@@ -11,20 +11,23 @@ IF(DTOO_INCLUDE_DIR AND DTOO_LIBRARIES AND DTOO_LINK_DIRECTORY)
   SET(DTOO_FOUND TRUE)
 ELSE(DTOO_INCLUDE_DIR AND DTOO_LIBRARIES AND DTOO_LINK_DIRECTORY)
   FIND_PATH(DTOO_INCLUDE_DIR progHelper.h
-    $ENV{DTOO_ROOTDIR}/include
+#    $ENV{DTOO_ROOTDIR}/include
+    ${DTOO_ROOTDIR}/include
     /usr/include/
   )
 
   FIND_LIBRARY(DTOO_LIBRARIES NAMES dtOO libdtOO
     PATHS
-    $ENV{DTOO_ROOTDIR}/lib
+#    $ENV{DTOO_ROOTDIR}/lib
+    ${DTOO_ROOTDIR}/lib
     /usr/lib/dtOO
     /usr/lib64/dtOO
   )
 
  FIND_PATH(DTOO_LINK_DIRECTORY libdtOO.so
     $ENV{EXTERNLIBS}/ALL/lib
-    $ENV{DTOO_ROOTDIR}/lib
+ #   $ENV{DTOO_ROOTDIR}/lib
+    ${DTOO_ROOTDIR}/lib
     /usr/lib
     /usr/local/lib
     /usr/lib/CGAL
