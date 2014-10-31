@@ -1,0 +1,285 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<canadaGuidevaneChannel>
+ <state label="var_01">
+  <constValue label="cV_conformalMappingNPointsChannel">
+   <builder name="intParam">
+    <float value="100" min="20" max="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.1" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.5" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.03" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.2" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.4" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yIn">
+   <builder name="sliderFloatParam">
+    <float value="3000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yOut">
+   <builder name="sliderFloatParam">
+    <float value="10000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+ </state>
+ <state label="var_03">
+  <constValue label="cV_conformalMappingNPointsChannel">
+   <builder name="intParam">
+    <float value="100" min="20" max="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.1" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.5" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.03" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.2" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.4" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yIn">
+   <builder name="sliderFloatParam">
+    <float value="3000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yOut">
+   <builder name="sliderFloatParam">
+    <float value="10000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+ </state>
+ <state label="var_05">
+  <constValue label="cV_conformalMappingNPointsChannel">
+   <builder name="intParam">
+    <float value="100" min="20" max="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.25" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.2" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.9" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yIn">
+   <builder name="sliderFloatParam">
+    <float value="4000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yOut">
+   <builder name="sliderFloatParam">
+    <float value="4000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+ </state>
+ <state label="var_06">
+  <constValue label="cV_conformalMappingNPointsChannel">
+   <builder name="intParam">
+    <float value="100" min="20" max="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.25" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.1" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.4" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yIn">
+   <builder name="sliderFloatParam">
+    <float value="4000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yOut">
+   <builder name="sliderFloatParam">
+    <float value="10000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+ </state>
+ <state label="var_21">
+  <constValue label="cV_conformalMappingNPointsChannel">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.25" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.1" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.4" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.99" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yIn">
+   <builder name="sliderFloatParam">
+    <float value="4000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yOut">
+   <builder name="sliderFloatParam">
+    <float value="10000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+ </state>
+ <state label="var_21_gmsh">
+  <constValue label="cV_conformalMappingNPointsChannel">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.25" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaIn_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_hub">
+   <builder name="sliderFloatParam">
+    <float value="0.01" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_mplane500">
+   <builder name="sliderFloatParam">
+    <float value="0.4" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_alphaOut_shroud">
+   <builder name="sliderFloatParam">
+    <float value="0.99" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yIn">
+   <builder name="sliderFloatParam">
+    <float value="4000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_channel_yOut">
+   <builder name="sliderFloatParam">
+    <float value="10000" min="1000" max="16000"/>
+   </builder>
+  </constValue>
+ </state>
+</canadaGuidevaneChannel>

@@ -1,0 +1,295 @@
+<c14Volume>
+
+<!--  <staticProperties label="">
+		<option name="reparamOnFace_precision" value="1.e-8"/>
+		<option name="reparamInVolume_precision" value="1.e-8"/>
+		<option name="geometricResolution" value="1.e-4"/>
+		<option name="minPointDistance" value="1.e-2"/>
+		<option name="point_diameter" value="1."/>
+		<option name="vector_tipSize" value="10."/>
+		<option name="snapTol" value="1.e-2"/>
+		<option name="reparamMaxAngle" value="1.e-1"/>
+		<option name="reparamNPoints" value="20"/>
+		<option name="reparamNPointsU" value="50"/>
+		<option name="reparamNPointsV" value="4"/>
+	</staticProperties>-->
+
+<!--	<transformer name="bVOSplitEdge">
+		<dtGmshEdge from="21" to="24"/>
+		<dtVector3 u="#2124u#" v="#2124v#" w=".5"/>
+	</transformer>	
+	<transformer name="bVOSplitEdge">
+		<dtGmshEdge from="12" to="32"/>
+		<dtVector3 u="#1232u#" v="#1232v#" w=".5"/>
+	</transformer>-->
+	<boundedVolume label="canadaGuidevaneC14Volume" name="c14Volume">
+	  <option name="[gmsh]General.Terminal" value="1."/>
+	  <option name="[gmsh]General.Verbosity" value="100."/>
+		<option name="[gmsh]Mesh.CharacteristicLengthMin" value="100."/>
+    <option name="[gmsh]Mesh.CharacteristicLengthMax" value="400."/>
+		<option name="[gmsh]General.ExpertMode" value="1."/>	
+		<map3dTo3d label="t6SC_cardinalDir" position="dtVolume"/>
+		<map2dTo3d label="aS_channel_internal" position="dtInternal"/>
+		<constValue label="0u"/>
+		<constValue label="0v"/>
+		<constValue label="1u"/>
+		<constValue label="1v"/>
+		<constValue label="2u"/>
+		<constValue label="2v"/>		
+		<constValue label="3u"/>
+		<constValue label="3v"/>
+		<constValue label="4u"/>
+		<constValue label="4v"/>
+		<constValue label="5u"/>
+		<constValue label="5v"/>
+		<constValue label="6u"/>
+		<constValue label="6v"/>
+		<constValue label="7u"/>
+		<constValue label="7v"/>		
+		<constValue label="8u"/>
+		<constValue label="8v"/>
+		<constValue label="9u"/>
+		<constValue label="9v"/>
+		<constValue label="10u"/>
+		<constValue label="10v"/>
+		<constValue label="11u"/>
+		<constValue label="11v"/>
+		<constValue label="12u"/>
+		<constValue label="12v"/>		
+		<constValue label="13u"/>
+		<constValue label="13v"/>
+		<constValue label="14u"/>
+		<constValue label="14v"/>
+		<constValue label="15u"/>
+		<constValue label="15v"/>
+		<constValue label="16u"/>
+		<constValue label="16v"/>
+		<constValue label="17u"/>
+		<constValue label="17v"/>		
+		<constValue label="18u"/>
+		<constValue label="18v"/>
+		<constValue label="19u"/>
+		<constValue label="19v"/>
+		<constValue label="20u"/>
+		<constValue label="20v"/>
+		<constValue label="21u"/>
+		<constValue label="21v"/>
+		<constValue label="22u"/>
+		<constValue label="22v"/>		
+		<constValue label="23u"/>
+		<constValue label="23v"/>
+		<constValue label="24u"/>
+		<constValue label="24v"/>
+		<constValue label="25u"/>
+		<constValue label="25v"/>
+		<constValue label="26u"/>
+		<constValue label="26v"/>
+		<constValue label="27u"/>
+		<constValue label="27v"/>		
+		<constValue label="28u"/>
+		<constValue label="28v"/>
+		<constValue label="29u"/>
+		<constValue label="29v"/>
+		<constValue label="30u"/>
+		<constValue label="30v"/>
+		<constValue label="31u"/>
+		<constValue label="31v"/>
+		<constValue label="32u"/>
+		<constValue label="32v"/>		
+		<constValue label="33u"/>
+		<constValue label="33v"/>
+		<constValue label="34u"/>
+		<constValue label="34v"/>
+		<constValue label="35u"/>
+		<constValue label="35v"/>
+		<constValue label="36u"/>
+		<constValue label="36v"/>
+		<constValue label="37u"/>
+		<constValue label="37v"/>		
+		<constValue label="38u"/>
+		<constValue label="38v"/>
+		<constValue label="39u"/>
+		<constValue label="39v"/>
+		<constValue label="40u"/>
+		<constValue label="40v"/>
+		<constValue label="41u"/>
+		<constValue label="41v"/>
+		<constValue label="42u"/>
+		<constValue label="42v"/>		
+		<constValue label="43u"/>
+		<constValue label="43v"/>
+		<constValue label="44u"/>
+		<constValue label="44v"/>
+		<constValue label="45u"/>
+		<constValue label="45v"/>
+		<!--		<constValue label="dtLayerGrading"/> -->
+		<constValue label="nElemAlpha"/>
+		<constValue label="nElemBeta"/>
+		<constValue label="nElemGamma"/>
+		<constValue label="nElemDelta"/>
+		<constValue label="nElemEpsilon"/>
+		<constValue label="nElemPhi"/>
+		<constValue label="nElemPsi"/>
+		<constValue label="gradingA"/>
+		<constValue label="gradingB"/>
+		<constValue label="gradingC"/>
+		<constValue label="gradingD"/>
+	</boundedVolume>
+	
+	<cvOptimizer label="testingOptimizer" name="eoLib">
+		<constValue label="1v"/>
+		<constValue label="2u"/>
+		<constValue label="2v"/>		
+		<constValue label="3u"/>
+		<constValue label="5v"/>
+		<constValue label="6u"/>
+		<constValue label="6v"/>
+		<constValue label="7u"/>
+		<constValue label="8u"/>
+		<constValue label="8v"/>
+		<constValue label="9u"/>
+		<constValue label="10u"/>
+		<constValue label="10v"/>
+		<constValue label="11u"/>
+		<constValue label="12u"/>
+		<constValue label="12v"/>		
+		<constValue label="13u"/>
+		<constValue label="14u"/>
+		<constValue label="14v"/>
+		<constValue label="15u"/>
+		<constValue label="16v"/>
+		<constValue label="18v"/>
+		<constValue label="20v"/>
+		<constValue label="21u"/>
+		<constValue label="21v"/>
+		<constValue label="22v"/>
+		<constValue label="23u"/>
+		<constValue label="23v"/>
+		<constValue label="25u"/>
+    <constValue label="27u"/>
+		<constValue label="28u"/>
+		<constValue label="29u"/>
+		<constValue label="30u"/>
+		<constValue label="31u"/>
+		<constValue label="32u"/>
+		<constValue label="32v"/>		
+		<constValue label="33u"/>
+		<constValue label="33v"/>
+		<constValue label="34v"/>
+		<constValue label="35v"/>
+		<constValue label="37u"/>
+		<constValue label="39u"/>
+		<constValue label="40u"/>
+		<constValue label="41u"/>
+		<constValue label="42u"/>
+		<constValue label="43u"/>
+	</cvOptimizer>	 
+	
+	<constValue label="0u"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="1u"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="2u"> <builder name="sliderFloatParam"> <float value="0.75" min="0.0" max="1."/> </builder> </constValue>
+	<constValue label="3u"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="4u"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="5u"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="6u"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1."/> </builder> </constValue>
+	<constValue label="7u"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="8u"> <builder name="sliderFloatParam"> <float value="0.5" min="0.00" max="1."/> </builder> </constValue>
+	<constValue label="9u"> <builder name="sliderFloatParam"> <float value="0.5" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="10u"> <builder name="sliderFloatParam"> <float value="0.5" min="0.00" max="1."/> </builder> </constValue>
+	<constValue label="11u"> <builder name="sliderFloatParam"> <float value="0.5" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="12u"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1."/> </builder> </constValue>
+	<constValue label="13u"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="14u"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1."/> </builder> </constValue>
+	<constValue label="15u"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="16u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="17u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="18u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="19u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="20u"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="21u"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="22u"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="23u"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="24u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="25u"> <builder name="sliderFloatParam"> <float value="0.45" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="26u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="27u"> <builder name="sliderFloatParam"> <float value="0.45" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="28u"> <builder name="sliderFloatParam"> <float value="0.5" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="29u"> <builder name="sliderFloatParam"> <float value="0.5" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="30u"> <builder name="sliderFloatParam"> <float value="0.55" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="31u"> <builder name="sliderFloatParam"> <float value="0.55" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="32u"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="33u"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="34u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="35u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="36u"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="37u"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="38u"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="39u"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="40u"> <builder name="sliderFloatParam"> <float value="0.5" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="41u"> <builder name="sliderFloatParam"> <float value="0.5" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="42u"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="43u"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="44u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="45u"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="0v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="1v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="2v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="3v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="4v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="5v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="6v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="7v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="8v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="9v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="10v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="11v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="12v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="13v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="14v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="15v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="16v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="17v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="18v"> <builder name="sliderFloatParam"> <float value="0.25" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="19v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="20v"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="21v"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="22v"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="23v"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="24v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="25v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="26v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="27v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="28v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="29v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="30v"> <builder name="sliderFloatParam"> <float value="0.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="31v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="32v"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="33v"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="34v"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="35v"> <builder name="sliderFloatParam"> <float value="0.75" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="36v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="37v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="38v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="39v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="40v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="41v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="42v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="43v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="44v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="45v"> <builder name="sliderFloatParam"> <float value="1.0" min="0.00" max="1.00"/> </builder> </constValue>
+	<constValue label="1232u"> <builder name="sliderFloatParam"> <float value=".5" min="-2.00" max="2.00"/> </builder> </constValue>
+	<constValue label="1232v"> <builder name="sliderFloatParam"> <float value=".5" min="-2.00" max="2.00"/> </builder> </constValue>
+	<constValue label="2124u"> <builder name="sliderFloatParam"> <float value=".5" min="-2.00" max="2.00"/> </builder> </constValue>
+	<constValue label="2124v"> <builder name="sliderFloatParam"> <float value=".5" min="-2.00" max="2.00"/> </builder> </constValue>
+	<constValue label="nElemAlpha"> <builder name="intParam"> <int value="10"/> </builder> </constValue>
+	<constValue label="nElemBeta"> <builder name="intParam"> <int value="10"/> </builder> </constValue>
+	<constValue label="nElemGamma"> <builder name="intParam"> <int value="10"/> </builder> </constValue>
+	<constValue label="nElemDelta"> <builder name="intParam"> <int value="10"/> </builder> </constValue>
+	<constValue label="nElemEpsilon"> <builder name="intParam"> <int value="10"/> </builder> </constValue>
+	<constValue label="nElemPhi"> <builder name="intParam"> <int value="10"/> </builder> </constValue>
+	<constValue label="nElemPsi"> <builder name="intParam"> <int value="10"/> </builder> </constValue>
+	<constValue label="gradingA"> <builder name="sliderFloatParam"> <float value="1." min="0." max="1.0"/> </builder> </constValue>
+	<constValue label="gradingB"> <builder name="sliderFloatParam"> <float value="1." min="0." max="1.0"/> </builder> </constValue>
+	<constValue label="gradingC"> <builder name="sliderFloatParam"> <float value="1." min="0." max="1.0"/> </builder> </constValue>
+	<constValue label="gradingD"> <builder name="sliderFloatParam"> <float value="1." min="0." max="1.0"/> </builder> </constValue>
+</c14Volume>

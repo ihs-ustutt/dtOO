@@ -1,0 +1,45 @@
+# - Find SISL
+# Find the SISL includes and client library
+# This module defines
+# SISL_DEFINITIONS: compiler flags for compiling with SISL
+# SISL_INCLUDE_DIR: where to find SISL.h
+# SISL_LIBRARIES: the libraries needed to use SISL
+# SISL_FOUND: if false, do not try to use SISL
+#SET(SISL_INCLUDE_DIR "not found")
+#SET(SISL_LIBRARIES "not found")
+
+SET(SISL_DEFINITIONS )
+
+IF(SISL_INCLUDE_DIR AND SISL_LIBRARIES)
+SET(SISL_FOUND TRUE)
+ELSE(SISL_INCLUDE_DIR AND SISL_LIBRARIES)
+FIND_PATH(SISL_INCLUDE_DIR sisl.h
+$ENV{EXTERNLIBS}/sisl/include
+/usr/include/SISL
+/usr/local/include/SISL
+$ENV{ProgramFiles}/SISL/*/include/SISL
+$ENV{SystemDrive}/SISL/*/include/SISL
+)
+FIND_LIBRARY(SISL_LIBRARIES NAMES sisl libsisl
+PATHS
+$ENV{EXTERNLIBS}/sisl/lib
+/usr/lib
+/usr/local/lib
+/usr/lib/SISL
+/usr/lib64
+/usr/local/lib64
+/usr/lib64/SISL
+$ENV{ProgramFiles}/SISL/*/lib/ms
+$ENV{SystemDrive}/SISL/*/lib/ms
+)
+
+IF(SISL_INCLUDE_DIR AND SISL_LIBRARIES)
+SET(SISL_FOUND TRUE)
+MESSAGE(STATUS "Found SISL: ${SISL_INCLUDE_DIR}, ${SISL_LIBRARIES}")
+ELSE(SISL_INCLUDE_DIR AND SISL_LIBRARIES)
+SET(SISL_FOUND FALSE)
+MESSAGE(STATUS "SISL not found.")
+ENDIF(SISL_INCLUDE_DIR AND SISL_LIBRARIES)
+
+MARK_AS_ADVANCED(SISL_INCLUDE_DIR SISL_LIBRARIES)
+ENDIF(SISL_INCLUDE_DIR AND SISL_LIBRARIES)

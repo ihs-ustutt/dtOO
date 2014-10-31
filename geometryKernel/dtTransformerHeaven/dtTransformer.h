@@ -1,0 +1,52 @@
+#ifndef DTTRANSFORMER_H
+#define	DTTRANSFORMER_H
+
+#include <dtLinearAlgebra.h>
+#include <dtXmlParserDecorator/qtXmlBase.h>
+#include <interfaceHeaven/vectorHandling.h>
+#include <vector>
+#include <string>
+#include <logMe/dtMacros.h>
+
+class QDomElement;
+
+namespace dtOO {
+  class pointContainer;
+  class vectorContainer;
+  class constValue;
+  class analyticGeometry;
+  class analyticFunction;
+  
+  class dtTransformer : public qtXmlBase {
+  public:
+    dt__CLASSNAME(dtTransformer);
+    dtTransformer();
+    virtual ~dtTransformer();
+    virtual void init( QDomElement * transformerElementP, 
+                       pointContainer * const pointContainerP,
+                       vectorContainer * const vectorContainerP,    
+                       vectorHandling< constValue * > const * const cValP,
+                       vectorHandling< analyticFunction * > const * const sFunP,
+                       vectorHandling< analyticGeometry * > const * const depAGeoP );
+    virtual void init( QDomElement * transformerElementP,
+                       vectorHandling< constValue * > const * const cValP,
+                       vectorHandling< analyticFunction * > const * const sFunP);
+    virtual bool isNecessary( void ) const = 0;
+    virtual std::vector< dtPoint2 * > apply( std::vector< dtPoint2 * > const * const toTrans ) const;
+    vectorHandling< dtPoint2 * > apply( vectorHandling< dtPoint2 * > const * const pointVecP ) const;
+    virtual std::vector< dtPoint3 * > apply( std::vector< dtPoint3 * > const * const toTrans ) const;    
+    virtual vectorHandling< analyticGeometry * > apply( vectorHandling< analyticGeometry * > const * const toTrans ) const;
+    virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const toTrans ) const;
+    analyticFunction * apply(analyticFunction const * const sF) const;
+    analyticGeometry * apply(analyticGeometry const * const aG) const;
+    virtual void handleFloat(std::string const name, float const value);
+    virtual void handleInt(std::string const name, int const value);
+    virtual void handleAnalyticGeometry(std::string const name, analyticGeometry const * value);
+    virtual void handleAnalyticFunction(std::string const name, analyticFunction const * value);
+    virtual void handlePoint2d(std::string const name, dtPoint2 const value);
+    virtual void handleBool(std::string const name, bool const value);
+  };
+}
+
+#endif	/* DTTRANSFORMER_H */
+

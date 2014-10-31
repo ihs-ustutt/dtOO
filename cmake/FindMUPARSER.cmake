@@ -1,0 +1,56 @@
+# - Find MUPARSER
+# Find the MUPARSER includes and client library
+# This module defines
+# MUPARSER_DEFINITIONS: compiler flags for compiling with MUPARSER
+# MUPARSER_INCLUDE_DIR: where to find MUPARSER.h
+# MUPARSER_LIBRARIES: the libraries needed to use MUPARSER
+# MUPARSER_FOUND: if false, do not try to use MUPARSER
+#SET(MUPARSER_INCLUDE_DIR "not found")
+#SET(MUPARSER_LIBRARIES "not found")
+
+#SET(MUPARSER_DEFINITIONS -frounding-math)
+
+IF(MUPARSER_INCLUDE_DIR AND MUPARSER_LIBRARIES AND MUPARSER_LINK_DIRECTORY)
+  SET(MUPARSER_FOUND TRUE)
+ELSE(MUPARSER_INCLUDE_DIR AND MUPARSER_LIBRARIES AND MUPARSER_LINK_DIRECTORY)
+  FIND_PATH(MUPARSER_INCLUDE_DIR muParser.h
+  $ENV{EXTERNLIBS}/muparser/include
+  /usr/include/muparser
+  /usr/local/include/muparser
+  $ENV{ProgramFiles}/muparser/*/include/muparser
+  $ENV{SystemDrive}/muparser/*/include/muparser
+  )
+  FIND_LIBRARY(MUPARSER_LIBRARIES NAMES muparser libmuparser
+  PATHS
+  $ENV{EXTERNLIBS}/muparser/lib64
+  /usr/lib
+  /usr/local/lib
+  /usr/lib/MUPARSER
+  /usr/lib64
+  /usr/local/lib64
+  /usr/lib64/muparser
+  $ENV{ProgramFiles}/muparser/*/lib/ms
+  $ENV{SystemDrive}/muparser/*/lib/ms
+  )
+
+  FIND_PATH(MUPARSER_LINK_DIRECTORY libmuparser.so
+    $ENV{EXTERNLIBS}/ALL/lib
+    $ENV{DTOO_ROOTDIR}/lib
+    /usr/lib
+    /usr/local/lib
+    /usr/lib/CGAL
+    /usr/lib64
+    /usr/local/lib64
+    /usr/lib64/CGAL
+  )
+
+  IF(MUPARSER_INCLUDE_DIR AND MUPARSER_LIBRARIES AND MUPARSER_LINK_DIRECTORY)
+    SET(MUPARSER_FOUND TRUE)
+    MESSAGE(STATUS "Found MUPARSER: ${MUPARSER_INCLUDE_DIR}, ${MUPARSER_LIBRARIES}, ${MUPARSER_LINK_DIRECTORY}")
+  ELSE(MUPARSER_INCLUDE_DIR AND MUPARSER_LIBRARIES AND MUPARSER_LINK_DIRECTORY)
+    SET(MUPARSER_FOUND FALSE)
+    MESSAGE(STATUS "muParser not found.")
+  ENDIF(MUPARSER_INCLUDE_DIR AND MUPARSER_LIBRARIES AND MUPARSER_LINK_DIRECTORY)
+
+  MARK_AS_ADVANCED(MUPARSER_INCLUDE_DIR MUPARSER_LIBRARIES MUPARSER_LINK_DIRECTORY)
+ENDIF(MUPARSER_INCLUDE_DIR AND MUPARSER_LIBRARIES AND MUPARSER_LINK_DIRECTORY)

@@ -1,0 +1,37 @@
+#ifndef BITHICKNESSINCREASING_H
+#define	BITHICKNESSINCREASING_H
+
+#include "dtTransformer.h"
+//#include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
+
+namespace dtOO {
+  class analyticFunction;
+  class scaOneD;
+  
+  class biThicknessIncreasing : public dtTransformer {
+  public:    
+    dt__CLASSNAME(biThicknessIncreasing);
+    biThicknessIncreasing();
+    virtual ~biThicknessIncreasing();
+    virtual bool isNecessary( void ) const;
+    virtual void init( QDomElement * transformerElementP,
+                       vectorHandling< constValue * > const * const cValP,
+                       vectorHandling< analyticFunction * > const * const sFunP);
+    virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const sFunP ) const;  
+    virtual void handleInt(std::string const name, int const value);
+    virtual void handleAnalyticFunction(std::string const name, analyticFunction const * value);
+//    virtual void handleBool(std::string const name, bool const value);
+  private:
+    scaOneD const * _tD[2];
+    scaOneD const * _para;
+    int _nPointsOne;
+//    bool _isInv;
+    int _splineOrder;
+//    ptrHandling<dtTransformer> _trans;
+//    ptrHandling<dtTransformer> _transInv;
+  };
+}    
+
+#endif	/* THICKNESSINCREASING_H */
+

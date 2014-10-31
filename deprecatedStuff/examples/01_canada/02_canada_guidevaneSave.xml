@@ -1,0 +1,3154 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<canadaGuidevane>
+ <state label="var_01">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="4"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="10"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="20" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="20" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="20" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="300" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="250" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+	 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 	
+ </state>
+ <state label="var_02">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="10"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="20" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="20" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="20" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="300" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="250" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+	 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 	
+ </state>
+ <state label="var_03">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="20" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="20" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="20" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="300" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="250" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_04">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_05">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_06">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="7"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="350" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="350" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_07">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="7"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="400" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="400" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_08">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="7"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="400" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="400" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_09">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="7"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-3" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-3" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="450" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="450" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_10">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="7"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-4" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-4" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.5" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="450" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="450" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_11">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="7"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-4" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-4" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.4" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="700" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".18" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_12">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="7"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-6" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-6" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="400" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="450" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".16" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".14" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".12" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value=".16" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value=".14" min=".0" max="1."/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value=".12" min=".0" max="1."/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_13">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="7"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-6" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-6" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="340" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="450" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.12" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.12" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_14">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="7"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-6" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-6" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="400" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="450" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.08" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_15">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-05" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="100"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-6" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-6" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.8" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="400" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="450" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.08" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_16">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-06" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="20"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="800" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="1000" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.08" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_17">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-06" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="550" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.08" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_18">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-06" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="550" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.08" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_19">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-06" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.08" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_20">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-06" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-15" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.08" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_21">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-06" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-14" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="500" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.07" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.17" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_22">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-06" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-14" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-8.5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="550" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="660" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4237.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.07" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.17" min="0" max="1"/>
+   </builder>
+  </constValue>
+		 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 
+ </state>
+ <state label="var_23">
+  <constValue label="cV_t">
+   <builder name="sliderFloatParam">
+    <float value="0.18" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_nBlades">
+   <builder name="intParam">
+    <int value="5"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingtolerance">
+   <builder name="sliderFloatParam">
+    <float value="5e-06" min="1e-08" max="0.0001"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_conformalMappingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_thicknessIncreasingNPoints">
+   <builder name="intParam">
+    <int value="40"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_1_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="10" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.0">
+   <builder name="sliderFloatParam">
+    <float value="-14" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_0.5">
+   <builder name="sliderFloatParam">
+    <float value="-7" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_alpha_2_ex_1.0">
+   <builder name="sliderFloatParam">
+    <float value="-8.5" min="-90" max="90"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_deltaX/deltaY_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.7" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.0">
+   <builder name="sliderFloatParam">
+    <float value="550" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_0.5">
+   <builder name="sliderFloatParam">
+    <float value="600" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_H_1.0">
+   <builder name="sliderFloatParam">
+    <float value="760" min="0" max="500"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.0">
+   <builder name="sliderFloatParam">
+    <float value="4037.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_0.5">
+   <builder name="sliderFloatParam">
+    <float value="4037.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_offsetZ_1.0">
+   <builder name="sliderFloatParam">
+    <float value="4037.85" min="0" max="1000"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tSuction_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.07" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.0">
+   <builder name="sliderFloatParam">
+    <float value="0.16" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_0.5">
+   <builder name="sliderFloatParam">
+    <float value="0.14" min="0" max="1"/>
+   </builder>
+  </constValue>
+  <constValue label="cV_tPressure_1.0">
+   <builder name="sliderFloatParam">
+    <float value="0.17" min="0" max="1"/>
+   </builder>
+  </constValue>
+	 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="0." min="0." max="100."/>
+    </builder>	 
+   </constValue> 	 	 	
+ </state>
+</canadaGuidevane>

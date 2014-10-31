@@ -1,0 +1,613 @@
+#include "map2dTo3d.h"
+
+#include <logMe/logMe.h>
+#include <interfaceHeaven/ptrHandling.h>
+#include "map1dTo3d.h"
+#include <interfaceHeaven/twoDArrayHandling.h>
+#include <baseContainer/vectorContainer.h>
+#include <progHelper.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
+#include <solid3dSurface.h>
+
+#define SQU(a)      ((a)*(a))
+
+namespace dtOO {  
+  map2dTo3d::map2dTo3d() : analyticGeometry() {
+  }
+
+  map2dTo3d::map2dTo3d(const map2dTo3d& orig) : analyticGeometry(orig) {
+  }
+
+  map2dTo3d::~map2dTo3d() {
+  }
+  
+  dtPoint3 map2dTo3d::getPoint( dtPoint2 const & pUV ) const {
+    return getPoint(pUV.x(), pUV.y());
+  }
+
+  dtPoint3 map2dTo3d::getPoint( dtPoint2 const * const pUV ) const {
+    return getPoint(*pUV);
+  }  
+  
+  bool map2dTo3d::isClosedU( void ) const {
+    return isClosed(0);
+  }
+  
+  bool map2dTo3d::isClosedV( void ) const {
+    return isClosed(1);
+  }
+  
+  float map2dTo3d::getUMin( void ) const {
+    return getMin(0);
+  }
+  
+  float map2dTo3d::getUMax( void ) const {
+    return getMax(0);
+  }
+  
+  float map2dTo3d::getVMin( void ) const {
+    return getMin(1);
+  }
+  
+  float map2dTo3d::getVMax( void ) const {
+    return getMax(1);
+  }
+  
+  std::vector< std::vector< dtPoint3 > > map2dTo3d::getPointGrid( int const & nU, int const & nV ) const {
+    std::vector< std::vector< dtPoint3 > > pp;
+    float intU = 1. / (static_cast<float>(nU)-1.);
+    float intV = 1. / (static_cast<float>(nV)-1.);    
+    for (int ii=0; ii<nV; ii++) {
+      pp.push_back(std::vector< dtPoint3 >(nU));
+      for (int jj=0; jj<nU; jj++) {
+        float iiF = static_cast< float >(ii);
+        float jjF = static_cast< float >(jj);
+        pp[ii][jj] = getPointPercent(jjF * intU, iiF * intV);
+      }      
+    }
+    
+    return pp;
+  }
+  
+  dtPoint3 map2dTo3d::getPointPercent( float const & uu, float const & vv ) const {
+    return getPoint( u_percent(uu), v_percent(vv) );
+  }    
+
+  std::vector< dtPoint3 > map2dTo3d::getPoint( std::vector< float > const & uu, std::vector< float > const & vv ) const {
+    std::vector< dtPoint3 > ppXYZ;
+    
+    dt__FORALL(uu, ii,
+      ppXYZ.push_back( getPoint( uu[ii], vv[ii] ) );
+    );
+    
+    return ppXYZ;
+  }
+
+  std::vector< dtPoint3 > map2dTo3d::getPointPercent( std::vector< float > const & uu, std::vector< float > const & vv ) const {
+    std::vector< dtPoint3 > ppXYZ;
+    
+    dt__FORALL(uu, ii,
+      ppXYZ.push_back( getPointPercent( uu[ii], vv[ii] ) );
+    );
+    
+    return ppXYZ;
+  }
+  
+  std::vector< dtVector3 > map2dTo3d::getPointPercentVector( std::vector< float > const & uu, std::vector< float > const & vv ) const {
+    std::vector< dtPoint3 > ppXYZ = getPointPercent(uu, vv);
+    
+    std::vector< dtVector3 > vvXYZ( ppXYZ.size() );
+    dt__FORALL(ppXYZ, ii,
+      vvXYZ[ii] = dtLinearAlgebra::toDtVector3(ppXYZ[ii]);
+    );
+    
+    return vvXYZ;
+  }  
+	
+	vectorHandling< renderInterface * > map2dTo3d::getRender( void ) const {
+		int renderResU = analyticGeometry::getRenderResolution(0);
+		int renderResV = analyticGeometry::getRenderResolution(1);		
+    
+    //
+    //calculate interval to create points
+    //
+    float intervalFirst = (getUMax() - getUMin()) / (renderResU-1.);
+    float intervalSecond = (getVMax() - getVMin()) / (renderResV-1.);  
+
+    twoDArrayHandling< dtPoint3 > surfacePoints(renderResU+1, renderResV+1);
+    for (int jj=0; jj<=renderResU; jj++) {
+      for(int ii=0; ii<=renderResV; ii++) {
+				float uu;
+				float vv;				
+        if (jj == (renderResU) ) {
+          uu = getUMax();
+        }
+        else {
+          uu = (float) (getUMin() + jj * intervalFirst);
+        }
+        if (ii == (renderResV) ) {      
+          vv = getVMax();
+        }
+        else {
+          vv = (float) (getVMin() + ii * intervalSecond);
+        }
+        surfacePoints[jj][ii] = getPoint(uu, vv);
+      }
+    }
+		
+		vectorHandling< renderInterface * > rV;
+		rV.push_back( new solid3dSurface(surfacePoints) );
+		
+		return rV;
+	}
+	
+	/**
+	 * 
+   * @todo: Replace vectorContainer with new class in renderHeaven.
+   */
+  vectorHandling< renderInterface * > map2dTo3d::getExtRender( void ) const {
+		vectorHandling< renderInterface * > retVec;
+    //
+    // get surface directions
+    //
+    dtPoint3 startPointU = map2dTo3d::getPointPercent(0.05, 0.); //getDtSislSurf()->getPointPercent3d(0.05, 0.);
+    dtPoint3 topPointU = map2dTo3d::getPointPercent(0.1, 0.);//getDtSislSurf()->getPointPercent3d(0.1, 0.);
+    dtPoint3 startPointV = map2dTo3d::getPointPercent(0., 0.05);//getDtSislSurf()->getPointPercent3d(0., 0.05);
+    dtPoint3 topPointV = map2dTo3d::getPointPercent(0., 0.10);//getDtSislSurf()->getPointPercent3d(0., 0.10);
+    dtVector3 uu = topPointU - startPointU;  
+    dtVector3 vv = topPointV - startPointV;  
+
+		retVec.push_back( new vectorContainer() );
+    vectorContainer & vecCon = *(static_cast< vectorContainer * >(retVec.back()));
+		retVec.push_back( new vectorContainer() );
+    vectorContainer & norCon = *(static_cast< vectorContainer * >(retVec.back()));		
+		
+    //
+    // add direction to vector container
+    //
+    vecCon.add(uu, "", startPointU);
+    vecCon.add(vv, "", startPointV);
+    vecCon.add(vv, "", topPointV);
+    norCon.add(map2dTo3d::normalPercent(.25, .25), "", map2dTo3d::getPointPercent(.25, .25));
+    norCon.add(map2dTo3d::normalPercent(.25, .75), "", map2dTo3d::getPointPercent(.25, .75));
+    norCon.add(map2dTo3d::normalPercent(.75, .25), "", map2dTo3d::getPointPercent(.75, .25));
+    norCon.add(map2dTo3d::normalPercent(.75, .75), "", map2dTo3d::getPointPercent(.75, .75));
+		
+		return retVec;
+  }	
+   
+  int map2dTo3d::getRenderResolutionU( void ) const { 
+    return analyticGeometry::getRenderResolution(0);
+  }
+
+  int map2dTo3d::getRenderResolutionV( void ) const { 
+    return analyticGeometry::getRenderResolution(1);
+  }  
+  
+  dtVector3 map2dTo3d::getPointPercentVector( float const & uu, float const & vv ) const {
+    return dtLinearAlgebra::toDtVector3( getPointPercent(uu, vv) );
+  }
+  
+  dtVector3 map2dTo3d::normal( float const & uu, float const & vv) const {
+    dtVector3 vec(
+      dtLinearAlgebra::crossProduct(
+        firstDerU(uu, vv), firstDerV(uu, vv)
+      )
+    );
+    return ( 1./sqrt(vec.squared_length()) ) * vec;
+  }
+  
+  dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const & ppXYZ) const {
+    double X = ppXYZ.x();
+    double Y = ppXYZ.y();
+    double Z = ppXYZ.z();
+    double U;
+    double V;
+    double relax = 1.;
+    std::vector<float> itVal;
+    bool converged = XYZtoUV(X, Y, Z, U, V, relax, itVal);
+    
+    
+    std::vector< std::string > header;
+		header.push_back("i");
+		header.push_back("j");
+    header.push_back("deltaXYZ");
+    header.push_back("deltaUV");
+		header.push_back("nIter");
+
+    std::vector< std::string > addInfo;
+		addInfo.push_back( "tolerance = ");
+    addInfo[0] 
+		+= 
+		stringPrimitive().floatToString(
+		  staticPropertiesHandler::getInstance()->getOptionFloat(
+        "reparamOnFace_precision"
+      )
+		);  
+		addInfo.push_back(
+			"p_xyz = ("
+			+ stringPrimitive().floatToString(ppXYZ.x()) 
+			+ ", " 
+			+ stringPrimitive().floatToString(ppXYZ.y())
+			+ ", "
+			+ stringPrimitive().floatToString(ppXYZ.z())
+			+ ")"
+		);    
+
+		dtPoint3 ppRep_xyz = getPoint(U,V);
+		dtVector3 dist = ppXYZ - ppRep_xyz;		
+
+		float minPDist 
+		= 
+		staticPropertiesHandler::getInstance()->getOptionFloat(
+      "xyz_resolution"
+    );    		
+		if (sqrt(dist.squared_length()) > minPDist) {		
+			DTDEBUGWF(
+				reparamOnFace(), 
+				<< DTLOGEVAL( getLabel() ) << LOGDEL
+				<< floatVecToTable(addInfo, header, itVal) << LOGDEL 
+				<< DTLOGEVAL(converged) << LOGDEL
+				<< "p_xyz = (" << ppXYZ.x() << ", " << ppXYZ.y() << ", " << ppXYZ.z() << ")" << LOGDEL
+				<< "S(p_uv) = (" << ppRep_xyz.x() << ", " << ppRep_xyz.y() << ", " << ppRep_xyz.z() << ")" << LOGDEL
+				<< "p_uv = (" << U << ", " << V << ")" << LOGDEL
+				<< "distance = (" << sqrt(dist.squared_length()) << ")"
+			);		
+    }
+		
+    return dtPoint2(U, V);  
+  }
+  
+  dtVector3 map2dTo3d::normalPercent( float const & uu, float const & vv ) const {
+    return normal(u_percent(uu), v_percent(vv));  
+  }
+  
+  dtVector3 map2dTo3d::firstDerU( float const & uu, float const & vv) const {
+    float uP = percent_u(uu);
+    float vP = percent_v(vv);
+    float const deltaPer = 0.0001;
+    float const deltaPerInv = 1. - deltaPer;		
+    
+    if (uP<deltaPer) {
+      return (
+        (getPointPercent(deltaPer, vP) - getPointPercent(0., vP))
+        /
+        (u_percent(deltaPer) - u_percent(0.) )
+      );      
+    }
+    else if ( (uP>=deltaPer) && (uP<=deltaPerInv) ) {
+      return (
+        ( getPointPercent(uP+deltaPer, vP) - getPointPercent(uP-deltaPer, vP) )
+        /
+        ( u_percent(uP+deltaPer) - u_percent(uP-deltaPer) )
+      );
+    }
+    else if (uP>deltaPerInv) {
+      return (
+        (getPointPercent(1., vP) - getPointPercent(1.-deltaPer, vP))
+        /
+        (u_percent(1.) - u_percent(1.-deltaPer) )
+      );      
+    }
+  }
+  
+  dtVector3 map2dTo3d::firstDerV( float const & uu, float const & vv) const {
+    float uP = percent_u(uu);
+    float vP = percent_v(vv);
+    float const deltaPer = 0.0001;
+    float const deltaPerInv = 1. - deltaPer;		
+    
+    if (vP<deltaPer) {
+      return (
+        (getPointPercent(uP, deltaPer) - getPointPercent(uP, 0.))
+        /
+        (v_percent(deltaPer) - v_percent(0.) )
+      );      
+    }
+    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
+      return (
+        (getPointPercent(uP, vP+deltaPer) - getPointPercent(uP, vP-deltaPer))
+        /
+        (v_percent(vP+deltaPer) - v_percent(vP-deltaPer) )
+      );
+    }
+    else if (vP>deltaPerInv) {
+      return (
+        (getPointPercent(uP, 1.) - getPointPercent(uP, 1.-deltaPer))
+        /
+        (v_percent(1.) - v_percent(1.-deltaPer) )
+      );      
+    }    
+  }
+
+  dtVector3 map2dTo3d::secondDerUU( float const & uu, float const & vv) const {
+    float uP = percent_u(uu);
+    float vP = percent_v(vv);
+    float const deltaPer = 0.001;
+    float const deltaPerInv = 1. - deltaPer;		
+    
+    if (uP<deltaPer) {
+      return (
+        (firstDerU(deltaPer, vP) - firstDerU(0., vP))
+        /
+        (u_percent(deltaPer) - u_percent(0.) )
+      );      
+    }
+    else if ( (uP>=deltaPer) && (uP<=deltaPerInv) ) {
+      return (
+        (firstDerU(uP+deltaPer, vP) - firstDerU(uP-deltaPer, vP))
+        /
+        (u_percent(uP+deltaPer) - u_percent(uP-deltaPer) )
+      );
+    }
+    else if (uP>deltaPerInv) {
+      return (
+        (firstDerU(1., vP) - firstDerU(1.-deltaPer, vP))
+        /
+        (u_percent(1.) - u_percent(1.-deltaPer) )
+      );      
+    }       
+  }
+  
+  dtVector3 map2dTo3d::secondDerVV( float const & uu, float const & vv) const {
+    float uP = percent_u(uu);
+    float vP = percent_v(vv);
+    float const deltaPer = 0.001;
+    float const deltaPerInv = 1. - deltaPer;		
+    
+    if (vP<deltaPer) {
+      return (
+        (firstDerV(uP, deltaPer) - firstDerV(uP, 0.))
+        /
+        (v_percent(deltaPer) - v_percent(0.) )
+      );      
+    }
+    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
+      return (
+        (firstDerV(uP, vP+deltaPer) - firstDerU(uP, vP-deltaPer))
+        /
+        (v_percent(vP+deltaPer) - v_percent(vP-deltaPer) )
+      );
+    }
+    else if (vP>deltaPerInv) {
+      return (
+        (firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
+        /
+        (v_percent(1.) - v_percent(1.-deltaPer) )
+      );      
+    }    
+  }
+  
+  dtVector3 map2dTo3d::secondDerUV( float const & uu, float const & vv) const {
+    float uP = percent_u(uu);
+    float vP = percent_v(vv);
+    float const deltaPer = 0.001;
+    float const deltaPerInv = 1. - deltaPer;
+    if (vP<deltaPer) {
+      return (
+        (firstDerV(uP, deltaPer) - firstDerV(uP, 0.))
+        /
+        (u_percent(deltaPer) - u_percent(0.) )
+      );      
+    }
+    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
+      return (
+        (firstDerV(uP, vP+deltaPer) - firstDerU(uP, vP-deltaPer))
+        /
+        (u_percent(uP+deltaPer) - u_percent(uP-deltaPer) )
+      );
+    }
+    else if (vP>deltaPerInv) {
+      return (
+        (firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
+        /
+        (u_percent(1.) - u_percent(1.-deltaPer) )
+      );      
+    }       
+  }
+  
+  dtPoint2 map2dTo3d::reparamPercentOnFace( dtPoint3 const & ppXYZ ) const {
+    dtPoint2 ppUV = reparamOnFace(ppXYZ);
+    
+    return percent_uv(ppUV);
+  }
+
+  dtPoint2 map2dTo3d::uv_percent(dtPoint2 const & pUV) const {
+    return dtPoint2( u_percent(pUV.x()), v_percent(pUV.y()) );
+  }
+    
+  dtPoint2 map2dTo3d::uv_percent(float const & uu, float const & vv) const {
+    return dtPoint2( u_percent(uu), v_percent(vv) );
+  }
+    
+  float map2dTo3d::u_percent(float const & uu) const {
+    return (getUMin() +  (getUMax() - getUMin() ) * uu);
+  }
+    
+  float map2dTo3d::v_percent(float const & vv) const {
+    return (getVMin() +  (getVMax() - getVMin() ) * vv);
+  }
+  
+  dtPoint2 map2dTo3d::percent_uv(dtPoint2 const & pUV) const {
+    return dtPoint2( percent_u(pUV.x()), percent_v(pUV.y()) );
+  }
+  
+  float map2dTo3d::percent_u(float const & uu) const {
+    return ( (uu - getUMin()) / (getUMax() - getUMin()) );
+  }
+  
+  float map2dTo3d::percent_v(float const & vv) const {
+    return ( (vv - getVMin()) / (getVMax() - getVMin()) );
+  }
+    
+  map1dTo3d * map2dTo3d::pickLinearPercent(
+    float const & uu0, float const & vv0, 
+    float const & uu1, float const & vv1
+  ) const {
+    return pickLinearUV(
+      u_percent(uu0),
+      v_percent(vv0),
+      u_percent(uu1),
+      v_percent(vv1)
+    );
+  }
+
+  /**
+   * 
+   * @todo: Make precision adjustable. Maybe increase precision automatically.
+   */
+  bool map2dTo3d::XYZtoUV(double X, double Y, double Z, double &U, double &V,
+                          double relax, std::vector< float > &itVal) const {
+    double const Precision
+    =
+    static_cast<double>(
+      staticPropertiesHandler::getInstance()->getOptionFloat(
+        "reparamOnFace_precision"
+      )
+    );      
+    double const precXYZ
+    =
+    static_cast<double>(
+      staticPropertiesHandler::getInstance()->getOptionFloat(
+        "reparamOnFace_precisionXYZ"
+      )
+    );      		
+    const int MaxIter = 25;
+    const int NumInitGuess = 11;
+
+    double Unew = 0., Vnew = 0., err, err2;
+    int iter;
+      double umin, umax, vmin, vmax;
+    // don't use 0.9, 0.1 it fails with ruled surfaces
+    double initu[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
+    double initv[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
+
+    umin = static_cast<double>(getUMin());
+    umax = static_cast<double>(getUMax());
+		double udiff = umax - umin;
+		umax = umax + 0.1*udiff;
+		umin = umin - 0.1*udiff;		
+    vmin = static_cast<double>(getVMin());
+    vmax = static_cast<double>(getVMax());
+		double vdiff = vmax - vmin;
+		vmax = vmax + 0.1*vdiff;
+		vmin = vmin - 0.1*vdiff;		
+    const double tol = Precision * (SQU(umax - umin) + SQU(vmax-vmin));
+		
+    for(int i = 0; i < NumInitGuess; i++) {
+      initu[i] = umin + initu[i] * (umax - umin);
+      initv[i] = vmin + initv[i] * (vmax - vmin);
+    }
+
+    for(int i = 0; i < NumInitGuess; i++){
+		  U = initu[i];			
+      for(int j = 0; j < NumInitGuess; j++){
+		    V = initv[j];				
+			  err = 1.0;
+				iter = 1;				
+        
+				try {
+					dtPoint3 P = getPoint(static_cast<float>(U), static_cast<float>(V));
+					err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
+		//      if (err2 < 1.e-8 * CTX::instance()->lc) return;
+
+					while(err > tol && iter < MaxIter) {
+						P = getPoint(static_cast<float>(U), static_cast<float>(V));
+						dtVector3 derU = firstDerU(static_cast<float>(U), static_cast<float>(V));
+						dtVector3 derV = firstDerV(static_cast<float>(U), static_cast<float>(V));
+						dtMatrix mat(2,3);
+						mat(0,0) = derU.x(); mat(0,1) = derU.y(); mat(0,2) = derU.z();
+						mat(1,0) = derV.x(); mat(1,1) = derV.y(); mat(1,2) = derV.z();
+						dtMatrix jac = dtLinearAlgebra::invert2x3Matrix(mat);
+
+						Unew = U + relax *
+							(jac(0,0) * (X - P.x()) + jac(1,0) * (Y - P.y()) +
+							 jac(2,0) * (Z - P.z()));
+						Vnew = V + relax *
+							(jac(0,1) * (X - P.x()) + jac(1,1) * (Y - P.y()) +
+							 jac(2,1) * (Z - P.z()));
+//						dtMatrix mat(3,2);
+//						mat(0,0) = derU.x(); mat(1,0) = derU.y(); mat(2,0) = derU.z();
+//						mat(0,1) = derV.x(); mat(1,1) = derV.y(); mat(2,1) = derV.z();
+//						dtMatrix jac = dtLinearAlgebra::invertMatrix(mat);
+//
+//						Unew = U + relax *
+//							(jac(0,0) * (X - P.x()) + jac(0,1) * (Y - P.y()) +
+//							 jac(0,2) * (Z - P.z()));
+//						Vnew = V + relax *
+//							(jac(1,0) * (X - P.x()) + jac(1,1) * (Y - P.y()) +
+//							 jac(1,2) * (Z - P.z()));
+
+						// don't remove this test: it is important
+						if((Unew > umax+tol || Unew < umin-tol) ||
+							 (Vnew > vmax+tol || Vnew < vmin-tol)) {
+							break;
+						}
+
+						if ( isnan(Unew) ) break;
+						if ( isnan(Vnew) ) break;
+						
+						err = SQU(Unew - U) + SQU(Vnew - V);
+						err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
+
+						iter++;
+						U = Unew;
+						V = Vnew;
+					}
+
+					itVal.push_back( static_cast<float>(i) );
+					itVal.push_back( static_cast<float>(j) );
+					itVal.push_back( static_cast<float>(err2) );
+					itVal.push_back( static_cast<float>(err) );
+					itVal.push_back( static_cast<float>(iter) );
+						
+					bool inRange = (Unew <= umax) && (Vnew <= vmax) 
+					               && (Unew >= umin) && (Vnew >= vmin);
+					bool uvConv = (err <= tol);
+					bool xyzConv = (err2 <= precXYZ);
+					
+					if( ( (iter<MaxIter) && inRange && xyzConv ) 
+//						|| ( (iter<MaxIter) && inRange && uvConv )  
+						) {
+//						itVal.clear();
+//						itVal.push_back(static_cast<float>(Unew) );
+//						itVal.push_back(static_cast<float>(Vnew) );
+//						itVal.push_back(static_cast<float>(err2) );
+//						itVal.push_back(static_cast<float>(err) );
+//						itVal.push_back(static_cast<float>(tol) );            
+
+						return true;
+					}
+			  }
+				catch (eGeneral & eGenRef) {
+//					eGenRef.clear();
+//					itVal.clear();
+					DTWARNINGWF(
+						XYZtoUV(), 
+						<< "Break initial guess (" << i << ", " << j 
+						<< ") and try next one." << LOGDEL
+						<< eGenRef.what());
+					itVal.push_back( static_cast<float>(i) );
+					itVal.push_back( static_cast<float>(j) );
+					itVal.push_back( static_cast<float>(err2) );
+					itVal.push_back( static_cast<float>(err) );
+					itVal.push_back( static_cast<float>(iter) );					
+					break;
+				}				
+      }
+    }
+
+    if(relax < 1.e-6) {
+      DTINFOWF(XYZtoUV(), << "Could not converge: surface mesh could be wrong");
+      return false;
+    }
+    else {
+//      itVal.push_back(static_cast<float>(Unew) );
+//      itVal.push_back(static_cast<float>(Vnew) );
+//      itVal.push_back(static_cast<float>(err2) );
+//      itVal.push_back(static_cast<float>(err) );
+//      itVal.push_back(static_cast<float>(tol) );
+      return XYZtoUV(X, Y, Z, U, V, 0.75 * relax, itVal);
+    }
+  }
+}

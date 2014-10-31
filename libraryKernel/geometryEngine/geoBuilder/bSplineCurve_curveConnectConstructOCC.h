@@ -1,0 +1,23 @@
+#ifndef BSPLINECURVE_CURVECONNECTCONSTRUCTOCC_H
+#define	BSPLINECURVE_CURVECONNECTCONSTRUCTOCC_H
+
+#include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
+#include <interfaceHeaven/ptrHandling.h>
+#include <interfaceHeaven/vectorHandling.h>
+
+namespace dtOO {
+  class dtCurve;
+  
+  class bSplineCurve_curveConnectConstructOCC {
+  public:
+    dt__CLASSNAME(bSplineCurve_curveConnectConstructOCC);
+    bSplineCurve_curveConnectConstructOCC( vectorHandling< dtCurve const * > const & cc );
+    virtual ~bSplineCurve_curveConnectConstructOCC();
+    dtCurve * result( void );
+  private:
+    ptrHandling<dtCurve> _dtC;
+  };
+}
+#endif	/* BSPLINECURVE_CURVECONNECTCONSTRUCTOCC_H */
+

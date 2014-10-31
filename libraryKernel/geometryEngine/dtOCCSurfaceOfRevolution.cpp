@@ -1,0 +1,122 @@
+#include "dtOCCSurfaceOfRevolution.h"
+
+#include <logMe/logMe.h>
+#include "dtOCCSurfaceBase.h"
+#include "dtOCCCurveBase.h"
+#include "dtOCCRectangularTrimmedSurface.h"
+#include "dtOCCBezierCurve.h"
+#include "dtOCCBSplineCurve.h"
+#include <progHelper.h>
+
+#include <Standard_TypeDef.hxx>
+#include <gp_Pnt.hxx>
+#include <Geom_SurfaceOfRevolution.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <Geom_BSplineCurve.hxx>
+
+namespace dtOO {
+	dtOCCSurfaceOfRevolution::dtOCCSurfaceOfRevolution() : dtOCCSurface() {
+		_ptr = NULL;
+	}
+
+	dtOCCSurfaceOfRevolution::dtOCCSurfaceOfRevolution(const dtOCCSurfaceBase& orig) 
+		: dtOCCSurface(orig) {
+		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_SurfaceOfRevolution const, _ptr);
+	}
+
+	dtOCCSurfaceOfRevolution::~dtOCCSurfaceOfRevolution() {
+
+	}
+
+	dtSurface * dtOCCSurfaceOfRevolution::clone( void ) const {
+		return new dtOCCSurfaceOfRevolution( OCCRef() );
+	}
+
+	dtPoint3 dtOCCSurfaceOfRevolution::controlPoint( int const uI, int const vI ) const {	
+		DTFUNCTIONNOTI(controlPoint);				
+	}
+
+	void dtOCCSurfaceOfRevolution::setControlPoint( int const uI, int const vI, dtPoint3 const point ) {
+		DTFUNCTIONNOTI(setControlPoint);			
+	}
+
+	int dtOCCSurfaceOfRevolution::nControlPoints( int const dim ) const {
+		switch (dim) {
+			case 0:		
+				return 0;					
+			case 1:		
+				return 0;
+			default:
+				dt__THROW(nControlPoints(),
+							<< DTLOGEVAL(dim) << LOGDEL
+							<< "dim should be 0 or 1.");				
+		}	
+	}
+
+	dtCurve * dtOCCSurfaceOfRevolution::getCurveConstU( float const uu, float const vvMin, float const vvMax) const {
+		Standard_Real uR = static_cast<Standard_Real>(uu);
+		Handle(Geom_Curve) cc = _ptr->UIso(uR);
+
+		Handle(Geom_BezierCurve) ccBezier = Handle(Geom_BezierCurve)::DownCast(cc);
+		Handle(Geom_BSplineCurve) ccBSpline = Handle(Geom_BSplineCurve)::DownCast(cc);
+
+		Standard_Real v1R = static_cast<Standard_Real>(vvMin);
+		Standard_Real v2R = static_cast<Standard_Real>(vvMax);
+
+		if ( !ccBezier.IsNull() ) {
+			ccBezier->Segment(v1R, v2R);
+
+			dtOCCCurveBase base;
+			base.setOCC(ccBezier);
+
+			return new dtOCCBezierCurve(base);			
+		}
+		else if ( !ccBSpline.IsNull() ) {
+			ccBSpline->Segment(v1R, v2R);
+
+			dtOCCCurveBase base;
+			base.setOCC(ccBSpline);
+
+			return new dtOCCBSplineCurve(base);					
+		}
+		else {
+			dt__THROW(getCurveConstU(),
+							<< DTLOGEVAL(ccBezier) << LOGDEL
+							<< DTLOGEVAL(ccBSpline) );
+		}
+	}
+
+	dtCurve * dtOCCSurfaceOfRevolution::getCurveConstV( float const vv, float const uuMin, float const uuMax) const {
+		Standard_Real vR = static_cast<Standard_Real>(vv);
+		Handle(Geom_Curve) cc = _ptr->VIso(vR);
+
+		Handle(Geom_BezierCurve) ccBezier = Handle(Geom_BezierCurve)::DownCast(cc);
+		Handle(Geom_BSplineCurve) ccBSpline = Handle(Geom_BSplineCurve)::DownCast(cc);
+
+		Standard_Real u1R = static_cast<Standard_Real>(uuMin);
+		Standard_Real u2R = static_cast<Standard_Real>(uuMax);
+
+		if ( !ccBezier.IsNull() ) {
+			ccBezier->Segment(u1R, u2R);
+
+			dtOCCCurveBase base;
+			base.setOCC(ccBezier);
+
+			return new dtOCCBezierCurve(base);			
+		}
+		else if ( !ccBSpline.IsNull() ) {
+			ccBSpline->Segment(u1R, u2R);
+
+			dtOCCCurveBase base;
+			base.setOCC(ccBSpline);
+
+			return new dtOCCBSplineCurve(base);					
+		}
+		else {
+			dt__THROW(getCurveConstU(),
+							<< DTLOGEVAL(ccBezier) << LOGDEL
+							<< DTLOGEVAL(ccBSpline) );
+		}
+	}		
+}
