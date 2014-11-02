@@ -67,7 +67,7 @@ namespace dtOO {
 		header.push_back("l(u)/l_ges");
 		DTDEBUGWF(
 			bSplineCurve_pointConstructArcLengthParaOCC(), 
-			<< floatVecToTable(header, ul)
+			<< logMe::floatVecToTable(header, ul)
 		);		
 	}
 	

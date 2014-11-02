@@ -39,3 +39,28 @@ MACRO(CHECK_DTOO_LIBRARIES MODULENAME)
     RETURN()
   ENDIF (CGAL_FOUND AND MUPARSER_FOUND AND GMSH_FOUND AND Boost_FOUND AND OpenCASCADE_FOUND AND ROOT_FOUND AND GSL_FOUND)
 ENDMACRO(CHECK_DTOO_LIBRARIES)
+
+MACRO(MAKE_DTOO_VERSION)
+  # Get the current working branch
+  execute_process(
+    COMMAND git rev-parse --abbrev-ref HEAD
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_BRANCH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+
+  # Get the latest abbreviated commit hash of the working branch
+  execute_process(
+    COMMAND git log -1 --format=%h
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+
+configure_file(
+  ${CMAKE_SOURCE_DIR}/cmake/dtOOVersion.h.in
+  ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
+)
+
+
+ENDMACRO(MAKE_DTOO_VERSION)

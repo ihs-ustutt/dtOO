@@ -150,7 +150,7 @@ namespace dtOO {
 			itVal.push_back(point.x()); itVal.push_back(point.y());
 			itVal.push_back(point3d.x()); itVal.push_back(point3d.y()); itVal.push_back(point3d.z());			
     }  
-	  DTDEBUGWF( apply(), << floatVecToTable(header, itVal) );
+	  DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
        
     return pointVec2d;    
   }

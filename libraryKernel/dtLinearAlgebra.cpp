@@ -155,7 +155,7 @@ namespace dtOO {
 					<< DTLOGEVAL(mat.row_dimension()) << LOGDEL
 					<< DTLOGEVAL(mat.column_dimension()) << LOGDEL
 					<< "mat = " << LOGDEL
-					<< floatMatrixToString(mat2d) 
+					<< logMe::floatMatrixToString(mat2d) 
 				);					
 				dt__THROW(
 				  invertMatrix(),
@@ -175,7 +175,7 @@ namespace dtOO {
 					<< DTLOGEVAL(mat.row_dimension()) << LOGDEL
 					<< DTLOGEVAL(mat.column_dimension()) << LOGDEL
 					<< "mat = " << LOGDEL
-					<< floatMatrixToString(mat2d) 
+					<< logMe::floatMatrixToString(mat2d) 
 				);					
 				dt__THROW(
 				  invertMatrix(),

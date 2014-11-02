@@ -1,14 +1,71 @@
 #include "logMe.h"
 
+#include <dtOOVersion.h>
 #include <execinfo.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
 #include <cxxabi.h>
+#include <string.h>
 
 namespace dtOO {
+	void logMe::initLog( std::string const & logFileName ) {
+    char * dtOO_logMode = getenv("DTOO_LOGMODE");
+    if ( dtOO_logMode != NULL) {
+      if (strcmp(dtOO_logMode, "logDEBUG") == 0 ) {
+        FILELog::ReportingLevel() = logDEBUG;
+      }
+      else if (strcmp(dtOO_logMode, "logERROR") == 0 ) {
+        FILELog::ReportingLevel() = logERROR;
+      }
+      else if (strcmp(dtOO_logMode, "logWARNING") == 0 ) {
+        FILELog::ReportingLevel() = logWARNING;
+      }
+      else if (strcmp(dtOO_logMode, "logINFO") == 0 ) {
+        FILELog::ReportingLevel() = logINFO;
+      }
+    }
+    //
+    // set file
+    //
+		std::string nameStr = logFileName;
+		Output2FILE::Stream().open( nameStr, std::ofstream::out | std::ofstream::trunc );
+		if (!Output2FILE::Stream().good()) {
+			nameStr = logFileName+NowDateAndTime()+".log";
+			Output2FILE::Stream().open( nameStr, std::ofstream::out | std::ofstream::trunc );
+			if ( !Output2FILE::Stream().good()) {
+				dt__THROW(compute, << "Cannot open log file " << DTLOGEVAL(nameStr) );
+			}
+    }
+    
+    DTINFOWF(compute(), 
+            << "**************************************************" << LOGDEL
+            << "*     .___  __    ________   ________   " << LOGDEL
+            << "*   __| _/_/  |_  \\_____  \\  \\_____  \\  " << LOGDEL
+            << "*  / __ | \\   __\\  /   |   \\  /   |   \\ " << LOGDEL
+            << "* / /_/ |  |  |   /    |    \\/    |    \\" << LOGDEL
+            << "* \\____ |  |__|   \\_______  /\\_______  /" << LOGDEL
+            << "*      \\/                 \\/         \\/ " << LOGDEL
+            << "* (d)esign (t)ool (O)bject-(O)riented" << LOGDEL                    
+            << "* " << LOGDEL
+//            << "* Version " << SDTOOVERSION_MAJOR << "." << SDTOOVERSION_MINOR << LOGDEL
+            << "* " << LOGDEL            
+            << "* " << DTLOGEVAL(dtOO::dtOO_gitBranch) << LOGDEL
+						<< "* " << DTLOGEVAL(dtOO::dtOO_gitCommitHash) << LOGDEL
+            << "*"  << LOGDEL
+            << "**************************************************" << LOGDEL
+            << " "
+		);		
+	}
+	
+  void logMe::closeLog( void ) {
+		if (Output2FILE::Stream().is_open()) {
+			Output2FILE::Stream().close();
+		}
+  }
+	
   // This function produces a stack backtrace with demangled function & method names.
-  std::string Backtrace(void) {
+  std::string logMe::Backtrace(void) {
 		int skip = 1;
 		void *callstack[128];
 		const int nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
@@ -51,7 +108,7 @@ namespace dtOO {
 		return trace_buf.str();
 	}	
 	
-  std::string floatVecToString( std::vector< float > const & vec, int const grouping ) {
+  std::string logMe::floatVecToString( std::vector< float > const & vec, int const grouping ) {
     std::ostringstream os;
     os << "[" << LOGDEL;
     int ii = 0;
@@ -67,7 +124,7 @@ namespace dtOO {
     return os.str();
   }
   
-  std::string floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec ) {
+  std::string logMe::floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec ) {
     std::ostringstream os;
     for (int ii=0; ii<header.size(); ii++) {
      os << boost::format("| %13s ") % header[ii];
@@ -86,7 +143,7 @@ namespace dtOO {
     return os.str();
   } 
 
-  std::string floatVecToTable( 
+  std::string logMe::floatVecToTable( 
 	  std::vector<std::string> const & addInfo, 
 		std::vector<std::string> const & header, 
 		std::vector< float > const & vec 
@@ -112,7 +169,7 @@ namespace dtOO {
     return os.str();
   } 	
 
-  std::string floatMatrixToString( std::vector< std::vector< float > > const & mat ) {
+  std::string logMe::floatMatrixToString( std::vector< std::vector< float > > const & mat ) {
     std::ostringstream os;
     
     int nU = mat.size();

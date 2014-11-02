@@ -126,7 +126,7 @@ namespace dtOO {
 			}
 		}
 
-    DTDEBUGWF( length(), << floatVecToTable(header, itVal) );		
+    DTDEBUGWF( length(), << logMe::floatVecToTable(header, itVal) );		
 		
 		return l1;
 	}
