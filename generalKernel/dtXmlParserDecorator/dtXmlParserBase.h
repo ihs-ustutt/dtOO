@@ -50,7 +50,7 @@ namespace dtOO {
                                       vectorHandling< constValue * > const * const cValP,
                                       vectorHandling< analyticFunction * > const * const sFunP, 
                                       vectorHandling< analyticGeometry * > const * const depAGeoP) const;     
-  protected:     
+  public:     
     dtTransformer * createTransformer(QDomElement const * toBuildP,                    
                                       vectorHandling< constValue * > const * const cValP,
                                       vectorHandling< analyticFunction * > const * const sFunP) const;     
