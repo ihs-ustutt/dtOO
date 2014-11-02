@@ -32,19 +32,6 @@ namespace dtOO {
   splineCurve3d::~splineCurve3d() {
   }
 
-  void splineCurve3d::dump(void) const {
-    analyticGeometry::dump();
-    
-    if (_dtC) {
-      _dtC->dump();
-    }
-    else {
-      DTWARNINGWF(dump(),
-              << "No SISL curve!" << LOGDEL
-              << DTLOGEVAL(_dtC) );
-    }
-  }
-
   dtPoint3 splineCurve3d::getPoint(float const & uu) const {
     return (_dtC->getPoint3d( uu ));
   }

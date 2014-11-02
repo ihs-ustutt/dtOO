@@ -171,14 +171,6 @@ namespace dtOO {
     float const vv = v_m(arg0);
     return r_v(vv);
   }
-  
-  void rotatingSpline::dump( void ) const {
-        analyticSurface::dump();
-        
-        DTINFOWF(dump(),
-            << DTLOGPOI3D(_pp) << LOGDEL
-            << DTLOGVEC3D(_vv) << LOGDEL);
-  }
 
   rotatingSpline * rotatingSpline::clone( void ) const {
     return new rotatingSpline( *this );

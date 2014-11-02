@@ -43,14 +43,6 @@ namespace dtOO {
     }
   }
 
-  void analyticSurface::dump(void) const {
-    analyticGeometry::dump();
-    
-    DTINFOWF(analyticSurface(),
-            << DTLOGEVAL(_dtS) );    
-    _dtS->dump();
-  }
-
   dtPoint3 analyticSurface::getPoint(float const & uu, float const & vv) const {
     return _dtS->point(uu, vv);
   }

@@ -321,22 +321,6 @@ namespace dtOO {
   int map3dTo3d::getRenderResolutionW( void ) const { 
     return analyticGeometry::getRenderResolution(2);
   }
-  
-	void map3dTo3d::dump(void) const {
-		analyticGeometry::dump();
-		
-		DTINFOWF(
-			dump(), 
-			<< DTLOGPOI3D( getPointPercent(0,0,0) ) << LOGDEL 
-			<< DTLOGPOI3D( getPointPercent(0,0,1) ) << LOGDEL
-			<< DTLOGPOI3D( getPointPercent(0,1,0) ) << LOGDEL
-			<< DTLOGPOI3D( getPointPercent(0,1,1) ) << LOGDEL
-			<< DTLOGPOI3D( getPointPercent(1,0,0) ) << LOGDEL
-			<< DTLOGPOI3D( getPointPercent(1,0,1) ) << LOGDEL
-			<< DTLOGPOI3D( getPointPercent(1,1,0) ) << LOGDEL
-			<< DTLOGPOI3D( getPointPercent(1,1,1) )						
-		);
-	}
 	
   bool map3dTo3d::isClosedU( void ) const {
     return isClosed(0);

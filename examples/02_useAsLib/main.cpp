@@ -22,9 +22,9 @@ int main( void ) {
 	dtXmlParser parser;
 
 	FILELog::ReportingLevel() = logINFO;
-  Output2FILE::Stream().open( "test.log", std::ofstream::out | std::ofstream::trunc );					
+  Output2FILE::Stream().open( "machine.log", std::ofstream::out | std::ofstream::trunc );					
 	
-	parser.openFileAndParse( "test.xml" );
+	parser.openFileAndParse( "machine.xml" );
 	// constValues
 	parser.getNames("constValue", &label); 
 	for (int ii = 0;ii<label.size();ii++) {
@@ -44,7 +44,7 @@ int main( void ) {
 		parser.createAnalyticGeometry(label[ii], &pC, &vC, &cV, &aF, &aG);
 	}
 	
-		for (int ii=0; ii<aG.size(); ii++) {
+  for (int ii=0; ii<aG.size(); ii++) {
 		aG[ii]->dump();
 	}
   cV.destroy();

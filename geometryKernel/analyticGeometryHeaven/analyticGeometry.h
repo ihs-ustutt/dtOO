@@ -27,7 +27,7 @@ namespace dtOO {
     analyticGeometry();
     virtual ~analyticGeometry();
     analyticGeometry( analyticGeometry const & orig );
-    virtual void dump(void) const;
+    void dump(void) const;
     void setRenderResolution(int const & dir, int const & value) const;
     int getRenderResolution(int const & dir) const;
     virtual analyticGeometry * clone( void ) const = 0;

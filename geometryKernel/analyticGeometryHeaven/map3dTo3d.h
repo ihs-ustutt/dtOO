@@ -31,7 +31,6 @@ namespace dtOO {
     virtual bool isClosed( int const & dir) const = 0;
     virtual float getMin( int const & dir) const = 0;
     virtual float getMax( int const & dir) const = 0;
-    virtual void dump(void) const;
     virtual bool isClosedU( void ) const;
     virtual bool isClosedV( void ) const;
     virtual bool isClosedW( void ) const;

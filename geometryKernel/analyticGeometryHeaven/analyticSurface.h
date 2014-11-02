@@ -40,7 +40,6 @@ namespace dtOO {
     //
     // output and visualization
     //
-    void dump(void) const;
     virtual vectorHandling< renderInterface * > getExtRender( void ) const;
     //
     // point picking and normal vectors

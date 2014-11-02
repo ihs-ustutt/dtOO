@@ -45,7 +45,6 @@ namespace dtOO {
       virtual float v_z(float const & arg) const;
       virtual float r_v(float const & arg0) const;
       virtual float r_m(float const & arg0) const;
-      void dump( void ) const;
       void correctOrigin( void );
       virtual map2dTo3d * pickPercent(
         float const & uu0, float const & uu1, 

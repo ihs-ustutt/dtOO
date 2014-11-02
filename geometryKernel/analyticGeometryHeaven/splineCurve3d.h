@@ -25,7 +25,6 @@ namespace dtOO {
     virtual splineCurve3d * clone( void ) const;
     virtual splineCurve3d * create( void ) const;       
     virtual ~splineCurve3d();
-    virtual void dump(void) const;
     virtual dtPoint3 getPoint( float const & uu ) const;
     virtual vectorHandling< renderInterface * > getExtRender( void ) const;
     dtCurve const * const ptrConstDtCurve(void) const;
