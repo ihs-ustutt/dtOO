@@ -52,6 +52,7 @@ namespace dtOO {
             << "* " << LOGDEL            
             << "* " << DTLOGEVAL(dtOO::dtOO_gitBranch) << LOGDEL
 						<< "* " << DTLOGEVAL(dtOO::dtOO_gitCommitHash) << LOGDEL
+						<< "* " << DTLOGEVAL(dtOO::dtOO_gitTag) << LOGDEL
             << "*"  << LOGDEL
             << "**************************************************" << LOGDEL
             << " "

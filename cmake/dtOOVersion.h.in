@@ -6,6 +6,8 @@
 namespace dtOO {
   static const std::string dtOO_gitBranch("@GIT_BRANCH@");
   static const std::string dtOO_gitCommitHash("@GIT_COMMIT_HASH@");
+  static const std::string dtOO_gitInfo("@GIT_INFO@");
+  static const std::string dtOO_gitTag("@GIT_TAG@");
 }
 
 #endif
