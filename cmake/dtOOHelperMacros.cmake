@@ -69,14 +69,13 @@ MACRO(MAKE_DTOO_VERSION)
 
 
 
-configure_file(
-  ${CMAKE_SOURCE_DIR}/cmake/dtOOVersion.h.in
-  ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
-)
+  configure_file(
+    ${CMAKE_SOURCE_DIR}/cmake/dtOOVersion.h.in
+    ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
+  )
 
-ADD_CUSTOM_TARGET(
-    version
-    DEPENDS ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
-)
-
+  ADD_CUSTOM_TARGET(
+      version ALL
+      DEPENDS ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
+  )
 ENDMACRO(MAKE_DTOO_VERSION)
