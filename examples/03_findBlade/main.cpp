@@ -27,6 +27,7 @@ int main(int argc, char **argv)
     float max;
     float min;
 
+    // neuer kommentar
 
   //Aufruf des Gesamten Algorithmuses//
 
