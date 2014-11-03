@@ -206,7 +206,7 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
 	thick2 = new thicknessIncreasing();
 	thick2->init(&qdtransfSuct, &cV2 , &sF2);
 	
-	thick2->apply(sF1[1]);
+	analyticFunction * aF = thick2->apply(sF1[1]);
 	
 	//sF4 = *thick2;
    

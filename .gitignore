@@ -1,3 +1,7 @@
 build_12.3/
 install_12.3/
 nbproject/
+install/
+build/
+buildFindBlade/
+doc/html/

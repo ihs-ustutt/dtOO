@@ -21,7 +21,6 @@ namespace dtOO {
                                           vectorHandling< analyticFunction * > const * const depSFunP,
                                           vectorHandling< analyticFunction * > * sFunP) const;
   private:
-//    dtXmlParserFunctionDecoratorInterface const * _mWrappee;
   };
 }
 #endif	/* SCA3POINTMEANLINEFUNCTIONDECORATORXY_H */
