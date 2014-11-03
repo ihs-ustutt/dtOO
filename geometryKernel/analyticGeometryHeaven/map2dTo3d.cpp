@@ -8,6 +8,8 @@
 #include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <solid3dSurface.h>
+#include <discrete3dPoints.h>
+#include <discrete3dVector.h>
 
 #define SQU(a)      ((a)*(a))
 
@@ -141,40 +143,42 @@ namespace dtOO {
 		return rV;
 	}
 	
-	/**
-	 * 
-   * @todo: Replace vectorContainer with new class in renderHeaven.
-   */
   vectorHandling< renderInterface * > map2dTo3d::getExtRender( void ) const {
-		vectorHandling< renderInterface * > retVec;
+		vectorHandling< dtVector3 > vecV;
+		vectorHandling< dtPoint3 > vecP;
+		vectorHandling< dtVector3 > norV;
+		vectorHandling< dtPoint3 > norP;
+		
     //
     // get surface directions
     //
-    dtPoint3 startPointU = map2dTo3d::getPointPercent(0.05, 0.); //getDtSislSurf()->getPointPercent3d(0.05, 0.);
-    dtPoint3 topPointU = map2dTo3d::getPointPercent(0.1, 0.);//getDtSislSurf()->getPointPercent3d(0.1, 0.);
-    dtPoint3 startPointV = map2dTo3d::getPointPercent(0., 0.05);//getDtSislSurf()->getPointPercent3d(0., 0.05);
-    dtPoint3 topPointV = map2dTo3d::getPointPercent(0., 0.10);//getDtSislSurf()->getPointPercent3d(0., 0.10);
+    dtPoint3 startPointU = map2dTo3d::getPointPercent(0.05, 0.);
+    dtPoint3 topPointU = map2dTo3d::getPointPercent(0.1, 0.);
+    dtPoint3 startPointV = map2dTo3d::getPointPercent(0., 0.05);
+    dtPoint3 topPointV = map2dTo3d::getPointPercent(0., 0.10);
     dtVector3 uu = topPointU - startPointU;  
     dtVector3 vv = topPointV - startPointV;  
 
-		retVec.push_back( new vectorContainer() );
-    vectorContainer & vecCon = *(static_cast< vectorContainer * >(retVec.back()));
-		retVec.push_back( new vectorContainer() );
-    vectorContainer & norCon = *(static_cast< vectorContainer * >(retVec.back()));		
-		
     //
     // add direction to vector container
     //
-    vecCon.add(uu, "", startPointU);
-    vecCon.add(vv, "", startPointV);
-    vecCon.add(vv, "", topPointV);
-    norCon.add(map2dTo3d::normalPercent(.25, .25), "", map2dTo3d::getPointPercent(.25, .25));
-    norCon.add(map2dTo3d::normalPercent(.25, .75), "", map2dTo3d::getPointPercent(.25, .75));
-    norCon.add(map2dTo3d::normalPercent(.75, .25), "", map2dTo3d::getPointPercent(.75, .25));
-    norCon.add(map2dTo3d::normalPercent(.75, .75), "", map2dTo3d::getPointPercent(.75, .75));
+		vecV.push_back(uu); vecP.push_back(startPointU); 
+		vecV.push_back(vv); vecP.push_back(startPointV);
+		vecV.push_back(vv); vecP.push_back(topPointV);
+		norV.push_back(map2dTo3d::normalPercent(.25, .25)); 
+		norP.push_back(map2dTo3d::getPointPercent(.25, .25));
+		norV.push_back(map2dTo3d::normalPercent(.25, .75)); 
+		norP.push_back(map2dTo3d::getPointPercent(.25, .75));		
+		norV.push_back(map2dTo3d::normalPercent(.75, .25)); 
+		norP.push_back(map2dTo3d::getPointPercent(.75, .25));		
+		norV.push_back(map2dTo3d::normalPercent(.75, .75)); 
+		norP.push_back(map2dTo3d::getPointPercent(.75, .75));		
 		
+		vectorHandling< renderInterface * > retVec(2);
+		retVec[0] = new discrete3dVector(vecV, vecP);
+		retVec[1] = new discrete3dVector(norV, norP);		
 		return retVec;
-  }	
+  }
    
   int map2dTo3d::getRenderResolutionU( void ) const { 
     return analyticGeometry::getRenderResolution(0);

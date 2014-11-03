@@ -14,6 +14,8 @@
 #include <geometryEngine/dtCurve2d.h>
 #include <functionHeaven/vec2dCurve2dOneD.h>
 #include "vec2dOneDInMap2dTo3d.h"
+#include <discrete3dPoints.h>
+#include <discrete3dVector.h>
 
 namespace dtOO {
   analyticSurface::analyticSurface() : map2dTo3d() {
@@ -52,7 +54,11 @@ namespace dtOO {
   }
 	
   vectorHandling< renderInterface * > analyticSurface::getExtRender( void ) const {
-		vectorHandling< renderInterface * > retVec;
+		vectorHandling< dtVector3 > vecV;
+		vectorHandling< dtPoint3 > vecP;
+		vectorHandling< dtVector3 > norV;
+		vectorHandling< dtPoint3 > norP;
+		vectorHandling< dtPoint3 > pp;		
     //
     // get surface directions
     //
@@ -62,24 +68,21 @@ namespace dtOO {
     dtPoint3 topPointV = map2dTo3d::getPointPercent(0., 0.10);//getDtSislSurf()->getPointPercent3d(0., 0.10);
     dtVector3 uu = topPointU - startPointU;  
     dtVector3 vv = topPointV - startPointV;  
-
-		retVec.push_back( new vectorContainer() );
-    vectorContainer & vecCon = *(static_cast< vectorContainer * >(retVec.back()));
-		retVec.push_back( new vectorContainer() );
-    vectorContainer & norCon = *(static_cast< vectorContainer * >(retVec.back()));		
-	  retVec.push_back( new pointContainer() );
-    pointContainer & controlPointContainer = *(static_cast< pointContainer * >(retVec.back()));
-		
+	
     //
     // add direction to vector container
     //
-    vecCon.add(uu, "", startPointU);
-    vecCon.add(vv, "", startPointV);
-    vecCon.add(vv, "", topPointV);
-    norCon.add(map2dTo3d::normalPercent(.25, .25), "", map2dTo3d::getPointPercent(.25, .25));
-    norCon.add(map2dTo3d::normalPercent(.25, .75), "", map2dTo3d::getPointPercent(.25, .75));
-    norCon.add(map2dTo3d::normalPercent(.75, .25), "", map2dTo3d::getPointPercent(.75, .25));
-    norCon.add(map2dTo3d::normalPercent(.75, .75), "", map2dTo3d::getPointPercent(.75, .75));
+		vecV.push_back(uu); vecP.push_back(startPointU);
+		vecV.push_back(vv); vecP.push_back(startPointV);
+		vecV.push_back(vv); vecP.push_back(topPointV);
+    norV.push_back(map2dTo3d::normalPercent(.25, .25)); 
+		norP.push_back(map2dTo3d::getPointPercent(.25, .25));
+    norV.push_back(map2dTo3d::normalPercent(.25, .75)); 
+		norP.push_back(map2dTo3d::getPointPercent(.25, .75));
+    norV.push_back(map2dTo3d::normalPercent(.75, .25)); 
+		norP.push_back(map2dTo3d::getPointPercent(.75, .25));
+    norV.push_back(map2dTo3d::normalPercent(.75, .75)); 
+		norP.push_back(map2dTo3d::getPointPercent(.75, .75));		
 
     //
     // get control points
@@ -88,68 +91,15 @@ namespace dtOO {
     dtPoint3 tmpControlPoint;
     for (int ii=0; ii<numPoints; ii++) {
       tmpControlPoint = _dtS->controlPoint(ii);
-      controlPointContainer.add( tmpControlPoint, "");
+			pp.push_back(tmpControlPoint);
     }
-    controlPointContainer.add( map2dTo3d::getPointPercent(0., .5), "", 2.);
-    controlPointContainer.add( map2dTo3d::getPointPercent(.5, 0.), "", 2.);
-//    if (getKind() == ANGEO_RATB) {
-//      int numPoints = getDtSislSurf()->getNControlPoints();
-//      dtPoint3 tmpControlPoint;
-//      for (int ii=0; ii<numPoints; ii++) {
-//        tmpControlPoint = getDtSislSurf()->getScaledControlPoint3d(ii);
-//        controlPointContainer.add( tmpControlPoint, "");
-//      }      
-//    }
-    
-//    //
-//    // create grid
-//    //
-//    std::vector< int > lines;
-//    std::vector< int > conn;
-//    std::vector< float > xx;
-//    std::vector< float > yy;
-//    std::vector< float > zz;
-//    int nCu = getDtSislSurf()->getNControlPointsU();
-//    int nCv = getDtSislSurf()->getNControlPointsV();
-//    for (int ii=0; ii<nCu; ii++) {
-//      lines.push_back(conn.size());
-//      for (int jj=0; jj<nCv; jj++) {  
-//        conn.push_back(nCv*ii + jj);
-//        dtPoint3 pp = getDtSislSurf()->getControlPoint3d(ii, jj);
-//        xx.push_back(pp.x());
-//        yy.push_back(pp.y());
-//        zz.push_back(pp.z());
-//      }
-//    }
-//    for (int ii=0; ii<nCv; ii++) {
-//      lines.push_back(conn.size());
-//      for (int jj=0; jj<nCu; jj++) {
-//        conn.push_back(ii+jj*nCv);
-//      }
-//    }
-//    covise::coDistributedObject* cPDistr[2];
-//    cPDistr[1] = NULL;
-//    cPDistr[0] = new covise::coDoLines(
-//                       "controlPointsLines", 
-//                       xx.size(), (float*) &(xx[0]), (float*) &(yy[0]), (float*) &(zz[0]),
-//                       conn.size(), (int *) &(conn[0]),
-//                       lines.size(), (int *) &(lines[0]) 
-//                     );
-//    ptrHandling< covise::coDoSet > cPointsSet(new covise::coDoSet("controlPointsSet", cPDistr));
-//    
-//    delete cPDistr[0];
-   
-    //
-    // get sets and put all to one coDoSet
-    //
-//    covise::coDoSet * aGeoSet = map2dTo3d::toCoDoSet(str);
-//    ptrHandling< covise::coDoSet > vectorContainerSet(vecCon.toCoDoSetNoLines("vectorContainer"));
-//    ptrHandling< covise::coDoSet > norConSet(norCon.toCoDoSet("normalContainer"));
-//    ptrHandling< covise::coDoSet > controlPointSet(controlPointContainer.toCoDoSet("pointContainer"));
-//    aGeoSet->addElement(vectorContainerSet.get());
-//    aGeoSet->addElement(norConSet.get());
-//    aGeoSet->addElement(controlPointSet.get());
-//    aGeoSet->addElement(cPointsSet.get());
+		pp.push_back(map2dTo3d::getPointPercent(0., .5));
+		pp.push_back(map2dTo3d::getPointPercent(.5, 0.));
+
+		vectorHandling< renderInterface * > retVec(3);
+		retVec[0] = new discrete3dPoints(pp);
+		retVec[1] = new discrete3dVector(norV, norP);
+		retVec[2] = new discrete3dVector(vecV, vecP);
 		
 		return retVec;
   }

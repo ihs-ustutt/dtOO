@@ -4,14 +4,9 @@
 #include <dtLinearAlgebra.h>
 #include <string>
 #include <logMe/dtMacros.h>
-#include <interfaceHeaven/renderInterface.h>
-
-//namespace covise {
-//  class coDoSet;
-//}
 
 namespace dtOO {
-  class vectorContainer : public renderInterface {
+  class vectorContainer {
   public:    
     dt__CLASSNAME(vectorContainer);
     vectorContainer();
@@ -31,9 +26,6 @@ namespace dtOO {
     dtVector3 get(std::string const * const stringP) const;
     bool has(std::string const string) const;
     bool has(std::string const * const stringP) const;  
-//    covise::coDoSet * toCoDoSet(std::string const string) const;
-//    virtual covise::coDoSet * toCoDoSet(char const * const str) const;
-//    covise::coDoSet * toCoDoSetNoLines(std::string const string) const;
     bool isEmpty( void ) const;
   private:
     std::vector< std::pair <std::pair< dtVector3, dtPoint3 >, std::string > > _pair;

@@ -1,7 +1,8 @@
 #include "splineCurve3d.h"
 #include <logMe/logMe.h>
 #include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
+#include <discrete3dVector.h>
+#include <discrete3dPoints.h>
 #include <geometryEngine/dtCurve.h>
 #include <progHelper.h>
 
@@ -37,12 +38,9 @@ namespace dtOO {
   }
 	
   vectorHandling< renderInterface * > splineCurve3d::getExtRender( void ) const {
-		vectorHandling< renderInterface * > retVec;		
-		retVec.push_back( new vectorContainer() );
-    vectorContainer & vecCon = *(static_cast< vectorContainer * >(retVec.back()));
-	  retVec.push_back( new pointContainer() );
-    pointContainer & controlPointContainer = *(static_cast< pointContainer * >(retVec.back()));
-		
+		vectorHandling< dtVector3 > vv;
+		vectorHandling< dtPoint3 > vp;
+		vectorHandling< dtPoint3 > pp;
     //
     // get spline direction
     //
@@ -53,7 +51,8 @@ namespace dtOO {
     //
     // add direction vector to container
     //    
-    vecCon.add(uu, "", startPoint);
+		vv.push_back(uu);
+		vp.push_back(startPoint);
 
     //
     // put control points to pointContainer
@@ -63,8 +62,11 @@ namespace dtOO {
 
     for (int ii=0; ii<numPoints; ii++) {
       tmpControlPoint = _dtC->getControlPoint3d(ii);
-      controlPointContainer.add( tmpControlPoint, "" );          
+			pp.push_back(tmpControlPoint);
     }
+		vectorHandling< renderInterface * > retVec(2);
+		retVec[0] = new discrete3dPoints(pp);
+		retVec[1] = new discrete3dVector(vv, vp);
 		return retVec;
   }
 

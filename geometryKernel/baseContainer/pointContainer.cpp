@@ -73,18 +73,6 @@ namespace dtOO {
     }
     return false;
   }
-
-	vectorHandling< renderInterface * > pointContainer::getRender( void ) const {
-		vectorHandling< dtPoint3 > p3(_pair.size());
-		dt__FORALL(_pair, ii,
-		  p3[ii] = _pair[ii].first;
-		);
-		
-		vectorHandling< renderInterface * > rV;
-		rV.push_back( new discrete3dPoints(p3) );
-		
-		return rV;
-	}
   
   bool pointContainer::isEmpty( void ) const {
     return _pair.empty();
