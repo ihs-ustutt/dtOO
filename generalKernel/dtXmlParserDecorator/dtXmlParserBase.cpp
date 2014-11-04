@@ -968,6 +968,11 @@ namespace dtOO {
                      advancedP);      
     }
 
+		/**
+		 * 
+     * @todo Maybe this could be done with builder on analyticGeometry-level.
+		 *       This prevents the definition of many classes.
+     */
     void dtXmlParserBase::createAdvanced( QDomElement const * toBuildP,
                                           pointContainer * const pointContainerP,
                                           vectorContainer * const vectorContainerP,                    
