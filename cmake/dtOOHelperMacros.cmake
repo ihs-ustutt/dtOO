@@ -79,3 +79,14 @@ MACRO(MAKE_DTOO_VERSION)
       DEPENDS ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
   )
 ENDMACRO(MAKE_DTOO_VERSION)
+
+MACRO(CREATE_DTOO_DOC)
+  find_package(Doxygen)
+  if(DOXYGEN_FOUND)
+    add_custom_target(
+      doc
+      ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/doc/Doxyfile
+      COMMENT "Generating API documentation with Doxygen" VERBATIM
+    )
+  endif(DOXYGEN_FOUND)
+ENDMACRO(CREATE_DTOO_DOC)

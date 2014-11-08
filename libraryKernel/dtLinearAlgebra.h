@@ -1,6 +1,14 @@
 #ifndef DTLINEARALGEBRA_H
 #define DTLINEARALGEBRA_H
 
+//
+// gmsh fix:
+// definition of sign(x) in Numeric.h (gmsh) conflicts with cgal
+//
+#ifdef _NUMERIC_H_
+  #undef sign
+#endif
+
 #include <logMe/dtMacros.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Cartesian_d.h>
@@ -10,6 +18,7 @@
 #include <CGAL/Linear_algebraCd.h>
 
 namespace dtOO {
+  typedef float dtFt;
   typedef CGAL::Exact_predicates_inexact_constructions_kernel dtKernel;
   typedef CGAL::Point_3< dtKernel > dtPoint3;
   typedef CGAL::Vector_3< dtKernel > dtVector3;
@@ -17,8 +26,8 @@ namespace dtOO {
   typedef CGAL::Point_2< dtKernel > dtPoint2;
   typedef CGAL::Vector_2< dtKernel > dtVector2;
   typedef CGAL::Aff_transformation_2< dtKernel > dtAffTransformation2;
-  typedef CGAL::Linear_algebraCd< float >::Matrix dtMatrix;
-  typedef CGAL::Linear_algebraCd< float >::Vector dtMatrixVector;
+  typedef CGAL::Linear_algebraCd< dtFt >::Matrix dtMatrix;
+  typedef CGAL::Linear_algebraCd< dtFt >::Vector dtMatrixVector;
 
   class dtLinearAlgebra {
   private:
@@ -55,7 +64,9 @@ namespace dtOO {
     static void makeOrdered(std::vector< dtPoint3 > & pp);
     static std::vector<dtPoint2> getGaussLegendre(int const & nPoints);
     static std::pair< dtPoint2, dtPoint2 > boundingBox( std::vector< dtPoint2 > const & pp );
-    static std::pair< dtPoint3, dtPoint3 > boundingBox( std::vector< dtPoint3 > const & pp );   
+    static std::pair< dtPoint3, dtPoint3 > boundingBox( std::vector< dtPoint3 > const & pp );
+    static float distance( dtPoint2 const & p0, dtPoint2 const & p1 );
+    static float distance( dtPoint3 const & p0, dtPoint3 const & p1 );
   };
 }
 #endif  /* DTLINEARALGEBRA_H */

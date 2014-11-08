@@ -11,8 +11,8 @@ namespace dtOO {
       dt__CLASSNAME(bVOInterfaceFactory);
       bVOInterfaceFactory();
       virtual ~bVOInterfaceFactory();
-      bVOInterface * create(char const * const str) const;
-      bVOInterface * create(std::string const str) const;
+      static bVOInterface * create(char const * const str);
+      static bVOInterface * create(std::string const str);
   };
 }
 #endif	/* BVOINTERFACEFACTORY_H */
