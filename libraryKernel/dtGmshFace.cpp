@@ -8,6 +8,7 @@
 #include <list>
 #include "logMe/logMe.h"
 #include "progHelper.h"
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {    
   dtGmshFace::dtGmshFace(GModel *m, int tag, const std::list<GEdge*> &edges, const std::vector< int > &ori )
@@ -181,4 +182,42 @@ namespace dtOO {
   void dtGmshFace::makeSuitable( void ) {
     DTINFOWF(updateFace(), << "Base class calling. Nothing to do.");
   }
+	
+	bool dtGmshFace::isEqual( GFace const * const gf ) const {
+    return isEqual(this, gf);
+	}
+
+  bool dtGmshFace::isEqual( GFace const * const gf0, GFace const * const gf1 ) {	
+		std::list< GVertex * > VL0 = gf0->vertices();
+		std::list< GVertex * > VL1 = gf1->vertices();
+		
+		if (VL0.size() != VL1.size()) {
+			return false;
+		}
+		
+		float xyzRes 
+		= 
+		staticPropertiesHandler::getInstance()->getOptionFloat(
+      "xyz_resolution"
+    );
+		int counter = 0;
+		std::list< GVertex * >::iterator V0_it;
+		std::list< GVertex * >::iterator V1_it;
+		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
+			dtPoint3 v0((*V0_it)->x(), (*V0_it)->y(), (*V0_it)->z());
+      for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {
+				dtPoint3 v1((*V1_it)->x(), (*V1_it)->y(), (*V1_it)->z());
+				if ( dtLinearAlgebra::distance(v0, v1) < xyzRes ) {
+					counter++;
+				}
+			}
+		}
+		
+		if (VL0.size() == counter) {
+			return true;
+		}
+		else {
+			return false;
+		}		
+	}
 }

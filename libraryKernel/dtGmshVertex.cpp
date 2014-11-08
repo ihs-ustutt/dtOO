@@ -7,6 +7,7 @@
 #include <progHelper.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO { 
   dtGmshVertex::dtGmshVertex(GModel *m, int tag, double ms) : GVertex(m, tag, ms) {
@@ -104,4 +105,20 @@ namespace dtOO {
     }
     return clone;
   }
+	
+  bool dtGmshVertex::isEqual( GVertex const * const gv0, GVertex const * const gv1 ) {	
+		float xyzRes
+		= 
+		staticPropertiesHandler::getInstance()->getOptionFloat(
+      "xyz_resolution"
+    );
+  	dtPoint3 v0(gv0->x(), gv0->y(), gv0->z());
+		dtPoint3 v1(gv1->x(), gv1->y(), gv1->z());
+		if ( dtLinearAlgebra::distance(v0, v1) < xyzRes ) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}	
 }

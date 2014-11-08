@@ -43,43 +43,32 @@ namespace dtOO {
     boundedVolume::init(element, cValP, sFunP, depAGeoP, depBVolP);
 		
     //
-    // region
-    //
-    addId("region", "dtVolume");
-		
+		// region
+		//		
     QDomElement wElement = getChild("analyticGeometry", element);
     std::string label = getAttributeStr("label", wElement);
-    analyticGeometry const * aG = depAGeoP->get(label);
+		std::string pos = getAttributeStr("position", wElement);
+    addId("region", pos);
+		//
+		// get analyticGeometry, cast and store in region vector
+		//
 		dt__PTRASS(
 			map3dTo3d const * mm3d,
-			map3dTo3d::ConstDownCast(aG)
+			map3dTo3d::ConstDownCast( depAGeoP->get(label) )
 		);
-    boundedVolume::getRefToMap3dTo3dHandling()[rStrToId("dtVolume")]
-		= 
-		mm3d->clone();
+    boundedVolume::getRefToMap3dTo3dHandling()[rStrToId(pos)] = mm3d->clone();
 		
-//		analyticGeometryPointerCompound< map3dTo3d > * aGC;
-//		= 
-//		new analyticGeometryPointerCompound< map3dTo3d >(aG);
-		
-		DTINFOWF(
-		  init(),
-			<< DTLOGEVAL(map3dTo3d::ConstDownCast(aG)) << LOGDEL
-			<< DTLOGEVAL( mm3d->isCompound() ) << LOGDEL
-			<< DTLOGEVAL( mm3d->compoundInternal().size() )
-		);
-		
-		vectorHandling< analyticGeometry const * > cI = mm3d->compoundInternal();
-		
+		//
+		// get compound and put pieces as regions to gmsh model
+		//
 		_gm.reset( new dtGmshModel(getLabel()) );
-		
-		
+		vectorHandling< analyticGeometry const * > cI = mm3d->compoundInternal();		
 		dt__FORALL(cI, ii,
 		  _gm->addRegionToGmshModel(map3dTo3d::ConstSecureCast(cI[ii]));
 		  _gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshTransfinite();
 		);
 		
-//	  _gm->writeGEO( (getLabel()+".geo").c_str() );	
+		_gm->writeGEO( (getLabel()+".geo").c_str() );
 	}
 	
   void map3dTo3dCompoundVolume::makeGrid(void) {
@@ -112,7 +101,7 @@ namespace dtOO {
 	}
   
 	void map3dTo3dCompoundVolume::makePreGrid(void) {
-		
+		boundedVolume::notify();
 	}
   
 	vectorHandling< renderInterface * > map3dTo3dCompoundVolume::getRender( void ) const {
@@ -151,4 +140,8 @@ namespace dtOO {
 		
 		return rV;
 	}	
+	
+	dtGmshModel * map3dTo3dCompoundVolume::refDtGmshModel( void ) {
+		return _gm.get();
+	}
 }
