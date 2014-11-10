@@ -17,9 +17,6 @@
 #include <gmsh/Gmsh.h>
 #include <gmsh/OpenFile.h>
 #include <gmsh/GModel.h>
-#include <gmsh/MElement.h>
-#include <gmsh/MTetrahedron.h>
-#include <gmsh/MHexahedron.h>
 
 namespace dtOO {
 	map3dTo3dCompoundVolume::map3dTo3dCompoundVolume() {
@@ -105,38 +102,9 @@ namespace dtOO {
 	}
   
 	vectorHandling< renderInterface * > map3dTo3dCompoundVolume::getRender( void ) const {
-		unstructured3dMesh * um = new unstructured3dMesh();
+		vectorHandling< renderInterface * > rV(1);
 		
-//    std::vector< unsigned > numElements(5,0);
-//    /*
-//     * cast away constness by macro, because getNumMeshElements 
-//     * is not a const routine
-//     */
-//    _gm->getNumMeshElements( &(numElements[0]) );
-//    int nElemTot = numElements[0] + numElements[1] + numElements[2] + numElements[3] + numElements[4];
-
-//    DTINFOWF(getRender(),
-//      << "tetrahedra = " << numElements[0] << LOGDEL
-//      << "hexahedra = " << numElements[1] << LOGDEL
-//      << "prisms = " << numElements[2] << LOGDEL
-//      << "pyramids = " << numElements[3] << LOGDEL
-//      << "polyhedra = " << numElements[4] << LOGDEL
-//    //  << "quadrangle = " << nElemQuad
-//    );
-    
-      for( int ii=0; ii<_gm->getNumMeshVertices(); ii++ ) {
-        MVertex const * const mv = _gm->getMeshVertexByTag(ii+1);
-				um->addPoint( 
-				  dtPoint3(
-				    static_cast< float >(mv->x()), 
-					  static_cast< float >(mv->y()), 
-						static_cast< float >(mv->z())
-				  )
-				);
-      }
-		
-	  vectorHandling< renderInterface * > rV;
-		rV.push_back(um);
+		rV[0] = _gm->toUnstructured3dMesh();
 		
 		return rV;
 	}	

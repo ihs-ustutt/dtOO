@@ -16,10 +16,14 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <interfaceHeaven/ptrHandling.h>
-
+#include <unstructured3dMesh.h>
 #include <gmsh/meshGEdge.h>
 #include <gmsh/meshGFace.h>
 #include <gmsh/meshGRegion.h>
+#include <gmsh/MVertex.h>
+#include <gmsh/MElement.h>
+#include <gmsh/MTetrahedron.h>
+#include <gmsh/MHexahedron.h>
 
 #define __caCThis \
   const_cast< dtGmshModel * >(this)
@@ -596,4 +600,78 @@ namespace dtOO {
 		}
 		return 0;
 	}	
+	
+  unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( void ) const {
+		unstructured3dMesh * um = new unstructured3dMesh();
+		
+		vectorHandling< dtPoint3 > pp(this->getNumMeshVertices());
+		for( int ii=0; ii<pp.size(); ii++ ) {
+			MVertex const * const mv = __caCThis->getMeshVertexByTag(ii+1);
+      pp[mv->getIndex()-1]
+			=
+			dtPoint3(
+				static_cast< float >(mv->x()), 
+				static_cast< float >(mv->y()), 
+				static_cast< float >(mv->z())
+			); 
+		}
+		um->addPoints(pp);
+		
+    std::vector< unsigned > numElements(5,0);
+    __caCThis->getNumMeshElements( &(numElements[0]) );
+    int nElemTot = numElements[0] + numElements[1] + numElements[2] + numElements[3] + numElements[4];
+    
+    DTINFOWF(toCoDoUnstructuredGrid(),
+      << "tetrahedra = " << numElements[0] << LOGDEL
+      << "hexahedra = " << numElements[1] << LOGDEL
+      << "prisms = " << numElements[2] << LOGDEL
+      << "pyramids = " << numElements[3] << LOGDEL
+      << "polyhedra = " << numElements[4] << LOGDEL
+    );
+		
+    for (
+			GModel::riter r_it = __caCThis->firstRegion(); 
+			r_it != __caCThis->lastRegion(); 
+			++r_it
+		) {
+      GRegion * gr = *r_it;
+      for( int ii=0; ii<nElemTot; ii++ ) {
+        MElement * me = gr->getMeshElement(ii);
+        MTetrahedron * mtet = dynamic_cast< MTetrahedron * >(me);
+        MHexahedron * mhex = dynamic_cast< MHexahedron * >(me);
+        //
+        // tetrahedron
+        //
+        if ( mtet ) {
+				  vectorHandling< int > vertsIndex(4);					
+          std::vector< MVertex * > verts;
+          mtet->getVertices(verts);        
+          vertsIndex[0] = verts[0]->getIndex()-1;
+          vertsIndex[1] = verts[1]->getIndex()-1;
+          vertsIndex[2] = verts[2]->getIndex()-1;
+          vertsIndex[3] = verts[3]->getIndex()-1;
+					um->addElement(vertsIndex);
+        }     
+        //
+        // hexahedron
+        //
+        else if ( mhex ) {
+					vectorHandling< int > vertsIndex(8);
+          std::vector< MVertex * > verts;
+					mhex->getVertices(verts); 
+          vertsIndex[0] = verts[4]->getIndex()-1;
+          vertsIndex[1] = verts[5]->getIndex()-1;
+          vertsIndex[2] = verts[1]->getIndex()-1;
+          vertsIndex[3] = verts[0]->getIndex()-1;
+          vertsIndex[4] = verts[7]->getIndex()-1;
+          vertsIndex[5] = verts[6]->getIndex()-1;
+          vertsIndex[6] = verts[2]->getIndex()-1;
+          vertsIndex[7] = verts[3]->getIndex()-1;          
+					um->addElement(vertsIndex);
+        }  
+      }
+    }
+		
+		return um;
+	}
 }

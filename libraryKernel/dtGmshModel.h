@@ -18,6 +18,7 @@ namespace dtOO {
   class dtGmshEdge;
   class dtGmshVertex;
   class boundedVolume;
+  class unstructured3dMesh;
   
   class dtGmshModel : public GModel {
   public:
@@ -46,12 +47,12 @@ namespace dtOO {
       int const from, 
       int const to
     );
-  void addIfEdgeToGmshModel(
-    map1dTo3d const * const edge, 
-    int * const tag, 
-    int const from, 
-    int const to 
-  );
+    void addIfEdgeToGmshModel(
+      map1dTo3d const * const edge, 
+      int * const tag, 
+      int const from, 
+      int const to 
+    );
 //    void addVertexToGmshModel( dtPoint3 const & vertex, int const tag); 
     dtGmshRegion * addRegionToGmshModel( map3dTo3d const * const vol );
     void createEdge(int const geI, int const gfI, int const v0, int const v1);
@@ -65,6 +66,7 @@ namespace dtOO {
     int alreadyInModel( GVertex const * const gv ) const;
     int alreadyInModel( GEdge const * const ge ) const;
     int alreadyInModel( GFace const * const gf ) const;
+    unstructured3dMesh * toUnstructured3dMesh( void ) const;
   private:
     boundedVolume const * _bV;
   
