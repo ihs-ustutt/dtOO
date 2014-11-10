@@ -168,18 +168,7 @@ namespace dtOO {
 			std::vector< QDomElement > elVec;
 			for (int jj=0; jj<list.length(); jj++) {
 				QDomElement tmpEl = list.at(jj).toElement();
-				if ( tmpEl.isNull() ) {
-//					DTWARNINGWF(
-//					  getChildVector(), 
-//						<< "Ignore following Node, because it is not an element." << LOGDEL
-//						<< DTLOGEVAL(tmpEl.isNull()) << LOGDEL
-//						<< "element:" << LOGDEL
-//						<< convertToString(element) << LOGDEL
-//						<< "list.at(" << jj << "):" << LOGDEL
-//						<< convertToString(list.at(jj)) 
-//					);
-				}
-				else {
+        if ( !tmpEl.isNull() ) {					
   		    elVec.push_back( tmpEl );
 				}
 			}			

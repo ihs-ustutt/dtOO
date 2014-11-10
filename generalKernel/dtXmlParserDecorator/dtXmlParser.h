@@ -99,7 +99,8 @@ namespace dtOO {
     ) const;    
   private:
     void checkFile(char const * const fileName, QDomDocument & xmlDocument);
-    void writeFile(char const * const fileName, QDomDocument & xmlDocument);
+    static void writeFile(char const * const fileName, QDomDocument & xmlDocument);
+    static void writeFile( std::string const & fileName, QDomNode const & node);
     void setStaticProperties( void );
   private:
     std::vector< QDomElement > _rootRead;
