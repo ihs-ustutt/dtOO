@@ -27,21 +27,23 @@
 
 using namespace dtOO;
 
-double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one genotypes (vgl. GenerationalGenericAlgorithm.cpp (General)
+double ffMeanline(const std::vector<double> & _ind) {	//_ind = variables in one genotypes (vgl. GenerationalGenericAlgorithm.cpp (General)
     pointContainer pC;
     vectorContainer vC;
     vectorHandling< constValue * > cV1, cV2;			
     vectorHandling< analyticFunction * > aF1, aF2;
-   	vectorHandling< dtCurve2d const * > cc;
+    vectorHandling< dtCurve2d const * > cc;
     std::vector<std::string > label;
     dtXmlParser parser1, parser2;
     float max;
     float min;
-    std::vector<dtPoint2>CtrlPnts2;					//CtrlPnts2 = 3 Punkte der 3PMeanline
+    //std::vector<dtPoint2>CtrlPnts2;					//CtrlPnts2 = 3 Punkte der 3PMeanline
     dtTransformer * thick1;
     dtTransformer * thick2;
     float res = 0;							//Rücksetzung des Rückgabewertes
     int n = 10;								//Anzahl an Auswertungsstellen
+ //   analyticFunction *aF3;
+ //   analyticFunction *aF4;
     
 /////////////////////////////////////////////
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
@@ -56,21 +58,20 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
     /////////////////////////////////////////////
     // constValues erzeugen //
     /////////////////////////////////////////////
-    
-    
+
     parser1.getNames("constValue", &label);
     for (int ii = 0;ii<label.size();ii++) {
         parser1.createConstValue(label[ii], &cV1);
 	}
 	
     label.clear();
+    std::cout<<cV1.get("cV_alpha_two")<<std::endl;
     
-    for (int ii = 0; ii < 3 ; ii++){						//_ind immer nur zwischen 0 und 1, daher multiplikation mit den Grenzen
-      float min = cV1[ii]->getMin();
-      float max = cV1[ii]->getMax();
-      cV1[ii]->setValue(min + ((max-min)* (static_cast<float> (_ind[ii]))));
-      }
-    
+//    for (int ii = 0; ii < 3 ; ii++){						//_ind immer nur zwischen 0 und 1, daher multiplikation mit den Grenzen
+//      float min = cV1[ii]->getMin();
+//      float max = cV1[ii]->getMax();
+//      cV1[ii]->setValue(min + ((max-min)* (static_cast<float> (_ind[ii]))));
+//      }
     parser1.getNames("Point_2", &label);
     for (int ll = 0;ll<label.size();ll++) {
 	QDomElement p2El = parser1.getElement("Point_2", label[ll]);
@@ -95,12 +96,13 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
 		  ) 
 		);		
   	aF1.back()->setLabel("f_pointsFile");	
-		
-	max = p2Vec.back()->x();
-	min = p2Vec.front()->x();
+	std::cout<<"Label= "<<aF1[ll]->getLabel()<<std::endl;	
+//	max = p2Vec.back()->x();
+//	min = p2Vec.front()->x();
 	}
     
     label.clear();
+    /*
 
     /////////////////////////////////////////////
     // scaFunctions//
@@ -108,8 +110,11 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
 		
      parser1.getNames("function", &label);
      for (int ii = 0;ii<label.size();ii++) {
+      std::cout<< "Label_size: " << label.size() << std::endl;
+      std::cout<< "Runde: " << ii <<std::endl;
      
 	if(label[ii]=="f_3pMeanLine") {
+	  
 		QDomElement * functionElementP = new QDomElement(parser1.getElement("function", "f_3pMeanLine") );
 		QDomElement builder1 = parser1.getChild("builder", *functionElementP);
 //		QDomElement *builderptr1 = &builder1;
@@ -131,15 +136,17 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
 //    std::cout<< "2ControllPoints " << aa << ":\t" << CtrlPnts2[aa] << std::endl;
 //    }	
     
-    
-    vec2dOneD * orig = vec2dOneD::DownCast(aF1.get("f_pointsFile"));
+ */   
+   std::cout<<aF1.get("f_pointsFile")<<std::endl;
+     /*  
     vec2dOneD * interp = vec2dOneD::DownCast(aF1.get("f_3pMeanLine"));
-    
-    /*
+    vec2dOneD * orig = vec2dOneD::DownCast(aF1.get("f_pointsFile"));
+  
 		 * atismer: 
 		 * hier bin ich mir nicht sicher, ob die auswertung noch genau das gleich macht wie vorher
 		 * 
 		 */
+/*  
     for(int kk=1 ; kk<=n ; kk++){										//Residuum berechnet akutell nur die Güte der Meanline
 //      res = res + (1+((kk/n)-1)*(kk/n))*fabs((orig->Y(kk*max/n))-(interp->Y(kk*max/n)));
 			dtVector2 dist = orig->YdtPoint2(kk*max/n)-interp->YdtPoint2(kk*max/n);
@@ -185,7 +192,7 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
     /////////////////////////////////////////////
     // Aufdickung druckseitig//
     /////////////////////////////////////////////
-    
+   
 
 	QDomElement qdtransfPr = parser2.getElement("transformer", "thicknessIncreasingPr");
 	
@@ -196,7 +203,7 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
   vec2dCurve2dOneD * press = vec2dCurve2dOneD::DownCast(aF3);
 	
   cc.push_back(press->ptrDtCurve2d());	
-        
+       
     /////////////////////////////////////////////
     // Aufdickung saugseitig//
     /////////////////////////////////////////////
@@ -219,7 +226,6 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
   );
   
   vec2dCurve2dOneD * optBlade = new vec2dCurve2dOneD(dtC2d.get());  //ermitteltes Profil ist in
-  
   //
   //Erzeugung des urpsrünglichen, nichttransformierten Profils auf Basis der Punktewolke
   //
@@ -249,18 +255,19 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
 	}
   
   vec2dOneD * origShape = vec2dOneD::DownCast(aF1.get("f_pointsFile"));    
-    
+*/    
   //Destruktoren
   
 //	delete thick1;
 //	delete thick2;
-  delete aF3;
-  delete aF4;
+//  delete aF3;
+  //delete aF4;
  
     cV1.destroy();
     cV2.destroy();
     aF1.destroy();
     aF2.destroy();
+
     return res;
 
 
