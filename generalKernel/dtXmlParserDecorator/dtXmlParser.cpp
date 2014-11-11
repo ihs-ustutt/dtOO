@@ -400,7 +400,10 @@ namespace dtOO {
 				}
 				std::vector< std::string > locNames;
 				getChildLabels(lookType, &locNames, _rootRead[ii]);
-				dt__FORALL(locNames, jj, names->push_back(locNames[jj]); );
+				dt__FORALL(locNames, jj, 
+					names->push_back(locNames[jj]); 
+				  DTINFOWF(getNames(), DTLOGEVAL(locNames[ii]) );
+				);
 			}
 		}
 		else {

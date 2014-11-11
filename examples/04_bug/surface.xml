@@ -3,17 +3,16 @@
 
 
  <Point_2 label="toFit" attribute="pick_order_from_file" file_name="Leitschaufelpunkte_vertauscht.txt">
-   
-   ölkajsdf</Point_2>
+ </Point_2>
    
  
   
   
   <function label="f_3pMeanLine">
     <builder name="sca3PointMeanlineXY"
-            alpha_one="_pi * #cV_alpha_one# / 180."
-            alpha_two="_pi * #cV_alpha_two# / 180."
-            delta_y="#cV_delta_y#"
+            alpha_one="_pi * 10. / 180."
+            alpha_two="_pi * 30. / 180."
+            delta_y="20."
             delta_x="93.7037"
             order="3"
 	    mirror_y="false">
