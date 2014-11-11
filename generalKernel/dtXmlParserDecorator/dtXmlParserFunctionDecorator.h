@@ -2,7 +2,6 @@
 #define	DTXMLPARSERFUNCTIONDECORATOR_H
 
 #include "dtXmlParserFunctionDecorator.h"
-#include "dtXmlParserFunctionDecoratorInterface.h"
 #include "dtXmlParserBase.h"
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>
@@ -13,7 +12,7 @@ namespace dtOO {
   class constValue;
   class analyticFunction;
 
-  class dtXmlParserFunctionDecorator : public dtXmlParserFunctionDecoratorInterface, public dtXmlParserBase {
+  class dtXmlParserFunctionDecorator : public dtXmlParserBase {
   public:  
     dt__CLASSNAME(dtXmlParserFunctionDecorator);
     dtXmlParserFunctionDecorator();
@@ -21,7 +20,7 @@ namespace dtOO {
     virtual void buildPart(QDomElement const & toBuildP, 
                                           vectorHandling< constValue * > const * const cValP,
                                           vectorHandling< analyticFunction * > const * const depSFunP,
-                                          vectorHandling< analyticFunction * > * sFunP) const;
+                                          vectorHandling< analyticFunction * > * sFunP) const = 0;
     virtual void buildPartCompound(QDomElement const & toBuildP, 
                                           vectorHandling< constValue * > const * const cValP, 
                                           vectorHandling< analyticFunction * > const * const depSFunP,
