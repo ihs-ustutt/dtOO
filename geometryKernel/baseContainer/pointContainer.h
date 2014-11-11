@@ -4,10 +4,9 @@
 #include <dtLinearAlgebra.h>
 #include <string>
 #include <logMe/dtMacros.h>
-#include <interfaceHeaven/renderInterface.h>
 
 namespace dtOO {
-  class pointContainer : public renderInterface {
+  class pointContainer {
     public:    
       dt__CLASSNAME(pointContainer);
       pointContainer();
@@ -21,7 +20,6 @@ namespace dtOO {
       dtPoint3 get(std::string const * const stringP) const;
       bool has(std::string const string) const;
       bool has(std::string const * const stringP) const;
-      virtual vectorHandling< renderInterface * > getRender( void ) const;
       bool isEmpty( void ) const;
     private:
       std::vector< std::pair <dtPoint3, std::string > > _pair;

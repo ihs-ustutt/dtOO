@@ -31,6 +31,7 @@ namespace dtOO {
     bool snappedTo(map2dTo3d const * const mm) const;
     dtPoint3 cast2DtPoint3( void ) const;
     virtual dtGmshVertex * clone( GModel * destModel ) const;
+    static bool isEqual( GVertex const * const gv0, GVertex const * const gv1 );
   private:
     dtPoint3 * _CGALPoint;
     GPoint * _GPointPoint;

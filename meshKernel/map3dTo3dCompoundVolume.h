@@ -13,6 +13,7 @@ namespace dtOO {
    
   class map3dTo3dCompoundVolume : public boundedVolume {
   public:
+    dt__CLASSSTD(map3dTo3dCompoundVolume, boundedVolume);
     map3dTo3dCompoundVolume();
     virtual ~map3dTo3dCompoundVolume();
     virtual void init( 
@@ -25,6 +26,7 @@ namespace dtOO {
     virtual void makeGrid(void);
     virtual void makePreGrid(void);
   	virtual vectorHandling< renderInterface * > getRender( void ) const;
+    dtGmshModel * refDtGmshModel(void);
   private:
     ptrHandling< dtGmshModel > _gm;
   };

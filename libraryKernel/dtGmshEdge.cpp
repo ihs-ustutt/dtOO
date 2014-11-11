@@ -3,6 +3,7 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
 #include "dtGmshFace.h"
@@ -105,4 +106,38 @@ namespace dtOO {
     setNElements(nElements);
     meshTransfinite(type, coeff);
   }
+	
+  bool dtGmshEdge::isEqual( GEdge const * const ge0, GEdge const * const ge1 ) {	
+		std::list< GVertex * > VL0 = ge0->vertices();
+		std::list< GVertex * > VL1 = ge1->vertices();
+		
+		if (VL0.size() != VL1.size()) {
+			return false;
+		}
+		
+		float xyzRes 
+		= 
+		staticPropertiesHandler::getInstance()->getOptionFloat(
+      "xyz_resolution"
+    );
+		int counter = 0;
+		std::list< GVertex * >::iterator V0_it;
+		std::list< GVertex * >::iterator V1_it;
+		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
+			dtPoint3 v0((*V0_it)->x(), (*V0_it)->y(), (*V0_it)->z());
+      for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {
+				dtPoint3 v1((*V1_it)->x(), (*V1_it)->y(), (*V1_it)->z());
+				if ( dtLinearAlgebra::distance(v0, v1) < xyzRes ) {
+					counter++;
+				}
+			}
+		}
+		
+		if (VL0.size() == counter) {
+			return true;
+		}
+		else {
+			return false;
+		}		
+	}	
 }

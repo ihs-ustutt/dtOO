@@ -26,6 +26,11 @@ namespace dtOO {
   }
 
   dtXmlParser::~dtXmlParser() {
+		dt__FORALL(_rootRead, ii,
+			_rootRead[ii].clear();
+		);
+		_rootRead.clear();
+		_rootLoad.clear();
   }
 
   void dtXmlParser::openFileAndParse(char const * const fileName) {
@@ -224,6 +229,29 @@ namespace dtOO {
     xmlFile.close();    
   }
   
+  void dtXmlParser::writeFile( std::string const & fileName, QDomNode const & node) {
+    //
+    // open file and write rootWriteElement to file
+    //
+		QDomDocument xmlDocument;
+    QDomProcessingInstruction myHeader 
+		= 
+		xmlDocument.createProcessingInstruction( 
+		  "xml","version=\"1.0\" encoding=\"ISO-8859-1\"" 
+		);
+    xmlDocument.appendChild( myHeader );		
+		xmlDocument.appendChild(node);
+    QFile xmlFile(fileName.c_str());
+    xmlFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+    QTextStream stream(&xmlFile);
+    stream << xmlDocument.toString();
+
+    //
+    // close file
+    //
+    xmlFile.close();    
+  }
+	
   void dtXmlParser::checkFile(char const * const fileName, QDomDocument & xmlDocument) {
     //
     // open file for reading
@@ -299,7 +327,7 @@ namespace dtOO {
     xmlFile.close();    
   }
 
-  void dtXmlParser::createConstValue(string const constValueLabel, 
+  void dtXmlParser::createConstValue(std::string const constValueLabel, 
                                     vectorHandling< constValue * > * cValP) const {
 
     QDomElement const cVElement = getElement( "constValue", constValueLabel );
@@ -362,7 +390,7 @@ namespace dtOO {
 		dt__FORALL( label, ii, createConstValue(label[ii], cValP); );
   }
 	
-  void dtXmlParser::getNames( string lookType, std::vector< string > * names ) const {
+  void dtXmlParser::getNames( std::string lookType, std::vector< std::string > * names ) const {
 		if (_rootRead.size() != 0) {
 			for (int ii=0; ii<_rootRead.size(); ii++) {
 				if (_rootRead[ii].isNull()) {
@@ -380,13 +408,13 @@ namespace dtOO {
 		}
   }
 	
-  std::vector< std::string > dtXmlParser::getNames( string lookType ) const {
+  std::vector< std::string > dtXmlParser::getNames( std::string lookType ) const {
 		std::vector< std::string > names;
 		getNames(lookType, &names);
 		return names;
   }	
 
-  void dtXmlParser::getName( string lookType, std::string * name ) const {
+  void dtXmlParser::getName( std::string lookType, std::string * name ) const {
     std::vector< std::string > names;
     
     getNames(lookType, &names);
@@ -401,7 +429,7 @@ namespace dtOO {
   }  
 
   void dtXmlParser::getChildLabels( std::string childName, 
-                                   std::vector< string > * labelValue, 
+                                   std::vector< std::string > * labelValue, 
                                    QDomElement const & parentElement) const {
 		std::vector< QDomElement > children = getChildVector(parentElement);
 		for (int ii=0; ii<children.size(); ii++) {
@@ -409,6 +437,7 @@ namespace dtOO {
       // found a part, now check for a name
       // if so store me
       //
+			DTDEBUGWF(getChildLabels(), << DTLOGEVAL(getTagName(children[ii])) );
       if ( getTagName(children[ii]) == childName) {
         if ( hasAttribute("label", children[ii]) ) {
           labelValue->push_back( getAttributeStr("label", children[ii]) );
@@ -420,7 +449,7 @@ namespace dtOO {
     }
   }  
 
-  QDomElement dtXmlParser::getElement( string const lookType, string const lookName ) const {
+  QDomElement dtXmlParser::getElement( std::string const lookType, std::string const lookName ) const {
 		for (int ii=0; ii<_rootRead.size(); ii++) {
 			if ( hasChildElement(lookType, lookName, _rootRead[ii]) ) {
 				return getChildElement(lookType, lookName, _rootRead[ii]);
@@ -432,7 +461,7 @@ namespace dtOO {
 		);
   }
   
-  QDomElement dtXmlParser::getElement( string const lookType ) const {
+  QDomElement dtXmlParser::getElement( std::string const lookType ) const {
     std::vector< std::string > label;
 
     getNames(lookType, &label);
@@ -517,7 +546,7 @@ namespace dtOO {
   }
 
   void dtXmlParser::createAnalyticFunction(
-	  string const functionName, 
+	  std::string const functionName, 
     vectorHandling< constValue * > const * const cVP, 
     vectorHandling< analyticFunction * > * sFP
 	) const {
@@ -580,7 +609,7 @@ namespace dtOO {
    * @todo: Attribute setting?
    */
   void dtXmlParser::createAnalyticGeometry(
-	  string const label,
+	  std::string const label,
     pointContainer * const pCP,
 		vectorContainer * const vCP,
 		vectorHandling< constValue * > const * const cVP,        

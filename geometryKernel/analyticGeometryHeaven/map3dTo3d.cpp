@@ -293,7 +293,7 @@ namespace dtOO {
 		if ( sqrt(dist.squared_length()) > minPDist) {
 			DTDEBUGWF(
 				reparamInVolume(), 
-				<< floatVecToTable(addInfo, header, itVal) << LOGDEL 
+				<< logMe::floatVecToTable(addInfo, header, itVal) << LOGDEL 
 				<< DTLOGEVAL(converged) << LOGDEL
 				<< "p_xyz = (" << ppXYZ.x() << ", " << ppXYZ.y() << ", " << ppXYZ.z() << ")" << LOGDEL
 				<< "V(p_uvw) = (" << ppRep_xyz.x() << ", " << ppRep_xyz.y() << ", " << ppRep_xyz.z() << ")" << LOGDEL

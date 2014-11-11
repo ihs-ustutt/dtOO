@@ -27,6 +27,8 @@ namespace dtOO {
         boundedVolume * bV
       );
     protected:
+      boundedVolume * ptrBoundedVolume(void);
+    private:
       boundedVolume * _bV;
   };
 }

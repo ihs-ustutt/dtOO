@@ -8,7 +8,6 @@
 class GModel;
 class GEdge;
 
-
 namespace dtOO {
   class map2dTo3d;
     
@@ -36,6 +35,8 @@ namespace dtOO {
     void meshTransfinite( void );
     virtual void updateFace( void );
     virtual void makeSuitable( void );
+    bool isEqual( GFace const * const gf ) const;
+    static bool isEqual( GFace const * const gf0, GFace const * const gf1 );
   private:
     map2dTo3d * _mm;
   };

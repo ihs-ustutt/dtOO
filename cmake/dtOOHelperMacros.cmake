@@ -39,3 +39,54 @@ MACRO(CHECK_DTOO_LIBRARIES MODULENAME)
     RETURN()
   ENDIF (CGAL_FOUND AND MUPARSER_FOUND AND GMSH_FOUND AND Boost_FOUND AND OpenCASCADE_FOUND AND ROOT_FOUND AND GSL_FOUND)
 ENDMACRO(CHECK_DTOO_LIBRARIES)
+
+MACRO(MAKE_DTOO_VERSION)
+  execute_process(
+    COMMAND git rev-parse --abbrev-ref HEAD
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_BRANCH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  execute_process(
+    COMMAND git log -1 --format=%h
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  #execute_process(
+  #  COMMAND git log --format='%ad %h %d' --abbrev-commit --date=short -1
+  #  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  #  OUTPUT_VARIABLE GIT_INFO
+  #  OUTPUT_STRIP_TRAILING_WHITESPACE
+  #)
+
+  execute_process(
+    COMMAND git describe --always --tag
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_TAG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+
+
+
+  configure_file(
+    ${CMAKE_SOURCE_DIR}/cmake/dtOOVersion.h.in
+    ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
+  )
+
+  ADD_CUSTOM_TARGET(
+      version ALL
+      DEPENDS ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
+  )
+ENDMACRO(MAKE_DTOO_VERSION)
+
+MACRO(CREATE_DTOO_DOC)
+  find_package(Doxygen)
+  if(DOXYGEN_FOUND)
+    add_custom_target(
+      doc
+      ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/doc/Doxyfile
+      COMMENT "Generating API documentation with Doxygen" VERBATIM
+    )
+  endif(DOXYGEN_FOUND)
+ENDMACRO(CREATE_DTOO_DOC)

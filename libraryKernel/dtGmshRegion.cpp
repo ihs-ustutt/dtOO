@@ -1,8 +1,10 @@
 #include "dtGmshRegion.h"
 
+//#include <dtLinearAlgebra.h>
 #include <gmsh/GmshDefines.h>
 #include <gmsh/GFace.h>
 #include <gmsh/GModel.h>
+#include "dtGmshFace.h"
 
 namespace dtOO {
   dtGmshRegion::dtGmshRegion(GModel *m, int tag, const std::list<GFace*> &faces, const std::vector<int> &ori )
@@ -11,6 +13,19 @@ namespace dtOO {
     int ii = 0;
     for (FIter fi=faces.begin(); fi != faces.end(); ++fi) {
       GFace *f = *fi;
+      l_faces.push_back(f);
+      f->addRegion(this);
+      l_dirs.push_back( ori[ii] );
+      ii++;
+    }
+  }
+
+  dtGmshRegion::dtGmshRegion(GModel *m, int tag, const std::list< dtGmshFace* > &faces, const std::vector<int> &ori )
+    : GRegion(m, tag) {
+    typedef std::list< dtGmshFace* >::const_iterator FIter;
+    int ii = 0;
+    for (FIter fi=faces.begin(); fi != faces.end(); ++fi) {
+      GFace * f = static_cast< dtGmshFace* >(*fi);
       l_faces.push_back(f);
       f->addRegion(this);
       l_dirs.push_back( ori[ii] );

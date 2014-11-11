@@ -50,7 +50,10 @@ namespace dtOO {
   }
 
   template < typename T >
-  vectorHandling< T >::vectorHandling(const vectorHandling& orig) {
+  vectorHandling< T >::vectorHandling(const vectorHandling& orig) : std::vector< T >(orig.size()) {
+    dt__FORALL(orig, ii, 
+      this->at(ii) = orig[ii];
+    );
   }
 
   template < typename T >

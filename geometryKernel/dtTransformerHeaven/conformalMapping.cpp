@@ -51,7 +51,7 @@ namespace dtOO {
 
     }  
 		
-	  DTDEBUGWF( apply(), << floatVecToTable(header, itVal) );
+	  DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
        
     return pointVec2d;
   }

@@ -21,5 +21,7 @@ namespace dtOO {
   ) {
     _bV = bV;
   }  
-  
+  boundedVolume * bVOInterface::ptrBoundedVolume( void ) {
+		return _bV;
+	}
 }

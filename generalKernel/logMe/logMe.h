@@ -13,6 +13,7 @@
 //------------------------------------------------------------------------------
 #include "logBase.h"
 #include "Output2FILE.h"
+#include <logMe/dtMacros.h>
 
 #define LOGDEL    "\n                      |-- "
 #define ENDLOGDEL "\n                      `-- "
@@ -20,29 +21,35 @@
 namespace dtOO {
   //
   // functions
-  // 
-  std::string Backtrace(void);  
-  template< class T >
-  inline std::string vecToString( std::vector< T > const & vec ) {
-    std::ostringstream os;
-    os << " [";
-    for (int ii=0;ii<vec.size();ii++) {
-      T val = vec[ii];
-      os << val << " ";
-    }
-    os << "] ";
-    return os.str();
-  }
-  inline std::string intVecToString( std::vector< int > const & vec ) {
-    return vecToString< int >(vec);
-  }
-  inline std::string floatVecToString( std::vector< float > const & vec ) {
-    return vecToString< float >(vec);
-  }     
-  std::string floatVecToString( std::vector< float > const & vec, int const grouping );
-  std::string floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec );
-  std::string floatVecToTable( std::vector<std::string> const & addInfo, std::vector<std::string> const & header, std::vector< float > const & vec );
-  std::string floatMatrixToString( std::vector< std::vector< float > > const & mat );
+  //
+  class logMe {
+    public:
+      dt__CLASSNAME(logMe);
+      static void initLog( std::string const & logFileName );
+      static void closeLog( void );
+      static std::string Backtrace(void);  
+      template< class T >
+      static inline std::string vecToString( std::vector< T > const & vec ) {
+        std::ostringstream os;
+        os << " [";
+        for (int ii=0;ii<vec.size();ii++) {
+          T val = vec[ii];
+          os << val << " ";
+        }
+        os << "] ";
+        return os.str();
+      }
+      static inline std::string intVecToString( std::vector< int > const & vec ) {
+        return vecToString< int >(vec);
+      }
+      static inline std::string floatVecToString( std::vector< float > const & vec ) {
+        return vecToString< float >(vec);
+      }     
+      static std::string floatVecToString( std::vector< float > const & vec, int const grouping );
+      static std::string floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec );
+      static std::string floatVecToTable( std::vector<std::string> const & addInfo, std::vector<std::string> const & header, std::vector< float > const & vec );
+      static std::string floatMatrixToString( std::vector< std::vector< float > > const & mat );
+  };
   
   //
   // FILELog
@@ -101,7 +108,7 @@ namespace dtOO {
           << LOGDEL \
           message \
           << LOGDEL \
-          << dtOO::Backtrace() \
+          << dtOO::logMe::Backtrace() \
           << LOGDEL \
           << "Honor thy error as a hidden intention. (Brian Eno)")
   #define dt__THROW_IF(cond, functionname, message) \
@@ -115,7 +122,7 @@ namespace dtOO {
           << LOGDEL \
           message \
           << LOGDEL \
-          << dtOO::Backtrace() \
+          << dtOO::logMe::Backtrace() \
           << LOGDEL \
           << "Honor thy error as a hidden intention. (Brian Eno)")
   #define DTCATCHERRORWF(functionname, eGWhat) \
@@ -192,7 +199,7 @@ namespace dtOO {
           << LOGDEL \
           errorOut \
           << LOGDEL \
-          << dtOO::Backtrace() \
+          << dtOO::logMe::Backtrace() \
           << LOGDEL \
           << "Honor thy error as a hidden intention. (Brian Eno)"); \
   }

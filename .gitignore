@@ -5,3 +5,4 @@ install/
 build/
 buildFindBlade/
 doc/html/
+generalKernel/dtOOVersion.h

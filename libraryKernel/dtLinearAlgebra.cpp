@@ -4,6 +4,8 @@
 #include "dtGaussLegendreIntegration.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <CGAL/bounding_box.h>
+#include <CGAL/squared_distance_2.h>
+#include <CGAL/squared_distance_3.h>
 #include <TMatrixD.h>
 #include <TDecompSVD.h>
 
@@ -155,7 +157,7 @@ namespace dtOO {
 					<< DTLOGEVAL(mat.row_dimension()) << LOGDEL
 					<< DTLOGEVAL(mat.column_dimension()) << LOGDEL
 					<< "mat = " << LOGDEL
-					<< floatMatrixToString(mat2d) 
+					<< logMe::floatMatrixToString(mat2d) 
 				);					
 				dt__THROW(
 				  invertMatrix(),
@@ -175,7 +177,7 @@ namespace dtOO {
 					<< DTLOGEVAL(mat.row_dimension()) << LOGDEL
 					<< DTLOGEVAL(mat.column_dimension()) << LOGDEL
 					<< "mat = " << LOGDEL
-					<< floatMatrixToString(mat2d) 
+					<< logMe::floatMatrixToString(mat2d) 
 				);					
 				dt__THROW(
 				  invertMatrix(),
@@ -369,5 +371,13 @@ namespace dtOO {
 		 dtKernel::Iso_cuboid_3 c3 = CGAL::bounding_box(pp.begin(), pp.end());
 		 std::pair< dtPoint3, dtPoint3 > minMax(c3.min(), c3.max());			
 		 return minMax;
+	}
+	
+	float dtLinearAlgebra::distance( dtPoint2 const & p0, dtPoint2 const & p1 ) {
+		return sqrt(CGAL::squared_distance(p0, p1));
+	}
+	
+	float dtLinearAlgebra::distance( dtPoint3 const & p0, dtPoint3 const & p1 ) {
+		return sqrt(CGAL::squared_distance(p0, p1));
 	}
 }

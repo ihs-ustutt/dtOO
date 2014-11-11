@@ -99,7 +99,7 @@ namespace dtOO {
 			itVal.push_back(tt);
 			itVal.push_back(1.);				
     
-			DTDEBUGWF( apply(), << floatVecToTable(header, itVal) );
+			DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
       //
       // create new function
       //

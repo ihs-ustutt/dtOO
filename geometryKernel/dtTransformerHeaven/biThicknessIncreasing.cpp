@@ -75,7 +75,7 @@ namespace dtOO {
 				itVal.push_back(p2[jj].x()); itVal.push_back(p2[jj].y());
 				itVal.push_back(p2Inv[jj].x()); itVal.push_back(p2Inv[jj].y());
       }
-			DTDEBUGWF( apply(), << floatVecToTable(header, itVal) );
+			DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
 						
       //
       // create new function

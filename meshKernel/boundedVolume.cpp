@@ -56,11 +56,9 @@ namespace dtOO {
       std::vector< QDomElement > transElement = getSiblingVector("transformer", element);
       
       for (int ii=0; ii<transElement.size(); ii++) {
-        bVOInterface * bVI 
-        = 
-        bVOInterfaceFactory().create( 
-          getAttributeStr("name", transElement[ii]) 
-        );
+        bVOInterface * bVI
+        =
+        bVOInterfaceFactory::create(getAttributeStr("name", transElement[ii]));
         bVI->init(transElement[ii], cValP, sFunP, depAGeoP, depBVolP, this);
         this->attachBVObserver( bVI );
       }
