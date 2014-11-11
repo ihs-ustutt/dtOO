@@ -19,6 +19,11 @@ namespace dtOO {
 		_v3 = vv;
 		_p3 = pp;
 	}
+
+  discrete3dVector::discrete3dVector(dtVector3 const & vv, dtPoint3 const & pp) : renderInterface() {
+		_v3.push_back(vv);
+		_p3.push_back(pp);
+	}	
 	
 	vectorHandling< dtVector3 > const & discrete3dVector::refV3( void ) const {
 		return _v3;

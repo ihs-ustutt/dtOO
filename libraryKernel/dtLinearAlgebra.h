@@ -67,6 +67,8 @@ namespace dtOO {
     static std::pair< dtPoint3, dtPoint3 > boundingBox( std::vector< dtPoint3 > const & pp );
     static float distance( dtPoint2 const & p0, dtPoint2 const & p1 );
     static float distance( dtPoint3 const & p0, dtPoint3 const & p1 );
+    static float angle( dtVector3 const & v0, dtVector3 const & v1 );
+    static float angleDegree( dtVector3 const & v0, dtVector3 const & v1 );
   };
 }
 #endif  /* DTLINEARALGEBRA_H */

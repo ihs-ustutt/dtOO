@@ -350,8 +350,37 @@ namespace dtOO {
       //
       // create vec3dSurfaceTwoD
       //
-			sFunP->push_back(vec3dTwoDaFC);			
+			sFunP->push_back(vec3dTwoDaFC);
 			
+			std::vector< float > itVal;
+			std::vector< std::string > header;
+			header.push_back("alpha_0_0");
+			header.push_back("alpha_1_0");
+			header.push_back("alpha_1_1");
+			header.push_back("alpha_0_1");
+			header.push_back("alpha_av");
+			for (int ii=0; ii<vec3dTwoDaFC->nComponents(); ii++) {
+				float av = 0.;
+			  vec3dSurfaceTwoD const & v3d2d = vec3dTwoDaFC->component(ii);
+				std::vector< dtVector3 > DY;
+				DY = v3d2d.DYdtVector3( v3d2d.x_percent(0.0, 0.0) );
+				itVal.push_back( dtLinearAlgebra::angleDegree( DY[0], DY[1] ) );
+				av = av + itVal.back();
+				DY = v3d2d.DYdtVector3( v3d2d.x_percent(1.0, 0.0) );
+				itVal.push_back( dtLinearAlgebra::angleDegree( DY[0], DY[1] ) );
+				av = av + itVal.back();
+				DY = v3d2d.DYdtVector3( v3d2d.x_percent(1.0, 1.0) );
+				itVal.push_back( dtLinearAlgebra::angleDegree( DY[0], DY[1] ) );				
+				av = av + itVal.back();
+				DY = v3d2d.DYdtVector3( v3d2d.x_percent(0.0, 1.0) );
+				itVal.push_back( dtLinearAlgebra::angleDegree( DY[0], DY[1] ) );				
+				av = av + itVal.back();
+				itVal.push_back(av/4.);
+			}
+			DTINFOWF(
+				buildPart(),
+				<< logMe::floatVecToTable(header, itVal)
+			);
 //			vec3dCurveOneDCompound * vec3dOneDaFC 
 //			= 
 //			new vec3dCurveOneDCompound();

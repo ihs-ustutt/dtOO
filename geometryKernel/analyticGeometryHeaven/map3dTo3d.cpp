@@ -17,6 +17,7 @@
 #include <functionHeaven/vec3dSurfaceTwoD.h>
 #include "vec3dTwoDInMap3dTo3d.h"
 #include "vec3dOneDInMap3dTo3d.h"
+#include <discrete3dVector.h>
 
 #define SQU(a)      ((a)*(a))
 
@@ -44,13 +45,14 @@ namespace dtOO {
     // get grid
     //
 		// v=0, w=0
-		for(int ii=0; ii<getRenderResolutionU(); ii++){
+		for(int ii=0; ii<getRenderResolutionU(); ii++) {
 			float uu = (getUMin() + ii * intU);
 			float vv = getVMin();// + jj * intV);
 			float ww = getWMin();// + kk * intW);
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
+		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]) );
 		pp.clear();
 		// u=0, w=0
 		for(int ii=0; ii<getRenderResolutionV(); ii++){
@@ -60,6 +62,8 @@ namespace dtOO {
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
+		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]) );
+		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]+0.5*(pp[1]-pp[0])) );
 		pp.clear();		
 		// u=0, v=0
 		for(int ii=0; ii<getRenderResolutionW(); ii++){
@@ -69,6 +73,9 @@ namespace dtOO {
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
+		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]) );
+		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]+0.5*(pp[1]-pp[0])) );
+		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]+1.0*(pp[1]-pp[0])) );
 		pp.clear();				
 		
 		// v=0, w=0
@@ -164,7 +171,7 @@ namespace dtOO {
     float wP = percent_w(ww);
     float const deltaPer = 0.01;
     
-    if (uP<0.01) {
+    if (uP<deltaPer) {
       return (
         (getPointPercent(deltaPer, vP, wP) - getPointPercent(0., vP, wP))
         /
@@ -193,7 +200,7 @@ namespace dtOO {
     float wP = percent_w(ww);
     float const deltaPer = 0.01;
     
-    if (vP<0.01) {
+    if (vP<deltaPer) {
       return (
         (getPointPercent(uP, deltaPer, wP) - getPointPercent(uP, 0., wP))
         /
@@ -222,7 +229,7 @@ namespace dtOO {
     float wP = percent_w(ww);
     float const deltaPer = 0.01;
     
-    if (wP<0.01) {
+    if (wP<deltaPer) {
       return (
         (getPointPercent(uP, vP, deltaPer) - getPointPercent(uP, vP, 0.))
         /
