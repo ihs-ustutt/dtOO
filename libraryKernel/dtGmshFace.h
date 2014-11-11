@@ -13,7 +13,7 @@ namespace dtOO {
     
   class dtGmshFace : public GFace {
   public:
-    dt__CLASSNAME(dtGmshFace);
+    dt__CLASSSTD(dtGmshFace, GEntity);
     dtGmshFace(GModel *m, int tag, const std::list<GEdge*> &edges, const std::vector< int > & ori);
     dtGmshFace(GModel *m, int tag, const std::list<GEdge*> &edges);
     virtual ~dtGmshFace();
@@ -38,7 +38,7 @@ namespace dtOO {
     bool isEqual( GFace const * const gf ) const;
     static bool isEqual( GFace const * const gf0, GFace const * const gf1 );
   private:
-    map2dTo3d * _mm;
+    dt__pH(map2dTo3d) _mm;
   };
 }
 

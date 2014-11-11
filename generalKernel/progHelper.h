@@ -1,5 +1,6 @@
 #ifndef PROGHELPER_H
 #define	PROGHELPER_H
+
 #include <logMe/logMe.h>
 #include <boost/utility.hpp>
 
@@ -18,15 +19,6 @@
     dt__THROW( dt__PTRASS, << "object "#ptr" cannot assigned to "#toAss ); \
   } \
   toAss = ptr
-#define dt__MUSTDOWNCASTWM( object, type, result, message ) \
-  result = dynamic_cast< type * >( object ); \
-  if (result == NULL ) { \
-    dt__THROW(MACRO(MUSTDOWNCAST), \
-              << "dynamic_cast of "#object" to "#type" fails" << LOGDEL \
-              message );\
-    }
-#define dt__CANDOWNCAST( object, type, result ) \
-  result = dynamic_cast< type * >( object )
 #define dt__NEXT( object ) \
   boost::next( object )
 #define dt__PRIOR( object ) \

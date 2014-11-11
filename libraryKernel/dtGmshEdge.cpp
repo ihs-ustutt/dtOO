@@ -76,22 +76,6 @@ namespace dtOO {
     return _mm.get();
   }
   
-  bool dtGmshEdge::isSeamU( void ) const {
-    return _isSeamU;
-  }
-  
-  bool dtGmshEdge::isSeamV( void ) const {
-    return _isSeamV;
-  }
-
-  bool dtGmshEdge::makeSeamU( void ) {
-    _isSeamU = true;
-  }
-  
-  bool dtGmshEdge::makeSeamV( void ) {
-    _isSeamV = true;
-  }  
-
   void dtGmshEdge::setNElements( int const nE ) {
     this->meshAttributes.nbPointsTransfinite = nE;
   }

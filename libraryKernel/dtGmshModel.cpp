@@ -1,6 +1,7 @@
 #include "dtGmshModel.h"
 
 #include <logMe/logMe.h>
+#include <progHelper.h>
 
 #include <gmsh/GEdge.h>
 #include <gmsh/GFace.h>
@@ -30,28 +31,11 @@
 
 namespace dtOO {
   dtGmshModel::dtGmshModel(std::string name) : GModel(name){
-    _bV = NULL;
   }
 
   dtGmshModel::~dtGmshModel() {
   }
-  
-  void dtGmshModel::attachToBoundedVolume( boundedVolume const * const bV) {
-    _bV = bV;
-  }
-  
-  boundedVolume const * dtGmshModel::getAttachedBoundedVolume( void ) {
-    return _bV;
-  }
-  
-  void dtGmshModel::addVertexToGmshModel( dtPoint3 const & vertex, int const tag ) {
-    GModel::add( new dtGmshVertex(this, tag) );
-
-    dtGmshVertex * gV;
-    dt__MUSTDOWNCAST( GModel::getVertexByTag(tag), dtGmshVertex, gV );
-    gV->setPosition(vertex); 
-  }
-	
+  	
   void dtGmshModel::addIfVertexToGmshModel( dtPoint3 const & vertex, int * const tag ) {
 		*tag = this->getNumVertices()+1;
     dtGmshVertex * gv = new dtGmshVertex(this, *tag);
@@ -67,28 +51,6 @@ namespace dtOO {
 			this->add(gv);
 		}
   }	
-
-  void dtGmshModel::addVertexToGmshModel( dtPoint3 const * const vertex, int const tag ) {
-    addVertexToGmshModel(*vertex, tag);
-  }  
-  
-  void dtGmshModel::addEdgeToGmshModel( 
-    map1dTo3d const * const edge, 
-    int const tag, 
-    int const from, 
-    int const to 
-  ) {
-      GModel::add( 
-        new dtGmshEdge(
-          this, tag, GModel::getVertexByTag(from), GModel::getVertexByTag(to)
-        )
-      );    
-
-      dtGmshEdge * gE;
-      dt__MUSTDOWNCAST(GModel::getEdgeByTag(tag), dtGmshEdge, gE);
-      
-      gE->setMap1dTo3d( edge );
-  }  
 
   void dtGmshModel::addIfEdgeToGmshModel( 
     map1dTo3d const * const edge, 
@@ -114,46 +76,7 @@ namespace dtOO {
 			this->add(ge);
 		}
   }  	
-	
-//	void dtGmshModel::addRegionToGmshModel( 
-//	  map3dTo3d const * const vol, int const tag, int const vS, int const fS
-//	) {
-//		this->addVertexToGmshModel( vol->getPoint( 0, 0, 0 ), vS );
-//		this->addVertexToGmshModel( vol->getPoint( 1, 0, 0 ), vS+1 );		
-//		this->addVertexToGmshModel( vol->getPoint( 1, 1, 0 ), vS+2 );
-//		this->addVertexToGmshModel( vol->getPoint( 0, 1, 0 ), vS+3 );		
-//		this->addVertexToGmshModel( vol->getPoint( 0, 0, 1 ), vS+4 );
-//		this->addVertexToGmshModel( vol->getPoint( 1, 0, 1 ), vS+5 );		
-//		this->addVertexToGmshModel( vol->getPoint( 1, 1, 1 ), vS+6 );
-//		this->addVertexToGmshModel( vol->getPoint( 0, 1, 1 ), vS+7 );
-		
-//		this->addEdgeToGmshModel(
-//		  vol->segmentPercent( dtPoint3(0,0,0), dtPoint3(1,0,0) ), fS, vS, vS+1
-//		);
-//		this->addEdgeToGmshModel(
-//		  vol->segmentPercent( dtPoint3(1,0,0), dtPoint3(1,1,0) ), fS+1, vS+1, vS+2
-//		);
-//		this->addEdgeToGmshModel(
-//		  vol->segmentPercent( dtPoint3(1,1,0), dtPoint3(0,1,0) ), fS+2, vS+2, vS+3
-//		);
-//		this->addEdgeToGmshModel(
-//		  vol->segmentPercent( dtPoint3(0,1,0), dtPoint3(0,0,0) ), fS+3, vS+3, vS
-//		);
-//		
-//		this->addEdgeToGmshModel(
-//		  vol->segmentPercent( dtPoint3(0,0,1), dtPoint3(1,0,1) ), fS+4, vS+4, vS+5
-//		);
-//		this->addEdgeToGmshModel(
-//		  vol->segmentPercent( dtPoint3(1,0,1), dtPoint3(1,1,1) ), fS+5, vS+5, vS+6
-//		);
-//		this->addEdgeToGmshModel(
-//		  vol->segmentPercent( dtPoint3(1,1,1), dtPoint3(0,1,1) ), fS+6, vS+6, vS+7
-//		);
-//		this->addEdgeToGmshModel(
-//		  vol->segmentPercent( dtPoint3(0,1,1), dtPoint3(0,0,1) ), fS+7, vS+7, vS+4
-//		);		
-//	}
-  
+	 
 	dtGmshRegion * dtGmshModel::addRegionToGmshModel( map3dTo3d const * const vol ) {
 	  std::vector< int > vId(8,0);// = GModel::getNumVertices()+1;
 		std::vector< int > eId(12, 0);// = GModel::getNumEdges()+1;
@@ -359,33 +282,21 @@ namespace dtOO {
 	
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {
     GRegion * region = GModel::getRegionByTag(tag);
-    dtGmshRegion * gRegion;
-    dt__MUSTDOWNCASTWM(region, dtGmshRegion, gRegion, 
-            << "Cannot convert region " << DTLOGEVAL(tag) << "." << LOGDEL
-            << DTLOGEVAL(region)
-    );
+    dt__PTRASS(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
     
     return gRegion;    
   }
   
   dtGmshFace * dtGmshModel::getDtGmshFaceByTag( int const tag ) const {
     GFace * face = GModel::getFaceByTag(tag);
-    dtGmshFace * gFace;
-    dt__MUSTDOWNCASTWM(face, dtGmshFace, gFace, 
-            << "Cannot convert face " << DTLOGEVAL(tag) << "." << LOGDEL
-            << DTLOGEVAL(face)
-    );
+    dt__PTRASS(dtGmshFace * gFace, dtGmshFace::DownCast(face));
     
     return gFace;    
   }
   
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByTag( int const tag ) const {
     GEdge * edge = GModel::getEdgeByTag(tag);
-    dtGmshEdge * gEdge;
-    dt__MUSTDOWNCASTWM(edge, dtGmshEdge, gEdge,
-            << "Cannot convert edge " << DTLOGEVAL(tag) << "." << LOGDEL
-            << DTLOGEVAL(edge)
-    );
+    dt__PTRASS(dtGmshEdge * gEdge, dtGmshEdge::DownCast(edge));
     
     return gEdge;    
   }
@@ -411,94 +322,44 @@ namespace dtOO {
 
   dtGmshVertex * dtGmshModel::getDtGmshVertexByTag( int const tag ) const {
     GVertex * vertex = GModel::getVertexByTag(tag);
-    dtGmshVertex * gVertex;
-    dt__MUSTDOWNCASTWM(vertex, dtGmshVertex, gVertex,
-            << "Cannot convert vertex " << DTLOGEVAL(tag) << "." << LOGDEL
-            << DTLOGEVAL(vertex)            
-    );
+   
+    dt__PTRASS( dtGmshVertex * gVertex, dtGmshVertex::DownCast(vertex) );
     
     return gVertex;    
   }  
 
-  dtGmshRegion * dtGmshModel::cast2DtGmshRegion( GRegion * gr ) const{
+  dtGmshRegion * dtGmshModel::cast2DtGmshRegion( GRegion * gr ){
     dtGmshRegion * ret;
     dt__MUSTDOWNCAST(gr, dtGmshRegion, ret);
     
     return ret;
   }
   
-  dtGmshFace * dtGmshModel::cast2DtGmshFace( GFace * gf ) const{
+  dtGmshFace * dtGmshModel::cast2DtGmshFace( GFace * gf ){
     dtGmshFace * ret;
     dt__MUSTDOWNCAST(gf, dtGmshFace, ret);
     
     return ret;
   }
   
-  dtGmshEdge * dtGmshModel::cast2DtGmshEdge( GEdge * ge ) const {
+  dtGmshEdge * dtGmshModel::cast2DtGmshEdge( GEdge * ge ) {
     dtGmshEdge * ret;
     dt__MUSTDOWNCAST(ge, dtGmshEdge, ret);
     
     return ret;    
   }
   
-  dtGmshVertex * dtGmshModel::cast2DtGmshVertex( GVertex * gv ) const {
+  dtGmshVertex * dtGmshModel::cast2DtGmshVertex( GVertex * gv ) {
     dtGmshVertex * ret;
     dt__MUSTDOWNCAST(gv, dtGmshVertex, ret);
     
     return ret;    
   }
 
-  void dtGmshModel::createEdge(int const geI, int const gfI, int const v0, int const v1) {
-    dtGmshFace * gf = getDtGmshFaceByTag(gfI);
-    
-    SPoint2 v0UV = gf->reparamOnFace( getVertexByTag(v0) );
-    SPoint2 v1UV = gf->reparamOnFace( getVertexByTag(v1) );
-
-    ptrHandling< map1dTo3d > mm(
-      gf->getMap2dTo3d()->pickLinearUV(v0UV.x(), v0UV.y(), v1UV.x(), v1UV.y())
-    );
-    
-    addEdgeToGmshModel(mm.get(), geI, v0, v1);
-  }
-  
-  void dtGmshModel::createEmbeddedEdge(int const geI, int const gfI, int const v0, int const v1) {
-    createEdge(geI, gfI, v0, v1);
-    getDtGmshFaceByTag(gfI)->addEmbeddedEdge( getEdgeByTag(geI) );
-  }
-  
-  dtPoint3 dtGmshModel::cast2DtPoint3( GVertex * gv ) const {
+  dtPoint3 dtGmshModel::cast2DtPoint3( GVertex * gv ) {
     return cast2DtGmshVertex(gv)->cast2DtPoint3();
   }
 
-  std::list< dtGmshEdge * > dtGmshModel::parallelEdges( dtGmshEdge const * const ge ) const {
-    dtGmshRegionHex * dtgrh = NULL;
-    std::list<GFace*> facesContain;
-//    std::list<dtGmshRegion*>::iterator dtgr_it;
-    for (riter r_it = __caCThis->firstRegion(); r_it != __caCThis->lastRegion(); ++r_it) {
-      std::list<GFace*> gf = (*r_it)->faces();
-      std::list<GFace*>::iterator f_it;
-      for (f_it = gf.begin(); f_it != gf.end(); ++f_it) {
-        if ( (*f_it)->containsEdge(ge->tag()) ) {
-          dt__MUSTDOWNCASTWM(
-            getDtGmshRegionByTag( (*r_it)->tag() ),
-            dtGmshRegionHex,
-            dtgrh,
-            << "parallelEdges() only supported in purely dtGmshRegionHex meshes."
-          );
-//          break;
-          facesContain.push_back(*f_it);
-        }
-      }
-      if (dtgrh) break;
-    }
-    
-//    DTBUFFERINIT();
-//    dt__FORALL(dtgr, ii,
-//      DTBUFFER( << DTLOGEVAL( dtgr[ii]->tag() ) << LOGDEL);
-//    );
-//    DTINFOWF_BUFFER(parallelEdges());
-  }
-  
   void dtGmshModel::meshEdgeTransfiniteFromTo(
     int const from, int const to, 
     int const type, float const coeff, 

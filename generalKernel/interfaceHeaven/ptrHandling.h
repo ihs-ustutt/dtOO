@@ -27,7 +27,7 @@ namespace dtOO {
   bool ptrHandling< T >::isNull( void ) const {
     if ( this->get() == NULL ) return true;
     return false;
-  }  
+  }
 }
 
 #endif	/* PTRHANDLING_H */

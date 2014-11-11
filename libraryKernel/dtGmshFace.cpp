@@ -6,8 +6,8 @@
 #include <gmsh/GEdge.h>
 #include <gmsh/GModel.h>
 #include <list>
-#include "logMe/logMe.h"
-#include "progHelper.h"
+#include <logMe/logMe.h>
+#include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {    
@@ -23,7 +23,6 @@ namespace dtOO {
       l_dirs.push_back(ori[ii]);
       ii++;
     }
-    _mm = NULL;
   }
 
   dtGmshFace::dtGmshFace(GModel *m, int tag, const std::list<GEdge*> &edges)
@@ -36,11 +35,9 @@ namespace dtOO {
       e->addFace(this);
       l_dirs.push_back(1);
     }
-    _mm = NULL;
   }  
 
   dtGmshFace::~dtGmshFace() {
-    delete _mm;
   }
   
   Range<double> dtGmshFace::parBounds(int i) const {
@@ -102,14 +99,11 @@ namespace dtOO {
   }    
     
   void dtGmshFace::setMap2dTo3d( map2dTo3d const * const base ) {
-    if (_mm) {
-      delete _mm;
-    }
-    _mm = base->clone();
+    _mm.reset( base->clone() );
   }
 
   map2dTo3d const * dtGmshFace::getMap2dTo3d( void ) const {
-    return _mm;
+    return _mm.get();
   }
   
   void dtGmshFace::addEdge( GEdge * edge, int const ori ) {
