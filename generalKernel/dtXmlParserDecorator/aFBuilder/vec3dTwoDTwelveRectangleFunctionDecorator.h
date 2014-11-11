@@ -24,7 +24,12 @@ namespace dtOO {
         vectorHandling< analyticFunction * > * sFunP
       ) const;
     private:
-      static void reorder(vectorHandling< dtCurve const * > & cc);    
+      static analyticFunction * createCompound( 
+        vectorHandling< dtCurve const * > & cL, 
+        std::vector< float > const & ll, std::vector< float > const & mm,
+        std::vector< float > const & nn, std::vector< float > const & kk 
+      );      
+      static void reorder(vectorHandling< dtCurve const * > & cc);
   };
 }
 #endif	/* VEC3DTWODTWELVERECTANGLEFUNCTIONDECORATOR_H */

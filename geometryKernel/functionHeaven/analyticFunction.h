@@ -15,7 +15,7 @@ namespace dtOO {
                            public labelHandling, 
                            public renderInterface {
   public:
-    dt__CLASSNAME(analyticFunction);    
+    dt__CLASSSTD(analyticFunction, analyticFunction);    
     analyticFunction();
     analyticFunction(const analyticFunction& orig);
     virtual ~analyticFunction();
@@ -26,6 +26,8 @@ namespace dtOO {
     virtual int xDim( void ) const = 0;
     virtual float xMin( int const & dir) const = 0;
     virtual float xMax( int const & dir) const = 0;
+    virtual bool isCompound( void ) const;
+	  virtual vectorHandling< analyticFunction const * > compoundInternal( void ) const;    
   };
 }
 #endif	/* ANALYTICFUNCTION_H */

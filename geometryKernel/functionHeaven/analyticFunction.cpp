@@ -16,4 +16,12 @@ namespace dtOO {
     DTLOGCHAP(dumping);
     DTINFOWF(dump(), << "label = " << getLabel());		
 	}
+
+	bool analyticFunction::isCompound( void ) const {
+		return false;
+	}
+
+	vectorHandling< analyticFunction const * > analyticFunction::compoundInternal( void ) const {
+		return vectorHandling< analyticFunction const * >();
+	}			
 }
