@@ -5,6 +5,7 @@
 #include <string>
 #include "dtXmlParserBase.h"
 #include <QtXml/QDomElement>
+#include <QtXml/QDomDocument>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -104,7 +105,9 @@ namespace dtOO {
     void setStaticProperties( void );
   private:
     std::vector< QDomElement > _rootRead;
+    std::vector< QDomDocument > _rootReadDoc;
     QDomElement _rootLoad;
+    QDomDocument _rootLoadDoc;
   };
 }
 #endif	/* DTXMLPARSER_H */

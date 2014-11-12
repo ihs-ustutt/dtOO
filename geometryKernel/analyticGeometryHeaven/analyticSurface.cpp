@@ -19,15 +19,14 @@
 
 namespace dtOO {
   analyticSurface::analyticSurface() : map2dTo3d() {
-    _dtS = NULL;
   }
 
   analyticSurface::analyticSurface(analyticSurface const & orig) : map2dTo3d(orig) {
-    _dtS = orig._dtS->clone();
+    _dtS.reset( orig._dtS->clone() );
   }
 
   analyticSurface::analyticSurface(dtSurface const * const surface) : map2dTo3d() {
-    _dtS = surface->clone();
+    _dtS.reset( surface->clone() );
   }
  
   analyticSurface * analyticSurface::clone( void ) const {
@@ -39,10 +38,6 @@ namespace dtOO {
   }
 
   analyticSurface::~analyticSurface() {
-
-    if (_dtS) {
-      delete _dtS;
-    }
   }
 
   dtPoint3 analyticSurface::getPoint(float const & uu, float const & vv) const {
@@ -105,11 +100,11 @@ namespace dtOO {
   }
 
   dtSurface * analyticSurface::ptrDtSurface( void ) const {
-    return _dtS;
+    return _dtS.get();
   }
 
   dtSurface const * analyticSurface::constPtrDtSurface( void ) const {
-    return _dtS;
+    return _dtS.get();
   }   
   
   void analyticSurface::revert( void ) {
@@ -197,7 +192,7 @@ namespace dtOO {
   ) const {
     ptrHandling< dtSurface > ss(		
 			rectangularTrimmedSurface_uvBounds(
-				_dtS, dtPoint2(uu0, vv0), dtPoint2(uu1, vv1)
+				_dtS.get(), dtPoint2(uu0, vv0), dtPoint2(uu1, vv1)
 			).result()
 		);		
     return new analyticSurface(ss.get());

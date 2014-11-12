@@ -76,7 +76,7 @@ namespace dtOO {
       float const & vv0, float const & vv1
     ) const;    
   private:
-    dtSurface * _dtS;
+    dt__pH(dtSurface) _dtS;
   };
 }
 #endif	/* ANALYTICSURFACE_H */

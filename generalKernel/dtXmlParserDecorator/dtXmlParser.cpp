@@ -30,7 +30,12 @@ namespace dtOO {
 			_rootRead[ii].clear();
 		);
 		_rootRead.clear();
+		dt__FORALL(_rootReadDoc, ii,
+			_rootReadDoc[ii].clear();
+		);
+		_rootReadDoc.clear();		
 		_rootLoad.clear();
+		_rootLoadDoc.clear();
   }
 
   void dtXmlParser::openFileAndParse(char const * const fileName) {
@@ -66,6 +71,10 @@ namespace dtOO {
 		_rootRead.push_back( 
 		  xmlDocument.documentElement().cloneNode(true).toElement()
 		);
+		//
+		// save QDomDocument because owner after cloning remains the same
+		//
+		_rootReadDoc.push_back( xmlDocument );
 
 		if (_rootRead.size() == 0) {
 			dt__THROW(
@@ -120,7 +129,12 @@ namespace dtOO {
     //
     checkFile(fileName, xmlDocument);
 
+		//
+		// save QDomNode and QDomDocument because owner after cloning 
+		// remains the same
+		//		
     _rootLoad = xmlDocument.documentElement().cloneNode(true).toElement(); 
+		_rootLoadDoc = xmlDocument;
   }
   
   void dtXmlParser::loadStateToConst(
@@ -396,13 +410,12 @@ namespace dtOO {
 				if (_rootRead[ii].isNull()) {
 					dt__THROW(getNames(),
 									<< DTLOGEVAL(_rootRead[ii].isNull()) << LOGDEL
-									<< "Parsed file resulsts in a NULL Pointer.");
+									<< "Parsed file results in a NULL Pointer.");
 				}
 				std::vector< std::string > locNames;
 				getChildLabels(lookType, &locNames, _rootRead[ii]);
 				dt__FORALL(locNames, jj, 
-					names->push_back(locNames[jj]); 
-				  DTINFOWF(getNames(), DTLOGEVAL(locNames[ii]) );
+					names->push_back(locNames[jj]);
 				);
 			}
 		}
