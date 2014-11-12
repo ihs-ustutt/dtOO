@@ -1,0 +1,30 @@
+/**
+\mainpage dtOO
+
+This is a short compiling description of this library.
+
+Prerequisites of this library are:
+- gmsh
+- OpenCascade
+- Root
+- CGAL
+- GSL
+- Boost
+- Qt5
+
+First checkout the git repository
+\code{.sh}
+git clone /mnt/fs2/home/covise_dev/rep/dtOO.git dtOO
+git checkout master
+\endcode
+
+Create a build directory and run cmake
+\code{.sh}
+cd dtOO
+mkdir buildDtOO
+cd buildDtOO
+cmake ..
+\endcode
+
+
+*/

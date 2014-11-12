@@ -3,8 +3,6 @@
 
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/renderInterface.h>
-#include <interfaceHeaven/ptrHandling.h>
-#include <interfaceHeaven/ptrVectorHandling.h>
 #include "analyticGeometry.h"
 
 namespace dtOO {

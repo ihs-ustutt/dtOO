@@ -68,9 +68,6 @@ namespace dtOO {
     DTLOGCHAP(dumping);
     DTINFOWF(dump(), << DTLOGEVAL( getLabel() ) );
   }
-   
-  void analyticGeometry::packToExtInfoContainer( extInfoContainer * const eIC ) const {
-  }
 	
 	bool analyticGeometry::isCompound( void ) const {
 		return false;

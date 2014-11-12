@@ -1,6 +1,5 @@
 #include "dtGmshRegion.h"
 
-//#include <dtLinearAlgebra.h>
 #include <gmsh/GmshDefines.h>
 #include <gmsh/GFace.h>
 #include <gmsh/GModel.h>
@@ -36,25 +35,7 @@ namespace dtOO {
   dtGmshRegion::dtGmshRegion( GModel *m, int tag ) : GRegion(m, tag) {
     
   }
-  
-  bool dtGmshRegion::containsEdge( GEdge const * const edge ) const {
-    std::list< GFace* > const gfs = faces();
-    std::list<GFace*>::const_iterator gf_it = gfs.begin();
-    for (gf_it; gf_it != gfs.end(); ++gf_it) {
-      if ( (*gf_it)->containsEdge( edge->tag() ) ) return true;
-    }
-    return false;
-  }
-
-  bool dtGmshRegion::containsFace( GFace const * const face ) const {
-    std::list< GFace* > const gfs = faces();
-    std::list<GFace*>::const_iterator gf_it = gfs.begin();
-    for (gf_it; gf_it != gfs.end(); ++gf_it) {
-      if ( (*gf_it)->tag() == face->tag() ) return true;
-    }
-    return false;
-  }  
-  
+   
   void dtGmshRegion::meshTransfinite( void ) {
     this->meshAttributes.method = MESH_TRANSFINITE;
     this->meshAttributes.recombine3D = 1;
@@ -63,7 +44,7 @@ namespace dtOO {
 			std::list<GEdge*> el = (*f_it)->edges();
 			for (std::list<GEdge*>::iterator e_it = el.begin(); e_it != el.end(); ++e_it) {
 				(*e_it)->meshAttributes.method = MESH_TRANSFINITE;
-				(*e_it)->meshAttributes.nbPointsTransfinite = 10;
+				(*e_it)->meshAttributes.nbPointsTransfinite = 2;
 				(*e_it)->meshAttributes.coeffTransfinite = 1.;
 			}
 			(*f_it)->meshAttributes.method = MESH_TRANSFINITE;

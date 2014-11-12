@@ -1,5 +1,6 @@
 #include "vec3dTwoD.h"
-#include "dtLinearAlgebra.h"
+#include <dtLinearAlgebra.h>
+#include <interfaceHeaven/twoDArrayHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <solid2dLine.h>
 #include <discrete2dPoints.h>
@@ -63,7 +64,23 @@ namespace dtOO {
 		ret[1] = xMin(1) +  (xMax(1) - xMin(1) ) * xx[1];
 		
 		return ret;
+  }
+
+	aFX vec3dTwoD::x_percent(float const & x0, float const & x1) const {
+		aFX xx(2, 0.);
+    xx[0] = x0;
+		xx[1] = x1;
+		
+		return x_percent(xx);
   }  
+	
+	aFX vec3dTwoD::percent_x(float const & x0, float const & x1) const {
+		aFX xx(2, 0.);
+    xx[0] = x0;
+		xx[1] = x1;
+		
+		return percent_x(xx);
+  }  	
   
   aFX vec3dTwoD::percent_x(aFX const & xx) const {
 		aFX ret(2, 0.);
@@ -74,40 +91,61 @@ namespace dtOO {
   }
 	
 	std::vector<dtVector3> vec3dTwoD::DYdtVector3( aFX const & xx ) const {
+		/*
+		 *                      (xP[0], uv[1][1]) -> yy[1][1]
+		 *                               o
+		 *                               |
+		 *                               |
+		 *                               |
+		 *  (uv[0][0], xP[1]) o---------------------o (uv[0][1], xP[1])
+		 *     -> yy[0][0]               |               -> yy[0][1]
+		 *                               |
+		 *                               |
+		 *                               o
+		 *                      (xP[0], uv[1][0]) -> yy[1][0] 
+		 */
     aFX xP = percent_x(xx);
     float deltaPer[2];
 		deltaPer[0] = 0.0001;
 		deltaPer[1] = 0.0001;
 
-		aFX x0(2,0);
-		aFX x1(2,0);
-    
+		std::vector< aFX > uv(2, aFX(2));    
 		for (int ii=0; ii<2; ii++) {
 			if (xP[ii]<deltaPer[ii]) {
-				x0[ii] = 0.;
-				x1[ii] = deltaPer[ii];      
+				uv[ii][0] = 0.;
+				uv[ii][1] = deltaPer[ii];
 			}
-			else if ( (xP[ii]>=0.01) && (xP[ii]<=(1.-deltaPer[ii])) ) {
-				x0[ii] = xP[ii]-deltaPer[ii];
-				x1[ii] = xP[ii]+deltaPer[ii];
+			else if ( (xP[ii]>=deltaPer[ii]) && (xP[ii]<=(1.-deltaPer[ii])) ) {
+				uv[ii][0] = xP[ii]-deltaPer[ii];
+				uv[ii][1] = xP[ii]+deltaPer[ii];
 			}
 			else if (xP[ii]>(1.-deltaPer[ii])) {
-				x0[ii] = 1.-deltaPer[ii];
-				x1[ii] = 1.;
+				uv[ii][0] = 1.-deltaPer[ii];
+				uv[ii][1] = 1.;
 			}		
 		}
 		
-		dtPoint3 y0 = YdtPoint3( x_percent(x0) );
-		dtPoint3 y1 = YdtPoint3( x_percent(x1) );
+		twoDArrayHandling< dtPoint3 > yy(2,2);
+		yy[0][0] = YdtPoint3( x_percent(uv[0][0], xP[1]) );
+		yy[0][1] = YdtPoint3( x_percent(uv[0][1], xP[1]) );
+		yy[1][0] = YdtPoint3( x_percent(xP[0], uv[1][0]) );
+		yy[1][1] = YdtPoint3( x_percent(xP[0], uv[1][1]) );
 		
 		std::vector<dtVector3> dxdy(2);
-		for (int ii=0; ii<2; ii++) {
-  		dxdy[ii] = (y1 - y0) / ( x_percent(x1)[ii] - x_percent(x0)[ii] );
-		}
+		dxdy[0] = (yy[0][1] - yy[0][0]) / ( x_percent(uv[0][1], xP[1])[0] - x_percent(uv[0][0], xP[1])[0] );
+		dxdy[1] = (yy[1][1] - yy[1][0]) / ( x_percent(xP[0], uv[1][1])[1] - x_percent(xP[0], uv[1][0])[1] );
 		
 		return dxdy;
 	}
-	
+		
+	std::vector<dtVector3> vec3dTwoD::DYdtVector3( float const & x0, float const & x1 ) const {
+		aFX xx(2,0);
+		xx[0] = x0;
+		xx[1] = x1;
+
+		return DYdtVector3(xx);
+	}
+		
 	dtVector3 vec3dTwoD::unitNdtVector3( aFX const & xx ) const {
 		std::vector<dtVector3> dxdy = DYdtVector3(xx);
 		

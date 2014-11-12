@@ -4,10 +4,8 @@ SET(HEADERS
   dtXmlParserDecorator/qtXmlPrimitive.h
   dtXmlParserDecorator/dtXmlParser.h
   dtXmlParserDecorator/dtXmlParserDecorator.h
-  dtXmlParserDecorator/dtXmlParserDecoratorInterface.h
   dtXmlParserDecorator/dtXmlParserDecoratorFactory.h
   dtXmlParserDecorator/dtXmlParserFunctionDecorator.h
-  dtXmlParserDecorator/dtXmlParserFunctionDecoratorInterface.h
   dtXmlParserDecorator/dtXmlParserFunctionDecoratorFactory.h
   dtXmlParserDecorator/generalBuilder/trans6SidedCubeDecorator.h
   dtXmlParserDecorator/generalBuilder/pointDefinitionDecorator.h
@@ -60,10 +58,8 @@ SET(SOURCES
   dtXmlParserDecorator/qtXmlPrimitive.cpp
   dtXmlParserDecorator/dtXmlParser.cpp
   dtXmlParserDecorator/dtXmlParserDecorator.cpp
-  dtXmlParserDecorator/dtXmlParserDecoratorInterface.cpp
   dtXmlParserDecorator/dtXmlParserDecoratorFactory.cpp
   dtXmlParserDecorator/dtXmlParserFunctionDecorator.cpp
-  dtXmlParserDecorator/dtXmlParserFunctionDecoratorInterface.cpp
   dtXmlParserDecorator/dtXmlParserFunctionDecoratorFactory.cpp
   dtXmlParserDecorator/generalBuilder/trans6SidedCubeDecorator.cpp
   dtXmlParserDecorator/generalBuilder/pointDefinitionDecorator.cpp

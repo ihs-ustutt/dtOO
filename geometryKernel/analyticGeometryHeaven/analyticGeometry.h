@@ -11,8 +11,6 @@
 #include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO { 
-  class extInfoContainer;
-  
   /**
    * @author A. Tismer
    * @date 05.11.2012
@@ -32,7 +30,7 @@ namespace dtOO {
     int getRenderResolution(int const & dir) const;
     virtual analyticGeometry * clone( void ) const = 0;
     virtual analyticGeometry * create( void ) const = 0;
-    virtual void packToExtInfoContainer( extInfoContainer * const eIC ) const;
+//    virtual void packToExtInfoContainer( extInfoContainer * const eIC ) const;
     virtual bool isCompound( void ) const;
 	  virtual vectorHandling< analyticGeometry const * > compoundInternal( void ) const;
   private:

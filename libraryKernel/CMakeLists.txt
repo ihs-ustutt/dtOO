@@ -44,8 +44,6 @@ SET(HEADERS
   dtGmshVertex.h
   dtGmshEdge.h
   dtGmshFace.h
-  dtGmshTransPartArea.h
-  dtGmshTransFace.h
   dtGmshRegion.h
   dtGmshRegionHex.h
   dtGmshModel.h
@@ -98,8 +96,6 @@ SET(SOURCES
   dtGmshVertex.cpp
   dtGmshEdge.cpp
   dtGmshFace.cpp
-  dtGmshTransPartArea.cpp
-  dtGmshTransFace.cpp
   dtGmshRegion.cpp
   dtGmshRegionHex.cpp
   dtGmshModel.cpp

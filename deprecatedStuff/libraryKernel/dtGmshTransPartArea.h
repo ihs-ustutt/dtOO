@@ -20,7 +20,7 @@ namespace dtOO {
       dtGmshTransPartArea(GModel *m, int tag, const std::list<GEdge*> &edges, const std::vector< int > & ori);
       dtGmshTransPartArea(GModel *m, int tag, const std::list<GEdge*> &edges);
       virtual ~dtGmshTransPartArea();
-      virtual void setMap2dTo3d( map2dTo3d const * const base );
+//      virtual void setMap2dTo3d( map2dTo3d const * const base );
       std::string getMotherSurfaceLabel( void ) const;
       void setMotherSurfaceLabel( std::string const label );
       virtual void updateFace(void);    

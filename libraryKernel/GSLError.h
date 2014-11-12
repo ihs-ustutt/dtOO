@@ -3,6 +3,7 @@
 
 #include <gsl/gsl_errno.h>
 #include <logMe/logMe.h>
+#include <logMe/dtMacros.h>
 
   namespace ROOT {
     namespace Math {

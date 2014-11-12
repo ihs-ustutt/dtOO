@@ -106,8 +106,9 @@ namespace dtOO {
 
   template< typename T >
   std::string vectorHandling< T >::getLabel( int const pos ) const {
-    labelHandling const * obj;
-    dt__CANDOWNCAST(this->at(pos), labelHandling const, obj);
+    labelHandling const * obj 
+    = 
+    dynamic_cast< labelHandling const * >(this->at(pos));
 
     if (obj ) {
       return obj->getLabel();

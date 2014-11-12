@@ -3,6 +3,7 @@
 
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/renderInterface.h>
+#include "analyticFunction.h"
 
 namespace dtOO {
   template < typename funT >
@@ -18,6 +19,8 @@ namespace dtOO {
     funT & addComponent( funT const & toAdd);
     int nComponents( void ) const;
     virtual vectorHandling< renderInterface * > getRender( void ) const;
+   	virtual bool isCompound( void ) const;
+    vectorHandling< analyticFunction const * > compoundInternal( void ) const;    
   private:
     vectorHandling< funT > _vec;
   };  
@@ -76,6 +79,21 @@ namespace dtOO {
     
     return retVec;
   }
+
+  template < typename funT >  
+  bool analyticFunctionCompound< funT >::isCompound( void ) const {
+		return true;
+	}
+  
+  template < typename funT >    
+	vectorHandling< analyticFunction const * > analyticFunctionCompound< funT >::compoundInternal( void ) const {
+		vectorHandling< analyticFunction const * > aFV(_vec.size());
+    dt__FORALL(_vec, ii,
+      aFV[ii] = analyticFunction::ConstDownCast( &(_vec[ii]) );
+    );
+    
+    return aFV;
+	}    
 }
 #endif	/* ANALYTICFUNCTIONCOMPOUND_H */
 

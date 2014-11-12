@@ -1,10 +1,10 @@
 #ifndef DTGMSHEDGE_H
 #define	DTGMSHEDGE_H
 
-#include <gmsh/GEdge.h>
-
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <gmsh/GEdge.h>
+
 class GVertex;
 
 namespace dtOO {
@@ -12,7 +12,7 @@ namespace dtOO {
   
   class dtGmshEdge : public GEdge {
   public:
-    dt__CLASSNAME(dtGmshEdge);
+    dt__CLASSSTD(dtGmshEdge, GEntity);
     dtGmshEdge(GModel * model, int tag, GVertex *v1, GVertex *v2);
     virtual ~dtGmshEdge();
     virtual Range<double> parBounds(int i) const;
@@ -21,10 +21,6 @@ namespace dtOO {
     void setMap1dTo3d( map1dTo3d const * const base );
     void setMap1dTo3dNoClone( map1dTo3d * base );
     map1dTo3d const * getMap1dTo3d( void ) const;
-    bool isSeamU( void ) const;
-    bool isSeamV( void ) const;
-    bool makeSeamU( void );
-    bool makeSeamV( void );
     void setNElements( int const nE );
     void meshTransfinite( int const type, float const coeff );
     void meshTransfiniteWNElements( int const type, float const coeff, int const nElements );

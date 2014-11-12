@@ -1,6 +1,7 @@
 #include "vec3dThreeD.h"
 #include "dtLinearAlgebra.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <interfaceHeaven/twoDArrayHandling.h>
 #include <solid2dLine.h>
 #include <discrete2dPoints.h>
 
@@ -80,38 +81,59 @@ namespace dtOO {
 		return ret;
   }
 	
+	aFX vec3dThreeD::x_percent(float const & x0, float const & x1, float const & x2) const {
+		aFX xx(3, 0.);
+    xx[0] = x0;
+		xx[1] = x1;
+		xx[2] = x2;
+		
+		return x_percent(xx);
+  }  
+	
+	aFX vec3dThreeD::percent_x(float const & x0, float const & x1, float const & x2) const {
+		aFX xx(3, 0.);
+    xx[0] = x0;
+		xx[1] = x1;
+		xx[2] = x2;
+		
+		return percent_x(xx);
+  }  
+	
 	std::vector<dtVector3> vec3dThreeD::DYdtVector3( aFX const & xx ) const {
     aFX xP = percent_x(xx);
     float deltaPer[3];
 		deltaPer[0] = 0.0001;
 		deltaPer[1] = 0.0001;
-    deltaPer[2] = 0.0001;
- 
-		aFX x0(3,0);
-		aFX x1(3,0);
-    
+		deltaPer[2] = 0.0001;
+
+		std::vector< aFX > uv(3, aFX(2));    
 		for (int ii=0; ii<3; ii++) {
 			if (xP[ii]<deltaPer[ii]) {
-				x0[ii] = 0.;
-				x1[ii] = deltaPer[ii];      
+				uv[ii][0] = 0.;
+				uv[ii][1] = deltaPer[ii];
 			}
-			else if ( (xP[ii]>=0.01) && (xP[ii]<=(1.-deltaPer[ii])) ) {
-				x0[ii] = xP[ii]-deltaPer[ii];
-				x1[ii] = xP[ii]+deltaPer[ii];
+			else if ( (xP[ii]>=deltaPer[ii]) && (xP[ii]<=(1.-deltaPer[ii])) ) {
+				uv[ii][0] = xP[ii]-deltaPer[ii];
+				uv[ii][1] = xP[ii]+deltaPer[ii];
 			}
 			else if (xP[ii]>(1.-deltaPer[ii])) {
-				x0[ii] = 1.-deltaPer[ii];
-				x1[ii] = 1.;
+				uv[ii][0] = 1.-deltaPer[ii];
+				uv[ii][1] = 1.;
 			}		
 		}
 		
-		dtPoint3 y0 = YdtPoint3( x_percent(x0) );
-		dtPoint3 y1 = YdtPoint3( x_percent(x1) );
+		twoDArrayHandling< dtPoint3 > yy(3,2);
+		yy[0][0] = YdtPoint3( x_percent(uv[0][0], xP[1], xP[2]) );
+		yy[0][1] = YdtPoint3( x_percent(uv[0][1], xP[1], xP[2]) );
+		yy[1][0] = YdtPoint3( x_percent(xP[0], uv[1][0], xP[2]) );
+		yy[1][1] = YdtPoint3( x_percent(xP[0], uv[1][1], xP[2]) );
+		yy[2][0] = YdtPoint3( x_percent(xP[0], xP[1], uv[2][0]) );
+		yy[2][1] = YdtPoint3( x_percent(xP[0], xP[1], uv[2][1]) );
 		
-		std::vector<dtVector3> dxdy(2);
-		for (int ii=0; ii<3; ii++) {
-  		dxdy[ii] = (y1 - y0) / ( x_percent(x1)[ii] - x_percent(x0)[ii] );
-		}
+		std::vector<dtVector3> dxdy(3);
+		dxdy[0] = (yy[0][1] - yy[0][0]) / ( x_percent(uv[0][1], xP[1], xP[2])[0] - x_percent(uv[0][0], xP[1], xP[2])[0] );
+		dxdy[1] = (yy[1][1] - yy[1][0]) / ( x_percent(xP[0], uv[1][1], xP[2])[1] - x_percent(xP[0], uv[1][0], xP[2])[1] );
+		dxdy[2] = (yy[2][1] - yy[2][0]) / ( x_percent(xP[0], xP[1], uv[2][1])[2] - x_percent(xP[0], xP[1], uv[2][0])[2] );
 		
 		return dxdy;
 	}

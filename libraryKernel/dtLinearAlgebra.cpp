@@ -380,4 +380,16 @@ namespace dtOO {
 	float dtLinearAlgebra::distance( dtPoint3 const & p0, dtPoint3 const & p1 ) {
 		return sqrt(CGAL::squared_distance(p0, p1));
 	}
+	
+	float dtLinearAlgebra::angle( dtVector3 const & v0, dtVector3 const & v1 ) {
+		return acos(
+			dtLinearAlgebra::dotProduct(v0, v1)
+			/
+			( dtLinearAlgebra::length(v0) * dtLinearAlgebra::length(v1) )
+		);
+	}
+
+	float dtLinearAlgebra::angleDegree( dtVector3 const & v0, dtVector3 const & v1 ) {
+		return dtLinearAlgebra::angle(v0, v1) * 180./M_PI;
+	}	
 }

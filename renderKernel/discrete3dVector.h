@@ -12,6 +12,7 @@ namespace dtOO {
     dt__CLASSSTD(discrete3dVector, renderInterface);
     discrete3dVector();
     discrete3dVector(vectorHandling< dtVector3 > const & vv, vectorHandling< dtPoint3 > const & pp);
+    discrete3dVector(dtVector3 const & vv, dtPoint3 const & pp);
     virtual ~discrete3dVector();
     vectorHandling< dtVector3 > const & refV3( void ) const;
 	  vectorHandling< dtPoint3 > const & refP3( void ) const;

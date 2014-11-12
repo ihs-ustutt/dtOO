@@ -290,7 +290,7 @@ namespace dtOO {
       return (
         (getPointPercent(1., vP) - getPointPercent(1.-deltaPer, vP))
         /
-        (u_percent(1.) - u_percent(1.-deltaPer) )
+        (u_percent(1.) - u_percent(deltaPerInv) )
       );      
     }
   }
@@ -319,7 +319,7 @@ namespace dtOO {
       return (
         (getPointPercent(uP, 1.) - getPointPercent(uP, 1.-deltaPer))
         /
-        (v_percent(1.) - v_percent(1.-deltaPer) )
+        (v_percent(1.) - v_percent(deltaPerInv) )
       );      
     }    
   }
@@ -348,7 +348,7 @@ namespace dtOO {
       return (
         (firstDerU(1., vP) - firstDerU(1.-deltaPer, vP))
         /
-        (u_percent(1.) - u_percent(1.-deltaPer) )
+        (u_percent(1.) - u_percent(deltaPerInv) )
       );      
     }       
   }
@@ -377,7 +377,7 @@ namespace dtOO {
       return (
         (firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
         /
-        (v_percent(1.) - v_percent(1.-deltaPer) )
+        (v_percent(1.) - v_percent(deltaPerInv) )
       );      
     }    
   }
@@ -405,7 +405,7 @@ namespace dtOO {
       return (
         (firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
         /
-        (u_percent(1.) - u_percent(1.-deltaPer) )
+        (u_percent(1.) - u_percent(deltaPerInv) )
       );      
     }       
   }
