@@ -5,6 +5,9 @@
 #include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 
+#include <Standard_Failure.hxx>
+#include <Standard_ErrorHandler.hxx>
+#include <Standard_TypeDef.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <TColgp_HArray1OfPnt.hxx>
 
@@ -31,7 +34,12 @@ namespace dtOO {
 
 //		GeomAPI_Interpolate Interp(arr, para, false, .01);
 //		Interp.Perform();
-		Handle(Geom_BezierCurve) curve = new Geom_BezierCurve( arr->Array1() );
+		Handle(Geom_BezierCurve) curve;
+		dt__TRYOCC(
+		  curve = new Geom_BezierCurve( arr->Array1() );
+		,
+		<< ""
+		);
 //		DTINFOWF(bezierCurve_pointConstructOCC(),
 //						<< DTLOGEVAL(curve->Degree()) << LOGDEL);
 		dtOCCCurveBase base;

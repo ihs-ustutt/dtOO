@@ -14,6 +14,7 @@
 #include "occBuilder/bSplineSurface_skinConstructOCCDecorator.h"
 #include "occBuilder/surfaceOfRevolution_curveRotateConstructOCCDecorator.h"
 #include "occBuilder/bezierCurvePointPickFromPartConstructOCCDecorator.h"
+#include "occBuilder/bSplineCurve_pointPickFromPartConstructOCCDecorator.h"
 #include "occBuilder/bezierSurface_bezierCurveFillConstructOCCDecorator.h"
 #include "occBuilder/bSplineCurve_pointInterpolateConstructOCCDecorator.h"
 #include "occBuilder/bSplineCurve_pointConstructOCCDecorator.h"
@@ -57,6 +58,8 @@ namespace dtOO {
 		__IFRETCUSTOM(surfaceOfRevolution_curveRotateConstructOCC, surfaceOfRevolution_curveRotateConstructOCCDecorator);
 		__IFRET(bezierCurvePointPickFromPartConstructOCCDecorator);
 		__IFRETCUSTOM(bezierCurvePointPickFromPartConstructOCC, bezierCurvePointPickFromPartConstructOCCDecorator);
+    __IFRET(bSplineCurve_pointPickFromPartConstructOCCDecorator);
+    __IFRETCUSTOM(bSplineCurve_pointPickFromPartConstructOCC, bSplineCurve_pointPickFromPartConstructOCCDecorator);		
 		__IFRET(bSplineCurve_curveConnectConstructOCCDecorator);
 		__IFRETCUSTOM(bSplineCurve_curveConnectConstructOCC, bSplineCurve_curveConnectConstructOCCDecorator);
 		__IFRET(bezierSurface_bezierCurveFillConstructOCCDecorator);

@@ -20,9 +20,7 @@ namespace dtOO {
          vectorHandling< constValue * > const * const cValP,
          vectorHandling< analyticFunction * > const * const depSFunP,
          vectorHandling< analyticFunction * > * sFunP) const {
-//    bool hasAGeo = hasChild("scaFunction", toBuildP);
 
-//    if ( hasAGeo ) {
 		std::vector< QDomElement > elV = getChildVector(toBuildP);
 		for (int ii=0; ii<elV.size(); ii++) {//dt__FORALL(elV, ii,
 		  if ( hasAttribute("label", elV[ii]) ) {
@@ -34,14 +32,6 @@ namespace dtOO {
 				}
 			}
 		}
-//      //
-//      // copy
-//      //
-//      QDomElement wElement = getChild("scaFunction", toBuildP);     
-//      analyticFunction * toCopy
-//			=
-//      this->createAnalyticFunction( &wElement, cValP, depSFunP);
-//      sFunP->push_back( toCopy );
-//    }
+
   }
 }

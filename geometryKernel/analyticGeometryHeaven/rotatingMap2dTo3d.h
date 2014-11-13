@@ -23,11 +23,11 @@ namespace dtOO {
     virtual float getMax( int const & dir) const;
     virtual dtPoint3 getPoint( float const & uu, float const & vv, float const & ww ) const; 
     float u_phi(float const & arg) const;
-    float phi_u(float const & arg) const;
+//    float phi_u(float const & arg) const;
     float v_m(float const & arg) const;
-    float m_v(float const & arg) const;    
+//    float m_v(float const & arg) const;    
     float w_s(float const & arg) const;
-    float s_w(float const & arg) const;    
+//    float s_w(float const & arg) const;    
   private:
     ptrHandling< map2dTo3d > _m2d;
     dtVector3 _vv;

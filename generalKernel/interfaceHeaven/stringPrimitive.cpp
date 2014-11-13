@@ -122,8 +122,9 @@ namespace dtOO {
 //              << DTLOGEVAL(to) << LOGDEL
 //              << DTLOGEVAL(str->erase(from, to-from+1)) );
 
+    if ( stringContains(signStart, *str) && stringContains(signEnd, *str) ) {
       str->erase(from, to-from+1);
-    //}
+    }
 
     return retStr;
   }  

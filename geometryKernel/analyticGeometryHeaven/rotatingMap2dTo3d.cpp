@@ -96,57 +96,56 @@ namespace dtOO {
 	}	
 	
 	float rotatingMap2dTo3d::u_phi(float const & arg) const {
-    return 
-      arg / (getMax(0));
+    return arg / getMax(0);
 	}
 	
-	float rotatingMap2dTo3d::phi_u(float const & arg) const {
-    if (arg >= 0.) {
-      return ( getMax(0) * arg);
-    }
-    else {
-      float uu = getMax(0) * (fabs(arg));
-      return (map3dTo3d::getUMax() - uu);
-    }		
-	}
+//	float rotatingMap2dTo3d::phi_u(float const & arg) const {
+//    if (arg >= 0.) {
+//      return ( getMax(0) * arg);
+//    }
+//    else {
+//      float uu = getMax(0) * (fabs(arg));
+//      return (map3dTo3d::getUMax() - uu);
+//    }		
+//	}
 	
 	float rotatingMap2dTo3d::v_m(float const & arg) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->pickConstUPercent(0., 0., 1.) );
+		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent(0., 0., 1.) );
 		dt__PTRASS(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
 		);
 		
-		return s3d->ptrConstDtCurve()->uPercent_lPercent(arg);
+		return s3d->ptrConstDtCurve()->u_lPercent(arg);
 	}
 	
-	float rotatingMap2dTo3d::m_v(float const & arg) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->pickConstUPercent(0., 0., 1.) );
-		dt__PTRASS(
-		  splineCurve3d const * s3d, 
-			splineCurve3d::ConstDownCast(m1d.get())
-		);
-		
-		return s3d->ptrConstDtCurve()->lPercent_uPercent(arg);		
-	}
+//	float rotatingMap2dTo3d::m_v(float const & arg) const {
+//		ptrHandling< map1dTo3d > m1d( _m2d->pickConstUPercent(0., 0., 1.) );
+//		dt__PTRASS(
+//		  splineCurve3d const * s3d, 
+//			splineCurve3d::ConstDownCast(m1d.get())
+//		);
+//		
+//		return s3d->ptrConstDtCurve()->lPercent_uPercent(arg);		
+//	}
 	
 	float rotatingMap2dTo3d::w_s(float const & arg) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent(0., 0., 1.) );
+		ptrHandling< map1dTo3d > m1d( _m2d->pickConstUPercent(0., 0., 1.) );
 		dt__PTRASS(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
 		);
 		
-		return s3d->ptrConstDtCurve()->uPercent_lPercent(arg);		
+		return s3d->ptrConstDtCurve()->u_lPercent(arg);		
 	}
 	
-	float rotatingMap2dTo3d::s_w(float const & arg) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent(0., 0., 1.) );
-		dt__PTRASS(
-		  splineCurve3d const * s3d, 
-			splineCurve3d::ConstDownCast(m1d.get())
-		);
-		
-		return s3d->ptrConstDtCurve()->lPercent_uPercent(arg);				
-	}
+//	float rotatingMap2dTo3d::s_w(float const & arg) const {
+//		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent(0., 0., 1.) );
+//		dt__PTRASS(
+//		  splineCurve3d const * s3d, 
+//			splineCurve3d::ConstDownCast(m1d.get())
+//		);
+//		
+//		return s3d->ptrConstDtCurve()->lPercent_uPercent(arg);				
+//	}
 }
