@@ -13,6 +13,8 @@
 #include "makePolynomial.h"
 #include "predefinedExtension.h"
 #include "closeGaps.h"
+#include "pickLengthRange.h"
+#include "pickLengthPercentRange.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -44,6 +46,8 @@ namespace dtOO {
     __IFRET( makePolynomial );
     __IFRET( predefinedExtension );
     __IFRET( closeGaps );
+		__IFRET( pickLengthRange );
+		__IFRET( pickLengthPercentRange );
 
     dt__THROW(create(), << str <<  " could not be created");  
   }
