@@ -409,14 +409,6 @@ namespace dtOO {
     return dtPoint3( u_percent(pp.x()), v_percent(pp.y()), w_percent(pp.z()) );
   }
 	
-	map2dTo3d * map3dTo3d::segment( twoDArrayHandling< dtPoint3 > const & pp ) const {
-		ptrHandling< dtSurface > dtS( bezierSurface_pointConstructOCC(pp).result() );
-		
-		vec3dSurfaceTwoD v3d2d(dtS.get());
-		
-		return new vec3dTwoDInMap3dTo3d(&v3d2d, this);
-	}
-	
 	map1dTo3d * map3dTo3d::segment( dtPoint3 const & p0, dtPoint3 const & p1 ) const {
 		ptrHandling< dtCurve > dtC( 
 		  trimmedCurve_twoPointsConnectConstructOCC(p0, p1).result() 
@@ -424,7 +416,158 @@ namespace dtOO {
 		vec3dCurveOneD v3d1d(dtC.get());		
 		return new vec3dOneDInMap3dTo3d(&v3d1d, this);
 	}	
+	
+	map2dTo3d * map3dTo3d::segment( twoDArrayHandling< dtPoint3 > const & pp ) const {
+		ptrHandling< dtSurface > dtS( bezierSurface_pointConstructOCC(pp).result() );
+		
+		vec3dSurfaceTwoD v3d2d(dtS.get());
+		
+		return new vec3dTwoDInMap3dTo3d(&v3d2d, this);
+	}
+
+	map2dTo3d * map3dTo3d::segmentConstU( float const & uu ) const {
+	  dtPoint3 p30(uu, getVMin(), getWMin());
+		dtPoint3 p31(uu, getVMax(), getWMin());
+		dtPoint3 p32(uu, getVMax(), getWMax());
+		dtPoint3 p33(uu, getVMin(), getWMax());
+		
+		return segment(p30, p31, p32, p33);
+	}
+
+	map2dTo3d * map3dTo3d::segmentConstV( float const & vv ) const {
+	  dtPoint3 p30(getUMin(), vv, getWMin());
+		dtPoint3 p31(getUMax(), vv, getWMin());
+		dtPoint3 p32(getUMax(), vv, getWMax());
+		dtPoint3 p33(getUMin(), vv, getWMax());
+		
+		return segment(p30, p31, p32, p33);		
+	}
   
+	map2dTo3d * map3dTo3d::segmentConstW( float const & ww ) const {
+	  dtPoint3 p30(getUMin(), getVMin(), ww);
+		dtPoint3 p31(getUMax(), getVMax(), ww);
+		dtPoint3 p32(getUMax(), getVMax(), ww);
+		dtPoint3 p33(getUMin(), getVMin(), ww);
+		
+		return segment(p30, p31, p32, p33);		
+	}
+	
+	/**
+	 *   (w)
+	 *    A
+	 *    |
+ 	 *            (1)
+	 *    +--------+
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    +--------+ --> (v)
+	 *   (0)      
+   */	
+	map2dTo3d * map3dTo3d::segmentConstU( float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	  dtPoint3 p30(uu, p0.x(), p0.y());
+		dtPoint3 p31(uu, p1.x(), p0.y());
+		dtPoint3 p32(uu, p1.x(), p1.y());
+		dtPoint3 p33(uu, p0.x(), p1.y());
+		
+		return segment(p30, p31, p32, p33);
+	}
+
+	/**
+	 *   (w)
+	 *    A
+	 *    |
+ 	 *            (1)
+	 *    +--------+
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    +--------+ --> (u)
+	 *   (0)      
+   */	  
+	map2dTo3d * map3dTo3d::segmentConstV( float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	  dtPoint3 p30(p0.x(), vv, p0.y());
+		dtPoint3 p31(p1.x(), vv, p0.y());
+		dtPoint3 p32(p1.x(), vv, p1.y());
+		dtPoint3 p33(p0.x(), vv, p1.y());
+		
+		return segment(p30, p31, p32, p33);		
+	}
+  
+	/**
+	 *   (v)
+	 *    A
+	 *    |
+ 	 *            (1)
+	 *    +--------+
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    +--------+ --> (u)
+	 *   (0)      
+   */		
+	map2dTo3d * map3dTo3d::segmentConstW( float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	  dtPoint3 p30(p0.x(), p0.y(), ww);
+		dtPoint3 p31(p1.x(), p0.y(), ww);
+		dtPoint3 p32(p1.x(), p1.y(), ww);
+		dtPoint3 p33(p0.x(), p1.y(), ww);
+		
+		return segment(p30, p31, p32, p33);		
+	}
+	
+	map2dTo3d * map3dTo3d::segmentConstUPercent( float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	  float const uP = u_percent(uu);
+		dtPoint2 const p0P( v_percent(p0.x()), w_percent(p0.y()) );
+		dtPoint2 const p1P( v_percent(p1.x()), w_percent(p1.y()) );
+		
+		return segmentConstU(uP, p0P, p1P);
+	}
+
+	map2dTo3d * map3dTo3d::segmentConstVPercent( float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	  float const vP = v_percent(vv);
+		dtPoint2 const p0P( u_percent(p0.x()), u_percent(p0.y()) );
+		dtPoint2 const p1P( w_percent(p1.x()), w_percent(p1.y()) );
+		
+		return segmentConstV(vP, p0P, p1P);
+	}
+  
+	map2dTo3d * map3dTo3d::segmentConstWPercent( float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	  float const wP = w_percent(ww);
+		dtPoint2 const p0P( u_percent(p0.x()), v_percent(p0.y()) );
+		dtPoint2 const p1P( u_percent(p1.x()), v_percent(p1.y()) );
+		
+		return segmentConstW(wP, p0P, p1P);	
+	}	
+
+	map2dTo3d * map3dTo3d::segmentConstUPercent( float const & uu ) const {		
+		return segmentConstU(u_percent(uu));
+	}
+
+	map2dTo3d * map3dTo3d::segmentConstVPercent( float const & vv ) const {
+	  return segmentConstV(v_percent(vv));
+	}
+  
+	map2dTo3d * map3dTo3d::segmentConstWPercent( float const & ww ) const {
+	  return segmentConstW(w_percent(ww));
+	}		
+  
+	/**
+	 *   (v)
+	 *    A
+	 *    |
+	 * 
+ 	 *   (3)      (2)
+	 *    +--------+
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    +--------+ --> (u)
+	 *   (0)      (1)
+   */
 	map2dTo3d * map3dTo3d::segment( 
 		dtPoint3 const & p0, dtPoint3 const & p1, 
 		dtPoint3 const & p2, dtPoint3 const & p3 

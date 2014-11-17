@@ -54,7 +54,7 @@ SET(HEADERS
   dtTransformerHeaven/doNothing.h
   dtTransformerHeaven/offset.h
   dtTransformerHeaven/rotate.h
-  dtTransformerHeaven/pickRange.h
+  dtTransformerHeaven/pickMap3dTo3dRangePercent.h
   dtTransformerHeaven/conformalMappingStartFromPoint.h
   dtTransformerHeaven/makePolynomial.h
   dtTransformerHeaven/predefinedExtension.h
@@ -116,7 +116,7 @@ SET(SOURCES
   dtTransformerHeaven/doNothing.cpp
   dtTransformerHeaven/offset.cpp
   dtTransformerHeaven/rotate.cpp
-  dtTransformerHeaven/pickRange.cpp
+  dtTransformerHeaven/pickMap3dTo3dRangePercent.cpp
   dtTransformerHeaven/conformalMappingStartFromPoint.cpp
   dtTransformerHeaven/makePolynomial.cpp
   dtTransformerHeaven/predefinedExtension.cpp

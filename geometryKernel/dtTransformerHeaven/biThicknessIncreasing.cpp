@@ -76,7 +76,13 @@ namespace dtOO {
 				itVal.push_back(p2Inv[jj].x()); itVal.push_back(p2Inv[jj].y());
       }
 			DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
-						
+			//
+      // reverse orientation of resulting splineCurve
+      //			
+			if (_reverse) {
+				std::reverse( p2.begin(), p2.end() );
+				std::reverse( p2Inv.begin(), p2Inv.end() );
+			}
       //
       // create new function
       //
@@ -112,9 +118,9 @@ namespace dtOO {
   void biThicknessIncreasing::init( QDomElement * transformerElementP, 
                                   vectorHandling< constValue * > const * const cValP,
                                   vectorHandling< analyticFunction * > const * const sFunP) {
-
     handleInt("order", getAttributeInt("order", *transformerElementP));     
-    
+    handleBool("reverse", getAttributeBool("reverse", *transformerElementP));		
+				
     //
     // get functions
     //     
@@ -152,6 +158,14 @@ namespace dtOO {
     }
     dtTransformer::handleInt(name, value);
   }
+
+  void biThicknessIncreasing::handleBool(std::string const name, bool const value) {
+    if (name == "reverse" ) {
+      _reverse = value;
+      return;
+    }
+    dtTransformer::handleBool(name, value);
+  }	
   
   void biThicknessIncreasing::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
     if (name == "function_label") {

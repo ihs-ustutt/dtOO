@@ -22,6 +22,11 @@ namespace dtOO {
         dtVector3 const & vv,
         float const & angle = 2.*M_PI
       );
+      rotatingSpline(
+        dtSurface const & dtS, 
+        dtVector3 const & vv,
+        float const & angle = 2.*M_PI
+      );      
       rotatingSpline( rotatingSpline const & orig );
       virtual rotatingSpline * clone( void ) const;
       virtual rotatingSpline * create( void ) const;        

@@ -8,7 +8,7 @@
 #include "offset.h"
 #include "rotate.h"
 #include "conformalMapping.h"
-#include "pickRange.h"
+#include "pickMap3dTo3dRangePercent.h"
 #include "conformalMappingStartFromPoint.h"
 #include "makePolynomial.h"
 #include "predefinedExtension.h"
@@ -41,7 +41,7 @@ namespace dtOO {
 		__IFRET( biThicknessIncreasing );
     __IFRET( offset );
     __IFRET( rotate );
-    __IFRET( pickRange );
+    __IFRET( pickMap3dTo3dRangePercent );
     __IFRET( conformalMappingStartFromPoint );
     __IFRET( makePolynomial );
     __IFRET( predefinedExtension );

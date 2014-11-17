@@ -3,7 +3,12 @@
 #include "map2dTo3d.h"
 #include "map1dTo3d.h"
 #include "splineCurve3d.h"
+#include "analyticSurface.h"
+#include "rotatingSpline.h"
+#include <geometryEngine/dtSurface.h>
+#include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
 #include <geometryEngine/dtCurve.h>
+#include <geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h>
 
 namespace dtOO {
 	rotatingMap2dTo3d::rotatingMap2dTo3d() : map3dTo3d() {
@@ -93,6 +98,57 @@ namespace dtOO {
 	dtPoint3 rotatingMap2dTo3d::getPoint( float const & uu, float const & vv, float const & ww ) const {
 		dtAffTransformation3 rot = dtLinearAlgebra::getRotation(_vv, uu*2*M_PI);
 		return rot.transform( _m2d->getPoint(vv, ww) );
+	}	
+	
+	map2dTo3d * rotatingMap2dTo3d::segmentConstU( float const & uu ) const {
+		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
+		if (aS) {
+			dt__pH(dtSurface) dtS(
+			  geomSurface_surfaceRotateConstructOCC(
+		      aS->ptrDtSurface(), dtPoint3(0,0,0), _vv, uu*2.*M_PI
+			  ).result()
+			);
+			return new analyticSurface(dtS.get());
+		}
+		else {
+			return map3dTo3d::segmentConstU(uu);
+		}
+	}
+
+	map2dTo3d * rotatingMap2dTo3d::segmentConstV( float const & vv ) const {
+		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
+		if (aS) {
+			map1dTo3d * m1d = aS->pickConstUPercent(percent_u(vv), 0., 1.);
+			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
+			dt__pH(dtSurface) dtS(
+			  surfaceOfRevolution_curveRotateConstructOCC(
+					*(s3d->ptrConstDtCurve()), dtPoint3(0,0,0), _vv
+			  ).result()
+			);
+			
+			return new rotatingSpline(*dtS, _vv);
+		}
+		else {
+			return map3dTo3d::segmentConstV(vv);
+		}
+	}
+  
+	map2dTo3d * rotatingMap2dTo3d::segmentConstW( float const & ww ) const {
+		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
+		if (aS) {
+			map1dTo3d * m1d = aS->pickConstVPercent(percent_v(ww), 0., 1.);
+			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
+			dt__pH(dtSurface) dtS(
+			  surfaceOfRevolution_curveRotateConstructOCC(
+					*(s3d->ptrConstDtCurve()), dtPoint3(0,0,0), _vv
+			  ).result()
+			);
+			
+			return new rotatingSpline(*dtS, _vv);
+		}
+		else {
+			return map3dTo3d::segmentConstW(ww);
+		}
 	}	
 	
 	float rotatingMap2dTo3d::u_phi(float const & arg) const {

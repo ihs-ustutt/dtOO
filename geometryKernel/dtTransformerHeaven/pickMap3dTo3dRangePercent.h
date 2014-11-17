@@ -1,5 +1,5 @@
-#ifndef PICKRANGE_H
-#define	PICKRANGE_H
+#ifndef PICKMAP3DTO3DRANGEPERCENT_H
+#define	PICKMAP3DTO3DRANGEPERCENT_H
 
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
@@ -8,12 +8,12 @@ namespace dtOO {
   class analyticFunction;
   class vec2dOneD;
   
-  class pickRange : public dtTransformer{
+  class pickMap3dTo3dRangePercent : public dtTransformer{
   public:
-    dt__CLASSNAME(pickRange);   
-    pickRange();
-    pickRange(const pickRange& orig);
-    virtual ~pickRange();
+    dt__CLASSNAME(pickMap3dTo3dRangePercent);   
+    pickMap3dTo3dRangePercent();
+    pickMap3dTo3dRangePercent(const pickMap3dTo3dRangePercent& orig);
+    virtual ~pickMap3dTo3dRangePercent();
     virtual bool isNecessary( void ) const; 
     void init( QDomElement * transformerElementP, 
                pointContainer * const pointContainerP,
@@ -23,17 +23,11 @@ namespace dtOO {
                vectorHandling< analyticGeometry * > const * const depAGeoP );
     virtual vectorHandling< analyticGeometry * > apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const;
   private:
-    float _parameterOneStartPercent;
-    float _parameterTwoStartPercent;
-    float _parameterOneEndPercent;
-    float _parameterTwoEndPercent;
-    vec2dOneD const * _parameterPercentFunction;
-    float _maxStep;
-    float _tolerance;
-    bool _createAnalyticSurface;
-    bool _createSplineCurve3d;
+    float _u0;
+    float _v0;
+    float _w0;
   };
 }
 
-#endif	/* PICKRANGE_H */
+#endif	/* PICKMAP3DTO3DRANGE_H */
 
