@@ -23,8 +23,10 @@ namespace dtOO {
     virtual float getMax( int const & dir) const;
     virtual dtPoint3 getPoint( float const & uu, float const & vv, float const & ww ) const; 
     float u_phi(float const & arg) const;
+    float u_phirvw(float const & phir, float const & vv, float const & ww) const;
 //    float phi_u(float const & arg) const;
     float v_m(float const & arg) const;
+    float v_mw(float const & mm, float const & ss) const;
 //    float m_v(float const & arg) const;    
     float w_s(float const & arg) const;
 //    float s_w(float const & arg) const;    

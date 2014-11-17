@@ -24,7 +24,7 @@ namespace dtOO {
 							<< DTLOGEVAL(m2d->isClosedU()) << LOGDEL
 							<< DTLOGEVAL(m2d->isClosedV()) );
 		}
-		_vv = vv;
+		_vv = dtLinearAlgebra::normalize(vv);
 		_m2d.reset( m2d->clone() );
 	}
   
@@ -98,6 +98,18 @@ namespace dtOO {
 	float rotatingMap2dTo3d::u_phi(float const & arg) const {
     return arg / getMax(0);
 	}
+
+	float rotatingMap2dTo3d::u_phirvw(float const & phir, float const & vv, float const & ww) const {
+    //
+		// get radius
+		//
+    dtVector3 vXYZ = dtLinearAlgebra::toDtVector3(_m2d->getPoint(vv, ww));
+    dtVector3 pointOnRotAx = _vv * dtLinearAlgebra::dotProduct(_vv, vXYZ);
+    dtVector3 rr = vXYZ - pointOnRotAx;
+		
+		
+		return (phir/dtLinearAlgebra::length(rr)) / getMax(0);
+	}	
 	
 //	float rotatingMap2dTo3d::phi_u(float const & arg) const {
 //    if (arg >= 0.) {
@@ -118,6 +130,16 @@ namespace dtOO {
 		
 		return s3d->ptrConstDtCurve()->u_lPercent(arg);
 	}
+
+	float rotatingMap2dTo3d::v_mw(float const & mm, float const & ww) const {
+		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent( _m2d->percent_v(ww), 0., 1.) );
+		dt__PTRASS(
+		  splineCurve3d const * s3d, 
+			splineCurve3d::ConstDownCast(m1d.get())
+		);
+		
+		return s3d->ptrConstDtCurve()->u_lPercent(mm);
+	}	
 	
 //	float rotatingMap2dTo3d::m_v(float const & arg) const {
 //		ptrHandling< map1dTo3d > m1d( _m2d->pickConstUPercent(0., 0., 1.) );
