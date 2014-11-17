@@ -87,6 +87,10 @@ namespace dtOO {
 		return uPercent_u( u_l( percent*getLength() ) );
 	}	
 	
+	float dtCurve::uPercent_l( float const ll ) const {
+		return uPercent_u( u_l(ll) );
+	}	
+	
 	void dtCurve::trimPercent( float const uPercentStart, float const uPercentEnd) {
 		trim(u_uPercent(uPercentStart), u_uPercent(uPercentEnd));
 	}
