@@ -71,12 +71,13 @@ namespace dtOO {
     return true;
   }
 
-  void conformalMapping::init( QDomElement * transformerElementP, 
-                               pointContainer * const pointContainerP,
-                               vectorContainer * const vectorContainerP,    
-                               vectorHandling< constValue * > const * const cValP,
-                               vectorHandling< analyticFunction * > const * const sFunP,
-                               vectorHandling< analyticGeometry * > const * const depAGeoP ) {
+  void conformalMapping::init( 
+	  QDomElement * transformerElementP, 
+    baseContainer * const bC,  
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
     //initialize with default values
     _rotSplineP = NULL;
     _tolerance = 0.01;

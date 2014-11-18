@@ -9,6 +9,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <boundedVolumeFactory.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>
 #include <constValueHeaven/constValueFactory.h>
@@ -626,8 +627,7 @@ namespace dtOO {
    */
   void dtXmlParser::createAnalyticGeometry(
 	  std::string const label,
-    pointContainer * const pCP,
-		vectorContainer * const vCP,
+    baseContainer * const bC,
 		vectorHandling< constValue * > const * const cVP,        
 		vectorHandling< analyticFunction * > const * const sFP,        
 		vectorHandling< analyticGeometry * > * aGP
@@ -659,10 +659,10 @@ namespace dtOO {
 		);
 		
 		if (!buildCompound) {
-			decoP->buildPart(&tEP, pCP, vCP, cVP, sFP, aGP, &tmpAGeo);
+			decoP->buildPart(&tEP, bC, cVP, sFP, aGP, &tmpAGeo);
 		}
 		else {
-			decoP->buildPartCompound(&tEP, pCP, vCP, cVP, sFP, aGP, &tmpAGeo);
+			decoP->buildPartCompound(&tEP, bC, cVP, sFP, aGP, &tmpAGeo);
 		}
 
     for (int ii=0;ii<tmpAGeo.size();ii++) {
@@ -701,21 +701,19 @@ namespace dtOO {
   }
 
   void dtXmlParser::createAnalyticGeometry(
-    pointContainer * const pCP,
-		vectorContainer * const vCP,
+    baseContainer * const bC,
 		vectorHandling< constValue * > const * const cVP,        
 		vectorHandling< analyticFunction * > const * const sFP,        
 		vectorHandling< analyticGeometry * > * aGP
 	) const {
 		std::vector< std::string > label = getNames("part");
 		
-		dt__FORALL( label, ii, createAnalyticGeometry(label[ii], pCP, vCP, cVP, sFP, aGP); );
+		dt__FORALL( label, ii, createAnalyticGeometry(label[ii], bC, cVP, sFP, aGP); );
   }
 	
   void dtXmlParser::createBoundedVolume(
 		std::string const label,
-	  pointContainer * const pCP,
-		vectorContainer * const vCP,
+    baseContainer * const bC,
 		vectorHandling< constValue * > const * const cVP,        
 		vectorHandling< analyticFunction * > const * const sFP,        
 		vectorHandling< analyticGeometry * > const * const aGP,
@@ -739,8 +737,7 @@ namespace dtOO {
   }
 	
   void dtXmlParser::createBoundedVolume(
-    pointContainer * const pCP,
-		vectorContainer * const vCP,
+    baseContainer * const bC,
 		vectorHandling< constValue * > const * const cVP,        
 		vectorHandling< analyticFunction * > const * const sFP,        
 		vectorHandling< analyticGeometry * > const * const aGP,
@@ -748,14 +745,13 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("boundedVolume");
 		
-		dt__FORALL( label, ii, createBoundedVolume(label[ii], pCP, vCP, cVP, sFP, aGP, bVP); );
+		dt__FORALL( label, ii, createBoundedVolume(label[ii], bC, cVP, sFP, aGP, bVP); );
   }
 	
 	void dtXmlParser::destroyAndCreate(
 		vectorHandling< constValue * > & cV,
 		vectorHandling< analyticFunction* > & aF,
-		ptrHandling< pointContainer > & pC,
-		ptrHandling< vectorContainer > & vC,        
+		ptrHandling< baseContainer > & bC,
 		vectorHandling< analyticGeometry * > & aG,
 		vectorHandling< boundedVolume * > & bV
 	) const {
@@ -766,8 +762,7 @@ namespace dtOO {
 		//
 		// destroy
 		//
-		pC.reset( new pointContainer() );
-		vC.reset( new vectorContainer() );
+		bC.reset( new baseContainer() );
 		aF.destroy();
 		aG.destroy();
 		bV.destroy();
@@ -776,8 +771,8 @@ namespace dtOO {
 		// create
 		//
 		createAnalyticFunction(&cV, &aF);
-		createAnalyticGeometry(pC.get(), vC.get(), &cV, &aF, &aG);
-		createBoundedVolume(pC.get(), vC.get(), &cV, &aF, &aG, &bV);
+		createAnalyticGeometry(bC.get(), &cV, &aF, &aG);
+		createBoundedVolume(bC.get(), &cV, &aF, &aG, &bV);
 	}
   
   void dtXmlParser::setStaticProperties( void ) {

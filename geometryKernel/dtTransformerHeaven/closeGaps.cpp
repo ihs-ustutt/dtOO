@@ -89,12 +89,13 @@ namespace dtOO {
     return true;
   }
 
-  void closeGaps::init( QDomElement * transformerElementP, 
-                     pointContainer * const pointContainerP,
-                     vectorContainer * const vectorContainerP,    
-                     vectorHandling< constValue * > const * const cValP,
-                     vectorHandling< analyticFunction * > const * const sFunP,
-                     vectorHandling< analyticGeometry * > const * const depAGeoP ) {
+  void closeGaps::init( 
+	  QDomElement * transformerElementP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
 
     //
     // check input

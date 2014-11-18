@@ -6,8 +6,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
-#include <baseContainerHeaven/pointContainer.h>
-#include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -21,8 +20,7 @@ namespace dtOO {
 
   void analyticGeometryDecorator::buildPart( 
                QDomElement ** toBuildP,
-               pointContainer * const pointContainerP,
-               vectorContainer * const vectorContainerP,            
+               baseContainer * const bC,           
                vectorHandling< constValue * > const * const cValP,           
                vectorHandling< analyticFunction * > const * const sFunP,    
                vectorHandling< analyticGeometry * > const * const depAGeoP,
@@ -35,13 +33,9 @@ namespace dtOO {
       //
       QDomElement wElement = getChild("analyticGeometry", **toBuildP);     
       vectorHandling< analyticGeometry * > toCopy;
-      this->createAdvanced( &wElement, 
-                            pointContainerP, 
-                            vectorContainerP, 
-                            cValP, 
-                            sFunP,
-                            depAGeoP,
-                            &toCopy );
+      this->createAdvanced( 
+				&wElement, bC, cValP, sFunP, depAGeoP, &toCopy 
+			);
       dt__FORALL(toCopy, ii,
         aGeoP->push_back( toCopy[ii] );
       );

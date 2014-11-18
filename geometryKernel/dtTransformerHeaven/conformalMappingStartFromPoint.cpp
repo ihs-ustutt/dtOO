@@ -22,24 +22,16 @@ namespace dtOO {
 	}
 	
   void conformalMappingStartFromPoint::init( 
-         QDomElement * transformerElementP, 
-         pointContainer * const pointContainerP,
-         vectorContainer * const vectorContainerP,    
-         vectorHandling< constValue * > const * const cValP,
-         vectorHandling< analyticFunction * > const * const sFunP,
-         vectorHandling< analyticGeometry * > const * const depAGeoP 
-       ) {
+		QDomElement * transformerElementP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
     //
     // call on base class
     //
-    conformalMapping::init(
-      transformerElementP,
-      pointContainerP,
-      vectorContainerP,
-      cValP,
-      sFunP,
-      depAGeoP
-    );
+    conformalMapping::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
             
     //
     // init me

@@ -14,8 +14,7 @@ namespace dtOO {
   class analyticGeometry;
   class analyticFunction;
   class constValue;
-  class pointContainer;
-  class vectorContainer;
+  class baseContainer;
   class boundedVolume;
   
   class dtXmlParser : public dtXmlParserBase {
@@ -60,31 +59,27 @@ namespace dtOO {
 	  ) const;
     void createAnalyticGeometry(
       std::string const label,
-      pointContainer * const pCP,
-      vectorContainer * const vCP,
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cVP,        
       vectorHandling< analyticFunction * > const * const sFP,        
       vectorHandling< analyticGeometry * > * aGP
     ) const;    
     void createAnalyticGeometry(
-      pointContainer * const pCP,
-      vectorContainer * const vCP,
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cVP,        
       vectorHandling< analyticFunction * > const * const sFP,        
       vectorHandling< analyticGeometry * > * aGP
     ) const;    
     void createBoundedVolume(
       std::string const label,
-      pointContainer * const pCP,
-      vectorContainer * const vCP,
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cVP,        
       vectorHandling< analyticFunction * > const * const sFP,        
       vectorHandling< analyticGeometry * > const * const aGP,
       vectorHandling< boundedVolume * > * bVP
     ) const;    
     void createBoundedVolume(
-      pointContainer * const pCP,
-      vectorContainer * const vCP,
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cVP,        
       vectorHandling< analyticFunction * > const * const sFP,        
       vectorHandling< analyticGeometry * > const * const aGP,
@@ -93,8 +88,7 @@ namespace dtOO {
     void destroyAndCreate(
       vectorHandling< constValue * > & cV,
       vectorHandling< analyticFunction* > & aF,
-      ptrHandling< pointContainer > & pC,
-      ptrHandling< vectorContainer > & vC,        
+      ptrHandling< baseContainer > & bC,
       vectorHandling< analyticGeometry * > & aG,
 		  vectorHandling< boundedVolume * > & bV      
     ) const;    

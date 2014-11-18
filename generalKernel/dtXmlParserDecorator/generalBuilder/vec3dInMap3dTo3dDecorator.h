@@ -11,8 +11,7 @@ namespace dtOO {
   class dtXmlParserDecoratorInterface;
   class analyticFunction;
   class constValue;
-  class pointContainer;
-  class vectorContainer;
+  class baseContainer;
 
   class vec3dInMap3dTo3dDecorator : public dtXmlParserDecorator {
   public:  
@@ -21,17 +20,15 @@ namespace dtOO {
     virtual ~vec3dInMap3dTo3dDecorator();
     virtual void buildPart(
       QDomElement ** toBuildP,
-      pointContainer * const pointContainerP,
-      vectorContainer * const vectorContainerP,    
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP,  
-      vectorHandling< analyticFunction * > const * const sFunP,
+      vectorHandling< analyticFunction * > const * const sFunP,  
       vectorHandling< analyticGeometry * > const * const depAGeoP,
       vectorHandling< analyticGeometry * > * aGeoP 
-    ) const;   
+    ) const;
     virtual void buildPartCompound(
       QDomElement ** toBuildP,
-      pointContainer * const pointContainerP,
-      vectorContainer * const vectorContainerP,    
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP,  
       vectorHandling< analyticFunction * > const * const sFunP,
       vectorHandling< analyticGeometry * > const * const depAGeoP,

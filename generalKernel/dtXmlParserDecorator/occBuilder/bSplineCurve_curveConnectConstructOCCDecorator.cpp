@@ -8,8 +8,7 @@
 #include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
-#include <baseContainerHeaven/pointContainer.h>
-#include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -21,13 +20,14 @@ namespace dtOO {
   bSplineCurve_curveConnectConstructOCCDecorator::~bSplineCurve_curveConnectConstructOCCDecorator() {
   }
 
-  void bSplineCurve_curveConnectConstructOCCDecorator::buildPart(QDomElement ** toBuildP,
-                                           pointContainer * const pointContainerP,
-                                           vectorContainer * const vectorContainerP,    
-                                           vectorHandling< constValue * > const * const cValP,        
-                                           vectorHandling< analyticFunction * > const * const sFunP,
-                                           vectorHandling< analyticGeometry * > const * const depAGeoP,   
-                                           vectorHandling< analyticGeometry * > * aGeoP ) const {
+  void bSplineCurve_curveConnectConstructOCCDecorator::buildPart(
+	  QDomElement ** toBuildP,
+		baseContainer * const bC,    
+		vectorHandling< constValue * > const * const cValP,        
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP,   
+		vectorHandling< analyticGeometry * > * aGeoP 
+	) const {
 
     /* ---------------------------------------------------------------------- */    
     /* check input */
@@ -39,11 +39,9 @@ namespace dtOO {
       QDomElement wElement = getChild("analyticGeometry", **toBuildP);
 			vectorHandling< dtCurve const * > ccV;
       while ( !wElement.isNull() ) {
-					analyticGeometry * aG
-				  =
-					this->createAnalyticGeometry( 
-					  &wElement, pointContainerP, vectorContainerP, cValP, sFunP, depAGeoP
-					);
+				analyticGeometry * aG
+				=
+				this->createAnalyticGeometry(&wElement, bC, cValP, sFunP, depAGeoP);
 			  dt__PTRASS(splineCurve3d const * s3, splineCurve3d::ConstDownCast(aG));					
 				ccV.push_back(s3->ptrConstDtCurve());
   			wElement = getNextSibling("analyticGeometry", wElement);

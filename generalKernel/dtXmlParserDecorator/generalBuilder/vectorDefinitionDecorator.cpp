@@ -1,7 +1,7 @@
 #include "vectorDefinitionDecorator.h"
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
-#include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
@@ -12,20 +12,19 @@ namespace dtOO {
   vectorDefinitionDecorator::~vectorDefinitionDecorator() {
   }
 
-  void vectorDefinitionDecorator::buildPart(QDomElement ** toBuildP,
-                                             pointContainer * const pointContainerP,
-                                             vectorContainer * const vectorContainerP,    
-                                             vectorHandling< constValue * > const * const cValP,        
-                                             vectorHandling< analyticFunction * > const * const sFunP,
-                                             vectorHandling< analyticGeometry * > const * const depAGeoP,    
-                                             vectorHandling< analyticGeometry * > * aGeoP ) const {
+  void vectorDefinitionDecorator::buildPart(
+	  QDomElement ** toBuildP,
+    baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,        
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP,    
+		vectorHandling< analyticGeometry * > * aGeoP 
+	) const {
     QDomElement wElement = getChild("Vector_3", **toBuildP);
     while ( !wElement.isNull() ) {
       dtVector3 workingVectorP 
 			= 
-			createDtVector3( 
-        &wElement, pointContainerP, vectorContainerP, cValP, sFunP, depAGeoP
-			);
+			createDtVector3(&wElement, bC, cValP, sFunP, depAGeoP);
       wElement = getNextSibling("Vector_3", wElement);
     }
   }

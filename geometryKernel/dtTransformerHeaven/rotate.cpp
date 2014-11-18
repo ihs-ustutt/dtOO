@@ -1,11 +1,12 @@
 #include "rotate.h"
+#include "baseContainerHeaven/baseContainer.h"
 #include <logMe/logMe.h>
 #include <geometryEngine/dtSurface.h>
 #include <interfaceHeaven/ptrHandling.h>
 
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h>
-
+#include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>
 #include <QtXml/QDomElement>
@@ -73,18 +74,19 @@ namespace dtOO {
     return true;
   }
 
-  void rotate::init( QDomElement * transformerElementP, 
-                     pointContainer * const pointContainerP,
-                     vectorContainer * const vectorContainerP,    
-                     vectorHandling< constValue * > const * const cValP,
-                     vectorHandling< analyticFunction * > const * const sFunP,
-                     vectorHandling< analyticGeometry * > const * const depAGeoP ) {
+  void rotate::init( 
+	  QDomElement * transformerElementP, 
+    baseContainer * const bC,   
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
 
     if (transformerElementP->hasAttribute("origin")) {
-      _origin = pointContainerP->get( getAttributeStr("origin", *transformerElementP) );
+      _origin = bC->ptrPointContainer()->get( getAttributeStr("origin", *transformerElementP) );
     }
     if (transformerElementP->hasAttribute("rotation_vector")) {
-      _rotVector = vectorContainerP->get( getAttributeStr("rotation_vector", *transformerElementP) );
+      _rotVector = bC->ptrVectorContainer()->get( getAttributeStr("rotation_vector", *transformerElementP) );
     }
     if (transformerElementP->hasAttribute("angle")) {
       _angle 

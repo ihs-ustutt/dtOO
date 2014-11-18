@@ -11,8 +11,7 @@
 class QDomElement;
 
 namespace dtOO {
-  class pointContainer;
-  class vectorContainer;
+  class baseContainer;
   class constValue;
   class analyticGeometry;
   class analyticFunction;
@@ -25,12 +24,13 @@ namespace dtOO {
     dtTransformer(dtTransformer const & orig);
     virtual dtTransformer * clone( void ) const = 0;
     virtual dtTransformer * create( void ) const = 0;    
-    virtual void init( QDomElement * transformerElementP, 
-                       pointContainer * const pointContainerP,
-                       vectorContainer * const vectorContainerP,    
-                       vectorHandling< constValue * > const * const cValP,
-                       vectorHandling< analyticFunction * > const * const sFunP,
-                       vectorHandling< analyticGeometry * > const * const depAGeoP );
+    virtual void init( 
+      QDomElement * transformerElementP, 
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cValP,
+      vectorHandling< analyticFunction * > const * const sFunP,
+      vectorHandling< analyticGeometry * > const * const depAGeoP 
+    );
     virtual void init( QDomElement * transformerElementP,
                        vectorHandling< constValue * > const * const cValP,
                        vectorHandling< analyticFunction * > const * const sFunP);

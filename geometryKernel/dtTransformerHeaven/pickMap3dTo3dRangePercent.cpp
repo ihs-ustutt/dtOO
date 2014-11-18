@@ -50,12 +50,13 @@ namespace dtOO {
     return true;
   }
   
-  void pickMap3dTo3dRangePercent::init( QDomElement * transformerElementP, 
-                     pointContainer * const pointContainerP,
-                     vectorContainer * const vectorContainerP,    
-                     vectorHandling< constValue * > const * const cValP,
-                     vectorHandling< analyticFunction * > const * const sFunP,
-                     vectorHandling< analyticGeometry * > const * const depAGeoP ) {
+  void pickMap3dTo3dRangePercent::init( 
+	  QDomElement * transformerElementP, 
+    baseContainer * const bC,  
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
     
 		_u0 = -1.;
 		_v0 = -1.;

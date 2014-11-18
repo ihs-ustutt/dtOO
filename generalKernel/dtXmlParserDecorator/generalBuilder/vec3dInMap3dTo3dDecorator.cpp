@@ -13,8 +13,7 @@
 #include <functionHeaven/vec3dTwoD.h>
 #include <functionHeaven/vec3dThreeD.h>
 #include <constValueHeaven/constValue.h>
-#include <baseContainerHeaven/pointContainer.h>
-#include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -28,8 +27,7 @@ namespace dtOO {
 
   void vec3dInMap3dTo3dDecorator::buildPart( 
     QDomElement ** toBuildP,
-    pointContainer * const pointContainerP,
-    vectorContainer * const vectorContainerP,            
+    baseContainer * const bC,            
     vectorHandling< constValue * > const * const cValP,           
     vectorHandling< analyticFunction * > const * const sFunP,    
     vectorHandling< analyticGeometry * > const * const depAGeoP,
@@ -89,8 +87,7 @@ namespace dtOO {
 	
   void vec3dInMap3dTo3dDecorator::buildPartCompound( 
     QDomElement ** toBuildP,
-    pointContainer * const pointContainerP,
-    vectorContainer * const vectorContainerP,            
+    baseContainer * const bC,     
     vectorHandling< constValue * > const * const cValP,           
     vectorHandling< analyticFunction * > const * const sFunP,    
     vectorHandling< analyticGeometry * > const * const depAGeoP,

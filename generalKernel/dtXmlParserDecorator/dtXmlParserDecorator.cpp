@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include <dtTransformerHeaven/dtTransformerFactory.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 namespace dtOO {
   dtXmlParserDecorator::dtXmlParserDecorator() {
@@ -13,8 +14,7 @@ namespace dtOO {
 
 	void dtXmlParserDecorator::buildPartCompound(
 		QDomElement ** toBuildP,
-		pointContainer * const pointContainerP,
-		vectorContainer * const vectorContainerP,      
+    baseContainer * const bC,  
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP,

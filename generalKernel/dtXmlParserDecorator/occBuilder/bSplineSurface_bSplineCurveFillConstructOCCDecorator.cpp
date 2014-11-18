@@ -10,8 +10,7 @@
 #include <geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
-#include <baseContainerHeaven/pointContainer.h>
-#include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -25,8 +24,7 @@ namespace dtOO {
 
   void bSplineSurface_bSplineCurveFillConstructOCCDecorator::buildPart(
 	  QDomElement ** toBuildP,
-		pointContainer * const pointContainerP,
-		vectorContainer * const vectorContainerP,    
+    baseContainer * const bC,    
 		vectorHandling< constValue * > const * const cValP,        
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP,   
@@ -42,13 +40,7 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > aG;
       QDomElement wElement = getChild("analyticGeometry", **toBuildP);
       while ( !wElement.isNull() ) {
-        this->createAdvanced( &wElement, 
-                           pointContainerP, 
-                           vectorContainerP, 
-                           cValP, 
-                           sFunP, 
-                           depAGeoP, 
-                           &aG );
+        this->createAdvanced( &wElement, bC, cValP, sFunP, depAGeoP, &aG );
   			wElement = getNextSibling("analyticGeometry", wElement);
       }
 			

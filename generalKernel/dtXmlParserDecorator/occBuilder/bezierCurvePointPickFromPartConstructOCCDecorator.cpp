@@ -10,8 +10,7 @@
 #include <geometryEngine/geoBuilder/bezierCurve_pointConstructOCC.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
-#include <baseContainerHeaven/pointContainer.h>
-#include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -25,8 +24,7 @@ namespace dtOO {
 
   void bezierCurvePointPickFromPartConstructOCCDecorator::buildPart(
 	  QDomElement ** toBuildP,
-		pointContainer * const pointContainerP,
-		vectorContainer * const vectorContainerP,    
+    baseContainer * const bC,   
 		vectorHandling< constValue * > const * const cValP,        
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP,   
@@ -43,13 +41,7 @@ namespace dtOO {
       std::vector< dtPoint2 * > p2;
       QDomElement wElement = getChild("Point_2", **toBuildP);
       while ( !wElement.isNull() ) {
-        this->createBasic( &wElement, 
-                           pointContainerP, 
-                           vectorContainerP, 
-                           cValP, 
-                           sFunP, 
-                           depAGeoP, 
-                           &p2 );
+        this->createBasic( &wElement, bC, cValP, sFunP, depAGeoP, &p2 );
   			wElement = getNextSibling("Point_2", wElement);
       }
 			

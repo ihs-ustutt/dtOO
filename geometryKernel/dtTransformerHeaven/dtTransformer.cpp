@@ -2,8 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <baseContainerHeaven/pointContainer.h>
-#include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <functionHeaven/analyticFunction.h>
 #include <QtXml/QDomElement>
@@ -19,12 +18,13 @@ namespace dtOO {
 		
 	}
 
-  void dtTransformer::init( QDomElement * transformerElementP, 
-                            pointContainer * const pointContainerP,
-                            vectorContainer * const vectorContainerP,    
-                            vectorHandling< constValue * > const * const cValP,
-                            vectorHandling< analyticFunction * > const * const sFunP,
-                            vectorHandling< analyticGeometry * > const * const depAGeoP ) {
+  void dtTransformer::init( 
+	  QDomElement * transformerElementP, 
+    baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
     DTWARNINGWF(init(), << "Call on abstract class!");
   }
     

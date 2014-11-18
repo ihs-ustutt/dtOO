@@ -7,6 +7,8 @@
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+  class baseContainer;
+  
   class dtXmlParserDecorator : public dtXmlParserBase {
   public:
     dt__CLASSNAME(dtXmlParserDecorator);
@@ -14,8 +16,7 @@ namespace dtOO {
     virtual ~dtXmlParserDecorator();
     virtual void buildPart(
       QDomElement ** toBuildP,
-      pointContainer * const pointContainerP,
-      vectorContainer * const vectorContainerP,      
+      baseContainer * const bC,   
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP,
       vectorHandling< analyticGeometry * > const * const depAGeoP,
@@ -23,8 +24,7 @@ namespace dtOO {
     ) const = 0;
     virtual void buildPartCompound(
       QDomElement ** toBuildP,
-      pointContainer * const pointContainerP,
-      vectorContainer * const vectorContainerP,      
+      baseContainer * const bC,  
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP,
       vectorHandling< analyticGeometry * > const * const depAGeoP,

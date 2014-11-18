@@ -6,6 +6,9 @@
 
 namespace dtOO {
 	baseContainer::baseContainer() {
+		_pC.reset(new pointContainer());
+		_vC.reset(new vectorContainer());
+		_tC.reset(new transformerContainer());
 	}
 
 	baseContainer::~baseContainer() {
