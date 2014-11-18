@@ -16,6 +16,8 @@ namespace dtOO {
     conformalMappingStartFromPoint();
     conformalMappingStartFromPoint(const conformalMappingStartFromPoint& orig);
     virtual ~conformalMappingStartFromPoint();
+    virtual dtTransformer * clone( void ) const;
+    virtual dtTransformer * create( void ) const;     
     void init( QDomElement * transformerElementP, 
                pointContainer * const pointContainerP,
                vectorContainer * const vectorContainerP,    

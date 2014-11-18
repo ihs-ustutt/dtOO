@@ -6,12 +6,23 @@
 //#include <geometryEngine/dtSislBase.h>
 
 namespace dtOO {
-  conformalMapping::conformalMapping() {
+  conformalMapping::conformalMapping() : dtTransformer() {
   }
 
+  conformalMapping::conformalMapping(conformalMapping const & orig ) : dtTransformer(orig) {
+  }
+	
   conformalMapping::~conformalMapping() {
   }
 
+  dtTransformer * conformalMapping::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * conformalMapping::create( void ) const {
+		return new conformalMapping();
+	}
+	
   std::vector< dtPoint2 * > conformalMapping::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
     
     std::vector< dtPoint2 * > pointVec2d(pointVecP->size());

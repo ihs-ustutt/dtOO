@@ -4,15 +4,23 @@
 #include <progHelper.h>
 
 namespace dtOO {
-  conformalMappingStartFromPoint::conformalMappingStartFromPoint() {
+  conformalMappingStartFromPoint::conformalMappingStartFromPoint() : conformalMapping() {
   }
 
-  conformalMappingStartFromPoint::conformalMappingStartFromPoint(const conformalMappingStartFromPoint& orig) {
+  conformalMappingStartFromPoint::conformalMappingStartFromPoint(const conformalMappingStartFromPoint& orig) : conformalMapping(orig) {
   }
 
   conformalMappingStartFromPoint::~conformalMappingStartFromPoint() {
   }
 
+  dtTransformer * conformalMappingStartFromPoint::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * conformalMappingStartFromPoint::create( void ) const {
+		return new conformalMappingStartFromPoint();
+	}
+	
   void conformalMappingStartFromPoint::init( 
          QDomElement * transformerElementP, 
          pointContainer * const pointContainerP,

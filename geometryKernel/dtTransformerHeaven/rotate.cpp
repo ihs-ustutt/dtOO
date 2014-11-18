@@ -11,12 +11,26 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
-  rotate::rotate() {
-    _nPieces = 1;
+  rotate::rotate() : dtTransformer() {
   }
 
   rotate::~rotate() {
   }
+	
+	rotate::rotate(const rotate& orig) : dtTransformer(orig) {
+		_angle = orig._angle;
+		_nPieces = orig._nPieces;
+		_origin = orig._origin;
+		_rotVector = orig._rotVector;
+	}
+	
+  dtTransformer * rotate::clone( void ) const {
+	  return new rotate(*this);	
+	}
+	
+  dtTransformer * rotate::create( void ) const {
+		return new rotate();
+	}	
 
   vectorHandling< analyticGeometry * > rotate::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
     vectorHandling< analyticGeometry * > retAGeo;

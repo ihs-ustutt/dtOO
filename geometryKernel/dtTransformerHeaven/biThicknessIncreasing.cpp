@@ -12,7 +12,7 @@
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  biThicknessIncreasing::biThicknessIncreasing() {
+  biThicknessIncreasing::biThicknessIncreasing() : dtTransformer() {
     _tD[0] = NULL;
 		_tD[1] = NULL;
     _para = NULL;
@@ -23,6 +23,14 @@ namespace dtOO {
   biThicknessIncreasing::~biThicknessIncreasing() {
   }
 
+  dtTransformer * biThicknessIncreasing::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * biThicknessIncreasing::create( void ) const {
+		return new biThicknessIncreasing();
+	}
+	
   vectorHandling< analyticFunction * > biThicknessIncreasing::apply( vectorHandling< analyticFunction * > const * const sFunP ) const {
     vectorHandling< analyticFunction * > transSFun;
     for (int ii=0;ii<sFunP->size();ii++) {

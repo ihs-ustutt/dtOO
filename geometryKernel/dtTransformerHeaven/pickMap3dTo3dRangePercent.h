@@ -14,6 +14,8 @@ namespace dtOO {
     pickMap3dTo3dRangePercent();
     pickMap3dTo3dRangePercent(const pickMap3dTo3dRangePercent& orig);
     virtual ~pickMap3dTo3dRangePercent();
+    virtual dtTransformer * clone( void ) const;
+    virtual dtTransformer * create( void ) const;     
     virtual bool isNecessary( void ) const; 
     void init( QDomElement * transformerElementP, 
                pointContainer * const pointContainerP,

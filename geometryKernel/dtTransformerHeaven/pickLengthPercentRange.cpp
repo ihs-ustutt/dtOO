@@ -13,14 +13,22 @@
 #include <functionHeaven/vec2dOneD.h>
 
 namespace dtOO {
-  pickLengthPercentRange::pickLengthPercentRange() {
+  pickLengthPercentRange::pickLengthPercentRange() : dtTransformer() {
   }
 
-  pickLengthPercentRange::pickLengthPercentRange(const pickLengthPercentRange& orig) {
+  pickLengthPercentRange::pickLengthPercentRange(const pickLengthPercentRange& orig) : dtTransformer(orig) {
   }
 
   pickLengthPercentRange::~pickLengthPercentRange() {
   }
+
+  dtTransformer * pickLengthPercentRange::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * pickLengthPercentRange::create( void ) const {
+		return new pickLengthPercentRange();
+	}	
 
   vectorHandling< analyticGeometry * > pickLengthPercentRange::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
     vectorHandling< analyticGeometry * > aGeoRet;

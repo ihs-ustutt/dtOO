@@ -6,15 +6,12 @@
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <interfaceHeaven/ptrHandling.h>
-//#include <interfaceHeaven/labelHandling.h>
 
 #include <progHelper.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  thicknessIncreasing::thicknessIncreasing() {
-    _thicknessDistributionP = NULL;
-    _paraOnePercentFunP = NULL;
+  thicknessIncreasing::thicknessIncreasing() : dtTransformer() {
     _nPointsOne = 0;
     _isInv = false;
     _splineOrder = 3;    
@@ -22,7 +19,27 @@ namespace dtOO {
 
   thicknessIncreasing::~thicknessIncreasing() {
   }
+	
+  thicknessIncreasing::thicknessIncreasing(const thicknessIncreasing& orig) : dtTransformer(orig) {
+		_thicknessDistributionP.reset( 
+		scaOneD::SecureCast(orig._thicknessDistributionP->clone())
+		);
+		_paraOnePercentFunP.reset( 
+		  scaOneD::SecureCast(orig._paraOnePercentFunP->clone())
+		);
+		_nPointsOne = orig._nPointsOne;
+		_isInv = orig._isInv;
+		_splineOrder= orig._splineOrder;
+	}
 
+  dtTransformer * thicknessIncreasing::clone( void ) const {
+	  return new thicknessIncreasing(*this);	
+	}
+	
+  dtTransformer * thicknessIncreasing::create( void ) const {
+		return new thicknessIncreasing();
+	}
+		
   vectorHandling< analyticFunction * > thicknessIncreasing::apply( vectorHandling< analyticFunction * > const * const sFunP ) const {
     vectorHandling< analyticFunction * > transSFun;
     for (int ii=0;ii<sFunP->size();ii++) {
@@ -128,11 +145,11 @@ namespace dtOO {
     //     
     handleAnalyticFunction(
       "function_label", 
-      sFunP->get( getAttributeStr("function_label", *transformerElementP) ) 
+      sFunP->get( getAttributeStr("function_label", *transformerElementP) )->clone() 
     );
     handleAnalyticFunction(
       "parameter_one_percent_function", 
-      sFunP->get( getAttributeStr("parameter_one_percent_function", *transformerElementP) ) 
+      sFunP->get( getAttributeStr("parameter_one_percent_function", *transformerElementP) )->clone()
     );
     
     handleInt( 
@@ -159,11 +176,13 @@ namespace dtOO {
   
   void thicknessIncreasing::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
     if (name == "function_label") {
-      dt__PTRASS( _thicknessDistributionP, scaOneD::ConstDownCast(value) );
+      dt__PTRASS( scaOneD const * s1d, scaOneD::ConstDownCast(value) );
+			_thicknessDistributionP.reset(s1d);
       return;
     }
     else if (name == "parameter_one_percent_function") {
-      dt__PTRASS( _paraOnePercentFunP, scaOneD::ConstDownCast( value ) );
+      dt__PTRASS( scaOneD const * s1d, scaOneD::ConstDownCast(value) );
+			_paraOnePercentFunP.reset(s1d);			
       return;
     }
     dtTransformer::handleAnalyticFunction(name, value);

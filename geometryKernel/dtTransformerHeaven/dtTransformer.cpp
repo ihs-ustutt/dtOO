@@ -14,6 +14,10 @@ namespace dtOO {
 
   dtTransformer::~dtTransformer() {
   }
+	
+	dtTransformer::dtTransformer(dtTransformer const & orig) {
+		
+	}
 
   void dtTransformer::init( QDomElement * transformerElementP, 
                             pointContainer * const pointContainerP,

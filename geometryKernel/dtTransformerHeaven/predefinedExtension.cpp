@@ -14,12 +14,20 @@
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  predefinedExtension::predefinedExtension() {
+  predefinedExtension::predefinedExtension() : dtTransformer() {
   }
 
   predefinedExtension::~predefinedExtension() {
   }
 
+  dtTransformer * predefinedExtension::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * predefinedExtension::create( void ) const {
+		return new predefinedExtension();
+	}
+	
   /**
    * 
    * @todo What if first and last control points are duplicate?

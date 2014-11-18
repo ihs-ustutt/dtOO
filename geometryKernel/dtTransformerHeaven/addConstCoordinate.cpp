@@ -9,15 +9,25 @@
 #include <geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.h>
 
 namespace dtOO {
-  addConstCoordinate::addConstCoordinate() {
+  addConstCoordinate::addConstCoordinate() : dtTransformer() {
   }
 
-  addConstCoordinate::addConstCoordinate(const addConstCoordinate& orig) {
+  addConstCoordinate::addConstCoordinate(const addConstCoordinate& orig) : dtTransformer(orig) {
+		_cc = orig._cc;
+		_vv = orig._vv;
   }
 
   addConstCoordinate::~addConstCoordinate() {
   }
 
+  dtTransformer * addConstCoordinate::clone( void ) const {
+	  return new addConstCoordinate(*this);
+	}
+	
+  dtTransformer * addConstCoordinate::create( void ) const {
+		return new addConstCoordinate();
+	}
+	
   vectorHandling< analyticFunction * > addConstCoordinate::apply( 
 	  vectorHandling< analyticFunction * > const * const aFVecP 
 	) const {

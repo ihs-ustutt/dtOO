@@ -22,6 +22,9 @@ namespace dtOO {
     dt__CLASSNAME(dtTransformer);
     dtTransformer();
     virtual ~dtTransformer();
+    dtTransformer(dtTransformer const & orig);
+    virtual dtTransformer * clone( void ) const = 0;
+    virtual dtTransformer * create( void ) const = 0;    
     virtual void init( QDomElement * transformerElementP, 
                        pointContainer * const pointContainerP,
                        vectorContainer * const vectorContainerP,    

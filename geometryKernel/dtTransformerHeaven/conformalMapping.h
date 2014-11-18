@@ -12,7 +12,10 @@ namespace dtOO {
   public:      
     dt__CLASSNAME(conformalMapping);
     conformalMapping();
+    conformalMapping( conformalMapping const & orig );
     virtual ~conformalMapping();
+    virtual dtTransformer * clone( void ) const;
+    virtual dtTransformer * create( void ) const;     
     virtual bool isNecessary( void ) const;
     void init( QDomElement * transformerElementP, 
                pointContainer * const pointContainerP,

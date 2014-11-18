@@ -11,6 +11,9 @@ namespace dtOO {
     dt__CLASSNAME(rotate);
     rotate();
     virtual ~rotate();
+    rotate(const rotate& orig);    
+    virtual dtTransformer * clone( void ) const;
+    virtual dtTransformer * create( void ) const;       
     virtual bool isNecessary( void ) const;
     void init( QDomElement * transformerElementP, 
                pointContainer * const pointContainerP,

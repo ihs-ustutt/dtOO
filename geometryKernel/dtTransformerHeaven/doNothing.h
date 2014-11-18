@@ -10,6 +10,8 @@ namespace dtOO {
     dt__CLASSNAME(doNothing);
     doNothing();
     virtual ~doNothing();
+    virtual dtTransformer * clone( void ) const;
+    virtual dtTransformer * create( void ) const;     
     virtual bool isNecessary( void ) const;
     virtual std::vector< dtPoint2 * > apply( std::vector< dtPoint2 * > const * const pointVecP ) const;    
     virtual std::vector< dtPoint3 * > apply( std::vector< dtPoint3 * > const * const pointVecP ) const;    

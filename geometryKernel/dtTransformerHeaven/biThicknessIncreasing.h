@@ -13,6 +13,8 @@ namespace dtOO {
     dt__CLASSNAME(biThicknessIncreasing);
     biThicknessIncreasing();
     virtual ~biThicknessIncreasing();
+    virtual dtTransformer * clone( void ) const;
+    virtual dtTransformer * create( void ) const;     
     virtual bool isNecessary( void ) const;
     virtual void init( QDomElement * transformerElementP,
                        vectorHandling< constValue * > const * const cValP,

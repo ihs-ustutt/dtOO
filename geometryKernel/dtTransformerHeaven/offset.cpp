@@ -5,7 +5,7 @@
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  offset::offset() {
+  offset::offset() : dtTransformer() {
     _nPieces = 1;
     _xyPercent = false;
   }
@@ -13,6 +13,14 @@ namespace dtOO {
   offset::~offset() {
   }
 
+  dtTransformer * offset::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * offset::create( void ) const {
+		return new offset();
+	}
+	
   vectorHandling< analyticGeometry * > offset::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
     vectorHandling< analyticGeometry * > retAGeo;
 

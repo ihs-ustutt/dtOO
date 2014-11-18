@@ -14,6 +14,8 @@ namespace dtOO {
     addConstCoordinate();
     addConstCoordinate(const addConstCoordinate& orig);
     virtual ~addConstCoordinate();
+    virtual dtTransformer * clone( void ) const;
+    virtual dtTransformer * create( void ) const;     
     virtual bool isNecessary( void ) const; 
     virtual void init( 
       QDomElement * transformerElementP,
@@ -28,7 +30,6 @@ namespace dtOO {
   private:
     float _cc;
     dtVector3 _vv;
-//    float _w0;
   };
 }
 

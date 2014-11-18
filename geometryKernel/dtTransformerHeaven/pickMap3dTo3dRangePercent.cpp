@@ -7,15 +7,23 @@
 #include <analyticGeometryHeaven/map3dTo3d.h>
 
 namespace dtOO {
-  pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent() {
+  pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent() : dtTransformer() {
   }
 
-  pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent(const pickMap3dTo3dRangePercent& orig) {
+  pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent(const pickMap3dTo3dRangePercent& orig) : dtTransformer(orig) {
   }
 
   pickMap3dTo3dRangePercent::~pickMap3dTo3dRangePercent() {
   }
 
+  dtTransformer * pickMap3dTo3dRangePercent::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * pickMap3dTo3dRangePercent::create( void ) const {
+		return new pickMap3dTo3dRangePercent();
+	}
+	
   vectorHandling< analyticGeometry * > pickMap3dTo3dRangePercent::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
     vectorHandling< analyticGeometry * > aGeoRet;
     

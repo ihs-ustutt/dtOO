@@ -5,7 +5,7 @@
 #include <geometryEngine/dtSurface.h>
 
 namespace dtOO {
-  closeGaps::closeGaps() {
+  closeGaps::closeGaps() : dtTransformer() {
     _vvStartAGeo = NULL;
     _vvEndAGeo = NULL;
   }
@@ -13,6 +13,14 @@ namespace dtOO {
   closeGaps::~closeGaps() {
   }
 
+  dtTransformer * closeGaps::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * closeGaps::create( void ) const {
+		return new closeGaps();
+	}
+	
 	/**
 	 * 
    * @todo: Rational check was removed.
