@@ -33,9 +33,7 @@ include_directories(
 
 add_executable(
   main 
-  main.cpp catchMeanline.cpp ffMeanline.cpp
-  sca3PointMeanlineFunctionDecoratorXY.cpp 
-  getBaseline.cpp
-)
+  ffMeanline.cpp
+  )
 
 target_link_libraries(main  ${DTOO_LIBRARIES} ${EO_LIBRARIES} ${QT_LIBRARIES})

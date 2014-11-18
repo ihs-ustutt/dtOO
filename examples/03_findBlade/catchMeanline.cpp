@@ -58,11 +58,11 @@ std::vector<double> catchMeanline(int argc, char **argv)
   const double _p = 2.; //
   const double _e = 1.; //
   float _rate = 1.;
-  const double _conv_r = 1;  //Konvergenzradius
-  const unsigned int VEC_SIZE = 3; // Number of object variables in genotypes _ entspricht Anzahl der benötigten Freiheitsgrad
-  const unsigned int POP_SIZE = 25; // Size of population
+  const double _conv_r = 1.;  //Konvergenzradius
+  const unsigned int VEC_SIZE = 4; // Number of object variables in genotypes _ entspricht Anzahl der benötigten Freiheitsgrad
+  const unsigned int POP_SIZE = 250; // Size of population
 
-  const unsigned int MAX_GEN = 5; // Maximum number of generation before STOP
+  const unsigned int MAX_GEN = 500; // Maximum number of generation before STOP
 
 //Crossover-Parameter  
   const float P_CROSS = 0.1;	// Crossover probability
@@ -73,8 +73,8 @@ std::vector<double> catchMeanline(int argc, char **argv)
   const float P_MUT = 0.9;	// mutation probability
   const double mutMin = 0.;	// lower mutation bound
   const double mutMax = 1.;	// upper mutation bound
-  const unsigned _dim = 3;	// dimension of VectorBounds
-  const double _p_change = 1.;	// the one probability to change all coordinates (mutation bound)
+  const unsigned _dim = 4;	// dimension of VectorBounds
+  const double _p_change = 1.0;	// the one probability to change all coordinates (mutation bound)
 
   const double EPSILON = 1.2;	// range for real uniform mutation
   double SIGMA = 0.3;	    	// std dev. for normal mutation
@@ -83,7 +83,7 @@ std::vector<double> catchMeanline(int argc, char **argv)
   const double uniformMutRate = 0.8;  // relative weight for uniform mutation
   const double detMutRate = 0.2;      // relative weight for det-uniform mutation
   const double normalMutRate = 1.5;   // relative weight for normal mutation
-  vector <double> solution (3);
+  vector <double> solution (4);
 
 // GENERAL
   //////////////////////////
@@ -212,23 +212,24 @@ std::vector<double> catchMeanline(int argc, char **argv)
   pop.sort();
   std::cout << pop[0].fitness()<<std::endl;
   cout << "FINAL Population\n" << pop << endl;
-  std::cout << pop[0][0] << " " << pop[0][1] << " " << pop[0][2] << std::endl;
+  std::cout << pop[0][0] << " " << pop[0][1] << " " << pop[0][2] << " " << pop[0][3] << std::endl;
   
   
   //Write Solution into txt-file
   double alphaone = pop[0][0];
   double alphatwo = pop[0][1];
   double delta_y = pop[0][2];
+  double cV_maxThickness = pop[0][3];
   
   std::ofstream paramstr("Solution.txt", ios::trunc);
   //paramstr.open ("Solution.txt");
-  paramstr << alphaone << std::endl << alphatwo << std::endl << delta_y;
+  paramstr << alphaone << std::endl << alphatwo << std::endl << delta_y << std::endl << cV_maxThickness;
   paramstr.close();
  
   solution[0] = static_cast<float>(alphaone);
   solution[1] = static_cast<float>(alphatwo);
   solution[2] = static_cast<float>(delta_y);
-  
+  solution[3] = static_cast<float>(cV_maxThickness);
   delete mutBounds;
   
   return solution;
