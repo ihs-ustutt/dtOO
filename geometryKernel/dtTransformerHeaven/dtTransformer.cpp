@@ -122,5 +122,12 @@ namespace dtOO {
             << DTLOGEVAL(name) << LOGDEL
             << DTLOGEVAL(value) );  
   }  
+	
+	void dtTransformer::handleDtVector3(std::string const name, dtVector3 const value) {
+    dt__THROW(handleDtVector3(),
+            << "Could not handle:" << LOGDEL
+            << DTLOGEVAL(name) << LOGDEL
+            << DTLOGPOI3D(value) );  		
+	}
 }
 

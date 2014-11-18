@@ -193,7 +193,7 @@ namespace dtOO {
     //
     // check tagName
     //
-    if ( !is("dtVector3", element) ) {
+    if ( !is("dtVector3", element) && !is("Vector_3", element) ) {
       dt__THROW(getDtVector3(), 
         << DTLOGEVAL( getTagName(element) ) << LOGDEL
         << "Not a dtVector3 element.");
