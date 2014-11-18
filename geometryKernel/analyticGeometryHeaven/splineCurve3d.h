@@ -35,7 +35,7 @@ namespace dtOO {
     virtual bool isClosed( int const & dir) const;
     virtual float getMin( int const & dir) const;
     virtual float getMax( int const & dir) const;
-    virtual dtVector3 firstDerU( float const uu) const;    
+    virtual dtVector3 firstDerU( float const uu) const;
   private:
     ptrHandling<dtCurve> _dtC;
   };

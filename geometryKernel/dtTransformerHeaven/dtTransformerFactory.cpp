@@ -8,11 +8,13 @@
 #include "offset.h"
 #include "rotate.h"
 #include "conformalMapping.h"
-#include "pickRange.h"
+#include "pickMap3dTo3dRangePercent.h"
 #include "conformalMappingStartFromPoint.h"
 #include "makePolynomial.h"
 #include "predefinedExtension.h"
 #include "closeGaps.h"
+#include "pickLengthRange.h"
+#include "pickLengthPercentRange.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -39,11 +41,13 @@ namespace dtOO {
 		__IFRET( biThicknessIncreasing );
     __IFRET( offset );
     __IFRET( rotate );
-    __IFRET( pickRange );
+    __IFRET( pickMap3dTo3dRangePercent );
     __IFRET( conformalMappingStartFromPoint );
     __IFRET( makePolynomial );
     __IFRET( predefinedExtension );
     __IFRET( closeGaps );
+		__IFRET( pickLengthRange );
+		__IFRET( pickLengthPercentRange );
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

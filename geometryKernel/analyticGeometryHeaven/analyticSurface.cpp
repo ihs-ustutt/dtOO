@@ -192,7 +192,9 @@ namespace dtOO {
   ) const {
     ptrHandling< dtSurface > ss(		
 			rectangularTrimmedSurface_uvBounds(
-				_dtS.get(), dtPoint2(uu0, vv0), dtPoint2(uu1, vv1)
+				_dtS.get(), 
+				dtPoint2(u_percent(uu0), v_percent(vv0)), 
+				dtPoint2(u_percent(uu1), v_percent(vv1))
 			).result()
 		);		
     return new analyticSurface(ss.get());

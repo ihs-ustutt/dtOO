@@ -60,6 +60,7 @@ namespace dtOO {
       float lPercent_uPercent(float const uuPercent) const;
       float u_lPercent( float const percent ) const;
       float uPercent_lPercent( float const percent ) const;
+      float uPercent_l( float const percent ) const;      
       void trimPercent( float const uuStart, float const uuEnd);
     private:
 

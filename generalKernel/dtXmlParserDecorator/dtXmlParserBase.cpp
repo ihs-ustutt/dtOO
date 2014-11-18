@@ -318,6 +318,32 @@ namespace dtOO {
 											 );                
 						basicP->push_back( new dtPoint3( m3d->getPointPercent(cX, cY, cZ) ) );
 					}        
+					else if (    hasAttribute("parameter_one", *toBuildP) 
+							 && hasAttribute("parameter_two", *toBuildP) 
+							 && hasAttribute("parameter_three", *toBuildP) ) {
+						float cX = muParseString(
+												 replaceUsedFunctions(
+													 getAttributeStr("parameter_one", *toBuildP),
+													 cValP, 
+													 sFunP
+												 )
+											 );
+						float cY = muParseString(
+												 replaceUsedFunctions(
+													 getAttributeStr("parameter_two", *toBuildP),
+													 cValP, 
+													 sFunP
+												 )
+											 );
+						float cZ = muParseString(
+												 replaceUsedFunctions(
+													 getAttributeStr("parameter_three", *toBuildP),
+													 cValP, 
+													 sFunP
+												 )
+											 );                
+						basicP->push_back( new dtPoint3( m3d->getPoint(cX, cY, cZ) ) );
+					} 					
 				}      
 			}
 	//

@@ -28,6 +28,18 @@ namespace dtOO {
 		_pp = dtPoint3(pp);
 		_angle = angle;		
   }
+
+  rotatingSpline::rotatingSpline(
+    dtSurface const & dtS, 
+    dtVector3 const & vv,
+    float const & angle) : analyticSurface(&dtS) {
+    
+	  _vv = dtVector3(vv);
+		_pp = dtPoint3(0,0,0);
+		_angle = angle;		
+		
+		correctOrigin();
+  }
   
   dtPoint3 rotatingSpline::getOrigin( void ) const {
     return _pp;

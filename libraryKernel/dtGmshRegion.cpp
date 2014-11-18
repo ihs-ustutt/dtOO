@@ -44,7 +44,7 @@ namespace dtOO {
 			std::list<GEdge*> el = (*f_it)->edges();
 			for (std::list<GEdge*>::iterator e_it = el.begin(); e_it != el.end(); ++e_it) {
 				(*e_it)->meshAttributes.method = MESH_TRANSFINITE;
-				(*e_it)->meshAttributes.nbPointsTransfinite = 2;
+				(*e_it)->meshAttributes.nbPointsTransfinite = 5;
 				(*e_it)->meshAttributes.coeffTransfinite = 1.;
 			}
 			(*f_it)->meshAttributes.method = MESH_TRANSFINITE;

@@ -16,10 +16,12 @@ namespace dtOO {
     rotatingMap2dTo3dPhiMS( dtVector3 const & vv, map2dTo3d const * const m2d );
     rotatingMap2dTo3dPhiMS(const rotatingMap2dTo3dPhiMS& orig);
     virtual ~rotatingMap2dTo3dPhiMS();
+    virtual rotatingMap2dTo3dPhiMS * clone( void ) const;
+    virtual rotatingMap2dTo3dPhiMS * create( void ) const;     
     virtual float getMin( int const & dir) const;
     virtual float getMax( int const & dir) const;
     void setAngle( float const & angle );
-    virtual dtPoint3 getPoint( float const & uu, float const & vv, float const & ww ) const; 
+    virtual dtPoint3 getPoint( float const & phi, float const & mm, float const & ss ) const; 
   private:
     float _angle;
   };

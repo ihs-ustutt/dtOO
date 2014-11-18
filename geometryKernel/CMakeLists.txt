@@ -54,11 +54,13 @@ SET(HEADERS
   dtTransformerHeaven/doNothing.h
   dtTransformerHeaven/offset.h
   dtTransformerHeaven/rotate.h
-  dtTransformerHeaven/pickRange.h
+  dtTransformerHeaven/pickMap3dTo3dRangePercent.h
   dtTransformerHeaven/conformalMappingStartFromPoint.h
   dtTransformerHeaven/makePolynomial.h
   dtTransformerHeaven/predefinedExtension.h
   dtTransformerHeaven/closeGaps.h
+  dtTransformerHeaven/pickLengthRange.h
+  dtTransformerHeaven/pickLengthPercentRange.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -114,11 +116,13 @@ SET(SOURCES
   dtTransformerHeaven/doNothing.cpp
   dtTransformerHeaven/offset.cpp
   dtTransformerHeaven/rotate.cpp
-  dtTransformerHeaven/pickRange.cpp
+  dtTransformerHeaven/pickMap3dTo3dRangePercent.cpp
   dtTransformerHeaven/conformalMappingStartFromPoint.cpp
   dtTransformerHeaven/makePolynomial.cpp
   dtTransformerHeaven/predefinedExtension.cpp
   dtTransformerHeaven/closeGaps.cpp
+  dtTransformerHeaven/pickLengthRange.cpp
+  dtTransformerHeaven/pickLengthPercentRange.cpp
 )
 
 APPEND_DTOO_SOURCE(geometryKernel "${SOURCES}")
