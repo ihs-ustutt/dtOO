@@ -111,9 +111,13 @@ namespace dtOO {
           << dtOO::logMe::Backtrace() \
           << LOGDEL \
           << "Honor thy error as a hidden intention. (Brian Eno)")
-  #define dt__THROW_IF(cond, functionname, message) \
+  #define dt__THROW_IFWM(cond, functionname, message) \
       if (cond) { \
         dt__THROW(functionname, message); \
+      }
+  #define dt__THROW_IF(cond, functionname) \
+      if (cond) { \
+        dt__THROW(functionname, << "condition: "#cond" is true."); \
       }
   #define dt__THROWSPEC(eType, functionname, message) \
       eType( std::ostringstream().flush() << ClassName() << "::"#functionname << LOGDEL \

@@ -6,8 +6,8 @@
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h>
 
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
+#include <baseContainerHeaven/pointContainer.h>
+#include <baseContainerHeaven/vectorContainer.h>
 #include <QtXml/QDomElement>
 
 namespace dtOO {

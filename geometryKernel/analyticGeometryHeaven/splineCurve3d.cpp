@@ -1,6 +1,5 @@
 #include "splineCurve3d.h"
 #include <logMe/logMe.h>
-#include <baseContainer/pointContainer.h>
 #include <discrete3dVector.h>
 #include <discrete3dPoints.h>
 #include <geometryEngine/dtCurve.h>

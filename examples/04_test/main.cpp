@@ -1,5 +1,3 @@
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
 #include <catchMeanline.h>
 #include <ffMeanline.h>
 #include <constValueHeaven/constValue.h>
@@ -14,10 +12,7 @@ using namespace dtOO;
 int main(int argc, char **argv)
 {
     try
-    {
-      
-    //pointContainer pC;
-    //vectorContainer vC;
+    {     
     std::vector<double> meanlineParam(3);
     //std::vector<std::string > label;
     //vectorHandling<constValue *> cV;

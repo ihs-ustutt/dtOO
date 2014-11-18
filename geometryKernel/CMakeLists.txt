@@ -22,9 +22,10 @@ SET(HEADERS
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
   analyticGeometryHeaven/analyticGeometryCompound.h
-  baseContainer/pointContainer.h
-  baseContainer/vectorContainer.h
-  baseContainer/transformerContainer.h
+  baseContainerHeaven/baseContainer.h
+  baseContainerHeaven/pointContainer.h
+  baseContainerHeaven/vectorContainer.h
+  baseContainerHeaven/transformerContainer.h
   constValueHeaven/constValue.h
   constValueHeaven/constValueFactory.h
   constValueHeaven/sliderFloatParam.h
@@ -87,9 +88,10 @@ SET(SOURCES
   analyticGeometryHeaven/vec3dOneDInMap3dTo3d.cpp
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.cpp
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.cpp
-  baseContainer/pointContainer.cpp
-  baseContainer/vectorContainer.cpp
-  baseContainer/transformerContainer.cpp
+  baseContainerHeaven/baseContainer.cpp
+  baseContainerHeaven/pointContainer.cpp
+  baseContainerHeaven/vectorContainer.cpp
+  baseContainerHeaven/transformerContainer.cpp
   constValueHeaven/constValue.cpp
   constValueHeaven/constValueFactory.cpp
   constValueHeaven/sliderFloatParam.cpp

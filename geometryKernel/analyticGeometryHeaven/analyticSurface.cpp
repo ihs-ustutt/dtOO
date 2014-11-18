@@ -5,8 +5,6 @@
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
 #include "splineCurve3d.h"
 #include <progHelper.h>
 #include <interfaceHeaven/ptrHandling.h>

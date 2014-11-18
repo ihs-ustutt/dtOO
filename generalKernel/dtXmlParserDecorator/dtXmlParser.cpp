@@ -9,8 +9,8 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <boundedVolumeFactory.h>
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
+#include <baseContainerHeaven/pointContainer.h>
+#include <baseContainerHeaven/vectorContainer.h>
 #include <constValueHeaven/constValueFactory.h>
 #include <dtXmlParserDecorator/dtXmlParserDecorator.h>
 #include <dtXmlParserDecorator/dtXmlParserDecoratorFactory.h>

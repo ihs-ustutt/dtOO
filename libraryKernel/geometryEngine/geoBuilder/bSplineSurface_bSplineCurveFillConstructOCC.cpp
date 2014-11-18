@@ -19,7 +19,7 @@ namespace dtOO {
 	bSplineSurface_bSplineCurveFillConstructOCC::bSplineSurface_bSplineCurveFillConstructOCC( 
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
-		dt__THROW_IF(
+		dt__THROW_IFWM(
 			cc.size() != 4,
 			bSplineSurface_bSplineCurveFillConstructOCC(),
 			<< "Only supported with 4 curves." << LOGDEL
