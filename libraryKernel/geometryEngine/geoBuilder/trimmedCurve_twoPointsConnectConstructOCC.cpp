@@ -7,6 +7,8 @@
 #include <geometryEngine/dtOCCTrimmedCurve.h>
 
 #include <Standard_Failure.hxx>
+#include <Standard_ErrorHandler.hxx>
+#include <Standard_TypeDef.hxx>
 #include <Geom_Line.hxx>
 #include <Geom_TrimmedCurve.hxx>
 #include <gp_Pnt.hxx>
@@ -14,17 +16,24 @@
 
 namespace dtOO {
 	trimmedCurve_twoPointsConnectConstructOCC::trimmedCurve_twoPointsConnectConstructOCC( dtPoint3 const & p0, dtPoint3 const & p1 ) {
-		gp_Pnt pp(
-			static_cast< Standard_Real >(p0.x()),
-			static_cast< Standard_Real >(p0.y()),
-			static_cast< Standard_Real >(p0.z())
-		);
 		dtVector3 vv = p1 - p0;
-		gp_Dir dir(
-			static_cast< Standard_Real >(vv.x()),
-			static_cast< Standard_Real >(vv.y()),
-			static_cast< Standard_Real >(vv.z())
-		);		
+		
+		gp_Pnt pp;
+		gp_Dir dir;
+    dt__TRYOCC(		
+			pp.SetCoord(
+				static_cast< Standard_Real >(p0.x()),
+				static_cast< Standard_Real >(p0.y()),
+				static_cast< Standard_Real >(p0.z())
+			);
+			dir.SetCoord(
+				static_cast< Standard_Real >(vv.x()),
+				static_cast< Standard_Real >(vv.y()),
+				static_cast< Standard_Real >(vv.z())
+			);		
+		,
+		<< ""
+		);
 		//
 		// create curve using standard constructor
 		//
