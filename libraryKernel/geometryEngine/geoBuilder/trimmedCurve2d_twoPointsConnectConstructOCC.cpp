@@ -42,7 +42,11 @@ namespace dtOO {
 
 		dtOCCCurve2dBase baseC;
 		baseC.setOCC( curve );
-		_dtC2d.reset( new dtOCCTrimmedCurve2d(baseC) );
+		_dtC2d.reset( 
+		  new dtOCCTrimmedCurve2d(
+		    baseC, static_cast<float>(U0), static_cast<float>(U1)
+		  ) 
+		);
 		
 //		DTINFOWF(
 //		  trimmedCurve2d_twoPointsConnectConstructOCC(),
