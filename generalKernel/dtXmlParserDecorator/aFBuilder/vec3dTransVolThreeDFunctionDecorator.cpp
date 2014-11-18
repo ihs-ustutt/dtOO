@@ -1,9 +1,7 @@
 #include "vec3dTransVolThreeDFunctionDecorator.h"
-#include "functionHeaven/vec3dSurfaceTwoD.h"
-#include "geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h"
+#include <functionHeaven/vec3dSurfaceTwoD.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
 #include <functionHeaven/analyticFunction.h>
-#include <dtTransformerHeaven/dtTransformerFactory.h>
-#include <dtTransformerHeaven/dtTransformer.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
 #include <functionHeaven/vec3dTransVolThreeD.h>
@@ -99,16 +97,6 @@ namespace dtOO {
       dt__THROW(buildPart(),
               << DTLOGEVAL(hasAF) );
     }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
-    }
   }
 
   void vec3dTransVolThreeDFunctionDecorator::buildPartCompound(
@@ -198,16 +186,6 @@ namespace dtOO {
     }
     else {
       dt__THROW(buildPart(), << DTLOGEVAL(hasAF) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }	
 }

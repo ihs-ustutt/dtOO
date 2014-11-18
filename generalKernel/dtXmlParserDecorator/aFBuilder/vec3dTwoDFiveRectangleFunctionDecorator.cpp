@@ -211,16 +211,6 @@ namespace dtOO {
       dt__THROW(buildPart(),
               << DTLOGEVAL(hasAF) );
     }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
-    }
   }
 	
 void vec3dTwoDFiveRectangleFunctionDecorator::reorder( 

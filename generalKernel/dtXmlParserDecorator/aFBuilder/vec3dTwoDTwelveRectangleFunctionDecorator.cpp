@@ -6,8 +6,6 @@
 #include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
 #include <geometryEngine/geoBuilder/geomSurface_geomCurveFillConstructOCC.h>
 #include <functionHeaven/analyticFunction.h>
-#include <dtTransformerHeaven/dtTransformerFactory.h>
-#include <dtTransformerHeaven/dtTransformer.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
 #include <functionHeaven/vec3dCurveOneD.h>
@@ -122,16 +120,6 @@ namespace dtOO {
     }
     else {
       dt__THROW(buildPart(), << DTLOGEVAL(hasAF) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }
 	

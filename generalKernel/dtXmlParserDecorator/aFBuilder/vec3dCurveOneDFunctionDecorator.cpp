@@ -1,7 +1,5 @@
 #include "vec3dCurveOneDFunctionDecorator.h"
-#include <dtTransformerHeaven/doNothing.h>
 #include <functionHeaven/analyticFunction.h>
-#include <dtTransformerHeaven/dtTransformerFactory.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <geometryEngine/dtCurve.h>
 #include <functionHeaven/vec3dCurveOneD.h>
@@ -64,16 +62,6 @@ namespace dtOO {
               << DTLOGEVAL(hasOrder) << LOGDEL
               << DTLOGEVAL(hasPoints) << LOGDEL
               << DTLOGEVAL(hasScaFunction) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }
 }

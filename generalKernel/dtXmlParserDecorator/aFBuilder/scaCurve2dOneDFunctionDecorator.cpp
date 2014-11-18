@@ -1,7 +1,5 @@
 #include "scaCurve2dOneDFunctionDecorator.h"
-#include <dtTransformerHeaven/doNothing.h>
 #include <functionHeaven/analyticFunction.h>
-#include <dtTransformerHeaven/dtTransformerFactory.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <functionHeaven/scaCurve2dOneD.h>
@@ -117,16 +115,6 @@ namespace dtOO {
               << DTLOGEVAL(hasOrder) << LOGDEL
               << DTLOGEVAL(hasPoints) << LOGDEL
               << DTLOGEVAL(hasScaFunction) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }
 }

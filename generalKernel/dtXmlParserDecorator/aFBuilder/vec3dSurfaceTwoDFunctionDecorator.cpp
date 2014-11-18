@@ -1,10 +1,6 @@
 #include "vec3dSurfaceTwoDFunctionDecorator.h"
-//#include "functionHeaven/vec2dCurve2dOneD.h"
 #include "geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h"
-//#include "geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.h"
 #include <functionHeaven/analyticFunction.h>
-#include <dtTransformerHeaven/dtTransformerFactory.h>
-#include <dtTransformerHeaven/dtTransformer.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
@@ -84,16 +80,6 @@ namespace dtOO {
 //              << DTLOGEVAL(hasOrder) << LOGDEL
 //              << DTLOGEVAL(hasPoints) << LOGDEL
               << DTLOGEVAL(hasAF) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }
 }

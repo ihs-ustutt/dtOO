@@ -2,7 +2,6 @@
 #include <functionHeaven/scaMuParserOneD.h>
 #include <functionHeaven/analyticFunction.h>
 #include <interfaceHeaven/ptrHandling.h>
-#include <dtTransformerHeaven/dtTransformer.h>
 #include <logMe/logMe.h>
 
 #include <QtXml/QDomElement>
@@ -95,16 +94,6 @@ namespace dtOO {
               << DTLOGEVAL(hasString) << LOGDEL
               << DTLOGEVAL(hasRange) << LOGDEL
               << DTLOGEVAL(hasScaFun) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }
 }

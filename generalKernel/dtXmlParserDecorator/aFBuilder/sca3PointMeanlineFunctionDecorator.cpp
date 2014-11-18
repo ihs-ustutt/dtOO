@@ -1,7 +1,5 @@
 #include "sca3PointMeanlineFunctionDecorator.h"
-#include <dtTransformerHeaven/doNothing.h>
 #include <functionHeaven/analyticFunction.h>
-#include <dtTransformerHeaven/dtTransformerFactory.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h>
 #include <functionHeaven/vec2dCurve2dOneD.h>
@@ -96,17 +94,6 @@ namespace dtOO {
               << DTLOGEVAL(hasAlphaTwo) << LOGDEL
               << DTLOGEVAL(hasRatio) << LOGDEL
               << DTLOGEVAL(hasDeltaY) );
-    }
-
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }
 }
