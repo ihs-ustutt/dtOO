@@ -42,6 +42,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h
   geometryEngine/geoBuilder/trimmedCurve_uBounds.h
   geometryEngine/geoBuilder/geomCurve_normalOffsetGeomCurveOCC.h
+  geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.h
   dtGmshVertex.h
   dtGmshEdge.h
   dtGmshFace.h
@@ -95,6 +96,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.cpp
   geometryEngine/geoBuilder/trimmedCurve_uBounds.cpp
   geometryEngine/geoBuilder/geomCurve_normalOffsetGeomCurveOCC.cpp
+  geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.cpp
   dtGmshVertex.cpp
   dtGmshEdge.cpp
   dtGmshFace.cpp

@@ -15,6 +15,7 @@
 #include "closeGaps.h"
 #include "pickLengthRange.h"
 #include "pickLengthPercentRange.h"
+#include "addConstCoordinate.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -48,6 +49,7 @@ namespace dtOO {
     __IFRET( closeGaps );
 		__IFRET( pickLengthRange );
 		__IFRET( pickLengthPercentRange );
+		__IFRET( addConstCoordinate );
 
     dt__THROW(create(), << str <<  " could not be created");  
   }
