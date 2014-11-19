@@ -82,6 +82,12 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFunP, 
       vectorHandling< analyticGeometry * > const * const depAGeoP
     ) const;    
+    dtVector3 createDtVector3(
+      QDomElement const * toBuildP,
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cValP,  
+      vectorHandling< analyticFunction * > const * const sFunP
+    ) const;        
     std::string createString(
       QDomElement const * toBuildP,
       vectorHandling< constValue * > const * const cValP,
@@ -102,7 +108,8 @@ namespace dtOO {
       std::vector< dtPoint2 * > * basicP
     ) const;
     void createBasic(
-      QDomElement const * toBuildP, 
+      QDomElement const * toBuildP,
+      baseContainer * const bC,      
       vectorHandling< constValue * > const * const cValP, 
       vectorHandling< analyticFunction * > const * const sFunP, 
       std::vector< dtPoint3 > * basicP

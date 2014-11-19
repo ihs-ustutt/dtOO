@@ -42,7 +42,7 @@ namespace dtOO {
       int order = getAttributeInt("order", toBuildP);
       while ( !elementP.isNull() ) {
 				std::vector< dtPoint3 > workingPoint;
-        this->createBasic( &elementP, cValP, depSFunP, &workingPoint );
+        this->createBasic( &elementP, bC, cValP, depSFunP, &workingPoint );
         for (int ii=0;ii<workingPoint.size();ii++) {
           // put in point builder
 					pointsArray.push_back( workingPoint[ii] );

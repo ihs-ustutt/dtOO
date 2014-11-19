@@ -658,6 +658,15 @@ namespace dtOO {
     }
   }
 
+  dtVector3 dtXmlParserBase::createDtVector3(
+	  QDomElement const * toBuildP,
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,  
+		vectorHandling< analyticFunction * > const * const sFunP
+	) const {  
+    return createDtVector3(toBuildP, bC, cValP, sFunP, NULL); 
+  }	
+
   std::string dtXmlParserBase::createString(
 	  QDomElement const * toBuildP, 
 		vectorHandling< constValue * > const * const cValP, 
@@ -715,7 +724,8 @@ namespace dtOO {
   }
 
   void dtXmlParserBase::createBasic(
-	  QDomElement const * toBuildP, 
+	  QDomElement const * toBuildP,
+    baseContainer * const bC,					
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const sFunP, 
 		std::vector< dtPoint3 > * basicP
@@ -724,7 +734,7 @@ namespace dtOO {
     if ( is("transformer", *toBuildP) ) {
       wEl = toBuildP->nextSiblingElement();
     }		
-    createBasic(&wEl, NULL, cValP, sFunP, NULL, basicP);      		
+    createBasic(&wEl, bC, cValP, sFunP, NULL, basicP);      		
   }	
 
   void dtXmlParserBase::createBasic(
