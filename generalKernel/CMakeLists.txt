@@ -8,8 +8,7 @@ SET(HEADERS
   dtXmlParserDecorator/dtXmlParserFunctionDecorator.h
   dtXmlParserDecorator/dtXmlParserFunctionDecoratorFactory.h
   dtXmlParserDecorator/generalBuilder/trans6SidedCubeDecorator.h
-  dtXmlParserDecorator/generalBuilder/pointDefinitionDecorator.h
-  dtXmlParserDecorator/generalBuilder/vectorDefinitionDecorator.h
+  dtXmlParserDecorator/generalBuilder/baseContainerDecorator.h
   dtXmlParserDecorator/generalBuilder/analyticGeometryDecorator.h
   dtXmlParserDecorator/generalBuilder/vec3dInMap3dTo3dDecorator.h
   dtXmlParserDecorator/generalBuilder/rotatingMap2dTo3dDecorator.h  
@@ -62,8 +61,7 @@ SET(SOURCES
   dtXmlParserDecorator/dtXmlParserFunctionDecorator.cpp
   dtXmlParserDecorator/dtXmlParserFunctionDecoratorFactory.cpp
   dtXmlParserDecorator/generalBuilder/trans6SidedCubeDecorator.cpp
-  dtXmlParserDecorator/generalBuilder/pointDefinitionDecorator.cpp
-  dtXmlParserDecorator/generalBuilder/vectorDefinitionDecorator.cpp
+  dtXmlParserDecorator/generalBuilder/baseContainerDecorator.cpp
   dtXmlParserDecorator/generalBuilder/analyticGeometryDecorator.cpp
   dtXmlParserDecorator/generalBuilder/vec3dInMap3dTo3dDecorator.cpp
   dtXmlParserDecorator/generalBuilder/rotatingMap2dTo3dDecorator.cpp  

@@ -22,31 +22,33 @@ namespace dtOO {
     /**
      * replace const values and functions with numeric values
      */  
-    std::string replaceUsedFunctions(std::string const expression,
-                                vectorHandling< constValue * > const * const cValP,
-                                vectorHandling< analyticFunction * > const * const sFunP) const;
+    static std::string replaceUsedFunctions(
+      std::string const expression,
+      vectorHandling< constValue * > const * const cValP,
+      vectorHandling< analyticFunction * > const * const sFunP
+    );
     /**
      * evaluate a string with muparser
      */  
-    float muParseString( std::string const expression ) const; 
-    int muParseStringInt( std::string const expression ) const;
-    float getAttributeFloatMuParse( 
+    static float muParseString( std::string const expression ); 
+    static int muParseStringInt( std::string const expression );
+    static float getAttributeFloatMuParse( 
       std::string const attName, 
       QDomElement const element, 
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP 
-    ) const;
-    int getAttributeIntMuParse( 
+    );
+    static int getAttributeIntMuParse( 
       std::string const attName, 
       QDomElement const element, 
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP 
-    ) const;    
-    dtVector3 getDtVector3( 
+    );    
+    static dtVector3 getDtVector3( 
       QDomElement const element,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP 
-    ) const;
+    );
   };
 }
 #endif	/* QTXMLBASE_H */

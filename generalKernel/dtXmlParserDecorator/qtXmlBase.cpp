@@ -17,9 +17,11 @@ namespace dtOO {
   qtXmlBase::~qtXmlBase() {
   }
 
-  std::string qtXmlBase::replaceUsedFunctions( std::string const expression, 
-                                               vectorHandling< constValue * > const * const cValP,
-                                               vectorHandling< analyticFunction * > const * const sFunP) const {
+  std::string qtXmlBase::replaceUsedFunctions( 
+	  std::string const expression, 
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP
+	) {
     std::string returnExpression;
     returnExpression = expression;
     unsigned int found;
@@ -137,7 +139,7 @@ namespace dtOO {
     return returnExpression;
   }
 
-  float qtXmlBase::muParseString( std::string const expression ) const {
+  float qtXmlBase::muParseString( std::string const expression ) {
     mu::Parser parser;
     try {
       parser.SetExpr( expression );
@@ -150,7 +152,7 @@ namespace dtOO {
     }
   }
 
-  int qtXmlBase::muParseStringInt( std::string const expression ) const {
+  int qtXmlBase::muParseStringInt( std::string const expression ) {
     int ret = static_cast< int >(muParseString(expression));
     return ret;
   }  
@@ -160,7 +162,7 @@ namespace dtOO {
     QDomElement const element, 
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP 
-  ) const {
+  ) {
     return muParseString( 
       replaceUsedFunctions(
         getAttributeStr(attName, element), 
@@ -175,7 +177,7 @@ namespace dtOO {
     QDomElement const element, 
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP 
-  ) const {
+  ) {
     return muParseStringInt( 
       replaceUsedFunctions(
         getAttributeStr(attName, element), 
@@ -189,7 +191,7 @@ namespace dtOO {
     QDomElement const element,
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP 
-  ) const {
+  ) {
     //
     // check tagName
     //

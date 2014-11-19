@@ -443,27 +443,6 @@ namespace dtOO {
     *name = names[0];
   }  
 
-  void dtXmlParser::getChildLabels( std::string childName, 
-                                   std::vector< std::string > * labelValue, 
-                                   QDomElement const & parentElement) const {
-		std::vector< QDomElement > children = getChildVector(parentElement);
-		for (int ii=0; ii<children.size(); ii++) {
-      //
-      // found a part, now check for a name
-      // if so store me
-      //
-			DTDEBUGWF(getChildLabels(), << DTLOGEVAL(getTagName(children[ii])) );
-      if ( getTagName(children[ii]) == childName) {
-        if ( hasAttribute("label", children[ii]) ) {
-          labelValue->push_back( getAttributeStr("label", children[ii]) );
-        }
-        else {
-          dt__THROW(getChildLabels(), << "No label attribute!");
-        }      
-      }
-    }
-  }  
-
   QDomElement dtXmlParser::getElement( std::string const lookType, std::string const lookName ) const {
 		for (int ii=0; ii<_rootRead.size(); ii++) {
 			if ( hasChildElement(lookType, lookName, _rootRead[ii]) ) {
@@ -488,76 +467,6 @@ namespace dtOO {
     }
     
     return QDomElement( getElement(lookType, label[0]) );
-  }
-
-  bool dtXmlParser::hasChildElement( 
-    std::string const elementTag, 
-    std::string const labelAttributeVal,
-    QDomElement const & parentElement 
-  ) const {   
-    /* ------------------------------------------------------------------------ */
-    /* check for a part element in each child of root (first generation) */
-    /* ------------------------------------------------------------------------ */  
-    QDomElement element = QDomElement(parentElement.firstChildElement());
-    while( !element.isNull() ) {
-      //
-      // found a part, now check for a name
-      // if so store me
-      //
-      if (element.tagName().toStdString() == elementTag) {
-        if ( element.hasAttribute("label") ) {
-          if ( element.attribute("label").toStdString() == labelAttributeVal ) {
-            return true;
-          }
-        }
-        else {
-          dt__THROW(getChildElement, << "No name attribute.");
-        }      
-      }
-      //
-      //go to next sibling
-      //
-      element = QDomElement( element.nextSiblingElement() );
-    }
-
-    return false;
-  }
-  
-  QDomElement dtXmlParser::getChildElement( 
-    std::string const elementTag, 
-    std::string const labelAttributeVal,
-    QDomElement const & parentElement ) const {
-    
-    /* ------------------------------------------------------------------------ */
-    /* check for a part element in each child of root (first generation) */
-    /* ------------------------------------------------------------------------ */  
-    QDomElement element = QDomElement(parentElement.firstChildElement());
-    while( !element.isNull() ) {
-      //
-      // found a part, now check for a name
-      // if so store me
-      //
-      if (element.tagName().toStdString() == elementTag) {
-        if ( element.hasAttribute("label") ) {
-          if ( element.attribute("label").toStdString() == labelAttributeVal ) {
-            return QDomElement( element );
-          }
-        }
-        else {
-          dt__THROW(getChildElement, << "No name attribute.");
-        }      
-      }
-      //
-      //go to next sibling
-      //
-      element = QDomElement( element.nextSiblingElement() );
-    }
-
-    //
-    //error case, no such element
-    //
-    dt__THROW(getChildElement(),
-            << "No " << elementTag << "-Element with " << DTLOGEVAL(labelAttributeVal) );
   }
 
   void dtXmlParser::createAnalyticFunction(

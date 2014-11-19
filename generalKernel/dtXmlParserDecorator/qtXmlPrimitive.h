@@ -15,106 +15,68 @@ namespace dtOO {
     dt__CLASSNAME(qtXmlPrimitive);  
     qtXmlPrimitive();
     virtual ~qtXmlPrimitive();  
-    /**
-     * xml navigation
-     */
-    QDomElement goToLastBuilder( QDomElement const element ) const;
-    /**
-     * xml navigation
-     */
-    QDomElement getBuilderSibling( QDomElement const element ) const;
-    /**
-     * xml navigation
-     */
-    QDomElement getSibling(std::string const sibName, QDomElement const element ) const;
-    std::vector< QDomElement > getSiblingVector(std::string const sibName, QDomElement const element ) const;
-    std::vector< QDomElement > getChildVector(std::string const sibName, QDomElement const element ) const;
-    std::vector< QDomElement > getChildVector( QDomElement const element ) const;
-    /**
-     * xml navigation
-     */  
-    QDomElement getChild(std::string const sibName, QDomElement const element ) const;
-    QDomElement getChildByName(
+    static QDomElement goToLastBuilder( QDomElement const element );
+    static QDomElement getBuilderSibling( QDomElement const element );
+    static QDomElement getSibling(std::string const sibName, QDomElement const element );
+    static std::vector< QDomElement > getSiblingVector(std::string const sibName, QDomElement const element );
+    static std::vector< QDomElement > getChildVector(std::string const sibName, QDomElement const element );
+    static std::vector< QDomElement > getChildVector( QDomElement const element );
+    static QDomElement getChild(std::string const sibName, QDomElement const element );
+    static QDomElement getChildByName(
       std::string const sibName, 
       std::string const name, 
       QDomElement const element 
-    ) const;
-    QDomElement getChildByAttributeMatch(
+    );
+    static QDomElement getChildByAttributeMatch(
       std::string const sibName,  
       std::string const attributeName,  
       std::string const attributeValue, 
       QDomElement const element 
-    ) const;
-    /**
-     * xml navigation
-     */
-    int getNChildren(std::string const sibName, QDomElement const element ) const;
-    /**
-     * xml navigation
-     */
-    bool hasSibling(std::string const sibName, QDomElement const element ) const;
-    /**
-     * xml navigation
-     */
-    bool hasChild(std::string const sibName, QDomElement const element ) const;
-    /**
-     * xml navigation
-     */
-    QDomElement getNextSibling(std::string const sibName, QDomElement const element ) const;
-    /**
-     * xml navigation
-     */
-    bool is( std::string const tagName, QDomElement const element ) const;  
-    /**
-     * xml navigation
-     */
-    bool isBuilder( QDomElement const element ) const;  
-    /**
-     * xml navigation
-     */
-    bool hasAttribute(std::string const attName, QDomElement const element ) const;
-    /**
-     * xml navigation
-     */
-    int getAttributeInt( std::string const attName, QDomElement const element ) const;
-    /**
-     * xml navigation
-     */
-    float getAttributeFloat( std::string const attName, QDomElement const element ) const;
-    /**
-     * xml navigation
-     */
-    std::string getAttributeStr( std::string const attName, QDomElement const element ) const; 
-    /**
-     * xml navigation
-     */    
-    bool getAttributeBool(std::string const attName, const QDomElement element) const;
-    /**
-     * output a xml element
-     */
-    std::string convertToString( QDomNode const node ) const;
-    std::string getTagName(QDomElement const element) const;
-    /**
-     * create an element
-     */
-    QDomElement createElement(QDomDocument & doc, std::string const name) const;
-    /**
-     * append element in first child
-     */
-    void appendChildElement(QDomDocument & doc, QDomElement & element) const;
-    /**
-     * append element in given element as child
-     */
-    void appendChildElementInElement(QDomDocument &doc, 
-                                     std::string const elName,
-                                     std::string const elAttribute,
-                                     std::string const elAttributeValue,
-                                     QDomElement & element) const;
-    void appendChildElementInElement(QDomElement & documentElement, 
-                                      std::string const elName,
-                                      std::string const elAttribute,
-                                      std::string const elAttributeValue,
-                                      QDomElement & element) const;    
+    );
+    static bool hasChildElement( 
+      std::string const elementTag, 
+      std::string const labelAttributeVal,
+      QDomElement const & parentElement
+    );    
+    static QDomElement getChildElement( 
+      std::string const elementTag, 
+      std::string const labelAttributeVal,
+      QDomElement const & parentElement
+    );    
+    static void getChildLabels(
+      std::string childName, 
+      std::vector< std::string > * labelValue,
+      QDomElement const & parentElement
+    );    
+    static int getNChildren(std::string const sibName, QDomElement const element );
+    static bool hasSibling(std::string const sibName, QDomElement const element );
+    static bool hasChild(std::string const sibName, QDomElement const element );
+    static QDomElement getNextSibling(std::string const sibName, QDomElement const element );
+    static bool is( std::string const tagName, QDomElement const element );  
+    static bool isBuilder( QDomElement const element );  
+    static bool hasAttribute(std::string const attName, QDomElement const element );
+    static int getAttributeInt( std::string const attName, QDomElement const element );
+    static float getAttributeFloat( std::string const attName, QDomElement const element );
+    static std::string getAttributeStr( std::string const attName, QDomElement const element ); 
+    static bool getAttributeBool(std::string const attName, const QDomElement element);
+    static std::string convertToString( QDomNode const node );
+    static std::string getTagName(QDomElement const element);
+    static QDomElement createElement(QDomDocument & doc, std::string const name);
+    static void appendChildElement(QDomDocument & doc, QDomElement & element);
+    static void appendChildElementInElement(
+      QDomDocument &doc, 
+      std::string const elName,
+      std::string const elAttribute,
+      std::string const elAttributeValue,
+      QDomElement & element
+    );
+    static void appendChildElementInElement(
+      QDomElement & documentElement, 
+      std::string const elName,
+      std::string const elAttribute,
+      std::string const elAttributeValue,
+      QDomElement & element
+    );    
   };
 }
 

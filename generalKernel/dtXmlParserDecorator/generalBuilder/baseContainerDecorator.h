@@ -1,24 +1,25 @@
-#ifndef POINTDEFINITIONDECORATOR_H
-#define	POINTDEFINITIONDECORATOR_H
+#ifndef BASECONTAINERDECORATOR_H
+#define	BASECONTAINERDECORATOR_H
 
-#include "pointDefinitionDecorator.h"
+#include "baseContainerDecorator.h"
 #include <dtXmlParserDecorator/dtXmlParserDecorator.h>
 #include <logMe/dtMacros.h>
 
 class QDomElement;
-class analyticGeometry;
-class dtXmlParserDecoratorInterface;
-class analyticFunction;
-class constValue;
-class baseContainer;
-class vectorContainer;
 
 namespace dtOO {
-  class pointDefinitionDecorator : public dtXmlParserDecorator {
-    dt__CLASSNAME(pointDefinitionDecorator);
+  class analyticGeometry;
+  class dtXmlParserDecoratorInterface;
+  class analyticFunction;
+  class constValue;
+  class baseContainer;
+  class vectorContainer;
+
+  class baseContainerDecorator : public dtXmlParserDecorator {
+    dt__CLASSNAME(baseContainerDecorator);
   public:
-    pointDefinitionDecorator();
-    virtual ~pointDefinitionDecorator();
+    baseContainerDecorator();
+    virtual ~baseContainerDecorator();
     virtual void buildPart(
       QDomElement ** toBuildP,
       baseContainer * const bC,
@@ -29,5 +30,5 @@ namespace dtOO {
     ) const;  
   };
 }
-#endif	/* POINTDEFINITIONDECORATOR_H */
+#endif	/* BASECONTAINERDECORATOR_H */
 

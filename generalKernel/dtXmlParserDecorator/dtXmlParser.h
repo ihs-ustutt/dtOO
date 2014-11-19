@@ -37,18 +37,8 @@ namespace dtOO {
     void getNames(std::string toLookFor, std::vector< std::string > * machinePartNames ) const;
     std::vector< std::string > getNames( std::string lookType ) const;
     void getName( std::string lookType, std::string * name ) const;
-    void getChildLabels(std::string childName, 
-                       std::vector< std::string > * labelValue,
-                       QDomElement const & parentElement) const;
     QDomElement getElement( std::string const lookType, std::string const lookName ) const ;
     QDomElement getElement( std::string const lookType ) const ;
-    bool hasChildElement( std::string const elementTag, 
-                          std::string const labelAttributeVal,
-                          QDomElement const & parentElement
-    ) const;    
-    QDomElement getChildElement( std::string const elementTag, 
-                                 std::string const labelAttributeVal,
-                                 QDomElement const & parentElement) const ;
     void createAnalyticFunction(
 	    std::string const functionName, 
       vectorHandling< constValue * > const * const cVP, 

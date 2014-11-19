@@ -16,10 +16,10 @@ namespace dtOO {
   }
 
   void analyticFunctionFunctionDecorator::buildPart( 
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP,
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP
+		QDomElement const & toBuildP, 
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP
 	) const {
 		std::vector< QDomElement > elV = getChildVector(toBuildP);
 		for (int ii=0; ii<elV.size(); ii++) {//dt__FORALL(elV, ii,

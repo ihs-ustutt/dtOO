@@ -3,8 +3,7 @@
 #include "dtXmlParserDecorator.h"
 #include <logMe/logMe.h>
 #include <string.h>
-#include "generalBuilder/pointDefinitionDecorator.h"
-#include "generalBuilder/vectorDefinitionDecorator.h"
+#include "generalBuilder/baseContainerDecorator.h"
 #include "generalBuilder/analyticGeometryDecorator.h"
 #include "generalBuilder/trans6SidedCubeDecorator.h"
 #include "generalBuilder/vec3dInMap3dTo3dDecorator.h"
@@ -42,10 +41,9 @@ namespace dtOO {
   dtXmlParserDecorator * dtXmlParserDecoratorFactory::create(char const * const str) {
     DTINFOWF(create(), << str <<  " creating ... ");
 		
-    __IFRET(pointDefinitionDecorator);   
-    __IFRETCUSTOM(pointDefinition, pointDefinitionDecorator);
-    __IFRET(vectorDefinitionDecorator);   
-    __IFRETCUSTOM(vectorDefinition, vectorDefinitionDecorator);
+    __IFRET(baseContainerDecorator);   
+    __IFRETCUSTOM(pointDefinition, baseContainerDecorator);
+		__IFRETCUSTOM(vectorDefinition, baseContainerDecorator);
     __IFRET(analyticGeometryDecorator);   
     __IFRETCUSTOM(analyticGeometry, analyticGeometryDecorator);
     __IFRET(trans6SidedCubeDecorator);
