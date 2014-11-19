@@ -1079,8 +1079,8 @@ namespace dtOO {
 				
 				DTINFOWF(
 					createAdvanced(),
-					<< DTLOGEVAL(transLabel) << LOGDEL
-					<< DTLOGEVAL(aGLabel)
+					<< "Applying " << DTLOGEVAL(transLabel) << " to " 
+					<< DTLOGEVAL(aGLabel) << "."
 				);
 				
 				dtTransformer const * const dtT = bC->ptrTransformerContainer()->get(transLabel);
@@ -1095,18 +1095,6 @@ namespace dtOO {
 				  depAGeoP->get( label )->clone()
 				);
 			}
-//      for (int ii=0;ii<depAGeoP->size();ii++) {
-//        if ( (depAGeoP->at(ii))->getLabel() == getAttributeStr("label", *toBuildP) ) {
-//          advancedP->push_back( depAGeoP->at(ii)->clone() );
-//          break;
-//        }
-//        else if ( stringContains("*", getAttributeStr("label", *toBuildP)) ) {
-//          std::string pattern = stringRemoveSingle("*", getAttributeStr("label", *toBuildP) );
-//          if ( stringContains(pattern, depAGeoP->at(ii)->getLabel()) ) {
-//            advancedP->push_back( depAGeoP->at(ii)->clone() );
-//          }
-//        }
-//      }
       
       if ( advancedP->size() == 0) {
         dt__THROW(createAdvanced(),
