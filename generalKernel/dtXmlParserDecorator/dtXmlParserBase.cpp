@@ -1034,13 +1034,7 @@ namespace dtOO {
       if ( is("transformer", *toBuildP) ) {
         wEl = toBuildP->nextSiblingElement();
       }
-      createAdvanced(&wEl,
-                     bC,                    
-                     cValP,
-                     sFunP, 
-                     depAGeoP, 
-                     dtT.get(),                          
-                     advancedP);      
+      createAdvanced(&wEl, bC, cValP, sFunP, depAGeoP, dtT.get(), advancedP);      
     }
 
 		/**
@@ -1055,20 +1049,64 @@ namespace dtOO {
 			vectorHandling< analyticFunction * > const * const sFunP, 
 			vectorHandling< analyticGeometry * > const * const depAGeoP, 
 			dtTransformer const * const dtTransformerP,                          
-			vectorHandling< analyticGeometry * > * advancedP ) const {
-
-      for (int ii=0;ii<depAGeoP->size();ii++) {
-        if ( (depAGeoP->at(ii))->getLabel() == getAttributeStr("label", *toBuildP) ) {
-          advancedP->push_back( depAGeoP->at(ii)->clone() );
-          break;
-        }
-        else if ( stringContains("*", getAttributeStr("label", *toBuildP)) ) {
-          std::string pattern = stringRemoveSingle("*", getAttributeStr("label", *toBuildP) );
+			vectorHandling< analyticGeometry * > * advancedP 
+		) const {
+			//
+			// get label
+			//
+			std::string label = getAttributeStr("label", *toBuildP);
+			
+      if ( stringContains("*", label) ) {
+				//
+				// string contains "*" --> return set of analyticGeometries
+				//				
+				std::string pattern 
+				= 
+				stringRemoveSingle("*", label );
+				for (int ii=0;ii<depAGeoP->size();ii++) { 
           if ( stringContains(pattern, depAGeoP->at(ii)->getLabel()) ) {
             advancedP->push_back( depAGeoP->at(ii)->clone() );
-          }          
-        }
-      }
+          }					
+				}
+			}
+			else if ( stringContains("~", label) ) {
+				//
+				// string contains "§" --> transform analyticGeometry
+				//				
+				getStringBetweenAndRemove("~", "~", &label);
+				std::string transLabel = getStringBetweenAndRemove("", "(", &label);
+				std::string aGLabel = getStringBetweenAndRemove("", ")", &label);
+				
+				DTINFOWF(
+					createAdvanced(),
+					<< DTLOGEVAL(transLabel) << LOGDEL
+					<< DTLOGEVAL(aGLabel)
+				);
+				
+				dtTransformer const * const dtT = bC->ptrTransformerContainer()->get(transLabel);
+				
+				advancedP->push_back( dtT->apply(depAGeoP->get(aGLabel)) );
+			}
+			else {
+				//
+				// normal case
+				//				
+				advancedP->push_back(
+				  depAGeoP->get( label )->clone()
+				);
+			}
+//      for (int ii=0;ii<depAGeoP->size();ii++) {
+//        if ( (depAGeoP->at(ii))->getLabel() == getAttributeStr("label", *toBuildP) ) {
+//          advancedP->push_back( depAGeoP->at(ii)->clone() );
+//          break;
+//        }
+//        else if ( stringContains("*", getAttributeStr("label", *toBuildP)) ) {
+//          std::string pattern = stringRemoveSingle("*", getAttributeStr("label", *toBuildP) );
+//          if ( stringContains(pattern, depAGeoP->at(ii)->getLabel()) ) {
+//            advancedP->push_back( depAGeoP->at(ii)->clone() );
+//          }
+//        }
+//      }
       
       if ( advancedP->size() == 0) {
         dt__THROW(createAdvanced(),
@@ -1233,7 +1271,6 @@ namespace dtOO {
 			vectorHandling< analyticFunction * > const * const sFunP, 
 			vectorHandling< analyticGeometry * > const * const depAGeoP
 		) const {
-
       vectorHandling< analyticGeometry * > advancedVec;
       createAdvanced(toBuildP, bC, cValP, sFunP, depAGeoP, &advancedVec);
       if (advancedVec.size() != 1) {
