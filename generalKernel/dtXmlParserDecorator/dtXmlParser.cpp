@@ -471,6 +471,7 @@ namespace dtOO {
 
   void dtXmlParser::createAnalyticFunction(
 	  std::string const functionName, 
+		baseContainer * const bC,
     vectorHandling< constValue * > const * const cVP, 
     vectorHandling< analyticFunction * > * sFP
 	) const {
@@ -503,10 +504,10 @@ namespace dtOO {
 		//
     vectorHandling< analyticFunction * > tmpSFun;
 		if (!buildCompound) {
-      funDecoP->buildPart(builderElement, cVP, sFP, &tmpSFun);
+      funDecoP->buildPart(builderElement, bC, cVP, sFP, &tmpSFun);
 		}
 		else {
-			funDecoP->buildPartCompound(builderElement, cVP, sFP, &tmpSFun);
+			funDecoP->buildPartCompound(builderElement, bC, cVP, sFP, &tmpSFun);
 		}
 
     //
@@ -520,12 +521,13 @@ namespace dtOO {
   }	
 	
   void dtXmlParser::createAnalyticFunction(
+	  baseContainer * const bC,
     vectorHandling< constValue * > const * const cVP, 
     vectorHandling< analyticFunction * > * sFP
 	) const {
 		std::vector< std::string > label = getNames("function");
 		
-		dt__FORALL( label, ii, createAnalyticFunction(label[ii], cVP, sFP); );
+		dt__FORALL( label, ii, createAnalyticFunction(label[ii], bC, cVP, sFP); );
   }		
 
 	/**
@@ -677,7 +679,7 @@ namespace dtOO {
 		//
 		// create
 		//
-		createAnalyticFunction(&cV, &aF);
+		createAnalyticFunction(bC.get(), &cV, &aF);
 		createAnalyticGeometry(bC.get(), &cV, &aF, &aG);
 		createBoundedVolume(bC.get(), &cV, &aF, &aG, &bV);
 	}

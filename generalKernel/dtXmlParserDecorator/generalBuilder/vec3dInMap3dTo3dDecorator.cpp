@@ -41,11 +41,12 @@ namespace dtOO {
       //
       // get analyticGeometry
       //
+			QDomElement aGElement = getChild("analyticGeometry", **toBuildP);
       analyticGeometry const * aG 
       = 
-      depAGeoP->get( 
-        getAttributeStr("label", getChild( "analyticGeometry", **toBuildP )) 
-      );
+      createAnalyticGeometry(&aGElement, bC, cValP, sFunP, depAGeoP);
+        
+//      );
       //
       // check if it is a map3dTo3d
       //
@@ -54,11 +55,13 @@ namespace dtOO {
       //
       // get analyticFunction
       //
+			QDomElement aFElement = getChild("analyticFunction", **toBuildP);
       analyticFunction const * aF
       = 
-      sFunP->get( 
-        getAttributeStr("label", getChild( "analyticFunction", **toBuildP )) 
-      );
+			createAnalyticFunction(&aFElement, bC, cValP, sFunP);
+//      sFunP->get( 
+//        getAttributeStr("label", getChild( "analyticFunction", **toBuildP )) 
+//      );
 
 			vec3dOneD const * v1d = vec3dOneD::ConstDownCast(aF);
 			vec3dTwoD const * v2d = vec3dTwoD::ConstDownCast(aF);

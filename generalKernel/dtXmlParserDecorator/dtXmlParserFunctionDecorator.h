@@ -11,6 +11,7 @@ class QDomElement;
 namespace dtOO {
   class constValue;
   class analyticFunction;
+  class baseContainer;
 
   class dtXmlParserFunctionDecorator : public dtXmlParserBase {
   public:  
@@ -19,12 +20,14 @@ namespace dtOO {
     ~dtXmlParserFunctionDecorator();
     virtual void buildPart(
       QDomElement const & toBuildP, 
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const depSFunP,
       vectorHandling< analyticFunction * > * sFunP
     ) const = 0;
     virtual void buildPartCompound(
       QDomElement const & toBuildP, 
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP, 
       vectorHandling< analyticFunction * > const * const depSFunP,
       vectorHandling< analyticFunction * > * sFunP

@@ -8,6 +8,7 @@
 #include <functionHeaven/vec3dSurfaceTwoD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -21,10 +22,12 @@ namespace dtOO {
   }
 
   void vec3dSurfaceTwoDFunctionDecorator::buildPart(
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP, 
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP ) const {
+		QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP, 
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP 
+	) const {
 //	<function label="f_meanplane_phiR_m_s">
 //		<builder name="vec3dSurfaceTwoDFunction"/>
 //		  <analyticFunction label="f_sm_hub"/>
@@ -52,7 +55,7 @@ namespace dtOO {
 //				std::vector< dtPoint2* > workingPoint;
         analyticFunction const * const aF 
 				= 
-				createAnalyticFunction( &elementP, cValP, depSFunP );
+				createAnalyticFunction( &elementP, bC, cValP, depSFunP );
 				dt__PTRASS(
 				  vec3dCurveOneD const * v3d1d, 
 				  vec3dCurveOneD::ConstDownCast(aF)

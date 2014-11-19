@@ -4,7 +4,7 @@
 #include <dtLinearAlgebra.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
-
+#include <baseContainerHeaven/baseContainer.h>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
@@ -17,6 +17,7 @@ namespace dtOO {
 
   void analyticFunctionFunctionDecorator::buildPart( 
 		QDomElement const & toBuildP, 
+		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const depSFunP,
 		vectorHandling< analyticFunction * > * sFunP
@@ -26,7 +27,7 @@ namespace dtOO {
 		  if ( hasAttribute("label", elV[ii]) ) {
 				if ( depSFunP->has( getAttributeStr("label", elV[ii]) ) ) {
 					sFunP->push_back( 
-					  this->createAnalyticFunction( &elV[ii], cValP, depSFunP)
+					  this->createAnalyticFunction( &elV[ii], bC, cValP, depSFunP)
 					);
 					return;
 				}

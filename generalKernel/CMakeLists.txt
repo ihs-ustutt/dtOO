@@ -12,6 +12,7 @@ SET(HEADERS
   dtXmlParserDecorator/generalBuilder/analyticGeometryDecorator.h
   dtXmlParserDecorator/generalBuilder/vec3dInMap3dTo3dDecorator.h
   dtXmlParserDecorator/generalBuilder/rotatingMap2dTo3dDecorator.h  
+  dtXmlParserDecorator/aFBuilder/baseContainerFunctionDecorator.h
   dtXmlParserDecorator/aFBuilder/scaMuParserOneDFunctionDecorator.h
   dtXmlParserDecorator/aFBuilder/scaCurve2dOneDFunctionDecorator.h
   dtXmlParserDecorator/aFBuilder/sca3PointMeanlineFunctionDecorator.h
@@ -65,6 +66,7 @@ SET(SOURCES
   dtXmlParserDecorator/generalBuilder/analyticGeometryDecorator.cpp
   dtXmlParserDecorator/generalBuilder/vec3dInMap3dTo3dDecorator.cpp
   dtXmlParserDecorator/generalBuilder/rotatingMap2dTo3dDecorator.cpp  
+  dtXmlParserDecorator/aFBuilder/baseContainerFunctionDecorator.cpp
   dtXmlParserDecorator/aFBuilder/sca3PointMeanlineFunctionDecorator.cpp
   dtXmlParserDecorator/aFBuilder/analyticFunctionFunctionDecorator.cpp
   dtXmlParserDecorator/aFBuilder/vec2dCurve2dOneDFunctionDecorator.cpp

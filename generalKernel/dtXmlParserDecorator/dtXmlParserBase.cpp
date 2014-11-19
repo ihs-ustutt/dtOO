@@ -123,7 +123,8 @@ namespace dtOO {
   }
 
   dtTransformer * dtXmlParserBase::createTransformer(
-	  QDomElement const * toBuildP,                   
+	  QDomElement const * toBuildP,    
+		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) const {
@@ -662,7 +663,6 @@ namespace dtOO {
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const sFunP
 	) const {
-
     if ( getTagName(*toBuildP) != "string" ) {
       dt__THROW(createBasic(), << DTLOGEVAL( getTagName(*toBuildP) ) );
     }
@@ -1071,7 +1071,7 @@ namespace dtOO {
 			}
 			else if ( stringContains("~", label) ) {
 				//
-				// string contains "§" --> transform analyticGeometry
+				// string contains "~" --> transform analyticGeometry
 				//				
 				getStringBetweenAndRemove("~", "~", &label);
 				std::string transLabel = getStringBetweenAndRemove("", "(", &label);
@@ -1269,18 +1269,54 @@ namespace dtOO {
   
     void dtXmlParserBase::createAdvanced( 
 		  QDomElement const * toBuildP,
+			baseContainer * const bC,
 			vectorHandling< constValue * > const * const cValP,
 			vectorHandling< analyticFunction * > const * const sFunP, 
 			dtTransformer const * const dtTransformerP,                          
 			vectorHandling< analyticFunction * > * advancedP 
 		) const {
-
-//			dt__PTRASS(
-//			  scaOneD const * const s1d, 
-//				scaOneD::ConstDownCast( sFunP->get(getAttributeStr("label", *toBuildP)) )				
-//			);
-			analyticFunction const * aF = sFunP->get(getAttributeStr("label", *toBuildP));
-			advancedP->push_back( aF->clone() );
+			//
+			// get label
+			//
+			std::string label = getAttributeStr("label", *toBuildP);
+			
+      if ( stringContains("*", label) ) {
+				//
+				// string contains "*" --> return set of analyticGeometries
+				//				
+				std::string pattern 
+				= 
+				stringRemoveSingle("*", label );
+				for (int ii=0;ii<sFunP->size();ii++) { 
+          if ( stringContains(pattern, sFunP->at(ii)->getLabel()) ) {
+            advancedP->push_back( sFunP->at(ii)->clone() );
+          }					
+				}
+			}
+			else if ( stringContains("~", label) ) {
+				//
+				// string contains "~" --> transform analyticGeometry
+				//				
+				getStringBetweenAndRemove("~", "~", &label);
+				std::string transLabel = getStringBetweenAndRemove("", "(", &label);
+				std::string aFLabel = getStringBetweenAndRemove("", ")", &label);
+				
+				DTINFOWF(
+					createAdvanced(),
+					<< "Applying " << DTLOGEVAL(transLabel) << " to " 
+					<< DTLOGEVAL(aFLabel) << "."
+				);
+				
+				dtTransformer const * const dtT = bC->ptrTransformerContainer()->get(transLabel);
+				
+				advancedP->push_back( dtT->apply(sFunP->get(aFLabel)) );
+			}
+			else {
+				//
+				// normal case
+				//				
+				advancedP->push_back(sFunP->get( label )->clone());
+			}
 			
       //
       // copy
@@ -1306,6 +1342,7 @@ namespace dtOO {
 		
     void dtXmlParserBase::createAdvanced( 
 		  QDomElement const * toBuildP,
+			baseContainer * const bC,
 			vectorHandling< constValue * > const * const cValP,
 			vectorHandling< analyticFunction * > const * const sFunP, 
 			vectorHandling< analyticFunction * > * advancedP 
@@ -1315,32 +1352,24 @@ namespace dtOO {
       // create transformer if necessary
       //
       ptrHandling< dtTransformer > dtTransformerP(
-			  createTransformer(toBuildP, cValP, sFunP)
+			  createTransformer(toBuildP, bC, cValP, sFunP)
 			);
 			QDomElement wEl = *toBuildP;
       if ( is("transformer", *toBuildP) ) {
         wEl = toBuildP->nextSiblingElement();
       }
-      createAdvanced(&wEl,                 
-                     cValP,
-                     sFunP, 
-                     dtTransformerP.get(),                          
-                     advancedP);      
+      createAdvanced(&wEl, bC, cValP, sFunP, dtTransformerP.get(), advancedP);      
     }
     
     analyticFunction * dtXmlParserBase::createAnalyticFunction( 
-			QDomElement const * toBuildP,           
+			QDomElement const * toBuildP,
+			baseContainer * const bC,
 			vectorHandling< constValue * > const * const cValP,
 			vectorHandling< analyticFunction * > const * const sFunP 
 		) const {
 
       vectorHandling< analyticFunction * > advancedVec;
-      createAdvanced(
-        toBuildP,
-        cValP,
-        sFunP,
-        &advancedVec
-      );
+      createAdvanced(toBuildP, bC, cValP, sFunP, &advancedVec);
       if (advancedVec.size() != 1) {
         dt__THROW(createAdvanced(), << DTLOGEVAL( advancedVec.size() ) );
       }

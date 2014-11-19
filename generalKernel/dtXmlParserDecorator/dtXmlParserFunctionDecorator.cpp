@@ -1,5 +1,6 @@
 #include "dtXmlParserFunctionDecorator.h"
 #include <logMe/logMe.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 namespace dtOO {
   dtXmlParserFunctionDecorator::dtXmlParserFunctionDecorator() {
@@ -7,6 +8,7 @@ namespace dtOO {
 
   void dtXmlParserFunctionDecorator::buildPartCompound(
 	  QDomElement const & toBuildP, 
+    baseContainer * const bC,					
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
 		vectorHandling< analyticFunction * > * sFunP

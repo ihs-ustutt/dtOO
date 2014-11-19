@@ -33,9 +33,11 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFunP,
       vectorHandling< analyticGeometry * > const * const depAGeoP 
     );
-    virtual void init( QDomElement const * transformerElementP,
-                       vectorHandling< constValue * > const * const cValP,
-                       vectorHandling< analyticFunction * > const * const sFunP);
+    virtual void init( 
+      QDomElement const * transformerElementP,
+      vectorHandling< constValue * > const * const cValP,
+      vectorHandling< analyticFunction * > const * const sFunP
+    );
     virtual bool isNecessary( void ) const = 0;
     virtual std::vector< dtPoint2 * > apply( std::vector< dtPoint2 * > const * const toTrans ) const;
     vectorHandling< dtPoint2 * > apply( vectorHandling< dtPoint2 * > const * const pointVecP ) const;

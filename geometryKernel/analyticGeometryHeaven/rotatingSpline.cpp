@@ -215,18 +215,18 @@ namespace dtOO {
 //  }
 	
 	void rotatingSpline::correctOrigin() {
-			dtPoint3 start = map2dTo3d::getPointPercent(0.,0.);
-      dtVector3 dist = start - _pp;
-      if ( (dist*_vv) != 0. ) {
-        float adjusting = (dist*_vv)/sqrt(_vv.squared_length());
-        
-        _pp = _pp + _vv  * adjusting;
-        
-        DTWARNINGWF(correctOrigin(),
-                << DTLOGEVAL(dist*_vv) << LOGDEL 
-                << "Origin of rotSpline is not correct!" << LOGDEL
-                << "Move origin to " << DTLOGPOI3D(_pp) );        
-      }
+		dtPoint3 start = map2dTo3d::getPointPercent(0.,0.);
+		dtVector3 dist = start - _pp;
+		if ( (dist*_vv) != 0. ) {
+			float adjusting = (dist*_vv)/sqrt(_vv.squared_length());
+
+			_pp = _pp + _vv  * adjusting;
+
+			DTWARNINGWF(correctOrigin(),
+							<< DTLOGEVAL(dist*_vv) << LOGDEL 
+							<< "Origin of rotSpline is not correct!" << LOGDEL
+							<< "Move origin to " << DTLOGPOI3D(_pp) );        
+		}
 	}
 	
   map2dTo3d * rotatingSpline::pickPercent(

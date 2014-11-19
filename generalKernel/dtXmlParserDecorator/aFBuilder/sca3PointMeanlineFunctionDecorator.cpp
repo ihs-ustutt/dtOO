@@ -4,6 +4,7 @@
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h>
 #include <functionHeaven/vec2dCurve2dOneD.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <logMe/logMe.h>
 #include <math.h>
 #include <QtXml/QDomElement>
@@ -17,10 +18,12 @@ namespace dtOO {
   }
 
   void sca3PointMeanlineFunctionDecorator::buildPart(
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP, 
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP ) const {
+		QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP, 
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP 
+	) const {
     //
     // check input
     //

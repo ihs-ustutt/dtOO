@@ -55,7 +55,8 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > const * const depAGeoP
     ) const;       
     dtTransformer * createTransformer(
-      QDomElement const * toBuildP,                    
+      QDomElement const * toBuildP,
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP
     ) const;     
@@ -123,6 +124,7 @@ namespace dtOO {
     ) const;  
     void createAdvanced( 
       QDomElement const * toBuildP,
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP, 
       dtTransformer const * const dtTransformerP,                          
@@ -130,12 +132,14 @@ namespace dtOO {
     ) const;   
     void createAdvanced( 
       QDomElement const * toBuildP,
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP, 
       vectorHandling< analyticFunction * > * advancedP 
     ) const;
     analyticFunction * createAnalyticFunction( 
       QDomElement const * toBuildP,
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP
     ) const; 

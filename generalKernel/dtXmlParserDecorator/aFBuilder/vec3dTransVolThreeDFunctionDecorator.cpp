@@ -8,6 +8,7 @@
 #include <functionHeaven/vec3dSurfaceTwoD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -21,10 +22,12 @@ namespace dtOO {
   }
 
   void vec3dTransVolThreeDFunctionDecorator::buildPart(
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP, 
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP ) const {
+		QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP, 
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP 
+	) const {
     //
     //check input
     //
@@ -38,7 +41,7 @@ namespace dtOO {
       //
 			vectorHandling< analyticFunction const * > aF;
 			while ( !elementP.isNull() ) {
-        aF.push_back( createAnalyticFunction( &elementP, cValP, depSFunP ) );
+        aF.push_back( createAnalyticFunction( &elementP, bC, cValP, depSFunP ) );
 				elementP = getNextSibling("analyticFunction", elementP);      
       }
 			
@@ -101,6 +104,7 @@ namespace dtOO {
 
   void vec3dTransVolThreeDFunctionDecorator::buildPartCompound(
 	  QDomElement const & toBuildP, 
+	  baseContainer * const bC,
     vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
 		vectorHandling< analyticFunction * > * sFunP
@@ -120,7 +124,7 @@ namespace dtOO {
 			while ( !elementP.isNull() ) {
         analyticFunction * aF 
 				= 
-				createAnalyticFunction( &elementP, cValP, depSFunP );
+				createAnalyticFunction( &elementP, bC, cValP, depSFunP );
 				if ( !vec3dSurfaceTwoDCompound::ConstDownCast(aF) ) {
 					dt__THROW(
 					  buildPartCompound(), 

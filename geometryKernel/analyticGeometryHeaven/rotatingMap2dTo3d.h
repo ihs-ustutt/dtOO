@@ -32,10 +32,13 @@ namespace dtOO {
     float v_mw(float const & mm, float const & ss) const;
 //    float m_v(float const & arg) const;    
     float w_s(float const & arg) const;
-//    float s_w(float const & arg) const;    
+//    float s_w(float const & arg) const;  
+  private:
+	  void correctOrigin( void );
   private:
     ptrHandling< map2dTo3d > _m2d;
     dtVector3 _vv;
+    dtPoint3 _pp;
   };
 }
 #endif	/* ROTATINMAP2DTO3D_H */

@@ -64,6 +64,7 @@ SET(HEADERS
   dtTransformerHeaven/closeGaps.h
   dtTransformerHeaven/pickLengthRange.h
   dtTransformerHeaven/pickLengthPercentRange.h
+  dtTransformerHeaven/conformalMappingScale.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -129,6 +130,7 @@ SET(SOURCES
   dtTransformerHeaven/closeGaps.cpp
   dtTransformerHeaven/pickLengthRange.cpp
   dtTransformerHeaven/pickLengthPercentRange.cpp
+  dtTransformerHeaven/conformalMappingScale.cpp
 )
 
 APPEND_DTOO_SOURCE(geometryKernel "${SOURCES}")

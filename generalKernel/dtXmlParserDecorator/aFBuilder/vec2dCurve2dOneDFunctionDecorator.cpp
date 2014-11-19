@@ -7,7 +7,7 @@
 #include <functionHeaven/vec2dCurve2dOneD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
-
+#include <baseContainerHeaven/baseContainer.h>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
@@ -20,10 +20,12 @@ namespace dtOO {
   }
 
   void vec2dCurve2dOneDFunctionDecorator::buildPart(
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP, 
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP ) const {
+		QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP, 
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP 
+	) const {
     //
     //check input
     //

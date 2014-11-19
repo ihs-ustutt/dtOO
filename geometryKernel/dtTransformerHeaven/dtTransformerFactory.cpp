@@ -16,6 +16,7 @@
 #include "pickLengthRange.h"
 #include "pickLengthPercentRange.h"
 #include "addConstCoordinate.h"
+#include "conformalMappingScale.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -50,6 +51,7 @@ namespace dtOO {
 		__IFRET( pickLengthRange );
 		__IFRET( pickLengthPercentRange );
 		__IFRET( addConstCoordinate );
+		__IFRET( conformalMappingScale );
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

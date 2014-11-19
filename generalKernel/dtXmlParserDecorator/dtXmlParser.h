@@ -40,12 +40,14 @@ namespace dtOO {
     QDomElement getElement( std::string const lookType, std::string const lookName ) const ;
     QDomElement getElement( std::string const lookType ) const ;
     void createAnalyticFunction(
-	    std::string const functionName, 
+	    std::string const functionName,
+      baseContainer * const bC,
       vectorHandling< constValue * > const * const cVP, 
       vectorHandling< analyticFunction * > * sFP) const;
     void createAnalyticFunction(
-    vectorHandling< constValue * > const * const cVP, 
-    vectorHandling< analyticFunction * > * sFP
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cVP, 
+      vectorHandling< analyticFunction * > * sFP
 	  ) const;
     void createAnalyticGeometry(
       std::string const label,

@@ -11,6 +11,7 @@
 #include <functionHeaven/vec3dCurveOneD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -24,10 +25,12 @@ namespace dtOO {
   }
 
   void vec3dTwoDFiveRectangleFunctionDecorator::buildPart(
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP, 
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP ) const {
+		QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP, 
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP 
+	) const {
 		
 		float A = .5;
 		float B = .1;
@@ -51,7 +54,7 @@ namespace dtOO {
       while ( !elementP.isNull() ) {
         analyticFunction const * const aF 
 				= 
-				createAnalyticFunction( &elementP, cValP, depSFunP );
+				createAnalyticFunction( &elementP, bC, cValP, depSFunP );
 				dt__PTRASS(
 				  vec3dCurveOneD const * v3d1d, 
 				  vec3dCurveOneD::ConstDownCast(aF)
