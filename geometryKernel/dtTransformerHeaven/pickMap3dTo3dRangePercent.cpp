@@ -1,5 +1,6 @@
 #include "pickMap3dTo3dRangePercent.h"
 #include "analyticGeometryHeaven/map2dTo3d.h"
+#include "pickLengthPercentRange.h"
 //#include "analyticGeometryHeaven/map3dTo3d.h"
 #include <logMe/logMe.h>
 #include <progHelper.h>
@@ -11,13 +12,16 @@ namespace dtOO {
   }
 
   pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent(const pickMap3dTo3dRangePercent& orig) : dtTransformer(orig) {
+		_u0 = orig._u0;
+		_v0 = orig._v0;
+		_w0 = orig._w0;
   }
 
   pickMap3dTo3dRangePercent::~pickMap3dTo3dRangePercent() {
   }
 
   dtTransformer * pickMap3dTo3dRangePercent::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  return new pickMap3dTo3dRangePercent(*this);
 	}
 	
   dtTransformer * pickMap3dTo3dRangePercent::create( void ) const {
@@ -51,7 +55,7 @@ namespace dtOO {
   }
   
   void pickMap3dTo3dRangePercent::init( 
-	  QDomElement * transformerElementP, 
+	  QDomElement const * transformerElementP, 
     baseContainer * const bC,  
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,

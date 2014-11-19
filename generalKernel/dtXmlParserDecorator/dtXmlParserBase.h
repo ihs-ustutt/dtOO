@@ -45,15 +45,15 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > const * const depAGeoP,
       dtTransformer const * const dtTransformerP,                        
       vectorHandling< analyticGeometry * > * advancedP 
-    ) const;     
+    ) const;       
+  public:     
     dtTransformer * createTransformer(
       QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP, 
       vectorHandling< analyticGeometry * > const * const depAGeoP
-    ) const;     
-  public:     
+    ) const;       
     dtTransformer * createTransformer(
       QDomElement const * toBuildP,                    
       vectorHandling< constValue * > const * const cValP,

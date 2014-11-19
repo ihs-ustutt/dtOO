@@ -133,7 +133,7 @@ namespace dtOO {
     return transSFun;  
   }
 
-  void thicknessIncreasing::init( QDomElement * transformerElementP, 
+  void thicknessIncreasing::init( QDomElement const * transformerElementP, 
                                   vectorHandling< constValue * > const * const cValP,
                                   vectorHandling< analyticFunction * > const * const sFunP) {
 

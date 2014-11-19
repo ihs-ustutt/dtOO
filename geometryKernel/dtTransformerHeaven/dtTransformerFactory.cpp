@@ -33,7 +33,7 @@ namespace dtOO {
   dtTransformerFactory::~dtTransformerFactory() {
   }
 
-  dtTransformer* dtTransformerFactory::create(char const * const str) const {
+  dtTransformer* dtTransformerFactory::create(char const * const str) {
     DTINFOWF(create(), << "creating " << str <<  "...");
     
     __IFRET( doNothing );
@@ -54,7 +54,7 @@ namespace dtOO {
     dt__THROW(create(), << str <<  " could not be created");  
   }
 
-  dtTransformer* dtTransformerFactory::create(string const str) const {
+  dtTransformer* dtTransformerFactory::create(string const str) {
     return create( str.c_str() );
   }
 }

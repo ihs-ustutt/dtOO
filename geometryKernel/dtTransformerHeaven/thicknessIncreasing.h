@@ -18,7 +18,7 @@ namespace dtOO {
     virtual dtTransformer * clone( void ) const;
     virtual dtTransformer * create( void ) const;        
     virtual bool isNecessary( void ) const;
-    virtual void init( QDomElement * transformerElementP,
+    virtual void init( QDomElement const * transformerElementP,
                        vectorHandling< constValue * > const * const cValP,
                        vectorHandling< analyticFunction * > const * const sFunP);
     virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const sFunP ) const;  

@@ -1,8 +1,9 @@
 #include "baseContainerDecorator.h"
-
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <baseContainerHeaven/baseContainer.h>
+#include <baseContainerHeaven/transformerContainer.h>
+#include <dtTransformerHeaven/dtTransformer.h>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
@@ -24,7 +25,8 @@ namespace dtOO {
    
     std::vector< QDomElement > wElement = getChildVector(**toBuildP);
 		
-    dt__FORALL(wElement, ii,
+    //dt__FORALL(wElement, ii,
+		for (int ii=0; ii<wElement.size(); ii++) {
 			if ( is("Point_3", wElement[ii]) ) {
 				vectorHandling< dtPoint3 > workingPointP;
 				this->createBasic( 
@@ -36,7 +38,15 @@ namespace dtOO {
 				= 
 				createDtVector3(&wElement[ii], bC, cValP, sFunP, depAGeoP);
 			}
-    );
+		  else if ( is("transformer", wElement[ii]) ) {
+				dt__pH(dtTransformer) dtT(
+				  createTransformer(&wElement[ii], bC, cValP, sFunP, depAGeoP)
+				);
+//				if ( hasAttribute("label", wElement[ii]) ) {
+//				  bC->ptrTransformerContainer()->add(dtT.get());
+//				}
+			}		
+    }
   }
 }
 

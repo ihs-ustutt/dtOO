@@ -50,7 +50,7 @@ namespace dtOO {
   }
   
   void addConstCoordinate::init( 
-	  QDomElement * transformerElementP, 
+	  QDomElement const * transformerElementP, 
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP
   ) {

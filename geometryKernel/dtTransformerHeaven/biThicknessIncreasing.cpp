@@ -123,9 +123,11 @@ namespace dtOO {
     return transSFun;  
   }
 
-  void biThicknessIncreasing::init( QDomElement * transformerElementP, 
-                                  vectorHandling< constValue * > const * const cValP,
-                                  vectorHandling< analyticFunction * > const * const sFunP) {
+  void biThicknessIncreasing::init( 
+		QDomElement const * transformerElementP, 
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP
+	) {
     dtTransformer::init(transformerElementP, cValP, sFunP);
 		
     handleInt("order", getAttributeInt("order", *transformerElementP));     

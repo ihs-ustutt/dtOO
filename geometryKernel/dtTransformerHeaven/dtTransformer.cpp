@@ -19,7 +19,7 @@ namespace dtOO {
 	}
 
   void dtTransformer::init( 
-	  QDomElement * transformerElementP, 
+	  QDomElement const * transformerElementP, 
     baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
@@ -30,9 +30,11 @@ namespace dtOO {
 		}
   }
     
-  void dtTransformer::init( QDomElement * transformerElementP,
-             vectorHandling< constValue * > const * const cValP,
-             vectorHandling< analyticFunction * > const * const sFunP) {
+  void dtTransformer::init( 
+	  QDomElement const * transformerElementP,
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP
+	) {
 		if ( hasAttribute("label", *transformerElementP) ) {
 			labelHandling::setLabel(getAttributeStr("label", *transformerElementP));
 		}

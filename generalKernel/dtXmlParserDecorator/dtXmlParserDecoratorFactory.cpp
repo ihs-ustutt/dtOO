@@ -42,6 +42,7 @@ namespace dtOO {
     DTINFOWF(create(), << str <<  " creating ... ");
 		
     __IFRET(baseContainerDecorator);   
+		__IFRETCUSTOM(baseContainer, baseContainerDecorator);
     __IFRETCUSTOM(pointDefinition, baseContainerDecorator);
 		__IFRETCUSTOM(vectorDefinition, baseContainerDecorator);
     __IFRET(analyticGeometryDecorator);   

@@ -13,8 +13,8 @@ namespace dtOO {
     dt__CLASSNAME(dtTransformerFactory);
     dtTransformerFactory();
     virtual ~dtTransformerFactory();
-    dtTransformer* create(char const * const str) const;
-    dtTransformer* create(string const str) const; 
+    static dtTransformer* create(char const * const str);
+    static dtTransformer* create(string const str); 
   private:
 
   };

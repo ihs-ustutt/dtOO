@@ -1,5 +1,6 @@
 #include "dtXmlParserBase.h"
 #include "interfaceHeaven/ptrHandling.h"
+#include "baseContainerHeaven/transformerContainer.h"
 #include <functionHeaven/scaOneD.h>
 #include <functionHeaven/vec2dOneD.h>
 #include <functionHeaven/vec3dOneD.h>
@@ -52,27 +53,73 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFunP, 
 		vectorHandling< analyticGeometry * > const * const depAGeoP
 	) const {
-      dtTransformerFactory dtTransFac;
-      dtTransformer * dtTransformerP;
+		dtTransformer * dtTransformerP;
 
-      //
-      // check if there is a transformer
-      //
-      if ( hasSibling("transformer", *toBuildP) ) {
-        //get transformer element
-        QDomElement wElement = getSibling("transformer", *toBuildP);
-        //
-        //create and initialize transformer
-        //
-        dtTransformerP 
-			  = 
-				dtTransFac.create( wElement.attribute("name").toStdString() );
-        dtTransformerP->init(&wElement, bC, cValP, sFunP, depAGeoP);
-      }
-      else {
-        dtTransformerP = dtTransFac.create("doNothing");
-      }
-      return dtTransformerP;
+		//
+		// get transformer element
+		//
+		QDomElement wElement;
+		if ( hasSibling("transformer", *toBuildP) ) {
+			wElement = getSibling("transformer", *toBuildP);				
+		}
+		else if ( is("transformer", *toBuildP) ) {
+			wElement = *toBuildP;
+		}
+
+		//
+		// check if there is a transformer
+		//
+		if ( !wElement.isNull() ) {	
+			bool hasLabel = hasAttribute("label", wElement);
+			bool hasName = hasAttribute("name", wElement);
+			bool inContainer = false;
+			std::string label;
+			std::string name;
+			if (hasLabel) {
+				label = getAttributeStr("label", wElement);
+				inContainer = bC->ptrTransformerContainer()->has(label);
+			}
+			if (hasName) {
+				name = getAttributeStr("name", wElement);
+			}			
+			
+			if ( !hasLabel ) {
+				dtTransformerP 
+				= 
+				dtTransformerFactory::create( name );
+				dtTransformerP->init(&wElement, bC, cValP, sFunP, depAGeoP);			
+			}
+			else if (hasLabel && inContainer && !hasName) {
+				return bC->ptrTransformerContainer()->get(label)->clone();
+			}
+			else if (hasLabel && !inContainer && hasName) {
+				dtTransformerP 
+				= 
+				dtTransformerFactory::create( name );
+				dtTransformerP->init(&wElement, bC, cValP, sFunP, depAGeoP);			
+        bC->ptrTransformerContainer()->add(dtTransformerP);
+				delete dtTransformerP;
+				dtTransformerP = dtTransformerFactory::create("doNothing");
+			}
+			else if (hasLabel && inContainer && hasName) {
+				dtTransformerP = dtTransformerFactory::create("doNothing");
+			}			
+			else {
+				dt__THROW(
+					createTransformer(),
+					<< DTLOGEVAL(hasLabel) << LOGDEL
+					<< DTLOGEVAL(hasName) << LOGDEL
+					<< DTLOGEVAL(inContainer) << LOGDEL
+					<< DTLOGEVAL(label) << LOGDEL
+					<< DTLOGEVAL(name) << LOGDEL
+					<< "Problem creating transformer."
+				);
+			}
+		}
+		else {
+			dtTransformerP = dtTransformerFactory::create("doNothing");
+		}
+		return dtTransformerP;
   }
 
   dtTransformer * dtXmlParserBase::createTransformer(

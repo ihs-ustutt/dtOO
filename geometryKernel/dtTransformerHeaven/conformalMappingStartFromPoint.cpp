@@ -22,7 +22,7 @@ namespace dtOO {
 	}
 	
   void conformalMappingStartFromPoint::init( 
-		QDomElement * transformerElementP, 
+		QDomElement const * transformerElementP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,

@@ -116,12 +116,13 @@ namespace dtOO {
     return true;
   }  
 
-  void makePolynomial::init( QDomElement * transformerElementP, 
-         baseContainer * const bC,  
-         vectorHandling< constValue * > const * const cValP,
-         vectorHandling< analyticFunction * > const * const sFunP,
-         vectorHandling< analyticGeometry * > const * const depAGeoP 
-       ) {     
+  void makePolynomial::init( 
+	  QDomElement const * transformerElementP, 
+		baseContainer * bC,  
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {     
     dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);		
 		
     if (transformerElementP->hasAttribute("number_points_one")) {
