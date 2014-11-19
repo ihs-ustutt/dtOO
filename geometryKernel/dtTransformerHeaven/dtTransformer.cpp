@@ -8,13 +8,13 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
-  dtTransformer::dtTransformer() {
+  dtTransformer::dtTransformer() : labelHandling() {
   }
 
   dtTransformer::~dtTransformer() {
   }
 	
-	dtTransformer::dtTransformer(dtTransformer const & orig) {
+	dtTransformer::dtTransformer(dtTransformer const & orig) : labelHandling(orig) {
 		
 	}
 
@@ -25,13 +25,17 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    DTWARNINGWF(init(), << "Call on abstract class!");
+		if ( hasAttribute("label", *transformerElementP) ) {
+			labelHandling::setLabel(getAttributeStr("label", *transformerElementP));
+		}
   }
     
   void dtTransformer::init( QDomElement * transformerElementP,
              vectorHandling< constValue * > const * const cValP,
              vectorHandling< analyticFunction * > const * const sFunP) {
-    DTWARNINGWF(init(), << "Call on abstract class!");
+		if ( hasAttribute("label", *transformerElementP) ) {
+			labelHandling::setLabel(getAttributeStr("label", *transformerElementP));
+		}
   }
   
   std::vector< dtPoint2 * > dtTransformer::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {

@@ -11,8 +11,6 @@
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
-#include <baseContainerHeaven/pointContainer.h>
-#include <baseContainerHeaven/vectorContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>

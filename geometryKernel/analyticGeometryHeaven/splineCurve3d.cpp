@@ -54,7 +54,7 @@ namespace dtOO {
 		vp.push_back(startPoint);
 
     //
-    // put control points to pointContainer
+    // control points
     //
     int numPoints = _dtC->getNControlPoints();
     dtPoint3 tmpControlPoint;

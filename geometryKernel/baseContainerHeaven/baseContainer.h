@@ -14,9 +14,9 @@ namespace dtOO {
   public:
     dt__CLASSNAME(baseContainer);    
     baseContainer();
-    dt__pH(pointContainer) & refPtrHPointContainer( void );
-    dt__pH(vectorContainer) & refPtrHVectorContainer( void );
-    dt__pH(transformerContainer) & refPtrHTransformerContainer( void );
+//    dt__pH(pointContainer) & refPtrHPointContainer( void );
+//    dt__pH(vectorContainer) & refPtrHVectorContainer( void );
+//    dt__pH(transformerContainer) & refPtrHTransformerContainer( void );
     pointContainer * const ptrPointContainer( void );
     vectorContainer * const ptrVectorContainer( void );
     transformerContainer * const ptrTransformerContainer( void );

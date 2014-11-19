@@ -96,7 +96,8 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+		
     //
     // check input
     //

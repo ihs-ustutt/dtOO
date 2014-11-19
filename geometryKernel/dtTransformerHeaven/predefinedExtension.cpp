@@ -179,7 +179,7 @@ namespace dtOO {
   void predefinedExtension::init( QDomElement * transformerElementP, 
                                   vectorHandling< constValue * > const * const cValP,
                                   vectorHandling< analyticFunction * > const * const sFunP ) {
-
+    dtTransformer::init(transformerElementP, cValP, sFunP);
     //
     // check input
     //

@@ -78,6 +78,8 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+		
     //initialize with default values
     _rotSplineP = NULL;
     _tolerance = 0.01;

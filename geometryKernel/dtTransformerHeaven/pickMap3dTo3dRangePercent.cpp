@@ -57,6 +57,7 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
     
 		_u0 = -1.;
 		_v0 = -1.;

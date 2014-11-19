@@ -137,6 +137,8 @@ namespace dtOO {
                                   vectorHandling< constValue * > const * const cValP,
                                   vectorHandling< analyticFunction * > const * const sFunP) {
 
+		dtTransformer::init(transformerElementP, cValP, sFunP);
+		
     handleBool("inverted", getAttributeBool("inverted", *transformerElementP));
     handleInt("order", getAttributeInt("order", *transformerElementP));     
     

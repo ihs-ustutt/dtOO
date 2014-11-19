@@ -10,8 +10,6 @@
 #include <boundedVolume.h>
 #include <boundedVolumeFactory.h>
 #include <baseContainerHeaven/baseContainer.h>
-#include <baseContainerHeaven/pointContainer.h>
-#include <baseContainerHeaven/vectorContainer.h>
 #include <constValueHeaven/constValueFactory.h>
 #include <dtXmlParserDecorator/dtXmlParserDecorator.h>
 #include <dtXmlParserDecorator/dtXmlParserDecoratorFactory.h>

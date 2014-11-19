@@ -81,7 +81,8 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+		
     if (transformerElementP->hasAttribute("origin")) {
       _origin = bC->ptrPointContainer()->get( getAttributeStr("origin", *transformerElementP) );
     }

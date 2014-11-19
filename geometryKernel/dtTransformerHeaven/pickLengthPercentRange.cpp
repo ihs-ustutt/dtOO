@@ -81,6 +81,8 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+		
     _createSplineCurve3d = true;
     _createAnalyticSurface = false;
 

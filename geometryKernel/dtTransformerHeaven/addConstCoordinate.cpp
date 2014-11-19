@@ -54,6 +54,8 @@ namespace dtOO {
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP
   ) {
+    dtTransformer::init(transformerElementP, cValP, sFunP);
+		
 		float cc 
 		= 
 		muParseString( 

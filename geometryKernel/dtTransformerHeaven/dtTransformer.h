@@ -2,8 +2,9 @@
 #define	DTTRANSFORMER_H
 
 #include <dtLinearAlgebra.h>
-#include <dtXmlParserDecorator/qtXmlBase.h>
+#include <dtXmlParserDecorator/dtXmlParserBase.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labelHandling.h>
 #include <vector>
 #include <string>
 #include <logMe/dtMacros.h>
@@ -16,7 +17,8 @@ namespace dtOO {
   class analyticGeometry;
   class analyticFunction;
   
-  class dtTransformer : public qtXmlBase {
+  class dtTransformer : public dtXmlParserBase,
+                        public labelHandling {
   public:
     dt__CLASSNAME(dtTransformer);
     dtTransformer();

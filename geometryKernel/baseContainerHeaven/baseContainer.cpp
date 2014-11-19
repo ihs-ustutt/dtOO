@@ -14,17 +14,17 @@ namespace dtOO {
 	baseContainer::~baseContainer() {
 	}
   
-  dt__pH(pointContainer) & baseContainer::refPtrHPointContainer( void ) {
-		return _pC;
-	}
-  
-	dt__pH(vectorContainer) & baseContainer::refPtrHVectorContainer( void ) {
-		return _vC;
-	}
-	
-  dt__pH(transformerContainer) & baseContainer::refPtrHTransformerContainer( void ) {
-		return _tC;
-	}
+//  dt__pH(pointContainer) & baseContainer::refPtrHPointContainer( void ) {
+//		return _pC;
+//	}
+//  
+//	dt__pH(vectorContainer) & baseContainer::refPtrHVectorContainer( void ) {
+//		return _vC;
+//	}
+//	
+//  dt__pH(transformerContainer) & baseContainer::refPtrHTransformerContainer( void ) {
+//		return _tC;
+//	}
 	
 	pointContainer * const baseContainer::ptrPointContainer( void ) {
 		dt__THROW_IF(_pC.get() == NULL, ptrPointContainer);
