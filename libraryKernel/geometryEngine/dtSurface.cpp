@@ -136,27 +136,6 @@ namespace dtOO {
 	dtPoint2 dtSurface::uv_uvPercent( dtPoint2 const uvPercent) const {
 	  return dtPoint2( u_uPercent(uvPercent.x()), v_vPercent(uvPercent.y()) );
 	}
-		
-	dtPoint3 dtSurface::controlPoint( int const nPoint ) const {
-		int nn = nPoint;
-	  int nV = nn/nControlPoints(0);
-		int nU = nn - nV * nControlPoints(0);
-		
-		return controlPoint(nU, nV);
-		
-	}
-	
-	int dtSurface::nControlPoints( void ) const {
-		return nControlPoints(0)*nControlPoints(1);
-	}
-	
-	void dtSurface::setControlPoint( int const nPoint, dtPoint3 const point ) {
-		int nn = nPoint;
-	  int nV = nn/nControlPoints(0);
-		int nU = nn - nV * nControlPoints(0);
-		
-    setControlPoint(nU, nV, point);		
-	}
 	
 	int dtSurface::getNControlPointsU( void ) const {
 		return nControlPoints(0);

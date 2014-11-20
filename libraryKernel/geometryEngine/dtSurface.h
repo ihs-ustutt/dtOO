@@ -73,9 +73,6 @@ namespace dtOO {
     dtVector3 getVectorDdUDdV3d( float const uu, float const vv) const;
     dtVector3 normalPercent( float const uP, float const vP ) const;
     dtPoint2 uv_uvPercent( dtPoint2 const uvPercent) const;  
-    dtPoint3 controlPoint( int const nPoint ) const;
-    int nControlPoints( void ) const;
-    void setControlPoint( int const nPoint, dtPoint3 const point );
     int getNControlPointsU( void ) const;
     int getNControlPointsV( void ) const;
     dtCurve * getCurveConstU( float const uu) const;

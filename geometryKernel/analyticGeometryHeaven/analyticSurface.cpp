@@ -39,11 +39,7 @@ namespace dtOO {
   }
 
   dtPoint3 analyticSurface::getPoint(float const & uu, float const & vv) const {
-    return _dtS->point(uu, vv);
-  }
-  
-  std::vector< dtPoint3 > analyticSurface::getPoint( std::vector< float > const & uu, std::vector< float > const & vv ) const {
-    return _dtS->getPoint3d(uu, vv);
+      return _dtS->point(uu, vv);
   }
 	
   vectorHandling< renderInterface * > analyticSurface::getExtRender( void ) const {
@@ -80,11 +76,12 @@ namespace dtOO {
     //
     // get control points
     //
-    int numPoints = _dtS->nControlPoints();
-    dtPoint3 tmpControlPoint;
-    for (int ii=0; ii<numPoints; ii++) {
-      tmpControlPoint = _dtS->controlPoint(ii);
-			pp.push_back(tmpControlPoint);
+    int numPointsU = _dtS->nControlPoints(0);
+		int numPointsV = _dtS->nControlPoints(1);
+    for (int ii=0; ii<numPointsU; ii++) {
+			for (int jj=0; jj<numPointsV; jj++) {
+				pp.push_back( _dtS->controlPoint(ii, jj) );
+			}
     }
 		pp.push_back(map2dTo3d::getPointPercent(0., .5));
 		pp.push_back(map2dTo3d::getPointPercent(.5, 0.));

@@ -33,6 +33,7 @@ namespace dtOO {
     //   
     virtual void revert( void );        
     dtOCCCurveBase const & OCCRef( void ) const;
+    dtOCCCurveBase & OCCRef( void );
   private:
     ptrHandling< dtOCCCurveBase > _curve;
     Geom_Curve const * _ptr;

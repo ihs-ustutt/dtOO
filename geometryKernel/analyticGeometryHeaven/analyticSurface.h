@@ -45,7 +45,6 @@ namespace dtOO {
     // point picking and normal vectors
     //
     virtual dtPoint3 getPoint(float const & uu, float const & vv) const;
-    virtual std::vector< dtPoint3 > getPoint( std::vector< float > const & uu, std::vector< float > const & vv ) const;  
     //
     // interfaces
     //

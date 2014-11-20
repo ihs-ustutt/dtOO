@@ -44,6 +44,16 @@ namespace dtOO {
 	}
 	
   void dtOCCBSplineCurve::setControlPoint3d( int const nPoint, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint3d);
+		Standard_Integer nPI = static_cast<Standard_Integer>(nPoint+1);		
+		gp_Pnt pp(
+			static_cast<Standard_Real>(point.x()), 
+			static_cast<Standard_Real>(point.y()),
+			static_cast<Standard_Real>(point.z())
+		);
+		
+		Handle(Geom_Curve) occC = dtOCCCurve::OCCRef().getOCC();
+		Handle(Geom_BSplineCurve) occBsc = Handle(Geom_BSplineCurve)::DownCast(occC);
+		
+		occBsc->SetPole(nPI, pp);
 	}
 }

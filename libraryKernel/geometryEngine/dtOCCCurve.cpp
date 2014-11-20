@@ -159,4 +159,7 @@ namespace dtOO {
 	dtOCCCurveBase const & dtOCCCurve::OCCRef( void ) const {
 		return *(_curve.get());
 	}
+	dtOCCCurveBase & dtOCCCurve::OCCRef( void ) {
+		return *(_curve.get());
+	}	
 }

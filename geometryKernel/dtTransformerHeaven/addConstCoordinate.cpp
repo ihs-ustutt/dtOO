@@ -37,7 +37,7 @@ namespace dtOO {
       dt__PTRASS(vec2dCurve2dOneD const * v2d1d, vec2dCurve2dOneD::DownCast(aFVecP->at(ii)));
 
 			dt__pH(dtCurve) dtC(
-			  geomCurve_convertGeomCurve2d(v2d1d->ptrDtCurve2d(), _vv).result()
+			  geomCurve_convertGeomCurve2d(v2d1d->ptrDtCurve2d(), CGAL::ORIGIN + _vv*_cc, _vv).result()
 			);
 			aFVecRet.push_back( new vec3dCurveOneD(dtC.get()) );
     }

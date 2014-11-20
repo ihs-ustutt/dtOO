@@ -6,7 +6,7 @@
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class map3dTo3d;
+  class rotatingMap2dTo3d;
   
   class conformalMappingScale : public dtTransformer {
   public:      
@@ -28,7 +28,7 @@ namespace dtOO {
     apply( vectorHandling< analyticFunction * > const * const aFP ) const;
     virtual void handleAnalyticGeometry(std::string const name, analyticGeometry const * value);
   protected:
-    dt__pH(map3dTo3d const) _m3d;
+    dt__pH(rotatingMap2dTo3d const) _rM2d;
   };
 }
 

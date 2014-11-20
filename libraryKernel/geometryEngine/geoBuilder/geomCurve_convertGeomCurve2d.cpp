@@ -30,10 +30,10 @@
 //#include <TColStd_Array1OfInteger.hxx>
 
 namespace dtOO {
-	geomCurve_convertGeomCurve2d::geomCurve_convertGeomCurve2d( dtCurve2d const * const dtC2d, dtVector3 const & vv ) {
+	geomCurve_convertGeomCurve2d::geomCurve_convertGeomCurve2d( dtCurve2d const * const dtC2d, dtPoint3 const & pp, dtVector3 const & vv ) {
 		dt__PTRASS(dtOCCCurve2d const * const occC2d, dtOCCCurve2d::ConstDownCast(dtC2d));
 		
-		gp_Ax2 ax2(gp_Pnt(0,0,0), gp_Dir(vv.x(), vv.y(), vv.z()));
+		gp_Ax2 ax2(gp_Pnt(pp.x(), pp.y(), pp.z()), gp_Dir(vv.x(), vv.y(), vv.z()));
 		Handle(Geom_Curve) occC = GeomLib::To3d(ax2, occC2d->OCCRef().getOCC());
 		
 		dtOCCCurveBase base;

@@ -4,8 +4,12 @@
 #include "map1dTo3d.h"
 #include "map3dTo3d.h"
 #include <functionHeaven/vec3dOneD.h>
+#include <functionHeaven/vec3dCurveOneD.h>
 #include <interfaceHeaven/ptrVectorHandling.h>
+#include <geometryEngine/dtCurve.h>
 #include <progHelper.h>
+#include <discrete3dPoints.h>
+#include <discrete3dVector.h>
 
 namespace dtOO {    
   vec3dOneDInMap3dTo3d::vec3dOneDInMap3dTo3d() : map1dTo3d() {
@@ -60,4 +64,39 @@ namespace dtOO {
   map3dTo3d const * vec3dOneDInMap3dTo3d::refToMap3dTo3d( void ) const {
     return _m3d.get();
   }  
+
+  vectorHandling< renderInterface * > vec3dOneDInMap3dTo3d::getExtRender( void ) const {
+		vectorHandling< dtVector3 > vv;
+		vectorHandling< dtPoint3 > vp;
+		vectorHandling< dtPoint3 > pp;
+    //
+    // get spline direction
+    //
+    dtPoint3 startPoint = getPointPercent(0.05);
+    dtPoint3 topPoint = getPointPercent(0.1);
+    dtVector3 uu = topPoint - startPoint;
+
+    //
+    // add direction vector to container
+    //    
+		vv.push_back(uu);
+		vp.push_back(startPoint);
+
+    //
+    // get control points
+    //
+		vec3dCurveOneD const * const v3dC1d = vec3dCurveOneD::ConstDownCast(_v1d.get());
+		if (v3dC1d) {
+			dtCurve const * const dtC = v3dC1d->ptrDtCurve();
+			int numPointsU = dtC->getNControlPoints();
+			for (int ii=0; ii<numPointsU; ii++) {
+			  pp.push_back( _m3d->getPoint( dtC->getControlPoint3d(ii) ) );
+			}
+		}
+
+		vectorHandling< renderInterface * > retVec(2);
+		retVec[0] = new discrete3dPoints(pp);
+		retVec[1] = new discrete3dVector(vv, vp);
+		return retVec;
+  }	
 }

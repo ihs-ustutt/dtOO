@@ -124,7 +124,7 @@ namespace dtOO {
 	map2dTo3d * rotatingMap2dTo3d::segmentConstV( float const & vv ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
-			map1dTo3d * m1d = aS->pickConstUPercent(percent_u(vv), 0., 1.);
+			map1dTo3d * m1d = aS->pickConstUPercent(percent_v(vv), 0., 1.);
 			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
@@ -142,7 +142,7 @@ namespace dtOO {
 	map2dTo3d * rotatingMap2dTo3d::segmentConstW( float const & ww ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
-			map1dTo3d * m1d = aS->pickConstVPercent(percent_v(ww), 0., 1.);
+			map1dTo3d * m1d = aS->pickConstVPercent(percent_w(ww), 0., 1.);
 			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
@@ -170,7 +170,7 @@ namespace dtOO {
     dtVector3 rr = vXYZ - pointOnRotAx;
 		
 		
-		return (phir/dtLinearAlgebra::length(rr)) / getMax(0);
+		return (phir/dtLinearAlgebra::length(rr)) / (2.*M_PI);//getMax(0);
 	}	
 	
 //	float rotatingMap2dTo3d::phi_u(float const & arg) const {
@@ -200,7 +200,7 @@ namespace dtOO {
 			splineCurve3d::ConstDownCast(m1d.get())
 		);
 		
-		return s3d->ptrConstDtCurve()->u_lPercent(mm);
+		return s3d->ptrConstDtCurve()->u_l(mm);
 	}	
 	
 //	float rotatingMap2dTo3d::m_v(float const & arg) const {

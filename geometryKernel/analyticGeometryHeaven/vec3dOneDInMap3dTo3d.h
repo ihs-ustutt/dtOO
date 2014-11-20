@@ -9,6 +9,7 @@
 namespace dtOO {
   class vec3dOneD;
   class map3dTo3d;
+  class renderInterface;
   
   class vec3dOneDInMap3dTo3d : public map1dTo3d {
   public:
@@ -25,6 +26,7 @@ namespace dtOO {
     virtual float getMax( int const & dir) const;
     vec3dOneD const * refToVec3dOneD( void ) const;
     map3dTo3d const * refToMap3dTo3d( void ) const;
+    vectorHandling< renderInterface * > getExtRender( void ) const;
   private:
     ptrHandling< vec3dOneD > _v1d;
     ptrHandling< map3dTo3d > _m3d;

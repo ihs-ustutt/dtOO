@@ -10,6 +10,7 @@ namespace dtOO {
   class vec3dTwoD;
   class vec3dSurfaceTwoD;
   class map3dTo3d;
+  class renderInterface;
   
   class vec3dTwoDInMap3dTo3d : public map2dTo3d {
   public:
@@ -40,6 +41,7 @@ namespace dtOO {
       float const & uu0, float const & uu1, 
       float const & vv0, float const & vv1
     ) const;
+    vectorHandling< renderInterface * > getExtRender( void ) const;
   private:
     ptrHandling< vec3dSurfaceTwoD > _v2d;
     ptrHandling< map3dTo3d > _m3d;
