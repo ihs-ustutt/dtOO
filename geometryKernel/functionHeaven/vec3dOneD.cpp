@@ -18,8 +18,8 @@ namespace dtOO {
 		return 1;
 	}
 
-  aFY vec3dOneD::Y(aFX const & xx) const {	
-		return Y(xx[0]);
+  aFY vec3dOneD::Y(float const & xx) const {	
+		return Y(xx);
 	}
 
   dtPoint3 vec3dOneD::YdtPoint3(float const & xx) const {

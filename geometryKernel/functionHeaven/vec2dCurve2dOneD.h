@@ -25,7 +25,6 @@ namespace dtOO {
     dtCurve2d const * ptrDtCurve2d( void ) const;
   private:
     ptrHandling<dtCurve2d> _dtC2d;
-    static int const _nVis = 100;
   };
 }
 #endif	/* VEC2DCURVE2DONED_H */

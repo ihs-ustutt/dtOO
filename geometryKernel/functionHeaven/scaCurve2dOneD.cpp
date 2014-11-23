@@ -57,38 +57,13 @@ namespace dtOO {
     _dtC2d->dump();
   }
 
-	double scaCurve2dOneD::funValue(const double xx ) const {
-//		DTDEBUGWF(
-//	    funValue(), 
-//			<< getLabel() << LOGDEL			
-//			<< DTLOGEVAL(static_cast<float>(xx)) << LOGDEL
-//			<< DTLOGEVAL(_tmpX) << LOGDEL
-//		);
-		
+	double scaCurve2dOneD::funValue(const double xx ) const {	
 		dtPoint2 pp = _dtC2d->point( static_cast<float>(xx) );
-		
-//		DTDEBUGWF(
-//	    funValue(), 
-//			<< DTLOGPOI2D(pp) << LOGDEL
-//			<< DTLOGEVAL(_tmpX - pp.x())
-//		);
 		return static_cast< double >( _tmpX - pp.x() );
 	}
 
 	double scaCurve2dOneD::diffFunValue(const double xx ) const {
-//		DTDEBUGWF(
-//	    diffFunValue(), 
-//			<< getLabel() << LOGDEL
-//			<< DTLOGEVAL(static_cast<float>(xx)) << LOGDEL
-//			<< DTLOGEVAL(_tmpX) << LOGDEL
-//		);		
 		dtVector2 der = _dtC2d->firstDer( static_cast<float>(xx) );
-		
-//		DTDEBUGWF(
-//	    diffFunValue(), 
-//			<< DTLOGEVAL(static_cast<float>(xx)) << LOGDEL
-//			<< DTLOGEVAL(_tmpX) << LOGDEL
-//		);
 		return static_cast< double >( der.y() / der.x() );
 	}	
 	
@@ -117,9 +92,6 @@ namespace dtOO {
 			}
 		}
 		if (mustIterate) {
-	//		std::cout << DTLOGEVAL(getLabel()) << "(" << xx << ") = ?" << std::endl;
-	//		DTLOGCOUT(spready, coutswitch);
-
 			_tmpX = xx;
 
 			// Create the Integrator
@@ -148,10 +120,6 @@ namespace dtOO {
 			}
 
 			if ( !check ) {
-				DTWARNINGWF(getValue(), << DTLOGEVAL(check) << LOGDEL
-							 << DTLOGEVAL(getLabel()) );
-
-
 				ROOT::Math::GradFunctor1D f1(this, &scaCurve2dOneD::funValue, &scaCurve2dOneD::diffFunValue );
 				ROOT::Math::Roots::Newton newtonF;
 				check 
@@ -174,28 +142,19 @@ namespace dtOO {
 				theRoot = bisectF.Root();
 			}
 		}
-//   cout << rf.Root() << endl;
- 
-//   return 0;		
-//
-//		//
-//		// set desired x value to mutable tmp value and perform minimization
-//		//		  
-		
-//		min->Minimize(); 
 
 		//
 		// output
 		//
 		dtPoint2 pp = _dtC2d->point( static_cast<float>( theRoot ) );
-		DTINFOWF(
-			YFloat(),
-			<< DTLOGEVAL(mustIterate) << LOGDEL
-			<< DTLOGEVAL(xx) << LOGDEL
-			<< DTLOGEVAL(fabs(xx-pp.x())) << LOGDEL
-		  << DTLOGPOI2D(pp) << LOGDEL
-			<< getLabel() << "(" << pp.x() << ") = " << pp.y()
-		);
+//		DTINFOWF(
+//			YFloat(),
+//			<< DTLOGEVAL(mustIterate) << LOGDEL
+//			<< DTLOGEVAL(xx) << LOGDEL
+//			<< DTLOGEVAL(fabs(xx-pp.x())) << LOGDEL
+//		  << DTLOGPOI2D(pp) << LOGDEL
+//			<< getLabel() << "(" << pp.x() << ") = " << pp.y()
+//		);
 		
 	  return pp.y();
   }

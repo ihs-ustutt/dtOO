@@ -8,6 +8,7 @@
 #include "generalBuilder/trans6SidedCubeDecorator.h"
 #include "generalBuilder/vec3dInMap3dTo3dDecorator.h"
 #include "generalBuilder/rotatingMap2dTo3dDecorator.h"
+#include "generalBuilder/infinityMap3dTo3dDecorator.h"
 #include "occBuilder/bezierCurve_pointConstructOCCDecorator.h"
 #include "occBuilder/bSplineCurve_curveConnectConstructOCCDecorator.h"
 #include "occBuilder/bSplineSurface_skinConstructOCCDecorator.h"
@@ -77,6 +78,8 @@ namespace dtOO {
 		__IFRETCUSTOM(bSplineCurve_pointConstructArcLengthParaOCC, bSplineCurve_pointConstructArcLengthParaOCCDecorator);
 		__IFRET(vec3dInMap3dTo3dDecorator);
 		__IFRETCUSTOM(vec3dInMap3dTo3d, vec3dInMap3dTo3dDecorator);
+		__IFRET(infinityMap3dTo3dDecorator);
+		__IFRETCUSTOM(infinityMap3dTo3d, infinityMap3dTo3dDecorator);		
 		
     dt__THROW(create(), <<  "Could not be created.");
   }

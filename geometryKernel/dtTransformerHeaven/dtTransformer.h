@@ -44,6 +44,7 @@ namespace dtOO {
     virtual std::vector< dtPoint3 * > apply( std::vector< dtPoint3 * > const * const toTrans ) const;    
     virtual vectorHandling< analyticGeometry * > apply( vectorHandling< analyticGeometry * > const * const toTrans ) const;
     virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const toTrans ) const;
+    dtPoint3 apply(dtPoint3 const & pp) const;    
     analyticFunction * apply(analyticFunction const * const sF) const;
     analyticGeometry * apply(analyticGeometry const * const aG) const;
     virtual void handleFloat(std::string const name, float const value);

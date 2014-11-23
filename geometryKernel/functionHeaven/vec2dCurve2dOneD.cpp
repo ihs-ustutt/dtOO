@@ -6,6 +6,7 @@
 #include <geometryEngine/dtCurve2d.h>
 #include <solid2dLine.h>
 #include <discrete2dPoints.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
 	vec2dCurve2dOneD::vec2dCurve2dOneD() : vec2dOneD() {
@@ -44,9 +45,15 @@ namespace dtOO {
 	}
 	
   vectorHandling< renderInterface * > vec2dCurve2dOneD::getRender( void ) const {
-		vectorHandling< dtPoint2 > p2(_nVis);
-    float interval = (xMax(0) - xMin(0)) / (_nVis-1);
-    for (int ii=0;ii<_nVis;ii++) {
+		int nU
+		=
+		staticPropertiesHandler::getInstance()->getOptionInt(
+      "function_render_resolution_u"
+    );		
+		
+		vectorHandling< dtPoint2 > p2(nU);
+    float interval = (xMax(0) - xMin(0)) / (nU-1);
+    for (int ii=0;ii<nU;ii++) {
 			float iiF = static_cast<float>(ii);
       float xx = xMin(0) + iiF * interval;
       p2[ii] = YdtPoint2(xx);

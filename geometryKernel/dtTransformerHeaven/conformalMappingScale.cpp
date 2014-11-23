@@ -5,8 +5,9 @@
 #include <functionHeaven/analyticFunction.h>
 #include <functionHeaven/vec3dSurfaceTwoD.h>
 #include <functionHeaven/vec3dCurveOneD.h>
-#include <geometryEngine/dtSurface.h>
-#include <geometryEngine/dtCurve.h>
+#include <functionHeaven/analyticFunctionTransformed.h>
+//#include <geometryEngine/dtSurface.h>
+//#include <geometryEngine/dtCurve.h>
 
 namespace dtOO {
   conformalMappingScale::conformalMappingScale() : dtTransformer() {
@@ -16,6 +17,7 @@ namespace dtOO {
 	  conformalMappingScale const & orig 
 	) : dtTransformer(orig) {
 		_rM2d.reset( orig._rM2d->clone() );
+		_ss = orig._ss;
   }
 	
   conformalMappingScale::~conformalMappingScale() {
@@ -41,50 +43,35 @@ namespace dtOO {
 			vec3dCurveOneD const * const vec3d1d = vec3dCurveOneD::ConstDownCast(aF);			
 			vec3dSurfaceTwoD const * const vec3d2d = vec3dSurfaceTwoD::ConstDownCast(aF);
 			
-			std::vector<float> itVal;
-			std::vector<std::string> header;
-			header.push_back("cP_x"); header.push_back("cP_y"); header.push_back("cP_z");
-			header.push_back("uu"); header.push_back("vv"); header.push_back("ww");
+//			std::vector<float> itVal;
+//			std::vector<std::string> header;
+//			header.push_back("cP_x"); header.push_back("cP_y"); header.push_back("cP_z");
+//			header.push_back("uu"); header.push_back("vv"); header.push_back("ww");
 			
-			if (vec3d1d) {
-				dtCurve * dtC = vec3d1d->ptrDtCurve()->clone();
-				for (int jj=0; jj<dtC->getNControlPoints(); jj++) {
-					dtPoint3 cP = dtC->getControlPoint3d(jj);
-          itVal.push_back(cP.x());
-					itVal.push_back(cP.y());
-					itVal.push_back(cP.z());
-					float ww = _rM2d->w_s( _rM2d->w_percent(cP.z()) );
-					float vv = _rM2d->v_mw(cP.y(), ww);
-					float uu = _rM2d->u_phirvw(cP.x(), vv, ww);
-          itVal.push_back(uu);
-					itVal.push_back(vv);
-					itVal.push_back(ww);
-					dtC->setControlPoint3d(jj, dtPoint3(uu, vv, ww));
-				}
-				retV.push_back( new vec3dCurveOneD(dtC) );
-				retV.back()->setLabel(aF->getLabel());				
+			if (vec3d1d) {			
+				analyticFunctionTransformed<vec3dCurveOneD> * aFT
+				= new analyticFunctionTransformed<vec3dCurveOneD>(*vec3d1d);
+				aFT->setTransformer(this);
+				retV.push_back( aFT );
+				retV.back()->setLabel(aF->getLabel());
+
+				DTINFOWF(
+				  apply(), 
+					<< DTLOGPOI3D(aFT->YdtPoint3(0) )
+				);				
 			}			
       else if (vec3d2d) {			
-				dtSurface * dtS = vec3d2d->ptrDtSurface()->clone();
-				for (int jj=0; jj<dtS->nControlPoints(0); jj++) {
-					for (int kk=0; kk<dtS->nControlPoints(1); kk++) {
-						dtPoint3 cP = dtS->controlPoint(jj, kk);
-						itVal.push_back(cP.x());
-						itVal.push_back(cP.y());
-						itVal.push_back(cP.z());
+				analyticFunctionTransformed<vec3dSurfaceTwoD> * aFT
+				= new analyticFunctionTransformed<vec3dSurfaceTwoD>(*vec3d2d);
+				aFT->setTransformer(this);
+				retV.push_back( aFT );
+				retV.back()->setLabel(aF->getLabel());				
 
-						float ww = _rM2d->w_s( _rM2d->w_percent(cP.z()) );
-						float vv = _rM2d->v_mw(cP.y(), ww);
-						float uu = _rM2d->u_phirvw(cP.x(), vv, ww);
-						itVal.push_back(uu);
-						itVal.push_back(vv);
-						itVal.push_back(ww);
-						
-						dtS->setControlPoint(jj, kk, dtPoint3(uu, vv, ww));
-					}
-				}
-				retV.push_back( new vec3dSurfaceTwoD(dtS) );
-				retV.back()->setLabel(aF->getLabel());
+				DTINFOWF(
+				  apply(), 
+					<< DTLOGPOI3D(aFT->YdtPoint3(0,0) )
+				);
+				
 			}
 			else {
 				dt__THROW(
@@ -95,15 +82,35 @@ namespace dtOO {
 				);
 			}
 			
-			DTINFOWF(
-				apply(),
-				<< logMe::floatVecToTable(header, itVal)
-			);
+//			DTINFOWF(
+//				apply(),
+//				<< logMe::floatVecToTable(header, itVal)
+//			);
 		}
 		
 		return retV;
   }
 
+	std::vector< dtPoint3 * > 
+	conformalMappingScale::apply( std::vector< dtPoint3 * > const * const toTrans ) const {
+		std::vector< dtPoint3 * > retVec;
+		dt__FORALL(*toTrans, ii,
+      float xx = toTrans->at(ii)->x() * _ss.x();
+		  float yy = toTrans->at(ii)->y() * _ss.y();
+		  float zz = toTrans->at(ii)->z() * _ss.z();
+		
+      float ww = _rM2d->w_s(zz);						
+			float vv = _rM2d->v_mw(yy, ww);
+			float uu = _rM2d->u_phirvw(xx, vv, ww);
+			
+//			DTINFOWF(apply(), << DTLOGPOI3DP( toTrans->at(ii)));
+			
+			retVec.push_back( new dtPoint3(uu, vv, ww) );
+		);
+		
+		return retVec;
+	}
+	
   bool conformalMappingScale::isNecessary( void ) const {
     return true;
   }
@@ -117,6 +124,16 @@ namespace dtOO {
 	) {
     dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
 		
+		if ( hasChild("Vector_3", *transformerElementP) ) {
+			QDomElement v3El = getChild("Vector_3", *transformerElementP);
+			handleDtVector3(
+				"Vector_3", 
+				createDtVector3(&v3El, bC, cValP, sFunP, depAGeoP)
+			);
+		}
+		else {
+      handleDtVector3("Vector_3", dtVector3(1.,1.,1.));			
+		}
 		handleAnalyticGeometry(
 			"part_label", 
 			depAGeoP->get(getAttributeStr("part_label", *transformerElementP))
@@ -131,4 +148,12 @@ namespace dtOO {
     }
     dtTransformer::handleAnalyticGeometry(name, value);
   }
+	
+  void conformalMappingScale::handleDtVector3(std::string const name, dtVector3 const value) {
+    if (name == "Vector_3") {
+      _ss = value;
+      return;
+    }
+    dtTransformer::handleDtVector3(name, value);
+  }	
 }

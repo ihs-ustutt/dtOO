@@ -7,6 +7,7 @@
 #include <geometryEngine/dtSurface.h>
 #include <solid2dLine.h>
 #include <discrete2dPoints.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
 	vec3dCurve2dInSurfaceOneD::vec3dCurve2dInSurfaceOneD() : vec3dOneD() {
@@ -29,8 +30,8 @@ namespace dtOO {
 		setMax( _dtC2d->maxU() );
 	}
 	
-	aFY vec3dCurve2dInSurfaceOneD::Y( float const & xx) const {
-		dtPoint2 pX = _dtC2d->point(xx);
+	aFY vec3dCurve2dInSurfaceOneD::Y( aFX const & xx ) const {
+		dtPoint2 pX = _dtC2d->point(xx[0]);
 		dtPoint3 pY = _dtS->getPoint3d(pX);
 		
 		aFY yy(3);
@@ -51,9 +52,15 @@ namespace dtOO {
 	}
 	
   vectorHandling< renderInterface * > vec3dCurve2dInSurfaceOneD::getRender( void ) const {
-		vectorHandling< dtPoint2 > p2(_nVis);
-    float interval = (xMax(0) - xMin(0)) / (_nVis-1);
-    for (int ii=0;ii<_nVis;ii++) {
+		int nU
+		=
+		staticPropertiesHandler::getInstance()->getOptionInt(
+      "function_render_resolution_u"
+    );	
+		
+		vectorHandling< dtPoint2 > p2(nU);
+    float interval = (xMax(0) - xMin(0)) / (nU-1);
+    for (int ii=0;ii<nU;ii++) {
 			float iiF = static_cast<float>(ii);
       float xx = xMin(0) + iiF * interval;
 			dtPoint3 p3 = YdtPoint3(xx);

@@ -39,7 +39,12 @@ namespace dtOO {
   }
 
   dtPoint3 analyticSurface::getPoint(float const & uu, float const & vv) const {
-      return _dtS->point(uu, vv);
+    dt__WARN_IFWM(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
+		dt__WARN_IFWM(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
+    dt__WARN_IFWM(uu>getUMax(), getPoint(), << uu << " > " << getUMax()); 
+		dt__WARN_IFWM(vv>getVMax(), getPoint(), << vv << " > " << getVMax());
+		
+    return _dtS->point(uu, vv);
   }
 	
   vectorHandling< renderInterface * > analyticSurface::getExtRender( void ) const {

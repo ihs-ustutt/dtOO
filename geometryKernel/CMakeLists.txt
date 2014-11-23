@@ -17,6 +17,7 @@ SET(HEADERS
   analyticGeometryHeaven/trans6SidedCube.h
   analyticGeometryHeaven/rotatingMap2dTo3d.h
   analyticGeometryHeaven/rotatingMap2dTo3dPhiMS.h
+  analyticGeometryHeaven/infinityMap3dTo3d.h
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
   analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h
@@ -48,6 +49,7 @@ SET(HEADERS
   functionHeaven/vec3dThreeD.h
   functionHeaven/vec3dTransVolThreeD.h
   functionHeaven/analyticFunctionCompound.h
+  functionHeaven/analyticFunctionTransformed.h
   dtTransformerHeaven/thicknessIncreasing.h
   dtTransformerHeaven/biThicknessIncreasing.h
   dtTransformerHeaven/dtTransformer.h
@@ -85,6 +87,7 @@ SET(SOURCES
   analyticGeometryHeaven/trans6SidedCube.cpp
   analyticGeometryHeaven/rotatingMap2dTo3d.cpp
   analyticGeometryHeaven/rotatingMap2dTo3dPhiMS.cpp
+  analyticGeometryHeaven/infinityMap3dTo3d.cpp
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.cpp
   analyticGeometryHeaven/vec3dOneDInMap3dTo3d.cpp
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.cpp

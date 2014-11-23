@@ -73,6 +73,23 @@ namespace dtOO {
     DTWARNINGWF(init(), << "Call on abstract class!");    
   }
   
+	dtPoint3 dtTransformer::apply(dtPoint3 const & pp) const {
+		std::vector< dtPoint3 * > vec;
+		vec.push_back( new dtPoint3(pp) );
+		
+		std::vector< dtPoint3 * > retVec = this->apply(&vec);
+		
+		delete vec[0];
+		vec.clear();
+		
+		dtPoint3 retP = *(retVec[0]);
+		
+		delete retVec[0];
+		retVec.clear();
+		
+		return retP;
+	}
+	
   analyticFunction * dtTransformer::apply(analyticFunction const * const sF) const {
     vectorHandling< analyticFunction * > vHIn;
     vHIn.push_back(const_cast< analyticFunction *>(sF));

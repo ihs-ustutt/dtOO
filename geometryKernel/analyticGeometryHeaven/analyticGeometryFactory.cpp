@@ -11,6 +11,7 @@
 #include "vec3dTwoDInMap3dTo3d.h"
 #include "vec3dOneDInMap3dTo3d.h"
 #include "vec2dOneDInMap2dTo3d.h"
+#include "infinityMap3dTo3d.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -40,6 +41,7 @@ namespace dtOO {
 		__IFRET(vec3dTwoDInMap3dTo3d);
 		__IFRET(vec3dOneDInMap3dTo3d);
 		__IFRET(vec2dOneDInMap2dTo3d);
+		__IFRET( infinityMap3dTo3d );
         
     dt__THROW(create(), <<  "Could not be created.");
   }

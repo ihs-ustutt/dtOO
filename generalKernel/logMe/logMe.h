@@ -113,11 +113,23 @@ namespace dtOO {
           << "Honor thy error as a hidden intention. (Brian Eno)")
   #define dt__THROW_IFWM(cond, functionname, message) \
       if (cond) { \
-        dt__THROW(functionname, message); \
+        dt__THROW(functionname, \
+        << "condition: "#cond" is true." << LOGDEL \
+        message); \
       }
   #define dt__THROW_IF(cond, functionname) \
       if (cond) { \
         dt__THROW(functionname, << "condition: "#cond" is true."); \
+      }
+  #define dt__WARN_IFWM(cond, functionname, message) \
+      if (cond) { \
+        DTWARNINGWF(functionname, \
+        << "condition: "#cond" is true." << LOGDEL \
+        message); \
+      }
+  #define dt__WARN_IF(cond, functionname) \
+      if (cond) { \
+        DTWARNINGWF(functionname, << "condition: "#cond" is true."); \
       }
   #define dt__THROWSPEC(eType, functionname, message) \
       eType( std::ostringstream().flush() << ClassName() << "::"#functionname << LOGDEL \

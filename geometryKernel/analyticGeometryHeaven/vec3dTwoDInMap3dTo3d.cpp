@@ -139,7 +139,7 @@ namespace dtOO {
 		vectorHandling< dtPoint3 > vecP;
 		vectorHandling< dtVector3 > norV;
 		vectorHandling< dtPoint3 > norP;
-		vectorHandling< dtPoint3 > pp;		
+//		vectorHandling< dtPoint3 > pp;		
     //
     // get surface directions
     //
@@ -168,18 +168,18 @@ namespace dtOO {
     //
     // get control points
     //
-		dtSurface const * const dtS = _v2d->ptrDtSurface();
-    int numPointsU = dtS->nControlPoints(0);
-		int numPointsV = dtS->nControlPoints(1);
-    for (int ii=0; ii<numPointsU; ii++) {
-			for (int jj=0; jj<numPointsV; jj++) {
-				pp.push_back( _m3d->getPoint( dtS->controlPoint(ii, jj) ) );
-			}
-    }
-		vectorHandling< renderInterface * > retVec(3);
-		retVec[0] = new discrete3dPoints(pp);
-		retVec[1] = new discrete3dVector(norV, norP);
-		retVec[2] = new discrete3dVector(vecV, vecP);
+//		dtSurface const * const dtS = _v2d->ptrDtSurface();
+//    int numPointsU = dtS->nControlPoints(0);
+//		int numPointsV = dtS->nControlPoints(1);
+//    for (int ii=0; ii<numPointsU; ii++) {
+//			for (int jj=0; jj<numPointsV; jj++) {
+//				pp.push_back( _m3d->getPoint( dtS->controlPoint(ii, jj) ) );
+//			}
+//    }
+		vectorHandling< renderInterface * > retVec(2);
+//		retVec[0] = new discrete3dPoints(pp);
+		retVec[0] = new discrete3dVector(norV, norP);
+		retVec[1] = new discrete3dVector(vecV, vecP);
 		
 		return retVec;
   }	
