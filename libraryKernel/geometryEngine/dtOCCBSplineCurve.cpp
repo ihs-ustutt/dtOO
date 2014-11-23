@@ -28,7 +28,7 @@ namespace dtOO {
     return static_cast<int>(_ptr->Degree());		
 	}
 	
-  int dtOCCBSplineCurve::getNControlPoints( void ) const {
+  int dtOCCBSplineCurve::nControlPoints( void ) const {
 		return static_cast<int>(_ptr->NbPoles());		
 	}
 	

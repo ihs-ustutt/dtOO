@@ -33,11 +33,8 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/oneDimTrimmable.h>
-#include <analyticGeometryHeaven/oneDimForwardExtendable.h>
-#include <analyticGeometryHeaven/oneDimBackwardExtendable.h>
 #include <analyticGeometryHeaven/oneDimRevertable.h>
 #include <analyticGeometryHeaven/twoDimRevertable.h>
-#include <analyticGeometryHeaven/oneDimCloseable.h>
 
 namespace dtOO {
   dtXmlParserBase::dtXmlParserBase() {
@@ -1162,44 +1159,6 @@ namespace dtOO {
           }                
         }
   //------------------------------------------------------------------------------
-  // forward_extend
-  //------------------------------------------------------------------------------
-        else if ( getAttributeStr("attribute", *toBuildP) == "forward_extend" ) {
-          for (int ii=0;ii<advancedTwin.size();ii++) {
-            oneDimForwardExtendable * toExt = dynamic_cast< oneDimForwardExtendable * >(advancedTwin[ii]);
-            if (toExt) {
-              DTINFOWF(createAdvanced(),
-                      << "do a forward extension on new class");            
-              toExt->forwardExtend();
-            }          
-            else {
-              DTWARNINGWF(createAdvanced(),
-                      << DTLOGEVAL( getAttributeStr("attribute", *toBuildP) ) << LOGDEL
-                      << DTLOGEVAL( advancedTwin[ii]->getLabel() ) << LOGDEL
-                      << "function not not defined on " << advancedTwin[ii]->ClassName() );     
-            }
-          }                
-        }
-  //------------------------------------------------------------------------------
-  // backward_extend
-  //------------------------------------------------------------------------------
-        else if ( getAttributeStr("attribute", *toBuildP) == "backward_extend" ) {
-          for (int ii=0;ii<advancedTwin.size();ii++) {
-            oneDimBackwardExtendable * toExt = dynamic_cast< oneDimBackwardExtendable * >(advancedTwin[ii]);
-            if (toExt) {
-              DTINFOWF(createAdvanced(),
-                      << "do a backward extension on new class");              
-              toExt->backwardExtend();          
-            }          
-            else {
-              DTWARNINGWF(createAdvanced(),
-                      << DTLOGEVAL( getAttributeStr("attribute", *toBuildP) ) << LOGDEL
-                      << DTLOGEVAL( advancedTwin[ii]->getLabel() ) << LOGDEL
-                      << "function not not defined on " << advancedTwin[ii]->ClassName() );     
-            }
-          }                
-        }
-  //------------------------------------------------------------------------------
   // revert
   //------------------------------------------------------------------------------
         else if ( getAttributeStr("attribute", *toBuildP) == "revert" ) {
@@ -1223,24 +1182,7 @@ namespace dtOO {
                       << "function not defined on " << advancedTwin[ii]->ClassName() );     
             }
           }                
-        }      
-  //------------------------------------------------------------------------------
-  // close
-  //------------------------------------------------------------------------------
-        else if ( getAttributeStr("attribute", *toBuildP) == "closeArithmetic" ) {
-          for (int ii=0;ii<advancedTwin.size();ii++) {
-            oneDimCloseable * toClose = dynamic_cast< oneDimCloseable * >(advancedTwin[ii]);
-            if (toClose) {
-              toClose->closeArithmetic();
-            }
-            else {
-              DTWARNINGWF(createAdvanced(),
-                      << DTLOGEVAL( getAttributeStr("attribute", *toBuildP) ) << LOGDEL
-                      << DTLOGEVAL( advancedTwin[ii]->getLabel() ) << LOGDEL
-                      << "function not not defined on " << advancedTwin[ii]->ClassName() );     
-            }
-          }                
-        }        
+        }         
         else {
           DTWARNINGWF(createAdvanced(),
                   << DTLOGEVAL( getAttributeStr("attribute", *toBuildP) ) << LOGDEL

@@ -18,7 +18,7 @@ namespace dtOO {
     virtual ~dtOCCTrimmedCurve();
     virtual dtCurve * clone( void ) const;
     virtual int getOrder( void ) const;
-    virtual int getNControlPoints( void ) const;
+    virtual int nControlPoints( void ) const;
     virtual dtPoint3 getControlPoint3d( int const nPoint ) const;
     virtual void setControlPoint3d( int const nPoint, dtPoint3 const point );  
     dtCurve * bSplineCurve( void ) const;

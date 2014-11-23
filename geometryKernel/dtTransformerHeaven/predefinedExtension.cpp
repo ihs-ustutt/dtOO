@@ -116,7 +116,7 @@ namespace dtOO {
 				//
 				// get points, slope and distances
 				//
-				int nCPoints = dtC->getNControlPoints();
+				int nCPoints = dtC->nControlPoints();
 				dtPoint3 start = dtC->getControlPoint3d(0);
 				dtPoint3 end = dtC->getControlPoint3d(nCPoints-1);
 				dtVector3 vvStart = start - dtC->getControlPoint3d(1);

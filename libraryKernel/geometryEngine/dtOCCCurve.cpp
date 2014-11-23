@@ -156,6 +156,15 @@ namespace dtOO {
 		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);		
 	}	
 	
+	void dtOCCCurve::translate( dtVector3 const & tt ) {
+		gp_Vec vv(
+		  static_cast<Standard_Real>(tt.x()),
+			static_cast<Standard_Real>(tt.y()),
+			static_cast<Standard_Real>(tt.z()) 
+		);
+		OCCRef().getOCC()->Translate(vv);
+	}
+	
 	dtOCCCurveBase const & dtOCCCurve::OCCRef( void ) const {
 		return *(_curve.get());
 	}

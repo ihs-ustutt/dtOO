@@ -6,12 +6,10 @@
 #include "map2dTo3d.h"
 #include <dtLinearAlgebra.h>
 #include <vector>
-#include "twoDimRevertable.h"
 
 namespace dtOO {
   class dtSurface;
   class dtCurve;
-  class dtCurve2d;
   class splineCurve3d;
 
   /**
@@ -19,8 +17,7 @@ namespace dtOO {
    * @author A. Tismer
    * @date 04.12.2012
    */
-  class analyticSurface : public map2dTo3d,
-                          public twoDimRevertable {
+  class analyticSurface : public map2dTo3d {
   public:
     dt__CLASSSTD(analyticSurface, analyticGeometry);    
     //
@@ -48,7 +45,6 @@ namespace dtOO {
     //
     // interfaces
     //
-    virtual void revert( void );
     virtual void offsetNormal( float const nn );
     virtual bool isClosed( int const & dir) const;
     virtual float getMin( int const & dir) const;

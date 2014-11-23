@@ -48,11 +48,11 @@ namespace dtOO {
 	}
 	
 	dtPoint3 dtCurve::getLastControlPoint3d(void) const {
-		return getControlPoint3d(getNControlPoints()-1);
+		return getControlPoint3d(nControlPoints()-1);
 	}
 	
 	dtPoint3 dtCurve::getPreLastControlPoint3d(void) const {
-		return getControlPoint3d(getNControlPoints()-2);
+		return getControlPoint3d(nControlPoints()-2);
 	}
 	
 	dtPoint3 dtCurve::getFirstControlPoint3d(void) const {
@@ -91,10 +91,6 @@ namespace dtOO {
 		return uPercent_u( u_l(ll) );
 	}	
 	
-	void dtCurve::trimPercent( float const uPercentStart, float const uPercentEnd) {
-		trim(u_uPercent(uPercentStart), u_uPercent(uPercentEnd));
-	}
-	
 	//
 	//
 	//
@@ -106,28 +102,13 @@ namespace dtOO {
 		);
 	}
 	
-	void dtCurve::connectArithmetic( dtCurve const * const toConnect ) {
-		DTFUNCTIONNOTI(connectArithmetic());
-	}
-	
-	void dtCurve::closeArithmetic( void ) {
-		DTFUNCTIONNOTI(closeArithmetic());
-	}
-	
-	void dtCurve::closeStraight( void ) {
-		DTFUNCTIONNOTI(closeStraight());
-	}
-	
-	void dtCurve::rotate( dtPoint3 const origin, dtVector3 const vector, float const angle ) {
-		DTFUNCTIONNOTI(rotate());
-	}
 	
 	void dtCurve::revert( void ) {
 		DTFUNCTIONNOTI(revert());
 	}
 	
-	void dtCurve::trim( float const uuStart, float const uuEnd) {
-		DTFUNCTIONNOTI(trim());
+	void dtCurve::translate( dtVector3 const & tt ) {
+		DTFUNCTIONNOTI(translate());
 	}
 	
   dtPoint3 dtCurve::startPoint(void) const {

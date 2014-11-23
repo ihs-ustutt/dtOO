@@ -107,10 +107,6 @@ namespace dtOO {
     return _dtS.get();
   }   
   
-  void analyticSurface::revert( void ) {
-    _dtS->revert();
-  }
-  
   void analyticSurface::offsetNormal( float const nn ) {
     _dtS->offsetNormal( nn );
   }

@@ -15,7 +15,7 @@ namespace dtOO {
 	geomCurve_normalOffsetGeomCurveOCC::geomCurve_normalOffsetGeomCurveOCC(dtCurve const * const dtC, float const & offset) {
     dt__PTRASS( dtOCCCurve const * occC, dtOCCCurve::ConstDownCast(dtC) );
 		
-		int numCP = occC->getNControlPoints();
+		int numCP = occC->nControlPoints();
 		vectorHandling< dtPoint3 > pp;
 
 

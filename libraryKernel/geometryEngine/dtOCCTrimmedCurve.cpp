@@ -38,7 +38,7 @@ namespace dtOO {
 		DTFUNCTIONNOTI(getOrder());			
 	}
 	
-  int dtOCCTrimmedCurve::getNControlPoints( void ) const {
+  int dtOCCTrimmedCurve::nControlPoints( void ) const {
 		return 0;			
 	}
 	

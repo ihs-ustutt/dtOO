@@ -31,7 +31,8 @@ namespace dtOO {
     //
     // optional
     //   
-    virtual void revert( void );        
+    virtual void revert( void );   
+	  virtual void translate( dtVector3 const & tt );
     dtOCCCurveBase const & OCCRef( void ) const;
     dtOCCCurveBase & OCCRef( void );
   private:

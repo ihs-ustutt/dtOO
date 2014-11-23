@@ -56,7 +56,7 @@ namespace dtOO {
     //
     // control points
     //
-    int numPoints = _dtC->getNControlPoints();
+    int numPoints = _dtC->nControlPoints();
     dtPoint3 tmpControlPoint;
 
     for (int ii=0; ii<numPoints; ii++) {
@@ -72,22 +72,10 @@ namespace dtOO {
   dtCurve const * const splineCurve3d::ptrConstDtCurve(void) const {
     return _dtC.get();
   }
-  
-  void splineCurve3d::rotate(dtPoint3 const origin, dtVector3 const vector, float const angle) {
-    _dtC->rotate(origin, vector, angle);
-  }
 
   void splineCurve3d::revert( void ) {
     _dtC->revert();
   }
-  
-  void splineCurve3d::closeArithmetic(void) {
-    _dtC->closeArithmetic();
-  }
-
-  void splineCurve3d::closeStraight(void) {
-    _dtC->closeStraight();
-  }  
   
   dtVector3 splineCurve3d::firstDerU( float const uu) const {
     return _dtC->firstDer(uu);

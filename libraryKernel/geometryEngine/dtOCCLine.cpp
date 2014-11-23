@@ -28,8 +28,8 @@ namespace dtOO {
 		DTFUNCTIONNOTI(getOrder);		
 	}
 	
-  int dtOCCLine::getNControlPoints( void ) const {
-		DTFUNCTIONNOTI(getNControlPoints);		
+  int dtOCCLine::nControlPoints( void ) const {
+		DTFUNCTIONNOTI(nControlPoints);		
 	}
 	
   dtPoint3 dtOCCLine::getControlPoint3d( int const nPoint ) const {

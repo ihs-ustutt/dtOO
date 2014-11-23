@@ -6,14 +6,11 @@ SET(HEADERS
   analyticGeometryHeaven/analyticSurface.h
   analyticGeometryHeaven/splineSurface3d.h
   analyticGeometryHeaven/oneDimTrimmable.h
-  analyticGeometryHeaven/oneDimForwardExtendable.h
-  analyticGeometryHeaven/oneDimBackwardExtendable.h
   analyticGeometryHeaven/oneDimRevertable.h
   analyticGeometryHeaven/twoDimRevertable.h
   analyticGeometryHeaven/map3dTo3d.h
   analyticGeometryHeaven/map2dTo3d.h
   analyticGeometryHeaven/map1dTo3d.h
-  analyticGeometryHeaven/oneDimCloseable.h
   analyticGeometryHeaven/trans6SidedCube.h
   analyticGeometryHeaven/rotatingMap2dTo3d.h
   analyticGeometryHeaven/rotatingMap2dTo3dPhiMS.h
@@ -76,14 +73,11 @@ SET(SOURCES
   analyticGeometryHeaven/analyticSurface.cpp
   analyticGeometryHeaven/splineSurface3d.cpp
   analyticGeometryHeaven/oneDimTrimmable.cpp
-  analyticGeometryHeaven/oneDimForwardExtendable.cpp
-  analyticGeometryHeaven/oneDimBackwardExtendable.cpp
   analyticGeometryHeaven/oneDimRevertable.cpp
   analyticGeometryHeaven/twoDimRevertable.cpp
   analyticGeometryHeaven/map3dTo3d.cpp
   analyticGeometryHeaven/map2dTo3d.cpp
   analyticGeometryHeaven/map1dTo3d.cpp
-  analyticGeometryHeaven/oneDimCloseable.cpp
   analyticGeometryHeaven/trans6SidedCube.cpp
   analyticGeometryHeaven/rotatingMap2dTo3d.cpp
   analyticGeometryHeaven/rotatingMap2dTo3dPhiMS.cpp

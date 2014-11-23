@@ -21,7 +21,7 @@ namespace dtOO {
       virtual bool closed( void ) const = 0;
       virtual dtPoint3 getPoint3d( float const uu ) const = 0;
       virtual dtVector3 firstDer( float const uu) const = 0;
-      virtual int getNControlPoints( void ) const = 0;
+      virtual int nControlPoints( void ) const = 0;
       virtual dtPoint3 getControlPoint3d( int const nPoint ) const = 0;
       virtual void setControlPoint3d( int const nPoint, dtPoint3 const point ) = 0;    
       virtual float l_u( float const uu ) const = 0;
@@ -31,12 +31,8 @@ namespace dtOO {
       // optional overload
       //
       virtual void dump(void);
-      virtual void connectArithmetic( dtCurve const * const toConnect );
-      virtual void closeArithmetic( void );
-      virtual void closeStraight( void );
-      virtual void rotate( dtPoint3 const origin, dtVector3 const vector, float const angle );
       virtual void revert( void );
-      virtual void trim( float const uuStart, float const uuEnd);
+      virtual void translate( dtVector3 const & tt );
       virtual dtPoint3 startPoint(void) const;
       virtual dtPoint3 endPoint(void) const;
       
@@ -61,7 +57,6 @@ namespace dtOO {
       float u_lPercent( float const percent ) const;
       float uPercent_lPercent( float const percent ) const;
       float uPercent_l( float const percent ) const;      
-      void trimPercent( float const uuStart, float const uuEnd);
     private:
 
     };
