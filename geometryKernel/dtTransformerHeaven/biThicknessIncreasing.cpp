@@ -7,6 +7,7 @@
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <algorithm>
 #include <progHelper.h>
 #include <logMe/logMe.h>
@@ -95,8 +96,26 @@ namespace dtOO {
       // create new function
       //
 			std::reverse( p2Inv.begin(), p2Inv.end() );
-			p2.erase( p2.begin() );
-			p2.erase( p2.end() );
+
+			//
+			// remove
+			//
+			float uvRes
+			= 
+			staticPropertiesHandler::getInstance()->getOptionFloat(
+				"uv_resolution"
+			);
+			if ( dtLinearAlgebra::distance(p2.back(), p2Inv.front()) < uvRes ) {
+				DTINFOWF(
+					apply(),
+					<< DTLOGPOI2D(p2.back()) << LOGDEL
+					<< DTLOGPOI2D(p2Inv.front()) << LOGDEL
+					<< DTLOGEVAL(dtLinearAlgebra::distance(p2.back(), p2Inv.front())) << LOGDEL
+					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< "Removing duplicate point."
+				);
+			  p2.erase( p2.end() );
+			}
 			std::vector< dtPoint2 > p2All( p2.size()+p2Inv.size() );
 			int counter = 0;
 			dt__FORALL(p2, ii,
@@ -112,8 +131,7 @@ namespace dtOO {
       ptrHandling<dtCurve2d> dtC2d( 
 			  bSplineCurve2d_pointConstructOCC(p2All, _splineOrder).result()
 			);
-
-//			DTINFOWF( apply(), << DTLOGEVAL(dtC2d->closed()) );			
+	
       //
       // create scaCurve2dOneD
       //
