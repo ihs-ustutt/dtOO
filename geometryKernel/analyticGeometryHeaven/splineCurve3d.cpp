@@ -33,7 +33,7 @@ namespace dtOO {
   }
 
   dtPoint3 splineCurve3d::getPoint(float const & uu) const {
-    return (_dtC->getPoint3d( uu ));
+    return (_dtC->point( uu ));
   }
 	
   vectorHandling< renderInterface * > splineCurve3d::getExtRender( void ) const {
@@ -60,7 +60,7 @@ namespace dtOO {
     dtPoint3 tmpControlPoint;
 
     for (int ii=0; ii<numPoints; ii++) {
-      tmpControlPoint = _dtC->getControlPoint3d(ii);
+      tmpControlPoint = _dtC->controlPoint(ii);
 			pp.push_back(tmpControlPoint);
     }
 		vectorHandling< renderInterface * > retVec(2);
@@ -86,10 +86,10 @@ namespace dtOO {
   }
   
   float splineCurve3d::getMin( int const & dir) const {
-    return _dtC->getMin(dir);
+    return _dtC->minPara(dir);
   }
 
   float splineCurve3d::getMax( int const & dir) const {
-    return _dtC->getMax(dir);
+    return _dtC->maxPara(dir);
   }  
 }

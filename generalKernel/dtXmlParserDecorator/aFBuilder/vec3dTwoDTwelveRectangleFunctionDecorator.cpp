@@ -133,36 +133,36 @@ namespace dtOO {
 		for (int ii=0; ii<cc.size(); ii++) {
 			retCC.push_back( cc[ii]->clone() );
 		}  
-		dtPoint3 p0 = retCC[0]->getPointPercent3d(0.);
-		dtPoint3 p1 = retCC[0]->getPointPercent3d(1.);
-		dtPoint3 q0 = retCC[1]->getPointPercent3d(0.);
-		dtPoint3 q1 = retCC[1]->getPointPercent3d(1.);
-		dtPoint3 r0 = retCC[2]->getPointPercent3d(0.);
-		dtPoint3 r1 = retCC[2]->getPointPercent3d(1.);
-		dtPoint3 s0 = retCC[3]->getPointPercent3d(0.);
-		dtPoint3 s1 = retCC[3]->getPointPercent3d(1.);
-//      dtPoint3 t0 = retCC[4]->getPointPercent3d(.25);
-//      dtPoint3 t1 = retCC[4]->getPointPercent3d(.75);
+		dtPoint3 p0 = retCC[0]->pointPercent(0.);
+		dtPoint3 p1 = retCC[0]->pointPercent(1.);
+		dtPoint3 q0 = retCC[1]->pointPercent(0.);
+		dtPoint3 q1 = retCC[1]->pointPercent(1.);
+		dtPoint3 r0 = retCC[2]->pointPercent(0.);
+		dtPoint3 r1 = retCC[2]->pointPercent(1.);
+		dtPoint3 s0 = retCC[3]->pointPercent(0.);
+		dtPoint3 s1 = retCC[3]->pointPercent(1.);
+//      dtPoint3 t0 = retCC[4]->pointPercent(.25);
+//      dtPoint3 t1 = retCC[4]->pointPercent(.75);
 
 		if ( dtVector3(p1-q0).squared_length() > dtVector3(p0-q0).squared_length() ) {
 			retCC[0]->revert();
-			p0 = retCC[0]->getPointPercent3d(0.);
-			p1 = retCC[0]->getPointPercent3d(1.);       
+			p0 = retCC[0]->pointPercent(0.);
+			p1 = retCC[0]->pointPercent(1.);       
 		}
 		if ( dtVector3(p1-q0).squared_length() > dtVector3(p1-q1).squared_length() ) {
 			retCC[1]->revert();
-			dtPoint3 q0 = retCC[1]->getPointPercent3d(0.);
-			dtPoint3 q1 = retCC[1]->getPointPercent3d(1.);
+			dtPoint3 q0 = retCC[1]->pointPercent(0.);
+			dtPoint3 q1 = retCC[1]->pointPercent(1.);
 		}    
 		if ( dtVector3(q1-r0).squared_length() > dtVector3(q1-r1).squared_length() ) {
 			retCC[2]->revert();
-			dtPoint3 r0 = retCC[2]->getPointPercent3d(0.);
-			dtPoint3 r1 = retCC[2]->getPointPercent3d(1.);
+			dtPoint3 r0 = retCC[2]->pointPercent(0.);
+			dtPoint3 r1 = retCC[2]->pointPercent(1.);
 		}      
 		if ( dtVector3(p0-s1).squared_length() > dtVector3(p0-s0).squared_length() ) {
 			retCC[3]->revert();
-//        dtPoint3 s0 = retVec[3]->getPointPercent3d(0.);
-//        dtPoint3 s1 = retVec[3]->getPointPercent3d(1.);
+//        dtPoint3 s0 = retVec[3]->pointPercent(0.);
+//        dtPoint3 s1 = retVec[3]->pointPercent(1.);
 		}         
 
 		cc.clear();
@@ -205,12 +205,12 @@ namespace dtOO {
 		cL2[10] 
 		= 
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[15]->getPointPercent3d(0.), cL2[14]->getPointPercent3d(0.)
+			cL2[15]->pointPercent(0.), cL2[14]->pointPercent(0.)
 		).result();
 		cL2[20] 
 		= 
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[15]->getPointPercent3d(1.), cL2[14]->getPointPercent3d(1.)
+			cL2[15]->pointPercent(1.), cL2[14]->pointPercent(1.)
 		).result();
 		cL2[21] 
 		= 
@@ -225,7 +225,7 @@ namespace dtOO {
 		cL2[22] 
 		= 
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[21]->getPointPercent3d(1.), cL2[26]->getPointPercent3d(1.)
+			cL2[21]->pointPercent(1.), cL2[26]->pointPercent(1.)
 		).result();
 		cL2[16] 
 		= 
@@ -240,34 +240,34 @@ namespace dtOO {
 		cL2[11] 
 		= 
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[16]->getPointPercent3d(1.), cL2[17]->getPointPercent3d(1.)
+			cL2[16]->pointPercent(1.), cL2[17]->pointPercent(1.)
 		).result();
-		ppUV = dtS->reparam(cL2[20]->getPointPercent3d(1.));
+		ppUV = dtS->reparam(cL2[20]->pointPercent(1.));
 		cL2[25] = dtS->getCurveConstU(ppUV.x(), ppUV.y(), dtS->maxV());			
-		ppUV = dtS->reparam(cL2[22]->getPointPercent3d(1.));
+		ppUV = dtS->reparam(cL2[22]->pointPercent(1.));
 		cL2[27] = dtS->getCurveConstU(ppUV.x(), ppUV.y(), dtS->maxV());
 		cL2[30] 
 		= 
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[25]->getPointPercent3d(1.), cL2[27]->getPointPercent3d(1.)
+			cL2[25]->pointPercent(1.), cL2[27]->pointPercent(1.)
 		).result();
-		ppUV = dtS->reparam(cL2[10]->getPointPercent3d(1.));
+		ppUV = dtS->reparam(cL2[10]->pointPercent(1.));
 		cL2[5] = dtS->getCurveConstU(ppUV.x(), dtS->minV(), ppUV.y());
-		ppUV = dtS->reparam(cL2[15]->getPointPercent3d(0.));
+		ppUV = dtS->reparam(cL2[15]->pointPercent(0.));
 		cL2[6] = dtS->getCurveConstU(ppUV.x(), dtS->minV(), ppUV.y());
-		ppUV = dtS->reparam(cL2[11]->getPointPercent3d(1.));
+		ppUV = dtS->reparam(cL2[11]->pointPercent(1.));
 		cL2[7] = dtS->getCurveConstU(ppUV.x(), dtS->minV(), ppUV.y());
 		cL2[1] 
 		= 
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[5]->getPointPercent3d(0.), cL2[6]->getPointPercent3d(0.)
+			cL2[5]->pointPercent(0.), cL2[6]->pointPercent(0.)
 		).result();			
 		cL2[2] 
 		= 
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[7]->getPointPercent3d(0.), cL2[6]->getPointPercent3d(0.)
+			cL2[7]->pointPercent(0.), cL2[6]->pointPercent(0.)
 		).result();
-		//ppUV = dtS->reparam(cL2[11]->getPointPercent3d(1.));
+		//ppUV = dtS->reparam(cL2[11]->pointPercent(1.));
 		cL2[24] 
 		= 
 		trimmedCurve_uBounds(
@@ -276,12 +276,12 @@ namespace dtOO {
 		cL2[19] 
 		=
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[24]->getPointPercent3d(1.), cL2[17]->getPointPercent3d(0.)
+			cL2[24]->pointPercent(1.), cL2[17]->pointPercent(0.)
 		).result();			
 		cL2[29] 
 		=
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[24]->getPointPercent3d(0.), cL2[27]->getPointPercent3d(1.)
+			cL2[24]->pointPercent(0.), cL2[27]->pointPercent(1.)
 		).result();							
 		cL2[28] 
 		= 
@@ -291,12 +291,12 @@ namespace dtOO {
 		cL2[23] 
 		=
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[28]->getPointPercent3d(0.), cL2[14]->getPointPercent3d(1.)
+			cL2[28]->pointPercent(0.), cL2[14]->pointPercent(1.)
 		).result();			
 		cL2[31] 
 		=
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[28]->getPointPercent3d(1.), cL2[25]->getPointPercent3d(1.)
+			cL2[28]->pointPercent(1.), cL2[25]->pointPercent(1.)
 		).result();				
 		cL2[4] 
 		= 
@@ -306,12 +306,12 @@ namespace dtOO {
 		cL2[0] 
 		=
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[5]->getPointPercent3d(0.), cL[0]->getPointPercent3d(1.)
+			cL2[5]->pointPercent(0.), cL[0]->pointPercent(1.)
 		).result();			
 		cL2[9] 
 		=
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[5]->getPointPercent3d(1.), cL2[4]->getPointPercent3d(1.)
+			cL2[5]->pointPercent(1.), cL2[4]->pointPercent(1.)
 		).result();				
 		cL2[13] 
 		= 
@@ -327,12 +327,12 @@ namespace dtOO {
 		cL2[3] 
 		=
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[8]->getPointPercent3d(1.), cL2[7]->getPointPercent3d(0.)
+			cL2[8]->pointPercent(1.), cL2[7]->pointPercent(0.)
 		).result();			
 		cL2[12] 
 		=
 		trimmedCurve_twoPointsConnectConstructOCC(
-			cL2[7]->getPointPercent3d(1.), cL2[8]->getPointPercent3d(0.)
+			cL2[7]->pointPercent(1.), cL2[8]->pointPercent(0.)
 		).result();				
 		cL2[18] 
 		= 

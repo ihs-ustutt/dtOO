@@ -32,7 +32,7 @@ namespace dtOO {
 	dtOCCCurve::~dtOCCCurve() {
 	}
 
-  float dtOCCCurve::getMin ( int const & dir ) const {
+  float dtOCCCurve::minPara ( int const & dir ) const {
     switch (dir) {
       case 0:
 				dt__TRYOCC(
@@ -42,13 +42,13 @@ namespace dtOO {
 				);
         break;
       default:
-        dt__THROW(getMin(),
+        dt__THROW(minPara(),
               << DTLOGEVAL(dir) << LOGDEL
               << "dir should be 0.");
     }    		    
 	}
 	
-  float dtOCCCurve::getMax ( int const & dir ) const {
+  float dtOCCCurve::maxPara ( int const & dir ) const {
     switch (dir) {
       case 0:
 				dt__TRYOCC(
@@ -58,7 +58,7 @@ namespace dtOO {
 				);
         break;
       default:
-        dt__THROW(getMin(),
+        dt__THROW(minPara(),
               << DTLOGEVAL(dir) << LOGDEL
               << "dir should be 0.");
     }    		
@@ -72,7 +72,7 @@ namespace dtOO {
 		return static_cast<bool>(_ptr->IsClosed());
 	}
 	
-  dtPoint3 dtOCCCurve::getPoint3d( float const uu ) const {
+  dtPoint3 dtOCCCurve::point( float const uu ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt pp;
 		dt__TRYOCC(

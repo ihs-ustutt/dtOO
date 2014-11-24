@@ -117,11 +117,11 @@ namespace dtOO {
 				// get points, slope and distances
 				//
 				int nCPoints = dtC->nControlPoints();
-				dtPoint3 start = dtC->getControlPoint3d(0);
-				dtPoint3 end = dtC->getControlPoint3d(nCPoints-1);
-				dtVector3 vvStart = start - dtC->getControlPoint3d(1);
+				dtPoint3 start = dtC->controlPoint(0);
+				dtPoint3 end = dtC->controlPoint(nCPoints-1);
+				dtVector3 vvStart = start - dtC->controlPoint(1);
 				vvStart = vvStart / sqrt(vvStart.squared_length());
-				dtVector3 vvEnd = end - dtC->getControlPoint3d(nCPoints-2);
+				dtVector3 vvEnd = end - dtC->controlPoint(nCPoints-2);
 				vvEnd = vvEnd / sqrt(vvEnd.squared_length());
 
 				//

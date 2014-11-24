@@ -17,10 +17,10 @@ namespace dtOO {
     dtOCCLine( dtOCCCurveBase const & orig);
     virtual ~dtOCCLine();
     virtual dtCurve * clone( void ) const;
-    virtual int getOrder( void ) const;
+    virtual int order( void ) const;
     virtual int nControlPoints( void ) const;
-    virtual dtPoint3 getControlPoint3d( int const nPoint ) const;
-    virtual void setControlPoint3d( int const nPoint, dtPoint3 const point );    
+    virtual dtPoint3 controlPoint( int const nPoint ) const;
+    virtual void setControlPoint( int const nPoint, dtPoint3 const point );    
   private:
     Geom_Line const * _ptr;
   };

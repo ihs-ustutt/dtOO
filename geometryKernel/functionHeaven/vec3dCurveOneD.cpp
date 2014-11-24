@@ -26,7 +26,7 @@ namespace dtOO {
 	}
 	
 	aFY vec3dCurveOneD::Y( aFX const & xx ) const {
-		dtPoint3 p2d = _dtC->getPoint3d(xx[0]);
+		dtPoint3 p2d = _dtC->point(xx[0]);
 		
 		aFY yy(3);
 		

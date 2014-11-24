@@ -34,28 +34,28 @@ namespace dtOO {
 		return new dtOCCTrimmedCurve( OCCRef(), _u0, _u1 );		
 	}
 	
-  int dtOCCTrimmedCurve::getOrder( void ) const {
-		DTFUNCTIONNOTI(getOrder());			
+  int dtOCCTrimmedCurve::order( void ) const {
+		DTFUNCTIONNOTI(order());			
 	}
 	
   int dtOCCTrimmedCurve::nControlPoints( void ) const {
 		return 0;			
 	}
 	
-  dtPoint3 dtOCCTrimmedCurve::getControlPoint3d( int const nPoint ) const {
-		DTFUNCTIONNOTI(getControlPoint3d());		
+  dtPoint3 dtOCCTrimmedCurve::controlPoint( int const nPoint ) const {
+		DTFUNCTIONNOTI(controlPoint());		
 	}
 	
-  void dtOCCTrimmedCurve::setControlPoint3d( int const nPoint, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint3d());				
+  void dtOCCTrimmedCurve::setControlPoint( int const nPoint, dtPoint3 const point ) {
+		DTFUNCTIONNOTI(setControlPoint());				
 	}
 	
   dtCurve * dtOCCTrimmedCurve::bSplineCurve( void ) const {
 		dtCurve * bS;
 	  if ( !Handle(Geom_Line)::DownCast(_ptr->BasisCurve()).IsNull() )	{
 			std::vector< dtPoint3 > pVec;
-			pVec.push_back( getPointPercent3d(0.) );
-			pVec.push_back( getPointPercent3d(1.) );
+			pVec.push_back( pointPercent(0.) );
+			pVec.push_back( pointPercent(1.) );
 			bS = bSplineCurve_pointConstructOCC(pVec, 1).result();
 		}
 		else if ( !Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull() ) {

@@ -19,11 +19,11 @@ namespace dtOO {
     //
     // overload
     //
-    virtual float getMin ( int const & dir ) const;
-    virtual float getMax ( int const & dir ) const;
+    virtual float minPara ( int const & dir ) const;
+    virtual float maxPara ( int const & dir ) const;
 //    virtual int getKind( void ) const;
     virtual bool closed( void ) const;
-    virtual dtPoint3 getPoint3d( float const uu ) const;
+    virtual dtPoint3 point( float const uu ) const;
     virtual dtVector3 firstDer( float const uu) const;
     virtual float l_u( float const uu ) const;
     virtual float u_l( float const length ) const;

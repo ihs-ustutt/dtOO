@@ -77,19 +77,19 @@ namespace dtOO {
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );					
       dtC.reset( // 1
 				trimmedCurve_twoPointsConnectConstructOCC(
-			    cL[0]->getPointPercent3d(A), cL[4]->getPointPercent3d(0.)
+			    cL[0]->pointPercent(A), cL[4]->pointPercent(0.)
 			  ).result() 
 			);
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );		
       dtC.reset( // 2
 				trimmedCurve_twoPointsConnectConstructOCC(
-			    cL[4]->getPointPercent3d(0.), cL[3]->getPointPercent3d(C)
+			    cL[4]->pointPercent(0.), cL[3]->pointPercent(C)
 			  ).result() 
 			);
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );				
       dtC.reset( // 3
 				trimmedCurve_twoPointsConnectConstructOCC(
-			    cL[3]->getPointPercent3d(C), cL[3]->getPointPercent3d(1.)
+			    cL[3]->pointPercent(C), cL[3]->pointPercent(1.)
 			  ).result() 
 			);
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );			
@@ -108,7 +108,7 @@ namespace dtOO {
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );					
       dtC.reset( // 6
 				trimmedCurve_twoPointsConnectConstructOCC(
-			    cL[1]->getPointPercent3d(B), cL[4]->getPointPercent3d(0.)
+			    cL[1]->pointPercent(B), cL[4]->pointPercent(0.)
 			  ).result() 
 			);
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );					
@@ -121,7 +121,7 @@ namespace dtOO {
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );					
       dtC.reset( // 8
 				trimmedCurve_twoPointsConnectConstructOCC(
-			    cL[1]->getPointPercent3d(1.), cL[4]->getPointPercent3d(D)
+			    cL[1]->pointPercent(1.), cL[4]->pointPercent(D)
 			  ).result() 
 			);
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );							
@@ -140,7 +140,7 @@ namespace dtOO {
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );					
       dtC.reset( // 11
 				trimmedCurve_twoPointsConnectConstructOCC(
-			    cL[4]->getPointPercent3d(E), cL[2]->getPointPercent3d(1.)
+			    cL[4]->pointPercent(E), cL[2]->pointPercent(1.)
 			  ).result() 
 			);
       vec3dOneDaFC->addComponent( vec3dCurveOneD(dtC.get()) );							
@@ -223,36 +223,36 @@ void vec3dTwoDFiveRectangleFunctionDecorator::reorder(
       for (int ii=0; ii<cc.size(); ii++) {
         retCC.push_back( cc[ii]->clone() );
       }  
-      dtPoint3 p0 = retCC[0]->getPointPercent3d(0.);
-      dtPoint3 p1 = retCC[0]->getPointPercent3d(1.);
-      dtPoint3 q0 = retCC[1]->getPointPercent3d(0.);
-      dtPoint3 q1 = retCC[1]->getPointPercent3d(1.);
-      dtPoint3 r0 = retCC[2]->getPointPercent3d(0.);
-      dtPoint3 r1 = retCC[2]->getPointPercent3d(1.);
-      dtPoint3 s0 = retCC[3]->getPointPercent3d(0.);
-      dtPoint3 s1 = retCC[3]->getPointPercent3d(1.);
-//      dtPoint3 t0 = retCC[4]->getPointPercent3d(.25);
-//      dtPoint3 t1 = retCC[4]->getPointPercent3d(.75);
+      dtPoint3 p0 = retCC[0]->pointPercent(0.);
+      dtPoint3 p1 = retCC[0]->pointPercent(1.);
+      dtPoint3 q0 = retCC[1]->pointPercent(0.);
+      dtPoint3 q1 = retCC[1]->pointPercent(1.);
+      dtPoint3 r0 = retCC[2]->pointPercent(0.);
+      dtPoint3 r1 = retCC[2]->pointPercent(1.);
+      dtPoint3 s0 = retCC[3]->pointPercent(0.);
+      dtPoint3 s1 = retCC[3]->pointPercent(1.);
+//      dtPoint3 t0 = retCC[4]->pointPercent(.25);
+//      dtPoint3 t1 = retCC[4]->pointPercent(.75);
 			
       if ( dtVector3(p1-q0).squared_length() > dtVector3(p0-q0).squared_length() ) {
         retCC[0]->revert();
-        p0 = retCC[0]->getPointPercent3d(0.);
-        p1 = retCC[0]->getPointPercent3d(1.);       
+        p0 = retCC[0]->pointPercent(0.);
+        p1 = retCC[0]->pointPercent(1.);       
       }
       if ( dtVector3(p1-q0).squared_length() > dtVector3(p1-q1).squared_length() ) {
         retCC[1]->revert();
-        dtPoint3 q0 = retCC[1]->getPointPercent3d(0.);
-        dtPoint3 q1 = retCC[1]->getPointPercent3d(1.);
+        dtPoint3 q0 = retCC[1]->pointPercent(0.);
+        dtPoint3 q1 = retCC[1]->pointPercent(1.);
       }    
       if ( dtVector3(q1-r0).squared_length() > dtVector3(q1-r1).squared_length() ) {
         retCC[2]->revert();
-        dtPoint3 r0 = retCC[2]->getPointPercent3d(0.);
-        dtPoint3 r1 = retCC[2]->getPointPercent3d(1.);
+        dtPoint3 r0 = retCC[2]->pointPercent(0.);
+        dtPoint3 r1 = retCC[2]->pointPercent(1.);
       }      
       if ( dtVector3(p0-s1).squared_length() > dtVector3(p0-s0).squared_length() ) {
         retCC[3]->revert();
-//        dtPoint3 s0 = retVec[3]->getPointPercent3d(0.);
-//        dtPoint3 s1 = retVec[3]->getPointPercent3d(1.);
+//        dtPoint3 s0 = retVec[3]->pointPercent(0.);
+//        dtPoint3 s1 = retVec[3]->pointPercent(1.);
       }         
       
 //			cc.clear();
