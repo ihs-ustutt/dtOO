@@ -54,6 +54,7 @@ namespace dtOO {
     virtual void handlePoint2d(std::string const name, dtPoint2 const value);
     virtual void handleBool(std::string const name, bool const value);
     virtual void handleDtVector3(std::string const name, dtVector3 const value);
+    virtual void handleDtVector2(std::string const name, dtVector2 const value);
   };
 }
 

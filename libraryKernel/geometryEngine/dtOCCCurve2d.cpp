@@ -84,18 +84,22 @@ namespace dtOO {
 		);		
 	}
 	
-  dtVector2 dtOCCCurve2d::normal( float const uu) const {
-//		Standard_Real uR = static_cast<Standard_Real>(uu);
-//		gp_Pnt2d pp;
-//		gp_Vec2d vv;
-//		
-//		_ptr->D1(uR, pp, vv);
-//		
-//		return dtVector2(
-//						static_cast<float>(vv.Coord(1)), 
-//						static_cast<float>(vv.Coord(2))
-//		);		
-		DTFUNCTIONNOTI(normal);
+  dtVector2 dtOCCCurve2d::normal( float const & uu) const {
+		Standard_Real uR = static_cast<Standard_Real>(uu);
+		gp_Pnt2d pp;
+		gp_Vec2d vv;
+		
+		_ptr->D1(uR, pp, vv);
+		
+		dtVector2 nn 
+		=
+		dtLinearAlgebra::unitNormal(
+			dtVector2(
+				static_cast<float>(vv.Coord(1)), static_cast<float>(vv.Coord(2))
+			)
+		);	
+		
+		return nn;
 	}	
 		
   float dtOCCCurve2d::l_u( float const uu ) const {
@@ -140,6 +144,14 @@ namespace dtOO {
 		
 		return static_cast<float>( epp.Parameter() );
 	}	
+
+	void dtOCCCurve2d::translate( dtVector2 const & tt ) {
+		gp_Vec2d vv(
+		  static_cast<Standard_Real>(tt.x()),
+			static_cast<Standard_Real>(tt.y()) 
+		);
+		OCCRef().getOCC()->Translate(vv);
+	}
 	
 	void dtOCCCurve2d::revert( void ) {
 		Handle(Geom2d_Curve) rev = _ptr->Reversed();

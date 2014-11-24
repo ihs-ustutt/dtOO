@@ -84,7 +84,12 @@ namespace dtOO {
 				dtTransformerP 
 				= 
 				dtTransformerFactory::create( name );
-				dtTransformerP->init(&wElement, bC, cValP, sFunP, depAGeoP);			
+				if (depAGeoP) {
+				  dtTransformerP->init(&wElement, bC, cValP, sFunP, depAGeoP);			
+				}
+				else {
+					dtTransformerP->init(&wElement, cValP, sFunP);			
+				}
 			}
 			else if (hasLabel && inContainer && !hasName) {
 				return bC->ptrTransformerContainer()->get(label)->clone();
@@ -93,7 +98,12 @@ namespace dtOO {
 				dtTransformerP 
 				= 
 				dtTransformerFactory::create( name );
-				dtTransformerP->init(&wElement, bC, cValP, sFunP, depAGeoP);			
+				if (depAGeoP) {
+				  dtTransformerP->init(&wElement, bC, cValP, sFunP, depAGeoP);			
+				}
+				else {
+					dtTransformerP->init(&wElement, cValP, sFunP);
+				}
         bC->ptrTransformerContainer()->add(dtTransformerP);
 				delete dtTransformerP;
 				dtTransformerP = dtTransformerFactory::create("doNothing");
@@ -125,25 +135,7 @@ namespace dtOO {
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) const {
-
-      dtTransformerFactory dtTransFac;
-      dtTransformer * dtTransformerP;
-        //
-      // check if there is a transformer
-      //
-      if ( hasSibling("transformer", *toBuildP) ) {
-        //get transformer element
-        QDomElement wElement = getSibling("transformer", *toBuildP);
-        //
-        //create and initialize transformer
-        //
-        dtTransformerP = dtTransFac.create( wElement.attribute("name").toStdString() );
-        dtTransformerP->init(&wElement, cValP, sFunP);
-      }
-      else {
-        dtTransformerP = dtTransFac.create("doNothing");
-      }
-      return dtTransformerP;
+		return createTransformer(toBuildP, bC, cValP, sFunP, NULL);
   }
 
   void dtXmlParserBase::createBasic(
@@ -578,6 +570,101 @@ namespace dtOO {
 		}    
   }
 
+	/**
+	 * 
+   * @todo Function does not store two dimensional vector in container.
+   */
+  dtVector2 dtXmlParserBase::createDtVector2(
+	  QDomElement const * toBuildP,
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,  
+		vectorHandling< analyticFunction * > const * const sFunP, 
+		vectorHandling< analyticGeometry * > const * const depAGeoP
+	) const {  
+		dtVector2 vv;
+
+    if ( !is("Vector_2", *toBuildP) && !is("dtVector2", *toBuildP) ) {
+      dt__THROW(createBasic(), << DTLOGEVAL( getTagName(*toBuildP) ) );
+    }
+    else {
+      //
+      // check if vector has a label and point is already created
+      // return point and that's it
+      //
+//      if ( toBuildP->hasAttribute("label") ) {
+//        if ( bC->ptrVectorContainer()->has(toBuildP->attribute("label").toStdString()) ) {
+////          *basicP = new dtVector3(0,0,0);
+//          vv = bC->ptrVectorContainer()->get( toBuildP->attribute("label").toStdString() );
+//          return vv;
+//        }
+//      }
+      //
+      // check for attribute x, y and z
+      //
+      if ( toBuildP->hasAttribute("x") && toBuildP->hasAttribute("y") ) { 
+        //
+        // create coordinates
+        //
+        float cX = muParseString(
+                     replaceUsedFunctions(
+                       getAttributeStr("x", *toBuildP),
+                       cValP, 
+                       sFunP
+                     )
+                   );  
+        float cY = muParseString(
+                     replaceUsedFunctions(
+                       getAttributeStr("y", *toBuildP),
+                       cValP, 
+                       sFunP
+                     )
+                   );            
+        //
+        // create vector
+        //
+        vv = dtVector2(cX, cY);
+      }
+      else if ( toBuildP->hasAttribute("u") && toBuildP->hasAttribute("v") ) { 
+        //
+        // create coordinates
+        //
+        float cX = muParseString(
+                     replaceUsedFunctions(
+                       getAttributeStr("u", *toBuildP),
+                       cValP, 
+                       sFunP
+                     )
+                   );  
+        float cY = muParseString(
+                     replaceUsedFunctions(
+                       getAttributeStr("v", *toBuildP),
+                       cValP, 
+                       sFunP
+                     )
+                   );            
+        //
+        // create vector
+        //
+        vv = dtVector2(cX, cY);
+      }			
+//      //
+//      //check if point has a label and add it to the container
+//      //
+//      if ( toBuildP->hasAttribute("label") ) {
+//        bC->ptrVectorContainer()->add( vv, toBuildP->attribute("label").toStdString() );
+//      }
+      //
+      //output
+      //
+      DTDEBUGWF(
+				createDtVector2(),
+        << "created vector: (" << vv.x() << " / " << vv.y() << ")"
+			);
+			
+			return vv;
+    }
+  }
+	
   dtVector3 dtXmlParserBase::createDtVector3(
 	  QDomElement const * toBuildP,
 		baseContainer * const bC,
@@ -926,7 +1013,7 @@ namespace dtOO {
     }
 		else if ( toBuildP->attribute("attribute") == "pick_order_from_file") {       
 			if ( getAttributeStr("file_name", *toBuildP) != "" ) {
-				ifstream in( getAttributeStr("file_name", *toBuildP).c_str() );
+				std::ifstream in( getAttributeStr("file_name", *toBuildP).c_str() );
 				std::vector< std::vector < double > > fields;
 				if (in) {
 					std::string line;
@@ -1231,8 +1318,9 @@ namespace dtOO {
 			// get label
 			//
 			std::string label = getAttributeStr("label", *toBuildP);
-			
-      if ( stringContains("*", label) ) {
+		  DTINFOWF(createAdvanced(), << DTLOGEVAL(label));
+      
+			if ( stringContains("*", label) ) {
 				//
 				// string contains "*" --> return set of analyticGeometries
 				//				

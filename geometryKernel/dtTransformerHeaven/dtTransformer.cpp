@@ -154,7 +154,14 @@ namespace dtOO {
     dt__THROW(handleDtVector3(),
             << "Could not handle:" << LOGDEL
             << DTLOGEVAL(name) << LOGDEL
-            << DTLOGPOI3D(value) );  		
+            << DTLOGVEC3D(value) );  		
 	}
+
+	void dtTransformer::handleDtVector2(std::string const name, dtVector2 const value) {
+    dt__THROW(handleDtVector2(),
+            << "Could not handle:" << LOGDEL
+            << DTLOGEVAL(name) << LOGDEL
+            << DTLOGVEC2D(value) );  		
+	}	
 }
 

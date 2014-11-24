@@ -187,6 +187,10 @@ namespace dtOO {
     );
   }  
   
+	/**
+	 * 
+   * @todo This function should be removed. Please use createDtVector3.
+   */
   dtVector3 qtXmlBase::getDtVector3(
     QDomElement const element,
     vectorHandling< constValue * > const * const cValP,

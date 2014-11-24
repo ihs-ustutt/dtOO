@@ -25,14 +25,10 @@ namespace dtOO {
 		std::vector< QDomElement > elV = getChildVector(toBuildP);
 		for (int ii=0; ii<elV.size(); ii++) {//dt__FORALL(elV, ii,
 		  if ( hasAttribute("label", elV[ii]) ) {
-				if ( depSFunP->has( getAttributeStr("label", elV[ii]) ) ) {
-					sFunP->push_back( 
-					  this->createAnalyticFunction( &elV[ii], bC, cValP, depSFunP)
-					);
-					return;
-				}
+				sFunP->push_back( 
+  			  this->createAnalyticFunction( &elV[ii], bC, cValP, depSFunP)
+				);
 			}
 		}
-
   }
 }

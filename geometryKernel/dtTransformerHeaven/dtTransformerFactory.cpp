@@ -6,6 +6,7 @@
 #include "thicknessIncreasing.h"
 #include "biThicknessIncreasing.h"
 #include "offset.h"
+#include "translate.h"
 #include "rotate.h"
 #include "conformalMapping.h"
 #include "pickMap3dTo3dRangePercent.h"
@@ -42,6 +43,7 @@ namespace dtOO {
     __IFRET( thicknessIncreasing );
 		__IFRET( biThicknessIncreasing );
     __IFRET( offset );
+		__IFRET( translate );
     __IFRET( rotate );
     __IFRET( pickMap3dTo3dRangePercent );
     __IFRET( conformalMappingStartFromPoint );
@@ -56,7 +58,7 @@ namespace dtOO {
     dt__THROW(create(), << str <<  " could not be created");  
   }
 
-  dtTransformer* dtTransformerFactory::create(string const str) {
+  dtTransformer* dtTransformerFactory::create( std::string const str) {
     return create( str.c_str() );
   }
 }

@@ -54,6 +54,7 @@ SET(HEADERS
   dtTransformerHeaven/conformalMapping.h
   dtTransformerHeaven/doNothing.h
   dtTransformerHeaven/offset.h
+  dtTransformerHeaven/translate.h
   dtTransformerHeaven/rotate.h
   dtTransformerHeaven/pickMap3dTo3dRangePercent.h
   dtTransformerHeaven/addConstCoordinate.h
@@ -118,6 +119,7 @@ SET(SOURCES
   dtTransformerHeaven/dtTransformerFactory.cpp
   dtTransformerHeaven/doNothing.cpp
   dtTransformerHeaven/offset.cpp
+  dtTransformerHeaven/translate.cpp
   dtTransformerHeaven/rotate.cpp
   dtTransformerHeaven/pickMap3dTo3dRangePercent.cpp
   dtTransformerHeaven/addConstCoordinate.cpp
