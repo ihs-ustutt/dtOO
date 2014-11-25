@@ -18,7 +18,6 @@
 		<option name="geometry_render_resolution_w" value="10"/>
 	</staticProperties>	
 	
-	<include label="meridian" filename="./simple.xml"/>
-	<include label="guidevane" filename="./mesh.xml"/> 
-<!--	<include label="debug" filename="./debug.xml"/> -->
+	<include label="simple" filename="./simple.xml"/>
+	<include label="mesh" filename="./mesh.xml"/> 
 </machine>
