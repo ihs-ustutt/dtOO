@@ -2,6 +2,7 @@
 #include <functionHeaven/analyticFunction.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h>
 #include <functionHeaven/vec2dCurve2dOneD.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -30,13 +31,14 @@ namespace dtOO {
     bool hasAlphaOne = hasAttribute("alpha_one", toBuildP);
     bool hasAlphaTwo = hasAttribute("alpha_two", toBuildP);
     bool hasRatio = hasAttribute("ratio", toBuildP);
+		bool hasDeltaX = hasAttribute("delta_x", toBuildP);
     bool hasDeltaY = hasAttribute("delta_y", toBuildP);
     bool hasOrder = hasAttribute("order", toBuildP);
 
     //
     //
     //
-    if ( hasAlphaOne && hasAlphaTwo && hasRatio && hasDeltaY && hasOrder ) {
+    if ( hasAlphaOne && hasAlphaTwo && hasRatio && !hasDeltaX && hasDeltaY && hasOrder ) {
       //
       // get necessary values
       //
@@ -90,12 +92,67 @@ namespace dtOO {
 			  )
 			);			
     }
+    else if ( hasAlphaOne && hasAlphaTwo && !hasRatio && hasDeltaX && hasDeltaY && hasOrder ) {
+      //
+      // get necessary values
+      //
+      float alphaOne = muParseString(
+                         replaceUsedFunctions(
+                           getAttributeStr(
+                             "alpha_one", 
+                             toBuildP
+                           ), 
+                           cValP, 
+                           depSFunP
+                         )
+                       );      
+      float alphaTwo = muParseString(
+                         replaceUsedFunctions(
+                           getAttributeStr(
+                             "alpha_two", 
+                             toBuildP
+                           ), 
+                           cValP, 
+                           depSFunP
+                         )
+                       );
+      float deltaY = muParseString(
+                       replaceUsedFunctions(
+                         getAttributeStr(
+                           "delta_y", 
+                           toBuildP
+                         ), 
+                         cValP, 
+                         depSFunP
+                       )
+                     ); 
+      float deltaX = muParseString(
+                       replaceUsedFunctions(
+                         getAttributeStr(
+                           "delta_x", 
+                           toBuildP
+                         ), 
+                         cValP, 
+                         depSFunP
+                       )
+                     ); 			
+			sFunP->push_back( 
+			  new vec2dCurve2dOneD( 
+					dt__pH(dtCurve2d)(
+						bSplineCurve2d_angleDeltaXDeltaYConstructOCC(
+			        alphaOne, alphaTwo, deltaX, deltaY
+			      ).result()
+					).get()
+			  )
+			);			
+    }		
     else {
       dt__THROW(buildPart(),
               << DTLOGEVAL(hasOrder) << LOGDEL
               << DTLOGEVAL(hasAlphaOne) << LOGDEL
               << DTLOGEVAL(hasAlphaTwo) << LOGDEL
               << DTLOGEVAL(hasRatio) << LOGDEL
+							<< DTLOGEVAL(hasDeltaX) << LOGDEL
               << DTLOGEVAL(hasDeltaY) );
     }
   }

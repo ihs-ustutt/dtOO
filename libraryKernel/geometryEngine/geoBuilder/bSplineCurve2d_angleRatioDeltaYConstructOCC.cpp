@@ -84,9 +84,9 @@ namespace dtOO {
 			//
 			std::vector< dtPoint2 > pV;
 			pV.push_back( dtPoint2(0.,0.) );
-			int ss = ( deltaY - deltaX * sin(angleIn) / cos(angleIn) )
-							 /
-							 ( sin(angleOut) - (cos(angleOut)*sin(angleIn) / cos(angleIn)) );
+//			int ss = ( deltaY - deltaX * sin(angleIn) / cos(angleIn) )
+//							 /
+//							 ( sin(angleOut) - (cos(angleOut)*sin(angleIn) / cos(angleIn)) );
 			int tt = ( deltaY - deltaX * sin(angleOut) / cos(angleOut) )
 							 /
 							 ( sin(angleIn) - (cos(angleIn)*sin(angleOut) / cos(angleOut)) );      
@@ -115,7 +115,7 @@ namespace dtOO {
 				<< DTLOGEVAL(deltaXMin) << LOGDEL 
 				<< DTLOGEVAL(deltaXMax) << LOGDEL               
 				<< DTLOGEVAL(ratio) << LOGDEL
-				<< DTLOGEVAL(ss) << LOGDEL
+//				<< DTLOGEVAL(ss) << LOGDEL
 				<< DTLOGEVAL(tt) << LOGDEL
 				<< DTLOGEVAL(deltaX) << LOGDEL 
 				<< DTLOGEVAL(deltaY) << LOGDEL
