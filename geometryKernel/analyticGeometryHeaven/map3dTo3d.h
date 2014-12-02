@@ -51,8 +51,20 @@ namespace dtOO {
     int getRenderResolutionU( void ) const;
     int getRenderResolutionV( void ) const;            
     int getRenderResolutionW( void ) const;
-    map2dTo3d * segment( twoDArrayHandling< dtPoint3 > const & pp ) const;
-    map1dTo3d * segment( dtPoint3 const & p0, dtPoint3 const & p1 ) const;
+    virtual map1dTo3d * segment( dtPoint3 const & p0, dtPoint3 const & p1 ) const;
+    virtual map2dTo3d * segment( twoDArrayHandling< dtPoint3 > const & pp ) const;
+    virtual map2dTo3d * segmentConstU( float const & uu ) const;
+    virtual map2dTo3d * segmentConstV( float const & vv ) const;
+    virtual map2dTo3d * segmentConstW( float const & ww ) const;    
+    virtual map2dTo3d * segmentConstU( float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
+    virtual map2dTo3d * segmentConstV( float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
+    virtual map2dTo3d * segmentConstW( float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
+    map2dTo3d * segmentConstUPercent( float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
+    map2dTo3d * segmentConstVPercent( float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
+    map2dTo3d * segmentConstWPercent( float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 ) const;    
+    map2dTo3d * segmentConstUPercent( float const & uu ) const;
+    map2dTo3d * segmentConstVPercent( float const & vv ) const;
+    map2dTo3d * segmentConstWPercent( float const & ww ) const;      
     map2dTo3d * segment( 
       dtPoint3 const & p0, dtPoint3 const & p1, 
       dtPoint3 const & p2, dtPoint3 const & p3 

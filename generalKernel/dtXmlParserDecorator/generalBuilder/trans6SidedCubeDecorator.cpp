@@ -7,8 +7,7 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -22,8 +21,7 @@ namespace dtOO {
 
   void trans6SidedCubeDecorator::buildPart( 
     QDomElement ** toBuildP,
-    pointContainer * const pointContainerP,
-    vectorContainer * const vectorContainerP,            
+    baseContainer * const bC,     
     vectorHandling< constValue * > const * const cValP,           
     vectorHandling< analyticFunction * > const * const sFunP,    
     vectorHandling< analyticGeometry * > const * const depAGeoP,

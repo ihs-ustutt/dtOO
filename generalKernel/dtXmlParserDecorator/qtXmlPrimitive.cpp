@@ -12,7 +12,7 @@ namespace dtOO {
   qtXmlPrimitive::~qtXmlPrimitive() {
   }  
 
-  std::string qtXmlPrimitive::convertToString(QDomNode const node) const {
+  std::string qtXmlPrimitive::convertToString(QDomNode const node) {
 		std::string retStr;
 		if (node.isNull()) {
 			retStr = "Trying to convert a Null-Node to a string.";
@@ -48,15 +48,15 @@ namespace dtOO {
 		return retStr;
   }	
 
-  std::string qtXmlPrimitive::getTagName(QDomElement const element) const {
+  std::string qtXmlPrimitive::getTagName(QDomElement const element) {
     return element.tagName().toStdString();
   }
       
-  QDomElement qtXmlPrimitive::getBuilderSibling( QDomElement const element ) const {
+  QDomElement qtXmlPrimitive::getBuilderSibling( QDomElement const element ) {
     return ( getSibling("builder", element) );
   }    
 
-  bool qtXmlPrimitive::hasSibling(std::string const sibName, QDomElement const element ) const {
+  bool qtXmlPrimitive::hasSibling(std::string const sibName, QDomElement const element ) {
     QDomElement tmpElement;
 
     tmpElement = getSibling(sibName, element);
@@ -68,7 +68,7 @@ namespace dtOO {
     }
   }
 
-    bool qtXmlPrimitive::hasChild(std::string const sibName, QDomElement const element ) const {
+    bool qtXmlPrimitive::hasChild(std::string const sibName, QDomElement const element ) {
     QDomElement tmpElement;
 
     tmpElement = getChild(sibName, element);
@@ -80,7 +80,7 @@ namespace dtOO {
     }
   }
 
-  QDomElement qtXmlPrimitive::getSibling(std::string const sibName, QDomElement const element ) const {
+  QDomElement qtXmlPrimitive::getSibling(std::string const sibName, QDomElement const element ) {
 //    QDomElement* tmpElementP;
     bool goBack;
 
@@ -118,7 +118,7 @@ namespace dtOO {
     return ( QDomElement (*tmpElementP) );
   }    
 
-  std::vector< QDomElement > qtXmlPrimitive::getSiblingVector(std::string const sibName, QDomElement const element ) const {
+  std::vector< QDomElement > qtXmlPrimitive::getSiblingVector(std::string const sibName, QDomElement const element ) {
     std::vector< QDomElement > sibVec;
     bool goBack = false;
     
@@ -154,7 +154,7 @@ namespace dtOO {
     return sibVec;
   }
   
-  std::vector< QDomElement > qtXmlPrimitive::getChildVector(std::string const sibName, QDomElement const element ) const {
+  std::vector< QDomElement > qtXmlPrimitive::getChildVector(std::string const sibName, QDomElement const element ) {
     QDomElement first = getChild(sibName, element);
     std::vector< QDomElement > retVec = getSiblingVector(sibName, first);
 
@@ -163,7 +163,7 @@ namespace dtOO {
     return retVec;
   }  
 	
-	std::vector< QDomElement > qtXmlPrimitive::getChildVector( QDomElement const element ) const {
+	std::vector< QDomElement > qtXmlPrimitive::getChildVector( QDomElement const element ) {
 			QDomNodeList list = element.childNodes();
 			std::vector< QDomElement > elVec;
 			for (int jj=0; jj<list.length(); jj++) {
@@ -176,7 +176,7 @@ namespace dtOO {
 			return elVec;
 	}
   
-  QDomElement qtXmlPrimitive::getChild(std::string const sibName, QDomElement const element ) const {
+  QDomElement qtXmlPrimitive::getChild(std::string const sibName, QDomElement const element ) {
     bool goBack;
 
     ptrHandling< QDomElement > tmpElementP(new QDomElement( element.firstChildElement() ) );
@@ -216,7 +216,7 @@ namespace dtOO {
   QDomElement qtXmlPrimitive::getChildByName(
     std::string const sibName, 
     std::string const name, 
-    QDomElement const element ) const {
+    QDomElement const element ) {
     
     QDomElement wElement = getChild(sibName, element);
     
@@ -235,7 +235,7 @@ namespace dtOO {
     std::string const sibName, 
     std::string const attributeName, 
     std::string const attributeValue,
-    QDomElement const element ) const {
+    QDomElement const element ) {
     
     QDomElement wElement = getChild(sibName, element);
     
@@ -250,7 +250,104 @@ namespace dtOO {
     );
   }  
 
-  int qtXmlPrimitive::getNChildren(std::string const sibName, QDomElement const element) const {
+  bool qtXmlPrimitive::hasChildElement( 
+    std::string const elementTag, 
+    std::string const labelAttributeVal,
+    QDomElement const & parentElement 
+  ) {   
+    QDomElement element = parentElement.firstChildElement();
+    while( !element.isNull() ) {
+      //
+      // found a part, now check for a name
+      // if so store me
+      //
+      if (getTagName(element) == elementTag) {
+        if ( element.hasAttribute("label") ) {
+          if ( getAttributeStr("label", element) == labelAttributeVal ) {
+            return true;
+          }
+        }
+        else {
+          dt__THROW(getChildElement, << "No name attribute.");
+        }      
+      }
+      //
+      //go to next sibling
+      //
+      element = element.nextSiblingElement();
+    }
+
+    return false;
+  }
+  
+  QDomElement qtXmlPrimitive::getChildElement( 
+    std::string const elementTag, 
+    std::string const labelAttributeVal,
+    QDomElement const & parentElement ) {
+    
+    /* ------------------------------------------------------------------------ */
+    /* check for a part element in each child of root (first generation) */
+    /* ------------------------------------------------------------------------ */  
+    QDomElement element = parentElement.firstChildElement();
+    while( !element.isNull() ) {
+      //
+      // found a part, now check for a name
+      // if so store me
+      //
+      if ( getTagName(element) == elementTag) {
+        if ( hasAttribute("label", element) ) {
+          if ( getAttributeStr("label", element) == labelAttributeVal ) {
+            return element;
+          }
+        }
+        else {
+          dt__THROW(
+						getChildElement, 
+						<< DTLOGEVAL(elementTag) << LOGDEL
+						<< DTLOGEVAL(labelAttributeVal) << LOGDEL
+						<< "No label attribute."
+					);
+        }      
+      }
+      //
+      //go to next sibling
+      //
+      element = element.nextSiblingElement();
+    }
+
+    //
+    //error case, no such element
+    //
+    dt__THROW(
+			getChildElement(),
+      << "No " << elementTag << "-Element with " 
+			<< DTLOGEVAL(labelAttributeVal) 
+		);
+  }	
+
+  void qtXmlPrimitive::getChildLabels( 
+	  std::string childName, 
+		std::vector< std::string > * labelValue, 
+		QDomElement const & parentElement
+	) {
+		std::vector< QDomElement > children = getChildVector(parentElement);
+		for (int ii=0; ii<children.size(); ii++) {
+      //
+      // found a part, now check for a name
+      // if so store me
+      //
+      if ( getTagName(children[ii]) == childName) {
+        if ( hasAttribute("label", children[ii]) ) {
+          labelValue->push_back( getAttributeStr("label", children[ii]) );
+        }
+        else {
+          dt__THROW(getChildLabels(), << "No label attribute!");
+        }      
+      }
+    }
+  }
+	
+  int qtXmlPrimitive::getNChildren(std::string const sibName, QDomElement const element) {
     int counter = 0;
     QDomElement wElement = getChild(sibName, element);
     while ( !wElement.isNull() ) {
@@ -260,7 +357,7 @@ namespace dtOO {
     return counter;
   }
 
-  QDomElement qtXmlPrimitive::getNextSibling(std::string const sibName, QDomElement const element ) const {
+  QDomElement qtXmlPrimitive::getNextSibling(std::string const sibName, QDomElement const element ) {
     QDomElement tmpElement = QDomElement( element.nextSiblingElement() );
     while ( (tmpElement.tagName().toStdString() != sibName) && (!tmpElement.isNull()) ) {
       tmpElement = QDomElement( tmpElement.nextSiblingElement() );
@@ -268,7 +365,7 @@ namespace dtOO {
     return getSibling(sibName, tmpElement);
   } 
 
-  bool qtXmlPrimitive::isBuilder( QDomElement const element ) const {
+  bool qtXmlPrimitive::isBuilder( QDomElement const element ) {
     if ( element.tagName().toStdString() == "builder" ) {
       return true;
     }
@@ -277,11 +374,11 @@ namespace dtOO {
     }
   }  
 
-  bool qtXmlPrimitive::hasAttribute(std::string const attName, const QDomElement element) const {
+  bool qtXmlPrimitive::hasAttribute(std::string const attName, const QDomElement element) {
     return element.hasAttribute(attName.c_str());
   }
     
-  int qtXmlPrimitive::getAttributeInt(std::string const attName, const QDomElement element) const {
+  int qtXmlPrimitive::getAttributeInt(std::string const attName, const QDomElement element) {
     bool flag;
     int rInt = 0;
     rInt = element.attribute( attName.c_str() ).toInt(&flag);
@@ -294,7 +391,7 @@ namespace dtOO {
     return rInt;
   }
 
-  float qtXmlPrimitive::getAttributeFloat(std::string const attName, const QDomElement element) const {
+  float qtXmlPrimitive::getAttributeFloat(std::string const attName, const QDomElement element) {
     bool flag;
     float rInt = 0;
     rInt = element.attribute( attName.c_str() ).toFloat(&flag);
@@ -307,13 +404,13 @@ namespace dtOO {
     return rInt;
   }  
 
-  std::string qtXmlPrimitive::getAttributeStr(std::string const attName, const QDomElement element) const {
+  std::string qtXmlPrimitive::getAttributeStr(std::string const attName, const QDomElement element) {
     std::string rInt;
     rInt = element.attribute( attName.c_str(), "" ).toStdString();
     return rInt;
   }
 
-  bool qtXmlPrimitive::getAttributeBool(std::string const attName, const QDomElement element) const {
+  bool qtXmlPrimitive::getAttributeBool(std::string const attName, const QDomElement element) {
     std::string attValue;
     attValue = element.attribute( attName.c_str() ).toStdString();
     if (attValue == "true") {
@@ -328,7 +425,7 @@ namespace dtOO {
             << "Should be true or false.");
   }    
 
-  bool qtXmlPrimitive::is(std::string const tagName, QDomElement const element ) const {
+  bool qtXmlPrimitive::is(std::string const tagName, QDomElement const element ) {
     if ( element.tagName().toStdString() == tagName ) {
       return true;
     }
@@ -337,7 +434,7 @@ namespace dtOO {
     }
   }  
 
-  QDomElement qtXmlPrimitive::goToLastBuilder( QDomElement const element ) const {
+  QDomElement qtXmlPrimitive::goToLastBuilder( QDomElement const element ) {
     QDomElement tmpElementP = QDomElement( getBuilderSibling( element.firstChildElement() ) );  
 //		if ( tmpElementP.isNull() ) {
 //			return element;
@@ -369,11 +466,11 @@ namespace dtOO {
     return ( QDomElement ( tmpNodeP.toElement() ) );//*tmpElementP ) );      
   }
 
-  QDomElement qtXmlPrimitive::createElement(QDomDocument & doc, std::string const name) const {
+  QDomElement qtXmlPrimitive::createElement(QDomDocument & doc, std::string const name) {
     return doc.createElement( name.c_str() );
   }
 
-  void qtXmlPrimitive::appendChildElement(QDomDocument & doc, QDomElement & element) const {
+  void qtXmlPrimitive::appendChildElement(QDomDocument & doc, QDomElement & element) {
     doc.documentElement().appendChild(element);
   }
     
@@ -381,7 +478,7 @@ namespace dtOO {
                                               std::string const elName,
                                               std::string const elAttribute,
                                               std::string const elAttributeValue,
-                                              QDomElement & element) const {
+                                              QDomElement & element) {
     QDomElement documentElement = doc.documentElement();
     QDomNodeList elements = documentElement.elementsByTagName( elName.c_str() ); 
     for (int ii=0;ii<elements.size();ii++) {
@@ -401,7 +498,7 @@ namespace dtOO {
                                               std::string const elName,
                                               std::string const elAttribute,
                                               std::string const elAttributeValue,
-                                              QDomElement & element) const {
+                                              QDomElement & element) {
     QDomNodeList elements = documentElement.elementsByTagName( elName.c_str() ); 
     for (int ii=0;ii<elements.size();ii++) {
       QDomElement foundEl = elements.at(ii).toElement();

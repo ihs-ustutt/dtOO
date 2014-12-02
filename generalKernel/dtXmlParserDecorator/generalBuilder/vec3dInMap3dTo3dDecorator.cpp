@@ -13,8 +13,7 @@
 #include <functionHeaven/vec3dTwoD.h>
 #include <functionHeaven/vec3dThreeD.h>
 #include <constValueHeaven/constValue.h>
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -28,8 +27,7 @@ namespace dtOO {
 
   void vec3dInMap3dTo3dDecorator::buildPart( 
     QDomElement ** toBuildP,
-    pointContainer * const pointContainerP,
-    vectorContainer * const vectorContainerP,            
+    baseContainer * const bC,            
     vectorHandling< constValue * > const * const cValP,           
     vectorHandling< analyticFunction * > const * const sFunP,    
     vectorHandling< analyticGeometry * > const * const depAGeoP,
@@ -43,11 +41,12 @@ namespace dtOO {
       //
       // get analyticGeometry
       //
+			QDomElement aGElement = getChild("analyticGeometry", **toBuildP);
       analyticGeometry const * aG 
       = 
-      depAGeoP->get( 
-        getAttributeStr("label", getChild( "analyticGeometry", **toBuildP )) 
-      );
+      createAnalyticGeometry(&aGElement, bC, cValP, sFunP, depAGeoP);
+        
+//      );
       //
       // check if it is a map3dTo3d
       //
@@ -56,11 +55,13 @@ namespace dtOO {
       //
       // get analyticFunction
       //
+			QDomElement aFElement = getChild("analyticFunction", **toBuildP);
       analyticFunction const * aF
       = 
-      sFunP->get( 
-        getAttributeStr("label", getChild( "analyticFunction", **toBuildP )) 
-      );
+			createAnalyticFunction(&aFElement, bC, cValP, sFunP);
+//      sFunP->get( 
+//        getAttributeStr("label", getChild( "analyticFunction", **toBuildP )) 
+//      );
 
 			vec3dOneD const * v1d = vec3dOneD::ConstDownCast(aF);
 			vec3dTwoD const * v2d = vec3dTwoD::ConstDownCast(aF);
@@ -89,8 +90,7 @@ namespace dtOO {
 	
   void vec3dInMap3dTo3dDecorator::buildPartCompound( 
     QDomElement ** toBuildP,
-    pointContainer * const pointContainerP,
-    vectorContainer * const vectorContainerP,            
+    baseContainer * const bC,     
     vectorHandling< constValue * > const * const cValP,           
     vectorHandling< analyticFunction * > const * const sFunP,    
     vectorHandling< analyticGeometry * > const * const depAGeoP,

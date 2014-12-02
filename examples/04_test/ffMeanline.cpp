@@ -1,3 +1,6 @@
+#include <baseContainerHeaven/pointContainer.h>
+#include <baseContainerHeaven/vectorContainer.h>
+#include <analyticGeometryHeaven/analyticGeometry.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>

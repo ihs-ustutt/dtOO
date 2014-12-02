@@ -22,15 +22,23 @@ namespace dtOO {
     virtual float getMin( int const & dir) const;
     virtual float getMax( int const & dir) const;
     virtual dtPoint3 getPoint( float const & uu, float const & vv, float const & ww ) const; 
+	  virtual map2dTo3d * segmentConstU( float const & uu ) const;
+	  virtual map2dTo3d * segmentConstV( float const & vv ) const;
+  	virtual map2dTo3d * segmentConstW( float const & ww ) const;
     float u_phi(float const & arg) const;
-    float phi_u(float const & arg) const;
+    float u_phirvw(float const & phir, float const & vv, float const & ww) const;
+//    float phi_u(float const & arg) const;
     float v_m(float const & arg) const;
-    float m_v(float const & arg) const;    
+    float v_mw(float const & mm, float const & ss) const;
+//    float m_v(float const & arg) const;    
     float w_s(float const & arg) const;
-    float s_w(float const & arg) const;    
+//    float s_w(float const & arg) const;  
+  private:
+	  void correctOrigin( void );
   private:
     ptrHandling< map2dTo3d > _m2d;
     dtVector3 _vv;
+    dtPoint3 _pp;
   };
 }
 #endif	/* ROTATINMAP2DTO3D_H */

@@ -7,13 +7,9 @@
 
 namespace dtOO {
   pointContainer::pointContainer() {
-    _height 
-    = 
-    staticPropertiesHandler::getInstance()->getOptionFloat("point_render_diameter");    
   }
 
   pointContainer::pointContainer(const pointContainer& orig) {
-    _height = orig._height;
   }
 
   pointContainer::~pointContainer() {
@@ -32,21 +28,21 @@ namespace dtOO {
     this->add(point, *stringP);    
   }
 
-  void pointContainer::add( dtPoint3 const point, std::string const string, float const heightScale ) {
+  void pointContainer::add( dtPoint3 const point, std::string const string) {
     if (string != "") {
       for (int ii=0;ii<_pair.size();ii++) {
         if (_pair[ii].second == string) {
-          dt__THROW(add(),
-                  << "Try to add a point that is already in container." << LOGDEL
-                  << DTLOGEVAL(string));
+          dt__THROW(
+						add(),
+            << "Try to add a point that is already in container." << LOGDEL
+            << DTLOGEVAL(string)
+					);
         }
       }
     }
-    DTINFOWF(add(),
-            << "adding point " << string);
+    DTINFOWF(add(), << "adding point " << string);
     
     _pair.push_back( std::pair < dtPoint3, std::string >(point, string) );
-    _heightScale.push_back( heightScale );
   }
 
   dtPoint3 pointContainer::get(std::string const string ) const {

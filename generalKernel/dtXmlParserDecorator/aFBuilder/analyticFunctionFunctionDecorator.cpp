@@ -4,7 +4,7 @@
 #include <dtLinearAlgebra.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
-
+#include <baseContainerHeaven/baseContainer.h>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
@@ -16,32 +16,19 @@ namespace dtOO {
   }
 
   void analyticFunctionFunctionDecorator::buildPart( 
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP,
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP) const {
-//    bool hasAGeo = hasChild("scaFunction", toBuildP);
-
-//    if ( hasAGeo ) {
+		QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP
+	) const {
 		std::vector< QDomElement > elV = getChildVector(toBuildP);
 		for (int ii=0; ii<elV.size(); ii++) {//dt__FORALL(elV, ii,
 		  if ( hasAttribute("label", elV[ii]) ) {
-				if ( depSFunP->has( getAttributeStr("label", elV[ii]) ) ) {
-					sFunP->push_back( 
-					  this->createAnalyticFunction( &elV[ii], cValP, depSFunP)
-					);
-					return;
-				}
+				sFunP->push_back( 
+  			  this->createAnalyticFunction( &elV[ii], bC, cValP, depSFunP)
+				);
 			}
 		}
-//      //
-//      // copy
-//      //
-//      QDomElement wElement = getChild("scaFunction", toBuildP);     
-//      analyticFunction * toCopy
-//			=
-//      this->createAnalyticFunction( &wElement, cValP, depSFunP);
-//      sFunP->push_back( toCopy );
-//    }
   }
 }

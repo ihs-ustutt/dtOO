@@ -24,19 +24,19 @@ namespace dtOO {
 		return new dtOCCLine( OCCRef() );
 	}
 	
-  int dtOCCLine::getOrder( void ) const {
-		DTFUNCTIONNOTI(getOrder);		
+  int dtOCCLine::order( void ) const {
+		DTFUNCTIONNOTI(order);		
 	}
 	
-  int dtOCCLine::getNControlPoints( void ) const {
-		DTFUNCTIONNOTI(getNControlPoints);		
+  int dtOCCLine::nControlPoints( void ) const {
+		DTFUNCTIONNOTI(nControlPoints);		
 	}
 	
-  dtPoint3 dtOCCLine::getControlPoint3d( int const nPoint ) const {
-		DTFUNCTIONNOTI(getControlPoint3d);		
+  dtPoint3 dtOCCLine::controlPoint( int const nPoint ) const {
+		DTFUNCTIONNOTI(controlPoint);		
 	}
 	
-  void dtOCCLine::setControlPoint3d( int const nPoint, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint3d);
+  void dtOCCLine::setControlPoint( int const nPoint, dtPoint3 const point ) {
+		DTFUNCTIONNOTI(setControlPoint);
 	}
 }

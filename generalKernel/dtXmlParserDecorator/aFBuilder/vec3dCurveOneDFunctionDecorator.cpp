@@ -1,12 +1,11 @@
 #include "vec3dCurveOneDFunctionDecorator.h"
-#include <dtTransformerHeaven/doNothing.h>
 #include <functionHeaven/analyticFunction.h>
-#include <dtTransformerHeaven/dtTransformerFactory.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <geometryEngine/dtCurve.h>
 #include <functionHeaven/vec3dCurveOneD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -20,10 +19,12 @@ namespace dtOO {
   }
 
   void vec3dCurveOneDFunctionDecorator::buildPart(
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP, 
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP ) const {
+		QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP, 
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP 
+	) const {
     //
     //check input
     //
@@ -41,7 +42,7 @@ namespace dtOO {
       int order = getAttributeInt("order", toBuildP);
       while ( !elementP.isNull() ) {
 				std::vector< dtPoint3 > workingPoint;
-        this->createBasic( &elementP, cValP, depSFunP, &workingPoint );
+        this->createBasic( &elementP, bC, cValP, depSFunP, &workingPoint );
         for (int ii=0;ii<workingPoint.size();ii++) {
           // put in point builder
 					pointsArray.push_back( workingPoint[ii] );
@@ -60,20 +61,12 @@ namespace dtOO {
       sFunP->push_back( new vec3dCurveOneD( dtC.get() ) );			
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasPoints) << LOGDEL
-              << DTLOGEVAL(hasScaFunction) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
+      dt__THROW(
+				buildPart(),
+				<< DTLOGEVAL(hasOrder) << LOGDEL
+				<< DTLOGEVAL(hasPoints) << LOGDEL
+				<< DTLOGEVAL(hasScaFunction) 
+			);
     }
   }
 }

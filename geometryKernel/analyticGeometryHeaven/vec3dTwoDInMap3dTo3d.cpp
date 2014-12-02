@@ -14,6 +14,8 @@
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
 #include "vec3dOneDInMap3dTo3d.h"
+#include <discrete3dPoints.h>
+#include <discrete3dVector.h>
 
 #include <progHelper.h>
 
@@ -131,4 +133,54 @@ namespace dtOO {
   map3dTo3d const * vec3dTwoDInMap3dTo3d::refToMap3dTo3d( void ) const {
     return _m3d.get();
   }  
+
+  vectorHandling< renderInterface * > vec3dTwoDInMap3dTo3d::getExtRender( void ) const {
+		vectorHandling< dtVector3 > vecV;
+		vectorHandling< dtPoint3 > vecP;
+		vectorHandling< dtVector3 > norV;
+		vectorHandling< dtPoint3 > norP;
+//		vectorHandling< dtPoint3 > pp;		
+    //
+    // get surface directions
+    //
+    dtPoint3 startPointU = map2dTo3d::getPointPercent(0.05, 0.); //getDtSislSurf()->getPointPercent3d(0.05, 0.);
+    dtPoint3 topPointU = map2dTo3d::getPointPercent(0.1, 0.);//getDtSislSurf()->getPointPercent3d(0.1, 0.);
+    dtPoint3 startPointV = map2dTo3d::getPointPercent(0., 0.05);//getDtSislSurf()->getPointPercent3d(0., 0.05);
+    dtPoint3 topPointV = map2dTo3d::getPointPercent(0., 0.10);//getDtSislSurf()->getPointPercent3d(0., 0.10);
+    dtVector3 uu = topPointU - startPointU;  
+    dtVector3 vv = topPointV - startPointV;  
+	
+    //
+    // add direction to vector container
+    //
+		vecV.push_back(uu); vecP.push_back(startPointU);
+		vecV.push_back(vv); vecP.push_back(startPointV);
+		vecV.push_back(vv); vecP.push_back(topPointV);
+    norV.push_back(map2dTo3d::normalPercent(.25, .25)); 
+		norP.push_back(map2dTo3d::getPointPercent(.25, .25));
+    norV.push_back(map2dTo3d::normalPercent(.25, .75)); 
+		norP.push_back(map2dTo3d::getPointPercent(.25, .75));
+    norV.push_back(map2dTo3d::normalPercent(.75, .25)); 
+		norP.push_back(map2dTo3d::getPointPercent(.75, .25));
+    norV.push_back(map2dTo3d::normalPercent(.75, .75)); 
+		norP.push_back(map2dTo3d::getPointPercent(.75, .75));		
+
+    //
+    // get control points
+    //
+//		dtSurface const * const dtS = _v2d->ptrDtSurface();
+//    int numPointsU = dtS->nControlPoints(0);
+//		int numPointsV = dtS->nControlPoints(1);
+//    for (int ii=0; ii<numPointsU; ii++) {
+//			for (int jj=0; jj<numPointsV; jj++) {
+//				pp.push_back( _m3d->getPoint( dtS->controlPoint(ii, jj) ) );
+//			}
+//    }
+		vectorHandling< renderInterface * > retVec(2);
+//		retVec[0] = new discrete3dPoints(pp);
+		retVec[0] = new discrete3dVector(norV, norP);
+		retVec[1] = new discrete3dVector(vecV, vecP);
+		
+		return retVec;
+  }	
 }

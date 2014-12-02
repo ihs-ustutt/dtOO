@@ -6,13 +6,18 @@
 #include "thicknessIncreasing.h"
 #include "biThicknessIncreasing.h"
 #include "offset.h"
+#include "translate.h"
 #include "rotate.h"
 #include "conformalMapping.h"
-#include "pickRange.h"
+#include "pickMap3dTo3dRangePercent.h"
 #include "conformalMappingStartFromPoint.h"
 #include "makePolynomial.h"
 #include "predefinedExtension.h"
 #include "closeGaps.h"
+#include "pickLengthRange.h"
+#include "pickLengthPercentRange.h"
+#include "addConstCoordinate.h"
+#include "conformalMappingScale.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -30,7 +35,7 @@ namespace dtOO {
   dtTransformerFactory::~dtTransformerFactory() {
   }
 
-  dtTransformer* dtTransformerFactory::create(char const * const str) const {
+  dtTransformer* dtTransformerFactory::create(char const * const str) {
     DTINFOWF(create(), << "creating " << str <<  "...");
     
     __IFRET( doNothing );
@@ -38,17 +43,22 @@ namespace dtOO {
     __IFRET( thicknessIncreasing );
 		__IFRET( biThicknessIncreasing );
     __IFRET( offset );
+		__IFRET( translate );
     __IFRET( rotate );
-    __IFRET( pickRange );
+    __IFRET( pickMap3dTo3dRangePercent );
     __IFRET( conformalMappingStartFromPoint );
     __IFRET( makePolynomial );
     __IFRET( predefinedExtension );
     __IFRET( closeGaps );
+		__IFRET( pickLengthRange );
+		__IFRET( pickLengthPercentRange );
+		__IFRET( addConstCoordinate );
+		__IFRET( conformalMappingScale );
 
     dt__THROW(create(), << str <<  " could not be created");  
   }
 
-  dtTransformer* dtTransformerFactory::create(string const str) const {
+  dtTransformer* dtTransformerFactory::create( std::string const str) {
     return create( str.c_str() );
   }
 }

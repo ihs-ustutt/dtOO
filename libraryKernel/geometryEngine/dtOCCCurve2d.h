@@ -24,11 +24,12 @@ namespace dtOO {
 //    virtual int kind( void ) const;
     virtual bool closed( void ) const;
     virtual dtPoint2 point( float const uu ) const;
-    virtual dtVector2 normal( float const uu) const;
+    virtual dtVector2 normal( float const & uu) const;
     virtual dtVector2 firstDer( float const uu) const;
     virtual float l_u( float const uu ) const;
     virtual float u_l( float const length ) const;
 	  virtual float reparam(dtPoint2 const point) const;
+	  virtual void translate( dtVector2 const & tt );    
     //
     // optional
     //   

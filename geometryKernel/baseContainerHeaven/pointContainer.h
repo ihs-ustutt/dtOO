@@ -15,7 +15,7 @@ namespace dtOO {
       void add(dtPoint3 const * const pointP, std::string const * const stringP );
       void add(dtPoint3 const * const pointP, std::string const  string );
       void add(dtPoint3 const point, std::string const * const stringP );
-      void add(dtPoint3 const point, std::string const string = "", float const heightScale = 1. );
+      void add(dtPoint3 const point, std::string const string = "");
       dtPoint3 get(std::string const string ) const;
       dtPoint3 get(std::string const * const stringP) const;
       bool has(std::string const string) const;
@@ -23,8 +23,6 @@ namespace dtOO {
       bool isEmpty( void ) const;
     private:
       std::vector< std::pair <dtPoint3, std::string > > _pair;
-      std::vector< float > _heightScale;
-      float _height;
   };
 }
 #endif	/* POINTCONTAINER_H */

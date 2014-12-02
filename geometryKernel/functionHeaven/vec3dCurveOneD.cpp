@@ -6,6 +6,7 @@
 #include <geometryEngine/dtCurve.h>
 #include <solid2dLine.h>
 #include <discrete2dPoints.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
 	vec3dCurveOneD::vec3dCurveOneD() : vec3dOneD() {
@@ -24,8 +25,8 @@ namespace dtOO {
 		setMax( dtC->getUMax() );
 	}
 	
-	aFY vec3dCurveOneD::Y( float const & xx) const {
-		dtPoint3 p2d = _dtC->getPoint3d(xx);
+	aFY vec3dCurveOneD::Y( aFX const & xx ) const {
+		dtPoint3 p2d = _dtC->point(xx[0]);
 		
 		aFY yy(3);
 		
@@ -45,9 +46,15 @@ namespace dtOO {
 	}
 	
   vectorHandling< renderInterface * > vec3dCurveOneD::getRender( void ) const {
-		vectorHandling< dtPoint2 > p2(_nVis);
-    float interval = (xMax(0) - xMin(0)) / (_nVis-1);
-    for (int ii=0;ii<_nVis;ii++) {
+		int nU
+		=
+		staticPropertiesHandler::getInstance()->getOptionInt(
+      "function_render_resolution_u"
+    );		
+		
+		vectorHandling< dtPoint2 > p2(nU);
+    float interval = (xMax(0) - xMin(0)) / (nU-1);
+    for (int ii=0;ii<nU;ii++) {
 			float iiF = static_cast<float>(ii);
       float xx = xMin(0) + iiF * interval;
 			dtPoint3 p3 = YdtPoint3(xx);

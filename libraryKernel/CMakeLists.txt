@@ -37,10 +37,12 @@ SET(HEADERS
   geometryEngine/geoBuilder/dtPoint2_surfaceEquidistantPoint.h
   geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve2d_curveConnectConstructOCC.h
+  geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h
   geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h
   geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h
   geometryEngine/geoBuilder/trimmedCurve_uBounds.h
   geometryEngine/geoBuilder/geomCurve_normalOffsetGeomCurveOCC.h
+  geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.h
   dtGmshVertex.h
   dtGmshEdge.h
   dtGmshFace.h
@@ -89,10 +91,12 @@ SET(SOURCES
   geometryEngine/geoBuilder/dtPoint2_surfaceEquidistantPoint.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_curveConnectConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.cpp
   geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.cpp
   geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.cpp
   geometryEngine/geoBuilder/trimmedCurve_uBounds.cpp
   geometryEngine/geoBuilder/geomCurve_normalOffsetGeomCurveOCC.cpp
+  geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.cpp
   dtGmshVertex.cpp
   dtGmshEdge.cpp
   dtGmshFace.cpp

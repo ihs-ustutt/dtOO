@@ -9,18 +9,26 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 
 namespace dtOO { 
-  makePolynomial::makePolynomial() {
+  makePolynomial::makePolynomial() : dtTransformer() {
     _nPointsOne = 5;
     _nPointsTwo = 5;
     _orderOne = 2;
     _orderTwo = 2;    
   }
 
-  makePolynomial::makePolynomial(const makePolynomial& orig) {
+  makePolynomial::makePolynomial(const makePolynomial& orig) : dtTransformer(orig) {
   }
 
   makePolynomial::~makePolynomial() {
   }
+
+  dtTransformer * makePolynomial::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * makePolynomial::create( void ) const {
+		return new makePolynomial();
+	}	
 
   vectorHandling< analyticGeometry * > makePolynomial::apply( 
               vectorHandling< analyticGeometry * > const * const aGeoVecP 
@@ -108,13 +116,15 @@ namespace dtOO {
     return true;
   }  
 
-  void makePolynomial::init( QDomElement * transformerElementP, 
-         pointContainer * const pointContainerP,
-         vectorContainer * const vectorContainerP,    
-         vectorHandling< constValue * > const * const cValP,
-         vectorHandling< analyticFunction * > const * const sFunP,
-         vectorHandling< analyticGeometry * > const * const depAGeoP 
-       ) {     
+  void makePolynomial::init( 
+	  QDomElement const * transformerElementP, 
+		baseContainer * bC,  
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {     
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);		
+		
     if (transformerElementP->hasAttribute("number_points_one")) {
       _nPointsOne = muParseStringInt( replaceUsedFunctions(
                       getAttributeStr("number_points_one", *transformerElementP),

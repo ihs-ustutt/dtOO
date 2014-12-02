@@ -3,6 +3,7 @@
 
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
+#include <progHelper.h>
 
 namespace dtOO {
   class analyticFunction;
@@ -13,8 +14,11 @@ namespace dtOO {
     dt__CLASSNAME(thicknessIncreasing);
     thicknessIncreasing();
     virtual ~thicknessIncreasing();
+    thicknessIncreasing(const thicknessIncreasing& orig);    
+    virtual dtTransformer * clone( void ) const;
+    virtual dtTransformer * create( void ) const;        
     virtual bool isNecessary( void ) const;
-    virtual void init( QDomElement * transformerElementP,
+    virtual void init( QDomElement const * transformerElementP,
                        vectorHandling< constValue * > const * const cValP,
                        vectorHandling< analyticFunction * > const * const sFunP);
     virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const sFunP ) const;  
@@ -22,8 +26,8 @@ namespace dtOO {
     virtual void handleAnalyticFunction(std::string const name, analyticFunction const * value);
     virtual void handleBool(std::string const name, bool const value);
   private:
-    scaOneD const * _thicknessDistributionP;
-    scaOneD const * _paraOnePercentFunP;
+    dt__pH(scaOneD const) _thicknessDistributionP;
+    dt__pH(scaOneD const) _paraOnePercentFunP;
     int _nPointsOne;
     bool _isInv;
     int _splineOrder;

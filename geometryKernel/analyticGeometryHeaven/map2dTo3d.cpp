@@ -4,7 +4,6 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include "map1dTo3d.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
-#include <baseContainer/vectorContainer.h>
 #include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <solid3dSurface.h>

@@ -2,6 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <string.h>
+#include "aFBuilder/baseContainerFunctionDecorator.h"
 #include "aFBuilder/scaMuParserOneDFunctionDecorator.h"
 #include "aFBuilder/scaCurve2dOneDFunctionDecorator.h"
 #include "aFBuilder/sca3PointMeanlineFunctionDecorator.h"
@@ -32,6 +33,8 @@ namespace dtOO {
   dtXmlParserFunctionDecorator* dtXmlParserFunctionDecoratorFactory::create(char const * const str) {
     DTINFOWF(create(), << "creating " << str <<  "...");
 
+    __IFRET(baseContainerFunctionDecorator);		
+		__IFRETCUSTOM(baseContainer, baseContainerFunctionDecorator);
     __IFRET(scaMuParserOneDFunctionDecorator);
     __IFRETCUSTOM(scaMuParserOneD, scaMuParserOneDFunctionDecorator);
     __IFRET(scaCurve2dOneDFunctionDecorator);

@@ -5,7 +5,7 @@
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  offset::offset() {
+  offset::offset() : dtTransformer() {
     _nPieces = 1;
     _xyPercent = false;
   }
@@ -13,6 +13,14 @@ namespace dtOO {
   offset::~offset() {
   }
 
+  dtTransformer * offset::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * offset::create( void ) const {
+		return new offset();
+	}
+	
   vectorHandling< analyticGeometry * > offset::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
     vectorHandling< analyticGeometry * > retAGeo;
 
@@ -110,13 +118,15 @@ namespace dtOO {
     return true;
   }
 
-  void offset::init( QDomElement * transformerElementP, 
-                     pointContainer * const pointContainerP,
-                     vectorContainer * const vectorContainerP,    
-                     vectorHandling< constValue * > const * const cValP,
-                     vectorHandling< analyticFunction * > const * const sFunP,
-                     vectorHandling< analyticGeometry * > const * const depAGeoP ) {
-
+  void offset::init( 
+	  QDomElement const * transformerElementP, 
+    baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+		
     if (transformerElementP->hasAttribute("parameter_one_offset_percent")) {
       _paraOneOffsetPercent = muParseString( 
                                 replaceUsedFunctions(

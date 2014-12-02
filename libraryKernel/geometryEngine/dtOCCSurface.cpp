@@ -298,4 +298,8 @@ namespace dtOO {
 	dtOCCSurfaceBase const & dtOCCSurface::OCCRef( void ) const {
 		return *(_surface.get());
 	}
+
+	dtOCCSurfaceBase & dtOCCSurface::OCCRef( void ) {
+		return *(_surface.get());
+	}
 }

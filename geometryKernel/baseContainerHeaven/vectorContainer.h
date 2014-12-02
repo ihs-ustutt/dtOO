@@ -29,7 +29,6 @@ namespace dtOO {
     bool isEmpty( void ) const;
   private:
     std::vector< std::pair <std::pair< dtVector3, dtPoint3 >, std::string > > _pair;
-    float _tipSize;
   };
 }
 #endif	/* VECTORCONTAINER_H */

@@ -14,8 +14,8 @@ namespace dtOO {
     virtual ~vec3dOneD();
     virtual vec3dOneD * clone( void ) const = 0;
     virtual vec3dOneD * create( void ) const = 0;    
-    virtual aFY Y( float const & xx) const = 0;
-    virtual aFY Y(aFX const & xx) const;
+    virtual aFY Y( float const & xx) const;
+    virtual aFY Y(aFX const & xx) const = 0;
     virtual int xDim( void ) const;
     void setMin( float const & min );
     void setMax( float const & max );

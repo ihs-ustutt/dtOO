@@ -9,21 +9,21 @@ namespace dtOO {
   class dtXmlParserDecoratorInterface;
   class analyticFunction;
   class constValue;
-  class pointContainer;
-  class vectorContainer;
+  class baseContainer;
 
   class bSplineCurve_pointPickFromPartConstructOCCDecorator : public dtXmlParserDecorator {
   public:  
     dt__CLASSNAME(bSplineCurve_pointPickFromPartConstructOCCDecorator);
     bSplineCurve_pointPickFromPartConstructOCCDecorator();
     virtual ~bSplineCurve_pointPickFromPartConstructOCCDecorator();
-    virtual void buildPart(QDomElement ** toBuildP,
-                                  pointContainer * const pointContainerP,
-                                  vectorContainer * const vectorContainerP,      
-                                  vectorHandling< constValue * > const * const cValP,  
-                                  vectorHandling< analyticFunction * > const * const sFunP,  
-                                  vectorHandling< analyticGeometry * > const * const depAGeoP,
-                                  vectorHandling< analyticGeometry * > * aGeoP ) const;  
+    virtual void buildPart(
+      QDomElement ** toBuildP,
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cValP,  
+      vectorHandling< analyticFunction * > const * const sFunP,  
+      vectorHandling< analyticGeometry * > const * const depAGeoP,
+      vectorHandling< analyticGeometry * > * aGeoP 
+    ) const; 
   };
 }
 

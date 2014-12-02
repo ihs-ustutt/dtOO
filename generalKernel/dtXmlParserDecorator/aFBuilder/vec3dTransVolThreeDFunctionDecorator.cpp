@@ -1,15 +1,14 @@
 #include "vec3dTransVolThreeDFunctionDecorator.h"
-#include "functionHeaven/vec3dSurfaceTwoD.h"
-#include "geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h"
+#include <functionHeaven/vec3dSurfaceTwoD.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
 #include <functionHeaven/analyticFunction.h>
-#include <dtTransformerHeaven/dtTransformerFactory.h>
-#include <dtTransformerHeaven/dtTransformer.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
 #include <functionHeaven/vec3dTransVolThreeD.h>
 #include <functionHeaven/vec3dSurfaceTwoD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -23,10 +22,12 @@ namespace dtOO {
   }
 
   void vec3dTransVolThreeDFunctionDecorator::buildPart(
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP, 
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP ) const {
+		QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP, 
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP 
+	) const {
     //
     //check input
     //
@@ -40,7 +41,7 @@ namespace dtOO {
       //
 			vectorHandling< analyticFunction const * > aF;
 			while ( !elementP.isNull() ) {
-        aF.push_back( createAnalyticFunction( &elementP, cValP, depSFunP ) );
+        aF.push_back( createAnalyticFunction( &elementP, bC, cValP, depSFunP ) );
 				elementP = getNextSibling("analyticFunction", elementP);      
       }
 			
@@ -99,20 +100,11 @@ namespace dtOO {
       dt__THROW(buildPart(),
               << DTLOGEVAL(hasAF) );
     }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
-    }
   }
 
   void vec3dTransVolThreeDFunctionDecorator::buildPartCompound(
 	  QDomElement const & toBuildP, 
+	  baseContainer * const bC,
     vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
 		vectorHandling< analyticFunction * > * sFunP
@@ -132,7 +124,7 @@ namespace dtOO {
 			while ( !elementP.isNull() ) {
         analyticFunction * aF 
 				= 
-				createAnalyticFunction( &elementP, cValP, depSFunP );
+				createAnalyticFunction( &elementP, bC, cValP, depSFunP );
 				if ( !vec3dSurfaceTwoDCompound::ConstDownCast(aF) ) {
 					dt__THROW(
 					  buildPartCompound(), 
@@ -198,16 +190,6 @@ namespace dtOO {
     }
     else {
       dt__THROW(buildPart(), << DTLOGEVAL(hasAF) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }	
 }

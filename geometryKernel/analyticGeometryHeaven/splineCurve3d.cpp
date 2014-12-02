@@ -1,6 +1,5 @@
 #include "splineCurve3d.h"
 #include <logMe/logMe.h>
-#include <baseContainer/pointContainer.h>
 #include <discrete3dVector.h>
 #include <discrete3dPoints.h>
 #include <geometryEngine/dtCurve.h>
@@ -34,7 +33,7 @@ namespace dtOO {
   }
 
   dtPoint3 splineCurve3d::getPoint(float const & uu) const {
-    return (_dtC->getPoint3d( uu ));
+    return (_dtC->point( uu ));
   }
 	
   vectorHandling< renderInterface * > splineCurve3d::getExtRender( void ) const {
@@ -55,13 +54,13 @@ namespace dtOO {
 		vp.push_back(startPoint);
 
     //
-    // put control points to pointContainer
+    // control points
     //
-    int numPoints = _dtC->getNControlPoints();
+    int numPoints = _dtC->nControlPoints();
     dtPoint3 tmpControlPoint;
 
     for (int ii=0; ii<numPoints; ii++) {
-      tmpControlPoint = _dtC->getControlPoint3d(ii);
+      tmpControlPoint = _dtC->controlPoint(ii);
 			pp.push_back(tmpControlPoint);
     }
 		vectorHandling< renderInterface * > retVec(2);
@@ -73,22 +72,10 @@ namespace dtOO {
   dtCurve const * const splineCurve3d::ptrConstDtCurve(void) const {
     return _dtC.get();
   }
-  
-  void splineCurve3d::rotate(dtPoint3 const origin, dtVector3 const vector, float const angle) {
-    _dtC->rotate(origin, vector, angle);
-  }
 
   void splineCurve3d::revert( void ) {
     _dtC->revert();
   }
-  
-  void splineCurve3d::closeArithmetic(void) {
-    _dtC->closeArithmetic();
-  }
-
-  void splineCurve3d::closeStraight(void) {
-    _dtC->closeStraight();
-  }  
   
   dtVector3 splineCurve3d::firstDerU( float const uu) const {
     return _dtC->firstDer(uu);
@@ -99,10 +86,10 @@ namespace dtOO {
   }
   
   float splineCurve3d::getMin( int const & dir) const {
-    return _dtC->getMin(dir);
+    return _dtC->minPara(dir);
   }
 
   float splineCurve3d::getMax( int const & dir) const {
-    return _dtC->getMax(dir);
+    return _dtC->maxPara(dir);
   }  
 }

@@ -2,32 +2,42 @@
 
 #include <logMe/logMe.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <functionHeaven/analyticFunction.h>
 #include <QtXml/QDomElement>
 
 namespace dtOO {
-  dtTransformer::dtTransformer() {
+  dtTransformer::dtTransformer() : labelHandling() {
   }
 
   dtTransformer::~dtTransformer() {
   }
+	
+	dtTransformer::dtTransformer(dtTransformer const & orig) : labelHandling(orig) {
+		
+	}
 
-  void dtTransformer::init( QDomElement * transformerElementP, 
-                            pointContainer * const pointContainerP,
-                            vectorContainer * const vectorContainerP,    
-                            vectorHandling< constValue * > const * const cValP,
-                            vectorHandling< analyticFunction * > const * const sFunP,
-                            vectorHandling< analyticGeometry * > const * const depAGeoP ) {
-    DTWARNINGWF(init(), << "Call on abstract class!");
+  void dtTransformer::init( 
+	  QDomElement const * transformerElementP, 
+    baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
+		if ( hasAttribute("label", *transformerElementP) ) {
+			labelHandling::setLabel(getAttributeStr("label", *transformerElementP));
+		}
   }
     
-  void dtTransformer::init( QDomElement * transformerElementP,
-             vectorHandling< constValue * > const * const cValP,
-             vectorHandling< analyticFunction * > const * const sFunP) {
-    DTWARNINGWF(init(), << "Call on abstract class!");
+  void dtTransformer::init( 
+	  QDomElement const * transformerElementP,
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP
+	) {
+		if ( hasAttribute("label", *transformerElementP) ) {
+			labelHandling::setLabel(getAttributeStr("label", *transformerElementP));
+		}
   }
   
   std::vector< dtPoint2 * > dtTransformer::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
@@ -63,6 +73,23 @@ namespace dtOO {
     DTWARNINGWF(init(), << "Call on abstract class!");    
   }
   
+	dtPoint3 dtTransformer::apply(dtPoint3 const & pp) const {
+		std::vector< dtPoint3 * > vec;
+		vec.push_back( new dtPoint3(pp) );
+		
+		std::vector< dtPoint3 * > retVec = this->apply(&vec);
+		
+		delete vec[0];
+		vec.clear();
+		
+		dtPoint3 retP = *(retVec[0]);
+		
+		delete retVec[0];
+		retVec.clear();
+		
+		return retP;
+	}
+	
   analyticFunction * dtTransformer::apply(analyticFunction const * const sF) const {
     vectorHandling< analyticFunction * > vHIn;
     vHIn.push_back(const_cast< analyticFunction *>(sF));
@@ -122,5 +149,19 @@ namespace dtOO {
             << DTLOGEVAL(name) << LOGDEL
             << DTLOGEVAL(value) );  
   }  
+	
+	void dtTransformer::handleDtVector3(std::string const name, dtVector3 const value) {
+    dt__THROW(handleDtVector3(),
+            << "Could not handle:" << LOGDEL
+            << DTLOGEVAL(name) << LOGDEL
+            << DTLOGVEC3D(value) );  		
+	}
+
+	void dtTransformer::handleDtVector2(std::string const name, dtVector2 const value) {
+    dt__THROW(handleDtVector2(),
+            << "Could not handle:" << LOGDEL
+            << DTLOGEVAL(name) << LOGDEL
+            << DTLOGVEC2D(value) );  		
+	}	
 }
 

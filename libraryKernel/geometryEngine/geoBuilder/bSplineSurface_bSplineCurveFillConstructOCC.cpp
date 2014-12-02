@@ -19,7 +19,7 @@ namespace dtOO {
 	bSplineSurface_bSplineCurveFillConstructOCC::bSplineSurface_bSplineCurveFillConstructOCC( 
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
-		dt__THROW_IF(
+		dt__THROW_IFWM(
 			cc.size() != 4,
 			bSplineSurface_bSplineCurveFillConstructOCC(),
 			<< "Only supported with 4 curves." << LOGDEL
@@ -52,14 +52,14 @@ namespace dtOO {
 			base.setOCC( fill.Surface() );
 		,
 			<< "Could not initialize and create filled surface." << LOGDEL
-			<< DTLOGEVAL(cc[0]->getPointPercent3d(0.)) << LOGDEL
-			<< DTLOGEVAL(cc[0]->getPointPercent3d(1.)) << LOGDEL
-			<< DTLOGEVAL(cc[1]->getPointPercent3d(0.)) << LOGDEL
-			<< DTLOGEVAL(cc[1]->getPointPercent3d(1.)) << LOGDEL
-			<< DTLOGEVAL(cc[2]->getPointPercent3d(0.)) << LOGDEL
-			<< DTLOGEVAL(cc[2]->getPointPercent3d(1.)) << LOGDEL
-			<< DTLOGEVAL(cc[3]->getPointPercent3d(0.)) << LOGDEL
-			<< DTLOGEVAL(cc[3]->getPointPercent3d(1.)) << LOGDEL
+			<< DTLOGEVAL(cc[0]->pointPercent(0.)) << LOGDEL
+			<< DTLOGEVAL(cc[0]->pointPercent(1.)) << LOGDEL
+			<< DTLOGEVAL(cc[1]->pointPercent(0.)) << LOGDEL
+			<< DTLOGEVAL(cc[1]->pointPercent(1.)) << LOGDEL
+			<< DTLOGEVAL(cc[2]->pointPercent(0.)) << LOGDEL
+			<< DTLOGEVAL(cc[2]->pointPercent(1.)) << LOGDEL
+			<< DTLOGEVAL(cc[3]->pointPercent(0.)) << LOGDEL
+			<< DTLOGEVAL(cc[3]->pointPercent(1.)) << LOGDEL
 		);
 		_dtS.reset( new dtOCCBSplineSurface(base) );
 	}

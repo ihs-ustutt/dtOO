@@ -2,7 +2,6 @@
 #define	DTTRANSFORMERFACTORY_H
 
 #include <string>
-using namespace std;
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
@@ -13,8 +12,8 @@ namespace dtOO {
     dt__CLASSNAME(dtTransformerFactory);
     dtTransformerFactory();
     virtual ~dtTransformerFactory();
-    dtTransformer* create(char const * const str) const;
-    dtTransformer* create(string const str) const; 
+    static dtTransformer* create(char const * const str);
+    static dtTransformer* create( std::string const str); 
   private:
 
   };

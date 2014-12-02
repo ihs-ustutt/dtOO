@@ -11,8 +11,7 @@
 #include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -24,13 +23,14 @@ namespace dtOO {
   bSplineSurface_skinConstructOCCDecorator::~bSplineSurface_skinConstructOCCDecorator() {
   }
 
-  void bSplineSurface_skinConstructOCCDecorator::buildPart(QDomElement ** toBuildP,
-                                           pointContainer * const pointContainerP,
-                                           vectorContainer * const vectorContainerP,    
-                                           vectorHandling< constValue * > const * const cValP,        
-                                           vectorHandling< analyticFunction * > const * const sFunP,
-                                           vectorHandling< analyticGeometry * > const * const depAGeoP,   
-                                           vectorHandling< analyticGeometry * > * aGeoP ) const {
+  void bSplineSurface_skinConstructOCCDecorator::buildPart(
+	  QDomElement ** toBuildP,
+    baseContainer * const bC, 
+		vectorHandling< constValue * > const * const cValP,        
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP,   
+		vectorHandling< analyticGeometry * > * aGeoP 
+	) const {
 
     /* ---------------------------------------------------------------------- */    
     /* check input */
@@ -55,9 +55,7 @@ namespace dtOO {
 				for (int jj=0;jj<aGOff;jj++) {
 					analyticGeometry * aG
 					=
-					this->createAnalyticGeometry( 
-					  &(wEl[ii]), pointContainerP, vectorContainerP, cValP, sFunP, depAGeoP
-					);
+					this->createAnalyticGeometry(&(wEl[ii]), bC, cValP, sFunP, depAGeoP);
 					dt__PTRASS(s3Vec[jj], splineCurve3d::ConstDownCast(aG));
 					dtCVec[jj] = s3Vec[jj]->ptrConstDtCurve();
 					ii++;

@@ -2,7 +2,6 @@
 #include <functionHeaven/scaMuParserOneD.h>
 #include <functionHeaven/analyticFunction.h>
 #include <interfaceHeaven/ptrHandling.h>
-#include <dtTransformerHeaven/dtTransformer.h>
 #include <logMe/logMe.h>
 
 #include <QtXml/QDomElement>
@@ -14,10 +13,13 @@ namespace dtOO {
   scaMuParserOneDFunctionDecorator::~scaMuParserOneDFunctionDecorator() {
   }
 
-  void scaMuParserOneDFunctionDecorator::buildPart(QDomElement const & toBuildP, 
-                                                                  vectorHandling< constValue * > const * const cValP, 
-                                                                  vectorHandling< analyticFunction * > const * const depSFunP,
-                                                                  vectorHandling< analyticFunction * > * sFunP) const {
+  void scaMuParserOneDFunctionDecorator::buildPart(
+	  QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP, 
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP
+	) const {
     //
     //check input
     //
@@ -95,16 +97,6 @@ namespace dtOO {
               << DTLOGEVAL(hasString) << LOGDEL
               << DTLOGEVAL(hasRange) << LOGDEL
               << DTLOGEVAL(hasScaFun) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }
 }

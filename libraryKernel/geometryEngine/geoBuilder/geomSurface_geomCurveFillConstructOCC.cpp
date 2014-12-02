@@ -41,7 +41,7 @@ namespace dtOO {
 	void geomSurface_geomCurveFillConstructOCC::init( 
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
-		dt__THROW_IF(
+		dt__THROW_IFWM(
 			cc.size() != 4, 
 			geomSurface_geomCurveFillConstructOCC(),
 			<< "Only supported with 4 curves." << LOGDEL

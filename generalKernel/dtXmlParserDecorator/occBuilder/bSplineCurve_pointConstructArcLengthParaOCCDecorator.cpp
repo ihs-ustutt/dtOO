@@ -8,8 +8,7 @@
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructArcLengthParaOCC.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
@@ -21,13 +20,14 @@ namespace dtOO {
   bSplineCurve_pointConstructArcLengthParaOCCDecorator::~bSplineCurve_pointConstructArcLengthParaOCCDecorator() {
   }
 
-  void bSplineCurve_pointConstructArcLengthParaOCCDecorator::buildPart(QDomElement ** toBuildP,
-                                           pointContainer * const pointContainerP,
-                                           vectorContainer * const vectorContainerP,    
-                                           vectorHandling< constValue * > const * const cValP,        
-                                           vectorHandling< analyticFunction * > const * const sFunP,
-                                           vectorHandling< analyticGeometry * > const * const depAGeoP,   
-                                           vectorHandling< analyticGeometry * > * aGeoP ) const {
+  void bSplineCurve_pointConstructArcLengthParaOCCDecorator::buildPart(
+	  QDomElement ** toBuildP,
+		baseContainer * const bC,    
+		vectorHandling< constValue * > const * const cValP,        
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP,   
+		vectorHandling< analyticGeometry * > * aGeoP 
+	) const {
     bool hasAG = hasChild("analyticGeometry", **toBuildP);
 		bool hasTol = hasAttribute("tolerance", **toBuildP);
 		bool hasMaxOrder = hasAttribute("max_order", **toBuildP);
@@ -41,11 +41,7 @@ namespace dtOO {
       QDomElement wElement = getChild("analyticGeometry", **toBuildP);
       analyticGeometry * aG 
 			=
-			createAnalyticGeometry(
-  			&wElement, 
-        pointContainerP, vectorContainerP, 
-        cValP, sFunP, depAGeoP
-		  );
+			createAnalyticGeometry(&wElement, bC, cValP, sFunP, depAGeoP);
 			dt__PTRASS(splineCurve3d const * sC3, splineCurve3d::ConstDownCast(aG));
   		aGeoP->push_back( 
 			  new splineCurve3d(

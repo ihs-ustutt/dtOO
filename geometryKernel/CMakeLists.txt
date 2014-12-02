@@ -6,24 +6,24 @@ SET(HEADERS
   analyticGeometryHeaven/analyticSurface.h
   analyticGeometryHeaven/splineSurface3d.h
   analyticGeometryHeaven/oneDimTrimmable.h
-  analyticGeometryHeaven/oneDimForwardExtendable.h
-  analyticGeometryHeaven/oneDimBackwardExtendable.h
   analyticGeometryHeaven/oneDimRevertable.h
   analyticGeometryHeaven/twoDimRevertable.h
   analyticGeometryHeaven/map3dTo3d.h
   analyticGeometryHeaven/map2dTo3d.h
   analyticGeometryHeaven/map1dTo3d.h
-  analyticGeometryHeaven/oneDimCloseable.h
   analyticGeometryHeaven/trans6SidedCube.h
   analyticGeometryHeaven/rotatingMap2dTo3d.h
   analyticGeometryHeaven/rotatingMap2dTo3dPhiMS.h
+  analyticGeometryHeaven/infinityMap3dTo3d.h
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
   analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
   analyticGeometryHeaven/analyticGeometryCompound.h
-  baseContainer/pointContainer.h
-  baseContainer/vectorContainer.h
+  baseContainerHeaven/baseContainer.h
+  baseContainerHeaven/pointContainer.h
+  baseContainerHeaven/vectorContainer.h
+  baseContainerHeaven/transformerContainer.h
   constValueHeaven/constValue.h
   constValueHeaven/constValueFactory.h
   constValueHeaven/sliderFloatParam.h
@@ -46,6 +46,7 @@ SET(HEADERS
   functionHeaven/vec3dThreeD.h
   functionHeaven/vec3dTransVolThreeD.h
   functionHeaven/analyticFunctionCompound.h
+  functionHeaven/analyticFunctionTransformed.h
   dtTransformerHeaven/thicknessIncreasing.h
   dtTransformerHeaven/biThicknessIncreasing.h
   dtTransformerHeaven/dtTransformer.h
@@ -53,12 +54,17 @@ SET(HEADERS
   dtTransformerHeaven/conformalMapping.h
   dtTransformerHeaven/doNothing.h
   dtTransformerHeaven/offset.h
+  dtTransformerHeaven/translate.h
   dtTransformerHeaven/rotate.h
-  dtTransformerHeaven/pickRange.h
+  dtTransformerHeaven/pickMap3dTo3dRangePercent.h
+  dtTransformerHeaven/addConstCoordinate.h
   dtTransformerHeaven/conformalMappingStartFromPoint.h
   dtTransformerHeaven/makePolynomial.h
   dtTransformerHeaven/predefinedExtension.h
   dtTransformerHeaven/closeGaps.h
+  dtTransformerHeaven/pickLengthRange.h
+  dtTransformerHeaven/pickLengthPercentRange.h
+  dtTransformerHeaven/conformalMappingScale.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -68,23 +74,23 @@ SET(SOURCES
   analyticGeometryHeaven/analyticSurface.cpp
   analyticGeometryHeaven/splineSurface3d.cpp
   analyticGeometryHeaven/oneDimTrimmable.cpp
-  analyticGeometryHeaven/oneDimForwardExtendable.cpp
-  analyticGeometryHeaven/oneDimBackwardExtendable.cpp
   analyticGeometryHeaven/oneDimRevertable.cpp
   analyticGeometryHeaven/twoDimRevertable.cpp
   analyticGeometryHeaven/map3dTo3d.cpp
   analyticGeometryHeaven/map2dTo3d.cpp
   analyticGeometryHeaven/map1dTo3d.cpp
-  analyticGeometryHeaven/oneDimCloseable.cpp
   analyticGeometryHeaven/trans6SidedCube.cpp
   analyticGeometryHeaven/rotatingMap2dTo3d.cpp
   analyticGeometryHeaven/rotatingMap2dTo3dPhiMS.cpp
+  analyticGeometryHeaven/infinityMap3dTo3d.cpp
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.cpp
   analyticGeometryHeaven/vec3dOneDInMap3dTo3d.cpp
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.cpp
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.cpp
-  baseContainer/pointContainer.cpp
-  baseContainer/vectorContainer.cpp
+  baseContainerHeaven/baseContainer.cpp
+  baseContainerHeaven/pointContainer.cpp
+  baseContainerHeaven/vectorContainer.cpp
+  baseContainerHeaven/transformerContainer.cpp
   constValueHeaven/constValue.cpp
   constValueHeaven/constValueFactory.cpp
   constValueHeaven/sliderFloatParam.cpp
@@ -113,12 +119,17 @@ SET(SOURCES
   dtTransformerHeaven/dtTransformerFactory.cpp
   dtTransformerHeaven/doNothing.cpp
   dtTransformerHeaven/offset.cpp
+  dtTransformerHeaven/translate.cpp
   dtTransformerHeaven/rotate.cpp
-  dtTransformerHeaven/pickRange.cpp
+  dtTransformerHeaven/pickMap3dTo3dRangePercent.cpp
+  dtTransformerHeaven/addConstCoordinate.cpp
   dtTransformerHeaven/conformalMappingStartFromPoint.cpp
   dtTransformerHeaven/makePolynomial.cpp
   dtTransformerHeaven/predefinedExtension.cpp
   dtTransformerHeaven/closeGaps.cpp
+  dtTransformerHeaven/pickLengthRange.cpp
+  dtTransformerHeaven/pickLengthPercentRange.cpp
+  dtTransformerHeaven/conformalMappingScale.cpp
 )
 
 APPEND_DTOO_SOURCE(geometryKernel "${SOURCES}")

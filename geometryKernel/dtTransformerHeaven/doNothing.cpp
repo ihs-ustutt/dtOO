@@ -2,12 +2,20 @@
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  doNothing::doNothing() {
+  doNothing::doNothing() : dtTransformer() {
   }
 
   doNothing::~doNothing() {
   }
 
+  dtTransformer * doNothing::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * doNothing::create( void ) const {
+		return new doNothing();
+	}
+	
   std::vector< dtPoint2 * > doNothing::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
   }
 

@@ -5,8 +5,6 @@
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
-#include <baseContainer/pointContainer.h>
-#include <baseContainer/vectorContainer.h>
 #include "splineCurve3d.h"
 #include <progHelper.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -41,11 +39,12 @@ namespace dtOO {
   }
 
   dtPoint3 analyticSurface::getPoint(float const & uu, float const & vv) const {
+    dt__WARN_IFWM(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
+		dt__WARN_IFWM(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
+    dt__WARN_IFWM(uu>getUMax(), getPoint(), << uu << " > " << getUMax()); 
+		dt__WARN_IFWM(vv>getVMax(), getPoint(), << vv << " > " << getVMax());
+		
     return _dtS->point(uu, vv);
-  }
-  
-  std::vector< dtPoint3 > analyticSurface::getPoint( std::vector< float > const & uu, std::vector< float > const & vv ) const {
-    return _dtS->getPoint3d(uu, vv);
   }
 	
   vectorHandling< renderInterface * > analyticSurface::getExtRender( void ) const {
@@ -82,11 +81,12 @@ namespace dtOO {
     //
     // get control points
     //
-    int numPoints = _dtS->nControlPoints();
-    dtPoint3 tmpControlPoint;
-    for (int ii=0; ii<numPoints; ii++) {
-      tmpControlPoint = _dtS->controlPoint(ii);
-			pp.push_back(tmpControlPoint);
+    int numPointsU = _dtS->nControlPoints(0);
+		int numPointsV = _dtS->nControlPoints(1);
+    for (int ii=0; ii<numPointsU; ii++) {
+			for (int jj=0; jj<numPointsV; jj++) {
+				pp.push_back( _dtS->controlPoint(ii, jj) );
+			}
     }
 		pp.push_back(map2dTo3d::getPointPercent(0., .5));
 		pp.push_back(map2dTo3d::getPointPercent(.5, 0.));
@@ -106,10 +106,6 @@ namespace dtOO {
   dtSurface const * analyticSurface::constPtrDtSurface( void ) const {
     return _dtS.get();
   }   
-  
-  void analyticSurface::revert( void ) {
-    _dtS->revert();
-  }
   
   void analyticSurface::offsetNormal( float const nn ) {
     _dtS->offsetNormal( nn );
@@ -192,7 +188,9 @@ namespace dtOO {
   ) const {
     ptrHandling< dtSurface > ss(		
 			rectangularTrimmedSurface_uvBounds(
-				_dtS.get(), dtPoint2(uu0, vv0), dtPoint2(uu1, vv1)
+				_dtS.get(), 
+				dtPoint2(u_percent(uu0), v_percent(vv0)), 
+				dtPoint2(u_percent(uu1), v_percent(vv1))
 			).result()
 		);		
     return new analyticSurface(ss.get());

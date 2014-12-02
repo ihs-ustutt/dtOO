@@ -17,10 +17,10 @@ namespace dtOO {
     dtOCCTrimmedCurve(dtOCCCurveBase const & orig, float const u0, float const u1);
     virtual ~dtOCCTrimmedCurve();
     virtual dtCurve * clone( void ) const;
-    virtual int getOrder( void ) const;
-    virtual int getNControlPoints( void ) const;
-    virtual dtPoint3 getControlPoint3d( int const nPoint ) const;
-    virtual void setControlPoint3d( int const nPoint, dtPoint3 const point );  
+    virtual int order( void ) const;
+    virtual int nControlPoints( void ) const;
+    virtual dtPoint3 controlPoint( int const nPoint ) const;
+    virtual void setControlPoint( int const nPoint, dtPoint3 const point );  
     dtCurve * bSplineCurve( void ) const;
   private:
     Geom_TrimmedCurve const * _ptr;

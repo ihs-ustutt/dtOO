@@ -6,12 +6,23 @@
 //#include <geometryEngine/dtSislBase.h>
 
 namespace dtOO {
-  conformalMapping::conformalMapping() {
+  conformalMapping::conformalMapping() : dtTransformer() {
   }
 
+  conformalMapping::conformalMapping(conformalMapping const & orig ) : dtTransformer(orig) {
+  }
+	
   conformalMapping::~conformalMapping() {
   }
 
+  dtTransformer * conformalMapping::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * conformalMapping::create( void ) const {
+		return new conformalMapping();
+	}
+	
   std::vector< dtPoint2 * > conformalMapping::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
     
     std::vector< dtPoint2 * > pointVec2d(pointVecP->size());
@@ -60,12 +71,15 @@ namespace dtOO {
     return true;
   }
 
-  void conformalMapping::init( QDomElement * transformerElementP, 
-                               pointContainer * const pointContainerP,
-                               vectorContainer * const vectorContainerP,    
-                               vectorHandling< constValue * > const * const cValP,
-                               vectorHandling< analyticFunction * > const * const sFunP,
-                               vectorHandling< analyticGeometry * > const * const depAGeoP ) {
+  void conformalMapping::init( 
+	  QDomElement const * transformerElementP, 
+    baseContainer * const bC,  
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+		
     //initialize with default values
     _rotSplineP = NULL;
     _tolerance = 0.01;

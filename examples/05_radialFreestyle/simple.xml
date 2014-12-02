@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<testing>  
+	
+	<!-- hub/shroud and meridian contour -->
+  <part label="s3_hub">
+    <builder name="bSplineCurve_pointConstructOCC" order="2">
+			<Point_3 x="10.0" y="0.0" z="100.0"/>
+      <Point_3 x="10.0" y="0.0" z="0.0"/>
+      <Point_3 x="100.0" y="0.0" z="0.0"/>
+		</builder>
+  </part>				
+  <part label="s3_shroud">
+    <builder name="bSplineCurve_pointConstructOCC" order="2">
+			<Point_3 x="30.0" y="0.0" z="100.0"/>
+      <Point_3 x="30.0" y="0.0" z="50.0"/>
+      <Point_3 x="100.0" y="0.0" z="50.0"/>
+		</builder>
+  </part>				
+  <part label="s3_inlet">
+    <builder name="bSplineCurve_pointConstructOCC" order="1">
+			<Point_3 attribute="pick_from_part" part_label="s3_hub" parameter_one_percent="0.0"/>
+      <Point_3 attribute="pick_from_part" part_label="s3_shroud" parameter_one_percent="0.0"/>
+		</builder>
+  </part>					
+  <part label="s3_outlet">
+    <builder name="bSplineCurve_pointConstructOCC" order="1">
+			<Point_3 attribute="pick_from_part" part_label="s3_hub" parameter_one_percent="1.0"/>
+      <Point_3 attribute="pick_from_part" part_label="s3_shroud" parameter_one_percent="1.0"/>
+		</builder>
+  </part>
+	<part label="aS_meridian">
+		<builder name="bSplineSurface_bSplineCurveFillConstructOCC">
+			<analyticGeometry label="s3_hub"/>
+			<analyticGeometry label="s3_outlet"/>
+			<analyticGeometry label="s3_shroud"/>
+      <analyticGeometry label="s3_inlet"/>			
+			
+		</builder>
+	</part>
+  <part label="m3d_meridian">	
+    <builder name="rotatingMap2dTo3dDecorator">
+				<analyticGeometry label="aS_meridian"/>
+				<Vector_3 label="v3_zz"/>
+    </builder>  
+  </part>	
+
+  <part label="blade">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3dSurface"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>
+  <part label="channel_left">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3d2d_left"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>
+  <part label="bladeCut_0">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3d1d_bladeCut_0"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>
+  <part label="bladeCut_1">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3d1d_bladeCut_1"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>
+  <part label="bladeCut_2">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3d1d_bladeCut_2"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>		
+  <part label="channel_right">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3d2d_right"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>	
+  <part label="channel_top">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3d2d_top"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>		
+  <part label="channel_down">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3d2d_down"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>			
+  <part label="channel_front">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3d2d_front"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>			
+  <part label="channel_back">
+    <builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="vec3d2d_back"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>				
+
+  <part label="mp_blockStructure">
+    <builder name="vec3dInMap3dTo3d[]">
+				<analyticFunction label="vec3d3d_12_blockStructure"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>			
+	
+  <function label="myBaseContainer">
+    <builder name="baseContainer">				
+      <Point_3 label="p3_origin" x="0." y="0." z="0."/>                 
+      <Vector_3 label="v3_zz" x="0." y="0." z="1."/>                
+
+      <transformer name="predefinedExtension" label="preExt" y_in="0." y_out="1."/>			
+    </builder>
+  </function>
+	
+	<function label="vec3d1d_bladeCut_0">
+		<builder name="vec3dCurveOneD" order="2">
+			<Point_3 x="0.04" y=".8" z="0"/>
+			<Point_3 x="0." y=".5" z="0"/>
+			<Point_3 x="-0.01" y=".4" z="0"/>
+			<Point_3 x="0.01" y=".4" z="0"/>
+			<Point_3 x="0.04" y=".8" z="0"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_bladeCut_1">
+		<builder name="vec3dCurveOneD" order="2">
+			<Point_3 x=".04" y=".9" z=".25"/>
+			<Point_3 x=".0" y=".5" z=".25"/>
+			<Point_3 x="-.005" y="0.3" z=".25"/>
+			<Point_3 x=".005" y="0.3" z=".25"/>
+			<Point_3 x=".04" y=".9" z=".25"/>
+			</builder>
+	</function>	
+	<function label="vec3d1d_bladeCut_2">
+		<builder name="vec3dCurveOneD" order="2">
+			<Point_3 x=".06" y=".9" z="1.00"/>
+			<Point_3 x=".03" y=".8" z="1.00"/>
+			<Point_3 x=".02" y=".6" z="1.00"/>
+			<Point_3 x=".04" y=".6" z="1.00"/>
+			<Point_3 x=".06" y=".9" z="1.00"/>			
+			</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_0_left_nT">
+<!--    <transformer name="predefinedExtension"
+                 y_in="0." 
+								 y_out="1."/>-->
+		<builder name="vec3dCurveOneD" order="2">
+			<Point_3 x="0.-0.1" y=".4" z="0"/>
+			<Point_3 x="0.-0.1" y=".5" z="0"/>
+			<Point_3 x="0.04-0.1" y=".8" z="0"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_bladeCut_0_left">
+    <builder name="analyticFunction">
+			<analyticFunction label="~preExt(vec3d1d_bladeCut_0_left_nT)~"/>
+		</builder>
+	</function>	
+	<function label="vec3d1d_bladeCut_1_left_nT">
+<!--    <transformer name="predefinedExtension"
+                 alpha_in="0." 
+								 alpha_out="1."
+                 y_in="0." 
+								 y_out="1."/>					-->
+		<builder name="vec3dCurveOneD" order="2">
+			<Point_3 x=".0-0.1" y="0.3" z=".25"/>
+			<Point_3 x=".0-0.1" y=".5" z=".25"/>
+			<Point_3 x=".04-0.1" y=".9" z=".25"/>
+			</builder>
+	</function>	
+	<function label="vec3d1d_bladeCut_1_left">
+    <builder name="analyticFunction">
+			<analyticFunction label="~preExt(vec3d1d_bladeCut_1_left_nT)~"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_2_left_nT">
+<!--    <transformer name="predefinedExtension"
+                 y_in="0." 
+								 y_out="1."/>					-->
+		<builder name="vec3dCurveOneD" order="2">
+			<Point_3 x=".03-0.1" y=".6" z="1.00"/>
+			<Point_3 x=".03-0.1" y=".8" z="1.00"/>
+			<Point_3 x=".06-0.1" y=".9" z="1.00"/>
+			</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_2_left">
+    <builder name="analyticFunction">
+			<analyticFunction label="~preExt(vec3d1d_bladeCut_2_left_nT)~"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_0_right_nT">
+<!--    <transformer name="predefinedExtension"
+                 y_in="0." 
+								 y_out="1."/>			-->
+		<builder name="vec3dCurveOneD" order="2">
+			<Point_3 x="0.+0.1" y=".4" z="0"/>
+			<Point_3 x="0.+0.1" y=".5" z="0"/>
+			<Point_3 x="0.04+0.1" y=".8" z="0"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_bladeCut_0_right">
+    <builder name="analyticFunction">
+			<analyticFunction label="~preExt(vec3d1d_bladeCut_0_right_nT)~"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_1_right_nT">
+<!--    <transformer name="predefinedExtension"
+                 y_in="0." 
+								 y_out="1."/>			-->
+		<builder name="vec3dCurveOneD" order="2">
+			<Point_3 x=".0+0.1" y="0.3" z=".25"/>
+			<Point_3 x=".0+0.1" y=".5" z=".25"/>
+			<Point_3 x=".04+0.1" y=".9" z=".25"/>
+			</builder>
+	</function>	
+	<function label="vec3d1d_bladeCut_1_right">
+    <builder name="analyticFunction">
+			<analyticFunction label="~preExt(vec3d1d_bladeCut_1_right_nT)~"/>
+		</builder>
+	</function>			
+	<function label="vec3d1d_bladeCut_2_right_nT">
+<!--    <transformer name="predefinedExtension"
+                 y_in="0." 
+								 y_out="1."/>			-->
+		<builder name="vec3dCurveOneD" order="2">
+			<Point_3 x=".03+0.1" y=".6" z="1.00"/>
+			<Point_3 x=".03+0.1" y=".8" z="1.00"/>
+			<Point_3 x=".06+0.1" y=".9" z="1.00"/>
+			</builder>
+	</function>
+	<function label="vec3d1d_bladeCut_2_right">
+    <builder name="analyticFunction">
+			<analyticFunction label="~preExt(vec3d1d_bladeCut_2_right_nT)~"/>
+		</builder>
+	</function>			
+	<function label="vec3d1d_bladeCut_0_front">
+		<builder name="vec3dCurveOneD" order="1">
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_0_left" x_one_percent="0."/>
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_0_right" x_one_percent="0."/>
+			</builder>
+	</function>	
+	<function label="vec3d1d_bladeCut_1_front">
+		<builder name="vec3dCurveOneD" order="1">
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_1_left" x_one_percent="0."/>
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_1_right" x_one_percent="0."/>
+			</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_2_front">
+		<builder name="vec3dCurveOneD" order="1">
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_2_left" x_one_percent="0."/>
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_2_right" x_one_percent="0."/>
+			</builder>
+	</function>		
+  <function label="vec3d2d_front">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_bladeCut_0_front"/>
+			<analyticFunction label="vec3d1d_bladeCut_1_front"/>
+			<analyticFunction label="vec3d1d_bladeCut_2_front"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_0_back">
+		<builder name="vec3dCurveOneD" order="1">
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_0_left" x_one_percent="1."/>
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_0_right" x_one_percent="1."/>
+			</builder>
+	</function>	
+	<function label="vec3d1d_bladeCut_1_back">
+		<builder name="vec3dCurveOneD" order="1">
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_1_left" x_one_percent="1."/>
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_1_right" x_one_percent="1."/>
+			</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_2_back">
+		<builder name="vec3dCurveOneD" order="1">
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_2_left" x_one_percent="1."/>
+			<Point_3 attribute="pick_from_function" function_label="vec3d1d_bladeCut_2_right" x_one_percent="1."/>
+			</builder>
+	</function>		
+  <function label="vec3d2d_back">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_bladeCut_0_back"/>
+			<analyticFunction label="vec3d1d_bladeCut_1_back"/>
+			<analyticFunction label="vec3d1d_bladeCut_2_back"/>
+		</builder>
+	</function>			
+	<function label="vec3dSurface">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_bladeCut_0"/>
+			<analyticFunction label="vec3d1d_bladeCut_1"/>
+			<analyticFunction label="vec3d1d_bladeCut_2"/>
+		</builder>
+	</function>	
+	<function label="vec3d2d_left">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_bladeCut_0_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_1_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_2_left"/>
+		</builder>
+	</function>		
+	<function label="vec3d2d_right">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_bladeCut_0_right"/>
+			<analyticFunction label="vec3d1d_bladeCut_1_right"/>
+			<analyticFunction label="vec3d1d_bladeCut_2_right"/>
+		</builder>
+	</function>	
+	<function label="vec3d2d_top">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_bladeCut_2_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_2_right"/>
+		</builder>
+	</function>			
+	<function label="vec3d2d_down">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_bladeCut_0_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_0_right"/>
+		</builder>
+	</function>				
+	
+	<function label="vec3d2dC_12_block_0">
+		<builder name="vec3dTwoDTwelveRectangle">
+			<analyticFunction label="vec3d1d_bladeCut_0_back"/>
+			<analyticFunction label="vec3d1d_bladeCut_0_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_0_front"/>
+      <analyticFunction label="vec3d1d_bladeCut_0_right"/>
+			<analyticFunction label="vec3d1d_bladeCut_0"/>
+		</builder>
+	</function>	
+	<function label="vec3d2dC_12_block_1">
+		<builder name="vec3dTwoDTwelveRectangle">
+			<analyticFunction label="vec3d1d_bladeCut_1_back"/>
+			<analyticFunction label="vec3d1d_bladeCut_1_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_1_front"/>
+      <analyticFunction label="vec3d1d_bladeCut_1_right"/>
+			<analyticFunction label="vec3d1d_bladeCut_1"/>
+		</builder>
+	</function>	
+	<function label="vec3d2dC_12_block_2">
+		<builder name="vec3dTwoDTwelveRectangle">
+			<analyticFunction label="vec3d1d_bladeCut_2_back"/>
+			<analyticFunction label="vec3d1d_bladeCut_2_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_2_front"/>
+      <analyticFunction label="vec3d1d_bladeCut_2_right"/>
+			<analyticFunction label="vec3d1d_bladeCut_2"/>
+		</builder>
+	</function>		
+	<function label="vec3d3d_12_blockStructure">
+		<builder name="vec3dTransVolThreeD[]">
+			<analyticFunction label="vec3d2dC_12_block_0"/>
+			<analyticFunction label="vec3d2dC_12_block_1"/>
+			<analyticFunction label="vec3d2dC_12_block_2"/>
+		</builder>
+	</function>	
+
+  <constValue label="cV_myOne">
+    <builder  name="sliderFloatParam">
+      <float value="0.5" min="0." max="1."/>
+    </builder>
+  </constValue> 	
+  <constValue label="cV_myTwo">
+    <builder  name="intParam">
+      <int value="5" min="0" max="10"/>
+    </builder>
+  </constValue>
+  <constValue label="cV_myThree">
+    <builder  name="sliderFloatParam">
+      <float value="0.5" min="0." max="1."/>
+    </builder>	
+  </constValue>		
+</testing>

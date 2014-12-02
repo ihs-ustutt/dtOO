@@ -3,17 +3,18 @@
 #include "dtXmlParserDecorator.h"
 #include <logMe/logMe.h>
 #include <string.h>
-#include "generalBuilder/pointDefinitionDecorator.h"
-#include "generalBuilder/vectorDefinitionDecorator.h"
+#include "generalBuilder/baseContainerDecorator.h"
 #include "generalBuilder/analyticGeometryDecorator.h"
 #include "generalBuilder/trans6SidedCubeDecorator.h"
 #include "generalBuilder/vec3dInMap3dTo3dDecorator.h"
 #include "generalBuilder/rotatingMap2dTo3dDecorator.h"
+#include "generalBuilder/infinityMap3dTo3dDecorator.h"
 #include "occBuilder/bezierCurve_pointConstructOCCDecorator.h"
 #include "occBuilder/bSplineCurve_curveConnectConstructOCCDecorator.h"
 #include "occBuilder/bSplineSurface_skinConstructOCCDecorator.h"
 #include "occBuilder/surfaceOfRevolution_curveRotateConstructOCCDecorator.h"
 #include "occBuilder/bezierCurvePointPickFromPartConstructOCCDecorator.h"
+#include "occBuilder/bSplineCurve_pointPickFromPartConstructOCCDecorator.h"
 #include "occBuilder/bezierSurface_bezierCurveFillConstructOCCDecorator.h"
 #include "occBuilder/bSplineCurve_pointInterpolateConstructOCCDecorator.h"
 #include "occBuilder/bSplineCurve_pointConstructOCCDecorator.h"
@@ -41,10 +42,10 @@ namespace dtOO {
   dtXmlParserDecorator * dtXmlParserDecoratorFactory::create(char const * const str) {
     DTINFOWF(create(), << str <<  " creating ... ");
 		
-    __IFRET(pointDefinitionDecorator);   
-    __IFRETCUSTOM(pointDefinition, pointDefinitionDecorator);
-    __IFRET(vectorDefinitionDecorator);   
-    __IFRETCUSTOM(vectorDefinition, vectorDefinitionDecorator);
+    __IFRET(baseContainerDecorator);   
+		__IFRETCUSTOM(baseContainer, baseContainerDecorator);
+    __IFRETCUSTOM(pointDefinition, baseContainerDecorator);
+		__IFRETCUSTOM(vectorDefinition, baseContainerDecorator);
     __IFRET(analyticGeometryDecorator);   
     __IFRETCUSTOM(analyticGeometry, analyticGeometryDecorator);
     __IFRET(trans6SidedCubeDecorator);
@@ -57,6 +58,8 @@ namespace dtOO {
 		__IFRETCUSTOM(surfaceOfRevolution_curveRotateConstructOCC, surfaceOfRevolution_curveRotateConstructOCCDecorator);
 		__IFRET(bezierCurvePointPickFromPartConstructOCCDecorator);
 		__IFRETCUSTOM(bezierCurvePointPickFromPartConstructOCC, bezierCurvePointPickFromPartConstructOCCDecorator);
+    __IFRET(bSplineCurve_pointPickFromPartConstructOCCDecorator);
+    __IFRETCUSTOM(bSplineCurve_pointPickFromPartConstructOCC, bSplineCurve_pointPickFromPartConstructOCCDecorator);		
 		__IFRET(bSplineCurve_curveConnectConstructOCCDecorator);
 		__IFRETCUSTOM(bSplineCurve_curveConnectConstructOCC, bSplineCurve_curveConnectConstructOCCDecorator);
 		__IFRET(bezierSurface_bezierCurveFillConstructOCCDecorator);
@@ -75,6 +78,8 @@ namespace dtOO {
 		__IFRETCUSTOM(bSplineCurve_pointConstructArcLengthParaOCC, bSplineCurve_pointConstructArcLengthParaOCCDecorator);
 		__IFRET(vec3dInMap3dTo3dDecorator);
 		__IFRETCUSTOM(vec3dInMap3dTo3d, vec3dInMap3dTo3dDecorator);
+		__IFRET(infinityMap3dTo3dDecorator);
+		__IFRETCUSTOM(infinityMap3dTo3d, infinityMap3dTo3dDecorator);		
 		
     dt__THROW(create(), <<  "Could not be created.");
   }

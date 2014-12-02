@@ -15,13 +15,13 @@ namespace dtOO {
 	geomCurve_normalOffsetGeomCurveOCC::geomCurve_normalOffsetGeomCurveOCC(dtCurve const * const dtC, float const & offset) {
     dt__PTRASS( dtOCCCurve const * occC, dtOCCCurve::ConstDownCast(dtC) );
 		
-		int numCP = occC->getNControlPoints();
+		int numCP = occC->nControlPoints();
 		vectorHandling< dtPoint3 > pp;
 
 
 		// first
-		dtVector3 vv0 = occC->getControlPoint3d(1) - occC->getControlPoint3d(0);
-		dtVector3 vv1 = occC->getControlPoint3d(2) - occC->getControlPoint3d(1);
+		dtVector3 vv0 = occC->controlPoint(1) - occC->controlPoint(0);
+		dtVector3 vv1 = occC->controlPoint(2) - occC->controlPoint(1);
 	  dtVector3 nn = dtLinearAlgebra::crossProduct(vv0, vv1);
 		dtVector3 nC0 = dtLinearAlgebra::crossProduct(vv0, nn);
 		nC0 = dtLinearAlgebra::normalize(nC0);
@@ -29,12 +29,12 @@ namespace dtOO {
 		nC1 = dtLinearAlgebra::normalize(nC1);
 		dtVector3 nC = .5 * (nC0 + nC1);
 		nC = dtLinearAlgebra::normalize(nC);
-    pp.push_back(occC->getControlPoint3d(0) + offset*nC0);
+    pp.push_back(occC->controlPoint(0) + offset*nC0);
 			
     // in-between
 		for (int ii=1; ii<numCP-1; ii++) {
-			vv0 = occC->getControlPoint3d(ii) - occC->getControlPoint3d(ii-1);
-			vv1 = occC->getControlPoint3d(ii+1) - occC->getControlPoint3d(ii);
+			vv0 = occC->controlPoint(ii) - occC->controlPoint(ii-1);
+			vv1 = occC->controlPoint(ii+1) - occC->controlPoint(ii);
 			nn = dtLinearAlgebra::crossProduct(vv0, vv1);
 			nC0 = dtLinearAlgebra::crossProduct(vv0, nn);
 			nC0 = dtLinearAlgebra::normalize(nC0);
@@ -42,14 +42,14 @@ namespace dtOO {
 			nC1 = dtLinearAlgebra::normalize(nC1);
 			nC = .5 * (nC0 + nC1);
 			nC = dtLinearAlgebra::normalize(nC);
-//			pp.push_back(occC->getControlPoint3d(ii) + offset*nC0);
-			pp.push_back(occC->getControlPoint3d(ii) + offset*nC);
-//			pp.push_back(occC->getControlPoint3d(ii) + offset*nC1);			
+//			pp.push_back(occC->controlPoint(ii) + offset*nC0);
+			pp.push_back(occC->controlPoint(ii) + offset*nC);
+//			pp.push_back(occC->controlPoint(ii) + offset*nC1);			
 		}
 
 		// last
-		vv0 = occC->getControlPoint3d(numCP-2) - occC->getControlPoint3d(numCP-3);
-		vv1 = occC->getControlPoint3d(numCP-1) - occC->getControlPoint3d(numCP-2);
+		vv0 = occC->controlPoint(numCP-2) - occC->controlPoint(numCP-3);
+		vv1 = occC->controlPoint(numCP-1) - occC->controlPoint(numCP-2);
 	  nn = dtLinearAlgebra::crossProduct(vv0, vv1);
 		nC0 = dtLinearAlgebra::crossProduct(vv0, nn);
 		nC0 = dtLinearAlgebra::normalize(nC0);
@@ -57,9 +57,9 @@ namespace dtOO {
 		nC1 = dtLinearAlgebra::normalize(nC1);
 		nC = .5 * (nC0 + nC1);
 		nC = dtLinearAlgebra::normalize(nC);
-    pp.push_back(occC->getControlPoint3d(numCP-1) + offset*nC1);		
+    pp.push_back(occC->controlPoint(numCP-1) + offset*nC1);		
 		
-		_dtC.reset( bSplineCurve_pointConstructOCC(pp, dtC->getOrder()).result() );
+		_dtC.reset( bSplineCurve_pointConstructOCC(pp, dtC->order()).result() );
 	}
 
 	geomCurve_normalOffsetGeomCurveOCC::~geomCurve_normalOffsetGeomCurveOCC() {

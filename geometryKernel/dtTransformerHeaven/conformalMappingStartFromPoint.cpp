@@ -4,34 +4,34 @@
 #include <progHelper.h>
 
 namespace dtOO {
-  conformalMappingStartFromPoint::conformalMappingStartFromPoint() {
+  conformalMappingStartFromPoint::conformalMappingStartFromPoint() : conformalMapping() {
   }
 
-  conformalMappingStartFromPoint::conformalMappingStartFromPoint(const conformalMappingStartFromPoint& orig) {
+  conformalMappingStartFromPoint::conformalMappingStartFromPoint(const conformalMappingStartFromPoint& orig) : conformalMapping(orig) {
   }
 
   conformalMappingStartFromPoint::~conformalMappingStartFromPoint() {
   }
 
+  dtTransformer * conformalMappingStartFromPoint::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * conformalMappingStartFromPoint::create( void ) const {
+		return new conformalMappingStartFromPoint();
+	}
+	
   void conformalMappingStartFromPoint::init( 
-         QDomElement * transformerElementP, 
-         pointContainer * const pointContainerP,
-         vectorContainer * const vectorContainerP,    
-         vectorHandling< constValue * > const * const cValP,
-         vectorHandling< analyticFunction * > const * const sFunP,
-         vectorHandling< analyticGeometry * > const * const depAGeoP 
-       ) {
+		QDomElement const * transformerElementP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP,
+		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	) {
     //
     // call on base class
     //
-    conformalMapping::init(
-      transformerElementP,
-      pointContainerP,
-      vectorContainerP,
-      cValP,
-      sFunP,
-      depAGeoP
-    );
+    conformalMapping::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
             
     //
     // init me

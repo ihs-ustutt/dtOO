@@ -13,15 +13,17 @@ namespace dtOO {
 		_ptr = NULL;		
 	}
 
-	dtOCCTrimmedCurve2d::dtOCCTrimmedCurve2d(dtOCCCurve2dBase const & orig) : dtOCCCurve2d(orig) {
+	dtOCCTrimmedCurve2d::dtOCCTrimmedCurve2d(dtOCCCurve2dBase const & orig, float const u0, float const u1) : dtOCCCurve2d(orig) {
 		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom2d_TrimmedCurve const, _ptr);		
+		_u0 = u0;
+		_u1 = u1;
 	}
 
 	dtOCCTrimmedCurve2d::~dtOCCTrimmedCurve2d() {
 	}
 
   dtCurve2d * dtOCCTrimmedCurve2d::clone( void ) const {
-		return new dtOCCTrimmedCurve2d( OCCRef() );		
+		return new dtOCCTrimmedCurve2d( OCCRef(), _u0, _u1 );		
 	}
 	
   int dtOCCTrimmedCurve2d::order( void ) const {
@@ -35,5 +37,12 @@ namespace dtOO {
   dtPoint2 dtOCCTrimmedCurve2d::controlPoint( int const nPoint ) const {
 		DTFUNCTIONNOTI(controlPoint());		
 	}
-		
+	
+  float dtOCCTrimmedCurve2d::getU0( void ) const {
+		return _u0;
+	}
+	
+  float dtOCCTrimmedCurve2d::getU1( void ) const {
+		return _u1;
+	}
 }

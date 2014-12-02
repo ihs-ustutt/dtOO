@@ -14,14 +14,18 @@ namespace dtOO {
   public:
     dt__CLASSSTD(dtOCCTrimmedCurve2d, dtCurve2d);    
     dtOCCTrimmedCurve2d();
-    dtOCCTrimmedCurve2d(dtOCCCurve2dBase const & orig);
+    dtOCCTrimmedCurve2d(dtOCCCurve2dBase const & orig, float const u0, float const u1);
     virtual ~dtOCCTrimmedCurve2d();
     virtual dtCurve2d * clone( void ) const;
     virtual int order( void ) const;
     virtual int nControlPoints( void ) const;
     virtual dtPoint2 controlPoint( int const nPoint ) const;
+    float getU0( void ) const;
+    float getU1( void ) const;
   private:
     Geom2d_TrimmedCurve const * _ptr;
+    float _u0;
+    float _u1;    
   };
 }
 

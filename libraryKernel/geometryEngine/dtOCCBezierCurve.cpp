@@ -24,15 +24,15 @@ namespace dtOO {
 		return new dtOCCBezierCurve( OCCRef() );
 	}
 	
-  int dtOCCBezierCurve::getOrder( void ) const {
+  int dtOCCBezierCurve::order( void ) const {
     return static_cast<int>(_ptr->Degree());		
 	}
 	
-  int dtOCCBezierCurve::getNControlPoints( void ) const {
+  int dtOCCBezierCurve::nControlPoints( void ) const {
 		return static_cast<int>(_ptr->NbPoles());		
 	}
 	
-  dtPoint3 dtOCCBezierCurve::getControlPoint3d( int const nPoint ) const {
+  dtPoint3 dtOCCBezierCurve::controlPoint( int const nPoint ) const {
 		Standard_Integer nPI = static_cast<Standard_Integer>(nPoint+1);		
 		gp_Pnt pp = _ptr->Pole(nPI);
 		
@@ -43,7 +43,7 @@ namespace dtOO {
 		);		
 	}
 	
-  void dtOCCBezierCurve::setControlPoint3d( int const nPoint, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint3d);
+  void dtOCCBezierCurve::setControlPoint( int const nPoint, dtPoint3 const point ) {
+		DTFUNCTIONNOTI(setControlPoint);
 	}
 }

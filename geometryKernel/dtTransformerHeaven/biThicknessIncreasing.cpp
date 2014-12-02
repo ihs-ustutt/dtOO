@@ -7,12 +7,13 @@
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <algorithm>
 #include <progHelper.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  biThicknessIncreasing::biThicknessIncreasing() {
+  biThicknessIncreasing::biThicknessIncreasing() : dtTransformer() {
     _tD[0] = NULL;
 		_tD[1] = NULL;
     _para = NULL;
@@ -23,6 +24,14 @@ namespace dtOO {
   biThicknessIncreasing::~biThicknessIncreasing() {
   }
 
+  dtTransformer * biThicknessIncreasing::clone( void ) const {
+	  dt__THROW(clone(), "Not yet implemented.");
+	}
+	
+  dtTransformer * biThicknessIncreasing::create( void ) const {
+		return new biThicknessIncreasing();
+	}
+	
   vectorHandling< analyticFunction * > biThicknessIncreasing::apply( vectorHandling< analyticFunction * > const * const sFunP ) const {
     vectorHandling< analyticFunction * > transSFun;
     for (int ii=0;ii<sFunP->size();ii++) {
@@ -76,13 +85,37 @@ namespace dtOO {
 				itVal.push_back(p2Inv[jj].x()); itVal.push_back(p2Inv[jj].y());
       }
 			DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
-						
+			//
+      // reverse orientation of resulting splineCurve
+      //			
+			if (_reverse) {
+				std::reverse( p2.begin(), p2.end() );
+				std::reverse( p2Inv.begin(), p2Inv.end() );
+			}
       //
       // create new function
       //
 			std::reverse( p2Inv.begin(), p2Inv.end() );
-			p2.erase( p2.begin() );
-			p2.erase( p2.end() );
+
+			//
+			// remove
+			//
+			float uvRes
+			= 
+			staticPropertiesHandler::getInstance()->getOptionFloat(
+				"uv_resolution"
+			);
+			if ( dtLinearAlgebra::distance(p2.back(), p2Inv.front()) < uvRes ) {
+				DTINFOWF(
+					apply(),
+					<< DTLOGPOI2D(p2.back()) << LOGDEL
+					<< DTLOGPOI2D(p2Inv.front()) << LOGDEL
+					<< DTLOGEVAL(dtLinearAlgebra::distance(p2.back(), p2Inv.front())) << LOGDEL
+					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< "Removing duplicate point."
+				);
+			  p2.erase( p2.end() );
+			}
 			std::vector< dtPoint2 > p2All( p2.size()+p2Inv.size() );
 			int counter = 0;
 			dt__FORALL(p2, ii,
@@ -98,8 +131,7 @@ namespace dtOO {
       ptrHandling<dtCurve2d> dtC2d( 
 			  bSplineCurve2d_pointConstructOCC(p2All, _splineOrder).result()
 			);
-
-//			DTINFOWF( apply(), << DTLOGEVAL(dtC2d->closed()) );			
+	
       //
       // create scaCurve2dOneD
       //
@@ -109,12 +141,16 @@ namespace dtOO {
     return transSFun;  
   }
 
-  void biThicknessIncreasing::init( QDomElement * transformerElementP, 
-                                  vectorHandling< constValue * > const * const cValP,
-                                  vectorHandling< analyticFunction * > const * const sFunP) {
-
+  void biThicknessIncreasing::init( 
+		QDomElement const * transformerElementP, 
+		vectorHandling< constValue * > const * const cValP,
+		vectorHandling< analyticFunction * > const * const sFunP
+	) {
+    dtTransformer::init(transformerElementP, cValP, sFunP);
+		
     handleInt("order", getAttributeInt("order", *transformerElementP));     
-    
+    handleBool("reverse", getAttributeBool("reverse", *transformerElementP));		
+				
     //
     // get functions
     //     
@@ -152,6 +188,14 @@ namespace dtOO {
     }
     dtTransformer::handleInt(name, value);
   }
+
+  void biThicknessIncreasing::handleBool(std::string const name, bool const value) {
+    if (name == "reverse" ) {
+      _reverse = value;
+      return;
+    }
+    dtTransformer::handleBool(name, value);
+  }	
   
   void biThicknessIncreasing::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
     if (name == "function_label") {

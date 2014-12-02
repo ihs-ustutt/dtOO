@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<c14Volume>
+	<boundedVolume label="map3dTo3dCompoundVolume" name="map3dTo3dCompoundVolume">
+	  <option name="[gmsh]General.Terminal" value="1."/>
+	  <option name="[gmsh]General.Verbosity" value="100."/>
+		<option name="[gmsh]Mesh.CharacteristicLengthMin" value="1."/>
+    <option name="[gmsh]Mesh.CharacteristicLengthMax" value="5."/>
+		<option name="[gmsh]General.ExpertMode" value="1."/>	
+		<analyticGeometry label="mp_blockStructure" position="dtVolume"/>
+	</boundedVolume>	
+</c14Volume>

@@ -21,13 +21,12 @@ namespace dtOO {
     virtual vec3dCurveOneD * clone( void ) const;
     virtual vec3dCurveOneD * create( void ) const;    
     virtual ~vec3dCurveOneD();
-    virtual aFY Y( float const & xx) const;
+    virtual aFY Y( aFX const & xx) const;    
     virtual vectorHandling< renderInterface * > getRender( void ) const;
     dtCurve const * ptrDtCurve( void ) const;
     virtual bool closed( int const & dir ) const;
   private:
     ptrHandling<dtCurve> _dtC;
-    static int const _nVis = 100;
   };
   typedef analyticFunctionCompound<vec3dCurveOneD> vec3dCurveOneDCompound;
 }

@@ -21,14 +21,13 @@ namespace dtOO {
     virtual vec3dCurve2dInSurfaceOneD * clone( void ) const;
     virtual vec3dCurve2dInSurfaceOneD * create( void ) const;    
     virtual ~vec3dCurve2dInSurfaceOneD();
-    virtual aFY Y( float const & xx) const;
+    virtual aFY Y( aFX const & xx ) const;
     vectorHandling< renderInterface * > getRender( void ) const;
     //dtCurve const * ptrDtCurve( void ) const;
     virtual bool closed( int const & dir ) const;
   private:
     ptrHandling<dtCurve2d> _dtC2d;
     ptrHandling<dtSurface> _dtS;
-    static int const _nVis = 100;
   };
 }
 #endif	/* VEC3DCURVE2DINSURFACEONED_H */

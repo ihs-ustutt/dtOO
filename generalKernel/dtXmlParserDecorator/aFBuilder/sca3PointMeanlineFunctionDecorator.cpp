@@ -1,11 +1,10 @@
 #include "sca3PointMeanlineFunctionDecorator.h"
-#include <dtTransformerHeaven/doNothing.h>
 #include <functionHeaven/analyticFunction.h>
-#include <dtTransformerHeaven/dtTransformerFactory.h>
 #include <geometryEngine/dtCurve2d.h>
-#include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h>
 #include <functionHeaven/vec2dCurve2dOneD.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <logMe/logMe.h>
 #include <math.h>
 #include <QtXml/QDomElement>
@@ -19,10 +18,12 @@ namespace dtOO {
   }
 
   void sca3PointMeanlineFunctionDecorator::buildPart(
-         QDomElement const & toBuildP, 
-         vectorHandling< constValue * > const * const cValP, 
-         vectorHandling< analyticFunction * > const * const depSFunP,
-         vectorHandling< analyticFunction * > * sFunP ) const {
+		QDomElement const & toBuildP, 
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cValP, 
+		vectorHandling< analyticFunction * > const * const depSFunP,
+		vectorHandling< analyticFunction * > * sFunP 
+	) const {
     //
     // check input
     //
@@ -31,7 +32,6 @@ namespace dtOO {
     bool hasRatio = hasAttribute("ratio", toBuildP);
     bool hasDeltaY = hasAttribute("delta_y", toBuildP);
     bool hasOrder = hasAttribute("order", toBuildP);
-
 
     //
     //
@@ -80,157 +80,15 @@ namespace dtOO {
                          depSFunP
                        )
                      );      
-//      int order = muParseStringInt(
-//                    replaceUsedFunctions(
-//                      getAttributeStr(
-//                        "order", 
-//                        toBuildP
-//                      ), 
-//                      cValP, 
-//                      depSFunP
-//                    )
-//                  );       
-      bool mirrorY = getAttributeBool("mirror_y", toBuildP);     
-      
-      //
-      // check values
-      //
-      if ( alphaOne < 0.) {
-        DTWARNINGWF(buildPart(),
-                << "Adjusting alphaOne from " << DTLOGEVAL(alphaOne) 
-                << " to " << 0. << "." );
-        alphaOne = 0.;
-      }
-      if ( alphaTwo < 0.) {
-        DTWARNINGWF(buildPart(),
-                << "Adjusting alphaTwo from " << DTLOGEVAL(alphaTwo) 
-                << " to " << 0. << "." );
-        alphaTwo = 0.;        
-      }            
-      if ( (ratio < 0.) || (ratio > 1.) ) {
-        dt__THROW(buildPart(),
-                << DTLOGEVAL(ratio) << LOGDEL        
-                << "Ratio is smaller than zero or bigger than one.");
-      }
-      if (alphaOne == alphaTwo) {
-          //
-          // calculate deltaX
-          //
-          float deltaX = deltaY * tan(alphaOne);
-          //
-          // calculate points
-          //
-          std::vector< dtPoint2 > pV;
-          pV.push_back( dtPoint2(0.,0.) );
-          if (!mirrorY) {
-            pV.push_back( dtPoint2(deltaX, deltaY));
-          }
-          else {
-            pV.push_back( dtPoint2(-deltaX, deltaY));
-          }
-          
-          DTINFOWF(
-            buildPart(),
-            << DTLOGEVAL(alphaOne) << LOGDEL
-            << DTLOGEVAL(alphaTwo) << LOGDEL              
-            << DTLOGEVAL(deltaX) << LOGDEL 
-            << DTLOGEVAL(deltaY) << LOGDEL
-            << DTLOGPOI2D(pV[0]) << LOGDEL
-            << DTLOGPOI2D(pV[1]) << LOGDEL
-            << DTLOGEVAL(mirrorY)
-          );
-					ptrHandling<dtCurve2d> dtC2d( 
-					  bSplineCurve2d_pointConstructOCC(pV, 1).result() 
-					);
-
-					//
-					// create scaCurve2dOneD
-					//
-					sFunP->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );	
-      }
-      else {
-        //
-        // calculate deltaX
-        //
-        float deltaXMax;
-        float deltaXMin;
-        if (alphaOne >= alphaTwo) {
-          deltaXMax = deltaY / tan(alphaTwo);
-          deltaXMin = deltaY / tan(alphaOne);
-        }
-        else if (alphaOne < alphaTwo) {
-          deltaXMin = deltaY / tan(alphaTwo);
-          deltaXMax = deltaY / tan(alphaOne);        
-        }
-//      else if ( alphaOne == M_PI_2 ) {
-//        
-//      }
-//      else if ( alphaTwo == M_PI_2 ) {
-//        
-//      }
-
-        float deltaX = deltaXMin + ratio * (deltaXMax - deltaXMin);
-      
-        //
-        // calculate points
-        //
-        std::vector< dtPoint2 > pV;
-        pV.push_back( dtPoint2(0.,0.) );
-        int ss = ( deltaY - deltaX * sin(alphaOne) / cos(alphaOne) )
-                 /
-                 ( sin(alphaTwo) - (cos(alphaTwo)*sin(alphaOne) / cos(alphaOne)) );
-        int tt = ( deltaY - deltaX * sin(alphaTwo) / cos(alphaTwo) )
-                 /
-                 ( sin(alphaOne) - (cos(alphaOne)*sin(alphaTwo) / cos(alphaTwo)) );      
-//      pV.push_back(
-//        dtPoint2(
-//          deltaX - cos(alphaTwo) * ss,
-//          deltaY - sin(alphaTwo) * ss
-//        )
-//      );
-        if (!mirrorY) {
-          pV.push_back(
-            dtPoint2(
-              cos(alphaOne) * tt,
-              sin(alphaOne) * tt
-            )
-          );      
-          pV.push_back( dtPoint2(deltaX, deltaY) );
-        }
-        else {
-          pV.push_back(
-            dtPoint2(
-              -cos(alphaOne) * tt,
-              sin(alphaOne) * tt
-            )
-          );      
-          pV.push_back( dtPoint2(-deltaX, deltaY) );          
-        }
-        DTINFOWF(
-          buildPart(),
-          << DTLOGEVAL(alphaOne) << LOGDEL
-          << DTLOGEVAL(alphaTwo) << LOGDEL              
-          << DTLOGEVAL(deltaXMin) << LOGDEL 
-          << DTLOGEVAL(deltaXMax) << LOGDEL               
-          << DTLOGEVAL(ratio) << LOGDEL
-          << DTLOGEVAL(ss) << LOGDEL
-          << DTLOGEVAL(tt) << LOGDEL
-          << DTLOGEVAL(deltaX) << LOGDEL 
-          << DTLOGEVAL(deltaY) << LOGDEL
-          << DTLOGPOI2D(pV[0]) << LOGDEL
-          << DTLOGPOI2D(pV[1]) << LOGDEL
-          << DTLOGPOI2D(pV[2]) << LOGDEL
-          << DTLOGEVAL(mirrorY) 
-        );
-				ptrHandling<dtCurve2d> dtC2d( 
-					bSplineCurve2d_pointConstructOCC(pV, 2).result() 
-				);
-
-				//
-				// create scaCurve2dOneD
-				//
-				sFunP->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );					
-      }
+			sFunP->push_back( 
+			  new vec2dCurve2dOneD( 
+					dt__pH(dtCurve2d)(
+						bSplineCurve2d_angleRatioDeltaYConstructOCC(
+			        alphaOne, alphaTwo, ratio, deltaY
+			      ).result()
+					).get()
+			  )
+			);			
     }
     else {
       dt__THROW(buildPart(),
@@ -239,16 +97,6 @@ namespace dtOO {
               << DTLOGEVAL(hasAlphaTwo) << LOGDEL
               << DTLOGEVAL(hasRatio) << LOGDEL
               << DTLOGEVAL(hasDeltaY) );
-    }
-
-		//
-		// transform
-		//
-    ptrHandling< dtTransformer > cTransP(  
-		  createTransformer(&toBuildP, cValP, depSFunP)
-		);	
-    if ( cTransP->isNecessary() ) {
-      *sFunP = cTransP->apply(sFunP);
     }
   }
 }

@@ -25,6 +25,7 @@ namespace dtOO {
     virtual std::vector<dtVector3> secondDer( float const uu, float const vv) const;
     virtual dtPoint2 reparam(dtPoint3 const point) const;
     dtOCCSurfaceBase const & OCCRef( void ) const;
+    dtOCCSurfaceBase & OCCRef( void );    
   private:
     ptrHandling< dtOCCSurfaceBase > _surface;
     Geom_Surface const * _ptr;

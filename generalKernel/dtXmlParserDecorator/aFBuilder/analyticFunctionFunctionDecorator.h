@@ -10,6 +10,7 @@ class QDomElement;
 namespace dtOO {
   class scaFunction;
   class constValue;
+  class baseContainer;
 
   class analyticFunctionFunctionDecorator : public dtXmlParserFunctionDecorator {
   public:  
@@ -17,10 +18,11 @@ namespace dtOO {
     analyticFunctionFunctionDecorator();
     virtual ~analyticFunctionFunctionDecorator();
     virtual void buildPart(
-                   QDomElement const & toBuildP, 
-                   vectorHandling< constValue * > const * const cValP,  
-                   vectorHandling< analyticFunction * > const * const depSFunP,
-                   vectorHandling< analyticFunction * > * sFunP 
+      QDomElement const & toBuildP,
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cValP,  
+      vectorHandling< analyticFunction * > const * const depSFunP,
+      vectorHandling< analyticFunction * > * sFunP 
     ) const;
   };
 }

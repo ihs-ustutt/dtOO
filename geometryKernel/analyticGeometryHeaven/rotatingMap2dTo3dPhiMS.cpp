@@ -21,6 +21,14 @@ namespace dtOO {
 		_angle = 2. * M_PI;
 	}
   
+	rotatingMap2dTo3dPhiMS * rotatingMap2dTo3dPhiMS::clone( void ) const {
+		return new rotatingMap2dTo3dPhiMS( *this );
+	}
+    
+	rotatingMap2dTo3dPhiMS * rotatingMap2dTo3dPhiMS::create( void ) const {
+		return new rotatingMap2dTo3dPhiMS();
+	}
+	
 	float rotatingMap2dTo3dPhiMS::getMin( int const & dir) const {
     switch (dir) {
       case 0:
