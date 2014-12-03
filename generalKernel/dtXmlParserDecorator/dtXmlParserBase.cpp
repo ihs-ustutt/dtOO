@@ -1166,20 +1166,30 @@ namespace dtOO {
 			else if ( stringContains("~", label) ) {
 				//
 				// string contains "~" --> transform analyticGeometry
-				//				
-				getStringBetweenAndRemove("~", "~", &label);
-				std::string transLabel = getStringBetweenAndRemove("", "(", &label);
+				//
+				
+				std::vector< std::string > transLabels;
+				std::string tmpString = getStringBetweenAndRemove("~", "(", &label);
+				while (tmpString != "") {
+          transLabels.push_back( tmpString );
+					tmpString = getStringBetweenAndRemove("~", "(", &label);
+				}
+				
 				std::string aGLabel = getStringBetweenAndRemove("", ")", &label);
-				
-				DTINFOWF(
-					createAdvanced(),
-					<< "Applying " << DTLOGEVAL(transLabel) << " to " 
-					<< DTLOGEVAL(aGLabel) << "."
-				);
-				
-				dtTransformer const * const dtT = bC->ptrTransformerContainer()->get(transLabel);
-				
-				advancedP->push_back( dtT->apply(depAGeoP->get(aGLabel)) );
+				dt__pH(analyticGeometry) toTrans(depAGeoP->get(aGLabel)->clone());
+				for (int ii=transLabels.size()-1; ii>=0; ii--) {
+					DTINFOWF(
+						createAdvanced(),
+						<< "Applying " << DTLOGEVAL(transLabels[ii]) << " to " 
+						<< DTLOGEVAL(aGLabel) << "."
+					);
+					
+					dtTransformer const * const dtT 
+					= 
+					bC->ptrTransformerContainer()->get(transLabels[ii]);
+					toTrans.reset(dtT->apply( toTrans.get() ));
+				}
+				advancedP->push_back( toTrans->clone() );
 			}
 			else {
 				//
@@ -1335,21 +1345,31 @@ namespace dtOO {
 			}
 			else if ( stringContains("~", label) ) {
 				//
-				// string contains "~" --> transform analyticGeometry
-				//				
-				getStringBetweenAndRemove("~", "~", &label);
-				std::string transLabel = getStringBetweenAndRemove("", "(", &label);
+				// string contains "~" --> transform analyticFunction
+				//
+				
+				std::vector< std::string > transLabels;
+				std::string tmpString = getStringBetweenAndRemove("~", "(", &label);
+				while (tmpString != "") {
+          transLabels.push_back( tmpString );
+					tmpString = getStringBetweenAndRemove("~", "(", &label);
+				}
+				
 				std::string aFLabel = getStringBetweenAndRemove("", ")", &label);
-				
-				DTINFOWF(
-					createAdvanced(),
-					<< "Applying " << DTLOGEVAL(transLabel) << " to " 
-					<< DTLOGEVAL(aFLabel) << "."
-				);
-				
-				dtTransformer const * const dtT = bC->ptrTransformerContainer()->get(transLabel);
-				
-				advancedP->push_back( dtT->apply(sFunP->get(aFLabel)) );
+				dt__pH(analyticFunction) toTrans(sFunP->get(aFLabel)->clone());
+				for (int ii=transLabels.size()-1; ii>=0; ii--) {
+					DTINFOWF(
+						createAdvanced(),
+						<< "Applying " << DTLOGEVAL(transLabels[ii]) << " to " 
+						<< DTLOGEVAL(aFLabel) << "."
+					);
+					
+					dtTransformer const * const dtT 
+					= 
+					bC->ptrTransformerContainer()->get(transLabels[ii]);
+					toTrans.reset(dtT->apply( toTrans.get() ));
+				}
+				advancedP->push_back( toTrans->clone() );
 			}
 			else {
 				//
