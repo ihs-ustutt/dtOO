@@ -1,4 +1,4 @@
-#include "conformalMappingScale.h"
+#include "uVw_phirMs.h"
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
 #include <logMe/logMe.h>
 #include <progHelper.h>
@@ -6,33 +6,31 @@
 #include <functionHeaven/vec3dSurfaceTwoD.h>
 #include <functionHeaven/vec3dCurveOneD.h>
 #include <functionHeaven/analyticFunctionTransformed.h>
-//#include <geometryEngine/dtSurface.h>
-//#include <geometryEngine/dtCurve.h>
 
 namespace dtOO {
-  conformalMappingScale::conformalMappingScale() : dtTransformer() {
+  uVw_phirMs::uVw_phirMs() : dtTransformer() {
   }
 
-  conformalMappingScale::conformalMappingScale(
-	  conformalMappingScale const & orig 
+  uVw_phirMs::uVw_phirMs(
+	  uVw_phirMs const & orig 
 	) : dtTransformer(orig) {
 		_rM2d.reset( orig._rM2d->clone() );
 		_ss = orig._ss;
   }
 	
-  conformalMappingScale::~conformalMappingScale() {
+  uVw_phirMs::~uVw_phirMs() {
 		
   }
 
-  dtTransformer * conformalMappingScale::clone( void ) const {
-	  return new conformalMappingScale(*this);
+  dtTransformer * uVw_phirMs::clone( void ) const {
+	  return new uVw_phirMs(*this);
 	}
 	
-  dtTransformer * conformalMappingScale::create( void ) const {
-		return new conformalMappingScale();
+  dtTransformer * uVw_phirMs::create( void ) const {
+		return new uVw_phirMs();
 	}
 	
-  vectorHandling< analyticFunction * > conformalMappingScale::apply( 
+  vectorHandling< analyticFunction * > uVw_phirMs::apply( 
 	  vectorHandling< analyticFunction * > const * const aFP 
 	) const {
 		vectorHandling< analyticFunction * > retV;
@@ -43,22 +41,12 @@ namespace dtOO {
 			vec3dCurveOneD const * const vec3d1d = vec3dCurveOneD::ConstDownCast(aF);			
 			vec3dSurfaceTwoD const * const vec3d2d = vec3dSurfaceTwoD::ConstDownCast(aF);
 			
-//			std::vector<float> itVal;
-//			std::vector<std::string> header;
-//			header.push_back("cP_x"); header.push_back("cP_y"); header.push_back("cP_z");
-//			header.push_back("uu"); header.push_back("vv"); header.push_back("ww");
-			
 			if (vec3d1d) {			
 				analyticFunctionTransformed<vec3dCurveOneD> * aFT
 				= new analyticFunctionTransformed<vec3dCurveOneD>(*vec3d1d);
 				aFT->setTransformer(this);
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());
-
-//				DTINFOWF(
-//				  apply(), 
-//					<< DTLOGPOI3D(aFT->YdtPoint3(0) )
-//				);				
 			}			
       else if (vec3d2d) {			
 				analyticFunctionTransformed<vec3dSurfaceTwoD> * aFT
@@ -66,12 +54,6 @@ namespace dtOO {
 				aFT->setTransformer(this);
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());				
-
-//				DTINFOWF(
-//				  apply(), 
-//					<< DTLOGPOI3D(aFT->YdtPoint3(0,0) )
-//				);
-				
 			}
 			else {
 				dt__THROW(
@@ -81,18 +63,13 @@ namespace dtOO {
 					<< "Unknown type."
 				);
 			}
-			
-//			DTINFOWF(
-//				apply(),
-//				<< logMe::floatVecToTable(header, itVal)
-//			);
 		}
 		
 		return retV;
   }
 
 	std::vector< dtPoint3 > 
-	conformalMappingScale::apply( std::vector< dtPoint3 > const * const toTrans ) const {
+	uVw_phirMs::apply( std::vector< dtPoint3 > const * const toTrans ) const {
 		std::vector< dtPoint3 > retVec;
 		dt__FORALL(*toTrans, ii,
       float xx = toTrans->at(ii).x() * _ss.x();
@@ -103,19 +80,17 @@ namespace dtOO {
 			float vv = _rM2d->v_mw(yy, ww);
 			float uu = _rM2d->u_phirvw(xx, vv, ww);
 			
-//			DTINFOWF(apply(), << DTLOGPOI3DP( toTrans->at(ii)));
-			
 			retVec.push_back( dtPoint3(uu, vv, ww) );
 		);
 		
 		return retVec;
 	}
 	
-  bool conformalMappingScale::isNecessary( void ) const {
+  bool uVw_phirMs::isNecessary( void ) const {
     return true;
   }
 
-  void conformalMappingScale::init( 
+  void uVw_phirMs::init( 
 	  QDomElement const * transformerElementP, 
     baseContainer * const bC,  
 		vectorHandling< constValue * > const * const cValP,
@@ -140,7 +115,7 @@ namespace dtOO {
 		);
   }
   
-  void conformalMappingScale::handleAnalyticGeometry(std::string const name, analyticGeometry const * value) {
+  void uVw_phirMs::handleAnalyticGeometry(std::string const name, analyticGeometry const * value) {
     if (name == "part_label") {
       dt__PTRASS(rotatingMap2dTo3d const * m3d, rotatingMap2dTo3d::ConstDownCast(value));
 			_rM2d.reset( m3d->clone() );
@@ -149,7 +124,7 @@ namespace dtOO {
     dtTransformer::handleAnalyticGeometry(name, value);
   }
 	
-  void conformalMappingScale::handleDtVector3(std::string const name, dtVector3 const value) {
+  void uVw_phirMs::handleDtVector3(std::string const name, dtVector3 const value) {
     if (name == "Vector_3") {
       _ss = value;
       return;

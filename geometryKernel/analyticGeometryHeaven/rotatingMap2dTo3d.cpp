@@ -165,7 +165,7 @@ namespace dtOO {
 	}	
 	
 	float rotatingMap2dTo3d::u_phi(float const & arg) const {
-    return arg / getMax(0);
+    return arg / (2.*M_PI);
 	}
 
 	float rotatingMap2dTo3d::u_phirvw(float const & phir, float const & vv, float const & ww) const {
@@ -178,7 +178,7 @@ namespace dtOO {
 		
 		
 		return (phir/dtLinearAlgebra::length(rr)) / (2.*M_PI);//getMax(0);
-	}	
+	}
 	
 //	float rotatingMap2dTo3d::phi_u(float const & arg) const {
 //    if (arg >= 0.) {

@@ -64,7 +64,7 @@ SET(HEADERS
   dtTransformerHeaven/closeGaps.h
   dtTransformerHeaven/pickLengthRange.h
   dtTransformerHeaven/pickLengthPercentRange.h
-  dtTransformerHeaven/conformalMappingScale.h
+  dtTransformerHeaven/uVw_phirMs.h
   dtTransformerHeaven/averagePoints.h
   dtTransformerHeaven/projectOnSurface.h
   dtTransformerHeaven/reparamInSurface.h
@@ -132,7 +132,7 @@ SET(SOURCES
   dtTransformerHeaven/closeGaps.cpp
   dtTransformerHeaven/pickLengthRange.cpp
   dtTransformerHeaven/pickLengthPercentRange.cpp
-  dtTransformerHeaven/conformalMappingScale.cpp
+  dtTransformerHeaven/uVw_phirMs.cpp
   dtTransformerHeaven/averagePoints.cpp
   dtTransformerHeaven/projectOnSurface.cpp
   dtTransformerHeaven/reparamInSurface.cpp

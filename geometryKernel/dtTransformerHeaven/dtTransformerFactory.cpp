@@ -17,7 +17,7 @@
 #include "pickLengthRange.h"
 #include "pickLengthPercentRange.h"
 #include "addConstCoordinate.h"
-#include "conformalMappingScale.h"
+#include "uVw_phirMs.h"
 #include "averagePoints.h"
 #include "projectOnSurface.h"
 #include "reparamInSurface.h"
@@ -56,7 +56,7 @@ namespace dtOO {
 		__IFRET( pickLengthRange );
 		__IFRET( pickLengthPercentRange );
 		__IFRET( addConstCoordinate );
-		__IFRET( conformalMappingScale );
+		__IFRET( uVw_phirMs );
 		__IFRET( averagePoints );
 		__IFRET( projectOnSurface );
 		__IFRET( reparamInSurface );

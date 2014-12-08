@@ -1,5 +1,5 @@
-#ifndef conformalMappingScale_H
-#define	conformalMappingScale_H
+#ifndef uVw_phirMs_H
+#define	uVw_phirMs_H
 
 #include "dtTransformer.h"
 #include <interfaceHeaven/vectorHandling.h>
@@ -8,12 +8,12 @@
 namespace dtOO {
   class rotatingMap2dTo3d;
   
-  class conformalMappingScale : public dtTransformer {
+  class uVw_phirMs : public dtTransformer {
   public:      
-    dt__CLASSNAME(conformalMappingScale);
-    conformalMappingScale();
-    conformalMappingScale( conformalMappingScale const & orig );
-    virtual ~conformalMappingScale();
+    dt__CLASSNAME(uVw_phirMs);
+    uVw_phirMs();
+    uVw_phirMs( uVw_phirMs const & orig );
+    virtual ~uVw_phirMs();
     virtual dtTransformer * clone( void ) const;
     virtual dtTransformer * create( void ) const;     
     virtual bool isNecessary( void ) const;
@@ -36,5 +36,5 @@ namespace dtOO {
   };
 }
 
-#endif	/* conformalMappingScale_H */
+#endif	/* uVw_phirMs_H */
 
