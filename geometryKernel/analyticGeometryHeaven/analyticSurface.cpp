@@ -14,7 +14,8 @@
 #include "vec2dOneDInMap2dTo3d.h"
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
-
+#include "map2dTo3dTransformed.h"
+#include <dtTransformerHeaven/dtTransformer.h>
 namespace dtOO {
   analyticSurface::analyticSurface() : map2dTo3d() {
   }
@@ -34,6 +35,10 @@ namespace dtOO {
   analyticSurface * analyticSurface::create( void ) const {
     return new analyticSurface();
   }
+	
+	analyticSurface * analyticSurface::cloneTransformed( dtTransformer const * const dtT ) const {
+		return new map2dTo3dTransformed<analyticSurface>(*this, dtT);
+	}
 
   analyticSurface::~analyticSurface() {
   }

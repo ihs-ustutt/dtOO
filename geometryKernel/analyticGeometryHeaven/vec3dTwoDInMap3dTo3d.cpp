@@ -14,9 +14,10 @@
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
 #include "vec3dOneDInMap3dTo3d.h"
+#include "map2dTo3dTransformed.h"
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
-
+#include <dtTransformerHeaven/dtTransformer.h>
 #include <progHelper.h>
 
 namespace dtOO {    
@@ -63,12 +64,16 @@ namespace dtOO {
     return _v2d->xMax(dir);    
   }
 
-  map2dTo3d * vec3dTwoDInMap3dTo3d::create( void ) const {
+  vec3dTwoDInMap3dTo3d * vec3dTwoDInMap3dTo3d::clone( void ) const {
+    return new vec3dTwoDInMap3dTo3d(*this);
+  }
+	
+  vec3dTwoDInMap3dTo3d * vec3dTwoDInMap3dTo3d::create( void ) const {
     return new vec3dTwoDInMap3dTo3d();
   }
-  
-  map2dTo3d * vec3dTwoDInMap3dTo3d::clone( void ) const {
-    return new vec3dTwoDInMap3dTo3d(*this);
+	
+	vec3dTwoDInMap3dTo3d * vec3dTwoDInMap3dTo3d::cloneTransformed( dtTransformer const * const dtT ) const {
+    return new map2dTo3dTransformed<vec3dTwoDInMap3dTo3d>(*this, dtT);
   }
   
   map1dTo3d * vec3dTwoDInMap3dTo3d::pickConstUPercent(

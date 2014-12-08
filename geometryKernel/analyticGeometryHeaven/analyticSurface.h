@@ -11,6 +11,7 @@ namespace dtOO {
   class dtSurface;
   class dtCurve;
   class splineCurve3d;
+  class dtTransformer;
 
   /**
    * Analytic surface.
@@ -28,6 +29,7 @@ namespace dtOO {
     analyticSurface(dtSurface const * const surface);
     virtual analyticSurface * clone( void ) const;
     virtual analyticSurface * create( void ) const;
+    virtual analyticSurface * cloneTransformed( dtTransformer const * const dtT ) const;
     virtual ~analyticSurface();
     //
     // read and modify member attributes

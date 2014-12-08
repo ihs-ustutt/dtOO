@@ -7,6 +7,7 @@
 
 namespace dtOO {
   class map1dTo3d;
+  class dtTransformer;
   
   class map2dTo3d : public analyticGeometry {
   public:
@@ -46,6 +47,7 @@ namespace dtOO {
     int getRenderResolutionU( void ) const;
     int getRenderResolutionV( void ) const;        
     virtual map2dTo3d * clone( void ) const = 0;
+    virtual map2dTo3d * cloneTransformed( dtTransformer const * const dtT ) const = 0;
     dtPoint2 uv_percent(dtPoint2 const & pUV) const;
     dtPoint2 uv_percent(float const & uu, float const & vv) const;
     float u_percent(float const & uu) const;

@@ -22,7 +22,10 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFunP,
       vectorHandling< analyticGeometry * > const * const depAGeoP 
     );
-    virtual vectorHandling< analyticGeometry * > apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const;
+    virtual std::vector< dtPoint3 > 
+    apply( std::vector< dtPoint3 > const * const toTrans ) const; 
+    virtual vectorHandling< analyticGeometry * > 
+    apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const;
   private:
     dtPoint3 _origin;
     dtVector3 _rotVector;

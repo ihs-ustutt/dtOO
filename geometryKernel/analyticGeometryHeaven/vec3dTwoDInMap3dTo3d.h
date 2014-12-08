@@ -11,6 +11,7 @@ namespace dtOO {
   class vec3dSurfaceTwoD;
   class map3dTo3d;
   class renderInterface;
+  class dtTransformer;
   
   class vec3dTwoDInMap3dTo3d : public map2dTo3d {
   public:
@@ -19,8 +20,9 @@ namespace dtOO {
     vec3dTwoDInMap3dTo3d(const vec3dTwoDInMap3dTo3d& orig);
     vec3dTwoDInMap3dTo3d(vec3dTwoD const * const v2d, map3dTo3d const * const m3d);
     virtual ~vec3dTwoDInMap3dTo3d();
-    virtual map2dTo3d * clone( void ) const;
-    virtual map2dTo3d * create( void ) const;
+    virtual vec3dTwoDInMap3dTo3d * clone( void ) const;
+    virtual vec3dTwoDInMap3dTo3d * create( void ) const;
+    virtual vec3dTwoDInMap3dTo3d * cloneTransformed( dtTransformer const * const dtT ) const;
     virtual dtPoint3 getPoint( float const & uu, float const & vv ) const;
     virtual bool isClosed( int const & dir) const;
     virtual float getMin( int const & dir) const;

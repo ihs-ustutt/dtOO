@@ -9,7 +9,6 @@
 namespace dtOO {
   class dtCurve;
   class dtSurface;
-  class map1dTo3d;
 
   /**
    * Spline surface class
@@ -25,6 +24,7 @@ namespace dtOO {
     virtual ~splineSurface3d();
     virtual splineSurface3d * clone( void ) const;
     virtual splineSurface3d * create( void ) const;    
+    virtual splineSurface3d * cloneTransformed( dtTransformer const * const dtT ) const;    
   private:
   };
 }

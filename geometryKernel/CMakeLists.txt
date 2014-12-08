@@ -20,6 +20,7 @@ SET(HEADERS
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
   analyticGeometryHeaven/analyticGeometryCompound.h
+  analyticGeometryHeaven/map2dTo3dTransformed.h
   baseContainerHeaven/baseContainer.h
   baseContainerHeaven/pointContainer.h
   baseContainerHeaven/vectorContainer.h
