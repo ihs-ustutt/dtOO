@@ -54,56 +54,9 @@ namespace dtOO {
     return getMax(1);
   }
   
-  std::vector< std::vector< dtPoint3 > > map2dTo3d::getPointGrid( int const & nU, int const & nV ) const {
-    std::vector< std::vector< dtPoint3 > > pp;
-    float intU = 1. / (static_cast<float>(nU)-1.);
-    float intV = 1. / (static_cast<float>(nV)-1.);    
-    for (int ii=0; ii<nV; ii++) {
-      pp.push_back(std::vector< dtPoint3 >(nU));
-      for (int jj=0; jj<nU; jj++) {
-        float iiF = static_cast< float >(ii);
-        float jjF = static_cast< float >(jj);
-        pp[ii][jj] = getPointPercent(jjF * intU, iiF * intV);
-      }      
-    }
-    
-    return pp;
-  }
-  
   dtPoint3 map2dTo3d::getPointPercent( float const & uu, float const & vv ) const {
     return getPoint( u_percent(uu), v_percent(vv) );
   }    
-
-  std::vector< dtPoint3 > map2dTo3d::getPoint( std::vector< float > const & uu, std::vector< float > const & vv ) const {
-    std::vector< dtPoint3 > ppXYZ;
-    
-    dt__FORALL(uu, ii,
-      ppXYZ.push_back( getPoint( uu[ii], vv[ii] ) );
-    );
-    
-    return ppXYZ;
-  }
-
-  std::vector< dtPoint3 > map2dTo3d::getPointPercent( std::vector< float > const & uu, std::vector< float > const & vv ) const {
-    std::vector< dtPoint3 > ppXYZ;
-    
-    dt__FORALL(uu, ii,
-      ppXYZ.push_back( getPointPercent( uu[ii], vv[ii] ) );
-    );
-    
-    return ppXYZ;
-  }
-  
-  std::vector< dtVector3 > map2dTo3d::getPointPercentVector( std::vector< float > const & uu, std::vector< float > const & vv ) const {
-    std::vector< dtPoint3 > ppXYZ = getPointPercent(uu, vv);
-    
-    std::vector< dtVector3 > vvXYZ( ppXYZ.size() );
-    dt__FORALL(ppXYZ, ii,
-      vvXYZ[ii] = dtLinearAlgebra::toDtVector3(ppXYZ[ii]);
-    );
-    
-    return vvXYZ;
-  }  
 	
 	vectorHandling< renderInterface * > map2dTo3d::getRender( void ) const {
 		int renderResU = analyticGeometry::getRenderResolution(0);
@@ -605,11 +558,6 @@ namespace dtOO {
       return false;
     }
     else {
-//      itVal.push_back(static_cast<float>(Unew) );
-//      itVal.push_back(static_cast<float>(Vnew) );
-//      itVal.push_back(static_cast<float>(err2) );
-//      itVal.push_back(static_cast<float>(err) );
-//      itVal.push_back(static_cast<float>(tol) );
       return XYZtoUV(X, Y, Z, U, V, 0.75 * relax, itVal);
     }
   }

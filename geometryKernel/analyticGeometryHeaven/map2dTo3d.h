@@ -18,10 +18,6 @@ namespace dtOO {
     virtual dtPoint3 getPoint( float const & uu, float const & vv ) const = 0;
     dtPoint3 getPoint( dtPoint2 const & pUV ) const;
     dtPoint3 getPoint( dtPoint2 const * const pUV ) const;
-    virtual std::vector< dtPoint3 > getPoint( std::vector< float > const & uu, std::vector< float > const & vv ) const;
-    virtual std::vector< dtPoint3 > getPointPercent( std::vector< float > const & uu, std::vector< float > const & vv ) const;
-    std::vector< dtVector3 > getPointPercentVector( std::vector< float > const & uu, std::vector< float > const & vv ) const;
-    std::vector< std::vector< dtPoint3 > >  getPointGrid( int const & nU, int const & nV ) const;
     dtPoint3 getPointPercent( float const & uu, float const & vv ) const;
     dtVector3 getPointPercentVector( float const & uu, float const & vv ) const;
     virtual vectorHandling< renderInterface * > getRender( void ) const;

@@ -21,7 +21,6 @@ namespace dtOO {
 	
 	rotate::rotate(const rotate& orig) : dtTransformer(orig) {
 		_angle = orig._angle;
-//		_nPieces = orig._nPieces;
 		_origin = orig._origin;
 		_rotVector = orig._rotVector;
 	}
@@ -46,47 +45,40 @@ namespace dtOO {
 		return ret;
 	}
 	
-  vectorHandling< analyticGeometry * > rotate::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
+  vectorHandling< analyticGeometry * > rotate::apply( 
+	  vectorHandling< analyticGeometry * > const * const aGeoVecP 
+	) const {
     vectorHandling< analyticGeometry * > retAGeo;
 
     //each analyticGeometry
     for (int ii=0; ii< aGeoVecP->size(); ii++) {
-      //each piece
-//      for (int jj=1;jj<=_nPieces;jj++) {
-//        dt__TOFLOAT(float jjF, jj);
-
-        //
-        // clone and cast analyticGeometry
-        //
-        dt__pH(analyticGeometry) aGeoP(aGeoVecP->at(ii)->clone());
-				map2dTo3d * m2d = map2dTo3d::DownCast(aGeoP.get());
-        analyticSurface * aS = analyticSurface::DownCast(aGeoP.get());
-				map2dTo3dTransformed< analyticSurface > * aST 
-				= 
-				map2dTo3dTransformed< analyticSurface >::DownCast(aGeoP.get());
-        if ( aS && !aST ) {
-					ptrHandling< dtSurface > dtS(
-						geomSurface_surfaceRotateConstructOCC( 
-							aS->ptrDtSurface(), 
-							_origin, 
-							_rotVector, 
-							_angle 
-						).result()
-					);
-					aGeoP.reset( new analyticSurface(dtS.get()) );
-        }
-        else {
-          aGeoP.reset( m2d->cloneTransformed(this) );
-//					m2d);
-//					map2dTo3dTransformed<analyticSurface>::setTransformer(m2d, this);
-//					aGeoP.reset( new analyticSurface(dtS.get()) );					
-//          DTWARNINGWF(apply(), << DTLOGEVAL(aS) );
-        }
-        //
-        // push translated geometry in vector
-        //      
-        retAGeo.push_back( aGeoP->clone() );
-//      }
+			//
+			// clone and cast analyticGeometry
+			//
+			dt__pH(analyticGeometry) aGeoP(aGeoVecP->at(ii)->clone());
+			map2dTo3d * m2d = map2dTo3d::DownCast(aGeoP.get());
+			analyticSurface * aS = analyticSurface::DownCast(aGeoP.get());
+			map2dTo3dTransformed< analyticSurface > * aST 
+			= 
+			map2dTo3dTransformed< analyticSurface >::DownCast(aGeoP.get());
+			if ( aS && !aST ) {
+				ptrHandling< dtSurface > dtS(
+					geomSurface_surfaceRotateConstructOCC( 
+						aS->ptrDtSurface(), 
+						_origin, 
+						_rotVector, 
+						_angle 
+					).result()
+				);
+				aGeoP.reset( new analyticSurface(dtS.get()) );
+			}
+			else {
+				aGeoP.reset( m2d->cloneTransformed(this) );
+			}
+			//
+			// push translated geometry in vector
+			//      
+			retAGeo.push_back( aGeoP->clone() );
     }
     return retAGeo;
   }
@@ -120,16 +112,6 @@ namespace dtOO {
 				sFunP
 			);
     }
-//    if (transformerElementP->hasAttribute("number_pieces")) {
-//      _nPieces
-//			= 
-//			getAttributeIntMuParse(
-//		    "number_pieces", 
-//				*transformerElementP, 
-//				cValP, 
-//				sFunP
-//			);
-//    }  
     DTDEBUGWF(
 			init(),
       << DTLOGPOI3D(_origin) << LOGDEL

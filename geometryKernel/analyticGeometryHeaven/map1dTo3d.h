@@ -15,7 +15,6 @@ namespace dtOO {
     virtual map1dTo3d * clone( void ) const = 0;
     virtual map1dTo3d * create( void ) const = 0;    
     virtual dtPoint3 getPoint( float const & uu ) const = 0;
-    virtual std::vector< dtPoint3 > getPointOrder( int const & nU ) const;
     dtPoint3 getPointPercent( float const & uu ) const;  
     int getRenderResolutionU( void ) const;
     float u_percent(float const & uu) const;

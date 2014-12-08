@@ -30,7 +30,6 @@ namespace dtOO {
     dtPoint3 _origin;
     dtVector3 _rotVector;
     float _angle;
-    int _nPieces;
   };
 }
 #endif	/* ROTATE_H */

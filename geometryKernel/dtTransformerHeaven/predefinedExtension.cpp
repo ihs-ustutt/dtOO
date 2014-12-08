@@ -22,6 +22,8 @@ namespace dtOO {
 	) : dtTransformer(orig) {
 		_yIn = orig._yIn;
 		_yOut = orig._yOut;
+		_alphaIn = orig._alphaIn;
+		_alphaOut = orig._alphaOut;
 	}
 
   predefinedExtension::~predefinedExtension() {
@@ -53,69 +55,6 @@ namespace dtOO {
 			// two dimensional curve
 			//
 			if (vS2) {
-//				dtCurve2d const * sS2DtC = vS2->ptrDtCurve2d();
-//
-//				int order = sS2DtC->order();
-//
-//				//
-//				// get points, slope and distances
-//				//
-//				int nCPoints = sS2DtC->nControlPoints();
-//				dtPoint2 start = sS2DtC->controlPoint(0);
-//				dtPoint2 end = sS2DtC->controlPoint(nCPoints-1);
-//				dtVector2 vvStart = start - sS2DtC->controlPoint(1);
-//				vvStart = vvStart / sqrt(vvStart.squared_length());
-//				dtVector2 vvEnd = end - sS2DtC->controlPoint(nCPoints-2);
-//				vvEnd = vvEnd / sqrt(vvEnd.squared_length());
-//	//      dtVector2 vvY = dtVector2(0,1);
-//
-//				//
-//				// calculate new points
-//				//
-//				float xx = _alphaIn * (_yIn - start.y())*vvStart.x()/vvStart.y() + start.x();
-//				dtPoint2 start1( xx, start.y() + _alphaIn * (_yIn-start.y()) );
-//				dtPoint2 start2( xx, _yIn);
-//
-//				xx = end.x() + vvEnd.x() * _alphaOut * (_yOut - end.y())/vvEnd.y();
-//				dtPoint2 end1( xx, end.y() + _alphaOut * (_yOut - end.y()));
-//				dtPoint2 end2( xx, _yOut);
-//
-//				//
-//				// calculate points
-//				//
-//				std::vector< dtPoint2 > pVStart;
-//				pVStart.push_back(start2);
-//				pVStart.push_back(start1);
-//				pVStart.push_back(start);
-//				std::vector< dtPoint2 > pVEnd;
-//				pVEnd.push_back(end);
-//				pVEnd.push_back(end1);
-//				pVEnd.push_back(end2);
-//
-//				//
-//				// create curve vector
-//				//
-//				vectorHandling< dtCurve2d const * > dtC2d;
-//				dtC2d.push_back( bSplineCurve2d_pointConstructOCC(pVStart, 1).result() );
-//				dtC2d.push_back( sS2DtC->clone() );
-//				dtC2d.push_back( bSplineCurve2d_pointConstructOCC(pVEnd, 1).result() );
-//
-//				//
-//				// connect curves
-//				//
-//				ptrHandling< dtCurve2d > newDtC2(
-//					bSplineCurve2d_curveConnectConstructOCC(dtC2d).result()
-//				);
-//				//
-//				// free memory
-//				//
-//				dtC2d.destroy();
-//
-//				//
-//				// create new curve
-//				//
-//				transSFun.push_back( new vec2dCurve2dOneD( newDtC2.get() ) );
-//				transSFun.back()->setLabel( vS2->getLabel() );
 				dtCurve2d const * dtC2d = vS2->ptrDtCurve2d();
 
 				//
@@ -129,31 +68,29 @@ namespace dtOO {
 				dtVector2 vvEnd = end - dtC2d->controlPoint(nCPoints-2);
 				vvEnd = vvEnd / sqrt(vvEnd.squared_length());
 
-				//
-				// calculate new points
-				//			
-				dtPoint2 start1 = start;
-				dtPoint2 start2 = start - (_yIn - start.y())*vvStart;
-				dtPoint2 end1 = end;
-				dtPoint2 end2 = end + (_yOut - end.y())*vvEnd;
+				std::vector< dtPoint2 > pV 
+				= 
+				calculateExtPoints(start, vvStart, end, vvEnd);
 				
 				//
 				// calculate points
 				//
-				std::vector< dtPoint2 > pVStart;
-				pVStart.push_back(start2);
-				pVStart.push_back(start1);
-				std::vector< dtPoint2 > pVEnd;
-				pVEnd.push_back(end1);
-				pVEnd.push_back(end2);
-
+				std::vector< dtPoint2 > pVStart(3);
+				pVStart[0] = pV[0];
+				pVStart[1] = pV[1];
+				pVStart[2] = pV[2];
+				std::vector< dtPoint2 > pVEnd(3);
+				pVEnd[0] = pV[3];
+				pVEnd[1] = pV[4];
+				pVEnd[2] = pV[5];
+				
 				//
 				// create curve vector
 				//
 				vectorHandling< dtCurve2d const * > dtCC2d;
-				dtCC2d.push_back( bSplineCurve2d_pointConstructOCC(pVStart, 1).result() );
+				dtCC2d.push_back( bSplineCurve2d_pointConstructOCC(pVStart, 2).result() );
 				dtCC2d.push_back( dtC2d->clone() );
-				dtCC2d.push_back( bSplineCurve2d_pointConstructOCC(pVEnd, 1).result() );
+				dtCC2d.push_back( bSplineCurve2d_pointConstructOCC(pVEnd, 2).result() );
 
 				//
 				// connect curves
@@ -186,31 +123,32 @@ namespace dtOO {
 				dtVector3 vvEnd = end - dtC->controlPoint(nCPoints-2);
 				vvEnd = vvEnd / sqrt(vvEnd.squared_length());
 
-				//
-				// calculate new points
-				//			
-				dtPoint3 start1 = start;
-				dtPoint3 start2 = start - (_yIn - start.y())*vvStart;
-				dtPoint3 end1 = end;
-				dtPoint3 end2 = end + (_yOut - end.y())*vvEnd;
+				std::vector< dtPoint2 > pV 
+				= 
+				calculateExtPoints(
+					dtPoint2(start.x(), start.y()), dtVector2(vvStart.x(), vvStart.y()),
+					dtPoint2(end.x(), end.y()), dtVector2(vvEnd.x(), vvEnd.y())
+				);
 				
 				//
 				// calculate points
 				//
 				std::vector< dtPoint3 > pVStart;
-				pVStart.push_back(start2);
-				pVStart.push_back(start1);
+				pVStart.push_back(dtPoint3(pV[0].x(), pV[0].y(), start.z()));
+				pVStart.push_back(dtPoint3(pV[1].x(), pV[1].y(), start.z()));
+				pVStart.push_back(dtPoint3(pV[2].x(), pV[2].y(), start.z()));
 				std::vector< dtPoint3 > pVEnd;
-				pVEnd.push_back(end1);
-				pVEnd.push_back(end2);
+				pVEnd.push_back(dtPoint3(pV[3].x(), pV[3].y(), end.z()));
+				pVEnd.push_back(dtPoint3(pV[4].x(), pV[4].y(), end.z()));
+				pVEnd.push_back(dtPoint3(pV[5].x(), pV[5].y(), end.z()));
 
 				//
 				// create curve vector
 				//
 				vectorHandling< dtCurve const * > dtCC;
-				dtCC.push_back( bSplineCurve_pointConstructOCC(pVStart, 1).result() );
+				dtCC.push_back( bSplineCurve_pointConstructOCC(pVStart, 2).result() );
 				dtCC.push_back( dtC->clone() );
-				dtCC.push_back( bSplineCurve_pointConstructOCC(pVEnd, 1).result() );
+				dtCC.push_back( bSplineCurve_pointConstructOCC(pVEnd, 2).result() );
 
 				//
 				// connect curves
@@ -255,82 +193,66 @@ namespace dtOO {
 	) {
     dtTransformer::init(transformerElementP, cValP, sFunP);
     //
-    // check input
-    //
-//    bool hasAlphaIn = transformerElementP->hasAttribute("alpha_in");
-    bool hasYIn = transformerElementP->hasAttribute("y_in");
-//    bool hasAlphaOut = transformerElementP->hasAttribute("alpha_out");
-    bool hasYOut = transformerElementP->hasAttribute("y_out");
-    
-    //
     // get input
     //
-//    if (hasAlphaIn) {    
-//      _alphaIn = muParseString( 
-//                   replaceUsedFunctions(
-//                     getAttributeStr(
-//                       "alpha_in", 
-//                       *transformerElementP
-//                     ),
-//                     cValP, 
-//                     sFunP
-//                   ) 
-//                 );
-//		}
-		if (hasYIn) {    
-      _yIn = muParseString( 
-                  replaceUsedFunctions(
-                    getAttributeStr(
-                      "y_in", 
-                      *transformerElementP
-                    ),
-                    cValP, 
-                    sFunP
-                  ) 
-                );
-		}
-//		if (hasAlphaOut) {    
-//      _alphaOut = muParseString( 
-//                    replaceUsedFunctions(
-//                      getAttributeStr(
-//                        "alpha_out", 
-//                        *transformerElementP
-//                      ),
-//                      cValP, 
-//                      sFunP
-//                    ) 
-//                  );
-//		}
-		if (hasYOut) {    
-      _yOut = muParseString( 
-                   replaceUsedFunctions(
-                     getAttributeStr(
-                       "y_out", 
-                       *transformerElementP
-                     ),
-                     cValP, 
-                     sFunP
-                   ) 
-                 );     
-		}
-//    }
-//    else {
-      DTINFOWF(
-        init(),
-//        << DTLOGEVAL(hasAlphaIn) << LOGDEL
-//        << DTLOGEVAL(hasAlphaOut) << LOGDEL
-        << DTLOGEVAL(hasYIn) << LOGDEL
-        << DTLOGEVAL(hasYOut) << LOGDEL
-//				<< DTLOGEVAL(_alphaIn) << LOGDEL
-//				<< DTLOGEVAL(_alphaOut) << LOGDEL
-				<< DTLOGEVAL(_yIn) << LOGDEL
-				<< DTLOGEVAL(_yOut)
-      );       
-//    }
+		_alphaIn = muParseString( 
+								 replaceUsedFunctions(
+									 getAttributeStr("alpha_in", *transformerElementP),
+									 cValP, 
+									 sFunP
+								 ) 
+							 );
+		_yIn = muParseString( 
+						 replaceUsedFunctions(
+						   getAttributeStr("y_in", *transformerElementP), cValP, sFunP
+						 ) 
+					 );
+		_alphaOut = muParseString( 
+									replaceUsedFunctions(
+										getAttributeStr("alpha_out", *transformerElementP),
+										cValP, 
+										sFunP
+									) 
+								);
+		_yOut = muParseString( 
+							replaceUsedFunctions(
+								getAttributeStr("y_out", *transformerElementP), cValP, sFunP
+							) 
+						);     
   }
 
   bool predefinedExtension::isNecessary( void ) const {
     return true;
   }
+	
+	std::vector<dtPoint2> predefinedExtension::calculateExtPoints(
+	  dtPoint2 const & start, dtVector2 const & vvStart,
+		dtPoint2 const & end, dtVector2 const & vvEnd
+	) const {
+				//
+				// calculate new points
+				//
+				float xx = _alphaIn * (_yIn - start.y())*vvStart.x()/vvStart.y() + start.x();
+				dtPoint2 start1( xx, start.y() + _alphaIn * (_yIn-start.y()) );
+				dtPoint2 start2( xx, _yIn);
+
+				xx = end.x() + vvEnd.x() * _alphaOut * (_yOut - end.y())/vvEnd.y();
+				dtPoint2 end1( xx, end.y() + _alphaOut * (_yOut - end.y()));
+				dtPoint2 end2( xx, _yOut);
+
+				//
+				// calculate points
+				//
+				std::vector< dtPoint2 > pVExt(6);
+				pVExt[0] = start2;
+				pVExt[1] = start1;
+				pVExt[2] = start;
+				pVExt[3] = end;
+				pVExt[4] = end1;
+				pVExt[5] = end2;
+
+        return pVExt;
+	}
+
 }
 

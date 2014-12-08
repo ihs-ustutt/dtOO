@@ -13,17 +13,6 @@ namespace dtOO {
 
   map1dTo3d::~map1dTo3d() {
   }
-
-  std::vector< dtPoint3 > map1dTo3d::getPointOrder( int const & nU ) const {
-    std::vector< dtPoint3 > pp(nU);
-    float intU = 1. / (static_cast<float>(nU)-1.);
-    for (int jj=0; jj<nU; jj++) {
-      float jjF = static_cast< float >(jj);
-      pp[jj] = getPointPercent(jjF * intU);
-    }
-    
-    return pp;
-  }
   
   dtPoint3 map1dTo3d::getPointPercent( float const & uu ) const {
     return getPoint( u_percent(uu) );

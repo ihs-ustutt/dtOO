@@ -30,8 +30,15 @@ namespace dtOO {
     );    
     virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const sFunP ) const;  
   private:
+    std::vector< dtPoint2 > calculateExtPoints(
+      dtPoint2 const & start, dtVector2 const & vvStart,
+      dtPoint2 const & end, dtVector2 const & vvEnd    
+    ) const;
+  private:
     float _yIn;
     float _yOut;
+    float _alphaIn;
+    float _alphaOut;    
   };
 }    
 
