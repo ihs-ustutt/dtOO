@@ -1,0 +1,112 @@
+#include "writeStep.h"
+#include <geometryEngine/dtOCCCurve2d.h>
+#include <geometryEngine/dtOCCCurve2dBase.h>
+#include <geometryEngine/dtOCCSurface.h>
+#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticGeometryHeaven/analyticSurface.h>
+#include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>
+
+#include <logMe/logMe.h>
+//#include <interfaceHeaven/ptrHandling.h>
+#include <constValueHeaven/constValue.h>
+#include <functionHeaven/analyticFunction.h>
+#include <analyticGeometryHeaven/analyticGeometry.h>
+#include <boundedVolume.h>
+#include <StepData_StepModel.hxx>
+#include <STEPControl_Writer.hxx>
+#include <Geom_Surface.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Edge.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRep_CurveOnSurface.hxx>
+#include <Precision.hxx>
+#include <TopLoc_Location.hxx>
+#include <ShapeBuild_Edge.hxx>
+
+namespace dtOO {  
+  writeStep::writeStep() { 
+  }
+
+  writeStep::~writeStep() {
+  }
+
+	void writeStep::init( 
+		QDomElement const & element,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG,
+		vectorHandling< boundedVolume * > const * const bV,
+		vectorHandling< dtPlugin * > const * const pL
+	) {
+	  dtPlugin::init(element, cV, aF, aG, bV, pL);
+		DTINFOWF(
+			init(),
+			<< "Init writeStep ..."
+	  );
+		
+		std::vector< QDomElement > aGEl 
+		= 
+		dtXmlParserBase::getChildVector("analyticGeometry", element);
+		for (int ii=0; ii<aGEl.size(); ii++) {
+			_aG.push_back(
+			  dtXmlParserBase::createAnalyticGeometry(&aGEl[ii], cV, aF, aG)
+			);
+		}
+	}
+		
+  void writeStep::apply(void) {  
+//		DTINFOWF(
+//			apply(),
+//			<< "Writing STEP file ..."
+//	  );
+		STEPControl_Writer writer;
+	  Handle(StepData_StepModel) model = writer.Model();
+//		dt__FORALL(_aG, ii,
+		for (int ii=0; ii<_aG.size(); ii++) {
+			analyticSurface * aS = analyticSurface::DownCast(_aG[ii]);
+			vec2dOneDInMap2dTo3d * v2d1d = vec2dOneDInMap2dTo3d::DownCast(_aG[ii]);
+			if ( aS ) {
+				dt__PTRASS(dtSurface const * dtS, aS->constPtrDtSurface());
+				dt__PTRASS(dtOCCSurface const * dtOccS, dtOCCSurface::ConstDownCast(dtS));
+				
+		    writer.Transfer(
+					BRepBuilderAPI_MakeFace(
+						dtOccS->OCCRef().getOCC(), Precision::Confusion()
+					).Shape(),
+					STEPControl_StepModelType::STEPControl_AsIs								
+				);
+			}
+			else if ( v2d1d ) {
+				dt__PTRASS(
+					analyticSurface const * aS, 
+					analyticSurface::ConstDownCast(v2d1d->ptrToMap2dTo3d()) 
+				);
+				dt__PTRASS(dtSurface const * dtS, aS->ptrDtSurface());
+				dt__PTRASS(dtOCCSurface const * dtOccS, dtOCCSurface::ConstDownCast(dtS));
+				dt__PTRASS(
+					vec2dCurve2dOneD const * v2dC1d, 
+					vec2dCurve2dOneD::ConstDownCast(v2d1d->ptrToVec2dCurve2dOneD()) 
+				);
+				dt__PTRASS(
+				  dtOCCCurve2d const * dtOccC2d, 
+					dtOCCCurve2d::ConstDownCast(v2dC1d->ptrDtCurve2d())
+				);
+			
+        TopoDS_Edge edge;
+				ShapeBuild_Edge buildEdge;
+				buildEdge.MakeEdge(
+					edge, 
+					dtOccC2d->OCCRef().getOCC(), 
+					BRepBuilderAPI_MakeFace(
+						dtOccS->OCCRef().getOCC(), Precision::Confusion()
+					).Face()
+				);
+//				TopoDS_Shape shape(edge);
+		    writer.Transfer( edge, STEPControl_StepModelType::STEPControl_AsIs	);
+			}			
+		}
+		writer.Write("test.step");
+  }
+}
+
+

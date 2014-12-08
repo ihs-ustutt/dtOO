@@ -55,10 +55,10 @@ namespace dtOO {
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());
 
-				DTINFOWF(
-				  apply(), 
-					<< DTLOGPOI3D(aFT->YdtPoint3(0) )
-				);				
+//				DTINFOWF(
+//				  apply(), 
+//					<< DTLOGPOI3D(aFT->YdtPoint3(0) )
+//				);				
 			}			
       else if (vec3d2d) {			
 				analyticFunctionTransformed<vec3dSurfaceTwoD> * aFT
@@ -67,10 +67,10 @@ namespace dtOO {
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());				
 
-				DTINFOWF(
-				  apply(), 
-					<< DTLOGPOI3D(aFT->YdtPoint3(0,0) )
-				);
+//				DTINFOWF(
+//				  apply(), 
+//					<< DTLOGPOI3D(aFT->YdtPoint3(0,0) )
+//				);
 				
 			}
 			else {

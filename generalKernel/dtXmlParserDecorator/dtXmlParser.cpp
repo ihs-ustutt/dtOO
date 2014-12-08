@@ -15,6 +15,8 @@
 #include <dtXmlParserDecorator/dtXmlParserDecoratorFactory.h>
 #include <dtXmlParserDecorator/dtXmlParserFunctionDecorator.h>
 #include <dtXmlParserDecorator/dtXmlParserFunctionDecoratorFactory.h>
+#include <dtPlugin.h>
+#include <dtPluginFactory.h>
 #include <QtCore/QFile>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomNode>
@@ -656,13 +658,53 @@ namespace dtOO {
 		
 		dt__FORALL( label, ii, createBoundedVolume(label[ii], bC, cVP, sFP, aGP, bVP); );
   }
+
+	void dtXmlParser::createPlugin(
+		std::string const label,
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cVP,        
+		vectorHandling< analyticFunction * > const * const sFP,        
+		vectorHandling< analyticGeometry * > const * const aGP,
+		vectorHandling< boundedVolume * > * bVP,
+		vectorHandling< dtPlugin * > * pLP
+	) const {
+		//
+		// get configuration element
+		//
+		QDomElement wEl = getElement("plugin", label);
+
+		//
+		// create new boundedVolume with factory
+		//
+		pLP->push_back( 
+			dtPluginFactory::create( getAttributeStr("name", wEl) ) 
+		);
+		//
+		// initialize dtPlugin
+		//
+		pLP->back()->init( wEl, cVP, sFP, aGP, bVP, pLP );		
+	} 
 	
+	void dtXmlParser::createPlugin(
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cVP,        
+		vectorHandling< analyticFunction * > const * const sFP,        
+		vectorHandling< analyticGeometry * > const * const aGP,
+		vectorHandling< boundedVolume * > * bVP,
+		vectorHandling< dtPlugin * > * pLP
+	) const {
+		std::vector< std::string > label = getNames("plugin");
+		
+		dt__FORALL( label, ii, createPlugin(label[ii], bC, cVP, sFP, aGP, bVP, pLP); );		
+	}
+		
 	void dtXmlParser::destroyAndCreate(
 		vectorHandling< constValue * > & cV,
 		vectorHandling< analyticFunction* > & aF,
 		ptrHandling< baseContainer > & bC,
 		vectorHandling< analyticGeometry * > & aG,
-		vectorHandling< boundedVolume * > & bV
+		vectorHandling< boundedVolume * > & bV,
+	  vectorHandling< dtPlugin * > & pL
 	) const {
 		if ( cV.size() == 0 ) {
 			createConstValue(&cV);
@@ -675,13 +717,15 @@ namespace dtOO {
 		aF.destroy();
 		aG.destroy();
 		bV.destroy();
-
+    pL.destroy();
+		
 		//
 		// create
 		//
 		createAnalyticFunction(bC.get(), &cV, &aF);
 		createAnalyticGeometry(bC.get(), &cV, &aF, &aG);
 		createBoundedVolume(bC.get(), &cV, &aF, &aG, &bV);
+		createPlugin(bC.get(), &cV, &aF, &aG, &bV, &pL);
 	}
   
   void dtXmlParser::setStaticProperties( void ) {

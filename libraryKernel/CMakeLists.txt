@@ -44,6 +44,8 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomCurve_normalOffsetGeomCurveOCC.h
   geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.h
   geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h
+  geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.h
+  geometryEngine/geoBuilder/geomCurve2d_reparamInGeomSurfaceOCC.h
   dtGmshVertex.h
   dtGmshEdge.h
   dtGmshFace.h
@@ -99,6 +101,8 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomCurve_normalOffsetGeomCurveOCC.cpp
   geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.cpp
+  geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.cpp
+  geometryEngine/geoBuilder/geomCurve2d_reparamInGeomSurfaceOCC.cpp
   dtGmshVertex.cpp
   dtGmshEdge.cpp
   dtGmshFace.cpp

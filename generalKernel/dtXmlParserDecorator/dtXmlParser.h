@@ -16,6 +16,7 @@ namespace dtOO {
   class constValue;
   class baseContainer;
   class boundedVolume;
+  class dtPlugin;
   
   class dtXmlParser : public dtXmlParserBase {
   public:  
@@ -76,13 +77,31 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFP,        
       vectorHandling< analyticGeometry * > const * const aGP,
       vectorHandling< boundedVolume * > * bVP
-    ) const;    
+    ) const;
+    void createPlugin(
+      std::string const label,
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cVP,        
+      vectorHandling< analyticFunction * > const * const sFP,        
+      vectorHandling< analyticGeometry * > const * const aGP,
+      vectorHandling< boundedVolume * > * bVP,
+      vectorHandling< dtPlugin * > * pLP
+    ) const;      
+    void createPlugin(
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cVP,        
+      vectorHandling< analyticFunction * > const * const sFP,        
+      vectorHandling< analyticGeometry * > const * const aGP,
+      vectorHandling< boundedVolume * > * bVP,
+      vectorHandling< dtPlugin * > * pLP
+    ) const;        
     void destroyAndCreate(
       vectorHandling< constValue * > & cV,
       vectorHandling< analyticFunction* > & aF,
       ptrHandling< baseContainer > & bC,
       vectorHandling< analyticGeometry * > & aG,
-		  vectorHandling< boundedVolume * > & bV      
+		  vectorHandling< boundedVolume * > & bV,
+      vectorHandling< dtPlugin * > & pL
     ) const;    
   private:
     void checkFile(char const * const fileName, QDomDocument & xmlDocument);

@@ -1,5 +1,5 @@
-#ifndef DTOCCBSPLINECURVE_H
-#define	DTOCCBSPLINECURVE_H
+#ifndef DTOCCBSPLINECURVE2D_H
+#define	DTOCCBSPLINECURVE2D_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -25,5 +25,5 @@ namespace dtOO {
     Geom2d_BSplineCurve const * _ptr;
   };
 }
-#endif	/* DTOCCBSPLINECURVE_H */
+#endif	/* DTOCCBSPLINECURVE2D_H */
 

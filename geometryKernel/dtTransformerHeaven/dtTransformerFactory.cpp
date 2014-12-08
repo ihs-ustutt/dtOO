@@ -19,6 +19,8 @@
 #include "addConstCoordinate.h"
 #include "conformalMappingScale.h"
 #include "averagePoints.h"
+#include "projectOnSurface.h"
+#include "reparamInSurface.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -56,6 +58,8 @@ namespace dtOO {
 		__IFRET( addConstCoordinate );
 		__IFRET( conformalMappingScale );
 		__IFRET( averagePoints );
+		__IFRET( projectOnSurface );
+		__IFRET( reparamInSurface );
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

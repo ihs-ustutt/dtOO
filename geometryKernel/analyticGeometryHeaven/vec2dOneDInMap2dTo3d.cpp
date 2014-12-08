@@ -71,4 +71,12 @@ namespace dtOO {
 	float vec2dOneDInMap2dTo3d::getMax( int const & dir) const {
 		return _v2d1d->xMax(dir);
 	}
+
+  vec2dCurve2dOneD const * vec2dOneDInMap2dTo3d::ptrToVec2dCurve2dOneD( void ) const {
+	  return _v2d1d.get();	
+	}
+	
+  map2dTo3d const * vec2dOneDInMap2dTo3d::ptrToMap2dTo3d( void ) const {
+		return _m2d.get();
+	}
 }

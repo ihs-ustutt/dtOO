@@ -388,13 +388,45 @@ namespace dtOO {
 	//      
 			else if ( getAttributeStr("attribute", *toBuildP) == "pick_order_from_part" ) {
 				//
+				// 1 map1dTo3d
+				//        
+				if ( m1d
+						 && hasAttribute("parameter_one_percent_function", *toBuildP)
+						 && hasAttribute("number_points_one", *toBuildP) 
+				) {
+					dt__PTRASS(
+						scaOneD const * sF,
+						scaOneD::ConstDownCast(
+							sFunP->get( 
+								getAttributeStr( "parameter_one_percent_function", *toBuildP )
+							)
+						)
+					);
+					int nPointsOne = getAttributeInt("number_points_one", *toBuildP);
+					float nPointsOneF = static_cast<float>(nPointsOne);              
+					basicP->push_back( 
+						new dtPoint3( m1d->getPointPercent(0.) )
+					);              					
+					for (int ii=1;ii<nPointsOne-1;ii++) {
+						float iiF = static_cast<float>(ii);
+						float uu = sF->YFloat( iiF / nPointsOneF ) ;
+						basicP->push_back( 
+							new dtPoint3( m1d->getPointPercent(uu) )
+						);              
+					}
+					basicP->push_back( 
+						new dtPoint3( m1d->getPointPercent(1.) )
+					);              						
+				}				
+				//
 				// 1 map2dTo3d
 				//        
-				if (   m2d
-						&& hasAttribute("parameter_one_percent_function", *toBuildP)
-						&& hasAttribute("parameter_two_percent_function", *toBuildP)
-						&& hasAttribute("number_points_one", *toBuildP)
-						&& hasAttribute("number_points_two", *toBuildP) ) {
+				else if ( m2d
+									&& hasAttribute("parameter_one_percent_function", *toBuildP)
+									&& hasAttribute("parameter_two_percent_function", *toBuildP)
+									&& hasAttribute("number_points_one", *toBuildP)
+									&& hasAttribute("number_points_two", *toBuildP) 
+				) {
 					int nPointsOne = getAttributeInt("number_points_one", *toBuildP);
 					int nPointsTwo = getAttributeInt("number_points_two", *toBuildP);
 					//
@@ -424,30 +456,6 @@ namespace dtOO {
 							  new dtPoint3( m2d->getPointPercent( paraOne, paraTwo ) )
 							);              
 						}
-					}
-				}
-				//
-				// 1 map1dTo3d
-				//        
-				else if (   m1d
-								 && hasAttribute("parameter_one_percent_function", *toBuildP)
-								 && hasAttribute("number_points_one", *toBuildP) ) {
-					dt__PTRASS(
-						scaOneD const * sF,
-						scaOneD::ConstDownCast(
-							sFunP->get( 
-								getAttributeStr( "parameter_one_percent_function", *toBuildP )
-							)
-						)
-					);
-					int nPointsOne = getAttributeInt("number_points_one", *toBuildP);
-					float nPointsOneF = static_cast<float>(nPointsOne);              
-					for (int ii=0;ii<nPointsOne;ii++) {
-						float iiF = static_cast<float>(ii);
-						float uu = sF->YFloat( iiF / nPointsOneF ) ;
-						basicP->push_back( 
-							new dtPoint3( m1d->getPointPercent(uu) )
-						);              
 					}
 				}                    
 			}
@@ -1315,6 +1323,15 @@ namespace dtOO {
       }
       return advancedVec[0];
     }
+		
+    analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
+		  QDomElement const * toBuildP,
+			vectorHandling< constValue * > const * const cValP,
+			vectorHandling< analyticFunction * > const * const sFunP, 
+			vectorHandling< analyticGeometry * > const * const depAGeoP
+		) const {
+      return createAnalyticGeometry(toBuildP, NULL, cValP, sFunP, depAGeoP);			
+		}		
   
     void dtXmlParserBase::createAdvanced( 
 		  QDomElement const * toBuildP,

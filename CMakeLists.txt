@@ -72,6 +72,7 @@ ADD_SUBDIRECTORY(generalKernel)
 ADD_SUBDIRECTORY(libraryKernel)
 ADD_SUBDIRECTORY(meshKernel)
 ADD_SUBDIRECTORY(renderKernel)
+ADD_SUBDIRECTORY(pluginKernel)
 
 #------------------------------------------------------------------------------#
 #
@@ -79,7 +80,7 @@ ADD_SUBDIRECTORY(renderKernel)
 #
 #------------------------------------------------------------------------------#
 include_directories(
-  geometryKernel generalKernel libraryKernel meshKernel renderKernel
+  geometryKernel generalKernel libraryKernel meshKernel renderKernel pluginKernel
   ${Boost_INCLUDE_DIR} 
   ${CGAL_INCLUDE_DIR} 
   ${GMSH_INCLUDE_DIR} 
@@ -121,6 +122,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${ROOT_LINK_D
 #
 #------------------------------------------------------------------------------#
 install(TARGETS dtOO DESTINATION lib)
+install(DIRECTORY pluginKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY meshKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY generalKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY libraryKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
