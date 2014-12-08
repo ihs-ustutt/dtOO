@@ -22,11 +22,6 @@ namespace dtOO {
     vectorHandling< boundedVolume * > const * const bV,
     vectorHandling< dtPlugin * > const * const pL
 	) {  
-		DTINFOWF(
-			init(),
-			<< "Init dtPlugin ..."
-	  );		
-		
     //
     // set label of dtPlugin
     //

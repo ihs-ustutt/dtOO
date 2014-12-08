@@ -29,6 +29,7 @@ namespace dtOO {
     virtual void apply(void);
   private:
     vectorHandling< analyticGeometry * > _aG;
+    std::string _fn;
   };
 }
 #endif	/* WRITESTEP_H */

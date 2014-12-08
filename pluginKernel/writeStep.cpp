@@ -39,11 +39,8 @@ namespace dtOO {
 		vectorHandling< dtPlugin * > const * const pL
 	) {
 	  dtPlugin::init(element, cV, aF, aG, bV, pL);
-		DTINFOWF(
-			init(),
-			<< "Init writeStep ..."
-	  );
 		
+		_fn = dtXmlParserBase::getAttributeStr("filename", element);
 		std::vector< QDomElement > aGEl 
 		= 
 		dtXmlParserBase::getChildVector("analyticGeometry", element);
@@ -55,10 +52,6 @@ namespace dtOO {
 	}
 		
   void writeStep::apply(void) {  
-//		DTINFOWF(
-//			apply(),
-//			<< "Writing STEP file ..."
-//	  );
 		STEPControl_Writer writer;
 	  Handle(StepData_StepModel) model = writer.Model();
 //		dt__FORALL(_aG, ii,
@@ -105,7 +98,7 @@ namespace dtOO {
 		    writer.Transfer( edge, STEPControl_StepModelType::STEPControl_AsIs	);
 			}			
 		}
-		writer.Write("test.step");
+		writer.Write(_fn.c_str());
   }
 }
 
