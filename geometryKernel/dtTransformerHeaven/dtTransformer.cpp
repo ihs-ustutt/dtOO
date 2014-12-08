@@ -61,10 +61,24 @@ namespace dtOO {
     return vHOut;
   }
   
-  std::vector< dtPoint3 * > dtTransformer::apply( std::vector< dtPoint3 * > const * const pointVecP ) const {
+  std::vector< dtPoint3 > dtTransformer::apply( std::vector< dtPoint3 > const * const pointVecP ) const {
     DTWARNINGWF(init(), << "Call on abstract class!");
   }
-
+  
+	std::vector< dtPoint3 * > dtTransformer::apply( std::vector< dtPoint3 * > const * const pointVecP ) const {
+		std::vector< dtPoint3 > twin(pointVecP->size());
+    dt__FORALL(*pointVecP, ii,
+			twin[ii] = *(pointVecP->at(ii));
+		);
+		twin = this->apply(&twin);
+		std::vector< dtPoint3 * > retTwin(twin.size());
+    dt__FORALL(twin, ii,
+			retTwin[ii] = new dtPoint3(twin[ii]);
+		);		
+		
+		return retTwin;
+  }
+	
   vectorHandling< analyticFunction * > dtTransformer::apply( vectorHandling< analyticFunction * > const * const sFunP ) const {
     DTWARNINGWF(init(), << "Call on abstract class!");    
   }
@@ -74,20 +88,12 @@ namespace dtOO {
   }
   
 	dtPoint3 dtTransformer::apply(dtPoint3 const & pp) const {
-		std::vector< dtPoint3 * > vec;
-		vec.push_back( new dtPoint3(pp) );
+		std::vector< dtPoint3 > vec;
+		vec.push_back( dtPoint3(pp) );
 		
-		std::vector< dtPoint3 * > retVec = this->apply(&vec);
-		
-		delete vec[0];
-		vec.clear();
-		
-		dtPoint3 retP = *(retVec[0]);
-		
-		delete retVec[0];
-		retVec.clear();
-		
-		return retP;
+		std::vector< dtPoint3 > retVec = this->apply(&vec);
+	
+		return retVec[0];
 	}
 	
   analyticFunction * dtTransformer::apply(analyticFunction const * const sF) const {

@@ -41,7 +41,8 @@ namespace dtOO {
     virtual bool isNecessary( void ) const = 0;
     virtual std::vector< dtPoint2 * > apply( std::vector< dtPoint2 * > const * const toTrans ) const;
     vectorHandling< dtPoint2 * > apply( vectorHandling< dtPoint2 * > const * const pointVecP ) const;
-    virtual std::vector< dtPoint3 * > apply( std::vector< dtPoint3 * > const * const toTrans ) const;    
+    virtual std::vector< dtPoint3 > apply( std::vector< dtPoint3 > const * const toTrans ) const;    
+    std::vector< dtPoint3 * > apply( std::vector< dtPoint3 * > const * const toTrans ) const;        
     virtual vectorHandling< analyticGeometry * > apply( vectorHandling< analyticGeometry * > const * const toTrans ) const;
     virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const toTrans ) const;
     dtPoint3 apply(dtPoint3 const & pp) const;    

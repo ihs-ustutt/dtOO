@@ -26,8 +26,8 @@ namespace dtOO {
     );
     virtual vectorHandling< analyticFunction * > 
     apply( vectorHandling< analyticFunction * > const * const aFP ) const;
-    virtual std::vector< dtPoint3 * > 
-    apply( std::vector< dtPoint3 * > const * const toTrans ) const;        
+    virtual std::vector< dtPoint3 > 
+    apply( std::vector< dtPoint3 > const * const toTrans ) const;        
     virtual void handleAnalyticGeometry(std::string const name, analyticGeometry const * value);
     virtual void handleDtVector3(std::string const name, dtVector3 const value);
   protected:

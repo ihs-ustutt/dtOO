@@ -91,13 +91,13 @@ namespace dtOO {
 		return retV;
   }
 
-	std::vector< dtPoint3 * > 
-	conformalMappingScale::apply( std::vector< dtPoint3 * > const * const toTrans ) const {
-		std::vector< dtPoint3 * > retVec;
+	std::vector< dtPoint3 > 
+	conformalMappingScale::apply( std::vector< dtPoint3 > const * const toTrans ) const {
+		std::vector< dtPoint3 > retVec;
 		dt__FORALL(*toTrans, ii,
-      float xx = toTrans->at(ii)->x() * _ss.x();
-		  float yy = toTrans->at(ii)->y() * _ss.y();
-		  float zz = toTrans->at(ii)->z() * _ss.z();
+      float xx = toTrans->at(ii).x() * _ss.x();
+		  float yy = toTrans->at(ii).y() * _ss.y();
+		  float zz = toTrans->at(ii).z() * _ss.z();
 		
       float ww = _rM2d->w_s(zz);						
 			float vv = _rM2d->v_mw(yy, ww);
@@ -105,7 +105,7 @@ namespace dtOO {
 			
 //			DTINFOWF(apply(), << DTLOGPOI3DP( toTrans->at(ii)));
 			
-			retVec.push_back( new dtPoint3(uu, vv, ww) );
+			retVec.push_back( dtPoint3(uu, vv, ww) );
 		);
 		
 		return retVec;
