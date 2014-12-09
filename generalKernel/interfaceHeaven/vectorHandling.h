@@ -282,7 +282,7 @@ namespace dtOO {
       labelHandling * obj;
       dt__MUSTDOWNCAST(this->at(ii), labelHandling, obj);
       
-      itVal.push_back( obj->getLabel()+"::>"+obj->ClassName() );
+      itVal.push_back( "label = "+obj->getLabel()+" type = "+obj->virtualClassName() );
     );
     
     DTINFOWF(dump(), << logMe::stringVecToString(itVal, 1) );

@@ -27,16 +27,16 @@ namespace dtOO {
 		for (int ii=0; ii<wElement.size(); ii++) {
 			if ( is("Point_3", wElement[ii]) ) {
 				vectorHandling< dtPoint3 > workingPointP;
-				this->createBasic(&wElement[ii], bC, cValP, sFunP, &workingPointP);
+				this->createBasic(&wElement[ii], bC, cValP, depSFunP, &workingPointP);
 			}
 		  else if ( is("Vector_3", wElement[ii]) ) {
 				dtVector3 workingVectorP 
 				= 
-				createDtVector3(&wElement[ii], bC, cValP, sFunP);
+				createDtVector3(&wElement[ii], bC, cValP, depSFunP);
 			}
 		  else if ( is("transformer", wElement[ii]) ) {
 				dt__pH(dtTransformer) dtT(
-				  createTransformer(&wElement[ii], bC, cValP, sFunP)
+				  createTransformer(&wElement[ii], bC, cValP, depSFunP)
 				);
 			}		
     }

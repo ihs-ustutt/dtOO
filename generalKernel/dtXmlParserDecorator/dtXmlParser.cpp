@@ -530,6 +530,8 @@ namespace dtOO {
 		std::vector< std::string > label = getNames("function");
 		
 		dt__FORALL( label, ii, createAnalyticFunction(label[ii], bC, cVP, sFP); );
+		
+		sFP->dump();
   }		
 
 	/**
@@ -543,8 +545,6 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFP,        
 		vectorHandling< analyticGeometry * > * aGP
 	) const {
-    ptrHandling< QDomNode > tmpNodeP;
-
     QDomElement partElement = getElement("part", label);
     DTLOGCHAP(creating part);
     DTINFOWF(createMachinePart(), << convertToString(partElement) );
@@ -620,6 +620,8 @@ namespace dtOO {
 		std::vector< std::string > label = getNames("part");
 		
 		dt__FORALL( label, ii, createAnalyticGeometry(label[ii], bC, cVP, sFP, aGP); );
+		
+		aGP->dump();
   }
 	
   void dtXmlParser::createBoundedVolume(

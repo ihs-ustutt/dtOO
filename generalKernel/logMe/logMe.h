@@ -103,7 +103,7 @@ namespace dtOO {
     #eval" = " << eval
   #define DTINFOWF(functionname, message) \
       if (logINFO > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logINFO) << ClassName() << "::"#functionname << LOGDEL \
+      FILELog().Get(logINFO) << className() << "::"#functionname << LOGDEL \
           << LOGDEL \
           message \
           << ENDLOGDEL \
@@ -111,7 +111,7 @@ namespace dtOO {
           }
   #define DTWARNINGWF(functionname, message) \
       if (logWARNING > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logWARNING) << ClassName() << "::"#functionname << LOGDEL \
+      FILELog().Get(logWARNING) << className() << "::"#functionname << LOGDEL \
           << LOGDEL \
           message \
           << ENDLOGDEL \
@@ -119,14 +119,14 @@ namespace dtOO {
           }
   #define DTDEBUGWF(functionname, message) \
       if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logDEBUG) << ClassName() << "::"#functionname << LOGDEL \
+      FILELog().Get(logDEBUG) << className() << "::"#functionname << LOGDEL \
           << LOGDEL \
           message \
           << ENDLOGDEL \
           << "\n" ;\
           }
   #define dt__THROW(functionname, message) \
-      throw eGeneral( std::ostringstream().flush() << ClassName() << "::"#functionname << LOGDEL \
+      throw eGeneral( std::ostringstream().flush() << className() << "::"#functionname << LOGDEL \
           << "file '" <<  __FILE__ << "'" << LOGDEL \
           << "line '" << __LINE__ << "'" << LOGDEL \
           << LOGDEL \
@@ -156,7 +156,7 @@ namespace dtOO {
         DTWARNINGWF(functionname, << "condition: "#cond" is true."); \
       }
   #define dt__THROWSPEC(eType, functionname, message) \
-      eType( std::ostringstream().flush() << ClassName() << "::"#functionname << LOGDEL \
+      eType( std::ostringstream().flush() << className() << "::"#functionname << LOGDEL \
           << "file '" <<  __FILE__ << "'" << LOGDEL \
           << "line '" << __LINE__ << "'" << LOGDEL \
           << LOGDEL \
@@ -166,7 +166,7 @@ namespace dtOO {
           << LOGDEL \
           << "Honor thy error as a hidden intention. (Brian Eno)")
   #define DTCATCHERRORWF(functionname, eGWhat) \
-      FILELog().Get(logERROR) << ClassName() << "::"#functionname << LOGDEL \
+      FILELog().Get(logERROR) << className() << "::"#functionname << LOGDEL \
           << "Catching instance of eGeneral:" << LOGDEL \
           << eGWhat \
           << ENDLOGDEL \
@@ -177,7 +177,7 @@ namespace dtOO {
           << LOGDEL \
           << "-------------------------------------------------------------------" << LOGDEL \
           << "| " << LOGDEL \
-          << "| "#chaptername << " (send from " << ClassName() << ")" << LOGDEL \
+          << "| "#chaptername << " (send from " << className() << ")" << LOGDEL \
           << "| " << LOGDEL \
           << "-------------------------------------------------------------------" << ENDLOGDEL \
           << "\n" ; \
@@ -190,7 +190,7 @@ namespace dtOO {
     dtDebugWf_buf_stream message
   #define DTDEBUGWF_BUFFER(functionname) \
     if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logDEBUG) << ClassName() << "::"#functionname << LOGDEL \
+      FILELog().Get(logDEBUG) << className() << "::"#functionname << LOGDEL \
           << LOGDEL \
           << dtDebugWf_buf_stream.str() \
           << ENDLOGDEL \
@@ -199,7 +199,7 @@ namespace dtOO {
           dtDebugWf_buf_stream.clear()
   #define DTINFOWF_BUFFER(functionname) \
     if (logINFO > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logINFO) << ClassName() << "::"#functionname << LOGDEL \
+      FILELog().Get(logINFO) << className() << "::"#functionname << LOGDEL \
           << LOGDEL \
           << dtDebugWf_buf_stream.str() \
           << ENDLOGDEL \
@@ -208,7 +208,7 @@ namespace dtOO {
           dtDebugWf_buf_stream.clear()
   #define DTWARNINGWF_BUFFER(functionname) \
     if (logWARNING > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logWARNING) << ClassName() << "::"#functionname << LOGDEL \
+      FILELog().Get(logWARNING) << className() << "::"#functionname << LOGDEL \
           << LOGDEL \
           << dtDebugWf_buf_stream.str() \
           << ENDLOGDEL \
@@ -216,7 +216,7 @@ namespace dtOO {
           } \
           dtDebugWf_buf_stream.clear()
   #define dt__THROW_BUFFER(functionname) \
-    throw eGeneral( std::ostringstream().flush() << ClassName() << "::"#functionname << LOGDEL \
+    throw eGeneral( std::ostringstream().flush() << className() << "::"#functionname << LOGDEL \
         << "file '" <<  __FILE__ << "'" << LOGDEL \
         << "line '" << __LINE__ << "'" << LOGDEL \
         << LOGDEL \
@@ -230,7 +230,7 @@ namespace dtOO {
     cmd \
   } \
   catch( Standard_Failure ) { \
-      throw eGeneral( std::ostringstream().flush() << ClassName() << "::" << LOGDEL \
+      throw eGeneral( std::ostringstream().flush() << className() << "::" << LOGDEL \
           << "file '" <<  __FILE__ << "'" << LOGDEL \
           << "line '" << __LINE__ << "'" << LOGDEL \
           << LOGDEL \

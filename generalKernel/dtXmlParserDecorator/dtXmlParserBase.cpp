@@ -1259,7 +1259,7 @@ namespace dtOO {
               DTWARNINGWF(createAdvanced(),
                       << DTLOGEVAL( getAttributeStr("attribute", *toBuildP) ) << LOGDEL
                       << DTLOGEVAL( advancedTwin[ii]->getLabel() ) << LOGDEL
-                      << "function not defined on " << advancedTwin[ii]->ClassName() );     
+                      << "function not defined on " << advancedTwin[ii]->virtualClassName() );     
             }
           }                
         }
@@ -1284,7 +1284,7 @@ namespace dtOO {
               DTWARNINGWF(createAdvanced(),
                       << DTLOGEVAL( getAttributeStr("attribute", *toBuildP) ) << LOGDEL
                       << DTLOGEVAL( advancedTwin[ii]->getLabel() ) << LOGDEL
-                      << "function not defined on " << advancedTwin[ii]->ClassName() );     
+                      << "function not defined on " << advancedTwin[ii]->virtualClassName() );     
             }
           }                
         }         
