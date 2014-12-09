@@ -10,6 +10,7 @@
 #include "rotate.h"
 #include "conformalMapping.h"
 #include "pickMap3dTo3dRangePercent.h"
+#include "pickMap2dTo3dRangePercent.h"
 #include "conformalMappingStartFromPoint.h"
 #include "makePolynomial.h"
 #include "predefinedExtension.h"
@@ -49,6 +50,7 @@ namespace dtOO {
 		__IFRET( translate );
     __IFRET( rotate );
     __IFRET( pickMap3dTo3dRangePercent );
+		__IFRET( pickMap2dTo3dRangePercent );
     __IFRET( conformalMappingStartFromPoint );
     __IFRET( makePolynomial );
     __IFRET( predefinedExtension );

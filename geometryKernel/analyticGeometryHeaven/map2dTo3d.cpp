@@ -9,6 +9,10 @@
 #include <solid3dSurface.h>
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
+#include <geometryEngine/dtCurve2d.h>
+#include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
+#include <functionHeaven/vec2dCurve2dOneD.h>
+#include "vec2dOneDInMap2dTo3d.h"
 
 #define SQU(a)      ((a)*(a))
 
@@ -395,19 +399,138 @@ namespace dtOO {
   float map2dTo3d::percent_v(float const & vv) const {
     return ( (vv - getVMin()) / (getVMax() - getVMin()) );
   }
-    
-  map1dTo3d * map2dTo3d::pickLinearPercent(
-    float const & uu0, float const & vv0, 
-    float const & uu1, float const & vv1
-  ) const {
-    return pickLinearUV(
-      u_percent(uu0),
-      v_percent(vv0),
-      u_percent(uu1),
-      v_percent(vv1)
-    );
+
+	map1dTo3d * map2dTo3d::segment( dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+		ptrHandling< dtCurve2d > dtC2d( 
+		  trimmedCurve2d_twoPointsConnectConstructOCC(p0, p1).result() 
+		);	
+		vec2dCurve2dOneD v2d1d(dtC2d.get());		
+		return new vec2dOneDInMap2dTo3d(&v2d1d, this);
+	}
+ 
+	map1dTo3d * map2dTo3d::segmentConstU( float const & uu, float const & p0, float const & p1 ) const {
+	  dtPoint2 p20(uu, p0);
+		dtPoint2 p21(uu, p1);
+		
+		return segment(p20, p21);
+	}
+
+	map1dTo3d * map2dTo3d::segmentConstV( float const & vv, float const & p0, float const & p1 ) const {
+	  dtPoint2 p20(p0, vv);
+		dtPoint2 p21(p1, vv);
+		
+		return segment(p20, p21);		
+	}
+
+	/**
+	 *   (v)
+	 *    A
+	 *    |
+	 * 
+ 	 *   (3)      (2)
+	 *    +--------+
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    +--------+ --> (u)
+	 *   (0)      (1)
+   */
+  map2dTo3d * map2dTo3d::segment( 
+	  dtPoint2 const & p0, dtPoint2 const & p1, 
+	  dtPoint2 const & p2, dtPoint2 const & p3 
+	) const {
+	  dt__THROW(
+	    segment(),
+			<< "Picking a surface in a surface is not yet implemented!"
+		);
   }
 
+	/**
+	 *   (v)
+	 *    A
+	 *    |
+ 	 *            (1)
+	 *    +--------+
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    +--------+ --> (u)
+	 *   (0)      
+   */		
+	map2dTo3d * map2dTo3d::segmentRectangle( dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+		return segment(p0, dtPoint2(p1.x(), p0.y()), p1, dtPoint2(p0.x(), p1.y()));
+	}	
+	
+	map1dTo3d * map2dTo3d::segmentConstU( float const & uu ) const {		
+		return segmentConstU(uu, getVMin(), getVMax());
+	}
+
+	map1dTo3d * map2dTo3d::segmentConstV( float const & vv ) const {
+		return segmentConstV(vv, getUMin(), getUMax());
+	}
+  
+	map1dTo3d * map2dTo3d::segmentConstUPercent( float const & uu, float const & p0, float const & p1 ) const {		
+		return segmentConstU(u_percent(uu), v_percent(p0), v_percent(p1));
+	}
+
+	map1dTo3d * map2dTo3d::segmentConstVPercent( float const & vv, float const & p0, float const & p1 ) const {
+		return segmentConstV( v_percent(vv), u_percent(p0), u_percent(p1) );
+	}
+
+	map1dTo3d * map2dTo3d::segmentConstUPercent( float const & uu ) const {		
+		return segmentConstU(u_percent(uu));
+	}
+
+	map1dTo3d * map2dTo3d::segmentConstVPercent( float const & vv ) const {
+	  return segmentConstV(v_percent(vv));
+	}
+	
+	map1dTo3d * map2dTo3d::segmentPercent( dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+		return segment(uv_percent(p0), uv_percent(p1));
+	}
+
+	/**
+	 *   (v)
+	 *    A
+	 *    |
+	 * 
+ 	 *   (3)      (2)
+	 *    +--------+
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    +--------+ --> (u)
+	 *   (0)      (1)
+   */	
+  map2dTo3d * map2dTo3d::segmentPercent( 
+	  dtPoint2 const & p0, dtPoint2 const & p1, 
+	  dtPoint2 const & p2, dtPoint2 const & p3 
+	) const {
+    return segment(
+			uv_percent(p0), uv_percent(p1), uv_percent(p2), uv_percent(p3)
+		);
+  }
+	
+	/**
+	 *   (v)
+	 *    A
+	 *    |
+ 	 *            (1)
+	 *    +--------+
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    +--------+ --> (u)
+	 *   (0)      
+   */		
+	map2dTo3d * map2dTo3d::segmentRectanglePercent( dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+		return segmentRectangle(uv_percent(p0), uv_percent(p1));
+	}
+	
   /**
    * 
    * @todo: Make precision adjustable. Maybe increase precision automatically.

@@ -10,6 +10,7 @@ SET(HEADERS
   geometryEngine/dtOCCBSplineCurve.h
   geometryEngine/dtOCCBezierCurve.h
   geometryEngine/dtOCCTrimmedCurve.h
+  geometryEngine/dtOCCConic.h
   geometryEngine/dtOCCLine.h
   geometryEngine/dtOCCSurfaceBase.h
   geometryEngine/dtOCCSurface.h
@@ -67,6 +68,7 @@ SET(SOURCES
   geometryEngine/dtOCCBSplineCurve.cpp
   geometryEngine/dtOCCBezierCurve.cpp
   geometryEngine/dtOCCTrimmedCurve.cpp
+  geometryEngine/dtOCCConic.cpp
   geometryEngine/dtOCCLine.cpp
   geometryEngine/dtOCCSurfaceBase.cpp
   geometryEngine/dtOCCSurface.cpp

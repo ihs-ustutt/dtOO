@@ -156,41 +156,31 @@ namespace dtOO {
     return _dtS->reparam( ppXYZ );
   }
   
-  map1dTo3d * analyticSurface::pickConstUPercent(
-    float const & uu, float const & vv0, float const & vv1
+  map1dTo3d * analyticSurface::segmentConstU(
+    float const & uu, float const & p0, float const & p1
   ) const {
     ptrHandling< dtCurve > cc(
-      _dtS->getCurveConstUPercent(uu, vv0, vv1)
+      _dtS->getCurveConstU(uu, p0, p1)
     );
     return new splineCurve3d(cc.get());
   }
   
-  map1dTo3d * analyticSurface::pickConstVPercent(
-      float const & vv, float const & uu0, float const & uu1
+  map1dTo3d * analyticSurface::segmentConstV(
+      float const & vv, float const & p0, float const & p1
     ) const {
       ptrHandling< dtCurve > cc(
-        _dtS->getCurveConstVPercent(vv, uu0, uu1)
+        _dtS->getCurveConstV(vv, p0, p1)
       );
     return new splineCurve3d(cc.get());
   }
-  
-  map1dTo3d * analyticSurface::pickLinearUV( float const & uu0, float const & vv0,
-                                             float const & uu1, float const & vv1 
+
+  map2dTo3d * analyticSurface::segmentRectangle(
+	  dtPoint2 const & p0, dtPoint2 const & p1
   ) const {
-		dtPoint2 p0(uu0, vv0);
-		dtPoint2 p1(uu1, vv1);
-		ptrHandling<dtCurve2d> dtC2d(
-		  trimmedCurve2d_twoPointsConnectConstructOCC(p0, p1).result()
-		);
-		ptrHandling<vec2dCurve2dOneD> v2d1d( new vec2dCurve2dOneD(dtC2d.get()) );
-		
-		return new vec2dOneDInMap2dTo3d(v2d1d.get(), this);
-  }
-  
-  map2dTo3d * analyticSurface::pickPercent(
-      float const & uu0, float const & uu1, 
-      float const & vv0, float const & vv1
-  ) const {
+		float uu0 = p0.x();
+		float uu1 = p1.x();
+		float vv0 = p0.y();
+		float vv1 = p1.y();
     ptrHandling< dtSurface > ss(		
 			rectangularTrimmedSurface_uvBounds(
 				_dtS.get(), 

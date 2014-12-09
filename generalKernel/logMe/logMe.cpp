@@ -108,22 +108,6 @@ namespace dtOO {
 		trace_buf << LOGDEL;
 		return trace_buf.str();
 	}	
-	
-  std::string logMe::floatVecToString( std::vector< float > const & vec, int const grouping ) {
-    std::ostringstream os;
-    os << "[" << LOGDEL;
-    int ii = 0;
-    while( ii < vec.size() ) {
-      for (int jj=0;jj<grouping;jj++) {
-        os << vec[ii] << " ";
-        ii++;
-        if (ii == vec.size()) break;
-      }
-      os << LOGDEL;
-    }
-    os << "]";
-    return os.str();
-  }
   
   std::string logMe::floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec ) {
     std::ostringstream os;

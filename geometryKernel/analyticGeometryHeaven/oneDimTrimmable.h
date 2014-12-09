@@ -5,8 +5,8 @@
 
 namespace dtOO {
   class oneDimTrimmable {
-    dt__CLASSNAME(oneDimTrimmable);
   public:  
+    dt__CLASSNAME(oneDimTrimmable);    
     oneDimTrimmable();
     oneDimTrimmable(const oneDimTrimmable& orig);
     virtual ~oneDimTrimmable();

@@ -39,13 +39,37 @@ namespace dtOO {
         os << "] ";
         return os.str();
       }
+      template< class T >
+      static inline std::string vecToString( std::vector< T > const & vec, int const grouping ) {
+        std::ostringstream os;
+        os << "[" << LOGDEL;
+        int ii = 0;
+        while( ii < vec.size() ) {
+          for (int jj=0;jj<grouping;jj++) {
+            os << vec[ii] << " ";
+            ii++;
+            if (ii == vec.size()) break;
+          }
+          os << LOGDEL;
+        }
+        os << "]";
+        return os.str();
+      }
       static inline std::string intVecToString( std::vector< int > const & vec ) {
         return vecToString< int >(vec);
       }
       static inline std::string floatVecToString( std::vector< float > const & vec ) {
         return vecToString< float >(vec);
       }     
-      static std::string floatVecToString( std::vector< float > const & vec, int const grouping );
+      static inline std::string stringVecToString( std::vector< std::string > const & vec ) {
+        return vecToString< std::string >(vec);
+      }    
+      static inline std::string stringVecToString( std::vector< std::string > const & vec, int const grouping ) {
+        return vecToString< std::string >(vec, grouping);
+      }          
+      static std::string floatVecToString( std::vector< float > const & vec, int const grouping ) {
+        return vecToString< float >(vec, grouping);
+      }
       static std::string floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec );
       static std::string floatVecToTable( std::vector<std::string> const & addInfo, std::vector<std::string> const & header, std::vector< float > const & vec );
       static std::string floatMatrixToString( std::vector< std::vector< float > > const & mat );

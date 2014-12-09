@@ -6,6 +6,8 @@
 #include "dtOCCRectangularTrimmedSurface.h"
 #include "dtOCCBezierCurve.h"
 #include "dtOCCBSplineCurve.h"
+#include "dtOCCConic.h"
+#include "dtOCCTrimmedCurve.h"
 #include <progHelper.h>
 
 #include <Standard_TypeDef.hxx>
@@ -14,6 +16,8 @@
 #include <Geom_RectangularTrimmedSurface.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
+#include <Geom_Conic.hxx>
+#include <Geom_TrimmedCurve.hxx>
 
 namespace dtOO {
 	dtOCCSurfaceOfRevolution::dtOCCSurfaceOfRevolution() : dtOCCSurface() {
@@ -93,6 +97,7 @@ namespace dtOO {
 
 		Handle(Geom_BezierCurve) ccBezier = Handle(Geom_BezierCurve)::DownCast(cc);
 		Handle(Geom_BSplineCurve) ccBSpline = Handle(Geom_BSplineCurve)::DownCast(cc);
+		Handle(Geom_Conic) ccConic = Handle(Geom_Conic)::DownCast(cc);		
 
 		Standard_Real u1R = static_cast<Standard_Real>(uuMin);
 		Standard_Real u2R = static_cast<Standard_Real>(uuMax);
@@ -113,10 +118,26 @@ namespace dtOO {
 
 			return new dtOCCBSplineCurve(base);					
 		}
+		else if ( !ccConic.IsNull() ) {
+			if (u1R < ccConic->FirstParameter()) {
+				u1R = ccConic->FirstParameter();
+			}
+			if (u2R > ccConic->LastParameter()) {
+				u2R = ccConic->LastParameter();
+			}
+			Handle(Geom_TrimmedCurve) trim = new Geom_TrimmedCurve(ccConic, u1R, u2R);
+			dtOCCCurveBase base;
+			base.setOCC(trim);
+
+			return new dtOCCTrimmedCurve(base, uuMin, uuMax);				
+		}		
 		else {
-			dt__THROW(getCurveConstU(),
-							<< DTLOGEVAL(ccBezier) << LOGDEL
-							<< DTLOGEVAL(ccBSpline) );
+			dt__THROW(
+				getCurveConstV(),
+				<< DTLOGEVAL(ccBezier) << LOGDEL
+				<< DTLOGEVAL(ccBSpline) << LOGDEL
+				<< DTLOGEVAL(ccConic) 
+			);
 		}
 	}		
 }

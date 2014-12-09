@@ -40,6 +40,7 @@ namespace dtOO {
     void destroy( std::vector< T > & vec );
     void erase( int const pos );
     void addIndex( void );
+    void dump(void);
   };
 
   //----------------------------------------------------------------------------
@@ -273,6 +274,18 @@ namespace dtOO {
       
       obj->setLabel( stringPrimitive().intToString(ii)+"_"+obj->getLabel() );
     );
+  }
+  template< typename T >  
+  void vectorHandling< T >::dump(void) {
+    std::vector< std::string > itVal;
+    dt__FORALL(*this, ii,
+      labelHandling * obj;
+      dt__MUSTDOWNCAST(this->at(ii), labelHandling, obj);
+      
+      itVal.push_back( obj->getLabel()+"::>"+obj->ClassName() );
+    );
+    
+    DTINFOWF(dump(), << logMe::stringVecToString(itVal, 1) );
   }
 }
 #endif	/* VECTORHANDLING_H */

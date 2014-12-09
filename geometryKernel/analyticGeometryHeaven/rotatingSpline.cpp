@@ -196,7 +196,7 @@ namespace dtOO {
   }
   
   dtCurve const * rotatingSpline::ptrConstRadiusCurve( void ) const {
-    map1dTo3d * m1d = pickConstUPercent(0., 0., 1.);
+    map1dTo3d * m1d = segmentConstUPercent(0., 0., 1.);
 		dt__PTRASS(
 		  splineCurve3d const * sC3,
 		  splineCurve3d::ConstDownCast(m1d)
@@ -229,14 +229,11 @@ namespace dtOO {
 		}
 	}
 	
-  map2dTo3d * rotatingSpline::pickPercent(
-      float const & uu0, float const & uu1, 
-      float const & vv0, float const & vv1
+  map2dTo3d * rotatingSpline::segmentRectangle(
+	  dtPoint2 const & p0, dtPoint2 const & p1
   ) const {
 		ptrHandling<analyticSurface> aS( 
-			analyticSurface::SecureCast(
-				analyticSurface::pickPercent(uu0, uu1, vv0, vv1)
-			) 
+			analyticSurface::SecureCast(analyticSurface::segmentRectangle(p0, p1)) 
 		);
 		return new rotatingSpline( *(aS.get()->ptrDtSurface()), _pp, _vv, _angle);
   }	

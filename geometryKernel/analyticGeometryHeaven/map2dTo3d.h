@@ -51,24 +51,20 @@ namespace dtOO {
     dtPoint2 percent_uv(dtPoint2 const & pUV) const;
     float percent_u(float const & uu) const;
     float percent_v(float const & vv) const;
-    virtual map1dTo3d * pickConstUPercent(
-      float const & uu, float const & vv0, float const & vv1
-    ) const = 0;
-    virtual map1dTo3d * pickConstVPercent(
-      float const & vv, float const & uu0, float const & uu1
-    ) const = 0;
-    virtual map1dTo3d * pickLinearUV(
-      float const & uu0, float const & vv0, 
-      float const & uu1, float const & vv1
-    ) const = 0;
-    map1dTo3d * pickLinearPercent(
-      float const & uu0, float const & vv0, 
-      float const & uu1, float const & vv1
-    ) const;    
-    virtual map2dTo3d * pickPercent(
-      float const & uu0, float const & uu1, 
-      float const & vv0, float const & vv1
-    ) const = 0;
+    virtual map1dTo3d * segment( dtPoint2 const & p0, dtPoint2 const & p1 ) const;
+    virtual map1dTo3d * segmentConstU( float const & uu, float const & p0, float const & p1 ) const;
+    virtual map1dTo3d * segmentConstV( float const & vv, float const & p0, float const & p1 ) const;
+    virtual map2dTo3d * segment( dtPoint2 const & p0, dtPoint2 const & p1, dtPoint2 const & p2, dtPoint2 const & p3 ) const;
+    virtual map2dTo3d * segmentRectangle( dtPoint2 const & p0, dtPoint2 const & p1 ) const;    
+    map1dTo3d * segmentConstU( float const & uu ) const;
+    map1dTo3d * segmentConstV( float const & vv ) const;    
+    map1dTo3d * segmentConstUPercent( float const & uu, float const & p0, float const & p1 ) const;
+    map1dTo3d * segmentConstVPercent( float const & vv, float const & p0, float const & p1 ) const;
+    map1dTo3d * segmentConstUPercent( float const & uu ) const;
+    map1dTo3d * segmentConstVPercent( float const & vv ) const;
+    map1dTo3d * segmentPercent( dtPoint2 const & p0, dtPoint2 const & p1 ) const;    
+    map2dTo3d * segmentPercent( dtPoint2 const & p0, dtPoint2 const & p1, dtPoint2 const & p2, dtPoint2 const & p3 ) const;    
+    map2dTo3d * segmentRectanglePercent( dtPoint2 const & p0, dtPoint2 const & p1 ) const;    
   private:
     bool XYZtoUV(double X, double Y, double Z, double &U, double &V,
                  double relax, std::vector< float > &itVal) const;

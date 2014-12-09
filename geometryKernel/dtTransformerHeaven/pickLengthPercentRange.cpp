@@ -46,16 +46,18 @@ namespace dtOO {
 				dt__THROW(apply(), << "Not yet supported.");
       }
       else if (_createAnalyticSurface) {
-				dt__pH(map1dTo3d) m1dU(aSP->pickConstVPercent(0., 0., 1.));
+				dt__pH(map1dTo3d) m1dU(aSP->segmentConstVPercent(0., 0., 1.));
 				dt__PTRASS(splineCurve3d * s3dU, splineCurve3d::DownCast(m1dU.get()));
 				float u0 = s3dU->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentOneStart);
 				float u1 = s3dU->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentOneEnd);
-				dt__pH(map1dTo3d) m1dV(aSP->pickConstUPercent(0., 0., 1.));
+				dt__pH(map1dTo3d) m1dV(aSP->segmentConstUPercent(0., 0., 1.));
 				dt__PTRASS(splineCurve3d * s3dV, splineCurve3d::DownCast(m1dV.get()));
 				float v0 = s3dV->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentTwoStart);
 				float v1 = s3dV->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentTwoEnd);
 				
-        map2dTo3d * m2d = aSP->pickPercent(u0, u1, v0, v1);				
+        map2dTo3d * m2d 
+				= 
+				aSP->segmentRectanglePercent(dtPoint2(u0, v0), dtPoint2(u1, v1));				
         delete aGP;
         aGP = m2d;
       }

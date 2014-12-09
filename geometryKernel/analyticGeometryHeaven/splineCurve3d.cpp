@@ -53,19 +53,23 @@ namespace dtOO {
 		vv.push_back(uu);
 		vp.push_back(startPoint);
 
-    //
-    // control points
-    //
-    int numPoints = _dtC->nControlPoints();
-    dtPoint3 tmpControlPoint;
+		vectorHandling< renderInterface * > retVec;
+		retVec.push_back( new discrete3dVector(vv, vp) );
 
-    for (int ii=0; ii<numPoints; ii++) {
-      tmpControlPoint = _dtC->controlPoint(ii);
-			pp.push_back(tmpControlPoint);
-    }
-		vectorHandling< renderInterface * > retVec(2);
-		retVec[0] = new discrete3dPoints(pp);
-		retVec[1] = new discrete3dVector(vv, vp);
+		//
+		// control points
+		//		
+		if (_dtC->nControlPoints() != 0) {
+      int numPoints = _dtC->nControlPoints();
+			dtPoint3 tmpControlPoint;
+
+			for (int ii=0; ii<numPoints; ii++) {
+				tmpControlPoint = _dtC->controlPoint(ii);
+				pp.push_back(tmpControlPoint);
+			}
+			retVec.push_back( new discrete3dPoints(pp) );
+		}
+		
 		return retVec;
   }
 

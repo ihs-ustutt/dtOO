@@ -58,6 +58,7 @@ SET(HEADERS
   dtTransformerHeaven/translate.h
   dtTransformerHeaven/rotate.h
   dtTransformerHeaven/pickMap3dTo3dRangePercent.h
+  dtTransformerHeaven/pickMap2dTo3dRangePercent.h
   dtTransformerHeaven/addConstCoordinate.h
   dtTransformerHeaven/conformalMappingStartFromPoint.h
   dtTransformerHeaven/makePolynomial.h
@@ -126,6 +127,7 @@ SET(SOURCES
   dtTransformerHeaven/translate.cpp
   dtTransformerHeaven/rotate.cpp
   dtTransformerHeaven/pickMap3dTo3dRangePercent.cpp
+  dtTransformerHeaven/pickMap2dTo3dRangePercent.cpp
   dtTransformerHeaven/addConstCoordinate.cpp
   dtTransformerHeaven/conformalMappingStartFromPoint.cpp
   dtTransformerHeaven/makePolynomial.cpp

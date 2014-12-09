@@ -131,7 +131,7 @@ namespace dtOO {
 	map2dTo3d * rotatingMap2dTo3d::segmentConstV( float const & vv ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
-			map1dTo3d * m1d = aS->pickConstUPercent(percent_v(vv), 0., 1.);
+			map1dTo3d * m1d = aS->segmentConstUPercent(percent_v(vv), 0., 1.);
 			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
@@ -149,7 +149,7 @@ namespace dtOO {
 	map2dTo3d * rotatingMap2dTo3d::segmentConstW( float const & ww ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
-			map1dTo3d * m1d = aS->pickConstVPercent(percent_w(ww), 0., 1.);
+			map1dTo3d * m1d = aS->segmentConstVPercent(percent_w(ww), 0., 1.);
 			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
@@ -191,7 +191,7 @@ namespace dtOO {
 //	}
 	
 	float rotatingMap2dTo3d::v_m(float const & arg) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent(0., 0., 1.) );
+		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstVPercent(0., 0., 1.) );
 		dt__PTRASS(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
@@ -201,7 +201,7 @@ namespace dtOO {
 	}
 
 	float rotatingMap2dTo3d::v_mw(float const & mm, float const & ww) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent( _m2d->percent_v(ww), 0., 1.) );
+		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstVPercent( _m2d->percent_v(ww), 0., 1.) );
 		dt__PTRASS(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
@@ -221,7 +221,7 @@ namespace dtOO {
 //	}
 	
 	float rotatingMap2dTo3d::w_s(float const & arg) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->pickConstUPercent(0., 0., 1.) );
+		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstUPercent(0., 0., 1.) );
 		dt__PTRASS(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())

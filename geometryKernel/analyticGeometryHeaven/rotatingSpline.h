@@ -51,10 +51,9 @@ namespace dtOO {
       virtual float r_v(float const & arg0) const;
       virtual float r_m(float const & arg0) const;
       void correctOrigin( void );
-      virtual map2dTo3d * pickPercent(
-        float const & uu0, float const & uu1, 
-        float const & vv0, float const & vv1
-      ) const;        
+      virtual map2dTo3d * segmentRectangle(
+        dtPoint2 const & p0, dtPoint2 const & p1
+      ) const;      
     private:
       dtCurve const * ptrConstRadiusCurve( void ) const;
 //      dtCurve * getCircleCurve( float const & vv ) const;      
