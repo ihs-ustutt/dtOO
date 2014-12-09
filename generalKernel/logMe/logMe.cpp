@@ -108,52 +108,11 @@ namespace dtOO {
 		trace_buf << LOGDEL;
 		return trace_buf.str();
 	}	
-  
-  std::string logMe::floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec ) {
-    std::ostringstream os;
-    for (int ii=0; ii<header.size(); ii++) {
-     os << boost::format("| %13s ") % header[ii];
-    }
-    os << LOGDEL;
-    int ii = 0;
-    int grouping = header.size();
-    while( ii < vec.size() ) {
-      for (int jj=0;jj<grouping;jj++) {
-        os << boost::format("| %+11.6e ") % vec[ii];
-        ii++;
-        if (ii == vec.size()) break;
-      }
-      os << LOGDEL;
-    }
-    return os.str();
-  } 
 
-  std::string logMe::floatVecToTable( 
-	  std::vector<std::string> const & addInfo, 
-		std::vector<std::string> const & header, 
-		std::vector< float > const & vec 
-	) {
-    std::ostringstream os;
-    for (int ii=0; ii<addInfo.size(); ii++) {		
-		  os << addInfo[ii] << LOGDEL;
-		}
-    for (int ii=0; ii<header.size(); ii++) {
-     os << boost::format("| %13s ") % header[ii];
-    }
-    os << LOGDEL;
-    int ii = 0;
-    int grouping = header.size();
-    while( ii < vec.size() ) {
-      for (int jj=0;jj<grouping;jj++) {
-        os << boost::format("| %+11.6e ") % vec[ii];
-        ii++;
-        if (ii == vec.size()) break;
-      }
-      os << LOGDEL;
-    }
-    return os.str();
-  } 	
-
+	/**
+	 * 
+   * @todo Make me template.
+   */
   std::string logMe::floatMatrixToString( std::vector< std::vector< float > > const & mat ) {
     std::ostringstream os;
     

@@ -55,6 +55,51 @@ namespace dtOO {
         os << "]";
         return os.str();
       }
+      template< class T >
+      static std::string vecToTable( std::vector< std::string > const & header, std::vector< T > const & vec ) {
+        std::ostringstream os;
+        for (int ii=0; ii<header.size(); ii++) {
+         os << boost::format("| %13s ") % header[ii];
+        }
+        os << LOGDEL;
+        int ii = 0;
+        int grouping = header.size();
+        while( ii < vec.size() ) {
+          for (int jj=0;jj<grouping;jj++) {
+            os << boost::format("| %+11.6e ") % vec[ii];
+            ii++;
+            if (ii == vec.size()) break;
+          }
+          os << LOGDEL;
+        }
+        return os.str();
+      }
+      template< class T >
+      static std::string vecToTable( 
+        std::vector< std::string > const & addInfo, 
+        std::vector< std::string > const & header, 
+        std::vector< T > const & vec 
+      ) {
+        std::ostringstream os;
+        for (int ii=0; ii<addInfo.size(); ii++) {		
+          os << addInfo[ii] << LOGDEL;
+        }
+        for (int ii=0; ii<header.size(); ii++) {
+         os << boost::format("| %13s ") % header[ii];
+        }
+        os << LOGDEL;
+        int ii = 0;
+        int grouping = header.size();
+        while( ii < vec.size() ) {
+          for (int jj=0;jj<grouping;jj++) {
+            os << boost::format("| %+11.6e ") % vec[ii];
+            ii++;
+            if (ii == vec.size()) break;
+          }
+          os << LOGDEL;
+        }
+        return os.str();
+      } 	      
       static inline std::string intVecToString( std::vector< int > const & vec ) {
         return vecToString< int >(vec);
       }
@@ -70,8 +115,15 @@ namespace dtOO {
       static std::string floatVecToString( std::vector< float > const & vec, int const grouping ) {
         return vecToString< float >(vec, grouping);
       }
-      static std::string floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec );
-      static std::string floatVecToTable( std::vector<std::string> const & addInfo, std::vector<std::string> const & header, std::vector< float > const & vec );
+      static std::string floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec ) {
+        return vecToTable< float >(header, vec);
+      }
+      static std::string stringVecToTable( std::vector< std::string > const & header, std::vector< std::string > const & vec ) {
+        return vecToTable< std::string >(header, vec);
+      }            
+      static std::string floatVecToTable( std::vector<std::string> const & addInfo, std::vector<std::string> const & header, std::vector< float > const & vec ) {
+        return vecToTable< float >(addInfo, header, vec);
+      }            
       static std::string floatMatrixToString( std::vector< std::vector< float > > const & mat );
   };
   

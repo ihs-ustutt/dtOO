@@ -277,15 +277,19 @@ namespace dtOO {
   }
   template< typename T >  
   void vectorHandling< T >::dump(void) {
+    std::vector< std::string > header;
+    header.push_back("label");
+    header.push_back("type");
     std::vector< std::string > itVal;
     dt__FORALL(*this, ii,
       labelHandling * obj;
       dt__MUSTDOWNCAST(this->at(ii), labelHandling, obj);
       
-      itVal.push_back( "label = "+obj->getLabel()+" type = "+obj->virtualClassName() );
+      itVal.push_back( obj->getLabel());
+      itVal.push_back( obj->virtualClassName() );
     );
     
-    DTINFOWF(dump(), << logMe::stringVecToString(itVal, 1) );
+    DTINFOWF(dump(), << logMe::stringVecToTable(header, itVal) );
   }
 }
 #endif	/* VECTORHANDLING_H */
