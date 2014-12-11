@@ -2,8 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <dtXmlParserDecorator/dtXmlParser.h>
-#include <baseContainerHeaven/pointContainer.h>
-#include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <functionHeaven/scaFunction.h>
@@ -13,8 +12,8 @@
 using namespace dtOO;
 
 int main( void ) {
-	pointContainer pC;
-	vectorContainer vC;
+	baseContainer bC;
+//	vectorContainer vC;
 	vectorHandling< analyticGeometry * > aG; 
 	vectorHandling< constValue * > cV; 
 	vectorHandling< analyticFunction * > aF; 
@@ -34,14 +33,14 @@ int main( void ) {
 	// scaFunctions
 	parser.getNames("function", &label);
 	for (int ii = 0;ii<label.size();ii++) {
-		parser.createAnalyticFunction(label[ii], &cV, &aF);
+		parser.createAnalyticFunction(label[ii], &bC, &cV, &aF);
 	}
 	label.clear();
   
 	// analyticGeometries
 	parser.getNames("part", &label);
 	for (int ii = 0;ii<label.size();ii++) {
-		parser.createAnalyticGeometry(label[ii], &pC, &vC, &cV, &aF, &aG);
+		parser.createAnalyticGeometry(label[ii], &bC, &cV, &aF, &aG);
 	}
 	
   for (int ii=0; ii<aG.size(); ii++) {
