@@ -66,7 +66,7 @@ namespace dtOO {
 		}	
 	}
 
-	dtCurve * dtOCCBSplineSurface::getCurveConstU( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve * dtOCCBSplineSurface::segmentConstU( float const uu, float const vvMin, float const vvMax) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
 
@@ -83,7 +83,7 @@ namespace dtOO {
 		return new dtOCCBSplineCurve(base);
 	}
 
-	dtCurve * dtOCCBSplineSurface::getCurveConstV( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve * dtOCCBSplineSurface::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		Handle(Geom_Curve) cc = _ptr->VIso(vR);
 

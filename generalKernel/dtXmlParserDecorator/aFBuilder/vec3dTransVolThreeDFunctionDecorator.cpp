@@ -61,10 +61,10 @@ namespace dtOO {
 			vectorHandling< dtCurve const * > cL2;
 			vectorHandling< dtCurve const * > cL3;
 			dt__FORALL(sL, ii,
-				cL0.push_back( sL[ii]->getCurveConstVPercent(0., 0., 1.) );
-			  cL1.push_back( sL[ii]->getCurveConstUPercent(1., 0., 1.) );
-			  cL2.push_back( sL[ii]->getCurveConstVPercent(1., 0., 1.) );
-			  cL3.push_back( sL[ii]->getCurveConstUPercent(0., 0., 1.) );
+				cL0.push_back( sL[ii]->segmentConstVPercent(0., 0., 1.) );
+			  cL1.push_back( sL[ii]->segmentConstUPercent(1., 0., 1.) );
+			  cL2.push_back( sL[ii]->segmentConstVPercent(1., 0., 1.) );
+			  cL3.push_back( sL[ii]->segmentConstUPercent(0., 0., 1.) );
 		  );
 			ptrHandling< dtSurface > sL0(
 			  bSplineSurface_skinConstructOCC(cL0).result() 
@@ -150,10 +150,10 @@ namespace dtOO {
 				vectorHandling< dtCurve const * > cL2;
 				vectorHandling< dtCurve const * > cL3;
 				dt__FORALL(sL, ii,
-					cL0.push_back( sL[ii]->getCurveConstVPercent(0., 0., 1.) );
-					cL1.push_back( sL[ii]->getCurveConstUPercent(1., 0., 1.) );
-					cL2.push_back( sL[ii]->getCurveConstVPercent(1., 0., 1.) );
-					cL3.push_back( sL[ii]->getCurveConstUPercent(0., 0., 1.) );
+					cL0.push_back( sL[ii]->segmentConstVPercent(0., 0., 1.) );
+					cL1.push_back( sL[ii]->segmentConstUPercent(1., 0., 1.) );
+					cL2.push_back( sL[ii]->segmentConstVPercent(1., 0., 1.) );
+					cL3.push_back( sL[ii]->segmentConstUPercent(0., 0., 1.) );
 				);
 				ptrHandling< dtSurface > sL0(
 					bSplineSurface_skinConstructOCC(cL0).result() 

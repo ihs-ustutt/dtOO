@@ -133,23 +133,23 @@ namespace dtOO {
   }
     
   dtVector3 analyticSurface::firstDerU( float const & uu, float const & vv) const {
-    return _dtS->getVectorDdU3d(uu, vv);
+    return _dtS->firstDerU(uu, vv);
   }
   
   dtVector3 analyticSurface::firstDerV( float const & uu, float const & vv) const {
-    return _dtS->getVectorDdV3d(uu, vv);
+    return _dtS->firstDerV(uu, vv);
   }
   
   dtVector3 analyticSurface::secondDerUU( float const & uu, float const & vv) const {
-    return _dtS->getVectorDdUDdU3d(uu, vv);
+    return _dtS->secondDerUU(uu, vv);
   }
   
   dtVector3 analyticSurface::secondDerVV( float const & uu, float const & vv) const {
-    return _dtS->getVectorDdVDdV3d(uu, vv);
+    return _dtS->secondDerVV(uu, vv);
   }
     
   dtVector3 analyticSurface::secondDerUV( float const & uu, float const & vv) const {
-    return _dtS->getVectorDdUDdV3d(uu, vv);
+    return _dtS->secondDerUV(uu, vv);
   }
   
   dtPoint2 analyticSurface::reparamOnFace(dtPoint3 const & ppXYZ) const {
@@ -160,7 +160,7 @@ namespace dtOO {
     float const & uu, float const & p0, float const & p1
   ) const {
     ptrHandling< dtCurve > cc(
-      _dtS->getCurveConstU(uu, p0, p1)
+      _dtS->segmentConstU(uu, p0, p1)
     );
     return new splineCurve3d(cc.get());
   }
@@ -169,7 +169,7 @@ namespace dtOO {
       float const & vv, float const & p0, float const & p1
     ) const {
       ptrHandling< dtCurve > cc(
-        _dtS->getCurveConstV(vv, p0, p1)
+        _dtS->segmentConstV(vv, p0, p1)
       );
     return new splineCurve3d(cc.get());
   }

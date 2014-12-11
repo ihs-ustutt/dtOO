@@ -30,28 +30,7 @@ namespace dtOO {
 		return new dtOCCRectangularTrimmedSurface( OCCRef() );
 	}
 
-	dtPoint3 dtOCCRectangularTrimmedSurface::controlPoint( int const uI, int const vI ) const {
-		DTFUNCTIONNOTI(controlPoint);				
-	}
-
-	void dtOCCRectangularTrimmedSurface::setControlPoint( int const uI, int const vI, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint);			
-	}
-
-	int dtOCCRectangularTrimmedSurface::nControlPoints( int const dim ) const {
-		switch (dim) {
-			case 0:		
-				return static_cast<int>(0);					
-			case 1:		
-				return static_cast<int>(0);
-			default:
-				dt__THROW(nControlPoints(),
-							<< DTLOGEVAL(dim) << LOGDEL
-							<< "dim should be 0 or 1.");				
-		}	
-	}
-
-	dtCurve * dtOCCRectangularTrimmedSurface::getCurveConstU( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve * dtOCCRectangularTrimmedSurface::segmentConstU( float const uu, float const vvMin, float const vvMax) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
 
@@ -68,7 +47,7 @@ namespace dtOO {
 		return new dtOCCTrimmedCurve(base, vvMin, vvMax);
 	}
 
-	dtCurve * dtOCCRectangularTrimmedSurface::getCurveConstV( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve * dtOCCRectangularTrimmedSurface::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
 			Standard_Real vR = static_cast<Standard_Real>(vv);
 			Handle(Geom_Curve) cc = _ptr->VIso(vR);
 

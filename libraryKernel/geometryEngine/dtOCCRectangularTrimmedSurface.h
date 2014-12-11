@@ -14,11 +14,8 @@ namespace dtOO {
     dtOCCRectangularTrimmedSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCRectangularTrimmedSurface();
     virtual dtSurface * clone( void ) const;
-	  virtual dtCurve * getCurveConstU( float const uu, float const vvMin, float const vvMax) const;
-	  virtual dtCurve * getCurveConstV( float const vv, float const uuMin, float const uuMax) const;     
-    virtual dtPoint3 controlPoint( int const uI, int const vI ) const;
-    virtual void setControlPoint( int const uI, int const vI, dtPoint3 const point );    
-    virtual int nControlPoints( int const dim ) const;  
+	  virtual dtCurve * segmentConstU( float const uu, float const vvMin, float const vvMax) const;
+	  virtual dtCurve * segmentConstV( float const vv, float const uuMin, float const uuMax) const;     
   private:
     Geom_RectangularTrimmedSurface const * _ptr;
   };

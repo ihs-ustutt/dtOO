@@ -243,20 +243,20 @@ namespace dtOO {
 			cL2[16]->pointPercent(1.), cL2[17]->pointPercent(1.)
 		).result();
 		ppUV = dtS->reparam(cL2[20]->pointPercent(1.));
-		cL2[25] = dtS->getCurveConstU(ppUV.x(), ppUV.y(), dtS->maxV());			
+		cL2[25] = dtS->segmentConstU(ppUV.x(), ppUV.y(), dtS->maxV());			
 		ppUV = dtS->reparam(cL2[22]->pointPercent(1.));
-		cL2[27] = dtS->getCurveConstU(ppUV.x(), ppUV.y(), dtS->maxV());
+		cL2[27] = dtS->segmentConstU(ppUV.x(), ppUV.y(), dtS->maxV());
 		cL2[30] 
 		= 
 		trimmedCurve_twoPointsConnectConstructOCC(
 			cL2[25]->pointPercent(1.), cL2[27]->pointPercent(1.)
 		).result();
 		ppUV = dtS->reparam(cL2[10]->pointPercent(1.));
-		cL2[5] = dtS->getCurveConstU(ppUV.x(), dtS->minV(), ppUV.y());
+		cL2[5] = dtS->segmentConstU(ppUV.x(), dtS->minV(), ppUV.y());
 		ppUV = dtS->reparam(cL2[15]->pointPercent(0.));
-		cL2[6] = dtS->getCurveConstU(ppUV.x(), dtS->minV(), ppUV.y());
+		cL2[6] = dtS->segmentConstU(ppUV.x(), dtS->minV(), ppUV.y());
 		ppUV = dtS->reparam(cL2[11]->pointPercent(1.));
-		cL2[7] = dtS->getCurveConstU(ppUV.x(), dtS->minV(), ppUV.y());
+		cL2[7] = dtS->segmentConstU(ppUV.x(), dtS->minV(), ppUV.y());
 		cL2[1] 
 		= 
 		trimmedCurve_twoPointsConnectConstructOCC(

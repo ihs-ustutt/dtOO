@@ -104,27 +104,27 @@ namespace dtOO {
 		return getPoint3d(*uuV, *vvV);
 	}
 	
-  dtVector3 dtSurface::getVectorDdU3d( float const uu, float const vv) const {
+  dtVector3 dtSurface::firstDerU( float const uu, float const vv) const {
 		std::vector<dtVector3> der = firstDer(uu, vv);
 		return der[0];
 	}
 	
-  dtVector3 dtSurface::getVectorDdV3d( float const uu, float const vv) const {
+  dtVector3 dtSurface::firstDerV( float const uu, float const vv) const {
 		std::vector<dtVector3> der = firstDer(uu, vv);
 		return der[1];		
 	}
 	
-  dtVector3 dtSurface::getVectorDdUDdU3d( float const uu, float const vv) const {
+  dtVector3 dtSurface::secondDerUU( float const uu, float const vv) const {
 		std::vector<dtVector3> der = secondDer(uu, vv);
 		return der[0];		
 	}
 	
-  dtVector3 dtSurface::getVectorDdVDdV3d( float const uu, float const vv) const {
+  dtVector3 dtSurface::secondDerVV( float const uu, float const vv) const {
 		std::vector<dtVector3> der = secondDer(uu, vv);
 		return der[2];				
 	}
 	
-  dtVector3 dtSurface::getVectorDdUDdV3d( float const uu, float const vv) const {
+  dtVector3 dtSurface::secondDerUV( float const uu, float const vv) const {
 		std::vector<dtVector3> der = secondDer(uu, vv);
 		return der[1];				
 	}
@@ -137,40 +137,40 @@ namespace dtOO {
 	  return dtPoint2( u_uPercent(uvPercent.x()), v_vPercent(uvPercent.y()) );
 	}
 	
-	int dtSurface::getNControlPointsU( void ) const {
+	int dtSurface::nControlPointsU( void ) const {
 		return nControlPoints(0);
 	}
 	
-	int dtSurface::getNControlPointsV( void ) const {
+	int dtSurface::nControlPointsV( void ) const {
 		return nControlPoints(1);
 	}
 	
-	dtCurve * dtSurface::getCurveConstU( float const uu) const {
-		return getCurveConstU( uu, minPara(1), maxPara(1) );
+	dtCurve * dtSurface::segmentConstU( float const uu) const {
+		return segmentConstU( uu, minPara(1), maxPara(1) );
 	}
 	
-	dtCurve * dtSurface::getCurveConstV( float const vv) const {
-		return getCurveConstV( vv, minPara(0), maxPara(0) );
+	dtCurve * dtSurface::segmentConstV( float const vv) const {
+		return segmentConstV( vv, minPara(0), maxPara(0) );
 	}
 	
-	dtCurve * dtSurface::getCurveConstUPercent( float const uu) const {
-		return getCurveConstU( u_uPercent(uu) );
+	dtCurve * dtSurface::segmentConstUPercent( float const uu) const {
+		return segmentConstU( u_uPercent(uu) );
 	}
 	
-	dtCurve * dtSurface::getCurveConstVPercent( float const vv) const {
-		return getCurveConstV( v_vPercent(vv) );
+	dtCurve * dtSurface::segmentConstVPercent( float const vv) const {
+		return segmentConstV( v_vPercent(vv) );
 	}
 	
-	dtCurve * dtSurface::getCurveConstUPercent( float const uu, float const vvMin, float const vvMax) const {
-		return getCurveConstU( 
+	dtCurve * dtSurface::segmentConstUPercent( float const uu, float const vvMin, float const vvMax) const {
+		return segmentConstU( 
 		  u_uPercent(uu), 
 			v_vPercent(vvMin), 
 			v_vPercent(vvMax) 
 	  );
 	}
 	
-	dtCurve * dtSurface::getCurveConstVPercent( float const vv, float const uuMin, float const uuMax) const {
-		return getCurveConstV( 
+	dtCurve * dtSurface::segmentConstVPercent( float const vv, float const uuMin, float const uuMax) const {
+		return segmentConstV( 
 		  v_vPercent(vv), 
 			u_uPercent(uuMin),
 			u_uPercent(uuMax)
@@ -181,9 +181,33 @@ namespace dtOO {
 		dtPoint2 ppUV = reparam(point);
 		return dtPoint2( uPercent_u(ppUV.x()), vPercent_v(ppUV.y()) );
 	}
+	
 	//
 	//
 	//
+  dtPoint3 dtSurface::controlPoint( int const uI, int const vI ) const {
+		dt__THROW(controlPoint(), <<"Not possible on this kind of surface.");
+	}
+	
+  void dtSurface::setControlPoint( int const uI, int const vI, dtPoint3 const point ) {
+		dt__THROW(setControlPoint(), <<"Not possible on this kind of surface.");
+	}
+	
+  int dtSurface::nControlPoints( int const dim ) const {
+		switch (dim) {
+			case 0:
+				return 0;
+			case 1:
+				return 0;
+			default:
+				dt__THROW(
+					nControlPoints(),
+					<< DTLOGEVAL(dim) << LOGDEL
+					<< "dim should be 0 or 1."
+				);
+		}
+	}
+		
 	void dtSurface::dump( void ) const {
     DTINFOWF(
 			dump(), 
@@ -192,12 +216,7 @@ namespace dtOO {
 		);
 	}	
 	
-	void dtSurface::revert(void) {
-		DTFUNCTIONNOTI(revert());
-	}
-	
 	void dtSurface::offsetNormal(float const nn) {
 		DTFUNCTIONNOTI(offsetNormal());
 	}
-	
 }

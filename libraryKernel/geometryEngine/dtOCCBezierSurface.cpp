@@ -58,7 +58,7 @@ namespace dtOO {
 		}	
 	}
 
-	dtCurve * dtOCCBezierSurface::getCurveConstU( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve * dtOCCBezierSurface::segmentConstU( float const uu, float const vvMin, float const vvMax) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
 
@@ -75,7 +75,7 @@ namespace dtOO {
 		return new dtOCCBezierCurve(base);
 	}
 
-	dtCurve * dtOCCBezierSurface::getCurveConstV( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve * dtOCCBezierSurface::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		Handle(Geom_Curve) cc = _ptr->VIso(vR);
 

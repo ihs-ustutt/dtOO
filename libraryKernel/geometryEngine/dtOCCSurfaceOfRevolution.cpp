@@ -37,28 +37,7 @@ namespace dtOO {
 		return new dtOCCSurfaceOfRevolution( OCCRef() );
 	}
 
-	dtPoint3 dtOCCSurfaceOfRevolution::controlPoint( int const uI, int const vI ) const {	
-		DTFUNCTIONNOTI(controlPoint);				
-	}
-
-	void dtOCCSurfaceOfRevolution::setControlPoint( int const uI, int const vI, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint);			
-	}
-
-	int dtOCCSurfaceOfRevolution::nControlPoints( int const dim ) const {
-		switch (dim) {
-			case 0:		
-				return 0;					
-			case 1:		
-				return 0;
-			default:
-				dt__THROW(nControlPoints(),
-							<< DTLOGEVAL(dim) << LOGDEL
-							<< "dim should be 0 or 1.");				
-		}	
-	}
-
-	dtCurve * dtOCCSurfaceOfRevolution::getCurveConstU( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve * dtOCCSurfaceOfRevolution::segmentConstU( float const uu, float const vvMin, float const vvMax) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
 
@@ -85,13 +64,13 @@ namespace dtOO {
 			return new dtOCCBSplineCurve(base);					
 		}
 		else {
-			dt__THROW(getCurveConstU(),
+			dt__THROW(segmentConstU(),
 							<< DTLOGEVAL(ccBezier) << LOGDEL
 							<< DTLOGEVAL(ccBSpline) );
 		}
 	}
 
-	dtCurve * dtOCCSurfaceOfRevolution::getCurveConstV( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve * dtOCCSurfaceOfRevolution::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		Handle(Geom_Curve) cc = _ptr->VIso(vR);
 
@@ -133,7 +112,7 @@ namespace dtOO {
 		}		
 		else {
 			dt__THROW(
-				getCurveConstV(),
+				segmentConstV(),
 				<< DTLOGEVAL(ccBezier) << LOGDEL
 				<< DTLOGEVAL(ccBSpline) << LOGDEL
 				<< DTLOGEVAL(ccConic) 

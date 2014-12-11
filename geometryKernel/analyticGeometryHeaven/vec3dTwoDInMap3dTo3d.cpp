@@ -80,7 +80,7 @@ namespace dtOO {
     float const & uu, float const & vv0, float const & vv1
   ) const {
     ptrHandling< dtCurve > dtC(
-		  _v2d->ptrDtSurface()->getCurveConstUPercent(uu, vv0, vv1)
+		  _v2d->ptrDtSurface()->segmentConstUPercent(uu, vv0, vv1)
 		);
     ptrHandling< vec3dOneD > v1d( new vec3dCurveOneD(dtC.get()) );
 
@@ -91,7 +91,7 @@ namespace dtOO {
     float const & vv, float const & uu0, float const & uu1
   ) const {
     ptrHandling< dtCurve > dtC(
-		  _v2d->ptrDtSurface()->getCurveConstVPercent(vv, uu0, uu1)
+		  _v2d->ptrDtSurface()->segmentConstVPercent(vv, uu0, uu1)
 		);
     ptrHandling< vec3dOneD > v1d( new vec3dCurveOneD(dtC.get()) );
 
