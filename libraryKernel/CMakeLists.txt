@@ -3,6 +3,7 @@ SET(HEADERS
   geometryEngine/dtCurve.h
   geometryEngine/dtCurve2d.h
   geometryEngine/dtSurface.h
+  geometryEngine/dtSurface2d.h
   geometryEngine/dtOCCCurveBase.h
   geometryEngine/dtOCCCurve.h
   geometryEngine/dtOCCCurve2dBase.h
@@ -14,7 +15,9 @@ SET(HEADERS
   geometryEngine/dtOCCLine.h
   geometryEngine/dtOCCSurfaceBase.h
   geometryEngine/dtOCCSurface.h
+  geometryEngine/dtOCCSurface2d.h
   geometryEngine/dtOCCBSplineSurface.h
+  geometryEngine/dtOCCBSplineSurface2d.h
   geometryEngine/dtOCCBezierSurface.h
   geometryEngine/dtOCCSurfaceOfRevolution.h
   geometryEngine/dtOCCRectangularTrimmedSurface.h
@@ -47,6 +50,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h
   geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.h
   geometryEngine/geoBuilder/geomCurve2d_reparamInGeomSurfaceOCC.h
+  geometryEngine/geoBuilder/geomCurve2d_ignoreZ.h
   dtGmshVertex.h
   dtGmshEdge.h
   dtGmshFace.h
@@ -61,6 +65,7 @@ SET(SOURCES
   geometryEngine/dtCurve.cpp
   geometryEngine/dtCurve2d.cpp
   geometryEngine/dtSurface.cpp
+  geometryEngine/dtSurface2d.cpp
   geometryEngine/dtOCCCurveBase.cpp
   geometryEngine/dtOCCCurve.cpp
   geometryEngine/dtOCCCurve2dBase.cpp
@@ -72,7 +77,9 @@ SET(SOURCES
   geometryEngine/dtOCCLine.cpp
   geometryEngine/dtOCCSurfaceBase.cpp
   geometryEngine/dtOCCSurface.cpp
+  geometryEngine/dtOCCSurface2d.cpp
   geometryEngine/dtOCCBSplineSurface.cpp
+  geometryEngine/dtOCCBSplineSurface2d.cpp
   geometryEngine/dtOCCBezierSurface.cpp
   geometryEngine/dtOCCSurfaceOfRevolution.cpp
   geometryEngine/dtOCCRectangularTrimmedSurface.cpp
@@ -105,6 +112,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.cpp
   geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.cpp
   geometryEngine/geoBuilder/geomCurve2d_reparamInGeomSurfaceOCC.cpp
+  geometryEngine/geoBuilder/geomCurve2d_ignoreZ.cpp
   dtGmshVertex.cpp
   dtGmshEdge.cpp
   dtGmshFace.cpp

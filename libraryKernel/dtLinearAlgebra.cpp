@@ -391,5 +391,13 @@ namespace dtOO {
 
 	float dtLinearAlgebra::angleDegree( dtVector3 const & v0, dtVector3 const & v1 ) {
 		return dtLinearAlgebra::angle(v0, v1) * 180./M_PI;
-	}	
+	}
+
+  dtVector2 dtLinearAlgebra::ignoreZ( dtVector3 const & v0 ) {
+		return dtVector2(v0.x(), v0.y());
+	}
+	
+  dtPoint2 dtLinearAlgebra::ignoreZ( dtPoint3 const & v0 ) {
+		return dtPoint2(v0.x(), v0.y());
+	}
 }

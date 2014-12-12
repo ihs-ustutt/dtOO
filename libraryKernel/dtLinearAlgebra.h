@@ -69,6 +69,8 @@ namespace dtOO {
     static float distance( dtPoint3 const & p0, dtPoint3 const & p1 );
     static float angle( dtVector3 const & v0, dtVector3 const & v1 );
     static float angleDegree( dtVector3 const & v0, dtVector3 const & v1 );
+    static dtVector2 ignoreZ( dtVector3 const & v0 );
+    static dtPoint2 ignoreZ( dtPoint3 const & v0 );
   };
 }
 #endif  /* DTLINEARALGEBRA_H */
