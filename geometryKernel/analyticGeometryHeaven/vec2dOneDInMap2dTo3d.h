@@ -25,10 +25,10 @@ namespace dtOO {
       virtual bool isClosed( int const & dir) const;
       virtual float getMin( int const & dir) const;
       virtual float getMax( int const & dir) const;
-      vec2dCurve2dOneD const * ptrToVec2dCurve2dOneD( void ) const;
+      vec2dOneD const * ptrToVec2dOneD( void ) const;
       map2dTo3d const * ptrToMap2dTo3d( void ) const;      
   private:
-    ptrHandling< vec2dCurve2dOneD > _v2d1d;
+    ptrHandling< vec2dOneD > _v2d;
     ptrHandling< map2dTo3d > _m2d;
     bool _percentF;
   };

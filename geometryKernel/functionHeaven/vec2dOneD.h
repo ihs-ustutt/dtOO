@@ -12,6 +12,8 @@ namespace dtOO {
     vec2dOneD();
     vec2dOneD(const vec2dOneD& orig);
     virtual ~vec2dOneD();
+    virtual vec2dOneD * clone( void ) const = 0;
+    virtual vec2dOneD * create( void ) const = 0;     
     virtual aFY Y( float const & xx) const = 0;
     virtual aFY Y(aFX const & xx) const;
     virtual int xDim( void ) const;

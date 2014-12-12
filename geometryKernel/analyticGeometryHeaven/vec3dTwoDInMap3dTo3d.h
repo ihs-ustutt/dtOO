@@ -8,7 +8,7 @@
 
 namespace dtOO {
   class vec3dTwoD;
-  class vec3dSurfaceTwoD;
+  class vec3dTwoD;
   class map3dTo3d;
   class renderInterface;
   class dtTransformer;
@@ -29,23 +29,9 @@ namespace dtOO {
     virtual float getMax( int const & dir) const;
     vec3dTwoD const * refToVec3dTwoD( void ) const;
     map3dTo3d const * refToMap3dTo3d( void ) const;
-    virtual map1dTo3d * pickConstUPercent(
-      float const & uu, float const & vv0, float const & vv1
-    ) const;
-    virtual map1dTo3d * pickConstVPercent(
-      float const & vv, float const & uu0, float const & uu1
-    ) const;
-    virtual map1dTo3d * pickLinearUV(
-      float const & uu0, float const & vv0, 
-      float const & uu1, float const & vv1
-    ) const;
-    virtual map2dTo3d * pickPercent(
-      float const & uu0, float const & uu1, 
-      float const & vv0, float const & vv1
-    ) const;
     vectorHandling< renderInterface * > getExtRender( void ) const;
   private:
-    ptrHandling< vec3dSurfaceTwoD > _v2d;
+    ptrHandling< vec3dTwoD > _v2d;
     ptrHandling< map3dTo3d > _m3d;
   };
 }

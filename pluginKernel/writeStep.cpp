@@ -78,7 +78,7 @@ namespace dtOO {
 				dt__PTRASS(dtOCCSurface const * dtOccS, dtOCCSurface::ConstDownCast(dtS));
 				dt__PTRASS(
 					vec2dCurve2dOneD const * v2dC1d, 
-					vec2dCurve2dOneD::ConstDownCast(v2d1d->ptrToVec2dCurve2dOneD()) 
+					vec2dCurve2dOneD::ConstDownCast(v2d1d->ptrToVec2dOneD()) 
 				);
 				dt__PTRASS(
 				  dtOCCCurve2d const * dtOccC2d, 

@@ -36,11 +36,11 @@ namespace dtOO {
 		return yy;
 	}
 
-  analyticFunction * vec2dCurve2dOneD::clone( void ) const {
+  vec2dOneD * vec2dCurve2dOneD::clone( void ) const {
 		return new vec2dCurve2dOneD(*this);
 	}
 	
-  analyticFunction * vec2dCurve2dOneD::create( void ) const {
+  vec2dOneD * vec2dCurve2dOneD::create( void ) const {
 		return new vec2dCurve2dOneD();
 	}
 	
@@ -73,5 +73,18 @@ namespace dtOO {
 	
 	dtCurve2d const * vec2dCurve2dOneD::ptrDtCurve2d( void ) const {
 		return _dtC2d.get();
+	}
+	
+  bool vec2dCurve2dOneD::closed( int const & dir ) const {
+		switch (dir) {
+			case 0:		
+				return static_cast<bool>(_dtC2d->closed());
+			default:
+				dt__THROW(
+					closed(),
+					<< DTLOGEVAL(dir) << LOGDEL
+					<< "dim should be 0."
+				);
+		}				
 	}
 }

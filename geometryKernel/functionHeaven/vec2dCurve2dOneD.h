@@ -17,12 +17,13 @@ namespace dtOO {
     vec2dCurve2dOneD();
     vec2dCurve2dOneD(const vec2dCurve2dOneD& orig);
     vec2dCurve2dOneD(dtCurve2d const * const dtC2d);
-    virtual analyticFunction * clone( void ) const;
-    virtual analyticFunction * create( void ) const;    
+    virtual vec2dOneD * clone( void ) const;
+    virtual vec2dOneD * create( void ) const;    
     virtual ~vec2dCurve2dOneD();
     virtual aFY Y( float const & xx) const;
     vectorHandling< renderInterface * > getRender( void ) const;
     dtCurve2d const * ptrDtCurve2d( void ) const;
+    virtual bool closed( int const & dir ) const;
   private:
     ptrHandling<dtCurve2d> _dtC2d;
   };
