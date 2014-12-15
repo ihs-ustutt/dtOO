@@ -51,6 +51,8 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.h
   geometryEngine/geoBuilder/geomCurve2d_reparamInGeomSurfaceOCC.h
   geometryEngine/geoBuilder/geomCurve2d_ignoreZ.h
+  geometryEngine/geoBuilder/geomCurve_baseConstructOCC.h
+  geometryEngine/geoBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCC.h
   dtGmshVertex.h
   dtGmshEdge.h
   dtGmshFace.h
@@ -113,6 +115,8 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.cpp
   geometryEngine/geoBuilder/geomCurve2d_reparamInGeomSurfaceOCC.cpp
   geometryEngine/geoBuilder/geomCurve2d_ignoreZ.cpp
+  geometryEngine/geoBuilder/geomCurve_baseConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCC.cpp
   dtGmshVertex.cpp
   dtGmshEdge.cpp
   dtGmshFace.cpp

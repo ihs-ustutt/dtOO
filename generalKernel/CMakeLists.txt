@@ -24,6 +24,7 @@ SET(HEADERS
   dtXmlParserDecorator/aFBuilder/vec3dTwoDFiveRectangleFunctionDecorator.h
   dtXmlParserDecorator/aFBuilder/vec3dTwoDTwelveRectangleFunctionDecorator.h
   dtXmlParserDecorator/aFBuilder/vec3dTransVolThreeDFunctionDecorator.h
+  dtXmlParserDecorator/aFBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator.h
   dtXmlParserDecorator/occBuilder/bezierCurve_pointConstructOCCDecorator.h
   dtXmlParserDecorator/occBuilder/bSplineCurve_curveConnectConstructOCCDecorator.h
   dtXmlParserDecorator/occBuilder/bSplineSurface_skinConstructOCCDecorator.h
@@ -79,6 +80,7 @@ SET(SOURCES
   dtXmlParserDecorator/aFBuilder/scaMuParserOneDFunctionDecorator.cpp
   dtXmlParserDecorator/aFBuilder/scaCurve2dOneDFunctionDecorator.cpp
   dtXmlParserDecorator/aFBuilder/vec3dTransVolThreeDFunctionDecorator.cpp
+  dtXmlParserDecorator/aFBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator.cpp
   dtXmlParserDecorator/occBuilder/bezierCurve_pointConstructOCCDecorator.cpp
   dtXmlParserDecorator/occBuilder/bSplineCurve_curveConnectConstructOCCDecorator.cpp
   dtXmlParserDecorator/occBuilder/bSplineSurface_skinConstructOCCDecorator.cpp

@@ -2,7 +2,6 @@
 #define	DTXMLPARSERFUNCTIONDECORATORFACTORY_H
 
 #include <string>
-using namespace std;
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
@@ -13,8 +12,8 @@ namespace dtOO {
     dt__CLASSNAME(dtXmlParserFunctionDecoratorFactory);
     dtXmlParserFunctionDecoratorFactory();
     virtual ~dtXmlParserFunctionDecoratorFactory();
-    static dtXmlParserFunctionDecorator * create(char const * const str);
-    static dtXmlParserFunctionDecorator * create(string const str);
+    static dtXmlParserFunctionDecorator * create( char const * const str );
+    static dtXmlParserFunctionDecorator * create( std::string const str );
   private:
   };
 }

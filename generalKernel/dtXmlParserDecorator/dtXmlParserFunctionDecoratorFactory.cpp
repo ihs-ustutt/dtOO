@@ -13,6 +13,7 @@
 #include "aFBuilder/vec3dTwoDFiveRectangleFunctionDecorator.h"
 #include "aFBuilder/vec3dTwoDTwelveRectangleFunctionDecorator.h"
 #include "aFBuilder/vec3dTransVolThreeDFunctionDecorator.h"
+#include "aFBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -30,7 +31,8 @@ namespace dtOO {
   dtXmlParserFunctionDecoratorFactory::~dtXmlParserFunctionDecoratorFactory() {
   }
 
-  dtXmlParserFunctionDecorator* dtXmlParserFunctionDecoratorFactory::create(char const * const str) {
+  dtXmlParserFunctionDecorator * 
+	dtXmlParserFunctionDecoratorFactory::create(char const * const str) {
     DTINFOWF(create(), << "creating " << str <<  "...");
 
     __IFRET(baseContainerFunctionDecorator);		
@@ -57,11 +59,17 @@ namespace dtOO {
 		__IFRETCUSTOM(vec3dTwoDTwelveRectangle, vec3dTwoDTwelveRectangleFunctionDecorator);
 		__IFRET(vec3dTransVolThreeDFunctionDecorator);
 		__IFRETCUSTOM(vec3dTransVolThreeD, vec3dTransVolThreeDFunctionDecorator);
+		__IFRET(bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator);
+		__IFRETCUSTOM(
+		  bSplineSurface2d_bSplineCurve2dFillConstructOCC, 
+			bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator
+		);
     
     dt__THROW(create(), << str <<  " could not be created.");
   }
 
-  dtXmlParserFunctionDecorator* dtXmlParserFunctionDecoratorFactory::create(string const str) {
+  dtXmlParserFunctionDecorator * 
+	dtXmlParserFunctionDecoratorFactory::create( std::string const str ) {
     return create( str.c_str() );
   }
 }
