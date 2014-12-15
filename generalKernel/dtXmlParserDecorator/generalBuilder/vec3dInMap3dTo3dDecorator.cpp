@@ -42,30 +42,27 @@ namespace dtOO {
       // get analyticGeometry
       //
 			QDomElement aGElement = getChild("analyticGeometry", **toBuildP);
-      analyticGeometry const * aG 
-      = 
-      createAnalyticGeometry(&aGElement, bC, cValP, sFunP, depAGeoP);
+      dt__pH(analyticGeometry const) aG(
+        createAnalyticGeometry(&aGElement, bC, cValP, sFunP, depAGeoP)
+			);
         
 //      );
       //
       // check if it is a map3dTo3d
       //
-      dt__PTRASS( map3dTo3d const * m3d, map3dTo3d::ConstDownCast(aG) );
+      dt__PTRASS( map3dTo3d const * m3d, map3dTo3d::ConstDownCast(aG.get()) );
 			
       //
       // get analyticFunction
       //
 			QDomElement aFElement = getChild("analyticFunction", **toBuildP);
-      analyticFunction const * aF
-      = 
-			createAnalyticFunction(&aFElement, bC, cValP, sFunP);
-//      sFunP->get( 
-//        getAttributeStr("label", getChild( "analyticFunction", **toBuildP )) 
-//      );
+      dt__pH(analyticFunction const) aF(
+			  createAnalyticFunction(&aFElement, bC, cValP, sFunP)
+			);
 
-			vec3dOneD const * v1d = vec3dOneD::ConstDownCast(aF);
-			vec3dTwoD const * v2d = vec3dTwoD::ConstDownCast(aF);
-			vec3dThreeD const * v3d = vec3dThreeD::ConstDownCast(aF);
+			vec3dOneD const * v1d = vec3dOneD::ConstDownCast(aF.get());
+			vec3dTwoD const * v2d = vec3dTwoD::ConstDownCast(aF.get());
+			vec3dThreeD const * v3d = vec3dThreeD::ConstDownCast(aF.get());
 			
 			if (v1d) {
 				aGeoP->push_back( new vec3dOneDInMap3dTo3d(v1d, m3d) );
@@ -76,7 +73,6 @@ namespace dtOO {
 			else if (v3d) {
 			  aGeoP->push_back( new vec3dThreeDInMap3dTo3d(v3d, m3d) );
 			}
-
 			else {
 				dt__THROW(
 				  buildPart(), 

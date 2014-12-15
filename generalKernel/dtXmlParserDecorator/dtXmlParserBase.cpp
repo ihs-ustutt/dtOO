@@ -51,7 +51,7 @@ namespace dtOO {
 		vectorHandling< analyticGeometry * > const * const depAGeoP
 	) const {
 		dtTransformer * dtTransformerP;
-
+		
 		//
 		// get transformer element
 		//

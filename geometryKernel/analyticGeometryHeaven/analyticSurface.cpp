@@ -16,6 +16,7 @@
 #include <discrete3dVector.h>
 #include "map2dTo3dTransformed.h"
 #include <dtTransformerHeaven/dtTransformer.h>
+
 namespace dtOO {
   analyticSurface::analyticSurface() : map2dTo3d() {
   }

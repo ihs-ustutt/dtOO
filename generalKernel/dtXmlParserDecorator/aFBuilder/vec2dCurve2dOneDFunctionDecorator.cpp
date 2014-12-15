@@ -31,8 +31,6 @@ namespace dtOO {
     //
     bool hasOrder = hasAttribute("order", toBuildP);
     bool hasPoints = hasChild("Point_2", toBuildP);
-    bool hasScaFunction = hasChild("function", toBuildP);
-    
 
     if ( hasPoints && hasOrder ) {
 			std::vector< dtPoint2 > pointsArray;
@@ -62,10 +60,11 @@ namespace dtOO {
       sFunP->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );			
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasPoints) << LOGDEL
-              << DTLOGEVAL(hasScaFunction) );
+      dt__THROW(
+				buildPart(),
+        << DTLOGEVAL(hasOrder) << LOGDEL
+        << DTLOGEVAL(hasPoints) 
+			);
     }
   }
 }

@@ -1,56 +1,35 @@
 #ifndef ANALYTICSURFACE_H
 #define	ANALYTICSURFACE_H
 
-#define _USE_MATH_DEFINES 
-#include <math.h>
 #include "map2dTo3d.h"
 #include <dtLinearAlgebra.h>
 #include <vector>
 
 namespace dtOO {
   class dtSurface;
-  class dtCurve;
-  class splineCurve3d;
   class dtTransformer;
 
-  /**
-   * Analytic surface.
-   * @author A. Tismer
-   * @date 04.12.2012
-   */
   class analyticSurface : public map2dTo3d {
     public:
       dt__CLASSSTD(analyticSurface, analyticGeometry);    
-      //
-      // construction and destruction
-      //
       analyticSurface();
       analyticSurface( analyticSurface const & orig );
       analyticSurface(dtSurface const * const surface);
-      virtual analyticSurface * clone( void ) const;
-      virtual analyticSurface * create( void ) const;
-      virtual analyticSurface * cloneTransformed( dtTransformer const * const dtT ) const;
       virtual ~analyticSurface();
       //
-      // read and modify member attributes
-      //
-      dtSurface * ptrDtSurface( void ) const;
-      dtSurface const * constPtrDtSurface( void ) const; 
-      //
-      // output and visualization
-      //
-      virtual vectorHandling< renderInterface * > getExtRender( void ) const;
-      //
-      // point picking and normal vectors
-      //
-      virtual dtPoint3 getPoint(float const & uu, float const & vv) const;
-      //
-      // interfaces
-      //
-      virtual void offsetNormal( float const nn );
+      // overload
+      //      
+      virtual analyticSurface * create( void ) const;
+      virtual analyticSurface * clone( void ) const;
+      virtual analyticSurface * cloneTransformed( dtTransformer const * const dtT ) const;
+      virtual dtPoint3 getPoint(float const & uu, float const & vv) const;      
       virtual bool isClosed( int const & dir) const;
       virtual float getMin( int const & dir) const;
       virtual float getMax( int const & dir) const;
+      //
+      // optional overload
+      //
+      virtual vectorHandling< renderInterface * > getExtRender( void ) const;
       virtual dtVector3 normal( float const & uu, float const & vv) const;
       virtual dtVector3 firstDerU( float const & uu, float const & vv) const;
       virtual dtVector3 firstDerV( float const & uu, float const & vv) const;
@@ -66,7 +45,14 @@ namespace dtOO {
       ) const;
       virtual map2dTo3d * segmentRectangle(
         dtPoint2 const & p0, dtPoint2 const & p1
-      ) const;    
+      ) const;          
+      //
+      // read and modify member attributes
+      //
+      dtSurface * ptrDtSurface( void ) const;
+      dtSurface const * constPtrDtSurface( void ) const; 
+
+      virtual void offsetNormal( float const nn );
     private:
       dt__pH(dtSurface) _dtS;
   };

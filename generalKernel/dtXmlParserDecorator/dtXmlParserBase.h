@@ -129,6 +129,9 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > const * const depAGeoP,            
       vectorHandling< analyticGeometry * > * advancedP 
     ) const;
+    /**
+     * Creates a clone and returns a pointer.
+     */
     analyticGeometry * createAnalyticGeometry( 
       QDomElement const * toBuildP,
       baseContainer * const bC,
@@ -136,6 +139,9 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFunP, 
       vectorHandling< analyticGeometry * > const * const depAGeoP
     ) const;
+    /**
+     * Creates a clone and returns a pointer.
+     */    
     analyticGeometry * createAnalyticGeometry( 
       QDomElement const * toBuildP,
       vectorHandling< constValue * > const * const cValP,
@@ -157,6 +163,9 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFunP, 
       vectorHandling< analyticFunction * > * advancedP 
     ) const;
+    /**
+     * Creates a clone and returns a pointer.
+     */    
     analyticFunction * createAnalyticFunction( 
       QDomElement const * toBuildP,
       baseContainer * const bC,

@@ -18,6 +18,7 @@ SET(HEADERS
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
   analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h
+  analyticGeometryHeaven/vec2dTwoDInMap2dTo3d.h
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
   analyticGeometryHeaven/analyticGeometryCompound.h
   analyticGeometryHeaven/map2dTo3dTransformed.h
@@ -93,6 +94,7 @@ SET(SOURCES
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.cpp
   analyticGeometryHeaven/vec3dOneDInMap3dTo3d.cpp
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.cpp
+  analyticGeometryHeaven/vec2dTwoDInMap2dTo3d.cpp
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.cpp
   baseContainerHeaven/baseContainer.cpp
   baseContainerHeaven/pointContainer.cpp

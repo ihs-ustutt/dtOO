@@ -10,20 +10,12 @@ namespace dtOO {
 	}
 
 	vec2dOneDInMap2dTo3d::vec2dOneDInMap2dTo3d(vec2dOneD const * const v2d1d, map2dTo3d const * const m2d) : map1dTo3d() {
-//		dt__PTRASS(
-//		  vec2dCurve2dOneD const * v2dCurve1d, 
-//			vec2dCurve2dOneD::ConstDownCast(v2d1d)
-//		);
 		_v2d.reset( v2d1d->clone() );
 		_m2d.reset( m2d->clone() );
 		_percentF = false;
 	}
 	
 	vec2dOneDInMap2dTo3d::vec2dOneDInMap2dTo3d(vec2dOneD const * const v2d1d, map2dTo3d const * const m2d, bool const & percentF) : map1dTo3d() {
-//		dt__PTRASS(
-//		  vec2dCurve2dOneD const * v2dCurve1d, 
-//			vec2dCurve2dOneD::ConstDownCast(v2d1d)
-//		);
 		_v2d.reset( v2d1d->clone() );
 		_m2d.reset( m2d->clone() );
 		_percentF = percentF;
