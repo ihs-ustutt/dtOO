@@ -72,18 +72,18 @@ namespace dtOO {
     float intervalFirst = (getUMax() - getUMin()) / (renderResU-1.);
     float intervalSecond = (getVMax() - getVMin()) / (renderResV-1.);  
 
-    twoDArrayHandling< dtPoint3 > surfacePoints(renderResU+1, renderResV+1);
-    for (int jj=0; jj<=renderResU; jj++) {
-      for(int ii=0; ii<=renderResV; ii++) {
+    twoDArrayHandling< dtPoint3 > surfacePoints(renderResU, renderResV);
+    for (int jj=0; jj<renderResU; jj++) {
+      for(int ii=0; ii<renderResV; ii++) {
 				float uu;
 				float vv;				
-        if (jj == (renderResU) ) {
+        if (jj == (renderResU-1) ) {
           uu = getUMax();
         }
         else {
           uu = (float) (getUMin() + jj * intervalFirst);
         }
-        if (ii == (renderResV) ) {      
+        if (ii == (renderResV-1) ) {      
           vv = getVMax();
         }
         else {

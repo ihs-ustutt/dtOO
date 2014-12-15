@@ -203,6 +203,13 @@ namespace dtOO {
         << "condition: "#cond" is true." << LOGDEL \
         message); \
       }
+  #define dt__WARN_IFWMAS(cond, solution, functionname, message) \
+      if (cond) { \
+        solution; \
+        DTWARNINGWF(functionname, \
+        << "condition: "#cond" is true." << LOGDEL \
+        message); \
+      }
   #define dt__WARN_IF(cond, functionname) \
       if (cond) { \
         DTWARNINGWF(functionname, << "condition: "#cond" is true."); \

@@ -16,6 +16,7 @@
 #include <Extrema_ExtPC.hxx>
 #include <Extrema_POnCurv.hxx>
 #include <GeomConvert_CompCurveToBSplineCurve.hxx>
+#include <Precision.hxx>
 
 namespace dtOO {					
 	dtOCCCurve::dtOCCCurve() {
@@ -106,30 +107,54 @@ namespace dtOO {
 		);		
 	}
 		
+	/**
+   * @todo Make tolerance adjustable or better automatically adjustable.
+   */
   float dtOCCCurve::l_u( float const uu ) const {
     GeomAdaptor_Curve gac;
 		gac.Load( _curve->getOCC() );
 		
 		Standard_Real uuR = static_cast<Standard_Real>(uu);
-		Standard_Real ll 
-	  = 
-		GCPnts_AbscissaPoint::Length( 
-		  gac, 
-			_ptr->FirstParameter(),
-			uuR
+		Standard_Real ll;
+		dt__TRYOCC(
+		  ll 
+			= 
+			GCPnts_AbscissaPoint::Length( 
+				gac, 
+				_ptr->FirstParameter(),
+				uuR,
+				Precision::Confusion()
+			);
+			,
+			<< DTLOGEVAL(uu)
 		);
+				
 		
 		return static_cast<float>(ll);
 	}
-	
+
+	/**
+   * @todo Make tolerance adjustable or better automatically adjustable.
+   */	
   float dtOCCCurve::u_l( float const length ) const {
     GeomAdaptor_Curve gac;
 		gac.Load( _curve->getOCC() );
 		
 		Standard_Real llR = static_cast<Standard_Real>(length);
-		GCPnts_AbscissaPoint ap(gac, llR, _ptr->FirstParameter());
-		
-		Standard_Real uu = ap.Parameter();
+		Standard_Real uu;
+	  Standard_Real uI = getUMin() + .5 * (getUMax()-getUMin());
+		dt__TRYOCC(
+		  GCPnts_AbscissaPoint ap(
+				gac, 
+				llR, 
+				_ptr->FirstParameter(), uI, 
+				Precision::Confusion()
+			);
+		  uu = ap.Parameter();
+			,
+			<< DTLOGEVAL(length) << LOGDEL
+			<< DTLOGEVAL(uu)
+		);
 		
 		return static_cast<float>(uu);						
 	}
