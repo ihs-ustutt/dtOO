@@ -1,8 +1,7 @@
 #include "vec2dOneDInMap2dTo3d.h"
 #include <logMe/logMe.h>
 #include "map2dTo3d.h"
-#include <functionHeaven/vec2dCurve2dOneD.h>
-#include <geometryEngine/dtCurve2d.h>
+#include <functionHeaven/vec2dOneD.h>
 
 namespace dtOO { 
 	vec2dOneDInMap2dTo3d::vec2dOneDInMap2dTo3d() : map1dTo3d() {

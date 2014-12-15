@@ -56,17 +56,6 @@ namespace dtOO {
       );      
     }
   }
-  
-  std::vector< dtVector3 > map1dTo3d::firstDerUOrder( int const & nU ) const {
-    std::vector< dtVector3 > pp(nU);
-    float intU = 1. / (static_cast<float>(nU)-1.);
-    for (int jj=0; jj<nU; jj++) {
-      float jjF = static_cast< float >(jj);
-      pp[jj] = firstDerU( u_percent(jjF * intU) );
-    }
-    
-    return pp;
-  }  
 
   vectorHandling< renderInterface * > map1dTo3d::getRender( void ) const {
 		vectorHandling< dtPoint3 > pp(getRenderResolutionU());

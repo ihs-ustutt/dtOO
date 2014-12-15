@@ -15,6 +15,7 @@ SET(HEADERS
   analyticGeometryHeaven/rotatingMap2dTo3d.h
   analyticGeometryHeaven/rotatingMap2dTo3dPhiMS.h
   analyticGeometryHeaven/infinityMap3dTo3d.h
+  analyticGeometryHeaven/scaOneDInMap1dTo3d.h
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
   analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h
@@ -91,6 +92,7 @@ SET(SOURCES
   analyticGeometryHeaven/rotatingMap2dTo3d.cpp
   analyticGeometryHeaven/rotatingMap2dTo3dPhiMS.cpp
   analyticGeometryHeaven/infinityMap3dTo3d.cpp
+  analyticGeometryHeaven/scaOneDInMap1dTo3d.cpp
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.cpp
   analyticGeometryHeaven/vec3dOneDInMap3dTo3d.cpp
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.cpp

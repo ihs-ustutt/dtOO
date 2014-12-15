@@ -6,6 +6,7 @@
 #include "generalBuilder/baseContainerDecorator.h"
 #include "generalBuilder/analyticGeometryDecorator.h"
 #include "generalBuilder/trans6SidedCubeDecorator.h"
+#include "generalBuilder/scaInMap1dTo3dDecorator.h"
 #include "generalBuilder/vec2dInMap2dTo3dDecorator.h"
 #include "generalBuilder/vec3dInMap3dTo3dDecorator.h"
 #include "generalBuilder/rotatingMap2dTo3dDecorator.h"
@@ -77,6 +78,8 @@ namespace dtOO {
 		__IFRETCUSTOM(bSplineCurve_pointPickFromPartConstructOCC, bSplineCurve_pointPickFromPartConstructOCCDecorator);
 		__IFRET(bSplineCurve_pointConstructArcLengthParaOCCDecorator);
 		__IFRETCUSTOM(bSplineCurve_pointConstructArcLengthParaOCC, bSplineCurve_pointConstructArcLengthParaOCCDecorator);
+		__IFRET(scaInMap1dTo3dDecorator);
+		__IFRETCUSTOM(scaInMap1dTo3d, scaInMap1dTo3dDecorator);
     __IFRET( vec2dInMap2dTo3dDecorator );
 		__IFRETCUSTOM( vec2dInMap2dTo3d, vec2dInMap2dTo3dDecorator );
 		__IFRET(vec3dInMap3dTo3dDecorator);

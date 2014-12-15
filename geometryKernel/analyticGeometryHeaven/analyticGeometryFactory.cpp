@@ -8,6 +8,7 @@
 #include "trans6SidedCube.h"
 #include "rotatingMap2dTo3d.h"
 #include "rotatingMap2dTo3dPhiMS.h"
+#include "scaOneDInMap1dTo3d.h"
 #include "vec3dTwoDInMap3dTo3d.h"
 #include "vec3dOneDInMap3dTo3d.h"
 #include "vec2dOneDInMap2dTo3d.h"
@@ -39,6 +40,7 @@ namespace dtOO {
     __IFRET(trans6SidedCube);
 		__IFRET(rotatingMap2dTo3d);
 		__IFRET(rotatingMap2dTo3dPhiMS);
+		__IFRET(scaOneDInMap1dTo3d);
 		__IFRET(vec3dTwoDInMap3dTo3d);
 		__IFRET(vec3dOneDInMap3dTo3d);
 		__IFRET(vec2dOneDInMap2dTo3d);

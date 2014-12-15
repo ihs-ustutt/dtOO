@@ -8,7 +8,6 @@
 
 namespace dtOO {
   class vec2dOneD;
-  class vec2dCurve2dOneD;
   class map2dTo3d;
   
   class vec2dOneDInMap2dTo3d : public map1dTo3d {
@@ -19,12 +18,18 @@ namespace dtOO {
       vec2dOneDInMap2dTo3d(vec2dOneD const * const v2d1d, map2dTo3d const * const m2d);
       vec2dOneDInMap2dTo3d(vec2dOneD const * const v2d1d, map2dTo3d const * const m2d, bool const & percentF);
       virtual ~vec2dOneDInMap2dTo3d();
+      //
+      // overload 
+      //
       virtual vec2dOneDInMap2dTo3d * clone( void ) const;
       virtual vec2dOneDInMap2dTo3d * create( void ) const;    
       virtual dtPoint3 getPoint( float const & uu ) const;
       virtual bool isClosed( int const & dir) const;
       virtual float getMin( int const & dir) const;
       virtual float getMax( int const & dir) const;
+      //
+      //
+      //
       vec2dOneD const * ptrToVec2dOneD( void ) const;
       map2dTo3d const * ptrToMap2dTo3d( void ) const;      
   private:
