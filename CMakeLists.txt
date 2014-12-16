@@ -122,6 +122,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${ROOT_LINK_D
 #
 #------------------------------------------------------------------------------#
 install(TARGETS dtOO DESTINATION lib)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/html DESTINATION doc)
 install(DIRECTORY pluginKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY meshKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY generalKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
