@@ -22,7 +22,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl") #for dladdr in Backtrace
 # options
 #
 #------------------------------------------------------------------------------#
-OPTION(DTOO_USE_GOOGLEPERFTOOLS "Use GooglePerformance Tools" OFF)
+option(DTOO_USE_GOOGLEPERFTOOLS "Use GooglePerformance Tools" OFF)
+option(DTOO_BUILDANDINSTALL_DOC "Use Doxygen to create the HTML based API documentation" OFF)
 
 #------------------------------------------------------------------------------#
 #
@@ -60,7 +61,9 @@ MAKE_DTOO_VERSION()
 # make documentation
 #
 #------------------------------------------------------------------------------#
-CREATE_DTOO_DOC()
+if (DTOO_BUILDANDINSTALL_DOC)
+  CREATE_DTOO_DOC()
+endif(DTOO_BUILDANDINSTALL_DOC)
 
 #------------------------------------------------------------------------------#
 #
@@ -122,7 +125,9 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${ROOT_LINK_D
 #
 #------------------------------------------------------------------------------#
 install(TARGETS dtOO DESTINATION lib)
-install(DIRECTORY ${CMAKE_BINARY_DIR}/html DESTINATION doc)
+if (DTOO_BUILDANDINSTALL_DOC)
+  install(DIRECTORY ${CMAKE_BINARY_DIR}/html DESTINATION doc)
+endif (DTOO_BUILDANDINSTALL_DOC)
 install(DIRECTORY pluginKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY meshKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY generalKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
