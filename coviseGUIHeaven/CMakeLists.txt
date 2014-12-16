@@ -125,7 +125,10 @@ target_link_libraries(
   dtOOAbstractModule coApi coAppl coCore coUtil coDo coShm ${EXTRA_LIBS}
 )
 
-install(TARGETS dtOODesignTool DESTINATION ${DTOO_COVISE_ARCHSUFFIX}/bin/${DTOO_COVISE_MODULE_FOLDER})
+install(
+  TARGETS dtOODesignTool dtOOSimCaller 
+  DESTINATION ${DTOO_COVISE_ARCHSUFFIX}/bin/${DTOO_COVISE_MODULE_FOLDER}
+)
 #install(DIRECTORY pluginKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
 #install(DIRECTORY meshKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
 #install(DIRECTORY generalKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
