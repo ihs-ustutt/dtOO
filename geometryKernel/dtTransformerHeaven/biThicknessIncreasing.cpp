@@ -126,7 +126,27 @@ namespace dtOO {
 			  p2All[counter] = p2Inv[ii];
 			  counter++;
 			);			
-			p2All.push_back( p2All.front() );
+			if ( dtLinearAlgebra::distance(p2All.front(), p2Inv.back()) < uvRes ) {
+				DTINFOWF(
+					apply(),
+					<< DTLOGPOI2D(p2All.back()) << LOGDEL
+					<< DTLOGPOI2D(p2Inv.back()) << LOGDEL
+					<< DTLOGEVAL(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << LOGDEL
+					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< "Closing spline."
+				);				
+			  p2All.push_back( p2All.front() );
+			}
+			else {
+				DTINFOWF(
+					apply(),
+					<< DTLOGPOI2D(p2All.back()) << LOGDEL
+					<< DTLOGPOI2D(p2Inv.back()) << LOGDEL
+					<< DTLOGEVAL(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << LOGDEL
+					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< "Open spline."
+				);								
+			}
 			
       ptrHandling<dtCurve2d> dtC2d( 
 			  bSplineCurve2d_pointConstructOCC(p2All, _splineOrder).result()
