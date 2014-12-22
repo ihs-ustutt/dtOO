@@ -9,7 +9,6 @@ class QDomElement;
 
 namespace dtOO {
   class analyticGeometry;
-  class dtXmlParserDecoratorInterface;
   class analyticFunction;
   class constValue;
   class baseContainer;

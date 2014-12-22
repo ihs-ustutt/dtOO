@@ -7,7 +7,6 @@
 class QDomElement;
 class analyticGeometry;
 class geometry;
-class dtXmlParserDecoratorInterface;
 class analyticFunction;
 class constValue;
 class baseContainer;
