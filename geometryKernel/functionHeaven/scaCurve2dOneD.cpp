@@ -53,10 +53,6 @@ namespace dtOO {
   scaCurve2dOneD::~scaCurve2dOneD() {
   }
 
-  void scaCurve2dOneD::dump(void) {
-    _dtC2d->dump();
-  }
-
 	double scaCurve2dOneD::funValue(const double xx ) const {	
 		dtPoint2 pp = _dtC2d->point( static_cast<float>(xx) );
 		return static_cast< double >( _tmpX - pp.x() );

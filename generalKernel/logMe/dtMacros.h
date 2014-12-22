@@ -9,7 +9,7 @@
   static std::string className( void ) { \
     return std::string(#name); \
   } \
-  virtual std::string virtualClassName( void ) { \
+  virtual std::string virtualClassName( void ) const { \
     return std::string(#name); \
   } \
   template< class dt__CLASSNAME_T > \
@@ -21,7 +21,7 @@
   static std::string className( void ) { \
     return std::string(#name); \
   } \
-  virtual std::string virtualClassName( void ) { \
+  virtual std::string virtualClassName( void ) const { \
     return std::string(#name); \
   } \
   template< class dt__CLASSNAME_T > \

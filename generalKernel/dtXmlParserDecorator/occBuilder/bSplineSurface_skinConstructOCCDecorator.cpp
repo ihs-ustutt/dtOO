@@ -4,7 +4,7 @@
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtCurve.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/splineSurface3d.h>
+#include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
@@ -67,13 +67,17 @@ namespace dtOO {
 				}
 				else {
 					ccV.push_back(
-					  bSplineCurve_curveConnectConstructOCC(dtCVec).result()
+					  dt__pH(dtCurve)(
+					    bSplineCurve_curveConnectConstructOCC(dtCVec).result()
+					  ).get()
 					);
 				}
 		  }
 			aGeoP->push_back( 
-			  new splineSurface3d(
-			    bSplineSurface_skinConstructOCC(ccV).result()
+			  new analyticSurface(
+			    dt__pH(dtSurface)(
+			      bSplineSurface_skinConstructOCC(ccV).result()
+			    ).get()
 			  )
 			);
 			//

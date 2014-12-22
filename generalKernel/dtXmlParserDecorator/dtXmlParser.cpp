@@ -621,7 +621,7 @@ namespace dtOO {
 		
 		dt__FORALL( label, ii, createAnalyticGeometry(label[ii], bC, cVP, sFP, aGP); );
 		
-		aGP->dump();
+		dt__FORALL( *aGP, ii, aGP->at(ii)->dump(); );
   }
 	
   void dtXmlParser::createBoundedVolume(

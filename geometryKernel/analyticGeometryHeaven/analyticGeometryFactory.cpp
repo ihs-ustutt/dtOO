@@ -4,7 +4,6 @@
 #include "splineCurve3d.h"
 #include "rotatingSpline.h"
 #include "analyticSurface.h"
-#include "splineSurface3d.h"
 #include "trans6SidedCube.h"
 #include "rotatingMap2dTo3d.h"
 #include "rotatingMap2dTo3dPhiMS.h"
@@ -36,7 +35,6 @@ namespace dtOO {
     __IFRET(splineCurve3d);
     __IFRET(analyticSurface);
     __IFRET(rotatingSpline);
-    __IFRET(splineSurface3d);
     __IFRET(trans6SidedCube);
 		__IFRET(rotatingMap2dTo3d);
 		__IFRET(rotatingMap2dTo3dPhiMS);

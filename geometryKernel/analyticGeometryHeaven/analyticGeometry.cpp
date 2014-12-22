@@ -65,9 +65,18 @@ namespace dtOO {
 	}
 
   void analyticGeometry::dump( void ) const {
-    DTLOGCHAP(dumping);
-    DTINFOWF(dump(), << DTLOGEVAL( getLabel() ) );
+    DTINFOWF(
+			dump(), 
+			<< DTLOGEVAL(getLabel()) << LOGDEL
+		  << DTLOGEVAL(virtualClassName()) << LOGDEL
+			<< "dumpToString()" << LOGDEL
+			<< dumpToString()
+		);
   }
+	
+	std::string analyticGeometry::dumpToString(void) const {
+		return std::string("");
+	}
 	
 	bool analyticGeometry::isCompound( void ) const {
 		return false;

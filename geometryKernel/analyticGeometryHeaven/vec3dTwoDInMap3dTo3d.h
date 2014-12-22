@@ -30,6 +30,8 @@ namespace dtOO {
     vec3dTwoD const * refToVec3dTwoD( void ) const;
     map3dTo3d const * refToMap3dTo3d( void ) const;
     vectorHandling< renderInterface * > getExtRender( void ) const;
+    virtual std::string dumpToString( void ) const;
+
   private:
     ptrHandling< vec3dTwoD > _v2d;
     ptrHandling< map3dTo3d > _m3d;

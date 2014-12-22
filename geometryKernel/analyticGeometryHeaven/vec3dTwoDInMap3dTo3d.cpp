@@ -128,4 +128,16 @@ namespace dtOO {
 		
 		return retVec;
   }	
+	
+	std::string vec3dTwoDInMap3dTo3d::dumpToString( void ) const {
+		std::stringstream ss;
+		
+		ss 
+		<< DTLOGEVAL(_m3d->virtualClassName()) << LOGDEL
+	  << _m3d->dumpToString() << LOGDEL
+    << DTLOGEVAL(_v2d->virtualClassName()) << LOGDEL
+		<< _v2d->dumpToString();
+		
+		return ss.str();
+	}
 }

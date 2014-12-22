@@ -4,7 +4,6 @@ SET(HEADERS
   analyticGeometryHeaven/splineCurve3d.h
   analyticGeometryHeaven/rotatingSpline.h
   analyticGeometryHeaven/analyticSurface.h
-  analyticGeometryHeaven/splineSurface3d.h
   analyticGeometryHeaven/oneDimTrimmable.h
   analyticGeometryHeaven/oneDimRevertable.h
   analyticGeometryHeaven/twoDimRevertable.h
@@ -81,7 +80,6 @@ SET(SOURCES
   analyticGeometryHeaven/splineCurve3d.cpp
   analyticGeometryHeaven/rotatingSpline.cpp
   analyticGeometryHeaven/analyticSurface.cpp
-  analyticGeometryHeaven/splineSurface3d.cpp
   analyticGeometryHeaven/oneDimTrimmable.cpp
   analyticGeometryHeaven/oneDimRevertable.cpp
   analyticGeometryHeaven/twoDimRevertable.cpp

@@ -26,6 +26,7 @@ namespace dtOO {
     virtual ~analyticGeometry();
     analyticGeometry( analyticGeometry const & orig );
     void dump(void) const;
+    virtual std::string dumpToString(void) const;
     void setRenderResolution(int const & dir, int const & value) const;
     int getRenderResolution(int const & dir) const;
     virtual analyticGeometry * clone( void ) const = 0;

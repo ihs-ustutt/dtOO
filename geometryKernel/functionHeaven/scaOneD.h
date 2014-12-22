@@ -15,7 +15,6 @@ namespace dtOO {
     virtual ~scaOneD();
     virtual scaOneD * clone( void ) const = 0;
     virtual scaOneD * create( void ) const = 0;       
-    virtual void dump(void) = 0;
     virtual float YFloat(aFX const & xx) const;
     virtual float YFloat(float const & xx) const = 0;
     float YFloatPercent( float const & xP ) const;

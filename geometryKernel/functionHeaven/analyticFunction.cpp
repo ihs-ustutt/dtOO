@@ -13,9 +13,18 @@ namespace dtOO {
 	}
 	
   void analyticFunction::dump(void) const {
-    DTLOGCHAP(dumping);
-    DTINFOWF(dump(), << "label = " << getLabel());		
+    DTINFOWF(
+			dump(), 
+			<< DTLOGEVAL(getLabel()) << LOGDEL
+		  << DTLOGEVAL(virtualClassName()) << LOGDEL
+			<< "dumpToString()" << LOGDEL
+			<< dumpToString()
+		);		
 	}
+	
+	std::string analyticFunction::dumpToString(void) const {
+		return std::string("");
+	}	
 
 	bool analyticFunction::isCompound( void ) const {
 		return false;

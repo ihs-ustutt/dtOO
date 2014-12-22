@@ -254,5 +254,16 @@ namespace dtOO {
 							<< "Origin of rotSpline is not correct!" << LOGDEL
 							<< "Move origin to " << DTLOGPOI3D(_pp) );        
 		}
-	}	
+	}
+
+  std::string rotatingMap2dTo3d::dumpToString( void ) const {
+		std::stringstream ss;
+		
+		ss 
+		<< DTLOGEVAL(_m2d->virtualClassName()) << LOGDEL
+    << DTLOGPOI3D(_pp) << LOGDEL
+		<< DTLOGVEC3D(_vv);
+		
+		return ss.str();		
+	}
 }

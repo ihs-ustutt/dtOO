@@ -76,10 +76,6 @@ namespace dtOO {
   scaMuParserOneD * scaMuParserOneD::create( void ) const {
     return new scaMuParserOneD();
   }
-  
-  void scaMuParserOneD::dump(void) {
-
-  }
 
   float scaMuParserOneD::YFloat(float const & xx) const {
     float myFloat;

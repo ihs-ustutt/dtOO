@@ -5,7 +5,7 @@
 #include <geometryEngine/dtSurface.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
-#include <analyticGeometryHeaven/splineSurface3d.h>
+#include <analyticGeometryHeaven/analyticSurface.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.h>
 #include <functionHeaven/analyticFunction.h>
@@ -53,7 +53,7 @@ namespace dtOO {
 			ptrHandling<dtSurface> dtS(
 			  bSplineSurface_bSplineCurveFillConstructOCC(dtC).result()
 			);
-			aGeoP->push_back( new splineSurface3d(dtS.get()) );
+			aGeoP->push_back( new analyticSurface(dtS.get()) );
     }
     else {
       dt__THROW(buildPart(),

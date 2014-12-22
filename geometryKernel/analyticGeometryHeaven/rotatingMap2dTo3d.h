@@ -33,6 +33,7 @@ namespace dtOO {
 //    float m_v(float const & arg) const;    
     float w_s(float const & arg) const;
 //    float s_w(float const & arg) const;  
+    virtual std::string dumpToString( void ) const;
   private:
 	  void correctOrigin( void );
   private:

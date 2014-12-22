@@ -21,7 +21,6 @@ namespace dtOO {
     scaMuParserOneD * clone( void ) const;
     scaMuParserOneD * create( void ) const;    
     virtual ~scaMuParserOneD();
-    virtual void dump(void);
     virtual float YFloat(float const & xx) const;
     void setArgumentRange(float xMin, float xMax);  
     vectorHandling< renderInterface * > getRender( void ) const;   

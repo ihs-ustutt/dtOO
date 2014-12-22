@@ -19,7 +19,6 @@ namespace dtOO {
     scaCurve2dOneD * clone( void ) const;
     scaCurve2dOneD * create( void ) const;    
     virtual ~scaCurve2dOneD();
-    virtual void dump(void);
     virtual float YFloat(float const & xx) const;
     dtCurve2d const * ptrDtCurve2d( void ) const;
     void translate( dtVector2 const vector );
