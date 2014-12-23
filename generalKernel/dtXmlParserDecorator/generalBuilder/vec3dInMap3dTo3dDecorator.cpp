@@ -25,6 +25,10 @@ namespace dtOO {
   vec3dInMap3dTo3dDecorator::~vec3dInMap3dTo3dDecorator() {
   }
 
+	/**
+	 * 
+   * @todo Add percent option also to map2dTo3d and map1dTo3d geometries.
+   */
   void vec3dInMap3dTo3dDecorator::buildPart( 
     QDomElement ** toBuildP,
     baseContainer * const bC,            
@@ -36,6 +40,10 @@ namespace dtOO {
 		
     bool hasAG = hasChild("analyticGeometry", **toBuildP);
 		bool hasAF = hasChild("analyticFunction", **toBuildP);
+    bool optionPercent = false;
+		if ( hasAttribute("percent", **toBuildP) ) {
+		  optionPercent = getAttributeBool("percent", **toBuildP);
+		}
     
     if ( hasAG && hasAF ) {
       //
@@ -46,7 +54,6 @@ namespace dtOO {
         createAnalyticGeometry(&aGElement, bC, cValP, sFunP, depAGeoP)
 			);
         
-//      );
       //
       // check if it is a map3dTo3d
       //
@@ -71,7 +78,7 @@ namespace dtOO {
 			  aGeoP->push_back( new vec3dTwoDInMap3dTo3d(v2d, m3d) );
 			}
 			else if (v3d) {
-			  aGeoP->push_back( new vec3dThreeDInMap3dTo3d(v3d, m3d) );
+			  aGeoP->push_back( new vec3dThreeDInMap3dTo3d(v3d, m3d, optionPercent) );
 			}
 			else {
 				dt__THROW(

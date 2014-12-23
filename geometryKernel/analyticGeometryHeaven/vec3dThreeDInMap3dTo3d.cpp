@@ -13,16 +13,29 @@ namespace dtOO {
   vec3dThreeDInMap3dTo3d::vec3dThreeDInMap3dTo3d(const vec3dThreeDInMap3dTo3d& orig) : map3dTo3d(orig) { 
     _v3d.reset( orig._v3d->clone() );
     _m3d.reset( orig._m3d->clone() );
-		
+		_percentF = orig._percentF;
 		labelHandling::setLabel( _v3d->getLabel()+"_in_"+_m3d->getLabel() );
   }
 
   vec3dThreeDInMap3dTo3d::vec3dThreeDInMap3dTo3d(vec3dThreeD const * const v3d, map3dTo3d const * const m3d) : map3dTo3d() {
     _v3d.reset( v3d->clone() );
     _m3d.reset( m3d->clone() );
+		_percentF = false;
 		
 		labelHandling::setLabel( _v3d->getLabel()+"_in_"+_m3d->getLabel() );
   }
+	
+  vec3dThreeDInMap3dTo3d::vec3dThreeDInMap3dTo3d(
+	  vec3dThreeD const * const v3d, 
+		map3dTo3d const * const m3d, 
+		bool percentF
+	) : map3dTo3d() {
+    _v3d.reset( v3d->clone() );
+    _m3d.reset( m3d->clone() );
+		_percentF = percentF;
+		
+		labelHandling::setLabel( _v3d->getLabel()+"_in_"+_m3d->getLabel() );
+  }	
 
   vec3dThreeDInMap3dTo3d::~vec3dThreeDInMap3dTo3d() {
   }
@@ -31,7 +44,12 @@ namespace dtOO {
 		aFX xx(3,0);
 		xx[0] = uu; xx[1] = vv; xx[2] = ww;
     dtPoint3 pUVW = _v3d->YdtPoint3(xx);
-    return _m3d->getPoint( pUVW.x(), pUVW.y(), pUVW.z() );
+		if (!_percentF) {
+      return _m3d->getPoint( pUVW.x(), pUVW.y(), pUVW.z() );
+		}
+		else {
+			return _m3d->getPointPercent( pUVW.x(), pUVW.y(), pUVW.z() );
+		}
   }
   
   bool vec3dThreeDInMap3dTo3d::isClosed( int const & dir) const {

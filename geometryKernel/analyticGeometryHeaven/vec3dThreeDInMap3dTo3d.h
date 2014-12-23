@@ -16,6 +16,11 @@ namespace dtOO {
     vec3dThreeDInMap3dTo3d();
     vec3dThreeDInMap3dTo3d(const vec3dThreeDInMap3dTo3d& orig);
     vec3dThreeDInMap3dTo3d(vec3dThreeD const * const v3d, map3dTo3d const * const m3d);
+    vec3dThreeDInMap3dTo3d(    
+	    vec3dThreeD const * const v3d, 
+		  map3dTo3d const * const m3d, 
+		  bool percentF
+    );
     virtual ~vec3dThreeDInMap3dTo3d();
     virtual map3dTo3d * clone( void ) const;
     virtual map3dTo3d * create( void ) const;
@@ -26,6 +31,7 @@ namespace dtOO {
   private:
     ptrHandling< vec3dThreeD > _v3d;
     ptrHandling< map3dTo3d > _m3d;
+    bool _percentF;
   };
   typedef analyticGeometryCompound<vec3dThreeDInMap3dTo3d> vec3dThreeDInMap3dTo3dCompound;
 }

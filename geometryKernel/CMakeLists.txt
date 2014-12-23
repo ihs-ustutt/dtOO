@@ -49,6 +49,7 @@ SET(HEADERS
   functionHeaven/vec3dCurve2dInSurfaceOneD.h
   functionHeaven/vec3dThreeD.h
   functionHeaven/vec3dTransVolThreeD.h
+  functionHeaven/vec3dMuParserThreeD.h
   functionHeaven/analyticFunctionCompound.h
   functionHeaven/analyticFunctionTransformed.h
   dtTransformerHeaven/thicknessIncreasing.h
@@ -124,6 +125,7 @@ SET(SOURCES
   functionHeaven/vec3dCurve2dInSurfaceOneD.cpp
   functionHeaven/vec3dThreeD.cpp
   functionHeaven/vec3dTransVolThreeD.cpp
+  functionHeaven/vec3dMuParserThreeD.cpp
   dtTransformerHeaven/thicknessIncreasing.cpp
   dtTransformerHeaven/biThicknessIncreasing.cpp
   dtTransformerHeaven/dtTransformer.cpp
