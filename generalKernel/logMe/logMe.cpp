@@ -9,7 +9,7 @@
 #include <string.h>
 
 namespace dtOO {
-	void logMe::initLog( std::string const & logFileName ) {
+	std::string logMe::initLog( std::string const & logFileName ) {
     char * dtOO_logMode = getenv("DTOO_LOGMODE");
     if ( dtOO_logMode != NULL) {
       if (strcmp(dtOO_logMode, "logDEBUG") == 0 ) {
@@ -57,6 +57,8 @@ namespace dtOO {
             << "**************************************************" << LOGDEL
             << " "
 		);		
+		
+		return nameStr;
 	}
 	
   void logMe::closeLog( void ) {

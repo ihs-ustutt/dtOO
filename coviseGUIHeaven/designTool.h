@@ -15,6 +15,7 @@ namespace covise {
   class coChoiceParam;
   class coFloatSliderParam;
   class coIntScalarParam;
+  class coStringParam;
 }
 
 namespace dtOO {
@@ -40,6 +41,7 @@ namespace dtOO {
       void loadCVStateLabels(void);
       void loadCVState(void);    
     private:
+      covise::coStringParam * _logName;
       covise::coChoiceParam * _moduleChoice;
       covise::coFileBrowserParam * _xmlBrowser;
 

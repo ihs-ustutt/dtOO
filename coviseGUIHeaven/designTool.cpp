@@ -20,7 +20,8 @@
 
 namespace dtOO {
   designTool::designTool(int argc, char *argv[]) : covise::coModule(argc, argv, "designTool") {
-    _moduleChoice = addChoiceParam("_moduleChoice", "_moduleChoiceDescription");		
+    _logName = addStringParam("_logName", "_logNameDescription");
+		_moduleChoice = addChoiceParam("_moduleChoice", "_moduleChoiceDescription");		
     _xmlBrowser = addFileBrowserParam("_xmlBrowser", "_xmlBrowserDescrition");
     _xmlBrowser->setValue(".", "*.xml/*");
     _xmlBrowser->disable();
@@ -136,6 +137,9 @@ namespace dtOO {
 	
   void designTool::param(const char* paramName, bool inMapLoading) {
 		try {
+			_logName->setValue("");
+			_logName->show();
+			_logName->disable();			
 			if (strcmp(paramName, "_moduleChoice") == 0) {
 				if ( _moduleChoice->getValue() == 0 ) {
 					dt__FORALL( _uifPara[0], ii, _uifPara[0][ii]->show(); );
@@ -488,8 +492,9 @@ namespace dtOO {
       // init log file
       //
       std::string logFileName = std::string( covise::coModule::getTitle() );
-      abstractModule::initializeLogFile( "./"+logFileName+".log" );
-	
+      logFileName = abstractModule::initializeLogFile( "./"+logFileName+".log" );
+	    _logName->setValue(logFileName.c_str());
+			
 			if ( _recreate ) {
 				_aGToRender.clear();
 				_aFToRender.clear();

@@ -8,8 +8,8 @@ namespace dtOO {
   abstractModule::~abstractModule() {
   }
 
-  void abstractModule::initializeLogFile( std::string const logFileName )  {
-		logMe::initLog(logFileName);
+  std::string abstractModule::initializeLogFile( std::string const logFileName )  {
+		return logMe::initLog(logFileName);
   }    
   
   void abstractModule::closeLogFile( void ) {

@@ -30,24 +30,32 @@ option(DTOO_BUILDANDINSTALL_DOC "Use Doxygen to create the HTML based API docume
 # required packages
 #
 #------------------------------------------------------------------------------#
-find_package(Qt4 COMPONENTS QtCore QtGui QtXml QtNetwork REQUIRED)
-find_package(Qt4 COMPONENTS Qt3Support QtWebkit QtScript QtScriptTools QtUiTools)
+find_package(Qt4 COMPONENTS QtCore QtXml REQUIRED)
 find_package(CGAL REQUIRED)
 find_package(GMSH REQUIRED)
-find_package(OpenCASCADE COMPONENTS TKernel TKSTEP TKIGES TKXSBase TKOffset 
-                                    TKFeat TKFillet TKBool TKShHealing TKMesh 
-                                    TKHLR TKBO TKPrim TKTopAlgo TKBRep 
-                                    TKGeomAlgo TKGeomBase TKG3d TKG2d 
-                                    TKAdvTools TKMath TKernel TKSTEPAttr 
-                                    TKSTEP209 TKSTEPBase)
+find_package(
+  OpenCASCADE 
+  COMPONENTS 
+  TKernel TKSTEP TKIGES TKXSBase TKOffset 
+  TKFeat TKFillet TKBool TKShHealing TKMesh 
+  TKHLR TKBO TKPrim TKTopAlgo TKBRep 
+  TKGeomAlgo TKGeomBase TKG3d TKG2d 
+  TKAdvTools TKMath TKernel TKSTEPAttr 
+  TKSTEP209 TKSTEPBase
+)
 find_package(MUPARSER REQUIRED)
 find_package(ROOT)
 find_package(GSL)
-find_package(Boost COMPONENTS thread date_time program_options filesystem system REQUIRED)
-IF(DTOO_USE_GOOGLEPERFTOOLS)
-  ADD_DEFINITIONS(-DDTOO_USE_GOOGLEPROFTOOLS)
-  FIND_PACKAGE(GOOGLEPERFTOOLS REQUIRED)
-ENDIF(DTOO_USE_GOOGLEPERFTOOLS)
+find_package(
+  Boost 
+  COMPONENTS 
+  thread date_time program_options filesystem system 
+  REQUIRED
+)
+if(DTOO_USE_GOOGLEPERFTOOLS)
+  add_definitions(-DDTOO_USE_GOOGLEPROFTOOLS)
+  find_package(GOOGLEPERFTOOLS REQUIRED)
+endif(DTOO_USE_GOOGLEPERFTOOLS)
 
 #------------------------------------------------------------------------------#
 #
@@ -70,12 +78,12 @@ endif(DTOO_BUILDANDINSTALL_DOC)
 # add directories
 #
 #------------------------------------------------------------------------------#
-ADD_SUBDIRECTORY(geometryKernel)
-ADD_SUBDIRECTORY(generalKernel)
-ADD_SUBDIRECTORY(libraryKernel)
-ADD_SUBDIRECTORY(meshKernel)
-ADD_SUBDIRECTORY(renderKernel)
-ADD_SUBDIRECTORY(pluginKernel)
+add_subdirectory(geometryKernel)
+add_subdirectory(generalKernel)
+add_subdirectory(libraryKernel)
+add_subdirectory(meshKernel)
+add_subdirectory(renderKernel)
+add_subdirectory(pluginKernel)
 
 #------------------------------------------------------------------------------#
 #
@@ -83,13 +91,18 @@ ADD_SUBDIRECTORY(pluginKernel)
 #
 #------------------------------------------------------------------------------#
 include_directories(
-  geometryKernel generalKernel libraryKernel meshKernel renderKernel pluginKernel
+  geometryKernel 
+  generalKernel 
+  libraryKernel 
+  meshKernel 
+  renderKernel 
+  pluginKernel
   ${Boost_INCLUDE_DIR} 
   ${CGAL_INCLUDE_DIR} 
   ${GMSH_INCLUDE_DIR} 
   ${MUPARSER_INCLUDE_DIR} 
-  ${QT_QTXML_INCLUDE_DIR} 
   ${QT_QTCORE_INCLUDE_DIR}
+  ${QT_QTXML_INCLUDE_DIR} 
   ${ROOT_INCLUDE_DIR} 
   ${GSL_INCLUDE_DIR} 
   ${OpenCASCADE_INCLUDE_DIR}
@@ -107,8 +120,8 @@ target_link_libraries(dtOO
   ${GMSH_LIBRARIES} 
   ${MUPARSER_LIBRARIES} 
   ${OpenCASCADE_LIBRARIES} 
-  ${QT_QTXML_LIBRARY} 
   ${QT_QTCORE_LIBRARY}
+  ${QT_QTXML_LIBRARY} 
   ${ROOT_LIBRARIES} 
   ${GSL_LIBRARIES}
 )

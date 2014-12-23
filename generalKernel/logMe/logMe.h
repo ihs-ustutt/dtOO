@@ -25,7 +25,7 @@ namespace dtOO {
   class logMe {
     public:
       dt__CLASSNAME(logMe);
-      static void initLog( std::string const & logFileName );
+      static std::string initLog( std::string const & logFileName );
       static void closeLog( void );
       static std::string Backtrace(void);  
       template< class T >

@@ -16,7 +16,7 @@ namespace dtOO {
   public:
     dt__CLASSNAME(abstractModule);
     virtual ~abstractModule();
-    static void initializeLogFile( std::string const logFileName ) ; 
+    static std::string initializeLogFile( std::string const logFileName ) ; 
     static void closeLogFile( void );
     static void updateChoiceParam(
          covise::coChoiceParam * choiceParamP, 
