@@ -73,6 +73,7 @@ SET(HEADERS
   dtTransformerHeaven/averagePoints.h
   dtTransformerHeaven/projectOnSurface.h
   dtTransformerHeaven/reparamInSurface.h
+  dtTransformerHeaven/pickVec3dTwoDRangePercent.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -145,6 +146,7 @@ SET(SOURCES
   dtTransformerHeaven/averagePoints.cpp
   dtTransformerHeaven/projectOnSurface.cpp
   dtTransformerHeaven/reparamInSurface.cpp
+  dtTransformerHeaven/pickVec3dTwoDRangePercent.cpp
 )
 
 APPEND_DTOO_SOURCE(geometryKernel "${SOURCES}")

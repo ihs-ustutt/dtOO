@@ -22,6 +22,7 @@
 #include "averagePoints.h"
 #include "projectOnSurface.h"
 #include "reparamInSurface.h"
+#include "pickVec3dTwoDRangePercent.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -62,6 +63,7 @@ namespace dtOO {
 		__IFRET( averagePoints );
 		__IFRET( projectOnSurface );
 		__IFRET( reparamInSurface );
+		__IFRET( pickVec3dTwoDRangePercent );
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

@@ -21,9 +21,12 @@ namespace dtOO {
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP
     );
-    virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const sFunP ) const;  
+    virtual vectorHandling< analyticFunction * > 
+    apply( vectorHandling< analyticFunction * > const * const sFunP ) const;  
     virtual void handleInt(std::string const name, int const value);
-    virtual void handleAnalyticFunction(std::string const name, analyticFunction const * value);
+    virtual void handleAnalyticFunction(
+      std::string const name, analyticFunction const * value
+    );
     virtual void handleBool(std::string const name, bool const value);
   private:
     scaOneD const * _tD[2];
