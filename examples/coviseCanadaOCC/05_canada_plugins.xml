@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<canadaPlugins>
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- conformalMappingScale transformer -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	
+<plugin name="writeStep" label="myStepWriter" filename="mySTEP.stp">
+	<analyticGeometry label="rS_hub"/>
+	<analyticGeometry label="rS_shroud"/>
+	<analyticGeometry label="aS_blade_resplined"/>	
+	<!--<analyticGeometry label="aS_bladeCut_0_resplinedProjected"/>-->
+</plugin>
+
+</canadaPlugins>

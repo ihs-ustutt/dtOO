@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<machine>
+  <staticProperties label="">
+		<option name="reparamOnFace_precision" value="1.e-8"/>
+		<option name="reparamInVolume_precision" value="1.e-8"/>
+		<option name="reparamOnFace_precisionXYZ" value="1.e-0"/>
+		<option name="reparamInVolume_precisionXYZ" value="1.e-0"/>
+		<option name="xyz_resolution" value="1.e+0"/>
+		<option name="uv_resolution" value="1.e-1"/>
+		<option name="point_render_diameter" value="5."/>
+		<option name="vector_render_size" value="20."/>
+		<option name="snapTol" value="1.e-1"/>
+		<option name="function_render_resolution_u" value="10"/>
+		<option name="function_render_resolution_v" value="10"/>
+		<option name="function_render_resolution_w" value="10"/>
+		<option name="geometry_render_resolution_u" value="10"/>
+		<option name="geometry_render_resolution_v" value="10"/>
+		<option name="geometry_render_resolution_w" value="10"/>
+	</staticProperties>	
+	
+	<include label="pointDistributions" filename="./pointDistributions.xml"/>
+	<include label="meridian" filename="./01_canada_meridian.xml"/>
+	<include label="guidevane2d" filename="./02_canada_guidevane2d.xml"/>
+	<include label="channel2d" filename="./06_canada_channel2d.xml"/>
+	<include label="guidevane" filename="./03_canada_guidevane.xml"/>
+	<include label="channel" filename="./07_canada_channel.xml"/>	
+	<!--<include label="compositions" filename="./04_canada_compositions.xml"/> -->
+	<!-- <include label="plugins" filename="./05_canada_plugins.xml"/> -->
+</machine>

@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<canadaGuidevane2d>
+<!--############################################################################
+################################################################################
+#CONST VALUES
+################################################################################
+#############################################################################-->
+ <!-- meridian planes -->
+  <constValue label="cV_mplane50_percent">
+    <builder  name="sliderFloatParam">
+      <float value="0.05" min="0." max="1."/>
+    </builder>
+  </constValue> 
+	
+  <constValue label="cV_mplane125_percent">
+    <builder  name="sliderFloatParam">
+      <float value="0.125" min="0." max="1."/>
+    </builder>
+	</constValue>
+	
+  <constValue label="cV_mplane250_percent">
+    <builder  name="sliderFloatParam">
+      <float value="0.25" min="0." max="1."/>
+    </builder>
+  </constValue>
+	
+  <constValue label="cV_mplane500_percent">
+    <builder  name="sliderFloatParam">
+      <float value="0.5" min="0." max="1."/>
+    </builder>
+  </constValue> 
+
+  <constValue label="cV_mplane750_percent">
+    <builder  name="sliderFloatParam">
+      <float value="0.75" min="0." max="1."/>
+    </builder>
+  </constValue>  
+
+  <constValue label="cV_mplane875_percent">
+    <builder  name="sliderFloatParam">
+      <float value="0.875" min="0." max="1."/>
+    </builder>
+  </constValue>  
+	
+  <constValue label="cV_mplane950_percent">
+    <builder  name="sliderFloatParam">
+      <float value="0.95" min="0." max="1."/>
+    </builder>
+  </constValue>
+
+  <constValue label="cV_hubOffsetZ">
+    <builder  name="sliderFloatParam">
+      <float value="0." min="-1000." max="1000."/>
+    </builder>
+  </constValue>
+ <!-- thickness distribution -->
+  <constValue label="cV_t">
+    <builder  name="sliderFloatParam">
+      <float value=".18" min="0." max="1."/>
+    </builder>
+  </constValue>  
+	
+	<!-- machine parameters -->
+  <constValue label="cV_nBlades">
+    <builder name="intParam">
+      <int value="4"/>
+    </builder>
+  </constValue>  
+
+ <!-- numerical parameters -->
+  <constValue label="cV_conformalMappingtolerance">
+    <builder name="sliderFloatParam">
+      <float value="50.e-6" min="1.e-8" max="100.e-6"/>
+    </builder>
+  </constValue> 
+
+  <constValue label="cV_conformalMappingNPoints">
+    <builder name="intParam">
+      <float value="10" min="5" max="100"/>
+    </builder>
+  </constValue> 
+
+  <constValue label="cV_extrudeNPoints">
+    <builder name="intParam">
+      <float value="10" min="5" max="100"/>
+    </builder>
+  </constValue> 
+	
+    <constValue label="cV_thicknessIncreasingNPoints">
+    <builder name="intParam">
+      <float value="20" min="10" max="1000"/>
+    </builder>
+  </constValue> 
+
+ <!-- angles -->
+  <constValue label="cV_alpha_1_ex_0.0">
+    <builder name="sliderFloatParam">
+			<float value="0." min="-90." max="90."/>
+    </builder>	 
+ </constValue> 
+  <constValue label="cV_alpha_1_ex_0.5">
+    <builder name="sliderFloatParam">
+			<float value="0." min="-90." max="90."/>
+    </builder>	 
+ </constValue>
+   <constValue label="cV_alpha_1_ex_1.0">
+    <builder name="sliderFloatParam">
+			<float value="0." min="-90." max="90."/>
+    </builder>	 
+ </constValue> 
+  <constValue label="cV_alpha_2_ex_0.0">
+    <builder name="sliderFloatParam">
+			<float value="0." min="-90." max="90."/>
+    </builder>	 
+ </constValue> 
+  <constValue label="cV_alpha_2_ex_0.5">
+    <builder name="sliderFloatParam">
+			<float value="0." min="-90." max="90."/>
+    </builder>	 
+ </constValue>
+   <constValue label="cV_alpha_2_ex_1.0">
+    <builder name="sliderFloatParam">
+			<float value="0." min="-90." max="90."/>
+    </builder>	 
+ </constValue>
+
+ <!-- deltaX -->
+	 <constValue label="cV_deltaX/deltaY_0.0">
+    <builder name="sliderFloatParam">
+			<float value=".8" min="0." max="1."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_deltaX/deltaY_0.5">
+    <builder name="sliderFloatParam">
+			<float value=".8" min="0." max="1."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_deltaX/deltaY_1.0">
+    <builder name="sliderFloatParam">
+			<float value=".8" min="0." max="1."/>
+    </builder>	 
+   </constValue>
+
+ <!-- H -->
+	 <constValue label="cV_H_0.0">
+    <builder name="sliderFloatParam">
+			<float value="353." min="0." max="500."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_H_0.5">
+    <builder name="sliderFloatParam">
+			<float value="353." min="0." max="500."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_H_1.0">
+    <builder name="sliderFloatParam">
+			<float value="353." min="0." max="500."/>
+    </builder>	 
+   </constValue>   
+
+   <!-- offsetZ -->
+	 <constValue label="cV_offsetZ_0.0">
+    <builder name="sliderFloatParam">
+			<float value="4237.85" min="0." max="10000."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_offsetZ_0.5">
+    <builder name="sliderFloatParam">
+			<float value="4237.85" min="0." max="10000."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_offsetZ_1.0">
+    <builder name="sliderFloatParam">
+			<float value="4237.85" min="0." max="10000."/>
+    </builder>	 
+   </constValue>
+   <!-- ttSuction -->
+	 <constValue label="cV_tSuction_0.0">
+    <builder name="sliderFloatParam">
+			<float value=".18" min=".0" max="1."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_tSuction_0.5">
+    <builder name="sliderFloatParam">
+			<float value=".18" min=".0" max="1."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_tSuction_1.0">
+    <builder name="sliderFloatParam">
+			<float value=".18" min=".0" max="1."/>
+    </builder>	 
+   </constValue>  
+   <!-- ttPressure -->
+	 <constValue label="cV_tPressure_0.0">
+    <builder name="sliderFloatParam">
+			<float value=".18" min=".0" max="1."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_tPressure_0.5">
+    <builder name="sliderFloatParam">
+			<float value=".18" min=".0" max="1."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_tPressure_1.0">
+    <builder name="sliderFloatParam">
+			<float value=".18" min=".0" max="1."/>
+    </builder>	 
+   </constValue> 
+	 <!-- trailing edge thickness -->
+	 <constValue label="cV_trailingEdgeThick">
+    <builder name="sliderFloatParam">
+			<float value="5." min="0." max="100."/>
+    </builder>	 
+   </constValue>
+
+<!--############################################################################
+################################################################################
+#ANALYTIC FUNCTIONS
+################################################################################
+#############################################################################-->   
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- transformer definitions -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	
+  <function label="myBaseContainer">
+    <builder name="baseContainer">
+			<transformer name="translate" label="transM">
+				<Vector_2 x="0." y="4000."/>
+				<Vector_3 x="0." y="4000." z="0."/>				
+			</transformer>
+<!--			<transformer name="translate" label="transPhi">
+				<Vector_2 x="0.5*2.*_pi" y="0."/>
+				<Vector_3 x="0.5*2.*_pi" y="0." z="0."/>
+			</transformer>			-->
+    </builder>
+  </function>
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- design parameters -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	  
+	<!-- deltaX -->
+	<function label="f_deltaX/deltaY"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0." y="#cV_deltaX/deltaY_0.0#"/>
+			<Point_2 x=".5" y="#cV_deltaX/deltaY_0.5#"/>
+			<Point_2 x="1." y="#cV_deltaX/deltaY_1.0#"/>
+    </builder>
+  </function>	
+
+	<!-- H -->
+	<function label="f_H"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0." y="#cV_H_0.0#"/>
+			<Point_2 x=".5" y="#cV_H_0.5#"/>
+			<Point_2 x="1." y="#cV_H_1.0#"/>
+    </builder>
+  </function>	
+
+	<!-- offsetZ -->
+	<function label="f_offsetZ"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0.0" y="#cV_offsetZ_0.0#"/>
+			<Point_2 x="0.5" y="#cV_offsetZ_0.5#"/>
+			<Point_2 x="1.0" y="#cV_offsetZ_1.0#"/>
+    </builder>
+  </function>	  
+	
+	<!-- t -->
+	<function label="f_tSuction"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0.0" y="#cV_tSuction_0.0#"/>
+			<Point_2 x="0.5" y="#cV_tSuction_0.5#"/>
+			<Point_2 x="1.0" y="#cV_tSuction_1.0#"/>
+    </builder>
+  </function>
+	<function label="f_tPressure"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0.0" y="#cV_tPressure_0.0#"/>
+			<Point_2 x="0.5" y="#cV_tPressure_0.5#"/>
+			<Point_2 x="1.0" y="#cV_tPressure_1.0#"/>
+    </builder>
+  </function>
+
+	<!-- angles -->
+  <function label="f_alpha_1"> 
+    <builder  name="scaCurve2dOneD" order="2">
+				<Point_2 x="0.0" y="90.0"/>
+				<Point_2 x="0.1" y="90.0"/>
+				<Point_2 x="0.2" y="90.0"/>
+				<Point_2 x="0.3" y="90.0"/>
+				<Point_2 x="0.4" y="90.0"/>
+				<Point_2 x="0.5" y="90.0"/>
+				<Point_2 x="0.6" y="90.0"/>
+				<Point_2 x="0.7" y="90.0"/>
+				<Point_2 x="0.8" y="90.0"/>
+				<Point_2 x="0.9" y="90.0"/>
+				<Point_2 x="1.0" y="90.0"/>	
+    </builder>
+  </function>
+  <function label="f_alpha_1_ex"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0." y="#cV_alpha_1_ex_0.0#"/>
+			<Point_2 x="#cV_mplane500_percent#" y="#cV_alpha_1_ex_0.5#"/>
+			<Point_2 x="1." y="#cV_alpha_1_ex_1.0#"/>	
+    </builder>
+  </function>		
+  <function label="f_alpha_2"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0.0" y="58.1"/>
+			<Point_2 x="0.1" y="66.6"/>
+			<Point_2 x="0.2" y="71.7"/>
+			<Point_2 x="0.3" y="75.0"/>
+			<Point_2 x="0.4" y="77.3"/>
+			<Point_2 x="0.5" y="79.0"/>
+			<Point_2 x="0.6" y="80.3"/>
+			<Point_2 x="0.7" y="81.3"/>
+			<Point_2 x="0.8" y="82.1"/>
+			<Point_2 x="0.9" y="82.8"/>
+			<Point_2 x="1.0" y="83.4"/>
+    </builder>
+  </function>
+  <function label="f_alpha_2_ex"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0." y="#cV_alpha_2_ex_0.0#"/>
+			<Point_2 x="#cV_mplane500_percent#" y="#cV_alpha_2_ex_0.5#"/>
+			<Point_2 x="1." y="#cV_alpha_2_ex_1.0#"/>	
+    </builder>
+  </function>
+	
+	<!-- last part of equation - 0.0021*(xx)^4 is necessary to close the profile
+	     because sum of summands has to be zero !!!! -->
+<!--  <function label="f_thicknessDistribution">
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="(#cV_t# * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>-->
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- thickness distributions -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	  
+  <function label="f_thicknessDistributionSuction_hub"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tSuction(0.)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>
+  <function label="f_thicknessDistributionSuction_mplane50"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tSuction(#cV_mplane50_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>	
+  <function label="f_thicknessDistributionSuction_mplane125"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tSuction(#cV_mplane125_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+	</function>
+  <function label="f_thicknessDistributionSuction_mplane250"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tSuction(#cV_mplane250_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>
+  <function label="f_thicknessDistributionSuction_mplane500"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tSuction(#cV_mplane500_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>	
+  <function label="f_thicknessDistributionSuction_mplane750"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tSuction(#cV_mplane750_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>		
+  <function label="f_thicknessDistributionSuction_mplane875"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tSuction(#cV_mplane875_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>		
+  <function label="f_thicknessDistributionSuction_mplane950"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tSuction(#cV_mplane950_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>
+  <function label="f_thicknessDistributionSuction_shroud"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tSuction(1.)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>		
+
+  <function label="f_thicknessDistributionPressure_hub"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tPressure(0.)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>
+  <function label="f_thicknessDistributionPressure_mplane50"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tPressure(#cV_mplane50_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>	
+  <function label="f_thicknessDistributionPressure_mplane125"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tPressure(#cV_mplane125_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+	</function>
+  <function label="f_thicknessDistributionPressure_mplane250"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tPressure(#cV_mplane250_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>
+  <function label="f_thicknessDistributionPressure_mplane500"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tPressure(#cV_mplane500_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>	
+  <function label="f_thicknessDistributionPressure_mplane750"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tPressure(#cV_mplane750_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>		
+  <function label="f_thicknessDistributionPressure_mplane875"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tPressure(#cV_mplane875_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>		
+  <function label="f_thicknessDistributionPressure_mplane950"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tPressure(#cV_mplane950_percent#)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>
+  <function label="f_thicknessDistributionPressure_shroud"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" 
+              value="($f_tPressure(1.)$ * 400. /0.2) 
+                     * ( 0.2969*sqrt(xx) 
+                      - 0.1260*(xx) 
+                      - 0.3516*(xx)^2. 
+                      + 0.2843*(xx)^3. 
+                      - 0.1015*(xx)^4.
+                      - 0.0021*(xx)^4)
+                      + #cV_trailingEdgeThick# * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>		
+	
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- meanlines -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  		
+	<function label="f_meanLineHub">
+		<builder name="sca3PointMeanline"
+			 alpha_one="_pi * ($f_alpha_1(.0)$ + $f_alpha_1_ex(0.)$) / 180."
+			 alpha_two="_pi * ($f_alpha_2(.0)$+$f_alpha_2_ex(.0)$) / 180."
+			 ratio="$f_deltaX/deltaY(0.)$"
+			 delta_y="$f_H(.0)$"
+			 order="2"
+			 mirror_y="true">
+ 				 <function/> 
+	  </builder>
+	</function>
+	<function label="f_meanLineMplane50">
+		<builder name="sca3PointMeanline"
+			 alpha_one="_pi * ($f_alpha_1(#cV_mplane50_percent#)$ + $f_alpha_1_ex(#cV_mplane50_percent#)$) / 180."
+			 alpha_two="_pi * ($f_alpha_2(#cV_mplane50_percent#)$ + $f_alpha_2_ex(#cV_mplane50_percent#)$) / 180."
+			 ratio="$f_deltaX/deltaY(#cV_mplane50_percent#)$"
+			 delta_y="$f_H(#cV_mplane50_percent#)$"
+			 order="2"
+			 mirror_y="true">
+ 				 <function/> 
+	  </builder>
+	</function>
+	<function label="f_meanLineMplane125">
+		<builder name="sca3PointMeanline"
+			 alpha_one="_pi * ($f_alpha_1(#cV_mplane125_percent#)$ + $f_alpha_1_ex(#cV_mplane125_percent#)$) / 180."
+			 alpha_two="_pi * ($f_alpha_2(#cV_mplane125_percent#)$ + $f_alpha_2_ex(#cV_mplane125_percent#)$) / 180."
+			 ratio="$f_deltaX/deltaY(#cV_mplane125_percent#)$"
+			 delta_y="$f_H(#cV_mplane125_percent#)$"
+			 order="2"
+			 mirror_y="true">
+ 				 <function/> 
+	  </builder>
+	</function>		
+	<function label="f_meanLineMplane250">
+		<builder name="sca3PointMeanline"
+			 alpha_one="_pi * ($f_alpha_1(#cV_mplane250_percent#)$ + $f_alpha_1_ex(#cV_mplane250_percent#)$) / 180."
+			 alpha_two="_pi * ($f_alpha_2(#cV_mplane250_percent#)$ + $f_alpha_2_ex(#cV_mplane250_percent#)$) / 180."
+			 ratio="$f_deltaX/deltaY(#cV_mplane250_percent#)$"
+			 delta_y="$f_H(#cV_mplane250_percent#)$"
+			 order="2"
+			 mirror_y="true">
+ 				 <function/> 
+	  </builder>
+	</function>	
+	<function label="f_meanLineMplane500">
+		<builder name="sca3PointMeanline"
+			 alpha_one="_pi * ($f_alpha_1(#cV_mplane500_percent#)$ + $f_alpha_1_ex(#cV_mplane500_percent#)$) / 180."
+			 alpha_two="_pi * ($f_alpha_2(#cV_mplane500_percent#)$ + $f_alpha_2_ex(#cV_mplane500_percent#)$) / 180."
+			 ratio="$f_deltaX/deltaY(#cV_mplane500_percent#)$"
+			 delta_y="$f_H(#cV_mplane500_percent#)$"
+			 order="2"
+			 mirror_y="true">
+ 				 <function/> 
+	  </builder>
+	</function>
+	<function label="f_meanLineMplane750">
+		<builder name="sca3PointMeanline"
+			 alpha_one="_pi * ($f_alpha_1(#cV_mplane750_percent#)$ + $f_alpha_1_ex(#cV_mplane750_percent#)$) / 180."
+			 alpha_two="_pi * ($f_alpha_2(#cV_mplane750_percent#)$ + $f_alpha_2_ex(#cV_mplane750_percent#)$) / 180."
+			 ratio="$f_deltaX/deltaY(#cV_mplane750_percent#)$"
+			 delta_y="$f_H(#cV_mplane750_percent#)$"
+			 order="2"
+			 mirror_y="true">
+ 				 <function/> 
+	  </builder>
+	</function>	
+	<function label="f_meanLineMplane875">
+		<builder name="sca3PointMeanline"
+			 alpha_one="_pi * ($f_alpha_1(#cV_mplane875_percent#)$ + $f_alpha_1_ex(#cV_mplane875_percent#)$) / 180."
+			 alpha_two="_pi * ($f_alpha_2(#cV_mplane875_percent#)$ + $f_alpha_2_ex(#cV_mplane875_percent#)$) / 180."
+			 ratio="$f_deltaX/deltaY(#cV_mplane875_percent#)$"
+			 delta_y="$f_H(#cV_mplane875_percent#)$"
+			 order="2"
+			 mirror_y="true">
+ 				 <function/> 
+	  </builder>
+	</function>	
+	<function label="f_meanLineMplane950">
+		<builder name="sca3PointMeanline"
+			 alpha_one="_pi * ($f_alpha_1(#cV_mplane950_percent#)$ + $f_alpha_1_ex(#cV_mplane950_percent#)$) / 180."
+			 alpha_two="_pi * ($f_alpha_2(#cV_mplane950_percent#)$ + $f_alpha_2_ex(#cV_mplane950_percent#)$) / 180."
+			 ratio="$f_deltaX/deltaY(#cV_mplane950_percent#)$"
+			 delta_y="$f_H(#cV_mplane950_percent#)$"
+			 order="2"
+			 mirror_y="true">
+ 				 <function/> 
+	  </builder>
+	</function>		
+	<function label="f_meanLineShroud">
+		<builder name="sca3PointMeanline"
+			 alpha_one="_pi * ($f_alpha_1(1.)$ + $f_alpha_1_ex(1.)$) / 180"
+			 alpha_two="_pi * ($f_alpha_2(1.)$ + $f_alpha_2_ex(1.)$) / 180"
+			 ratio="$f_deltaX/deltaY(1.)$"
+			 delta_y="$f_H(1.)$"
+			 order="2"
+			 mirror_y="true">
+ 		  <function/> 
+	  </builder>
+	</function>	
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- blade cuts (meanline with added thickness -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  		
+  <function label="f_hub">
+    <builder name="analyticFunction">
+      <transformer name="biThicknessIncreasing"
+                 function_label="f_thicknessDistributionPressure_hub"
+								 function_label_inverted="f_thicknessDistributionSuction_hub"
+                 parameter_one_percent_function="f_pointDistribution_3_spline" 
+                 number_points_one="#cV_thicknessIncreasingNPoints#"
+                 reverse="true"
+                 order="2"/>
+      <function label="f_meanLineHub"/>
+    </builder>
+  </function>		
+  <function label="f_mplane50">
+    <builder name="analyticFunction">
+    <transformer name="biThicknessIncreasing"
+                 function_label="f_thicknessDistributionSuction_mplane50"
+								 function_label_inverted="f_thicknessDistributionPressure_mplane50"
+                 parameter_one_percent_function="f_pointDistribution_3_spline" 
+                 number_points_one="#cV_thicknessIncreasingNPoints#"
+                 reverse="true"
+                 order="2"/>
+      <function label="f_meanLineMplane50"/>
+    </builder>
+  </function>		
+	<function label="f_mplane125">
+    <builder name="analyticFunction">
+    <transformer name="biThicknessIncreasing"
+                 function_label="f_thicknessDistributionSuction_mplane125"
+								 function_label_inverted="f_thicknessDistributionPressure_mplane125"
+                 parameter_one_percent_function="f_pointDistribution_3_spline" 
+                 number_points_one="#cV_thicknessIncreasingNPoints#"
+                 reverse="true"
+                 order="2"/>
+      <function label="f_meanLineMplane125"/>
+    </builder>
+  </function>		
+  <function label="f_mplane250">
+    <builder name="analyticFunction">
+    <transformer name="biThicknessIncreasing"
+                 function_label="f_thicknessDistributionSuction_mplane250"
+								 function_label_inverted="f_thicknessDistributionPressure_mplane250"
+                 parameter_one_percent_function="f_pointDistribution_3_spline" 
+                 number_points_one="#cV_thicknessIncreasingNPoints#"
+                 reverse="true"
+                 order="2"/>
+      <function label="f_meanLineMplane250"/>
+    </builder>
+  </function>		
+  <function label="f_mplane500">
+    <builder name="analyticFunction">
+    <transformer name="biThicknessIncreasing"
+                 function_label="f_thicknessDistributionSuction_mplane500"
+								 function_label_inverted="f_thicknessDistributionPressure_mplane500"
+                 parameter_one_percent_function="f_pointDistribution_3_spline" 
+                 number_points_one="#cV_thicknessIncreasingNPoints#"
+                 reverse="true"
+                 order="2"/>
+      <function label="f_meanLineMplane500"/>
+    </builder>
+  </function>	
+  <function label="f_mplane750">
+    <builder name="analyticFunction">
+    <transformer name="biThicknessIncreasing"
+                 function_label="f_thicknessDistributionSuction_mplane750"
+								 function_label_inverted="f_thicknessDistributionPressure_mplane750"
+                 parameter_one_percent_function="f_pointDistribution_3_spline" 
+                 number_points_one="#cV_thicknessIncreasingNPoints#"
+                 reverse="true"
+                 order="2"/>
+      <function label="f_meanLineMplane750"/>
+    </builder>
+  </function>		
+  <function label="f_mplane875">
+    <builder name="analyticFunction">
+    <transformer name="biThicknessIncreasing"
+                 function_label="f_thicknessDistributionSuction_mplane875"
+								 function_label_inverted="f_thicknessDistributionPressure_mplane875"
+                 parameter_one_percent_function="f_pointDistribution_3_spline" 
+                 number_points_one="#cV_thicknessIncreasingNPoints#"
+                 reverse="true"
+                 order="2"/>
+      <function label="f_meanLineMplane875"/>
+    </builder>
+  </function>		
+  <function label="f_mplane950">
+    <builder name="analyticFunction">
+    <transformer name="biThicknessIncreasing"
+                 function_label="f_thicknessDistributionSuction_mplane950"
+								 function_label_inverted="f_thicknessDistributionPressure_mplane950"
+                 parameter_one_percent_function="f_pointDistribution_3_spline" 
+                 number_points_one="#cV_thicknessIncreasingNPoints#"
+                 reverse="true"
+                 order="2"/>
+      <function label="f_meanLineMplane950"/>
+    </builder>
+  </function>			
+  <function label="f_shroud">
+    <builder name="analyticFunction">
+      <transformer name="biThicknessIncreasing"
+                 function_label="f_thicknessDistributionPressure_shroud"
+								 function_label_inverted="f_thicknessDistributionSuction_shroud"
+                 parameter_one_percent_function="f_pointDistribution_3_spline" 
+                 number_points_one="#cV_thicknessIncreasingNPoints#"
+                 reverse="true"
+                 order="2"/>
+      <function label="f_meanLineShroud"/>
+    </builder>
+  </function>	
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- blade cuts as 3d function f:(u)->(phiR, m, s)  -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+	<function label="vec3d1d_bladeCut_0">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="0.">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_hub)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_bladeCut_50">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="50">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_mplane50)~"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_125">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="125">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_mplane125)~"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_bladeCut_250">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="250">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_mplane250)"/>
+		</builder>
+	</function>	
+	<function label="vec3d1d_bladeCut_500">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="500">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_mplane500)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_bladeCut_750">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="750">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_mplane750)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_bladeCut_875">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="875">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_mplane875)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_bladeCut_950">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="950">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_mplane950)~"/>
+		</builder>
+	</function>	
+	<function label="vec3d1d_bladeCut_1000">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="1000.">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_shroud)~"/>
+		</builder>
+	</function>	
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- meanline as 3d function f:(u)->(phiR, m, s)  -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	
+	<function label="vec3d1d_meanline_0">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="0.">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_meanLineHub)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_meanline_50">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="50">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_meanLineMplane50)~"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_meanline_125">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="125">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_meanLineMplane125)~"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_meanline_250">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="250">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_meanLineMplane250)"/>
+		</builder>
+	</function>	
+	<function label="vec3d1d_meanline_500">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="500">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_meanLineMplane500)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_meanline_750">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="750">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_meanLineMplane750)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_meanline_875">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="875">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_meanLineMplane875)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_meanline_950">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="950">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_meanLineMplane950)~"/>
+		</builder>
+	</function>	
+	<function label="vec3d1d_meanline_1000">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="1000.">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transM(f_meanLineShroud)~"/>
+		</builder>
+	</function>	
+	
+<!--	<function label="vec3d1d_periodic_0">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="0.">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transMPhiR(f_meanLineHub)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_periodic_50">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="50">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transMPhiR(f_meanLineMplane50)~"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_periodic_125">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="125">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transMPhiR(f_meanLineMplane125)~"/>
+		</builder>
+	</function>		
+	<function label="vec3d1d_periodic_250">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="250">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transMPhiR(f_meanLineMplane250)"/>
+		</builder>
+	</function>	
+	<function label="vec3d1d_periodic_500">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="500">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transMPhiR(f_meanLineMplane500)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_periodic_750">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="750">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transMPhiR(f_meanLineMplane750)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_periodic_875">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="875">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transMPhiR(f_meanLineMplane875)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_periodic_950">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="950">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transMPhiR(f_meanLineMplane950)~"/>
+		</builder>
+	</function>	
+	<function label="vec3d1d_periodic_1000">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="1000.">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>
+			<analyticFunction label="~transMPhiR(f_meanLineShroud)~"/>
+		</builder>
+	</function>	-->
+	
+
+<!--	<function label="vec3d1d_meanline_0_ext">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="0">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>			
+			<analyticFunction label="~transM(~preExt(f_meanLineHub)~)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_meanline_500_ext">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="500">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>			
+			<analyticFunction label="~transM(~preExt(f_meanLineMplane500)~)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_meanline_1000_ext">
+		<builder name="analyticFunction">
+			<transformer name="addConstCoordinate" coordinate_value="1000">
+				<Vector_3 x="0." y="0." z="1."/>
+			</transformer>			
+			<analyticFunction label="~transM(~preExt(f_meanLineShroud)~)~"/>
+		</builder>
+	</function>-->
+
+<!--	<function label="vec3d1d_meanline_0_perioOne">
+		<builder name="analyticFunction">
+			<analyticFunction label="~transMPhiR(vec3d1d_meanline_0_ext)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_meanline_500_perioOne">
+		<builder name="analyticFunction">
+			<analyticFunction label="~transMPhiR(vec3d1d_meanline_500_ext)~"/>
+		</builder>
+	</function>
+	<function label="vec3d1d_meanline_1000_perioOne">
+		<builder name="analyticFunction">
+			<analyticFunction label="~transMPhiR(vec3d1d_meanline_1000_ext)~"/>
+		</builder>
+	</function>-->
+	
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- blade as 3d function f:(u, v)->(phiR, m, s)  -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	
+	<function label="vec3d2d_blade">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_bladeCut_0"/>
+			<analyticFunction label="vec3d1d_bladeCut_50"/>
+			<analyticFunction label="vec3d1d_bladeCut_125"/>
+			<analyticFunction label="vec3d1d_bladeCut_250"/>
+			<analyticFunction label="vec3d1d_bladeCut_500"/>
+			<analyticFunction label="vec3d1d_bladeCut_750"/>
+			<analyticFunction label="vec3d1d_bladeCut_875"/>
+			<analyticFunction label="vec3d1d_bladeCut_950"/>
+			<analyticFunction label="vec3d1d_bladeCut_1000"/>
+		</builder>
+	</function>
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- meanplane as 3d function f:(u, v)->(phiR, m, s)  -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  		
+	<function label="vec3d2d_meanPlane">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_meanline_0"/>
+			<analyticFunction label="vec3d1d_meanline_50"/>
+			<analyticFunction label="vec3d1d_meanline_125"/>
+			<analyticFunction label="vec3d1d_meanline_250"/>
+			<analyticFunction label="vec3d1d_meanline_500"/>
+			<analyticFunction label="vec3d1d_meanline_750"/>
+			<analyticFunction label="vec3d1d_meanline_875"/>
+			<analyticFunction label="vec3d1d_meanline_950"/>
+			<analyticFunction label="vec3d1d_meanline_1000"/>
+		</builder>
+	</function>
+	
+	<function label="vec3d1d_blade_teOne">
+		<builder name="analyticFunction">
+			<transformer name="pickVec3dTwoDRangePercent" x_one_percent="0."/> 
+			<analyticFunction label="vec3d2d_blade"/>
+		</builder>
+	</function>	
+	<function label="vec3d1d_blade_teTwo">
+		<builder name="analyticFunction">
+			<transformer name="pickVec3dTwoDRangePercent" x_one_percent="1."/> 
+			<analyticFunction label="vec3d2d_blade"/>
+		</builder>
+	</function>		
+	<function label="vec3d2d_blade_te">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_blade_teOne"/>
+			<analyticFunction label="vec3d1d_blade_teTwo"/>
+		</builder>
+	</function>	
+<!--	<function label="vec3d2d_meanPlane_ext">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_meanline_0_ext"/>
+			<analyticFunction label="vec3d1d_meanline_500_ext"/>
+			<analyticFunction label="vec3d1d_meanline_1000_ext"/>
+		</builder>
+	</function>		-->
+<!--	<function label="vec3d2d_perioOne">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="vec3d1d_meanline_0_perioOne"/>
+			<analyticFunction label="vec3d1d_meanline_500_perioOne"/>
+			<analyticFunction label="vec3d1d_meanline_1000_perioOne"/>
+		</builder>
+	</function>		-->
+</canadaGuidevane2d>

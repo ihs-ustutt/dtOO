@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<canadaChannel2d>
+	
+ <!-- channel alphaIn --> 
+	<constValue label="cV_channel_alphaIn_hub">
+		<builder name="sliderFloatParam">
+			<float value=".5" min="0." max="1."/>
+		</builder>	 
+	</constValue>
+	<constValue label="cV_channel_alphaIn_mplane500">
+		<builder name="sliderFloatParam">
+			<float value=".5" min="0." max="1."/>
+		</builder>	 
+	</constValue>
+	<constValue label="cV_channel_alphaIn_shroud">
+		<builder name="sliderFloatParam">
+			<float value=".5" min="0." max="1."/>
+		</builder>	 
+	</constValue>   
+	<!-- channel alphaOut -->
+	<constValue label="cV_channel_alphaOut_hub">
+		<builder name="sliderFloatParam">
+			<float value=".5" min="0." max="1."/>
+		</builder>	 
+	</constValue>
+	<constValue label="cV_channel_alphaOut_mplane500">
+		<builder name="sliderFloatParam">
+			<float value=".5" min="0." max="1."/>
+		</builder>	 
+	</constValue>
+	<constValue label="cV_channel_alphaOut_shroud">
+		<builder name="sliderFloatParam">
+			<float value=".5" min="0." max="1."/>
+		</builder>	 
+	</constValue>
+	<constValue label="cV_channel_yIn">
+		<builder name="sliderFloatParam">
+			<float value="0." min="0." max="16000."/>
+		</builder>	 
+	</constValue>
+	<constValue label="cV_channel_yOut">
+		<builder name="sliderFloatParam">
+			<float value="6000." min="0." max="16000."/>
+		</builder>	 
+	</constValue>
+	 
+  <function label="f_channel_alphaIn"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0." y="#cV_channel_alphaIn_hub#"/>
+			<Point_2 x=".5" y="#cV_channel_alphaIn_mplane500#"/>
+			<Point_2 x="1." y="#cV_channel_alphaIn_shroud#"/>
+    </builder>
+  </function>	
+  <function label="f_channel_alphaOut"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0." y="#cV_channel_alphaOut_hub#"/>
+			<Point_2 x=".5" y="#cV_channel_alphaOut_mplane500#"/>
+			<Point_2 x="1." y="#cV_channel_alphaOut_shroud#"/>
+    </builder>
+  </function>			
+
+  <function label="myBaseContainer4">
+    <builder name="baseContainer">
+      <transformer name="predefinedExtension" label="preExt0" 
+			             y_in="#cV_channel_yIn#" y_out="#cV_channel_yOut#"
+									 alpha_in="$f_channel_alphaIn(0.)$" alpha_out="$f_channel_alphaOut(0.)$"/>
+      <transformer name="predefinedExtension" label="preExt50" 
+			             y_in="#cV_channel_yIn#" y_out="#cV_channel_yOut#"
+									 alpha_in="$f_channel_alphaIn(#cV_mplane50_percent#)$" alpha_out="$f_channel_alphaOut(#cV_mplane50_percent#)$"/>
+      <transformer name="predefinedExtension" label="preExt125" 
+			             y_in="#cV_channel_yIn#" y_out="#cV_channel_yOut#"
+									 alpha_in="$f_channel_alphaIn(#cV_mplane125_percent#)$" alpha_out="$f_channel_alphaOut(#cV_mplane125_percent#)$"/>
+      <transformer name="predefinedExtension" label="preExt250" 
+			             y_in="#cV_channel_yIn#" y_out="#cV_channel_yOut#"
+									 alpha_in="$f_channel_alphaIn(#cV_mplane250_percent#)$" alpha_out="$f_channel_alphaOut(#cV_mplane250_percent#)$"/>
+      <transformer name="predefinedExtension" label="preExt500" 
+			             y_in="#cV_channel_yIn#" y_out="#cV_channel_yOut#"
+									 alpha_in="$f_channel_alphaIn(#cV_mplane500_percent#)$" alpha_out="$f_channel_alphaOut(#cV_mplane500_percent#)$"/>
+      <transformer name="predefinedExtension" label="preExt750" 
+			             y_in="#cV_channel_yIn#" y_out="#cV_channel_yOut#"
+									 alpha_in="$f_channel_alphaIn(#cV_mplane750_percent#)$" alpha_out="$f_channel_alphaOut(#cV_mplane750_percent#)$"/>
+      <transformer name="predefinedExtension" label="preExt875" 
+			             y_in="#cV_channel_yIn#" y_out="#cV_channel_yOut#"
+									 alpha_in="$f_channel_alphaIn(#cV_mplane875_percent#)$" alpha_out="$f_channel_alphaOut(#cV_mplane875_percent#)$"/>
+      <transformer name="predefinedExtension" label="preExt950" 
+			             y_in="#cV_channel_yIn#" y_out="#cV_channel_yOut#"
+									 alpha_in="$f_channel_alphaIn(#cV_mplane950_percent#)$" alpha_out="$f_channel_alphaOut(#cV_mplane950_percent#)$"/>
+      <transformer name="predefinedExtension" label="preExt1000" 
+			             y_in="#cV_channel_yIn#" y_out="#cV_channel_yOut#"
+									 alpha_in="$f_channel_alphaIn(1.)$" alpha_out="$f_channel_alphaOut(1.)$"/>
+    </builder>
+  </function>
+	
+	<function label="vec3d2d_meanPlane_ext">
+		<builder name="vec3dSurfaceTwoD">
+			<analyticFunction label="~preExt0(vec3d1d_meanline_0)~"/>
+			<analyticFunction label="~preExt50(vec3d1d_meanline_50)~"/>
+			<analyticFunction label="~preExt125(vec3d1d_meanline_125)~"/>
+			<analyticFunction label="~preExt250(vec3d1d_meanline_250)~"/>
+			<analyticFunction label="~preExt500(vec3d1d_meanline_500)~"/>
+			<analyticFunction label="~preExt750(vec3d1d_meanline_750)~"/>
+			<analyticFunction label="~preExt875(vec3d1d_meanline_875)~"/>
+			<analyticFunction label="~preExt950(vec3d1d_meanline_950)~"/>
+			<analyticFunction label="~preExt1000(vec3d1d_meanline_1000)~"/>
+		</builder>
+	</function>
+</canadaChannel2d>	
