@@ -36,13 +36,17 @@ find_package(GMSH REQUIRED)
 find_package(
   OpenCASCADE 
   COMPONENTS 
-  TKernel TKSTEP TKIGES TKXSBase TKOffset 
-  TKFeat TKFillet TKBool TKShHealing TKMesh 
-  TKHLR TKBO TKPrim TKTopAlgo TKBRep 
-  TKGeomAlgo TKGeomBase TKG3d TKG2d 
-  TKAdvTools TKMath TKernel TKSTEPAttr 
-  TKSTEP209 TKSTEPBase
+  TKernel TKMath
+  TKSTEP 
+  TKFillet TKShHealing 
+  TKTopAlgo TKBRep 
+  TKGeomBase TKGeomAlgo 
+  TKG3d TKG2d 
 )
+#TKMesh TKIGES TKXSBase TKOffset TKBool
+#TKFeat TKSTEPAttr TKHLR TKBO TKPrim TKAdvTools 
+#TKSTEP209 TKSTEPBase 
+
 find_package(MUPARSER REQUIRED)
 find_package(ROOT)
 find_package(GSL)
