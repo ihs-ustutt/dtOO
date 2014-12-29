@@ -61,12 +61,6 @@ if(DTOO_USE_GOOGLEPERFTOOLS)
   find_package(GOOGLEPERFTOOLS REQUIRED)
 endif(DTOO_USE_GOOGLEPERFTOOLS)
 
-#------------------------------------------------------------------------------#
-#
-# make version
-#
-#------------------------------------------------------------------------------#
-MAKE_DTOO_VERSION()
 
 #------------------------------------------------------------------------------#
 #
@@ -114,11 +108,41 @@ include_directories(
 
 #------------------------------------------------------------------------------#
 #
-# linking
+# parse version and write header version.h
+#
+#------------------------------------------------------------------------------#
+MAKE_DTOO_VERSION(VERSION_MAJOR VERSION_MINOR VERSION_COMMIT)
+
+#------------------------------------------------------------------------------#
+#
+# add target
 #
 #------------------------------------------------------------------------------#
 add_library(dtOO SHARED ${DTOO_SOURCES})
+
+#------------------------------------------------------------------------------#
+#
+# make shared library version
+#
+#------------------------------------------------------------------------------#
+set(
+  DTOO_VERSION_STRING 
+  ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_COMMIT}
+)
+
+set_target_properties(
+  dtOO 
+  PROPERTIES 
+  VERSION ${DTOO_VERSION_STRING} 
+  SOVERSION ${VERSION_MAJOR}
+)
 add_dependencies(dtOO version)
+
+#------------------------------------------------------------------------------#
+#
+# linking
+#
+#------------------------------------------------------------------------------#
 target_link_libraries(dtOO 
   ${CGAL_LIBRARIES} 
   ${GMSH_LIBRARIES} 

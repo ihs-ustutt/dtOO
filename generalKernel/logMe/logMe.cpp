@@ -50,9 +50,13 @@ namespace dtOO {
             << "* " << LOGDEL
 //            << "* Version " << SDTOOVERSION_MAJOR << "." << SDTOOVERSION_MINOR << LOGDEL
             << "* " << LOGDEL            
-            << "* " << DTLOGEVAL(dtOO::dtOO_gitBranch) << LOGDEL
-						<< "* " << DTLOGEVAL(dtOO::dtOO_gitCommitHash) << LOGDEL
-						<< "* " << DTLOGEVAL(dtOO::dtOO_gitTag) << LOGDEL
+            << "* " << DTLOGEVAL(dtOO::git::branch) << LOGDEL
+						<< "* " << DTLOGEVAL(dtOO::git::version) << LOGDEL
+						<< "* " << DTLOGEVAL(dtOO::git::versionMajor) << LOGDEL
+						<< "* " << DTLOGEVAL(dtOO::git::versionMinor) << LOGDEL
+						<< "* " << DTLOGEVAL(dtOO::git::versionCommitNo) << LOGDEL
+						<< "* " << DTLOGEVAL(dtOO::git::versionSha1) << LOGDEL
+						<< "* " << DTLOGEVAL(dtOO::git::versionShort) << LOGDEL
             << "*"  << LOGDEL
             << "**************************************************" << LOGDEL
             << " "
