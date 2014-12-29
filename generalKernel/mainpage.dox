@@ -10,7 +10,7 @@ Prerequisites of this library are:
 - CGAL
 - GSL
 - Boost
-- Qt5
+- Qt4
 
 First checkout the git repository
 \code{.sh}
