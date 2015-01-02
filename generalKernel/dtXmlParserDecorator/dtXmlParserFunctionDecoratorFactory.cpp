@@ -15,6 +15,7 @@
 #include "aFBuilder/vec3dTransVolThreeDFunctionDecorator.h"
 #include "aFBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator.h"
 #include "aFBuilder/vec3dMuParserThreeDFunctionDecorator.h"
+#include "aFBuilder/scaMuParserTwoDFunctionDecorator.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -67,6 +68,8 @@ namespace dtOO {
 		);
 		__IFRET(vec3dMuParserThreeDFunctionDecorator);
 		__IFRETCUSTOM(vec3dMuParserThreeD, vec3dMuParserThreeDFunctionDecorator);
+		__IFRET(scaMuParserTwoDFunctionDecorator);
+		__IFRETCUSTOM(scaMuParserTwoD, scaMuParserTwoDFunctionDecorator);
     
     dt__THROW(create(), << str <<  " could not be created.");
   }

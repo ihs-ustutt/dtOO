@@ -35,7 +35,7 @@ namespace dtOO {
 		
 		return yy;
 	}
-
+	
   vec2dOneD * vec2dCurve2dOneD::clone( void ) const {
 		return new vec2dCurve2dOneD(*this);
 	}

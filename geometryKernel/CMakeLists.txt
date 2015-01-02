@@ -35,6 +35,8 @@ SET(HEADERS
   functionHeaven/scaOneD.h
   functionHeaven/scaMuParserOneD.h
   functionHeaven/scaCurve2dOneD.h
+  functionHeaven/scaTwoD.h
+  functionHeaven/scaMuParserTwoD.h
   functionHeaven/transIntCube.h
   functionHeaven/vec2dFunction.h
   functionHeaven/vec2dOneD.h
@@ -44,6 +46,7 @@ SET(HEADERS
   functionHeaven/vec3dFunction.h
   functionHeaven/vec3dTwoD.h
   functionHeaven/vec3dSurfaceTwoD.h
+  functionHeaven/vec3dThickedTwoD.h
   functionHeaven/vec3dOneD.h
   functionHeaven/vec3dCurveOneD.h
   functionHeaven/vec3dCurve2dInSurfaceOneD.h
@@ -75,6 +78,7 @@ SET(HEADERS
   dtTransformerHeaven/projectOnSurface.h
   dtTransformerHeaven/reparamInSurface.h
   dtTransformerHeaven/pickVec3dTwoDRangePercent.h
+  dtTransformerHeaven/analyticAddNormal.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -111,6 +115,8 @@ SET(SOURCES
   functionHeaven/scaOneD.cpp
   functionHeaven/scaMuParserOneD.cpp
   functionHeaven/scaCurve2dOneD.cpp
+  functionHeaven/scaTwoD.cpp
+  functionHeaven/scaMuParserTwoD.cpp
   functionHeaven/transIntCube.cpp
   functionHeaven/vec2dFunction.cpp
   functionHeaven/vec2dOneD.cpp
@@ -120,6 +126,7 @@ SET(SOURCES
   functionHeaven/vec3dFunction.cpp
   functionHeaven/vec3dTwoD.cpp
   functionHeaven/vec3dSurfaceTwoD.cpp
+  functionHeaven/vec3dThickedTwoD.cpp
   functionHeaven/vec3dOneD.cpp
   functionHeaven/vec3dCurveOneD.cpp
   functionHeaven/vec3dCurve2dInSurfaceOneD.cpp
@@ -149,6 +156,7 @@ SET(SOURCES
   dtTransformerHeaven/projectOnSurface.cpp
   dtTransformerHeaven/reparamInSurface.cpp
   dtTransformerHeaven/pickVec3dTwoDRangePercent.cpp
+  dtTransformerHeaven/analyticAddNormal.cpp
 )
 
 APPEND_DTOO_SOURCE(geometryKernel "${SOURCES}")

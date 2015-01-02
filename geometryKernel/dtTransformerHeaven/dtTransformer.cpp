@@ -40,25 +40,22 @@ namespace dtOO {
 		}
   }
   
-  std::vector< dtPoint2 * > dtTransformer::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
+  std::vector< dtPoint2 > dtTransformer::apply( std::vector< dtPoint2 > const * const pointVecP ) const {
     DTWARNINGWF(init(), << "Call on abstract class!");
   }
 
-  vectorHandling< dtPoint2 * > dtTransformer::apply( vectorHandling< dtPoint2 * > const * const pointVecP ) const {
-    std::vector< dtPoint2 * > const * const pV 
-      = dynamic_cast< std::vector< dtPoint2 * > const * const>(pointVecP);
-
-    if (!pV) {
-      dt__THROW(apply(), << DTLOGEVAL(pV) );
-    }
-    std::vector< dtPoint2 * > vecOut = this->apply(pV);
-    vectorHandling< dtPoint2 * > vHOut;
-    dt__FORALL(vecOut, ii,
-      vHOut.push_back(vecOut[ii]);
-    );
-    vecOut.clear();
-    
-    return vHOut;
+  std::vector< dtPoint2 * > dtTransformer::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
+		std::vector< dtPoint2 > twin(pointVecP->size());
+    dt__FORALL(*pointVecP, ii,
+			twin[ii] = *(pointVecP->at(ii));
+		);
+		twin = this->apply(&twin);
+		std::vector< dtPoint2 * > retTwin(twin.size());
+    dt__FORALL(twin, ii,
+			retTwin[ii] = new dtPoint2(twin[ii]);
+		);		
+		
+		return retTwin;
   }
   
   std::vector< dtPoint3 > dtTransformer::apply( std::vector< dtPoint3 > const * const pointVecP ) const {
@@ -78,13 +75,13 @@ namespace dtOO {
 		
 		return retTwin;
   }
-	
+
   vectorHandling< analyticFunction * > dtTransformer::apply( vectorHandling< analyticFunction * > const * const sFunP ) const {
-    DTWARNINGWF(init(), << "Call on abstract class!");    
+    DTWARNINGWF(apply(), << "Call on abstract class!");    
   }
 
   vectorHandling< analyticGeometry * > dtTransformer::apply( vectorHandling< analyticGeometry * > const * const sFunP ) const {
-    DTWARNINGWF(init(), << "Call on abstract class!");    
+    DTWARNINGWF(apply(), << "Call on abstract class!");    
   }
   
 	dtPoint3 dtTransformer::apply(dtPoint3 const & pp) const {
@@ -95,6 +92,15 @@ namespace dtOO {
 	
 		return retVec[0];
 	}
+
+	dtPoint2 dtTransformer::apply(dtPoint2 const & pp) const {
+		std::vector< dtPoint2 > vec;
+		vec.push_back( dtPoint2(pp) );
+		
+		std::vector< dtPoint2 > retVec = this->apply(&vec);
+	
+		return retVec[0];
+	}	
 	
   analyticFunction * dtTransformer::apply(analyticFunction const * const sF) const {
     vectorHandling< analyticFunction * > vHIn;

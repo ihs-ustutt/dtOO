@@ -20,6 +20,7 @@ namespace dtOO {
     virtual vec2dOneD * clone( void ) const;
     virtual vec2dOneD * create( void ) const;    
     virtual ~vec2dCurve2dOneD();
+    using vec2dOneD::Y; // name hiding
     virtual aFY Y( float const & xx) const;
     vectorHandling< renderInterface * > getRender( void ) const;
     dtCurve2d const * ptrDtCurve2d( void ) const;

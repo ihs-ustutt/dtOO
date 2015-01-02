@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <interfaceHeaven/ptrHandling.h>
+#include <interfaceHeaven/ptrVectorHandling.h>
 
 #define dt__CLASSNAME( name ) \
   static std::string className( void ) { \
@@ -43,6 +44,9 @@
 
 #define dt__pH( name ) \
   ptrHandling< name >
+
+#define dt__pVH( name ) \
+  ptrVectorHandling< name >
 
 #endif	/* DTMACROS_H */
 

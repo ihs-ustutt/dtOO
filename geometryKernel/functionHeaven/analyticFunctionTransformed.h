@@ -57,11 +57,24 @@ namespace dtOO {
   aFY analyticFunctionTransformed< funT >::Y( aFX const & xx ) const {
     aFY yy = funT::Y(xx);
     
-    dt__THROW_IF( yy.size() != 3, Y() );
-    dtPoint3 pp = _dtT->apply( dtPoint3(yy[0], yy[1], yy[2]) );
-    yy[0] = pp.x();
-    yy[1] = pp.y();
-    yy[2] = pp.z();
+//    dt__THROW_IF( yy.size() != 3, Y() );
+    if (yy.size() == 3) {
+      dtPoint3 pp = _dtT->apply( dtPoint3(yy[0], yy[1], yy[2]) );
+      yy[0] = pp.x();
+      yy[1] = pp.y();
+      yy[2] = pp.z();
+    }
+    else if(yy.size() == 2) {
+      dtPoint2 pp = _dtT->apply( dtPoint2(yy[0], yy[1]) );
+      yy[0] = pp.x();
+      yy[1] = pp.y();
+    }
+    else {
+      dt__THROW(Y(),
+        << DTLOGEVAL(yy.size()) << LOGDEL
+        << "Currently only supported for dimension 2 and 3."
+      );
+    }
     
     return yy;
   }
