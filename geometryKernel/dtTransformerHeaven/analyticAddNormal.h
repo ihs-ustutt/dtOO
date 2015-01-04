@@ -2,12 +2,12 @@
 #define	ANALYTICADDNORMAL_H
 
 #include "dtTransformer.h"
+#include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
   class analyticFunction;
-  class scaOneD;
-  class scaTwoD;
+  class vec3dTwoD;
   
   class analyticAddNormal : public dtTransformer {
   public:    
@@ -20,6 +20,7 @@ namespace dtOO {
     virtual bool isNecessary( void ) const;
     virtual void init( 
       QDomElement const * transformerElementP,
+      baseContainer const * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP
     );
@@ -28,13 +29,10 @@ namespace dtOO {
     virtual void handleAnalyticFunction(
       std::string const name, analyticFunction const * value
     );
-    virtual void handleBool(std::string const name, bool const value);
+    virtual void handleDtVector3(std::string const name, dtVector3 const value);
   private:
-    dt__pH(scaOneD) _s1d_tD0;
-    dt__pH(scaOneD) _s1d_tD1;
-    dt__pH(scaTwoD) _s2d_tD0;
-    dt__pH(scaTwoD) _s2d_tD1;
-    bool _reverse;
+    dt__pH(vec3dTwoD) _tt;
+    dtVector3 _nf;
   };
 }    
 

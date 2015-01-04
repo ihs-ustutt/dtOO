@@ -20,7 +20,7 @@ namespace dtOO {
 
   void dtTransformer::init( 
 	  QDomElement const * transformerElementP, 
-    baseContainer * const bC,
+    baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
@@ -32,6 +32,7 @@ namespace dtOO {
     
   void dtTransformer::init( 
 	  QDomElement const * transformerElementP,
+	  baseContainer const * const bC, 
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {

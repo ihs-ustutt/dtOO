@@ -89,7 +89,7 @@ namespace dtOO {
 
   void rotate::init( 
 	  QDomElement const * transformerElementP, 
-    baseContainer * const bC,   
+    baseContainer const * const bC,   
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
@@ -97,10 +97,17 @@ namespace dtOO {
     dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
 		
     if (transformerElementP->hasAttribute("origin")) {
-      _origin = bC->ptrPointContainer()->get( getAttributeStr("origin", *transformerElementP) );
+      _origin 
+			= 
+			getDtPoint3(getAttributeStr("origin", *transformerElementP), bC );
     }
     if (transformerElementP->hasAttribute("rotation_vector")) {
-      _rotVector = bC->ptrVectorContainer()->get( getAttributeStr("rotation_vector", *transformerElementP) );
+      _rotVector
+			= 
+			getDtVector3(
+				getAttributeStr("rotation_vector", *transformerElementP), 
+				bC 
+			);
     }
     if (transformerElementP->hasAttribute("angle")) {
       _angle 

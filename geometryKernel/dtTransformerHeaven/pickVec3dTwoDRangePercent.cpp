@@ -74,11 +74,12 @@ namespace dtOO {
   }
   
   void pickVec3dTwoDRangePercent::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * transformerElementP,
+		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {
-    dtTransformer::init(transformerElementP, cValP, sFunP);
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP);
     
 		_x0 = -1.;
 		_x1 = -1.;

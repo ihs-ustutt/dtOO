@@ -31,12 +31,24 @@ namespace dtOO {
 		
 		return _pC.get();
 	}
+
+	pointContainer const * const baseContainer::constPtrPointContainer( void ) const {
+	  dt__THROW_IF(_pC.get() == NULL, constPtrPointContainer());
+		
+		return _pC.get();
+	}	
   
 	vectorContainer * const baseContainer::ptrVectorContainer( void ) {
-	  dt__THROW_IF(_vC.get() == NULL, ptrVectorContainer);
+	  dt__THROW_IF(_vC.get() == NULL, ptrVectorContainer());
 		
 		return _vC.get();
 	}
+
+	vectorContainer const * const baseContainer::constPtrVectorContainer( void ) const {
+	  dt__THROW_IF(_vC.get() == NULL, constPtrVectorContainer());
+		
+		return _vC.get();
+	}	
   
 	transformerContainer * const baseContainer::ptrTransformerContainer( void ) {
 	  dt__THROW_IF(_tC.get() == NULL, ptrTransformerContainer);

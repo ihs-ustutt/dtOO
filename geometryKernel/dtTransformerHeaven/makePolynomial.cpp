@@ -118,7 +118,7 @@ namespace dtOO {
 
   void makePolynomial::init( 
 	  QDomElement const * transformerElementP, 
-		baseContainer * bC,  
+		baseContainer const * bC,  
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 

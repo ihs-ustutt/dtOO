@@ -163,10 +163,11 @@ namespace dtOO {
 
   void biThicknessIncreasing::init( 
 		QDomElement const * transformerElementP, 
+		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {
-    dtTransformer::init(transformerElementP, cValP, sFunP);
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP);
 		
     handleInt("order", getAttributeInt("order", *transformerElementP));     
     handleBool("reverse", getAttributeBool("reverse", *transformerElementP));		

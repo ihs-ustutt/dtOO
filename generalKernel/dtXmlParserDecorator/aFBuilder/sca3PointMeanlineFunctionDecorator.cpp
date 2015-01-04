@@ -1,6 +1,7 @@
 #include "sca3PointMeanlineFunctionDecorator.h"
 #include <functionHeaven/analyticFunction.h>
 #include <geometryEngine/dtCurve2d.h>
+#include <geometryEngine/dtOCCBSplineCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h>
 #include <functionHeaven/vec2dCurve2dOneD.h>
@@ -33,11 +34,12 @@ namespace dtOO {
     bool hasRatio = hasAttribute("ratio", toBuildP);
 		bool hasDeltaX = hasAttribute("delta_x", toBuildP);
     bool hasDeltaY = hasAttribute("delta_y", toBuildP);
-    bool hasOrder = hasAttribute("order", toBuildP);
+    bool hasOrder = hasAttribute("order", toBuildP);		
 
     //
     //
     //
+		dt__pH(dtCurve2d) dtC2d;
     if ( hasAlphaOne && hasAlphaTwo && hasRatio && !hasDeltaX && hasDeltaY && hasOrder ) {
       //
       // get necessary values
@@ -82,15 +84,11 @@ namespace dtOO {
                          depSFunP
                        )
                      );      
-			sFunP->push_back( 
-			  new vec2dCurve2dOneD( 
-					dt__pH(dtCurve2d)(
-						bSplineCurve2d_angleRatioDeltaYConstructOCC(
-			        alphaOne, alphaTwo, ratio, deltaY
-			      ).result()
-					).get()
-			  )
-			);			
+			dtC2d.reset(
+				bSplineCurve2d_angleRatioDeltaYConstructOCC(
+					alphaOne, alphaTwo, ratio, deltaY
+				).result()
+			);
     }
     else if ( hasAlphaOne && hasAlphaTwo && !hasRatio && hasDeltaX && hasDeltaY && hasOrder ) {
       //
@@ -136,15 +134,11 @@ namespace dtOO {
                          depSFunP
                        )
                      ); 			
-			sFunP->push_back( 
-			  new vec2dCurve2dOneD( 
-					dt__pH(dtCurve2d)(
-						bSplineCurve2d_angleDeltaXDeltaYConstructOCC(
-			        alphaOne, alphaTwo, deltaX, deltaY
-			      ).result()
-					).get()
-			  )
-			);			
+			dtC2d.reset(
+				bSplineCurve2d_angleDeltaXDeltaYConstructOCC(
+					alphaOne, alphaTwo, deltaX, deltaY
+				).result()
+			);
     }		
     else {
       dt__THROW(buildPart(),
@@ -155,5 +149,11 @@ namespace dtOO {
 							<< DTLOGEVAL(hasDeltaX) << LOGDEL
               << DTLOGEVAL(hasDeltaY) );
     }
+		if ( hasAttribute("revert", toBuildP) ) {
+			if ( getAttributeBool("revert", toBuildP) ) {
+				dtOCCBSplineCurve2d::SecureCast(dtC2d.get())->revert();
+			}
+		}		
+		sFunP->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );
   }
 }

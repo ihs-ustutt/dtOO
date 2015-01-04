@@ -178,20 +178,21 @@ namespace dtOO {
 	
 	void predefinedExtension::init( 
 		QDomElement const * transformerElementP, 
-		baseContainer * const bC,
+		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    init(transformerElementP, cValP, sFunP);
+    init(transformerElementP, bC, cValP, sFunP);
 	}
 		
   void predefinedExtension::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * transformerElementP,
+		baseContainer const * const bC,
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP 
 	) {
-    dtTransformer::init(transformerElementP, cValP, sFunP);
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP);
     //
     // get input
     //

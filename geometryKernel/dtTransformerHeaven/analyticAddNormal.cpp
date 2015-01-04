@@ -1,8 +1,6 @@
 #include "analyticAddNormal.h"
+#include <baseContainerHeaven/baseContainer.h>
 #include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/scaOneD.h>
-#include <functionHeaven/scaTwoD.h>
-#include <functionHeaven/vec2dOneD.h>
 #include <functionHeaven/vec3dTwoD.h>
 #include <functionHeaven/vec3dThickedTwoD.h>
 #include <progHelper.h>
@@ -13,11 +11,8 @@ namespace dtOO {
   }
 
   analyticAddNormal::analyticAddNormal(analyticAddNormal const & orig) : dtTransformer(orig) {
-		_reverse = orig._reverse;
-		_s1d_tD0.reset( orig._s1d_tD0->clone() );
-		_s1d_tD1.reset( orig._s1d_tD1->clone() );
-		_s2d_tD0.reset( orig._s2d_tD0->clone() );
-		_s2d_tD1.reset( orig._s2d_tD1->clone() );
+    _tt.reset( orig._tt->clone() );
+    _nf = orig._nf;
   }	
   analyticAddNormal::~analyticAddNormal() {
   }
@@ -38,7 +33,7 @@ namespace dtOO {
     for (int ii=0; ii<aFP->size(); ii++) {
 			analyticFunction * aF = aFP->at(ii);
 
-			vec2dOneD const * const vec2d1d = vec2dOneD::ConstDownCast(aF);			
+//			vec2dOneD const * const vec2d1d = vec2dOneD::ConstDownCast(aF);			
 			vec3dTwoD const * const vec3d2d = vec3dTwoD::ConstDownCast(aF);
 			
 //			if (vec2d1d) {			
@@ -48,14 +43,16 @@ namespace dtOO {
 //				retV.push_back( aFT );
 //				retV.back()->setLabel(aF->getLabel());
 //			}			
-      if (vec3d2d) {			
-				retV.push_back( new vec3dThickedTwoD(vec3d2d, _s2d_tD0.get()) );
+      if (vec3d2d) {
+				retV.push_back( 
+					new vec3dThickedTwoD(vec3d2d, _tt.get(), _nf) 
+				);
 				retV.back()->setLabel(aF->getLabel());				
 			}
 			else {
 				dt__THROW(
 					apply(),
-					<< DTLOGEVAL(vec2d1d) << LOGDEL
+//					<< DTLOGEVAL(vec2d1d) << LOGDEL
 					<< DTLOGEVAL(vec3d2d) << LOGDEL
 					<< "Unknown type."
 				);
@@ -67,63 +64,55 @@ namespace dtOO {
 
   void analyticAddNormal::init( 
 		QDomElement const * transformerElementP, 
+		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {
-    dtTransformer::init(transformerElementP, cValP, sFunP);
-		
-    handleBool("reverse", getAttributeBool("reverse", *transformerElementP));		
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP);
 				
     //
     // get functions
     //     
-    handleAnalyticFunction(
-      "function_label", 
-      sFunP->get( getAttributeStr("function_label", *transformerElementP) ) 
-    );
-    handleAnalyticFunction(
-      "function_label_inverted", 
-      sFunP->get( getAttributeStr("function_label_inverted", *transformerElementP) ) 
-    );		
+		if ( hasAttribute("function_label", *transformerElementP) ) {
+			handleAnalyticFunction(
+				"function_label", 
+				sFunP->get( getAttributeStr("function_label", *transformerElementP) ) 
+			);
+		}
+		//
+		// set vector
+		//
+		_nf = dtVector3(0,0,0);
+		if ( hasAttribute("scale_vector", *transformerElementP) ) {
+			handleDtVector3(
+				"scale_vector",
+				getDtVector3(
+					getAttributeStr("scale_vector", *transformerElementP), bC 
+				)
+			);
+		}
   }
 
   bool analyticAddNormal::isNecessary( void ) const {
     return true;
   }
-
-  void analyticAddNormal::handleBool(std::string const name, bool const value) {
-    if (name == "reverse" ) {
-      _reverse = value;
-      return;
-    }
-    dtTransformer::handleBool(name, value);
-  }	
   
   void analyticAddNormal::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
-  	scaOneD const * const s1d = scaOneD::ConstDownCast(value);
-		scaTwoD const * const s2d = scaTwoD::ConstDownCast(value);
+		vec3dTwoD const * const tt = vec3dTwoD::ConstDownCast(value);
 
     if (name == "function_label") {
-			if (s1d) {
-				_s1d_tD0.reset( s1d->clone() );
-				return;
-			}
-			else if (s2d) {
-				_s2d_tD0.reset( s2d->clone() );
-				return;
-			}			
-    }
-    else if (name == "function_label_inverted") {
-			if (s1d) {
-				_s1d_tD1.reset( s1d->clone() );
-				return;
-			}
-			else if (s2d) {
-				_s2d_tD1.reset( s2d->clone() );
-				return;
-			}			
+      _tt.reset(tt->clone());
+			return;
     }
     dtTransformer::handleAnalyticFunction(name, value);
   }  
+
+  void analyticAddNormal::handleDtVector3(std::string const name, dtVector3 const value) {
+    if (name == "scale_vector" ) {
+      _nf = value;
+      return;
+    }
+    dtTransformer::handleDtVector3(name, value);
+  }		
 }
 

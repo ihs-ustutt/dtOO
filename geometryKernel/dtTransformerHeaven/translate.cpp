@@ -79,7 +79,7 @@ namespace dtOO {
 
   void translate::init( 
 	  QDomElement const * transformerElementP, 
-    baseContainer * const bC,
+    baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
@@ -88,22 +88,23 @@ namespace dtOO {
 		
     if ( hasChild("Vector_2", *transformerElementP) ) {
 			QDomElement v2El = getChild("Vector_2", *transformerElementP);
-			dtVector2 v2 = createDtVector2(&v2El, bC, cValP, sFunP, depAGeoP);
+			dtVector2 v2 = getDtVector2(&v2El, bC, cValP, sFunP, depAGeoP);
 			handleDtVector2("", v2);
     }
     if ( hasChild("Vector_3", *transformerElementP) ) {
 			QDomElement v3El = getChild("Vector_3", *transformerElementP);
-			dtVector3 v3 = createDtVector3(&v3El, bC, cValP, sFunP, depAGeoP);
+			dtVector3 v3 = getDtVector3(&v3El, bC, cValP, sFunP, depAGeoP);
 			handleDtVector3("", v3);
     }
   }
 
   void translate::init( 
 	  QDomElement const * transformerElementP, 
+		baseContainer const * const bC, 
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {
-		return init(transformerElementP, NULL, cValP, sFunP, NULL);
+		return init(transformerElementP, bC, cValP, sFunP, NULL);
 	}	
 	
 	void translate::handleDtVector3(std::string const name, dtVector3 const value) {

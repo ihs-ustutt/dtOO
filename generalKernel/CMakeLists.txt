@@ -30,6 +30,7 @@ SET(HEADERS
   dtXmlParserDecorator/aFBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator.h
   dtXmlParserDecorator/aFBuilder/vec3dMuParserThreeDFunctionDecorator.h
   dtXmlParserDecorator/aFBuilder/scaMuParserTwoDFunctionDecorator.h
+  dtXmlParserDecorator/aFBuilder/muParserFunctionDecorator.h
   dtXmlParserDecorator/occBuilder/bezierCurve_pointConstructOCCDecorator.h
   dtXmlParserDecorator/occBuilder/bSplineCurve_curveConnectConstructOCCDecorator.h
   dtXmlParserDecorator/occBuilder/bSplineSurface_skinConstructOCCDecorator.h
@@ -91,6 +92,7 @@ SET(SOURCES
   dtXmlParserDecorator/aFBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator.cpp
   dtXmlParserDecorator/aFBuilder/vec3dMuParserThreeDFunctionDecorator.cpp
   dtXmlParserDecorator/aFBuilder/scaMuParserTwoDFunctionDecorator.cpp
+  dtXmlParserDecorator/aFBuilder/muParserFunctionDecorator.cpp
   dtXmlParserDecorator/occBuilder/bezierCurve_pointConstructOCCDecorator.cpp
   dtXmlParserDecorator/occBuilder/bSplineCurve_curveConnectConstructOCCDecorator.cpp
   dtXmlParserDecorator/occBuilder/bSplineSurface_skinConstructOCCDecorator.cpp

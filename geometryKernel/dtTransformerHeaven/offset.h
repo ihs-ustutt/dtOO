@@ -15,7 +15,7 @@ namespace dtOO {
     virtual bool isNecessary( void ) const;
     void init( 
       QDomElement const * transformerElementP, 
-      baseContainer * const bC,
+      baseContainer const * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP,
       vectorHandling< analyticGeometry * > const * const depAGeoP 

@@ -1,4 +1,5 @@
 #include "addConstCoordinate.h"
+#include "baseContainerHeaven/baseContainer.h"
 #include <logMe/logMe.h>
 #include <progHelper.h>
 
@@ -32,7 +33,7 @@ namespace dtOO {
 	  vectorHandling< analyticFunction * > const * const aFVecP 
 	) const {
     vectorHandling< analyticFunction * > aFVecRet;
-//    
+    
     for (int ii=0;ii<aFVecP->size();ii++) {
       dt__PTRASS(vec2dCurve2dOneD const * v2d1d, vec2dCurve2dOneD::DownCast(aFVecP->at(ii)));
 
@@ -51,10 +52,11 @@ namespace dtOO {
   
   void addConstCoordinate::init( 
 	  QDomElement const * transformerElementP, 
+		baseContainer const * const bC,
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP
   ) {
-    dtTransformer::init(transformerElementP, cValP, sFunP);
+    dtTransformer::init(transformerElementP, bC, cValP, sFunP);
 		
 		float cc 
 		= 
@@ -68,7 +70,7 @@ namespace dtOO {
 		handleFloat("coordinate_value", cc);
 
 		QDomElement vvEl = getChild("Vector_3", *transformerElementP);
-		dtVector3 vv = getDtVector3(vvEl, cValP, sFunP);
+		dtVector3 vv = getDtVector3(&vvEl, bC);
 		handleDtVector3("dtVector3", vv);
   }
 	

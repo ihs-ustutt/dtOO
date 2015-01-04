@@ -4,6 +4,7 @@
 #include <progHelper.h>
 #include <functionHeaven/analyticFunction.h>
 #include <functionHeaven/vec3dSurfaceTwoD.h>
+#include <functionHeaven/vec3dThickedTwoD.h>
 #include <functionHeaven/vec3dCurveOneD.h>
 #include <functionHeaven/analyticFunctionTransformed.h>
 
@@ -30,6 +31,10 @@ namespace dtOO {
 		return new uVw_phirMs();
 	}
 	
+	/**
+	 * @todo ConstDownCast to current types is not a satisfying solution. Maybe
+	 * "transformed cloning" is a better solution?!
+   */
   vectorHandling< analyticFunction * > uVw_phirMs::apply( 
 	  vectorHandling< analyticFunction * > const * const aFP 
 	) const {
@@ -40,6 +45,7 @@ namespace dtOO {
 
 			vec3dCurveOneD const * const vec3d1d = vec3dCurveOneD::ConstDownCast(aF);			
 			vec3dSurfaceTwoD const * const vec3d2d = vec3dSurfaceTwoD::ConstDownCast(aF);
+			vec3dThickedTwoD const * const vec3dThick2d = vec3dThickedTwoD::ConstDownCast(aF);
 			
 			if (vec3d1d) {			
 				analyticFunctionTransformed<vec3dCurveOneD> * aFT
@@ -55,11 +61,19 @@ namespace dtOO {
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());				
 			}
+      else if (vec3dThick2d) {			
+				analyticFunctionTransformed<vec3dThickedTwoD> * aFT
+				= new analyticFunctionTransformed<vec3dThickedTwoD>(*vec3dThick2d);
+				aFT->setTransformer(this);
+				retV.push_back( aFT );
+				retV.back()->setLabel(aF->getLabel());	
+			}			
 			else {
 				dt__THROW(
 					apply(),
 					<< DTLOGEVAL(vec3d1d) << LOGDEL
 					<< DTLOGEVAL(vec3d2d) << LOGDEL
+					<< DTLOGEVAL(vec3dThick2d) << LOGDEL								
 					<< "Unknown type."
 				);
 			}
@@ -92,7 +106,7 @@ namespace dtOO {
 
   void uVw_phirMs::init( 
 	  QDomElement const * transformerElementP, 
-    baseContainer * const bC,  
+    baseContainer const * const bC,  
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
@@ -103,7 +117,7 @@ namespace dtOO {
 			QDomElement v3El = getChild("Vector_3", *transformerElementP);
 			handleDtVector3(
 				"Vector_3", 
-				createDtVector3(&v3El, bC, cValP, sFunP, depAGeoP)
+				getDtVector3(&v3El, bC, cValP, sFunP, depAGeoP)
 			);
 		}
 		else {

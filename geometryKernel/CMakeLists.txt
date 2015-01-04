@@ -47,6 +47,7 @@ SET(HEADERS
   functionHeaven/vec3dTwoD.h
   functionHeaven/vec3dSurfaceTwoD.h
   functionHeaven/vec3dThickedTwoD.h
+  functionHeaven/vec3dMuParserTwoD.h
   functionHeaven/vec3dOneD.h
   functionHeaven/vec3dCurveOneD.h
   functionHeaven/vec3dCurve2dInSurfaceOneD.h
@@ -127,6 +128,7 @@ SET(SOURCES
   functionHeaven/vec3dTwoD.cpp
   functionHeaven/vec3dSurfaceTwoD.cpp
   functionHeaven/vec3dThickedTwoD.cpp
+  functionHeaven/vec3dMuParserTwoD.cpp
   functionHeaven/vec3dOneD.cpp
   functionHeaven/vec3dCurveOneD.cpp
   functionHeaven/vec3dCurve2dInSurfaceOneD.cpp
