@@ -6,10 +6,6 @@
 #include "conformalMapping.h"
 
 namespace dtOO {
-  /**
-   * 
-   * @todo: Remove dtSislBase in class. Use staticPropertiesHandler.
-   */
   class conformalMappingStartFromPoint : public conformalMapping {
   public:
     dt__CLASSNAME(conformalMappingStartFromPoint);
@@ -28,8 +24,6 @@ namespace dtOO {
     virtual std::vector< dtPoint2 * > apply( std::vector< dtPoint2 * > const * const pointVecP ) const;    
     virtual void handlePoint2d(std::string const name, dtPoint2 const value);
   private:
-//    float _offsetPhiR;
-//    float _offsetM;
     dtPoint2 _basePoint;
   };
 }
