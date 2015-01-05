@@ -25,10 +25,6 @@ namespace dtOO {
   vec3dInMap3dTo3dDecorator::~vec3dInMap3dTo3dDecorator() {
   }
 
-	/**
-	 * 
-   * @todo Add percent option also to map2dTo3d and map1dTo3d geometries.
-   */
   void vec3dInMap3dTo3dDecorator::buildPart( 
     QDomElement ** toBuildP,
     baseContainer * const bC,            
@@ -72,10 +68,10 @@ namespace dtOO {
 			vec3dThreeD const * v3d = vec3dThreeD::ConstDownCast(aF.get());
 			
 			if (v1d) {
-				aGeoP->push_back( new vec3dOneDInMap3dTo3d(v1d, m3d) );
+				aGeoP->push_back( new vec3dOneDInMap3dTo3d(v1d, m3d, optionPercent) );
 			}
 			else if (v2d) {
-			  aGeoP->push_back( new vec3dTwoDInMap3dTo3d(v2d, m3d) );
+			  aGeoP->push_back( new vec3dTwoDInMap3dTo3d(v2d, m3d, optionPercent) );
 			}
 			else if (v3d) {
 			  aGeoP->push_back( new vec3dThreeDInMap3dTo3d(v3d, m3d, optionPercent) );

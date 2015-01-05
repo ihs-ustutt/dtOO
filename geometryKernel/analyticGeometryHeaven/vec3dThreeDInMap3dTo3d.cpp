@@ -17,14 +17,6 @@ namespace dtOO {
 		labelHandling::setLabel( _v3d->getLabel()+"_in_"+_m3d->getLabel() );
   }
 
-  vec3dThreeDInMap3dTo3d::vec3dThreeDInMap3dTo3d(vec3dThreeD const * const v3d, map3dTo3d const * const m3d) : map3dTo3d() {
-    _v3d.reset( v3d->clone() );
-    _m3d.reset( m3d->clone() );
-		_percentF = false;
-		
-		labelHandling::setLabel( _v3d->getLabel()+"_in_"+_m3d->getLabel() );
-  }
-	
   vec3dThreeDInMap3dTo3d::vec3dThreeDInMap3dTo3d(
 	  vec3dThreeD const * const v3d, 
 		map3dTo3d const * const m3d, 

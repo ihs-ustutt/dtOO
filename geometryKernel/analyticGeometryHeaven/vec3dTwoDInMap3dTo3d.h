@@ -18,7 +18,11 @@ namespace dtOO {
     dt__CLASSSTD(vec3dTwoDInMap3dTo3d, analyticGeometry);
     vec3dTwoDInMap3dTo3d();
     vec3dTwoDInMap3dTo3d(const vec3dTwoDInMap3dTo3d& orig);
-    vec3dTwoDInMap3dTo3d(vec3dTwoD const * const v2d, map3dTo3d const * const m3d);
+    vec3dTwoDInMap3dTo3d(    
+	    vec3dTwoD const * const v2d, 
+		  map3dTo3d const * const m3d, 
+		  bool percentF = false
+    );    
     virtual ~vec3dTwoDInMap3dTo3d();
     virtual vec3dTwoDInMap3dTo3d * clone( void ) const;
     virtual vec3dTwoDInMap3dTo3d * create( void ) const;
@@ -35,6 +39,7 @@ namespace dtOO {
   private:
     ptrHandling< vec3dTwoD > _v2d;
     ptrHandling< map3dTo3d > _m3d;
+    bool _percentF;    
   };
 }
 #endif	/* vec3dTwoDInMap3dTo3d_H */
