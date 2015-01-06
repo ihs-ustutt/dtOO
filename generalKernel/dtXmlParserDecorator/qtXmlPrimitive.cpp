@@ -4,6 +4,7 @@
 #include <logMe/logMe.h>
 #include <iomanip>
 #include <interfaceHeaven/ptrHandling.h>
+#include <progHelper.h>
 
 namespace dtOO {
   qtXmlPrimitive::qtXmlPrimitive() {
@@ -164,18 +165,18 @@ namespace dtOO {
   }  
 	
 	std::vector< QDomElement > qtXmlPrimitive::getChildVector( QDomElement const element ) {
-			QDomNodeList list = element.childNodes();
-			std::vector< QDomElement > elVec;
-			for (int jj=0; jj<list.length(); jj++) {
-				QDomElement tmpEl = list.at(jj).toElement();
-        if ( !tmpEl.isNull() ) {					
-  		    elVec.push_back( tmpEl );
-				}
-			}			
-			
-			return elVec;
+		QDomNodeList list = element.childNodes();
+		std::vector< QDomElement > elVec;
+		for (int jj=0; jj<list.length(); jj++) {
+			QDomElement tmpEl = list.at(jj).toElement();
+			if ( !tmpEl.isNull() ) {					
+				elVec.push_back( tmpEl );
+			}
+		}			
+
+		return elVec;
 	}
-  
+	 
   QDomElement qtXmlPrimitive::getChild(std::string const sibName, QDomElement const element ) {
     bool goBack;
 
@@ -494,11 +495,13 @@ namespace dtOO {
     }
   }
 
-  void qtXmlPrimitive::appendChildElementInElement(QDomElement & documentElement, 
-                                              std::string const elName,
-                                              std::string const elAttribute,
-                                              std::string const elAttributeValue,
-                                              QDomElement & element) {
+  void qtXmlPrimitive::appendChildElementInElement(
+	  QDomElement & documentElement, 
+		std::string const elName,
+		std::string const elAttribute,
+		std::string const elAttributeValue,
+		QDomElement & element
+	) {
     QDomNodeList elements = documentElement.elementsByTagName( elName.c_str() ); 
     for (int ii=0;ii<elements.size();ii++) {
       QDomElement foundEl = elements.at(ii).toElement();
@@ -511,6 +514,53 @@ namespace dtOO {
       }
 
     }
-}    
+  }  
+ 
+	void qtXmlPrimitive::replaceInAllAttributes( 
+	  std::string const replace, std::string const with, 
+	  QDomElement * const element 
+	) {
+		std::vector< QDomAttr > attrs = getAttributeVector(*element);
+		dt__FORALL(attrs, ii,	
+      std::string name = attrs[ii].name().toStdString();						
+			std::string value = attrs[ii].value().toStdString();
+			std::string replaced = replaceStringInString(replace, with, value);
+			attrs[ii].setValue( QString(replaced.c_str()) );
+//			DTINFOWF(
+//				replaceInAllAttributes(),
+//				<< "Replace attribute " << name << " = " << value << "." << LOGDEL
+//				<< "-> " << replaced
+//			);
+		);
+	}  
+	
+	void qtXmlPrimitive::replaceRecursiveInAllAttributes( 
+	  std::string const replace, std::string const with, 
+	  QDomElement * const element 
+	) {
+		replaceInAllAttributes(replace, with, element);
+    std::vector< QDomElement > children = getChildVector(*element);			
+		dt__FORALL(children, ii,	
+			replaceRecursiveInAllAttributes(replace, with, &children[ii]);						
+		);		
+	}  
+	
+	std::vector< QDomAttr > qtXmlPrimitive::getAttributeVector( QDomElement const element ) {
+		std::vector< QDomAttr > attrs;
+		if( element.hasAttributes() ) {
+			QDomNamedNodeMap map = element.attributes();
+			for( int i = 0 ; i < map.length() ; ++i ) {
+			  if(!(map.item(i).isNull())) {
+					QDomNode debug = map.item(i);
+					QDomAttr attr = debug.toAttr();
+					if(!attr.isNull()) {
+						attrs.push_back(attr);
+					}
+			  }
+		  }
+		}
+		
+		return attrs;
+	}		
 }
 

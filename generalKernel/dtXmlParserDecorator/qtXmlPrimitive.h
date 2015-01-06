@@ -76,7 +76,19 @@ namespace dtOO {
       std::string const elAttribute,
       std::string const elAttributeValue,
       QDomElement & element
+    );        
+    static void replaceInAllAttributes( 
+      std::string const replace, 
+      std::string const with, 
+      QDomElement * const element 
+    );
+    static void replaceRecursiveInAllAttributes( 
+      std::string const replace, 
+      std::string const with, 
+      QDomElement * const element 
     );    
+  private:
+    static std::vector< QDomAttr > getAttributeVector( QDomElement const element );
   };
 }
 

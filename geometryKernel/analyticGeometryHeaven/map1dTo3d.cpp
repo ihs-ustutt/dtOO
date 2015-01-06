@@ -111,7 +111,7 @@ namespace dtOO {
 		float l1 = 0.;
 		float const geoRes 
 		= 
-		staticPropertiesHandler::getInstance()->getOptionFloat("geometricResolution");
+		staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution");
 		for (int ii=0; ii<16; ii++) {
 		  l1 = l_u(uu, glpOrder[ii]);	
 			float eps = fabs(l1-l0)/l1;

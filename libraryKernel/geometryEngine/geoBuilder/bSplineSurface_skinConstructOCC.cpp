@@ -7,6 +7,8 @@
 #include <geometryEngine/dtOCCBSplineSurface.h>
 
 #include <Precision.hxx>
+#include <Standard_Failure.hxx>
+#include <Standard_ErrorHandler.hxx>
 #include <GeomFill_SectionGenerator.hxx>
 #include <GeomFill_Line.hxx>
 #include <GeomFill_AppSurf.hxx>
@@ -37,8 +39,17 @@ namespace dtOO {
 		Standard_Real aTol3d = Precision::Confusion();
 		Standard_Real aTol2d = Precision::Parametric(aTol3d);
 		
-		GeomFill_AppSurf anAlgo(aMinDeg, aMaxDeg, aTol3d, aTol2d, aNbIt);
-		anAlgo.Perform(aLine, aSecGen);
+		GeomFill_AppSurf anAlgo;
+		dt__TRYOCC(
+			anAlgo.Init(aMinDeg, aMaxDeg, aTol3d, aTol2d, aNbIt);
+	  ,
+		  << ""
+		);
+		dt__TRYOCC(
+			anAlgo.Perform(aLine, aSecGen);
+	  ,
+		  << ""
+		);		
 		
 		Handle(Geom_Surface) aRes = new Geom_BSplineSurface(
 			anAlgo.SurfPoles(), anAlgo.SurfWeights(),

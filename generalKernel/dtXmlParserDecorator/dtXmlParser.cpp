@@ -104,11 +104,7 @@ namespace dtOO {
 			= 
 			_rootRead.back().removeChild( static_cast<QDomNode>(wElement) );
 			if (check.isNull()) {
-				dt__THROW(
-					openFileAndParse(),
-					<< "Error removing element:" << LOGDEL
-					<< convertToString(check)
-				);
+				dt__THROW(openFileAndParse(), << "Error removing element.");
 			}			
 		}
     // parse included files
@@ -116,6 +112,60 @@ namespace dtOO {
 			this->openFileAndParse( label[ii].c_str() );
 		}
     
+		//
+		// handle replace-elements
+		//
+		QDomElement forElement = getUnlabeledElement("replace");
+		while ( !forElement.isNull() ) {
+			//
+			// parse variable and values to replace
+			//
+			std::string var = getAttributeStr("variable", forElement);
+			std::string valueStr = getAttributeStr("values", forElement);
+			std::vector< std::string > values = convertToStringArray("{", "}", valueStr);
+			DTINFOWF( 
+			  openFileAndParse(), 
+				<< "Replace element" << LOGDEL
+				<< " > " << DTLOGEVAL(var) << LOGDEL
+				<< " > " << DTLOGEVAL(valueStr)
+			);			
+			
+			//
+			// replace
+			//
+			std::vector<QDomElement> children = getChildVector(forElement);
+			for (int kk=0; kk<values.size(); kk++) {
+  			for (int jj=0; jj<children.size(); jj++) {
+				  QDomElement childClone = children[jj].cloneNode(true).toElement();
+					replaceRecursiveInAllAttributes("{"+var+"}", values[kk], &(childClone));						
+					QDomNode checkOne 
+					=							
+					_rootRead.back().insertBefore( 
+						static_cast<QDomNode>(childClone),
+						static_cast<QDomNode>(forElement) 
+					);
+					if (checkOne.isNull()) {
+						dt__THROW(openFileAndParse(), << "Error inserting element.");
+					}
+				}
+			}
+			
+			//
+			// delete dummy node
+			//
+			QDomNode check 
+			= 
+			_rootRead.back().removeChild( static_cast<QDomNode>(forElement) );
+			if (check.isNull()) {
+				dt__THROW(openFileAndParse(), << "Error removing element.");
+			}	
+
+			//
+			// get new replace element
+			//
+			forElement = getUnlabeledElement("replace");
+		}
+		
 		//
     // set static properties on classes
     //
@@ -456,7 +506,7 @@ namespace dtOO {
       << "No " << lookType << "-Element with " << DTLOGEVAL(lookName) 
 		);
   }
-  
+	
   QDomElement dtXmlParser::getElement( std::string const lookType ) const {
     std::vector< std::string > label;
 
@@ -470,7 +520,16 @@ namespace dtOO {
     
     return QDomElement( getElement(lookType, label[0]) );
   }
-
+  
+	QDomElement dtXmlParser::getUnlabeledElement( std::string const lookType ) const {
+		for (int ii=0; ii<_rootRead.size(); ii++) {
+			if ( hasChild(lookType, _rootRead[ii]) ) {
+				return getChild(lookType, _rootRead[ii]);
+			}
+		}
+		return QDomElement();
+  }
+	
   void dtXmlParser::createAnalyticFunction(
 	  std::string const functionName, 
 		baseContainer * const bC,

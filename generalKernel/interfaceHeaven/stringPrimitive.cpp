@@ -127,5 +127,41 @@ namespace dtOO {
     }
 
     return retStr;
-  }  
+  }
+	
+	std::vector< std::string > stringPrimitive::convertToStringArray(std::string const signStart, std::string const signEnd, std::string const str) {
+		std::vector< std::string > values;
+		std::string valueStr = str;
+		while (valueStr.length() != 0) {
+			std::string aVal = getStringBetweenAndRemove(signStart, signEnd, &valueStr);
+			if (aVal.length() != 0 ) {
+				values.push_back(aVal);
+//				DTINFOWF( 
+//					openFileAndParse(), 
+//					<< DTLOGEVAL(values.back()) << LOGDEL
+//				);
+			}
+			else dt__THROW(convertToStringArray(), << "Error in creating the array.");
+		}
+
+		return values;
+	}
+
+  std::string stringPrimitive::replaceStringInString(std::string const toReplace, std::string const with, std::string const str) {
+		if ( !stringContains(toReplace, str) ) return str;
+
+    std::string retStr = str;		
+		retStr.replace(
+		  retStr.find(toReplace), 
+			toReplace.length(), 
+			with
+	  );
+		
+		if ( stringContains(toReplace, retStr) ) {
+			retStr = replaceStringInString(toReplace, with, retStr);
+		}
+
+    return retStr;
+  }	
+	
 }
