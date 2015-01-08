@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include "dtPlugin.h"
 #include "writeStep.h"
+#include "writeTurboGrid.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -24,6 +25,7 @@ namespace dtOO {
     DTINFOWF(create(), << "creating " << str <<  "...");
     
 		__IFRET(writeStep);
+		__IFRET(writeTurboGrid);
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

@@ -9,13 +9,10 @@ namespace dtOO {
   systemHandling::systemHandling() {
   }
 
-  systemHandling::systemHandling(const systemHandling& orig) {
-  }
-
   systemHandling::~systemHandling() {
   }
   
-  void systemHandling::command( std::string & cmd ) const {
+  void systemHandling::command( std::string & cmd ) {
     //
     // call system
     //
@@ -30,7 +27,7 @@ namespace dtOO {
             << DTLOGEVAL(wExitStatus) );
   }
   
-  bool systemHandling::createDirectory(std::string const & dirPath) const {
+  bool systemHandling::createDirectory(std::string const & dirPath) {
     //
     // create directory
     //
@@ -48,7 +45,7 @@ namespace dtOO {
     return true;
   }
 
-  bool systemHandling::fileExists(std::string const filename) const {
+  bool systemHandling::fileExists(std::string const filename) {
     if ( FILE *file = fopen(filename.c_str(), "r") ) {
       fclose(file);
       return true;
@@ -58,7 +55,7 @@ namespace dtOO {
     }   
   }
   
-  void systemHandling::deleteFile( std::string const filename ) const {
+  void systemHandling::deleteFile( std::string const filename ) {
     if( remove( filename.c_str() ) != 0 ) {
       dt__THROW(deleteFile(),
               << "Error deleting " << DTLOGEVAL(filename) );

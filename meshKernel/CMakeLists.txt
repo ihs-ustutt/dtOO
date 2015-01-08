@@ -6,6 +6,7 @@ SET(HEADERS
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dCompoundVolume.h
+  map3dTo3dTriangulated.h
 )
 
 SET(SOURCES
@@ -16,6 +17,7 @@ SET(SOURCES
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dCompoundVolume.cpp
+  map3dTo3dTriangulated.cpp
 )
 
 APPEND_DTOO_SOURCE(meshKernel "${SOURCES}")

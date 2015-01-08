@@ -77,6 +77,9 @@ namespace dtOO {
 		}
   }  	
 	 
+	/**
+   * @todo What if region is not 6-sided?
+   */
 	dtGmshRegion * dtGmshModel::addRegionToGmshModel( map3dTo3d const * const vol ) {
 	  std::vector< int > vId(8,0);// = GModel::getNumVertices()+1;
 		std::vector< int > eId(12, 0);// = GModel::getNumEdges()+1;

@@ -3,15 +3,12 @@
 #include <logMe/logMe.h>
 #include "boundedVolume.h"
 #include "map3dTo3dCompoundVolume.h"
+#include "map3dTo3dTriangulated.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
       return new className; \
     }
-#define __IFRETCUSTOM(className, retClass) \
-  if ( strcmp(str, #className) == 0 ) { \
-    return new retClass; \
-  }
 
 namespace dtOO {
   boundedVolumeFactory::boundedVolumeFactory() {
@@ -24,6 +21,7 @@ namespace dtOO {
     DTINFOWF(create(), << "creating " << str <<  "...");
     
 		__IFRET(map3dTo3dCompoundVolume);
+		__IFRET(map3dTo3dTriangulated);
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

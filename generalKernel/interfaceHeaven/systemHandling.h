@@ -8,14 +8,13 @@ namespace dtOO {
   class systemHandling {
   public:
     dt__CLASSNAME(systemHandling);
-    systemHandling();
-    systemHandling(const systemHandling& orig);
     virtual ~systemHandling();
-    void command(std::string & cmd) const;
-    bool createDirectory( std::string const & dirPath ) const;
-    bool fileExists(std::string const filename) const;
-    void deleteFile( std::string const filename ) const;
+    static void command(std::string & cmd);
+    static bool createDirectory( std::string const & dirPath );
+    static bool fileExists(std::string const filename);
+    static void deleteFile( std::string const filename );
   private:
+    systemHandling();    
   };
 }
 

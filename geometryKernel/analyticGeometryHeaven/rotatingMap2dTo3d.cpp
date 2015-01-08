@@ -102,12 +102,12 @@ namespace dtOO {
 	}
     
 	dtPoint3 rotatingMap2dTo3d::getPoint( float const & uu, float const & vv, float const & ww ) const {
-    dt__WARN_IFWM(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
-		dt__WARN_IFWM(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
-		dt__WARN_IFWM(ww<getWMin(), getPoint(), << ww << " < " << getWMin());
-    dt__WARN_IFWM(uu>getUMax(), getPoint(), << uu << " > " << getUMax()); 
-		dt__WARN_IFWM(vv>getVMax(), getPoint(), << vv << " > " << getVMax());
-		dt__WARN_IFWM(ww>getWMax(), getPoint(), << ww << " > " << getWMax());
+//    dt__WARN_IFWM(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
+//		dt__WARN_IFWM(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
+//		dt__WARN_IFWM(ww<getWMin(), getPoint(), << ww << " < " << getWMin());
+//    dt__WARN_IFWM(uu>getUMax(), getPoint(), << uu << " > " << getUMax()); 
+//		dt__WARN_IFWM(vv>getVMax(), getPoint(), << vv << " > " << getVMax());
+//		dt__WARN_IFWM(ww>getWMax(), getPoint(), << ww << " > " << getWMax());
 		
 		dtAffTransformation3 rot = dtLinearAlgebra::getRotation(_vv, uu*2*M_PI);
 		return rot.transform( _m2d->getPoint(vv, ww) );
