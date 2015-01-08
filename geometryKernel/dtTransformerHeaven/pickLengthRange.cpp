@@ -77,59 +77,59 @@ namespace dtOO {
   }
   
   void pickLengthRange::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
     baseContainer const * const bC,   
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
 		
     _createSplineCurve3d = true;
     _createAnalyticSurface = false;
 
-    if ( hasAttribute("length_one_start", *transformerElementP)
-            && hasAttribute("length_two_start", *transformerElementP)
-            && hasAttribute("length_one_end", *transformerElementP)
-            && hasAttribute("length_two_end", *transformerElementP) ) {
-      if (transformerElementP->hasAttribute("length_one_start")) {
-        _lengthOneStart = muParseString( replaceUsedFunctions(
-                                      getAttributeStr(
+    if ( dtXmlParserBase::hasAttribute("length_one_start", *tE)
+            && dtXmlParserBase::hasAttribute("length_two_start", *tE)
+            && dtXmlParserBase::hasAttribute("length_one_end", *tE)
+            && dtXmlParserBase::hasAttribute("length_two_end", *tE) ) {
+      if (dtXmlParserBase::hasAttribute("length_one_start", *tE)) {
+        _lengthOneStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+                                      dtXmlParserBase::getAttributeStr(
                                         "length_one_start",
-                                        *transformerElementP
+                                        *tE
                                       ),
                                       cValP, 
                                       sFunP) 
                                     );
       }
 
-      if (transformerElementP->hasAttribute("length_two_start")) {
-        _lengthTwoStart = muParseString( replaceUsedFunctions(
-                                      getAttributeStr(
+      if (dtXmlParserBase::hasAttribute("length_two_start", *tE)) {
+        _lengthTwoStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+                                      dtXmlParserBase::getAttributeStr(
                                         "length_two_start",
-                                        *transformerElementP
+                                        *tE
                                       ),
                                       cValP, 
                                       sFunP) 
                                     );
       }
 
-      if (transformerElementP->hasAttribute("length_one_end")) {
-        _lengthOneEnd = muParseString( replaceUsedFunctions(
-                                      getAttributeStr(
+      if (dtXmlParserBase::hasAttribute("length_one_end", *tE)) {
+        _lengthOneEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+                                      dtXmlParserBase::getAttributeStr(
                                         "length_one_end",
-                                        *transformerElementP
+                                        *tE
                                       ),
                                       cValP, 
                                       sFunP) 
                                     );
       }
 
-      if (transformerElementP->hasAttribute("length_two_end")) {
-        _lengthTwoEnd = muParseString( replaceUsedFunctions(
-                                      getAttributeStr(
+      if (dtXmlParserBase::hasAttribute("length_two_end", *tE)) {
+        _lengthTwoEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+                                      dtXmlParserBase::getAttributeStr(
                                         "length_two_end",
-                                        *transformerElementP
+                                        *tE
                                       ),
                                       cValP, 
                                       sFunP) 

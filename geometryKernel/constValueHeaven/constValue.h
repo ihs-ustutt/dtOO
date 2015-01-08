@@ -9,8 +9,7 @@
 #include <interfaceHeaven/renderInterface.h>
 
 namespace dtOO {
-  class constValue : public qtXmlPrimitive,
-                     public labelHandling {
+  class constValue : public labelHandling {
   public:
     dt__CLASSNAME(constValue);    
     constValue();

@@ -50,34 +50,34 @@ namespace dtOO {
   }
   
   void pickMap2dTo3dRangePercent::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
     baseContainer const * const bC,  
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
     
 		_u0 = -1.;
 		_v0 = -1.;
 
-		if ( hasAttribute("parameter_percent_one", *transformerElementP) ) {
+		if ( dtXmlParserBase::hasAttribute("parameter_percent_one", *tE) ) {
 			_u0 
 			= 
-			muParseString( 
-				replaceUsedFunctions(
-					getAttributeStr("parameter_percent_one", *transformerElementP),
+			dtXmlParserBase::muParseString( 
+				dtXmlParserBase::replaceUsedFunctions(
+					dtXmlParserBase::getAttributeStr("parameter_percent_one", *tE),
 					cValP, 
 					sFunP
 				) 
 			);
 		}
-		if ( hasAttribute("parameter_percent_two", *transformerElementP) ) {
+		if ( dtXmlParserBase::hasAttribute("parameter_percent_two", *tE) ) {
 			_v0
 			= 
-			muParseString( 
-				replaceUsedFunctions(
-					getAttributeStr("parameter_percent_two", *transformerElementP),
+			dtXmlParserBase::muParseString( 
+				dtXmlParserBase::replaceUsedFunctions(
+					dtXmlParserBase::getAttributeStr("parameter_percent_two", *tE),
 					cValP, 
 					sFunP
 				) 

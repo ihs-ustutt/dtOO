@@ -17,8 +17,7 @@ namespace dtOO {
   class analyticGeometry;
   class analyticFunction;
   
-  class dtTransformer : public dtXmlParserBase,
-                        public labelHandling {
+  class dtTransformer : public labelHandling {
   public:
     dt__CLASSNAME(dtTransformer);
     dtTransformer();
@@ -27,14 +26,14 @@ namespace dtOO {
     virtual dtTransformer * clone( void ) const = 0;
     virtual dtTransformer * create( void ) const = 0;    
     virtual void init( 
-      QDomElement const * transformerElementP, 
+      QDomElement const * tE, 
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP,
       vectorHandling< analyticGeometry * > const * const depAGeoP 
     );
     virtual void init( 
-      QDomElement const * transformerElementP,
+      QDomElement const * tE,
       baseContainer const * const bC, 
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP

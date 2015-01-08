@@ -63,31 +63,31 @@ namespace dtOO {
   }
 
   void analyticAddNormal::init( 
-		QDomElement const * transformerElementP, 
+		QDomElement const * tE, 
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP);
+    dtTransformer::init(tE, bC, cValP, sFunP);
 				
     //
     // get functions
     //     
-		if ( hasAttribute("function_label", *transformerElementP) ) {
+		if ( dtXmlParserBase::hasAttribute("function_label", *tE) ) {
 			handleAnalyticFunction(
 				"function_label", 
-				sFunP->get( getAttributeStr("function_label", *transformerElementP) ) 
+				sFunP->get( dtXmlParserBase::getAttributeStr("function_label", *tE) ) 
 			);
 		}
 		//
 		// set vector
 		//
 		_nf = dtVector3(0,0,0);
-		if ( hasAttribute("scale_vector", *transformerElementP) ) {
+		if ( dtXmlParserBase::hasAttribute("scale_vector", *tE) ) {
 			handleDtVector3(
 				"scale_vector",
-				getDtVector3(
-					getAttributeStr("scale_vector", *transformerElementP), bC 
+				dtXmlParserBase::getDtVector3(
+					dtXmlParserBase::getAttributeStr("scale_vector", *tE), bC 
 				)
 			);
 		}

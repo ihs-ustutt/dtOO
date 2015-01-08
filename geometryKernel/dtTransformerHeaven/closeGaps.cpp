@@ -90,31 +90,31 @@ namespace dtOO {
   }
 
   void closeGaps::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
 		
     //
     // check input
     //
-    bool hasVStart = hasAttribute("parameter_two_start_part_label", *transformerElementP);
-    bool hasVEnd = hasAttribute("parameter_two_end_part_label", *transformerElementP);
+    bool hasVStart = dtXmlParserBase::hasAttribute("parameter_two_start_part_label", *tE);
+    bool hasVEnd = dtXmlParserBase::hasAttribute("parameter_two_end_part_label", *tE);
     
     //
     // get pointers to parts
     //
     if (hasVStart && hasVEnd) {
-      std::string vStartLabel = getAttributeStr(
+      std::string vStartLabel = dtXmlParserBase::getAttributeStr(
                                   "parameter_two_start_part_label", 
-                                  *transformerElementP
+                                  *tE
                                 );
-      std::string vEndLabel = getAttributeStr(
+      std::string vEndLabel = dtXmlParserBase::getAttributeStr(
                                   "parameter_two_end_part_label", 
-                                  *transformerElementP
+                                  *tE
                                 );      
       for (int ii = 0; ii<depAGeoP->size();ii++) {
          if ( depAGeoP->at(ii)->getLabel() == vStartLabel ) {

@@ -60,25 +60,25 @@ namespace dtOO {
   }
 
   void projectOnSurface::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
     
-    if (hasAttribute( "part_label", *transformerElementP) ) {
+    if (dtXmlParserBase::hasAttribute( "part_label", *tE) ) {
 			_aS.reset(			
 				analyticSurface::ConstDownCast(
-					depAGeoP->get(getAttributeStr("part_label", *transformerElementP))->clone()
+					depAGeoP->get(dtXmlParserBase::getAttributeStr("part_label", *tE))->clone()
 				)
 			);
     }
     else {
       dt__THROW(
 				init(), 
-				<< DTLOGEVAL(hasAttribute( "part_label", *transformerElementP))
+				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "part_label", *tE))
 			);
     }
   }

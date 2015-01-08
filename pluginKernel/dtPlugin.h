@@ -15,8 +15,7 @@ namespace dtOO {
   class boundedVolume;
   
   class dtPlugin : public labelHandling,
-                   public optionHandling,
-                   public dtXmlParserBase {
+                   public optionHandling {
   public:
     dt__CLASSNAME(dtPlugin);
     dtPlugin();

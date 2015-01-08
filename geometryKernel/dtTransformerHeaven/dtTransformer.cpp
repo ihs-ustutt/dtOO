@@ -19,25 +19,25 @@ namespace dtOO {
 	}
 
   void dtTransformer::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
     baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-		if ( hasAttribute("label", *transformerElementP) ) {
-			labelHandling::setLabel(getAttributeStr("label", *transformerElementP));
+		if ( dtXmlParserBase::hasAttribute("label", *tE) ) {
+			labelHandling::setLabel(dtXmlParserBase::getAttributeStr("label", *tE));
 		}
   }
     
   void dtTransformer::init( 
-	  QDomElement const * transformerElementP,
+	  QDomElement const * tE,
 	  baseContainer const * const bC, 
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {
-		if ( hasAttribute("label", *transformerElementP) ) {
-			labelHandling::setLabel(getAttributeStr("label", *transformerElementP));
+		if ( dtXmlParserBase::hasAttribute("label", *tE) ) {
+			labelHandling::setLabel(dtXmlParserBase::getAttributeStr("label", *tE));
 		}
   }
   

@@ -77,59 +77,59 @@ namespace dtOO {
   }
   
   void pickLengthPercentRange::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
     baseContainer const * const bC,  
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
 		
     _createSplineCurve3d = true;
     _createAnalyticSurface = false;
 
-    if ( hasAttribute("length_percent_one_start", *transformerElementP)
-            && hasAttribute("length_percent_two_start", *transformerElementP)
-            && hasAttribute("length_percent_one_end", *transformerElementP)
-            && hasAttribute("length_percent_two_end", *transformerElementP) ) {
-      if (transformerElementP->hasAttribute("length_percent_one_start")) {
-        _lengthPercentOneStart = muParseString( replaceUsedFunctions(
-                                      getAttributeStr(
+    if ( dtXmlParserBase::hasAttribute("length_percent_one_start", *tE)
+            && dtXmlParserBase::hasAttribute("length_percent_two_start", *tE)
+            && dtXmlParserBase::hasAttribute("length_percent_one_end", *tE)
+            && dtXmlParserBase::hasAttribute("length_percent_two_end", *tE) ) {
+      if (dtXmlParserBase::hasAttribute("length_percent_one_start", *tE)) {
+        _lengthPercentOneStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+                                      dtXmlParserBase::getAttributeStr(
                                         "length_percent_one_start",
-                                        *transformerElementP
+                                        *tE
                                       ),
                                       cValP, 
                                       sFunP) 
                                     );
       }
 
-      if (transformerElementP->hasAttribute("length_percent_two_start")) {
-        _lengthPercentTwoStart = muParseString( replaceUsedFunctions(
-                                      getAttributeStr(
+      if (dtXmlParserBase::hasAttribute("length_percent_two_start", *tE)) {
+        _lengthPercentTwoStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+                                      dtXmlParserBase::getAttributeStr(
                                         "length_percent_two_start",
-                                        *transformerElementP
+                                        *tE
                                       ),
                                       cValP, 
                                       sFunP) 
                                     );
       }
 
-      if (transformerElementP->hasAttribute("length_percent_one_end")) {
-        _lengthPercentOneEnd = muParseString( replaceUsedFunctions(
-                                      getAttributeStr(
+      if (dtXmlParserBase::hasAttribute("length_percent_one_end", *tE)) {
+        _lengthPercentOneEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+                                      dtXmlParserBase::getAttributeStr(
                                         "length_percent_one_end",
-                                        *transformerElementP
+                                        *tE
                                       ),
                                       cValP, 
                                       sFunP) 
                                     );
       }
 
-      if (transformerElementP->hasAttribute("length_percent_two_end")) {
-        _lengthPercentTwoEnd = muParseString( replaceUsedFunctions(
-                                      getAttributeStr(
+      if (dtXmlParserBase::hasAttribute("length_percent_two_end", *tE)) {
+        _lengthPercentTwoEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+                                      dtXmlParserBase::getAttributeStr(
                                         "length_percent_two_end",
-                                        *transformerElementP
+                                        *tE
                                       ),
                                       cValP, 
                                       sFunP) 

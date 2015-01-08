@@ -13,7 +13,6 @@ namespace dtOO {
   class qtXmlPrimitive : public stringPrimitive {
   public:
     dt__CLASSNAME(qtXmlPrimitive);  
-    qtXmlPrimitive();
     virtual ~qtXmlPrimitive();  
     static QDomElement goToLastBuilder( QDomElement const element );
     static QDomElement getBuilderSibling( QDomElement const element );
@@ -87,6 +86,8 @@ namespace dtOO {
       std::string const with, 
       QDomElement * const element 
     );    
+  protected:
+    qtXmlPrimitive();        
   private:
     static std::vector< QDomAttr > getAttributeVector( QDomElement const element );
   };

@@ -29,10 +29,10 @@ namespace dtOO {
     _optionName.clear();
     _optionValue.clear();
 
-    QDomElement option = qtXmlPrimitive().getChild("option", *wElement);
+    QDomElement option = qtXmlPrimitive::getChild("option", *wElement);
     while ( !option.isNull() ) {
-      std::string optionName = qtXmlPrimitive().getAttributeStr("name", option);
-      std::string optionValue = qtXmlPrimitive().getAttributeStr("value", option);
+      std::string optionName = qtXmlPrimitive::getAttributeStr("name", option);
+      std::string optionValue = qtXmlPrimitive::getAttributeStr("value", option);
       optionHandling::setOption(optionName, optionValue);
       option = option.nextSiblingElement("option");
     }
@@ -107,20 +107,19 @@ namespace dtOO {
     optionGroup group;
     
     for (int ii=0;ii<_optionName.size();ii++) {
-      stringPrimitive sP;
-      if ( sP.getStringBetween("[", "]", _optionName[ii]) == name ) {
+      if ( stringPrimitive::getStringBetween("[", "]", _optionName[ii]) == name ) {
         std::string optionNameTwin = _optionName[ii];
-        sP.getStringBetweenAndRemove( "[", "]", &(optionNameTwin) );
+        stringPrimitive::getStringBetweenAndRemove( "[", "]", &(optionNameTwin) );
         optionGroupElement toAdd;
-        while ( sP.stringContains(".", optionNameTwin) ) {
+        while ( stringPrimitive::stringContains(".", optionNameTwin) ) {
           toAdd.first.push_back(
-            sP.getStringBetweenAndRemove( "", ".", &(optionNameTwin) )
+            stringPrimitive::getStringBetweenAndRemove( "", ".", &(optionNameTwin) )
           );
         }
         toAdd.first.push_back(
           optionNameTwin
         );
-        toAdd.second = sP.stringToFloat( _optionValue[ii] );
+        toAdd.second = stringPrimitive::stringToFloat( _optionValue[ii] );
         group.push_back(toAdd);
       }
     }
@@ -131,20 +130,19 @@ namespace dtOO {
     optionGroup group;
     
     for (int ii=0;ii<_optionName.size();ii++) {
-      stringPrimitive sP;
-      if ( sP.getStringBetween("[", "]", _optionName[ii]) == name ) {
+      if ( stringPrimitive::getStringBetween("[", "]", _optionName[ii]) == name ) {
         std::string optionNameTwin = _optionName[ii];
-        sP.getStringBetweenAndRemove( "[", "]", &(optionNameTwin) );
+        stringPrimitive::getStringBetweenAndRemove( "[", "]", &(optionNameTwin) );
         optionGroupElement toAdd;
-        while ( sP.stringContains(".", optionNameTwin) ) {
+        while ( stringPrimitive::stringContains(".", optionNameTwin) ) {
           toAdd.first.push_back(
-            sP.getStringBetweenAndRemove( "", ".", &(optionNameTwin) )
+            stringPrimitive::getStringBetweenAndRemove( "", ".", &(optionNameTwin) )
           );
         }
         toAdd.first.push_back(
           optionNameTwin
         );
-        toAdd.second = sP.stringToInt( _optionValue[ii] );
+        toAdd.second = stringPrimitive::stringToInt( _optionValue[ii] );
         group.push_back(toAdd);
       }
     }

@@ -119,56 +119,56 @@ namespace dtOO {
   }
 
   void offset::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
     baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
 		
-    if (transformerElementP->hasAttribute("parameter_one_offset_percent")) {
-      _paraOneOffsetPercent = muParseString( 
-                                replaceUsedFunctions(
-                                  getAttributeStr(
+    if (dtXmlParserBase::hasAttribute("parameter_one_offset_percent", *tE)) {
+      _paraOneOffsetPercent = dtXmlParserBase::muParseString( 
+                                dtXmlParserBase::replaceUsedFunctions(
+                                  dtXmlParserBase::getAttributeStr(
                                     "parameter_one_offset_percent", 
-                                    *transformerElementP
+                                    *tE
                                   ),
                                   cValP, 
                                   sFunP
                                 ) 
                               );
     }
-    if (transformerElementP->hasAttribute("parameter_two_offset_percent")) {
-      _paraTwoOffsetPercent = muParseString( 
-                                replaceUsedFunctions(
-                                  getAttributeStr(
+    if (dtXmlParserBase::hasAttribute("parameter_two_offset_percent", *tE)) {
+      _paraTwoOffsetPercent = dtXmlParserBase::muParseString( 
+                                dtXmlParserBase::replaceUsedFunctions(
+                                  dtXmlParserBase::getAttributeStr(
                                     "parameter_two_offset_percent", 
-                                    *transformerElementP
+                                    *tE
                                   ),
                                   cValP, 
                                   sFunP
                                 ) 
                               );
     }  
-    if (transformerElementP->hasAttribute("number_pieces")) {
-      _nPieces = muParseString( 
-                   replaceUsedFunctions(
-                     getAttributeStr(
+    if (dtXmlParserBase::hasAttribute("number_pieces", *tE)) {
+      _nPieces = dtXmlParserBase::muParseString( 
+                   dtXmlParserBase::replaceUsedFunctions(
+                     dtXmlParserBase::getAttributeStr(
                        "number_pieces", 
-                       *transformerElementP
+                       *tE
                      ),
                      cValP, 
                      sFunP
                    ) 
                  );
     }  
-    if (transformerElementP->hasAttribute("x_offset_percent")) {
-      _xOffset = muParseString( 
-                          replaceUsedFunctions(
-                            getAttributeStr(
+    if (dtXmlParserBase::hasAttribute("x_offset_percent", *tE)) {
+      _xOffset = dtXmlParserBase::muParseString( 
+                          dtXmlParserBase::replaceUsedFunctions(
+                            dtXmlParserBase::getAttributeStr(
                               "x_offset_percent", 
-                              *transformerElementP
+                              *tE
                             ),
                             cValP, 
                             sFunP
@@ -176,12 +176,12 @@ namespace dtOO {
                         );
       _xyPercent = true;
     }
-    if (transformerElementP->hasAttribute("y_offset_percent")) {
-      _yOffset = muParseString( 
-                          replaceUsedFunctions(
-                            getAttributeStr(
+    if (dtXmlParserBase::hasAttribute("y_offset_percent", *tE)) {
+      _yOffset = dtXmlParserBase::muParseString( 
+                          dtXmlParserBase::replaceUsedFunctions(
+                            dtXmlParserBase::getAttributeStr(
                               "y_offset_percent", 
-                              *transformerElementP
+                              *tE
                             ),
                             cValP, 
                             sFunP
@@ -189,36 +189,36 @@ namespace dtOO {
                         );
       _xyPercent = true;
     }      
-    if (transformerElementP->hasAttribute("x_offset")) {
-      _xOffset = muParseString( 
-                          replaceUsedFunctions(
-                            getAttributeStr(
+    if (dtXmlParserBase::hasAttribute("x_offset", *tE)) {
+      _xOffset = dtXmlParserBase::muParseString( 
+                          dtXmlParserBase::replaceUsedFunctions(
+                            dtXmlParserBase::getAttributeStr(
                               "x_offset", 
-                              *transformerElementP
+                              *tE
                             ),
                             cValP, 
                             sFunP
                           ) 
                         );
     }
-    if (transformerElementP->hasAttribute("y_offset")) {
-      _yOffset = muParseString( 
-                          replaceUsedFunctions(
-                            getAttributeStr(
+    if (dtXmlParserBase::hasAttribute("y_offset", *tE)) {
+      _yOffset = dtXmlParserBase::muParseString( 
+                          dtXmlParserBase::replaceUsedFunctions(
+                            dtXmlParserBase::getAttributeStr(
                               "y_offset", 
-                              *transformerElementP
+                              *tE
                             ),
                             cValP, 
                             sFunP
                           ) 
                         );
     }      
-    if (transformerElementP->hasAttribute("normal_offset")) {
-      _normalOffset = muParseString( 
-                          replaceUsedFunctions(
-                            getAttributeStr(
+    if (dtXmlParserBase::hasAttribute("normal_offset", *tE)) {
+      _normalOffset = dtXmlParserBase::muParseString( 
+                          dtXmlParserBase::replaceUsedFunctions(
+                            dtXmlParserBase::getAttributeStr(
                               "normal_offset", 
-                              *transformerElementP
+                              *tE
                             ),
                             cValP, 
                             sFunP

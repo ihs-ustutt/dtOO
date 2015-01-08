@@ -105,19 +105,19 @@ namespace dtOO {
   }
 
   void uVw_phirMs::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
     baseContainer const * const bC,  
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
 		
-		if ( hasChild("Vector_3", *transformerElementP) ) {
-			QDomElement v3El = getChild("Vector_3", *transformerElementP);
+		if ( dtXmlParserBase::hasChild("Vector_3", *tE) ) {
+			QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
 			handleDtVector3(
 				"Vector_3", 
-				getDtVector3(&v3El, bC, cValP, sFunP, depAGeoP)
+				dtXmlParserBase::getDtVector3(&v3El, bC, cValP, sFunP, depAGeoP)
 			);
 		}
 		else {
@@ -125,7 +125,7 @@ namespace dtOO {
 		}
 		handleAnalyticGeometry(
 			"part_label", 
-			depAGeoP->get(getAttributeStr("part_label", *transformerElementP))
+			depAGeoP->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
 		);
   }
   

@@ -42,7 +42,7 @@ namespace dtOO {
     //
     // set label of boundenVolume
     //
-    labelHandling::setLabel( getAttributeStr("label", element ) );
+    labelHandling::setLabel( qtXmlPrimitive::getAttributeStr("label", element ) );
     
     //
     // set options
@@ -52,13 +52,17 @@ namespace dtOO {
     //
     // check for transformers (bVObservers)
     //
-    if ( hasSibling("transformer", element) ) {      
-      std::vector< QDomElement > transElement = getSiblingVector("transformer", element);
+    if ( qtXmlPrimitive::hasSibling("transformer", element) ) {      
+      std::vector< QDomElement > transElement 
+			= 
+			qtXmlPrimitive::getSiblingVector("transformer", element);
       
       for (int ii=0; ii<transElement.size(); ii++) {
         bVOInterface * bVI
         =
-        bVOInterfaceFactory::create(getAttributeStr("name", transElement[ii]));
+        bVOInterfaceFactory::create(
+					qtXmlPrimitive::getAttributeStr("name", transElement[ii])
+				);
         bVI->init(transElement[ii], cValP, sFunP, depAGeoP, depBVolP, this);
         this->attachBVObserver( bVI );
       }

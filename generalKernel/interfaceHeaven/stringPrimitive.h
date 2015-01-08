@@ -9,9 +9,7 @@
 namespace dtOO {
   class stringPrimitive {
   public:
-    dt__CLASSNAME(stringPrimitive);     
-    stringPrimitive();
-    stringPrimitive(const stringPrimitive& orig);
+    dt__CLASSNAME(stringPrimitive);          
     virtual ~stringPrimitive();
     static float stringToFloat(std::string const value);
     static std::string floatToString(float const value);
@@ -24,8 +22,9 @@ namespace dtOO {
     static std::string stringRemoveSingle(std::string const pattern, std::string const str);
 	  static std::vector< std::string > convertToStringArray(std::string const signStart, std::string const signEnd, std::string const str);
     static std::string replaceStringInString(std::string const toReplace, std::string const with, std::string const str);
+  protected:
+    stringPrimitive();       
   private:
-
   };
 }
 #endif	/* STRINGPRIMITIVE_H */

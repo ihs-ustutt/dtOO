@@ -23,7 +23,6 @@ namespace dtOO {
   class boundedVolume : public bVOSubject,
                         public labelHandling,
                         public optionHandling,
-                        public qtXmlPrimitive,
                         public renderInterface {
   public:
     dt__CLASSNAME(boundedVolume);

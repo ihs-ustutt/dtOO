@@ -88,33 +88,33 @@ namespace dtOO {
   }
 
   void rotate::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
     baseContainer const * const bC,   
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
 		
-    if (transformerElementP->hasAttribute("origin")) {
+    if (dtXmlParserBase::hasAttribute("origin", *tE)) {
       _origin 
 			= 
-			getDtPoint3(getAttributeStr("origin", *transformerElementP), bC );
+			dtXmlParserBase::getDtPoint3(dtXmlParserBase::getAttributeStr("origin", *tE), bC );
     }
-    if (transformerElementP->hasAttribute("rotation_vector")) {
+    if (dtXmlParserBase::hasAttribute("rotation_vector", *tE)) {
       _rotVector
 			= 
-			getDtVector3(
-				getAttributeStr("rotation_vector", *transformerElementP), 
+			dtXmlParserBase::getDtVector3(
+				dtXmlParserBase::getAttributeStr("rotation_vector", *tE), 
 				bC 
 			);
     }
-    if (transformerElementP->hasAttribute("angle")) {
+    if (dtXmlParserBase::hasAttribute("angle", *tE)) {
       _angle 
 			= 
-			getAttributeFloatMuParse(
+			dtXmlParserBase::getAttributeFloatMuParse(
 		    "angle", 
-				*transformerElementP, 
+				*tE, 
 				cValP, 
 				sFunP
 			);

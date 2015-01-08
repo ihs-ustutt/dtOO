@@ -16,7 +16,6 @@ namespace dtOO {
   class dtXmlParserBase : public qtXmlBase {
   public:  
     dt__CLASSNAME(dtXmlParserBase);
-    dtXmlParserBase();
     virtual ~dtXmlParserBase();
   private:
     static void createBasic(
@@ -225,6 +224,8 @@ namespace dtOO {
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP
     ); 
+  protected:
+    dtXmlParserBase();    
   };
 }
 #endif	/* DTXMLPARSERBASE_H */

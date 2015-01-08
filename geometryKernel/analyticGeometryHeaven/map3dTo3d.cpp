@@ -275,18 +275,18 @@ namespace dtOO {
 		addInfo.push_back( "tolerance = ");
     addInfo[0] 
 		+= 
-		stringPrimitive().floatToString(
+		stringPrimitive::floatToString(
 		  staticPropertiesHandler::getInstance()->getOptionFloat(
         "reparamInVolume_precision"
       )
 		);  
 		addInfo.push_back(
 			"p_xyz = ("
-			+ stringPrimitive().floatToString(ppXYZ.x()) 
+			+ stringPrimitive::floatToString(ppXYZ.x()) 
 			+ ", " 
-			+ stringPrimitive().floatToString(ppXYZ.y())
+			+ stringPrimitive::floatToString(ppXYZ.y())
 			+ ", "
-			+ stringPrimitive().floatToString(ppXYZ.z())
+			+ stringPrimitive::floatToString(ppXYZ.z())
 			+ ")"
 		);
 

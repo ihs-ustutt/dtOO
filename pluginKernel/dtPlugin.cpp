@@ -25,7 +25,9 @@ namespace dtOO {
     //
     // set label of dtPlugin
     //
-    labelHandling::setLabel( getAttributeStr("label", element ) );
+    labelHandling::setLabel( 
+		  dtXmlParserBase::getAttributeStr("label", element ) 
+		);
     
     //
     // set options

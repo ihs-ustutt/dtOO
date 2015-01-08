@@ -72,23 +72,23 @@ namespace dtOO {
   }
 
   void conformalMapping::init( 
-	  QDomElement const * transformerElementP, 
+	  QDomElement const * tE, 
     baseContainer const * const bC,  
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
 		
     //initialize with default values
     _rotSplineP = NULL;
     _tolerance = 0.01;
-    if ( hasAttribute("tolerance", *transformerElementP) ) {
+    if ( dtXmlParserBase::hasAttribute("tolerance", *tE) ) {
       handleFloat(
         "tolerance", 
-        muParseString( 
-          replaceUsedFunctions(
-            getAttributeStr("tolerance", *transformerElementP), 
+        dtXmlParserBase::muParseString( 
+          dtXmlParserBase::replaceUsedFunctions(
+            dtXmlParserBase::getAttributeStr("tolerance", *tE), 
             cValP, 
             sFunP
           ) 
@@ -104,7 +104,7 @@ namespace dtOO {
     //
     dt__FORALL(*depAGeoP, ii,
       std::string geoName = depAGeoP->at(ii)->getLabel();
-      if ( geoName == getAttributeStr("part_label", *transformerElementP ) ) {
+      if ( geoName == dtXmlParserBase::getAttributeStr("part_label", *tE ) ) {
         handleAnalyticGeometry("part_label", depAGeoP->at(ii));
         break;
       }

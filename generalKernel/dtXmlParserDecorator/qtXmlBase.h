@@ -16,9 +16,7 @@ namespace dtOO {
   class qtXmlBase : public qtXmlPrimitive {
   public:  
     dt__CLASSNAME(qtXmlBase);  
-    qtXmlBase();
     virtual ~qtXmlBase();  
-  protected:
     /**
      * replace const values and functions with numeric values
      */  
@@ -49,6 +47,8 @@ namespace dtOO {
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP 
     );
+  protected:
+    qtXmlBase();    
   };
 }
 #endif	/* QTXMLBASE_H */

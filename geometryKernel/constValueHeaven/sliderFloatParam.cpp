@@ -34,19 +34,19 @@ namespace dtOO {
     //
     // const Value
     //
-    QDomElement cValElement = createElement(doc, "constValue");
+    QDomElement cValElement = qtXmlPrimitive::createElement(doc, "constValue");
     cValElement.setAttribute("label", getLabel().c_str());
 
     //
     // builder
     //
-    QDomElement builderElement = createElement(doc, "builder");
+    QDomElement builderElement = qtXmlPrimitive::createElement(doc, "builder");
     builderElement.setAttribute("name", "sliderFloatParam");
     
     //
     //float
     //
-    QDomElement floatElement = createElement(doc, "float");
+    QDomElement floatElement = qtXmlPrimitive::createElement(doc, "float");
     floatElement.setAttribute("value", getValue());
     floatElement.setAttribute("min", _min);
     floatElement.setAttribute("max", _max);

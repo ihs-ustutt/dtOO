@@ -177,47 +177,47 @@ namespace dtOO {
   }
 	
 	void predefinedExtension::init( 
-		QDomElement const * transformerElementP, 
+		QDomElement const * tE, 
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
 		vectorHandling< analyticGeometry * > const * const depAGeoP 
 	) {
-    init(transformerElementP, bC, cValP, sFunP);
+    init(tE, bC, cValP, sFunP);
 	}
 		
   void predefinedExtension::init( 
-	  QDomElement const * transformerElementP,
+	  QDomElement const * tE,
 		baseContainer const * const bC,
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP 
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP);
+    dtTransformer::init(tE, bC, cValP, sFunP);
     //
     // get input
     //
-		_alphaIn = muParseString( 
-								 replaceUsedFunctions(
-									 getAttributeStr("alpha_in", *transformerElementP),
+		_alphaIn = dtXmlParserBase::muParseString( 
+								 dtXmlParserBase::replaceUsedFunctions(
+									 dtXmlParserBase::getAttributeStr("alpha_in", *tE),
 									 cValP, 
 									 sFunP
 								 ) 
 							 );
-		_yIn = muParseString( 
-						 replaceUsedFunctions(
-						   getAttributeStr("y_in", *transformerElementP), cValP, sFunP
+		_yIn = dtXmlParserBase::muParseString( 
+						 dtXmlParserBase::replaceUsedFunctions(
+						   dtXmlParserBase::getAttributeStr("y_in", *tE), cValP, sFunP
 						 ) 
 					 );
-		_alphaOut = muParseString( 
-									replaceUsedFunctions(
-										getAttributeStr("alpha_out", *transformerElementP),
+		_alphaOut = dtXmlParserBase::muParseString( 
+									dtXmlParserBase::replaceUsedFunctions(
+										dtXmlParserBase::getAttributeStr("alpha_out", *tE),
 										cValP, 
 										sFunP
 									) 
 								);
-		_yOut = muParseString( 
-							replaceUsedFunctions(
-								getAttributeStr("y_out", *transformerElementP), cValP, sFunP
+		_yOut = dtXmlParserBase::muParseString( 
+							dtXmlParserBase::replaceUsedFunctions(
+								dtXmlParserBase::getAttributeStr("y_out", *tE), cValP, sFunP
 							) 
 						);     
   }

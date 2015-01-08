@@ -3,7 +3,7 @@
 #include <progHelper.h>
 
 namespace dtOO {
-  constValue::constValue() {
+  constValue::constValue() : labelHandling() {
   }
 
   constValue::constValue( constValue const & orig ) : labelHandling(orig) {
@@ -13,8 +13,7 @@ namespace dtOO {
   }
 
   void constValue::setRange(float const min, float const max) {
-    DTWARNINGWF(setRange(),
-            << "Call on constValue.");
+    DTWARNINGWF(setRange(), << "Call on constValue.");
   }
 
   float constValue::getValue(void) const {

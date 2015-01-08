@@ -22,7 +22,7 @@ namespace dtOO {
 	}
 	
   void conformalMappingStartFromPoint::init( 
-		QDomElement const * transformerElementP, 
+		QDomElement const * tE, 
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP,
@@ -31,14 +31,14 @@ namespace dtOO {
     //
     // call on base class
     //
-    conformalMapping::init(transformerElementP, bC, cValP, sFunP, depAGeoP);
+    conformalMapping::init(tE, bC, cValP, sFunP, depAGeoP);
             
     //
     // init me
     //
-    bool hasOffsetZ = hasAttribute("offset_z", *transformerElementP);
-    bool hasOffsetM = hasAttribute("offset_m", *transformerElementP);
-    bool hasOffsetPhi = hasAttribute("offset_phi", *transformerElementP);
+    bool hasOffsetZ = dtXmlParserBase::hasAttribute("offset_z", *tE);
+    bool hasOffsetM = dtXmlParserBase::hasAttribute("offset_m", *tE);
+    bool hasOffsetPhi = dtXmlParserBase::hasAttribute("offset_phi", *tE);
     
     if (hasOffsetZ && hasOffsetM) {
         dt__THROW(init(), 
@@ -48,9 +48,9 @@ namespace dtOO {
     float offsetZ = 0.;    
     /** @xmlAttribute{offset_z, float, Offset in \f$z\f$-Coordinate} */
     if ( hasOffsetZ ) {
-       offsetZ = muParseString( 
-                   replaceUsedFunctions(
-                     getAttributeStr("offset_z", *transformerElementP), 
+       offsetZ = dtXmlParserBase::muParseString( 
+                   dtXmlParserBase::replaceUsedFunctions(
+                     dtXmlParserBase::getAttributeStr("offset_z", *tE), 
                      cValP, 
                      sFunP
                    ) 
@@ -59,9 +59,9 @@ namespace dtOO {
     float offsetPhi = 0.;
     /** @xmlAttribute{offset_phi, float, Offset in \f$\phi\f$-Coordinate} */
     if ( hasOffsetPhi ) {
-      offsetPhi = muParseString( 
-                    replaceUsedFunctions(
-                      getAttributeStr("offset_phi", *transformerElementP), 
+      offsetPhi = dtXmlParserBase::muParseString( 
+                    dtXmlParserBase::replaceUsedFunctions(
+                      dtXmlParserBase::getAttributeStr("offset_phi", *tE), 
                       cValP, 
                       sFunP
                     ) 
@@ -70,9 +70,9 @@ namespace dtOO {
     float offsetM = 0.;
     /** @xmlAttribute{offset_m, float, Offset in \f$m\f$-Coordinate} */
     if ( hasOffsetM ) {
-      offsetM = muParseString( 
-                    replaceUsedFunctions(
-                      getAttributeStr("offset_m", *transformerElementP), 
+      offsetM = dtXmlParserBase::muParseString( 
+                    dtXmlParserBase::replaceUsedFunctions(
+                      dtXmlParserBase::getAttributeStr("offset_m", *tE), 
                       cValP, 
                       sFunP
                     ) 

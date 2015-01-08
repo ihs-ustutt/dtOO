@@ -42,8 +42,8 @@ namespace dtOO {
     //
 		// region
 		//		
-    QDomElement wElement = getChild("analyticGeometry", element);
-    std::string label = getAttributeStr("label", wElement);
+    QDomElement wElement = qtXmlPrimitive::getChild("analyticGeometry", element);
+    std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
 		std::string pos = "volume";
     addId("region", pos);
 		//

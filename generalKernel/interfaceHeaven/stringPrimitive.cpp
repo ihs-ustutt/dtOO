@@ -9,9 +9,6 @@ namespace dtOO {
   stringPrimitive::stringPrimitive() {
   }
 
-  stringPrimitive::stringPrimitive(const stringPrimitive& orig) {
-  }
-
   stringPrimitive::~stringPrimitive() {
   }
 

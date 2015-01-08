@@ -74,33 +74,33 @@ namespace dtOO {
   }
   
   void pickVec3dTwoDRangePercent::init( 
-	  QDomElement const * transformerElementP,
+	  QDomElement const * tE,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {
-    dtTransformer::init(transformerElementP, bC, cValP, sFunP);
+    dtTransformer::init(tE, bC, cValP, sFunP);
     
 		_x0 = -1.;
 		_x1 = -1.;
 
-		if ( hasAttribute("x_one_percent", *transformerElementP) ) {
+		if ( dtXmlParserBase::hasAttribute("x_one_percent", *tE) ) {
 			_x0 
 			= 
-			muParseString( 
-				replaceUsedFunctions(
-					getAttributeStr("x_one_percent", *transformerElementP),
+			dtXmlParserBase::muParseString( 
+				dtXmlParserBase::replaceUsedFunctions(
+					dtXmlParserBase::getAttributeStr("x_one_percent", *tE),
 					cValP, 
 					sFunP
 				) 
 			);
 		}
-		if ( hasAttribute("x_two_percent", *transformerElementP) ) {
+		if ( dtXmlParserBase::hasAttribute("x_two_percent", *tE) ) {
 			_x1
 			= 
-			muParseString( 
-				replaceUsedFunctions(
-					getAttributeStr("x_two_percent", *transformerElementP),
+			dtXmlParserBase::muParseString( 
+				dtXmlParserBase::replaceUsedFunctions(
+					dtXmlParserBase::getAttributeStr("x_two_percent", *tE),
 					cValP, 
 					sFunP
 				) 
