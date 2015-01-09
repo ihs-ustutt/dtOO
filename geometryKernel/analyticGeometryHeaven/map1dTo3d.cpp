@@ -1,8 +1,17 @@
 #include "map1dTo3d.h"
 #include "interfaceHeaven/staticPropertiesHandler.h"
+#include "interfaceHeaven/floatHandling.h"
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <solid3dLine.h>
+
+#include <RConfigure.h>
+#include <Rtypes.h>
+#include <Math/GSLMinimizer.h>
+#include <Math/GSLRootFinder.h>
+#include <Math/RootFinderAlgorithms.h>
+#include <Math/Functor.h>
+#include <GSLError.h>
 
 namespace dtOO { 
   map1dTo3d::map1dTo3d() : analyticGeometry() {
@@ -82,6 +91,10 @@ namespace dtOO {
     return getMax(0);
   }
 	
+	float map1dTo3d::length( void ) const {
+		return l_u(getUMax());
+	}
+	
 	float map1dTo3d::l_u( float const & uu, int const & nP ) const {
 		std::vector<dtPoint2> glp = dtLinearAlgebra::getGaussLegendre(nP);
 		float L = 0.0;
@@ -100,32 +113,59 @@ namespace dtOO {
 	}
 
 	float map1dTo3d::l_u( float const & uu ) const {
-    std::vector<float> itVal;       
-    std::vector< std::string > header;
-    header.push_back("l0");
-    header.push_back("l1");
-    header.push_back("eps");		
+		return l_u(uu, 20);	
+	}	
+
+	double map1dTo3d::funValue(const double xx ) const {	
+		float ll = l_u( static_cast<float>(xx) );
+		return static_cast< double >( ll -_tmpL );
+	}
+	
+  float map1dTo3d::u_l( float const & ll ) const {
+		bool mustIterate = true;
+		float lMax = length();
+		float theRoot;
+
+		if ( floatHandling::isSmall(ll) || (ll<0.) ) { 
+			mustIterate = false;
+			theRoot = getUMin();
+		}
+		else if ( floatHandling::isSmall(lMax-ll) || (ll>lMax) ) {
+			mustIterate = false;
+			theRoot = getUMax();
+		}
 		
-	  int glpOrder[16] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 20};
-		float l0 = l_u(uu, 1);
-		float l1 = 0.;
-		float const geoRes 
-		= 
-		staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution");
-		for (int ii=0; ii<16; ii++) {
-		  l1 = l_u(uu, glpOrder[ii]);	
-			float eps = fabs(l1-l0)/l1;
-			l0 = l1;
-			itVal.push_back(l0);
-			itVal.push_back(l1);
-			itVal.push_back(eps);
-			if ( eps < geoRes ) {
-			  break;
+		if (mustIterate) {
+			_tmpL = ll;
+
+			// Create the Integrator
+			bool check = false;
+			ROOT::Math::Roots::Bisection bisectF;
+			ROOT::Math::Functor1D f0(this, &map1dTo3d::funValue );
+
+			check 
+			= 
+			bisectF.SetFunction(
+				f0, static_cast<double>(getUMin()), static_cast<double>(getUMax())
+			); 
+
+			if ( check ) {
+				check = bisectF.Solve();
 			}
+			else {
+				dt__THROW(u_l(), << "No iteration.");
+			}
+				theRoot = bisectF.Root();
 		}
 
-    DTDEBUGWF( l_u(), << logMe::floatVecToTable(header, itVal) );		
-		
-		return l1;
-	}	
+		DTINFOWF(
+			u_l(),
+			<< DTLOGEVAL(mustIterate) << LOGDEL
+			<< DTLOGEVAL(ll) << LOGDEL
+			<< DTLOGEVAL( fabs(ll-l_u(theRoot)) ) << LOGDEL
+			<< DTLOGEVAL( theRoot )
+		);		
+	  return theRoot;
+  }
+	
 }

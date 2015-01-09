@@ -173,6 +173,9 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFunP, 
       std::vector< dtPoint3 > * basicP
     );
+    /**
+     * Creates a clone and put it in advancedP.
+     */            
     static void createAdvanced( 
       QDomElement const * toBuildP,
       baseContainer * const bC,
@@ -200,6 +203,9 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFunP, 
       vectorHandling< analyticGeometry * > const * const depAGeoP
     );      
+    /**
+     * Creates a clone and put it in advancedP.
+     */            
     static void createAdvanced( 
       QDomElement const * toBuildP,
       baseContainer * const bC,
@@ -207,7 +213,10 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFunP, 
       dtTransformer const * const dtTransformerP,                          
       vectorHandling< analyticFunction * > * advancedP 
-    );   
+    );
+    /**
+     * Creates a clone and put it in advancedP.
+     */        
     static void createAdvanced( 
       QDomElement const * toBuildP,
       baseContainer * const bC,

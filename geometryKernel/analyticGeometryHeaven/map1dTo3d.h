@@ -26,6 +26,7 @@ namespace dtOO {
       //
       virtual dtVector3 firstDerU( float const & uu) const;
       virtual float l_u( float const & uu ) const;
+      virtual float u_l( float const & ll ) const;
       virtual vectorHandling< renderInterface * > getRender( void ) const;
       //
       //
@@ -37,8 +38,12 @@ namespace dtOO {
       bool isClosedU( void ) const;
       float getUMin( void ) const;
       float getUMax( void ) const;
+      float length( void ) const;
     private:
-      float l_u( float const & uu, int const & nP ) const;    
+      float l_u( float const & uu, int const & nP ) const;
+	    double funValue(const double xx ) const;
+    private:
+      mutable float _tmpL;
   };
 }
 #endif	/* MAP1DTO3D_H */

@@ -390,33 +390,44 @@ namespace dtOO {
 				//
 				// 1 map1dTo3d
 				//        
-				if ( m1d
-						 && hasAttribute("parameter_one_percent_function", *toBuildP)
-						 && hasAttribute("number_points_one", *toBuildP) 
-				) {
-					dt__PTRASS(
-						scaOneD const * sF,
-						scaOneD::ConstDownCast(
-							sFunP->get( 
-								getAttributeStr( "parameter_one_percent_function", *toBuildP )
+				if ( m1d && hasAttribute("number_points_one", *toBuildP) ) {
+					int nPointsOne = getAttributeInt("number_points_one", *toBuildP);					
+				  float nPointsOneF = static_cast<float>(nPointsOne);              					
+					if ( hasAttribute("parameter_one_percent_function", *toBuildP) ) {
+						dt__PTRASS(
+							scaOneD const * sF,
+							scaOneD::ConstDownCast(
+								sFunP->get( 
+									getAttributeStr( "parameter_one_percent_function", *toBuildP )
+								)
 							)
-						)
-					);
-					int nPointsOne = getAttributeInt("number_points_one", *toBuildP);
-					float nPointsOneF = static_cast<float>(nPointsOne);              
-					basicP->push_back( 
-						new dtPoint3( m1d->getPointPercent(0.) )
-					);              					
-					for (int ii=1;ii<nPointsOne-1;ii++) {
-						float iiF = static_cast<float>(ii);
-						float uu = sF->YFloat( iiF / nPointsOneF ) ;
-						basicP->push_back( 
-							new dtPoint3( m1d->getPointPercent(uu) )
-						);              
+						);
+						for (int ii=0;ii<nPointsOne;ii++) {
+							float iiF = static_cast<float>(ii);
+							float uu = sF->YFloat( iiF / (nPointsOneF-1.) ) ;
+							basicP->push_back( 
+								new dtPoint3( m1d->getPointPercent(uu) )
+							);              
+						}
 					}
-					basicP->push_back( 
-						new dtPoint3( m1d->getPointPercent(1.) )
-					);              						
+					else if (hasAttribute("length_one_percent_function", *toBuildP)) {
+						dt__PTRASS(
+							scaOneD const * sF,
+							scaOneD::ConstDownCast(
+								sFunP->get( 
+									getAttributeStr( "length_one_percent_function", *toBuildP )
+								)
+							)
+						);
+						float length = m1d->length();
+						float uP;// = m1d->u_l(0.*length);
+						for (int ii=0; ii<nPointsOne; ii++) {
+							float iiF = static_cast<float>(ii);
+							float uu = sF->YFloat( iiF / (nPointsOneF-1.) );
+							uP = m1d->u_l(uu*length);
+              basicP->push_back( new dtPoint3(m1d->getPoint(uP)) );              					
+						}
+					}
 				}				
 				//
 				// 1 map2dTo3d
@@ -433,7 +444,7 @@ namespace dtOO {
 					// search functions
 					//
 					dt__PTRASS(
-						scaOneD const * functionOneP, 
+						scaOneD const * fOne, 
 						scaOneD::ConstDownCast(
 							sFunP->get( 
 								getAttributeStr("parameter_one_percent_function", *toBuildP)
@@ -441,7 +452,7 @@ namespace dtOO {
 						)
 					);
 					dt__PTRASS(
-						scaOneD const * functionTwoP,
+						scaOneD const * fTwo,
 						scaOneD::ConstDownCast(
 							sFunP->get( 
 								getAttributeStr("parameter_two_percent_function", *toBuildP)
@@ -450,8 +461,10 @@ namespace dtOO {
 					);
 					for (int ii=0;ii<nPointsOne;ii++) {
 						for (int jj=0;jj<nPointsTwo;jj++) {
-							float paraOne = functionOneP->YFloat( ((float) ii) / nPointsOne ) ;
-							float paraTwo = functionTwoP->YFloat( ((float) jj) / nPointsTwo ) ;
+							dt__TOFLOAT(float iiF, ii);
+							dt__TOFLOAT(float jjF, jj);
+							float paraOne = fOne->YFloat( iiF / nPointsOne ) ;
+							float paraTwo = fTwo->YFloat( jjF / nPointsTwo ) ;
 							basicP->push_back( 
 							  new dtPoint3( m2d->getPointPercent( paraOne, paraTwo ) )
 							);              
@@ -494,7 +507,11 @@ namespace dtOO {
 										 );
 					basicP->push_back( new dtPoint3( v1D->YdtPoint3Percent(cX) ) );
 				}				
-				else if ( v2D && hasAttribute("x_one", *toBuildP) && hasAttribute("x_two", *toBuildP) ) {
+				else if ( 
+					v2D 
+					&& hasAttribute("x_one", *toBuildP) 
+					&& hasAttribute("x_two", *toBuildP) 
+				) {
 					float cX = muParseString(
 											 replaceUsedFunctions(
 												 getAttributeStr("x_one", *toBuildP), cValP,  sFunP
@@ -507,7 +524,11 @@ namespace dtOO {
 										 );                      
 					basicP->push_back( new dtPoint3( v2D->YdtPoint3(cX, cY) ) );
 				}	
-				else if ( v2D && hasAttribute("x_one_percent", *toBuildP) && hasAttribute("x_two_percent", *toBuildP) ) {
+				else if ( 
+				  v2D 
+					&& hasAttribute("x_one_percent", *toBuildP) 
+					&& hasAttribute("x_two_percent", *toBuildP) 
+				) {
 					float cX = muParseString(
 											 replaceUsedFunctions(
 												 getAttributeStr("x_one_percent", *toBuildP), cValP,  sFunP

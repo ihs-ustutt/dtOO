@@ -26,6 +26,6 @@
 
      }
   }
-  ROOT::Math::GSLError gGSLError;
+  static ROOT::Math::GSLError gGSLError;
 
 #endif /* GSLERROR_H */
