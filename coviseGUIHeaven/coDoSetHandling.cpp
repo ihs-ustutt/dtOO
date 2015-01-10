@@ -194,46 +194,52 @@ namespace dtOO {
 	
 	covise::coDoSet * coDoSetHandling::renderElement2d( renderInterface const * const rI, char const * const str) {
 		vectorHandling< renderInterface * > vec = rI->getRender();
-		covise::coDoSet * set	= toCoDoSet(vec[0], str);
-		float xMin = vec[0]->getMin(0); 
-		float xMax = vec[0]->getMax(0); 
-		float yMin = vec[0]->getMin(1); 
-		float yMax = vec[0]->getMax(1);		
-		for (int ii=1; ii<vec.size(); ii++) {
-		  if ( vec[ii]->getMin(0) < xMin ) xMin = vec[ii]->getMin(0);
-			if ( vec[ii]->getMin(1) < yMin ) yMin = vec[ii]->getMin(1);
-		  if ( vec[ii]->getMax(0) > xMax ) xMax = vec[ii]->getMax(0);
-			if ( vec[ii]->getMax(1) > yMax ) yMax = vec[ii]->getMax(1);
-			set = toCoDoSet( set, toCoDoSet(vec[ii], str), str );
+		covise::coDoSet * set	= NULL;
+		if (vec.size() != 0) {
+			set = toCoDoSet(vec[0], str);
+			float xMin = vec[0]->getMin(0); 
+			float xMax = vec[0]->getMax(0); 
+			float yMin = vec[0]->getMin(1); 
+			float yMax = vec[0]->getMax(1);		
+			for (int ii=1; ii<vec.size(); ii++) {
+				if ( vec[ii]->getMin(0) < xMin ) xMin = vec[ii]->getMin(0);
+				if ( vec[ii]->getMin(1) < yMin ) yMin = vec[ii]->getMin(1);
+				if ( vec[ii]->getMax(0) > xMax ) xMax = vec[ii]->getMax(0);
+				if ( vec[ii]->getMax(1) > yMax ) yMax = vec[ii]->getMax(1);
+				set = toCoDoSet( set, toCoDoSet(vec[ii], str), str );
+			}
+
+			rI->setMin(0, xMin);
+			rI->setMin(1, yMin);
+			rI->setMax(0, xMax);
+			rI->setMax(1, yMax);
 		}
-		
-		rI->setMin(0, xMin);
-		rI->setMin(1, yMin);
-		rI->setMax(0, xMax);
-		rI->setMax(1, yMax);
-		
 		return set;		
 	}
 
 	covise::coDoSet * coDoSetHandling::renderElement3d( renderInterface const * const rI, char const * const str) {
 		vectorHandling< renderInterface * > vec = rI->getRender();
-		covise::coDoSet * set	= toCoDoSet(vec[0], str);
-    for (int ii=1; ii<vec.size(); ii++) {
-			set 
-			= 
-			coDoSetHandling::toCoDoSet(
-				set, 
-				toCoDoSet(vec[ii], str),
-				str
-			);
-		}	
-		if (rI->mustExtRender()) {
-			vectorHandling< renderInterface * > vec = rI->getExtRender();
-			dt__FORALL(vec, ii,
-			  set 
+		covise::coDoSet * set	= NULL;
+		if (vec.size() != 0) {
+			set = toCoDoSet(vec[0], str);
+		
+			for (int ii=1; ii<vec.size(); ii++) {
+				set 
 				= 
-				coDoSetHandling::toCoDoSet( set, toCoDoSet(vec[ii], str), str );
-			);
+				coDoSetHandling::toCoDoSet(
+					set, 
+					toCoDoSet(vec[ii], str),
+					str
+				);
+			}	
+			if (rI->mustExtRender()) {
+				vectorHandling< renderInterface * > vec = rI->getExtRender();
+				dt__FORALL(vec, ii,
+					set 
+					= 
+					coDoSetHandling::toCoDoSet( set, toCoDoSet(vec[ii], str), str );
+				);
+			}
 		}
 		return set;
 	}	

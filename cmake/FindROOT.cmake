@@ -9,7 +9,7 @@ if(ROOTSYS_DIR)
 else(ROOTSYS_DIR)
    find_path(ROOTSYS_DIR include/TObject.h PATHS
    "$ENV{ROOTSYS}"
-   "$ENV{EXTERNLIBS}/root"
+   "${DTOO_EXTERNLIBS}/root"
      )
 endif(ROOTSYS_DIR)
 
@@ -50,7 +50,7 @@ if(ROOTSYS_DIR)
      "${ROOTSYS_DIR}/include/root"
    )
   FIND_PATH(ROOT_LINK_DIRECTORY libRootAuth.so
-    $ENV{EXTERNLIBS}/ALL/lib
+    ${DTOO_EXTERNLIBS}/ALL/lib
     $ENV{DTOO_ROOTDIR}/lib
     /usr/lib
     /usr/local/lib

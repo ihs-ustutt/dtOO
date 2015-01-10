@@ -11,6 +11,16 @@ INCLUDE(cmake/dtOOHelperMacros.cmake)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 
 #------------------------------------------------------------------------------#
+#                                                                              #
+# externlibs path                                                              #
+#                                                                              #
+#------------------------------------------------------------------------------#
+set(DTOO_EXTERNLIBS $ENV{EXTERNLIBS} CACHE FILEPATH "externlibs folder")
+if (DTOO_EXTERNLIBS STREQUAL "")
+  message( FATAL_ERROR "Please set DTOO_EXTERNLIBS." )
+endif (DTOO_EXTERNLIBS STREQUAL "")
+
+#------------------------------------------------------------------------------#
 #
 # compiler flags
 #
@@ -56,6 +66,7 @@ find_package(
   thread date_time program_options filesystem system 
   REQUIRED
 )
+find_package(MOAB)
 if(DTOO_USE_GOOGLEPERFTOOLS)
   add_definitions(-DDTOO_USE_GOOGLEPROFTOOLS)
   find_package(GOOGLEPERFTOOLS REQUIRED)
@@ -104,6 +115,7 @@ include_directories(
   ${ROOT_INCLUDE_DIR} 
   ${GSL_INCLUDE_DIR} 
   ${OpenCASCADE_INCLUDE_DIR}
+  ${MOAB_INCLUDE_DIR}
 )
 
 #------------------------------------------------------------------------------#
@@ -152,6 +164,7 @@ target_link_libraries(dtOO
   ${QT_QTXML_LIBRARY} 
   ${ROOT_LIBRARIES} 
   ${GSL_LIBRARIES}
+  ${MOAB_LIBRARIES}
 )
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGAL_LINK_DIRECTORY}")
@@ -159,6 +172,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${GMSH_LINK_D
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${MUPARSER_LINK_DIRECTORY}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenCASCADE_LINK_DIRECTORY}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${ROOT_LINK_DIRECTORY}")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${MOAB_LINK_DIRECTORY}")
 
 #------------------------------------------------------------------------------#
 #

@@ -14,7 +14,7 @@ IF(GMSH_INCLUDE_DIR AND GMSH_LIBRARIES AND GMSH_LINK_DIRECTORY)
   SET(GMSH_FOUND TRUE)
 ELSE(GMSH_INCLUDE_DIR AND GMSH_LIBRARIES AND GMSH_LINK_DIRECTORY)
   FIND_PATH(GMSH_INCLUDE_DIR gmsh/Gmsh.h
-  $ENV{EXTERNLIBS}/gmsh/include/
+  ${DTOO_EXTERNLIBS}/gmsh/include/
   /usr/include/gmsh
   /usr/local/include/gmsh
   $ENV{ProgramFiles}/gmsh/*/include/gmsh
@@ -22,7 +22,7 @@ ELSE(GMSH_INCLUDE_DIR AND GMSH_LIBRARIES AND GMSH_LINK_DIRECTORY)
   )
   FIND_LIBRARY(GMSH_LIBRARIES NAMES Gmsh libGmsh
   PATHS
-  $ENV{EXTERNLIBS}/gmsh/lib
+  ${DTOO_EXTERNLIBS}/gmsh/lib
   /usr/lib
   /usr/local/lib
   /usr/lib/gmsh
@@ -34,7 +34,7 @@ ELSE(GMSH_INCLUDE_DIR AND GMSH_LIBRARIES AND GMSH_LINK_DIRECTORY)
   )
 
  FIND_PATH(GMSH_LINK_DIRECTORY libGmsh.so
-    $ENV{EXTERNLIBS}/ALL/lib
+    ${DTOO_EXTERNLIBS}/ALL/lib
     $ENV{DTOO_ROOTDIR}/lib
     /usr/lib
     /usr/local/lib

@@ -12,7 +12,7 @@ SET(EO_DEFINITIONS )
 
 IF( NOT EO_FOUND STREQUAL TRUE )
   FIND_PATH(EO_INCLUDE_DIR eo
-    $ENV{EXTERNLIBS}/eo/include/eo
+    ${DTOO_EXTERNLIBS}/eo/include/eo
     /usr/include/EO
     /usr/local/include/EO
     $ENV{ProgramFiles}/EO/*/include/EO
@@ -25,7 +25,7 @@ IF( NOT EO_FOUND STREQUAL TRUE )
 
   FIND_PATH(EO_LINK_DIRECTORY libeo.so
     PATHS
-    $ENV{EXTERNLIBS}/eo/lib
+    ${DTOO_EXTERNLIBS}/eo/lib
     /usr/lib
     /usr/local/lib
     /usr/lib/EO

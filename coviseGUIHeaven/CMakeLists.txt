@@ -8,7 +8,7 @@ find_path(DTOO_ROOTDIR include/progHelper.h
   $ENV{DTOO_ROOTDIR}
 )
 
-set( "designTool")
+#set( "designTool")
 set(DTOO_COVISE_MODULE_FOLDER "designTool" CACHE STRING "covise folder")
 set(DTOO_COVISE_ARCHSUFFIX $ENV{ARCHSUFFIX} CACHE STRING "covise archsuffix")
 

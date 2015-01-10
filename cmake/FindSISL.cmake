@@ -14,7 +14,7 @@ IF(SISL_INCLUDE_DIR AND SISL_LIBRARIES)
 SET(SISL_FOUND TRUE)
 ELSE(SISL_INCLUDE_DIR AND SISL_LIBRARIES)
 FIND_PATH(SISL_INCLUDE_DIR sisl.h
-$ENV{EXTERNLIBS}/sisl/include
+${DTOO_EXTERNLIBS}/sisl/include
 /usr/include/SISL
 /usr/local/include/SISL
 $ENV{ProgramFiles}/SISL/*/include/SISL
@@ -22,7 +22,7 @@ $ENV{SystemDrive}/SISL/*/include/SISL
 )
 FIND_LIBRARY(SISL_LIBRARIES NAMES sisl libsisl
 PATHS
-$ENV{EXTERNLIBS}/sisl/lib
+${DTOO_EXTERNLIBS}/sisl/lib
 /usr/lib
 /usr/local/lib
 /usr/lib/SISL

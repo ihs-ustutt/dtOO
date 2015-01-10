@@ -31,7 +31,7 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
   ENDIF (UNIX)
 
   #find the include dir by looking for Standard_Real.hxx
-  FIND_PATH( OpenCASCADE_INCLUDE_DIR Standard_Real.hxx PATHS $ENV{EXTERNLIBS}/OpenCASCADE/inc ${_incsearchpath} DOC "Path to OCC includes" )
+  FIND_PATH( OpenCASCADE_INCLUDE_DIR Standard_Real.hxx PATHS ${DTOO_EXTERNLIBS}/OpenCASCADE/inc ${_incsearchpath} DOC "Path to OCC includes" )
   IF( OpenCASCADE_INCLUDE_DIR STREQUAL Standard_Real.hxx-NOTFOUND )
     SET( OpenCASCADE_FOUND FALSE CACHE BOOL FORCE )
     MESSAGE( FATAL_ERROR "Cannot find OCC include dir. Install opencascade or set CASROOT or create a symlink /opt/occ/inc pointing to the correct directory." )
@@ -40,7 +40,7 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
   # Find one lib and save its directory to OpenCASCADE_LINK_DIRECTORY. Because
   # OCC has so many libs, there is increased risk of a name collision.
   # Requiring that all libs be in the same directory reduces the risk.
-  FIND_PATH( OpenCASCADE_LINK_DIRECTORY ${_testlibname} PATH $ENV{EXTERNLIBS}/OpenCASCADE/lib64 ${_libsearchpath} DOC "Path to OCC libs" )
+  FIND_PATH( OpenCASCADE_LINK_DIRECTORY ${_testlibname} PATH ${DTOO_EXTERNLIBS}/OpenCASCADE/lib64 ${_libsearchpath} DOC "Path to OCC libs" )
   IF( OpenCASCADE_LINK_DIRECTORY STREQUAL ${_testlibname}-NOTFOUND )
     SET( OpenCASCADE_FOUND FALSE CACHE BOOL FORCE )
     MESSAGE( FATAL_ERROR "Cannot find OCC lib dir. Install opencascade or set CASROOT or create a symlink /opt/occ/lib pointing to the dir where the OCC libs are." )
