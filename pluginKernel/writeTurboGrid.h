@@ -12,6 +12,7 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class boundedVolume;
+  class baseContainer;
   
   class writeTurboGrid : public dtPlugin {
   public:
@@ -20,6 +21,7 @@ namespace dtOO {
     virtual ~writeTurboGrid();
     virtual void init( 
       QDomElement const & element,
+      baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticGeometry * > const * const aG,
@@ -32,6 +34,9 @@ namespace dtOO {
     dt__pH(analyticGeometry) _shroud;
     dt__pH(analyticGeometry) _blade;
     int _nBladeCuts;
+    int _nPoints;
+    int _nBlades;
+    dtVector3 _vv;
     std::string _dir;
   };
 }

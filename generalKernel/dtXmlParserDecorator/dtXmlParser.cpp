@@ -735,7 +735,7 @@ namespace dtOO {
 		QDomElement wEl = getElement("plugin", label);
 
 		//
-		// create new boundedVolume with factory
+		// create new plugin with factory
 		//
 		pLP->push_back( 
 			dtPluginFactory::create( getAttributeStr("name", wEl) ) 
@@ -743,7 +743,7 @@ namespace dtOO {
 		//
 		// initialize dtPlugin
 		//
-		pLP->back()->init( wEl, cVP, sFP, aGP, bVP, pLP );		
+		pLP->back()->init( wEl, bC, cVP, sFP, aGP, bVP, pLP );		
 	} 
 	
 	void dtXmlParser::createPlugin(

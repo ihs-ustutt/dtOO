@@ -2,6 +2,7 @@
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <constValueHeaven/constValue.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <functionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
@@ -16,6 +17,7 @@ namespace dtOO {
 
   void dtPlugin::init(
 	  QDomElement const & element,
+		baseContainer const * const bC,
     vectorHandling< constValue * > const * const cV,
     vectorHandling< analyticFunction * > const * const aF,
     vectorHandling< analyticGeometry * > const * const aG,

@@ -400,4 +400,19 @@ namespace dtOO {
   dtPoint2 dtLinearAlgebra::ignoreZ( dtPoint3 const & v0 ) {
 		return dtPoint2(v0.x(), v0.y());
 	}
+	
+	std::string dtLinearAlgebra::directionString( dtVector3 const & vv ) {
+		if ( (vv.x() == 1.) && (vv.y() == 0.) && (vv.z() == 0.) ) {
+			return "X";
+		}
+		else if ( (vv.x() == 0.) && (vv.y() == 1.) && (vv.z() == 0.) ) {
+			return "Y";
+		}
+		else if ( (vv.x() == 0.) && (vv.y() == 0.) && (vv.z() == 1.) ) {
+			return "Z";
+		}
+		else {
+			return "";
+		}
+	}
 }

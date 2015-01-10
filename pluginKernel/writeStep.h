@@ -12,6 +12,7 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class boundedVolume;
+  class baseContainer;
   
   class writeStep : public dtPlugin {
   public:
@@ -20,6 +21,7 @@ namespace dtOO {
     virtual ~writeStep();
     virtual void init( 
       QDomElement const & element,
+      baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticGeometry * > const * const aG,

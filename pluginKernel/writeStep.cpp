@@ -8,6 +8,7 @@
 
 #include <logMe/logMe.h>
 //#include <interfaceHeaven/ptrHandling.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <functionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -32,13 +33,14 @@ namespace dtOO {
 
 	void writeStep::init( 
 		QDomElement const & element,
+		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
 		vectorHandling< analyticGeometry * > const * const aG,
 		vectorHandling< boundedVolume * > const * const bV,
 		vectorHandling< dtPlugin * > const * const pL
 	) {
-	  dtPlugin::init(element, cV, aF, aG, bV, pL);
+	  dtPlugin::init(element, bC, cV, aF, aG, bV, pL);
 		
 		_fn = dtXmlParserBase::getAttributeStr("filename", element);
 		std::vector< QDomElement > aGEl 

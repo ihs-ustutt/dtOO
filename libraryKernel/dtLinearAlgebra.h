@@ -71,6 +71,7 @@ namespace dtOO {
     static float angleDegree( dtVector3 const & v0, dtVector3 const & v1 );
     static dtVector2 ignoreZ( dtVector3 const & v0 );
     static dtPoint2 ignoreZ( dtPoint3 const & v0 );
+    static std::string directionString( dtVector3 const & vv );
   };
 }
 #endif  /* DTLINEARALGEBRA_H */
