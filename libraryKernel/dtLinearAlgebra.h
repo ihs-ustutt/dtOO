@@ -56,6 +56,11 @@ namespace dtOO {
     static dtVector2 toDtVector2(dtPoint2 const & pp);
     static dtPoint3 toDtPoint3(dtVector3 const & pp);
     static dtPoint2 toDtPoint2(dtVector2 const & pp);   
+    static std::vector< dtPoint3 > toDtPoint3Vector(
+      std::vector< double > const & xx,
+      std::vector< double > const & yy,
+      std::vector< double > const & zz
+    );
     static dtVector2 unitNormal( dtVector2 const & vv);
     static dtMatrix invertMatrix(dtMatrix const & mat);
     static dtMatrix transposeMatrix(dtMatrix const mat);

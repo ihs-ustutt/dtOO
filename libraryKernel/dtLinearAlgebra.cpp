@@ -96,6 +96,22 @@ namespace dtOO {
 		return CGAL::ORIGIN + pp;
 	}        
 
+	std::vector< dtPoint3 > dtLinearAlgebra::toDtPoint3Vector(
+		std::vector< double > const & xx,
+		std::vector< double > const & yy,
+		std::vector< double > const & zz
+	) {
+		dt__THROW_IF( xx.size() != yy.size(), toDtPoint3Vector() );
+		dt__THROW_IF( yy.size() != zz.size(), toDtPoint3Vector() );
+		
+		std::vector< dtPoint3 > pp(xx.size());
+		dt__FORALL(pp, ii,
+		  pp[ii] = dtPoint3(xx[ii], yy[ii], zz[ii]);
+		);
+		
+		return pp;
+	}
+		
 	dtVector2 dtLinearAlgebra::unitNormal( dtVector2 const & vv) {
 	  dtVector2 nn = dtVector2(-vv.y(), vv.x());
 		return (1./sqrt(nn.squared_length())) * nn;

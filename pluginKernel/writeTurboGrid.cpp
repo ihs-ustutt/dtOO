@@ -31,6 +31,7 @@ namespace dtOO {
 	  dtPlugin::init(element, bC, cV, aF, aG, bV, pL);
 		
 		_dir = dtXmlParserBase::getAttributeStr("directory", element);
+		_scr = dtXmlParserBase::getAttributeStr("run_script", element);
 		_nBladeCuts 
 		= 
 		dtXmlParserBase::getAttributeIntMuParse("number_blade_cuts", element, cV, aF);
@@ -167,6 +168,8 @@ namespace dtOO {
 		if (!blade->isClosedU()) of << "Blade 0 TE: CutOffEnd" << std::endl;
 		
 		of.close();
+		
+		systemHandling::command(_scr);
   }
 }
 

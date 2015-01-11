@@ -21,6 +21,7 @@ namespace dtOO {
     dt__CLASSNAME(vectorHandling);
     vectorHandling();
     vectorHandling(const vectorHandling& orig);
+    vectorHandling(const std::vector< T >& orig);    
     vectorHandling(int const dim);
     virtual ~vectorHandling();
     T * set( T const & toSet);
@@ -52,6 +53,13 @@ namespace dtOO {
 
   template < typename T >
   vectorHandling< T >::vectorHandling(const vectorHandling& orig) : std::vector< T >(orig.size()) {
+    dt__FORALL(orig, ii, 
+      this->at(ii) = orig[ii];
+    );
+  }
+  
+  template < typename T >
+  vectorHandling< T >::vectorHandling(const std::vector< T >& orig) : std::vector< T >(orig.size()) {
     dt__FORALL(orig, ii, 
       this->at(ii) = orig[ii];
     );

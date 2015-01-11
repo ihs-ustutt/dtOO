@@ -4,6 +4,7 @@
 #include "boundedVolume.h"
 #include "map3dTo3dCompoundVolume.h"
 #include "map3dTo3dTriangulated.h"
+#include "readMOABMesh.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -22,6 +23,7 @@ namespace dtOO {
     
 		__IFRET(map3dTo3dCompoundVolume);
 		__IFRET(map3dTo3dTriangulated);
+		__IFRET(readMOABMesh)
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

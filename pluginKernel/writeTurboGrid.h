@@ -38,6 +38,7 @@ namespace dtOO {
     int _nBlades;
     dtVector3 _vv;
     std::string _dir;
+    std::string _scr;
   };
 }
 #endif	/* WRITETURBOGRID_H */
