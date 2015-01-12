@@ -26,6 +26,33 @@ namespace dtOO {
             << DTLOGEVAL(status) << LOGDEL
             << DTLOGEVAL(wExitStatus) );
   }
+
+  void systemHandling::commandAndWait( std::string & cmd ) {
+    //
+    // call system
+    //
+    int nullStatus = system(NULL);
+    FILE * status = popen( cmd.c_str(), "r" );
+//    int wExitStatus = WEXITSTATUS(status);
+    dt__THROW_IF(status == 0, commandAndWait());
+
+    const int BUFSIZE = 80;
+    char buf[ BUFSIZE ];
+    while( fgets( buf, BUFSIZE,  status ) ) {
+      DTINFOWF(
+				commandAndWait(),
+				<< DTLOGEVAL(buf)  
+			);
+    }
+    pclose( status );
+    
+    DTINFOWF(
+			command(),
+      << DTLOGEVAL(cmd) << LOGDEL
+      << DTLOGEVAL(nullStatus) << LOGDEL
+      << DTLOGEVAL(status)
+		);
+  }
   
   bool systemHandling::createDirectory(std::string const & dirPath) {
     //

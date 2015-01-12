@@ -475,7 +475,10 @@ namespace dtOO {
 			if ( _pL.size() != 0 ) {
 				if ( strcmp(paramName, "_pLChoice") == 0 ) {
 				  int pos = _pLChoice->getValue();
-					_pL[pos]->apply();
+					_pLApply.push_back( _pL[pos] );
+					_recreate = false;
+					setExecGracePeriod(0.1);
+					selfExec();		
 				}		
 			}			
 		}		
@@ -594,6 +597,29 @@ namespace dtOO {
 				}
 				_bVOut->setCurrentObject( set );
       }   			
+
+//			if (_bVOut->isConnected()) {
+//				covise::coDoSet * set;
+//        if (_bV.size() != 0) {
+//					_bVToRender[0]->writeGrid();
+//				  set  = _bVToRender[0]->toCoDoUnstructuredGrid( _bVOut->getObjName() );
+//					dt__FORALL(_bV, ii,
+//					  _bV[ii]->makePreGrid();
+//					);
+//					_bVToRender.clear();
+//					_bVToRender.resize(_bVMakeGrid.size());
+  				dt__FORALL(_pLApply, ii,
+						_pLApply[ii]->apply();
+//					  _bVToRender[ii] = _bVMakeGrid[ii];
+					);
+					_pLApply.clear();					
+//          set = _bVToRender.render3d( _bVToRender, _bVOut->getObjName() );
+//        }
+//				else {
+//					set = NULL;
+//				}
+//				_bVOut->setCurrentObject( set );
+//      }   			
 			
 			abstractModule::closeLogFile();
 			

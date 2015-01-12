@@ -82,6 +82,7 @@ namespace dtOO {
       vectorHandling< boundedVolume * > _bV;
       vectorHandling< dtPlugin * > _pL;
       ptrHandling< baseContainer > _bC;
+      vectorHandling< dtPlugin * > _pLApply;
       vectorHandling< boundedVolume * > _bVMakeGrid;
       coDoSetHandling _aGToRender;
       coDoSetHandling _aFToRender;

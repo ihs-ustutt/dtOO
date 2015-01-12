@@ -169,7 +169,7 @@ namespace dtOO {
 		
 		of.close();
 		
-		systemHandling::command(_scr);
+		systemHandling::commandAndWait(_scr);
   }
 }
 
