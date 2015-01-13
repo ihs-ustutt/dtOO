@@ -7,12 +7,13 @@
 #include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO {
+  class baseContainer;
   class constValue;
   class analyticFunction;
   class analyticGeometry;
   class boundedVolume;
   
-  class bVOInterface : public qtXmlBase {
+  class bVOInterface {
     public:
       dt__CLASSNAME(bVOInterface);  
       bVOInterface();
@@ -20,11 +21,12 @@ namespace dtOO {
       virtual void update( void ) = 0;
       virtual void init( 
         QDomElement const & element,
-        vectorHandling< constValue * > const * const cValP,
-        vectorHandling< analyticFunction * > const * const sFunP,
-        vectorHandling< analyticGeometry * > const * const depAGeoP,
-        vectorHandling< boundedVolume * > const * const depBVolP,
-        boundedVolume * bV
+        baseContainer const * const bC,
+        vectorHandling< constValue * > const * const cV,
+        vectorHandling< analyticFunction * > const * const aF,
+        vectorHandling< analyticGeometry * > const * const aG,
+        vectorHandling< boundedVolume * > const * const bV,
+        boundedVolume * attachTo
       );
     protected:
       boundedVolume * ptrBoundedVolume(void);

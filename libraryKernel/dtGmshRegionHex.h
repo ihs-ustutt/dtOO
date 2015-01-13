@@ -11,15 +11,16 @@ class GFace;
 namespace dtOO {
   class dtGmshRegionHex : public dtGmshRegion {
   public:
-    dt__CLASSNAME(dtGmshRegionHex);    
+    dt__CLASSSTD(dtGmshRegionHex, GEntity);
     dtGmshRegionHex( 
       GModel *m, 
       int tag, 
       const std::vector<int> & geTag,
-      const std::list<GFace*> & faces,
+		  const std::list< dtGmshFace * > &faces, 
       const std::vector<int> & ori
     );
-    void reorderBlock( void );
+    void meshTransfinite( int const nU, int const nV, int const nW );
+    void setGrading( std::vector< float > const & grading, std::vector< float > & type );
   private:
     std::vector< int > _hexEdges;
   };

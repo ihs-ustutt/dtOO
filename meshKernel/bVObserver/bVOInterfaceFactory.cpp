@@ -4,7 +4,8 @@
 #include <string>
 #include "bVOInterfaceFactory.h"
 #include "bVOInterface.h"
-#include "bVOSplitEdge.h"
+#include "bVOSetNElements.h"
+#include "bVOSetGrading.h"
 
 #define __IFRET(className) \
 	if ( strcmp(str, #className) == 0 ) { \
@@ -20,7 +21,8 @@ namespace dtOO {
   bVOInterface * bVOInterfaceFactory::create(char const * const str) {
     DTINFOWF(create(), << str <<  " creating ... ");
     
-    __IFRET(bVOSplitEdge);
+    __IFRET(bVOSetNElements);
+		__IFRET(bVOSetGrading);
 		
     dt__THROW(create(), <<  "Could not be created.");
   }

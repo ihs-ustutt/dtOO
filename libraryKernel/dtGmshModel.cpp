@@ -75,7 +75,7 @@ namespace dtOO {
 		else {
 			this->add(ge);
 		}
-  }  	
+  }
 	 
 	/**
    * @todo What if region is not 6-sided?
@@ -86,14 +86,14 @@ namespace dtOO {
 //		int fId = GModel::getNumFaces()+1;
 		int rId = GModel::getNumRegions()+1;
 		
-    dtPoint3 p0(0. ,0. ,0.);
-		dtPoint3 p1(1. ,0. ,0.);
-		dtPoint3 p2(1. ,1. ,0.);
-		dtPoint3 p3(0. ,1. ,0.);
-		dtPoint3 p4(0. ,0. ,1.);
-		dtPoint3 p5(1. ,0. ,1.);
-		dtPoint3 p6(1. ,1. ,1.);
-		dtPoint3 p7(0. ,1. ,1.);
+    dtPoint3 p0(0., 0., 0.);
+		dtPoint3 p1(1., 0., 0.);
+		dtPoint3 p2(1., 1., 0.);
+		dtPoint3 p3(0., 1., 0.);
+		dtPoint3 p4(0., 0., 1.);
+		dtPoint3 p5(1., 0., 1.);
+		dtPoint3 p6(1., 1., 1.);
+		dtPoint3 p7(0., 1., 1.);
 		
 		this->addIfVertexToGmshModel( vol->getPointPercent(p0), &(vId[0]) );
 		this->addIfVertexToGmshModel( vol->getPointPercent(p1), &(vId[1]) );		
@@ -275,12 +275,10 @@ namespace dtOO {
 		}
 		else {
 			this->add( gf.back() );
-			gf.back()->setMap2dTo3d( 
-				vol->segmentPercent(p2, p1, p5, p6)
-			);	
+			gf.back()->setMap2dTo3d(vol->segmentPercent(p2, p1, p5, p6));	
 		}
 		
-		this->add( new dtGmshRegion(this, rId, gf, fori) );
+		this->add( new dtGmshRegionHex(this, rId, eId, gf, fori) );
 	}
 	
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {

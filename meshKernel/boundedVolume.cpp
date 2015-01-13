@@ -55,12 +55,12 @@ namespace dtOO {
     optionHandling::init( &element );
     
     //
-    // check for transformers (bVObservers)
+    // check for bVObservers
     //
-    if ( qtXmlPrimitive::hasSibling("transformer", element) ) {      
+    if ( qtXmlPrimitive::hasChild("bVObserver", element) ) {      
       std::vector< QDomElement > transElement 
 			= 
-			qtXmlPrimitive::getSiblingVector("transformer", element);
+			qtXmlPrimitive::getChildVector("bVObserver", element);
       
       for (int ii=0; ii<transElement.size(); ii++) {
         bVOInterface * bVI
@@ -68,7 +68,7 @@ namespace dtOO {
         bVOInterfaceFactory::create(
 					qtXmlPrimitive::getAttributeStr("name", transElement[ii])
 				);
-        bVI->init(transElement[ii], cV, aF, aG, bV, this);
+        bVI->init(transElement[ii], bC, cV, aF, aG, bV, this);
         this->attachBVObserver( bVI );
       }
 

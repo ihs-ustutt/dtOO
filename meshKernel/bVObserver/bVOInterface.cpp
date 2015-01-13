@@ -1,6 +1,10 @@
 #include "bVOInterface.h"
 
 #include <logMe/logMe.h>
+#include <constValueHeaven/constValue.h>
+#include <functionHeaven/analyticFunction.h>
+#include <analyticGeometryHeaven/analyticGeometry.h>
+#include <boundedVolume.h>
 
 namespace dtOO {  
   bVOInterface::bVOInterface() {
@@ -13,13 +17,14 @@ namespace dtOO {
 
   void bVOInterface::init( 
     QDomElement const & element,
-    vectorHandling< constValue * > const * const cValP,
-    vectorHandling< analyticFunction * > const * const sFunP,
-    vectorHandling< analyticGeometry * > const * const depAGeoP,
-    vectorHandling< boundedVolume * > const * const depBVolP,
-    boundedVolume * bV
+		baseContainer const * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF,
+    vectorHandling< analyticGeometry * > const * const aG,
+    vectorHandling< boundedVolume * > const * const bV,
+    boundedVolume * attachTo
   ) {
-    _bV = bV;
+    _bV = attachTo;
   }  
   boundedVolume * bVOInterface::ptrBoundedVolume( void ) {
 		return _bV;
