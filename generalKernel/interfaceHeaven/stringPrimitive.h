@@ -20,7 +20,7 @@ namespace dtOO {
     static std::string getStringBetweenAndRemove(std::string const signStart, std::string const signEnd, std::string * const str);
     static bool stringContains(std::string const pattern, std::string const str);
     static std::string stringRemoveSingle(std::string const pattern, std::string const str);
-	  static std::vector< std::string > convertToStringArray(std::string const signStart, std::string const signEnd, std::string const str);
+	  static std::vector< std::string > convertToStringVector(std::string const signStart, std::string const signEnd, std::string const str);
     static std::string replaceStringInString(std::string const toReplace, std::string const with, std::string const str);
   protected:
     stringPrimitive();       

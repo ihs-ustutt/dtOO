@@ -122,7 +122,7 @@ namespace dtOO {
 			//
 			std::string var = getAttributeStr("variable", forElement);
 			std::string valueStr = getAttributeStr("values", forElement);
-			std::vector< std::string > values = convertToStringArray("{", "}", valueStr);
+			std::vector< std::string > values = convertToStringVector("{", "}", valueStr);
 			DTINFOWF( 
 			  openFileAndParse(), 
 				<< "Replace element" << LOGDEL

@@ -187,6 +187,23 @@ namespace dtOO {
     );
   }  
   
+	std::vector< float > qtXmlBase::getAttributeFloatVectorMuParse( 
+		std::string const attName, 
+		QDomElement const element, 
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF 
+	) {
+		std::string att = getAttributeStr(attName, element);
+		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
+		std::vector< float > floatVec(attVec.size(), 0.);
+		int counter = 0;
+		for ( auto &el : attVec ) {		
+			floatVec[counter] = muParseString( replaceUsedFunctions(el, cV, aF) );
+			counter++;
+		}		
+		return floatVec;
+	}
+		
 	/**
 	 * 
    * @todo This function should be removed. Please use createDtVector3.

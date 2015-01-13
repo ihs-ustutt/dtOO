@@ -126,7 +126,7 @@ namespace dtOO {
     return retStr;
   }
 	
-	std::vector< std::string > stringPrimitive::convertToStringArray(std::string const signStart, std::string const signEnd, std::string const str) {
+	std::vector< std::string > stringPrimitive::convertToStringVector(std::string const signStart, std::string const signEnd, std::string const str) {
 		std::vector< std::string > values;
 		std::string valueStr = str;
 		while (valueStr.length() != 0) {
@@ -138,7 +138,7 @@ namespace dtOO {
 //					<< DTLOGEVAL(values.back()) << LOGDEL
 //				);
 			}
-			else dt__THROW(convertToStringArray(), << "Error in creating the array.");
+			else dt__THROW(convertToStringVector(), << "Error in creating the array.");
 		}
 
 		return values;
