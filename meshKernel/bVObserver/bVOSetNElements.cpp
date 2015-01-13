@@ -34,27 +34,19 @@ namespace dtOO {
     
 		// <bVObserver 
 		//   name="bVOSetNElements" 
-		//   number_elements_u="10" 
-		//   number_elements_v="100" 
-		//   number_elements_w="10"
+		//   number_elements="{10}{100}{10}" 
 		// />
 								
     DTINFOWF(init(), << dtXmlParserBase::convertToString(element) );
-		_nU 
+		
+		std::vector< int > nn 
 		= 
-		dtXmlParserBase::getAttributeIntMuParse(
-			"number_elements_u", element, cV, aF
+		dtXmlParserBase::getAttributeIntVectorMuParse(
+			"number_elements", element, cV, aF
 		);
-    _nV 
-		= 
-		dtXmlParserBase::getAttributeIntMuParse(
-			"number_elements_v", element, cV, aF
-		);
-    _nW 
-		= 
-		dtXmlParserBase::getAttributeIntMuParse(
-			"number_elements_w", element, cV, aF
-		);
+		_nU = nn[0];
+		_nV = nn[1];
+		_nW = nn[2];
   }
   
   void bVOSetNElements::update( void ) {
