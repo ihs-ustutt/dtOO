@@ -705,7 +705,7 @@ namespace dtOO {
 		//
 		// initialize boundedVolume
 		//
-		bVP->back()->init( wEl, cVP, sFP, aGP, bVP );
+		bVP->back()->init( wEl, bC, cVP, sFP, aGP, bVP );
   }
 	
   void dtXmlParser::createBoundedVolume(

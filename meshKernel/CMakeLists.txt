@@ -7,7 +7,7 @@ SET(HEADERS
   boundedVolumeFactory.h
   map3dTo3dCompoundVolume.h
   map3dTo3dTriangulated.h
-  readMOABMesh.h
+  map3dTo3dWithInternalTurboGrid.h
 )
 
 SET(SOURCES
@@ -19,7 +19,7 @@ SET(SOURCES
   boundedVolumeFactory.cpp
   map3dTo3dCompoundVolume.cpp
   map3dTo3dTriangulated.cpp
-  readMOABMesh.cpp
+  map3dTo3dWithInternalTurboGrid.cpp
 )
 
 APPEND_DTOO_SOURCE(meshKernel "${SOURCES}")

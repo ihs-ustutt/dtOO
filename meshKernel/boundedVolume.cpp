@@ -5,10 +5,12 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <functionHeaven/analyticFunction.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <stdexcept>
 #include <bVObserver/bVOInterfaceFactory.h>
 #include <bVObserver/bVOInterface.h>
+#include <dtXmlParserDecorator/qtXmlPrimitive.h>
 
 
 namespace dtOO {  
@@ -22,11 +24,14 @@ namespace dtOO {
     _vertexP.destroy();    
   }
 
-  void boundedVolume::init( QDomElement const & element,
-                            vectorHandling< constValue * > const * const cValP,
-                            vectorHandling< analyticFunction * > const * const sFunP,
-                            vectorHandling< analyticGeometry * > const * const depAGeoP,
-                            vectorHandling< boundedVolume * > const * const depBVolP) {
+  void boundedVolume::init( 
+		QDomElement const & element,
+		baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG,
+		vectorHandling< boundedVolume * > const * const bV
+	) {
     //
     // clear maps
     //
@@ -63,7 +68,7 @@ namespace dtOO {
         bVOInterfaceFactory::create(
 					qtXmlPrimitive::getAttributeStr("name", transElement[ii])
 				);
-        bVI->init(transElement[ii], cValP, sFunP, depAGeoP, depBVolP, this);
+        bVI->init(transElement[ii], cV, aF, aG, bV, this);
         this->attachBVObserver( bVI );
       }
 

@@ -10,6 +10,7 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <functionHeaven/analyticFunction.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <unstructured3dMesh.h>
 #include <gmsh/Context.h>
@@ -28,16 +29,17 @@ namespace dtOO {
 	}
 	
   void map3dTo3dCompoundVolume::init( 
-		QDomElement const & element,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP,
-		vectorHandling< boundedVolume * > const * const depBVolP
+    QDomElement const & element,
+		baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG,
+		vectorHandling< boundedVolume * > const * const bV
 	) {
     //
     // init cardinalDirVolume
     //
-    boundedVolume::init(element, cValP, sFunP, depAGeoP, depBVolP);
+    boundedVolume::init(element, bC, cV, aF, aG, bV);
 		
     //
 		// region
@@ -51,7 +53,7 @@ namespace dtOO {
 		//
 		dt__PTRASS(
 			map3dTo3d const * mm3d,
-			map3dTo3d::ConstDownCast( depAGeoP->get(label) )
+			map3dTo3d::ConstDownCast( aG->get(label) )
 		);
     boundedVolume::getRefToMap3dTo3dHandling()[rStrToId(pos)] = mm3d->clone();
 		

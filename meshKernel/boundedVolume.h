@@ -7,7 +7,6 @@
 #include "bVObserver/bVOSubject.h"
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
-#include <dtXmlParserDecorator/qtXmlPrimitive.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include <dtLinearAlgebra.h>
@@ -19,6 +18,7 @@ namespace dtOO {
   class map1dTo3d;
   class analyticFunction;
   class constValue;
+  class baseContainer;
   
   class boundedVolume : public bVOSubject,
                         public labelHandling,
@@ -29,12 +29,13 @@ namespace dtOO {
     boundedVolume();
     virtual ~boundedVolume();
     virtual void init( 
-                   QDomElement const & element,
-                   vectorHandling< constValue * > const * const cValP,
-                   vectorHandling< analyticFunction * > const * const sFunP,
-                   vectorHandling< analyticGeometry * > const * const depAGeoP,
-                   vectorHandling< boundedVolume * > const * const depBVolP
-                 );
+      QDomElement const & element,
+      baseContainer const * const bC,
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const sF,
+      vectorHandling< analyticGeometry * > const * const aF,
+      vectorHandling< boundedVolume * > const * const bV
+    );
     virtual void makeGrid(void) = 0;
     virtual void makePreGrid(void);
     void addId(std::string const typeStr, std::string const nameStr);

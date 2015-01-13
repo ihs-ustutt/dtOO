@@ -6,6 +6,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 
 namespace dtOO {
+  class baseContainer;
   class constValue;
   class analyticFunction;
   class analyticGeometry;
@@ -18,10 +19,11 @@ namespace dtOO {
     virtual ~map3dTo3dCompoundVolume();
     virtual void init( 
       QDomElement const & element,
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP,
-      vectorHandling< analyticGeometry * > const * const depAGeoP,
-      vectorHandling< boundedVolume * > const * const depBVolP
+      baseContainer const * const bC,
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG,
+      vectorHandling< boundedVolume * > const * const bV
     );    
     virtual void makeGrid(void);
     virtual void makePreGrid(void);
