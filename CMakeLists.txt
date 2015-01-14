@@ -63,7 +63,8 @@ find_package(GSL)
 find_package(
   Boost 
   COMPONENTS 
-  thread date_time program_options filesystem system 
+  filesystem 
+  system 
   REQUIRED
 )
 find_package(MOAB)
@@ -165,6 +166,7 @@ target_link_libraries(dtOO
   ${ROOT_LIBRARIES} 
   ${GSL_LIBRARIES}
   ${MOAB_LIBRARIES}
+  ${Boost_LIBRARIES}
 )
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGAL_LINK_DIRECTORY}")
