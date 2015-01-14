@@ -1,6 +1,6 @@
 #include "bVOSetNElements.h"
 
-#include <map3dTo3dCompoundVolume.h>
+#include <map3dTo3dBlockGmsh.h>
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -51,8 +51,8 @@ namespace dtOO {
   
   void bVOSetNElements::update( void ) {
     dt__PTRASS(
-			map3dTo3dCompoundVolume * mC,
-      map3dTo3dCompoundVolume::DownCast(ptrBoundedVolume())
+			map3dTo3dBlockGmsh * mC,
+      map3dTo3dBlockGmsh::DownCast(ptrBoundedVolume())
 		);
 		
 		dtGmshModel * gm = mC->refDtGmshModel();

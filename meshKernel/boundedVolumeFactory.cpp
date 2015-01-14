@@ -2,7 +2,7 @@
 
 #include <logMe/logMe.h>
 #include "boundedVolume.h"
-#include "map3dTo3dCompoundVolume.h"
+#include "map3dTo3dBlockGmsh.h"
 #include "map3dTo3dTriangulated.h"
 #include "map3dTo3dWithInternalTurboGrid.h"
 
@@ -21,7 +21,7 @@ namespace dtOO {
   boundedVolume * boundedVolumeFactory::create(char const * const str) {
     DTINFOWF(create(), << "creating " << str <<  "...");
     
-		__IFRET(map3dTo3dCompoundVolume);
+		__IFRET(map3dTo3dBlockGmsh);
 		__IFRET(map3dTo3dTriangulated);
 		__IFRET(map3dTo3dWithInternalTurboGrid);
 

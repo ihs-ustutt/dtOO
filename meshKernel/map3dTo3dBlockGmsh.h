@@ -1,5 +1,5 @@
-#ifndef MAP3DTO3DCOMPOUNDVOLUME_H
-#define	MAP3DTO3DCOMPOUNDVOLUME_H
+#ifndef MAP3DTO3DBLOCKGMSH_H
+#define	MAP3DTO3DBLOCKGMSH_H
 
 #include <logMe/dtMacros.h>
 #include "boundedVolume.h"
@@ -12,11 +12,11 @@ namespace dtOO {
   class analyticGeometry;
   class dtGmshModel;
    
-  class map3dTo3dCompoundVolume : public boundedVolume {
+  class map3dTo3dBlockGmsh : public boundedVolume {
   public:
-    dt__CLASSSTD(map3dTo3dCompoundVolume, boundedVolume);
-    map3dTo3dCompoundVolume();
-    virtual ~map3dTo3dCompoundVolume();
+    dt__CLASSSTD(map3dTo3dBlockGmsh, boundedVolume);
+    map3dTo3dBlockGmsh();
+    virtual ~map3dTo3dBlockGmsh();
     virtual void init( 
       QDomElement const & element,
       baseContainer const * const bC,
@@ -33,5 +33,5 @@ namespace dtOO {
     ptrHandling< dtGmshModel > _gm;
   };
 }
-#endif	/* MAP3DTO3DCOMPOUNDVOLUME_H */
+#endif	/* MAP3DTO3DBLOCKGMSH_H */
 

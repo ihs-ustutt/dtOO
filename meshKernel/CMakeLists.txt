@@ -6,7 +6,7 @@ SET(HEADERS
   bVObserver/bVOSetGrading.h
   boundedVolume.h
   boundedVolumeFactory.h
-  map3dTo3dCompoundVolume.h
+  map3dTo3dBlockGmsh.h
   map3dTo3dTriangulated.h
   map3dTo3dWithInternalTurboGrid.h
 )
@@ -19,7 +19,7 @@ SET(SOURCES
   bVObserver/bVOSetGrading.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
-  map3dTo3dCompoundVolume.cpp
+  map3dTo3dBlockGmsh.cpp
   map3dTo3dTriangulated.cpp
   map3dTo3dWithInternalTurboGrid.cpp
 )

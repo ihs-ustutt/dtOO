@@ -464,40 +464,99 @@ namespace dtOO {
 	}	
 	
   unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( void ) const {
-		unstructured3dMesh * um = new unstructured3dMesh();
+		//
+		// set current model
+		// 
+		GModel::setCurrent(__caCThis);
+			
+		//
+		// get all entities
+		//
+		std::vector< GEntity * > ent;
+		this->getEntities(ent);
+		vectorHandling< dtPoint3 > pp(__caCThis->getNumMeshVertices());		
 		
-		vectorHandling< dtPoint3 > pp(this->getNumMeshVertices());
-		for( int ii=0; ii<pp.size(); ii++ ) {
-			MVertex const * const mv = __caCThis->getMeshVertexByTag(ii+1);
-      pp[mv->getIndex()-1]
-			=
-			dtPoint3(
-				static_cast< float >(mv->x()), 
-				static_cast< float >(mv->y()), 
-				static_cast< float >(mv->z())
-			); 
-		}
+		for( int ii=0; ii<ent.size(); ii++ ) {
+      for( int jj=0; jj<ent[ii]->getNumMeshVertices(); jj++ ) {
+				MVertex const * const mv = ent[ii]->getMeshVertex(jj);				
+				pp[mv->getNum()-1]
+				=
+				dtPoint3(
+					static_cast< float >(mv->x()), 
+					static_cast< float >(mv->y()), 
+					static_cast< float >(mv->z())
+				); 				
+			}
+		}	
+    
+		//
+		// create unstructured mesh and set points
+		//
+		unstructured3dMesh * um = new unstructured3dMesh();		
 		um->addPoints(pp);
 		
-    std::vector< unsigned > numElements(5,0);
-    __caCThis->getNumMeshElements( &(numElements[0]) );
-    int nElemTot = numElements[0] + numElements[1] + numElements[2] + numElements[3] + numElements[4];
-    
-    DTINFOWF(toCoDoUnstructuredGrid(),
-      << "tetrahedra = " << numElements[0] << LOGDEL
-      << "hexahedra = " << numElements[1] << LOGDEL
-      << "prisms = " << numElements[2] << LOGDEL
-      << "pyramids = " << numElements[3] << LOGDEL
-      << "polyhedra = " << numElements[4] << LOGDEL
-    );
-		
+		for( int ii=0; ii<ent.size(); ii++ ) {
+			GVertex * gv = dynamic_cast< GVertex * >(ent[ii]);
+			GEdge * ge = dynamic_cast< GEdge * >(ent[ii]);
+			GFace * gf = dynamic_cast< GFace * >(ent[ii]);
+			GRegion * gr = dynamic_cast< GRegion * >(ent[ii]);
+
+      if (gv) {
+				unsigned nEl = ent[ii]->getNumMeshElements();
+				int nElTot = nEl;
+				DTINFOWF(toCoDoUnstructuredGrid(),
+					<< "GEntity[" << ii << "]<GVertex>:" << LOGDEL
+					<< "points = " << nEl << LOGDEL
+					<< DTLOGEVAL(nElTot)
+				);		
+			}		
+      else if (ge) {
+				unsigned nEl = ent[ii]->getNumMeshElements();
+				int nElTot = nEl;
+				DTINFOWF(toCoDoUnstructuredGrid(),
+					<< "GEntity[" << ii << "]<GEdge>:" << LOGDEL
+					<< "lines = " << nEl << LOGDEL
+					<< DTLOGEVAL(nElTot)
+				);		
+			}					
+      else if (gf) {
+				std::vector< unsigned > nEl(3,0);
+				ent[ii]->getNumMeshElements(&(nEl[0]));
+				int nElTot = nEl[0] + nEl[1] + nEl[2] + nEl[3] + nEl[4];
+				DTINFOWF(toCoDoUnstructuredGrid(),
+					<< "GEntity[" << ii << "]<GFace>:" << LOGDEL
+					<< "triangles = " << nEl[0] << LOGDEL
+					<< "quadrangles = " << nEl[1] << LOGDEL
+					<< "polygons = " << nEl[2] << LOGDEL
+					<< DTLOGEVAL(nElTot)
+				);		
+			}			
+			else if (gr) {
+				std::vector< unsigned > nEl(5,0);
+				ent[ii]->getNumMeshElements(&(nEl[0]));
+				int nElTot = nEl[0] + nEl[1] + nEl[2] + nEl[3] + nEl[4];
+				DTINFOWF(toCoDoUnstructuredGrid(),
+					<< "GEntity[" << ii << "]<GRegion>:" << LOGDEL
+					<< "tetrahedra = " << nEl[0] << LOGDEL
+					<< "hexahedra = " << nEl[1] << LOGDEL
+					<< "prisms = " << nEl[2] << LOGDEL
+					<< "pyramids = " << nEl[3] << LOGDEL
+					<< "polyhedra = " << nEl[4] << LOGDEL
+					<< DTLOGEVAL(nElTot)
+				);		
+			}
+		}
+		//
+		// write only 3d elements
+		//
     for (
 			GModel::riter r_it = __caCThis->firstRegion(); 
 			r_it != __caCThis->lastRegion(); 
 			++r_it
 		) {
       GRegion * gr = *r_it;
-      for( int ii=0; ii<nElemTot; ii++ ) {
+			unsigned nElemTot = gr->getNumMeshElements();
+      for( unsigned ii=0; ii<nElemTot; ii++ ) {
         MElement * me = gr->getMeshElement(ii);
         MTetrahedron * mtet = dynamic_cast< MTetrahedron * >(me);
         MHexahedron * mhex = dynamic_cast< MHexahedron * >(me);
@@ -508,10 +567,10 @@ namespace dtOO {
 				  vectorHandling< int > vertsIndex(4);					
           std::vector< MVertex * > verts;
           mtet->getVertices(verts);        
-          vertsIndex[0] = verts[0]->getIndex()-1;
-          vertsIndex[1] = verts[1]->getIndex()-1;
-          vertsIndex[2] = verts[2]->getIndex()-1;
-          vertsIndex[3] = verts[3]->getIndex()-1;
+          vertsIndex[0] = verts[0]->getNum()-1;
+          vertsIndex[1] = verts[1]->getNum()-1;
+          vertsIndex[2] = verts[2]->getNum()-1;
+          vertsIndex[3] = verts[3]->getNum()-1;
 					um->addElement(vertsIndex);
         }     
         //
@@ -521,14 +580,14 @@ namespace dtOO {
 					vectorHandling< int > vertsIndex(8);
           std::vector< MVertex * > verts;
 					mhex->getVertices(verts); 
-          vertsIndex[0] = verts[4]->getIndex()-1;
-          vertsIndex[1] = verts[5]->getIndex()-1;
-          vertsIndex[2] = verts[1]->getIndex()-1;
-          vertsIndex[3] = verts[0]->getIndex()-1;
-          vertsIndex[4] = verts[7]->getIndex()-1;
-          vertsIndex[5] = verts[6]->getIndex()-1;
-          vertsIndex[6] = verts[2]->getIndex()-1;
-          vertsIndex[7] = verts[3]->getIndex()-1;          
+          vertsIndex[0] = verts[4]->getNum()-1;
+          vertsIndex[1] = verts[5]->getNum()-1;
+          vertsIndex[2] = verts[1]->getNum()-1;
+          vertsIndex[3] = verts[0]->getNum()-1;
+          vertsIndex[4] = verts[7]->getNum()-1;
+          vertsIndex[5] = verts[6]->getNum()-1;
+          vertsIndex[6] = verts[2]->getNum()-1;
+          vertsIndex[7] = verts[3]->getNum()-1;          
 					um->addElement(vertsIndex);
         }  
       }

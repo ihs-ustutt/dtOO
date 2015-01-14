@@ -1,4 +1,4 @@
-#include "map3dTo3dCompoundVolume.h"
+#include "map3dTo3dBlockGmsh.h"
 #include <analyticGeometryHeaven/analyticGeometryCompound.h>
 #include <dtGmshRegion.h>
 #include <dtGmshModel.h>
@@ -20,15 +20,15 @@
 #include <gmsh/GModel.h>
 
 namespace dtOO {
-	map3dTo3dCompoundVolume::map3dTo3dCompoundVolume() {
+	map3dTo3dBlockGmsh::map3dTo3dBlockGmsh() {
 	  GmshInitialize();
 	}
 
-	map3dTo3dCompoundVolume::~map3dTo3dCompoundVolume() {
+	map3dTo3dBlockGmsh::~map3dTo3dBlockGmsh() {
 		GmshFinalize();
 	}
 	
-  void map3dTo3dCompoundVolume::init( 
+  void map3dTo3dBlockGmsh::init( 
     QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
@@ -37,7 +37,7 @@ namespace dtOO {
 		vectorHandling< boundedVolume * > const * const bV
 	) {
     //
-    // init cardinalDirVolume
+    // init boundedVolume
     //
     boundedVolume::init(element, bC, cV, aF, aG, bV);
 		
@@ -48,6 +48,7 @@ namespace dtOO {
     std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
 		std::string pos = qtXmlPrimitive::getAttributeStr("position", wElement);
     addId("region", pos);
+		
 		//
 		// get analyticGeometry, cast and store in region vector
 		//
@@ -60,17 +61,23 @@ namespace dtOO {
 		//
 		// get compound and put pieces as regions to gmsh model
 		//
-		_gm.reset( new dtGmshModel(getLabel()) );
-		vectorHandling< analyticGeometry const * > cI = mm3d->compoundInternal();		
+		_gm.reset( new dtGmshModel() );
+		vectorHandling< analyticGeometry const * > cI = mm3d->compoundInternal();
+		if (cI.size() == 0) {
+			cI.push_back(mm3d);
+		}
 		dt__FORALL(cI, ii,
 		  _gm->addRegionToGmshModel(map3dTo3d::ConstSecureCast(cI[ii]));
 		  _gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshTransfinite();
 		);
-		
-		_gm->writeGEO( (getLabel()+".geo").c_str() );
 	}
 	
-  void map3dTo3dCompoundVolume::makeGrid(void) {
+  void map3dTo3dBlockGmsh::makeGrid(void) {		
+		//
+		// set current model
+		//
+		GModel::setCurrent(_gm.get());
+		
     //
     // set options
     //      
@@ -84,34 +91,44 @@ namespace dtOO {
     // very small elements
     //
     SetBoundingBox();
-//		CTX::instance()->lc = 10.;
+
+    //
+		// destroy old mesh
+		//
+		_gm->deleteMesh();
 		
-//		_gm->writeGEO( (getLabel()+".geo").c_str() );
+		//
+		// reset vertex and element numbering
+		//
+		_gm->setMaxVertexNumber(0); 
+		_gm->setMaxElementNumber(0);
 		
-//		_gm->mesh(3);
-    _gm->meshVertex();
+		//
+		// meshing
+		//
+		_gm->mesh(0);
+		_gm->mesh(1);
+		_gm->mesh(2);
+		_gm->mesh(3);
 		
-    for (int ii=1; ii<=_gm->getNumRegions(); ii++) {
-		  _gm->meshRegion( ii );
-			_gm->writeMSH( (getLabel()+"_building.msh").c_str() );
-		}
-		_gm->writeMSH( (getLabel()+".msh").c_str() );
-		
+    //
+		// force renumbering mesh in gmsh
+		//
+    _gm->indexMeshVertices(true, 0, true);
 	}
   
-	void map3dTo3dCompoundVolume::makePreGrid(void) {
+	void map3dTo3dBlockGmsh::makePreGrid(void) {
 		boundedVolume::notify();
 	}
   
-	vectorHandling< renderInterface * > map3dTo3dCompoundVolume::getRender( void ) const {
+	vectorHandling< renderInterface * > map3dTo3dBlockGmsh::getRender( void ) const {
 		vectorHandling< renderInterface * > rV(1);
-		
 		rV[0] = _gm->toUnstructured3dMesh();
 		
 		return rV;
 	}	
 	
-	dtGmshModel * map3dTo3dCompoundVolume::refDtGmshModel( void ) {
+	dtGmshModel * map3dTo3dBlockGmsh::refDtGmshModel( void ) {
 		return _gm.get();
 	}
 }
