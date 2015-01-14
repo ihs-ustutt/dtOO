@@ -14,6 +14,7 @@ namespace dtOO {
     static bool createDirectory( std::string const & dirPath );
     static bool fileExists(std::string const filename);
     static void deleteFile( std::string const filename );
+    static void deleteDirectory( std::string const dirname );    
   private:
     systemHandling();    
   };

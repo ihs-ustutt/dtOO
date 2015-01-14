@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <sys/stat.h>
 #include <stdio.h>
+#include <boost/filesystem.hpp>
+#include <iostream> 
 
 namespace dtOO { 
   systemHandling::systemHandling() {
@@ -84,8 +86,30 @@ namespace dtOO {
   
   void systemHandling::deleteFile( std::string const filename ) {
     if( remove( filename.c_str() ) != 0 ) {
-      dt__THROW(deleteFile(),
-              << "Error deleting " << DTLOGEVAL(filename) );
+      dt__THROW(deleteFile(), << "Error deleting " << DTLOGEVAL(filename) );
     }
   }
+
+  void systemHandling::deleteDirectory( std::string const dirname ) {
+  try {
+		boost::filesystem::remove_all( 
+		  boost::filesystem::path(dirname.c_str()) 
+		);
+  }
+	catch( boost::filesystem::filesystem_error const & e) {
+      dt__THROW(
+				deleteDirectory(), 
+				<< "Error deleting " << DTLOGEVAL(e.what()) << LOGDEL
+				<< "Error deleting " << DTLOGEVAL(dirname) 
+			);
+
+  }		
+//    if( status != 0 ) {
+//      dt__THROW(
+//				deleteDirectory(), 
+//				<< "Error deleting " << DTLOGEVAL(status) << LOGDEL
+//				<< "Error deleting " << DTLOGEVAL(dirname) 
+//			);
+//    }
+  }	
 }
