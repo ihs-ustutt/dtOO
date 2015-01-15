@@ -283,12 +283,12 @@ namespace dtOO {
 		fNames[3] = "back"; fNames[4] = "west"; fNames[5] = "east";
 		int counter = 0;
 		for (std::list< dtGmshFace* >::iterator it=gf.begin(); it!=gf.end(); ++it) {
-			counter++;
 			(*it)->addPhysicalEntity( 
 				this->setPhysicalName( 
 					vol->getLabel()+"_GFace_"+fNames[counter], 2, 0
 				)							
 			);
+			counter++;			
 		}
 		
 		this->add( new dtGmshRegionHex(this, rId, eId, gf, fori) );
