@@ -91,31 +91,20 @@ namespace dtOO {
 	}
 	
   void map3dTo3dWithInternalTurboGrid::makeGrid(void) {
-		dt__THROW_IF(_mb == NULL, makeGrid());
-
-		// Load the mesh from vtk file
-		moab::ErrorCode rval = _mb->load_mesh(_meshFileName.c_str());
-		dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
-	}
-  
-	/**
-	 * @todo Calculate rotation angle or number of internals.
-   */
-	void map3dTo3dWithInternalTurboGrid::makePreGrid(void) {
-		boundedVolume::notify();	
-		
 		systemHandling::createDirectory(_directory);
 		std::fstream of;
 		std::string ofName;
 
+		//
+		// write hub curve
+		//		
+		dt__pH(map1dTo3d) hub( 
+			_channel->segmentPercent(dtPoint3(0.,0.,0.), dtPoint3(0.,1.,0.)) 
+		);		
 		ofName = "./"+_directory+"/hub.curve";			
 		of.open(ofName.c_str(), std::ios::out | std::ios::trunc);	
 		of.precision(8);
 		of.fixed;
-		dt__pH(map1dTo3d) hub( 
-			_channel->segmentPercent(dtPoint3(0.,0.,0.), dtPoint3(0.,1.,0.)) 
-		);
-
 		for ( int jj=0; jj<_nPoints;jj++) {			
 			float jjF = (float) jj;
 			float nPointsJJF = (float) _nPoints;                
@@ -126,15 +115,16 @@ namespace dtOO {
 		}
 	  of.close();		
 		
+		//
+		// write shroud curve
+		//
+		dt__pH(map1dTo3d) shroud( 
+			_channel->segmentPercent(dtPoint3(0.,0.,1.), dtPoint3(0.,1.,1.)) 
+		);		
 		ofName = "./"+_directory+"/shroud.curve";			
 		of.open(ofName.c_str(), std::ios::out | std::ios::trunc);	
 		of.precision(8);
 		of.fixed;
-
-		dt__pH(map1dTo3d) shroud( 
-			_channel->segmentPercent(dtPoint3(0.,0.,1.), dtPoint3(0.,1.,1.)) 
-		);
-
 		for ( int jj=0; jj<_nPoints;jj++) {			
 			dt__TOFLOAT(float jjF,  jj);
 			dt__TOFLOAT(float nPointsJJF,  _nPoints);          
@@ -145,16 +135,13 @@ namespace dtOO {
 		}
 	  of.close();					
 		
+		//
+		// write blade cut curves
+		//
 		ofName = "./"+_directory+"/blade.curve";				
 		of.open(ofName.c_str(), std::ios::out | std::ios::trunc);	
 		of.precision(8);
 		of.fixed;
-
-//		dt__PTRASS(
-//			map2dTo3d const * const blade, 
-//			map2dTo3d::ConstDownCast(_blade.get())
-//		);
-		
 		for ( int ii=0; ii<_nInternalCuts;ii++) {			
 			dt__TOFLOAT(float iiF,  ii);
 			dt__TOFLOAT(float nPointsIIF,  _nInternalCuts);               
@@ -171,9 +158,11 @@ namespace dtOO {
 		}
 	  of.close();		
 		
+		//
+		// write bladeGen.inf
+		//
 		ofName = "./"+_directory+"/bladeGen.inf";				
 		of.open(ofName.c_str(), std::ios::out | std::ios::trunc);	
-		
     of << "!======  CFX-BladeGen Export  ========" << std::endl;
     of << "Axis of Rotation: " << dtLinearAlgebra::directionString(_vv) << std::endl;
     of << "Number of Blade Sets: " << _nInternals << std::endl;
@@ -183,10 +172,32 @@ namespace dtOO {
     of << "Shroud Data File: shroud.curve" << std::endl;
     of << "Profile Data File: blade.curve" << std::endl;
 		if (!_internal->isClosedU()) of << "Blade 0 TE: CutOffEnd" << std::endl;
-		
 		of.close();
 		
+		//
+		// call script (turboGrid)
+		//
 		systemHandling::commandAndWait(_script);
+		
+		dt__THROW_IF(_mb == NULL, makeGrid());
+
+		//
+		// read cgns mesh of turboGrid
+		//
+		moab::ErrorCode rval = _mb->load_mesh(_meshFileName.c_str());
+		dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
+		
+		//
+		// delete turboGrid directory
+		//
+		systemHandling::deleteDirectory("./"+_directory);		
+	}
+  
+	/**
+	 * @todo Calculate rotation angle or number of internals.
+   */
+	void map3dTo3dWithInternalTurboGrid::makePreGrid(void) {
+		boundedVolume::notify();	
 	}
   
 	vectorHandling< renderInterface * > map3dTo3dWithInternalTurboGrid::getRender( void ) const {
