@@ -1,14 +1,17 @@
 cmake_minimum_required(VERSION 2.8)
 #------------------------------------------------------------------------------#
 #                                                                              #
-# check for environment variable                                               #
+# set DTOO_ROOTDIR and DTOO_EXTERNLIBS                                         #
 #                                                                              #
 #------------------------------------------------------------------------------#
 find_path(DTOO_ROOTDIR include/progHelper.h
   $ENV{DTOO_ROOTDIR}
 )
+set(DTOO_EXTERNLIBS $ENV{EXTERNLIBS} CACHE FILEPATH "externlibs folder")
+if (DTOO_EXTERNLIBS STREQUAL "")
+  message( FATAL_ERROR "Please set DTOO_EXTERNLIBS." )
+endif (DTOO_EXTERNLIBS STREQUAL "")
 
-#set( "designTool")
 set(DTOO_COVISE_MODULE_FOLDER "designTool" CACHE STRING "covise folder")
 set(DTOO_COVISE_ARCHSUFFIX $ENV{ARCHSUFFIX} CACHE STRING "covise archsuffix")
 
