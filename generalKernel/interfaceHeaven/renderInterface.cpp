@@ -9,6 +9,7 @@ namespace dtOO {
 
   renderInterface::renderInterface(const renderInterface& orig) {
 		_extRender = orig._extRender;
+		_extRenderOption = orig._extRenderOption;
   }
 
   renderInterface::~renderInterface() {
@@ -25,10 +26,19 @@ namespace dtOO {
 	void renderInterface::extRender( bool const & flag ) const {
 		_extRender = flag;
 	}  
+
+	void renderInterface::extRender( bool const & flag, std::string const & option ) const {
+		extRender(flag);
+		_extRenderOption = option;
+	}  
 	
 	bool renderInterface::mustExtRender( void ) const {
 		return _extRender;
-	}  
+	} 
+
+	std::string renderInterface::extRenderWhat( void ) const {
+		return _extRenderOption;
+	}  	
 	
 	void renderInterface::setMin(int const & dir, float const & value) const {
     switch (dir) {

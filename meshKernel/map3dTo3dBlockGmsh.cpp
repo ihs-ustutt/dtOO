@@ -62,6 +62,12 @@ namespace dtOO {
 		// get compound and put pieces as regions to gmsh model
 		//
 		_gm.reset( new dtGmshModel() );
+
+		//
+		// set current model
+		//
+		GModel::setCurrent(_gm.get());
+		
 		vectorHandling< analyticGeometry const * > cI = mm3d->compoundInternal();
 		if (cI.size() == 0) {
 			cI.push_back(mm3d);
@@ -115,6 +121,11 @@ namespace dtOO {
 		// force renumbering mesh in gmsh
 		//
     _gm->indexMeshVertices(true, 0, true);
+		
+		//
+		// mark as meshed
+		//
+		boundedVolume::setMeshed();		
 	}
   
 	void map3dTo3dBlockGmsh::makePreGrid(void) {
@@ -122,12 +133,27 @@ namespace dtOO {
 	}
   
 	vectorHandling< renderInterface * > map3dTo3dBlockGmsh::getRender( void ) const {
+		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
 		vectorHandling< renderInterface * > rV(1);
 		rV[0] = _gm->toUnstructured3dMesh();
 		
 		return rV;
 	}	
+
+	vectorHandling< renderInterface * > map3dTo3dBlockGmsh::getExtRender( void ) const {
+		vectorHandling< renderInterface * > rV(1);
+		rV[0] = _gm->toUnstructured3dMesh();
+		
+		return rV;
+	}		
 	
+	std::vector< std::string > map3dTo3dBlockGmsh::getMeshTags( void ) const {
+		std::vector< std::string > tags;
+		tags.push_back("internal");
+
+		return tags;
+	}
+		
 	dtGmshModel * map3dTo3dBlockGmsh::refDtGmshModel( void ) {
 		return _gm.get();
 	}

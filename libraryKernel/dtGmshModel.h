@@ -18,6 +18,7 @@ namespace dtOO {
   class dtGmshEdge;
   class dtGmshVertex;
   class unstructured3dMesh;
+  class unstructured3dSurfaceMesh;
   
   class dtGmshModel : public GModel {
   public:
@@ -52,6 +53,18 @@ namespace dtOO {
     int alreadyInModel( GEdge const * const ge ) const;
     int alreadyInModel( GFace const * const gf ) const;
     unstructured3dMesh * toUnstructured3dMesh( void ) const;
+    static unstructured3dMesh * toUnstructured3dMesh(
+      std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
+    ); 
+    static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
+      std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
+    );
+    static void dtReadCGNS(
+    	const std::string & name, 
+		  std::vector< MVertex * > & vertices, std::vector< MElement * > & elements,
+      std::vector< GFace * >  & _faces, std::vector< GRegion * >  & _regions,
+      std::vector< std::string > & _faceLabels, std::vector< std::string > & _regionLabels
+    );
   };
 }
 #endif	/* DTGMSHMODEL_H */

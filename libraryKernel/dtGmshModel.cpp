@@ -18,6 +18,7 @@
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <unstructured3dMesh.h>
+#include <unstructured3dSurfaceMesh.h>
 #include <gmsh/meshGEdge.h>
 #include <gmsh/meshGFace.h>
 #include <gmsh/meshGRegion.h>
@@ -25,9 +26,14 @@
 #include <gmsh/MElement.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MHexahedron.h>
+#include <gmsh/MQuadrangle.h>
+#include <cgnslib.h>
 
 #define __caCThis \
   const_cast< dtGmshModel * >(this)
+
+#define __cgnsCheck(cmd) \
+  if (cmd) dt__THROW(__cgnsCheck(), << DTLOGEVAL(cg_get_error()))
 
 namespace dtOO {
   dtGmshModel::dtGmshModel(std::string name) : GModel(name){
@@ -614,4 +620,394 @@ namespace dtOO {
 		
 		return um;
 	}
+	
+  unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( 
+	  std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
+	) {
+		std::vector< dtPoint3 > pp(vertices.size());
+		for( int ii=0; ii<vertices.size(); ii++ ) {
+			MVertex const * const mv = vertices[ii];				
+			pp[mv->getNum()-1]
+			=
+			dtPoint3(
+				static_cast< float >(mv->x()), 
+				static_cast< float >(mv->y()), 
+				static_cast< float >(mv->z())
+			); 				
+		}
+
+		unstructured3dMesh * um = new unstructured3dMesh();		
+		um->addPoints(pp);
+		
+		for( int ii=0; ii<elements.size(); ii++ ) {
+			MElement * me = elements[ii];
+			MTetrahedron * mtet = dynamic_cast< MTetrahedron * >(me);
+			MHexahedron * mhex = dynamic_cast< MHexahedron * >(me);
+			//
+			// tetrahedron
+			//
+			if ( mtet ) {
+				vectorHandling< int > vertsIndex(4);					
+				std::vector< MVertex * > verts;
+				mtet->getVertices(verts);        
+				vertsIndex[0] = verts[0]->getNum()-1;
+				vertsIndex[1] = verts[1]->getNum()-1;
+				vertsIndex[2] = verts[2]->getNum()-1;
+				vertsIndex[3] = verts[3]->getNum()-1;
+				um->addElement(vertsIndex);
+			}     
+			//
+			// hexahedron
+			//
+			else if ( mhex ) {
+				vectorHandling< int > vertsIndex(8);
+				std::vector< MVertex * > verts;
+				mhex->getVertices(verts); 
+				vertsIndex[0] = verts[4]->getNum()-1;
+				vertsIndex[1] = verts[5]->getNum()-1;
+				vertsIndex[2] = verts[1]->getNum()-1;
+				vertsIndex[3] = verts[0]->getNum()-1;
+				vertsIndex[4] = verts[7]->getNum()-1;
+				vertsIndex[5] = verts[6]->getNum()-1;
+				vertsIndex[6] = verts[2]->getNum()-1;
+				vertsIndex[7] = verts[3]->getNum()-1;          
+				um->addElement(vertsIndex);
+			}  
+		}		
+		
+		return um;
+	}	
+
+  unstructured3dSurfaceMesh * dtGmshModel::toUnstructured3dSurfaceMesh( 
+	  std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
+	) {
+		std::vector< dtPoint3 > pp(vertices.size());
+		for( int ii=0; ii<vertices.size(); ii++ ) {
+			MVertex const * const mv = vertices[ii];				
+			pp[mv->getNum()-1]
+			=
+			dtPoint3(
+				static_cast< float >(mv->x()), 
+				static_cast< float >(mv->y()), 
+				static_cast< float >(mv->z())
+			); 				
+		}
+
+		unstructured3dSurfaceMesh * um = new unstructured3dSurfaceMesh();		
+		um->addPoints(pp);
+		
+		for( int ii=0; ii<elements.size(); ii++ ) {
+			MElement * me = elements[ii];
+			MQuadrangle * mquad = dynamic_cast< MQuadrangle * >(me);
+			
+			//
+			// quadrangle
+			//
+			if ( mquad ) {
+				vectorHandling< int > vertsIndex(4);					
+				std::vector< MVertex * > verts;
+				mquad->getVertices(verts);        
+				vertsIndex[0] = verts[0]->getNum()-1;
+				vertsIndex[1] = verts[1]->getNum()-1;
+				vertsIndex[2] = verts[2]->getNum()-1;
+				vertsIndex[3] = verts[3]->getNum()-1;
+				um->addElement(vertsIndex);
+			}     
+		}		
+		
+		return um;		
+	}	
+	
+	void dtGmshModel::dtReadCGNS(
+	  const std::string &name,
+		std::vector< MVertex * > & vertices, std::vector< MElement * > & elements,
+	  std::vector< GFace * >  & _faces, std::vector< GRegion * >  & _regions,
+		std::vector< std::string > & _faceLabels, std::vector< std::string > & _regionLabels
+	) {
+			dt__THROW_IF(vertices.size() != 0, dtReadCGNS());
+			dt__THROW_IF(elements.size() != 0, dtReadCGNS());
+		
+			int vNum = 0;	
+			std::map<int, MVertex*> vertexMap;
+			int minVertex = 1;
+			int maxVertex = 0;		
+
+			int eNum = 0;
+			std::map<int, MElement*> elementMap;			
+			int minElement = 1;
+			int maxElement = 0;
+				
+			int fNum = 0;
+			int rNum = 0;
+
+			//
+			// open cgns file
+			//
+			int index_file;
+			__cgnsCheck(cg_open(name.c_str(), CG_MODE_READ, &index_file));
+
+			//
+			// get number of bases
+			//
+			int nBases;
+			__cgnsCheck(cg_nbases(index_file, &nBases));
+			DTINFOWF(dtReadCGNS(), << "Found " << nBases << " base(s).");
+			dt__THROW_IF(nBases > 1, dtReadCGNS());
+			int index_base = 1;
+			
+			//
+			// number of zones
+			//
+			int nZones;
+			__cgnsCheck(cg_nzones(index_file, index_base, &nZones));
+			DTINFOWF(dtReadCGNS(), << "Found " << nZones << " zone(s).");
+
+			for (int index_zone = 1; index_zone <= nZones; index_zone++) {
+			  DTINFOWF(dtReadCGNS(), << "Reading zone " << index_zone);
+				
+				ZoneType_t zoneType;
+				__cgnsCheck(cg_zone_type(index_file, index_base, index_zone, &zoneType));
+
+				dt__THROW_IF(zoneType==ZoneTypeNull, dtReadCGNS() );
+				dt__THROW_IF(zoneType==ZoneTypeUserDefined, dtReadCGNS() );
+				dt__THROW_IF(zoneType==Structured, dtReadCGNS() );
+				if ( zoneType == Unstructured ) {
+					DTINFOWF(dtReadCGNS(), << "Unstructured zone detected.");
+					//
+					// read zone info
+					//				
+					cgsize_t zoneSizes[3];				
+					char zoneName[35];
+					__cgnsCheck(cg_zone_read(index_file, index_base, index_zone, zoneName, zoneSizes));
+					int nNodes = static_cast< int >(zoneSizes[0]);
+					int nCells = static_cast< int >(zoneSizes[1]);
+					DTINFOWF(
+					  dtReadCGNS(), 
+						<< DTLOGEVAL(zoneName) << LOGDEL
+						<< DTLOGEVAL(zoneSizes[0]) << LOGDEL
+						<< DTLOGEVAL(zoneSizes[1]) << LOGDEL
+						<< DTLOGEVAL(zoneSizes[2]) << LOGDEL
+						<< DTLOGEVAL(nNodes) << LOGDEL
+						<< DTLOGEVAL(nCells)
+					);
+					
+					//
+					// read coordinates
+					//				
+					int nCoords;
+					__cgnsCheck(cg_ncoords(index_file, index_base, index_zone, &nCoords));		
+					DataType_t dataType;
+					char coordName[35];
+					void* coord;
+					twoDArrayHandling< double > nodes(nNodes, nCoords);
+
+					for ( int iCoord = 0; iCoord < nCoords; iCoord++ ) {
+						__cgnsCheck(
+							cg_coord_info(
+								index_file, index_base, index_zone, 
+								iCoord+1, &dataType, coordName
+							)
+						);
+						DTINFOWF(
+							dtReadCGNS(),
+							<< "Reading coordinate " << iCoord+1 << " : " << coordName
+						);
+
+						cgsize_t irmin  = 1;
+						cgsize_t irmax = zoneSizes[0];
+						switch(dataType) {
+							case RealSingle:
+    						DTINFOWF(dtReadCGNS(), << "Type is float");
+								coord = new float[nNodes];
+								__cgnsCheck(
+									cg_coord_read(
+										index_file, index_base, index_zone, 
+										coordName, dataType, &irmin, &irmax, coord
+									)
+								);
+								for (int iNode = 0; iNode < nNodes; iNode++) {
+									nodes[iNode][iCoord] = (double)((float*)coord)[iNode];
+								}
+								delete [] (float*)coord;
+								break;
+							case RealDouble:
+								DTINFOWF(dtReadCGNS(), << "Type is double");
+								coord = new double[nNodes];
+								__cgnsCheck(
+									cg_coord_read(
+										index_file, index_base, index_zone, 
+										coordName, dataType, &irmin, &irmax, coord
+									)
+								);
+								for (int iNode = 0; iNode < nNodes; iNode++) {
+									nodes[iNode][iCoord] = ((double*) coord)[iNode];
+								}
+								delete [] (double*)coord;
+								break;
+						}
+					}	
+
+					//
+					// create vertices
+					//		
+					for (int iNode = 0; iNode < nNodes; iNode++) {
+						vNum++;
+						MVertex* mv = new MVertex(nodes[iNode][0], nodes[iNode][1], nodes[iNode][2], 0, vNum);
+						minVertex = std::min(minVertex, vNum);
+						maxVertex = std::max(maxVertex, vNum);
+						vertexMap[vNum] = mv;
+					}
+	
+			  //
+			  // read sections
+				//
+				int nSec;
+				__cgnsCheck( cg_nsections(index_file, index_base, index_zone, &nSec) );
+				DTINFOWF(dtReadCGNS(), << "Found " << nSec << " sections.");
+				for (int index_section = 1; index_section <= nSec; index_section++) {
+					char secName[30];
+					ElementType_t elementType;
+					cgsize_t bounds[2];
+					int nBoundary;
+					int parentFlag = 0;
+					__cgnsCheck(
+						cg_section_read(
+							index_file, index_base, index_zone, index_section,
+							secName, &elementType, &(bounds[0]), &(bounds[1]), &nBoundary, &parentFlag
+						)
+					);
+					DTINFOWF(
+					  dtReadCGNS(), 
+						<< DTLOGEVAL(secName) << LOGDEL
+						<< DTLOGEVAL(bounds[0]) << LOGDEL
+						<< DTLOGEVAL(bounds[1]) << LOGDEL
+						<< DTLOGEVAL(nBoundary) << LOGDEL
+						<< DTLOGEVAL(parentFlag) 
+					);					
+           
+					//
+					// read element data
+					//
+					cgsize_t elementDataSize;				
+					__cgnsCheck( 
+						cg_ElementDataSize(
+							index_file, index_base, index_zone, index_section,
+							&elementDataSize
+						)
+					);
+					std::vector< cgsize_t > elementData(elementDataSize);					
+					__cgnsCheck(
+						cg_elements_read(
+							index_file, index_base, index_zone, index_section,
+							&(elementData[0]), NULL
+						)
+					);
+
+					DTINFOWF(
+						dtReadCGNS(), 
+						<< DTLOGEVAL(elementDataSize) << LOGDEL
+						<< DTLOGEVAL(elementType) << LOGDEL
+            << DTLOGEVAL(ElementTypeName[elementType])
+					);
+					int nElements;
+					int tmpC = 0;
+					switch(elementType) {
+						/*        gmsh                              cgns                   
+						 *         v                                 v                        
+						 *         ^                                 ^                         
+						 *         |                                 |                      
+						 *   3-----------2                     3-----------2                  
+						 *   |     |     |                     |     |     |                
+						 *   |     |     |           >>>       |     |     |               
+						 *   |     +---- | --> u     >>>       |     +---- | --> u              
+						 *   |           |           >>>       |           |                   
+						 *   |           |                     |           |              
+						 *   0-----------1                     0-----------1           
+						 */									
+						case QUAD_4:
+							_faceLabels.push_back( std::string(secName) );
+							fNum++;
+							_faces.push_back( new dtGmshFace(NULL, fNum) );
+							nElements = elementDataSize/4;
+							//
+							// create elements
+							//
+							tmpC = 0;
+							for (int iEl = bounds[0]; iEl<=bounds[1]; iEl++) {
+								eNum++;								
+								int counter = (tmpC)*4;
+								tmpC++;
+								std::vector< MVertex * > locVertices(4, NULL);
+								locVertices[0] = vertexMap[elementData[counter+0]];
+								locVertices[1] = vertexMap[elementData[counter+1]];
+								locVertices[2] = vertexMap[elementData[counter+2]];
+								locVertices[3] = vertexMap[elementData[counter+3]];
+								MQuadrangle * me = new MQuadrangle(locVertices, eNum, 0);
+								minElement = std::min(minElement, eNum);
+								maxElement = std::max(maxElement, eNum);
+								elementMap[eNum] = me;
+								_faces.back()->addQuadrangle(me);
+							}
+							break;
+						/*         gmsh                           cgns
+						 *          v                              v
+						 *   3----------2                   7----------6
+						 *   |\     ^   |\                  |\     ^   |\
+						 *   | \    |   | \                 | \    |   | \
+						 *   |  \   |   |  \                |  \   |   |  \
+						 *   |   7------+---6        >>>    |   8------+---5
+						 *   |   |  +-- |-- | -> u   >>>    |   |  +-- |-- | -> u
+						 *   0---+---\--1   |        >>>    3---+---\--2   |
+						 *    \  |    \  \  |                \  |    \  \  |
+						 *     \ |     \  \ |                 \ |     \  \ |
+						 *      \|      w  \|                  \|      w  \|
+						 *       4----------5                   4----------1
+						 */													
+						case HEXA_8:
+							_regionLabels.push_back( std::string(secName) );
+							rNum++;
+							_regions.push_back( new dtGmshRegion(NULL, rNum) );
+							nElements = elementDataSize/4;							
+							nElements = elementDataSize/8;
+							//
+							// create elements
+							//
+							tmpC = 0;
+							for (int iEl = bounds[0]; iEl<= bounds[1]; iEl++) {						
+								eNum++;								
+								int counter = (tmpC)*8;
+								tmpC++;
+								std::vector< MVertex * > locVertices(8, NULL);
+								locVertices[0] = vertexMap[elementData[counter+2]];
+								locVertices[1] = vertexMap[elementData[counter+1]];
+								locVertices[2] = vertexMap[elementData[counter+5]];
+								locVertices[3] = vertexMap[elementData[counter+6]];
+								locVertices[4] = vertexMap[elementData[counter+3]];
+								locVertices[5] = vertexMap[elementData[counter+0]];
+								locVertices[6] = vertexMap[elementData[counter+4]];
+								locVertices[7] = vertexMap[elementData[counter+7]];
+								MHexahedron * me = new MHexahedron(locVertices, eNum, 0);
+								minElement = std::min(minElement, eNum);
+								maxElement = std::max(maxElement, eNum);
+								elementMap[eNum] = me;
+								_regions.back()->addHexahedron(me);
+							}
+							break;
+						default:
+							dt__THROW(dtReadCGNS(), << ElementTypeName[elementType]);
+					}
+				}				
+			}
+		}
+		
+		__cgnsCheck( cg_close(index_file) );
+		
+		dt__THROW_IF( vertexMap.size() != vNum, dtReadCGNS() );
+		dt__THROW_IF( elementMap.size() != eNum, dtReadCGNS() );
+		
+    vertices.resize(vNum);
+		elements.resize(eNum);
+		for (int ii=1; ii<=vNum; ii++) vertices[ii-1] = vertexMap[ii];
+		for (int ii=1; ii<=eNum; ii++) elements[ii-1] = elementMap[ii];
+	}	
 }

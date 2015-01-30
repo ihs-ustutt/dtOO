@@ -28,6 +28,8 @@ namespace dtOO {
     virtual void makeGrid(void);
     virtual void makePreGrid(void);
   	virtual vectorHandling< renderInterface * > getRender( void ) const;
+  	virtual vectorHandling< renderInterface * > getExtRender( void ) const;    
+	  virtual std::vector< std::string > getMeshTags( void ) const;    
     dtGmshModel * refDtGmshModel(void);
   private:
     ptrHandling< dtGmshModel > _gm;

@@ -3,6 +3,7 @@
 
 #include <logMe/dtMacros.h>
 #include "vectorHandling.h"
+#include <string>
 
 namespace dtOO { 
   class renderInterface {
@@ -12,7 +13,9 @@ namespace dtOO {
     renderInterface(const renderInterface& orig);
     virtual ~renderInterface();
     void extRender( bool const & flag ) const;
+	  void extRender( bool const & flag, std::string const & option ) const;
 	  bool mustExtRender( void ) const;
+	  std::string extRenderWhat( void ) const;
     virtual vectorHandling< renderInterface * > getExtRender( void ) const;
     virtual vectorHandling< renderInterface * > getRender( void ) const;
 	  void setMin(int const & dir, float const & value) const;
@@ -21,6 +24,7 @@ namespace dtOO {
 	  float getMax(int const & dir) const;	     
   private:
     mutable bool _extRender;
+    mutable std::string _extRenderOption;
     mutable float _u[2];
     mutable float _v[2];
     mutable float _w[2];
