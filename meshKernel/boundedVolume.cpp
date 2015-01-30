@@ -208,6 +208,10 @@ namespace dtOO {
   void boundedVolume::setMeshed( void ) {
 		_meshed = true;
 	}
+	
+	std::vector< std::string > boundedVolume::getMeshTags( void ) const {
+		return std::vector< std::string >(0);
+	}	
 }
 
 

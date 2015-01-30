@@ -56,6 +56,7 @@ namespace dtOO {
     vectorHandling< dtPoint3 * > & getRefToVertexHandling( void );
     bool isMeshed( void ) const;
     void setMeshed( void );
+    virtual std::vector< std::string > getMeshTags( void ) const;
   private:
     std::map< std::string, int > _vId;
     std::map< std::string, int > _eId;
