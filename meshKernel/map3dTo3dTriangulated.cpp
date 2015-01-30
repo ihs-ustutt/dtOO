@@ -104,6 +104,11 @@ namespace dtOO {
 		_gm->mesh(3);
 		_gm->writeMSH( (getLabel()+".msh").c_str() );
 		
+		//
+		// mark as meshed
+		//
+		boundedVolume::setMeshed();		
+		
 	}
   
 	void map3dTo3dTriangulated::makePreGrid(void) {

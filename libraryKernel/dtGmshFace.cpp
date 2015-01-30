@@ -11,6 +11,10 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {    
+  dtGmshFace::dtGmshFace(GModel *m, int tag) : GFace(m, tag) {
+		
+  }
+	
   dtGmshFace::dtGmshFace(GModel *m, int tag, const std::list<GEdge*> &edges, const std::vector< int > &ori )
     : GFace(m, tag) {
     edgeLoops.push_back(GEdgeLoop(edges));

@@ -14,6 +14,7 @@ namespace dtOO {
   class dtGmshFace : public GFace {
   public:
     dt__CLASSSTD(dtGmshFace, GEntity);
+    dtGmshFace(GModel *m, int tag);
     dtGmshFace(GModel *m, int tag, const std::list<GEdge*> &edges, const std::vector< int > & ori);
     dtGmshFace(GModel *m, int tag, const std::list<GEdge*> &edges);
     virtual ~dtGmshFace();

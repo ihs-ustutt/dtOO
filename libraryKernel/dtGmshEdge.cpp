@@ -23,16 +23,13 @@ namespace dtOO {
     _isSeamU = false;
     _isSeamV = false;
 		
-		_mm.reset( 
-		  new splineCurve3d(	
-				ptrHandling< dtCurve >(
-					trimmedCurve_twoPointsConnectConstructOCC(
-						dtPoint3(v1->x(), v1->y(), v1->z()),
-						dtPoint3(v2->x(), v2->y(), v2->z())
-						).result()
-				).get() 
-			)
+		trimmedCurve_twoPointsConnectConstructOCC builder(
+			dtPoint3(v1->x(), v1->y(), v1->z()),
+			dtPoint3(v2->x(), v2->y(), v2->z())
 		);
+		ptrHandling< dtCurve > tmpEdge(builder.result());
+				
+		_mm.reset( new splineCurve3d(tmpEdge.get()) );
   }
 
   dtGmshEdge::~dtGmshEdge(void) {

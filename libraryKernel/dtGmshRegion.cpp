@@ -6,6 +6,10 @@
 #include "dtGmshFace.h"
 
 namespace dtOO {
+	dtGmshRegion::dtGmshRegion(GModel *m, int tag) : GRegion(m, tag) {
+		
+	}
+	
   dtGmshRegion::dtGmshRegion(GModel *m, int tag, const std::list<GFace*> &faces, const std::vector<int> &ori )
     : GRegion(m, tag) {
     typedef std::list<GFace*>::const_iterator FIter;
@@ -30,10 +34,6 @@ namespace dtOO {
       l_dirs.push_back( ori[ii] );
       ii++;
     }
-  }
-  
-  dtGmshRegion::dtGmshRegion( GModel *m, int tag ) : GRegion(m, tag) {
-    
   }
    
   void dtGmshRegion::meshTransfinite( void ) {

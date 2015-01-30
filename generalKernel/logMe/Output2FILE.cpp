@@ -17,9 +17,9 @@ namespace dtOO {
   }
 
   void Output2FILE::OutputFile(const std::string& msg, TLogLevel level) {   
-    if ( !Stream().is_open() )
-    return;
+    if ( !Stream().is_open() ) return;
     Stream() << msg.c_str();
+		Stream().flush();
   }
 
 }

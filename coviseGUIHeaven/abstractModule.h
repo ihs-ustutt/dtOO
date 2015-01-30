@@ -39,7 +39,7 @@ namespace dtOO {
         labelStr = choiceParamP->getActLabel();
       }
 
-      std::vector<string> choicesFun(vecHP->size(), "empty");
+      std::vector<std::string> choicesFun(vecHP->size(), "empty");
       for (int ii = 0;ii<vecHP->size();ii++) {
         if ( !vecHP->at(ii)->Is( labelHandling() ) ) {
           dt__THROW(
@@ -48,7 +48,7 @@ namespace dtOO {
             << DTLOGEVAL(vecHP->at(ii)->virtualClassName())
           );
         }        
-        choicesFun[ii] = dynamic_cast< labelHandling const * >(vecHP->at(ii))->getLabel().c_str();
+        choicesFun[ii] = dynamic_cast< labelHandling const * >(vecHP->at(ii))->getLabel();
       }
       choiceParamP->disable();
       choiceParamP->setValue(vecHP->size(), choicesFun, 0);
@@ -61,6 +61,7 @@ namespace dtOO {
         choiceParamP->setValue(label);
       }
     }
+    static std::string blankReConvert(std::string const & str);
   private:
     abstractModule();
   };

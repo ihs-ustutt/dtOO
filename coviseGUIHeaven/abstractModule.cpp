@@ -1,6 +1,6 @@
 #include "abstractModule.h"
 #include <logMe/logMe.h>
-
+#include <interfaceHeaven/stringPrimitive.h>
 namespace dtOO { 
   abstractModule::abstractModule() {
   }
@@ -20,7 +20,12 @@ namespace dtOO {
          covise::coChoiceParam * choiceParamP, 
          std::vector< std::string > * vecHP
        ) {
-    
+
+		if (vecHP->size() == 0) {
+			choiceParamP->disable();
+			return;
+		}
+			
     int label = 0;
     std::string labelStr = "";
     if (choiceParamP->getNumChoices() > 0) {
@@ -28,9 +33,9 @@ namespace dtOO {
       labelStr = choiceParamP->getActLabel();
     }
     
-    std::vector<string> choicesFun(vecHP->size(), "empty");
+    std::vector<std::string> choicesFun(vecHP->size(), "empty");
     for (int ii = 0;ii<vecHP->size();ii++) {
-      choicesFun[ii] = vecHP->at(ii).c_str();
+      choicesFun[ii] = vecHP->at(ii);
     }
     choiceParamP->disable();
     choiceParamP->setValue(vecHP->size(), choicesFun, 0);
@@ -43,4 +48,8 @@ namespace dtOO {
     }
     choiceParamP->setValue(label);
   }  
+
+	std::string abstractModule::blankReConvert(std::string const & str) {
+		return stringPrimitive::replaceStringInString("\177", " ", str);
+	}   	
 }
