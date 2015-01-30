@@ -51,15 +51,16 @@ find_package(
   TKFillet TKShHealing 
   TKTopAlgo TKBRep 
   TKGeomBase TKGeomAlgo 
-  TKG3d TKG2d 
+  TKG3d TKG2d
+  REQUIRED 
 )
 #TKMesh TKIGES TKXSBase TKOffset TKBool
 #TKFeat TKSTEPAttr TKHLR TKBO TKPrim TKAdvTools 
 #TKSTEP209 TKSTEPBase 
 
 find_package(MUPARSER REQUIRED)
-find_package(ROOT)
-find_package(GSL)
+find_package(ROOT REQUIRED)
+find_package(GSL REQUIRED)
 find_package(
   Boost 
   COMPONENTS 
@@ -67,7 +68,8 @@ find_package(
   system 
   REQUIRED
 )
-find_package(MOAB)
+find_package(MOAB REQUIRED)
+find_package(CGNS REQUIRED)
 if(DTOO_USE_GOOGLEPERFTOOLS)
   add_definitions(-DDTOO_USE_GOOGLEPROFTOOLS)
   find_package(GOOGLEPERFTOOLS REQUIRED)
@@ -117,6 +119,7 @@ include_directories(
   ${GSL_INCLUDE_DIR} 
   ${OpenCASCADE_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}
+  ${CGNS_INCLUDE_DIR}
 )
 
 #------------------------------------------------------------------------------#
@@ -167,6 +170,7 @@ target_link_libraries(dtOO
   ${GSL_LIBRARIES}
   ${MOAB_LIBRARIES}
   ${Boost_LIBRARIES}
+  ${CGNS_LIBRARIES}
 )
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGAL_LINK_DIRECTORY}")
@@ -175,6 +179,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${MUPARSER_LI
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenCASCADE_LINK_DIRECTORY}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${ROOT_LINK_DIRECTORY}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${MOAB_LINK_DIRECTORY}")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGNS_LINK_DIRECTORY}")
 
 #------------------------------------------------------------------------------#
 #
