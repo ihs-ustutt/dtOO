@@ -6,6 +6,7 @@ SET(HEADERS
   solid3dSurface.h
   unstructured3dMesh.h
   discrete3dVector.h
+  unstructured3dSurfaceMesh.h
 )
 SET(SOURCES
   discrete2dPoints.cpp
@@ -15,6 +16,7 @@ SET(SOURCES
   solid3dSurface.cpp
   unstructured3dMesh.cpp
   discrete3dVector.cpp
+  unstructured3dSurfaceMesh.cpp
 )
 
 APPEND_DTOO_SOURCE(renderKernel "${SOURCES}")
