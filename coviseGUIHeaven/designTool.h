@@ -65,7 +65,10 @@ namespace dtOO {
       covise::coBooleanParam * _aGRenderCurrentToggle;
 
 		  covise::coChoiceParam * _bVChoice;
-
+      covise::coChoiceParam * _bVRenderChoice;
+      covise::coChoiceParam * _bVRenderTags;
+      covise::coBooleanParam * _bVRenderCurrentToggle;
+      
 		  covise::coChoiceParam * _pLChoice;
       
       covise::coOutputPort * _aFOut;  
@@ -83,7 +86,6 @@ namespace dtOO {
       vectorHandling< dtPlugin * > _pL;
       ptrHandling< baseContainer > _bC;
       vectorHandling< dtPlugin * > _pLApply;
-      vectorHandling< boundedVolume * > _bVMakeGrid;
       coDoSetHandling _aGToRender;
       coDoSetHandling _aFToRender;
       coDoSetHandling _bVToRender;

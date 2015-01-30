@@ -11,29 +11,36 @@
 #include <solid3dLine.h>
 #include <solid3dSurface.h>
 #include <unstructured3dMesh.h>
+#include <unstructured3dSurfaceMesh.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <boost/smart_ptr/scoped_ptr.hpp>
 
 namespace dtOO {  
   coDoSetHandling::coDoSetHandling() {
   }
 
-  coDoSetHandling::coDoSetHandling(const coDoSetHandling& orig) {
-  }
-
   coDoSetHandling::~coDoSetHandling() {
   }
 
-  covise::coDoSet * coDoSetHandling::render3d( 
-                      coDoSetHandling const & vec,
-                      char const * str
-                    ) const {
-    covise::coDoSet * bigCoDoSetP = NULL;  
-    for (int ii=0; ii<vec.size(); ii++) {
+  covise::coDoSet * coDoSetHandling::render3d(
+    coDoSetHandling::const_iterator const & it, char const * str
+  ) const {   
+    return renderElement3d(*it, str);
+	}
+	
+  covise::coDoSet * coDoSetHandling::render3d(
+    coDoSetHandling::const_iterator const & first, 
+    coDoSetHandling::const_iterator const & last, 
+    char const * str
+  ) const {
+    covise::coDoSet * bigCoDoSetP = NULL; 
+		int counter = 0;
+    for (coDoSetHandling::const_iterator it = first; it != last; ++it) {
       //
       // check if object has the correct interface
       //
-      renderInterface const * cDSI = vec[ii];
+      renderInterface const * cDSI = *it;
       
       //
       // find fist element
@@ -44,7 +51,7 @@ namespace dtOO {
       }
       else {
         char * objName = new char[strlen(str)+5];
-        sprintf(objName,"%s_%d", str, ii);
+        sprintf(objName,"%s_%d", str, counter);
         covise::coDoSet * smallCoDoSetP = renderElement3d(cDSI, objName);
         if (smallCoDoSetP != NULL) {
           for (int jj=0;jj<smallCoDoSetP->getNumElements();jj++) {
@@ -53,10 +60,18 @@ namespace dtOO {
           delete smallCoDoSetP;
         }
       }
+			counter++;
     }
     
     return bigCoDoSetP;   
-  }  
+	}
+	
+  covise::coDoSet * coDoSetHandling::render3d( 
+                      coDoSetHandling const & vec,
+                      char const * str
+                    ) const {
+		return render3d(vec.begin(), vec.end(), str);
+  }
 
   covise::coDoSet * coDoSetHandling::render2d( 
                       coDoSetHandling const & vec,
@@ -136,20 +151,36 @@ namespace dtOO {
     return bigCoDoSetP;   
   }
      
+  covise::coDoSet * coDoSetHandling::createCoDoSet( 
+		covise::coDistributedObject * const cdo, char const * str
+	) {
+		covise::coDistributedObject** cdoa = new covise::coDistributedObject*[2];
+		
+		cdoa[0] = cdo;
+		cdoa[1] = NULL;
+    covise::coDoSet * set = new covise::coDoSet(str, cdoa);
+		
+		delete cdoa;
+		
+    return set;   
+  }     
+	
   covise::coDoSet * coDoSetHandling::toCoDoSet( 
                       covise::coDoSet * setOne,
                       covise::coDoSet * setTwo,
                       char const * str
                     ) {
-      //
-      // find fist element
-      //
-        if (setTwo != NULL) {
-          for (int jj=0;jj<setTwo->getNumElements();jj++) {
-            setOne->addElement(setTwo->getElement(jj));
-          }
-          delete setTwo;
-        }
+		dt__THROW_IF(setOne==NULL, toCoDoSet());
+		
+		//
+		// find fist element
+		//
+		if (setTwo != NULL) {
+			for (int jj=0;jj<setTwo->getNumElements();jj++) {
+				setOne->addElement(setTwo->getElement(jj));
+			}
+			delete setTwo;
+		}
     return setOne;   
   }      
 	
@@ -160,6 +191,7 @@ namespace dtOO {
 		solid3dLine const * const s3dL = solid3dLine::ConstDownCast(rI);
 		solid3dSurface const * const s3dS = solid3dSurface::ConstDownCast(rI);
 		unstructured3dMesh const * const u3dM = unstructured3dMesh::ConstDownCast(rI);
+		unstructured3dSurfaceMesh const * const u3dSM = unstructured3dSurfaceMesh::ConstDownCast(rI);
 		discrete3dVector const * const d3dV = discrete3dVector::ConstDownCast(rI);
 		
 		if (d2dP) {
@@ -180,6 +212,9 @@ namespace dtOO {
 		else if (u3dM) {
 			return unstructured3dMeshToCoDoSet(u3dM, str);
 		}		
+		else if (u3dSM) {
+			return unstructured3dSurfaceMeshToCoDoSet(u3dSM, str);
+		}			
 		else if (d3dV) {
 			return discrete3dVectorToCoDoSet(d3dV, str);
 		}				
@@ -220,7 +255,7 @@ namespace dtOO {
 	covise::coDoSet * coDoSetHandling::renderElement3d( renderInterface const * const rI, char const * const str) {
 		vectorHandling< renderInterface * > vec = rI->getRender();
 		covise::coDoSet * set	= NULL;
-		if (vec.size() != 0) {
+		if ( (vec.size() != 0) && !rI->mustExtRender() ) {
 			set = toCoDoSet(vec[0], str);
 		
 			for (int ii=1; ii<vec.size(); ii++) {
@@ -233,7 +268,8 @@ namespace dtOO {
 				);
 			}	
 			if (rI->mustExtRender()) {
-				vectorHandling< renderInterface * > vec = rI->getExtRender();
+				vec.destroy();
+				vec = rI->getExtRender();
 				dt__FORALL(vec, ii,
 					set 
 					= 
@@ -241,6 +277,25 @@ namespace dtOO {
 				);
 			}
 		}
+		else {
+			vectorHandling< renderInterface * > vec2 = rI->getExtRender();
+			
+      vec.reserve( vec.size() + vec2.size() );
+      vec.insert( vec.end(), vec2.begin(), vec2.end() );
+
+			if (vec.size()==0) return NULL;
+			set = toCoDoSet(vec[0], str);			
+			vectorHandling< renderInterface * >::const_iterator cit;
+			DTINFOWF(renderElement3d(), << DTLOGEVAL(vec.size()) );
+			if (vec.size() > 1) {
+				for (cit = dt__NEXT(vec.begin()); cit != vec.end(); ++cit) {
+					set 
+					= 
+					coDoSetHandling::toCoDoSet(set, toCoDoSet(*cit, str), str);
+				}
+			}
+		}
+		
 		return set;
 	}	
 	
@@ -539,9 +594,10 @@ namespace dtOO {
 	
   covise::coDoSet * coDoSetHandling::unstructured3dMeshToCoDoSet( unstructured3dMesh const * const rI, char const * str ) {
     int nElemTot = rI->getNHex();// + rI->getNTet();
+		std::string objName = std::string(str)+"_uns3dGrid";
 		ptrHandling< covise::coDoUnstructuredGrid > cug( 
       new covise::coDoUnstructuredGrid( 
-        "grid",
+        objName.c_str(),
         nElemTot, 
           0*rI->getNTet()//4 //tetrahedra
         + 8*rI->getNHex() //hexahedra
@@ -616,6 +672,65 @@ namespace dtOO {
     return new covise::coDoSet(str, cdo.get());				
 	}
 
+  covise::coDoSet * coDoSetHandling::unstructured3dSurfaceMeshToCoDoSet( unstructured3dSurfaceMesh const * const rI, char const * str ) {
+    int nElemTot = rI->getNQuads();
+		std::string objName = std::string(str)+"_uns3dSGrid";
+		ptrHandling< covise::coDoUnstructuredGrid > cug( 
+      new covise::coDoUnstructuredGrid( 
+        objName.c_str(),
+        nElemTot, 
+        4*rI->getNQuads(), //hexahedra
+        rI->refP3().size(), 
+        1 
+      )
+    );
+    int * elem;
+    int * conn;
+    float * xx;
+    float * yy;
+    float * zz;
+    int * tl;
+        
+    cug->getAddresses(&elem, &conn, &xx, &yy, &zz);
+    cug->getTypeList(&tl);
+		
+		dt__FORALL(rI->refP3(), ii,
+			xx[ii] = static_cast< float >(rI->refP3()[ii].x());
+			yy[ii] = static_cast< float >(rI->refP3()[ii].y());
+			zz[ii] = static_cast< float >(rI->refP3()[ii].z());
+	  );
+
+    int cellC = 0;
+    int connC = 0;  
+
+		for( int ii=0; ii<rI->refEl().size(); ii++ ) {
+			//
+			// tetrahedron
+			//				
+			if ( rI->refEl()[ii].size() == 4 ) {
+				elem[cellC] = connC;
+				tl[cellC] = TYPE_QUAD;      
+				conn[elem[cellC]+0] = rI->refEl()[ii][0];
+				conn[elem[cellC]+1] = rI->refEl()[ii][1];
+				conn[elem[cellC]+2] = rI->refEl()[ii][2];
+				conn[elem[cellC]+3] = rI->refEl()[ii][3];
+				connC = connC + 4;
+				cellC++;      
+			}      
+			else {
+				dt__THROW(
+					unstructured3dSurfaceMeshToCoDoSet(),
+					<< "Element is not yet supported." << LOGDEL
+					<< DTLOGEVAL(rI->refEl()[ii].size()) );
+			}
+		}
+		
+    ptrHandling< covise::coDistributedObject * > cdo( new covise::coDistributedObject*[2] );
+    cdo.get()[0] = cug.get();
+    cdo.get()[1] = NULL;
+    return new covise::coDoSet(str, cdo.get());				
+	}
+	
   covise::coDoSet * coDoSetHandling::discrete3dVectorToCoDoSet( discrete3dVector const * const rI, char const * str ) {
     float tipSize
 		=

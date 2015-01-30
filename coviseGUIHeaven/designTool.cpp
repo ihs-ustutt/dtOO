@@ -70,7 +70,14 @@ namespace dtOO {
 
 		_bVChoice = addChoiceParam("_bVChoice", "_bVChoiceDescription");
     _bVChoice->disable();
-
+    _bVRenderChoice = addChoiceParam("_bVRenderChoice", "_bVRenderChoiceDescription");
+    _bVRenderChoice->disable();
+    _bVRenderTags = addChoiceParam("_bVRenderTags", "_bVRenderTagsDescription");
+    _bVRenderTags->disable();
+    _bVRenderCurrentToggle = addBooleanParam("_bVRenderCurrentToggle", "_bVRenderCurrentToggleDescription");
+    _bVRenderCurrentToggle->disable();
+    _bVRenderCurrentToggle->setValue(false);	
+		
 		_pLChoice = addChoiceParam("_pLChoice", "_pLChoiceDescription");
     _pLChoice->disable();
 		
@@ -115,8 +122,11 @@ namespace dtOO {
 		// boundedVolumes
 		//
 		tmp.clear();
-		_moduleChoices.push_back("bVGen");
+		_moduleChoices.push_back("bVGen");		
 		tmp.push_back( _bVChoice );
+    tmp.push_back( _bVRenderChoice );
+    tmp.push_back( _bVRenderTags );
+    tmp.push_back( _bVRenderCurrentToggle );
 		_uifPara.push_back( tmp );		
 		//
 		// plugin
@@ -444,14 +454,43 @@ namespace dtOO {
 			if ( _bV.size() != 0 ) {
 				if ( strcmp(paramName, "_bVChoice") == 0 ) {
 				  int pos = _bVChoice->getValue();
-					_bVMakeGrid.clear();
-					_bVMakeGrid.push_back( _bV[pos] );
-//					_bVMakeGrid
-//					_bV[pos]->makeGrid();
+					if ( !_bVToRender.has( _bV[pos]->getLabel() ) ) {
+						_bVToRender.push_back( _bV[pos] );
+					}
+					else {
+						int toDel = _bVToRender.getPosition( _bV[pos]->getLabel() );
+						_bVToRender.erase(toDel);
+					}
+					
+					_bVRenderTags->disable();
+					
 		      _recreate = false;
 		      setExecGracePeriod(0.1);
-		      selfExec();
-				}		
+		      selfExec();					
+				}
+				else if ( strcmp(paramName, "_bVRenderChoice") == 0 ) {
+					std::string str(_bVRenderChoice->getActLabel());
+					
+					boundedVolume const * bV = _bV.get(str);
+          std::vector< std::string > tags = bV->getMeshTags();
+					abstractModule::updateChoiceParam(_bVRenderTags, &tags);
+					bV->extRender(true, abstractModule::blankReConvert(_bVRenderTags->getActLabel()) );
+				
+					_bVRenderTags->enable();
+					
+					_recreate = false;
+					setExecGracePeriod(0.1);
+					selfExec();		
+				}
+				else if ( strcmp(paramName, "_bVRenderTags") == 0 ) {
+					std::string str(_bVRenderChoice->getActLabel());
+					
+					boundedVolume const * bV = _bV.get(str);
+					bV->extRender(true, abstractModule::blankReConvert(_bVRenderTags->getActLabel()) );
+					_recreate = false;
+					setExecGracePeriod(0.1);
+					selfExec();		
+				}
 //				else if ( strcmp(paramName, "_bVMakeGridChoice") == 0 ) {
 //					std::string str(_bVMakeGridChoice->getActLabel());
 //					_bVToRender.get(str)->writeGrid();
@@ -501,7 +540,7 @@ namespace dtOO {
 			if ( _recreate ) {
 				_aGToRender.clear();
 				_aFToRender.clear();
-				_bVMakeGrid.clear();
+				_bVToRender.clear();
 				
 				_parser.reset( new dtXmlParser() );
 				_parser->openFileAndParse( _xmlBrowser->getValue() );
@@ -524,15 +563,6 @@ namespace dtOO {
 			//
 			// rendering
 			//
-//			if ( _bVMakeGrid.size() == 0 ) {
-//				_bVRenderChoice->disable();
-//				_bVRenderCurrentToggle->disable();
-//			}
-//			else {
-//				_bVRenderChoice->enable();
-//				_bVRenderCurrentToggle->enable();
-//			  abstractModule::updateChoiceParam(_bVRenderChoice, &_bVToRender);				
-//			}						
 			if ( _aGToRender.size() == 0 ) {
 				_aGRenderChoice->disable();
 				_aGRenderCurrentToggle->disable();
@@ -555,6 +585,15 @@ namespace dtOO {
 				_aFRenderCurrentToggle->enable();
 			  abstractModule::updateChoiceParam(_aFRenderChoice, &_aFToRender);				
 			}			
+			if ( _bVToRender.size() == 0 ) {
+				_bVRenderChoice->disable();
+				_bVRenderCurrentToggle->disable();
+			}
+			else {
+				_bVRenderChoice->enable();
+				_bVRenderCurrentToggle->enable();
+			  abstractModule::updateChoiceParam(_bVRenderChoice, &_bVToRender);				
+			}						
 			if (_aFOut->isConnected()) {
 				covise::coDoSet * set;
         if (_aFToRender.size() != 0) {
@@ -576,50 +615,27 @@ namespace dtOO {
 				_aGOut->setCurrentObject( set );
       }   			
 			if (_bVOut->isConnected()) {
-				covise::coDoSet * set;
-        if (_bV.size() != 0) {
-//					_bVToRender[0]->writeGrid();
-//				  set  = _bVToRender[0]->toCoDoUnstructuredGrid( _bVOut->getObjName() );
-					dt__FORALL(_bV, ii,
-					  _bV[ii]->makePreGrid();
+				covise::coDoSet * set = NULL;
+        if (_bVToRender.size() != 0) {
+					dt__FORALL(_bVToRender, ii,
+						boundedVolume * bV = static_cast< boundedVolume * >(_bVToRender[ii]);
+						if ( !bV->isMeshed() ) {
+							bV->makePreGrid();
+							bV->makeGrid();
+						}
 					);
-//					_bVToRender.clear();
-					_bVToRender.resize(_bVMakeGrid.size());
-  				dt__FORALL(_bVMakeGrid, ii,
-						_bVMakeGrid[ii]->makeGrid();
-					  _bVToRender[ii] = _bVMakeGrid[ii];
+          set
+					= 
+					_bVToRender.render3d( 
+					  _bVToRender.begin(), _bVToRender.end(),//dt__PRIOR(_bVToRender.end()), 
+						_bVOut->getObjName() 
 					);
-					_bVMakeGrid.clear();					
-          set = _bVToRender.render3d( _bVToRender, _bVOut->getObjName() );
+				  _bVOut->setCurrentObject( set );					
         }
-				else {
-					set = NULL;
-				}
-				_bVOut->setCurrentObject( set );
       }   			
 
-//			if (_bVOut->isConnected()) {
-//				covise::coDoSet * set;
-//        if (_bV.size() != 0) {
-//					_bVToRender[0]->writeGrid();
-//				  set  = _bVToRender[0]->toCoDoUnstructuredGrid( _bVOut->getObjName() );
-//					dt__FORALL(_bV, ii,
-//					  _bV[ii]->makePreGrid();
-//					);
-//					_bVToRender.clear();
-//					_bVToRender.resize(_bVMakeGrid.size());
-  				dt__FORALL(_pLApply, ii,
-						_pLApply[ii]->apply();
-//					  _bVToRender[ii] = _bVMakeGrid[ii];
-					);
-					_pLApply.clear();					
-//          set = _bVToRender.render3d( _bVToRender, _bVOut->getObjName() );
-//        }
-//				else {
-//					set = NULL;
-//				}
-//				_bVOut->setCurrentObject( set );
-//      }   			
+			dt__FORALL( _pLApply, ii, _pLApply[ii]->apply(); );
+			_pLApply.clear();					
 			
 			abstractModule::closeLogFile();
 			
