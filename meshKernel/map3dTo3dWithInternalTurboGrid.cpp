@@ -16,10 +16,9 @@
 #include <unstructured3dMesh.h>
 #include <discrete3dPoints.h>
 
-#include <moab/Core.hpp>
-#include <moab/CN.hpp>
 #include <iostream>
 #include <dtGmshModel.h>
+#include <dtGmshFace.h>
 #include <gmsh/Gmsh.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>

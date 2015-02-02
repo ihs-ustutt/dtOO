@@ -2,10 +2,14 @@
 
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include "dtGmshEdge.h"
+#include <interfaceHeaven/twoDArrayHandling.h>
 #include <gmsh/GmshDefines.h>
 #include <gmsh/GEdge.h>
 #include <gmsh/GModel.h>
+#include <gmsh/MElement.h>
+#include <gmsh/MVertex.h>
 #include <list>
+#include <map>
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
@@ -216,6 +220,163 @@ namespace dtOO {
 		}
 		else {
 			return false;
+		}		
+	}
+	
+	void dtGmshFace::reconstructEdgesFromSurfaceMesh( void ) {
+    std::map< MVertex *, std::vector< MElement * >  > e_v;
+		std::map< MVertex *, std::vector< MElement * >  >::iterator e_vIt;
+		std::map< MElement *, std::vector< MVertex * >  > v_e;
+		std::map< MElement *, std::vector< MVertex * >  >::iterator v_eIt;
+		
+		//
+		// create e_v => in: vertex out: element
+		// create v_e => in: element out: vertex
+		//
+		for (int ii=0; ii<getNumMeshElements(); ii++) {
+			MElement * me = getMeshElement(ii);
+			std::vector< MVertex * > verts;
+			me->getVertices(verts);
+			for (int jj=0; jj<verts.size(); jj++) {
+				e_vIt = e_v.find( verts[jj] );
+				if (e_vIt == e_v.end()) {
+					e_v[verts[jj]] 
+					= 
+					std::vector<MElement*>(1,me);
+				}
+				else e_vIt->second.push_back(me);
+				v_eIt = v_e.find( me );
+				if (v_eIt == v_e.end()) {
+					v_e[me] = std::vector<MVertex*>(1,verts[jj]);
+				}
+				else v_eIt->second.push_back(verts[jj]);				
+			}
+		}
+		
+//		DTINFOWF(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(e_v));
+//		DTINFOWF(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(v_e));
+		
+		twoDArrayHandling< MVertex * > recEdges;
+		
+		for (int counter=0; counter<99; counter++) {
+			//
+			// look for a start vertex
+			//
+			for (e_vIt = e_v.begin(); e_vIt != e_v.end(); ++e_vIt) {
+				if (e_vIt->second.size() == 1) {
+//					DTINFOWF(
+//						reconstructEdgesFromSurfaceMesh(), 
+//						<< logMe::dtFormat("Start vertex %d.") % e_vIt->first->getNum()
+//					);
+					break;
+				}
+			}
+			
+			//
+			// cancel reconstruction if there is no start vertex left
+			//			
+			if (e_vIt == e_v.end()) {
+				break;
+			}
+
+			//
+			// initialize reconstructed edge vector
+			//
+			recEdges.push_back( std::vector< MVertex * >(0) );
+			std::vector< MVertex * > & recEdge = recEdges.back();
+			recEdge.push_back(e_vIt->first);
+			MElement * wE;
+			wE = e_vIt->second[0];
+
+			//
+			// perform reconstruction
+			//
+			do {
+				//
+				// get a reference to the vertices
+				//
+				std::vector< MVertex * > & pV = v_e[wE];
+				//
+				// iterate over all vertices
+				//
+				bool endVertex = false;
+				MVertex * toSave = NULL;
+				for (int ii=0; ii<pV.size(); ii++) {
+					if (pV[ii] == recEdge.back()) continue;
+					
+					//
+					// found an internal edge vertex
+					//
+					if ( e_v[pV[ii]].size() == 2) {
+				    toSave = pV[ii];						
+//						DTINFOWF(
+//							reconstructEdgesFomSurface(),
+//							<< logMe::dtFormat("Internal vertex %d") % recEdge.back()->getNum()
+//						);
+					}
+					//
+					// found the end vertex
+					//
+					else if ( e_v[pV[ii]].size() == 1) {
+				    toSave = pV[ii];						
+						endVertex = true;
+//						DTINFOWF(
+//							reconstructEdgesFomSurface(),
+//							<< logMe::dtFormat("End vertex %d") % recEdge.back()->getNum()
+//						);
+						break;
+					}
+				}
+				//
+				// check if there is something to save
+				//
+				if (toSave) {
+					//
+					// save vertex in edge reconstruction
+					//
+					recEdge.push_back(toSave);
+					if (!endVertex) {
+						if (e_v[toSave][0] == wE) wE = e_v[toSave][1];
+						else wE = e_v[toSave][0];
+						//
+						// erase internal mapping from vertex to element
+						//
+						e_v[toSave].clear();
+					}
+				}
+			}
+			while ( e_v[recEdge.back()].size() != 1 );
+						
+			//
+			// delete start vertex if there is no connection to another end vertex
+			//
+			if (recEdge.size() == 1) {
+				e_v[recEdge[0]].clear();
+				recEdges.erase( dt__PRIOR(recEdges.end()) );
+			}			
+			if (recEdge.size() == 2) {
+				dt__THROW_IF(recEdge[0]!=recEdge[1], reconstructEdgesFromSurfaceMesh());
+				e_v[recEdge[0]].clear();
+				recEdges.erase( dt__PRIOR(recEdges.end()) );
+			}
+		}
+
+//	  DTINFOWF( 
+//		  reconstructFromEdges(), 
+//			<< logMe::dtFormat("%d edges reconstructed.") % recEdges.size()
+//		);    		
+		for (
+			twoDArrayHandling< MVertex * >::iterator0 it = recEdges.begin(); 
+			it!=recEdges.end(); 
+			++it 
+		) {
+			DTINFOWF(
+				reconstructEdgesFromSurfaceMesh(), 
+				<< logMe::dtFormat(
+				  "Edge from vertex %d to vertex %d reconstructed with %d vertices"
+				) % it->at(0)->getNum() % it->back()->getNum() % it->size()
+			); 
+			
 		}		
 	}
 }

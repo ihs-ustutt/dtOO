@@ -38,6 +38,7 @@ namespace dtOO {
     virtual void makeSuitable( void );
     bool isEqual( GFace const * const gf ) const;
     static bool isEqual( GFace const * const gf0, GFace const * const gf1 );
+    void reconstructEdgesFromSurfaceMesh( void );
   private:
     dt__pH(map2dTo3d) _mm;
   };
