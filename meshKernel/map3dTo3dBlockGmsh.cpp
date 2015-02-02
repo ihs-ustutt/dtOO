@@ -46,8 +46,6 @@ namespace dtOO {
 		//		
     QDomElement wElement = qtXmlPrimitive::getChild("analyticGeometry", element);
     std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
-		std::string pos = qtXmlPrimitive::getAttributeStr("position", wElement);
-    addId("region", pos);
 		
 		//
 		// get analyticGeometry, cast and store in region vector
@@ -56,7 +54,7 @@ namespace dtOO {
 			map3dTo3d const * mm3d,
 			map3dTo3d::ConstDownCast( aG->get(label) )
 		);
-    boundedVolume::getRefToMap3dTo3dHandling()[rStrToId(pos)] = mm3d->clone();
+    _m3d.reset( mm3d->clone() );
 		
 		//
 		// get compound and put pieces as regions to gmsh model
@@ -68,9 +66,9 @@ namespace dtOO {
 		//
 		GModel::setCurrent(_gm.get());
 		
-		vectorHandling< analyticGeometry const * > cI = mm3d->compoundInternal();
+		vectorHandling< analyticGeometry const * > cI = _m3d->compoundInternal();
 		if (cI.size() == 0) {
-			cI.push_back(mm3d);
+			cI.push_back(_m3d.get());
 		}
 		dt__FORALL(cI, ii,
 		  _gm->addRegionToGmshModel(map3dTo3d::ConstSecureCast(cI[ii]));

@@ -11,6 +11,7 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class dtGmshModel;
+  class map3dTo3d;
    
   class map3dTo3dBlockGmsh : public boundedVolume {
   public:
@@ -32,6 +33,7 @@ namespace dtOO {
 	  virtual std::vector< std::string > getMeshTags( void ) const;    
     dtGmshModel * refDtGmshModel(void);
   private:
+    dt__pH(map3dTo3d) _m3d;    
     ptrHandling< dtGmshModel > _gm;
   };
 }

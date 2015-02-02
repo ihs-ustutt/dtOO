@@ -11,6 +11,7 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class dtGmshModel;
+  class map3dTo3d;
   
   class map3dTo3dTriangulated : public boundedVolume {
   public:
@@ -29,7 +30,8 @@ namespace dtOO {
   	virtual vectorHandling< renderInterface * > getRender( void ) const;
     dtGmshModel * refDtGmshModel(void);    
   private:
-    ptrHandling< dtGmshModel > _gm;
+    dt__pH(map3dTo3d) _m3d;    
+    ptrHandling< dtGmshModel > _gm;    
   };
 }
 
