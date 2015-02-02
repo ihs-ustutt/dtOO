@@ -6,6 +6,7 @@
 #include <string>
 #include <stdio.h>
 #include <vector>
+#include <map>
 #include <boost/format.hpp>
 //------------------------------------------------------------------------------
 #include <exceptionHandling/eGeneral.h>
@@ -19,10 +20,23 @@
 #define ENDLOGDEL "\n                      `-- "
 
 namespace dtOO {
+  template< class T >
+  std::ostream& operator<<(std::ostream& os, const std::vector< T >& toLog) {
+    typename std::vector< T >::const_iterator cIt;
+    os <<  "[ ";
+    for (cIt = toLog.begin(); cIt!=toLog.end(); ++cIt) {  
+      os << *cIt << " | ";
+    }
+    os << " ]";
+    return os;
+  }  
+  
   //
   // functions
   //
   class logMe {
+    public:
+      typedef boost::format dtFormat;
     public:
       dt__CLASSNAME(logMe);
       static std::string initLog( std::string const & logFileName );
@@ -99,7 +113,19 @@ namespace dtOO {
           os << LOGDEL;
         }
         return os.str();
-      } 	      
+      } 	
+      template< class T0, class T1 >
+      static std::string mapToTable( 
+        std::map< T0, T1 > const & mm 
+      ) {
+        std::map< T0, T1 > mmNC = (std::map< T0, T1 >) mm; 
+        std::ostringstream os;
+        typename std::map< T0, T1 >::const_iterator cIt;
+        for (cIt=mm.begin(); cIt != mm.end(); ++cIt) {
+          os << cIt->first << " -> " << cIt->second << LOGDEL;
+        }
+        return os.str();
+      }       
       static inline std::string intVecToString( std::vector< int > const & vec ) {
         return vecToString< int >(vec);
       }

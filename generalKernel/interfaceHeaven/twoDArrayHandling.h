@@ -12,14 +12,19 @@ namespace dtOO {
   //----------------------------------------------------------------------------
   template < typename T >
   class twoDArrayHandling : public std::vector< std::vector< T > > {
-  public:
-    dt__CLASSNAME(twoDArrayHandling);
-    twoDArrayHandling();
-    twoDArrayHandling( int const sizeI, int const sizeJ );
-    twoDArrayHandling(const twoDArrayHandling& orig);
-    virtual ~twoDArrayHandling();
-    void resize(int const sizeI, int const sizeJ);
-    int size( int const dim = 0) const;
+    public:
+      typedef typename std::vector< std::vector< T >  >::iterator iterator0;
+      typedef typename std::vector< std::vector< T >  >::const_iterator const_iterator0;
+      typedef typename std::vector< T >::iterator iterator1;
+      typedef typename std::vector< T >::const_iterator const_iterator1;      
+    public:
+      dt__CLASSNAME(twoDArrayHandling);
+      twoDArrayHandling();
+      twoDArrayHandling( int const sizeI, int const sizeJ );
+      twoDArrayHandling(const twoDArrayHandling& orig);
+      virtual ~twoDArrayHandling();
+      void resize(int const sizeI, int const sizeJ);
+      int size( int const dim = 0) const;
   };
 
   //----------------------------------------------------------------------------
