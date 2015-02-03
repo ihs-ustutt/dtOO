@@ -4,9 +4,11 @@
 #include <dtLinearAlgebra.h>
 #include <gmsh/GFace.h>
 #include <logMe/dtMacros.h>
+#include <interfaceHeaven/twoDArrayHandling.h>
 
 class GModel;
 class GEdge;
+class MVertex;
 
 namespace dtOO {
   class map2dTo3d;
@@ -38,7 +40,7 @@ namespace dtOO {
     virtual void makeSuitable( void );
     bool isEqual( GFace const * const gf ) const;
     static bool isEqual( GFace const * const gf0, GFace const * const gf1 );
-    void reconstructEdgesFromSurfaceMesh( void );
+    twoDArrayHandling< MVertex * > reconstructEdgesFromSurfaceMesh( void ) const;
   private:
     dt__pH(map2dTo3d) _mm;
   };

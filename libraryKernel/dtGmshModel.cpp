@@ -386,6 +386,10 @@ namespace dtOO {
     return cast2DtGmshVertex(gv)->cast2DtPoint3();
   }
 
+  dtPoint3 dtGmshModel::cast2DtPoint3( MVertex * mv ) {
+    return dtPoint3(mv->x(), mv->y(), mv->z());
+  }
+	
   void dtGmshModel::meshEdgeTransfiniteFromTo(
     int const from, int const to, 
     int const type, float const coeff, 
@@ -721,7 +725,7 @@ namespace dtOO {
 	void dtGmshModel::dtReadCGNS(
 	  const std::string &name,
 		std::vector< MVertex * > & vertices, std::vector< MElement * > & elements,
-	  std::vector< GFace * >  & _faces, std::vector< GRegion * >  & _regions,
+	  std::vector< dtGmshFace * >  & _faces, std::vector< dtGmshRegion * >  & _regions,
 		std::vector< std::string > & _faceLabels, std::vector< std::string > & _regionLabels
 	) {
 			dt__THROW_IF(vertices.size() != 0, dtReadCGNS());

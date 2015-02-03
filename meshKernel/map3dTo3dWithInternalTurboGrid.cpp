@@ -19,6 +19,7 @@
 #include <iostream>
 #include <dtGmshModel.h>
 #include <dtGmshFace.h>
+#include <dtGmshRegion.h>
 #include <gmsh/Gmsh.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
@@ -320,5 +321,13 @@ namespace dtOO {
 		dt__FORALL( _regionLabels, ii, tags.push_back(_regionLabels[ii]); );
 		dt__FORALL( _faceLabels, ii, tags.push_back(_faceLabels[ii]); );
 		return tags;
+	}
+	
+	dtGmshFace const * map3dTo3dWithInternalTurboGrid::getFace( std::string const & tag ) const {
+		dt__FORALL(_faceLabels, ii, 
+			if (_faceLabels[ii] == tag) {
+		    return _faces[ii];		
+			}
+	  );
 	}
 }

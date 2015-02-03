@@ -35,7 +35,8 @@ namespace dtOO {
     static dtGmshFace * cast2DtGmshFace( GFace * gf );
     static dtGmshEdge * cast2DtGmshEdge( GEdge * ge );  
     static dtGmshVertex * cast2DtGmshVertex( GVertex * gv );
-    static dtPoint3 cast2DtPoint3( GVertex * gv );    
+    static dtPoint3 cast2DtPoint3( GVertex * gv );  
+    static dtPoint3 cast2DtPoint3( MVertex * mv );
     void addIfVertexToGmshModel( dtPoint3 const & vertex, int * const tag );
     void addIfEdgeToGmshModel(
       map1dTo3d const * const edge, 
@@ -62,7 +63,7 @@ namespace dtOO {
     static void dtReadCGNS(
     	const std::string & name, 
 		  std::vector< MVertex * > & vertices, std::vector< MElement * > & elements,
-      std::vector< GFace * >  & _faces, std::vector< GRegion * >  & _regions,
+      std::vector< dtGmshFace * >  & _faces, std::vector< dtGmshRegion * >  & _regions,
       std::vector< std::string > & _faceLabels, std::vector< std::string > & _regionLabels
     );
   };

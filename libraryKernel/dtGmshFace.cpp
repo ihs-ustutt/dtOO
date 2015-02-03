@@ -14,6 +14,9 @@
 #include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
+#define __caCThis \
+  const_cast< dtGmshFace * >(this)
+
 namespace dtOO {    
   dtGmshFace::dtGmshFace(GModel *m, int tag) : GFace(m, tag) {
 		
@@ -223,7 +226,7 @@ namespace dtOO {
 		}		
 	}
 	
-	void dtGmshFace::reconstructEdgesFromSurfaceMesh( void ) {
+	twoDArrayHandling< MVertex * > dtGmshFace::reconstructEdgesFromSurfaceMesh( void ) const {
     std::map< MVertex *, std::vector< MElement * >  > e_v;
 		std::map< MVertex *, std::vector< MElement * >  >::iterator e_vIt;
 		std::map< MElement *, std::vector< MVertex * >  > v_e;
@@ -233,8 +236,8 @@ namespace dtOO {
 		// create e_v => in: vertex out: element
 		// create v_e => in: element out: vertex
 		//
-		for (int ii=0; ii<getNumMeshElements(); ii++) {
-			MElement * me = getMeshElement(ii);
+		for (int ii=0; ii<__caCThis->getNumMeshElements(); ii++) {
+			MElement * me = __caCThis->getMeshElement(ii);
 			std::vector< MVertex * > verts;
 			me->getVertices(verts);
 			for (int jj=0; jj<verts.size(); jj++) {
@@ -375,8 +378,9 @@ namespace dtOO {
 				<< logMe::dtFormat(
 				  "Edge from vertex %d to vertex %d reconstructed with %d vertices"
 				) % it->at(0)->getNum() % it->back()->getNum() % it->size()
-			); 
-			
+			); 	
 		}		
+		
+		return recEdges;
 	}
 }
