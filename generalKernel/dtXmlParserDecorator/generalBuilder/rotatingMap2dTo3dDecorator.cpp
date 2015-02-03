@@ -6,7 +6,6 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
-#include <analyticGeometryHeaven/rotatingMap2dTo3dPhiMS.h>
 #include <functionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -54,16 +53,7 @@ namespace dtOO {
       //
       // create analyticGeometry
       //
-      if ( hasAttribute("phiMS", **toBuildP) ) {
-			  aGeoP->push_back( new rotatingMap2dTo3dPhiMS(vv, m2d) );
-				if (hasAttribute("angle", **toBuildP)) {
-					float angle = getAttributeFloatMuParse("angle", **toBuildP, cValP, sFunP);
-					rotatingMap2dTo3dPhiMS::SecureCast(aGeoP->back())->setAngle(angle);
-				}
-			}
-			else {     
-        aGeoP->push_back( new rotatingMap2dTo3d(vv, m2d) );
-			}			
+      aGeoP->push_back( new rotatingMap2dTo3d(vv, m2d) );
     }
   }
 }

@@ -113,6 +113,18 @@ namespace dtOO {
 		return rot.transform( _m2d->getPoint(vv, ww) );
 	}	
 	
+	dtPoint3 rotatingMap2dTo3d::reparamInVolume(dtPoint3 const & ppXYZ) const {
+		float const extU = .0;
+		float const extV = .1;
+		float const extW = .1;
+	  DTINFOWF(
+			reparamInVolume(), 
+			<< logMe::dtFormat("Extension of uvw-range by (%d, %d, %d)") % extU % extV % extW
+		);
+		
+		return map3dTo3d::reparamInVolume(ppXYZ, dtVector3(extU, extV, extW) );
+	}
+	
 	map2dTo3d * rotatingMap2dTo3d::segmentConstU( float const & uu ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {

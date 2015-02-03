@@ -22,6 +22,7 @@ namespace dtOO {
     virtual float getMin( int const & dir) const;
     virtual float getMax( int const & dir) const;
     virtual dtPoint3 getPoint( float const & uu, float const & vv, float const & ww ) const; 
+    virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;
 	  virtual map2dTo3d * segmentConstU( float const & uu ) const;
 	  virtual map2dTo3d * segmentConstV( float const & vv ) const;
   	virtual map2dTo3d * segmentConstW( float const & ww ) const;
