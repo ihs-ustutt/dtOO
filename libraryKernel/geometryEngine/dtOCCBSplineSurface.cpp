@@ -6,6 +6,8 @@
 #include "dtOCCBSplineCurve.h"
 #include <progHelper.h>
 
+#include <Standard_Failure.hxx>
+#include <Standard_ErrorHandler.hxx>
 #include <Standard_TypeDef.hxx>
 #include <gp_Pnt.hxx>
 #include <Geom_BSplineSurface.hxx>
@@ -75,7 +77,25 @@ namespace dtOO {
 		Standard_Real v1R = static_cast<Standard_Real>(vvMin);
 		Standard_Real v2R = static_cast<Standard_Real>(vvMax);
 
-		ccB->Segment(v1R, v2R);
+    dt__WARN_IFWMAS(
+			v1R<ccB->FirstParameter(), 
+			v1R = ccB->FirstParameter();,
+			segmentConstU(),
+			<< "v1R = ccB->FirstParameter();"				
+		);			
+    dt__WARN_IFWMAS(
+			v2R>ccB->LastParameter(), 
+			v2R = ccB->LastParameter();,
+			segmentConstU(),
+			<< "v2R = ccB->LastParameter();"				
+		);	
+			
+		dt__TRYOCC(
+		  ccB->Segment(v1R, v2R);
+		  ,
+		  << DTLOGEVAL(v1R) << LOGDEL
+			<< DTLOGEVAL(v2R)							
+	  );
 
 		dtOCCCurveBase base;
 		base.setOCC(ccB);
@@ -92,7 +112,25 @@ namespace dtOO {
 		Standard_Real u1R = static_cast<Standard_Real>(uuMin);
 		Standard_Real u2R = static_cast<Standard_Real>(uuMax);
 
-		ccB->Segment(u1R, u2R);
+    dt__WARN_IFWMAS(
+			u1R<ccB->FirstParameter(), 
+			u1R = ccB->FirstParameter();,
+			segmentConstV(),
+			<< "u1R = ccB->FirstParameter();"				
+		);			
+    dt__WARN_IFWMAS(
+			u2R>ccB->LastParameter(), 
+			u2R = ccB->LastParameter();,
+			segmentConstV(),
+			<< "u2R = ccB->LastParameter();"				
+		);	
+							
+		dt__TRYOCC(
+		  ccB->Segment(u1R, u2R);
+		  ,
+		  << DTLOGEVAL(u1R) << LOGDEL
+			<< DTLOGEVAL(u2R)							
+	  );
 
 		dtOCCCurveBase base;
 		base.setOCC(ccB);
