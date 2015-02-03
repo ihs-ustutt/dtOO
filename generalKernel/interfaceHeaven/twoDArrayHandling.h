@@ -24,6 +24,7 @@ namespace dtOO {
       twoDArrayHandling(const twoDArrayHandling& orig);
       virtual ~twoDArrayHandling();
       void resize(int const sizeI, int const sizeJ);
+      void resize(int const sizeI);
       int size( int const dim = 0) const;
   };
 
@@ -60,7 +61,12 @@ namespace dtOO {
     
     std::vector< std::vector< T > >::resize(sizeI, std::vector< T >( sizeJ ) );
   }  
-  
+
+  template < typename T >
+  void twoDArrayHandling< T >::resize(int const sizeI) {
+    std::vector< std::vector< T > >::resize(sizeI);
+  }
+    
   template < typename T >
   int twoDArrayHandling< T >::size(int const dim) const {
     if (dim == 0) {
