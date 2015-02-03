@@ -74,11 +74,21 @@ namespace dtOO {
     map2dTo3d * segmentPercent( 
       dtPoint3 const & p0, dtPoint3 const & p1, 
       dtPoint3 const & p2, dtPoint3 const & p3 
+    ) const;
+  protected:
+    dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent) const;    
+  private:
+    bool XYZtoUVW(
+      double X, double Y, double Z, 
+      double &U, double &V, double &W,
+      double relax, std::vector< float > &itVal
     ) const;    
-  private:
-    bool XYZtoUVW(double X, double Y, double Z, double &U, double &V, double &W,
-                 double relax, std::vector< float > &itVal) const;
-  private:
+    bool XYZtoUVW(
+      double X, double Y, double Z, 
+      double &U, double &V, double &W,
+      double relax, double extU, double extV, double extW,
+      std::vector< float > &itVal
+    ) const;
   };
 }
 #endif	/* MAP3DTO3D_H */

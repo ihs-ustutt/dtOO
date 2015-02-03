@@ -63,6 +63,21 @@ namespace dtOO {
 		);
 		_dtS.reset( new dtOCCBSplineSurface(base) );
 	}
+
+	bSplineSurface_bSplineCurveFillConstructOCC::bSplineSurface_bSplineCurveFillConstructOCC( 
+	  dt__pVH(dtCurve) const & cc 
+	) {
+	  vectorHandling< dtCurve const * > ccV;
+		for (
+			dt__pVH(dtCurve)::const_iterator it = cc.begin();
+			it!=cc.end();
+			++it
+		) {
+			ccV.push_back( &(*it) );
+		}
+		
+		_dtS.reset( bSplineSurface_bSplineCurveFillConstructOCC(ccV).result() );
+	}	
 	
 	bSplineSurface_bSplineCurveFillConstructOCC::~bSplineSurface_bSplineCurveFillConstructOCC() {
 	}

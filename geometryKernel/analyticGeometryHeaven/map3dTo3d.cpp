@@ -253,70 +253,15 @@ namespace dtOO {
   }  
   
   dtPoint3 map3dTo3d::reparamInVolume(dtPoint3 const & ppXYZ) const {
-		double X = ppXYZ.x();
-    double Y = ppXYZ.y();
-    double Z = ppXYZ.z();
-    double U;
-    double V;
-    double W;
-    double relax = 1.;
-    std::vector<float> itVal;  
-    bool converged = XYZtoUVW(X, Y, Z, U, V, W, relax, itVal);
-    
-    std::vector< std::string > header;
-		header.push_back("i");
-		header.push_back("j");
-		header.push_back("k");
-    header.push_back("deltaXYZ");
-    header.push_back("deltaUV");
-		header.push_back("nIter");
-
-    std::vector< std::string > addInfo;
-		addInfo.push_back( "tolerance = ");
-    addInfo[0] 
-		+= 
-		stringPrimitive::floatToString(
-		  staticPropertiesHandler::getInstance()->getOptionFloat(
-        "reparamInVolume_precision"
-      )
-		);  
-		addInfo.push_back(
-			"p_xyz = ("
-			+ stringPrimitive::floatToString(ppXYZ.x()) 
-			+ ", " 
-			+ stringPrimitive::floatToString(ppXYZ.y())
-			+ ", "
-			+ stringPrimitive::floatToString(ppXYZ.z())
-			+ ")"
-		);
-
-		dtPoint3 ppRep_xyz = getPoint(U,V,W);
-		dtVector3 dist = ppXYZ - ppRep_xyz;
-		float minPDist 
-		= 
-		staticPropertiesHandler::getInstance()->getOptionFloat(
-      "xyz_resolution"
-    );    		
-		if ( sqrt(dist.squared_length()) > minPDist) {
-			DTDEBUGWF(
-				reparamInVolume(), 
-				<< logMe::floatVecToTable(addInfo, header, itVal) << LOGDEL 
-				<< DTLOGEVAL(converged) << LOGDEL
-				<< "p_xyz = (" << ppXYZ.x() << ", " << ppXYZ.y() << ", " << ppXYZ.z() << ")" << LOGDEL
-				<< "V(p_uvw) = (" << ppRep_xyz.x() << ", " << ppRep_xyz.y() << ", " << ppRep_xyz.z() << ")" << LOGDEL
-				<< "p_uvw = (" << U << ", " << V << ", " << W << ")" << LOGDEL
-				<< "distance = (" << sqrt(dist.squared_length()) << ")"
-			);
-    }
-    return dtPoint3(U, V, W);      
-  }
-  
+		return reparamInVolume(ppXYZ, dtVector3(0,0,0));
+	}
+	
   dtPoint3 map3dTo3d::reparamPercentInVolume(dtPoint3 const & ppXYZ) const {
     dtPoint3 ppUVW = reparamInVolume(ppXYZ);
     
     return percent_uvw(ppUVW);    
-  }
-		
+	}
+		 	
   int map3dTo3d::getRenderResolutionU( void ) const { 
     return analyticGeometry::getRenderResolution(0);
   }
@@ -605,8 +550,78 @@ namespace dtOO {
 		);
 	}	
 			
-  bool map3dTo3d::XYZtoUVW(double X, double Y, double Z, double &U, double &V, double &W,
-                          double relax, std::vector< float > &itVal ) const {
+  dtPoint3 map3dTo3d::reparamInVolume(dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent) const {
+		double X = ppXYZ.x();
+    double Y = ppXYZ.y();
+    double Z = ppXYZ.z();
+    double U;
+    double V;
+    double W;
+    double relax = 1.;
+    std::vector<float> itVal;  
+    bool converged 
+	  = 
+	  XYZtoUVW(
+		  X, Y, Z, 
+			U, V, W, 
+			relax, uvwExtPercent.x(), uvwExtPercent.y(), uvwExtPercent.z(), 
+			itVal
+    );
+    
+    std::vector< std::string > header;
+		header.push_back("i");
+		header.push_back("j");
+		header.push_back("k");
+    header.push_back("deltaXYZ");
+    header.push_back("deltaUV");
+		header.push_back("nIter");
+
+    std::vector< std::string > addInfo;
+		addInfo.push_back( "tolerance = ");
+    addInfo[0] 
+		+= 
+		stringPrimitive::floatToString(
+		  staticPropertiesHandler::getInstance()->getOptionFloat(
+        "reparamInVolume_precision"
+      )
+		);  
+		addInfo.push_back(
+			"p_xyz = ("
+			+ stringPrimitive::floatToString(ppXYZ.x()) 
+			+ ", " 
+			+ stringPrimitive::floatToString(ppXYZ.y())
+			+ ", "
+			+ stringPrimitive::floatToString(ppXYZ.z())
+			+ ")"
+		);
+
+		dtPoint3 ppRep_xyz = getPoint(U,V,W);
+		dtVector3 dist = ppXYZ - ppRep_xyz;
+		float minPDist 
+		= 
+		staticPropertiesHandler::getInstance()->getOptionFloat(
+      "xyz_resolution"
+    );    		
+		if ( sqrt(dist.squared_length()) > minPDist) {
+			DTDEBUGWF(
+				reparamInVolume(), 
+				<< logMe::floatVecToTable(addInfo, header, itVal) << LOGDEL 
+				<< DTLOGEVAL(converged) << LOGDEL
+				<< "p_xyz = (" << ppXYZ.x() << ", " << ppXYZ.y() << ", " << ppXYZ.z() << ")" << LOGDEL
+				<< "V(p_uvw) = (" << ppRep_xyz.x() << ", " << ppRep_xyz.y() << ", " << ppRep_xyz.z() << ")" << LOGDEL
+				<< "p_uvw = (" << U << ", " << V << ", " << W << ")" << LOGDEL
+				<< "distance = (" << sqrt(dist.squared_length()) << ")"
+			);
+    }
+    return dtPoint3(U, V, W);      
+  }
+	
+	bool map3dTo3d::XYZtoUVW(
+		double X, double Y, double Z, 
+		double &U, double &V, double &W,
+		double relax, double extU, double extV, double extW,
+		std::vector< float > &itVal
+	) const {
     double const Precision
     =
     static_cast<double>(
@@ -635,17 +650,17 @@ namespace dtOO {
     
     umax = static_cast<double>(getUMax());
 		umin = static_cast<double>(getUMin());
-		double udiff = umax - umin;
+		double udiff = extU;
 		umax = umax + 0.1*udiff;
 		umin = umin - 0.1*udiff;
     vmin = static_cast<double>(getVMin());
     vmax = static_cast<double>(getVMax());
-		double vdiff = vmax - vmin;
+		double vdiff = extV;
 		vmax = vmax + 0.1*vdiff;		
 		vmin = vmin - 0.1*vdiff;
     wmin = static_cast<double>(getWMin());
     wmax = static_cast<double>(getWMax());
-		double wdiff = wmax - wmin;
+		double wdiff = extW;
 		wmax = wmax + 0.1*wdiff;		
 		wmin = wmin - 0.1*wdiff;
     
@@ -742,7 +757,7 @@ namespace dtOO {
 					bool xyzConv = (err2 <= precXYZ);
 					
 					if( ( (iter<MaxIter) && inRange && xyzConv ) 
-//						|| ( (iter<MaxIter) && inRange && uvwConv )  
+						|| ( (iter<MaxIter) && inRange && uvwConv )  
 						) {
 							return true;
 						}
@@ -770,7 +785,15 @@ namespace dtOO {
       return false;
     }
     else {
-      return XYZtoUVW(X, Y, Z, U, V, W, 0.75 * relax, itVal);
+      return XYZtoUVW(X, Y, Z, U, V, W, 0.75 * relax, extU, extV, extW, itVal);
     }
   }    
+
+  bool map3dTo3d::XYZtoUVW(
+		double X, double Y, double Z, 
+		double &U, double &V, double &W,
+		double relax, std::vector< float > &itVal
+  ) const {
+		return XYZtoUVW(X, Y, Z, U, V, W, relax, 0., 0., 0., itVal);
+	}
 }

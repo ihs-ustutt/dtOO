@@ -21,6 +21,8 @@ namespace dtOO {
     dt__CLASSNAME(vectorHandling);
     vectorHandling();
     vectorHandling(const vectorHandling& orig);
+    vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1);        
+    vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1, const vectorHandling& orig2);    
     vectorHandling(const std::vector< T >& orig);    
     vectorHandling(int const dim);
     virtual ~vectorHandling();
@@ -55,6 +57,38 @@ namespace dtOO {
   vectorHandling< T >::vectorHandling(const vectorHandling& orig) : std::vector< T >(orig.size()) {
     dt__FORALL(orig, ii, 
       this->at(ii) = orig[ii];
+    );
+  }
+  
+  template < typename T >
+  vectorHandling< T >::vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1) 
+    : std::vector< T >(orig0.size()+orig1.size()) {
+    int counter = 0;
+    dt__FORALL(orig0, ii, 
+      this->at(counter) = orig0[ii];
+      counter++;
+    );
+    dt__FORALL(orig1, ii, 
+      this->at(counter) = orig1[ii];
+      counter++;
+    );    
+  }
+  
+  template < typename T >
+  vectorHandling< T >::vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1, const vectorHandling& orig2) 
+    : std::vector< T >(orig0.size()+orig1.size()+orig2.size()) {
+    int counter = 0;
+    dt__FORALL(orig0, ii, 
+      this->at(counter) = orig0[ii];
+      counter++;
+    );
+    dt__FORALL(orig1, ii, 
+      this->at(counter) = orig1[ii];
+      counter++;
+    );    
+    dt__FORALL(orig2, ii, 
+      this->at(counter) = orig2[ii];
+      counter++;
     );
   }
   
