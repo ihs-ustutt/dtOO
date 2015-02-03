@@ -7,6 +7,7 @@
 #include <bVObserver/bVOInterfaceFactory.h>
 #include <bVObserver/bVOInterface.h>
 #include <dtXmlParserDecorator/qtXmlPrimitive.h>
+#include <dtGmshFace.h>
 
 
 namespace dtOO {  
@@ -56,10 +57,6 @@ namespace dtOO {
     }
   }
 
-  void boundedVolume::makePreGrid(void) {
-    makeGrid();
-  }
-	
   bool boundedVolume::isMeshed( void ) const {
 		return _meshed;
 	}
@@ -70,7 +67,15 @@ namespace dtOO {
 	
 	std::vector< std::string > boundedVolume::getMeshTags( void ) const {
 		return std::vector< std::string >(0);
-	}	
+	}
+	
+	dtGmshFace const * boundedVolume::getFace( std::string const & tag ) const {
+		return NULL;
+	}
+
+	dtGmshModel * boundedVolume::getModel( void ) const {
+		return NULL;
+	}
 }
 
 

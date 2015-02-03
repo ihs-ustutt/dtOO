@@ -76,7 +76,7 @@ namespace dtOO {
 		);
 	}
 	
-  void map3dTo3dBlockGmsh::makeGrid(void) {		
+  void map3dTo3dBlockGmsh::makeGrid(void) {
 		//
 		// set current model
 		//
@@ -152,7 +152,7 @@ namespace dtOO {
 		return tags;
 	}
 		
-	dtGmshModel * map3dTo3dBlockGmsh::refDtGmshModel( void ) {
+	dtGmshModel * map3dTo3dBlockGmsh::getModel( void ) const {
 		return _gm.get();
 	}
 }

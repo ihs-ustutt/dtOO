@@ -9,6 +9,7 @@ SET(HEADERS
   map3dTo3dBlockGmsh.h
   map3dTo3dTriangulated.h
   map3dTo3dWithInternalTurboGrid.h
+  vec3dInMap3dTo3dWithMeshedSurface.h
 )
 
 SET(SOURCES
@@ -22,6 +23,7 @@ SET(SOURCES
   map3dTo3dBlockGmsh.cpp
   map3dTo3dTriangulated.cpp
   map3dTo3dWithInternalTurboGrid.cpp
+  vec3dInMap3dTo3dWithMeshedSurface.cpp
 )
 
 APPEND_DTOO_SOURCE(meshKernel "${SOURCES}")

@@ -16,6 +16,8 @@ namespace dtOO {
   class analyticFunction;
   class constValue;
   class baseContainer;
+  class dtGmshFace;
+  class dtGmshModel;
   
   class boundedVolume : public bVOSubject,
                         public labelHandling,
@@ -34,10 +36,12 @@ namespace dtOO {
       vectorHandling< boundedVolume * > const * const bV
     );
     virtual void makeGrid(void) = 0;
-    virtual void makePreGrid(void);
+    virtual void makePreGrid(void) = 0;
     bool isMeshed( void ) const;
     void setMeshed( void );
     virtual std::vector< std::string > getMeshTags( void ) const;
+	  virtual dtGmshFace const * getFace( std::string const & tag ) const;
+    virtual dtGmshModel * getModel( void ) const;
   private:
     bool _meshed;
   };

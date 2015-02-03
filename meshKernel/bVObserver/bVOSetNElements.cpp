@@ -50,12 +50,9 @@ namespace dtOO {
   }
   
   void bVOSetNElements::update( void ) {
-    dt__PTRASS(
-			map3dTo3dBlockGmsh * mC,
-      map3dTo3dBlockGmsh::DownCast(ptrBoundedVolume())
-		);
+		dtGmshModel * gm = ptrBoundedVolume()->getModel();
 		
-		dtGmshModel * gm = mC->refDtGmshModel();
+		dt__THROW_IF(gm==NULL, update());
 		
 		for(GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
 		  dtGmshRegionHex * hex = dtGmshRegionHex::DownCast(*r_it);

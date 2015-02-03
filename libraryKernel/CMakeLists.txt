@@ -55,6 +55,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCC.h
   geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h
   geometryEngine/geoBuilder/geomSurface_baseConstructOCC.h
+  geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h
   dtGmshVertex.h
   dtGmshEdge.h
   dtGmshFace.h
@@ -121,6 +122,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCC.cpp
   geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.cpp
   geometryEngine/geoBuilder/geomSurface_baseConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.cpp
   dtGmshVertex.cpp
   dtGmshEdge.cpp
   dtGmshFace.cpp

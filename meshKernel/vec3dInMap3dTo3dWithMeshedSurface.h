@@ -1,9 +1,9 @@
-#ifndef MAP3DTO3DBLOCKGMSH_H
-#define	MAP3DTO3DBLOCKGMSH_H
+#ifndef vec3dInMap3dTo3dWithMeshedSurface_H
+#define	vec3dInMap3dTo3dWithMeshedSurface_H
 
 #include <logMe/dtMacros.h>
 #include "boundedVolume.h"
-#include <interfaceHeaven/ptrHandling.h>
+//#include <interfaceHeaven/ptrHandling.h>
 
 namespace dtOO {
   class baseContainer;
@@ -13,11 +13,11 @@ namespace dtOO {
   class dtGmshModel;
   class map3dTo3d;
    
-  class map3dTo3dBlockGmsh : public boundedVolume {
+  class vec3dInMap3dTo3dWithMeshedSurface : public boundedVolume {
   public:
-    dt__CLASSSTD(map3dTo3dBlockGmsh, boundedVolume);
-    map3dTo3dBlockGmsh();
-    virtual ~map3dTo3dBlockGmsh();
+    dt__CLASSSTD(vec3dInMap3dTo3dWithMeshedSurface, boundedVolume);
+    vec3dInMap3dTo3dWithMeshedSurface();
+    virtual ~vec3dInMap3dTo3dWithMeshedSurface();
     virtual void init( 
       QDomElement const & element,
       baseContainer const * const bC,
@@ -31,11 +31,20 @@ namespace dtOO {
   	virtual vectorHandling< renderInterface * > getRender( void ) const;
   	virtual vectorHandling< renderInterface * > getExtRender( void ) const;    
 	  virtual std::vector< std::string > getMeshTags( void ) const;    
-    virtual dtGmshModel * getModel(void) const;
+    virtual dtGmshModel * getModel( void ) const;
   private:
     dt__pH(map3dTo3d) _m3d;    
     ptrHandling< dtGmshModel > _gm;
+    boundedVolume const * _meshedBV;
+    std::string _meshedFaceTag;
+    dtVector3 _vv;
+    dt__pH(map3dTo3d) _recVol;
+//    dt__pVH(analyticGeometry) _recEdge;
+//    dt__pH(analyticGeometry) _recFace;
+//    dt__pH(analyticGeometry) _recFace;
+//    dt__pH(analyticGeometry) _recFace;
+    
   };
 }
-#endif	/* MAP3DTO3DBLOCKGMSH_H */
+#endif	/* vec3dInMap3dTo3dWithMeshedSurface_H */
 
