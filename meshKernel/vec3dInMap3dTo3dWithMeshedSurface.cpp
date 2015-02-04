@@ -182,6 +182,13 @@ namespace dtOO {
 		);		
 
 		//
+		// create reconstructed face
+		//
+		_recFace.reset( new vec3dTwoDInMap3dTo3d(
+		  dt__pH(vec3dTwoD)(new vec3dSurfaceTwoD(dtS[0])).get(), _m3d.get()
+		) );
+		
+		//
 		// create reconstructed volume
 		//
 		_recVol.reset( new vec3dThreeDInMap3dTo3d(v3d3d.get(), _m3d.get()) );
@@ -252,17 +259,30 @@ namespace dtOO {
 	}	
 
 	vectorHandling< renderInterface * > vec3dInMap3dTo3dWithMeshedSurface::getExtRender( void ) const {
-		return vectorHandling< renderInterface * >(0);
-//		vectorHandling< renderInterface * > rV(1);
-//		rV[0] = _gm->toUnstructured3dMesh();
-//		
+		std::string toRender = extRenderWhat();
+
+		if (toRender == "internal") {
+  		vectorHandling< renderInterface * > rV;			
+		  rV.push_back( _gm->toUnstructured3dMesh() );
+			return rV;
+		}
+    else if (toRender == "reconstructedFace") {
+		  return _recFace->getRender();
+		}		
+    else if (toRender == "reconstructedVolume") {
+		  return _recVol->getRender();
+		}
+		else {
+			dt__THROW(getExtRender(), << logMe::dtFormat("Unknown tag: %s") % toRender );
+		}
 //		return rV;
 	}		
 	
 	std::vector< std::string > vec3dInMap3dTo3dWithMeshedSurface::getMeshTags( void ) const {
 		std::vector< std::string > tags;
 		tags.push_back("internal");
-
+    tags.push_back("reconstructedFace");
+		tags.push_back("reconstructedVolume");
 		return tags;
 	}
 		
