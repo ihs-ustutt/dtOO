@@ -73,8 +73,8 @@ namespace dtOO {
     //
 		// boundedVolume
 		//		
-    wElement = qtXmlPrimitive::getChild("boundedVolume", element);
-    label = qtXmlPrimitive::getAttributeStr("label", wElement);
+    wElement = qtXmlPrimitive::getChild("analyticFunction", element);
+    label = qtXmlPrimitive::getAttributeStr("boundedVolume_label", wElement);
 		
 		//
 		// get boundedVolume
@@ -82,11 +82,6 @@ namespace dtOO {
     _meshedBV = bV->get(label);
     _meshedFaceTag = qtXmlPrimitive::getAttributeStr("reconstruct", wElement);
 		
-		wElement = qtXmlPrimitive::getChild("Vector_3", element);
-		_vv 
-		= 
-		dtXmlParserBase::getDtVector3(&wElement, bC, cV, aF);
-
 		//
 		// get compound and put pieces as regions to gmsh model
 		//
@@ -156,7 +151,43 @@ namespace dtOO {
 		//
 		vectorHandling< dtSurface const * > dtS(2);
 		dtS[0] = bSplineSurface_bSplineCurveFillConstructOCC(dtC).result();
-		dtS[1] = geomSurface_geomSurfaceTranslateConstructOCC(dtS[0], _vv).result();
+		//dtS[1] = geomSurface_geomSurfaceTranslateConstructOCC(dtS[0], _vv).result();
+		dtSurface * wS = dtS[0]->clone();
+		std::vector< float > scale(3, 1.);
+		std::vector< float > trans(3, 0.);
+		
+		if (hasOption("extent_to")) {
+			std::string opt = getOption("extent_to");
+			if (opt == "vMin") {
+				scale[1] = 0.;
+				trans[1] = _m3d->getVMin();
+			}
+			else if (opt == "vMax") {
+				scale[1] = 0.;
+				trans[1] = _m3d->getVMax();				
+			}
+			else {
+				dt__THROW(
+					makeGrid(), 
+					<< DTLOGEVAL(opt) << LOGDEL
+					<< "Unknown option."
+				);
+			}
+		}
+		for (int ii=0; ii<wS->nControlPointsU(); ii++) {
+			for (int jj=0; jj<wS->nControlPointsV(); jj++) {
+				dtPoint3 cP = wS->controlPoint(ii, jj);
+				cP 
+				= 
+				dtPoint3(
+					cP.x()*scale[0] + trans[0], 
+					cP.y()*scale[1] + trans[1], 
+					cP.z()*scale[2] + trans[2]
+				);
+				wS->setControlPoint(ii,jj, cP);
+			}
+		}
+		dtS[1] = wS;
 		
 		//
 		// do skinning with surface

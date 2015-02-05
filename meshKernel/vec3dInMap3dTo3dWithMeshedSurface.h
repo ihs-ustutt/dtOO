@@ -37,12 +37,8 @@ namespace dtOO {
     ptrHandling< dtGmshModel > _gm;
     boundedVolume const * _meshedBV;
     std::string _meshedFaceTag;
-    dtVector3 _vv;
     dt__pH(map3dTo3d) _recVol;
-//    dt__pVH(analyticGeometry) _recEdge;
     dt__pH(analyticGeometry) _recFace;
-//    dt__pH(analyticGeometry) _recFace;
-//    dt__pH(analyticGeometry) _recFace;
     
   };
 }

@@ -12,13 +12,13 @@
 # ${OpenCASCADE_FOUND} is cached, so once OCC is found this block shouldn't have to run again
 IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
   IF(UNIX)
-    set( _incsearchpath /usr/include/opencascade /opt/occ/inc $ENV{CASROOT}/inc )
+    set( _incsearchpath ${DTOO_EXTERNLIBS}/OpenCASCADE/include/oce /usr/include/opencascade /opt/occ/inc $ENV{CASROOT}/inc )
     if (APPLE)
     set( _testlibname libTKernel.dylib )
     else (APPLE)
     set( _testlibname libTKernel.so )
     endif (APPLE)
-    set( _libsearchpath /usr/lib /opt/occ/lib $ENV{CASROOT}/lib )
+    set( _libsearchpath ${DTOO_EXTERNLIBS}/OpenCASCADE/lib /usr/lib /opt/occ/lib $ENV{CASROOT}/lib )
   ELSE(UNIX)
     IF (WIN32)
       MESSAGE("************ FindOpenCASCADE.cmake has not been tried on windows and may or may not work! *************")
@@ -31,7 +31,7 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
   ENDIF (UNIX)
 
   #find the include dir by looking for Standard_Real.hxx
-  FIND_PATH( OpenCASCADE_INCLUDE_DIR Standard_Real.hxx PATHS ${DTOO_EXTERNLIBS}/OpenCASCADE/inc ${_incsearchpath} DOC "Path to OCC includes" )
+  FIND_PATH( OpenCASCADE_INCLUDE_DIR Standard_Real.hxx PATHS ${_incsearchpath} DOC "Path to OCC includes" )
   IF( OpenCASCADE_INCLUDE_DIR STREQUAL Standard_Real.hxx-NOTFOUND )
     SET( OpenCASCADE_FOUND FALSE CACHE BOOL FORCE )
     MESSAGE( FATAL_ERROR "Cannot find OCC include dir. Install opencascade or set CASROOT or create a symlink /opt/occ/inc pointing to the correct directory." )
@@ -40,7 +40,7 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
   # Find one lib and save its directory to OpenCASCADE_LINK_DIRECTORY. Because
   # OCC has so many libs, there is increased risk of a name collision.
   # Requiring that all libs be in the same directory reduces the risk.
-  FIND_PATH( OpenCASCADE_LINK_DIRECTORY ${_testlibname} PATH ${DTOO_EXTERNLIBS}/OpenCASCADE/lib64 ${_libsearchpath} DOC "Path to OCC libs" )
+  FIND_PATH( OpenCASCADE_LINK_DIRECTORY ${_testlibname} PATH ${_libsearchpath} DOC "Path to OCC libs" )
   IF( OpenCASCADE_LINK_DIRECTORY STREQUAL ${_testlibname}-NOTFOUND )
     SET( OpenCASCADE_FOUND FALSE CACHE BOOL FORCE )
     MESSAGE( FATAL_ERROR "Cannot find OCC lib dir. Install opencascade or set CASROOT or create a symlink /opt/occ/lib pointing to the dir where the OCC libs are." )
