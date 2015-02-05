@@ -1,4 +1,4 @@
-#include "bVOSetGrading.h"
+#include "bVOSetSimpleGrading.h"
 
 #include <map3dTo3dBlockGmsh.h>
 #include <logMe/logMe.h>
@@ -11,14 +11,14 @@
 #include <dtGmshModel.h>
 
 namespace dtOO {  
-  bVOSetGrading::bVOSetGrading() {
+  bVOSetSimpleGrading::bVOSetSimpleGrading() {
   }
 
-  bVOSetGrading::~bVOSetGrading() {
+  bVOSetSimpleGrading::~bVOSetSimpleGrading() {
     
   }
   
-  void bVOSetGrading::bVOSetGrading::init( 
+  void bVOSetSimpleGrading::bVOSetSimpleGrading::init( 
 		QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
@@ -33,7 +33,7 @@ namespace dtOO {
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
     
 		// <bVObserver 
-		//   name="bVOSetGrading" 
+		//   name="bVOSetSimpleGrading" 
 		//   grading="{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}"
 		// />
 								
@@ -47,7 +47,7 @@ namespace dtOO {
 //		for ( auto &el : _grading ) DTINFOWF(init(), << el);
   }
   
-  void bVOSetGrading::update( void ) {
+  void bVOSetSimpleGrading::update( void ) {
 		dtGmshModel * gm = ptrBoundedVolume()->getModel();
 		
 		dt__THROW_IF(gm==NULL, update());
@@ -57,7 +57,10 @@ namespace dtOO {
 
 			dt__WARN_IF(hex==NULL, update());
 
-			if (hex) hex->setGrading(_grading, _type);
+			if (hex) hex->setGrading(
+			           _grading[0], _grading[1], _grading[2], 
+							   _type[0], _type[1], _type[2]
+			         );
 		}
   }
 }

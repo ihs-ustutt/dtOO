@@ -21,6 +21,10 @@ namespace dtOO {
     );
     void meshTransfinite( int const nU, int const nV, int const nW );
     void setGrading( std::vector< float > const & grading, std::vector< float > & type );
+    void setGrading( 
+      float const & gU, float const & gV, float const & gW,
+      float const & tU, float const & tV, float const & tW
+    );
   private:
     std::vector< int > _hexEdges;
   };
