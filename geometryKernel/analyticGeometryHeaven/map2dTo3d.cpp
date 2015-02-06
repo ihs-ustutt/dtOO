@@ -563,12 +563,12 @@ namespace dtOO {
 
     umin = static_cast<double>(getUMin());
     umax = static_cast<double>(getUMax());
-		double udiff = umax - umin;
+		double udiff = 0.;//umax - umin;
 		umax = umax + 0.1*udiff;
 		umin = umin - 0.1*udiff;		
     vmin = static_cast<double>(getVMin());
     vmax = static_cast<double>(getVMax());
-		double vdiff = vmax - vmin;
+		double vdiff = 0.;//vmax - vmin;
 		vmax = vmax + 0.1*vdiff;
 		vmin = vmin - 0.1*vdiff;		
     const double tol = Precision * (SQU(umax - umin) + SQU(vmax-vmin));
@@ -646,7 +646,7 @@ namespace dtOO {
 					bool xyzConv = (err2 <= precXYZ);
 					
 					if( ( (iter<MaxIter) && inRange && xyzConv ) 
-//						|| ( (iter<MaxIter) && inRange && uvConv )  
+						|| ( (iter<MaxIter) && inRange && uvConv )  
 						) {
 //						itVal.clear();
 //						itVal.push_back(static_cast<float>(Unew) );

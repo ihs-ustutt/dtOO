@@ -70,6 +70,7 @@ namespace dtOO {
     static std::vector<dtPoint2> getGaussLegendre(int const & nPoints);
     static std::pair< dtPoint2, dtPoint2 > boundingBox( std::vector< dtPoint2 > const & pp );
     static std::pair< dtPoint3, dtPoint3 > boundingBox( std::vector< dtPoint3 > const & pp );
+	  static bool isStraightLine( std::pair< dtPoint3, dtPoint3 > const & bBox, float const & eps );
     static float distance( dtPoint2 const & p0, dtPoint2 const & p1 );
     static float distance( dtPoint3 const & p0, dtPoint3 const & p1 );
     static float angle( dtVector3 const & v0, dtVector3 const & v1 );

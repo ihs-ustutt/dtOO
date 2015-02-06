@@ -389,6 +389,29 @@ namespace dtOO {
 		 return minMax;
 	}
 	
+	bool dtLinearAlgebra::isStraightLine( std::pair< dtPoint3, dtPoint3 > const & bBox, float const & eps ) {
+		dtVector3 diff = bBox.first - bBox.second;
+		std::vector< bool > isSmall(3, false);
+
+		if ( fabs(diff.x()) < eps ) isSmall[0] = true;
+		if ( fabs(diff.y()) < eps ) isSmall[1] = true;
+		if ( fabs(diff.z()) < eps ) isSmall[2] = true;
+		if (
+					 (isSmall[0]&&isSmall[1]) 
+				|| (isSmall[0]&&isSmall[2])
+				|| (isSmall[1]&&isSmall[2])
+			 ) {
+			DTINFOWF(
+				isStraightLine(), 
+				<< logMe::dtFormat("Bounding box: %f, %f, %f") 
+					% diff.x() % diff.y() % diff.z() << LOGDEL
+				<< "This is a straight line."
+			);	
+			return true;
+		}			
+		return false;
+	}	
+	
 	float dtLinearAlgebra::distance( dtPoint2 const & p0, dtPoint2 const & p1 ) {
 		return sqrt(CGAL::squared_distance(p0, p1));
 	}

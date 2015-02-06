@@ -26,6 +26,21 @@ namespace dtOO {
 	}
 	
 	geomSurface_geomCurveFillConstructOCC::geomSurface_geomCurveFillConstructOCC( 
+	  dt__pVH(dtCurve) const & cc 
+	) {
+	  vectorHandling< dtCurve const * > ccV;
+		for (
+			dt__pVH(dtCurve)::const_iterator it = cc.begin();
+			it!=cc.end();
+			++it
+		) {
+			ccV.push_back( &(*it) );
+		}
+		
+		init(ccV);
+	}		
+	
+	geomSurface_geomCurveFillConstructOCC::geomSurface_geomCurveFillConstructOCC( 
 		dtCurve const * c0, dtCurve const * c1, 
 		dtCurve const * c2, dtCurve const * c3 
 	) {
@@ -36,7 +51,7 @@ namespace dtOO {
 		cc[3] = c3;
 		
 		init(cc);
-	}
+	}	
 
 	void geomSurface_geomCurveFillConstructOCC::init( 
 	  vectorHandling< dtCurve const * > const & cc 
