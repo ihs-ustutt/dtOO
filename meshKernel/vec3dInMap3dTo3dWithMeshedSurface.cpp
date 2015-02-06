@@ -137,11 +137,11 @@ namespace dtOO {
 			  mvUVW[ii][jj]
 				= 
 				_m3d->reparamInVolume( dtGmshModel::cast2DtPoint3(*it1) );
-				DTINFOWF(
-					makeGrid(), 
-					<< logMe::dtFormat("mvUVW[%d][%d] = %f, %f, %f") 
-					% ii % jj % mvUVW[ii][jj].x() % mvUVW[ii][jj].y() % mvUVW[ii][jj].z()
-				);
+//				DTINFOWF(
+//					makeGrid(), 
+//					<< logMe::dtFormat("mvUVW[%d][%d] = %f, %f, %f") 
+//					% ii % jj % mvUVW[ii][jj].x() % mvUVW[ii][jj].y() % mvUVW[ii][jj].z()
+//				);
 				jj++;
 			}
 			

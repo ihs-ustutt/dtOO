@@ -117,10 +117,10 @@ namespace dtOO {
 		float const extU = .0;
 		float const extV = .1;
 		float const extW = .1;
-	  DTINFOWF(
-			reparamInVolume(), 
-			<< logMe::dtFormat("Extension of uvw-range by (%d, %d, %d)") % extU % extV % extW
-		);
+//	  DTINFOWF(
+//			reparamInVolume(), 
+//			<< logMe::dtFormat("Extension of uvw-range by (%d, %d, %d)") % extU % extV % extW
+//		);
 		
 		return map3dTo3d::reparamInVolume(ppXYZ, dtVector3(extU, extV, extW) );
 	}
