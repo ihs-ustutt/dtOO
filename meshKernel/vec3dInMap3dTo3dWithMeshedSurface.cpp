@@ -1,30 +1,25 @@
 #include "vec3dInMap3dTo3dWithMeshedSurface.h"
 
-#include <dtXmlParserDecorator/dtXmlParser.h>
-//#include <analyticGeometryHeaven/analyticGeometryCompound.h>
-#include <dtGmshRegion.h>
-#include <dtGmshModel.h>
-#include <dtGmshFace.h>
 #include <logMe/logMe.h>
-//#include <interfaceHeaven/ptrHandling.h>
-//#include <interfaceHeaven/stringPrimitive.h>
-#include <analyticGeometryHeaven/map3dTo3d.h>
-#include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticGeometryHeaven/map1dTo3d.h>
-#include <functionHeaven/analyticFunction.h>
+#include <dtXmlParserDecorator/dtXmlParser.h>
+#include <interfaceHeaven/twoDArrayHandling.h>
+
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
+#include <functionHeaven/analyticFunction.h>
+#include <analyticGeometryHeaven/analyticGeometry.h>
 #include <unstructured3dMesh.h>
-#include <interfaceHeaven/twoDArrayHandling.h>
-//#include <gmsh/Context.h>
+
 #include <gmsh/GmshDefines.h>
 #include <gmsh/Gmsh.h>
 #include <gmsh/OpenFile.h>
-//#include <gmsh/GModel.h>
-#include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h>
-#include <geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h>
+#include <dtGmshRegion.h>
+#include <dtGmshModel.h>
+#include <dtGmshFace.h>
+
+#include <analyticGeometryHeaven/map1dTo3d.h>
+#include <analyticGeometryHeaven/map2dTo3d.h>
+#include <analyticGeometryHeaven/map3dTo3d.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
 #include <functionHeaven/vec3dSurfaceTwoD.h>
@@ -32,6 +27,12 @@
 #include <functionHeaven/vec3dTransVolThreeD.h>
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
+#include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_geomCurveFillConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h>
 
 namespace dtOO {
 	vec3dInMap3dTo3dWithMeshedSurface::vec3dInMap3dTo3dWithMeshedSurface() {
@@ -136,13 +137,25 @@ namespace dtOO {
 			  mvUVW[ii][jj]
 				= 
 				_m3d->reparamInVolume( dtGmshModel::cast2DtPoint3(*it1) );
-//				DTINFOWF(makeGrid(), 
-//								<< logMe::dtFormat("mvUVW[%d][%d] = %f, %f, %f") % ii % jj % mvUVW[ii][jj].x() % mvUVW[ii][jj].y() % mvUVW[ii][jj].z() << LOGDEL
-//			          << logMe::dtFormat("*it1 = %f, %f, %f") % (*it1)->x() % (*it1)->y() % (*it1)->z() << LOGDEL								
-//				);
+				DTINFOWF(
+					makeGrid(), 
+					<< logMe::dtFormat("mvUVW[%d][%d] = %f, %f, %f") 
+					% ii % jj % mvUVW[ii][jj].x() % mvUVW[ii][jj].y() % mvUVW[ii][jj].z()
+				);
 				jj++;
 			}
-			dtC.push_back( bSplineCurve_pointConstructOCC(mvUVW[ii], 1).result() );
+			
+			std::pair< dtPoint3, dtPoint3 > bb = dtLinearAlgebra::boundingBox(mvUVW[ii]);
+			float eps = staticPropertiesHandler::getInstance()->getOptionFloat("uv_resolution");
+			if ( dtLinearAlgebra::isStraightLine(bb, eps) ) {
+				dtC.push_back( 
+				  trimmedCurve_twoPointsConnectConstructOCC(
+				    mvUVW[ii].front(), mvUVW[ii].back()).result() 
+				);
+			}
+			else {
+			  dtC.push_back( bSplineCurve_pointConstructOCC(mvUVW[ii], 1).result() );
+			}
 			ii++;
 		}
 		
@@ -150,7 +163,7 @@ namespace dtOO {
 		// create coupling surface
 		//
 		vectorHandling< dtSurface const * > dtS(2);
-		dtS[0] = bSplineSurface_bSplineCurveFillConstructOCC(dtC).result();
+		dtS[0] = geomSurface_geomCurveFillConstructOCC(dtC).result();
 		//dtS[1] = geomSurface_geomSurfaceTranslateConstructOCC(dtS[0], _vv).result();
 		dtSurface * wS = dtS[0]->clone();
 		std::vector< float > scale(3, 1.);
