@@ -7,6 +7,8 @@
 #include "bVOSetNElements.h"
 #include "bVOSetGrading.h"
 #include "bVOSetSimpleGrading.h"
+#include "bVONameFaces.h"
+#include "bVONameRegions.h"
 
 #define __IFRET(className) \
 	if ( strcmp(str, #className) == 0 ) { \
@@ -25,6 +27,8 @@ namespace dtOO {
     __IFRET(bVOSetNElements);
 		__IFRET(bVOSetGrading);
 		__IFRET(bVOSetSimpleGrading);
+		__IFRET(bVONameFaces);
+		__IFRET(bVONameRegions);
 		
     dt__THROW(create(), <<  "Could not be created.");
   }

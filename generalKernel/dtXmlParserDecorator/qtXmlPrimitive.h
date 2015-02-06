@@ -58,6 +58,9 @@ namespace dtOO {
     static float getAttributeFloat( std::string const attName, QDomElement const element );
     static std::string getAttributeStr( std::string const attName, QDomElement const element ); 
     static bool getAttributeBool(std::string const attName, const QDomElement element);
+    static std::vector< std::string > getAttributeStringVector(
+      std::string const attName, QDomElement const element
+    );    
     static std::string convertToString( QDomNode const node );
     static std::string getTagName(QDomElement const element);
     static QDomElement createElement(QDomDocument & doc, std::string const name);

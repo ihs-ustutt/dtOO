@@ -199,12 +199,12 @@ namespace dtOO {
 		//
 		// create transfinite volume
 		//
-		ptrHandling<vec3dSurfaceTwoD> v3d2d0(new vec3dSurfaceTwoD(dtSSkin[0]));
-		ptrHandling<vec3dSurfaceTwoD> v3d2d1(new vec3dSurfaceTwoD(dtSSkin[1]));
-		ptrHandling<vec3dSurfaceTwoD> v3d2d2(new vec3dSurfaceTwoD(dtSSkin[2]));
-		ptrHandling<vec3dSurfaceTwoD> v3d2d3(new vec3dSurfaceTwoD(dtSSkin[3]));
-		ptrHandling<vec3dSurfaceTwoD> v3d2d4(new vec3dSurfaceTwoD(dtSSkin[4]));
-		ptrHandling<vec3dSurfaceTwoD> v3d2d5(new vec3dSurfaceTwoD(dtSSkin[5]));
+		ptrHandling<vec3dSurfaceTwoD> v3d2d0(new vec3dSurfaceTwoD(dtSSkin[0])); // north
+		ptrHandling<vec3dSurfaceTwoD> v3d2d1(new vec3dSurfaceTwoD(dtSSkin[1])); // west
+		ptrHandling<vec3dSurfaceTwoD> v3d2d2(new vec3dSurfaceTwoD(dtSSkin[2])); // south
+		ptrHandling<vec3dSurfaceTwoD> v3d2d3(new vec3dSurfaceTwoD(dtSSkin[3])); // east
+		ptrHandling<vec3dSurfaceTwoD> v3d2d4(new vec3dSurfaceTwoD(dtSSkin[4])); // front
+		ptrHandling<vec3dSurfaceTwoD> v3d2d5(new vec3dSurfaceTwoD(dtSSkin[5])); // back
 		dt__pH(vec3dThreeD) v3d3d( 
 			new vec3dTransVolThreeD( 
 				v3d2d0.get(), v3d2d1.get(), v3d2d2.get(), 
@@ -275,6 +275,11 @@ namespace dtOO {
 		// mark as meshed
 		//
 		boundedVolume::setMeshed();		
+		
+		//
+		// write out
+		//
+		_gm->writeMSH(getLabel()+".msh");
 	}
   
 	void vec3dInMap3dTo3dWithMeshedSurface::makePreGrid(void) {

@@ -283,27 +283,8 @@ namespace dtOO {
 			this->add( gf.back() );
 			gf.back()->setMap2dTo3d(vol->segmentPercent(p2, p1, p5, p6));	
 		}
-		
-		std::vector< std::string > fNames(6,"");
-		fNames[0] = "south"; fNames[1] = "north"; fNames[2] = "front";
-		fNames[3] = "back"; fNames[4] = "west"; fNames[5] = "east";
-		int counter = 0;
-		for (std::list< dtGmshFace* >::iterator it=gf.begin(); it!=gf.end(); ++it) {
-			(*it)->addPhysicalEntity( 
-				this->setPhysicalName( 
-					vol->getLabel()+"_GFace_"+fNames[counter], 2, 0
-				)							
-			);
-			counter++;			
-		}
-		
-		this->add( new dtGmshRegionHex(this, rId, eId, gf, fori) );
-		this->getRegionByTag(rId)->addPhysicalEntity( 			
-			this->setPhysicalName(
-				vol->getLabel()+"_GRegion_"+stringPrimitive::intToString(rId), 3, 0
-			)
-    );
-		
+				
+		this->add( new dtGmshRegionHex(this, rId, eId, gf, fori) );		
 	}
 	
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {

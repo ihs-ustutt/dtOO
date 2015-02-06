@@ -5,6 +5,8 @@ SET(HEADERS
   bVObserver/bVOSetNElements.h
   bVObserver/bVOSetGrading.h
   bVObserver/bVOSetSimpleGrading.h
+  bVObserver/bVONameFaces.h
+  bVObserver/bVONameRegions.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dBlockGmsh.h
@@ -20,6 +22,8 @@ SET(SOURCES
   bVObserver/bVOSetNElements.cpp
   bVObserver/bVOSetGrading.cpp
   bVObserver/bVOSetSimpleGrading.cpp
+  bVObserver/bVONameFaces.cpp
+  bVObserver/bVONameRegions.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dBlockGmsh.cpp

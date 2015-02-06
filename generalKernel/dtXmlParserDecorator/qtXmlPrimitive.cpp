@@ -406,9 +406,20 @@ namespace dtOO {
   }  
 
   std::string qtXmlPrimitive::getAttributeStr(std::string const attName, const QDomElement element) {
-    std::string rInt;
-    rInt = element.attribute( attName.c_str(), "" ).toStdString();
-    return rInt;
+    std::string str = element.attribute( attName.c_str(), "" ).toStdString();
+		
+		//
+		// remove whitespaces
+		//
+    str.erase(
+		  std::remove_if(
+		    str.begin(), 
+				str.end(), 
+				::isspace
+		  ), 
+			str.end()
+	  );
+    return str;
   }
 
   bool qtXmlPrimitive::getAttributeBool(std::string const attName, const QDomElement element) {
@@ -426,6 +437,13 @@ namespace dtOO {
             << "Should be true or false.");
   }    
 
+	std::vector< std::string > qtXmlPrimitive::getAttributeStringVector(
+		std::string const attName, QDomElement const element
+	) {
+		std::string att = getAttributeStr(attName, element);
+		return convertToStringVector("{", "}", att);
+	}
+	
   bool qtXmlPrimitive::is(std::string const tagName, QDomElement const element ) {
     if ( element.tagName().toStdString() == tagName ) {
       return true;
