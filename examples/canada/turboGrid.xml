@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<turboGrid>
+
+	<constValue label="cV_nElemU">
+		<builder name="intParam">
+			<int value="30"/>
+		</builder>
+	</constValue>  
+  <constValue label="cV_nElemV">
+    <builder name="intParam">
+      <int value="50"/>
+    </builder>
+  </constValue>  
+  <constValue label="cV_nElemW">
+    <builder name="intParam">
+      <int value="20"/>
+    </builder>
+  </constValue>  
+  <constValue label="cV_gradingV">
+    <builder name="sliderFloatParam">
+      <float value="1.05" min="0." max="2."/>
+    </builder>
+  </constValue>  	
+  <constValue label="cV_gradingOutletV">
+    <builder name="sliderFloatParam">
+      <float value="1.01" min="0." max="2."/>
+    </builder>
+  </constValue>  		
+  <constValue label="cV_gradingW">
+    <builder name="sliderFloatParam">
+      <float value=".05" min="0." max="2."/>
+    </builder>
+  </constValue> 
+	
+	<replace variable="ii" values="{hub}{shroud}">	
+		<function label="f_s3_{ii}Blade"> 
+			<builder  name="muParser">
+				<expression value="0.18+0.04*xx" dimension="1"/>
+				<x_one name="xx" min="0." max="1.0"/>
+			</builder>
+		</function>
+		<part label="s3_{ii}Blade">		
+			<builder name="bSplineCurve_pointConstructOCC" order="2">
+				<Point_3 
+					attribute="pick_order_from_part"
+					number_points_one="100"
+					length_one_percent_function="f_s3_{ii}Blade"
+					part_label="s3_{ii}"
+				/>
+			</builder>	
+		</part>	
+	</replace>
+
+ <!-- rotatingMap2dTo3d for turboGrid -->
+	<part label="aS_meridianBladeTurboGrid">		
+		<builder name="bSplineSurface_skinConstructOCCDecorator" order="2">
+			<analyticGeometry label="s3_hubBlade"/>
+			<analyticGeometry label="s3_shroudBlade"/>
+		</builder>	
+	</part>	
+  <part label="rM2d3d_meridianBladeTurboGrid">	
+    <builder name="rotatingMap2dTo3dDecorator">
+				<analyticGeometry label="aS_meridianBladeTurboGrid"/>
+				<Vector_3 label="v3_zz"/>
+    </builder>
+  </part>
+  <function label="v3d3d_channel_cube">
+    <builder  name="muParser">
+			<expression value="0.5*xx/#cV_nBlades#,yy,zz" dimension="3"/>
+      <x_one name="xx" min="-1." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+			<x_three name="zz" min="0." max="1."/>
+    </builder>
+  </function>	
+	<part label="v3dIn3d_meridianBladeTurboGridBlock">	
+		<builder name="vec3dInMap3dTo3dDecorator" percent="true">
+			<analyticGeometry label="rM2d3d_meridianBladeTurboGrid"/>
+			<analyticFunction label="v3d3d_channel_cube"/>
+		</builder>
+	</part>			
+
+	<boundedVolume 
+	  name="map3dTo3dWithInternalTurboGrid" 
+		label="meshInternal"
+		directory="turboGrid"
+		number_internal_cuts="10"
+		number_points="51"
+		number_internals="#cV_nBlades#"
+		run_script="./makeMesh.sh"		
+	>
+		<option name="mesh_file" value="/mnt/scratch/atismer/tmp/09_coviseCanadaOCC/turboGrid/mesh.cgns"/>
+		<analyticGeometry label="v3dIn3d_meridianBladeTurboGridBlock"/>
+		<analyticGeometry label="aS_bladeAnalytic_rotate_2"/>
+		<Vector_3 label="v3_zz"/>		
+	</boundedVolume>
+		
+	<boundedVolume name="vec3dInMap3dTo3dWithMeshedSurface" label="meshINFLOW">
+		<option name="extent_to" value="vMin"/>
+	  <option name="[gmsh]General.Terminal" value="1."/>
+	  <option name="[gmsh]General.Verbosity" value="100."/>
+		<option name="[gmsh]General.ExpertMode" value="1."/>		
+		<!--<option name="[gmsh]Mesh.Smoothing" value="100"/>			-->
+		<bVObserver name="bVOSetNElements" number_elements="{#cV_nElemU#}{#cV_nElemW#}{#cV_nElemV#}"/>					
+		<bVObserver 
+		  name="bVOSetSimpleGrading" 
+			grading="{1.}{#cV_gradingW#}{#cV_gradingV#}"
+	    type="{1}{2}{1}"
+		/>		
+    <bVObserver name="bVONameRegions" regionLabel="{meshINFLOW}"/>						
+    <bVObserver 
+		  name="bVONameFaces" 
+			faceLabel="
+			  {INFLOW_GGI}
+				{INFLOW_IN}
+				{INFLOW_HUB}
+				{INFLOW_SHROUD}
+				{INFLOW_PER1}
+				{INFLOW_PER2}
+			"/>							
+		<analyticGeometry label="rM2d3d_meridian"/>
+		<analyticFunction 
+		  boundedVolume_label="meshInternal" 
+			reconstruct="INFLOW" 
+		/>
+	</boundedVolume>
+
+	<boundedVolume name="vec3dInMap3dTo3dWithMeshedSurface" label="meshOUTFLOW">
+		<option name="extent_to" value="vMax"/>		
+	  <option name="[gmsh]General.Terminal" value="1."/>
+	  <option name="[gmsh]General.Verbosity" value="100."/>
+		<option name="[gmsh]General.ExpertMode" value="1."/>		
+		<!--<option name="[gmsh]Mesh.Smoothing" value="100"/>		-->
+		<bVObserver name="bVOSetNElements" number_elements="{#cV_nElemU#}{#cV_nElemW#}{2*#cV_nElemV#}"/>
+		<bVObserver 
+		  name="bVOSetSimpleGrading" 
+			grading="{1.}{#cV_gradingW#}{#cV_gradingOutletV#}"
+	    type="{1}{2}{1}"			
+		/>				
+		<bVObserver name="bVONameRegions" regionLabel="{meshOUTFLOW}"/>						
+    <bVObserver 
+		  name="bVONameFaces" 
+			faceLabel="
+			  {OUTFLOW_GGI}
+				{OUTFLOW_OUT}
+				{OUTFLOW_HUB}
+				{OUTFLOW_SHROUD}
+				{OUTFLOW_PER1}
+				{OUTFLOW_PER2}
+			"/>							
+		<analyticGeometry label="rM2d3d_meridian"/>
+		<analyticFunction 
+	    boundedVolume_label="meshInternal" 
+			reconstruct="OUTFLOW"
+		/>
+	</boundedVolume>
+	
+	
+</turboGrid>

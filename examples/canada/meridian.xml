@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<meridian>
+
+  <constValue label="cV_hubOffsetZ">
+    <builder  name="sliderFloatParam">
+      <float value="0." min="-1000." max="1000."/>
+    </builder>
+  </constValue>
+	
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- point definitions -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+  <part label="myBaseContainer0">
+    <builder name="baseContainer">
+<!-- hub -->
+      <!-- inlet -->
+			<Point_3 label="p3_hub_inlet" x="0." y="0 - sin((20./180.)*_pi) * 275." z="- 5133.85"/>
+			<!-- sphere -->
+			<Point_3 label="p3_hub_sphere_0" x="0." y="0 - sin((20./180.)*_pi) * 275." z="-1165. - #cV_hubOffsetZ# - cos((20./180.)*_pi) * 275."/>
+			<Point_3 label="p3_hub_sphere_1" x="0." y="0 - sin((25./180.)*_pi) * 275." z="-1165. - #cV_hubOffsetZ# - cos((25./180.)*_pi) * 275."/>
+			<Point_3 label="p3_hub_sphere_2" x="0." y="0 - sin((30./180.)*_pi) * 275." z="-1165. - #cV_hubOffsetZ# - cos((30./180.)*_pi) * 275."/>
+			<Point_3 label="p3_hub_sphere_3" x="0." y="0 - sin((40./180.)*_pi) * 275." z="-1165. - #cV_hubOffsetZ# - cos((40./180.)*_pi) * 275."/>
+			<Point_3 label="p3_hub_sphere_4" x="0." y="0 - sin((50./180.)*_pi) * 275." z="-1165. - #cV_hubOffsetZ# - cos((50./180.)*_pi) * 275."/>
+			<Point_3 label="p3_hub_sphere_5" x="0." y="0 - sin((60./180.)*_pi) * 275." z="-1165. - #cV_hubOffsetZ# - cos((60./180.)*_pi) * 275."/>
+			<Point_3 label="p3_hub_sphere_6" x="0." y="0 - sin((70./180.)*_pi) * 275." z="-1165. - #cV_hubOffsetZ# - cos((70./180.)*_pi) * 275."/>
+			<Point_3 label="p3_hub_sphere_7" x="0." y="0 - sin((80./180.)*_pi) * 275." z="-1165. - #cV_hubOffsetZ# - cos((80./180.)*_pi) * 275."/>
+			<Point_3 label="p3_hub_sphere_8" x="0." y="0 - sin((90./180.)*_pi) * 275." z="-1165. - #cV_hubOffsetZ# - cos((90./180.)*_pi) * 275."/>
+			<!-- outlet -->
+			<Point_3 label="p3_hub_outlet" x="0." y="-275.0" z="16000"/>				
+<!-- shroud -->
+      <!-- inlet -->
+			<Point_3 label="p3_shroud_inlet" x="0." y="-1671.572 - 3." z="-5133.85"/>
+      <!-- curvature -->
+			<Point_3 label="p3_shroud_curvature_geoIn_0" x="0." y="-1671.572 - 3." z="-187.514 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_1" x="0." y="-1663.68 - 3." z="-186.399 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_2" x="0." y="-1654.327 - 3." z="-181.409 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_3" x="0." y="-1641.714 - 3." z="-167.882 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_4" x="0." y="-1633.169 - 3." z="-154.509 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_5" x="0." y="-1624.521 - 3." z="-138.143 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_6" x="0." y="-1617.743 - 3." z="-123.798 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_7" x="0." y="-1607.142 - 3." z="-99.575 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_8" x="0." y="-1591.285 - 3." z="-60.955 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_9" x="0." y="-1574.873 - 3." z="-17.468 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_10" x="0." y="-1561.638 - 3." z="20.99 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_11" x="0." y="-1547.812 - 3." z="65.367 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_12" x="0." y="-1531.088 - 3." z="127.047 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_13" x="0." y="-1523.092 - 3." z="160.981 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_14" x="0." y="-1515.897 - 3." z="195.091 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_15" x="0." y="-1503.924 - 3." z="263.773 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_16" x="0." y="-1497.073 - 3." z="315.613 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_17" x="0." y="-1490.063 - 3." z="396.645 - 977.486"/>
+			<Point_3 label="p3_shroud_curvature_geoIn_18" x="0." y="-1488.058 - 3." z="443.083 - 977.486"/>			
+			<Point_3 label="p3_shroud_curvature_geoIn_19" x="0." y="-1487.5 - 3." z="483.75 - 977.486"/>
+			<!-- outlet -->
+			<Point_3 label="p3_shroud_outlet" x="0." y="-1487.5 - 3." z="16000."/>			
+    </builder>		
+	</part>
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- hub -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< --> 
+  <part label="s3_hub_inlet">
+    <builder name="bSplineCurve_pointConstructOCC" 
+             order="1"
+             show_construction="false">
+				<Point_3 label="p3_hub_inlet"/>
+				<Point_3 label="p3_hub_sphere_0"/>
+		</builder>
+  </part>	
+  <part label="s3_hub_sphere">
+    <builder name="bSplineCurve_pointConstructOCC" 
+             order="3"
+             show_construction="false">
+				<Point_3 label="p3_hub_sphere_0"/>
+				<Point_3 label="p3_hub_sphere_1"/>
+				<Point_3 label="p3_hub_sphere_2"/>				
+				<Point_3 label="p3_hub_sphere_3"/>
+				<Point_3 label="p3_hub_sphere_4"/>
+				<Point_3 label="p3_hub_sphere_5"/>
+				<Point_3 label="p3_hub_sphere_6"/>
+				<Point_3 label="p3_hub_sphere_7"/>
+				<Point_3 label="p3_hub_sphere_8"/>
+		</builder>
+  </part>
+  <part label="s3_hub_outlet">
+    <builder name="bSplineCurve_pointConstructOCC" 
+             order="1"
+             show_construction="false">
+				<Point_3 label="p3_hub_sphere_8"/>
+				<Point_3 label="p3_hub_outlet"/>
+		</builder>
+  </part>	
+	
+	<part label="s3_hub">
+		<builder name="bSplineCurve_curveConnectConstructOCC">
+			<analyticGeometry label="s3_hub_inlet"/>
+			<analyticGeometry label="s3_hub_sphere"/>
+			<analyticGeometry label="s3_hub_outlet"/>
+		</builder>
+	</part>
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- shroud -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+  <part label="s3_shroud_inlet">
+    <builder name="bSplineCurve_pointConstructOCC" 
+             order="1"
+             show_construction="false">
+				<Point_3 label="p3_shroud_inlet"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_0"/>
+		</builder>
+  </part>	
+  <part label="s3_shroud_curvature">
+    <builder name="bSplineCurve_pointConstructOCC" 
+             order="3"
+             show_construction="false">
+				<Point_3 label="p3_shroud_curvature_geoIn_0"/>
+				<!--<Point_3 label="p3_shroud_curvature_geoIn_1"/>-->
+				<Point_3 label="p3_shroud_curvature_geoIn_2"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_3"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_4"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_5"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_6"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_7"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_8"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_9"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_10"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_11"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_12"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_13"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_14"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_15"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_16"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_17"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_18"/>
+				<Point_3 label="p3_shroud_curvature_geoIn_19"/>
+    </builder>
+  </part>
+  <part label="s3_shroud_outlet">
+    <builder name="bSplineCurve_pointConstructOCC" 
+             order="1"
+             show_construction="false">
+				<Point_3 label="p3_shroud_curvature_geoIn_19"/>
+				<Point_3 label="p3_shroud_outlet"/>
+		</builder>
+  </part>	
+	
+	<part label="s3_shroud">
+		<builder name="bSplineCurve_curveConnectConstructOCC">
+			<analyticGeometry label="s3_shroud_inlet"/>
+			<analyticGeometry label="s3_shroud_curvature"/>
+			<analyticGeometry label="s3_shroud_outlet"/>
+		</builder>
+	</part>		
+	
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- meridian contour (bSplineSurface) -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	
+  <part label="aS_meridian">
+		<builder name="bSplineSurface_skinConstructOCCDecorator">
+			<analyticGeometry label="s3_hub"/>
+			<analyticGeometry label="s3_shroud"/>
+		</builder>
+	</part>
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- meridian contour (rotatingMap2dTo3d) -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	
+  <part label="rM2d3d_meridian">	
+    <builder name="rotatingMap2dTo3dDecorator">
+				<analyticGeometry label="aS_meridian"/>
+				<Vector_3 label="v3_zz"/>
+    </builder>
+  </part>
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- hub and shroud (just for rendering) -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	
+  <part label="rS_hub">
+    <builder name="analyticGeometry">
+			<transformer name="pickMap3dTo3dRangePercent" parameter_percent_three="0."/>
+			<analyticGeometry label="rM2d3d_meridian"/>
+    </builder>
+  </part>
+  <part label="rS_shroud">
+    <builder name="analyticGeometry">
+			<transformer name="pickMap3dTo3dRangePercent" parameter_percent_three="1."/>
+			<analyticGeometry label="rM2d3d_meridian"/>
+    </builder>
+  </part>
+</meridian>

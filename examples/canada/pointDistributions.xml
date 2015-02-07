@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<pointDistributions>
+	 <constValue label="cV_spline_0">
+    <builder name="sliderFloatParam">
+			<float value="0.25" min="0." max="1."/>
+    </builder>	 
+   </constValue>
+	 <constValue label="cV_spline_1">
+    <builder name="sliderFloatParam">
+			<float value="0.50" min="0." max="1."/>
+    </builder>	 
+   </constValue> 
+	 <constValue label="cV_spline_2">
+    <builder name="sliderFloatParam">
+			<float value="0.75" min="0." max="1."/>
+    </builder>	 
+   </constValue> 	 
+	 
+	<!-- point distributions -->
+  <function label="f_pointDistribution_0_lin"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" value="xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>
+  <function label="f_pointDistribution_0_linFirst"> 
+    <builder  name="scaMuParserOneD">
+			<string type="expression" value="1. - xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>		
+	<function label="f_pointDistribution_1_quadratic"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" value="xx * xx"/>
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>
+  <function label="f_pointDistribution_2_cos"> 
+    <builder  name="scaMuParserOneD">
+      <string type="expression" value=".5 * (cos(_pi * (1.+xx)) + 1.)"/> 
+      <string type="argument" value="xx"/>
+      <range min="0." max="1."/>
+    </builder>
+  </function>	
+  <function label="f_pointDistribution_3_spline"> 
+    <builder  name="scaCurve2dOneD" order="2">
+			<Point_2 x="0.0" y="0.0"/>
+			<Point_2 x="0.25" y="#cV_spline_0#"/>
+			<Point_2 x="0.5" y="#cV_spline_1#"/>
+			<Point_2 x="0.75" y="#cV_spline_2#"/>
+			<Point_2 x="1.0" y="1.0"/>
+    </builder>
+  </function>	  
+</pointDistributions>

@@ -1,0 +1,209 @@
+# Session file started:  2015/01/12 16:36:33
+# CFX-15.0 build 2013.10.10-08.49-130242
+
+
+COMMAND FILE:
+  TurboGrid Version=15.0
+END
+
+VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = 0, 0, 0
+    Scale = 1
+    Pan = 0, 0
+    Rotation Quaternion = 0.279848, -0.364705, -0.115917, 0.880476
+  END
+  
+END
+
+> update
+> um object=/GEOMETRY/MACHINE DATA, mode=suspend
+>readinf filename=/mnt/scratch/atismer/tmp/09_coviseCanadaOCC/turboGrid/\
+bladeGen.inf, guess=Off
+> forceupdate /GEOMETRY/MACHINE DATA
+> um object=/GEOMETRY/MACHINE DATA, mode=normal
+
+VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = -0.0192348, -0.831776, -1.0291
+    Scale = 0.658499
+    Pan = 0, 0
+    Rotation Quaternion = 0.279848, -0.364705, -0.115917, 0.880476
+  END
+  
+END
+
+> update
+GEOMETRY:
+  OUTLET:
+    Fully Extend = On
+    Generate Intermediate Points = On
+    Hub Angle = 24.0343 [deg]
+    Input Filename =
+    Override Automatic Angles = Off
+    Shroud Angle = 5.22387 [deg]
+    GEO POINT:Low Hub Point
+      AR Location Method = From A and R
+      Requested ART = -0.742649 [m],0.273526 [m],-178.1 [degree]
+      Visibility = On
+    END
+    GEO POINT:Low Shroud Point
+      Visibility = On
+    END
+  END
+END
+
+VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = -0.0192348, -0.831776, -1.0291
+    Scale = 0.658499
+    Pan = 0, 0
+    Rotation Quaternion = 0.279848, -0.364705, -0.115917, 0.880476
+  END
+  
+END
+
+> update
+GEOMETRY:
+  INLET:
+    Fully Extend = On
+    Generate Intermediate Points = On
+    Hub Angle = -22.9531 [deg]
+    Input Filename =
+    Override Automatic Angles = Off
+    Shroud Angle = -2.31835 [deg]
+    GEO POINT:Low Hub Point
+      AR Location Method = From A and R
+      Requested ART = -1.28962 [m],0.2435 [m],123.691 [degree]
+      Visibility = On
+    END
+    GEO POINT:Low Shroud Point
+      Visibility = On
+    END
+  END
+END
+
+VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = -0.0192348, -0.831776, -1.0291
+    Scale = 0.658499
+    Pan = 0, 0
+    Rotation Quaternion = 0.279848, -0.364705, -0.115917, 0.880476
+  END
+  
+END
+
+> update
+TOPOLOGY SET:
+  ATM Topology Optimizer = Off
+  One To One Passage Interfaces = On
+  One To One Periodicity Range = Full
+  Periodic Node Projection = Float on Surface
+  Preserve Control Points = Off
+  Topology From File = off
+  Topology Filename =
+  TOPOLOGY: Blade 1
+    OGrid = On
+    OGrid Distance Factor = 0.5
+    Topology Definition = H-Grid
+  END
+  Override ATM Topology List = False
+  Override ATM Topology Choice = False
+END
+
+VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = -0.0192348, -0.831776, -1.0291
+    Scale = 0.658499
+    Pan = 0, 0
+    Rotation Quaternion = 0.279848, -0.364705, -0.115917, 0.880476
+  END
+  
+END
+
+> update
+> um mode=normal, object=/TOPOLOGY SET
+
+VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = -0.0192348, -0.831776, -1.0291
+    Scale = 5.9125
+    Pan = -0.0530628, -0.540933
+    Rotation Quaternion = -0.0395093, -0.900212, 0.430954, -0.0483279
+  END
+  
+END
+
+> update
+> setlayerhighlight object=/LAYERS/LAYER:Hub/MASTER POINT:Master 3, layer=/\
+LAYERS/LAYER:Hub
+
+LAYERS:
+  LAYER:Hub
+    MASTER POINT:Master 3
+      Requested Position = -0.00835004, 0.00165981
+      Frame of Reference = Relative
+    END
+  END
+END
+
+VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = -0.0192348, -0.831776, -1.0291
+    Scale = 5.9125
+    Pan = -0.0530628, -0.540933
+    Rotation Quaternion = -0.0395093, -0.900212, 0.430954, -0.0483279
+  END
+  
+END
+
+> update
+> addlayer type=auto
+> mesh
+
+VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = -0.0192348, -0.831776, -1.0291
+    Scale = 5.9125
+    Pan = -0.0530628, -0.540933
+    Rotation Quaternion = -0.0395093, -0.900212, 0.430954, -0.0483279
+  END
+  
+END
+
+> update
+> savemesh filename=/mnt/scratch/atismer/tmp/09_coviseCanadaOCC/turboGrid/\
+mesh.cgns, onedomain=true, single=Off, units=mm, solver=cgns
+
+VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = -0.0192348, -0.831776, -1.0291
+    Scale = 5.9125
+    Pan = -0.0530628, -0.540933
+    Rotation Quaternion = -0.0395093, -0.900212, 0.430954, -0.0483279
+  END
+  
+END
+
+> update
+
+# Session file stopped:  2015/01/12 16:37:48
+

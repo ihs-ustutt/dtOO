@@ -3,15 +3,15 @@
 LOCAL
 LUSER
 #numModules
-1
+4
 # Module dtOODesignTool
 dtOODesignTool
 1
 LOCAL
 designTool
 dtOODesignTool_1
--391
--39
+-408
+-68
 0
 3
 _aFOut
@@ -25,21 +25,27 @@ _aGOutDescription
 default
 
 _bVOut
-UnstructuredGrid
+UnstructuredGrid|Points|Lines|Polygons|StructuredGrid
 _bVOutDescription
 default
 
-23
+26
+_logName
+String
+_logNameDescription
+
+
+-1
 _moduleChoice
 Choice
 _moduleChoiceDescription
-1 cVGen aFGen aGGen bVGen
+1 cVGen aFGen aGGen bVGen pL
 
 -1
 _xmlBrowser
 Browser
 _xmlBrowserDescrition
-./00_machine.xml
+./machine.xml
 
 -1
 _xmlBrowser___filter
@@ -162,11 +168,166 @@ _bVRenderChoiceDescription
 1 ---
 
 -1
+_bVRenderTags
+Choice
+_bVRenderTagsDescription
+1 ---
+
+-1
 _bVRenderCurrentToggle
 Boolean
 _bVRenderCurrentToggleDescription
 FALSE
 
 -1
+_pLChoice
+Choice
+_pLChoiceDescription
+1 ---
+
+-1
+0
+# Module Renderer
+Renderer
+1
+LOCAL
+Renderer
+Renderer_1
+-340
+156
+1
+RenderData
+Geometry|Points|Text_Iv|UnstructuredGrid|RectilinearGrid|StructuredGrid|Polygons|TriangleStrips|Lines
+render geometry or Inventor file
+req
+
+0
+1
+AnnotationString
+String
+Annotation descr. string
+empty
+
+-1
+0
+# Module ShowUsg
+ShowUsg
+1
+LOCAL
+Tools
+ShowUsg_1
+-238
+51
+2
+meshIn
+UnstructuredGrid
+input mesh
+req
+
+colors
+Vec3|RGBA
+colors
+opt
+
+1
+geometry
+Geometry
+Geometry
+default
+
 0
 0
+# Module DomainSurface
+DomainSurface
+1
+LOCAL
+Filter
+DomainSurface_1
+-493
+65
+2
+GridIn0
+StructuredGrid|RectilinearGrid|UniformGrid|UnstructuredGrid
+grid
+req
+
+DataIn0
+Float|Vec3|Mat3
+data on grid points
+opt
+
+4
+GridOut0
+Polygons
+surface of structured grid
+default
+
+DataOut0
+Float|Vec3|Mat3
+data on surface
+dep DataIn0
+
+GridOut1
+Lines
+feature lines 
+default
+
+DataOut1
+Float|Vec3|Mat3
+data on feature lines
+dep DataIn0
+
+4
+angle
+FloatScalar
+feature angle
+0.100000
+
+-1
+vertex
+FloatVector
+normal for back-face culling
+1 0 0
+
+-1
+scalar
+FloatScalar
+threshold for back-face culling
+1.500000
+
+-1
+double
+Boolean
+check for duplicated vertices
+TRUE
+
+-1
+0
+3
+dtOODesignTool
+1
+LOCAL
+_aGOut
+
+Renderer
+1
+LOCAL
+RenderData
+dtOODesignTool
+1
+LOCAL
+_bVOut
+
+DomainSurface
+1
+LOCAL
+GridIn0
+dtOODesignTool
+1
+LOCAL
+_bVOut
+
+ShowUsg
+1
+LOCAL
+meshIn

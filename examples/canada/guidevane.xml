@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<guidevane>
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- conformalMappingScale transformer -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  	
+  <part label="myBaseContainer2">
+    <builder name="baseContainer">
+			<transformer label="uVw_phirMs" name="uVw_phirMs" part_label="rM2d3d_meridian">
+			  <Vector_3 x="1." y="1." z="0.001"/>
+			</transformer>
+    </builder>
+  </part>
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- meanplane -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  		  
+	<part label="aS_meanPlane">
+    <builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="~uVw_phirMs(vec3d2d_meanPlane)~"/>
+			<analyticGeometry label="rM2d3d_meridian"/>
+    </builder>
+  </part>	 
+	
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- blade cuts -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  		  	
+<!--	<replace label="myLoop" variable="ii" values="{0}{50}{125}{250}{500}{750}{875}{950}{1000}">	
+		<part label="aS_bladeCut_{ii}">
+			<builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="~uVw_phirMs(vec3d1d_bladeCut_{ii})~"/>
+				<analyticGeometry label="rM2d3d_meridian"/>
+			</builder>
+		</part>
+	</replace>-->
+	
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- blade surface -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  			
+  <part label="aS_blade">
+    <builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="~uVw_phirMs(vec3d2d_blade)~"/>
+			<analyticGeometry label="rM2d3d_meridian"/>
+    </builder>
+  </part>		
+	
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- blade trailing edge surface -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  			 		
+  <part label="aS_blade_te">
+    <builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="~uVw_phirMs(vec3d2d_blade_te)~"/>
+			<analyticGeometry label="rM2d3d_meridian"/>
+    </builder>
+  </part>		
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- bladeAnalytic surface -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  			 
+  <part label="aS_bladeAnalytic">
+    <builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="~uVw_phirMs(vec3d2d_bladeAnalytic)~"/>
+			<analyticGeometry label="rM2d3d_meridian"/>
+    </builder>
+  </part>	
+
+	<replace variable="ii" values="{0}{1}{2}{3}">		
+		<part label="aS_bladeAnalytic_rotate_{ii}">
+			<builder name="analyticGeometry">
+				<transformer name="rotate" origin="p3_origin"
+					rotation_vector="v3_zz" angle="{ii}*2*_pi / #cV_nBlades#"/>
+				<analyticGeometry label="aS_bladeAnalytic"/>
+			</builder>
+		</part>	
+	</replace>
+	
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  
+<!-- bladeAnalytic trailing edge surface -->
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->  			 	
+  <part label="aS_bladeAnalytic_te">
+    <builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="~uVw_phirMs(vec3d2d_bladeAnalytic_te)~"/>
+			<analyticGeometry label="rM2d3d_meridian"/>
+    </builder>
+  </part>	
+</guidevane>
