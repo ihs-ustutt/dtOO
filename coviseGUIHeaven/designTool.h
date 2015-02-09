@@ -24,6 +24,7 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class boundedVolume;
+  class dtCase;
   class dtPlugin;
   class dtXmlParser;
   class renderInterface;
@@ -83,6 +84,7 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > _aG;
       vectorHandling< analyticFunction * > _aF;
       vectorHandling< boundedVolume * > _bV;
+      vectorHandling< dtCase * > _dC;
       vectorHandling< dtPlugin * > _pL;
       ptrHandling< baseContainer > _bC;
       vectorHandling< dtPlugin * > _pLApply;

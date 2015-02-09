@@ -8,6 +8,7 @@
 #include <functionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
+#include <dtCase.h>
 #include <dtPlugin.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
@@ -544,7 +545,7 @@ namespace dtOO {
 				
 				_parser.reset( new dtXmlParser() );
 				_parser->openFileAndParse( _xmlBrowser->getValue() );
-				_parser->destroyAndCreate(_cV, _aF, _bC, _aG, _bV, _pL);
+				_parser->destroyAndCreate(_cV, _aF, _bC, _aG, _bV, _dC, _pL);
 
 				abstractModule::updateChoiceParam(_cVChoice, &_cV);
 

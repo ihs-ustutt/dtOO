@@ -48,7 +48,6 @@ find_package(COVISE REQUIRED)
 #------------------------------------------------------------------------------#
 find_package(CGAL)
 add_definitions(-DCGAL_DISABLE_ROUNDING_MATH_CHECK)
-find_package(ROOT)
 USE_DTOO()
 
 #------------------------------------------------------------------------------#
@@ -57,7 +56,6 @@ USE_DTOO()
 #                                                                              #
 #------------------------------------------------------------------------------#
 include_directories(
-  ${ROOT_INCLUDE_DIR} 
   ${BOOST_INCLUDE_DIR} 
   ${DTOO_INCLUDE_DIR} 
   ${CGAL_INCLUDE_DIR}

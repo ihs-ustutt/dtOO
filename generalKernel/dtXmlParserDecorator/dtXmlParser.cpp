@@ -17,6 +17,8 @@
 #include <dtXmlParserDecorator/dtXmlParserFunctionDecoratorFactory.h>
 #include <dtPlugin.h>
 #include <dtPluginFactory.h>
+#include <dtCase.h>
+#include <dtCaseFactory.h>
 #include <QtCore/QFile>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomNode>
@@ -759,12 +761,52 @@ namespace dtOO {
 		dt__FORALL( label, ii, createPlugin(label[ii], bC, cVP, sFP, aGP, bVP, pLP); );		
 	}
 		
+	void dtXmlParser::createCase(
+		std::string const label,
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cVP,        
+		vectorHandling< analyticFunction * > const * const sFP,        
+		vectorHandling< analyticGeometry * > const * const aGP,
+		vectorHandling< boundedVolume * > * bVP,
+		vectorHandling< dtCase * > * dCP
+	) const {
+		//
+		// get configuration element
+		//
+		QDomElement wEl = getElement("case", label);
+
+		//
+		// create new plugin with factory
+		//
+		dCP->push_back( 
+			dtCaseFactory::create( getAttributeStr("name", wEl) ) 
+		);
+		//
+		// initialize dtPlugin
+		//
+		dCP->back()->init( wEl, bC, cVP, sFP, aGP, bVP, dCP );		
+	}
+	
+	void dtXmlParser::createCase(
+		baseContainer * const bC,
+		vectorHandling< constValue * > const * const cVP,        
+		vectorHandling< analyticFunction * > const * const sFP,        
+		vectorHandling< analyticGeometry * > const * const aGP,
+		vectorHandling< boundedVolume * > * bVP,
+		vectorHandling< dtCase * > * dCP
+	) const {
+		std::vector< std::string > label = getNames("case");
+		
+		dt__FORALL( label, ii, createCase(label[ii], bC, cVP, sFP, aGP, bVP, dCP); );				
+	}
+		
 	void dtXmlParser::destroyAndCreate(
 		vectorHandling< constValue * > & cV,
 		vectorHandling< analyticFunction* > & aF,
 		ptrHandling< baseContainer > & bC,
 		vectorHandling< analyticGeometry * > & aG,
 		vectorHandling< boundedVolume * > & bV,
+		vectorHandling< dtCase * > & dC,
 	  vectorHandling< dtPlugin * > & pL
 	) const {
 		if ( cV.size() == 0 ) {
@@ -778,6 +820,7 @@ namespace dtOO {
 		aF.destroy();
 		aG.destroy();
 		bV.destroy();
+		dC.destroy();
     pL.destroy();
 		
 		//
@@ -786,6 +829,7 @@ namespace dtOO {
 		createAnalyticFunction(bC.get(), &cV, &aF);
 		createAnalyticGeometry(bC.get(), &cV, &aF, &aG);
 		createBoundedVolume(bC.get(), &cV, &aF, &aG, &bV);
+		createCase(bC.get(), &cV, &aF, &aG, &bV, &dC);
 		createPlugin(bC.get(), &cV, &aF, &aG, &bV, &pL);
 	}
   

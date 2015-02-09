@@ -17,6 +17,7 @@ namespace dtOO {
   class baseContainer;
   class boundedVolume;
   class dtPlugin;
+  class dtCase;
   
   class dtXmlParser : public dtXmlParserBase {
   public:  
@@ -96,12 +97,30 @@ namespace dtOO {
       vectorHandling< boundedVolume * > * bVP,
       vectorHandling< dtPlugin * > * pLP
     ) const;        
+    void createCase(
+      std::string const label,
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cVP,        
+      vectorHandling< analyticFunction * > const * const sFP,        
+      vectorHandling< analyticGeometry * > const * const aGP,
+      vectorHandling< boundedVolume * > * bVP,
+      vectorHandling< dtCase * > * dCP
+    ) const;      
+    void createCase(
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cVP,        
+      vectorHandling< analyticFunction * > const * const sFP,        
+      vectorHandling< analyticGeometry * > const * const aGP,
+      vectorHandling< boundedVolume * > * bVP,
+      vectorHandling< dtCase * > * dCP
+    ) const;       
     void destroyAndCreate(
       vectorHandling< constValue * > & cV,
       vectorHandling< analyticFunction* > & aF,
       ptrHandling< baseContainer > & bC,
       vectorHandling< analyticGeometry * > & aG,
 		  vectorHandling< boundedVolume * > & bV,
+      vectorHandling< dtCase * > & dC,
       vectorHandling< dtPlugin * > & pL
     ) const;    
   private:

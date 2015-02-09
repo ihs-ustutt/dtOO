@@ -25,7 +25,7 @@ endif (DTOO_EXTERNLIBS STREQUAL "")
 # compiler flags
 #
 #------------------------------------------------------------------------------#
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl") #for dladdr in Backtrace
 #------------------------------------------------------------------------------#
 #
@@ -69,6 +69,12 @@ find_package(
   REQUIRED
 )
 find_package(CGNS REQUIRED)
+find_package(
+  OpenFOAM
+  COMPONENTS 
+  foam Pstream
+  REQUIRED 
+)
 if(DTOO_USE_GOOGLEPERFTOOLS)
   add_definitions(-DDTOO_USE_GOOGLEPROFTOOLS)
   find_package(GOOGLEPERFTOOLS REQUIRED)
@@ -95,6 +101,7 @@ add_subdirectory(libraryKernel)
 add_subdirectory(meshKernel)
 add_subdirectory(renderKernel)
 add_subdirectory(pluginKernel)
+add_subdirectory(solverKernel)
 
 #------------------------------------------------------------------------------#
 #
@@ -108,6 +115,7 @@ include_directories(
   meshKernel 
   renderKernel 
   pluginKernel
+  solverKernel
   ${Boost_INCLUDE_DIR} 
   ${CGAL_INCLUDE_DIR} 
   ${GMSH_INCLUDE_DIR} 
@@ -118,6 +126,10 @@ include_directories(
   ${GSL_INCLUDE_DIR} 
   ${OpenCASCADE_INCLUDE_DIR}
   ${CGNS_INCLUDE_DIR}
+  ${OpenFOAM_foam_INCLUDE_DIR}
+  ${OpenFOAM_OSspecific_INCLUDE_DIR}
+#/foam/lnInclude
+#  ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
 )
 
 #------------------------------------------------------------------------------#
@@ -168,6 +180,7 @@ target_link_libraries(dtOO
   ${GSL_LIBRARIES}
   ${Boost_LIBRARIES}
   ${CGNS_LIBRARIES}
+  ${OpenFOAM_LIBRARIES}
 )
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGAL_LINK_DIRECTORY}")
@@ -176,6 +189,8 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${MUPARSER_LI
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenCASCADE_LINK_DIRECTORY}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${ROOT_LINK_DIRECTORY}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGNS_LINK_DIRECTORY}")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenFOAM_LINK_DIRECTORY}")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenFOAM_LINK_DIRECTORY}/openmpi-system")
 
 #------------------------------------------------------------------------------#
 #
@@ -192,4 +207,5 @@ install(DIRECTORY generalKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h
 install(DIRECTORY libraryKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY geometryKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY renderKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY solverKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY cmake/ DESTINATION cmake FILES_MATCHING PATTERN "*")
