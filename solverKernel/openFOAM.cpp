@@ -8,31 +8,14 @@
 #include <boundedVolume.h>
 #include <interfaceHeaven/systemHandling.h>
 
-#ifdef _NUMERIC_H_
-  #undef sign
-#endif
-
-// avoid issues with pre-processor defines
-#undef FALSE
-#undef TRUE
-#undef OFF
-#undef ON
-#undef NO
-#undef YES
-#undef NO_1
-#undef YES_1
-#undef FALSE_1
-#undef TRUE_1
-#undef NONE
-#undef PLACEHOLDER
-#undef INVALID
-
-//#include <HashTable.H>
+#include <criticalHeaven/prepareOpenFOAM.h>
 #include <argList.H>
 #include <Time.H>
 #include <IOdictionary.H>
-#include <OStringStream.H>
+//#include <OStringStream.H>
 #include <OFstream.H>
+#include <IFstream.H>
+#include <IOstream.H>
 #include <IOobject.H>
 
 namespace dtOO {  
@@ -55,52 +38,57 @@ namespace dtOO {
 		
 		DTINFOWF(init(), << "I'm an openFOAM case!!!!!!");
 		
+//		systemHandling::createDirectory(getLabel());
+//		systemHandling::createDirectory(getLabel()+"/system");
+		Foam::argList::noParallel();
+		
 		int argc = 3;
 		char ** argv = new char*[3];
-		argv[0] = "dieter";
-		argv[1] = "-case";
-		argv[2] = "myOpenFOAMCase";
-		Foam::argList args(argc, (char**&) argv, false, false);
+		argv[0] = const_cast< char * >("antoineInTheBuilding");
+		argv[1] = const_cast< char * >("-case");
+		argv[2] = const_cast< char * >(getLabel().c_str());
+//		Foam::argList args(argc, argv, false, false);
 
-		
-		
-		
-		Foam::dictionary timeDict( 
-		  Foam::fileName(args.rootPath()+"/"+args.caseName()+"/timeFile") 
+		//
+		// delete and copy template case
+		//				
+		systemHandling::commandAndWait( "rm -rf "+getOption("workingDirectory")+"/"+getLabel() );
+		systemHandling::commandAndWait(
+		  "cp -r "+getOption("templateCase")+" "+getOption("workingDirectory")+"/"+getLabel()
 		);
-		timeDict.add("deltaT", Foam::scalar(1.));
-    timeDict.add("writeFrequency", Foam::scalar(1.));				
 
+		//
+		// create openFOAM rootCase and time
+		//
+#include "setRootCase.H"
+#include "createTime.H"
 		
-		Foam::Time runTime(timeDict, args.rootPath(), args.caseName());
-
-		
-		Foam::dictionary myDict("myDict");
-		Foam::dictionary subDict("subDict");
-
-		Foam::IOobject ioObject("IOobject", runTime);
-		
-		
-		//Foam::word word("wordValue");
-//		Foam::scalar scalar(.01);
-		
-		subDict.add(Foam::word("word"), Foam::word("wordValue"));
-		subDict.add(Foam::word("scalar"), Foam::scalar(.01));
-		
-
-		myDict.add(Foam::word("foamFile"), subDict);
-		myDict.add(Foam::word("timeFile"), timeDict);
-
-    Foam::IOdictionary ioDict(ioObject, myDict);
-		ioDict.add(Foam::word("tester"), Foam::scalar(3.));
-
-    Foam::OStringStream os;
-		Foam::OFstream of(
-		  Foam::fileName(args.rootPath()+"/"+args.caseName()+"/dictFile")
+		//
+		// read dictionary
+		//
+		Foam::IOdictionary fieldDict(
+      Foam::IOobject(
+				"system/controlDict",
+				runTime,
+				Foam::IOobject::READ_IF_PRESENT,
+				Foam::IOobject::AUTO_WRITE,
+				false
+			)
 		);
 		
-		ioDict.writeData( of );
-
+		//
+		// add entry
+		//
+		fieldDict.add("dieter", "herbert");		
+		
+		//
+		// write modified dict
+		//
+		fieldDict.writeObject(
+		  Foam::IOstream::ASCII, 
+			Foam::IOstream::currentVersion,
+			Foam::IOstream::compressionType::UNCOMPRESSED
+		);
 	}
 		
   void openFOAM::apply(void) {  
