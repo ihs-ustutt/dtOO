@@ -19,12 +19,9 @@
     dt__THROW( dt__PTRASS, << "object "#ptr" cannot assigned to "#toAss ); \
   } \
   toAss = ptr
-#define dt__NEXT( object ) \
-  boost::next( object )
-#define dt__PRIOR( object ) \
-  boost::prior( object )
-#define dt__TOFLOAT(toAss, value ) \
-  toAss = static_cast<float>(value)
+#define dt__NEXT( object ) boost::next( object )
+#define dt__PRIOR( object ) boost::prior( object )
+#define dt__TOFLOAT(toAss, value ) toAss = static_cast<float>(value)
 
 #endif	/* PROGHELPER_H */
 

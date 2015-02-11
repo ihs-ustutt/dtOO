@@ -1,13 +1,7 @@
 #ifndef DTLINEARALGEBRA_H
 #define DTLINEARALGEBRA_H
 
-//
-// gmsh fix:
-// definition of sign(x) in Numeric.h (gmsh) conflicts with cgal
-//
-#ifdef _NUMERIC_H_
-  #undef sign
-#endif
+#include <criticalHeaven/unsetGmsh.h>
 
 #include <logMe/dtMacros.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>

@@ -9,12 +9,13 @@ namespace dtOO {
   public:
     dt__CLASSNAME(systemHandling);
     virtual ~systemHandling();
-    static void command(std::string & cmd);
+    static void command(std::string const & cmd);
     static void commandAndWait(std::string & cmd);
     static bool createDirectory( std::string const & dirPath );
     static bool fileExists(std::string const filename);
     static void deleteFile( std::string const filename );
     static void deleteDirectory( std::string const dirname );    
+    static void copyDirectory( std::string const & from, std::string const & to);
   private:
     systemHandling();    
   };

@@ -14,7 +14,7 @@ namespace dtOO {
   systemHandling::~systemHandling() {
   }
   
-  void systemHandling::command( std::string & cmd ) {
+  void systemHandling::command( std::string const & cmd ) {
     //
     // call system
     //
@@ -112,4 +112,104 @@ namespace dtOO {
 //			);
 //    }
   }	
+	
+	void systemHandling::copyDirectory(
+		std::string const & from, std::string const & to
+	) {
+		boost::filesystem::path source(from);
+		boost::filesystem::path destination(to);
+		namespace fs = boost::filesystem;
+		try
+		{
+			// Check whether the function call is valid
+			if(
+					!fs::exists(source) ||
+					!fs::is_directory(source)
+			)
+			{
+	//				std::cerr << "Source directory " << source.string()
+	//						<< " does not exist or is not a directory." << '\n'
+	//				;
+				dt__THROW( 
+					copyDirectory(), 
+					<< "Source directory " << source.string() 
+					<< " does not exist or is not a directory."
+				);							
+//					return false;
+			}
+			if(fs::exists(destination))
+			{
+	//				std::cerr << "Destination directory " << destination.string()
+	//						<< " already exists." << '\n'
+	//				;
+				dt__THROW( 
+					copyDirectory(), 
+					<< "Destination directory " << destination.string() << " already exists."
+				);				
+//					return false;
+			}
+			// Create the destination directory
+			if(!fs::create_directory(destination))
+			{
+	//			std::cerr << "Unable to create destination directory"
+	//					<< destination.string() << '\n'
+	//			;
+				dt__THROW( 
+					copyDirectory(), 
+					<< "Unable to create destination directory" << destination.string() 
+				);			
+//				return false;
+			}
+		}
+		catch(fs::filesystem_error const & e)
+		{
+			std::cerr << e.what() << '\n';
+//			return false;
+		}
+		// Iterate through the source directory
+		for(
+			fs::directory_iterator file(source);
+			file != fs::directory_iterator(); ++file
+		)
+		{
+			try
+			{
+				fs::path current(file->path());
+				if(fs::is_directory(current))
+				{
+					// Found directory: Recursion
+//					if(
+							copyDirectory(
+								current.string(),
+								(destination / current.filename()).string()
+							);
+//					)
+//					{
+//							return false;
+//					}
+				}
+				else
+				{
+//
+// produces compiler bug:
+// see: https://svn.boost.org/trac/boost/ticket/6124
+//
+					// Found file: Copy
+//					fs::copy_file(
+//						current,
+//						destination / current.filename()
+//					);
+					command(
+						"cp "+current.string()+" "+(destination / current.filename()).string()
+					);
+				}
+			}
+			catch(fs::filesystem_error const & e)
+			{
+				//std:: cerr << e.what() << '\n';
+				dt__THROW( copyDirectory(), << DTLOGEVAL(e.what()) );
+			}
+		}
+//		return true;
+	}	
 }

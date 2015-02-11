@@ -42,6 +42,8 @@ SET(HEADERS
   dtXmlParserDecorator/occBuilder/bSplineSurface_bSplineCurveFillConstructOCCDecorator.h
   dtXmlParserDecorator/occBuilder/bSplineCurve_pointPickFromPartConstructOCCDecorator.h
   dtXmlParserDecorator/occBuilder/bSplineCurve_pointConstructArcLengthParaOCCDecorator.h  
+  criticalHeaven/unsetGmsh.h
+  criticalHeaven/prepareOpenFOAM.h
   exceptionHandling/eGeneral.h
   exceptionHandling/eGSL.h
   interfaceHeaven/stringPrimitive.h
