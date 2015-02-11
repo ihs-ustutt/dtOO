@@ -75,6 +75,7 @@ find_package(
   foam Pstream
   REQUIRED 
 )
+find_package(MOAB)
 if(DTOO_USE_GOOGLEPERFTOOLS)
   add_definitions(-DDTOO_USE_GOOGLEPROFTOOLS)
   find_package(GOOGLEPERFTOOLS REQUIRED)
@@ -128,6 +129,7 @@ include_directories(
   ${CGNS_INCLUDE_DIR}
   ${OpenFOAM_foam_INCLUDE_DIR}
   ${OpenFOAM_OSspecific_INCLUDE_DIR}
+  ${MOAB_INCLUDE_DIR}
 #/foam/lnInclude
 #  ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
 )
@@ -181,6 +183,7 @@ target_link_libraries(dtOO
   ${Boost_LIBRARIES}
   ${CGNS_LIBRARIES}
   ${OpenFOAM_LIBRARIES}
+  ${MOAB_LIBRARIES}
 )
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGAL_LINK_DIRECTORY}")
@@ -191,6 +194,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${ROOT_LINK_D
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGNS_LINK_DIRECTORY}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenFOAM_LINK_DIRECTORY}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenFOAM_LINK_DIRECTORY}/openmpi-system")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${MOAB_LINK_DIRECTORY}")
 
 #------------------------------------------------------------------------------#
 #

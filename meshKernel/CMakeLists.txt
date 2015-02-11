@@ -13,6 +13,7 @@ SET(HEADERS
   map3dTo3dTriangulated.h
   map3dTo3dWithInternalTurboGrid.h
   vec3dInMap3dTo3dWithMeshedSurface.h
+  readMOABMesh.h
 )
 
 SET(SOURCES
@@ -30,6 +31,7 @@ SET(SOURCES
   map3dTo3dTriangulated.cpp
   map3dTo3dWithInternalTurboGrid.cpp
   vec3dInMap3dTo3dWithMeshedSurface.cpp
+  readMOABMesh.cpp
 )
 
 APPEND_DTOO_SOURCE(meshKernel "${SOURCES}")
