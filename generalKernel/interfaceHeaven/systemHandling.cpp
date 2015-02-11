@@ -29,7 +29,7 @@ namespace dtOO {
             << DTLOGEVAL(wExitStatus) );
   }
 
-  void systemHandling::commandAndWait( std::string & cmd ) {
+  void systemHandling::commandAndWait( std::string const & cmd ) {
     //
     // call system
     //
