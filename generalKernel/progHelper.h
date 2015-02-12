@@ -9,11 +9,11 @@
       content \
     }
 #define dt__FORALLITER(type, vector, iter) \
-								for ( \
-									type::iterator iter = vector.begin(); \
-									iter!=vector.end(); \
-									++iter \
-								)
+  for ( \
+    type::iterator iter = vector.begin(); \
+    iter!=vector.end(); \
+    ++iter \
+  )
 #define dt__MUSTDOWNCAST( object, type, result ) \
   result = dynamic_cast< type * >( object ); \
   if (result == NULL ) { \
