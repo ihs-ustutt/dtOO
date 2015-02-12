@@ -38,6 +38,7 @@ namespace dtOO {
 	  virtual std::vector< std::string > getMeshTags( void ) const;
     virtual dtGmshFace const * getFace( std::string const & tag ) const;
   private:
+    dt__pH(dtGmshModel) _gm;
     std::vector< MVertex * > _vertices;
     std::vector< MElement * > _elements;
     std::vector< dtGmshFace * > _faces;

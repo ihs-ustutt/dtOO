@@ -94,9 +94,18 @@ namespace dtOO {
 			}
 		}		
 		
+		//
+		// get compound and put pieces as regions to gmsh model
+		//
+		_gm.reset( new dtGmshModel() );			
 	}
 	
   void map3dTo3dWithInternalTurboGrid::makeGrid(void) {
+		//
+		// set current model
+		//
+		GModel::setCurrent(_gm.get());
+		
 		systemHandling::createDirectory(_directory);
 		std::fstream of;
 		std::string ofName;
@@ -193,12 +202,19 @@ namespace dtOO {
 //		moab::ErrorCode rval = _mb->load_mesh(_meshFileName.c_str());
 //		dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
 		
-		dtGmshModel::dtReadCGNS( 
+		_gm->dtReadCGNS( 
 	    _meshFileName.c_str(), 
 			_vertices, _elements, 
 			_faces, _regions,
 			_faceLabels, _regionLabels
     );
+
+    //
+		// force renumbering mesh in gmsh
+		//
+//    _gm->indexMeshVertices(true, 0, true);		
+		
+		_gm->writeMSH("turboDieter.msh");
 
 		//
 		// delete turboGrid directory
@@ -222,77 +238,8 @@ namespace dtOO {
 		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
 		
 		vectorHandling< renderInterface * > rV(1);
-		rV[0] = dtGmshModel::toUnstructured3dMesh(_vertices, _elements);
+		rV[0] = _gm->toUnstructured3dMesh();//_vertices, _elements);
 		return rV;
-		
-		//
-		// old MOAB source
-		//
-		/*
-		moab::ErrorCode rval;
-		
-		moab::Range verts;
-		rval = _mb->get_entities_by_type(0, moab::MBVERTEX, verts);
-		
-		std::vector<double> xx(verts.size());
-		std::vector<double> yy(verts.size());
-		std::vector<double> zz(verts.size());
-		rval = _mb->get_coords(verts, &xx[0], &yy[0], &zz[0]);
-		dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
-		
-		unstructured3dMesh * um = new unstructured3dMesh();
-		rV[0] = um;
-		um->addPoints(
-		  vectorHandling<dtPoint3>(dtLinearAlgebra::toDtPoint3Vector(xx, yy, zz))
-		);
-		
-//		int num;
-//		rval = _mb->num_child_meshsets(0, &num);
-//		dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
-//		DTINFOWF( getRender(), << DTLOGEVAL(num) );		
-		
-
-		
-//		std::vector< moab::EntityHandle> han;
-//		rval = _mb->get_entities_by_handle(0, han);
-//		dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
-//		for (std::vector<moab::EntityHandle>::iterator it = han.begin(); it != han.end(); it++) {
-//			int nEnt;
-//			rval = _mb->get_number_entities_by_handle(*it, nEnt);
-//			dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
-//			DTINFOWF( 
-//			  getRender(), 
-//				<< DTLOGEVAL( nEnt ) 
-//			);			
-//		}
-		
-//		DTINFOWF(getRender(),
-//						<< DTLOGEVAL(num) << LOGDEL
-			//			<< DTLOGEVAL(numHops) << LOGDEL
-//		);
-	  moab::Range hex;
-    rval = _mb->get_entities_by_type(0, moab::MBHEX, hex);
-		
-		dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
-		for (moab::Range::iterator it = hex.begin(); it != hex.end(); it++) {
-			moab::EntityHandle const * conn;
-			int nNodes;
-			rval = _mb->get_connectivity(*it, conn, nNodes);
-			dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
-			
-//   		DTINFOWF(
-//				makeGrid(), 
-//				<< DTLOGEVAL(nNodes) << LOGDEL
-//				<< DTLOGEVAL(conn) << LOGDEL
-//			  << moab::CN::EntityTypeName(_mb->type_from_handle(*it)) << " " 
-//				<< _mb->id_from_handle(*it) << " hex connectivity is: "
-//			);
-			vectorHandling< int > tmp(nNodes);
-      for (int i = 0; i < nNodes; i++) tmp[i] = conn[i]-1;
-			um->addElement(tmp);
-    }
-	*/
-
 	}	
 	
 	vectorHandling< renderInterface * > map3dTo3dWithInternalTurboGrid::getExtRender( void ) const {
@@ -300,7 +247,7 @@ namespace dtOO {
 		std::string toRender = extRenderWhat();
 
 		if (toRender == _regionLabels[0]) {
-		  rV.push_back( dtGmshModel::toUnstructured3dMesh(_vertices, _elements) );
+		  rV.push_back( _gm->toUnstructured3dMesh() );//_vertices, _elements) );
 		}
     else {
 			for (int ii=0; ii<_faceLabels.size(); ii++) {

@@ -60,7 +60,7 @@ namespace dtOO {
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
       std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
     );
-    static void dtReadCGNS(
+    void dtReadCGNS(
     	const std::string & name, 
 		  std::vector< MVertex * > & vertices, std::vector< MElement * > & elements,
       std::vector< dtGmshFace * >  & _faces, std::vector< dtGmshRegion * >  & _regions,

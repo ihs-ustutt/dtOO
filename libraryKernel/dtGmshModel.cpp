@@ -712,13 +712,16 @@ namespace dtOO {
 			dt__THROW_IF(vertices.size() != 0, dtReadCGNS());
 			dt__THROW_IF(elements.size() != 0, dtReadCGNS());
 		
+			typedef std::map<int, MVertex*> vertexMap_t;
+			typedef std::map<int, MElement*> elementMap_t;		
+			
 			int vNum = 0;	
-			std::map<int, MVertex*> vertexMap;
+			vertexMap_t vertexMap;
 			int minVertex = 1;
 			int maxVertex = 0;		
 
 			int eNum = 0;
-			std::map<int, MElement*> elementMap;			
+			elementMap_t elementMap;			
 			int minElement = 1;
 			int maxElement = 0;
 				
@@ -912,12 +915,16 @@ namespace dtOO {
 						case QUAD_4:
 							_faceLabels.push_back( std::string(secName) );
 							fNum++;
-							_faces.push_back( new dtGmshFace(NULL, fNum) );
+							_faces.push_back( new dtGmshFace(this, fNum) );
 							nElements = elementDataSize/4;
 							//
 							// create elements
 							//
 							tmpC = 0;
+							_faces.back()->addPhysicalEntity(
+							  setPhysicalName(secName, 2, 0)
+							);
+							this->add( _faces.back() );
 							for (int iEl = bounds[0]; iEl<=bounds[1]; iEl++) {
 								eNum++;								
 								int counter = (tmpC)*4;
@@ -951,7 +958,11 @@ namespace dtOO {
 						case HEXA_8:
 							_regionLabels.push_back( std::string(secName) );
 							rNum++;
-							_regions.push_back( new dtGmshRegion(NULL, rNum) );
+							_regions.push_back( new dtGmshRegion(this, rNum) );
+							_regions.back()->addPhysicalEntity(
+							  setPhysicalName(secName, 3, 0)
+							);							
+							this->add( _regions.back() );
 							nElements = elementDataSize/4;							
 							nElements = elementDataSize/8;
 							//
@@ -989,6 +1000,12 @@ namespace dtOO {
 		
 		dt__THROW_IF( vertexMap.size() != vNum, dtReadCGNS() );
 		dt__THROW_IF( elementMap.size() != eNum, dtReadCGNS() );
+		
+		dt__FORALLITER(vertexMap_t, vertexMap, it) {
+			MVertex * mv = it->second;
+			mv->setEntity(_regions.back());
+			_regions.back()->addMeshVertex(mv);
+		}
 		
     vertices.resize(vNum);
 		elements.resize(eNum);
