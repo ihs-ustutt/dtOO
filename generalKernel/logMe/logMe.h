@@ -328,6 +328,15 @@ namespace dtOO {
           << LOGDEL \
           << "Honor thy error as a hidden intention. (Brian Eno)"); \
   }
+  #define moab__THROW_IF(cond, functionname) \
+      if (cond) { \
+        std::string err; \
+		    moab::MBErrorHandler_GetLastError(err); \
+        dt__THROW( \
+          functionname, \
+          << "condition: "#cond" is true." << LOGDEL \
+          << DTLOGEVAL(err) ); \
+      }  
 //  //
 //  // can redirect std::cout output to logfile
 //  //

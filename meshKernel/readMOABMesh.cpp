@@ -95,29 +95,30 @@ namespace dtOO {
 	
 		int nMeshSets;
 		rval = _mb->num_contained_meshsets(0, &nMeshSets, 0);
-		dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
+		moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
 		DTINFOWF( getRender(), << DTLOGEVAL(nMeshSets) );			
 		
-		int dim1; int dim2; int dim3;
-    rval = _mb->get_number_entities_by_dimension(0, 1, dim1, true);
-		rval = _mb->get_number_entities_by_dimension(0, 2, dim2, true);
-		rval = _mb->get_number_entities_by_dimension(0, 3, dim3, true); 
-		DTINFOWF(
-			getRender(), 
-			<< DTLOGEVAL(dim1) << LOGDEL
-			<< DTLOGEVAL(dim2) << LOGDEL
-			<< DTLOGEVAL(dim3)
-		);
+		moab::Range allSets;
+    rval = _mb->get_entities_by_type(0, moab::MBENTITYSET, allSets);
+		moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());		
+		for (moab::Range::iterator it=allSets.begin(); it!=allSets.end(); it++) {
+		  moab::EntityHandle currentSet = *it;
+			int dim1; int dim2; int dim3;
+			rval = _mb->get_number_entities_by_dimension(currentSet, 1, dim1, true);
+			moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());		
+			rval = _mb->get_number_entities_by_dimension(currentSet, 2, dim2, true);
+			moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());		
+			rval = _mb->get_number_entities_by_dimension(currentSet, 3, dim3, true);
+			moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());		
+			DTINFOWF(
+				getRender(), 
+				<< "In loop" << LOGDEL
+				<< DTLOGEVAL(dim1) << LOGDEL
+				<< DTLOGEVAL(dim2) << LOGDEL
+				<< DTLOGEVAL(dim3)
+			); 
+		} 		
 		
-    rval = _mb->get_number_entities_by_dimension(1, 1, dim1, true);
-		rval = _mb->get_number_entities_by_dimension(1, 2, dim2, true);
-		rval = _mb->get_number_entities_by_dimension(1, 3, dim3, true);
-		DTINFOWF(
-			getRender(), 
-			<< DTLOGEVAL(dim1) << LOGDEL
-			<< DTLOGEVAL(dim2) << LOGDEL
-			<< DTLOGEVAL(dim3)
-		); 
 		return rV;
 	}	
 }
