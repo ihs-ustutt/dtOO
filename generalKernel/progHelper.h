@@ -2,12 +2,14 @@
 #define	PROGHELPER_H
 
 #include <logMe/logMe.h>
-#include <boost/utility.hpp>
+//#include <boost/utility.hpp>
 
 #define dt__FORALL(vector, variable, content) \
     for (int variable = 0; variable<((vector).size());variable++) { \
       content \
     }
+#define dt__FORALLINDEX(vector, index) \
+    for (int index = 0; index<((vector).size());index++)
 #define dt__FORALLITER(type, vector, iter) \
   for ( \
     type::iterator iter = vector.begin(); \
@@ -25,8 +27,12 @@
     dt__THROW( dt__PTRASS, << "object "#ptr" cannot assigned to "#toAss ); \
   } \
   toAss = ptr
-#define dt__NEXT( object ) boost::next( object )
-#define dt__PRIOR( object ) boost::prior( object )
+namespace dtOO {
+  template <class T> inline T prior(T x) { return --x; }
+  template <class T> inline T next(T x) { return ++x; }  
+}
+#define dt__NEXT( object ) dtOO::next( object )
+#define dt__PRIOR( object ) dtOO::prior( object )
 #define dt__TOFLOAT(toAss, value ) toAss = static_cast<float>(value)
 
 #endif	/* PROGHELPER_H */
