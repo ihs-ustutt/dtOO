@@ -98,9 +98,12 @@ namespace dtOO {
         }
       }
     }
-    return false;
-    //DTINFOWF(getOption(),
-    //        << "Option " << DTLOGEVAL(name) << " not found.");    
+    DTWARNINGWF(
+			optionTrue(),
+      << "Option " << DTLOGEVAL(name) << " not found. Set to false."
+		);    		
+    
+		return false;
   }
 
   optionGroup optionHandling::getOptionGroup( std::string const name ) const {
