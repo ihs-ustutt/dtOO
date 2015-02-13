@@ -5,6 +5,7 @@
 #include <logMe/dtMacros.h>
 #include <gmsh/GModel.h>
 
+class GEntity;
 class GRegion;
 class GFace;
 class GEdge;
@@ -22,6 +23,8 @@ namespace dtOO {
   
   class dtGmshModel : public GModel {
   public:
+		typedef std::map< int, std::vector< GEntity * > > intGEntityVMap;
+  public:
     dt__CLASSSTD(dtGmshModel, GModel);      
     dtGmshModel(std::string name="");
     virtual ~dtGmshModel();
@@ -31,10 +34,10 @@ namespace dtOO {
     int getDtGmshEdgeTagByFromTo( int const from, int const to ) const;
     dtGmshEdge * getDtGmshEdgeByFromTo( int const from, int const to ) const;
     dtGmshVertex * getDtGmshVertexByTag( int const tag ) const;
-    static dtGmshRegion * cast2DtGmshRegion( GRegion * gr );
-    static dtGmshFace * cast2DtGmshFace( GFace * gf );
-    static dtGmshEdge * cast2DtGmshEdge( GEdge * ge );  
-    static dtGmshVertex * cast2DtGmshVertex( GVertex * gv );
+    static dtGmshRegion * cast2DtGmshRegion( GEntity * gr );
+    static dtGmshFace * cast2DtGmshFace( GEntity * gf );
+    static dtGmshEdge * cast2DtGmshEdge( GEntity * ge );  
+    static dtGmshVertex * cast2DtGmshVertex( GEntity * gv );
     static dtPoint3 cast2DtPoint3( GVertex * gv );  
     static dtPoint3 cast2DtPoint3( MVertex * mv );
     void addIfVertexToGmshModel( dtPoint3 const & vertex, int * const tag );
@@ -60,12 +63,7 @@ namespace dtOO {
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
       std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
     );
-    void dtReadCGNS(
-    	const std::string & name, 
-		  std::vector< MVertex * > & vertices, std::vector< MElement * > & elements,
-      std::vector< dtGmshFace * >  & _faces, std::vector< dtGmshRegion * >  & _regions,
-      std::vector< std::string > & _faceLabels, std::vector< std::string > & _regionLabels
-    );
+    void dtReadCGNS(const std::string & name);
   };
 }
 #endif	/* DTGMSHMODEL_H */

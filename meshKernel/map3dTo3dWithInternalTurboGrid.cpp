@@ -25,12 +25,10 @@
 #include <gmsh/MElement.h>
 
 namespace dtOO {
-	map3dTo3dWithInternalTurboGrid::map3dTo3dWithInternalTurboGrid() {
-	  GmshInitialize();
+	map3dTo3dWithInternalTurboGrid::map3dTo3dWithInternalTurboGrid() : gmshBoundedVolume() {
 	}
 
 	map3dTo3dWithInternalTurboGrid::~map3dTo3dWithInternalTurboGrid() {
-	  GmshFinalize();
 	}
 	
   void map3dTo3dWithInternalTurboGrid::init( 
@@ -44,7 +42,7 @@ namespace dtOO {
     //
     // init boundedVolume
     //
-    boundedVolume::init(element, bC, cV, aF, aG, bV);
+    gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 
 		_meshFileName = getOption("mesh_file");		
 		_directory = qtXmlPrimitive::getAttributeStr("directory", element);
@@ -93,11 +91,6 @@ namespace dtOO {
 				_vv = dtXmlParserBase::getDtVector3(&ii, bC, cV, aF, aG);
 			}
 		}		
-		
-		//
-		// get compound and put pieces as regions to gmsh model
-		//
-		_gm.reset( new dtGmshModel() );			
 	}
 	
   void map3dTo3dWithInternalTurboGrid::makeGrid(void) {
@@ -194,32 +187,19 @@ namespace dtOO {
 		//
 		systemHandling::commandAndWait(_script);
 		
-//		dt__THROW_IF(_mb == NULL, makeGrid());
-//
-//		//
-//		// read cgns mesh of turboGrid
-//		//
-//		moab::ErrorCode rval = _mb->load_mesh(_meshFileName.c_str());
-//		dt__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
+		_gm->dtReadCGNS(_meshFileName.c_str());
 		
-		_gm->dtReadCGNS( 
-	    _meshFileName.c_str(), 
-			_vertices, _elements, 
-			_faces, _regions,
-			_faceLabels, _regionLabels
-    );
-
-    //
-		// force renumbering mesh in gmsh
 		//
-//    _gm->indexMeshVertices(true, 0, true);		
+		// update physical labels
+		//
+		gmshBoundedVolume::updatePhysicals();
 		
-		_gm->writeMSH("turboDieter.msh");
-
 		//
 		// delete turboGrid directory
 		//
-//		systemHandling::deleteDirectory("./"+_directory);		
+		if ( !optionTrue("keep_directory") ) {
+			systemHandling::deleteDirectory("./"+_directory);		
+		}
 		
 		//
 		// mark as meshed
@@ -232,49 +212,5 @@ namespace dtOO {
    */
 	void map3dTo3dWithInternalTurboGrid::makePreGrid(void) {
 		boundedVolume::notify();	
-	}
-  
-	vectorHandling< renderInterface * > map3dTo3dWithInternalTurboGrid::getRender( void ) const {	
-		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
-		
-		vectorHandling< renderInterface * > rV(1);
-		rV[0] = _gm->toUnstructured3dMesh();//_vertices, _elements);
-		return rV;
-	}	
-	
-	vectorHandling< renderInterface * > map3dTo3dWithInternalTurboGrid::getExtRender( void ) const {
-		vectorHandling< renderInterface * > rV;
-		std::string toRender = extRenderWhat();
-
-		if (toRender == _regionLabels[0]) {
-		  rV.push_back( _gm->toUnstructured3dMesh() );//_vertices, _elements) );
-		}
-    else {
-			for (int ii=0; ii<_faceLabels.size(); ii++) {
-				if (_faceLabels[ii] == toRender) {
-					std::vector< MElement * > quads;
-					for (int jj=0;jj<_faces[ii]->getNumMeshElements(); jj++) {
-						quads.push_back( _faces[ii]->getMeshElement(jj) );	
-					}
-					rV.push_back( dtGmshModel::toUnstructured3dSurfaceMesh(_vertices, quads) );
-				}
-			}
-		}
-		return rV;
-	}		
-	
-	std::vector< std::string > map3dTo3dWithInternalTurboGrid::getMeshTags( void ) const {
-		std::vector< std::string > tags;
-		dt__FORALL( _regionLabels, ii, tags.push_back(_regionLabels[ii]); );
-		dt__FORALL( _faceLabels, ii, tags.push_back(_faceLabels[ii]); );
-		return tags;
-	}
-	
-	dtGmshFace const * map3dTo3dWithInternalTurboGrid::getFace( std::string const & tag ) const {
-		dt__FORALL(_faceLabels, ii, 
-			if (_faceLabels[ii] == tag) {
-		    return _faces[ii];		
-			}
-	  );
 	}
 }

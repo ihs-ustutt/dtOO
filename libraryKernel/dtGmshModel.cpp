@@ -335,28 +335,28 @@ namespace dtOO {
     return gVertex;    
   }  
 
-  dtGmshRegion * dtGmshModel::cast2DtGmshRegion( GRegion * gr ){
+  dtGmshRegion * dtGmshModel::cast2DtGmshRegion( GEntity * gr ){
     dtGmshRegion * ret;
     dt__MUSTDOWNCAST(gr, dtGmshRegion, ret);
     
     return ret;
   }
   
-  dtGmshFace * dtGmshModel::cast2DtGmshFace( GFace * gf ){
+  dtGmshFace * dtGmshModel::cast2DtGmshFace( GEntity * gf ){
     dtGmshFace * ret;
     dt__MUSTDOWNCAST(gf, dtGmshFace, ret);
     
     return ret;
   }
   
-  dtGmshEdge * dtGmshModel::cast2DtGmshEdge( GEdge * ge ) {
+  dtGmshEdge * dtGmshModel::cast2DtGmshEdge( GEntity * ge ) {
     dtGmshEdge * ret;
     dt__MUSTDOWNCAST(ge, dtGmshEdge, ret);
     
     return ret;    
   }
   
-  dtGmshVertex * dtGmshModel::cast2DtGmshVertex( GVertex * gv ) {
+  dtGmshVertex * dtGmshModel::cast2DtGmshVertex( GEntity * gv ) {
     dtGmshVertex * ret;
     dt__MUSTDOWNCAST(gv, dtGmshVertex, ret);
     
@@ -610,15 +610,17 @@ namespace dtOO {
 	  std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
+		std::map< int, int > vLoc_num;
 		for( int ii=0; ii<vertices.size(); ii++ ) {
 			MVertex const * const mv = vertices[ii];				
-			pp[mv->getNum()-1]
+			pp[ii]
 			=
 			dtPoint3(
 				static_cast< float >(mv->x()), 
 				static_cast< float >(mv->y()), 
 				static_cast< float >(mv->z())
 			); 				
+			vLoc_num[mv->getNum()] = ii;
 		}
 
 		unstructured3dMesh * um = new unstructured3dMesh();		
@@ -635,10 +637,10 @@ namespace dtOO {
 				vectorHandling< int > vertsIndex(4);					
 				std::vector< MVertex * > verts;
 				mtet->getVertices(verts);        
-				vertsIndex[0] = verts[0]->getNum()-1;
-				vertsIndex[1] = verts[1]->getNum()-1;
-				vertsIndex[2] = verts[2]->getNum()-1;
-				vertsIndex[3] = verts[3]->getNum()-1;
+				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
+				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
+				vertsIndex[2] = vLoc_num[verts[2]->getNum()];
+				vertsIndex[3] = vLoc_num[verts[3]->getNum()];
 				um->addElement(vertsIndex);
 			}     
 			//
@@ -648,34 +650,36 @@ namespace dtOO {
 				vectorHandling< int > vertsIndex(8);
 				std::vector< MVertex * > verts;
 				mhex->getVertices(verts); 
-				vertsIndex[0] = verts[4]->getNum()-1;
-				vertsIndex[1] = verts[5]->getNum()-1;
-				vertsIndex[2] = verts[1]->getNum()-1;
-				vertsIndex[3] = verts[0]->getNum()-1;
-				vertsIndex[4] = verts[7]->getNum()-1;
-				vertsIndex[5] = verts[6]->getNum()-1;
-				vertsIndex[6] = verts[2]->getNum()-1;
-				vertsIndex[7] = verts[3]->getNum()-1;          
+				vertsIndex[0] = vLoc_num[verts[4]->getNum()];
+				vertsIndex[1] = vLoc_num[verts[5]->getNum()];
+				vertsIndex[2] = vLoc_num[verts[1]->getNum()];
+				vertsIndex[3] = vLoc_num[verts[0]->getNum()];
+				vertsIndex[4] = vLoc_num[verts[7]->getNum()];
+				vertsIndex[5] = vLoc_num[verts[6]->getNum()];
+				vertsIndex[6] = vLoc_num[verts[2]->getNum()];
+				vertsIndex[7] = vLoc_num[verts[3]->getNum()];
 				um->addElement(vertsIndex);
 			}  
 		}		
 		
 		return um;
 	}	
-
+	
   unstructured3dSurfaceMesh * dtGmshModel::toUnstructured3dSurfaceMesh( 
 	  std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
+		std::map< int, int > vLoc_num;
 		for( int ii=0; ii<vertices.size(); ii++ ) {
 			MVertex const * const mv = vertices[ii];				
-			pp[mv->getNum()-1]
+			pp[ii]
 			=
 			dtPoint3(
 				static_cast< float >(mv->x()), 
 				static_cast< float >(mv->y()), 
 				static_cast< float >(mv->z())
-			); 				
+			); 			
+			vLoc_num[mv->getNum()] = ii;
 		}
 
 		unstructured3dSurfaceMesh * um = new unstructured3dSurfaceMesh();		
@@ -692,10 +696,10 @@ namespace dtOO {
 				vectorHandling< int > vertsIndex(4);					
 				std::vector< MVertex * > verts;
 				mquad->getVertices(verts);        
-				vertsIndex[0] = verts[0]->getNum()-1;
-				vertsIndex[1] = verts[1]->getNum()-1;
-				vertsIndex[2] = verts[2]->getNum()-1;
-				vertsIndex[3] = verts[3]->getNum()-1;
+				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
+				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
+				vertsIndex[2] = vLoc_num[verts[2]->getNum()];
+				vertsIndex[3] = vLoc_num[verts[3]->getNum()];
 				um->addElement(vertsIndex);
 			}     
 		}		
@@ -703,15 +707,10 @@ namespace dtOO {
 		return um;		
 	}	
 	
-	void dtGmshModel::dtReadCGNS(
-	  const std::string &name,
-		std::vector< MVertex * > & vertices, std::vector< MElement * > & elements,
-	  std::vector< dtGmshFace * >  & _faces, std::vector< dtGmshRegion * >  & _regions,
-		std::vector< std::string > & _faceLabels, std::vector< std::string > & _regionLabels
-	) {
-			dt__THROW_IF(vertices.size() != 0, dtReadCGNS());
-			dt__THROW_IF(elements.size() != 0, dtReadCGNS());
-		
+	void dtGmshModel::dtReadCGNS(const std::string &name) {		
+			std::vector< dtGmshFace * >  faces;
+			std::vector< dtGmshRegion * >  regions;
+							
 			typedef std::map<int, MVertex*> vertexMap_t;
 			typedef std::map<int, MElement*> elementMap_t;		
 			
@@ -913,18 +912,17 @@ namespace dtOO {
 						 *   0-----------1                     0-----------1           
 						 */									
 						case QUAD_4:
-							_faceLabels.push_back( std::string(secName) );
 							fNum++;
-							_faces.push_back( new dtGmshFace(this, fNum) );
+							faces.push_back( new dtGmshFace(this, fNum) );
 							nElements = elementDataSize/4;
 							//
 							// create elements
 							//
 							tmpC = 0;
-							_faces.back()->addPhysicalEntity(
+							faces.back()->addPhysicalEntity(
 							  setPhysicalName(secName, 2, 0)
 							);
-							this->add( _faces.back() );
+							this->add( faces.back() );
 							for (int iEl = bounds[0]; iEl<=bounds[1]; iEl++) {
 								eNum++;								
 								int counter = (tmpC)*4;
@@ -938,7 +936,7 @@ namespace dtOO {
 								minElement = std::min(minElement, eNum);
 								maxElement = std::max(maxElement, eNum);
 								elementMap[eNum] = me;
-								_faces.back()->addQuadrangle(me);
+								faces.back()->addQuadrangle(me);
 							}
 							break;
 						/*         gmsh                           cgns
@@ -956,13 +954,12 @@ namespace dtOO {
 						 *       4----------5                   4----------1
 						 */													
 						case HEXA_8:
-							_regionLabels.push_back( std::string(secName) );
 							rNum++;
-							_regions.push_back( new dtGmshRegion(this, rNum) );
-							_regions.back()->addPhysicalEntity(
+							regions.push_back( new dtGmshRegion(this, rNum) );
+							regions.back()->addPhysicalEntity(
 							  setPhysicalName(secName, 3, 0)
 							);							
-							this->add( _regions.back() );
+							this->add( regions.back() );
 							nElements = elementDataSize/4;							
 							nElements = elementDataSize/8;
 							//
@@ -986,7 +983,7 @@ namespace dtOO {
 								minElement = std::min(minElement, eNum);
 								maxElement = std::max(maxElement, eNum);
 								elementMap[eNum] = me;
-								_regions.back()->addHexahedron(me);
+								regions.back()->addHexahedron(me);
 							}
 							break;
 						default:
@@ -1003,13 +1000,8 @@ namespace dtOO {
 		
 		dt__FORALLITER(vertexMap_t, vertexMap, it) {
 			MVertex * mv = it->second;
-			mv->setEntity(_regions.back());
-			_regions.back()->addMeshVertex(mv);
+			mv->setEntity(regions.back());
+			regions.back()->addMeshVertex(mv);
 		}
-		
-    vertices.resize(vNum);
-		elements.resize(eNum);
-		for (int ii=1; ii<=vNum; ii++) vertices[ii-1] = vertexMap[ii];
-		for (int ii=1; ii<=eNum; ii++) elements[ii-1] = elementMap[ii];
 	}	
 }

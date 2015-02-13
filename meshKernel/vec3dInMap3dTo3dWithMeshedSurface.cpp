@@ -35,12 +35,10 @@
 #include <geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h>
 
 namespace dtOO {
-	vec3dInMap3dTo3dWithMeshedSurface::vec3dInMap3dTo3dWithMeshedSurface() {
-	  GmshInitialize();
+	vec3dInMap3dTo3dWithMeshedSurface::vec3dInMap3dTo3dWithMeshedSurface() : gmshBoundedVolume() {
 	}
 
 	vec3dInMap3dTo3dWithMeshedSurface::~vec3dInMap3dTo3dWithMeshedSurface() {
-		GmshFinalize();
 	}
 	
   void vec3dInMap3dTo3dWithMeshedSurface::init( 
@@ -54,7 +52,7 @@ namespace dtOO {
     //
     // init boundedVolume
     //
-    boundedVolume::init(element, bC, cV, aF, aG, bV);
+    gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 		
     //
 		// region
@@ -82,11 +80,6 @@ namespace dtOO {
 		//
     _meshedBV = bV->get(label);
     _meshedFaceTag = qtXmlPrimitive::getAttributeStr("reconstruct", wElement);
-		
-		//
-		// get compound and put pieces as regions to gmsh model
-		//
-		_gm.reset( new dtGmshModel() );		
 	}
 	
   void vec3dInMap3dTo3dWithMeshedSurface::makeGrid(void) {				
@@ -285,57 +278,44 @@ namespace dtOO {
     _gm->indexMeshVertices(true, 0, true);
 		
 		//
-		// mark as meshed
+		// update physical labels
 		//
-		boundedVolume::setMeshed();		
+		gmshBoundedVolume::updatePhysicals();
 		
 		//
-		// write out
+		// mark as meshed
 		//
-		_gm->writeMSH(getLabel()+".msh");
+		boundedVolume::setMeshed();
 	}
   
 	void vec3dInMap3dTo3dWithMeshedSurface::makePreGrid(void) {
-//		boundedVolume::notify();
 	}
-  
-	vectorHandling< renderInterface * > vec3dInMap3dTo3dWithMeshedSurface::getRender( void ) const {
-		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
-		vectorHandling< renderInterface * > rV(1);
-		rV[0] = _gm->toUnstructured3dMesh();
-		
-		return rV;
-	}	
 
-	vectorHandling< renderInterface * > vec3dInMap3dTo3dWithMeshedSurface::getExtRender( void ) const {
-		std::string toRender = extRenderWhat();
-
-		if (toRender == "internal") {
-  		vectorHandling< renderInterface * > rV;			
-		  rV.push_back( _gm->toUnstructured3dMesh() );
-			return rV;
-		}
-    else if (toRender == "reconstructedFace") {
-		  return _recFace->getRender();
-		}		
-    else if (toRender == "reconstructedVolume") {
-		  return _recVol->getRender();
-		}
-		else {
-			dt__THROW(getExtRender(), << logMe::dtFormat("Unknown tag: %s") % toRender );
-		}
-//		return rV;
-	}		
-	
-	std::vector< std::string > vec3dInMap3dTo3dWithMeshedSurface::getMeshTags( void ) const {
-		std::vector< std::string > tags;
-		tags.push_back("internal");
-    tags.push_back("reconstructedFace");
-		tags.push_back("reconstructedVolume");
-		return tags;
-	}
-		
-	dtGmshModel * vec3dInMap3dTo3dWithMeshedSurface::getModel( void ) const {
-		return _gm.get();
-	}
+//	vectorHandling< renderInterface * > vec3dInMap3dTo3dWithMeshedSurface::getExtRender( void ) const {
+//		std::string toRender = extRenderWhat();
+//
+//		if (toRender == "internal") {
+//  		vectorHandling< renderInterface * > rV;			
+//		  rV.push_back( _gm->toUnstructured3dMesh() );
+//			return rV;
+//		}
+//    else if (toRender == "reconstructedFace") {
+//		  return _recFace->getRender();
+//		}		
+//    else if (toRender == "reconstructedVolume") {
+//		  return _recVol->getRender();
+//		}
+//		else {
+//			dt__THROW(getExtRender(), << logMe::dtFormat("Unknown tag: %s") % toRender );
+//		}
+////		return rV;
+//	}		
+//	
+//	std::vector< std::string > vec3dInMap3dTo3dWithMeshedSurface::getMeshTags( void ) const {
+//		std::vector< std::string > tags;
+//		tags.push_back("internal");
+//    tags.push_back("reconstructedFace");
+//		tags.push_back("reconstructedVolume");
+//		return tags;
+//	}	
 }
