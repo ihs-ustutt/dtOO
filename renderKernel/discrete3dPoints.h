@@ -13,6 +13,7 @@ namespace dtOO {
     discrete3dPoints();
     discrete3dPoints(vectorHandling< dtPoint3 > const & pp);
     virtual ~discrete3dPoints();
+    void addPoints( vectorHandling< dtPoint3 > const & pp );    
     vectorHandling< dtPoint3 > const & refP3( void ) const;
   private:
     vectorHandling< dtPoint3 > _p3;
