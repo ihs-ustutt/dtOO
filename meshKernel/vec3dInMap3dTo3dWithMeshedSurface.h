@@ -27,12 +27,15 @@ namespace dtOO {
     );    
     virtual void makeGrid(void);
     virtual void makePreGrid(void);
+	  vectorHandling< renderInterface * > getExtRender( void ) const;
+	  virtual std::vector< std::string > getMeshTags( void ) const;
   private:
     dt__pH(map3dTo3d) _m3d;    
     boundedVolume const * _meshedBV;
     std::string _meshedFaceTag;
     dt__pH(map3dTo3d) _recVol;
     dt__pH(analyticGeometry) _recFace;
+    dt__pH(analyticGeometry) _couplingBox;
     
   };
 }

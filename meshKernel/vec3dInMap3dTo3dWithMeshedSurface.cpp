@@ -25,6 +25,7 @@
 #include <functionHeaven/vec3dSurfaceTwoD.h>
 #include <functionHeaven/vec3dCurveOneD.h>
 #include <functionHeaven/vec3dTransVolThreeD.h>
+#include <functionHeaven/vec3dBoxThreeD.h>
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
@@ -114,7 +115,8 @@ namespace dtOO {
 		//
 		int ii = 0;
 		int jj = 0;
-		dt__pVH(dtCurve) dtC(mv.size(0));
+		dt__pVH(dtCurve) dtC;//(mv.size(0));
+		std::vector< dtPoint3 > ultraBoxPoints;//(mv.size(0));
 		for (
 			twoDArrayHandling< MVertex * >::iterator0 it0 = mv.begin();
 			it0 != mv.end();
@@ -139,6 +141,8 @@ namespace dtOO {
 			}
 			
 			std::pair< dtPoint3, dtPoint3 > bb = dtLinearAlgebra::boundingBox(mvUVW[ii]);
+			ultraBoxPoints.push_back(bb.first);
+			ultraBoxPoints.push_back(bb.second);
 			float eps = staticPropertiesHandler::getInstance()->getOptionFloat("uv_resolution");
 			if ( dtLinearAlgebra::isStraightLine(bb, eps) ) {
 				dtC.push_back( 
@@ -231,6 +235,23 @@ namespace dtOO {
 		_recVol.reset( new vec3dThreeDInMap3dTo3d(v3d3d.get(), _m3d.get()) );
 		
 		//
+		// create couplingBox
+		//
+		std::pair< dtPoint3, dtPoint3 > ultraBox = dtLinearAlgebra::boundingBox(ultraBoxPoints);
+		DTINFOWF(
+			makeGrid(),
+			<< logMe::dtFormat("ultraBox(%f, %f, %f : %f, %f, %f)")
+						% ultraBox.first.x() % ultraBox.first.y() % ultraBox.first.z()
+						% ultraBox.second.x() % ultraBox.second.y() % ultraBox.second.z()
+		);
+		_couplingBox.reset(
+		  new vec3dThreeDInMap3dTo3d(
+		    dt__pH(vec3dThreeD)(new vec3dBoxThreeD(ultraBox.first, ultraBox.second) ).get(),
+				_m3d.get()
+		  ) 
+		);
+		
+		//
 		// free memory
 		//
 		dtS.destroy();
@@ -291,31 +312,36 @@ namespace dtOO {
 	void vec3dInMap3dTo3dWithMeshedSurface::makePreGrid(void) {
 	}
 
-//	vectorHandling< renderInterface * > vec3dInMap3dTo3dWithMeshedSurface::getExtRender( void ) const {
-//		std::string toRender = extRenderWhat();
-//
-//		if (toRender == "internal") {
-//  		vectorHandling< renderInterface * > rV;			
-//		  rV.push_back( _gm->toUnstructured3dMesh() );
-//			return rV;
-//		}
-//    else if (toRender == "reconstructedFace") {
-//		  return _recFace->getRender();
-//		}		
-//    else if (toRender == "reconstructedVolume") {
-//		  return _recVol->getRender();
-//		}
-//		else {
-//			dt__THROW(getExtRender(), << logMe::dtFormat("Unknown tag: %s") % toRender );
-//		}
-////		return rV;
-//	}		
-//	
-//	std::vector< std::string > vec3dInMap3dTo3dWithMeshedSurface::getMeshTags( void ) const {
-//		std::vector< std::string > tags;
-//		tags.push_back("internal");
-//    tags.push_back("reconstructedFace");
-//		tags.push_back("reconstructedVolume");
-//		return tags;
-//	}	
+	vectorHandling< renderInterface * > vec3dInMap3dTo3dWithMeshedSurface::getExtRender( void ) const {
+		std::string toRender = extRenderWhat();
+
+		//
+		// give objects according to extent tags if necessary
+		//
+    if (toRender == "reconstructedFace") {
+		  return _recFace->getRender();
+		}		
+    else if (toRender == "reconstructedVolume") {
+		  return _recVol->getRender();
+		}
+    else if (toRender == "couplingBox") {
+		  return _couplingBox->getRender();
+		}
+		else {	
+		  return gmshBoundedVolume::getExtRender();
+		}
+	}		
+	
+	std::vector< std::string > vec3dInMap3dTo3dWithMeshedSurface::getMeshTags( void ) const {
+		std::vector< std::string > tags = gmshBoundedVolume::getMeshTags();
+
+		//
+		// extent tags
+		//		
+    tags.push_back("reconstructedFace");
+		tags.push_back("reconstructedVolume");
+		tags.push_back("couplingBox");
+
+		return tags;
+	}	
 }
