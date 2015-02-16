@@ -53,6 +53,7 @@ SET(HEADERS
   functionHeaven/vec3dThreeD.h
   functionHeaven/vec3dTransVolThreeD.h
   functionHeaven/vec3dMuParserThreeD.h
+  functionHeaven/vec3dBoxThreeD.h
   functionHeaven/analyticFunctionCompound.h
   functionHeaven/analyticFunctionTransformed.h
   dtTransformerHeaven/thicknessIncreasing.h
@@ -133,6 +134,7 @@ SET(SOURCES
   functionHeaven/vec3dThreeD.cpp
   functionHeaven/vec3dTransVolThreeD.cpp
   functionHeaven/vec3dMuParserThreeD.cpp
+  functionHeaven/vec3dBoxThreeD.cpp
   dtTransformerHeaven/thicknessIncreasing.cpp
   dtTransformerHeaven/biThicknessIncreasing.cpp
   dtTransformerHeaven/dtTransformer.cpp

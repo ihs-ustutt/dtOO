@@ -22,8 +22,12 @@ namespace dtOO {
   typedef CGAL::Aff_transformation_2< dtKernel > dtAffTransformation2;
   typedef CGAL::Linear_algebraCd< dtFt >::Matrix dtMatrix;
   typedef CGAL::Linear_algebraCd< dtFt >::Vector dtMatrixVector;
-
+  
   class dtLinearAlgebra {
+  public:
+    static dtVector3 unitNormal0;
+    static dtVector3 unitNormal1;
+    static dtVector3 unitNormal2;
   private:
     dtLinearAlgebra();     
   public:

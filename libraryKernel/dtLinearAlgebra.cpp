@@ -10,6 +10,10 @@
 #include <TDecompSVD.h>
 
 namespace dtOO {
+	dtVector3 dtLinearAlgebra::unitNormal0 = dtVector3(1,0,0);
+	dtVector3 dtLinearAlgebra::unitNormal1 = dtVector3(0,1,0);
+	dtVector3 dtLinearAlgebra::unitNormal2 = dtVector3(0,0,1);
+	
 	dtLinearAlgebra::dtLinearAlgebra() {
 
 	}
