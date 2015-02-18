@@ -42,6 +42,8 @@ namespace dtOO {
     static bool isEqual( GFace const * const gf0, GFace const * const gf1 );
     twoDArrayHandling< MVertex * > reconstructEdgesFromSurfaceMesh( void ) const;
   private:
+    static bool sortPredicate(MVertex const * d1, MVertex const * d2);
+  private:
     dt__pH(map2dTo3d) _mm;
   };
 }

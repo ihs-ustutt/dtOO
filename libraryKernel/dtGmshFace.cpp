@@ -226,6 +226,10 @@ namespace dtOO {
 		}		
 	}
 	
+	bool dtGmshFace::sortPredicate(MVertex const * d1, MVertex const * d2) {
+		return d1->getNum() < d2->getNum();
+	}
+	
 	twoDArrayHandling< MVertex * > dtGmshFace::reconstructEdgesFromSurfaceMesh( void ) const {
     std::map< MVertex *, std::vector< MElement * >  > e_v;
 		std::map< MVertex *, std::vector< MElement * >  >::iterator e_vIt;
@@ -259,29 +263,22 @@ namespace dtOO {
 //		DTINFOWF(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(e_v));
 //		DTINFOWF(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(v_e));
 		
+		std::vector< MVertex * > startVerts;
+		for (e_vIt = e_v.begin(); e_vIt != e_v.end(); ++e_vIt) {
+			if (e_vIt->second.size() == 1) {
+        startVerts.push_back(e_vIt->first);
+			}
+		}
+		std::sort(startVerts.begin(), startVerts.end(), dtGmshFace::sortPredicate);
+		
 		twoDArrayHandling< MVertex * > recEdges;
 		
-		for (int counter=0; counter<99; counter++) {
+		dt__FORALLINDEX(startVerts, counter) {
 			//
-			// look for a start vertex
+			// set start vertex
 			//
-			for (e_vIt = e_v.begin(); e_vIt != e_v.end(); ++e_vIt) {
-				if (e_vIt->second.size() == 1) {
-//					DTINFOWF(
-//						reconstructEdgesFromSurfaceMesh(), 
-//						<< logMe::dtFormat("Start vertex %d.") % e_vIt->first->getNum()
-//					);
-					break;
-				}
-			}
+			e_vIt = e_v.find(startVerts[counter]); 
 			
-			//
-			// cancel reconstruction if there is no start vertex left
-			//			
-			if (e_vIt == e_v.end()) {
-				break;
-			}
-
 			//
 			// initialize reconstructed edge vector
 			//
