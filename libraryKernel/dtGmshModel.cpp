@@ -1004,4 +1004,9 @@ namespace dtOO {
 			regions.back()->addMeshVertex(mv);
 		}
 	}	
+
+	void dtGmshModel::clearModel( void ) {
+	  this->destroy(true);
+		this->deleteMesh();
+	}	
 }

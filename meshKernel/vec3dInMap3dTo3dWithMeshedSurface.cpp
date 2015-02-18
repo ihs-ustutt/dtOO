@@ -88,6 +88,7 @@ namespace dtOO {
 		// set current model
 		//
 		GModel::setCurrent(_gm.get());
+		_gm->clearModel();
 		
     //
     // set options

@@ -98,6 +98,7 @@ namespace dtOO {
 		// set current model
 		//
 		GModel::setCurrent(_gm.get());
+    _gm->clearModel();
 		
 		systemHandling::createDirectory(_directory);
 		std::fstream of;

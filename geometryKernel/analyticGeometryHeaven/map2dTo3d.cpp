@@ -563,12 +563,12 @@ namespace dtOO {
 
     umin = static_cast<double>(getUMin());
     umax = static_cast<double>(getUMax());
-		double udiff = 0.;//umax - umin;
+		double udiff = umax - umin;
 		umax = umax + 0.1*udiff;
 		umin = umin - 0.1*udiff;		
     vmin = static_cast<double>(getVMin());
     vmax = static_cast<double>(getVMax());
-		double vdiff = 0.;//vmax - vmin;
+		double vdiff = vmax - vmin;
 		vmax = vmax + 0.1*vdiff;
 		vmin = vmin - 0.1*vdiff;		
     const double tol = Precision * (SQU(umax - umin) + SQU(vmax-vmin));

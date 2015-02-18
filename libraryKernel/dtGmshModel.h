@@ -64,6 +64,7 @@ namespace dtOO {
       std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
     );
     void dtReadCGNS(const std::string & name);
+    void clearModel( void );
   };
 }
 #endif	/* DTGMSHMODEL_H */
