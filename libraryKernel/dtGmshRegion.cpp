@@ -52,4 +52,18 @@ namespace dtOO {
 			(*f_it)->meshAttributes.recombine = 1;
 		}
   }
+	
+  void dtGmshRegion::meshUnstructured( void ) {
+    this->meshAttributes.method = MESH_UNSTRUCTURED;
+    this->meshAttributes.recombine3D = 0;
+		std::list<GFace*> fl = faces();
+		for (std::list<GFace*>::iterator f_it = fl.begin(); f_it != fl.end(); ++f_it) {
+			std::list<GEdge*> el = (*f_it)->edges();
+			for (std::list<GEdge*>::iterator e_it = el.begin(); e_it != el.end(); ++e_it) {
+				(*e_it)->meshAttributes.method = MESH_UNSTRUCTURED;
+			}
+			(*f_it)->meshAttributes.method = MESH_UNSTRUCTURED;
+			(*f_it)->meshAttributes.recombine = 0;
+		}
+  }	
 }

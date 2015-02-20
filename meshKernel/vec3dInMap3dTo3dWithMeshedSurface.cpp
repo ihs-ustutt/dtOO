@@ -34,6 +34,7 @@
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h>
 #include <geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.h>
 
 namespace dtOO {
 	vec3dInMap3dTo3dWithMeshedSurface::vec3dInMap3dTo3dWithMeshedSurface() : gmshBoundedVolume() {
@@ -98,6 +99,13 @@ namespace dtOO {
       GmshSetOption(oG[ii].first[0], oG[ii].first[1], oG[ii].second);
     }
 		
+    //
+    // parse gmsh file if option exists
+    //
+    if ( hasOption("gmshMeshFile") ) {
+      ParseFile( getOption("gmshMeshFile"), true, true );
+    }
+		
 		dt__WARN_IFWMAS(
 			!_meshedBV->isMeshed(), 
 			return;, 
@@ -152,7 +160,9 @@ namespace dtOO {
 				);
 			}
 			else {
-			  dtC.push_back( bSplineCurve_pointConstructOCC(mvUVW[ii], 1).result() );
+			  dtC.push_back( 
+				  bSplineCurve_pointInterpolateConstructOCC(mvUVW[ii]).result()
+				);
 			}
 			ii++;
 		}
@@ -274,11 +284,6 @@ namespace dtOO {
     // very small elements
     //
     SetBoundingBox();
-
-    //
-		// destroy old mesh
-		//
-		_gm->deleteMesh();
 		
 		//
 		// reset vertex and element numbering
@@ -314,6 +319,8 @@ namespace dtOO {
 	}
 
 	vectorHandling< renderInterface * > vec3dInMap3dTo3dWithMeshedSurface::getExtRender( void ) const {
+		GModel::setCurrent(_gm.get());
+		
 		std::string toRender = extRenderWhat();
 
 		//
