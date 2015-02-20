@@ -18,10 +18,12 @@ namespace dtOO {
     vectorHandling< dtPoint3 > const & refP3( void ) const;    
     vectorHandling< vectorHandling< int > > const & refEl( void ) const;
     int getNQuads( void ) const;
+    int getNTris( void ) const;
   private:
     vectorHandling< dtPoint3 > _pp;
     vectorHandling< vectorHandling< int > > _el;
     int _nQuads;
+    int _nTris;
   };
 }
 #endif	/* UNSTRUCTURED3DSURFACEMESH_H */

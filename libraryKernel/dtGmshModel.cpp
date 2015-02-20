@@ -27,6 +27,7 @@
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MQuadrangle.h>
+#include <gmsh/MTriangle.h>
 #include <cgnslib.h>
 
 #define __caCThis \
@@ -143,7 +144,7 @@ namespace dtOO {
 		  gf.back() = getDtGmshFaceByTag(alreadyInModel(gf.back()));
 			fori.back() = -1;
 		}
-		else {		
+		else {
 			this->add( gf.back() );
 			gf.back()->setMap2dTo3d(
 				vol->segmentPercent(p0, p1, p2, p3)
@@ -477,7 +478,7 @@ namespace dtOO {
 		//
 		// set current model
 		// 
-		GModel::setCurrent(__caCThis);
+		DTINFOWF( toUnstructured3dMesh(), << DTLOGEVAL(GModel::setCurrent(__caCThis)) );
 			
 		//
 		// get all entities
@@ -485,17 +486,21 @@ namespace dtOO {
 		std::vector< GEntity * > ent;
 		this->getEntities(ent);
 		vectorHandling< dtPoint3 > pp(__caCThis->getNumMeshVertices());		
+		std::map< int, int > vLoc_num;
 		
+		int counter = 0;
 		for( int ii=0; ii<ent.size(); ii++ ) {
       for( int jj=0; jj<ent[ii]->getNumMeshVertices(); jj++ ) {
 				MVertex const * const mv = ent[ii]->getMeshVertex(jj);				
-				pp[mv->getNum()-1]
+				pp[counter]
 				=
 				dtPoint3(
 					static_cast< float >(mv->x()), 
 					static_cast< float >(mv->y()), 
 					static_cast< float >(mv->z())
 				); 				
+				vLoc_num[mv->getNum()] = counter;
+				counter++;
 			}
 		}	
     
@@ -512,27 +517,27 @@ namespace dtOO {
 			GRegion * gr = dynamic_cast< GRegion * >(ent[ii]);
 
       if (gv) {
-				unsigned nEl = ent[ii]->getNumMeshElements();
+				unsigned nEl = gv->getNumMeshElements();
 				int nElTot = nEl;
 				DTINFOWF(toCoDoUnstructuredGrid(),
 					<< "GEntity[" << ii << "]<GVertex>:" << LOGDEL
-					<< "points = " << nEl << LOGDEL
+					<< "points = " << nElTot << LOGDEL
 					<< DTLOGEVAL(nElTot)
 				);		
 			}		
       else if (ge) {
-				unsigned nEl = ent[ii]->getNumMeshElements();
+				unsigned nEl = ge->getNumMeshElements();
 				int nElTot = nEl;
 				DTINFOWF(toCoDoUnstructuredGrid(),
 					<< "GEntity[" << ii << "]<GEdge>:" << LOGDEL
-					<< "lines = " << nEl << LOGDEL
+					<< "lines = " << nElTot << LOGDEL
 					<< DTLOGEVAL(nElTot)
 				);		
 			}					
       else if (gf) {
 				std::vector< unsigned > nEl(3,0);
-				ent[ii]->getNumMeshElements(&(nEl[0]));
-				int nElTot = nEl[0] + nEl[1] + nEl[2] + nEl[3] + nEl[4];
+				gf->getNumMeshElements(&(nEl[0]));
+				int nElTot = nEl[0] + nEl[1] + nEl[2];
 				DTINFOWF(toCoDoUnstructuredGrid(),
 					<< "GEntity[" << ii << "]<GFace>:" << LOGDEL
 					<< "triangles = " << nEl[0] << LOGDEL
@@ -577,10 +582,10 @@ namespace dtOO {
 				  vectorHandling< int > vertsIndex(4);					
           std::vector< MVertex * > verts;
           mtet->getVertices(verts);        
-          vertsIndex[0] = verts[0]->getNum()-1;
-          vertsIndex[1] = verts[1]->getNum()-1;
-          vertsIndex[2] = verts[2]->getNum()-1;
-          vertsIndex[3] = verts[3]->getNum()-1;
+          vertsIndex[0] = vLoc_num[verts[0]->getNum()];
+          vertsIndex[1] = vLoc_num[verts[1]->getNum()];
+          vertsIndex[2] = vLoc_num[verts[2]->getNum()];
+          vertsIndex[3] = vLoc_num[verts[3]->getNum()];
 					um->addElement(vertsIndex);
         }     
         //
@@ -590,14 +595,14 @@ namespace dtOO {
 					vectorHandling< int > vertsIndex(8);
           std::vector< MVertex * > verts;
 					mhex->getVertices(verts); 
-          vertsIndex[0] = verts[4]->getNum()-1;
-          vertsIndex[1] = verts[5]->getNum()-1;
-          vertsIndex[2] = verts[1]->getNum()-1;
-          vertsIndex[3] = verts[0]->getNum()-1;
-          vertsIndex[4] = verts[7]->getNum()-1;
-          vertsIndex[5] = verts[6]->getNum()-1;
-          vertsIndex[6] = verts[2]->getNum()-1;
-          vertsIndex[7] = verts[3]->getNum()-1;          
+          vertsIndex[0] = vLoc_num[verts[4]->getNum()];
+          vertsIndex[1] = vLoc_num[verts[5]->getNum()];
+          vertsIndex[2] = vLoc_num[verts[1]->getNum()];
+          vertsIndex[3] = vLoc_num[verts[0]->getNum()];
+          vertsIndex[4] = vLoc_num[verts[7]->getNum()];
+          vertsIndex[5] = vLoc_num[verts[6]->getNum()];
+          vertsIndex[6] = vLoc_num[verts[2]->getNum()];
+          vertsIndex[7] = vLoc_num[verts[3]->getNum()];          
 					um->addElement(vertsIndex);
         }  
       }
@@ -688,6 +693,7 @@ namespace dtOO {
 		for( int ii=0; ii<elements.size(); ii++ ) {
 			MElement * me = elements[ii];
 			MQuadrangle * mquad = dynamic_cast< MQuadrangle * >(me);
+			MTriangle * mtri = dynamic_cast< MTriangle * >(me);
 			
 			//
 			// quadrangle
@@ -701,7 +707,16 @@ namespace dtOO {
 				vertsIndex[2] = vLoc_num[verts[2]->getNum()];
 				vertsIndex[3] = vLoc_num[verts[3]->getNum()];
 				um->addElement(vertsIndex);
-			}     
+			}    
+			else if ( mtri ) {
+				vectorHandling< int > vertsIndex(3);					
+				std::vector< MVertex * > verts;
+				mtri->getVertices(verts);        
+				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
+				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
+				vertsIndex[2] = vLoc_num[verts[2]->getNum()];
+				um->addElement(vertsIndex);
+			}     				
 		}		
 		
 		return um;		

@@ -593,13 +593,13 @@ namespace dtOO {
 	}
 	
   covise::coDoSet * coDoSetHandling::unstructured3dMeshToCoDoSet( unstructured3dMesh const * const rI, char const * str ) {
-    int nElemTot = rI->getNHex();// + rI->getNTet();
+    int nElemTot = rI->getNHex() + rI->getNTet();
 		std::string objName = std::string(str)+"_uns3dGrid";
 		ptrHandling< covise::coDoUnstructuredGrid > cug( 
       new covise::coDoUnstructuredGrid( 
         objName.c_str(),
         nElemTot, 
-          0*rI->getNTet()//4 //tetrahedra
+          4*rI->getNTet() //tetrahedra
         + 8*rI->getNHex() //hexahedra
         + 9*0//9 //prisms
         + 5*0//5 //pyramids
@@ -673,13 +673,14 @@ namespace dtOO {
 	}
 
   covise::coDoSet * coDoSetHandling::unstructured3dSurfaceMeshToCoDoSet( unstructured3dSurfaceMesh const * const rI, char const * str ) {
-    int nElemTot = rI->getNQuads();
+    int nElemTot = rI->getNQuads() + rI->getNTris();
 		std::string objName = std::string(str)+"_uns3dSGrid";
 		ptrHandling< covise::coDoUnstructuredGrid > cug( 
       new covise::coDoUnstructuredGrid( 
         objName.c_str(),
         nElemTot, 
-        4*rI->getNQuads(), //hexahedra
+        4*rI->getNQuads() // quadrangle
+				+ 3*rI->getNTris(), // triangles
         rI->refP3().size(), 
         1 
       )
@@ -705,7 +706,7 @@ namespace dtOO {
 
 		for( int ii=0; ii<rI->refEl().size(); ii++ ) {
 			//
-			// tetrahedron
+			// quadrangle
 			//				
 			if ( rI->refEl()[ii].size() == 4 ) {
 				elem[cellC] = connC;
@@ -717,6 +718,18 @@ namespace dtOO {
 				connC = connC + 4;
 				cellC++;      
 			}      
+			//
+			// triangle
+			//
+			else if ( rI->refEl()[ii].size() == 3 ) {
+				elem[cellC] = connC;
+				tl[cellC] = TYPE_TRIANGLE;      
+				conn[elem[cellC]+0] = rI->refEl()[ii][0];
+				conn[elem[cellC]+1] = rI->refEl()[ii][1];
+				conn[elem[cellC]+2] = rI->refEl()[ii][2];
+				connC = connC + 3;
+				cellC++;      
+			}      			
 			else {
 				dt__THROW(
 					unstructured3dSurfaceMeshToCoDoSet(),

@@ -273,11 +273,11 @@ namespace dtOO {
 		
 		twoDArrayHandling< MVertex * > recEdges;
 		
-		dt__FORALLINDEX(startVerts, counter) {
+		while ( !startVerts.empty() ) {
 			//
 			// set start vertex
 			//
-			e_vIt = e_v.find(startVerts[counter]); 
+			e_vIt = e_v.find(startVerts.back()); 
 			
 			//
 			// initialize reconstructed edge vector
@@ -353,11 +353,13 @@ namespace dtOO {
 			if (recEdge.size() == 1) {
 				e_v[recEdge[0]].clear();
 				recEdges.erase( dt__PRIOR(recEdges.end()) );
+				startVerts.erase( dt__PRIOR(startVerts.end()) );
 			}			
 			if (recEdge.size() == 2) {
 				dt__THROW_IF(recEdge[0]!=recEdge[1], reconstructEdgesFromSurfaceMesh());
 				e_v[recEdge[0]].clear();
 				recEdges.erase( dt__PRIOR(recEdges.end()) );
+				startVerts.erase( dt__PRIOR(startVerts.end()));
 			}
 		}
 

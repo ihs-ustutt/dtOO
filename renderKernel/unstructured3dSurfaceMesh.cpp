@@ -5,6 +5,7 @@
 namespace dtOO {
 	unstructured3dSurfaceMesh::unstructured3dSurfaceMesh() {
     _nQuads = 0;
+		_nTris = 0;
 	}
 
 	unstructured3dSurfaceMesh::~unstructured3dSurfaceMesh() {
@@ -23,9 +24,12 @@ namespace dtOO {
 		if (el.size() == 4) {
 			_nQuads++;
 		}
-//		else if (el.size() == 8) {
-//			_nHex++;
-//		}		
+		else if (el.size() == 3) {
+			_nTris++;
+		}
+		else {
+			dt__THROW(addElement, << DTLOGEVAL(el.size()) );
+		}
 	}
 	
 	vectorHandling< dtPoint3 > const & unstructured3dSurfaceMesh::refP3( void ) const {
@@ -39,4 +43,8 @@ namespace dtOO {
   int unstructured3dSurfaceMesh::getNQuads( void ) const {
   	return _nQuads;
   }
+	
+  int unstructured3dSurfaceMesh::getNTris( void ) const {
+  	return _nTris;
+  }	
 }

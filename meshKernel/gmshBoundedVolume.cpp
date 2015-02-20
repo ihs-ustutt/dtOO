@@ -46,11 +46,15 @@ namespace dtOO {
 		//
 		// get compound and put pieces as regions to gmsh model
 		//
-		_gm.reset( new dtGmshModel() );			
+		_gm.reset( new dtGmshModel() );
+
+    GModel::setCurrent(_gm.get());		
 	}	
 	
-	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( void ) const {	
+	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( void ) const {
 		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
+		
+		GModel::setCurrent(_gm.get());
 		
 		vectorHandling< renderInterface * > rV(1);
 		rV[0] = _gm->toUnstructured3dMesh();//_vertices, _elements);
@@ -58,6 +62,8 @@ namespace dtOO {
 	}	
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getExtRender( void ) const {
+		GModel::setCurrent(_gm.get());
+		
 		vectorHandling< renderInterface * > rV;
 		std::string toRender = extRenderWhat();
 
@@ -114,6 +120,8 @@ namespace dtOO {
 	}
 	
 	dtGmshFace const * gmshBoundedVolume::getFace( std::string const & tag ) const {
+		GModel::setCurrent(_gm.get());
+		
 		dt__FORALL(_physLabels[2], jj,
 			if (_physLabels[2][jj] == tag) {
 				int pNum = _gm->getPhysicalNumber(2, tag);
@@ -139,6 +147,8 @@ namespace dtOO {
 	}
 	
 	void gmshBoundedVolume::updatePhysicals( void ) {
+		GModel::setCurrent(_gm.get());
+		
 		dtGmshModel::intGEntityVMap groups;		
 		_physLabels.resize(4);
 		for (int ii=0; ii<4; ii++) {
