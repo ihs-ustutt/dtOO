@@ -272,7 +272,7 @@ namespace dtOO {
 		// add reconstructed volume
 		//
 		_gm->addRegionToGmshModel( _recVol.get() );
-		_gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshTransfinite();
+//		_gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshTransfinite();
 
 	  //
 		// call observers

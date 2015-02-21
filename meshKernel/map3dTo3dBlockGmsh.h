@@ -2,8 +2,7 @@
 #define	MAP3DTO3DBLOCKGMSH_H
 
 #include <logMe/dtMacros.h>
-#include "boundedVolume.h"
-#include <interfaceHeaven/ptrHandling.h>
+#include "gmshBoundedVolume.h"
 
 namespace dtOO {
   class baseContainer;
@@ -13,7 +12,7 @@ namespace dtOO {
   class dtGmshModel;
   class map3dTo3d;
    
-  class map3dTo3dBlockGmsh : public boundedVolume {
+  class map3dTo3dBlockGmsh : public gmshBoundedVolume {
   public:
     dt__CLASSSTD(map3dTo3dBlockGmsh, boundedVolume);
     map3dTo3dBlockGmsh();
@@ -28,13 +27,8 @@ namespace dtOO {
     );    
     virtual void makeGrid(void);
     virtual void makePreGrid(void);
-  	virtual vectorHandling< renderInterface * > getRender( void ) const;
-  	virtual vectorHandling< renderInterface * > getExtRender( void ) const;    
-	  virtual std::vector< std::string > getMeshTags( void ) const;    
-    virtual dtGmshModel * getModel(void) const;
   private:
     dt__pH(map3dTo3d) _m3d;    
-    ptrHandling< dtGmshModel > _gm;
   };
 }
 #endif	/* MAP3DTO3DBLOCKGMSH_H */

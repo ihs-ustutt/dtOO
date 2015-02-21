@@ -20,12 +20,10 @@
 #include <gmsh/GModel.h>
 
 namespace dtOO {
-	map3dTo3dBlockGmsh::map3dTo3dBlockGmsh() {
-	  GmshInitialize();
+	map3dTo3dBlockGmsh::map3dTo3dBlockGmsh() : gmshBoundedVolume() {
 	}
 
 	map3dTo3dBlockGmsh::~map3dTo3dBlockGmsh() {
-		GmshFinalize();
 	}
 	
   void map3dTo3dBlockGmsh::init( 
@@ -37,9 +35,9 @@ namespace dtOO {
 		vectorHandling< boundedVolume * > const * const bV
 	) {
     //
-    // init boundedVolume
+    // init gmshBoundedVolume
     //
-    boundedVolume::init(element, bC, cV, aF, aG, bV);
+    gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 		
     //
 		// region
@@ -57,11 +55,6 @@ namespace dtOO {
     _m3d.reset( mm3d->clone() );
 		
 		//
-		// get compound and put pieces as regions to gmsh model
-		//
-		_gm.reset( new dtGmshModel() );
-
-		//
 		// set current model
 		//
 		GModel::setCurrent(_gm.get());
@@ -72,7 +65,7 @@ namespace dtOO {
 		}
 		dt__FORALL(cI, ii,
 		  _gm->addRegionToGmshModel(map3dTo3d::ConstSecureCast(cI[ii]));
-		  _gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshTransfinite();
+//		  _gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshUnstructured();
 		);
 	}
 	
@@ -88,6 +81,13 @@ namespace dtOO {
     optionGroup oG = getOptionGroup("gmsh");      
     for (int ii=0;ii<oG.size();ii++) {
       GmshSetOption(oG[ii].first[0], oG[ii].first[1], oG[ii].second);
+    }
+		
+    //
+    // parse gmsh file if option exists
+    //
+    if ( hasOption("gmshMeshFile") ) {
+      ParseFile( getOption("gmshMeshFile"), true, true );
     }
 		
     //
@@ -128,31 +128,5 @@ namespace dtOO {
   
 	void map3dTo3dBlockGmsh::makePreGrid(void) {
 		boundedVolume::notify();
-	}
-  
-	vectorHandling< renderInterface * > map3dTo3dBlockGmsh::getRender( void ) const {
-		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
-		vectorHandling< renderInterface * > rV(1);
-		rV[0] = _gm->toUnstructured3dMesh();
-		
-		return rV;
-	}	
-
-	vectorHandling< renderInterface * > map3dTo3dBlockGmsh::getExtRender( void ) const {
-		vectorHandling< renderInterface * > rV(1);
-		rV[0] = _gm->toUnstructured3dMesh();
-		
-		return rV;
-	}		
-	
-	std::vector< std::string > map3dTo3dBlockGmsh::getMeshTags( void ) const {
-		std::vector< std::string > tags;
-		tags.push_back("internal");
-
-		return tags;
-	}
-		
-	dtGmshModel * map3dTo3dBlockGmsh::getModel( void ) const {
-		return _gm.get();
 	}
 }
