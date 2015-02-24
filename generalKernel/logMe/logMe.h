@@ -337,6 +337,10 @@ namespace dtOO {
           << "condition: "#cond" is true." << LOGDEL \
           << DTLOGEVAL(err) ); \
       }  
+  #define meshkit__CATCH(functionname) \
+  catch( MeshKit::Error & merr ) { \
+    dt__THROW(functionname, << merr.what() ); \
+  }
 //  //
 //  // can redirect std::cout output to logfile
 //  //

@@ -131,14 +131,14 @@ namespace dtOO {
 		std::string valueStr = str;
 		while (valueStr.length() != 0) {
 			std::string aVal = getStringBetweenAndRemove(signStart, signEnd, &valueStr);
-			if (aVal.length() != 0 ) {
+//			if (aVal.length() != 0 ) {
 				values.push_back(aVal);
 //				DTINFOWF( 
 //					openFileAndParse(), 
 //					<< DTLOGEVAL(values.back()) << LOGDEL
 //				);
-			}
-			else dt__THROW(convertToStringVector(), << "Error in creating the array.");
+//			}
+//			else dt__THROW(convertToStringVector(), << "Error in creating the array.");
 		}
 
 		return values;

@@ -48,20 +48,28 @@ namespace dtOO {
 		
 		dt__THROW_IF(gm==NULL, update());
 		
+		//
+		// check size
+		//		
+		dt__THROW_IF(_regionLabel.size()!=gm->getNumRegions(), update());
+		
 		int counter = 0;
 		for(GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
 			std::vector< int > pInt = (*r_it)->getPhysicalEntities();
 			dt__THROW_IF(pInt.size()!=0, update());
 
 			std::string newL = _regionLabel[counter];
-			int pTag = (*r_it)->model()->setPhysicalName(newL, 3, 0);
-			(*r_it)->addPhysicalEntity(pTag);
-			DTINFOWF(
-				update(),
-				<< logMe::dtFormat("Name physical group %s (%d) and add region %d of %s") 
-					% pTag % newL % counter % ptrBoundedVolume()->getLabel()
-			);						
-			counter++;
+			
+			if (newL != "") {
+				int pTag = (*r_it)->model()->setPhysicalName(newL, 3, 0);
+				(*r_it)->addPhysicalEntity(pTag);
+				DTINFOWF(
+					update(),
+					<< logMe::dtFormat("Name physical group %s (%d) and add region %d of %s") 
+						% pTag % newL % counter % ptrBoundedVolume()->getLabel()
+				);						
+				counter++;
+			}
 		}
   }
 }

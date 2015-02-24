@@ -52,20 +52,27 @@ namespace dtOO {
 			std::list< GFace * > faceL = (*r_it)->faces();
 			std::list< GFace * >::iterator f_it;
 
+			//
+			// check size
+			//
+			dt__THROW_IF(_faceLabel.size()!=faceL.size(), update());
+			
 			int counter = 0;
 			for (f_it = faceL.begin(); f_it!=faceL.end(); ++f_it) {
 				std::vector< int > pInt = (*f_it)->getPhysicalEntities();
 				dt__THROW_IF(pInt.size()!=0, update());
 
 				std::string newL = _faceLabel[counter];
-				int pTag = (*f_it)->model()->setPhysicalName(newL, 2, 0);
-				(*f_it)->addPhysicalEntity(pTag);
-				DTINFOWF(
-					update(),
-					<< logMe::dtFormat("Name physical group %s (%d) and add face %d of %s") 
-						% pTag % newL % counter % ptrBoundedVolume()->getLabel()
-				);						
-				counter++;
+				if (newL != "") {
+					int pTag = (*f_it)->model()->setPhysicalName(newL, 2, 0);
+					(*f_it)->addPhysicalEntity(pTag);
+					DTINFOWF(
+						update(),
+						<< logMe::dtFormat("Name physical group %s (%d) and add face %d of %s") 
+							% pTag % newL % counter % ptrBoundedVolume()->getLabel()
+					);						
+					counter++;
+				}
 			}
 		}
   }
