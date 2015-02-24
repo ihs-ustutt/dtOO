@@ -15,6 +15,7 @@ SET(HEADERS
   vec3dInMap3dTo3dWithMeshedSurface.h
   readMOABMesh.h
   gmshBoundedVolume.h
+  postBLMeshKit.h
 )
 
 SET(SOURCES
@@ -34,6 +35,7 @@ SET(SOURCES
   vec3dInMap3dTo3dWithMeshedSurface.cpp
   readMOABMesh.cpp
   gmshBoundedVolume.cpp
+  postBLMeshKit.cpp
 )
 
 APPEND_DTOO_SOURCE(meshKernel "${SOURCES}")

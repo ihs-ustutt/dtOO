@@ -7,6 +7,7 @@
 #include "map3dTo3dWithInternalTurboGrid.h"
 #include "vec3dInMap3dTo3dWithMeshedSurface.h"
 #include "readMOABMesh.h"
+#include "postBLMeshKit.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -28,6 +29,7 @@ namespace dtOO {
 		__IFRET(map3dTo3dWithInternalTurboGrid);
 		__IFRET(vec3dInMap3dTo3dWithMeshedSurface);
 		__IFRET(readMOABMesh);
+		__IFRET(postBLMeshKit);
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

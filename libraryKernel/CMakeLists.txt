@@ -56,6 +56,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h
   geometryEngine/geoBuilder/geomSurface_baseConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h
+  meshEngine/dtPostBL.h
   dtGmshVertex.h
   dtGmshEdge.h
   dtGmshFace.h
@@ -123,6 +124,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.cpp
   geometryEngine/geoBuilder/geomSurface_baseConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.cpp
+  meshEngine/dtPostBL.cpp
   dtGmshVertex.cpp
   dtGmshEdge.cpp
   dtGmshFace.cpp
