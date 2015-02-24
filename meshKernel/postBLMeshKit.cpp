@@ -52,35 +52,15 @@ namespace dtOO {
 			moab::Tag materialTag;
 			rval = mb->tag_get_handle("MATERIAL_SET", materialTag);
 			moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
-//			int materialTagLength;
-//			rval = mb->tag_get_length(materialTag, materialTagLength);
-			moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());			
-//				DTINFOWF(
-//					makeGrid(), 
-//          << DTLOGEVAL(materialTagLength));			
-//			for (int ii=0; ii<materialTagLength; ii++) {
-//				int const materialTagValue[1];
-//				int numberMaterialTagValue;
-//				materialTagValue[0] = ii+1;
-				moab::Range matEnts;
-				rval
-				=
-				mb->get_entities_by_type_and_tag(
-					0, 
-					moab::MBENTITYSET, &materialTag, 0, 1,//&numberMaterialTagValue,
-					matEnts
-				);
-//				DTINFOWF(
-//					makeGrid(), 
-//					<< dtOO::logMe::dtFormat("numberMaterialTagValue %i has %i entries.") 
-//						   % 1 % matEnts.size()
-//				);
-//		  }
-			
-//			mb->get_entities_by_type_and_tag()
-//			moab::Range allSets;
-//			rval = mb->get_entities_by_type(0, moab::MBENTITYSET, allSets);
-//			moab__THROW_IF(rval != moab::MB_SUCCESS, getRender());	
+
+			moab::Range matEnts;
+			rval
+			=
+			mb->get_entities_by_type_and_tag(
+				0, 
+				moab::MBENTITYSET, &materialTag, 0, 1,//&numberMaterialTagValue,
+				matEnts
+			);
 
 			moab::Range commonRangePos;
       moab::Range commonRangeNeg;
@@ -125,21 +105,6 @@ namespace dtOO {
 			mb->get_entities_by_dimension(currentSet, 2, neuEnts);
 			commonRangePos.merge(neuEnts);	
 			
-			moab::Tag neuTag;
-			moab::EntityHandle neuEntSet;			
-			int m_NeumannSet;
-			mb->create_meshset(moab::MESHSET_SET, neuEntSet);
-			mb->tag_get_handle("NEUMANN_SET", 1, moab::MB_TYPE_INTEGER, neuTag);
-			mb->add_entities(neuEntSet, commonRangePos);
-			m_NeumannSet = 999999;
-			mb->tag_set_data(neuTag, &neuEntSet, 1, (void*) &m_NeumannSet);				
-			mb->create_meshset(moab::MESHSET_SET, neuEntSet);
-			mb->tag_get_handle("NEUMANN_SET", 1, moab::MB_TYPE_INTEGER, neuTag);
-			mb->add_entities(neuEntSet, commonRangeNeg);
-			m_NeumannSet = -999999;
-			mb->tag_set_data(neuTag, &neuEntSet, 1, (void*) &m_NeumannSet);						
-			
-//			MeshKit::MeshOpSet::instance()->register_mesh_op(&dtPBL);
 			//! create a model entity vector for construting PostBL meshop, note that model entities(mesh) input for PostBL meshop is read from a file.
 			MeshKit::MEntVector volso;
 
@@ -147,15 +112,14 @@ namespace dtOO {
 			MeshKit::dtPostBL * pbl = (MeshKit::dtPostBL*) _mk->construct_meshop("dtPostBL", volso);
 			pbl->set_name("PostBL");
 
-			//!setup and execute PostBL graph node, point the executable to PostBL input file,
-			int argc = 2;
-			char ** argv = new char*[2];
-			argv[0] = const_cast< char * >("antoineInTheBuilding");
-			argv[1] = const_cast< char * >(_pBLFile.c_str());
-			pbl->PrepareIO(argc, argv, "");
 			pbl->setup_this();
+			pbl->debug(true);
+			pbl->init(.02, 6, 0.7);
+			pbl->addPosRange(commonRangePos);
+			pbl->addNegRange(commonRangeNeg);
+			
 			pbl->execute_this();
-			_mk->save_mesh("out_postbl.vtk");
+			_mk->save_mesh("dieterherbert_nach.vtk");
 			delete pbl;
 		}
 		meshkit__CATCH(makeGrid);

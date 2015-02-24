@@ -38,7 +38,7 @@
 #include <moab/Skinner.hpp>
 #include <moab/AdaptiveKDTree.hpp>
 #include <moab/Matrix3.hpp>
-#include <moab/VerdictWrapper.hpp>
+//#include <moab/VerdictWrapper.hpp>
 
 /*!
  * \class dtPostBL
@@ -116,43 +116,16 @@ namespace MeshKit {
     //! execute dtPostBL graph node
     virtual void execute_this();
 
-
-//    /** \brief Improved algorithm
-//     */
-//    void Algo2 ();
-
-    /** \brief Prepare input/output files for reading/writing
-     *  command line args and testdir for default test case
-     * \param TestDir directory where test will be located and command line arguments.
-     */
-    void PrepareIO (int argc, char *argv[], std::string TestDir);
-
+    void init( double const & thickness, int const & intervals, double const & bias );
+    void debug( bool const & debug );
+    void addPosRange( moab::Range const & toAdd );
+    void addNegRange( moab::Range const & toAdd );    
+  private:
     /** \brief get the normals given connectivity of a quad
      * \param conn connectivity array type EntityHandle
      *	\param v return normal vector
      */
-    void get_normal_quad (std::vector<moab::EntityHandle>conn, moab::CartVect &v)   ;
-
-    /** \brief get the normals given connectivity of a quad
-     * \param conn connectivity array type moab::EntityHandle
-     *	\param v return normal vector
-     */
-    void get_normal_edge (std::vector<moab::EntityHandle>conn, moab::CartVect AB, moab::CartVect &v);
-
-    /** \brief compute determinant of jacobian of a hex element
-     *  \param conn connectivity array
-     *	\param offset passed when conn array has connectivity of more than one element
-     *  \param	detJ is returned
-     */
-    void get_det_jacobian (std::vector<moab::EntityHandle> conn, int offset, double &detJ);
-
-    /** \brief compute edge length from the vertex specified
-     *  \param vector of quads/edges
-     *	\param vertex specified
-     *  \param	o/p edge length
-     */
-    void find_min_edge_length (moab::Range, moab::EntityHandle, moab::Range, double &e_len);
-
+    void get_normal_quad (std::vector<moab::EntityHandle>conn, moab::CartVect &v);
   private:
     //! iGeom Impl for calling geometry creation/manipulation operations
     iGeom *igeom;
@@ -163,33 +136,22 @@ namespace MeshKit {
     //! MOAB Impl for calling mesh creation/manipulation operations
     moab::Interface *mb;
 
-    // ! parser related
-    bool debug, check_bl_edge_length;//, hybrid;
-    // !! file Input
-    std::ifstream m_FileInput;
-    mstream m_LogFile;
-    std::string szInputString;
-    std::string szComment;
-    int MAXCHARS, m_nLineNumber;
-    
-    // ! variables to parse
-    std::string m_InputFile;
-//    std::string m_MeshFile;
-    std::string  m_OutFile, m_LogName, m_MeshType;
-//    int m_SurfId;
-    int m_NeumannSet, m_Material, m_HConn;
-    double m_Thickness, m_MinEdgeLength;
-    int m_Intervals, m_JacCalls;//, tri_sch;//, fixmat;
-    double m_Bias, m_JLo, m_JHi;
-    // ! variable for hex and tet meshes
-    int m_Conn, m_BElemNodes;
-    int m_GD, m_BLDim;
-    std::string m_Card;
-    int err;
+    //
+    // boundary layer specification
+    // pos: positive normal
+    // neg: negative normal
+    //
+    moab::Range m_QuadsPos;
+    moab::Range m_QuadsNeg;
+    //
+    // boundary layer specification
+    //    
+    double m_Thickness;
+    int m_Intervals;    
+    double m_Bias;
+    bool m_Debug;
 
-    // ! error handlers
-    enum ErrorStates { INVALIDINPUT};
-    void IOErrorHandler (ErrorStates) const;
+    mstream m_LogFile;
   };
 
   inline const char* dtPostBL::name()
