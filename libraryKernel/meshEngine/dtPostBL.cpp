@@ -71,7 +71,6 @@ namespace MeshKit
 			clock_t sTime = clock();
 			std::string szDateTime;
 			Timer.GetDateTime (szDateTime);
-//			VerdictWrapper vw(mb);
 
 			m_LogFile <<  "\nStarting out at : " << szDateTime << std::endl;
 
@@ -89,22 +88,10 @@ namespace MeshKit
 
 			// obtain existing tag handles
 			moab::Tag GDTag;
-			moab::Tag MTag, STag, MNTag, MatIDTag, BLNodeIDTag;
+			moab::Tag BLNodeIDTag;
 			MBERRCHK(mb->tag_get_handle("GEOM_DIMENSION", 1, moab::MB_TYPE_INTEGER, GDTag),mb);
-			MBERRCHK(mb->tag_get_handle("MATERIAL_SET", 1, moab::MB_TYPE_INTEGER, MTag),mb);
-
-			MBERRCHK(mb->tag_get_handle("mnode", 1, moab::MB_TYPE_INTEGER, MNTag,
-																	moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT),mb);
-			MBERRCHK(mb->tag_get_handle("matid", 1, moab::MB_TYPE_INTEGER, MatIDTag,
-																	moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT),mb);
 			MBERRCHK(mb->tag_get_handle("BLNODEID", 1, moab::MB_TYPE_INTEGER, BLNodeIDTag,
 																	moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT),mb);
-
-			// get all the entity sets with boundary layer geom dimension, neumann sets and material sets
-			moab::Range m_sets;
-
-
-			MBERRCHK(mb->get_entities_by_type_and_tag(0, moab::MBENTITYSET, &MTag, 0, 1 , m_sets),mb);
 
 			// For specified surface: get the  all the quads and nodes in a range
 			moab::Range quads;
@@ -183,90 +170,41 @@ namespace MeshKit
 					++node_id;
 			}
 
-			// Handling MaterialSet
-			int mset_id = 0;
-			for (moab::Range::iterator mset_it = m_sets.begin(); mset_it != m_sets.end(); mset_it++)  {
-				moab::EntityHandle mthis_set = *mset_it;
-
-				// get entity handle of MS specified in the input file
-				MBERRCHK(mb->tag_get_data(MTag, &mthis_set, 1, &mset_id), mb);
-
-				// get all the nodes in the material and tag bl nodes
-				moab::Range mat_nodes, mat_hexes;
-				if(connSize == 8)
-						MBERRCHK(mb->get_entities_by_type(mthis_set, moab::MBHEX, mat_hexes, true), mb);
-				else if(connSize ==4)
-						MBERRCHK(mb->get_entities_by_type(mthis_set, moab::MBTET, mat_hexes, true), mb);
-				// tag all the mat_hexes with matid
-				std::vector<int> matID(mat_hexes.size(), mset_id);
-				MBERRCHK(mb->tag_set_data(MatIDTag, mat_hexes, &matID[0]), mb);
-				//
-				MBERRCHK(mb->get_adjacencies(mat_hexes, 0, false, mat_nodes, Interface::UNION), mb);
-				moab::Range mat_b_nodes = intersect(nodes, mat_nodes);
-
-				//
-				std::vector<int> bl_node_data(mat_b_nodes.size(), 0);
-				std::vector<int> node_tag_data(mat_b_nodes.size(),-1);
-				// don't error check, as it is supposed to give error when multiple material case is encountered
-				mb->tag_get_data(MNTag, mat_b_nodes, &node_tag_data[0]);
-				for(int i=0; i< (int)mat_b_nodes.size(); i++){
-						// already a part of some material
-						if(node_tag_data[i] != -1){
-								bl_node_data[i] = node_tag_data[i]+1;
-						}
-				}
-				MBERRCHK(mb->tag_set_data(MNTag, mat_b_nodes, &bl_node_data[0]), mb);
-				mat_hexes.clear();
-				mat_b_nodes.clear();
-				mat_nodes.clear();
-			} // end handling material set
-
 			// COMPUTE NORMALS
-			// get tag data and print
-			std::vector<int> all_bl(nodes.size(), 0);
-			mb->tag_get_data(MNTag, nodes, &all_bl[0]);
 			int count = -1;
 			for (Range::iterator kter = nodes.begin(); kter != nodes.end(); ++kter){
 				++count;
 				// only one normal in case of single material
 				double xdisp = 0.0, ydisp = 0.0, zdisp = 0.0;
-				// check if node belongs to one or more materials
-				if(all_bl[count] == 0){
-					moab::Range adj_for_normal;
-					MBERRCHK(mb->get_adjacencies(&(*kter), 1, BLD, false, adj_for_normal, Interface::UNION), mb);
-					//create the coordinates of the innermost node corresponding to this node
 
-					moab::Range adj_for_norm = intersect(quads, adj_for_normal);							
-					moab::Range adj_for_normPos = intersect(m_QuadsPos, adj_for_normal);
-					moab::Range adj_for_normNeg = intersect(m_QuadsNeg, adj_for_normal);
+				moab::Range adj_for_normal;
+				MBERRCHK(mb->get_adjacencies(&(*kter), 1, BLD, false, adj_for_normal, Interface::UNION), mb);
+				//create the coordinates of the innermost node corresponding to this node
 
-					// now compute the average normal direction for this vertex
-					moab::CartVect rt(0.0, 0.0, 0.0), v(0.0, 0.0, 0.0);
+				moab::Range adj_for_norm = intersect(quads, adj_for_normal);							
+				moab::Range adj_for_normPos = intersect(m_QuadsPos, adj_for_normal);
+				moab::Range adj_for_normNeg = intersect(m_QuadsNeg, adj_for_normal);
 
-					for(Range::iterator qter = adj_for_norm.begin(); qter != adj_for_norm.end(); ++qter){
-						MBERRCHK(mb->get_connectivity(&(*qter), 1, adj_qconn),mb);
+				// now compute the average normal direction for this vertex
+				moab::CartVect rt(0.0, 0.0, 0.0), v(0.0, 0.0, 0.0);
 
-						get_normal_quad (adj_qconn, v);
+				for(Range::iterator qter = adj_for_norm.begin(); qter != adj_for_norm.end(); ++qter){
+					MBERRCHK(mb->get_connectivity(&(*qter), 1, adj_qconn),mb);
 
-						if (adj_for_normPos.find(*qter) == adj_for_normPos.end()) v = -v;
-						rt = rt + v;
-					}					
-					if(rt.length() !=0){
-						xdisp=rt[0]/rt.length();
-						ydisp=rt[1]/rt.length();
-						zdisp=rt[2]/rt.length();
-					}
-					else{
-						xdisp=0.0;
-						ydisp=0.0;
-						zdisp=0.0;
-					}
+					get_normal_quad (adj_qconn, v);
+
+					if (adj_for_normPos.find(*qter) == adj_for_normPos.end()) v = -v;
+					rt = rt + v;
+				}					
+				if(rt.length() !=0){
+					xdisp=rt[0]/rt.length();
+					ydisp=rt[1]/rt.length();
+					zdisp=rt[2]/rt.length();
 				}
-				else if(all_bl[count] < 0 ){
-					throw MeshKit::Error(
-						MeshKit::MK_FAILURE, 
-						"Material must have associated with BLNode %i", count
-					);
+				else{
+					xdisp=0.0;
+					ydisp=0.0;
+					zdisp=0.0;
 				}
 
 				// after the normal computation is done create new BL nodes
@@ -308,7 +246,6 @@ namespace MeshKit
 			count = -1;
 			for (Range::iterator kter = nodes.begin(); kter != nodes.end(); ++kter){
 				++count;
-				if(all_bl[count] == 0 ){
 					double coords_new_quad[3];
 					double coords_old_quad[3];
 
@@ -326,25 +263,10 @@ namespace MeshKit
 //														<< ", " << coords_old_quad[1] << ", " << coords_old_quad[2] << " OLD:- coords: NEW" << coords_new_quad[0]
 //														<< ", " << coords_new_quad[1] << ", " << coords_new_quad[2]  << std::endl;
 //							}
-				}
+//				}
 			}
 
-			// check for the volume of penultimate elements if -ve volume encountered. Report.
-			count = -1;
-			// Try to move another layer attached to it.
-			for (Range::iterator kter = nodes.begin(); kter != nodes.end(); ++kter){
-				++count;
-				for(int j=0; j< m_Intervals; j++){
-					int nid = count*m_Intervals+j;
-					double coords_new_quad[3];
-					MBERRCHK(mb->get_coords(&new_vert[nid], 1, coords_new_quad),mb);
-//							m_LogFile << std::setprecision (3) << std::scientific << " : NID:" << (nid)
-//												<< " of " << new_vert.size() << " new nodes:- coords: " << coords_new_quad[0]
-//												<< ", " << coords_new_quad[1] << ", " << coords_new_quad[2]  << std::endl;
-				}
-			}
-
-//			// Now start creating New elements
+			// Now start creating New elements
 			for (Range::iterator kter = quads.begin(); kter != quads.end(); ++kter){
 				MBERRCHK(mb->get_connectivity(&(*kter), 1, qconn),mb);
 				double one_node_in_quad[3];
@@ -377,7 +299,7 @@ namespace MeshKit
 								conn[connSize*j + i+bElemNodesSize] = new_vert[nid + m_Intervals - 2*j -2];
 							}
 						}
-						else if(connSize == 4 && bElemNodesSize == 3){ // && hybrid == true make wedges aka prisms for tet mesh
+						else if(connSize == 4 && bElemNodesSize == 3){ // prism
 							int nid = node_tag_id*m_Intervals+j;
 							if(m_Intervals == 1){
 								conn[connSize*j +i] = qconn[i];
@@ -416,26 +338,16 @@ namespace MeshKit
 					// add this hex to a block
 					moab::Range adj_hex_for_mat;
 
-					MBERRCHK(mb->get_adjacencies(&(*kter), 1, GD, false, adj_hex_for_mat, moab::Interface::INTERSECT), mb);
+					MBERRCHK(
+						mb->get_adjacencies(
+							&(*kter), 1, GD, 
+							false, 
+							adj_hex_for_mat, moab::Interface::INTERSECT
+					  ), 
+						mb
+					);
 					MBERRCHK(mb->add_adjacencies(hex, adj_hex_for_mat, true), mb);
 
-					std::vector<int> hmat_id(adj_hex_for_mat.size(), 0);
-
-					// this will lead to an error, so no error checking, new adj hexes don't have matidtag
-					mb->tag_get_data(MatIDTag, adj_hex_for_mat, &hmat_id[0]);//, mb);
-					for(int p=0; p< (int)hmat_id.size(); p++){
-						if(hmat_id[p] !=0){
-							// this is our mat id for this hex
-							moab::EntityHandle mat_set = 0;
-							for (moab::Range::iterator set_it = m_sets.begin(); set_it != m_sets.end(); set_it++)  {
-								mat_set = *set_it;
-								int set_id;
-								MBERRCHK(mb->tag_get_data(MTag, &mat_set, 1, &set_id), mb);
-								if(set_id == hmat_id[p]) break;
-							}
-							MBERRCHK(mb->add_entities(mat_set, &hex, 1), mb);
-						}
-					}						// mark entities for smoothing
 					// add geom dim tag
 					MBERRCHK(mb->add_entities(geom_set, &hex, 1), mb);
 				}
