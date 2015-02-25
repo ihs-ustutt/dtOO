@@ -14,9 +14,9 @@
 #include <discrete3dPoints.h>
 
 #include <iostream>
-#include <dtGmshModel.h>
-#include <dtGmshFace.h>
-#include <dtGmshRegion.h>
+#include <meshEngine/dtGmshModel.h>
+#include <meshEngine/dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
 #include <gmsh/Gmsh.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>

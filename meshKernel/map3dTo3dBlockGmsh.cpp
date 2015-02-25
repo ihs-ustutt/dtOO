@@ -1,8 +1,8 @@
 #include "map3dTo3dBlockGmsh.h"
 #include <analyticGeometryHeaven/analyticGeometryCompound.h>
-#include <dtGmshRegion.h>
-#include <dtGmshModel.h>
-#include <dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
+#include <meshEngine/dtGmshModel.h>
+#include <meshEngine/dtGmshFace.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>

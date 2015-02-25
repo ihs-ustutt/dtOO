@@ -13,9 +13,9 @@
 #include <gmsh/GmshDefines.h>
 #include <gmsh/Gmsh.h>
 #include <gmsh/OpenFile.h>
-#include <dtGmshRegion.h>
-#include <dtGmshModel.h>
-#include <dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
+#include <meshEngine/dtGmshModel.h>
+#include <meshEngine/dtGmshFace.h>
 
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>

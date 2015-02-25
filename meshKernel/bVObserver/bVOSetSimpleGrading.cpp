@@ -7,8 +7,8 @@
 #include <vector>
 #include <math.h>
 #include <dtXmlParserDecorator/dtXmlParserBase.h>
-#include <dtGmshRegionHex.h>
-#include <dtGmshModel.h>
+#include <meshEngine/dtGmshRegionHex.h>
+#include <meshEngine/dtGmshModel.h>
 
 namespace dtOO {  
   bVOSetSimpleGrading::bVOSetSimpleGrading() {

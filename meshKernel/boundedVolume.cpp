@@ -7,7 +7,7 @@
 #include <bVObserver/bVOInterfaceFactory.h>
 #include <bVObserver/bVOInterface.h>
 #include <dtXmlParserDecorator/qtXmlPrimitive.h>
-#include <dtGmshFace.h>
+#include <meshEngine/dtGmshFace.h>
 
 
 namespace dtOO {  

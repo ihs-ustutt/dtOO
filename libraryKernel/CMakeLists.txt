@@ -57,12 +57,12 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomSurface_baseConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h
   meshEngine/dtPostBL.h
-  dtGmshVertex.h
-  dtGmshEdge.h
-  dtGmshFace.h
-  dtGmshRegion.h
-  dtGmshRegionHex.h
-  dtGmshModel.h
+  meshEngine/dtGmshVertex.h
+  meshEngine/dtGmshEdge.h
+  meshEngine/dtGmshFace.h
+  meshEngine/dtGmshRegion.h
+  meshEngine/dtGmshRegionHex.h
+  meshEngine/dtGmshModel.h
   dtGaussLegendreIntegration.h
   GSLError.h
 )
@@ -125,12 +125,12 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomSurface_baseConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.cpp
   meshEngine/dtPostBL.cpp
-  dtGmshVertex.cpp
-  dtGmshEdge.cpp
-  dtGmshFace.cpp
-  dtGmshRegion.cpp
-  dtGmshRegionHex.cpp
-  dtGmshModel.cpp
+  meshEngine/dtGmshVertex.cpp
+  meshEngine/dtGmshEdge.cpp
+  meshEngine/dtGmshFace.cpp
+  meshEngine/dtGmshRegion.cpp
+  meshEngine/dtGmshRegionHex.cpp
+  meshEngine/dtGmshModel.cpp
   dtGaussLegendreIntegration.cpp
 )
 
