@@ -41,6 +41,10 @@ namespace dtOO {
     bool isEqual( GFace const * const gf ) const;
     static bool isEqual( GFace const * const gf0, GFace const * const gf1 );
     twoDArrayHandling< MVertex * > reconstructEdgesFromSurfaceMesh( void ) const;
+    void getMeshVerticesAndElements(
+      std::vector< MVertex const * > * const mv, 
+      std::vector< MElement const * > * const me
+    ) const;
   private:
     static bool sortPredicate(MVertex const * d1, MVertex const * d2);
   private:
