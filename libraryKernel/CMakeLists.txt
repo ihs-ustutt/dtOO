@@ -63,6 +63,7 @@ SET(HEADERS
   meshEngine/dtGmshRegion.h
   meshEngine/dtGmshRegionHex.h
   meshEngine/dtGmshModel.h
+  meshEngine/dtMoabCore.h
   dtGaussLegendreIntegration.h
   GSLError.h
 )
@@ -131,6 +132,7 @@ SET(SOURCES
   meshEngine/dtGmshRegion.cpp
   meshEngine/dtGmshRegionHex.cpp
   meshEngine/dtGmshModel.cpp
+  meshEngine/dtMoabCore.cpp
   dtGaussLegendreIntegration.cpp
 )
 
