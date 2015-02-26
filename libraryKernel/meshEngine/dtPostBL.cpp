@@ -1,5 +1,44 @@
 #include "dtPostBL.h"
 
+#include <cassert>
+#include <string>
+#include <vector>
+#include <set>
+#include <math.h>
+#include <iomanip>
+
+#include <meshkit/Types.hpp>
+#include <meshkit/Error.hpp>
+#include <meshkit/MeshScheme.hpp>
+#include <meshkit/ModelEnt.hpp>
+#include <meshkit/MKCore.hpp>
+#include <meshkit/SizingFunction.hpp>
+#include <meshkit/RegisterMeshOp.hpp>
+
+#include <meshkit/LocalSet.hpp>
+#include <meshkit/LocalTag.hpp>
+#include <meshkit/Matrix.hpp>
+
+#include <meshkit/iMesh.hpp>
+#include <meshkit/iGeom.hpp>
+#include <MBCN.h>
+
+#include <meshkit/SimpleArray.hpp>
+#include <meshkit/parser.hpp>
+#include <meshkit/clock.hpp>
+#include <meshkit/mstream.hpp>
+
+#include <MBiMesh.hpp>
+#include <moab/Interface.hpp>
+#include <moab/Range.hpp>
+#include <moab/CartVect.hpp>
+
+
+#include <moab/Skinner.hpp>
+#include <moab/AdaptiveKDTree.hpp>
+#include <moab/Matrix3.hpp>
+#include <moab/VerdictWrapper.hpp>
+
 namespace MeshKit
 {
   RegisterMeshOp<MeshKit::dtPostBL> dtPostBL_GLOBAL_PROXY;
