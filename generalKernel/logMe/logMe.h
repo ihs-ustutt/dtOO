@@ -204,7 +204,7 @@ namespace dtOO {
           << "\n" ;\
           }
   #define dt__THROW(functionname, message) \
-      throw eGeneral( std::ostringstream().flush() << className() << "::"#functionname << LOGDEL \
+      throw dtOO::eGeneral( std::ostringstream().flush() << className() << "::"#functionname << LOGDEL \
           << "file '" <<  __FILE__ << "'" << LOGDEL \
           << "line '" << __LINE__ << "'" << LOGDEL \
           << LOGDEL \

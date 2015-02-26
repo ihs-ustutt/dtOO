@@ -40,7 +40,7 @@ namespace dtOO {
     DTINFOWF(init(), << dtXmlParserBase::convertToString(element) );
 		_regionLabel
 		= 
-		dtXmlParserBase::getAttributeStringVector("regionLabel", element);
+		dtXmlParserBase::getAttributeStrVector("regionLabel", element);
   }
   
   void bVONameRegions::update( void ) {

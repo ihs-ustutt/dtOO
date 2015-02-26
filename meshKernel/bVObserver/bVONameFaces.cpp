@@ -40,7 +40,7 @@ namespace dtOO {
     DTINFOWF(init(), << dtXmlParserBase::convertToString(element) );
 		_faceLabel
 		= 
-		dtXmlParserBase::getAttributeStringVector("faceLabel", element);
+		dtXmlParserBase::getAttributeStrVector("faceLabel", element);
   }
   
   void bVONameFaces::update( void ) {

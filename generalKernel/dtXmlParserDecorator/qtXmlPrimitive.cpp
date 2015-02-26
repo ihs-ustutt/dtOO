@@ -437,7 +437,7 @@ namespace dtOO {
             << "Should be true or false.");
   }    
 
-	std::vector< std::string > qtXmlPrimitive::getAttributeStringVector(
+	std::vector< std::string > qtXmlPrimitive::getAttributeStrVector(
 		std::string const attName, QDomElement const element
 	) {
 		std::string att = getAttributeStr(attName, element);

@@ -16,6 +16,12 @@
     iter!=vector.end(); \
     ++iter \
   )
+#define dt__FORALLCONSTITER(type, vector, iter) \
+  for ( \
+    type::const_iterator iter = vector.begin(); \
+    iter!=vector.end(); \
+    ++iter \
+  )
 #define dt__MUSTDOWNCAST( object, type, result ) \
   result = dynamic_cast< type * >( object ); \
   if (result == NULL ) { \
