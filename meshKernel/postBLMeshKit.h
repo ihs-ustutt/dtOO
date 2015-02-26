@@ -18,18 +18,20 @@ namespace dtOO {
     postBLMeshKit();
     virtual ~postBLMeshKit();
     virtual void init( 
-      QDomElement const & element,
-      baseContainer const * const bC,      
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP,
-      vectorHandling< analyticGeometry * > const * const depAGeoP,
-      vectorHandling< boundedVolume * > const * const depBVolP
+		QDomElement const & element,
+    baseContainer const * const bC,					
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG,
+		vectorHandling< boundedVolume * > const * const bV
     );    
     virtual void makeGrid(void);
     virtual void makePreGrid(void);
   	virtual vectorHandling< renderInterface * > getRender( void ) const;    
   private:
-    std::string _pBLFile;
+    boundedVolume const * _meshedBV;
+    std::vector< std::string > _faceLabel;
+    std::vector< int > _faceOrientation;
     ptrHandling< MeshKit::MKCore > _mk;    
   };
 }

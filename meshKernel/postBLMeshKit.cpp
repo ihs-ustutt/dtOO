@@ -1,4 +1,6 @@
 #include "postBLMeshKit.h"
+#include "meshEngine/dtMoabCore.h"
+#include "dtXmlParserDecorator/qtXmlBase.h"
 //#include <analyticGeometryHeaven/analyticGeometryCompound.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -9,6 +11,7 @@
 #include <unstructured3dMesh.h>
 #include <discrete3dPoints.h>
 
+#include <meshEngine/dtGmshFace.h>
 #include <moab/Core.hpp>
 #include <moab/CN.hpp>
 #include <meshkit/MKCore.hpp>
@@ -16,6 +19,7 @@
 #include <meshkit/RegisterMeshOp.hpp>
 #include <meshkit/ModelEnt.hpp>
 #include <meshEngine/dtPostBL.h>
+#include <meshEngine/dtMoabCore.h>
 #include <meshkit/SizingFunction.hpp>
 #include <meshkit/CopyGeom.hpp>
 
@@ -29,81 +33,73 @@ namespace dtOO {
   void postBLMeshKit::init( 
 		QDomElement const & element,
     baseContainer const * const bC,					
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP,
-		vectorHandling< boundedVolume * > const * const depBVolP
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG,
+		vectorHandling< boundedVolume * > const * const bV
 	) {
     //
     // init boundedVolume
     //
-    boundedVolume::init(element, bC, cValP, sFunP, depAGeoP, depBVolP);
+    boundedVolume::init(element, bC, cV, aF, aG, bV);
 		
-		_pBLFile = getOption("postBL_file");
+		//
+		// boundedVolume
+		//		
+    QDomElement wElement = qtXmlPrimitive::getChild("boundedVolume", element);
+    std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
+		_faceLabel 
+		= 
+		qtXmlPrimitive::getAttributeStrVector("faceLabel", wElement);
+		_faceOrientation 
+		= 
+		qtXmlBase::getAttributeIntVectorMuParse("faceOrientation", wElement, cV, aF);
+		
+		//
+		// get boundedVolume
+		//
+    _meshedBV = bV->get(label);
 	}
 	
   void postBLMeshKit::makeGrid(void) {
 		try {
-			_mk.reset( new MeshKit::MKCore() );
-			_mk->moab_instance()->load_file("dieterherbert.msh");
+			//
+			// create moab Core
+			//
+			dtMoabCore * mbCore = new dtMoabCore();
+			dtGmshFace const * gf;
+			std::vector< MVertex const * > mv;
+      twoDArrayHandling< MElement const * > me(_faceLabel.size(), 0);			
+			dt__FORALLINDEX(_faceLabel, ii) {
+			  gf = _meshedBV->getFace(_faceLabel[ii]);
+			  gf->getMeshVerticesAndElements(&mv, &(me[ii]));
+			}
 			
-			moab::ErrorCode rval;
-			moab::Interface * mb = _mk->moab_instance();
-			moab::Tag materialTag;
-			rval = mb->tag_get_handle("MATERIAL_SET", materialTag);
-			moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());
+			//
+			// add vertices
+			//
+			mbCore->addVertices(mv);
 
-			moab::Range matEnts;
-			rval
-			=
-			mb->get_entities_by_type_and_tag(
-				0, 
-				moab::MBENTITYSET, &materialTag, 0, 1,//&numberMaterialTagValue,
-				matEnts
-			);
-
+      //
+			// add elements according to orientation
+			//			
 			moab::Range commonRangePos;
       moab::Range commonRangeNeg;
-			
-			moab::Range::iterator it;
-  	  moab::EntityHandle currentSet;
-			moab::Range neuEnts;
-			
-			it=matEnts.begin();
-		  neuEnts.clear();			
-			currentSet = *it;
-			mb->get_entities_by_dimension(currentSet, 2, neuEnts);
-			commonRangePos.merge(neuEnts);
+			dt__FORALLINDEX(_faceOrientation, ii) {
+				if (_faceOrientation[ii] > 0) {
+			    commonRangePos.merge(mbCore->addElements(me[ii]));
+				}
+				else {
+			    commonRangeNeg.merge(mbCore->addElements(me[ii]));
+				}
+			}
 
-      it++;
-		  neuEnts.clear();			
-			currentSet = *it;
-			mb->get_entities_by_dimension(currentSet, 2, neuEnts);
-			commonRangeNeg.merge(neuEnts);
-			
-      it++;
-		  neuEnts.clear();
-			currentSet = *it;
-			mb->get_entities_by_dimension(currentSet, 2, neuEnts);
-			commonRangeNeg.merge(neuEnts);	
-			
-			it++;
-			neuEnts.clear();
-			currentSet = *it;
-			mb->get_entities_by_dimension(currentSet, 2, neuEnts);
-			commonRangePos.merge(neuEnts);
-//
-      it++;
-		  neuEnts.clear();			
-			currentSet = *it;
-			mb->get_entities_by_dimension(currentSet, 2, neuEnts);
-			commonRangeNeg.merge(neuEnts);
-//			
-      it++;
-		  neuEnts.clear();			
-			currentSet = *it;
-			mb->get_entities_by_dimension(currentSet, 2, neuEnts);
-			commonRangePos.merge(neuEnts);	
+			//
+			// create MeshKit core
+			//
+			_mk.reset( 
+			  new MeshKit::MKCore(NULL, mbCore, NULL, NULL, true) 
+			);
 			
 			//! create a model entity vector for construting PostBL meshop, note that model entities(mesh) input for PostBL meshop is read from a file.
 			MeshKit::MEntVector volso;
