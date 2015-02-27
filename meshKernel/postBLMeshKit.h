@@ -29,6 +29,9 @@ namespace dtOO {
     virtual void makePreGrid(void);
   	virtual vectorHandling< renderInterface * > getRender( void ) const;    
   private:
+    float _thickness;
+    int _intervals;
+    float _bias;
     boundedVolume const * _meshedBV;
     std::vector< std::string > _faceLabel;
     std::vector< int > _faceOrientation;

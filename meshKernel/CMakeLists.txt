@@ -13,6 +13,7 @@ SET(HEADERS
   map3dTo3dTriangulated.h
   map3dTo3dWithInternalTurboGrid.h
   vec3dInMap3dTo3dWithMeshedSurface.h
+  map3dTo3dWithInternalGmsh.h
   readMOABMesh.h
   gmshBoundedVolume.h
   postBLMeshKit.h
@@ -33,6 +34,7 @@ SET(SOURCES
   map3dTo3dTriangulated.cpp
   map3dTo3dWithInternalTurboGrid.cpp
   vec3dInMap3dTo3dWithMeshedSurface.cpp
+  map3dTo3dWithInternalGmsh.cpp
   readMOABMesh.cpp
   gmshBoundedVolume.cpp
   postBLMeshKit.cpp

@@ -86,12 +86,20 @@ namespace MeshKit {
     void debug( bool const & debug );
     void addPosRange( moab::Range const & toAdd );
     void addNegRange( moab::Range const & toAdd );    
+    void addFixRange( moab::Range const & toAdd );    
   private:
     /** \brief get the normals given connectivity of a quad
      * \param conn connectivity array type EntityHandle
      *	\param v return normal vector
      */
     void get_normal_quad (std::vector<moab::EntityHandle>conn, moab::CartVect &v);
+    std::vector< moab::EntityHandle > 
+    renumberTetrahedra( std::vector< moab::EntityHandle > const & orig );
+    std::vector< moab::EntityHandle > 
+    renumberPyramid( std::vector< moab::EntityHandle > const & orig );
+    std::vector< moab::EntityHandle > 
+    renumberPrism( std::vector< moab::EntityHandle > const & orig );
+    
   private:
     //! iGeom Impl for calling geometry creation/manipulation operations
     iGeom *igeom;
@@ -106,9 +114,11 @@ namespace MeshKit {
     // boundary layer specification
     // pos: positive normal
     // neg: negative normal
+    // fix: fixed elements
     //
     moab::Range m_QuadsPos;
     moab::Range m_QuadsNeg;
+    moab::Range m_QuadsFix;
     //
     // boundary layer specification
     //    
@@ -116,8 +126,6 @@ namespace MeshKit {
     int m_Intervals;    
     double m_Bias;
     bool m_Debug;
-
-    mstream m_LogFile;
   };
 
   inline const char* dtPostBL::name()
@@ -139,6 +147,5 @@ namespace MeshKit {
   {
     return output_types();
   }
-
 } // namespace MeshKit
 #endif

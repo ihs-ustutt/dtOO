@@ -341,57 +341,57 @@ namespace dtOO {
   catch( MeshKit::Error & merr ) { \
     dt__THROW(functionname, << merr.what() ); \
   }
-//  //
-//  // can redirect std::cout output to logfile
-//  //
-//  class IosSwitch {
-//    public:
-//      IosSwitch( std::basic_ios< char >& ios, std::streambuf* sb )
-//        : m_ios( &ios )
-//        , m_sbMerk( ios.rdbuf( sb ) ) {
-//      }
-//
-//      ~IosSwitch() {
-//        if( m_ios ) {
-//            m_ios->rdbuf( m_sbMerk );
-//        }
-//      }
-//      std::streambuf* rdbuf() const { 
-//        return m_sbMerk; 
-//      }
-//    private:
-//      std::basic_ios< char >* m_ios;
-//      std::streambuf*         m_sbMerk;
-//
-//      // ---  nicht kopierbar
-//      IosSwitch( const IosSwitch& );
-//      IosSwitch& operator=( const IosSwitch& );
-//  };
-// 
-//  class Spreadbuf : public std::basic_streambuf< char > {
-//    public:
-//      Spreadbuf( std::basic_streambuf< char >* sb1, std::basic_streambuf< char >* sb2 )
-//        : m_sb1( sb1 )
-//        , m_sb2( sb2 ) {
-//      }
-//    protected:
-//      virtual int_type overflow( int_type c = traits_type::eof() ) {
-//        if( !traits_type::eq_int_type( c, traits_type::eof() ) ) {
-//            const char x = traits_type::to_char_type( c );
-//            if( traits_type::eq_int_type( m_sb1->sputc( x ), traits_type::eof() )
-//                    || traits_type::eq_int_type( m_sb2->sputc( x ), traits_type::eof() ) )
-//                return traits_type::eof();
-//        }
-//        return traits_type::not_eof( c );
-//      }
-//    private:
-//        std::basic_streambuf< char >* m_sb1;
-//        std::basic_streambuf< char >* m_sb2;
-//  };
+  //
+  // can redirect std::cout output to logfile
+  //
+  class IosSwitch {
+    public:
+      IosSwitch( std::basic_ios< char >& ios, std::streambuf* sb )
+        : m_ios( &ios )
+        , m_sbMerk( ios.rdbuf( sb ) ) {
+      }
+
+      ~IosSwitch() {
+        if( m_ios ) {
+            m_ios->rdbuf( m_sbMerk );
+        }
+      }
+      std::streambuf* rdbuf() const { 
+        return m_sbMerk; 
+      }
+    private:
+      std::basic_ios< char >* m_ios;
+      std::streambuf*         m_sbMerk;
+
+      // ---  nicht kopierbar
+      IosSwitch( const IosSwitch& );
+      IosSwitch& operator=( const IosSwitch& );
+  };
+ 
+  class Spreadbuf : public std::basic_streambuf< char > {
+    public:
+      Spreadbuf( std::basic_streambuf< char >* sb1, std::basic_streambuf< char >* sb2 )
+        : m_sb1( sb1 )
+        , m_sb2( sb2 ) {
+      }
+    protected:
+      virtual int_type overflow( int_type c = traits_type::eof() ) {
+        if( !traits_type::eq_int_type( c, traits_type::eof() ) ) {
+            const char x = traits_type::to_char_type( c );
+            if( traits_type::eq_int_type( m_sb1->sputc( x ), traits_type::eof() )
+                    || traits_type::eq_int_type( m_sb2->sputc( x ), traits_type::eof() ) )
+                return traits_type::eof();
+        }
+        return traits_type::not_eof( c );
+      }
+    private:
+        std::basic_streambuf< char >* m_sb1;
+        std::basic_streambuf< char >* m_sb2;
+  };
   
-//  #define DTLOGCOUT( spready,  coutswitch) \
-//  	Spreadbuf spready( std::cout.rdbuf(), Output2FILE::Stream().rdbuf() ); \
-//		IosSwitch coutswitch( std::cout, &spready );
+  #define dt__LOGCOUT( spready,  coutswitch) \
+  	Spreadbuf spready( std::cout.rdbuf(), Output2FILE::Stream().rdbuf() ); \
+		IosSwitch coutswitch( std::cout, &spready );
 
 
   }

@@ -43,6 +43,10 @@ namespace dtOO {
     //
     boundedVolume::init(element, bC, cV, aF, aG, bV);
 		
+    _thickness = optionHandling::getOptionFloat("thickness");
+    _intervals = optionHandling::getOptionInt("intervals");
+    _bias = optionHandling::getOptionFloat("bias");
+		
 		//
 		// boundedVolume
 		//		
@@ -67,6 +71,14 @@ namespace dtOO {
 			// create moab Core
 			//
 			dtMoabCore * mbCore = new dtMoabCore();
+
+			//
+			// create MeshKit core
+			//
+			_mk.reset( 
+			  new MeshKit::MKCore(NULL, mbCore, NULL, NULL, true) 
+			);			
+			
 			dtGmshFace const * gf;
 			std::vector< MVertex const * > mv;
       twoDArrayHandling< MElement const * > me(_faceLabel.size(), 0);			
@@ -85,21 +97,18 @@ namespace dtOO {
 			//			
 			moab::Range commonRangePos;
       moab::Range commonRangeNeg;
+			moab::Range commonRangeFix;
 			dt__FORALLINDEX(_faceOrientation, ii) {
 				if (_faceOrientation[ii] > 0) {
 			    commonRangePos.merge(mbCore->addElements(me[ii]));
 				}
-				else {
+				else if (_faceOrientation[ii] < 0) {
 			    commonRangeNeg.merge(mbCore->addElements(me[ii]));
 				}
+				else {
+					commonRangeFix.merge(mbCore->addElements(me[ii]));
+				}
 			}
-
-			//
-			// create MeshKit core
-			//
-			_mk.reset( 
-			  new MeshKit::MKCore(NULL, mbCore, NULL, NULL, true) 
-			);
 			
 			//! create a model entity vector for construting PostBL meshop, note that model entities(mesh) input for PostBL meshop is read from a file.
 			MeshKit::MEntVector volso;
@@ -109,13 +118,22 @@ namespace dtOO {
 			pbl->set_name("PostBL");
 
 			pbl->setup_this();
+//			pbl->setLogStream( Output2FILE::Stream() );
 			pbl->debug(true);
-			pbl->init(.02, 6, 0.7);
+			pbl->init(_thickness, _intervals, _bias);
 			pbl->addPosRange(commonRangePos);
 			pbl->addNegRange(commonRangeNeg);
+			pbl->addFixRange(commonRangeFix);
 			
-			pbl->execute_this();
-			_mk->save_mesh("dieterherbert_nach.vtk");
+			{
+				dt__LOGCOUT(spread, coutswitch);
+				pbl->execute_this();
+			}
+			
+			std::vector< moab::EntityHandle > handles;
+			mbCore->get_entities_by_dimension(0, 2, handles, true);
+			mbCore->delete_entities(&(handles[0]), static_cast<int>(handles.size()));
+			mbCore->write_mesh("dieterherbert_nach.vtk");
 			delete pbl;
 		}
 		meshkit__CATCH(makeGrid);
