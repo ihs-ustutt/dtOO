@@ -58,15 +58,71 @@ namespace dtOO {
 			else if (mm2d) {
 				_internal.push_back( mm2d->clone() );
 			}
-			
-
-			//
-			// set current model
-			//
-			GModel::setCurrent(_gm.get());
-
-			_gm->addRegionToGmshModel(_m3d.get());
 		}
+		
+
+		//
+		// set current model
+		//
+		GModel::setCurrent(_gm.get());
+
+		dtGmshRegion * gr = _gm->addRegionToGmshModel(_m3d.get());
+
+		twoDArrayHandling< int > vId(_internal.size(), 4);
+		twoDArrayHandling< int > eId(_internal.size(), 4);
+		dt__FORALLINDEX(_internal, ii) {
+			dtPoint2 p0(0., 0.);
+			dtPoint2 p1(1., 0.);
+			dtPoint2 p2(1., 1.);
+			dtPoint2 p3(0., 1.);
+			
+			_gm->addIfVertexToGmshModel(_internal[ii].getPointPercent(p0), &(vId[ii][0]));
+			_gm->addIfVertexToGmshModel(_internal[ii].getPointPercent(p1), &(vId[ii][1]));
+			_gm->addIfVertexToGmshModel(_internal[ii].getPointPercent(p2), &(vId[ii][2]));
+			_gm->addIfVertexToGmshModel(_internal[ii].getPointPercent(p3), &(vId[ii][3]));
+			
+			
+			_gm->addIfEdgeToGmshModel(
+			  dt__pH(map1dTo3d)(_internal[ii].segmentPercent(p0, p1)).get(),
+				&(eId[ii][0]), vId[ii][0], vId[ii][1]
+			);
+			_gm->addIfEdgeToGmshModel(
+			  dt__pH(map1dTo3d)(_internal[ii].segmentPercent(p1, p2)).get(),
+				&(eId[ii][1]), vId[ii][1], vId[ii][2]
+			);
+			_gm->addIfEdgeToGmshModel(
+			  dt__pH(map1dTo3d)(_internal[ii].segmentPercent(p2, p3)).get(),
+				&(eId[ii][2]), vId[ii][2], vId[ii][3]
+			);
+			_gm->addIfEdgeToGmshModel(
+			  dt__pH(map1dTo3d)(_internal[ii].segmentPercent(p3, p0)).get(),
+				&(eId[ii][3]), vId[ii][3], vId[ii][0]
+			);			
+			DTINFOWF(
+				init(), 
+				<< "vId[ii] = " << vId[ii] << LOGDEL
+				<< "eId[ii] = " << eId[ii]
+			);
+			std::list<GEdge*> ge;
+			std::vector<int> eori(4);						
+			ge.push_back( _gm->getEdgeByTag(abs(eId[ii][0])) );
+			ge.push_back( _gm->getEdgeByTag(abs(eId[ii][1])) );
+			ge.push_back( _gm->getEdgeByTag(abs(eId[ii][2])) );
+			ge.push_back( _gm->getEdgeByTag(abs(eId[ii][3])) );
+			eori[0] = ( eId[ii][0] < 0 ? -1 : 1);
+			eori[1] = ( eId[ii][1] < 0 ? -1 : 1);
+			eori[2] = ( eId[ii][2] < 0 ? -1 : 1);
+			eori[3] = ( eId[ii][3] < 0 ? -1 : 1);			
+			int fId;
+			_gm->addIfFaceToGmshModel( &(_internal[ii]), &fId, ge, eori);
+			_gm->getDtGmshFaceByTag(1)->addEdge(
+        _gm->getEdgeByTag(eId[ii][0]), 1
+			);			
+			_gm->getDtGmshFaceByTag(2)->addEdge(
+        _gm->getEdgeByTag(eId[ii][2]), 1
+			);
+			gr->addFace( _gm->getDtGmshFaceByTag(fId), 1 );
+		}		
 	}
 	
   void map3dTo3dWithInternalGmsh::makeGrid(void) {
@@ -113,7 +169,7 @@ namespace dtOO {
 		_gm->mesh(0);
 		_gm->mesh(1);
 		_gm->mesh(2);
-		_gm->mesh(3);
+//		_gm->mesh(3);
 		
     //
 		// force renumbering mesh in gmsh
@@ -128,7 +184,9 @@ namespace dtOO {
 		//
 		// mark as meshed
 		//
-		boundedVolume::setMeshed();		
+		boundedVolume::setMeshed();	
+		
+		_gm->writeMSH("dieterHerbert.msh");		
 	}
   
 	void map3dTo3dWithInternalGmsh::makePreGrid(void) {

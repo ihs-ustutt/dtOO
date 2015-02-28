@@ -130,9 +130,6 @@ namespace dtOO {
 				pbl->execute_this();
 			}
 			
-			std::vector< moab::EntityHandle > handles;
-			mbCore->get_entities_by_dimension(0, 2, handles, true);
-			mbCore->delete_entities(&(handles[0]), static_cast<int>(handles.size()));
 			mbCore->write_mesh("dieterherbert_nach.vtk");
 			delete pbl;
 		}
