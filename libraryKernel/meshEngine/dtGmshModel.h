@@ -13,6 +13,7 @@ class GVertex;
 
 namespace dtOO {
   class map1dTo3d;
+  class map2dTo3d;
   class map3dTo3d;
   class dtGmshRegion;
   class dtGmshFace;
@@ -46,6 +47,10 @@ namespace dtOO {
       int * const tag, 
       int const from, 
       int const to 
+    );
+    void addIfFaceToGmshModel(
+      map2dTo3d const * const face, int * const tag,
+      std::list< GEdge * > const & edges, std::vector< int > const & ori
     );
     dtGmshRegion * addRegionToGmshModel( map3dTo3d const * const vol );
     void meshEdgeTransfiniteFromTo(int const from, int const to, int const type, float const coeff, int const nEl);

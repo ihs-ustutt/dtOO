@@ -83,6 +83,25 @@ namespace dtOO {
 			this->add(ge);
 		}
   }
+
+  void dtGmshModel::addIfFaceToGmshModel( 
+    map2dTo3d const * const face, int * const tag,
+		std::list< GEdge * > const & edges, std::vector< int > const & ori
+  ) {
+		*tag = this->getNumFaces()+1;	
+		
+		dtGmshFace * gf = new dtGmshFace(this, *tag, edges, ori);
+		gf->setMap2dTo3d(face);
+		
+		int tTag = alreadyInModel(gf);
+		if (tTag) {
+			delete gf;
+			*tag = tTag;
+		}
+		else {
+			this->add(gf);
+		}
+  }	
 	 
 	/**
    * @todo What if region is not 6-sided?
@@ -285,7 +304,10 @@ namespace dtOO {
 			gf.back()->setMap2dTo3d(vol->segmentPercent(p2, p1, p5, p6));	
 		}
 				
-		this->add( new dtGmshRegionHex(this, rId, eId, gf, fori) );		
+		dtGmshRegion * gr = new dtGmshRegionHex(this, rId, eId, gf, fori);
+		this->add(gr);		
+		
+		return gr;
 	}
 	
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {
@@ -316,10 +338,10 @@ namespace dtOO {
     std::list<GEdge*>::iterator it = edges.begin();
     for (it; it != edges.end(); ++it) {
       if ( (*it)->getBeginVertex()->tag() == to ) {
-        return (*it)->tag();
+        return -((*it)->tag());
       }
       else if ( (*it)->getEndVertex()->tag() == to ) {
-        return -(*it)->tag();
+        return (*it)->tag();
       }
     }
   }
