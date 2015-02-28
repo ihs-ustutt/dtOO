@@ -65,5 +65,11 @@ namespace dtOO {
 			(*f_it)->meshAttributes.method = MESH_UNSTRUCTURED;
 			(*f_it)->meshAttributes.recombine = 0;
 		}
-  }	
+  }
+	
+  void dtGmshRegion::addFace( GFace * face, int const ori ) {
+    l_faces.push_back( face );
+    face->addRegion(this);
+    l_dirs.push_back( ori );
+  }  	
 }

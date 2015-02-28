@@ -18,6 +18,7 @@ namespace dtOO {
     dtGmshRegion( GModel *m, int tag, const std::list<dtGmshFace*> &faces, const std::vector<int> &ori );
     void meshTransfinite( void );
     void meshUnstructured( void );
+    void addFace( GFace * face, int const ori );
   private:
 
   };

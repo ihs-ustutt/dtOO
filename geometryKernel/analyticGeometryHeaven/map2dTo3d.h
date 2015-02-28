@@ -55,6 +55,7 @@ namespace dtOO {
       dtPoint3 getPoint( dtPoint2 const & pUV ) const;
       dtPoint3 getPoint( dtPoint2 const * const pUV ) const;
       dtPoint3 getPointPercent( float const & uu, float const & vv ) const;
+      dtPoint3 getPointPercent( dtPoint2 const & pUV ) const;
       dtVector3 getPointPercentVector( float const & uu, float const & vv ) const;
       bool isClosedU( void ) const;
       bool isClosedV( void ) const;

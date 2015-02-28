@@ -191,4 +191,20 @@ namespace dtOO {
 		);		
     return new analyticSurface(ss.get());
   }
+
+	std::string analyticSurface::dumpToString( void ) const {
+		std::stringstream ss;
+		
+		ss 
+		<< DTLOGEVAL(_dtS->virtualClassName()) << LOGDEL
+    << DTLOGEVAL(_dtS->closedU()) << LOGDEL
+		<< DTLOGEVAL(_dtS->closedV()) << LOGDEL
+		<< DTLOGEVAL(_dtS->minU()) << LOGDEL
+		<< DTLOGEVAL(_dtS->minV()) << LOGDEL
+		<< DTLOGEVAL(_dtS->maxU()) << LOGDEL
+		<< DTLOGEVAL(_dtS->maxV());
+		
+		
+		return ss.str();
+	}	
 }

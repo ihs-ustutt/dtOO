@@ -2,6 +2,7 @@
 #include <functionHeaven/scaMuParserOneD.h>
 #include <functionHeaven/scaMuParserTwoD.h>
 #include <functionHeaven/vec3dMuParserTwoD.h>
+#include <functionHeaven/vec2dMuParserTwoD.h>
 #include <functionHeaven/vec3dMuParserThreeD.h>
 #include <functionHeaven/analyticFunction.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -89,6 +90,28 @@ namespace dtOO {
 
 			sFunP->push_back(theF);
     }		
+		//
+		// vec2dMuParserTwoD
+		//
+    else if (isVec2d && isTwoD) {		
+			QDomElement xOneEl = getChild("x_one", toBuildP);
+			QDomElement xTwoEl = getChild("x_two", toBuildP);
+
+			vec2dMuParserTwoD * theF 
+			= 
+			new vec2dMuParserTwoD(
+			  expStr, 
+			  getAttributeStr("name", xOneEl), 
+				getAttributeStr("name", xTwoEl)
+			); 
+			
+			theF->setMin(0, getAttributeFloatMuParse("min", xOneEl, cValP, depSFunP));
+			theF->setMin(1, getAttributeFloatMuParse("min", xTwoEl, cValP, depSFunP));
+			theF->setMax(0, getAttributeFloatMuParse("max", xOneEl, cValP, depSFunP));
+			theF->setMax(1, getAttributeFloatMuParse("max", xTwoEl, cValP, depSFunP));
+
+			sFunP->push_back(theF);
+    }				
 		//
 		// vec3dMuParserTwoD
 		//

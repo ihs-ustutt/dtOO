@@ -46,6 +46,7 @@ namespace dtOO {
       virtual map2dTo3d * segmentRectangle(
         dtPoint2 const & p0, dtPoint2 const & p1
       ) const;          
+      virtual std::string dumpToString( void ) const;      
       //
       // read and modify member attributes
       //
