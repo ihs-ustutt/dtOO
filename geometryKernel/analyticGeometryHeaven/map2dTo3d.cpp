@@ -62,6 +62,10 @@ namespace dtOO {
     return getPoint( u_percent(uu), v_percent(vv) );
   }    
 	
+  dtPoint3 map2dTo3d::getPointPercent( dtPoint2 const & pUV ) const {
+    return getPointPercent( pUV.x(), pUV.y() );
+  }    
+	
 	vectorHandling< renderInterface * > map2dTo3d::getRender( void ) const {
 		int renderResU = analyticGeometry::getRenderResolution(0);
 		int renderResV = analyticGeometry::getRenderResolution(1);		
@@ -225,7 +229,7 @@ namespace dtOO {
   dtVector3 map2dTo3d::firstDerU( float const & uu, float const & vv) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
-    float const deltaPer = 0.0001;
+    float const deltaPer = 0.01;
     float const deltaPerInv = 1. - deltaPer;		
     
     if (uP<deltaPer) {
@@ -254,7 +258,7 @@ namespace dtOO {
   dtVector3 map2dTo3d::firstDerV( float const & uu, float const & vv) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
-    float const deltaPer = 0.0001;
+    float const deltaPer = 0.01;
     float const deltaPerInv = 1. - deltaPer;		
     
     if (vP<deltaPer) {
@@ -283,7 +287,7 @@ namespace dtOO {
   dtVector3 map2dTo3d::secondDerUU( float const & uu, float const & vv) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
-    float const deltaPer = 0.001;
+    float const deltaPer = 0.01;
     float const deltaPerInv = 1. - deltaPer;		
     
     if (uP<deltaPer) {
@@ -312,7 +316,7 @@ namespace dtOO {
   dtVector3 map2dTo3d::secondDerVV( float const & uu, float const & vv) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
-    float const deltaPer = 0.001;
+    float const deltaPer = 0.01;
     float const deltaPerInv = 1. - deltaPer;		
     
     if (vP<deltaPer) {
@@ -341,7 +345,7 @@ namespace dtOO {
   dtVector3 map2dTo3d::secondDerUV( float const & uu, float const & vv) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
-    float const deltaPer = 0.001;
+    float const deltaPer = 0.01;
     float const deltaPerInv = 1. - deltaPer;
     if (vP<deltaPer) {
       return (
