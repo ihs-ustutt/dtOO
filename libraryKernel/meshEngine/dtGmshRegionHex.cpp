@@ -22,7 +22,7 @@ namespace dtOO {
  *                   3-7 > 11
  */                  
   dtGmshRegionHex::dtGmshRegionHex( 
-    GModel *m, int tag, 
+    ::GModel *m, int tag, 
     const std::vector<int> & geTag,
 		const std::list< dtGmshFace * > &faces, 
     const std::vector<int> & ori

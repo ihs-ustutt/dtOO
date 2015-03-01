@@ -11,9 +11,9 @@ class GFace;
 namespace dtOO {
   class dtGmshRegionHex : public dtGmshRegion {
   public:
-    dt__CLASSSTD(dtGmshRegionHex, GEntity);
+    dt__CLASSSTD(dtGmshRegionHex, ::GEntity);
     dtGmshRegionHex( 
-      GModel *m, 
+      ::GModel *m, 
       int tag, 
       const std::vector<int> & geTag,
 		  const std::list< dtGmshFace * > &faces, 

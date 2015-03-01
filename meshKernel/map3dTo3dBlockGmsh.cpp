@@ -57,7 +57,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		GModel::setCurrent(_gm.get());
+		::GModel::setCurrent(_gm.get());
 		
 		vectorHandling< analyticGeometry const * > cI = _m3d->compoundInternal();
 		if (cI.size() == 0) {
@@ -73,7 +73,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		GModel::setCurrent(_gm.get());
+		::GModel::setCurrent(_gm.get());
 		
     //
     // set options

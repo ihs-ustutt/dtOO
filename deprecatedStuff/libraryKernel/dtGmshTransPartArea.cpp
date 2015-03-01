@@ -12,15 +12,15 @@
 #include <interfaceHeaven/ptrHandling.h>
 
 namespace dtOO { 
-  dtGmshTransPartArea::dtGmshTransPartArea(GModel *m, int tag, const std::list<GEdge*> &edges, const std::vector< int > & ori) 
+  dtGmshTransPartArea::dtGmshTransPartArea(::GModel *m, int tag, const std::list< ::GEdge * > &edges, const std::vector< int > & ori) 
   : dtGmshFace(m, tag, edges, ori) {
     if (edges.size() != 4) {
       dt__THROW(dtGmshTransPartArea(),
               << "Currently only supported with 4 edges.");
     }
-    typedef std::list<GEdge*>::const_iterator EIter;    
+    typedef std::list< ::GEdge * >::const_iterator EIter;    
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
-      GEdge * ge = *ei;
+      ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
       dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
      _edge.push_back(dge);
@@ -28,16 +28,16 @@ namespace dtOO {
     }
   }
   
-  dtGmshTransPartArea::dtGmshTransPartArea(GModel *m, int tag, const std::list<GEdge*> &edges) 
+  dtGmshTransPartArea::dtGmshTransPartArea(::GModel *m, int tag, const std::list< ::GEdge * > &edges) 
   : dtGmshFace(m, tag, edges) {
     if (edges.size() != 4) {
       dt__THROW(dtGmshTransPartArea(),
               << "Currently only supported with 4 edges.");
     } 
 
-    typedef std::list<GEdge*>::const_iterator EIter;    
+    typedef std::list< ::GEdge * >::const_iterator EIter;    
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
-      GEdge * ge = *ei;
+      ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
       dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
       _edge.push_back(dge);

@@ -88,7 +88,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		GModel::setCurrent(_gm.get());
+		::GModel::setCurrent(_gm.get());
 		_gm->clearModel();
 		
     //
@@ -115,7 +115,7 @@ namespace dtOO {
 		
 		dtGmshFace const * gf = _meshedBV->getFace(_meshedFaceTag);
 		
-		twoDArrayHandling< MVertex * > mv = gf->reconstructEdgesFromSurfaceMesh();
+		twoDArrayHandling< ::MVertex * > mv = gf->reconstructEdgesFromSurfaceMesh();
 		twoDArrayHandling< dtPoint3 > mvUVW;//(mv.size(0));
 		mvUVW.resize(mv.size(0));
 		
@@ -127,14 +127,14 @@ namespace dtOO {
 		dt__pVH(dtCurve) dtC;//(mv.size(0));
 		std::vector< dtPoint3 > ultraBoxPoints;//(mv.size(0));
 		for (
-			twoDArrayHandling< MVertex * >::iterator0 it0 = mv.begin();
+			twoDArrayHandling< ::MVertex * >::iterator0 it0 = mv.begin();
 			it0 != mv.end();
 			++it0
 		) {
 			mvUVW[ii].resize(mv[ii].size());
 			jj = 0;
 			for (
-				twoDArrayHandling< MVertex * >::iterator1 it1 = it0->begin();
+				twoDArrayHandling< ::MVertex * >::iterator1 it1 = it0->begin();
 				it1 != it0->end();
 				++it1
 			) {			
@@ -319,7 +319,7 @@ namespace dtOO {
 	}
 
 	vectorHandling< renderInterface * > vec3dInMap3dTo3dWithMeshedSurface::getExtRender( void ) const {
-		GModel::setCurrent(_gm.get());
+		::GModel::setCurrent(_gm.get());
 		
 		std::string toRender = extRenderWhat();
 

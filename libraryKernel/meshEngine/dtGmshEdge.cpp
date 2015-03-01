@@ -18,7 +18,7 @@
 #include <progHelper.h>
 
 namespace dtOO {  
-  dtGmshEdge::dtGmshEdge(GModel *m, int tag, GVertex *v1, GVertex *v2)
+  dtGmshEdge::dtGmshEdge(::GModel *m, int tag, ::GVertex *v1, ::GVertex *v2)
     : GEdge(m, tag, v1, v2) {
     _isSeamU = false;
     _isSeamV = false;
@@ -88,9 +88,9 @@ namespace dtOO {
     meshTransfinite(type, coeff);
   }
 	
-  bool dtGmshEdge::isEqual( GEdge const * const ge0, GEdge const * const ge1 ) {	
-		std::list< GVertex * > VL0 = ge0->vertices();
-		std::list< GVertex * > VL1 = ge1->vertices();
+  bool dtGmshEdge::isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 ) {	
+		std::list< ::GVertex * > VL0 = ge0->vertices();
+		std::list< ::GVertex * > VL1 = ge1->vertices();
 		
 		if (VL0.size() != VL1.size()) {
 			return false;
@@ -102,8 +102,8 @@ namespace dtOO {
       "xyz_resolution"
     );
 		int counter = 0;
-		std::list< GVertex * >::iterator V0_it;
-		std::list< GVertex * >::iterator V1_it;
+		std::list< ::GVertex * >::iterator V0_it;
+		std::list< ::GVertex * >::iterator V1_it;
 		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
 			dtPoint3 v0((*V0_it)->x(), (*V0_it)->y(), (*V0_it)->z());
       for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {

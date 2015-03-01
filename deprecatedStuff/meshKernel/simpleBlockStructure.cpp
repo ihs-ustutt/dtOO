@@ -875,13 +875,13 @@ namespace dtOO {
   float simpleBlockStructure::getJacobianInBlockFace( int const blockIndex, int const faceIndex ) const {
     std::vector< int > const & bfi = _blockFaceVertex[blockIndex][faceIndex];
     
-    std::vector< MVertex > vv;
+    std::vector< ::MVertex > vv;
     for (int ii=0; ii<4; ii++) {
       dtPoint3 vertex = getVertex(bfi[ii]);
-      vv.push_back( MVertex( vertex.x(), vertex.y(), vertex.z() ) );
+      vv.push_back( ::MVertex( vertex.x(), vertex.y(), vertex.z() ) );
     }
     
-    MQuadrangle quad( &vv[0], &vv[1], &vv[2] , &vv[3] );
+    ::MQuadrangle quad( &vv[0], &vv[1], &vv[2] , &vv[3] );
     
     std::vector< double > det;
     det.push_back( quad.getJacobianDeterminant(-1, -1, 0) );
@@ -919,12 +919,12 @@ namespace dtOO {
   }
   
 //  float simpleBlockStructure::getJacobianOfBlock( std::string const blockName ) const {
-//    std::vector< MVertex > vertex;
+//    std::vector< ::MVertex > vertex;
 //    blockNumbering const & nodes = _block[getBlockIndex(blockName)];
 //    
 //    for (int ii=0; ii<nodes.size(); ii++) {
 //      dtPoint3 const pp = getVertex(nodes[ii]);
-//      vertex.push_back( MVertex( pp.x(), pp.y(), pp.z() ) );
+//      vertex.push_back( ::MVertex( pp.x(), pp.y(), pp.z() ) );
 //    }
 //    
 //    MHexahedron hex( &vertex[3], &vertex[2], &vertex[6], &vertex[7],

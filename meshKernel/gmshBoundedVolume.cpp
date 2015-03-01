@@ -48,13 +48,13 @@ namespace dtOO {
 		//
 		_gm.reset( new dtGmshModel() );
 
-    GModel::setCurrent(_gm.get());		
+    ::GModel::setCurrent(_gm.get());		
 	}	
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( void ) const {
 		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
 		
-		GModel::setCurrent(_gm.get());
+		::GModel::setCurrent(_gm.get());
 		
 		vectorHandling< renderInterface * > rV(1);
 		rV[0] = _gm->toUnstructured3dMesh();//_vertices, _elements);
@@ -62,7 +62,7 @@ namespace dtOO {
 	}	
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getExtRender( void ) const {
-		GModel::setCurrent(_gm.get());
+		::GModel::setCurrent(_gm.get());
 		
 		vectorHandling< renderInterface * > rV;
 		std::string toRender = extRenderWhat();
@@ -74,30 +74,30 @@ namespace dtOO {
 					dtGmshModel::intGEntityVMap groups;
 					_gm->getPhysicalGroups(ii, groups);
 					int physNum = _gm->getPhysicalNumber(ii, toRender);
-					std::vector< GEntity * > & geV = groups[physNum];
+					std::vector< ::GEntity * > & geV = groups[physNum];
 					
-					dt__FORALLITER(std::vector< GEntity * >, geV, it) {
-						GEntity * ge = *it;
+					dt__FORALLITER(std::vector< ::GEntity * >, geV, it) {
+						::GEntity * ge = *it;
 						dtGmshFace * gf = dtGmshFace::DownCast(ge);
 						dtGmshRegion * gr = dtGmshRegion::DownCast(ge);
 
 					  if (gf) {
-							std::vector< MElement * > elTwoD;
+							std::vector< ::MElement * > elTwoD;
 							for (int jj=0;jj<gf->getNumMeshElements(); jj++) {
 								elTwoD.push_back( gf->getMeshElement(jj) );	
 							}
-							std::vector< MVertex * > vertices;
+							std::vector< ::MVertex * > vertices;
 							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
 							rV.push_back(
 							  _gm->toUnstructured3dSurfaceMesh(vertices, elTwoD)
 							);
 						}
 						else if (gr) {
-							std::vector< MElement * > elThreeD;
+							std::vector< ::MElement * > elThreeD;
 							for (int jj=0;jj<gr->getNumMeshElements(); jj++) {
 								elThreeD.push_back( gr->getMeshElement(jj) );	
 							}							
-							std::vector< MVertex * > vertices;
+							std::vector< ::MVertex * > vertices;
 							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
 							rV.push_back(
 							  dtGmshModel::toUnstructured3dMesh(vertices, elThreeD)
@@ -120,19 +120,19 @@ namespace dtOO {
 	}
 	
 	dtGmshFace const * gmshBoundedVolume::getFace( std::string const & tag ) const {
-		GModel::setCurrent(_gm.get());
+		::GModel::setCurrent(_gm.get());
 		
 		dt__FORALL(_physLabels[2], jj,
 			if (_physLabels[2][jj] == tag) {
 				int pNum = _gm->getPhysicalNumber(2, tag);
 				dtGmshModel::intGEntityVMap groups;
 				_gm->getPhysicalGroups(2, groups);
-				std::vector< GEntity * > & geV
+				std::vector< ::GEntity * > & geV
 				=
 				groups[_gm->getPhysicalNumber(2, tag)];
 
-				dt__FORALLITER(std::vector< GEntity * >, geV, it) {
-					GEntity * ge = *it;
+				dt__FORALLITER(std::vector< ::GEntity * >, geV, it) {
+					::GEntity * ge = *it;
 					dtGmshFace * gf = dtGmshFace::DownCast(ge);
 					if (gf) {
 						return gf;
@@ -147,7 +147,7 @@ namespace dtOO {
 	}
 	
 	void gmshBoundedVolume::updatePhysicals( void ) {
-		GModel::setCurrent(_gm.get());
+		::GModel::setCurrent(_gm.get());
 		
 		dtGmshModel::intGEntityVMap groups;		
 		_physLabels.resize(4);

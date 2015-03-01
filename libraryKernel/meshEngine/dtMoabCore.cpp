@@ -25,7 +25,7 @@ namespace dtOO {
 		}		
 	}
 	
-  void dtMoabCore::addVertices( std::vector< MVertex const * > const & mv ) {
+  void dtMoabCore::addVertices( std::vector< ::MVertex const * > const & mv ) {
 		//
 		// get global id tag
 		//
@@ -96,7 +96,7 @@ namespace dtOO {
 		handles.clear();
 	}
 	
-  moab::Range dtMoabCore::addElements( std::vector< MElement const * > const & me ) {
+  moab::Range dtMoabCore::addElements( std::vector< ::MElement const * > const & me ) {
 		dt__THROW_IF(me.size()==0, addElements());
 
 		//
@@ -124,10 +124,10 @@ namespace dtOO {
 		// get type
 		//
 		moab::EntityType type;
-		MQuadrangle const * quad = dynamic_cast< MQuadrangle const * >(me[0]);
-		MTetrahedron const * tet = dynamic_cast< MTetrahedron const * >(me[0]);
-		MHexahedron const * hex = dynamic_cast< MHexahedron const * >(me[0]);
-		MTriangle const * tri = dynamic_cast< MTriangle const * >(me[0]);
+		::MQuadrangle const * quad = dynamic_cast< ::MQuadrangle const * >(me[0]);
+		::MTetrahedron const * tet = dynamic_cast< ::MTetrahedron const * >(me[0]);
+		::MHexahedron const * hex = dynamic_cast< ::MHexahedron const * >(me[0]);
+		::MTriangle const * tri = dynamic_cast< ::MTriangle const * >(me[0]);
 		int elementDim = 0;
 		if (quad) {
 			elementDim = 2;
@@ -156,12 +156,12 @@ namespace dtOO {
 		int counter = 0;
 		int elCount;
     this->get_number_entities_by_dimension(0, elementDim, elCount, true);
-		dt__FORALLCONSTITER(std::vector< MElement const * >, me, it) {
-			MElement const * thisElement = *it;
+		dt__FORALLCONSTITER(std::vector< ::MElement const * >, me, it) {
+			::MElement const * thisElement = *it;
 			elem_ids.push_back(elCount+1);
 			elCount++;
-			std::vector< MVertex * > verts;
-			const_cast<MElement*>(thisElement)->getVertices(verts);
+			std::vector< ::MVertex * > verts;
+			const_cast< ::MElement * >(thisElement)->getVertices(verts);
 			dt__FORALLINDEX(verts, ii) {
 				connectivity[counter]	= _node_id_map[verts[ii]->getNum()];
 				counter++;

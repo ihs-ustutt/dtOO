@@ -48,9 +48,9 @@ namespace dtOO {
 		
 		dt__THROW_IF(gm==NULL, update());
 		
-		for(GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
-			std::list< GFace * > faceL = (*r_it)->faces();
-			std::list< GFace * >::iterator f_it;
+		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
+			std::list< ::GFace * > faceL = (*r_it)->faces();
+			std::list< ::GFace * >::iterator f_it;
 
 			//
 			// check size

@@ -30,12 +30,12 @@
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
 
 namespace dtOO {
-  dtGmshTransFace::dtGmshTransFace(GModel *m, int tag, const std::list<GEdge*> &edges, const std::vector< int > & ori) 
+  dtGmshTransFace::dtGmshTransFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges, const std::vector< int > & ori) 
     : dtGmshFace(m, tag, edges, ori) {
     vectorHandling< map1dTo3d const * > curve;
-    typedef std::list<GEdge*>::const_iterator EIter;    
+    typedef std::list< ::GEdge * >::const_iterator EIter;    
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
-      GEdge * ge = *ei;
+      ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
       dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
       curve.push_back( dge->getMap1dTo3d()->clone() );
@@ -46,12 +46,12 @@ namespace dtOO {
     curve.destroy();
   }
   
-  dtGmshTransFace::dtGmshTransFace(GModel *m, int tag, const std::list<GEdge*> &edges) 
+  dtGmshTransFace::dtGmshTransFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges) 
     : dtGmshFace(m, tag, edges) {
     vectorHandling< map1dTo3d const * > curve;
-    typedef std::list<GEdge*>::const_iterator EIter;    
+    typedef std::list< ::GEdge * >::const_iterator EIter;    
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
-      GEdge * ge = *ei;
+      ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
       dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
       curve.push_back( dge->getMap1dTo3d()->clone() );
@@ -109,8 +109,8 @@ namespace dtOO {
           break;
         }        
       }
-			std::list<GVertex*> verts = this->vertices();
-			std::list<GVertex*>::iterator theIter;
+			std::list<::GVertex*> verts = this->vertices();
+			std::list<::GVertex*>::iterator theIter;
 			std::vector<dtPoint3> vertUVW;
       for ( theIter=verts.begin(); theIter != verts.end(); theIter++ ) {
 				vertUVW.push_back( 
@@ -177,7 +177,7 @@ namespace dtOO {
       ptrHandling< vec3dTwoD > v3d2d( 
 			  new vec3dSurfaceTwoD(dtS.get()) 
 			);
-      v3d2d->setLabel( "GFace::tag()_"+stringPrimitive().intToString(GFace::tag()) );
+      v3d2d->setLabel( "GFace::tag()_"+stringPrimitive().intToString(::GFace::tag()) );
 			
       ptrHandling< vec3dTwoDInMap3dTo3d > surf( 
         new vec3dTwoDInMap3dTo3d( v3d2d.get(), m3d ) 
@@ -190,10 +190,10 @@ namespace dtOO {
     DTINFOWF(updateFace(), << "Updating ...");
     
     vectorHandling< map1dTo3d const * > curve;
-    std::list<GEdge*> edges = GFace::edges();
-    std::list<GEdge*>::iterator it;
+    std::list< ::GEdge * > edges = ::GFace::edges();
+    std::list< ::GEdge * >::iterator it;
     for (it=edges.begin(); it != edges.end(); ++it) {
-      GEdge const * ge = *it;
+      ::GEdge const * ge = *it;
       dtGmshEdge const * dge;
       dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
       curve.push_back( dge->getMap1dTo3d()->clone() );
@@ -214,8 +214,8 @@ namespace dtOO {
     // respline splineCurve3d in parameter space of map3dTo3d
     //
     map3dTo3d const * m3d = NULL;
-    std::list<GEdge*> ee = this->edges();
-    std::list<GEdge*>::iterator e_it;// = ee.begin();
+    std::list< ::GEdge * > ee = this->edges();
+    std::list< ::GEdge * >::iterator e_it;// = ee.begin();
     for (e_it = ee.begin(); e_it != ee.end(); ++e_it) {
       dtGmshEdge * dtge;
       dt__CANDOWNCAST(*e_it, dtGmshEdge, dtge);
@@ -238,10 +238,10 @@ namespace dtOO {
     vectorHandling< dtCurve const * > tmp(4);    
     for (e_it = ee.begin(); e_it != ee.end(); ++e_it) {      
       std::vector<dtPoint3> pp;
-      GVertex * gv = (*e_it)->getBeginVertex();
+      ::GVertex * gv = (*e_it)->getBeginVertex();
       pp.push_back( m3d->reparamInVolume(dtPoint3(gv->x(), gv->y(), gv->z())) );
       for (int ii=0;ii<(*e_it)->getNumMeshVertices();ii++) {
-        MVertex * mv = (*e_it)->getMeshVertex(ii);
+        ::MVertex * mv = (*e_it)->getMeshVertex(ii);
         pp.push_back( m3d->reparamInVolume(dtPoint3(mv->x(), mv->y(), mv->z())) );
       }        
       gv = (*e_it)->getEndVertex();
@@ -255,7 +255,7 @@ namespace dtOO {
 		);
     tmp.destroy();
     ptrHandling< vec3dTwoD > v3d2d( new vec3dSurfaceTwoD(dtS.get()) );
-    v3d2d->setLabel( "GFace::tag()_"+stringPrimitive().intToString(GFace::tag()) );
+    v3d2d->setLabel( "GFace::tag()_"+stringPrimitive().intToString(::GFace::tag()) );
 
     ptrHandling< vec3dTwoDInMap3dTo3d > surf( 
       new vec3dTwoDInMap3dTo3d( v3d2d.get(), m3d ) 

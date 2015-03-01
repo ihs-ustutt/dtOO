@@ -67,7 +67,7 @@ namespace dtOO {
   ) {
 		*tag = this->getNumEdges()+1;
 		dtGmshEdge * ge = new dtGmshEdge(
-			this, *tag, GModel::getVertexByTag(from), GModel::getVertexByTag(to)
+			this, *tag, ::GModel::getVertexByTag(from), ::GModel::getVertexByTag(to)
 		);
 		ge->setMap1dTo3d( edge );
 		
@@ -75,7 +75,7 @@ namespace dtOO {
 		if (tTag) {
 			delete ge;
 			*tag = tTag;
-			if ( GModel::getEdgeByTag(*tag)->getBeginVertex()->tag() != from ) {
+			if ( ::GModel::getEdgeByTag(*tag)->getBeginVertex()->tag() != from ) {
 				*tag = -tTag;
 			}
 		}
@@ -86,7 +86,7 @@ namespace dtOO {
 
   void dtGmshModel::addIfFaceToGmshModel( 
     map2dTo3d const * const face, int * const tag,
-		std::list< GEdge * > const & edges, std::vector< int > const & ori
+		std::list< ::GEdge * > const & edges, std::vector< int > const & ori
   ) {
 		*tag = this->getNumFaces()+1;	
 		
@@ -107,7 +107,7 @@ namespace dtOO {
     map2dTo3d const * const face, int * const tag,
 		int const & eId0, int const & eId1, int const & eId2, int const & eId3
   ) {
-		std::list<GEdge*> ge;
+		std::list< ::GEdge * > ge;
 		ge.push_back( this->getEdgeByTag(abs(eId0)) );
 		ge.push_back( this->getEdgeByTag(abs(eId1)) );
 		ge.push_back( this->getEdgeByTag(abs(eId2)) );
@@ -125,7 +125,7 @@ namespace dtOO {
    * @todo What if region is not 6-sided?
    */
 	dtGmshRegion * dtGmshModel::addRegionToGmshModel( map3dTo3d const * const vol ) {
-		int rId = GModel::getNumRegions()+1;
+		int rId = ::GModel::getNumRegions()+1;
 		
     dtPoint3 p0(0., 0., 0.);
 		dtPoint3 p1(1., 0., 0.);
@@ -211,21 +211,21 @@ namespace dtOO {
 	}
 	
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {
-    GRegion * region = GModel::getRegionByTag(tag);
+    ::GRegion * region = ::GModel::getRegionByTag(tag);
     dt__PTRASS(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
     
     return gRegion;    
   }
   
   dtGmshFace * dtGmshModel::getDtGmshFaceByTag( int const tag ) const {
-    GFace * face = GModel::getFaceByTag(tag);
+    ::GFace * face = ::GModel::getFaceByTag(tag);
     dt__PTRASS(dtGmshFace * gFace, dtGmshFace::DownCast(face));
     
     return gFace;    
   }
   
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByTag( int const tag ) const {
-    GEdge * edge = GModel::getEdgeByTag(tag);
+    ::GEdge * edge = ::GModel::getEdgeByTag(tag);
     dt__PTRASS(dtGmshEdge * gEdge, dtGmshEdge::DownCast(edge));
     
     return gEdge;    
@@ -234,8 +234,8 @@ namespace dtOO {
   int dtGmshModel::getDtGmshEdgeTagByFromTo( int const from, int const to ) const {
     dtGmshVertex * gv = getDtGmshVertexByTag(from);
     
-    std::list<GEdge*> edges = gv->edges();
-    std::list<GEdge*>::iterator it = edges.begin();
+    std::list< ::GEdge * > edges = gv->edges();
+    std::list< ::GEdge * >::iterator it = edges.begin();
     for (it; it != edges.end(); ++it) {
       if ( (*it)->getBeginVertex()->tag() == to ) {
         return -((*it)->tag());
@@ -251,46 +251,46 @@ namespace dtOO {
   }  
 
   dtGmshVertex * dtGmshModel::getDtGmshVertexByTag( int const tag ) const {
-    GVertex * vertex = GModel::getVertexByTag(tag);
+    ::GVertex * vertex = ::GModel::getVertexByTag(tag);
    
     dt__PTRASS( dtGmshVertex * gVertex, dtGmshVertex::DownCast(vertex) );
     
     return gVertex;    
   }  
 
-  dtGmshRegion * dtGmshModel::cast2DtGmshRegion( GEntity * gr ){
+  dtGmshRegion * dtGmshModel::cast2DtGmshRegion( ::GEntity * gr ){
     dtGmshRegion * ret;
     dt__MUSTDOWNCAST(gr, dtGmshRegion, ret);
     
     return ret;
   }
   
-  dtGmshFace * dtGmshModel::cast2DtGmshFace( GEntity * gf ){
+  dtGmshFace * dtGmshModel::cast2DtGmshFace( ::GEntity * gf ){
     dtGmshFace * ret;
     dt__MUSTDOWNCAST(gf, dtGmshFace, ret);
     
     return ret;
   }
   
-  dtGmshEdge * dtGmshModel::cast2DtGmshEdge( GEntity * ge ) {
+  dtGmshEdge * dtGmshModel::cast2DtGmshEdge( ::GEntity * ge ) {
     dtGmshEdge * ret;
     dt__MUSTDOWNCAST(ge, dtGmshEdge, ret);
     
     return ret;    
   }
   
-  dtGmshVertex * dtGmshModel::cast2DtGmshVertex( GEntity * gv ) {
+  dtGmshVertex * dtGmshModel::cast2DtGmshVertex( ::GEntity * gv ) {
     dtGmshVertex * ret;
     dt__MUSTDOWNCAST(gv, dtGmshVertex, ret);
     
     return ret;    
   }
 
-  dtPoint3 dtGmshModel::cast2DtPoint3( GVertex * gv ) {
+  dtPoint3 dtGmshModel::cast2DtPoint3( ::GVertex * gv ) {
     return cast2DtGmshVertex(gv)->cast2DtPoint3();
   }
 
-  dtPoint3 dtGmshModel::cast2DtPoint3( MVertex * mv ) {
+  dtPoint3 dtGmshModel::cast2DtPoint3( ::MVertex * mv ) {
     return dtPoint3(mv->x(), mv->y(), mv->z());
   }
 	
@@ -323,21 +323,21 @@ namespace dtOO {
   
   void dtGmshModel::meshEdge( int const tag ) {
     dtGmshEdge * dtge = getDtGmshEdgeByTag(tag);   
-    meshGEdge me;
-    if ( dtge->meshStatistics.status == GEntity::PENDING ) me(dtge);
+    ::meshGEdge me;
+    if ( dtge->meshStatistics.status == ::GEntity::PENDING ) me(dtge);
   }
   
   void dtGmshModel::meshFace( int const tag ) {
     dtGmshFace * dtgf = getDtGmshFaceByTag(tag);
     
-    std::list<GEdge*> ee = dtgf->edges();
-    std::list<GEdge*>::iterator e_it = ee.begin();
+    std::list< ::GEdge * > ee = dtgf->edges();
+    std::list< ::GEdge * >::iterator e_it = ee.begin();
     for ( e_it; e_it != ee.end(); ++e_it) {
       meshEdge( (*e_it)->tag() );
     }
     
-    meshGFace mf;
-    if ( dtgf->meshStatistics.status == GEntity::PENDING ) {
+    ::meshGFace mf;
+    if ( dtgf->meshStatistics.status == ::GEntity::PENDING ) {
       dtgf->makeSuitable();
       mf(dtgf);
     }
@@ -346,19 +346,19 @@ namespace dtOO {
   void dtGmshModel::meshRegion( int const tag ) {
     dtGmshRegion * dtgr = getDtGmshRegionByTag(tag);
     
-    std::list<GFace*> ff = dtgr->faces();
-    std::list<GFace*>::iterator f_it = ff.begin();
+    std::list< ::GFace * > ff = dtgr->faces();
+    std::list< ::GFace * >::iterator f_it = ff.begin();
     for ( f_it; f_it != ff.end(); ++f_it) {
       meshFace( (*f_it)->tag() );
     }
     
-    std::vector<GRegion*> delauny;
-    meshGRegion mr( delauny );
+    std::vector< ::GRegion * > delauny;
+    ::meshGRegion mr( delauny );
     mr(dtgr);    
   }
 
-  int dtGmshModel::alreadyInModel( GVertex const * const gv ) const {
-		for (GModel::viter vIt = __caCThis->firstVertex(); vIt != __caCThis->lastVertex(); ++vIt) {
+  int dtGmshModel::alreadyInModel( ::GVertex const * const gv ) const {
+		for (::GModel::viter vIt = __caCThis->firstVertex(); vIt != __caCThis->lastVertex(); ++vIt) {
 			if ( dtGmshVertex::isEqual(gv, *vIt) ) {
 				DTINFOWF(
 					update(),
@@ -370,8 +370,8 @@ namespace dtOO {
 		return 0;
 	}
 
-  int dtGmshModel::alreadyInModel( GEdge const * const ge ) const {
-		for (GModel::eiter eIt = __caCThis->firstEdge(); eIt != __caCThis->lastEdge(); ++eIt) {
+  int dtGmshModel::alreadyInModel( ::GEdge const * const ge ) const {
+		for (::GModel::eiter eIt = __caCThis->firstEdge(); eIt != __caCThis->lastEdge(); ++eIt) {
 			if ( dtGmshEdge::isEqual(ge, *eIt) ) {
 				DTINFOWF(
 					update(),
@@ -383,8 +383,8 @@ namespace dtOO {
 		return 0;
 	}
 	
-  int dtGmshModel::alreadyInModel( GFace const * const gf ) const {
-		for (GModel::fiter fIt = __caCThis->firstFace(); fIt != __caCThis->lastFace(); ++fIt) {
+  int dtGmshModel::alreadyInModel( ::GFace const * const gf ) const {
+		for (::GModel::fiter fIt = __caCThis->firstFace(); fIt != __caCThis->lastFace(); ++fIt) {
 			if ( dtGmshFace::isEqual(gf, *fIt) ) {
 				DTINFOWF(
 					update(),
@@ -400,12 +400,12 @@ namespace dtOO {
 		//
 		// set current model
 		// 
-		DTINFOWF( toUnstructured3dMesh(), << DTLOGEVAL(GModel::setCurrent(__caCThis)) );
+		DTINFOWF( toUnstructured3dMesh(), << DTLOGEVAL(::GModel::setCurrent(__caCThis)) );
 			
 		//
 		// get all entities
 		//
-		std::vector< GEntity * > ent;
+		std::vector< ::GEntity * > ent;
 		this->getEntities(ent);
 		vectorHandling< dtPoint3 > pp(__caCThis->getNumMeshVertices());		
 		std::map< int, int > vLoc_num;
@@ -413,7 +413,7 @@ namespace dtOO {
 		int counter = 0;
 		for( int ii=0; ii<ent.size(); ii++ ) {
       for( int jj=0; jj<ent[ii]->getNumMeshVertices(); jj++ ) {
-				MVertex const * const mv = ent[ii]->getMeshVertex(jj);				
+				::MVertex const * const mv = ent[ii]->getMeshVertex(jj);				
 				pp[counter]
 				=
 				dtPoint3(
@@ -433,10 +433,10 @@ namespace dtOO {
 		um->addPoints(pp);
 		
 		for( int ii=0; ii<ent.size(); ii++ ) {
-			GVertex * gv = dynamic_cast< GVertex * >(ent[ii]);
-			GEdge * ge = dynamic_cast< GEdge * >(ent[ii]);
-			GFace * gf = dynamic_cast< GFace * >(ent[ii]);
-			GRegion * gr = dynamic_cast< GRegion * >(ent[ii]);
+			::GVertex * gv = dynamic_cast< ::GVertex * >(ent[ii]);
+			::GEdge * ge = dynamic_cast< ::GEdge * >(ent[ii]);
+			::GFace * gf = dynamic_cast< ::GFace * >(ent[ii]);
+			::GRegion * gr = dynamic_cast< ::GRegion * >(ent[ii]);
 
       if (gv) {
 				unsigned nEl = gv->getNumMeshElements();
@@ -487,22 +487,22 @@ namespace dtOO {
 		// write only 3d elements
 		//
     for (
-			GModel::riter r_it = __caCThis->firstRegion(); 
+			::GModel::riter r_it = __caCThis->firstRegion(); 
 			r_it != __caCThis->lastRegion(); 
 			++r_it
 		) {
-      GRegion * gr = *r_it;
+      ::GRegion * gr = *r_it;
 			unsigned nElemTot = gr->getNumMeshElements();
       for( unsigned ii=0; ii<nElemTot; ii++ ) {
-        MElement * me = gr->getMeshElement(ii);
-        MTetrahedron * mtet = dynamic_cast< MTetrahedron * >(me);
-        MHexahedron * mhex = dynamic_cast< MHexahedron * >(me);
+        ::MElement * me = gr->getMeshElement(ii);
+        ::MTetrahedron * mtet = dynamic_cast< ::MTetrahedron * >(me);
+        ::MHexahedron * mhex = dynamic_cast< ::MHexahedron * >(me);
         //
         // tetrahedron
         //
         if ( mtet ) {
 				  vectorHandling< int > vertsIndex(4);					
-          std::vector< MVertex * > verts;
+          std::vector< ::MVertex * > verts;
           mtet->getVertices(verts);        
           vertsIndex[0] = vLoc_num[verts[0]->getNum()];
           vertsIndex[1] = vLoc_num[verts[1]->getNum()];
@@ -515,7 +515,7 @@ namespace dtOO {
         //
         else if ( mhex ) {
 					vectorHandling< int > vertsIndex(8);
-          std::vector< MVertex * > verts;
+          std::vector< ::MVertex * > verts;
 					mhex->getVertices(verts); 
           vertsIndex[0] = vLoc_num[verts[4]->getNum()];
           vertsIndex[1] = vLoc_num[verts[5]->getNum()];
@@ -534,12 +534,12 @@ namespace dtOO {
 	}
 	
   unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( 
-	  std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
+	  std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
 		std::map< int, int > vLoc_num;
 		for( int ii=0; ii<vertices.size(); ii++ ) {
-			MVertex const * const mv = vertices[ii];				
+			::MVertex const * const mv = vertices[ii];				
 			pp[ii]
 			=
 			dtPoint3(
@@ -554,15 +554,15 @@ namespace dtOO {
 		um->addPoints(pp);
 		
 		for( int ii=0; ii<elements.size(); ii++ ) {
-			MElement * me = elements[ii];
-			MTetrahedron * mtet = dynamic_cast< MTetrahedron * >(me);
-			MHexahedron * mhex = dynamic_cast< MHexahedron * >(me);
+			::MElement * me = elements[ii];
+			::MTetrahedron * mtet = dynamic_cast< ::MTetrahedron * >(me);
+			::MHexahedron * mhex = dynamic_cast< ::MHexahedron * >(me);
 			//
 			// tetrahedron
 			//
 			if ( mtet ) {
 				vectorHandling< int > vertsIndex(4);					
-				std::vector< MVertex * > verts;
+				std::vector< ::MVertex * > verts;
 				mtet->getVertices(verts);        
 				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
 				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
@@ -575,7 +575,7 @@ namespace dtOO {
 			//
 			else if ( mhex ) {
 				vectorHandling< int > vertsIndex(8);
-				std::vector< MVertex * > verts;
+				std::vector< ::MVertex * > verts;
 				mhex->getVertices(verts); 
 				vertsIndex[0] = vLoc_num[verts[4]->getNum()];
 				vertsIndex[1] = vLoc_num[verts[5]->getNum()];
@@ -593,12 +593,12 @@ namespace dtOO {
 	}	
 	
   unstructured3dSurfaceMesh * dtGmshModel::toUnstructured3dSurfaceMesh( 
-	  std::vector< MVertex * > const & vertices, std::vector< MElement * > const & elements
+	  std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
 		std::map< int, int > vLoc_num;
 		for( int ii=0; ii<vertices.size(); ii++ ) {
-			MVertex const * const mv = vertices[ii];				
+			::MVertex const * const mv = vertices[ii];				
 			pp[ii]
 			=
 			dtPoint3(
@@ -613,16 +613,16 @@ namespace dtOO {
 		um->addPoints(pp);
 		
 		for( int ii=0; ii<elements.size(); ii++ ) {
-			MElement * me = elements[ii];
-			MQuadrangle * mquad = dynamic_cast< MQuadrangle * >(me);
-			MTriangle * mtri = dynamic_cast< MTriangle * >(me);
+			::MElement * me = elements[ii];
+			::MQuadrangle * mquad = dynamic_cast< ::MQuadrangle * >(me);
+			::MTriangle * mtri = dynamic_cast< ::MTriangle * >(me);
 			
 			//
 			// quadrangle
 			//
 			if ( mquad ) {
 				vectorHandling< int > vertsIndex(4);					
-				std::vector< MVertex * > verts;
+				std::vector< ::MVertex * > verts;
 				mquad->getVertices(verts);        
 				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
 				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
@@ -632,7 +632,7 @@ namespace dtOO {
 			}    
 			else if ( mtri ) {
 				vectorHandling< int > vertsIndex(3);					
-				std::vector< MVertex * > verts;
+				std::vector< ::MVertex * > verts;
 				mtri->getVertices(verts);        
 				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
 				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
@@ -648,8 +648,8 @@ namespace dtOO {
 			std::vector< dtGmshFace * >  faces;
 			std::vector< dtGmshRegion * >  regions;
 							
-			typedef std::map<int, MVertex*> vertexMap_t;
-			typedef std::map<int, MElement*> elementMap_t;		
+			typedef std::map<int, ::MVertex*> vertexMap_t;
+			typedef std::map<int, ::MElement*> elementMap_t;		
 			
 			int vNum = 0;	
 			vertexMap_t vertexMap;
@@ -776,7 +776,7 @@ namespace dtOO {
 					//		
 					for (int iNode = 0; iNode < nNodes; iNode++) {
 						vNum++;
-						MVertex* mv = new MVertex(nodes[iNode][0], nodes[iNode][1], nodes[iNode][2], 0, vNum);
+						::MVertex* mv = new ::MVertex(nodes[iNode][0], nodes[iNode][1], nodes[iNode][2], 0, vNum);
 						minVertex = std::min(minVertex, vNum);
 						maxVertex = std::max(maxVertex, vNum);
 						vertexMap[vNum] = mv;
@@ -864,12 +864,12 @@ namespace dtOO {
 								eNum++;								
 								int counter = (tmpC)*4;
 								tmpC++;
-								std::vector< MVertex * > locVertices(4, NULL);
+								std::vector< ::MVertex * > locVertices(4, NULL);
 								locVertices[0] = vertexMap[elementData[counter+0]];
 								locVertices[1] = vertexMap[elementData[counter+1]];
 								locVertices[2] = vertexMap[elementData[counter+2]];
 								locVertices[3] = vertexMap[elementData[counter+3]];
-								MQuadrangle * me = new MQuadrangle(locVertices, eNum, 0);
+								::MQuadrangle * me = new ::MQuadrangle(locVertices, eNum, 0);
 								minElement = std::min(minElement, eNum);
 								maxElement = std::max(maxElement, eNum);
 								elementMap[eNum] = me;
@@ -907,7 +907,7 @@ namespace dtOO {
 								eNum++;								
 								int counter = (tmpC)*8;
 								tmpC++;
-								std::vector< MVertex * > locVertices(8, NULL);
+								std::vector< ::MVertex * > locVertices(8, NULL);
 								locVertices[0] = vertexMap[elementData[counter+2]];
 								locVertices[1] = vertexMap[elementData[counter+1]];
 								locVertices[2] = vertexMap[elementData[counter+5]];
@@ -916,7 +916,7 @@ namespace dtOO {
 								locVertices[5] = vertexMap[elementData[counter+0]];
 								locVertices[6] = vertexMap[elementData[counter+4]];
 								locVertices[7] = vertexMap[elementData[counter+7]];
-								MHexahedron * me = new MHexahedron(locVertices, eNum, 0);
+								::MHexahedron * me = new ::MHexahedron(locVertices, eNum, 0);
 								minElement = std::min(minElement, eNum);
 								maxElement = std::max(maxElement, eNum);
 								elementMap[eNum] = me;
@@ -936,7 +936,7 @@ namespace dtOO {
 		dt__THROW_IF( elementMap.size() != eNum, dtReadCGNS() );
 		
 		dt__FORALLITER(vertexMap_t, vertexMap, it) {
-			MVertex * mv = it->second;
+			::MVertex * mv = it->second;
 			mv->setEntity(regions.back());
 			regions.back()->addMeshVertex(mv);
 		}

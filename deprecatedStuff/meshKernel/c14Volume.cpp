@@ -177,7 +177,7 @@ namespace dtOO {
     // create model and attach a boundedVolume
     //
     _gModel.reset( new blockGridModel("blockGridModel") );
-    GModel::setCurrent( _gModel.get() );
+    ::GModel::setCurrent( _gModel.get() );
     _gModel->attachToBoundedVolume( this );
     
     //
@@ -246,7 +246,7 @@ namespace dtOO {
     // add regions
     //
     std::vector< int > ori;
-    std::list< GFace * > faces;    
+    std::list< ::GFace * > faces;    
     for(int ii=0; ii<getNBlocks();ii++) {
       ori.clear();
       faces.clear();

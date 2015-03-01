@@ -54,7 +54,7 @@ namespace dtOO {
 		
 		dt__THROW_IF(gm==NULL, update());
 		
-		for(GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
+		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
 		  dtGmshRegionHex * hex = dtGmshRegionHex::DownCast(*r_it);
 			if (hex) hex->meshTransfinite(_nU+1, _nV+1, _nW+1);
 		}

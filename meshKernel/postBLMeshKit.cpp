@@ -80,8 +80,8 @@ namespace dtOO {
 			);			
 			
 			dtGmshFace const * gf;
-			std::vector< MVertex const * > mv;
-      twoDArrayHandling< MElement const * > me(_faceLabel.size(), 0);			
+			std::vector< ::MVertex const * > mv;
+      twoDArrayHandling< ::MElement const * > me(_faceLabel.size(), 0);			
 			dt__FORALLINDEX(_faceLabel, ii) {
 			  gf = _meshedBV->getFace(_faceLabel[ii]);
 			  gf->getMeshVerticesAndElements(&mv, &(me[ii]));

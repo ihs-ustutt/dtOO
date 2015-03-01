@@ -54,7 +54,7 @@ namespace dtOO {
 		dt__THROW_IF(_regionLabel.size()!=gm->getNumRegions(), update());
 		
 		int counter = 0;
-		for(GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
+		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
 			std::vector< int > pInt = (*r_it)->getPhysicalEntities();
 			dt__THROW_IF(pInt.size()!=0, update());
 

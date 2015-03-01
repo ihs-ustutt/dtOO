@@ -8,11 +8,11 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO { 
-  dtGmshVertex::dtGmshVertex(GModel *m, int tag, double ms) : GVertex(m, tag, ms) {
+  dtGmshVertex::dtGmshVertex(::GModel *m, int tag, double ms) : GVertex(m, tag, ms) {
     _dtP = dtPoint3(0., 0., 0.);  
   }
 
-  dtGmshVertex::dtGmshVertex(GModel *m, int tag) : GVertex(m, tag) {
+  dtGmshVertex::dtGmshVertex(::GModel *m, int tag) : GVertex(m, tag) {
     _dtP = dtPoint3(0., 0., 0.);  
   }
   
@@ -51,7 +51,7 @@ namespace dtOO {
     return dtPoint3(x(), y(), z());
   }
 	
-  bool dtGmshVertex::isEqual( GVertex const * const gv0, GVertex const * const gv1 ) {	
+  bool dtGmshVertex::isEqual( ::GVertex const * const gv0, ::GVertex const * const gv1 ) {	
 		float xyzRes
 		= 
 		staticPropertiesHandler::getInstance()->getOptionFloat(

@@ -8,11 +8,11 @@
 class GPoint;
   
 namespace dtOO { 
-  class dtGmshVertex : public GVertex {
+  class dtGmshVertex : public ::GVertex {
   public:
-    dt__CLASSSTD(dtGmshVertex, GEntity); 
-    dtGmshVertex(GModel *m, int tag, double ms);
-    dtGmshVertex(GModel *m, int tag);
+    dt__CLASSSTD(dtGmshVertex, ::GEntity); 
+    dtGmshVertex(::GModel *m, int tag, double ms);
+    dtGmshVertex(::GModel *m, int tag);
     virtual ~dtGmshVertex();
     virtual GPoint point() const;
     virtual double x() const;
@@ -22,7 +22,7 @@ namespace dtOO {
     virtual void setPosition(dtPoint3 const p);    
     virtual void setPosition(dtPoint3 const * const p);
     dtPoint3 cast2DtPoint3( void ) const;
-    static bool isEqual( GVertex const * const gv0, GVertex const * const gv1 );
+    static bool isEqual( ::GVertex const * const gv0, ::GVertex const * const gv1 );
   private:
     dtPoint3 _dtP;
   };

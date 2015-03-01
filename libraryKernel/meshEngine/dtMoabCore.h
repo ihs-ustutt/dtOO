@@ -20,8 +20,8 @@ namespace dtOO {
     dt__CLASSNAME(dtMoabCore);    
     dtMoabCore();
     virtual ~dtMoabCore();
-    void addVertices( std::vector< MVertex const * > const & mv );
-    moab::Range addElements( std::vector< MElement const * > const & me );
+    void addVertices( std::vector< ::MVertex const * > const & mv );
+    moab::Range addElements( std::vector< ::MElement const * > const & me );
   private:
     moab::ReadUtilIface * _readUtilIface;
 		std::map<long, moab::EntityHandle> _node_id_map;      

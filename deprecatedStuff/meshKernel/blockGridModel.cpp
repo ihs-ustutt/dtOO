@@ -54,7 +54,7 @@ namespace dtOO {
               << "blockGridModel is not attached." << LOGDEL
               << DTLOGEVAL(getAttachedBoundedVolume()));
     }
-    GVertex * gv = GModel::getVertexByTag(vId);
+    ::GVertex * gv = ::GModel::getVertexByTag(vId);
     dtGmshVertex * dtGV;
     dt__MUSTDOWNCAST(gv, dtGmshVertex, dtGV);
     dtGV->snapToMap2dTo3d( getAttachedBoundedVolume()->getPtrToMap2dTo3d(aSId) );
@@ -66,7 +66,7 @@ namespace dtOO {
               << "blockGridModel is not attached." << LOGDEL
               << DTLOGEVAL(getAttachedBoundedVolume()));
     }
-    GVertex * gv = GModel::getVertexByTag(vId);
+    ::GVertex * gv = ::GModel::getVertexByTag(vId);
     dtGmshVertex * dtGV;
     dt__MUSTDOWNCAST(gv, dtGmshVertex, dtGV);
     dtGV->snapToMap3dTo3d( getAttachedBoundedVolume()->getPtrToMap3dTo3d(rId) );
@@ -78,7 +78,7 @@ namespace dtOO {
               << "blockGridModel is not attached." << LOGDEL
               << DTLOGEVAL(getAttachedBoundedVolume()));
     }
-    GVertex * gv = GModel::getVertexByTag(vId);
+    ::GVertex * gv = ::GModel::getVertexByTag(vId);
     dtGmshVertex * dtGV;
     dt__MUSTDOWNCAST(gv, dtGmshVertex, dtGV);
     dtGV->snapToMap2dTo3d( getAttachedBoundedVolume()->getPtrToMap2dTo3d(aSId) );
@@ -91,18 +91,18 @@ namespace dtOO {
     dtGmshEdge * dtGE = new dtGmshEdge(
                               this, 
                               eId, 
-                              GModel::getVertexByTag(from), 
-                              GModel::getVertexByTag(to)
+                              ::GModel::getVertexByTag(from), 
+                              ::GModel::getVertexByTag(to)
                             );
-    GModel::add(dtGE);  
+    ::GModel::add(dtGE);  
   }
 
   void blockGridModel::addDtGmshFace(int const fId, int const e0, int const e1, int const e2, int const e3) {
-    if ( GModel::getFaceByTag(fId) ) {
+    if ( ::GModel::getFaceByTag(fId) ) {
       return;
     }
     else {
-      std::vector< GEdge * > edgesV;
+      std::vector< ::GEdge * > edgesV;
       edgesV.push_back( getDtGmshEdgeByTag(e0) );
       edgesV.push_back( getDtGmshEdgeByTag(e1) );
       edgesV.push_back( getDtGmshEdgeByTag(e2) );
@@ -134,7 +134,7 @@ namespace dtOO {
         } 
       }
       
-      std::list< GEdge * > edges;
+      std::list< ::GEdge * > edges;
       std::vector< int > ori;
       edges.push_back( edgesV[0] );
       edges.push_back( edgesV[1] );
@@ -187,12 +187,12 @@ namespace dtOO {
       if (snap0Index.size() == 1) {
         dtGmshTransPartArea * tPA = new dtGmshTransPartArea(this, fId, edges, ori);
         tPA->setMap2dTo3d( snap0[snap0Index[0]] );
-        GModel::add(tPA);
+        ::GModel::add(tPA);
         tPA->setMotherSurfaceLabel( snap0[snap0Index[0]]->getLabel() );
       }
       else {
         dtGmshTransFace * tPA = new dtGmshTransFace(this, fId, edges, ori);
-        GModel::add(tPA);
+        ::GModel::add(tPA);
       }
       DTINFOWF(addFace(), 
         << "dtGmshFace[" << fId << "] : " 
@@ -648,7 +648,7 @@ namespace dtOO {
     
         
     for( int ii=0; ii<getNumMeshVertices(); ii++ ) {
-      MVertex const * const mv = __caCThis->getMeshVertexByTag(ii+1);
+      ::MVertex const * const mv = __caCThis->getMeshVertexByTag(ii+1);
 //      xx[ii] = static_cast< float >(mv->x());
 //      yy[ii] = static_cast< float >(mv->y());
 //      zz[ii] = static_cast< float >(mv->z());
@@ -676,15 +676,15 @@ namespace dtOO {
     
     
     for (riter r_it = __caCThis->firstRegion(); r_it != __caCThis->lastRegion(); ++r_it) {
-        GRegion * gr = *r_it;
+        ::GRegion * gr = *r_it;
       
       
       if (r_it == __caCThis->firstRegion()) { //das muss dann raus und intArr in Vector schreiben oder so
-          std::list<GFace*>::iterator f_it;
-          std::list<GFace*> myFaces = (*r_it)->faces();
+          std::list<::GFace*>::iterator f_it;
+          std::list<::GFace*> myFaces = (*r_it)->faces();
           for (f_it = myFaces.begin(); f_it!=myFaces.end(); ++f_it) {
 //          for (fiter f_it = __caCThis->firstFace(); f_it != __caCThis->lastFace(); ++f_it) {
-        GFace * gf = *f_it;
+        ::GFace * gf = *f_it;
         
         dimsPatchVec.push_back( ( gf->getNumMeshElements() ) * 4 ); //"4" nur für quads
         
@@ -701,13 +701,13 @@ namespace dtOO {
         int faceCount=0;
         
         for( int ii=0; ii<gf->getNumMeshElements(); ii++ ) {
-          MElement * faceME = gf->getMeshElement(ii);
-          MQuadrangle * mquad = dynamic_cast< MQuadrangle * >(faceME);
+          ::MElement * faceME = gf->getMeshElement(ii);
+          ::MQuadrangle * mquad = dynamic_cast< ::MQuadrangle * >(faceME);
           //
           // quadrangle
           //
           if ( mquad ) {
-              std::vector< MVertex * > verts;
+              std::vector< ::MVertex * > verts;
               mquad->getVertices(verts); 
               faceConnValues[faceCount+0] = verts[0]->getIndex()-1;
               faceConnValues[faceCount+1] = verts[1]->getIndex()-1;
@@ -738,16 +738,16 @@ namespace dtOO {
       
         
       for( int ii=0; ii<gr->getNumMeshElements(); ii++ ) {
-        MElement * me = gr->getMeshElement(ii);        
+        ::MElement * me = gr->getMeshElement(ii);        
         //
         // tetrahedron
         //
-        MTetrahedron * mtet = dynamic_cast< MTetrahedron * >(me);
-        MHexahedron * mhex = dynamic_cast< MHexahedron * >(me);
-//        MQuadrangle * mquad = dynamic_cast< MQuadrangle * >(me);
+        ::MTetrahedron * mtet = dynamic_cast< ::MTetrahedron * >(me);
+        ::MHexahedron * mhex = dynamic_cast< ::MHexahedron * >(me);
+//        ::MQuadrangle * mquad = dynamic_cast< ::MQuadrangle * >(me);
         if ( mtet ) {
           elem[cellC] = connC;
-          std::vector< MVertex * > verts;
+          std::vector< ::MVertex * > verts;
           mtet->getVertices(verts);        
           tl[cellC] = TYPE_TETRAHEDER;      
           conn[elem[cellC]+0] = verts[0]->getIndex()-1;
@@ -762,7 +762,7 @@ namespace dtOO {
         //
         else if ( mhex ) {
           elem[cellC] = connC;
-          std::vector< MVertex * > verts;
+          std::vector< ::MVertex * > verts;
           mhex->getVertices(verts);        
           tl[cellC] = TYPE_HEXAEDER;      
           conn[elem[cellC]+0] = verts[4]->getIndex()-1;
@@ -790,7 +790,7 @@ namespace dtOO {
         //
 //        else if ( mquad ) {
 //          elem[cellC] = connC;
-//          std::vector< MVertex * > verts;
+//          std::vector< ::MVertex * > verts;
 //          mquad->getVertices(verts);        
 //          tl[cellC] = TYPE_QUAD;      
 //          conn[elem[cellC]+0] = verts[0]->getIndex()-1;
@@ -863,15 +863,15 @@ namespace dtOO {
   
   covise::coDoSet * blockGridModel::toCoDoSurfUnsGrid(char const * const str, int const boundFaceNum) const {
       
-      std::vector< GFace* > boundingFaces;
+      std::vector< ::GFace* > boundingFaces;
       int boundFaceNumLoc = boundFaceNum;
       
       for (riter r_it = __caCThis->firstRegion(); r_it != __caCThis->lastRegion(); ++r_it) {
-          GRegion * gr = *r_it;
-          std::list<GFace*>::iterator f_it;
-          std::list<GFace*> myFaces = (*r_it)->faces();
+          ::GRegion * gr = *r_it;
+          std::list<::GFace*>::iterator f_it;
+          std::list<::GFace*> myFaces = (*r_it)->faces();
           for (f_it = myFaces.begin(); f_it!=myFaces.end(); ++f_it) {
-              GFace * gf = *f_it;
+              ::GFace * gf = *f_it;
               if (gf->numRegions()==1) {
                   boundingFaces.push_back(gf);
               }
@@ -886,7 +886,7 @@ namespace dtOO {
           boundFaceNumLoc = (boundingFaces.size()-1);
       }
       
-      GFace * gfb = boundingFaces[boundFaceNumLoc];
+      ::GFace * gfb = boundingFaces[boundFaceNumLoc];
       int nElem = gfb->getNumMeshElements();
 //      int nVert = boundingFaces[boundFaceNum]->getNumMeshVertices();
     
@@ -911,7 +911,7 @@ namespace dtOO {
       cug->getTypeList(&tl);
         
       for( int ii=0; ii<getNumMeshVertices(); ii++ ) {
-        MVertex const * const mv = __caCThis->getMeshVertexByTag(ii+1);
+        ::MVertex const * const mv = __caCThis->getMeshVertexByTag(ii+1);
         xx[mv->getIndex()-1] = static_cast< float >(mv->x());
         yy[mv->getIndex()-1] = static_cast< float >(mv->y());
         zz[mv->getIndex()-1] = static_cast< float >(mv->z());
@@ -959,15 +959,15 @@ namespace dtOO {
         int connC = 0;  
         
         for( int ii=0; ii<nElem; ii++ ) {
-          MElement * faceME = gfb->getMeshElement(ii);
-          MQuadrangle * mquad = dynamic_cast< MQuadrangle * >(faceME);
+          ::MElement * faceME = gfb->getMeshElement(ii);
+          ::MQuadrangle * mquad = dynamic_cast< ::MQuadrangle * >(faceME);
           
           //
         // quadrangle
         //
         if ( mquad ) {
           elem[cellC] = connC;
-          std::vector< MVertex * > verts;
+          std::vector< ::MVertex * > verts;
           mquad->getVertices(verts);        
           tl[cellC] = TYPE_QUAD;      
           conn[elem[cellC]+0] = verts[0]->getIndex()-1;
@@ -989,7 +989,7 @@ namespace dtOO {
           // quadrangle
           //
 //          if ( mquad ) {
-//              std::vector< MVertex * > verts;
+//              std::vector< ::MVertex * > verts;
 //              mquad->getVertices(verts); 
 //              faceConnValues[faceCount+0] = verts[0]->getIndex()-1;
 //              faceConnValues[faceCount+1] = verts[1]->getIndex()-1;
@@ -1082,7 +1082,7 @@ namespace dtOO {
   
     covise::coDoSet * blockGridModel::makeBoCo(char const * const str) const {
   
-      std::vector< GFace* > boundingFaces;
+      std::vector< ::GFace* > boundingFaces;
       std::vector< int > tmpFaces;
       std::vector< int > tmpConnValues;
       std::vector< int > inletFaces;
@@ -1099,11 +1099,11 @@ namespace dtOO {
       size[0] = 7;
     
       for (riter r_it = __caCThis->firstRegion(); r_it != __caCThis->lastRegion(); ++r_it) {
-          GRegion * gr = *r_it;
-          std::list<GFace*>::iterator f_it;
-          std::list<GFace*> myFaces = (*r_it)->faces();
+          ::GRegion * gr = *r_it;
+          std::list<::GFace*>::iterator f_it;
+          std::list<::GFace*> myFaces = (*r_it)->faces();
           for (f_it = myFaces.begin(); f_it!=myFaces.end(); ++f_it) {
-              GFace * gf = *f_it;
+              ::GFace * gf = *f_it;
               if (gf->numRegions()==1) {
                   boundingFaces.push_back(gf);
               }
@@ -1181,19 +1181,19 @@ namespace dtOO {
           }
       
       for (int ii = 0; ii < tmpFaces.size(); ii++) {
-          GFace * gfb = boundingFaces[tmpFaces[ii]];
+          ::GFace * gfb = boundingFaces[tmpFaces[ii]];
           
           std::vector< int > faceConnValues ( gfb->getNumMeshElements() * 4 );
           int faceCount=0;
         
           for( int ii=0; ii<gfb->getNumMeshElements(); ii++ ) {
-             MElement * faceME = gfb->getMeshElement(ii);
-             MQuadrangle * mquad = dynamic_cast< MQuadrangle * >(faceME);
+             ::MElement * faceME = gfb->getMeshElement(ii);
+             ::MQuadrangle * mquad = dynamic_cast< ::MQuadrangle * >(faceME);
              //
              // quadrangle
              //
              if ( mquad ) {
-                std::vector< MVertex * > verts;
+                std::vector< ::MVertex * > verts;
                 mquad->getVertices(verts); 
                 faceConnValues[faceCount+0] = verts[0]->getIndex()-1;
                 faceConnValues[faceCount+1] = verts[1]->getIndex()-1;

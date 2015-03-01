@@ -18,17 +18,17 @@
   const_cast< dtGmshFace * >(this)
 
 namespace dtOO {    
-  dtGmshFace::dtGmshFace(GModel *m, int tag) : GFace(m, tag) {
+  dtGmshFace::dtGmshFace(::GModel *m, int tag) : GFace(m, tag) {
 		
   }
 	
-  dtGmshFace::dtGmshFace(GModel *m, int tag, const std::list<GEdge*> &edges, const std::vector< int > &ori )
+  dtGmshFace::dtGmshFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges, const std::vector< int > &ori )
     : GFace(m, tag) {
     edgeLoops.push_back(GEdgeLoop(edges));
-    typedef std::list<GEdge*>::const_iterator EIter;
+    typedef std::list< ::GEdge * >::const_iterator EIter;
     int ii = 0;
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
-      GEdge *e = *ei;
+      ::GEdge *e = *ei;
       l_edges.push_back(e);
       e->addFace(this);
       l_dirs.push_back(ori[ii]);
@@ -36,12 +36,12 @@ namespace dtOO {
     }
   }
 
-  dtGmshFace::dtGmshFace(GModel *m, int tag, const std::list<GEdge*> &edges)
+  dtGmshFace::dtGmshFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges)
     : GFace(m, tag) {
-    edgeLoops.push_back(GEdgeLoop(edges));
-    typedef std::list<GEdge*>::const_iterator EIter;
+    edgeLoops.push_back(::GEdgeLoop(edges));
+    typedef std::list< ::GEdge * >::const_iterator EIter;
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
-      GEdge *e = *ei;
+      ::GEdge *e = *ei;
       l_edges.push_back(e);
       e->addFace(this);
       l_dirs.push_back(1);
@@ -97,7 +97,7 @@ namespace dtOO {
     return SPoint2(ppUV.x(), ppUV.y());
   }
 
-  SPoint2 dtGmshFace::reparamOnFace(GVertex const * gv) const {
+  SPoint2 dtGmshFace::reparamOnFace(::GVertex const * gv) const {
     dtPoint3 pp(gv->x(), gv->y(), gv->z());
     
     return reparamOnFace(pp);
@@ -117,20 +117,20 @@ namespace dtOO {
     return _mm.get();
   }
   
-  void dtGmshFace::addEdge( GEdge * edge, int const ori ) {
+  void dtGmshFace::addEdge( ::GEdge * edge, int const ori ) {
     l_edges.push_back( edge );
     edge->addFace(this);
     l_dirs.push_back( ori );
     edgeLoops.clear();
-    edgeLoops.push_back( GEdgeLoop(l_edges) );
+    edgeLoops.push_back( ::GEdgeLoop(l_edges) );
   }  
 
-  void dtGmshFace::addEdgeLoop( std::list< GEdge * > edgeL ) {
+  void dtGmshFace::addEdgeLoop( std::list< ::GEdge * > edgeL ) {
     addEdge( edgeL.front(), 1);
-    GVertex * gv = edgeL.front()->getEndVertex();
+    ::GVertex * gv = edgeL.front()->getEndVertex();
     edgeL.erase( edgeL.begin() );
     for (int ii=0;edgeL.size();ii++) {
-      for(std::list<GEdge*>::iterator it = edgeL.begin(); it != edgeL.end(); ++it ) {
+      for(std::list< ::GEdge * >::iterator it = edgeL.begin(); it != edgeL.end(); ++it ) {
         if ( (*it)->getBeginVertex() == gv ) {
           addEdge(*it, 1);
           gv = (*it)->getEndVertex();
@@ -157,7 +157,7 @@ namespace dtOO {
     return reparamOnFace( pp );
   }
   
-  std::list<GEdge*> dtGmshFace::edges( void ) const { 
+  std::list< ::GEdge * > dtGmshFace::edges( void ) const { 
     return l_edges;
   }
   
@@ -188,13 +188,13 @@ namespace dtOO {
     DTINFOWF(updateFace(), << "Base class calling. Nothing to do.");
   }
 	
-	bool dtGmshFace::isEqual( GFace const * const gf ) const {
+	bool dtGmshFace::isEqual( ::GFace const * const gf ) const {
     return isEqual(this, gf);
 	}
 
-  bool dtGmshFace::isEqual( GFace const * const gf0, GFace const * const gf1 ) {	
-		std::list< GVertex * > VL0 = gf0->vertices();
-		std::list< GVertex * > VL1 = gf1->vertices();
+  bool dtGmshFace::isEqual( ::GFace const * const gf0, ::GFace const * const gf1 ) {	
+		std::list< ::GVertex * > VL0 = gf0->vertices();
+		std::list< ::GVertex * > VL1 = gf1->vertices();
 		
 		if (VL0.size() != VL1.size()) {
 			return false;
@@ -206,8 +206,8 @@ namespace dtOO {
       "xyz_resolution"
     );
 		int counter = 0;
-		std::list< GVertex * >::iterator V0_it;
-		std::list< GVertex * >::iterator V1_it;
+		std::list< ::GVertex * >::iterator V0_it;
+		std::list< ::GVertex * >::iterator V1_it;
 		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
 			dtPoint3 v0((*V0_it)->x(), (*V0_it)->y(), (*V0_it)->z());
       for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {
@@ -226,35 +226,35 @@ namespace dtOO {
 		}		
 	}
 	
-	bool dtGmshFace::sortPredicate(MVertex const * d1, MVertex const * d2) {
+	bool dtGmshFace::sortPredicate(::MVertex const * d1, ::MVertex const * d2) {
 		return d1->getNum() < d2->getNum();
 	}
 	
-	twoDArrayHandling< MVertex * > dtGmshFace::reconstructEdgesFromSurfaceMesh( void ) const {
-    std::map< MVertex *, std::vector< MElement * >  > e_v;
-		std::map< MVertex *, std::vector< MElement * >  >::iterator e_vIt;
-		std::map< MElement *, std::vector< MVertex * >  > v_e;
-		std::map< MElement *, std::vector< MVertex * >  >::iterator v_eIt;
+	twoDArrayHandling< ::MVertex * > dtGmshFace::reconstructEdgesFromSurfaceMesh( void ) const {
+    std::map< ::MVertex *, std::vector< ::MElement * >  > e_v;
+		std::map< ::MVertex *, std::vector< ::MElement * >  >::iterator e_vIt;
+		std::map< ::MElement *, std::vector< ::MVertex * >  > v_e;
+		std::map< ::MElement *, std::vector< ::MVertex * >  >::iterator v_eIt;
 		
 		//
 		// create e_v => in: vertex out: element
 		// create v_e => in: element out: vertex
 		//
 		for (int ii=0; ii<__caCThis->getNumMeshElements(); ii++) {
-			MElement * me = __caCThis->getMeshElement(ii);
-			std::vector< MVertex * > verts;
+			::MElement * me = __caCThis->getMeshElement(ii);
+			std::vector< ::MVertex * > verts;
 			me->getVertices(verts);
 			for (int jj=0; jj<verts.size(); jj++) {
 				e_vIt = e_v.find( verts[jj] );
 				if (e_vIt == e_v.end()) {
 					e_v[verts[jj]] 
 					= 
-					std::vector<MElement*>(1,me);
+					std::vector< ::MElement * >(1,me);
 				}
 				else e_vIt->second.push_back(me);
 				v_eIt = v_e.find( me );
 				if (v_eIt == v_e.end()) {
-					v_e[me] = std::vector<MVertex*>(1,verts[jj]);
+					v_e[me] = std::vector< ::MVertex * >(1,verts[jj]);
 				}
 				else v_eIt->second.push_back(verts[jj]);				
 			}
@@ -263,7 +263,7 @@ namespace dtOO {
 //		DTINFOWF(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(e_v));
 //		DTINFOWF(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(v_e));
 		
-		std::vector< MVertex * > startVerts;
+		std::vector< ::MVertex * > startVerts;
 		for (e_vIt = e_v.begin(); e_vIt != e_v.end(); ++e_vIt) {
 			if (e_vIt->second.size() == 1) {
         startVerts.push_back(e_vIt->first);
@@ -271,7 +271,7 @@ namespace dtOO {
 		}
 		std::sort(startVerts.begin(), startVerts.end(), dtGmshFace::sortPredicate);
 		
-		twoDArrayHandling< MVertex * > recEdges;
+		twoDArrayHandling< ::MVertex * > recEdges;
 		
 		while ( !startVerts.empty() ) {
 			//
@@ -282,10 +282,10 @@ namespace dtOO {
 			//
 			// initialize reconstructed edge vector
 			//
-			recEdges.push_back( std::vector< MVertex * >(0) );
-			std::vector< MVertex * > & recEdge = recEdges.back();
+			recEdges.push_back( std::vector< ::MVertex * >(0) );
+			std::vector< ::MVertex * > & recEdge = recEdges.back();
 			recEdge.push_back(e_vIt->first);
-			MElement * wE;
+			::MElement * wE;
 			wE = e_vIt->second[0];
 
 			//
@@ -295,12 +295,12 @@ namespace dtOO {
 				//
 				// get a reference to the vertices
 				//
-				std::vector< MVertex * > & pV = v_e[wE];
+				std::vector< ::MVertex * > & pV = v_e[wE];
 				//
 				// iterate over all vertices
 				//
 				bool endVertex = false;
-				MVertex * toSave = NULL;
+				::MVertex * toSave = NULL;
 				for (int ii=0; ii<pV.size(); ii++) {
 					if (pV[ii] == recEdge.back()) continue;
 					
@@ -368,7 +368,7 @@ namespace dtOO {
 //			<< logMe::dtFormat("%d edges reconstructed.") % recEdges.size()
 //		);    		
 		for (
-			twoDArrayHandling< MVertex * >::iterator0 it = recEdges.begin(); 
+			twoDArrayHandling< ::MVertex * >::iterator0 it = recEdges.begin(); 
 			it!=recEdges.end(); 
 			++it 
 		) {
@@ -384,8 +384,8 @@ namespace dtOO {
 	}
 	
 	void dtGmshFace::getMeshVerticesAndElements(
-		std::vector< MVertex const * > * const mv, 
-		std::vector< MElement const * > * const me
+		std::vector< ::MVertex const * > * const mv, 
+		std::vector< ::MElement const * > * const me
 	) const {	
 		int num_elements  = __caCThis->getNumMeshElements();
 		
@@ -404,9 +404,9 @@ namespace dtOO {
     for (int ii=0; ii<num_elements; ii++) {
 			me->push_back( __caCThis->getMeshElement(ii) );
 			
-			std::vector< MVertex * > vertices;
-			const_cast<MElement *>(me->back())->getVertices(vertices);
-			dt__FORALLITER(std::vector< MVertex * >, vertices, aV) mv->push_back(*aV);	
+			std::vector< ::MVertex * > vertices;
+			const_cast< ::MElement *>(me->back())->getVertices(vertices);
+			dt__FORALLITER(std::vector< ::MVertex * >, vertices, aV) mv->push_back(*aV);	
 		}		
 	}
 }

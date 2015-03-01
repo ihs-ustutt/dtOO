@@ -36,7 +36,7 @@ namespace dtOO {
     GmshInitialize();
 
     cardinalDirGModel * model = new cardinalDirGModel("gmshVolume");
-    GModel::setCurrent( model );
+    ::GModel::setCurrent( model );
    
     //
     // set options

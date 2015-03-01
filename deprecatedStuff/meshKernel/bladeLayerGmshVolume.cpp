@@ -65,7 +65,7 @@ namespace dtOO {
     // create model and attach a boundedVolume
     //
     _strucModel = new blockGridModel("bladeLayerStrucGmshVolume");
-    GModel::setCurrent( _strucModel );
+    ::GModel::setCurrent( _strucModel );
     _strucModel->attachToBoundedVolume( this );
     
     //
@@ -118,7 +118,7 @@ namespace dtOO {
     }
 
     std::vector< int > ori;
-    std::list< GFace * > faces;    
+    std::list< ::GFace * > faces;    
     //
     // add regions
     //
@@ -135,12 +135,12 @@ namespace dtOO {
       //
       if (bGrading.size() == 8) {
         dt__FORALL(bGrading, jj,
-          GEdge * ge = _strucModel->getEdgeByTag( eI[jj]+1 );
+          ::GEdge * ge = _strucModel->getEdgeByTag( eI[jj]+1 );
           ge->meshAttributes.coeffTransfinite = bGrading[jj];
         );
       }
       else {
-        GEdge * ge;
+        ::GEdge * ge;
         ge = _strucModel->getEdgeByTag(eI[0]+1);
         ge->meshAttributes.coeffTransfinite = bGrading[0];
         ge->meshAttributes.typeTransfinite = 2;
@@ -182,7 +182,7 @@ namespace dtOO {
       //
       // number of elements
       //
-      GEdge * ge;
+      ::GEdge * ge;
       ge = _strucModel->getEdgeByTag(eI[0]+1);
       ge->meshAttributes.nbPointsTransfinite = bNElem[0];
       ge = _strucModel->getEdgeByTag(eI[1]+1);
@@ -238,20 +238,20 @@ namespace dtOO {
     faces.push_back( _strucModel->getFaceByTag(cDDef.transId(fStrToId("dtBack"))) );
     ori.push_back(1);
     
-    std::list< GEdge * > northEmb;
-    std::list< GEdge * > southEmb;
+    std::list< ::GEdge * > northEmb;
+    std::list< ::GEdge * > southEmb;
     for (int ii=0;ii<getNCouplingPatches();ii++) {
       std::vector< blockNumbering > cPatches = getPatch( getCouplingPatchName(ii) );
       
       for (int jj=0;jj<cPatches.size();jj++) {
         int fId = getFaceIndex( cPatches[jj] );
-        GFace * gf = _strucModel->getFaceByTag(fId+1);
+        ::GFace * gf = _strucModel->getFaceByTag(fId+1);
         faces.push_back(gf);//_unstrucModel->add( gf->clone(_unstrucModel)->cast2Face() );
         ori.push_back(-1);
         
-        std::list< GEdge * > eList = gf->edges();
-        for (std::list<GEdge *>::const_iterator it = eList.begin();it != eList.end(); ++it) {
-          GEdge * ge = (*it);
+        std::list< ::GEdge * > eList = gf->edges();
+        for (std::list<::GEdge *>::const_iterator it = eList.begin();it != eList.end(); ++it) {
+          ::GEdge * ge = (*it);
           dtGmshVertex * dtGV0 = _strucModel->cast2DtGmshVertex( ge->getBeginVertex() );
           dtGmshVertex * dtGV1 = _strucModel->cast2DtGmshVertex( ge->getEndVertex() );
           
@@ -271,7 +271,7 @@ namespace dtOO {
     //
     // additional information
     //
-    for (GModel::fiter it = _strucModel->firstFace(); it != _strucModel->lastFace(); ++it) {
+    for (::GModel::fiter it = _strucModel->firstFace(); it != _strucModel->lastFace(); ++it) {
       _strucModel->cast2DtGmshFace((*it))->packToExtInfoContainer(_eIC);
     }
     

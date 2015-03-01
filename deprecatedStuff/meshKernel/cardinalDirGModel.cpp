@@ -81,7 +81,7 @@ namespace dtOO {
     //
     // faces
     //
-    std::list< GEdge * > edges;
+    std::list< ::GEdge * > edges;
     std::vector< int > ori;
     edges.push_back( getEdgeByTag(def->transId(_cardDir->eStrToId("dtSouthFront"))) );
     ori.push_back(1);
@@ -168,13 +168,13 @@ namespace dtOO {
     //
     edges.clear();
     ori.clear();
-    edges.push_back( GModel::getEdgeByTag(def->transId(_cardDir->eStrToId("dtNorthFront"))) );
+    edges.push_back( ::GModel::getEdgeByTag(def->transId(_cardDir->eStrToId("dtNorthFront"))) );
     ori.push_back(1);
-    edges.push_back( GModel::getEdgeByTag(def->transId(_cardDir->eStrToId("dtNorthEast"))) );
+    edges.push_back( ::GModel::getEdgeByTag(def->transId(_cardDir->eStrToId("dtNorthEast"))) );
     ori.push_back(1);
-    edges.push_back( GModel::getEdgeByTag(def->transId(_cardDir->eStrToId("dtNorthBack"))) );
+    edges.push_back( ::GModel::getEdgeByTag(def->transId(_cardDir->eStrToId("dtNorthBack"))) );
     ori.push_back(-1);
-    edges.push_back( GModel::getEdgeByTag(def->transId(_cardDir->eStrToId("dtNorthWest"))) );
+    edges.push_back( ::GModel::getEdgeByTag(def->transId(_cardDir->eStrToId("dtNorthWest"))) );
     ori.push_back(-1);
     add( new dtGmshFace(this, def->transId(_cardDir->fStrToId("dtNorth")), edges, ori) );
     face = getDtGmshFaceByTag(def->transId(_cardDir->fStrToId("dtNorth")));
@@ -335,7 +335,7 @@ namespace dtOO {
       dtGmshVertex * vertex;
       dtGmshEdge * edge;
       dtGmshFace * face;
-      std::list< GEdge * > edges;
+      std::list< ::GEdge * > edges;
       //
       // vertices
       //
@@ -462,7 +462,7 @@ namespace dtOO {
       ori.push_back(-1);
       edges.push_back( getEdgeByTag(def->transId(_cardDir->eStrToId("_internalFront"))) );
       ori.push_back(-1);      
-      GModel::add( new dtGmshFace(this, def->transId(_cardDir->fStrToId("sInternalWest")), edges, ori) );
+      ::GModel::add( new dtGmshFace(this, def->transId(_cardDir->fStrToId("sInternalWest")), edges, ori) );
       face = getDtGmshFaceByTag(def->transId(_cardDir->fStrToId("sInternalWest")));
       mm2d.reset(
         _cardDir->getPtrToMap2dTo3d(
@@ -474,9 +474,9 @@ namespace dtOO {
       //
       // internal edges
       //
-      GFace * gfP;
-      GEdge * geP;
-      GVertex * gvP;
+      ::GFace * gfP;
+      ::GEdge * geP;
+      ::GVertex * gvP;
 
       gfP = getFaceByTag(def->transId(_cardDir->fStrToId("dtSouth")));
       geP = getEdgeByTag(def->transId(_cardDir->eStrToId("_internalSouthEast")));
@@ -509,7 +509,7 @@ namespace dtOO {
     //
     /* -------------------------------------------------------------------- */
     std::vector< int > ori;
-    std::list< GFace * > faces;
+    std::list< ::GFace * > faces;
     faces.push_back( getFaceByTag(def->transId(_cardDir->fStrToId("dtNorth"))) );
     ori.push_back(1);
     faces.push_back( getFaceByTag(def->transId(_cardDir->fStrToId("dtWest"))) );
