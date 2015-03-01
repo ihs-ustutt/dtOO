@@ -48,14 +48,18 @@ namespace dtOO {
 		
 		dt__THROW_IF(gm==NULL, update());
 		
-		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
-			std::list< ::GFace * > faceL = (*r_it)->faces();
+//		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
+			std::list< ::GFace * > faceL = gm->faces();
 			std::list< ::GFace * >::iterator f_it;
 
 			//
 			// check size
 			//
-			dt__THROW_IF(_faceLabel.size()!=faceL.size(), update());
+			dt__THROW_IFWM(
+				_faceLabel.size()!=faceL.size(), update(),
+				<< DTLOGEVAL(_faceLabel.size()) << LOGDEL
+        << DTLOGEVAL(faceL.size()) 
+			);
 			
 			int counter = 0;
 			for (f_it = faceL.begin(); f_it!=faceL.end(); ++f_it) {
@@ -74,6 +78,6 @@ namespace dtOO {
 					counter++;
 				}
 			}
-		}
+//		}
   }
 }
