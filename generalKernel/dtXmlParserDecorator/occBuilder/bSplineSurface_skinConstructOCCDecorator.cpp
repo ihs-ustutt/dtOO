@@ -67,17 +67,19 @@ namespace dtOO {
 				}
 				else {
 					ccV.push_back(
-					  dt__pH(dtCurve)(
-					    bSplineCurve_curveConnectConstructOCC(dtCVec).result()
-					  ).get()
+					  dt__tmpPtr(
+					    dtCurve, 
+							bSplineCurve_curveConnectConstructOCC(dtCVec).result()
+					  )
 					);
 				}
 		  }
 			aGeoP->push_back( 
 			  new analyticSurface(
-			    dt__pH(dtSurface)(
+			    dt__tmpPtr(
+		        dtSurface, 
 			      bSplineSurface_skinConstructOCC(ccV).result()
-			    ).get()
+			    )
 			  )
 			);
 			//

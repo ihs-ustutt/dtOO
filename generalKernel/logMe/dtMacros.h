@@ -44,7 +44,8 @@
 
 #define dt__pH( name ) \
   ptrHandling< name >
-
+#define dt__tmpPtr( name, init ) \
+  ptrHandling< name >(init).get()
 #define dt__pVH( name ) \
   ptrVectorHandling< name >
 

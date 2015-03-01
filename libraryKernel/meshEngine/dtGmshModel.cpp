@@ -103,13 +103,28 @@ namespace dtOO {
 		}
   }	
 	 
+  void dtGmshModel::addIfFaceToGmshModel( 
+    map2dTo3d const * const face, int * const tag,
+		int const & eId0, int const & eId1, int const & eId2, int const & eId3
+  ) {
+		std::list<GEdge*> ge;
+		ge.push_back( this->getEdgeByTag(abs(eId0)) );
+		ge.push_back( this->getEdgeByTag(abs(eId1)) );
+		ge.push_back( this->getEdgeByTag(abs(eId2)) );
+		ge.push_back( this->getEdgeByTag(abs(eId3)) );
+		std::vector<int> ori(4);
+		ori[0] = ( eId0 < 0 ? -1 : 1);
+		ori[1] = ( eId1 < 0 ? -1 : 1);
+		ori[2] = ( eId2 < 0 ? -1 : 1);
+		ori[3] = ( eId3 < 0 ? -1 : 1);  
+		
+		addIfFaceToGmshModel(face, tag, ge, ori);
+  }
+	
 	/**
    * @todo What if region is not 6-sided?
    */
 	dtGmshRegion * dtGmshModel::addRegionToGmshModel( map3dTo3d const * const vol ) {
-	  std::vector< int > vId(8,0);// = GModel::getNumVertices()+1;
-		std::vector< int > eId(12, 0);// = GModel::getNumEdges()+1;
-//		int fId = GModel::getNumFaces()+1;
 		int rId = GModel::getNumRegions()+1;
 		
     dtPoint3 p0(0., 0., 0.);
@@ -121,6 +136,10 @@ namespace dtOO {
 		dtPoint3 p6(1., 1., 1.);
 		dtPoint3 p7(0., 1., 1.);
 		
+		//
+		// vertices
+		//
+	  std::vector< int > vId(8,0);		
 		this->addIfVertexToGmshModel( vol->getPointPercent(p0), &(vId[0]) );
 		this->addIfVertexToGmshModel( vol->getPointPercent(p1), &(vId[1]) );		
 		this->addIfVertexToGmshModel( vol->getPointPercent(p2), &(vId[2]) );
@@ -130,6 +149,10 @@ namespace dtOO {
 		this->addIfVertexToGmshModel( vol->getPointPercent(p6), &(vId[6]) );
 		this->addIfVertexToGmshModel( vol->getPointPercent(p7), &(vId[7]) );	
 		
+		//
+		// edges
+		//
+		std::vector< int > eId(12, 0);
 		this->addIfEdgeToGmshModel(vol->segmentPercent(p0, p1), &(eId[0]), vId[0], vId[1]);
 		this->addIfEdgeToGmshModel(vol->segmentPercent(p1, p2), &(eId[1]), vId[1], vId[2]);
 		this->addIfEdgeToGmshModel(vol->segmentPercent(p2, p3), &(eId[2]), vId[2], vId[3]);
@@ -142,168 +165,45 @@ namespace dtOO {
 		this->addIfEdgeToGmshModel(vol->segmentPercent(p1, p5), &(eId[9]), vId[1], vId[5]);
 		this->addIfEdgeToGmshModel(vol->segmentPercent(p2, p6), &(eId[10]), vId[2], vId[6]);
 		this->addIfEdgeToGmshModel(vol->segmentPercent(p3, p7), &(eId[11]), vId[3], vId[7]);
-		
-		std::list<GEdge*> ge;
-		std::vector<int> fori;
-		std::vector<int> eori(4);
-	  std::list< dtGmshFace * > gf;
 
-		int fId = GModel::getNumFaces()+1;		
-		ge.push_back( this->getEdgeByTag(abs(eId[0])));
-		ge.push_back( this->getEdgeByTag(abs(eId[1])));
-		ge.push_back( this->getEdgeByTag(abs(eId[2])));
-		ge.push_back( this->getEdgeByTag(abs(eId[3])));
-		eori[0] = ( eId[0] < 0 ? -1 : 1);
-		eori[1] = ( eId[1] < 0 ? -1 : 1);
-		eori[2] = ( eId[2] < 0 ? -1 : 1);
-		eori[3] = ( eId[3] < 0 ? -1 : 1);
-		gf.push_back( new dtGmshFace(this, fId, ge, eori) );
-		fori.push_back(1);
-		if ( alreadyInModel(gf.back()) ) {
-		  gf.back() = getDtGmshFaceByTag(alreadyInModel(gf.back()));
-			fori.back() = -1;
-		}
-		else {
-			this->add( gf.back() );
-			gf.back()->setMap2dTo3d(
-				vol->segmentPercent(p0, p1, p2, p3)
-			);
-		}
-    ge.clear();		
-//		fori.clear();
-//		eori.clear();
-		fId = GModel::getNumFaces()+1;
-		ge.push_back( this->getEdgeByTag(abs(eId[4])));
-		ge.push_back( this->getEdgeByTag(abs(eId[5])));
-		ge.push_back( this->getEdgeByTag(abs(eId[6])));
-		ge.push_back( this->getEdgeByTag(abs(eId[7])));
-		eori[0] = ( eId[4] < 0 ? -1 : 1);
-		eori[1] = ( eId[5] < 0 ? -1 : 1);
-		eori[2] = ( eId[6] < 0 ? -1 : 1);
-		eori[3] = ( eId[7] < 0 ? -1 : 1);		
-		gf.push_back( new dtGmshFace(this, fId, ge, eori) );
-		fori.push_back(1);
-		if ( alreadyInModel(gf.back()) ) {
-		  gf.back() = getDtGmshFaceByTag(alreadyInModel(gf.back()));
-			fori.back() = -1;
-		}
-		else {		
-			this->add( gf.back() );
-			gf.back()->setMap2dTo3d( 
-				vol->segmentPercent(p4, p5, p6, p7)
-			);		
-		}
-    ge.clear();		
-//		fori.clear();
-//		eori.clear();
-		fId = GModel::getNumFaces()+1;
-		ge.push_back( this->getEdgeByTag(abs(eId[0])));
-		ge.push_back( this->getEdgeByTag(abs(eId[9])));
-		ge.push_back( this->getEdgeByTag(abs(eId[4])));
-		ge.push_back( this->getEdgeByTag(abs(eId[8])));
-//		eori.push_back(1);
-//		eori.push_back(1);
-//		eori.push_back(-1);
-//		eori.push_back(-1);
-		eori[0] = ( eId[0] < 0 ? -1 : 1);
-		eori[1] = ( eId[9] < 0 ? -1 : 1);
-		eori[2] = ( eId[4] > 0 ? -1 : 1);
-		eori[3] = ( eId[8] > 0 ? -1 : 1);				
-		gf.push_back( new dtGmshFace(this, fId, ge, eori) );
-		fori.push_back(1);
-		if ( alreadyInModel(gf.back()) ) {
-		  gf.back() = getDtGmshFaceByTag(alreadyInModel(gf.back()));
-			fori.back() = -1;
-		}
-		else {		
-			this->add( gf.back() );
-			gf.back()->setMap2dTo3d( 
-				vol->segmentPercent(p0, p1, p5, p4)
-			);		
-		}
-    ge.clear();	
-//		fori.clear();
-//		eori.clear();
-		fId = GModel::getNumFaces()+1;
-		ge.push_back( this->getEdgeByTag(abs(eId[2])));
-		ge.push_back( this->getEdgeByTag(abs(eId[10])));
-		ge.push_back( this->getEdgeByTag(abs(eId[6])));
-		ge.push_back( this->getEdgeByTag(abs(eId[11])));
-//		eori.push_back(-1);
-//		eori.push_back(1);
-//		eori.push_back(1);
-//		eori.push_back(-1);		
-		eori[0] = ( eId[2] > 0 ? -1 : 1);
-		eori[1] = ( eId[10] < 0 ? -1 : 1);
-		eori[2] = ( eId[6] < 0 ? -1 : 1);
-		eori[3] = ( eId[11] > 0 ? -1 : 1);				
-		gf.push_back( new dtGmshFace(this, fId, ge, eori) );
-		fori.push_back(1);
-		if ( alreadyInModel(gf.back()) ) {
-		  gf.back() = getDtGmshFaceByTag(alreadyInModel(gf.back()));
-			fori.back() = -1;
-		}
-		else {		
-			this->add( gf.back() );
-			gf.back()->setMap2dTo3d( 
-				vol->segmentPercent(p3, p2, p6, p7)
-			);		
-		}
-    ge.clear();	
-//		fori.clear();
-//		eori.clear();
-		fId = GModel::getNumFaces()+1;
-		ge.push_back( this->getEdgeByTag(abs(eId[3])));
-		ge.push_back( this->getEdgeByTag(abs(eId[8])));
-		ge.push_back( this->getEdgeByTag(abs(eId[7])));
-		ge.push_back( this->getEdgeByTag(abs(eId[11])));
-//		eori.push_back(1);
-//		eori.push_back(1);
-//		eori.push_back(-1);
-//		eori.push_back(-1);	
-		eori[0] = ( eId[3] < 0 ? -1 : 1);
-		eori[1] = ( eId[8] < 0 ? -1 : 1);
-		eori[2] = ( eId[7] > 0 ? -1 : 1);
-		eori[3] = ( eId[11] > 0 ? -1 : 1);			
-		gf.push_back( new dtGmshFace(this, fId, ge, eori) );
-		fori.push_back(1);
-		if ( alreadyInModel(gf.back()) ) {
-		  gf.back() = getDtGmshFaceByTag(alreadyInModel(gf.back()));
-			fori.back() = -1;
-		}
-		else {
-			this->add( gf.back() );
-			gf.back()->setMap2dTo3d( 
-				vol->segmentPercent(p3, p0, p4, p7)
-			);		
-		}
-    ge.clear();	
-//		fori.clear();
-//		eori.clear();
-		fId = GModel::getNumFaces()+1;
-		ge.push_back( this->getEdgeByTag(abs(eId[1])));
-		ge.push_back( this->getEdgeByTag(abs(eId[9])));
-		ge.push_back( this->getEdgeByTag(abs(eId[5])));
-		ge.push_back( this->getEdgeByTag(abs(eId[10])));
-//		eori.push_back(-1);
-//		eori.push_back(1);
-//		eori.push_back(1);
-//		eori.push_back(-1);	
-		eori[0] = ( eId[1] > 0 ? -1 : 1);
-		eori[1] = ( eId[9] < 0 ? -1 : 1);
-		eori[2] = ( eId[5] < 0 ? -1 : 1);
-		eori[3] = ( eId[10] > 0 ? -1 : 1);					
-		gf.push_back( new dtGmshFace(this, fId, ge, eori) );
-		fori.push_back(1);
-		if ( alreadyInModel(gf.back()) ) {
-		  gf.back() = getDtGmshFaceByTag(alreadyInModel(gf.back()));
-			fori.back() = -1;
-		}
-		else {
-			this->add( gf.back() );
-			gf.back()->setMap2dTo3d(vol->segmentPercent(p2, p1, p5, p6));	
-		}
+    //
+    // faces
+    //		
+		std::vector< int > fId(6);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p0, p1, p2, p3)),
+			&(fId[0]), eId[0], eId[1], eId[2], eId[3]
+		);						
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p4, p5, p6, p7)),
+			&(fId[1]), eId[4], eId[5], eId[6], eId[7]
+		);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p0, p1, p5, p4)),
+			&(fId[2]), eId[0], eId[9], -eId[4], -eId[8]
+		);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p3, p2, p6, p7)),
+			&(fId[3]), -eId[2], eId[10], eId[6], -eId[11]
+		);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p3, p0, p4, p7)),
+			&(fId[4]), eId[3], eId[8], -eId[7], -eId[11]
+		);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p2, p1, p5, p6)),
+			&(fId[5]), -eId[1], eId[9], eId[5], -eId[10]
+		);
 				
+		//
+		// region
+		//
+		std::vector<int> fori;
+	  std::list< dtGmshFace * > gf;		
+		dt__FORALLINDEX(fId, ii) {
+			gf.push_back( this->getDtGmshFaceByTag(fId[ii]) );
+			fori.push_back(1);
+		}
 		dtGmshRegion * gr = new dtGmshRegionHex(this, rId, eId, gf, fori);
 		this->add(gr);		
 		

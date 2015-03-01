@@ -52,6 +52,10 @@ namespace dtOO {
       map2dTo3d const * const face, int * const tag,
       std::list< GEdge * > const & edges, std::vector< int > const & ori
     );
+    void addIfFaceToGmshModel( 
+      map2dTo3d const * const face, int * const tag,
+      int const & eId0, int const & eId1, int const & eId2, int const & eId3
+    );  
     dtGmshRegion * addRegionToGmshModel( map3dTo3d const * const vol );
     void meshEdgeTransfiniteFromTo(int const from, int const to, int const type, float const coeff, int const nEl);
     void meshVertex( int const tag = 0 );

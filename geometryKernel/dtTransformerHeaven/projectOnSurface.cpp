@@ -43,11 +43,12 @@ namespace dtOO {
       //      
       retAGeo.push_back( 
 				new splineCurve3d(
-					dt__pH(dtCurve)(
+					dt__tmpPtr(
+			      dtCurve,
 						geomCurve_projectOnGeomSurfaceOCC(
 							constSc->ptrConstDtCurve(), _aS->ptrDtSurface()
 						).result()
-					).get()
+					)
 				)
 			);
 			retAGeo.back()->setLabel(constSc->getLabel());
