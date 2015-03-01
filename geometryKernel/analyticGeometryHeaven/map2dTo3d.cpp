@@ -12,7 +12,9 @@
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
 #include <functionHeaven/vec2dCurve2dOneD.h>
+#include <functionHeaven/vec2dBiLinearTwoD.h>
 #include "vec2dOneDInMap2dTo3d.h"
+#include "vec2dTwoDInMap2dTo3d.h"
 
 #define SQU(a)      ((a)*(a))
 
@@ -443,10 +445,9 @@ namespace dtOO {
   map2dTo3d * map2dTo3d::segment( 
 	  dtPoint2 const & p0, dtPoint2 const & p1, 
 	  dtPoint2 const & p2, dtPoint2 const & p3 
-	) const {
-	  dt__THROW(
-	    segment(),
-			<< "Picking a surface in a surface is not yet implemented!"
+	) const {				
+		return new vec2dTwoDInMap2dTo3d(
+			dt__tmpPtr(vec2dTwoD, new vec2dBiLinearTwoD(p0, p1, p2, p3)), this
 		);
   }
 
