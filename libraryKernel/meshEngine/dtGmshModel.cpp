@@ -44,7 +44,7 @@ namespace dtOO {
   }
   	
   void dtGmshModel::addIfVertexToGmshModel( dtPoint3 const & vertex, int * const tag ) {
-		*tag = this->getNumVertices()+1;
+		*tag = this->getMaxVertexTag()+1;
     dtGmshVertex * gv = new dtGmshVertex(this, *tag);
 		gv->setPosition(vertex); 
 		
@@ -65,7 +65,7 @@ namespace dtOO {
     int const from, 
     int const to 
   ) {
-		*tag = this->getNumEdges()+1;
+		*tag = this->getMaxEdgeTag()+1;
 		dtGmshEdge * ge = new dtGmshEdge(
 			this, *tag, ::GModel::getVertexByTag(from), ::GModel::getVertexByTag(to)
 		);
@@ -83,12 +83,24 @@ namespace dtOO {
 			this->add(ge);
 		}
   }
-
+	
+  void dtGmshModel::addIfEdgeToGmshModel(
+    map1dTo3d const * const edge, int * const tag
+  ) {
+		*tag = this->getMaxEdgeTag()+1;		
+		
+		std::vector< int > vId(2);
+		addIfVertexToGmshModel(edge->getPointPercent(0.), &(vId[0]) );
+		addIfVertexToGmshModel(edge->getPointPercent(1.), &(vId[1]) );
+		
+		addIfEdgeToGmshModel(edge, tag, vId[0], vId[1]);
+	}
+	
   void dtGmshModel::addIfFaceToGmshModel( 
     map2dTo3d const * const face, int * const tag,
 		std::list< ::GEdge * > const & edges, std::vector< int > const & ori
   ) {
-		*tag = this->getNumFaces()+1;	
+		*tag = this->getMaxFaceTag()+1;	
 		
 		dtGmshFace * gf = new dtGmshFace(this, *tag, edges, ori);
 		gf->setMap2dTo3d(face);
@@ -120,6 +132,24 @@ namespace dtOO {
 		
 		addIfFaceToGmshModel(face, tag, ge, ori);
   }
+	
+  void dtGmshModel::addIfFaceToGmshModel(
+    map2dTo3d const * const face, int * const tag
+  ) {
+		*tag = this->getMaxFaceTag()+1;		
+		
+    dtPoint2 p0(0., 0.);
+		dtPoint2 p1(1., 0.);
+		dtPoint2 p2(1., 1.);
+		dtPoint2 p3(0., 1.);		
+		std::vector< int > eId(4);
+		addIfEdgeToGmshModel(dt__tmpPtr(map1dTo3d, face->segmentPercent(p0, p1)), &(eId[0]) );
+		addIfEdgeToGmshModel(dt__tmpPtr(map1dTo3d, face->segmentPercent(p1, p2)), &(eId[1]) );
+		addIfEdgeToGmshModel(dt__tmpPtr(map1dTo3d, face->segmentPercent(p2, p3)), &(eId[2]) );
+		addIfEdgeToGmshModel(dt__tmpPtr(map1dTo3d, face->segmentPercent(p3, p0)), &(eId[3]) );
+		
+  	addIfFaceToGmshModel(face, tag, eId[0], eId[1], eId[2], eId[3]);
+	}
 	
 	/**
    * @todo What if region is not 6-sided?
@@ -278,6 +308,14 @@ namespace dtOO {
     
     return ret;    
   }
+	
+  std::list< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( std::list< ::GEdge * > edges ) {
+		std::list< dtGmshEdge * > retEdges;
+		dt__FORALLITER(std::list< ::GEdge * >, edges, it) {
+			retEdges.push_back( cast2DtGmshEdge(*it) );
+		}
+		return retEdges;
+	}
   
   dtGmshVertex * dtGmshModel::cast2DtGmshVertex( ::GEntity * gv ) {
     dtGmshVertex * ret;
@@ -946,4 +984,36 @@ namespace dtOO {
 	  this->destroy(true);
 		this->deleteMesh();
 	}	
+
+	int dtGmshModel::getMaxVertexTag( void ) {
+		int maxTag = 0;
+		for( ::GModel::viter v_it=GModel::vertices.begin(); v_it!=GModel::vertices.end(); ++v_it ) {
+			if ( (*v_it)->tag() > maxTag ) maxTag = (*v_it)->tag();
+		}
+		return maxTag;
+	}
+	
+	int dtGmshModel::getMaxEdgeTag( void ) {
+		int maxTag = 0;
+		for( ::GModel::eiter e_it= GModel::edges.begin(); e_it!=GModel::edges.end(); ++e_it ) {
+			if ( (*e_it)->tag() > maxTag ) maxTag = (*e_it)->tag();
+		}
+		return maxTag;
+	}
+	
+	int dtGmshModel::getMaxFaceTag( void ) {
+		int maxTag = 0;
+		for( ::GModel::fiter f_it= GModel::faces.begin(); f_it!=GModel::faces.end(); ++f_it ) {
+			if ( (*f_it)->tag() > maxTag ) maxTag = (*f_it)->tag();
+		}
+		return maxTag;
+	}	
+	
+	std::list< ::GFace * > dtGmshModel::faces( void ) const {
+		std::list< ::GFace * > faceL;
+    for( ::GModel::fiter f_it= GModel::faces.begin(); f_it!=GModel::faces.end(); ++f_it ) {		
+			faceL.push_back( *f_it );
+		}
+		return faceL;
+	}
 }

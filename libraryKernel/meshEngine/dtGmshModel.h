@@ -38,6 +38,7 @@ namespace dtOO {
     static dtGmshRegion * cast2DtGmshRegion( ::GEntity * gr );
     static dtGmshFace * cast2DtGmshFace( ::GEntity * gf );
     static dtGmshEdge * cast2DtGmshEdge( ::GEntity * ge );  
+    static std::list< dtGmshEdge * > cast2DtGmshEdge( std::list< ::GEdge * > edges );
     static dtGmshVertex * cast2DtGmshVertex( ::GEntity * gv );
     static dtPoint3 cast2DtPoint3( ::GVertex * gv );  
     static dtPoint3 cast2DtPoint3( ::MVertex * mv );
@@ -48,6 +49,7 @@ namespace dtOO {
       int const from, 
       int const to 
     );
+    void addIfEdgeToGmshModel(map1dTo3d const * const edge, int * const tag);
     void addIfFaceToGmshModel(
       map2dTo3d const * const face, int * const tag,
       std::list< ::GEdge * > const & edges, std::vector< int > const & ori
@@ -56,6 +58,7 @@ namespace dtOO {
       map2dTo3d const * const face, int * const tag,
       int const & eId0, int const & eId1, int const & eId2, int const & eId3
     );  
+    void addIfFaceToGmshModel(map2dTo3d const * const face, int * const tag);    
     dtGmshRegion * addRegionToGmshModel( map3dTo3d const * const vol );
     void meshEdgeTransfiniteFromTo(int const from, int const to, int const type, float const coeff, int const nEl);
     void meshVertex( int const tag = 0 );
@@ -74,6 +77,10 @@ namespace dtOO {
     );
     void dtReadCGNS(const std::string & name);
     void clearModel( void );
+    int getMaxVertexTag( void );
+    int getMaxEdgeTag( void );
+    int getMaxFaceTag( void );
+    std::list< ::GFace * > faces( void ) const;
   };
 }
 #endif	/* DTGMSHMODEL_H */
