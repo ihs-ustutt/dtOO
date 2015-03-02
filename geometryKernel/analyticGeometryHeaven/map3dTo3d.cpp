@@ -390,9 +390,9 @@ namespace dtOO {
   
 	map2dTo3d * map3dTo3d::segmentConstW( float const & ww ) const {
 	  dtPoint3 p30(getUMin(), getVMin(), ww);
-		dtPoint3 p31(getUMax(), getVMax(), ww);
+		dtPoint3 p31(getUMax(), getVMin(), ww);
 		dtPoint3 p32(getUMax(), getVMax(), ww);
-		dtPoint3 p33(getUMin(), getVMin(), ww);
+		dtPoint3 p33(getUMin(), getVMax(), ww);
 		
 		return segment(p30, p31, p32, p33);		
 	}
