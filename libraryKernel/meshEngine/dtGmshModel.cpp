@@ -316,7 +316,15 @@ namespace dtOO {
 		}
 		return retEdges;
 	}
-  
+	
+  std::list< dtGmshFace * > dtGmshModel::cast2DtGmshFace( std::list< ::GFace * > faces ) {
+		std::list< dtGmshFace * > ret;
+		dt__FORALLITER(std::list< ::GFace * >, faces, it) {
+			ret.push_back( cast2DtGmshFace(*it) );
+		}
+		return ret;
+	}	
+	
   dtGmshVertex * dtGmshModel::cast2DtGmshVertex( ::GEntity * gv ) {
     dtGmshVertex * ret;
     dt__MUSTDOWNCAST(gv, dtGmshVertex, ret);
