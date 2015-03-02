@@ -7,6 +7,7 @@
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <interfaceHeaven/intHandling.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
@@ -41,6 +42,13 @@ namespace dtOO {
     //
     gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 		
+		//
+		// get margin width and target margin element size
+		//
+		_marginWidth = optionHandling::getOptionFloat("marginWidth");
+		_marginNormalWidth = optionHandling::getOptionFloat("marginNormalWidth");
+		_marginTangentialWidth = optionHandling::getOptionFloat("marginTangentialWidth");
+		
     //
 		// region
 		//		
@@ -74,7 +82,7 @@ namespace dtOO {
 		
 		for (int ii = 0; ii<6; ii++) {
 			dt__pVH(map2dTo3d) margin = map2dTo3d_constructMarginFaces(
-			  _gm->getDtGmshFaceByTag(ii+1)->getMap2dTo3d(), .1
+			  _gm->getDtGmshFaceByTag(ii+1)->getMap2dTo3d(), _marginWidth
 			).result();
 			
 			dt__FORALLITER(dt__pVH(map2dTo3d), margin, it) {
@@ -82,70 +90,42 @@ namespace dtOO {
 				fId[ii].push_back(0);
 				_gm->addIfFaceToGmshModel( &thisMap, &(fId[ii].back()) );
 			}
+			
+			//
+			// set number of elements
+			//
+			int nV = 0;
 			for (int jj=1; jj<5; jj++) {
-				_gm->getDtGmshFaceByTag(fId[ii][jj])->meshTransfiniteWNElements(10, 2);
-				_gm->getDtGmshFaceByTag(fId[ii][jj])->meshTransfiniteWNElements(10, 2);
+				std::vector< int > eNEl
+				=
+				_gm->getDtGmshFaceByTag(fId[ii][jj])->estimateTransfiniteNElements(
+				  _marginTangentialWidth, _marginNormalWidth
+				);
+				nV = nV + eNEl[1];
 			}
+			nV = intHandling::round(nV/4.);
+      for (int jj=1; jj<5; jj++) {	
+				std::vector< int > eNEl
+				=
+	      _gm->getDtGmshFaceByTag(fId[ii][jj])->estimateTransfiniteNElements(
+  				_marginTangentialWidth, _marginNormalWidth
+				);
+				_gm->getDtGmshFaceByTag(fId[ii][jj])->meshTransfiniteWNElements(eNEl[0], nV);
+		  }
 		}
-
-		for (int ii = 0; ii<6; ii++) delete _gm->getDtGmshFaceByTag(ii+1);		
-//		_gm->remove()
-
-//		twoDArrayHandling< int > vId(_internal.size(), 4);
-//		twoDArrayHandling< int > eId(_internal.size(), 4);
-//		dt__FORALLINDEX(_internal, ii) {
-//			dtPoint2 p0(0., 0.);
-//			dtPoint2 p1(1., 0.);
-//			dtPoint2 p2(1., 1.);
-//			dtPoint2 p3(0., 1.);
-//			
-//			_gm->addIfVertexToGmshModel(_internal[ii].getPointPercent(p0), &(vId[ii][0]));
-//			_gm->addIfVertexToGmshModel(_internal[ii].getPointPercent(p1), &(vId[ii][1]));
-//			_gm->addIfVertexToGmshModel(_internal[ii].getPointPercent(p2), &(vId[ii][2]));
-//			_gm->addIfVertexToGmshModel(_internal[ii].getPointPercent(p3), &(vId[ii][3]));
-//			
-//			
-//			_gm->addIfEdgeToGmshModel(
-//			  dt__tmpPtr(map1dTo3d, _internal[ii].segmentPercent(p0, p1)),
-//				&(eId[ii][0]), vId[ii][0], vId[ii][1]
-//			);
-//			_gm->addIfEdgeToGmshModel(
-//			  dt__tmpPtr(map1dTo3d, _internal[ii].segmentPercent(p1, p2)),
-//				&(eId[ii][1]), vId[ii][1], vId[ii][2]
-//			);
-//			_gm->addIfEdgeToGmshModel(
-//			  dt__tmpPtr(map1dTo3d, _internal[ii].segmentPercent(p2, p3)),
-//				&(eId[ii][2]), vId[ii][2], vId[ii][3]
-//			);
-//			_gm->addIfEdgeToGmshModel(
-//			  dt__tmpPtr(map1dTo3d, _internal[ii].segmentPercent(p3, p0)),
-//				&(eId[ii][3]), vId[ii][3], vId[ii][0]
-//			);			
-//			DTINFOWF(
-//				init(), 
-//				<< "vId[ii] = " << vId[ii] << LOGDEL
-//				<< "eId[ii] = " << eId[ii]
-//			);
-//			std::list< ::GEdge * > ge;
-//			std::vector<int> eori(4);						
-//			ge.push_back( _gm->getEdgeByTag(abs(eId[ii][0])) );
-//			ge.push_back( _gm->getEdgeByTag(abs(eId[ii][1])) );
-//			ge.push_back( _gm->getEdgeByTag(abs(eId[ii][2])) );
-//			ge.push_back( _gm->getEdgeByTag(abs(eId[ii][3])) );
-//			eori[0] = ( eId[ii][0] < 0 ? -1 : 1);
-//			eori[1] = ( eId[ii][1] < 0 ? -1 : 1);
-//			eori[2] = ( eId[ii][2] < 0 ? -1 : 1);
-//			eori[3] = ( eId[ii][3] < 0 ? -1 : 1);			
-//			int fId;
-//			_gm->addIfFaceToGmshModel( &(_internal[ii]), &fId, ge, eori);
-//			_gm->getDtGmshFaceByTag(1)->addEdge(
-//        _gm->getEdgeByTag(eId[ii][0]), 1
-//			);			
-//			_gm->getDtGmshFaceByTag(2)->addEdge(
-//        _gm->getEdgeByTag(eId[ii][2]), 1
-//			);
-//			gr->addFace( _gm->getDtGmshFaceByTag(fId), 1 );
-//		}		
+		
+		//
+		// remove old faces
+		//
+		for (int ii = 0; ii<6; ii++) delete _gm->getDtGmshFaceByTag(ii+1);	
+		
+		//
+		// correct transfinite surfaces
+		//
+		std::list< ::GFace * > ff = _gm->faces();
+		dt__FORALLITER(std::list< ::GFace * >, ff, it) {
+			dtGmshModel::cast2DtGmshFace(*it)->correctIfTransfinite();
+		}
 	}
 	
   void map3dTo3dWithInternalGmsh::makeGrid(void) {
