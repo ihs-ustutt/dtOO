@@ -56,11 +56,13 @@ SET(HEADERS
   interfaceHeaven/systemHandling.h
   interfaceHeaven/renderInterface.h
   interfaceHeaven/floatHandling.h
+  interfaceHeaven/intHandling.h
   interfaceHeaven/twoDArrayHandling.h
   interfaceHeaven/profilingHandling.h
   logMe/logBase.h
   logMe/Output2FILE.h
   logMe/logMe.h
+  progHelper.h
 )
 SET(SOURCES
   dtXmlParserDecorator/dtXmlParserBase.cpp
@@ -115,12 +117,12 @@ SET(SOURCES
   interfaceHeaven/systemHandling.cpp
   interfaceHeaven/renderInterface.cpp
   interfaceHeaven/floatHandling.cpp
+  interfaceHeaven/intHandling.cpp
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp
+  progHelper.cpp
 )
 
 APPEND_DTOO_SOURCE(generalKernel "${SOURCES}")
 APPEND_DTOO_HEADER(generalKernel "${HEADERS}")
-
-#INCLUDE_DIRECTORIES(../generalKernel ../geometryKernel ../libraryKernel)
