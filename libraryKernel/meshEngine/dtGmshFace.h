@@ -42,6 +42,10 @@ namespace dtOO {
     void meshTransfiniteWNElements( 
       int const & nElementsU, int const & nElementsV 
     );
+    std::vector< int > estimateTransfiniteNElements( 
+      float const & uWidth, float const & vWidth 
+    ) const;
+    void correctIfTransfinite( void );
     virtual void updateFace( void );
     virtual void makeSuitable( void );
     bool isEqual( ::GFace const * const gf ) const;

@@ -1,6 +1,7 @@
 #include "dtGmshFace.h"
 
 #include <analyticGeometryHeaven/map2dTo3d.h>
+#include <analyticGeometryHeaven/map1dTo3d.h>
 #include "dtGmshEdge.h"
 #include "dtGmshModel.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
@@ -14,6 +15,7 @@
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <interfaceHeaven/intHandling.h>
 
 #define __caCThis \
   const_cast< dtGmshFace * >(this)
@@ -195,19 +197,92 @@ namespace dtOO {
   
   void dtGmshFace::meshTransfiniteWNElements( int const & nElementsU, int const & nElementsV ) {	
 		meshTransfinite();
-		std::list< dtGmshEdge * > ee = dtGmshModel::cast2DtGmshEdge(edges());
+		std::list< dtGmshEdge * > eeList = dtGmshModel::cast2DtGmshEdge(edges());
+		
+		//
+		// only supported for 4-sided faces
+		//
+		dt__THROW_IF(eeList.size()!=4, meshTransfiniteWNElements());
+		std::vector< dtGmshEdge * > ee = progHelper::list2Vector(eeList);
+		
+		//
+		// set number of elements
+		//
+		ee[0]->meshTransfiniteWNElements(1, 1., nElementsU);
+    ee[1]->meshTransfiniteWNElements(1, 1., nElementsV);
+		ee[2]->meshTransfiniteWNElements(1, 1., nElementsU);
+    ee[3]->meshTransfiniteWNElements(1, 1., nElementsV);		
+	}
+	
+  void dtGmshFace::correctIfTransfinite( void ) {
+		//
+		// only correct transfinite surfaces
+		//
+		if (GFace::meshAttributes.method != MESH_TRANSFINITE) return;
+		
+		std::list< dtGmshEdge * > eeList = dtGmshModel::cast2DtGmshEdge(edges());
+    std::vector< dtGmshEdge * > ee = progHelper::list2Vector(eeList);		
+		
+		//
+		// only supported for 4-sided faces
+		//
+		dt__THROW_IF(ee.size()!=4, meshTransfiniteWNElements());
+		
+		//
+		// correct number of elements
+		//
+		ee[0]->meshAttributes.nbPointsTransfinite
+		= 
+		std::max(
+		  ee[0]->meshAttributes.nbPointsTransfinite, 
+			ee[2]->meshAttributes.nbPointsTransfinite
+		);
+		ee[1]->meshAttributes.nbPointsTransfinite 
+		= 
+		std::max(
+		  ee[1]->meshAttributes.nbPointsTransfinite, 
+			ee[3]->meshAttributes.nbPointsTransfinite
+		);
+		ee[2]->meshAttributes.nbPointsTransfinite 
+		= 
+		ee[0]->meshAttributes.nbPointsTransfinite;
+		ee[3]->meshAttributes.nbPointsTransfinite
+		= 
+		ee[1]->meshAttributes.nbPointsTransfinite;
+	}	
+	
+  std::vector< int > dtGmshFace::estimateTransfiniteNElements( 
+	  float const & uWidth, float const & vWidth 
+	) const {	
+		std::list< dtGmshEdge * > const ee = dtGmshModel::cast2DtGmshEdge(edges());
+		
+		//
+		// only supported for 4-sided faces
+		//
+		dt__THROW_IF(ee.size()!=4, meshTransfiniteWNElements());
+		
+		//
+		// set number of elements
+		//
 		bool toggle = false;
-		dt__FORALLITER(std::list< dtGmshEdge * >, ee, it) {
+		std::vector< float > average(2, 0.);
+		dt__FORALLCONSTITER(std::list< dtGmshEdge * >, ee, it) {
 			if ( !toggle) {
-			  (*it)->meshTransfiniteWNElements(1, 1., nElementsU);
+				average[0] = average[0] + (*it)->getMap1dTo3d()->length()/uWidth;
 				toggle = true;
 			}
 			else {
-				(*it)->meshTransfiniteWNElements(1, 1., nElementsV);
+				average[1] = average[1] + (*it)->getMap1dTo3d()->length()/vWidth;
 				toggle = false;
 			}			
 		}
-	}
+
+    std::vector< int > nEl(2);
+    nEl[0] = intHandling::round(average[0]/2.); 		
+		nEl[1] = intHandling::round(average[1]/2.); 		
+		
+		return nEl;
+	}	
 	
   void dtGmshFace::updateFace( void ) {
     dt__THROW(updateFace(), << "Not yet implemented. This could produce errors.");
