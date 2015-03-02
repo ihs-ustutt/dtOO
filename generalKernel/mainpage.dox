@@ -11,6 +11,8 @@ Prerequisites of this library are:
 - GSL
 - Boost
 - Qt4
+- MeshKit
+- MOAB
 
 First checkout the git repository
 \code{.sh}
@@ -26,5 +28,12 @@ cd buildDtOO
 cmake ..
 \endcode
 
+When building Covise please set the following cmake options:
 
+\code
+COVISE_USE_CUDA = false
+COVISE_WARNING_IS_ERROR = false
+COVISE_NATIVE_ARCH = false
+COVISE_USE_QT4 = true
+\endcode
 */
