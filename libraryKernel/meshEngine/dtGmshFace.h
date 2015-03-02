@@ -17,7 +17,10 @@ namespace dtOO {
   public:
     dt__CLASSSTD(dtGmshFace, ::GEntity);
     dtGmshFace(::GModel *m, int tag);
-    dtGmshFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges, const std::vector< int > & ori);
+    dtGmshFace(
+      ::GModel *m, int tag, 
+      const std::list< ::GEdge * > &edges, const std::vector< int > & ori
+    );
     dtGmshFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges);
     virtual ~dtGmshFace();
     virtual Range<double> parBounds(int i) const; 
@@ -36,6 +39,9 @@ namespace dtOO {
     void addEdgeLoop( std::list< ::GEdge * > edgeL );
     bool isClosed( int const dim ) const;
     void meshTransfinite( void );
+    void meshTransfiniteWNElements( 
+      int const & nElementsU, int const & nElementsV 
+    );
     virtual void updateFace( void );
     virtual void makeSuitable( void );
     bool isEqual( ::GFace const * const gf ) const;
@@ -45,6 +51,7 @@ namespace dtOO {
       std::vector< ::MVertex const * > * const mv, 
       std::vector< ::MElement const * > * const me
     ) const;
+    std::vector< map2dTo3d * > constructMarginFaces( float const & width ) const;
   private:
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:

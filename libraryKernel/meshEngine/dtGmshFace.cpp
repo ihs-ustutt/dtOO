@@ -2,6 +2,7 @@
 
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include "dtGmshEdge.h"
+#include "dtGmshModel.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <gmsh/GmshDefines.h>
 #include <gmsh/GEdge.h>
@@ -49,6 +50,18 @@ namespace dtOO {
   }  
 
   dtGmshFace::~dtGmshFace() {
+		DTINFOWF(
+			~dtGmshFace(), << "Removing face tag = " << tag() << " on all edges."	
+		);
+		std::list< ::GEdge * > ee = edges();
+		dt__FORALLITER(std::list< ::GEdge * >, ee, it) {
+			(*it)->delFace(this);
+		}
+		this->model()->remove(this);
+//		std::list< ::GRegion * > rr = regions();
+//		dt__FORALLITER(std::list< ::GRegion * >, rr, it) {
+//			(*it)->delFace(this);
+//		}		
   }
   
   Range<double> dtGmshFace::parBounds(int i) const {
@@ -177,9 +190,25 @@ namespace dtOO {
   
   void dtGmshFace::meshTransfinite( void ) {
       this->meshAttributes.method = MESH_TRANSFINITE;
-      this->meshAttributes.recombine = 1;
+//      this->meshAttributes.recombine = 1;
   }
   
+  void dtGmshFace::meshTransfiniteWNElements( int const & nElementsU, int const & nElementsV ) {	
+		meshTransfinite();
+		std::list< dtGmshEdge * > ee = dtGmshModel::cast2DtGmshEdge(edges());
+		bool toggle = false;
+		dt__FORALLITER(std::list< dtGmshEdge * >, ee, it) {
+			if ( !toggle) {
+			  (*it)->meshTransfiniteWNElements(1, 1., nElementsU);
+				toggle = true;
+			}
+			else {
+				(*it)->meshTransfiniteWNElements(1, 1., nElementsV);
+				toggle = false;
+			}			
+		}
+	}
+	
   void dtGmshFace::updateFace( void ) {
     dt__THROW(updateFace(), << "Not yet implemented. This could produce errors.");
   }
@@ -408,5 +437,54 @@ namespace dtOO {
 			const_cast< ::MElement *>(me->back())->getVertices(vertices);
 			dt__FORALLITER(std::vector< ::MVertex * >, vertices, aV) mv->push_back(*aV);	
 		}		
+	}
+	
+	/*
+	 * (v)
+	 *  A
+	 *  |
+	 *  (0,1)            (1,1)             faces:
+	 *  o--------------------o             <0>: 0/1/2/3
+	 *  |\     <3>          /|             <1>: (0,0)/(1,0)/1/0
+	 *  | o----------------o |             <2>: (1,0)/(1,1)/2/1
+	 *  | |3              2| |             <3>: (1,1)/(0,1)/3/2
+	 *  <4>      <0>       <2>             <4>: (0,1)/(0,0)/0/3
+	 *  | |0              1| |
+	 *  | o----------------o |
+	 *  |/      <1>         \|
+	 *  o--------------------o --> (u)
+	 *  (0,0)            (1,0)
+	 */
+	std::vector< map2dTo3d * > dtGmshFace::constructMarginFaces( float const & width ) const {
+		std::list< dtGmshEdge * > edges 
+		= 
+		dtGmshModel::cast2DtGmshEdge(GFace::edges());
+		
+		dt__THROW_IF( edges.size()!=4, constructMarginFaces());
+		
+		std::vector< dtPoint2 > embVertUV(4);
+		embVertUV[0] = dtPoint2(width, width);
+		embVertUV[1] = dtPoint2(1.-width, width);
+		embVertUV[2] = dtPoint2(1.-width, 1.-width);
+		embVertUV[3] = dtPoint2(width, 1.-width);
+		
+		std::vector< map2dTo3d * > retFace(5);		
+    retFace[0] 
+		= 
+		_mm->segmentPercent(embVertUV[0], embVertUV[1], embVertUV[2], embVertUV[3]);
+		retFace[1] 
+		= 
+		_mm->segmentPercent(dtPoint2(0, 0), dtPoint2(1, 0), embVertUV[1], embVertUV[0]);
+		retFace[2] 
+		= 
+		_mm->segmentPercent(dtPoint2(1, 0), dtPoint2(1, 1), embVertUV[2], embVertUV[1]);
+		retFace[3] 
+		= 
+		_mm->segmentPercent(dtPoint2(1, 1), dtPoint2(0, 1), embVertUV[3], embVertUV[2]);
+		retFace[4]
+		=
+		_mm->segmentPercent(dtPoint2(0, 1), dtPoint2(0, 0), embVertUV[0], embVertUV[3]);		
+		
+		return retFace;
 	}
 }
