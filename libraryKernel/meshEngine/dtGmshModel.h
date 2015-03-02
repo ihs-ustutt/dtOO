@@ -37,6 +37,7 @@ namespace dtOO {
     dtGmshVertex * getDtGmshVertexByTag( int const tag ) const;
     static dtGmshRegion * cast2DtGmshRegion( ::GEntity * gr );
     static dtGmshFace * cast2DtGmshFace( ::GEntity * gf );
+    std::list< dtGmshFace * > cast2DtGmshFace( std::list< ::GFace * > faces );
     static dtGmshEdge * cast2DtGmshEdge( ::GEntity * ge );  
     static std::list< dtGmshEdge * > cast2DtGmshEdge( std::list< ::GEdge * > edges );
     static dtGmshVertex * cast2DtGmshVertex( ::GEntity * gv );

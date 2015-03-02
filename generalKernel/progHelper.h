@@ -1,7 +1,11 @@
 #ifndef PROGHELPER_H
 #define	PROGHELPER_H
 
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
+#include <vector>
+#include <list>
+
 //#include <boost/utility.hpp>
 
 #define dt__FORALL(vector, variable, content) \
@@ -40,6 +44,23 @@ namespace dtOO {
 #define dt__NEXT( object ) dtOO::next( object )
 #define dt__PRIOR( object ) dtOO::prior( object )
 #define dt__TOFLOAT(toAss, value ) toAss = static_cast<float>(value)
+
+namespace dtOO {
+  class progHelper {
+    public:
+      dt__CLASSNAME(progHelper);
+      template < class T >
+      static std::vector< T > list2Vector(std::list< T > & eeList) {
+        std::vector< T > ee { 
+          std::begin(eeList), 
+          std::end(eeList) 
+        };		
+        return ee;
+      }      
+    private:
+      progHelper();
+  };
+}	
 
 #endif	/* PROGHELPER_H */
 
