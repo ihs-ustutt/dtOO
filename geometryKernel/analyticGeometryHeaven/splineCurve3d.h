@@ -2,7 +2,6 @@
 #define	SPLINECURVE3D_H
 
 #include "map1dTo3d.h"
-#include "oneDimRevertable.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -12,8 +11,7 @@
 namespace dtOO {
   class dtCurve;
 
-  class splineCurve3d : public map1dTo3d,
-                        public oneDimRevertable {
+  class splineCurve3d : public map1dTo3d {
     public:
       dt__CLASSSTD(splineCurve3d, analyticGeometry);
       splineCurve3d();

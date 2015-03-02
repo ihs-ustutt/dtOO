@@ -32,9 +32,6 @@
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
-#include <analyticGeometryHeaven/oneDimTrimmable.h>
-#include <analyticGeometryHeaven/oneDimRevertable.h>
-#include <analyticGeometryHeaven/twoDimRevertable.h>
 
 namespace dtOO {
   dtXmlParserBase::dtXmlParserBase() {
@@ -1353,79 +1350,6 @@ namespace dtOO {
         advancedTwin.push_back( advancedP->at(ii) );
       }
       advancedP->clear();
-
-      //
-      // check for attributes
-      //
-      if ( toBuildP->hasAttribute("attribute") ) {
-  //------------------------------------------------------------------------------
-  // trim
-  //------------------------------------------------------------------------------
-        if ( getAttributeStr("attribute", *toBuildP) == "trim" ) {
-          for (int ii=0;ii<advancedTwin.size();ii++) {
-            oneDimTrimmable * toTrim = dynamic_cast< oneDimTrimmable * >(advancedTwin[ii]);
-            if (toTrim) {
-              float uuStart = muParseString( 
-                                replaceUsedFunctions( 
-                                  getAttributeStr(
-                                    "parameter_one_percent_start", 
-                                    *toBuildP
-                                  ), 
-                                  cValP, 
-                                  sFunP
-                                ) 
-                              );
-              float uuEnd = muParseString( 
-                                replaceUsedFunctions( 
-                                  getAttributeStr(
-                                    "parameter_one_percent_end", 
-                                    *toBuildP
-                                  ), 
-                                  cValP, 
-                                  sFunP
-                                ) 
-                              );
-              toTrim->trim(uuStart,uuEnd);
-            }          
-            else {
-              DTWARNINGWF(createAdvanced(),
-                      << DTLOGEVAL( getAttributeStr("attribute", *toBuildP) ) << LOGDEL
-                      << DTLOGEVAL( advancedTwin[ii]->getLabel() ) << LOGDEL
-                      << "function not defined on " << advancedTwin[ii]->virtualClassName() );     
-            }
-          }                
-        }
-  //------------------------------------------------------------------------------
-  // revert
-  //------------------------------------------------------------------------------
-        else if ( getAttributeStr("attribute", *toBuildP) == "revert" ) {
-          for (int ii=0;ii<advancedTwin.size();ii++) {
-            oneDimRevertable * oneDToRev = dynamic_cast< oneDimRevertable * >(advancedTwin[ii]);
-            twoDimRevertable * twoDToRev = dynamic_cast< twoDimRevertable * >(advancedTwin[ii]);
-            if (oneDToRev) {
-              DTINFOWF(createAdvanced(),
-                      << "revert geometry");            
-              oneDToRev->revert();
-            }          
-            else if (twoDToRev) {
-              DTINFOWF(createAdvanced(),
-                      << "revert geometry");            
-              twoDToRev->revert();
-            }                
-            else {
-              DTWARNINGWF(createAdvanced(),
-                      << DTLOGEVAL( getAttributeStr("attribute", *toBuildP) ) << LOGDEL
-                      << DTLOGEVAL( advancedTwin[ii]->getLabel() ) << LOGDEL
-                      << "function not defined on " << advancedTwin[ii]->virtualClassName() );     
-            }
-          }                
-        }         
-        else {
-          DTWARNINGWF(createAdvanced(),
-                  << DTLOGEVAL( getAttributeStr("attribute", *toBuildP) ) << LOGDEL
-                  << "Unknown attribute");
-        }
-      }
 
       //
       // transform
