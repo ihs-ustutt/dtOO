@@ -35,6 +35,10 @@ namespace dtOO {
     return ( (uu - getUMin()) / (getUMax() - getUMin()) );
   }
   
+  float map1dTo3d::percent_l(float const & ll) const {
+		return percent_u( u_l(ll) );
+	}
+	
   int map1dTo3d::getRenderResolutionU( void ) const { 
     return analyticGeometry::getRenderResolution(0);
   }  

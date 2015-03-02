@@ -35,6 +35,7 @@ namespace dtOO {
       int getRenderResolutionU( void ) const;
       float u_percent(float const & uu) const;
       float percent_u(float const & uu) const;
+      float percent_l(float const & ll) const;      
       bool isClosedU( void ) const;
       float getUMin( void ) const;
       float getUMax( void ) const;
