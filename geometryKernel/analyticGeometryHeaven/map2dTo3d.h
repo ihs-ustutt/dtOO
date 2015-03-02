@@ -96,6 +96,11 @@ namespace dtOO {
       bool XYZtoUV(double X, double Y, double Z, double &U, double &V,
                    double relax, std::vector< float > &itVal) const;
   };
+  
+	//
+	// boost requires this method in ptr_vector
+	//    
+  map2dTo3d * new_clone(map2dTo3d const & m2d);
 }
 #endif	/* MAP2DTO3D_H */
 

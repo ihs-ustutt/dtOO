@@ -42,6 +42,8 @@
     return static_cast<name const *>(obj); \
   }
 
+#define dt__vH( name ) \
+  vectorHandling< name >
 #define dt__pH( name ) \
   ptrHandling< name >
 #define dt__tmpPtr( name, init ) \

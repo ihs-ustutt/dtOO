@@ -689,4 +689,8 @@ namespace dtOO {
       return XYZtoUV(X, Y, Z, U, V, 0.75 * relax, itVal);
     }
   }
+
+  map2dTo3d * new_clone(map2dTo3d const & m2d){
+    return m2d.clone();
+  }		
 }

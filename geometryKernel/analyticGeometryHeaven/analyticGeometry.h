@@ -41,6 +41,11 @@ namespace dtOO {
     std::vector< std::string > _attType;
     std::vector< std::string > _attValue;
   };
+  
+	//
+	// boost requires this method in ptr_vector
+	//  
+  analyticGeometry * new_clone(analyticGeometry const & aG);
 }
 #endif	/* ANALYTICGEOMETRY_H */
 
