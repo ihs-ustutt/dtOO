@@ -51,7 +51,6 @@ namespace dtOO {
       std::vector< ::MVertex const * > * const mv, 
       std::vector< ::MElement const * > * const me
     ) const;
-    std::vector< map2dTo3d * > constructMarginFaces( float const & width ) const;
   private:
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:
