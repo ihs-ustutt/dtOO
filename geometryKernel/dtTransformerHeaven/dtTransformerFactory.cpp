@@ -24,6 +24,7 @@
 #include "reparamInSurface.h"
 #include "pickVec3dTwoDRangePercent.h"
 #include "analyticAddNormal.h"
+#include "approxInSurface.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -66,6 +67,7 @@ namespace dtOO {
 		__IFRET( reparamInSurface );
 		__IFRET( pickVec3dTwoDRangePercent );
 		__IFRET( analyticAddNormal );
+		__IFRET( approxInSurface );
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

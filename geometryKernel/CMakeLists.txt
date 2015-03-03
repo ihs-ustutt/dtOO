@@ -19,6 +19,7 @@ SET(HEADERS
   analyticGeometryHeaven/analyticGeometryCompound.h
   analyticGeometryHeaven/map2dTo3dTransformed.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h
+  analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h
   baseContainerHeaven/baseContainer.h
   baseContainerHeaven/pointContainer.h
   baseContainerHeaven/vectorContainer.h
@@ -80,6 +81,7 @@ SET(HEADERS
   dtTransformerHeaven/reparamInSurface.h
   dtTransformerHeaven/pickVec3dTwoDRangePercent.h
   dtTransformerHeaven/analyticAddNormal.h
+  dtTransformerHeaven/approxInSurface.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -100,6 +102,7 @@ SET(SOURCES
   analyticGeometryHeaven/vec2dTwoDInMap2dTo3d.cpp
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.cpp
+  analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.cpp
   baseContainerHeaven/baseContainer.cpp
   baseContainerHeaven/pointContainer.cpp
   baseContainerHeaven/vectorContainer.cpp
@@ -159,6 +162,7 @@ SET(SOURCES
   dtTransformerHeaven/reparamInSurface.cpp
   dtTransformerHeaven/pickVec3dTwoDRangePercent.cpp
   dtTransformerHeaven/analyticAddNormal.cpp
+  dtTransformerHeaven/approxInSurface.cpp
 )
 
 APPEND_DTOO_SOURCE(geometryKernel "${SOURCES}")
