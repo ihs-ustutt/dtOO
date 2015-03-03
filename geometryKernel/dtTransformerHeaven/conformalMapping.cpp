@@ -73,12 +73,12 @@ namespace dtOO {
 
   void conformalMapping::init( 
 	  QDomElement const * tE, 
-    baseContainer const * const bC,  
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+    baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
 		
     //initialize with default values
     _rotSplineP = NULL;
@@ -89,28 +89,22 @@ namespace dtOO {
         dtXmlParserBase::muParseString( 
           dtXmlParserBase::replaceUsedFunctions(
             dtXmlParserBase::getAttributeStr("tolerance", *tE), 
-            cValP, 
-            sFunP
+            cV, 
+            aF
           ) 
         )
       );
     }
-    else {
-      DTINFOWF(init(),
-              << "Using default tolerance of " << _tolerance );
-    }
+    else DTINFOWF(init(), << "Using default tolerance of " << _tolerance );
     //
     // search part
     //
-    dt__FORALL(*depAGeoP, ii,
-      std::string geoName = depAGeoP->at(ii)->getLabel();
-      if ( geoName == dtXmlParserBase::getAttributeStr("part_label", *tE ) ) {
-        handleAnalyticGeometry("part_label", depAGeoP->at(ii));
-        break;
-      }
-    );
+    handleAnalyticGeometry(
+			"part_label", 
+			aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE ))
+		);		
   }
-  
+	
   void conformalMapping::handleFloat(std::string const name, float const value) {
     if (name == "tolerance") {
       _tolerance = value;

@@ -65,10 +65,11 @@ namespace dtOO {
   void analyticAddNormal::init( 
 		QDomElement const * tE, 
 		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
 				
     //
     // get functions
@@ -76,7 +77,7 @@ namespace dtOO {
 		if ( dtXmlParserBase::hasAttribute("function_label", *tE) ) {
 			handleAnalyticFunction(
 				"function_label", 
-				sFunP->get( dtXmlParserBase::getAttributeStr("function_label", *tE) ) 
+				aF->get( dtXmlParserBase::getAttributeStr("function_label", *tE) ) 
 			);
 		}
 		//

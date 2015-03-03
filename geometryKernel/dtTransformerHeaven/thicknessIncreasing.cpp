@@ -136,10 +136,11 @@ namespace dtOO {
   void thicknessIncreasing::init( 
 	  QDomElement const * tE, 
 		baseContainer const * const bC,
-    vectorHandling< constValue * > const * const cValP,
-    vectorHandling< analyticFunction * > const * const sFunP
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 					
 	) {
-		dtTransformer::init(tE, bC, cValP, sFunP);
+		dtTransformer::init(tE, bC, cV, aF, aG);
 		
     handleBool("inverted", dtXmlParserBase::getAttributeBool("inverted", *tE));
     handleInt("order", dtXmlParserBase::getAttributeInt("order", *tE));     
@@ -149,19 +150,19 @@ namespace dtOO {
     //     
     handleAnalyticFunction(
       "function_label", 
-      sFunP->get( dtXmlParserBase::getAttributeStr("function_label", *tE) )->clone() 
+      aF->get( dtXmlParserBase::getAttributeStr("function_label", *tE) )->clone() 
     );
     handleAnalyticFunction(
       "parameter_one_percent_function", 
-      sFunP->get( dtXmlParserBase::getAttributeStr("parameter_one_percent_function", *tE) )->clone()
+      aF->get( dtXmlParserBase::getAttributeStr("parameter_one_percent_function", *tE) )->clone()
     );
     
     handleInt( 
       "number_points_one", 
-      dtXmlParserBase::getAttributeIntMuParse("number_points_one", *tE, cValP, sFunP)
+      dtXmlParserBase::getAttributeIntMuParse("number_points_one", *tE, cV, aF)
     );
   }
-
+		
   bool thicknessIncreasing::isNecessary( void ) const {
     return true;
   }

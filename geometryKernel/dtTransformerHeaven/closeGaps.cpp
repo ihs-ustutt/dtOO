@@ -91,12 +91,12 @@ namespace dtOO {
 
   void closeGaps::init( 
 	  QDomElement const * tE, 
-		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+    baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
 		
     //
     // check input
@@ -116,12 +116,12 @@ namespace dtOO {
                                   "parameter_two_end_part_label", 
                                   *tE
                                 );      
-      for (int ii = 0; ii<depAGeoP->size();ii++) {
-         if ( depAGeoP->at(ii)->getLabel() == vStartLabel ) {
-           dt__MUSTDOWNCAST(depAGeoP->at(ii), analyticSurface const, _vvStartAGeo);
+      for (int ii = 0; ii<aG->size();ii++) {
+         if ( aG->at(ii)->getLabel() == vStartLabel ) {
+           dt__PTRASS(_vvStartAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
          }
-         if ( depAGeoP->at(ii)->getLabel() == vEndLabel ) {
-           dt__MUSTDOWNCAST(depAGeoP->at(ii), analyticSurface const, _vvEndAGeo);
+         if ( aG->at(ii)->getLabel() == vEndLabel ) {
+           dt__PTRASS(_vvEndAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
          }
          if (_vvStartAGeo && _vvEndAGeo) {
            break;

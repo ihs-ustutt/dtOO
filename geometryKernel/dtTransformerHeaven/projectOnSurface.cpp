@@ -62,17 +62,17 @@ namespace dtOO {
 
   void projectOnSurface::init( 
 	  QDomElement const * tE, 
-		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+    baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
     
     if (dtXmlParserBase::hasAttribute( "part_label", *tE) ) {
 			_aS.reset(			
 				analyticSurface::ConstDownCast(
-					depAGeoP->get(dtXmlParserBase::getAttributeStr("part_label", *tE))->clone()
+					aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE))->clone()
 				)
 			);
     }

@@ -80,32 +80,23 @@ namespace dtOO {
   void translate::init( 
 	  QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
 		
     if ( dtXmlParserBase::hasChild("Vector_2", *tE) ) {
 			QDomElement v2El = dtXmlParserBase::getChild("Vector_2", *tE);
-			dtVector2 v2 = dtXmlParserBase::getDtVector2(&v2El, bC, cValP, sFunP, depAGeoP);
+			dtVector2 v2 = dtXmlParserBase::getDtVector2(&v2El, bC, cV, aF, aG);
 			handleDtVector2("", v2);
     }
     if ( dtXmlParserBase::hasChild("Vector_3", *tE) ) {
 			QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
-			dtVector3 v3 = dtXmlParserBase::getDtVector3(&v3El, bC, cValP, sFunP, depAGeoP);
+			dtVector3 v3 = dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG);
 			handleDtVector3("", v3);
     }
   }
-
-  void translate::init( 
-	  QDomElement const * tE, 
-		baseContainer const * const bC, 
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP
-	) {
-		return init(tE, bC, cValP, sFunP, NULL);
-	}	
 	
 	void translate::handleDtVector3(std::string const name, dtVector3 const value) {
     _v3 = value;

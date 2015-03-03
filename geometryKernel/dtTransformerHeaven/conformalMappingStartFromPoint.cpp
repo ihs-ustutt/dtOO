@@ -22,16 +22,16 @@ namespace dtOO {
 	}
 	
   void conformalMappingStartFromPoint::init( 
-		QDomElement const * tE, 
-		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+	  QDomElement const * tE, 
+    baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG  
 	) {
     //
     // call on base class
     //
-    conformalMapping::init(tE, bC, cValP, sFunP, depAGeoP);
+    conformalMapping::init(tE, bC, cV, aF, aG);
             
     //
     // init me
@@ -51,8 +51,8 @@ namespace dtOO {
        offsetZ = dtXmlParserBase::muParseString( 
                    dtXmlParserBase::replaceUsedFunctions(
                      dtXmlParserBase::getAttributeStr("offset_z", *tE), 
-                     cValP, 
-                     sFunP
+                     cV, 
+							       aF
                    ) 
                  );
     }  
@@ -62,8 +62,8 @@ namespace dtOO {
       offsetPhi = dtXmlParserBase::muParseString( 
                     dtXmlParserBase::replaceUsedFunctions(
                       dtXmlParserBase::getAttributeStr("offset_phi", *tE), 
-                      cValP, 
-                      sFunP
+                      cV, 
+							        aF
                     ) 
                   );
     }  
@@ -73,8 +73,8 @@ namespace dtOO {
       offsetM = dtXmlParserBase::muParseString( 
                     dtXmlParserBase::replaceUsedFunctions(
                       dtXmlParserBase::getAttributeStr("offset_m", *tE), 
-                      cValP, 
-                      sFunP
+                      cV, 
+							        aF
                     ) 
                   );
     }  

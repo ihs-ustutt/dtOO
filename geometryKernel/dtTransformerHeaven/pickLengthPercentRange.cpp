@@ -78,12 +78,12 @@ namespace dtOO {
   
   void pickLengthPercentRange::init( 
 	  QDomElement const * tE, 
-    baseContainer const * const bC,  
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+    baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
 		
     _createSplineCurve3d = true;
     _createAnalyticSurface = false;
@@ -98,8 +98,8 @@ namespace dtOO {
                                         "length_percent_one_start",
                                         *tE
                                       ),
-                                      cValP, 
-                                      sFunP) 
+                                      cV, 
+                                      aF) 
                                     );
       }
 
@@ -109,8 +109,8 @@ namespace dtOO {
                                         "length_percent_two_start",
                                         *tE
                                       ),
-                                      cValP, 
-                                      sFunP) 
+                                      cV, 
+                                      aF) 
                                     );
       }
 
@@ -120,8 +120,8 @@ namespace dtOO {
                                         "length_percent_one_end",
                                         *tE
                                       ),
-                                      cValP, 
-                                      sFunP) 
+                                      cV, 
+                                      aF) 
                                     );
       }
 
@@ -131,8 +131,8 @@ namespace dtOO {
                                         "length_percent_two_end",
                                         *tE
                                       ),
-                                      cValP, 
-                                      sFunP) 
+                                      cV, 
+                                      aF) 
                                     );
       }    
 

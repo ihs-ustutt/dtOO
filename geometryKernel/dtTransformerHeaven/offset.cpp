@@ -121,11 +121,11 @@ namespace dtOO {
   void offset::init( 
 	  QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
 		
     if (dtXmlParserBase::hasAttribute("parameter_one_offset_percent", *tE)) {
       _paraOneOffsetPercent = dtXmlParserBase::muParseString( 
@@ -134,8 +134,8 @@ namespace dtOO {
                                     "parameter_one_offset_percent", 
                                     *tE
                                   ),
-                                  cValP, 
-                                  sFunP
+                                  cV, 
+                                  aF
                                 ) 
                               );
     }
@@ -146,8 +146,8 @@ namespace dtOO {
                                     "parameter_two_offset_percent", 
                                     *tE
                                   ),
-                                  cValP, 
-                                  sFunP
+                                  cV, 
+                                  aF
                                 ) 
                               );
     }  
@@ -158,8 +158,8 @@ namespace dtOO {
                        "number_pieces", 
                        *tE
                      ),
-                     cValP, 
-                     sFunP
+                     cV, 
+                     aF
                    ) 
                  );
     }  
@@ -170,8 +170,8 @@ namespace dtOO {
                               "x_offset_percent", 
                               *tE
                             ),
-                            cValP, 
-                            sFunP
+                            cV, 
+                            aF
                           ) 
                         );
       _xyPercent = true;
@@ -183,8 +183,8 @@ namespace dtOO {
                               "y_offset_percent", 
                               *tE
                             ),
-                            cValP, 
-                            sFunP
+                            cV, 
+                            aF
                           ) 
                         );
       _xyPercent = true;
@@ -196,8 +196,8 @@ namespace dtOO {
                               "x_offset", 
                               *tE
                             ),
-                            cValP, 
-                            sFunP
+                            cV, 
+                            aF
                           ) 
                         );
     }
@@ -208,8 +208,8 @@ namespace dtOO {
                               "y_offset", 
                               *tE
                             ),
-                            cValP, 
-                            sFunP
+                            cV, 
+                            aF
                           ) 
                         );
     }      
@@ -220,8 +220,8 @@ namespace dtOO {
                               "normal_offset", 
                               *tE
                             ),
-                            cValP, 
-                            sFunP
+                            cV, 
+                            aF
                           ) 
                         );
     }          

@@ -175,49 +175,40 @@ namespace dtOO {
     }
     return transSFun;  
   }
-	
-	void predefinedExtension::init( 
-		QDomElement const * tE, 
-		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
-	) {
-    init(tE, bC, cValP, sFunP);
-	}
 		
   void predefinedExtension::init( 
-	  QDomElement const * tE,
-		baseContainer const * const bC,
-    vectorHandling< constValue * > const * const cValP,
-    vectorHandling< analyticFunction * > const * const sFunP 
+	  QDomElement const * tE, 
+    baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
     //
     // get input
     //
 		_alphaIn = dtXmlParserBase::muParseString( 
 								 dtXmlParserBase::replaceUsedFunctions(
 									 dtXmlParserBase::getAttributeStr("alpha_in", *tE),
-									 cValP, 
-									 sFunP
+									 cV, 
+						       aF
 								 ) 
 							 );
 		_yIn = dtXmlParserBase::muParseString( 
 						 dtXmlParserBase::replaceUsedFunctions(
-						   dtXmlParserBase::getAttributeStr("y_in", *tE), cValP, sFunP
+						   dtXmlParserBase::getAttributeStr("y_in", *tE), cV, aF
 						 ) 
 					 );
 		_alphaOut = dtXmlParserBase::muParseString( 
 									dtXmlParserBase::replaceUsedFunctions(
 										dtXmlParserBase::getAttributeStr("alpha_out", *tE),
-										cValP, 
-										sFunP
+										cV, 
+						aF
 									) 
 								);
 		_yOut = dtXmlParserBase::muParseString( 
 							dtXmlParserBase::replaceUsedFunctions(
-								dtXmlParserBase::getAttributeStr("y_out", *tE), cValP, sFunP
+								dtXmlParserBase::getAttributeStr("y_out", *tE), cV, aF
 							) 
 						);     
   }

@@ -31,8 +31,8 @@ namespace dtOO {
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP,
       vectorHandling< analyticGeometry * > const * const depAGeoP 
-    );
-    virtual void init( 
+    ) = 0;
+    void init( 
       QDomElement const * tE,
       baseContainer const * const bC, 
       vectorHandling< constValue * > const * const cValP,

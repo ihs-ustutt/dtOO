@@ -18,11 +18,11 @@ namespace dtOO {
     virtual dtTransformer * create( void ) const;     
     virtual bool isNecessary( void ) const; 
     void init( 
-      QDomElement const * tE,
+      QDomElement const * tE, 
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP,
-      vectorHandling< analyticGeometry * > const * const depAGeoP 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG 
     );
     virtual vectorHandling< analyticGeometry * > 
     apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const;

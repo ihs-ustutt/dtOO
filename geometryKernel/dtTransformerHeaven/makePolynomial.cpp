@@ -118,39 +118,39 @@ namespace dtOO {
 
   void makePolynomial::init( 
 	  QDomElement const * tE, 
-		baseContainer const * bC,  
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+    baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {     
-    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);		
+    dtTransformer::init(tE, bC, cV, aF, aG);		
 		
     if (dtXmlParserBase::hasAttribute("number_points_one", *tE)) {
       _nPointsOne = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceUsedFunctions(
                       dtXmlParserBase::getAttributeStr("number_points_one", *tE),
-                      cValP, 
-                      sFunP) 
+                      cV, 
+                      aF) 
                     );
     }    
     if (dtXmlParserBase::hasAttribute("number_points_two", *tE)) {
       _nPointsTwo = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceUsedFunctions(
                       dtXmlParserBase::getAttributeStr("number_points_two", *tE),
-                      cValP, 
-                      sFunP) 
+                      cV, 
+                      aF) 
                     );
     }    
     if (dtXmlParserBase::hasAttribute("order_one", *tE)) {
       _orderOne = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceUsedFunctions(
                     dtXmlParserBase::getAttributeStr("order_one", *tE),
-                    cValP, 
-                    sFunP) 
+                    cV, 
+                    aF) 
                   );
     }        
     if (dtXmlParserBase::hasAttribute("order_two", *tE)) {
       _orderTwo = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceUsedFunctions(
                     dtXmlParserBase::getAttributeStr("order_two", *tE),
-                    cValP, 
-                    sFunP) 
+                    cV, 
+                    aF) 
                   );
     } 
   }

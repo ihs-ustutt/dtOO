@@ -51,12 +51,12 @@ namespace dtOO {
   
   void pickMap2dTo3dRangePercent::init( 
 	  QDomElement const * tE, 
-    baseContainer const * const bC,  
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+    baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP, depAGeoP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
     
 		_u0 = -1.;
 		_v0 = -1.;
@@ -67,8 +67,8 @@ namespace dtOO {
 			dtXmlParserBase::muParseString( 
 				dtXmlParserBase::replaceUsedFunctions(
 					dtXmlParserBase::getAttributeStr("parameter_percent_one", *tE),
-					cValP, 
-					sFunP
+					cV, 
+					aF
 				) 
 			);
 		}
@@ -78,8 +78,8 @@ namespace dtOO {
 			dtXmlParserBase::muParseString( 
 				dtXmlParserBase::replaceUsedFunctions(
 					dtXmlParserBase::getAttributeStr("parameter_percent_two", *tE),
-					cValP, 
-					sFunP
+					cV, 
+					aF
 				) 
 			);
 		}

@@ -19,16 +19,10 @@ namespace dtOO {
     virtual void init( 
       QDomElement const * tE, 
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP,
-      vectorHandling< analyticGeometry * > const * const depAGeoP 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG 
     );
-    virtual void init( 
-      QDomElement const * tE,
-      baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP 
-    );    
     virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const sFunP ) const;  
   private:
     std::vector< dtPoint2 > calculateExtPoints(

@@ -51,20 +51,21 @@ namespace dtOO {
   }
   
   void addConstCoordinate::init( 
-	  QDomElement const * tE, 
+		QDomElement const * tE, 
 		baseContainer const * const bC,
-    vectorHandling< constValue * > const * const cValP,
-    vectorHandling< analyticFunction * > const * const sFunP
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
   ) {
-    dtTransformer::init(tE, bC, cValP, sFunP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
 		
 		float cc 
 		= 
 		dtXmlParserBase::muParseString( 
 			dtXmlParserBase::replaceUsedFunctions(
 				dtXmlParserBase::getAttributeStr("coordinate_value", *tE),
-				cValP, 
-				sFunP
+				cV, 
+				aF
 			) 
 		);
 		handleFloat("coordinate_value", cc);

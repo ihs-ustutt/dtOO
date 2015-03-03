@@ -16,10 +16,10 @@ namespace dtOO {
     virtual dtTransformer * create( void ) const;     
     void init( 
       QDomElement const * tE, 
-      baseContainer const * const bC,   
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP,
-      vectorHandling< analyticGeometry * > const * const depAGeoP 
+      baseContainer const * const bC,
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG 
     );
     virtual std::vector< dtPoint2 * > apply( std::vector< dtPoint2 * > const * const pointVecP ) const;    
     virtual void handlePoint2d(std::string const name, dtPoint2 const value);

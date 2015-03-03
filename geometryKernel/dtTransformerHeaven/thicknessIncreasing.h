@@ -19,11 +19,12 @@ namespace dtOO {
     virtual dtTransformer * create( void ) const;        
     virtual bool isNecessary( void ) const;
     virtual void init( 
-      QDomElement const * tE,
+      QDomElement const * tE, 
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP
-    );
+      vectorHandling< analyticFunction * > const * const sFunP,
+      vectorHandling< analyticGeometry * > const * const depAGeoP 
+    );    
     virtual vectorHandling< analyticFunction * > 
     apply( vectorHandling< analyticFunction * > const * const sFunP ) const;  
     virtual void handleInt(std::string const name, int const value);

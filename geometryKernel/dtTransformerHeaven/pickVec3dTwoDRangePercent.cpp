@@ -74,12 +74,13 @@ namespace dtOO {
   }
   
   void pickVec3dTwoDRangePercent::init( 
-	  QDomElement const * tE,
-		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP
+	  QDomElement const * tE, 
+    baseContainer const * const bC,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cValP, sFunP);
+    dtTransformer::init(tE, bC, cV, aF, aG);
     
 		_x0 = -1.;
 		_x1 = -1.;
@@ -89,9 +90,7 @@ namespace dtOO {
 			= 
 			dtXmlParserBase::muParseString( 
 				dtXmlParserBase::replaceUsedFunctions(
-					dtXmlParserBase::getAttributeStr("x_one_percent", *tE),
-					cValP, 
-					sFunP
+					dtXmlParserBase::getAttributeStr("x_one_percent", *tE), cV, aF
 				) 
 			);
 		}
@@ -100,9 +99,7 @@ namespace dtOO {
 			= 
 			dtXmlParserBase::muParseString( 
 				dtXmlParserBase::replaceUsedFunctions(
-					dtXmlParserBase::getAttributeStr("x_two_percent", *tE),
-					cValP, 
-					sFunP
+					dtXmlParserBase::getAttributeStr("x_two_percent", *tE), cV, aF
 				) 
 			);
 		}

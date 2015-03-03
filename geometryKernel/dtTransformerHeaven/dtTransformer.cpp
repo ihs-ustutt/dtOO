@@ -36,9 +36,7 @@ namespace dtOO {
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {
-		if ( dtXmlParserBase::hasAttribute("label", *tE) ) {
-			labelHandling::setLabel(dtXmlParserBase::getAttributeStr("label", *tE));
-		}
+    init(tE, bC, cValP, sFunP, NULL);
   }
   
   std::vector< dtPoint2 > dtTransformer::apply( std::vector< dtPoint2 > const * const pointVecP ) const {
