@@ -45,7 +45,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h
   geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h
   geometryEngine/geoBuilder/trimmedCurve_uBounds.h
-  geometryEngine/geoBuilder/geomCurve_normalOffsetGeomCurveOCC.h
+  geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h
   geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.h
   geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h
   geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.h
@@ -115,7 +115,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.cpp
   geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.cpp
   geometryEngine/geoBuilder/trimmedCurve_uBounds.cpp
-  geometryEngine/geoBuilder/geomCurve_normalOffsetGeomCurveOCC.cpp
+  geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.cpp
   geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.cpp
   geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.cpp

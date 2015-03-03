@@ -1,7 +1,7 @@
 #include "vec3dTwoDTwelveRectangleFunctionDecorator.h"
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
-#include <geometryEngine/geoBuilder/geomCurve_normalOffsetGeomCurveOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h>
 #include <functionHeaven/vec3dSurfaceTwoD.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
 #include <geometryEngine/geoBuilder/geomSurface_geomCurveFillConstructOCC.h>
@@ -74,7 +74,7 @@ namespace dtOO {
 			//
 			// add boundary layer curve
 			//
-			cL.push_back( geomCurve_normalOffsetGeomCurveOCC(cL[4], tt).result() );
+			cL.push_back( bSplineCurve_normalOffsetGeomCurveOCC(cL[4], tt).result() );
 			
       analyticFunction * vec3dTwoDaFC = createCompound(cL, ll, mm, nn, kk);
 			cL.destroy();
