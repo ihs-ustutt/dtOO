@@ -34,6 +34,10 @@ namespace dtOO {
   float map1dTo3d::percent_u(float const & uu) const {
     return ( (uu - getUMin()) / (getUMax() - getUMin()) );
   }
+	
+	float map1dTo3d::u_lPercent(float const & lP) const {
+		return u_l( lP*length() );
+	}
   
   float map1dTo3d::percent_l(float const & ll) const {
 		return percent_u( u_l(ll) );

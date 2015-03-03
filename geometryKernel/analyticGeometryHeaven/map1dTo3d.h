@@ -34,6 +34,7 @@ namespace dtOO {
       dtPoint3 getPointPercent( float const & uu ) const;  
       int getRenderResolutionU( void ) const;
       float u_percent(float const & uu) const;
+      float u_lPercent(float const & lP) const;
       float percent_u(float const & uu) const;
       float percent_l(float const & ll) const;      
       bool isClosedU( void ) const;
