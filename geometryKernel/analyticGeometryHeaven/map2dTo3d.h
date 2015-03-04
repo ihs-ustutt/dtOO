@@ -31,8 +31,10 @@ namespace dtOO {
       virtual vectorHandling< renderInterface * > getRender( void ) const;
       virtual vectorHandling< renderInterface * > getExtRender( void ) const;
       virtual dtVector3 normal( float const & uu, float const & vv) const;
+      std::vector< dtVector3 > firstDer( float const & uu, float const & vv) const;    
       virtual dtVector3 firstDerU( float const & uu, float const & vv) const;
       virtual dtVector3 firstDerV( float const & uu, float const & vv) const;
+      virtual std::vector< dtVector3 > secondDer( float const & uu, float const & vv) const;
       virtual dtVector3 secondDerUU( float const & uu, float const & vv) const;
       virtual dtVector3 secondDerVV( float const & uu, float const & vv) const;
       virtual dtVector3 secondDerUV( float const & uu, float const & vv) const; 

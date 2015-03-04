@@ -227,149 +227,170 @@ namespace dtOO {
   dtVector3 map2dTo3d::normalPercent( float const & uu, float const & vv ) const {
     return normal(u_percent(uu), v_percent(vv));  
   }
-  
-  dtVector3 map2dTo3d::firstDerU( float const & uu, float const & vv) const {
-    float uP = percent_u(uu);
-    float vP = percent_v(vv);
-    float const deltaPer = 0.01;
-    float const deltaPerInv = 1. - deltaPer;		
-    
-    if (uP<deltaPer) {
-      return (
-        (getPointPercent(deltaPer, vP) - getPointPercent(0., vP))
-        /
-        (u_percent(deltaPer) - u_percent(0.) )
-      );      
-    }
-    else if ( (uP>=deltaPer) && (uP<=deltaPerInv) ) {
-      return (
-        ( getPointPercent(uP+deltaPer, vP) - getPointPercent(uP-deltaPer, vP) )
-        /
-        ( u_percent(uP+deltaPer) - u_percent(uP-deltaPer) )
-      );
-    }
-    else if (uP>deltaPerInv) {
-      return (
-        (getPointPercent(1., vP) - getPointPercent(1.-deltaPer, vP))
-        /
-        (u_percent(1.) - u_percent(deltaPerInv) )
-      );      
-    }
-  }
-  
-  dtVector3 map2dTo3d::firstDerV( float const & uu, float const & vv) const {
-    float uP = percent_u(uu);
-    float vP = percent_v(vv);
-    float const deltaPer = 0.01;
-    float const deltaPerInv = 1. - deltaPer;		
-    
-    if (vP<deltaPer) {
-      return (
-        (getPointPercent(uP, deltaPer) - getPointPercent(uP, 0.))
-        /
-        (v_percent(deltaPer) - v_percent(0.) )
-      );      
-    }
-    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
-      return (
-        (getPointPercent(uP, vP+deltaPer) - getPointPercent(uP, vP-deltaPer))
-        /
-        (v_percent(vP+deltaPer) - v_percent(vP-deltaPer) )
-      );
-    }
-    else if (vP>deltaPerInv) {
-      return (
-        (getPointPercent(uP, 1.) - getPointPercent(uP, 1.-deltaPer))
-        /
-        (v_percent(1.) - v_percent(deltaPerInv) )
-      );      
-    }    
-  }
-
-  dtVector3 map2dTo3d::secondDerUU( float const & uu, float const & vv) const {
-    float uP = percent_u(uu);
-    float vP = percent_v(vv);
-    float const deltaPer = 0.01;
-    float const deltaPerInv = 1. - deltaPer;		
-    
-    if (uP<deltaPer) {
-      return (
-        (firstDerU(deltaPer, vP) - firstDerU(0., vP))
-        /
-        (u_percent(deltaPer) - u_percent(0.) )
-      );      
-    }
-    else if ( (uP>=deltaPer) && (uP<=deltaPerInv) ) {
-      return (
-        (firstDerU(uP+deltaPer, vP) - firstDerU(uP-deltaPer, vP))
-        /
-        (u_percent(uP+deltaPer) - u_percent(uP-deltaPer) )
-      );
-    }
-    else if (uP>deltaPerInv) {
-      return (
-        (firstDerU(1., vP) - firstDerU(1.-deltaPer, vP))
-        /
-        (u_percent(1.) - u_percent(deltaPerInv) )
-      );      
-    }       
-  }
-  
-  dtVector3 map2dTo3d::secondDerVV( float const & uu, float const & vv) const {
-    float uP = percent_u(uu);
-    float vP = percent_v(vv);
-    float const deltaPer = 0.01;
-    float const deltaPerInv = 1. - deltaPer;		
-    
-    if (vP<deltaPer) {
-      return (
-        (firstDerV(uP, deltaPer) - firstDerV(uP, 0.))
-        /
-        (v_percent(deltaPer) - v_percent(0.) )
-      );      
-    }
-    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
-      return (
-        (firstDerV(uP, vP+deltaPer) - firstDerU(uP, vP-deltaPer))
-        /
-        (v_percent(vP+deltaPer) - v_percent(vP-deltaPer) )
-      );
-    }
-    else if (vP>deltaPerInv) {
-      return (
-        (firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
-        /
-        (v_percent(1.) - v_percent(deltaPerInv) )
-      );      
-    }    
-  }
-  
-  dtVector3 map2dTo3d::secondDerUV( float const & uu, float const & vv) const {
+	
+	std::vector< dtVector3 > map2dTo3d::firstDer( float const & uu, float const & vv) const {
+		//
+		// dU
+		//
     float uP = percent_u(uu);
     float vP = percent_v(vv);
     float const deltaPer = 0.01;
     float const deltaPerInv = 1. - deltaPer;
+		std::vector< dtVector3 > dd(2);
+    
+    if (uP<deltaPer) {
+      dd[0] 
+			= 
+			(getPointPercent(deltaPer, vP) - getPointPercent(0., vP))
+			/
+			(u_percent(deltaPer) - u_percent(0.) );      
+    }
+    else if ( (uP>=deltaPer) && (uP<=deltaPerInv) ) {
+      dd[0] 
+			= 
+			( getPointPercent(uP+deltaPer, vP) - getPointPercent(uP-deltaPer, vP) )
+			/
+			( u_percent(uP+deltaPer) - u_percent(uP-deltaPer) );
+    }
+    else if (uP>deltaPerInv) {
+      dd[0] 
+			= 
+			(getPointPercent(1., vP) - getPointPercent(1.-deltaPer, vP))
+			/
+			(u_percent(1.) - u_percent(deltaPerInv) );    
+    }
+		
+		//
+		// dV
+		//
     if (vP<deltaPer) {
-      return (
-        (firstDerV(uP, deltaPer) - firstDerV(uP, 0.))
-        /
-        (u_percent(deltaPer) - u_percent(0.) )
-      );      
+      dd[1] 
+			= 
+			(getPointPercent(uP, deltaPer) - getPointPercent(uP, 0.))
+			/
+			(v_percent(deltaPer) - v_percent(0.) );
     }
     else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
-      return (
-        (firstDerV(uP, vP+deltaPer) - firstDerU(uP, vP-deltaPer))
-        /
-        (u_percent(uP+deltaPer) - u_percent(uP-deltaPer) )
-      );
+      dd[1] 
+			= 
+			(getPointPercent(uP, vP+deltaPer) - getPointPercent(uP, vP-deltaPer))
+			/
+			(v_percent(vP+deltaPer) - v_percent(vP-deltaPer) );
     }
     else if (vP>deltaPerInv) {
-      return (
-        (firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
-        /
-        (u_percent(1.) - u_percent(deltaPerInv) )
-      );      
+      dd[1] 
+			= 
+			(getPointPercent(uP, 1.) - getPointPercent(uP, 1.-deltaPer))
+			/
+			(v_percent(1.) - v_percent(deltaPerInv) );      
+    }
+		
+		return dd;
+	}
+  
+  dtVector3 map2dTo3d::firstDerU( float const & uu, float const & vv) const {
+		return firstDer(uu, vv)[0];
+  }
+  
+  dtVector3 map2dTo3d::firstDerV( float const & uu, float const & vv) const {
+    return firstDer(uu, vv)[1];		
+  }
+
+  std::vector< dtVector3 > map2dTo3d::secondDer( float const & uu, float const & vv) const {
+    float uP = percent_u(uu);
+    float vP = percent_v(vv);
+    float const deltaPer = 0.01;
+    float const deltaPerInv = 1. - deltaPer;		
+    std::vector< dtVector3 > dd(3);
+		
+		//
+		// dUU
+		//
+    if (uP<deltaPer) {
+      dd[0]
+			=
+			(firstDerU(deltaPer, vP) - firstDerU(0., vP))
+			/
+			(u_percent(deltaPer) - u_percent(0.) );      
+    }
+    else if ( (uP>=deltaPer) && (uP<=deltaPerInv) ) {
+      dd[0]
+			=
+			(firstDerU(uP+deltaPer, vP) - firstDerU(uP-deltaPer, vP))
+			/
+			(u_percent(uP+deltaPer) - u_percent(uP-deltaPer) );
+    }
+    else if (uP>deltaPerInv) {
+      dd[0]
+			=
+			(firstDerU(1., vP) - firstDerU(1.-deltaPer, vP))
+			/
+			(u_percent(1.) - u_percent(deltaPerInv) );      
     }       
+
+		//
+		// ddUV
+		//
+    if (vP<deltaPer) {
+      dd[1]
+			=
+			(firstDerV(uP, deltaPer) - firstDerV(uP, 0.))
+			/
+			(u_percent(deltaPer) - u_percent(0.) );      
+    }
+    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
+      dd[1]
+			=
+			(firstDerV(uP, vP+deltaPer) - firstDerV(uP, vP-deltaPer))
+			/
+			(u_percent(uP+deltaPer) - u_percent(uP-deltaPer) );
+    }
+    else if (vP>deltaPerInv) {
+      dd[1]
+			=
+			(firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
+			/
+			(u_percent(1.) - u_percent(deltaPerInv) );      
+    }       
+	
+		//
+		// dVV
+		//
+    if (vP<deltaPer) {
+      dd[2]
+			=
+			(firstDerV(uP, deltaPer) - firstDerV(uP, 0.))
+			/
+			(v_percent(deltaPer) - v_percent(0.) );      
+    }
+    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
+      dd[2]
+			=
+			(firstDerV(uP, vP+deltaPer) - firstDerU(uP, vP-deltaPer))
+			/
+			(v_percent(vP+deltaPer) - v_percent(vP-deltaPer) );
+    }
+    else if (vP>deltaPerInv) {
+      dd[2]
+			=
+			(firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
+			/
+			(v_percent(1.) - v_percent(deltaPerInv) );      
+    }    		
+	
+	  return dd;
+	}
+	
+  dtVector3 map2dTo3d::secondDerUU( float const & uu, float const & vv) const {
+		return secondDer(uu, vv)[0];
+  }
+  
+  dtVector3 map2dTo3d::secondDerVV( float const & uu, float const & vv) const {
+		return secondDer(uu, vv)[2];
+  }
+  
+  dtVector3 map2dTo3d::secondDerUV( float const & uu, float const & vv) const {
+		return secondDer(uu, vv)[1];
   }
   
   dtPoint2 map2dTo3d::reparamPercentOnFace( dtPoint3 const & ppXYZ ) const {
