@@ -28,6 +28,7 @@ namespace dtOO {
   private:
     dt__pH(map2dTo3d const) _m2d;
     int _nPoints;
+    int _order;
   };
 }
 #endif	/* approxInSurface_H */

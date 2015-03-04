@@ -16,6 +16,7 @@ namespace dtOO {
 	approxInSurface::approxInSurface( approxInSurface const & orig ) {
 	  _m2d.reset( orig._m2d->clone() );
 		_nPoints = orig._nPoints;
+		_order = orig._order;
 	}
 	
   approxInSurface::~approxInSurface() {
@@ -60,7 +61,7 @@ namespace dtOO {
       // push approx geometry in vector
       //      
 			dt__pH(dtCurve2d) dtC2d(
-				bSplineCurve2d_pointConstructOCC(ppUV, 1).result()
+				bSplineCurve2d_pointConstructOCC(ppUV, _order).result()
 			);
 			dt__pH(vec2dCurve2dOneD) v2d1d(new vec2dCurve2dOneD(dtC2d.get()) );
 			retAGeo.push_back( new vec2dOneDInMap2dTo3d(v2d1d.get(), _m2d.get()) );
@@ -108,5 +109,17 @@ namespace dtOO {
 				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "number_points", *tE))
 			);
     }		
+
+    if (dtXmlParserBase::hasAttribute( "order", *tE) ) {
+			_order 
+			= 
+			dtXmlParserBase::getAttributeIntMuParse("order", *tE, cV, aF);
+    }
+    else {
+      dt__THROW(
+				init(), 
+				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "order", *tE))
+			);
+    }				
   }
 }
