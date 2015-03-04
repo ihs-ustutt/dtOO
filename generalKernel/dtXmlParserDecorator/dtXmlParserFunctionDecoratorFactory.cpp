@@ -2,21 +2,21 @@
 
 #include <logMe/logMe.h>
 #include <string.h>
-#include "aFBuilder/baseContainerFunctionDecorator.h"
-#include "aFBuilder/scaMuParserOneDFunctionDecorator.h"
-#include "aFBuilder/scaCurve2dOneDFunctionDecorator.h"
-#include "aFBuilder/sca3PointMeanlineFunctionDecorator.h"
-#include "aFBuilder/analyticFunctionFunctionDecorator.h"
-#include "aFBuilder/vec2dCurve2dOneDFunctionDecorator.h"
-#include "aFBuilder/vec3dSurfaceTwoDFunctionDecorator.h"
-#include "aFBuilder/vec3dCurveOneDFunctionDecorator.h"
-#include "aFBuilder/vec3dTwoDFiveRectangleFunctionDecorator.h"
-#include "aFBuilder/vec3dTwoDTwelveRectangleFunctionDecorator.h"
-#include "aFBuilder/vec3dTransVolThreeDFunctionDecorator.h"
-#include "aFBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator.h"
-#include "aFBuilder/vec3dMuParserThreeDFunctionDecorator.h"
-#include "aFBuilder/scaMuParserTwoDFunctionDecorator.h"
-#include "aFBuilder/muParserFunctionDecorator.h"
+#include "aFXmlBuilder/baseContainerFunctionDecorator.h"
+#include "aFXmlBuilder/scaMuParserOneDFunctionDecorator.h"
+#include "aFXmlBuilder/scaCurve2dOneDFunctionDecorator.h"
+#include "aFXmlBuilder/sca3PointMeanlineFunctionDecorator.h"
+#include "aFXmlBuilder/analyticFunctionFunctionDecorator.h"
+#include "aFXmlBuilder/vec2dCurve2dOneDFunctionDecorator.h"
+#include "aFXmlBuilder/vec3dSurfaceTwoDFunctionDecorator.h"
+#include "aFXmlBuilder/vec3dCurveOneDFunctionDecorator.h"
+#include "aFXmlBuilder/vec3dTwoDFiveRectangleFunctionDecorator.h"
+#include "aFXmlBuilder/vec3dTwoDTwelveRectangleFunctionDecorator.h"
+#include "aFXmlBuilder/vec3dTransVolThreeDFunctionDecorator.h"
+#include "aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator.h"
+#include "aFXmlBuilder/vec3dMuParserThreeDFunctionDecorator.h"
+#include "aFXmlBuilder/scaMuParserTwoDFunctionDecorator.h"
+#include "aFXmlBuilder/muParserFunctionDecorator.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
