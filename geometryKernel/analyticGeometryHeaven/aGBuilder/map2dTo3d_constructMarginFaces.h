@@ -27,6 +27,7 @@ namespace dtOO {
 	 */
   class map2dTo3d_constructMarginFaces {
   public:
+    dt__CLASSNAME(map2dTo3d_constructMarginFaces);
     map2dTo3d_constructMarginFaces(
       map2dTo3d const * const m2d, float const & width
     );

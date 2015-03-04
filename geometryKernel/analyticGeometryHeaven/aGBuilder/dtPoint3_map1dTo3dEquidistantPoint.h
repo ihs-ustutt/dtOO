@@ -10,6 +10,7 @@ namespace dtOO {
   
   class dtPoint3_map1dTo3dEquidistantPoint {
   public:
+    dt__CLASSNAME(dtPoint3_map1dTo3dEquidistantPoint);     
     dtPoint3_map1dTo3dEquidistantPoint(
       map1dTo3d const * const m1d, int const & nPoints
     );
