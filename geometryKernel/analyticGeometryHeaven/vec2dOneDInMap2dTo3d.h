@@ -32,6 +32,7 @@ namespace dtOO {
       //
       vec2dOneD const * ptrToVec2dOneD( void ) const;
       map2dTo3d const * ptrToMap2dTo3d( void ) const;      
+      bool isPercent( void ) const;
   private:
     ptrHandling< vec2dOneD > _v2d;
     ptrHandling< map2dTo3d > _m2d;

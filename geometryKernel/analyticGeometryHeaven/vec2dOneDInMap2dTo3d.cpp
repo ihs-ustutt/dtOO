@@ -66,4 +66,8 @@ namespace dtOO {
   map2dTo3d const * vec2dOneDInMap2dTo3d::ptrToMap2dTo3d( void ) const {
 		return _m2d.get();
 	}
+	
+	bool vec2dOneDInMap2dTo3d::isPercent( void ) const {
+		return _percentF;
+	}
 }
