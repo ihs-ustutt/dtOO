@@ -161,17 +161,17 @@ namespace dtOO {
 				check = bisectF.Solve();
 			}
 			else {
-				dt__THROW(u_l(), << "No iteration.");
+				dt__THROW(u_l(), << "No iteration possible.");
 			}
-				theRoot = bisectF.Root();
+			theRoot = bisectF.Root();
 		}
 
-		DTINFOWF(
-			u_l(),
-			<< logMe::dtFormat(
-			     "mustIterate = %i, ll=%f, theRoot = %f, |ll-l_u(theRoot)| = %f"
-				 ) % mustIterate % ll % theRoot % fabs(ll-l_u(theRoot)) 
-		);		
+//		DTINFOWF(
+//			u_l(),
+//			<< logMe::dtFormat(
+//			     "mustIterate = %i, ll=%f, theRoot = %f, |ll-l_u(theRoot)| = %f"
+//				 ) % mustIterate % ll % theRoot % fabs(ll-l_u(theRoot)) 
+//		);		
 	  return theRoot;
   }
 	

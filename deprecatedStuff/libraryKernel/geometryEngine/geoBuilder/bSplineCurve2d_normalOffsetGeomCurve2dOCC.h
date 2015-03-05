@@ -15,7 +15,7 @@ namespace dtOO {
       dtCurve2d const * const dtC, std::vector< float > const & offset
     );
     bSplineCurve2d_normalOffsetGeomCurve2dOCC(
-      dtCurve2d const * const dtC, float const & offset
+      dtCurve2d const * const dtC, float const & offset, int const & nPoints
     );    
     virtual ~bSplineCurve2d_normalOffsetGeomCurve2dOCC();
     dtCurve2d * result( void );

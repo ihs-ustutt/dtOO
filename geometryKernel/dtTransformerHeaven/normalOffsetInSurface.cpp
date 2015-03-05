@@ -13,6 +13,8 @@ namespace dtOO {
 	normalOffsetInSurface::normalOffsetInSurface( normalOffsetInSurface const & orig ) {
 	  _m2d.reset( orig._m2d->clone() );
 		_thickness = orig._thickness;
+		_nPoints = orig._nPoints;
+		_nIntPoints = orig._nIntPoints;
 	}
 	
   normalOffsetInSurface::~normalOffsetInSurface() {
@@ -38,32 +40,10 @@ namespace dtOO {
 			);
 
 			
-//			std::vector< dtPoint3 > ppXYZ
-//			=
-//			dtPoint3_map1dTo3dEquidistantPoint(m1d, _nPoints).result();
-//			
-//			std::vector< dtPoint2 > ppUV(ppXYZ.size());
-//			for (int ii=0; ii<ppUV.size(); ii++) {
-//				ppUV[ii] = _m2d->reparamOnFace( ppXYZ[ii] );
-//			}
-//		
-//			DTINFOWF(
-//				apply(),
-//				<< "Approx " << DTLOGEVAL(m1d->getLabel()) << " on " 
-//				<<  DTLOGEVAL(_m2d->getLabel()) << "."
-//			);
-//			
-//      //
-//      // push approx geometry in vector
-//      //      
-//			dt__pH(dtCurve2d) dtC2d(
-//				bSplineCurve2d_pointConstructOCC(ppUV, 1).result()
-//			);
-//			dt__pH(vec2dCurve2dOneD) v2d1d(new vec2dCurve2dOneD(dtC2d.get()) );
-//			
-//			dt__pH(map1dTo3d) tmpM1d( new vec2dOneDInMap2dTo3d(v2d1d.get(), _m2d.get()) );
 			retAGeo.push_back(
-			  map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(m1d, _thickness).result()
+			  map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(
+			    m1d, _thickness, _nPoints, _nIntPoints
+			  ).result()
 			);
 			
 			retAGeo.back()->setLabel(m1d->getLabel());
@@ -109,5 +89,29 @@ namespace dtOO {
 				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "thickness", *tE))
 			);
     }		
+
+    if (dtXmlParserBase::hasAttribute( "number_points", *tE) ) {
+			_nPoints 
+			= 
+			dtXmlParserBase::getAttributeIntMuParse("number_points", *tE, cV, aF);
+    }
+    else {
+      dt__THROW(
+				init(), 
+				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "number_points", *tE))
+			);
+    }		
+
+    if (dtXmlParserBase::hasAttribute( "number_integration_points", *tE) ) {
+			_nIntPoints 
+			= 
+			dtXmlParserBase::getAttributeIntMuParse("number_integration_points", *tE, cV, aF);
+    }
+    else {
+      dt__THROW(
+				init(), 
+				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "number_integration_points", *tE))
+			);
+    }				
   }
 }

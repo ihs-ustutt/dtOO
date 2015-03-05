@@ -8,16 +8,22 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineCurve2d_normalOffsetGeomCurve2dOCC.h>
+#include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>
+#include "dtPoint3_map1dTo3dPoint.h"
+#include "dtPoint3_map1dTo3dEquidistantPoint.h"
 
 namespace dtOO {
 	map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d
 	  ::map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(
-      map1dTo3d const * const m1d, float const & thick
+      map1dTo3d const * const m1d, float const & thick, 
+			int const & nPoints, int const & nIntegrationPoints
 	) {
+		//
+		// casting
+		//
 		dt__PTRASS(
 			vec2dOneDInMap2dTo3d const * const v3dInM3d,
 			vec2dOneDInMap2dTo3d::ConstDownCast(m1d)
@@ -31,74 +37,120 @@ namespace dtOO {
 			vec2dCurve2dOneD::ConstDownCast(v3dInM3d->ptrToVec2dOneD())
 		);
 		map2dTo3d const * const m2d = v3dInM3d->ptrToMap2dTo3d();
-		
-		std::vector< float > percent(3);
-		percent[0] = 0.0;
-		percent[1] = 0.5;
-		percent[2] = 1.0;
-		
-		std::vector< dtPoint2 > v2d(percent.size());
-		twoDArrayHandling< dtVector3 > dM(percent.size(), 2);
-		std::vector< dtVector2 > nV2d(percent.size());
-		std::vector< dtPoint2 > thickPoints(percent.size());
-		for ( int ii=0; ii<percent.size(); ii++) {
-			v2d[ii] = v2d1d->YdtPoint2Percent(percent[ii]);
-		  dM[ii] = m2d->firstDer(v2d[ii].x(), v2d[ii].y());
-      nV2d[ii] 
+				  
+		std::vector< dtPoint3 > ppXYZ
+		= 
+		dtPoint3_map1dTo3dEquidistantPoint(m1d, nPoints).result();
+		std::vector< dtPoint2 > ppNewUV(ppXYZ.size());
+		std::vector< float > itVal;
+		float deltaThick = thick/nIntegrationPoints;			
+		dt__FORALLINDEX(ppXYZ, ii) {
+			float percent 
 			= 
-			dtLinearAlgebra::unitNormal(
-				v2d1d->DYdtVector2( v2d1d->x_percent(percent[ii]) )
-			);			
+			static_cast< float >(ii) / static_cast< float >(nPoints-1);
+			//
+			// reparam on surface and get derivative
+			//
+			dtPoint2 ppUV = m2d->reparamOnFace( ppXYZ[ii] );				
+			dtVector3 dCdU = m1d->firstDerU( m1d->u_lPercent(percent) );
 
-			dtVector3 gradNormalC = nV2d[ii].x()*dM[ii][0] + nV2d[ii].y()*dM[ii][1];
-      thickPoints[ii] 
-			= 
-			dtPoint2(percent[ii], thick/dtLinearAlgebra::length(gradNormalC));
-			DTINFOWF(
-				map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(),
-				<< DTLOGEVAL(percent[ii]) << LOGDEL
-				<< DTLOGVEC3D(dM[ii][0]) << LOGDEL
-				<< DTLOGVEC3D(dM[ii][1]) << LOGDEL
-				<< DTLOGVEC2D(nV2d[ii]) << LOGDEL
-				<< DTLOGVEC3D(gradNormalC) << LOGDEL
-				<< DTLOGEVAL(dtLinearAlgebra::length(gradNormalC)) << LOGDEL
-				<< DTLOGEVAL(thick) << LOGDEL
-				<< DTLOGPOI2D(thickPoints[ii])
-			);			
-    }
-		
-		scaCurve2dOneD fSmooth(
-      dt__tmpPtr(dtCurve2d, bSplineCurve2d_pointConstructOCC(thickPoints, 1).result())						
-		);
+			std::vector< dtPoint3 > movingXYZ(2);
+			movingXYZ[0] = ppXYZ[ii];
+			ppNewUV[ii] = ppUV;
+			float intDist = 0.;
+			for (int jj=0; jj<nIntegrationPoints; jj++) {
+				//
+				// approximate normal
+				// calculate cross product of surface normal and curve normal
+				//
+				dtVector3 nS = m2d->normal( ppNewUV[ii].x(), ppNewUV[ii].y());
+				dtVector3 nInC = dtLinearAlgebra::crossProduct(dCdU, nS);					
+				nInC = dtLinearAlgebra::normalize(nInC);
+				
+				//
+				// calculate distance with approximated normal
+				//
+				dtPoint3 ppOpt = movingXYZ[0] + deltaThick*nInC;
+				dtVector3 deltaXYZ = ppOpt - movingXYZ[0];
+				
+				//
+				// calculate approximation of distance in parameter space
+				// solve: deltaXYZ = J(u,v) deltaUV
+				//
+				std::vector< dtVector3 > dSdUV 
+				= 
+				m2d->firstDer(ppNewUV[ii].x(), ppNewUV[ii].y());
+				dtMatrix mat(3,2);
+				mat(0,0) = dSdUV[0].x(); mat(0,1) = dSdUV[1].x();
+				mat(1,0) = dSdUV[0].y(); mat(1,1) = dSdUV[1].y();
+				mat(2,0) = dSdUV[0].z(); mat(2,1) = dSdUV[1].z();
+				dtMatrixVector rhs(3, 0.);
+				rhs[0] = deltaXYZ.x(); rhs[1] = deltaXYZ.y(); rhs[2] = deltaXYZ.z();
+				dtMatrixVector deltaUV = dtLinearAlgebra::solveMatrix(mat, rhs);
 
-		int nPoints 
-	  = 
-		v2d1d->ptrDtCurve2d()->nControlPoints();
+				//
+				// update ppNewUV, movingXYZ and calculate discrete distance
+				//
+				ppNewUV[ii] = ppNewUV[ii] + dtVector2(deltaUV[0], deltaUV[1]);
+				movingXYZ[1] = m2d->getPoint(ppNewUV[ii]);
+				intDist = intDist + dtLinearAlgebra::length(movingXYZ[1]-movingXYZ[0]);
+				
+				//
+				// make current value old
+				//
+				movingXYZ[0] = movingXYZ[1];
+			}
+			
+			//
+			// save iteration output
+			//
+			itVal.push_back( ppUV.x() );
+			itVal.push_back( ppUV.y() );
+			itVal.push_back( ppNewUV[ii].x() );
+			itVal.push_back( ppNewUV[ii].y() );				
+			itVal.push_back( intDist );
+			itVal.push_back( fabs( (thick-intDist)/thick ) );
+		}
+		//
+		// output
+		//
+		std::vector< std::string > header;
+		header.push_back("p_u");
+		header.push_back("p_v");
+		header.push_back("pT_u");
+		header.push_back("pT_v");			
+		header.push_back("int(T)");
+		header.push_back("|(T-int(T))/T|");
+		DTINFOWF(
+			map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(),
+			<< logMe::floatVecToTable(header, itVal)
+		);			
 		
-		std::vector< float > thickSmooth(nPoints);
-		float dist = 1./(nPoints-1);
-		for (int ii=0; ii<nPoints; ii++) {
-			dt__TOFLOAT(float iiF, ii);
-			thickSmooth[ii] = fSmooth.YFloat( dist * iiF );
-		}		
-		
-	  
+//		//
+//		// create
+//		//			
+//		dt__pH(dtCurve2d) dtC2dTmp(
+//			bSplineCurve2d_pointConstructOCC(ppNewUV, v2d1d->ptrDtCurve2d()->order()).result()
+//		);
+
+		//
+		// create mapping
+		//
+		int order = v2d1d->ptrDtCurve2d()->order();
 		_m1d.reset( 
-		  new vec2dOneDInMap2dTo3d(
+			new vec2dOneDInMap2dTo3d(
 				dt__tmpPtr(
-		      vec2dCurve2dOneD,
+					vec2dCurve2dOneD, 
 					new vec2dCurve2dOneD(
 						dt__tmpPtr(
 							dtCurve2d, 
-							bSplineCurve2d_normalOffsetGeomCurve2dOCC(
-		            v2d1d->ptrDtCurve2d(), thickSmooth
-              ).result()
+							bSplineCurve2d_pointConstructOCC(ppNewUV, order).result()
 						)
 					)
-				), 
+		    ),
 				v3dInM3d->ptrToMap2dTo3d()
-		  ) 
-		);
+		  )
+		);		
 	}
 
 	map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d::~map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d() {

@@ -28,6 +28,8 @@ namespace dtOO {
   private:
     dt__pH(map2dTo3d const) _m2d;
     float _thickness;
+    int _nPoints;
+    int _nIntPoints;
   };
 }
 #endif	/* normalOffsetInSurface_H */

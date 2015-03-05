@@ -10,7 +10,8 @@ namespace dtOO {
     public:
       dt__CLASSNAME(map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d);        
       map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(
-        map1dTo3d const * const m1d, float const & thick
+        map1dTo3d const * const m1d, float const & thick, 
+        int const & nPoints, int const & nIntegrationPoints
       );
       virtual ~map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d();
       map1dTo3d * result( void );
