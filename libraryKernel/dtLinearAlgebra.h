@@ -61,6 +61,7 @@ namespace dtOO {
     );
     static dtVector2 unitNormal( dtVector2 const & vv);
     static dtMatrix invertMatrix(dtMatrix const & mat);
+    static dtMatrixVector solveMatrix(dtMatrix const & mat, dtMatrixVector const & rhs);
     static dtMatrix transposeMatrix(dtMatrix const mat);
     static dtMatrix invert2x3Matrix(dtMatrix const mat);
     static dtPoint3 returnFarthestPointTo(dtPoint3 pp, dtPoint3 p0, dtPoint3 p1);

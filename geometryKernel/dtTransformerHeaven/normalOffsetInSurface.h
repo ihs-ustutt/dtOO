@@ -27,7 +27,7 @@ namespace dtOO {
     virtual vectorHandling< analyticGeometry * > apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const;
   private:
     dt__pH(map2dTo3d const) _m2d;
-    int _thickness;
+    float _thickness;
   };
 }
 #endif	/* normalOffsetInSurface_H */

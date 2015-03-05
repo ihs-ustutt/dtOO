@@ -138,13 +138,6 @@ namespace dtOO {
 //			<< floatMatrixToString(mat2d) 
 //		);
 
-		//
-		// determine size and copy to root matrix
-		//
-		int aS = mat.row_dimension();
-		if (mat.column_dimension() > mat.row_dimension()) {
-			aS = mat.column_dimension();
-		}
 		TMatrixD rootMat(TMatrixD::kZero, TMatrixD(mat.row_dimension(),mat.column_dimension()));
 		for (int rr=0; rr<mat.row_dimension(); rr++) {
 			for (int cc=0; cc<mat.column_dimension(); cc++) {		
@@ -160,29 +153,29 @@ namespace dtOO {
 		
 		if (fabs(rootDet) == 0.) {
 //			DTINFOWF(invertMatrix(), << "Using TDecompSVD");
-			TDecompSVD lu(rootMat);
-			lu.SetTol(1.e-16);
-			bool ok = lu.Decompose();
+			TDecompSVD svd(rootMat);
+			svd.SetTol(1.e-16);
+			bool ok = svd.Decompose();
 			if (ok) {
-				bool invOk = lu.Invert(invRootMat);
-				if (!invOk) {
-				twoDArrayHandling<float> mat2d(mat.dimension().first, mat.dimension().second);
-				for (int ii=0; ii<mat2d.size(0);ii++) {
-					for (int jj=0; jj<mat2d.size(1);jj++) {
-						mat2d[ii][jj] = mat(ii,jj);
-					}	
-				}
-				DTDEBUGWF(
-					invertMatrix(), 
-					<< DTLOGEVAL(mat.row_dimension()) << LOGDEL
-					<< DTLOGEVAL(mat.column_dimension()) << LOGDEL
-					<< "mat = " << LOGDEL
-					<< logMe::floatMatrixToString(mat2d) 
-				);					
-				dt__THROW(
-				  invertMatrix(),
-					<< "Inversion of TDecompSVD fails."
-				);					
+				bool invOk = svd.Invert(invRootMat);
+				if (!invOk) {		
+					twoDArrayHandling<float> mat2d(mat.dimension().first, mat.dimension().second);
+					for (int ii=0; ii<mat2d.size(0);ii++) {
+						for (int jj=0; jj<mat2d.size(1);jj++) {
+							mat2d[ii][jj] = mat(ii,jj);
+						}	
+					}
+					DTDEBUGWF(
+						invertMatrix(), 
+						<< DTLOGEVAL(mat.row_dimension()) << LOGDEL
+						<< DTLOGEVAL(mat.column_dimension()) << LOGDEL
+						<< "mat = " << LOGDEL
+						<< logMe::floatMatrixToString(mat2d) 
+					);					
+					dt__THROW(
+						invertMatrix(),
+						<< "Inversion of TDecompSVD fails."
+					);					
 				}
 			}
 			else {
@@ -246,6 +239,35 @@ namespace dtOO {
 		return invMat;
 	}
 
+  dtMatrixVector dtLinearAlgebra::solveMatrix(
+	  dtMatrix const & mat, dtMatrixVector const & rhs
+	) {
+		TMatrixD rootMat(TMatrixD::kZero, TMatrixD(mat.row_dimension(),mat.column_dimension()));
+		for (int rr=0; rr<mat.row_dimension(); rr++) {
+			for (int cc=0; cc<mat.column_dimension(); cc++) {		
+		    rootMat(rr,cc) = mat(rr, cc);
+			}
+		}
+    TVectorD rootVec(rhs.dimension());
+		for (int rr=0; rr<rhs.dimension(); rr++) {
+			rootVec(rr) = rhs[rr];
+		}
+		
+		TDecompSVD svd(rootMat);	
+		
+		bool ok;
+		TVectorD rootSol = svd.Solve(rootVec, ok);
+		if (!ok) dt__THROW(solveMatrix(), << DTLOGEVAL(ok));
+						
+    dtMatrixVector sol(rootSol.GetNrows());
+		for (int rr=0; rr<rootSol.GetNrows(); rr++) {
+			sol[rr] = rootSol(rr);
+		}
+		
+		return sol;
+		
+	}
+	
 	dtMatrix dtLinearAlgebra::transposeMatrix(dtMatrix const mat) {
 		return CGAL::Linear_algebraCd< float >::transpose(mat);
 	}    
@@ -294,7 +316,7 @@ namespace dtOO {
 //			<< floatMatrixToString(inv2d)
 //		);		
 		return matInv;      
-	}    
+	}
 //
 //	dtMatrix dtLinearAlgebra::ultraInvert2x3Matrix(dtMatrix const mat) const {      
 //		dtMatrixVector alpha;
