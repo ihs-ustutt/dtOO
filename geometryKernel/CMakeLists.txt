@@ -20,6 +20,7 @@ SET(HEADERS
   analyticGeometryHeaven/map2dTo3dTransformed.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h
+  analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h
   analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d.h
   baseContainerHeaven/baseContainer.h
   baseContainerHeaven/pointContainer.h
@@ -58,6 +59,7 @@ SET(HEADERS
   analyticFunctionHeaven/vec3dBoxThreeD.h
   analyticFunctionHeaven/analyticFunctionCompound.h
   analyticFunctionHeaven/analyticFunctionTransformed.h
+  analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h
   dtTransformerHeaven/thicknessIncreasing.h
   dtTransformerHeaven/biThicknessIncreasing.h
   dtTransformerHeaven/dtTransformer.h
@@ -105,6 +107,7 @@ SET(SOURCES
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.cpp
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.cpp
+  analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.cpp
   analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d.cpp
   baseContainerHeaven/baseContainer.cpp
   baseContainerHeaven/pointContainer.cpp
@@ -141,6 +144,7 @@ SET(SOURCES
   analyticFunctionHeaven/vec3dTransVolThreeD.cpp
   analyticFunctionHeaven/vec3dMuParserThreeD.cpp
   analyticFunctionHeaven/vec3dBoxThreeD.cpp
+  analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.cpp
   dtTransformerHeaven/thicknessIncreasing.cpp
   dtTransformerHeaven/biThicknessIncreasing.cpp
   dtTransformerHeaven/dtTransformer.cpp
