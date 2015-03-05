@@ -56,10 +56,6 @@ namespace dtOO {
   }
 	
 	bool floatHandling::isSmall( float const & val ) {
-		DTDEBUGWF(isSmall(),
-			<< DTLOGEVAL(dt__SMALL) << LOGDEL
-			<< DTLOGEVAL(val) << LOGDEL
-		);
 		if ( fabs(val) < dt__SMALL ) {
 			return true;
 		}

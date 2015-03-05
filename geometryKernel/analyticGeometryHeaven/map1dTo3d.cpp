@@ -168,10 +168,9 @@ namespace dtOO {
 
 		DTINFOWF(
 			u_l(),
-			<< DTLOGEVAL(mustIterate) << LOGDEL
-			<< DTLOGEVAL(ll) << LOGDEL
-			<< DTLOGEVAL( fabs(ll-l_u(theRoot)) ) << LOGDEL
-			<< DTLOGEVAL( theRoot )
+			<< logMe::dtFormat(
+			     "mustIterate = %i, ll=%f, theRoot = %f, |ll-l_u(theRoot)| = %f"
+				 ) % mustIterate % ll % theRoot % fabs(ll-l_u(theRoot)) 
 		);		
 	  return theRoot;
   }
