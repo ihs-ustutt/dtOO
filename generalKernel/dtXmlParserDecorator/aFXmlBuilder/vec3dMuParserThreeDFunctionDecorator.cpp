@@ -1,6 +1,6 @@
 #include "vec3dMuParserThreeDFunctionDecorator.h"
-#include <functionHeaven/vec3dMuParserThreeD.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec3dMuParserThreeD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <logMe/logMe.h>
 

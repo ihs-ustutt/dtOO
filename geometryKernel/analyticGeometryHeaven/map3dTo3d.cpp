@@ -11,10 +11,10 @@
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/bezierSurface_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
-#include <functionHeaven/vec3dOneD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
-#include <functionHeaven/vec3dTwoD.h>
-#include <functionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dTwoD.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include "vec3dTwoDInMap3dTo3d.h"
 #include "vec3dOneDInMap3dTo3d.h"
 #include <discrete3dVector.h>

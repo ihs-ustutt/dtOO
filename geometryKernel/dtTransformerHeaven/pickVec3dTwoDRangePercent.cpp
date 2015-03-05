@@ -2,10 +2,10 @@
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/vec3dTwoD.h>
-#include <functionHeaven/vec3dSurfaceTwoD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec3dTwoD.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtCurve.h>
 

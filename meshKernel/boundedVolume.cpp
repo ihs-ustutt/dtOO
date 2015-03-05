@@ -1,7 +1,7 @@
 #include "boundedVolume.h"
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <bVObserver/bVOInterfaceFactory.h>

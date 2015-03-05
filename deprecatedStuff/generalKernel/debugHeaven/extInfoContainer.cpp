@@ -1,11 +1,11 @@
 #include "extInfoContainer.h"
 
 #include <logMe/logMe.h>
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/scaMuParserOneD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/scaMuParserOneD.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <do/coDoSet.h>
-#include <functionHeaven/scaMuParserOneD.h>
+#include <analyticFunctionHeaven/scaMuParserOneD.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <progHelper.h>
 

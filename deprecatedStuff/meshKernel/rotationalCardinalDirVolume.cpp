@@ -5,8 +5,8 @@
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/rotatingSpline.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
-#include <functionHeaven/scaFunction.h>
-#include <functionHeaven/constValue.h>
+#include <analyticFunctionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/constValue.h>
 #include <libraryKernel/dtIntersection.h>
 #include <progHelper.h>
 

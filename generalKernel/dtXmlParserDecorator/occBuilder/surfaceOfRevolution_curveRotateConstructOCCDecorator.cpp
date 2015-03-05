@@ -10,7 +10,7 @@
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
 

@@ -1,8 +1,8 @@
 #include "vec3dCurveOneDFunctionDecorator.h"
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <geometryEngine/dtCurve.h>
-#include <functionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>

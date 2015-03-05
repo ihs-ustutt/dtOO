@@ -1,10 +1,10 @@
 #include "sca3PointMeanlineFunctionDecorator.h"
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/dtOCCBSplineCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <logMe/logMe.h>

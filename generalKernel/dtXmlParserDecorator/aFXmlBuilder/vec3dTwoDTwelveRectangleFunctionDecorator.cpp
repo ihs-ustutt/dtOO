@@ -2,13 +2,13 @@
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h>
-#include <functionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
 #include <geometryEngine/geoBuilder/geomSurface_geomCurveFillConstructOCC.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
-#include <functionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>

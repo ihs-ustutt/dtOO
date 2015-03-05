@@ -6,7 +6,7 @@
 #include <analyticGeometryHeaven/analyticGeometryCompound.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
 

@@ -1,5 +1,5 @@
 #include "vec3dInMap3dTo3dDecorator.h"
-#include "functionHeaven/vec3dTransVolThreeD.h"
+#include "analyticFunctionHeaven/vec3dTransVolThreeD.h"
 
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
@@ -8,10 +8,10 @@
 #include <analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/vec3dOneD.h>
-#include <functionHeaven/vec3dTwoD.h>
-#include <functionHeaven/vec3dThreeD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec3dOneD.h>
+#include <analyticFunctionHeaven/vec3dTwoD.h>
+#include <analyticFunctionHeaven/vec3dThreeD.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
 

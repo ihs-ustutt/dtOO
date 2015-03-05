@@ -2,7 +2,7 @@
 #include "analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h"
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <progHelper.h>
 #include <logMe/logMe.h>
 #include <geometryEngine/dtCurve.h>

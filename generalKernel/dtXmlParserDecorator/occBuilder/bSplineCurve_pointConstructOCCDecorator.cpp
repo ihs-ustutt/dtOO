@@ -6,7 +6,7 @@
 #include <analyticGeometryHeaven/splineCurve3d.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
 

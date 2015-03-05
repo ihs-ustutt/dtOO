@@ -2,7 +2,7 @@
 #include <baseContainerHeaven/vectorContainer.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <interfaceHeaven/vectorHandling.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <dtXmlParserDecorator/dtXmlParser.h>
 //#include <dtXmlParserDecorator/sca3PointMeanlineFunctionDecorator.h>
@@ -14,15 +14,15 @@
 #include <getBaseline.h>
 #include <dtTransformerHeaven/dtTransformer.h>
 #include <dtTransformerHeaven/dtTransformerFactory.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <dtTransformerHeaven/thicknessIncreasing.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_curveConnectConstructOCC.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <interfaceHeaven/ptrHandling.h>
 
-#include "functionHeaven/scaFunction.h"
+#include "analyticFunctionHeaven/scaFunction.h"
 
 
 using namespace dtOO;

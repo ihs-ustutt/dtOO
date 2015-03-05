@@ -2,7 +2,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
-#include <functionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <geometryEngine/geoBuilder/bezierSurface_pointConstructOCC.h>

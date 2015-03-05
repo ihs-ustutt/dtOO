@@ -11,7 +11,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticGeometryReconstructor.h>
 #include <constValueHeaven/constValue.h>
-#include <functionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaFunction.h>
 #include <constValueHeaven/constValueReconstructor.h>
 #include <boundedVolume.h>
 #include <boundedVolumeFactory.h>

@@ -1,8 +1,8 @@
 #include "thicknessIncreasing.h"
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/scaOneD.h>
-#include <functionHeaven/vec2dOneD.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/scaOneD.h>
+#include <analyticFunctionHeaven/vec2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <interfaceHeaven/ptrHandling.h>

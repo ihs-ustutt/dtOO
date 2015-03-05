@@ -10,7 +10,7 @@
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <unstructured3dMesh.h>

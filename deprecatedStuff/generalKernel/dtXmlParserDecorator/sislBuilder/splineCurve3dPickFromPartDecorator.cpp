@@ -7,7 +7,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
 #include <dtXmlParserDecorator/dtXmlParserDecoratorInterface.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainer/pointContainer.h>
 #include <baseContainer/vectorContainer.h>

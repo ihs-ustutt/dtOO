@@ -1,6 +1,6 @@
 #include "scaMuParserOneDBuilder.h"
 
-#include <functionHeaven/scaMuParserOneD.h>
+#include <analyticFunctionHeaven/scaMuParserOneD.h>
 #include <progHelper.h>
 #include <logMe/logMe.h>
 

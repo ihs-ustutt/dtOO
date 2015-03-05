@@ -4,7 +4,7 @@
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>
 #include <progHelper.h>
 #include <logMe/logMe.h>

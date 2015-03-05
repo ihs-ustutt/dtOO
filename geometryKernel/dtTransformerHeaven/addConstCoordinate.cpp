@@ -3,9 +3,9 @@
 #include <logMe/logMe.h>
 #include <progHelper.h>
 
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.h>
 

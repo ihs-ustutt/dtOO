@@ -6,11 +6,11 @@
 #include <gmsh/MVertex.h>
 #include "dtGmshEdge.h"
 #include <geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.h>
-#include <functionHeaven/vec3dOneD.h>
+#include <analyticFunctionHeaven/vec3dOneD.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
-#include <functionHeaven/vec3dCurveOneD.h>
-#include <functionHeaven/vec3dTwoD.h>
-#include <functionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dTwoD.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 
 #include <logMe/logMe.h>
 #include <progHelper.h>

@@ -29,35 +29,35 @@ SET(HEADERS
   constValueHeaven/constValueFactory.h
   constValueHeaven/sliderFloatParam.h
   constValueHeaven/intParam.h
-  functionHeaven/analyticFunction.h
-  functionHeaven/scaFunction.h
-  functionHeaven/scaOneD.h
-  functionHeaven/scaMuParserOneD.h
-  functionHeaven/scaCurve2dOneD.h
-  functionHeaven/scaTwoD.h
-  functionHeaven/scaMuParserTwoD.h
-  functionHeaven/transIntCube.h
-  functionHeaven/vec2dFunction.h
-  functionHeaven/vec2dOneD.h
-  functionHeaven/vec2dCurve2dOneD.h
-  functionHeaven/vec2dTwoD.h
-  functionHeaven/vec2dSurface2dTwoD.h
-  functionHeaven/vec2dMuParserTwoD.h
-  functionHeaven/vec2dBiLinearTwoD.h
-  functionHeaven/vec3dFunction.h
-  functionHeaven/vec3dTwoD.h
-  functionHeaven/vec3dSurfaceTwoD.h
-  functionHeaven/vec3dThickedTwoD.h
-  functionHeaven/vec3dMuParserTwoD.h
-  functionHeaven/vec3dOneD.h
-  functionHeaven/vec3dCurveOneD.h
-  functionHeaven/vec3dCurve2dInSurfaceOneD.h
-  functionHeaven/vec3dThreeD.h
-  functionHeaven/vec3dTransVolThreeD.h
-  functionHeaven/vec3dMuParserThreeD.h
-  functionHeaven/vec3dBoxThreeD.h
-  functionHeaven/analyticFunctionCompound.h
-  functionHeaven/analyticFunctionTransformed.h
+  analyticFunctionHeaven/analyticFunction.h
+  analyticFunctionHeaven/scaFunction.h
+  analyticFunctionHeaven/scaOneD.h
+  analyticFunctionHeaven/scaMuParserOneD.h
+  analyticFunctionHeaven/scaCurve2dOneD.h
+  analyticFunctionHeaven/scaTwoD.h
+  analyticFunctionHeaven/scaMuParserTwoD.h
+  analyticFunctionHeaven/transIntCube.h
+  analyticFunctionHeaven/vec2dFunction.h
+  analyticFunctionHeaven/vec2dOneD.h
+  analyticFunctionHeaven/vec2dCurve2dOneD.h
+  analyticFunctionHeaven/vec2dTwoD.h
+  analyticFunctionHeaven/vec2dSurface2dTwoD.h
+  analyticFunctionHeaven/vec2dMuParserTwoD.h
+  analyticFunctionHeaven/vec2dBiLinearTwoD.h
+  analyticFunctionHeaven/vec3dFunction.h
+  analyticFunctionHeaven/vec3dTwoD.h
+  analyticFunctionHeaven/vec3dSurfaceTwoD.h
+  analyticFunctionHeaven/vec3dThickedTwoD.h
+  analyticFunctionHeaven/vec3dMuParserTwoD.h
+  analyticFunctionHeaven/vec3dOneD.h
+  analyticFunctionHeaven/vec3dCurveOneD.h
+  analyticFunctionHeaven/vec3dCurve2dInSurfaceOneD.h
+  analyticFunctionHeaven/vec3dThreeD.h
+  analyticFunctionHeaven/vec3dTransVolThreeD.h
+  analyticFunctionHeaven/vec3dMuParserThreeD.h
+  analyticFunctionHeaven/vec3dBoxThreeD.h
+  analyticFunctionHeaven/analyticFunctionCompound.h
+  analyticFunctionHeaven/analyticFunctionTransformed.h
   dtTransformerHeaven/thicknessIncreasing.h
   dtTransformerHeaven/biThicknessIncreasing.h
   dtTransformerHeaven/dtTransformer.h
@@ -114,33 +114,33 @@ SET(SOURCES
   constValueHeaven/constValueFactory.cpp
   constValueHeaven/sliderFloatParam.cpp
   constValueHeaven/intParam.cpp
-  functionHeaven/analyticFunction.cpp
-  functionHeaven/scaFunction.cpp
-  functionHeaven/scaOneD.cpp
-  functionHeaven/scaMuParserOneD.cpp
-  functionHeaven/scaCurve2dOneD.cpp
-  functionHeaven/scaTwoD.cpp
-  functionHeaven/scaMuParserTwoD.cpp
-  functionHeaven/transIntCube.cpp
-  functionHeaven/vec2dFunction.cpp
-  functionHeaven/vec2dOneD.cpp
-  functionHeaven/vec2dCurve2dOneD.cpp
-  functionHeaven/vec2dTwoD.cpp
-  functionHeaven/vec2dSurface2dTwoD.cpp
-  functionHeaven/vec2dMuParserTwoD.cpp
-  functionHeaven/vec2dBiLinearTwoD.cpp
-  functionHeaven/vec3dFunction.cpp
-  functionHeaven/vec3dTwoD.cpp
-  functionHeaven/vec3dSurfaceTwoD.cpp
-  functionHeaven/vec3dThickedTwoD.cpp
-  functionHeaven/vec3dMuParserTwoD.cpp
-  functionHeaven/vec3dOneD.cpp
-  functionHeaven/vec3dCurveOneD.cpp
-  functionHeaven/vec3dCurve2dInSurfaceOneD.cpp
-  functionHeaven/vec3dThreeD.cpp
-  functionHeaven/vec3dTransVolThreeD.cpp
-  functionHeaven/vec3dMuParserThreeD.cpp
-  functionHeaven/vec3dBoxThreeD.cpp
+  analyticFunctionHeaven/analyticFunction.cpp
+  analyticFunctionHeaven/scaFunction.cpp
+  analyticFunctionHeaven/scaOneD.cpp
+  analyticFunctionHeaven/scaMuParserOneD.cpp
+  analyticFunctionHeaven/scaCurve2dOneD.cpp
+  analyticFunctionHeaven/scaTwoD.cpp
+  analyticFunctionHeaven/scaMuParserTwoD.cpp
+  analyticFunctionHeaven/transIntCube.cpp
+  analyticFunctionHeaven/vec2dFunction.cpp
+  analyticFunctionHeaven/vec2dOneD.cpp
+  analyticFunctionHeaven/vec2dCurve2dOneD.cpp
+  analyticFunctionHeaven/vec2dTwoD.cpp
+  analyticFunctionHeaven/vec2dSurface2dTwoD.cpp
+  analyticFunctionHeaven/vec2dMuParserTwoD.cpp
+  analyticFunctionHeaven/vec2dBiLinearTwoD.cpp
+  analyticFunctionHeaven/vec3dFunction.cpp
+  analyticFunctionHeaven/vec3dTwoD.cpp
+  analyticFunctionHeaven/vec3dSurfaceTwoD.cpp
+  analyticFunctionHeaven/vec3dThickedTwoD.cpp
+  analyticFunctionHeaven/vec3dMuParserTwoD.cpp
+  analyticFunctionHeaven/vec3dOneD.cpp
+  analyticFunctionHeaven/vec3dCurveOneD.cpp
+  analyticFunctionHeaven/vec3dCurve2dInSurfaceOneD.cpp
+  analyticFunctionHeaven/vec3dThreeD.cpp
+  analyticFunctionHeaven/vec3dTransVolThreeD.cpp
+  analyticFunctionHeaven/vec3dMuParserThreeD.cpp
+  analyticFunctionHeaven/vec3dBoxThreeD.cpp
   dtTransformerHeaven/thicknessIncreasing.cpp
   dtTransformerHeaven/biThicknessIncreasing.cpp
   dtTransformerHeaven/dtTransformer.cpp

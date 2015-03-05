@@ -19,8 +19,8 @@
 #include <analyticGeometryBuilder/analyticGeometryBuilderFactory.h>
 #include <analyticGeometryBuilder/analyticGeometryDirector.h>
 //------------------------------------------------------------------------------
-//#include <functionHeaven/scaFunction.h>
-//#include <functionHeaven/constValue.h>
+//#include <analyticFunctionHeaven/scaFunction.h>
+//#include <analyticFunctionHeaven/constValue.h>
 //------------------------------------------------------------------------------
 #include <baseContainer/pointContainer.h>
 //#include <baseContainer/vectorContainer.h>

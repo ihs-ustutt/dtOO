@@ -1,6 +1,6 @@
 #include "scaSISLSplineTwoDBuilder.h"
 #include <interfaceHeaven/ptrHandling.h>
-#include <functionHeaven/scaCurve2dOneD.h>
+#include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include <geometryEngine/dtSislCurve2d.h>
 #include <logMe/logMe.h>
 #include <progHelper.h>

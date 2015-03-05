@@ -1,6 +1,6 @@
 #include "blockMeshDictWriter.h"
 #include "logMe/dtMacros.h"
-#include "functionHeaven/scaFunction.h"
+#include "analyticFunctionHeaven/scaFunction.h"
 
 #include <logMe/logMe.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -10,7 +10,7 @@
 #include <progHelper.h>
 #include <dtXmlParserDecorator/qtXmlPrimitive.h>
 #include <do/coDoSet.h>
-#include <functionHeaven/scaCurve2dOneD.h>
+#include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include <geometryEngine/dtSislCurve.h>
 #include <math.h>
 

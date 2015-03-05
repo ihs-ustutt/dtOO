@@ -4,8 +4,8 @@
 #include "boundedVolume.h"
 #include "gmsh/MQuadrangle.h"
 #include "alg/coVectField.h"
-#include <functionHeaven/vec3dOneD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>

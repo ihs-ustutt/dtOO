@@ -1,6 +1,6 @@
 #include "scaOneDInMap1dTo3d.h"
 #include <logMe/logMe.h>
-#include <functionHeaven/scaOneD.h>
+#include <analyticFunctionHeaven/scaOneD.h>
 
 namespace dtOO { 
 	scaOneDInMap1dTo3d::scaOneDInMap1dTo3d() : map1dTo3d() {

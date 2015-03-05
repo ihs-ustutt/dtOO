@@ -3,10 +3,10 @@
 #include <logMe/logMe.h>
 #include "map3dTo3d.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <functionHeaven/vec3dOneD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
-#include <functionHeaven/vec3dCurve2dInSurfaceOneD.h>
-#include <functionHeaven/vec3dTwoD.h>
+#include <analyticFunctionHeaven/vec3dOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dCurve2dInSurfaceOneD.h>
+#include <analyticFunctionHeaven/vec3dTwoD.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtCurve2d.h>

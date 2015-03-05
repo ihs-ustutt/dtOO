@@ -1,6 +1,6 @@
 #include "optiTestVolume.h"
 
-#include <functionHeaven/constValue.h>
+#include <analyticFunctionHeaven/constValue.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {

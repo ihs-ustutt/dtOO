@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include <templateClass/vectorTemplate.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
 

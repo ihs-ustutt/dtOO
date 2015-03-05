@@ -15,8 +15,8 @@
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
 
-#include <functionHeaven/scaFunction.h>
-#include <functionHeaven/scaSISLSplineTwoD.h>
+#include <analyticFunctionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaSISLSplineTwoD.h>
 
 #include <geometryEngine/dtSislCurve.h>
 

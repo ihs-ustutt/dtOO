@@ -1,7 +1,7 @@
 #include "vec2dTwoDInMap2dTo3d.h"
 #include <logMe/logMe.h>
 #include "map2dTo3d.h"
-#include <functionHeaven/vec2dTwoD.h>
+#include <analyticFunctionHeaven/vec2dTwoD.h>
 #include <geometryEngine/dtCurve2d.h>
 #include "map2dTo3dTransformed.h"
 #include <dtTransformerHeaven/dtTransformer.h>

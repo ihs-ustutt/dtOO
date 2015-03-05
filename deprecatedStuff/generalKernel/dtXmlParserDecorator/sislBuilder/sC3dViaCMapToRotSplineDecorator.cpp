@@ -6,7 +6,7 @@
 #include <dtTransformerHeaven/conformalMappingStartFromPoint.h>
 #include <dtXmlParserDecorator/dtXmlParserDecoratorInterface.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
-#include <functionHeaven/scaCurve2dOneD.h>
+#include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include <analyticGeometryHeaven/rotatingSpline.h>
 #include <dtTransformerHeaven/conformalMappingStartFromPoint.h>
 #include <interfaceHeaven/ptrHandling.h>

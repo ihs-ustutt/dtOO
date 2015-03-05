@@ -9,7 +9,7 @@
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/surfaceRotateCurveConstruct.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainer/pointContainer.h>
 #include <baseContainer/vectorContainer.h>

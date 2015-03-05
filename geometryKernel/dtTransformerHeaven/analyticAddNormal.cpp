@@ -1,8 +1,8 @@
 #include "analyticAddNormal.h"
 #include <baseContainerHeaven/baseContainer.h>
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/vec3dTwoD.h>
-#include <functionHeaven/vec3dThickedTwoD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec3dTwoD.h>
+#include <analyticFunctionHeaven/vec3dThickedTwoD.h>
 #include <progHelper.h>
 #include <logMe/logMe.h>
 

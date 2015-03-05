@@ -17,7 +17,7 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 //------------------------------------------------------------------------------
-#include <functionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <constValueHeaven/constValueReconstructor.h>
 //------------------------------------------------------------------------------

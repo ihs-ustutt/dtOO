@@ -10,7 +10,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include "map1dTo3d.h"
 #include <geometryEngine/dtCurve2d.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include "vec2dOneDInMap2dTo3d.h"
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>

@@ -1,13 +1,13 @@
 #include "qtXmlBase.h"
-#include "functionHeaven/scaOneD.h"
+#include "analyticFunctionHeaven/scaOneD.h"
 
 #include <muParser.h>
 //using namespace mu;
 #include <constValueHeaven/constValue.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <QtXml/QDomNode>
 #include <logMe/logMe.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 
 
 namespace dtOO {

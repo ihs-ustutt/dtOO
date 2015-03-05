@@ -1,5 +1,5 @@
 #include "offset.h"
-#include <functionHeaven/scaCurve2dOneD.h>
+#include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include "progHelper.h"
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <logMe/logMe.h>

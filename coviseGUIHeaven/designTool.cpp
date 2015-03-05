@@ -5,7 +5,7 @@
 #include <constValueHeaven/constValue.h>
 #include <constValueHeaven/intParam.h>
 #include <constValueHeaven/sliderFloatParam.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <dtCase.h>

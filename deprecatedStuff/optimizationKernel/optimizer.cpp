@@ -1,15 +1,15 @@
 #include "optimizer.h"
 #include "interfaceHeaven/optimizationCyclingDecorator.h"
-#include "functionHeaven/pointCloud.h"
+#include "analyticFunctionHeaven/pointCloud.h"
 #include "interfaceHeaven/labelHandling.h"
-#include "functionHeaven/scaPiecewiseLinear.h"
+#include "analyticFunctionHeaven/scaPiecewiseLinear.h"
 #include <sys/wait.h>
 
 #include <logMe/logMe.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <functionHeaven/constValue.h>
-#include <functionHeaven/scaFunction.h>
-#include <functionHeaven/scaPiecewiseLinear.h>
+#include <analyticFunctionHeaven/constValue.h>
+#include <analyticFunctionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaPiecewiseLinear.h>
 #include <boundedVolume.h>
 #include <progHelper.h>
 #include <interfaceHeaven/optimizationCyclingDecorator.h>

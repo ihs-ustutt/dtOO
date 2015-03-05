@@ -3,8 +3,8 @@
 #include <logMe/logMe.h>
 
 #include <do/coDoSet.h>
-#include <functionHeaven/scaFunctionReconstructor.h>
-#include <functionHeaven/scaCurve2dOneD.h>
+#include <analyticFunctionHeaven/scaFunctionReconstructor.h>
+#include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include <progHelper.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtSislCurve.h>

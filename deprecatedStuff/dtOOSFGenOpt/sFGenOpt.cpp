@@ -1,6 +1,6 @@
 #include "sFGenOpt.h"
 #include <logMe/logMe.h>
-#include <functionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaFunction.h>
 #include <characterizable.h>
 
 

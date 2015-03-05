@@ -9,8 +9,8 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/rotatingSpline.h>
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/vec2dOneD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec2dOneD.h>
 
 namespace dtOO {
   pickLengthPercentRange::pickLengthPercentRange() : dtTransformer() {

@@ -8,7 +8,7 @@
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <constValueHeaven/constValue.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 
 namespace dtOO {  

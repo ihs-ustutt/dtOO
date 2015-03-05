@@ -1,9 +1,9 @@
 #include "bSplineSurface2d_bSplineCurve2dFillConstructOCCFunctionDecorator.h"
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/dtSurface2d.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
-#include <functionHeaven/vec2dSurface2dTwoD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dSurface2dTwoD.h>
 #include <geometryEngine/geoBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCC.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>

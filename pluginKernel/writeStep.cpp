@@ -2,7 +2,7 @@
 #include <geometryEngine/dtOCCCurve2d.h>
 #include <geometryEngine/dtOCCCurve2dBase.h>
 #include <geometryEngine/dtOCCSurface.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>
 
@@ -10,7 +10,7 @@
 //#include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <StepData_StepModel.hxx>

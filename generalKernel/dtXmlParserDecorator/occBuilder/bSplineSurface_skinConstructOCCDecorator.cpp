@@ -9,7 +9,7 @@
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
 

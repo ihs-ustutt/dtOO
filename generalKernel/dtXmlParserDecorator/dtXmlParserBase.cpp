@@ -1,10 +1,10 @@
 #include "dtXmlParserBase.h"
 #include "interfaceHeaven/ptrHandling.h"
 #include "baseContainerHeaven/transformerContainer.h"
-#include <functionHeaven/scaOneD.h>
-#include <functionHeaven/vec2dOneD.h>
-#include <functionHeaven/vec3dOneD.h>
-#include <functionHeaven/vec3dTwoD.h>
+#include <analyticFunctionHeaven/scaOneD.h>
+#include <analyticFunctionHeaven/vec2dOneD.h>
+#include <analyticFunctionHeaven/vec3dOneD.h>
+#include <analyticFunctionHeaven/vec3dTwoD.h>
 
 #include <dtLinearAlgebra.h>
 #include <logMe/logMe.h>
@@ -20,7 +20,7 @@
 #include <QtXml/QDomNode>
 
 #include <constValueHeaven/constValue.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>

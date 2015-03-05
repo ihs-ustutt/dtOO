@@ -1,6 +1,6 @@
 #include "sFGen.h"
 #include <dtXmlParserDecorator/dtXmlParser.h>
-#include <functionHeaven/scaOneD.h>
+#include <analyticFunctionHeaven/scaOneD.h>
 #include <constValueHeaven/constValue.h>
 #include <do/coDoSet.h>
 #include <logMe/logMe.h>

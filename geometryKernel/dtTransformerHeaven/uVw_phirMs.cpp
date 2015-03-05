@@ -2,11 +2,11 @@
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
 #include <logMe/logMe.h>
 #include <progHelper.h>
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/vec3dSurfaceTwoD.h>
-#include <functionHeaven/vec3dThickedTwoD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
-#include <functionHeaven/analyticFunctionTransformed.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dThickedTwoD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/analyticFunctionTransformed.h>
 
 namespace dtOO {
   uVw_phirMs::uVw_phirMs() : dtTransformer() {

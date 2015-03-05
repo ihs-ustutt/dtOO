@@ -1,10 +1,10 @@
 #include "coVolume.h"
 #include "analyticGeometryHeaven/splineCurve3d.h"
 #include "interfaceHeaven/systemHandling.h"
-#include "functionHeaven/scaFunction.h"
+#include "analyticFunctionHeaven/scaFunction.h"
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <functionHeaven/constValue.h>
+#include <analyticFunctionHeaven/constValue.h>
 #include <ReadFOAM.h>
 #include <logMe/logMe.h>
 #include <string>

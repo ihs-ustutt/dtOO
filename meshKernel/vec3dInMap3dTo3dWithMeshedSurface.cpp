@@ -6,7 +6,7 @@
 
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <unstructured3dMesh.h>
 
@@ -22,10 +22,10 @@
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
-#include <functionHeaven/vec3dSurfaceTwoD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
-#include <functionHeaven/vec3dTransVolThreeD.h>
-#include <functionHeaven/vec3dBoxThreeD.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
+#include <analyticFunctionHeaven/vec3dBoxThreeD.h>
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>

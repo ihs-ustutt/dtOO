@@ -1,8 +1,8 @@
 #include "predefinedExtension.h"
 #include "geometryEngine/dtCurve.h"
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_curveConnectConstructOCC.h>

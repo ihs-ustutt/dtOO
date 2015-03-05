@@ -1,10 +1,10 @@
 #include "vec2dCurve2dOneDFunctionDecorator.h"
-#include <functionHeaven/vec2dCurve2dOneD.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <dtTransformerHeaven/dtTransformerFactory.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <geometryEngine/dtCurve2d.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>

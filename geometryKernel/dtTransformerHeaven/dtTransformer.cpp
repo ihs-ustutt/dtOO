@@ -4,7 +4,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <QtXml/QDomElement>
 
 namespace dtOO {

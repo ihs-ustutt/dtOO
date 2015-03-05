@@ -1,7 +1,7 @@
 #ifndef SCAFUNCTIONDIRECTOR_H
 #define	SCAFUNCTIONDIRECTOR_H
 
-#include <functionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaFunction.h>
 #include "scaFunctionBuilder.h"
 #include <logMe/dtMacros.h>
 

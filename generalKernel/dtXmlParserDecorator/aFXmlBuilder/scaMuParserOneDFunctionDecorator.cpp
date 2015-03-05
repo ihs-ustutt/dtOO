@@ -1,6 +1,6 @@
 #include "scaMuParserOneDFunctionDecorator.h"
-#include <functionHeaven/scaMuParserOneD.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/scaMuParserOneD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <logMe/logMe.h>
 

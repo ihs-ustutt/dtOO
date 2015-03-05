@@ -1,9 +1,9 @@
 #include "translate.h"
 #include "progHelper.h"
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/scaCurve2dOneD.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/scaCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/dtCurve.h>
 #include <logMe/logMe.h>

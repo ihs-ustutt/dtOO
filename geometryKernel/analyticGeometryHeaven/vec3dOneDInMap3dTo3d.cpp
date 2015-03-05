@@ -3,8 +3,8 @@
 #include <logMe/logMe.h>
 #include "map1dTo3d.h"
 #include "map3dTo3d.h"
-#include <functionHeaven/vec3dOneD.h>
-#include <functionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <interfaceHeaven/ptrVectorHandling.h>
 #include <geometryEngine/dtCurve.h>
 #include <progHelper.h>

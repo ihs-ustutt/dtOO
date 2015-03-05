@@ -5,7 +5,7 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <interfaceHeaven/vectorHandling.h>
-#include <functionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaFunction.h>
 #include <constValueHeaven/constValue.h>
 
 

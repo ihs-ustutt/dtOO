@@ -6,7 +6,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <unstructured3dMesh.h>
 #include <discrete3dPoints.h>

@@ -8,7 +8,7 @@
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/bezierSurface_bezierCurveFillConstructOCC.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
 

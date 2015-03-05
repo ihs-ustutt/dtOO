@@ -3,8 +3,8 @@
 #define SUCCESS 1;
 #define FAILURE 0;
 
-#include <functionHeaven/scaFunction.h>
-#include <functionHeaven/scaCurve2dOneD.h>
+#include <analyticFunctionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include <dtXmlParserDecorator/dtXmlParser.h>
 #include <math.h>
 

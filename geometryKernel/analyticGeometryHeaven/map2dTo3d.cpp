@@ -11,8 +11,8 @@
 #include <discrete3dVector.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
-#include <functionHeaven/vec2dBiLinearTwoD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dBiLinearTwoD.h>
 #include "vec2dOneDInMap2dTo3d.h"
 #include "vec2dTwoDInMap2dTo3d.h"
 

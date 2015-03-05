@@ -3,7 +3,7 @@
 #include "interfaceHeaven/systemHandling.h"
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <functionHeaven/constValue.h>
+#include <analyticFunctionHeaven/constValue.h>
 #include <ReadFOAM.h>
 #include <logMe/logMe.h>
 #include <string>

@@ -7,7 +7,7 @@
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/systemHandling.h>
 #include <dtXmlParserDecorator/dtXmlParserBase.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <unstructured3dMesh.h>

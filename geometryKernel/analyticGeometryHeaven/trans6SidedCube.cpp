@@ -1,7 +1,7 @@
 #include "trans6SidedCube.h"
 
 #include <logMe/logMe.h>
-#include <functionHeaven/transIntCube.h>
+#include <analyticFunctionHeaven/transIntCube.h>
 #include "map2dTo3d.h"
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/ptrVectorHandling.h>

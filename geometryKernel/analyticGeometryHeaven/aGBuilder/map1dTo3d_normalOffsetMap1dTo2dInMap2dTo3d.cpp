@@ -1,16 +1,16 @@
 #include "map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d.h"
-#include <functionHeaven/vec2dOneD.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <geometryEngine/dtCurve2d.h>
 
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-#include <functionHeaven/vec2dOneD.h>
+#include <analyticFunctionHeaven/vec2dOneD.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_normalOffsetGeomCurve2dOCC.h>
-#include <functionHeaven/vec2dCurve2dOneD.h>
-#include <functionHeaven/scaCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>
 
 namespace dtOO {

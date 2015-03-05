@@ -1,5 +1,5 @@
 #include "vec2dInMap2dTo3dDecorator.h"
-#include "functionHeaven/vec3dTransVolThreeD.h"
+#include "analyticFunctionHeaven/vec3dTransVolThreeD.h"
 
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
@@ -7,9 +7,9 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>
 #include <analyticGeometryHeaven/vec2dTwoDInMap2dTo3d.h>
-#include <functionHeaven/analyticFunction.h>
-#include <functionHeaven/vec2dOneD.h>
-#include <functionHeaven/vec2dTwoD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec2dOneD.h>
+#include <analyticFunctionHeaven/vec2dTwoD.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
 

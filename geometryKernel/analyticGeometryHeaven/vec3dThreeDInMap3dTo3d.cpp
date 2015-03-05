@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include "map3dTo3d.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <functionHeaven/vec3dThreeD.h>
+#include <analyticFunctionHeaven/vec3dThreeD.h>
 #include <progHelper.h>
 
 namespace dtOO {    

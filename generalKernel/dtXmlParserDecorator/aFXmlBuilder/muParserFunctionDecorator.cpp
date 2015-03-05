@@ -1,10 +1,10 @@
 #include "muParserFunctionDecorator.h"
-#include <functionHeaven/scaMuParserOneD.h>
-#include <functionHeaven/scaMuParserTwoD.h>
-#include <functionHeaven/vec3dMuParserTwoD.h>
-#include <functionHeaven/vec2dMuParserTwoD.h>
-#include <functionHeaven/vec3dMuParserThreeD.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/scaMuParserOneD.h>
+#include <analyticFunctionHeaven/scaMuParserTwoD.h>
+#include <analyticFunctionHeaven/vec3dMuParserTwoD.h>
+#include <analyticFunctionHeaven/vec2dMuParserTwoD.h>
+#include <analyticFunctionHeaven/vec3dMuParserThreeD.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <logMe/logMe.h>
 

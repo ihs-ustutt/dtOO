@@ -1,5 +1,5 @@
 #include "setResValue.h"
-#include <functionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaFunction.h>
 
 #include <progHelper.h>
 #include <logMe/logMe.h>

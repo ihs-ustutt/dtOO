@@ -8,7 +8,7 @@
 #include <do/coDoSet.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtCurve.h>
-#include <functionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaFunction.h>
 
 
 #define FALSE 0

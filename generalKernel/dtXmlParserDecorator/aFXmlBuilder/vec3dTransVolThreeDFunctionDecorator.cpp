@@ -1,11 +1,11 @@
 #include "vec3dTransVolThreeDFunctionDecorator.h"
-#include <functionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
-#include <functionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
-#include <functionHeaven/vec3dTransVolThreeD.h>
-#include <functionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
