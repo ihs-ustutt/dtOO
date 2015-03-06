@@ -187,4 +187,7 @@ namespace dtOO {
 		return this->u_lPercent(lengthPercent);
 	}
 	
+	map1dTo3d * new_clone(map1dTo3d const & m1d) {
+		return m1d.clone();
+	}
 }
