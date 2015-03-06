@@ -52,7 +52,7 @@ namespace dtOO {
 			// reparam on surface and get derivative
 			//
 			dtPoint2 ppUV = m2d->reparamOnFace( ppXYZ[ii] );				
-			dtVector3 dCdU = m1d->firstDerU( m1d->u_lPercent(percent) );
+			dtVector3 dCdU = m1d->firstDerU( *m1d & percent );
 
 			std::vector< dtPoint3 > movingXYZ(2);
 			movingXYZ[0] = ppXYZ[ii];
@@ -63,7 +63,7 @@ namespace dtOO {
 				// approximate normal
 				// calculate cross product of surface normal and curve normal
 				//
-				dtVector3 nS = m2d->normal( ppNewUV[ii].x(), ppNewUV[ii].y());
+				dtVector3 nS = m2d->normal( ppNewUV[ii] );
 				dtVector3 nInC = dtLinearAlgebra::crossProduct(dCdU, nS);					
 				nInC = dtLinearAlgebra::normalize(nInC);
 				
@@ -77,21 +77,19 @@ namespace dtOO {
 				// calculate approximation of distance in parameter space
 				// solve: deltaXYZ = J(u,v) deltaUV
 				//
-				std::vector< dtVector3 > dSdUV 
+				dtVector2 deltaUV 
 				= 
-				m2d->firstDer(ppNewUV[ii].x(), ppNewUV[ii].y());
-				dtMatrix mat(3,2);
-				mat(0,0) = dSdUV[0].x(); mat(0,1) = dSdUV[1].x();
-				mat(1,0) = dSdUV[0].y(); mat(1,1) = dSdUV[1].y();
-				mat(2,0) = dSdUV[0].z(); mat(2,1) = dSdUV[1].z();
-				dtMatrixVector rhs(3, 0.);
-				rhs[0] = deltaXYZ.x(); rhs[1] = deltaXYZ.y(); rhs[2] = deltaXYZ.z();
-				dtMatrixVector deltaUV = dtLinearAlgebra::solveMatrix(mat, rhs);
-
+				dtLinearAlgebra::toDtVector2(
+					dtLinearAlgebra::solveMatrix(
+						m2d->jacobi(ppNewUV[ii]), 
+						dtLinearAlgebra::createMatrixVector(deltaXYZ)
+					)
+				);
+				
 				//
 				// update ppNewUV, movingXYZ and calculate discrete distance
 				//
-				ppNewUV[ii] = ppNewUV[ii] + dtVector2(deltaUV[0], deltaUV[1]);
+				ppNewUV[ii] = ppNewUV[ii] + deltaUV;
 				movingXYZ[1] = m2d->getPoint(ppNewUV[ii]);
 				intDist = intDist + dtLinearAlgebra::length(movingXYZ[1]-movingXYZ[0]);
 				
@@ -126,13 +124,6 @@ namespace dtOO {
 			<< logMe::floatVecToTable(header, itVal)
 		);			
 		
-//		//
-//		// create
-//		//			
-//		dt__pH(dtCurve2d) dtC2dTmp(
-//			bSplineCurve2d_pointConstructOCC(ppNewUV, v2d1d->ptrDtCurve2d()->order()).result()
-//		);
-
 		//
 		// create mapping
 		//

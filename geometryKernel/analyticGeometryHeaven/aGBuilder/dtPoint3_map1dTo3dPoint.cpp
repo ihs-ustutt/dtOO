@@ -10,7 +10,7 @@ namespace dtOO {
 		float dist = 1./(nPoints-1);
 		for (int ii=0; ii<nPoints; ii++) {
 			dt__TOFLOAT(float iiF, ii);
-			_ppXYZ[ii] = m1d->getPointPercent( dist * iiF );
+			_ppXYZ[ii] = m1d->getPoint( *m1d % (dist*iiF) );
 		}
 	}
 
