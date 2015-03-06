@@ -56,6 +56,9 @@ namespace dtOO {
 		return u_l( percent*length() );
 	}
 
+	void dtCurve2d::setControlPoint( int const nPoint, dtPoint2 const point ) {
+		dt__THROW(setControlPoint(), << "Call on dtCurve2d()");
+	}
 //  dtVector2 dtCurve2d::normal(float const uu) const {
 //		dtVector2 nn = firstDer(uu);
 //    double xP = nn.x();
@@ -108,5 +111,12 @@ namespace dtOO {
 	//
 	void dtCurve2d::dump(void) {
 		DTFUNCTIONNOTI(dump());
+	}
+	
+	//
+	// boost requires this method in ptr_vector
+	//    
+	dtCurve2d * new_clone(dtCurve2d const & dtC2d) {
+		return dtC2d.clone();
 	}
 }

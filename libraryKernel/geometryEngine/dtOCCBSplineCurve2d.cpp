@@ -42,7 +42,16 @@ namespace dtOO {
 		);		
 	}
 	
-//  void dtOCCBSplineCurve2d::setControlPoint( int const nPoint, dtPoint2 const point ) {
-//		DTFUNCTIONNOTI(setControlPoint2d);
-//	}
+  void dtOCCBSplineCurve2d::setControlPoint( int const nPoint, dtPoint2 const point ) {
+		Standard_Integer nPI = static_cast<Standard_Integer>(nPoint+1);		
+		gp_Pnt2d pp(
+			static_cast<Standard_Real>(point.x()), 
+			static_cast<Standard_Real>(point.y())
+		);
+		
+		Handle(Geom2d_Curve) occC = dtOCCCurve2d::OCCRef().getOCC();
+		Handle(Geom2d_BSplineCurve) occBsc = Handle(Geom2d_BSplineCurve)::DownCast(occC);
+		
+		occBsc->SetPole(nPI, pp);
+	}
 }
