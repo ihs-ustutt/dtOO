@@ -19,14 +19,14 @@ namespace dtOO {
 		//
 		// allocate arraies
 		//
-		TColgp_Array2OfPnt arr(1, nP1, 1, nP0);
+		TColgp_Array2OfPnt arr(1, nP0, 1, nP1);
 
 		//
 		// set arraies
 		//
 		dt__FORALL(pp, ii,
 		  dt__FORALL(pp[ii], jj, 
-		  arr.SetValue( jj+1, ii+1, gp_Pnt(pp[ii][jj].x(), pp[ii][jj].y(), pp[ii][jj].z()) );
+		  arr.SetValue( ii+1, jj+1, gp_Pnt(pp[ii][jj].x(), pp[ii][jj].y(), pp[ii][jj].z()) );
 		  );
 	  );
 
