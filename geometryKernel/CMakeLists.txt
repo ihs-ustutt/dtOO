@@ -22,6 +22,7 @@ SET(HEADERS
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h
   analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d.h
+  analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h
   baseContainerHeaven/baseContainer.h
   baseContainerHeaven/pointContainer.h
   baseContainerHeaven/vectorContainer.h
@@ -86,6 +87,7 @@ SET(HEADERS
   dtTransformerHeaven/analyticAddNormal.h
   dtTransformerHeaven/approxInSurface.h
   dtTransformerHeaven/normalOffsetInSurface.h
+  dtTransformerHeaven/closeGapsArithmetic.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -109,6 +111,7 @@ SET(SOURCES
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.cpp
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.cpp
   analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d.cpp
+  analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.cpp
   baseContainerHeaven/baseContainer.cpp
   baseContainerHeaven/pointContainer.cpp
   baseContainerHeaven/vectorContainer.cpp
@@ -171,6 +174,7 @@ SET(SOURCES
   dtTransformerHeaven/analyticAddNormal.cpp
   dtTransformerHeaven/approxInSurface.cpp
   dtTransformerHeaven/normalOffsetInSurface.cpp
+  dtTransformerHeaven/closeGapsArithmetic.cpp
 )
 
 APPEND_DTOO_SOURCE(geometryKernel "${SOURCES}")
