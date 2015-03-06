@@ -50,6 +50,11 @@ namespace dtOO {
     private:
       mutable float _tmpL;
   };  
+  
+	//
+	// boost requires this method in ptr_vector
+	//    
+  map1dTo3d * new_clone(map1dTo3d const & m1d);  
 }
 #endif	/* MAP1DTO3D_H */
 

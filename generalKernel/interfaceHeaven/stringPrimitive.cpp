@@ -53,7 +53,7 @@ namespace dtOO {
               << DTLOGEVAL(pattern) << LOGDEL
               << DTLOGEVAL( pattern.size() ) );
     }
-    if ( !stringContains(pattern, str) || !stringContains(pattern, str) ) {
+    if ( !stringContains(pattern, str) ) { //|| !stringContains(pattern, str) ) {
       return std::string("");
     }    
     int pos = str.find(pattern.c_str());
@@ -80,14 +80,14 @@ namespace dtOO {
 
     int from;
     if ( (signStart.size() == 1) ) {
-      from = str.find(signStart.c_str());
+      from = str.find_first_of(signStart.c_str());
     }
     else {
       from = -1;
     }
     int to;
     if ( (signEnd.size() == 1) ) {
-      to = str.find(signEnd.c_str());
+      to = str.find_last_of(signEnd.c_str());
     }
     else {
       to = -1;

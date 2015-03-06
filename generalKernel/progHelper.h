@@ -14,6 +14,8 @@
     }
 #define dt__FORALLINDEX(vector, index) \
     for (int index = 0; index<((vector).size());index++)
+#define dt__FORINNERINDEX(vector, index) \
+    for (int index = 1; index<((vector).size()-1);index++)
 #define dt__FORALLITER(type, vector, iter) \
   for ( \
     type::iterator iter = vector.begin(); \

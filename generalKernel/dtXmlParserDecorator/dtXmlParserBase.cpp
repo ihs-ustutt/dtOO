@@ -1293,7 +1293,7 @@ namespace dtOO {
 				//				
 				std::string pattern 
 				= 
-				stringRemoveSingle("*", label );
+				getStringBetween("*", "*", label );
 				for (int ii=0;ii<depAGeoP->size();ii++) { 
           if ( stringContains(pattern, depAGeoP->at(ii)->getLabel()) ) {
             advancedP->push_back( depAGeoP->at(ii)->clone() );

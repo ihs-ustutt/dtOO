@@ -734,6 +734,4 @@ namespace dtOO {
   map2dTo3d * new_clone(map2dTo3d const & m2d){
     return m2d.clone();
   }		
-	
-
 }
