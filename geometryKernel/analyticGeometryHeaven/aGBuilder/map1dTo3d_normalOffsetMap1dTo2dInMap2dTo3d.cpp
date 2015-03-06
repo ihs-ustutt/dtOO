@@ -18,26 +18,10 @@
 namespace dtOO {
 	map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d
 	  ::map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(
-      map1dTo3d const * const m1d, float const & thick, 
-			int const & nPoints, int const & nIntegrationPoints
-	) {
-		//
-		// casting
-		//
-		dt__PTRASS(
-			vec2dOneDInMap2dTo3d const * const v3dInM3d,
-			vec2dOneDInMap2dTo3d::ConstDownCast(m1d)
-		);
-		dt__THROW_IF(
-		  v3dInM3d->isPercent(), 
-			map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d
-		);
-		dt__PTRASS(
-			vec2dCurve2dOneD const * const v2d1d,
-			vec2dCurve2dOneD::ConstDownCast(v3dInM3d->ptrToVec2dOneD())
-		);
-		map2dTo3d const * const m2d = v3dInM3d->ptrToMap2dTo3d();
-				  
+      map1dTo3d const * const m1d, map2dTo3d const * const m2d,
+			float const & thick, int const & nPoints, int const & nIntegrationPoints,
+		  int const & order
+	) {				  
 		std::vector< dtPoint3 > ppXYZ
 		= 
 		dtPoint3_map1dTo3dEquidistantPoint(m1d, nPoints).result();
@@ -127,7 +111,6 @@ namespace dtOO {
 		//
 		// create mapping
 		//
-		int order = v2d1d->ptrDtCurve2d()->order();
 		_m1d.reset( 
 			new vec2dOneDInMap2dTo3d(
 				dt__tmpPtr(
@@ -139,7 +122,7 @@ namespace dtOO {
 						)
 					)
 		    ),
-				v3dInM3d->ptrToMap2dTo3d()
+				m2d
 		  )
 		);		
 	}

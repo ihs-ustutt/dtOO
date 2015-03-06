@@ -42,7 +42,7 @@ namespace dtOO {
 			
 			retAGeo.push_back(
 			  map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(
-			    m1d, _thickness, _nPoints, _nIntPoints
+			    m1d, _m2d.get(), _thickness, _nPoints, _nIntPoints, _order
 			  ).result()
 			);
 			
@@ -111,6 +111,17 @@ namespace dtOO {
       dt__THROW(
 				init(), 
 				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "number_integration_points", *tE))
+			);
+    }				
+    if (dtXmlParserBase::hasAttribute( "order", *tE) ) {
+			_order 
+			= 
+			dtXmlParserBase::getAttributeIntMuParse("order", *tE, cV, aF);
+    }
+    else {
+      dt__THROW(
+				init(), 
+				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "order", *tE))
 			);
     }				
   }

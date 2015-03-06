@@ -30,6 +30,7 @@ namespace dtOO {
     float _thickness;
     int _nPoints;
     int _nIntPoints;
+    int _order;
   };
 }
 #endif	/* normalOffsetInSurface_H */
