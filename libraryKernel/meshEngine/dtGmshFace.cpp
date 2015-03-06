@@ -60,10 +60,12 @@ namespace dtOO {
 			(*it)->delFace(this);
 		}
 		this->model()->remove(this);
-//		std::list< ::GRegion * > rr = regions();
-//		dt__FORALLITER(std::list< ::GRegion * >, rr, it) {
-//			(*it)->delFace(this);
-//		}		
+		std::list< ::GRegion * > rr = regions();
+		dt__FORALLITER(std::list< ::GRegion * >, rr, it) {
+			std::list< ::GFace * > ff = (*it)->faces();
+			std::list< ::GFace * >::iterator itF = std::find(ff.begin(), ff.end(), this);
+			if(itF != ff.end()) ff.erase(itF);		
+		}		
   }
   
   Range<double> dtGmshFace::parBounds(int i) const {
