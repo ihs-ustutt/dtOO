@@ -121,6 +121,65 @@ namespace dtOO {
 		return (1./sqrt(nn.squared_length())) * nn;
 	}
 	
+	dtMatrix dtLinearAlgebra::createMatrixGiveColumns( 
+	  std::vector< dtVector3 > const & cols 
+	) {
+		dtMatrix mat(3, cols.size());
+		dt__FORALLCONSTITER(std::vector< dtVector3 >, cols, it) {
+			int ii = it-cols.begin();
+			mat(0, ii) = it->x();
+			mat(1, ii) = it->y();
+			mat(2, ii) = it->z();
+		}
+		
+		return mat;
+	}
+	
+	dtMatrix dtLinearAlgebra::createMatrixGiveRows( 
+	  std::vector< dtVector3 > const & rows 
+	) {
+		dtMatrix mat(rows.size(), 3);
+		dt__FORALLCONSTITER(std::vector< dtVector3 >, rows, it) {
+			int ii = it-rows.begin();
+			mat(ii, 0) = it->x();
+			mat(ii, 1) = it->y();
+			mat(ii, 2) = it->z();
+		}
+		
+		return mat;
+	}	
+	
+  dtMatrixVector dtLinearAlgebra::createMatrixVector( dtVector3 const & vec ) {
+		dtMatrixVector ret(3);
+		
+		ret[0] = vec.x();
+		ret[1] = vec.y();
+		ret[2] = vec.z();
+		
+		return ret;
+	}
+	
+  dtMatrixVector dtLinearAlgebra::createMatrixVector( dtVector2 const & vec ) {
+		dtMatrixVector ret(2);
+		
+		ret[0] = vec.x();
+		ret[1] = vec.y();
+		
+		return ret;		
+	}
+	
+	dtVector2 dtLinearAlgebra::toDtVector2(dtMatrixVector const & vec) {
+		dt__THROW_IF(vec.dimension()!=2, toDtVector2);
+		
+		return dtVector2(vec[0], vec[1]);
+	}
+	
+	dtVector3 dtLinearAlgebra::toDtVector3(dtMatrixVector const & vec) {
+		dt__THROW_IF(vec.dimension()!=3, toDtVector3);
+		
+		return dtVector3(vec[0], vec[1], vec[2]);
+	}	
+	
 	dtMatrix dtLinearAlgebra::invertMatrix(dtMatrix const & mat) {
 //		twoDArrayHandling<float> mat2d(mat.dimension().first, mat.dimension().second);
 //		for (int ii=0; ii<mat2d.size(0);ii++) {

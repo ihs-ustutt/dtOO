@@ -162,6 +162,10 @@ namespace dtOO {
     );
     return ( 1./sqrt(vec.squared_length()) ) * vec;
   }
+	
+	dtVector3 map2dTo3d::normal( dtPoint2 const & pp ) const {
+		return normal(pp.x(), pp.y());
+	}
   
   dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const & ppXYZ) const {
     double X = ppXYZ.x();
@@ -288,6 +292,10 @@ namespace dtOO {
 		return dd;
 	}
   
+  std::vector< dtVector3 > map2dTo3d::firstDer( dtPoint2 const & pp ) const {
+		return firstDer(pp.x(), pp.y());
+	}
+	
   dtVector3 map2dTo3d::firstDerU( float const & uu, float const & vv) const {
 		return firstDer(uu, vv)[0];
   }
@@ -393,6 +401,14 @@ namespace dtOO {
 		return secondDer(uu, vv)[1];
   }
   
+	dtMatrix map2dTo3d::jacobi( float const & uu, float const & vv) const {
+		return dtLinearAlgebra::createMatrixGiveColumns( firstDer(uu, vv) );
+	}
+	
+	dtMatrix map2dTo3d::jacobi( dtPoint2 const & pp ) const {
+		return jacobi(pp.x(), pp.y());
+	}
+	
   dtPoint2 map2dTo3d::reparamPercentOnFace( dtPoint3 const & ppXYZ ) const {
     dtPoint2 ppUV = reparamOnFace(ppXYZ);
     
@@ -710,8 +726,14 @@ namespace dtOO {
       return XYZtoUV(X, Y, Z, U, V, 0.75 * relax, itVal);
     }
   }
-
+	
+	dtPoint2 map2dTo3d::operator%(const dtPoint2 &percent) const {
+		return dtPoint2( this->uv_percent(percent) );
+	}
+	
   map2dTo3d * new_clone(map2dTo3d const & m2d){
     return m2d.clone();
   }		
+	
+
 }

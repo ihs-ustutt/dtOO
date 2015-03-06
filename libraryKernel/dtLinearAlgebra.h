@@ -60,6 +60,12 @@ namespace dtOO {
       std::vector< double > const & zz
     );
     static dtVector2 unitNormal( dtVector2 const & vv);
+    static dtMatrix createMatrixGiveColumns( std::vector< dtVector3 > const & cols );
+    static dtMatrix createMatrixGiveRows( std::vector< dtVector3 > const & rows );
+    static dtMatrixVector createMatrixVector( dtVector3 const & vec );
+    static dtMatrixVector createMatrixVector( dtVector2 const & vec );
+    static dtVector2 toDtVector2(dtMatrixVector const & vec);
+    static dtVector3 toDtVector3(dtMatrixVector const & vec);
     static dtMatrix invertMatrix(dtMatrix const & mat);
     static dtMatrixVector solveMatrix(dtMatrix const & mat, dtMatrixVector const & rhs);
     static dtMatrix transposeMatrix(dtMatrix const mat);

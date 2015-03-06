@@ -175,4 +175,16 @@ namespace dtOO {
 	  return theRoot;
   }
 	
+  float map1dTo3d::operator%(const float &percent) const {
+		return this->u_percent(percent);
+	}
+	
+  float map1dTo3d::operator|(const float &length) const {
+		return this->u_l(length);
+	}
+	
+  float map1dTo3d::operator&(const float &lengthPercent) const {
+		return this->u_lPercent(lengthPercent);
+	}
+	
 }

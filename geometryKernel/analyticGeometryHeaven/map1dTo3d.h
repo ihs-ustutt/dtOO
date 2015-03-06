@@ -41,12 +41,15 @@ namespace dtOO {
       float getUMin( void ) const;
       float getUMax( void ) const;
       float length( void ) const;
+      float operator%( const float &percent ) const;        
+      float operator|( const float &length ) const;  
+      float operator&( const float &lengthPercent ) const;  
     private:
       float l_u( float const & uu, int const & nP ) const;
 	    double funValue(const double xx ) const;
     private:
       mutable float _tmpL;
-  };
+  };  
 }
 #endif	/* MAP1DTO3D_H */
 
