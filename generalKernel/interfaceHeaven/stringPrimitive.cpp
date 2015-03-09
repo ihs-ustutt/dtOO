@@ -82,16 +82,12 @@ namespace dtOO {
     if ( (signStart.size() == 1) ) {
       from = str.find_first_of(signStart.c_str());
     }
-    else {
-      from = -1;
-    }
+    else from = -1;
     int to;
     if ( (signEnd.size() == 1) ) {
       to = str.find_first_of(signEnd.c_str(), from+1);
     }
-    else {
-      to = -1;
-    }
+    else to = -1;
 
 //    DTDEBUGWF(getStringBetween(),
 //            << DTLOGEVAL(str) << LOGDEL

@@ -74,7 +74,7 @@ namespace dtOO {
   }
   
   void dtGmshEdge::setNElements( int const nE ) {
-    this->meshAttributes.nbPointsTransfinite = nE;
+    this->meshAttributes.nbPointsTransfinite = nE+1;
   }
 
   void dtGmshEdge::meshTransfinite( int const type, float const coeff ) {

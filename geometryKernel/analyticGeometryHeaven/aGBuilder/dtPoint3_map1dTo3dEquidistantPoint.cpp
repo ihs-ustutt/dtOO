@@ -6,6 +6,7 @@ namespace dtOO {
 	dtPoint3_map1dTo3dEquidistantPoint::dtPoint3_map1dTo3dEquidistantPoint(
     map1dTo3d const * const m1d, int const & nPoints
 	) {
+		dt__THROW_IF(nPoints==1, dtPoint3_map1dTo3dEquidistantPoint());
 		_ppXYZ.resize(nPoints);
 		float dist = 1./(nPoints-1);
 		float length = m1d->length();

@@ -229,6 +229,20 @@ namespace dtOO {
 		// only supported for 4-sided faces
 		//
 		dt__THROW_IF(ee.size()!=4, meshTransfiniteWNElements());
+
+		std::vector< bool > correct(2, false);
+    if (
+		  ee[0]->meshAttributes.nbPointsTransfinite !=
+			ee[2]->meshAttributes.nbPointsTransfinite
+		) {
+			correct[0] = true;
+		}		
+    if (
+		  ee[1]->meshAttributes.nbPointsTransfinite !=
+			ee[3]->meshAttributes.nbPointsTransfinite
+		) {
+			correct[1] = true;
+		}			
 		
 		//
 		// correct number of elements
@@ -251,6 +265,27 @@ namespace dtOO {
 		ee[3]->meshAttributes.nbPointsTransfinite
 		= 
 		ee[1]->meshAttributes.nbPointsTransfinite;
+		
+		if (correct[0]) {
+			std::list< dtGmshFace * > faces0 = dtGmshModel::cast2DtGmshFace(ee[0]->faces());
+			std::list< dtGmshFace * > faces2 = dtGmshModel::cast2DtGmshFace(ee[2]->faces());
+			dt__FORALLITER(std::list< dtGmshFace * >, faces0, it) {
+				(*it)->correctIfTransfinite();
+			}
+			dt__FORALLITER(std::list< dtGmshFace * >, faces2, it) {
+				(*it)->correctIfTransfinite();
+			}				
+		}
+		if (correct[1]) {
+			std::list< dtGmshFace * > faces1 = dtGmshModel::cast2DtGmshFace(ee[1]->faces());
+			std::list< dtGmshFace * > faces3 = dtGmshModel::cast2DtGmshFace(ee[3]->faces());
+			dt__FORALLITER(std::list< dtGmshFace * >, faces1, it) {
+				(*it)->correctIfTransfinite();
+			}
+			dt__FORALLITER(std::list< dtGmshFace * >, faces3, it) {
+				(*it)->correctIfTransfinite();
+			}				
+		}		
 	}	
 	
   std::vector< int > dtGmshFace::estimateTransfiniteNElements( 
@@ -280,8 +315,8 @@ namespace dtOO {
 		}
 
     std::vector< int > nEl(2);
-    nEl[0] = intHandling::round(average[0]/2.); 		
-		nEl[1] = intHandling::round(average[1]/2.); 		
+    nEl[0] = std::max(intHandling::round(average[0]/2.), 1); 		
+		nEl[1] = std::max(intHandling::round(average[1]/2.), 1); 		
 		
 		return nEl;
 	}	
