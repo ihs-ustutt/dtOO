@@ -87,7 +87,7 @@ namespace dtOO {
     }
     int to;
     if ( (signEnd.size() == 1) ) {
-      to = str.find_last_of(signEnd.c_str());
+      to = str.find_first_of(signEnd.c_str(), from+1);
     }
     else {
       to = -1;
