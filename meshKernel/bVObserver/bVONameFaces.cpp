@@ -75,8 +75,8 @@ namespace dtOO {
 						<< logMe::dtFormat("Name physical group %s (%d) and add face %d of %s") 
 							% pTag % newL % counter % ptrBoundedVolume()->getLabel()
 					);						
-					counter++;
 				}
+				counter++;				
 			}
 //		}
   }
