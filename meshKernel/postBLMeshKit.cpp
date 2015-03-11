@@ -46,6 +46,7 @@ namespace dtOO {
     _thickness = optionHandling::getOptionFloat("thickness");
     _intervals = optionHandling::getOptionInt("intervals");
     _bias = optionHandling::getOptionFloat("bias");
+		_debug = optionHandling::optionTrue("debug");
 		
 		//
 		// boundedVolume
@@ -119,7 +120,7 @@ namespace dtOO {
 
 			pbl->setup_this();
 //			pbl->setLogStream( Output2FILE::Stream() );
-			pbl->debug(true);
+			pbl->debug(_debug);
 			pbl->init(_thickness, _intervals, _bias);
 			pbl->addPosRange(commonRangePos);
 			pbl->addNegRange(commonRangeNeg);
