@@ -5,6 +5,7 @@
 #include <meshkit/MeshScheme.hpp>
 #include <meshkit/mstream.hpp>
 #include <moab/CartVect.hpp>
+#include <moab/EntityHandle.hpp>
 
 /*!
  * \class dtPostBL
@@ -93,6 +94,7 @@ namespace MeshKit {
      *	\param v return normal vector
      */
     void get_normal_quad (std::vector<moab::EntityHandle>conn, moab::CartVect &v);
+    void get_normal(std::vector<moab::EntityHandle>conn, moab::CartVect &v, moab::EntityHandle const &el);
     std::vector< moab::EntityHandle > 
     renumberTetrahedra( std::vector< moab::EntityHandle > const & orig );
     std::vector< moab::EntityHandle > 

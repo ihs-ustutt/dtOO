@@ -1,5 +1,6 @@
 #include "dtPostBL.h"
 #include "progHelper.h"
+#include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
 
 #include <cassert>
@@ -96,7 +97,7 @@ namespace MeshKit {
 	//! Output:   none \n
 	// ---------------------------------------------------------------------------
 	{
-		if (m_Debug) std::cout <<  "\nIn setup this : " <<  std::endl;
+		std::cout <<  "\nIn setup this : " <<  std::endl;
 	}
 
 	void dtPostBL::execute_this()
@@ -118,6 +119,22 @@ namespace MeshKit {
 			MBERRCHK(mb->tag_get_handle("GEOM_DIMENSION", 1, moab::MB_TYPE_INTEGER, GDTag),mb);
 			MBERRCHK(mb->tag_get_handle("BLNODEID", 1, moab::MB_TYPE_INTEGER, BLNodeIDTag,
 																	moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT),mb);
+
+			//
+			// debug output
+			//
+			std::vector< moab::Tag > nTag(3);
+			moab::Tag numNormalsTag;			
+      if (m_Debug) {						
+				MBERRCHK(mb->tag_get_handle("n_x", 1, moab::MB_TYPE_DOUBLE, nTag[0],
+																		moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT),mb);
+				MBERRCHK(mb->tag_get_handle("n_y", 1, moab::MB_TYPE_DOUBLE, nTag[1],
+																		moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT),mb);
+				MBERRCHK(mb->tag_get_handle("n_z", 1, moab::MB_TYPE_DOUBLE, nTag[2],
+																		moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT),mb);
+				MBERRCHK(mb->tag_get_handle("num_normals", 1, moab::MB_TYPE_INTEGER, numNormalsTag,
+																		moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT),mb);			
+			}
 			
 			// For specified surface: get the  all the quads and nodes in a range
 			moab::Range quads;
@@ -129,74 +146,62 @@ namespace MeshKit {
 			// create union of m_QuadsPos and m_QuadsNeg
 			//
 			quads.merge(m_QuadsPos);
-			quads.merge(m_QuadsNeg);
-
-			//size of the following is based on element type
-			std::vector<moab::EntityHandle> conn;
-			std::vector<moab::EntityHandle> qconn;
-			std::vector<moab::EntityHandle> adj_qconn;
-
-      int hConnSize = 0;			
-			int connSize = 0;
-			int bElemNodesSize = 0;			
-			// allocate space for connectivity/adjacency during the first pass of this loop
-			if(mb->type_from_handle(quads.front()) == MBQUAD){
-				connSize = 8;
-				bElemNodesSize = 4;
-				hConnSize = 8;
-				//allocating based on element type
-				conn.resize(m_Intervals*connSize);
-				qconn.resize(bElemNodesSize);
-				adj_qconn.resize(bElemNodesSize);
-			}
-			else if(mb->type_from_handle(quads.front()) == MBTRI){
-				connSize = 4;
-				bElemNodesSize = 3;
-				//allocating based on element type - thrice the number of elements
-				hConnSize = 6;
-				conn.resize(m_Intervals*6);
-				qconn.resize(bElemNodesSize);
-				adj_qconn.resize(bElemNodesSize);
-			}
-			else if(connSize == 0 || bElemNodesSize == 0){
-				throw MeshKit::Error(
-					MeshKit::MK_FAILURE, 
-					"This mesh type is not supported by this tool"
-				);
-			}
-			
-			MBERRCHK(mb->get_adjacencies(quads, 0, false, nodes, moab::Interface::UNION),mb);
-			MBERRCHK(mb->get_adjacencies(m_QuadsFix, 0, false, nodesFix, moab::Interface::UNION),mb);
+			quads.merge(m_QuadsNeg);			
+		
+			MBERRCHK(mb->get_connectivity(quads, nodes),mb);
+			MBERRCHK(mb->get_connectivity(m_QuadsFix, nodesFix),mb);			
 			nodes = moab::subtract(nodes, nodesFix);
 			
-			// remove critical elements
+			//
+			// remove critical boundary elements
+			//
 			for (Range::iterator quadIt = quads.begin(); quadIt != quads.end(); ++quadIt) {
-				MBERRCHK(mb->get_connectivity(&(*quadIt), 1, qconn),mb);
+				std::vector<moab::EntityHandle> tmpC;
+				MBERRCHK(mb->get_connectivity(&(*quadIt), 1, tmpC),mb);
 				int counter = 0;
-				for (int i=0; i<bElemNodesSize; i++){
-					if (nodesFix.find(qconn[i]) != nodesFix.end()) {
+				std::vector< bool > fixed(tmpC.size(), false);
+				for (int i=0; i<tmpC.size(); i++) {
+					if (nodesFix.find(tmpC[i]) != nodesFix.end()) {
 						counter++;
+						fixed[i] = true;
 					}
 				}
-				if ( counter == bElemNodesSize ) {
-				  quadIt = dt__PRIOR(quads.erase(quadIt));
-				}
-				else if( counter > 0 ) {
-				  quadsFix.insert(*quadIt);					
-          quadIt = dt__PRIOR(quads.erase(quadIt));										
+				if (counter > 0) {
+					if (fixed.size() == 3) {
+						if ( counter == 3 ) {
+							quadIt = dt__PRIOR(quads.erase(quadIt));
+						}
+						else {
+							quadsFix.insert(*quadIt);					
+							quadIt = dt__PRIOR(quads.erase(quadIt));										
+						}
+					}
+					else if (fixed.size() == 4) {
+						if (    ( counter >= 3 ) 
+								 || ( counter == 2 && (fixed[0] && fixed[2])  ) 
+								 || ( counter == 2 && (fixed[1] && fixed[3])  ) 
+						) {
+							quadIt = dt__PRIOR(quads.erase(quadIt));
+						}										
+						else {
+							quadsFix.insert(*quadIt);					
+							quadIt = dt__PRIOR(quads.erase(quadIt));
+						}					
+					}
 				}
 			}
 
-			if (m_Debug) {
-				std::cout << "#m_QuadsNeg in this surface: " << m_QuadsNeg.size() << std::endl;
-				std::cout << "#m_QuadsPos in this surface: " << m_QuadsPos.size() << std::endl;
-				std::cout << "#m_QuadsFix in this surface: " << m_QuadsFix.size() << std::endl;
-				std::cout << "#quads in this surface: " << quads.size() << std::endl;
-				std::cout << "#QuadsFix in this surface: " << quadsFix.size() << std::endl;
-				std::cout << "#nodes in this surface: " << nodes.size() << std::endl;
-				std::cout << "#nodesFix in this surface: " << nodesFix.size() << std::endl;
-				std::cout << "#New nodes to be created:" << m_Intervals*nodes.size() << std::endl;
-			}
+			//
+			// output
+			//
+			std::cout << "#m_QuadsNeg in this surface: " << m_QuadsNeg.size() << std::endl;
+			std::cout << "#m_QuadsPos in this surface: " << m_QuadsPos.size() << std::endl;
+			std::cout << "#m_QuadsFix in this surface: " << m_QuadsFix.size() << std::endl;
+			std::cout << "#quads in this surface: " << quads.size() << std::endl;
+			std::cout << "#QuadsFix in this surface: " << quadsFix.size() << std::endl;
+			std::cout << "#nodes in this surface: " << nodes.size() << std::endl;
+			std::cout << "#nodesFix in this surface: " << nodesFix.size() << std::endl;
+			std::cout << "#New nodes to be created:" << m_Intervals*nodes.size() << std::endl;
 
 			if (quads.size() == 0 || nodes.size() == 0) {
 				throw MeshKit::Error(
@@ -204,14 +209,37 @@ namespace MeshKit {
 					"Invalid boundary layer specification, aborting.."
 				);
 			}
+			
+      //
+			// debug output
+			//
+      if (m_Debug) {			
+				moab::EntityHandle quadsSet;
+				mb->create_meshset(moab::MESHSET_SET, quadsSet);
+				mb->add_entities(quadsSet, quads);
+				mb->write_mesh("quads.vtk", &(quadsSet), 1);				
+			
+				moab::EntityHandle m_QuadsPosSet;
+				mb->create_meshset(moab::MESHSET_SET, m_QuadsPosSet);
+				mb->add_entities(m_QuadsPosSet, m_QuadsPos);
+				if (!m_QuadsPos.empty()) mb->write_mesh("m_QuadsPos.vtk", &(m_QuadsPosSet), 1);
+
+				moab::EntityHandle m_QuadsNegSet;
+				mb->create_meshset(moab::MESHSET_SET, m_QuadsNegSet);
+				mb->add_entities(m_QuadsNegSet, m_QuadsNeg);
+				if (!m_QuadsNeg.empty()) mb->write_mesh("m_QuadsNeg.vtk", &(m_QuadsNegSet), 1);
+
+				moab::EntityHandle m_QuadsFixSet;
+				mb->create_meshset(moab::MESHSET_SET, m_QuadsFixSet);
+				mb->add_entities(m_QuadsFixSet, m_QuadsFix);
+				if (!m_QuadsFix.empty()) mb->write_mesh("m_QuadsFix.vtk", &(m_QuadsFixSet), 1);			
+			}
+			
 
 			// placeholder for storing gd on new entities
 			moab::EntityHandle geom_set;
 			MBERRCHK(mb->create_meshset(moab::MESHSET_SET, geom_set, 1), mb);
 			MBERRCHK(mb->tag_set_data(GDTag, &geom_set, 1, &GD), mb);
-
-
-
 
 			// Tag all nodes on outer boundary with a unique number
 			int node_id = 0;
@@ -225,34 +253,60 @@ namespace MeshKit {
 					++node_id;
 			}			
 
+			//
 			// COMPUTE NORMALS
 			// declare variables before starting BL creation
+			//
       std::vector<moab::EntityHandle> new_vert(m_Intervals*nodes.size());			
 			int count = -1;
-			for (Range::iterator kter = nodes.begin(); kter != nodes.end(); ++kter){
+			int cc = 0;
+			for (Range::iterator kter = nodes.begin(); kter != nodes.end(); ++kter) {
 				++count;
 				// only one normal in case of single material
 				double xdisp = 0.0, ydisp = 0.0, zdisp = 0.0;
 
-				moab::Range adj_for_normal;
-				MBERRCHK(mb->get_adjacencies(&(*kter), 1, BLD, false, adj_for_normal, Interface::UNION), mb);
+				Range adjQuads;
+				MBERRCHK(mb->get_adjacencies(&(*kter), 1, BLD, false, adjQuads, Interface::UNION), mb);
+				Range adjNodes;
+				MBERRCHK( mb->get_connectivity( adjQuads, adjNodes), mb );
+				Range adjQuadsFar; 
+				adjQuadsFar.insert(adjQuads.begin(), adjQuads.end());
+//				for (Range::iterator jter = adjNodes.begin(); jter != adjNodes.end(); ++jter) {
+//					Range tmp_adjForNorm;
+//					MBERRCHK(mb->get_adjacencies(&(*jter), 1, BLD, false, tmp_adjForNorm, Interface::UNION), mb);
+//					adjQuadsFar.insert(tmp_adjForNorm.begin(), tmp_adjForNorm.end());
+//				}
 				//create the coordinates of the innermost node corresponding to this node
-
-				moab::Range adj_for_norm = intersect(quads, adj_for_normal);							
-				moab::Range adj_for_normPos = intersect(m_QuadsPos, adj_for_normal);
-				moab::Range adj_for_normNeg = intersect(m_QuadsNeg, adj_for_normal);
+				moab::Range adj_for_norm = intersect(quads, adjQuadsFar);							
+				moab::Range adj_for_normPos = intersect(m_QuadsPos, adj_for_norm);
+				moab::Range adj_for_normNeg = intersect(m_QuadsNeg, adj_for_norm);
 
 				// now compute the average normal direction for this vertex
 				moab::CartVect rt(0.0, 0.0, 0.0), v(0.0, 0.0, 0.0);
 
-				for(Range::iterator qter = adj_for_norm.begin(); qter != adj_for_norm.end(); ++qter){
-					MBERRCHK(mb->get_connectivity(&(*qter), 1, adj_qconn),mb);
+				//
+				// debug
+				//
+				if (m_Debug) {
+					int numNormals = adj_for_norm.size();
+					MBERRCHK(mb->tag_set_data(numNormalsTag, &(*kter), 1, &numNormals), mb);	
+				}
+			
+				for(Range::iterator qter = adj_for_norm.begin(); qter != adj_for_norm.end(); ++qter) {
+			    std::vector<moab::EntityHandle> tmpConn;
+					MBERRCHK(mb->get_connectivity(&(*qter), 1, tmpConn),mb);
+					get_normal(tmpConn, v, *qter);
 
-					get_normal_quad (adj_qconn, v);
+					if (adj_for_normPos.find(*qter) == adj_for_normPos.end()) v.flip();
 
-					if (adj_for_normPos.find(*qter) == adj_for_normPos.end()) v = -v;
+//          //
+//          // debug
+//          //					
+//					MBERRCHK(mb->tag_set_data(nTag[0], &(*qter), 1, &(v[0])), mb);					
+//					MBERRCHK(mb->tag_set_data(nTag[1], &(*qter), 1, &(v[1])), mb);					
+//					MBERRCHK(mb->tag_set_data(nTag[2], &(*qter), 1, &(v[2])), mb);					
 					rt = rt + v;
-				}					
+				}
 				if(rt.length() !=0){
 					xdisp=rt[0]/rt.length();
 					ydisp=rt[1]/rt.length();
@@ -263,8 +317,28 @@ namespace MeshKit {
 					ydisp=0.0;
 					zdisp=0.0;
 				}
-
+				
+        //
+				// debug
+				//
+				if (m_Debug) {
+					MBERRCHK(mb->tag_set_data(nTag[0], &(*kter), 1, &xdisp), mb);					
+					MBERRCHK(mb->tag_set_data(nTag[1], &(*kter), 1, &ydisp), mb);					
+					MBERRCHK(mb->tag_set_data(nTag[2], &(*kter), 1, &zdisp), mb);		
+				
+					std::string fname 
+					= 
+					"adj_for_norm_"+dtOO::stringPrimitive::intToString(cc)+".vtk";
+					moab::EntityHandle adj_for_normSet;
+					mb->create_meshset(moab::MESHSET_SET, adj_for_normSet);
+					mb->add_entities(adj_for_normSet, adj_for_norm);				
+					mb->write_mesh( fname.c_str(), &(adj_for_normSet), 1);
+					cc++;
+				}
+					
+				//
 				// after the normal computation is done create new BL nodes
+				//
 				double coords_bl_quad[3], move = 0.0;
 				MBERRCHK(mb->get_coords(&(*kter), 1, coords_bl_quad),mb);
 
@@ -290,32 +364,64 @@ namespace MeshKit {
 				}
 			}
 
+			if (m_Debug) {
+				moab::EntityHandle afterNormalSet;
+				mb->create_meshset(moab::MESHSET_SET, afterNormalSet);
+				mb->add_entities(afterNormalSet, quads);				
+				mb->write_mesh( "afterNormal.vtk", &(afterNormalSet), 1);
+			}
+
+			//
 			// swap nodal coordinates of input nodes with innermost BL nodes to push the bulk mesh
+			//
 			count = -1;
-			for (Range::iterator kter = nodes.begin(); kter != nodes.end(); ++kter){
+			for (Range::iterator kter = nodes.begin(); kter != nodes.end(); ++kter) {
 				++count;
-					double coords_new_quad[3];
-					double coords_old_quad[3];
+				double coords_new_quad[3];
+				double coords_old_quad[3];
 
-					int nid = (count+1)*m_Intervals - 1;
-					MBERRCHK(mb->get_coords(&new_vert[nid], 1, coords_new_quad),mb);
+				int nid = (count+1)*m_Intervals - 1;
+				MBERRCHK(mb->get_coords(&new_vert[nid], 1, coords_new_quad),mb);
 
-					MBERRCHK(mb->get_coords(&(*kter), 1, coords_old_quad),mb);
+				MBERRCHK(mb->get_coords(&(*kter), 1, coords_old_quad),mb);
 
-					MBERRCHK(mb->set_coords(&(*kter), 1, coords_new_quad),mb);
+				MBERRCHK(mb->set_coords(&(*kter), 1, coords_new_quad),mb);
 
-					MBERRCHK(mb->set_coords(&new_vert[nid], 1, coords_old_quad),mb);
-//							if (m_Debug) {
-//									m_LogFile << std::setprecision (3) << std::scientific << " : NID:" << (nid)
-//														<< coords_old_quad[0]
-//														<< ", " << coords_old_quad[1] << ", " << coords_old_quad[2] << " OLD:- coords: NEW" << coords_new_quad[0]
-//														<< ", " << coords_new_quad[1] << ", " << coords_new_quad[2]  << std::endl;
-//							}
-//				}
+				MBERRCHK(mb->set_coords(&new_vert[nid], 1, coords_old_quad),mb);
 			}
 
 			// Now start creating New elements
-			for (Range::iterator kter = quads.begin(); kter != quads.end(); ++kter){
+			for (Range::iterator kter = quads.begin(); kter != quads.end(); ++kter) {
+				//				
+				// size of the following is based on element type
+				//
+				std::vector<moab::EntityHandle> conn;
+				std::vector<moab::EntityHandle> qconn;
+				int hConnSize;			
+				int connSize;
+				int bElemNodesSize;			
+				if(mb->type_from_handle(*kter) == MBQUAD){
+					connSize = 8;
+					bElemNodesSize = 4;
+					hConnSize = 8;
+					conn.resize(m_Intervals*connSize);
+					qconn.resize(bElemNodesSize);
+				}
+				else if(mb->type_from_handle(*kter) == MBTRI){
+					connSize = 4;
+					bElemNodesSize = 3;
+					hConnSize = 6;
+					conn.resize(m_Intervals*6);
+					qconn.resize(bElemNodesSize);
+				}
+				else {
+					throw MeshKit::Error(
+						MeshKit::MK_FAILURE, 
+						"This mesh type is not supported by this tool"
+					);
+				}
+
+			
 				MBERRCHK(mb->get_connectivity(&(*kter), 1, qconn),mb);
 				double one_node_in_quad[3];
 				for (int i=0; i<bElemNodesSize; i++){
@@ -323,8 +429,6 @@ namespace MeshKit {
 					int node_tag_id = 0;
 					MBERRCHK(mb->tag_get_data(BLNodeIDTag, &qconn[i], 1, &node_tag_id) ,mb);
 					MBERRCHK(mb->get_coords(&qconn[i], 1, one_node_in_quad),mb);
-//							m_LogFile << std::setprecision (3) << std::scientific << " new nodes:- coords: " << one_node_in_quad[0]
-//												<< ", " << one_node_in_quad[1] << ", " << one_node_in_quad[2]  << std::endl;
 
 					//populate the connectivity after creating nodes for this BL node
 					for(int j=0; j< m_Intervals; j++){
@@ -366,8 +470,9 @@ namespace MeshKit {
 					}
 				}
 
-				// create boundary layer hexes
-//				std::cout << "conn = " << conn << std::endl;
+				//
+				// create boundary layer elements
+				//
 				for(int j=0; j< m_Intervals; j++) {
 			    moab::EntityHandle hex;					
 					if(connSize == 8){
@@ -404,6 +509,42 @@ namespace MeshKit {
 			}
 			
 			for (Range::iterator kter = quadsFix.begin(); kter != quadsFix.end(); ++kter) {
+
+				//				
+				// size of the following is based on element type
+				//
+				std::vector<moab::EntityHandle> conn;
+				std::vector<moab::EntityHandle> qconn;
+				int hConnSize;			
+				int connSize;
+				int bElemNodesSize;
+				bool isQuad;
+				bool isTri;
+				if(mb->type_from_handle(*kter) == MBQUAD){
+					connSize = 8;
+					bElemNodesSize = 4;
+					hConnSize = 8;
+					conn.resize(m_Intervals*connSize);
+					qconn.resize(bElemNodesSize);
+				  isQuad = true;
+				  isTri = false;					
+				}
+				else if(mb->type_from_handle(*kter) == MBTRI){
+					connSize = 4;
+					bElemNodesSize = 3;
+					hConnSize = 6;
+					conn.resize(m_Intervals*6);
+					qconn.resize(bElemNodesSize);
+				  isQuad = false;
+				  isTri = true;										
+				}
+				else {
+					throw MeshKit::Error(
+						MeshKit::MK_FAILURE, 
+						"This mesh type is not supported by this tool"
+					);
+				}				
+				
         dtOO::twoDArrayHandling< moab::EntityHandle > critConn(m_Intervals, 0);
 				std::vector< int > fixedNodePosConn;
 				
@@ -424,7 +565,7 @@ namespace MeshKit {
 					
 					//populate the connectivity after creating nodes for this BL node
 					for(int j=0; j< m_Intervals; j++) {
-						if(connSize == 4 && bElemNodesSize == 3) { // prism
+						if(isTri) {//connSize == 4 && bElemNodesSize == 3) { // prism
 							int nid = node_tag_id*m_Intervals+j;
 							if(j==0) {
 								critConn[j].push_back( qconn[i] );
@@ -451,6 +592,33 @@ namespace MeshKit {
 								}								
 							}
 						}
+						else if(isQuad) {//connSize == 8 && bElemNodesSize == 4) { // hexahedron
+							int nid = node_tag_id*m_Intervals+j;
+							if(j==0) {
+								critConn[j].push_back( qconn[i] );
+								if (!fixedNode) {
+									critConn[j].push_back( new_vert[nid + m_Intervals - 2] );
+								}
+							}
+							else if(j==(m_Intervals-1)){
+								if (!fixedNode) {
+									critConn[j].push_back( new_vert[nid - m_Intervals + 1] );									
+									critConn[j].push_back( new_vert[nid] );
+								}
+								else {
+								  critConn[j].push_back( qconn[i] );									
+								}
+							}
+							else {
+								if (!fixedNode) {
+									critConn[j].push_back( new_vert[nid + m_Intervals - 2*j - 1] );
+									critConn[j].push_back( new_vert[nid + m_Intervals - 2*j - 2] );
+								}
+								else {
+								  critConn[j].push_back( qconn[i] );									
+								}								
+							}
+						}						
 						else {
 							throw MeshKit::Error(
 								MeshKit::MK_FAILURE, 
@@ -462,11 +630,6 @@ namespace MeshKit {
 
 				// create boundary layer hexes
 				for(int j=0; j< m_Intervals; j++){
-//				  std::cout 
-//					  << "#Adding fixed quad" << std::endl
-//						<< "critConn[" << j << "] = " << critConn[j] << std::endl
-//				    << "fixedNodePosConn = " << fixedNodePosConn << std::endl;
-
 					int num_nodes_element = critConn[j].size();//m_Intervals;
 					if( num_nodes_element == 4 ) {
 						std::vector< moab::EntityHandle > tmpConn;
@@ -531,6 +694,59 @@ namespace MeshKit {
 						MBERRCHK(mb->add_adjacencies(pyr, adj_for_mat, true), mb);
 						MBERRCHK(mb->add_entities(geom_set, &pyr, 1), mb);												
 					}
+					else if( num_nodes_element == 6 ) {
+						std::vector< moab::EntityHandle > tmpConn(6);
+						if (fixedNodePosConn[0] == 0 && fixedNodePosConn[1] == 1) {
+							tmpConn[0] = critConn[j][1];
+							tmpConn[1] = critConn[j][2];
+							tmpConn[2] = critConn[j][3];
+							tmpConn[3] = critConn[j][0];
+							tmpConn[4] = critConn[j][4];
+							tmpConn[5] = critConn[j][5];
+						}
+						else if (fixedNodePosConn[0] == 1 && fixedNodePosConn[1] == 2) {
+							tmpConn[0] = critConn[j][0];
+							tmpConn[1] = critConn[j][2];
+							tmpConn[2] = critConn[j][1];
+							tmpConn[3] = critConn[j][4];
+							tmpConn[4] = critConn[j][3];
+							tmpConn[5] = critConn[j][5];
+						}						
+						else if (fixedNodePosConn[0] == 2 && fixedNodePosConn[1] == 3) {
+							tmpConn[0] = critConn[j][2];
+							tmpConn[1] = critConn[j][4];
+							tmpConn[2] = critConn[j][3];
+							tmpConn[3] = critConn[j][0];
+							tmpConn[4] = critConn[j][5];
+							tmpConn[5] = critConn[j][1];
+						}
+						else if (fixedNodePosConn[0] == 0 && fixedNodePosConn[1] == 3) {
+							tmpConn[0] = critConn[j][0];
+							tmpConn[1] = critConn[j][1];
+							tmpConn[2] = critConn[j][2];
+							tmpConn[3] = critConn[j][5];
+							tmpConn[4] = critConn[j][3];
+							tmpConn[5] = critConn[j][4];
+						}						
+						else {
+							throw MeshKit::Error(
+								MeshKit::MK_FAILURE, 
+								"Unexpected position %i of fixed node.", fixedNodePosConn[0] 
+							);								
+						}						
+						tmpConn = renumberPrism(tmpConn);
+						moab::EntityHandle prism;
+						MBERRCHK(mb->create_element(MBPRISM, &(tmpConn[0]), 6, prism), mb);				
+						moab::Range adj_for_mat;
+						MBERRCHK(
+							mb->get_adjacencies(
+								&(*kter), 1, GD, false, adj_for_mat, moab::Interface::INTERSECT
+							), 
+							mb
+						);
+						MBERRCHK(mb->add_adjacencies(prism, adj_for_mat, true), mb);
+						MBERRCHK(mb->add_entities(geom_set, &prism, 1), mb);									
+					}
 			  }			
 			}
 	}
@@ -568,11 +784,41 @@ namespace MeshKit {
 			MBERRCHK(mb->get_coords(&conn[0], 3, (double*) &coords[0]), mb);
 			moab::CartVect AB(coords[1] - coords[0]);
 			moab::CartVect BC(coords[2] - coords[1]);
-			moab::CartVect normal = AB*BC;
-			normal = normal/normal.length();
-			v = normal;
+			v = AB*BC;
+			//normal = normal/normal.length();
+			v.normalize();// = normal;
 	}
 
+	void dtPostBL::get_normal(std::vector<EntityHandle>conn, moab::CartVect &v, moab::EntityHandle const &el)
+	// ---------------------------------------------------------------------------
+	//! Function: Get normal of a quad \n
+	//! Input:    conn \n
+	//! Output:   moab::CartVect v \n
+	// ---------------------------------------------------------------------------
+	{
+		moab::EntityType type = mb->type_from_handle(el);
+		
+		moab::CartVect AB;
+	  moab::CartVect BC;
+		if ( type == moab::MBTRI ) {
+			moab::CartVect coords[3];
+			MBERRCHK(mb->get_coords(&conn[0], 3, (double*) &coords[0]), mb);
+			AB = (coords[1] - coords[0]);
+			BC = (coords[2] - coords[1]);
+			v = AB*BC;
+			v.normalize();
+		}
+		else if ( type == moab::MBQUAD ) {
+			moab::CartVect coords[4];
+			MBERRCHK(mb->get_coords(&conn[0], 4, (double*) &coords[0]), mb);
+			AB = (coords[2] - coords[0]);
+			BC = (coords[3] - coords[1]);
+		}
+		
+		v = AB*BC;
+		v.normalize();		
+	}	
+			
   std::vector< moab::EntityHandle > dtPostBL::renumberTetrahedra( std::vector< moab::EntityHandle > const & orig ) {
 		moab::CartVect coords[4];
     mb->get_coords(&(orig[0]), 4, (double*) &coords[0]);
