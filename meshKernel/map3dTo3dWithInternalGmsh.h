@@ -9,7 +9,6 @@ namespace dtOO {
   class constValue;
   class analyticFunction;
   class analyticGeometry;
-//  class dtGmshModel;
   class map3dTo3d;
   class map2dTo3d;
   
@@ -34,6 +33,9 @@ namespace dtOO {
     float _marginWidth;
     float _marginNormalWidth;
     float _marginTangentialWidth;
+    float _bladeNormalWidth;
+    float _bladeTangentialWidth;  
+    int _normalAddNumberIntegrationPoints;
   };
 }
 #endif	/* map3dTo3dWithInternalGmsh_H */
