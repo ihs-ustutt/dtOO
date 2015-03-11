@@ -1017,11 +1017,56 @@ namespace dtOO {
 		return maxTag;
 	}	
 	
+  std::list< ::GVertex * > dtGmshModel::vertices( void ) const {
+		std::list< ::GVertex * > ll;
+    for( ::GModel::viter it= GModel::vertices.begin(); it!=GModel::vertices.end(); ++it ) {		
+			ll.push_back( *it );
+		}
+		return ll;
+	}
+	
+  std::list< ::GEdge * > dtGmshModel::edges( void ) const {
+		std::list< ::GEdge * > ll;
+    for( ::GModel::eiter it= GModel::edges.begin(); it!=GModel::edges.end(); ++it ) {		
+			ll.push_back( *it );
+		}
+		return ll;		
+	}
+		
 	std::list< ::GFace * > dtGmshModel::faces( void ) const {
 		std::list< ::GFace * > faceL;
     for( ::GModel::fiter f_it= GModel::faces.begin(); f_it!=GModel::faces.end(); ++f_it ) {		
 			faceL.push_back( *f_it );
 		}
 		return faceL;
+	}
+	
+  void dtGmshModel::meshPhysical(int const & dim) {
+		if (dim == 0) {
+			GModel::mesh(0);
+		}
+		else if (dim == 1) {
+			std::list< ::GEdge * > ee = edges();
+			dt__FORALLITER(std::list< ::GEdge * >, ee, it) {
+				if ( (*it)->getPhysicalEntities().size() != 0 ) {
+					meshEdge( (*it)->tag() );
+				}
+			}
+		}
+		else if (dim == 2) {
+			std::list< ::GFace * > ff = faces();
+			dt__FORALLITER(std::list< ::GFace * >, ff, it) {
+				if ( (*it)->getPhysicalEntities().size() != 0 ) {
+					meshFace( (*it)->tag() );
+				}
+			}			
+		}
+		else if (dim == 3) {
+			GModel::mesh(3);
+		}
+		else {
+			dt__THROW( meshPhysical(), << DTLOGEVAL(dim) );
+		}
+		
 	}
 }

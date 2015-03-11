@@ -81,7 +81,10 @@ namespace dtOO {
     int getMaxVertexTag( void );
     int getMaxEdgeTag( void );
     int getMaxFaceTag( void );
+    std::list< ::GVertex * > vertices( void ) const;    
+    std::list< ::GEdge * > edges( void ) const;    
     std::list< ::GFace * > faces( void ) const;
+    void meshPhysical(int const & dim);
   };
 }
 #endif	/* DTGMSHMODEL_H */
