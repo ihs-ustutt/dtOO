@@ -22,16 +22,26 @@ namespace dtOO {
 			float const & thick, int const & nPoints, int const & nIntegrationPoints,
 		  int const & order
 	) {				  
+		//
+		// should be at least 2 points
+		//
+		int nPointsMax = std::max(nPoints, 2);
+		dt__WARN_IFWM(
+			nPoints!=nPointsMax, 
+			map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d,
+			<< "Reset nPoints from " << nPoints << " to " << nPointsMax
+		);
+		
 		std::vector< dtPoint3 > ppXYZ
 		= 
-		dtPoint3_map1dTo3dEquidistantPoint(m1d, nPoints).result();
+		dtPoint3_map1dTo3dEquidistantPoint(m1d, nPointsMax).result();
 		std::vector< dtPoint2 > ppNewUV(ppXYZ.size());
 		std::vector< float > itVal;
 		float deltaThick = thick/nIntegrationPoints;			
 		dt__FORALLINDEX(ppXYZ, ii) {
 			float percent 
 			= 
-			static_cast< float >(ii) / static_cast< float >(nPoints-1);
+			static_cast< float >(ii) / static_cast< float >(nPointsMax-1);
 			//
 			// reparam on surface and get derivative
 			//
