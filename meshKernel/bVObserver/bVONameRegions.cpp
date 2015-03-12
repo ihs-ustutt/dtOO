@@ -68,8 +68,8 @@ namespace dtOO {
 					<< logMe::dtFormat("Name physical group %s (%d) and add region %d of %s") 
 						% pTag % newL % counter % ptrBoundedVolume()->getLabel()
 				);						
-				counter++;
 			}
+			counter++;			
 		}
   }
 }
