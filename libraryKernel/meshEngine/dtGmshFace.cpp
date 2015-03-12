@@ -4,6 +4,7 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include "dtGmshEdge.h"
 #include "dtGmshModel.h"
+#include "dtOMMesh.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <gmsh/GmshDefines.h>
 #include <gmsh/GEdge.h>
@@ -552,5 +553,17 @@ namespace dtOO {
 			const_cast< ::MElement *>(me->back())->getVertices(vertices);
 			dt__FORALLITER(std::vector< ::MVertex * >, vertices, aV) mv->push_back(*aV);	
 		}		
+	}
+	
+	dtOMMesh * dtGmshFace::getOMMesh( void ) const {
+		dtOMMesh * om = new dtOMMesh();
+			
+    for (int ii=0; ii<__caCThis->getNumMeshElements(); ii++) {
+			std::vector< MVertex * > vertices;
+			__caCThis->getMeshElement(ii)->getVertices(vertices);
+			om->addFace(vertices);
+		}
+		
+		return om;
 	}
 }

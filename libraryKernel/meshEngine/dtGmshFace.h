@@ -12,6 +12,7 @@ class MVertex;
 
 namespace dtOO {
   class map2dTo3d;
+  class dtOMMesh;
     
   class dtGmshFace : public ::GFace {
   public:
@@ -56,6 +57,7 @@ namespace dtOO {
       std::vector< ::MVertex const * > * const mv, 
       std::vector< ::MElement const * > * const me
     ) const;
+    dtOMMesh * getOMMesh( void ) const;
   private:
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:

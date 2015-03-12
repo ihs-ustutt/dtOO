@@ -79,6 +79,7 @@ find_package(CGM)
 find_package(LASSO)
 find_package(MOAB COMPONENTS MOAB iMesh)
 find_package(MESHKIT)
+find_package(OpenMesh COMPONENTS OpenMeshCore OpenMeshTools)
 if(DTOO_USE_GOOGLEPERFTOOLS)
   add_definitions(-DDTOO_USE_GOOGLEPROFTOOLS)
   find_package(GOOGLEPERFTOOLS REQUIRED)
@@ -136,6 +137,7 @@ include_directories(
   ${LASSO_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}
   ${MESHKIT_INCLUDE_DIR}
+  ${OpenMesh_INCLUDE_DIR}
 #/foam/lnInclude
 #  ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
 )
@@ -193,6 +195,7 @@ target_link_libraries(dtOO
   ${LASSO_LIBRARIES}
   ${MOAB_LIBRARIES}
   ${MESHKIT_LIBRARIES}
+  ${OpenMesh_LIBRARIES}
 )
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGAL_LINK_DIRECTORY}")
