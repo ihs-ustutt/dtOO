@@ -194,8 +194,11 @@ namespace dtOO {
   
   void dtGmshFace::meshTransfinite( void ) {
       this->meshAttributes.method = MESH_TRANSFINITE;
-      this->meshAttributes.recombine = 1;
   }
+	
+	void dtGmshFace::meshRecombine( void ) {
+		this->meshAttributes.recombine = 1;
+	}
   
   void dtGmshFace::meshTransfiniteWNElements( int const & nElementsU, int const & nElementsV ) {	
 		meshTransfinite();
