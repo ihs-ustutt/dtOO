@@ -39,6 +39,7 @@ namespace dtOO {
     void addEdgeLoop( std::list< ::GEdge * > edgeL );
     bool isClosed( int const dim ) const;
     void meshTransfinite( void );
+	  void meshRecombine( void );
     void meshTransfiniteWNElements( 
       int const & nElementsU, int const & nElementsV 
     );
