@@ -253,6 +253,16 @@ namespace dtOO {
     
     return gFace;    
   }
+	
+  dtGmshFace * dtGmshModel::getDtGmshFaceByPhysical( std::string const & physical ) const {
+    int pN = __caCThis->getPhysicalNumber(2, physical);
+		intGEntityVMap gE_pN;
+		__caCThis->getPhysicalGroups(2, gE_pN);
+		
+		dt__THROW_IF(gE_pN[pN].size()!=1, getDtGmshFaceByPhysical);
+		
+		return cast2DtGmshFace(gE_pN[pN][0]);
+  }	
   
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByTag( int const tag ) const {
     ::GEdge * edge = ::GModel::getEdgeByTag(tag);
