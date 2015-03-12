@@ -150,7 +150,7 @@ namespace dtOO {
 		
   	addIfFaceToGmshModel(face, tag, eId[0], eId[1], eId[2], eId[3]);
 	}
-	
+			
 	/**
    * @todo What if region is not 6-sided?
    */
@@ -401,6 +401,7 @@ namespace dtOO {
     std::vector< ::GRegion * > delauny;
     ::meshGRegion mr( delauny );
     mr(dtgr);    
+		MeshDelaunayVolume(delauny);
   }
 
   int dtGmshModel::alreadyInModel( ::GVertex const * const gv ) const {
@@ -1017,6 +1018,14 @@ namespace dtOO {
 		return maxTag;
 	}	
 	
+	int dtGmshModel::getMaxRegionTag( void ) {
+		int maxTag = 0;
+		for( ::GModel::riter r_it= GModel::regions.begin(); r_it!=GModel::regions.end(); ++r_it ) {
+			if ( (*r_it)->tag() > maxTag ) maxTag = (*r_it)->tag();
+		}
+		return maxTag;
+	}		
+	
   std::list< ::GVertex * > dtGmshModel::vertices( void ) const {
 		std::list< ::GVertex * > ll;
     for( ::GModel::viter it= GModel::vertices.begin(); it!=GModel::vertices.end(); ++it ) {		
@@ -1041,6 +1050,14 @@ namespace dtOO {
 		return faceL;
 	}
 	
+	std::list< ::GRegion * > dtGmshModel::regions( void ) const {
+		std::list< ::GRegion * > regionL;
+    for( ::GModel::riter r_it= GModel::regions.begin(); r_it!=GModel::regions.end(); ++r_it ) {		
+			regionL.push_back( *r_it );
+		}
+		return regionL;
+	}
+	
   void dtGmshModel::meshPhysical(int const & dim) {
 		if (dim == 0) {
 			GModel::mesh(0);
@@ -1062,7 +1079,12 @@ namespace dtOO {
 			}			
 		}
 		else if (dim == 3) {
-			GModel::mesh(3);
+			std::list< ::GRegion * > rr = regions();
+			dt__FORALLITER(std::list< ::GRegion * >, rr, it) {
+				if ( (*it)->getPhysicalEntities().size() != 0 ) {
+					meshRegion( (*it)->tag() );
+				}
+			}	
 		}
 		else {
 			dt__THROW( meshPhysical(), << DTLOGEVAL(dim) );

@@ -81,9 +81,11 @@ namespace dtOO {
     int getMaxVertexTag( void );
     int getMaxEdgeTag( void );
     int getMaxFaceTag( void );
+    int getMaxRegionTag( void );    
     std::list< ::GVertex * > vertices( void ) const;    
     std::list< ::GEdge * > edges( void ) const;    
     std::list< ::GFace * > faces( void ) const;
+    std::list< ::GRegion * > regions( void ) const;
     void meshPhysical(int const & dim);
   };
 }
