@@ -82,14 +82,19 @@ namespace dtOO {
 		// set current model
 		//
 		::GModel::setCurrent(_gm.get());
-
-		dtGmshRegion * gr = _gm->addRegionToGmshModel(_m3d.get());
-		
+	
+		dt__pVH(map2dTo3d) m2dV;
+		m2dV.push_back( _m3d->segmentConstWPercent(0.) );
+		m2dV.push_back( _m3d->segmentConstWPercent(1.) );
+		m2dV.push_back( _m3d->segmentConstVPercent(0.) );
+		m2dV.push_back( _m3d->segmentConstVPercent(1.) );
+		m2dV.push_back( _m3d->segmentConstUPercent(0.) );
+		m2dV.push_back( _m3d->segmentConstUPercent(1.) );		
 		twoDArrayHandling< int > fId(6,0);
 		for (int ii = 0; ii<6; ii++) {
-			dt__pVH(map2dTo3d) margin = map2dTo3d_constructMarginFaces(
-			  _gm->getDtGmshFaceByTag(ii+1)->getMap2dTo3d(), _marginWidth
-			).result();
+			dt__pVH(map2dTo3d) margin 
+			= 
+			map2dTo3d_constructMarginFaces(&(m2dV[ii]), _marginWidth).result();
 			
 			dt__FORALLITER(dt__pVH(map2dTo3d), margin, it) {
 				map2dTo3d const & thisMap = *it;
@@ -247,18 +252,21 @@ namespace dtOO {
 			);
 		}
 		
-		//
-		// remove old faces
-		//
-		for (int ii = 0; ii<6; ii++) delete _gm->getDtGmshFaceByTag(ii+1);	
+//		//
+//		// remove old faces
+//		//
+//		for (int ii = 0; ii<6; ii++) delete _gm->getDtGmshFaceByTag(ii+1);	
 		
 		//
-		// correct transfinite surfaces
+		// correct transfinite surfaces and create region
 		//
+		dtGmshRegion * gr = new dtGmshRegion(_gm.get(), _gm->getMaxRegionTag());
 		std::list< ::GFace * > ff = _gm->faces();
 		dt__FORALLITER(std::list< ::GFace * >, ff, it) {
 			dtGmshModel::cast2DtGmshFace(*it)->correctIfTransfinite();
+			gr->addFace(*it, -1);
 		}	
+		_gm->add( gr );		
 	}
 	
   void map3dTo3dWithInternalGmsh::makeGrid(void) {
@@ -305,7 +313,7 @@ namespace dtOO {
 		_gm->meshPhysical(0);
 		_gm->meshPhysical(1);
 		_gm->meshPhysical(2);
-//		_gm->mesh(3);
+		_gm->meshPhysical(3);
 		
     //
 		// force renumbering mesh in gmsh
