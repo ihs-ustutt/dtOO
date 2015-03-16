@@ -19,8 +19,10 @@ namespace dtOO {
   class dtGmshFace;
   class dtGmshEdge;
   class dtGmshVertex;
+  class renderInterface;
   class unstructured3dMesh;
   class unstructured3dSurfaceMesh;
+  class discrete3dPoints;
   
   class dtGmshModel : public ::GModel {
   public:
@@ -75,6 +77,12 @@ namespace dtOO {
       std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
     ); 
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
+      std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
+    );
+    static discrete3dPoints * toDiscrete3dPoints( 
+      std::vector< ::MVertex * > const & vertices
+    );
+    static renderInterface * toAdequateSurfaceRenderInterface( 
       std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
     );
     void dtReadCGNS(const std::string & name);

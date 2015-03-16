@@ -13,6 +13,7 @@
 #include "dtGmshFace.h"
 #include "dtGmshEdge.h"
 #include "dtGmshVertex.h"
+#include "discrete3dPoints.h"
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
@@ -700,6 +701,35 @@ namespace dtOO {
 		
 		return um;		
 	}	
+
+  discrete3dPoints * dtGmshModel::toDiscrete3dPoints( 
+	  std::vector< ::MVertex * > const & vertices
+	) {
+		std::vector< dtPoint3 > pp(vertices.size());
+		for( int ii=0; ii<vertices.size(); ii++ ) {
+			::MVertex const * const mv = vertices[ii];				
+			pp[ii]
+			=
+			dtPoint3(
+				static_cast< float >(mv->x()), 
+				static_cast< float >(mv->y()), 
+				static_cast< float >(mv->z())
+			); 			
+		}
+		
+		return new discrete3dPoints(pp);
+	}	
+	
+  renderInterface * dtGmshModel::toAdequateSurfaceRenderInterface( 
+	  std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
+	) {
+		if (elements.size() != 0) {
+			return toUnstructured3dSurfaceMesh(vertices, elements);
+		}
+		else {
+			return toDiscrete3dPoints(vertices);
+		}
+	}		
 	
 	void dtGmshModel::dtReadCGNS(const std::string &name) {		
 			std::vector< dtGmshFace * >  faces;
