@@ -28,6 +28,12 @@
     iter!=vector.end(); \
     ++iter \
   )
+#define dt__FROMTOITER(iterator_type, from, to, iter) \
+  for ( \
+    iterator_type iter = from; \
+    iter != to; \
+    ++iter \
+  )
 #define dt__MUSTDOWNCAST( object, type, result ) \
   result = dynamic_cast< type * >( object ); \
   if (result == NULL ) { \

@@ -560,8 +560,9 @@ namespace dtOO {
 			
     for (int ii=0; ii<__caCThis->getNumMeshElements(); ii++) {
 			std::vector< MVertex * > vertices;
-			__caCThis->getMeshElement(ii)->getVertices(vertices);
-			om->addFace(vertices);
+			MElement * me = __caCThis->getMeshElement(ii);
+			me->getVertices(vertices);
+			omFaceH fH = om->addFace(vertices, me);
 		}
 		
 		return om;
