@@ -15,10 +15,7 @@
 //    }
 
 namespace dtOO {
-  dtOMMesh::dtOMMesh() {
-  }
-
-  dtOMMesh::dtOMMesh(const dtOMMesh& orig) {
+  dtOMMesh::dtOMMesh() : omMesh() {
   }
 
   dtOMMesh::~dtOMMesh() {
@@ -102,4 +99,23 @@ namespace dtOO {
   void dtOMMesh::writeMesh(std::string const filename) const {
     OpenMesh::IO::write_mesh(*this, filename);
   }
+	
+	void dtOMMesh::add(const dtOMMesh &toAdd) {
+		for (
+			omFaceI f_it = toAdd.faces_begin();
+			f_it != toAdd.faces_end();
+			++f_it
+		) {
+			std::vector< MVertex * > vertices;
+			for (
+				omConstFaceVertexI fv_it = toAdd.cfv_begin(*f_it);
+				fv_it != toAdd.cfv_end(*f_it);
+				++fv_it
+			) {
+  		  omVertexD omVD = toAdd.data(*fv_it);
+				vertices.push_back( const_cast< MVertex * >(omVD.MVertex()) );
+			}
+			addFace(vertices);
+		}
+	}
 }
