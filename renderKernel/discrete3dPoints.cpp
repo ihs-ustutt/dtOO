@@ -16,6 +16,8 @@ namespace dtOO {
 	}
 	
 	void discrete3dPoints::addPoints( vectorHandling< dtPoint3 > const & pp ) {
+		dt__THROW_IF(pp.size()==0, addPoints());
+		
 		_p3 = pp;
 		
 		std::pair<dtPoint3, dtPoint3> minMax = dtLinearAlgebra::boundingBox(_p3);

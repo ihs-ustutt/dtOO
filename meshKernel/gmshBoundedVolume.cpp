@@ -88,8 +88,11 @@ namespace dtOO {
 							}
 							std::vector< ::MVertex * > vertices;
 							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
+							if (vertices.empty()) {
+								vertices = progHelper::nonconstify(gf->getMeshVertices());
+							}
 							rV.push_back(
-							  _gm->toUnstructured3dSurfaceMesh(vertices, elTwoD)
+							  dtGmshModel::toAdequateSurfaceRenderInterface(vertices, elTwoD)
 							);
 						}
 						else if (gr) {
@@ -152,13 +155,12 @@ namespace dtOO {
 		dtGmshModel::intGEntityVMap groups;		
 		_physLabels.resize(4);
 		for (int ii=0; ii<4; ii++) {
+			_physLabels[ii].clear();
 			_gm->getPhysicalGroups(ii, groups);
 			dt__FORALLITER(dtGmshModel::intGEntityVMap, groups, it) {
 				int num = it->first;
 				std::string pName = _gm->getPhysicalName(ii, num);
-				if (pName != "") {
-					_physLabels[ii].push_back(pName);
-				}
+				if (pName != "") _physLabels[ii].push_back(pName);
 			}
 		}
 	}
