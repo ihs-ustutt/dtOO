@@ -74,16 +74,19 @@ namespace dtOO {
     int alreadyInModel( ::GFace const * const gf ) const;
     unstructured3dMesh * toUnstructured3dMesh( void ) const;
     static unstructured3dMesh * toUnstructured3dMesh(
-      std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
+      std::vector< ::MVertex const * > const & vertices, 
+      std::vector< ::MElement const * > const & elements
     ); 
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
-      std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
+      std::vector< ::MVertex const * > const & vertices, 
+      std::vector< ::MElement const * > const & elements
     );
     static discrete3dPoints * toDiscrete3dPoints( 
-      std::vector< ::MVertex * > const & vertices
+      std::vector< ::MVertex const * > const & vertices
     );
     static renderInterface * toAdequateSurfaceRenderInterface( 
-      std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
+      std::vector< ::MVertex const * > const & vertices, 
+      std::vector< ::MElement const * > const & elements
     );
     void dtReadCGNS(const std::string & name);
     void clearModel( void );
@@ -96,6 +99,11 @@ namespace dtOO {
     std::list< ::GFace * > faces( void ) const;
     std::list< ::GRegion * > regions( void ) const;
     void meshPhysical(int const & dim);
+	  int getMeshVerticesForPhysicalGroup(
+      int const & dim, 
+      int const & num, 
+      std::vector< ::MVertex const * > & vertices
+    );    
   };
 }
 #endif	/* DTGMSHMODEL_H */

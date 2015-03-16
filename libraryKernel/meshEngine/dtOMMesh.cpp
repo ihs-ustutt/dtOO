@@ -4,6 +4,8 @@
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <gmsh/MVertex.h>
+#include <gmsh/MElement.h>
+#include <gmsh/MFace.h>
 
 namespace dtOO {
   dtOMMesh::dtOMMesh() : omMesh() {
@@ -12,14 +14,14 @@ namespace dtOO {
   dtOMMesh::~dtOMMesh() {
   }
 
-  omVertexH dtOMMesh::addVertex( MVertex const * const &mv ) {
+  omVertexH dtOMMesh::addVertex( ::MVertex const * const &mv ) {
     omVertexH vH 
     = 
     omMesh::add_vertex( 
       omMesh::Point(mv->x(), mv->y(), mv->z()) 
     );
     omVertexD & vD = omMesh::data(vH);
-    vD.MVertex() = mv;
+    vD.MVertex(mv);
 		
 		_om_gmsh[mv] = vH;
 		
@@ -65,7 +67,13 @@ namespace dtOO {
 	) {
 		omFaceH fH = addFace(vertices);
 		omFaceD & fD = omMesh::data( fH );
-		fD.MElement() = me;
+		fD.MElement(me);
+
+		dt__THROW_IF(const_cast< ::MElement * >(me)->getNumFaces()!=1, addFace());
+		
+	  fD.MFace( const_cast< ::MElement * >(me)->getFace(0) );
+		SVector3 sv = fD.MFace().normal();
+		fD.setNormal( dtVector3(sv.x(), sv.y(), sv.z()) );
 		
 		return fH;
 	}  
@@ -90,7 +98,7 @@ namespace dtOO {
 				vertices.push_back( const_cast< ::MVertex * >(vD.MVertex()) );
 			}
 			omFaceD const & fD = toAdd.data(*f_it);
-			MElement const * const me = fD.MElement();
+			::MElement const * const me = fD.MElement();
 			addFace(vertices, me);
 		}
 	}

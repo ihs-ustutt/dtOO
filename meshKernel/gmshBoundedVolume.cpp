@@ -82,25 +82,25 @@ namespace dtOO {
 						dtGmshRegion * gr = dtGmshRegion::DownCast(ge);
 
 					  if (gf) {
-							std::vector< ::MElement * > elTwoD;
+							std::vector< ::MElement const * > elTwoD;
 							for (int jj=0;jj<gf->getNumMeshElements(); jj++) {
 								elTwoD.push_back( gf->getMeshElement(jj) );	
 							}
-							std::vector< ::MVertex * > vertices;
+							std::vector< ::MVertex const * > vertices;
 							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
 							if (vertices.empty()) {
-								vertices = progHelper::nonconstify(gf->getMeshVertices());
+								vertices = gf->getMeshVertices();
 							}
 							rV.push_back(
 							  dtGmshModel::toAdequateSurfaceRenderInterface(vertices, elTwoD)
 							);
 						}
 						else if (gr) {
-							std::vector< ::MElement * > elThreeD;
+							std::vector< ::MElement const * > elThreeD;
 							for (int jj=0;jj<gr->getNumMeshElements(); jj++) {
 								elThreeD.push_back( gr->getMeshElement(jj) );	
 							}							
-							std::vector< ::MVertex * > vertices;
+							std::vector< ::MVertex const * > vertices;
 							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
 							rV.push_back(
 							  dtGmshModel::toUnstructured3dMesh(vertices, elThreeD)

@@ -592,7 +592,7 @@ namespace dtOO {
 	}
 	
   unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( 
-	  std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
+	  std::vector< ::MVertex const * > const & vertices, std::vector< ::MElement const * > const & elements
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
 		std::map< int, int > vLoc_num;
@@ -612,7 +612,7 @@ namespace dtOO {
 		um->addPoints(pp);
 		
 		for( int ii=0; ii<elements.size(); ii++ ) {
-			::MElement * me = elements[ii];
+			::MElement * me = const_cast< ::MElement * >(elements[ii]);
 			::MTetrahedron * mtet = dynamic_cast< ::MTetrahedron * >(me);
 			::MHexahedron * mhex = dynamic_cast< ::MHexahedron * >(me);
 			//
@@ -651,7 +651,8 @@ namespace dtOO {
 	}	
 	
   unstructured3dSurfaceMesh * dtGmshModel::toUnstructured3dSurfaceMesh( 
-	  std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
+	  std::vector< ::MVertex const * > const & vertices, 
+		std::vector< ::MElement const * > const & elements
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
 		std::map< int, int > vLoc_num;
@@ -671,7 +672,7 @@ namespace dtOO {
 		um->addPoints(pp);
 		
 		for( int ii=0; ii<elements.size(); ii++ ) {
-			::MElement * me = elements[ii];
+			::MElement * me = const_cast< ::MElement * >(elements[ii]);
 			::MQuadrangle * mquad = dynamic_cast< ::MQuadrangle * >(me);
 			::MTriangle * mtri = dynamic_cast< ::MTriangle * >(me);
 			
@@ -703,7 +704,7 @@ namespace dtOO {
 	}	
 
   discrete3dPoints * dtGmshModel::toDiscrete3dPoints( 
-	  std::vector< ::MVertex * > const & vertices
+	  std::vector< ::MVertex const * > const & vertices
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
 		for( int ii=0; ii<vertices.size(); ii++ ) {
@@ -721,7 +722,8 @@ namespace dtOO {
 	}	
 	
   renderInterface * dtGmshModel::toAdequateSurfaceRenderInterface( 
-	  std::vector< ::MVertex * > const & vertices, std::vector< ::MElement * > const & elements
+	  std::vector< ::MVertex const * > const & vertices, 
+		std::vector< ::MElement const * > const & elements
 	) {
 		if (elements.size() != 0) {
 			return toUnstructured3dSurfaceMesh(vertices, elements);
@@ -1128,7 +1130,19 @@ namespace dtOO {
 		}
 		else {
 			dt__THROW( meshPhysical(), << DTLOGEVAL(dim) );
-		}
-		
+		}	
 	}
+	
+	int dtGmshModel::getMeshVerticesForPhysicalGroup(
+		int const & dim, 
+		int const & num, 
+		std::vector< ::MVertex const * > & vertices
+	) {
+		std::vector< ::MVertex * > nonConstVertices; 
+		GModel::getMeshVerticesForPhysicalGroup(dim, num, nonConstVertices);
+		vertices.resize(nonConstVertices.size());
+		dt__FORALLINDEX(nonConstVertices, ii) {
+			vertices.push_back( const_cast< ::MVertex const * >(nonConstVertices[ii]) );
+		}
+	}	
 }

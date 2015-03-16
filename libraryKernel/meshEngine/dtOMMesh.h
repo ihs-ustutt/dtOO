@@ -5,6 +5,7 @@
 #include <OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh>
 #include <OpenMesh/Core/Mesh/Traits.hh>
 
+#include <gmsh/MFace.h>
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
@@ -17,27 +18,42 @@ namespace dtOO {
   struct dtOMMeshTraits : public OpenMesh::DefaultTraits {
     VertexTraits {
       private:
-        ::MVertex const * _mv;
+        ::MVertex * _mv;
       public:
         VertexT() : _mv(NULL) {}
-        ::MVertex const * & MVertex( void ) {
-          return _mv;
+        void MVertex( ::MVertex const * const mv ) {
+          _mv = const_cast< ::MVertex * >(mv);
         }
-        ::MVertex const * const & MVertex( void ) const {
+        ::MVertex * MVertex( void ) const {
           return _mv;
         }              
     };
     FaceTraits {
       private:
-        ::MElement const * _me;
+        ::MElement * _me;
+        ::MFace _mf;
+        dtVector3 _nn;
       public:
-        FaceT() : _me(NULL) {}
-        ::MElement const * & MElement( void ) {
-          return _me;
+        FaceT() : _me(NULL) {
+        }
+        void MElement( ::MElement const * const me ) {
+          _me = const_cast< ::MElement * >(me);
         }        
-        ::MElement const * const & MElement( void ) const {
+        ::MElement * MElement( void ) const {
           return _me;
         }                
+        void MFace( ::MFace const & mf ) {
+          _mf = mf;
+        }        
+        ::MFace & MFace( void ) {
+          return _mf;
+        }            
+        dtVector3 const & normal( void ) {
+          return _nn;
+        }
+        void setNormal( dtVector3 const & nn ) {
+          _nn = nn;
+        }        
     };
   };
 
@@ -89,7 +105,7 @@ namespace dtOO {
       void writeMesh(std::string const filename) const;
       void add( const dtOMMesh &toAdd );      
     private:
-      omVertexH addVertex( MVertex const * const &mv );      
+      omVertexH addVertex( ::MVertex const * const &mv );      
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          
     private:      
       std::map< ::MVertex const *, omVertexH > _om_gmsh;

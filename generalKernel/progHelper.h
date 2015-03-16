@@ -65,14 +65,6 @@ namespace dtOO {
         };		
         return ee;
       }
-      template < class T >      
-      static std::vector< T * > nonconstify(std::vector< T const * > vec) {
-        return reinterpret_cast< std::vector< T * > >(vec);              
-      }       
-      template < class T >      
-      static std::vector< T const * > constify(std::vector< T * > vec) {
-        return reinterpret_cast< std::vector< T const * > >(vec);              
-      }            
     private:
       progHelper();
   };
