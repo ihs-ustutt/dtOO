@@ -52,7 +52,8 @@ namespace dtOO {
     virtual void makeSuitable( void );
     bool isEqual( ::GFace const * const gf ) const;
     static bool isEqual( ::GFace const * const gf0, ::GFace const * const gf1 );
-    twoDArrayHandling< ::MVertex * > reconstructEdgesFromSurfaceMesh( void ) const;
+    twoDArrayHandling< ::MVertex * > reconstructEdgesFromSurfaceMesh( void ) const;	
+	  std::vector< const ::MVertex * > getMeshVertices( void ) const;
     void getMeshVerticesAndElements(
       std::vector< ::MVertex const * > * const mv, 
       std::vector< ::MElement const * > * const me

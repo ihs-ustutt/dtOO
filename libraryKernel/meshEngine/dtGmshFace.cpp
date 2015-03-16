@@ -528,13 +528,26 @@ namespace dtOO {
 		return recEdges;
 	}
 	
+	std::vector< const ::MVertex * > dtGmshFace::getMeshVertices( void ) const {	
+		int num_vertices  = __caCThis->getNumMeshVertices();
+		dt__THROW_IF(num_vertices == 0, getMesVertices());
+
+		std::vector< ::MVertex const * > mv;
+		mv.reserve(num_vertices);
+    for (int ii=0; ii<num_vertices; ii++) {
+			mv.push_back( __caCThis->getMeshVertex(ii) );
+		}
+		
+		return mv;
+	}
+	
 	void dtGmshFace::getMeshVerticesAndElements(
 		std::vector< ::MVertex const * > * const mv, 
 		std::vector< ::MElement const * > * const me
 	) const {	
 		int num_elements  = __caCThis->getNumMeshElements();
 		
-		dt__THROW_IF(num_elements == 0, addFace());
+		dt__THROW_IF(num_elements == 0, getMeshVerticesAndElements());
 		
 		int num_vertices_per_element 
 		= 
