@@ -6,6 +6,8 @@
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
 #include <gmsh/MFace.h>
+#include <OpenMesh/Core/IO/MeshIO.hh>
+
 
 namespace dtOO {
   dtOMMesh::dtOMMesh() : omMesh() {

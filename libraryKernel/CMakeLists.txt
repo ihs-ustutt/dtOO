@@ -67,6 +67,7 @@ SET(HEADERS
   meshEngine/dtMoabCore.h
   meshEngine/dtGmshMeshGFaceExtrude.h
   meshEngine/dtOMMesh.h
+  meshEngine/dtOMMeshTraits.h
   dtGaussLegendreIntegration.h
   GSLError.h
 )
