@@ -12,28 +12,36 @@
     for (int variable = 0; variable<((vector).size());variable++) { \
       content \
     }
-#define dt__FORALLINDEX(vector, index) \
-    for (int index = 0; index<((vector).size());index++)
-#define dt__FORINNERINDEX(vector, index) \
+#define dt__forInnerIndex(vector, index) \
     for (int index = 1; index<((vector).size()-1);index++)
-#define dt__FORALLITER(type, vector, iter) \
+#define dt__forAllIter(type, vector, iter) \
   for ( \
     type::iterator iter = vector.begin(); \
     iter!=vector.end(); \
     ++iter \
   )
-#define dt__FORALLCONSTITER(type, vector, iter) \
+#define dt__forAllConstIter(type, vector, iter) \
   for ( \
     type::const_iterator iter = vector.begin(); \
     iter!=vector.end(); \
     ++iter \
   )
-#define dt__FROMTOITER(iterator_type, from, to, iter) \
+#define dt__forFromToIter(iterator_type, from, to, iter) \
   for ( \
     iterator_type iter = from; \
     iter != to; \
     ++iter \
   )
+#define dt__FORALLINDEX(vector, index) \
+  dt__forInnerIndex(vector, index)
+#define dt__FORINNERINDEX(vector, index) \
+  dt__forInnerIndex(vector, index)
+#define dt__FORALLITER(type, vector, iter) \
+  dt__forAllIter(type, vector, iter)
+#define dt__FORALLCONSTITER(type, vector, iter) \
+  dt__forAllConstIter(type, vector, iter)
+#define dt__FROMTOITER(iterator_type, from, to, iter) \
+  dt__forFromToIter(iterator_type, from, to, iter)
 #define dt__MUSTDOWNCAST( object, type, result ) \
   result = dynamic_cast< type * >( object ); \
   if (result == NULL ) { \

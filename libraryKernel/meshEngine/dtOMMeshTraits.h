@@ -50,6 +50,7 @@ namespace dtOO {
           _nn = nn;
         }        
     };
+    FaceAttributes( OpenMesh::Attributes::Normal );
   };
 }
 

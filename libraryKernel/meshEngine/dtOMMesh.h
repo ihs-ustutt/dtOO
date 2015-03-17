@@ -21,14 +21,14 @@ namespace dtOO {
   // handles
   //
   typedef ::OpenMesh::VertexHandle omVertexH;  
-  typedef ::OpenMesh::HalfedgeHandle omHalfEdgeH;
+  typedef ::OpenMesh::HalfedgeHandle omHalfedgeH;
   typedef ::OpenMesh::EdgeHandle omEdgeH;
   typedef ::OpenMesh::FaceHandle omFaceH;
   //
   // data
   //
   typedef omMesh::VertexData omVertexD;  
-  typedef omMesh::HalfedgeData omHalfEdgeD;
+  typedef omMesh::HalfedgeData omHalfedgeD;
   typedef omMesh::EdgeData omEdgeD;
   typedef omMesh::FaceData omFaceD;
   //
@@ -38,11 +38,18 @@ namespace dtOO {
   typedef omMesh::VertexVertexIter omVertexVertexI;
   typedef omMesh::FaceIter omFaceI;
   typedef omMesh::VertexFaceIter omVertexFaceI;
+  typedef omMesh::ConstVertexFaceIter omConstVertexFaceI;
+  typedef omMesh::FaceVertexIter omFaceVertexI;
   typedef omMesh::ConstFaceVertexIter omConstFaceVertexI;
+  typedef omMesh::VertexEdgeIter omVertexEdgeI;
+  typedef omMesh::ConstVertexEdgeIter omConstVertexEdgeI;
+  typedef omMesh::VertexOHalfedgeIter omVertexOHalfedgeI;
+  typedef omMesh::ConstVertexOHalfedgeIter omConstVertexOHalfedgeI;
   //
   // misc
   //
   typedef omMesh::Point omPoint;
+  typedef omMesh::Scalar omScalar;
   
   /**
    * @brief Interface to OpenMesh
@@ -58,8 +65,10 @@ namespace dtOO {
       dtOMMesh();
       virtual ~dtOMMesh();
       omFaceH addFace( std::vector< ::MVertex * > const & vertices, ::MElement const * const me );  
+      omFaceH addFace( ::MElement const * const me );  
       void writeMesh(std::string const filename) const;
       void add( const dtOMMesh &toAdd );      
+      std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;
     private:
       omVertexH addVertex( ::MVertex const * const &mv );      
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          

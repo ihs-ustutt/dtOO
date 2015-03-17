@@ -68,6 +68,7 @@ SET(HEADERS
   meshEngine/dtGmshMeshGFaceExtrude.h
   meshEngine/dtOMMesh.h
   meshEngine/dtOMMeshTraits.h
+  meshEngine/dtOMMeshManifold.h
   dtGaussLegendreIntegration.h
   GSLError.h
 )
@@ -140,6 +141,7 @@ SET(SOURCES
   meshEngine/dtMoabCore.cpp
   meshEngine/dtGmshMeshGFaceExtrude.cpp
   meshEngine/dtOMMesh.cpp
+  meshEngine/dtOMMeshManifold.cpp
   dtGaussLegendreIntegration.cpp
 )
 

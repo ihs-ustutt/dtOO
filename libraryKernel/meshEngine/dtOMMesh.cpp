@@ -55,6 +55,8 @@ namespace dtOO {
  *
  */		
 	omFaceH dtOMMesh::addFace( std::vector< ::MVertex * > const & vertices ) {
+		dt__THROW_IF( (vertices.size()!=3)&&(vertices.size()!=4), addFace() );
+		
 		std::vector< omVertexH > handle;
 		handle.reserve(vertices.size());
     dt__FORALLCONSTITER(std::vector< ::MVertex * >, vertices, it) {
@@ -80,6 +82,13 @@ namespace dtOO {
 		return fH;
 	}  
 
+  omFaceH dtOMMesh::addFace( ::MElement const * const me ) {
+		std::vector< ::MVertex * > vertices;
+		const_cast< ::MElement * >(me)->getVertices(vertices);
+		
+    return addFace(vertices, me);
+	}  	
+	
   void dtOMMesh::writeMesh(std::string const filename) const {
     OpenMesh::IO::write_mesh(*this, filename);
   }
@@ -103,5 +112,9 @@ namespace dtOO {
 			::MElement const * const me = fD.MElement();
 			addFace(vertices, me);
 		}
+	}
+	
+	std::map< ::MVertex const *, omVertexH > const & dtOMMesh::omGmsh( void ) const {
+		return _om_gmsh;
 	}
 }
