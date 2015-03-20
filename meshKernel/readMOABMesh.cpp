@@ -123,7 +123,7 @@ namespace dtOO {
 		
 		std::vector< moab::Tag > tag_handles;
 		_mb->tag_get_tags(tag_handles);
-		dt__FORALLITER(std::vector< moab::Tag >, tag_handles, it) {
+		dt__forAllIter(std::vector< moab::Tag >, tag_handles, it) {
 			moab::Tag currentTag = *it;
 			std::string tagName;
 			rval = _mb->tag_get_name(currentTag, tagName);

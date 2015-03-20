@@ -38,7 +38,7 @@ namespace dtOO {
 		std::vector< dtPoint2 > ppNewUV(ppXYZ.size());
 		std::vector< float > itVal;
 		float deltaThick = thick/nIntegrationPoints;			
-		dt__FORALLINDEX(ppXYZ, ii) {
+		dt__forAllIndex(ppXYZ, ii) {
 			float percent 
 			= 
 			static_cast< float >(ii) / static_cast< float >(nPointsMax-1);

@@ -18,7 +18,7 @@ namespace dtOO {
 	}
 	
   void dtGmshMeshGFaceExtrude::operator()( std::list< dtGmshFace * > const & face ) {
-		dt__FORALLCONSTITER( std::list< dtGmshFace * >, face, it ) {
+		dt__forAllConstIter( std::list< dtGmshFace * >, face, it ) {
 			dtGmshFace const * const &thisFace = *it;
       DTINFOWF(operator(), << "Working on face = " << thisFace->tag());
 			

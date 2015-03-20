@@ -231,7 +231,7 @@ namespace dtOO {
 		//
 		std::vector<int> fori;
 	  std::list< dtGmshFace * > gf;		
-		dt__FORALLINDEX(fId, ii) {
+		dt__forAllIndex(fId, ii) {
 			gf.push_back( this->getDtGmshFaceByTag(fId[ii]) );
 			fori.push_back(1);
 		}
@@ -322,7 +322,7 @@ namespace dtOO {
 	
   std::list< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( std::list< ::GEdge * > edges ) {
 		std::list< dtGmshEdge * > retEdges;
-		dt__FORALLITER(std::list< ::GEdge * >, edges, it) {
+		dt__forAllIter(std::list< ::GEdge * >, edges, it) {
 			retEdges.push_back( cast2DtGmshEdge(*it) );
 		}
 		return retEdges;
@@ -330,7 +330,7 @@ namespace dtOO {
 	
   std::list< dtGmshFace * > dtGmshModel::cast2DtGmshFace( std::list< ::GFace * > faces ) {
 		std::list< dtGmshFace * > ret;
-		dt__FORALLITER(std::list< ::GFace * >, faces, it) {
+		dt__forAllIter(std::list< ::GFace * >, faces, it) {
 			ret.push_back( cast2DtGmshFace(*it) );
 		}
 		return ret;
@@ -1024,7 +1024,7 @@ namespace dtOO {
 		dt__THROW_IF( vertexMap.size() != vNum, dtReadCGNS() );
 		dt__THROW_IF( elementMap.size() != eNum, dtReadCGNS() );
 		
-		dt__FORALLITER(vertexMap_t, vertexMap, it) {
+		dt__forAllIter(vertexMap_t, vertexMap, it) {
 			::MVertex * mv = it->second;
 			mv->setEntity(regions.back());
 			regions.back()->addMeshVertex(mv);
@@ -1106,7 +1106,7 @@ namespace dtOO {
 		}
 		else if (dim == 1) {
 			std::list< ::GEdge * > ee = edges();
-			dt__FORALLITER(std::list< ::GEdge * >, ee, it) {
+			dt__forAllIter(std::list< ::GEdge * >, ee, it) {
 				if ( (*it)->getPhysicalEntities().size() != 0 ) {
 					meshEdge( (*it)->tag() );
 				}
@@ -1114,7 +1114,7 @@ namespace dtOO {
 		}
 		else if (dim == 2) {
 			std::list< ::GFace * > ff = faces();
-			dt__FORALLITER(std::list< ::GFace * >, ff, it) {
+			dt__forAllIter(std::list< ::GFace * >, ff, it) {
 				if ( (*it)->getPhysicalEntities().size() != 0 ) {
 					meshFace( (*it)->tag() );
 				}
@@ -1122,7 +1122,7 @@ namespace dtOO {
 		}
 		else if (dim == 3) {
 			std::list< ::GRegion * > rr = regions();
-			dt__FORALLITER(std::list< ::GRegion * >, rr, it) {
+			dt__forAllIter(std::list< ::GRegion * >, rr, it) {
 				if ( (*it)->getPhysicalEntities().size() != 0 ) {
 					meshRegion( (*it)->tag() );
 				}
@@ -1141,7 +1141,7 @@ namespace dtOO {
 		std::vector< ::MVertex * > nonConstVertices; 
 		GModel::getMeshVerticesForPhysicalGroup(dim, num, nonConstVertices);
 		vertices.resize(nonConstVertices.size());
-		dt__FORALLINDEX(nonConstVertices, ii) {
+		dt__forAllIndex(nonConstVertices, ii) {
 			vertices.push_back( const_cast< ::MVertex const * >(nonConstVertices[ii]) );
 		}
 	}	

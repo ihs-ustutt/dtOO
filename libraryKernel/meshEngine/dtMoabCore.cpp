@@ -156,13 +156,13 @@ namespace dtOO {
 		int counter = 0;
 		int elCount;
     this->get_number_entities_by_dimension(0, elementDim, elCount, true);
-		dt__FORALLCONSTITER(std::vector< ::MElement const * >, me, it) {
+		dt__forAllConstIter(std::vector< ::MElement const * >, me, it) {
 			::MElement const * thisElement = *it;
 			elem_ids.push_back(elCount+1);
 			elCount++;
 			std::vector< ::MVertex * > verts;
 			const_cast< ::MElement * >(thisElement)->getVertices(verts);
-			dt__FORALLINDEX(verts, ii) {
+			dt__forAllIndex(verts, ii) {
 				connectivity[counter]	= _node_id_map[verts[ii]->getNum()];
 				counter++;
 			}

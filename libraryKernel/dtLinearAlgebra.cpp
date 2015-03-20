@@ -125,7 +125,7 @@ namespace dtOO {
 	  std::vector< dtVector3 > const & cols 
 	) {
 		dtMatrix mat(3, cols.size());
-		dt__FORALLCONSTITER(std::vector< dtVector3 >, cols, it) {
+		dt__forAllConstIter(std::vector< dtVector3 >, cols, it) {
 			int ii = it-cols.begin();
 			mat(0, ii) = it->x();
 			mat(1, ii) = it->y();
@@ -139,7 +139,7 @@ namespace dtOO {
 	  std::vector< dtVector3 > const & rows 
 	) {
 		dtMatrix mat(rows.size(), 3);
-		dt__FORALLCONSTITER(std::vector< dtVector3 >, rows, it) {
+		dt__forAllConstIter(std::vector< dtVector3 >, rows, it) {
 			int ii = it-rows.begin();
 			mat(ii, 0) = it->x();
 			mat(ii, 1) = it->y();

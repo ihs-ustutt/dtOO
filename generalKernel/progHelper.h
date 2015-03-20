@@ -6,12 +6,12 @@
 #include <vector>
 #include <list>
 
-//#include <boost/utility.hpp>
-
 #define dt__FORALL(vector, variable, content) \
     for (int variable = 0; variable<((vector).size());variable++) { \
       content \
     }
+#define dt__forAllIndex(vector, index) \
+  for (int index = 0; index<((vector).size());index++)
 #define dt__forInnerIndex(vector, index) \
     for (int index = 1; index<((vector).size()-1);index++)
 #define dt__forAllIter(type, vector, iter) \
@@ -32,16 +32,6 @@
     iter != to; \
     ++iter \
   )
-#define dt__FORALLINDEX(vector, index) \
-  dt__forInnerIndex(vector, index)
-#define dt__FORINNERINDEX(vector, index) \
-  dt__forInnerIndex(vector, index)
-#define dt__FORALLITER(type, vector, iter) \
-  dt__forAllIter(type, vector, iter)
-#define dt__FORALLCONSTITER(type, vector, iter) \
-  dt__forAllConstIter(type, vector, iter)
-#define dt__FROMTOITER(iterator_type, from, to, iter) \
-  dt__forFromToIter(iterator_type, from, to, iter)
 #define dt__MUSTDOWNCAST( object, type, result ) \
   result = dynamic_cast< type * >( object ); \
   if (result == NULL ) { \

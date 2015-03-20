@@ -59,7 +59,7 @@ namespace dtOO {
 		
 		std::vector< omVertexH > handle;
 		handle.reserve(vertices.size());
-    dt__FORALLCONSTITER(std::vector< ::MVertex * >, vertices, it) {
+    dt__forAllConstIter(std::vector< ::MVertex * >, vertices, it) {
 			if (_om_gmsh.find(*it)==_om_gmsh.end()) addVertex(*it);
 			handle.push_back( _om_gmsh[*it] );
 		}

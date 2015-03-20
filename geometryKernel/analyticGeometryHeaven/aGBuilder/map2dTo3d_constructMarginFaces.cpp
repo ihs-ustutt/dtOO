@@ -18,7 +18,7 @@ namespace dtOO {
 		
 		std::vector< float > ll;
 		
-		dt__FORALLCONSTITER(dt__pVH(map1dTo3d), m1d, it) {
+		dt__forAllConstIter(dt__pVH(map1dTo3d), m1d, it) {
 			map1dTo3d const & thisCurve = *it;
 			ll.push_back( thisCurve.length() );
 		}

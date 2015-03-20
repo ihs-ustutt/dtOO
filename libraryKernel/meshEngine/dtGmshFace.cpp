@@ -57,12 +57,12 @@ namespace dtOO {
 			~dtGmshFace(), << "Removing face tag = " << tag() << " on all edges."	
 		);
 		std::list< ::GEdge * > ee = edges();
-		dt__FORALLITER(std::list< ::GEdge * >, ee, it) {
+		dt__forAllIter(std::list< ::GEdge * >, ee, it) {
 			(*it)->delFace(this);
 		}
 		this->model()->remove(this);
 		std::list< ::GRegion * > rr = regions();
-		dt__FORALLITER(std::list< ::GRegion * >, rr, it) {
+		dt__forAllIter(std::list< ::GRegion * >, rr, it) {
 			std::list< ::GFace * > ff = (*it)->faces();
 			std::list< ::GFace * >::iterator itF = std::find(ff.begin(), ff.end(), this);
 			if(itF != ff.end()) ff.erase(itF);		
@@ -273,20 +273,20 @@ namespace dtOO {
 		if (correct[0]) {
 			std::list< dtGmshFace * > faces0 = dtGmshModel::cast2DtGmshFace(ee[0]->faces());
 			std::list< dtGmshFace * > faces2 = dtGmshModel::cast2DtGmshFace(ee[2]->faces());
-			dt__FORALLITER(std::list< dtGmshFace * >, faces0, it) {
+			dt__forAllIter(std::list< dtGmshFace * >, faces0, it) {
 				(*it)->correctIfTransfinite();
 			}
-			dt__FORALLITER(std::list< dtGmshFace * >, faces2, it) {
+			dt__forAllIter(std::list< dtGmshFace * >, faces2, it) {
 				(*it)->correctIfTransfinite();
 			}				
 		}
 		if (correct[1]) {
 			std::list< dtGmshFace * > faces1 = dtGmshModel::cast2DtGmshFace(ee[1]->faces());
 			std::list< dtGmshFace * > faces3 = dtGmshModel::cast2DtGmshFace(ee[3]->faces());
-			dt__FORALLITER(std::list< dtGmshFace * >, faces1, it) {
+			dt__forAllIter(std::list< dtGmshFace * >, faces1, it) {
 				(*it)->correctIfTransfinite();
 			}
-			dt__FORALLITER(std::list< dtGmshFace * >, faces3, it) {
+			dt__forAllIter(std::list< dtGmshFace * >, faces3, it) {
 				(*it)->correctIfTransfinite();
 			}				
 		}		
@@ -307,7 +307,7 @@ namespace dtOO {
 		//
 		bool toggle = false;
 		std::vector< float > average(2, 0.);
-		dt__FORALLCONSTITER(std::list< dtGmshEdge * >, ee, it) {
+		dt__forAllConstIter(std::list< dtGmshEdge * >, ee, it) {
 			if ( !toggle) {
 				average[0] = average[0] + (*it)->getMap1dTo3d()->length()/uWidth;
 				toggle = true;
@@ -564,7 +564,7 @@ namespace dtOO {
 			
 			std::vector< ::MVertex * > vertices;
 			const_cast< ::MElement *>(me->back())->getVertices(vertices);
-			dt__FORALLITER(std::vector< ::MVertex * >, vertices, aV) mv->push_back(*aV);	
+			dt__forAllIter(std::vector< ::MVertex * >, vertices, aV) mv->push_back(*aV);	
 		}		
 	}
 	

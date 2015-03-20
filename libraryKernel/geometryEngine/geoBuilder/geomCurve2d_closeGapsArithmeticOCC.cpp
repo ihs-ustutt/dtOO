@@ -25,7 +25,7 @@ namespace dtOO {
 		
 		typedef std::vector< std::pair< dtVector2, dtVector2 > > pPair;
 		pPair pp;
-		dt__FORALLCONSTITER(dt__pVH(dtCurve2d), dtC2d, it) {
+		dt__forAllConstIter(dt__pVH(dtCurve2d), dtC2d, it) {
 			dtCurve2d const & theCurve = *it;
 			pp.push_back(
 				std::pair< dtVector2, dtVector2 >(
@@ -40,7 +40,7 @@ namespace dtOO {
 		}
 		pp.push_back(pp[0]);
 		
-    dt__FORINNERINDEX(pp, ii) {		
+    dt__forInnerIndex(pp, ii) {		
 			pp[ii].first = 0.5 * (pp[ii].first + pp[ii-1].second);
 			pp[ii-1].second = pp[ii].first;
 
@@ -51,7 +51,7 @@ namespace dtOO {
 		pp.front().first = pp.back().first;
 		pp.pop_back();
 		
-		dt__FORALLCONSTITER(dt__pVH(dtCurve2d), dtC2d, it) {
+		dt__forAllConstIter(dt__pVH(dtCurve2d), dtC2d, it) {
 			int ii = it - dtC2d.begin();
 			dtCurve2d const & theCurve = *it;
 			dtCurve2d * theClone = theCurve.clone();

@@ -28,7 +28,7 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > retAGeo;
 		
 		dt__pVH(map1dTo3d) m1dV;
-    dt__FORALLCONSTITER(vectorHandling< analyticGeometry * >, (*aGeoVecP), it) {
+    dt__forAllConstIter(vectorHandling< analyticGeometry * >, (*aGeoVecP), it) {
 			analyticGeometry * const & theAG = *it;
       //
       // cast analyticGeometry
@@ -43,7 +43,7 @@ namespace dtOO {
 
 		m1dV = map1dTo3d_closeGapsArithmetic(m1dV).result();
 		
-		dt__FORALLCONSTITER(dt__pVH(map1dTo3d), m1dV, it) {
+		dt__forAllConstIter(dt__pVH(map1dTo3d), m1dV, it) {
 			retAGeo.push_back( it->clone() );
 //  		retAGeo.back()->setLabel(m1d->getLabel());
 		}

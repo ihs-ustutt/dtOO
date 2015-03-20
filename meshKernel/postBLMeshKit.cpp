@@ -83,7 +83,7 @@ namespace dtOO {
 			dtGmshFace const * gf;
 			std::vector< ::MVertex const * > mv;
       twoDArrayHandling< ::MElement const * > me(_faceLabel.size(), 0);			
-			dt__FORALLINDEX(_faceLabel, ii) {
+			dt__forAllIndex(_faceLabel, ii) {
 			  gf = _meshedBV->getFace(_faceLabel[ii]);
 			  gf->getMeshVerticesAndElements(&mv, &(me[ii]));
 			}
@@ -99,7 +99,7 @@ namespace dtOO {
 			moab::Range commonRangePos;
       moab::Range commonRangeNeg;
 			moab::Range commonRangeFix;
-			dt__FORALLINDEX(_faceOrientation, ii) {
+			dt__forAllIndex(_faceOrientation, ii) {
 				if (_faceOrientation[ii] > 0) {
 			    commonRangePos.merge(mbCore->addElements(me[ii]));
 				}

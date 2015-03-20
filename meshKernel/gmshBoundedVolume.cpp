@@ -68,7 +68,7 @@ namespace dtOO {
 		std::string toRender = extRenderWhat();
 
     for (int ii=0; ii<4; ii++) {
-			dt__FORALLINDEX(_physLabels[ii], jj) {
+			dt__forAllIndex(_physLabels[ii], jj) {
 			  if (_physLabels[ii][jj] == toRender) {
 					int pNum = _gm->getPhysicalNumber(ii, toRender);
 					dtGmshModel::intGEntityVMap groups;
@@ -76,7 +76,7 @@ namespace dtOO {
 					int physNum = _gm->getPhysicalNumber(ii, toRender);
 					std::vector< ::GEntity * > & geV = groups[physNum];
 					
-					dt__FORALLITER(std::vector< ::GEntity * >, geV, it) {
+					dt__forAllIter(std::vector< ::GEntity * >, geV, it) {
 						::GEntity * ge = *it;
 						dtGmshFace * gf = dtGmshFace::DownCast(ge);
 						dtGmshRegion * gr = dtGmshRegion::DownCast(ge);
@@ -134,7 +134,7 @@ namespace dtOO {
 				=
 				groups[_gm->getPhysicalNumber(2, tag)];
 
-				dt__FORALLITER(std::vector< ::GEntity * >, geV, it) {
+				dt__forAllIter(std::vector< ::GEntity * >, geV, it) {
 					::GEntity * ge = *it;
 					dtGmshFace * gf = dtGmshFace::DownCast(ge);
 					if (gf) {
@@ -157,7 +157,7 @@ namespace dtOO {
 		for (int ii=0; ii<4; ii++) {
 			_physLabels[ii].clear();
 			_gm->getPhysicalGroups(ii, groups);
-			dt__FORALLITER(dtGmshModel::intGEntityVMap, groups, it) {
+			dt__forAllIter(dtGmshModel::intGEntityVMap, groups, it) {
 				int num = it->first;
 				std::string pName = _gm->getPhysicalName(ii, num);
 				if (pName != "") _physLabels[ii].push_back(pName);

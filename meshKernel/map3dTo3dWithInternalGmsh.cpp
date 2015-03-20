@@ -62,7 +62,7 @@ namespace dtOO {
     std::vector< QDomElement > wElement 
 		= 
 		qtXmlPrimitive::getChildVector("analyticGeometry", element);
-		dt__FORALLITER(std::vector< QDomElement >, wElement, it) {
+		dt__forAllIter(std::vector< QDomElement >, wElement, it) {
 			std::string label = qtXmlPrimitive::getAttributeStr("label", *it);
 			//
 			// get analyticGeometry, cast and store in region vector
@@ -96,7 +96,7 @@ namespace dtOO {
 			= 
 			map2dTo3d_constructMarginFaces(&(m2dV[ii]), _marginWidth).result();
 			
-			dt__FORALLITER(dt__pVH(map2dTo3d), margin, it) {
+			dt__forAllIter(dt__pVH(map2dTo3d), margin, it) {
 				map2dTo3d const & thisMap = *it;
 				fId[ii].push_back(0);
 				_gm->addIfFaceToGmshModel( &thisMap, &(fId[ii].back()) );
@@ -126,7 +126,7 @@ namespace dtOO {
 		//
 		// add normal to internal faces
 		//		
-		dt__FORALLITER(dt__pVH(map2dTo3d), _internal, it) {
+		dt__forAllIter(dt__pVH(map2dTo3d), _internal, it) {
 			map2dTo3d const & thisFace = *it;
 			
 			dt__pH(map1dTo3d) iE0(thisFace.segmentConstVPercent(0.));
@@ -158,7 +158,7 @@ namespace dtOO {
 		bL0 = map1dTo3d_closeGapsArithmetic(bL0).result();
 		bL1 = map1dTo3d_closeGapsArithmetic(bL1).result();
 		
-		dt__FORALLITER(dt__pVH(map2dTo3d), _internal, it) {
+		dt__forAllIter(dt__pVH(map2dTo3d), _internal, it) {
 			//
 			// create internal faces and edges
 			//
@@ -262,7 +262,7 @@ namespace dtOO {
 		//
 		dtGmshRegion * gr = new dtGmshRegion(_gm.get(), _gm->getMaxRegionTag());
 		std::list< ::GFace * > ff = _gm->faces();
-		dt__FORALLITER(std::list< ::GFace * >, ff, it) {
+		dt__forAllIter(std::list< ::GFace * >, ff, it) {
 			dtGmshModel::cast2DtGmshFace(*it)->correctIfTransfinite();
 			gr->addFace(*it, -1);
 		}	

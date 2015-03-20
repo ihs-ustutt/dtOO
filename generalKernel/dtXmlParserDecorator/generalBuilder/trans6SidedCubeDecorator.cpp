@@ -39,7 +39,7 @@ namespace dtOO {
 			getChildVector( "analyticGeometry", **toBuildP );
 			if (wElementVec.size() == 6) {
 				int counter = 0;
-				dt__FORALLITER(std::vector< QDomElement >, wElementVec, it) {
+				dt__forAllIter(std::vector< QDomElement >, wElementVec, it) {
 					//
 					// get analyticGeometry
 					//
@@ -70,7 +70,7 @@ namespace dtOO {
 					cDtS.push_back( aS0->ptrDtSurface() );
 					cDtS.push_back( aS1->ptrDtSurface() );
 					dtS = bSplineSurfaces_bSplineSurfaceSkinConstructOCC(cDtS).result();
-					dt__FORALLINDEX(dtS, ii) {
+					dt__forAllIndex(dtS, ii) {
 						mm[ii] = new analyticSurface(dtS[ii]);
 					}
 					

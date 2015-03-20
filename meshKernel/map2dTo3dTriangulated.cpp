@@ -51,7 +51,7 @@ namespace dtOO {
 		= 
 		qtXmlPrimitive::getChildVector("analyticGeometry", element);
     
-		dt__FORALLCONSTITER(std::vector< QDomElement >, wElementVec, it) { 
+		dt__forAllConstIter(std::vector< QDomElement >, wElementVec, it) { 
 			QDomElement const & wElement = *it;
 			
 			//

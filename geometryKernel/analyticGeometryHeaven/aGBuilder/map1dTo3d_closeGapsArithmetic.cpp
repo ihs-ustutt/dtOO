@@ -16,7 +16,7 @@ namespace dtOO {
 		// casting and fill arraies
 		//
 		dt__pVH(dtCurve2d) dtC2d;
-		dt__FORALLCONSTITER(dt__pVH(map1dTo3d), m1d, it) {
+		dt__forAllConstIter(dt__pVH(map1dTo3d), m1d, it) {
 			map1dTo3d const & theMap = *it;
 			//
 			// casting
@@ -39,7 +39,7 @@ namespace dtOO {
 			vec2dOneDInMap2dTo3d::ConstDownCast( &(m1d.front()) )
 		);
 			
-		dt__FORALLCONSTITER(dt__pVH(dtCurve2d), dtC2d, it) {
+		dt__forAllConstIter(dt__pVH(dtCurve2d), dtC2d, it) {
 			int ii = it - dtC2d.begin();
 			dtCurve2d const & theCurve = *it;
 			_m1d.push_back( 
