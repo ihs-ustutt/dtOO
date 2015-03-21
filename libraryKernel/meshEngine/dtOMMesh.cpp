@@ -22,6 +22,9 @@ namespace dtOO {
     omMesh::add_vertex( 
       omMesh::Point(mv->x(), mv->y(), mv->z()) 
     );
+		
+		dt__THROW_IF(!vH.is_valid(), addVertex());
+		
     omVertexD & vD = omMesh::data(vH);
     vD.MVertex(mv);
 		
@@ -63,7 +66,16 @@ namespace dtOO {
 			if (_om_gmsh.find(*it)==_om_gmsh.end()) addVertex(*it);
 			handle.push_back( _om_gmsh[*it] );
 		}
-		return omMesh::add_face(&(handle[0]), handle.size());
+		omFaceH fH = omMesh::add_face(&(handle[0]), handle.size());
+		
+		dt__THROW_IFWM(
+			!fH.is_valid(), 
+			addFace(),
+		  << DTLOGEVAL( handle.size() ) << LOGDEL
+			<< handle
+		);
+		
+		return fH;
 	}	
   
   omFaceH dtOMMesh::addFace( 
@@ -94,23 +106,10 @@ namespace dtOO {
   }
 	
 	void dtOMMesh::add(const dtOMMesh &toAdd) {
-		for (
-			omFaceI f_it = toAdd.faces_begin();
-			f_it != toAdd.faces_end();
-			++f_it
-		) {
-			std::vector< ::MVertex * > vertices;
-			for (
-				omConstFaceVertexI fv_it = toAdd.cfv_begin(*f_it);
-				fv_it != toAdd.cfv_end(*f_it);
-				++fv_it
-			) {
-  		  omVertexD const & vD = toAdd.data(*fv_it);
-				vertices.push_back( const_cast< ::MVertex * >(vD.MVertex()) );
-			}
+		dt__forFromToIter(omFaceI, toAdd.faces_begin(), toAdd.faces_end(), f_it) {
 			omFaceD const & fD = toAdd.data(*f_it);
 			::MElement const * const me = fD.MElement();
-			addFace(vertices, me);
+			addFace(me);
 		}
 	}
 	

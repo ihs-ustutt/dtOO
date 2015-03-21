@@ -1,5 +1,6 @@
 #include "map3dTo3dWithInternalGmsh.h"
-#include "meshEngine/dtGmshEdge.h"
+#include <meshEngine/dtGmshEdge.h>
+#include <meshEngine/dtGmshMeshGFaceExtrude.h>
 #include <analyticGeometryHeaven/analyticGeometryCompound.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
@@ -264,7 +265,7 @@ namespace dtOO {
 		std::list< ::GFace * > ff = _gm->faces();
 		dt__forAllIter(std::list< ::GFace * >, ff, it) {
 			dtGmshModel::cast2DtGmshFace(*it)->correctIfTransfinite();
-			gr->addFace(*it, -1);
+			gr->addFace(*it, 1);
 		}	
 		_gm->add( gr );		
 	}
@@ -313,7 +314,12 @@ namespace dtOO {
 		_gm->meshPhysical(0);
 		_gm->meshPhysical(1);
 		_gm->meshPhysical(2);
-		_gm->meshPhysical(3);
+		
+		std::list< dtGmshFace * > llF;
+//		llF.push_back(_gm->getDtGmshFaceByPhysical("FACE_31"));
+		llF.push_back(_gm->getDtGmshFaceByPhysical("FACE_32"));
+		llF.push_back(_gm->getDtGmshFaceByPhysical("FACE_33"));
+		dtGmshMeshGFaceExtrude()(llF);
 		
     //
 		// force renumbering mesh in gmsh
