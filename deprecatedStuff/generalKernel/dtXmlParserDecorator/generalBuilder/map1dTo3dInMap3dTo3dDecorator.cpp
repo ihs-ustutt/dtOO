@@ -46,7 +46,7 @@ namespace dtOO {
       // check if it is a map2dTo3d
       //
       map1dTo3d const * m1d;
-      dt__MUSTDOWNCAST(aG, map1dTo3d const, m1d);
+      dt__mustDownCast(aG, map1dTo3d const, m1d);
 
       //
       // get analyticGeometry
@@ -61,7 +61,7 @@ namespace dtOO {
       // check if it is a map2dTo3d
       //
       map3dTo3d const * m3d;
-      dt__MUSTDOWNCAST(aG, map3dTo3d const, m3d);      
+      dt__mustDownCast(aG, map3dTo3d const, m3d);      
 
       //
       // create analyticGeometry

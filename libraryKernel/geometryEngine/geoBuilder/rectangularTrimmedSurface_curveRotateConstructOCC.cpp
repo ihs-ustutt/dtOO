@@ -21,7 +21,7 @@ namespace dtOO {
 		dtVector3 const & rA, 
 		float const & angle 
 	) {
-		dt__PTRASS(dtOCCCurve const * bC, dtOCCCurve::ConstDownCast( &cL ));
+		dt__ptrAss(dtOCCCurve const * bC, dtOCCCurve::ConstDownCast( &cL ));
 		
 	  gp_Pnt pp(
 		  static_cast<Standard_Real>(oP.x()), 

@@ -49,9 +49,7 @@ namespace dtOO {
   } 
 
   transIntCube::transIntCube(const transIntCube& orig) {
-    dt__FORALL(orig._aS, ii,
-      _aS.push_back( orig._aS[ii]->clone() );
-    );
+    dt__forAllIndex(orig._aS, ii) _aS.push_back( orig._aS[ii]->clone() );
     _aS_1_0_0 = orig._aS_1_0_0;
     _aS_1_0_1 = orig._aS_1_0_1;
     _aS_1_1_0 = orig._aS_1_1_0;

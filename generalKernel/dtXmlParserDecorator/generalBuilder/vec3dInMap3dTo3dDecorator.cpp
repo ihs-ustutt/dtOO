@@ -53,7 +53,7 @@ namespace dtOO {
       //
       // check if it is a map3dTo3d
       //
-      dt__PTRASS( map3dTo3d const * m3d, map3dTo3d::ConstDownCast(aG.get()) );
+      dt__ptrAss( map3dTo3d const * m3d, map3dTo3d::ConstDownCast(aG.get()) );
 			
       //
       // get analyticFunction
@@ -111,7 +111,7 @@ namespace dtOO {
       //
       // check if it is a map3dTo3d
       //
-      dt__PTRASS( 
+      dt__ptrAss( 
 			  map3dTo3d const * m3d, 
 				map3dTo3d::ConstDownCast(aG) 
 			);

@@ -56,7 +56,7 @@ namespace dtOO {
     }
     ::GVertex * gv = ::GModel::getVertexByTag(vId);
     dtGmshVertex * dtGV;
-    dt__MUSTDOWNCAST(gv, dtGmshVertex, dtGV);
+    dt__mustDownCast(gv, dtGmshVertex, dtGV);
     dtGV->snapToMap2dTo3d( getAttachedBoundedVolume()->getPtrToMap2dTo3d(aSId) );
   }
 
@@ -68,7 +68,7 @@ namespace dtOO {
     }
     ::GVertex * gv = ::GModel::getVertexByTag(vId);
     dtGmshVertex * dtGV;
-    dt__MUSTDOWNCAST(gv, dtGmshVertex, dtGV);
+    dt__mustDownCast(gv, dtGmshVertex, dtGV);
     dtGV->snapToMap3dTo3d( getAttachedBoundedVolume()->getPtrToMap3dTo3d(rId) );
   }
   
@@ -80,7 +80,7 @@ namespace dtOO {
     }
     ::GVertex * gv = ::GModel::getVertexByTag(vId);
     dtGmshVertex * dtGV;
-    dt__MUSTDOWNCAST(gv, dtGmshVertex, dtGV);
+    dt__mustDownCast(gv, dtGmshVertex, dtGV);
     dtGV->snapToMap2dTo3d( getAttachedBoundedVolume()->getPtrToMap2dTo3d(aSId) );
     dtGV->setPosition( 
       getAttachedBoundedVolume()->getPtrToMap2dTo3d(aSId)->getPointPercent( ppUV.x(), ppUV.y() ) 
@@ -210,9 +210,9 @@ namespace dtOO {
     bool retBool = false;
     dtGmshEdge * dtGE = getDtGmshEdgeByTag(eID);
     dtGmshVertex * dtGV0;
-    dt__MUSTDOWNCAST(dtGE->getBeginVertex(), dtGmshVertex, dtGV0);
+    dt__mustDownCast(dtGE->getBeginVertex(), dtGmshVertex, dtGV0);
     dtGmshVertex * dtGV1;
-    dt__MUSTDOWNCAST(dtGE->getEndVertex(), dtGmshVertex, dtGV1);
+    dt__mustDownCast(dtGE->getEndVertex(), dtGmshVertex, dtGV1);
     
     std::vector< map2dTo3d const *> const & aS0 = dtGV0->getRefToSnapMap2dTo3d();
     std::vector< map2dTo3d const *> const & aS1 = dtGV1->getRefToSnapMap2dTo3d();
@@ -350,9 +350,9 @@ namespace dtOO {
     bool retBool = false;
     dtGmshEdge * dtGE = getDtGmshEdgeByTag(eID);
     dtGmshVertex * dtGV0;
-    dt__MUSTDOWNCAST(dtGE->getBeginVertex(), dtGmshVertex, dtGV0);
+    dt__mustDownCast(dtGE->getBeginVertex(), dtGmshVertex, dtGV0);
     dtGmshVertex * dtGV1;
-    dt__MUSTDOWNCAST(dtGE->getEndVertex(), dtGmshVertex, dtGV1);
+    dt__mustDownCast(dtGE->getEndVertex(), dtGmshVertex, dtGV1);
     
     std::vector< map2dTo3d const *> const & aS0 = dtGV0->getRefToSnapMap2dTo3d();
     std::vector< map2dTo3d const *> const & aS1 = dtGV1->getRefToSnapMap2dTo3d();

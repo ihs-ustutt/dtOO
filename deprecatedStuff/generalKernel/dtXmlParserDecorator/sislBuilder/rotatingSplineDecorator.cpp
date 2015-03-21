@@ -88,7 +88,7 @@ namespace dtOO {
       this->createAnalyticGeometry( 
 			  &wElement, pointContainerP, vectorContainerP, cValP, sFunP, depAGeoP
 			);
-			dt__PTRASS(splineCurve3d * s3, splineCurve3d::DownCast(aG));
+			dt__ptrAss(splineCurve3d * s3, splineCurve3d::DownCast(aG));
 			
       //
       // angle

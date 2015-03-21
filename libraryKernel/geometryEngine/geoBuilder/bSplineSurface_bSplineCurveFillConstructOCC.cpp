@@ -31,13 +31,13 @@ namespace dtOO {
 		Handle(Geom_BSplineCurve) C4;
 	  
 		dtOCCBSplineCurve const * occC;
-	  dt__PTRASS( occC, dtOCCBSplineCurve::ConstDownCast(cc[0]) );
+	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[0]) );
 		C1 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__PTRASS( occC, dtOCCBSplineCurve::ConstDownCast(cc[1]) );
+	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[1]) );
 		C2 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__PTRASS( occC, dtOCCBSplineCurve::ConstDownCast(cc[2]) );
+	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[2]) );
 		C3 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__PTRASS( occC, dtOCCBSplineCurve::ConstDownCast(cc[3]) );
+	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[3]) );
 		C4 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );		
 		
 		

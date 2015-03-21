@@ -25,11 +25,11 @@ namespace dtOO {
 	  vectorHandling< dtCurve const * > const &  cL
 	) {
 		GeomFill_SectionGenerator aSecGen;
-		dt__FORALL(cL, ii,
-		  dt__PTRASS( dtOCCCurve * bC, dtOCCCurve::DownCast(cL[ii]->clone()) );
+		dt__forAllIndex(cL, ii) {
+		  dt__ptrAss( dtOCCCurve * bC, dtOCCCurve::DownCast(cL[ii]->clone()) );
       aSecGen.AddCurve( bC->OCCRef().getOCC() );
       delete bC;			
-		);
+		}
 		aSecGen.Perform( Precision::Parametric(Precision::Confusion()) );
 		
 		Handle(GeomFill_Line) aLine = new GeomFill_Line(cL.size() );

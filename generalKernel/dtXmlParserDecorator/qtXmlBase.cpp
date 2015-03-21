@@ -68,7 +68,7 @@ namespace dtOO {
       //evaluate function
       //
       float insertMeFloat;
-      dt__PTRASS( 
+      dt__ptrAss( 
 			  scaOneD const * const sF, 
 				scaOneD::ConstDownCast( sFunP->get(funName) ) 
 			);        

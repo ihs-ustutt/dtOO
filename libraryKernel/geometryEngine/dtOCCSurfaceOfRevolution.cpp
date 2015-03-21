@@ -26,7 +26,7 @@ namespace dtOO {
 
 	dtOCCSurfaceOfRevolution::dtOCCSurfaceOfRevolution(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface(orig) {
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_SurfaceOfRevolution const, _ptr);
+		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_SurfaceOfRevolution const, _ptr);
 	}
 
 	dtOCCSurfaceOfRevolution::~dtOCCSurfaceOfRevolution() {

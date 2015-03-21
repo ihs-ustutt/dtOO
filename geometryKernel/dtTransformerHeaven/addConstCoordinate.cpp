@@ -35,7 +35,7 @@ namespace dtOO {
     vectorHandling< analyticFunction * > aFVecRet;
     
     for (int ii=0;ii<aFVecP->size();ii++) {
-      dt__PTRASS(vec2dCurve2dOneD const * v2d1d, vec2dCurve2dOneD::DownCast(aFVecP->at(ii)));
+      dt__ptrAss(vec2dCurve2dOneD const * v2d1d, vec2dCurve2dOneD::DownCast(aFVecP->at(ii)));
 
 			dt__pH(dtCurve) dtC(
 			  geomCurve_convertGeomCurve2d(v2d1d->ptrDtCurve2d(), CGAL::ORIGIN + _vv*_cc, _vv).result()

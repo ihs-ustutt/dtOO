@@ -2,6 +2,7 @@
 #include "progHelper.h"
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
+#include <progHelper.h>
 
 #include <cassert>
 #include <string>
@@ -169,11 +170,11 @@ namespace MeshKit {
 				if (counter > 0) {
 					if (fixed.size() == 3) {
 						if ( counter == 3 ) {
-							quadIt = dt__PRIOR(quads.erase(quadIt));
+							quadIt = dtOO::progHelper::prior(quads.erase(quadIt));
 						}
 						else {
 							quadsFix.insert(*quadIt);					
-							quadIt = dt__PRIOR(quads.erase(quadIt));										
+							quadIt = dtOO::progHelper::prior(quads.erase(quadIt));										
 						}
 					}
 					else if (fixed.size() == 4) {
@@ -181,11 +182,11 @@ namespace MeshKit {
 								 || ( counter == 2 && (fixed[0] && fixed[2])  ) 
 								 || ( counter == 2 && (fixed[1] && fixed[3])  ) 
 						) {
-							quadIt = dt__PRIOR(quads.erase(quadIt));
+							quadIt = dtOO::progHelper::prior(quads.erase(quadIt));
 						}										
 						else {
 							quadsFix.insert(*quadIt);					
-							quadIt = dt__PRIOR(quads.erase(quadIt));
+							quadIt = dtOO::progHelper::prior(quads.erase(quadIt));
 						}					
 					}
 				}

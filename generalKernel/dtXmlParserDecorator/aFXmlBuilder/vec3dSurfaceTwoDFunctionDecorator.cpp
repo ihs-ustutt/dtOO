@@ -43,7 +43,7 @@ namespace dtOO {
         analyticFunction const * const aF 
 				= 
 				createAnalyticFunction( &elementP, bC, cValP, depSFunP );
-				dt__PTRASS(
+				dt__ptrAss(
 				  vec3dCurveOneD const * v3d1d, 
 				  vec3dCurveOneD::ConstDownCast(aF)
 				);

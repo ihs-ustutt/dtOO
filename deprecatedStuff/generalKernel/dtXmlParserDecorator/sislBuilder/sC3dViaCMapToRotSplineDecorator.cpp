@@ -47,7 +47,7 @@ namespace dtOO {
       
       ptrHandling< analyticGeometry > aG(tmpAG);
       rotatingSpline * rS;
-      dt__MUSTDOWNCAST(aG.get(), rotatingSpline, rS);
+      dt__mustDownCast(aG.get(), rotatingSpline, rS);
 
       
       //

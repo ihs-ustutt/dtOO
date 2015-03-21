@@ -42,7 +42,7 @@ namespace dtOO {
       analyticGeometry * aG 
 			=
 			createAnalyticGeometry(&wElement, bC, cValP, sFunP, depAGeoP);
-			dt__PTRASS(splineCurve3d const * sC3, splineCurve3d::ConstDownCast(aG));
+			dt__ptrAss(splineCurve3d const * sC3, splineCurve3d::ConstDownCast(aG));
   		aGeoP->push_back( 
 			  new splineCurve3d(
 			    bSplineCurve_pointConstructArcLengthParaOCC(

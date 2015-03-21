@@ -14,7 +14,7 @@ namespace dtOO {
 	}
 
 	dtOCCLine::dtOCCLine( dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_Line const, _ptr);
+		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_Line const, _ptr);
 	}
 	
 	dtOCCLine::~dtOCCLine() {

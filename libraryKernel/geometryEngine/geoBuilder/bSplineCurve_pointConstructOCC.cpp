@@ -38,9 +38,9 @@ namespace dtOO {
 		//
 		// set poles and multiplicity
 		//	
-		dt__FORALL(pp, ii,
+		dt__forAllIndex(pp, ii) {
 		  poles.SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) );
-	  );
+	  }
 		for (int ii=1;ii<=knots.Length();ii++) {
 			knots.SetValue( ii, static_cast<float>(ii-1) );
 		}

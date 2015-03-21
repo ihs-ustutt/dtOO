@@ -40,7 +40,7 @@ namespace dtOO {
       //
       // cast pointer and check if it is a analyticFunction
       //
-      dt__PTRASS(vec2dOneD const * theF, vec2dOneD::ConstDownCast( sFunP->at(ii) ) );
+      dt__ptrAss(vec2dOneD const * theF, vec2dOneD::ConstDownCast( sFunP->at(ii) ) );
 
 			std::vector<float> itVal;       
 			std::vector< std::string > header;
@@ -67,8 +67,8 @@ namespace dtOO {
       // points
       //
       for (int jj=0;jj<_nPointsOne;jj++) {
-        dt__TOFLOAT(float jjF, jj);
-        dt__TOFLOAT(float nPointsOneF, _nPointsOne);
+        dt__toFloat(float jjF, jj);
+        dt__toFloat(float nPointsOneF, _nPointsOne);
         float paraOne = _para->YFloat( jjF * ( (xMax-xMin) / (nPointsOneF-1.)) ) ;
         dtPoint2 YY = theF->YdtPoint2Percent( paraOne );
         dtVector2 NN = theF->unitNdtVector2Percent( paraOne );
@@ -118,14 +118,14 @@ namespace dtOO {
 			}
 			std::vector< dtPoint2 > p2All( p2.size()+p2Inv.size() );
 			int counter = 0;
-			dt__FORALL(p2, ii,
+			dt__forAllIndex(p2, ii) {
 			  p2All[counter] = p2[ii];
 			  counter++;
-			);
-			dt__FORALL(p2Inv, ii,
+			}
+			dt__forAllIndex(p2Inv, ii) {
 			  p2All[counter] = p2Inv[ii];
 			  counter++;
-			);			
+			}	
 			if ( dtLinearAlgebra::distance(p2All.front(), p2Inv.back()) < uvRes ) {
 				DTINFOWF(
 					apply(),
@@ -221,15 +221,15 @@ namespace dtOO {
   
   void biThicknessIncreasing::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
     if (name == "function_label") {
-      dt__PTRASS( _tD[0], scaOneD::ConstDownCast(value) );
+      dt__ptrAss( _tD[0], scaOneD::ConstDownCast(value) );
       return;
     }
     if (name == "function_label_inverted") {
-      dt__PTRASS( _tD[1], scaOneD::ConstDownCast(value) );
+      dt__ptrAss( _tD[1], scaOneD::ConstDownCast(value) );
       return;
     }		
     else if (name == "parameter_one_percent_function") {
-      dt__PTRASS( _para, scaOneD::ConstDownCast( value ) );
+      dt__ptrAss( _para, scaOneD::ConstDownCast( value ) );
       return;
     }
     dtTransformer::handleAnalyticFunction(name, value);

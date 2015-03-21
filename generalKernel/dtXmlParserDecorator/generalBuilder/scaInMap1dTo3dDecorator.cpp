@@ -48,7 +48,7 @@ namespace dtOO {
       //
       // check if it is a map1dTo3d
       //
-      dt__PTRASS( map1dTo3d const * m1d, map1dTo3d::ConstDownCast(aG.get()) );
+      dt__ptrAss( map1dTo3d const * m1d, map1dTo3d::ConstDownCast(aG.get()) );
 			
       //
       // get analyticFunction

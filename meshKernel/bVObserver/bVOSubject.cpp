@@ -17,8 +17,6 @@ namespace dtOO {
   }
 
   void bVOSubject::notify( void ) {
-    dt__FORALL(_observers, ii,
-      _observers[ii]->update();
-    );
+    dt__forAllIndex(_observers, ii) _observers[ii]->update();
   }
 }

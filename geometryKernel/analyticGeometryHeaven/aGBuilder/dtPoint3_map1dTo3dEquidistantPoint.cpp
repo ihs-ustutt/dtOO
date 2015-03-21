@@ -11,7 +11,7 @@ namespace dtOO {
 		float dist = 1./(nPoints-1);
 		float length = m1d->length();
 		for (int ii=0; ii<nPoints; ii++) {
-			dt__TOFLOAT(float iiF, ii);
+			dt__toFloat(float iiF, ii);
 			_ppXYZ[ii] = m1d->getPoint( m1d->u_l(length * dist * iiF) );
 		}
 	}

@@ -57,7 +57,7 @@ namespace dtOO {
 			//
 			// get analyticGeometry, cast and store in region vector
 			//
-			dt__PTRASS(
+			dt__ptrAss(
 				map2dTo3d const * mm2d,
 				map2dTo3d::ConstDownCast( 
 				  aG->get(qtXmlPrimitive::getAttributeStr("label", wElement)) 

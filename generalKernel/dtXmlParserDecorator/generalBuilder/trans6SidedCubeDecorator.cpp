@@ -48,7 +48,7 @@ namespace dtOO {
 					//
 					// check if it is a map2dTo3d
 					//
-					dt__MUSTDOWNCAST(aG, map2dTo3d const, mm[counter]);
+					dt__mustDownCast(aG, map2dTo3d const, mm[counter]);
 					counter++;
 				}
 			}
@@ -62,8 +62,8 @@ namespace dtOO {
 					//
 					// check if it is a map2dTo3d
 					//
-					dt__PTRASS(analyticSurface const * aS0, analyticSurface::ConstDownCast(aG0));
-					dt__PTRASS(analyticSurface const * aS1, analyticSurface::ConstDownCast(aG1));
+					dt__ptrAss(analyticSurface const * aS0, analyticSurface::ConstDownCast(aG0));
+					dt__ptrAss(analyticSurface const * aS1, analyticSurface::ConstDownCast(aG1));
 					
 					vectorHandling< dtSurface const * > cDtS;
 					vectorHandling< dtSurface * > dtS;

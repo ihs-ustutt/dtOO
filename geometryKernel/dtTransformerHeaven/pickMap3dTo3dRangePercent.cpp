@@ -32,7 +32,7 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > aGeoRet;
     
     for (int ii=0;ii<aGeoVecP->size();ii++) {
-      dt__PTRASS(map3dTo3d const * m3d, map3dTo3d::DownCast(aGeoVecP->at(ii)));
+      dt__ptrAss(map3dTo3d const * m3d, map3dTo3d::DownCast(aGeoVecP->at(ii)));
 			
 			analyticGeometry * aG;
 			if (_u0 >= 0.) {

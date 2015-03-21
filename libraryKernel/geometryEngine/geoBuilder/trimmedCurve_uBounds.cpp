@@ -13,7 +13,7 @@ namespace dtOO {
   trimmedCurve_uBounds::trimmedCurve_uBounds(
 	  dtCurve const * dtC, float const & min, float const & max
 	) {
-    dt__PTRASS(
+    dt__ptrAss(
 		  dtOCCCurve const * occC, 
 			dtOCCCurve::ConstDownCast(dtC)
 		);

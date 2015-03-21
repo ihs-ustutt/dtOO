@@ -30,7 +30,7 @@ namespace dtOO {
 		  _dtC.reset( new dtOCCBezierCurve(base) );			
 		}
 //		else if ( !(Handle(Geom_TrimmedCurve)::DownCast(occC).IsNull()) ) {
-//			dt__PTRASS(
+//			dt__ptrAss(
 //				dtOCCTrimmedCurve2d const * const tC2d, 
 //				dtOCCTrimmedCurve2d::ConstDownCast(dtC2d)
 //			);

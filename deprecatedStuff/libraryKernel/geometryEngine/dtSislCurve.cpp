@@ -19,7 +19,7 @@ namespace dtOO {
   dtSislCurve::dtSislCurve( dtSislBase const * base ) : dtSislBase(), dtCurve() {
     _SISLCurveP = NULL;
     dtSislCurve const * dC;
-    dt__MUSTDOWNCAST(base, dtSislCurve const, dC);
+    dt__mustDownCast(base, dtSislCurve const, dC);
     
     _SISLCurveP = copyCurve( const_cast< SISLCurve * >(dC->_SISLCurveP) );
     _leftknot = 0;
@@ -659,13 +659,13 @@ namespace dtOO {
 
 	dtSislCurve const * dtSislCurve::cast2Sisl( dtCurve const * curve ) const {
 		dtSislCurve const * dtSislCurveP;
-		dt__MUSTDOWNCAST(curve, dtSislCurve const, dtSislCurveP);
+		dt__mustDownCast(curve, dtSislCurve const, dtSislCurveP);
 		return dtSislCurveP;
 	}
 	
   dtSislCurve * dtSislCurve::cast2Sisl( dtCurve * curve ) const {
 		dtSislCurve * dtSislCurveP;
-		dt__MUSTDOWNCAST(curve, dtSislCurve, dtSislCurveP);
+		dt__mustDownCast(curve, dtSislCurve, dtSislCurveP);
 		return dtSislCurveP;		
 	}	
 }

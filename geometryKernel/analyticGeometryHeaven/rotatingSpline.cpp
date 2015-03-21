@@ -197,7 +197,7 @@ namespace dtOO {
   
   dtCurve const * rotatingSpline::ptrConstRadiusCurve( void ) const {
     map1dTo3d * m1d = segmentConstUPercent(0., 0., 1.);
-		dt__PTRASS(
+		dt__ptrAss(
 		  splineCurve3d const * sC3,
 		  splineCurve3d::ConstDownCast(m1d)
 		);
@@ -206,7 +206,7 @@ namespace dtOO {
   
 //  dtCurve * rotatingSpline::getCircleCurve( float const & vv ) const {
 //    map1dTo3d * m1d = pickConstVPercent(0., 0., 1.);
-//		dt__PTRASS(
+//		dt__ptrAss(
 //		  splineCurve3d const * sC3,
 //		  splineCurve3d::ConstDownCast(m1d)
 //		);

@@ -104,7 +104,7 @@ namespace dtOO {
       // check cast
       //
       scaSISLSplineTwoD * sSISLS2dP;
-      dt__MUSTDOWNCASTWM( 
+      dt__mustDownCastWM( 
         *sFunP, 
         scaSISLSplineTwoD, 
         sSISLS2dP,

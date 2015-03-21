@@ -35,7 +35,7 @@ namespace dtOO {
       //
       analyticGeometry * aGeoP = aGeoVecP->at(ii)->clone();
       analyticSurface *  aS;
-      dt__MUSTDOWNCAST(aGeoP, analyticSurface, aS);
+      dt__mustDownCast(aGeoP, analyticSurface, aS);
 
 //      //
 //      // check if it is rotational
@@ -118,10 +118,10 @@ namespace dtOO {
                                 );      
       for (int ii = 0; ii<aG->size();ii++) {
          if ( aG->at(ii)->getLabel() == vStartLabel ) {
-           dt__PTRASS(_vvStartAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
+           dt__ptrAss(_vvStartAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
          }
          if ( aG->at(ii)->getLabel() == vEndLabel ) {
-           dt__PTRASS(_vvEndAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
+           dt__ptrAss(_vvEndAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
          }
          if (_vvStartAGeo && _vvEndAGeo) {
            break;

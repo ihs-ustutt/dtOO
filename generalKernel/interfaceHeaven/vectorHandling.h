@@ -55,48 +55,46 @@ namespace dtOO {
 
   template < typename T >
   vectorHandling< T >::vectorHandling(const vectorHandling& orig) : std::vector< T >(orig.size()) {
-    dt__FORALL(orig, ii, 
-      this->at(ii) = orig[ii];
-    );
+    dt__forAllIndex(orig, ii) this->at(ii) = orig[ii];
   }
   
   template < typename T >
   vectorHandling< T >::vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1) 
     : std::vector< T >(orig0.size()+orig1.size()) {
     int counter = 0;
-    dt__FORALL(orig0, ii, 
+    dt__forAllIndex(orig0, ii) {
       this->at(counter) = orig0[ii];
       counter++;
-    );
-    dt__FORALL(orig1, ii, 
+    }
+    dt__forAllIndex(orig1, ii) {
       this->at(counter) = orig1[ii];
       counter++;
-    );    
+    }
   }
   
   template < typename T >
   vectorHandling< T >::vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1, const vectorHandling& orig2) 
     : std::vector< T >(orig0.size()+orig1.size()+orig2.size()) {
     int counter = 0;
-    dt__FORALL(orig0, ii, 
+    dt__forAllIndex(orig0, ii) {
       this->at(counter) = orig0[ii];
       counter++;
-    );
-    dt__FORALL(orig1, ii, 
+    }
+    dt__forAllIndex(orig1, ii) {
       this->at(counter) = orig1[ii];
       counter++;
-    );    
-    dt__FORALL(orig2, ii, 
+    }
+    dt__forAllIndex(orig2, ii) {
       this->at(counter) = orig2[ii];
       counter++;
-    );
+    }
   }
   
   template < typename T >
   vectorHandling< T >::vectorHandling(const std::vector< T >& orig) : std::vector< T >(orig.size()) {
-    dt__FORALL(orig, ii, 
+    dt__forAllIndex(orig, ii) {
       this->at(ii) = orig[ii];
-    );
+    }
   }
 
   template < typename T >
@@ -132,19 +130,18 @@ namespace dtOO {
 
   template< typename T >
   T const & vectorHandling< T >::get( std::string const label ) const {
-    dt__FORALL(*this, ii,
+    dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
       //
       labelHandling const * obj;
-      dt__MUSTDOWNCAST(this->at(ii), labelHandling const, obj);
+      dt__mustDownCast(this->at(ii), labelHandling const, obj);
       
       if (obj->getLabel() == label ) {
         return this->at(ii);
       }
-    );
-  dt__THROW(get(),
-          << "No element with " << DTLOGEVAL(label) );
+    }
+  dt__THROW(get(), << "No element with " << DTLOGEVAL(label) );
   }
 
   template< typename T >
@@ -166,29 +163,29 @@ namespace dtOO {
   
   template< typename T >
   bool vectorHandling< T >::has( std::string const label ) const {
-    dt__FORALL(*this, ii,
+    dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
       //
       labelHandling const * obj;
-      dt__MUSTDOWNCAST(this->at(ii), labelHandling const, obj);
+      dt__mustDownCast(this->at(ii), labelHandling const, obj);
       
       if (obj->getLabel() == label ) {
         return true;
       }
-    );
+    }
     return false;
   }
 
   template< typename T >
   bool vectorHandling< T >::hasTwice( std::string const label ) const {
     int counter = 0;
-    dt__FORALL(*this, ii,
+    dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
       //
       labelHandling const * obj;
-      dt__MUSTDOWNCAST(this->at(ii), labelHandling const, obj);
+      dt__mustDownCast(this->at(ii), labelHandling const, obj);
       
       if (obj->getLabel() == label ) {
         counter++;
@@ -196,18 +193,18 @@ namespace dtOO {
       if (counter == 2) {
         return true;
       }
-    );
+    }
     return false;
   }
   
   template< typename T >
   void vectorHandling< T >::checkForBastardTwins( void ) const {
-    dt__FORALL(*this, ii,
+    dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
       //
       labelHandling const * obj;
-      dt__MUSTDOWNCAST(this->at(ii), labelHandling const, obj);
+      dt__mustDownCast(this->at(ii), labelHandling const, obj);
     
       //
       // check
@@ -216,17 +213,17 @@ namespace dtOO {
         dt__THROW(checkForBastardTwins(),
                  << "Duplicate element " << DTLOGEVAL( obj->getLabel() ) );
       }
-    );
+    }
   }
 
   template< typename T >
   void vectorHandling< T >::checkForBastardTwinsAndMakeUnique( void ) {
-    dt__FORALL(*this, ii,
+    dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
       //
       labelHandling * obj;
-      dt__MUSTDOWNCAST(this->at(ii), labelHandling, obj);
+      dt__mustDownCast(this->at(ii), labelHandling, obj);
     
       //
       // check
@@ -236,19 +233,17 @@ namespace dtOO {
                 << "Make label " << DTLOGEVAL(obj->getLabel()) << " unique!");          
         obj->setLabel( obj->getLabel()+"_" );
       }
-    );
+    }
   }  
 
   template< typename T >
   void vectorHandling< T >::nullify( void ) {
-    dt__FORALL(*this, ii,
-      this->at(ii) = NULL;
-    );
+    dt__forAllIndex(*this, ii) this->at(ii) = NULL;
   }  
   
   template< typename T >
   int vectorHandling< T >::getPosition( std::string const label ) const {
-    dt__FORALL(*this, ii,
+    dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
       //
@@ -258,7 +253,7 @@ namespace dtOO {
       if (obj->getLabel() == label ) {
         return ii;
       }
-    );
+    }
     return -1;
   }  
 
@@ -285,17 +280,13 @@ namespace dtOO {
    */
   template< typename T >
   void vectorHandling< T >::destroy( void ) {
-    dt__FORALL(*this, ii,
-      delete this->at(ii);
-    );
+    dt__forAllIndex(*this, ii) delete this->at(ii);
     this->clear();
   }
 
   template< typename T >
   void vectorHandling< T >::destroy( std::vector< T > & vec ) {
-    dt__FORALL(vec, ii,
-      delete vec.at(ii);
-    );
+    dt__forAllIndex(vec, ii) delete vec.at(ii);
     vec.clear();
   }
   
@@ -307,15 +298,15 @@ namespace dtOO {
   
   template< typename T >
   void vectorHandling< T >::addIndex( void ) {
-    dt__FORALL(*this, ii,
+    dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
       //
       labelHandling * obj;
-      dt__MUSTDOWNCAST(this->at(ii), labelHandling, obj);
+      dt__mustDownCast(this->at(ii), labelHandling, obj);
       
       obj->setLabel( stringPrimitive().intToString(ii)+"_"+obj->getLabel() );
-    );
+    }
   }
   template< typename T >  
   void vectorHandling< T >::dump(void) {
@@ -323,13 +314,13 @@ namespace dtOO {
     header.push_back("label");
     header.push_back("type");
     std::vector< std::string > itVal;
-    dt__FORALL(*this, ii,
+    dt__forAllIndex(*this, ii) {
       labelHandling * obj;
-      dt__MUSTDOWNCAST(this->at(ii), labelHandling, obj);
+      dt__mustDownCast(this->at(ii), labelHandling, obj);
       
       itVal.push_back( obj->getLabel());
       itVal.push_back( obj->virtualClassName() );
-    );
+    }
     
     DTINFOWF(dump(), << logMe::stringVecToTable(header, itVal) );
   }

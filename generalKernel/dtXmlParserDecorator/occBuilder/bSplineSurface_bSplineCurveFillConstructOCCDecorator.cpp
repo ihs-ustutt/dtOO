@@ -45,10 +45,10 @@ namespace dtOO {
       }
 			
 			vectorHandling< dtCurve const * > dtC( aG.size() );
-			dt__FORALL(aG, ii,
-			  dt__PTRASS(splineCurve3d const * s3, splineCurve3d::ConstDownCast(aG[ii]));
+			dt__forAllIndex(aG, ii) {
+			  dt__ptrAss(splineCurve3d const * s3, splineCurve3d::ConstDownCast(aG[ii]));
 			  dtC[ii] = s3->ptrConstDtCurve();
-			);
+			}
 			
 			ptrHandling<dtSurface> dtS(
 			  bSplineSurface_bSplineCurveFillConstructOCC(dtC).result()

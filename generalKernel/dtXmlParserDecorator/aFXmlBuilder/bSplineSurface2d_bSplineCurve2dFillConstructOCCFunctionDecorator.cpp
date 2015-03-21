@@ -36,16 +36,16 @@ namespace dtOO {
       std::vector< QDomElement > elVec 
 			= 
 			getChildVector("analyticFunction", toBuildP);
-      dt__FORALL(elVec, ii,
+      dt__forAllIndex(elVec, ii) {
         dt__pH(analyticFunction) aF(
 				  createAnalyticFunction(&elVec[ii], bC, cValP, depSFunP)
 				);
-				dt__PTRASS(
+				dt__ptrAss(
 					vec2dCurve2dOneD const * v2d1d,
 					vec2dCurve2dOneD::ConstDownCast(aF.get())
 				);
 				cc.push_back( v2d1d->ptrDtCurve2d()->clone() );
-      );
+      }
 
 			ptrHandling<dtSurface2d> dtS2d( 
 				bSplineSurface2d_bSplineCurve2dFillConstructOCC(cc).result()

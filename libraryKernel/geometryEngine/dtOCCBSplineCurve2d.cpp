@@ -14,7 +14,7 @@ namespace dtOO {
 	}
 
 	dtOCCBSplineCurve2d::dtOCCBSplineCurve2d( dtOCCCurve2dBase const & orig) : dtOCCCurve2d(orig) {
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom2d_BSplineCurve const, _ptr);
+		dt__mustDownCast(OCCRef().getOCC().Access(), Geom2d_BSplineCurve const, _ptr);
 	}
 	
 	dtOCCBSplineCurve2d::~dtOCCBSplineCurve2d() {

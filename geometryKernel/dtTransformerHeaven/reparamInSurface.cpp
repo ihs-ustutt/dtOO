@@ -33,7 +33,7 @@ namespace dtOO {
       //
       analyticGeometry const * aGeoP = aGeoVecP->at(ii);
       splineCurve3d const *  constSc;
-      dt__PTRASS(constSc, splineCurve3d::ConstDownCast(aGeoP));
+      dt__ptrAss(constSc, splineCurve3d::ConstDownCast(aGeoP));
 
 			DTINFOWF(
 				apply(),

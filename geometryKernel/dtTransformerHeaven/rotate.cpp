@@ -37,10 +37,10 @@ namespace dtOO {
 		dtAffTransformation3 rot = dtLinearAlgebra::getRotation(_rotVector, _angle);
 	
 		std::vector< dtPoint3 > ret(toTrans->size());
-		dt__FORALL(*toTrans, ii,
+		dt__forAllIndex(*toTrans, ii) {
 			dtVector3 vv = rot.transform( toTrans->at(ii) - _origin );
 		  ret[ii] = _origin + vv;
-		);
+		}
 		
 		return ret;
 	}

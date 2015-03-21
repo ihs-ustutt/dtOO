@@ -497,14 +497,14 @@ namespace dtOO {
 			//
 			if (recEdge.size() == 1) {
 				e_v[recEdge[0]].clear();
-				recEdges.erase( dt__PRIOR(recEdges.end()) );
-				startVerts.erase( dt__PRIOR(startVerts.end()) );
+				recEdges.erase( progHelper::prior(recEdges.end()) );
+				startVerts.erase( progHelper::prior(startVerts.end()) );
 			}			
 			if (recEdge.size() == 2) {
 				dt__THROW_IF(recEdge[0]!=recEdge[1], reconstructEdgesFromSurfaceMesh());
 				e_v[recEdge[0]].clear();
-				recEdges.erase( dt__PRIOR(recEdges.end()) );
-				startVerts.erase( dt__PRIOR(startVerts.end()));
+				recEdges.erase( progHelper::prior(recEdges.end()) );
+				startVerts.erase( progHelper::prior(startVerts.end()));
 			}
 		}
 

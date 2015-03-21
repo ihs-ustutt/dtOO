@@ -27,7 +27,7 @@ namespace dtOO {
 	dtOCCCurve::dtOCCCurve( dtOCCCurveBase const & orig) {
 		_curve.reset( new dtOCCCurveBase() );		
 		_curve->setOCC( Handle(Geom_Curve)::DownCast(orig.getOCC()->Copy()) );
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);
+		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);
 	}
 	
 	dtOCCCurve::~dtOCCCurve() {
@@ -178,7 +178,7 @@ namespace dtOO {
 	void dtOCCCurve::revert( void ) {
 		Handle(Geom_Curve) rev = _ptr->Reversed();
 		_curve->setOCC(rev);
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);		
+		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);		
 	}	
 	
 	void dtOCCCurve::translate( dtVector3 const & tt ) {

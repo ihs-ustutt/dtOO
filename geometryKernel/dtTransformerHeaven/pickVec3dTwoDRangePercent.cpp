@@ -37,7 +37,7 @@ namespace dtOO {
     vectorHandling< analyticFunction * > ret;
     
     for (int ii=0;ii<aFVecP->size();ii++) {
-      dt__PTRASS(
+      dt__ptrAss(
 				vec3dTwoD const * const v3d, 
 				vec3dTwoD::ConstDownCast(aFVecP->at(ii))
 			);

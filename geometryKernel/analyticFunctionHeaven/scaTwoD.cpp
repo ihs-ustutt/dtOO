@@ -196,10 +196,10 @@ namespace dtOO {
 		float intervalV = (xMax(1) - xMin(1)) / (nV-1);
 
 		for (int jj=0; jj<nV; jj++) {
-			dt__TOFLOAT(float jjF, jj);			
+			dt__toFloat(float jjF, jj);			
 			float constV = xMin(1) + jjF * intervalV;
 			for (int ii=0; ii<nU; ii++) {
-				dt__TOFLOAT(float iiF, ii);
+				dt__toFloat(float iiF, ii);
 				aFX xx(2,0);
 				xx[0] = xMin(0) + iiF * intervalU;
 				xx[1] = constV;

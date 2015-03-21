@@ -12,12 +12,12 @@ namespace dtOO {
 			vectorHandling< dtCurve const * > cL1;
 			vectorHandling< dtCurve const * > cL2;
 			vectorHandling< dtCurve const * > cL3;
-			dt__FORALL(dtS, ii,
+			dt__forAllIndex(dtS, ii) {
 				cL0.push_back( dtS[ii]->segmentConstVPercent(0., 0., 1.) );
 			  cL1.push_back( dtS[ii]->segmentConstUPercent(1., 0., 1.) );
 			  cL2.push_back( dtS[ii]->segmentConstVPercent(1., 0., 1.) );
 			  cL3.push_back( dtS[ii]->segmentConstUPercent(0., 0., 1.) );
-		  );
+		  }
 			dtSurface * sL0 = bSplineSurface_skinConstructOCC(cL0).result();
 			dtSurface * sL1 = bSplineSurface_skinConstructOCC(cL1).result();
 			dtSurface * sL2 = bSplineSurface_skinConstructOCC(cL2).result();

@@ -71,8 +71,8 @@ namespace dtOO {
         //
         // clone and cast scaFunction
         //
-        dt__PTRASS( scaOneD * cloneP, scaOneD::DownCast( sFunP->at(ii)->clone() ) );
-        dt__PTRASS( scaCurve2dOneD  * splineP, scaCurve2dOneD::DownCast(cloneP) );
+        dt__ptrAss( scaOneD * cloneP, scaOneD::DownCast( sFunP->at(ii)->clone() ) );
+        dt__ptrAss( scaCurve2dOneD  * splineP, scaCurve2dOneD::DownCast(cloneP) );
 //        dt__CANDOWNCAST(cloneP, scaCurve2dOneD, splineP);
           
         //

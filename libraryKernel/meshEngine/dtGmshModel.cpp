@@ -243,14 +243,14 @@ namespace dtOO {
 	
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {
     ::GRegion * region = ::GModel::getRegionByTag(tag);
-    dt__PTRASS(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
+    dt__ptrAss(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
     
     return gRegion;    
   }
   
   dtGmshFace * dtGmshModel::getDtGmshFaceByTag( int const tag ) const {
     ::GFace * face = ::GModel::getFaceByTag(tag);
-    dt__PTRASS(dtGmshFace * gFace, dtGmshFace::DownCast(face));
+    dt__ptrAss(dtGmshFace * gFace, dtGmshFace::DownCast(face));
     
     return gFace;    
   }
@@ -267,7 +267,7 @@ namespace dtOO {
   
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByTag( int const tag ) const {
     ::GEdge * edge = ::GModel::getEdgeByTag(tag);
-    dt__PTRASS(dtGmshEdge * gEdge, dtGmshEdge::DownCast(edge));
+    dt__ptrAss(dtGmshEdge * gEdge, dtGmshEdge::DownCast(edge));
     
     return gEdge;    
   }
@@ -294,28 +294,28 @@ namespace dtOO {
   dtGmshVertex * dtGmshModel::getDtGmshVertexByTag( int const tag ) const {
     ::GVertex * vertex = ::GModel::getVertexByTag(tag);
    
-    dt__PTRASS( dtGmshVertex * gVertex, dtGmshVertex::DownCast(vertex) );
+    dt__ptrAss( dtGmshVertex * gVertex, dtGmshVertex::DownCast(vertex) );
     
     return gVertex;    
   }  
 
   dtGmshRegion * dtGmshModel::cast2DtGmshRegion( ::GEntity * gr ){
     dtGmshRegion * ret;
-    dt__MUSTDOWNCAST(gr, dtGmshRegion, ret);
+    dt__mustDownCast(gr, dtGmshRegion, ret);
     
     return ret;
   }
   
   dtGmshFace * dtGmshModel::cast2DtGmshFace( ::GEntity * gf ){
     dtGmshFace * ret;
-    dt__MUSTDOWNCAST(gf, dtGmshFace, ret);
+    dt__mustDownCast(gf, dtGmshFace, ret);
     
     return ret;
   }
   
   dtGmshEdge * dtGmshModel::cast2DtGmshEdge( ::GEntity * ge ) {
     dtGmshEdge * ret;
-    dt__MUSTDOWNCAST(ge, dtGmshEdge, ret);
+    dt__mustDownCast(ge, dtGmshEdge, ret);
     
     return ret;    
   }
@@ -338,7 +338,7 @@ namespace dtOO {
 	
   dtGmshVertex * dtGmshModel::cast2DtGmshVertex( ::GEntity * gv ) {
     dtGmshVertex * ret;
-    dt__MUSTDOWNCAST(gv, dtGmshVertex, ret);
+    dt__mustDownCast(gv, dtGmshVertex, ret);
     
     return ret;    
   }

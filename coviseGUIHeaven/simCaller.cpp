@@ -112,7 +112,7 @@ namespace dtOO {
       if (_p_unsGridInputP->isConnected()) {
           
 //        const covise::coDoUnstructuredGrid * inGrid = _p_unsGridInputP->getCurrentObject();
-          dt__PTRASS(const covise::coDoSet * inSet, dynamic_cast<const covise::coDoSet *>(_p_unsGridInputP->getCurrentObject()) );
+          dt__ptrAss(const covise::coDoSet * inSet, dynamic_cast<const covise::coDoSet *>(_p_unsGridInputP->getCurrentObject()) );
           for (int ii=0; ii<inSet->getNumElements(); ii++) {
               inGrid = dynamic_cast<const covise::coDoUnstructuredGrid *>(inSet->getElement(ii) );
               if (inGrid) {
@@ -194,7 +194,7 @@ namespace dtOO {
       std::vector<const covise::coDoIntArr *> bocoVec;
       
       if (_p_bocoInputP->isConnected()) {
-          dt__PTRASS(const covise::coDoSet * inSet, dynamic_cast<const covise::coDoSet *>(_p_bocoInputP->getCurrentObject()) );
+          dt__ptrAss(const covise::coDoSet * inSet, dynamic_cast<const covise::coDoSet *>(_p_bocoInputP->getCurrentObject()) );
           for (int ii=0; ii<inSet->getNumElements(); ii++) {
               tmpBocoArr = dynamic_cast<const covise::coDoIntArr *>(inSet->getElement(ii) );
               if (tmpBocoArr) {

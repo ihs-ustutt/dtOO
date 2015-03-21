@@ -72,13 +72,13 @@ namespace dtOO {
   template < typename funT >  
   vectorHandling< renderInterface * > analyticGeometryCompound< funT >::getRender(void) const {
     vectorHandling< renderInterface * > retVec;
-    dt__FORALL(_vec, ii,
+    dt__forAllIndex(_vec, ii) {
       _vec[ii].setRenderResolution(0, this->getRenderResolution(0));
       _vec[ii].setRenderResolution(1, this->getRenderResolution(1));
       _vec[ii].setRenderResolution(2, this->getRenderResolution(2));      
       vectorHandling< renderInterface * > tVec = _vec[ii].getRender();
-      dt__FORALL( tVec, jj, retVec.push_back( tVec[jj] ); );
-    );
+      dt__forAllIndex( tVec, jj) retVec.push_back( tVec[jj] );
+    }
     
     return retVec;    
   }
@@ -91,9 +91,9 @@ namespace dtOO {
   template < typename funT >    
 	vectorHandling< analyticGeometry const * > analyticGeometryCompound< funT >::compoundInternal( void ) const {
 		vectorHandling< analyticGeometry const * > aGV(_vec.size());
-    dt__FORALL(_vec, ii,
+    dt__forAllIndex(_vec, ii) {
       aGV[ii] = analyticGeometry::ConstDownCast( &(_vec[ii]) );
-    );
+    }
     
     return aGV;
 	}  

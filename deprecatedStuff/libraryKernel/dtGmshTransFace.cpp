@@ -37,7 +37,7 @@ namespace dtOO {
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
       ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
-      dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
+      dt__mustDownCast(ge, dtGmshEdge const, dge);
       curve.push_back( dge->getMap1dTo3d()->clone() );
       ge->addFace(this);
     }
@@ -53,7 +53,7 @@ namespace dtOO {
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
       ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
-      dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
+      dt__mustDownCast(ge, dtGmshEdge const, dge);
       curve.push_back( dge->getMap1dTo3d()->clone() );
       ge->addFace(this);
     }  
@@ -72,10 +72,10 @@ namespace dtOO {
   void dtGmshTransFace::blendSurf( vectorHandling< map1dTo3d const * > & curve ) {
     splineCurve3d const * sC[4];
     vec3dOneDInMap3dTo3d const * v3d1dV[4];
-    dt__FORALL(curve, ii,
+    dt__forAllIndex(curve, ii) {
       sC[ii] = splineCurve3d::ConstDownCast(curve[ii]);
       v3d1dV[ii] = vec3dOneDInMap3dTo3d::ConstDownCast(curve[ii]);
-    );
+    }
     
     if (sC[0] && sC[1] && sC[2] && sC[3]) {
       dt__THROW(
@@ -162,7 +162,7 @@ namespace dtOO {
       vectorHandling< dtCurve const * > tmp(4);
 //			splineCurve3d const * s3d;
       for (int ii=0;ii<4;ii++) {
-//				dt__PTRASS(
+//				dt__ptrAss(
 //					s3d, 
 //					splineCurve3d::ConstDownCast(m1dInm3d[ii]->getConstPtrToMap1dTo3d())
 //				);
@@ -195,7 +195,7 @@ namespace dtOO {
     for (it=edges.begin(); it != edges.end(); ++it) {
       ::GEdge const * ge = *it;
       dtGmshEdge const * dge;
-      dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
+      dt__mustDownCast(ge, dtGmshEdge const, dge);
       curve.push_back( dge->getMap1dTo3d()->clone() );
     }
     

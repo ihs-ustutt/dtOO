@@ -29,13 +29,9 @@ namespace dtOO {
   }
 
   dtXmlParser::~dtXmlParser() {
-		dt__FORALL(_rootRead, ii,
-			_rootRead[ii].clear();
-		);
+		dt__forAllIndex(_rootRead, ii) _rootRead[ii].clear();
 		_rootRead.clear();
-		dt__FORALL(_rootReadDoc, ii,
-			_rootReadDoc[ii].clear();
-		);
+		dt__forAllIndex(_rootReadDoc, ii) _rootReadDoc[ii].clear();
 		_rootReadDoc.clear();		
 		_rootLoad.clear();
 		_rootLoadDoc.clear();
@@ -454,7 +450,7 @@ namespace dtOO {
   void dtXmlParser::createConstValue(vectorHandling< constValue * > * cValP) const {
     std::vector< std::string > label = getNames("constValue");
 
-		dt__FORALL( label, ii, createConstValue(label[ii], cValP); );
+		dt__forAllIndex( label, ii) createConstValue(label[ii], cValP);
   }
 	
   void dtXmlParser::getNames( std::string lookType, std::vector< std::string > * names ) const {
@@ -467,14 +463,10 @@ namespace dtOO {
 				}
 				std::vector< std::string > locNames;
 				getChildLabels(lookType, &locNames, _rootRead[ii]);
-				dt__FORALL(locNames, jj, 
-					names->push_back(locNames[jj]);
-				);
+				dt__forAllIndex(locNames, jj) names->push_back(locNames[jj]);
 			}
 		}
-		else {
-				dt__THROW(getNames(), << "Please parse a XML file.");
-		}
+		else dt__THROW(getNames(), << "Please parse a XML file.");
   }
 	
   std::vector< std::string > dtXmlParser::getNames( std::string lookType ) const {
@@ -590,7 +582,7 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("function");
 		
-		dt__FORALL( label, ii, createAnalyticFunction(label[ii], bC, cVP, sFP); );
+		dt__forAllIndex(label, ii) createAnalyticFunction(label[ii], bC, cVP, sFP);
 		
 		sFP->dump();
   }		
@@ -680,9 +672,9 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("part");
 		
-		dt__FORALL( label, ii, createAnalyticGeometry(label[ii], bC, cVP, sFP, aGP); );
+		dt__forAllIndex(label, ii) createAnalyticGeometry(label[ii], bC, cVP, sFP, aGP);
 		
-		dt__FORALL( *aGP, ii, aGP->at(ii)->dump(); );
+		dt__forAllIndex(*aGP, ii) aGP->at(ii)->dump();
   }
 	
   void dtXmlParser::createBoundedVolume(
@@ -719,7 +711,7 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("boundedVolume");
 		
-		dt__FORALL( label, ii, createBoundedVolume(label[ii], bC, cVP, sFP, aGP, bVP); );
+		dt__forAllIndex(label, ii) createBoundedVolume(label[ii], bC, cVP, sFP, aGP, bVP);
   }
 
 	void dtXmlParser::createPlugin(
@@ -758,7 +750,7 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("plugin");
 		
-		dt__FORALL( label, ii, createPlugin(label[ii], bC, cVP, sFP, aGP, bVP, pLP); );		
+		dt__forAllIndex(label, ii) createPlugin(label[ii], bC, cVP, sFP, aGP, bVP, pLP);
 	}
 		
 	void dtXmlParser::createCase(
@@ -797,7 +789,7 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("case");
 		
-		dt__FORALL( label, ii, createCase(label[ii], bC, cVP, sFP, aGP, bVP, dCP); );				
+		dt__forAllIndex(label, ii) createCase(label[ii], bC, cVP, sFP, aGP, bVP, dCP);
 	}
 		
 	void dtXmlParser::destroyAndCreate(

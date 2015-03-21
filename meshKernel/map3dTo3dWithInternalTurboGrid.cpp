@@ -135,8 +135,8 @@ namespace dtOO {
 		of.precision(8);
 		of.fixed;
 		for ( int jj=0; jj<_nPoints;jj++) {			
-			dt__TOFLOAT(float jjF,  jj);
-			dt__TOFLOAT(float nPointsJJF,  _nPoints);          
+			dt__toFloat(float jjF,  jj);
+			dt__toFloat(float nPointsJJF,  _nPoints);          
 			float percentJJ = jjF * (1. / (nPointsJJF-1) );  
 
       dtPoint3 pp = shroud->getPointPercent(percentJJ);
@@ -152,8 +152,8 @@ namespace dtOO {
 		of.precision(8);
 		of.fixed;
 		for ( int ii=0; ii<_nInternalCuts;ii++) {			
-			dt__TOFLOAT(float iiF,  ii);
-			dt__TOFLOAT(float nPointsIIF,  _nInternalCuts);               
+			dt__toFloat(float iiF,  ii);
+			dt__toFloat(float nPointsIIF,  _nInternalCuts);               
 			float percentII = iiF * (1. / (nPointsIIF-1.) );  		
 			of << "# percentII = " << percentII << std::endl;
 			for ( int jj=0; jj<_nPoints;jj++) {			

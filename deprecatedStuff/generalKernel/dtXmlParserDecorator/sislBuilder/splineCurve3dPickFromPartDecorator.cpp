@@ -48,7 +48,7 @@ namespace dtOO {
       );
       
       map2dTo3d * map;
-      dt__MUSTDOWNCAST(aG, map2dTo3d, map);
+      dt__mustDownCast(aG, map2dTo3d, map);
     
       //
       // analyticGeometries

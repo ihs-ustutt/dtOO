@@ -144,7 +144,7 @@ namespace dtOO {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstUPercent(percent_v(vv), 0., 1.);
-			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
+			dt__ptrAss(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
 					*(s3d->ptrConstDtCurve()), _pp, _vv
@@ -162,7 +162,7 @@ namespace dtOO {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstVPercent(percent_w(ww), 0., 1.);
-			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
+			dt__ptrAss(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
 					*(s3d->ptrConstDtCurve()), _pp, _vv
@@ -204,7 +204,7 @@ namespace dtOO {
 	
 	float rotatingMap2dTo3d::v_m(float const & arg) const {
 		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstVPercent(0., 0., 1.) );
-		dt__PTRASS(
+		dt__ptrAss(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
 		);
@@ -214,7 +214,7 @@ namespace dtOO {
 
 	float rotatingMap2dTo3d::v_mw(float const & mm, float const & ww) const {
 		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstVPercent( _m2d->percent_v(ww), 0., 1.) );
-		dt__PTRASS(
+		dt__ptrAss(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
 		);
@@ -224,7 +224,7 @@ namespace dtOO {
 	
 //	float rotatingMap2dTo3d::m_v(float const & arg) const {
 //		ptrHandling< map1dTo3d > m1d( _m2d->pickConstUPercent(0., 0., 1.) );
-//		dt__PTRASS(
+//		dt__ptrAss(
 //		  splineCurve3d const * s3d, 
 //			splineCurve3d::ConstDownCast(m1d.get())
 //		);
@@ -234,7 +234,7 @@ namespace dtOO {
 	
 	float rotatingMap2dTo3d::w_s(float const & arg) const {
 		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstUPercent(0., 0., 1.) );
-		dt__PTRASS(
+		dt__ptrAss(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
 		);
@@ -244,7 +244,7 @@ namespace dtOO {
 	
 //	float rotatingMap2dTo3d::s_w(float const & arg) const {
 //		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent(0., 0., 1.) );
-//		dt__PTRASS(
+//		dt__ptrAss(
 //		  splineCurve3d const * s3d, 
 //			splineCurve3d::ConstDownCast(m1d.get())
 //		);

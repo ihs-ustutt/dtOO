@@ -27,10 +27,10 @@ namespace dtOO {
 		//
 		// set arraies
 		//
-		dt__FORALL(pp, ii,
+		dt__forAllIndex(pp, ii) {
 		  arr->SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) ); 
 //		  para->SetValue( ii+1, static_cast<float>(ii) );
-	  );
+	  }
 
 //		GeomAPI_Interpolate Interp(arr, para, false, .01);
 //		Interp.Perform();

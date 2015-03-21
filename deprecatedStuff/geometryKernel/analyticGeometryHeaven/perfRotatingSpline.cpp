@@ -289,37 +289,37 @@ namespace dtOO {
     //
     //0
     covise::coDoSet const * phiUSet;
-    dt__MUSTDOWNCAST(set->getElement(0), covise::coDoSet const, phiUSet);
+    dt__mustDownCast(set->getElement(0), covise::coDoSet const, phiUSet);
     covise::coDoSet const * phiUSetSet;
-    dt__MUSTDOWNCAST(phiUSet->getElement(0), covise::coDoSet const, phiUSetSet);    
+    dt__mustDownCast(phiUSet->getElement(0), covise::coDoSet const, phiUSetSet);    
     //1
     covise::coDoSet const * UPhiSet;
-    dt__MUSTDOWNCAST(set->getElement(1), covise::coDoSet const, UPhiSet);
+    dt__mustDownCast(set->getElement(1), covise::coDoSet const, UPhiSet);
     covise::coDoSet const * UPhiSetSet;
-    dt__MUSTDOWNCAST(UPhiSet->getElement(0), covise::coDoSet const, UPhiSetSet);    
+    dt__mustDownCast(UPhiSet->getElement(0), covise::coDoSet const, UPhiSetSet);    
     //2
     covise::coDoSet const * meridianVSet;
-    dt__MUSTDOWNCAST(set->getElement(2), covise::coDoSet const, meridianVSet);
+    dt__mustDownCast(set->getElement(2), covise::coDoSet const, meridianVSet);
     covise::coDoSet const * meridianVSetSet;
-    dt__MUSTDOWNCAST(meridianVSet->getElement(0), covise::coDoSet const, meridianVSetSet);    
+    dt__mustDownCast(meridianVSet->getElement(0), covise::coDoSet const, meridianVSetSet);    
     //3
     covise::coDoSet const * vMeridianSet;
-    dt__MUSTDOWNCAST(set->getElement(3), covise::coDoSet const, vMeridianSet);
+    dt__mustDownCast(set->getElement(3), covise::coDoSet const, vMeridianSet);
     covise::coDoSet const * vMeridianSetSet;
-    dt__MUSTDOWNCAST(vMeridianSet->getElement(0), covise::coDoSet const, vMeridianSetSet);    
+    dt__mustDownCast(vMeridianSet->getElement(0), covise::coDoSet const, vMeridianSetSet);    
     //4
     covise::coDoSet const * meridianRSet;
-    dt__MUSTDOWNCAST(set->getElement(4), covise::coDoSet const, meridianRSet);
+    dt__mustDownCast(set->getElement(4), covise::coDoSet const, meridianRSet);
     covise::coDoSet const * meridianRSetSet;
-    dt__MUSTDOWNCAST(meridianRSet->getElement(0), covise::coDoSet const, meridianRSetSet);    
+    dt__mustDownCast(meridianRSet->getElement(0), covise::coDoSet const, meridianRSetSet);    
     //5
     covise::coDoSet const * rMeridianSet;
-    dt__MUSTDOWNCAST(set->getElement(5), covise::coDoSet const, rMeridianSet);
+    dt__mustDownCast(set->getElement(5), covise::coDoSet const, rMeridianSet);
     covise::coDoSet const * rMeridianSetSet;
-    dt__MUSTDOWNCAST(rMeridianSet->getElement(0), covise::coDoSet const, rMeridianSetSet);    
+    dt__mustDownCast(rMeridianSet->getElement(0), covise::coDoSet const, rMeridianSetSet);    
     //6
     covise::coDoSet const * rSSet;
-    dt__MUSTDOWNCAST(set->getElement(6), covise::coDoSet const, rSSet);
+    dt__mustDownCast(set->getElement(6), covise::coDoSet const, rSSet);
 
     //
     // call on base class

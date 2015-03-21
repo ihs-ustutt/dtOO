@@ -22,7 +22,7 @@ namespace dtOO {
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
       ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
-      dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
+      dt__mustDownCast(ge, dtGmshEdge const, dge);
      _edge.push_back(dge);
      ge->addFace(this);
     }
@@ -39,7 +39,7 @@ namespace dtOO {
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
       ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
-      dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
+      dt__mustDownCast(ge, dtGmshEdge const, dge);
       _edge.push_back(dge);
       ge->addFace(this);
     }    

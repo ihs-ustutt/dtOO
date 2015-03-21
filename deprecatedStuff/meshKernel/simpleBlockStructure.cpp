@@ -441,7 +441,7 @@ namespace dtOO {
 //        scaFunction * sF;
 //        _markedEdgeScaFunction[ii]->copy( &sF );
 //        scaSISLSplineTwoD * spline;
-//        dt__MUSTDOWNCAST(sF, scaSISLSplineTwoD, spline);
+//        dt__mustDownCast(sF, scaSISLSplineTwoD, spline);
 //        dtSislCurve * dtC = const_cast< dtSislCurve * >(spline->getDtSislCurve());
 //
 //        
@@ -584,7 +584,7 @@ namespace dtOO {
 //    float delta = (uuEnd - uuStart) / (nPointsF-1.);
 //
 //      map1dTo3d const * map;
-//      dt__MUSTDOWNCAST(aG, map1dTo3d const, map);
+//      dt__mustDownCast(aG, map1dTo3d const, map);
 //      pointOnEdge.push_back( map->getPointPercent(0.) );
 //    for (int ii=1; ii<nPoints-1; ii++) {
 //      float iiF = (float) ii;
@@ -609,7 +609,7 @@ namespace dtOO {
 //    float delta = (uuEnd - uuStart) / (nPointsF-1.);
 //
 //      map1dTo3d const * map;
-//      dt__MUSTDOWNCAST(aG, map1dTo3d const, map);
+//      dt__mustDownCast(aG, map1dTo3d const, map);
 ////      pointOnEdge.push_back( map->getPointPercent(0.) );
 //      pointOnEdge.push_back( getVertex(startVertex) );
 //    for (int ii=1; ii<nPoints-1; ii++) {
@@ -746,9 +746,9 @@ namespace dtOO {
 //    // |/
 //    // 0----1
 //    //
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][0], _block[pos][1]), splineCurve3d const, sCOne );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][0], _block[pos][3]), splineCurve3d const, sCTwo );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][0], _block[pos][4]), splineCurve3d const, sCThree );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][0], _block[pos][1]), splineCurve3d const, sCOne );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][0], _block[pos][3]), splineCurve3d const, sCTwo );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][0], _block[pos][4]), splineCurve3d const, sCThree );
 //    oo = sCOne->getConstDtSislCurve()->getFirstControlPoint3d();
 //    pp = sCOne->getConstDtSislCurve()->getFirstNextControlPoint3d();
 //    qq = sCTwo->getConstDtSislCurve()->getFirstNextControlPoint3d();
@@ -761,9 +761,9 @@ namespace dtOO {
 //    //      |/
 //    // 0----1
 //    //
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][0], _block[pos][1]), splineCurve3d const, sCOne );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][1], _block[pos][2]), splineCurve3d const, sCTwo );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][1], _block[pos][5]), splineCurve3d const, sCThree );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][0], _block[pos][1]), splineCurve3d const, sCOne );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][1], _block[pos][2]), splineCurve3d const, sCTwo );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][1], _block[pos][5]), splineCurve3d const, sCThree );
 //    oo = sCOne->getConstDtSislCurve()->getLastControlPoint3d();
 //    pp = sCOne->getConstDtSislCurve()->getPreLastControlPoint3d();
 //    qq = sCTwo->getConstDtSislCurve()->getFirstNextControlPoint3d();
@@ -778,9 +778,9 @@ namespace dtOO {
 //    //     /
 //    //    1
 //    //
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][3], _block[pos][2]), splineCurve3d const, sCOne );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][1], _block[pos][2]), splineCurve3d const, sCTwo );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][2], _block[pos][6]), splineCurve3d const, sCThree );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][3], _block[pos][2]), splineCurve3d const, sCOne );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][1], _block[pos][2]), splineCurve3d const, sCTwo );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][2], _block[pos][6]), splineCurve3d const, sCThree );
 //    oo = sCOne->getConstDtSislCurve()->getLastControlPoint3d();
 //    pp = sCOne->getConstDtSislCurve()->getPreLastControlPoint3d();
 //    qq = sCTwo->getConstDtSislCurve()->getPreLastControlPoint3d();
@@ -795,9 +795,9 @@ namespace dtOO {
 //    //  /
 //    // 0
 //    //
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][3], _block[pos][2]), splineCurve3d const, sCOne );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][0], _block[pos][3]), splineCurve3d const, sCTwo );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][3], _block[pos][7]), splineCurve3d const, sCThree );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][3], _block[pos][2]), splineCurve3d const, sCOne );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][0], _block[pos][3]), splineCurve3d const, sCTwo );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][3], _block[pos][7]), splineCurve3d const, sCThree );
 //    oo = sCOne->getConstDtSislCurve()->getFirstControlPoint3d();
 //    pp = sCOne->getConstDtSislCurve()->getFirstNextControlPoint3d();
 //    qq = sCTwo->getConstDtSislCurve()->getPreLastControlPoint3d();
@@ -812,9 +812,9 @@ namespace dtOO {
 //    // |
 //    // 0
 //    //
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][4], _block[pos][5]), splineCurve3d const, sCOne );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][4], _block[pos][7]), splineCurve3d const, sCTwo );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][0], _block[pos][4]), splineCurve3d const, sCThree );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][4], _block[pos][5]), splineCurve3d const, sCOne );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][4], _block[pos][7]), splineCurve3d const, sCTwo );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][0], _block[pos][4]), splineCurve3d const, sCThree );
 //    oo = sCOne->getConstDtSislCurve()->getFirstControlPoint3d();
 //    pp = sCOne->getConstDtSislCurve()->getFirstNextControlPoint3d();
 //    qq = sCTwo->getConstDtSislCurve()->getFirstNextControlPoint3d();
@@ -829,9 +829,9 @@ namespace dtOO {
 //    //      |
 //    //      |
 //    //      1
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][4], _block[pos][5]), splineCurve3d const, sCOne );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][5], _block[pos][6]), splineCurve3d const, sCTwo );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][1], _block[pos][5]), splineCurve3d const, sCThree );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][4], _block[pos][5]), splineCurve3d const, sCOne );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][5], _block[pos][6]), splineCurve3d const, sCTwo );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][1], _block[pos][5]), splineCurve3d const, sCThree );
 //    oo = sCOne->getConstDtSislCurve()->getLastControlPoint3d();
 //    pp = sCOne->getConstDtSislCurve()->getPreLastControlPoint3d();
 //    qq = sCTwo->getConstDtSislCurve()->getFirstNextControlPoint3d();
@@ -844,9 +844,9 @@ namespace dtOO {
 //    //    5 |
 //    //      2
 //    //
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][7], _block[pos][6]), splineCurve3d const, sCOne );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][5], _block[pos][6]), splineCurve3d const, sCTwo );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][2], _block[pos][6]), splineCurve3d const, sCThree );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][7], _block[pos][6]), splineCurve3d const, sCOne );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][5], _block[pos][6]), splineCurve3d const, sCTwo );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][2], _block[pos][6]), splineCurve3d const, sCThree );
 //    oo = sCOne->getConstDtSislCurve()->getLastControlPoint3d();
 //    pp = sCOne->getConstDtSislCurve()->getPreLastControlPoint3d();
 //    qq = sCTwo->getConstDtSislCurve()->getPreLastControlPoint3d();
@@ -859,9 +859,9 @@ namespace dtOO {
 //    // 4 |
 //    //   3
 //    //
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][7], _block[pos][6]), splineCurve3d const, sCOne );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][4], _block[pos][7]), splineCurve3d const, sCTwo );
-//    dt__MUSTDOWNCAST( getEdgeFromTo(_block[pos][3], _block[pos][7]), splineCurve3d const, sCThree );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][7], _block[pos][6]), splineCurve3d const, sCOne );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][4], _block[pos][7]), splineCurve3d const, sCTwo );
+//    dt__mustDownCast( getEdgeFromTo(_block[pos][3], _block[pos][7]), splineCurve3d const, sCThree );
 //    oo = sCOne->getConstDtSislCurve()->getFirstControlPoint3d();
 //    pp = sCOne->getConstDtSislCurve()->getFirstNextControlPoint3d();
 //    qq = sCTwo->getConstDtSislCurve()->getPreLastControlPoint3d();

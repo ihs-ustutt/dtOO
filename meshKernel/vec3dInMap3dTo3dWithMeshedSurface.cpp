@@ -65,7 +65,7 @@ namespace dtOO {
 		//
 		// get analyticGeometry, cast and store in region vector
 		//
-		dt__PTRASS(
+		dt__ptrAss(
 			map3dTo3d const * mm3d,
 			map3dTo3d::ConstDownCast( aG->get(label) )
 		);

@@ -19,7 +19,7 @@ namespace dtOO {
 		= 
 		scaFunctionFactory::create( obj->getAttribute("factoryType") );
     
-		dt__PTRASS(scaOneD * s1d, scaOneD::DownCast(ret));
+		dt__ptrAss(scaOneD * s1d, scaOneD::DownCast(ret));
     
 		s1d->unpackFromCoDoSet(obj);
     

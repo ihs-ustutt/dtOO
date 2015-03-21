@@ -38,9 +38,9 @@ namespace dtOO {
       SISLCurve * SISLCurveListPP[reoCurve.size()];
       for (int ii=0;ii<reoCurve.size();ii++) {
 				dtSislCurve const * tmpCurve;
-        dt__MUSTDOWNCAST(reoCurve.at(ii), dtSislCurve const, tmpCurve);
+        dt__mustDownCast(reoCurve.at(ii), dtSislCurve const, tmpCurve);
 				SISLCurve const * tmpSislCurve;
-				dt__MUSTDOWNCAST(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
+				dt__mustDownCast(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
 				SISLCurveListPP[ii] = const_cast< SISLCurve * >(tmpSislCurve);
       }  
       if (reoCurve.size() != 4) {

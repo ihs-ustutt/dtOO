@@ -15,13 +15,13 @@ namespace dtOO {
 	  vectorHandling< dtCurve2d const * > const & cc 
 	) {
 		Geom2dConvert_CompCurveToBSplineCurve conv;
-		dt__FORALL(cc, ii,
-			dt__PTRASS( dtOCCCurve2d const * occC, dtOCCCurve2d::ConstDownCast(cc[ii]) );
+		dt__forAllIndex(cc, ii) {
+			dt__ptrAss( dtOCCCurve2d const * occC, dtOCCCurve2d::ConstDownCast(cc[ii]) );
 			Handle(Geom2d_BoundedCurve) boundedC
 			=
 			Handle(Geom2d_BoundedCurve)::DownCast( occC->OCCRef().getOCC() );
       conv.Add(boundedC, Precision::Confusion());//Precision::Confusion());			
-    );
+    }
 		dtOCCCurve2dBase base;
 		base.setOCC( conv.BSplineCurve() );
 		_dtC2d.reset( new dtOCCBSplineCurve2d(base) );		

@@ -72,7 +72,7 @@ namespace dtOO {
         //
         if (closing == "closeArithmetic") {
           oneDimCloseable * oDC;
-          dt__MUSTDOWNCASTWM(
+          dt__mustDownCastWM(
             sC, 
             oneDimCloseable, 
             oDC, 
@@ -82,7 +82,7 @@ namespace dtOO {
         }
         else if (closing == "closeStraight") {
           oneDimCloseable * oDC;
-          dt__MUSTDOWNCASTWM(
+          dt__mustDownCastWM(
             sC, 
             oneDimCloseable, 
             oDC, 

@@ -80,7 +80,7 @@ namespace dtOO {
         for (int jj=0;jj<offset;jj++) {
           if ( parser.is("scaFunction", wElement) ) {
             std::string sFLabel = parser.getAttributeStr("label", wElement);
-            dt__PTRASS(
+            dt__ptrAss(
 							scaOneD const * const sF,
 							scaOneD::ConstDownCast( _sFun.get(sFLabel) )
 					  );

@@ -45,14 +45,10 @@ namespace dtOO {
 
   std::vector< dtPoint2 * > dtTransformer::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
 		std::vector< dtPoint2 > twin(pointVecP->size());
-    dt__FORALL(*pointVecP, ii,
-			twin[ii] = *(pointVecP->at(ii));
-		);
+    dt__forAllIndex(*pointVecP, ii) twin[ii] = *(pointVecP->at(ii));
 		twin = this->apply(&twin);
 		std::vector< dtPoint2 * > retTwin(twin.size());
-    dt__FORALL(twin, ii,
-			retTwin[ii] = new dtPoint2(twin[ii]);
-		);		
+    dt__forAllIndex(twin, ii) retTwin[ii] = new dtPoint2(twin[ii]);
 		
 		return retTwin;
   }
@@ -63,14 +59,10 @@ namespace dtOO {
   
 	std::vector< dtPoint3 * > dtTransformer::apply( std::vector< dtPoint3 * > const * const pointVecP ) const {
 		std::vector< dtPoint3 > twin(pointVecP->size());
-    dt__FORALL(*pointVecP, ii,
-			twin[ii] = *(pointVecP->at(ii));
-		);
+    dt__forAllIndex(*pointVecP, ii) twin[ii] = *(pointVecP->at(ii));
 		twin = this->apply(&twin);
 		std::vector< dtPoint3 * > retTwin(twin.size());
-    dt__FORALL(twin, ii,
-			retTwin[ii] = new dtPoint3(twin[ii]);
-		);		
+    dt__forAllIndex(twin, ii) retTwin[ii] = new dtPoint3(twin[ii]);
 		
 		return retTwin;
   }

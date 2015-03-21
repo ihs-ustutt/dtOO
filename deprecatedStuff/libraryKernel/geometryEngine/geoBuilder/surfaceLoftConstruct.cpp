@@ -38,9 +38,9 @@ namespace dtOO {
       for (int ii=0;ii<curveList.size();ii++) {
         curveType.push_back(1);
 				dtSislCurve const * tmpCurve;
-        dt__MUSTDOWNCAST(curveList.at(ii), dtSislCurve const, tmpCurve);
+        dt__mustDownCast(curveList.at(ii), dtSislCurve const, tmpCurve);
 				SISLCurve const * tmpSislCurve;
-				dt__MUSTDOWNCAST(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
+				dt__mustDownCast(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
 				SISLCurveListPP[ii] = const_cast< SISLCurve * >(tmpSislCurve);
       }  
 
@@ -76,9 +76,9 @@ namespace dtOO {
       for (int ii=0;ii<curveList.size();ii++) {
         //SISLCurveListPP[ii] = const_cast< SISLCurve * >( cast2Sisl(curveList.at(ii))->getSISLCurve() );
 				dtSislCurve const * tmpCurve;
-        dt__MUSTDOWNCAST(curveList.at(ii), dtSislCurve const, tmpCurve);
+        dt__mustDownCast(curveList.at(ii), dtSislCurve const, tmpCurve);
 				SISLCurve const * tmpSislCurve;
-				dt__MUSTDOWNCAST(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
+				dt__mustDownCast(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
 				SISLCurveListPP[ii] = const_cast< SISLCurve * >(tmpSislCurve);
         double iiD = (double) ii;
         parArr[ii] = iiD * parArrInt;

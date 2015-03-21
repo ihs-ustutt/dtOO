@@ -40,7 +40,7 @@ namespace dtOO {
 			analyticGeometry * aG
 			=
 			this->createAnalyticGeometry(&wElement, bC, cValP, sFunP, depAGeoP);
-      dt__PTRASS(map2dTo3d const * m2d, map2dTo3d::ConstDownCast(aG));
+      dt__ptrAss(map2dTo3d const * m2d, map2dTo3d::ConstDownCast(aG));
 			
 			//
 			// get vector

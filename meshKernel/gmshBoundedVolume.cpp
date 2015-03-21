@@ -117,7 +117,7 @@ namespace dtOO {
   std::vector< std::string > gmshBoundedVolume::getMeshTags( void ) const {
 		std::vector< std::string > tags;
     for (int ii=0; ii<4; ii++) {
-			dt__FORALL(_physLabels[ii], jj, tags.push_back(_physLabels[ii][jj]); );
+			dt__forAllIndex(_physLabels[ii], jj) tags.push_back(_physLabels[ii][jj]);
 		}		
 		return tags;		
 	}
@@ -125,7 +125,7 @@ namespace dtOO {
 	dtGmshFace const * gmshBoundedVolume::getFace( std::string const & tag ) const {
 		::GModel::setCurrent(_gm.get());
 		
-		dt__FORALL(_physLabels[2], jj,
+		dt__forAllIndex(_physLabels[2], jj) {
 			if (_physLabels[2][jj] == tag) {
 				int pNum = _gm->getPhysicalNumber(2, tag);
 				dtGmshModel::intGEntityVMap groups;
@@ -142,7 +142,7 @@ namespace dtOO {
 					}
 				}
 			}
-		);
+	  }
 	}
 	
   dtGmshModel * gmshBoundedVolume::getModel( void ) const {

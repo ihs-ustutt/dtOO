@@ -76,9 +76,9 @@ namespace dtOO {
 		std::vector< float > const & vv
 	) const {
 		std::vector< dtPoint3 > pp( uu.size() );
-		dt__FORALL(uu, ii,
+		dt__forAllIndex(uu, ii) {
 		  pp[ii] = point( uu[ii], vv[ii] );				
-		);
+		}
 		
 		return pp;
 	}
@@ -89,9 +89,9 @@ namespace dtOO {
 		std::vector< float > const & vv
 	) const {
 		std::vector< dtPoint3 > pp( uu.size() );
-		dt__FORALL(uu, ii,
+		dt__forAllIndex(uu, ii) {
 		  pp[ii] = point( u_uPercent(uu[ii]), v_vPercent(vv[ii]) );				
-		);
+		}
 		
 		return pp;		
 	} 

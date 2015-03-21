@@ -50,7 +50,7 @@ namespace dtOO {
       //
       // get mapping
       //
-			dt__PTRASS(
+			dt__ptrAss(
 				map2dTo3d * map,
 				map2dTo3d::DownCast(
 					depAGeoP->get( getAttributeStr("part_label", **toBuildP) )
@@ -58,10 +58,10 @@ namespace dtOO {
 			);
 			
 			std::vector< dtPoint3 > p3(p2.size());
-			dt__FORALL(p2, ii,
+			dt__forAllIndex(p2, ii) {
 			  p3[ii] = map->getPoint( *(p2[ii]) );
 			  delete p2[ii];
-			);
+			}
 			
 		  int order = getAttributeInt("order", **toBuildP);
 			aGeoP->push_back( 

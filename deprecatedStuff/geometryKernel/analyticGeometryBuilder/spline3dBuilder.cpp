@@ -61,7 +61,7 @@ namespace dtOO {
       vectorHandling< splineCurve3d * > s3CVec;
       for (int ii=1;ii<=_analyticGeometryP.getNAttributes();ii++) {
         splineCurve3d * sC3;
-        dt__MUSTDOWNCAST(
+        dt__mustDownCast(
           *(_analyticGeometryP.getAttribute(ii)), 
           splineCurve3d, 
           sC3

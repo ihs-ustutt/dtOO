@@ -78,7 +78,7 @@ namespace dtOO {
       // check cast
       //
       scaMuParserOneD * sMPOD;
-      dt__MUSTDOWNCASTWM(
+      dt__mustDownCastWM(
         *sFunP, 
         scaMuParserOneD, 
         sMPOD,

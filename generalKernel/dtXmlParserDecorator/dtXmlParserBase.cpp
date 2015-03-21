@@ -160,9 +160,7 @@ namespace dtOO {
     createBasic(
 			&wEl, bC, cValP, sFunP, depAGeoP, dtTransformerP.get(), &pp
 		);		
-		dt__FORALL(pp, ii,
-		  basicP->push_back( *(pp[ii]) );
-		);		
+		dt__forAllIndex(pp, ii) basicP->push_back( *(pp[ii]) );
   }
 	
   void dtXmlParserBase::createBasic(
@@ -391,7 +389,7 @@ namespace dtOO {
 					int nPointsOne = getAttributeInt("number_points_one", *toBuildP);					
 				  float nPointsOneF = static_cast<float>(nPointsOne);              					
 					if ( hasAttribute("parameter_one_percent_function", *toBuildP) ) {
-						dt__PTRASS(
+						dt__ptrAss(
 							scaOneD const * sF,
 							scaOneD::ConstDownCast(
 								sFunP->get( 
@@ -408,7 +406,7 @@ namespace dtOO {
 						}
 					}
 					else if (hasAttribute("length_one_percent_function", *toBuildP)) {
-						dt__PTRASS(
+						dt__ptrAss(
 							scaOneD const * sF,
 							scaOneD::ConstDownCast(
 								sFunP->get( 
@@ -440,7 +438,7 @@ namespace dtOO {
 					//
 					// search functions
 					//
-					dt__PTRASS(
+					dt__ptrAss(
 						scaOneD const * fOne, 
 						scaOneD::ConstDownCast(
 							sFunP->get( 
@@ -448,7 +446,7 @@ namespace dtOO {
 							)
 						)
 					);
-					dt__PTRASS(
+					dt__ptrAss(
 						scaOneD const * fTwo,
 						scaOneD::ConstDownCast(
 							sFunP->get( 
@@ -458,8 +456,8 @@ namespace dtOO {
 					);
 					for (int ii=0;ii<nPointsOne;ii++) {
 						for (int jj=0;jj<nPointsTwo;jj++) {
-							dt__TOFLOAT(float iiF, ii);
-							dt__TOFLOAT(float jjF, jj);
+							dt__toFloat(float iiF, ii);
+							dt__toFloat(float jjF, jj);
 							float paraOne = fOne->YFloat( iiF / nPointsOne ) ;
 							float paraTwo = fTwo->YFloat( jjF / nPointsTwo ) ;
 							basicP->push_back( 
@@ -1086,7 +1084,7 @@ namespace dtOO {
       //
       //look for function to pick point from
       //
-			dt__PTRASS(
+			dt__ptrAss(
 				vec2dOneD const * const theF,
 				vec2dOneD::ConstDownCast(
 					sFunP->get( getAttributeStr("function_label", *toBuildP) )
@@ -1107,7 +1105,7 @@ namespace dtOO {
           //
           // search functions
           //
-					dt__PTRASS(
+					dt__ptrAss(
 						scaOneD const * const thePara,
 						scaOneD::ConstDownCast(
 							sFunP->get(
@@ -1118,8 +1116,8 @@ namespace dtOO {
 
           //get parameter range of function
           for (int ii=0;ii<nPoints;ii++) {
-            dt__TOFLOAT(float iiF, ii);
-						dt__TOFLOAT(float nPointsF, nPoints);
+            dt__toFloat(float iiF, ii);
+						dt__toFloat(float nPointsF, nPoints);
 //            float para = thePara->YFloat( iiF / (nPointsF-1.) );
 //            dtPoint2 YY;            
             //get value of scaFunction

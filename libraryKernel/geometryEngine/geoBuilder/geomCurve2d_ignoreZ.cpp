@@ -20,7 +20,7 @@
 
 namespace dtOO {
 	geomCurve2d_ignoreZ::geomCurve2d_ignoreZ( dtCurve const * const dtC ) {
-		dt__PTRASS(dtOCCCurve const * const occC, dtOCCCurve::ConstDownCast(dtC));
+		dt__ptrAss(dtOCCCurve const * const occC, dtOCCCurve::ConstDownCast(dtC));
 		
 		std::vector<dtPoint2> p2;
 		for (int ii=0; ii<occC->nControlPoints(); ii++) {

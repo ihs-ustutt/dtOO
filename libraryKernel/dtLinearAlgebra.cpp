@@ -109,9 +109,9 @@ namespace dtOO {
 		dt__THROW_IF( yy.size() != zz.size(), toDtPoint3Vector() );
 		
 		std::vector< dtPoint3 > pp(xx.size());
-		dt__FORALL(pp, ii,
+		dt__forAllIndex(pp, ii) {
 		  pp[ii] = dtPoint3(xx[ii], yy[ii], zz[ii]);
-		);
+		}
 		
 		return pp;
 	}

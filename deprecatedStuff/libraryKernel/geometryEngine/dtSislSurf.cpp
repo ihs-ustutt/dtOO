@@ -852,25 +852,25 @@ namespace dtOO {
 	
 	dtSislCurve const * dtSislSurf::cast2Sisl( dtCurve const * curve ) const {
 		dtSislCurve const * sislC;
-		dt__MUSTDOWNCAST(curve, dtSislCurve const, sislC);
+		dt__mustDownCast(curve, dtSislCurve const, sislC);
 		return sislC;
 	}
 	
   dtSislCurve * dtSislSurf::cast2Sisl( dtCurve * curve ) const {
 		dtSislCurve * sislC;
-		dt__MUSTDOWNCAST(curve, dtSislCurve, sislC);
+		dt__mustDownCast(curve, dtSislCurve, sislC);
 		return sislC;		
 	}
 
 	dtSislCurve2d const * dtSislSurf::cast2Sisl( dtCurve2d const * curve ) const {
 		dtSislCurve2d const * sislC;
-		dt__MUSTDOWNCAST(curve, dtSislCurve2d const, sislC);
+		dt__mustDownCast(curve, dtSislCurve2d const, sislC);
 		return sislC;
 	}
 	
   dtSislCurve2d * dtSislSurf::cast2Sisl( dtCurve2d * curve ) const {
 		dtSislCurve2d * sislC;
-		dt__MUSTDOWNCAST(curve, dtSislCurve2d, sislC);
+		dt__mustDownCast(curve, dtSislCurve2d, sislC);
 		return sislC;		
 	}
 	

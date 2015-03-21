@@ -48,7 +48,7 @@ namespace dtOO {
 		//
 		// get analyticGeometry, cast and store in region vector
 		//
-		dt__PTRASS(
+		dt__ptrAss(
 			map3dTo3d const * mm3d,
 			map3dTo3d::ConstDownCast( aG->get(label) )
 		);
@@ -63,10 +63,10 @@ namespace dtOO {
 		if (cI.size() == 0) {
 			cI.push_back(_m3d.get());
 		}
-		dt__FORALL(cI, ii,
-		  _gm->addRegionToGmshModel(map3dTo3d::ConstSecureCast(cI[ii]));
+		dt__forAllIndex(cI, ii) {
+			_gm->addRegionToGmshModel(map3dTo3d::ConstSecureCast(cI[ii]));
 //		  _gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshUnstructured();
-		);
+		}
 	}
 	
   void map3dTo3dBlockGmsh::makeGrid(void) {

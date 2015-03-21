@@ -83,7 +83,7 @@ namespace dtOO {
       //      
       analyticGeometry const * aG = depAGeoP->get(label);
       analyticSurface const * aS;
-      dt__MUSTDOWNCAST(aG, analyticSurface const, aS);
+      dt__mustDownCast(aG, analyticSurface const, aS);
       
       //
       // put surface at correct position and store pointer

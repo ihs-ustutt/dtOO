@@ -15,7 +15,7 @@ namespace dtOO {
 	}
 
 	dtOCCConic::dtOCCConic(dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_Conic const, _ptr);	
+		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_Conic const, _ptr);	
 	}
 
 	dtOCCConic::~dtOCCConic() {

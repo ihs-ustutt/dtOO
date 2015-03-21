@@ -539,7 +539,7 @@ namespace dtOO {
 	  QDomElement * const element 
 	) {
 		std::vector< QDomAttr > attrs = getAttributeVector(*element);
-		dt__FORALL(attrs, ii,	
+		dt__forAllIndex(attrs, ii) {
       std::string name = attrs[ii].name().toStdString();						
 			std::string value = attrs[ii].value().toStdString();
 			std::string replaced = replaceStringInString(replace, with, value);
@@ -549,7 +549,7 @@ namespace dtOO {
 //				<< "Replace attribute " << name << " = " << value << "." << LOGDEL
 //				<< "-> " << replaced
 //			);
-		);
+		}
 	}  
 	
 	void qtXmlPrimitive::replaceRecursiveInAllAttributes( 
@@ -558,9 +558,9 @@ namespace dtOO {
 	) {
 		replaceInAllAttributes(replace, with, element);
     std::vector< QDomElement > children = getChildVector(*element);			
-		dt__FORALL(children, ii,	
+		dt__forAllIndex(children, ii) {
 			replaceRecursiveInAllAttributes(replace, with, &children[ii]);						
-		);		
+		}
 	}  
 	
 	std::vector< QDomAttr > qtXmlPrimitive::getAttributeVector( QDomElement const element ) {

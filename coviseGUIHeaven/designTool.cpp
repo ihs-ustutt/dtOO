@@ -227,7 +227,7 @@ namespace dtOO {
 				else if ( strcmp(paramName, "_cVSlider") == 0 ) {
 					std::string label = _cVChoice->getActLabel();
 					constValue * cVptr = _cV.get(label);
-					dt__PTRASS(
+					dt__ptrAss(
 						sliderFloatParam * sfp, 
 						sliderFloatParam::DownCast(cVptr)
 					);
@@ -236,7 +236,7 @@ namespace dtOO {
 				else if ( strcmp(paramName, "_cVInt") == 0 ) {
 					std::string label = _cVChoice->getActLabel();
 					constValue * cVptr = _cV.get(label);
-					dt__PTRASS(
+					dt__ptrAss(
 						intParam * ip, 
 						intParam::DownCast(cVptr)
 					);

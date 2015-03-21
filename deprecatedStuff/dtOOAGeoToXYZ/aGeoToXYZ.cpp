@@ -92,7 +92,7 @@ namespace dtOO {
                 float percentII = iiF * (1. / (nPointsIIF-1) );                              
 
                   map2dTo3d * map;
-                  dt__MUSTDOWNCAST(aG, map2dTo3d, map);
+                  dt__mustDownCast(aG, map2dTo3d, map);
                   dtPoint3 point = map->getPointPercent(percentII, percentJJ);
                   of << point.x() << " " << point.y() << " " << point.z() << std::endl;
               }
