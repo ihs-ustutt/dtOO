@@ -18,6 +18,7 @@ SET(HEADERS
   readMOABMesh.h
   gmshBoundedVolume.h
   postBLMeshKit.h
+  postBLGmsh.h
 )
 
 SET(SOURCES
@@ -40,6 +41,7 @@ SET(SOURCES
   readMOABMesh.cpp
   gmshBoundedVolume.cpp
   postBLMeshKit.cpp
+  postBLGmsh.cpp
 )
 
 APPEND_DTOO_SOURCE(meshKernel "${SOURCES}")

@@ -5,9 +5,11 @@
 
 #include "dtGmshFace.h"
 #include "dtOMMesh.h"
+#include "dtOMMeshManifold.h"
 
 namespace dtOO {
 	dtGmshMeshGFaceExtrude::dtGmshMeshGFaceExtrude() {
+		_thickness = 0.;
 	}
 
 	dtGmshMeshGFaceExtrude::~dtGmshMeshGFaceExtrude() {
@@ -17,36 +19,32 @@ namespace dtOO {
 		_thickness = thickness;
 	}
 	
-  void dtGmshMeshGFaceExtrude::operator()( std::list< dtGmshFace * > const & face ) {
-		dt__forAllConstIter( std::list< dtGmshFace * >, face, it ) {
-			dtGmshFace const * const &thisFace = *it;
-      DTINFOWF(operator(), << "Working on face = " << thisFace->tag());
-			
-		  dtOMMesh * om = thisFace->getOMMesh();	
-			
-			for (
-				omVertexI v_it = om->vertices_begin();
-				v_it != om->vertices_end();
-				++v_it
-			) {
-				omVertexD omD = om->data(*v_it);
-				MVertex const * const mv = omD.MVertex();
-				DTINFOWF(
-					operator(),
-				  << DTLOGEVAL(mv->x()) << LOGDEL
-				  << DTLOGEVAL(mv->y()) << LOGDEL
-				  << DTLOGEVAL(mv->z())
-				);
-			}			
-			
-		}
-	}
+  void dtGmshMeshGFaceExtrude::operator()( 
+	  std::list< dtGmshFace const * > const & face, 
+		std::vector< int > const & ori 
+	) {
+		dtOMMesh om;
 	
-	void dtGmshMeshGFaceExtrude::operator()( dtGmshFace * face ) {
-		std::list< dtGmshFace * > faceL;
-		faceL.push_back(face);
+		int itC = 0;
+		dt__forAllConstIter( std::list< dtGmshFace const * >, face, it ) {
+			dtGmshFace const * const &thisFace = *it;
+
+			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
+			
+			if (ori[itC] > 0) om.add(*tmpOM);		
+			else if (ori[itC] < 0) om.addInv(*tmpOM);
+			else {
+				DTWARNINGWF(
+				  operator(), 
+					<< "Ignoring face (tag = " << thisFace->tag() << ")."
+				);
+			}
+			itC++;
+		}
 		
-		this->operator()(faceL);
+		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), v_it) {
+			dtOMMeshManifold(om, *v_it);
+		}			
 	}
 }
 

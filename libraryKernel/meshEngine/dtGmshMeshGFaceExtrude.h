@@ -13,8 +13,7 @@ namespace dtOO {
       dtGmshMeshGFaceExtrude();
       dtGmshMeshGFaceExtrude( float const & thickness );
       virtual ~dtGmshMeshGFaceExtrude();
-      void operator()( std::list< dtGmshFace * > const & face );      
-      void operator()( dtGmshFace * face );      
+      void operator()( std::list< dtGmshFace const * > const & face, std::vector< int > const & ori);      
     private:
       float _thickness;
   };
