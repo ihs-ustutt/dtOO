@@ -16,6 +16,7 @@ namespace dtOO {
   
   class readMOABMesh : public boundedVolume {
   public:
+    dt__CLASSSTD(readMOABMesh, boundedVolume);
     readMOABMesh();
     virtual ~readMOABMesh();
     virtual void init( 

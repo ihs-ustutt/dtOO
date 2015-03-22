@@ -17,6 +17,7 @@ namespace dtOO {
   
   class gmshBoundedVolume : public boundedVolume {
   public:
+    dt__CLASSSTD(gmshBoundedVolume, boundedVolume);      
     gmshBoundedVolume();
     virtual ~gmshBoundedVolume();
     virtual void init( 

@@ -15,6 +15,7 @@ namespace dtOO {
   
   class map3dTo3dTriangulated : public boundedVolume {
   public:
+    dt__CLASSSTD(map3dTo3dTriangulated, boundedVolume);
     map3dTo3dTriangulated();
     virtual ~map3dTo3dTriangulated();
     virtual void init( 
