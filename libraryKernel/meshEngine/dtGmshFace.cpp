@@ -575,7 +575,7 @@ namespace dtOO {
 			std::vector< MVertex * > vertices;
 			MElement * me = __caCThis->getMeshElement(ii);
 			me->getVertices(vertices);
-			omFaceH fH = om->addFace(vertices, me);
+			om->addFace(me);
 		}
 		
 		return om;
