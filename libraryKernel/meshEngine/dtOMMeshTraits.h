@@ -28,8 +28,9 @@ namespace dtOO {
         ::MElement * _me;
         ::MFace _mf;
         dtVector3 _nn;
+        bool _inverted;
       public:
-        FaceT() : _me(NULL) {
+        FaceT() : _me(NULL), _inverted(false) {
         }
         void MElement( ::MElement const * const me ) {
           _me = const_cast< ::MElement * >(me);
@@ -48,7 +49,13 @@ namespace dtOO {
         }
         void setNormal( dtVector3 const & nn ) {
           _nn = nn;
-        }        
+        }     
+        void invert( void ) {
+          _inverted = true;
+        }            
+        bool inverted( void ) const {
+          return _inverted;
+        }                    
     };
     FaceAttributes( OpenMesh::Attributes::Normal );
   };

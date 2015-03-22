@@ -63,15 +63,18 @@ namespace dtOO {
       dt__CLASSNAME(dtOMMesh);
     public:
       dtOMMesh();
-      virtual ~dtOMMesh();
-      omFaceH addFace( std::vector< ::MVertex * > const & vertices, ::MElement const * const me );  
+      virtual ~dtOMMesh();  
+      omFaceH addFace( omFaceD const & fD );
       omFaceH addFace( ::MElement const * const me );  
+      omFaceH addFaceInv( ::MElement const * const me );  
       void writeMesh(std::string const filename) const;
       void add( const dtOMMesh &toAdd );      
+      void addInv( const dtOMMesh &toAdd );      
       std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;
     private:
       omVertexH addVertex( ::MVertex const * const &mv );      
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          
+      omFaceH addFace( std::vector< ::MVertex * > const & vertices, ::MElement const * const me );      
     private:      
       std::map< ::MVertex const *, omVertexH > _om_gmsh;
     

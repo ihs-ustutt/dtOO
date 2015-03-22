@@ -94,12 +94,32 @@ namespace dtOO {
 		return fH;
 	}  
 
+  omFaceH dtOMMesh::addFace( omFaceD const & fD ) {
+    if ( !fD.inverted() ) {
+			return addFace(fD.MElement());
+		} 
+		else {
+			return addFaceInv(fD.MElement());
+		}
+	}	
+	
   omFaceH dtOMMesh::addFace( ::MElement const * const me ) {
 		std::vector< ::MVertex * > vertices;
 		const_cast< ::MElement * >(me)->getVertices(vertices);
 		
     return addFace(vertices, me);
-	}  	
+	}
+
+  omFaceH dtOMMesh::addFaceInv( ::MElement const * const me ) {
+		std::vector< ::MVertex * > vertices;
+		const_cast< ::MElement * >(me)->getVertices(vertices);
+		
+		std::reverse(vertices.begin(), vertices.end());
+    omFaceH fH = addFace(vertices, me);
+		data(fH).invert();
+		
+		return fH;
+	}  		
 	
   void dtOMMesh::writeMesh(std::string const filename) const {
     OpenMesh::IO::write_mesh(*this, filename);
@@ -112,6 +132,14 @@ namespace dtOO {
 			addFace(me);
 		}
 	}
+	
+	void dtOMMesh::addInv(const dtOMMesh &toAdd) {
+		dt__forFromToIter(omFaceI, toAdd.faces_begin(), toAdd.faces_end(), f_it) {
+			omFaceD const & fD = toAdd.data(*f_it);
+			::MElement const * const me = fD.MElement();
+			addFaceInv(me);
+		}
+	}	
 	
 	std::map< ::MVertex const *, omVertexH > const & dtOMMesh::omGmsh( void ) const {
 		return _om_gmsh;

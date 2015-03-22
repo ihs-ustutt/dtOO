@@ -4,8 +4,8 @@
 namespace dtOO {
   dtOMMeshManifold::dtOMMeshManifold(dtOMMesh const & om, omVertexH const & vH) {
 		dt__forFromToIter(omConstVertexFaceI, om.cvf_begin(vH), om.cvf_end(vH), it) {
-		  omFaceD const & fD = om.data(*it);
-			addFace( fD.MElement() );
+//		  omFaceD const & fD = om.data(*it);
+			addFace( om.data(*it) );
 		}
 		omVertexD const & myVD  = om.data(vH);
 		omVertexH myVH = omGmsh().at(myVD.MVertex());
