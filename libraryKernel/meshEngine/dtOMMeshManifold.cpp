@@ -63,8 +63,8 @@ namespace dtOO {
 	bool dtOMMeshManifold::divideable( void ) const {
 		bool isClosed = closed();
 		if ( 
-		     ((_dihedralAngleV.size()>=4) && isClosed)
-			|| (_dihedralAngleV.size()>=5) 
+		     ((_dihedralAngleV.size()>=4) &&  isClosed)
+			|| ((_dihedralAngleV.size()>=3) && !isClosed) 
 		) {
 			return true;
 		}
@@ -136,7 +136,39 @@ namespace dtOO {
 			}
 		}
 		else {
-			DTWARNINGWF(divide(), << "Not yet implemented.");
+			//
+			// find max dihedral angle and save iterators
+			//			
+			std::vector< float >::iterator maxAngleIt;
+			omVertexEdgeI maxEdgeIt;
+			int maxAngleBegPos;
+			int maxAngleEndPos;			
+			dt__forAllIndex(_dihedralAngleV, tmp) {
+				maxAngleIt
+				=
+				std::max_element(_dihedralAngleV.begin(), _dihedralAngleV.end());
+				maxEdgeIt = ve_begin(_centerVertex);
+				maxAngleBegPos = maxAngleIt-_dihedralAngleV.begin();
+				maxAngleEndPos = maxAngleIt-_dihedralAngleV.end();
+				for (int ii=0;ii<maxAngleBegPos;ii++) maxEdgeIt++;
+				*maxAngleIt = 0.;
+				if ( (maxAngleBegPos>2) && (maxAngleEndPos<-2) ) break;
+			}
+			
+			//
+			// output
+			//
+			DTINFOWF(
+				divide(),
+				<< "Dividing manifold at " << maxAngleBegPos << LOGDEL
+				<< "Distance " << DTLOGEVAL(maxAngleBegPos) 
+				<< " and " << DTLOGEVAL(maxAngleEndPos)
+			);
+			
+			//
+			// create pair and return
+			//
+			return subractManifold( *(ve_begin(_centerVertex)), *maxEdgeIt);
 		}
 	}
 
