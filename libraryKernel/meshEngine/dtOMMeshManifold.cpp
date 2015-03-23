@@ -61,7 +61,13 @@ namespace dtOO {
 	}	
 	
 	bool dtOMMeshManifold::divideable( void ) const {
-		if (_dihedralAngleV.size() >= 3) return true;
+		bool isClosed = closed();
+		if ( 
+		     ((_dihedralAngleV.size()>=4) && isClosed)
+			|| (_dihedralAngleV.size()>=5) 
+		) {
+			return true;
+		}
 		else return false;
 	}
 

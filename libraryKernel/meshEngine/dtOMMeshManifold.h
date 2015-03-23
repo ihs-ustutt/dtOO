@@ -16,8 +16,6 @@ namespace dtOO {
     bool closed( void ) const;
     void update( void );
   private:
-//    bool _isClosed;
-//    bool _isDivideable;
     std::vector< float > _dihedralAngleV;
 		std::vector< bool > _isBoundary;
     omVertexH _centerVertex;
