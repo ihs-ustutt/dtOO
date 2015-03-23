@@ -23,6 +23,20 @@ namespace dtOO {
         }              
     };
     
+    EdgeTraits {
+      private:
+        float _dihedralAngle;
+      public:
+        EdgeT() : _dihedralAngle(0.) {
+        }
+        void dihedralAngle( float const & dihedralAngle ) {
+          _dihedralAngle = dihedralAngle;
+        }        
+        float dihedralAngle( void ) const {
+          return _dihedralAngle;
+        }
+    };
+    
     FaceTraits {
       private:
         ::MElement * _me;
