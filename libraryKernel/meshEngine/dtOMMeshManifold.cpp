@@ -33,7 +33,7 @@ namespace dtOO {
 			_isBoundary.push_back(is_boundary(*it));
 			if ( !_isBoundary.back() ) {
 				omEdgeD & eD = data(*it);
-				eD.dihedralAngle( calc_dihedral_angle(*it) );
+				eD.dihedralAngle( fabs(calc_dihedral_angle(*it)) );
 				_dihedralAngleV.push_back( eD.dihedralAngle() );
 			}
 		}		
@@ -82,5 +82,99 @@ namespace dtOO {
 			return true;
 		}
 		return false;
+	}	
+
+  dtOMMeshManifold dtOMMeshManifold::divide(void) {
+		dt__THROW_IF(!divideable(), divide());
+		
+		bool isClosed = closed();
+		
+		if (isClosed) {
+			//
+			// find max dihedral angle and save iterators
+			//
+      std::vector< float >::iterator maxAngleIt
+			=
+			std::max_element(_dihedralAngleV.begin(), _dihedralAngleV.end());
+		  omVertexEdgeI maxEdgeIt = ve_begin(_centerVertex);
+			for (int ii=0;ii<(maxAngleIt-_dihedralAngleV.begin());ii++) maxEdgeIt++;
+			*maxAngleIt = 0.;
+
+			//
+			// find next max dihedral angle and save iterators
+			//			
+			std::vector< float >::iterator max2ndAngleIt;
+			omVertexEdgeI max2ndEdgeIt;
+			dt__forAllIndex(_dihedralAngleV, tmp) {
+				max2ndAngleIt
+				=
+				std::max_element(_dihedralAngleV.begin(), _dihedralAngleV.end());
+				max2ndEdgeIt = ve_begin(_centerVertex);
+				for (int ii=0;ii<(max2ndAngleIt-_dihedralAngleV.begin());ii++) max2ndEdgeIt++;
+				*max2ndAngleIt = 0.;
+				if ( abs(max2ndAngleIt-maxAngleIt) > 2) break;
+			}
+			
+			//
+			// output
+			//
+			DTINFOWF(
+				divide(),
+				<< "Dividing manifold at " << maxAngleIt - _dihedralAngleV.begin() 
+				<< " and " << max2ndAngleIt - _dihedralAngleV.begin() << LOGDEL
+				<< "Distance between " << max2ndAngleIt-maxAngleIt
+			);
+			
+			//
+			// create pair and return
+			//
+			if ( (max2ndAngleIt-maxAngleIt)>0 ) {
+				return subractManifold(*maxEdgeIt, *max2ndEdgeIt);
+			}
+			else {
+				return subractManifold(*max2ndEdgeIt, *maxEdgeIt);
+			}
+		}
+		else {
+			DTWARNINGWF(divide(), << "Not yet implemented.");
+		}
+	}
+
+  dtOMMeshManifold dtOMMeshManifold::subractManifold(
+	  omEdgeH const & from, omEdgeH const & to
+	) {
+		dtOMMesh retMesh;
+		bool reachStart = false;
+		dt__forFromToIter(
+			omVertexIHalfedgeI, vih_begin(_centerVertex), vih_end(_centerVertex), 
+			vih_it
+		) {
+			if (edge_handle(*vih_it) == from) {
+				reachStart = true;
+			}
+			if (edge_handle(*vih_it) == to) {
+				break;
+			}				
+			if (reachStart) {
+				retMesh.addFace( data(face_handle(*vih_it)) );
+				delete_face(face_handle(*vih_it), true);
+			}
+		}		
+		
+		//
+		// get center vertex handle
+		//
+		omVertexD & vD = retMesh.data(_centerVertex);
+
+		//
+		// remove deleted faces and update this manifold
+		//
+		garbage_collection();
+		update();
+		
+		//
+		// create new manifold
+		//
+		return dtOMMeshManifold(retMesh, retMesh.omGmsh().at(vD.MVertex()));
 	}	
 }

@@ -45,6 +45,9 @@ namespace dtOO {
   typedef omMesh::ConstVertexEdgeIter omConstVertexEdgeI;
   typedef omMesh::VertexOHalfedgeIter omVertexOHalfedgeI;
   typedef omMesh::ConstVertexOHalfedgeIter omConstVertexOHalfedgeI;
+  typedef omMesh::VertexIHalfedgeIter omVertexIHalfedgeI;
+  typedef omMesh::ConstVertexIHalfedgeIter omConstVertexIHalfedgeI;
+  
   //
   // misc
   //

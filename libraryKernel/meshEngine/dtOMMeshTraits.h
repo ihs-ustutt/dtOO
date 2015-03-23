@@ -71,7 +71,12 @@ namespace dtOO {
           return _inverted;
         }                    
     };
-    FaceAttributes( OpenMesh::Attributes::Normal );
+    //
+    // standard attributes
+    //
+    VertexAttributes( OpenMesh::Attributes::Status );    
+    EdgeAttributes( OpenMesh::Attributes::Status );    
+    FaceAttributes( OpenMesh::Attributes::Normal | OpenMesh::Attributes::Status );
   };
 }
 

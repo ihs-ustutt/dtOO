@@ -15,6 +15,9 @@ namespace dtOO {
     bool divideable( void ) const;    
     bool closed( void ) const;
     void update( void );
+    dtOMMeshManifold divide(void);
+  private:
+    dtOMMeshManifold subractManifold(omEdgeH const & from, omEdgeH const & to);
   private:
     std::vector< float > _dihedralAngleV;
 		std::vector< bool > _isBoundary;
