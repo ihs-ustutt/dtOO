@@ -215,7 +215,6 @@ namespace dtOO {
 		}
 		
 		while (true) {
-			omHalfedgeH opHeH = opposite_halfedge_handle(heH);			
 			omFaceH fH = face_handle(opposite_halfedge_handle(heH));
 
 		  retMesh.addFace( data(fH) );
