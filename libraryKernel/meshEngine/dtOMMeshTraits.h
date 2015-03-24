@@ -43,8 +43,9 @@ namespace dtOO {
         ::MFace _mf;
         dtVector3 _nn;
         bool _inverted;
+        bool _mark;
       public:
-        FaceT() : _me(NULL), _inverted(false) {
+        FaceT() : _me(NULL), _inverted(false), _mark(false) {
         }
         void MElement( ::MElement const * const me ) {
           _me = const_cast< ::MElement * >(me);
@@ -70,6 +71,12 @@ namespace dtOO {
         bool inverted( void ) const {
           return _inverted;
         }                    
+        void mark( void ) {
+          _mark = true;
+        }            
+        bool marked( void ) const {
+          return _mark;
+        }                            
     };
     //
     // standard attributes

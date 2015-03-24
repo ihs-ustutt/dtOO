@@ -144,4 +144,11 @@ namespace dtOO {
 	std::map< ::MVertex const *, omVertexH > const & dtOMMesh::omGmsh( void ) const {
 		return _om_gmsh;
 	}
+
+  bool dtOMMesh::contains( omFaceH const & fH, omEdgeH const & eH ) const {
+		dt__forFromToIter(omConstFaceEdgeI, cfe_begin(fH), cfe_end(fH), eIt) {
+			if (*eIt == eH) return true;
+		}
+		return false;
+	}
 }

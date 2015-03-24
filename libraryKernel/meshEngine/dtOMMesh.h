@@ -47,6 +47,10 @@ namespace dtOO {
   typedef omMesh::ConstVertexOHalfedgeIter omConstVertexOHalfedgeI;
   typedef omMesh::VertexIHalfedgeIter omVertexIHalfedgeI;
   typedef omMesh::ConstVertexIHalfedgeIter omConstVertexIHalfedgeI;
+  typedef omMesh::FaceEdgeIter omFaceEdgeI;
+  typedef omMesh::ConstFaceEdgeIter omConstFaceEdgeI;
+  typedef omMesh::FaceHalfedgeIter omFaceHalfedgeI;
+  typedef omMesh::ConstFaceHalfedgeIter omConstFaceHalfedgeI;
   
   //
   // misc
@@ -74,6 +78,7 @@ namespace dtOO {
       void add( const dtOMMesh &toAdd );      
       void addInv( const dtOMMesh &toAdd );      
       std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;
+      bool contains( omFaceH const & fH, omEdgeH const & eH ) const;
     private:
       omVertexH addVertex( ::MVertex const * const &mv );      
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          
