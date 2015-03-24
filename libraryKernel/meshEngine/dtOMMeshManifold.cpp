@@ -90,6 +90,7 @@ namespace dtOO {
 		bool isClosed = closed();
 		
 		if (isClosed) {
+			int nEdges = _dihedralAngleV.size();
 			//
 			// find max dihedral angle and save iterators
 			//
@@ -112,7 +113,7 @@ namespace dtOO {
 				max2ndEdgeIt = ve_begin(_centerVertex);
 				for (int ii=0;ii<(max2ndAngleIt-_dihedralAngleV.begin());ii++) max2ndEdgeIt++;
 				*max2ndAngleIt = 0.;
-				if ( abs(max2ndAngleIt-maxAngleIt) > 2) break;
+				if ( (abs(max2ndAngleIt-maxAngleIt) > 1) && ((nEdges-abs(max2ndAngleIt-maxAngleIt))>1) ) break;
 			}
 			
 			//
@@ -172,26 +173,63 @@ namespace dtOO {
 		}
 	}
 
+  std::vector< dtOMMeshManifold > dtOMMeshManifold::divide( float const & angle ) {
+		std::vector< dtOMMeshManifold > manifolds;
+		
+		bool restart = true;
+		manifolds.push_back(*this);
+		
+		while (restart) {
+			restart = false;
+			dt__forAllIter(std::vector< dtOMMeshManifold >, manifolds, it) {
+				if (it->divideable() && (it->maxDihedralAngle()>angle) ) {
+					manifolds.push_back( it->divide() );
+					restart = true;
+					break;
+				}
+			}
+		}
+		
+		return manifolds;
+	}	
+	
   dtOMMeshManifold dtOMMeshManifold::subractManifold(
 	  omEdgeH const & from, omEdgeH const & to
 	) {
 		dtOMMesh retMesh;
-		bool reachStart = false;
-		dt__forFromToIter(
-			omVertexIHalfedgeI, vih_begin(_centerVertex), vih_end(_centerVertex), 
-			vih_it
-		) {
-			if (edge_handle(*vih_it) == from) {
-				reachStart = true;
-			}
-			if (edge_handle(*vih_it) == to) {
+		//
+		// find start halfedge
+		//
+		omHalfedgeH heH = halfedge_handle(from, 0);
+		if ( is_boundary(heH) ) {
+			heH = opposite_halfedge_handle(heH);
+		}
+		omFaceH fH = face_handle(heH);
+		dt__forFromToIter(omFaceHalfedgeI, fh_begin(fH), fh_end(fH), fhIt) {
+			omHalfedgeH thisHe = *fhIt;
+			omHalfedgeH thisOppositeHe = opposite_halfedge_handle(thisHe);
+			if ( is_boundary(thisOppositeHe) ) {
+				heH = thisOppositeHe;
 				break;
-			}				
-			if (reachStart) {
-				retMesh.addFace( data(face_handle(*vih_it)) );
-				delete_face(face_handle(*vih_it), true);
 			}
-		}		
+		}
+		
+		while (true) {
+			omHalfedgeH opHeH = opposite_halfedge_handle(heH);			
+			omFaceH fH = face_handle(opposite_halfedge_handle(heH));
+
+		  retMesh.addFace( data(fH) );
+			
+			bool lastFace = dtOMMesh::contains(fH, to);
+			heH = next_halfedge_handle(heH);
+			data(fH).mark();
+			
+			if (lastFace) break;
+		}
+		
+		dt__forFromToIter(omFaceI, faces_begin(), faces_end(), fIt) {
+			if (data(*fIt).marked()) delete_face(*fIt, true);
+		}
 		
 		//
 		// get center vertex handle

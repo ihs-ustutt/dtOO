@@ -16,6 +16,7 @@ namespace dtOO {
     bool closed( void ) const;
     void update( void );
     dtOMMeshManifold divide(void);
+    std::vector< dtOMMeshManifold > divide( float const & angle );
   private:
     dtOMMeshManifold subractManifold(omEdgeH const & from, omEdgeH const & to);
   private:
