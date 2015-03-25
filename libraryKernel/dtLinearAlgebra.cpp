@@ -80,6 +80,14 @@ namespace dtOO {
 		return (1./sqrt(v0.squared_length())) * v0;
 	}	
 	
+  dtVector3 dtLinearAlgebra::meanAverage( std::vector< dtVector3 > const & vv ) {
+		dtVector3 nn(0, 0, 0);
+		dt__forAllConstIter(std::vector< dtVector3 >, vv, it) {
+			nn = nn + (*it);
+		}
+		return normalize(nn);
+	}
+	
 	float dtLinearAlgebra::length( dtVector3 const & v0 ) {
 		return sqrt(v0.squared_length());
 	}

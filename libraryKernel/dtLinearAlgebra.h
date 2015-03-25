@@ -48,7 +48,8 @@ namespace dtOO {
       dtVector3 const & v0, 
       dtVector3 const & v1
     );    
-	  static dtVector3 normalize( dtVector3 const & v0 );    
+	  static dtVector3 normalize( dtVector3 const & v0 );
+    static dtVector3 meanAverage( std::vector< dtVector3 > const & vv );
     static float length( dtVector3 const & v0 );    
     static dtVector3 toDtVector3(dtPoint3 const & pp);
     static dtVector2 toDtVector2(dtPoint2 const & pp);
