@@ -37,6 +37,7 @@ namespace dtOO {
   typedef omMesh::VertexIter omVertexI;
   typedef omMesh::VertexVertexIter omVertexVertexI;
   typedef omMesh::FaceIter omFaceI;
+  typedef omMesh::ConstFaceIter omConstFaceI;
   typedef omMesh::VertexFaceIter omVertexFaceI;
   typedef omMesh::ConstVertexFaceIter omConstVertexFaceI;
   typedef omMesh::FaceVertexIter omFaceVertexI;
@@ -57,6 +58,7 @@ namespace dtOO {
   //
   typedef omMesh::Point omPoint;
   typedef omMesh::Scalar omScalar;
+  typedef omMesh::Normal omNormal;
   
   /**
    * @brief Interface to OpenMesh

@@ -18,6 +18,7 @@ namespace dtOO {
     void update( void );
     dtOMMeshManifold divide(void);
     std::vector< dtOMMeshManifold > divide( float const & angle );
+    dtVector3 normal( void ) const;
   private:
     dtOMMeshManifold subractManifold(omEdgeH const & from, omEdgeH const & to);
   private:

@@ -253,4 +253,13 @@ namespace dtOO {
 		//
 		return dtOMMeshManifold(retMesh, retMesh.omGmsh().at(vD.MVertex()));
 	}	
+	
+	dtVector3 dtOMMeshManifold::normal( void ) const {
+		dtVector3 nn(0, 0, 0);
+		dt__forFromToIter(omConstFaceI, faces_begin(), faces_end(), fIt) {		
+			omNormal const & omN = omMesh::normal(*fIt);
+			nn = nn + dtVector3(omN[0], omN[1], omN[2]);
+		}
+		return dtLinearAlgebra::normalize(nn);
+	}
 }

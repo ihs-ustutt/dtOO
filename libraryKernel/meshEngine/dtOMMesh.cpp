@@ -15,7 +15,7 @@ namespace dtOO {
 
   dtOMMesh::dtOMMesh( dtOMMesh const & orig ) : omMesh() {
 		dt__forFromToIter(omFaceI, orig.faces_begin(), orig.faces_end(), fIt) {
-			addFace( data(*fIt) );
+			addFace( orig.data(*fIt) );
 		}
   }
 
