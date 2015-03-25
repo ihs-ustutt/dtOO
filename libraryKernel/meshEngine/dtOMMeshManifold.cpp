@@ -26,8 +26,7 @@ namespace dtOO {
 	}
 	
 	dtOMMeshManifold::dtOMMeshManifold( dtOMMeshManifold const & orig) : dtOMMesh(orig) {
-		omVertexD const & vD = orig.data(orig._centerVertex);
-		_centerVertex = this->omGmsh().at(vD.MVertex());
+		_centerVertex = this->omGmsh().at(orig.centerMVertex());
 		
 		update();
 	}
@@ -38,12 +37,12 @@ namespace dtOO {
 		
 		dt__forFromToIter(omVertexEdgeI, ve_begin(_centerVertex), ve_end(_centerVertex), it) {
 			_isBoundary.push_back(is_boundary(*it));
-			if ( !_isBoundary.back() ) {
-				omEdgeD & eD = data(*it);
-				eD.dihedralAngle( fabs(calc_dihedral_angle(*it)) );
-				_dihedralAngleV.push_back( eD.dihedralAngle() );
-			}
+			omEdgeD & eD = data(*it);
+			eD.dihedralAngle( fabs(calc_dihedral_angle(*it)) );
+			_dihedralAngleV.push_back( eD.dihedralAngle() );
 		}		
+		
+		update_normals();
 	}
 
 	dtOMMeshManifold::~dtOMMeshManifold() {
@@ -71,7 +70,7 @@ namespace dtOO {
 		bool isClosed = closed();
 		if ( 
 		     ((_dihedralAngleV.size()>=4) &&  isClosed)
-			|| ((_dihedralAngleV.size()>=3) && !isClosed) 
+			|| ((_dihedralAngleV.size()>=5) && !isClosed) 
 		) {
 			return true;
 		}
@@ -160,7 +159,7 @@ namespace dtOO {
 				maxAngleEndPos = maxAngleIt-_dihedralAngleV.end();
 				for (int ii=0;ii<maxAngleBegPos;ii++) maxEdgeIt++;
 				*maxAngleIt = 0.;
-				if ( (maxAngleBegPos>2) && (maxAngleEndPos<-2) ) break;
+				if ( (maxAngleBegPos>1) && (maxAngleEndPos<-1) ) break;
 			}
 			
 			//
@@ -170,7 +169,9 @@ namespace dtOO {
 				divide(),
 				<< "Dividing manifold at " << maxAngleBegPos << LOGDEL
 				<< "Distance " << DTLOGEVAL(maxAngleBegPos) 
-				<< " and " << DTLOGEVAL(maxAngleEndPos)
+				<< " and " << DTLOGEVAL(maxAngleEndPos) << LOGDEL
+				<< "_dihedralAngleV = " << _dihedralAngleV << LOGDEL
+				<< "_isBoundary = " << _isBoundary << LOGDEL
 			);
 			
 			//
@@ -215,7 +216,12 @@ namespace dtOO {
 		dt__forFromToIter(omFaceHalfedgeI, fh_begin(fH), fh_end(fH), fhIt) {
 			omHalfedgeH thisHe = *fhIt;
 			omHalfedgeH thisOppositeHe = opposite_halfedge_handle(thisHe);
-			if ( is_boundary(thisOppositeHe) ) {
+//			if ( is_boundary(thisOppositeHe) && (thisOppositeHe!=heH) ) {
+      if ( 
+				   is_boundary(thisOppositeHe) 
+				&& (from_vertex_handle(thisOppositeHe)!=_centerVertex) 
+				&& (to_vertex_handle(thisOppositeHe)!=_centerVertex) 
+			) {			
 				heH = thisOppositeHe;
 				break;
 			}
@@ -255,11 +261,15 @@ namespace dtOO {
 	}	
 	
 	dtVector3 dtOMMeshManifold::normal( void ) const {
-		dtVector3 nn(0, 0, 0);
+		std::vector< dtVector3 > nn;
 		dt__forFromToIter(omConstFaceI, faces_begin(), faces_end(), fIt) {		
 			omNormal const & omN = omMesh::normal(*fIt);
-			nn = nn + dtVector3(omN[0], omN[1], omN[2]);
+			nn.push_back( dtVector3(omN[0], omN[1], omN[2]) );
 		}
-		return dtLinearAlgebra::normalize(nn);
+		return dtLinearAlgebra::meanAverage(nn);
 	}
+	
+	MVertex * dtOMMeshManifold::centerMVertex( void ) const {
+		return data(_centerVertex).MVertex();
+	}	
 }
