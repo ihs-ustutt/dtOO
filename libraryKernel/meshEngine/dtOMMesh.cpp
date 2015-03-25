@@ -13,6 +13,12 @@ namespace dtOO {
   dtOMMesh::dtOMMesh() : omMesh() {
   }
 
+  dtOMMesh::dtOMMesh( dtOMMesh const & orig ) : omMesh() {
+		dt__forFromToIter(omFaceI, orig.faces_begin(), orig.faces_end(), fIt) {
+			addFace( data(*fIt) );
+		}
+  }
+
   dtOMMesh::~dtOMMesh() {
   }
 
@@ -88,8 +94,6 @@ namespace dtOO {
 		dt__THROW_IF(const_cast< ::MElement * >(me)->getNumFaces()!=1, addFace());
 		
 	  fD.MFace( const_cast< ::MElement * >(me)->getFace(0) );
-		SVector3 sv = fD.MFace().normal();
-		fD.setNormal( dtVector3(sv.x(), sv.y(), sv.z()) );
 		
 		return fH;
 	}  

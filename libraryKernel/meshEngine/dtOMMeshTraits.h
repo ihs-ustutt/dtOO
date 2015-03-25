@@ -41,7 +41,6 @@ namespace dtOO {
       private:
         ::MElement * _me;
         ::MFace _mf;
-        dtVector3 _nn;
         bool _inverted;
         bool _mark;
       public:
@@ -59,12 +58,6 @@ namespace dtOO {
         ::MFace & MFace( void ) {
           return _mf;
         }            
-        dtVector3 const & normal( void ) {
-          return _nn;
-        }
-        void setNormal( dtVector3 const & nn ) {
-          _nn = nn;
-        }     
         void invert( void ) {
           _inverted = true;
         }            

@@ -25,6 +25,13 @@ namespace dtOO {
 		);
 	}
 	
+	dtOMMeshManifold::dtOMMeshManifold( dtOMMeshManifold const & orig) : dtOMMesh(orig) {
+		omVertexD const & vD = orig.data(orig._centerVertex);
+		_centerVertex = this->omGmsh().at(vD.MVertex());
+		
+		update();
+	}
+	
 	void dtOMMeshManifold::update( void ) {
 		_dihedralAngleV.clear();
 		_isBoundary.clear();

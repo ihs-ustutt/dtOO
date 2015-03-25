@@ -9,10 +9,11 @@ namespace dtOO {
   public:
     dt__CLASSNAME(dtOMMeshManifold);
     dtOMMeshManifold(dtOMMesh const & om, omVertexH const & vH);
+    dtOMMeshManifold( dtOMMeshManifold const & orig);
     virtual ~dtOMMeshManifold();
     float minDihedralAngle( void ) const;
     float maxDihedralAngle( void ) const;
-    bool divideable( void ) const;    
+    bool divideable( void ) const;
     bool closed( void ) const;
     void update( void );
     dtOMMeshManifold divide(void);

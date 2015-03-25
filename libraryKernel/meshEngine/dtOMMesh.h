@@ -70,6 +70,7 @@ namespace dtOO {
       dt__CLASSNAME(dtOMMesh);
     public:
       dtOMMesh();
+      dtOMMesh( dtOMMesh const & orig );
       virtual ~dtOMMesh();  
       omFaceH addFace( omFaceD const & fD );
       omFaceH addFace( ::MElement const * const me );  
