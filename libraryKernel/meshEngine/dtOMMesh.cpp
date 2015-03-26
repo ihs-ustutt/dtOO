@@ -159,6 +159,15 @@ namespace dtOO {
 	dtVector3 & dtOMMesh::vertexNormal(MVertex * mv) {
 		return data(_om_gmsh[mv]).normal();
 	}
+
+	void dtOMMesh::replaceMVertex( omVertexH const & vH, ::MVertex * mv ) {
+		data(vH).MVertex(mv);
+	  point(vH) = omPoint(mv->x(), mv->y(), mv->z());
+	}
+	
+	bool dtOMMesh::vertexIsBoundary(MVertex * mv) const {
+		return const_cast<dtOMMesh *>(this)->is_boundary(_om_gmsh.at(mv));
+	}
 	
 	void dtOMMesh::laplacianSmoothVertexNormal( void ) {
 		std::vector< dtVector3 > av(_om_gmsh.size());
