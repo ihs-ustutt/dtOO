@@ -29,8 +29,10 @@ namespace dtOO {
     float _thickness;
     int _intervals;
     float _bias;
+    int _nSmoothingSteps;
     boundedVolume const * _meshedBV;
     std::vector< std::string > _faceLabel;
+    std::string _regionLabel;
     std::vector< int > _faceOrientation;
   };
 }

@@ -7,6 +7,7 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <meshEngine/dtGmshFace.h>
+#include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshMeshGFaceExtrude.h>
 //#include "gmshBoundedVolume.h"
 
@@ -33,6 +34,7 @@ namespace dtOO {
     _thickness = optionHandling::getOptionFloat("thickness");
     _intervals = optionHandling::getOptionInt("intervals");
     _bias = optionHandling::getOptionFloat("bias");
+		_nSmoothingSteps = optionHandling::getOptionInt("nSmoothingSteps");		
 		
 		//
 		// boundedVolume
@@ -45,6 +47,9 @@ namespace dtOO {
 		_faceOrientation 
 		= 
 		qtXmlBase::getAttributeIntVectorMuParse("faceOrientation", wElement, cV, aF);
+		_regionLabel
+		= 
+		qtXmlPrimitive::getAttributeStr("regionLabel", wElement);
 		
 		//
 		// get boundedVolume
@@ -57,9 +62,10 @@ namespace dtOO {
 		dt__forAllConstIter(std::vector< std::string >, _faceLabel, it) {
 		  llF.push_back( _meshedBV->getFace(*it) );
 		}
-		dtGmshMeshGFaceExtrude extruder(_thickness);
-		extruder(llF, _faceOrientation);
+		dtGmshMeshGFaceExtrude extruder(_thickness, _nSmoothingSteps);
+		extruder(_meshedBV->getRegion(_regionLabel), llF, _faceOrientation);
 		
+		_meshedBV->getModel()->writeMSH("postBLGmsh.msh");
 		boundedVolume::setMeshed();
 	}
   
