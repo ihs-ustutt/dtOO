@@ -145,6 +145,29 @@ namespace dtOO {
 	  }
 	}
 	
+	dtGmshRegion const * gmshBoundedVolume::getRegion( std::string const & tag ) const {
+		::GModel::setCurrent(_gm.get());
+		
+		dt__forAllIndex(_physLabels[3], jj) {
+			if (_physLabels[3][jj] == tag) {
+				int pNum = _gm->getPhysicalNumber(3, tag);
+				dtGmshModel::intGEntityVMap groups;
+				_gm->getPhysicalGroups(3, groups);
+				std::vector< ::GEntity * > & geV
+				=
+				groups[_gm->getPhysicalNumber(3, tag)];
+
+				dt__forAllIter(std::vector< ::GEntity * >, geV, it) {
+					::GEntity * ge = *it;
+					dtGmshRegion * gr = dtGmshRegion::DownCast(ge);
+					if (gr) {
+						return gr;
+					}
+				}
+			}
+	  }
+	}
+	
   dtGmshModel * gmshBoundedVolume::getModel( void ) const {
 		return _gm.get();
 	}

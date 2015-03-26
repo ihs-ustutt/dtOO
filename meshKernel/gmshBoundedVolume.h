@@ -13,6 +13,7 @@ namespace dtOO {
   class constValue;
   class baseContainer;
   class dtGmshFace;
+  class dtGmshRegion;
   class dtGmshModel;
   
   class gmshBoundedVolume : public boundedVolume {
@@ -32,6 +33,7 @@ namespace dtOO {
   	virtual vectorHandling< renderInterface * > getExtRender( void ) const;        
     virtual std::vector< std::string > getMeshTags( void ) const;
 	  virtual dtGmshFace const * getFace( std::string const & tag ) const;
+	  virtual dtGmshRegion const * getRegion( std::string const & tag ) const;
     virtual dtGmshModel * getModel( void ) const;
   protected:
     void updatePhysicals( void );
