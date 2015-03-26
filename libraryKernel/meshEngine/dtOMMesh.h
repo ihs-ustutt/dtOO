@@ -82,6 +82,8 @@ namespace dtOO {
       void addInv( const dtOMMesh &toAdd );      
       std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;
       bool contains( omFaceH const & fH, omEdgeH const & eH ) const;
+      dtVector3 & vertexNormal(MVertex * mv);
+      void laplacianSmoothVertexNormal( void );
     private:
       omVertexH addVertex( ::MVertex const * const &mv );      
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          

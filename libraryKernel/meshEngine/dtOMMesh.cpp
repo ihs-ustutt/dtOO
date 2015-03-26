@@ -155,4 +155,29 @@ namespace dtOO {
 		}
 		return false;
 	}
+	
+	dtVector3 & dtOMMesh::vertexNormal(MVertex * mv) {
+		return data(_om_gmsh[mv]).normal();
+	}
+	
+	void dtOMMesh::laplacianSmoothVertexNormal( void ) {
+		std::vector< dtVector3 > av(_om_gmsh.size());
+		int counter = 0;
+		dt__forFromToIter(omVertexI, vertices_begin(), vertices_end(), vIt) {
+			std::vector< dtVector3 > tmp;
+			dt__forFromToIter(omVertexVertexI, vv_begin(*vIt), vv_end(*vIt), vvIt) {			
+        tmp.push_back( data(*vvIt).normal() );
+			}
+			av[counter] = dtLinearAlgebra::meanAverage(tmp);
+			counter++;
+		}
+		
+		counter = 0;
+		dt__forFromToIter(omVertexI, vertices_begin(), vertices_end(), vIt) {
+			data(*vIt).normal() 
+			= 
+			dtLinearAlgebra::normalize(data(*vIt).normal() + av[counter]);
+			counter++;
+		}		
+	}
 }

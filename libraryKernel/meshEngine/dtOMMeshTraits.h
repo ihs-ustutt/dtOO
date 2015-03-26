@@ -13,14 +13,18 @@ namespace dtOO {
     VertexTraits {
       private:
         ::MVertex * _mv;
+        dtVector3 _nn;
       public:
-        VertexT() : _mv(NULL) {}
+        VertexT() : _mv(NULL), _nn(dtVector3(0, 0, 0)) {}
         void MVertex( ::MVertex const * const mv ) {
           _mv = const_cast< ::MVertex * >(mv);
         }
         ::MVertex * MVertex( void ) const {
           return _mv;
-        }              
+        }             
+        dtVector3 & normal( void ) {
+          return _nn;
+        }
     };
     
     EdgeTraits {

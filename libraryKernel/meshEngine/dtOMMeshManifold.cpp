@@ -264,7 +264,7 @@ namespace dtOO {
 		std::vector< dtVector3 > nn;
 		dt__forFromToIter(omConstFaceI, faces_begin(), faces_end(), fIt) {		
 			omNormal const & omN = omMesh::normal(*fIt);
-			nn.push_back( dtVector3(omN[0], omN[1], omN[2]) );
+			nn.push_back( dtLinearAlgebra::normalize(dtVector3(omN[0], omN[1], omN[2])) );
 		}
 		return dtLinearAlgebra::meanAverage(nn);
 	}
