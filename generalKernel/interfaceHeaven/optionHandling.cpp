@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <dtXmlParserDecorator/qtXmlPrimitive.h>
+#include <dtXmlParserDecorator/qtXmlBase.h>
 #include <sstream>
 
 namespace dtOO {  
@@ -75,12 +76,32 @@ namespace dtOO {
     return argumentFloat;
   }
 
+  float optionHandling::getOptionFloat(
+	  std::string const name,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF					
+	) const {
+     return qtXmlBase::muParseString( 
+      qtXmlBase::replaceUsedFunctions(getOption(name), cV, aF)
+    );
+  }
+	
   int optionHandling::getOptionInt(std::string const name) const {
     int argumentInt;
     std::istringstream( getOption(name) ) >> argumentInt;
     return argumentInt;
   }
   
+  int optionHandling::getOptionInt(
+	  std::string const name,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF					
+	) const {
+     return qtXmlBase::muParseStringInt( 
+      qtXmlBase::replaceUsedFunctions(getOption(name), cV, aF)
+    );
+  }
+	
   bool optionHandling::optionTrue(std::string const name) const {
     for (int ii=0;ii<_optionName.size();ii++) {
       if (_optionName[ii] == name) {
