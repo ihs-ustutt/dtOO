@@ -30,6 +30,7 @@ namespace dtOO {
     int _intervals;
     float _bias;
     int _nSmoothingSteps;
+    float _maxDihedralAngle;
     boundedVolume const * _meshedBV;
     std::vector< std::string > _faceLabel;
     std::string _regionLabel;

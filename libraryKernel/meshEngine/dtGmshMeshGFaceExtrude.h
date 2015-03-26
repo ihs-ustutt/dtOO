@@ -13,7 +13,8 @@ namespace dtOO {
       dt__CLASSNAME(dtGmshMeshGFaceExtrude);      
       dtGmshMeshGFaceExtrude();
       dtGmshMeshGFaceExtrude( 
-        float const & thickness, int const nSmoothingSteps 
+        float const & thickness, float const & maxDihedralAngle,
+        int const nSmoothingSteps 
       );
       virtual ~dtGmshMeshGFaceExtrude();
       void operator()( 
@@ -23,6 +24,7 @@ namespace dtOO {
     private:
       float _thickness;
       int _nSmoothingSteps;
+      float _maxDihedralAngle;
   };
 }
 

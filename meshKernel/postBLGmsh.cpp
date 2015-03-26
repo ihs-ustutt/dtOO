@@ -31,10 +31,11 @@ namespace dtOO {
     //
     boundedVolume::init(element, bC, cV, aF, aG, bV);
 		
-    _thickness = optionHandling::getOptionFloat("thickness");
-    _intervals = optionHandling::getOptionInt("intervals");
-    _bias = optionHandling::getOptionFloat("bias");
-		_nSmoothingSteps = optionHandling::getOptionInt("nSmoothingSteps");		
+    _thickness = optionHandling::getOptionFloat("thickness", cV, aF);
+    _intervals = optionHandling::getOptionInt("intervals", cV, aF);
+    _bias = optionHandling::getOptionFloat("bias", cV, aF);
+		_nSmoothingSteps = optionHandling::getOptionInt("nSmoothingSteps", cV, aF);		
+		_maxDihedralAngle = optionHandling::getOptionInt("maxDihedralAngle", cV, aF);		
 		
 		//
 		// boundedVolume
@@ -62,7 +63,7 @@ namespace dtOO {
 		dt__forAllConstIter(std::vector< std::string >, _faceLabel, it) {
 		  llF.push_back( _meshedBV->getFace(*it) );
 		}
-		dtGmshMeshGFaceExtrude extruder(_thickness, _nSmoothingSteps);
+		dtGmshMeshGFaceExtrude extruder(_thickness, _maxDihedralAngle, _nSmoothingSteps);
 		extruder(_meshedBV->getRegion(_regionLabel), llF, _faceOrientation);
 		
 		_meshedBV->getModel()->writeMSH("postBLGmsh.msh");

@@ -18,10 +18,12 @@ namespace dtOO {
 	}
 	
 	dtGmshMeshGFaceExtrude::dtGmshMeshGFaceExtrude( 
-	  float const & thickness, int const nSmoothingSteps 
+	  float const & thickness, float const & maxDihedralAngle,
+		int const nSmoothingSteps 
 	) {
 		_thickness = thickness;
 		_nSmoothingSteps = nSmoothingSteps;
+		_maxDihedralAngle = maxDihedralAngle;
 	}
 	
   void dtGmshMeshGFaceExtrude::operator()( 
@@ -55,7 +57,7 @@ namespace dtOO {
 
 //		std::map< MVertex *, dtVector3 > mvN;
 		dt__forAllIter(std::vector< dtOMMeshManifold >, omMs, it) {
-			std::vector< dtOMMeshManifold > divOmMs = it->divide(M_PI*60./180.);
+			std::vector< dtOMMeshManifold > divOmMs = it->divide(_maxDihedralAngle);
 			std::vector< dtVector3 > nnV;
 			dt__forAllIter(std::vector< dtOMMeshManifold >, divOmMs, itDiv) {
 				nnV.push_back(itDiv->normal());
