@@ -33,8 +33,10 @@ namespace dtOO {
     float _maxDihedralAngle;
     boundedVolume const * _meshedBV;
     std::vector< std::string > _faceLabel;
-    std::string _regionLabel;
     std::vector< int > _faceOrientation;
+    std::vector< std::string > _fixedFaceLabel;
+    std::vector< int > _fixedFaceOrientation;    
+    std::string _regionLabel;
   };
 }
 #endif	/* postBLGmsh_H */

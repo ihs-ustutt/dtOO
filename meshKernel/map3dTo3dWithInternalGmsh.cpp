@@ -11,7 +11,6 @@
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
-#include <analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h>
 #include <analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -90,33 +89,15 @@ namespace dtOO {
 		m2dV.push_back( _m3d->segmentConstVPercent(1.) );
 		m2dV.push_back( _m3d->segmentConstUPercent(0.) );
 		m2dV.push_back( _m3d->segmentConstUPercent(1.) );		
-		twoDArrayHandling< int > fId(6,0);
+		std::vector< int > fId(6);
 		for (int ii = 0; ii<6; ii++) {
-			dt__pVH(map2dTo3d) margin 
-			= 
-			map2dTo3d_constructMarginFaces(&(m2dV[ii]), _marginWidth).result();
-			
-			dt__forAllIter(dt__pVH(map2dTo3d), margin, it) {
-				map2dTo3d const & thisMap = *it;
-				fId[ii].push_back(0);
-				_gm->addIfFaceToGmshModel( &thisMap, &(fId[ii].back()) );
-			}
-			
-			//
-			// set number of elements
-			//
-      for (int jj=1; jj<5; jj++) {	
-				std::vector< int > eNEl
-				=
-	      _gm->getDtGmshFaceByTag(fId[ii][jj])->estimateTransfiniteNElements(
-  				_marginTangentialWidth, _marginNormalWidth
-				);
-				_gm->getDtGmshFaceByTag(fId[ii][jj])->meshTransfiniteWNElements(eNEl[0], eNEl[1]);
-		  }
+			map2dTo3d const & thisMap = m2dV[ii];
+			fId[ii] = 0;
+			_gm->addIfFaceToGmshModel( &thisMap, &(fId[ii]) );
 		}
 		
-		dtGmshFace * const & hub = _gm->getDtGmshFaceByTag(fId[0][0]);
-		dtGmshFace * const & shroud = _gm->getDtGmshFaceByTag(fId[1][0]);
+		dtGmshFace * const & hub = _gm->getDtGmshFaceByTag(fId[0]);
+		dtGmshFace * const & shroud = _gm->getDtGmshFaceByTag(fId[1]);
 		map2dTo3d const * const & hubMap = hub->getMap2dTo3d();
 		map2dTo3d const * const & shroudMap = shroud->getMap2dTo3d();
 		
@@ -252,11 +233,6 @@ namespace dtOO {
 			);
 		}
 		
-//		//
-//		// remove old faces
-//		//
-//		for (int ii = 0; ii<6; ii++) delete _gm->getDtGmshFaceByTag(ii+1);	
-		
 		//
 		// correct transfinite surfaces and create region
 		//
@@ -313,6 +289,7 @@ namespace dtOO {
 		_gm->meshPhysical(0);
 		_gm->meshPhysical(1);
 		_gm->meshPhysical(2);
+		_gm->meshPhysical(3);
 			
     //
 		// force renumbering mesh in gmsh
@@ -334,6 +311,6 @@ namespace dtOO {
 	}
   
 	void map3dTo3dWithInternalGmsh::makePreGrid(void) {
-		boundedVolume::notify();
+		bVOSubject::notify();
 	}
 }

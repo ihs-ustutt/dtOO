@@ -14,15 +14,15 @@ namespace dtOO {
 		float minA = minDihedralAngle();
 		float maxA = maxDihedralAngle();
 		
-		DTINFOWF(
-			dtOMMeshManifold(),
-			<< DTLOGEVAL(closed()) << LOGDEL
-			<< DTLOGEVAL(divideable()) << LOGDEL
-			<< "_dihedralAngleV = " << _dihedralAngleV << LOGDEL
-			<< "_isBoundary = " << _isBoundary << LOGDEL
-			<< DTLOGEVAL(minA) << " rad (" << minA*180./M_PI << " degree )" << LOGDEL
-			<< DTLOGEVAL(maxA) << " rad (" << maxA*180./M_PI << " degree )" << LOGDEL
-		);
+//		DTINFOWF(
+//			dtOMMeshManifold(),
+//			<< DTLOGEVAL(closed()) << LOGDEL
+//			<< DTLOGEVAL(divideable()) << LOGDEL
+//			<< "_dihedralAngleV = " << _dihedralAngleV << LOGDEL
+//			<< "_isBoundary = " << _isBoundary << LOGDEL
+//			<< DTLOGEVAL(minA) << " rad (" << minA*180./M_PI << " degree )" << LOGDEL
+//			<< DTLOGEVAL(maxA) << " rad (" << maxA*180./M_PI << " degree )" << LOGDEL
+//		);
 	}
 	
 	dtOMMeshManifold::dtOMMeshManifold( dtOMMeshManifold const & orig) : dtOMMesh(orig) {
@@ -125,12 +125,12 @@ namespace dtOO {
 			//
 			// output
 			//
-			DTINFOWF(
-				divide(),
-				<< "Dividing manifold at " << maxAngleIt - _dihedralAngleV.begin() 
-				<< " and " << max2ndAngleIt - _dihedralAngleV.begin() << LOGDEL
-				<< "Distance between " << max2ndAngleIt-maxAngleIt
-			);
+//			DTINFOWF(
+//				divide(),
+//				<< "Dividing manifold at " << maxAngleIt - _dihedralAngleV.begin() 
+//				<< " and " << max2ndAngleIt - _dihedralAngleV.begin() << LOGDEL
+//				<< "Distance between " << max2ndAngleIt-maxAngleIt
+//			);
 			
 			//
 			// create pair and return
@@ -165,14 +165,14 @@ namespace dtOO {
 			//
 			// output
 			//
-			DTINFOWF(
-				divide(),
-				<< "Dividing manifold at " << maxAngleBegPos << LOGDEL
-				<< "Distance " << DTLOGEVAL(maxAngleBegPos) 
-				<< " and " << DTLOGEVAL(maxAngleEndPos) << LOGDEL
-				<< "_dihedralAngleV = " << _dihedralAngleV << LOGDEL
-				<< "_isBoundary = " << _isBoundary << LOGDEL
-			);
+//			DTINFOWF(
+//				divide(),
+//				<< "Dividing manifold at " << maxAngleBegPos << LOGDEL
+//				<< "Distance " << DTLOGEVAL(maxAngleBegPos) 
+//				<< " and " << DTLOGEVAL(maxAngleEndPos) << LOGDEL
+//				<< "_dihedralAngleV = " << _dihedralAngleV << LOGDEL
+//				<< "_isBoundary = " << _isBoundary << LOGDEL
+//			);
 			
 			//
 			// create pair and return

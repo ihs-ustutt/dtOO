@@ -31,79 +31,127 @@ namespace dtOO {
 	}
 	
   void dtGmshMeshGFaceExtrude::operator()( 
-	  dtGmshRegion const * const region,
+	  dtGmshRegion * region,
 	  std::list< dtGmshFace const * > const & face, 
-		std::vector< int > const & ori 
+		std::vector< int > const & ori,
+	  std::list< dtGmshFace const * > const & fface, 
+		std::vector< int > const & fori 					
 	) {
+		//
+		// define two surface meshes
+		//
 		dtOMMesh om;
+		dtOMMesh omFixed;
 	
+		//
+		// surface mesh to thick
+		//
 		int itC = 0;
 		dt__forAllConstIter( std::list< dtGmshFace const * >, face, it ) {
 			dtGmshFace const * const &thisFace = *it;
-
+			//
+			// add current surface mesh
+			//
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
-			
-			if (ori[itC] > 0) om.add(*tmpOM);		
-			else if (ori[itC] < 0) om.addInv(*tmpOM);
+			if (ori[itC] > 0) {
+				om.add(*tmpOM);		
+				omFixed.add(*tmpOM);		
+			}
+			else if (ori[itC] < 0) {
+				om.addInv(*tmpOM);
+				omFixed.addInv(*tmpOM);		
+			}
 			else {
-				DTWARNINGWF(
+				dt__THROW(
 				  operator(), 
-					<< "Ignoring face (tag = " << thisFace->tag() << ")."
+					<< "Undefined orientation of face (tag = " << thisFace->tag() << ")."
 				);
 			}
 			itC++;
 		}
 		
+		//
+		// fixed surface mesh
+		//
+		itC = 0;
+		dt__forAllConstIter( std::list< dtGmshFace const * >, fface, it ) {
+			dtGmshFace const * const &thisFace = *it;
+			//
+			// add current surface mesh
+			//
+			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
+			
+			if (fori[itC] > 0) {
+				omFixed.add(*tmpOM);		
+			}
+			else if (fori[itC] < 0) {
+				omFixed.addInv(*tmpOM);		
+			}
+			else {
+				dt__THROW(
+				  operator(), 
+					<< "Undefined orientation of fixedFace (tag = " << thisFace->tag() << ")."
+				);
+			}
+			itC++;
+		}		
+		
+		//
+		// create mesh manifolds
+		//
 		std::vector< dtOMMeshManifold > omMs;		
 		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), v_it) {
-			omMs.push_back( dtOMMeshManifold(om, *v_it) );			
+			omMs.push_back( 
+			  dtOMMeshManifold(omFixed, omFixed.requestVertexH(om.requestMVertex(*v_it))) 
+			);			
 		}
 
-//		std::map< MVertex *, dtVector3 > mvN;
+		//
+		// divide manifolds and calculate normals
+		// averaging all normals of manifolds
+		//
 		dt__forAllIter(std::vector< dtOMMeshManifold >, omMs, it) {
+//			int itC = it - omMs.begin();
+//			it->writeMesh("omMs_"+stringPrimitive::intToString(itC)+".vtk");
 			std::vector< dtOMMeshManifold > divOmMs = it->divide(_maxDihedralAngle);
 			std::vector< dtVector3 > nnV;
 			dt__forAllIter(std::vector< dtOMMeshManifold >, divOmMs, itDiv) {
+//				int itDivC = itDiv - divOmMs.begin();
+//				itDiv->writeMesh(
+//				   "omMs_"+stringPrimitive::intToString(itC)+"_"
+//				  +stringPrimitive::intToString(itDivC)+".vtk"
+//				);
 				nnV.push_back(itDiv->normal());
 			}
 			dtVector3 nn = dtLinearAlgebra::meanAverage(nnV);
 			MVertex * mv = it->centerMVertex();
-			om.vertexNormal(mv) = nn;
-//			it->centerMVertex()->setXYZ(
-//			  mv->x()+_thickness*nn.x(), 
-//			  mv->y()+_thickness*nn.y(), 
-//				mv->z()+_thickness*nn.z()
-//			);
+			omFixed.vertexNormal(mv) = nn;
 		}
-		
-		for (int ii=0;ii<_nSmoothingSteps;ii++) om.laplacianSmoothVertexNormal();
-//		om.laplacianSmoothVertexNormal(1.);
-		
-//		dt__forAllIter(std::vector< dtOMMeshManifold >, omMs, it) {
+
+		//
+		// laplacian smoothing
+		//
+		for (int ii=0;ii<_nSmoothingSteps;ii++) omFixed.laplacianSmoothVertexNormal();
+
+		//
+		// create new vertices
+		//
 		dtOMMesh omT(om);
 		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
-			MVertex * mv = om.data(*it).MVertex();//it->centerMVertex();
+			MVertex * mv = om.requestMVertex(*it);
 			if (!om.vertexIsBoundary(mv)) {
-				dtVector3 nn = om.vertexNormal(mv);
-//				omT.data(omT.omGmsh()[mv]).MVertex()
-				MVertex * mvNew = new MVertex(mv->x(), mv->y(), mv->z(), const_cast<dtGmshRegion * >(region));
-				omT.replaceMVertex(omT.omGmsh().at(mv), mvNew);
-  			const_cast<dtGmshRegion*>(region)->addMeshVertex(mvNew);				
-				mv->setXYZ(
-					mv->x()+_thickness*nn.x(), 
-					mv->y()+_thickness*nn.y(), 
-					mv->z()+_thickness*nn.z()//,
-				  //const_cast<dtGmshRegion * >(region)
-				);
+				MVertex * mvNew = new MVertex(mv->x(), mv->y(), mv->z(), region);
+				omT.replaceMVertex(omT.requestVertexH(mv), mvNew);
+  			region->addMeshVertex(mvNew);
+				dtVector3 nT = _thickness*omFixed.vertexNormal(mv);				
+				mv->setXYZ(mv->x()+nT.x(), mv->y()+nT.y(), mv->z()+nT.z());
 		  }
-//			else {
-//				omT.omGmsh()[mv] 
-//			}
 		}
-		dt__forFromToIter(omFaceI, om.faces_begin(), om.faces_end(), fIt) {
-//			omFaceD & omF = om.data(*fIt);
-//			omFaceD & omTF = omT.data(*fIt);
 		
+		//
+		// create new boundary elements
+		//
+		dt__forFromToIter(omFaceI, om.faces_begin(), om.faces_end(), fIt) {
 			std::vector< MVertex * > commonVertices;
 			std::vector< MVertex * > omVertices;
 			std::vector< MVertex * > omTVertices;
@@ -142,8 +190,6 @@ namespace dtOO {
 			    ) 
 				);					
 			}
-			
-			
 		}
   }
 }

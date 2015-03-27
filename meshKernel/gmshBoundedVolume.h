@@ -32,8 +32,8 @@ namespace dtOO {
   	virtual vectorHandling< renderInterface * > getRender( void ) const;
   	virtual vectorHandling< renderInterface * > getExtRender( void ) const;        
     virtual std::vector< std::string > getMeshTags( void ) const;
-	  virtual dtGmshFace const * getFace( std::string const & tag ) const;
-	  virtual dtGmshRegion const * getRegion( std::string const & tag ) const;
+	  virtual dtGmshFace * getFace( std::string const & tag ) const;
+	  virtual dtGmshRegion * getRegion( std::string const & tag ) const;
     virtual dtGmshModel * getModel( void ) const;
   protected:
     void updatePhysicals( void );

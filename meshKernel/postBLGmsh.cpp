@@ -48,6 +48,12 @@ namespace dtOO {
 		_faceOrientation 
 		= 
 		qtXmlBase::getAttributeIntVectorMuParse("faceOrientation", wElement, cV, aF);
+		_fixedFaceLabel 
+		= 
+		qtXmlPrimitive::getAttributeStrVector("fixedFaceLabel", wElement);
+		_fixedFaceOrientation 
+		= 
+		qtXmlBase::getAttributeIntVectorMuParse("fixedFaceOrientation", wElement, cV, aF);
 		_regionLabel
 		= 
 		qtXmlPrimitive::getAttributeStr("regionLabel", wElement);
@@ -59,12 +65,20 @@ namespace dtOO {
 	}
 	
   void postBLGmsh::makeGrid(void) {
-		std::list< dtGmshFace const * > llF;
+		std::list< dtGmshFace const * > faceList;
 		dt__forAllConstIter(std::vector< std::string >, _faceLabel, it) {
-		  llF.push_back( _meshedBV->getFace(*it) );
+		  faceList.push_back( _meshedBV->getFace(*it) );
 		}
+		std::list< dtGmshFace const * > fixedFaceList;
+		dt__forAllConstIter(std::vector< std::string >, _fixedFaceLabel, it) {
+		  fixedFaceList.push_back( _meshedBV->getFace(*it) );
+		}		
 		dtGmshMeshGFaceExtrude extruder(_thickness, _maxDihedralAngle, _nSmoothingSteps);
-		extruder(_meshedBV->getRegion(_regionLabel), llF, _faceOrientation);
+		extruder(
+		  _meshedBV->getRegion(_regionLabel), 
+			faceList, _faceOrientation, 
+			fixedFaceList, _fixedFaceOrientation
+		);
 		
 		_meshedBV->getModel()->writeMSH("postBLGmsh.msh");
 		boundedVolume::setMeshed();

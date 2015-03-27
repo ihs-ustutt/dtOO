@@ -122,7 +122,7 @@ namespace dtOO {
 		return tags;		
 	}
 	
-	dtGmshFace const * gmshBoundedVolume::getFace( std::string const & tag ) const {
+	dtGmshFace * gmshBoundedVolume::getFace( std::string const & tag ) const {
 		::GModel::setCurrent(_gm.get());
 		
 		dt__forAllIndex(_physLabels[2], jj) {
@@ -145,7 +145,7 @@ namespace dtOO {
 	  }
 	}
 	
-	dtGmshRegion const * gmshBoundedVolume::getRegion( std::string const & tag ) const {
+	dtGmshRegion * gmshBoundedVolume::getRegion( std::string const & tag ) const {
 		::GModel::setCurrent(_gm.get());
 		
 		dt__forAllIndex(_physLabels[3], jj) {

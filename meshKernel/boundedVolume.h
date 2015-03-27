@@ -41,8 +41,8 @@ namespace dtOO {
     bool isMeshed( void ) const;
     void setMeshed( void );
     virtual std::vector< std::string > getMeshTags( void ) const;
-	  virtual dtGmshFace const * getFace( std::string const & tag ) const;
-    virtual dtGmshRegion const * getRegion( std::string const & tag ) const;
+	  virtual dtGmshFace * getFace( std::string const & tag ) const;
+    virtual dtGmshRegion * getRegion( std::string const & tag ) const;
     virtual dtGmshModel * getModel( void ) const;
   private:
     bool _meshed;
