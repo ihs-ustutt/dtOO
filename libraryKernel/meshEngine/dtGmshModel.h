@@ -80,13 +80,9 @@ namespace dtOO {
     static unstructured3dMesh * toUnstructured3dMesh(
       std::vector< ::MElement const * > const & elements
     );     
-    static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
-      std::vector< ::MVertex const * > const & vertices, 
-      std::vector< ::MElement const * > const & elements
-    );
-    static discrete3dPoints * toDiscrete3dPoints( 
-      std::vector< ::MVertex const * > const & vertices
-    );
+    static renderInterface * toAdequateSurfaceRenderInterface( 
+        std::vector< ::MElement const * > const & elements
+	  );
     static renderInterface * toAdequateSurfaceRenderInterface( 
       std::vector< ::MVertex const * > const & vertices, 
       std::vector< ::MElement const * > const & elements
@@ -108,6 +104,14 @@ namespace dtOO {
       std::vector< ::MVertex const * > & vertices
     );    
     void tagPhysical(::GEntity * const ge, std::string const & pName);
+  private:
+    static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
+      std::vector< ::MVertex const * > const & vertices, 
+      std::vector< ::MElement const * > const & elements
+    );    
+    static discrete3dPoints * toDiscrete3dPoints( 
+      std::vector< ::MVertex const * > const & vertices
+    );    
   };
 }
 #endif	/* DTGMSHMODEL_H */

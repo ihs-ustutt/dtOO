@@ -771,6 +771,22 @@ namespace dtOO {
 	}	
 	
   renderInterface * dtGmshModel::toAdequateSurfaceRenderInterface( 
+		std::vector< ::MElement const * > const & elements
+	) {
+		std::vector< ::MVertex const * > vertices;
+		for( int ii=0; ii<elements.size(); ii++ ) {
+			::MElement * me = const_cast< ::MElement * >(elements[ii]);
+			std::vector< ::MVertex * > verts;
+			me->getVertices(verts);
+			for( int ii=0; ii<verts.size(); ii++ ) vertices.push_back(verts[ii]);			
+		}		
+		sort( vertices.begin(), vertices.end() );
+    vertices.erase( unique( vertices.begin(), vertices.end() ), vertices.end() );
+		
+		return dtGmshModel::toAdequateSurfaceRenderInterface(vertices, elements);
+	}		
+	
+  renderInterface * dtGmshModel::toAdequateSurfaceRenderInterface( 
 	  std::vector< ::MVertex const * > const & vertices, 
 		std::vector< ::MElement const * > const & elements
 	) {
