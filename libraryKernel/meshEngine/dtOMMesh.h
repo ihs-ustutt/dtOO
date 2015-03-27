@@ -86,6 +86,8 @@ namespace dtOO {
       void replaceMVertex( omVertexH const & vH, ::MVertex * mv );
       bool vertexIsBoundary(MVertex * mv) const;
       void laplacianSmoothVertexNormal( void );
+      omVertexH const requestVertexH( ::MVertex const * mv ) const;
+      ::MVertex * requestMVertex( omVertexH const vH ) const;
     private:
       omVertexH addVertex( ::MVertex const * const &mv );
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          

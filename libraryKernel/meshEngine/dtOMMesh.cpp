@@ -189,4 +189,12 @@ namespace dtOO {
 			counter++;
 		}		
 	}
+	
+	omVertexH const dtOMMesh::requestVertexH( ::MVertex const * mv ) const {
+		return _om_gmsh.at(mv);
+	}
+	
+	::MVertex * dtOMMesh::requestMVertex( omVertexH const vH ) const {
+		return data(vH).MVertex();
+	}	
 }
