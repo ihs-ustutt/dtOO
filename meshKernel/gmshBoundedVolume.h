@@ -35,10 +35,9 @@ namespace dtOO {
 	  virtual dtGmshFace * getFace( std::string const & tag ) const;
 	  virtual dtGmshRegion * getRegion( std::string const & tag ) const;
     virtual dtGmshModel * getModel( void ) const;
-  protected:
-    void updatePhysicals( void );
+    void updatePhysicals( void ) const;
   private:
-    twoDArrayHandling< std::string > _physLabels;    
+    mutable twoDArrayHandling< std::string > _physLabels;    
   protected:
     dt__pH(dtGmshModel) _gm;
   };

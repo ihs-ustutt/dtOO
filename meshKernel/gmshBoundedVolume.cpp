@@ -86,13 +86,13 @@ namespace dtOO {
 							for (int jj=0;jj<gf->getNumMeshElements(); jj++) {
 								elTwoD.push_back( gf->getMeshElement(jj) );	
 							}
-							std::vector< ::MVertex const * > vertices;
-							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
-							if (vertices.empty()) {
-								vertices = gf->getMeshVertices();
-							}
+//							std::vector< ::MVertex const * > vertices;
+//							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
+//							if (vertices.empty()) {
+//								vertices = gf->getMeshVertices();
+//							}
 							rV.push_back(
-							  dtGmshModel::toAdequateSurfaceRenderInterface(vertices, elTwoD)
+							  dtGmshModel::toAdequateSurfaceRenderInterface(elTwoD)
 							);
 						}
 						else if (gr) {
@@ -100,10 +100,10 @@ namespace dtOO {
 							for (int jj=0;jj<gr->getNumMeshElements(); jj++) {
 								elThreeD.push_back( gr->getMeshElement(jj) );	
 							}							
-							std::vector< ::MVertex const * > vertices;
-							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
+//							std::vector< ::MVertex const * > vertices;
+//							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
 							rV.push_back(
-							  dtGmshModel::toUnstructured3dMesh(vertices, elThreeD)
+							  dtGmshModel::toUnstructured3dMesh(elThreeD)
 							);							
 						}
 						
@@ -172,7 +172,7 @@ namespace dtOO {
 		return _gm.get();
 	}
 	
-	void gmshBoundedVolume::updatePhysicals( void ) {
+	void gmshBoundedVolume::updatePhysicals( void ) const {
 		::GModel::setCurrent(_gm.get());
 		
 		dtGmshModel::intGEntityVMap groups;		
