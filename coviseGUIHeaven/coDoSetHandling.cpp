@@ -270,11 +270,11 @@ namespace dtOO {
 			if (rI->mustExtRender()) {
 				vec.destroy();
 				vec = rI->getExtRender();
-				dt__FORALL(vec, ii,
+				dt__forAllIndex(vec, ii) {
 					set 
 					= 
 					coDoSetHandling::toCoDoSet( set, toCoDoSet(vec[ii], str), str );
-				);
+				}
 			}
 		}
 		else {
@@ -288,7 +288,7 @@ namespace dtOO {
 			vectorHandling< renderInterface * >::const_iterator cit;
 			DTINFOWF(renderElement3d(), << DTLOGEVAL(vec.size()) );
 			if (vec.size() > 1) {
-				for (cit = dt__NEXT(vec.begin()); cit != vec.end(); ++cit) {
+				for (cit = progHelper::next(vec.begin()); cit != vec.end(); ++cit) {
 					set 
 					= 
 					coDoSetHandling::toCoDoSet(set, toCoDoSet(*cit, str), str);
@@ -593,7 +593,7 @@ namespace dtOO {
 	}
 	
   covise::coDoSet * coDoSetHandling::unstructured3dMeshToCoDoSet( unstructured3dMesh const * const rI, char const * str ) {
-    int nElemTot = rI->getNHex() + rI->getNTet();
+    int nElemTot = rI->getNHex() + rI->getNTet() + rI->getNPri() + rI->getNPyr();
 		std::string objName = std::string(str)+"_uns3dGrid";
 		ptrHandling< covise::coDoUnstructuredGrid > cug( 
       new covise::coDoUnstructuredGrid( 
@@ -601,8 +601,8 @@ namespace dtOO {
         nElemTot, 
           4*rI->getNTet() //tetrahedra
         + 8*rI->getNHex() //hexahedra
-        + 9*0//9 //prisms
-        + 5*0//5 //pyramids
+        + 6*rI->getNPri() //prisms
+        + 5*rI->getNPyr() //pyramids
         + 0*0, //polyhedra - not yet supported
         rI->refP3().size(), 
         1 
@@ -618,11 +618,11 @@ namespace dtOO {
     cug->getAddresses(&elem, &conn, &xx, &yy, &zz);
     cug->getTypeList(&tl);
 		
-		dt__FORALL(rI->refP3(), ii,
+		dt__forAllIndex(rI->refP3(), ii) {
 			xx[ii] = static_cast< float >(rI->refP3()[ii].x());
 			yy[ii] = static_cast< float >(rI->refP3()[ii].y());
 			zz[ii] = static_cast< float >(rI->refP3()[ii].z());
-	  );
+	  }
 
     int cellC = 0;
     int connC = 0;  
@@ -641,6 +641,35 @@ namespace dtOO {
 				connC = connC + 4;
 				cellC++;      
 			}      
+			//
+			// pyramid
+			//
+			else if ( rI->refEl()[ii].size() == 5 ) {
+				elem[cellC] = connC;
+				tl[cellC] = TYPE_PYRAMID;      
+				conn[elem[cellC]+0] = rI->refEl()[ii][0];
+				conn[elem[cellC]+1] = rI->refEl()[ii][1];
+				conn[elem[cellC]+2] = rI->refEl()[ii][2];
+				conn[elem[cellC]+3] = rI->refEl()[ii][3];
+				conn[elem[cellC]+4] = rI->refEl()[ii][4];
+				connC = connC + 5;
+				cellC++;      
+			}			
+			//
+			// prism
+			//
+			else if ( rI->refEl()[ii].size() == 6 ) {
+				elem[cellC] = connC;
+				tl[cellC] = TYPE_PRISM;      
+				conn[elem[cellC]+0] = rI->refEl()[ii][0];
+				conn[elem[cellC]+1] = rI->refEl()[ii][1];
+				conn[elem[cellC]+2] = rI->refEl()[ii][2];
+				conn[elem[cellC]+3] = rI->refEl()[ii][3];
+				conn[elem[cellC]+4] = rI->refEl()[ii][4];
+				conn[elem[cellC]+5] = rI->refEl()[ii][5];
+				connC = connC + 6;
+				cellC++;      
+			}						
 			//
 			// hexahedron
 			//
@@ -695,11 +724,11 @@ namespace dtOO {
     cug->getAddresses(&elem, &conn, &xx, &yy, &zz);
     cug->getTypeList(&tl);
 		
-		dt__FORALL(rI->refP3(), ii,
+		dt__forAllIndex(rI->refP3(), ii) {
 			xx[ii] = static_cast< float >(rI->refP3()[ii].x());
 			yy[ii] = static_cast< float >(rI->refP3()[ii].y());
 			zz[ii] = static_cast< float >(rI->refP3()[ii].z());
-	  );
+	  }
 
     int cellC = 0;
     int connC = 0;  

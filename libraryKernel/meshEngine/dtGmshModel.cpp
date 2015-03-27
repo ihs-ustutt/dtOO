@@ -26,6 +26,8 @@
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
 #include <gmsh/MTetrahedron.h>
+#include <gmsh/MPyramid.h>
+#include <gmsh/MPrism.h>
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTriangle.h>
@@ -592,6 +594,22 @@ namespace dtOO {
 	}
 	
   unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( 
+	  std::vector< ::MElement const * > const & elements
+	) {
+		std::vector< ::MVertex const * > vertices;
+		for( int ii=0; ii<elements.size(); ii++ ) {
+			::MElement * me = const_cast< ::MElement * >(elements[ii]);
+			std::vector< ::MVertex * > verts;
+			me->getVertices(verts);
+			for( int ii=0; ii<verts.size(); ii++ ) vertices.push_back(verts[ii]);			
+		}		
+		sort( vertices.begin(), vertices.end() );
+    vertices.erase( unique( vertices.begin(), vertices.end() ), vertices.end() );
+		
+		return dtGmshModel::toUnstructured3dMesh(vertices, elements);
+	}	
+	
+  unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( 
 	  std::vector< ::MVertex const * > const & vertices, std::vector< ::MElement const * > const & elements
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
@@ -614,6 +632,8 @@ namespace dtOO {
 		for( int ii=0; ii<elements.size(); ii++ ) {
 			::MElement * me = const_cast< ::MElement * >(elements[ii]);
 			::MTetrahedron * mtet = dynamic_cast< ::MTetrahedron * >(me);
+			::MPyramid * mpyr = dynamic_cast< ::MPyramid * >(me);
+			::MPrism * mpri = dynamic_cast< ::MPrism * >(me);			
 			::MHexahedron * mhex = dynamic_cast< ::MHexahedron * >(me);
 			//
 			// tetrahedron
@@ -628,6 +648,35 @@ namespace dtOO {
 				vertsIndex[3] = vLoc_num[verts[3]->getNum()];
 				um->addElement(vertsIndex);
 			}     
+			//
+			// pyramid
+			//
+			else if ( mpyr ) {
+				vectorHandling< int > vertsIndex(5);
+				std::vector< ::MVertex * > verts;
+				mpyr->getVertices(verts); 
+				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
+				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
+				vertsIndex[2] = vLoc_num[verts[2]->getNum()];
+				vertsIndex[3] = vLoc_num[verts[3]->getNum()];
+				vertsIndex[4] = vLoc_num[verts[4]->getNum()];
+				um->addElement(vertsIndex);
+			}  
+			//
+			// prism
+			//
+			else if ( mpri ) {
+				vectorHandling< int > vertsIndex(6);
+				std::vector< ::MVertex * > verts;
+				mpri->getVertices(verts); 
+				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
+				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
+				vertsIndex[2] = vLoc_num[verts[2]->getNum()];
+				vertsIndex[3] = vLoc_num[verts[3]->getNum()];
+				vertsIndex[4] = vLoc_num[verts[4]->getNum()];
+				vertsIndex[5] = vLoc_num[verts[5]->getNum()];
+				um->addElement(vertsIndex);
+			}  			
 			//
 			// hexahedron
 			//
@@ -1144,5 +1193,9 @@ namespace dtOO {
 		dt__forAllIndex(nonConstVertices, ii) {
 			vertices.push_back( const_cast< ::MVertex const * >(nonConstVertices[ii]) );
 		}
-	}	
+	}
+
+  void dtGmshModel::tagPhysical(::GEntity * const ge, std::string const & pName) {		
+		ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );
+	}
 }

@@ -67,6 +67,7 @@ include_directories(
 # compiler flags                                                               #
 #                                                                              #
 #------------------------------------------------------------------------------#
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${DTOO_LINK_DIRECTORY}")
 

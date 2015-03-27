@@ -6,6 +6,8 @@ namespace dtOO {
 	unstructured3dMesh::unstructured3dMesh() {
     _nTet = 0;
     _nHex = 0;
+		_nPyr = 0;
+		_nPri = 0;
 	}
 
 	unstructured3dMesh::~unstructured3dMesh() {
@@ -24,6 +26,12 @@ namespace dtOO {
 		if (el.size() == 4) {
 			_nTet++;
 		}
+		else if (el.size() == 5) {
+			_nPyr++;
+		}		
+		else if (el.size() == 6) {
+			_nPri++;
+		}				
 		else if (el.size() == 8) {
 			_nHex++;
 		}		
@@ -44,4 +52,12 @@ namespace dtOO {
   int unstructured3dMesh::getNTet( void ) const {
   	return _nTet;
   }
+
+  int unstructured3dMesh::getNPyr( void ) const {
+  	return _nPyr;
+  }
+
+  int unstructured3dMesh::getNPri( void ) const {
+  	return _nPri;
+  }	
 }

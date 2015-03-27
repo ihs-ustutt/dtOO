@@ -8,8 +8,9 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshModel.h>
+#include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshMeshGFaceExtrude.h>
-//#include "gmshBoundedVolume.h"
+#include <unstructured3dMesh.h>
 
 namespace dtOO {
 	postBLGmsh::postBLGmsh() {
@@ -54,9 +55,6 @@ namespace dtOO {
 		_fixedFaceOrientation 
 		= 
 		qtXmlBase::getAttributeIntVectorMuParse("fixedFaceOrientation", wElement, cV, aF);
-		_regionLabel
-		= 
-		qtXmlPrimitive::getAttributeStr("regionLabel", wElement);
 		
 		//
 		// get boundedVolume
@@ -73,9 +71,14 @@ namespace dtOO {
 		dt__forAllConstIter(std::vector< std::string >, _fixedFaceLabel, it) {
 		  fixedFaceList.push_back( _meshedBV->getFace(*it) );
 		}		
+		_dtR 
+		= 
+		new dtGmshRegion(_meshedBV->getModel(), _meshedBV->getModel()->getMaxRegionTag()+1);
+		_meshedBV->getModel()->tagPhysical(_dtR, getLabel());
+		_meshedBV->getModel()->add(_dtR);
 		dtGmshMeshGFaceExtrude extruder(_thickness, _maxDihedralAngle, _nSmoothingSteps);
 		extruder(
-		  _meshedBV->getRegion(_regionLabel), 
+		  _dtR, 
 			faceList, _faceOrientation, 
 			fixedFaceList, _fixedFaceOrientation
 		);
@@ -89,6 +92,14 @@ namespace dtOO {
 	}
   
 	vectorHandling< renderInterface * > postBLGmsh::getRender( void ) const {
-		return vectorHandling< renderInterface * >(0);
+	  vectorHandling< renderInterface * > rV;
+				
+		std::vector< ::MElement const * > elThreeD;
+		for (int jj=0;jj<_dtR->getNumMeshElements(); jj++) {
+			elThreeD.push_back( _dtR->getMeshElement(jj) );	
+		}							
+		rV.push_back(dtGmshModel::toUnstructured3dMesh(elThreeD));	
+		
+		return rV;
 	}	
 }

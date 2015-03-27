@@ -24,7 +24,7 @@ namespace dtOO {
     );    
     virtual void makeGrid(void);
     virtual void makePreGrid(void);
-  	virtual vectorHandling< renderInterface * > getRender( void ) const;    
+  	virtual vectorHandling< renderInterface * > getRender( void ) const;
   private:
     float _thickness;
     int _intervals;
@@ -35,8 +35,8 @@ namespace dtOO {
     std::vector< std::string > _faceLabel;
     std::vector< int > _faceOrientation;
     std::vector< std::string > _fixedFaceLabel;
-    std::vector< int > _fixedFaceOrientation;    
-    std::string _regionLabel;
+    std::vector< int > _fixedFaceOrientation;
+    dtGmshRegion * _dtR;
   };
 }
 #endif	/* postBLGmsh_H */

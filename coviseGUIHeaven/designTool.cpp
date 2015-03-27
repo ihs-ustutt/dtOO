@@ -153,39 +153,39 @@ namespace dtOO {
 			_logName->disable();			
 			if (strcmp(paramName, "_moduleChoice") == 0) {
 				if ( _moduleChoice->getValue() == 0 ) {
-					dt__FORALL( _uifPara[0], ii, _uifPara[0][ii]->show(); );
-					dt__FORALL( _uifPara[1], ii, _uifPara[1][ii]->hide(); );
-					dt__FORALL( _uifPara[2], ii, _uifPara[2][ii]->hide(); );
-					dt__FORALL( _uifPara[3], ii, _uifPara[3][ii]->hide(); );
-					dt__FORALL( _uifPara[4], ii, _uifPara[4][ii]->hide(); );
+					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->show();
+					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
+					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
+					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
+					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
 				}
 				else if (_moduleChoice->getValue() == 1) {
-					dt__FORALL( _uifPara[0], ii, _uifPara[0][ii]->hide(); );
-					dt__FORALL( _uifPara[1], ii, _uifPara[1][ii]->show(); );
-					dt__FORALL( _uifPara[2], ii, _uifPara[2][ii]->hide(); );				
-					dt__FORALL( _uifPara[3], ii, _uifPara[3][ii]->hide(); );
-					dt__FORALL( _uifPara[4], ii, _uifPara[4][ii]->hide(); );
+					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
+					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->show();
+					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();				
+					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
+					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
 				}
 				else if (_moduleChoice->getValue() == 2) {
-					dt__FORALL( _uifPara[0], ii, _uifPara[0][ii]->hide(); );
-					dt__FORALL( _uifPara[1], ii, _uifPara[1][ii]->hide(); );
-					dt__FORALL( _uifPara[2], ii, _uifPara[2][ii]->show(); );
-					dt__FORALL( _uifPara[3], ii, _uifPara[3][ii]->hide(); );
-					dt__FORALL( _uifPara[4], ii, _uifPara[4][ii]->hide(); );
+					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
+					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
+					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->show();
+					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
+					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
 				}			
 				else if (_moduleChoice->getValue() == 3) {
-					dt__FORALL( _uifPara[0], ii, _uifPara[0][ii]->hide(); );
-					dt__FORALL( _uifPara[1], ii, _uifPara[1][ii]->hide(); );
-					dt__FORALL( _uifPara[2], ii, _uifPara[2][ii]->hide(); );
-					dt__FORALL( _uifPara[3], ii, _uifPara[3][ii]->show(); );
-					dt__FORALL( _uifPara[4], ii, _uifPara[4][ii]->hide(); );
+					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
+					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
+					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
+					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->show();
+					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
 				}				
 				else if (_moduleChoice->getValue() == 4) {
-					dt__FORALL( _uifPara[0], ii, _uifPara[0][ii]->hide(); );
-					dt__FORALL( _uifPara[1], ii, _uifPara[1][ii]->hide(); );
-					dt__FORALL( _uifPara[2], ii, _uifPara[2][ii]->hide(); );
-					dt__FORALL( _uifPara[3], ii, _uifPara[3][ii]->hide(); );
-					dt__FORALL( _uifPara[4], ii, _uifPara[4][ii]->show(); );
+					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
+					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
+					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
+					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
+					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->show();
 				}										
 			}
 			//--------------------------------------------------------------------------
@@ -296,7 +296,7 @@ namespace dtOO {
 						// set ext rendering for chosen geometry
 //						_aF[pos]->extRender(true);
 						//reset other geometries
-						//dt__FORALL(_aFToRender,ii, _aFToRender[ii]->extRender(false); );
+						//dt__forAllIndex(_aFToRender,ii, _aFToRender[ii]->extRender(false); );
 						_aFToRender.push_back( _aF[pos] );
 					}
 					else {
@@ -357,7 +357,7 @@ namespace dtOO {
 						// set ext rendering for chosen geometry
 						_aG[pos]->extRender(true);
 						//reset other geometries
-						dt__FORALL(_aGToRender,ii, _aGToRender[ii]->extRender(false); );
+						dt__forAllIndex(_aGToRender,ii) _aGToRender[ii]->extRender(false);
 						_aGToRender.push_back( _aG[pos] );
 					}
 					else {
@@ -438,7 +438,7 @@ namespace dtOO {
 				}  		
 		//    else if ( strcmp(paramName, "_aGRenderShowAll") == 0 ) {
 		//      _aGRenderShowAll->setValue(false);
-		//      dt__FORALL(_aG, ii,
+		//      dt__forAllIndex(_aG, ii,
 		//        _aG[ii]->setRenderResolution(0, 10);
 		//			  _aG[ii]->setRenderResolution(1, 10);
 		//  			_aG[ii]->setRenderResolution(2, 10);
@@ -618,13 +618,13 @@ namespace dtOO {
 			if (_bVOut->isConnected()) {
 				covise::coDoSet * set = NULL;
         if (_bVToRender.size() != 0) {
-					dt__FORALL(_bVToRender, ii,
+					dt__forAllIndex(_bVToRender, ii) {
 						boundedVolume * bV = static_cast< boundedVolume * >(_bVToRender[ii]);
 						if ( !bV->isMeshed() ) {
 							bV->makePreGrid();
 							bV->makeGrid();
 						}
-					);
+					}
           set
 					= 
 					_bVToRender.render3d( 
@@ -635,7 +635,7 @@ namespace dtOO {
         }
       }   			
 
-			dt__FORALL( _pLApply, ii, _pLApply[ii]->apply(); );
+			dt__forAllIndex( _pLApply, ii) _pLApply[ii]->apply();
 			_pLApply.clear();					
 			
 			abstractModule::closeLogFile();
