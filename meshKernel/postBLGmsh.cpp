@@ -11,6 +11,7 @@
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshMeshGFaceExtrude.h>
 #include <unstructured3dMesh.h>
+#include "gmshBoundedVolume.h"
 
 namespace dtOO {
 	postBLGmsh::postBLGmsh() {
@@ -59,7 +60,7 @@ namespace dtOO {
 		//
 		// get boundedVolume
 		//
-    _meshedBV = bV->get(label);
+    dt__ptrAss( _meshedBV, gmshBoundedVolume::ConstDownCast(bV->get(label)) );
 	}
 	
   void postBLGmsh::makeGrid(void) {
@@ -84,6 +85,12 @@ namespace dtOO {
 		);
 		
 		_meshedBV->getModel()->writeMSH("postBLGmsh.msh");
+		
+		//
+		// update physicals because we add a new region
+		//
+		_meshedBV->updatePhysicals();
+		
 		boundedVolume::setMeshed();
 	}
   

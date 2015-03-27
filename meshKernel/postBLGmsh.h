@@ -3,11 +3,13 @@
 
 #include <logMe/dtMacros.h>
 #include "boundedVolume.h"
+#include "gmshBoundedVolume.h"
 
 namespace dtOO {
   class constValue;
   class analyticFunction;
   class analyticGeometry;
+  class gmshBoundedVolume;
   
   class postBLGmsh : public boundedVolume {
   public:
@@ -31,7 +33,7 @@ namespace dtOO {
     float _bias;
     int _nSmoothingSteps;
     float _maxDihedralAngle;
-    boundedVolume const * _meshedBV;
+    gmshBoundedVolume const * _meshedBV;
     std::vector< std::string > _faceLabel;
     std::vector< int > _faceOrientation;
     std::vector< std::string > _fixedFaceLabel;
