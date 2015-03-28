@@ -27,6 +27,7 @@ endif (DTOO_EXTERNLIBS STREQUAL "")
 #------------------------------------------------------------------------------#
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl") #for dladdr in Backtrace
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
 #------------------------------------------------------------------------------#
 #
 # options

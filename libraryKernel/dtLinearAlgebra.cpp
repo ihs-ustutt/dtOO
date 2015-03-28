@@ -6,6 +6,7 @@
 #include <CGAL/bounding_box.h>
 #include <CGAL/squared_distance_2.h>
 #include <CGAL/squared_distance_3.h>
+#include <CGAL/intersections.h>
 #include <TMatrixD.h>
 #include <TDecompSVD.h>
 
@@ -546,5 +547,21 @@ namespace dtOO {
 		else {
 			return "";
 		}
+	}
+	
+	bool dtLinearAlgebra::intersects(dtTriangle3 const & triangle, dtLine3 const & line) {
+		dtPoint3 iPoint;   
+		dtSegment3 iSegment;   
+    
+		CGAL::Object res = CGAL::intersection(triangle, line);
+    
+    if (CGAL::assign(iPoint, res)) {
+			return true;
+    }
+    if (CGAL::assign(iSegment, res)) {
+			return true;
+    }		
+		
+		return false;
 	}
 }

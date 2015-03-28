@@ -8,6 +8,9 @@
 #include <CGAL/Cartesian_d.h>
 #include <CGAL/Point_3.h>
 #include <CGAL/Vector_3.h>
+#include <CGAL/Line_3.h>
+#include <CGAL/Triangle_3.h>
+#include <CGAL/Segment_3.h>
 #include <CGAL/Origin.h>
 #include <CGAL/Linear_algebraCd.h>
 
@@ -20,6 +23,9 @@ namespace dtOO {
   typedef CGAL::Point_2< dtKernel > dtPoint2;
   typedef CGAL::Vector_2< dtKernel > dtVector2;
   typedef CGAL::Aff_transformation_2< dtKernel > dtAffTransformation2;
+  typedef CGAL::Line_3< dtKernel > dtLine3;
+  typedef CGAL::Triangle_3< dtKernel > dtTriangle3;
+  typedef CGAL::Segment_3< dtKernel > dtSegment3;
   typedef CGAL::Linear_algebraCd< dtFt >::Matrix dtMatrix;
   typedef CGAL::Linear_algebraCd< dtFt >::Vector dtMatrixVector;
   
@@ -84,6 +90,7 @@ namespace dtOO {
     static dtVector2 ignoreZ( dtVector3 const & v0 );
     static dtPoint2 ignoreZ( dtPoint3 const & v0 );
     static std::string directionString( dtVector3 const & vv );
+    static bool intersects(dtTriangle3 const & triangle, dtLine3 const & line);
   };
 }
 #endif  /* DTLINEARALGEBRA_H */
