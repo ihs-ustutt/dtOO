@@ -1,5 +1,5 @@
-#ifndef DTGMSHMESHGFACEEXTRUDE_H
-#define	DTGMSHMESHGFACEEXTRUDE_H
+#ifndef dtGmshMeshBoundaryLayer_H
+#define	dtGmshMeshBoundaryLayer_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -8,16 +8,16 @@ namespace dtOO {
   class dtGmshFace;
   class dtGmshRegion;
   
-  class dtGmshMeshGFaceExtrude {
+  class dtGmshMeshBoundaryLayer {
     public:
-      dt__CLASSNAME(dtGmshMeshGFaceExtrude);      
-      dtGmshMeshGFaceExtrude();
-      dtGmshMeshGFaceExtrude( 
+      dt__CLASSNAME(dtGmshMeshBoundaryLayer);      
+      dtGmshMeshBoundaryLayer();
+      dtGmshMeshBoundaryLayer( 
         float const & thickness, std::vector< float > const & spacing,
         float const & maxDihedralAngle,
         int const nSmoothingSteps, int const nShrinkingSteps 
       );
-      virtual ~dtGmshMeshGFaceExtrude();
+      virtual ~dtGmshMeshBoundaryLayer();
       void operator()( 
         dtGmshRegion * region,
         std::list< dtGmshFace const * > const & face, 
@@ -34,5 +34,5 @@ namespace dtOO {
   };
 }
 
-#endif	/* DTGMSHMESHGFACEEXTRUDE_H */
+#endif	/* dtGmshMeshBoundaryLayer_H */
 

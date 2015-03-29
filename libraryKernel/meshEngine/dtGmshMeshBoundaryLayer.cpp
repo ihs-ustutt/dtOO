@@ -1,4 +1,4 @@
-#include "dtGmshMeshGFaceExtrude.h"
+#include "dtGmshMeshBoundaryLayer.h"
 
 #include <logMe/logMe.h>
 #include <progHelper.h>
@@ -7,7 +7,7 @@
 #include "dtOMMesh.h"
 #include "dtOMMeshManifold.h"
 #include "dtGmshRegion.h"
-#include <dtGmshModel.h>
+#include "dtGmshModel.h"
 #include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
@@ -16,14 +16,14 @@
 #include <gmsh/MTetrahedron.h>
 
 namespace dtOO {
-	dtGmshMeshGFaceExtrude::dtGmshMeshGFaceExtrude() {
+	dtGmshMeshBoundaryLayer::dtGmshMeshBoundaryLayer() {
 		_thickness = 0.;
 	}
 
-	dtGmshMeshGFaceExtrude::~dtGmshMeshGFaceExtrude() {
+	dtGmshMeshBoundaryLayer::~dtGmshMeshBoundaryLayer() {
 	}
 	
-	dtGmshMeshGFaceExtrude::dtGmshMeshGFaceExtrude( 
+	dtGmshMeshBoundaryLayer::dtGmshMeshBoundaryLayer( 
         float const & thickness, std::vector< float > const & spacing,
         float const & maxDihedralAngle,
         int const nSmoothingSteps, int const nShrinkingSteps 
@@ -35,7 +35,7 @@ namespace dtOO {
 		_maxDihedralAngle = maxDihedralAngle;
 	}
 	
-  void dtGmshMeshGFaceExtrude::operator()( 
+  void dtGmshMeshBoundaryLayer::operator()( 
 	  dtGmshRegion * region,
 	  std::list< dtGmshFace const * > const & face, 
 		std::vector< int > const & ori,

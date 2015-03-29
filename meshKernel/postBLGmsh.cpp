@@ -9,7 +9,7 @@
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
-#include <meshEngine/dtGmshMeshGFaceExtrude.h>
+#include <meshEngine/dtGmshMeshBoundaryLayer.h>
 #include <unstructured3dMesh.h>
 #include "gmshBoundedVolume.h"
 
@@ -88,12 +88,11 @@ namespace dtOO {
 		_dtR 
 		= 
 		new dtGmshRegion(_meshedBV->getModel(), _meshedBV->getModel()->getMaxRegionTag()+1);
-		dtGmshMeshGFaceExtrude extruder(
+		dtGmshMeshBoundaryLayer(
 		  _thickness, _spacing, 
 			_maxDihedralAngle, 
 			_nSmoothingSteps, _nShrinkingSteps
-		);
-		extruder(
+		)(
 		  _dtR, 
 			faceList, _faceOrientation, 
 			fixedFaceList, _fixedFaceOrientation
