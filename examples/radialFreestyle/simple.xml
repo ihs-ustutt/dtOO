@@ -104,20 +104,18 @@
 				<analyticGeometry label="m3d_meridian"/>
     </builder>
   </part>				
-
-  <part label="mp_blockStructure">
-    <builder name="vec3dInMap3dTo3d[]">
-				<analyticFunction label="vec3d3d_12_blockStructure"/>
-				<analyticGeometry label="m3d_meridian"/>
-    </builder>
-  </part>			
 	
   <function label="myBaseContainer">
     <builder name="baseContainer">				
       <Point_3 label="p3_origin" x="0." y="0." z="0."/>                 
       <Vector_3 label="v3_zz" x="0." y="0." z="1."/>                
 
-      <transformer name="predefinedExtension" label="preExt" y_in="0." y_out="1."/>			
+      <transformer 
+			  name="predefinedExtension" 
+			  label="preExt" 
+				y_in="0." y_out="1." 
+				alpha_in="0.01" alpha_out="0.01"
+			/>			
     </builder>
   </function>
 	
@@ -323,41 +321,6 @@
 			<analyticFunction label="vec3d1d_bladeCut_0_right"/>
 		</builder>
 	</function>				
-	
-	<function label="vec3d2dC_12_block_0">
-		<builder name="vec3dTwoDTwelveRectangle">
-			<analyticFunction label="vec3d1d_bladeCut_0_back"/>
-			<analyticFunction label="vec3d1d_bladeCut_0_left"/>
-			<analyticFunction label="vec3d1d_bladeCut_0_front"/>
-      <analyticFunction label="vec3d1d_bladeCut_0_right"/>
-			<analyticFunction label="vec3d1d_bladeCut_0"/>
-		</builder>
-	</function>	
-	<function label="vec3d2dC_12_block_1">
-		<builder name="vec3dTwoDTwelveRectangle">
-			<analyticFunction label="vec3d1d_bladeCut_1_back"/>
-			<analyticFunction label="vec3d1d_bladeCut_1_left"/>
-			<analyticFunction label="vec3d1d_bladeCut_1_front"/>
-      <analyticFunction label="vec3d1d_bladeCut_1_right"/>
-			<analyticFunction label="vec3d1d_bladeCut_1"/>
-		</builder>
-	</function>	
-	<function label="vec3d2dC_12_block_2">
-		<builder name="vec3dTwoDTwelveRectangle">
-			<analyticFunction label="vec3d1d_bladeCut_2_back"/>
-			<analyticFunction label="vec3d1d_bladeCut_2_left"/>
-			<analyticFunction label="vec3d1d_bladeCut_2_front"/>
-      <analyticFunction label="vec3d1d_bladeCut_2_right"/>
-			<analyticFunction label="vec3d1d_bladeCut_2"/>
-		</builder>
-	</function>		
-	<function label="vec3d3d_12_blockStructure">
-		<builder name="vec3dTransVolThreeD[]">
-			<analyticFunction label="vec3d2dC_12_block_0"/>
-			<analyticFunction label="vec3d2dC_12_block_1"/>
-			<analyticFunction label="vec3d2dC_12_block_2"/>
-		</builder>
-	</function>	
 
   <constValue label="cV_myOne">
     <builder  name="sliderFloatParam">

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<canadaGmsh>
+  <staticProperties label="">
+		<option name="reparamOnFace_precision" value="1.e-8"/>
+		<option name="reparamInVolume_precision" value="1.e-8"/>
+		<option name="reparamOnFace_precisionXYZ" value="1.e-1"/>
+		<option name="reparamInVolume_precisionXYZ" value="1.e-1"/>
+		<option name="xyz_resolution" value="1.e-1"/>
+		<option name="uv_resolution" value="1.e-2"/>
+		<option name="point_render_diameter" value=".5"/>
+		<option name="vector_render_size" value="2."/>
+		<option name="snapTol" value="1.e-1"/>
+		<option name="function_render_resolution_u" value="50"/>
+		<option name="function_render_resolution_v" value="50"/>
+		<option name="function_render_resolution_w" value="10"/>
+		<option name="geometry_render_resolution_u" value="51"/>
+		<option name="geometry_render_resolution_v" value="51"/>
+		<option name="geometry_render_resolution_w" value="11"/>
+	</staticProperties>	
+	
+
+	  <constValue label="cV_a">
+    <builder  name="sliderFloatParam">
+      <float value="0.6" min="0.0" max="1.0"/>
+    </builder>
+  </constValue>
+	
+		<part label="baseContainer2">
+			<builder name="baseContainer">
+			<transformer 
+			  label="vZero" 
+				name="pickMap2dTo3dRangePercent"
+			  parameter_percent_two="0."
+			/>
+			<transformer 
+			  label="vOne" 
+				name="pickMap2dTo3dRangePercent"
+			  parameter_percent_two="1."
+			/>			
+			<transformer 
+			  label="wZero" 
+				name="pickMap3dTo3dRangePercent"
+			  parameter_percent_three="0."
+			/>										
+			</builder>
+		</part>
+
+	<!-- hub/shroud and meridian contour -->
+  <part label="s3_hub">
+    <builder name="bSplineCurve_pointConstructOCC" order="2">
+			<Point_3 x="100.0" y="0.0" z="0.0"/>
+      <Point_3 x="10.0" y="0.0" z="0.0"/>
+			<Point_3 x="10.0" y="0.0" z="100.0"/>
+		</builder>
+  </part>				
+  <part label="s3_shroud">
+    <builder name="bSplineCurve_pointConstructOCC" order="2">
+			<Point_3 x="100.0" y="0.0" z="50.0"/>
+      <Point_3 x="30.0" y="0.0" z="50.0"/>
+			<Point_3 x="30.0" y="0.0" z="100.0"/>
+		</builder>
+  </part>				
+  <part label="s3_inlet">
+    <builder name="bSplineCurve_pointConstructOCC" order="1">
+			<Point_3 attribute="pick_from_part" part_label="s3_hub" parameter_one_percent="0.0"/>
+      <Point_3 attribute="pick_from_part" part_label="s3_shroud" parameter_one_percent="0.0"/>
+		</builder>
+  </part>					
+  <part label="s3_outlet">
+    <builder name="bSplineCurve_pointConstructOCC" order="1">
+			<Point_3 attribute="pick_from_part" part_label="s3_hub" parameter_one_percent="1.0"/>
+      <Point_3 attribute="pick_from_part" part_label="s3_shroud" parameter_one_percent="1.0"/>
+		</builder>
+  </part>
+	<part label="aS_meridian">
+		<builder name="bSplineSurface_bSplineCurveFillConstructOCC">
+			<analyticGeometry label="s3_hub"/>
+			<analyticGeometry label="s3_outlet"/>
+			<analyticGeometry label="s3_shroud"/>
+      <analyticGeometry label="s3_inlet"/>			
+		</builder>
+	</part>
+  <part label="aG_v_0">	
+    <builder name="rotatingMap2dTo3dDecorator">
+				<analyticGeometry label="aS_meridian"/>
+				<Vector_3 label="v3_zz"/>
+    </builder>  
+  </part>	
+	
+  <function label="v3d3d_cube">
+    <builder  name="muParser">
+			<expression value=".375+xx*.25,yy, zz" dimension="3"/>
+      <x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+			<x_three name="zz" min="0." max="1."/>
+    </builder>
+  </function>		
+	
+	<part label="aG_v_1">
+		<builder name="vec3dInMap3dTo3dDecorator">
+			<analyticGeometry label="aG_v_0"/>
+			<analyticFunction label="v3d3d_cube"/>				
+		</builder>
+	</part>			
+	
+	
+  <function label="myBaseContainer0">
+    <builder name="baseContainer">
+      <Point_3 label="p3_origin" x="0." y="0." z="0."/>                 
+      <Vector_3 label="v3_zz" x="0." y="0." z="1."/>   
+			
+			<Point_3 label="p3_0" x="0.49" y="#cV_a#" z="0."/>
+			<Point_3 label="p3_1" x="0.40" y="0.25" z="0."/>
+			<Point_3 label="p3_2" x="0.50" y="0.25" z="0."/>
+			<Point_3 label="p3_3" x="0.51" y="#cV_a#" z="0."/>
+			<Point_3 label="p3_4" x="0.49" y="0.75" z="1."/>
+			<Point_3 label="p3_5" x="0.50" y="0.25" z="1."/>
+			<Point_3 label="p3_6" x="0.60" y="0.25" z="1."/>
+			<Point_3 label="p3_7" x="0.51" y="0.75" z="1."/>
+		</builder>
+	</function>
+	
+  <function label="aF_c_0">
+    <builder name="vec3dCurveOneD" order="2">
+				<Point_3 label="p3_0"/>
+				<Point_3 label="p3_1"/>
+				<Point_3 label="p3_2"/>
+				<Point_3 label="p3_3"/>
+		</builder>
+  </function>		
+  <function label="aF_c_1">
+    <builder name="vec3dCurveOneD" order="2">
+				<Point_3 label="p3_4"/>
+				<Point_3 label="p3_5"/>
+				<Point_3 label="p3_6"/>
+				<Point_3 label="p3_7"/>
+		</builder>
+  </function>			
+	
+  <function label="aF_c_2">
+    <builder name="vec3dCurveOneD" order="1">
+				<Point_3 label="p3_3"/>
+				<Point_3 label="p3_0"/>
+		</builder>
+  </function>		
+  <function label="aF_c_3">
+    <builder name="vec3dCurveOneD" order="1">
+				<Point_3 label="p3_7"/>
+				<Point_3 label="p3_4"/>
+		</builder>
+  </function>			
+	
+		<function label="aF_s_0">
+			<builder name="vec3dSurfaceTwoD">
+			  <analyticFunction label="aF_c_0"/>		
+				<analyticFunction label="aF_c_1"/>
+			</builder>
+		</function>	
+		<function label="aF_s_1">
+			<builder name="vec3dSurfaceTwoD">
+			  <analyticFunction label="aF_c_2"/>
+				<analyticFunction label="aF_c_3"/>
+			</builder>
+		</function>			
+		
+	<part label="aG_s_0">
+		<builder name="vec3dInMap3dTo3dDecorator" percent="true">
+			<analyticGeometry label="aG_v_0"/>
+			<analyticFunction label="aF_s_0"/>				
+		</builder>
+	</part>
+	<part label="aG_s_1">
+		<builder name="vec3dInMap3dTo3dDecorator" percent="true">
+			<analyticGeometry label="aG_v_0"/>
+			<analyticFunction label="aF_s_1"/>				
+		</builder>
+	</part>	
+	
+  <function label="aF_square_0">
+    <builder  name="muParser">
+			<expression value=".5*xx,yy" dimension="2"/>
+      <x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+    </builder>
+  </function>
+	<part label="aG_s_0_0">
+		<builder name="vec2dInMap2dTo3dDecorator" percent="true">
+			<analyticGeometry label="aG_s_0"/>
+			<analyticFunction label="aF_square_0"/>				
+		</builder>
+	</part>			
+  <function label="aF_square_1">
+    <builder  name="muParser">
+			<expression value=".5+.5*xx,yy" dimension="2"/>
+      <x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+    </builder>
+  </function>		
+	<part label="aG_s_0_1">
+		<builder name="vec2dInMap2dTo3dDecorator" percent="true">
+			<analyticGeometry label="aG_s_0"/>
+			<analyticFunction label="aF_square_1"/>				
+		</builder>
+	</part>
+
+	<!--
+	  gmsh switches face normals if meshing of the volume is performed
+	-->
+	<boundedVolume name="map3dTo3dWithInternalGmsh" label="map3dTo3dWithInternalGmsh"
+		marginWidth="4."
+		marginNormalWidth="4."
+		marginTangentialWidth="4."
+		bladeNormalWidth="8."
+		bladeTangentialWidth="4."	
+    normalAddNumberIntegrationPoints="3"
+	>
+		<option name="gmshMeshFile" value="gmshLayer.geo"/>		
+		<option name="defer_mesh_3" value="true"/>
+    <bVObserver name="bVONameRegions" regionLabel="{REG_1}"/>
+    <bVObserver 
+		  name="bVONameFaces" 
+			faceLabel="
+				{FACE_1}
+				{FACE_2}
+        {FACE_3}
+				{FACE_4}
+				{FACE_5}
+				{FACE_6}
+				{FACE_7}{FACE_8}{FACE_9}
+				{FACE_10}{FACE_11}{FACE_12}
+				{FACE_13}{FACE_14}{FACE_15}				
+			"/>
+		<analyticGeometry label="aG_v_1"/>
+		<analyticGeometry label="aG_s_0_0"/>
+		<analyticGeometry label="aG_s_0_1"/>
+		<analyticGeometry label="aG_s_1"/>
+	</boundedVolume>	
+
+	<boundedVolume name="postBLGmsh"  label="postBLGmsh" 
+	  spacing="{.6}{.8}{.9}"
+		thickness="2."
+		intervals="2"
+		nSmoothingSteps="10"
+		nShrinkingSteps="3"
+		maxDihedralAngle="_pi*70./180."
+	>
+		<boundedVolume 
+		  label="map3dTo3dWithInternalGmsh"
+			faceLabel="
+				{FACE_1}
+				{FACE_2}
+				{FACE_7}{FACE_8}{FACE_9}
+				{FACE_10}{FACE_11}{FACE_12}
+				{FACE_13}{FACE_14}
+			"
+      faceOrientation="
+				{-1}			
+				{1}
+				{-1}{1}{1}
+				{-1}{1}{1}
+				{-1}{1}
+			"
+			fixedFaceLabel="
+			{FACE_3}{FACE_4}{FACE_5}{FACE_6}
+			{FACE_15}
+			"
+      fixedFaceOrientation="{1}{-1}{-1}{1}{1}"
+      />			
+	</boundedVolume>
+</canadaGmsh> 

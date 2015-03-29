@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <c14Volume>
+	<function label="vec3d2dC_12_block_0">
+		<builder name="vec3dTwoDTwelveRectangle">
+			<analyticFunction label="vec3d1d_bladeCut_0_back"/>
+			<analyticFunction label="vec3d1d_bladeCut_0_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_0_front"/>
+      <analyticFunction label="vec3d1d_bladeCut_0_right"/>
+			<analyticFunction label="vec3d1d_bladeCut_0"/>
+		</builder>
+	</function>	
+	<function label="vec3d2dC_12_block_1">
+		<builder name="vec3dTwoDTwelveRectangle">
+			<analyticFunction label="vec3d1d_bladeCut_1_back"/>
+			<analyticFunction label="vec3d1d_bladeCut_1_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_1_front"/>
+      <analyticFunction label="vec3d1d_bladeCut_1_right"/>
+			<analyticFunction label="vec3d1d_bladeCut_1"/>
+		</builder>
+	</function>	
+	<function label="vec3d2dC_12_block_2">
+		<builder name="vec3dTwoDTwelveRectangle">
+			<analyticFunction label="vec3d1d_bladeCut_2_back"/>
+			<analyticFunction label="vec3d1d_bladeCut_2_left"/>
+			<analyticFunction label="vec3d1d_bladeCut_2_front"/>
+      <analyticFunction label="vec3d1d_bladeCut_2_right"/>
+			<analyticFunction label="vec3d1d_bladeCut_2"/>
+		</builder>
+	</function>		
+	<function label="vec3d3d_12_blockStructure">
+		<builder name="vec3dTransVolThreeD[]">
+			<analyticFunction label="vec3d2dC_12_block_0"/>
+			<analyticFunction label="vec3d2dC_12_block_1"/>
+			<analyticFunction label="vec3d2dC_12_block_2"/>
+		</builder>
+	</function>
+	
+  <part label="mp_blockStructure">
+    <builder name="vec3dInMap3dTo3d[]">
+				<analyticFunction label="vec3d3d_12_blockStructure"/>
+				<analyticGeometry label="m3d_meridian"/>
+    </builder>
+  </part>
+	
 	<boundedVolume label="map3dTo3dCompoundVolume" name="map3dTo3dCompoundVolume">
 	  <option name="[gmsh]General.Terminal" value="1."/>
 	  <option name="[gmsh]General.Verbosity" value="100."/>
