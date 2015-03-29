@@ -30,8 +30,9 @@ namespace dtOO {
   private:
     float _thickness;
     int _intervals;
-    float _bias;
+    std::vector< float > _spacing;
     int _nSmoothingSteps;
+    int _nShrinkingSteps;
     float _maxDihedralAngle;
     gmshBoundedVolume const * _meshedBV;
     std::vector< std::string > _faceLabel;

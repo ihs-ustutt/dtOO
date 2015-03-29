@@ -32,12 +32,25 @@ namespace dtOO {
     // init boundedVolume
     //
     boundedVolume::init(element, bC, cV, aF, aG, bV);
-		
-    _thickness = optionHandling::getOptionFloat("thickness", cV, aF);
-    _intervals = optionHandling::getOptionInt("intervals", cV, aF);
-    _bias = optionHandling::getOptionFloat("bias", cV, aF);
-		_nSmoothingSteps = optionHandling::getOptionInt("nSmoothingSteps", cV, aF);		
-		_maxDihedralAngle = optionHandling::getOptionInt("maxDihedralAngle", cV, aF);		
+
+		_spacing 
+		= 
+		qtXmlBase::getAttributeFloatVectorMuParse("spacing", element, cV, aF);		
+    _thickness 
+		= 
+		qtXmlBase::getAttributeFloatMuParse("thickness", element, cV, aF);
+    _intervals 
+		= 
+		qtXmlBase::getAttributeIntMuParse("intervals", element, cV, aF);
+		_nSmoothingSteps 
+		= 
+		qtXmlBase::getAttributeIntMuParse("nSmoothingSteps", element, cV, aF);		
+		_nShrinkingSteps 
+		=
+		qtXmlBase::getAttributeIntMuParse("nShrinkingSteps", element, cV, aF);		
+		_maxDihedralAngle 
+		= 
+		qtXmlBase::getAttributeFloatMuParse("maxDihedralAngle", element, cV, aF);		
 		
 		//
 		// boundedVolume
@@ -75,17 +88,23 @@ namespace dtOO {
 		_dtR 
 		= 
 		new dtGmshRegion(_meshedBV->getModel(), _meshedBV->getModel()->getMaxRegionTag()+1);
-		_meshedBV->getModel()->tagPhysical(_dtR, getLabel());
-		_meshedBV->getModel()->add(_dtR);
-		dtGmshMeshGFaceExtrude extruder(_thickness, _maxDihedralAngle, _nSmoothingSteps);
+		dtGmshMeshGFaceExtrude extruder(
+		  _thickness, _spacing, 
+			_maxDihedralAngle, 
+			_nSmoothingSteps, _nShrinkingSteps
+		);
 		extruder(
 		  _dtR, 
 			faceList, _faceOrientation, 
 			fixedFaceList, _fixedFaceOrientation
 		);
 		
-		_meshedBV->getModel()->writeMSH("postBLGmsh.msh");
+		_meshedBV->getModel()->meshRegion();
 		
+		_meshedBV->getModel()->tagPhysical(_dtR, getLabel());
+		_meshedBV->getModel()->add(_dtR);
+		
+		_meshedBV->getModel()->writeMSH("postBLGmsh.msh");
 		//
 		// update physicals because we add a new region
 		//

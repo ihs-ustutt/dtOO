@@ -7,6 +7,8 @@
 #include "dtOMMesh.h"
 #include "dtOMMeshManifold.h"
 #include "dtGmshRegion.h"
+#include <dtGmshModel.h>
+#include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
 #include <gmsh/MPrism.h>
@@ -22,11 +24,14 @@ namespace dtOO {
 	}
 	
 	dtGmshMeshGFaceExtrude::dtGmshMeshGFaceExtrude( 
-	  float const & thickness, float const & maxDihedralAngle,
-		int const nSmoothingSteps 
+        float const & thickness, std::vector< float > const & spacing,
+        float const & maxDihedralAngle,
+        int const nSmoothingSteps, int const nShrinkingSteps 
 	) {
 		_thickness = thickness;
+		_spacing = spacing;
 		_nSmoothingSteps = nSmoothingSteps;
+		_nShrinkingSteps = nShrinkingSteps;
 		_maxDihedralAngle = maxDihedralAngle;
 	}
 	
@@ -96,14 +101,15 @@ namespace dtOO {
 			itC++;
 		}		
 		
+		om.update();
+		omFixed.update();
+		
 		//
 		// create mesh manifolds
 		//
 		std::vector< dtOMMeshManifold > omMs;		
 		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), v_it) {
-			omMs.push_back( 
-			  dtOMMeshManifold(omFixed, omFixed.requestVertexH(om.requestMVertex(*v_it))) 
-			);			
+			omMs.push_back(dtOMMeshManifold(omFixed, omFixed[om[*v_it]]));			
 		}
 
 		//
@@ -124,7 +130,7 @@ namespace dtOO {
 				nnV.push_back(itDiv->normal());
 			}
 			dtVector3 nn = dtLinearAlgebra::meanAverage(nnV);
-			MVertex * mv = it->centerMVertex();
+			::MVertex * mv = it->centerMVertex();
 			omFixed.vertexNormal(mv) = nn;
 		}
 
@@ -137,26 +143,56 @@ namespace dtOO {
 		// create new vertices
 		//
 		dtOMMesh omT(om);
-		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
-			MVertex * mv = om.requestMVertex(*it);
+		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {		
+		  ::MVertex * mv = om[*it];
 			if (!om.vertexIsBoundary(mv)) {
-				MVertex * mvNew = new MVertex(mv->x(), mv->y(), mv->z(), region);
-				omT.replaceMVertex(omT.requestVertexH(mv), mvNew);
+      	::MVertex * mvNew = new ::MVertex(mv->x(), mv->y(), mv->z(), region);
+				omT.replaceMVertex(omT[mv], mvNew);
   			region->addMeshVertex(mvNew);
-				dtVector3 nT = _thickness*omFixed.vertexNormal(mv);				
-				mv->setXYZ(mv->x()+nT.x(), mv->y()+nT.y(), mv->z()+nT.z());
+				
+				dtVector3 nn = omFixed.vertexNormal(mv);	
+				dt__THROW_IF(floatHandling::isSmall(dtLinearAlgebra::length(nn)), operator());
+				
+				//
+				// shrinking
+				//
+				std::vector< omFaceH > movingHv;
+				dt__forFromToIter(omVertexVertexI, om.vv_begin(*it), om.vv_end(*it), vIt) {
+					dt__forFromToIter(omConstVertexFaceI, om.cvf_begin(*vIt), om.cvf_end(*vIt), fIt) {
+						if ( !om.contains(*fIt, *it) ) movingHv.push_back(*fIt);
+					}
+				}				
+				float thisThickness = _thickness;
+				dtPoint3 target;
+				dtPoint3 start(mv->x(), mv->y(), mv->z());
+				for (int ii=0;ii<_nShrinkingSteps;ii++) {
+					dtVector3 nT = thisThickness*nn;
+					target = dtPoint3(mv->x()+nT.x(), mv->y()+nT.y(), mv->z()+nT.z());
+					mv->setXYZ(target.x(), target.y(), target.z());
+					if ( om.intersection(movingHv, start, target) ) break;
+					thisThickness = .5*thisThickness;
+				}
+				if (thisThickness != _thickness) {
+					DTINFOWF(
+				    operator(), 
+						<< "Shrinking from " << DTLOGEVAL(_thickness) << " to " 
+					  << DTLOGEVAL(thisThickness)
+					);
+				}
 		  }
 		}
 		
 		//
 		// create new boundary elements
 		//
+		int nLayers = _spacing.size()+1;
+		// calculate element width of each layer sheet
 		dt__forFromToIter(omFaceI, om.faces_begin(), om.faces_end(), fIt) {
-			std::vector< MVertex * > commonVertices;
-			std::vector< MVertex * > omVertices;
-			std::vector< MVertex * > omTVertices;
-			dt__forFromToIter(omFaceVertexI, om.fv_begin(*fIt), om.fv_end(*fIt), vIt) {	
-				if (om.data(*vIt).MVertex()->getNum() ==  omT.data(*vIt).MVertex()->getNum() ) {
+			std::vector< ::MVertex * > commonVertices;
+			std::vector< ::MVertex * > omVertices;
+			std::vector< ::MVertex * > omTVertices;
+			dt__forFromToIter(omFaceVertexI, om.fv_begin(*fIt), om.fv_end(*fIt), vIt) {
+				if ( om.data(*vIt).MVertex()->getNum() ==  omT.data(*vIt).MVertex()->getNum() ) {
 					commonVertices.push_back( om.data(*vIt).MVertex() );
 				}
 				else {
@@ -164,31 +200,61 @@ namespace dtOO {
 					omTVertices.push_back( omT.data(*vIt).MVertex() );
 				}
 			}
+
+			// create two dimensional arrays of all mesh vertices
+			twoDArrayHandling< ::MVertex * > omVerticesL(nLayers, 0);
+			twoDArrayHandling< ::MVertex * > omTVerticesL(nLayers, 0);			
+			omVerticesL[0] = omVertices;			
+			omTVerticesL[nLayers-1] = omTVertices;
+			dt__forAllIndex(omTVertices, jj) {
+				dtPoint3 mv0 = dtGmshModel::cast2DtPoint3(omVertices[jj]);
+				dtPoint3 mv1 = dtGmshModel::cast2DtPoint3(omTVertices[jj]);
+				dtVector3 vv = mv1-mv0;
+				dt__toFloat(float nLayersF, nLayers);
+				for (int ii=1; ii<nLayers; ii++) {
+					dt__toFloat(float iiF, ii);
+					dtPoint3 mvXYZ = mv0 + _spacing[ii-1]*vv;
+					::MVertex * mv = new ::MVertex(0., 0., 0., region);
+					region->addMeshVertex(mv);
+					dtGmshModel::setPosition(mv, mvXYZ);
+					omVerticesL[ii].push_back(mv);
+					omTVerticesL[ii-1].push_back(mv);
+				}
+			}
 			
-			if (commonVertices.size() == 0) {
-				const_cast<dtGmshRegion*>(region)->addPrism( 
-				  new MPrism(
-				    omVertices[0], omVertices[1], omVertices[2],
-						omTVertices[0], omTVertices[1], omTVertices[2]
-			    ) 
-				);
-			}
-			else if (commonVertices.size() == 1) {
-				const_cast<dtGmshRegion*>(region)->addPyramid( 
-				  new MPyramid(
-				    omVertices[0], omVertices[1], 
-						omTVertices[1], omTVertices[0], 
+			// create elements and add it to given region
+			for (int ii=0; ii<nLayers; ii++) {
+				if (commonVertices.size() == 0) {
+					::MPrism * pri 
+					= 
+					new ::MPrism(
+				    omVerticesL[ii][0], omVerticesL[ii][1], omVerticesL[ii][2],
+						omTVerticesL[ii][0], omTVerticesL[ii][1], omTVerticesL[ii][2]
+					);
+					if (pri->getVolumeSign()<0.) pri->reverse();
+					region->addPrism(pri);
+				}
+				else if (commonVertices.size() == 1) {
+					::MPyramid * pyr 
+					= 
+					new ::MPyramid(
+						omTVerticesL[ii][1], omTVerticesL[ii][0], 
+						omVerticesL[ii][0], omVerticesL[ii][1], 
 						commonVertices[0]
-			    ) 
-				);				
-			}
-			else if (commonVertices.size() == 2) {
-				const_cast<dtGmshRegion*>(region)->addTetrahedron(
-				  new MTetrahedron(
-				    omVertices[0], omTVertices[0], 
+					);
+					if (pyr->getVolumeSign()<0.) pyr->reverse();
+					region->addPyramid(pyr);		
+				}
+				else if (commonVertices.size() == 2) {
+					::MTetrahedron * tet 
+					= 
+					new ::MTetrahedron(
+						omTVerticesL[ii][0], omVerticesL[ii][0], 
 						commonVertices[0], commonVertices[1]
-			    ) 
-				);					
+					);				
+					if (tet->getVolumeSign()<0.) tet->reverse();
+					region->addTetrahedron(tet);					
+				}
 			}
 		}
   }
