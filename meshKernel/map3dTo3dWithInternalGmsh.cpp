@@ -1,4 +1,5 @@
 #include "map3dTo3dWithInternalGmsh.h"
+#include "dtXmlParserDecorator/qtXmlBase.h"
 #include <meshEngine/dtGmshEdge.h>
 #include <analyticGeometryHeaven/analyticGeometryCompound.h>
 #include <meshEngine/dtGmshRegion.h>
@@ -46,14 +47,24 @@ namespace dtOO {
 		//
 		// get margin width, margin element size and blade element size
 		//
-		_marginWidth = optionHandling::getOptionFloat("marginWidth");
-		_marginNormalWidth = optionHandling::getOptionFloat("marginNormalWidth");
-		_marginTangentialWidth = optionHandling::getOptionFloat("marginTangentialWidth");
-		_bladeNormalWidth = optionHandling::getOptionFloat("bladeNormalWidth");
-		_bladeTangentialWidth = optionHandling::getOptionFloat("bladeTangentialWidth");
+		_marginWidth 
+	  = 
+		qtXmlBase::getAttributeFloatMuParse("marginWidth", element, cV, aF);
+		_marginNormalWidth 
+		= 
+		qtXmlBase::getAttributeFloatMuParse("marginNormalWidth", element, cV, aF);
+		_marginTangentialWidth 
+		= 
+		qtXmlBase::getAttributeFloatMuParse("marginTangentialWidth", element, cV, aF);
+		_bladeNormalWidth 
+		= 
+		qtXmlBase::getAttributeFloatMuParse("bladeNormalWidth", element, cV, aF);
+		_bladeTangentialWidth 
+		= 
+	  qtXmlBase::getAttributeFloatMuParse("bladeTangentialWidth", element, cV, aF);
 		_normalAddNumberIntegrationPoints 
 		= 
-		optionHandling::getOptionInt("normalAddNumberIntegrationPoints");
+		qtXmlBase::getAttributeIntMuParse("normalAddNumberIntegrationPoints", element, cV, aF);
 		
     //
 		// get geometries
@@ -286,10 +297,10 @@ namespace dtOO {
 		//
 		// meshing
 		//
-		_gm->meshPhysical(0);
-		_gm->meshPhysical(1);
-		_gm->meshPhysical(2);
-		_gm->meshPhysical(3);
+		if ( !optionHandling::optionTrue("defer_mesh_0") ) _gm->meshPhysical(0);
+		if ( !optionHandling::optionTrue("defer_mesh_1") ) _gm->meshPhysical(1);
+		if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
+		if ( !optionHandling::optionTrue("defer_mesh_3") ) _gm->meshPhysical(3);
 			
     //
 		// force renumbering mesh in gmsh
