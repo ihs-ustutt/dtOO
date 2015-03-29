@@ -15,7 +15,7 @@ namespace dtOO {
     float maxDihedralAngle( void ) const;
     bool divideable( void ) const;
     bool closed( void ) const;
-    void update( void );
+    virtual void update( void );
     dtOMMeshManifold divide(void);
     std::vector< dtOMMeshManifold > divide( float const & angle );
     dtVector3 normal( void ) const;

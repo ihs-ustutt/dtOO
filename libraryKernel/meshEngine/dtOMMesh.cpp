@@ -156,6 +156,28 @@ namespace dtOO {
 		return false;
 	}
 	
+  bool dtOMMesh::contains( omFaceH const & fH, omVertexH const & vH ) const {
+		dt__forFromToIter(omConstFaceVertexI, cfv_begin(fH), cfv_end(fH), it) {
+			if (*it == vH) return true;
+		}
+		return false;
+	}	
+	
+	bool dtOMMesh::intersection( 
+	  omFaceH const & fH, dtPoint3 const & start, dtPoint3 const & target 
+	) const {
+		std::vector< dtPoint3 > v;
+		dt__forFromToIter(omConstFaceVertexI, cfv_begin(fH), cfv_end(fH), it) {
+			v.push_back( toDtPoint3(point(*it)) );
+		}
+		dt__THROW_IF(v.size()!=3, contains());
+		
+		return dtLinearAlgebra::intersects(
+		  dtTriangle3(v[0], v[1], v[2]), dtLine3(start, target)
+		);
+		
+	}
+	
 	dtVector3 & dtOMMesh::vertexNormal(MVertex * mv) {
 		return data(_om_gmsh[mv]).normal();
 	}
@@ -190,6 +212,16 @@ namespace dtOO {
 		}		
 	}
 	
+	bool dtOMMesh::intersection( 
+	  std::vector< omFaceH > const & fH, 
+		dtPoint3 const & start, dtPoint3 const & target 
+	) const {	
+		dt__forAllIndex(fH, ii) {
+			if (intersection(fH[ii], start, target)) return false;
+		}
+		return true;
+	}
+	
 	omVertexH const dtOMMesh::requestVertexH( ::MVertex const * mv ) const {
 		return _om_gmsh.at(mv);
 	}
@@ -197,4 +229,24 @@ namespace dtOO {
 	::MVertex * dtOMMesh::requestMVertex( omVertexH const vH ) const {
 		return data(vH).MVertex();
 	}	
+	
+	dtPoint3 dtOMMesh::toDtPoint3( omPoint const & oP) {
+		return dtPoint3(oP[0], oP[1], oP[2]);
+	}
+	
+  dtVector3 dtOMMesh::toDtVector3( omNormal const & nP) {
+		return dtVector3(nP[0], nP[1], nP[2]);
+	}
+	
+	void dtOMMesh::update( void ) {
+		omMesh::update_normals();
+	}
+
+  omVertexH const dtOMMesh::operator[]( ::MVertex const * const mv ) {
+		return requestVertexH(mv);
+	}
+	
+  ::MVertex * dtOMMesh::operator[](omVertexH const & vH) {
+		return requestMVertex(vH);
+	}
 }

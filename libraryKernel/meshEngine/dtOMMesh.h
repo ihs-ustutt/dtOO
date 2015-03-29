@@ -35,6 +35,7 @@ namespace dtOO {
   // iterators
   //
   typedef omMesh::VertexIter omVertexI;
+  typedef omMesh::ConstVertexIter omConstVertexI;
   typedef omMesh::VertexVertexIter omVertexVertexI;
   typedef omMesh::FaceIter omFaceI;
   typedef omMesh::ConstFaceIter omConstFaceI;
@@ -82,16 +83,29 @@ namespace dtOO {
       void addInv( const dtOMMesh &toAdd );      
       std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;
       bool contains( omFaceH const & fH, omEdgeH const & eH ) const;
+      bool contains( omFaceH const & fH, omVertexH const & vH ) const;
       dtVector3 & vertexNormal(MVertex * mv);
       void replaceMVertex( omVertexH const & vH, ::MVertex * mv );
       bool vertexIsBoundary(MVertex * mv) const;
-      void laplacianSmoothVertexNormal( void );
       omVertexH const requestVertexH( ::MVertex const * mv ) const;
       ::MVertex * requestMVertex( omVertexH const vH ) const;
+      void laplacianSmoothVertexNormal( void );
+      bool intersection( 
+        std::vector< omFaceH > const & fH, 
+        dtPoint3 const & start, dtPoint3 const & target 
+      ) const;
+      static dtPoint3 toDtPoint3( omPoint const & oP);
+      static dtVector3 toDtVector3( omNormal const & nP);
+      virtual void update( void );
+      omVertexH const operator[]( ::MVertex const * const mv );
+      ::MVertex * operator[](omVertexH const & vH);
     private:
       omVertexH addVertex( ::MVertex const * const &mv );
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          
       omFaceH addFace( std::vector< ::MVertex * > const & vertices, ::MElement const * const me );      
+      bool intersection( 
+        omFaceH const & fH, dtPoint3 const & start, dtPoint3 const & target 
+      ) const;
     private:      
       std::map< ::MVertex const *, omVertexH > _om_gmsh;
     

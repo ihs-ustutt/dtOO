@@ -11,9 +11,8 @@ namespace dtOO {
 
 		update();
 		
-		float minA = minDihedralAngle();
-		float maxA = maxDihedralAngle();
-		
+//		float minA = minDihedralAngle();
+//		float maxA = maxDihedralAngle();
 //		DTINFOWF(
 //			dtOMMeshManifold(),
 //			<< DTLOGEVAL(closed()) << LOGDEL
@@ -32,6 +31,11 @@ namespace dtOO {
 	}
 	
 	void dtOMMeshManifold::update( void ) {
+    //
+		// update underlying mesh
+		//
+		dtOMMesh::update();
+		
 		_dihedralAngleV.clear();
 		_isBoundary.clear();
 		
@@ -41,8 +45,6 @@ namespace dtOO {
 			eD.dihedralAngle( fabs(calc_dihedral_angle(*it)) );
 			_dihedralAngleV.push_back( eD.dihedralAngle() );
 		}		
-		
-		update_normals();
 	}
 
 	dtOMMeshManifold::~dtOMMeshManifold() {
