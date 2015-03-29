@@ -353,6 +353,10 @@ namespace dtOO {
     return dtPoint3(mv->x(), mv->y(), mv->z());
   }
 	
+	void dtGmshModel::setPosition( ::MVertex * mv, dtPoint3 const & pp ) {
+		mv->setXYZ(pp.x(), pp.y(), pp.z());
+	}
+	
   void dtGmshModel::meshEdgeTransfiniteFromTo(
     int const from, int const to, 
     int const type, float const coeff, 
@@ -416,6 +420,11 @@ namespace dtOO {
     mr(dtgr);    
 		MeshDelaunayVolume(delauny);
   }
+	
+	void dtGmshModel::meshRegion( void ) {
+		std::list< ::GRegion * > rr = regions();
+		dt__forAllIter(std::list< ::GRegion * >, rr, it) meshRegion((*it)->tag());
+	}
 
   int dtGmshModel::alreadyInModel( ::GVertex const * const gv ) const {
 		for (::GModel::viter vIt = __caCThis->firstVertex(); vIt != __caCThis->lastVertex(); ++vIt) {
