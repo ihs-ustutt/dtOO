@@ -78,7 +78,9 @@ namespace dtOO {
 	dtVector3 dtLinearAlgebra::normalize(
 		dtVector3 const & v0
 	) {
-		return (1./sqrt(v0.squared_length())) * v0;
+		float sqL = v0.squared_length();
+		if (sqL == 0.) return dtVector3(0.,0.,0.);
+		return (1./sqrt(sqL)) * v0;
 	}	
 	
   dtVector3 dtLinearAlgebra::meanAverage( std::vector< dtVector3 > const & vv ) {

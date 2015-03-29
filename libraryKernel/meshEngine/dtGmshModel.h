@@ -46,6 +46,7 @@ namespace dtOO {
     static dtGmshVertex * cast2DtGmshVertex( ::GEntity * gv );
     static dtPoint3 cast2DtPoint3( ::GVertex * gv );  
     static dtPoint3 cast2DtPoint3( ::MVertex * mv );
+    static void setPosition( ::MVertex * mv, dtPoint3 const & pp );
     void addIfVertexToGmshModel( dtPoint3 const & vertex, int * const tag );
     void addIfEdgeToGmshModel(
       map1dTo3d const * const edge, 
@@ -69,6 +70,7 @@ namespace dtOO {
     void meshEdge( int const tag );
     void meshFace( int const tag );
     void meshRegion( int const tag );
+    void meshRegion( void );    
     int alreadyInModel( ::GVertex const * const gv ) const;
     int alreadyInModel( ::GEdge const * const ge ) const;
     int alreadyInModel( ::GFace const * const gf ) const;
