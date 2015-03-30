@@ -415,10 +415,14 @@ namespace dtOO {
       meshFace( (*f_it)->tag() );
     }
     
-    std::vector< ::GRegion * > delauny;
-    ::meshGRegion mr( delauny );
-    mr(dtgr);    
-		MeshDelaunayVolume(delauny);
+		if (dtgr->_status == ::GEntity::MeshGenerationStatus::PENDING) {
+			std::vector< ::GRegion * > delauny;
+			::meshGRegion mr( delauny );
+			mr(dtgr);    
+			MeshDelaunayVolume(delauny);
+			dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
+		}
+		
   }
 	
 	void dtGmshModel::meshRegion( void ) {

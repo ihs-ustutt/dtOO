@@ -19,8 +19,8 @@ namespace dtOO {
     void meshTransfinite( void );
     void meshUnstructured( void );
     void addFace( ::GFace * face, int const ori );
-  private:
-
+  public:
+    mutable ::GEntity::MeshGenerationStatus _status;
   };
 }
 #endif	/* DTGMSHREGION_H */
