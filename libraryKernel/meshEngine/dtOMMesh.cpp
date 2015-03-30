@@ -231,4 +231,12 @@ namespace dtOO {
   ::MVertex * dtOMMesh::operator[](omVertexH const & vH) {
 		return requestMVertex(vH);
 	}
+	
+	::MVertex const * const dtOMMesh::at(omVertexH const & vH) const {
+		return data(vH).MVertex();
+	}
+
+	::MElement const * const dtOMMesh::at(omFaceH const & fH) const {
+		return data(fH).MElement();
+	}	
 }

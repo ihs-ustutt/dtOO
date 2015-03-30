@@ -103,6 +103,8 @@ namespace dtOO {
       virtual void update( void );
       omVertexH const & operator[]( ::MVertex const * const mv ) const;
       ::MVertex * operator[](omVertexH const & vH);
+      ::MVertex const * const at(omVertexH const & vH) const;
+	    ::MElement const * const at(omFaceH const & fH) const;
     private:
       omVertexH addVertex( ::MVertex const * const &mv );
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          
