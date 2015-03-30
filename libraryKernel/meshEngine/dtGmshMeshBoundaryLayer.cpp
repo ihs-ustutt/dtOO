@@ -9,6 +9,7 @@
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
 #include "dtOMVertexField.h"
+#include "dtMoabCore.h"
 #include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
@@ -117,7 +118,7 @@ namespace dtOO {
 		// divide manifolds and calculate normals
 		// averaging all normals of manifolds
 		//
-		dtOMVertexField< dtVector3 > nF(omFixed, dtVector3(0.,0.,0.) );
+		dtOMVertexField< dtVector3 > nF("nF", omFixed, dtVector3(0.,0.,0.) );
 		dt__forAllIter(std::vector< dtOMMeshManifold >, omM, it) {
 //			int itC = it - omM.begin();
 //			it->writeMesh("omM_"+stringPrimitive::intToString(itC)+".vtk");
@@ -147,15 +148,24 @@ namespace dtOO {
 		//
 		// create new vertices
 		//
-		dtOMVertexField< float > tF(omFixed, 0.);
-
+		dtOMVertexField< float > tF("tF", omFixed, 0.);
+		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
+			::MVertex * mv = om[*it];	
+			if (!om.vertexIsBoundary(mv)) tF[mv] = _thickness;
+		}
+		tF.laplacianSmooth();
+		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
+			::MVertex * mv = om[*it];	
+			if (om.vertexIsBoundary(mv)) tF[mv] = 0.;
+		}		
+		
 		//
 		// determine thickness
 		//
+	  dtOMMesh omT(om);		
 		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
 		  ::MVertex * mv = om[*it];
 			if (!om.vertexIsBoundary(mv)) {
-				tF[mv] = _thickness;
 
 				dt__THROW_IF(
 				  floatHandling::isSmall(dtLinearAlgebra::length(nF[mv])), 
@@ -166,21 +176,27 @@ namespace dtOO {
 				// get "two-ring" neighbor faces
 				//
 				std::vector< omFaceH > neighborFace;
-//				omVertexH fixedIt = omFixed[mv];
 				dt__forFromToIter(
 				  omVertexVertexI, 
 					omFixed.vv_begin(omFixed[mv]), 
 					omFixed.vv_end(omFixed[mv]), 
 					vvIt
 				) {
-					dt__forFromToIter(
-					  omConstVertexFaceI, 
-						omFixed.cvf_begin(*vvIt), 
-						omFixed.cvf_end(*vvIt), 
-						fIt
-					) {
-						if ( !omFixed.contains(*fIt, *it) ) neighborFace.push_back(*fIt);
-					}
+//				dt__forFromToIter(
+//				  omVertexVertexI, 
+//					omFixed.vv_begin(*vvIt), 
+//					omFixed.vv_end(*vvIt), 
+//					vvvIt
+//				) {					
+						dt__forFromToIter(
+							omConstVertexFaceI, 
+							omFixed.cvf_begin(*vvIt), 
+							omFixed.cvf_end(*vvIt), 
+							fIt
+						) {
+							if ( !omFixed.contains(*fIt, *it) ) neighborFace.push_back(*fIt);
+						}
+//					}	
 				}
 		    std::sort( neighborFace.begin(), neighborFace.end() );
         neighborFace.erase( 
@@ -204,28 +220,20 @@ namespace dtOO {
 						<< "Intersection => shrink t = " << _thickness << " -> " << tF[mv]
 					);
 				}
-		  }
-		}
-
+				
     //
     // move vertices of surface mesh om and create new vertices with old
 		// position in new surface mesh omT
 		//
-	  dtOMMesh omT(om);
-		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
-		  ::MVertex * mv = om[*it];
-			if (!om.vertexIsBoundary(mv)) {
-				
-      	::MVertex * mvNew = new ::MVertex(mv->x(), mv->y(), mv->z(), region);
+				::MVertex * mvNew = new ::MVertex(mv->x(), mv->y(), mv->z(), region);
 				omT.replaceMVertex(omT[mv], mvNew);
-  			region->addMeshVertex(mvNew);
-				
-				dtPoint3 start(mv->x(), mv->y(), mv->z());
+				region->addMeshVertex(mvNew);
 				dtPoint3 target = start + tF[mv] * nF[mv];
 				om.replacePosition(*it, target);
+				omFixed.replaceMVertex(omFixed[mv], mv);
 		  }
 		}
-		
+	
 		//
 		// create new boundary elements
 		//
@@ -238,9 +246,7 @@ namespace dtOO {
 			dt__forFromToIter(omFaceVertexI, om.fv_begin(*fIt), om.fv_end(*fIt), vIt) {
 				MVertex * om_mv = om[*vIt];
 				MVertex * omT_mv = omT[*vIt];
-				if ( tF[om_mv] == 0.) {//om.data(*vIt).MVertex()->getNum() ==  omT.data(*vIt).MVertex()->getNum() ) {
-					commonVertices.push_back(om_mv);
-				}
+				if ( om.vertexIsBoundary(om_mv) ) commonVertices.push_back(om_mv);
 				else {
 					omVertices.push_back(om_mv);
 					omTVertices.push_back(omT_mv);
@@ -303,6 +309,14 @@ namespace dtOO {
 				}
 			}
 		}
+		
+		//
+		// write fields
+		//
+		dtMoabCore mb(omFixed);
+		mb.addVertexField(tF);
+		mb.addVertexField(nF);
+		mb.write_mesh("dtGmshMeshBoundaryLayer.vtk");
   }
 }
 

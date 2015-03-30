@@ -82,16 +82,18 @@ namespace dtOO {
 		dt__forFromToIter(omConstVertexI, _om.vertices_begin(), _om.vertices_end(), vIt) {
       omConstVertexVertexI vBegin = _om.cvv_begin(*vIt);
 			T tmp = _field[*vBegin];
-			dt__forFromToIter(omConstVertexVertexI, _om.cvv_begin(*vIt), _om.cvv_end(*vIt), vvIt) {			
+      float tmpC = 1.;
+			dt__forFromToIter(omConstVertexVertexI, progHelper::next(_om.cvv_begin(*vIt)), _om.cvv_end(*vIt), vvIt) {			
         tmp = tmp + _field[*vvIt];
+        tmpC = tmpC + 1.;
 			}
-			av[counter] = tmp;
+			av[counter] = tmp/tmpC;
 			counter++;
 		}
 		
 		counter = 0;
 		dt__forFromToIter(omConstVertexI, _om.vertices_begin(), _om.vertices_end(), vIt) {
-			_field[*vIt] = _field[*vIt] + av[counter];
+			_field[*vIt] = av[counter];
 			counter++;
 		}		
 	}

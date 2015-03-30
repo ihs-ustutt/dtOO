@@ -92,6 +92,10 @@ namespace dtOO {
       void replaceMVertex( omVertexH const & vH, ::MVertex * mv );
       void replacePosition( omVertexH const & vH, dtPoint3 const & pp );
       bool vertexIsBoundary(MVertex * mv) const;
+	    bool isGeometricalEdge( omEdgeH const & eH) const;
+	    std::pair< ::MVertex *, ::MVertex * >
+	    foldVertices( omEdgeH const & eH) const;
+      std::pair< omFaceH, omFaceH > foldFaces( omEdgeH const & eH) const;
       omVertexH const & requestVertexH( ::MVertex const * mv ) const;
       ::MVertex * requestMVertex( omVertexH const vH ) const;
       bool intersection( 

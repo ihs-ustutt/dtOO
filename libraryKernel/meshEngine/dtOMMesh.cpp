@@ -1,4 +1,6 @@
 #include "dtOMMesh.h"
+#include "dtGmshModel.h"
+#include "dtGmshEdge.h"
 #include <progHelper.h>
 
 #include <logMe/logMe.h>
@@ -179,19 +181,59 @@ namespace dtOO {
 
 	void dtOMMesh::replaceMVertex( omVertexH const & vH, ::MVertex * mv ) {
 		data(vH).MVertex(mv);
-	  point(vH) = omPoint(mv->x(), mv->y(), mv->z());
+	  set_point(vH, omPoint(mv->x(), mv->y(), mv->z()));
 		update_normals();
 	}
 
 	void dtOMMesh::replacePosition( omVertexH const & vH, dtPoint3 const & pp ) {
 		::MVertex * mv = data(vH).MVertex();
 		mv->setXYZ(pp.x(), pp.y(), pp.z());
-	  point(vH) = omPoint(pp.x(), pp.y(), pp.z());
+	  set_point(vH, omPoint(pp.x(), pp.y(), pp.z()));
     update_normals();
 	}	
 	
 	bool dtOMMesh::vertexIsBoundary(MVertex * mv) const {
 		return const_cast<dtOMMesh *>(this)->is_boundary(_om_gmsh.at(mv));
+	}
+
+	bool dtOMMesh::isGeometricalEdge( omEdgeH const & eH) const {
+		omVertexH fromH
+		= 
+		from_vertex_handle(const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 0));
+		omVertexH toH
+		= 
+		to_vertex_handle(const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 0));
+		
+		if (
+			   dtGmshEdge::ConstDownCast(at(fromH)->onWhat()) 
+			&& dtGmshEdge::ConstDownCast(at(toH)->onWhat())
+		) return true;
+		return false;
+		
+	}
+	
+	std::pair< ::MVertex *, ::MVertex * >
+	dtOMMesh::foldVertices( omEdgeH const & eH) const {
+		omHalfedgeH he0H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 0);
+		omHalfedgeH he1H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 1);
+		
+		he0H = const_cast<dtOMMesh*>(this)->next_halfedge_handle(he0H);
+		he1H = const_cast<dtOMMesh*>(this)->next_halfedge_handle(he1H);
+		
+		return std::pair< ::MVertex *, ::MVertex * >(
+			requestMVertex(to_vertex_handle(he0H)), 
+			requestMVertex(to_vertex_handle(he1H))
+		);
+	}
+
+	std::pair< omFaceH, omFaceH > dtOMMesh::foldFaces( omEdgeH const & eH) const {
+		omHalfedgeH he0H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 0);
+		omHalfedgeH he1H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 1);
+		
+		return std::pair< omFaceH, omFaceH >(
+			const_cast<dtOMMesh*>(this)->face_handle(he0H), 
+			const_cast<dtOMMesh*>(this)->face_handle(he1H)
+		);
 	}
 	
 	bool dtOMMesh::intersection( 
