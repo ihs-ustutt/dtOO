@@ -37,9 +37,14 @@ namespace dtOO {
   typedef omMesh::VertexIter omVertexI;
   typedef omMesh::ConstVertexIter omConstVertexI;
   typedef omMesh::VertexVertexIter omVertexVertexI;
+  typedef omMesh::ConstVertexVertexIter omConstVertexVertexI;
   typedef omMesh::FaceIter omFaceI;
   typedef omMesh::ConstFaceIter omConstFaceI;
+  typedef omMesh::EdgeIter omEdgeI;
+  typedef omMesh::ConstEdgeIter omConstEdgeI;  
   typedef omMesh::VertexFaceIter omVertexFaceI;
+  typedef omMesh::FaceFaceIter omFaceFaceI;
+  typedef omMesh::ConstFaceFaceIter omConstFaceFaceI;  
   typedef omMesh::ConstVertexFaceIter omConstVertexFaceI;
   typedef omMesh::FaceVertexIter omFaceVertexI;
   typedef omMesh::ConstFaceVertexIter omConstFaceVertexI;
@@ -84,12 +89,11 @@ namespace dtOO {
       std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;
       bool contains( omFaceH const & fH, omEdgeH const & eH ) const;
       bool contains( omFaceH const & fH, omVertexH const & vH ) const;
-      dtVector3 & vertexNormal(MVertex * mv);
       void replaceMVertex( omVertexH const & vH, ::MVertex * mv );
+      void replacePosition( omVertexH const & vH, dtPoint3 const & pp );
       bool vertexIsBoundary(MVertex * mv) const;
-      omVertexH const requestVertexH( ::MVertex const * mv ) const;
+      omVertexH const & requestVertexH( ::MVertex const * mv ) const;
       ::MVertex * requestMVertex( omVertexH const vH ) const;
-      void laplacianSmoothVertexNormal( void );
       bool intersection( 
         std::vector< omFaceH > const & fH, 
         dtPoint3 const & start, dtPoint3 const & target 
@@ -97,7 +101,7 @@ namespace dtOO {
       static dtPoint3 toDtPoint3( omPoint const & oP);
       static dtVector3 toDtVector3( omNormal const & nP);
       virtual void update( void );
-      omVertexH const operator[]( ::MVertex const * const mv );
+      omVertexH const & operator[]( ::MVertex const * const mv ) const;
       ::MVertex * operator[](omVertexH const & vH);
     private:
       omVertexH addVertex( ::MVertex const * const &mv );

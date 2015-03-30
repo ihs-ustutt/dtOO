@@ -175,41 +175,23 @@ namespace dtOO {
 		return dtLinearAlgebra::intersects(
 		  dtTriangle3(v[0], v[1], v[2]), dtLine3(start, target)
 		);
-		
-	}
-	
-	dtVector3 & dtOMMesh::vertexNormal(MVertex * mv) {
-		return data(_om_gmsh[mv]).normal();
 	}
 
 	void dtOMMesh::replaceMVertex( omVertexH const & vH, ::MVertex * mv ) {
 		data(vH).MVertex(mv);
 	  point(vH) = omPoint(mv->x(), mv->y(), mv->z());
+		update_normals();
 	}
+
+	void dtOMMesh::replacePosition( omVertexH const & vH, dtPoint3 const & pp ) {
+		::MVertex * mv = data(vH).MVertex();
+		mv->setXYZ(pp.x(), pp.y(), pp.z());
+	  point(vH) = omPoint(pp.x(), pp.y(), pp.z());
+    update_normals();
+	}	
 	
 	bool dtOMMesh::vertexIsBoundary(MVertex * mv) const {
 		return const_cast<dtOMMesh *>(this)->is_boundary(_om_gmsh.at(mv));
-	}
-	
-	void dtOMMesh::laplacianSmoothVertexNormal( void ) {
-		std::vector< dtVector3 > av(_om_gmsh.size());
-		int counter = 0;
-		dt__forFromToIter(omVertexI, vertices_begin(), vertices_end(), vIt) {
-			std::vector< dtVector3 > tmp;
-			dt__forFromToIter(omVertexVertexI, vv_begin(*vIt), vv_end(*vIt), vvIt) {			
-        tmp.push_back( data(*vvIt).normal() );
-			}
-			av[counter] = dtLinearAlgebra::meanAverage(tmp);
-			counter++;
-		}
-		
-		counter = 0;
-		dt__forFromToIter(omVertexI, vertices_begin(), vertices_end(), vIt) {
-			data(*vIt).normal() 
-			= 
-			dtLinearAlgebra::normalize(data(*vIt).normal() + av[counter]);
-			counter++;
-		}		
 	}
 	
 	bool dtOMMesh::intersection( 
@@ -217,12 +199,12 @@ namespace dtOO {
 		dtPoint3 const & start, dtPoint3 const & target 
 	) const {	
 		dt__forAllIndex(fH, ii) {
-			if (intersection(fH[ii], start, target)) return false;
+			if (intersection(fH[ii], start, target)) return true;
 		}
-		return true;
+		return false;
 	}
 	
-	omVertexH const dtOMMesh::requestVertexH( ::MVertex const * mv ) const {
+	omVertexH const & dtOMMesh::requestVertexH( ::MVertex const * mv ) const {
 		return _om_gmsh.at(mv);
 	}
 	
@@ -242,7 +224,7 @@ namespace dtOO {
 		omMesh::update_normals();
 	}
 
-  omVertexH const dtOMMesh::operator[]( ::MVertex const * const mv ) {
+  omVertexH const & dtOMMesh::operator[]( ::MVertex const * const mv ) const {
 		return requestVertexH(mv);
 	}
 	
