@@ -9,6 +9,7 @@
 #include <gmsh/MTriangle.h>
 #include <gmsh/MVertex.h>
 #include "dtGmshFace.h"
+#include "dtOMVertexField.h"
 
 #include <moab/ReadUtilIface.hpp>
 
@@ -16,6 +17,43 @@
 namespace dtOO {
 	dtMoabCore::dtMoabCore() : moab::Core() {
 		query_interface(_readUtilIface);
+	}
+	
+	dtMoabCore::dtMoabCore( dtOMMesh const & om ) {
+		query_interface(_readUtilIface);
+		
+		//
+		// vertices
+		//
+		std::vector< ::MVertex const * > vertices(om.n_vertices());		
+		int ii = 0;
+		dt__forFromToIter(
+			omConstVertexI, 
+			om.vertices_begin(), 
+			om.vertices_end(),
+			vIt
+		) {
+			vertices[ii] = om.at(*vIt);
+		  ii++;
+		}
+		
+		//
+		// elements
+		//
+		ii = 0;
+		std::vector< ::MElement const * > elements(om.n_faces());		
+		dt__forFromToIter(
+			omConstFaceI, 
+			om.faces_begin(), 
+			om.faces_end(),
+			fIt
+		) {
+			elements[ii] = om.at(*fIt);
+		  ii++;
+		}		
+		
+		addVertices(vertices);
+		addElements(elements);
 	}
 
 	dtMoabCore::~dtMoabCore() {
@@ -201,4 +239,73 @@ namespace dtOO {
 		//
 		return elements;
 	}
+	
+	void dtMoabCore::addVertexField( dtOMVertexField<float> const & fF ) {
+		moab::ErrorCode result;
+		
+		moab::Tag fieldTag;
+  	result 
+		= 
+		tag_get_handle(
+			fF.getLabel().c_str(), 1, moab::MB_TYPE_DOUBLE, 
+		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
+		);
+		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		
+		std::vector< double > val(fF.size(), 0.);
+		std::vector< moab::EntityHandle > ent(fF.size());
+		int ii = 0;
+		dt__forFromToIter(
+			omConstVertexI, 
+			fF.refMesh().vertices_begin(), 
+			fF.refMesh().vertices_end(),
+			vIt
+		) {
+			::MVertex * mv = fF.refMesh().requestMVertex(*vIt);
+			ent[ii] = _node_id_map[mv->getNum()];
+			val[ii] = static_cast< double >(fF.at(mv));
+		  ii++;
+		}
+		
+		result 
+		=
+		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
+		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+	}
+
+	void dtMoabCore::addVertexField( dtOMVertexField< dtVector3 > const & vF ) {
+		moab::ErrorCode result;
+		
+		moab::Tag fieldTag;
+  	result 
+		= 
+		tag_get_handle(
+			vF.getLabel().c_str(), 3, moab::MB_TYPE_DOUBLE, 
+		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
+		);
+		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		
+		std::vector< double > val(vF.size()*3, 0.);
+		std::vector< moab::EntityHandle > ent(vF.size());
+		int ii = 0;
+		dt__forFromToIter(
+			omConstVertexI, 
+			vF.refMesh().vertices_begin(), 
+			vF.refMesh().vertices_end(),
+			vIt
+		) {
+			::MVertex * mv = vF.refMesh().requestMVertex(*vIt);
+			ent[ii] = _node_id_map[mv->getNum()];
+			dtVector3 const & vec = vF.at(mv);
+			val[ii*3+0] = vec.x();
+			val[ii*3+1] = vec.y();
+			val[ii*3+2] = vec.z();
+		  ii++;
+		}
+		
+		result 
+		=
+		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
+		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+	}	
 }
