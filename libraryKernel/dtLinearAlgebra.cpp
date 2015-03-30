@@ -558,12 +558,58 @@ namespace dtOO {
 		CGAL::Object res = CGAL::intersection(triangle, line);
     
     if (CGAL::assign(iPoint, res)) {
-			return true;
+			float dP 
+			= 
+		  dtLinearAlgebra::dotProduct(
+				line.to_vector(),
+				iPoint - line.point(0)
+			);
+      DTDEBUGWF(
+			  intersects(), 
+				<< DTLOGPOI3D(iPoint) << LOGDEL
+			  << DTLOGEVAL(dP ) << LOGDEL
+				<< DTLOGEVAL( dtLinearAlgebra::length(line.to_vector()) ) << LOGDEL
+				<< DTLOGEVAL( dtLinearAlgebra::length(iPoint - line.point(0)) )
+			);			
+			if ( 
+				dtLinearAlgebra::length(line.to_vector())
+				>
+				dtLinearAlgebra::length(iPoint - line.point(0))
+			){
+				return true;
+			}
     }
-    if (CGAL::assign(iSegment, res)) {
-			return true;
-    }		
+		dt__THROW_IFWM(CGAL::assign(iSegment, res),
+			intersects(), 
+			<< DTLOGPOI3D(iSegment.point(0)) << LOGDEL
+			<< DTLOGPOI3D(iSegment.point(1)) << LOGDEL
+			<< DTLOGEVAL(iSegment.squared_length())
+		);
 		
 		return false;
+	}
+	
+	bool dtLinearAlgebra::intersects(dtTriangle3 const & triangle0, dtTriangle3 const & triangle1) {
+		dtPoint3 iPoint;   
+		dtSegment3 iSegment;   
+		dtTriangle3 iTriangle;   
+		std::vector< dtPoint3 > iPointV;   
+    
+		CGAL::Object res = CGAL::intersection(triangle0, triangle1);
+    
+    if (CGAL::assign(iPoint, res)) {
+				return true;
+    }
+		else if (CGAL::assign(iSegment, res)) {
+			return true;
+		}
+		else if (CGAL::assign(iTriangle, res)) {
+			return true;			
+		}
+		else if (CGAL::assign(iPointV, res)) {
+			return true;			
+		}		
+		return false;
+		
 	}
 }

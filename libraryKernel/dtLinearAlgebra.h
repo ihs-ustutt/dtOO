@@ -91,6 +91,7 @@ namespace dtOO {
     static dtPoint2 ignoreZ( dtPoint3 const & v0 );
     static std::string directionString( dtVector3 const & vv );
     static bool intersects(dtTriangle3 const & triangle, dtLine3 const & line);
+    static bool intersects(dtTriangle3 const & triangle0, dtTriangle3 const & triangle1);
   };
 }
 #endif  /* DTLINEARALGEBRA_H */
