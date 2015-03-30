@@ -558,19 +558,19 @@ namespace dtOO {
 		CGAL::Object res = CGAL::intersection(triangle, line);
     
     if (CGAL::assign(iPoint, res)) {
-			float dP 
-			= 
-		  dtLinearAlgebra::dotProduct(
-				line.to_vector(),
-				iPoint - line.point(0)
-			);
-      DTDEBUGWF(
-			  intersects(), 
-				<< DTLOGPOI3D(iPoint) << LOGDEL
-			  << DTLOGEVAL(dP ) << LOGDEL
-				<< DTLOGEVAL( dtLinearAlgebra::length(line.to_vector()) ) << LOGDEL
-				<< DTLOGEVAL( dtLinearAlgebra::length(iPoint - line.point(0)) )
-			);			
+//			float dP 
+//			= 
+//		  dtLinearAlgebra::dotProduct(
+//				line.to_vector(),
+//				iPoint - line.point(0)
+//			);
+//      DTDEBUGWF(
+//			  intersects(), 
+//				<< DTLOGPOI3D(iPoint) << LOGDEL
+//			  << DTLOGEVAL(dP ) << LOGDEL
+//				<< DTLOGEVAL( dtLinearAlgebra::length(line.to_vector()) ) << LOGDEL
+//				<< DTLOGEVAL( dtLinearAlgebra::length(iPoint - line.point(0)) )
+//			);			
 			if ( 
 				dtLinearAlgebra::length(line.to_vector())
 				>
@@ -579,12 +579,12 @@ namespace dtOO {
 				return true;
 			}
     }
-		dt__THROW_IFWM(CGAL::assign(iSegment, res),
-			intersects(), 
-			<< DTLOGPOI3D(iSegment.point(0)) << LOGDEL
-			<< DTLOGPOI3D(iSegment.point(1)) << LOGDEL
-			<< DTLOGEVAL(iSegment.squared_length())
-		);
+//		dt__THROW_IFWM(CGAL::assign(iSegment, res),
+//			intersects(), 
+//			<< DTLOGPOI3D(iSegment.point(0)) << LOGDEL
+//			<< DTLOGPOI3D(iSegment.point(1)) << LOGDEL
+//			<< DTLOGEVAL(iSegment.squared_length())
+//		);
 		
 		return false;
 	}

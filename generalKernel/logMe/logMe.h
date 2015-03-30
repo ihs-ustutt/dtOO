@@ -144,6 +144,9 @@ namespace dtOO {
       static std::string floatVecToTable( std::vector<std::string> const & header, std::vector< float > const & vec ) {
         return vecToTable< float >(header, vec);
       }
+      static std::string floatVecToTable( std::string const & header, std::vector< float > const & vec ) {
+        return floatVecToTable(std::vector< std::string >(1, header), vec);
+      }
       static std::string stringVecToTable( std::vector< std::string > const & header, std::vector< std::string > const & vec ) {
         return vecToTable< std::string >(header, vec);
       }            
