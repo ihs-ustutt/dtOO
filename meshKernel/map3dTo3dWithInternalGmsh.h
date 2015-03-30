@@ -30,12 +30,8 @@ namespace dtOO {
   private:
     dt__pH(map3dTo3d) _m3d;    
     dt__pVH(map2dTo3d) _internal;
-    float _marginWidth;
-    float _marginNormalWidth;
-    float _marginTangentialWidth;
     float _bladeNormalWidth;
     float _bladeTangentialWidth;  
-    int _normalAddNumberIntegrationPoints;
   };
 }
 #endif	/* map3dTo3dWithInternalGmsh_H */
