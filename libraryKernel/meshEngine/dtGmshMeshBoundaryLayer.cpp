@@ -8,6 +8,7 @@
 #include "dtOMMeshManifold.h"
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
+#include "dtOMVertexField.h"
 #include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
@@ -107,78 +108,121 @@ namespace dtOO {
 		//
 		// create mesh manifolds
 		//
-		std::vector< dtOMMeshManifold > omMs;		
+		std::vector< dtOMMeshManifold > omM;		
 		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), v_it) {
-			omMs.push_back(dtOMMeshManifold(omFixed, omFixed[om[*v_it]]));			
+			omM.push_back(dtOMMeshManifold(omFixed, omFixed[om[*v_it]]));			
 		}
 
 		//
 		// divide manifolds and calculate normals
 		// averaging all normals of manifolds
 		//
-		dt__forAllIter(std::vector< dtOMMeshManifold >, omMs, it) {
-//			int itC = it - omMs.begin();
-//			it->writeMesh("omMs_"+stringPrimitive::intToString(itC)+".vtk");
+		dtOMVertexField< dtVector3 > nF(omFixed, dtVector3(0.,0.,0.) );
+		dt__forAllIter(std::vector< dtOMMeshManifold >, omM, it) {
+//			int itC = it - omM.begin();
+//			it->writeMesh("omM_"+stringPrimitive::intToString(itC)+".vtk");
 			std::vector< dtOMMeshManifold > divOmMs = it->divide(_maxDihedralAngle);
 			std::vector< dtVector3 > nnV;
 			dt__forAllIter(std::vector< dtOMMeshManifold >, divOmMs, itDiv) {
 //				int itDivC = itDiv - divOmMs.begin();
 //				itDiv->writeMesh(
-//				   "omMs_"+stringPrimitive::intToString(itC)+"_"
+//				   "omM_"+stringPrimitive::intToString(itC)+"_"
 //				  +stringPrimitive::intToString(itDivC)+".vtk"
 //				);
 				nnV.push_back(itDiv->normal());
 			}
 			dtVector3 nn = dtLinearAlgebra::meanAverage(nnV);
-			::MVertex * mv = it->centerMVertex();
-			omFixed.vertexNormal(mv) = nn;
+			
+			nF[it->centerMVertex()] = nn;
 		}
 
 		//
 		// laplacian smoothing
 		//
-		for (int ii=0;ii<_nSmoothingSteps;ii++) omFixed.laplacianSmoothVertexNormal();
+		for (int ii=0;ii<_nSmoothingSteps;ii++) {
+			nF.laplacianSmooth();
+			nF.execute( &dtLinearAlgebra::normalize );
+		}
 
 		//
 		// create new vertices
 		//
-		dtOMMesh omT(om);
-		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {		
+		dtOMVertexField< float > tF(omFixed, 0.);
+
+		//
+		// determine thickness
+		//
+		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
 		  ::MVertex * mv = om[*it];
 			if (!om.vertexIsBoundary(mv)) {
+				tF[mv] = _thickness;
+
+				dt__THROW_IF(
+				  floatHandling::isSmall(dtLinearAlgebra::length(nF[mv])), 
+					operator()
+				);
+				
+				//
+				// get "two-ring" neighbor faces
+				//
+				std::vector< omFaceH > neighborFace;
+//				omVertexH fixedIt = omFixed[mv];
+				dt__forFromToIter(
+				  omVertexVertexI, 
+					omFixed.vv_begin(omFixed[mv]), 
+					omFixed.vv_end(omFixed[mv]), 
+					vvIt
+				) {
+					dt__forFromToIter(
+					  omConstVertexFaceI, 
+						omFixed.cvf_begin(*vvIt), 
+						omFixed.cvf_end(*vvIt), 
+						fIt
+					) {
+						if ( !omFixed.contains(*fIt, *it) ) neighborFace.push_back(*fIt);
+					}
+				}
+		    std::sort( neighborFace.begin(), neighborFace.end() );
+        neighborFace.erase( 
+				  std::unique( neighborFace.begin(), neighborFace.end() ), 
+					neighborFace.end() 
+				);
+
+        //
+        // check for intersections between target mesh vertex 
+				// and neighbor faces
+				//
+				dtPoint3 start(mv->x(), mv->y(), mv->z());
+				for (int ii=0;ii<_nShrinkingSteps;ii++) {
+					dtPoint3 target = start + 2.*tF[mv]*nF[mv];
+					if ( !omFixed.intersection(neighborFace, start, target) ) break;
+					tF[mv] = .9*tF[mv];
+				}
+				if (tF[mv] != _thickness) {
+					DTINFOWF(
+				    operator(), 
+						<< "Intersection => shrink t = " << _thickness << " -> " << tF[mv]
+					);
+				}
+		  }
+		}
+
+    //
+    // move vertices of surface mesh om and create new vertices with old
+		// position in new surface mesh omT
+		//
+	  dtOMMesh omT(om);
+		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
+		  ::MVertex * mv = om[*it];
+			if (!om.vertexIsBoundary(mv)) {
+				
       	::MVertex * mvNew = new ::MVertex(mv->x(), mv->y(), mv->z(), region);
 				omT.replaceMVertex(omT[mv], mvNew);
   			region->addMeshVertex(mvNew);
 				
-				dtVector3 nn = omFixed.vertexNormal(mv);	
-				dt__THROW_IF(floatHandling::isSmall(dtLinearAlgebra::length(nn)), operator());
-				
-				//
-				// shrinking
-				//
-				std::vector< omFaceH > movingHv;
-				dt__forFromToIter(omVertexVertexI, om.vv_begin(*it), om.vv_end(*it), vIt) {
-					dt__forFromToIter(omConstVertexFaceI, om.cvf_begin(*vIt), om.cvf_end(*vIt), fIt) {
-						if ( !om.contains(*fIt, *it) ) movingHv.push_back(*fIt);
-					}
-				}				
-				float thisThickness = _thickness;
-				dtPoint3 target;
 				dtPoint3 start(mv->x(), mv->y(), mv->z());
-				for (int ii=0;ii<_nShrinkingSteps;ii++) {
-					dtVector3 nT = thisThickness*nn;
-					target = dtPoint3(mv->x()+nT.x(), mv->y()+nT.y(), mv->z()+nT.z());
-					mv->setXYZ(target.x(), target.y(), target.z());
-					if ( om.intersection(movingHv, start, target) ) break;
-					thisThickness = .5*thisThickness;
-				}
-				if (thisThickness != _thickness) {
-					DTINFOWF(
-				    operator(), 
-						<< "Shrinking from " << DTLOGEVAL(_thickness) << " to " 
-					  << DTLOGEVAL(thisThickness)
-					);
-				}
+				dtPoint3 target = start + tF[mv] * nF[mv];
+				om.replacePosition(*it, target);
 		  }
 		}
 		
@@ -192,15 +236,17 @@ namespace dtOO {
 			std::vector< ::MVertex * > omVertices;
 			std::vector< ::MVertex * > omTVertices;
 			dt__forFromToIter(omFaceVertexI, om.fv_begin(*fIt), om.fv_end(*fIt), vIt) {
-				if ( om.data(*vIt).MVertex()->getNum() ==  omT.data(*vIt).MVertex()->getNum() ) {
-					commonVertices.push_back( om.data(*vIt).MVertex() );
+				MVertex * om_mv = om[*vIt];
+				MVertex * omT_mv = omT[*vIt];
+				if ( tF[om_mv] == 0.) {//om.data(*vIt).MVertex()->getNum() ==  omT.data(*vIt).MVertex()->getNum() ) {
+					commonVertices.push_back(om_mv);
 				}
 				else {
-					omVertices.push_back( om.data(*vIt).MVertex() );
-					omTVertices.push_back( omT.data(*vIt).MVertex() );
+					omVertices.push_back(om_mv);
+					omTVertices.push_back(omT_mv);
 				}
 			}
-
+			
 			// create two dimensional arrays of all mesh vertices
 			twoDArrayHandling< ::MVertex * > omVerticesL(nLayers, 0);
 			twoDArrayHandling< ::MVertex * > omTVerticesL(nLayers, 0);			

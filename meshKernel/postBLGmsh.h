@@ -29,7 +29,6 @@ namespace dtOO {
   	virtual vectorHandling< renderInterface * > getRender( void ) const;
   private:
     float _thickness;
-    int _intervals;
     std::vector< float > _spacing;
     int _nSmoothingSteps;
     int _nShrinkingSteps;

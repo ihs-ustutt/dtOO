@@ -39,9 +39,6 @@ namespace dtOO {
     _thickness 
 		= 
 		qtXmlBase::getAttributeFloatMuParse("thickness", element, cV, aF);
-    _intervals 
-		= 
-		qtXmlBase::getAttributeIntMuParse("intervals", element, cV, aF);
 		_nSmoothingSteps 
 		= 
 		qtXmlBase::getAttributeIntMuParse("nSmoothingSteps", element, cV, aF);		
@@ -98,12 +95,15 @@ namespace dtOO {
 			fixedFaceList, _fixedFaceOrientation
 		);
 		
-		_meshedBV->getModel()->meshRegion();
-		
+		_meshedBV->getModel()->writeMSH(getLabel()+"_0.msh");
+
 		_meshedBV->getModel()->tagPhysical(_dtR, getLabel());
 		_meshedBV->getModel()->add(_dtR);
+    _dtR->_status = ::GEntity::MeshGenerationStatus::DONE;
 		
-		_meshedBV->getModel()->writeMSH("postBLGmsh.msh");
+		_meshedBV->getModel()->meshRegion();
+
+		_meshedBV->getModel()->writeMSH(getLabel()+"_1.msh");
 		//
 		// update physicals because we add a new region
 		//
