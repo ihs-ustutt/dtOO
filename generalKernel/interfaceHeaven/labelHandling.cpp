@@ -13,6 +13,10 @@ namespace dtOO {
     _label = orig._label;
   }
 
+  labelHandling::labelHandling(std::string const & label) {
+	  _label = label;	
+	}
+	
   labelHandling::~labelHandling() {
     _label.clear();
   }

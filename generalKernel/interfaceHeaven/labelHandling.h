@@ -10,6 +10,7 @@ namespace dtOO {
     dt__CLASSNAME(labelHandling);
     labelHandling();
     labelHandling(const labelHandling& orig);
+    labelHandling(std::string const & label);
     virtual ~labelHandling();
     void setLabel(std::string const label);
     void setLabel(char const * const label);
