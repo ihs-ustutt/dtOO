@@ -281,4 +281,12 @@ namespace dtOO {
 	::MElement const * const dtOMMesh::at(omFaceH const & fH) const {
 		return data(fH).MElement();
 	}	
+	
+	std::vector< omEdgeH > dtOMMesh::oneRingEdgeH( omVertexH const & vH ) const {
+	  std::vector< omEdgeH > eHV;	
+		dt__forFromToIter(omConstVertexOHalfedgeI, cvoh_begin(vH), cvoh_end(vH), heIt) {
+			eHV.push_back( edge_handle( next_halfedge_handle(*heIt) ) );
+		}
+		return eHV;
+	}
 }

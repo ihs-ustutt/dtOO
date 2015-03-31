@@ -109,6 +109,7 @@ namespace dtOO {
       ::MVertex * operator[](omVertexH const & vH);
       ::MVertex const * const at(omVertexH const & vH) const;
 	    ::MElement const * const at(omFaceH const & fH) const;
+      std::vector< omEdgeH > oneRingEdgeH( omVertexH const & vH ) const;
     private:
       omVertexH addVertex( ::MVertex const * const &mv );
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          
