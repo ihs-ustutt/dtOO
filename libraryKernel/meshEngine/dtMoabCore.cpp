@@ -8,6 +8,7 @@
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MVertex.h>
+#include <gmsh/MLine.h>
 #include "dtGmshFace.h"
 #include "dtOMVertexField.h"
 
@@ -19,6 +20,10 @@ namespace dtOO {
 		query_interface(_readUtilIface);
 	}
 	
+	/**
+	 * @todo Implementation of edges is not very well. Should not be done by
+	 * additionally add ::MLine elements.
+   */
 	dtMoabCore::dtMoabCore( dtOMMesh const & om ) {
 		query_interface(_readUtilIface);
 		
@@ -36,6 +41,7 @@ namespace dtOO {
 			vertices[ii] = om.at(*vIt);
 		  ii++;
 		}
+		addVertices(vertices);
 		
 		//
 		// elements
@@ -50,10 +56,35 @@ namespace dtOO {
 		) {
 			elements[ii] = om.at(*fIt);
 		  ii++;
-		}		
-		
-		addVertices(vertices);
+		}
 		addElements(elements);
+
+		dt__forFromToIter(
+			omConstEdgeI, 
+			om.edges_begin(), 
+			om.edges_end(),
+			eIt
+		) {
+			omVertexH const from 
+			= 
+		  om.from_vertex_handle( om.halfedge_handle(*eIt,0) );
+			omVertexH const to 
+		  = 
+			om.to_vertex_handle( om.halfedge_handle(*eIt,0) );
+			MVertex const * const mvFrom = om.at(from);
+			MVertex const * const mvTo = om.at(to);
+			_edgeElement.push_back( 
+				new MLine(const_cast< ::MVertex * >(mvFrom), const_cast< ::MVertex * >(mvTo))
+			);
+			moab::Range range
+			=
+			addElements( 
+				std::vector< ::MElement const * >(
+				  1, &(_edgeElement.back())
+				)
+			);
+			_edge_id_map[*eIt] = range.front();
+		}
 	}
 
 	dtMoabCore::~dtMoabCore() {
@@ -101,15 +132,15 @@ namespace dtOO {
 			y[i] = mv[i]->y();
 			z[i] = mv[i]->z();
 
-			//
-			// ignore duplicate nodes
-			// 
-			dt__WARN_IFWM(
-				!_node_id_map.insert(std::pair<long, moab::EntityHandle>(id, handle)).second,
-				addVertices(), 
-				<< "Duplicate node ID = " << id
-			);
-		}
+				//
+				// ignore duplicate nodes
+				// 
+				dt__WARN_IFWM(
+					!_node_id_map.insert(std::pair<long, moab::EntityHandle>(id, handle)).second,
+					addVertices(), 
+					<< "Duplicate node ID = " << id
+				);
+			}
 
 		//
 		// create reverse map from handle to id
@@ -166,6 +197,7 @@ namespace dtOO {
 		::MTetrahedron const * tet = dynamic_cast< ::MTetrahedron const * >(me[0]);
 		::MHexahedron const * hex = dynamic_cast< ::MHexahedron const * >(me[0]);
 		::MTriangle const * tri = dynamic_cast< ::MTriangle const * >(me[0]);
+		::MLine const * line = dynamic_cast< ::MLine const * >(me[0]);		
 		int elementDim = 0;
 		if (quad) {
 			elementDim = 2;
@@ -183,6 +215,10 @@ namespace dtOO {
 			elementDim = 2;
 			type = moab::MBTRI;
 		}		
+		else if (line) {
+			elementDim = 1;
+			type = moab::MBEDGE;
+		}				
 		else dt__THROW(addElements, "Unknown element type.");
 
 		//
@@ -338,6 +374,38 @@ namespace dtOO {
 		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
 		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
 	}
+	
+	void dtMoabCore::addEdgeField( dtOMEdgeField<float> const & eF ) {
+		moab::ErrorCode result;
+		
+		moab::Tag fieldTag;
+  	result 
+		= 
+		tag_get_handle(
+			eF.getLabel().c_str(), 1, moab::MB_TYPE_DOUBLE, 
+		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
+		);
+		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		
+		std::vector< double > val(eF.size(), 0.);
+		std::vector< moab::EntityHandle > ent(eF.size());
+		int ii = 0;
+		dt__forFromToIter(
+			omConstEdgeI, 
+			eF.refMesh().edges_begin(), 
+			eF.refMesh().edges_end(),
+			eIt
+		) {
+			ent[ii] = _edge_id_map[*eIt];
+			val[ii] = static_cast< double >(eF[*eIt]);
+		  ii++;
+		}
+		
+		result 
+		=
+		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
+		moab__THROW_IF(result != moab::MB_SUCCESS, addEdgeField());
+	}	
 
 	void dtMoabCore::addVertexField( dtOMVertexField< dtVector3 > const & vF ) {
 		moab::ErrorCode result;
