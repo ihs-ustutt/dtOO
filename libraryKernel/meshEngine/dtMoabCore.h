@@ -24,6 +24,8 @@ namespace dtOO {
     virtual ~dtMoabCore();
     void addVertices( std::vector< ::MVertex const * > const & mv );
     moab::Range addElements( std::vector< ::MElement const * > const & me );
+    void addVertexField( dtOMVertexField< bool > const & field );
+	  void addVertexField( dtOMVertexField< int > const & field );
     void addVertexField( dtOMVertexField< float > const & fF );
     void addVertexField( dtOMVertexField< dtVector3 > const & vF );
   private:

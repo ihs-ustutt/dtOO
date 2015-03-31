@@ -240,6 +240,72 @@ namespace dtOO {
 		return elements;
 	}
 	
+	void dtMoabCore::addVertexField( dtOMVertexField< bool > const & field ) {
+		moab::ErrorCode result;
+		
+		moab::Tag fieldTag;
+  	result 
+		= 
+		tag_get_handle(
+			field.getLabel().c_str(), 1, moab::MB_TYPE_INTEGER, 
+		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
+		);
+		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		
+		std::vector< int > val(field.size(), 0);
+		std::vector< moab::EntityHandle > ent(field.size());
+		int ii = 0;
+		dt__forFromToIter(
+			omConstVertexI, 
+			field.refMesh().vertices_begin(), 
+			field.refMesh().vertices_end(),
+			vIt
+		) {
+			::MVertex * mv = field.refMesh().requestMVertex(*vIt);
+			ent[ii] = _node_id_map[mv->getNum()];
+			val[ii] = (field.at(mv) ? 1 : 0);
+		  ii++;
+		}
+		
+		result 
+		=
+		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
+		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+	}
+	
+	void dtMoabCore::addVertexField( dtOMVertexField< int > const & field ) {
+		moab::ErrorCode result;
+		
+		moab::Tag fieldTag;
+  	result 
+		= 
+		tag_get_handle(
+			field.getLabel().c_str(), 1, moab::MB_TYPE_INTEGER, 
+		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
+		);
+		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		
+		std::vector< int > val(field.size(), 0.);
+		std::vector< moab::EntityHandle > ent(field.size());
+		int ii = 0;
+		dt__forFromToIter(
+			omConstVertexI, 
+			field.refMesh().vertices_begin(), 
+			field.refMesh().vertices_end(),
+			vIt
+		) {
+			::MVertex * mv = field.refMesh().requestMVertex(*vIt);
+			ent[ii] = _node_id_map[mv->getNum()];
+			val[ii] = field.at(mv);
+		  ii++;
+		}
+		
+		result 
+		=
+		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
+		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+	}
+	
 	void dtMoabCore::addVertexField( dtOMVertexField<float> const & fF ) {
 		moab::ErrorCode result;
 		

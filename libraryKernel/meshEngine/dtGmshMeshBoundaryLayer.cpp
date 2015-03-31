@@ -149,15 +149,19 @@ namespace dtOO {
 		// create new vertices
 		//
 		dtOMVertexField< float > tF("tF", omFixed, 0.);
+		dtOMVertexField< bool > lockF("lockF", omFixed, true);
 		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
 			::MVertex * mv = om[*it];	
-			if (!om.vertexIsBoundary(mv)) tF[mv] = _thickness;
+			if (!om.vertexIsBoundary(mv)) {
+				tF[mv] = _thickness;
+				lockF[mv] = false;
+			}
 		}
 		tF.laplacianSmooth();
-		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
-			::MVertex * mv = om[*it];	
-			if (om.vertexIsBoundary(mv)) tF[mv] = 0.;
-		}		
+//		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
+//			::MVertex * mv = om[*it];	
+//			if (om.vertexIsBoundary(mv)) tF[mv] = 0.;
+//		}		
 		
 		//
 		// determine thickness
@@ -165,7 +169,7 @@ namespace dtOO {
 	  dtOMMesh omT(om);		
 		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
 		  ::MVertex * mv = om[*it];
-			if (!om.vertexIsBoundary(mv)) {
+			if ( !lockF[mv] ) {
 
 				dt__THROW_IF(
 				  floatHandling::isSmall(dtLinearAlgebra::length(nF[mv])), 
@@ -246,7 +250,7 @@ namespace dtOO {
 			dt__forFromToIter(omFaceVertexI, om.fv_begin(*fIt), om.fv_end(*fIt), vIt) {
 				MVertex * om_mv = om[*vIt];
 				MVertex * omT_mv = omT[*vIt];
-				if ( om.vertexIsBoundary(om_mv) ) commonVertices.push_back(om_mv);
+				if ( lockF[om_mv] ) commonVertices.push_back(om_mv);
 				else {
 					omVertices.push_back(om_mv);
 					omTVertices.push_back(omT_mv);
@@ -316,6 +320,7 @@ namespace dtOO {
 		dtMoabCore mb(omFixed);
 		mb.addVertexField(tF);
 		mb.addVertexField(nF);
+		mb.addVertexField(lockF);		
 		mb.write_mesh("dtGmshMeshBoundaryLayer.vtk");
   }
 }
