@@ -71,8 +71,8 @@ namespace dtOO {
 	bool dtOMMeshManifold::divideable( void ) const {
 		bool isClosed = closed();
 		if ( 
-		     ((_dihedralAngleV.size()>=4) &&  isClosed)
-			|| ((_dihedralAngleV.size()>=5) && !isClosed) 
+		     ((_dihedralAngleV.size()>=3) &&  isClosed)
+			|| ((_dihedralAngleV.size()>=3) && !isClosed) 
 		) {
 			return true;
 		}
@@ -121,7 +121,10 @@ namespace dtOO {
 				max2ndEdgeIt = ve_begin(_centerVertex);
 				for (int ii=0;ii<(max2ndAngleIt-_dihedralAngleV.begin());ii++) max2ndEdgeIt++;
 				*max2ndAngleIt = 0.;
-				if ( (abs(max2ndAngleIt-maxAngleIt) > 1) && ((nEdges-abs(max2ndAngleIt-maxAngleIt))>1) ) break;
+//				if ( 
+//					   (abs(max2ndAngleIt-maxAngleIt) > 0) 
+//					&& ((nEdges-abs(max2ndAngleIt-maxAngleIt))>0) 
+//				) break;
 			}
 			
 			//
@@ -161,7 +164,7 @@ namespace dtOO {
 				maxAngleEndPos = maxAngleIt-_dihedralAngleV.end();
 				for (int ii=0;ii<maxAngleBegPos;ii++) maxEdgeIt++;
 				*maxAngleIt = 0.;
-				if ( (maxAngleBegPos>1) && (maxAngleEndPos<-1) ) break;
+//				if ( (maxAngleBegPos>0) && (maxAngleEndPos<-0) ) break;
 			}
 			
 			//
