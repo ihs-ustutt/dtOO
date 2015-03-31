@@ -9,6 +9,7 @@
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
 #include "dtOMVertexField.h"
+#include "dtOMEdgeField.h"
 #include "dtMoabCore.h"
 #include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
@@ -105,7 +106,7 @@ namespace dtOO {
 		
 		om.update();
 		omFixed.update();
-		
+
 		//
 		// create mesh manifolds
 		//
@@ -148,6 +149,7 @@ namespace dtOO {
 		//
 		// create new vertices
 		//
+	  dtOMMesh omT(om);				
 		dtOMVertexField< float > tF("tF", omFixed, 0.);
 		dtOMVertexField< bool > lockF("lockF", omFixed, true);
 		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
@@ -155,24 +157,23 @@ namespace dtOO {
 			if (!om.vertexIsBoundary(mv)) {
 				tF[mv] = _thickness;
 				lockF[mv] = false;
+				::MVertex * mvNew = new ::MVertex(mv->x(), mv->y(), mv->z(), region);
+				omT.replaceMVertex(omT[mv], mvNew);
+				region->addMeshVertex(mvNew);
 			}
 		}
 		tF.laplacianSmooth();
-//		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
-//			::MVertex * mv = om[*it];	
-//			if (om.vertexIsBoundary(mv)) tF[mv] = 0.;
-//		}		
 		
 		//
 		// determine thickness
 		//
-	  dtOMMesh omT(om);		
-		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), it) {
-		  ::MVertex * mv = om[*it];
-			if ( !lockF[mv] ) {
+
+		dt__forFromToIter(omVertexI, om.vertices_begin(), om.vertices_end(), omIt) {
+		  ::MVertex * om_mv = om[*omIt];
+			if ( !lockF[om_mv] ) {
 
 				dt__THROW_IF(
-				  floatHandling::isSmall(dtLinearAlgebra::length(nF[mv])), 
+				  floatHandling::isSmall(dtLinearAlgebra::length(nF[om_mv])), 
 					operator()
 				);
 				
@@ -182,8 +183,8 @@ namespace dtOO {
 				std::vector< omFaceH > neighborFace;
 				dt__forFromToIter(
 				  omVertexVertexI, 
-					omFixed.vv_begin(omFixed[mv]), 
-					omFixed.vv_end(omFixed[mv]), 
+					omFixed.vv_begin(omFixed[om_mv]), 
+					omFixed.vv_end(omFixed[om_mv]), 
 					vvIt
 				) {
 //				dt__forFromToIter(
@@ -198,7 +199,7 @@ namespace dtOO {
 							omFixed.cvf_end(*vvIt), 
 							fIt
 						) {
-							if ( !omFixed.contains(*fIt, *it) ) neighborFace.push_back(*fIt);
+							if ( !omFixed.contains(*fIt, *omIt) ) neighborFace.push_back(*fIt);
 						}
 //					}	
 				}
@@ -212,32 +213,72 @@ namespace dtOO {
         // check for intersections between target mesh vertex 
 				// and neighbor faces
 				//
-				dtPoint3 start(mv->x(), mv->y(), mv->z());
+				dtPoint3 start(om_mv->x(), om_mv->y(), om_mv->z());
 				for (int ii=0;ii<_nShrinkingSteps;ii++) {
-					dtPoint3 target = start + 2.*tF[mv]*nF[mv];
+					dtPoint3 target = start + 2.*tF[om_mv]*nF[om_mv];
 					if ( !omFixed.intersection(neighborFace, start, target) ) break;
-					tF[mv] = .9*tF[mv];
+					tF[om_mv] = .9*tF[om_mv];
+					tF.laplacianSmooth();
 				}
-				if (tF[mv] != _thickness) {
+				if (tF[om_mv] != _thickness) {
 					DTINFOWF(
 				    operator(), 
-						<< "Intersection => shrink t = " << _thickness << " -> " << tF[mv]
+						<< "Intersection => shrink t = " << _thickness << " -> " << tF[om_mv]
 					);
 				}
 				
-    //
-    // move vertices of surface mesh om and create new vertices with old
-		// position in new surface mesh omT
-		//
-				::MVertex * mvNew = new ::MVertex(mv->x(), mv->y(), mv->z(), region);
-				omT.replaceMVertex(omT[mv], mvNew);
-				region->addMeshVertex(mvNew);
-				dtPoint3 target = start + tF[mv] * nF[mv];
-				om.replacePosition(*it, target);
-				omFixed.replaceMVertex(omFixed[mv], mv);
+				//
+				// move vertices of surface mesh om and create new vertices womIth old
+				// posomItion in new surface mesh omT
+				//
+				dtPoint3 target = dtGmshModel::cast2DtPoint3(omT[*omIt]) + tF[om_mv] * nF[om_mv];
+				om.replacePosition(*omIt, target);
+				omFixed.replaceMVertex(omFixed[om_mv], om_mv);
 		  }
 		}
 	
+		//
+		// dihedral angle field
+		//		
+		dtOMEdgeField< float > dAF("dA", omFixed, 0.);
+		dtOMVertexField< bool > dABoolF("dABoolF", omFixed, false);
+		dt__forFromToIter(omEdgeI, omFixed.edges_begin(), omFixed.edges_end(), eIt) {
+		  dAF[*eIt] = omFixed.calc_dihedral_angle(*eIt);
+		}
+		dt__forFromToIter(omConstVertexI, omFixed.vertices_begin(), omFixed.vertices_end(), vIt) {
+			std::vector< omEdgeH > oneRing = omFixed.oneRingEdgeH(*vIt);
+			float min = 0.;
+			float max = 0.;
+			dt__forAllIter(std::vector< omEdgeH >, oneRing, eIt) {
+				float const & dA = dAF[*eIt];
+				min = std::min(dA, min);
+				max = std::max(dA, max);
+			}
+			if ( fabs(max - min) > M_PI ) {
+				dABoolF[*vIt] = true;
+			  DTINFOWF(
+				  operator(), 
+					<< "Possible dihedral angle problem detected." << LOGDEL
+				  << DTLOGEVAL(min) << LOGDEL
+				  << DTLOGEVAL(max) << LOGDEL
+				  << "|max-min| = " << max-min
+				);
+				
+				//
+				// move vertices of surface mesh om and create new vertices womIth old
+				// posomItion in new surface mesh omT
+				//
+				MVertex * omFixed_mv = omFixed[*vIt];
+				tF[omFixed_mv] = .5*tF[omFixed_mv];
+				omVertexH omT_h = om[omFixed_mv];
+				dtPoint3 target = dtGmshModel::cast2DtPoint3(omT[omT_h]) + tF[omFixed_mv] * nF[omFixed_mv];
+				om.replacePosition(omT_h, target);
+				omFixed.replacePosition(omFixed[omFixed_mv], target);				
+			}			
+//			omVertexH const vH = dAF[*vIt];
+//		  float dA = omFixed.calc_dihedral_angle(*eIt);
+		}
+		
 		//
 		// create new boundary elements
 		//
@@ -314,13 +355,18 @@ namespace dtOO {
 			}
 		}
 		
+
+
+		
 		//
 		// write fields
 		//
 		dtMoabCore mb(omFixed);
 		mb.addVertexField(tF);
 		mb.addVertexField(nF);
-		mb.addVertexField(lockF);		
+		mb.addVertexField(lockF);
+		mb.addEdgeField(dAF);
+		mb.addVertexField(dABoolF);
 		mb.write_mesh("dtGmshMeshBoundaryLayer.vtk");
   }
 }
