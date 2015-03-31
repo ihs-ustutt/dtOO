@@ -119,13 +119,13 @@ namespace dtOO {
 			// 
 			int tmp;
 			_gm->addIfFaceToGmshModel(&thisFace, &(tmp));
-  		eNEl = _gm->getDtGmshFaceByTag(tmp)->estimateTransfiniteNElements(
-			  _bladeTangentialWidth, _bladeNormalWidth			
-			);
-			_gm->getDtGmshFaceByTag(tmp)->meshTransfiniteWNElements(
-			  eNEl[0],eNEl[1]
-			);
-			_gm->getDtGmshFaceByTag(tmp)->meshAttributes.method = MESH_UNSTRUCTURED;
+//  		eNEl = _gm->getDtGmshFaceByTag(tmp)->estimateTransfiniteNElements(
+//			  _bladeTangentialWidth, _bladeNormalWidth			
+//			);
+//			_gm->getDtGmshFaceByTag(tmp)->meshTransfiniteWNElements(
+//			  eNEl[0],eNEl[1]
+//			);
+//			_gm->getDtGmshFaceByTag(tmp)->meshAttributes.method = MESH_UNSTRUCTURED;
 		}
 		
 		//
