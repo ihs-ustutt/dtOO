@@ -16,10 +16,10 @@ namespace dtOO {
     dtOMVertexField( std::string const & label, dtOMMesh const & om, T const & init );
     virtual ~dtOMVertexField();
     T & operator[](omVertexH const & vH);    
-    T const & operator[](omVertexH const & vH) const;    
     T & operator[](::MVertex const * const mv);
     T const & at(::MVertex const * const mv) const;    
     T const & operator[](::MVertex const * const mv) const;
+    void assign( dtOMMesh const & om, T const & value );    
     void execute( T (*executeMe)(T const & member) );
 	  void laplacianSmooth( void );
     long unsigned int size( void ) const;
@@ -47,11 +47,6 @@ namespace dtOO {
   T & dtOMVertexField< T >::operator[](omVertexH const & vH) {
     return _field[vH];
   }
-  
-  template < typename T >
-  T const & dtOMVertexField< T >::operator[](omVertexH const & vH) const {
-    return _field.at(vH);
-  }
 
   template < typename T >
   T & dtOMVertexField< T >::operator[](::MVertex const * const mv) {
@@ -68,6 +63,15 @@ namespace dtOO {
     return _field[_om[mv]];
   }
   
+  template < typename T >  
+  void dtOMVertexField< T >::assign( dtOMMesh const & om, T const & value ) {
+		dt__forFromToIter(omConstVertexI, om.vertices_begin(), om.vertices_end(), vIt) {
+      ::MVertex const * const mv = om.at(*vIt);
+      omVertexH const vH = _om[mv];
+      _field[vH] = value;
+    }    
+  }
+    
   template < typename T >
   void dtOMVertexField< T >::execute( T (*executeMe)(T const & member) ) {
     dt__forFromToIter(
@@ -100,7 +104,7 @@ namespace dtOO {
 
   template < typename T >
   long unsigned int dtOMVertexField< T >::size( void ) const {
-    return _field.size();
+    return _om.n_vertices();
   }
   
   template < typename T >
