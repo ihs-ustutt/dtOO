@@ -70,6 +70,7 @@ SET(HEADERS
   meshEngine/dtOMMeshTraits.h
   meshEngine/dtOMMeshManifold.h
   meshEngine/dtOMVertexField.h
+  meshEngine/dtOMEdgeField.h
   dtGaussLegendreIntegration.h
   GSLError.h
 )
