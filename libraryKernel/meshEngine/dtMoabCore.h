@@ -29,12 +29,12 @@ namespace dtOO {
 	  void addVertexField( dtOMVertexField< int > const & field );
     void addVertexField( dtOMVertexField< float > const & fF );
     void addVertexField( dtOMVertexField< dtVector3 > const & vF );
-    void addEdgeField( dtOMEdgeField< float > const & eF );    
+//    void addEdgeField( dtOMEdgeField< float > const & eF );    
   private:
     moab::ReadUtilIface * _readUtilIface;
 		std::map<long, moab::EntityHandle> _node_id_map;
-    std::map<omEdgeH, moab::EntityHandle> _edge_id_map;
-    dt__pVH(::MElement) _edgeElement;
+//    std::map<omEdgeH, moab::EntityHandle> _edge_id_map;
+//    dt__pVH(::MElement) _edgeElement;
   };
 }
 #endif	/* DTMOABCORE_H */
