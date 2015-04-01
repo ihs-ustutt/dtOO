@@ -46,13 +46,14 @@ namespace dtOO {
 		std::vector< int > const & fori 					
 	) {
 		DTINFOWF(operator(), << "Start algorithm ...");
+		dt__pVH(::MElement) elements;
 		//
 		// define two surface meshes
 		//
 		dtOMMesh omInit;
 		dtOMMesh omMoved;
-		dtOMVertexField< bool > fixedF("fixedF", omMoved, false);
-	  dtOMVertexField< float > tF("tF", omMoved, _thickness);
+		dtOMVertexField< bool > fixedF("fixedF", omInit, false);
+	  dtOMVertexField< float > tF("tF", omInit, _thickness);
 		
 		//
 		// surface mesh to thick
@@ -126,9 +127,9 @@ namespace dtOO {
 		//
 		dt__forFromToIter(omVertexI, omInit.vertices_begin(), omInit.vertices_end(), it) {
 			::MVertex * mv = omInit[*it];	
-			if ( omInit.vertexIsBoundary(mv) ) {
-				fixedF[mv] = true;
-				tF[mv] = 0.;
+			if ( omInit.is_boundary(*it) ) {
+				fixedF[*it] = true;
+				tF[*it] = 0.;
 			}
 		}
 		
@@ -148,7 +149,7 @@ namespace dtOO {
 		// divide manifolds and calculate normals
 		// averaging all normals of manifolds
 		//
-		dtOMVertexField< dtVector3 > nF("nF", omMoved, dtVector3(0.,0.,0.) );		
+		dtOMVertexField< dtVector3 > nF("nF", omInit, dtVector3(0.,0.,0.) );		
 		dt__forAllIter(std::vector< dtOMMeshManifold >, omManifolds, it) {
 			std::vector< dtOMMeshManifold > divOmMs = it->divide(_maxDihedralAngle);
 			std::vector< dtVector3 > nnV;
@@ -181,7 +182,18 @@ namespace dtOO {
 				region->addMeshVertex(mvNew);
 			}
 		}
-		tF.laplacianSmooth();
+//		tF.laplacianSmooth();
+		//
+		// create new elements
+		//
+		dt__forFromToIter(omFaceI, omInit.faces_begin(), omInit.faces_end(), fIt) {
+			std::vector< ::MVertex * > vertices;
+			dt__forFromToIter(omFaceVertexI, omInit.fv_begin(*fIt), omInit.fv_end(*fIt), vIt) {
+        vertices.push_back( omInit[*vIt] );
+			}
+			elements.push_back( ::MElement::createElement(MSH_TRI_3, vertices) );
+			omInit.data(*fIt).MElement( &(elements.back()) );
+		}
 		
 		DTINFOWF(operator(), << "New vertices created.");
 		
@@ -254,49 +266,58 @@ namespace dtOO {
 		}
 		
 		DTINFOWF(operator(), << "Shrinked.");
-//	
-//		//
-//		// dihedral angle field
-//		//		
-//		dtOMEdgeField< float > dAF("dA", omMoved, 0.);
-//		dtOMVertexField< bool > dABoolF("dABoolF", omMoved, false);
-//		dt__forFromToIter(omEdgeI, omMoved.edges_begin(), omMoved.edges_end(), eIt) {
-//		  dAF[*eIt] = omMoved.calc_dihedral_angle(*eIt);
-//		}
-//		dt__forFromToIter(omConstVertexI, omMoved.vertices_begin(), omMoved.vertices_end(), vIt) {
-//			std::vector< omEdgeH > oneRing = omMoved.oneRingEdgeH(*vIt);
-//			float min = 0.;
-//			float max = 0.;
-//			dt__forAllIter(std::vector< omEdgeH >, oneRing, eIt) {
-//				float const & dA = dAF[*eIt];
-//				min = std::min(dA, min);
-//				max = std::max(dA, max);
-//			}
-//			if ( fabs(max - min) > M_PI ) {
+	
+		//
+		// dihedral angle field
+		//		
+		dtOMEdgeField< float > dAF("dA", omInit, 0.);
+		dt__forFromToIter(omEdgeI, omMoved.edges_begin(), omMoved.edges_end(), eIt) {
+		  dAF[*eIt] = omMoved.calc_dihedral_angle(*eIt);
+		}
+		dt__forFromToIter(omConstVertexI, omMoved.vertices_begin(), omMoved.vertices_end(), vIt) {
+			std::vector< omEdgeH > oneRing = omMoved.oneRingEdgeH(*vIt);
+			float min = 0.;
+			float max = 0.;
+			dt__forAllIter(std::vector< omEdgeH >, oneRing, eIt) {
+				float const & dA = dAF[*eIt];
+				min = std::min(dA, min);
+				max = std::max(dA, max);
+			}
+			if ( fabs(max - min) > M_PI ) {
 //				dABoolF[*vIt] = true;
-//			  DTINFOWF(
-//				  operator(), 
-//					<< "Possible dihedral angle problem detected." << LOGDEL
-//				  << DTLOGEVAL(min) << LOGDEL
-//				  << DTLOGEVAL(max) << LOGDEL
-//				  << "|max-min| = " << max-min
-//				);
-//				
-//				//
-//				// move vertices of surface mesh om and create new vertices womIth old
-//				// posomItion in new surface mesh omT
-//				//
-//				MVertex * omMoved_mv = omMoved[*vIt];
-//				tF[omMoved_mv] = .5*tF[omMoved_mv];
-//				omVertexH omT_h = omInit[omMoved_mv];
-//				dtPoint3 target = dtGmshModel::cast2DtPoint3(omT[omT_h]) + tF[omMoved_mv] * nF[omMoved_mv];
-//				omInit.replacePosition(omT_h, target);
-//				omMoved.replacePosition(omMoved[omMoved_mv], target);				
-//			}			
-////			omVertexH const vH = dAF[*vIt];
-////		  float dA = omMoved.calc_dihedral_angle(*eIt);
-//		}
-//		
+			  DTINFOWF(
+				  operator(), 
+					<< "Possible dihedral angle problem detected." << LOGDEL
+				  << DTLOGEVAL(min) << LOGDEL
+				  << DTLOGEVAL(max) << LOGDEL
+				  << "|max-min| = " << max-min
+				);
+							
+				//
+				// move vertices of surface mesh om and create new vertices with old
+				// position in new surface mesh omT
+				//
+				tF[*vIt] = .5*tF[*vIt];
+				dtPoint3 target = dtGmshModel::cast2DtPoint3(omInit[*vIt]) + tF[*vIt] * nF[*vIt];
+				omMoved.replacePosition(*vIt, target);				
+
+				//
+				// move vertices of surface mesh om and create new vertices with old
+				// position in new surface mesh omT
+				//
+				dt__forFromToIter(omConstVertexVertexI, omMoved.vv_begin(*vIt), omMoved.vv_end(*vIt), vvIt) {
+					if ( !fixedF[*vIt] ) {
+						tF[*vIt] = .75*tF[*vvIt];
+						dtPoint3 target = dtGmshModel::cast2DtPoint3(omInit[*vvIt]) + tF[*vvIt] * nF[*vvIt];
+						omMoved.replacePosition(*vvIt, target);
+					}
+				}
+				
+			}			
+//			omVertexH const vH = dAF[*vIt];
+//		  float dA = omMoved.calc_dihedral_angle(*eIt);
+		}
+		
 		//
 		// create new boundary elements
 		//
@@ -379,12 +400,10 @@ namespace dtOO {
 		//
 		// write fields
 		//
-		dtMoabCore mb(omInit);
+		dtMoabCore mb(tF.refMesh());
 		mb.addVertexField(tF);
 		mb.addVertexField(nF);
 		mb.addVertexField(fixedF);
-//		mb.addEdgeField(dAF);
-//		mb.addVertexField(dABoolF);
 		mb.write_mesh("dtGmshMeshBoundaryLayer.vtk");
 	  
 		DTINFOWF(operator(), << "Fields written.");
