@@ -1,7 +1,6 @@
 #ifndef DTOMMESHTRAITS_H
 #define	DTOMMESHTRAITS_H
 
-#include <gmsh/MFace.h>
 #include <dtLinearAlgebra.h>
 #include <OpenMesh/Core/Mesh/Traits.hh>
 
@@ -40,7 +39,6 @@ namespace dtOO {
     FaceTraits {
       private:
         ::MElement * _me;
-        ::MFace _mf;
         bool _inverted;
         bool _mark;
       public:
@@ -51,13 +49,7 @@ namespace dtOO {
         }        
         ::MElement * MElement( void ) const {
           return _me;
-        }                
-        void MFace( ::MFace const & mf ) {
-          _mf = mf;
-        }        
-        ::MFace & MFace( void ) {
-          return _mf;
-        }            
+        }                      
         void invert( void ) {
           _inverted = true;
         }            

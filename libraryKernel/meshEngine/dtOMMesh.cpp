@@ -95,8 +95,6 @@ namespace dtOO {
 
 		dt__THROW_IF(const_cast< ::MElement * >(me)->getNumFaces()!=1, addFace());
 		
-	  fD.MFace( const_cast< ::MElement * >(me)->getFace(0) );
-		
 		return fH;
 	}  
 
@@ -180,16 +178,40 @@ namespace dtOO {
 	}
 
 	void dtOMMesh::replaceMVertex( omVertexH const & vH, ::MVertex * mv ) {
+		//
+		// replace vertex in mapping
+		//
+		_om_gmsh.erase( at(vH) );
+		_om_gmsh[mv] = vH;
+				
+		//
+		// replace MVertex on OpenMesh vertex
+		//
 		data(vH).MVertex(mv);
 	  set_point(vH, omPoint(mv->x(), mv->y(), mv->z()));
-		update_normals();
+		
+		//
+		// update normals
+		//
+		dt__forFromToIter(
+			omVertexFaceI, vf_begin(vH), vf_end(vH), it
+		) update_normal(*it);
 	}
 
 	void dtOMMesh::replacePosition( omVertexH const & vH, dtPoint3 const & pp ) {
+		//
+		// update position
+		//
 		::MVertex * mv = data(vH).MVertex();
 		mv->setXYZ(pp.x(), pp.y(), pp.z());
 	  set_point(vH, omPoint(pp.x(), pp.y(), pp.z()));
-    update_normals();
+
+		//
+		// update normals
+		//		
+		dt__forFromToIter(
+			omVertexFaceI, vf_begin(vH), vf_end(vH), it
+		) update_normal(*it);
 	}	
 	
 	bool dtOMMesh::vertexIsBoundary(MVertex * mv) const {
@@ -212,7 +234,7 @@ namespace dtOO {
 		
 	}
 	
-	std::pair< ::MVertex *, ::MVertex * >
+	std::pair< omVertexH const, omVertexH const >
 	dtOMMesh::foldVertices( omEdgeH const & eH) const {
 		omHalfedgeH he0H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 0);
 		omHalfedgeH he1H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 1);
@@ -220,9 +242,8 @@ namespace dtOO {
 		he0H = const_cast<dtOMMesh*>(this)->next_halfedge_handle(he0H);
 		he1H = const_cast<dtOMMesh*>(this)->next_halfedge_handle(he1H);
 		
-		return std::pair< ::MVertex *, ::MVertex * >(
-			requestMVertex(to_vertex_handle(he0H)), 
-			requestMVertex(to_vertex_handle(he1H))
+		return std::pair< omVertexH const, omVertexH const >(
+			to_vertex_handle(he0H), to_vertex_handle(he1H)
 		);
 	}
 
@@ -246,14 +267,6 @@ namespace dtOO {
 		return false;
 	}
 	
-	omVertexH const & dtOMMesh::requestVertexH( ::MVertex const * mv ) const {
-		return _om_gmsh.at(mv);
-	}
-	
-	::MVertex * dtOMMesh::requestMVertex( omVertexH const vH ) const {
-		return data(vH).MVertex();
-	}	
-	
 	dtPoint3 dtOMMesh::toDtPoint3( omPoint const & oP) {
 		return dtPoint3(oP[0], oP[1], oP[2]);
 	}
@@ -267,11 +280,11 @@ namespace dtOO {
 	}
 
   omVertexH const & dtOMMesh::operator[]( ::MVertex const * const mv ) const {
-		return requestVertexH(mv);
+		return _om_gmsh.at(mv);
 	}
 	
   ::MVertex * dtOMMesh::operator[](omVertexH const & vH) {
-		return requestMVertex(vH);
+		return data(vH).MVertex();
 	}
 	
 	::MVertex const * const dtOMMesh::at(omVertexH const & vH) const {

@@ -93,11 +93,9 @@ namespace dtOO {
       void replacePosition( omVertexH const & vH, dtPoint3 const & pp );
       bool vertexIsBoundary(MVertex * mv) const;
 	    bool isGeometricalEdge( omEdgeH const & eH) const;
-	    std::pair< ::MVertex *, ::MVertex * >
+	    std::pair< omVertexH const, omVertexH const >
 	    foldVertices( omEdgeH const & eH) const;
       std::pair< omFaceH, omFaceH > foldFaces( omEdgeH const & eH) const;
-      omVertexH const & requestVertexH( ::MVertex const * mv ) const;
-      ::MVertex * requestMVertex( omVertexH const vH ) const;
       bool intersection( 
         std::vector< omFaceH > const & fH, 
         dtPoint3 const & start, dtPoint3 const & target 
@@ -107,7 +105,7 @@ namespace dtOO {
       virtual void update( void );
       omVertexH const & operator[]( ::MVertex const * const mv ) const;
       ::MVertex * operator[](omVertexH const & vH);
-      ::MVertex const * const at(omVertexH const & vH) const;
+      ::MVertex const * const at(omVertexH const & vH) const; 
 	    ::MElement const * const at(omFaceH const & fH) const;
       std::vector< omEdgeH > oneRingEdgeH( omVertexH const & vH ) const;
     private:
