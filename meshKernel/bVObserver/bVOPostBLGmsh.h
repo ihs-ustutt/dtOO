@@ -1,39 +1,37 @@
-#ifndef postBLGmsh_H
-#define	postBLGmsh_H
+#ifndef bVOPostBLGmsh_H
+#define	bVOPostBLGmsh_H
 
 #include <logMe/dtMacros.h>
-#include "boundedVolume.h"
-#include "gmshBoundedVolume.h"
+#include "bVOInterface.h"
 
 namespace dtOO {
   class constValue;
   class analyticFunction;
   class analyticGeometry;
   class gmshBoundedVolume;
+  class dtGmshRegion;
   
-  class postBLGmsh : public boundedVolume {
+  class bVOPostBLGmsh : public bVOInterface {
   public:
-    dt__CLASSSTD(postBLGmsh, boundedVolume);    
-    postBLGmsh();
-    virtual ~postBLGmsh();
-    virtual void init( 
+    dt__CLASSNAME(bVOPostBLGmsh);
+    bVOPostBLGmsh();
+    virtual ~bVOPostBLGmsh();
+    virtual void init(
       QDomElement const & element,
-      baseContainer const * const bC,					
+      baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticGeometry * > const * const aG,
-      vectorHandling< boundedVolume * > const * const bV
+      vectorHandling< boundedVolume * > const * const bV,
+      boundedVolume * attachTo
     );    
-    virtual void makeGrid(void);
-    virtual void makePreGrid(void);
-  	virtual vectorHandling< renderInterface * > getRender( void ) const;
+    virtual void postUpdate( void );
   private:
     float _thickness;
     std::vector< float > _spacing;
     int _nSmoothingSteps;
     int _nShrinkingSteps;
     float _maxDihedralAngle;
-    gmshBoundedVolume const * _meshedBV;
     std::vector< std::string > _faceLabel;
     std::vector< int > _faceOrientation;
     std::vector< std::string > _fixedFaceLabel;
@@ -41,5 +39,5 @@ namespace dtOO {
     dtGmshRegion * _dtR;
   };
 }
-#endif	/* postBLGmsh_H */
+#endif	/* bVOPostBLGmsh_H */
 

@@ -7,6 +7,7 @@ SET(HEADERS
   bVObserver/bVOSetSimpleGrading.h
   bVObserver/bVONameFaces.h
   bVObserver/bVONameRegions.h
+  bVObserver/bVOPostBLGmsh.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dBlockGmsh.h
@@ -18,7 +19,6 @@ SET(HEADERS
   readMOABMesh.h
   gmshBoundedVolume.h
   postBLMeshKit.h
-  postBLGmsh.h
 )
 
 SET(SOURCES
@@ -30,6 +30,7 @@ SET(SOURCES
   bVObserver/bVOSetSimpleGrading.cpp
   bVObserver/bVONameFaces.cpp
   bVObserver/bVONameRegions.cpp
+  bVObserver/bVOPostBLGmsh.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dBlockGmsh.cpp
@@ -41,7 +42,6 @@ SET(SOURCES
   readMOABMesh.cpp
   gmshBoundedVolume.cpp
   postBLMeshKit.cpp
-  postBLGmsh.cpp
 )
 
 APPEND_DTOO_SOURCE(meshKernel "${SOURCES}")

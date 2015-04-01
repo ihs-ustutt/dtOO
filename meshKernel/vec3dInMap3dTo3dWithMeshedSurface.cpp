@@ -277,7 +277,7 @@ namespace dtOO {
 	  //
 		// call observers
 		//
-		boundedVolume::notify();
+		boundedVolume::preNotify();
 				
     //
     // set a bounding box, necessary to set CTX::instance()->lc to prevent
@@ -298,6 +298,8 @@ namespace dtOO {
 		_gm->mesh(1);
 		_gm->mesh(2);
 		_gm->mesh(3);
+		
+		boundedVolume::postNotify();
 		
     //
 		// force renumbering mesh in gmsh

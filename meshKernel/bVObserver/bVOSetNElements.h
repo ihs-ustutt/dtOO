@@ -24,7 +24,7 @@ namespace dtOO {
       vectorHandling< boundedVolume * > const * const bV,
       boundedVolume * attachTo
     );    
-    virtual void update( void );
+    virtual void preUpdate( void );
   private:
     int _nU;
     int _nV;

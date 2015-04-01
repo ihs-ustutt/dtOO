@@ -190,6 +190,8 @@ namespace dtOO {
 		
 		_gm->dtReadCGNS(_meshFileName.c_str());
 		
+		boundedVolume::postNotify();
+		
 		//
 		// update physical labels
 		//
@@ -212,6 +214,6 @@ namespace dtOO {
 	 * @todo Calculate rotation angle or number of internals.
    */
 	void map3dTo3dWithInternalTurboGrid::makePreGrid(void) {
-		boundedVolume::notify();	
+		boundedVolume::preNotify();	
 	}
 }

@@ -18,7 +18,8 @@ namespace dtOO {
       dt__CLASSNAME(bVOInterface);  
       bVOInterface();
       virtual ~bVOInterface();
-      virtual void update( void ) = 0;
+      virtual void preUpdate( void );
+      virtual void postUpdate( void );
       virtual void init( 
         QDomElement const & element,
         baseContainer const * const bC,

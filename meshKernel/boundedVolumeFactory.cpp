@@ -10,7 +10,6 @@
 #include "readMOABMesh.h"
 #include "postBLMeshKit.h"
 #include "map3dTo3dWithInternalGmsh.h"
-#include "postBLGmsh.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -35,7 +34,6 @@ namespace dtOO {
 		__IFRET(readMOABMesh);
 		__IFRET(postBLMeshKit);
 		__IFRET(map3dTo3dWithInternalGmsh);
-		__IFRET(postBLGmsh);
 
     dt__THROW(create(), << str <<  " could not be created");  
   }

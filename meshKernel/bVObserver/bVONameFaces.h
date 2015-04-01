@@ -24,7 +24,7 @@ namespace dtOO {
       vectorHandling< boundedVolume * > const * const bV,
       boundedVolume * attachTo
     );    
-    virtual void update( void );
+    virtual void preUpdate( void );
   private:
     std::vector< std::string > _faceLabel;
   };

@@ -136,11 +136,13 @@ namespace dtOO {
 		}
 		meshkit__CATCH(makeGrid);
 		
+		boundedVolume::postNotify();
+		
 		boundedVolume::setMeshed();
 	}
   
 	void postBLMeshKit::makePreGrid(void) {
-		boundedVolume::notify();
+		boundedVolume::preNotify();
 	}
   
 	vectorHandling< renderInterface * > postBLMeshKit::getRender( void ) const {

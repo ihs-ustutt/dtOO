@@ -47,15 +47,15 @@ namespace dtOO {
 //		for ( auto &el : _grading ) DTINFOWF(init(), << el);
   }
   
-  void bVOSetSimpleGrading::update( void ) {
+  void bVOSetSimpleGrading::preUpdate( void ) {
 		dtGmshModel * gm = ptrBoundedVolume()->getModel();
 		
-		dt__THROW_IF(gm==NULL, update());
+		dt__THROW_IF(gm==NULL, preUpdate());
 		
 		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
 		  dtGmshRegionHex * hex = dtGmshRegionHex::DownCast(*r_it);
 
-			dt__WARN_IF(hex==NULL, update());
+			dt__WARN_IF(hex==NULL, preUpdate());
 
 			if (hex) hex->setGrading(
 			           _grading[0], _grading[1], _grading[2], 

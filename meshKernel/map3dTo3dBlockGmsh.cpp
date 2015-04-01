@@ -115,6 +115,8 @@ namespace dtOO {
 		_gm->mesh(2);
 		_gm->mesh(3);
 		
+		boundedVolume::postNotify();
+		
     //
 		// force renumbering mesh in gmsh
 		//
@@ -132,6 +134,6 @@ namespace dtOO {
 	}
   
 	void map3dTo3dBlockGmsh::makePreGrid(void) {
-		boundedVolume::notify();
+		boundedVolume::preNotify();
 	}
 }

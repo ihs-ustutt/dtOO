@@ -47,11 +47,14 @@ namespace dtOO {
 		rval = _mb->delete_mesh();
 		moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());		
 		rval = _mb->load_mesh(_fileName.c_str());
-		moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());		
+		moab__THROW_IF(rval != moab::MB_SUCCESS, makeGrid());	
+
+		boundedVolume::postNotify();
+		
 	}
   
 	void readMOABMesh::makePreGrid(void) {
-		boundedVolume::notify();
+		boundedVolume::preNotify();
 	}
   
 	vectorHandling< renderInterface * > readMOABMesh::getRender( void ) const {

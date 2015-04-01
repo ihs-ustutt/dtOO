@@ -102,6 +102,8 @@ namespace dtOO {
 		_gm->mesh(3);
 		_gm->writeMSH( (getLabel()+".msh").c_str() );
 		
+		boundedVolume::postNotify();
+		
 		//
 		// mark as meshed
 		//
@@ -110,7 +112,7 @@ namespace dtOO {
 	}
   
 	void map3dTo3dTriangulated::makePreGrid(void) {
-		boundedVolume::notify();
+		boundedVolume::preNotify();
 	}
   
 	vectorHandling< renderInterface * > map3dTo3dTriangulated::getRender( void ) const {

@@ -49,10 +49,10 @@ namespace dtOO {
 		_nW = nn[2];
   }
   
-  void bVOSetNElements::update( void ) {
+  void bVOSetNElements::preUpdate( void ) {
 		dtGmshModel * gm = ptrBoundedVolume()->getModel();
 		
-		dt__THROW_IF(gm==NULL, update());
+		dt__THROW_IF(gm==NULL, preUpdate());
 		
 		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
 		  dtGmshRegionHex * hex = dtGmshRegionHex::DownCast(*r_it);

@@ -24,7 +24,7 @@ namespace dtOO {
       vectorHandling< boundedVolume * > const * const bV,
       boundedVolume * attachTo
     );    
-    virtual void update( void );
+    virtual void preUpdate( void );
   private:
     std::vector< float > _grading;
     std::vector< float > _type;

@@ -16,7 +16,11 @@ namespace dtOO {
     _observers.push_back( observer );
   }
 
-  void bVOSubject::notify( void ) {
-    dt__forAllIndex(_observers, ii) _observers[ii]->update();
+  void bVOSubject::preNotify( void ) {
+    dt__forAllIndex(_observers, ii) _observers[ii]->preUpdate();
   }
+	
+  void bVOSubject::postNotify( void ) {
+    dt__forAllIndex(_observers, ii) _observers[ii]->postUpdate();
+  }	
 }

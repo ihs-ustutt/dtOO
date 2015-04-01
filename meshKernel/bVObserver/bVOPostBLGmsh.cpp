@@ -1,4 +1,5 @@
-#include "postBLGmsh.h"
+#include "bVOPostBLGmsh.h"
+
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <dtXmlParserDecorator/qtXmlBase.h>
@@ -13,26 +14,40 @@
 #include <unstructured3dMesh.h>
 #include "gmshBoundedVolume.h"
 
-namespace dtOO {
-	postBLGmsh::postBLGmsh() {
-	}
+namespace dtOO {  
+  bVOPostBLGmsh::bVOPostBLGmsh() {
+  }
 
-	postBLGmsh::~postBLGmsh() {
-	}
-	
-  void postBLGmsh::init( 
+  bVOPostBLGmsh::~bVOPostBLGmsh() {
+    
+  }
+  
+  void bVOPostBLGmsh::bVOPostBLGmsh::init( 
 		QDomElement const & element,
-    baseContainer const * const bC,					
+		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
 		vectorHandling< analyticGeometry * > const * const aG,
-		vectorHandling< boundedVolume * > const * const bV
-	) {
+		vectorHandling< boundedVolume * > const * const bV,
+		boundedVolume * attachTo
+  ) {		
     //
-    // init boundedVolume
+    // init bVOInterface
     //
-    boundedVolume::init(element, bC, cV, aF, aG, bV);
-
+    bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
+    
+//		<bVObserver name="bVOPostBLGmsh"
+//			spacing="{.5}"
+//			thickness="1."
+//			nSmoothingSteps="10"
+//			nShrinkingSteps="10"
+//			maxDihedralAngle="_pi*45./180."
+//			faceLabel="{FACE_1}{FACE_2}"
+//			faceOrientation="{-1}{1}"
+//			fixedFaceLabel="{FACE_3}{FACE_4}"
+//			fixedFaceOrientation="{1}{-1}"
+//		/>		
+							
 		_spacing 
 		= 
 		qtXmlBase::getAttributeFloatVectorMuParse("spacing", element, cV, aF);		
@@ -52,39 +67,37 @@ namespace dtOO {
 		//
 		// boundedVolume
 		//		
-    QDomElement wElement = qtXmlPrimitive::getChild("boundedVolume", element);
-    std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
 		_faceLabel 
 		= 
-		qtXmlPrimitive::getAttributeStrVector("faceLabel", wElement);
+		qtXmlPrimitive::getAttributeStrVector("faceLabel", element);
 		_faceOrientation 
 		= 
-		qtXmlBase::getAttributeIntVectorMuParse("faceOrientation", wElement, cV, aF);
+		qtXmlBase::getAttributeIntVectorMuParse("faceOrientation", element, cV, aF);
 		_fixedFaceLabel 
 		= 
-		qtXmlPrimitive::getAttributeStrVector("fixedFaceLabel", wElement);
+		qtXmlPrimitive::getAttributeStrVector("fixedFaceLabel", element);
 		_fixedFaceOrientation 
 		= 
-		qtXmlBase::getAttributeIntVectorMuParse("fixedFaceOrientation", wElement, cV, aF);
+		qtXmlBase::getAttributeIntVectorMuParse("fixedFaceOrientation", element, cV, aF);
 		
 		//
-		// get boundedVolume
+		// gmshBoundedVolume
 		//
-    dt__ptrAss( _meshedBV, gmshBoundedVolume::ConstDownCast(bV->get(label)) );
-	}
-	
-  void postBLGmsh::makeGrid(void) {
+    dt__THROW_IF(gmshBoundedVolume::ConstDownCast(attachTo)==NULL, init());
+  }
+  
+  void bVOPostBLGmsh::postUpdate( void ) {
 		std::list< dtGmshFace const * > faceList;
 		dt__forAllConstIter(std::vector< std::string >, _faceLabel, it) {
-		  faceList.push_back( _meshedBV->getFace(*it) );
+		  faceList.push_back( ptrBoundedVolume()->getFace(*it) );
 		}
 		std::list< dtGmshFace const * > fixedFaceList;
 		dt__forAllConstIter(std::vector< std::string >, _fixedFaceLabel, it) {
-		  fixedFaceList.push_back( _meshedBV->getFace(*it) );
+		  fixedFaceList.push_back( ptrBoundedVolume()->getFace(*it) );
 		}		
 		_dtR 
 		= 
-		new dtGmshRegion(_meshedBV->getModel(), _meshedBV->getModel()->getMaxRegionTag()+1);
+		new dtGmshRegion(ptrBoundedVolume()->getModel(), ptrBoundedVolume()->getModel()->getMaxRegionTag()+1);
 		dtGmshMeshBoundaryLayer(
 		  _thickness, _spacing, 
 			_maxDihedralAngle, 
@@ -95,36 +108,19 @@ namespace dtOO {
 			fixedFaceList, _fixedFaceOrientation
 		);
 		
-		_meshedBV->getModel()->writeMSH(getLabel()+"_0.msh");
+		ptrBoundedVolume()->getModel()->writeMSH(ptrBoundedVolume()->getLabel()+"_0.msh");
 
-		_meshedBV->getModel()->tagPhysical(_dtR, getLabel());
-		_meshedBV->getModel()->add(_dtR);
+		ptrBoundedVolume()->getModel()->tagPhysical(_dtR, ptrBoundedVolume()->getLabel());
+		ptrBoundedVolume()->getModel()->add(_dtR);
     _dtR->_status = ::GEntity::MeshGenerationStatus::DONE;
 		
-		_meshedBV->getModel()->meshRegion();
-
-		_meshedBV->getModel()->writeMSH(getLabel()+"_1.msh");
+		ptrBoundedVolume()->getModel()->meshRegion();
+		
+		ptrBoundedVolume()->getModel()->writeMSH(ptrBoundedVolume()->getLabel()+"_1.msh");
+		
 		//
 		// update physicals because we add a new region
 		//
-		_meshedBV->updatePhysicals();
-		
-		boundedVolume::setMeshed();
-	}
-  
-	void postBLGmsh::makePreGrid(void) {
-		boundedVolume::notify();
-	}
-  
-	vectorHandling< renderInterface * > postBLGmsh::getRender( void ) const {
-	  vectorHandling< renderInterface * > rV;
-				
-		std::vector< ::MElement const * > elThreeD;
-		for (int jj=0;jj<_dtR->getNumMeshElements(); jj++) {
-			elThreeD.push_back( _dtR->getMeshElement(jj) );	
-		}							
-		rV.push_back(dtGmshModel::toUnstructured3dMesh(elThreeD));	
-		
-		return rV;
-	}	
+		gmshBoundedVolume::DownCast(ptrBoundedVolume())->updatePhysicals();
+  }
 }
