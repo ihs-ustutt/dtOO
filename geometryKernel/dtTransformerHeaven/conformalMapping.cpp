@@ -16,7 +16,7 @@ namespace dtOO {
   }
 
   dtTransformer * conformalMapping::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__THROW(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * conformalMapping::create( void ) const {

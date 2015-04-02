@@ -14,7 +14,7 @@ namespace dtOO {
   }
 
   dtTransformer * closeGaps::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__THROW(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * closeGaps::create( void ) const {
@@ -45,7 +45,6 @@ namespace dtOO {
 //                << "Closing gaps of a rotational surface is not yet supported.");
 //      }
 
-        DTBUFFERINIT();
       if (_vvStartAGeo) {
         for (int ii = 0;ii<aS->ptrDtSurface()->nControlPointsU();ii++) {
           dtPoint3 cP = aS->ptrDtSurface()->controlPoint(ii, 0);
@@ -55,9 +54,6 @@ namespace dtOO {
                                 nearest.y()
                               );
           aS->ptrDtSurface()->setControlPoint(ii, 0, cPNearest);
-            DTBUFFER( << " ii::> " << ii << " " << DTLOGPOI3D(cP) << LOGDEL 
-                      << DTLOGPOI2D(nearest) << LOGDEL
-                      << DTLOGPOI3D(cPNearest) << LOGDEL);
         }
       }
       if (_vvEndAGeo) {
@@ -69,13 +65,9 @@ namespace dtOO {
                                 nearest.x(), 
                                 nearest.y()
                               );
-          aS->ptrDtSurface()->setControlPoint(ii, nV-1, cPNearest);
-            DTBUFFER( << " ii::> " << ii << DTLOGPOI3D(cP) << LOGDEL 
-                      << DTLOGPOI2D(nearest) << LOGDEL
-                      << DTLOGPOI3D(cPNearest) << LOGDEL);        
+          aS->ptrDtSurface()->setControlPoint(ii, nV-1, cPNearest); 
         }
       }
-        DTDEBUGWF_BUFFER(apply());
 
       //
       // push translated geometry in vector

@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   dtTransformer * makePolynomial::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__THROW(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * makePolynomial::create( void ) const {

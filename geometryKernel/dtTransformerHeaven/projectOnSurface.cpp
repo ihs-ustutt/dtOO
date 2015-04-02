@@ -15,7 +15,7 @@ namespace dtOO {
   }
 
   dtTransformer * projectOnSurface::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__THROW(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * projectOnSurface::create( void ) const {

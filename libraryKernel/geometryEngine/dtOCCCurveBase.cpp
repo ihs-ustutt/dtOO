@@ -14,14 +14,14 @@ namespace dtOO {
 
   void dtOCCCurveBase::setOCC(Handle_Geom_Curve occCurve) {
 		if ( occCurve.IsNull() ) {
-			dt__THROW(setOCC(), "Try to set NULL handle in setOCC().");
+			dt__THROW(setOCC(), << "Try to set NULL handle in setOCC().");
 		}		
     _hanWrap->occHandle = occCurve;
   }
 	
   Handle_Geom_Curve const dtOCCCurveBase::getOCC( void ) const {
 		if ( _hanWrap->occHandle.IsNull() ) {
-			dt__THROW(getOCC(), "getOCC() return NULL Handle.");
+			dt__THROW(getOCC(), << "getOCC() return NULL Handle.");
 		}
     return _hanWrap->occHandle;
   }

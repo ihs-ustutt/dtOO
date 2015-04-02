@@ -18,7 +18,7 @@ namespace dtOO {
   }
 
   dtTransformer * reparamInSurface::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__THROW(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * reparamInSurface::create( void ) const {

@@ -9,7 +9,7 @@ namespace dtOO {
   }
 
   dtTransformer * doNothing::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__THROW(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * doNothing::create( void ) const {

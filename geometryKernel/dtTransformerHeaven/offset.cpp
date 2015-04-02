@@ -14,7 +14,7 @@ namespace dtOO {
   }
 
   dtTransformer * offset::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__THROW(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * offset::create( void ) const {

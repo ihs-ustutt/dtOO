@@ -81,7 +81,7 @@ namespace dtOO {
 		char **symbols = backtrace_symbols(callstack, nFrames);
 
 		std::ostringstream trace_buf;
-		trace_buf << LOGDEL << "\n+---------------------+\n|\n";
+		trace_buf << LOGDEL << "\n+---------------------+\n\n";
 		trace_buf <<  "+-- Backtrace\n";
 		for (int i = skip; i < nFrames; i++) {
 			//printf("%s\n", symbols[i]);
@@ -110,7 +110,7 @@ namespace dtOO {
 		}
 		free(symbols);
 		if (nFrames == nMaxFrames) trace_buf << "[truncated]\n";
-		trace_buf <<  "+-- End Backtrace \n|\n+---------------------+";
+		trace_buf <<  "+-- End Backtrace \n\n+---------------------+";
 		trace_buf << LOGDEL;
 		return trace_buf.str();
 	}	
@@ -119,7 +119,9 @@ namespace dtOO {
 	 * 
    * @todo Make me template.
    */
-  std::string logMe::floatMatrixToString( std::vector< std::vector< float > > const & mat ) {
+  std::string logMe::floatMatrixToString( 
+	  std::vector< std::vector< float > > const & mat 
+	) {
     std::ostringstream os;
     
     int nU = mat.size();

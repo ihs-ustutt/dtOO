@@ -25,7 +25,7 @@ namespace dtOO {
   }
 
   dtTransformer * biThicknessIncreasing::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__THROW(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * biThicknessIncreasing::create( void ) const {

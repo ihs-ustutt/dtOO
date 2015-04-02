@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   dtTransformer * pickLengthRange::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__THROW(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * pickLengthRange::create( void ) const {

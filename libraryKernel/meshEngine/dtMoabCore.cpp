@@ -219,7 +219,7 @@ namespace dtOO {
 			elementDim = 1;
 			type = moab::MBEDGE;
 		}				
-		else dt__THROW(addElements, "Unknown element type.");
+		else dt__THROW(addElements, << "Unknown element type.");
 
 		//
 		// create connectivity list
