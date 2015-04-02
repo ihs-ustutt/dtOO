@@ -38,15 +38,15 @@ namespace dtOO {
     //
     gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 		
-		//
-		// get margin width, margin element size and blade element size
-		//
-		_bladeNormalWidth 
-		= 
-		qtXmlBase::getAttributeFloatMuParse("bladeNormalWidth", element, cV, aF);
-		_bladeTangentialWidth 
-		= 
-	  qtXmlBase::getAttributeFloatMuParse("bladeTangentialWidth", element, cV, aF);
+//		//
+//		// get margin width, margin element size and blade element size
+//		//
+//		_bladeNormalWidth 
+//		= 
+//		qtXmlBase::getAttributeFloatMuParse("bladeNormalWidth", element, cV, aF);
+//		_bladeTangentialWidth 
+//		= 
+//	  qtXmlBase::getAttributeFloatMuParse("bladeTangentialWidth", element, cV, aF);
 		
     //
 		// get geometries

@@ -206,15 +206,12 @@
 	<!--
 	  gmsh switches face normals if meshing of the volume is performed
 	-->
-	<boundedVolume name="map3dTo3dWithInternalGmsh" label="map3dTo3dWithInternalGmsh"
-		marginWidth="4."
-		marginNormalWidth="4."
-		marginTangentialWidth="4."
-		bladeNormalWidth="8."
-		bladeTangentialWidth="4."	
-    normalAddNumberIntegrationPoints="3"
-	>
-		<option name="gmshMeshFile" value="gmshLayer.geo"/>		
+	<boundedVolume name="map3dTo3dWithInternalGmsh" label="map3dTo3dWithInternalGmsh">	
+		<option name="[gmsh]General.Terminal" value="1."/>
+		<option name="[gmsh]General.Verbosity" value="100."/>
+		<option name="[gmsh]General.ExpertMode" value="1."/>
+		<option name="[gmsh]Mesh.CharacteristicLengthMin" value="16."/>
+		<option name="[gmsh]Mesh.CharacteristicLengthMax" value="16."/>
 		<option name="defer_mesh_3" value="true"/>
     <bVObserver name="bVONameRegions" regionLabel="{REG_1}"/>
     <bVObserver 
@@ -226,45 +223,39 @@
 				{FACE_4}
 				{FACE_5}
 				{FACE_6}
-				{FACE_7}{FACE_8}{FACE_9}
-				{FACE_10}{FACE_11}{FACE_12}
-				{FACE_13}{FACE_14}{FACE_15}				
+				{FACE_7}{FACE_8}{FACE_9}		
 			"/>
+    <bVObserver name="bVOWriteMSH" filename="map3dTo3dWithInternalGmsh_0.msh"/>
+		<bVObserver name="bVOPostBLGmsh"
+			spacing="{.025}{.050}{.150}{.300}{.600}"
+			thickness="2."
+			nSmoothingSteps="10"
+			nShrinkingSteps="10"
+			maxDihedralAngle="_pi*45./180."
+			label="map3dTo3dWithInternalGmsh"
+			faceLabel="
+				{FACE_1}
+				{FACE_2}
+				{FACE_7}{FACE_8}
+			"
+			faceOrientation="
+				{-1}			
+				{1}
+				{-1}{-1}
+			"
+			fixedFaceLabel="
+				{FACE_3}{FACE_4}{FACE_5}{FACE_6}
+				{FACE_9}
+			"
+			fixedFaceOrientation="
+				{1}{-1}{-1}{1}
+				{-1}
+			"
+		/>			
+    <bVObserver name="bVOWriteMSH" filename="map3dTo3dWithInternalGmsh_1.msh"/>		
 		<analyticGeometry label="aG_v_1"/>
 		<analyticGeometry label="aG_s_0_0"/>
 		<analyticGeometry label="aG_s_0_1"/>
 		<analyticGeometry label="aG_s_1"/>
 	</boundedVolume>	
-
-	<boundedVolume name="postBLGmsh"  label="postBLGmsh" 
-	  spacing="{.6}{.8}{.9}"
-		thickness="2."
-		intervals="2"
-		nSmoothingSteps="10"
-		nShrinkingSteps="3"
-		maxDihedralAngle="_pi*70./180."
-	>
-		<boundedVolume 
-		  label="map3dTo3dWithInternalGmsh"
-			faceLabel="
-				{FACE_1}
-				{FACE_2}
-				{FACE_7}{FACE_8}{FACE_9}
-				{FACE_10}{FACE_11}{FACE_12}
-				{FACE_13}{FACE_14}
-			"
-      faceOrientation="
-				{-1}			
-				{1}
-				{-1}{1}{1}
-				{-1}{1}{1}
-				{-1}{1}
-			"
-			fixedFaceLabel="
-			{FACE_3}{FACE_4}{FACE_5}{FACE_6}
-			{FACE_15}
-			"
-      fixedFaceOrientation="{1}{-1}{-1}{1}{1}"
-      />			
-	</boundedVolume>
 </canadaGmsh> 
