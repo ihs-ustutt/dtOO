@@ -117,10 +117,5 @@ namespace dtOO {
 		ptrBoundedVolume()->getModel()->meshRegion();
 		
 		ptrBoundedVolume()->getModel()->writeMSH(ptrBoundedVolume()->getLabel()+"_1.msh");
-		
-		//
-		// update physicals because we add a new region
-		//
-		gmshBoundedVolume::DownCast(ptrBoundedVolume())->updatePhysicals();
   }
 }

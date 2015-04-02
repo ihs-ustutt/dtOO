@@ -53,6 +53,11 @@ namespace dtOO {
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( void ) const {
 		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
+
+		//
+		// update
+		//
+		updatePhysicals();		
 		
 		::GModel::setCurrent(_gm.get());
 		
@@ -62,6 +67,11 @@ namespace dtOO {
 	}	
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getExtRender( void ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
 		::GModel::setCurrent(_gm.get());
 		
 		vectorHandling< renderInterface * > rV;
@@ -115,6 +125,11 @@ namespace dtOO {
 	}		
 	
   std::vector< std::string > gmshBoundedVolume::getMeshTags( void ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
 		std::vector< std::string > tags;
     for (int ii=0; ii<4; ii++) {
 			dt__forAllIndex(_physLabels[ii], jj) tags.push_back(_physLabels[ii][jj]);
@@ -123,6 +138,11 @@ namespace dtOO {
 	}
 	
 	dtGmshFace * gmshBoundedVolume::getFace( std::string const & tag ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
 		::GModel::setCurrent(_gm.get());
 		
 		dt__forAllIndex(_physLabels[2], jj) {
@@ -146,6 +166,11 @@ namespace dtOO {
 	}
 	
 	dtGmshRegion * gmshBoundedVolume::getRegion( std::string const & tag ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
 		::GModel::setCurrent(_gm.get());
 		
 		dt__forAllIndex(_physLabels[3], jj) {
@@ -169,6 +194,11 @@ namespace dtOO {
 	}
 	
   dtGmshModel * gmshBoundedVolume::getModel( void ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
 		return _gm.get();
 	}
 	

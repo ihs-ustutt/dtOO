@@ -185,18 +185,13 @@ namespace dtOO {
 		if ( !optionHandling::optionTrue("defer_mesh_1") ) _gm->meshPhysical(1);
 		if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
 		if ( !optionHandling::optionTrue("defer_mesh_3") ) _gm->meshPhysical(3);
-			
-		//
-		// update physicals
-		//
-		gmshBoundedVolume::updatePhysicals();
 		
 		boundedVolume::postNotify();
 		
-    //
-		// force renumbering mesh in gmsh
-		//
-    _gm->indexMeshVertices(true, 0, true);
+//    //
+//		// force renumbering mesh in gmsh
+//		//
+//    _gm->indexMeshVertices(true, 0, true);
 		
 		//
 		// mark as meshed

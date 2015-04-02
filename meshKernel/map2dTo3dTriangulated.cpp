@@ -106,11 +106,6 @@ namespace dtOO {
   
 	void map2dTo3dTriangulated::makePreGrid(void) {
 		boundedVolume::preNotify();
-		
-		//
-		// update physicals
-		//
-		gmshBoundedVolume::updatePhysicals();
 	}
   
 //	vectorHandling< renderInterface * > map2dTo3dTriangulated::getRender( void ) const {

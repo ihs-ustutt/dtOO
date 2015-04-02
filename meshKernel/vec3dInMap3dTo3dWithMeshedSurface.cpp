@@ -307,11 +307,6 @@ namespace dtOO {
     _gm->indexMeshVertices(true, 0, true);
 		
 		//
-		// update physical labels
-		//
-		gmshBoundedVolume::updatePhysicals();
-		
-		//
 		// mark as meshed
 		//
 		boundedVolume::setMeshed();

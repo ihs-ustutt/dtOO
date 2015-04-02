@@ -193,11 +193,6 @@ namespace dtOO {
 		boundedVolume::postNotify();
 		
 		//
-		// update physical labels
-		//
-		gmshBoundedVolume::updatePhysicals();
-		
-		//
 		// delete turboGrid directory
 		//
 		if ( !optionTrue("keep_directory") ) {
