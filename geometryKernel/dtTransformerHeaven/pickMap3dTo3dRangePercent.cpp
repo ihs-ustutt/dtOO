@@ -102,11 +102,11 @@ namespace dtOO {
 		}
 		
     if ( (_u0 >= 0.) && (_v0 >= 0.) && (_w0 >= 0.) ) {
-			dt__THROW(
+			dt__throw(
 				init(),
-				<< DTLOGEVAL(_u0) << LOGDEL
-				<< DTLOGEVAL(_v0) << LOGDEL
-				<< DTLOGEVAL(_w0) << LOGDEL
+				<< dt__eval(_u0) << std::endl
+				<< dt__eval(_v0) << std::endl
+				<< dt__eval(_w0) << std::endl
 				<< "Only one value should be greater than zero. Check input."
 			);
     }

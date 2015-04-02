@@ -64,7 +64,7 @@ namespace dtOO {
 				aGeoP->push_back( new scaOneDInMap1dTo3d(s1d, m1d, optionPercent) );
 			}
 			else {
-				dt__THROW(buildPart(), << DTLOGEVAL(s1d));
+				dt__throw(buildPart(), << dt__eval(s1d));
 			}
     }
   }

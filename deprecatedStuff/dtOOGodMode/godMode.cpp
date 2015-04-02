@@ -31,8 +31,8 @@ namespace dtOO {
       covise::coDistributedObject const * inObj = _pIn_extInfoContainerP->getCurrentObject();
       covise::coDoSet const * set = dynamic_cast< covise::coDoSet const * >(inObj);
       if ( set == NULL) {
-        DTDEBUGWF(compute(),
-                << DTLOGEVAL(set) );
+        dt__debug(compute(),
+                << dt__eval(set) );
         return SUCCESS;
       }
 
@@ -94,7 +94,7 @@ namespace dtOO {
       return SUCCESS;
     }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       send_stop_pipeline();
       return FAILURE;
     }    

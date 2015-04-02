@@ -14,7 +14,7 @@ namespace covise {
 namespace dtOO {
   class scaPiecewiseLinear : public scaFunction {
   public:
-    dt__CLASSNAME(scaPiecewiseLinear);
+    dt__classOnlyName(scaPiecewiseLinear);
     scaPiecewiseLinear();
     scaPiecewiseLinear(std::vector< dtPoint2> const * point);
     scaPiecewiseLinear(std::vector< dtPoint2> const & point);

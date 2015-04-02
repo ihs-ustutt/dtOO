@@ -22,7 +22,7 @@ namespace dtOO {
   class c14Volume : public cardinalDirTransfiniteVolume,
                     public dtMacroMesh {
     public:
-      dt__CLASSNAME(c14Volume); 
+      dt__classOnlyName(c14Volume); 
       c14Volume();
       virtual ~c14Volume();
       virtual void init(

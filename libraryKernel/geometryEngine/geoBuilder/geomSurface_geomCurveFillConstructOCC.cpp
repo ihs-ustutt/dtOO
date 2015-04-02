@@ -56,11 +56,11 @@ namespace dtOO {
 	void geomSurface_geomCurveFillConstructOCC::init( 
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
-		dt__THROW_IFWM(
+		dt__throwIfWithMessage(
 			cc.size() != 4, 
 			geomSurface_geomCurveFillConstructOCC(),
-			<< "Only supported with 4 curves." << LOGDEL
-			<< DTLOGEVAL(cc.size())
+			<< "Only supported with 4 curves." << std::endl
+			<< dt__eval(cc.size())
 		);
 		vectorHandling< dtCurve const * > C(4);
 		for (int ii=0; ii<4; ii++) {
@@ -73,10 +73,10 @@ namespace dtOO {
   			C[ii] = occTc->bSplineCurve();
 			}
       else {
-				dt__THROW(
+				dt__throw(
 				  geomSurface_geomCurveFillConstructOCC(), 
-					<< DTLOGEVAL(occBsc) << LOGDEL
-					<< DTLOGEVAL(occTc)
+					<< dt__eval(occBsc) << std::endl
+					<< dt__eval(occTc)
 				);
 			}			
 		}

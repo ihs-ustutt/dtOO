@@ -10,7 +10,7 @@ namespace dtOO {
   
   class approxInSurface : public dtTransformer {
   public:    
-    dt__CLASSNAME(approxInSurface);
+    dt__classOnlyName(approxInSurface);
     approxInSurface();
     approxInSurface( approxInSurface const & orig );    
     virtual ~approxInSurface();

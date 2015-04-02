@@ -13,7 +13,7 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const depSFunP,
 		vectorHandling< analyticFunction * > * sFunP
 	) const {
-    DTINFOWF(buildPartCompound(), << "Call on dtXmlParserFunctionDecorator");
+    dt__info(buildPartCompound(), << "Call on dtXmlParserFunctionDecorator");
   }
 	
 

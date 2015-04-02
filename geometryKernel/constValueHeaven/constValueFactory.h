@@ -9,7 +9,7 @@ namespace dtOO {
 
   class constValueFactory {
     public:
-      dt__CLASSNAME(constValueFactory);    
+      dt__classOnlyName(constValueFactory);    
       constValueFactory();
       virtual ~constValueFactory();
       constValue * create(char const * const str) const ;

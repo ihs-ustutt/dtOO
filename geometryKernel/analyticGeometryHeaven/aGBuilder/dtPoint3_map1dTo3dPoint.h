@@ -10,7 +10,7 @@ namespace dtOO {
   
   class dtPoint3_map1dTo3dPoint {
   public:
-    dt__CLASSNAME(dtPoint3_map1dTo3dPoint);     
+    dt__classOnlyName(dtPoint3_map1dTo3dPoint);     
     dtPoint3_map1dTo3dPoint(
       map1dTo3d const * const m1d, int const & nPoints
     );

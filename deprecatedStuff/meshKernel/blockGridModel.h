@@ -16,7 +16,7 @@ namespace dtOO {
   
   class blockGridModel : public cardinalDirGModel {
   public:
-    dt__CLASSNAME(blockGridModel);
+    dt__classOnlyName(blockGridModel);
     blockGridModel(std::string name="");
     virtual ~blockGridModel();
     void addDtGmshVertex(int const vId);

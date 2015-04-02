@@ -36,7 +36,7 @@ namespace dtOO {
 
   dtXmlParserFunctionDecorator * 
 	dtXmlParserFunctionDecoratorFactory::create(char const * const str) {
-    DTINFOWF(create(), << "creating " << str <<  "...");
+    dt__info(create(), << "creating " << str <<  "...");
 
     __IFRET(baseContainerFunctionDecorator);		
 		__IFRETCUSTOM(baseContainer, baseContainerFunctionDecorator);
@@ -74,7 +74,7 @@ namespace dtOO {
 		__IFRET(muParserFunctionDecorator);
 		__IFRETCUSTOM(muParser, muParserFunctionDecorator);
     
-    dt__THROW(create(), << str <<  " could not be created.");
+    dt__throw(create(), << str <<  " could not be created.");
   }
 
   dtXmlParserFunctionDecorator * 

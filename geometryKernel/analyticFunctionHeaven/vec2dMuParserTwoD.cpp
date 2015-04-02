@@ -30,7 +30,7 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__THROW( vec2dMuParserTwoD(), << e.GetMsg() );
+      dt__throw( vec2dMuParserTwoD(), << e.GetMsg() );
     }  
   }
 
@@ -60,7 +60,7 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__THROW( vec2dMuParserTwoD(), << e.GetMsg() );
+      dt__throw( vec2dMuParserTwoD(), << e.GetMsg() );
     }  
   }
 
@@ -70,7 +70,7 @@ namespace dtOO {
   }
 
   aFY vec2dMuParserTwoD::Y( aFX const & xx ) const {
-    dt__THROW_IF(xx.size()!=2, Y());
+    dt__throwIf(xx.size()!=2, Y());
     aFY yy(2,0.);
 		
     try {
@@ -79,19 +79,19 @@ namespace dtOO {
 		  }
 			int nDim;
       double * yyD = _parser->Eval(nDim);
-		  dt__THROW_IF(nDim!=2, Y());
+		  dt__throwIf(nDim!=2, Y());
 			for (int ii=0; ii<2; ii++) {
 				yy[ii] = static_cast<float>(yyD[ii]);
 			}
     }
     catch (mu::Parser::exception_type &e) {
-      dt__THROW(Y(), << e.GetMsg() );
+      dt__throw(Y(), << e.GetMsg() );
     }
     return yy;		
 	}
 	
 	bool vec2dMuParserTwoD::closed( int const & dir ) const {
-		dt__THROW_IF( (dir!=0) && (dir!=1), closed );
+		dt__throwIf( (dir!=0) && (dir!=1), closed );
 		return false;
 	}
 	

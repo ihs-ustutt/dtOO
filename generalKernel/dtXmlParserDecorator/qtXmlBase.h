@@ -15,7 +15,7 @@ namespace dtOO {
   
   class qtXmlBase : public qtXmlPrimitive {
   public:  
-    dt__CLASSNAME(qtXmlBase);  
+    dt__classOnlyName(qtXmlBase);  
     virtual ~qtXmlBase();  
     /**
      * replace const values and functions with numeric values

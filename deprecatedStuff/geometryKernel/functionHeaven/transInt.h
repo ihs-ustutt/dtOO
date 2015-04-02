@@ -48,8 +48,8 @@ namespace dtOO {
   transInt< T >::transInt(std::vector< dtCurve * > const & boundary) {
     if (boundary.size() != 4) {
       dt__THROW(transInt(),
-              << "Wrong number of curves." << LOGDEL
-              << DTLOGEVAL(boundary.size()) );
+              << "Wrong number of curves." << std::endl
+              << dt__eval(boundary.size()) );
     }
     dt__FORALL(boundary, ii,
       _curve.push_back( boundary[ii] );

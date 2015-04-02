@@ -12,7 +12,7 @@ namespace dtOO {
   
   class cardinalDirGModel : public dtGmshModel {
   public:
-    dt__CLASSNAME(cardinalDirGModel);  
+    dt__classOnlyName(cardinalDirGModel);  
     cardinalDirGModel(std::string name="");
     virtual ~cardinalDirGModel();
     void attachToBoundedVolume( boundedVolume const * const bV);

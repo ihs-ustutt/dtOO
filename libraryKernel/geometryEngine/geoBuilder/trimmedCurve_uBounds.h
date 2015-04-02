@@ -11,7 +11,7 @@ namespace dtOO {
   
   class trimmedCurve_uBounds {
   public:
-    dt__CLASSNAME(trimmedCurve_uBounds);
+    dt__classOnlyName(trimmedCurve_uBounds);
     trimmedCurve_uBounds(dtCurve const * dtC, float const & min, float const & max);
     virtual ~trimmedCurve_uBounds();
     dtCurve * result( void );

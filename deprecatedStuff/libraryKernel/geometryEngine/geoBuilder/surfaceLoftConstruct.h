@@ -12,7 +12,7 @@ namespace dtOO {
   
   class surfaceLoftConstruct {
   public:
-    dt__CLASSNAME(surfaceLoftConstruct);
+    dt__classOnlyName(surfaceLoftConstruct);
     surfaceLoftConstruct( vectorHandling< dtCurve const * > const &  curveList, int const order );
     virtual ~surfaceLoftConstruct();
     dtSurface * result( void );

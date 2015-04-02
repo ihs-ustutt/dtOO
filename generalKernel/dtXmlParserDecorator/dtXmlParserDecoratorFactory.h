@@ -9,7 +9,7 @@ namespace dtOO {
   
   class dtXmlParserDecoratorFactory {
   public:  
-    dt__CLASSNAME(dtXmlParserDecoratorFactory);
+    dt__classOnlyName(dtXmlParserDecoratorFactory);
     dtXmlParserDecoratorFactory();
     virtual ~dtXmlParserDecoratorFactory();
     static dtXmlParserDecorator* create( char const * const str );

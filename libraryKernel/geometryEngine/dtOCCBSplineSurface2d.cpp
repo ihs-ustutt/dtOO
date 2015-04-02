@@ -19,7 +19,7 @@ namespace dtOO {
 
 	dtOCCBSplineSurface2d::dtOCCBSplineSurface2d(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface2d(orig) {
-		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_BSplineSurface const, _ptr);
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_BSplineSurface const, _ptr);
 	}
 
 	dtOCCBSplineSurface2d::~dtOCCBSplineSurface2d() {
@@ -63,8 +63,8 @@ namespace dtOO {
 			case 1:		
 				return static_cast<int>(_ptr->NbVPoles());
 			default:
-				dt__THROW(nControlPoints(),
-							<< DTLOGEVAL(dim) << LOGDEL
+				dt__throw(nControlPoints(),
+							<< dt__eval(dim) << std::endl
 							<< "dim should be 0 or 1.");				
 		}	
 	}

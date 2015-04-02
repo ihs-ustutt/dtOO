@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   bVOInterface * bVOInterfaceFactory::create(char const * const str) {
-    DTINFOWF(create(), << str <<  " creating ... ");
+    dt__info(create(), << str <<  " creating ... ");
     
     __IFRET(bVOSetNElements);
 		__IFRET(bVOSetGrading);
@@ -32,7 +32,7 @@ namespace dtOO {
 		__IFRET(bVONameRegions);
 		__IFRET(bVOPostBLGmsh);		
 		
-    dt__THROW(create(), <<  "Could not be created.");
+    dt__throw(create(), <<  "Could not be created.");
   }
   
   bVOInterface * bVOInterfaceFactory::create(std::string const str) {

@@ -161,18 +161,18 @@ namespace dtOO {
 			sFunP->push_back(theF);
     }				
     else {
-      dt__THROW(
+      dt__throw(
 				buildPart(), 
-        << DTLOGEVAL(hasXOne) << LOGDEL
-        << DTLOGEVAL(hasXTwo) << LOGDEL
-        << DTLOGEVAL(hasXThree) << LOGDEL
-        << DTLOGEVAL(isOneD) << LOGDEL
-        << DTLOGEVAL(isTwoD) << LOGDEL
-        << DTLOGEVAL(isThreeD) << LOGDEL
-        << DTLOGEVAL(yDim) << LOGDEL
-        << DTLOGEVAL(isSca) << LOGDEL
-        << DTLOGEVAL(isVec2d) << LOGDEL
-        << DTLOGEVAL(isVec3d) 
+        << dt__eval(hasXOne) << std::endl
+        << dt__eval(hasXTwo) << std::endl
+        << dt__eval(hasXThree) << std::endl
+        << dt__eval(isOneD) << std::endl
+        << dt__eval(isTwoD) << std::endl
+        << dt__eval(isThreeD) << std::endl
+        << dt__eval(yDim) << std::endl
+        << dt__eval(isSca) << std::endl
+        << dt__eval(isVec2d) << std::endl
+        << dt__eval(isVec3d) 
 			);
     }
   }

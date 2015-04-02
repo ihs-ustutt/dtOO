@@ -68,8 +68,8 @@ namespace dtOO {
 			);
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasPoints) );
+      dt__throw(buildPart(),
+              << dt__eval(hasPoints) );
     }
   }
 }

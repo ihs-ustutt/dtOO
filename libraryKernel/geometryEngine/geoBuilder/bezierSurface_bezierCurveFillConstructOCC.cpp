@@ -16,10 +16,10 @@ namespace dtOO {
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
 		if (cc.size() != 4) {
-			dt__THROW(
+			dt__throw(
 				bezierSurface_bezierCurveFillConstructOCC(),
-				<< "Only supported with 4 curves." << LOGDEL
-				<< DTLOGEVAL(cc.size())
+				<< "Only supported with 4 curves." << std::endl
+				<< dt__eval(cc.size())
 			);
 		}
 		Handle(Geom_BezierCurve) C1;

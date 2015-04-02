@@ -72,9 +72,9 @@ namespace dtOO {
 			);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "part_label", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "part_label", *tE))
 			);
     }
 		
@@ -84,9 +84,9 @@ namespace dtOO {
 			dtXmlParserBase::getAttributeFloatMuParse("thickness", *tE, cV, aF);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "thickness", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "thickness", *tE))
 			);
     }		
 
@@ -96,9 +96,9 @@ namespace dtOO {
 			dtXmlParserBase::getAttributeIntMuParse("number_points", *tE, cV, aF);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "number_points", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "number_points", *tE))
 			);
     }		
 
@@ -108,9 +108,9 @@ namespace dtOO {
 			dtXmlParserBase::getAttributeIntMuParse("number_integration_points", *tE, cV, aF);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "number_integration_points", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "number_integration_points", *tE))
 			);
     }				
     if (dtXmlParserBase::hasAttribute( "order", *tE) ) {
@@ -119,9 +119,9 @@ namespace dtOO {
 			dtXmlParserBase::getAttributeIntMuParse("order", *tE, cV, aF);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "order", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "order", *tE))
 			);
     }				
   }

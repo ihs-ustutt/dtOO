@@ -12,7 +12,7 @@ namespace dtOO {
   
   class baseContainer {
   public:
-    dt__CLASSNAME(baseContainer);    
+    dt__classOnlyName(baseContainer);    
     baseContainer();
 //    dt__pH(pointContainer) & refPtrHPointContainer( void );
 //    dt__pH(vectorContainer) & refPtrHVectorContainer( void );

@@ -7,7 +7,7 @@
 namespace dtOO {
   class labelHandling {
   public:
-    dt__CLASSNAME(labelHandling);
+    dt__classOnlyName(labelHandling);
     labelHandling();
     labelHandling(const labelHandling& orig);
     labelHandling(std::string const & label);

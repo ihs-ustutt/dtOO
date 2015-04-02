@@ -46,7 +46,7 @@ namespace dtOO {
   class dtMacroMesh : public OpenVolumeMesh::GeometricHexahedralMeshV3f {
       friend class bVOAngleBasedMacroMeshSmoothing;
   public:
-    dt__CLASSNAME(dtMacroMesh);
+    dt__classOnlyName(dtMacroMesh);
     dtMacroMesh();
     dtMacroMesh(const dtMacroMesh& orig);
     virtual ~dtMacroMesh();

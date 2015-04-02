@@ -9,7 +9,7 @@
 namespace dtOO { 
   class dtSislBase {
   public:
-    dt__CLASSNAME(dtSislBase);   
+    dt__classOnlyName(dtSislBase);   
     dtSislBase();
     dtSislBase(const dtSislBase& orig);
     virtual ~dtSislBase();

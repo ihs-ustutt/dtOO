@@ -14,7 +14,7 @@ namespace dtOO {
   
   class vec3dCurve2dInSurfaceOneD : public vec3dOneD {
   public:
-    dt__CLASSSTD(vec3dCurve2dInSurfaceOneD, analyticFunction);     
+    dt__class(vec3dCurve2dInSurfaceOneD, analyticFunction);     
     vec3dCurve2dInSurfaceOneD();
     vec3dCurve2dInSurfaceOneD(const vec3dCurve2dInSurfaceOneD& orig);
     vec3dCurve2dInSurfaceOneD(dtCurve2d const * const dtC2d, dtSurface const * const dtS);

@@ -17,7 +17,7 @@ namespace dtOO {
   
   class dtAnalysis {
   public:
-    dt__CLASSNAME(dtAnalysis);    
+    dt__classOnlyName(dtAnalysis);    
     dtAnalysis();
     dtAnalysis(const dtAnalysis& orig);
     virtual ~dtAnalysis();

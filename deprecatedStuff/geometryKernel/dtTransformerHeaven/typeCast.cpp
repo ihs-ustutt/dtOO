@@ -5,8 +5,8 @@
 
 namespace dtOO {
   DTCLASSLOGMETHODI(typeCast,
-          << DTLOGEVAL(thisRef._tolerance) << LOGDEL
-          << DTLOGEVAL(thisRef._maxStep) );
+          << dt__eval(thisRef._tolerance) << std::endl
+          << dt__eval(thisRef._maxStep) );
   
   typeCast::typeCast() {
   }
@@ -25,7 +25,7 @@ namespace dtOO {
       dt__CANDOWNCAST(aGeoVecP->at(ii), rotatingSpline, rS);
 			
 //      if ( rS ) {
-//        DTINFOWF(apply(),
+//        dt__info(apply(),
 //                << "casting rotatingSpline " << rS->getLabel() << " ... ");
 //        perfRotatingSpline * pRS = new perfRotatingSpline( *rS );
 //        pRS->initInternalFunctions();

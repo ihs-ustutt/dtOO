@@ -11,7 +11,7 @@ namespace dtOO {
 	  ::bSplineCurve2d_normalOffsetGeomCurve2dOCC(
 	    dtCurve2d const * const dtC2d, std::vector< float > const & offset
 	) {
-//    dt__THROW_IF(
+//    dt__throwIf(
 //			dtC2d->nControlPoints()<3, 
 //			bSplineCurve2d_normalOffsetGeomCurve2dOCC()
 //		);

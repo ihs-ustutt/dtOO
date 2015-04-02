@@ -37,25 +37,25 @@ namespace dtOO {
 		//   grading="{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}"
 		// />
 								
-    DTINFOWF(init(), << dtXmlParserBase::convertToString(element) );
+    dt__info(init(), << dtXmlParserBase::convertToString(element) );
 		_grading
 		= 
 		dtXmlParserBase::getAttributeFloatVectorMuParse("grading", element, cV, aF);
 		_type
 		= 
 		dtXmlParserBase::getAttributeFloatVectorMuParse("type", element, cV, aF);
-//		for ( auto &el : _grading ) DTINFOWF(init(), << el);
+//		for ( auto &el : _grading ) dt__info(init(), << el);
   }
   
   void bVOSetSimpleGrading::preUpdate( void ) {
 		dtGmshModel * gm = ptrBoundedVolume()->getModel();
 		
-		dt__THROW_IF(gm==NULL, preUpdate());
+		dt__throwIf(gm==NULL, preUpdate());
 		
 		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
 		  dtGmshRegionHex * hex = dtGmshRegionHex::DownCast(*r_it);
 
-			dt__WARN_IF(hex==NULL, preUpdate());
+			dt__warnIf(hex==NULL, preUpdate());
 
 			if (hex) hex->setGrading(
 			           _grading[0], _grading[1], _grading[2], 

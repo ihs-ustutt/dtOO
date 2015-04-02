@@ -10,7 +10,7 @@ namespace dtOO {
   
   class trimmedCurve2d_twoPointsConnectConstructOCC {
   public:
-    dt__CLASSNAME(trimmedCurve2d_twoPointsConnectConstructOCC);
+    dt__classOnlyName(trimmedCurve2d_twoPointsConnectConstructOCC);
     trimmedCurve2d_twoPointsConnectConstructOCC( dtPoint2 const & p0, dtPoint2 const & p1 );
     virtual ~trimmedCurve2d_twoPointsConnectConstructOCC();
     dtCurve2d * result( void );

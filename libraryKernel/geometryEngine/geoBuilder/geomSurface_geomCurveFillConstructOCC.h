@@ -11,7 +11,7 @@ namespace dtOO {
   
   class geomSurface_geomCurveFillConstructOCC {
     public:
-      dt__CLASSNAME(geomSurface_geomCurveFillConstructOCC);
+      dt__classOnlyName(geomSurface_geomCurveFillConstructOCC);
       geomSurface_geomCurveFillConstructOCC( vectorHandling< dtCurve const * > const & cc );
       geomSurface_geomCurveFillConstructOCC( dt__pVH(dtCurve) const & cc );      
       geomSurface_geomCurveFillConstructOCC( 

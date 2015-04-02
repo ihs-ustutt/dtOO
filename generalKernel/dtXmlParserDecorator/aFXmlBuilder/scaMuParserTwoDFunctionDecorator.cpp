@@ -52,11 +52,11 @@ namespace dtOO {
 			sFunP->push_back(s2d);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				buildPart(), 
-        << DTLOGEVAL(hasExpression) << LOGDEL
-        << DTLOGEVAL(hasXOne) << LOGDEL
-        << DTLOGEVAL(hasXTwo) 
+        << dt__eval(hasExpression) << std::endl
+        << dt__eval(hasXOne) << std::endl
+        << dt__eval(hasXTwo) 
 			);
     }
   }

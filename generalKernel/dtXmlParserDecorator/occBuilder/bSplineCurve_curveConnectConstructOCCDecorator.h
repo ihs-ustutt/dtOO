@@ -12,7 +12,7 @@ namespace dtOO {
 
   class bSplineCurve_curveConnectConstructOCCDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(bSplineCurve_curveConnectConstructOCCDecorator);
+    dt__classOnlyName(bSplineCurve_curveConnectConstructOCCDecorator);
     bSplineCurve_curveConnectConstructOCCDecorator();
     virtual ~bSplineCurve_curveConnectConstructOCCDecorator();
     virtual void buildPart(

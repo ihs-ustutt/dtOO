@@ -38,15 +38,15 @@ namespace dtOO {
       SISLCurve * SISLCurveListPP[reoCurve.size()];
       for (int ii=0;ii<reoCurve.size();ii++) {
 				dtSislCurve const * tmpCurve;
-        dt__mustDownCast(reoCurve.at(ii), dtSislCurve const, tmpCurve);
+        dt__mustCast(reoCurve.at(ii), dtSislCurve const, tmpCurve);
 				SISLCurve const * tmpSislCurve;
-				dt__mustDownCast(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
+				dt__mustCast(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
 				SISLCurveListPP[ii] = const_cast< SISLCurve * >(tmpSislCurve);
       }  
       if (reoCurve.size() != 4) {
         dt__THROW(blendMe(),
-                << DTLOGEVAL(reoCurve.size()) << LOGDEL
-                << "Creation of a blended surface out of more" << LOGDEL
+                << dt__eval(reoCurve.size()) << std::endl
+                << "Creation of a blended surface out of more" << std::endl
                 << " than 4 curves is not yet supported.");
       }
       numder[0] = 1;
@@ -71,12 +71,12 @@ namespace dtOO {
     }
     else if (!isPolynomial && isRational) {     
       dt__THROW( surfaceBlendConstruct(),
-              << "Surface creation out of rational and polyomial " << LOGDEL
+              << "Surface creation out of rational and polyomial " << std::endl
               << "B-Splines is not yet possible.");
     }
     else if (isPolynomial && isRational) {     
       dt__THROW( surfaceBlendConstruct(),
-              << "Surface creation out of rational and polyomial " << LOGDEL
+              << "Surface creation out of rational and polyomial " << std::endl
               << "B-Splines is not yet possible.");
     }
 	}

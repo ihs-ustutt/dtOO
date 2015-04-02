@@ -75,11 +75,11 @@ namespace dtOO {
 					_internal.reset( m2d->clone() );
 				}
 				else {
-					dt__THROW(
+					dt__throw(
 					  init(), 
-						<< DTLOGEVAL(label) << LOGDEL
-						<< DTLOGEVAL(m2d) << LOGDEL
-            << DTLOGEVAL(m3d) << LOGDEL									
+						<< dt__eval(label) << std::endl
+						<< dt__eval(m2d) << std::endl
+            << dt__eval(m3d) << std::endl									
 						<< "Unexpected type of part."
 					);
 				}

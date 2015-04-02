@@ -16,7 +16,7 @@ namespace dtOO {
   
   class dtGmshTransPartArea : public dtGmshFace {
     public:
-      dt__CLASSNAME(dtGmshTransPartArea);
+      dt__classOnlyName(dtGmshTransPartArea);
       dtGmshTransPartArea(::GModel *m, int tag, const std::list< ::GEdge * > &edges, const std::vector< int > & ori);
       dtGmshTransPartArea(::GModel *m, int tag, const std::list< ::GEdge * > &edges);
       virtual ~dtGmshTransPartArea();

@@ -107,7 +107,7 @@ namespace dtOO {
 			globalId, 
 			moab::MB_TAG_DENSE | moab::MB_TAG_CREAT, &zero
 		);
-  	moab__THROW_IF(result != moab::MB_SUCCESS, makeGrid());
+  	moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 		
 		//
 		// allocate space and get pointer of vertices
@@ -118,7 +118,7 @@ namespace dtOO {
 		result 
 		= 
 		_readUtilIface->get_node_coords(3, num_nodes, 1, handle, coord_arrays);
-  	moab__THROW_IF(result != moab::MB_SUCCESS, makeGrid());
+  	moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 		
 		//
 		// insert vertices
@@ -135,7 +135,7 @@ namespace dtOO {
 				//
 				// ignore duplicate nodes
 				// 
-				dt__WARN_IFWM(
+				dt__warnIfWithMessage(
 					!_node_id_map.insert(std::pair<long, moab::EntityHandle>(id, handle)).second,
 					addVertices(), 
 					<< "Duplicate node ID = " << id
@@ -159,14 +159,14 @@ namespace dtOO {
 		// store IDs in global id tag
 		//
 		result = this->tag_set_data(globalId, &handles[0], num_nodes, &ids[0]);
-  	moab__THROW_IF(result != moab::MB_SUCCESS, makeGrid());
+  	moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 		
 		ids.clear();
 		handles.clear();
 	}
 	
   moab::Range dtMoabCore::addElements( std::vector< ::MElement const * > const & me ) {
-		dt__THROW_IF(me.size()==0, addElements());
+		dt__throwIf(me.size()==0, addElements());
 
 		//
 		// get global id tag
@@ -181,7 +181,7 @@ namespace dtOO {
 			globalId, 
 			moab::MB_TAG_DENSE | moab::MB_TAG_CREAT, &zero
 		);
-    moab__THROW_IF(result != moab::MB_SUCCESS, makeGrid());
+    moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 		
 		//
 		// first element gives number of nodes per element
@@ -219,7 +219,7 @@ namespace dtOO {
 			elementDim = 1;
 			type = moab::MBEDGE;
 		}				
-		else dt__THROW(addElements, << "Unknown element type.");
+		else dt__throw(addElements, << "Unknown element type.");
 
 		//
 		// create connectivity list
@@ -250,7 +250,7 @@ namespace dtOO {
 		_readUtilIface->get_element_connect(
 			num_elem, node_per_elem, type, 1, handle, conn_array
 		);
-		moab__THROW_IF(result != moab::MB_SUCCESS, makeGrid());
+		moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 
 		memcpy(conn_array, &connectivity[0], connectivity.size() * sizeof(moab::EntityHandle));
 
@@ -261,14 +261,14 @@ namespace dtOO {
 		result 
 		= 
 		_readUtilIface->update_adjacencies(handle, num_elem, node_per_elem, conn_array);
-		moab__THROW_IF(result != moab::MB_SUCCESS, makeGrid());
+		moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 
 		//
 		// store element IDs
 		//
 		moab::Range elements(handle, handle + num_elem - 1);
 		result = this->tag_set_data(globalId, elements, &elem_ids[0]);
-		moab__THROW_IF(result != moab::MB_SUCCESS, makeGrid());
+		moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 
 		//
 		// return new added range
@@ -286,7 +286,7 @@ namespace dtOO {
 			field.getLabel().c_str(), 1, moab::MB_TYPE_INTEGER, 
 		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
 		);
-		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 		
 		std::vector< int > val(field.size(), 0);
 		std::vector< moab::EntityHandle > ent(field.size());
@@ -306,7 +306,7 @@ namespace dtOO {
 		result 
 		=
 		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
-		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}
 	
 	void dtMoabCore::addVertexField( dtOMVertexField< int > const & field ) {
@@ -319,7 +319,7 @@ namespace dtOO {
 			field.getLabel().c_str(), 1, moab::MB_TYPE_INTEGER, 
 		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
 		);
-		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 		
 		std::vector< int > val(field.size(), 0.);
 		std::vector< moab::EntityHandle > ent(field.size());
@@ -339,7 +339,7 @@ namespace dtOO {
 		result 
 		=
 		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
-		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}
 	
 	void dtMoabCore::addVertexField( dtOMVertexField<float> const & fF ) {
@@ -352,7 +352,7 @@ namespace dtOO {
 			fF.getLabel().c_str(), 1, moab::MB_TYPE_DOUBLE, 
 		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
 		);
-		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 		
 		std::vector< double > val(fF.size(), 0.);
 		std::vector< moab::EntityHandle > ent(fF.size());
@@ -372,7 +372,7 @@ namespace dtOO {
 		result 
 		=
 		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
-		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}
 	
 //	void dtMoabCore::addEdgeField( dtOMEdgeField<float> const & eF ) {
@@ -385,7 +385,7 @@ namespace dtOO {
 //			eF.getLabel().c_str(), 1, moab::MB_TYPE_DOUBLE, 
 //		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
 //		);
-//		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+//		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 //		
 //		std::vector< double > val(eF.size(), 0.);
 //		std::vector< moab::EntityHandle > ent(eF.size());
@@ -404,7 +404,7 @@ namespace dtOO {
 //		result 
 //		=
 //		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
-//		moab__THROW_IF(result != moab::MB_SUCCESS, addEdgeField());
+//		moab__throwIf(result != moab::MB_SUCCESS, addEdgeField());
 //	}	
 
 	void dtMoabCore::addVertexField( dtOMVertexField< dtVector3 > const & vF ) {
@@ -417,7 +417,7 @@ namespace dtOO {
 			vF.getLabel().c_str(), 3, moab::MB_TYPE_DOUBLE, 
 		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
 		);
-		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 		
 		std::vector< double > val(vF.size()*3, 0.);
 		std::vector< moab::EntityHandle > ent(vF.size());
@@ -440,6 +440,6 @@ namespace dtOO {
 		result 
 		=
 		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
-		moab__THROW_IF(result != moab::MB_SUCCESS, addVertexField());
+		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}	
 }

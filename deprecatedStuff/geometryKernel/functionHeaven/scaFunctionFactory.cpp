@@ -17,7 +17,7 @@ namespace dtOO {
   }
 
   scaFunction* scaFunctionFactory::create(char const * const str) const {
-    DTINFOWF(create(), << "creating " << str <<  "...");  
+    dt__info(create(), << "creating " << str <<  "...");  
 
     __IFRET(scaMuParserOneD);
 		__IFRET(scaCurve2dOneD);

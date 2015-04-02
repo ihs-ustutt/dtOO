@@ -222,10 +222,10 @@ namespace dtOO {
 
 			_pp = _pp + _vv  * adjusting;
 
-			DTWARNINGWF(correctOrigin(),
-							<< DTLOGEVAL(dist*_vv) << LOGDEL 
-							<< "Origin of rotSpline is not correct!" << LOGDEL
-							<< "Move origin to " << DTLOGPOI3D(_pp) );        
+			dt__warning(correctOrigin(),
+							<< dt__eval(dist*_vv) << std::endl 
+							<< "Origin of rotSpline is not correct!" << std::endl
+							<< "Move origin to " << dt__point3d(_pp) );        
 		}
 	}
 	

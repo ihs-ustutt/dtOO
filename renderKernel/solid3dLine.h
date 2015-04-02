@@ -9,7 +9,7 @@
 namespace dtOO {
   class solid3dLine : public renderInterface {
   public:
-    dt__CLASSSTD(solid3dLine, renderInterface);
+    dt__class(solid3dLine, renderInterface);
     solid3dLine();
     solid3dLine(vectorHandling< dtPoint3 > const & pp);
     virtual ~solid3dLine();

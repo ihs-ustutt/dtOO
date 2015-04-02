@@ -14,7 +14,7 @@ namespace dtOO {
 
   class scaInMap1dTo3dDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(scaInMap1dTo3dDecorator);
+    dt__classOnlyName(scaInMap1dTo3dDecorator);
     scaInMap1dTo3dDecorator();
     virtual ~scaInMap1dTo3dDecorator();
     virtual void buildPart(

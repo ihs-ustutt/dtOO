@@ -16,7 +16,7 @@ namespace dtOO {
     
   class dtGmshFace : public ::GFace {
   public:
-    dt__CLASSSTD(dtGmshFace, ::GEntity);
+    dt__class(dtGmshFace, ::GEntity);
     dtGmshFace(::GModel *m, int tag);
     dtGmshFace(
       ::GModel *m, int tag, 

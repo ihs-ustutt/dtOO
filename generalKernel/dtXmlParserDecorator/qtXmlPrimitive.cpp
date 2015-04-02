@@ -23,13 +23,13 @@ namespace dtOO {
 
 			std::ostringstream head;
 
-			head << "nodeName = " << node.nodeName().toStdString() << LOGDEL;
-			head << "nodeType = " << node.nodeType() << LOGDEL;
+			head << "nodeName = " << node.nodeName().toStdString() << std::endl;
+			head << "nodeType = " << node.nodeType() << std::endl;
 			//
 			// if element add tagName to output
 			//
 			if ( !element.isNull() ) {
-				head << "tagName = " << element.tagName().toStdString() << LOGDEL;
+				head << "tagName = " << element.tagName().toStdString() << std::endl;
 			}
 
 			//
@@ -41,7 +41,7 @@ namespace dtOO {
 					if ( !attr.isNull() ) {
 						head << attr.name().toStdString() 
 								 << "=" 
-								 << attr.value().toStdString() << LOGDEL;
+								 << attr.value().toStdString() << std::endl;
 					}
 			}
 			retStr = head.str();
@@ -227,7 +227,7 @@ namespace dtOO {
       }
       wElement = getNextSibling(sibName, wElement);
     }
-    dt__THROW(getChildByName(),
+    dt__throw(getChildByName(),
             << "There is no child " << sibName << " with name " << name
     );
   }
@@ -246,7 +246,7 @@ namespace dtOO {
       }
       wElement = getNextSibling(sibName, wElement);
     }
-    dt__THROW(getChildByName(),
+    dt__throw(getChildByName(),
             << "There is no child " << sibName << " with " << attributeName << " " << attributeValue
     );
   }  
@@ -269,7 +269,7 @@ namespace dtOO {
           }
         }
         else {
-          dt__THROW(getChildElement, << "No name attribute.");
+          dt__throw(getChildElement, << "No name attribute.");
         }      
       }
       //
@@ -302,10 +302,10 @@ namespace dtOO {
           }
         }
         else {
-          dt__THROW(
+          dt__throw(
 						getChildElement, 
-						<< DTLOGEVAL(elementTag) << LOGDEL
-						<< DTLOGEVAL(labelAttributeVal) << LOGDEL
+						<< dt__eval(elementTag) << std::endl
+						<< dt__eval(labelAttributeVal) << std::endl
 						<< "No label attribute."
 					);
         }      
@@ -319,10 +319,10 @@ namespace dtOO {
     //
     //error case, no such element
     //
-    dt__THROW(
+    dt__throw(
 			getChildElement(),
       << "No " << elementTag << "-Element with " 
-			<< DTLOGEVAL(labelAttributeVal) 
+			<< dt__eval(labelAttributeVal) 
 		);
   }	
 
@@ -342,7 +342,7 @@ namespace dtOO {
           labelValue->push_back( getAttributeStr("label", children[ii]) );
         }
         else {
-          dt__THROW(getChildLabels(), << "No label attribute!");
+          dt__throw(getChildLabels(), << "No label attribute!");
         }      
       }
     }
@@ -384,9 +384,9 @@ namespace dtOO {
     int rInt = 0;
     rInt = element.attribute( attName.c_str() ).toInt(&flag);
     if (!flag) {
-      dt__THROW( getAttributeInt(),
-        << convertToString(element) << LOGDEL
-        << DTLOGEVAL(attName) << LOGDEL
+      dt__throw( getAttributeInt(),
+        << convertToString(element) << std::endl
+        << dt__eval(attName) << std::endl
         << "Attribute is not an Integer");
     }
     return rInt;
@@ -397,9 +397,9 @@ namespace dtOO {
     float rInt = 0;
     rInt = element.attribute( attName.c_str() ).toFloat(&flag);
     if (!flag) {
-      dt__THROW( getAttributeInt(),
-              << convertToString(element) << LOGDEL
-              << DTLOGEVAL(attName) << LOGDEL
+      dt__throw( getAttributeInt(),
+              << convertToString(element) << std::endl
+              << dt__eval(attName) << std::endl
               << "Attribute is not a Float");
     }
     return rInt;
@@ -432,8 +432,8 @@ namespace dtOO {
       return false;
     }
     return false;
-    DTWARNINGWF(getAttributeBool(),
-            << "Value of attribute = " << attValue << LOGDEL
+    dt__warning(getAttributeBool(),
+            << "Value of attribute = " << attValue << std::endl
             << "Should be true or false.");
   }    
 
@@ -544,9 +544,9 @@ namespace dtOO {
 			std::string value = attrs[ii].value().toStdString();
 			std::string replaced = replaceStringInString(replace, with, value);
 			attrs[ii].setValue( QString(replaced.c_str()) );
-//			DTINFOWF(
+//			dt__info(
 //				replaceInAllAttributes(),
-//				<< "Replace attribute " << name << " = " << value << "." << LOGDEL
+//				<< "Replace attribute " << name << " = " << value << "." << std::endl
 //				<< "-> " << replaced
 //			);
 		}

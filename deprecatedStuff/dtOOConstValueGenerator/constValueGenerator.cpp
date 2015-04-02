@@ -62,7 +62,7 @@ namespace dtOO {
       // constValueChoiceParam
       //
       if (strcmp(paramName, "constValueChoiceParam") == 0) {
-        DTINFOWF(param,
+        dt__info(param,
                 << "constValueChoiceParam changed");
         //
         //update slider parameter
@@ -76,7 +76,7 @@ namespace dtOO {
       //
       else if ( (strcmp(paramName, "constValueFloatSliderParam") == 0) 
                   || (strcmp(paramName, "constValueIntParam") == 0) ){
-        DTINFOWF(param(),
+        dt__info(param(),
                 << paramName << " changed");
         //
         //update constValue
@@ -89,8 +89,8 @@ namespace dtOO {
       // constValueChoiceParam
       //
       else if (strcmp(paramName, "_p_constValueSetChoiceParam") == 0) {
-        DTINFOWF(param,
-                << DTLOGEVAL(paramName) );
+        dt__info(param,
+                << dt__eval(paramName) );
         //
         // update slider parameter
         //
@@ -107,7 +107,7 @@ namespace dtOO {
       // constValueFloatSliderParam or constValueIntParam
       //
       else if ( (strcmp(paramName, "_p_constValueSetFloatSliderParam") == 0) ){
-        DTINFOWF(param(),
+        dt__info(param(),
                 << paramName << " changed");
         //
         //update constValue
@@ -122,7 +122,7 @@ namespace dtOO {
       // parseXml
       //
       else if(strcmp(paramName, "parseXml") == 0) {
-        DTINFOWF(param,
+        dt__info(param,
                 << "parseXml changed");   
         if( _p_parseXml->getValue() ) {
           _p_xmlFilebrowser->enable();
@@ -172,7 +172,7 @@ namespace dtOO {
       }     
     }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(param(), eGenRef.what());
+      dt__catch(param(), eGenRef.what());
     }
   }
 
@@ -200,7 +200,7 @@ namespace dtOO {
          */
         if ( _cVal.size() == 0 ) {
           dt__THROW(compute(),
-                  << DTLOGEVAL(_cVal.size()) );
+                  << dt__eval(_cVal.size()) );
         }
         
         if ( _pOut_constValueP->isConnected() ) {
@@ -252,7 +252,7 @@ namespace dtOO {
         return SUCCESS;
       }
       catch (eGeneral & eGenRef) {
-        DTCATCHERRORWF(compute(), eGenRef.what());
+        dt__catch(compute(), eGenRef.what());
         send_stop_pipeline();
 //        abstractModule::closeLogFile();
         return FAIL;
@@ -329,10 +329,10 @@ namespace dtOO {
   
   void constValueGenerator::loadStateToConst(void) {
     std::string stateName = _p_stateChoiceParam->getLabel(_p_stateChoiceParam->getValue());
-    DTINFOWF(loadStateToConst,
-            << "Loading state:" << LOGDEL
-            << DTLOGEVAL(_p_stateChoiceParam->getValue()) << LOGDEL
-            << DTLOGEVAL(stateName) << LOGDEL
+    dt__info(loadStateToConst,
+            << "Loading state:" << std::endl
+            << dt__eval(_p_stateChoiceParam->getValue()) << std::endl
+            << dt__eval(stateName) << std::endl
             << " to constValue.");
     
     _dtXmlParserP->loadStateToConst(stateName, _cVal);

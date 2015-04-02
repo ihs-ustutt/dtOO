@@ -13,7 +13,7 @@ namespace dtOO {
   }
 
   void constValue::setRange(float const min, float const max) {
-    DTWARNINGWF(setRange(), << "Call on constValue.");
+    dt__warning(setRange(), << "Call on constValue.");
   }
 
   float constValue::getValue(void) const {

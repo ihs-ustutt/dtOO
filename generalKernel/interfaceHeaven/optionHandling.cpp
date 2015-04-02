@@ -59,7 +59,7 @@ namespace dtOO {
       return val;
     }
     else {
-      dt__THROW(getOption(), << "Option " << DTLOGEVAL(name) << " not found.");
+      dt__throw(getOption(), << "Option " << dt__eval(name) << " not found.");
     }
   }
   
@@ -112,16 +112,16 @@ namespace dtOO {
           break;
         }
         else {
-          DTWARNINGWF(optionTrue(),
-            << "Option " << DTLOGEVAL(name) << " is set to " 
+          dt__warning(optionTrue(),
+            << "Option " << dt__eval(name) << " is set to " 
             << _optionValue[ii] << ".");    
           break;
         }
       }
     }
-    DTWARNINGWF(
+    dt__warning(
 			optionTrue(),
-      << "Option " << DTLOGEVAL(name) << " not found. Set to false."
+      << "Option " << dt__eval(name) << " not found. Set to false."
 		);    		
     
 		return false;

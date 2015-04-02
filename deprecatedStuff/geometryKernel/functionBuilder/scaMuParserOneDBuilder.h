@@ -9,7 +9,7 @@ namespace dtOO {
 
   class scaMuParserOneDBuilder : public scaFunctionBuilder {
     public:
-      dt__CLASSNAME(scaMuParserOneDBuilder);    
+      dt__classOnlyName(scaMuParserOneDBuilder);    
       scaMuParserOneDBuilder();
       virtual ~scaMuParserOneDBuilder();
       virtual int buildPart(void);

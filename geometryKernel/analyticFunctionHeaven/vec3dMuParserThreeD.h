@@ -13,7 +13,7 @@ namespace mu {
 namespace dtOO {
   class vec3dMuParserThreeD : public vec3dThreeD {
   public:
-    dt__CLASSSTD(vec3dMuParserThreeD, analyticFunction);     
+    dt__class(vec3dMuParserThreeD, analyticFunction);     
     vec3dMuParserThreeD();
     vec3dMuParserThreeD(vec3dMuParserThreeD const & orig);
     vec3dMuParserThreeD(

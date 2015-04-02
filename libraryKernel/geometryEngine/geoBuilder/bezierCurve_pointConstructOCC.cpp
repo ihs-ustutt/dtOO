@@ -35,13 +35,13 @@ namespace dtOO {
 //		GeomAPI_Interpolate Interp(arr, para, false, .01);
 //		Interp.Perform();
 		Handle(Geom_BezierCurve) curve;
-		dt__TRYOCC(
+		dt__tryOcc(
 		  curve = new Geom_BezierCurve( arr->Array1() );
 		,
 		<< ""
 		);
-//		DTINFOWF(bezierCurve_pointConstructOCC(),
-//						<< DTLOGEVAL(curve->Degree()) << LOGDEL);
+//		dt__info(bezierCurve_pointConstructOCC(),
+//						<< dt__eval(curve->Degree()) << std::endl);
 		dtOCCCurveBase base;
 		base.setOCC( curve );
 		_dtC.reset( new dtOCCBezierCurve(base) );

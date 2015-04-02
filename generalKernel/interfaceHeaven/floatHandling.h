@@ -7,7 +7,7 @@
 namespace dtOO {
   class floatHandling {
   public:
-    dt__CLASSNAME(floatHandling);
+    dt__classOnlyName(floatHandling);
     virtual ~floatHandling();
     static float next(double a);
     static float prev(double a);

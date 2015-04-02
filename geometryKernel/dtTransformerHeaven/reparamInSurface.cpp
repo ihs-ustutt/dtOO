@@ -18,7 +18,7 @@ namespace dtOO {
   }
 
   dtTransformer * reparamInSurface::clone( void ) const {
-	  dt__THROW(clone(), << "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * reparamInSurface::create( void ) const {
@@ -35,10 +35,10 @@ namespace dtOO {
       splineCurve3d const *  constSc;
       dt__ptrAss(constSc, splineCurve3d::ConstDownCast(aGeoP));
 
-			DTINFOWF(
+			dt__info(
 				apply(),
-				<< "Reparam " << DTLOGEVAL(constSc->getLabel()) << " on " 
-				<<  DTLOGEVAL(_aS->getLabel()) << "."
+				<< "Reparam " << dt__eval(constSc->getLabel()) << " on " 
+				<<  dt__eval(_aS->getLabel()) << "."
 			);
 			
       //
@@ -78,9 +78,9 @@ namespace dtOO {
 			);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "part_label", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "part_label", *tE))
 			);
     }
   }

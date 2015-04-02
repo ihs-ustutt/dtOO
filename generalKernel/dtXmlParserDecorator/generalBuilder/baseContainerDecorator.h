@@ -15,7 +15,7 @@ namespace dtOO {
   class vectorContainer;
 
   class baseContainerDecorator : public dtXmlParserDecorator {
-    dt__CLASSNAME(baseContainerDecorator);
+    dt__classOnlyName(baseContainerDecorator);
   public:
     baseContainerDecorator();
     virtual ~baseContainerDecorator();

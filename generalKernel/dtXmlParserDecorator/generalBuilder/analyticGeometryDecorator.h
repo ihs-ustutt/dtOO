@@ -14,7 +14,7 @@ class baseContainer;
 namespace dtOO {
   class analyticGeometryDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(analyticGeometryDecorator);
+    dt__classOnlyName(analyticGeometryDecorator);
     analyticGeometryDecorator();
     virtual ~analyticGeometryDecorator();
     virtual void buildPart(

@@ -13,7 +13,7 @@ namespace dtOO {
   
   class cardinalDirVolume : public boundedVolume {
   public:
-    dt__CLASSNAME(cardinalDirVolume);
+    dt__classOnlyName(cardinalDirVolume);
     cardinalDirVolume();
     virtual ~cardinalDirVolume();
     virtual void init(

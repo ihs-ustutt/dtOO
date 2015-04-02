@@ -15,6 +15,6 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const depSFunP,
 		vectorHandling< analyticFunction * > * sFunP
 	) const {
-		dt__THROW(buildPartCompound(), "Call on interface dtXmlParserFunctionDecoratorInterface.");
+		dt__throw(buildPartCompound(), "Call on interface dtXmlParserFunctionDecoratorInterface.");
 	}
 }

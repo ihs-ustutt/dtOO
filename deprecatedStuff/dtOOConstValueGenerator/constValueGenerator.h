@@ -22,7 +22,7 @@ namespace dtOO {
   class constValueGenerator : public covise::coModule,
                               public abstractModule {
     public:
-      dt__CLASSNAME(constValueGenerator);    
+      dt__classOnlyName(constValueGenerator);    
       constValueGenerator(int argc, char *argv[]);
     private:
       virtual int compute(char const * str);    

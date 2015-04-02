@@ -16,7 +16,7 @@ namespace dtOO {
   }
 
   dtTransformer * conformalMapping::clone( void ) const {
-	  dt__THROW(clone(), << "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * conformalMapping::create( void ) const {
@@ -55,14 +55,14 @@ namespace dtOO {
 //              << "phiR = " << phiR << " mm = " << mm
 //              << " >> <cMap> >> "
 //              << "uu = " << point.x() << " vv = " << point.y() << " ::> "
-//              << DTLOGPOI3D(point3d) << LOGDEL );
+//              << dt__point3d(point3d) << std::endl );
 			itVal.push_back(phiR); itVal.push_back(mm);
 			itVal.push_back(point.x()); itVal.push_back(point.y());
 			itVal.push_back(point3d.x()); itVal.push_back(point3d.y()); itVal.push_back(point3d.z());
 
     }  
 		
-	  DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
+	  dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
        
     return pointVec2d;
   }
@@ -95,7 +95,7 @@ namespace dtOO {
         )
       );
     }
-    else DTINFOWF(init(), << "Using default tolerance of " << _tolerance );
+    else dt__info(init(), << "Using default tolerance of " << _tolerance );
     //
     // search part
     //
@@ -115,7 +115,7 @@ namespace dtOO {
   
   void conformalMapping::handleAnalyticGeometry(std::string const name, analyticGeometry const * value) {
     if (name == "part_label") {
-      dt__mustDownCast(value, rotatingSpline const, _rotSplineP);
+      dt__mustCast(value, rotatingSpline const, _rotSplineP);
       return;
     }
     dtTransformer::handleAnalyticGeometry(name, value);

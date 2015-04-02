@@ -14,7 +14,7 @@ namespace dtOO {
 
   class makeCompoundDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(makeCompoundDecorator);
+    dt__classOnlyName(makeCompoundDecorator);
     makeCompoundDecorator();
     virtual ~makeCompoundDecorator();
     virtual void buildPart(

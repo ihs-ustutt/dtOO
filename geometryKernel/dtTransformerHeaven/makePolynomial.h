@@ -10,7 +10,7 @@ namespace dtOO {
   
   class makePolynomial : public dtTransformer {
   public:
-    dt__CLASSNAME(makePolynomial);
+    dt__classOnlyName(makePolynomial);
     makePolynomial();
     makePolynomial(const makePolynomial& orig);
     virtual ~makePolynomial();

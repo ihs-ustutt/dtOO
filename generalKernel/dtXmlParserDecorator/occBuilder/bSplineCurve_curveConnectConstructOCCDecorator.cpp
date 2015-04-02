@@ -50,8 +50,8 @@ namespace dtOO {
 			aGeoP->push_back( new splineCurve3d(dtC.get()) );
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAGeo) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAGeo) );
     }
   }
 }

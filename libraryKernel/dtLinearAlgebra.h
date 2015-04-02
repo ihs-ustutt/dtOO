@@ -37,7 +37,7 @@ namespace dtOO {
   private:
     dtLinearAlgebra();     
   public:
-    dt__CLASSNAME(dtLinearAlgebra);   
+    dt__classOnlyName(dtLinearAlgebra);   
     virtual ~dtLinearAlgebra();
     static dtAffTransformation3 getRotation(
       dtVector3 const vector, 

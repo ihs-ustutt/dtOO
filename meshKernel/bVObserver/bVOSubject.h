@@ -12,7 +12,7 @@ namespace dtOO {
   
   class bVOSubject {
   public:
-    dt__CLASSNAME(bVOSubject);
+    dt__classOnlyName(bVOSubject);
     bVOSubject();
     virtual ~bVOSubject();
     void attachBVObserver( bVOInterface* observer );

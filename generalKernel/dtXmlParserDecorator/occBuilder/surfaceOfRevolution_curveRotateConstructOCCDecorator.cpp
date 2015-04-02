@@ -99,10 +99,10 @@ namespace dtOO {
 			aGeoP->push_back(rS);
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAG) << LOGDEL
-							<< DTLOGEVAL(hasOrigin) << LOGDEL
-							<< DTLOGEVAL(hasRotAxis) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAG) << std::endl
+							<< dt__eval(hasOrigin) << std::endl
+							<< dt__eval(hasRotAxis) );
     }
   }
 }

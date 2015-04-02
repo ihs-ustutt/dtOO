@@ -28,7 +28,7 @@ namespace dtOO {
   public:
 		typedef std::map< int, std::vector< ::GEntity * > > intGEntityVMap;
   public:
-    dt__CLASSSTD(dtGmshModel, ::GModel);      
+    dt__class(dtGmshModel, ::GModel);      
     dtGmshModel(std::string name="");
     virtual ~dtGmshModel();
     dtGmshRegion * getDtGmshRegionByTag( int const tag ) const;

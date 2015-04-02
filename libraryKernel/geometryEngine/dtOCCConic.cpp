@@ -15,7 +15,7 @@ namespace dtOO {
 	}
 
 	dtOCCConic::dtOCCConic(dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_Conic const, _ptr);	
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_Conic const, _ptr);	
 	}
 
 	dtOCCConic::~dtOCCConic() {
@@ -26,7 +26,7 @@ namespace dtOO {
 	}
 	
   int dtOCCConic::order( void ) const {
-		DTFUNCTIONNOTI(order());			
+		dt__functionNotImplemented(order());			
 	}
 	
   int dtOCCConic::nControlPoints( void ) const {
@@ -34,11 +34,11 @@ namespace dtOO {
 	}
 	
   dtPoint3 dtOCCConic::controlPoint( int const nPoint ) const {
-		DTFUNCTIONNOTI(controlPoint());		
+		dt__functionNotImplemented(controlPoint());		
 	}
 	
   void dtOCCConic::setControlPoint( int const nPoint, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint());				
+		dt__functionNotImplemented(setControlPoint());				
 	}
 	
 //  dtCurve * dtOCCConic::bSplineCurve( void ) const {
@@ -62,19 +62,19 @@ namespace dtOO {
 //		else {
 //			dt__THROW(
 //			  bSplineCurve(),
-//				<< DTLOGEVAL(Handle(Geom_Line)::DownCast(_ptr->BasisCurve()).IsNull())<< LOGDEL
-//				<< DTLOGEVAL(Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull())
+//				<< dt__eval(Handle(Geom_Line)::DownCast(_ptr->BasisCurve()).IsNull())<< std::endl
+//				<< dt__eval(Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull())
 //			);
 //		}
-////		DTINFOWF(bSplineCurve(),
-////						<< DTLOGEVAL(Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull()) << LOGDEL
-////						<< DTLOGEVAL(Handle(Geom_Line)::DownCast(_ptr->BasisCurve()).IsNull()) << LOGDEL
-////						<< DTLOGEVAL(_u0) << LOGDEL
-////						<< DTLOGEVAL(_u1) << LOGDEL
-////						<< DTLOGPOI3D(getPointPercent3d(0.)) << LOGDEL
-////						<< DTLOGPOI3D(getPointPercent3d(1.)) << LOGDEL
-////						<< DTLOGPOI3D(bS->getPointPercent3d(0.)) << LOGDEL
-////						<< DTLOGPOI3D(bS->getPointPercent3d(1.)) << LOGDEL
+////		dt__info(bSplineCurve(),
+////						<< dt__eval(Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull()) << std::endl
+////						<< dt__eval(Handle(Geom_Line)::DownCast(_ptr->BasisCurve()).IsNull()) << std::endl
+////						<< dt__eval(_u0) << std::endl
+////						<< dt__eval(_u1) << std::endl
+////						<< dt__point3d(getPointPercent3d(0.)) << std::endl
+////						<< dt__point3d(getPointPercent3d(1.)) << std::endl
+////						<< dt__point3d(bS->getPointPercent3d(0.)) << std::endl
+////						<< dt__point3d(bS->getPointPercent3d(1.)) << std::endl
 ////						);
 //	  return bS;
 //	}	

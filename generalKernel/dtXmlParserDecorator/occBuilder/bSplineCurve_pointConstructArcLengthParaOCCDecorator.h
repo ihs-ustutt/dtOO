@@ -12,7 +12,7 @@ namespace dtOO {
 
   class bSplineCurve_pointConstructArcLengthParaOCCDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(bSplineCurve_pointConstructArcLengthParaOCCDecorator);
+    dt__classOnlyName(bSplineCurve_pointConstructArcLengthParaOCCDecorator);
     bSplineCurve_pointConstructArcLengthParaOCCDecorator();
     virtual ~bSplineCurve_pointConstructArcLengthParaOCCDecorator();
     virtual void buildPart(

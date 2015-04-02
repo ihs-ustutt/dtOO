@@ -170,7 +170,7 @@ namespace dtOO {
                       covise::coDoSet * setTwo,
                       char const * str
                     ) {
-		dt__THROW_IF(setOne==NULL, toCoDoSet());
+		dt__throwIf(setOne==NULL, toCoDoSet());
 		
 		//
 		// find fist element
@@ -219,10 +219,10 @@ namespace dtOO {
 			return discrete3dVectorToCoDoSet(d3dV, str);
 		}				
 		else {
-			dt__THROW(
+			dt__throw(
 				coDoSetHandling(), 
-				<< "Unknown renderInterface type." << LOGDEL
-				<< DTLOGEVAL(rI->className())
+				<< "Unknown renderInterface type." << std::endl
+				<< dt__eval(rI->className())
 			);
 		}
 	}
@@ -286,7 +286,7 @@ namespace dtOO {
 			if (vec.size()==0) return NULL;
 			set = toCoDoSet(vec[0], str);			
 			vectorHandling< renderInterface * >::const_iterator cit;
-			DTINFOWF(renderElement3d(), << DTLOGEVAL(vec.size()) );
+			dt__info(renderElement3d(), << dt__eval(vec.size()) );
 			if (vec.size() > 1) {
 				for (cit = progHelper::next(vec.begin()); cit != vec.end(); ++cit) {
 					set 
@@ -688,10 +688,10 @@ namespace dtOO {
 				cellC++;      
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 					unstructured3dMeshToCoDoSet(),
-					<< "Element is not yet supported." << LOGDEL
-					<< DTLOGEVAL(rI->refEl()[ii].size()) );
+					<< "Element is not yet supported." << std::endl
+					<< dt__eval(rI->refEl()[ii].size()) );
 			}
 		}
 		
@@ -760,10 +760,10 @@ namespace dtOO {
 				cellC++;      
 			}      			
 			else {
-				dt__THROW(
+				dt__throw(
 					unstructured3dSurfaceMeshToCoDoSet(),
-					<< "Element is not yet supported." << LOGDEL
-					<< DTLOGEVAL(rI->refEl()[ii].size()) );
+					<< "Element is not yet supported." << std::endl
+					<< dt__eval(rI->refEl()[ii].size()) );
 			}
 		}
 		

@@ -36,7 +36,7 @@ namespace dtOO {
 	) {
 	  dtCase::init(element, bC, cV, aF, aG, bV, dC);
 		
-		DTINFOWF(init(), << "I'm an openFOAM case!!!!!!");
+		dt__info(init(), << "I'm an openFOAM case!!!!!!");
 		
 //		systemHandling::createDirectory(getLabel());
 //		systemHandling::createDirectory(getLabel()+"/system");

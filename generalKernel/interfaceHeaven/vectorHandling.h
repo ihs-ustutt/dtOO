@@ -18,7 +18,7 @@ namespace dtOO {
   public:
     typedef typename std::vector< T >::iterator iterator;    
   public:
-    dt__CLASSNAME(vectorHandling);
+    dt__classOnlyName(vectorHandling);
     vectorHandling();
     vectorHandling(const vectorHandling& orig);
     vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1);        
@@ -135,13 +135,13 @@ namespace dtOO {
       // check if class is of type labelHandling
       //
       labelHandling const * obj;
-      dt__mustDownCast(this->at(ii), labelHandling const, obj);
+      dt__mustCast(this->at(ii), labelHandling const, obj);
       
       if (obj->getLabel() == label ) {
         return this->at(ii);
       }
     }
-  dt__THROW(get(), << "No element with " << DTLOGEVAL(label) );
+  dt__throw(get(), << "No element with " << dt__eval(label) );
   }
 
   template< typename T >
@@ -154,9 +154,9 @@ namespace dtOO {
       return obj->getLabel();
     }
     else {
-      dt__THROW(
+      dt__throw(
         getLabel(), 
-        << "No labelHandling at " << DTLOGEVAL(pos) << " in vector."
+        << "No labelHandling at " << dt__eval(pos) << " in vector."
       );
     }
   }  
@@ -168,7 +168,7 @@ namespace dtOO {
       // check if class is of type labelHandling
       //
       labelHandling const * obj;
-      dt__mustDownCast(this->at(ii), labelHandling const, obj);
+      dt__mustCast(this->at(ii), labelHandling const, obj);
       
       if (obj->getLabel() == label ) {
         return true;
@@ -185,7 +185,7 @@ namespace dtOO {
       // check if class is of type labelHandling
       //
       labelHandling const * obj;
-      dt__mustDownCast(this->at(ii), labelHandling const, obj);
+      dt__mustCast(this->at(ii), labelHandling const, obj);
       
       if (obj->getLabel() == label ) {
         counter++;
@@ -204,14 +204,14 @@ namespace dtOO {
       // check if class is of type labelHandling
       //
       labelHandling const * obj;
-      dt__mustDownCast(this->at(ii), labelHandling const, obj);
+      dt__mustCast(this->at(ii), labelHandling const, obj);
     
       //
       // check
       //
       if ( this->hasTwice( obj->getLabel() ) ) {
-        dt__THROW(checkForBastardTwins(),
-                 << "Duplicate element " << DTLOGEVAL( obj->getLabel() ) );
+        dt__throw(checkForBastardTwins(),
+                 << "Duplicate element " << dt__eval( obj->getLabel() ) );
       }
     }
   }
@@ -223,14 +223,14 @@ namespace dtOO {
       // check if class is of type labelHandling
       //
       labelHandling * obj;
-      dt__mustDownCast(this->at(ii), labelHandling, obj);
+      dt__mustCast(this->at(ii), labelHandling, obj);
     
       //
       // check
       //
       if ( this->hasTwice( obj->getLabel() ) ) {
-        DTWARNINGWF(checkForBastardTwinsAndMakeUnique(),
-                << "Make label " << DTLOGEVAL(obj->getLabel()) << " unique!");          
+        dt__warning(checkForBastardTwinsAndMakeUnique(),
+                << "Make label " << dt__eval(obj->getLabel()) << " unique!");          
         obj->setLabel( obj->getLabel()+"_" );
       }
     }
@@ -265,14 +265,14 @@ namespace dtOO {
 //      labelHandling const * obj;
 //      dt__CANDOWNCAST(*it, labelHandling const, obj);
 //      if (obj) {
-//        DTINFOWF( getIterator(), << DTLOGEVAL(obj->getLabel()) );
+//        dt__info( getIterator(), << dt__eval(obj->getLabel()) );
 //      }      
       if (counter == pos) {
         return it;
       }
       counter++;
     }
-    dt__THROW(getIterator(), << "No position " << DTLOGEVAL(pos) << " in vector." );
+    dt__throw(getIterator(), << "No position " << dt__eval(pos) << " in vector." );
   }    
 
   /**
@@ -303,7 +303,7 @@ namespace dtOO {
       // check if class is of type labelHandling
       //
       labelHandling * obj;
-      dt__mustDownCast(this->at(ii), labelHandling, obj);
+      dt__mustCast(this->at(ii), labelHandling, obj);
       
       obj->setLabel( stringPrimitive().intToString(ii)+"_"+obj->getLabel() );
     }
@@ -316,13 +316,13 @@ namespace dtOO {
     std::vector< std::string > itVal;
     dt__forAllIndex(*this, ii) {
       labelHandling * obj;
-      dt__mustDownCast(this->at(ii), labelHandling, obj);
+      dt__mustCast(this->at(ii), labelHandling, obj);
       
       itVal.push_back( obj->getLabel());
       itVal.push_back( obj->virtualClassName() );
     }
     
-    DTINFOWF(dump(), << logMe::stringVecToTable(header, itVal) );
+    dt__info(dump(), << logMe::stringVecToTable(header, itVal) );
   }
 }
 #endif	/* VECTORHANDLING_H */

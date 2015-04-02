@@ -2,14 +2,14 @@
 
 namespace dtOO {
   DTCLASSLOGMETHODI(analyticGeometryBuilder,
-          << DTLOGEVAL( &(thisRef._point) ) << LOGDEL
-          << DTLOGEVAL( &(thisRef._pointTwo) ) << LOGDEL
-          << DTLOGEVAL( &(thisRef._vector) ) << LOGDEL
-          << DTLOGEVAL( &(thisRef._integer) ) << LOGDEL
-          << DTLOGEVAL( &(thisRef._float) ) << LOGDEL
-          << DTLOGEVAL( &(thisRef._analyticGeometryP) ) << LOGDEL
-          << DTLOGEVAL( &(thisRef._scaFunctionP) ) << LOGDEL
-          << DTLOGEVAL( &(thisRef._option) ) );
+          << dt__eval( &(thisRef._point) ) << std::endl
+          << dt__eval( &(thisRef._pointTwo) ) << std::endl
+          << dt__eval( &(thisRef._vector) ) << std::endl
+          << dt__eval( &(thisRef._integer) ) << std::endl
+          << dt__eval( &(thisRef._float) ) << std::endl
+          << dt__eval( &(thisRef._analyticGeometryP) ) << std::endl
+          << dt__eval( &(thisRef._scaFunctionP) ) << std::endl
+          << dt__eval( &(thisRef._option) ) );
 
   analyticGeometryBuilder::analyticGeometryBuilder() {
 

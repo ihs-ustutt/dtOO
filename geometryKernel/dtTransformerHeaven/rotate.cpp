@@ -115,11 +115,11 @@ namespace dtOO {
 			= 
 			dtXmlParserBase::getAttributeFloatMuParse("angle", *tE, cV, aF);
     }
-    DTDEBUGWF(
+    dt__debug(
 			init(),
-      << DTLOGPOI3D(_origin) << LOGDEL
-      << DTLOGVEC3D(_rotVector) << LOGDEL
-      << DTLOGEVAL(_angle) 
+      << dt__point3d(_origin) << std::endl
+      << dt__vector3d(_rotVector) << std::endl
+      << dt__eval(_angle) 
 		);
   }
 }

@@ -51,7 +51,7 @@ namespace dtOO {
 		= 
 		Handle(Geom_BSplineSurface)::DownCast(occS->OCCRef().getOCC());
 		
-		dt__THROW_IF(bS.IsNull(), bSplineSurface2d_bSplineCurve2dFillConstructOCC());
+		dt__throwIf(bS.IsNull(), bSplineSurface2d_bSplineCurve2dFillConstructOCC());
 		
 		_dtS2d.reset( new dtOCCBSplineSurface2d(occS->OCCRef()) );
 	}

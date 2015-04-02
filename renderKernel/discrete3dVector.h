@@ -9,7 +9,7 @@
 namespace dtOO {
   class discrete3dVector : public renderInterface {
   public:
-    dt__CLASSSTD(discrete3dVector, renderInterface);
+    dt__class(discrete3dVector, renderInterface);
     discrete3dVector();
     discrete3dVector(vectorHandling< dtVector3 > const & vv, vectorHandling< dtPoint3 > const & pp);
     discrete3dVector(dtVector3 const & vv, dtPoint3 const & pp);

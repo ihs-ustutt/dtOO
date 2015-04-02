@@ -19,7 +19,7 @@ namespace dtOO {
 
 	dtOCCRectangularTrimmedSurface::dtOCCRectangularTrimmedSurface(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface(orig) {
-		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_RectangularTrimmedSurface const, _ptr);
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_RectangularTrimmedSurface const, _ptr);
 	}
 
 	dtOCCRectangularTrimmedSurface::~dtOCCRectangularTrimmedSurface() {

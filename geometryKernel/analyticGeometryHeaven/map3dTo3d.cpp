@@ -603,13 +603,13 @@ namespace dtOO {
       "xyz_resolution"
     );    		
 		if ( sqrt(dist.squared_length()) > minPDist) {
-			DTDEBUGWF(
+			dt__debug(
 				reparamInVolume(), 
-				<< logMe::floatVecToTable(addInfo, header, itVal) << LOGDEL 
-				<< DTLOGEVAL(converged) << LOGDEL
-				<< "p_xyz = (" << ppXYZ.x() << ", " << ppXYZ.y() << ", " << ppXYZ.z() << ")" << LOGDEL
-				<< "V(p_uvw) = (" << ppRep_xyz.x() << ", " << ppRep_xyz.y() << ", " << ppRep_xyz.z() << ")" << LOGDEL
-				<< "p_uvw = (" << U << ", " << V << ", " << W << ")" << LOGDEL
+				<< logMe::floatVecToTable(addInfo, header, itVal) << std::endl 
+				<< dt__eval(converged) << std::endl
+				<< "p_xyz = (" << ppXYZ.x() << ", " << ppXYZ.y() << ", " << ppXYZ.z() << ")" << std::endl
+				<< "V(p_uvw) = (" << ppRep_xyz.x() << ", " << ppRep_xyz.y() << ", " << ppRep_xyz.z() << ")" << std::endl
+				<< "p_uvw = (" << U << ", " << V << ", " << W << ")" << std::endl
 				<< "distance = (" << sqrt(dist.squared_length()) << ")"
 			);
     }
@@ -769,10 +769,10 @@ namespace dtOO {
 						itVal.push_back(static_cast<float>(err2) );
 						itVal.push_back(static_cast<float>(err) );
 						itVal.push_back(static_cast<float>(-iter) );						
-						DTWARNINGWF(
+						dt__warning(
 						  XYZtoUVW(), 
 							<< "Break initial guess (" << i << ", " << j << ", " << k 
-							<< ") and try next one." << LOGDEL
+							<< ") and try next one." << std::endl
 							<< eGenRef.what());
 					  break;
 					}    						
@@ -781,7 +781,7 @@ namespace dtOO {
     }
 
     if(relax < 1.e-6) {
-      DTINFOWF(XYZtoUVW(), << "Could not converge: surface mesh could be wrong");
+      dt__info(XYZtoUVW(), << "Could not converge: surface mesh could be wrong");
       return false;
     }
     else {

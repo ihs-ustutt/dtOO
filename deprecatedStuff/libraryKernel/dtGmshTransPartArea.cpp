@@ -15,14 +15,14 @@ namespace dtOO {
   dtGmshTransPartArea::dtGmshTransPartArea(::GModel *m, int tag, const std::list< ::GEdge * > &edges, const std::vector< int > & ori) 
   : dtGmshFace(m, tag, edges, ori) {
     if (edges.size() != 4) {
-      dt__THROW(dtGmshTransPartArea(),
+      dt__throw(dtGmshTransPartArea(),
               << "Currently only supported with 4 edges.");
     }
     typedef std::list< ::GEdge * >::const_iterator EIter;    
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
       ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
-      dt__mustDownCast(ge, dtGmshEdge const, dge);
+      dt__mustCast(ge, dtGmshEdge const, dge);
      _edge.push_back(dge);
      ge->addFace(this);
     }
@@ -31,7 +31,7 @@ namespace dtOO {
   dtGmshTransPartArea::dtGmshTransPartArea(::GModel *m, int tag, const std::list< ::GEdge * > &edges) 
   : dtGmshFace(m, tag, edges) {
     if (edges.size() != 4) {
-      dt__THROW(dtGmshTransPartArea(),
+      dt__throw(dtGmshTransPartArea(),
               << "Currently only supported with 4 edges.");
     } 
 
@@ -39,7 +39,7 @@ namespace dtOO {
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
       ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
-      dt__mustDownCast(ge, dtGmshEdge const, dge);
+      dt__mustCast(ge, dtGmshEdge const, dge);
       _edge.push_back(dge);
       ge->addFace(this);
     }    
@@ -94,10 +94,10 @@ namespace dtOO {
 //    }
 //    if ( _edge[1]->isSeamV() || _edge[1]->isSeamV() || _edge[2]->isSeamV() || _edge[3]->isSeamV() ) {
 //      dt__THROW(setMap2dTo3d(),
-//              << DTLOGEVAL(_edge[0]->isSeamV()) << LOGDEL
-//              << DTLOGEVAL(_edge[1]->isSeamV()) << LOGDEL
-//              << DTLOGEVAL(_edge[2]->isSeamV()) << LOGDEL
-//              << DTLOGEVAL(_edge[3]->isSeamV()) << LOGDEL              
+//              << dt__eval(_edge[0]->isSeamV()) << std::endl
+//              << dt__eval(_edge[1]->isSeamV()) << std::endl
+//              << dt__eval(_edge[2]->isSeamV()) << std::endl
+//              << dt__eval(_edge[3]->isSeamV()) << std::endl              
 //              << "Not yet supported.");
 //    }    
 //  }
@@ -111,6 +111,6 @@ namespace dtOO {
   }
   
   void dtGmshTransPartArea::updateFace(void) {
-    DTINFOWF(updateFace(), << "No update necessary.");
+    dt__info(updateFace(), << "No update necessary.");
   }
 }

@@ -9,7 +9,7 @@ namespace dtOO {
   template < typename funT >
   class analyticGeometryCompound : public funT {
   public:
-    dt__CLASSSTD(analyticGeometryCompound, analyticGeometry); 
+    dt__class(analyticGeometryCompound, analyticGeometry); 
     analyticGeometryCompound();
     analyticGeometryCompound( analyticGeometryCompound const & orig );  
     virtual ~analyticGeometryCompound();

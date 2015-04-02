@@ -10,7 +10,7 @@ namespace dtOO {
   
   class transIntCube {
   public:
-    dt__CLASSNAME(transIntCube);
+    dt__classOnlyName(transIntCube);
     transIntCube();
     transIntCube(
       map2dTo3d const * const aS0, 

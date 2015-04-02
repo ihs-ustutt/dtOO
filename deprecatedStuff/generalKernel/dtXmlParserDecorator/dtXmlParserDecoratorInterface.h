@@ -17,7 +17,7 @@ namespace dtOO {
 
   class dtXmlParserDecoratorInterface {
   public:  
-    dt__CLASSNAME(dtXmlParserDecoratorInterface);
+    dt__classOnlyName(dtXmlParserDecoratorInterface);
     dtXmlParserDecoratorInterface();
     virtual ~dtXmlParserDecoratorInterface();
     /**

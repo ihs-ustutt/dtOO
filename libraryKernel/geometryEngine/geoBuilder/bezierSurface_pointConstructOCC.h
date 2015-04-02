@@ -11,7 +11,7 @@ namespace dtOO {
   
   class bezierSurface_pointConstructOCC {
   public:
-    dt__CLASSNAME(bezierSurface_pointConstructOCC);
+    dt__classOnlyName(bezierSurface_pointConstructOCC);
     bezierSurface_pointConstructOCC( twoDArrayHandling< dtPoint3 > const & pp );
     virtual ~bezierSurface_pointConstructOCC();
     dtSurface * result( void );

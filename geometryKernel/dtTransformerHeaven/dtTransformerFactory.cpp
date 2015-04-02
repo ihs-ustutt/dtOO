@@ -45,7 +45,7 @@ namespace dtOO {
   }
 
   dtTransformer* dtTransformerFactory::create(char const * const str) {
-    DTINFOWF(create(), << "creating " << str <<  "...");
+    dt__info(create(), << "creating " << str <<  "...");
     
     __IFRET( doNothing );
     __IFRET( conformalMapping );
@@ -73,7 +73,7 @@ namespace dtOO {
 		__IFRET( normalOffsetInSurface );
 		__IFRET( closeGapsArithmetic );
 
-    dt__THROW(create(), << str <<  " could not be created");  
+    dt__throw(create(), << str <<  " could not be created");  
   }
 
   dtTransformer* dtTransformerFactory::create( std::string const str) {

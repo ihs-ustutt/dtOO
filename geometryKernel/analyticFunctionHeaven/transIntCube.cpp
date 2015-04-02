@@ -37,14 +37,14 @@ namespace dtOO {
     _aS_3_1_0 = _aS[3]->getPointPercentVector(1.,0.);
     _aS_3_1_1 = _aS[3]->getPointPercentVector(1.,1.);
                   
-    DTINFOWF(transIntCube(),
-      << "Creating transfinite interpolation with:" << LOGDEL
-      << DTLOGEVAL(aS0->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS1->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS2->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS3->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS4->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS5->getLabel()) << LOGDEL
+    dt__info(transIntCube(),
+      << "Creating transfinite interpolation with:" << std::endl
+      << dt__eval(aS0->getLabel()) << std::endl
+      << dt__eval(aS1->getLabel()) << std::endl
+      << dt__eval(aS2->getLabel()) << std::endl
+      << dt__eval(aS3->getLabel()) << std::endl
+      << dt__eval(aS4->getLabel()) << std::endl
+      << dt__eval(aS5->getLabel()) << std::endl
     );    
   } 
 

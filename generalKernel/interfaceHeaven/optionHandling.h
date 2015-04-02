@@ -19,7 +19,7 @@ namespace dtOO {
   
   class optionHandling {
     public:    
-      dt__CLASSNAME(optionHandling);
+      dt__classOnlyName(optionHandling);
       optionHandling();
       optionHandling(const optionHandling& orig);
       virtual ~optionHandling();

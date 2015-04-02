@@ -10,7 +10,7 @@ namespace dtOO {
   
   class conformalMapping : public dtTransformer {
   public:      
-    dt__CLASSNAME(conformalMapping);
+    dt__classOnlyName(conformalMapping);
     conformalMapping();
     conformalMapping( conformalMapping const & orig );
     virtual ~conformalMapping();

@@ -14,7 +14,7 @@ namespace dtOO {
 
   class scaCurve2dOneDFunctionDecorator : public dtXmlParserFunctionDecorator {
   public:
-    dt__CLASSNAME(scaCurve2dOneDFunctionDecorator);    
+    dt__classOnlyName(scaCurve2dOneDFunctionDecorator);    
     scaCurve2dOneDFunctionDecorator();
     virtual ~scaCurve2dOneDFunctionDecorator();
     virtual void buildPart(

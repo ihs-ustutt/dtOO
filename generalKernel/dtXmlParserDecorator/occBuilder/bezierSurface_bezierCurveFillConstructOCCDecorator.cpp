@@ -56,8 +56,8 @@ namespace dtOO {
 			aGeoP->push_back( new analyticSurface(dtS.get()) );
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAG) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAG) );
     }
   }
 }

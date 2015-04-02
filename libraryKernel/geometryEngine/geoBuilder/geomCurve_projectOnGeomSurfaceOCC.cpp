@@ -22,16 +22,16 @@ namespace dtOO {
 		dt__ptrAss( dtOCCCurve const * const cc, dtOCCCurve::ConstDownCast(dtC) );
 		
 		Geom_Surface const * sP;
-		dt__mustDownCast(ss->OCCRef().getOCC().Access(), Geom_Surface const, sP);
+		dt__mustCast(ss->OCCRef().getOCC().Access(), Geom_Surface const, sP);
 		Geom_Curve const * cP;
-		dt__mustDownCast(cc->OCCRef().getOCC().Access(), Geom_Curve const, cP);
+		dt__mustCast(cc->OCCRef().getOCC().Access(), Geom_Curve const, cP);
 		Handle(Geom_Curve) cH = cP;
 		Handle(Geom_Surface) sH = sP;
 		
 		Handle(Geom_Curve) pC = GeomProjLib::Project(cH, sH);
 		
 		if (pC.IsNull()) {
-			dt__THROW(
+			dt__throw(
 				geomCurve_projectOnGeomSurfaceOCC(),
 				<< "Projection of curve to surface fails."
 			);
@@ -46,10 +46,10 @@ namespace dtOO {
 		  _dtC.reset( new dtOCCBSplineCurve(base) );		
 		}
 		else {
-			dt__THROW(
+			dt__throw(
 			  geomCurve_projectOnGeomSurfaceOCC(),
-				<< DTLOGEVAL(dtOCCBezierCurve::ConstDownCast(dtC)) << LOGDEL
-				<< DTLOGEVAL(dtOCCBSplineCurve::ConstDownCast(dtC))
+				<< dt__eval(dtOCCBezierCurve::ConstDownCast(dtC)) << std::endl
+				<< dt__eval(dtOCCBSplineCurve::ConstDownCast(dtC))
 			);
 		}
 	}

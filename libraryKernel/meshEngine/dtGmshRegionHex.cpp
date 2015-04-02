@@ -49,8 +49,8 @@ namespace dtOO {
   }
 	
   void dtGmshRegionHex::setGrading( std::vector< float > const & grading, std::vector< float > & type ) {
-    dt__THROW_IF(grading.size() != 12, setGrading());
-    dt__THROW_IF(type.size() != 12, setGrading());
+    dt__throwIf(grading.size() != 12, setGrading());
+    dt__throwIf(type.size() != 12, setGrading());
 		
 		for (int ii=0; ii<grading.size(); ii++) {
       if (type[ii]!=2.) {

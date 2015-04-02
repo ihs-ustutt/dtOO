@@ -57,7 +57,7 @@ namespace dtOO {
       sFunP->push_back( new vec2dSurface2dTwoD( dtS2d.get() ) );			
     }
     else {
-      dt__THROW(buildPart(), << DTLOGEVAL(hasFunction) );
+      dt__throw(buildPart(), << dt__eval(hasFunction) );
     }
   }
 }

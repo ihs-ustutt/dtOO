@@ -29,7 +29,7 @@ namespace dtOO {
     if ( strcmp(paramName, "_p_startCycle") == 0 ) {
       if ( _p_startCycle->getValue() ) {
         if (!_initialized) {
-          DTWARNINGWF(param(),
+          dt__warning(param(),
                   << "Please initialize me first!");
           return;
         }
@@ -141,7 +141,7 @@ namespace dtOO {
       }
     }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       send_stop_pipeline();
       return FAILURE;
     }    

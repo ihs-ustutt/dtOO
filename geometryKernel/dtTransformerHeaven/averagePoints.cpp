@@ -27,9 +27,9 @@ namespace dtOO {
 	averagePoints::apply( std::vector< dtPoint2 * > const * const toTrans ) const {
     std::vector< dtPoint2 * > transP2;
     if ((toTrans->size()%2) == 1) {
-			dt__THROW(apply(),
-							<< "Point vector has not correct size." << LOGDEL
-							<< DTLOGEVAL(toTrans->size()) );
+			dt__throw(apply(),
+							<< "Point vector has not correct size." << std::endl
+							<< dt__eval(toTrans->size()) );
     }
 		for (int ii=0; ii<=(((toTrans->size())/2)-1);(ii=ii+1)) {		
 			float xi = toTrans->at(ii)->x();

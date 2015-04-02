@@ -17,9 +17,9 @@
 namespace dtOO {
     DTCLASSLOGMETHODIN(dtBmGrid);
 //    std::ostream& operator<<(std::ostream& oo, const dtBmGrid& thisRef) { 
-//    return oo << " " << LOGDEL 
-//          << " << _internalState_ >> " << LOGDEL 
-////          << thisRef.getClassName() << LOGDEL 
+//    return oo << " " << std::endl 
+//          << " << _internalState_ >> " << std::endl 
+////          << thisRef.getClassName() << std::endl 
 //          << "Not yet implemented."; 
 //  }
 
@@ -393,10 +393,10 @@ covise::coDoStructuredGrid * dtBmGrid::toCoDoStruct(string const str) const {
 
 //    float xc, yc, zc;
 //    myStructGrid->getPointCoordinates(5, &xc,0,&yc ,0,&zc);
-//                DTINFOWF(structGrid(), 
-//                    << DTLOGEVAL(xc) << LOGDEL
-//                    << DTLOGEVAL(yc) << LOGDEL
-//                    << DTLOGEVAL(zc) << LOGDEL
+//                dt__info(structGrid(), 
+//                    << dt__eval(xc) << std::endl
+//                    << dt__eval(yc) << std::endl
+//                    << dt__eval(zc) << std::endl
 //                 
 //           );
     
@@ -457,15 +457,15 @@ covise::coDoUnstructuredGrid * dtBmGrid::toCoDoUns(string const str) const {
             *(outConnList+6) = ii+(_nx*_ny)+_nx+1;
             *(outConnList+7) = ii+(_nx*_ny)+_nx;
             
-//            DTINFOWF(connList(), 
-//                    << DTLOGEVAL(*(outConnList+0)) << LOGDEL
-//                    << DTLOGEVAL(*(outConnList+1)) << LOGDEL
-//                    << DTLOGEVAL(*(outConnList+2)) << LOGDEL
-//                    << DTLOGEVAL(*(outConnList+3)) << LOGDEL
-//                    << DTLOGEVAL(*(outConnList+4)) << LOGDEL
-//                    << DTLOGEVAL(*(outConnList+5)) << LOGDEL
-//                    << DTLOGEVAL(*(outConnList+6)) << LOGDEL
-//                    << DTLOGEVAL(*(outConnList+7)) << LOGDEL
+//            dt__info(connList(), 
+//                    << dt__eval(*(outConnList+0)) << std::endl
+//                    << dt__eval(*(outConnList+1)) << std::endl
+//                    << dt__eval(*(outConnList+2)) << std::endl
+//                    << dt__eval(*(outConnList+3)) << std::endl
+//                    << dt__eval(*(outConnList+4)) << std::endl
+//                    << dt__eval(*(outConnList+5)) << std::endl
+//                    << dt__eval(*(outConnList+6)) << std::endl
+//                    << dt__eval(*(outConnList+7)) << std::endl
 //           );
             
             outConnList += 8;
@@ -510,11 +510,11 @@ covise::coDoStructuredGrid * dtBmGrid::coupleStructBlocks(string const str,
             if (nyI!=nyII || nzI!=nzII)
             {
                 dt__THROW(coupleStructBlocks(),
-                        << "Number of Knots in east-west coupling not corresponding" << LOGDEL
-                        << DTLOGEVAL(nyI) << LOGDEL
-                        << DTLOGEVAL(nyII) << LOGDEL
-                        << DTLOGEVAL(nzI) << LOGDEL
-                        << DTLOGEVAL (nzII)
+                        << "Number of Knots in east-west coupling not corresponding" << std::endl
+                        << dt__eval(nyI) << std::endl
+                        << dt__eval(nyII) << std::endl
+                        << dt__eval(nzI) << std::endl
+                        << dt__eval (nzII)
                         );
 
                 
@@ -548,11 +548,11 @@ covise::coDoStructuredGrid * dtBmGrid::coupleStructBlocks(string const str,
             if (nxI!=nxII || nzI!=nzII)
             {
                 dt__THROW(coupleStructBlocks(),
-                        << "Number of Knots in back-front coupling not corresponding" << LOGDEL
-                        << DTLOGEVAL(nxI) << LOGDEL
-                        << DTLOGEVAL(nxII) << LOGDEL
-                        << DTLOGEVAL(nzI) << LOGDEL
-                        << DTLOGEVAL (nzII)
+                        << "Number of Knots in back-front coupling not corresponding" << std::endl
+                        << dt__eval(nxI) << std::endl
+                        << dt__eval(nxII) << std::endl
+                        << dt__eval(nzI) << std::endl
+                        << dt__eval (nzII)
                         );
             }
     coupleStructGrid = new coDoStructuredGrid(str, nxI, (nyI+nyII-1), nzI ); //backfront
@@ -585,11 +585,11 @@ covise::coDoStructuredGrid * dtBmGrid::coupleStructBlocks(string const str,
             if (nxI!=nxII || nyI!=nyII)
             {
                 dt__THROW(coupleStructBlocks(),
-                        << "Number of Knots in north-south coupling not corresponding" << LOGDEL
-                        << DTLOGEVAL(nxI) << LOGDEL
-                        << DTLOGEVAL(nxII) << LOGDEL
-                        << DTLOGEVAL(nyI) << LOGDEL
-                        << DTLOGEVAL (nyII)
+                        << "Number of Knots in north-south coupling not corresponding" << std::endl
+                        << dt__eval(nxI) << std::endl
+                        << dt__eval(nxII) << std::endl
+                        << dt__eval(nyI) << std::endl
+                        << dt__eval (nyII)
                         );
             }
     coupleStructGrid = new coDoStructuredGrid(str, nxI, nyI, (nzI+nzII-1) ); //northsouth
@@ -623,8 +623,8 @@ covise::coDoStructuredGrid * dtBmGrid::coupleStructBlocks(string const str,
     
         default:
             dt__THROW(coupleStructBlocks(),
-                        << "unknown coupling index" << LOGDEL
-                        << DTLOGEVAL(cm)
+                        << "unknown coupling index" << std::endl
+                        << dt__eval(cm)
                         );
     } 
     
@@ -655,11 +655,11 @@ covise::coDoUnstructuredGrid * dtBmGrid::unsCoupleStructBlocks(string const str,
     ncoord = ( nxI*nyI*nzI ) + ( (nxII-1)*nyII*nzII ); //eastwest
     if (nyII > nyI || nzII > nzI ) {
                 dt__THROW(unsCoupleStructBlocks(),
-                        << "forbidden number of knots in EW-coupling (nyII>nyI || nzII>nzI)" << LOGDEL
-                        << DTLOGEVAL(nyI) << LOGDEL
-                        << DTLOGEVAL(nyII) << LOGDEL
-                        << DTLOGEVAL(nzI) << LOGDEL
-                        << DTLOGEVAL(nzII) << LOGDEL
+                        << "forbidden number of knots in EW-coupling (nyII>nyI || nzII>nzI)" << std::endl
+                        << dt__eval(nyI) << std::endl
+                        << dt__eval(nyII) << std::endl
+                        << dt__eval(nzI) << std::endl
+                        << dt__eval(nzII) << std::endl
                         );
             }
     break;
@@ -668,11 +668,11 @@ covise::coDoUnstructuredGrid * dtBmGrid::unsCoupleStructBlocks(string const str,
             ncoord = ( nxI*nyI*nzI ) + ( nxII*(nyII-1)*nzII );//backfront
             if (nxII > nxI || nzII > nzI ) {
                 dt__THROW(unsCoupleStructBlocks(),
-                        << "forbidden number of knots in BF-coupling (nxII>nxI || nzII>nzI)" << LOGDEL
-                        << DTLOGEVAL(nxI) << LOGDEL
-                        << DTLOGEVAL(nxII) << LOGDEL
-                        << DTLOGEVAL(nzI) << LOGDEL
-                        << DTLOGEVAL(nzII) << LOGDEL
+                        << "forbidden number of knots in BF-coupling (nxII>nxI || nzII>nzI)" << std::endl
+                        << dt__eval(nxI) << std::endl
+                        << dt__eval(nxII) << std::endl
+                        << dt__eval(nzI) << std::endl
+                        << dt__eval(nzII) << std::endl
                         );
             }
             break;
@@ -681,19 +681,19 @@ covise::coDoUnstructuredGrid * dtBmGrid::unsCoupleStructBlocks(string const str,
             ncoord = ( nxI*nyI*nzI ) + ( nxII*nyII*(nzII-1) ); //northsouth
             if (nxII > nxI || nyII > nyI ) {
                 dt__THROW(unsCoupleStructBlocks(),
-                        << "forbidden number of knots in NS-coupling (nxII>nxI || nyII>nyI)" << LOGDEL
-                        << DTLOGEVAL(nxI) << LOGDEL
-                        << DTLOGEVAL(nxII) << LOGDEL
-                        << DTLOGEVAL(nyI) << LOGDEL
-                        << DTLOGEVAL(nyII) << LOGDEL
+                        << "forbidden number of knots in NS-coupling (nxII>nxI || nyII>nyI)" << std::endl
+                        << dt__eval(nxI) << std::endl
+                        << dt__eval(nxII) << std::endl
+                        << dt__eval(nyI) << std::endl
+                        << dt__eval(nyII) << std::endl
                         );
             }
             break;
             
         default:
             dt__THROW(unsCoupleStructBlocks(),
-                        << "unknown coupling index" << LOGDEL
-                        << DTLOGEVAL(coupleIndex)
+                        << "unknown coupling index" << std::endl
+                        << dt__eval(coupleIndex)
                         );
     }
     coDoUnstructuredGrid *unsCoupleGrid = new coDoUnstructuredGrid(str, nelem, nconn, ncoord, ht); //immer

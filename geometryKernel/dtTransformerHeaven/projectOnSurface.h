@@ -10,7 +10,7 @@ namespace dtOO {
   
   class projectOnSurface : public dtTransformer {
   public:    
-    dt__CLASSNAME(projectOnSurface);
+    dt__classOnlyName(projectOnSurface);
     projectOnSurface();
     virtual ~projectOnSurface();
     virtual dtTransformer * clone( void ) const;

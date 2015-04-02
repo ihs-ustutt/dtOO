@@ -20,8 +20,8 @@ namespace dtOO {
     if ( CGAL::compare_xyz(pp.at(0), pp.at(pp.size()-1)) == CGAL::EQUAL ) {
       if ( nPoints == 2 ) {
         dt__THROW(curvePointConstruct(),
-                << "Try to create a spline out of two equal points." << LOGDEL
-                << DTLOGEVAL(nPoints) );
+                << "Try to create a spline out of two equal points." << std::endl
+                << dt__eval(nPoints) );
       }
       openFlag = 0;
     }
@@ -48,8 +48,8 @@ namespace dtOO {
             && (pointsArray[counter+2] == pointsArray[counter+2-3])
          ) {
         numPoints--;
-        DTINFOWF(curvePointConstruct(),
-                << "Duplicate point detected at " << DTLOGEVAL(ii) );
+        dt__info(curvePointConstruct(),
+                << "Duplicate point detected at " << dt__eval(ii) );
       }
       else {
         counter =  counter+3;

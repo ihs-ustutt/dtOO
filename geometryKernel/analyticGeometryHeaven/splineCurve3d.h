@@ -13,7 +13,7 @@ namespace dtOO {
 
   class splineCurve3d : public map1dTo3d {
     public:
-      dt__CLASSSTD(splineCurve3d, analyticGeometry);
+      dt__class(splineCurve3d, analyticGeometry);
       splineCurve3d();
       splineCurve3d( splineCurve3d const & orig );
       splineCurve3d( dtCurve const & orig );

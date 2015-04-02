@@ -109,13 +109,13 @@ namespace dtOO {
 				dtTransformerP = dtTransformerFactory::create("doNothing");
 			}			
 			else {
-				dt__THROW(
+				dt__throw(
 					createTransformer(),
-					<< DTLOGEVAL(hasLabel) << LOGDEL
-					<< DTLOGEVAL(hasName) << LOGDEL
-					<< DTLOGEVAL(inContainer) << LOGDEL
-					<< DTLOGEVAL(label) << LOGDEL
-					<< DTLOGEVAL(name) << LOGDEL
+					<< dt__eval(hasLabel) << std::endl
+					<< dt__eval(hasName) << std::endl
+					<< dt__eval(inContainer) << std::endl
+					<< dt__eval(label) << std::endl
+					<< dt__eval(name) << std::endl
 					<< "Problem creating transformer."
 				);
 			}
@@ -173,7 +173,7 @@ namespace dtOO {
 		std::vector< dtPoint3* > * basicP
 	) {
     if ( !is("Point_3", *toBuildP) ) {
-      dt__THROW(createBasic(), << DTLOGEVAL( getTagName(*toBuildP) ) );
+      dt__throw(createBasic(), << dt__eval( getTagName(*toBuildP) ) );
     }
 
 		//
@@ -261,9 +261,9 @@ namespace dtOO {
 			map3dTo3d const * m3d = map3dTo3d::ConstDownCast(aG);
 
 			if (!m1d && !m2d && !m3d) {
-				dt__THROW(
+				dt__throw(
 				  createBasic(),
-					<< DTLOGEVAL( getAttributeStr("part_label", *toBuildP) ) << LOGDEL
+					<< dt__eval( getAttributeStr("part_label", *toBuildP) ) << std::endl
 					<< "No such part or part is not of correct type");     
 			}
 			if ( getAttributeStr("attribute", *toBuildP) == "pick_from_part" ) {
@@ -480,9 +480,9 @@ namespace dtOO {
 			vec3dTwoD const * v2D = vec3dTwoD::ConstDownCast(aF);
 
 			if (!v1D && !v2D) {
-				dt__THROW(
+				dt__throw(
 				  createBasic(),
-					<< DTLOGEVAL( getAttributeStr("function_label", *toBuildP) ) << LOGDEL
+					<< dt__eval( getAttributeStr("function_label", *toBuildP) ) << std::endl
 					<< "No such analyticFunction or analyticFunction has wrong type.");     
 			}
 			if ( getAttributeStr("attribute", *toBuildP) == "pick_from_function" ) {
@@ -544,9 +544,9 @@ namespace dtOO {
 		// check if a point was created
 		//
 		if (basicP->size() == 0 ) {
-			dt__THROW(
+			dt__throw(
 		    createBasic(), 
-				<< "No point could be created." << LOGDEL
+				<< "No point could be created." << std::endl
 				<< convertToString(*toBuildP) 
 			);	
 		}
@@ -587,9 +587,8 @@ namespace dtOO {
 		//output
 		//
 		for (int ii=0;ii<basicP->size();ii++) {
-			DTDEBUGWF(
-			  createBasic(), 
-				<< "created point: " << DTLOGPOI3DP(basicP->at(ii)) 
+			dt__debug(
+			  createBasic(), << "created point: " << dt__point3d( (*(basicP->at(ii))) ) 
 			);
 		}    
   }
@@ -608,7 +607,7 @@ namespace dtOO {
 		dtVector2 vv;
 
     if ( !is("Vector_2", *toBuildP) && !is("dtVector2", *toBuildP) ) {
-      dt__THROW(createBasic(), << DTLOGEVAL( getTagName(*toBuildP) ) );
+      dt__throw(createBasic(), << dt__eval( getTagName(*toBuildP) ) );
     }
     else {
       //
@@ -680,7 +679,7 @@ namespace dtOO {
       //
       //output
       //
-      DTDEBUGWF(
+      dt__debug(
 				createDtVector2(),
         << "created vector: (" << vv.x() << " / " << vv.y() << ")"
 			);
@@ -699,8 +698,8 @@ namespace dtOO {
 		dtVector3 vv;
 
     if ( !is("Vector_3", *toBuildP) ) {
-      dt__THROW(createBasic(),
-              << DTLOGEVAL(qPrintable( toBuildP->tagName() ) ) );
+      dt__throw(createBasic(),
+              << dt__eval(qPrintable( toBuildP->tagName() ) ) );
     }
     else {
       //
@@ -756,7 +755,7 @@ namespace dtOO {
       //
       //output
       //
-      DTDEBUGWF(createBasic(),
+      dt__debug(createBasic(),
               << "created vector: (" 
               << vv.x() << " / "
               << vv.y() << " / "
@@ -883,7 +882,7 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFunP
 	) {
     if ( getTagName(*toBuildP) != "string" ) {
-      dt__THROW(createBasic(), << DTLOGEVAL( getTagName(*toBuildP) ) );
+      dt__throw(createBasic(), << dt__eval( getTagName(*toBuildP) ) );
     }
 		//
 		// check for attribute value
@@ -912,7 +911,7 @@ namespace dtOO {
                 depAGeoP,
                 &basicVec);
     if (basicVec.size() != 1) {
-      dt__THROW(createBasic(),
+      dt__throw(createBasic(),
               << "Try to create one point, but function "
               << "createBasic() returns more than one point.");
     }
@@ -971,7 +970,7 @@ namespace dtOO {
     /* ------------------------------------------------------------------------ */
     bool isdtPoint2 = is("Point_2", *toBuildP);
     if ( !isdtPoint2  ) {
-      dt__THROW(createBasic(), << DTLOGEVAL( getTagName(*toBuildP) ) );
+      dt__throw(createBasic(), << dt__eval( getTagName(*toBuildP) ) );
       return;
     }
 
@@ -1057,26 +1056,26 @@ namespace dtOO {
             //
             // error handling
             //
-            dt__THROW(createBasic(),
-                    << DTLOGEVAL(toBuildP->hasAttribute("phi") ) << LOGDEL
-                    << DTLOGEVAL(toBuildP->hasAttribute("r") ) << LOGDEL
-                    << DTLOGEVAL(toBuildP->hasAttribute("z") ) << LOGDEL
-                    << DTLOGEVAL(toBuildP->hasAttribute("parameter_one_percent") ) << LOGDEL
-                    << DTLOGEVAL(toBuildP->hasAttribute("parameter_two_percent") ) << LOGDEL
-                    << DTLOGEVAL( qPrintable(toBuildP->attribute("phi")) ) << LOGDEL
-                    << DTLOGEVAL( qPrintable(toBuildP->attribute("r")) ) << LOGDEL
-                    << DTLOGEVAL( qPrintable(toBuildP->attribute("z")) ) << LOGDEL
-                    << DTLOGEVAL( qPrintable(toBuildP->attribute("parameter_one_percent")) ) << LOGDEL
-                    << DTLOGEVAL( qPrintable(toBuildP->attribute("parameter_two_percent")) ) << LOGDEL
-                    << DTLOGEVAL( analyticSurface_partToPickFromP ) );
+            dt__throw(createBasic(),
+                    << dt__eval(toBuildP->hasAttribute("phi") ) << std::endl
+                    << dt__eval(toBuildP->hasAttribute("r") ) << std::endl
+                    << dt__eval(toBuildP->hasAttribute("z") ) << std::endl
+                    << dt__eval(toBuildP->hasAttribute("parameter_one_percent") ) << std::endl
+                    << dt__eval(toBuildP->hasAttribute("parameter_two_percent") ) << std::endl
+                    << dt__eval( qPrintable(toBuildP->attribute("phi")) ) << std::endl
+                    << dt__eval( qPrintable(toBuildP->attribute("r")) ) << std::endl
+                    << dt__eval( qPrintable(toBuildP->attribute("z")) ) << std::endl
+                    << dt__eval( qPrintable(toBuildP->attribute("parameter_one_percent")) ) << std::endl
+                    << dt__eval( qPrintable(toBuildP->attribute("parameter_two_percent")) ) << std::endl
+                    << dt__eval( analyticSurface_partToPickFromP ) );
             return;
           }          
         }
         else {
-          dt__THROW(createBasic(), 
-                  << DTLOGEVAL( toBuildP->hasAttribute("parameter_one_percent") ) << LOGDEL
-                  << DTLOGEVAL( qPrintable(toBuildP->attribute("attribute")) ) << LOGDEL
-                  << DTLOGEVAL( qPrintable(toBuildP->attribute("part_label")) ) );                 
+          dt__throw(createBasic(), 
+                  << dt__eval( toBuildP->hasAttribute("parameter_one_percent") ) << std::endl
+                  << dt__eval( qPrintable(toBuildP->attribute("attribute")) ) << std::endl
+                  << dt__eval( qPrintable(toBuildP->attribute("part_label")) ) );                 
         }        
       }    
     }
@@ -1129,19 +1128,19 @@ namespace dtOO {
 						);
 //            if (vecValue.size() != 2) {
 //              dt__THROW(createBasic(),
-//                      << "Function is not a 2-dim function." << LOGDEL
-//                      << DTLOGEVAL(vecValue.size()) );
+//                      << "Function is not a 2-dim function." << std::endl
+//                      << dt__eval(vecValue.size()) );
 //            }
             basicP->push_back( new dtPoint2(YY) );
           }
         }
         else {
-          DTWARNINGWF(createBasic(), 
-                  << DTLOGEVAL( hasAttribute("parameter_percent_function", *toBuildP) ) << LOGDEL
-                  << DTLOGEVAL( hasAttribute("number_points", *toBuildP) ) << LOGDEL
-                  << DTLOGEVAL( getAttributeStr("parameter_percent_function", *toBuildP) ) << LOGDEL
-                  << DTLOGEVAL( getAttributeStr("number_points", *toBuildP) ) );
-//                  << DTLOGEVAL( sF ) );
+          dt__warning(createBasic(), 
+                  << dt__eval( hasAttribute("parameter_percent_function", *toBuildP) ) << std::endl
+                  << dt__eval( hasAttribute("number_points", *toBuildP) ) << std::endl
+                  << dt__eval( getAttributeStr("parameter_percent_function", *toBuildP) ) << std::endl
+                  << dt__eval( getAttributeStr("number_points", *toBuildP) ) );
+//                  << dt__eval( sF ) );
           return;        
         }
       }      
@@ -1164,23 +1163,23 @@ namespace dtOO {
 
 				for ( int ii=0; ii<fields.size(); ii++ ) {
 					if ( fields[ii].size() != 2 ) {
-						dt__THROW(createBasic(),
-										<< "field[" << ii << "] of read point has not a size of 2." << LOGDEL
+						dt__throw(createBasic(),
+										<< "field[" << ii << "] of read point has not a size of 2." << std::endl
 										<< "file_name = " << getAttributeStr("file_name", *toBuildP));
 					}
 					basicP->push_back( new dtPoint2(fields[ii][0], fields[ii][1]) );          
 				}
 			}
 			else {
-				dt__THROW(createBasic(), << "Attribute file_name is empty");
+				dt__throw(createBasic(), << "Attribute file_name is empty");
 			}
 		}  		
     //
     // 4 unknown attribute
     //
     else {
-      dt__THROW(createBasic(),
-              << DTLOGEVAL(qPrintable(toBuildP->attribute("attribute"))) << LOGDEL
+      dt__throw(createBasic(),
+              << dt__eval(qPrintable(toBuildP->attribute("attribute"))) << std::endl
               << "Error creating point.");
     }
     //
@@ -1198,9 +1197,9 @@ namespace dtOO {
       //
 //      DTBUFFERINIT();
 //      dt__FORALL(basicPTwin, ii,
-//        DTBUFFER(<< DTLOGPOI2DP(basicPTwin[ii]) << "=>" << DTLOGPOI2DP(basicP->at(ii)) << LOGDEL );          
+//        DTBUFFER(<< dt__point2dP(basicPTwin[ii]) << "=>" << dt__point2dP(basicP->at(ii)) << std::endl );          
 //      );
-//      DTDEBUGWF_BUFFER(createBase());
+//      dt__debug_BUFFER(createBase());
 //      for (int ii=0;ii<basicPTwin.size();ii++) {
 //        delete basicPTwin[ii];
 //      }
@@ -1211,8 +1210,10 @@ namespace dtOO {
     // point output
     //
     for (int ii=0;ii<basicP->size();ii++) {
-      DTDEBUGWF(createBasic(),
-              << "created point:" << DTLOGPOI2DP( (*basicP)[ii] ) );
+      dt__debug(
+			  createBasic(),
+        << "created point:" << dt__point2d( (*(basicP->at(ii))) )
+			);
     }    
 
   }
@@ -1313,10 +1314,10 @@ namespace dtOO {
 				std::string aGLabel = getStringBetweenAndRemove("", ")", &label);
 				dt__pH(analyticGeometry) toTrans(depAGeoP->get(aGLabel)->clone());
 				for (int ii=transLabels.size()-1; ii>=0; ii--) {
-					DTINFOWF(
+					dt__info(
 						createAdvanced(),
-						<< "Applying " << DTLOGEVAL(transLabels[ii]) << " to " 
-						<< DTLOGEVAL(aGLabel) << "."
+						<< "Applying " << dt__eval(transLabels[ii]) << " to " 
+						<< dt__eval(aGLabel) << "."
 					);
 					
 					dtTransformer const * const dtT 
@@ -1336,7 +1337,7 @@ namespace dtOO {
 			}
       
       if ( advancedP->size() == 0) {
-        dt__THROW(createAdvanced(),
+        dt__throw(createAdvanced(),
                 << "Cannot find part " << getAttributeStr("label", *toBuildP) );
       }
 
@@ -1373,7 +1374,7 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > advancedVec;
       createAdvanced(toBuildP, bC, cValP, sFunP, depAGeoP, &advancedVec);
       if (advancedVec.size() != 1) {
-        dt__THROW(createAdvanced(), << DTLOGEVAL( advancedVec.size() ) );
+        dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
       }
       return advancedVec[0];
     }
@@ -1399,7 +1400,7 @@ namespace dtOO {
 			// get label
 			//
 			std::string label = getAttributeStr("label", *toBuildP);
-		  DTINFOWF(createAdvanced(), << DTLOGEVAL(label));
+		  dt__info(createAdvanced(), << dt__eval(label));
       
 			if ( stringContains("*", label) ) {
 				//
@@ -1429,10 +1430,10 @@ namespace dtOO {
 				std::string aFLabel = getStringBetweenAndRemove("", ")", &label);
 				dt__pH(analyticFunction) toTrans(sFunP->get(aFLabel)->clone());
 				for (int ii=transLabels.size()-1; ii>=0; ii--) {
-					DTINFOWF(
+					dt__info(
 						createAdvanced(),
-						<< "Applying " << DTLOGEVAL(transLabels[ii]) << " to " 
-						<< DTLOGEVAL(aFLabel) << "."
+						<< "Applying " << dt__eval(transLabels[ii]) << " to " 
+						<< dt__eval(aFLabel) << "."
 					);
 					
 					dtTransformer const * const dtT 
@@ -1502,7 +1503,7 @@ namespace dtOO {
       vectorHandling< analyticFunction * > advancedVec;
       createAdvanced(toBuildP, bC, cValP, sFunP, &advancedVec);
       if (advancedVec.size() != 1) {
-        dt__THROW(createAdvanced(), << DTLOGEVAL( advancedVec.size() ) );
+        dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
       }
       return advancedVec[0];
     }

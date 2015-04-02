@@ -36,7 +36,7 @@ namespace dtOO {
 			);
 		}
 		else {
-			dt__THROW(
+			dt__throw(
 			  geomCurve2d_ignoreZ(), 
 			  << "Unknown OCC type."
 			);

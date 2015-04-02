@@ -73,7 +73,7 @@ namespace dtOO {
         of.precision(8);
         of.fixed;        
 
-        DTINFOWF(compute(),
+        dt__info(compute(),
                 << "writing " <<  filename+parser.intToStringLZ(filenameCounter, 2)+".dat" 
                 );        
         
@@ -189,7 +189,7 @@ namespace dtOO {
       return SUCCESS;
     }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       send_stop_pipeline();
       return FAILURE;
     }    

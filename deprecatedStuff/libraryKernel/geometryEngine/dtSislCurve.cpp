@@ -19,7 +19,7 @@ namespace dtOO {
   dtSislCurve::dtSislCurve( dtSislBase const * base ) : dtSislBase(), dtCurve() {
     _SISLCurveP = NULL;
     dtSislCurve const * dC;
-    dt__mustDownCast(base, dtSislCurve const, dC);
+    dt__mustCast(base, dtSislCurve const, dC);
     
     _SISLCurveP = copyCurve( const_cast< SISLCurve * >(dC->_SISLCurveP) );
     _leftknot = 0;
@@ -66,14 +66,14 @@ namespace dtOO {
     int nPoints = pointV->size();;
 
 //    dtVector3 dist = pointV->at(0) - pointV->at(pointV->size()-1);
-//    DTDEBUGWF(pointConstruct3d(),
-//            << DTLOGEVAL( sqrt(dist.squared_length()) ) );
+//    dt__debug(pointConstruct3d(),
+//            << dt__eval( sqrt(dist.squared_length()) ) );
     
     if ( CGAL::compare_xyz(pointV->at(0), pointV->at(pointV->size()-1)) == CGAL::EQUAL ) {
       if ( nPoints == 2 ) {
         dt__THROW(pointConstruct3d(),
-                << "Try to create a spline out of two equal points." << LOGDEL
-                << DTLOGEVAL(nPoints) );
+                << "Try to create a spline out of two equal points." << std::endl
+                << dt__eval(nPoints) );
       }
       openFlag = 0;
     }
@@ -100,8 +100,8 @@ namespace dtOO {
             && (pointsArray[counter+2] == pointsArray[counter+2-3])
          ) {
         numPoints--;
-        DTINFOWF(pointConstruct3d(),
-                << "Duplicate point detected at " << DTLOGEVAL(ii) );
+        dt__info(pointConstruct3d(),
+                << "Duplicate point detected at " << dt__eval(ii) );
       }
       else {
         counter =  counter+3;
@@ -143,7 +143,7 @@ namespace dtOO {
         break;
       default:
         dt__THROW(getMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    
   }
@@ -165,7 +165,7 @@ namespace dtOO {
         break;
       default:
         dt__THROW(getMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    
   }
@@ -277,32 +277,32 @@ namespace dtOO {
     // length is close to zero
     //
     if (length < 0.) {
-      DTWARNINGWF(u_l(),
-              << DTLOGEVAL(length) << LOGDEL
-              << "Length is below zero." << LOGDEL
-              << "Return " << DTLOGEVAL(uuMin) );
+      dt__warning(u_l(),
+              << dt__eval(length) << std::endl
+              << "Length is below zero." << std::endl
+              << "Return " << dt__eval(uuMin) );
       return uuMin;      
     }
     else if (length > maxLength) {
-      DTWARNINGWF(u_l(),
-              << DTLOGEVAL(length) << LOGDEL
-              << "Length is bigger than " << DTLOGEVAL(maxLength) << LOGDEL
-              << "Return " << DTLOGEVAL(uuMax) );
+      dt__warning(u_l(),
+              << dt__eval(length) << std::endl
+              << "Length is bigger than " << dt__eval(maxLength) << std::endl
+              << "Return " << dt__eval(uuMax) );
       return uuMax;      
     }    
     else if (length <= (maxLength * dtSislBase::refToGeometricResolution()) ) {
-      DTWARNINGWF(u_l(),
-              << DTLOGEVAL(length) << LOGDEL
+      dt__warning(u_l(),
+              << dt__eval(length) << std::endl
               << "Length is smaller than "
-              << DTLOGEVAL(dtSislBase::refToGeometricResolution()) << " times " << maxLength );
+              << dt__eval(dtSislBase::refToGeometricResolution()) << " times " << maxLength );
 
       return uuMin;
     }
     else if (length >= (maxLength * (1. - dtSislBase::refToGeometricResolution()) ) ) {
-      DTWARNINGWF(u_l(),
-              << DTLOGEVAL(length) << LOGDEL
+      dt__warning(u_l(),
+              << dt__eval(length) << std::endl
               << "Length is bigger than "
-              << DTLOGEVAL(1. - dtSislBase::refToGeometricResolution()) << " times " << maxLength );
+              << dt__eval(1. - dtSislBase::refToGeometricResolution()) << " times " << maxLength );
 
       return uuMax;
     }
@@ -354,7 +354,7 @@ namespace dtOO {
       // convergence check
       //
       if ( fabs(deltaAbs) <= dtSislBase::refToGeometricResolution() ) {
-//        DTDEBUGWF(u_l(),
+//        dt__debug(u_l(),
 //                << "Convergence after " << counter << " iterations.");
         break;
       }
@@ -365,12 +365,12 @@ namespace dtOO {
 		header.push_back("l(u)"); header.push_back("l(u)/l(u-1)"); header.push_back("l(u)/l");
 		header.push_back("l(u)-l");
 		
-		DTINFOWF(u_l(),
-						<< floatVecToTable(header, iVal) << LOGDEL
-            << "Result after " << counter << " iterations." << LOGDEL
-            << DTLOGEVAL(length) << LOGDEL
-            << DTLOGEVAL(maxLength) << LOGDEL
-            << DTLOGEVAL(lengthUU[counter]) << " => " << delta[counter] << " * length" << LOGDEL
+		dt__info(u_l(),
+						<< floatVecToTable(header, iVal) << std::endl
+            << "Result after " << counter << " iterations." << std::endl
+            << dt__eval(length) << std::endl
+            << dt__eval(maxLength) << std::endl
+            << dt__eval(lengthUU[counter]) << " => " << delta[counter] << " * length" << std::endl
             << "uu = " << uu[counter]);
             
     
@@ -378,7 +378,7 @@ namespace dtOO {
   }
 	
 	float dtSislCurve::reparam(dtPoint3 const point) const {
-		DTFUNCTIONNOTI(reparam);
+		dt__functionNotImplemented(reparam);
 	}
     
   SISLCurve const & dtSislCurve::SISLRef( void ) const {
@@ -396,7 +396,7 @@ namespace dtOO {
   dtPoint3 dtSislCurve::getControlPoint3d(int const nPoint) const {
     if (_SISLCurveP->idim != DIMTHREED) {
       dt__THROW(getControlPoint3d(),
-              << DTLOGEVAL(_SISLCurveP->idim) << LOGDEL
+              << dt__eval(_SISLCurveP->idim) << std::endl
               << "Should be 3");
     }    
     int pIndex = nPoint * _SISLCurveP->idim;
@@ -410,7 +410,7 @@ namespace dtOO {
   void dtSislCurve::setControlPoint3d(int const nPoint, dtPoint3 const point) {
     if (_SISLCurveP->idim != DIMTHREED) {
       dt__THROW(setControlPoint3d(),
-              << DTLOGEVAL(_SISLCurveP->idim) << LOGDEL
+              << dt__eval(_SISLCurveP->idim) << std::endl
               << "Should be 3");
     }        
     int pIndex = nPoint * _SISLCurveP->idim;
@@ -422,7 +422,7 @@ namespace dtOO {
   void dtSislCurve::rotate( dtPoint3 const origin, dtVector3 const vector, const float angle ) {
     if (_SISLCurveP->idim != DIMTHREED ) {
       dt__THROW(rotate(),
-              << DTLOGEVAL(_SISLCurveP->idim) << LOGDEL
+              << dt__eval(_SISLCurveP->idim) << std::endl
               << " should be 3");
       return;
     }
@@ -441,26 +441,26 @@ namespace dtOO {
   }
 
   void dtSislCurve::dump( void ) {
-    DTDEBUGWF(dump(),
-            << "uu = [ " <<  getUMin() << ", " << getUMax() << "]" << LOGDEL
-            << "kind = " << _SISLCurveP->ikind << LOGDEL
-            << "dim = " << _SISLCurveP->idim << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->ik) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->in) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->ikind) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->idim) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->icopy) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->cuopen) );
+    dt__debug(dump(),
+            << "uu = [ " <<  getUMin() << ", " << getUMax() << "]" << std::endl
+            << "kind = " << _SISLCurveP->ikind << std::endl
+            << "dim = " << _SISLCurveP->idim << std::endl
+            << dt__eval(_SISLCurveP->ik) << std::endl
+            << dt__eval(_SISLCurveP->in) << std::endl
+            << dt__eval(_SISLCurveP->ikind) << std::endl
+            << dt__eval(_SISLCurveP->idim) << std::endl
+            << dt__eval(_SISLCurveP->icopy) << std::endl
+            << dt__eval(_SISLCurveP->cuopen) );
     DTBUFFERINIT();
     for (int ii=0; ii<getNControlPoints(); ii++) {
 //      if (getDimension() == DIMTWOD) {
-//       DTBUFFER(<< DTLOGPOI2D( getControlPoint2d(ii) ) << LOGDEL);
+//       DTBUFFER(<< dt__point2d( getControlPoint2d(ii) ) << std::endl);
 //      }
 //      else {
-        DTBUFFER(<< DTLOGPOI3D( getControlPoint3d(ii) ) << LOGDEL);
+        DTBUFFER(<< dt__point3d( getControlPoint3d(ii) ) << std::endl);
 //      }
     }
-    DTINFOWF_BUFFER(dump());
+    dt__info_BUFFER(dump());
   }
 
   void dtSislCurve::closeStraight( void ) {
@@ -469,9 +469,9 @@ namespace dtOO {
 		dtPoint3 startPoint = getPointPercent3d(1.);
 
 		if ( CGAL::compare_xyz(endPoint, startPoint) != CGAL::EQUAL ) {
-			DTWARNINGWF(closeStraight(),
-							<< DTLOGPOI3D(endPoint) << LOGDEL
-							<< DTLOGPOI3D(startPoint) << ")" << LOGDEL
+			dt__warning(closeStraight(),
+							<< dt__point3d(endPoint) << std::endl
+							<< dt__point3d(startPoint) << ")" << std::endl
 							<< "Gap between endPoint and startPoint is filled with a linear spline!");      
 			std::vector< dtPoint3 > pointArray(2, dtPoint3(0,0,0));
 			pointArray[0] = endPoint;
@@ -510,9 +510,9 @@ namespace dtOO {
 		dtPoint3 endPoint = getPointPercent3d(1.);
 		dtPoint3 startPoint = toConnect->getPointPercent3d(0.);
 
-		DTWARNINGWF(connectArithmetic(),
-						<< DTLOGPOI3D(endPoint) << LOGDEL
-						<< DTLOGPOI3D(startPoint) << ")" );
+		dt__warning(connectArithmetic(),
+						<< dt__point3d(endPoint) << std::endl
+						<< dt__point3d(startPoint) << ")" );
 
 		//
 		// create startExt
@@ -558,9 +558,9 @@ namespace dtOO {
 		dtPoint3 startPoint = getPointPercent3d(0.);
 
 		if ( CGAL::compare_xyz(endPoint, startPoint) != CGAL::EQUAL ) {
-			DTWARNINGWF(connectArithmetic(),
-							<< DTLOGPOI3D(endPoint) << LOGDEL
-							<< DTLOGPOI3D(startPoint) << ")" );
+			dt__warning(connectArithmetic(),
+							<< dt__point3d(endPoint) << std::endl
+							<< dt__point3d(startPoint) << ")" );
 			dtPoint3 newPoint = dtPoint3(
 													 .5 * (startPoint.x() + endPoint.x()), 
 													 .5 * (startPoint.y() + endPoint.y()),
@@ -617,14 +617,14 @@ namespace dtOO {
 		bool isMax =  false;
 		
     if ( uuStartD <= uMinD ) {
-      DTWARNINGWF(trim(),
-              << "Adjust " << DTLOGEVAL(uuStartD) << " to " << DTLOGEVAL(uMinD) );
+      dt__warning(trim(),
+              << "Adjust " << dt__eval(uuStartD) << " to " << dt__eval(uMinD) );
       uuStartD = uMinD;
 			isMin = true;
     }
     if ( uuEndD >= uMaxD ) {
-      DTWARNINGWF(trim(),
-              << "Adjust " << DTLOGEVAL(uuEndD) << " to " << DTLOGEVAL(uMaxD) );
+      dt__warning(trim(),
+              << "Adjust " << dt__eval(uuEndD) << " to " << dt__eval(uMaxD) );
       uuEndD = uMaxD;
 			isMax = true;
     }
@@ -633,22 +633,22 @@ namespace dtOO {
 		}
     
 		if ( uuEndD < uMinD ) {
-      DTWARNINGWF(trim(),
-              << "Adjust " << DTLOGEVAL(uuEndD) << " to " << DTLOGEVAL(uMinD) );
+      dt__warning(trim(),
+              << "Adjust " << dt__eval(uuEndD) << " to " << dt__eval(uMinD) );
       uuEndD = uMinD;
     }
     if ( uuStartD > uMaxD ) {
-      DTWARNINGWF(trim(),
-              << "Adjust " << DTLOGEVAL(uuStartD) << " to " << DTLOGEVAL(uMaxD) );
+      dt__warning(trim(),
+              << "Adjust " << dt__eval(uuStartD) << " to " << dt__eval(uMaxD) );
       uuStartD = uMaxD;
     }
 		
     s1712(_SISLCurveP, uuStartD, uuEndD, &trimmedCurve, &errFlag);
-    DTINFOWF(trim(),
-						<< DTLOGEVAL(uuStartD) << LOGDEL
-						<< DTLOGEVAL(uuEndD) << LOGDEL
-						<< DTLOGEVAL(uMinD) << LOGDEL
-						<< DTLOGEVAL(uMaxD) );
+    dt__info(trim(),
+						<< dt__eval(uuStartD) << std::endl
+						<< dt__eval(uuEndD) << std::endl
+						<< dt__eval(uMinD) << std::endl
+						<< dt__eval(uMaxD) );
 		allRight(errFlag, __FILE__, __LINE__);
     
 		SISLCurve * tmpCurve = _SISLCurveP;
@@ -659,13 +659,13 @@ namespace dtOO {
 
 	dtSislCurve const * dtSislCurve::cast2Sisl( dtCurve const * curve ) const {
 		dtSislCurve const * dtSislCurveP;
-		dt__mustDownCast(curve, dtSislCurve const, dtSislCurveP);
+		dt__mustCast(curve, dtSislCurve const, dtSislCurveP);
 		return dtSislCurveP;
 	}
 	
   dtSislCurve * dtSislCurve::cast2Sisl( dtCurve * curve ) const {
 		dtSislCurve * dtSislCurveP;
-		dt__mustDownCast(curve, dtSislCurve, dtSislCurveP);
+		dt__mustCast(curve, dtSislCurve, dtSislCurveP);
 		return dtSislCurveP;		
 	}	
 }

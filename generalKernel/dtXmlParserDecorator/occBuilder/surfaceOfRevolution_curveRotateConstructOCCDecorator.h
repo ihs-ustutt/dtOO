@@ -12,7 +12,7 @@ namespace dtOO {
 
   class surfaceOfRevolution_curveRotateConstructOCCDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(surfaceOfRevolution_curveRotateConstructOCCDecorator);
+    dt__classOnlyName(surfaceOfRevolution_curveRotateConstructOCCDecorator);
     surfaceOfRevolution_curveRotateConstructOCCDecorator();
     virtual ~surfaceOfRevolution_curveRotateConstructOCCDecorator();
     virtual void buildPart(

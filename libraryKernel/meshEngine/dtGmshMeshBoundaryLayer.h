@@ -10,7 +10,7 @@ namespace dtOO {
   
   class dtGmshMeshBoundaryLayer {
     public:
-      dt__CLASSNAME(dtGmshMeshBoundaryLayer);      
+      dt__classOnlyName(dtGmshMeshBoundaryLayer);      
       dtGmshMeshBoundaryLayer();
       dtGmshMeshBoundaryLayer( 
         float const & thickness, std::vector< float > const & spacing,

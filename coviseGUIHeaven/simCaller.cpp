@@ -50,8 +50,7 @@ namespace dtOO {
         
        if (counter == 0) {
             if (startSim()!=0) {
-                dt__THROW(compute(),
-                        << "Unable to start Simulation!");
+              dt__throw(compute(), << "Unable to start Simulation!");
             }
             sendMesh();
             sendBoundaryConditions();
@@ -68,23 +67,23 @@ namespace dtOO {
         sendInfo("recieved param is %i", recDat);
         sendData(&counter, sizeof(int));       
         
-            DTINFOWF(compute(),
-                    <<DTLOGEVAL(counter) << LOGDEL
-                    <<DTLOGEVAL(coSimLib::isConnected()) );  
+            dt__info(compute(),
+                    <<dt__eval(counter) << std::endl
+                    <<dt__eval(coSimLib::isConnected()) );  
                           
         }
         
         if (counter == 2) {
-           DTINFOWF(compute(),
-                   <<DTLOGEVAL(counter) << LOGDEL
-                   <<DTLOGEVAL(coSimLib::isConnected()) );   
+           dt__info(compute(),
+                   <<dt__eval(counter) << std::endl
+                   <<dt__eval(coSimLib::isConnected()) );   
           executeCommands(); //benötigt um coSend1Data aus Simulation auf Modul-Port zu legen. 
         }
         counter++;
         
      }
      catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       abstractModule::closeLogFile();
       send_stop_pipeline();
       
@@ -121,7 +120,7 @@ namespace dtOO {
               }
           }
           if (!inGrid) {
-              dt__THROW(compute(), << "No Grid in Input-Set.");
+              dt__throw(compute(), << "No Grid in Input-Set.");
           }
       }
       
@@ -202,8 +201,8 @@ namespace dtOO {
                   bocoVec.push_back(tmpBocoArr);
               }
           }
-          DTINFOWF(sendBoundaryConditions(),
-                    <<DTLOGEVAL(bocoVec.size()) );
+          dt__info(sendBoundaryConditions(),
+                    <<dt__eval(bocoVec.size()) );
       }
       
       const covise::coDoIntArr * wallArray = bocoVec[4];

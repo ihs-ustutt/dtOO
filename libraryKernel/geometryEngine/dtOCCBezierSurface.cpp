@@ -18,7 +18,7 @@ namespace dtOO {
 
 	dtOCCBezierSurface::dtOCCBezierSurface(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface(orig) {
-		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_BezierSurface const, _ptr);
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_BezierSurface const, _ptr);
 	}
 
 	dtOCCBezierSurface::~dtOCCBezierSurface() {
@@ -42,7 +42,7 @@ namespace dtOO {
 	}
 
 	void dtOCCBezierSurface::setControlPoint( int const uI, int const vI, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint);			
+		dt__functionNotImplemented(setControlPoint);			
 	}
 
 	int dtOCCBezierSurface::nControlPoints( int const dim ) const {
@@ -52,8 +52,8 @@ namespace dtOO {
 			case 1:		
 				return static_cast<int>(_ptr->NbVPoles());
 			default:
-				dt__THROW(getNControlPoints(),
-							<< DTLOGEVAL(dim) << LOGDEL
+				dt__throw(getNControlPoints(),
+							<< dt__eval(dim) << std::endl
 							<< "dim should be 0 or 1.");				
 		}	
 	}

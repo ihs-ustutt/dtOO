@@ -15,7 +15,7 @@ namespace dtOO {
   
   class extInfoContainer : public coDoSetInterface {
   public:
-    dt__CLASSNAME(extInfoContainer);
+    dt__classOnlyName(extInfoContainer);
     extInfoContainer();
     extInfoContainer(const extInfoContainer& orig);
     virtual ~extInfoContainer();

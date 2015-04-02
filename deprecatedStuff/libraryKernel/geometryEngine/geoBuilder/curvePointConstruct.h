@@ -10,7 +10,7 @@ namespace dtOO {
   
   class curvePointConstruct {
   public:
-    dt__CLASSNAME(curvePointConstruct);
+    dt__classOnlyName(curvePointConstruct);
     curvePointConstruct( std::vector < dtPoint3 > const & pp, int const & order );
     virtual ~curvePointConstruct();
     dtCurve * result( void );

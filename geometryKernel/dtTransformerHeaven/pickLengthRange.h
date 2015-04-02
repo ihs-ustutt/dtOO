@@ -10,7 +10,7 @@ namespace dtOO {
   
   class pickLengthRange : public dtTransformer{
   public:
-    dt__CLASSNAME(pickLengthRange);   
+    dt__classOnlyName(pickLengthRange);   
     pickLengthRange();
     pickLengthRange(const pickLengthRange& orig);
     virtual ~pickLengthRange();

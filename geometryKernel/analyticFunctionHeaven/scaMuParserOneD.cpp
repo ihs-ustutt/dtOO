@@ -29,7 +29,7 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__THROW( scaMuParserOneD(), 
+      dt__throw( scaMuParserOneD(), 
               << e.GetMsg() );
     }  
   }
@@ -51,7 +51,7 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__THROW( scaMuParserOneD(), 
+      dt__throw( scaMuParserOneD(), 
               << e.GetMsg() );
     }  
   }
@@ -84,7 +84,7 @@ namespace dtOO {
       myFloat = (float) _parser->Eval();
     }
     catch (mu::Parser::exception_type &e) {
-      dt__THROW(getValue, << e.GetMsg() );
+      dt__throw(getValue, << e.GetMsg() );
     }
     return myFloat;
   }

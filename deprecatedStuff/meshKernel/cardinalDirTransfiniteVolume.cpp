@@ -95,7 +95,7 @@ namespace dtOO {
     std::string position = getAttributeStr("position", wElement);      
     analyticGeometry const * aG = depAGeoP->get(label);
     map3dTo3d const * mm3d;
-    dt__mustDownCast(aG, map3dTo3d const, mm3d);
+    dt__mustCast(aG, map3dTo3d const, mm3d);
     rRefP[rStrToId(position)] = mm3d->clone();
     
     //
@@ -106,7 +106,7 @@ namespace dtOO {
     position = getAttributeStr("position", wElement);      
     aG = depAGeoP->get(label);
     map2dTo3d const * mm2d;
-    dt__mustDownCast(aG, map2dTo3d const, mm2d);
+    dt__mustCast(aG, map2dTo3d const, mm2d);
     sRefP[fStrToId(position)] = mm2d->clone();//mm3d->reparamInVolume( mm2d );
     
     //

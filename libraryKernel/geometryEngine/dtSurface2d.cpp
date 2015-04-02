@@ -147,11 +147,11 @@ namespace dtOO {
 	//
 	//
   dtPoint2 dtSurface2d::controlPoint( int const uI, int const vI ) const {
-		dt__THROW(controlPoint(), <<"Not possible on this kind of surface.");
+		dt__throw(controlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
   void dtSurface2d::setControlPoint( int const uI, int const vI, dtPoint2 const point ) {
-		dt__THROW(setControlPoint(), <<"Not possible on this kind of surface.");
+		dt__throw(setControlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
   int dtSurface2d::nControlPoints( int const dim ) const {
@@ -161,18 +161,18 @@ namespace dtOO {
 			case 1:
 				return 0;
 			default:
-				dt__THROW(
+				dt__throw(
 					nControlPoints(),
-					<< DTLOGEVAL(dim) << LOGDEL
+					<< dt__eval(dim) << std::endl
 					<< "dim should be 0 or 1."
 				);
 		}
 	}
 		
 	void dtSurface2d::dump( void ) const {
-    DTINFOWF(
+    dt__info(
 			dump(), 
-      << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << LOGDEL
+      << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << std::endl
       << "vv = [ " <<  minPara(1) << ", " << maxPara(1) << "]" 
 		);
 	}		

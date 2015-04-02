@@ -66,7 +66,7 @@ namespace dtOO {
 		    return static_cast<float>(startParaSecond);
       default:
         dt__THROW(getMin(),
-              << DTLOGEVAL(dim) << LOGDEL
+              << dt__eval(dim) << std::endl
               << "dim should be 0 or 1.");				
 		}
 	}
@@ -93,7 +93,7 @@ namespace dtOO {
 		    return static_cast<float>(endParaSecond);
       default:
         dt__THROW(getMax(),
-              << DTLOGEVAL(dim) << LOGDEL
+              << dt__eval(dim) << std::endl
               << "dim should be 0 or 1.");				
 		}		
 	}
@@ -106,7 +106,7 @@ namespace dtOO {
 		    return _SISLSurfP->in2;
       default:
         dt__THROW(getMax(),
-              << DTLOGEVAL(dim) << LOGDEL
+              << dt__eval(dim) << std::endl
               << "dim should be 0 or 1.");				
 		}
   }
@@ -125,7 +125,7 @@ namespace dtOO {
 				return false;				
       default:
         dt__THROW(getMax(),
-              << DTLOGEVAL(dim) << LOGDEL
+              << dt__eval(dim) << std::endl
               << "dim should be 0 or 1.");				
 		}
 	}
@@ -252,22 +252,22 @@ namespace dtOO {
   void dtSislSurf::dump( void ) const {
     DTBUFFERINIT();
     DTBUFFER( 
-            << "uu = [ " <<  getUMin() << ", " << getUMax() << "]" << LOGDEL
-            << "vv = [ " <<  getVMin() << ", " << getVMax() << "]" << LOGDEL
-            << "kind = " << _SISLSurfP->ikind << LOGDEL
-            << "dim = " << _SISLSurfP->idim << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->ik1) << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->ik2) << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->in1) << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->in2) << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->ikind) << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->idim) << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->icopy) << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->use_count) << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->cuopen_1) << LOGDEL
-            << DTLOGEVAL(_SISLSurfP->cuopen_2) << LOGDEL
-            << DTLOGEVAL(_cLengthMin) << LOGDEL
-            << DTLOGEVAL(_cLengthMax) );
+            << "uu = [ " <<  getUMin() << ", " << getUMax() << "]" << std::endl
+            << "vv = [ " <<  getVMin() << ", " << getVMax() << "]" << std::endl
+            << "kind = " << _SISLSurfP->ikind << std::endl
+            << "dim = " << _SISLSurfP->idim << std::endl
+            << dt__eval(_SISLSurfP->ik1) << std::endl
+            << dt__eval(_SISLSurfP->ik2) << std::endl
+            << dt__eval(_SISLSurfP->in1) << std::endl
+            << dt__eval(_SISLSurfP->in2) << std::endl
+            << dt__eval(_SISLSurfP->ikind) << std::endl
+            << dt__eval(_SISLSurfP->idim) << std::endl
+            << dt__eval(_SISLSurfP->icopy) << std::endl
+            << dt__eval(_SISLSurfP->use_count) << std::endl
+            << dt__eval(_SISLSurfP->cuopen_1) << std::endl
+            << dt__eval(_SISLSurfP->cuopen_2) << std::endl
+            << dt__eval(_cLengthMin) << std::endl
+            << dt__eval(_cLengthMax) );
     
 //    int nPoints;
 //    //
@@ -275,21 +275,21 @@ namespace dtOO {
 //    //
 //    nPoints = _SISLSurfP->in1 * _SISLSurfP->idim;
 //    for (int ii=0;ii<nPoints;ii++) {
-//      DTBUFFER( << "_SISLSurfP->et1[" << ii << "] = " << _SISLSurfP->et1[ii] << LOGDEL);
+//      DTBUFFER( << "_SISLSurfP->et1[" << ii << "] = " << _SISLSurfP->et1[ii] << std::endl);
 //    }
 //    //
 //    //et2
 //    //
 //    nPoints = _SISLSurfP->in2 * _SISLSurfP->idim;
 //    for (int ii=0;ii<nPoints;ii++) {
-//      DTBUFFER( << "_SISLSurfP->et2[" << ii << "] = " << _SISLSurfP->et2[ii] << LOGDEL);
+//      DTBUFFER( << "_SISLSurfP->et2[" << ii << "] = " << _SISLSurfP->et2[ii] << std::endl);
 //    }
 //    //
 //    //ecoef
 //    //
 //    nPoints = _SISLSurfP->in1 * _SISLSurfP->in2 * _SISLSurfP->idim;
 //    for (int ii=0;ii<nPoints;ii++) {
-//      DTBUFFER( << "_SISLSurfP->ecoef[" << ii << "] = " << _SISLSurfP->ecoef[ii] << LOGDEL);
+//      DTBUFFER( << "_SISLSurfP->ecoef[" << ii << "] = " << _SISLSurfP->ecoef[ii] << std::endl);
 //    }
 //    if ( (_SISLSurfP->ikind == 2) || (_SISLSurfP->ikind == 4) ) {
 //      //
@@ -297,10 +297,10 @@ namespace dtOO {
 //      //
 //      nPoints = _SISLSurfP->in1 * _SISLSurfP->in2 * _SISLSurfP->idim;
 //      for (int ii=0;ii<nPoints;ii++) {
-//        DTBUFFER( << "_SISLSurfP->rcoef[" << ii << "] = " << _SISLSurfP->rcoef[ii] << LOGDEL);
+//        DTBUFFER( << "_SISLSurfP->rcoef[" << ii << "] = " << _SISLSurfP->rcoef[ii] << std::endl);
 //      }
 //    }
-    DTDEBUGWF_BUFFER(dump());
+    dt__debug_BUFFER(dump());
   }
 
   dtVector3 dtSislSurf::normal(float const uu, float const vv) const {
@@ -323,11 +323,11 @@ namespace dtOO {
           &errFlag); //int *stat; 
  
     if (errFlag == 1) {
-      DTWARNINGWF(normal(),
+      dt__warning(normal(),
               << "Surface is degenerate at the point, normal has zero length.");
     }
     else if (errFlag == 2) {
-      DTWARNINGWF(normal(),
+      dt__warning(normal(),
               << "Angle between tangents is less than the angular tolerance.");
     }
     
@@ -408,7 +408,7 @@ namespace dtOO {
   void dtSislSurf::rotate( dtPoint3 const origin, dtVector3 const vector, const float angle ) {
     if (_SISLSurfP->idim != DIMTHREED ) {
       dt__THROW(rotate(),
-              << DTLOGEVAL(_SISLSurfP->idim) << LOGDEL
+              << dt__eval(_SISLSurfP->idim) << std::endl
               << " should be 3");
       return;
     }
@@ -557,10 +557,10 @@ namespace dtOO {
           dtPoint2 cPUV = reparam( cPXYZ );
           dtVector3 vv = normal( cPUV.x(), cPUV.y());
           newCP[ii][jj] = cPXYZ + nn * vv;
-          DTBUFFER( << DTLOGPOI3D(cPXYZ) << " | " << DTLOGPOI2D(cPUV) << " | " << DTLOGVEC3D(vv) << LOGDEL );
+          DTBUFFER( << dt__point3d(cPXYZ) << " | " << dt__point2d(cPUV) << " | " << dt__vector3d(vv) << std::endl );
 //        }
 //      }
-      DTDEBUGWF_BUFFER(offsetNormal());
+      dt__debug_BUFFER(offsetNormal());
       
 //      for (int ii=0;ii<getNControlPointsU();ii++) {
 //        for (int jj=0;jj<getNControlPointsV();jj++) {
@@ -600,15 +600,15 @@ namespace dtOO {
       &errFlag
     );
 
-//    DTINFOWF(getClosestPointParameter(),
-//            << DTLOGEVAL( _cLengthMin ) << LOGDEL
-//            << DTLOGEVAL( _cLengthMax ) << LOGDEL
-//            << DTLOGEVAL( geoRes ) << LOGDEL
-//            << DTLOGEVAL( dist ) << LOGDEL
-//            << DTLOGPOI3D( point ) << LOGDEL
-//            << DTLOGPOI3D( getPoint3d(gpar[0], gpar[1]) ) << LOGDEL
-//            << DTLOGEVAL(gpar[0]) << LOGDEL
-//            << DTLOGEVAL(gpar[1]) );
+//    dt__info(getClosestPointParameter(),
+//            << dt__eval( _cLengthMin ) << std::endl
+//            << dt__eval( _cLengthMax ) << std::endl
+//            << dt__eval( geoRes ) << std::endl
+//            << dt__eval( dist ) << std::endl
+//            << dt__point3d( point ) << std::endl
+//            << dt__point3d( getPoint3d(gpar[0], gpar[1]) ) << std::endl
+//            << dt__eval(gpar[0]) << std::endl
+//            << dt__eval(gpar[1]) );
     
     //
     // check error
@@ -678,9 +678,9 @@ namespace dtOO {
     }
     else {
       dt__THROW(getClosestPointParameterExtend(),
-              << DTLOGEVAL(nClosestPoints) << LOGDEL
-              << DTLOGEVAL(nClosestCurves) << LOGDEL
-              << DTLOGPOI3D(point) << LOGDEL
+              << dt__eval(nClosestPoints) << std::endl
+              << dt__eval(nClosestCurves) << std::endl
+              << dt__point3d(point) << std::endl
               << "No point found.");      
     }
     
@@ -692,20 +692,20 @@ namespace dtOO {
     double dist  = sqrt(diffPoint.squared_length());
 
     if (dist <= (dtSislBase::refToMinPointDistance()*_cLengthMin) ) {
-      DTWARNINGWF(
+      dt__warning(
 			  getClosestPointParameterExtend(),
-				<< "Distance of point to reparameterized point is bigger than expected." << LOGDEL
-				<< "Should be smaller than " << dtSislBase::refToMinPointDistance()*_cLengthMin << LOGDEL
-				<< "Is " << DTLOGEVAL(dist) << LOGDEL
-				<< DTLOGEVAL( _cLengthMin ) << LOGDEL
-				<< DTLOGEVAL( _cLengthMax ) << LOGDEL
-				<< DTLOGEVAL( geoRes ) << LOGDEL              
-				<< DTLOGPOI3D(point) << LOGDEL
-				<< DTLOGPOI3D(retPoint) << LOGDEL
-				<< DTLOGPOI3D(diffPoint) << LOGDEL
-				<< DTLOGEVAL(dist) << LOGDEL
-				<< DTLOGEVAL(retU) << LOGDEL
-				<< DTLOGEVAL(retV) );
+				<< "Distance of point to reparameterized point is bigger than expected." << std::endl
+				<< "Should be smaller than " << dtSislBase::refToMinPointDistance()*_cLengthMin << std::endl
+				<< "Is " << dt__eval(dist) << std::endl
+				<< dt__eval( _cLengthMin ) << std::endl
+				<< dt__eval( _cLengthMax ) << std::endl
+				<< dt__eval( geoRes ) << std::endl              
+				<< dt__point3d(point) << std::endl
+				<< dt__point3d(retPoint) << std::endl
+				<< dt__point3d(diffPoint) << std::endl
+				<< dt__eval(dist) << std::endl
+				<< dt__eval(retU) << std::endl
+				<< dt__eval(retV) );
     }
     
 
@@ -817,7 +817,7 @@ namespace dtOO {
   std::vector< dtPoint3 > dtSislSurf::getBoundingBox3d( void ) const {
     if (getDimension() != DIMTHREED ) {
       dt__THROW(getBoundingBox3d(),
-              << DTLOGEVAL( getDimension() ) << LOGDEL
+              << dt__eval( getDimension() ) << std::endl
               << " should be 3");      
     }
     int errFlag;
@@ -852,25 +852,25 @@ namespace dtOO {
 	
 	dtSislCurve const * dtSislSurf::cast2Sisl( dtCurve const * curve ) const {
 		dtSislCurve const * sislC;
-		dt__mustDownCast(curve, dtSislCurve const, sislC);
+		dt__mustCast(curve, dtSislCurve const, sislC);
 		return sislC;
 	}
 	
   dtSislCurve * dtSislSurf::cast2Sisl( dtCurve * curve ) const {
 		dtSislCurve * sislC;
-		dt__mustDownCast(curve, dtSislCurve, sislC);
+		dt__mustCast(curve, dtSislCurve, sislC);
 		return sislC;		
 	}
 
 	dtSislCurve2d const * dtSislSurf::cast2Sisl( dtCurve2d const * curve ) const {
 		dtSislCurve2d const * sislC;
-		dt__mustDownCast(curve, dtSislCurve2d const, sislC);
+		dt__mustCast(curve, dtSislCurve2d const, sislC);
 		return sislC;
 	}
 	
   dtSislCurve2d * dtSislSurf::cast2Sisl( dtCurve2d * curve ) const {
 		dtSislCurve2d * sislC;
-		dt__mustDownCast(curve, dtSislCurve2d, sislC);
+		dt__mustCast(curve, dtSislCurve2d, sislC);
 		return sislC;		
 	}
 	

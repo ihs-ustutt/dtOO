@@ -75,7 +75,7 @@ namespace dtOO {
    */    
   class dtOMMesh : public omMesh {
     public:
-      dt__CLASSNAME(dtOMMesh);
+      dt__classOnlyName(dtOMMesh);
     public:
       dtOMMesh();
       dtOMMesh( dtOMMesh const & orig );

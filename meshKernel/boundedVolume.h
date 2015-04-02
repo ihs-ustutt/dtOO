@@ -25,7 +25,7 @@ namespace dtOO {
                         public optionHandling,
                         public renderInterface {
   public:
-    dt__CLASSNAME(boundedVolume);
+    dt__classOnlyName(boundedVolume);
     boundedVolume();
     virtual ~boundedVolume();
     virtual void init( 

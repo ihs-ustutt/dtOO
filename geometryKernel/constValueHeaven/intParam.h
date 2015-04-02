@@ -7,7 +7,7 @@
 namespace dtOO {
   class intParam : public constValue {
   public:
-    dt__CLASSSTD(intParam, constValue);        
+    dt__class(intParam, constValue);        
     intParam();
     intParam(intParam const & orig);
     virtual ~intParam();

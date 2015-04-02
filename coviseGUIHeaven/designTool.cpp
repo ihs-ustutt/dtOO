@@ -523,7 +523,7 @@ namespace dtOO {
 			}			
 		}		
 		catch (eGeneral & eGenRef) {
-			DTCATCHERRORWF(compute(), eGenRef.what());
+			dt__catch(compute(), eGenRef.what());
 			return;
 		}
   }
@@ -643,7 +643,7 @@ namespace dtOO {
 			return CONTINUE_PIPELINE;
 		}
 		catch (eGeneral & eGenRef) {
-			DTCATCHERRORWF(compute(), eGenRef.what());
+			dt__catch(compute(), eGenRef.what());
 			
 			abstractModule::closeLogFile();
 			return STOP_PIPELINE;
@@ -676,10 +676,10 @@ namespace dtOO {
   void designTool::loadCVState(void) {
     if (_parser.get() != NULL ) {			
 			std::string stateName = _cVStateChoice->getLabel( _cVStateChoice->getValue() );
-			DTINFOWF(loadStateToConst,
-							<< "Loading state:" << LOGDEL
-							<< DTLOGEVAL(_cVStateChoice->getValue()) << LOGDEL
-							<< DTLOGEVAL(stateName) << LOGDEL
+			dt__info(loadStateToConst,
+							<< "Loading state:" << std::endl
+							<< dt__eval(_cVStateChoice->getValue()) << std::endl
+							<< dt__eval(stateName) << std::endl
 							<< " to constValue.");
 
 			_parser->loadStateToConst(stateName, _cV);

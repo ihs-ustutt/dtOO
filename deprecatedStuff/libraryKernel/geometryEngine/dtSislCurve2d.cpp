@@ -20,7 +20,7 @@ namespace dtOO {
 //  dtSislCurve2d::dtSislCurve2d( dtSislBase const * base ) : dtSislBase() {
 //    _SISLCurveP = NULL;
 //    dtSislCurve2d const * dC;
-//    dt__mustDownCast(base, dtSislCurve2d const, dC);
+//    dt__mustCast(base, dtSislCurve2d const, dC);
 //    
 //    _SISLCurveP = copyCurve( const_cast< SISLCurve * >(dC->_SISLCurveP) );
 //    _leftknot = 0;
@@ -73,7 +73,7 @@ namespace dtOO {
     }
     else {
       dt__THROW(dtSislCurve2d(),
-              << "Unknown " << DTLOGEVAL(attribute) );
+              << "Unknown " << dt__eval(attribute) );
     }
     //
     // destructor
@@ -157,7 +157,7 @@ namespace dtOO {
         break;
       default:
         dt__THROW(minPara(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    
   }
@@ -179,7 +179,7 @@ namespace dtOO {
         break;
       default:
         dt__THROW(maxPara(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    
   }
@@ -238,13 +238,13 @@ namespace dtOO {
 //    double yP = (float) dbl_pointLeft[3];
 //    if ( (xP == 0.) && (yP == 0.)) {
 //      dt__THROW(normal(),
-//              << DTLOGEVAL(xP) << LOGDEL
-//              << DTLOGEVAL(yP) );      
+//              << dt__eval(xP) << std::endl
+//              << dt__eval(yP) );      
 //    } 
 //    else if ( xP == 0. ) {
-//      DTWARNINGWF(normal(),
-//              << DTLOGEVAL(xP) << LOGDEL
-//              << DTLOGEVAL(yP) << LOGDEL
+//      dt__warning(normal(),
+//              << dt__eval(xP) << std::endl
+//              << dt__eval(yP) << std::endl
 //              << "Adjusting to (1., 0.) ");
 //      yyV[0] = 1.;
 //      yyV[1] = 0.;
@@ -263,12 +263,12 @@ namespace dtOO {
 //    //
 //    double orientation = xP * yyV[1] - yP * yyV[0];
 //    if (orientation < 0) {
-//      DTDEBUGWF(normal(),
-//              << DTLOGEVAL(xP) << LOGDEL
-//              << DTLOGEVAL(yP) << LOGDEL
-//              << DTLOGEVAL(yyV[0]) << LOGDEL
-//              << DTLOGEVAL(yyV[1]) << LOGDEL
-//              << DTLOGEVAL(orientation) << LOGDEL
+//      dt__debug(normal(),
+//              << dt__eval(xP) << std::endl
+//              << dt__eval(yP) << std::endl
+//              << dt__eval(yyV[0]) << std::endl
+//              << dt__eval(yyV[1]) << std::endl
+//              << dt__eval(orientation) << std::endl
 //              << "Changing direction of normal vector.");
 //      yyV[0] = -yyV[0];
 //      yyV[1] = -yyV[1];
@@ -338,32 +338,32 @@ namespace dtOO {
     // length is close to zero
     //
     if (length < 0.) {
-      DTWARNINGWF(u_l(),
-              << DTLOGEVAL(length) << LOGDEL
-              << "Length is below zero." << LOGDEL
-              << "Return " << DTLOGEVAL(uuMin) );
+      dt__warning(u_l(),
+              << dt__eval(length) << std::endl
+              << "Length is below zero." << std::endl
+              << "Return " << dt__eval(uuMin) );
       return uuMin;      
     }
     else if (length > maxLength) {
-      DTWARNINGWF(u_l(),
-              << DTLOGEVAL(length) << LOGDEL
-              << "Length is bigger than " << DTLOGEVAL(maxLength) << LOGDEL
-              << "Return " << DTLOGEVAL(uuMax) );
+      dt__warning(u_l(),
+              << dt__eval(length) << std::endl
+              << "Length is bigger than " << dt__eval(maxLength) << std::endl
+              << "Return " << dt__eval(uuMax) );
       return uuMax;      
     }    
     else if (length <= (maxLength * dtSislBase::refToGeometricResolution()) ) {
-      DTWARNINGWF(u_l(),
-              << DTLOGEVAL(length) << LOGDEL
+      dt__warning(u_l(),
+              << dt__eval(length) << std::endl
               << "Length is smaller than "
-              << DTLOGEVAL(dtSislBase::refToGeometricResolution()) << " times " << maxLength );
+              << dt__eval(dtSislBase::refToGeometricResolution()) << " times " << maxLength );
 
       return uuMin;
     }
     else if (length >= (maxLength * (1. - dtSislBase::refToGeometricResolution()) ) ) {
-      DTWARNINGWF(u_l(),
-              << DTLOGEVAL(length) << LOGDEL
+      dt__warning(u_l(),
+              << dt__eval(length) << std::endl
               << "Length is bigger than "
-              << DTLOGEVAL(1. - dtSislBase::refToGeometricResolution()) << " times " << maxLength );
+              << dt__eval(1. - dtSislBase::refToGeometricResolution()) << " times " << maxLength );
 
       return uuMax;
     }
@@ -410,7 +410,7 @@ namespace dtOO {
       // convergence check
       //
       if ( fabs(res[ii]) <= dtSislBase::refToGeometricResolution() ) {
-        DTDEBUGWF(u_l(),
+        dt__debug(u_l(),
                 << "Convergence after " << counter << " iterations.");
         break;
       }
@@ -419,11 +419,11 @@ namespace dtOO {
     //
     // output
     //
-    DTDEBUGWF(u_l(),
-            << "Result after " << counter << " iterations." << LOGDEL
-            << DTLOGEVAL(length) << LOGDEL
-            << DTLOGEVAL(maxLength) << LOGDEL
-            << DTLOGEVAL(lengthUU[counter]) << " => " << delta[counter] << " * length" << LOGDEL
+    dt__debug(u_l(),
+            << "Result after " << counter << " iterations." << std::endl
+            << dt__eval(length) << std::endl
+            << dt__eval(maxLength) << std::endl
+            << dt__eval(lengthUU[counter]) << " => " << delta[counter] << " * length" << std::endl
             << "uu = " << uu[counter]);
             
     
@@ -431,7 +431,7 @@ namespace dtOO {
   }
     
   float dtSislCurve2d::reparam(dtPoint2 const point) const {
-		DTFUNCTIONNOTI(reparam);
+		dt__functionNotImplemented(reparam);
 	}
 	
   SISLCurve const * dtSislCurve2d::getSISLCurve( void ) const{
@@ -445,7 +445,7 @@ namespace dtOO {
   dtPoint2 dtSislCurve2d::controlPoint(int const nPoint) const {
     if (_SISLCurveP->idim != DIMTWOD) {
       dt__THROW(controlPoint(),
-              << DTLOGEVAL(_SISLCurveP->idim) << LOGDEL
+              << dt__eval(_SISLCurveP->idim) << std::endl
               << "Should be 2");
     }
     int pIndex = nPoint * _SISLCurveP->idim;
@@ -458,7 +458,7 @@ namespace dtOO {
   void dtSislCurve2d::setControlPoint(int const nPoint, dtPoint2 const point) {
     if (_SISLCurveP->idim != DIMTWOD) {
       dt__THROW(setControlPoint(),
-              << DTLOGEVAL(_SISLCurveP->idim) << LOGDEL
+              << dt__eval(_SISLCurveP->idim) << std::endl
               << "Should be 2");
     }        
     int pIndex = nPoint * _SISLCurveP->idim;
@@ -475,21 +475,21 @@ namespace dtOO {
   }
 
   void dtSislCurve2d::dump( void ) {
-    DTDEBUGWF(dump(),
-            << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << LOGDEL
-            << "kind = " << _SISLCurveP->ikind << LOGDEL
-            << "dim = " << _SISLCurveP->idim << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->ik) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->in) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->ikind) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->idim) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->icopy) << LOGDEL
-            << DTLOGEVAL(_SISLCurveP->cuopen) );
+    dt__debug(dump(),
+            << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << std::endl
+            << "kind = " << _SISLCurveP->ikind << std::endl
+            << "dim = " << _SISLCurveP->idim << std::endl
+            << dt__eval(_SISLCurveP->ik) << std::endl
+            << dt__eval(_SISLCurveP->in) << std::endl
+            << dt__eval(_SISLCurveP->ikind) << std::endl
+            << dt__eval(_SISLCurveP->idim) << std::endl
+            << dt__eval(_SISLCurveP->icopy) << std::endl
+            << dt__eval(_SISLCurveP->cuopen) );
     DTBUFFERINIT();
     for (int ii=0; ii<nControlPoints(); ii++) {
-      DTBUFFER(<< DTLOGPOI2D( controlPoint(ii) ) << LOGDEL);
+      DTBUFFER(<< dt__point2d( controlPoint(ii) ) << std::endl);
     }
-    DTINFOWF_BUFFER(dump());
+    dt__info_BUFFER(dump());
   }
 
 //  void dtSislCurve2d::closeStraight( void ) {
@@ -497,9 +497,9 @@ namespace dtOO {
 //		dtPoint2 startPoint = pointPercent(1.);
 //
 //		if ( CGAL::compare_xy(endPoint, startPoint) != CGAL::EQUAL ) {
-//			DTWARNINGWF(closeStraight(),
-//							<< DTLOGPOI2D(endPoint) << LOGDEL
-//							<< DTLOGPOI2D(startPoint) << ")" << LOGDEL
+//			dt__warning(closeStraight(),
+//							<< dt__point2d(endPoint) << std::endl
+//							<< dt__point2d(startPoint) << ")" << std::endl
 //							<< "gap between endPoint and startPoint is filled with a linear spline!");      
 //			std::vector< dtPoint2 > pointArray(2,dtPoint2(0,0));
 //			pointArray[0] = endPoint;
@@ -536,9 +536,9 @@ namespace dtOO {
 		dtPoint2 endPoint = pointPercent(1.);
 		dtPoint2 startPoint = toConnect->pointPercent(0.);
 
-		DTWARNINGWF(connectArithmetic(),
-						<< DTLOGPOI2D(endPoint) << LOGDEL
-						<< DTLOGPOI2D(startPoint) << ")" );
+		dt__warning(connectArithmetic(),
+						<< dt__point2d(endPoint) << std::endl
+						<< dt__point2d(startPoint) << ")" );
 
 		//
 		// create startExt
@@ -579,9 +579,9 @@ namespace dtOO {
 //		dtPoint2 startPoint = pointPercent(0.);
 //
 //		if ( CGAL::compare_xy(endPoint, startPoint) != CGAL::EQUAL ) {
-//			DTWARNINGWF(connectArithmetic(),
-//							<< DTLOGPOI2D(endPoint) << LOGDEL
-//							<< DTLOGPOI2D(startPoint) << ")" );
+//			dt__warning(connectArithmetic(),
+//							<< dt__point2d(endPoint) << std::endl
+//							<< dt__point2d(startPoint) << ")" );
 //			dtPoint2 newPoint = dtPoint2(
 //													 .5 * (startPoint.x() + endPoint.x()), 
 //													 .5 * (startPoint.y() + endPoint.y())
@@ -633,14 +633,14 @@ namespace dtOO {
 //		bool isMax =  false;
 //		
 //    if ( uuStartD <= uMinD ) {
-//      DTWARNINGWF(trim(),
-//              << "Adjust " << DTLOGEVAL(uuStartD) << " to " << DTLOGEVAL(uMinD) );
+//      dt__warning(trim(),
+//              << "Adjust " << dt__eval(uuStartD) << " to " << dt__eval(uMinD) );
 //      uuStartD = uMinD;
 //			isMin = true;
 //    }
 //    if ( uuEndD >= uMaxD ) {
-//      DTWARNINGWF(trim(),
-//              << "Adjust " << DTLOGEVAL(uuEndD) << " to " << DTLOGEVAL(uMaxD) );
+//      dt__warning(trim(),
+//              << "Adjust " << dt__eval(uuEndD) << " to " << dt__eval(uMaxD) );
 //      uuEndD = uMaxD;
 //			isMax = true;
 //    }
@@ -649,22 +649,22 @@ namespace dtOO {
 //		}
 //    
 //		if ( uuEndD < uMinD ) {
-//      DTWARNINGWF(trim(),
-//              << "Adjust " << DTLOGEVAL(uuEndD) << " to " << DTLOGEVAL(uMinD) );
+//      dt__warning(trim(),
+//              << "Adjust " << dt__eval(uuEndD) << " to " << dt__eval(uMinD) );
 //      uuEndD = uMinD;
 //    }
 //    if ( uuStartD > uMaxD ) {
-//      DTWARNINGWF(trim(),
-//              << "Adjust " << DTLOGEVAL(uuStartD) << " to " << DTLOGEVAL(uMaxD) );
+//      dt__warning(trim(),
+//              << "Adjust " << dt__eval(uuStartD) << " to " << dt__eval(uMaxD) );
 //      uuStartD = uMaxD;
 //    }
 //		
 //    s1712(_SISLCurveP, uuStartD, uuEndD, &trimmedCurve, &errFlag);
-//    DTINFOWF(trim(),
-//						<< DTLOGEVAL(uuStartD) << LOGDEL
-//						<< DTLOGEVAL(uuEndD) << LOGDEL
-//						<< DTLOGEVAL(uMinD) << LOGDEL
-//						<< DTLOGEVAL(uMaxD) );
+//    dt__info(trim(),
+//						<< dt__eval(uuStartD) << std::endl
+//						<< dt__eval(uuEndD) << std::endl
+//						<< dt__eval(uMinD) << std::endl
+//						<< dt__eval(uMaxD) );
 //		allRight(errFlag, __FILE__, __LINE__);
 //    
 //		SISLCurve * tmpCurve = _SISLCurveP;
@@ -943,16 +943,16 @@ namespace dtOO {
 //    
 //    if (pp.size() > 1) {
 //      DTBUFFERINIT();
-//      DTBUFFER( << "More than one intersection point found." << LOGDEL );
+//      DTBUFFER( << "More than one intersection point found." << std::endl );
 //      for (int ii=0;ii<pp.size();ii++) {
-//        DTBUFFER( << DTLOGPOI2D(pp[ii]) << LOGDEL );
+//        DTBUFFER( << dt__point2d(pp[ii]) << std::endl );
 //      }
-//      DTBUFFER( << "Returning point " << DTLOGPOI2D(pp[0]) );
-//      DTDEBUGWF_BUFFER( getFunctionValue2d() );
+//      DTBUFFER( << "Returning point " << dt__point2d(pp[0]) );
+//      dt__debug_BUFFER( getFunctionValue2d() );
 //    }
 //    else if (pp.size() == 0) {
 //      dt__THROW(getFunctionValue2d(),
-//              << "No Point at " << DTLOGEVAL(xx) << " found.");
+//              << "No Point at " << dt__eval(xx) << " found.");
 //    }
 //    
 //    return pp[0].y();
@@ -960,13 +960,13 @@ namespace dtOO {
 
 	dtSislCurve2d const * dtSislCurve2d::cast2Sisl( dtCurve2d const * curve ) const {
 		dtSislCurve2d const * dtSislCurve2dP;
-		dt__mustDownCast(curve, dtSislCurve2d const, dtSislCurve2dP);
+		dt__mustCast(curve, dtSislCurve2d const, dtSislCurve2dP);
 		return dtSislCurve2dP;
 	}
 	
   dtSislCurve2d * dtSislCurve2d::cast2Sisl( dtCurve2d * curve ) const {
 		dtSislCurve2d * dtSislCurve2dP;
-		dt__mustDownCast(curve, dtSislCurve2d, dtSislCurve2dP);
+		dt__mustCast(curve, dtSislCurve2d, dtSislCurve2dP);
 		return dtSislCurve2dP;		
 	}	
 }

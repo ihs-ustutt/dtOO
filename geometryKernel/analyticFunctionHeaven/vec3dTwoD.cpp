@@ -167,8 +167,8 @@ namespace dtOO {
         return _min[1];
         break;				
       default:
-        dt__THROW(xMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(xMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }   
 	}
@@ -182,8 +182,8 @@ namespace dtOO {
         return _max[1];
         break;
       default:
-        dt__THROW(xMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(xMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }
 	}	
@@ -197,8 +197,8 @@ namespace dtOO {
         _min[1] = min;
 				break;
       default:
-        dt__THROW(setMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(setMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }
   }
@@ -212,8 +212,8 @@ namespace dtOO {
         _max[1] = max;
 				break;
       default:
-        dt__THROW(setMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(setMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }
   }
@@ -241,7 +241,7 @@ namespace dtOO {
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMin(1);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );
@@ -252,7 +252,7 @@ namespace dtOO {
 			xx[0] = xMin(0);
 			xx[1] = xMin(1) + jjF * intervalV;
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );			
@@ -263,7 +263,7 @@ namespace dtOO {
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMax(1);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );
@@ -274,7 +274,7 @@ namespace dtOO {
 			xx[0] = xMax(0);
 			xx[1] = xMin(1) + jjF * intervalV;
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );			

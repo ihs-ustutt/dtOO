@@ -19,11 +19,11 @@ namespace dtOO {
 		int const nP = pp.size();
 		int const nOnes = nP - (order+1);
 		if (nOnes < 0) {
-			dt__THROW(
+			dt__throw(
 				bSplineCurve_pointConstructOCC(),
-				<< "Order too high. Please reduce order of the spline." << LOGDEL
-				<< DTLOGEVAL(order) << LOGDEL
-				<< DTLOGEVAL(nOnes) 
+				<< "Order too high. Please reduce order of the spline." << std::endl
+				<< dt__eval(order) << std::endl
+				<< dt__eval(nOnes) 
 			);
 		}
 		
@@ -74,7 +74,7 @@ namespace dtOO {
 //		std::vector< std::string > header;
 //		header.push_back("u");
 //		header.push_back("l(u)/l_ges");
-//		DTDEBUGWF(
+//		dt__debug(
 //			bSplineCurve_pointConstructOCC(), 
 //			<< floatVecToTable(header, ul)
 //		);

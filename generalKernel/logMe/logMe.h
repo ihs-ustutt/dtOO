@@ -16,9 +16,6 @@
 #include "Output2FILE.h"
 #include <logMe/dtMacros.h>
 
-#define LOGDEL std::endl
-#define ENDLOGDEL std::endl
-
 namespace dtOO {
   template< class T >
   std::ostream& operator<<(std::ostream& os, const std::vector< T >& toLog) {
@@ -38,7 +35,7 @@ namespace dtOO {
     public:
       typedef boost::format dtFormat;
     public:
-      dt__CLASSNAME(logMe);
+      dt__classOnlyName(logMe);
       static std::string initLog( std::string const & logFileName );
       static void closeLog( void );
       static std::string Backtrace(void); 
@@ -56,7 +53,7 @@ namespace dtOO {
       template< class T >
       static inline std::string vecToString( std::vector< T > const & vec, int const grouping ) {
         std::ostringstream os;
-        os << "[" << LOGDEL;
+        os << "[" << std::endl;
         int ii = 0;
         while( ii < vec.size() ) {
           for (int jj=0;jj<grouping;jj++) {
@@ -64,7 +61,7 @@ namespace dtOO {
             ii++;
             if (ii == vec.size()) break;
           }
-          os << LOGDEL;
+          os << std::endl;
         }
         os << "]";
         return os.str();
@@ -75,7 +72,7 @@ namespace dtOO {
         for (int ii=0; ii<header.size(); ii++) {
          os << boost::format("| %13s ") % header[ii];
         }
-        os << LOGDEL;
+        os << std::endl;
         int ii = 0;
         int grouping = header.size();
         while( ii < vec.size() ) {
@@ -84,7 +81,7 @@ namespace dtOO {
             ii++;
             if (ii == vec.size()) break;
           }
-          os << LOGDEL;
+          os << std::endl;
         }
         return os.str();
       }
@@ -96,12 +93,12 @@ namespace dtOO {
       ) {
         std::ostringstream os;
         for (int ii=0; ii<addInfo.size(); ii++) {		
-          os << addInfo[ii] << LOGDEL;
+          os << addInfo[ii] << std::endl;
         }
         for (int ii=0; ii<header.size(); ii++) {
          os << boost::format("| %13s ") % header[ii];
         }
-        os << LOGDEL;
+        os << std::endl;
         int ii = 0;
         int grouping = header.size();
         while( ii < vec.size() ) {
@@ -110,7 +107,7 @@ namespace dtOO {
             ii++;
             if (ii == vec.size()) break;
           }
-          os << LOGDEL;
+          os << std::endl;
         }
         return os.str();
       } 	
@@ -122,7 +119,7 @@ namespace dtOO {
         std::ostringstream os;
         typename std::map< T0, T1 >::const_iterator cIt;
         for (cIt=mm.begin(); cIt != mm.end(); ++cIt) {
-          os << cIt->first << " -> " << cIt->second << LOGDEL;
+          os << cIt->first << " -> " << cIt->second << std::endl;
         }
         return os.str();
       }       
@@ -188,150 +185,142 @@ namespace dtOO {
   //
   // macros
   //
-  #define DTLOGVEC2D( vector ) \
+  #define dt__vector2d( vector ) \
     #vector" = ( " << vector.x() << ", " << vector.y() << ")"  
-  #define DTLOGVEC2DP( vector ) \
-    #vector" = ( " << vector->x() << ", " << vector->y() << ")"  
-  #define DTLOGPOI2D( point ) \
+  #define dt__point2d( point ) \
     #point" = ( " << point.x() << ", " << point.y() << ")"  
-  #define DTLOGPOI2DP( point ) \
-    #point" = ( " << point->x() << ", " << point->y() << ")" 
-  #define DTLOGVEC3D( vector ) \
+  #define dt__vector3d( vector ) \
     #vector" = ( " << vector.x() << ", " << vector.y() << ", " << vector.z() << ")"  
-  #define DTLOGVEC3DP( vector ) \
-    #vector" = ( " << vector->x() << ", " << vector->y() << ", " << vector->z() << ")"  
-  #define DTLOGPOI3D( point ) \
+  #define dt__point3d( point ) \
     #point" = ( " << point.x() << ", " << point.y() << ", " << point.z() << ")"  
-  #define DTLOGPOI3DP( point ) \
-    #point" = ( " << point->x() << ", " << point->y() << ", " << point->z() << ")"  
-  #define DTLOGEVAL( eval ) #eval" = " << eval
-  #define DTINFOWF(functionname, message) \
+  #define dt__eval( eval ) #eval" = " << eval
+  #define dt__info(functionname, message) \
       if (logINFO > FILELog::ReportingLevel() ) {} else { \
         FILELog().Get(logINFO) \
-          << "|    " << className() << "::"#functionname << LOGDEL \
+          << "|    " << className() << "::"#functionname << std::endl \
           message \
-          << ENDLOGDEL \
+          << std::endl \
           << std::endl; \
       }
-  #define DTWARNINGWF(functionname, message) \
+  #define dt__warning(functionname, message) \
       if (logWARNING > FILELog::ReportingLevel() ) {} else { \
         FILELog().Get(logWARNING) \
-          << "|    " << className() << "::"#functionname << LOGDEL \
+          << "|    " << className() << "::"#functionname << std::endl \
           message \
-          << ENDLOGDEL \
+          << std::endl \
           << std::endl; \
       }
-  #define DTDEBUGWF(functionname, message) \
+  #define dt__debug(functionname, message) \
       if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
         FILELog().Get(logDEBUG) \
-          << "|    " << className() << "::"#functionname << LOGDEL \
+          << "|    " << className() << "::"#functionname << std::endl \
           message \
-          << ENDLOGDEL \
+          << std::endl \
           << std::endl ;\
       }
-  #define dt__THROW(functionname, message) \
+  #define dt__throw(functionname, message) \
       throw dtOO::eGeneral( \
-        std::ostringstream().flush() << std::endl \
-          << "|    " << className() << "::"#functionname << LOGDEL \
-          << "file '" <<  __FILE__ << "'" << LOGDEL \
-          << "line '" << __LINE__ << "'" << LOGDEL \
-          << LOGDEL \
+        std::ostringstream().flush() \
+          << className() << "::"#functionname << std::endl \
+          << "*-> file '" <<  __FILE__ << "'" << std::endl \
+          << "*-> line '" << __LINE__ << "'" << std::endl \
+          << std::endl \
           message \
-          << LOGDEL \
+          << std::endl \
           << dtOO::logMe::Backtrace() \
-          << LOGDEL \
+          << std::endl \
           << "Honor thy error as a hidden intention. (Brian Eno)"\
       )
-  #define dt__THROW_IFWM(cond, functionname, message) \
+  #define dt__throwIfWithMessage(cond, functionname, message) \
       if (cond) { \
-        dt__THROW(functionname, \
-        << "condition: "#cond" is true." << LOGDEL \
+        dt__throw(functionname, \
+        << "condition: "#cond" is true." << std::endl \
         message); \
       }
-  #define dt__THROW_IF(cond, functionname) \
+  #define dt__throwIf(cond, functionname) \
       if (cond) { \
-        dt__THROW(functionname, << "condition: "#cond" is true."); \
+        dt__throw(functionname, << "condition: "#cond" is true."); \
       }
-  #define dt__WARN_IFWM(cond, functionname, message) \
+  #define dt__warnIfWithMessage(cond, functionname, message) \
       if (cond) { \
-        DTWARNINGWF(functionname, \
-        << "condition: "#cond" is true." << LOGDEL \
+        dt__warning(functionname, \
+        << "condition: "#cond" is true." << std::endl \
         message); \
       }
-  #define dt__WARN_IFWMAS(cond, solution, functionname, message) \
+  #define dt__warnIfWithMessageAndSolution(cond, solution, functionname, message) \
       if (cond) { \
         solution; \
-        DTWARNINGWF(functionname, \
-        << "condition: "#cond" is true." << LOGDEL \
+        dt__warning(functionname, \
+        << "condition: "#cond" is true." << std::endl \
         message); \
       }
-  #define dt__WARN_IF(cond, functionname) \
+  #define dt__warnIf(cond, functionname) \
       if (cond) { \
-        DTWARNINGWF(functionname, << "condition: "#cond" is true."); \
+        dt__warning(functionname, << "condition: "#cond" is true."); \
       }
-  #define dt__THROWSPEC(eType, functionname, message) \
+  #define dt__throwSpec(eType, functionname, message) \
       eType( \
-        std::ostringstream().flush() << std::endl \
-          << "|    " << className() << "::"#functionname << LOGDEL \
-          << "file '" <<  __FILE__ << "'" << LOGDEL \
-          << "line '" << __LINE__ << "'" << LOGDEL \
-          << LOGDEL \
+        std::ostringstream().flush() \
+          << className() << "::"#functionname << std::endl \
+          << "*-> file '" <<  __FILE__ << "'" << std::endl \
+          << "*-> line '" << __LINE__ << "'" << std::endl \
+          << std::endl \
           message \
-          << LOGDEL \
+          << std::endl \
           << dtOO::logMe::Backtrace() \
-          << LOGDEL \
+          << std::endl \
           << "Honor thy error as a hidden intention. (Brian Eno)"\
       )
-  #define DTCATCHERRORWF(functionname, eGWhat) \
+  #define dt__catch(functionname, eGWhat) \
       FILELog().Get(logERROR) \
-        << "|    " << className() << "::"#functionname << LOGDEL \
-        << "Catching instance of eGeneral:" << LOGDEL \
+        << "|    " << className() << "::"#functionname \
+        << " >> Catching instance of eGeneral from " \
         << eGWhat \
-        << ENDLOGDEL \
+        << std::endl \
         << std::endl
-  #define DTLOGCHAP(chaptername) \
+  #define dt__makeChapter(chaptername) \
     if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
       FILELog().Get() \
-        << "-------------------------------------------------------------------" << LOGDEL \
-        << "| " << LOGDEL \
-        << "| "#chaptername << " (send from " << className() << ")" << LOGDEL \
-        << "| " << LOGDEL \
-        << "-------------------------------------------------------------------" << ENDLOGDEL \
+        << "-------------------------------------------------------------------" << std::endl \
+        << "| " << std::endl \
+        << "| "#chaptername << " (send from " << className() << ")" << std::endl \
+        << "| " << std::endl \
+        << "-------------------------------------------------------------------" << std::endl \
         << std::endl; \
     }
-  #define DTFUNCTIONNOTI(functionname) \
+  #define dt__functionNotImplemented(functionname) \
           std::cout << "This function is not yet implemented." << std::endl
-  #define dt__TRYOCC(cmd, errorOut) \
+  #define dt__tryOcc(cmd, errorOut) \
   try { \
     OCC_CATCH_SIGNALS \
     cmd \
   } \
   catch( Standard_Failure ) { \
-      throw eGeneral( std::ostringstream().flush() << className() << "::" << LOGDEL \
-          << "file '" <<  __FILE__ << "'" << LOGDEL \
-          << "line '" << __LINE__ << "'" << LOGDEL \
-          << LOGDEL \
-          << Standard_Failure::Caught() << LOGDEL \
-          << Standard_Failure::Caught()->GetMessageString() << LOGDEL \
-          << LOGDEL \
+      throw eGeneral( std::ostringstream().flush() << className() << "::" << std::endl \
+          << "*-> file '" <<  __FILE__ << "'" << std::endl \
+          << "*-> line '" << __LINE__ << "'" << std::endl \
+          << std::endl \
+          << Standard_Failure::Caught() << std::endl \
+          << Standard_Failure::Caught()->GetMessageString() << std::endl \
+          << std::endl \
           errorOut \
-          << LOGDEL \
+          << std::endl \
           << dtOO::logMe::Backtrace() \
-          << LOGDEL \
+          << std::endl \
           << "Honor thy error as a hidden intention. (Brian Eno)"); \
   }
-  #define moab__THROW_IF(cond, functionname) \
+  #define moab__throwIf(cond, functionname) \
       if (cond) { \
         std::string err; \
 		    moab::MBErrorHandler_GetLastError(err); \
-        dt__THROW( \
+        dt__throw( \
           functionname, \
-          << "condition: "#cond" is true." << LOGDEL \
-          << DTLOGEVAL(err) ); \
+          << "condition: "#cond" is true." << std::endl \
+          << dt__eval(err) ); \
       }  
-  #define meshkit__CATCH(functionname) \
+  #define meshkit__catch(functionname) \
   catch( MeshKit::Error & merr ) { \
-    dt__THROW(functionname, << merr.what() ); \
+    dt__throw(functionname, << merr.what() ); \
   }
   //
   // can redirect std::cout output to logfile

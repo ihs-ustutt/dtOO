@@ -12,7 +12,7 @@ namespace dtOO {
   
   class geomSurface_baseConstructOCC {
   public:
-    dt__CLASSNAME(geomSurface_baseConstructOCC);
+    dt__classOnlyName(geomSurface_baseConstructOCC);
     geomSurface_baseConstructOCC( dtOCCSurfaceBase const & base );
     virtual ~geomSurface_baseConstructOCC();
     dtSurface * result( void );

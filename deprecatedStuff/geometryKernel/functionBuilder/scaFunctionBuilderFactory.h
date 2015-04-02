@@ -7,7 +7,7 @@ namespace dtOO {
   class scaFunctionBuilder;
 
   class scaFunctionBuilderFactory {
-    dt__CLASSNAME(scaFunctionBuilderFactory);
+    dt__classOnlyName(scaFunctionBuilderFactory);
   public:
     /**
      * constructor

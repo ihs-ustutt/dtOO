@@ -61,11 +61,11 @@ namespace dtOO {
 				retSFun.back()->setLabel(v3dC1d->getLabel());
 			}
 			else {
-        dt__THROW(
+        dt__throw(
 					apply(),
-          << DTLOGEVAL(sC2d1d) << LOGDEL
-          << DTLOGEVAL(v2dC1d) << LOGDEL
-          << DTLOGEVAL(v3dC1d) << LOGDEL								
+          << dt__eval(sC2d1d) << std::endl
+          << dt__eval(v2dC1d) << std::endl
+          << dt__eval(v3dC1d) << std::endl								
           << "Unknown type."
 				);
       }					

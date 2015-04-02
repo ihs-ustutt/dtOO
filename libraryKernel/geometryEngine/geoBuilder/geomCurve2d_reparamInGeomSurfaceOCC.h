@@ -13,7 +13,7 @@ namespace dtOO {
   
   class geomCurve2d_reparamInGeomSurfaceOCC {
   public:
-    dt__CLASSNAME(geomCurve2d_reparamInGeomSurfaceOCC);    
+    dt__classOnlyName(geomCurve2d_reparamInGeomSurfaceOCC);    
     geomCurve2d_reparamInGeomSurfaceOCC();
     geomCurve2d_reparamInGeomSurfaceOCC(
       dtCurve const * const dtC, 

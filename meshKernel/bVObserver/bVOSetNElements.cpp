@@ -37,7 +37,7 @@ namespace dtOO {
 		//   number_elements="{10}{100}{10}" 
 		// />
 								
-    DTINFOWF(init(), << dtXmlParserBase::convertToString(element) );
+    dt__info(init(), << dtXmlParserBase::convertToString(element) );
 		
 		std::vector< int > nn 
 		= 
@@ -52,7 +52,7 @@ namespace dtOO {
   void bVOSetNElements::preUpdate( void ) {
 		dtGmshModel * gm = ptrBoundedVolume()->getModel();
 		
-		dt__THROW_IF(gm==NULL, preUpdate());
+		dt__throwIf(gm==NULL, preUpdate());
 		
 		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
 		  dtGmshRegionHex * hex = dtGmshRegionHex::DownCast(*r_it);

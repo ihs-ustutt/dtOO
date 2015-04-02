@@ -211,8 +211,8 @@ namespace dtOO {
 			sFunP->push_back(vec3dTwoDaFC);			
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAF) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAF) );
     }
   }
 	

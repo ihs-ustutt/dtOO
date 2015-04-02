@@ -13,7 +13,7 @@ namespace mu {
 namespace dtOO {
   class vec2dMuParserTwoD : public vec2dTwoD {
   public:
-    dt__CLASSSTD(vec2dMuParserTwoD, analyticFunction);     
+    dt__class(vec2dMuParserTwoD, analyticFunction);     
     vec2dMuParserTwoD();
     vec2dMuParserTwoD(vec2dMuParserTwoD const & orig);
     vec2dMuParserTwoD(

@@ -142,9 +142,9 @@ namespace dtOO {
 		std::stringstream ss;
 		
 		ss 
-		<< DTLOGEVAL(_m3d->virtualClassName()) << LOGDEL
-	  << _m3d->dumpToString() << LOGDEL
-    << DTLOGEVAL(_v2d->virtualClassName()) << LOGDEL
+		<< dt__eval(_m3d->virtualClassName()) << std::endl
+	  << _m3d->dumpToString() << std::endl
+    << dt__eval(_v2d->virtualClassName()) << std::endl
 		<< _v2d->dumpToString();
 		
 		return ss.str();

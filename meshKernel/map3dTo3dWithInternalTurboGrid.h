@@ -21,7 +21,7 @@ namespace dtOO {
   
   class map3dTo3dWithInternalTurboGrid : public gmshBoundedVolume {
   public:
-    dt__CLASSSTD(map3dTo3dWithInternalTurboGrid, boundedVolume);    
+    dt__class(map3dTo3dWithInternalTurboGrid, boundedVolume);    
     map3dTo3dWithInternalTurboGrid();
     virtual ~map3dTo3dWithInternalTurboGrid();
     virtual void init( 

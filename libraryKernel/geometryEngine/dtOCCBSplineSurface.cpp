@@ -20,7 +20,7 @@ namespace dtOO {
 
 	dtOCCBSplineSurface::dtOCCBSplineSurface(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface(orig) {
-		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_BSplineSurface const, _ptr);
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_BSplineSurface const, _ptr);
 	}
 
 	dtOCCBSplineSurface::~dtOCCBSplineSurface() {
@@ -62,8 +62,8 @@ namespace dtOO {
 			case 1:		
 				return static_cast<int>(_ptr->NbVPoles());
 			default:
-				dt__THROW(nControlPoints(),
-							<< DTLOGEVAL(dim) << LOGDEL
+				dt__throw(nControlPoints(),
+							<< dt__eval(dim) << std::endl
 							<< "dim should be 0 or 1.");				
 		}	
 	}
@@ -77,24 +77,24 @@ namespace dtOO {
 		Standard_Real v1R = static_cast<Standard_Real>(vvMin);
 		Standard_Real v2R = static_cast<Standard_Real>(vvMax);
 
-    dt__WARN_IFWMAS(
+    dt__warnIfWithMessageAndSolution(
 			v1R<ccB->FirstParameter(), 
 			v1R = ccB->FirstParameter();,
 			segmentConstU(),
 			<< "v1R = ccB->FirstParameter();"				
 		);			
-    dt__WARN_IFWMAS(
+    dt__warnIfWithMessageAndSolution(
 			v2R>ccB->LastParameter(), 
 			v2R = ccB->LastParameter();,
 			segmentConstU(),
 			<< "v2R = ccB->LastParameter();"				
 		);	
 			
-		dt__TRYOCC(
+		dt__tryOcc(
 		  ccB->Segment(v1R, v2R);
 		  ,
-		  << DTLOGEVAL(v1R) << LOGDEL
-			<< DTLOGEVAL(v2R)							
+		  << dt__eval(v1R) << std::endl
+			<< dt__eval(v2R)							
 	  );
 
 		dtOCCCurveBase base;
@@ -112,24 +112,24 @@ namespace dtOO {
 		Standard_Real u1R = static_cast<Standard_Real>(uuMin);
 		Standard_Real u2R = static_cast<Standard_Real>(uuMax);
 
-    dt__WARN_IFWMAS(
+    dt__warnIfWithMessageAndSolution(
 			u1R<ccB->FirstParameter(), 
 			u1R = ccB->FirstParameter();,
 			segmentConstV(),
 			<< "u1R = ccB->FirstParameter();"				
 		);			
-    dt__WARN_IFWMAS(
+    dt__warnIfWithMessageAndSolution(
 			u2R>ccB->LastParameter(), 
 			u2R = ccB->LastParameter();,
 			segmentConstV(),
 			<< "u2R = ccB->LastParameter();"				
 		);	
 							
-		dt__TRYOCC(
+		dt__tryOcc(
 		  ccB->Segment(u1R, u2R);
 		  ,
-		  << DTLOGEVAL(u1R) << LOGDEL
-			<< DTLOGEVAL(u2R)							
+		  << dt__eval(u1R) << std::endl
+			<< dt__eval(u2R)							
 	  );
 
 		dtOCCCurveBase base;

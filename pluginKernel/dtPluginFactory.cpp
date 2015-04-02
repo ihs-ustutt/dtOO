@@ -21,11 +21,11 @@ namespace dtOO {
   }
 
   dtPlugin * dtPluginFactory::create(char const * const str) {
-    DTINFOWF(create(), << "creating " << str <<  "...");
+    dt__info(create(), << "creating " << str <<  "...");
     
 		__IFRET(writeStep);
 
-    dt__THROW(create(), << str <<  " could not be created");  
+    dt__throw(create(), << str <<  " could not be created");  
   }
 
   dtPlugin * dtPluginFactory::create( std::string const str ) {

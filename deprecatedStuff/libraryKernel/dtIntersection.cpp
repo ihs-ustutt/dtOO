@@ -50,32 +50,32 @@ namespace dtOO {
   
   void dtIntersection::dump( void ) const {
     DTBUFFERINIT();
-    DTBUFFER( << DTLOGEVAL(_nIntPt) << LOGDEL );
+    DTBUFFER( << dt__eval(_nIntPt) << std::endl );
     for (int ii=0; ii<_nIntPt; ii++) {
-      DTBUFFER(<< "intPoint = ( " << _uPt[ii] << ", " << _vPt[ii] << " )" << LOGDEL);
+      DTBUFFER(<< "intPoint = ( " << _uPt[ii] << ", " << _vPt[ii] << " )" << std::endl);
     }
-    DTBUFFER( << DTLOGEVAL(_nIntCr) << LOGDEL );
+    DTBUFFER( << dt__eval(_nIntCr) << std::endl );
     for (int ii=0; ii<_nIntCr; ii++) {
-      DTBUFFER( << "_intCurves[" << ii << "]->ipoint = " << _intCurves[ii]->ipoint << LOGDEL );
-      DTBUFFER( << "_intCurves[" << ii << "]->ipar1 = " << _intCurves[ii]->ipar1 << LOGDEL );
-      DTBUFFER( << "_intCurves[" << ii << "]->ipar2 = " << _intCurves[ii]->ipar2 << LOGDEL );
+      DTBUFFER( << "_intCurves[" << ii << "]->ipoint = " << _intCurves[ii]->ipoint << std::endl );
+      DTBUFFER( << "_intCurves[" << ii << "]->ipar1 = " << _intCurves[ii]->ipar1 << std::endl );
+      DTBUFFER( << "_intCurves[" << ii << "]->ipar2 = " << _intCurves[ii]->ipar2 << std::endl );
       for (int jj=0; jj<_intCurves[ii]->ipoint; jj++) {
-        DTBUFFER( << "_intCurves[" << ii << "]->epar1[" << jj << "] = " << _intCurves[ii]->epar1[jj] << LOGDEL );
+        DTBUFFER( << "_intCurves[" << ii << "]->epar1[" << jj << "] = " << _intCurves[ii]->epar1[jj] << std::endl );
       }
       for (int jj=0; jj<_intCurves[ii]->ipoint; jj++) {
-        DTBUFFER( << "_intCurves[" << ii << "]->epar2[" << jj << "] = " << _intCurves[ii]->epar2[jj] << LOGDEL );
+        DTBUFFER( << "_intCurves[" << ii << "]->epar2[" << jj << "] = " << _intCurves[ii]->epar2[jj] << std::endl );
       }
-      DTBUFFER( << "_intCurves[" << ii << "]->pgeom = " << _intCurves[ii]->pgeom << LOGDEL );
-      DTBUFFER( << "_intCurves[" << ii << "]->ppar1 = " << _intCurves[ii]->ppar1 << LOGDEL );
-      DTBUFFER( << "_intCurves[" << ii << "]->ppar2 = " << _intCurves[ii]->ppar2 << LOGDEL );
-      DTBUFFER( << "_intCurves[" << ii << "]->itype = " << _intCurves[ii]->itype << LOGDEL
-                << " (" << intCurveKindStr[_intCurves[ii]->itype] << ") " << LOGDEL );
-      DTBUFFER( << "_intCurves[" << ii << "]->pretop[0] = " << _intCurves[ii]->pretop[0] << LOGDEL );
-      DTBUFFER( << "_intCurves[" << ii << "]->pretop[1] = " << _intCurves[ii]->pretop[1] << LOGDEL );
-      DTBUFFER( << "_intCurves[" << ii << "]->pretop[2] = " << _intCurves[ii]->pretop[2] << LOGDEL );
-      DTBUFFER( << "_intCurves[" << ii << "]->pretop[3] = " << _intCurves[ii]->pretop[3] << LOGDEL );
+      DTBUFFER( << "_intCurves[" << ii << "]->pgeom = " << _intCurves[ii]->pgeom << std::endl );
+      DTBUFFER( << "_intCurves[" << ii << "]->ppar1 = " << _intCurves[ii]->ppar1 << std::endl );
+      DTBUFFER( << "_intCurves[" << ii << "]->ppar2 = " << _intCurves[ii]->ppar2 << std::endl );
+      DTBUFFER( << "_intCurves[" << ii << "]->itype = " << _intCurves[ii]->itype << std::endl
+                << " (" << intCurveKindStr[_intCurves[ii]->itype] << ") " << std::endl );
+      DTBUFFER( << "_intCurves[" << ii << "]->pretop[0] = " << _intCurves[ii]->pretop[0] << std::endl );
+      DTBUFFER( << "_intCurves[" << ii << "]->pretop[1] = " << _intCurves[ii]->pretop[1] << std::endl );
+      DTBUFFER( << "_intCurves[" << ii << "]->pretop[2] = " << _intCurves[ii]->pretop[2] << std::endl );
+      DTBUFFER( << "_intCurves[" << ii << "]->pretop[3] = " << _intCurves[ii]->pretop[3] << std::endl );
     }
-    DTDEBUGWF_BUFFER(dump());
+    dt__debug_BUFFER(dump());
   }
   
   int dtIntersection::getNCurves( void ) const {

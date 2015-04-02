@@ -98,21 +98,21 @@ namespace dtOO {
       // check values
       //
       if ( alphaOne < 0.) {
-        DTWARNINGWF(functionBuilderDecorator(),
-                << "Adjusting alphaOne from " << DTLOGEVAL(alphaOne) 
+        dt__warning(functionBuilderDecorator(),
+                << "Adjusting alphaOne from " << dt__eval(alphaOne) 
                 << " to " << 0. << "." );
         alphaOne = 0.;
       }
       if ( alphaTwo < 0.) {
-        DTWARNINGWF(functionBuilderDecorator(),
-                << "Adjusting alphaTwo from " << DTLOGEVAL(alphaTwo) 
+        dt__warning(functionBuilderDecorator(),
+                << "Adjusting alphaTwo from " << dt__eval(alphaTwo) 
                 << " to " << 0. << "." );
         alphaTwo = 0.;        
       }            
       /*
       if ( (ratio < 0.) || (ratio > 1.) ) {
         dt__THROW(functionBuilderDecorator(),
-                << DTLOGEVAL(ratio) << LOGDEL        
+                << dt__eval(ratio) << std::endl        
                 << "Ratio is smaller than zero or bigger than one.");
       }
       */
@@ -133,15 +133,15 @@ namespace dtOO {
             pV.push_back( dtPoint2(-deltaX, deltaY));
           }
           
-          DTINFOWF(
+          dt__info(
             functionBuilderDecorator(),
-            << DTLOGEVAL(alphaOne) << LOGDEL
-            << DTLOGEVAL(alphaTwo) << LOGDEL              
-            << DTLOGEVAL(deltaX) << LOGDEL 
-            << DTLOGEVAL(deltaY) << LOGDEL
-            << DTLOGPOI2D(pV[0]) << LOGDEL
-            << DTLOGPOI2D(pV[1]) << LOGDEL
-            << DTLOGEVAL(mirrorY)
+            << dt__eval(alphaOne) << std::endl
+            << dt__eval(alphaTwo) << std::endl              
+            << dt__eval(deltaX) << std::endl 
+            << dt__eval(deltaY) << std::endl
+            << dt__point2d(pV[0]) << std::endl
+            << dt__point2d(pV[1]) << std::endl
+            << dt__eval(mirrorY)
           );
           
 //          sFunBuilderP->setAttribute( &pV[0] );
@@ -216,21 +216,21 @@ namespace dtOO {
           );      
           pV.push_back( dtPoint2(-deltaX, deltaY) );          
         }
-        DTINFOWF(
+        dt__info(
           functionBuilderDecorator(),
-          << DTLOGEVAL(alphaOne) << LOGDEL
-          << DTLOGEVAL(alphaTwo) << LOGDEL              
-          << DTLOGEVAL(deltaXMin) << LOGDEL 
-          << DTLOGEVAL(deltaXMax) << LOGDEL               
-          << DTLOGEVAL(ratio) << LOGDEL
-          << DTLOGEVAL(ss) << LOGDEL
-          << DTLOGEVAL(tt) << LOGDEL
-          << DTLOGEVAL(deltaX) << LOGDEL 
-          << DTLOGEVAL(deltaY) << LOGDEL
-          << DTLOGPOI2D(pV[0]) << LOGDEL
-          << DTLOGPOI2D(pV[1]) << LOGDEL
-          << DTLOGPOI2D(pV[2]) << LOGDEL
-          << DTLOGEVAL(mirrorY) 
+          << dt__eval(alphaOne) << std::endl
+          << dt__eval(alphaTwo) << std::endl              
+          << dt__eval(deltaXMin) << std::endl 
+          << dt__eval(deltaXMax) << std::endl               
+          << dt__eval(ratio) << std::endl
+          << dt__eval(ss) << std::endl
+          << dt__eval(tt) << std::endl
+          << dt__eval(deltaX) << std::endl 
+          << dt__eval(deltaY) << std::endl
+          << dt__point2d(pV[0]) << std::endl
+          << dt__point2d(pV[1]) << std::endl
+          << dt__point2d(pV[2]) << std::endl
+          << dt__eval(mirrorY) 
         );
            
 				ptrHandling<dtCurve2d> dtC2d( 
@@ -309,14 +309,14 @@ namespace dtOO {
       // check values
       //
       if ( alphaOne < 0.) {
-        DTWARNINGWF(functionBuilderDecorator(),
-                << "Adjusting alphaOne from " << DTLOGEVAL(alphaOne) 
+        dt__warning(functionBuilderDecorator(),
+                << "Adjusting alphaOne from " << dt__eval(alphaOne) 
                 << " to " << 0. << "." );
         alphaOne = 0.;
       }
       if ( alphaTwo < 0.) {
-        DTWARNINGWF(functionBuilderDecorator(),
-                << "Adjusting alphaTwo from " << DTLOGEVAL(alphaTwo) 
+        dt__warning(functionBuilderDecorator(),
+                << "Adjusting alphaTwo from " << dt__eval(alphaTwo) 
                 << " to " << 0. << "." );
         alphaTwo = 0.;        
       }
@@ -330,7 +330,7 @@ namespace dtOO {
       
       /*if ( (ratio < 0.) || (ratio > 1.) ) {
         dt__THROW(functionBuilderDecorator(),
-                << DTLOGEVAL(ratio) << LOGDEL        
+                << dt__eval(ratio) << std::endl        
                 << "Ratio is smaller than zero or bigger than one.");
       }
       */
@@ -351,15 +351,15 @@ namespace dtOO {
             pV.push_back( dtPoint2(-deltaX, deltaY));
           }
           
-          DTINFOWF(
+          dt__info(
             functionBuilderDecorator(),
-            << DTLOGEVAL(alphaOne) << LOGDEL
-            << DTLOGEVAL(alphaTwo) << LOGDEL              
-            << DTLOGEVAL(deltaX) << LOGDEL 
-            << DTLOGEVAL(deltaY) << LOGDEL
-            << DTLOGPOI2D(pV[0]) << LOGDEL
-            << DTLOGPOI2D(pV[1]) << LOGDEL
-            << DTLOGEVAL(mirrorY)
+            << dt__eval(alphaOne) << std::endl
+            << dt__eval(alphaTwo) << std::endl              
+            << dt__eval(deltaX) << std::endl 
+            << dt__eval(deltaY) << std::endl
+            << dt__point2d(pV[0]) << std::endl
+            << dt__point2d(pV[1]) << std::endl
+            << dt__eval(mirrorY)
           );
           
 					ptrHandling<dtCurve2d> dtC2d( 
@@ -429,21 +429,21 @@ namespace dtOO {
           );      
           pV.push_back( dtPoint2(-deltaX, deltaY) );          
         }
-        DTINFOWF(
+        dt__info(
           functionBuilderDecorator(),
-          << DTLOGEVAL(alphaOne) << LOGDEL
-          << DTLOGEVAL(alphaTwo) << LOGDEL              
-          << DTLOGEVAL(deltaXMin) << LOGDEL 
-          << DTLOGEVAL(deltaXMax) << LOGDEL               
-          << DTLOGEVAL(ratio) << LOGDEL
-          << DTLOGEVAL(ss) << LOGDEL
-          << DTLOGEVAL(tt) << LOGDEL
-          << DTLOGEVAL(deltaX) << LOGDEL 
-          << DTLOGEVAL(deltaY) << LOGDEL
-          << DTLOGPOI2D(pV[0]) << LOGDEL
-          << DTLOGPOI2D(pV[1]) << LOGDEL
-          << DTLOGPOI2D(pV[2]) << LOGDEL
-          << DTLOGEVAL(mirrorY) 
+          << dt__eval(alphaOne) << std::endl
+          << dt__eval(alphaTwo) << std::endl              
+          << dt__eval(deltaXMin) << std::endl 
+          << dt__eval(deltaXMax) << std::endl               
+          << dt__eval(ratio) << std::endl
+          << dt__eval(ss) << std::endl
+          << dt__eval(tt) << std::endl
+          << dt__eval(deltaX) << std::endl 
+          << dt__eval(deltaY) << std::endl
+          << dt__point2d(pV[0]) << std::endl
+          << dt__point2d(pV[1]) << std::endl
+          << dt__point2d(pV[2]) << std::endl
+          << dt__eval(mirrorY) 
         );
            
 				ptrHandling<dtCurve2d> dtC2d( 
@@ -465,11 +465,11 @@ namespace dtOO {
     
     else {
       dt__THROW(functionBuilderDecorator(),
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasAlphaOne) << LOGDEL
-              << DTLOGEVAL(hasAlphaTwo) << LOGDEL
-              << DTLOGEVAL(hasRatio) << LOGDEL
-              << DTLOGEVAL(hasDeltaY) );
+              << dt__eval(hasOrder) << std::endl
+              << dt__eval(hasAlphaOne) << std::endl
+              << dt__eval(hasAlphaTwo) << std::endl
+              << dt__eval(hasRatio) << std::endl
+              << dt__eval(hasDeltaY) );
     }
 
 		//

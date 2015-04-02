@@ -37,7 +37,7 @@ namespace dtOO {
 		//   faceLabel="{name0}{name1}{name2}{name3}{name4}{name5}"
 		// />
 								
-    DTINFOWF(init(), << dtXmlParserBase::convertToString(element) );
+    dt__info(init(), << dtXmlParserBase::convertToString(element) );
 		_faceLabel
 		= 
 		dtXmlParserBase::getAttributeStrVector("faceLabel", element);
@@ -46,7 +46,7 @@ namespace dtOO {
   void bVONameFaces::preUpdate( void ) {
 		dtGmshModel * gm = ptrBoundedVolume()->getModel();
 		
-		dt__THROW_IF(gm==NULL, update());
+		dt__throwIf(gm==NULL, update());
 		
 //		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
 			std::list< ::GFace * > faceL = gm->faces();
@@ -55,22 +55,22 @@ namespace dtOO {
 			//
 			// check size
 			//
-			dt__THROW_IFWM(
+			dt__throwIfWithMessage(
 				_faceLabel.size()!=faceL.size(), preUpdate(),
-				<< DTLOGEVAL(_faceLabel.size()) << LOGDEL
-        << DTLOGEVAL(faceL.size()) 
+				<< dt__eval(_faceLabel.size()) << std::endl
+        << dt__eval(faceL.size()) 
 			);
 			
 			int counter = 0;
 			for (f_it = faceL.begin(); f_it!=faceL.end(); ++f_it) {
 				std::vector< int > pInt = (*f_it)->getPhysicalEntities();
-				dt__THROW_IF(pInt.size()!=0, preUpdate());
+				dt__throwIf(pInt.size()!=0, preUpdate());
 
 				std::string newL = _faceLabel[counter];
 				if (newL != "") {
 					int pTag = (*f_it)->model()->setPhysicalName(newL, 2, 0);
 					(*f_it)->addPhysicalEntity(pTag);
-					DTINFOWF(
+					dt__info(
 						preUpdate(),
 						<< logMe::dtFormat("Name physical group %s (%d) and add face %d of %s") 
 							% pTag % newL % counter % ptrBoundedVolume()->getLabel()

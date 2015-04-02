@@ -11,7 +11,7 @@ class GFace;
 namespace dtOO {
   class dtGmshRegionHex : public dtGmshRegion {
   public:
-    dt__CLASSSTD(dtGmshRegionHex, ::GEntity);
+    dt__class(dtGmshRegionHex, ::GEntity);
     dtGmshRegionHex( 
       ::GModel *m, 
       int tag, 

@@ -13,7 +13,7 @@ namespace dtOO {
   
   class geomCurve2d_closeGapsArithmeticOCC {
   public:
-    dt__CLASSNAME(geomCurve2d_closeGapsArithmeticOCC);    
+    dt__classOnlyName(geomCurve2d_closeGapsArithmeticOCC);    
     geomCurve2d_closeGapsArithmeticOCC();
     geomCurve2d_closeGapsArithmeticOCC(dt__pVH(dtCurve2d) const & dtC2d);
     virtual ~geomCurve2d_closeGapsArithmeticOCC();

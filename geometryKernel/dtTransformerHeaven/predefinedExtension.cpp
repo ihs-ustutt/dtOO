@@ -168,9 +168,9 @@ namespace dtOO {
 				transSFun.back()->setLabel( vS3->getLabel() );
 			}			
 			else {
-				dt__THROW(apply(),
-								<< DTLOGEVAL(vS2) << LOGDEL 
-								<< DTLOGEVAL(vS3) );
+				dt__throw(apply(),
+								<< dt__eval(vS2) << std::endl 
+								<< dt__eval(vS3) );
 			}
     }
     return transSFun;  

@@ -21,7 +21,7 @@ namespace dtOO {
   
   class dtXmlParser : public dtXmlParserBase {
   public:  
-    dt__CLASSNAME(dtXmlParser);
+    dt__classOnlyName(dtXmlParser);
     dtXmlParser();
     virtual ~dtXmlParser();
     void openFileAndParse(char const * const fileName);

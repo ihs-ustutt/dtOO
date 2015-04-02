@@ -7,7 +7,7 @@
 namespace dtOO {
   class intHandling {
   public:
-    dt__CLASSNAME(intHandling);
+    dt__classOnlyName(intHandling);
     virtual ~intHandling();
     static int round( float a );
   private:

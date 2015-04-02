@@ -12,7 +12,7 @@ namespace dtOO {
 
   class bezierSurface_bezierCurveFillConstructOCCDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(bezierSurface_bezierCurveFillConstructOCCDecorator);
+    dt__classOnlyName(bezierSurface_bezierCurveFillConstructOCCDecorator);
     bezierSurface_bezierCurveFillConstructOCCDecorator();
     virtual ~bezierSurface_bezierCurveFillConstructOCCDecorator();
     virtual void buildPart(

@@ -13,7 +13,7 @@ namespace dtOO {
 
   class sca3PointMeanlineFunctionDecoratorXY : public dtXmlParserFunctionDecorator {
   public:
-    dt__CLASSSTD(sca3PointMeanlineFunctionDecoratorXY, dtXmlParserFunctionDecorator);
+    dt__class(sca3PointMeanlineFunctionDecoratorXY, dtXmlParserFunctionDecorator);
     sca3PointMeanlineFunctionDecoratorXY();
     virtual ~sca3PointMeanlineFunctionDecoratorXY();
     virtual void buildPart(QDomElement const & toBuildP, 

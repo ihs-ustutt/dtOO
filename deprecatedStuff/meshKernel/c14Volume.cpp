@@ -206,7 +206,7 @@ namespace dtOO {
       if (!snapped) {
         bool forceSnapped = _gModel->forceSnapEdge(ii+1);
         if (!forceSnapped) {
-          dt__THROW(writeGrid(), << "Cannot snap edge " << DTLOGEVAL(ii+1) );
+          dt__THROW(writeGrid(), << "Cannot snap edge " << dt__eval(ii+1) );
         }
       }      
     }

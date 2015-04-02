@@ -38,7 +38,7 @@ namespace dtOO {
       return retVal;
     }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       return FAIL;
     }     
   }

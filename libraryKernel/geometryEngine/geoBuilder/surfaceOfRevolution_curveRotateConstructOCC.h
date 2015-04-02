@@ -11,7 +11,7 @@ namespace dtOO {
   
   class surfaceOfRevolution_curveRotateConstructOCC {
   public:
-    dt__CLASSNAME(surfaceOfRevolution_curveRotateConstructOCC);  
+    dt__classOnlyName(surfaceOfRevolution_curveRotateConstructOCC);  
     surfaceOfRevolution_curveRotateConstructOCC();
     surfaceOfRevolution_curveRotateConstructOCC( 
       dtCurve const & cL, 

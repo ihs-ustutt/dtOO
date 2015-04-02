@@ -14,7 +14,7 @@ namespace dtOO {
   }
 
   dtTransformer * closeGaps::clone( void ) const {
-	  dt__THROW(clone(), << "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * closeGaps::create( void ) const {
@@ -35,7 +35,7 @@ namespace dtOO {
       //
       analyticGeometry * aGeoP = aGeoVecP->at(ii)->clone();
       analyticSurface *  aS;
-      dt__mustDownCast(aGeoP, analyticSurface, aS);
+      dt__mustCast(aGeoP, analyticSurface, aS);
 
 //      //
 //      // check if it is rotational
@@ -121,9 +121,9 @@ namespace dtOO {
       }
     }
     else {
-      dt__THROW(init(),
-              << DTLOGEVAL(hasVStart) << LOGDEL
-              << DTLOGEVAL(hasVEnd) );
+      dt__throw(init(),
+              << dt__eval(hasVStart) << std::endl
+              << dt__eval(hasVEnd) );
     }
   }
 }

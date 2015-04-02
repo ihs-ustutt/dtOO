@@ -16,7 +16,7 @@ namespace dtOO {
 	}
 	
 	void discrete3dPoints::addPoints( vectorHandling< dtPoint3 > const & pp ) {
-		dt__THROW_IF(pp.size()==0, addPoints());
+		dt__throwIf(pp.size()==0, addPoints());
 		
 		_p3 = pp;
 		

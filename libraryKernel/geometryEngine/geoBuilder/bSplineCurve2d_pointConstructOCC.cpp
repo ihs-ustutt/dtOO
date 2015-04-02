@@ -20,10 +20,10 @@ namespace dtOO {
 		int const nP = pp.size();
 		int const nOnes = nP - (order+1);
 		if (nOnes < 0) {
-			dt__THROW(bSplineCurve2d_pointConstructOCC(),
-							<< "Order too high. Please reduce order of the spline." << LOGDEL
-							<< DTLOGEVAL(order) << LOGDEL
-							<< DTLOGEVAL(nOnes) );
+			dt__throw(bSplineCurve2d_pointConstructOCC(),
+							<< "Order too high. Please reduce order of the spline." << std::endl
+							<< dt__eval(order) << std::endl
+							<< dt__eval(nOnes) );
 		}
 		
 		//

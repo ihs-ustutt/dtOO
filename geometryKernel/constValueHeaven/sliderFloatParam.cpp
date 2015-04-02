@@ -18,11 +18,11 @@ namespace dtOO {
   }
 
   void sliderFloatParam::dump(void) const {
-    DTINFOWF( dump(),
-            << getLabel() << LOGDEL
-            << DTLOGEVAL( getValue() ) << LOGDEL
-            << DTLOGEVAL( _min ) << LOGDEL
-            << DTLOGEVAL( _max ) );
+    dt__info( dump(),
+            << getLabel() << std::endl
+            << dt__eval( getValue() ) << std::endl
+            << dt__eval( _min ) << std::endl
+            << dt__eval( _max ) );
   }
 
   void sliderFloatParam::setRange(float const min, float const max) {

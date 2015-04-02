@@ -8,7 +8,7 @@ namespace dtOO {
   
   class bVOInterfaceFactory {
     public:    
-      dt__CLASSNAME(bVOInterfaceFactory);
+      dt__classOnlyName(bVOInterfaceFactory);
       bVOInterfaceFactory();
       virtual ~bVOInterfaceFactory();
       static bVOInterface * create(char const * const str);

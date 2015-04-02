@@ -14,7 +14,7 @@ namespace dtOO {
 
   class trans6SidedCubeDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(trans6SidedCubeDecorator);
+    dt__classOnlyName(trans6SidedCubeDecorator);
     trans6SidedCubeDecorator();
     virtual ~trans6SidedCubeDecorator();
     virtual void buildPart(

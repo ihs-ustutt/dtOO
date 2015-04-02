@@ -40,12 +40,12 @@ namespace dtOO {
 		Standard_Real aTol2d = Precision::Parametric(aTol3d);
 		
 		GeomFill_AppSurf anAlgo;
-		dt__TRYOCC(
+		dt__tryOcc(
 			anAlgo.Init(aMinDeg, aMaxDeg, aTol3d, aTol2d, aNbIt);
 	  ,
 		  << ""
 		);
-		dt__TRYOCC(
+		dt__tryOcc(
 			anAlgo.Perform(aLine, aSecGen);
 	  ,
 		  << ""

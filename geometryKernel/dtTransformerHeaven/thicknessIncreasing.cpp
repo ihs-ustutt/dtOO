@@ -62,7 +62,7 @@ namespace dtOO {
       // thickness increasing
       //            
 			float cLength = theF->length();
-			DTINFOWF(apply(), << DTLOGEVAL(cLength) );
+			dt__info(apply(), << dt__eval(cLength) );
       float xMin = _paraOnePercentFunP->xMin(0);
       float xMax = _paraOnePercentFunP->xMax(0);
       //
@@ -116,7 +116,7 @@ namespace dtOO {
 			itVal.push_back(tt);
 			itVal.push_back(1.);				
     
-			DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
+			dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
       //
       // create new function
       //

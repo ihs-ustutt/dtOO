@@ -11,7 +11,7 @@ namespace dtOO {
   
   class geomCurve_convertGeomCurve2d {
   public:
-    dt__CLASSNAME(geomCurve_convertGeomCurve2d);
+    dt__classOnlyName(geomCurve_convertGeomCurve2d);
     geomCurve_convertGeomCurve2d( dtCurve2d const * const dtC2d, dtPoint3 const & pp, dtVector3 const & vv );
     virtual ~geomCurve_convertGeomCurve2d();
     dtCurve * result( void );

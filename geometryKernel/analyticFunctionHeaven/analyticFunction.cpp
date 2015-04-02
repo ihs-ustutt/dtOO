@@ -13,11 +13,11 @@ namespace dtOO {
 	}
 	
   void analyticFunction::dump(void) const {
-    DTINFOWF(
+    dt__info(
 			dump(), 
-			<< DTLOGEVAL(getLabel()) << LOGDEL
-		  << DTLOGEVAL(virtualClassName()) << LOGDEL
-			<< "dumpToString()" << LOGDEL
+			<< dt__eval(getLabel()) << std::endl
+		  << dt__eval(virtualClassName()) << std::endl
+			<< "dumpToString()" << std::endl
 			<< dumpToString()
 		);		
 	}

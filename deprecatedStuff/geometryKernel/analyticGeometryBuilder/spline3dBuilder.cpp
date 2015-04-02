@@ -9,7 +9,7 @@
 
 namespace dtOO {
   DTCLASSLOGMETHODI(spline3dBuilder,
-          << DTLOGEVAL( thisRef._splineCurve ) );
+          << dt__eval( thisRef._splineCurve ) );
 
   spline3dBuilder::spline3dBuilder() {
     _splineCurve = NULL;
@@ -61,7 +61,7 @@ namespace dtOO {
       vectorHandling< splineCurve3d * > s3CVec;
       for (int ii=1;ii<=_analyticGeometryP.getNAttributes();ii++) {
         splineCurve3d * sC3;
-        dt__mustDownCast(
+        dt__mustCast(
           *(_analyticGeometryP.getAttribute(ii)), 
           splineCurve3d, 
           sC3
@@ -83,9 +83,9 @@ namespace dtOO {
     //
     else {
       dt__THROW(buildPart(),
-              << DTLOGEVAL(hasPoints) << LOGDEL
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasSpline) );
+              << dt__eval(hasPoints) << std::endl
+              << dt__eval(hasOrder) << std::endl
+              << dt__eval(hasSpline) );
     }
   }
 

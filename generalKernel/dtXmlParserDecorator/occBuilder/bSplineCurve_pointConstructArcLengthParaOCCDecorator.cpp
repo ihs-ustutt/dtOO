@@ -52,11 +52,11 @@ namespace dtOO {
 			);
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAG) << LOGDEL
-							<< DTLOGEVAL(hasTol) << LOGDEL
-							<< DTLOGEVAL(hasMaxOrder) << LOGDEL
-							<< DTLOGEVAL(hasSegments) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAG) << std::endl
+							<< dt__eval(hasTol) << std::endl
+							<< dt__eval(hasMaxOrder) << std::endl
+							<< dt__eval(hasSegments) );
     }
   }
 }

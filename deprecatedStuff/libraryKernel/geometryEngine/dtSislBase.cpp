@@ -69,16 +69,16 @@ namespace dtOO {
   bool dtSislBase::allRight(const int errFlag, std::string const file, int const line) const {
     if (errFlag < 0) {
       dt__THROW(allRight(),
-              << DTLOGEVAL(errFlag) << LOGDEL
-              << "> " << "called from:" << LOGDEL
-              << "> " << DTLOGEVAL(file) << LOGDEL
-              << "> " << DTLOGEVAL(line) << LOGDEL
+              << dt__eval(errFlag) << std::endl
+              << "> " << "called from:" << std::endl
+              << "> " << dt__eval(file) << std::endl
+              << "> " << dt__eval(line) << std::endl
               << "SISL ERROR MESSAGE::> " << errStr[-errFlag-100-1].c_str() );
       return false;
     }
     else if (errFlag > 0) {
-      DTWARNINGWF(allRight(),
-              << DTLOGEVAL(errFlag) );
+      dt__warning(allRight(),
+              << dt__eval(errFlag) );
     }
     return true;
   }

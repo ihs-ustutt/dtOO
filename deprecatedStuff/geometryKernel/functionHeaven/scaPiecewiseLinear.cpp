@@ -182,11 +182,11 @@ namespace dtOO {
     setLabel( set->getAttribute("name") );
 
     covise::coDoSet const * setArr;
-    dt__mustDownCast(set->getElement(0), covise::coDoSet const, setArr); 
+    dt__mustCast(set->getElement(0), covise::coDoSet const, setArr); 
     scaFunction::unpackFromCoDoSet(setArr);
     
     covise::coDoVec2 const * coVec;
-    dt__mustDownCast(set->getElement(1), covise::coDoVec2 const, coVec);
+    dt__mustCast(set->getElement(1), covise::coDoVec2 const, coVec);
 
     float * xx;
     float * yy;    

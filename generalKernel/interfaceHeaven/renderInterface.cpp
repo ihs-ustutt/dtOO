@@ -52,8 +52,8 @@ namespace dtOO {
 				_w[0] = value;
         return;
       default:
-        dt__THROW(setMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(setMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }		
 	}	
@@ -67,8 +67,8 @@ namespace dtOO {
       case 2:
 				return _w[0];
       default:
-        dt__THROW(getMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(getMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }		
 	}		
@@ -85,8 +85,8 @@ namespace dtOO {
 				_w[1] = value;
         return;
       default:
-        dt__THROW(setMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(setMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }		
 	}	
@@ -100,8 +100,8 @@ namespace dtOO {
       case 2:
 				return _w[1];
       default:
-        dt__THROW(getMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(getMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }		
 	}			

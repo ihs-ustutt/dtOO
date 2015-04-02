@@ -41,7 +41,7 @@ namespace dtOO {
 		
 //		if ( !Interp.IsDone() ) {
 //			dt__THROW(bSplineCurve_pointInterpolateConstructOCC(), 
-//							<< DTLOGEVAL(Interp.IsDone()) );
+//							<< dt__eval(Interp.IsDone()) );
 //		}
 //		Interp.Perform();
 		Handle(Geom_BSplineCurve) curve = Interp.Curve();

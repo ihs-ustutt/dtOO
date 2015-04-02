@@ -60,16 +60,16 @@ namespace dtOO {
 				mat[ii][jj] = _dMS[ii][jj].x();
 			}
 		}
-	  DTINFOWF(writeTableToLog(), << logMe::floatMatrixToString(mat) );	
+	  dt__info(writeTableToLog(), << logMe::floatMatrixToString(mat) );	
 		
 		for (int ii=0; ii<_dMS.size(0); ii++) {
 			for (int jj=0; jj<_dMS.size(1); jj++) {
 				mat[ii][jj] = _dMS[ii][jj].y();
 			}
 		}
-	  DTINFOWF(writeTableToLog(), << logMe::floatMatrixToString(mat) );			
+	  dt__info(writeTableToLog(), << logMe::floatMatrixToString(mat) );			
 		
-	  DTINFOWF(writeTableToLog(), << logMe::floatVecToString(_sumM) );		
-		DTINFOWF(writeTableToLog(), << logMe::floatVecToString(_sumS) );		
+	  dt__info(writeTableToLog(), << logMe::floatVecToString(_sumM) );		
+		dt__info(writeTableToLog(), << logMe::floatVecToString(_sumS) );		
 	}
 }

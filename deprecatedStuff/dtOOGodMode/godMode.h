@@ -18,7 +18,7 @@ namespace dtOO {
   class godMode : public covise::coModule,
                   public abstractModule {
   public:
-    dt__CLASSNAME(godMode);      
+    dt__classOnlyName(godMode);      
     godMode(int argc, char *argv[]);    
   private:
     virtual int compute(char const * str);    

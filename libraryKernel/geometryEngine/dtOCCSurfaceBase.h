@@ -10,7 +10,7 @@ class Handle_Geom_Surface;
 namespace dtOO {    
   class dtOCCSurfaceBase {
   public:
-    dt__CLASSNAME(dtOCCSurfaceBase);  
+    dt__classOnlyName(dtOCCSurfaceBase);  
     dtOCCSurfaceBase();
 	  dtOCCSurfaceBase(Handle_Geom_Surface & orig);
     dtOCCSurfaceBase(const dtOCCSurfaceBase& orig);

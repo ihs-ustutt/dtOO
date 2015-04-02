@@ -8,7 +8,7 @@
 namespace dtOO {
   class conformalMappingStartFromPoint : public conformalMapping {
   public:
-    dt__CLASSNAME(conformalMappingStartFromPoint);
+    dt__classOnlyName(conformalMappingStartFromPoint);
     conformalMappingStartFromPoint();
     conformalMappingStartFromPoint(const conformalMappingStartFromPoint& orig);
     virtual ~conformalMappingStartFromPoint();

@@ -12,7 +12,7 @@ namespace dtOO {
   
   class dtOCCBezierCurve : public dtOCCCurve {
   public:
-    dt__CLASSSTD(dtOCCBezierCurve, dtCurve);
+    dt__class(dtOCCBezierCurve, dtCurve);
     dtOCCBezierCurve();
     dtOCCBezierCurve( dtOCCCurveBase const & orig);
     virtual ~dtOCCBezierCurve();

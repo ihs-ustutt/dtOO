@@ -24,7 +24,7 @@ namespace dtOO {
   }
 
   boundedVolume * boundedVolumeFactory::create(char const * const str) {
-    DTINFOWF(create(), << "creating " << str <<  "...");
+    dt__info(create(), << "creating " << str <<  "...");
     
 		__IFRET(map3dTo3dBlockGmsh);
 		__IFRET(map3dTo3dTriangulated);
@@ -35,7 +35,7 @@ namespace dtOO {
 		__IFRET(postBLMeshKit);
 		__IFRET(map3dTo3dWithInternalGmsh);
 
-    dt__THROW(create(), << str <<  " could not be created");  
+    dt__throw(create(), << str <<  " could not be created");  
   }
 
   boundedVolume * boundedVolumeFactory::create( std::string const str ) {

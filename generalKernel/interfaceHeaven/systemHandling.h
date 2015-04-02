@@ -7,7 +7,7 @@
 namespace dtOO {
   class systemHandling {
   public:
-    dt__CLASSNAME(systemHandling);
+    dt__classOnlyName(systemHandling);
     virtual ~systemHandling();
     static void command(std::string const & cmd);
     static void commandAndWait(std::string const & cmd);

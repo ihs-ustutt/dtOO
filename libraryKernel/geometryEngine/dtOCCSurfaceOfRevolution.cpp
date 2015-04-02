@@ -26,7 +26,7 @@ namespace dtOO {
 
 	dtOCCSurfaceOfRevolution::dtOCCSurfaceOfRevolution(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface(orig) {
-		dt__mustDownCast(OCCRef().getOCC().Access(), Geom_SurfaceOfRevolution const, _ptr);
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_SurfaceOfRevolution const, _ptr);
 	}
 
 	dtOCCSurfaceOfRevolution::~dtOCCSurfaceOfRevolution() {
@@ -64,9 +64,9 @@ namespace dtOO {
 			return new dtOCCBSplineCurve(base);					
 		}
 		else {
-			dt__THROW(segmentConstU(),
-							<< DTLOGEVAL(ccBezier) << LOGDEL
-							<< DTLOGEVAL(ccBSpline) );
+			dt__throw(segmentConstU(),
+							<< dt__eval(ccBezier) << std::endl
+							<< dt__eval(ccBSpline) );
 		}
 	}
 
@@ -111,11 +111,11 @@ namespace dtOO {
 			return new dtOCCTrimmedCurve(base, uuMin, uuMax);				
 		}		
 		else {
-			dt__THROW(
+			dt__throw(
 				segmentConstV(),
-				<< DTLOGEVAL(ccBezier) << LOGDEL
-				<< DTLOGEVAL(ccBSpline) << LOGDEL
-				<< DTLOGEVAL(ccConic) 
+				<< dt__eval(ccBezier) << std::endl
+				<< dt__eval(ccBSpline) << std::endl
+				<< dt__eval(ccConic) 
 			);
 		}
 	}		

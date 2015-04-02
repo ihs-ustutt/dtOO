@@ -11,7 +11,7 @@
 namespace dtOO {
   class constValue : public labelHandling {
   public:
-    dt__CLASSNAME(constValue);    
+    dt__classOnlyName(constValue);    
     constValue();
     constValue( constValue const & orig );
     virtual ~constValue();

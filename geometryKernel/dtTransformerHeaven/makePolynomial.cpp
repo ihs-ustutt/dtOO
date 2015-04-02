@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   dtTransformer * makePolynomial::clone( void ) const {
-	  dt__THROW(clone(), << "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * makePolynomial::create( void ) const {
@@ -103,8 +103,8 @@ namespace dtOO {
         retAGeo[ii] = s3;        
       }
       else {
-        dt__THROW(apply(),
-                << DTLOGEVAL(map1dTo3dP) << LOGDEL
+        dt__throw(apply(),
+                << dt__eval(map1dTo3dP) << std::endl
                 << "Unexpected error.");
       }
   }

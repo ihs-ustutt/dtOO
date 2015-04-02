@@ -15,7 +15,7 @@ namespace dtOO {
   
   class sC3dViaCMapToRotSplineDecorator : public dtXmlParserDecorator {
   public:
-    dt__CLASSNAME(sC3dViaCMapToRotSplineDecorator);
+    dt__classOnlyName(sC3dViaCMapToRotSplineDecorator);
     sC3dViaCMapToRotSplineDecorator();
     virtual void buildPart(QDomElement ** toBuildP,
                                   pointContainer * const pointContainerP,

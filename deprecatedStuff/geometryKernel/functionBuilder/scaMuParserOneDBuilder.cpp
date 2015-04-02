@@ -23,9 +23,9 @@ namespace dtOO {
     
     if (_string.getNAttributes() >= 2) {
 //      dt__THROW( buildPart(),
-//              << DTLOGEVAL( _string.getNAttributes() ) << LOGDEL
-//              << "Should be: "<< LOGDEL
-//              << "(1) argument name" << LOGDEL
+//              << dt__eval( _string.getNAttributes() ) << std::endl
+//              << "Should be: "<< std::endl
+//              << "(1) argument name" << std::endl
 //              << "(2) expression");
       hasString = true;
     }
@@ -34,9 +34,9 @@ namespace dtOO {
 //    }
     if (_float.getNAttributes() == 2) {
 //      dt__THROW( buildPart(),
-//              << DTLOGEVAL( _float.getNAttributes() ) << LOGDEL
-//              << "Should be: "<< LOGDEL
-//              << "(1) min value of argument" << LOGDEL
+//              << dt__eval( _float.getNAttributes() ) << std::endl
+//              << "Should be: "<< std::endl
+//              << "(1) min value of argument" << std::endl
 //              << "(2) max value of argument");
       hasFloat = true;
     }
@@ -78,7 +78,7 @@ namespace dtOO {
       // check cast
       //
       scaMuParserOneD * sMPOD;
-      dt__mustDownCastWM(
+      dt__mustCastWM(
         *sFunP, 
         scaMuParserOneD, 
         sMPOD,
@@ -91,9 +91,9 @@ namespace dtOO {
     }
     else {
       dt__THROW(buildPart(),
-              << DTLOGEVAL(hasScaFun) << LOGDEL
-              << DTLOGEVAL(hasString) << LOGDEL
-              << DTLOGEVAL(hasFloat) );
+              << dt__eval(hasScaFun) << std::endl
+              << dt__eval(hasString) << std::endl
+              << dt__eval(hasFloat) );
     }
   }
 

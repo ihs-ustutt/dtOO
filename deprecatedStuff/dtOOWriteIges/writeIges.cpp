@@ -51,7 +51,7 @@ namespace dtOO {
       dtXmlParser parser;
       parser.openFileAndParse( _p_xmlFilebrowser->getValue() );
 
-      DTINFOWF(writeIges(),
+      dt__info(writeIges(),
               << "Writing Iges file to " << _p_igesFilebrowser->getValue() );
       igesWriter aWriter;
 
@@ -85,7 +85,7 @@ namespace dtOO {
       aWriter.CloseFile( _p_igesFilebrowser->getValue() );
     }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       send_stop_pipeline();
       return FAILURE;
     }

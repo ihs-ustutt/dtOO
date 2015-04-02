@@ -18,7 +18,7 @@ namespace dtOO {
       typedef typename std::vector< T >::iterator iterator1;
       typedef typename std::vector< T >::const_iterator const_iterator1;      
     public:
-      dt__CLASSNAME(twoDArrayHandling);
+      dt__classOnlyName(twoDArrayHandling);
       twoDArrayHandling();
       twoDArrayHandling( int const sizeI, int const sizeJ );
       twoDArrayHandling(const twoDArrayHandling& orig);
@@ -77,7 +77,7 @@ namespace dtOO {
       }
     }
     else {
-      dt__THROW( size(), << "Wrong dimension " << DTLOGEVAL(dim) );
+      dt__throw( size(), << "Wrong dimension " << dt__eval(dim) );
     }
   }    
 }

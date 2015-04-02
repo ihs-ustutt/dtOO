@@ -83,7 +83,7 @@ namespace dtOO {
 		//
 		// gmshBoundedVolume
 		//
-    dt__THROW_IF(gmshBoundedVolume::ConstDownCast(attachTo)==NULL, init());
+    dt__throwIf(gmshBoundedVolume::ConstDownCast(attachTo)==NULL, init());
   }
   
   void bVOPostBLGmsh::postUpdate( void ) {

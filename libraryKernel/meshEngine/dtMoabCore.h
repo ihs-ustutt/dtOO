@@ -19,7 +19,7 @@ namespace dtOO {
   
   class dtMoabCore : public moab::Core {
   public:
-    dt__CLASSNAME(dtMoabCore);    
+    dt__classOnlyName(dtMoabCore);    
     dtMoabCore();
     dtMoabCore( dtOMMesh const & om );
     virtual ~dtMoabCore();

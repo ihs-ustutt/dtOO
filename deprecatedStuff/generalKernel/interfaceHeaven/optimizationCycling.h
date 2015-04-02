@@ -6,7 +6,7 @@
 namespace dtOO {
   class optimizationCycling {
   public:
-    dt__CLASSNAME(optimizationCycling);
+    dt__classOnlyName(optimizationCycling);
     optimizationCycling();
     optimizationCycling(const optimizationCycling& orig);
     virtual ~optimizationCycling();

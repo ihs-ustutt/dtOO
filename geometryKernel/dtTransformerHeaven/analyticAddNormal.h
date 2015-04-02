@@ -11,7 +11,7 @@ namespace dtOO {
   
   class analyticAddNormal : public dtTransformer {
   public:    
-    dt__CLASSNAME(analyticAddNormal);
+    dt__classOnlyName(analyticAddNormal);
     analyticAddNormal();
     analyticAddNormal(analyticAddNormal const & orig);
     virtual ~analyticAddNormal();

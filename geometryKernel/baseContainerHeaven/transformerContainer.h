@@ -11,7 +11,7 @@ namespace dtOO {
   
   class transformerContainer {
     public:    
-      dt__CLASSNAME(transformerContainer);
+      dt__classOnlyName(transformerContainer);
       transformerContainer();
       transformerContainer(const transformerContainer& orig);
       virtual ~transformerContainer();

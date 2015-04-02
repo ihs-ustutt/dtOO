@@ -9,7 +9,7 @@
 namespace dtOO {
   class vec2dBiLinearTwoD : public vec2dTwoD {
   public:
-    dt__CLASSSTD(vec2dBiLinearTwoD, analyticFunction);     
+    dt__class(vec2dBiLinearTwoD, analyticFunction);     
     vec2dBiLinearTwoD();
     vec2dBiLinearTwoD(vec2dBiLinearTwoD const & orig);
     vec2dBiLinearTwoD(

@@ -8,7 +8,7 @@ namespace dtOO {
   
   class eoLib {
   public:
-    dt__CLASSNAME(eoLib);
+    dt__classOnlyName(eoLib);
     eoLib();
     eoLib(const eoLib& orig);
     virtual ~eoLib();

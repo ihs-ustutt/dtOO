@@ -13,7 +13,7 @@ namespace dtOO {
   class map2dTo3dTransformed : public funT {
     BOOST_STATIC_ASSERT( (boost::is_base_of<map2dTo3d, funT>::value) );    
   public:
-    dt__CLASSSTD(map2dTo3dTransformed, analyticGeometry); 
+    dt__class(map2dTo3dTransformed, analyticGeometry); 
     map2dTo3dTransformed();
     map2dTo3dTransformed( map2dTo3dTransformed const & orig ); 
     map2dTo3dTransformed(funT const & orig );    

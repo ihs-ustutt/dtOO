@@ -45,7 +45,7 @@ namespace dtOO {
     //
     //prepare case
     //
-    DTINFOWF(writeGrid(),
+    dt__info(writeGrid(),
             << "Preparing case: " << _caseDirectory );    
     cmd = "sh " + getOption("prepareCase_script") + " " + _caseDirectory;    
     systemH.command(cmd);
@@ -213,7 +213,7 @@ namespace dtOO {
       }
       else {
         dt__THROW(writeDict(),
-                << "_blockGrading[" << ii << "].size() = " << _blockGrading[ii].size() << LOGDEL
+                << "_blockGrading[" << ii << "].size() = " << _blockGrading[ii].size() << std::endl
                 << "Should be 3 or 12.");
       }
       dictFile << std::endl;

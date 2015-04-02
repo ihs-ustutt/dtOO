@@ -13,7 +13,7 @@ namespace dtOO {
 
   class spline3dDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(spline3dDecorator);
+    dt__classOnlyName(spline3dDecorator);
     spline3dDecorator();
     virtual ~spline3dDecorator();
     virtual void buildPart(QDomElement ** toBuildP,

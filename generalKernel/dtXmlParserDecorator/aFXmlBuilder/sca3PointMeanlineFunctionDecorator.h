@@ -14,7 +14,7 @@ namespace dtOO {
   
   class sca3PointMeanlineFunctionDecorator : public dtXmlParserFunctionDecorator {
   public:
-    dt__CLASSNAME(sca3PointMeanlineFunctionDecorator);    
+    dt__classOnlyName(sca3PointMeanlineFunctionDecorator);    
     sca3PointMeanlineFunctionDecorator();
     virtual ~sca3PointMeanlineFunctionDecorator();
     virtual void buildPart(

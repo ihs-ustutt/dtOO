@@ -48,8 +48,8 @@ namespace dtOO {
 			vectorHandling< dtSurface const * > sL;
       //dt__FORALL(aF, ii,
 			for (int ii=0; ii<aF.size(); ii++) {
-//							DTINFOWF(buildPart(), 
-//							<< DTLOGEVAL(vec3dSurfaceTwoDCompound::ConstDownCast(aF[ii])) );
+//							dt__info(buildPart(), 
+//							<< dt__eval(vec3dSurfaceTwoDCompound::ConstDownCast(aF[ii])) );
 				dt__ptrAss(
 				  vec3dSurfaceTwoD const * v3d2d, 
 				  vec3dSurfaceTwoD::ConstDownCast(aF[ii])
@@ -97,8 +97,8 @@ namespace dtOO {
 			sFunP->push_back(v3d3d);
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAF) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAF) );
     }
   }
 
@@ -126,9 +126,9 @@ namespace dtOO {
 				= 
 				createAnalyticFunction( &elementP, bC, cValP, depSFunP );
 				if ( !vec3dSurfaceTwoDCompound::ConstDownCast(aF) ) {
-					dt__THROW(
+					dt__throw(
 					  buildPartCompound(), 
-						<< DTLOGEVAL(vec3dSurfaceTwoDCompound::ConstDownCast(aF)) << LOGDEL
+						<< dt__eval(vec3dSurfaceTwoDCompound::ConstDownCast(aF)) << std::endl
 						<< getAttributeStr("label", elementP) << " has not correct type." 
 					);
 				}				
@@ -189,7 +189,7 @@ namespace dtOO {
 			sFunP->push_back(vec3dTVC);
     }
     else {
-      dt__THROW(buildPart(), << DTLOGEVAL(hasAF) );
+      dt__throw(buildPart(), << dt__eval(hasAF) );
     }
   }	
 }

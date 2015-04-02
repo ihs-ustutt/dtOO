@@ -18,11 +18,11 @@ namespace dtOO {
   }
 
   dtCase * dtCaseFactory::create(char const * const str) {
-    DTINFOWF(create(), << "creating " << str <<  "...");
+    dt__info(create(), << "creating " << str <<  "...");
     
 		__IFRET(openFOAM);
 
-    dt__THROW(create(), << str <<  " could not be created");  
+    dt__throw(create(), << str <<  " could not be created");  
   }
 
   dtCase * dtCaseFactory::create( std::string const str ) {

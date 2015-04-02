@@ -9,7 +9,7 @@
 namespace dtOO {
   class unstructured3dSurfaceMesh : public renderInterface {
   public:
-    dt__CLASSSTD(unstructured3dSurfaceMesh, renderInterface);    
+    dt__class(unstructured3dSurfaceMesh, renderInterface);    
     unstructured3dSurfaceMesh();
     virtual ~unstructured3dSurfaceMesh();
     void addPoints( vectorHandling< dtPoint3 > const & pp );

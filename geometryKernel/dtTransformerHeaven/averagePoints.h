@@ -7,7 +7,7 @@
 namespace dtOO {
   class averagePoints : public dtTransformer {
   public:    
-    dt__CLASSSTD(averagePoints, dtTransformer);  
+    dt__class(averagePoints, dtTransformer);  
     averagePoints();
     averagePoints( averagePoints const & orig );
     virtual dtTransformer * clone( void ) const;

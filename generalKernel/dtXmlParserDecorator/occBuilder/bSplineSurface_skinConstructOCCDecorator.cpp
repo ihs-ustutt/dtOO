@@ -88,8 +88,8 @@ namespace dtOO {
 //			ccV.destroy();
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAG) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAG) );
     }
   }
 }

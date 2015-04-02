@@ -15,7 +15,7 @@ namespace dtOO {
   }
 
   dtTransformer * projectOnSurface::clone( void ) const {
-	  dt__THROW(clone(), << "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * projectOnSurface::create( void ) const {
@@ -32,10 +32,10 @@ namespace dtOO {
       splineCurve3d const *  constSc;
       dt__ptrAss(constSc, splineCurve3d::ConstDownCast(aGeoP));
 
-			DTINFOWF(
+			dt__info(
 				apply(),
-				<< "Projecting " << DTLOGEVAL(constSc->getLabel()) << " on " 
-				<<  DTLOGEVAL(_aS->getLabel()) << "."
+				<< "Projecting " << dt__eval(constSc->getLabel()) << " on " 
+				<<  dt__eval(_aS->getLabel()) << "."
 			);
 			
       //
@@ -77,9 +77,9 @@ namespace dtOO {
 			);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "part_label", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "part_label", *tE))
 			);
     }
   }

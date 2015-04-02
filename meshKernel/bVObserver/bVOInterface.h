@@ -15,7 +15,7 @@ namespace dtOO {
   
   class bVOInterface {
     public:
-      dt__CLASSNAME(bVOInterface);  
+      dt__classOnlyName(bVOInterface);  
       bVOInterface();
       virtual ~bVOInterface();
       virtual void preUpdate( void );

@@ -14,7 +14,7 @@ namespace dtOO {
 
   class muParserFunctionDecorator : public dtXmlParserFunctionDecorator {
   public:  
-    dt__CLASSNAME(muParserFunctionDecorator);
+    dt__classOnlyName(muParserFunctionDecorator);
     muParserFunctionDecorator();
     virtual ~muParserFunctionDecorator();
     virtual void buildPart(

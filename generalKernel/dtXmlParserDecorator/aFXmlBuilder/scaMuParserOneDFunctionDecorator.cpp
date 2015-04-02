@@ -93,10 +93,10 @@ namespace dtOO {
 			sMP1d->setMinMax(xMin, xMax);
     }
     else {
-      dt__THROW(buildPart(), 
-              << DTLOGEVAL(hasString) << LOGDEL
-              << DTLOGEVAL(hasRange) << LOGDEL
-              << DTLOGEVAL(hasScaFun) );
+      dt__throw(buildPart(), 
+              << dt__eval(hasString) << std::endl
+              << dt__eval(hasRange) << std::endl
+              << dt__eval(hasScaFun) );
     }
   }
 }

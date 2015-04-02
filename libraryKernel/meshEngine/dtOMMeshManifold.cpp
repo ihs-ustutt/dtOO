@@ -13,14 +13,14 @@ namespace dtOO {
 		
 //		float minA = minDihedralAngle();
 //		float maxA = maxDihedralAngle();
-//		DTINFOWF(
+//		dt__info(
 //			dtOMMeshManifold(),
-//			<< DTLOGEVAL(closed()) << LOGDEL
-//			<< DTLOGEVAL(divideable()) << LOGDEL
-//			<< "_dihedralAngleV = " << _dihedralAngleV << LOGDEL
-//			<< "_isBoundary = " << _isBoundary << LOGDEL
-//			<< DTLOGEVAL(minA) << " rad (" << minA*180./M_PI << " degree )" << LOGDEL
-//			<< DTLOGEVAL(maxA) << " rad (" << maxA*180./M_PI << " degree )" << LOGDEL
+//			<< dt__eval(closed()) << std::endl
+//			<< dt__eval(divideable()) << std::endl
+//			<< "_dihedralAngleV = " << _dihedralAngleV << std::endl
+//			<< "_isBoundary = " << _isBoundary << std::endl
+//			<< dt__eval(minA) << " rad (" << minA*180./M_PI << " degree )" << std::endl
+//			<< dt__eval(maxA) << " rad (" << maxA*180./M_PI << " degree )" << std::endl
 //		);
 	}
 	
@@ -93,7 +93,7 @@ namespace dtOO {
 	}	
 
   dtOMMeshManifold dtOMMeshManifold::divide(void) {
-		dt__THROW_IF(!divideable(), divide());
+		dt__throwIf(!divideable(), divide());
 		
 		bool isClosed = closed();
 		
@@ -130,10 +130,10 @@ namespace dtOO {
 			//
 			// output
 			//
-//			DTINFOWF(
+//			dt__info(
 //				divide(),
 //				<< "Dividing manifold at " << maxAngleIt - _dihedralAngleV.begin() 
-//				<< " and " << max2ndAngleIt - _dihedralAngleV.begin() << LOGDEL
+//				<< " and " << max2ndAngleIt - _dihedralAngleV.begin() << std::endl
 //				<< "Distance between " << max2ndAngleIt-maxAngleIt
 //			);
 			
@@ -170,13 +170,13 @@ namespace dtOO {
 			//
 			// output
 			//
-//			DTINFOWF(
+//			dt__info(
 //				divide(),
-//				<< "Dividing manifold at " << maxAngleBegPos << LOGDEL
-//				<< "Distance " << DTLOGEVAL(maxAngleBegPos) 
-//				<< " and " << DTLOGEVAL(maxAngleEndPos) << LOGDEL
-//				<< "_dihedralAngleV = " << _dihedralAngleV << LOGDEL
-//				<< "_isBoundary = " << _isBoundary << LOGDEL
+//				<< "Dividing manifold at " << maxAngleBegPos << std::endl
+//				<< "Distance " << dt__eval(maxAngleBegPos) 
+//				<< " and " << dt__eval(maxAngleEndPos) << std::endl
+//				<< "_dihedralAngleV = " << _dihedralAngleV << std::endl
+//				<< "_isBoundary = " << _isBoundary << std::endl
 //			);
 			
 			//

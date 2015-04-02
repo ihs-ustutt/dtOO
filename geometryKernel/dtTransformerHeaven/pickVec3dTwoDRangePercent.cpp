@@ -57,11 +57,11 @@ namespace dtOO {
 				ret.push_back( new vec3dCurveOneD( dtC.get() ) );
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 					apply(), 
-					<< "Incompatible type." << LOGDEL
-					<< DTLOGEVAL(v3d) << LOGDEL
-					<< DTLOGEVAL(v3dSurface)
+					<< "Incompatible type." << std::endl
+					<< dt__eval(v3d) << std::endl
+					<< dt__eval(v3dSurface)
 				);		
 			}
     }
@@ -104,6 +104,6 @@ namespace dtOO {
 			);
 		}
 		
-    dt__THROW_IF( (_x0 >= 0.) && (_x1 >= 0.), init() );
+    dt__throwIf( (_x0 >= 0.) && (_x1 >= 0.), init() );
   }  
 }

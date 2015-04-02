@@ -43,9 +43,9 @@ namespace dtOO {
       //
       std::string option = getStringBetweenAndRemove("[", "]", &funString);
       if (option != "") {
-        DTDEBUGWF(replaceUsedFunctions(),
-                << "Option found" << LOGDEL
-                << DTLOGEVAL(option) );
+        dt__debug(replaceUsedFunctions(),
+                << "Option found" << std::endl
+                << dt__eval(option) );
       }
 
       
@@ -76,9 +76,9 @@ namespace dtOO {
         insertMeFloat = sF->YFloat( stringToFloat(funArgumentValue) );
       }
       else {
-        dt__THROW(replaceUsedFunctions(),
-                << "Function name " << DTLOGEVAL(funName) << " has no "
-								<< DTLOGEVAL(option) );				
+        dt__throw(replaceUsedFunctions(),
+                << "Function name " << dt__eval(funName) << " has no "
+								<< dt__eval(option) );				
       }      
       //
       //replace function string with value
@@ -127,8 +127,8 @@ namespace dtOO {
         returnExpression.replace(replaceStart, replaceEnd, floatToString(insertMeFloat));
       }
       else {
-        dt__THROW(replaceUsedFunctions(),
-                << "ConstValue name " << DTLOGEVAL(funName) << " not found.");
+        dt__throw(replaceUsedFunctions(),
+                << "ConstValue name " << dt__eval(funName) << " not found.");
         returnExpression.replace(replaceStart, replaceEnd, floatToString(0.));
       }
       //
@@ -146,8 +146,8 @@ namespace dtOO {
       return ( (float) parser.Eval() );
     }
     catch (mu::Parser::exception_type &e) {
-      dt__THROW( muParseString(),
-              << e.GetMsg() << LOGDEL
+      dt__throw( muParseString(),
+              << e.GetMsg() << std::endl
               << "Error in muParser. Return 0");
     }
   }
@@ -234,8 +234,8 @@ namespace dtOO {
     // check tagName
     //
     if ( !is("dtVector3", element) && !is("Vector_3", element) ) {
-      dt__THROW(getDtVector3(), 
-        << DTLOGEVAL( getTagName(element) ) << LOGDEL
+      dt__throw(getDtVector3(), 
+        << dt__eval( getTagName(element) ) << std::endl
         << "Not a dtVector3 element.");
     }
     

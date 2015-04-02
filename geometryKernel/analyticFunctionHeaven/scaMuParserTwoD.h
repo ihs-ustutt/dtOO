@@ -13,7 +13,7 @@ namespace mu {
 namespace dtOO {
   class scaMuParserTwoD : public scaTwoD {
   public:
-    dt__CLASSSTD(scaMuParserTwoD, analyticFunction);     
+    dt__class(scaMuParserTwoD, analyticFunction);     
     scaMuParserTwoD();
     scaMuParserTwoD(scaMuParserTwoD const & orig);
     scaMuParserTwoD(

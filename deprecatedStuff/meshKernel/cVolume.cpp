@@ -70,7 +70,7 @@ namespace dtOO {
       analyticSurface const * aS = dynamic_cast< analyticSurface const * >(aG);
       if (!aS) {
         dt__THROW(init,
-                DTLOGEVAL(aS) << LOGDEL
+                dt__eval(aS) << std::endl
                 << "dynamic_cast of analyticGeometry " << aG->getName() 
                 << " to analyticSurface fails.");
       }
@@ -243,8 +243,8 @@ namespace dtOO {
       constValue * cV = cValP->get(label);
       if (!cV) {
         dt__THROW(init,
-                DTLOGEVAL(cV) << LOGDEL
-                << "constValue " << DTLOGEVAL(label) 
+                dt__eval(cV) << std::endl
+                << "constValue " << dt__eval(label) 
                 << " not in vector _cValP.");
       }
       if (attribute == "dtAlpha") {
@@ -289,15 +289,15 @@ namespace dtOO {
     DTBUFFERINIT();
     dt__FORALL(_surfP, ii,
       DTBUFFER( << "_surfP[" << ii << "] = " << _surfP[ii] 
-            << " label = " << _surfP[ii]->getName() << LOGDEL );
+            << " label = " << _surfP[ii]->getName() << std::endl );
     );
     dt__FORALL(_val, ii,
-      DTBUFFER( << "_val[" << ii << "] = " << _val[ii] << LOGDEL );
+      DTBUFFER( << "_val[" << ii << "] = " << _val[ii] << std::endl );
     );       
     dt__FORALL(_int, ii,
-      DTBUFFER( << "_int[" << ii << "] = " << _int[ii] << LOGDEL );
+      DTBUFFER( << "_int[" << ii << "] = " << _int[ii] << std::endl );
     );    
-    DTDEBUGWF_BUFFER(init());
+    dt__debug_BUFFER(init());
   }
   
   void cVolume::pushGridToBlockMeshDictWriter( void ) {
@@ -554,7 +554,7 @@ namespace dtOO {
     //
     //prepare case
     //
-    DTINFOWF(writeGrid(),
+    dt__info(writeGrid(),
             << "Preparing case: " << _caseDirectory );    
     cmd = "sh " + getOption("prepareCase_script") + " " + _caseDirectory;    
     systemH.command(cmd);
@@ -627,11 +627,11 @@ namespace dtOO {
                                             lPoiInternalS.y()
                       )
                     );
-    DTINFOWF(autoAdjust(),
-            << "trailingEdgePoint (hub) >> " << DTLOGPOI2D(tPoiH) << LOGDEL
-            << "trailingEdgePoint (shroud) >> " << DTLOGPOI2D(tPoiS) << LOGDEL
-            << "leadingEdgePoint (hub) >> " << DTLOGPOI2D(lPoiH) << LOGDEL
-            << "leadingEdgePoint (shroud) >> " << DTLOGPOI2D(lPoiS) );
+    dt__info(autoAdjust(),
+            << "trailingEdgePoint (hub) >> " << dt__point2d(tPoiH) << std::endl
+            << "trailingEdgePoint (shroud) >> " << dt__point2d(tPoiS) << std::endl
+            << "leadingEdgePoint (hub) >> " << dt__point2d(lPoiH) << std::endl
+            << "leadingEdgePoint (shroud) >> " << dt__point2d(lPoiS) );
 
     //
     //adjust constValues
@@ -658,10 +658,10 @@ namespace dtOO {
     DTBUFFERINIT();
     for(int ii=0;ii<_nGridVal;ii++) {
       DTBUFFER(
-              << DTLOGEVAL(_valCValP[ii]->getMin()) << " " 
-              << DTLOGEVAL(_valCValP[ii]->getMax()) << LOGDEL);
+              << dt__eval(_valCValP[ii]->getMin()) << " " 
+              << dt__eval(_valCValP[ii]->getMax()) << std::endl);
     }
-    DTDEBUGWF_BUFFER(autoAdjust());
+    dt__debug_BUFFER(autoAdjust());
   }
 
   bool cVolume::parameterCheck(void) {
@@ -670,7 +670,7 @@ namespace dtOO {
             || (_valCValP[dtNode19v]->getValue() <=  _valCValP[dtNode17]->getValue())
             || (_valCValP[dtNode19v]->getValue() <=  _valCValP[dtNode15]->getValue()) ) {
       
-      DTINFOWF(parameterCheck(),
+      dt__info(parameterCheck(),
               << "parameterCheck fails." );
       return false;
     }

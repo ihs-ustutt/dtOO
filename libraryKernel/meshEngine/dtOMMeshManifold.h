@@ -7,7 +7,7 @@
 namespace dtOO {
   class dtOMMeshManifold : public dtOMMesh {
   public:
-    dt__CLASSNAME(dtOMMeshManifold);
+    dt__classOnlyName(dtOMMeshManifold);
     dtOMMeshManifold(dtOMMesh const & om, omVertexH const & vH);
     dtOMMeshManifold( dtOMMeshManifold const & orig);
     virtual ~dtOMMeshManifold();

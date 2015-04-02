@@ -10,7 +10,7 @@ namespace dtOO {
   
   class normalOffsetInSurface : public dtTransformer {
   public:    
-    dt__CLASSNAME(normalOffsetInSurface);
+    dt__classOnlyName(normalOffsetInSurface);
     normalOffsetInSurface();
     normalOffsetInSurface( normalOffsetInSurface const & orig );    
     virtual ~normalOffsetInSurface();

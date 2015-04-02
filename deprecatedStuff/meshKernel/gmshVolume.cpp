@@ -106,9 +106,9 @@ namespace dtOO {
     model->mesh(3);
     model->writeMSH(labelHandling::getLabel()+"_3d"+".msh");
    
-    DTDEBUGWF(compute(), 
-            << DTLOGEVAL( Msg().GetFirstError() ) << LOGDEL
-            << DTLOGEVAL( Msg().GetFirstWarning() ) );
+    dt__debug(compute(), 
+            << dt__eval( Msg().GetFirstError() ) << std::endl
+            << dt__eval( Msg().GetFirstWarning() ) );
 
     delete model;
 

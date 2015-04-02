@@ -10,7 +10,7 @@ namespace dtOO {
   
   class biThicknessIncreasing : public dtTransformer {
   public:    
-    dt__CLASSNAME(biThicknessIncreasing);
+    dt__classOnlyName(biThicknessIncreasing);
     biThicknessIncreasing();
     virtual ~biThicknessIncreasing();
     virtual dtTransformer * clone( void ) const;

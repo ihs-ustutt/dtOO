@@ -48,12 +48,12 @@ namespace dtOO {
 		  ) 
 		);
 		
-//		DTINFOWF(
+//		dt__info(
 //		  trimmedCurve2d_twoPointsConnectConstructOCC(),
-//			<< DTLOGEVAL(p0) << LOGDEL
-//			<< DTLOGEVAL(p1) << LOGDEL
-//			<< DTLOGPOI2D(_dtC2d->pointPercent(0.)) << LOGDEL
-//			<< DTLOGPOI2D(_dtC2d->pointPercent(1.))
+//			<< dt__eval(p0) << std::endl
+//			<< dt__eval(p1) << std::endl
+//			<< dt__point2d(_dtC2d->pointPercent(0.)) << std::endl
+//			<< dt__point2d(_dtC2d->pointPercent(1.))
 //		);
 	}
 	

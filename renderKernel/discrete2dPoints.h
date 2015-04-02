@@ -9,7 +9,7 @@
 namespace dtOO {
   class discrete2dPoints : public renderInterface {
   public:
-    dt__CLASSSTD(discrete2dPoints, renderInterface);
+    dt__class(discrete2dPoints, renderInterface);
     discrete2dPoints();
     discrete2dPoints(vectorHandling< dtPoint2 > const & pp);
     virtual ~discrete2dPoints();

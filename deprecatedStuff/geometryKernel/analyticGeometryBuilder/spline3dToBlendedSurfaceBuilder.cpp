@@ -8,7 +8,7 @@
 
 namespace dtOO {
   DTCLASSLOGMETHODI(spline3dToBlendedSurfaceBuilder,
-          << DTLOGEVAL( thisRef._splineSurface3dP ) );
+          << dt__eval( thisRef._splineSurface3dP ) );
   
   spline3dToBlendedSurfaceBuilder::spline3dToBlendedSurfaceBuilder() {
     _splineSurface3dP = NULL;      
@@ -26,7 +26,7 @@ namespace dtOO {
     //
     if (_analyticGeometryP.getNAttributes() == 0) {
       dt__THROW( buildPart(),
-              << DTLOGEVAL( _analyticGeometryP.getNAttributes() ) );
+              << dt__eval( _analyticGeometryP.getNAttributes() ) );
     }
 
 

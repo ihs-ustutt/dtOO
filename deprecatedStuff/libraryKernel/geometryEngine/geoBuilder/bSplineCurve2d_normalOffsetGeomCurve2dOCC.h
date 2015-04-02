@@ -10,7 +10,7 @@ namespace dtOO {
   
   class bSplineCurve2d_normalOffsetGeomCurve2dOCC {
   public:
-    dt__CLASSNAME(bSplineCurve2d_normalOffsetGeomCurve2dOCC);    
+    dt__classOnlyName(bSplineCurve2d_normalOffsetGeomCurve2dOCC);    
     bSplineCurve2d_normalOffsetGeomCurve2dOCC(
       dtCurve2d const * const dtC, std::vector< float > const & offset
     );

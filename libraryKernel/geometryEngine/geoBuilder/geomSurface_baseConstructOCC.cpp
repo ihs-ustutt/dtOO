@@ -36,9 +36,9 @@ namespace dtOO {
 		  _dtS.reset( new dtOCCSurfaceOfRevolution(base) );			
 		}
 		else {
-			dt__THROW(
+			dt__throw(
 				geomSurface_baseConstructOCC(), 
-				<< DTLOGEVAL(occS->DynamicType()->Name()) << LOGDEL
+				<< dt__eval(occS->DynamicType()->Name()) << std::endl
 				<< "Unsupported OCC type."
 			);			
 		}

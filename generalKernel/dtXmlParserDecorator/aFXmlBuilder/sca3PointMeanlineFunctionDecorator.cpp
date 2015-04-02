@@ -141,13 +141,13 @@ namespace dtOO {
 			);
     }		
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasAlphaOne) << LOGDEL
-              << DTLOGEVAL(hasAlphaTwo) << LOGDEL
-              << DTLOGEVAL(hasRatio) << LOGDEL
-							<< DTLOGEVAL(hasDeltaX) << LOGDEL
-              << DTLOGEVAL(hasDeltaY) );
+      dt__throw(buildPart(),
+              << dt__eval(hasOrder) << std::endl
+              << dt__eval(hasAlphaOne) << std::endl
+              << dt__eval(hasAlphaTwo) << std::endl
+              << dt__eval(hasRatio) << std::endl
+							<< dt__eval(hasDeltaX) << std::endl
+              << dt__eval(hasDeltaY) );
     }
 		if ( hasAttribute("revert", toBuildP) ) {
 			if ( getAttributeBool("revert", toBuildP) ) {

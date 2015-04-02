@@ -116,13 +116,13 @@ namespace dtOO {
 				av = av + itVal.back();
 				itVal.push_back(av/4.);
 			}
-			DTINFOWF(
+			dt__info(
 				buildPart(),
 				<< logMe::floatVecToTable(header, itVal)
 			);
     }
     else {
-      dt__THROW(buildPart(), << DTLOGEVAL(hasAF) );
+      dt__throw(buildPart(), << dt__eval(hasAF) );
     }
   }
 	

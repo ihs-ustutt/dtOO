@@ -55,7 +55,7 @@ namespace dtOO {
 		  _dtC.reset( new dtOCCLine(base) );			
 		}				
 		else {
-			dt__THROW(
+			dt__throw(
 			  geomCurve_convertGeomCurve2d(), 
 			  << "Unknown OCC type."
 			);

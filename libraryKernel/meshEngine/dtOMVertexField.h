@@ -12,7 +12,7 @@ namespace dtOO {
   template < typename T >  
   class dtOMVertexField : public labelHandling {
   public:
-    dt__CLASSNAME(dtOMVertexField);    
+    dt__classOnlyName(dtOMVertexField);    
     dtOMVertexField( std::string const & label, dtOMMesh const & om, T const & init );
     virtual ~dtOMVertexField();
     T & operator[](omVertexH const & vH);    

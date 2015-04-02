@@ -13,7 +13,7 @@ namespace dtOO {
   
   class vec2dCurve2dOneD : public vec2dOneD {
   public:
-    dt__CLASSSTD(vec2dCurve2dOneD, analyticFunction);     
+    dt__class(vec2dCurve2dOneD, analyticFunction);     
     vec2dCurve2dOneD();
     vec2dCurve2dOneD(const vec2dCurve2dOneD& orig);
     vec2dCurve2dOneD(dtCurve2d const * const dtC2d);

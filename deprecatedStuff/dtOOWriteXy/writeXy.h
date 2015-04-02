@@ -11,7 +11,7 @@ namespace dtOO {
   class writeXy : public covise::coModule,
                   public abstractModule {
   public:
-    dt__CLASSNAME(writeXy);    
+    dt__classOnlyName(writeXy);    
     writeXy(int argc, char *argv[]); 
     virtual ~writeXy();
     virtual int compute(char const * str);        

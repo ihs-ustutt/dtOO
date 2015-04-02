@@ -31,7 +31,7 @@ namespace dtOO {
 		
 //    SISLCurve * curve = const_cast< SISLCurve * >( cast2Sisl(curveP)->getSISLCurve());
 		dtSislCurve const * sisl;
-		dt__mustDownCast(&curve, dtSislCurve const, sisl);
+		dt__mustCast(&curve, dtSislCurve const, sisl);
     SISLSurf * surf;		
     s1302(const_cast<SISLCurve*>(sisl->getSISLCurve()), //SISLCurve *curve;
           0, //double epsge;

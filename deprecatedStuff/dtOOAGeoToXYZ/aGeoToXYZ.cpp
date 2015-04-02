@@ -60,7 +60,7 @@ namespace dtOO {
       of.fixed;        
       of << "Closed Index Arclength" << std::endl;
       
-      DTINFOWF(compute(),
+      dt__info(compute(),
               << "writing " << ofName 
               );        
 
@@ -92,7 +92,7 @@ namespace dtOO {
                 float percentII = iiF * (1. / (nPointsIIF-1) );                              
 
                   map2dTo3d * map;
-                  dt__mustDownCast(aG, map2dTo3d, map);
+                  dt__mustCast(aG, map2dTo3d, map);
                   dtPoint3 point = map->getPointPercent(percentII, percentJJ);
                   of << point.x() << " " << point.y() << " " << point.z() << std::endl;
               }
@@ -111,7 +111,7 @@ namespace dtOO {
       return SUCCESS;
     }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       send_stop_pipeline();
       return FAILURE;
     }    

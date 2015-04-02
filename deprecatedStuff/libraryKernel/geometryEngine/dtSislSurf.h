@@ -18,7 +18,7 @@ namespace dtOO {
   class dtSislSurf : public dtSislBase,
                      public dtSurface {
   public:
-    dt__CLASSSTD(dtSislSurf, dtSurface);  
+    dt__class(dtSislSurf, dtSurface);  
     //
     // overloaded
     //

@@ -11,7 +11,7 @@ namespace dtOO {
   
   class vec2dSurface2dTwoD : public vec2dTwoD {
   public:
-    dt__CLASSSTD(vec2dSurface2dTwoD, analyticFunction);     
+    dt__class(vec2dSurface2dTwoD, analyticFunction);     
     vec2dSurface2dTwoD();
     vec2dSurface2dTwoD(const vec2dSurface2dTwoD& orig);
     vec2dSurface2dTwoD(dtSurface2d const * const dtS2d);

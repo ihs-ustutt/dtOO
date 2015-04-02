@@ -7,7 +7,7 @@
 namespace dtOO {
   class translate : public dtTransformer {
   public:    
-    dt__CLASSNAME(translate);
+    dt__classOnlyName(translate);
     translate();
     translate( translate const & orig );
     virtual ~translate();

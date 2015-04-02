@@ -325,33 +325,33 @@ namespace dtOO {
   void dtMacroMesh::dump( void ) const {
     DTBUFFERINIT();
     DTBUFFER(
-      << DTLOGEVAL(this->n_vertices()) << LOGDEL
-      << DTLOGEVAL(this->n_edges()) << LOGDEL
-      << DTLOGEVAL(this->n_halfedges()) << LOGDEL
-      << DTLOGEVAL(this->n_faces()) << LOGDEL
-      << DTLOGEVAL(this->n_halffaces()) << LOGDEL
-      << DTLOGEVAL(this->n_cells()) << LOGDEL
+      << dt__eval(this->n_vertices()) << std::endl
+      << dt__eval(this->n_edges()) << std::endl
+      << dt__eval(this->n_halfedges()) << std::endl
+      << dt__eval(this->n_faces()) << std::endl
+      << dt__eval(this->n_halffaces()) << std::endl
+      << dt__eval(this->n_cells()) << std::endl
     );
     
     for (ovmCellI c_it = this->cells_begin(); c_it!=this->cells_end(); ++c_it) {
       DTBUFFER( 
-        << "cell " << DTLOGEVAL(c_it)
+        << "cell " << dt__eval(c_it)
         << ", label = " << __caCThis->request_cell_property< std::string >("label")[*c_it] 
-        << LOGDEL
+        << std::endl
       );
-      DTBUFFER( << "CellVertexIter" << LOGDEL);//LOGDEL);
+      DTBUFFER( << "CellVertexIter" << std::endl);//std::endl);
       ovmCellVertexI cv_it = this->cv_iter( *c_it );
       for (cv_it; cv_it.valid(); ++cv_it) {
         OpenVolumeMesh::Vec3f vv = this->vertex( *cv_it );
         DTBUFFER( 
           << vv
           << " id = " << __caCThis->request_vertex_property< int >("id")[*cv_it] 
-          << LOGDEL 
+          << std::endl 
         );
       }
-      DTBUFFER( << LOGDEL );
+      DTBUFFER( << std::endl );
 
-      DTBUFFER( << "HalfFaceVertexIter" << LOGDEL);
+      DTBUFFER( << "HalfFaceVertexIter" << std::endl);
       //ovmHalfFaceI hf_it = this->cell( *c_it ).hf_iter();
       std::vector< ovmHalfFaceH > hfVec = __caCThis->cell( *c_it ).halffaces();
       for (int ii=0; ii<hfVec.size(); ii++) {
@@ -362,10 +362,10 @@ namespace dtOO {
             << " "
           );
         }
-        DTBUFFER( << LOGDEL );
+        DTBUFFER( << std::endl );
       }
-      DTBUFFER( << LOGDEL );
-      DTBUFFER( << "CellHalfEdgeIter" << LOGDEL);
+      DTBUFFER( << std::endl );
+      DTBUFFER( << "CellHalfEdgeIter" << std::endl);
       ovmCellHalfEdgeI che_it = this->che_iter( *c_it );
       for (che_it; che_it.valid(); ++che_it) {
         DTBUFFER( 
@@ -374,7 +374,7 @@ namespace dtOO {
         << __caCThis->request_vertex_property< int >("id")[this->halfedge(*che_it).from_vertex()] 
         << " -> toVertex = "
         << __caCThis->request_vertex_property< int >("id")[this->halfedge(*che_it).to_vertex()]
-        << LOGDEL        );
+        << std::endl        );
       }
     }
     
@@ -386,11 +386,11 @@ namespace dtOO {
         << __caCThis->request_vertex_property< int >("id")[this->edge(*e_it).from_vertex()] 
         << " -> toVertex = "
         << __caCThis->request_vertex_property< int >("id")[this->edge(*e_it).to_vertex()]
-        << LOGDEL
+        << std::endl
       );
     }        
-    DTBUFFER( << LOGDEL );    
-    DTINFOWF_BUFFER(dump());
+    DTBUFFER( << std::endl );    
+    dt__info_BUFFER(dump());
     
 //    OpenVolumeMesh::IO::FileManager().writeFile("dtMacroMesh.ovm", *this);
     
@@ -408,7 +408,7 @@ namespace dtOO {
     );
     
     dt__THROW(getVertexHandle(),
-            << "Vertex " << DTLOGEVAL(id) << " not in mesh.");
+            << "Vertex " << dt__eval(id) << " not in mesh.");
   }
   
   int const dtMacroMesh::getVertexId( ovmVertexH const vH ) const {
@@ -430,7 +430,7 @@ namespace dtOO {
       }
     );
     
-    dt__THROW(getCellHandle(), << "Cell " << DTLOGEVAL(id) << " not in mesh.");    
+    dt__THROW(getCellHandle(), << "Cell " << dt__eval(id) << " not in mesh.");    
   }
   
   ovmCellH const dtMacroMesh::getCellHandle( int const id ) const {
@@ -440,7 +440,7 @@ namespace dtOO {
       return *cv_it;
     }
     
-    dt__THROW(getCellHandle(), << "Cell " << DTLOGEVAL(id) << " not in mesh.");        
+    dt__THROW(getCellHandle(), << "Cell " << dt__eval(id) << " not in mesh.");        
   }
   
   ovmEdgeH const dtMacroMesh::getEdgeHandle( int const id ) const {
@@ -450,7 +450,7 @@ namespace dtOO {
       return *e_it;
     }
     
-    dt__THROW(getEdgeHandle(), << "Edge " << DTLOGEVAL(id) << " not in mesh.");    
+    dt__THROW(getEdgeHandle(), << "Edge " << dt__eval(id) << " not in mesh.");    
   }
 
   ovmFaceH const dtMacroMesh::getFaceHandle( int const id ) const {
@@ -460,7 +460,7 @@ namespace dtOO {
       return *f_it;
     }
     
-    dt__THROW(getEdgeHandle(), << "Edge " << DTLOGEVAL(id) << " not in mesh.");    
+    dt__THROW(getEdgeHandle(), << "Edge " << dt__eval(id) << " not in mesh.");    
   }
   
   int dtMacroMesh::getFromByEdgeIndex(int const eId) const {
@@ -499,8 +499,8 @@ namespace dtOO {
       vId.push_back( getVertexId( *hfv_it ) );
     }
     
-//    DTDEBUGWF(getFaceVertices(),
-//            << DTLOGEVAL(fId) << LOGDEL
+//    dt__debug(getFaceVertices(),
+//            << dt__eval(fId) << std::endl
 //            << "vID = " << vecToString<int>(vId) );
     return vId;
   }
@@ -579,7 +579,7 @@ namespace dtOO {
       }
       counter++;
     );    
-    dt__THROW(getEdgeIndex(), << "Edge " << DTLOGEVAL(eH) << " not in mesh.");    
+    dt__THROW(getEdgeIndex(), << "Edge " << dt__eval(eH) << " not in mesh.");    
   }
   
   dtPoint3 dtMacroMesh::toDtPoint3( ovmVertexH const vH ) const {

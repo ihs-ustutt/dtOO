@@ -23,7 +23,7 @@ namespace dtOO {
 		);
 		
 		Handle(GeomAdaptor_HCurve) gahc;
-		dt__TRYOCC(
+		dt__tryOcc(
 			gahc
 			=
 			new GeomAdaptor_HCurve(bsc);
@@ -33,7 +33,7 @@ namespace dtOO {
 		//Standard_Real llR = static_cast<Standard_Real>(length);
 		Handle(Geom_BSplineCurve) curve;
 		
-		dt__TRYOCC(
+		dt__tryOcc(
 			Approx_CurvilinearParameter 
 			acp(
 			  gahc, 
@@ -65,7 +65,7 @@ namespace dtOO {
 		std::vector< std::string > header;
 		header.push_back("u");
 		header.push_back("l(u)/l_ges");
-		DTDEBUGWF(
+		dt__debug(
 			bSplineCurve_pointConstructArcLengthParaOCC(), 
 			<< logMe::floatVecToTable(header, ul)
 		);		

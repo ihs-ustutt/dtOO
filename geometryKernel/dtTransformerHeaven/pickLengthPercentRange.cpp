@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   dtTransformer * pickLengthPercentRange::clone( void ) const {
-	  dt__THROW(clone(), << "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * pickLengthPercentRange::create( void ) const {
@@ -39,11 +39,11 @@ namespace dtOO {
       // cast
       //
       analyticSurface * aSP;
-      dt__mustDownCast(aGP, analyticSurface, aSP);
+      dt__mustCast(aGP, analyticSurface, aSP);
 
       //
       if ( _createSplineCurve3d ) {
-				dt__THROW(apply(), << "Not yet supported.");
+				dt__throw(apply(), << "Not yet supported.");
       }
       else if (_createAnalyticSurface) {
 				dt__pH(map1dTo3d) m1dU(aSP->segmentConstVPercent(0., 0., 1.));
@@ -141,13 +141,13 @@ namespace dtOO {
       //
       if ( (_lengthPercentOneStart == _lengthPercentOneEnd)
               && (_lengthPercentTwoStart == _lengthPercentTwoEnd) ) {
-        dt__THROW(init(),
-                << DTLOGEVAL(_lengthPercentOneStart) << LOGDEL
-                << DTLOGEVAL(_lengthPercentTwoStart) << LOGDEL
-                << DTLOGEVAL(_lengthPercentOneEnd) << LOGDEL
-                << DTLOGEVAL(_lengthPercentTwoEnd) << LOGDEL
-                << "Either lengthOneStart and lengthOneEnd or/and" << LOGDEL
-                << " lengthTwoStart and lengthTwoEnd should be different." << LOGDEL
+        dt__throw(init(),
+                << dt__eval(_lengthPercentOneStart) << std::endl
+                << dt__eval(_lengthPercentTwoStart) << std::endl
+                << dt__eval(_lengthPercentOneEnd) << std::endl
+                << dt__eval(_lengthPercentTwoEnd) << std::endl
+                << "Either lengthOneStart and lengthOneEnd or/and" << std::endl
+                << " lengthTwoStart and lengthTwoEnd should be different." << std::endl
                 << " Both ranges equal means picking a point.");
       }
       if ( (_lengthPercentOneStart != _lengthPercentOneEnd)
@@ -155,28 +155,28 @@ namespace dtOO {
         _createSplineCurve3d = false;
         _createAnalyticSurface = true;        
 //        dt__THROW(init(),
-//                << DTLOGEVAL(_lengthPercentOneStart) << LOGDEL
-//                << DTLOGEVAL(_lengthPercentTwoStart) << LOGDEL
-//                << DTLOGEVAL(_lengthPercentOneEnd) << LOGDEL
-//                << DTLOGEVAL(_lengthPercentTwoEnd) << LOGDEL
-//                << "Either lengthOneStart and lengthOneEnd or/and" << LOGDEL
-//                << " lengthTwoStart and lengthTwoEnd are equal." << LOGDEL
+//                << dt__eval(_lengthPercentOneStart) << std::endl
+//                << dt__eval(_lengthPercentTwoStart) << std::endl
+//                << dt__eval(_lengthPercentOneEnd) << std::endl
+//                << dt__eval(_lengthPercentTwoEnd) << std::endl
+//                << "Either lengthOneStart and lengthOneEnd or/and" << std::endl
+//                << " lengthTwoStart and lengthTwoEnd are equal." << std::endl
 //                << " Please use a scaFunction to pick this kind of curve.");
       }      
       if ( (_lengthPercentOneStart > _lengthPercentOneEnd)
               || (_lengthPercentTwoStart > _lengthPercentTwoEnd) ) {
-        dt__THROW(init(),
-                << DTLOGEVAL(_lengthPercentOneStart) << LOGDEL
-                << DTLOGEVAL(_lengthPercentTwoStart) << LOGDEL
-                << DTLOGEVAL(_lengthPercentOneEnd) << LOGDEL
-                << DTLOGEVAL(_lengthPercentTwoEnd) << LOGDEL
-                << "Either lengthOneStart is bigger than lengthOneEnd or/and" << LOGDEL
-                << " lengthTwoStart is bigger than lengthTwoEnd." << LOGDEL
+        dt__throw(init(),
+                << dt__eval(_lengthPercentOneStart) << std::endl
+                << dt__eval(_lengthPercentTwoStart) << std::endl
+                << dt__eval(_lengthPercentOneEnd) << std::endl
+                << dt__eval(_lengthPercentTwoEnd) << std::endl
+                << "Either lengthOneStart is bigger than lengthOneEnd or/and" << std::endl
+                << " lengthTwoStart is bigger than lengthTwoEnd." << std::endl
                 << " In both ranges start should be smaller than end.");
       }    
     }
     else {
-      dt__THROW(init(), << "Error in input values.");
+      dt__throw(init(), << "Error in input values.");
     }
   }  
 }

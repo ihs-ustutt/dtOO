@@ -39,7 +39,7 @@ namespace dtOO {
 	// according to: http://en.wikipedia.org/wiki/Bilinear_interpolation
 	//
   aFY vec2dBiLinearTwoD::Y( aFX const & xx ) const {
-    dt__THROW_IF(xx.size()!=2, Y());
+    dt__throwIf(xx.size()!=2, Y());
 
 		float uu = xx[0];
 		float vv = xx[1];
@@ -55,7 +55,7 @@ namespace dtOO {
 	}
 	
 	bool vec2dBiLinearTwoD::closed( int const & dir ) const {
-		dt__THROW_IF( (dir!=0) && (dir!=1), closed );
+		dt__throwIf( (dir!=0) && (dir!=1), closed );
 		return false;
 	}
 	

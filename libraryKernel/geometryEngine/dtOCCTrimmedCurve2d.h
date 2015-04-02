@@ -12,7 +12,7 @@ namespace dtOO {
   
   class dtOCCTrimmedCurve2d : public dtOCCCurve2d {
   public:
-    dt__CLASSSTD(dtOCCTrimmedCurve2d, dtCurve2d);    
+    dt__class(dtOCCTrimmedCurve2d, dtCurve2d);    
     dtOCCTrimmedCurve2d();
     dtOCCTrimmedCurve2d(dtOCCCurve2dBase const & orig, float const u0, float const u1);
     virtual ~dtOCCTrimmedCurve2d();

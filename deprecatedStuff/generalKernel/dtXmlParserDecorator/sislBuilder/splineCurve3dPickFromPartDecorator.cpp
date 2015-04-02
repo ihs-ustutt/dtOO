@@ -48,7 +48,7 @@ namespace dtOO {
       );
       
       map2dTo3d * map;
-      dt__mustDownCast(aG, map2dTo3d, map);
+      dt__mustCast(aG, map2dTo3d, map);
     
       //
       // analyticGeometries
@@ -80,9 +80,9 @@ namespace dtOO {
     }
     else {
       dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAGeo) << LOGDEL
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasPartLabel) );      
+              << dt__eval(hasAGeo) << std::endl
+              << dt__eval(hasOrder) << std::endl
+              << dt__eval(hasPartLabel) );      
     }
   }
 }

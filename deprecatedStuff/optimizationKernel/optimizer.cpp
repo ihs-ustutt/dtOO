@@ -23,9 +23,9 @@ namespace dtOO {
   }
       
   DTCLASSLOGMETHODI(optimizer,
-          << DTLOGEVAL(thisRef._optiCyclingDecorator) << LOGDEL
-          << DTLOGEVAL(thisRef._cValP) << LOGDEL
-          << DTLOGEVAL(thisRef._optiHandling) );
+          << dt__eval(thisRef._optiCyclingDecorator) << std::endl
+          << dt__eval(thisRef._cValP) << std::endl
+          << dt__eval(thisRef._optiHandling) );
 
   optimizationCyclingDecorator * optimizer::_optiCyclingDecorator = NULL;
   std::vector< constValue *> * optimizer::_cValP = new std::vector< constValue *>();
@@ -76,7 +76,7 @@ namespace dtOO {
       // error
       //
       dt__THROW(optimizeMe(),
-             << "Forking not possible " << DTLOGEVAL(pid) );
+             << "Forking not possible " << dt__eval(pid) );
     }
   }
   
@@ -94,7 +94,7 @@ namespace dtOO {
     }
     readOptiParamAndWriteRes();
     
-    DTINFOWF(cycle(),
+    dt__info(cycle(),
             << "Optimization cycle ... ");
   }
   
@@ -172,15 +172,15 @@ namespace dtOO {
       _optiCyclingDecorator = dynamic_cast< optimizationCyclingDecorator * >( bVolP->get(label) );
       if (!_optiCyclingDecorator) {
         dt__THROW(init(),
-                << DTLOGEVAL(_optiCyclingDecorator) << LOGDEL
-                << DTLOGEVAL(label) << " has not correct type.");
+                << dt__eval(_optiCyclingDecorator) << std::endl
+                << dt__eval(label) << " has not correct type.");
       }
     }
     else {
       dt__THROW(init(),
-              << "optimizationCyclingDecorator is not optimizeable." << LOGDEL
-              << DTLOGEVAL(label) << LOGDEL
-              << DTLOGEVAL(attribute) );
+              << "optimizationCyclingDecorator is not optimizeable." << std::endl
+              << dt__eval(label) << std::endl
+              << dt__eval(attribute) );
     }
     
     //
@@ -199,15 +199,15 @@ namespace dtOO {
       _optiHandling = dynamic_cast< optimizationHandling * >( bVolP->get(label) );
       if (!_optiHandling) {
         dt__THROW(init(),
-                << DTLOGEVAL(_optiHandling) << LOGDEL
-                << DTLOGEVAL(label) << " has not correct type.");
+                << dt__eval(_optiHandling) << std::endl
+                << dt__eval(label) << " has not correct type.");
       }
     }
     else {
       dt__THROW(init(),
-              << "optimizationHandling is not optimizeable." << LOGDEL
-              << DTLOGEVAL(label) << LOGDEL
-              << DTLOGEVAL(attribute) );
+              << "optimizationHandling is not optimizeable." << std::endl
+              << dt__eval(label) << std::endl
+              << dt__eval(attribute) );
     }
     
     //
@@ -220,12 +220,12 @@ namespace dtOO {
   
   void optimizer::dump(void) {
     DTBUFFERINIT();
-    DTBUFFER( << DTLOGEVAL(_optiCyclingDecorator) << LOGDEL);
-    DTBUFFER( << DTLOGEVAL(_optiHandling) << LOGDEL);
+    DTBUFFER( << dt__eval(_optiCyclingDecorator) << std::endl);
+    DTBUFFER( << dt__eval(_optiHandling) << std::endl);
     for (int ii=0;ii<_cValP->size();ii++) {
-      DTBUFFER( << "_cValP[" << ii << "] = " << _cValP->at(ii) << DTLOGEVAL(_cValP->at(ii)->getName()) << LOGDEL);
+      DTBUFFER( << "_cValP[" << ii << "] = " << _cValP->at(ii) << dt__eval(_cValP->at(ii)->getName()) << std::endl);
     }
-    DTDEBUGWF_BUFFER(dump());
+    dt__debug_BUFFER(dump());
   }
   
   void optimizer::writeOptiStf(void) {
@@ -328,7 +328,7 @@ namespace dtOO {
         // output
         //
         DTFORCEWF(readOptiParamAndWriteRes(),
-                << "Design " << ii << " fails." << LOGDEL
+                << "Design " << ii << " fails." << std::endl
                 << "Discard this design.");
         
       }
@@ -391,7 +391,7 @@ namespace dtOO {
         labelHandling * labelH = dynamic_cast< labelHandling * >(_optiHandling);
         if ( labelH == NULL ) {
           dt__THROW(readOptiParamAndWriteResPara(),
-                  << DTLOGEVAL(labelH) );
+                  << dt__eval(labelH) );
         }
         labelH->setName(labelH->getName()+intToString(ii));
         _optiCyclingDecorator->doCycle();
@@ -413,7 +413,7 @@ namespace dtOO {
         // error
         //
         dt__THROW(optimizeMe(),
-               << "Forking not possible " << DTLOGEVAL(pid) );        
+               << "Forking not possible " << dt__eval(pid) );        
       }
     }
 

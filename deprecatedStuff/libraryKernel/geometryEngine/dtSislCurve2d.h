@@ -15,7 +15,7 @@ namespace dtOO {
                         public dtCurve2d {
     friend class dtSislSurf;
   public:
-    dt__CLASSSTD(dtSislCurve2d, dtCurve2d);
+    dt__class(dtSislCurve2d, dtCurve2d);
     //
     // overloaded
     //

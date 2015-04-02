@@ -134,7 +134,7 @@ namespace dtOO {
 			mbCore->write_mesh("dieterherbert_nach.vtk");
 			delete pbl;
 		}
-		meshkit__CATCH(makeGrid);
+		meshkit__catch(makeGrid);
 		
 		boundedVolume::postNotify();
 		
@@ -157,7 +157,7 @@ namespace dtOO {
 //		std::vector<double> yy(verts.size());
 //		std::vector<double> zz(verts.size());
 //		rval = _mb->get_coords(verts, &xx[0], &yy[0], &zz[0]);
-//		moab__THROW_IF(rval != moab::MB_SUCCESS, getRender());
+//		moab__throwIf(rval != moab::MB_SUCCESS, getRender());
 //		
 //		unstructured3dMesh * um = new unstructured3dMesh();
 //		rV[0] = um;
@@ -167,18 +167,18 @@ namespace dtOO {
 //		
 //	  moab::Range hex;
 //    rval = _mb->get_entities_by_type(0, moab::MBHEX, hex);
-//		moab__THROW_IF(rval != moab::MB_SUCCESS, getRender());
+//		moab__throwIf(rval != moab::MB_SUCCESS, getRender());
 //		
 //		for (moab::Range::iterator it = hex.begin(); it != hex.end(); it++) {
 //			moab::EntityHandle const * conn;
 //			int nNodes;
 //			rval = _mb->get_connectivity(*it, conn, nNodes);
-//			moab__THROW_IF(rval != moab::MB_SUCCESS, getRender());
+//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());
 //
-////   		DTINFOWF(
+////   		dt__info(
 ////				makeGrid(), 
-////				<< DTLOGEVAL(nNodes) << LOGDEL
-////				<< DTLOGEVAL(conn) << LOGDEL
+////				<< dt__eval(nNodes) << std::endl
+////				<< dt__eval(conn) << std::endl
 ////			  << moab::CN::EntityTypeName(_mb->type_from_handle(*it)) << " " 
 ////				<< _mb->id_from_handle(*it) << " hex connectivity is: "
 ////			);
@@ -189,27 +189,27 @@ namespace dtOO {
 //	
 //		int nMeshSets;
 //		rval = _mb->num_contained_meshsets(0, &nMeshSets, 0);
-//		moab__THROW_IF(rval != moab::MB_SUCCESS, getRender());
-//		DTINFOWF( getRender(), << DTLOGEVAL(nMeshSets) );			
+//		moab__throwIf(rval != moab::MB_SUCCESS, getRender());
+//		dt__info( getRender(), << dt__eval(nMeshSets) );			
 //		
 //		moab::Range allSets;
 //    rval = _mb->get_entities_by_type(0, moab::MBENTITYSET, allSets);
-//		moab__THROW_IF(rval != moab::MB_SUCCESS, getRender());		
+//		moab__throwIf(rval != moab::MB_SUCCESS, getRender());		
 //		for (moab::Range::iterator it=allSets.begin(); it!=allSets.end(); it++) {
 //		  moab::EntityHandle currentSet = *it;
 //			int dim1; int dim2; int dim3;
 //			rval = _mb->get_number_entities_by_dimension(currentSet, 1, dim1, true);
-//			moab__THROW_IF(rval != moab::MB_SUCCESS, getRender());		
+//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());		
 //			rval = _mb->get_number_entities_by_dimension(currentSet, 2, dim2, true);
-//			moab__THROW_IF(rval != moab::MB_SUCCESS, getRender());		
+//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());		
 //			rval = _mb->get_number_entities_by_dimension(currentSet, 3, dim3, true);
-//			moab__THROW_IF(rval != moab::MB_SUCCESS, getRender());		
-//			DTINFOWF(
+//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());		
+//			dt__info(
 //				getRender(), 
-//				<< "In loop" << LOGDEL
-//				<< DTLOGEVAL(dim1) << LOGDEL
-//				<< DTLOGEVAL(dim2) << LOGDEL
-//				<< DTLOGEVAL(dim3)
+//				<< "In loop" << std::endl
+//				<< dt__eval(dim1) << std::endl
+//				<< dt__eval(dim2) << std::endl
+//				<< dt__eval(dim3)
 //			); 
 //		} 		
 //		

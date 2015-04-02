@@ -45,7 +45,7 @@ namespace dtOO {
 	  std::list< dtGmshFace const * > const & fface, 
 		std::vector< int > const & fori 					
 	) {
-		DTINFOWF(operator(), << "Start algorithm ...");
+		dt__info(operator(), << "Start algorithm ...");
 		dt__pVH(::MElement) elements;
 		//
 		// define two surface meshes
@@ -74,7 +74,7 @@ namespace dtOO {
 				omMoved.addInv(*tmpOM);		
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 				  operator(), 
 					<< "Undefined orientation of face (tag = " << thisFace->tag() << ")."
 				);
@@ -108,7 +108,7 @@ namespace dtOO {
 				omMoved.addInv(*tmpOM);		
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 				  operator(), 
 					<< "Undefined orientation of fixedFace (tag = " << thisFace->tag() << ")."
 				);
@@ -136,7 +136,7 @@ namespace dtOO {
 		omInit.update();
 		omMoved.update();
 
-		DTINFOWF(operator(), << "Initialized");
+		dt__info(operator(), << "Initialized");
 		//
 		// create mesh manifolds
 		//
@@ -169,7 +169,7 @@ namespace dtOO {
 			nF.execute( &dtLinearAlgebra::normalize );
 		}
 
-		DTINFOWF(operator(), << "Normals calculated.");
+		dt__info(operator(), << "Normals calculated.");
 		
 		//
 		// create new vertices
@@ -195,7 +195,7 @@ namespace dtOO {
 			omInit.data(*fIt).MElement( &(elements.back()) );
 		}
 		
-		DTINFOWF(operator(), << "New vertices created.");
+		dt__info(operator(), << "New vertices created.");
 		
 		//
 		// determine thickness
@@ -203,7 +203,7 @@ namespace dtOO {
 		dt__forFromToIter(omVertexI, omInit.vertices_begin(), omInit.vertices_end(), it) {
 			if ( !fixedF[*it] ) {
         ::MVertex * mv_omInit = omInit[*it];
-				dt__THROW_IF(
+				dt__throwIf(
 				  floatHandling::isSmall(dtLinearAlgebra::length(nF[*it])), 
 					operator()
 				);
@@ -250,7 +250,7 @@ namespace dtOO {
 //					tF.laplacianSmooth();
 				}
 				if (tF[*it] != _thickness) {
-					DTINFOWF(
+					dt__info(
 				    operator(), 
 						<< "Intersection => shrink t = " << _thickness << " -> " << tF[*it]
 					);
@@ -265,7 +265,7 @@ namespace dtOO {
 		  }
 		}
 		
-		DTINFOWF(operator(), << "Shrinked.");
+		dt__info(operator(), << "Shrinked.");
 	
 		//
 		// dihedral angle field
@@ -285,11 +285,11 @@ namespace dtOO {
 			}
 			if ( fabs(max - min) > M_PI ) {
 //				dABoolF[*vIt] = true;
-			  DTINFOWF(
+			  dt__info(
 				  operator(), 
-					<< "Possible dihedral angle problem detected." << LOGDEL
-				  << DTLOGEVAL(min) << LOGDEL
-				  << DTLOGEVAL(max) << LOGDEL
+					<< "Possible dihedral angle problem detected." << std::endl
+				  << dt__eval(min) << std::endl
+				  << dt__eval(max) << std::endl
 				  << "|max-min| = " << max-min
 				);
 							
@@ -394,7 +394,7 @@ namespace dtOO {
 			}
 		}
 		
-    DTINFOWF(operator(), << "Elements created");
+    dt__info(operator(), << "Elements created");
 
 		
 		//
@@ -406,8 +406,8 @@ namespace dtOO {
 		mb.addVertexField(fixedF);
 		mb.write_mesh("dtGmshMeshBoundaryLayer.vtk");
 	  
-		DTINFOWF(operator(), << "Fields written.");
-		DTINFOWF(operator(), << "Done.");
+		dt__info(operator(), << "Fields written.");
+		dt__info(operator(), << "Done.");
   }
 }
 

@@ -14,7 +14,7 @@ namespace dtOO {
 
   class infinityMap3dTo3dDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(infinityMap3dTo3dDecorator);
+    dt__classOnlyName(infinityMap3dTo3dDecorator);
     infinityMap3dTo3dDecorator();
     virtual ~infinityMap3dTo3dDecorator();
     virtual void buildPart(

@@ -50,10 +50,10 @@ namespace dtOO {
 				retV.back()->setLabel(aF->getLabel());				
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 					apply(),
-//					<< DTLOGEVAL(vec2d1d) << LOGDEL
-					<< DTLOGEVAL(vec3d2d) << LOGDEL
+//					<< dt__eval(vec2d1d) << std::endl
+					<< dt__eval(vec3d2d) << std::endl
 					<< "Unknown type."
 				);
 			}

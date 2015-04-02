@@ -9,7 +9,7 @@ namespace dtOO {
   
   class boundedVolumeFactory {
   public:
-    dt__CLASSNAME(boundedVolumeFactory);
+    dt__classOnlyName(boundedVolumeFactory);
     boundedVolumeFactory();
     virtual ~boundedVolumeFactory();
     static boundedVolume * create(char const * const str);

@@ -23,7 +23,7 @@ namespace dtOO {
 	dtOCCCurve2d::dtOCCCurve2d( dtOCCCurve2dBase const & orig) {
 		_curve.reset( new dtOCCCurve2dBase() );		
 		_curve->setOCC( Handle(Geom2d_Curve)::DownCast(orig.getOCC()->Copy()) );
-		dt__mustDownCast(OCCRef().getOCC().Access(), Geom2d_Curve const, _ptr);
+		dt__mustCast(OCCRef().getOCC().Access(), Geom2d_Curve const, _ptr);
 	}
 	
 	dtOCCCurve2d::~dtOCCCurve2d() {
@@ -35,8 +35,8 @@ namespace dtOO {
         return static_cast<float>(_ptr->FirstParameter());
         break;
       default:
-        dt__THROW(getMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(getMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    		    
 	}
@@ -47,14 +47,14 @@ namespace dtOO {
         return static_cast<float>(_ptr->LastParameter());
         break;
       default:
-        dt__THROW(getMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(getMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    		
 	}
 	
 //  int dtOCCCurve2d::kind( void ) const {
-//		DTFUNCTIONNOTI(kind);
+//		dt__functionNotImplemented(kind);
 //	}
 	
   bool dtOCCCurve2d::closed( void ) const {
@@ -156,7 +156,7 @@ namespace dtOO {
 	void dtOCCCurve2d::revert( void ) {
 		Handle(Geom2d_Curve) rev = _ptr->Reversed();
 		_curve->setOCC(rev);
-		dt__mustDownCast(OCCRef().getOCC().Access(), Geom2d_Curve const, _ptr);		
+		dt__mustCast(OCCRef().getOCC().Access(), Geom2d_Curve const, _ptr);		
 	}	
 	
 	dtOCCCurve2dBase const & dtOCCCurve2d::OCCRef( void ) const {

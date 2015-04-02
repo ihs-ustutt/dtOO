@@ -71,10 +71,10 @@ namespace dtOO {
 			  aGeoP->push_back( new vec2dTwoDInMap2dTo3d(v2d, m2d, optionPercent) );
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 				  buildPart(), 
-					<< DTLOGEVAL(v1d) << LOGDEL
-					<< DTLOGEVAL(v2d)
+					<< dt__eval(v1d) << std::endl
+					<< dt__eval(v2d)
 				);
 			}
     }

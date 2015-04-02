@@ -28,15 +28,15 @@
     iter != to; \
     ++iter \
   )
-#define dt__mustDownCast( object, type, result ) \
+#define dt__mustCast( object, type, result ) \
   result = dynamic_cast< type * >( object ); \
   if (result == NULL ) { \
-    dt__THROW(MACRO(MUSTDOWNCAST), \
+    dt__throw(MACRO(MUSTDOWNCAST), \
               << "dynamic_cast of "#object" to "#type" fails" ); \
     }
 #define dt__ptrAss( toAss, ptr ) \
   if (ptr == NULL ) { \
-    dt__THROW( dt__ptrAss, << "object "#ptr" cannot assigned to "#toAss ); \
+    dt__throw( dt__ptrAss, << "object "#ptr" cannot assigned to "#toAss ); \
   } \
   toAss = ptr
 
@@ -45,7 +45,7 @@
 namespace dtOO {
   class progHelper {
     public:
-      dt__CLASSNAME(progHelper);
+      dt__classOnlyName(progHelper);
       template < class T >
       static std::vector< T > list2Vector(std::list< T > & eeList) {
         std::vector< T > ee { 

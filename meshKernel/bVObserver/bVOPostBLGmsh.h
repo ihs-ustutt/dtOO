@@ -13,7 +13,7 @@ namespace dtOO {
   
   class bVOPostBLGmsh : public bVOInterface {
   public:
-    dt__CLASSNAME(bVOPostBLGmsh);
+    dt__classOnlyName(bVOPostBLGmsh);
     bVOPostBLGmsh();
     virtual ~bVOPostBLGmsh();
     virtual void init(

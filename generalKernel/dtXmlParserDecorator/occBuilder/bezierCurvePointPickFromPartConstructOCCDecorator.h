@@ -12,7 +12,7 @@ namespace dtOO {
 
   class bezierCurvePointPickFromPartConstructOCCDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(bezierCurvePointPickFromPartConstructOCCDecorator);
+    dt__classOnlyName(bezierCurvePointPickFromPartConstructOCCDecorator);
     bezierCurvePointPickFromPartConstructOCCDecorator();
     virtual ~bezierCurvePointPickFromPartConstructOCCDecorator();
     virtual void buildPart(

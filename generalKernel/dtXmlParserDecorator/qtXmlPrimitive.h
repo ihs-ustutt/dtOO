@@ -12,7 +12,7 @@
 namespace dtOO {
   class qtXmlPrimitive : public stringPrimitive {
   public:
-    dt__CLASSNAME(qtXmlPrimitive);  
+    dt__classOnlyName(qtXmlPrimitive);  
     virtual ~qtXmlPrimitive();  
     static QDomElement goToLastBuilder( QDomElement const element );
     static QDomElement getBuilderSibling( QDomElement const element );

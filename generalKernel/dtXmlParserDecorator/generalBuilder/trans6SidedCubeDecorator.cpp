@@ -48,7 +48,7 @@ namespace dtOO {
 					//
 					// check if it is a map2dTo3d
 					//
-					dt__mustDownCast(aG, map2dTo3d const, mm[counter]);
+					dt__mustCast(aG, map2dTo3d const, mm[counter]);
 					counter++;
 				}
 			}
@@ -77,10 +77,10 @@ namespace dtOO {
 					dtS.destroy();
 			}			
 			else {
-				dt__THROW(
+				dt__throw(
 					buildPart(), 
-					<< DTLOGEVAL(wElementVec.size()) << LOGDEL
-					<< "Supported only 2 and 6." << LOGDEL
+					<< dt__eval(wElementVec.size()) << std::endl
+					<< "Supported only 2 and 6." << std::endl
 				);
 			}
 

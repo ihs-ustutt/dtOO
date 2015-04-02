@@ -19,7 +19,7 @@ namespace dtOO {
   
   class dtTransformer : public labelHandling {
   public:
-    dt__CLASSNAME(dtTransformer);
+    dt__classOnlyName(dtTransformer);
     dtTransformer();
     virtual ~dtTransformer();
     dtTransformer(dtTransformer const & orig);

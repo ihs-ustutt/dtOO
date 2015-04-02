@@ -5,7 +5,7 @@
 
 namespace dtOO {
   DTCLASSLOGMETHODI(spline3dToSurfaceBuilder,
-          << DTLOGEVAL( thisRef._splineSurface3dP ) );
+          << dt__eval( thisRef._splineSurface3dP ) );
 
   spline3dToSurfaceBuilder::spline3dToSurfaceBuilder() {
     _splineSurface3dP = NULL;  
@@ -25,11 +25,11 @@ namespace dtOO {
     /*INPUT --------------------------------------------------------------------*/
     if (_analyticGeometryP.getNAttributes() == 0) {
       dt__THROW( buildPart(),
-              << DTLOGEVAL( _analyticGeometryP.getNAttributes() ) );
+              << dt__eval( _analyticGeometryP.getNAttributes() ) );
     }
     if (_integer.getNAttributes() == 0) {
       dt__THROW( buildPart(),
-              << DTLOGEVAL(_integer.getNAttributes() ) << LOGDEL
+              << dt__eval(_integer.getNAttributes() ) << std::endl
               << "Should be (1) loftedDirectionOrder");
       return FAILURE;
     }

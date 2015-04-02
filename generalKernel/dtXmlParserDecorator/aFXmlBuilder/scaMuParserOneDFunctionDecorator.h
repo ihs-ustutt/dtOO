@@ -14,7 +14,7 @@ namespace dtOO {
 
   class scaMuParserOneDFunctionDecorator : public dtXmlParserFunctionDecorator {
   public:  
-    dt__CLASSNAME(scaMuParserOneDFunctionDecorator);
+    dt__classOnlyName(scaMuParserOneDFunctionDecorator);
     scaMuParserOneDFunctionDecorator();
     virtual ~scaMuParserOneDFunctionDecorator();
     virtual void buildPart(

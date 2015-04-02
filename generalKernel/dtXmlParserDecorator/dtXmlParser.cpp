@@ -45,7 +45,7 @@ namespace dtOO {
     // open file
 		//
     if( !xmlFile.open(QIODevice::ReadOnly | QIODevice::Text) ) {
-      dt__THROW(openFileAndParse, << "Failed to open " << DTLOGEVAL(fileName));
+      dt__throw(openFileAndParse, << "Failed to open " << dt__eval(fileName));
     }
 
     //
@@ -55,10 +55,10 @@ namespace dtOO {
     int line;
     int column;
     if( !xmlDocument.setContent( &xmlFile, &qString, &line, &column ) ) {
-      dt__THROW( openFileAndParse(),
-              << DTLOGEVAL(qPrintable(qString) ) << LOGDEL
-              << DTLOGEVAL(line) << LOGDEL
-              << DTLOGEVAL(column) << LOGDEL    
+      dt__throw( openFileAndParse(),
+              << dt__eval(qPrintable(qString) ) << std::endl
+              << dt__eval(line) << std::endl
+              << dt__eval(column) << std::endl    
               << "Failed to parse file " << fileName);
     }
 
@@ -76,10 +76,10 @@ namespace dtOO {
 		_rootReadDoc.push_back( xmlDocument );
 
 		if (_rootRead.size() == 0) {
-			dt__THROW(
+			dt__throw(
 			  openFileAndParse(), 
-				<< "Error parsing file " << fileName << LOGDEL
-				<< DTLOGEVAL(_rootRead.size()) );
+				<< "Error parsing file " << fileName << std::endl
+				<< dt__eval(_rootRead.size()) );
 		}
 		
 	
@@ -92,17 +92,17 @@ namespace dtOO {
 		getNames("include", &label);
 		for (int ii=0; ii<label.size(); ii++) {
 		  QDomElement wElement = getElement("include", label[ii]);
-			DTINFOWF( 
+			dt__info( 
 			  openFileAndParse(), 
-				<< "Replace include " << DTLOGEVAL(label[ii]) << " with "
-				<< DTLOGEVAL(getAttributeStr("filename", wElement)) 
+				<< "Replace include " << dt__eval(label[ii]) << " with "
+				<< dt__eval(getAttributeStr("filename", wElement)) 
 			);
 			label[ii] = getAttributeStr("filename", wElement);
 			QDomNode check 
 			= 
 			_rootRead.back().removeChild( static_cast<QDomNode>(wElement) );
 			if (check.isNull()) {
-				dt__THROW(openFileAndParse(), << "Error removing element.");
+				dt__throw(openFileAndParse(), << "Error removing element.");
 			}			
 		}
     // parse included files
@@ -121,11 +121,11 @@ namespace dtOO {
 			std::string var = getAttributeStr("variable", forElement);
 			std::string valueStr = getAttributeStr("values", forElement);
 			std::vector< std::string > values = convertToStringVector("{", "}", valueStr);
-			DTINFOWF( 
+			dt__info( 
 			  openFileAndParse(), 
-				<< "Replace element" << LOGDEL
-				<< " > " << DTLOGEVAL(var) << LOGDEL
-				<< " > " << DTLOGEVAL(valueStr)
+				<< "Replace element" << std::endl
+				<< " > " << dt__eval(var) << std::endl
+				<< " > " << dt__eval(valueStr)
 			);			
 			
 			//
@@ -143,7 +143,7 @@ namespace dtOO {
 						static_cast<QDomNode>(forElement) 
 					);
 					if (checkOne.isNull()) {
-						dt__THROW(openFileAndParse(), << "Error inserting element.");
+						dt__throw(openFileAndParse(), << "Error inserting element.");
 					}
 				}
 			}
@@ -155,7 +155,7 @@ namespace dtOO {
 			= 
 			_rootRead.back().removeChild( static_cast<QDomNode>(forElement) );
 			if (check.isNull()) {
-				dt__THROW(openFileAndParse(), << "Error removing element.");
+				dt__throw(openFileAndParse(), << "Error removing element.");
 			}	
 
 			//
@@ -206,8 +206,8 @@ namespace dtOO {
         );
       }
       else {
-        DTWARNINGWF(loadStateToConst(),
-                << cValRef[ii]->getLabel() << "-Element not in state file." << LOGDEL
+        dt__warning(loadStateToConst(),
+                << cValRef[ii]->getLabel() << "-Element not in state file." << std::endl
                 << "Leave value as it was before load state.");  
       }
     }
@@ -215,7 +215,7 @@ namespace dtOO {
   
   std::vector< std::string > dtXmlParser::getStates(void) {
     if (_rootLoad.isNull()) {
-      dt__THROW(getStates, << DTLOGEVAL(_rootLoad.isNull()) );
+      dt__throw(getStates, << dt__eval(_rootLoad.isNull()) );
     }
     std::vector< std::string > labels;
     getChildLabels("state", &labels, _rootLoad);
@@ -245,7 +245,7 @@ namespace dtOO {
     // write file
     //
     writeFile(fileName, xmlDocument);
-    DTINFOWF(openFileAndWrite,
+    dt__info(openFileAndWrite,
             << "Save state = " << timeStr << " to file = " << fileName );
   }
 
@@ -273,7 +273,7 @@ namespace dtOO {
     // write file
     //
     writeFile(fileName, xmlDocument);
-    DTINFOWF(openFileAndWrite,
+    dt__info(openFileAndWrite,
             << "Save state = " << stateName << " to file = " << fileName );
   }
   
@@ -325,8 +325,8 @@ namespace dtOO {
     // check if file exists, if not create
     //
     if ( !xmlFile.exists() ) {
-      DTWARNINGWF(checkFile,
-              << "Failed to open " << DTLOGEVAL(fileName) << LOGDEL
+      dt__warning(checkFile,
+              << "Failed to open " << dt__eval(fileName) << std::endl
               << "File does not exist. Try to create file.");
       xmlFile.open(QIODevice::WriteOnly | QIODevice::Text);
       xmlFile.close();
@@ -336,8 +336,8 @@ namespace dtOO {
     //open file
     //
     if( !xmlFile.open(QIODevice::ReadOnly | QIODevice::Text) ) {
-      dt__THROW(checkFile,
-              << "Failed to open " << DTLOGEVAL(fileName));
+      dt__throw(checkFile,
+              << "Failed to open " << dt__eval(fileName));
     }
 
     // try to read file and check if it is correct
@@ -348,11 +348,11 @@ namespace dtOO {
     // parsing error
     //
     if( !xmlDocument.setContent( &xmlFile, &qString, &line, &column ) ) {
-      DTWARNINGWF( checkFile(),
-              << DTLOGEVAL(qPrintable(qString) ) << LOGDEL
-              << DTLOGEVAL(line) << LOGDEL
-              << DTLOGEVAL(column) << LOGDEL    
-              << "Failed to parse file " << fileName << LOGDEL
+      dt__warning( checkFile(),
+              << dt__eval(qPrintable(qString) ) << std::endl
+              << dt__eval(line) << std::endl
+              << dt__eval(column) << std::endl    
+              << "Failed to parse file " << fileName << std::endl
               << "Recreate file.");
       //
       // initialize new file
@@ -375,13 +375,13 @@ namespace dtOO {
       if ( xmlDocument.documentElement().tagName() 
            == 
            _rootRead[0].tagName() ) {
-        DTINFOWF(checkFile, << "Correct root Element name. Write to this file.");
+        dt__info(checkFile, << "Correct root Element name. Write to this file.");
       }
       //
       // rootReadElement and rootWriteElement have not same root name
       //
       else {
-        dt__THROW(checkFile, << "Incorrect root Element name.");        
+        dt__throw(checkFile, << "Incorrect root Element name.");        
       }
     }
     //
@@ -423,7 +423,7 @@ namespace dtOO {
                           muParseString( getAttributeStr( "max", *firstChild ) ) );        
       }
       else {
-        dt__THROW(createConstValue(),
+        dt__throw(createConstValue(),
                 << "Missing attributes min, max or float");
       }
     }
@@ -435,13 +435,13 @@ namespace dtOO {
         aCValP->setValue( muParseString( getAttributeStr( "value", *firstChild ) ) );        
       }
       else {
-        dt__THROW(createConstValue(),
+        dt__throw(createConstValue(),
                 << "Missing attributes min, max or float");
       }
     }    
     else {
-      dt__THROW( createConstValue(),
-              << DTLOGEVAL( qPrintable(firstChild->tagName()) ) );
+      dt__throw( createConstValue(),
+              << dt__eval( qPrintable(firstChild->tagName()) ) );
     }
 
     cValP->push_back( aCValP );
@@ -457,8 +457,8 @@ namespace dtOO {
 		if (_rootRead.size() != 0) {
 			for (int ii=0; ii<_rootRead.size(); ii++) {
 				if (_rootRead[ii].isNull()) {
-					dt__THROW(getNames(),
-									<< DTLOGEVAL(_rootRead[ii].isNull()) << LOGDEL
+					dt__throw(getNames(),
+									<< dt__eval(_rootRead[ii].isNull()) << std::endl
 									<< "Parsed file results in a NULL Pointer.");
 				}
 				std::vector< std::string > locNames;
@@ -466,7 +466,7 @@ namespace dtOO {
 				dt__forAllIndex(locNames, jj) names->push_back(locNames[jj]);
 			}
 		}
-		else dt__THROW(getNames(), << "Please parse a XML file.");
+		else dt__throw(getNames(), << "Please parse a XML file.");
   }
 	
   std::vector< std::string > dtXmlParser::getNames( std::string lookType ) const {
@@ -481,8 +481,8 @@ namespace dtOO {
     getNames(lookType, &names);
     
     if (names.size() != 1) {
-      DTWARNINGWF(getName(),
-              << "More than one " << DTLOGEVAL(lookType) << " in file." << LOGDEL
+      dt__warning(getName(),
+              << "More than one " << dt__eval(lookType) << " in file." << std::endl
               << "Taking the first one.");
     }
     
@@ -495,9 +495,9 @@ namespace dtOO {
 				return getChildElement(lookType, lookName, _rootRead[ii]);
 			}
 		}
-    dt__THROW(
+    dt__throw(
 		  getElement(),
-      << "No " << lookType << "-Element with " << DTLOGEVAL(lookName) 
+      << "No " << lookType << "-Element with " << dt__eval(lookName) 
 		);
   }
 	
@@ -507,8 +507,8 @@ namespace dtOO {
     getNames(lookType, &label);
 
     if (label.size() != 1) {
-      dt__THROW(getElement(),
-              << DTLOGEVAL(label.size()) << LOGDEL
+      dt__throw(getElement(),
+              << dt__eval(label.size()) << std::endl
               << "Should be 1.");      
     }
     
@@ -539,8 +539,9 @@ namespace dtOO {
 		//
 		// logging
 		//
-    DTLOGCHAP(creating function);
-    DTINFOWF(createFunction(), << convertToString(aFElement) );
+    dt__makeChapter(creating function);
+    dt__info(createFunction(), << convertToString(aFElement) );
+		
 		//
     // create builder
 		//
@@ -599,8 +600,8 @@ namespace dtOO {
 		vectorHandling< analyticGeometry * > * aGP
 	) const {
     QDomElement partElement = getElement("part", label);
-    DTLOGCHAP(creating part);
-    DTINFOWF(createMachinePart(), << convertToString(partElement) );
+    dt__makeChapter(creating part);
+    dt__info(createMachinePart(), << convertToString(partElement) );
 
     //
     // construct via builder

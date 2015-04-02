@@ -77,11 +77,11 @@ namespace dtOO {
 			  aGeoP->push_back( new vec3dThreeDInMap3dTo3d(v3d, m3d, optionPercent) );
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 				  buildPart(), 
-					<< DTLOGEVAL(v1d) << LOGDEL
-					<< DTLOGEVAL(v2d) << LOGDEL
-					<< DTLOGEVAL(v3d)
+					<< dt__eval(v1d) << std::endl
+					<< dt__eval(v2d) << std::endl
+					<< dt__eval(v3d)
 				);
 			}
     }
@@ -144,11 +144,11 @@ namespace dtOO {
 				aGeoP->push_back( v3dC );
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 				  buildPart(), 
-//					<< DTLOGEVAL(v1d) << LOGDEL
-//					<< DTLOGEVAL(v2d) << LOGDEL
-					<< DTLOGEVAL(v3d)
+//					<< dt__eval(v1d) << std::endl
+//					<< dt__eval(v2d) << std::endl
+					<< dt__eval(v3d)
 				);
 			}
     }

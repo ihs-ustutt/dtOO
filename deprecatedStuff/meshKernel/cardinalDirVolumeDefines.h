@@ -6,7 +6,7 @@
 namespace dtOO {
   class cardinalDirVolumeDefines {
     public:
-      dt__CLASSNAME(cardinalDirVolumeDefines);
+      dt__classOnlyName(cardinalDirVolumeDefines);
       cardinalDirVolumeDefines();
       cardinalDirVolumeDefines(int const offset);
       ~cardinalDirVolumeDefines();

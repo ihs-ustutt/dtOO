@@ -12,7 +12,7 @@ namespace dtOO {
   template < typename T >  
   class dtOMEdgeField : public labelHandling {
   public:
-    dt__CLASSNAME(dtOMEdgeField);    
+    dt__classOnlyName(dtOMEdgeField);    
     dtOMEdgeField( std::string const & label, dtOMMesh const & om, T const & init );
     virtual ~dtOMEdgeField();
     T & operator[](omEdgeH const & eH);    

@@ -16,7 +16,7 @@ namespace dtOO {
   class dtCase : public labelHandling,
                  public optionHandling {
   public:
-    dt__CLASSNAME(dtCase);    
+    dt__classOnlyName(dtCase);    
     dtCase();
     virtual ~dtCase();
     virtual void init( 

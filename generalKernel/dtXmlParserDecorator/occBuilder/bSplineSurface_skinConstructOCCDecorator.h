@@ -12,7 +12,7 @@ namespace dtOO {
 
   class bSplineSurface_skinConstructOCCDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(bSplineSurface_skinConstructOCCDecorator);
+    dt__classOnlyName(bSplineSurface_skinConstructOCCDecorator);
     bSplineSurface_skinConstructOCCDecorator();
     virtual ~bSplineSurface_skinConstructOCCDecorator();
     virtual void buildPart(

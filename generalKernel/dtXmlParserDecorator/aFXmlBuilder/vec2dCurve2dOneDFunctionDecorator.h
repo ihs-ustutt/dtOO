@@ -14,7 +14,7 @@ namespace dtOO {
 
   class vec2dCurve2dOneDFunctionDecorator : public dtXmlParserFunctionDecorator {
   public:
-    dt__CLASSNAME(vec2dCurve2dOneDFunctionDecorator);    
+    dt__classOnlyName(vec2dCurve2dOneDFunctionDecorator);    
     vec2dCurve2dOneDFunctionDecorator();
     virtual ~vec2dCurve2dOneDFunctionDecorator();
     virtual void buildPart(

@@ -11,7 +11,7 @@ namespace dtOO {
   
   class geomSurface_surfaceRotateConstructOCC {
   public:
-    dt__CLASSNAME(geomSurface_surfaceRotateConstructOCC);    
+    dt__classOnlyName(geomSurface_surfaceRotateConstructOCC);    
     geomSurface_surfaceRotateConstructOCC();
     geomSurface_surfaceRotateConstructOCC(
       dtSurface const * const dtS, 

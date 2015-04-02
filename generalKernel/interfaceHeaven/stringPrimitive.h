@@ -9,7 +9,7 @@
 namespace dtOO {
   class stringPrimitive {
   public:
-    dt__CLASSNAME(stringPrimitive);          
+    dt__classOnlyName(stringPrimitive);          
     virtual ~stringPrimitive();
     static float stringToFloat(std::string const value);
     static std::string floatToString(float const value);

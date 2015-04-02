@@ -44,7 +44,7 @@ namespace dtOO {
         break;    
       default:
         dt__THROW(isClosed(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }
   }
@@ -59,7 +59,7 @@ namespace dtOO {
         break;
       default:
         dt__THROW(getMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }    
   }
@@ -74,7 +74,7 @@ namespace dtOO {
         break;
       default:
         dt__THROW(getMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }    
   }
@@ -91,10 +91,10 @@ namespace dtOO {
 //      "minPointDistance"
 //    );    		
 //		if ( sqrt(vvXYZ.squared_length()) > minPDist) {
-//			DTINFOWF(reparamOnFace(),
-//        << DTLOGEVAL(getLabel()) << LOGDEL							
-//				<< "Reparameterization of " << DTLOGPOI3D(ppXYZ) << ":" << LOGDEL
-//				<< DTLOGPOI3D( ppXYZRep ) << LOGDEL
+//			dt__info(reparamOnFace(),
+//        << dt__eval(getLabel()) << std::endl							
+//				<< "Reparameterization of " << dt__point3d(ppXYZ) << ":" << std::endl
+//				<< dt__point3d( ppXYZRep ) << std::endl
 //				<< "distance = " << sqrt(vvXYZ.squared_length())
 //			);
 //		}

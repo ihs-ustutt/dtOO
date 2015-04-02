@@ -31,7 +31,7 @@ namespace dtOO {
       omMesh::Point(mv->x(), mv->y(), mv->z()) 
     );
 		
-		dt__THROW_IF(!vH.is_valid(), addVertex());
+		dt__throwIf(!vH.is_valid(), addVertex());
 		
     omVertexD & vD = omMesh::data(vH);
     vD.MVertex(mv);
@@ -66,7 +66,7 @@ namespace dtOO {
  *
  */		
 	omFaceH dtOMMesh::addFace( std::vector< ::MVertex * > const & vertices ) {
-		dt__THROW_IF( (vertices.size()!=3)&&(vertices.size()!=4), addFace() );
+		dt__throwIf( (vertices.size()!=3)&&(vertices.size()!=4), addFace() );
 		
 		std::vector< omVertexH > handle;
 		handle.reserve(vertices.size());
@@ -76,10 +76,10 @@ namespace dtOO {
 		}
 		omFaceH fH = omMesh::add_face(&(handle[0]), handle.size());
 		
-		dt__THROW_IFWM(
+		dt__throwIfWithMessage(
 			!fH.is_valid(), 
 			addFace(),
-		  << DTLOGEVAL( handle.size() ) << LOGDEL
+		  << dt__eval( handle.size() ) << std::endl
 			<< handle
 		);
 		
@@ -93,7 +93,7 @@ namespace dtOO {
 		omFaceD & fD = omMesh::data( fH );
 		fD.MElement(me);
 
-		dt__THROW_IF(const_cast< ::MElement * >(me)->getNumFaces()!=1, addFace());
+		dt__throwIf(const_cast< ::MElement * >(me)->getNumFaces()!=1, addFace());
 		
 		return fH;
 	}  
@@ -170,7 +170,7 @@ namespace dtOO {
 		dt__forFromToIter(omConstFaceVertexI, cfv_begin(fH), cfv_end(fH), it) {
 			v.push_back( toDtPoint3(point(*it)) );
 		}
-		dt__THROW_IF(v.size()!=3, contains());
+		dt__throwIf(v.size()!=3, contains());
 		
 		return dtLinearAlgebra::intersects(
 		  dtTriangle3(v[0], v[1], v[2]), dtLine3(start, target)

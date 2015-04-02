@@ -15,7 +15,7 @@ namespace dtOO {
   
   class vec3dTwoDFiveRectangleFunctionDecorator : public dtXmlParserFunctionDecorator {
     public:
-      dt__CLASSNAME(vec3dTwoDFiveRectangleFunctionDecorator);    
+      dt__classOnlyName(vec3dTwoDFiveRectangleFunctionDecorator);    
       vec3dTwoDFiveRectangleFunctionDecorator();
       virtual ~vec3dTwoDFiveRectangleFunctionDecorator();
       virtual void buildPart(

@@ -12,7 +12,7 @@ namespace dtOO {
   }
 
   scaFunctionBuilder* scaFunctionBuilderFactory::create(char const * const str) const {
-    DTINFOWF(create(),
+    dt__info(create(),
             << "creating " << str <<  "...");  
     if ( (strcmp(str, "scaMuParserOneDBuilder") == 0) ||
            (strcmp(str, "scaMuParserOneD") == 0) ) {

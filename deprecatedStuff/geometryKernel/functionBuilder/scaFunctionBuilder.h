@@ -12,7 +12,7 @@
 namespace dtOO {
   class scaFunctionBuilder {
   public:
-    dt__CLASSNAME(scaFunctionBuilder);    
+    dt__classOnlyName(scaFunctionBuilder);    
     /**
      * constructor
      */

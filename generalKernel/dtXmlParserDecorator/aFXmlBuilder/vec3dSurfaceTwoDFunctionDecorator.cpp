@@ -60,9 +60,9 @@ namespace dtOO {
       sFunP->push_back( new vec3dSurfaceTwoD( dtS.get() ) );			
     }
     else {
-      dt__THROW(
+      dt__throw(
 			  buildPart(),
-        << DTLOGEVAL(hasAF) 
+        << dt__eval(hasAF) 
 			);
     }
   }

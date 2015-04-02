@@ -10,7 +10,7 @@ namespace dtOO {
   
   class geomSurface_geomSurfaceTranslateConstructOCC {
     public:
-      dt__CLASSNAME(geomSurface_geomSurfaceTranslateConstructOCC);
+      dt__classOnlyName(geomSurface_geomSurfaceTranslateConstructOCC);
       geomSurface_geomSurfaceTranslateConstructOCC( 
         dtSurface const * const ss, dtVector3 const & vv 
       );

@@ -10,7 +10,7 @@ namespace dtOO {
   
   class bSplineCurve2d_angleDeltaXDeltaYConstructOCC {
   public:
-    dt__CLASSNAME(bSplineCurve2d_angleDeltaXDeltaYConstructOCC);
+    dt__classOnlyName(bSplineCurve2d_angleDeltaXDeltaYConstructOCC);
     bSplineCurve2d_angleDeltaXDeltaYConstructOCC( 
       float angleIn, float angleOut, float const & deltaX, float const & deltaY
     );

@@ -13,7 +13,7 @@ namespace covise {
 namespace dtOO {
   class pointCloud : public scaFunction {
   public:
-    dt__CLASSNAME(pointCloud);
+    dt__classOnlyName(pointCloud);
     pointCloud();
     pointCloud(std::vector< dtPoint2> const * point);
     pointCloud(std::vector< dtPoint2> const & point);

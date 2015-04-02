@@ -12,7 +12,7 @@ namespace dtOO {
   
   class bezierSurface_bezierCurveFillConstructOCC {
     public:
-      dt__CLASSNAME(bezierSurface_bezierCurveFillConstructOCC);
+      dt__classOnlyName(bezierSurface_bezierCurveFillConstructOCC);
       bezierSurface_bezierCurveFillConstructOCC( vectorHandling< dtCurve const * > const & cc );
       virtual ~bezierSurface_bezierCurveFillConstructOCC();
       dtSurface * result( void );

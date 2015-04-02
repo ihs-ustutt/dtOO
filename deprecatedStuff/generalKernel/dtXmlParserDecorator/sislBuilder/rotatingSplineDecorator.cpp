@@ -50,7 +50,7 @@ namespace dtOO {
       wElement = getChild("Point_3", **toBuildP);
       if ( wElement.hasAttribute("attribute") ) {
         if ( getAttributeStr("attribute", wElement) != "origin" ) {
-          DTWARNINGWF(buildPart(),
+          dt__warning(buildPart(),
                   << "Attribute of dtPoint3 is not origin" );
         }        
       }
@@ -69,7 +69,7 @@ namespace dtOO {
       wElement = getChild("Vector_3", **toBuildP);
       if ( wElement.hasAttribute("attribute") ) {
         if ( getAttributeStr("attribute", wElement) != "rotation_axis" ) {
-          DTWARNINGWF(buildPart(),
+          dt__warning(buildPart(),
                   << "Attribute of dtVector3 is not rotation_axis" );
         }
       }
@@ -97,7 +97,7 @@ namespace dtOO {
       if (hasAngle) {
         wElement = getChild("float", **toBuildP);
         if ( getAttributeStr("attribute", wElement) != "angle" ) {
-          DTWARNINGWF(buildPart(),
+          dt__warning(buildPart(),
                   << "Attribute of float is not angle" );
         }
         angle = muParseString(

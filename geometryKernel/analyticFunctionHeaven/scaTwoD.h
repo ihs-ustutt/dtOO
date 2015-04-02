@@ -11,7 +11,7 @@ namespace dtOO {
   
   class scaTwoD : public scaFunction {
   public:
-    dt__CLASSSTD(scaTwoD, analyticFunction); 
+    dt__class(scaTwoD, analyticFunction); 
     scaTwoD();
     scaTwoD( scaTwoD const & orig);  
     virtual ~scaTwoD();

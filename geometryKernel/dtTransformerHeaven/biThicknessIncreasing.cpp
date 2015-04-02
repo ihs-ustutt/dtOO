@@ -25,7 +25,7 @@ namespace dtOO {
   }
 
   dtTransformer * biThicknessIncreasing::clone( void ) const {
-	  dt__THROW(clone(), << "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * biThicknessIncreasing::create( void ) const {
@@ -60,7 +60,7 @@ namespace dtOO {
       // thickness increasing
       //            
 			float cLength = theF->length();
-			DTINFOWF(apply(), << DTLOGEVAL(cLength) );
+			dt__info(apply(), << dt__eval(cLength) );
       float xMin = _para->xMin(0);
       float xMax = _para->xMax(0);
       //
@@ -84,7 +84,7 @@ namespace dtOO {
 				itVal.push_back(p2[jj].x()); itVal.push_back(p2[jj].y());
 				itVal.push_back(p2Inv[jj].x()); itVal.push_back(p2Inv[jj].y());
       }
-			DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
+			dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
 			//
       // reverse orientation of resulting splineCurve
       //			
@@ -106,12 +106,12 @@ namespace dtOO {
 				"uv_resolution"
 			);
 			if ( dtLinearAlgebra::distance(p2.back(), p2Inv.front()) < uvRes ) {
-				DTINFOWF(
+				dt__info(
 					apply(),
-					<< DTLOGPOI2D(p2.back()) << LOGDEL
-					<< DTLOGPOI2D(p2Inv.front()) << LOGDEL
-					<< DTLOGEVAL(dtLinearAlgebra::distance(p2.back(), p2Inv.front())) << LOGDEL
-					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< dt__point2d(p2.back()) << std::endl
+					<< dt__point2d(p2Inv.front()) << std::endl
+					<< dt__eval(dtLinearAlgebra::distance(p2.back(), p2Inv.front())) << std::endl
+					<< dt__eval(uvRes) << std::endl
 					<< "Removing duplicate point."
 				);
 			  p2.erase( p2.end() );
@@ -127,23 +127,23 @@ namespace dtOO {
 			  counter++;
 			}	
 			if ( dtLinearAlgebra::distance(p2All.front(), p2Inv.back()) < uvRes ) {
-				DTINFOWF(
+				dt__info(
 					apply(),
-					<< DTLOGPOI2D(p2All.back()) << LOGDEL
-					<< DTLOGPOI2D(p2Inv.back()) << LOGDEL
-					<< DTLOGEVAL(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << LOGDEL
-					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< dt__point2d(p2All.back()) << std::endl
+					<< dt__point2d(p2Inv.back()) << std::endl
+					<< dt__eval(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << std::endl
+					<< dt__eval(uvRes) << std::endl
 					<< "Closing spline."
 				);				
 			  p2All.push_back( p2All.front() );
 			}
 			else {
-				DTINFOWF(
+				dt__info(
 					apply(),
-					<< DTLOGPOI2D(p2All.back()) << LOGDEL
-					<< DTLOGPOI2D(p2Inv.back()) << LOGDEL
-					<< DTLOGEVAL(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << LOGDEL
-					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< dt__point2d(p2All.back()) << std::endl
+					<< dt__point2d(p2Inv.back()) << std::endl
+					<< dt__eval(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << std::endl
+					<< dt__eval(uvRes) << std::endl
 					<< "Open spline."
 				);								
 			}
