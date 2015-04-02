@@ -186,20 +186,15 @@ namespace dtOO {
 		if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
 		if ( !optionHandling::optionTrue("defer_mesh_3") ) _gm->meshPhysical(3);
 		
+		//
+		// notify observers
+		//
 		boundedVolume::postNotify();
-		
-//    //
-//		// force renumbering mesh in gmsh
-//		//
-//    _gm->indexMeshVertices(true, 0, true);
 		
 		//
 		// mark as meshed
 		//
-		boundedVolume::setMeshed();	
-		
-		_gm->writeMSH("dieterHerbert.msh");		
-//		_gm->writeGEO("dieterHerbert.geo");				
+		boundedVolume::setMeshed();			
 	}
   
 	void map3dTo3dWithInternalGmsh::makePreGrid(void) {

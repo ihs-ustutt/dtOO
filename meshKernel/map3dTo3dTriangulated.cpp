@@ -64,8 +64,6 @@ namespace dtOO {
 		  _gm->addRegionToGmshModel(_m3d.get());
 //		  _gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshTransfinite();
 //		);
-		
-		_gm->writeGEO( (getLabel()+".geo").c_str() );
 	}
 	
   void map3dTo3dTriangulated::makeGrid(void) {
@@ -88,20 +86,15 @@ namespace dtOO {
     // very small elements
     //
     SetBoundingBox();
-//		CTX::instance()->lc = 10.;
-		
-//		_gm->writeGEO( (getLabel()+".geo").c_str() );
-		
-//		_gm->mesh(3);
-//    _gm->meshVertex();
-		
-//    for (int ii=1; ii<=_gm->getNumRegions(); ii++) {
-//		  _gm->meshRegion( ii );
-//			_gm->writeMSH( (getLabel()+"_building.msh").c_str() );
-//		}
+
+		//
+		// mesh
+		//
 		_gm->mesh(3);
-		_gm->writeMSH( (getLabel()+".msh").c_str() );
 		
+		//
+		// notify observers
+		//
 		boundedVolume::postNotify();
 		
 		//

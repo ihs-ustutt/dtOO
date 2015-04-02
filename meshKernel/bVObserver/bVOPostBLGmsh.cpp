@@ -95,9 +95,18 @@ namespace dtOO {
 		dt__forAllConstIter(std::vector< std::string >, _fixedFaceLabel, it) {
 		  fixedFaceList.push_back( ptrBoundedVolume()->getFace(*it) );
 		}		
+		//
+		// create new region, tag it and add it to the model
+		//
 		_dtR 
 		= 
-		new dtGmshRegion(ptrBoundedVolume()->getModel(), ptrBoundedVolume()->getModel()->getMaxRegionTag()+1);
+		new dtGmshRegion(
+			ptrBoundedVolume()->getModel(), 
+			ptrBoundedVolume()->getModel()->getMaxRegionTag()+1
+		);
+		ptrBoundedVolume()->getModel()->tagPhysical(_dtR, ptrBoundedVolume()->getLabel());
+		ptrBoundedVolume()->getModel()->add(_dtR);
+		
 		dtGmshMeshBoundaryLayer(
 		  _thickness, _spacing, 
 			_maxDihedralAngle, 
@@ -107,15 +116,9 @@ namespace dtOO {
 			faceList, _faceOrientation, 
 			fixedFaceList, _fixedFaceOrientation
 		);
-		
-		ptrBoundedVolume()->getModel()->writeMSH(ptrBoundedVolume()->getLabel()+"_0.msh");
-
-		ptrBoundedVolume()->getModel()->tagPhysical(_dtR, ptrBoundedVolume()->getLabel());
-		ptrBoundedVolume()->getModel()->add(_dtR);
+				
     _dtR->_status = ::GEntity::MeshGenerationStatus::DONE;
 		
 		ptrBoundedVolume()->getModel()->meshRegion();
-		
-		ptrBoundedVolume()->getModel()->writeMSH(ptrBoundedVolume()->getLabel()+"_1.msh");
   }
 }

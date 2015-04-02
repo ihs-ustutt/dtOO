@@ -93,10 +93,16 @@ namespace dtOO {
     //
     SetBoundingBox();
 
+		//
+		// mesh
+		//
 		_gm->mesh(2);
-//		_gm->writeMSH( (getLabel()+".msh").c_str() );
-		
+
+		//
+		// notify observers
+		//
 		boundedVolume::postNotify();
+		
 		//
 		// mark as meshed
 		//

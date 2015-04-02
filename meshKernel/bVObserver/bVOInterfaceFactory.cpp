@@ -10,6 +10,7 @@
 #include "bVONameFaces.h"
 #include "bVONameRegions.h"
 #include "bVOPostBLGmsh.h"
+#include "bVOWriteMSH.h"
 
 #define __IFRET(className) \
 	if ( strcmp(str, #className) == 0 ) { \
@@ -30,7 +31,8 @@ namespace dtOO {
 		__IFRET(bVOSetSimpleGrading);
 		__IFRET(bVONameFaces);
 		__IFRET(bVONameRegions);
-		__IFRET(bVOPostBLGmsh);		
+		__IFRET(bVOPostBLGmsh);
+		__IFRET(bVOWriteMSH);
 		
     dt__throw(create(), <<  "Could not be created.");
   }
