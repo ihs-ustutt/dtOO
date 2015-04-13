@@ -27,7 +27,7 @@ COVISEDIR
 \endcode
 must be set. This can be done by user or by sourcing the script setCoviseCompileEnv:
 \code{.sh}
-source /mnt/opt.net/application/covise/compileScripts/setCoviseCompileEnv
+source /mnt/opt.net/application/covise/scripts/setCoviseEnv
 \endcode
 
 Additionally you need some openFOAM variables to find the libraries:
