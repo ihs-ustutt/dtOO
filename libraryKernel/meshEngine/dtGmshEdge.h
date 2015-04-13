@@ -6,6 +6,7 @@
 #include <gmsh/GEdge.h>
 
 class GVertex;
+class GEntity;
 
 namespace dtOO {
   class map1dTo3d;

@@ -434,7 +434,7 @@ namespace dtOO {
 		for (::GModel::viter vIt = __caCThis->firstVertex(); vIt != __caCThis->lastVertex(); ++vIt) {
 			if ( dtGmshVertex::isEqual(gv, *vIt) ) {
 				dt__info(
-					update(),
+					alreadyInModel(),
 					<< "duplicate vertex = " << gv->tag() << " equal to vertex tag = " << (*vIt)->tag()
 				);				
 				return (*vIt)->tag();
@@ -447,7 +447,7 @@ namespace dtOO {
 		for (::GModel::eiter eIt = __caCThis->firstEdge(); eIt != __caCThis->lastEdge(); ++eIt) {
 			if ( dtGmshEdge::isEqual(ge, *eIt) ) {
 				dt__info(
-					update(),
+					alreadyInModel(),
 					<< "duplicate edge = " << ge->tag() << " equal to edge tag = " << (*eIt)->tag()
 				);				
 				return (*eIt)->tag();
@@ -460,7 +460,7 @@ namespace dtOO {
 		for (::GModel::fiter fIt = __caCThis->firstFace(); fIt != __caCThis->lastFace(); ++fIt) {
 			if ( dtGmshFace::isEqual(gf, *fIt) ) {
 				dt__info(
-					update(),
+					alreadyInModel(),
 					<< "duplicate face = " << gf->tag() << " equal to face tag = " << (*fIt)->tag()
 				);				
 				return (*fIt)->tag();

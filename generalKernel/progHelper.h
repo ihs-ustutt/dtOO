@@ -30,14 +30,12 @@
   )
 #define dt__mustCast( object, type, result ) \
   result = dynamic_cast< type * >( object ); \
-  if (result == NULL ) { \
-    dt__throw(MACRO(MUSTDOWNCAST), \
-              << "dynamic_cast of "#object" to "#type" fails" ); \
-    }
+  if (result == NULL ) \
+    dt__throw(dt__mustCast, << "dynamic_cast of "#object" to "#type" fails" );
+
 #define dt__ptrAss( toAss, ptr ) \
-  if (ptr == NULL ) { \
+  if (ptr == NULL ) \
     dt__throw( dt__ptrAss, << "object "#ptr" cannot assigned to "#toAss ); \
-  } \
   toAss = ptr
 
 #define dt__toFloat(toAss, value ) toAss = static_cast<float>(value)
