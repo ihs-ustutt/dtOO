@@ -25,35 +25,26 @@ The environment variables
 EXTERNLIBS
 COVISEDIR
 \endcode
-must be set. This can be done by user or by sourcing the script setCoviseCompileEnv:
+must be set. This can be done by user or by sourcing the script setCoviseEnv:
 \code{.sh}
 source /mnt/opt.net/application/covise/scripts/setCoviseEnv
 \endcode
 
-Additionally you need some openFOAM variables to find the libraries:
+Additionally you need some openFOAM variables to find the libraries. Please 
+take the correct openFOAM version for your OS, e.g.
 \code{.sh}
 . openfoam 3.1x12.3
 \endcode
-
-Please set CMAKE_INSTALL_PREFIX not to the build directory!
 
 Create a build directory and run cmake
 \code{.sh}
 cd dtOO
 mkdir buildDtOO
 cd buildDtOO
-cmake ..
+cmake -DCMAKE_INSTALL_PREFIX=../install ..
 \endcode
 
-The GUI needs an existing COVISE installation. When building Covise 
-please set the following cmake options:
-
-\code
-COVISE_USE_CUDA = false
-COVISE_WARNING_IS_ERROR = false
-COVISE_NATIVE_ARCH = false
-COVISE_USE_QT4 = true
-\endcode
+The GUI needs an existing COVISE installation.
 
 For building the GUI please set the environment variable DTOO_ROOTDIR:
 \code{.sh}
@@ -79,4 +70,16 @@ with the script
 covise_myModules
 \endcode
 
+\section COVISE
+When building Covise please set the following cmake options:
+
+\code
+COVISE_USE_CUDA = false
+COVISE_WARNING_IS_ERROR = false
+COVISE_NATIVE_ARCH = false
+COVISE_USE_QT4 = true
+\endcode
+
+When running COVISE with OpenCOVER unset the option View/TabletUI can improve
+the performance.
 */
