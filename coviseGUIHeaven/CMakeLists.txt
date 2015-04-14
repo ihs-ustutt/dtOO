@@ -68,9 +68,6 @@ include_directories(
 #                                                                              #
 #------------------------------------------------------------------------------#
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-#set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined")
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${DTOO_EXTERNLIBS}/ALL/lib")
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${DTOO_LINK_DIRECTORY}")
 
 #------------------------------------------------------------------------------#
 #                                                                              #
@@ -133,13 +130,11 @@ target_link_libraries(
 # linking                                                                      #
 #                                                                              #
 #------------------------------------------------------------------------------#
-
 set(
   _rpathList
   ${DTOO_LINK_DIRECTORY}
   ${DTOO_EXTERNLIBS}/ALL/lib
 )
-
 set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined")
 foreach(_rpath ${_rpathList})
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${_rpath}")
