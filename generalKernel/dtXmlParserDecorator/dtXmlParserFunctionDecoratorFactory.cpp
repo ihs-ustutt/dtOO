@@ -6,6 +6,7 @@
 #include "aFXmlBuilder/scaMuParserOneDFunctionDecorator.h"
 #include "aFXmlBuilder/scaCurve2dOneDFunctionDecorator.h"
 #include "aFXmlBuilder/sca3PointMeanlineFunctionDecorator.h"
+#include "aFXmlBuilder/sca5PointMeanlineFunctionDecorator.h"
 #include "aFXmlBuilder/analyticFunctionFunctionDecorator.h"
 #include "aFXmlBuilder/vec2dCurve2dOneDFunctionDecorator.h"
 #include "aFXmlBuilder/vec3dSurfaceTwoDFunctionDecorator.h"
@@ -46,6 +47,8 @@ namespace dtOO {
     __IFRETCUSTOM(scaCurve2dOneD, scaCurve2dOneDFunctionDecorator);
     __IFRET(sca3PointMeanlineFunctionDecorator);
     __IFRETCUSTOM(sca3PointMeanline, sca3PointMeanlineFunctionDecorator);    
+    __IFRET(sca5PointMeanlineFunctionDecorator);
+    __IFRETCUSTOM(sca5PointMeanline, sca5PointMeanlineFunctionDecorator);    
     __IFRET(analyticFunctionFunctionDecorator);
     __IFRETCUSTOM(analyticFunction, analyticFunctionFunctionDecorator);  
 		__IFRETCUSTOM(scaFunction, analyticFunctionFunctionDecorator);  
