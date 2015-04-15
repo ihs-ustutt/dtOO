@@ -2,7 +2,7 @@
 
 namespace dtOO {
   DTCLASSLOGMETHODI(analyticGeometryDirector,
-          << DTLOGEVAL( &(thisRef._builder) ) );
+          << dt__eval( &(thisRef._builder) ) );
 
   analyticGeometryDirector::analyticGeometryDirector() {
   }

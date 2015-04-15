@@ -47,7 +47,7 @@ namespace dtOO {
       //
       // cast pointer and check if it is a analyticFunction
       //
-      dt__PTRASS(vec2dOneD const * theF, vec2dOneD::ConstDownCast( sFunP->at(ii) ) );
+      dt__ptrAss(vec2dOneD const * theF, vec2dOneD::ConstDownCast( sFunP->at(ii) ) );
 
 			std::vector<float> itVal;       
 			std::vector< std::string > header;
@@ -62,7 +62,7 @@ namespace dtOO {
       // thickness increasing
       //            
 			float cLength = theF->length();
-			DTINFOWF(apply(), << DTLOGEVAL(cLength) );
+			dt__info(apply(), << dt__eval(cLength) );
       float xMin = _paraOnePercentFunP->xMin(0);
       float xMax = _paraOnePercentFunP->xMax(0);
       //
@@ -84,8 +84,8 @@ namespace dtOO {
       // inner points
       //
       for (int jj=1;jj<(_nPointsOne-1);jj++) {
-        dt__TOFLOAT(float jjF, jj);
-        dt__TOFLOAT(float nPointsOneF, _nPointsOne);
+        dt__toFloat(float jjF, jj);
+        dt__toFloat(float nPointsOneF, _nPointsOne);
         paraOne = _paraOnePercentFunP->YFloat( jjF * ( (xMax-xMin) / (nPointsOneF-1.)) ) ;
         YY = theF->YdtPoint2Percent( paraOne );
         NN = theF->unitNdtVector2Percent( paraOne );
@@ -116,7 +116,7 @@ namespace dtOO {
 			itVal.push_back(tt);
 			itVal.push_back(1.);				
     
-			DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
+			dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
       //
       // create new function
       //
@@ -181,12 +181,12 @@ namespace dtOO {
   
   void thicknessIncreasing::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
     if (name == "function_label") {
-      dt__PTRASS( scaOneD const * s1d, scaOneD::ConstDownCast(value) );
+      dt__ptrAss( scaOneD const * s1d, scaOneD::ConstDownCast(value) );
 			_thicknessDistributionP.reset(s1d);
       return;
     }
     else if (name == "parameter_one_percent_function") {
-      dt__PTRASS( scaOneD const * s1d, scaOneD::ConstDownCast(value) );
+      dt__ptrAss( scaOneD const * s1d, scaOneD::ConstDownCast(value) );
 			_paraOnePercentFunP.reset(s1d);			
       return;
     }

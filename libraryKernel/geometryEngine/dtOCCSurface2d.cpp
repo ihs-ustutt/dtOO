@@ -23,13 +23,13 @@ namespace dtOO {
 	}
 
 	dtOCCSurface2d::dtOCCSurface2d(const dtOCCSurfaceBase& orig) : dtSurface2d() {
-		dt__TRYOCC(			
+		dt__tryOcc(			
 			_surface.reset( new dtOCCSurfaceBase() );		
 			_surface->setOCC( 
 				Handle(Geom_Surface)::DownCast(orig.getOCC()->Copy()) 
 			);
-			dt__MUSTDOWNCAST(_surface->getOCC().Access(), Geom_Surface const, _ptr);
-		, << DTLOGEVAL(_ptr) << LOGDEL
+			dt__mustCast(_surface->getOCC().Access(), Geom_Surface const, _ptr);
+		, << dt__eval(_ptr) << std::endl
 		);
 	}
 
@@ -42,7 +42,7 @@ namespace dtOO {
 		Standard_Real U2;
 		Standard_Real V1;
 		Standard_Real V2;		
-		dt__TRYOCC(
+		dt__tryOcc(
 			_ptr->Bounds(U1, U2, V1, V2);
 			switch (dim) {
 				case 0:		
@@ -50,14 +50,14 @@ namespace dtOO {
 				case 1:		
 					return static_cast<float>(V1);
 				default:
-					dt__THROW(minPara(),
-								<< DTLOGEVAL(dim) << LOGDEL
+					dt__throw(minPara(),
+								<< dt__eval(dim) << std::endl
 								<< "dim should be 0 or 1.");				
 			}
-		, << DTLOGEVAL(U1) << LOGDEL
-		  << DTLOGEVAL(U2) << LOGDEL
-			<< DTLOGEVAL(V1) << LOGDEL
-			<< DTLOGEVAL(V2)
+		, << dt__eval(U1) << std::endl
+		  << dt__eval(U2) << std::endl
+			<< dt__eval(V1) << std::endl
+			<< dt__eval(V2)
 		);
 	}
 	
@@ -66,7 +66,7 @@ namespace dtOO {
 		Standard_Real U2;
 		Standard_Real V1;
 		Standard_Real V2;		
-		dt__TRYOCC(	
+		dt__tryOcc(	
 			_ptr->Bounds(U1, U2, V1, V2);
 			switch (dim) {
 				case 0:		
@@ -74,30 +74,30 @@ namespace dtOO {
 				case 1:		
 					return static_cast<float>(V2);
 				default:
-					dt__THROW(getMax(),
-								<< DTLOGEVAL(dim) << LOGDEL
+					dt__throw(getMax(),
+								<< dt__eval(dim) << std::endl
 								<< "dim should be 0 or 1.");				
 			}
-		, << DTLOGEVAL(U1) << LOGDEL
-		  << DTLOGEVAL(U2) << LOGDEL
-			<< DTLOGEVAL(V1) << LOGDEL
-			<< DTLOGEVAL(V2)
+		, << dt__eval(U1) << std::endl
+		  << dt__eval(U2) << std::endl
+			<< dt__eval(V1) << std::endl
+			<< dt__eval(V2)
 		);
 	}
 	
   bool dtOCCSurface2d::closed( int const dim ) const {
-		dt__TRYOCC(			
+		dt__tryOcc(			
 			switch (dim) {
 				case 0:		
 					return static_cast<bool>(_ptr->IsUClosed());
 				case 1:		
 					return static_cast<bool>(_ptr->IsVClosed());
 				default:
-					dt__THROW(isClosed(),
-								<< DTLOGEVAL(dim) << LOGDEL
+					dt__throw(isClosed(),
+								<< dt__eval(dim) << std::endl
 								<< "dim should be 0 or 1.");				
 			}		
-		, << DTLOGEVAL(dim) );
+		, << dt__eval(dim) );
 	}
 	
   dtPoint2 dtOCCSurface2d::point( float const uu, float const vv) const {
@@ -105,12 +105,12 @@ namespace dtOO {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		
 		gp_Pnt pp;
-		dt__TRYOCC(	
+		dt__tryOcc(	
 			pp = _ptr->Value(uR, vR);
-		, << DTLOGEVAL(uu) << LOGDEL
-			<< DTLOGEVAL(vv) << LOGDEL
-			<< DTLOGEVAL(uR) << LOGDEL
-			<< DTLOGEVAL(vR)			
+		, << dt__eval(uu) << std::endl
+			<< dt__eval(vv) << std::endl
+			<< dt__eval(uR) << std::endl
+			<< dt__eval(vR)			
 	  );
 		return dtLinearAlgebra::ignoreZ(
 						 dtPoint3(
@@ -128,12 +128,12 @@ namespace dtOO {
 		gp_Vec D1U;
 		gp_Vec D1V;
 
-		dt__TRYOCC(	
+		dt__tryOcc(	
 			_ptr->D1(uR, vR, pp, D1U, D1V);
-	  , << DTLOGEVAL(uu) << LOGDEL
-			<< DTLOGEVAL(vv) << LOGDEL
-			<< DTLOGEVAL(uR) << LOGDEL
-			<< DTLOGEVAL(vR)
+	  , << dt__eval(uu) << std::endl
+			<< dt__eval(vv) << std::endl
+			<< dt__eval(uR) << std::endl
+			<< dt__eval(vR)
 		);
 		
 		std::vector<dtVector2> retVec(2);
@@ -170,17 +170,17 @@ namespace dtOO {
 		gp_Vec D2V;
 		gp_Vec D2UV;
 			
-		dt__TRYOCC(			
+		dt__tryOcc(			
 			_ptr->D2(
 				uR, vR, 
 				pp, 
 				D1U, D1V,
 				D2U, D2V, D2UV
 			);
-		, << DTLOGEVAL(uu) << LOGDEL
-			<< DTLOGEVAL(vv) << LOGDEL
-			<< DTLOGEVAL(uR) << LOGDEL
-			<< DTLOGEVAL(vR) 
+		, << dt__eval(uu) << std::endl
+			<< dt__eval(vv) << std::endl
+			<< dt__eval(uR) << std::endl
+			<< dt__eval(vR) 
     );
 		
 		std::vector<dtVector2> retVec(3);
@@ -246,7 +246,7 @@ namespace dtOO {
 		
 		GeomAdaptor_Surface gas;
 		Extrema_ExtPS ext;	
-		dt__TRYOCC(	
+		dt__tryOcc(	
 			gas.Load( _surface->getOCC() );
 			ext.Initialize(
 				gas, 
@@ -256,31 +256,31 @@ namespace dtOO {
 		ext.SetFlag( Extrema_ExtFlag::Extrema_ExtFlag_MIN );
 		ext.SetAlgo(Extrema_ExtAlgo::Extrema_ExtAlgo_Grad);				
 			ext.Perform(pp);
-		, << DTLOGPOI2D(point) << LOGDEL
-			<< DTLOGEVAL(Utol) << LOGDEL
-			<< DTLOGEVAL(Vtol) << LOGDEL
-			<< DTLOGEVAL(U) << LOGDEL
-			<< DTLOGEVAL(V) << LOGDEL
-			<< DTLOGPOI2D(pointPercent(0.,0.)) << LOGDEL
-			<< DTLOGPOI2D(pointPercent(0.,1.)) << LOGDEL
-			<< DTLOGPOI2D(pointPercent(1.,0.)) << LOGDEL
-			<< DTLOGPOI2D(pointPercent(1.,1.)) << LOGDEL
-		  << DTLOGEVAL(ext.NbExt())
+		, << dt__point2d(point) << std::endl
+			<< dt__eval(Utol) << std::endl
+			<< dt__eval(Vtol) << std::endl
+			<< dt__eval(U) << std::endl
+			<< dt__eval(V) << std::endl
+			<< dt__point2d(pointPercent(0.,0.)) << std::endl
+			<< dt__point2d(pointPercent(0.,1.)) << std::endl
+			<< dt__point2d(pointPercent(1.,0.)) << std::endl
+			<< dt__point2d(pointPercent(1.,1.)) << std::endl
+		  << dt__eval(ext.NbExt())
 		);
 		
 		if ( !ext.IsDone() ) {
-			dt__THROW(
+			dt__throw(
 			  reparam(), 
-				<< DTLOGEVAL(ext.IsDone()) 
-			  << DTLOGPOI2D(point) << LOGDEL
-			  << DTLOGEVAL(Utol) << LOGDEL
-			  << DTLOGEVAL(Vtol) << LOGDEL
-			  << DTLOGEVAL(U) << LOGDEL
-			  << DTLOGEVAL(V) << LOGDEL
-			  << DTLOGPOI2D(pointPercent(0.,0.)) << LOGDEL
-			  << DTLOGPOI2D(pointPercent(0.,1.)) << LOGDEL
-			  << DTLOGPOI2D(pointPercent(1.,0.)) << LOGDEL
-			  << DTLOGPOI2D(pointPercent(1.,1.)) 
+				<< dt__eval(ext.IsDone()) 
+			  << dt__point2d(point) << std::endl
+			  << dt__eval(Utol) << std::endl
+			  << dt__eval(Vtol) << std::endl
+			  << dt__eval(U) << std::endl
+			  << dt__eval(V) << std::endl
+			  << dt__point2d(pointPercent(0.,0.)) << std::endl
+			  << dt__point2d(pointPercent(0.,1.)) << std::endl
+			  << dt__point2d(pointPercent(1.,0.)) << std::endl
+			  << dt__point2d(pointPercent(1.,1.)) 
 			);
 		}
 		Extrema_POnSurf epp = ext.Point(1); 

@@ -17,6 +17,7 @@ namespace dtOO {
   class constValue;
   class baseContainer;
   class dtGmshFace;
+  class dtGmshRegion;
   class dtGmshModel;
   
   class boundedVolume : public bVOSubject,
@@ -24,7 +25,7 @@ namespace dtOO {
                         public optionHandling,
                         public renderInterface {
   public:
-    dt__CLASSNAME(boundedVolume);
+    dt__classOnlyName(boundedVolume);
     boundedVolume();
     virtual ~boundedVolume();
     virtual void init( 
@@ -40,7 +41,8 @@ namespace dtOO {
     bool isMeshed( void ) const;
     void setMeshed( void );
     virtual std::vector< std::string > getMeshTags( void ) const;
-	  virtual dtGmshFace const * getFace( std::string const & tag ) const;
+	  virtual dtGmshFace * getFace( std::string const & tag ) const;
+    virtual dtGmshRegion * getRegion( std::string const & tag ) const;
     virtual dtGmshModel * getModel( void ) const;
   private:
     bool _meshed;

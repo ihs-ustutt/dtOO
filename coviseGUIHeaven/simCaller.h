@@ -41,7 +41,7 @@ public:
     //destructor:
     virtual ~simCaller() {};
     
-    dt__CLASSNAME(simCaller);
+    dt__classOnlyName(simCaller);
     
 };
 

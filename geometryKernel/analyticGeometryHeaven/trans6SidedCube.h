@@ -11,7 +11,7 @@ namespace dtOO {
   
   class trans6SidedCube : public map3dTo3d {
   public:
-    dt__CLASSSTD(trans6SidedCube, analyticGeometry);   
+    dt__class(trans6SidedCube, analyticGeometry);   
     trans6SidedCube();
     trans6SidedCube(const trans6SidedCube& orig);
     trans6SidedCube(

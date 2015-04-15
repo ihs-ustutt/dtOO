@@ -72,7 +72,7 @@ namespace dtOO {
         //
         if (closing == "closeArithmetic") {
           oneDimCloseable * oDC;
-          dt__MUSTDOWNCASTWM(
+          dt__mustCastWM(
             sC, 
             oneDimCloseable, 
             oDC, 
@@ -82,7 +82,7 @@ namespace dtOO {
         }
         else if (closing == "closeStraight") {
           oneDimCloseable * oDC;
-          dt__MUSTDOWNCASTWM(
+          dt__mustCastWM(
             sC, 
             oneDimCloseable, 
             oDC, 
@@ -99,9 +99,9 @@ namespace dtOO {
     }
     else {
       dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAGeo) << LOGDEL
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasAGeoOffset) );      
+              << dt__eval(hasAGeo) << std::endl
+              << dt__eval(hasOrder) << std::endl
+              << dt__eval(hasAGeoOffset) );      
     }
     
     //

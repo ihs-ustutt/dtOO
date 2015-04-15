@@ -56,13 +56,13 @@ namespace dtOO {
 					analyticGeometry * aG
 					=
 					this->createAnalyticGeometry(&(wEl[ii]), bC, cValP, sFunP, depAGeoP);
-					dt__PTRASS(s3Vec[jj], splineCurve3d::ConstDownCast(aG));
+					dt__ptrAss(s3Vec[jj], splineCurve3d::ConstDownCast(aG));
 					dtCVec[jj] = s3Vec[jj]->ptrConstDtCurve();
 					ii++;
 			  }
 				splineCurve3d const * s3;
 				if (aGOff == 1) {
-				  dt__PTRASS(s3, splineCurve3d::ConstDownCast( s3Vec[0]) );
+				  dt__ptrAss(s3, splineCurve3d::ConstDownCast( s3Vec[0]) );
 					ccV.push_back( s3->ptrConstDtCurve()->clone() );
 				}
 				else {
@@ -88,8 +88,8 @@ namespace dtOO {
 //			ccV.destroy();
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAG) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAG) );
     }
   }
 }

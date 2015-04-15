@@ -11,7 +11,7 @@ namespace dtOO {
 
   class analyticSurface : public map2dTo3d {
     public:
-      dt__CLASSSTD(analyticSurface, analyticGeometry);    
+      dt__class(analyticSurface, analyticGeometry);    
       analyticSurface();
       analyticSurface( analyticSurface const & orig );
       analyticSurface(dtSurface const * const surface);

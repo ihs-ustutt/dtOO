@@ -11,7 +11,7 @@ namespace dtOO {
   
   class rectangularTrimmedSurface_curveRotateConstructOCC {
   public:
-    dt__CLASSNAME(rectangularTrimmedSurface_curveRotateConstructOCC);  
+    dt__classOnlyName(rectangularTrimmedSurface_curveRotateConstructOCC);  
     rectangularTrimmedSurface_curveRotateConstructOCC( 
       dtCurve const & cL, 
       dtPoint3 const & oP, 					

@@ -16,10 +16,10 @@ namespace dtOO {
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
 		if (cc.size() != 4) {
-			dt__THROW(
+			dt__throw(
 				bezierSurface_bezierCurveFillConstructOCC(),
-				<< "Only supported with 4 curves." << LOGDEL
-				<< DTLOGEVAL(cc.size())
+				<< "Only supported with 4 curves." << std::endl
+				<< dt__eval(cc.size())
 			);
 		}
 		Handle(Geom_BezierCurve) C1;
@@ -28,13 +28,13 @@ namespace dtOO {
 		Handle(Geom_BezierCurve) C4;
 	  
 		dtOCCBezierCurve const * occC;
-	  dt__PTRASS( occC, dtOCCBezierCurve::ConstDownCast(cc[0]) );
+	  dt__ptrAss( occC, dtOCCBezierCurve::ConstDownCast(cc[0]) );
 		C1 = Handle(Geom_BezierCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__PTRASS( occC, dtOCCBezierCurve::ConstDownCast(cc[1]) );
+	  dt__ptrAss( occC, dtOCCBezierCurve::ConstDownCast(cc[1]) );
 		C2 = Handle(Geom_BezierCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__PTRASS( occC, dtOCCBezierCurve::ConstDownCast(cc[2]) );
+	  dt__ptrAss( occC, dtOCCBezierCurve::ConstDownCast(cc[2]) );
 		C3 = Handle(Geom_BezierCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__PTRASS( occC, dtOCCBezierCurve::ConstDownCast(cc[3]) );
+	  dt__ptrAss( occC, dtOCCBezierCurve::ConstDownCast(cc[3]) );
 		C4 = Handle(Geom_BezierCurve)::DownCast( occC->OCCRef().getOCC() );		
 		
 		GeomFill_BezierCurves fill(C1, C2, C3, C4, GeomFill_FillingStyle::GeomFill_StretchStyle);

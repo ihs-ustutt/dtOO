@@ -14,7 +14,7 @@ namespace dtOO {
   
   class dtGmshTransFace : public dtGmshFace {
   public:
-    dt__CLASSNAME(dtGmshTransFace);  
+    dt__classOnlyName(dtGmshTransFace);  
     dtGmshTransFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges, const std::vector< int > & ori);
     dtGmshTransFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges);
     virtual ~dtGmshTransFace();

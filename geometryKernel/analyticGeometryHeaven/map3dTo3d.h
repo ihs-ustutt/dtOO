@@ -12,7 +12,7 @@ namespace dtOO {
   
   class map3dTo3d : public analyticGeometry {
   public:
-    dt__CLASSSTD(map3dTo3d, analyticGeometry); 
+    dt__class(map3dTo3d, analyticGeometry); 
     map3dTo3d();
     map3dTo3d(const map3dTo3d& orig);
     virtual ~map3dTo3d();

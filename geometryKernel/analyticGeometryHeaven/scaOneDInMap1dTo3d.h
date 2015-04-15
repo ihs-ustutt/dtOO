@@ -11,7 +11,7 @@ namespace dtOO {
   
   class scaOneDInMap1dTo3d : public map1dTo3d {
     public:
-      dt__CLASSSTD(scaOneDInMap1dTo3d, analyticGeometry);
+      dt__class(scaOneDInMap1dTo3d, analyticGeometry);
       scaOneDInMap1dTo3d();
       scaOneDInMap1dTo3d(const scaOneDInMap1dTo3d& orig);
       scaOneDInMap1dTo3d(scaOneD const * const s1d, map1dTo3d const * const m1d);

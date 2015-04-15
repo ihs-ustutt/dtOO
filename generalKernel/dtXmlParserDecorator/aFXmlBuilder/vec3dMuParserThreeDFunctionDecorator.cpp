@@ -57,12 +57,12 @@ namespace dtOO {
 			sFunP->push_back(v3d);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				buildPart(), 
-        << DTLOGEVAL(hasExpression) << LOGDEL
-        << DTLOGEVAL(hasXOne) << LOGDEL
-        << DTLOGEVAL(hasXTwo) << LOGDEL
-				<< DTLOGEVAL(hasXThree) 
+        << dt__eval(hasExpression) << std::endl
+        << dt__eval(hasXOne) << std::endl
+        << dt__eval(hasXTwo) << std::endl
+				<< dt__eval(hasXThree) 
 			);
     }
   }

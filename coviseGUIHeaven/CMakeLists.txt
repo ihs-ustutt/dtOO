@@ -67,8 +67,7 @@ include_directories(
 # compiler flags                                                               #
 #                                                                              #
 #------------------------------------------------------------------------------#
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${DTOO_LINK_DIRECTORY}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 #------------------------------------------------------------------------------#
 #                                                                              #
@@ -126,14 +125,31 @@ target_link_libraries(
   dtOOAbstractModule coApi coAppl coCore coUtil coDo coShm ${EXTRA_LIBS}
 )
 
+#------------------------------------------------------------------------------#
+#                                                                              #
+# linking                                                                      #
+#                                                                              #
+#------------------------------------------------------------------------------#
+set(
+  _rpathList
+  ${DTOO_LINK_DIRECTORY}
+  ${DTOO_EXTERNLIBS}/ALL/lib
+)
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined")
+foreach(_rpath ${_rpathList})
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${_rpath}")
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH}:${_rpath}")
+endforeach(_rpath)
+
+#------------------------------------------------------------------------------#
+#                                                                              #
+# install                                                                      #
+#                                                                              #
+#------------------------------------------------------------------------------#
+set_target_properties(dtOODesignTool PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
+set_target_properties(dtOOSimCaller PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 install(
   TARGETS dtOODesignTool dtOOSimCaller 
   DESTINATION ${DTOO_COVISE_ARCHSUFFIX}/bin/${DTOO_COVISE_MODULE_FOLDER}
 )
-#install(DIRECTORY pluginKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
-#install(DIRECTORY meshKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
-#install(DIRECTORY generalKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
-#install(DIRECTORY libraryKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
-#install(DIRECTORY geometryKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
-#install(DIRECTORY renderKernel/ DESTINATION include/ FILES_MATCHING PATTERN "*.h")
-#install(DIRECTORY cmake/ DESTINATION cmake/ FILES_MATCHING PATTERN "*")

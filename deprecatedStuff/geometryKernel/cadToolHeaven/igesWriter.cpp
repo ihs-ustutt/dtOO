@@ -11,16 +11,16 @@
 
 namespace dtOO {
   DTCLASSLOGMETHODI(igesWriter,
-          << DTLOGEVAL(&(thisRef._toWriteCurve)) << LOGDEL
-          << DTLOGEVAL(&(thisRef._toWriteSurf)) << LOGDEL
-          << DTLOGEVAL(&(thisRef._SizeOfCurveDouble)) << LOGDEL
-          << DTLOGEVAL(&(thisRef._SizeOfSurfDouble)) << LOGDEL
-          << DTLOGEVAL(&(thisRef._CurveDataDouble)) << LOGDEL
-          << DTLOGEVAL(&(thisRef._SurfDataDouble)) << LOGDEL
-          << DTLOGEVAL(&(thisRef._CurveDataInt)) << LOGDEL
-          << DTLOGEVAL(&(thisRef._SurfDataInt)) << LOGDEL
-          << DTLOGEVAL(thisRef.paraSequ) << LOGDEL
-          << DTLOGEVAL(thisRef.DESequ));
+          << dt__eval(&(thisRef._toWriteCurve)) << std::endl
+          << dt__eval(&(thisRef._toWriteSurf)) << std::endl
+          << dt__eval(&(thisRef._SizeOfCurveDouble)) << std::endl
+          << dt__eval(&(thisRef._SizeOfSurfDouble)) << std::endl
+          << dt__eval(&(thisRef._CurveDataDouble)) << std::endl
+          << dt__eval(&(thisRef._SurfDataDouble)) << std::endl
+          << dt__eval(&(thisRef._CurveDataInt)) << std::endl
+          << dt__eval(&(thisRef._SurfDataInt)) << std::endl
+          << dt__eval(thisRef.paraSequ) << std::endl
+          << dt__eval(thisRef.DESequ));
   
   igesWriter::igesWriter() {
   }
@@ -262,14 +262,14 @@ namespace dtOO {
           InitSurf( dtSislSurfP->getSISLSurf() );
         }
         else {
-          DTWARNINGWF(InitAnalyticGeometry,
-                  << DTLOGEVAL(dtSislCurveP) << LOGDEL
-                  << DTLOGEVAL(dtSislCurveP));
+          dt__warning(InitAnalyticGeometry,
+                  << dt__eval(dtSislCurveP) << std::endl
+                  << dt__eval(dtSislCurveP));
         }
       }
     }
     else {
-      DTWARNINGWF(InitAnalyticGeometry,
+      dt__warning(InitAnalyticGeometry,
               << "analyticGeometry " << aGeoP->getLabel() 
               << " has not correct type igesWritable");
     }

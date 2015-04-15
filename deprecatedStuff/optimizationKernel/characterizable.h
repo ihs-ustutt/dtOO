@@ -12,7 +12,7 @@ namespace dtOO {
   typedef std::map< std::string, float > resValueMap;
   class characterizable {
   public:
-    dt__CLASSNAME(characterizable);    
+    dt__classOnlyName(characterizable);    
     characterizable();
     characterizable(const characterizable& orig);
     virtual ~characterizable();

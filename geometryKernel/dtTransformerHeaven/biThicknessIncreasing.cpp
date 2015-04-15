@@ -25,7 +25,7 @@ namespace dtOO {
   }
 
   dtTransformer * biThicknessIncreasing::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * biThicknessIncreasing::create( void ) const {
@@ -40,7 +40,7 @@ namespace dtOO {
       //
       // cast pointer and check if it is a analyticFunction
       //
-      dt__PTRASS(vec2dOneD const * theF, vec2dOneD::ConstDownCast( sFunP->at(ii) ) );
+      dt__ptrAss(vec2dOneD const * theF, vec2dOneD::ConstDownCast( sFunP->at(ii) ) );
 
 			std::vector<float> itVal;       
 			std::vector< std::string > header;
@@ -60,15 +60,15 @@ namespace dtOO {
       // thickness increasing
       //            
 			float cLength = theF->length();
-			DTINFOWF(apply(), << DTLOGEVAL(cLength) );
+			dt__info(apply(), << dt__eval(cLength) );
       float xMin = _para->xMin(0);
       float xMax = _para->xMax(0);
       //
       // points
       //
       for (int jj=0;jj<_nPointsOne;jj++) {
-        dt__TOFLOAT(float jjF, jj);
-        dt__TOFLOAT(float nPointsOneF, _nPointsOne);
+        dt__toFloat(float jjF, jj);
+        dt__toFloat(float nPointsOneF, _nPointsOne);
         float paraOne = _para->YFloat( jjF * ( (xMax-xMin) / (nPointsOneF-1.)) ) ;
         dtPoint2 YY = theF->YdtPoint2Percent( paraOne );
         dtVector2 NN = theF->unitNdtVector2Percent( paraOne );
@@ -84,7 +84,7 @@ namespace dtOO {
 				itVal.push_back(p2[jj].x()); itVal.push_back(p2[jj].y());
 				itVal.push_back(p2Inv[jj].x()); itVal.push_back(p2Inv[jj].y());
       }
-			DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
+			dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
 			//
       // reverse orientation of resulting splineCurve
       //			
@@ -106,44 +106,44 @@ namespace dtOO {
 				"uv_resolution"
 			);
 			if ( dtLinearAlgebra::distance(p2.back(), p2Inv.front()) < uvRes ) {
-				DTINFOWF(
+				dt__info(
 					apply(),
-					<< DTLOGPOI2D(p2.back()) << LOGDEL
-					<< DTLOGPOI2D(p2Inv.front()) << LOGDEL
-					<< DTLOGEVAL(dtLinearAlgebra::distance(p2.back(), p2Inv.front())) << LOGDEL
-					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< dt__point2d(p2.back()) << std::endl
+					<< dt__point2d(p2Inv.front()) << std::endl
+					<< dt__eval(dtLinearAlgebra::distance(p2.back(), p2Inv.front())) << std::endl
+					<< dt__eval(uvRes) << std::endl
 					<< "Removing duplicate point."
 				);
 			  p2.erase( p2.end() );
 			}
 			std::vector< dtPoint2 > p2All( p2.size()+p2Inv.size() );
 			int counter = 0;
-			dt__FORALL(p2, ii,
+			dt__forAllIndex(p2, ii) {
 			  p2All[counter] = p2[ii];
 			  counter++;
-			);
-			dt__FORALL(p2Inv, ii,
+			}
+			dt__forAllIndex(p2Inv, ii) {
 			  p2All[counter] = p2Inv[ii];
 			  counter++;
-			);			
+			}	
 			if ( dtLinearAlgebra::distance(p2All.front(), p2Inv.back()) < uvRes ) {
-				DTINFOWF(
+				dt__info(
 					apply(),
-					<< DTLOGPOI2D(p2All.back()) << LOGDEL
-					<< DTLOGPOI2D(p2Inv.back()) << LOGDEL
-					<< DTLOGEVAL(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << LOGDEL
-					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< dt__point2d(p2All.back()) << std::endl
+					<< dt__point2d(p2Inv.back()) << std::endl
+					<< dt__eval(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << std::endl
+					<< dt__eval(uvRes) << std::endl
 					<< "Closing spline."
 				);				
 			  p2All.push_back( p2All.front() );
 			}
 			else {
-				DTINFOWF(
+				dt__info(
 					apply(),
-					<< DTLOGPOI2D(p2All.back()) << LOGDEL
-					<< DTLOGPOI2D(p2Inv.back()) << LOGDEL
-					<< DTLOGEVAL(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << LOGDEL
-					<< DTLOGEVAL(uvRes) << LOGDEL
+					<< dt__point2d(p2All.back()) << std::endl
+					<< dt__point2d(p2Inv.back()) << std::endl
+					<< dt__eval(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << std::endl
+					<< dt__eval(uvRes) << std::endl
 					<< "Open spline."
 				);								
 			}
@@ -221,15 +221,15 @@ namespace dtOO {
   
   void biThicknessIncreasing::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
     if (name == "function_label") {
-      dt__PTRASS( _tD[0], scaOneD::ConstDownCast(value) );
+      dt__ptrAss( _tD[0], scaOneD::ConstDownCast(value) );
       return;
     }
     if (name == "function_label_inverted") {
-      dt__PTRASS( _tD[1], scaOneD::ConstDownCast(value) );
+      dt__ptrAss( _tD[1], scaOneD::ConstDownCast(value) );
       return;
     }		
     else if (name == "parameter_one_percent_function") {
-      dt__PTRASS( _para, scaOneD::ConstDownCast( value ) );
+      dt__ptrAss( _para, scaOneD::ConstDownCast( value ) );
       return;
     }
     dtTransformer::handleAnalyticFunction(name, value);

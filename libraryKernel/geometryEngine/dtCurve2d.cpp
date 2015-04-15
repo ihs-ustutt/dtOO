@@ -57,7 +57,7 @@ namespace dtOO {
 	}
 
 	void dtCurve2d::setControlPoint( int const nPoint, dtPoint2 const point ) {
-		dt__THROW(setControlPoint(), << "Call on dtCurve2d()");
+		dt__throw(setControlPoint(), << "Call on dtCurve2d()");
 	}
 //  dtVector2 dtCurve2d::normal(float const uu) const {
 //		dtVector2 nn = firstDer(uu);
@@ -67,13 +67,13 @@ namespace dtOO {
 //    std::vector< double > yyV(2,0);		
 //    if ( (xP == 0.) && (yP == 0.)) {
 //      dt__THROW(normal(),
-//              << DTLOGEVAL(xP) << LOGDEL
-//              << DTLOGEVAL(yP) );      
+//              << dt__eval(xP) << std::endl
+//              << dt__eval(yP) );      
 //    } 
 //    else if ( xP == 0. ) {
-//      DTWARNINGWF(normal(),
-//              << DTLOGEVAL(xP) << LOGDEL
-//              << DTLOGEVAL(yP) << LOGDEL
+//      dt__warning(normal(),
+//              << dt__eval(xP) << std::endl
+//              << dt__eval(yP) << std::endl
 //              << "Adjusting to (1., 0.) ");
 //      yyV[0] = 1.;
 //      yyV[1] = 0.;
@@ -92,12 +92,12 @@ namespace dtOO {
 //    //
 //    double orientation = xP * yyV[1] - yP * yyV[0];
 //    if (orientation < 0) {
-//      DTDEBUGWF(normal(),
-//              << DTLOGEVAL(xP) << LOGDEL
-//              << DTLOGEVAL(yP) << LOGDEL
-//              << DTLOGEVAL(yyV[0]) << LOGDEL
-//              << DTLOGEVAL(yyV[1]) << LOGDEL
-//              << DTLOGEVAL(orientation) << LOGDEL
+//      dt__debug(normal(),
+//              << dt__eval(xP) << std::endl
+//              << dt__eval(yP) << std::endl
+//              << dt__eval(yyV[0]) << std::endl
+//              << dt__eval(yyV[1]) << std::endl
+//              << dt__eval(orientation) << std::endl
 //              << "Changing direction of normal vector.");
 //      yyV[0] = -yyV[0];
 //      yyV[1] = -yyV[1];
@@ -110,7 +110,7 @@ namespace dtOO {
 	//
 	//
 	void dtCurve2d::dump(void) {
-		DTFUNCTIONNOTI(dump());
+		dt__functionNotImplemented(dump());
 	}
 	
 	//

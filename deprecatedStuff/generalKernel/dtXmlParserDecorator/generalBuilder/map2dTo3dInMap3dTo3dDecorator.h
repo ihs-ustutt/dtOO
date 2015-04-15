@@ -16,7 +16,7 @@ namespace dtOO {
 
   class map2dTo3dInMap3dTo3dDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(map2dTo3dInMap3dTo3dDecorator);
+    dt__classOnlyName(map2dTo3dInMap3dTo3dDecorator);
     map2dTo3dInMap3dTo3dDecorator();
     virtual ~map2dTo3dInMap3dTo3dDecorator();
     virtual void buildPart(QDomElement ** toBuildP,

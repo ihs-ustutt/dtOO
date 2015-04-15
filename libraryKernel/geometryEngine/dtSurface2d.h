@@ -9,7 +9,7 @@ namespace dtOO {
   
   class dtSurface2d {
   public:
-    dt__CLASSNAME(dtSurface2d);
+    dt__classOnlyName(dtSurface2d);
     dtSurface2d();
     virtual ~dtSurface2d();
     //

@@ -7,7 +7,7 @@
 namespace dtOO {
   class derivable {
   public:
-    dt__CLASSNAME(derivable);
+    dt__classOnlyName(derivable);
     derivable();
     derivable(const derivable& orig);
     virtual ~derivable();

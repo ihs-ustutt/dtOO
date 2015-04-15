@@ -12,7 +12,7 @@ namespace dtOO {
   
   class dtOCCLine : public dtOCCCurve {
   public:
-    dt__CLASSSTD(dtOCCLine, dtCurve);
+    dt__class(dtOCCLine, dtCurve);
     dtOCCLine();
     dtOCCLine( dtOCCCurveBase const & orig);
     virtual ~dtOCCLine();

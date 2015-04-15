@@ -6,7 +6,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/ptrVectorHandling.h>
 
-#define dt__CLASSNAME( name ) \
+#define dt__classOnlyName( name ) \
   static std::string className( void ) { \
     return std::string(#name); \
   } \
@@ -18,7 +18,7 @@
     return (dynamic_cast<dt__CLASSNAME_T const *>(this) == NULL ? false : true); \
   }
 
-#define dt__CLASSSTD( name, castFrom ) \
+#define dt__class( name, castFrom ) \
   static std::string className( void ) { \
     return std::string(#name); \
   } \

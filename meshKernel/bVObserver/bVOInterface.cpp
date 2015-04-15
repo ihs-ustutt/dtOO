@@ -26,7 +26,16 @@ namespace dtOO {
   ) {
     _bV = attachTo;
   }  
+	
   boundedVolume * bVOInterface::ptrBoundedVolume( void ) {
 		return _bV;
+	}
+
+  void bVOInterface::preUpdate( void ) {
+		
+	}
+	
+  void bVOInterface::postUpdate( void ) {
+		
 	}
 }

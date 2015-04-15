@@ -11,7 +11,7 @@ namespace dtOO {
   
   class surfacePointConstruct {
   public:
-    dt__CLASSNAME(surfacePointConstruct);   
+    dt__classOnlyName(surfacePointConstruct);   
     surfacePointConstruct(
       std::vector< std::vector< dtPoint3 > > const & points, 
       int const & orderOne, 

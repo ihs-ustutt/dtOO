@@ -6,6 +6,7 @@
 #include <CGAL/bounding_box.h>
 #include <CGAL/squared_distance_2.h>
 #include <CGAL/squared_distance_3.h>
+#include <CGAL/intersections.h>
 #include <TMatrixD.h>
 #include <TDecompSVD.h>
 
@@ -77,8 +78,18 @@ namespace dtOO {
 	dtVector3 dtLinearAlgebra::normalize(
 		dtVector3 const & v0
 	) {
-		return (1./sqrt(v0.squared_length())) * v0;
+		float sqL = v0.squared_length();
+		if (sqL == 0.) return dtVector3(0.,0.,0.);
+		return (1./sqrt(sqL)) * v0;
 	}	
+	
+  dtVector3 dtLinearAlgebra::meanAverage( std::vector< dtVector3 > const & vv ) {
+		dtVector3 nn(0, 0, 0);
+		dt__forAllConstIter(std::vector< dtVector3 >, vv, it) {
+			nn = nn + (*it);
+		}
+		return normalize(nn);
+	}
 	
 	float dtLinearAlgebra::length( dtVector3 const & v0 ) {
 		return sqrt(v0.squared_length());
@@ -105,13 +116,13 @@ namespace dtOO {
 		std::vector< double > const & yy,
 		std::vector< double > const & zz
 	) {
-		dt__THROW_IF( xx.size() != yy.size(), toDtPoint3Vector() );
-		dt__THROW_IF( yy.size() != zz.size(), toDtPoint3Vector() );
+		dt__throwIf( xx.size() != yy.size(), toDtPoint3Vector() );
+		dt__throwIf( yy.size() != zz.size(), toDtPoint3Vector() );
 		
 		std::vector< dtPoint3 > pp(xx.size());
-		dt__FORALL(pp, ii,
+		dt__forAllIndex(pp, ii) {
 		  pp[ii] = dtPoint3(xx[ii], yy[ii], zz[ii]);
-		);
+		}
 		
 		return pp;
 	}
@@ -169,13 +180,13 @@ namespace dtOO {
 	}
 	
 	dtVector2 dtLinearAlgebra::toDtVector2(dtMatrixVector const & vec) {
-		dt__THROW_IF(vec.dimension()!=2, toDtVector2);
+		dt__throwIf(vec.dimension()!=2, toDtVector2);
 		
 		return dtVector2(vec[0], vec[1]);
 	}
 	
 	dtVector3 dtLinearAlgebra::toDtVector3(dtMatrixVector const & vec) {
-		dt__THROW_IF(vec.dimension()!=3, toDtVector3);
+		dt__throwIf(vec.dimension()!=3, toDtVector3);
 		
 		return dtVector3(vec[0], vec[1], vec[2]);
 	}	
@@ -188,12 +199,12 @@ namespace dtOO {
 //			}	
 //		}
 //		float cgalDet = CGAL::Linear_algebraCd<float>::determinant(mat);
-//		DTDEBUGWF(
+//		dt__debug(
 //			invertMatrix(), 
-//			<< DTLOGEVAL(cgalDet) << LOGDEL
-//			<< DTLOGEVAL(mat.row_dimension()) << LOGDEL
-//			<< DTLOGEVAL(mat.column_dimension()) << LOGDEL
-//			<< "mat = " << LOGDEL
+//			<< dt__eval(cgalDet) << std::endl
+//			<< dt__eval(mat.row_dimension()) << std::endl
+//			<< dt__eval(mat.column_dimension()) << std::endl
+//			<< "mat = " << std::endl
 //			<< floatMatrixToString(mat2d) 
 //		);
 
@@ -211,7 +222,7 @@ namespace dtOO {
 		TMatrixD invRootMat = rootMat.Invert(&rootDet);		
 		
 		if (fabs(rootDet) == 0.) {
-//			DTINFOWF(invertMatrix(), << "Using TDecompSVD");
+//			dt__info(invertMatrix(), << "Using TDecompSVD");
 			TDecompSVD svd(rootMat);
 			svd.SetTol(1.e-16);
 			bool ok = svd.Decompose();
@@ -224,14 +235,14 @@ namespace dtOO {
 							mat2d[ii][jj] = mat(ii,jj);
 						}	
 					}
-					DTDEBUGWF(
+					dt__debug(
 						invertMatrix(), 
-						<< DTLOGEVAL(mat.row_dimension()) << LOGDEL
-						<< DTLOGEVAL(mat.column_dimension()) << LOGDEL
-						<< "mat = " << LOGDEL
+						<< dt__eval(mat.row_dimension()) << std::endl
+						<< dt__eval(mat.column_dimension()) << std::endl
+						<< "mat = " << std::endl
 						<< logMe::floatMatrixToString(mat2d) 
 					);					
-					dt__THROW(
+					dt__throw(
 						invertMatrix(),
 						<< "Inversion of TDecompSVD fails."
 					);					
@@ -244,14 +255,14 @@ namespace dtOO {
 						mat2d[ii][jj] = mat(ii,jj);
 					}	
 				}
-				DTDEBUGWF(
+				dt__debug(
 					invertMatrix(), 
-					<< DTLOGEVAL(mat.row_dimension()) << LOGDEL
-					<< DTLOGEVAL(mat.column_dimension()) << LOGDEL
-					<< "mat = " << LOGDEL
+					<< dt__eval(mat.row_dimension()) << std::endl
+					<< dt__eval(mat.column_dimension()) << std::endl
+					<< "mat = " << std::endl
 					<< logMe::floatMatrixToString(mat2d) 
 				);					
-				dt__THROW(
+				dt__throw(
 				  invertMatrix(),
 					<< "Decomposition fails."
 				);
@@ -274,12 +285,12 @@ namespace dtOO {
 //        inv2d[ii][jj] = invMat(ii,jj);
 //			}	
 //		}
-//		DTDEBUGWF(
+//		dt__debug(
 //		  invertMatrix(), 
-//      << "ROOT(det) = " << rootDet << LOGDEL
-//      << DTLOGEVAL(rootMat.Norm1()) << LOGDEL
-//			<< "inv = " << LOGDEL
-//			<< floatMatrixToString(inv2d) << LOGDEL
+//      << "ROOT(det) = " << rootDet << std::endl
+//      << dt__eval(rootMat.Norm1()) << std::endl
+//			<< "inv = " << std::endl
+//			<< floatMatrixToString(inv2d) << std::endl
 //		);
 		
 //		twoDArrayHandling<float> cont2d(invMat.row_dimension(), mat.column_dimension());
@@ -289,10 +300,10 @@ namespace dtOO {
 //        cont2d[ii][jj] = cont(ii,jj);
 //			}	
 //		}
-//		DTDEBUGWF(
+//		dt__debug(
 //		  invertMatrix(), 
-//			<< "invMat * mat = " << LOGDEL
-//			<< floatMatrixToString(cont2d) << LOGDEL
+//			<< "invMat * mat = " << std::endl
+//			<< floatMatrixToString(cont2d) << std::endl
 //		);
 		
 		return invMat;
@@ -316,7 +327,7 @@ namespace dtOO {
 		
 		bool ok;
 		TVectorD rootSol = svd.Solve(rootVec, ok);
-		if (!ok) dt__THROW(solveMatrix(), << DTLOGEVAL(ok));
+		if (!ok) dt__throw(solveMatrix(), << dt__eval(ok));
 						
     dtMatrixVector sol(rootSol.GetNrows());
 		for (int rr=0; rr<rootSol.GetNrows(); rr++) {
@@ -357,10 +368,10 @@ namespace dtOO {
 //        mat2d[ii][jj] = mat(ii,jj);
 //			}	
 //		}
-//		DTDEBUGWF(
+//		dt__debug(
 //			invertMatrix(), 
-//			<< DTLOGEVAL(CGAL::Linear_algebraCd<float>::determinant(mat)) << LOGDEL
-//			<< "mat = " << LOGDEL
+//			<< dt__eval(CGAL::Linear_algebraCd<float>::determinant(mat)) << std::endl
+//			<< "mat = " << std::endl
 //			<< floatMatrixToString(mat2d) 
 //		);		
 //		twoDArrayHandling<float> inv2d(matInv.dimension().first, matInv.dimension().second);
@@ -369,9 +380,9 @@ namespace dtOO {
 //        inv2d[ii][jj] = matInv(ii,jj);
 //			}	
 //		}
-//		DTDEBUGWF(
+//		dt__debug(
 //		  invertMatrix(), 
-//			<< "inv = " << LOGDEL
+//			<< "inv = " << std::endl
 //			<< floatMatrixToString(inv2d)
 //		);		
 		return matInv;      
@@ -410,7 +421,7 @@ namespace dtOO {
 
 	void dtLinearAlgebra::makeOrdered(std::vector< dtPoint3 > & pp) {
 		if (pp.size() != 8) {
-			dt__THROW(makeOrdered(), << "Currently only supported for vectors with size 8.");
+			dt__throw(makeOrdered(), << "Currently only supported for vectors with size 8.");
 		}
 		dtPoint3 p0 = pp[0]; //0
 		dtPoint3 p1 = pp[1]; //0
@@ -449,10 +460,10 @@ namespace dtOO {
 		dtGaussLegendreIntegration().gmshGaussLegendre1D(nPoints, &tt, &ww);
 
 		if ( !tt || !ww ) {
-			dt__THROW(getGaussLegendre(),
-							<< DTLOGEVAL(tt) << LOGDEL
-							<< DTLOGEVAL(ww) << LOGDEL
-							<< DTLOGEVAL(nPoints) );
+			dt__throw(getGaussLegendre(),
+							<< dt__eval(tt) << std::endl
+							<< dt__eval(ww) << std::endl
+							<< dt__eval(nPoints) );
 		}
 		std::vector<dtPoint2> p2(nPoints);
 		for ( int ii=0; ii<nPoints; ii++ ) {
@@ -486,10 +497,10 @@ namespace dtOO {
 				|| (isSmall[0]&&isSmall[2])
 				|| (isSmall[1]&&isSmall[2])
 			 ) {
-			DTINFOWF(
+			dt__info(
 				isStraightLine(), 
 				<< logMe::dtFormat("Bounding box: %f, %f, %f") 
-					% diff.x() % diff.y() % diff.z() << LOGDEL
+					% diff.x() % diff.y() % diff.z() << std::endl
 				<< "This is a straight line."
 			);	
 			return true;
@@ -538,5 +549,67 @@ namespace dtOO {
 		else {
 			return "";
 		}
+	}
+	
+	bool dtLinearAlgebra::intersects(dtTriangle3 const & triangle, dtLine3 const & line) {
+		dtPoint3 iPoint;   
+		dtSegment3 iSegment;   
+    
+		CGAL::Object res = CGAL::intersection(triangle, line);
+    
+    if (CGAL::assign(iPoint, res)) {
+//			float dP 
+//			= 
+//		  dtLinearAlgebra::dotProduct(
+//				line.to_vector(),
+//				iPoint - line.point(0)
+//			);
+//      dt__debug(
+//			  intersects(), 
+//				<< dt__point3d(iPoint) << std::endl
+//			  << dt__eval(dP ) << std::endl
+//				<< dt__eval( dtLinearAlgebra::length(line.to_vector()) ) << std::endl
+//				<< dt__eval( dtLinearAlgebra::length(iPoint - line.point(0)) )
+//			);			
+			if ( 
+				dtLinearAlgebra::length(line.to_vector())
+				>
+				dtLinearAlgebra::length(iPoint - line.point(0))
+			){
+				return true;
+			}
+    }
+//		dt__throwIfWithMessage(CGAL::assign(iSegment, res),
+//			intersects(), 
+//			<< dt__point3d(iSegment.point(0)) << std::endl
+//			<< dt__point3d(iSegment.point(1)) << std::endl
+//			<< dt__eval(iSegment.squared_length())
+//		);
+		
+		return false;
+	}
+	
+	bool dtLinearAlgebra::intersects(dtTriangle3 const & triangle0, dtTriangle3 const & triangle1) {
+		dtPoint3 iPoint;   
+		dtSegment3 iSegment;   
+		dtTriangle3 iTriangle;   
+		std::vector< dtPoint3 > iPointV;   
+    
+		CGAL::Object res = CGAL::intersection(triangle0, triangle1);
+    
+    if (CGAL::assign(iPoint, res)) {
+				return true;
+    }
+		else if (CGAL::assign(iSegment, res)) {
+			return true;
+		}
+		else if (CGAL::assign(iTriangle, res)) {
+			return true;			
+		}
+		else if (CGAL::assign(iPointV, res)) {
+			return true;			
+		}		
+		return false;
+		
 	}
 }

@@ -12,7 +12,7 @@ namespace dtOO {
   
   class curveInSurface : public map1dTo3d {
     public:
-      dt__CLASSSTD(curveInSurface, analyticGeometry);
+      dt__class(curveInSurface, analyticGeometry);
       curveInSurface();
       curveInSurface(const curveInSurface& orig);
       curveInSurface(dtCurve2d const * const dtC2d, map2dTo3d const * const m2d);

@@ -6,7 +6,7 @@
 namespace dtOO {
   class oneDimCloseable {    
   public:
-    dt__CLASSNAME(oneDimCloseable);
+    dt__classOnlyName(oneDimCloseable);
     oneDimCloseable();
     oneDimCloseable(const oneDimCloseable& orig);
     virtual ~oneDimCloseable();

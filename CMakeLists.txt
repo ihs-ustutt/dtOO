@@ -27,6 +27,7 @@ endif (DTOO_EXTERNLIBS STREQUAL "")
 #------------------------------------------------------------------------------#
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl") #for dladdr in Backtrace
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
 #------------------------------------------------------------------------------#
 #
 # options
@@ -72,8 +73,7 @@ find_package(CGNS REQUIRED)
 find_package(
   OpenFOAM
   COMPONENTS 
-  foam Pstream
-  REQUIRED 
+  foam OpenFOAM Pstream
 )
 find_package(CGM)
 find_package(LASSO)
@@ -138,8 +138,6 @@ include_directories(
   ${MOAB_INCLUDE_DIR}
   ${MESHKIT_INCLUDE_DIR}
   ${OpenMesh_INCLUDE_DIR}
-#/foam/lnInclude
-#  ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
 )
 
 #------------------------------------------------------------------------------#
@@ -197,25 +195,37 @@ target_link_libraries(dtOO
   ${MESHKIT_LIBRARIES}
   ${OpenMesh_LIBRARIES}
 )
+
+set(
+  _rpathList
+  ${CGAL_LINK_DIRECTORY}
+  ${GMSH_LINK_DIRECTORY} 
+  ${MUPARSER_LINK_DIRECTORY}
+  ${OpenCASCADE_LINK_DIRECTORY}
+  ${ROOT_LINK_DIRECTORY}
+  ${CGNS_LINK_DIRECTORY}
+  ${OpenFOAM_LINK_DIRECTORY}
+  ${OpenFOAM_LINK_DIRECTORY}/openmpi-system
+  ${CGM_LINK_DIRECTORY}
+  ${LASSO_LINK_DIRECTORY}
+  ${MOAB_LINK_DIRECTORY}
+  ${MESHKIT_LINK_DIRECTORY}
+)
+
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGAL_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${GMSH_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${MUPARSER_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenCASCADE_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${ROOT_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGNS_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenFOAM_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${OpenFOAM_LINK_DIRECTORY}/openmpi-system")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CGM_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${LASSO_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${MOAB_LINK_DIRECTORY}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${MESHKIT_LINK_DIRECTORY}")
+foreach(_rpath ${_rpathList})
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${_rpath}")
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH}:${_rpath}")
+endforeach(_rpath)
 
 #------------------------------------------------------------------------------#
 #
 # install
 #
 #------------------------------------------------------------------------------#
+set_target_properties(dtOO PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+
 install(TARGETS dtOO DESTINATION lib)
 if (DTOO_BUILDANDINSTALL_DOC)
   install(DIRECTORY ${CMAKE_BINARY_DIR}/html DESTINATION doc)

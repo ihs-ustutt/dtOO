@@ -14,7 +14,7 @@ namespace dtOO {
 
   class rotatingSpline : public analyticSurface {
     public:
-      dt__CLASSSTD(rotatingSpline, analyticGeometry);
+      dt__class(rotatingSpline, analyticGeometry);
       rotatingSpline();
       rotatingSpline(
         dtSurface const & dtS, 

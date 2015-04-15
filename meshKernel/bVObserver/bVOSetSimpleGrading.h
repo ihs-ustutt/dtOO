@@ -12,7 +12,7 @@ namespace dtOO {
   
   class bVOSetSimpleGrading : public bVOInterface {
   public:
-    dt__CLASSNAME(bVOSetSimpleGrading);
+    dt__classOnlyName(bVOSetSimpleGrading);
     bVOSetSimpleGrading();
     virtual ~bVOSetSimpleGrading();
     virtual void init(
@@ -24,7 +24,7 @@ namespace dtOO {
       vectorHandling< boundedVolume * > const * const bV,
       boundedVolume * attachTo
     );    
-    virtual void update( void );
+    virtual void preUpdate( void );
   private:
     std::vector< float > _grading;
     std::vector< float > _type;

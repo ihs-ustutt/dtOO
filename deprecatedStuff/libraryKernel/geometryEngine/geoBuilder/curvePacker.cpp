@@ -89,7 +89,7 @@ namespace dtOO {
 		else {
 			dt__THROW(
 			  pack(), 
-			  << "Unknown type." << LOGDEL
+			  << "Unknown type." << std::endl
 				<< "Should be dtSislCurve."
 			);
 		}

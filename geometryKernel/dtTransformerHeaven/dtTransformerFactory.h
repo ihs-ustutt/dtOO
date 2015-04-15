@@ -9,7 +9,7 @@ namespace dtOO {
 
   class dtTransformerFactory {
   public:
-    dt__CLASSNAME(dtTransformerFactory);
+    dt__classOnlyName(dtTransformerFactory);
     dtTransformerFactory();
     virtual ~dtTransformerFactory();
     static dtTransformer* create(char const * const str);

@@ -48,7 +48,7 @@ namespace dtOO {
 					//
 					// check if it is a map2dTo3d
 					//
-					dt__MUSTDOWNCAST(aG, map2dTo3d const, mm[counter]);
+					dt__mustCast(aG, map2dTo3d const, mm[counter]);
 					counter++;
 				}
 			}
@@ -62,8 +62,8 @@ namespace dtOO {
 					//
 					// check if it is a map2dTo3d
 					//
-					dt__PTRASS(analyticSurface const * aS0, analyticSurface::ConstDownCast(aG0));
-					dt__PTRASS(analyticSurface const * aS1, analyticSurface::ConstDownCast(aG1));
+					dt__ptrAss(analyticSurface const * aS0, analyticSurface::ConstDownCast(aG0));
+					dt__ptrAss(analyticSurface const * aS1, analyticSurface::ConstDownCast(aG1));
 					
 					vectorHandling< dtSurface const * > cDtS;
 					vectorHandling< dtSurface * > dtS;
@@ -77,10 +77,10 @@ namespace dtOO {
 					dtS.destroy();
 			}			
 			else {
-				dt__THROW(
+				dt__throw(
 					buildPart(), 
-					<< DTLOGEVAL(wElementVec.size()) << LOGDEL
-					<< "Supported only 2 and 6." << LOGDEL
+					<< dt__eval(wElementVec.size()) << std::endl
+					<< "Supported only 2 and 6." << std::endl
 				);
 			}
 

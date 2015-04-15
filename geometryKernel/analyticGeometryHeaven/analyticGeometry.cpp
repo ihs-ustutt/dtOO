@@ -42,8 +42,8 @@ namespace dtOO {
 				_resW = value;
         return;
       default:
-        dt__THROW(setRenderResolution(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(setRenderResolution(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }		
 	}
@@ -58,18 +58,18 @@ namespace dtOO {
       case 2:
 				return _resW;
       default:
-        dt__THROW(getRenderResolution(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(getRenderResolution(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }		
 	}
 
   void analyticGeometry::dump( void ) const {
-    DTINFOWF(
+    dt__info(
 			dump(), 
-			<< DTLOGEVAL(getLabel()) << LOGDEL
-		  << DTLOGEVAL(virtualClassName()) << LOGDEL
-			<< "dumpToString()" << LOGDEL
+			<< dt__eval(getLabel()) << std::endl
+		  << dt__eval(virtualClassName()) << std::endl
+			<< "dumpToString()" << std::endl
 			<< dumpToString()
 		);
   }

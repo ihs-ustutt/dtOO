@@ -30,7 +30,7 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > aGeoRet;
     
     for (int ii=0;ii<aGeoVecP->size();ii++) {
-      dt__PTRASS(map2dTo3d const * m2d, map2dTo3d::DownCast(aGeoVecP->at(ii)));
+      dt__ptrAss(map2dTo3d const * m2d, map2dTo3d::DownCast(aGeoVecP->at(ii)));
 			
 			map1dTo3d * m1d;
 			if (_u0 >= 0.) {
@@ -85,10 +85,10 @@ namespace dtOO {
 		}
 		
     if ( (_u0 >= 0.) && (_v0 >= 0.) ) {
-			dt__THROW(
+			dt__throw(
 				init(),
-				<< DTLOGEVAL(_u0) << LOGDEL
-				<< DTLOGEVAL(_v0) << LOGDEL
+				<< dt__eval(_u0) << std::endl
+				<< dt__eval(_v0) << std::endl
 				<< "Only one value should be greater than zero. Check input."
 			);
     }

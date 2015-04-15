@@ -7,7 +7,7 @@
 namespace dtOO {
   class optimizationCyclingDecorator : public optimizationCycling {
   public:
-    dt__CLASSNAME(optimizationCyclingDecorator);
+    dt__classOnlyName(optimizationCyclingDecorator);
     optimizationCyclingDecorator();
     optimizationCyclingDecorator(const optimizationCyclingDecorator& orig);
 //    optimizationCyclingDecorator(optimizationCycling * inner);

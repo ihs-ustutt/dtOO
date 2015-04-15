@@ -33,7 +33,7 @@ namespace dtOO {
       //
       // cast analyticGeometry
       //
-      dt__PTRASS(
+      dt__ptrAss(
 			  map1dTo3d const * const m1d, 
 				map1dTo3d::ConstDownCast(theAG)
 			);			

@@ -14,7 +14,7 @@ namespace dtOO {
   
   class openFOAM : public dtCase {
   public:
-    dt__CLASSSTD(openFOAM, dtCase);
+    dt__class(openFOAM, dtCase);
     openFOAM();
     virtual ~openFOAM();
     virtual void init( 

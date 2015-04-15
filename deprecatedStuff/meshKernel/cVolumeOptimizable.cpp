@@ -57,8 +57,8 @@ namespace dtOO {
     
     float val = _meshQuality;
  
-    DTINFOWF(characterizeMe(),
-            << DTLOGEVAL(val) );
+    dt__info(characterizeMe(),
+            << dt__eval(val) );
     return val;
   }
 
@@ -109,8 +109,8 @@ namespace dtOO {
 //
 //    
 //    if ( cVolume::parameterCheck() ) {
-//      DTINFOWF(writeGrid(),
-//              << DTLOGEVAL(_meshQuality) );
+//      dt__info(writeGrid(),
+//              << dt__eval(_meshQuality) );
 //    }
 //    else {
 //      _meshQuality = _meshWorst;

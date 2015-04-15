@@ -9,7 +9,7 @@
 namespace dtOO {
   template <typename T> class vectorTemplate {
   public:
-    dt__CLASSNAME(vectorTemplate);
+    dt__classOnlyName(vectorTemplate);
     vectorTemplate();
 
     ~vectorTemplate();
@@ -58,7 +58,7 @@ namespace dtOO {
   template <typename T> T * vectorTemplate<T>::getAttribute(int indexOfAttribute) {
     if (indexOfAttribute > _vector.size() ) {
       dt__THROW(getAttribute(),
-              << DTLOGEVAL(indexOfAttribute) << LOGDEL
+              << dt__eval(indexOfAttribute) << std::endl
               << "Exceeds vector size.");
     }
     return &(_vector[indexOfAttribute-1]);
@@ -67,7 +67,7 @@ namespace dtOO {
   template <typename T> T & vectorTemplate<T>::getAttributeRef(int indexOfAttribute) {
     if (indexOfAttribute >= _vector.size() ) {
       dt__THROW(getAttributeRef(),
-              << DTLOGEVAL(indexOfAttribute)
+              << dt__eval(indexOfAttribute)
               << " exceeds vector size.");
     }
     return _vector[indexOfAttribute];

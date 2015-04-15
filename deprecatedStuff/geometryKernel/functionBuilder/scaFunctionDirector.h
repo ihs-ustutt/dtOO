@@ -8,7 +8,7 @@
 namespace dtOO {
   class scaFunctionDirector {
   public:
-    dt__CLASSNAME(scaFunctionDirector);    
+    dt__classOnlyName(scaFunctionDirector);    
     /**
      * constructor
      */

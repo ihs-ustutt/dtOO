@@ -15,7 +15,7 @@ namespace covise {
 namespace dtOO {
   class gmshVolume : public cardinalDirVolume {
   public:
-    dt__CLASSNAME(gmshVolume);
+    dt__classOnlyName(gmshVolume);
     gmshVolume();
     virtual ~gmshVolume();
     virtual void init(

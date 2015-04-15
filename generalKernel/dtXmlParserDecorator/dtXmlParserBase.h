@@ -15,7 +15,7 @@ namespace dtOO {
   
   class dtXmlParserBase : public qtXmlBase {
   public:  
-    dt__CLASSNAME(dtXmlParserBase);
+    dt__classOnlyName(dtXmlParserBase);
     virtual ~dtXmlParserBase();
   private:
     static void createBasic(

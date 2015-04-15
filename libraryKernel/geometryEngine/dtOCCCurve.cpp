@@ -27,7 +27,7 @@ namespace dtOO {
 	dtOCCCurve::dtOCCCurve( dtOCCCurveBase const & orig) {
 		_curve.reset( new dtOCCCurveBase() );		
 		_curve->setOCC( Handle(Geom_Curve)::DownCast(orig.getOCC()->Copy()) );
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);
 	}
 	
 	dtOCCCurve::~dtOCCCurve() {
@@ -36,15 +36,15 @@ namespace dtOO {
   float dtOCCCurve::minPara ( int const & dir ) const {
     switch (dir) {
       case 0:
-				dt__TRYOCC(
+				dt__tryOcc(
           return static_cast<float>(_ptr->FirstParameter());
 				,
-				  << DTLOGEVAL(dir)
+				  << dt__eval(dir)
 				);
         break;
       default:
-        dt__THROW(minPara(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(minPara(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    		    
 	}
@@ -52,21 +52,21 @@ namespace dtOO {
   float dtOCCCurve::maxPara ( int const & dir ) const {
     switch (dir) {
       case 0:
-				dt__TRYOCC(
+				dt__tryOcc(
           return static_cast<float>(_ptr->LastParameter());
 				, 
-					<< DTLOGEVAL(dir) 
+					<< dt__eval(dir) 
 				);
         break;
       default:
-        dt__THROW(minPara(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(minPara(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    		
 	}
 	
 //  int dtOCCCurve::getKind( void ) const {
-//		DTFUNCTIONNOTI(getKind);
+//		dt__functionNotImplemented(getKind);
 //	}
 	
   bool dtOCCCurve::closed( void ) const {
@@ -76,10 +76,10 @@ namespace dtOO {
   dtPoint3 dtOCCCurve::point( float const uu ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt pp;
-		dt__TRYOCC(
+		dt__tryOcc(
 		  pp = _ptr->Value(uR);
 		,
-		  << DTLOGEVAL(uu)
+		  << dt__eval(uu)
 		);
 		
 		return dtPoint3(
@@ -94,10 +94,10 @@ namespace dtOO {
 		gp_Pnt pp;
 		gp_Vec vv;
 
-		dt__TRYOCC(
+		dt__tryOcc(
 		  _ptr->D1(uR, pp, vv);
 		,
-		  << DTLOGEVAL(uu)
+		  << dt__eval(uu)
 		);
 			
 		return dtVector3(
@@ -116,7 +116,7 @@ namespace dtOO {
 		
 		Standard_Real uuR = static_cast<Standard_Real>(uu);
 		Standard_Real ll;
-		dt__TRYOCC(
+		dt__tryOcc(
 		  ll 
 			= 
 			GCPnts_AbscissaPoint::Length( 
@@ -126,7 +126,7 @@ namespace dtOO {
 				Precision::Confusion()
 			);
 			,
-			<< DTLOGEVAL(uu)
+			<< dt__eval(uu)
 		);
 				
 		
@@ -143,7 +143,7 @@ namespace dtOO {
 		Standard_Real llR = static_cast<Standard_Real>(length);
 		Standard_Real uu;
 	  Standard_Real uI = getUMin() + .5 * (getUMax()-getUMin());
-		dt__TRYOCC(
+		dt__tryOcc(
 		  GCPnts_AbscissaPoint ap(
 				gac, 
 				llR, 
@@ -152,8 +152,8 @@ namespace dtOO {
 			);
 		  uu = ap.Parameter();
 			,
-			<< DTLOGEVAL(length) << LOGDEL
-			<< DTLOGEVAL(uu)
+			<< dt__eval(length) << std::endl
+			<< dt__eval(uu)
 		);
 		
 		return static_cast<float>(uu);						
@@ -178,7 +178,7 @@ namespace dtOO {
 	void dtOCCCurve::revert( void ) {
 		Handle(Geom_Curve) rev = _ptr->Reversed();
 		_curve->setOCC(rev);
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);		
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);		
 	}	
 	
 	void dtOCCCurve::translate( dtVector3 const & tt ) {

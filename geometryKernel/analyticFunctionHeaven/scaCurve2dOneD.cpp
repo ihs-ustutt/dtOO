@@ -77,12 +77,12 @@ namespace dtOO {
 				theRoot = _dtC2d->maxU();
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 					YFloat(),
-					<< DTLOGEVAL( getLabel() ) << LOGDEL
-					<< DTLOGEVAL(xx) << LOGDEL 
-					<< DTLOGEVAL(xMin(0)) << LOGDEL 
-					<< DTLOGEVAL(xMax(0)) << LOGDEL 
+					<< dt__eval( getLabel() ) << std::endl
+					<< dt__eval(xx) << std::endl 
+					<< dt__eval(xMin(0)) << std::endl 
+					<< dt__eval(xMax(0)) << std::endl 
 					<< "xx out of range."
 				);
 			}
@@ -129,8 +129,8 @@ namespace dtOO {
 					check = newtonF.Solve();
 				}
 				if ( !check ) {
-					dt__THROW(YFloat(), << DTLOGEVAL(check) << LOGDEL
-								 << DTLOGEVAL(getLabel()) );			
+					dt__throw(YFloat(), << dt__eval(check) << std::endl
+								 << dt__eval(getLabel()) );			
 				}
 				theRoot = newtonF.Root();
 			}
@@ -143,12 +143,12 @@ namespace dtOO {
 		// output
 		//
 		dtPoint2 pp = _dtC2d->point( static_cast<float>( theRoot ) );
-//		DTINFOWF(
+//		dt__info(
 //			YFloat(),
-//			<< DTLOGEVAL(mustIterate) << LOGDEL
-//			<< DTLOGEVAL(xx) << LOGDEL
-//			<< DTLOGEVAL(fabs(xx-pp.x())) << LOGDEL
-//		  << DTLOGPOI2D(pp) << LOGDEL
+//			<< dt__eval(mustIterate) << std::endl
+//			<< dt__eval(xx) << std::endl
+//			<< dt__eval(fabs(xx-pp.x())) << std::endl
+//		  << dt__point2d(pp) << std::endl
 //			<< getLabel() << "(" << pp.x() << ") = " << pp.y()
 //		);
 		

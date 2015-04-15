@@ -16,7 +16,7 @@ namespace dtOO {
                       public abstractModule,
                       public optimizableInterface {
   public:
-    dt__CLASSNAME(cvOptimizer);
+    dt__classOnlyName(cvOptimizer);
     cvOptimizer(int argc, char *argv[]);
     virtual ~cvOptimizer();
     virtual int compute(const char *); 

@@ -14,7 +14,7 @@ namespace dtOO {
   }
 
   dtTransformer * offset::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * offset::create( void ) const {
@@ -49,8 +49,8 @@ namespace dtOO {
             aS->offsetNormal( _normalOffset );
           }
           else {
-            DTWARNINGWF(apply(),
-                    << DTLOGEVAL(aS) << LOGDEL
+            dt__warning(apply(),
+                    << dt__eval(aS) << std::endl
                     << "Unknown type");
           }
 
@@ -71,8 +71,8 @@ namespace dtOO {
         //
         // clone and cast scaFunction
         //
-        dt__PTRASS( scaOneD * cloneP, scaOneD::DownCast( sFunP->at(ii)->clone() ) );
-        dt__PTRASS( scaCurve2dOneD  * splineP, scaCurve2dOneD::DownCast(cloneP) );
+        dt__ptrAss( scaOneD * cloneP, scaOneD::DownCast( sFunP->at(ii)->clone() ) );
+        dt__ptrAss( scaCurve2dOneD  * splineP, scaCurve2dOneD::DownCast(cloneP) );
 //        dt__CANDOWNCAST(cloneP, scaCurve2dOneD, splineP);
           
         //
@@ -100,8 +100,8 @@ namespace dtOO {
           splineP->translate( jjF * transVec );
 //          }
 //          else {
-//            DTWARNINGWF(apply(),
-//                    << DTLOGEVAL(splineP) << LOGDEL
+//            dt__warning(apply(),
+//                    << dt__eval(splineP) << std::endl
 //                    << "Unknown type");
 //          }
 
@@ -226,13 +226,13 @@ namespace dtOO {
                         );
     }          
     
-    DTINFOWF(init(),
-            << DTLOGEVAL(_paraOneOffsetPercent) << LOGDEL
-            << DTLOGEVAL(_paraTwoOffsetPercent) << LOGDEL
-            << DTLOGEVAL(_normalOffset) << LOGDEL
-            << DTLOGEVAL(_xOffset) << LOGDEL
-            << DTLOGEVAL(_yOffset) << LOGDEL
-            << DTLOGEVAL(_xyPercent) << LOGDEL
-            << DTLOGEVAL(_nPieces) );
+    dt__info(init(),
+            << dt__eval(_paraOneOffsetPercent) << std::endl
+            << dt__eval(_paraTwoOffsetPercent) << std::endl
+            << dt__eval(_normalOffset) << std::endl
+            << dt__eval(_xOffset) << std::endl
+            << dt__eval(_yOffset) << std::endl
+            << dt__eval(_xyPercent) << std::endl
+            << dt__eval(_nPieces) );
   }
 }

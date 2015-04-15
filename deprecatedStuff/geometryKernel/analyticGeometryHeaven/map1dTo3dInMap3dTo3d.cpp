@@ -51,7 +51,7 @@ namespace dtOO {
         break;
       default:
         dt__THROW(isClosed(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }
   }
@@ -63,7 +63,7 @@ namespace dtOO {
         break;
       default:
         dt__THROW(getMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    
   }
@@ -75,7 +75,7 @@ namespace dtOO {
         break;
       default:
         dt__THROW(getMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }    
   }    

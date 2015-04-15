@@ -14,6 +14,7 @@ namespace dtOO {
   
   class map2dTo3dTriangulated : public gmshBoundedVolume {
   public:
+    dt__class(map2dTo3dTriangulated, boundedVolume);    
     map2dTo3dTriangulated();
     virtual ~map2dTo3dTriangulated();
     virtual void init( 

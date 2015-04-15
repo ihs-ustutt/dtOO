@@ -10,7 +10,7 @@ namespace dtOO {
   
   class reparamInSurface : public dtTransformer {
   public:    
-    dt__CLASSNAME(reparamInSurface);
+    dt__classOnlyName(reparamInSurface);
     reparamInSurface();
     virtual ~reparamInSurface();
     virtual dtTransformer * clone( void ) const;

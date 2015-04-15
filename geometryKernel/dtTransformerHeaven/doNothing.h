@@ -7,7 +7,7 @@
 namespace dtOO {
   class doNothing : public dtTransformer {
   public:
-    dt__CLASSNAME(doNothing);
+    dt__classOnlyName(doNothing);
     doNothing();
     virtual ~doNothing();
     virtual dtTransformer * clone( void ) const;

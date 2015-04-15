@@ -13,17 +13,17 @@ namespace dtOO {
       // check values
       //
       if ( angleIn < 0.) {
-        DTWARNINGWF(
+        dt__warning(
 				  functionBuilderDecorator(),
-          << "Adjusting angleIn from " << DTLOGEVAL(angleIn) 
+          << "Adjusting angleIn from " << dt__eval(angleIn) 
           << " to " << 0. << "." 
 			  );
         angleIn = 0.;
       }
       if ( angleOut < 0.) {
-        DTWARNINGWF(
+        dt__warning(
 				  functionBuilderDecorator(),
-          << "Adjusting angleOut from " << DTLOGEVAL(angleOut) 
+          << "Adjusting angleOut from " << dt__eval(angleOut) 
           << " to " << 0. << "." 
 			  );
         angleOut = 0.;        
@@ -41,14 +41,14 @@ namespace dtOO {
 //            pV.push_back( dtPoint2(-deltaX, deltaY));
 //          }
           
-          DTINFOWF(
+          dt__info(
             functionBuilderDecorator(),
-            << DTLOGEVAL(angleIn) << LOGDEL
-            << DTLOGEVAL(angleOut) << LOGDEL              
-            << DTLOGEVAL(deltaX) << LOGDEL 
-            << DTLOGEVAL(deltaY) << LOGDEL
-            << DTLOGPOI2D(pV[0]) << LOGDEL
-            << DTLOGPOI2D(pV[1])
+            << dt__eval(angleIn) << std::endl
+            << dt__eval(angleOut) << std::endl              
+            << dt__eval(deltaX) << std::endl 
+            << dt__eval(deltaY) << std::endl
+            << dt__point2d(pV[0]) << std::endl
+            << dt__point2d(pV[1])
           );
           
 					_dtC2d.reset( bSplineCurve2d_pointConstructOCC(pV, 1).result() );		
@@ -98,20 +98,20 @@ namespace dtOO {
 //          );      
 //          pV.push_back( dtPoint2(-deltaX, deltaY) );          
 //        }
-        DTINFOWF(
+        dt__info(
           functionBuilderDecorator(),
-          << DTLOGEVAL(angleIn) << LOGDEL
-          << DTLOGEVAL(angleOut) << LOGDEL              
-          << DTLOGEVAL(deltaXMin) << LOGDEL 
-          << DTLOGEVAL(deltaXMax) << LOGDEL               
-          << DTLOGEVAL(ratio) << LOGDEL
-//          << DTLOGEVAL(ss) << LOGDEL
-          << DTLOGEVAL(tt) << LOGDEL
-          << DTLOGEVAL(deltaX) << LOGDEL 
-          << DTLOGEVAL(deltaY) << LOGDEL
-          << DTLOGPOI2D(pV[0]) << LOGDEL
-          << DTLOGPOI2D(pV[1]) << LOGDEL
-          << DTLOGPOI2D(pV[2]) 
+          << dt__eval(angleIn) << std::endl
+          << dt__eval(angleOut) << std::endl              
+          << dt__eval(deltaXMin) << std::endl 
+          << dt__eval(deltaXMax) << std::endl               
+          << dt__eval(ratio) << std::endl
+//          << dt__eval(ss) << std::endl
+          << dt__eval(tt) << std::endl
+          << dt__eval(deltaX) << std::endl 
+          << dt__eval(deltaY) << std::endl
+          << dt__point2d(pV[0]) << std::endl
+          << dt__point2d(pV[1]) << std::endl
+          << dt__point2d(pV[2]) 
         );
            
 				ptrHandling<dtCurve2d> dtC2d( 

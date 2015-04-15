@@ -32,15 +32,15 @@ namespace dtOO {
     if (string != "") {
       for (int ii=0;ii<_pair.size();ii++) {
         if (_pair[ii].second == string) {
-          dt__THROW(
+          dt__throw(
 						add(),
-            << "Try to add a point that is already in container." << LOGDEL
-            << DTLOGEVAL(string)
+            << "Try to add a point that is already in container." << std::endl
+            << dt__eval(string)
 					);
         }
       }
     }
-    DTINFOWF(add(), << "adding point " << string);
+    dt__info(add(), << "adding point " << string);
     
     _pair.push_back( std::pair < dtPoint3, std::string >(point, string) );
   }

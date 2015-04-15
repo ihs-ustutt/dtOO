@@ -49,7 +49,7 @@ namespace dtOO {
 			analyticGeometry * aG
 			=
 			this->createAnalyticGeometry(&wElement, bC, cValP, sFunP, depAGeoP);
-			dt__PTRASS(splineCurve3d * s3, splineCurve3d::DownCast(aG) );
+			dt__ptrAss(splineCurve3d * s3, splineCurve3d::DownCast(aG) );
 			dtCurve const * cc = s3->ptrConstDtCurve();
 			//
 			// vector
@@ -99,10 +99,10 @@ namespace dtOO {
 			aGeoP->push_back(rS);
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAG) << LOGDEL
-							<< DTLOGEVAL(hasOrigin) << LOGDEL
-							<< DTLOGEVAL(hasRotAxis) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAG) << std::endl
+							<< dt__eval(hasOrigin) << std::endl
+							<< dt__eval(hasRotAxis) );
     }
   }
 }

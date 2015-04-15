@@ -9,6 +9,8 @@
 #include "bVOSetSimpleGrading.h"
 #include "bVONameFaces.h"
 #include "bVONameRegions.h"
+#include "bVOPostBLGmsh.h"
+#include "bVOWriteMSH.h"
 
 #define __IFRET(className) \
 	if ( strcmp(str, #className) == 0 ) { \
@@ -22,15 +24,17 @@ namespace dtOO {
   }
 
   bVOInterface * bVOInterfaceFactory::create(char const * const str) {
-    DTINFOWF(create(), << str <<  " creating ... ");
+    dt__info(create(), << str <<  " creating ... ");
     
     __IFRET(bVOSetNElements);
 		__IFRET(bVOSetGrading);
 		__IFRET(bVOSetSimpleGrading);
 		__IFRET(bVONameFaces);
 		__IFRET(bVONameRegions);
+		__IFRET(bVOPostBLGmsh);
+		__IFRET(bVOWriteMSH);
 		
-    dt__THROW(create(), <<  "Could not be created.");
+    dt__throw(create(), <<  "Could not be created.");
   }
   
   bVOInterface * bVOInterfaceFactory::create(std::string const str) {

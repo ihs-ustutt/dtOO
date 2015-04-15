@@ -10,7 +10,7 @@ class Handle_Geom_Curve;
 namespace dtOO {    
   class dtOCCCurveBase {
   public:
-    dt__CLASSNAME(dtOCCCurveBase);
+    dt__classOnlyName(dtOCCCurveBase);
     dtOCCCurveBase();
     dtOCCCurveBase(const dtOCCCurveBase& orig);
     virtual ~dtOCCCurveBase();

@@ -75,11 +75,11 @@ namespace dtOO {
 					_internal.reset( m2d->clone() );
 				}
 				else {
-					dt__THROW(
+					dt__throw(
 					  init(), 
-						<< DTLOGEVAL(label) << LOGDEL
-						<< DTLOGEVAL(m2d) << LOGDEL
-            << DTLOGEVAL(m3d) << LOGDEL									
+						<< dt__eval(label) << std::endl
+						<< dt__eval(m2d) << std::endl
+            << dt__eval(m3d) << std::endl									
 						<< "Unexpected type of part."
 					);
 				}
@@ -135,8 +135,8 @@ namespace dtOO {
 		of.precision(8);
 		of.fixed;
 		for ( int jj=0; jj<_nPoints;jj++) {			
-			dt__TOFLOAT(float jjF,  jj);
-			dt__TOFLOAT(float nPointsJJF,  _nPoints);          
+			dt__toFloat(float jjF,  jj);
+			dt__toFloat(float nPointsJJF,  _nPoints);          
 			float percentJJ = jjF * (1. / (nPointsJJF-1) );  
 
       dtPoint3 pp = shroud->getPointPercent(percentJJ);
@@ -152,8 +152,8 @@ namespace dtOO {
 		of.precision(8);
 		of.fixed;
 		for ( int ii=0; ii<_nInternalCuts;ii++) {			
-			dt__TOFLOAT(float iiF,  ii);
-			dt__TOFLOAT(float nPointsIIF,  _nInternalCuts);               
+			dt__toFloat(float iiF,  ii);
+			dt__toFloat(float nPointsIIF,  _nInternalCuts);               
 			float percentII = iiF * (1. / (nPointsIIF-1.) );  		
 			of << "# percentII = " << percentII << std::endl;
 			for ( int jj=0; jj<_nPoints;jj++) {			
@@ -190,10 +190,7 @@ namespace dtOO {
 		
 		_gm->dtReadCGNS(_meshFileName.c_str());
 		
-		//
-		// update physical labels
-		//
-		gmshBoundedVolume::updatePhysicals();
+		boundedVolume::postNotify();
 		
 		//
 		// delete turboGrid directory
@@ -212,6 +209,6 @@ namespace dtOO {
 	 * @todo Calculate rotation angle or number of internals.
    */
 	void map3dTo3dWithInternalTurboGrid::makePreGrid(void) {
-		boundedVolume::notify();	
+		boundedVolume::preNotify();	
 	}
 }

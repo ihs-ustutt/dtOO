@@ -12,7 +12,7 @@ namespace dtOO {
   
   class bSplineSurface2d_bSplineCurve2dFillConstructOCC {
     public:
-      dt__CLASSNAME(bSplineSurface2d_bSplineCurve2dFillConstructOCC);
+      dt__classOnlyName(bSplineSurface2d_bSplineCurve2dFillConstructOCC);
       bSplineSurface2d_bSplineCurve2dFillConstructOCC( vectorHandling< dtCurve2d const * > const & cc2d );
       virtual ~bSplineSurface2d_bSplineCurve2dFillConstructOCC();
       dtSurface2d * result( void );

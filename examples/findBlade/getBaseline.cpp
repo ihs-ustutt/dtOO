@@ -15,8 +15,8 @@ namespace dtOO {
     std::vector< dtPoint2 * > transP2;
       if ((toTrans->size()%2) == 1) {
         dt__THROW(apply(),
-                << "Point vector has not correct size." << LOGDEL
-                << DTLOGEVAL(toTrans->size()) );
+                << "Point vector has not correct size." << std::endl
+                << dt__eval(toTrans->size()) );
     }
 	std::ofstream paramstr("Meanline_points.txt", std::ios::trunc);
 	 for (int ii=0; ii<=(((toTrans->size())/2)-1);(ii=ii+1)) {

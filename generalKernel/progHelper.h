@@ -6,10 +6,6 @@
 #include <vector>
 #include <list>
 
-#define dt__FORALL(vector, variable, content) \
-    for (int variable = 0; variable<((vector).size());variable++) { \
-      content \
-    }
 #define dt__forAllIndex(vector, index) \
   for (int index = 0; index<((vector).size());index++)
 #define dt__forInnerIndex(vector, index) \
@@ -32,29 +28,22 @@
     iter != to; \
     ++iter \
   )
-#define dt__MUSTDOWNCAST( object, type, result ) \
+#define dt__mustCast( object, type, result ) \
   result = dynamic_cast< type * >( object ); \
-  if (result == NULL ) { \
-    dt__THROW(MACRO(MUSTDOWNCAST), \
-              << "dynamic_cast of "#object" to "#type" fails" ); \
-    }
-#define dt__PTRASS( toAss, ptr ) \
-  if (ptr == NULL ) { \
-    dt__THROW( dt__PTRASS, << "object "#ptr" cannot assigned to "#toAss ); \
-  } \
+  if (result == NULL ) \
+    dt__throw(dt__mustCast, << "dynamic_cast of "#object" to "#type" fails" );
+
+#define dt__ptrAss( toAss, ptr ) \
+  if (ptr == NULL ) \
+    dt__throw( dt__ptrAss, << "object "#ptr" cannot assigned to "#toAss ); \
   toAss = ptr
-namespace dtOO {
-  template <class T> inline T prior(T x) { return --x; }
-  template <class T> inline T next(T x) { return ++x; }  
-}
-#define dt__NEXT( object ) dtOO::next( object )
-#define dt__PRIOR( object ) dtOO::prior( object )
-#define dt__TOFLOAT(toAss, value ) toAss = static_cast<float>(value)
+
+#define dt__toFloat(toAss, value ) toAss = static_cast<float>(value)
 
 namespace dtOO {
   class progHelper {
     public:
-      dt__CLASSNAME(progHelper);
+      dt__classOnlyName(progHelper);
       template < class T >
       static std::vector< T > list2Vector(std::list< T > & eeList) {
         std::vector< T > ee { 
@@ -63,10 +52,17 @@ namespace dtOO {
         };		
         return ee;
       }
+      template <class T> 
+      static T prior(T x) { 
+        return --x; 
+      }
+      template <class T> 
+      static T next(T x) { 
+        return ++x; 
+      }        
     private:
       progHelper();
   };
-}	
-
+}
 #endif	/* PROGHELPER_H */
 

@@ -11,7 +11,7 @@ namespace dtOO {
   
   class surfaceRotateCurveConstruct {
   public:
-    dt__CLASSNAME(surfaceRotateCurveConstruct);     
+    dt__classOnlyName(surfaceRotateCurveConstruct);     
     surfaceRotateCurveConstruct(
       dtPoint3 const & origin, 
       dtVector3 const & rotAxis, 

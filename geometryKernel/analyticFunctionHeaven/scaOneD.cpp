@@ -16,9 +16,9 @@ namespace dtOO {
 
   float scaOneD::YFloat(aFX const & xx) const {
 		if (xx.size() != 1) {
-			dt__THROW(
+			dt__throw(
 			  YFloat(), 
-				<< DTLOGEVAL(xx.size()) << LOGDEL 
+				<< dt__eval(xx.size()) << std::endl 
 				<< "Should be 1."
 			);
 		}
@@ -42,14 +42,14 @@ namespace dtOO {
 //    }        
 //    else {
 //      dt__THROW(optionFunction(),
-//              << "Unknown " << DTLOGEVAL(option));
+//              << "Unknown " << dt__eval(option));
 //    }
 //  }
   
 //  float scaOneD::simpleNewton( float const yy) const {
 //    DTBUFFERINIT();
 //    
-//    DTBUFFER( << DTLOGEVAL(yy) << LOGDEL);
+//    DTBUFFER( << dt__eval(yy) << std::endl);
 //    
 //    float xx[3];
 //    
@@ -64,21 +64,21 @@ namespace dtOO {
 //      }
 //      else {
 //        DTBUFFER( 
-//          << DTLOGEVAL(YFloat(xx[1])) << LOGDEL
-//          << DTLOGEVAL(YFloat(xx[2])) << LOGDEL
+//          << dt__eval(YFloat(xx[1])) << std::endl
+//          << dt__eval(YFloat(xx[2])) << std::endl
 //          << "Unexpected end of iteration. Set xx[0] = xx[1]"
-//          << LOGDEL );
+//          << std::endl );
 //        xx[0] = xx[1];
 //        break;
 //      }
 //      float res = xx[0] - xx[1];
 //      
 //      DTBUFFER( 
-//        << DTLOGEVAL(ii) << " | "
-//        << DTLOGEVAL(xx[0]) << " | " 
-//        << DTLOGEVAL(xx[1]) << " | " 
-//        << DTLOGEVAL(xx[2]) << " | " 
-//        << DTLOGEVAL(res) << LOGDEL ); 
+//        << dt__eval(ii) << " | "
+//        << dt__eval(xx[0]) << " | " 
+//        << dt__eval(xx[1]) << " | " 
+//        << dt__eval(xx[2]) << " | " 
+//        << dt__eval(res) << std::endl ); 
 //      xx[2] = xx[1];
 //      xx[1] = xx[0];
 //      
@@ -87,9 +87,9 @@ namespace dtOO {
 //      }
 //    }
 //    
-//    DTBUFFER( << "f(" << xx[0] << ") = " << YFloat(xx[0]) << LOGDEL);
+//    DTBUFFER( << "f(" << xx[0] << ") = " << YFloat(xx[0]) << std::endl);
 //    
-//    DTDEBUGWF_BUFFER( simpleNewton() );
+//    dt__debug_BUFFER( simpleNewton() );
 //    
 //    return xx[0];
 //  }
@@ -104,8 +104,8 @@ namespace dtOO {
         return _xxMin;
         break;
       default:
-        dt__THROW(xMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(xMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }   
 	}
@@ -116,8 +116,8 @@ namespace dtOO {
         return _xxMax;
         break;
       default:
-        dt__THROW(xMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(xMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0.");
     }
 	}

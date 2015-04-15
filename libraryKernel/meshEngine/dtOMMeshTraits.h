@@ -1,7 +1,6 @@
 #ifndef DTOMMESHTRAITS_H
 #define	DTOMMESHTRAITS_H
 
-#include <gmsh/MFace.h>
 #include <dtLinearAlgebra.h>
 #include <OpenMesh/Core/Mesh/Traits.hh>
 
@@ -20,37 +19,56 @@ namespace dtOO {
         }
         ::MVertex * MVertex( void ) const {
           return _mv;
-        }              
+        }             
+    };
+    
+    EdgeTraits {
+      private:
+        float _dihedralAngle;
+      public:
+        EdgeT() : _dihedralAngle(0.) {
+        }
+        void dihedralAngle( float const & dihedralAngle ) {
+          _dihedralAngle = dihedralAngle;
+        }        
+        float dihedralAngle( void ) const {
+          return _dihedralAngle;
+        }
     };
     
     FaceTraits {
       private:
         ::MElement * _me;
-        ::MFace _mf;
-        dtVector3 _nn;
+        bool _inverted;
+        bool _mark;
       public:
-        FaceT() : _me(NULL) {
+        FaceT() : _me(NULL), _inverted(false), _mark(false) {
         }
         void MElement( ::MElement const * const me ) {
           _me = const_cast< ::MElement * >(me);
         }        
         ::MElement * MElement( void ) const {
           return _me;
-        }                
-        void MFace( ::MFace const & mf ) {
-          _mf = mf;
-        }        
-        ::MFace & MFace( void ) {
-          return _mf;
+        }                      
+        void invert( void ) {
+          _inverted = true;
         }            
-        dtVector3 const & normal( void ) {
-          return _nn;
-        }
-        void setNormal( dtVector3 const & nn ) {
-          _nn = nn;
-        }        
+        bool inverted( void ) const {
+          return _inverted;
+        }                    
+        void mark( void ) {
+          _mark = true;
+        }            
+        bool marked( void ) const {
+          return _mark;
+        }                            
     };
-    FaceAttributes( OpenMesh::Attributes::Normal );
+    //
+    // standard attributes
+    //
+    VertexAttributes( OpenMesh::Attributes::Status );    
+    EdgeAttributes( OpenMesh::Attributes::Status );    
+    FaceAttributes( OpenMesh::Attributes::Normal | OpenMesh::Attributes::Status );
   };
 }
 

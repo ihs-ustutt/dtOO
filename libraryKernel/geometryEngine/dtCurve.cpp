@@ -73,10 +73,10 @@ namespace dtOO {
 	//
 	//
 	void dtCurve::dump(void) {
-    DTINFOWF(
+    dt__info(
 		  dump(),
-      << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << LOGDEL
-			<< DTLOGEVAL(closed()) << LOGDEL
+      << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << std::endl
+			<< dt__eval(closed()) << std::endl
 		);
 	}
 }

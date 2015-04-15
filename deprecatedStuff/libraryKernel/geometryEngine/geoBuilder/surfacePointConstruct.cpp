@@ -25,9 +25,9 @@ namespace dtOO {
       int SDChecker = points.at(ii).size();
       if (SDChecker != nPointsSD) {
         dt__THROW(surfacePointConstruct(),
-                << "different dimensions" << LOGDEL
-                << "nPointsFD = " << nPointsFD << LOGDEL
-                << "nPointsSD = " << nPointsSD << LOGDEL
+                << "different dimensions" << std::endl
+                << "nPointsFD = " << nPointsFD << std::endl
+                << "nPointsSD = " << nPointsSD << std::endl
                 << "SDChecker = " << SDChecker);
       }
       for(int jj=0;jj<SDChecker;jj++) {

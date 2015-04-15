@@ -10,7 +10,7 @@
 namespace dtOO {
   class eGSL : public eGeneral {
   public:
-    dt__CLASSNAME(eGSL);    
+    dt__classOnlyName(eGSL);    
     eGSL() _GLIBCXX_USE_NOEXCEPT;
     eGSL( std::ostream & msg) _GLIBCXX_USE_NOEXCEPT;
     virtual ~eGSL() _GLIBCXX_USE_NOEXCEPT;

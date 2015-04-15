@@ -14,7 +14,7 @@ namespace dtOO {
 
   class vec3dMuParserThreeDFunctionDecorator : public dtXmlParserFunctionDecorator {
   public:  
-    dt__CLASSNAME(vec3dMuParserThreeDFunctionDecorator);
+    dt__classOnlyName(vec3dMuParserThreeDFunctionDecorator);
     vec3dMuParserThreeDFunctionDecorator();
     virtual ~vec3dMuParserThreeDFunctionDecorator();
     virtual void buildPart(

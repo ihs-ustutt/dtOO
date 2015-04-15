@@ -31,10 +31,10 @@ namespace dtOO {
       int sizeVV = myResV + 1;
       dtSislSurf * surfcopy;
       
-      DTINFOWF(writeStl,
-            << DTLOGEVAL(vertex.max_size())  << LOGDEL
-             << DTLOGEVAL(sizeUU)  << LOGDEL
-                  << DTLOGEVAL(sizeVV)  << LOGDEL
+      dt__info(writeStl,
+            << dt__eval(vertex.max_size())  << std::endl
+             << dt__eval(sizeUU)  << std::endl
+                  << dt__eval(sizeVV)  << std::endl
               );
       
       for (int kk=0; kk<surface.size(); kk++) {
@@ -54,8 +54,8 @@ namespace dtOO {
               //tmpVV = tmpVV + myResV ;
       } 
       vertex.push_back( surfcopy->getPointPercent3d(1., 1.) );    
-          DTINFOWF(writeStl,
-            << DTLOGEVAL(vertex.size()) 
+          dt__info(writeStl,
+            << dt__eval(vertex.size()) 
               );
       stlFile << "solid part " << kk <<std::endl;
       for (int ii=0; ii<(vertex.size()-sizeVV); ii+=sizeVV) { 
@@ -83,9 +83,9 @@ namespace dtOO {
               stlFile << "endloop" << std::endl;
               stlFile << "endfacet" << std::endl;
              
-               DTINFOWF(writeStl(),
-            << DTLOGEVAL(nn)  << LOGDEL
-             << DTLOGEVAL(ii)  
+               dt__info(writeStl(),
+            << dt__eval(nn)  << std::endl
+             << dt__eval(ii)  
               );                        
           }
       

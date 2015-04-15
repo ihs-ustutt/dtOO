@@ -14,7 +14,7 @@ namespace dtOO {
    
   class vec3dInMap3dTo3dWithMeshedSurface : public gmshBoundedVolume {
   public:
-    dt__CLASSSTD(vec3dInMap3dTo3dWithMeshedSurface, gmshBoundedVolume);
+    dt__class(vec3dInMap3dTo3dWithMeshedSurface, boundedVolume);
     vec3dInMap3dTo3dWithMeshedSurface();
     virtual ~vec3dInMap3dTo3dWithMeshedSurface();
     virtual void init( 

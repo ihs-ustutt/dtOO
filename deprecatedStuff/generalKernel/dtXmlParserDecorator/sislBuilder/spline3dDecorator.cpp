@@ -71,9 +71,9 @@ namespace dtOO {
     }
     else {
       dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAGeo) << LOGDEL
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasPoints) );
+              << dt__eval(hasAGeo) << std::endl
+              << dt__eval(hasOrder) << std::endl
+              << dt__eval(hasPoints) );
     }
   }
 }

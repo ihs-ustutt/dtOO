@@ -9,7 +9,7 @@ class Geom_RectangularTrimmedSurface;
 namespace dtOO {
   class dtOCCRectangularTrimmedSurface : public dtOCCSurface {
   public:
-    dt__CLASSSTD(dtOCCRectangularTrimmedSurface, dtSurface);
+    dt__class(dtOCCRectangularTrimmedSurface, dtSurface);
     dtOCCRectangularTrimmedSurface();
     dtOCCRectangularTrimmedSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCRectangularTrimmedSurface();

@@ -282,7 +282,7 @@ namespace dtOO {
 //      //
 //      // dump
 //      //
-//      DTINFOWF(compute(), << "AGEOIN ....");
+//      dt__info(compute(), << "AGEOIN ....");
 //      dt__FORALL(aGeoIn, ii,
 //        aGeoIn[ii]->dump();
 //      );        
@@ -345,7 +345,7 @@ namespace dtOO {
 			return CONTINUE_PIPELINE;
     }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       send_stop_pipeline();
 			
 			//

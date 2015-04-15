@@ -25,10 +25,10 @@ namespace dtOO {
 	
   rotatingMap2dTo3d::rotatingMap2dTo3d( dtVector3 const & vv, map2dTo3d const * const m2d ) : map3dTo3d() {
 		if (m2d->isClosedU() || m2d->isClosedV() ) {
-			dt__THROW(rotatingMap2dTo3d(),
-							<< "Surface is closed. This is not yet supported." << LOGDEL
-							<< DTLOGEVAL(m2d->isClosedU()) << LOGDEL
-							<< DTLOGEVAL(m2d->isClosedV()) );
+			dt__throw(rotatingMap2dTo3d(),
+							<< "Surface is closed. This is not yet supported." << std::endl
+							<< dt__eval(m2d->isClosedU()) << std::endl
+							<< dt__eval(m2d->isClosedV()) );
 		}
 		_pp = dtPoint3(0.,0.,0.);
 		_vv = dtLinearAlgebra::normalize(vv);
@@ -59,8 +59,8 @@ namespace dtOO {
         return false;
         break;        
       default:
-        dt__THROW(isClosed(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(isClosed(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }
 	}
@@ -77,8 +77,8 @@ namespace dtOO {
         return _m2d->getVMin();
         break;        
       default:
-        dt__THROW(getMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(getMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }    		
 	}
@@ -95,19 +95,19 @@ namespace dtOO {
         return _m2d->getVMax();
         break;        
       default:
-        dt__THROW(getMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(getMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }    				
 	}
     
 	dtPoint3 rotatingMap2dTo3d::getPoint( float const & uu, float const & vv, float const & ww ) const {
-//    dt__WARN_IFWM(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
-//		dt__WARN_IFWM(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
-//		dt__WARN_IFWM(ww<getWMin(), getPoint(), << ww << " < " << getWMin());
-//    dt__WARN_IFWM(uu>getUMax(), getPoint(), << uu << " > " << getUMax()); 
-//		dt__WARN_IFWM(vv>getVMax(), getPoint(), << vv << " > " << getVMax());
-//		dt__WARN_IFWM(ww>getWMax(), getPoint(), << ww << " > " << getWMax());
+//    dt__warnIfWithMessage(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
+//		dt__warnIfWithMessage(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
+//		dt__warnIfWithMessage(ww<getWMin(), getPoint(), << ww << " < " << getWMin());
+//    dt__warnIfWithMessage(uu>getUMax(), getPoint(), << uu << " > " << getUMax()); 
+//		dt__warnIfWithMessage(vv>getVMax(), getPoint(), << vv << " > " << getVMax());
+//		dt__warnIfWithMessage(ww>getWMax(), getPoint(), << ww << " > " << getWMax());
 		
 		dtAffTransformation3 rot = dtLinearAlgebra::getRotation(_vv, uu*2*M_PI);
 		return rot.transform( _m2d->getPoint(vv, ww) );
@@ -117,7 +117,7 @@ namespace dtOO {
 		float const extU = .0;
 		float const extV = .1;
 		float const extW = .1;
-//	  DTINFOWF(
+//	  dt__info(
 //			reparamInVolume(), 
 //			<< logMe::dtFormat("Extension of uvw-range by (%d, %d, %d)") % extU % extV % extW
 //		);
@@ -144,7 +144,7 @@ namespace dtOO {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstUPercent(percent_v(vv), 0., 1.);
-			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
+			dt__ptrAss(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
 					*(s3d->ptrConstDtCurve()), _pp, _vv
@@ -162,7 +162,7 @@ namespace dtOO {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstVPercent(percent_w(ww), 0., 1.);
-			dt__PTRASS(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
+			dt__ptrAss(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
 					*(s3d->ptrConstDtCurve()), _pp, _vv
@@ -204,7 +204,7 @@ namespace dtOO {
 	
 	float rotatingMap2dTo3d::v_m(float const & arg) const {
 		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstVPercent(0., 0., 1.) );
-		dt__PTRASS(
+		dt__ptrAss(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
 		);
@@ -214,7 +214,7 @@ namespace dtOO {
 
 	float rotatingMap2dTo3d::v_mw(float const & mm, float const & ww) const {
 		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstVPercent( _m2d->percent_v(ww), 0., 1.) );
-		dt__PTRASS(
+		dt__ptrAss(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
 		);
@@ -224,7 +224,7 @@ namespace dtOO {
 	
 //	float rotatingMap2dTo3d::m_v(float const & arg) const {
 //		ptrHandling< map1dTo3d > m1d( _m2d->pickConstUPercent(0., 0., 1.) );
-//		dt__PTRASS(
+//		dt__ptrAss(
 //		  splineCurve3d const * s3d, 
 //			splineCurve3d::ConstDownCast(m1d.get())
 //		);
@@ -234,7 +234,7 @@ namespace dtOO {
 	
 	float rotatingMap2dTo3d::w_s(float const & arg) const {
 		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstUPercent(0., 0., 1.) );
-		dt__PTRASS(
+		dt__ptrAss(
 		  splineCurve3d const * s3d, 
 			splineCurve3d::ConstDownCast(m1d.get())
 		);
@@ -244,7 +244,7 @@ namespace dtOO {
 	
 //	float rotatingMap2dTo3d::s_w(float const & arg) const {
 //		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent(0., 0., 1.) );
-//		dt__PTRASS(
+//		dt__ptrAss(
 //		  splineCurve3d const * s3d, 
 //			splineCurve3d::ConstDownCast(m1d.get())
 //		);
@@ -261,10 +261,10 @@ namespace dtOO {
 
 			_pp = _pp + _vv  * adjusting;
 
-			DTWARNINGWF(correctOrigin(),
-							<< DTLOGEVAL(dist*_vv) << LOGDEL 
-							<< "Origin of rotSpline is not correct!" << LOGDEL
-							<< "Move origin to " << DTLOGPOI3D(_pp) );        
+			dt__warning(correctOrigin(),
+							<< dt__eval(dist*_vv) << std::endl 
+							<< "Origin of rotSpline is not correct!" << std::endl
+							<< "Move origin to " << dt__point3d(_pp) );        
 		}
 	}
 
@@ -272,9 +272,9 @@ namespace dtOO {
 		std::stringstream ss;
 		
 		ss 
-		<< DTLOGEVAL(_m2d->virtualClassName()) << LOGDEL
-    << DTLOGPOI3D(_pp) << LOGDEL
-		<< DTLOGVEC3D(_vv);
+		<< dt__eval(_m2d->virtualClassName()) << std::endl
+    << dt__point3d(_pp) << std::endl
+		<< dt__vector3d(_vv);
 		
 		return ss.str();		
 	}

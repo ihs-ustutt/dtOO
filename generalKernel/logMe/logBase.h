@@ -10,7 +10,7 @@ namespace dtOO {
   
   enum TLogLevel {logERROR, logWARNING, logINFO, logDEBUG};
   
-  template <typename T> 
+  template < typename T > 
   class logBase {
     public:
       logBase();
@@ -31,33 +31,43 @@ namespace dtOO {
   //
   // methods
   //
-  template <typename T> logBase<T>::logBase() {
+  template < typename T > 
+  logBase< T >::logBase() {
+    
   }
 
-  template <typename T> std::ostringstream& logBase<T>::Get(TLogLevel level) {
-    os << "- " << NowTime();
-    os << " " << ToString(level) << ": ";
-    os << std::string(level > logDEBUG ? level - logDEBUG : 0, '\t');
+  template < typename T > 
+  std::ostringstream& logBase< T >::Get(TLogLevel level) {
+    os 
+    << "*--> " << NowTime()
+    << " < " << ToString(level) << " >"
+    << std::string(level > logDEBUG ? level - logDEBUG : 0, '\t')
+    << std::endl;
+    
     myLogLevel = level;
     return os;
   }
 
-  template <typename T> logBase<T>::~logBase() {
+  template < typename T > 
+  logBase< T >::~logBase() {
     os << std::endl;
     T::Output(os.str(), myLogLevel);
   }
 
-  template <typename T> TLogLevel& logBase<T>::ReportingLevel(void) {
+  template < typename T > 
+  TLogLevel& logBase< T >::ReportingLevel(void) {
     static TLogLevel reportingLevel = logDEBUG;
     return reportingLevel;
   }
 
-  template <typename T> std::string logBase<T>::ToString(TLogLevel level) {
+  template < typename T > 
+  std::string logBase< T >::ToString(TLogLevel level) {
     static const char* const buffer[] = {"ERROR  ", "WARNING", "INFO   ", "DEBUG  "};
     return buffer[level];
   }
 
-  template <typename T> TLogLevel logBase<T>::FromString(const std::string& level) {
+  template < typename T > 
+  TLogLevel logBase< T >::FromString(const std::string& level) {
     if (level == "DEBUG")
       return logDEBUG;
     if (level == "INFO")
@@ -66,7 +76,8 @@ namespace dtOO {
       return logWARNING;
     if (level == "ERROR")
       return logERROR;
-    logBase<T>().Get(logWARNING) << "Unknown logging level '" << level << "'. Using INFO level as default.";
+    logBase< T >().Get(logWARNING) 
+    << "Unknown logging level '" << level << "'. Using INFO level as default.";
     return logINFO;
   }
 }

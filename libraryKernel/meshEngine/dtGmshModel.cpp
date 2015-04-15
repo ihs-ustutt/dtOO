@@ -26,6 +26,8 @@
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
 #include <gmsh/MTetrahedron.h>
+#include <gmsh/MPyramid.h>
+#include <gmsh/MPrism.h>
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTriangle.h>
@@ -35,7 +37,7 @@
   const_cast< dtGmshModel * >(this)
 
 #define __cgnsCheck(cmd) \
-  if (cmd) dt__THROW(__cgnsCheck(), << DTLOGEVAL(cg_get_error()))
+  if (cmd) dt__throw(__cgnsCheck(), << dt__eval(cg_get_error()))
 
 namespace dtOO {
   dtGmshModel::dtGmshModel(std::string name) : GModel(name){
@@ -243,14 +245,14 @@ namespace dtOO {
 	
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {
     ::GRegion * region = ::GModel::getRegionByTag(tag);
-    dt__PTRASS(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
+    dt__ptrAss(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
     
     return gRegion;    
   }
   
   dtGmshFace * dtGmshModel::getDtGmshFaceByTag( int const tag ) const {
     ::GFace * face = ::GModel::getFaceByTag(tag);
-    dt__PTRASS(dtGmshFace * gFace, dtGmshFace::DownCast(face));
+    dt__ptrAss(dtGmshFace * gFace, dtGmshFace::DownCast(face));
     
     return gFace;    
   }
@@ -260,14 +262,14 @@ namespace dtOO {
 		intGEntityVMap gE_pN;
 		__caCThis->getPhysicalGroups(2, gE_pN);
 		
-		dt__THROW_IF(gE_pN[pN].size()!=1, getDtGmshFaceByPhysical);
+		dt__throwIf(gE_pN[pN].size()!=1, getDtGmshFaceByPhysical);
 		
 		return cast2DtGmshFace(gE_pN[pN][0]);
   }	
   
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByTag( int const tag ) const {
     ::GEdge * edge = ::GModel::getEdgeByTag(tag);
-    dt__PTRASS(dtGmshEdge * gEdge, dtGmshEdge::DownCast(edge));
+    dt__ptrAss(dtGmshEdge * gEdge, dtGmshEdge::DownCast(edge));
     
     return gEdge;    
   }
@@ -294,28 +296,28 @@ namespace dtOO {
   dtGmshVertex * dtGmshModel::getDtGmshVertexByTag( int const tag ) const {
     ::GVertex * vertex = ::GModel::getVertexByTag(tag);
    
-    dt__PTRASS( dtGmshVertex * gVertex, dtGmshVertex::DownCast(vertex) );
+    dt__ptrAss( dtGmshVertex * gVertex, dtGmshVertex::DownCast(vertex) );
     
     return gVertex;    
   }  
 
   dtGmshRegion * dtGmshModel::cast2DtGmshRegion( ::GEntity * gr ){
     dtGmshRegion * ret;
-    dt__MUSTDOWNCAST(gr, dtGmshRegion, ret);
+    dt__mustCast(gr, dtGmshRegion, ret);
     
     return ret;
   }
   
   dtGmshFace * dtGmshModel::cast2DtGmshFace( ::GEntity * gf ){
     dtGmshFace * ret;
-    dt__MUSTDOWNCAST(gf, dtGmshFace, ret);
+    dt__mustCast(gf, dtGmshFace, ret);
     
     return ret;
   }
   
   dtGmshEdge * dtGmshModel::cast2DtGmshEdge( ::GEntity * ge ) {
     dtGmshEdge * ret;
-    dt__MUSTDOWNCAST(ge, dtGmshEdge, ret);
+    dt__mustCast(ge, dtGmshEdge, ret);
     
     return ret;    
   }
@@ -338,7 +340,7 @@ namespace dtOO {
 	
   dtGmshVertex * dtGmshModel::cast2DtGmshVertex( ::GEntity * gv ) {
     dtGmshVertex * ret;
-    dt__MUSTDOWNCAST(gv, dtGmshVertex, ret);
+    dt__mustCast(gv, dtGmshVertex, ret);
     
     return ret;    
   }
@@ -350,6 +352,10 @@ namespace dtOO {
   dtPoint3 dtGmshModel::cast2DtPoint3( ::MVertex * mv ) {
     return dtPoint3(mv->x(), mv->y(), mv->z());
   }
+	
+	void dtGmshModel::setPosition( ::MVertex * mv, dtPoint3 const & pp ) {
+		mv->setXYZ(pp.x(), pp.y(), pp.z());
+	}
 	
   void dtGmshModel::meshEdgeTransfiniteFromTo(
     int const from, int const to, 
@@ -371,9 +377,9 @@ namespace dtOO {
       this->mesh(0);
     }
     else {
-      DTINFOWF(
+      dt__info(
         meshVertex(), 
-        << DTLOGEVAL(tag) << LOGDEL
+        << dt__eval(tag) << std::endl
         << "Should be 0.");
     }
   }
@@ -409,17 +415,26 @@ namespace dtOO {
       meshFace( (*f_it)->tag() );
     }
     
-    std::vector< ::GRegion * > delauny;
-    ::meshGRegion mr( delauny );
-    mr(dtgr);    
-		MeshDelaunayVolume(delauny);
+		if (dtgr->_status == ::GEntity::MeshGenerationStatus::PENDING) {
+			std::vector< ::GRegion * > delauny;
+			::meshGRegion mr( delauny );
+			mr(dtgr);    
+			MeshDelaunayVolume(delauny);
+			dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
+		}
+		
   }
+	
+	void dtGmshModel::meshRegion( void ) {
+		std::list< ::GRegion * > rr = regions();
+		dt__forAllIter(std::list< ::GRegion * >, rr, it) meshRegion((*it)->tag());
+	}
 
   int dtGmshModel::alreadyInModel( ::GVertex const * const gv ) const {
 		for (::GModel::viter vIt = __caCThis->firstVertex(); vIt != __caCThis->lastVertex(); ++vIt) {
 			if ( dtGmshVertex::isEqual(gv, *vIt) ) {
-				DTINFOWF(
-					update(),
+				dt__info(
+					alreadyInModel(),
 					<< "duplicate vertex = " << gv->tag() << " equal to vertex tag = " << (*vIt)->tag()
 				);				
 				return (*vIt)->tag();
@@ -431,8 +446,8 @@ namespace dtOO {
   int dtGmshModel::alreadyInModel( ::GEdge const * const ge ) const {
 		for (::GModel::eiter eIt = __caCThis->firstEdge(); eIt != __caCThis->lastEdge(); ++eIt) {
 			if ( dtGmshEdge::isEqual(ge, *eIt) ) {
-				DTINFOWF(
-					update(),
+				dt__info(
+					alreadyInModel(),
 					<< "duplicate edge = " << ge->tag() << " equal to edge tag = " << (*eIt)->tag()
 				);				
 				return (*eIt)->tag();
@@ -444,8 +459,8 @@ namespace dtOO {
   int dtGmshModel::alreadyInModel( ::GFace const * const gf ) const {
 		for (::GModel::fiter fIt = __caCThis->firstFace(); fIt != __caCThis->lastFace(); ++fIt) {
 			if ( dtGmshFace::isEqual(gf, *fIt) ) {
-				DTINFOWF(
-					update(),
+				dt__info(
+					alreadyInModel(),
 					<< "duplicate face = " << gf->tag() << " equal to face tag = " << (*fIt)->tag()
 				);				
 				return (*fIt)->tag();
@@ -458,7 +473,7 @@ namespace dtOO {
 		//
 		// set current model
 		// 
-		DTINFOWF( toUnstructured3dMesh(), << DTLOGEVAL(::GModel::setCurrent(__caCThis)) );
+		dt__info( toUnstructured3dMesh(), << dt__eval(::GModel::setCurrent(__caCThis)) );
 			
 		//
 		// get all entities
@@ -499,45 +514,45 @@ namespace dtOO {
       if (gv) {
 				unsigned nEl = gv->getNumMeshElements();
 				int nElTot = nEl;
-				DTINFOWF(toCoDoUnstructuredGrid(),
-					<< "GEntity[" << ii << "]<GVertex>:" << LOGDEL
-					<< "points = " << nElTot << LOGDEL
-					<< DTLOGEVAL(nElTot)
+				dt__info(toCoDoUnstructuredGrid(),
+					<< "GEntity[" << ii << "]<GVertex>:" << std::endl
+					<< "points = " << nElTot << std::endl
+					<< dt__eval(nElTot)
 				);		
 			}		
       else if (ge) {
 				unsigned nEl = ge->getNumMeshElements();
 				int nElTot = nEl;
-				DTINFOWF(toCoDoUnstructuredGrid(),
-					<< "GEntity[" << ii << "]<GEdge>:" << LOGDEL
-					<< "lines = " << nElTot << LOGDEL
-					<< DTLOGEVAL(nElTot)
+				dt__info(toCoDoUnstructuredGrid(),
+					<< "GEntity[" << ii << "]<GEdge>:" << std::endl
+					<< "lines = " << nElTot << std::endl
+					<< dt__eval(nElTot)
 				);		
 			}					
       else if (gf) {
 				std::vector< unsigned > nEl(3,0);
 				gf->getNumMeshElements(&(nEl[0]));
 				int nElTot = nEl[0] + nEl[1] + nEl[2];
-				DTINFOWF(toCoDoUnstructuredGrid(),
-					<< "GEntity[" << ii << "]<GFace>:" << LOGDEL
-					<< "triangles = " << nEl[0] << LOGDEL
-					<< "quadrangles = " << nEl[1] << LOGDEL
-					<< "polygons = " << nEl[2] << LOGDEL
-					<< DTLOGEVAL(nElTot)
+				dt__info(toCoDoUnstructuredGrid(),
+					<< "GEntity[" << ii << "]<GFace>:" << std::endl
+					<< "triangles = " << nEl[0] << std::endl
+					<< "quadrangles = " << nEl[1] << std::endl
+					<< "polygons = " << nEl[2] << std::endl
+					<< dt__eval(nElTot)
 				);		
 			}			
 			else if (gr) {
 				std::vector< unsigned > nEl(5,0);
 				ent[ii]->getNumMeshElements(&(nEl[0]));
 				int nElTot = nEl[0] + nEl[1] + nEl[2] + nEl[3] + nEl[4];
-				DTINFOWF(toCoDoUnstructuredGrid(),
-					<< "GEntity[" << ii << "]<GRegion>:" << LOGDEL
-					<< "tetrahedra = " << nEl[0] << LOGDEL
-					<< "hexahedra = " << nEl[1] << LOGDEL
-					<< "prisms = " << nEl[2] << LOGDEL
-					<< "pyramids = " << nEl[3] << LOGDEL
-					<< "polyhedra = " << nEl[4] << LOGDEL
-					<< DTLOGEVAL(nElTot)
+				dt__info(toCoDoUnstructuredGrid(),
+					<< "GEntity[" << ii << "]<GRegion>:" << std::endl
+					<< "tetrahedra = " << nEl[0] << std::endl
+					<< "hexahedra = " << nEl[1] << std::endl
+					<< "prisms = " << nEl[2] << std::endl
+					<< "pyramids = " << nEl[3] << std::endl
+					<< "polyhedra = " << nEl[4] << std::endl
+					<< dt__eval(nElTot)
 				);		
 			}
 		}
@@ -592,6 +607,22 @@ namespace dtOO {
 	}
 	
   unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( 
+	  std::vector< ::MElement const * > const & elements
+	) {
+		std::vector< ::MVertex const * > vertices;
+		for( int ii=0; ii<elements.size(); ii++ ) {
+			::MElement * me = const_cast< ::MElement * >(elements[ii]);
+			std::vector< ::MVertex * > verts;
+			me->getVertices(verts);
+			for( int ii=0; ii<verts.size(); ii++ ) vertices.push_back(verts[ii]);			
+		}		
+		sort( vertices.begin(), vertices.end() );
+    vertices.erase( unique( vertices.begin(), vertices.end() ), vertices.end() );
+		
+		return dtGmshModel::toUnstructured3dMesh(vertices, elements);
+	}	
+	
+  unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( 
 	  std::vector< ::MVertex const * > const & vertices, std::vector< ::MElement const * > const & elements
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
@@ -614,6 +645,8 @@ namespace dtOO {
 		for( int ii=0; ii<elements.size(); ii++ ) {
 			::MElement * me = const_cast< ::MElement * >(elements[ii]);
 			::MTetrahedron * mtet = dynamic_cast< ::MTetrahedron * >(me);
+			::MPyramid * mpyr = dynamic_cast< ::MPyramid * >(me);
+			::MPrism * mpri = dynamic_cast< ::MPrism * >(me);			
 			::MHexahedron * mhex = dynamic_cast< ::MHexahedron * >(me);
 			//
 			// tetrahedron
@@ -628,6 +661,35 @@ namespace dtOO {
 				vertsIndex[3] = vLoc_num[verts[3]->getNum()];
 				um->addElement(vertsIndex);
 			}     
+			//
+			// pyramid
+			//
+			else if ( mpyr ) {
+				vectorHandling< int > vertsIndex(5);
+				std::vector< ::MVertex * > verts;
+				mpyr->getVertices(verts); 
+				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
+				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
+				vertsIndex[2] = vLoc_num[verts[2]->getNum()];
+				vertsIndex[3] = vLoc_num[verts[3]->getNum()];
+				vertsIndex[4] = vLoc_num[verts[4]->getNum()];
+				um->addElement(vertsIndex);
+			}  
+			//
+			// prism
+			//
+			else if ( mpri ) {
+				vectorHandling< int > vertsIndex(6);
+				std::vector< ::MVertex * > verts;
+				mpri->getVertices(verts); 
+				vertsIndex[0] = vLoc_num[verts[0]->getNum()];
+				vertsIndex[1] = vLoc_num[verts[1]->getNum()];
+				vertsIndex[2] = vLoc_num[verts[2]->getNum()];
+				vertsIndex[3] = vLoc_num[verts[3]->getNum()];
+				vertsIndex[4] = vLoc_num[verts[4]->getNum()];
+				vertsIndex[5] = vLoc_num[verts[5]->getNum()];
+				um->addElement(vertsIndex);
+			}  			
 			//
 			// hexahedron
 			//
@@ -722,6 +784,22 @@ namespace dtOO {
 	}	
 	
   renderInterface * dtGmshModel::toAdequateSurfaceRenderInterface( 
+		std::vector< ::MElement const * > const & elements
+	) {
+		std::vector< ::MVertex const * > vertices;
+		for( int ii=0; ii<elements.size(); ii++ ) {
+			::MElement * me = const_cast< ::MElement * >(elements[ii]);
+			std::vector< ::MVertex * > verts;
+			me->getVertices(verts);
+			for( int ii=0; ii<verts.size(); ii++ ) vertices.push_back(verts[ii]);			
+		}		
+		sort( vertices.begin(), vertices.end() );
+    vertices.erase( unique( vertices.begin(), vertices.end() ), vertices.end() );
+		
+		return dtGmshModel::toAdequateSurfaceRenderInterface(vertices, elements);
+	}		
+	
+  renderInterface * dtGmshModel::toAdequateSurfaceRenderInterface( 
 	  std::vector< ::MVertex const * > const & vertices, 
 		std::vector< ::MElement const * > const & elements
 	) {
@@ -764,8 +842,8 @@ namespace dtOO {
 			//
 			int nBases;
 			__cgnsCheck(cg_nbases(index_file, &nBases));
-			DTINFOWF(dtReadCGNS(), << "Found " << nBases << " base(s).");
-			dt__THROW_IF(nBases > 1, dtReadCGNS());
+			dt__info(dtReadCGNS(), << "Found " << nBases << " base(s).");
+			dt__throwIf(nBases > 1, dtReadCGNS());
 			int index_base = 1;
 			
 			//
@@ -773,19 +851,19 @@ namespace dtOO {
 			//
 			int nZones;
 			__cgnsCheck(cg_nzones(index_file, index_base, &nZones));
-			DTINFOWF(dtReadCGNS(), << "Found " << nZones << " zone(s).");
+			dt__info(dtReadCGNS(), << "Found " << nZones << " zone(s).");
 
 			for (int index_zone = 1; index_zone <= nZones; index_zone++) {
-			  DTINFOWF(dtReadCGNS(), << "Reading zone " << index_zone);
+			  dt__info(dtReadCGNS(), << "Reading zone " << index_zone);
 				
 				ZoneType_t zoneType;
 				__cgnsCheck(cg_zone_type(index_file, index_base, index_zone, &zoneType));
 
-				dt__THROW_IF(zoneType==ZoneTypeNull, dtReadCGNS() );
-				dt__THROW_IF(zoneType==ZoneTypeUserDefined, dtReadCGNS() );
-				dt__THROW_IF(zoneType==Structured, dtReadCGNS() );
+				dt__throwIf(zoneType==ZoneTypeNull, dtReadCGNS() );
+				dt__throwIf(zoneType==ZoneTypeUserDefined, dtReadCGNS() );
+				dt__throwIf(zoneType==Structured, dtReadCGNS() );
 				if ( zoneType == Unstructured ) {
-					DTINFOWF(dtReadCGNS(), << "Unstructured zone detected.");
+					dt__info(dtReadCGNS(), << "Unstructured zone detected.");
 					//
 					// read zone info
 					//				
@@ -794,14 +872,14 @@ namespace dtOO {
 					__cgnsCheck(cg_zone_read(index_file, index_base, index_zone, zoneName, zoneSizes));
 					int nNodes = static_cast< int >(zoneSizes[0]);
 					int nCells = static_cast< int >(zoneSizes[1]);
-					DTINFOWF(
+					dt__info(
 					  dtReadCGNS(), 
-						<< DTLOGEVAL(zoneName) << LOGDEL
-						<< DTLOGEVAL(zoneSizes[0]) << LOGDEL
-						<< DTLOGEVAL(zoneSizes[1]) << LOGDEL
-						<< DTLOGEVAL(zoneSizes[2]) << LOGDEL
-						<< DTLOGEVAL(nNodes) << LOGDEL
-						<< DTLOGEVAL(nCells)
+						<< dt__eval(zoneName) << std::endl
+						<< dt__eval(zoneSizes[0]) << std::endl
+						<< dt__eval(zoneSizes[1]) << std::endl
+						<< dt__eval(zoneSizes[2]) << std::endl
+						<< dt__eval(nNodes) << std::endl
+						<< dt__eval(nCells)
 					);
 					
 					//
@@ -821,7 +899,7 @@ namespace dtOO {
 								iCoord+1, &dataType, coordName
 							)
 						);
-						DTINFOWF(
+						dt__info(
 							dtReadCGNS(),
 							<< "Reading coordinate " << iCoord+1 << " : " << coordName
 						);
@@ -830,7 +908,7 @@ namespace dtOO {
 						cgsize_t irmax = zoneSizes[0];
 						switch(dataType) {
 							case RealSingle:
-    						DTINFOWF(dtReadCGNS(), << "Type is float");
+    						dt__info(dtReadCGNS(), << "Type is float");
 								coord = new float[nNodes];
 								__cgnsCheck(
 									cg_coord_read(
@@ -844,7 +922,7 @@ namespace dtOO {
 								delete [] (float*)coord;
 								break;
 							case RealDouble:
-								DTINFOWF(dtReadCGNS(), << "Type is double");
+								dt__info(dtReadCGNS(), << "Type is double");
 								coord = new double[nNodes];
 								__cgnsCheck(
 									cg_coord_read(
@@ -876,7 +954,7 @@ namespace dtOO {
 				//
 				int nSec;
 				__cgnsCheck( cg_nsections(index_file, index_base, index_zone, &nSec) );
-				DTINFOWF(dtReadCGNS(), << "Found " << nSec << " sections.");
+				dt__info(dtReadCGNS(), << "Found " << nSec << " sections.");
 				for (int index_section = 1; index_section <= nSec; index_section++) {
 					char secName[30];
 					ElementType_t elementType;
@@ -889,13 +967,13 @@ namespace dtOO {
 							secName, &elementType, &(bounds[0]), &(bounds[1]), &nBoundary, &parentFlag
 						)
 					);
-					DTINFOWF(
+					dt__info(
 					  dtReadCGNS(), 
-						<< DTLOGEVAL(secName) << LOGDEL
-						<< DTLOGEVAL(bounds[0]) << LOGDEL
-						<< DTLOGEVAL(bounds[1]) << LOGDEL
-						<< DTLOGEVAL(nBoundary) << LOGDEL
-						<< DTLOGEVAL(parentFlag) 
+						<< dt__eval(secName) << std::endl
+						<< dt__eval(bounds[0]) << std::endl
+						<< dt__eval(bounds[1]) << std::endl
+						<< dt__eval(nBoundary) << std::endl
+						<< dt__eval(parentFlag) 
 					);					
            
 					//
@@ -916,11 +994,11 @@ namespace dtOO {
 						)
 					);
 
-					DTINFOWF(
+					dt__info(
 						dtReadCGNS(), 
-						<< DTLOGEVAL(elementDataSize) << LOGDEL
-						<< DTLOGEVAL(elementType) << LOGDEL
-            << DTLOGEVAL(ElementTypeName[elementType])
+						<< dt__eval(elementDataSize) << std::endl
+						<< dt__eval(elementType) << std::endl
+            << dt__eval(ElementTypeName[elementType])
 					);
 					int nElements;
 					int tmpC = 0;
@@ -1013,7 +1091,7 @@ namespace dtOO {
 							}
 							break;
 						default:
-							dt__THROW(dtReadCGNS(), << ElementTypeName[elementType]);
+							dt__throw(dtReadCGNS(), << ElementTypeName[elementType]);
 					}
 				}				
 			}
@@ -1021,8 +1099,8 @@ namespace dtOO {
 		
 		__cgnsCheck( cg_close(index_file) );
 		
-		dt__THROW_IF( vertexMap.size() != vNum, dtReadCGNS() );
-		dt__THROW_IF( elementMap.size() != eNum, dtReadCGNS() );
+		dt__throwIf( vertexMap.size() != vNum, dtReadCGNS() );
+		dt__throwIf( elementMap.size() != eNum, dtReadCGNS() );
 		
 		dt__forAllIter(vertexMap_t, vertexMap, it) {
 			::MVertex * mv = it->second;
@@ -1129,7 +1207,7 @@ namespace dtOO {
 			}	
 		}
 		else {
-			dt__THROW( meshPhysical(), << DTLOGEVAL(dim) );
+			dt__throw( meshPhysical(), << dt__eval(dim) );
 		}	
 	}
 	
@@ -1144,5 +1222,9 @@ namespace dtOO {
 		dt__forAllIndex(nonConstVertices, ii) {
 			vertices.push_back( const_cast< ::MVertex const * >(nonConstVertices[ii]) );
 		}
-	}	
+	}
+
+  void dtGmshModel::tagPhysical(::GEntity * const ge, std::string const & pName) {		
+		ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );
+	}
 }

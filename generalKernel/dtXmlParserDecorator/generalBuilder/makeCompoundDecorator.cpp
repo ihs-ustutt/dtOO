@@ -46,7 +46,7 @@ namespace dtOO {
       //
       // check if it is a map3dTo3d
       //
-      dt__PTRASS( 
+      dt__ptrAss( 
 				vec3dThreeDInMap3dTo3d const * v3dIn3d, 
 				vec3dThreeDInMap3dTo3d::ConstDownCast(aG.get()) 
 			);
@@ -55,7 +55,7 @@ namespace dtOO {
 			= 
 			new analyticGeometryCompound<vec3dThreeDInMap3dTo3d>();
 			
-			dt__FORALL(aGElVec, ii,
+			dt__forAllIndex(aGElVec, ii) {
 				dt__pH(analyticGeometry const) aG(
 					createAnalyticGeometry(&aGElVec[ii], bC, cValP, sFunP, depAGeoP)
 				);
@@ -63,12 +63,12 @@ namespace dtOO {
 				//
 				// check if it is a map3dTo3d
 				//
-				dt__PTRASS( 
+				dt__ptrAss( 
 					vec3dThreeDInMap3dTo3d const * v3dIn3d, 
 					vec3dThreeDInMap3dTo3d::ConstDownCast(aG.get()) 
 				);
 				v3dIn3dC->addComponent(*v3dIn3d);
-			);
+			}
 			
 			aGeoP->push_back(v3dIn3dC);
     }

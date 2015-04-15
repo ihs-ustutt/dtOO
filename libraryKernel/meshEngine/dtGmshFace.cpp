@@ -53,7 +53,7 @@ namespace dtOO {
   }  
 
   dtGmshFace::~dtGmshFace() {
-		DTINFOWF(
+		dt__info(
 			~dtGmshFace(), << "Removing face tag = " << tag() << " on all edges."	
 		);
 		std::list< ::GEdge * > ee = edges();
@@ -77,8 +77,8 @@ namespace dtOO {
       return Range<double>(_mm->getVMin(), _mm->getVMax());
     }
     else {
-      dt__THROW(parBounds(),
-              << DTLOGEVAL(i) << LOGDEL
+      dt__throw(parBounds(),
+              << dt__eval(i) << std::endl
               << "i should be 0 or 1.");
     }
   }
@@ -164,8 +164,8 @@ namespace dtOO {
       }
     }
     if (edgeL.size() != 0) {
-      dt__THROW(addEdgeLoop(),
-              << DTLOGEVAL( edgeL.size() ) );
+      dt__throw(addEdgeLoop(),
+              << dt__eval( edgeL.size() ) );
     }
   }  
   
@@ -187,8 +187,8 @@ namespace dtOO {
       return _mm->isClosedV();
     }
     else {
-      dt__THROW(isClosed(),
-              << DTLOGEVAL(dim) << LOGDEL
+      dt__throw(isClosed(),
+              << dt__eval(dim) << std::endl
               << "dim should be 0 or 1.");
     }    
   }
@@ -208,7 +208,7 @@ namespace dtOO {
 		//
 		// only supported for 4-sided faces
 		//
-		dt__THROW_IF(eeList.size()!=4, meshTransfiniteWNElements());
+		dt__throwIf(eeList.size()!=4, meshTransfiniteWNElements());
 		std::vector< dtGmshEdge * > ee = progHelper::list2Vector(eeList);
 		
 		//
@@ -232,7 +232,7 @@ namespace dtOO {
 		//
 		// only supported for 4-sided faces
 		//
-		dt__THROW_IF(ee.size()!=4, meshTransfiniteWNElements());
+		dt__throwIf(ee.size()!=4, meshTransfiniteWNElements());
 
 		std::vector< bool > correct(2, false);
     if (
@@ -300,7 +300,7 @@ namespace dtOO {
 		//
 		// only supported for 4-sided faces
 		//
-		dt__THROW_IF(ee.size()!=4, meshTransfiniteWNElements());
+		dt__throwIf(ee.size()!=4, meshTransfiniteWNElements());
 		
 		//
 		// set number of elements
@@ -326,11 +326,11 @@ namespace dtOO {
 	}	
 	
   void dtGmshFace::updateFace( void ) {
-    dt__THROW(updateFace(), << "Not yet implemented. This could produce errors.");
+    dt__throw(updateFace(), << "Not yet implemented. This could produce errors.");
   }
   
   void dtGmshFace::makeSuitable( void ) {
-    DTINFOWF(updateFace(), << "Base class calling. Nothing to do.");
+    dt__info(updateFace(), << "Base class calling. Nothing to do.");
   }
 	
 	bool dtGmshFace::isEqual( ::GFace const * const gf ) const {
@@ -405,8 +405,8 @@ namespace dtOO {
 			}
 		}
 		
-//		DTINFOWF(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(e_v));
-//		DTINFOWF(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(v_e));
+//		dt__info(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(e_v));
+//		dt__info(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(v_e));
 		
 		std::vector< ::MVertex * > startVerts;
 		for (e_vIt = e_v.begin(); e_vIt != e_v.end(); ++e_vIt) {
@@ -454,7 +454,7 @@ namespace dtOO {
 					//
 					if ( e_v[pV[ii]].size() == 2) {
 				    toSave = pV[ii];						
-//						DTINFOWF(
+//						dt__info(
 //							reconstructEdgesFomSurface(),
 //							<< logMe::dtFormat("Internal vertex %d") % recEdge.back()->getNum()
 //						);
@@ -465,7 +465,7 @@ namespace dtOO {
 					else if ( e_v[pV[ii]].size() == 1) {
 				    toSave = pV[ii];						
 						endVertex = true;
-//						DTINFOWF(
+//						dt__info(
 //							reconstructEdgesFomSurface(),
 //							<< logMe::dtFormat("End vertex %d") % recEdge.back()->getNum()
 //						);
@@ -497,18 +497,18 @@ namespace dtOO {
 			//
 			if (recEdge.size() == 1) {
 				e_v[recEdge[0]].clear();
-				recEdges.erase( dt__PRIOR(recEdges.end()) );
-				startVerts.erase( dt__PRIOR(startVerts.end()) );
+				recEdges.erase( progHelper::prior(recEdges.end()) );
+				startVerts.erase( progHelper::prior(startVerts.end()) );
 			}			
 			if (recEdge.size() == 2) {
-				dt__THROW_IF(recEdge[0]!=recEdge[1], reconstructEdgesFromSurfaceMesh());
+				dt__throwIf(recEdge[0]!=recEdge[1], reconstructEdgesFromSurfaceMesh());
 				e_v[recEdge[0]].clear();
-				recEdges.erase( dt__PRIOR(recEdges.end()) );
-				startVerts.erase( dt__PRIOR(startVerts.end()));
+				recEdges.erase( progHelper::prior(recEdges.end()) );
+				startVerts.erase( progHelper::prior(startVerts.end()));
 			}
 		}
 
-//	  DTINFOWF( 
+//	  dt__info( 
 //		  reconstructFromEdges(), 
 //			<< logMe::dtFormat("%d edges reconstructed.") % recEdges.size()
 //		);    		
@@ -517,7 +517,7 @@ namespace dtOO {
 			it!=recEdges.end(); 
 			++it 
 		) {
-			DTINFOWF(
+			dt__info(
 				reconstructEdgesFromSurfaceMesh(), 
 				<< logMe::dtFormat(
 				  "Edge from vertex %d to vertex %d reconstructed with %d vertices"
@@ -530,7 +530,7 @@ namespace dtOO {
 	
 	std::vector< const ::MVertex * > dtGmshFace::getMeshVertices( void ) const {	
 		int num_vertices  = __caCThis->getNumMeshVertices();
-		dt__THROW_IF(num_vertices == 0, getMesVertices());
+		dt__throwIf(num_vertices == 0, getMesVertices());
 
 		std::vector< ::MVertex const * > mv;
 		mv.reserve(num_vertices);
@@ -547,7 +547,7 @@ namespace dtOO {
 	) const {	
 		int num_elements  = __caCThis->getNumMeshElements();
 		
-		dt__THROW_IF(num_elements == 0, getMeshVerticesAndElements());
+		dt__throwIf(num_elements == 0, getMeshVerticesAndElements());
 		
 		int num_vertices_per_element 
 		= 
@@ -575,7 +575,7 @@ namespace dtOO {
 			std::vector< MVertex * > vertices;
 			MElement * me = __caCThis->getMeshElement(ii);
 			me->getVertices(vertices);
-			omFaceH fH = om->addFace(vertices, me);
+			om->addFace(me);
 		}
 		
 		return om;

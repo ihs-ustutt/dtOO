@@ -18,7 +18,7 @@ namespace dtOO {
       typedef typename std::vector< T >::iterator iterator1;
       typedef typename std::vector< T >::const_iterator const_iterator1;      
     public:
-      dt__CLASSNAME(twoDArrayHandling);
+      dt__classOnlyName(twoDArrayHandling);
       twoDArrayHandling();
       twoDArrayHandling( int const sizeI, int const sizeJ );
       twoDArrayHandling(const twoDArrayHandling& orig);
@@ -43,9 +43,7 @@ namespace dtOO {
   template < typename T >
   twoDArrayHandling< T >::twoDArrayHandling(const twoDArrayHandling& orig) 
     : std::vector< std::vector< T > >( orig.size(0), std::vector< T >(orig.size(1)) ) {
-    dt__FORALL(*this, ii,
-      this->at(ii) = orig.at(ii);
-    );
+    dt__forAllIndex(*this, ii) this->at(ii) = orig.at(ii);
   }
 
   template < typename T >
@@ -54,9 +52,7 @@ namespace dtOO {
 
   template < typename T >
   void twoDArrayHandling< T >::resize(int const sizeI, int const sizeJ) {
-    dt__FORALL(*this, ii,
-      this->at(ii).clear();        
-    );
+    dt__forAllIndex(*this, ii) this->at(ii).clear();        
     this->clear();
     
     std::vector< std::vector< T > >::resize(sizeI, std::vector< T >( sizeJ ) );
@@ -81,7 +77,7 @@ namespace dtOO {
       }
     }
     else {
-      dt__THROW( size(), << "Wrong dimension " << DTLOGEVAL(dim) );
+      dt__throw( size(), << "Wrong dimension " << dt__eval(dim) );
     }
   }    
 }

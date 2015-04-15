@@ -76,9 +76,9 @@ namespace dtOO {
 		std::vector< float > const & vv
 	) const {
 		std::vector< dtPoint3 > pp( uu.size() );
-		dt__FORALL(uu, ii,
+		dt__forAllIndex(uu, ii) {
 		  pp[ii] = point( uu[ii], vv[ii] );				
-		);
+		}
 		
 		return pp;
 	}
@@ -89,9 +89,9 @@ namespace dtOO {
 		std::vector< float > const & vv
 	) const {
 		std::vector< dtPoint3 > pp( uu.size() );
-		dt__FORALL(uu, ii,
+		dt__forAllIndex(uu, ii) {
 		  pp[ii] = point( u_uPercent(uu[ii]), v_vPercent(vv[ii]) );				
-		);
+		}
 		
 		return pp;		
 	} 
@@ -186,11 +186,11 @@ namespace dtOO {
 	//
 	//
   dtPoint3 dtSurface::controlPoint( int const uI, int const vI ) const {
-		dt__THROW(controlPoint(), <<"Not possible on this kind of surface.");
+		dt__throw(controlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
   void dtSurface::setControlPoint( int const uI, int const vI, dtPoint3 const point ) {
-		dt__THROW(setControlPoint(), <<"Not possible on this kind of surface.");
+		dt__throw(setControlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
   int dtSurface::nControlPoints( int const dim ) const {
@@ -200,23 +200,23 @@ namespace dtOO {
 			case 1:
 				return 0;
 			default:
-				dt__THROW(
+				dt__throw(
 					nControlPoints(),
-					<< DTLOGEVAL(dim) << LOGDEL
+					<< dt__eval(dim) << std::endl
 					<< "dim should be 0 or 1."
 				);
 		}
 	}
 		
 	void dtSurface::dump( void ) const {
-    DTINFOWF(
+    dt__info(
 			dump(), 
-      << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << LOGDEL
+      << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << std::endl
       << "vv = [ " <<  minPara(1) << ", " << maxPara(1) << "]" 
 		);
 	}	
 	
 	void dtSurface::offsetNormal(float const nn) {
-		DTFUNCTIONNOTI(offsetNormal());
+		dt__functionNotImplemented(offsetNormal());
 	}
 }

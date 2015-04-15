@@ -9,7 +9,7 @@ namespace dtOO {
 
   class predefinedExtension : public dtTransformer {
   public:    
-    dt__CLASSNAME(predefinedExtension);
+    dt__classOnlyName(predefinedExtension);
     predefinedExtension();
     predefinedExtension( predefinedExtension const & orig );
     virtual ~predefinedExtension();

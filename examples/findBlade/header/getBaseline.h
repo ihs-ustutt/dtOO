@@ -8,7 +8,7 @@ namespace dtOO {
   class scaFunction;
   class getBaseline : public dtTransformer {
   public:    
-    dt__CLASSSTD(getBaseline, dtTransformer);  
+    dt__class(getBaseline, dtTransformer);  
     getBaseline();
     virtual ~getBaseline();
     virtual bool isNecessary( void ) const;

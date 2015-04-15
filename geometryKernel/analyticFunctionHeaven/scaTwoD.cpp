@@ -21,7 +21,7 @@ namespace dtOO {
   }
 
   float scaTwoD::YFloat(aFX const & xx) const {
-		dt__THROW_IF(xx.size()!=2, YFloat());	
+		dt__throwIf(xx.size()!=2, YFloat());	
 		
 		return YFloat(xx[0], xx[1]);
 	}
@@ -41,8 +41,8 @@ namespace dtOO {
       case 1:
         return _min[1];
       default:
-        dt__THROW(xMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(xMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }
 	}
@@ -54,8 +54,8 @@ namespace dtOO {
       case 1:
         return _max[1];
       default:
-        dt__THROW(xMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(xMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }
 	}	
@@ -69,8 +69,8 @@ namespace dtOO {
         _min[1] = min;
 				return;
       default:
-        dt__THROW(setMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(setMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }
   }
@@ -84,8 +84,8 @@ namespace dtOO {
         _max[1] = max;
 				return;
       default:
-        dt__THROW(setMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(setMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0 or 1.");
     }
   }
@@ -196,10 +196,10 @@ namespace dtOO {
 		float intervalV = (xMax(1) - xMin(1)) / (nV-1);
 
 		for (int jj=0; jj<nV; jj++) {
-			dt__TOFLOAT(float jjF, jj);			
+			dt__toFloat(float jjF, jj);			
 			float constV = xMin(1) + jjF * intervalV;
 			for (int ii=0; ii<nU; ii++) {
-				dt__TOFLOAT(float iiF, ii);
+				dt__toFloat(float iiF, ii);
 				aFX xx(2,0);
 				xx[0] = xMin(0) + iiF * intervalU;
 				xx[1] = constV;

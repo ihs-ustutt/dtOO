@@ -45,10 +45,10 @@ namespace dtOO {
   }
 
   dtPoint3 analyticSurface::getPoint(float const & uu, float const & vv) const {
-//    dt__WARN_IFWM(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
-//		dt__WARN_IFWM(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
-//    dt__WARN_IFWM(uu>getUMax(), getPoint(), << uu << " > " << getUMax()); 
-//		dt__WARN_IFWM(vv>getVMax(), getPoint(), << vv << " > " << getVMax());
+//    dt__warnIfWithMessage(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
+//		dt__warnIfWithMessage(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
+//    dt__warnIfWithMessage(uu>getUMax(), getPoint(), << uu << " > " << getUMax()); 
+//		dt__warnIfWithMessage(vv>getVMax(), getPoint(), << vv << " > " << getVMax());
 		
     return _dtS->point(uu, vv);
   }
@@ -196,13 +196,13 @@ namespace dtOO {
 		std::stringstream ss;
 		
 		ss 
-		<< DTLOGEVAL(_dtS->virtualClassName()) << LOGDEL
-    << DTLOGEVAL(_dtS->closedU()) << LOGDEL
-		<< DTLOGEVAL(_dtS->closedV()) << LOGDEL
-		<< DTLOGEVAL(_dtS->minU()) << LOGDEL
-		<< DTLOGEVAL(_dtS->minV()) << LOGDEL
-		<< DTLOGEVAL(_dtS->maxU()) << LOGDEL
-		<< DTLOGEVAL(_dtS->maxV());
+		<< dt__eval(_dtS->virtualClassName()) << std::endl
+    << dt__eval(_dtS->closedU()) << std::endl
+		<< dt__eval(_dtS->closedV()) << std::endl
+		<< dt__eval(_dtS->minU()) << std::endl
+		<< dt__eval(_dtS->minV()) << std::endl
+		<< dt__eval(_dtS->maxU()) << std::endl
+		<< dt__eval(_dtS->maxV());
 		
 		
 		return ss.str();

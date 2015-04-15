@@ -21,7 +21,7 @@ namespace dtOO {
                            public labelHandling,
                            public renderInterface {
   public:  
-    dt__CLASSSTD(analyticGeometry, analyticGeometry);
+    dt__class(analyticGeometry, analyticGeometry);
     analyticGeometry();
     virtual ~analyticGeometry();
     analyticGeometry( analyticGeometry const & orig );

@@ -12,7 +12,7 @@ namespace dtOO {
   
   class geomCurve_baseConstructOCC {
   public:
-    dt__CLASSNAME(geomCurve_baseConstructOCC);
+    dt__classOnlyName(geomCurve_baseConstructOCC);
     geomCurve_baseConstructOCC( dtOCCCurveBase const & base );
     virtual ~geomCurve_baseConstructOCC();
     dtCurve * result( void );

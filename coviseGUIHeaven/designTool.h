@@ -31,7 +31,7 @@ namespace dtOO {
   
   class designTool : public covise::coModule {
     public:
-      dt__CLASSNAME(designTool);
+      dt__classOnlyName(designTool);
       designTool(int argc, char *argv[]);
       virtual void postInst();
       virtual void param(const char* paramName, bool inMapLoading);

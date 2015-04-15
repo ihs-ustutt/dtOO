@@ -15,7 +15,7 @@ namespace dtOO {
 
   class rotatingSplineDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(rotatingSplineDecorator);
+    dt__classOnlyName(rotatingSplineDecorator);
     rotatingSplineDecorator();
     virtual ~rotatingSplineDecorator();
     virtual void buildPart(QDomElement ** toBuildP,

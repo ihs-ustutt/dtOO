@@ -38,9 +38,9 @@ namespace dtOO {
       for (int ii=0;ii<curveList.size();ii++) {
         curveType.push_back(1);
 				dtSislCurve const * tmpCurve;
-        dt__MUSTDOWNCAST(curveList.at(ii), dtSislCurve const, tmpCurve);
+        dt__mustCast(curveList.at(ii), dtSislCurve const, tmpCurve);
 				SISLCurve const * tmpSislCurve;
-				dt__MUSTDOWNCAST(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
+				dt__mustCast(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
 				SISLCurveListPP[ii] = const_cast< SISLCurve * >(tmpSislCurve);
       }  
 
@@ -76,9 +76,9 @@ namespace dtOO {
       for (int ii=0;ii<curveList.size();ii++) {
         //SISLCurveListPP[ii] = const_cast< SISLCurve * >( cast2Sisl(curveList.at(ii))->getSISLCurve() );
 				dtSislCurve const * tmpCurve;
-        dt__MUSTDOWNCAST(curveList.at(ii), dtSislCurve const, tmpCurve);
+        dt__mustCast(curveList.at(ii), dtSislCurve const, tmpCurve);
 				SISLCurve const * tmpSislCurve;
-				dt__MUSTDOWNCAST(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
+				dt__mustCast(tmpCurve->getSISLCurve(), SISLCurve const, tmpSislCurve); 
 				SISLCurveListPP[ii] = const_cast< SISLCurve * >(tmpSislCurve);
         double iiD = (double) ii;
         parArr[ii] = iiD * parArrInt;
@@ -103,7 +103,7 @@ namespace dtOO {
     }
     else if (isPolynomial && isRational) {     
       dt__THROW(surfaceLoftConstruct(),
-              << "Surface creation out of rational and polyomial " << LOGDEL
+              << "Surface creation out of rational and polyomial " << std::endl
               << "B-Splines is not yet possible.");
     }		
 	}

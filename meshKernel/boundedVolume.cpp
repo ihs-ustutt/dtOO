@@ -69,7 +69,11 @@ namespace dtOO {
 		return std::vector< std::string >(0);
 	}
 	
-	dtGmshFace const * boundedVolume::getFace( std::string const & tag ) const {
+	dtGmshRegion * boundedVolume::getRegion( std::string const & tag ) const {
+		return NULL;
+	}
+	
+	dtGmshFace * boundedVolume::getFace( std::string const & tag ) const {
 		return NULL;
 	}
 

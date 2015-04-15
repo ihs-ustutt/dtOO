@@ -51,7 +51,7 @@ namespace dtOO {
       //
       // check if it is a map2dTo3d
       //
-      dt__PTRASS( map2dTo3d const * m2d, map2dTo3d::ConstDownCast(aG.get()) );
+      dt__ptrAss( map2dTo3d const * m2d, map2dTo3d::ConstDownCast(aG.get()) );
 			
       //
       // get analyticFunction
@@ -71,10 +71,10 @@ namespace dtOO {
 			  aGeoP->push_back( new vec2dTwoDInMap2dTo3d(v2d, m2d, optionPercent) );
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 				  buildPart(), 
-					<< DTLOGEVAL(v1d) << LOGDEL
-					<< DTLOGEVAL(v2d)
+					<< dt__eval(v1d) << std::endl
+					<< dt__eval(v2d)
 				);
 			}
     }

@@ -58,7 +58,7 @@ namespace dtOO {
         analyticFunction const * const aF 
 				= 
 				createAnalyticFunction( &elementP, bC, cValP, depSFunP );
-				dt__PTRASS(
+				dt__ptrAss(
 				  vec3dCurveOneD const * v3d1d, 
 				  vec3dCurveOneD::ConstDownCast(aF)
 				);
@@ -97,7 +97,7 @@ namespace dtOO {
 			vectorHandling< analyticFunction const * > aFV = vec3dTwoDaFC->compoundInternal();
 			for (int ii=0; ii<aFV.size(); ii++) {
 				float av = 0.;
-			  dt__PTRASS(
+			  dt__ptrAss(
 					vec3dSurfaceTwoD const * v3d2d,
 				  vec3dSurfaceTwoD::ConstDownCast(aFV[ii])
 				);
@@ -116,13 +116,13 @@ namespace dtOO {
 				av = av + itVal.back();
 				itVal.push_back(av/4.);
 			}
-			DTINFOWF(
+			dt__info(
 				buildPart(),
 				<< logMe::floatVecToTable(header, itVal)
 			);
     }
     else {
-      dt__THROW(buildPart(), << DTLOGEVAL(hasAF) );
+      dt__throw(buildPart(), << dt__eval(hasAF) );
     }
   }
 	

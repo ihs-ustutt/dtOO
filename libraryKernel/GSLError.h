@@ -9,14 +9,14 @@
     namespace Math {
       class GSLError {
         public:
-          dt__CLASSNAME(GSLError);
+          dt__classOnlyName(GSLError);
           GSLError() {
             //gsl_set_error_handler(&GSLError::Handler);
             gsl_set_error_handler(&GSLError::Handler); // JLK : turn off message errors from GSL
             // set a new handler for GSL
           }
           static void Handler(const char * reason, const char * file, int line, int gsl_errno)  {
-             dt__THROWSPEC(
+             dt__throwSpec(
                dtOO::eGSL, 
                Handler(), 
                << boost::format( "Error %d in %s at %d : %s" ) % gsl_errno % file % line % reason 

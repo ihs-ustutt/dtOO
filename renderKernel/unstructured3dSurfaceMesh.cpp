@@ -28,7 +28,7 @@ namespace dtOO {
 			_nTris++;
 		}
 		else {
-			dt__THROW(addElement, << DTLOGEVAL(el.size()) );
+			dt__throw(addElement, << dt__eval(el.size()) );
 		}
 	}
 	

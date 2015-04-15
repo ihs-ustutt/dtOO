@@ -12,7 +12,7 @@ namespace dtOO {
   
   class geomCurve_projectOnGeomSurfaceOCC {
   public:
-    dt__CLASSNAME(geomCurve_projectOnGeomSurfaceOCC);    
+    dt__classOnlyName(geomCurve_projectOnGeomSurfaceOCC);    
     geomCurve_projectOnGeomSurfaceOCC();
     geomCurve_projectOnGeomSurfaceOCC(
       dtCurve const * const dtC, 

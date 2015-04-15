@@ -11,7 +11,7 @@ namespace dtOO {
   
   class infinityMap3dTo3d : public map3dTo3d {
   public:
-    dt__CLASSSTD(infinityMap3dTo3d, analyticGeometry);
+    dt__class(infinityMap3dTo3d, analyticGeometry);
     infinityMap3dTo3d();
     infinityMap3dTo3d(const infinityMap3dTo3d& orig);
     virtual ~infinityMap3dTo3d();

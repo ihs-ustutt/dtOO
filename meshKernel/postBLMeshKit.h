@@ -15,6 +15,7 @@ namespace dtOO {
   
   class postBLMeshKit : public boundedVolume {
   public:
+    dt__class(postBLMeshKit, boundedVolume);
     postBLMeshKit();
     virtual ~postBLMeshKit();
     virtual void init( 

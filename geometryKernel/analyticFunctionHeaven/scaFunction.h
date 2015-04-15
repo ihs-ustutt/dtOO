@@ -8,7 +8,7 @@
 namespace dtOO {
   class scaFunction : public analyticFunction {
   public:
-    dt__CLASSSTD(scaFunction, analyticFunction); 
+    dt__class(scaFunction, analyticFunction); 
     scaFunction();
     scaFunction( scaFunction const & orig);  
     virtual ~scaFunction();

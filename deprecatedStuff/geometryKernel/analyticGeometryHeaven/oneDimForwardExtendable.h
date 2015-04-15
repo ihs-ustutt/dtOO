@@ -6,7 +6,7 @@
 namespace dtOO {
   class oneDimForwardExtendable {
     public:    
-      dt__CLASSNAME(oneDimForwardExtendable);
+      dt__classOnlyName(oneDimForwardExtendable);
       oneDimForwardExtendable();
       oneDimForwardExtendable(const oneDimForwardExtendable& orig);
       virtual ~oneDimForwardExtendable();

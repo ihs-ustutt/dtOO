@@ -14,7 +14,7 @@ namespace dtOO {
 
   class vec3dSurfaceTwoDFunctionDecorator : public dtXmlParserFunctionDecorator {
   public:
-    dt__CLASSNAME(vec3dSurfaceTwoDFunctionDecorator);    
+    dt__classOnlyName(vec3dSurfaceTwoDFunctionDecorator);    
     vec3dSurfaceTwoDFunctionDecorator();
     virtual ~vec3dSurfaceTwoDFunctionDecorator();
     virtual void buildPart(

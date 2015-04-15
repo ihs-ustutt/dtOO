@@ -29,8 +29,8 @@ namespace dtOO {
 	) {
 		gp_Ax2 ax2(gp_Pnt(0., 0., 0.), gp_Dir(0., 0., 1.));
 		vectorHandling< dtCurve const * > cc(cc2d.size());
-		dt__FORALL(cc2d, ii,
-			dt__PTRASS(
+		dt__forAllIndex(cc2d, ii) {
+			dt__ptrAss(
 				dtOCCCurve2d const * occC2d, 
 				dtOCCCurve2d::ConstDownCast(cc2d[ii])
 			);
@@ -38,11 +38,11 @@ namespace dtOO {
 			dtOCCCurveBase base;
 			base.setOCC( occC );
 			cc[ii] = geomCurve_baseConstructOCC(base).result();
-		);
+		}
 		dt__pH(dtSurface) dtS( 
 		  bSplineSurface_bSplineCurveFillConstructOCC(cc).result() 
 		);
-		dt__PTRASS(
+		dt__ptrAss(
 		  dtOCCSurface const * occS, 
 			dtOCCBSplineSurface::ConstDownCast(dtS.get())
 		);
@@ -51,7 +51,7 @@ namespace dtOO {
 		= 
 		Handle(Geom_BSplineSurface)::DownCast(occS->OCCRef().getOCC());
 		
-		dt__THROW_IF(bS.IsNull(), bSplineSurface2d_bSplineCurve2dFillConstructOCC());
+		dt__throwIf(bS.IsNull(), bSplineSurface2d_bSplineCurve2dFillConstructOCC());
 		
 		_dtS2d.reset( new dtOCCBSplineSurface2d(occS->OCCRef()) );
 	}

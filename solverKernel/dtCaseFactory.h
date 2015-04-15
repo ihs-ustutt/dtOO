@@ -9,7 +9,7 @@ namespace dtOO {
   
   class dtCaseFactory {
   public:
-    dt__CLASSNAME(dtCaseFactory);
+    dt__classOnlyName(dtCaseFactory);
     dtCaseFactory();
     virtual ~dtCaseFactory();
     static dtCase * create(char const * const str);

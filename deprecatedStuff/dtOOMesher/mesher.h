@@ -22,7 +22,7 @@ namespace dtOO {
   class mesher : public covise::coModule,
                  public abstractModule {
     public:
-      dt__CLASSNAME(mesher);
+      dt__classOnlyName(mesher);
       mesher(int argc, char *argv[]);
       vectorHandling< boundedVolume * > & getRefToBoundedVolume( void );
       virtual int compute(const char *);

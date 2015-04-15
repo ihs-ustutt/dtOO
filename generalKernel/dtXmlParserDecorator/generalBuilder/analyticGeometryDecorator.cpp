@@ -36,9 +36,7 @@ namespace dtOO {
       this->createAdvanced( 
 				&wElement, bC, cValP, sFunP, depAGeoP, &toCopy 
 			);
-      dt__FORALL(toCopy, ii,
-        aGeoP->push_back( toCopy[ii] );
-      );
+      dt__forAllIndex(toCopy, ii) aGeoP->push_back( toCopy[ii] );
     }
   }
 }

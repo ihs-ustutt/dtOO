@@ -42,7 +42,7 @@ namespace dtOO {
 				analyticGeometry * aG
 				=
 				this->createAnalyticGeometry(&wElement, bC, cValP, sFunP, depAGeoP);
-			  dt__PTRASS(splineCurve3d const * s3, splineCurve3d::ConstDownCast(aG));					
+			  dt__ptrAss(splineCurve3d const * s3, splineCurve3d::ConstDownCast(aG));					
 				ccV.push_back(s3->ptrConstDtCurve());
   			wElement = getNextSibling("analyticGeometry", wElement);
       }
@@ -50,8 +50,8 @@ namespace dtOO {
 			aGeoP->push_back( new splineCurve3d(dtC.get()) );
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAGeo) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAGeo) );
     }
   }
 }

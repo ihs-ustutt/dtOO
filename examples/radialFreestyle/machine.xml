@@ -19,5 +19,5 @@
 	</staticProperties>	
 	
 	<include label="simple" filename="./simple.xml"/>
-	<include label="mesh" filename="./mesh.xml"/> 
+<!--	<include label="mesh" filename="./mesh.xml"/> -->
 </machine>

@@ -14,7 +14,7 @@ namespace dtOO {
   }
 
   dtTransformer * conformalMappingStartFromPoint::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * conformalMappingStartFromPoint::create( void ) const {
@@ -41,7 +41,7 @@ namespace dtOO {
     bool hasOffsetPhi = dtXmlParserBase::hasAttribute("offset_phi", *tE);
     
     if (hasOffsetZ && hasOffsetM) {
-        dt__THROW(init(), 
+        dt__throw(init(), 
                 << "Please set offset_z OR offset_m");
     }
     
@@ -87,10 +87,10 @@ namespace dtOO {
       handlePoint2d("base_point", _rotSplineP->uv_phiZ(offsetPhi, offsetZ));
     }
 
-    DTINFOWF(init(),
-//            << DTLOGEVAL(_offsetPhiR) << LOGDEL
-//            << DTLOGEVAL(_offsetM) << LOGDEL
-            << DTLOGPOI2D(_basePoint) );
+    dt__info(init(),
+//            << dt__eval(_offsetPhiR) << std::endl
+//            << dt__eval(_offsetM) << std::endl
+            << dt__point2d(_basePoint) );
   }
   
   std::vector< dtPoint2 * > conformalMappingStartFromPoint::apply( 
@@ -143,14 +143,14 @@ namespace dtOO {
       dtPoint3 point3d = rS->getPoint(point.x(), point.y());
       pointVec2d[ii] = new dtPoint2(point);      
 //      DTBUFFER(
-//              << DTLOGEVAL(deltaPhiR) << " " << DTLOGEVAL(deltaMm)
+//              << dt__eval(deltaPhiR) << " " << dt__eval(deltaMm)
 //              << " >> <cMap> >> uu = " << point.x() << " vv = " << point.y() << " ::> "
-//              << DTLOGPOI3D(point3d) << LOGDEL );
+//              << dt__point3d(point3d) << std::endl );
 			itVal.push_back(deltaPhiR); itVal.push_back(deltaMm);
 			itVal.push_back(point.x()); itVal.push_back(point.y());
 			itVal.push_back(point3d.x()); itVal.push_back(point3d.y()); itVal.push_back(point3d.z());			
     }  
-	  DTDEBUGWF( apply(), << logMe::floatVecToTable(header, itVal) );
+	  dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
        
     return pointVec2d;    
   }

@@ -13,7 +13,7 @@ namespace dtOO {
   class aGeoToXYZ : public covise::coModule,
                     public abstractModule {
   public:
-    dt__CLASSNAME(aGeoToXYZ);    
+    dt__classOnlyName(aGeoToXYZ);    
     aGeoToXYZ(int argc, char *argv[]); 
     virtual ~aGeoToXYZ();
     virtual int compute(char const * str);        

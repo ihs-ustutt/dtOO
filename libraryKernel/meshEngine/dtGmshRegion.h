@@ -12,15 +12,15 @@ namespace dtOO {
   
   class dtGmshRegion : public ::GRegion {
   public:
-    dt__CLASSSTD(dtGmshRegion, ::GEntity);
+    dt__class(dtGmshRegion, ::GEntity);
     dtGmshRegion( ::GModel *m, int tag );
     dtGmshRegion( ::GModel *m, int tag, const std::list< ::GFace * > &faces, const std::vector<int> &ori );
     dtGmshRegion( ::GModel *m, int tag, const std::list<dtGmshFace*> &faces, const std::vector<int> &ori );
     void meshTransfinite( void );
     void meshUnstructured( void );
     void addFace( ::GFace * face, int const ori );
-  private:
-
+  public:
+    mutable ::GEntity::MeshGenerationStatus _status;
   };
 }
 #endif	/* DTGMSHREGION_H */

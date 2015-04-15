@@ -197,7 +197,7 @@ namespace dtOO {
   
   dtCurve const * rotatingSpline::ptrConstRadiusCurve( void ) const {
     map1dTo3d * m1d = segmentConstUPercent(0., 0., 1.);
-		dt__PTRASS(
+		dt__ptrAss(
 		  splineCurve3d const * sC3,
 		  splineCurve3d::ConstDownCast(m1d)
 		);
@@ -206,7 +206,7 @@ namespace dtOO {
   
 //  dtCurve * rotatingSpline::getCircleCurve( float const & vv ) const {
 //    map1dTo3d * m1d = pickConstVPercent(0., 0., 1.);
-//		dt__PTRASS(
+//		dt__ptrAss(
 //		  splineCurve3d const * sC3,
 //		  splineCurve3d::ConstDownCast(m1d)
 //		);
@@ -222,10 +222,10 @@ namespace dtOO {
 
 			_pp = _pp + _vv  * adjusting;
 
-			DTWARNINGWF(correctOrigin(),
-							<< DTLOGEVAL(dist*_vv) << LOGDEL 
-							<< "Origin of rotSpline is not correct!" << LOGDEL
-							<< "Move origin to " << DTLOGPOI3D(_pp) );        
+			dt__warning(correctOrigin(),
+							<< dt__eval(dist*_vv) << std::endl 
+							<< "Origin of rotSpline is not correct!" << std::endl
+							<< "Move origin to " << dt__point3d(_pp) );        
 		}
 	}
 	

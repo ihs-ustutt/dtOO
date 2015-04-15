@@ -11,7 +11,7 @@ namespace dtOO {
   
   class dtOCCBSplineSurface : public dtOCCSurface {
   public:
-    dt__CLASSSTD(dtOCCBSplineSurface, dtSurface);
+    dt__class(dtOCCBSplineSurface, dtSurface);
     dtOCCBSplineSurface();
     dtOCCBSplineSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCBSplineSurface();

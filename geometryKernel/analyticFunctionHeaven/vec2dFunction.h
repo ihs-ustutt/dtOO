@@ -8,7 +8,7 @@
 namespace dtOO {
   class vec2dFunction : public analyticFunction {
   public:
-    dt__CLASSSTD(vec2dFunction, analyticFunction);     
+    dt__class(vec2dFunction, analyticFunction);     
     vec2dFunction();
     vec2dFunction(const vec2dFunction& orig);
     virtual ~vec2dFunction();

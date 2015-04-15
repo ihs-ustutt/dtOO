@@ -18,6 +18,6 @@ namespace dtOO {
 		vectorHandling< analyticGeometry * > const * const depAGeoP,
 		vectorHandling< analyticGeometry * > * aGeoP 
 	) const {
-		dt__THROW(buildPartCompound(), << "Call on dtXmlParserDecoratorInterface");
+		dt__throw(buildPartCompound(), << "Call on dtXmlParserDecoratorInterface");
 	}
 }

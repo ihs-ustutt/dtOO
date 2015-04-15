@@ -69,11 +69,11 @@ namespace dtOO {
 				retV.back()->setLabel(aF->getLabel());	
 			}			
 			else {
-				dt__THROW(
+				dt__throw(
 					apply(),
-					<< DTLOGEVAL(vec3d1d) << LOGDEL
-					<< DTLOGEVAL(vec3d2d) << LOGDEL
-					<< DTLOGEVAL(vec3dThick2d) << LOGDEL								
+					<< dt__eval(vec3d1d) << std::endl
+					<< dt__eval(vec3d2d) << std::endl
+					<< dt__eval(vec3dThick2d) << std::endl								
 					<< "Unknown type."
 				);
 			}
@@ -85,7 +85,7 @@ namespace dtOO {
 	std::vector< dtPoint3 > 
 	uVw_phirMs::apply( std::vector< dtPoint3 > const * const toTrans ) const {
 		std::vector< dtPoint3 > retVec;
-		dt__FORALL(*toTrans, ii,
+		dt__forAllIndex(*toTrans, ii) {
       float xx = toTrans->at(ii).x() * _ss.x();
 		  float yy = toTrans->at(ii).y() * _ss.y();
 		  float zz = toTrans->at(ii).z() * _ss.z();
@@ -95,7 +95,7 @@ namespace dtOO {
 			float uu = _rM2d->u_phirvw(xx, vv, ww);
 			
 			retVec.push_back( dtPoint3(uu, vv, ww) );
-		);
+		}
 		
 		return retVec;
 	}
@@ -131,7 +131,7 @@ namespace dtOO {
   
   void uVw_phirMs::handleAnalyticGeometry(std::string const name, analyticGeometry const * value) {
     if (name == "part_label") {
-      dt__PTRASS(rotatingMap2dTo3d const * m3d, rotatingMap2dTo3d::ConstDownCast(value));
+      dt__ptrAss(rotatingMap2dTo3d const * m3d, rotatingMap2dTo3d::ConstDownCast(value));
 			_rM2d.reset( m3d->clone() );
       return;
     }

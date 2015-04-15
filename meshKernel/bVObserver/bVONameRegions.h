@@ -12,7 +12,7 @@ namespace dtOO {
   
   class bVONameRegions : public bVOInterface {
   public:
-    dt__CLASSNAME(bVONameRegions);
+    dt__classOnlyName(bVONameRegions);
     bVONameRegions();
     virtual ~bVONameRegions();
     virtual void init(
@@ -24,7 +24,8 @@ namespace dtOO {
       vectorHandling< boundedVolume * > const * const bV,
       boundedVolume * attachTo
     );    
-    virtual void update( void );
+    virtual void preUpdate( void );
+    using bVOInterface::postUpdate;
   private:
     std::vector< std::string > _regionLabel;
   };

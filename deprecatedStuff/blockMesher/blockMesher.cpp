@@ -93,7 +93,7 @@ int blockMesher::compute(const char * port) {
 //  FILE* pFile = fopen(_p_logFilebrowser->getValue(), "w");
 //  Output2FILE::Stream() = pFile;
 //
-//	DTINFOWF(compute(),
+//	dt__info(compute(),
 //          << "I'm the blockMesher");
   
 	//read inPort:
@@ -151,19 +151,19 @@ int blockMesher::compute(const char * port) {
   
   if ( _p_nxIntParam->getValue() < 2 ) {
       _p_nxIntParam->setValue(2);
-      DTWARNINGWF(compute(), "nx smaller 2, set to 2");
+      dt__warning(compute(), "nx smaller 2, set to 2");
   }
   int nx = _p_nxIntParam->getValue();
   
   if ( _p_nyIntParam->getValue() < 2 ) {
       _p_nyIntParam->setValue(2);
-      DTWARNINGWF(compute(), "ny smaller 2, set to 2");
+      dt__warning(compute(), "ny smaller 2, set to 2");
   }
   int ny = _p_nyIntParam->getValue();
   
   if ( _p_nzIntParam->getValue() < 2 ) {
       _p_nzIntParam->setValue(2);
-      DTWARNINGWF(compute(), "nz smaller 2, set to 2");
+      dt__warning(compute(), "nz smaller 2, set to 2");
   }
   int nz = _p_nzIntParam->getValue();
   
@@ -222,8 +222,8 @@ int blockMesher::compute(const char * port) {
   
       
         tEnd = time(NULL);
-        DTINFOWF(time(), 
-                   << "Duration Gridgeneration: " << DTLOGEVAL(tEnd-tStart) << " s" << LOGDEL
+        dt__info(time(), 
+                   << "Duration Gridgeneration: " << dt__eval(tEnd-tStart) << " s" << std::endl
                 );
         
         
@@ -254,7 +254,7 @@ int blockMesher::compute(const char * port) {
         delete dummyGridIV;
 }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       send_stop_pipeline();
       return FAILURE;
     }

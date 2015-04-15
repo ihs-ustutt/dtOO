@@ -10,7 +10,7 @@ namespace dtOO {
   
   class uVw_phirMs : public dtTransformer {
   public:      
-    dt__CLASSNAME(uVw_phirMs);
+    dt__classOnlyName(uVw_phirMs);
     uVw_phirMs();
     uVw_phirMs( uVw_phirMs const & orig );
     virtual ~uVw_phirMs();

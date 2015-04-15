@@ -48,9 +48,9 @@ namespace dtOO {
 			vectorHandling< dtSurface const * > sL;
       //dt__FORALL(aF, ii,
 			for (int ii=0; ii<aF.size(); ii++) {
-//							DTINFOWF(buildPart(), 
-//							<< DTLOGEVAL(vec3dSurfaceTwoDCompound::ConstDownCast(aF[ii])) );
-				dt__PTRASS(
+//							dt__info(buildPart(), 
+//							<< dt__eval(vec3dSurfaceTwoDCompound::ConstDownCast(aF[ii])) );
+				dt__ptrAss(
 				  vec3dSurfaceTwoD const * v3d2d, 
 				  vec3dSurfaceTwoD::ConstDownCast(aF[ii])
 				);
@@ -60,12 +60,12 @@ namespace dtOO {
 			vectorHandling< dtCurve const * > cL1;
 			vectorHandling< dtCurve const * > cL2;
 			vectorHandling< dtCurve const * > cL3;
-			dt__FORALL(sL, ii,
+			dt__forAllIndex(sL, ii) {
 				cL0.push_back( sL[ii]->segmentConstVPercent(0., 0., 1.) );
 			  cL1.push_back( sL[ii]->segmentConstUPercent(1., 0., 1.) );
 			  cL2.push_back( sL[ii]->segmentConstVPercent(1., 0., 1.) );
 			  cL3.push_back( sL[ii]->segmentConstUPercent(0., 0., 1.) );
-		  );
+		  }
 			ptrHandling< dtSurface > sL0(
 			  bSplineSurface_skinConstructOCC(cL0).result() 
 			);
@@ -97,8 +97,8 @@ namespace dtOO {
 			sFunP->push_back(v3d3d);
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAF) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAF) );
     }
   }
 
@@ -126,9 +126,9 @@ namespace dtOO {
 				= 
 				createAnalyticFunction( &elementP, bC, cValP, depSFunP );
 				if ( !vec3dSurfaceTwoDCompound::ConstDownCast(aF) ) {
-					dt__THROW(
+					dt__throw(
 					  buildPartCompound(), 
-						<< DTLOGEVAL(vec3dSurfaceTwoDCompound::ConstDownCast(aF)) << LOGDEL
+						<< dt__eval(vec3dSurfaceTwoDCompound::ConstDownCast(aF)) << std::endl
 						<< getAttributeStr("label", elementP) << " has not correct type." 
 					);
 				}				
@@ -142,19 +142,19 @@ namespace dtOO {
 			new vec3dTransVolThreeDCompound();
 			for (int cc=0; cc<nComponents; cc++) {
 				vectorHandling< dtSurface const * > sL;
-				dt__FORALL(v3dSC, ii,
+				dt__forAllIndex(v3dSC, ii) {
 					sL.push_back( v3dSC[ii]->component(cc).ptrDtSurface() );
-				);
+				}
 				vectorHandling< dtCurve const * > cL0;
 				vectorHandling< dtCurve const * > cL1;
 				vectorHandling< dtCurve const * > cL2;
 				vectorHandling< dtCurve const * > cL3;
-				dt__FORALL(sL, ii,
+				dt__forAllIndex(sL, ii) {
 					cL0.push_back( sL[ii]->segmentConstVPercent(0., 0., 1.) );
 					cL1.push_back( sL[ii]->segmentConstUPercent(1., 0., 1.) );
 					cL2.push_back( sL[ii]->segmentConstVPercent(1., 0., 1.) );
 					cL3.push_back( sL[ii]->segmentConstUPercent(0., 0., 1.) );
-				);
+				}
 				ptrHandling< dtSurface > sL0(
 					bSplineSurface_skinConstructOCC(cL0).result() 
 				);
@@ -189,7 +189,7 @@ namespace dtOO {
 			sFunP->push_back(vec3dTVC);
     }
     else {
-      dt__THROW(buildPart(), << DTLOGEVAL(hasAF) );
+      dt__throw(buildPart(), << dt__eval(hasAF) );
     }
   }	
 }

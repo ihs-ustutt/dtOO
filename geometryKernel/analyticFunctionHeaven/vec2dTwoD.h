@@ -11,7 +11,7 @@ namespace dtOO {
   
   class vec2dTwoD : public vec2dFunction {
   public:
-    dt__CLASSSTD(vec2dTwoD, analyticFunction);     
+    dt__class(vec2dTwoD, analyticFunction);     
     vec2dTwoD();
     vec2dTwoD(const vec2dTwoD& orig);
     virtual ~vec2dTwoD();

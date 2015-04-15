@@ -10,7 +10,7 @@ namespace dtOO {
   
   class closeGapsArithmetic : public dtTransformer {
   public:    
-    dt__CLASSNAME(closeGapsArithmetic);
+    dt__classOnlyName(closeGapsArithmetic);
     closeGapsArithmetic();
     closeGapsArithmetic( closeGapsArithmetic const & orig );    
     virtual ~closeGapsArithmetic();

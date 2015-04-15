@@ -23,20 +23,20 @@ namespace dtOO {
       dtCurve const * const dtC, 
       dtSurface const * const dtS
 	) {
-		dt__PTRASS( dtOCCSurface const * const ss, dtOCCSurface::ConstDownCast(dtS) );
-		dt__PTRASS( dtOCCCurve const * const cc, dtOCCCurve::ConstDownCast(dtC) );
+		dt__ptrAss( dtOCCSurface const * const ss, dtOCCSurface::ConstDownCast(dtS) );
+		dt__ptrAss( dtOCCCurve const * const cc, dtOCCCurve::ConstDownCast(dtC) );
 		
 		Geom_Surface const * sP;
-		dt__MUSTDOWNCAST(ss->OCCRef().getOCC().Access(), Geom_Surface const, sP);
+		dt__mustCast(ss->OCCRef().getOCC().Access(), Geom_Surface const, sP);
 		Geom_Curve const * cP;
-		dt__MUSTDOWNCAST(cc->OCCRef().getOCC().Access(), Geom_Curve const, cP);
+		dt__mustCast(cc->OCCRef().getOCC().Access(), Geom_Curve const, cP);
 		Handle(Geom_Curve) cH = cP;
 		Handle(Geom_Surface) sH = sP;
 		
 		Handle(Geom2d_Curve) pC = GeomProjLib::Curve2d(cH, sH);
 		
 		if (pC.IsNull()) {
-			dt__THROW(
+			dt__throw(
 				geomCurve2d_reparamInGeomSurfaceOCC(),
 				<< "Projection of curve to surface fails."
 			);
@@ -51,9 +51,9 @@ namespace dtOO {
 		  _dtC2d.reset( new dtOCCBSplineCurve2d(base) );		
 		}
 		else {
-			dt__THROW(
+			dt__throw(
 			  geomCurve2d_reparamInGeomSurfaceOCC(),
-				<< DTLOGEVAL(Handle(Geom2d_BSplineCurve)::DownCast(pC).IsNull())
+				<< dt__eval(Handle(Geom2d_BSplineCurve)::DownCast(pC).IsNull())
 			);
 		}
 	}

@@ -10,7 +10,7 @@ namespace dtOO {
   
   class optimizableInterface : public characterizable {
   public:
-    dt__CLASSNAME(optimizableInterface);    
+    dt__classOnlyName(optimizableInterface);    
     optimizableInterface();
     optimizableInterface(const optimizableInterface& orig);
     virtual ~optimizableInterface();

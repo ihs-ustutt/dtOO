@@ -29,23 +29,19 @@ namespace dtOO {
 		//
 		// set arraies
 		//
-		dt__FORALL(pp, ii,
-						DTINFOWF(bSplineCurve_pointInterpolateConstructOCC(),
-						<< DTLOGPOI3D(pp[ii]) << LOGDEL
-						<< DTLOGEVAL(static_cast<float>(ii)));
-		        
+		dt__forAllIndex(pp, ii) {		        
 		  arr->SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) ); 
 			arr2.SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) ); 
 		  para->SetValue( ii+1, static_cast<float>(ii) );
 //			gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z())
-	  );
+	  }
 
 //		GeomAPI_Interpolate Interp(arr, para, false, Precision::Confusion());
 		GeomAPI_PointsToBSpline Interp(arr2);
 		
 //		if ( !Interp.IsDone() ) {
 //			dt__THROW(bSplineCurve_pointInterpolateConstructOCC(), 
-//							<< DTLOGEVAL(Interp.IsDone()) );
+//							<< dt__eval(Interp.IsDone()) );
 //		}
 //		Interp.Perform();
 		Handle(Geom_BSplineCurve) curve = Interp.Curve();

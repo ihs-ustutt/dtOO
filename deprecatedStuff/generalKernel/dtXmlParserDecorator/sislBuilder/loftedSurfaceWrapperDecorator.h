@@ -7,7 +7,7 @@
 namespace dtOO {
   class loftedSurfaceWrapperDecorator : public dtXmlParserDecorator {
   public:
-    dt__CLASSNAME(loftedSurfaceWrapperDecorator);
+    dt__classOnlyName(loftedSurfaceWrapperDecorator);
     loftedSurfaceWrapperDecorator();
     virtual ~loftedSurfaceWrapperDecorator();
     virtual void buildPart(QDomElement ** toBuildP,

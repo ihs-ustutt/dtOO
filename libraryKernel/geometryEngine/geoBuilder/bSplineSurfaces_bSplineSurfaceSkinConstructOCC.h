@@ -10,7 +10,7 @@ namespace dtOO {
   
   class bSplineSurfaces_bSplineSurfaceSkinConstructOCC {
   public:
-    dt__CLASSNAME(bSplineSurfaces_bSplineSurfaceSkinConstructOCC);    
+    dt__classOnlyName(bSplineSurfaces_bSplineSurfaceSkinConstructOCC);    
     bSplineSurfaces_bSplineSurfaceSkinConstructOCC();
     bSplineSurfaces_bSplineSurfaceSkinConstructOCC( vectorHandling< dtSurface const * > const & dtS );
     virtual ~bSplineSurfaces_bSplineSurfaceSkinConstructOCC();

@@ -16,7 +16,7 @@ class vectorContainer;
 namespace dtOO {
   class spline3dToBlendedSurfaceDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(spline3dToBlendedSurfaceDecorator);
+    dt__classOnlyName(spline3dToBlendedSurfaceDecorator);
     spline3dToBlendedSurfaceDecorator();
     virtual ~spline3dToBlendedSurfaceDecorator();
     virtual void buildPart(QDomElement ** toBuildP,

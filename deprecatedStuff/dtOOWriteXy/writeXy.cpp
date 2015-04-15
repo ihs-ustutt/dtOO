@@ -73,14 +73,14 @@ namespace dtOO {
         of.precision(8);
         of.fixed;        
 
-        DTINFOWF(compute(),
+        dt__info(compute(),
                 << "writing " <<  filename+parser.intToStringLZ(filenameCounter, 2)+".dat" 
                 );        
         
         for (int jj=0;jj<offset;jj++) {
           if ( parser.is("scaFunction", wElement) ) {
             std::string sFLabel = parser.getAttributeStr("label", wElement);
-            dt__PTRASS(
+            dt__ptrAss(
 							scaOneD const * const sF,
 							scaOneD::ConstDownCast( _sFun.get(sFLabel) )
 					  );
@@ -189,7 +189,7 @@ namespace dtOO {
       return SUCCESS;
     }
     catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       send_stop_pipeline();
       return FAILURE;
     }    

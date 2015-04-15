@@ -7,7 +7,7 @@
 
 namespace dtOO {
 	dtGmshRegion::dtGmshRegion(::GModel *m, int tag) : GRegion(m, tag) {
-		
+	  _status = ::GEntity::MeshGenerationStatus::PENDING;	
 	}
 	
   dtGmshRegion::dtGmshRegion(::GModel *m, int tag, const std::list< ::GFace * > &faces, const std::vector<int> &ori )
@@ -21,6 +21,7 @@ namespace dtOO {
       l_dirs.push_back( ori[ii] );
       ii++;
     }
+		_status = ::GEntity::MeshGenerationStatus::PENDING;
   }
 
   dtGmshRegion::dtGmshRegion(::GModel *m, int tag, const std::list< dtGmshFace* > &faces, const std::vector<int> &ori )
@@ -34,6 +35,7 @@ namespace dtOO {
       l_dirs.push_back( ori[ii] );
       ii++;
     }
+		_status = ::GEntity::MeshGenerationStatus::PENDING;
   }
    
   void dtGmshRegion::meshTransfinite( void ) {

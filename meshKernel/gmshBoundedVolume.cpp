@@ -53,6 +53,11 @@ namespace dtOO {
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( void ) const {
 		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
+
+		//
+		// update
+		//
+		updatePhysicals();		
 		
 		::GModel::setCurrent(_gm.get());
 		
@@ -62,6 +67,11 @@ namespace dtOO {
 	}	
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getExtRender( void ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
 		::GModel::setCurrent(_gm.get());
 		
 		vectorHandling< renderInterface * > rV;
@@ -86,13 +96,13 @@ namespace dtOO {
 							for (int jj=0;jj<gf->getNumMeshElements(); jj++) {
 								elTwoD.push_back( gf->getMeshElement(jj) );	
 							}
-							std::vector< ::MVertex const * > vertices;
-							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
-							if (vertices.empty()) {
-								vertices = gf->getMeshVertices();
-							}
+//							std::vector< ::MVertex const * > vertices;
+//							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
+//							if (vertices.empty()) {
+//								vertices = gf->getMeshVertices();
+//							}
 							rV.push_back(
-							  dtGmshModel::toAdequateSurfaceRenderInterface(vertices, elTwoD)
+							  dtGmshModel::toAdequateSurfaceRenderInterface(elTwoD)
 							);
 						}
 						else if (gr) {
@@ -100,10 +110,10 @@ namespace dtOO {
 							for (int jj=0;jj<gr->getNumMeshElements(); jj++) {
 								elThreeD.push_back( gr->getMeshElement(jj) );	
 							}							
-							std::vector< ::MVertex const * > vertices;
-							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
+//							std::vector< ::MVertex const * > vertices;
+//							_gm->getMeshVerticesForPhysicalGroup(ii, pNum, vertices);
 							rV.push_back(
-							  dtGmshModel::toUnstructured3dMesh(vertices, elThreeD)
+							  dtGmshModel::toUnstructured3dMesh(elThreeD)
 							);							
 						}
 						
@@ -115,17 +125,27 @@ namespace dtOO {
 	}		
 	
   std::vector< std::string > gmshBoundedVolume::getMeshTags( void ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
 		std::vector< std::string > tags;
     for (int ii=0; ii<4; ii++) {
-			dt__FORALL(_physLabels[ii], jj, tags.push_back(_physLabels[ii][jj]); );
+			dt__forAllIndex(_physLabels[ii], jj) tags.push_back(_physLabels[ii][jj]);
 		}		
 		return tags;		
 	}
 	
-	dtGmshFace const * gmshBoundedVolume::getFace( std::string const & tag ) const {
+	dtGmshFace * gmshBoundedVolume::getFace( std::string const & tag ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
 		::GModel::setCurrent(_gm.get());
 		
-		dt__FORALL(_physLabels[2], jj,
+		dt__forAllIndex(_physLabels[2], jj) {
 			if (_physLabels[2][jj] == tag) {
 				int pNum = _gm->getPhysicalNumber(2, tag);
 				dtGmshModel::intGEntityVMap groups;
@@ -142,14 +162,47 @@ namespace dtOO {
 					}
 				}
 			}
-		);
+	  }
+	}
+	
+	dtGmshRegion * gmshBoundedVolume::getRegion( std::string const & tag ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
+		::GModel::setCurrent(_gm.get());
+		
+		dt__forAllIndex(_physLabels[3], jj) {
+			if (_physLabels[3][jj] == tag) {
+				int pNum = _gm->getPhysicalNumber(3, tag);
+				dtGmshModel::intGEntityVMap groups;
+				_gm->getPhysicalGroups(3, groups);
+				std::vector< ::GEntity * > & geV
+				=
+				groups[_gm->getPhysicalNumber(3, tag)];
+
+				dt__forAllIter(std::vector< ::GEntity * >, geV, it) {
+					::GEntity * ge = *it;
+					dtGmshRegion * gr = dtGmshRegion::DownCast(ge);
+					if (gr) {
+						return gr;
+					}
+				}
+			}
+	  }
 	}
 	
   dtGmshModel * gmshBoundedVolume::getModel( void ) const {
+		//
+		// update
+		//
+		updatePhysicals();
+		
 		return _gm.get();
 	}
 	
-	void gmshBoundedVolume::updatePhysicals( void ) {
+	void gmshBoundedVolume::updatePhysicals( void ) const {
 		::GModel::setCurrent(_gm.get());
 		
 		dtGmshModel::intGEntityVMap groups;		

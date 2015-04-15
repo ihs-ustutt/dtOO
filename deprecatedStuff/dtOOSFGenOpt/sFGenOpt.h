@@ -6,7 +6,7 @@
 namespace dtOO {  
   class sFGenOpt : public sFGen {
   public:
-    dt__CLASSNAME(sFGenOpt);
+    dt__classOnlyName(sFGenOpt);
     sFGenOpt(int argc, char *argv[]);    
     virtual int compute(char const * str);    
     virtual ~sFGenOpt();

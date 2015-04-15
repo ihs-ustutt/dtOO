@@ -10,7 +10,7 @@ namespace dtOO {
   
   class dtPoint2_surfaceEquidistantPoint {
   public:
-    dt__CLASSNAME(dtPoint2_surfaceEquidistantPoint);    
+    dt__classOnlyName(dtPoint2_surfaceEquidistantPoint);    
     dtPoint2_surfaceEquidistantPoint();
     dtPoint2_surfaceEquidistantPoint( dtSurface const * const dtS, int const & nU, int const nV );
     virtual ~dtPoint2_surfaceEquidistantPoint();

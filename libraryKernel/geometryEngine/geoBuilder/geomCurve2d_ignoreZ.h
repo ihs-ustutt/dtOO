@@ -11,7 +11,7 @@ namespace dtOO {
   
   class geomCurve2d_ignoreZ {
   public:
-    dt__CLASSNAME(geomCurve2d_ignoreZ);
+    dt__classOnlyName(geomCurve2d_ignoreZ);
     geomCurve2d_ignoreZ( dtCurve const * const dtC );
     virtual ~geomCurve2d_ignoreZ();
     dtCurve2d * result( void );

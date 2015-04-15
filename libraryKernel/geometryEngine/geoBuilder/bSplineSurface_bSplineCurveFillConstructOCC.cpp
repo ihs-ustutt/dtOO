@@ -19,11 +19,11 @@ namespace dtOO {
 	bSplineSurface_bSplineCurveFillConstructOCC::bSplineSurface_bSplineCurveFillConstructOCC( 
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
-		dt__THROW_IFWM(
+		dt__throwIfWithMessage(
 			cc.size() != 4,
 			bSplineSurface_bSplineCurveFillConstructOCC(),
-			<< "Only supported with 4 curves." << LOGDEL
-			<< DTLOGEVAL(cc.size())
+			<< "Only supported with 4 curves." << std::endl
+			<< dt__eval(cc.size())
 		);
 		Handle(Geom_BSplineCurve) C1;
 		Handle(Geom_BSplineCurve) C2;
@@ -31,19 +31,19 @@ namespace dtOO {
 		Handle(Geom_BSplineCurve) C4;
 	  
 		dtOCCBSplineCurve const * occC;
-	  dt__PTRASS( occC, dtOCCBSplineCurve::ConstDownCast(cc[0]) );
+	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[0]) );
 		C1 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__PTRASS( occC, dtOCCBSplineCurve::ConstDownCast(cc[1]) );
+	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[1]) );
 		C2 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__PTRASS( occC, dtOCCBSplineCurve::ConstDownCast(cc[2]) );
+	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[2]) );
 		C3 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__PTRASS( occC, dtOCCBSplineCurve::ConstDownCast(cc[3]) );
+	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[3]) );
 		C4 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );		
 		
 		
 		GeomFill_BSplineCurves fill;
 		dtOCCSurfaceBase base;	
-		dt__TRYOCC(
+		dt__tryOcc(
 			fill.Init(
 			  C1, C2, C3, C4, 
 				GeomFill_FillingStyle::GeomFill_StretchStyle//,
@@ -51,15 +51,15 @@ namespace dtOO {
 			);						
 			base.setOCC( fill.Surface() );
 		,
-			<< "Could not initialize and create filled surface." << LOGDEL
-			<< DTLOGEVAL(cc[0]->pointPercent(0.)) << LOGDEL
-			<< DTLOGEVAL(cc[0]->pointPercent(1.)) << LOGDEL
-			<< DTLOGEVAL(cc[1]->pointPercent(0.)) << LOGDEL
-			<< DTLOGEVAL(cc[1]->pointPercent(1.)) << LOGDEL
-			<< DTLOGEVAL(cc[2]->pointPercent(0.)) << LOGDEL
-			<< DTLOGEVAL(cc[2]->pointPercent(1.)) << LOGDEL
-			<< DTLOGEVAL(cc[3]->pointPercent(0.)) << LOGDEL
-			<< DTLOGEVAL(cc[3]->pointPercent(1.)) << LOGDEL
+			<< "Could not initialize and create filled surface." << std::endl
+			<< dt__eval(cc[0]->pointPercent(0.)) << std::endl
+			<< dt__eval(cc[0]->pointPercent(1.)) << std::endl
+			<< dt__eval(cc[1]->pointPercent(0.)) << std::endl
+			<< dt__eval(cc[1]->pointPercent(1.)) << std::endl
+			<< dt__eval(cc[2]->pointPercent(0.)) << std::endl
+			<< dt__eval(cc[2]->pointPercent(1.)) << std::endl
+			<< dt__eval(cc[3]->pointPercent(0.)) << std::endl
+			<< dt__eval(cc[3]->pointPercent(1.)) << std::endl
 		);
 		_dtS.reset( new dtOCCBSplineSurface(base) );
 	}

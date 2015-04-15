@@ -74,9 +74,9 @@ namespace dtOO {
     }
     else {
       dt__THROW(buildPart(),
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasSplineCurves3d) << LOGDEL
-              << DTLOGEVAL(hasSplineSurface) );
+              << dt__eval(hasOrder) << std::endl
+              << dt__eval(hasSplineCurves3d) << std::endl
+              << dt__eval(hasSplineSurface) );
     }
   }
 }

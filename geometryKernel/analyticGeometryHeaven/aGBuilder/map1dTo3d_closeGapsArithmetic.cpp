@@ -21,11 +21,11 @@ namespace dtOO {
 			//
 			// casting
 			//
-			dt__PTRASS(
+			dt__ptrAss(
 				vec2dOneDInMap2dTo3d const * const v2dInM3d,
 				vec2dOneDInMap2dTo3d::ConstDownCast(&theMap)
 			);
-			dt__PTRASS(
+			dt__ptrAss(
 				vec2dCurve2dOneD const * const v2dC1d,
 				vec2dCurve2dOneD::ConstDownCast(v2dInM3d->ptrToVec2dOneD())
 			);
@@ -34,7 +34,7 @@ namespace dtOO {
 		}
 		
 		dtC2d = geomCurve2d_closeGapsArithmeticOCC(dtC2d).result();
-		dt__PTRASS(
+		dt__ptrAss(
 			vec2dOneDInMap2dTo3d const * const v2dInM3d,
 			vec2dOneDInMap2dTo3d::ConstDownCast( &(m1d.front()) )
 		);

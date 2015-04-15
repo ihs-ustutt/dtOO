@@ -8,7 +8,7 @@
 namespace dtOO {
   class rotate : public dtTransformer {
   public:    
-    dt__CLASSNAME(rotate);
+    dt__classOnlyName(rotate);
     rotate();
     virtual ~rotate();
     rotate(const rotate& orig);    

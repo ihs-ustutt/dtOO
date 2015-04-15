@@ -13,7 +13,7 @@ namespace dtOO {
   
   class scaFunctionFactory {
   public:
-    dt__CLASSNAME(scaFunctionFactory);    
+    dt__classOnlyName(scaFunctionFactory);    
     scaFunctionFactory();
     ~scaFunctionFactory();
     scaFunction * create(char const * const str) const;

@@ -7,7 +7,7 @@
 namespace dtOO {
   class splineCurve3dPickFromPartDecorator : public dtXmlParserDecorator {
   public:
-    dt__CLASSNAME(splineCurve3dPickFromPartDecorator);
+    dt__classOnlyName(splineCurve3dPickFromPartDecorator);
     splineCurve3dPickFromPartDecorator();
     virtual ~splineCurve3dPickFromPartDecorator();
     virtual void buildPart(QDomElement ** toBuildP,

@@ -57,7 +57,7 @@ namespace dtOO {
 			//
 			// get analyticGeometry, cast and store in region vector
 			//
-			dt__PTRASS(
+			dt__ptrAss(
 				map2dTo3d const * mm2d,
 				map2dTo3d::ConstDownCast( 
 				  aG->get(qtXmlPrimitive::getAttributeStr("label", wElement)) 
@@ -93,8 +93,15 @@ namespace dtOO {
     //
     SetBoundingBox();
 
+		//
+		// mesh
+		//
 		_gm->mesh(2);
-//		_gm->writeMSH( (getLabel()+".msh").c_str() );
+
+		//
+		// notify observers
+		//
+		boundedVolume::postNotify();
 		
 		//
 		// mark as meshed
@@ -104,12 +111,7 @@ namespace dtOO {
 	}
   
 	void map2dTo3dTriangulated::makePreGrid(void) {
-		boundedVolume::notify();
-		
-		//
-		// update physicals
-		//
-		gmshBoundedVolume::updatePhysicals();
+		boundedVolume::preNotify();
 	}
   
 //	vectorHandling< renderInterface * > map2dTo3dTriangulated::getRender( void ) const {

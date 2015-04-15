@@ -20,7 +20,7 @@ namespace dtOO {
 		
 		gp_Pnt pp;
 		gp_Dir dir;
-    dt__TRYOCC(		
+    dt__tryOcc(		
 			pp.SetCoord(
 				static_cast< Standard_Real >(p0.x()),
 				static_cast< Standard_Real >(p0.y()),

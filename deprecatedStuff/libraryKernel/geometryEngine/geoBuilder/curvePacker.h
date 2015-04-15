@@ -11,7 +11,7 @@ namespace dtOO {
   
   class curvePacker {
   public:
-    dt__CLASSNAME(curvePacker);
+    dt__classOnlyName(curvePacker);
     curvePacker();
     curvePacker(int const * const intArr, double const * const doubleArr);    
 //    curvePacker(const curvePacker& orig);

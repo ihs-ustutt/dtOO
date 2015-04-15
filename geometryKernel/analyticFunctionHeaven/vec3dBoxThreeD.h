@@ -13,7 +13,7 @@ namespace dtOO {
   
   class vec3dBoxThreeD : public vec3dThreeD {
   public:
-    dt__CLASSSTD(vec3dBoxThreeD, analyticFunction);     
+    dt__class(vec3dBoxThreeD, analyticFunction);     
     vec3dBoxThreeD();
     vec3dBoxThreeD(const vec3dBoxThreeD& orig);
     vec3dBoxThreeD(dtPoint3 const & p0, dtPoint3 const & p1);

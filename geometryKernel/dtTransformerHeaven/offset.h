@@ -7,7 +7,7 @@
 namespace dtOO {
   class offset : public dtTransformer {
   public:    
-    dt__CLASSNAME(offset);
+    dt__classOnlyName(offset);
     offset();
     virtual ~offset();
     virtual dtTransformer * clone( void ) const;

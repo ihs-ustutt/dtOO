@@ -20,14 +20,57 @@ git clone /mnt/fs2/home/covise_dev/rep/dtOO.git dtOO
 git checkout master
 \endcode
 
+The environment variables 
+\code{.sh}
+EXTERNLIBS
+COVISEDIR
+\endcode
+must be set. This can be done by user or by sourcing the script setCoviseEnv:
+\code{.sh}
+source /mnt/opt.net/application/covise/scripts/setCoviseEnv
+\endcode
+
+Additionally you need some openFOAM variables to find the libraries. Please 
+take the correct openFOAM version for your OS, e.g.
+\code{.sh}
+. openfoam 3.1x12.3
+\endcode
+
 Create a build directory and run cmake
 \code{.sh}
 cd dtOO
 mkdir buildDtOO
 cd buildDtOO
-cmake ..
+cmake -DCMAKE_INSTALL_PREFIX=../install ..
 \endcode
 
+The GUI needs an existing COVISE installation.
+
+For building the GUI please set the environment variable DTOO_ROOTDIR:
+\code{.sh}
+export DTOO_ROOTDIR={install directory of dtOO lib}
+\endcode
+
+Create a build directory and run cmake
+\code{.sh}
+cd dtOO
+mkdir buildCoviseGuiHeaven
+cd buildCoviseGuiHeaven
+\endcode
+
+Additionally set the CMAKE_INSTALL_PREFIX to a folder called covise in your
+home directory or invoke cmake by:
+\code{.sh}
+cmake -DCMAKE_INSTALL_PREFIX=~/covise ../coviseGUIHeaven/
+\endcode
+
+After successful compiling you can run COVISE with the GUI if the dtOO library
+with the script
+\code{.sh}
+covise_myModules
+\endcode
+
+\section COVISE
 When building Covise please set the following cmake options:
 
 \code
@@ -36,4 +79,7 @@ COVISE_WARNING_IS_ERROR = false
 COVISE_NATIVE_ARCH = false
 COVISE_USE_QT4 = true
 \endcode
+
+When running COVISE with OpenCOVER unset the option View/TabletUI can improve
+the performance.
 */

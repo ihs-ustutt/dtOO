@@ -7,7 +7,7 @@
 namespace dtOO {
   class sliderFloatParam : public constValue {
   public:
-    dt__CLASSSTD(sliderFloatParam, constValue);    
+    dt__class(sliderFloatParam, constValue);    
     sliderFloatParam();
     sliderFloatParam(sliderFloatParam const & orig);
     virtual ~sliderFloatParam();

@@ -22,7 +22,7 @@ namespace dtOO {
   }
   
   void cardinalDirGModel::attachToBoundedVolume( boundedVolume const * const bV) {
-    dt__MUSTDOWNCAST(bV, cardinalDirTransfiniteVolume const, _cardDir);
+    dt__mustCast(bV, cardinalDirTransfiniteVolume const, _cardDir);
   }
 
   boundedVolume const * cardinalDirGModel::getAttachedBoundedVolume( void ) {
@@ -539,7 +539,7 @@ namespace dtOO {
     int const to
   ) {
     map1dTo3d const * sC;
-    dt__MUSTDOWNCAST(edge, map1dTo3d const, sC);
+    dt__mustCast(edge, map1dTo3d const, sC);
     addEdgeToGmshModel(sC, tag, from, to);
   }  
 }

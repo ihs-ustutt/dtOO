@@ -14,7 +14,7 @@ namespace dtOO {
   
   class map3dTo3dWithInternalGmsh : public gmshBoundedVolume {
   public:
-    dt__CLASSSTD(map3dTo3dWithInternalGmsh, boundedVolume);
+    dt__class(map3dTo3dWithInternalGmsh, boundedVolume);
     map3dTo3dWithInternalGmsh();
     virtual ~map3dTo3dWithInternalGmsh();
     virtual void init( 
@@ -30,12 +30,8 @@ namespace dtOO {
   private:
     dt__pH(map3dTo3d) _m3d;    
     dt__pVH(map2dTo3d) _internal;
-    float _marginWidth;
-    float _marginNormalWidth;
-    float _marginTangentialWidth;
-    float _bladeNormalWidth;
-    float _bladeTangentialWidth;  
-    int _normalAddNumberIntegrationPoints;
+//    float _bladeNormalWidth;
+//    float _bladeTangentialWidth;  
   };
 }
 #endif	/* map3dTo3dWithInternalGmsh_H */

@@ -60,10 +60,10 @@ namespace dtOO {
       sFunP->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );			
     }
     else {
-      dt__THROW(
+      dt__throw(
 				buildPart(),
-        << DTLOGEVAL(hasOrder) << LOGDEL
-        << DTLOGEVAL(hasPoints) 
+        << dt__eval(hasOrder) << std::endl
+        << dt__eval(hasPoints) 
 			);
     }
   }

@@ -10,7 +10,7 @@ namespace dtOO {
 
   class scaSISLSplineTwoDBuilder : public scaFunctionBuilder {
     public:
-      dt__CLASSNAME(scaSISLSplineTwoDBuilder);
+      dt__classOnlyName(scaSISLSplineTwoDBuilder);
       scaSISLSplineTwoDBuilder();
       virtual ~scaSISLSplineTwoDBuilder();
       virtual int buildPart(void);

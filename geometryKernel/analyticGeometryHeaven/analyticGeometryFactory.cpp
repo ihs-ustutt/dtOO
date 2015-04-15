@@ -29,7 +29,7 @@ namespace dtOO {
   }
 
   analyticGeometry * analyticGeometryFactory::create(char const * const str) {
-    DTINFOWF(create(), << str <<  " creating ... ");
+    dt__info(create(), << str <<  " creating ... ");
     
     __IFRET(splineCurve3d);
     __IFRET(analyticSurface);
@@ -43,6 +43,6 @@ namespace dtOO {
 		__IFRET(vec2dTwoDInMap2dTo3d);
 		__IFRET(infinityMap3dTo3d);
         
-    dt__THROW(create(), <<  "Could not be created.");
+    dt__throw(create(), <<  "Could not be created.");
   }
 }

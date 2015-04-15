@@ -23,7 +23,7 @@ namespace dtOO {
     dtPoint3 const & oP, 					
 		dtVector3 const & rA
 	) {
-		dt__PTRASS(dtOCCCurve const * bC, dtOCCCurve::ConstDownCast( &cL ));
+		dt__ptrAss(dtOCCCurve const * bC, dtOCCCurve::ConstDownCast( &cL ));
 		
 	  gp_Pnt pp(
 		  static_cast<Standard_Real>(oP.x()), 

@@ -27,21 +27,21 @@ namespace dtOO {
 		//
 		// set arraies
 		//
-		dt__FORALL(pp, ii,
+		dt__forAllIndex(pp, ii) {
 		  arr->SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) ); 
 //		  para->SetValue( ii+1, static_cast<float>(ii) );
-	  );
+	  }
 
 //		GeomAPI_Interpolate Interp(arr, para, false, .01);
 //		Interp.Perform();
 		Handle(Geom_BezierCurve) curve;
-		dt__TRYOCC(
+		dt__tryOcc(
 		  curve = new Geom_BezierCurve( arr->Array1() );
 		,
 		<< ""
 		);
-//		DTINFOWF(bezierCurve_pointConstructOCC(),
-//						<< DTLOGEVAL(curve->Degree()) << LOGDEL);
+//		dt__info(bezierCurve_pointConstructOCC(),
+//						<< dt__eval(curve->Degree()) << std::endl);
 		dtOCCCurveBase base;
 		base.setOCC( curve );
 		_dtC.reset( new dtOCCBezierCurve(base) );

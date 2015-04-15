@@ -80,9 +80,9 @@ namespace dtOO {
 			case 0:		
 				return static_cast<bool>(_dtC2d->closed());
 			default:
-				dt__THROW(
+				dt__throw(
 					closed(),
-					<< DTLOGEVAL(dir) << LOGDEL
+					<< dt__eval(dir) << std::endl
 					<< "dim should be 0."
 				);
 		}				

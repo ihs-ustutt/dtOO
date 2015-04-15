@@ -10,7 +10,7 @@ namespace dtOO {
   
   class bSplineCurve2d_pointConstructOCC {
   public:
-    dt__CLASSNAME(bSplineCurve2d_pointConstructOCC);
+    dt__classOnlyName(bSplineCurve2d_pointConstructOCC);
     bSplineCurve2d_pointConstructOCC( std::vector< dtPoint2 > const & pp, int const & order );
     virtual ~bSplineCurve2d_pointConstructOCC();
     dtCurve2d * result( void );

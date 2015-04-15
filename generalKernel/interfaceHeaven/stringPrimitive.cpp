@@ -48,10 +48,10 @@ namespace dtOO {
   
   std::string stringPrimitive::stringRemoveSingle(std::string const pattern, std::string const str) {
     if (pattern.size() != 1) {
-      dt__THROW(stringRemoveSingle(),
-              << "Only possible to remove one single char." << LOGDEL
-              << DTLOGEVAL(pattern) << LOGDEL
-              << DTLOGEVAL( pattern.size() ) );
+      dt__throw(stringRemoveSingle(),
+              << "Only possible to remove one single char." << std::endl
+              << dt__eval(pattern) << std::endl
+              << dt__eval( pattern.size() ) );
     }
     if ( !stringContains(pattern, str) ) { //|| !stringContains(pattern, str) ) {
       return std::string("");
@@ -65,16 +65,16 @@ namespace dtOO {
 
   std::string stringPrimitive::getStringBetween(std::string const signStart, std::string const signEnd, std::string const str) {  
     if ( (signStart.size() > 1) || (signEnd.size() > 1) ) {
-      dt__THROW(getStringBetween(),
-              << DTLOGEVAL(signStart.size()) << LOGDEL
-              << DTLOGEVAL(signEnd.size()) << LOGDEL
+      dt__throw(getStringBetween(),
+              << dt__eval(signStart.size()) << std::endl
+              << dt__eval(signEnd.size()) << std::endl
               << "Signs should have size equal one.");
     }
 
     if ( !stringContains(signStart, str) || !stringContains(signEnd, str) ) {
-//      DTDEBUGWF(getStringBetween(),
-//              << "No string between " << DTLOGEVAL(signStart) << " "
-//              << DTLOGEVAL(signEnd) << " in " << DTLOGEVAL(str) );
+//      dt__debug(getStringBetween(),
+//              << "No string between " << dt__eval(signStart) << " "
+//              << dt__eval(signEnd) << " in " << dt__eval(str) );
       return std::string("");
     }
 
@@ -89,13 +89,13 @@ namespace dtOO {
     }
     else to = -1;
 
-//    DTDEBUGWF(getStringBetween(),
-//            << DTLOGEVAL(str) << LOGDEL
-//            << DTLOGEVAL(signStart) << LOGDEL
-//            << DTLOGEVAL(signEnd) << LOGDEL
-//            << DTLOGEVAL(from) << LOGDEL
-//            << DTLOGEVAL(to) << LOGDEL
-//            << DTLOGEVAL(str.substr( from+1, to-from-1)) );
+//    dt__debug(getStringBetween(),
+//            << dt__eval(str) << std::endl
+//            << dt__eval(signStart) << std::endl
+//            << dt__eval(signEnd) << std::endl
+//            << dt__eval(from) << std::endl
+//            << dt__eval(to) << std::endl
+//            << dt__eval(str.substr( from+1, to-from-1)) );
 
     return str.substr( from+1, to-from-1);
   }
@@ -107,13 +107,13 @@ namespace dtOO {
       unsigned int from = str->find(signStart.c_str());
       unsigned int to = str->find(signEnd.c_str());
 
-//      DTDEBUGWF(getStringBetweenAndRemove(),
-//              << DTLOGEVAL(*str) << LOGDEL
-//              << DTLOGEVAL(signStart) << LOGDEL
-//              << DTLOGEVAL(signEnd) << LOGDEL
-//              << DTLOGEVAL(from) << LOGDEL
-//              << DTLOGEVAL(to) << LOGDEL
-//              << DTLOGEVAL(str->erase(from, to-from+1)) );
+//      dt__debug(getStringBetweenAndRemove(),
+//              << dt__eval(*str) << std::endl
+//              << dt__eval(signStart) << std::endl
+//              << dt__eval(signEnd) << std::endl
+//              << dt__eval(from) << std::endl
+//              << dt__eval(to) << std::endl
+//              << dt__eval(str->erase(from, to-from+1)) );
 
     if ( stringContains(signStart, *str) && stringContains(signEnd, *str) ) {
       str->erase(from, to-from+1);
@@ -129,9 +129,9 @@ namespace dtOO {
 			std::string aVal = getStringBetweenAndRemove(signStart, signEnd, &valueStr);
 //			if (aVal.length() != 0 ) {
 				values.push_back(aVal);
-//				DTINFOWF( 
+//				dt__info( 
 //					openFileAndParse(), 
-//					<< DTLOGEVAL(values.back()) << LOGDEL
+//					<< dt__eval(values.back()) << std::endl
 //				);
 //			}
 //			else dt__THROW(convertToStringVector(), << "Error in creating the array.");

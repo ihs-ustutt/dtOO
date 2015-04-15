@@ -6,7 +6,7 @@
 
 namespace dtOO {
   DTCLASSLOGMETHODI(rotSplineBuilder,
-          << DTLOGEVAL( thisRef.myRotBSpline ) );
+          << dt__eval( thisRef.myRotBSpline ) );
 
   rotSplineBuilder::rotSplineBuilder() {
 
@@ -37,18 +37,18 @@ namespace dtOO {
 //    //some checks
 //    if (_vector.getNAttributes() != 1) {
 //      dt__THROW( buildPart(),
-//              << DTLOGEVAL( _vector.getNAttributes() ) );
+//              << dt__eval( _vector.getNAttributes() ) );
 //    }
 //    if (_analyticGeometryP.getNAttributes() != 1) {
 //      dt__THROW( buildPart(),
-//              << DTLOGEVAL( _analyticGeometryP.getNAttributes() ) );
+//              << dt__eval( _analyticGeometryP.getNAttributes() ) );
 //    }
 //    else {
 //      splineCurve3dP = dynamic_cast<splineCurve3d*> ( *(_analyticGeometryP.getAttribute(1)) );
 //    }
 //    if (_point.getNAttributes() != 1) {
 //      dt__THROW( buildPart(),
-//              << DTLOGEVAL( _point.getNAttributes() ) );
+//              << dt__eval( _point.getNAttributes() ) );
 //    }  
     if ( hasAGeo && hasPoint && hasVector ) {
       dtPoint3 origin =  *( _point.getAttribute(1) );
@@ -68,10 +68,10 @@ namespace dtOO {
         
         origin = origin + axis  * adjusting;
         
-        DTWARNINGWF(buildPart(),
-                << DTLOGEVAL(vv*axis) << LOGDEL 
-                << "Origin of rotSpline is not correct!" << LOGDEL
-                << "Move origin to " << DTLOGPOI3D(origin) );        
+        dt__warning(buildPart(),
+                << dt__eval(vv*axis) << std::endl 
+                << "Origin of rotSpline is not correct!" << std::endl
+                << "Move origin to " << dt__point3d(origin) );        
       }
       
       if ( hasAngle ) {

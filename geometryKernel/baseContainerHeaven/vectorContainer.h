@@ -8,7 +8,7 @@
 namespace dtOO {
   class vectorContainer {
   public:    
-    dt__CLASSNAME(vectorContainer);
+    dt__classOnlyName(vectorContainer);
     vectorContainer();
     vectorContainer(const vectorContainer& orig);
     virtual ~vectorContainer();

@@ -43,8 +43,8 @@ namespace dtOO {
       );
     }
     else {
-      dt__THROW(parBounds(),
-              << DTLOGEVAL(i) << LOGDEL
+      dt__throw(parBounds(),
+              << dt__eval(i) << std::endl
               << "i should be 0.");
     }
   }

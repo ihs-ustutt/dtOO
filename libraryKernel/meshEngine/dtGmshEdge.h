@@ -6,13 +6,14 @@
 #include <gmsh/GEdge.h>
 
 class GVertex;
+class GEntity;
 
 namespace dtOO {
   class map1dTo3d;
   
   class dtGmshEdge : public ::GEdge {
   public:
-    dt__CLASSSTD(dtGmshEdge, ::GEntity);
+    dt__class(dtGmshEdge, ::GEntity);
     dtGmshEdge(::GModel * model, int tag, ::GVertex *v1, ::GVertex *v2);
     virtual ~dtGmshEdge();
     virtual Range<double> parBounds(int i) const;

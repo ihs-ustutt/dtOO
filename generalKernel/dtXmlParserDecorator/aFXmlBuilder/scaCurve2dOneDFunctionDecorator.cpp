@@ -34,7 +34,7 @@ namespace dtOO {
     bool hasShapeFactor = hasAttribute("shape_factor", toBuildP);
     
     if (hasShapeFactor && hasOrder) {
-      dt__THROW(buildPart(),
+      dt__throw(buildPart(),
               << "order- and shape_factor-Attribute given.");
     }
 
@@ -114,10 +114,10 @@ namespace dtOO {
 			sFunP->push_back( aF->clone() );
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasPoints) << LOGDEL
-              << DTLOGEVAL(hasScaFunction) );
+      dt__throw(buildPart(),
+              << dt__eval(hasOrder) << std::endl
+              << dt__eval(hasPoints) << std::endl
+              << dt__eval(hasScaFunction) );
     }
   }
 }

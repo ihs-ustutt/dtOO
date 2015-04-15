@@ -11,7 +11,7 @@ namespace dtOO {
   
   class rotatingMap2dTo3d : public map3dTo3d {
   public:
-    dt__CLASSSTD(rotatingMap2dTo3d, analyticGeometry);
+    dt__class(rotatingMap2dTo3d, analyticGeometry);
     rotatingMap2dTo3d();
     rotatingMap2dTo3d( dtVector3 const & vv, map2dTo3d const * const m2d );
     rotatingMap2dTo3d(const rotatingMap2dTo3d& orig);

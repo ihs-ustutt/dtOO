@@ -23,7 +23,7 @@ namespace dtOO {
   class geoGen : public covise::coModule,
                  public abstractModule {
     public:
-      dt__CLASSNAME(geoGen);
+      dt__classOnlyName(geoGen);
     private:
       //
       //covise attributes

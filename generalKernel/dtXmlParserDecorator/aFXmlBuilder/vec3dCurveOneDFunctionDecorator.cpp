@@ -61,11 +61,11 @@ namespace dtOO {
       sFunP->push_back( new vec3dCurveOneD( dtC.get() ) );			
     }
     else {
-      dt__THROW(
+      dt__throw(
 				buildPart(),
-				<< DTLOGEVAL(hasOrder) << LOGDEL
-				<< DTLOGEVAL(hasPoints) << LOGDEL
-				<< DTLOGEVAL(hasScaFunction) 
+				<< dt__eval(hasOrder) << std::endl
+				<< dt__eval(hasPoints) << std::endl
+				<< dt__eval(hasScaFunction) 
 			);
     }
   }

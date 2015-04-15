@@ -36,7 +36,7 @@ namespace dtOO {
       //
       // cast analyticGeometry
       //
-      dt__PTRASS(
+      dt__ptrAss(
 			  map1dTo3d const * const m1d, 
 				map1dTo3d::ConstDownCast(aGeoVecP->at(ii))
 			);
@@ -51,10 +51,10 @@ namespace dtOO {
 				ppUV[ii] = _m2d->reparamOnFace( ppXYZ[ii] );
 			}
 		
-			DTINFOWF(
+			dt__info(
 				apply(),
-				<< "Approx " << DTLOGEVAL(m1d->getLabel()) << " on " 
-				<<  DTLOGEVAL(_m2d->getLabel()) << "."
+				<< "Approx " << dt__eval(m1d->getLabel()) << " on " 
+				<<  dt__eval(_m2d->getLabel()) << "."
 			);
 			
       //
@@ -92,9 +92,9 @@ namespace dtOO {
 			);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "part_label", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "part_label", *tE))
 			);
     }
 		
@@ -104,9 +104,9 @@ namespace dtOO {
 			dtXmlParserBase::getAttributeIntMuParse("number_points", *tE, cV, aF);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "number_points", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "number_points", *tE))
 			);
     }		
 
@@ -116,9 +116,9 @@ namespace dtOO {
 			dtXmlParserBase::getAttributeIntMuParse("order", *tE, cV, aF);
     }
     else {
-      dt__THROW(
+      dt__throw(
 				init(), 
-				<< DTLOGEVAL(dtXmlParserBase::hasAttribute( "order", *tE))
+				<< dt__eval(dtXmlParserBase::hasAttribute( "order", *tE))
 			);
     }				
   }

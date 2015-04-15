@@ -10,7 +10,7 @@ namespace dtOO {
   
   class bezierCurve_pointConstructOCC {
   public:
-    dt__CLASSNAME(bezierCurve_pointConstructOCC);
+    dt__classOnlyName(bezierCurve_pointConstructOCC);
     bezierCurve_pointConstructOCC( std::vector < dtPoint3 > const & pp );
     virtual ~bezierCurve_pointConstructOCC();
     dtCurve * result( void );

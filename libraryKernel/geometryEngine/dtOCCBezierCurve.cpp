@@ -14,7 +14,7 @@ namespace dtOO {
 	}
 
 	dtOCCBezierCurve::dtOCCBezierCurve( dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_BezierCurve const, _ptr);
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_BezierCurve const, _ptr);
 	}
 	
 	dtOCCBezierCurve::~dtOCCBezierCurve() {
@@ -44,6 +44,6 @@ namespace dtOO {
 	}
 	
   void dtOCCBezierCurve::setControlPoint( int const nPoint, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint);
+		dt__functionNotImplemented(setControlPoint);
 	}
 }

@@ -11,7 +11,7 @@ namespace dtOO {
   
   class vec3dThreeD : public vec3dFunction {
   public:
-    dt__CLASSSTD(vec3dThreeD, analyticFunction);     
+    dt__class(vec3dThreeD, analyticFunction);     
     vec3dThreeD();
     vec3dThreeD(const vec3dThreeD& orig);
     virtual ~vec3dThreeD();

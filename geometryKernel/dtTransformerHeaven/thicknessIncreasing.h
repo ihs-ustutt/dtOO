@@ -11,7 +11,7 @@ namespace dtOO {
   
   class thicknessIncreasing : public dtTransformer {
   public:    
-    dt__CLASSNAME(thicknessIncreasing);
+    dt__classOnlyName(thicknessIncreasing);
     thicknessIncreasing();
     virtual ~thicknessIncreasing();
     thicknessIncreasing(const thicknessIncreasing& orig);    

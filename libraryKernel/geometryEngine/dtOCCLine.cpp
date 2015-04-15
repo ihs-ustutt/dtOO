@@ -14,7 +14,7 @@ namespace dtOO {
 	}
 
 	dtOCCLine::dtOCCLine( dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__MUSTDOWNCAST(OCCRef().getOCC().Access(), Geom_Line const, _ptr);
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_Line const, _ptr);
 	}
 	
 	dtOCCLine::~dtOCCLine() {
@@ -25,18 +25,18 @@ namespace dtOO {
 	}
 	
   int dtOCCLine::order( void ) const {
-		DTFUNCTIONNOTI(order);		
+		dt__functionNotImplemented(order);		
 	}
 	
   int dtOCCLine::nControlPoints( void ) const {
-		DTFUNCTIONNOTI(nControlPoints);		
+		dt__functionNotImplemented(nControlPoints);		
 	}
 	
   dtPoint3 dtOCCLine::controlPoint( int const nPoint ) const {
-		DTFUNCTIONNOTI(controlPoint);		
+		dt__functionNotImplemented(controlPoint);		
 	}
 	
   void dtOCCLine::setControlPoint( int const nPoint, dtPoint3 const point ) {
-		DTFUNCTIONNOTI(setControlPoint);
+		dt__functionNotImplemented(setControlPoint);
 	}
 }

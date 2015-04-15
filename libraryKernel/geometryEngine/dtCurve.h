@@ -7,7 +7,7 @@
 namespace dtOO {
     class dtCurve {
     public:
-      dt__CLASSNAME(dtCurve);     
+      dt__classOnlyName(dtCurve);     
       //
       // overload
       //

@@ -10,7 +10,7 @@ namespace dtOO {
   
   class pickLengthPercentRange : public dtTransformer{
   public:
-    dt__CLASSNAME(pickLengthPercentRange);   
+    dt__classOnlyName(pickLengthPercentRange);   
     pickLengthPercentRange();
     pickLengthPercentRange(const pickLengthPercentRange& orig);    
     virtual ~pickLengthPercentRange();

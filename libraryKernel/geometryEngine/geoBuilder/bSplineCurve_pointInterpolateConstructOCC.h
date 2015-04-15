@@ -10,7 +10,7 @@ namespace dtOO {
   
   class bSplineCurve_pointInterpolateConstructOCC {
   public:
-    dt__CLASSNAME(bSplineCurve_pointInterpolateConstructOCC);
+    dt__classOnlyName(bSplineCurve_pointInterpolateConstructOCC);
     bSplineCurve_pointInterpolateConstructOCC( std::vector < dtPoint3 > const & pp );
     virtual ~bSplineCurve_pointInterpolateConstructOCC();
     dtCurve * result( void );

@@ -9,7 +9,7 @@ namespace dtOO {
   template < typename funT >
   class analyticFunctionCompound : public funT {
   public:
-    dt__CLASSSTD(analyticFunctionCompound, analyticFunction); 
+    dt__class(analyticFunctionCompound, analyticFunction); 
     analyticFunctionCompound();
     analyticFunctionCompound( analyticFunctionCompound const & orig);  
     virtual ~analyticFunctionCompound();
@@ -72,10 +72,10 @@ namespace dtOO {
   template < typename funT >  
   vectorHandling< renderInterface * > analyticFunctionCompound< funT >::getRender( void ) const {
     vectorHandling< renderInterface * > retVec;
-    dt__FORALL(_vec, ii,
+    dt__forAllIndex(_vec, ii) {
       vectorHandling< renderInterface * > tVec = _vec[ii].getRender();
-      dt__FORALL( tVec, jj, retVec.push_back( tVec[jj] ); );
-    );
+      dt__forAllIndex(tVec, jj) retVec.push_back( tVec[jj] );
+    }
     
     return retVec;
   }
@@ -88,9 +88,9 @@ namespace dtOO {
   template < typename funT >    
 	vectorHandling< analyticFunction const * > analyticFunctionCompound< funT >::compoundInternal( void ) const {
 		vectorHandling< analyticFunction const * > aFV(_vec.size());
-    dt__FORALL(_vec, ii,
+    dt__forAllIndex(_vec, ii) {
       aFV[ii] = analyticFunction::ConstDownCast( &(_vec[ii]) );
-    );
+    }
     
     return aFV;
 	}    

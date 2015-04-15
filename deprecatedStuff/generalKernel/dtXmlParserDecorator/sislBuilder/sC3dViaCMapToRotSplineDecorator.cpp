@@ -47,7 +47,7 @@ namespace dtOO {
       
       ptrHandling< analyticGeometry > aG(tmpAG);
       rotatingSpline * rS;
-      dt__MUSTDOWNCAST(aG.get(), rotatingSpline, rS);
+      dt__mustCast(aG.get(), rotatingSpline, rS);
 
       
       //
@@ -115,9 +115,9 @@ namespace dtOO {
     }
     else {
       dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAGeo) << LOGDEL
-              << DTLOGEVAL(hasOrder) << LOGDEL
-              << DTLOGEVAL(hasPartLabel) );      
+              << dt__eval(hasAGeo) << std::endl
+              << dt__eval(hasOrder) << std::endl
+              << dt__eval(hasPartLabel) );      
     }
   }
 }

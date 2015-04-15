@@ -48,7 +48,7 @@ namespace dtOO {
       //
       // check if it is a map1dTo3d
       //
-      dt__PTRASS( map1dTo3d const * m1d, map1dTo3d::ConstDownCast(aG.get()) );
+      dt__ptrAss( map1dTo3d const * m1d, map1dTo3d::ConstDownCast(aG.get()) );
 			
       //
       // get analyticFunction
@@ -64,7 +64,7 @@ namespace dtOO {
 				aGeoP->push_back( new scaOneDInMap1dTo3d(s1d, m1d, optionPercent) );
 			}
 			else {
-				dt__THROW(buildPart(), << DTLOGEVAL(s1d));
+				dt__throw(buildPart(), << dt__eval(s1d));
 			}
     }
   }

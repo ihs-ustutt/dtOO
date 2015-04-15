@@ -66,10 +66,12 @@ SET(HEADERS
   meshEngine/dtGmshRegionHex.h
   meshEngine/dtGmshModel.h
   meshEngine/dtMoabCore.h
-  meshEngine/dtGmshMeshGFaceExtrude.h
+  meshEngine/dtGmshMeshBoundaryLayer.h
   meshEngine/dtOMMesh.h
   meshEngine/dtOMMeshTraits.h
   meshEngine/dtOMMeshManifold.h
+  meshEngine/dtOMVertexField.h
+  meshEngine/dtOMEdgeField.h
   dtGaussLegendreIntegration.h
   GSLError.h
 )
@@ -141,7 +143,7 @@ SET(SOURCES
   meshEngine/dtGmshRegionHex.cpp
   meshEngine/dtGmshModel.cpp
   meshEngine/dtMoabCore.cpp
-  meshEngine/dtGmshMeshGFaceExtrude.cpp
+  meshEngine/dtGmshMeshBoundaryLayer.cpp
   meshEngine/dtOMMesh.cpp
   meshEngine/dtOMMeshManifold.cpp
   dtGaussLegendreIntegration.cpp

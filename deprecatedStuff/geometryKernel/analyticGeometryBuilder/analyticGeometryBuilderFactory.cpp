@@ -24,7 +24,7 @@ namespace dtOO {
   }
 
   analyticGeometryBuilder* analyticGeometryBuilderFactory::create(char const * const str) const {
-    DTINFOWF(create(), << str <<  " creating ... ");
+    dt__info(create(), << str <<  " creating ... ");
 
 //    __IFRET(rotSplineBuilder);    
 //    __IFRET(spline3dBuilder);   

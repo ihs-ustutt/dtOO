@@ -13,7 +13,7 @@ namespace dtOO {
   class baseContainer;
 
   class baseContainerFunctionDecorator : public dtXmlParserFunctionDecorator {
-    dt__CLASSNAME(baseContainerFunctionDecorator);
+    dt__classOnlyName(baseContainerFunctionDecorator);
   public:
     baseContainerFunctionDecorator();
     virtual ~baseContainerFunctionDecorator();

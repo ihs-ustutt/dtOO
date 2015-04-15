@@ -50,7 +50,7 @@ namespace dtOO {
    * @todo This check is not enough. Maybe a general check on base class?
    */
 	bool scaOneDInMap1dTo3d::isClosed( int const & dir) const {
-    dt__THROW_IF(dir != 0, isClosed());
+    dt__throwIf(dir != 0, isClosed());
 		
 		return false;
 	}

@@ -9,7 +9,7 @@ namespace dtOO {
   
   class dtPluginFactory {
   public:
-    dt__CLASSNAME(dtPluginFactory);
+    dt__classOnlyName(dtPluginFactory);
     dtPluginFactory();
     virtual ~dtPluginFactory();
     static dtPlugin * create(char const * const str);

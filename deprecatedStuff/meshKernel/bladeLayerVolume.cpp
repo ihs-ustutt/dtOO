@@ -48,7 +48,7 @@ namespace dtOO {
       )
     );
     analyticSurface const * aS;
-    dt__MUSTDOWNCAST(aG, analyticSurface const, aS);
+    dt__mustCast(aG, analyticSurface const, aS);
     getRefToSurfHandling()[fStrToId("dtBladeLayerExt")] = aS->clone(); 
     
     //

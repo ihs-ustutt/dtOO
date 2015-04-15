@@ -9,7 +9,7 @@ namespace dtOO {
   
   class pickVec3dTwoDRangePercent : public dtTransformer {
   public:
-    dt__CLASSNAME(pickVec3dTwoDRangePercent);   
+    dt__classOnlyName(pickVec3dTwoDRangePercent);   
     pickVec3dTwoDRangePercent();
     pickVec3dTwoDRangePercent(const pickVec3dTwoDRangePercent& orig);
     virtual ~pickVec3dTwoDRangePercent();

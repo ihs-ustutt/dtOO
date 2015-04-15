@@ -30,7 +30,7 @@ namespace dtOO {
 		  _dtC.reset( new dtOCCBezierCurve(base) );			
 		}
 //		else if ( !(Handle(Geom_TrimmedCurve)::DownCast(occC).IsNull()) ) {
-//			dt__PTRASS(
+//			dt__ptrAss(
 //				dtOCCTrimmedCurve2d const * const tC2d, 
 //				dtOCCTrimmedCurve2d::ConstDownCast(dtC2d)
 //			);
@@ -40,9 +40,9 @@ namespace dtOO {
 		  _dtC.reset( new dtOCCLine(base) );			
 		}
 		else {
-			dt__THROW(
+			dt__throw(
 				geomCurve_baseConstructOCC(), 
-				<< DTLOGEVAL(occC->DynamicType()->Name()) << LOGDEL
+				<< dt__eval(occC->DynamicType()->Name()) << std::endl
 				<< "Unsupported OCC type."
 			);			
 		}

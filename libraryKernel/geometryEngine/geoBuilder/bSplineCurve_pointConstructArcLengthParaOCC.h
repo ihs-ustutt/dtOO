@@ -10,7 +10,7 @@ namespace dtOO {
   
   class bSplineCurve_pointConstructArcLengthParaOCC {
   public:
-    dt__CLASSNAME(bSplineCurve_pointConstructArcLengthParaOCC);
+    dt__classOnlyName(bSplineCurve_pointConstructArcLengthParaOCC);
     bSplineCurve_pointConstructArcLengthParaOCC( 
       dtCurve const * dtC, float const tol, 
       int const maxOrder, int const segments       

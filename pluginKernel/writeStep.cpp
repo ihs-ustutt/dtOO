@@ -61,8 +61,8 @@ namespace dtOO {
 			analyticSurface * aS = analyticSurface::DownCast(_aG[ii]);
 			vec2dOneDInMap2dTo3d * v2d1d = vec2dOneDInMap2dTo3d::DownCast(_aG[ii]);
 			if ( aS ) {
-				dt__PTRASS(dtSurface const * dtS, aS->constPtrDtSurface());
-				dt__PTRASS(dtOCCSurface const * dtOccS, dtOCCSurface::ConstDownCast(dtS));
+				dt__ptrAss(dtSurface const * dtS, aS->constPtrDtSurface());
+				dt__ptrAss(dtOCCSurface const * dtOccS, dtOCCSurface::ConstDownCast(dtS));
 				
 		    writer.Transfer(
 					BRepBuilderAPI_MakeFace(
@@ -72,17 +72,17 @@ namespace dtOO {
 				);
 			}
 			else if ( v2d1d ) {
-				dt__PTRASS(
+				dt__ptrAss(
 					analyticSurface const * aS, 
 					analyticSurface::ConstDownCast(v2d1d->ptrToMap2dTo3d()) 
 				);
-				dt__PTRASS(dtSurface const * dtS, aS->ptrDtSurface());
-				dt__PTRASS(dtOCCSurface const * dtOccS, dtOCCSurface::ConstDownCast(dtS));
-				dt__PTRASS(
+				dt__ptrAss(dtSurface const * dtS, aS->ptrDtSurface());
+				dt__ptrAss(dtOCCSurface const * dtOccS, dtOCCSurface::ConstDownCast(dtS));
+				dt__ptrAss(
 					vec2dCurve2dOneD const * v2dC1d, 
 					vec2dCurve2dOneD::ConstDownCast(v2d1d->ptrToVec2dOneD()) 
 				);
-				dt__PTRASS(
+				dt__ptrAss(
 				  dtOCCCurve2d const * dtOccC2d, 
 					dtOCCCurve2d::ConstDownCast(v2dC1d->ptrDtCurve2d())
 				);

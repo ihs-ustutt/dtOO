@@ -46,8 +46,8 @@ namespace dtOO {
     
     if ( !in.good() ) {
       dt__THROW(getResValuesFromFile(),
-              << DTLOGEVAL(_resValueFileName) << " could not be opened." << LOGDEL
-              << DTLOGEVAL(in.good()) );
+              << dt__eval(_resValueFileName) << " could not be opened." << std::endl
+              << dt__eval(in.good()) );
     }
     
 //    // discard header
@@ -83,8 +83,8 @@ namespace dtOO {
     
     if ( !in.good() ) {
       dt__THROW(getResValuesFromFile(),
-              << DTLOGEVAL(_failedValueFileName) << " could not be opened." << LOGDEL
-              << DTLOGEVAL(in.good()) );
+              << dt__eval(_failedValueFileName) << " could not be opened." << std::endl
+              << dt__eval(in.good()) );
     }
     
 //    // discard header

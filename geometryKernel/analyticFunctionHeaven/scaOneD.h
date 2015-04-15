@@ -9,7 +9,7 @@
 namespace dtOO {
   class scaOneD : public scaFunction {
   public:
-    dt__CLASSSTD(scaOneD, analyticFunction); 
+    dt__class(scaOneD, analyticFunction); 
     scaOneD();
     scaOneD( scaOneD const & orig);  
     virtual ~scaOneD();

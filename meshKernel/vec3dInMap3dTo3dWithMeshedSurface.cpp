@@ -65,7 +65,7 @@ namespace dtOO {
 		//
 		// get analyticGeometry, cast and store in region vector
 		//
-		dt__PTRASS(
+		dt__ptrAss(
 			map3dTo3d const * mm3d,
 			map3dTo3d::ConstDownCast( aG->get(label) )
 		);
@@ -106,7 +106,7 @@ namespace dtOO {
       ParseFile( getOption("gmshMeshFile"), true, true );
     }
 		
-		dt__WARN_IFWMAS(
+		dt__warnIfWithMessageAndSolution(
 			!_meshedBV->isMeshed(), 
 			return;, 
 			makeGrid(), 
@@ -141,7 +141,7 @@ namespace dtOO {
 			  mvUVW[ii][jj]
 				= 
 				_m3d->reparamInVolume( dtGmshModel::cast2DtPoint3(*it1) );
-//				DTINFOWF(
+//				dt__info(
 //					makeGrid(), 
 //					<< logMe::dtFormat("mvUVW[%d][%d] = %f, %f, %f") 
 //					% ii % jj % mvUVW[ii][jj].x() % mvUVW[ii][jj].y() % mvUVW[ii][jj].z()
@@ -188,9 +188,9 @@ namespace dtOO {
 				trans[1] = _m3d->getVMax();				
 			}
 			else {
-				dt__THROW(
+				dt__throw(
 					makeGrid(), 
-					<< DTLOGEVAL(opt) << LOGDEL
+					<< dt__eval(opt) << std::endl
 					<< "Unknown option."
 				);
 			}
@@ -249,7 +249,7 @@ namespace dtOO {
 		// create couplingBox
 		//
 		std::pair< dtPoint3, dtPoint3 > ultraBox = dtLinearAlgebra::boundingBox(ultraBoxPoints);
-		DTINFOWF(
+		dt__info(
 			makeGrid(),
 			<< logMe::dtFormat("ultraBox(%f, %f, %f : %f, %f, %f)")
 						% ultraBox.first.x() % ultraBox.first.y() % ultraBox.first.z()
@@ -277,7 +277,7 @@ namespace dtOO {
 	  //
 		// call observers
 		//
-		boundedVolume::notify();
+		boundedVolume::preNotify();
 				
     //
     // set a bounding box, necessary to set CTX::instance()->lc to prevent
@@ -299,15 +299,12 @@ namespace dtOO {
 		_gm->mesh(2);
 		_gm->mesh(3);
 		
+		boundedVolume::postNotify();
+		
     //
 		// force renumbering mesh in gmsh
 		//
     _gm->indexMeshVertices(true, 0, true);
-		
-		//
-		// update physical labels
-		//
-		gmshBoundedVolume::updatePhysicals();
 		
 		//
 		// mark as meshed

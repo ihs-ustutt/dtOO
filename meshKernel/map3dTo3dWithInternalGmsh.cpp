@@ -1,24 +1,17 @@
 #include "map3dTo3dWithInternalGmsh.h"
+#include <dtXmlParserDecorator/qtXmlBase.h>
 #include <meshEngine/dtGmshEdge.h>
-#include <meshEngine/dtGmshMeshGFaceExtrude.h>
-#include <analyticGeometryHeaven/analyticGeometryCompound.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshFace.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
-#include <interfaceHeaven/stringPrimitive.h>
-#include <interfaceHeaven/intHandling.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
-#include <analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h>
-#include <analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d.h>
-#include <analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
-#include <unstructured3dMesh.h>
 #include <gmsh/Context.h>
 #include <gmsh/GmshDefines.h>
 #include <gmsh/Gmsh.h>
@@ -45,17 +38,15 @@ namespace dtOO {
     //
     gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 		
-		//
-		// get margin width, margin element size and blade element size
-		//
-		_marginWidth = optionHandling::getOptionFloat("marginWidth");
-		_marginNormalWidth = optionHandling::getOptionFloat("marginNormalWidth");
-		_marginTangentialWidth = optionHandling::getOptionFloat("marginTangentialWidth");
-		_bladeNormalWidth = optionHandling::getOptionFloat("bladeNormalWidth");
-		_bladeTangentialWidth = optionHandling::getOptionFloat("bladeTangentialWidth");
-		_normalAddNumberIntegrationPoints 
-		= 
-		optionHandling::getOptionInt("normalAddNumberIntegrationPoints");
+//		//
+//		// get margin width, margin element size and blade element size
+//		//
+//		_bladeNormalWidth 
+//		= 
+//		qtXmlBase::getAttributeFloatMuParse("bladeNormalWidth", element, cV, aF);
+//		_bladeTangentialWidth 
+//		= 
+//	  qtXmlBase::getAttributeFloatMuParse("bladeTangentialWidth", element, cV, aF);
 		
     //
 		// get geometries
@@ -91,172 +82,51 @@ namespace dtOO {
 		m2dV.push_back( _m3d->segmentConstVPercent(1.) );
 		m2dV.push_back( _m3d->segmentConstUPercent(0.) );
 		m2dV.push_back( _m3d->segmentConstUPercent(1.) );		
-		twoDArrayHandling< int > fId(6,0);
+		std::vector< int > fId(6);
 		for (int ii = 0; ii<6; ii++) {
-			dt__pVH(map2dTo3d) margin 
-			= 
-			map2dTo3d_constructMarginFaces(&(m2dV[ii]), _marginWidth).result();
-			
-			dt__forAllIter(dt__pVH(map2dTo3d), margin, it) {
-				map2dTo3d const & thisMap = *it;
-				fId[ii].push_back(0);
-				_gm->addIfFaceToGmshModel( &thisMap, &(fId[ii].back()) );
-			}
-			
-			//
-			// set number of elements
-			//
-      for (int jj=1; jj<5; jj++) {	
-				std::vector< int > eNEl
-				=
-	      _gm->getDtGmshFaceByTag(fId[ii][jj])->estimateTransfiniteNElements(
-  				_marginTangentialWidth, _marginNormalWidth
-				);
-				_gm->getDtGmshFaceByTag(fId[ii][jj])->meshTransfiniteWNElements(eNEl[0], eNEl[1]);
-		  }
+			map2dTo3d const & thisMap = m2dV[ii];
+			fId[ii] = 0;
+			_gm->addIfFaceToGmshModel( &thisMap, &(fId[ii]) );
 		}
 		
-		dtGmshFace * const & hub = _gm->getDtGmshFaceByTag(fId[0][0]);
-		dtGmshFace * const & shroud = _gm->getDtGmshFaceByTag(fId[1][0]);
+		dtGmshFace * const & hub = _gm->getDtGmshFaceByTag(fId[0]);
+		dtGmshFace * const & shroud = _gm->getDtGmshFaceByTag(fId[1]);
 		map2dTo3d const * const & hubMap = hub->getMap2dTo3d();
 		map2dTo3d const * const & shroudMap = shroud->getMap2dTo3d();
 		
-		dt__pVH(map1dTo3d) bL0;
-		dt__pVH(map1dTo3d) bL1;
-		
-		//
-		// add normal to internal faces
-		//		
-		dt__forAllIter(dt__pVH(map2dTo3d), _internal, it) {
-			map2dTo3d const & thisFace = *it;
-			
-			dt__pH(map1dTo3d) iE0(thisFace.segmentConstVPercent(0.));
-			dt__pH(map1dTo3d) iE1(thisFace.segmentConstVPercent(1.));
-			
-			int nPoints
-			=
-			intHandling::round(iE0->length()/_marginTangentialWidth);
-			bL0.push_back(
-				map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(
-					iE0.get(), hubMap, _marginWidth, 
-					nPoints, _normalAddNumberIntegrationPoints, 1 
-				).result() 
-			);
-			nPoints
-			=
-			intHandling::round(iE1->length()/_marginTangentialWidth);			
-			bL1.push_back(
-			  map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(
-			    iE1.get(), shroudMap, _marginWidth, 
-					nPoints, _normalAddNumberIntegrationPoints, 1 
-			  ).result() 
-			);
-		}
-			
-		//
-		// close gaps
-		//
-		bL0 = map1dTo3d_closeGapsArithmetic(bL0).result();
-		bL1 = map1dTo3d_closeGapsArithmetic(bL1).result();
-		
+    //
+    // internal
+    //		
 		dt__forAllIter(dt__pVH(map2dTo3d), _internal, it) {
 			//
 			// create internal faces and edges
 			//
 			map2dTo3d const & thisFace = *it;
-			int ii = it - _internal.begin();
 			dt__pH(map1dTo3d) iE0(thisFace.segmentConstVPercent(0.));
 			dt__pH(map1dTo3d) iE1(thisFace.segmentConstVPercent(1.));
-			
-			dt__pVH(map1dTo3d) bLN0;
-			bLN0.push_back(
-				hubMap->segment(
-					hubMap->reparamOnFace( iE0->getPointPercent(0.) ),
-					hubMap->reparamOnFace( bL0[ii].getPointPercent(0.) )
-				)
-			);
-			bLN0.push_back(
-				hubMap->segment(
-					hubMap->reparamOnFace( iE0->getPointPercent(1.) ),
-					hubMap->reparamOnFace( bL0[ii].getPointPercent(1.) )
-				)
-			);			
-			dt__pVH(map1dTo3d) bLN1;
-			bLN1.push_back(
-				shroudMap->segment(
-					shroudMap->reparamOnFace( iE1->getPointPercent(0.) ),
-					shroudMap->reparamOnFace( bL1[ii].getPointPercent(0.) )
-				)
-			);
-			bLN1.push_back(
-				shroudMap->segment(
-					shroudMap->reparamOnFace( iE1->getPointPercent(1.) ),
-					shroudMap->reparamOnFace( bL1[ii].getPointPercent(1.) )
-				)
-			);
 
-			//
-			// add hub bL edge
-			//
-			std::vector< int > bLLoop0(4);
-			_gm->addIfEdgeToGmshModel(iE0.get(),  &(bLLoop0[0]));
-			_gm->addIfEdgeToGmshModel(&(bLN0[1]), &(bLLoop0[1]));
-			_gm->addIfEdgeToGmshModel(&(bL0[ii]), &(bLLoop0[2]));
-			_gm->addIfEdgeToGmshModel(&(bLN0[0]), &(bLLoop0[3]));
-			hub->addEdge( _gm->getDtGmshEdgeByTag(bLLoop0[2]), 1);
-			bLLoop0[2] = bLLoop0[2]*(-1);
-			bLLoop0[3] = bLLoop0[3]*(-1);
-			
-			std::vector< int > bLLoop1(4);
-			_gm->addIfEdgeToGmshModel(iE1.get(),  &(bLLoop1[0]));
-			_gm->addIfEdgeToGmshModel(&(bLN1[1]), &(bLLoop1[1]));			
-			_gm->addIfEdgeToGmshModel(&(bL1[ii]), &(bLLoop1[2]));
-			_gm->addIfEdgeToGmshModel(&(bLN1[0]), &(bLLoop1[3]));
-			shroud->addEdge( _gm->getDtGmshEdgeByTag(bLLoop1[2]), 1);
-			bLLoop1[2] = bLLoop1[2]*(-1);
-			bLLoop1[3] = bLLoop1[3]*(-1);
-
-			int tmp;
 			std::vector< int > eNEl;
-			_gm->addIfFaceToGmshModel(
-			  hubMap, &tmp, 
-				bLLoop0[0], bLLoop0[1], bLLoop0[2], bLLoop0[3]
-			);
-  		eNEl = _gm->getDtGmshFaceByTag(tmp)->estimateTransfiniteNElements(
-			  _bladeTangentialWidth, _bladeNormalWidth			
-			);
-			_gm->getDtGmshFaceByTag(tmp)->meshTransfiniteWNElements(
-			  eNEl[0],eNEl[1]
-			);
-			
-			_gm->addIfFaceToGmshModel(
-			  shroudMap, &tmp, 
-				bLLoop1[0], bLLoop1[1], bLLoop1[2], bLLoop1[3]
-			);
-  		eNEl = _gm->getDtGmshFaceByTag(tmp)->estimateTransfiniteNElements(
-			  _bladeTangentialWidth, _bladeNormalWidth			
-			);
-			_gm->getDtGmshFaceByTag(tmp)->meshTransfiniteWNElements(
-			  eNEl[0],eNEl[1]
-			);			
-			
+
+			int iE0Tag;
+			int iE1Tag;
+			_gm->addIfEdgeToGmshModel(iE0.get(), &iE0Tag);
+			hub->addEdge(_gm->getDtGmshEdgeByTag(iE0Tag), 1);
+			_gm->addIfEdgeToGmshModel(iE1.get(), &iE1Tag);
+			shroud->addEdge(_gm->getDtGmshEdgeByTag(iE1Tag), 1);
 			
 			//
 			// add blade face
 			// 
+			int tmp;
 			_gm->addIfFaceToGmshModel(&thisFace, &(tmp));
-  		eNEl = _gm->getDtGmshFaceByTag(tmp)->estimateTransfiniteNElements(
-			  _bladeTangentialWidth, _bladeNormalWidth			
-			);
-			_gm->getDtGmshFaceByTag(tmp)->meshTransfiniteWNElements(
-			  eNEl[0],eNEl[1]
-			);
+//  		eNEl = _gm->getDtGmshFaceByTag(tmp)->estimateTransfiniteNElements(
+//			  _bladeTangentialWidth, _bladeNormalWidth			
+//			);
+//			_gm->getDtGmshFaceByTag(tmp)->meshTransfiniteWNElements(
+//			  eNEl[0],eNEl[1]
+//			);
+//			_gm->getDtGmshFaceByTag(tmp)->meshAttributes.method = MESH_UNSTRUCTURED;
 		}
-		
-//		//
-//		// remove old faces
-//		//
-//		for (int ii = 0; ii<6; ii++) delete _gm->getDtGmshFaceByTag(ii+1);	
 		
 		//
 		// correct transfinite surfaces and create region
@@ -311,36 +181,23 @@ namespace dtOO {
 		//
 		// meshing
 		//
-		_gm->meshPhysical(0);
-		_gm->meshPhysical(1);
-		_gm->meshPhysical(2);
-		
-		std::list< dtGmshFace * > llF;
-//		llF.push_back(_gm->getDtGmshFaceByPhysical("FACE_31"));
-		llF.push_back(_gm->getDtGmshFaceByPhysical("FACE_32"));
-		llF.push_back(_gm->getDtGmshFaceByPhysical("FACE_33"));
-		dtGmshMeshGFaceExtrude()(llF);
-		
-    //
-		// force renumbering mesh in gmsh
-		//
-    _gm->indexMeshVertices(true, 0, true);
+		if ( !optionHandling::optionTrue("defer_mesh_0") ) _gm->meshPhysical(0);
+		if ( !optionHandling::optionTrue("defer_mesh_1") ) _gm->meshPhysical(1);
+		if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
+		if ( !optionHandling::optionTrue("defer_mesh_3") ) _gm->meshPhysical(3);
 		
 		//
-		// update physicals
+		// notify observers
 		//
-		gmshBoundedVolume::updatePhysicals();
+		boundedVolume::postNotify();
 		
 		//
 		// mark as meshed
 		//
-		boundedVolume::setMeshed();	
-		
-		_gm->writeMSH("dieterHerbert.msh");		
-//		_gm->writeGEO("dieterHerbert.geo");				
+		boundedVolume::setMeshed();			
 	}
   
 	void map3dTo3dWithInternalGmsh::makePreGrid(void) {
-		boundedVolume::notify();
+		bVOSubject::preNotify();
 	}
 }

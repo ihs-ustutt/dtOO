@@ -49,7 +49,7 @@ namespace dtOO {
 		//
 		// get analyticGeometry, cast and store in region vector
 		//
-		dt__PTRASS(
+		dt__ptrAss(
 			map3dTo3d const * mm3d,
 			map3dTo3d::ConstDownCast( aG->get(label) )
 		);
@@ -64,8 +64,6 @@ namespace dtOO {
 		  _gm->addRegionToGmshModel(_m3d.get());
 //		  _gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshTransfinite();
 //		);
-		
-		_gm->writeGEO( (getLabel()+".geo").c_str() );
 	}
 	
   void map3dTo3dTriangulated::makeGrid(void) {
@@ -88,19 +86,16 @@ namespace dtOO {
     // very small elements
     //
     SetBoundingBox();
-//		CTX::instance()->lc = 10.;
-		
-//		_gm->writeGEO( (getLabel()+".geo").c_str() );
-		
-//		_gm->mesh(3);
-//    _gm->meshVertex();
-		
-//    for (int ii=1; ii<=_gm->getNumRegions(); ii++) {
-//		  _gm->meshRegion( ii );
-//			_gm->writeMSH( (getLabel()+"_building.msh").c_str() );
-//		}
+
+		//
+		// mesh
+		//
 		_gm->mesh(3);
-		_gm->writeMSH( (getLabel()+".msh").c_str() );
+		
+		//
+		// notify observers
+		//
+		boundedVolume::postNotify();
 		
 		//
 		// mark as meshed
@@ -110,7 +105,7 @@ namespace dtOO {
 	}
   
 	void map3dTo3dTriangulated::makePreGrid(void) {
-		boundedVolume::notify();
+		boundedVolume::preNotify();
 	}
   
 	vectorHandling< renderInterface * > map3dTo3dTriangulated::getRender( void ) const {

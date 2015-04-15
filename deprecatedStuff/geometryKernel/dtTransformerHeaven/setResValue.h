@@ -9,7 +9,7 @@ class scaFunction;
 namespace dtOO {
   class setResValue : public dtTransformer {
   public:    
-    dt__CLASSNAME(setResValue);
+    dt__classOnlyName(setResValue);
     setResValue();
     virtual ~setResValue();
     virtual bool isNecessary( void ) const;

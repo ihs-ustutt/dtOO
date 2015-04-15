@@ -104,7 +104,7 @@ namespace dtOO {
       // check cast
       //
       scaSISLSplineTwoD * sSISLS2dP;
-      dt__MUSTDOWNCASTWM( 
+      dt__mustCastWM( 
         *sFunP, 
         scaSISLSplineTwoD, 
         sSISLS2dP,
@@ -118,9 +118,9 @@ namespace dtOO {
     }
     else {
         dt__THROW(buildPart(),
-                << DTLOGEVAL(hasOrder) << LOGDEL
-                << DTLOGEVAL(hasScaFunction) << LOGDEL
-                << DTLOGEVAL(hasPoints) );
+                << dt__eval(hasOrder) << std::endl
+                << dt__eval(hasScaFunction) << std::endl
+                << dt__eval(hasPoints) );
     }
   }
 

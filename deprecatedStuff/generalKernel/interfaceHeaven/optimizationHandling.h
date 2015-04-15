@@ -6,7 +6,7 @@
 namespace dtOO {
   class optimizationHandling {
   public:
-    dt__CLASSNAME(optimizationHandling);
+    dt__classOnlyName(optimizationHandling);
     optimizationHandling();
     optimizationHandling(const optimizationHandling& orig);
     virtual ~optimizationHandling();

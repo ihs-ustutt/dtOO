@@ -19,7 +19,7 @@ namespace dtOO {
   class sFGen : public covise::coModule,
                 public abstractModule {
   public:
-    dt__CLASSNAME(sFGen);   
+    dt__classOnlyName(sFGen);   
     sFGen(int argc, char *argv[]);
 //  private:
     virtual int compute(char const * str);    

@@ -150,8 +150,8 @@ namespace dtOO {
         return _min[2];
         break;					
       default:
-        dt__THROW(xMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(xMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }   
 	}
@@ -168,8 +168,8 @@ namespace dtOO {
         return _max[2];
         break;					
       default:
-        dt__THROW(xMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(xMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }
 	}	
@@ -186,8 +186,8 @@ namespace dtOO {
         _min[2] = min;
 				break;				
       default:
-        dt__THROW(setMin(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(setMin(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }
   }
@@ -204,8 +204,8 @@ namespace dtOO {
         _max[2] = max;
 				break;				
       default:
-        dt__THROW(setMax(),
-              << DTLOGEVAL(dir) << LOGDEL
+        dt__throw(setMax(),
+              << dt__eval(dir) << std::endl
               << "dir should be 0, 1 or 2.");
     }
   }
@@ -234,9 +234,9 @@ namespace dtOO {
 //				float intervalV = (xMax(1) - xMin(1)) / (nV-1);
 //				float intervalW = (xMax(2) - xMin(2)) / (nW-1);
 //				for (int ii=0; ii<nU; ii++) {
-//					dt__TOFLOAT(float iiF, ii);
-//					dt__TOFLOAT(float jjF, jj);
-//					dt__TOFLOAT(float kkF, kk);
+//					dt__toFloat(float iiF, ii);
+//					dt__toFloat(float jjF, jj);
+//					dt__toFloat(float kkF, kk);
 //					aFX xx(3,0);
 //					xx[0] = xMin(0) + iiF * intervalU;
 //					xx[1] = xMin(1) + jjF * intervalV;
@@ -252,97 +252,97 @@ namespace dtOO {
 		float intervalV = (xMax(1) - xMin(1)) / (nV-1);		
 		float intervalW = (xMax(2) - xMin(2)) / (nW-1);
 		for (int ii=0; ii<nU; ii++) {
-			dt__TOFLOAT(float iiF, ii);
+			dt__toFloat(float iiF, ii);
 			aFX xx(3,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMin(1);
 			xx[2] = xMin(2);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__TOFLOAT(float jjF, jj);
+			dt__toFloat(float jjF, jj);
 			aFX xx(3,0);
 			xx[0] = xMin(0);
 			xx[1] = xMin(1) + jjF * intervalV;
 			xx[2] = xMin(2);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );			
 		p2.clear();
 		for (int ii=0; ii<nU; ii++) {
-			dt__TOFLOAT(float iiF, ii);
+			dt__toFloat(float iiF, ii);
 			aFX xx(3,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMax(1);
 			xx[2] = xMin(2);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__TOFLOAT(float jjF, jj);
+			dt__toFloat(float jjF, jj);
 			aFX xx(3,0);
 			xx[0] = xMax(0);
 			xx[1] = xMin(1) + jjF * intervalV;
 			xx[2] = xMin(2);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );		
 		p2.clear();
 		for (int ii=0; ii<nU; ii++) {
-			dt__TOFLOAT(float iiF, ii);
+			dt__toFloat(float iiF, ii);
 			aFX xx(3,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMin(1);
 			xx[2] = xMax(2);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__TOFLOAT(float jjF, jj);
+			dt__toFloat(float jjF, jj);
 			aFX xx(3,0);
 			xx[0] = xMin(0);
 			xx[1] = xMin(1) + jjF * intervalV;
 			xx[2] = xMax(2);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );			
 		p2.clear();
 		for (int ii=0; ii<nU; ii++) {
-			dt__TOFLOAT(float iiF, ii);
+			dt__toFloat(float iiF, ii);
 			aFX xx(3,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMax(1);
 			xx[2] = xMax(2);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__TOFLOAT(float jjF, jj);
+			dt__toFloat(float jjF, jj);
 			aFX xx(3,0);
 			xx[0] = xMax(0);
 			xx[1] = xMin(1) + jjF * intervalV;
 			xx[2] = xMax(2);
 			dtPoint3 p3 = YdtPoint3(xx);
-			DTINFOWF(getRender(), << DTLOGPOI3D(p3) );
+			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );						

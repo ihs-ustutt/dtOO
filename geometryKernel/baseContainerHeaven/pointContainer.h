@@ -8,7 +8,7 @@
 namespace dtOO {
   class pointContainer {
     public:    
-      dt__CLASSNAME(pointContainer);
+      dt__classOnlyName(pointContainer);
       pointContainer();
       pointContainer(const pointContainer& orig);
       virtual ~pointContainer();

@@ -4,6 +4,7 @@
 #include <do/coDoIntArr.h>
 #include <api/coSimLib.h>
 #include <logMe/logMe.h>
+#include <progHelper.h>
 
 const int SUCCESS = 1;
 const int FAILURE = 0;
@@ -49,8 +50,7 @@ namespace dtOO {
         
        if (counter == 0) {
             if (startSim()!=0) {
-                dt__THROW(compute(),
-                        << "Unable to start Simulation!");
+              dt__throw(compute(), << "Unable to start Simulation!");
             }
             sendMesh();
             sendBoundaryConditions();
@@ -67,23 +67,23 @@ namespace dtOO {
         sendInfo("recieved param is %i", recDat);
         sendData(&counter, sizeof(int));       
         
-            DTINFOWF(compute(),
-                    <<DTLOGEVAL(counter) << LOGDEL
-                    <<DTLOGEVAL(coSimLib::isConnected()) );  
+            dt__info(compute(),
+                    <<dt__eval(counter) << std::endl
+                    <<dt__eval(coSimLib::isConnected()) );  
                           
         }
         
         if (counter == 2) {
-           DTINFOWF(compute(),
-                   <<DTLOGEVAL(counter) << LOGDEL
-                   <<DTLOGEVAL(coSimLib::isConnected()) );   
+           dt__info(compute(),
+                   <<dt__eval(counter) << std::endl
+                   <<dt__eval(coSimLib::isConnected()) );   
           executeCommands(); //benötigt um coSend1Data aus Simulation auf Modul-Port zu legen. 
         }
         counter++;
         
      }
      catch (eGeneral & eGenRef) {
-      DTCATCHERRORWF(compute(), eGenRef.what());
+      dt__catch(compute(), eGenRef.what());
       abstractModule::closeLogFile();
       send_stop_pipeline();
       
@@ -112,7 +112,7 @@ namespace dtOO {
       if (_p_unsGridInputP->isConnected()) {
           
 //        const covise::coDoUnstructuredGrid * inGrid = _p_unsGridInputP->getCurrentObject();
-          dt__PTRASS(const covise::coDoSet * inSet, dynamic_cast<const covise::coDoSet *>(_p_unsGridInputP->getCurrentObject()) );
+          dt__ptrAss(const covise::coDoSet * inSet, dynamic_cast<const covise::coDoSet *>(_p_unsGridInputP->getCurrentObject()) );
           for (int ii=0; ii<inSet->getNumElements(); ii++) {
               inGrid = dynamic_cast<const covise::coDoUnstructuredGrid *>(inSet->getElement(ii) );
               if (inGrid) {
@@ -120,7 +120,7 @@ namespace dtOO {
               }
           }
           if (!inGrid) {
-              dt__THROW(compute(), << "No Grid in Input-Set.");
+              dt__throw(compute(), << "No Grid in Input-Set.");
           }
       }
       
@@ -194,15 +194,15 @@ namespace dtOO {
       std::vector<const covise::coDoIntArr *> bocoVec;
       
       if (_p_bocoInputP->isConnected()) {
-          dt__PTRASS(const covise::coDoSet * inSet, dynamic_cast<const covise::coDoSet *>(_p_bocoInputP->getCurrentObject()) );
+          dt__ptrAss(const covise::coDoSet * inSet, dynamic_cast<const covise::coDoSet *>(_p_bocoInputP->getCurrentObject()) );
           for (int ii=0; ii<inSet->getNumElements(); ii++) {
               tmpBocoArr = dynamic_cast<const covise::coDoIntArr *>(inSet->getElement(ii) );
               if (tmpBocoArr) {
                   bocoVec.push_back(tmpBocoArr);
               }
           }
-          DTINFOWF(sendBoundaryConditions(),
-                    <<DTLOGEVAL(bocoVec.size()) );
+          dt__info(sendBoundaryConditions(),
+                    <<dt__eval(bocoVec.size()) );
       }
       
       const covise::coDoIntArr * wallArray = bocoVec[4];

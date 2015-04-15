@@ -9,7 +9,7 @@ class Geom_SurfaceOfRevolution;
 namespace dtOO {
   class dtOCCSurfaceOfRevolution : public dtOCCSurface {
   public:
-    dt__CLASSSTD(dtOCCSurfaceOfRevolution, dtSurface);
+    dt__class(dtOCCSurfaceOfRevolution, dtSurface);
     dtOCCSurfaceOfRevolution();
     dtOCCSurfaceOfRevolution(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCSurfaceOfRevolution();

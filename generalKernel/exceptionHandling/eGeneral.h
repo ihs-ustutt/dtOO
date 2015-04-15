@@ -10,7 +10,7 @@
 namespace dtOO {
   class eGeneral : public std::exception {
   public:
-    dt__CLASSNAME(eGeneral);
+    dt__classOnlyName(eGeneral);
     eGeneral() _GLIBCXX_USE_NOEXCEPT;
     eGeneral( std::ostream & msg) _GLIBCXX_USE_NOEXCEPT;
     virtual ~eGeneral() _GLIBCXX_USE_NOEXCEPT;

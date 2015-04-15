@@ -11,7 +11,7 @@ namespace dtOO {
   
   class dtOCCBezierSurface : public dtOCCSurface {
   public:
-    dt__CLASSSTD(dtOCCBezierSurface, dtSurface);
+    dt__class(dtOCCBezierSurface, dtSurface);
     dtOCCBezierSurface();
     dtOCCBezierSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCBezierSurface();

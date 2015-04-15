@@ -26,7 +26,7 @@ namespace dtOO {
 		// should be at least 2 points
 		//
 		int nPointsMax = std::max(nPoints, 2);
-		dt__WARN_IFWM(
+		dt__warnIfWithMessage(
 			nPoints!=nPointsMax, 
 			map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d,
 			<< "Reset nPoints from " << nPoints << " to " << nPointsMax
@@ -113,7 +113,7 @@ namespace dtOO {
 		header.push_back("pT_v");			
 		header.push_back("int(T)");
 		header.push_back("|(T-int(T))/T|");
-		DTINFOWF(
+		dt__info(
 			map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(),
 			<< logMe::floatVecToTable(header, itVal)
 		);			

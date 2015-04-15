@@ -14,7 +14,7 @@ namespace dtOO {
   }
 
   dtTransformer * closeGaps::clone( void ) const {
-	  dt__THROW(clone(), "Not yet implemented.");
+	  dt__throw(clone(), << "Not yet implemented.");
 	}
 	
   dtTransformer * closeGaps::create( void ) const {
@@ -34,8 +34,7 @@ namespace dtOO {
       // clone and cast analyticGeometry
       //
       analyticGeometry * aGeoP = aGeoVecP->at(ii)->clone();
-      analyticSurface *  aS;
-      dt__MUSTDOWNCAST(aGeoP, analyticSurface, aS);
+      dt__ptrAss(analyticSurface * aS, analyticSurface::DownCast(aGeoP));
 
 //      //
 //      // check if it is rotational
@@ -45,7 +44,6 @@ namespace dtOO {
 //                << "Closing gaps of a rotational surface is not yet supported.");
 //      }
 
-        DTBUFFERINIT();
       if (_vvStartAGeo) {
         for (int ii = 0;ii<aS->ptrDtSurface()->nControlPointsU();ii++) {
           dtPoint3 cP = aS->ptrDtSurface()->controlPoint(ii, 0);
@@ -55,9 +53,6 @@ namespace dtOO {
                                 nearest.y()
                               );
           aS->ptrDtSurface()->setControlPoint(ii, 0, cPNearest);
-            DTBUFFER( << " ii::> " << ii << " " << DTLOGPOI3D(cP) << LOGDEL 
-                      << DTLOGPOI2D(nearest) << LOGDEL
-                      << DTLOGPOI3D(cPNearest) << LOGDEL);
         }
       }
       if (_vvEndAGeo) {
@@ -69,13 +64,9 @@ namespace dtOO {
                                 nearest.x(), 
                                 nearest.y()
                               );
-          aS->ptrDtSurface()->setControlPoint(ii, nV-1, cPNearest);
-            DTBUFFER( << " ii::> " << ii << DTLOGPOI3D(cP) << LOGDEL 
-                      << DTLOGPOI2D(nearest) << LOGDEL
-                      << DTLOGPOI3D(cPNearest) << LOGDEL);        
+          aS->ptrDtSurface()->setControlPoint(ii, nV-1, cPNearest); 
         }
       }
-        DTDEBUGWF_BUFFER(apply());
 
       //
       // push translated geometry in vector
@@ -118,10 +109,10 @@ namespace dtOO {
                                 );      
       for (int ii = 0; ii<aG->size();ii++) {
          if ( aG->at(ii)->getLabel() == vStartLabel ) {
-           dt__PTRASS(_vvStartAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
+           dt__ptrAss(_vvStartAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
          }
          if ( aG->at(ii)->getLabel() == vEndLabel ) {
-           dt__PTRASS(_vvEndAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
+           dt__ptrAss(_vvEndAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
          }
          if (_vvStartAGeo && _vvEndAGeo) {
            break;
@@ -129,9 +120,9 @@ namespace dtOO {
       }
     }
     else {
-      dt__THROW(init(),
-              << DTLOGEVAL(hasVStart) << LOGDEL
-              << DTLOGEVAL(hasVEnd) );
+      dt__throw(init(),
+              << dt__eval(hasVStart) << std::endl
+              << dt__eval(hasVEnd) );
     }
   }
 }

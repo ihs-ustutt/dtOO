@@ -10,7 +10,7 @@ namespace dtOO {
   
   class pickMap2dTo3dRangePercent : public dtTransformer {
   public:
-    dt__CLASSNAME(pickMap2dTo3dRangePercent);   
+    dt__classOnlyName(pickMap2dTo3dRangePercent);   
     pickMap2dTo3dRangePercent();
     pickMap2dTo3dRangePercent(const pickMap2dTo3dRangePercent& orig);
     virtual ~pickMap2dTo3dRangePercent();

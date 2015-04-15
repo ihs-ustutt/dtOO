@@ -15,7 +15,7 @@ namespace dtOO {
 
   class dtXmlParserFunctionDecorator : public dtXmlParserBase {
   public:  
-    dt__CLASSNAME(dtXmlParserFunctionDecorator);
+    dt__classOnlyName(dtXmlParserFunctionDecorator);
     dtXmlParserFunctionDecorator();
     ~dtXmlParserFunctionDecorator();
     virtual void buildPart(

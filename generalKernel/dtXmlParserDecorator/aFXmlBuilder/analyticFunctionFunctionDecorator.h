@@ -14,7 +14,7 @@ namespace dtOO {
 
   class analyticFunctionFunctionDecorator : public dtXmlParserFunctionDecorator {
   public:  
-    dt__CLASSNAME(analyticFunctionFunctionDecorator);
+    dt__classOnlyName(analyticFunctionFunctionDecorator);
     analyticFunctionFunctionDecorator();
     virtual ~analyticFunctionFunctionDecorator();
     virtual void buildPart(

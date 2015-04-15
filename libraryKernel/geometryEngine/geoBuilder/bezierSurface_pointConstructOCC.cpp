@@ -24,11 +24,11 @@ namespace dtOO {
 		//
 		// set arraies
 		//
-		dt__FORALL(pp, ii,
-		  dt__FORALL(pp[ii], jj, 
-		  arr.SetValue( ii+1, jj+1, gp_Pnt(pp[ii][jj].x(), pp[ii][jj].y(), pp[ii][jj].z()) );
-		  );
-	  );
+		dt__forAllIndex(pp, ii) {
+		  dt__forAllIndex(pp[ii], jj) {
+		    arr.SetValue( ii+1, jj+1, gp_Pnt(pp[ii][jj].x(), pp[ii][jj].y(), pp[ii][jj].z()) );
+		  }
+	  }
 
 		Handle(Geom_BezierSurface) surface = new Geom_BezierSurface( arr );
 		dtOCCSurfaceBase base;

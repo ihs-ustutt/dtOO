@@ -17,9 +17,9 @@ namespace dtOO {
   }  
 
   void intParam::dump(void) const {
-    DTINFOWF( dump(),
-            << getLabel() << LOGDEL
-            << DTLOGEVAL( getValue() ) );  
+    dt__info( dump(),
+            << getLabel() << std::endl
+            << dt__eval( getValue() ) );  
   }
 
   void intParam::writeToElement(QDomDocument & doc, QDomElement & element) {

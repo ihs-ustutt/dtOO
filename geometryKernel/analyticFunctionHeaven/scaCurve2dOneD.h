@@ -12,7 +12,7 @@ namespace dtOO {
   class scaCurve2dOneD : public scaOneD {
     
   public:
-    dt__CLASSSTD(scaCurve2dOneD, analyticFunction);    
+    dt__class(scaCurve2dOneD, analyticFunction);    
     scaCurve2dOneD();
     scaCurve2dOneD(scaCurve2dOneD const & orig);
     scaCurve2dOneD( dtCurve2d const * const orig );

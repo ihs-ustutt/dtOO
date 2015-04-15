@@ -8,7 +8,7 @@ namespace dtOO {
 
   class analyticGeometryFactory {
     public:    
-      dt__CLASSNAME(analyticGeometryFactory);
+      dt__classOnlyName(analyticGeometryFactory);
       analyticGeometryFactory();
       virtual ~analyticGeometryFactory();
       static analyticGeometry* create(char const * const str);

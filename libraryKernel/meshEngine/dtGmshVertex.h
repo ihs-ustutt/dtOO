@@ -10,7 +10,7 @@ class GPoint;
 namespace dtOO { 
   class dtGmshVertex : public ::GVertex {
   public:
-    dt__CLASSSTD(dtGmshVertex, ::GEntity); 
+    dt__class(dtGmshVertex, ::GEntity); 
     dtGmshVertex(::GModel *m, int tag, double ms);
     dtGmshVertex(::GModel *m, int tag);
     virtual ~dtGmshVertex();

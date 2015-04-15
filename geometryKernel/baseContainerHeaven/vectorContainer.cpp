@@ -54,9 +54,9 @@ namespace dtOO {
     if ( string != "" ) {
       for (int ii=0;ii<_pair.size();ii++) {
         if (_pair[ii].second == string) {
-          dt__THROW(add(),
-                  << "Try to add a vector that is already in container." << LOGDEL
-                  << DTLOGEVAL(string));
+          dt__throw(add(),
+                  << "Try to add a vector that is already in container." << std::endl
+                  << dt__eval(string));
         }
       }
     }

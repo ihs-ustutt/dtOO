@@ -12,7 +12,7 @@ namespace dtOO {
   
   class dtXmlParserFunctionDecoratorInterface {
   public:  
-    dt__CLASSNAME(dtXmlParserFunctionDecoratorInterface);
+    dt__classOnlyName(dtXmlParserFunctionDecoratorInterface);
     dtXmlParserFunctionDecoratorInterface();
     virtual ~dtXmlParserFunctionDecoratorInterface();
     virtual void buildPart(QDomElement const & toBuildP, 

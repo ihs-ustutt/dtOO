@@ -10,7 +10,7 @@ namespace dtOO {
   
   class addConstCoordinate : public dtTransformer{
   public:
-    dt__CLASSNAME(addConstCoordinate);   
+    dt__classOnlyName(addConstCoordinate);   
     addConstCoordinate();
     addConstCoordinate(const addConstCoordinate& orig);
     virtual ~addConstCoordinate();

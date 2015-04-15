@@ -30,7 +30,7 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__THROW( vec3dMuParserThreeD(), << e.GetMsg() );
+      dt__throw( vec3dMuParserThreeD(), << e.GetMsg() );
     }  
   }
 
@@ -63,7 +63,7 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__THROW( vec3dMuParserThreeD(), << e.GetMsg() );
+      dt__throw( vec3dMuParserThreeD(), << e.GetMsg() );
     }  
   }
 
@@ -73,7 +73,7 @@ namespace dtOO {
   }
 
   aFY vec3dMuParserThreeD::Y( aFX const & xx ) const {
-    dt__THROW_IF(xx.size()!=3, Y());
+    dt__throwIf(xx.size()!=3, Y());
     aFY yy(3,0.);
 		
     try {
@@ -82,19 +82,19 @@ namespace dtOO {
 		  }
 			int nDim;
       double * yyD = _parser->Eval(nDim);
-		  dt__THROW_IF(nDim!=3, Y());
+		  dt__throwIf(nDim!=3, Y());
 			for (int ii=0; ii<3; ii++) {
 				yy[ii] = static_cast<float>(yyD[ii]);
 			}
     }
     catch (mu::Parser::exception_type &e) {
-      dt__THROW(Y(), << e.GetMsg() );
+      dt__throw(Y(), << e.GetMsg() );
     }
     return yy;		
 	}
 	
 	bool vec3dMuParserThreeD::closed( int const & dir ) const {
-		dt__THROW_IF( (dir!=0) && (dir!=1) && (dir!=2), closed );
+		dt__throwIf( (dir!=0) && (dir!=1) && (dir!=2), closed );
 		return false;
 	}
 	

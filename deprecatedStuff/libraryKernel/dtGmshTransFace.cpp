@@ -37,7 +37,7 @@ namespace dtOO {
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
       ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
-      dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
+      dt__mustCast(ge, dtGmshEdge const, dge);
       curve.push_back( dge->getMap1dTo3d()->clone() );
       ge->addFace(this);
     }
@@ -53,7 +53,7 @@ namespace dtOO {
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
       ::GEdge * ge = *ei;
       dtGmshEdge const * dge;
-      dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
+      dt__mustCast(ge, dtGmshEdge const, dge);
       curve.push_back( dge->getMap1dTo3d()->clone() );
       ge->addFace(this);
     }  
@@ -72,31 +72,31 @@ namespace dtOO {
   void dtGmshTransFace::blendSurf( vectorHandling< map1dTo3d const * > & curve ) {
     splineCurve3d const * sC[4];
     vec3dOneDInMap3dTo3d const * v3d1dV[4];
-    dt__FORALL(curve, ii,
+    dt__forAllIndex(curve, ii) {
       sC[ii] = splineCurve3d::ConstDownCast(curve[ii]);
       v3d1dV[ii] = vec3dOneDInMap3dTo3d::ConstDownCast(curve[ii]);
-    );
+    }
     
     if (sC[0] && sC[1] && sC[2] && sC[3]) {
-      dt__THROW(
+      dt__throw(
         blendSurf(), 
-        << "Necessary to create dtGmshTransFace via blending in physical space." << LOGDEL
+        << "Necessary to create dtGmshTransFace via blending in physical space." << std::endl
         << "Not yet supported."
       );
     }
     else {
-      DTINFOWF(
+      dt__info(
         blendSurf(), 
-        << "Create dtGmshTransFace via blending in parameter space, " << LOGDEL
-        << "but some edges have to be reparametrized in map3dTo3d." << LOGDEL
-        << DTLOGEVAL(sC[0]) << LOGDEL
-        << DTLOGEVAL(sC[1]) << LOGDEL
-        << DTLOGEVAL(sC[2]) << LOGDEL 
-        << DTLOGEVAL(sC[3]) << LOGDEL
-        << DTLOGEVAL(v3d1dV[0]) << LOGDEL 
-        << DTLOGEVAL(v3d1dV[1]) << LOGDEL
-        << DTLOGEVAL(v3d1dV[2]) << LOGDEL
-        << DTLOGEVAL(v3d1dV[3])
+        << "Create dtGmshTransFace via blending in parameter space, " << std::endl
+        << "but some edges have to be reparametrized in map3dTo3d." << std::endl
+        << dt__eval(sC[0]) << std::endl
+        << dt__eval(sC[1]) << std::endl
+        << dt__eval(sC[2]) << std::endl 
+        << dt__eval(sC[3]) << std::endl
+        << dt__eval(v3d1dV[0]) << std::endl 
+        << dt__eval(v3d1dV[1]) << std::endl
+        << dt__eval(v3d1dV[2]) << std::endl
+        << dt__eval(v3d1dV[3])
       );
       
       //
@@ -162,7 +162,7 @@ namespace dtOO {
       vectorHandling< dtCurve const * > tmp(4);
 //			splineCurve3d const * s3d;
       for (int ii=0;ii<4;ii++) {
-//				dt__PTRASS(
+//				dt__ptrAss(
 //					s3d, 
 //					splineCurve3d::ConstDownCast(m1dInm3d[ii]->getConstPtrToMap1dTo3d())
 //				);
@@ -187,7 +187,7 @@ namespace dtOO {
   }
   
   void dtGmshTransFace::updateFace( void ) {
-    DTINFOWF(updateFace(), << "Updating ...");
+    dt__info(updateFace(), << "Updating ...");
     
     vectorHandling< map1dTo3d const * > curve;
     std::list< ::GEdge * > edges = ::GFace::edges();
@@ -195,7 +195,7 @@ namespace dtOO {
     for (it=edges.begin(); it != edges.end(); ++it) {
       ::GEdge const * ge = *it;
       dtGmshEdge const * dge;
-      dt__MUSTDOWNCAST(ge, dtGmshEdge const, dge);
+      dt__mustCast(ge, dtGmshEdge const, dge);
       curve.push_back( dge->getMap1dTo3d()->clone() );
     }
     
@@ -204,9 +204,9 @@ namespace dtOO {
   }
   
   void dtGmshTransFace::makeSuitable( void ) {
-    DTINFOWF(
+    dt__info(
       makeSuitable(), 
-      << "Create dtGmshTransFace via blending in parameter space, " << LOGDEL
+      << "Create dtGmshTransFace via blending in parameter space, " << std::endl
       << "based on meshed bounding edges."
     );
 
@@ -229,8 +229,8 @@ namespace dtOO {
     }
 
     if (!m3d) {
-      dt__THROW(makeSuitable(), 
-        << DTLOGEVAL(m3d) << LOGDEL 
+      dt__throw(makeSuitable(), 
+        << dt__eval(m3d) << std::endl 
         << "No mapping map3dTo3d.");
     }
 		

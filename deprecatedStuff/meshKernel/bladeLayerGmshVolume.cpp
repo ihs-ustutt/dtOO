@@ -92,7 +92,7 @@ namespace dtOO {
         bool forceSnapped = _strucModel->forceSnapEdge(ii+1);
         if (!forceSnapped) {
           dt__THROW(writeGrid(),
-                  << "Cannot snap edge " << DTLOGEVAL(ii+1) );
+                  << "Cannot snap edge " << dt__eval(ii+1) );
         }
       }
       _strucModel->getEdgeByTag(ii+1)->meshAttributes.method = MESH_TRANSFINITE;

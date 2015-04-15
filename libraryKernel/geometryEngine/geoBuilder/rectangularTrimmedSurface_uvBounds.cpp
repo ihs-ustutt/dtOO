@@ -17,7 +17,7 @@ namespace dtOO {
   rectangularTrimmedSurface_uvBounds::rectangularTrimmedSurface_uvBounds(
 	  dtSurface const * dtS, dtPoint2 const & min, dtPoint2 const & max
 	) {
-    dt__PTRASS(
+    dt__ptrAss(
 		  dtOCCSurface const * occS, 
 			dtOCCSurface::ConstDownCast(dtS)
 		);

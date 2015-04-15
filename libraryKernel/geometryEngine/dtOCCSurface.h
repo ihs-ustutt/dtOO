@@ -12,7 +12,7 @@ namespace dtOO {
   
   class dtOCCSurface : public dtSurface {
   public:
-    dt__CLASSSTD(dtOCCSurface, dtSurface);    
+    dt__class(dtOCCSurface, dtSurface);    
     dtOCCSurface();
     dtOCCSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCSurface();

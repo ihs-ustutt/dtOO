@@ -31,7 +31,7 @@ namespace dtOO {
    */
   class vec3dThickedTwoD : public vec3dTwoD {
   public:
-    dt__CLASSSTD(vec3dThickedTwoD, analyticFunction);     
+    dt__class(vec3dThickedTwoD, analyticFunction);     
     vec3dThickedTwoD();
     vec3dThickedTwoD(const vec3dThickedTwoD& orig);
     vec3dThickedTwoD(

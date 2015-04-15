@@ -12,7 +12,7 @@ namespace dtOO {
 
   class bSplineCurve_pointPickFromPartConstructOCCDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(bSplineCurve_pointPickFromPartConstructOCCDecorator);
+    dt__classOnlyName(bSplineCurve_pointPickFromPartConstructOCCDecorator);
     bSplineCurve_pointPickFromPartConstructOCCDecorator();
     virtual ~bSplineCurve_pointPickFromPartConstructOCCDecorator();
     virtual void buildPart(

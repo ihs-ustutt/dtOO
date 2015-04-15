@@ -10,7 +10,7 @@ namespace dtOO {
   template < typename funT >
   class analyticFunctionTransformed : public funT {
   public:
-    dt__CLASSSTD(analyticFunctionTransformed, analyticFunction); 
+    dt__class(analyticFunctionTransformed, analyticFunction); 
     analyticFunctionTransformed();
     analyticFunctionTransformed( analyticFunctionTransformed const & orig);      
     analyticFunctionTransformed(funT const & orig );
@@ -57,7 +57,7 @@ namespace dtOO {
   aFY analyticFunctionTransformed< funT >::Y( aFX const & xx ) const {
     aFY yy = funT::Y(xx);
     
-//    dt__THROW_IF( yy.size() != 3, Y() );
+//    dt__throwIf( yy.size() != 3, Y() );
     if (yy.size() == 3) {
       dtPoint3 pp = _dtT->apply( dtPoint3(yy[0], yy[1], yy[2]) );
       yy[0] = pp.x();
@@ -70,8 +70,8 @@ namespace dtOO {
       yy[1] = pp.y();
     }
     else {
-      dt__THROW(Y(),
-        << DTLOGEVAL(yy.size()) << LOGDEL
+      dt__throw(Y(),
+        << dt__eval(yy.size()) << std::endl
         << "Currently only supported for dimension 2 and 3."
       );
     }

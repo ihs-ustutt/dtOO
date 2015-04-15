@@ -12,7 +12,7 @@ namespace dtOO {
   template < typename T >  
   class labeledPrimType : public labelHandling {
   public:
-    dt__CLASSNAME(labeledPrimType);  
+    dt__classOnlyName(labeledPrimType);  
     labeledPrimType();
     labeledPrimType(const labeledPrimType& orig);
     labeledPrimType( std::string const label);

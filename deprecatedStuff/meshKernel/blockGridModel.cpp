@@ -51,36 +51,36 @@ namespace dtOO {
   void blockGridModel::snapVertex(int const vId, int const aSId) {
     if (!getAttachedBoundedVolume()) {
       dt__THROW(snapVertex(),
-              << "blockGridModel is not attached." << LOGDEL
-              << DTLOGEVAL(getAttachedBoundedVolume()));
+              << "blockGridModel is not attached." << std::endl
+              << dt__eval(getAttachedBoundedVolume()));
     }
     ::GVertex * gv = ::GModel::getVertexByTag(vId);
     dtGmshVertex * dtGV;
-    dt__MUSTDOWNCAST(gv, dtGmshVertex, dtGV);
+    dt__mustCast(gv, dtGmshVertex, dtGV);
     dtGV->snapToMap2dTo3d( getAttachedBoundedVolume()->getPtrToMap2dTo3d(aSId) );
   }
 
   void blockGridModel::snap3dVertex(int const vId, int const rId) {
     if (!getAttachedBoundedVolume()) {
       dt__THROW(snap3dVertex(),
-              << "blockGridModel is not attached." << LOGDEL
-              << DTLOGEVAL(getAttachedBoundedVolume()));
+              << "blockGridModel is not attached." << std::endl
+              << dt__eval(getAttachedBoundedVolume()));
     }
     ::GVertex * gv = ::GModel::getVertexByTag(vId);
     dtGmshVertex * dtGV;
-    dt__MUSTDOWNCAST(gv, dtGmshVertex, dtGV);
+    dt__mustCast(gv, dtGmshVertex, dtGV);
     dtGV->snapToMap3dTo3d( getAttachedBoundedVolume()->getPtrToMap3dTo3d(rId) );
   }
   
   void blockGridModel::snapVertexPercent(int const vId, int const aSId, dtPoint2 const ppUV) {
     if (!getAttachedBoundedVolume()) {
       dt__THROW(snapVertexPercent(),
-              << "blockGridModel is not attached." << LOGDEL
-              << DTLOGEVAL(getAttachedBoundedVolume()));
+              << "blockGridModel is not attached." << std::endl
+              << dt__eval(getAttachedBoundedVolume()));
     }
     ::GVertex * gv = ::GModel::getVertexByTag(vId);
     dtGmshVertex * dtGV;
-    dt__MUSTDOWNCAST(gv, dtGmshVertex, dtGV);
+    dt__mustCast(gv, dtGmshVertex, dtGV);
     dtGV->snapToMap2dTo3d( getAttachedBoundedVolume()->getPtrToMap2dTo3d(aSId) );
     dtGV->setPosition( 
       getAttachedBoundedVolume()->getPtrToMap2dTo3d(aSId)->getPointPercent( ppUV.x(), ppUV.y() ) 
@@ -194,7 +194,7 @@ namespace dtOO {
         dtGmshTransFace * tPA = new dtGmshTransFace(this, fId, edges, ori);
         ::GModel::add(tPA);
       }
-      DTINFOWF(addFace(), 
+      dt__info(addFace(), 
         << "dtGmshFace[" << fId << "] : " 
         << getDtGmshFaceByTag(fId)->ClassName() 
       );
@@ -210,9 +210,9 @@ namespace dtOO {
     bool retBool = false;
     dtGmshEdge * dtGE = getDtGmshEdgeByTag(eID);
     dtGmshVertex * dtGV0;
-    dt__MUSTDOWNCAST(dtGE->getBeginVertex(), dtGmshVertex, dtGV0);
+    dt__mustCast(dtGE->getBeginVertex(), dtGmshVertex, dtGV0);
     dtGmshVertex * dtGV1;
-    dt__MUSTDOWNCAST(dtGE->getEndVertex(), dtGmshVertex, dtGV1);
+    dt__mustCast(dtGE->getEndVertex(), dtGmshVertex, dtGV1);
     
     std::vector< map2dTo3d const *> const & aS0 = dtGV0->getRefToSnapMap2dTo3d();
     std::vector< map2dTo3d const *> const & aS1 = dtGV1->getRefToSnapMap2dTo3d();
@@ -231,12 +231,12 @@ namespace dtOO {
     //
     DTBUFFERINIT();
     DTBUFFER(
-      << "Try to snap edge " << DTLOGEVAL(eID) << "." << LOGDEL
-      << DTLOGEVAL( aS0Snap.size() ) << LOGDEL 
-      << "Edge is part of following faces:" << LOGDEL
+      << "Try to snap edge " << dt__eval(eID) << "." << std::endl
+      << dt__eval( aS0Snap.size() ) << std::endl 
+      << "Edge is part of following faces:" << std::endl
     );
     dt__FORALL(aS0Snap, ii,
-      DTBUFFER( << aS0[aS0Snap[ii]]->getLabel() << LOGDEL);
+      DTBUFFER( << aS0[aS0Snap[ii]]->getLabel() << std::endl);
     );
       
     if (aS0Snap.size() == 1) {
@@ -271,8 +271,8 @@ namespace dtOO {
       }
     }
     else if (aS0Snap.size() > 1) {      
-      DTBUFFER( << "Adding straight line." << LOGDEL
-                << "Edge is part of more than one face." << LOGDEL);            
+      DTBUFFER( << "Adding straight line." << std::endl
+                << "Edge is part of more than one face." << std::endl);            
       //
       // create straight line
       //
@@ -289,11 +289,11 @@ namespace dtOO {
       dtGE->setMap1dTo3d( dtB.get() );
     }
     else if (aS0Snap.size() < 1) {      
-      DTBUFFER( << "Adding straight line." << LOGDEL
-                << "Edge is treated as an internal edge" << LOGDEL);
+      DTBUFFER( << "Adding straight line." << std::endl
+                << "Edge is treated as an internal edge" << std::endl);
       if ( (dtGV0->getRefToSnapMap3dTo3d().size() != 0) 
               && (dtGV1->getRefToSnapMap3dTo3d().size() != 0) ) {
-        DTBUFFER( << "Vertices snapped to map3dTo3d" << LOGDEL);
+        DTBUFFER( << "Vertices snapped to map3dTo3d" << std::endl);
         dtPoint3 p0UVW 
         = 
         dtGV0->getRefToSnapMap3dTo3d()[0]->reparamInVolume(
@@ -320,8 +320,8 @@ namespace dtOO {
         dtGE->setMap1dTo3d( dtB.get() );
       }
       else {
-      DTBUFFER( << "Adding straight line." << LOGDEL
-                << "Edge is treated as free edge" << LOGDEL);				
+      DTBUFFER( << "Adding straight line." << std::endl
+                << "Edge is treated as free edge" << std::endl);				
         //
         // create straight line
         //
@@ -341,7 +341,7 @@ namespace dtOO {
 
       retBool = true;      
     }
-    DTWARNINGWF_BUFFER(snapEdge());    
+    dt__warning_BUFFER(snapEdge());    
     
     return retBool;
   }
@@ -350,9 +350,9 @@ namespace dtOO {
     bool retBool = false;
     dtGmshEdge * dtGE = getDtGmshEdgeByTag(eID);
     dtGmshVertex * dtGV0;
-    dt__MUSTDOWNCAST(dtGE->getBeginVertex(), dtGmshVertex, dtGV0);
+    dt__mustCast(dtGE->getBeginVertex(), dtGmshVertex, dtGV0);
     dtGmshVertex * dtGV1;
-    dt__MUSTDOWNCAST(dtGE->getEndVertex(), dtGmshVertex, dtGV1);
+    dt__mustCast(dtGE->getEndVertex(), dtGmshVertex, dtGV1);
     
     std::vector< map2dTo3d const *> const & aS0 = dtGV0->getRefToSnapMap2dTo3d();
     std::vector< map2dTo3d const *> const & aS1 = dtGV1->getRefToSnapMap2dTo3d();
@@ -371,16 +371,16 @@ namespace dtOO {
     //
     DTBUFFERINIT();
     DTBUFFER(
-      << "Try to force snap edge " << DTLOGEVAL(eID) << "." << LOGDEL
-      << DTLOGEVAL( aS0Snap.size() ) << LOGDEL 
-      << "Edge is part of following faces:" << LOGDEL
+      << "Try to force snap edge " << dt__eval(eID) << "." << std::endl
+      << dt__eval( aS0Snap.size() ) << std::endl 
+      << "Edge is part of following faces:" << std::endl
     );
     dt__FORALL(aS0Snap, ii,
-      DTBUFFER( << aS0[aS0Snap[ii]]->getLabel() << LOGDEL);
+      DTBUFFER( << aS0[aS0Snap[ii]]->getLabel() << std::endl);
     );
       
 //    if (aS0Snap.size() > 1) {      
-    DTBUFFER( << "Check if edge is located at a boundary." << LOGDEL);
+    DTBUFFER( << "Check if edge is located at a boundary." << std::endl);
     for (int ii=0; ii<aS0Snap.size(); ii++) {
       map2dTo3d const * const aS = aS0[aS0Snap[ii]];      
       dtPoint2 dtGV0UV = aS->reparamPercentOnFace( dtGV0->cast2DtPoint3() );
@@ -423,28 +423,28 @@ namespace dtOO {
       }
 
       DTBUFFER(
-//							<< DTLOGEVAL(dtGE->getBeginVertex()->tag()) << LOGDEL
-//							<< DTLOGEVAL(dtGE->getEndVertex()->tag()) << LOGDEL
-//							<< DTLOGPOI2D(dtGV0UV) << LOGDEL
-//							<< DTLOGPOI2D(dtGV1UV) << LOGDEL
-              << DTLOGEVAL(atUSeam0) << LOGDEL
-              << DTLOGEVAL(atUSeam1) << LOGDEL
-              << DTLOGEVAL(atVSeam0) << LOGDEL
-              << DTLOGEVAL(atVSeam1) << LOGDEL
-              << DTLOGEVAL(aS->isClosedU()) << LOGDEL
-              << DTLOGEVAL(aS->isClosedV()) << LOGDEL
-              << DTLOGEVAL(atBound) << LOGDEL
-              << DTLOGEVAL(atSeam) << LOGDEL
-              << DTLOGEVAL(vertexOnUSeam) << LOGDEL
-              << DTLOGEVAL(vertexOnVSeam) << LOGDEL 
-//              << DTLOGEVAL(fabs( dtGV0UV.x()-1. ) ) << LOGDEL
-//							<< DTLOGEVAL(fabs( dtGV0UV.x()-0. ) ) << LOGDEL
-//							<< DTLOGEVAL(fabs( dtGV1UV.x()-1. ) ) << LOGDEL 
-//							<< DTLOGEVAL(fabs( dtGV1UV.x()-0. ) ) << LOGDEL
-//							<< DTLOGEVAL(fabs( dtGV0UV.y()-1. ) ) << LOGDEL
-//							<< DTLOGEVAL(fabs( dtGV0UV.y()-0. ) ) << LOGDEL
-//							<< DTLOGEVAL(fabs( dtGV1UV.y()-1. ) ) << LOGDEL
-//							<< DTLOGEVAL(fabs( dtGV1UV.y()-0. ) )<< LOGDEL	
+//							<< dt__eval(dtGE->getBeginVertex()->tag()) << std::endl
+//							<< dt__eval(dtGE->getEndVertex()->tag()) << std::endl
+//							<< dt__point2d(dtGV0UV) << std::endl
+//							<< dt__point2d(dtGV1UV) << std::endl
+              << dt__eval(atUSeam0) << std::endl
+              << dt__eval(atUSeam1) << std::endl
+              << dt__eval(atVSeam0) << std::endl
+              << dt__eval(atVSeam1) << std::endl
+              << dt__eval(aS->isClosedU()) << std::endl
+              << dt__eval(aS->isClosedV()) << std::endl
+              << dt__eval(atBound) << std::endl
+              << dt__eval(atSeam) << std::endl
+              << dt__eval(vertexOnUSeam) << std::endl
+              << dt__eval(vertexOnVSeam) << std::endl 
+//              << dt__eval(fabs( dtGV0UV.x()-1. ) ) << std::endl
+//							<< dt__eval(fabs( dtGV0UV.x()-0. ) ) << std::endl
+//							<< dt__eval(fabs( dtGV1UV.x()-1. ) ) << std::endl 
+//							<< dt__eval(fabs( dtGV1UV.x()-0. ) ) << std::endl
+//							<< dt__eval(fabs( dtGV0UV.y()-1. ) ) << std::endl
+//							<< dt__eval(fabs( dtGV0UV.y()-0. ) ) << std::endl
+//							<< dt__eval(fabs( dtGV1UV.y()-1. ) ) << std::endl
+//							<< dt__eval(fabs( dtGV1UV.y()-0. ) )<< std::endl	
       );
         
       //
@@ -470,7 +470,7 @@ namespace dtOO {
         break;
       }
       else if ( atSeam ) {
-        DTBUFFER( << "Adding seam in face." << LOGDEL);      
+        DTBUFFER( << "Adding seam in face." << std::endl);      
         dtPoint2 dtGV0UV = aS->reparamPercentOnFace( dtGV0->cast2DtPoint3() );
         dtPoint2 dtGV1UV = aS->reparamPercentOnFace( dtGV1->cast2DtPoint3() );
 
@@ -485,13 +485,13 @@ namespace dtOO {
           dtGE->makeSeamV();
         }
         else {
-          DTBUFFER( << "aS is not closed!" << LOGDEL
-                  << DTLOGEVAL(aS->isClosedU()) << LOGDEL
-                  << DTLOGEVAL(aS->isClosedV()) );
+          DTBUFFER( << "aS is not closed!" << std::endl
+                  << dt__eval(aS->isClosedU()) << std::endl
+                  << dt__eval(aS->isClosedV()) );
           dt__THROW_BUFFER(forceSnapEdge());          
         }
-        DTBUFFER( << DTLOGPOI2D(dtGV0UV) << LOGDEL
-                  << DTLOGPOI2D(dtGV1UV) );
+        DTBUFFER( << dt__point2d(dtGV0UV) << std::endl
+                  << dt__point2d(dtGV1UV) );
         
         ptrHandling< map1dTo3d > dtB( 
           aS->pickLinearPercent(
@@ -508,7 +508,7 @@ namespace dtOO {
         break;
       }      
       else if ( vertexOnUSeam && !vertexOnVSeam) {
-        DTBUFFER( << "Adding line with vertex on seam in face." << LOGDEL);      
+        DTBUFFER( << "Adding line with vertex on seam in face." << std::endl);      
         dtPoint2 dtGV0UV = aS->reparamPercentOnFace( dtGV0->cast2DtPoint3() );
         dtPoint2 dtGV1UV = aS->reparamPercentOnFace( dtGV1->cast2DtPoint3() );
         if (atUSeam0) {
@@ -543,11 +543,11 @@ namespace dtOO {
         break;
       }
       else if ( !vertexOnUSeam && vertexOnVSeam) {
-        DTBUFFER( << "Case not yet implemented!" << LOGDEL);
+        DTBUFFER( << "Case not yet implemented!" << std::endl);
         dt__THROW_BUFFER(forceSnapEdge());
       }      
       else {
-        DTBUFFER( << "Adding not critical line in face." << LOGDEL);      
+        DTBUFFER( << "Adding not critical line in face." << std::endl);      
         dtPoint2 dtGV0UV = aS->reparamOnFace( dtGV0->cast2DtPoint3() );
         dtPoint2 dtGV1UV = aS->reparamOnFace( dtGV1->cast2DtPoint3() );
         ptrHandling< map1dTo3d > dtB( 
@@ -565,7 +565,7 @@ namespace dtOO {
         break;
       }
     }
-    DTWARNINGWF_BUFFER(forceSnapEdge());    
+    dt__warning_BUFFER(forceSnapEdge());    
     
     return retBool;
   }
@@ -606,19 +606,19 @@ namespace dtOO {
 //    }
     //nElemTot = nElemQuad;
     
-    DTINFOWF(toCoDoUnstructuredGrid(),
-      << "tetrahedra = " << numElements[0] << LOGDEL
-      << "hexahedra = " << numElements[1] << LOGDEL
-      << "prisms = " << numElements[2] << LOGDEL
-      << "pyramids = " << numElements[3] << LOGDEL
-      << "polyhedra = " << numElements[4] << LOGDEL
+    dt__info(toCoDoUnstructuredGrid(),
+      << "tetrahedra = " << numElements[0] << std::endl
+      << "hexahedra = " << numElements[1] << std::endl
+      << "prisms = " << numElements[2] << std::endl
+      << "pyramids = " << numElements[3] << std::endl
+      << "polyhedra = " << numElements[4] << std::endl
     //  << "quadrangle = " << nElemQuad
     );
     
    
     //bool testBool = true;
 //    int numVertis = 99;//__caCThis->indexMeshVertices(testBool);
-//    DTINFOWF(toCoDoUnstructuredGrid(),
+//    dt__info(toCoDoUnstructuredGrid(),
 //      << "Anzahl Veritces = " << numVertis );
     
     ptrHandling< covise::coDoUnstructuredGrid > cug( 
@@ -655,12 +655,12 @@ namespace dtOO {
       xx[mv->getIndex()-1] = static_cast< float >(mv->x());
       yy[mv->getIndex()-1] = static_cast< float >(mv->y());
       zz[mv->getIndex()-1] = static_cast< float >(mv->z());
-       DTINFOWF(toCoDoUnstructuredGrid(),
-                << DTLOGEVAL(ii) << LOGDEL
-               << DTLOGEVAL(mv->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(mv->x()) << LOGDEL
-                  << DTLOGEVAL(mv->y()) << LOGDEL         
-                  << DTLOGEVAL(mv->z()) );
+       dt__info(toCoDoUnstructuredGrid(),
+                << dt__eval(ii) << std::endl
+               << dt__eval(mv->getIndex()-1) << std::endl
+                  << dt__eval(mv->x()) << std::endl
+                  << dt__eval(mv->y()) << std::endl         
+                  << dt__eval(mv->z()) );
     }
 
     int cellC = 0;
@@ -688,11 +688,11 @@ namespace dtOO {
         
         dimsPatchVec.push_back( ( gf->getNumMeshElements() ) * 4 ); //"4" nur für quads
         
-        DTINFOWF(toCoDoUnstructuredGrid(),
-                  << DTLOGEVAL(gf->getNumMeshElements()) << LOGDEL
-                  << DTLOGEVAL(dimsPatchVec.size() ) << LOGDEL
-                  << DTLOGEVAL(gf->numRegions()) << LOGDEL
-                  << DTLOGEVAL(gf->getNumMeshVertices())
+        dt__info(toCoDoUnstructuredGrid(),
+                  << dt__eval(gf->getNumMeshElements()) << std::endl
+                  << dt__eval(dimsPatchVec.size() ) << std::endl
+                  << dt__eval(gf->numRegions()) << std::endl
+                  << dt__eval(gf->getNumMeshVertices())
                 );
         
 //        
@@ -715,11 +715,11 @@ namespace dtOO {
               faceConnValues[faceCount+3] = verts[3]->getIndex()-1;
               faceCount = faceCount + 4;
               
-              DTINFOWF(toCoDoUnstructuredGrid(),
-                  << DTLOGEVAL(verts[0]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[1]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[2]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[3]->getIndex()-1) );
+              dt__info(toCoDoUnstructuredGrid(),
+                  << dt__eval(verts[0]->getIndex()-1) << std::endl
+                  << dt__eval(verts[1]->getIndex()-1) << std::endl
+                  << dt__eval(verts[2]->getIndex()-1) << std::endl
+                  << dt__eval(verts[3]->getIndex()-1) );
               
 
           }
@@ -773,15 +773,15 @@ namespace dtOO {
           conn[elem[cellC]+5] = verts[6]->getIndex()-1;
           conn[elem[cellC]+6] = verts[2]->getIndex()-1;
           conn[elem[cellC]+7] = verts[3]->getIndex()-1;          
-          DTINFOWF(toCoDoUnstructuredGrid(),
-                  << DTLOGEVAL(verts[4]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[5]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[1]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[0]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[7]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[6]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[2]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[3]->getIndex()-1) );
+          dt__info(toCoDoUnstructuredGrid(),
+                  << dt__eval(verts[4]->getIndex()-1) << std::endl
+                  << dt__eval(verts[5]->getIndex()-1) << std::endl
+                  << dt__eval(verts[1]->getIndex()-1) << std::endl
+                  << dt__eval(verts[0]->getIndex()-1) << std::endl
+                  << dt__eval(verts[7]->getIndex()-1) << std::endl
+                  << dt__eval(verts[6]->getIndex()-1) << std::endl
+                  << dt__eval(verts[2]->getIndex()-1) << std::endl
+                  << dt__eval(verts[3]->getIndex()-1) );
           connC = connC + 8;
           cellC++;      
         }  
@@ -821,13 +821,13 @@ namespace dtOO {
                  arrAdd[7*ii+6] = 0;
               }
               
-              DTINFOWF(toCoDoUnstructuredGrid(),
-                  << DTLOGEVAL(connPatchInt->getNumDimensions()) << LOGDEL
-                  << DTLOGEVAL(connPatchInt->getDimension(0)) << LOGDEL
-                  << DTLOGEVAL(connPatchInt->getDimension(1)) << LOGDEL
-                  << DTLOGEVAL(connPatchInt->getSize()) //<< LOGDEL
-//                  << DTLOGEVAL(boundingFaces.size()) << LOGDEL
-//                  << DTLOGEVAL(boundingFaces[0])
+              dt__info(toCoDoUnstructuredGrid(),
+                  << dt__eval(connPatchInt->getNumDimensions()) << std::endl
+                  << dt__eval(connPatchInt->getDimension(0)) << std::endl
+                  << dt__eval(connPatchInt->getDimension(1)) << std::endl
+                  << dt__eval(connPatchInt->getSize()) //<< std::endl
+//                  << dt__eval(boundingFaces.size()) << std::endl
+//                  << dt__eval(boundingFaces[0])
                       );
 
               
@@ -878,11 +878,11 @@ namespace dtOO {
           }
       }
       
-      DTINFOWF(toCoDoSurfUnsGrid(),
-                  << DTLOGEVAL(boundingFaces.size()) );
+      dt__info(toCoDoSurfUnsGrid(),
+                  << dt__eval(boundingFaces.size()) );
       if (boundFaceNumLoc >= boundingFaces.size()) {
-          DTINFOWF(toCoDoSurfUnsGrid(),
-          << DTLOGEVAL("Facenumber too big, chosen to max. possible") );
+          dt__info(toCoDoSurfUnsGrid(),
+          << dt__eval("Facenumber too big, chosen to max. possible") );
           boundFaceNumLoc = (boundingFaces.size()-1);
       }
       
@@ -915,12 +915,12 @@ namespace dtOO {
         xx[mv->getIndex()-1] = static_cast< float >(mv->x());
         yy[mv->getIndex()-1] = static_cast< float >(mv->y());
         zz[mv->getIndex()-1] = static_cast< float >(mv->z());
-         DTINFOWF(toCoDoSurfUnsGrid(),
-                  << DTLOGEVAL(ii) << LOGDEL
-                  << DTLOGEVAL(mv->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(mv->x()) << LOGDEL
-                  << DTLOGEVAL(mv->y()) << LOGDEL         
-                  << DTLOGEVAL(mv->z()) );
+         dt__info(toCoDoSurfUnsGrid(),
+                  << dt__eval(ii) << std::endl
+                  << dt__eval(mv->getIndex()-1) << std::endl
+                  << dt__eval(mv->x()) << std::endl
+                  << dt__eval(mv->y()) << std::endl         
+                  << dt__eval(mv->z()) );
       }
       
       
@@ -942,10 +942,10 @@ namespace dtOO {
         
 //        dimsPatchVec.push_back( ( gf->getNumMeshElements() ) * 4 ); //"4" nur für quads
 //        
-//        DTINFOWF(toCoDoSurfUnsGrid(),
-//                  << DTLOGEVAL(gf->getNumMeshElements()) << LOGDEL
-//                  << DTLOGEVAL(dimsPatchVec.size() ) << LOGDEL
-//                  << DTLOGEVAL(gf->numRegions())
+//        dt__info(toCoDoSurfUnsGrid(),
+//                  << dt__eval(gf->getNumMeshElements()) << std::endl
+//                  << dt__eval(dimsPatchVec.size() ) << std::endl
+//                  << dt__eval(gf->numRegions())
 //                );
         
 //        if(gf->numRegions()==1) {
@@ -977,11 +977,11 @@ namespace dtOO {
           connC = connC + 4;
           cellC++;   
           
-          DTINFOWF(toCoDoSurfUnsGrid(),
-                  << DTLOGEVAL(verts[0]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[1]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[2]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[3]->getIndex()-1) );
+          dt__info(toCoDoSurfUnsGrid(),
+                  << dt__eval(verts[0]->getIndex()-1) << std::endl
+                  << dt__eval(verts[1]->getIndex()-1) << std::endl
+                  << dt__eval(verts[2]->getIndex()-1) << std::endl
+                  << dt__eval(verts[3]->getIndex()-1) );
         }            
           
           
@@ -997,11 +997,11 @@ namespace dtOO {
 //              faceConnValues[faceCount+3] = verts[3]->getIndex()-1;
 //              faceCount = faceCount + 4;
               
-//              DTINFOWF(toCoDoSurfUnsGrid(),
-//                  << DTLOGEVAL(verts[0]->getIndex()-1) << LOGDEL
-//                  << DTLOGEVAL(verts[1]->getIndex()-1) << LOGDEL
-//                  << DTLOGEVAL(verts[2]->getIndex()-1) << LOGDEL
-//                  << DTLOGEVAL(verts[3]->getIndex()-1) );
+//              dt__info(toCoDoSurfUnsGrid(),
+//                  << dt__eval(verts[0]->getIndex()-1) << std::endl
+//                  << dt__eval(verts[1]->getIndex()-1) << std::endl
+//                  << dt__eval(verts[2]->getIndex()-1) << std::endl
+//                  << dt__eval(verts[3]->getIndex()-1) );
 //              
 
 //          }
@@ -1034,13 +1034,13 @@ namespace dtOO {
 //                 arrAdd[7*ii+6] = 0;
 //              }
 //              
-//              DTINFOWF(toCoDoSurfUnsGrid(),
-//                  << DTLOGEVAL(connPatchInt->getNumDimensions()) << LOGDEL
-//                  << DTLOGEVAL(connPatchInt->getDimension(0)) << LOGDEL
-//                  << DTLOGEVAL(connPatchInt->getDimension(1)) << LOGDEL
-//                  << DTLOGEVAL(connPatchInt->getSize()) << LOGDEL
-//                  << DTLOGEVAL(boundingFaces.size()) << LOGDEL
-//                  << DTLOGEVAL(boundingFaces[0])
+//              dt__info(toCoDoSurfUnsGrid(),
+//                  << dt__eval(connPatchInt->getNumDimensions()) << std::endl
+//                  << dt__eval(connPatchInt->getDimension(0)) << std::endl
+//                  << dt__eval(connPatchInt->getDimension(1)) << std::endl
+//                  << dt__eval(connPatchInt->getSize()) << std::endl
+//                  << dt__eval(boundingFaces.size()) << std::endl
+//                  << dt__eval(boundingFaces[0])
 //                      );
       
 //      ptrHandling< covise::coDistributedObject * > cdo( new covise::coDistributedObject*[4] );
@@ -1201,11 +1201,11 @@ namespace dtOO {
                 faceConnValues[faceCount+3] = verts[3]->getIndex()-1;
                 faceCount = faceCount + 4;
               
-                DTINFOWF(makeBoCo(),
-                  << DTLOGEVAL(verts[0]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[1]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[2]->getIndex()-1) << LOGDEL
-                  << DTLOGEVAL(verts[3]->getIndex()-1) );
+                dt__info(makeBoCo(),
+                  << dt__eval(verts[0]->getIndex()-1) << std::endl
+                  << dt__eval(verts[1]->getIndex()-1) << std::endl
+                  << dt__eval(verts[2]->getIndex()-1) << std::endl
+                  << dt__eval(verts[3]->getIndex()-1) );
               
              }
           }

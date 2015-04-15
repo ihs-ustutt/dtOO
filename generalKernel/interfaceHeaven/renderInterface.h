@@ -8,7 +8,7 @@
 namespace dtOO { 
   class renderInterface {
   public:
-    dt__CLASSNAME(renderInterface);  
+    dt__classOnlyName(renderInterface);  
     renderInterface();
     renderInterface(const renderInterface& orig);
     virtual ~renderInterface();

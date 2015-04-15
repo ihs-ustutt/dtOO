@@ -30,7 +30,7 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__THROW( scaMuParserTwoD(), << e.GetMsg() );
+      dt__throw( scaMuParserTwoD(), << e.GetMsg() );
     }  
   }
 
@@ -61,7 +61,7 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__THROW( scaMuParserTwoD(), << e.GetMsg() );
+      dt__throw( scaMuParserTwoD(), << e.GetMsg() );
     }  
   }
 
@@ -79,17 +79,17 @@ namespace dtOO {
 			
 			int nDim;
       double * yyD = _parser->Eval(nDim);
-		  dt__THROW_IF(nDim!=1, Y());
+		  dt__throwIf(nDim!=1, Y());
 		  yy = static_cast<float>(yyD[0]);
     }
     catch (mu::Parser::exception_type &e) {
-      dt__THROW(Y(), << e.GetMsg() );
+      dt__throw(Y(), << e.GetMsg() );
     }
     return yy;		
 	}
 	
 	bool scaMuParserTwoD::closed( int const & dir ) const {
-		dt__THROW_IF( (dir!=0) && (dir!=1), closed );
+		dt__throwIf( (dir!=0) && (dir!=1), closed );
 		return false;
 	}
 	

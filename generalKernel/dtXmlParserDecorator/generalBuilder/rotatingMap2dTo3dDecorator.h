@@ -14,7 +14,7 @@ namespace dtOO {
 
   class rotatingMap2dTo3dDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(rotatingMap2dTo3dDecorator);
+    dt__classOnlyName(rotatingMap2dTo3dDecorator);
     rotatingMap2dTo3dDecorator();
     virtual ~rotatingMap2dTo3dDecorator();
     virtual void buildPart(

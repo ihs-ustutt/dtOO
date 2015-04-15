@@ -37,21 +37,19 @@ namespace dtOO {
     _aS_3_1_0 = _aS[3]->getPointPercentVector(1.,0.);
     _aS_3_1_1 = _aS[3]->getPointPercentVector(1.,1.);
                   
-    DTINFOWF(transIntCube(),
-      << "Creating transfinite interpolation with:" << LOGDEL
-      << DTLOGEVAL(aS0->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS1->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS2->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS3->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS4->getLabel()) << LOGDEL
-      << DTLOGEVAL(aS5->getLabel()) << LOGDEL
+    dt__info(transIntCube(),
+      << "Creating transfinite interpolation with:" << std::endl
+      << dt__eval(aS0->getLabel()) << std::endl
+      << dt__eval(aS1->getLabel()) << std::endl
+      << dt__eval(aS2->getLabel()) << std::endl
+      << dt__eval(aS3->getLabel()) << std::endl
+      << dt__eval(aS4->getLabel()) << std::endl
+      << dt__eval(aS5->getLabel()) << std::endl
     );    
   } 
 
   transIntCube::transIntCube(const transIntCube& orig) {
-    dt__FORALL(orig._aS, ii,
-      _aS.push_back( orig._aS[ii]->clone() );
-    );
+    dt__forAllIndex(orig._aS, ii) _aS.push_back( orig._aS[ii]->clone() );
     _aS_1_0_0 = orig._aS_1_0_0;
     _aS_1_0_1 = orig._aS_1_0_1;
     _aS_1_1_0 = orig._aS_1_1_0;

@@ -28,7 +28,7 @@ namespace dtOO {
   public:
 		typedef std::map< int, std::vector< ::GEntity * > > intGEntityVMap;
   public:
-    dt__CLASSSTD(dtGmshModel, ::GModel);      
+    dt__class(dtGmshModel, ::GModel);      
     dtGmshModel(std::string name="");
     virtual ~dtGmshModel();
     dtGmshRegion * getDtGmshRegionByTag( int const tag ) const;
@@ -46,6 +46,7 @@ namespace dtOO {
     static dtGmshVertex * cast2DtGmshVertex( ::GEntity * gv );
     static dtPoint3 cast2DtPoint3( ::GVertex * gv );  
     static dtPoint3 cast2DtPoint3( ::MVertex * mv );
+    static void setPosition( ::MVertex * mv, dtPoint3 const & pp );
     void addIfVertexToGmshModel( dtPoint3 const & vertex, int * const tag );
     void addIfEdgeToGmshModel(
       map1dTo3d const * const edge, 
@@ -69,6 +70,7 @@ namespace dtOO {
     void meshEdge( int const tag );
     void meshFace( int const tag );
     void meshRegion( int const tag );
+    void meshRegion( void );    
     int alreadyInModel( ::GVertex const * const gv ) const;
     int alreadyInModel( ::GEdge const * const ge ) const;
     int alreadyInModel( ::GFace const * const gf ) const;
@@ -77,13 +79,12 @@ namespace dtOO {
       std::vector< ::MVertex const * > const & vertices, 
       std::vector< ::MElement const * > const & elements
     ); 
-    static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
-      std::vector< ::MVertex const * > const & vertices, 
+    static unstructured3dMesh * toUnstructured3dMesh(
       std::vector< ::MElement const * > const & elements
-    );
-    static discrete3dPoints * toDiscrete3dPoints( 
-      std::vector< ::MVertex const * > const & vertices
-    );
+    );     
+    static renderInterface * toAdequateSurfaceRenderInterface( 
+        std::vector< ::MElement const * > const & elements
+	  );
     static renderInterface * toAdequateSurfaceRenderInterface( 
       std::vector< ::MVertex const * > const & vertices, 
       std::vector< ::MElement const * > const & elements
@@ -103,6 +104,15 @@ namespace dtOO {
       int const & dim, 
       int const & num, 
       std::vector< ::MVertex const * > & vertices
+    );    
+    void tagPhysical(::GEntity * const ge, std::string const & pName);
+  private:
+    static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
+      std::vector< ::MVertex const * > const & vertices, 
+      std::vector< ::MElement const * > const & elements
+    );    
+    static discrete3dPoints * toDiscrete3dPoints( 
+      std::vector< ::MVertex const * > const & vertices
     );    
   };
 }

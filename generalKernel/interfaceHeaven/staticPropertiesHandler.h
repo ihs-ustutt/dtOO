@@ -7,7 +7,7 @@
 namespace dtOO {
   class staticPropertiesHandler : public optionHandling {
   public:
-    dt__CLASSNAME(staticPropertiesHandler);
+    dt__classOnlyName(staticPropertiesHandler);
     static staticPropertiesHandler * getInstance( void );
     virtual ~staticPropertiesHandler();
   private:

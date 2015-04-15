@@ -6,7 +6,7 @@
 namespace dtOO {  
   class mesherOpt : public mesher {
   public:
-    dt__CLASSNAME(mesherOpt);
+    dt__classOnlyName(mesherOpt);
     mesherOpt(int argc, char *argv[]);    
     virtual int compute(char const * str);    
     virtual ~mesherOpt();

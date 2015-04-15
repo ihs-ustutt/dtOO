@@ -15,7 +15,7 @@ namespace dtOO {
 
   constValue * constValueFactory::create(char const * const str) const {
 
-    DTINFOWF(create(),
+    dt__info(create(),
             << str <<  " creating ... ");
 
     if ( strcmp(str, "sliderFloatParam") == 0 ) {
@@ -24,7 +24,7 @@ namespace dtOO {
     if ( strcmp(str, "intParam") == 0 ) {
       return new intParam;
     }    
-    dt__THROW(create(),
+    dt__throw(create(),
             <<  "Could not be created.");
   }
 

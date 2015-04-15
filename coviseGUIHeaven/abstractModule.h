@@ -14,7 +14,7 @@
 namespace dtOO {  
   class abstractModule {    
   public:
-    dt__CLASSNAME(abstractModule);
+    dt__classOnlyName(abstractModule);
     virtual ~abstractModule();
     static std::string initializeLogFile( std::string const logFileName ) ; 
     static void closeLogFile( void );
@@ -42,10 +42,10 @@ namespace dtOO {
       std::vector<std::string> choicesFun(vecHP->size(), "empty");
       for (int ii = 0;ii<vecHP->size();ii++) {
         if ( !vecHP->at(ii)->Is( labelHandling() ) ) {
-          dt__THROW(
+          dt__throw(
             updateChoiceParam(), 
-            << "vecHP< T >: T is not a baseclass of labelHandling" << LOGDEL
-            << DTLOGEVAL(vecHP->at(ii)->virtualClassName())
+            << "vecHP< T >: T is not a baseclass of labelHandling" << std::endl
+            << dt__eval(vecHP->at(ii)->virtualClassName())
           );
         }        
         choicesFun[ii] = dynamic_cast< labelHandling const * >(vecHP->at(ii))->getLabel();

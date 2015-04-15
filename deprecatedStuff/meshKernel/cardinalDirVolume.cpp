@@ -106,7 +106,7 @@ namespace dtOO {
         //      
         analyticGeometry const * aG = depAGeoP->get(label);
         map2dTo3d const * mm2d;
-        dt__MUSTDOWNCAST(aG, map2dTo3d const, mm2d);
+        dt__mustCast(aG, map2dTo3d const, mm2d);
 
         //
         // put surface at correct position and store pointer

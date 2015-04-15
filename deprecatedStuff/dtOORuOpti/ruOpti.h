@@ -14,7 +14,7 @@ namespace dtOO {
   class ruOpti : public covise::coModule,
                  public abstractModule {
   public:
-    dt__CLASSNAME(ruOpti);    
+    dt__classOnlyName(ruOpti);    
     ruOpti(int argc, char *argv[]);
     virtual ~ruOpti();
     virtual int compute(const char *); 

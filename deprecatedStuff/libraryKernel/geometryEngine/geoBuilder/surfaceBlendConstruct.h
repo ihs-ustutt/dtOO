@@ -12,7 +12,7 @@ namespace dtOO {
   
   class surfaceBlendConstruct {
   public:
-    dt__CLASSNAME(surfaceBlendConstruct);     
+    dt__classOnlyName(surfaceBlendConstruct);     
     surfaceBlendConstruct( vectorHandling< dtCurve const * > const &  curveList );
     virtual ~surfaceBlendConstruct();
     dtSurface * result( void );

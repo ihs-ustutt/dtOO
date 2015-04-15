@@ -14,7 +14,7 @@ namespace dtOO {
 
   class vec2dInMap2dTo3dDecorator : public dtXmlParserDecorator {
   public:  
-    dt__CLASSNAME(vec2dInMap2dTo3dDecorator);
+    dt__classOnlyName(vec2dInMap2dTo3dDecorator);
     vec2dInMap2dTo3dDecorator();
     virtual ~vec2dInMap2dTo3dDecorator();
     virtual void buildPart(

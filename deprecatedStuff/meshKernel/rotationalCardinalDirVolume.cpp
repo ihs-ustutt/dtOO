@@ -43,9 +43,9 @@ namespace dtOO {
     rotatingSpline const * rS;
     
     aS = getPtrTM(fStrToId("dtNorth"));
-    dt__MUSTDOWNCAST(aS, rotatingSpline const, rS);
+    dt__mustCast(aS, rotatingSpline const, rS);
     aS = getPtrToSurf(fStrToId("dtSouth"));
-    dt__MUSTDOWNCAST(aS, rotatingSpline const, rS);
+    dt__mustCast(aS, rotatingSpline const, rS);
     
     aS = getPtrToSurf( fStrToId("dtWest") );
     

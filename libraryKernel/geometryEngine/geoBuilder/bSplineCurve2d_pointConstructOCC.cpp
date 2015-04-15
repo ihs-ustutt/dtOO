@@ -20,10 +20,10 @@ namespace dtOO {
 		int const nP = pp.size();
 		int const nOnes = nP - (order+1);
 		if (nOnes < 0) {
-			dt__THROW(bSplineCurve2d_pointConstructOCC(),
-							<< "Order too high. Please reduce order of the spline." << LOGDEL
-							<< DTLOGEVAL(order) << LOGDEL
-							<< DTLOGEVAL(nOnes) );
+			dt__throw(bSplineCurve2d_pointConstructOCC(),
+							<< "Order too high. Please reduce order of the spline." << std::endl
+							<< dt__eval(order) << std::endl
+							<< dt__eval(nOnes) );
 		}
 		
 		//
@@ -37,9 +37,9 @@ namespace dtOO {
 		//
 		// set poles and multiplicity
 		//	
-		dt__FORALL(pp, ii,
+		dt__forAllIndex(pp, ii) {
 		  poles.SetValue( ii+1, gp_Pnt2d(pp[ii].x(), pp[ii].y()) ); 
-	  );
+	  }
 		for (int ii=1;ii<=knots.Length();ii++) {
 			knots.SetValue( ii, static_cast<float>(ii-1) );
 		}

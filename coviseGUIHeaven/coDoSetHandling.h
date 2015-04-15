@@ -23,7 +23,7 @@ namespace dtOO {
   
   class coDoSetHandling : public vectorHandling< renderInterface * > {
     public:
-      dt__CLASSNAME(coDoSetHandling);
+      dt__classOnlyName(coDoSetHandling);
       coDoSetHandling();
       virtual ~coDoSetHandling();
       covise::coDoSet * render2d( coDoSetHandling const & vec, char const * str) const;

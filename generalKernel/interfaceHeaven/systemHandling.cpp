@@ -22,11 +22,11 @@ namespace dtOO {
     int status = system( cmd.c_str() );
     int wExitStatus = WEXITSTATUS(status);
     
-    DTINFOWF(command(),
-            << DTLOGEVAL(cmd) << LOGDEL
-            << DTLOGEVAL(nullStatus) << LOGDEL
-            << DTLOGEVAL(status) << LOGDEL
-            << DTLOGEVAL(wExitStatus) );
+    dt__info(command(),
+            << dt__eval(cmd) << std::endl
+            << dt__eval(nullStatus) << std::endl
+            << dt__eval(status) << std::endl
+            << dt__eval(wExitStatus) );
   }
 
   void systemHandling::commandAndWait( std::string const & cmd ) {
@@ -36,23 +36,23 @@ namespace dtOO {
     int nullStatus = system(NULL);
     FILE * status = popen( cmd.c_str(), "r" );
 //    int wExitStatus = WEXITSTATUS(status);
-    dt__THROW_IF(status == 0, commandAndWait());
+    dt__throwIf(status == 0, commandAndWait());
 
     const int BUFSIZE = 80;
     char buf[ BUFSIZE ];
     while( fgets( buf, BUFSIZE,  status ) ) {
-      DTINFOWF(
+      dt__info(
 				commandAndWait(),
-				<< DTLOGEVAL(buf)  
+				<< dt__eval(buf)  
 			);
     }
     pclose( status );
     
-    DTINFOWF(
+    dt__info(
 			command(),
-      << DTLOGEVAL(cmd) << LOGDEL
-      << DTLOGEVAL(nullStatus) << LOGDEL
-      << DTLOGEVAL(status)
+      << dt__eval(cmd) << std::endl
+      << dt__eval(nullStatus) << std::endl
+      << dt__eval(status)
 		);
   }
   
@@ -65,9 +65,9 @@ namespace dtOO {
     //
     // output
     //    
-    DTINFOWF(createDirectory(),
-            << DTLOGEVAL(dirPath) << LOGDEL
-            << DTLOGEVAL(status) );
+    dt__info(createDirectory(),
+            << dt__eval(dirPath) << std::endl
+            << dt__eval(status) );
     if (status) {
       return false;
     }
@@ -86,7 +86,7 @@ namespace dtOO {
   
   void systemHandling::deleteFile( std::string const filename ) {
     if( remove( filename.c_str() ) != 0 ) {
-      dt__THROW(deleteFile(), << "Error deleting " << DTLOGEVAL(filename) );
+      dt__throw(deleteFile(), << "Error deleting " << dt__eval(filename) );
     }
   }
 
@@ -97,18 +97,18 @@ namespace dtOO {
 		);
   }
 	catch( boost::filesystem::filesystem_error const & e) {
-      dt__THROW(
+      dt__throw(
 				deleteDirectory(), 
-				<< "Error deleting " << DTLOGEVAL(e.what()) << LOGDEL
-				<< "Error deleting " << DTLOGEVAL(dirname) 
+				<< "Error deleting " << dt__eval(e.what()) << std::endl
+				<< "Error deleting " << dt__eval(dirname) 
 			);
 
   }		
 //    if( status != 0 ) {
 //      dt__THROW(
 //				deleteDirectory(), 
-//				<< "Error deleting " << DTLOGEVAL(status) << LOGDEL
-//				<< "Error deleting " << DTLOGEVAL(dirname) 
+//				<< "Error deleting " << dt__eval(status) << std::endl
+//				<< "Error deleting " << dt__eval(dirname) 
 //			);
 //    }
   }	
@@ -130,7 +130,7 @@ namespace dtOO {
 	//				std::cerr << "Source directory " << source.string()
 	//						<< " does not exist or is not a directory." << '\n'
 	//				;
-				dt__THROW( 
+				dt__throw( 
 					copyDirectory(), 
 					<< "Source directory " << source.string() 
 					<< " does not exist or is not a directory."
@@ -142,7 +142,7 @@ namespace dtOO {
 	//				std::cerr << "Destination directory " << destination.string()
 	//						<< " already exists." << '\n'
 	//				;
-				dt__THROW( 
+				dt__throw( 
 					copyDirectory(), 
 					<< "Destination directory " << destination.string() << " already exists."
 				);				
@@ -154,7 +154,7 @@ namespace dtOO {
 	//			std::cerr << "Unable to create destination directory"
 	//					<< destination.string() << '\n'
 	//			;
-				dt__THROW( 
+				dt__throw( 
 					copyDirectory(), 
 					<< "Unable to create destination directory" << destination.string() 
 				);			
@@ -207,7 +207,7 @@ namespace dtOO {
 			catch(fs::filesystem_error const & e)
 			{
 				//std:: cerr << e.what() << '\n';
-				dt__THROW( copyDirectory(), << DTLOGEVAL(e.what()) );
+				dt__throw( copyDirectory(), << dt__eval(e.what()) );
 			}
 		}
 //		return true;

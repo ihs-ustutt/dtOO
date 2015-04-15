@@ -54,8 +54,8 @@ namespace dtOO {
       constValue * cV = cValP->get(label);
       if (!cV) {
         dt__THROW(init,
-                DTLOGEVAL(cV) << LOGDEL
-                << "constValue " << DTLOGEVAL(label) 
+                dt__eval(cV) << std::endl
+                << "constValue " << dt__eval(label) 
                 << " not in vector _cValP.");
       }
       if (attribute == "dtX") {
@@ -80,10 +80,10 @@ namespace dtOO {
     
     float val = (xx - 2.) * (xx - 2.) + yy * yy + 2. + 4.;
     
-    DTINFOWF(characterizeMe(),
-            << DTLOGEVAL(xx) << LOGDEL
-            << DTLOGEVAL(yy) << LOGDEL
-            << DTLOGEVAL(val) );
+    dt__info(characterizeMe(),
+            << dt__eval(xx) << std::endl
+            << dt__eval(yy) << std::endl
+            << dt__eval(val) );
     return val;
   }
 
@@ -103,7 +103,7 @@ namespace dtOO {
     //nothing
   }
   void optiTestVolume::writeGrid( void ) {
-    DTINFOWF(writeGrid(),
+    dt__info(writeGrid(),
             << "Writing abstract, senseless grid ;-)");
   }
 

@@ -9,7 +9,7 @@
 namespace dtOO {
   class solid3dSurface : public renderInterface {
   public:
-    dt__CLASSSTD(solid3dSurface, renderInterface);
+    dt__class(solid3dSurface, renderInterface);
     solid3dSurface();
     solid3dSurface(twoDArrayHandling< dtPoint3 > const & pp);
     virtual ~solid3dSurface();

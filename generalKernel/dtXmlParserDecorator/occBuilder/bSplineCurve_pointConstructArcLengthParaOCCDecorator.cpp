@@ -42,7 +42,7 @@ namespace dtOO {
       analyticGeometry * aG 
 			=
 			createAnalyticGeometry(&wElement, bC, cValP, sFunP, depAGeoP);
-			dt__PTRASS(splineCurve3d const * sC3, splineCurve3d::ConstDownCast(aG));
+			dt__ptrAss(splineCurve3d const * sC3, splineCurve3d::ConstDownCast(aG));
   		aGeoP->push_back( 
 			  new splineCurve3d(
 			    bSplineCurve_pointConstructArcLengthParaOCC(
@@ -52,11 +52,11 @@ namespace dtOO {
 			);
     }
     else {
-      dt__THROW(buildPart(),
-              << DTLOGEVAL(hasAG) << LOGDEL
-							<< DTLOGEVAL(hasTol) << LOGDEL
-							<< DTLOGEVAL(hasMaxOrder) << LOGDEL
-							<< DTLOGEVAL(hasSegments) );
+      dt__throw(buildPart(),
+              << dt__eval(hasAG) << std::endl
+							<< dt__eval(hasTol) << std::endl
+							<< dt__eval(hasMaxOrder) << std::endl
+							<< dt__eval(hasSegments) );
     }
   }
 }
