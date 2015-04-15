@@ -34,8 +34,7 @@ namespace dtOO {
       // clone and cast analyticGeometry
       //
       analyticGeometry * aGeoP = aGeoVecP->at(ii)->clone();
-      analyticSurface *  aS;
-      dt__mustCast(aGeoP, analyticSurface, aS);
+      dt__ptrAss(analyticSurface * aS, analyticSurface::DownCast(aGeoP));
 
 //      //
 //      // check if it is rotational

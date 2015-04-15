@@ -11,8 +11,13 @@
 
 # ${OpenFOAM_FOUND} is cached, so once OF is found this block shouldn't have to run again
 IF( NOT OpenFOAM_FOUND STREQUAL TRUE )
-  set( _incsearchpath $ENV{FOAM_SRC}/foam/lnInclude $ENV{FOAM_SRC}/OSspecific/POSIX/lnInclude )
-  set( _testlibname libfoam.so )
+  set( 
+    _incsearchpath 
+    $ENV{FOAM_SRC}/foam/lnInclude 
+    $ENV{FOAM_SRC}/OpenFOAM/lnInclude 
+    $ENV{FOAM_SRC}/OSspecific/POSIX/lnInclude 
+  )
+  set( _testlibname libODE.so )
   set( _libsearchpath $ENV{FOAM_LIBBIN} )
   #find the include dir by looking for Standard_Real.hxx
   FIND_PATH( OpenFOAM_foam_INCLUDE_DIR entry.H PATHS ${_incsearchpath} DOC "Path to OF foam includes" )
@@ -50,9 +55,10 @@ IF( OpenFOAM_FOUND STREQUAL TRUE )
       FIND_LIBRARY( ${_libname}_OFLIB ${_libname} ${OpenFOAM_LINK_DIRECTORY} ${OpenFOAM_LINK_DIRECTORY}/openmpi-system NO_DEFAULT_PATH)
       SET( _foundlib ${${_libname}_OFLIB} )
       IF( _foundlib STREQUAL ${_libname}_OFLIB-NOTFOUND )
-        MESSAGE( FATAL_ERROR "Cannot find ${_libname}. Is it spelled correctly? Correct capitalization? Do you have another package with similarly-named libraries, installed at ${OpenFOAM_LINK_DIRECTORY}? (That is where this script thinks the OF libs are.)" )
+        MESSAGE( WARNING "Cannot find ${_libname}. Is it spelled correctly? Correct capitalization? Do you have another package with similarly-named libraries, installed at ${OpenFOAM_LINK_DIRECTORY}? (That is where this script thinks the OF libs are.)" )
+      ELSE ( _foundlib STREQUAL ${_libname}_OFLIB-NOTFOUND )
+        SET( OpenFOAM_LIBRARIES ${OpenFOAM_LIBRARIES} ${_foundlib} )
       ENDIF( _foundlib STREQUAL ${_libname}_OFLIB-NOTFOUND )
-      SET( OpenFOAM_LIBRARIES ${OpenFOAM_LIBRARIES} ${_foundlib} )
     ENDFOREACH( _libname ${OpenFOAM_FIND_COMPONENTS} )
 
     #

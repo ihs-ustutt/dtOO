@@ -73,8 +73,7 @@ find_package(CGNS REQUIRED)
 find_package(
   OpenFOAM
   COMPONENTS 
-  foam Pstream
-  REQUIRED 
+  foam OpenFOAM Pstream
 )
 find_package(CGM)
 find_package(LASSO)
@@ -139,8 +138,6 @@ include_directories(
   ${MOAB_INCLUDE_DIR}
   ${MESHKIT_INCLUDE_DIR}
   ${OpenMesh_INCLUDE_DIR}
-#/foam/lnInclude
-#  ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
 )
 
 #------------------------------------------------------------------------------#

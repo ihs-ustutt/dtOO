@@ -115,7 +115,7 @@ namespace dtOO {
   
   void conformalMapping::handleAnalyticGeometry(std::string const name, analyticGeometry const * value) {
     if (name == "part_label") {
-      dt__mustCast(value, rotatingSpline const, _rotSplineP);
+      dt__ptrAss( _rotSplineP, rotatingSpline::ConstDownCast(value) );
       return;
     }
     dtTransformer::handleAnalyticGeometry(name, value);
