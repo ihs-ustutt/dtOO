@@ -52,6 +52,14 @@ namespace dtOO {
         };		
         return ee;
       }
+      template < class T >
+      static void removeBastardTwins( std::vector< T > & toMod) {
+		    std::sort(toMod.begin(), toMod.end());
+        toMod.erase( 
+				  std::unique(toMod.begin(), toMod.end() ), 
+					toMod.end()
+				);        
+      }      
       template <class T> 
       static T prior(T x) { 
         return --x; 
