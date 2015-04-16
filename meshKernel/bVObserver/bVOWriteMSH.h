@@ -11,7 +11,7 @@ namespace dtOO {
   
   class bVOWriteMSH : public bVOInterface {
   public:
-    dt__classOnlyName(bVOWriteMSH);
+    dt__class(bVOWriteMSH, bVOInterface);
     bVOWriteMSH();
     virtual ~bVOWriteMSH();
     virtual void init(

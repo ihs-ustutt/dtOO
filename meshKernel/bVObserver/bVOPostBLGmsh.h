@@ -13,7 +13,7 @@ namespace dtOO {
   
   class bVOPostBLGmsh : public bVOInterface {
   public:
-    dt__classOnlyName(bVOPostBLGmsh);
+    dt__class(bVOPostBLGmsh, bVOInterface);
     bVOPostBLGmsh();
     virtual ~bVOPostBLGmsh();
     virtual void init(
@@ -24,7 +24,7 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > const * const aG,
       vectorHandling< boundedVolume * > const * const bV,
       boundedVolume * attachTo
-    );    
+    );
     virtual void postUpdate( void );
   private:
     float _thickness;

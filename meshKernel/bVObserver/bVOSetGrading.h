@@ -12,7 +12,7 @@ namespace dtOO {
   
   class bVOSetGrading : public bVOInterface {
   public:
-    dt__classOnlyName(bVOSetGrading);
+    dt__class(bVOSetGrading, bVOInterface);
     bVOSetGrading();
     virtual ~bVOSetGrading();
     virtual void init(

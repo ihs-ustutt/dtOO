@@ -12,7 +12,7 @@ namespace dtOO {
   
   class bVONameFaces : public bVOInterface {
   public:
-    dt__classOnlyName(bVONameFaces);
+    dt__class(bVONameFaces, bVOInterface);
     bVONameFaces();
     virtual ~bVONameFaces();
     virtual void init(
