@@ -14,6 +14,7 @@ namespace dtOO {
   class dtGmshEdge : public ::GEdge {
   public:
     dt__class(dtGmshEdge, ::GEntity);
+    dtGmshEdge(::GModel *m, int tag);
     dtGmshEdge(::GModel * model, int tag, ::GVertex *v1, ::GVertex *v2);
     virtual ~dtGmshEdge();
     virtual Range<double> parBounds(int i) const;

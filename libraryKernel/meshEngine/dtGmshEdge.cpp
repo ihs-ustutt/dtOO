@@ -18,6 +18,12 @@
 #include <progHelper.h>
 
 namespace dtOO {  
+  dtGmshEdge::dtGmshEdge(::GModel *m, int tag)
+    : GEdge(m, tag) {
+    _isSeamU = false;
+    _isSeamV = false;		
+  }
+	
   dtGmshEdge::dtGmshEdge(::GModel *m, int tag, ::GVertex *v1, ::GVertex *v2)
     : GEdge(m, tag, v1, v2) {
     _isSeamU = false;
