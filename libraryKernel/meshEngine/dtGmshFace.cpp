@@ -10,6 +10,8 @@
 #include <gmsh/GEdge.h>
 #include <gmsh/GModel.h>
 #include <gmsh/MElement.h>
+#include <gmsh/MQuadrangle.h>
+#include <gmsh/MTriangle.h>
 #include <gmsh/MVertex.h>
 #include <list>
 #include <map>
@@ -579,5 +581,14 @@ namespace dtOO {
 		}
 		
 		return om;
+	}
+	
+	void dtGmshFace::addElement( ::MElement * me ) {
+		::MQuadrangle * mquad = dynamic_cast< ::MQuadrangle * >(me);
+		::MTriangle * mtri = dynamic_cast< ::MTriangle * >(me);
+		
+		if (mquad) addQuadrangle(mquad);
+		else if (mtri) addTriangle(mtri);
+		else dt__throw(addElement(), << "Try to add unsupported element.");
 	}
 }

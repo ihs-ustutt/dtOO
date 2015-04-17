@@ -59,6 +59,7 @@ namespace dtOO {
       std::vector< ::MElement const * > * const me
     ) const;
     dtOMMesh * getOMMesh( void ) const;
+    void addElement( ::MElement * me );
   private:
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:
