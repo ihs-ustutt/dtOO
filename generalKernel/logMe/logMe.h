@@ -195,89 +195,91 @@ namespace dtOO {
     #point" = ( " << point.x() << ", " << point.y() << ", " << point.z() << ")"  
   #define dt__eval( eval ) #eval" = " << eval
   #define dt__info(functionname, message) \
-      if (logINFO > FILELog::ReportingLevel() ) {} else { \
-        FILELog().Get(logINFO) \
-          << "|    " << className() << "::"#functionname << std::endl \
-          message \
-          << std::endl \
-          << std::endl; \
-      }
-  #define dt__warning(functionname, message) \
-      if (logWARNING > FILELog::ReportingLevel() ) {} else { \
-        FILELog().Get(logWARNING) \
-          << "|    " << className() << "::"#functionname << std::endl \
-          message \
-          << std::endl \
-          << std::endl; \
-      }
-  #define dt__debug(functionname, message) \
-      if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
-        FILELog().Get(logDEBUG) \
-          << "|    " << className() << "::"#functionname << std::endl \
-          message \
-          << std::endl \
-          << std::endl ;\
-      }
-  #define dt__throw(functionname, message) \
-      throw dtOO::eGeneral( \
-        std::ostringstream().flush() \
-          << className() << "::"#functionname << std::endl \
-          << "*-> file '" <<  __FILE__ << "'" << std::endl \
-          << "*-> line '" << __LINE__ << "'" << std::endl \
-          << std::endl \
-          message \
-          << std::endl \
-          << dtOO::logMe::Backtrace() \
-          << std::endl \
-          << "Honor thy error as a hidden intention. (Brian Eno)"\
-      )
-  #define dt__throwIfWithMessage(cond, functionname, message) \
-      if (cond) { \
-        dt__throw(functionname, \
-        << "condition: "#cond" is true." << std::endl \
-        message); \
-      }
-  #define dt__throwIf(cond, functionname) \
-      if (cond) { \
-        dt__throw(functionname, << "condition: "#cond" is true."); \
-      }
-  #define dt__warnIfWithMessage(cond, functionname, message) \
-      if (cond) { \
-        dt__warning(functionname, \
-        << "condition: "#cond" is true." << std::endl \
-        message); \
-      }
-  #define dt__warnIfWithMessageAndSolution(cond, solution, functionname, message) \
-      if (cond) { \
-        solution; \
-        dt__warning(functionname, \
-        << "condition: "#cond" is true." << std::endl \
-        message); \
-      }
-  #define dt__warnIf(cond, functionname) \
-      if (cond) { \
-        dt__warning(functionname, << "condition: "#cond" is true."); \
-      }
-  #define dt__throwSpec(eType, functionname, message) \
-      eType( \
-        std::ostringstream().flush() \
-          << className() << "::"#functionname << std::endl \
-          << "*-> file '" <<  __FILE__ << "'" << std::endl \
-          << "*-> line '" << __LINE__ << "'" << std::endl \
-          << std::endl \
-          message \
-          << std::endl \
-          << dtOO::logMe::Backtrace() \
-          << std::endl \
-          << "Honor thy error as a hidden intention. (Brian Eno)"\
-      )
-  #define dt__catch(functionname, eGWhat) \
-      FILELog().Get(logERROR) \
-        << "|    " << className() << "::"#functionname \
-        << " >> Catching instance of eGeneral from " \
-        << eGWhat \
+    if (logINFO > FILELog::ReportingLevel() ) {} else { \
+      FILELog().Get(logINFO) \
+        << "|    " << className() << "::"#functionname << std::endl \
+        message \
         << std::endl \
-        << std::endl
+        << std::endl; \
+    }
+  #define dt__warning(functionname, message) \
+    if (logWARNING > FILELog::ReportingLevel() ) {} else { \
+      FILELog().Get(logWARNING) \
+        << "|    " << className() << "::"#functionname << std::endl \
+        message \
+        << std::endl \
+        << std::endl; \
+    }
+  #define dt__debug(functionname, message) \
+    if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
+      FILELog().Get(logDEBUG) \
+        << "|    " << className() << "::"#functionname << std::endl \
+        message \
+        << std::endl \
+        << std::endl ;\
+    }
+  #define dt__throw(functionname, message) \
+    throw dtOO::eGeneral( \
+      std::ostringstream().flush() \
+        << className() << "::"#functionname << std::endl \
+        << "*-> file '" <<  __FILE__ << "'" << std::endl \
+        << "*-> line '" << __LINE__ << "'" << std::endl \
+        << std::endl \
+        message \
+        << std::endl \
+        << dtOO::logMe::Backtrace() \
+        << std::endl \
+        << "Honor thy error as a hidden intention. (Brian Eno)"\
+    )
+  #define dt__throwUnexpected(functionname) \
+    dt__throw(functionname, << "Unexpected")
+  #define dt__throwIfWithMessage(cond, functionname, message) \
+    if (cond) { \
+      dt__throw(functionname, \
+      << "condition: "#cond" is true." << std::endl \
+      message); \
+    }
+  #define dt__throwIf(cond, functionname) \
+    if (cond) { \
+      dt__throw(functionname, << "condition: "#cond" is true."); \
+    }
+  #define dt__warnIfWithMessage(cond, functionname, message) \
+    if (cond) { \
+      dt__warning(functionname, \
+      << "condition: "#cond" is true." << std::endl \
+      message); \
+    }
+  #define dt__warnIfWithMessageAndSolution(cond, solution, functionname, message) \
+    if (cond) { \
+      solution; \
+      dt__warning(functionname, \
+      << "condition: "#cond" is true." << std::endl \
+      message); \
+    }
+  #define dt__warnIf(cond, functionname) \
+    if (cond) { \
+      dt__warning(functionname, << "condition: "#cond" is true."); \
+    }
+  #define dt__throwSpec(eType, functionname, message) \
+    eType( \
+      std::ostringstream().flush() \
+        << className() << "::"#functionname << std::endl \
+        << "*-> file '" <<  __FILE__ << "'" << std::endl \
+        << "*-> line '" << __LINE__ << "'" << std::endl \
+        << std::endl \
+        message \
+        << std::endl \
+        << dtOO::logMe::Backtrace() \
+        << std::endl \
+        << "Honor thy error as a hidden intention. (Brian Eno)"\
+    )
+  #define dt__catch(functionname, eGWhat) \
+    FILELog().Get(logERROR) \
+      << "|    " << className() << "::"#functionname \
+      << " >> Catching instance of eGeneral from " \
+      << eGWhat \
+      << std::endl \
+      << std::endl
   #define dt__makeChapter(chaptername) \
     if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
       FILELog().Get() \
@@ -289,39 +291,39 @@ namespace dtOO {
         << std::endl; \
     }
   #define dt__functionNotImplemented(functionname) \
-          std::cout << "This function is not yet implemented." << std::endl
+    std::cout << "This function is not yet implemented." << std::endl
   #define dt__tryOcc(cmd, errorOut) \
-  try { \
-    OCC_CATCH_SIGNALS \
-    cmd \
-  } \
-  catch( Standard_Failure ) { \
-      throw eGeneral( std::ostringstream().flush() << className() << "::" << std::endl \
-          << "*-> file '" <<  __FILE__ << "'" << std::endl \
-          << "*-> line '" << __LINE__ << "'" << std::endl \
-          << std::endl \
-          << Standard_Failure::Caught() << std::endl \
-          << Standard_Failure::Caught()->GetMessageString() << std::endl \
-          << std::endl \
-          errorOut \
-          << std::endl \
-          << dtOO::logMe::Backtrace() \
-          << std::endl \
-          << "Honor thy error as a hidden intention. (Brian Eno)"); \
-  }
+    try { \
+      OCC_CATCH_SIGNALS \
+      cmd \
+    } \
+    catch( Standard_Failure ) { \
+        throw eGeneral( std::ostringstream().flush() << className() << "::" << std::endl \
+            << "*-> file '" <<  __FILE__ << "'" << std::endl \
+            << "*-> line '" << __LINE__ << "'" << std::endl \
+            << std::endl \
+            << Standard_Failure::Caught() << std::endl \
+            << Standard_Failure::Caught()->GetMessageString() << std::endl \
+            << std::endl \
+            errorOut \
+            << std::endl \
+            << dtOO::logMe::Backtrace() \
+            << std::endl \
+            << "Honor thy error as a hidden intention. (Brian Eno)"); \
+    }
   #define moab__throwIf(cond, functionname) \
-      if (cond) { \
-        std::string err; \
-		    moab::MBErrorHandler_GetLastError(err); \
-        dt__throw( \
-          functionname, \
-          << "condition: "#cond" is true." << std::endl \
-          << dt__eval(err) ); \
-      }  
+    if (cond) { \
+      std::string err; \
+      moab::MBErrorHandler_GetLastError(err); \
+      dt__throw( \
+        functionname, \
+        << "condition: "#cond" is true." << std::endl \
+        << dt__eval(err) ); \
+    }  
   #define meshkit__catch(functionname) \
-  catch( MeshKit::Error & merr ) { \
-    dt__throw(functionname, << merr.what() ); \
-  }
+    catch( MeshKit::Error & merr ) { \
+      dt__throw(functionname, << merr.what() ); \
+    }
   //
   // can redirect std::cout output to logfile
   //
@@ -370,7 +372,7 @@ namespace dtOO {
         std::basic_streambuf< char >* m_sb2;
   };
   
-  #define dt__LOGCOUT( spready,  coutswitch) \
+  #define dt__pipeCout( spready,  coutswitch ) \
   	Spreadbuf spready( std::cout.rdbuf(), Output2FILE::Stream().rdbuf() ); \
 		IosSwitch coutswitch( std::cout, &spready );
   }

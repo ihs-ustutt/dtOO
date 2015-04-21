@@ -54,12 +54,63 @@ namespace dtOO {
       }
       template < class T >
       static void removeBastardTwins( std::vector< T > & toMod) {
-		    std::sort(toMod.begin(), toMod.end());
+		    progHelper::sort(toMod);
         toMod.erase( 
 				  std::unique(toMod.begin(), toMod.end() ), 
 					toMod.end()
 				);        
-      }      
+      }     
+
+      /** Moves duplicates to front, returning end of duplicates range.
+       *  Use a sorted range as input. */
+      template < class T >
+      static void removeOnlyChildren( std::vector< T > & toMod ) {
+        //
+        // sort vector
+        //
+        progHelper::sort(toMod);
+        //
+        // remove duplicates
+        //
+        typename std::vector< T >::iterator dup = toMod.begin();
+        for (
+          typename std::vector< T >::iterator it = toMod.begin();
+          it != toMod.end();
+          ++it
+        ) {
+          typename std::vector< T >::iterator next = it;
+          ++next;
+          typename std::vector< T >::iterator const miss 
+          = 
+          std::mismatch(next, toMod.end(), it).second;
+          if (miss != it) {
+            *dup++ = *miss;
+            it = miss;
+          }
+        }
+        toMod.erase(dup, toMod.end());
+      }
+
+      template < class T >
+      static void sort( std::vector< T > & toMod ) {
+        std::sort(toMod.begin(), toMod.end());        
+      }
+      
+      template < class T >      
+      static T mostFrequentChild( std::vector< T > const & vec ) {
+        typename std::map< T , int > frequencyMap;
+        int maxFrequency = 0;
+        T mostFrequentElement = vec.front();
+        for (T x : vec) {
+          int f = ++frequencyMap[x];
+          if (f > maxFrequency) {
+            maxFrequency = f;
+            mostFrequentElement = x;
+          }
+        }
+        return mostFrequentElement;
+      }
+      
       template <class T> 
       static T prior(T x) { 
         return --x; 
