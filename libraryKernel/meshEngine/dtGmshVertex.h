@@ -22,6 +22,7 @@ namespace dtOO {
     virtual void setPosition(dtPoint3 const p);    
     virtual void setPosition(dtPoint3 const * const p);
     dtPoint3 cast2DtPoint3( void ) const;
+    void addGEntity( ::GEntity * const gEnt );
     static bool isEqual( ::GVertex const * const gv0, ::GVertex const * const gv1 );
   private:
     dtPoint3 _dtP;

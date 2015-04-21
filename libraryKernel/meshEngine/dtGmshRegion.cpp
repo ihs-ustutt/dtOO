@@ -70,8 +70,21 @@ namespace dtOO {
   }
 	
   void dtGmshRegion::addFace( ::GFace * face, int const ori ) {
-    l_faces.push_back( face );
-    face->addRegion(this);
-    l_dirs.push_back( ori );
+	  if (std::find(l_faces.begin(), l_faces.end(), face) == l_faces.end()) {
+		  l_faces.push_back(face);
+			l_dirs.push_back( ori );
+		}
   }  	
+	
+	void dtGmshRegion::addGEntity( ::GEntity * const gEnt ) {
+		//
+		// cast
+		//		
+		dt__ptrAss(dtGmshFace * gf, dtGmshFace::DownCast(gEnt));
+		
+		// add this region to face
+		gf->addRegion(this);
+		// add face to this region
+		addFace(gf, 1);
+	}
 }

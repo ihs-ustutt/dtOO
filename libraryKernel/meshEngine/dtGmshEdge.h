@@ -26,6 +26,8 @@ namespace dtOO {
     void setNElements( int const nE );
     void meshTransfinite( int const type, float const coeff );
     void meshTransfiniteWNElements( int const type, float const coeff, int const nElements );
+    void addGEntity( ::GEntity * const gEnt );
+    void addVertex( ::GVertex * gv);
     static bool isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 );
   private:
     ptrHandling< map1dTo3d > _mm;

@@ -5,6 +5,7 @@
 #include "dtGmshEdge.h"
 #include "dtGmshModel.h"
 #include "dtOMMesh.h"
+#include "dtGmshRegion.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <gmsh/GmshDefines.h>
 #include <gmsh/GEdge.h>
@@ -591,4 +592,26 @@ namespace dtOO {
 		else if (mtri) addTriangle(mtri);
 		else dt__throw(addElement(), << "Try to add unsupported element.");
 	}
+
+	void dtGmshFace::addGEntity( ::GEntity * const gEnt ) {
+		//
+		// cast
+		//
+		dtGmshEdge * ge = dtGmshEdge::DownCast(gEnt);
+		dtGmshRegion * gr = dtGmshRegion::DownCast(gEnt);
+		dt__throwIf( (ge==NULL)&&(gr==NULL), addGEntity() );
+
+		if (ge) {
+			// add this face to to edge
+      ge->addFace(this);
+      // add edge to this face
+			this->addEdge(ge, 1);
+		}
+		else {
+			// add this face to to region
+      gr->addFace(this, 1);
+      // add region to this face
+			this->addRegion(gr);
+		}
+	}	
 }

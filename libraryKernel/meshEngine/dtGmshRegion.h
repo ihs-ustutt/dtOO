@@ -19,6 +19,7 @@ namespace dtOO {
     void meshTransfinite( void );
     void meshUnstructured( void );
     void addFace( ::GFace * face, int const ori );
+	  void addGEntity( ::GEntity * const gEnt );
   public:
     mutable ::GEntity::MeshGenerationStatus _status;
   };

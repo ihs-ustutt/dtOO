@@ -94,6 +94,33 @@ namespace dtOO {
     meshTransfinite(type, coeff);
   }
 	
+	void dtGmshEdge::addGEntity( ::GEntity * const gEnt ) {
+		//
+		// cast
+		//		
+		dtGmshVertex * gv = dtGmshVertex::DownCast(gEnt);
+		dtGmshFace * gf = dtGmshFace::DownCast(gEnt);
+		dt__throwIf( (gv==NULL)&&(gf==NULL), addGEntity() );
+		
+		if (gv) {
+			// add this edge to vertex
+			gv->addEdge(this);
+      // add vertex to this edge
+			addVertex(gv);
+		}
+		else {
+			// add this edge to face
+			gf->addEdge(this, 1);
+      // add face to this edge
+			addFace(gf);
+		}
+	}
+	
+	void dtGmshEdge::addVertex( ::GVertex * gv) {
+	  if (std::find(l_vertices.begin(), l_vertices.end(), gv) == l_vertices.end()) 
+		  l_vertices.push_back(gv);
+	}
+	
   bool dtGmshEdge::isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 ) {	
 		std::list< ::GVertex * > VL0 = ge0->vertices();
 		std::list< ::GVertex * > VL1 = ge1->vertices();

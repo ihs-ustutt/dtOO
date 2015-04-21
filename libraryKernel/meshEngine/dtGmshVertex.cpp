@@ -1,8 +1,10 @@
 #include "dtGmshVertex.h"
 
 #include <gmsh/GPoint.h>
+#include <gmsh/GEdge.h>
 #include <gmsh/GModel.h>
 #include "dtGmshFace.h"
+#include "dtGmshEdge.h"
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
@@ -50,6 +52,18 @@ namespace dtOO {
   dtPoint3 dtGmshVertex::cast2DtPoint3( void ) const {
     return dtPoint3(x(), y(), z());
   }
+	
+	void dtGmshVertex::addGEntity( ::GEntity * const gEnt ) {
+		//
+		// cast
+		//		
+		dt__ptrAss(dtGmshEdge * ge, dtGmshEdge::DownCast(gEnt));
+		
+		// add this vertex to edge
+		ge->addVertex(this);
+		// add edge to this vertex
+		addEdge(ge);
+	}
 	
   bool dtGmshVertex::isEqual( ::GVertex const * const gv0, ::GVertex const * const gv1 ) {	
 		float xyzRes

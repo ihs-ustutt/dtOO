@@ -60,6 +60,7 @@ namespace dtOO {
     ) const;
     dtOMMesh * getOMMesh( void ) const;
     void addElement( ::MElement * me );
+	  void addGEntity( ::GEntity * const gEnt );
   private:
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:
