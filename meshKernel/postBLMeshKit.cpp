@@ -127,7 +127,7 @@ namespace dtOO {
 			pbl->addFixRange(commonRangeFix);
 			
 			{
-				dt__LOGCOUT(spread, coutswitch);
+				dt__pipeCout(spread, coutswitch);
 				pbl->execute_this();
 			}
 			
