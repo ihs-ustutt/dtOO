@@ -11,6 +11,10 @@
 #include "dtOMVertexField.h"
 #include "dtOMEdgeField.h"
 #include "dtMoabCore.h"
+#include "dtGmshVertex.h"
+#include "dtGmshEdge.h"
+#include "dtGmshFace.h"
+#include "dtGmshRegion.h"
 #include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
@@ -46,7 +50,8 @@ namespace dtOO {
 		std::vector< int > const & fori 					
 	) {
 		dt__info(operator(), << "Start algorithm ...");
-		dt__pVH(::MElement) elements;
+//		std::vector< ::MElement * > elements;
+		dtGmshModel * const wModel = dtGmshModel::DownCast(region->model());
 		//
 		// define two surface meshes
 		//
@@ -170,19 +175,142 @@ namespace dtOO {
 		}
 
 		dt__info(operator(), << "Normals calculated.");
-		
+
+    //
+    // add new GEntities
+    //		
+		typedef std::map< ::GEntity *, ::GEntity * > GEntGEnt_t;
+		GEntGEnt_t newOld;
+		int counter = 0;
+		dt__forFromToIter(omVertexI, omInit.vertices_begin(), omInit.vertices_end(), it) {
+			if ( !fixedF[*it] ) {
+				if ( newOld.find(omInit[*it]->onWhat()) == newOld.end() ) {
+          dtGmshVertex const * const gv 
+				  = 
+					dtGmshVertex::ConstDownCast(omInit[*it]->onWhat());					
+          dtGmshEdge const * const ge 
+				  = 
+					dtGmshEdge::ConstDownCast(omInit[*it]->onWhat());					
+          dtGmshFace const * const gf 
+				  = 
+					dtGmshFace::ConstDownCast(omInit[*it]->onWhat());					
+          dtGmshRegion const * const gr 
+				  = 
+					dtGmshRegion::ConstDownCast(omInit[*it]->onWhat());
+					
+					if (gv) {
+            dtGmshVertex * newVertex 
+						= 
+						new dtGmshVertex(wModel, wModel->getMaxVertexTag()+1);
+            wModel->add(newVertex);						
+						newOld[ omInit[*it]->onWhat() ] = newVertex;
+						wModel->tagPhysical(
+						  newVertex, "newGEntity_"+stringPrimitive::intToString(counter)
+						);
+						counter++;
+						//newVertex->meshStatistics.status = GEntity::MeshGenerationStatus::DONE;
+					}
+					else if (ge) {
+						dtGmshEdge * newEdge 
+						= 
+					  new dtGmshEdge(wModel, wModel->getMaxEdgeTag()+1);
+						wModel->add(newEdge);
+						newOld[ omInit[*it]->onWhat() ] = newEdge;
+						newEdge->meshStatistics.status = GEntity::MeshGenerationStatus::DONE;
+						wModel->tagPhysical(
+						  newEdge, "newGEntity_"+stringPrimitive::intToString(counter)
+						);
+						counter++;
+					}
+					else if (gf) {
+						dtGmshFace * newFace 
+						= 
+						new dtGmshFace(wModel, wModel->getMaxFaceTag()+1);
+						wModel->add(newFace);						
+						newOld[ omInit[*it]->onWhat() ] = newFace;
+						newFace->meshStatistics.status = GEntity::MeshGenerationStatus::DONE;
+						wModel->tagPhysical(
+						  newFace, "newGEntity_"+stringPrimitive::intToString(counter)
+						);
+						counter++;
+					}
+					else if (gr) {
+						dtGmshRegion * newRegion 
+						= 
+						new dtGmshRegion(wModel, wModel->getMaxRegionTag()+1);
+						wModel->add(newRegion);
+						newOld[ omInit[*it]->onWhat() ] = newRegion;
+						newRegion->_status = GEntity::MeshGenerationStatus::DONE;
+						wModel->tagPhysical(
+						  newRegion, "newGEntity_"+stringPrimitive::intToString(counter)
+						);
+						counter++;											
+					}
+					else dt__throwUnexpected(operator());
+				}
+			}
+		}
+		//
+		// find relationships
+		//		
+		dt__forAllIter(GEntGEnt_t, newOld, it) {
+			::GEntity * oldGE = it->first;
+			::GEntity * newGE = it->second;
+			
+			dtGmshVertex * gv = dtGmshVertex::DownCast(oldGE);
+			dtGmshEdge * ge = dtGmshEdge::DownCast(oldGE);
+			dtGmshFace * gf = dtGmshFace::DownCast(oldGE);
+			dtGmshRegion * gr = dtGmshRegion::DownCast(oldGE);
+
+			if (gv) {
+        dt__ptrAss(dtGmshVertex * gvn, dtGmshVertex::DownCast(newGE));
+				std::list< ::GEdge * > ee = gv->edges();
+				dt__forAllIter(std::list< ::GEdge * >, ee, eIt) {
+					if (newOld.find(*eIt) != newOld.end()) gvn->addGEntity( newOld[*eIt] );
+					else gvn->addGEntity(*eIt);
+				}
+			}
+			else if (ge) {
+        dt__ptrAss(dtGmshEdge * gen, dtGmshEdge::DownCast(newGE));
+				std::list< ::GVertex * > vv = ge->vertices();
+				dt__forAllIter(std::list< ::GVertex * >, vv, vIt) {
+					if (newOld.find(*vIt) != newOld.end()) gen->addGEntity( newOld[*vIt] );
+					else gen->addGEntity(*vIt);
+				}
+				std::list< ::GFace * > ff = ge->faces();
+				dt__forAllIter(std::list< ::GFace * >, ff, fIt) {
+					if (newOld.find(*fIt) != newOld.end()) gen->addGEntity( newOld[*fIt] );
+					else gen->addGEntity(*fIt);
+				}				
+			}
+			else if (gf) {
+        dt__ptrAss(dtGmshFace * gfn, dtGmshFace::DownCast(newGE));
+				std::list< ::GEdge * > ee = gf->edges();
+				dt__forAllIter(std::list< ::GEdge * >, ee, eIt) {
+					if (newOld.find(*eIt) != newOld.end()) gfn->addGEntity( newOld[*eIt] );
+					else gfn->addGEntity(*eIt);
+				}
+				std::list< ::GRegion * > rr = gf->regions();
+				dt__forAllIter(std::list< ::GRegion * >, rr, rIt) {
+					if (newOld.find(*rIt) != newOld.end()) gfn->addGEntity( newOld[*rIt] );
+					else gfn->addGEntity(*rIt);
+				}
+			}
+			
+		}
 		//
 		// create new vertices
 		//
 		dt__forFromToIter(omVertexI, omInit.vertices_begin(), omInit.vertices_end(), it) {
 			if ( !fixedF[*it] ) {
-        ::MVertex * mv = omInit[*it];					
-				::MVertex * mvNew = new ::MVertex(mv->x(), mv->y(), mv->z(), region);
+        ::MVertex * mv = omInit[*it];
+				::MVertex * mvNew = new ::MVertex(mv->x(), mv->y(), mv->z(), newOld[mv->onWhat()]);
 				omInit.replaceMVertex(*it, mvNew);
-				region->addMeshVertex(mvNew);
+//				region->addMeshVertex(mvNew);
+				newOld[mv->onWhat()]->addMeshVertex(mvNew);
 			}
 		}
-//		tF.laplacianSmooth();
+
 		//
 		// create new elements
 		//
@@ -191,8 +319,15 @@ namespace dtOO {
 			dt__forFromToIter(omFaceVertexI, omInit.fv_begin(*fIt), omInit.fv_end(*fIt), vIt) {
         vertices.push_back( omInit[*vIt] );
 			}
-			elements.push_back( ::MElement::createElement(MSH_TRI_3, vertices) );
-			omInit.data(*fIt).MElement( &(elements.back()) );
+			::MElement * anEl = ::MElement::createElement(MSH_TRI_3, vertices);
+			omInit.data(*fIt).MElement( anEl );
+			GEntity * guess = dtGmshModel::guessOnWhat(anEl);
+			if (guess) {
+				dtGmshFace * gf = dtGmshFace::DownCast(guess);
+				if (gf) gf->addElement( anEl );
+			}
+//			omMoved.data(*fIt).MElement()->
+			
 		}
 		
 		dt__info(operator(), << "New vertices created.");
@@ -224,19 +359,15 @@ namespace dtOO {
 //					omMoved.vv_end(*vvIt), 
 //					vvvIt
 //				) {					
-						dt__forFromToIter(
-							omConstVertexFaceI, 
-							omMoved.cvf_begin(*vvIt), 
-							omMoved.cvf_end(*vvIt), 
-							fIt
-						) if ( !omMoved.contains(*fIt, *it) ) neighborFace.push_back(*fIt);
+					dt__forFromToIter(
+						omConstVertexFaceI, 
+						omMoved.cvf_begin(*vvIt), 
+						omMoved.cvf_end(*vvIt), 
+						fIt
+					) if ( !omMoved.contains(*fIt, *it) ) neighborFace.push_back(*fIt);
 //					}	
 				}
-		    std::sort( neighborFace.begin(), neighborFace.end() );
-        neighborFace.erase( 
-				  std::unique( neighborFace.begin(), neighborFace.end() ), 
-					neighborFace.end() 
-				);
+				progHelper::removeBastardTwins(neighborFace);
 
         //
         // check for intersections between target mesh vertex 
@@ -395,7 +526,6 @@ namespace dtOO {
 		}
 		
     dt__info(operator(), << "Elements created");
-
 		
 		//
 		// write fields
