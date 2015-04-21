@@ -106,6 +106,7 @@ namespace dtOO {
       std::vector< ::MVertex const * > & vertices
     );    
     void tagPhysical(::GEntity * const ge, std::string const & pName);
+    static ::GEntity * guessOnWhat( ::MElement const * const me );
   private:
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
       std::vector< ::MVertex const * > const & vertices, 
