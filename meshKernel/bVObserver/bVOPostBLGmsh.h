@@ -36,7 +36,6 @@ namespace dtOO {
     std::vector< int > _faceOrientation;
     std::vector< std::string > _fixedFaceLabel;
     std::vector< int > _fixedFaceOrientation;
-    dtGmshRegion * _dtR;
   };
 }
 #endif	/* bVOPostBLGmsh_H */

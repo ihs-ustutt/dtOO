@@ -87,38 +87,68 @@ namespace dtOO {
   }
   
   void bVOPostBLGmsh::postUpdate( void ) {
+		//
+		// init faces and regions
+		//
 		std::list< dtGmshFace const * > faceList;
+		std::vector< dtGmshRegion * > regVec;
 		dt__forAllConstIter(std::vector< std::string >, _faceLabel, it) {
 		  faceList.push_back( ptrBoundedVolume()->getFace(*it) );
+			std::list< ::GRegion * > rr = faceList.back()->regions();
+			dt__forAllConstIter(std::list< ::GRegion * >, rr, rIt) {
+				dt__throwIf(!dtGmshRegion::DownCast(*rIt), postUpdate());
+				regVec.push_back( dtGmshRegion::SecureCast(*rIt) );
+			}
 		}
 		std::list< dtGmshFace const * > fixedFaceList;
 		dt__forAllConstIter(std::vector< std::string >, _fixedFaceLabel, it) {
 		  fixedFaceList.push_back( ptrBoundedVolume()->getFace(*it) );
-		}		
-		//
-		// create new region, tag it and add it to the model
-		//
-		_dtR 
-		= 
-		new dtGmshRegion(
-			ptrBoundedVolume()->getModel(), 
-			ptrBoundedVolume()->getModel()->getMaxRegionTag()+1
-		);
-		ptrBoundedVolume()->getModel()->tagPhysical(_dtR, ptrBoundedVolume()->getLabel());
-		ptrBoundedVolume()->getModel()->add(_dtR);
+			std::list< ::GRegion * > rr = fixedFaceList.back()->regions();
+			dt__forAllConstIter(std::list< ::GRegion * >, rr, rIt) {
+				dt__throwIf(!dtGmshRegion::DownCast(*rIt), postUpdate());
+				regVec.push_back( dtGmshRegion::SecureCast(*rIt) );
+			}			
+		}	
 		
+		//
+		// get most frequent region
+		//
+		dtGmshRegion * commonReg = progHelper::mostFrequentChild(regVec);
+		dt__info(
+			postUpdate(), 
+			<< "Adding elements to region with label " 
+			<< ptrBoundedVolume()->getModel()->getPhysicalString(commonReg)
+		);
+				
+		
+		//
+		// move boundary layer surfaces
+		//
+    std::vector< ::MVertex * > vv;
+		std::vector< ::MElement * > ee;
 		dtGmshMeshBoundaryLayer(
 		  _thickness, _spacing, 
 			_maxDihedralAngle, 
 			_nSmoothingSteps, _nShrinkingSteps
 		)(
-		  _dtR, 
+		  ptrBoundedVolume()->getModel(), 
 			faceList, _faceOrientation, 
-			fixedFaceList, _fixedFaceOrientation
+			fixedFaceList, _fixedFaceOrientation,
+			vv, ee
 		);
 				
-    _dtR->_status = ::GEntity::MeshGenerationStatus::DONE;
-		
+		//
+		// create 3d mesh
+		//
 		ptrBoundedVolume()->getModel()->meshRegion();
+		
+		//
+		// add elements and vertices to commonReg
+		//
+		dt__forAllIter(std::vector< ::MVertex * >, vv, vIt) {
+			(*vIt)->setEntity(commonReg);
+			commonReg->addMeshVertex(*vIt);
+		}
+		dt__forAllIter(std::vector< ::MElement * >, ee, eIt) commonReg->addElement(*eIt);
   }
 }
