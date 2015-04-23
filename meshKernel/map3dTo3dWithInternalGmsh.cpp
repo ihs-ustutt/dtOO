@@ -131,11 +131,12 @@ namespace dtOO {
 		//
 		// correct transfinite surfaces and create region
 		//
-		dtGmshRegion * gr = new dtGmshRegion(_gm.get(), _gm->getMaxRegionTag());
+		dtGmshRegion * gr = new dtGmshRegion(_gm.get(), _gm->getMaxRegionTag()+1);
 		std::list< ::GFace * > ff = _gm->faces();
 		dt__forAllIter(std::list< ::GFace * >, ff, it) {
 			dtGmshModel::cast2DtGmshFace(*it)->correctIfTransfinite();
 			gr->addFace(*it, 1);
+			(*it)->addRegion(gr);
 		}	
 		_gm->add( gr );		
 	}
