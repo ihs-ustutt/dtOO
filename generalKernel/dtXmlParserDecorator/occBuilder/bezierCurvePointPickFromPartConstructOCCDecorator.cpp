@@ -38,10 +38,10 @@ namespace dtOO {
     bool hasPartLabel = hasAttribute("part_label", **toBuildP);
 		
     if (hasPoints && hasPartLabel) {
-      std::vector< dtPoint2 * > p2;
+      std::vector< dtPoint2 > p2;
       QDomElement wElement = getChild("Point_2", **toBuildP);
       while ( !wElement.isNull() ) {
-        this->createBasic( &wElement, bC, cValP, sFunP, depAGeoP, &p2 );
+        dtXmlParserBase::createBasic( &wElement, bC, cValP, sFunP, depAGeoP, &p2 );
   			wElement = getNextSibling("Point_2", wElement);
       }
 			
@@ -57,8 +57,8 @@ namespace dtOO {
 			
 			std::vector< dtPoint3 > p3(p2.size());
 			dt__forAllIndex(p2, ii) {
-			  p3[ii] = map->getPoint( *(p2[ii]) );
-			  delete p2[ii];
+			  p3[ii] = map->getPoint( p2[ii] );
+//			  delete p2[ii];
 			}
 			
 			aGeoP->push_back( 

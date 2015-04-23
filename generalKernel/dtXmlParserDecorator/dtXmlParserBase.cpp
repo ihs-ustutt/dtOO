@@ -43,9 +43,9 @@ namespace dtOO {
   dtTransformer * dtXmlParserBase::createTransformer(
 	  QDomElement const * toBuildP,
     baseContainer * const bC,                    
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG
 	) {
 		dtTransformer * dtTransformerP;
 		
@@ -81,11 +81,11 @@ namespace dtOO {
 				dtTransformerP 
 				= 
 				dtTransformerFactory::create( name );
-				if (depAGeoP) {
-				  dtTransformerP->init(&wElement, bC, cValP, sFunP, depAGeoP);			
+				if (aG) {
+				  dtTransformerP->init(&wElement, bC, cV, aF, aG);			
 				}
 				else {
-					dtTransformerP->init(&wElement, bC, cValP, sFunP);			
+					dtTransformerP->init(&wElement, bC, cV, aF);			
 				}
 			}
 			else if (hasLabel && inContainer && !hasName) {
@@ -95,11 +95,11 @@ namespace dtOO {
 				dtTransformerP 
 				= 
 				dtTransformerFactory::create( name );
-				if (depAGeoP) {
-				  dtTransformerP->init(&wElement, bC, cValP, sFunP, depAGeoP);			
+				if (aG) {
+				  dtTransformerP->init(&wElement, bC, cV, aF, aG);			
 				}
 				else {
-					dtTransformerP->init(&wElement, bC, cValP, sFunP);
+					dtTransformerP->init(&wElement, bC, cV, aF);
 				}
         bC->ptrTransformerContainer()->add(dtTransformerP);
 				delete dtTransformerP;
@@ -129,18 +129,18 @@ namespace dtOO {
   dtTransformer * dtXmlParserBase::createTransformer(
 	  QDomElement const * toBuildP,    
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF
 	) {
-		return createTransformer(toBuildP, bC, cValP, sFunP, NULL);
+		return createTransformer(toBuildP, bC, cV, aF, NULL);
   }
 
   void dtXmlParserBase::createBasic(
 	  QDomElement const * toBuildP,
     baseContainer * const bC,                  
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG,
 		std::vector< dtPoint3 > * basicP
 	) {
     //
@@ -148,7 +148,7 @@ namespace dtOO {
     //
 		QDomElement wEl = *toBuildP;
     ptrHandling<dtTransformer> dtTransformerP(   
-      createTransformer(toBuildP, bC, cValP, sFunP, depAGeoP)
+      createTransformer(toBuildP, bC, cV, aF, aG)
 	  );
     if ( is("transformer", *toBuildP) ) {
       wEl = toBuildP->nextSiblingElement();
@@ -158,7 +158,7 @@ namespace dtOO {
     //
 		vectorHandling< dtPoint3 * > pp;		
     createBasic(
-			&wEl, bC, cValP, sFunP, depAGeoP, dtTransformerP.get(), &pp
+			&wEl, bC, cV, aF, aG, dtTransformerP.get(), &pp
 		);		
 		dt__forAllIndex(pp, ii) basicP->push_back( *(pp[ii]) );
   }
@@ -166,9 +166,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  QDomElement const * toBuildP,
     baseContainer * const bC,		
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG,
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPoint3* > * basicP
 	) {
@@ -233,17 +233,17 @@ namespace dtOO {
 				 && hasAttribute("z", *toBuildP) ) { 
 			float cX = muParseString(
 									 replaceUsedFunctions(
-										 getAttributeStr("x", *toBuildP), cValP,  sFunP
+										 getAttributeStr("x", *toBuildP), cV,  aF
 									 )
 								 );
 			float cY = muParseString(
 									 replaceUsedFunctions(
-										 getAttributeStr("y", *toBuildP), cValP, sFunP
+										 getAttributeStr("y", *toBuildP), cV, aF
 									 )
 								 );
 			float cZ = muParseString(
 									 replaceUsedFunctions(
-										 getAttributeStr("z", *toBuildP), cValP, sFunP
+										 getAttributeStr("z", *toBuildP), cV, aF
 									 )
 								 );        
 			basicP->push_back( new dtPoint3(cX, cY, cZ) );      
@@ -253,12 +253,12 @@ namespace dtOO {
 		/* ---------------------------------------------------------------------- */          
 		else if (    hasAttribute("attribute", *toBuildP) 
 						  && hasAttribute("part_label", *toBuildP) ) {
-			analyticGeometry const * aG 
+			analyticGeometry const * anAG 
 			= 
-			depAGeoP->get( getAttributeStr("part_label", *toBuildP) );
-			map1dTo3d const * m1d = map1dTo3d::ConstDownCast(aG);
-			map2dTo3d const * m2d = map2dTo3d::ConstDownCast(aG);
-			map3dTo3d const * m3d = map3dTo3d::ConstDownCast(aG);
+			aG->get( getAttributeStr("part_label", *toBuildP) );
+			map1dTo3d const * m1d = map1dTo3d::ConstDownCast(anAG);
+			map2dTo3d const * m2d = map2dTo3d::ConstDownCast(anAG);
+			map3dTo3d const * m3d = map3dTo3d::ConstDownCast(anAG);
 
 			if (!m1d && !m2d && !m3d) {
 				dt__throw(
@@ -278,12 +278,12 @@ namespace dtOO {
 					if (rS && hasAttribute("phi", *toBuildP) && hasAttribute("z", *toBuildP) ) {
 						float cX = muParseString(
 												 replaceUsedFunctions(
-													 getAttributeStr("phi", *toBuildP), cValP,  sFunP
+													 getAttributeStr("phi", *toBuildP), cV,  aF
 												 )
 											 );
 						float cY = muParseString(
 												 replaceUsedFunctions(
-													 getAttributeStr("z", *toBuildP), cValP, sFunP
+													 getAttributeStr("z", *toBuildP), cV, aF
 												 )
 											 );                      
 						basicP->push_back( new dtPoint3( rS->xyz_phiZ(cX, cY) ) );
@@ -293,15 +293,15 @@ namespace dtOO {
 						float cX = muParseString(
 												 replaceUsedFunctions(
 													 getAttributeStr("parameter_one_percent", *toBuildP),
-													 cValP, 
-													 sFunP
+													 cV, 
+													 aF
 												 )
 											 );
 						float cY = muParseString(
 												 replaceUsedFunctions(
 													 getAttributeStr("parameter_two_percent", *toBuildP),
-													 cValP, 
-													 sFunP
+													 cV, 
+													 aF
 												 )
 											 );              
 						basicP->push_back( new dtPoint3( m2d->getPointPercent(cX, cY) ) );
@@ -314,8 +314,8 @@ namespace dtOO {
 					float cX = muParseString(
 											 replaceUsedFunctions(
 												 getAttributeStr("parameter_one_percent", *toBuildP),
-												 cValP, 
-												 sFunP
+												 cV, 
+												 aF
 											 )
 										 );
 					basicP->push_back( new dtPoint3( m1d->getPointPercent(cX) ) );
@@ -330,22 +330,22 @@ namespace dtOO {
 						float cX = muParseString(
 												 replaceUsedFunctions(
 													 getAttributeStr("parameter_one_percent", *toBuildP),
-													 cValP, 
-													 sFunP
+													 cV, 
+													 aF
 												 )
 											 );
 						float cY = muParseString(
 												 replaceUsedFunctions(
 													 getAttributeStr("parameter_two_percent", *toBuildP),
-													 cValP, 
-													 sFunP
+													 cV, 
+													 aF
 												 )
 											 );
 						float cZ = muParseString(
 												 replaceUsedFunctions(
 													 getAttributeStr("parameter_three_percent", *toBuildP),
-													 cValP, 
-													 sFunP
+													 cV, 
+													 aF
 												 )
 											 );                
 						basicP->push_back( new dtPoint3( m3d->getPointPercent(cX, cY, cZ) ) );
@@ -356,22 +356,22 @@ namespace dtOO {
 						float cX = muParseString(
 												 replaceUsedFunctions(
 													 getAttributeStr("parameter_one", *toBuildP),
-													 cValP, 
-													 sFunP
+													 cV, 
+													 aF
 												 )
 											 );
 						float cY = muParseString(
 												 replaceUsedFunctions(
 													 getAttributeStr("parameter_two", *toBuildP),
-													 cValP, 
-													 sFunP
+													 cV, 
+													 aF
 												 )
 											 );
 						float cZ = muParseString(
 												 replaceUsedFunctions(
 													 getAttributeStr("parameter_three", *toBuildP),
-													 cValP, 
-													 sFunP
+													 cV, 
+													 aF
 												 )
 											 );                
 						basicP->push_back( new dtPoint3( m3d->getPoint(cX, cY, cZ) ) );
@@ -392,7 +392,7 @@ namespace dtOO {
 						dt__ptrAss(
 							scaOneD const * sF,
 							scaOneD::ConstDownCast(
-								sFunP->get( 
+								aF->get( 
 									getAttributeStr( "parameter_one_percent_function", *toBuildP )
 								)
 							)
@@ -409,7 +409,7 @@ namespace dtOO {
 						dt__ptrAss(
 							scaOneD const * sF,
 							scaOneD::ConstDownCast(
-								sFunP->get( 
+								aF->get( 
 									getAttributeStr( "length_one_percent_function", *toBuildP )
 								)
 							)
@@ -441,7 +441,7 @@ namespace dtOO {
 					dt__ptrAss(
 						scaOneD const * fOne, 
 						scaOneD::ConstDownCast(
-							sFunP->get( 
+							aF->get( 
 								getAttributeStr("parameter_one_percent_function", *toBuildP)
 							)
 						)
@@ -449,7 +449,7 @@ namespace dtOO {
 					dt__ptrAss(
 						scaOneD const * fTwo,
 						scaOneD::ConstDownCast(
-							sFunP->get( 
+							aF->get( 
 								getAttributeStr("parameter_two_percent_function", *toBuildP)
 							)
 						)
@@ -473,11 +473,11 @@ namespace dtOO {
 		/* ---------------------------------------------------------------------- */          
 		else if (    hasAttribute("attribute", *toBuildP) 
 						  && hasAttribute("function_label", *toBuildP) ) {
-			analyticFunction const * aF
+			analyticFunction const * anAF
 			= 
-			sFunP->get( getAttributeStr("function_label", *toBuildP) );
-			vec3dOneD const * v1D = vec3dOneD::ConstDownCast(aF);
-			vec3dTwoD const * v2D = vec3dTwoD::ConstDownCast(aF);
+			aF->get( getAttributeStr("function_label", *toBuildP) );
+			vec3dOneD const * v1D = vec3dOneD::ConstDownCast(anAF);
+			vec3dTwoD const * v2D = vec3dTwoD::ConstDownCast(anAF);
 
 			if (!v1D && !v2D) {
 				dt__throw(
@@ -489,7 +489,7 @@ namespace dtOO {
 				if ( v1D && hasAttribute("x_one", *toBuildP) ) {
 					float cX = muParseString(
 											 replaceUsedFunctions(
-												 getAttributeStr("x_one", *toBuildP), cValP,  sFunP
+												 getAttributeStr("x_one", *toBuildP), cV,  aF
 											 )
 										 );
 					basicP->push_back( new dtPoint3( v1D->YdtPoint3(cX) ) );
@@ -497,7 +497,7 @@ namespace dtOO {
 				else if ( v1D && hasAttribute("x_one_percent", *toBuildP) ) {
 					float cX = muParseString(
 											 replaceUsedFunctions(
-												 getAttributeStr("x_one_percent", *toBuildP), cValP,  sFunP
+												 getAttributeStr("x_one_percent", *toBuildP), cV,  aF
 											 )
 										 );
 					basicP->push_back( new dtPoint3( v1D->YdtPoint3Percent(cX) ) );
@@ -509,12 +509,12 @@ namespace dtOO {
 				) {
 					float cX = muParseString(
 											 replaceUsedFunctions(
-												 getAttributeStr("x_one", *toBuildP), cValP,  sFunP
+												 getAttributeStr("x_one", *toBuildP), cV,  aF
 											 )
 										 );
 					float cY = muParseString(
 											 replaceUsedFunctions(
-												 getAttributeStr("x_two", *toBuildP), cValP, sFunP
+												 getAttributeStr("x_two", *toBuildP), cV, aF
 											 )
 										 );                      
 					basicP->push_back( new dtPoint3( v2D->YdtPoint3(cX, cY) ) );
@@ -526,12 +526,12 @@ namespace dtOO {
 				) {
 					float cX = muParseString(
 											 replaceUsedFunctions(
-												 getAttributeStr("x_one_percent", *toBuildP), cValP,  sFunP
+												 getAttributeStr("x_one_percent", *toBuildP), cV,  aF
 											 )
 										 );
 					float cY = muParseString(
 											 replaceUsedFunctions(
-												 getAttributeStr("x_two_percent", *toBuildP), cValP, sFunP
+												 getAttributeStr("x_two_percent", *toBuildP), cV, aF
 											 )
 										 );                      
 					basicP->push_back( new dtPoint3( v2D->YdtPoint3Percent(cX, cY) ) );
@@ -600,9 +600,9 @@ namespace dtOO {
   dtVector2 dtXmlParserBase::createDtVector2(
 	  QDomElement const * toBuildP,
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cValP,  
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP
+		vectorHandling< constValue * > const * const cV,  
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG
 	) {  
 		dtVector2 vv;
 
@@ -631,15 +631,15 @@ namespace dtOO {
         float cX = muParseString(
                      replaceUsedFunctions(
                        getAttributeStr("x", *toBuildP),
-                       cValP, 
-                       sFunP
+                       cV, 
+                       aF
                      )
                    );  
         float cY = muParseString(
                      replaceUsedFunctions(
                        getAttributeStr("y", *toBuildP),
-                       cValP, 
-                       sFunP
+                       cV, 
+                       aF
                      )
                    );            
         //
@@ -654,15 +654,15 @@ namespace dtOO {
         float cX = muParseString(
                      replaceUsedFunctions(
                        getAttributeStr("u", *toBuildP),
-                       cValP, 
-                       sFunP
+                       cV, 
+                       aF
                      )
                    );  
         float cY = muParseString(
                      replaceUsedFunctions(
                        getAttributeStr("v", *toBuildP),
-                       cValP, 
-                       sFunP
+                       cV, 
+                       aF
                      )
                    );            
         //
@@ -691,9 +691,9 @@ namespace dtOO {
   dtVector3 dtXmlParserBase::createDtVector3(
 	  QDomElement const * toBuildP,
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cValP,  
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP
+		vectorHandling< constValue * > const * const cV,  
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG
 	) {
 		dtVector3 vv;
 
@@ -723,22 +723,22 @@ namespace dtOO {
         float cX = muParseString(
                      replaceUsedFunctions(
                        getAttributeStr("x", *toBuildP),
-                       cValP, 
-                       sFunP
+                       cV, 
+                       aF
                      )
                    );  
         float cY = muParseString(
                      replaceUsedFunctions(
                        getAttributeStr("y", *toBuildP),
-                       cValP, 
-                       sFunP
+                       cV, 
+                       aF
                      )
                    );
         float cZ = muParseString(
                      replaceUsedFunctions(
                        getAttributeStr("z", *toBuildP),
-                       cValP, 
-                       sFunP
+                       cV, 
+                       aF
                      )
                    );              
         //
@@ -768,87 +768,87 @@ namespace dtOO {
   dtVector3 dtXmlParserBase::createDtVector3(
 	  QDomElement const * toBuildP,
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cValP,  
-		vectorHandling< analyticFunction * > const * const sFunP
+		vectorHandling< constValue * > const * const cV,  
+		vectorHandling< analyticFunction * > const * const aF
 	) {  
-    return createDtVector3(toBuildP, bC, cValP, sFunP, NULL); 
+    return createDtVector3(toBuildP, bC, cV, aF, NULL); 
   }	
 
 //	dtPoint3 dtXmlParserBase::getDtPoint3(
 //		QDomElement const * toBuildP,
 //		baseContainer const * const bC,
-//		vectorHandling< constValue * > const * const cValP,
-//		vectorHandling< analyticFunction * > const * const sFunP, 
-//		vectorHandling< analyticGeometry * > const * const depAGeoP
+//		vectorHandling< constValue * > const * const cV,
+//		vectorHandling< analyticFunction * > const * const aF, 
+//		vectorHandling< analyticGeometry * > const * const aG
 //	) {
-//		return createDtPoint3(toBuildP, NULL, cValP, sFunP, depAGeoP);		
+//		return createDtPoint3(toBuildP, NULL, cV, aF, aG);		
 //	}
 	
 	dtVector2 dtXmlParserBase::getDtVector2(
 		QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,  
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP
+		vectorHandling< constValue * > const * const cV,  
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG
 	) {
-		return createDtVector2(toBuildP, NULL, cValP, sFunP, depAGeoP);
+		return createDtVector2(toBuildP, NULL, cV, aF, aG);
 	} 
 	
 	dtPoint3 dtXmlParserBase::getDtPoint3(
 		QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,  
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP
+		vectorHandling< constValue * > const * const cV,  
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrPointContainer()->get(getAttributeStr("label", *toBuildP));
 		}
 		else {
-			return createDtPoint3(toBuildP, NULL, cValP, sFunP, depAGeoP);
+			return createDtPoint3(toBuildP, NULL, cV, aF, aG);
 		}
 	} 
 	
 	dtPoint3 dtXmlParserBase::getDtPoint3(
 		QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,  
-		vectorHandling< analyticFunction * > const * const sFunP
+		vectorHandling< constValue * > const * const cV,  
+		vectorHandling< analyticFunction * > const * const aF
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrPointContainer()->get(getAttributeStr("label", *toBuildP));
 		}
 		else {
-			return createDtPoint3(toBuildP, NULL, cValP, sFunP);
+			return createDtPoint3(toBuildP, NULL, cV, aF);
 		}		
 	}
 		
 	dtVector3 dtXmlParserBase::getDtVector3(
 		QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,  
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP
+		vectorHandling< constValue * > const * const cV,  
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrVectorContainer()->get(getAttributeStr("label", *toBuildP));
 		}
 		else {
-			return createDtVector3(toBuildP, NULL, cValP, sFunP, depAGeoP);
+			return createDtVector3(toBuildP, NULL, cV, aF, aG);
 		}
 	} 
 	
 	dtVector3 dtXmlParserBase::getDtVector3(
 		QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,  
-		vectorHandling< analyticFunction * > const * const sFunP
+		vectorHandling< constValue * > const * const cV,  
+		vectorHandling< analyticFunction * > const * const aF
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrVectorContainer()->get(getAttributeStr("label", *toBuildP));
 		}
 		else {
-			return createDtVector3(toBuildP, NULL, cValP, sFunP);
+			return createDtVector3(toBuildP, NULL, cV, aF);
 		}		
 	}
 	
@@ -878,8 +878,8 @@ namespace dtOO {
 	
   std::string dtXmlParserBase::createString(
 	  QDomElement const * toBuildP, 
-		vectorHandling< constValue * > const * const cValP, 
-		vectorHandling< analyticFunction * > const * const sFunP
+		vectorHandling< constValue * > const * const cV, 
+		vectorHandling< analyticFunction * > const * const aF
 	) {
     if ( getTagName(*toBuildP) != "string" ) {
       dt__throw(createBasic(), << dt__eval( getTagName(*toBuildP) ) );
@@ -890,7 +890,7 @@ namespace dtOO {
 		if ( hasAttribute("value", *toBuildP)  ) {
 			// create point
 			return replaceUsedFunctions( 
-							 getAttributeStr("value", *toBuildP), cValP, sFunP
+							 getAttributeStr("value", *toBuildP), cV, aF
 						 );
 		}  
   }
@@ -898,17 +898,17 @@ namespace dtOO {
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  QDomElement const * toBuildP,
     baseContainer * const bC,                   
-    vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP) {
-//		createBasic(toBuildP, pointContainerP, vectorContainerP, cValP, sFunP, depAGeoP, &basicP);
+    vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG) {
+//		createBasic(toBuildP, pointContainerP, vectorContainerP, cV, aF, aG, &basicP);
     std::vector< dtPoint3 > basicVec;
 
     createBasic(toBuildP,
                 bC,                    
-                cValP,
-                sFunP, 
-                depAGeoP,
+                cV,
+                aF, 
+                aG,
                 &basicVec);
     if (basicVec.size() != 1) {
       dt__throw(createBasic(),
@@ -922,45 +922,51 @@ namespace dtOO {
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  QDomElement const * toBuildP,
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cValP,  
-		vectorHandling< analyticFunction * > const * const sFunP
+		vectorHandling< constValue * > const * const cV,  
+		vectorHandling< analyticFunction * > const * const aF
 	) {  
-    return createDtPoint3(toBuildP, bC, cValP, sFunP, NULL); 
+    return createDtPoint3(toBuildP, bC, cV, aF, NULL); 
   }	
 	
   void dtXmlParserBase::createBasic(
 	  QDomElement const * toBuildP, 
-		vectorHandling< constValue * > const * const cValP, 
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		std::vector< dtPoint2 * > * basicP
+    baseContainer * const bC,      					
+		vectorHandling< constValue * > const * const cV, 
+		vectorHandling< analyticFunction * > const * const aF, 
+		std::vector< dtPoint2 > * basicP
 	) {
+    ptrHandling< dtTransformer > dtT(
+		  createTransformer(toBuildP, bC, cV, aF)
+		);		
 		QDomElement wEl = *toBuildP;
     if ( is("transformer", *toBuildP) ) {
       wEl = toBuildP->nextSiblingElement();
     }		
-    createBasic(&wEl, NULL, cValP, sFunP, NULL, basicP);      		
+		std::vector< dtPoint2 * > pp;
+    createBasic(&wEl, NULL, cV, aF, NULL, dtT.get(), &pp);      		
+		dt__forAllIndex(pp, ii) basicP->push_back( *(pp[ii]) );
   }
 
   void dtXmlParserBase::createBasic(
 	  QDomElement const * toBuildP,
     baseContainer * const bC,					
-		vectorHandling< constValue * > const * const cValP, 
-		vectorHandling< analyticFunction * > const * const sFunP, 
+		vectorHandling< constValue * > const * const cV, 
+		vectorHandling< analyticFunction * > const * const aF, 
 		std::vector< dtPoint3 > * basicP
 	) {
 		QDomElement wEl = *toBuildP;
     if ( is("transformer", *toBuildP) ) {
       wEl = toBuildP->nextSiblingElement();
     }		
-    createBasic(&wEl, bC, cValP, sFunP, NULL, basicP);      		
+    createBasic(&wEl, bC, cV, aF, NULL, basicP);      		
   }	
 
   void dtXmlParserBase::createBasic(
 	  QDomElement const * toBuildP,
     baseContainer * const bC,            
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP,
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG,
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPoint2* > * basicP
 	) {
@@ -984,15 +990,15 @@ namespace dtOO {
       float cX = muParseString(
                    replaceUsedFunctions(
                      getAttributeStr("x", *toBuildP),
-                     cValP, 
-                     sFunP
+                     cV, 
+                     aF
                    )
                  );  
       float cY = muParseString(
                    replaceUsedFunctions(
                      getAttributeStr("y", *toBuildP),
-                     cValP, 
-                     sFunP
+                     cV, 
+                     aF
                    )
                  );              
       //
@@ -1008,8 +1014,8 @@ namespace dtOO {
       //look for part to pick point from
       //
       analyticSurface const * analyticSurface_partToPickFromP = NULL;
-      analyticGeometry const * aG = depAGeoP->get( getAttributeStr("part_label", *toBuildP) );
-      analyticSurface_partToPickFromP = dynamic_cast< analyticSurface const * >( aG );
+      analyticGeometry const * anAG = aG->get( getAttributeStr("part_label", *toBuildP) );
+      analyticSurface_partToPickFromP = dynamic_cast< analyticSurface const * >( anAG );
       //
       // attribute: pick_from_part
       //      
@@ -1030,15 +1036,15 @@ namespace dtOO {
             float pX = muParseString(
                          replaceUsedFunctions(
                            getAttributeStr("parameter_one_percent", *toBuildP),
-                           cValP, 
-                           sFunP
+                           cV, 
+                           aF
                          )
                        );  
             float pY = muParseString(
                          replaceUsedFunctions(
                            getAttributeStr("parameter_two_percent", *toBuildP),
-                           cValP, 
-                           sFunP
+                           cV, 
+                           aF
                          )
                        );              
             //
@@ -1086,7 +1092,7 @@ namespace dtOO {
 			dt__ptrAss(
 				vec2dOneD const * const theF,
 				vec2dOneD::ConstDownCast(
-					sFunP->get( getAttributeStr("function_label", *toBuildP) )
+					aF->get( getAttributeStr("function_label", *toBuildP) )
 				)
 			);
 
@@ -1099,7 +1105,7 @@ namespace dtOO {
           int nPoints
 				  = 
 					getAttributeIntMuParse(
-            "number_points", *toBuildP, cValP, sFunP
+            "number_points", *toBuildP, cV, aF
 					);
           //
           // search functions
@@ -1107,7 +1113,7 @@ namespace dtOO {
 					dt__ptrAss(
 						scaOneD const * const thePara,
 						scaOneD::ConstDownCast(
-							sFunP->get(
+							aF->get(
 								getAttributeStr( "parameter_percent_function", *toBuildP ) 
 							)
 						)
@@ -1221,36 +1227,32 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  QDomElement const * toBuildP,
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP, 
-		vectorHandling< analyticGeometry * > const * const depAGeoP,
-		std::vector< dtPoint2* > * basicP
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF, 
+		vectorHandling< analyticGeometry * > const * const aG,
+		std::vector< dtPoint2 > * basicP
 	) {
     //
     // create transformer if necessary
     //
     ptrHandling< dtTransformer > dtT(
-		  createTransformer(toBuildP, bC, cValP, sFunP, depAGeoP)
+		  createTransformer(toBuildP, bC, cV, aF, aG)
 		);
 		QDomElement wEl = *toBuildP;
     if ( is("transformer", *toBuildP) ) {
       wEl = toBuildP->nextSiblingElement();
     }
-    createBasic(&wEl, 
-                bC, 
-                cValP, 
-                sFunP, 
-                depAGeoP, 
-                dtT.get(), 
-                basicP);
+		vectorHandling< dtPoint2 * > pp;
+    createBasic(&wEl, bC, cV, aF, aG, dtT.get(), &pp);
+		dt__forAllIndex(pp, ii) basicP->push_back( *(pp[ii]) );		
   }
 
     void dtXmlParserBase::createAdvanced( 
 		  QDomElement const * toBuildP,
 			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cValP,
-			vectorHandling< analyticFunction * > const * const sFunP, 
-			vectorHandling< analyticGeometry * > const * const depAGeoP,            
+			vectorHandling< constValue * > const * const cV,
+			vectorHandling< analyticFunction * > const * const aF, 
+			vectorHandling< analyticGeometry * > const * const aG,            
 			vectorHandling< analyticGeometry * > * advancedP 
 		) {
 
@@ -1258,13 +1260,13 @@ namespace dtOO {
       // create transformer if necessary
       //
       ptrHandling< dtTransformer > dtT(
-			  createTransformer(toBuildP, bC, cValP, sFunP, depAGeoP)
+			  createTransformer(toBuildP, bC, cV, aF, aG)
 			);
 			QDomElement wEl = *toBuildP;
       if ( is("transformer", *toBuildP) ) {
         wEl = toBuildP->nextSiblingElement();
       }
-      createAdvanced(&wEl, bC, cValP, sFunP, depAGeoP, dtT.get(), advancedP);      
+      createAdvanced(&wEl, bC, cV, aF, aG, dtT.get(), advancedP);      
     }
 
 		/**
@@ -1275,9 +1277,9 @@ namespace dtOO {
     void dtXmlParserBase::createAdvanced( 
 		  QDomElement const * toBuildP,
 			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cValP,
-			vectorHandling< analyticFunction * > const * const sFunP, 
-			vectorHandling< analyticGeometry * > const * const depAGeoP, 
+			vectorHandling< constValue * > const * const cV,
+			vectorHandling< analyticFunction * > const * const aF, 
+			vectorHandling< analyticGeometry * > const * const aG, 
 			dtTransformer const * const dtTransformerP,                          
 			vectorHandling< analyticGeometry * > * advancedP 
 		) {
@@ -1293,9 +1295,9 @@ namespace dtOO {
 				std::string pattern 
 				= 
 				getStringBetween("*", "*", label );
-				for (int ii=0;ii<depAGeoP->size();ii++) { 
-          if ( stringContains(pattern, depAGeoP->at(ii)->getLabel()) ) {
-            advancedP->push_back( depAGeoP->at(ii)->clone() );
+				for (int ii=0;ii<aG->size();ii++) { 
+          if ( stringContains(pattern, aG->at(ii)->getLabel()) ) {
+            advancedP->push_back( aG->at(ii)->clone() );
           }					
 				}
 			}
@@ -1312,7 +1314,7 @@ namespace dtOO {
 				}
 				
 				std::string aGLabel = getStringBetweenAndRemove("", ")", &label);
-				dt__pH(analyticGeometry) toTrans(depAGeoP->get(aGLabel)->clone());
+				dt__pH(analyticGeometry) toTrans(aG->get(aGLabel)->clone());
 				for (int ii=transLabels.size()-1; ii>=0; ii--) {
 					dt__info(
 						createAdvanced(),
@@ -1332,7 +1334,7 @@ namespace dtOO {
 				// normal case
 				//				
 				advancedP->push_back(
-				  depAGeoP->get( label )->clone()
+				  aG->get( label )->clone()
 				);
 			}
       
@@ -1367,12 +1369,12 @@ namespace dtOO {
     analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
 		  QDomElement const * toBuildP,
 			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cValP,
-			vectorHandling< analyticFunction * > const * const sFunP, 
-			vectorHandling< analyticGeometry * > const * const depAGeoP
+			vectorHandling< constValue * > const * const cV,
+			vectorHandling< analyticFunction * > const * const aF, 
+			vectorHandling< analyticGeometry * > const * const aG
 		) {
       vectorHandling< analyticGeometry * > advancedVec;
-      createAdvanced(toBuildP, bC, cValP, sFunP, depAGeoP, &advancedVec);
+      createAdvanced(toBuildP, bC, cV, aF, aG, &advancedVec);
       if (advancedVec.size() != 1) {
         dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
       }
@@ -1381,18 +1383,18 @@ namespace dtOO {
 		
     analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
 		  QDomElement const * toBuildP,
-			vectorHandling< constValue * > const * const cValP,
-			vectorHandling< analyticFunction * > const * const sFunP, 
-			vectorHandling< analyticGeometry * > const * const depAGeoP
+			vectorHandling< constValue * > const * const cV,
+			vectorHandling< analyticFunction * > const * const aF, 
+			vectorHandling< analyticGeometry * > const * const aG
 		) {
-      return createAnalyticGeometry(toBuildP, NULL, cValP, sFunP, depAGeoP);			
+      return createAnalyticGeometry(toBuildP, NULL, cV, aF, aG);			
 		}		
   
     void dtXmlParserBase::createAdvanced( 
 		  QDomElement const * toBuildP,
 			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cValP,
-			vectorHandling< analyticFunction * > const * const sFunP, 
+			vectorHandling< constValue * > const * const cV,
+			vectorHandling< analyticFunction * > const * const aF, 
 			dtTransformer const * const dtTransformerP,                          
 			vectorHandling< analyticFunction * > * advancedP 
 		) {
@@ -1409,9 +1411,9 @@ namespace dtOO {
 				std::string pattern 
 				= 
 				stringRemoveSingle("*", label );
-				for (int ii=0;ii<sFunP->size();ii++) { 
-          if ( stringContains(pattern, sFunP->at(ii)->getLabel()) ) {
-            advancedP->push_back( sFunP->at(ii)->clone() );
+				for (int ii=0;ii<aF->size();ii++) { 
+          if ( stringContains(pattern, aF->at(ii)->getLabel()) ) {
+            advancedP->push_back( aF->at(ii)->clone() );
           }					
 				}
 			}
@@ -1428,7 +1430,7 @@ namespace dtOO {
 				}
 				
 				std::string aFLabel = getStringBetweenAndRemove("", ")", &label);
-				dt__pH(analyticFunction) toTrans(sFunP->get(aFLabel)->clone());
+				dt__pH(analyticFunction) toTrans(aF->get(aFLabel)->clone());
 				for (int ii=transLabels.size()-1; ii>=0; ii--) {
 					dt__info(
 						createAdvanced(),
@@ -1447,7 +1449,7 @@ namespace dtOO {
 				//
 				// normal case
 				//				
-				advancedP->push_back(sFunP->get( label )->clone());
+				advancedP->push_back(aF->get( label )->clone());
 			}
 			
       //
@@ -1475,8 +1477,8 @@ namespace dtOO {
     void dtXmlParserBase::createAdvanced( 
 		  QDomElement const * toBuildP,
 			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cValP,
-			vectorHandling< analyticFunction * > const * const sFunP, 
+			vectorHandling< constValue * > const * const cV,
+			vectorHandling< analyticFunction * > const * const aF, 
 			vectorHandling< analyticFunction * > * advancedP 
 		) {
 
@@ -1484,24 +1486,24 @@ namespace dtOO {
       // create transformer if necessary
       //
       ptrHandling< dtTransformer > dtTransformerP(
-			  createTransformer(toBuildP, bC, cValP, sFunP)
+			  createTransformer(toBuildP, bC, cV, aF)
 			);
 			QDomElement wEl = *toBuildP;
       if ( is("transformer", *toBuildP) ) {
         wEl = toBuildP->nextSiblingElement();
       }
-      createAdvanced(&wEl, bC, cValP, sFunP, dtTransformerP.get(), advancedP);      
+      createAdvanced(&wEl, bC, cV, aF, dtTransformerP.get(), advancedP);      
     }
     
     analyticFunction * dtXmlParserBase::createAnalyticFunction( 
 			QDomElement const * toBuildP,
 			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cValP,
-			vectorHandling< analyticFunction * > const * const sFunP 
+			vectorHandling< constValue * > const * const cV,
+			vectorHandling< analyticFunction * > const * const aF 
 		) {
 
       vectorHandling< analyticFunction * > advancedVec;
-      createAdvanced(toBuildP, bC, cValP, sFunP, &advancedVec);
+      createAdvanced(toBuildP, bC, cV, aF, &advancedVec);
       if (advancedVec.size() != 1) {
         dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
       }
