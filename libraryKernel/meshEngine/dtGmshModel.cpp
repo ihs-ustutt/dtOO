@@ -345,12 +345,18 @@ namespace dtOO {
     return ret;    
   }
 
-  dtPoint3 dtGmshModel::cast2DtPoint3( ::GVertex * gv ) {
-    return cast2DtGmshVertex(gv)->cast2DtPoint3();
+  dtPoint3 dtGmshModel::cast2DtPoint3( ::GVertex const * const gv ) {
+    return cast2DtGmshVertex(
+			const_cast< ::GVertex * >(gv)
+		)->cast2DtPoint3();
   }
 
-  dtPoint3 dtGmshModel::cast2DtPoint3( ::MVertex * mv ) {
-    return dtPoint3(mv->x(), mv->y(), mv->z());
+  dtPoint3 dtGmshModel::cast2DtPoint3( ::MVertex const * const mv ) {
+    return dtPoint3(
+			const_cast< ::MVertex * >(mv)->x(), 
+			const_cast< ::MVertex * >(mv)->y(), 
+			const_cast< ::MVertex * >(mv)->z()
+		);
   }
 	
 	void dtGmshModel::setPosition( ::MVertex * mv, dtPoint3 const & pp ) {
@@ -1222,6 +1228,19 @@ namespace dtOO {
 		}
 	}
 
+  void dtGmshModel::untagPhysical( ::GEntity * const ge ) {
+		dt__throwIf(ge->physicals.size()!=1, untagPhysical());
+		
+		ge->physicals.clear();
+	}
+	
+  std::string dtGmshModel::getPhysicalString( ::GEntity * const ge ) const {
+		std::vector< int > pInt = ge->getPhysicalEntities();
+		dt__throwIf(pInt.size()!=1, getPhysicalString());
+		
+		return GModel::getPhysicalName(ge->dim(), pInt[0]);
+	}
+	
   void dtGmshModel::tagPhysical(::GEntity * const ge, std::string const & pName) {		
 		ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );
 	}

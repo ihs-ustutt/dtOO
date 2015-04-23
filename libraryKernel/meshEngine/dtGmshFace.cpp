@@ -145,7 +145,7 @@ namespace dtOO {
     edgeLoops.clear();
     edgeLoops.push_back( ::GEdgeLoop(l_edges) );
   }  
-
+	
   void dtGmshFace::addEdgeLoop( std::list< ::GEdge * > edgeL ) {
     addEdge( edgeL.front(), 1);
     ::GVertex * gv = edgeL.front()->getEndVertex();
@@ -602,16 +602,16 @@ namespace dtOO {
 		dt__throwIf( (ge==NULL)&&(gr==NULL), addGEntity() );
 
 		if (ge) {
-			// add this face to to edge
+			// add this face to edge
       ge->addFace(this);
       // add edge to this face
 			this->addEdge(ge, 1);
 		}
 		else {
-			// add this face to to region
+			// add this face to region
       gr->addFace(this, 1);
       // add region to this face
-			this->addRegion(gr);
+			if ( (getRegion(0)!=gr) && (getRegion(1)!=gr) ) addRegion(gr);
 		}
 	}	
 }

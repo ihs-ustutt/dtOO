@@ -44,8 +44,8 @@ namespace dtOO {
     static dtGmshEdge * cast2DtGmshEdge( ::GEntity * ge );  
     static std::list< dtGmshEdge * > cast2DtGmshEdge( std::list< ::GEdge * > edges );
     static dtGmshVertex * cast2DtGmshVertex( ::GEntity * gv );
-    static dtPoint3 cast2DtPoint3( ::GVertex * gv );  
-    static dtPoint3 cast2DtPoint3( ::MVertex * mv );
+    static dtPoint3 cast2DtPoint3( ::GVertex const * const gv );  
+    static dtPoint3 cast2DtPoint3( ::MVertex const * const mv );
     static void setPosition( ::MVertex * mv, dtPoint3 const & pp );
     void addIfVertexToGmshModel( dtPoint3 const & vertex, int * const tag );
     void addIfEdgeToGmshModel(
@@ -104,7 +104,9 @@ namespace dtOO {
       int const & dim, 
       int const & num, 
       std::vector< ::MVertex const * > & vertices
-    );    
+    );
+    void untagPhysical( ::GEntity * const ge );
+    std::string getPhysicalString(::GEntity * const ge ) const;
     void tagPhysical(::GEntity * const ge, std::string const & pName);
     static ::GEntity * guessOnWhat( ::MElement const * const me );
   private:
