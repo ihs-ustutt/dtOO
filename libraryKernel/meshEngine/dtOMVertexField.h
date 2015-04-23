@@ -16,6 +16,7 @@ namespace dtOO {
     dtOMVertexField( std::string const & label, dtOMMesh const & om, T const & init );
     virtual ~dtOMVertexField();
     T & operator[](omVertexH const & vH);    
+    T const & at(omVertexH const & vH) const;    
     T & operator[](::MVertex const * const mv);
     T const & at(::MVertex const * const mv) const;    
     T const & operator[](::MVertex const * const mv) const;
@@ -46,6 +47,11 @@ namespace dtOO {
   template < typename T >
   T & dtOMVertexField< T >::operator[](omVertexH const & vH) {
     return _field[vH];
+  }
+  
+  template < typename T >
+  T const & dtOMVertexField< T >::at(omVertexH const & vH) const {
+    return _field.at(vH);
   }
 
   template < typename T >

@@ -20,6 +20,7 @@ namespace dtOO {
     void meshUnstructured( void );
     void addFace( ::GFace * face, int const ori );
 	  void addGEntity( ::GEntity * const gEnt );
+    void addElement( ::MElement * me );
   public:
     mutable ::GEntity::MeshGenerationStatus _status;
   };

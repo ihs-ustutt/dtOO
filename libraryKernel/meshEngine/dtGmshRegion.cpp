@@ -3,6 +3,12 @@
 #include <gmsh/GmshDefines.h>
 #include <gmsh/GFace.h>
 #include <gmsh/GModel.h>
+#include <gmsh/MVertex.h>
+#include <gmsh/MElement.h>
+#include <gmsh/MTetrahedron.h>
+#include <gmsh/MPyramid.h>
+#include <gmsh/MPrism.h>
+#include <gmsh/MHexahedron.h>
 #include "dtGmshFace.h"
 
 namespace dtOO {
@@ -86,5 +92,20 @@ namespace dtOO {
 		gf->addRegion(this);
 		// add face to this region
 		addFace(gf, 1);
+	}
+	
+	void dtGmshRegion::addElement( ::MElement * me ) {
+	  ::MTetrahedron * mtet = dynamic_cast< ::MTetrahedron * >(me);
+		::MHexahedron * mhex = dynamic_cast< ::MHexahedron * >(me);
+		::MPyramid * mpyr = dynamic_cast< ::MPyramid * >(me);
+		::MPrism * mpri = dynamic_cast< ::MPrism * >(me);
+			//
+			// tetrahedron
+			//
+			if (mtet) addTetrahedron(mtet);
+		  else if (mhex) addHexahedron(mhex);
+			else if (mpyr) addPyramid(mpyr);
+      else if (mpri) addPrism(mpri);
+			else dt__throwUnexpected(addElement());
 	}
 }
