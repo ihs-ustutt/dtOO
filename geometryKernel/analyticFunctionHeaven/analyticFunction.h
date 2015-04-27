@@ -28,7 +28,10 @@ namespace dtOO {
     virtual float xMin( int const & dir) const = 0;
     virtual float xMax( int const & dir) const = 0;
     virtual bool isCompound( void ) const;
-	  virtual vectorHandling< analyticFunction const * > compoundInternal( void ) const;    
+	  virtual vectorHandling< analyticFunction const * > compoundInternal( void ) const;
+    static aFX aFXOneD( float const & x0 );
+    static aFX aFXTwoD( float const & x0, float const & x1 );
+    static aFX aFXThreeD( float const & x0, float const & x1, float const & x2 );
   };
 }
 #endif	/* ANALYTICFUNCTION_H */
