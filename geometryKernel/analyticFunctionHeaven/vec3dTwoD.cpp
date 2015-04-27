@@ -282,4 +282,8 @@ namespace dtOO {
 		
 		return rV;
   }		
+
+	aFX vec3dTwoD::operator%(const aFX &percent) const {
+		return x_percent(percent);
+	}	
 }

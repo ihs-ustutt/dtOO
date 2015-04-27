@@ -135,6 +135,10 @@ namespace dtOO {
 		return length( xMax(0) );
 	}
 	
+  float vec3dOneD::operator%(const float &percent) const {
+		return x_percent(percent);
+	}
+	
 	float vec3dOneD::length( int const & nP, float const & x1 ) const {
 		std::vector< dtPoint2 > glp = dtLinearAlgebra::getGaussLegendre(nP);
 		float L = 0.0;
