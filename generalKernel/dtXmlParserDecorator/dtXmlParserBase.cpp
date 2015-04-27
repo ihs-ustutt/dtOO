@@ -1,6 +1,7 @@
 #include "dtXmlParserBase.h"
 #include "interfaceHeaven/ptrHandling.h"
-#include "baseContainerHeaven/transformerContainer.h"
+#include <baseContainerHeaven/transformerContainer.h>
+#include <baseContainerHeaven/baseBuilder/dtPoint3_readIBL.h>
 #include <analyticFunctionHeaven/scaOneD.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
 #include <analyticFunctionHeaven/vec3dOneD.h>
@@ -181,6 +182,7 @@ namespace dtOO {
 		// return point and that's it
 		//
 		if ( hasAttribute("label", *toBuildP) ) {
+			std::string label = getAttributeStr("label", *toBuildP);
 			//
 			// return multiple points
 			//        
@@ -188,7 +190,7 @@ namespace dtOO {
 				int nPoints = getAttributeInt("number_points", *toBuildP);
 				for (int ii=0;ii<nPoints;ii++) {
 					std::string pointName;
-					pointName = getAttributeStr("label", *toBuildP);
+					pointName = label;
 					pointName += "_";
 					pointName += intToString(ii+1);
 					if ( bC->ptrPointContainer()->has( pointName ) ) {
@@ -205,7 +207,7 @@ namespace dtOO {
 				int nPoints = endPoint - startPoint + 1;
 				for (int ii=0;ii<nPoints;ii++) {
 					std::string pointName;
-					pointName = getAttributeStr("label", *toBuildP);
+					pointName = label;
 					pointName += "_";
 					pointName += intToString(startPoint);
 					if ( bC->ptrPointContainer()->has( pointName ) ) {
@@ -216,8 +218,31 @@ namespace dtOO {
 				}
 				return;
 			}        
+			else if ( stringContains("[", label) && stringContains("]", label) ) {
+				std::vector< std::string > forStr
+			  = 
+				convertToStringVector(
+					":", ":", getStringBetweenAndRemove("[", "]", &label)
+				);
+				int const from = stringToInt(forStr[0]);
+				int const spacing = stringToInt(forStr[1]);
+				int const to = stringToInt(forStr[2]);
+
+				for (int ii=from; ii<=to; ii=ii+spacing) {
+					std::string pointName;
+					pointName = label;
+					pointName += "_";
+					pointName += intToString(ii);
+					if ( bC->ptrPointContainer()->has( pointName ) ) {
+						basicP->push_back( 
+						  new dtPoint3(bC->ptrPointContainer()->get(pointName)) 
+						);
+					}
+				}
+				return;				
+			}
 			//
-			//return a single point
+			// return a single point
 			//
 			else {
 				if ( bC->ptrPointContainer()->has(toBuildP->attribute("label").toStdString()) ) {
@@ -479,27 +504,32 @@ namespace dtOO {
 			vec3dOneD const * v1D = vec3dOneD::ConstDownCast(anAF);
 			vec3dTwoD const * v2D = vec3dTwoD::ConstDownCast(anAF);
 
-			if (!v1D && !v2D) {
-				dt__throw(
-				  createBasic(),
-					<< dt__eval( getAttributeStr("function_label", *toBuildP) ) << std::endl
-					<< "No such analyticFunction or analyticFunction has wrong type.");     
-			}
+			dt__throwIfWithMessage(
+				!v1D&&!v2D,
+				createBasic(),
+				<< dt__eval( getAttributeStr("function_label", *toBuildP) ) << std::endl
+				<< "No such analyticFunction or analyticFunction has wrong type."
+			);     
+
 			if ( getAttributeStr("attribute", *toBuildP) == "pick_from_function" ) {
 				if ( v1D && hasAttribute("x_one", *toBuildP) ) {
-					float cX = muParseString(
-											 replaceUsedFunctions(
-												 getAttributeStr("x_one", *toBuildP), cV,  aF
-											 )
-										 );
+					float cX 
+					= 
+					muParseString(
+						replaceUsedFunctions(
+							getAttributeStr("x_one", *toBuildP), cV,  aF
+						)
+					);
 					basicP->push_back( new dtPoint3( v1D->YdtPoint3(cX) ) );
 				}
 				else if ( v1D && hasAttribute("x_one_percent", *toBuildP) ) {
-					float cX = muParseString(
-											 replaceUsedFunctions(
-												 getAttributeStr("x_one_percent", *toBuildP), cV,  aF
-											 )
-										 );
+					float cX
+					= 
+					muParseString(
+						replaceUsedFunctions(
+							getAttributeStr("x_one_percent", *toBuildP), cV,  aF
+						)
+					);
 					basicP->push_back( new dtPoint3( v1D->YdtPoint3Percent(cX) ) );
 				}				
 				else if ( 
@@ -507,49 +537,71 @@ namespace dtOO {
 					&& hasAttribute("x_one", *toBuildP) 
 					&& hasAttribute("x_two", *toBuildP) 
 				) {
-					float cX = muParseString(
-											 replaceUsedFunctions(
-												 getAttributeStr("x_one", *toBuildP), cV,  aF
-											 )
-										 );
-					float cY = muParseString(
-											 replaceUsedFunctions(
-												 getAttributeStr("x_two", *toBuildP), cV, aF
-											 )
-										 );                      
-					basicP->push_back( new dtPoint3( v2D->YdtPoint3(cX, cY) ) );
+					float cX 
+					= 
+					muParseString(
+						replaceUsedFunctions(
+							getAttributeStr("x_one", *toBuildP), cV,  aF
+						)
+					);
+					float cY 
+					= 
+					muParseString(
+						replaceUsedFunctions(
+							getAttributeStr("x_two", *toBuildP), cV, aF
+						)
+					);                      
+					basicP->push_back( 
+					  new dtPoint3( v2D->YdtPoint3( analyticFunction::aFXTwoD(cX, cY) ) )
+					);
 				}	
 				else if ( 
 				  v2D 
 					&& hasAttribute("x_one_percent", *toBuildP) 
 					&& hasAttribute("x_two_percent", *toBuildP) 
 				) {
-					float cX = muParseString(
-											 replaceUsedFunctions(
-												 getAttributeStr("x_one_percent", *toBuildP), cV,  aF
-											 )
-										 );
-					float cY = muParseString(
-											 replaceUsedFunctions(
-												 getAttributeStr("x_two_percent", *toBuildP), cV, aF
-											 )
-										 );                      
+					float cX
+					= 
+					muParseString(
+						replaceUsedFunctions(
+							getAttributeStr("x_one_percent", *toBuildP), cV,  aF
+						)
+					);
+					float cY
+					= 
+					muParseString(
+						replaceUsedFunctions(
+							getAttributeStr("x_two_percent", *toBuildP), cV, aF
+						)
+					);                      
 					basicP->push_back( new dtPoint3( v2D->YdtPoint3Percent(cX, cY) ) );
 				}				
 			}			
-			
+		}
+		else if ( toBuildP->attribute("attribute") == "pick_order_from_file") {
+			std::string filename = getAttributeStr("file_name", *toBuildP);
+			if ( filename != "" ) {
+				std::vector< dtPoint3 > p3;
+				if (filename.find(".ibl") != std::string::npos) {
+					p3 = dtPoint3_readIBL(filename).result();
+					dt__forAllConstIter(std::vector< dtPoint3 >, p3, it) {
+						basicP->push_back( new dtPoint3(*it) );
+					}
+				}
+				else dt__throw(createBasic(), << "Unknown file extension.");
+			}
+			else dt__throw(createBasic(), << "attribute file_name is empty.");
 		}
 		
 		//
 		// check if a point was created
 		//
-		if (basicP->size() == 0 ) {
-			dt__throw(
-		    createBasic(), 
-				<< "No point could be created." << std::endl
-				<< convertToString(*toBuildP) 
-			);	
-		}
+		dt__throwIfWithMessage(
+			basicP->size()==0,
+			createBasic(), 
+			<< "No point could be created." << std::endl
+			<< convertToString(*toBuildP) 
+		);	
 		
 		//
 		//transform points
@@ -586,11 +638,20 @@ namespace dtOO {
 		//
 		//output
 		//
+		std::vector< float > itVal;
 		for (int ii=0;ii<basicP->size();ii++) {
-			dt__debug(
-			  createBasic(), << "created point: " << dt__point3d( (*(basicP->at(ii))) ) 
-			);
+			itVal.push_back( basicP->at(ii)->x() );
+			itVal.push_back( basicP->at(ii)->y() );
+			itVal.push_back( basicP->at(ii)->z() );
 		}    
+		std::vector< std::string > header;
+		header.push_back("p_x"); header.push_back("p_y"); header.push_back("p_z");
+		dt__debug(
+  	  createBasic(), 
+			<< "created points" << std::endl
+			<< logMe::floatVecToTable(header, itVal)
+		);
+
   }
 
 	/**
@@ -968,7 +1029,7 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const aF, 
 		vectorHandling< analyticGeometry * > const * const aG,
 		dtTransformer const * const dtTransformerP, 
-		std::vector< dtPoint2* > * basicP
+		std::vector< dtPoint2 * > * basicP
 	) {
 
     /* ------------------------------------------------------------------------ */
@@ -1175,6 +1236,10 @@ namespace dtOO {
 					}
 					basicP->push_back( new dtPoint2(fields[ii][0], fields[ii][1]) );          
 				}
+				//
+				// close file
+				//
+				in.close();
 			}
 			else {
 				dt__throw(createBasic(), << "Attribute file_name is empty");
@@ -1184,9 +1249,11 @@ namespace dtOO {
     // 4 unknown attribute
     //
     else {
-      dt__throw(createBasic(),
-              << dt__eval(qPrintable(toBuildP->attribute("attribute"))) << std::endl
-              << "Error creating point.");
+      dt__throw(
+				createBasic(),
+        << dt__eval(getAttributeStr("attribute", *toBuildP)) << std::endl
+        << "Error creating point."
+			);
     }
     //
     //transform points
