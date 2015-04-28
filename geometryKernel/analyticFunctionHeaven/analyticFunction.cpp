@@ -33,4 +33,28 @@ namespace dtOO {
 	vectorHandling< analyticFunction const * > analyticFunction::compoundInternal( void ) const {
 		return vectorHandling< analyticFunction const * >();
 	}			
+	
+  aFX analyticFunction::aFXOneD( float const & x0 ) {
+		aFX ret = aFX(1, 0.);
+		ret[0] = x0;
+		
+		return ret;
+	}
+	
+  aFX analyticFunction::aFXTwoD( float const & x0, float const & x1 ) {
+		aFX ret = aFX(2, 0.);
+		ret[0] = x0;
+		ret[1] = x1;		
+		
+		return ret;
+	}
+	
+  aFX analyticFunction::aFXThreeD( float const & x0, float const & x1, float const & x2 ) {
+		aFX ret = aFX(3, 0.);
+		ret[0] = x0;
+		ret[1] = x1;
+		ret[2] = x2;	
+		
+		return ret;
+	}
 }

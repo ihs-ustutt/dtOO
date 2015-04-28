@@ -29,6 +29,7 @@ namespace dtOO {
     dtPoint3 YdtPoint3Percent(float const & xx) const;
     float length( float const & x1 ) const;
     float length( void ) const;
+    float operator%( const float &percent ) const;     
   private:
 	  float length( int const & nP, float const & x1 ) const;
   private:    

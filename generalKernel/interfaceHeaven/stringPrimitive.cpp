@@ -63,12 +63,18 @@ namespace dtOO {
     return retStr.erase( pos );
   }
 
-  std::string stringPrimitive::getStringBetween(std::string const signStart, std::string const signEnd, std::string const str) {  
+  std::string stringPrimitive::getStringBetween(
+	  std::string const signStart, 
+		std::string const signEnd, 
+		std::string const str
+	) {  
     if ( (signStart.size() > 1) || (signEnd.size() > 1) ) {
-      dt__throw(getStringBetween(),
-              << dt__eval(signStart.size()) << std::endl
-              << dt__eval(signEnd.size()) << std::endl
-              << "Signs should have size equal one.");
+      dt__throw(
+				getStringBetween(),
+        << dt__eval(signStart.size()) << std::endl
+        << dt__eval(signEnd.size()) << std::endl
+        << "Signs should have size equal one."
+			);
     }
 
     if ( !stringContains(signStart, str) || !stringContains(signEnd, str) ) {
@@ -104,8 +110,8 @@ namespace dtOO {
     std::string retStr = getStringBetween(signStart, signEnd, *str);
 
     //if (retStr != "") {
-      unsigned int from = str->find(signStart.c_str());
-      unsigned int to = str->find(signEnd.c_str());
+      unsigned int from = str->find_first_of(signStart.c_str());
+      unsigned int to = str->find_first_of(signEnd.c_str(), from+1);
 
 //      dt__debug(getStringBetweenAndRemove(),
 //              << dt__eval(*str) << std::endl

@@ -49,12 +49,11 @@ namespace dtOO {
       //
       int order = getAttributeInt("order", toBuildP);
       while ( !elementP.isNull() ) {
-				std::vector< dtPoint2* > workingPoint;
-        this->createBasic( &elementP, cValP, depSFunP, &workingPoint );
-        for (int ii=0;ii<workingPoint.size();ii++) {
-          // put in point builder
-					pointsArray.push_back( *(workingPoint[ii]) );
-					delete workingPoint[ii];
+				std::vector< dtPoint2 > workingPoint;
+        dtXmlParserBase::createBasic( &elementP, bC, cValP, depSFunP, &workingPoint );
+        for (int ii=0; ii<workingPoint.size();ii++) {
+					pointsArray.push_back( workingPoint[ii] );
+//					delete workingPoint[ii];
         }
       // next sibling
       elementP = QDomElement( getNextSibling("Point_2", elementP) );      

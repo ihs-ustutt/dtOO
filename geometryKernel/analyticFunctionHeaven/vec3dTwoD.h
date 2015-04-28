@@ -37,6 +37,7 @@ namespace dtOO {
     dtPoint3 YdtPoint3Percent(aFX const & xx) const;
     dtPoint3 YdtPoint3Percent(float const & x0, float const & x1) const;    
     vectorHandling< renderInterface * > getRender( void ) const;
+    aFX operator%(const aFX &percent) const;
   private:    
     float _min[2];
     float _max[2];
