@@ -13,23 +13,23 @@ namespace dtOO {
 		// check values
 		//
 		if ( angleIn < 0.) {
-			DTWARNINGWF(
+			dt__warning(
 				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
-				<< "Adjusting angleIn from " << DTLOGEVAL(angleIn) << " to " << 0. << "."
+				<< "Adjusting angleIn from " << dt__eval(angleIn) << " to " << 0. << "."
 			);
 			angleIn = 0.;
 		}
 		if ( angleOut < 0.) {
-			DTWARNINGWF(
+			dt__warning(
 				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
-				<< "Adjusting angleOut from " << DTLOGEVAL(angleOut) << " to " << 0. << "." 
+				<< "Adjusting angleOut from " << dt__eval(angleOut) << " to " << 0. << "." 
 			);
 			angleOut = 0.;        
 		}            
 		if ( (ratio < 0.) || (ratio > 1.) ) {
-			dt__THROW(
+			dt__throw(
 				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
-				<< DTLOGEVAL(ratio) << LOGDEL        
+				<< dt__eval(ratio) << std::endl        
 				<< "Ratio is smaller than zero or bigger than one."
 			);
 		}
@@ -52,16 +52,16 @@ namespace dtOO {
 //					pV.push_back( dtPoint2(-deltaX, deltaY));
 //				}
 
-			DTINFOWF(
+			dt__info(
 				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
-				<< DTLOGEVAL(angleIn) << LOGDEL
-				<< DTLOGEVAL(angleOut) << LOGDEL              
-				<< DTLOGEVAL(deltaX) << LOGDEL 
-				<< DTLOGEVAL(deltaY) << LOGDEL
-				<< DTLOGEVAL(pointOne) << LOGDEL
-				<< DTLOGEVAL(pointTwo) << LOGDEL
-				<< DTLOGPOI2D(pV[0]) << LOGDEL
-				<< DTLOGPOI2D(pV[1])
+				<< dt__eval(angleIn) << std::endl
+				<< dt__eval(angleOut) << std::endl              
+				<< dt__eval(deltaX) << std::endl 
+				<< dt__eval(deltaY) << std::endl
+				<< dt__eval(pointOne) << std::endl
+				<< dt__eval(pointTwo) << std::endl
+				<< dt__point2d(pV[0]) << std::endl
+				<< dt__point2d(pV[1])
 			);
 					
 			_dtC2d.reset( bSplineCurve2d_pointConstructOCC(pV, 1).result() );
@@ -126,25 +126,25 @@ namespace dtOO {
 //				);      
 //				pV.push_back( dtPoint2(-deltaX, deltaY) );          
 //			}
-			DTINFOWF(
+			dt__info(
 				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
-				<< DTLOGEVAL(angleIn) << LOGDEL
-				<< DTLOGEVAL(angleOut) << LOGDEL              
-				<< DTLOGEVAL(deltaXMin) << LOGDEL 
-				<< DTLOGEVAL(deltaXMax) << LOGDEL               
-				<< DTLOGEVAL(ratio) << LOGDEL
-//				<< DTLOGEVAL(ss) << LOGDEL
-				<< DTLOGEVAL(tt) << LOGDEL
-				<< DTLOGEVAL(ll) << LOGDEL
-				<< DTLOGEVAL(deltaX) << LOGDEL 
-				<< DTLOGEVAL(deltaY) << LOGDEL
-				<< DTLOGEVAL(pointOne) << LOGDEL
-				<< DTLOGEVAL(pointTwo) << LOGDEL
-				<< DTLOGPOI2D(pV[0]) << LOGDEL
-				<< DTLOGPOI2D(pV[1]) << LOGDEL
-				<< DTLOGPOI2D(pV[2]) << LOGDEL
-				<< DTLOGPOI2D(pV[3]) << LOGDEL
-				<< DTLOGPOI2D(pV[4]) 
+				<< dt__eval(angleIn) << std::endl
+				<< dt__eval(angleOut) << std::endl              
+				<< dt__eval(deltaXMin) << std::endl 
+				<< dt__eval(deltaXMax) << std::endl               
+				<< dt__eval(ratio) << std::endl
+//				<< dt__eval(ss) << std::endl
+				<< dt__eval(tt) << std::endl
+				<< dt__eval(ll) << std::endl
+				<< dt__eval(deltaX) << std::endl 
+				<< dt__eval(deltaY) << std::endl
+				<< dt__eval(pointOne) << std::endl
+				<< dt__eval(pointTwo) << std::endl
+				<< dt__point2d(pV[0]) << std::endl
+				<< dt__point2d(pV[1]) << std::endl
+				<< dt__point2d(pV[2]) << std::endl
+				<< dt__point2d(pV[3]) << std::endl
+				<< dt__point2d(pV[4]) 
 			);
 			_dtC2d.reset( bSplineCurve2d_pointConstructOCC(pV, 2).result() );
 		}

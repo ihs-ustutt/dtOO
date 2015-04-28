@@ -10,7 +10,7 @@ namespace dtOO {
   
   class bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC {
   public:
-    dt__CLASSNAME(bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC);
+    dt__classOnlyName(bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC);
     bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC( 
       float angleIn, float angleOut, float const & ratio, float const & deltaY, 
       float const & pointOne, float const & pointTwo    	/*nicht sicher mi dem &*/
