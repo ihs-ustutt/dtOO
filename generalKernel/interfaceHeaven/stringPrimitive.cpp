@@ -42,16 +42,22 @@ namespace dtOO {
     return buff.str();
   } 
 
-  bool stringPrimitive::stringContains(std::string const pattern, std::string const str) {
+  bool stringPrimitive::stringContains(
+	  std::string const pattern, std::string const str
+	) {
     return (str.find(pattern.c_str()) != std::string::npos);
   }
   
-  std::string stringPrimitive::stringRemoveSingle(std::string const pattern, std::string const str) {
+  std::string stringPrimitive::stringRemoveSingle(
+	  std::string const pattern, std::string const str
+	) {
     if (pattern.size() != 1) {
-      dt__throw(stringRemoveSingle(),
-              << "Only possible to remove one single char." << std::endl
-              << dt__eval(pattern) << std::endl
-              << dt__eval( pattern.size() ) );
+      dt__throw(
+				stringRemoveSingle(),
+        << "Only possible to remove one single char." << std::endl
+        << dt__eval(pattern) << std::endl
+        << dt__eval(pattern.size()) 
+			);
     }
     if ( !stringContains(pattern, str) ) { //|| !stringContains(pattern, str) ) {
       return std::string("");
@@ -68,85 +74,56 @@ namespace dtOO {
 		std::string const signEnd, 
 		std::string const str
 	) {  
-    if ( (signStart.size() > 1) || (signEnd.size() > 1) ) {
-      dt__throw(
-				getStringBetween(),
-        << dt__eval(signStart.size()) << std::endl
-        << dt__eval(signEnd.size()) << std::endl
-        << "Signs should have size equal one."
-			);
-    }
-
-    if ( !stringContains(signStart, str) || !stringContains(signEnd, str) ) {
-//      dt__debug(getStringBetween(),
-//              << "No string between " << dt__eval(signStart) << " "
-//              << dt__eval(signEnd) << " in " << dt__eval(str) );
-      return std::string("");
-    }
-
-    int from;
-    if ( (signStart.size() == 1) ) {
-      from = str.find_first_of(signStart.c_str());
-    }
-    else from = -1;
-    int to;
-    if ( (signEnd.size() == 1) ) {
-      to = str.find_first_of(signEnd.c_str(), from+1);
-    }
-    else to = -1;
-
-//    dt__debug(getStringBetween(),
-//            << dt__eval(str) << std::endl
-//            << dt__eval(signStart) << std::endl
-//            << dt__eval(signEnd) << std::endl
-//            << dt__eval(from) << std::endl
-//            << dt__eval(to) << std::endl
-//            << dt__eval(str.substr( from+1, to-from-1)) );
-
-    return str.substr( from+1, to-from-1);
+    std::pair< int, int > fromTo = getFromToBetween(signStart, signEnd, str);
+		if ( (fromTo.first == 0) && (fromTo.second == 0) ) return std::string("");
+		else return str.substr( fromTo.first+1, fromTo.second-fromTo.first-1);
   }
 
-  std::string stringPrimitive::getStringBetweenAndRemove(std::string const signStart, std::string const signEnd, std::string * const str) {
+  std::string stringPrimitive::getStringBetweenAndRemove(
+	  std::string const signStart, std::string const signEnd, 
+		std::string * const str
+	) {
+	  //
+		// get return string
+		//
     std::string retStr = getStringBetween(signStart, signEnd, *str);
+		
+		//
+		// get indices and remove return string with start and end sign
+		//
+    std::pair< int, int > fromTo = getFromToBetween(signStart, signEnd, *str);
+		if ( (fromTo.first == 0) && (fromTo.second == 0) ) return retStr;
+		
+		int from = std::max(0, fromTo.first);
+		int to 
+		= 
+		std::min(
+			static_cast<int>(str->length()), 
+			fromTo.second-fromTo.first+1
+		);
 
-    //if (retStr != "") {
-      unsigned int from = str->find_first_of(signStart.c_str());
-      unsigned int to = str->find_first_of(signEnd.c_str(), from+1);
-
-//      dt__debug(getStringBetweenAndRemove(),
-//              << dt__eval(*str) << std::endl
-//              << dt__eval(signStart) << std::endl
-//              << dt__eval(signEnd) << std::endl
-//              << dt__eval(from) << std::endl
-//              << dt__eval(to) << std::endl
-//              << dt__eval(str->erase(from, to-from+1)) );
-
-    if ( stringContains(signStart, *str) && stringContains(signEnd, *str) ) {
-      str->erase(from, to-from+1);
-    }
-
+		str->erase(from, to);
     return retStr;
   }
 	
-	std::vector< std::string > stringPrimitive::convertToStringVector(std::string const signStart, std::string const signEnd, std::string const str) {
+	std::vector< std::string > stringPrimitive::convertToStringVector(
+	  std::string const signStart, std::string const signEnd, 
+		std::string const str
+	) {
 		std::vector< std::string > values;
 		std::string valueStr = str;
-		while (valueStr.length() != 0) {
+		for (int ii=0; ii<str.length(); ii++) {//while (valueStr.length() != 0) {
 			std::string aVal = getStringBetweenAndRemove(signStart, signEnd, &valueStr);
-//			if (aVal.length() != 0 ) {
-				values.push_back(aVal);
-//				dt__info( 
-//					openFileAndParse(), 
-//					<< dt__eval(values.back()) << std::endl
-//				);
-//			}
-//			else dt__THROW(convertToStringVector(), << "Error in creating the array.");
+			if (aVal.length() == 0 ) break;
+		  values.push_back(aVal);
 		}
 
 		return values;
 	}
 
-  std::string stringPrimitive::replaceStringInString(std::string const toReplace, std::string const with, std::string const str) {
+  std::string stringPrimitive::replaceStringInString(
+	  std::string const toReplace, std::string const with, std::string const str
+	) {
 		if ( !stringContains(toReplace, str) ) return str;
 
     std::string retStr = str;		
@@ -163,4 +140,34 @@ namespace dtOO {
     return retStr;
   }	
 	
+  std::pair< int, int > stringPrimitive::getFromToBetween(
+	  std::string const signStart, std::string const signEnd, std::string const str
+	) {
+    if ( (signStart.size() > 1) || (signEnd.size() > 1) ) {
+      dt__throw(
+				getStringFromTo(),
+        << dt__eval(signStart.size()) << std::endl
+        << dt__eval(signEnd.size()) << std::endl
+        << "Signs should have size equal one."
+			);
+    }
+
+    if ( !stringContains(signStart, str) || !stringContains(signEnd, str) ) {
+      return std::pair< int, int >(0, 0);
+    }
+
+    int from;
+    if ( (signStart.size() == 1) ) {
+      from = str.find_first_of(signStart.c_str());
+    }
+    else from = -1;
+    int to;
+    if ( (signEnd.size() == 1) ) {
+      to = str.find_first_of(signEnd.c_str(), from+1);
+    }
+    else to = -1;
+
+    return std::pair< int, int >(from, to);		
+	}
+		
 }

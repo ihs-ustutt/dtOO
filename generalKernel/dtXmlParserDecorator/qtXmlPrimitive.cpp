@@ -60,9 +60,7 @@ namespace dtOO {
   bool qtXmlPrimitive::hasSibling(
 	  std::string const sibName, QDomElement const element 
 	) {
-    QDomElement tmpElement;
-
-    tmpElement = getSibling(sibName, element);
+    QDomElement tmpElement = getSibling(sibName, element);
     if ( tmpElement.isNull() ) return false;
     else return true;
   }
@@ -70,9 +68,7 @@ namespace dtOO {
   bool qtXmlPrimitive::hasChild(
 	  std::string const sibName, QDomElement const element 
 	) {
-    QDomElement tmpElement;
-
-    tmpElement = getChild(sibName, element);
+    QDomElement tmpElement = getChild(sibName, element);
     if ( tmpElement.isNull() ) return false;
     else return true;
   }
@@ -138,9 +134,7 @@ namespace dtOO {
       }      
     }
     
-    if ( tmpElementP.isNull() ) {
-      return sibVec;
-    }
+    if ( tmpElementP.isNull() ) return sibVec;
     
     while( !tmpElementP.isNull() ) {
       if ( is(sibName, tmpElementP) ) sibVec.push_back( tmpElementP );
@@ -251,7 +245,6 @@ namespace dtOO {
     std::string const attributeValue,
     QDomElement const element 
 	) {
-    
     QDomElement wElement = getChild(sibName, element);
     
     while ( !wElement.isNull() ) {
@@ -387,12 +380,8 @@ namespace dtOO {
   } 
 
   bool qtXmlPrimitive::isBuilder( QDomElement const element ) {
-    if ( element.tagName().toStdString() == "builder" ) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    if ( element.tagName().toStdString() == "builder" ) return true;
+    else return false;
   }  
 
   bool qtXmlPrimitive::hasAttribute(
@@ -503,12 +492,8 @@ namespace dtOO {
         tmpElementP = QDomElement( tmpElementP.firstChildElement() );        
       }
       else {
-        if ( getBuilderSibling(tmpElementP).isNull() ) {
-          break;
-        }
-        else {
-          tmpElementP = QDomElement( getBuilderSibling(tmpElementP) );          
-        }
+        if ( getBuilderSibling(tmpElementP).isNull() ) break;
+        else tmpElementP = QDomElement( getBuilderSibling(tmpElementP) );
       }
     }
     //
@@ -516,7 +501,7 @@ namespace dtOO {
     // go to the parent and that's it
     //		
     QDomNode tmpNodeP = QDomNode( tmpElementP.parentNode() );
-    return ( QDomElement ( tmpNodeP.toElement() ) );//*tmpElementP ) );      
+    return QDomElement ( tmpNodeP.toElement() );
   }
 
   QDomElement qtXmlPrimitive::createElement(
@@ -565,9 +550,8 @@ namespace dtOO {
       if ( foundEl.hasAttribute( elAttribute.c_str() ) ) {
         if ( getAttributeStr(elAttribute, foundEl)
              ==
-             elAttributeValue ) {
-        elements.at(ii).toElement().appendChild(element);            
-        } 
+             elAttributeValue 
+				) elements.at(ii).toElement().appendChild(element);            
       }
     }
   }  
