@@ -91,10 +91,10 @@ namespace dtOO {
 //			int ss = ( deltaY - deltaX * sin(angleIn) / cos(angleIn) )
 //							 /
 //							 ( sin(angleOut) - (cos(angleOut)*sin(angleIn) / cos(angleIn)) );
-			int tt = ( deltaY - deltaX * sin(angleOut) / cos(angleOut) )
+			float tt = ( deltaY - deltaX * sin(angleOut) / cos(angleOut) )
 							 /
 							 ( sin(angleIn) - (cos(angleIn)*sin(angleOut) / cos(angleOut)) );  
-			int ll = ( deltaY - sin(angleIn) * tt ) / sin(angleOut);
+			float ll = ( deltaY - sin(angleIn) * tt ) / sin(angleOut);
 //			if (!mirrorY) {
 			pV.push_back(
 				dtPoint2(
