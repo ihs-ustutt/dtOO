@@ -129,8 +129,11 @@ namespace dtOO {
 					check = newtonF.Solve();
 				}
 				if ( !check ) {
-					dt__throw(YFloat(), << dt__eval(check) << std::endl
-								 << dt__eval(getLabel()) );			
+					dt__throw(
+						YFloat(), 
+						<< dt__eval(check) << std::endl
+						<< dt__eval(getLabel()) 
+					);			
 				}
 				theRoot = newtonF.Root();
 			}
