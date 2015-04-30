@@ -24,6 +24,7 @@
 #include "occBuilder/bSplineSurface_bSplineCurveFillConstructOCCDecorator.h"
 #include "occBuilder/bSplineCurve_pointPickFromPartConstructOCCDecorator.h"
 #include "occBuilder/bSplineCurve_pointConstructArcLengthParaOCCDecorator.h"
+#include "occBuilder/bSplineCurve_straightExtentToSurfaceOCCDecorator.h"
 
 
 #define __IFRET(className) \
@@ -79,6 +80,8 @@ namespace dtOO {
 		__IFRETCUSTOM(bSplineCurve_pointPickFromPartConstructOCC, bSplineCurve_pointPickFromPartConstructOCCDecorator);
 		__IFRET(bSplineCurve_pointConstructArcLengthParaOCCDecorator);
 		__IFRETCUSTOM(bSplineCurve_pointConstructArcLengthParaOCC, bSplineCurve_pointConstructArcLengthParaOCCDecorator);
+		__IFRET(bSplineCurve_straightExtentToSurfaceOCCDecorator);
+		__IFRETCUSTOM(bSplineCurve_straightExtentToSurfaceOCC, bSplineCurve_straightExtentToSurfaceOCCDecorator);
 		__IFRET(scaInMap1dTo3dDecorator);
 		__IFRETCUSTOM(scaInMap1dTo3d, scaInMap1dTo3dDecorator);
     __IFRET( vec2dInMap2dTo3dDecorator );
