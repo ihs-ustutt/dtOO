@@ -40,7 +40,9 @@ namespace dtOO {
     private:
       void saveCVState(void);
       void loadCVStateLabels(void);
-      void loadCVState(void);    
+      void loadCVState(void);
+      void tryToStoreAGRender();
+      void tryToRemakeAGRender(void);      
     private:
       covise::coStringParam * _logName;
       covise::coChoiceParam * _moduleChoice;
@@ -93,6 +95,8 @@ namespace dtOO {
       coDoSetHandling _bVToRender;
       
       bool _recreate;
+      
+      std::vector< std::string > _memento;
   };
 }
 #endif

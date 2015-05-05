@@ -539,6 +539,11 @@ namespace dtOO {
 	    _logName->setValue(logFileName.c_str());
 			
 			if ( _recreate ) {
+				//
+				// try to store visualization
+				//
+				tryToStoreAGRender();
+				
 				_aGToRender.clear();
 				_aFToRender.clear();
 				_bVToRender.clear();
@@ -547,6 +552,11 @@ namespace dtOO {
 				_parser->openFileAndParse( _xmlBrowser->getValue() );
 				_parser->destroyAndCreate(_cV, _aF, _bC, _aG, _bV, _dC, _pL);
 
+				//
+				// try to remake visualization
+				//				
+				tryToRemakeAGRender();
+				
 				abstractModule::updateChoiceParam(_cVChoice, &_cV);
 
 				abstractModule::updateChoiceParam(_aFChoice, &_aF);
@@ -691,8 +701,24 @@ namespace dtOO {
 	
   designTool::~designTool() {
   }
-    
+	
+	void designTool::tryToStoreAGRender( void ) {
+		if (_aGToRender.empty()) return;
+		_memento.clear();
+		dt__forAllConstIter(coDoSetHandling, _aGToRender, it) {
+			labelHandling const * const labelIt = dynamic_cast< labelHandling const * const >(*it);
+			if (labelIt) _memento.push_back(labelIt->getLabel());
+		}
+	} 
+
+	void designTool::tryToRemakeAGRender( void ) {
+		dt__forAllConstIter(std::vector< std::string >, _memento, it) {
+		  if (_aG.has(*it) ) _aGToRender.push_back( _aG.get(*it) );
+		}
+		dt__forAllIndex(_aGToRender,ii) _aGToRender[ii]->extRender(false);
+	}
 }
+
 
 using namespace covise;
 MODULE_MAIN(designTool, dtOO::designTool)
