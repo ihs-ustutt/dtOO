@@ -102,6 +102,11 @@ namespace dtOO {
     }
   }
 
+	/**
+	 * 
+   * @todo Is this a memory bug? Should cL0 - cL4 be destroyed at the end
+	 *       of the function?
+   */
   void vec3dTransVolThreeDFunctionDecorator::buildPartCompound(
 	  QDomElement const & toBuildP, 
 	  baseContainer * const bC,

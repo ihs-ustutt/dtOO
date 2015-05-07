@@ -25,7 +25,9 @@ namespace dtOO {
 		return new reparamInSurface();
 	}
 	
-  vectorHandling< analyticGeometry * > reparamInSurface::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
+  vectorHandling< analyticGeometry * > reparamInSurface::apply( 
+	  vectorHandling< analyticGeometry * > const * const aGeoVecP 
+	) const {
     vectorHandling< analyticGeometry * > retAGeo;
     for (int ii=0; ii<aGeoVecP->size(); ii++) {
       //

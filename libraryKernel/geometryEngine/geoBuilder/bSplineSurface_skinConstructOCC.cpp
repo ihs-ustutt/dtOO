@@ -21,6 +21,9 @@ namespace dtOO {
 		
 	}
 	
+	/**
+	 * @todo ptrVectorHandling as input
+	 */
   bSplineSurface_skinConstructOCC::bSplineSurface_skinConstructOCC(
 	  vectorHandling< dtCurve const * > const &  cL
 	) {
