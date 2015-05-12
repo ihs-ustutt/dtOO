@@ -80,6 +80,16 @@ namespace dtOO {
 //		);
 	}
 	
+	bSplineCurve_pointConstructOCC::bSplineCurve_pointConstructOCC( 
+	  dtPoint3 const & p0, dtPoint3 const & p1 
+	) {
+	  std::vector< dtPoint3 > pp(2);
+		pp[0] = p0;
+		pp[1] = p1;
+		
+		_dtC.reset(bSplineCurve_pointConstructOCC(pp, 1).result());
+	}
+	
 	bSplineCurve_pointConstructOCC::~bSplineCurve_pointConstructOCC() {
 	}
 	
