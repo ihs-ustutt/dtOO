@@ -77,17 +77,17 @@ namespace dtOO {
 		Standard_Real v1R = static_cast<Standard_Real>(vvMin);
 		Standard_Real v2R = static_cast<Standard_Real>(vvMax);
 
-    dt__warnIfWithMessageAndSolution(
+    dt__solution(
 			v1R<ccB->FirstParameter(), 
-			v1R = ccB->FirstParameter();,
-			segmentConstU(),
-			<< "v1R = ccB->FirstParameter();"				
+			v1R = ccB->FirstParameter();//,
+//			segmentConstU(),
+//			<< "v1R = ccB->FirstParameter();"				
 		);			
-    dt__warnIfWithMessageAndSolution(
+    dt__solution(
 			v2R>ccB->LastParameter(), 
-			v2R = ccB->LastParameter();,
-			segmentConstU(),
-			<< "v2R = ccB->LastParameter();"				
+			v2R = ccB->LastParameter();//,
+//			segmentConstU(),
+//			<< "v2R = ccB->LastParameter();"				
 		);	
 			
 		dt__tryOcc(
@@ -112,17 +112,17 @@ namespace dtOO {
 		Standard_Real u1R = static_cast<Standard_Real>(uuMin);
 		Standard_Real u2R = static_cast<Standard_Real>(uuMax);
 
-    dt__warnIfWithMessageAndSolution(
+    dt__solution(
 			u1R<ccB->FirstParameter(), 
-			u1R = ccB->FirstParameter();,
-			segmentConstV(),
-			<< "u1R = ccB->FirstParameter();"				
+			u1R = ccB->FirstParameter();//,
+//			segmentConstV(),
+//			<< "u1R = ccB->FirstParameter();"				
 		);			
-    dt__warnIfWithMessageAndSolution(
+    dt__solution(
 			u2R>ccB->LastParameter(), 
-			u2R = ccB->LastParameter();,
-			segmentConstV(),
-			<< "u2R = ccB->LastParameter();"				
+			u2R = ccB->LastParameter();//,
+//			segmentConstV(),
+//			<< "u2R = ccB->LastParameter();"				
 		);	
 							
 		dt__tryOcc(
