@@ -12,6 +12,8 @@
 #include "generalBuilder/rotatingMap2dTo3dDecorator.h"
 #include "generalBuilder/infinityMap3dTo3dDecorator.h"
 #include "generalBuilder/makeCompoundDecorator.h"
+#include "generalBuilder/vec3dInMap3dTo3dSurroundingInternalDecorator.h"
+#include "generalBuilder/map2dTo3dApproximateInMap3dTo3dDecorator.h"
 #include "occBuilder/bezierCurve_pointConstructOCCDecorator.h"
 #include "occBuilder/bSplineCurve_curveConnectConstructOCCDecorator.h"
 #include "occBuilder/bSplineSurface_skinConstructOCCDecorator.h"
@@ -55,33 +57,69 @@ namespace dtOO {
     __IFRET(trans6SidedCubeDecorator);
     __IFRETCUSTOM(trans6SidedCube, trans6SidedCubeDecorator);
 		__IFRET(bezierCurve_pointConstructOCCDecorator);
-		__IFRETCUSTOM(bezierCurve_pointConstructOCC, bezierCurve_pointConstructOCCDecorator);
+		__IFRETCUSTOM(
+		  bezierCurve_pointConstructOCC, bezierCurve_pointConstructOCCDecorator
+		);
 		__IFRET(bSplineSurface_skinConstructOCCDecorator);
-		__IFRETCUSTOM(bSplineSurface_skinConstructOCC, bSplineSurface_skinConstructOCCDecorator);
+		__IFRETCUSTOM(
+		  bSplineSurface_skinConstructOCC, bSplineSurface_skinConstructOCCDecorator
+		);
 		__IFRET(surfaceOfRevolution_curveRotateConstructOCCDecorator);
-		__IFRETCUSTOM(surfaceOfRevolution_curveRotateConstructOCC, surfaceOfRevolution_curveRotateConstructOCCDecorator);
+		__IFRETCUSTOM(
+		  surfaceOfRevolution_curveRotateConstructOCC, 
+			surfaceOfRevolution_curveRotateConstructOCCDecorator
+		);
 		__IFRET(bezierCurvePointPickFromPartConstructOCCDecorator);
-		__IFRETCUSTOM(bezierCurvePointPickFromPartConstructOCC, bezierCurvePointPickFromPartConstructOCCDecorator);
+		__IFRETCUSTOM(
+		  bezierCurvePointPickFromPartConstructOCC, 
+			bezierCurvePointPickFromPartConstructOCCDecorator
+		);
     __IFRET(bSplineCurve_pointPickFromPartConstructOCCDecorator);
-    __IFRETCUSTOM(bSplineCurve_pointPickFromPartConstructOCC, bSplineCurve_pointPickFromPartConstructOCCDecorator);		
+    __IFRETCUSTOM(
+			bSplineCurve_pointPickFromPartConstructOCC, 
+			bSplineCurve_pointPickFromPartConstructOCCDecorator
+		);		
 		__IFRET(bSplineCurve_curveConnectConstructOCCDecorator);
-		__IFRETCUSTOM(bSplineCurve_curveConnectConstructOCC, bSplineCurve_curveConnectConstructOCCDecorator);
+		__IFRETCUSTOM(
+			bSplineCurve_curveConnectConstructOCC, 
+			bSplineCurve_curveConnectConstructOCCDecorator
+		);
 		__IFRET(bezierSurface_bezierCurveFillConstructOCCDecorator);
-		__IFRETCUSTOM(bezierSurface_bezierCurveFillConstructOCC, bezierSurface_bezierCurveFillConstructOCCDecorator);
+		__IFRETCUSTOM(
+			bezierSurface_bezierCurveFillConstructOCC, 
+			bezierSurface_bezierCurveFillConstructOCCDecorator
+		);
 		__IFRET(bSplineCurve_pointInterpolateConstructOCCDecorator);
-		__IFRETCUSTOM(bSplineCurve_pointInterpolateConstructOCC, bSplineCurve_pointInterpolateConstructOCCDecorator);
+		__IFRETCUSTOM(
+			bSplineCurve_pointInterpolateConstructOCC, 
+			bSplineCurve_pointInterpolateConstructOCCDecorator
+		);
 		__IFRET(bSplineCurve_pointConstructOCCDecorator);
-		__IFRETCUSTOM(bSplineCurve_pointConstructOCC, bSplineCurve_pointConstructOCCDecorator);
+		__IFRETCUSTOM(
+			bSplineCurve_pointConstructOCC, bSplineCurve_pointConstructOCCDecorator
+		);
 		__IFRET(bSplineSurface_bSplineCurveFillConstructOCCDecorator);
-		__IFRETCUSTOM(bSplineSurface_bSplineCurveFillConstructOCC, bSplineSurface_bSplineCurveFillConstructOCCDecorator);
+		__IFRETCUSTOM(
+			bSplineSurface_bSplineCurveFillConstructOCC, 
+			bSplineSurface_bSplineCurveFillConstructOCCDecorator
+		);
 		__IFRET(rotatingMap2dTo3dDecorator);
 		__IFRETCUSTOM(rotatingMap2dTo3d, rotatingMap2dTo3dDecorator);
 		__IFRET(bSplineCurve_pointPickFromPartConstructOCCDecorator);
-		__IFRETCUSTOM(bSplineCurve_pointPickFromPartConstructOCC, bSplineCurve_pointPickFromPartConstructOCCDecorator);
+		__IFRETCUSTOM(
+			bSplineCurve_pointPickFromPartConstructOCC, 
+			bSplineCurve_pointPickFromPartConstructOCCDecorator
+		);
 		__IFRET(bSplineCurve_pointConstructArcLengthParaOCCDecorator);
-		__IFRETCUSTOM(bSplineCurve_pointConstructArcLengthParaOCC, bSplineCurve_pointConstructArcLengthParaOCCDecorator);
+		__IFRETCUSTOM(
+			bSplineCurve_pointConstructArcLengthParaOCC, 
+			bSplineCurve_pointConstructArcLengthParaOCCDecorator
+		);
 		__IFRET(bSplineCurve_straightExtentToSurfaceOCCDecorator);
-		__IFRETCUSTOM(bSplineCurve_straightExtentToSurfaceOCC, bSplineCurve_straightExtentToSurfaceOCCDecorator);
+		__IFRETCUSTOM(
+			bSplineCurve_straightExtentToSurfaceOCC, 
+			bSplineCurve_straightExtentToSurfaceOCCDecorator
+		);
 		__IFRET(scaInMap1dTo3dDecorator);
 		__IFRETCUSTOM(scaInMap1dTo3d, scaInMap1dTo3dDecorator);
     __IFRET( vec2dInMap2dTo3dDecorator );
@@ -92,6 +130,16 @@ namespace dtOO {
 		__IFRETCUSTOM(infinityMap3dTo3d, infinityMap3dTo3dDecorator);	
 		__IFRET(makeCompoundDecorator);
 		__IFRETCUSTOM(makeCompound, makeCompoundDecorator);
+		__IFRET(vec3dInMap3dTo3dSurroundingInternalDecorator);
+		__IFRETCUSTOM(
+			vec3dInMap3dTo3dSurroundingInternal, 
+			vec3dInMap3dTo3dSurroundingInternalDecorator
+		);		
+    __IFRET(map2dTo3dApproximateInMap3dTo3dDecorator);
+    __IFRETCUSTOM(
+      map2dTo3dApproximateInMap3dTo3d,
+      map2dTo3dApproximateInMap3dTo3dDecorator
+    );
 
     dt__throw(create(), <<  "Could not be created.");
   }
