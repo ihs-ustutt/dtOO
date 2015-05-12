@@ -16,7 +16,7 @@ namespace dtOO {
     bSplineSurface_extentSurfaceByLength( 
       dtSurface const * const dtS, 
       int const & parameterDir, float const & length, 
-      int const & cont = 1, bool const & forward = false
+      int const & cont = 2, bool const & forward = false
     );
     virtual ~bSplineSurface_extentSurfaceByLength();
     dtSurface * result( void );
