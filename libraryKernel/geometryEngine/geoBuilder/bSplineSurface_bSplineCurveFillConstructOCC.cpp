@@ -1,4 +1,5 @@
 #include "bSplineSurface_bSplineCurveFillConstructOCC.h"
+#include "interfaceHeaven/staticPropertiesHandler.h"
 
 #include <logMe/logMe.h>
 #include <geometryEngine/dtOCCSurfaceBase.h>
@@ -13,7 +14,7 @@
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BSplineSurface.hxx>
 #include <GeomFill_FillingStyle.hxx>
-#include <GeomFill_BSplineCurves.hxx>
+#include <geometryEngine/GeomFill_BSplineCurvesExtPrecision.h>
 
 namespace dtOO {
 	bSplineSurface_bSplineCurveFillConstructOCC::bSplineSurface_bSplineCurveFillConstructOCC( 
@@ -41,13 +42,13 @@ namespace dtOO {
 		C4 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );		
 		
 		
-		GeomFill_BSplineCurves fill;
+		GeomFill_BSplineCurvesExtPrecision fill;
 		dtOCCSurfaceBase base;	
 		dt__tryOcc(
 			fill.Init(
 			  C1, C2, C3, C4, 
-				GeomFill_FillingStyle::GeomFill_StretchStyle//,
-				//1.e-2
+				GeomFill_FillingStyle::GeomFill_StretchStyle,
+				staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
 			);						
 			base.setOCC( fill.Surface() );
 		,
