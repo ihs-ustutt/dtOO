@@ -94,15 +94,24 @@ namespace dtOO {
     std::pair< int, int > fromTo = getFromToBetween(signStart, signEnd, *str);
 		if ( (fromTo.first == 0) && (fromTo.second == 0) ) return retStr;
 		
-		int from = std::max(0, fromTo.first);
-		int to 
-		= 
-		std::min(
-			static_cast<int>(str->length()), 
-			fromTo.second-fromTo.first+1
-		);
-
-		str->erase(from, to);
+    //
+    // adjust from to 0 if first signStart is empty
+    //
+    int from = std::max(0, fromTo.first);
+    int to = fromTo.second;    
+    int nChars = to - from + 1;
+    
+    dt__throwIfWithMessage(
+      to==(str->length()+1), 
+      getStringBetweenAndRemove(),
+      << "Case not yet implemented."
+    );
+    
+    //
+    // remove substring with signStart and signEnd
+    //
+		str->erase(from, nChars);
+    
     return retStr;
   }
 	
@@ -165,7 +174,7 @@ namespace dtOO {
     if ( (signEnd.size() == 1) ) {
       to = str.find_first_of(signEnd.c_str(), from+1);
     }
-    else to = -1;
+    else to = str.length()+1;
 
     return std::pair< int, int >(from, to);		
 	}
