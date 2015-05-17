@@ -11,10 +11,10 @@
 #include <boundedVolumeFactory.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValueFactory.h>
-#include <dtXmlParserDecorator/dtXmlParserDecorator.h>
-#include <dtXmlParserDecorator/dtXmlParserDecoratorFactory.h>
-#include <dtXmlParserDecorator/dtXmlParserFunctionDecorator.h>
-#include <dtXmlParserDecorator/dtXmlParserFunctionDecoratorFactory.h>
+#include <dtXmlParserDecorator/aGXmlBuilder.h>
+#include <dtXmlParserDecorator/aGXmlBuilderFactory.h>
+#include <dtXmlParserDecorator/aFXmlBuilder.h>
+#include <dtXmlParserDecorator/aFXmlBuilderFactory.h>
 #include <dtPlugin.h>
 #include <dtPluginFactory.h>
 #include <dtCase.h>
@@ -551,8 +551,8 @@ namespace dtOO {
 			buildCompound = true;
 			stringPrimitive::getStringBetweenAndRemove("[", "]", &builderName);
 		}
-		ptrHandling<dtXmlParserFunctionDecorator> funDecoP(
-  		dtXmlParserFunctionDecoratorFactory::create(builderName)
+		ptrHandling< aFXmlBuilder > builder(
+  		aFXmlBuilderFactory::create(builderName)
 		);
 
 		//
@@ -560,10 +560,10 @@ namespace dtOO {
 		//
     vectorHandling< analyticFunction * > tmpSFun;
 		if (!buildCompound) {
-      funDecoP->buildPart(builderElement, bC, cVP, sFP, &tmpSFun);
+      builder->buildPart(builderElement, bC, cVP, sFP, &tmpSFun);
 		}
 		else {
-			funDecoP->buildPartCompound(builderElement, bC, cVP, sFP, &tmpSFun);
+			builder->buildPartCompound(builderElement, bC, cVP, sFP, &tmpSFun);
 		}
 
     //
@@ -618,16 +618,12 @@ namespace dtOO {
 			buildCompound = true;
 			stringPrimitive::getStringBetweenAndRemove("[", "]", &builderName);
 		}
-		ptrHandling< dtXmlParserDecorator > decoP (
-			dtXmlParserDecoratorFactory::create( builderName )
+		ptrHandling< aGXmlBuilder > builder (
+			aGXmlBuilderFactory::create( builderName )
 		);
 		
-		if (!buildCompound) {
-			decoP->buildPart(tE, bC, cVP, sFP, aGP, &tmpAGeo);
-		}
-		else {
-			decoP->buildPartCompound(tE, bC, cVP, sFP, aGP, &tmpAGeo);
-		}
+		if (!buildCompound) builder->buildPart(tE, bC, cVP, sFP, aGP, &tmpAGeo);
+		else builder->buildPartCompound(tE, bC, cVP, sFP, aGP, &tmpAGeo);
 
     for (int ii=0;ii<tmpAGeo.size();ii++) {
 //      //
