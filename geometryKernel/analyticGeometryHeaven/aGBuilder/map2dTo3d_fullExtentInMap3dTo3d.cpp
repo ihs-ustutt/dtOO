@@ -37,7 +37,7 @@ namespace dtOO {
       //
       // get derivative and approximate straight extension to the front
       //
-		  std::vector< dtPoint3 > from(2);			
+		  std::vector< dtPoint3 > from(2);
 			vectorHandling< dtCurve const * > dtC;
       from[0] = v3d->YdtPoint3Percent(0., 0.);      
 			from[1] = v3d->YdtPoint3Percent(0., 1.);
@@ -49,16 +49,30 @@ namespace dtOO {
 			= 
 			v3d->DYdtVector3( (*v3d) % analyticFunction::aFXTwoD(0., 1.) );
 
+      bool isPos = false;
+      if ( (dY0[0].x()>0.) && (dY0[1].x()>0.) ) isPos = true;
+      
 			float t0 = (from[0].y() - m3d->getVMin())/dY0[0].y();
 			float t1 = (m3d->getVMin() - from[1].y())/dY1[0].y();
-			
-			
+			float u0max = from[0].x()-t0*dY0[0].x();
+			float u1max = from[1].x()+t1*dY1[0].x();
+      float u0 = u0max;
+      float u1 = u1max;      
+      if (isPos) {
+        u0 = std::min(u0max, u1max);
+        u1 = u0;
+      }
+      else {
+        u0 = std::max(u0max, u1max);
+        u1 = u0;
+      }
+      
       //
       // create 4 curves for inlet extension
       //
 			dtC.push_back(
 				bSplineCurve_pointConstructOCC(
-					dtPoint3(from[0].x()-t0*dY0[0].x(), m3d->getVMin(), m3d->getWMin()), 
+					dtPoint3(u0, m3d->getVMin(), m3d->getWMin()), 
 					from[0]
 				).result()
 			);
@@ -66,13 +80,13 @@ namespace dtOO {
       dtC.push_back(
 				bSplineCurve_pointConstructOCC(
 					from[1], 
-					dtPoint3(from[1].x()+t1*dY1[0].x(), m3d->getVMin(), m3d->getWMax())//dtPoint3(m3d->getUMin(), vForward, m3d->getWMax())
+					dtPoint3(u1, m3d->getVMin(), m3d->getWMax())
 				).result()
 			);			
       dtC.push_back(
 				bSplineCurve_pointConstructOCC(
-					dtPoint3(from[1].x()+t1*dY1[0].x(), m3d->getVMin(), m3d->getWMax()), 
-					dtPoint3(from[0].x()-t0*dY0[0].x(), m3d->getVMin(), m3d->getWMin())
+					dtPoint3(u1, m3d->getVMin(), m3d->getWMax()), 
+					dtPoint3(u0, m3d->getVMin(), m3d->getWMin())
 				).result()
 			);			
       
@@ -95,27 +109,40 @@ namespace dtOO {
 			= 
 			v3d->DYdtVector3( (*v3d) % analyticFunction::aFXTwoD(1., 1.) );
 
+      isPos = false;
+      if ( (dY0[0].x()>0.) && (dY0[1].x()>0.) ) isPos = true;
+      
 			t0 = (from[0].y() - m3d->getVMax())/dY0[0].y();
 			t1 = (m3d->getVMax() - from[1].y())/dY1[0].y();
-			
+			u0max = from[0].x()-t0*dY0[0].x();
+      u1max = from[1].x()+t1*dY1[0].x();
+      if (isPos) {
+        u0 = std::min(u0max, u1max);
+        u1 = u0;
+      }
+      else {
+        u0 = std::max(u0max, u1max);
+        u1 = u0;
+      }
+      
       //
       // create 4 curves for outlet extension
       //
 			dtC.push_back(
 				bSplineCurve_pointConstructOCC(
 					from[0],
-					dtPoint3(from[0].x()-t0*dY0[0].x(), m3d->getVMax(), m3d->getWMin())
+					dtPoint3(u0, m3d->getVMax(), m3d->getWMin())
 				).result()
 			);
       dtC.push_back(
 				bSplineCurve_pointConstructOCC(
-					dtPoint3(from[0].x()-t0*dY0[0].x(), m3d->getVMax(), m3d->getWMin()),			
-					dtPoint3(from[1].x()+t1*dY1[0].x(), m3d->getVMax(), m3d->getWMax()) 
+					dtPoint3(u0, m3d->getVMax(), m3d->getWMin()),			
+					dtPoint3(u1, m3d->getVMax(), m3d->getWMax()) 
 				).result()
 			);						
       dtC.push_back(
 				bSplineCurve_pointConstructOCC(
-			    dtPoint3(from[1].x()+t1*dY1[0].x(), m3d->getVMax(), m3d->getWMax()),
+			    dtPoint3(u1, m3d->getVMax(), m3d->getWMax()),
 					from[1]
 				).result()
 			);			
