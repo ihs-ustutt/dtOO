@@ -68,10 +68,18 @@ namespace dtOO {
 			//
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
 			if (ori[itC] > 0) {
+				dt__info(
+				  operator(), 
+					<< "Adding normal face (tag = " << thisFace->tag() << ") with."
+				);        
 				omInit.add(*tmpOM);		
 				omMoved.add(*tmpOM);
 			}
 			else if (ori[itC] < 0) {
+				dt__info(
+				  operator(), 
+					<< "Adding inverted face (tag = " << thisFace->tag() << ") with."
+				);                
 				omInit.addInv(*tmpOM);
 				omMoved.addInv(*tmpOM);		
 			}
@@ -102,10 +110,18 @@ namespace dtOO {
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
 			
 			if (fori[itC] > 0) {
+				dt__info(
+				  operator(), 
+					<< "Adding normal fixedFace (tag = " << thisFace->tag() << ") with."
+				);                
 				omInit.add(*tmpOM);						
 				omMoved.add(*tmpOM);		
 			}
 			else if (fori[itC] < 0) {
+				dt__info(
+				  operator(), 
+					<< "Adding inverted fixedFace (tag = " << thisFace->tag() << ") with."
+				);                
 				omInit.addInv(*tmpOM);						
 				omMoved.addInv(*tmpOM);		
 			}

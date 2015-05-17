@@ -80,9 +80,8 @@ namespace dtOO {
       dtOMMesh();
       dtOMMesh( dtOMMesh const & orig );
       virtual ~dtOMMesh();  
-      omFaceH addFace( omFaceD const & fD );
-      omFaceH addFace( ::MElement const * const me );  
-      omFaceH addFaceInv( ::MElement const * const me );  
+      omFaceH addFace( omFaceD const & fD );      
+      omFaceH addFace( ::MElement const * const me );      
       void writeMesh(std::string const filename) const;
       void add( const dtOMMesh &toAdd );      
       void addInv( const dtOMMesh &toAdd );      
@@ -92,9 +91,9 @@ namespace dtOO {
       void replaceMVertex( omVertexH const & vH, ::MVertex * mv );
       void replacePosition( omVertexH const & vH, dtPoint3 const & pp );
       bool vertexIsBoundary(MVertex * mv) const;
-	    bool isGeometricalEdge( omEdgeH const & eH) const;
-	    std::pair< omVertexH const, omVertexH const >
-	    foldVertices( omEdgeH const & eH) const;
+      bool isGeometricalEdge( omEdgeH const & eH) const;
+      std::pair< omVertexH const, omVertexH const >
+      foldVertices( omEdgeH const & eH) const;
       std::pair< omFaceH, omFaceH > foldFaces( omEdgeH const & eH) const;
       bool intersection( 
         std::vector< omFaceH > const & fH, 
@@ -106,12 +105,13 @@ namespace dtOO {
       omVertexH const & operator[]( ::MVertex const * const mv ) const;
       ::MVertex * operator[](omVertexH const & vH);
       ::MVertex const * const at(omVertexH const & vH) const; 
-	    ::MElement const * const at(omFaceH const & fH) const;
-      std::vector< omEdgeH > oneRingEdgeH( omVertexH const & vH ) const;
+      ::MElement const * const at(omFaceH const & fH) const;
+      std::vector< omEdgeH > oneRingEdgeH( omVertexH const & vH ) const; 
     private:
       omVertexH addVertex( ::MVertex const * const &mv );
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          
       omFaceH addFace( std::vector< ::MVertex * > const & vertices, ::MElement const * const me );      
+      omFaceH addFaceInv( ::MElement const * const me );       
       bool intersection( 
         omFaceH const & fH, dtPoint3 const & start, dtPoint3 const & target 
       ) const;
