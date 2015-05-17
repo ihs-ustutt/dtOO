@@ -15,20 +15,20 @@ namespace dtOO {
     dtXmlParserDecorator();
     virtual ~dtXmlParserDecorator();
     virtual void buildPart(
-      QDomElement ** toBuildP,
+      QDomElement const & toBuild,
       baseContainer * const bC,   
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP,
-      vectorHandling< analyticGeometry * > const * const depAGeoP,
-      vectorHandling< analyticGeometry * > * aGeoP 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG,
+      vectorHandling< analyticGeometry * > * result 
     ) const = 0;
     virtual void buildPartCompound(
-      QDomElement ** toBuildP,
+      QDomElement const & toBuild,
       baseContainer * const bC,  
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP,
-      vectorHandling< analyticGeometry * > const * const depAGeoP,
-      vectorHandling< analyticGeometry * > * aGeoP 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG,
+      vectorHandling< analyticGeometry * > * result 
     ) const;        
   };
 }

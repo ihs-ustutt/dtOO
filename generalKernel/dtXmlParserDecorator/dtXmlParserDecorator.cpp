@@ -13,12 +13,12 @@ namespace dtOO {
   }
 
 	void dtXmlParserDecorator::buildPartCompound(
-		QDomElement ** toBuildP,
-    baseContainer * const bC,  
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP,
-		vectorHandling< analyticGeometry * > * aGeoP 
+    QDomElement const & toBuild,
+    baseContainer * const bC,           
+    vectorHandling< constValue * > const * const cV,           
+    vectorHandling< analyticFunction * > const * const aF,    
+    vectorHandling< analyticGeometry * > const * const aG,
+    vectorHandling< analyticGeometry * > * result  
 	) const {
     dt__info(buildPartCompound(), << "Call on dtXmlParserDecorator");		
 	}

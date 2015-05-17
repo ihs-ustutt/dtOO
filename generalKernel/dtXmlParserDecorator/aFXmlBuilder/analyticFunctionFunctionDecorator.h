@@ -20,9 +20,9 @@ namespace dtOO {
     virtual void buildPart(
       QDomElement const & toBuildP,
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cValP,  
-      vectorHandling< analyticFunction * > const * const depSFunP,
-      vectorHandling< analyticFunction * > * sFunP 
+      vectorHandling< constValue * > const * const cV,  
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticFunction * > * result 
     ) const;
   };
 }

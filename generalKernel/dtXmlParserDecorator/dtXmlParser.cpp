@@ -608,7 +608,6 @@ namespace dtOO {
     //
     vectorHandling< analyticGeometry * > tmpAGeo;
     QDomElement tE = getChild("builder", partElement);
-		QDomElement * tEP = &tE;
 
     //
     // create builder
@@ -624,10 +623,10 @@ namespace dtOO {
 		);
 		
 		if (!buildCompound) {
-			decoP->buildPart(&tEP, bC, cVP, sFP, aGP, &tmpAGeo);
+			decoP->buildPart(tE, bC, cVP, sFP, aGP, &tmpAGeo);
 		}
 		else {
-			decoP->buildPartCompound(&tEP, bC, cVP, sFP, aGP, &tmpAGeo);
+			decoP->buildPartCompound(tE, bC, cVP, sFP, aGP, &tmpAGeo);
 		}
 
     for (int ii=0;ii<tmpAGeo.size();ii++) {
