@@ -1,4 +1,4 @@
-#include "map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d.h"
+#include "map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h"
 #include <analyticFunctionHeaven/vec2dOneD.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <geometryEngine/dtCurve2d.h>
@@ -16,8 +16,8 @@
 #include "dtPoint3_map1dTo3dEquidistantPoint.h"
 
 namespace dtOO {
-	map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d
-	  ::map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(
+	map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d
+	  ::map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(
       map1dTo3d const * const m1d, map2dTo3d const * const m2d,
 			float const & thick, int const & nPoints, int const & nIntegrationPoints,
 		  int const & order
@@ -28,7 +28,7 @@ namespace dtOO {
 		int nPointsMax = std::max(nPoints, 2);
 		dt__warnIfWithMessage(
 			nPoints!=nPointsMax, 
-			map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d,
+			map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d,
 			<< "Reset nPoints from " << nPoints << " to " << nPointsMax
 		);
 		
@@ -114,7 +114,7 @@ namespace dtOO {
 		header.push_back("int(T)");
 		header.push_back("|(T-int(T))/T|");
 		dt__info(
-			map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(),
+			map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(),
 			<< logMe::floatVecToTable(header, itVal)
 		);			
 		
@@ -137,10 +137,10 @@ namespace dtOO {
 		);		
 	}
 
-	map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d::~map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d() {
+	map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d::~map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d() {
 	}
 	
-	map1dTo3d * map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d::result( void ) {
+	map1dTo3d * map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d::result( void ) {
 		return _m1d->clone();
 	}
 }

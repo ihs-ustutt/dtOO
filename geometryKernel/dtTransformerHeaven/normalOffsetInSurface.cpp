@@ -1,7 +1,7 @@
 #include "normalOffsetInSurface.h"
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h>
 #include <progHelper.h>
 #include <logMe/logMe.h>
 
@@ -41,7 +41,7 @@ namespace dtOO {
 
 			
 			retAGeo.push_back(
-			  map1dTo3d_normalOffsetMap1dTo2dInMap2dTo3d(
+			  map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(
 			    m1d, _m2d.get(), _thickness, _nPoints, _nIntPoints, _order
 			  ).result()
 			);
