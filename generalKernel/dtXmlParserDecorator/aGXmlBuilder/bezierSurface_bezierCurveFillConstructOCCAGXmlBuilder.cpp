@@ -52,7 +52,7 @@ namespace dtOO {
       dtC[ii] = s3->ptrConstDtCurve();
     }
 
-    ptrHandling<dtSurface> dtS(
+    ptrHandling< dtSurface > dtS(
       bezierSurface_bezierCurveFillConstructOCC(dtC).result()
     );
     result->push_back( new analyticSurface(dtS.get()) );

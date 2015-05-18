@@ -141,7 +141,15 @@ namespace dtOO {
       map2dTo3dApproximateInMap3dTo3dAGXmlBuilder
     );
 
-    dt__throw(create(), <<  "Could not be created.");
+    dt__throw(
+      create(), 
+      << str <<  " could not be created." << std::endl
+      << "> -------------------------------------------------------" << std::endl
+      << "> Please note: ""Decorator"" at the end of the" << std::endl
+      << "> builder name is no longer supported. Please erase it" << std::endl
+      << "> or replace it by ""AGXmlBuilder""." << std::endl
+      << "> -------------------------------------------------------"
+      );
   }
 
   aGXmlBuilder* aGXmlBuilderFactory::create( std::string const str ) {

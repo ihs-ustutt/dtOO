@@ -76,7 +76,15 @@ namespace dtOO {
 		__IFRET(muParserAFXmlBuilder);
 		__IFRETCUSTOM(muParser, muParserAFXmlBuilder);
     
-    dt__throw(create(), << str <<  " could not be created.");
+    dt__throw(
+      create(), 
+      << str <<  " could not be created." << std::endl
+      << "> -------------------------------------------------------" << std::endl
+      << "> Please note: ""FunctionDecorator"" at the end of the" << std::endl
+      << "> builder name is no longer supported. Please erase it" << std::endl
+      << "> or replace it by ""AFXmlBuilder""." << std::endl
+      << "> -------------------------------------------------------"
+      );
   }
 
   aFXmlBuilder * aFXmlBuilderFactory::create( std::string const str ) {
