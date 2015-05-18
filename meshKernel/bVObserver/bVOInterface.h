@@ -3,7 +3,7 @@
 
 #include <logMe/dtMacros.h>
 
-#include <dtXmlParserDecorator/qtXmlBase.h>
+#include <xmlHeaven/qtXmlBase.h>
 #include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO {

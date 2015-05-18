@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <logMe/dtMacros.h>
-#include <dtXmlParserDecorator/qtXmlPrimitive.h>
+#include <xmlHeaven/qtXmlPrimitive.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 

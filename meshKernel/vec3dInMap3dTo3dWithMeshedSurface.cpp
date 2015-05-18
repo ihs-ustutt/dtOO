@@ -1,7 +1,7 @@
 #include "vec3dInMap3dTo3dWithMeshedSurface.h"
 
 #include <logMe/logMe.h>
-#include <dtXmlParserDecorator/dtXmlParser.h>
+#include <xmlHeaven/dtXmlParser.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
 
 #include <baseContainerHeaven/baseContainer.h>

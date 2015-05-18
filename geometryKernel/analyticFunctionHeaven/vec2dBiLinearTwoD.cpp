@@ -17,6 +17,23 @@ namespace dtOO {
 		}		
   }
 
+  /**
+	 *   (v)
+	 *    A
+	 *    |
+	 * 
+ 	 *    p3      p2
+	 *    +--------+
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    |        |
+	 *    +--------+ --> (u)
+	 *    p0      p1
+   * 
+   * according to: http://en.wikipedia.org/wiki/Bilinear_interpolation
+   * 
+   */  
   vec2dBiLinearTwoD::vec2dBiLinearTwoD(
       dtPoint2 const & p0, dtPoint2 const & p1, 
       dtPoint2 const & p2, dtPoint2 const & p3
@@ -31,13 +48,16 @@ namespace dtOO {
 		}				
   }
 
-
+  vec2dBiLinearTwoD::vec2dBiLinearTwoD(
+      dtPoint2 const & p0, dtPoint2 const & p2
+	) : vec2dBiLinearTwoD(
+      p0, dtPoint2(p2.x(), p0.y()), p2, dtPoint2(p0.x(), p2.y())
+    ) {
+  }
+  
   vec2dBiLinearTwoD::~vec2dBiLinearTwoD() {
   }
 
-  //
-	// according to: http://en.wikipedia.org/wiki/Bilinear_interpolation
-	//
   aFY vec2dBiLinearTwoD::Y( aFX const & xx ) const {
     dt__throwIf(xx.size()!=2, Y());
 

@@ -1,12 +1,11 @@
 #include "gmshBoundedVolume.h"
 
-#include "dtXmlParserDecorator/dtXmlParserBase.h"
 #include <unstructured3dSurfaceMesh.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/systemHandling.h>
-#include <dtXmlParserDecorator/dtXmlParserBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>

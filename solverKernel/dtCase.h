@@ -5,7 +5,7 @@
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
-#include <dtXmlParserDecorator/dtXmlParserBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 
 namespace dtOO {
   class constValue;

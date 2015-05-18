@@ -1,5 +1,5 @@
 #include "map3dTo3dWithInternalGmsh.h"
-#include <dtXmlParserDecorator/qtXmlBase.h>
+#include <xmlHeaven/qtXmlBase.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>

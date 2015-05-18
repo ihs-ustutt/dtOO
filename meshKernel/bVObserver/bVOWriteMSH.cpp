@@ -1,7 +1,7 @@
 #include "bVOWriteMSH.h"
 
 #include <logMe/logMe.h>
-#include <dtXmlParserDecorator/qtXmlBase.h>
+#include <xmlHeaven/qtXmlBase.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>

@@ -16,6 +16,9 @@ namespace dtOO {
       dtPoint2 const & p0, dtPoint2 const & p1, 
       dtPoint2 const & p2, dtPoint2 const & p3
     );
+    vec2dBiLinearTwoD(
+      dtPoint2 const & p0, dtPoint2 const & p2
+    );    
     vec2dBiLinearTwoD * clone( void ) const;
     vec2dBiLinearTwoD * create( void ) const;    
     virtual ~vec2dBiLinearTwoD();

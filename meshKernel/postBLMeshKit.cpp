@@ -1,7 +1,6 @@
 #include "postBLMeshKit.h"
 #include "meshEngine/dtMoabCore.h"
-#include "dtXmlParserDecorator/qtXmlBase.h"
-//#include <analyticGeometryHeaven/analyticGeometryCompound.h>
+#include <xmlHeaven/qtXmlBase.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>

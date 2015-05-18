@@ -2,8 +2,8 @@
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
-#include <dtXmlParserDecorator/qtXmlPrimitive.h>
-#include <dtXmlParserDecorator/qtXmlBase.h>
+#include <xmlHeaven/qtXmlPrimitive.h>
+#include <xmlHeaven/qtXmlBase.h>
 #include <sstream>
 
 namespace dtOO {  

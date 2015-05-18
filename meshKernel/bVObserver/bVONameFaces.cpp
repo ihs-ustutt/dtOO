@@ -6,7 +6,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <vector>
 #include <math.h>
-#include <dtXmlParserDecorator/dtXmlParserBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshRegionHex.h>
 #include <meshEngine/dtGmshModel.h>
 

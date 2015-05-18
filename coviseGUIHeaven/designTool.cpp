@@ -13,8 +13,8 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
-#include <dtXmlParserDecorator/dtXmlParser.h>
-#include <exceptionHandling/eGeneral.h>
+#include <xmlHeaven/dtXmlParser.h>
+#include <exceptionHeaven/eGeneral.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <do/coDoSet.h>
 #include <abstractModule.h>

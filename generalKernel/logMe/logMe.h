@@ -9,8 +9,8 @@
 #include <map>
 #include <boost/format.hpp>
 //------------------------------------------------------------------------------
-#include <exceptionHandling/eGeneral.h>
-#include <exceptionHandling/eGSL.h>
+#include <exceptionHeaven/eGeneral.h>
+#include <exceptionHeaven/eGSL.h>
 //------------------------------------------------------------------------------
 #include "logBase.h"
 #include "Output2FILE.h"

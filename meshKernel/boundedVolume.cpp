@@ -6,7 +6,7 @@
 #include <constValueHeaven/constValue.h>
 #include <bVObserver/bVOInterfaceFactory.h>
 #include <bVObserver/bVOInterface.h>
-#include <dtXmlParserDecorator/qtXmlPrimitive.h>
+#include <xmlHeaven/qtXmlPrimitive.h>
 #include <meshEngine/dtGmshFace.h>
 
 

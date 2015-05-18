@@ -2,7 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
-#include <dtXmlParserDecorator/qtXmlBase.h>
+#include <xmlHeaven/qtXmlBase.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>

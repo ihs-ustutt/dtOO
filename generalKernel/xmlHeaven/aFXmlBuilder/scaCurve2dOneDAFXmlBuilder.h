@@ -1,0 +1,30 @@
+#ifndef scaCurve2dOneDAFXmlBuilder_H
+#define	scaCurve2dOneDAFXmlBuilder_H
+
+#include <xmlHeaven/aFXmlBuilder.h>
+#include <logMe/dtMacros.h>
+#include <interfaceHeaven/vectorHandling.h>
+
+class QDomElement;
+
+namespace dtOO {
+  class analyticFunction;
+  class constValue;
+  class baseContainer;
+
+  class scaCurve2dOneDAFXmlBuilder : public aFXmlBuilder {
+  public:
+    dt__classOnlyName(scaCurve2dOneDAFXmlBuilder);    
+    scaCurve2dOneDAFXmlBuilder();
+    virtual ~scaCurve2dOneDAFXmlBuilder();
+    virtual void buildPart(
+      QDomElement const & toBuildP, 
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cValP, 
+      vectorHandling< analyticFunction * > const * const depSFunP,
+      vectorHandling< analyticFunction * > * sFunP
+    ) const;
+  };
+}
+#endif	/* scaCurve2dOneDAFXmlBuilder_H */
+

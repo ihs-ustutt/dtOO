@@ -2,7 +2,7 @@
 #define	DTTRANSFORMER_H
 
 #include <dtLinearAlgebra.h>
-#include <dtXmlParserDecorator/dtXmlParserBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <vector>
