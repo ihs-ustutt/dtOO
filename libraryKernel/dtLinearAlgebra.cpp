@@ -610,6 +610,23 @@ namespace dtOO {
 			return true;			
 		}		
 		return false;
-		
 	}
+
+  std::vector< float > dtLinearAlgebra::solveQuadraticEquation(
+    float const & aa, float const & bb, float const & cc
+  ) {
+    float dis = bb*bb - 4.0*aa*cc;
+
+    dt__throwIf(dis<0.0, invY());
+
+    if (dis == 0.) return std::vector< float > ( 1, -bb/(2.0*aa) );
+    
+    dis = sqrt(dis);
+    
+    std::vector< float > sol(2);
+    sol[0] = (-bb - dis)/(2.0*aa);
+    sol[1] = (-bb + dis)/(2.0*aa);    
+    
+    return sol;
+  }
 }
