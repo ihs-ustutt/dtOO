@@ -14,4 +14,10 @@ namespace dtOO {
   int intHandling::round( float a ) {
    return boost::math::iround(a);
 	}
+  
+  int intHandling::bound( int const & toBound, int const & aa, int const & bb ) {
+    if (toBound < aa) return aa;
+    else if (toBound > bb) return bb;
+    else return toBound;
+  }
 }

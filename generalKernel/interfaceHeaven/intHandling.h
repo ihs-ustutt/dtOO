@@ -10,6 +10,7 @@ namespace dtOO {
     dt__classOnlyName(intHandling);
     virtual ~intHandling();
     static int round( float a );
+    static int bound( int const & toBound, int const & aa, int const & bb );
   private:
     intHandling();
   };

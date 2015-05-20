@@ -7,6 +7,7 @@
 #include <CGAL/squared_distance_2.h>
 #include <CGAL/squared_distance_3.h>
 #include <CGAL/intersections.h>
+#include <CGAL/Polygon_2_algorithms.h>
 #include <TMatrixD.h>
 #include <TDecompSVD.h>
 
@@ -628,5 +629,25 @@ namespace dtOO {
     sol[1] = (-bb + dis)/(2.0*aa);    
     
     return sol;
+  }
+  
+  bool dtLinearAlgebra::isInsideQuadrangle(
+    dtPoint2 const & pt,
+    dtPoint2 const & p0, dtPoint2 const & p1, 
+    dtPoint2 const & p2, dtPoint2 const & p3
+  ) {
+    std::vector< dtPoint2 > pgn(4);
+    pgn[0] = p0;
+    pgn[1] = p1;
+    pgn[2] = p2;
+    pgn[3] = p3;
+    switch( CGAL::bounded_side_2(pgn.begin(), pgn.end(), pt) ) {
+      case CGAL::ON_BOUNDED_SIDE:
+        return true;
+      case CGAL::ON_BOUNDARY:
+        return true;
+      case CGAL::ON_UNBOUNDED_SIDE:
+        return false;
+    }
   }
 }

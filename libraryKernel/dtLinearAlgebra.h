@@ -95,6 +95,11 @@ namespace dtOO {
     static std::vector< float > solveQuadraticEquation(
       float const & aa, float const & bb, float const & cc
     );
+    static bool isInsideQuadrangle(
+      dtPoint2 const & pt,
+      dtPoint2 const & p0, dtPoint2 const & p1, 
+      dtPoint2 const & p2, dtPoint2 const & p3
+    );
   };
 }
 #endif  /* DTLINEARALGEBRA_H */

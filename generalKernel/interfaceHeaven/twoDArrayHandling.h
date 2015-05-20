@@ -41,9 +41,14 @@ namespace dtOO {
   }
   
   template < typename T >
-  twoDArrayHandling< T >::twoDArrayHandling(const twoDArrayHandling& orig) 
-    : std::vector< std::vector< T > >( orig.size(0), std::vector< T >(orig.size(1)) ) {
-    dt__forAllIndex(*this, ii) this->at(ii) = orig.at(ii);
+  twoDArrayHandling< T >::twoDArrayHandling(const twoDArrayHandling& orig) {
+    resize(orig.size(0), orig.size(1));
+    
+    dt__forAllIndex(orig, ii) {
+      dt__forAllIndex(orig[ii], jj) {      
+        this->at(ii).at(jj) = T(orig[ii][jj]);
+      }
+    }    
   }
 
   template < typename T >
