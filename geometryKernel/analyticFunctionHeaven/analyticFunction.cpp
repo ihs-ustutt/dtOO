@@ -57,4 +57,28 @@ namespace dtOO {
 		
 		return ret;
 	}
+  
+  aFY analyticFunction::aFYOneD( float const & x0 ) {
+		aFY ret = aFY(1, 0.);
+		ret[0] = x0;
+		
+		return ret;
+	}
+	
+  aFY analyticFunction::aFYTwoD( float const & x0, float const & x1 ) {
+		aFY ret = aFY(2, 0.);
+		ret[0] = x0;
+		ret[1] = x1;		
+		
+		return ret;
+	}
+	
+  aFY analyticFunction::aFYThreeD( float const & x0, float const & x1, float const & x2 ) {
+		aFY ret = aFY(3, 0.);
+		ret[0] = x0;
+		ret[1] = x1;
+		ret[2] = x2;	
+		
+		return ret;
+	}  
 }

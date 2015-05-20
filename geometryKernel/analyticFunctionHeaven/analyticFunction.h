@@ -32,6 +32,9 @@ namespace dtOO {
     static aFX aFXOneD( float const & x0 );
     static aFX aFXTwoD( float const & x0, float const & x1 );
     static aFX aFXThreeD( float const & x0, float const & x1, float const & x2 );
+    static aFY aFYOneD( float const & x0 );
+    static aFY aFYTwoD( float const & x0, float const & x1 );
+    static aFY aFYThreeD( float const & x0, float const & x1, float const & x2 );    
   };
 }
 #endif	/* ANALYTICFUNCTION_H */
