@@ -10,7 +10,11 @@ namespace dtOO {
 		_p0 = orig._p0;
 		_p1 = orig._p1;
 		_p2 = orig._p2;
-		_p3 = orig._p3;
+		_p3 = orig._p3;    
+		_v0 = orig._v0;
+		_v1 = orig._v1;
+		_v2 = orig._v2;
+		_v3 = orig._v3;    
 		for (int ii=0; ii<2; ii++) {
 			setMin( ii, orig.xMin(ii) );
 			setMax( ii, orig.xMax(ii) );
@@ -38,10 +42,14 @@ namespace dtOO {
       dtPoint2 const & p0, dtPoint2 const & p1, 
       dtPoint2 const & p2, dtPoint2 const & p3
 	) : vec2dTwoD() {
-		_p0 = dtLinearAlgebra::toDtVector2(p0);
-		_p1 = dtLinearAlgebra::toDtVector2(p1);
-		_p2 = dtLinearAlgebra::toDtVector2(p2);
-		_p3 = dtLinearAlgebra::toDtVector2(p3);
+    _p0 = p0;
+    _p1 = p1;
+    _p2 = p2;
+    _p3 = p3;
+		_v0 = dtLinearAlgebra::toDtVector2(_p0);
+		_v1 = dtLinearAlgebra::toDtVector2(_p1);
+		_v2 = dtLinearAlgebra::toDtVector2(_p2);
+		_v3 = dtLinearAlgebra::toDtVector2(_p3);
 		for (int ii=0; ii<2; ii++) {
 			setMin( ii, 0. );
 			setMax( ii, 1. );
@@ -65,7 +73,7 @@ namespace dtOO {
 		float vv = xx[1];
 		
 		dtVector2 vY(
-		  _p0 * (1.-uu)*(1.-vv) + _p1 * uu*(1.-vv) + _p3 * (1.-uu)*vv + _p2 * uu*vv
+		  _v0 * (1.-uu)*(1.-vv) + _v1 * uu*(1.-vv) + _v3 * (1.-uu)*vv + _v2 * uu*vv
 		);
 		
 		aFY yy(2,0.);
@@ -98,8 +106,8 @@ namespace dtOO {
     int num_st 
     = 
     inverseBilerp( 
-      _p0.x(), _p0.y(), _p1.x(), _p1.y(), 
-      _p3.x(), _p3.y(), _p2.x(), _p2.y(), 
+      _v0.x(), _v0.y(), _v1.x(), _v1.y(), 
+      _v3.x(), _v3.y(), _v2.x(), _v2.y(), 
       yy[0], yy[1], 
       &u0, &v0, &u1, &v1 
     );
@@ -122,6 +130,12 @@ namespace dtOO {
     }
     
     return res;
+  }
+  
+  bool vec2dBiLinearTwoD::insideY( aFY const & yy ) const {
+    return dtLinearAlgebra::isInsideQuadrangle(
+      dtPoint2(yy[0], yy[1]), _p0, _p1, _p2, _p3
+    );
   }
   
   int vec2dBiLinearTwoD::equals( float a, float b, float tolerance ) {
@@ -170,16 +184,16 @@ namespace dtOO {
     /* this is how many valid s values we have */
     int num_valid_s = 0;
 
-    if ( equals( am2bpc, 0, 1e-10 ) )
+    if ( equals( am2bpc, 0, 1e-6 ) )
     {
-      if ( equals( a-c, 0, 1e-10 ) )
+      if ( equals( a-c, 0, 1e-6 ) )
       {
         /* Looks like the input is a line */
         /* You could set s=0.5 and solve for t if you wanted to */
         return 0;
       }
       s = a / (a-c);
-      if ( in_range( s, 0, 1, 1e-10 ) )
+      if ( in_range( s, 0, 1, 1e-6 ) )
         num_valid_s = 1;
     }
     else
@@ -188,15 +202,15 @@ namespace dtOO {
       s  = ((a-b) - sqrtbsqmac) / am2bpc;
       s2 = ((a-b) + sqrtbsqmac) / am2bpc;
       num_valid_s = 0;
-      if ( in_range( s, 0, 1, 1e-10 ) )
+      if ( in_range( s, 0, 1, 1e-6 ) )
       {
         num_valid_s++;
-        if ( in_range( s2, 0, 1, 1e-10 ) )
+        if ( in_range( s2, 0, 1, 1e-6 ) )
           num_valid_s++;
       }
       else
       {
-        if ( in_range( s2, 0, 1, 1e-10 ) )
+        if ( in_range( s2, 0, 1, 1e-6 ) )
         {
           num_valid_s++;
           s = s2;
@@ -213,7 +227,7 @@ namespace dtOO {
       float tdenom_x = (1-s)*(x0-x2) + s*(x1-x3);
       float tdenom_y = (1-s)*(y0-y2) + s*(y1-y3);
       t_valid = 1;
-      if ( equals( tdenom_x, 0, 1e-10 ) && equals( tdenom_y, 0, 1e-10 ) )
+      if ( equals( tdenom_x, 0, 1e-6 ) && equals( tdenom_y, 0, 1e-6 ) )
       {
         t_valid = 0;
       }
@@ -228,7 +242,7 @@ namespace dtOO {
         {
           t = ( (1-s)*(y0-y) + s*(y1-y) ) / ( tdenom_y );
         }
-        if ( !in_range( t, 0, 1, 1e-10 ) )
+        if ( !in_range( t, 0, 1, 1e-6 ) )
           t_valid = 0;
       }
     }
@@ -240,7 +254,7 @@ namespace dtOO {
       float tdenom_x = (1-s2)*(x0-x2) + s2*(x1-x3);
       float tdenom_y = (1-s2)*(y0-y2) + s2*(y1-y3);
       t2_valid = 1;
-      if ( equals( tdenom_x, 0, 1e-10 ) && equals( tdenom_y, 0, 1e-10 ) )
+      if ( equals( tdenom_x, 0, 1e-6 ) && equals( tdenom_y, 0, 1e-6 ) )
       {
         t2_valid = 0;
       }
@@ -255,7 +269,7 @@ namespace dtOO {
         {
           t2 = ( (1-s2)*(y0-y) + s2*(y1-y) ) / ( tdenom_y );
         }
-        if ( !in_range( t2, 0, 1, 1e-10 ) )
+        if ( !in_range( t2, 0, 1, 1e-6 ) )
           t2_valid = 0;
       }
     }

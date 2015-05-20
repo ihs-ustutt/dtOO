@@ -25,6 +25,7 @@ namespace dtOO {
     virtual aFY Y( aFX const & xx ) const;
     virtual bool closed( int const & dir ) const;    
     aFX invY(aFY const & yy) const;
+    bool insideY( aFY const & yy ) const;
   private:
     static float cross2(
       float const & x0, float const & y0, float const & x1, float const & y1
@@ -40,10 +41,14 @@ namespace dtOO {
     );    
   static int equals(float a, float b, float tolerance);   
   private:
-    dtVector2 _p0;
-    dtVector2 _p1;
-    dtVector2 _p2;
-    dtVector2 _p3;
+    dtVector2 _v0;
+    dtVector2 _v1;
+    dtVector2 _v2;
+    dtVector2 _v3;
+    dtPoint2 _p0;
+    dtPoint2 _p1;
+    dtPoint2 _p2;
+    dtPoint2 _p3;    
   };
 }
 #endif	/* VEC2DBILINEARTWOD_H */
