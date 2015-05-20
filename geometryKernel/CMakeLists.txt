@@ -50,6 +50,7 @@ SET(HEADERS
   analyticFunctionHeaven/vec2dSurface2dTwoD.h
   analyticFunctionHeaven/vec2dMuParserTwoD.h
   analyticFunctionHeaven/vec2dBiLinearTwoD.h
+  analyticFunctionHeaven/vec2dMultiBiLinearTwoD.h
   analyticFunctionHeaven/vec3dFunction.h
   analyticFunctionHeaven/vec3dTwoD.h
   analyticFunctionHeaven/vec3dSurfaceTwoD.h
@@ -143,6 +144,7 @@ SET(SOURCES
   analyticFunctionHeaven/vec2dSurface2dTwoD.cpp
   analyticFunctionHeaven/vec2dMuParserTwoD.cpp
   analyticFunctionHeaven/vec2dBiLinearTwoD.cpp
+  analyticFunctionHeaven/vec2dMultiBiLinearTwoD.cpp
   analyticFunctionHeaven/vec3dFunction.cpp
   analyticFunctionHeaven/vec3dTwoD.cpp
   analyticFunctionHeaven/vec3dSurfaceTwoD.cpp
