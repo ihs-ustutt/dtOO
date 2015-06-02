@@ -6,6 +6,7 @@
 #include <interfaceHeaven/labelHandling.h>
 #include <vector>
 #include <interfaceHeaven/renderInterface.h>
+#include <dtLinearAlgebra.h>
 
 namespace dtOO {
   typedef std::vector< float > aFX;
@@ -27,14 +28,22 @@ namespace dtOO {
     virtual int xDim( void ) const = 0;
     virtual float xMin( int const & dir) const = 0;
     virtual float xMax( int const & dir) const = 0;
+    virtual aFX invY(aFY const & yy) const;    
     virtual bool isCompound( void ) const;
 	  virtual vectorHandling< analyticFunction const * > compoundInternal( void ) const;
+    virtual bool isTransformed( void ) const;
+    static aFX aFXZeroD( void );
     static aFX aFXOneD( float const & x0 );
     static aFX aFXTwoD( float const & x0, float const & x1 );
     static aFX aFXThreeD( float const & x0, float const & x1, float const & x2 );
+    static aFX aFXTwoD( dtPoint2 const & pp );    
+    static aFX aFXThreeD( dtPoint3 const & pp );
+    static aFY aFYZeroD( void );    
     static aFY aFYOneD( float const & x0 );
     static aFY aFYTwoD( float const & x0, float const & x1 );
     static aFY aFYThreeD( float const & x0, float const & x1, float const & x2 );    
+    static aFY aFYTwoD( dtPoint2 const & pp );    
+    static aFY aFYThreeD( dtPoint3 const & pp );    
   };
 }
 #endif	/* ANALYTICFUNCTION_H */
