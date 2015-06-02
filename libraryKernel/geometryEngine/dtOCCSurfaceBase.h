@@ -16,7 +16,8 @@ namespace dtOO {
     dtOCCSurfaceBase(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCSurfaceBase();
     void setOCC(Handle_Geom_Surface);    
-    Handle_Geom_Surface const getOCC( void ) const;    
+    Handle_Geom_Surface const getOCC( void ) const;
+    std::string dumpToString(void) const;
   private:
     class OCCHanWrap;
     typedef boost::shared_ptr<OCCHanWrap> OCCHanWrapPtr;    

@@ -74,9 +74,16 @@ namespace dtOO {
 	//
 	void dtCurve::dump(void) {
     dt__info(
-		  dump(),
+			dump(), 
+		  << dt__eval(virtualClassName()) << std::endl
       << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << std::endl
 			<< dt__eval(closed()) << std::endl
+			<< "dumpToString()" << std::endl
+			<< dumpToString()
 		);
 	}
+  
+	std::string dtCurve::dumpToString(void) const {
+		return std::string("");
+	}    
 }

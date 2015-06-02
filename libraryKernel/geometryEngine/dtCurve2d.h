@@ -30,7 +30,8 @@ namespace dtOO {
       //
       // optional overload
       //
-      virtual void dump(void);
+      void dump(void);
+      virtual std::string dumpToString(void) const;
       //
       // 
       //

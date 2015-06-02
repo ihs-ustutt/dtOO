@@ -208,13 +208,22 @@ namespace dtOO {
 		}
 	}
 		
-	void dtSurface::dump( void ) const {
+	void dtSurface::dump(void) const {
     dt__info(
 			dump(), 
+		  << dt__eval(virtualClassName()) << std::endl
       << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << std::endl
-      << "vv = [ " <<  minPara(1) << ", " << maxPara(1) << "]" 
+      << "vv = [ " <<  minPara(1) << ", " << maxPara(1) << "]" << std::endl
+      << dt__eval(closed(0)) << std::endl
+      << dt__eval(closed(1)) << std::endl
+			<< "dumpToString()" << std::endl
+			<< dumpToString()
 		);
 	}	
+  
+	std::string dtSurface::dumpToString(void) const {
+		return std::string("");
+	}  
 	
 	void dtSurface::offsetNormal(float const nn) {
 		dt__functionNotImplemented(offsetNormal());

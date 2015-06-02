@@ -31,7 +31,8 @@ namespace dtOO {
     virtual dtPoint2 controlPoint( int const uI, int const vI ) const;
     virtual void setControlPoint( int const uI, int const vI, dtPoint2 const point );    
     virtual int nControlPoints( int const dim ) const;    
-    virtual void dump( void ) const ;
+    void dump( void ) const;
+    virtual std::string dumpToString(void) const;
     //
     //
     //    

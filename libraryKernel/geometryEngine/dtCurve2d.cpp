@@ -110,9 +110,20 @@ namespace dtOO {
 	//
 	//
 	void dtCurve2d::dump(void) {
-		dt__functionNotImplemented(dump());
+    dt__info(
+			dump(), 
+		  << dt__eval(virtualClassName()) << std::endl
+      << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << std::endl
+			<< dt__eval(closed()) << std::endl
+			<< "dumpToString()" << std::endl
+			<< dumpToString()
+		);
 	}
 	
+	std::string dtCurve2d::dumpToString(void) const {
+		return std::string("");
+	} 
+  
 	//
 	// boost requires this method in ptr_vector
 	//    

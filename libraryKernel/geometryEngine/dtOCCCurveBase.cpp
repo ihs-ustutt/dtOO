@@ -26,6 +26,16 @@ namespace dtOO {
     return _hanWrap->occHandle;
   }
 
+	std::string dtOCCCurveBase::dumpToString(void) const {
+		std::stringstream ss;
+    
+    Handle(Geom_Curve) const & cH = getOCC();
+    Handle(Standard_Type) const & stH = cH->DynamicType();
+    ss << stH->Name();
+    
+    return ss.str();
+  }
+
 	dtOCCCurveBase::dtOCCCurveBase(const dtOCCCurveBase& orig) {
 	}
 

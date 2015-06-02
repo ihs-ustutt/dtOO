@@ -16,6 +16,9 @@ namespace dtOO {
     dtOCCSurface();
     dtOCCSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCSurface();
+    //
+    // overload
+    //
     virtual float minPara( int const dim ) const;
     virtual float maxPara( int const dim ) const;
     virtual bool closed( int const dim ) const;
@@ -24,8 +27,12 @@ namespace dtOO {
     virtual std::vector<dtVector3> firstDer( float const uu, float const vv) const;
     virtual std::vector<dtVector3> secondDer( float const uu, float const vv) const;
     virtual dtPoint2 reparam(dtPoint3 const point) const;
-    dtOCCSurfaceBase const & OCCRef( void ) const;
-    dtOCCSurfaceBase & OCCRef( void );    
+    //
+    // optional
+    //
+	  virtual std::string dumpToString(void) const;
+    dtOCCSurfaceBase const & OCCRef(void) const;
+    dtOCCSurfaceBase & OCCRef(void);  
   private:
     ptrHandling< dtOCCSurfaceBase > _surface;
     Geom_Surface const * _ptr;

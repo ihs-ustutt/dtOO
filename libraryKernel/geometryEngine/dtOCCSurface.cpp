@@ -295,6 +295,14 @@ namespace dtOO {
 		return dtPoint2(static_cast<float>(U), static_cast<float>(V));
 	}
 	
+	std::string dtOCCSurface::dumpToString( void ) const {
+		std::stringstream ss;
+		
+		ss << dt__eval(_surface->dumpToString());
+		
+		return ss.str();
+	}
+  
 	dtOCCSurfaceBase const & dtOCCSurface::OCCRef( void ) const {
 		return *(_surface.get());
 	}

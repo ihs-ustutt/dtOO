@@ -24,6 +24,17 @@ namespace dtOO {
   Handle_Geom_Surface const dtOCCSurfaceBase::getOCC( void ) const {
     return _hanWrap->occHandle;
   }
+  
+ std::string dtOCCSurfaceBase::dumpToString(void) const {
+		std::stringstream ss;
+    
+    Handle(Geom_Surface) const & sH = getOCC();
+    Handle(Standard_Type) const & stH = sH->DynamicType();
+    ss << stH->Name();
+    
+    return ss.str();
+  }
+    
 
 	dtOCCSurfaceBase::dtOCCSurfaceBase(const dtOCCSurfaceBase& orig) {
 	}

@@ -31,7 +31,14 @@ namespace dtOO {
     //
     // optional
     //   
-    virtual void revert( void );   
+	  virtual std::string dumpToString( void ) const;
+    /**
+     * @todo Do this in external builder.
+     */
+    virtual void revert(void);   
+    /**
+     * @todo Do this in external builder.
+     */
 	  virtual void translate( dtVector3 const & tt );
     dtOCCCurveBase const & OCCRef( void ) const;
     dtOCCCurveBase & OCCRef( void );

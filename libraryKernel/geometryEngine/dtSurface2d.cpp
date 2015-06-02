@@ -173,7 +173,15 @@ namespace dtOO {
     dt__info(
 			dump(), 
       << "uu = [ " <<  minPara(0) << ", " << maxPara(0) << "]" << std::endl
-      << "vv = [ " <<  minPara(1) << ", " << maxPara(1) << "]" 
+      << "vv = [ " <<  minPara(1) << ", " << maxPara(1) << "]" << std::endl
+      << dt__eval(closed(0)) << std::endl
+      << dt__eval(closed(1)) << std::endl      
+			<< "dumpToString()" << std::endl
+			<< dumpToString()      
 		);
 	}		
+  
+	std::string dtSurface2d::dumpToString(void) const {
+		return std::string("");
+	}   
 }

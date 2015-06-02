@@ -136,5 +136,20 @@ namespace dtOO {
 		base.setOCC(ccB);
 
 		return new dtOCCBSplineCurve(base);
-	}		
+	}
+  
+	std::string dtOCCBSplineSurface::dumpToString( void ) const {
+		std::stringstream ss;
+		
+		ss 
+    << dtOCCSurface::dumpToString() << std::endl
+    << dt__eval(_ptr->IsURational()) << std::endl
+    << dt__eval(_ptr->IsVRational()) << std::endl
+    << dt__eval(_ptr->Continuity()) << std::endl
+    << "GeomAbs_C0=0, GeomAbs_G1, GeomAbs_C1, GeomAbs_G2," << std::endl
+    << "GeomAbs_C2, GeomAbs_C3, GeomAbs_CN";
+    
+		
+		return ss.str();
+	}  
 }

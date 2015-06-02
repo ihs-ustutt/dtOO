@@ -16,6 +16,7 @@ namespace dtOO {
     virtual ~dtOCCCurve2dBase();
     void setOCC(Handle_Geom2d_Curve occCurve);    
     Handle_Geom2d_Curve const getOCC( void ) const;    
+	  std::string dumpToString(void) const;    
   private:
     class OCCHanWrap;
     typedef boost::shared_ptr<OCCHanWrap> OCCHanWrapPtr;    

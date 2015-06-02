@@ -29,6 +29,10 @@ namespace dtOO {
     virtual float l_u( float const uu ) const;
     virtual float u_l( float const length ) const;
 	  virtual float reparam(dtPoint2 const point) const;
+    //
+    // optional
+    //   
+	  virtual std::string dumpToString( void ) const;    
 	  virtual void translate( dtVector2 const & tt );    
     //
     // optional

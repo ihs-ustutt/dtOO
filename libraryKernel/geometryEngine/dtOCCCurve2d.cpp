@@ -145,6 +145,14 @@ namespace dtOO {
 		return static_cast<float>( epp.Parameter() );
 	}	
 
+	std::string dtOCCCurve2d::dumpToString( void ) const {
+		std::stringstream ss;
+		
+		ss << dt__eval(_curve->dumpToString());
+		
+		return ss.str();
+	}	
+  
 	void dtOCCCurve2d::translate( dtVector2 const & tt ) {
 		gp_Vec2d vv(
 		  static_cast<Standard_Real>(tt.x()),

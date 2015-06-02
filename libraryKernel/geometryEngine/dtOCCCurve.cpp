@@ -175,6 +175,14 @@ namespace dtOO {
 		return static_cast<float>( epp.Parameter() );
 	}
 	
+	std::string dtOCCCurve::dumpToString( void ) const {
+		std::stringstream ss;
+		
+		ss << dt__eval(_curve->dumpToString());
+		
+		return ss.str();
+	}	
+  
 	void dtOCCCurve::revert( void ) {
 		Handle(Geom_Curve) rev = _ptr->Reversed();
 		_curve->setOCC(rev);
