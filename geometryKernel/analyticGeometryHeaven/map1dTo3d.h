@@ -36,7 +36,8 @@ namespace dtOO {
       float u_percent(float const & uu) const;
       float u_lPercent(float const & lP) const;
       float percent_u(float const & uu) const;
-      float percent_l(float const & ll) const;      
+      float percent_l(float const & ll) const;  
+      float lPercent_u(float const & uu) const;
       bool isClosedU( void ) const;
       float getUMin( void ) const;
       float getUMax( void ) const;

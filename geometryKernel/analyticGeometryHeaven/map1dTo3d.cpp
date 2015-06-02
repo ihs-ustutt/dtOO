@@ -43,6 +43,10 @@ namespace dtOO {
 		return percent_u( u_l(ll) );
 	}
 	
+  float map1dTo3d::lPercent_u(float const & uu) const {
+		return percent_u( l_u(uu)/length() );
+	}
+  
   int map1dTo3d::getRenderResolutionU( void ) const { 
     return analyticGeometry::getRenderResolution(0);
   }  
