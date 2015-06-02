@@ -112,7 +112,16 @@ namespace dtOO {
       &u0, &v0, &u1, &v1 
     );
     
-    dt__throwIf(num_st==0, invY() );
+    if (num_st==0) {
+      dt__throw(
+        invY(),
+        << dt__point2d(_p0) << std::endl
+        << dt__point2d(_p1) << std::endl
+        << dt__point2d(_p2) << std::endl
+        << dt__point2d(_p3) << std::endl
+        << dt__eval(yy)
+      );
+    }
     
     aFX res = analyticFunction::aFXTwoD(-1., -1.);
     if (num_st == 1) {
