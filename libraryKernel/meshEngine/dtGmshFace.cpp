@@ -56,20 +56,24 @@ namespace dtOO {
   }  
 
   dtGmshFace::~dtGmshFace() {
-		dt__info(
-			~dtGmshFace(), << "Removing face tag = " << tag() << " on all edges."	
-		);
-		std::list< ::GEdge * > ee = edges();
-		dt__forAllIter(std::list< ::GEdge * >, ee, it) {
-			(*it)->delFace(this);
-		}
-		this->model()->remove(this);
-		std::list< ::GRegion * > rr = regions();
-		dt__forAllIter(std::list< ::GRegion * >, rr, it) {
-			std::list< ::GFace * > ff = (*it)->faces();
-			std::list< ::GFace * >::iterator itF = std::find(ff.begin(), ff.end(), this);
-			if(itF != ff.end()) ff.erase(itF);		
-		}		
+    /* 
+     * destructor ends in a segmentation fault, because if the model is
+     * destroyed before the face no longer exists 
+     */
+//		dt__info(
+//			~dtGmshFace(), << "Removing face tag = " << tag() << " on all edges."	
+//		);
+//		std::list< ::GEdge * > ee = edges();
+//		dt__forAllIter(std::list< ::GEdge * >, ee, it) {
+//			(*it)->delFace(this);
+//		}
+//		this->model()->remove(this);
+//		std::list< ::GRegion * > rr = regions();
+//		dt__forAllIter(std::list< ::GRegion * >, rr, it) {
+//			std::list< ::GFace * > ff = (*it)->faces();
+//			std::list< ::GFace * >::iterator itF = std::find(ff.begin(), ff.end(), this);
+//			if(itF != ff.end()) ff.erase(itF);		
+//		}		
   }
   
   Range<double> dtGmshFace::parBounds(int i) const {
