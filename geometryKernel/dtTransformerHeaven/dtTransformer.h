@@ -51,6 +51,12 @@ namespace dtOO {
     std::vector< dtPoint3 * > apply( std::vector< dtPoint3 * > const * const toTrans ) const;        
     dtPoint3 apply(dtPoint3 const & pp) const;    
     dtPoint2 apply(dtPoint2 const & pp) const;
+    virtual std::vector< dtPoint3 > 
+    retract(std::vector< dtPoint3 > const * const toRetract) const;
+    dtPoint3 retract(dtPoint3 const & toRetract) const;
+    virtual std::vector< dtPoint2 > 
+    retract(std::vector< dtPoint2 > const * const toRetract) const;
+    dtPoint2 retract(dtPoint2 const & toRetract) const;    
     analyticFunction * apply(analyticFunction const * const sF) const;
     analyticGeometry * apply(analyticGeometry const * const aG) const;
     virtual void handleFloat(std::string const name, float const value);

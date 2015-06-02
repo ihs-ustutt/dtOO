@@ -109,6 +109,36 @@ namespace dtOO {
     return vHOut[0];
   }  
   
+  std::vector< dtPoint3 > dtTransformer::retract(
+    std::vector< dtPoint3 > const * const toRetract
+  ) const {
+    dt__throw(retract(), << "Call on base class.");
+  }
+  
+	dtPoint3 dtTransformer::retract(dtPoint3 const & pp) const {
+		std::vector< dtPoint3 > vec;
+		vec.push_back( dtPoint3(pp) );
+		
+		std::vector< dtPoint3 > retVec = this->retract(&vec);
+	
+		return retVec[0];
+	}	
+  
+  std::vector< dtPoint2 > dtTransformer::retract(
+    std::vector< dtPoint2 > const * const toRetract
+  ) const {
+    dt__throw(retract(), << "Call on base class.");
+  }
+  
+	dtPoint2 dtTransformer::retract(dtPoint2 const & pp) const {
+		std::vector< dtPoint2 > vec;
+		vec.push_back( dtPoint2(pp) );
+		
+		std::vector< dtPoint2 > retVec = this->retract(&vec);
+	
+		return retVec[0];
+	}	  
+  
   void dtTransformer::handleFloat(std::string const name, float const value) {
     dt__throw(handleFloat(),
             << "Could not handle:" << std::endl

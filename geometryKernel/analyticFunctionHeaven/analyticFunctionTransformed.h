@@ -18,7 +18,9 @@ namespace dtOO {
     virtual analyticFunctionTransformed * clone( void ) const;
     virtual analyticFunctionTransformed * create( void ) const;
     virtual aFY Y( aFX const & xx ) const;
+    virtual aFX invY( aFY const & yy ) const;
     void setTransformer( dtTransformer const * const dtT );
+    virtual bool isTransformed( void ) const;
   private:
     dt__pH(dtTransformer) _dtT;
   };  
@@ -79,12 +81,36 @@ namespace dtOO {
     return yy;
   }
   
+  template < typename funT >    
+  aFX analyticFunctionTransformed< funT >::invY( aFY const & yy ) const {
+    aFY yyC = yy;    
+    if (yyC.size() == 3) {
+      dtPoint3 pp = _dtT->retract( dtPoint3(yyC[0], yyC[1], yyC[2]) );
+      yyC[0] = pp.x();
+      yyC[1] = pp.y();
+      yyC[2] = pp.z();
+    }
+    else if(yyC.size() == 2) {
+      dtPoint2 pp = _dtT->retract( dtPoint2(yyC[0], yyC[1]) );
+      yyC[0] = pp.x();
+      yyC[1] = pp.y();
+    }
+    else dt__throwUnexpected(Y());
+    
+    return funT::invY(yyC);
+  }  
+  
   template < typename funT >  
   void analyticFunctionTransformed< funT >::setTransformer( 
     dtTransformer const * const dtT 
   ) {
     _dtT.reset( dtT->clone() );
   }
+
+  template < typename funT >    
+	bool analyticFunctionTransformed< funT >::isTransformed( void ) const {
+		return true;
+	}  
 }
 #endif	/* ANALYTICFUNCTIONTRANSFORMED_H */
 

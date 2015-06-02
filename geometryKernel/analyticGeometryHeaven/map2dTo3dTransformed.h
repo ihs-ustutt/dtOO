@@ -21,9 +21,7 @@ namespace dtOO {
     virtual ~map2dTo3dTransformed();
     virtual map2dTo3dTransformed * clone( void ) const;
     virtual map2dTo3dTransformed * create( void ) const;
-    virtual dtPoint3 getPoint( float const & uu, float const & vv ) const;
-    void setTransformer( dtTransformer const * const dtT );    
-    static void setTransformer( map2dTo3d * const orig, dtTransformer const * const dtT );    
+    virtual dtPoint3 getPoint( float const & uu, float const & vv ) const; 
   private:
     dt__pH(dtTransformer) _dtT;
   };  
@@ -68,19 +66,6 @@ namespace dtOO {
     
     return _dtT->apply(pp);
   }
-  
-  template < typename funT >  
-  void map2dTo3dTransformed< funT >::setTransformer( 
-    dtTransformer const * const dtT 
-  ) {
-    _dtT.reset( dtT->clone() );
-  }  
-  template < typename funT >
-  void map2dTo3dTransformed< funT >::setTransformer( 
-    map2dTo3d * const orig, dtTransformer const * const dtT 
-  ) {
-//    orig->setTransformer( dtT );
-  }    
 }
 #endif	/* MAP2DTO3DTRANSFORMED_H */
 
