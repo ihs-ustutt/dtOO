@@ -32,13 +32,8 @@ namespace dtOO {
       // optional overload
       //
       virtual dtVector3 firstDerU( float const uu) const;
-
       virtual vectorHandling< renderInterface * > getExtRender( void ) const;
-      virtual void revert(void);
-
       dtCurve const * const ptrConstDtCurve(void) const;
-
-
     private:
       dt__pH(dtCurve) _dtC;
   };

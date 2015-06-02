@@ -76,10 +76,6 @@ namespace dtOO {
   dtCurve const * const splineCurve3d::ptrConstDtCurve(void) const {
     return _dtC.get();
   }
-
-  void splineCurve3d::revert( void ) {
-    _dtC->revert();
-  }
   
   dtVector3 splineCurve3d::firstDerU( float const uu) const {
     return _dtC->firstDer(uu);

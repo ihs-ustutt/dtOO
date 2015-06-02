@@ -196,14 +196,8 @@ namespace dtOO {
 		std::stringstream ss;
 		
 		ss 
-		<< dt__eval(_dtS->virtualClassName()) << std::endl
-    << dt__eval(_dtS->closedU()) << std::endl
-		<< dt__eval(_dtS->closedV()) << std::endl
-		<< dt__eval(_dtS->minU()) << std::endl
-		<< dt__eval(_dtS->minV()) << std::endl
-		<< dt__eval(_dtS->maxU()) << std::endl
-		<< dt__eval(_dtS->maxV());
-		
+    << dt__eval(_dtS->virtualClassName()) << std::endl
+    << _dtS->dumpToString();
 		
 		return ss.str();
 	}	
