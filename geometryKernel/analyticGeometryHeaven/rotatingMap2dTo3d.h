@@ -26,15 +26,10 @@ namespace dtOO {
 	  virtual map2dTo3d * segmentConstU( float const & uu ) const;
 	  virtual map2dTo3d * segmentConstV( float const & vv ) const;
   	virtual map2dTo3d * segmentConstW( float const & ww ) const;
-    float u_phi(float const & arg) const;
-    float u_phirvw(float const & phir, float const & vv, float const & ww) const;
-//    float phi_u(float const & arg) const;
-    float v_m(float const & arg) const;
-    float v_mw(float const & mm, float const & ss) const;
-//    float m_v(float const & arg) const;    
-    float w_s(float const & arg) const;
-//    float s_w(float const & arg) const;  
     virtual std::string dumpToString( void ) const;
+    map2dTo3d const & constRefMap2dTo3d( void ) const;
+    dtVector3 const & rotationAxis( void ) const;
+    dtPoint3 const & origin( void ) const;    
   private:
 	  void correctOrigin( void );
   private:

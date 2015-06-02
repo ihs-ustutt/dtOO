@@ -3,16 +3,7 @@
 #include <logMe/logMe.h>
 #include "map3dTo3d.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <analyticFunctionHeaven/vec3dOneD.h>
-#include <analyticFunctionHeaven/vec3dCurveOneD.h>
-#include <analyticFunctionHeaven/vec3dCurve2dInSurfaceOneD.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
-#include <geometryEngine/dtSurface.h>
-#include <geometryEngine/dtCurve.h>
-#include <geometryEngine/dtCurve2d.h>
-#include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
-#include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
-#include "vec3dOneDInMap3dTo3d.h"
 #include "map2dTo3dTransformed.h"
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
@@ -97,10 +88,10 @@ namespace dtOO {
     //
     // get surface directions
     //
-    dtPoint3 startPointU = map2dTo3d::getPointPercent(0.05, 0.); //getDtSislSurf()->getPointPercent3d(0.05, 0.);
-    dtPoint3 topPointU = map2dTo3d::getPointPercent(0.1, 0.);//getDtSislSurf()->getPointPercent3d(0.1, 0.);
-    dtPoint3 startPointV = map2dTo3d::getPointPercent(0., 0.05);//getDtSislSurf()->getPointPercent3d(0., 0.05);
-    dtPoint3 topPointV = map2dTo3d::getPointPercent(0., 0.10);//getDtSislSurf()->getPointPercent3d(0., 0.10);
+    dtPoint3 startPointU = map2dTo3d::getPointPercent(0.05, 0.); 
+    dtPoint3 topPointU = map2dTo3d::getPointPercent(0.1, 0.);
+    dtPoint3 startPointV = map2dTo3d::getPointPercent(0., 0.05);
+    dtPoint3 topPointV = map2dTo3d::getPointPercent(0., 0.10);
     dtVector3 uu = topPointU - startPointU;  
     dtVector3 vv = topPointV - startPointV;  
 	
@@ -137,7 +128,7 @@ namespace dtOO {
 		
 		return retVec;
   }	
-	
+  
 	std::string vec3dTwoDInMap3dTo3d::dumpToString( void ) const {
 		std::stringstream ss;
 		
@@ -149,4 +140,31 @@ namespace dtOO {
 		
 		return ss.str();
 	}
+  
+  dtPoint2 vec3dTwoDInMap3dTo3d::reparamOnFace(dtPoint3 const & ppXYZ) const {
+    //
+    // normals case
+    //
+    if (!_v2d->isTransformed()) return map2dTo3d::reparamOnFace(ppXYZ);
+    //
+    //transformed case
+    //
+    else {
+      dtPoint3 ppUVW = _m3d->reparamInVolume(ppXYZ);
+      aFX xx 
+      = 
+      _v2d->invY( analyticFunction::aFYThreeD(ppUVW.x(), ppUVW.y(), ppUVW.z()) );
+      float dist = dtLinearAlgebra::length(ppXYZ - getPoint(xx[0], xx[1]));
+      dt__warnIfWithMessage(
+        dist>staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+        reparamOnFace(), 
+        << dt__eval(xx) << std::endl
+        << dt__point3d( ppXYZ ) << std::endl
+        << dt__point3d( _m3d->getPoint(ppUVW) ) << std::endl
+        << dt__point3d( getPoint(xx[0], xx[1]) ) << std::endl
+        << dt__eval(dist) << std::endl
+      );  
+      return dtPoint2(xx[0], xx[1]);
+    }
+  }
 }

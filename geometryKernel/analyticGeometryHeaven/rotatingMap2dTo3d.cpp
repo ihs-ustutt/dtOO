@@ -176,82 +176,6 @@ namespace dtOO {
 		}
 	}	
 	
-	float rotatingMap2dTo3d::u_phi(float const & arg) const {
-    return arg / (2.*M_PI);
-	}
-
-	float rotatingMap2dTo3d::u_phirvw(float const & phir, float const & vv, float const & ww) const {
-    //
-		// get radius
-		//
-    dtVector3 vXYZ = dtLinearAlgebra::toDtVector3(_m2d->getPoint(vv, ww));
-    dtVector3 pointOnRotAx = _vv * dtLinearAlgebra::dotProduct(_vv, vXYZ);
-    dtVector3 rr = vXYZ - pointOnRotAx;
-		
-		
-		return (phir/dtLinearAlgebra::length(rr)) / (2.*M_PI);//getMax(0);
-	}
-	
-//	float rotatingMap2dTo3d::phi_u(float const & arg) const {
-//    if (arg >= 0.) {
-//      return ( getMax(0) * arg);
-//    }
-//    else {
-//      float uu = getMax(0) * (fabs(arg));
-//      return (map3dTo3d::getUMax() - uu);
-//    }		
-//	}
-	
-	float rotatingMap2dTo3d::v_m(float const & arg) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstVPercent(0., 0., 1.) );
-		dt__ptrAss(
-		  splineCurve3d const * s3d, 
-			splineCurve3d::ConstDownCast(m1d.get())
-		);
-		
-		return s3d->ptrConstDtCurve()->u_lPercent(arg);
-	}
-
-	float rotatingMap2dTo3d::v_mw(float const & mm, float const & ww) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstVPercent( _m2d->percent_v(ww), 0., 1.) );
-		dt__ptrAss(
-		  splineCurve3d const * s3d, 
-			splineCurve3d::ConstDownCast(m1d.get())
-		);
-		
-		return s3d->ptrConstDtCurve()->u_l(mm);
-	}	
-	
-//	float rotatingMap2dTo3d::m_v(float const & arg) const {
-//		ptrHandling< map1dTo3d > m1d( _m2d->pickConstUPercent(0., 0., 1.) );
-//		dt__ptrAss(
-//		  splineCurve3d const * s3d, 
-//			splineCurve3d::ConstDownCast(m1d.get())
-//		);
-//		
-//		return s3d->ptrConstDtCurve()->lPercent_uPercent(arg);		
-//	}
-	
-	float rotatingMap2dTo3d::w_s(float const & arg) const {
-		ptrHandling< map1dTo3d > m1d( _m2d->segmentConstUPercent(0., 0., 1.) );
-		dt__ptrAss(
-		  splineCurve3d const * s3d, 
-			splineCurve3d::ConstDownCast(m1d.get())
-		);
-		
-		return s3d->ptrConstDtCurve()->u_lPercent(arg);		
-	}
-	
-//	float rotatingMap2dTo3d::s_w(float const & arg) const {
-//		ptrHandling< map1dTo3d > m1d( _m2d->pickConstVPercent(0., 0., 1.) );
-//		dt__ptrAss(
-//		  splineCurve3d const * s3d, 
-//			splineCurve3d::ConstDownCast(m1d.get())
-//		);
-//		
-//		return s3d->ptrConstDtCurve()->lPercent_uPercent(arg);				
-//	}
-
 	void rotatingMap2dTo3d::correctOrigin() {
 		dtVector3 dist = _m2d->getPointPercent(0.,0.) - _pp;
 		if ( (dist*_vv) != 0. ) {
@@ -278,4 +202,16 @@ namespace dtOO {
 		
 		return ss.str();		
 	}
+  
+  map2dTo3d const & rotatingMap2dTo3d::constRefMap2dTo3d( void ) const {
+    return *(_m2d.get());
+  }
+  
+  dtVector3 const & rotatingMap2dTo3d::rotationAxis( void ) const {
+    return _vv;
+  }
+    
+  dtPoint3 const & rotatingMap2dTo3d::origin( void ) const {
+    return _pp;
+  }
 }
