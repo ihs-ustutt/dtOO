@@ -5,7 +5,6 @@
 #include <logMe/dtMacros.h>
 #include "vec3dTwoD.h"
 #include <interfaceHeaven/ptrHandling.h>
-//#include <interfaceHeaven/vectorHandling.h>
 #include "analyticFunctionCompound.h"
 
 namespace dtOO {
@@ -21,9 +20,9 @@ namespace dtOO {
     virtual vec3dSurfaceTwoD * create( void ) const;    
     virtual ~vec3dSurfaceTwoD();
     virtual aFY Y( aFX const & xx) const;
-//    vectorHandling< renderInterface * > getRender( void ) const;
     dtSurface const * ptrDtSurface( void ) const;
     virtual bool closed( int const & dir ) const;
+    virtual aFX invY(aFY const & yy) const;    
   private:
     ptrHandling<dtSurface> _dtS;
   };

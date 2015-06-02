@@ -4,7 +4,6 @@
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <geometryEngine/dtSurface.h>
-//#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
 	vec3dSurfaceTwoD::vec3dSurfaceTwoD() : vec3dTwoD() {
@@ -56,4 +55,10 @@ namespace dtOO {
   bool vec3dSurfaceTwoD::closed( int const & dir ) const {
 		return _dtS->closed(dir);
 	}
+  
+  aFX vec3dSurfaceTwoD::invY(aFY const & yy) const {
+    return analyticFunction::aFXTwoD(
+      _dtS->reparam( dtPoint3(yy[0], yy[1], yy[2]) )
+    );
+  }
 }
