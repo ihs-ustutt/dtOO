@@ -128,12 +128,6 @@ namespace dtOO {
     return reparamOnFace(pp);
   }  
   
-  dtPoint2 dtGmshFace::reparamOnFace2d( dtPoint3 const ppXYZ ) const {
-    SPoint2 ppUV = reparamOnFace(ppXYZ);
-    
-    return dtPoint2(ppUV.x(), ppUV.y());
-  }    
-    
   void dtGmshFace::setMap2dTo3d( map2dTo3d const * const base ) {
     _mm.reset( base->clone() );
   }
@@ -298,6 +292,10 @@ namespace dtOO {
 			}				
 		}		
 	}	
+
+  void dtGmshFace::meshUnstructured( void ) {
+    this->meshAttributes.method = MESH_UNSTRUCTURED;
+  }  
 	
   std::vector< int > dtGmshFace::estimateTransfiniteNElements( 
 	  float const & uWidth, float const & vWidth 

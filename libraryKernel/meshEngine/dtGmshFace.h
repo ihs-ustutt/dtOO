@@ -27,11 +27,11 @@ namespace dtOO {
     virtual Range<double> parBounds(int i) const; 
     virtual GPoint point(double par1, double par2) const; 
     virtual Pair<SVector3,SVector3> firstDer(const SPoint2 &param) const;
-    virtual void secondDer(const SPoint2 &param, 
-                           SVector3 *dudu, SVector3 *dvdv, SVector3 *dudv) const;
+    virtual void secondDer(
+      const SPoint2 &param, SVector3 *dudu, SVector3 *dvdv, SVector3 *dudv
+    ) const;
     SPoint2 reparamOnFace( dtPoint3 const ppXYZ ) const;
     SPoint2 reparamOnFace(::GVertex const * gv) const;
-    dtPoint2 reparamOnFace2d( dtPoint3 const ppXYZ ) const;
     virtual SPoint2 parFromPoint(const SPoint3 &, bool onSurface) const;    
     virtual std::list< ::GEdge * > edges( void ) const;
     virtual void setMap2dTo3d( map2dTo3d const * const base );
@@ -40,7 +40,7 @@ namespace dtOO {
     void addEdgeLoop( std::list< ::GEdge * > edgeL );
     bool isClosed( int const dim ) const;
     void meshTransfinite( void );
-	  void meshRecombine( void );
+    void meshRecombine( void );
     void meshTransfiniteWNElements( 
       int const & nElementsU, int const & nElementsV 
     );
@@ -48,19 +48,20 @@ namespace dtOO {
       float const & uWidth, float const & vWidth 
     ) const;
     void correctIfTransfinite( void );
+    void meshUnstructured( void ); 
     virtual void updateFace( void );
     virtual void makeSuitable( void );
     bool isEqual( ::GFace const * const gf ) const;
     static bool isEqual( ::GFace const * const gf0, ::GFace const * const gf1 );
     twoDArrayHandling< ::MVertex * > reconstructEdgesFromSurfaceMesh( void ) const;	
-	  std::vector< const ::MVertex * > getMeshVertices( void ) const;
+    std::vector< const ::MVertex * > getMeshVertices( void ) const;
     void getMeshVerticesAndElements(
       std::vector< ::MVertex const * > * const mv, 
       std::vector< ::MElement const * > * const me
     ) const;
     dtOMMesh * getOMMesh( void ) const;
     void addElement( ::MElement * me );
-	  void addGEntity( ::GEntity * const gEnt );
+    void addGEntity( ::GEntity * const gEnt );
   private:
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:
