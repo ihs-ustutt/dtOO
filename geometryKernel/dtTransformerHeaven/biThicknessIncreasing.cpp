@@ -40,7 +40,10 @@ namespace dtOO {
       //
       // cast pointer and check if it is a analyticFunction
       //
-      dt__ptrAss(vec2dOneD const * theF, vec2dOneD::ConstDownCast( sFunP->at(ii) ) );
+      dt__ptrAss(
+        vec2dOneD const * const theF, 
+        vec2dOneD::ConstDownCast( sFunP->at(ii) ) 
+      );
 
 			std::vector<float> itVal;       
 			std::vector< std::string > header;
