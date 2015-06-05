@@ -12,6 +12,10 @@ namespace dtOO {
   scaFunction::~scaFunction() {
   }
 	
+  int scaFunction::yDim( void ) const {
+		return 1;
+	}  
+    
 	aFY scaFunction::Y( aFX const & xx ) const {
 		aFY yy(1); 
 		yy[0] = YFloat(xx);

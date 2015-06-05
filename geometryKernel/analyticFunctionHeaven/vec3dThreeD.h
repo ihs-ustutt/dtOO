@@ -25,8 +25,8 @@ namespace dtOO {
     virtual float xMin( int const & dir) const;
     virtual float xMax( int const & dir) const;   
     virtual std::vector<dtVector3> DYdtVector3( aFX const & xx ) const;
-	  aFX x_percent( aFX const & xx ) const;
-    aFX percent_x( aFX const & xx ) const;
+	  using analyticFunction::x_percent;
+    using analyticFunction::percent_x;
 	  aFX x_percent(float const & x0, float const & x1, float const & x2) const;
 	  aFX percent_x(float const & x0, float const & x1, float const & x2) const;
     dtPoint3 YdtPoint3(aFX const & xx) const;

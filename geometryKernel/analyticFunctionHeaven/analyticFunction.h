@@ -26,8 +26,11 @@ namespace dtOO {
     virtual std::string dumpToString(void) const;
     virtual aFY Y(aFX const & xx) const = 0;
     virtual int xDim( void ) const = 0;
+    virtual int yDim( void ) const = 0;
     virtual float xMin( int const & dir) const = 0;
     virtual float xMax( int const & dir) const = 0;
+	  virtual aFX x_percent( aFX const & xx ) const;
+    virtual aFX percent_x( aFX const & xx ) const;    
     virtual aFX invY(aFY const & yy) const;    
     virtual bool isCompound( void ) const;
 	  virtual vectorHandling< analyticFunction const * > compoundInternal( void ) const;
@@ -44,6 +47,9 @@ namespace dtOO {
     static aFY aFYThreeD( float const & x0, float const & x1, float const & x2 );    
     static aFY aFYTwoD( dtPoint2 const & pp );    
     static aFY aFYThreeD( dtPoint3 const & pp );    
+  private:
+	  double F(double const * xx) const;
+    mutable aFY _invY;
   };
 }
 #endif	/* ANALYTICFUNCTION_H */

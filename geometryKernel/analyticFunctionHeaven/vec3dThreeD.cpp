@@ -63,24 +63,6 @@ namespace dtOO {
 		return YdtPoint3( x_percent(xx) );
 	}
 	
-	aFX vec3dThreeD::x_percent(aFX const & xx) const {
-		aFX ret(3, 0.);
-    for (int ii=0; ii<3; ii++) {
-      ret[ii] = xMin(ii) +  (xMax(ii) - xMin(ii) ) * xx[ii];
-		}
-		
-		return ret;
-  }  
-  
-  aFX vec3dThreeD::percent_x(aFX const & xx) const {
-		aFX ret(3, 0.);
-		for (int ii=0; ii<3; ii++) {
-      ret[ii] = (xx[ii] - xMin(ii)) / (xMax(ii) - xMin(ii));
-		}
-		
-		return ret;
-  }
-	
 	aFX vec3dThreeD::x_percent(float const & x0, float const & x1, float const & x2) const {
 		aFX xx(3, 0.);
     xx[0] = x0;

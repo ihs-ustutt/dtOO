@@ -28,8 +28,8 @@ namespace dtOO {
     std::vector<dtVector3> DYdtVector3( float const & x0, float const & x1 ) const;
     dtVector3 unitNdtVector3( aFX const & xx ) const;
     dtVector3 unitNdtVector3Percent( aFX const & xx ) const;
-	  aFX x_percent( aFX const & xx ) const;
-    aFX percent_x( aFX const & xx ) const;
+	  using analyticFunction::x_percent;
+    using analyticFunction::percent_x;
     aFX x_percent(float const & x0, float const & x1) const;
     aFX percent_x(float const & x0, float const & x1) const;
     dtPoint3 YdtPoint3(aFX const & xx) const;

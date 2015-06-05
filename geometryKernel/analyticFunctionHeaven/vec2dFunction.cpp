@@ -11,6 +11,10 @@ namespace dtOO {
 	vec2dFunction::~vec2dFunction() {
 	}
 	
+	int vec2dFunction::yDim( void ) const {
+		return 2;
+	}  
+  
   dtPoint2 vec2dFunction::YdtPoint2(aFX const & xx) const {
 		aFY yy = Y(xx);
 		

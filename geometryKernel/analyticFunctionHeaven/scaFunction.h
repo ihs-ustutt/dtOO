@@ -12,6 +12,7 @@ namespace dtOO {
     scaFunction();
     scaFunction( scaFunction const & orig);  
     virtual ~scaFunction();
+    virtual int yDim( void ) const;      
     virtual float YFloat(aFX const & xx) const = 0;
     virtual aFY Y(aFX const & xx) const;
   };

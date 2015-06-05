@@ -25,8 +25,8 @@ namespace dtOO {
     virtual int xDim( void ) const;
     virtual float xMin( int const & dir) const;
     virtual float xMax( int const & dir) const;   
-	  aFX x_percent( aFX const & xx ) const;
-    aFX percent_x( aFX const & xx ) const;
+	  using analyticFunction::x_percent;
+    using analyticFunction::percent_x;
     aFX x_percent(float const & x0, float const & x1) const;
     aFX percent_x(float const & x0, float const & x1) const;
 	  std::vector<float> DYFloat( aFX const & xx ) const;

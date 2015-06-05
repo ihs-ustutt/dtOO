@@ -11,6 +11,10 @@ namespace dtOO {
 	vec3dFunction::~vec3dFunction() {
 	}
 	
+	int vec3dFunction::yDim( void ) const {
+		return 3;
+	}  
+  
   dtPoint3 vec3dFunction::YdtPoint3(aFX const & xx) const {
 		aFY yy = Y(xx);
 		

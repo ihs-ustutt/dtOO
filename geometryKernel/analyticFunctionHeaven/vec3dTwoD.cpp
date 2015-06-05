@@ -58,13 +58,13 @@ namespace dtOO {
 		return YdtPoint3( x_percent(xx) );
 	}
 	
-	aFX vec3dTwoD::x_percent(aFX const & xx) const {
-		aFX ret(2, 0.);
-    ret[0] = xMin(0) +  (xMax(0) - xMin(0) ) * xx[0];
-		ret[1] = xMin(1) +  (xMax(1) - xMin(1) ) * xx[1];
-		
-		return ret;
-  }
+//	aFX vec3dTwoD::x_percent(aFX const & xx) const {
+//		aFX ret(2, 0.);
+//    ret[0] = xMin(0) +  (xMax(0) - xMin(0) ) * xx[0];
+//		ret[1] = xMin(1) +  (xMax(1) - xMin(1) ) * xx[1];
+//		
+//		return ret;
+//  }
 
 	aFX vec3dTwoD::x_percent(float const & x0, float const & x1) const {
 		aFX xx(2, 0.);
@@ -82,13 +82,13 @@ namespace dtOO {
 		return percent_x(xx);
   }  	
   
-  aFX vec3dTwoD::percent_x(aFX const & xx) const {
-		aFX ret(2, 0.);
-    ret[0] = (xx[0] - xMin(0)) / (xMax(0) - xMin(0));
-		ret[1] = (xx[1] - xMin(1)) / (xMax(1) - xMin(1));
-		
-		return ret;
-  }
+//  aFX vec3dTwoD::percent_x(aFX const & xx) const {
+//		aFX ret(2, 0.);
+//    ret[0] = (xx[0] - xMin(0)) / (xMax(0) - xMin(0));
+//		ret[1] = (xx[1] - xMin(1)) / (xMax(1) - xMin(1));
+//		
+//		return ret;
+//  }
 	
 	std::vector<dtVector3> vec3dTwoD::DYdtVector3( aFX const & xx ) const {
 		/*

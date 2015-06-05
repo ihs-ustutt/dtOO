@@ -12,6 +12,7 @@ namespace dtOO {
     vec3dFunction();
     vec3dFunction(const vec3dFunction& orig);
     virtual ~vec3dFunction();
+    virtual int yDim( void ) const;    
     dtPoint3 YdtPoint3(aFX const & xx) const;
     virtual bool closed( int const & dir ) const = 0;
   private:
