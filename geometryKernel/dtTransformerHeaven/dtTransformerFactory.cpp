@@ -24,6 +24,7 @@
 #include "reparamInSurface.h"
 #include "pickVec3dTwoDRangePercent.h"
 #include "analyticAddNormal.h"
+#include "discreteAddNormal.h"
 #include "approxInSurface.h"
 #include "normalOffsetInSurface.h"
 #include "closeGapsArithmetic.h"
@@ -69,6 +70,7 @@ namespace dtOO {
 		__IFRET( reparamInSurface );
 		__IFRET( pickVec3dTwoDRangePercent );
 		__IFRET( analyticAddNormal );
+    __IFRET( discreteAddNormal );
 		__IFRET( approxInSurface );
 		__IFRET( normalOffsetInSurface );
 		__IFRET( closeGapsArithmetic );

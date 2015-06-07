@@ -66,6 +66,8 @@ SET(HEADERS
   analyticFunctionHeaven/analyticFunctionCompound.h
   analyticFunctionHeaven/analyticFunctionTransformed.h
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h
+  analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
+  analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
   dtTransformerHeaven/thicknessIncreasing.h
   dtTransformerHeaven/biThicknessIncreasing.h
   dtTransformerHeaven/dtTransformer.h
@@ -90,6 +92,7 @@ SET(HEADERS
   dtTransformerHeaven/reparamInSurface.h
   dtTransformerHeaven/pickVec3dTwoDRangePercent.h
   dtTransformerHeaven/analyticAddNormal.h
+  dtTransformerHeaven/discreteAddNormal.h
   dtTransformerHeaven/approxInSurface.h
   dtTransformerHeaven/normalOffsetInSurface.h
   dtTransformerHeaven/closeGapsArithmetic.h
@@ -158,6 +161,8 @@ SET(SOURCES
   analyticFunctionHeaven/vec3dMuParserThreeD.cpp
   analyticFunctionHeaven/vec3dBoxThreeD.cpp
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.cpp
+  analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.cpp
+  analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.cpp
   dtTransformerHeaven/thicknessIncreasing.cpp
   dtTransformerHeaven/biThicknessIncreasing.cpp
   dtTransformerHeaven/dtTransformer.cpp
@@ -182,6 +187,7 @@ SET(SOURCES
   dtTransformerHeaven/reparamInSurface.cpp
   dtTransformerHeaven/pickVec3dTwoDRangePercent.cpp
   dtTransformerHeaven/analyticAddNormal.cpp
+  dtTransformerHeaven/discreteAddNormal.cpp
   dtTransformerHeaven/approxInSurface.cpp
   dtTransformerHeaven/normalOffsetInSurface.cpp
   dtTransformerHeaven/closeGapsArithmetic.cpp
