@@ -2,13 +2,8 @@
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
-#include <RConfigure.h>
-#include <Rtypes.h>
-#include <Math/GSLMinimizer.h>
-#include <Math/GSLRootFinder.h>
-#include <Math/RootFinderAlgorithms.h>
+#include <Minuit2/Minuit2Minimizer.h>
 #include <Math/Functor.h>
-#include <GSLError.h>
 
 namespace dtOO {
 	analyticFunction::analyticFunction() : optionHandling(), labelHandling() {
@@ -38,7 +33,7 @@ namespace dtOO {
     aFX ret(xDim(), 0.);
     
     for (int ii=0; ii<xDim(); ii++) {
-      ret[ii]= xMin(ii) +  (xMax(ii) - xMin(ii)) * xx[ii];    
+      ret[ii] = xMin(ii) +  (xMax(ii) - xMin(ii)) * xx[ii];    
     }
     return ret;    
   }
@@ -47,27 +42,17 @@ namespace dtOO {
     aFX ret(xDim(), 0.);
     
     for (int ii=0; ii<xDim(); ii++) {
-      ret[ii]= (xx[ii] - xMin(ii)) / (xMax(ii) - xMin(ii));    
+      ret[ii] = (xx[ii] - xMin(ii)) / (xMax(ii) - xMin(ii));    
     }
     return ret;
   }
     
   aFX analyticFunction::invY(aFY const & yy) const {
-    dt__info(
-      invY(), 
-      << "yy = " << yy << std::endl
-      << dt__eval(xDim()) << std::endl
-      << dt__eval(yDim()) << std::endl
-      << dt__eval( Y(x_percent(analyticFunction::aFXTwoD(0.,0.))) ) << std::endl
-      << dt__eval( Y(x_percent(analyticFunction::aFXTwoD(1.,0.))) ) << std::endl
-      << dt__eval( Y(x_percent(analyticFunction::aFXTwoD(0.,1.))) ) << std::endl
-      << dt__eval( Y(x_percent(analyticFunction::aFXTwoD(1.,1.))) ) << std::endl
-    );
     _invY = yy;
 		// 
 		// multidimensional minimization
 		//
-		ROOT::Math::GSLMinimizer min( ROOT::Math::kVectorBFGS );
+    ROOT::Minuit2::Minuit2Minimizer min;
 		ROOT::Math::Functor toMin(
 			this, &analyticFunction::F, xDim() 
 		);			
@@ -78,7 +63,7 @@ namespace dtOO {
 		//
     for (int ii=0; ii<xDim(); ii++) {
       std::string xStr = "x"+stringPrimitive::intToString(ii);
-		  min.SetVariable( ii, xStr, .5, 1.1 );			
+		  min.SetVariable( ii, xStr, .5, 0.01 );			
       min.SetVariableLimits(ii, 0., 1.);	
     }
     
@@ -87,7 +72,7 @@ namespace dtOO {
 		//
 		min.SetMaxFunctionCalls(1000000);
 		min.SetMaxIterations(100000);
-		min.SetTolerance(0.0000001);			
+		min.SetTolerance(0.00001);			
 		min.SetPrintLevel(3);
 
 		//
@@ -204,23 +189,9 @@ namespace dtOO {
     aFY yy = Y(xxT);
     
     double objective = 0.;
-//    double length = 0.;
     for (int ii=0; ii<yDim(); ii++) {
-//      length = length + _invY[ii]*_invY[ii];
       objective = objective + (yy[ii]-_invY[ii])*(yy[ii]-_invY[ii]);
     }
-//    objective = objective/sqrt(length);
-
-//    dt__info(
-//      F(), 
-//      << "xxT = " << xxT << std::endl
-////      << "xx[0] = " << xx[0] << std::endl
-////      << "xx[1] = " << xx[1] << std::endl
-//      << "yy = " << yy << std::endl
-//      << "_invY = " << _invY << std::endl            
-//      << "objective " << objective << std::endl
-//    );
-    
-    return 100.*objective;
+    return objective;
 	}	    
 }
