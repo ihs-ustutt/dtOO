@@ -286,4 +286,33 @@ namespace dtOO {
 	aFX vec3dTwoD::operator%(const aFX &percent) const {
 		return x_percent(percent);
 	}	
+  
+//  float vec3dTwoD::length( 
+//    int const & nP, aFX const & x0, aFX const & x1 
+//  ) const {
+//		std::vector< dtPoint2 > glp = dtLinearAlgebra::getGaussLegendre(nP);
+//		float L = 0.0;
+//		dtPoint2 const u0(x0[0], x0[1]);
+//		dtPoint2 const u1(x1[0], x1[1]);
+//		dtVector2 const normalDir( dtLinearAlgebra::normalize(u1-u0) );
+//		const dtVector2 rapJ = .5 * (u1 - u0);
+//		for (int i = 0; i < nP; i++) {
+//			float const tt = glp[i].x();
+//			float const ww = glp[i].y();
+//			dtPoint2 const ui(
+//        .5 * (1. - tt) * u0.x()  + .5 * (1. + tt) * u1.x(),
+//        .5 * (1. - tt) * u0.y()  + .5 * (1. + tt) * u1.y()
+//      );
+//			std::vector< dtVector3 > der = DYdtVector3(ui.x(), ui.y());
+//			const float d 
+//      = 
+//      dtLinearAlgebra::length(normalDir.x()*der[0]+normalDir.y()*der[1] );
+//			L += d * ww * dtLinearAlgebra::length(rapJ);
+//		}
+//		return L;    
+//  }
+  
+//  float vec3dTwoD::length( aFX const & x0, aFX const & x1 ) const {	
+//    return length(20, x0, x1);
+//  }
 }
