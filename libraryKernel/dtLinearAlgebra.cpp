@@ -2,7 +2,6 @@
 
 #include <logMe/logMe.h>
 #include "dtGaussLegendreIntegration.h"
-#include <interfaceHeaven/twoDArrayHandling.h>
 #include <CGAL/bounding_box.h>
 #include <CGAL/squared_distance_2.h>
 #include <CGAL/squared_distance_3.h>
@@ -83,6 +82,14 @@ namespace dtOO {
 		if (sqL == 0.) return dtVector3(0.,0.,0.);
 		return (1./sqrt(sqL)) * v0;
 	}	
+
+	dtVector2 dtLinearAlgebra::normalize(
+		dtVector2 const & v0
+	) {
+		float sqL = v0.squared_length();
+		if (sqL == 0.) return dtVector2(0.,0.);
+		return (1./sqrt(sqL)) * v0;
+	}	  
 	
   dtVector3 dtLinearAlgebra::meanAverage( std::vector< dtVector3 > const & vv ) {
 		dtVector3 nn(0, 0, 0);
@@ -96,6 +103,10 @@ namespace dtOO {
 		return sqrt(v0.squared_length());
 	}
 
+	float dtLinearAlgebra::length( dtVector2 const & v0 ) {
+		return sqrt(v0.squared_length());
+	}
+  
 	dtVector3 dtLinearAlgebra::toDtVector3(dtPoint3 const & pp) {
 		return pp - CGAL::ORIGIN;
 	}
@@ -649,5 +660,35 @@ namespace dtOO {
       case CGAL::ON_UNBOUNDED_SIDE:
         return false;
     }
+  }
+  
+  std::vector< float > dtLinearAlgebra::unitGrid(int const & nU) {
+    std::vector< float > grid(nU);
+    
+    float distU = 1./(nU-1);
+		for (int ii=0; ii<nU; ii++) {
+      dt__toFloat(float iiF, ii);
+      grid[ii] = distU * iiF;
+		}
+    
+    return grid;
+  }
+    
+  twoDArrayHandling< dtPoint2 > dtLinearAlgebra::unitGrid( 
+    int const & nU, int const & nV
+  ) {
+    twoDArrayHandling< dtPoint2 > grid(nU, nV);
+    
+    float distU = 1./(nU-1);
+    float distV = 1./(nV-1);
+		for (int ii=0; ii<nU; ii++) {
+      for (int jj=0; jj<nV; jj++) {
+			  dt__toFloat(float iiF, ii);
+        dt__toFloat(float jjF, jj);
+			  grid[ii][jj] = dtPoint2(distU * iiF, distV * jjF);
+      }
+		}		
+    
+    return grid;
   }
 }

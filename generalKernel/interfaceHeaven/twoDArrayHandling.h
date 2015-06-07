@@ -21,11 +21,14 @@ namespace dtOO {
       dt__classOnlyName(twoDArrayHandling);
       twoDArrayHandling();
       twoDArrayHandling( int const sizeI, int const sizeJ );
-      twoDArrayHandling(const twoDArrayHandling& orig);
+      twoDArrayHandling( int const sizeI, int const sizeJ, T const & init );      
+      twoDArrayHandling( const twoDArrayHandling& orig );
       virtual ~twoDArrayHandling();
       void resize(int const sizeI, int const sizeJ);
       void resize(int const sizeI);
       int size( int const dim = 0) const;
+      std::vector< T > fixJ(int const jj) const;
+      std::vector< T > fixI(int const ii) const;
   };
 
   //----------------------------------------------------------------------------
@@ -38,6 +41,13 @@ namespace dtOO {
   template < typename T >
   twoDArrayHandling< T >::twoDArrayHandling(int const sizeI, int const sizeJ) 
     : std::vector< std::vector< T > >( sizeI, std::vector< T >(sizeJ) ) {
+  }
+  
+  template < typename T >
+  twoDArrayHandling< T >::twoDArrayHandling(
+    int const sizeI, int const sizeJ, T const & init
+  ) 
+    : std::vector< std::vector< T > >( sizeI, std::vector< T >(sizeJ, init) ) {
   }
   
   template < typename T >
@@ -85,6 +95,19 @@ namespace dtOO {
       dt__throw( size(), << "Wrong dimension " << dt__eval(dim) );
     }
   }    
+  template < typename T >  
+  std::vector< T > twoDArrayHandling< T >::fixJ(int const jj) const {
+    std::vector< T > ret(this->size());
+    dt__forAllIndex(*this, ii) {
+      ret[ii] = this->at(ii).at(jj);      
+    }
+    return ret;
+  }
+  
+  template < typename T >    
+  std::vector< T > twoDArrayHandling< T >::fixI(int const ii) const {
+    return this->at(ii);
+  }
 }
 #endif	/* twoDArrayHandling_H */
 

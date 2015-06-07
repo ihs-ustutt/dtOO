@@ -10,6 +10,8 @@
   for (int index = 0; index<((vector).size());index++)
 #define dt__forInnerIndex(vector, index) \
     for (int index = 1; index<((vector).size()-1);index++)
+#define dt__forFromToIndex(from, to, index) \
+  for (int index = 0; index<to;index++)
 #define dt__forAllIter(type, vector, iter) \
   for ( \
     type::iterator iter = vector.begin(); \

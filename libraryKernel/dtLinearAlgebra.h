@@ -14,6 +14,8 @@
 #include <CGAL/Origin.h>
 #include <CGAL/Linear_algebraCd.h>
 
+#include <interfaceHeaven/twoDArrayHandling.h>
+
 namespace dtOO {
   typedef float dtFt;
   typedef CGAL::Exact_predicates_inexact_constructions_kernel dtKernel;
@@ -55,8 +57,10 @@ namespace dtOO {
       dtVector3 const & v1
     );    
 	  static dtVector3 normalize( dtVector3 const & v0 );
+	  static dtVector2 normalize( dtVector2 const & v0 );    
     static dtVector3 meanAverage( std::vector< dtVector3 > const & vv );
     static float length( dtVector3 const & v0 );    
+    static float length( dtVector2 const & v0 );    
     static dtVector3 toDtVector3(dtPoint3 const & pp);
     static dtVector2 toDtVector2(dtPoint2 const & pp);
     static dtPoint3 toDtPoint3(dtVector3 const & pp);
@@ -99,6 +103,10 @@ namespace dtOO {
       dtPoint2 const & pt,
       dtPoint2 const & p0, dtPoint2 const & p1, 
       dtPoint2 const & p2, dtPoint2 const & p3
+    );
+    static std::vector< float > unitGrid(int const & nU);        
+    static twoDArrayHandling< dtPoint2 > unitGrid( 
+      int const & nU, int const & nV
     );
   };
 }
