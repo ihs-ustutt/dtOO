@@ -9,6 +9,7 @@ SET(HEADERS
   bVObserver/bVONameRegions.h
   bVObserver/bVOPostBLGmsh.h
   bVObserver/bVOWriteMSH.h
+  bVObserver/bVOTransfiniteFaces.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dBlockGmsh.h
@@ -33,6 +34,7 @@ SET(SOURCES
   bVObserver/bVONameRegions.cpp
   bVObserver/bVOPostBLGmsh.cpp
   bVObserver/bVOWriteMSH.cpp
+  bVObserver/bVOTransfiniteFaces.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dBlockGmsh.cpp
