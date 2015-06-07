@@ -50,27 +50,27 @@ namespace dtOO {
     for (int ii=0; ii<aFP->size(); ii++) {
 			analyticFunction * aF = aFP->at(ii);
 
-			vec3dCurveOneD const * const vec3d1d = vec3dCurveOneD::ConstDownCast(aF);			
-			vec3dSurfaceTwoD const * const vec3d2d = vec3dSurfaceTwoD::ConstDownCast(aF);
-			vec3dThickedTwoD const * const vec3dThick2d = vec3dThickedTwoD::ConstDownCast(aF);
+			vec3dCurveOneD const * const v1d = vec3dCurveOneD::ConstDownCast(aF);			
+			vec3dSurfaceTwoD const * const v2d = vec3dSurfaceTwoD::ConstDownCast(aF);
+			vec3dThickedTwoD const * const vT2d = vec3dThickedTwoD::ConstDownCast(aF);
 			
-			if (vec3d1d) {			
+			if (v1d) {			
 				analyticFunctionTransformed<vec3dCurveOneD> * aFT
-				= new analyticFunctionTransformed<vec3dCurveOneD>(*vec3d1d);
+				= new analyticFunctionTransformed<vec3dCurveOneD>(*v1d);
 				aFT->setTransformer(this);
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());
 			}			
-      else if (vec3d2d) {			
+      else if (v2d) {			
 				analyticFunctionTransformed<vec3dSurfaceTwoD> * aFT
-				= new analyticFunctionTransformed<vec3dSurfaceTwoD>(*vec3d2d);
+				= new analyticFunctionTransformed<vec3dSurfaceTwoD>(*v2d);
 				aFT->setTransformer(this);
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());				
 			}
-      else if (vec3dThick2d) {			
+      else if (vT2d) {			
 				analyticFunctionTransformed<vec3dThickedTwoD> * aFT
-				= new analyticFunctionTransformed<vec3dThickedTwoD>(*vec3dThick2d);
+				= new analyticFunctionTransformed<vec3dThickedTwoD>(*vT2d);
 				aFT->setTransformer(this);
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());	
@@ -78,9 +78,9 @@ namespace dtOO {
 			else {
 				dt__throw(
 					apply(),
-					<< dt__eval(vec3d1d) << std::endl
-					<< dt__eval(vec3d2d) << std::endl
-					<< dt__eval(vec3dThick2d) << std::endl								
+					<< dt__eval(v1d) << std::endl
+					<< dt__eval(v2d) << std::endl
+					<< dt__eval(vT2d) << std::endl								
 					<< "Unknown type."
 				);
 			}
@@ -96,8 +96,10 @@ namespace dtOO {
 		dt__forAllIndex(*toTrans, ii) {
       float phir = toTrans->at(ii).x() * _ss.x();
 		  float mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
-		  float ss = std::max( toTrans->at(ii).z() * _ss.z(), 0.);
-		
+		  float ss = toTrans->at(ii).z() * _ss.z();
+      dt__warnIfWithMessageAndSolution(ss>1., ss=1., apply(), << dt__eval(ss));
+      dt__warnIfWithMessageAndSolution(ss<0., ss=0., apply(), << dt__eval(ss));
+      
       float wV = wV_ms(mm, ss);						
 			float vV = vV_ms(mm, ss);
 			float uV = uV_phirVVWV(phir, vV, wV);
@@ -132,9 +134,11 @@ namespace dtOO {
       dt__info(
         retract(),
         << logMe::dtFormat(
-          "Retracting point (u, v, w) = (%E, %E, %E)") % uu % vv % ww << std::endl
+             "Retracting point (u, v, w) = (%E, %E, %E)"
+           ) % uu % vv % ww << std::endl
         << logMe::dtFormat(
-          "to point (phir, mm, ss) = (%E, %E, %E)") % phir % mm % ss
+             "to point (phir, mm, ss) = (%E, %E, %E)"
+           ) % phir % mm % ss
       );
       
 			retVec.push_back( dtPoint3(phir, mm, ss) );
@@ -214,35 +218,38 @@ namespace dtOO {
       }
     }
     _ms_uSPercentVSPercent.reset( new vec2dMultiBiLinearTwoD(ms) );
-    //
-    // write csv of mapping
-    //
-    std::fstream of;
-    of.open("ms.csv", std::ios::out | std::ios::trunc);
-    of.precision(8);
-    of.fixed;
-    of << "x_coord,y_coord,z_coord,u_p,v_p,m,s,m_p,s_p" << std::endl;
-    dt__forAllIndex(ms, ii) {
-      dt__forAllIndex(ms[ii], jj) {
-        float uPercent = static_cast<float>(ii)/(_nU-1);
-        float vPercent = static_cast<float>(jj)/(_nV-1);
-
-        dtPoint3 pXYZ 
-        = 
-        _rM2d->constRefMap2dTo3d().getPointPercent(uPercent, vPercent);
-        
-        of 
-        << pXYZ.x() << ", " << pXYZ.y() << ", " << pXYZ.z() << ", "
-        << uPercent << ", " << vPercent << ", "
-        << ms[ii][jj].x() << ", " << ms[ii][jj].y() << ", "
-        << ms[ii][jj].x()/ms.back()[jj].x() << ", " << ms[ii][jj].y()/ms[ii].back().y()
-        << std::endl;
-      }
-    }
-    of.close();
+//    //
+//    // write csv of mapping
+//    //
+//    std::fstream of;
+//    of.open("ms.csv", std::ios::out | std::ios::trunc);
+//    of.precision(8);
+//    of.fixed;
+//    of << "x_coord,y_coord,z_coord,u_p,v_p,m,s,m_p,s_p" << std::endl;
+//    dt__forAllIndex(ms, ii) {
+//      dt__forAllIndex(ms[ii], jj) {
+//        float uPercent = static_cast<float>(ii)/(_nU-1);
+//        float vPercent = static_cast<float>(jj)/(_nV-1);
+//
+//        dtPoint3 pXYZ 
+//        = 
+//        _rM2d->constRefMap2dTo3d().getPointPercent(uPercent, vPercent);
+//        
+//        of 
+//        << pXYZ.x() << ", " << pXYZ.y() << ", " << pXYZ.z() << ", "
+//        << uPercent << ", " << vPercent << ", "
+//        << ms[ii][jj].x() << ", " << ms[ii][jj].y() << ", "
+//        << ms[ii][jj].x()/ms.back()[jj].x() << ", " 
+//        << ms[ii][jj].y()/ms[ii].back().y()
+//        << std::endl;
+//      }
+//    }
+//    of.close();
   }
   
-  void uVw_phirMs::handleAnalyticGeometry(std::string const name, analyticGeometry const * value) {
+  void uVw_phirMs::handleAnalyticGeometry(
+    std::string const name, analyticGeometry const * value
+  ) {
     if (name == "part_label") {
       dt__ptrAss(
         rotatingMap2dTo3d const * const m3d, 
@@ -254,7 +261,9 @@ namespace dtOO {
     dtTransformer::handleAnalyticGeometry(name, value);
   }
 	
-  void uVw_phirMs::handleDtVector3(std::string const name, dtVector3 const value) {
+  void uVw_phirMs::handleDtVector3(
+    std::string const name, dtVector3 const value
+  ) {
     if (name == "Vector_3") {
       _ss = value;
       return;
@@ -293,7 +302,9 @@ namespace dtOO {
 		return m1d->lPercent_u(vv);		
 	} 
   
-	float uVw_phirMs::uV_phirVVWV(float const & phir, float const & vv, float const & ww) const {
+	float uVw_phirMs::uV_phirVVWV(
+    float const & phir, float const & vv, float const & ww
+  ) const {
     //
 		// get radius
 		//
@@ -304,7 +315,9 @@ namespace dtOO {
     );
     dtVector3 pointOnRotAx 
     = 
-    _rM2d->rotationAxis() * dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
+    _rM2d->rotationAxis() 
+    * 
+    dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
     
     dtVector3 rr = vXYZ - pointOnRotAx;
     
@@ -325,7 +338,9 @@ namespace dtOO {
     return _rM2d->constRefMap2dTo3d().v_percent(uvPercent[1]);    
 	}    
 
-  float uVw_phirMs::phir_uVvVwV(float const & uu, float const & vv, float const & ww) const {
+  float uVw_phirMs::phir_uVvVwV(
+    float const & uu, float const & vv, float const & ww
+  ) const {
     dtVector3 vXYZ 
     = 
     dtLinearAlgebra::toDtVector3(
@@ -333,7 +348,9 @@ namespace dtOO {
     );
     dtVector3 pointOnRotAx 
     = 
-    _rM2d->rotationAxis() * dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
+    _rM2d->rotationAxis() 
+    * 
+    dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
     dtVector3 rr = vXYZ - pointOnRotAx;
 		
 		
@@ -341,7 +358,9 @@ namespace dtOO {
   }
   
   float uVw_phirMs::m_vVs(float const & vv, float const & ss) const {
-    aFX xx = analyticFunction::aFXTwoD( _rM2d->constRefMap2dTo3d().u_percent(vv), ss );
+    aFX xx 
+    = 
+    analyticFunction::aFXTwoD( _rM2d->constRefMap2dTo3d().u_percent(vv), ss );
     aFY yy = _ms_uSPercentVSPercent->Y(xx);
     
     return _rM2d->constRefMap2dTo3d().percent_u(yy[0]);    
