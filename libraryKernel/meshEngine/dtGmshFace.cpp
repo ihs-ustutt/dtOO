@@ -330,14 +330,6 @@ namespace dtOO {
 		return nEl;
 	}	
 	
-  void dtGmshFace::updateFace( void ) {
-    dt__throw(updateFace(), << "Not yet implemented. This could produce errors.");
-  }
-  
-  void dtGmshFace::makeSuitable( void ) {
-    dt__info(updateFace(), << "Base class calling. Nothing to do.");
-  }
-	
 	bool dtGmshFace::isEqual( ::GFace const * const gf ) const {
     return isEqual(this, gf);
 	}

@@ -40,9 +40,13 @@ namespace dtOO {
     dtGmshVertex * getDtGmshVertexByTag( int const tag ) const;
     static dtGmshRegion * cast2DtGmshRegion( ::GEntity * gr );
     static dtGmshFace * cast2DtGmshFace( ::GEntity * gf );
-    static std::list< dtGmshFace * > cast2DtGmshFace( std::list< ::GFace * > faces );
+    static std::list< dtGmshFace * > cast2DtGmshFace( 
+      std::list< ::GFace * > faces 
+    );
     static dtGmshEdge * cast2DtGmshEdge( ::GEntity * ge );  
-    static std::list< dtGmshEdge * > cast2DtGmshEdge( std::list< ::GEdge * > edges );
+    static std::list< dtGmshEdge * > cast2DtGmshEdge( 
+      std::list< ::GEdge * > edges 
+    );
     static dtGmshVertex * cast2DtGmshVertex( ::GEntity * gv );
     static dtPoint3 cast2DtPoint3( ::GVertex const * const gv );  
     static dtPoint3 cast2DtPoint3( ::MVertex const * const mv );
@@ -65,7 +69,10 @@ namespace dtOO {
     );  
     void addIfFaceToGmshModel(map2dTo3d const * const face, int * const tag);    
     dtGmshRegion * addRegionToGmshModel( map3dTo3d const * const vol );
-    void meshEdgeTransfiniteFromTo(int const from, int const to, int const type, float const coeff, int const nEl);
+    void meshEdgeTransfiniteFromTo(
+      int const from, int const to, 
+      int const type, float const coeff, int const nEl
+    );
     void meshVertex( int const tag = 0 );
     void meshEdge( int const tag );
     void meshFace( int const tag );

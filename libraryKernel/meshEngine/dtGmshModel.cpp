@@ -405,7 +405,6 @@ namespace dtOO {
     
     ::meshGFace mf;
     if ( dtgf->meshStatistics.status == ::GEntity::PENDING ) {
-      dtgf->makeSuitable();
       mf(dtgf);
     }
   }
@@ -1190,6 +1189,13 @@ namespace dtOO {
 			std::list< ::GEdge * > ee = edges();
 			dt__forAllIter(std::list< ::GEdge * >, ee, it) {
 				if ( (*it)->getPhysicalEntities().size() != 0 ) {
+          if (dtGmshEdge::ConstDownCast(*it)) {
+            dt__info(
+              meshPhysical(),
+              << "Meshing edge " 
+              << dtGmshEdge::ConstDownCast(*it)->getMap1dTo3d()->getLabel()
+            );
+          }
 					meshEdge( (*it)->tag() );
 				}
 			}
@@ -1198,6 +1204,13 @@ namespace dtOO {
 			std::list< ::GFace * > ff = faces();
 			dt__forAllIter(std::list< ::GFace * >, ff, it) {
 				if ( (*it)->getPhysicalEntities().size() != 0 ) {
+          if (dtGmshFace::ConstDownCast(*it)) {
+            dt__info(
+              meshPhysical(),
+              << "Meshing face " 
+              << dtGmshFace::ConstDownCast(*it)->getMap2dTo3d()->getLabel()
+            );
+          }          
 					meshFace( (*it)->tag() );
 				}
 			}			

@@ -49,8 +49,6 @@ namespace dtOO {
     ) const;
     void correctIfTransfinite( void );
     void meshUnstructured( void ); 
-    virtual void updateFace( void );
-    virtual void makeSuitable( void );
     bool isEqual( ::GFace const * const gf ) const;
     static bool isEqual( ::GFace const * const gf0, ::GFace const * const gf1 );
     twoDArrayHandling< ::MVertex * > reconstructEdgesFromSurfaceMesh( void ) const;	
