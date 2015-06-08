@@ -3,7 +3,6 @@
 
 #include <logMe/dtMacros.h>
 #include "gmshBoundedVolume.h"
-#include <interfaceHeaven/ptrHandling.h>
 
 namespace dtOO {
   class baseContainer;
