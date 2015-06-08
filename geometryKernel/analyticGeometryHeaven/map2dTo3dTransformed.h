@@ -19,9 +19,13 @@ namespace dtOO {
     map2dTo3dTransformed(funT const & orig );    
     map2dTo3dTransformed(funT const & orig, dtTransformer const * const dtT);
     virtual ~map2dTo3dTransformed();
-    virtual map2dTo3dTransformed * clone( void ) const;
+    virtual map2dTo3dTransformed * clone(void) const;
+    virtual map2dTo3dTransformed * cloneTransformed(
+      dtTransformer const * const dtT
+    ) const;
     virtual map2dTo3dTransformed * create( void ) const;
     virtual dtPoint3 getPoint( float const & uu, float const & vv ) const; 
+    virtual dtPoint2 reparamOnFace(dtPoint3 const & ppXYZ) const;    
   private:
     dt__pH(dtTransformer) _dtT;
   };  
@@ -32,16 +36,23 @@ namespace dtOO {
   }
 
   template < typename funT >  
-  map2dTo3dTransformed< funT >::map2dTo3dTransformed(map2dTo3dTransformed const & orig) : funT(orig) {
+  map2dTo3dTransformed< funT >::map2dTo3dTransformed(
+    map2dTo3dTransformed const & orig
+  ) : funT(orig) {
     _dtT.reset( orig._dtT->clone() );
   }  
 
   template < typename funT >  
-  map2dTo3dTransformed< funT >::map2dTo3dTransformed(funT const & orig) : funT(orig) {
+  map2dTo3dTransformed< funT >::map2dTo3dTransformed(
+    funT const & orig
+  ) : funT(orig) {
+    
   }    
   
   template < typename funT >
-  map2dTo3dTransformed< funT >::map2dTo3dTransformed(funT const & orig, dtTransformer const * const dtT) : funT(orig) {
+  map2dTo3dTransformed< funT >::map2dTo3dTransformed(
+    funT const & orig, dtTransformer const * const dtT
+  ) : funT(orig) {
     _dtT.reset( dtT->clone() );
   }
   
@@ -51,20 +62,40 @@ namespace dtOO {
   }
   
   template < typename funT >  
-  map2dTo3dTransformed< funT > * map2dTo3dTransformed< funT >::clone( void ) const {
+  map2dTo3dTransformed< funT > * map2dTo3dTransformed< funT >::clone( 
+    void 
+  ) const {
     return new map2dTo3dTransformed< funT >(*this);
   }
   
   template < typename funT >  
-  map2dTo3dTransformed< funT > * map2dTo3dTransformed< funT >::create( void ) const {
+  map2dTo3dTransformed< funT > * map2dTo3dTransformed< funT >::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new map2dTo3dTransformed< funT >(*this, dtT);
+  }
+  
+  template < typename funT >  
+  map2dTo3dTransformed< funT > * map2dTo3dTransformed< funT >::create( 
+    void 
+  ) const {
     return new map2dTo3dTransformed< funT >();
   }
     
   template < typename funT >    
-  dtPoint3 map2dTo3dTransformed< funT >::getPoint( float const & uu, float const & vv ) const {
+  dtPoint3 map2dTo3dTransformed< funT >::getPoint( 
+    float const & uu, float const & vv 
+  ) const {
     dtPoint3 pp = funT::getPoint(uu, vv);
     
     return _dtT->apply(pp);
+  }
+  
+  template < typename funT >    
+  dtPoint2 map2dTo3dTransformed< funT >::reparamOnFace(
+    dtPoint3 const & ppXYZ
+  ) const {
+    dt__throwUnexpected(reparamOnFace());
   }
 }
 #endif	/* MAP2DTO3DTRANSFORMED_H */
