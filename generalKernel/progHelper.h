@@ -14,14 +14,14 @@
   for (int index = 0; index<to;index++)
 #define dt__forAllIter(type, vector, iter) \
   for ( \
-    type::iterator iter = vector.begin(); \
-    iter!=vector.end(); \
+    type::iterator iter = (vector).begin(); \
+    iter!=(vector).end(); \
     ++iter \
   )
 #define dt__forAllConstIter(type, vector, iter) \
   for ( \
-    type::const_iterator iter = vector.begin(); \
-    iter!=vector.end(); \
+    type::const_iterator iter = (vector).begin(); \
+    iter!=(vector).end(); \
     ++iter \
   )
 #define dt__forFromToIter(iterator_type, from, to, iter) \
