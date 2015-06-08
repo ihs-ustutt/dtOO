@@ -15,8 +15,14 @@ namespace dtOO {
       dt__class(vec2dTwoDInMap2dTo3d, analyticGeometry);
       vec2dTwoDInMap2dTo3d();
       vec2dTwoDInMap2dTo3d(const vec2dTwoDInMap2dTo3d& orig);
-      vec2dTwoDInMap2dTo3d(vec2dTwoD const * const v2d2d, map2dTo3d const * const m2d);
-      vec2dTwoDInMap2dTo3d(vec2dTwoD const * const v2d2d, map2dTo3d const * const m2d, bool const & percentF);
+      vec2dTwoDInMap2dTo3d(
+        vec2dTwoD const * const v2d2d, map2dTo3d const * const m2d
+      );
+      vec2dTwoDInMap2dTo3d(
+        vec2dTwoD const * const v2d2d, 
+        map2dTo3d const * const m2d, 
+        bool const & percentF
+      );
       virtual ~vec2dTwoDInMap2dTo3d();
       //
       // overload

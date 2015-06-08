@@ -225,18 +225,22 @@ namespace dtOO {
 			);		
     }
 		
-    dt__warnIfWithMessageAndSolution(
-      U<getMin(0), U=getMin(0), reparamOnFace(), << dt__eval(U)
-    );
-    dt__warnIfWithMessageAndSolution(
-      V<getMin(1), V=getMin(1), reparamOnFace(), << dt__eval(V)
-    );
-    dt__warnIfWithMessageAndSolution(
-      U>getMax(0), U=getMax(0), reparamOnFace(), << dt__eval(U)
-    );
-    dt__warnIfWithMessageAndSolution(
-      V>getMax(0), V=getMax(1), reparamOnFace(), << dt__eval(V)
-    );
+//    dt__warnIfWithMessageAndSolution(
+//      U<getMin(0), U=getMin(0), reparamOnFace(), << dt__eval(U)
+//    );
+//    dt__warnIfWithMessageAndSolution(
+//      V<getMin(1), V=getMin(1), reparamOnFace(), << dt__eval(V)
+//    );
+//    dt__warnIfWithMessageAndSolution(
+//      U>getMax(0), U=getMax(0), reparamOnFace(), << dt__eval(U)
+//    );
+//    dt__warnIfWithMessageAndSolution(
+//      V>getMax(0), V=getMax(1), reparamOnFace(), << dt__eval(V)
+//    );
+    dt__solution(U<getMin(0), U=getMin(0));
+    dt__solution(V<getMin(1), V=getMin(1));
+    dt__solution(U>getMax(0), U=getMax(0));
+    dt__solution(V>getMax(0), V=getMax(1));    
     
     return dtPoint2(U, V);  
   }

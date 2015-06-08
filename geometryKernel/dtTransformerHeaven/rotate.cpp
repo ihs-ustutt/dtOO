@@ -50,12 +50,11 @@ namespace dtOO {
 	) const {
     vectorHandling< analyticGeometry * > retAGeo;
 
-    //each analyticGeometry
-    for (int ii=0; ii< aGeoVecP->size(); ii++) {
+    dt__forAllConstIter(vectorHandling< analyticGeometry * >, *aGeoVecP, it) {
 			//
 			// clone and cast analyticGeometry
 			//
-			dt__pH(analyticGeometry) aGeoP(aGeoVecP->at(ii)->clone());
+			dt__pH(analyticGeometry) aGeoP((*it)->clone());
 			map2dTo3d * m2d = map2dTo3d::DownCast(aGeoP.get());
 			analyticSurface * aS = analyticSurface::DownCast(aGeoP.get());
 			map2dTo3dTransformed< analyticSurface > * aST 

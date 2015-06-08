@@ -97,8 +97,10 @@ namespace dtOO {
       float phir = toTrans->at(ii).x() * _ss.x();
 		  float mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
 		  float ss = toTrans->at(ii).z() * _ss.z();
-      dt__warnIfWithMessageAndSolution(ss>1., ss=1., apply(), << dt__eval(ss));
-      dt__warnIfWithMessageAndSolution(ss<0., ss=0., apply(), << dt__eval(ss));
+//      dt__warnIfWithMessageAndSolution(ss>1., ss=1., apply(), << dt__eval(ss));
+//      dt__warnIfWithMessageAndSolution(ss<0., ss=0., apply(), << dt__eval(ss));
+      dt__solution(ss>1., ss=1.);
+      dt__solution(ss<0., ss=0.);
       
       float wV = wV_ms(mm, ss);						
 			float vV = vV_ms(mm, ss);

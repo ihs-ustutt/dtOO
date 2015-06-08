@@ -14,7 +14,9 @@ namespace dtOO {
   vec3dTwoDInMap3dTo3d::vec3dTwoDInMap3dTo3d() : map2dTo3d() {
   }
 
-  vec3dTwoDInMap3dTo3d::vec3dTwoDInMap3dTo3d(const vec3dTwoDInMap3dTo3d& orig) : map2dTo3d(orig) { 
+  vec3dTwoDInMap3dTo3d::vec3dTwoDInMap3dTo3d(
+    const vec3dTwoDInMap3dTo3d& orig
+  ) : map2dTo3d(orig) { 
     _v2d.reset( orig._v2d->clone() );
     _m3d.reset( orig._m3d->clone() );
 		_percentF = orig._percentF;
