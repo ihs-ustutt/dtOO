@@ -10,7 +10,9 @@ namespace dtOO {
   vec3dThreeDInMap3dTo3d::vec3dThreeDInMap3dTo3d() : map3dTo3d() {
   }
 
-  vec3dThreeDInMap3dTo3d::vec3dThreeDInMap3dTo3d(const vec3dThreeDInMap3dTo3d& orig) : map3dTo3d(orig) { 
+  vec3dThreeDInMap3dTo3d::vec3dThreeDInMap3dTo3d(
+    const vec3dThreeDInMap3dTo3d& orig
+  ) : map3dTo3d(orig) { 
     _v3d.reset( orig._v3d->clone() );
     _m3d.reset( orig._m3d->clone() );
 		_percentF = orig._percentF;
@@ -32,7 +34,9 @@ namespace dtOO {
   vec3dThreeDInMap3dTo3d::~vec3dThreeDInMap3dTo3d() {
   }
   
-  dtPoint3 vec3dThreeDInMap3dTo3d::getPoint( float const & uu, float const & vv, float const & ww ) const {
+  dtPoint3 vec3dThreeDInMap3dTo3d::getPoint( 
+    float const & uu, float const & vv, float const & ww 
+  ) const {
 		aFX xx(3,0);
 		xx[0] = uu; xx[1] = vv; xx[2] = ww;
     dtPoint3 pUVW = _v3d->YdtPoint3(xx);
@@ -62,5 +66,25 @@ namespace dtOO {
   
   map3dTo3d * vec3dThreeDInMap3dTo3d::clone( void ) const {
     return new vec3dThreeDInMap3dTo3d(*this);
+  }
+  
+  dtPoint3 vec3dThreeDInMap3dTo3d::reparamInVolume(
+    dtPoint3 const & ppXYZ
+  ) const {
+    dtPoint3 ppUVW = _m3d->reparamInVolume(ppXYZ);
+    aFX xx 
+    = 
+    _v3d->invY( analyticFunction::aFYThreeD(ppUVW) );
+    float dist = dtLinearAlgebra::length(ppXYZ - getPoint(xx[0], xx[1], xx[2]));
+    dt__warnIfWithMessage(
+      dist>staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+      reparamInVolume(), 
+      << dt__eval(xx) << std::endl
+      << dt__point3d( ppXYZ ) << std::endl
+      << dt__point3d( _m3d->getPoint(ppUVW) ) << std::endl
+      << dt__point3d( getPoint(xx[0], xx[1], xx[2]) ) << std::endl
+      << dt__eval(dist) << std::endl
+    );  
+    return dtPoint3(xx[0], xx[1], xx[2]);
   }
 }

@@ -2,9 +2,9 @@
 #include <logMe/logMe.h>
 #include "map2dTo3d.h"
 #include <analyticFunctionHeaven/vec2dTwoD.h>
-#include <geometryEngine/dtCurve2d.h>
 #include "map2dTo3dTransformed.h"
 #include <dtTransformerHeaven/dtTransformer.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO { 
 	vec2dTwoDInMap2dTo3d::vec2dTwoDInMap2dTo3d() : map2dTo3d() {
@@ -76,6 +76,26 @@ namespace dtOO {
 		return _v2d->xMax(dir);
 	}
 
+  dtPoint2 vec2dTwoDInMap2dTo3d::reparamOnFace(
+    dtPoint3 const & ppXYZ
+  ) const {
+    dtPoint2 ppUV = _m2d->reparamOnFace(ppXYZ);
+    aFX xx 
+    = 
+    _v2d->invY( analyticFunction::aFYTwoD(ppUV.x(), ppUV.y()) );
+    float dist = dtLinearAlgebra::length(ppXYZ - getPoint(xx[0], xx[1]));
+    dt__warnIfWithMessage(
+      dist>staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+      reparamOnFace(), 
+      << dt__eval(xx) << std::endl
+      << dt__point3d( ppXYZ ) << std::endl
+      << dt__point3d( _m2d->getPoint(ppUV) ) << std::endl
+      << dt__point3d( getPoint(xx[0], xx[1]) ) << std::endl
+      << dt__eval(dist) << std::endl
+    );  
+    return dtPoint2(xx[0], xx[1]);
+  }
+      
   vec2dTwoD const * vec2dTwoDInMap2dTo3d::ptrToVec2dTwoD( void ) const {
 	  return _v2d.get();	
 	}
