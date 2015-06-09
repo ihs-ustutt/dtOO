@@ -26,7 +26,9 @@ namespace dtOO {
     virtual ~vec3dTwoDInMap3dTo3d();
     virtual vec3dTwoDInMap3dTo3d * clone( void ) const;
     virtual vec3dTwoDInMap3dTo3d * create( void ) const;
-    virtual vec3dTwoDInMap3dTo3d * cloneTransformed( dtTransformer const * const dtT ) const;
+    virtual vec3dTwoDInMap3dTo3d * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const;
     virtual dtPoint3 getPoint( float const & uu, float const & vv ) const;
     virtual bool isClosed( int const & dir) const;
     virtual float getMin( int const & dir) const;

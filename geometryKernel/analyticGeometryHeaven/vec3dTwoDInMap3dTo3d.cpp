@@ -37,7 +37,9 @@ namespace dtOO {
   vec3dTwoDInMap3dTo3d::~vec3dTwoDInMap3dTo3d() {
   }
   
-  dtPoint3 vec3dTwoDInMap3dTo3d::getPoint( float const & uu, float const & vv ) const {
+  dtPoint3 vec3dTwoDInMap3dTo3d::getPoint( 
+    float const & uu, float const & vv 
+  ) const {
 		aFX xx(2,0);
 		xx[0] = uu; xx[1] = vv;
     dtPoint3 pUVW = _v2d->YdtPoint3(xx);
@@ -69,7 +71,9 @@ namespace dtOO {
     return new vec3dTwoDInMap3dTo3d();
   }
 	
-	vec3dTwoDInMap3dTo3d * vec3dTwoDInMap3dTo3d::cloneTransformed( dtTransformer const * const dtT ) const {
+	vec3dTwoDInMap3dTo3d * vec3dTwoDInMap3dTo3d::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
     return new map2dTo3dTransformed<vec3dTwoDInMap3dTo3d>(*this, dtT);
   }
   
@@ -81,7 +85,9 @@ namespace dtOO {
     return _m3d.get();
   }  
 
-  vectorHandling< renderInterface * > vec3dTwoDInMap3dTo3d::getExtRender( void ) const {
+  vectorHandling< renderInterface * > vec3dTwoDInMap3dTo3d::getExtRender( 
+    void 
+  ) const {
 		vectorHandling< dtVector3 > vecV;
 		vectorHandling< dtPoint3 > vecP;
 		vectorHandling< dtVector3 > norV;
@@ -138,7 +144,8 @@ namespace dtOO {
 		<< dt__eval(_m3d->virtualClassName()) << std::endl
 	  << _m3d->dumpToString() << std::endl
     << dt__eval(_v2d->virtualClassName()) << std::endl
-		<< _v2d->dumpToString();
+		<< _v2d->dumpToString() << std::endl
+    << dt__eval(_percentF);
 		
 		return ss.str();
 	}

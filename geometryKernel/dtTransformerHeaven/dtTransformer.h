@@ -39,30 +39,44 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFunP
     );
     virtual bool isNecessary( void ) const = 0;
-    virtual std::vector< dtPoint2 > 
-    apply( std::vector< dtPoint2 > const * const toTrans ) const;
-    virtual std::vector< dtPoint3 > 
-    apply( std::vector< dtPoint3 > const * const toTrans ) const;    
-    virtual vectorHandling< analyticGeometry * > 
-    apply( vectorHandling< analyticGeometry * > const * const toTrans ) const;
-    virtual vectorHandling< analyticFunction * > 
-    apply( vectorHandling< analyticFunction * > const * const toTrans ) const;
-    std::vector< dtPoint2 * > apply( std::vector< dtPoint2 * > const * const pointVecP ) const;
-    std::vector< dtPoint3 * > apply( std::vector< dtPoint3 * > const * const toTrans ) const;        
+    virtual std::vector< dtPoint2 > apply( 
+      std::vector< dtPoint2 > const * const toTrans 
+    ) const;
+    virtual std::vector< dtPoint3 > apply( 
+      std::vector< dtPoint3 > const * const toTrans 
+    ) const;    
+    virtual vectorHandling< analyticGeometry * > apply( 
+      vectorHandling< analyticGeometry * > const * const toTrans 
+    ) const;
+    virtual vectorHandling< analyticFunction * > apply( 
+      vectorHandling< analyticFunction * > const * const toTrans 
+    ) const;
+    std::vector< dtPoint2 * > apply( 
+      std::vector< dtPoint2 * > const * const pointVecP 
+    ) const;
+    std::vector< dtPoint3 * > apply( 
+      std::vector< dtPoint3 * > const * const toTrans 
+    ) const;        
     dtPoint3 apply(dtPoint3 const & pp) const;    
     dtPoint2 apply(dtPoint2 const & pp) const;
-    virtual std::vector< dtPoint3 > 
-    retract(std::vector< dtPoint3 > const * const toRetract) const;
+    virtual std::vector< dtPoint3 > retract(
+      std::vector< dtPoint3 > const * const toRetract
+    ) const;
     dtPoint3 retract(dtPoint3 const & toRetract) const;
-    virtual std::vector< dtPoint2 > 
-    retract(std::vector< dtPoint2 > const * const toRetract) const;
+    virtual std::vector< dtPoint2 > retract(
+      std::vector< dtPoint2 > const * const toRetract
+    ) const;
     dtPoint2 retract(dtPoint2 const & toRetract) const;    
     analyticFunction * apply(analyticFunction const * const sF) const;
     analyticGeometry * apply(analyticGeometry const * const aG) const;
     virtual void handleFloat(std::string const name, float const value);
     virtual void handleInt(std::string const name, int const value);
-    virtual void handleAnalyticGeometry(std::string const name, analyticGeometry const * value);
-    virtual void handleAnalyticFunction(std::string const name, analyticFunction const * value);
+    virtual void handleAnalyticGeometry(
+      std::string const name, analyticGeometry const * value
+    );
+    virtual void handleAnalyticFunction(
+      std::string const name, analyticFunction const * value
+    );
     virtual void handlePoint2d(std::string const name, dtPoint2 const value);
     virtual void handleBool(std::string const name, bool const value);
     virtual void handleDtVector3(std::string const name, dtVector3 const value);

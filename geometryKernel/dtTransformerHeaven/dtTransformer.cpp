@@ -14,7 +14,9 @@ namespace dtOO {
   dtTransformer::~dtTransformer() {
   }
 	
-	dtTransformer::dtTransformer(dtTransformer const & orig) : labelHandling(orig) {
+	dtTransformer::dtTransformer(
+    dtTransformer const & orig
+  ) : labelHandling(orig) {
 		
 	}
 
@@ -39,11 +41,15 @@ namespace dtOO {
     init(tE, bC, cValP, sFunP, NULL);
   }
   
-  std::vector< dtPoint2 > dtTransformer::apply( std::vector< dtPoint2 > const * const pointVecP ) const {
+  std::vector< dtPoint2 > dtTransformer::apply( 
+    std::vector< dtPoint2 > const * const pointVecP 
+  ) const {
     dt__warning(init(), << "Call on abstract class!");
   }
 
-  std::vector< dtPoint2 * > dtTransformer::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
+  std::vector< dtPoint2 * > dtTransformer::apply( 
+    std::vector< dtPoint2 * > const * const pointVecP 
+  ) const {
 		std::vector< dtPoint2 > twin(pointVecP->size());
     dt__forAllIndex(*pointVecP, ii) twin[ii] = *(pointVecP->at(ii));
 		twin = this->apply(&twin);
@@ -53,11 +59,15 @@ namespace dtOO {
 		return retTwin;
   }
   
-  std::vector< dtPoint3 > dtTransformer::apply( std::vector< dtPoint3 > const * const pointVecP ) const {
+  std::vector< dtPoint3 > dtTransformer::apply( 
+    std::vector< dtPoint3 > const * const pointVecP 
+  ) const {
     dt__warning(init(), << "Call on abstract class!");
   }
   
-	std::vector< dtPoint3 * > dtTransformer::apply( std::vector< dtPoint3 * > const * const pointVecP ) const {
+	std::vector< dtPoint3 * > dtTransformer::apply( 
+    std::vector< dtPoint3 * > const * const pointVecP 
+  ) const {
 		std::vector< dtPoint3 > twin(pointVecP->size());
     dt__forAllIndex(*pointVecP, ii) twin[ii] = *(pointVecP->at(ii));
 		twin = this->apply(&twin);
@@ -67,11 +77,15 @@ namespace dtOO {
 		return retTwin;
   }
 
-  vectorHandling< analyticFunction * > dtTransformer::apply( vectorHandling< analyticFunction * > const * const sFunP ) const {
+  vectorHandling< analyticFunction * > dtTransformer::apply( 
+    vectorHandling< analyticFunction * > const * const sFunP 
+  ) const {
     dt__warning(apply(), << "Call on abstract class!");    
   }
 
-  vectorHandling< analyticGeometry * > dtTransformer::apply( vectorHandling< analyticGeometry * > const * const sFunP ) const {
+  vectorHandling< analyticGeometry * > dtTransformer::apply( 
+    vectorHandling< analyticGeometry * > const * const sFunP 
+  ) const {
     dt__warning(apply(), << "Call on abstract class!");    
   }
   
@@ -93,7 +107,9 @@ namespace dtOO {
 		return retVec[0];
 	}	
 	
-  analyticFunction * dtTransformer::apply(analyticFunction const * const sF) const {
+  analyticFunction * dtTransformer::apply(
+    analyticFunction const * const sF
+  ) const {
     vectorHandling< analyticFunction * > vHIn;
     vHIn.push_back(const_cast< analyticFunction *>(sF));
     vectorHandling< analyticFunction * > vHOut = this->apply( &vHIn );
@@ -101,7 +117,9 @@ namespace dtOO {
     return vHOut[0];
   }
 
-  analyticGeometry * dtTransformer::apply(analyticGeometry const * const aG) const {
+  analyticGeometry * dtTransformer::apply(
+    analyticGeometry const * const aG
+  ) const {
     vectorHandling< analyticGeometry * > vHIn;
     vHIn.push_back(const_cast< analyticGeometry *>(aG));
     vectorHandling< analyticGeometry * > vHOut = this->apply( &vHIn );
@@ -153,7 +171,9 @@ namespace dtOO {
             << dt__eval(value) );      
   }
   
-  void dtTransformer::handleAnalyticGeometry(std::string const name, analyticGeometry const * value) {
+  void dtTransformer::handleAnalyticGeometry(
+    std::string const name, analyticGeometry const * value
+  ) {
     dt__throw(handleAnalyticGeometry(),
             << "Could not handle:" << std::endl
             << dt__eval(name) << std::endl
@@ -161,7 +181,9 @@ namespace dtOO {
             << dt__eval(value->getLabel()) );
   }
   
-  void dtTransformer::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
+  void dtTransformer::handleAnalyticFunction(
+    std::string const name, analyticFunction const * value
+  ) {
     dt__throw(handleAnalyticFunction(),
             << "Could not handle:" << std::endl
             << dt__eval(name) << std::endl
@@ -169,7 +191,9 @@ namespace dtOO {
             << dt__eval(value->getLabel()) );    
   }
   
-  void dtTransformer::handlePoint2d(std::string const name, dtPoint2 const value) {
+  void dtTransformer::handlePoint2d(
+    std::string const name, dtPoint2 const value
+  ) {
     dt__throw(handlePoint2d(),
             << "Could not handle:" << std::endl
             << dt__eval(name) << std::endl
@@ -183,14 +207,18 @@ namespace dtOO {
             << dt__eval(value) );  
   }  
 	
-	void dtTransformer::handleDtVector3(std::string const name, dtVector3 const value) {
+	void dtTransformer::handleDtVector3(
+    std::string const name, dtVector3 const value
+  ) {
     dt__throw(handleDtVector3(),
             << "Could not handle:" << std::endl
             << dt__eval(name) << std::endl
             << dt__vector3d(value) );  		
 	}
 
-	void dtTransformer::handleDtVector2(std::string const name, dtVector2 const value) {
+	void dtTransformer::handleDtVector2(
+    std::string const name, dtVector2 const value
+  ) {
     dt__throw(handleDtVector2(),
             << "Could not handle:" << std::endl
             << dt__eval(name) << std::endl
