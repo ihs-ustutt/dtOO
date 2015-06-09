@@ -46,7 +46,9 @@ namespace dtOO {
   dtGmshModel::~dtGmshModel() {
   }
   	
-  void dtGmshModel::addIfVertexToGmshModel( dtPoint3 const & vertex, int * const tag ) {
+  void dtGmshModel::addIfVertexToGmshModel( 
+    dtPoint3 const & vertex, int * const tag 
+  ) {
 		*tag = this->getMaxVertexTag()+1;
     dtGmshVertex * gv = new dtGmshVertex(this, *tag);
 		gv->setPosition(vertex); 
@@ -146,10 +148,18 @@ namespace dtOO {
 		dtPoint2 p2(1., 1.);
 		dtPoint2 p3(0., 1.);		
 		std::vector< int > eId(4);
-		addIfEdgeToGmshModel(dt__tmpPtr(map1dTo3d, face->segmentPercent(p0, p1)), &(eId[0]) );
-		addIfEdgeToGmshModel(dt__tmpPtr(map1dTo3d, face->segmentPercent(p1, p2)), &(eId[1]) );
-		addIfEdgeToGmshModel(dt__tmpPtr(map1dTo3d, face->segmentPercent(p2, p3)), &(eId[2]) );
-		addIfEdgeToGmshModel(dt__tmpPtr(map1dTo3d, face->segmentPercent(p3, p0)), &(eId[3]) );
+		addIfEdgeToGmshModel(
+      dt__tmpPtr(map1dTo3d, face->segmentPercent(p0, p1)), &(eId[0]) 
+    );
+		addIfEdgeToGmshModel(
+      dt__tmpPtr(map1dTo3d, face->segmentPercent(p1, p2)), &(eId[1]) 
+    );
+		addIfEdgeToGmshModel(
+      dt__tmpPtr(map1dTo3d, face->segmentPercent(p2, p3)), &(eId[2]) 
+    );
+		addIfEdgeToGmshModel(
+      dt__tmpPtr(map1dTo3d, face->segmentPercent(p3, p0)), &(eId[3]) 
+    );
 		
   	addIfFaceToGmshModel(face, tag, eId[0], eId[1], eId[2], eId[3]);
 	}
@@ -157,7 +167,9 @@ namespace dtOO {
 	/**
    * @todo What if region is not 6-sided?
    */
-	dtGmshRegion * dtGmshModel::addRegionToGmshModel( map3dTo3d const * const vol ) {
+	dtGmshRegion * dtGmshModel::addRegionToGmshModel( 
+    map3dTo3d const * const vol 
+  ) {
 		int rId = ::GModel::getNumRegions()+1;
 		
     dtPoint3 p0(0., 0., 0.);
@@ -186,18 +198,42 @@ namespace dtOO {
 		// edges
 		//
 		std::vector< int > eId(12, 0);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p0, p1), &(eId[0]), vId[0], vId[1]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p1, p2), &(eId[1]), vId[1], vId[2]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p2, p3), &(eId[2]), vId[2], vId[3]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p3, p0), &(eId[3]), vId[3], vId[0]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p4, p5), &(eId[4]), vId[4], vId[5]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p5, p6), &(eId[5]), vId[5], vId[6]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p6, p7), &(eId[6]), vId[6], vId[7]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p7, p4), &(eId[7]), vId[7], vId[4]);		
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p0, p4), &(eId[8]), vId[0], vId[4]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p1, p5), &(eId[9]), vId[1], vId[5]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p2, p6), &(eId[10]), vId[2], vId[6]);
-		this->addIfEdgeToGmshModel(vol->segmentPercent(p3, p7), &(eId[11]), vId[3], vId[7]);
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p0, p1), &(eId[0]), vId[0], vId[1]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p1, p2), &(eId[1]), vId[1], vId[2]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p2, p3), &(eId[2]), vId[2], vId[3]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p3, p0), &(eId[3]), vId[3], vId[0]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p4, p5), &(eId[4]), vId[4], vId[5]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p5, p6), &(eId[5]), vId[5], vId[6]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p6, p7), &(eId[6]), vId[6], vId[7]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p7, p4), &(eId[7]), vId[7], vId[4]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p0, p4), &(eId[8]), vId[0], vId[4]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p1, p5), &(eId[9]), vId[1], vId[5]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p2, p6), &(eId[10]), vId[2], vId[6]
+    );
+		this->addIfEdgeToGmshModel(
+      vol->segmentPercent(p3, p7), &(eId[11]), vId[3], vId[7]
+    );
 
     //
     // faces
@@ -257,7 +293,9 @@ namespace dtOO {
     return gFace;    
   }
 	
-  dtGmshFace * dtGmshModel::getDtGmshFaceByPhysical( std::string const & physical ) const {
+  dtGmshFace * dtGmshModel::getDtGmshFaceByPhysical( 
+    std::string const & physical 
+  ) const {
     int pN = __caCThis->getPhysicalNumber(2, physical);
 		intGEntityVMap gE_pN;
 		__caCThis->getPhysicalGroups(2, gE_pN);
@@ -274,7 +312,9 @@ namespace dtOO {
     return gEdge;    
   }
 
-  int dtGmshModel::getDtGmshEdgeTagByFromTo( int const from, int const to ) const {
+  int dtGmshModel::getDtGmshEdgeTagByFromTo( 
+    int const from, int const to 
+  ) const {
     dtGmshVertex * gv = getDtGmshVertexByTag(from);
     
     std::list< ::GEdge * > edges = gv->edges();
@@ -289,7 +329,9 @@ namespace dtOO {
     }
   }
   
-  dtGmshEdge * dtGmshModel::getDtGmshEdgeByFromTo( int const from, int const to ) const {
+  dtGmshEdge * dtGmshModel::getDtGmshEdgeByFromTo( 
+    int const from, int const to 
+  ) const {
     return getDtGmshEdgeByTag( abs(getDtGmshEdgeTagByFromTo(from, to)) );
   }  
 
@@ -322,7 +364,9 @@ namespace dtOO {
     return ret;    
   }
 	
-  std::list< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( std::list< ::GEdge * > edges ) {
+  std::list< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( 
+    std::list< ::GEdge * > edges 
+  ) {
 		std::list< dtGmshEdge * > retEdges;
 		dt__forAllIter(std::list< ::GEdge * >, edges, it) {
 			retEdges.push_back( cast2DtGmshEdge(*it) );
@@ -330,7 +374,9 @@ namespace dtOO {
 		return retEdges;
 	}
 	
-  std::list< dtGmshFace * > dtGmshModel::cast2DtGmshFace( std::list< ::GFace * > faces ) {
+  std::list< dtGmshFace * > dtGmshModel::cast2DtGmshFace( 
+    std::list< ::GFace * > faces 
+  ) {
 		std::list< dtGmshFace * > ret;
 		dt__forAllIter(std::list< ::GFace * >, faces, it) {
 			ret.push_back( cast2DtGmshFace(*it) );
@@ -434,11 +480,16 @@ namespace dtOO {
 	}
 
   int dtGmshModel::alreadyInModel( ::GVertex const * const gv ) const {
-		for (::GModel::viter vIt = __caCThis->firstVertex(); vIt != __caCThis->lastVertex(); ++vIt) {
+		for (
+      ::GModel::viter vIt = __caCThis->firstVertex(); 
+      vIt != __caCThis->lastVertex(); 
+      ++vIt
+    ) {
 			if ( dtGmshVertex::isEqual(gv, *vIt) ) {
-				dt__info(
+				dt__debug(
 					alreadyInModel(),
-					<< "duplicate vertex = " << gv->tag() << " equal to vertex tag = " << (*vIt)->tag()
+					<< "duplicate vertex = " << gv->tag() 
+          << " equal to vertex tag = " << (*vIt)->tag()
 				);				
 				return (*vIt)->tag();
 			}
@@ -447,11 +498,16 @@ namespace dtOO {
 	}
 
   int dtGmshModel::alreadyInModel( ::GEdge const * const ge ) const {
-		for (::GModel::eiter eIt = __caCThis->firstEdge(); eIt != __caCThis->lastEdge(); ++eIt) {
+		for (
+      ::GModel::eiter eIt = __caCThis->firstEdge(); 
+      eIt != __caCThis->lastEdge(); 
+      ++eIt
+    ) {
 			if ( dtGmshEdge::isEqual(ge, *eIt) ) {
-				dt__info(
+				dt__debug(
 					alreadyInModel(),
-					<< "duplicate edge = " << ge->tag() << " equal to edge tag = " << (*eIt)->tag()
+					<< "duplicate edge = " << ge->tag() 
+          << " equal to edge tag = " << (*eIt)->tag()
 				);				
 				return (*eIt)->tag();
 			}
@@ -460,11 +516,16 @@ namespace dtOO {
 	}
 	
   int dtGmshModel::alreadyInModel( ::GFace const * const gf ) const {
-		for (::GModel::fiter fIt = __caCThis->firstFace(); fIt != __caCThis->lastFace(); ++fIt) {
+		for (
+      ::GModel::fiter fIt = __caCThis->firstFace(); 
+      fIt != __caCThis->lastFace(); 
+      ++fIt
+    ) {
 			if ( dtGmshFace::isEqual(gf, *fIt) ) {
-				dt__info(
+				dt__debug(
 					alreadyInModel(),
-					<< "duplicate face = " << gf->tag() << " equal to face tag = " << (*fIt)->tag()
+					<< "duplicate face = " << gf->tag() 
+          << " equal to face tag = " << (*fIt)->tag()
 				);				
 				return (*fIt)->tag();
 			}
@@ -476,7 +537,10 @@ namespace dtOO {
 		//
 		// set current model
 		// 
-		dt__info( toUnstructured3dMesh(), << dt__eval(::GModel::setCurrent(__caCThis)) );
+		dt__info( 
+      toUnstructured3dMesh(), 
+      << dt__eval(::GModel::setCurrent(__caCThis)) 
+    );
 			
 		//
 		// get all entities
@@ -619,14 +683,13 @@ namespace dtOO {
 			me->getVertices(verts);
 			for( int ii=0; ii<verts.size(); ii++ ) vertices.push_back(verts[ii]);			
 		}		
-		sort( vertices.begin(), vertices.end() );
-    vertices.erase( unique( vertices.begin(), vertices.end() ), vertices.end() );
-		
+		progHelper::removeBastardTwins(vertices);
 		return dtGmshModel::toUnstructured3dMesh(vertices, elements);
 	}	
 	
   unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( 
-	  std::vector< ::MVertex const * > const & vertices, std::vector< ::MElement const * > const & elements
+	  std::vector< ::MVertex const * > const & vertices, 
+    std::vector< ::MElement const * > const & elements
 	) {
 		std::vector< dtPoint3 > pp(vertices.size());
 		std::map< int, int > vLoc_num;
@@ -796,9 +859,8 @@ namespace dtOO {
 			me->getVertices(verts);
 			for( int ii=0; ii<verts.size(); ii++ ) vertices.push_back(verts[ii]);			
 		}		
-		sort( vertices.begin(), vertices.end() );
-    vertices.erase( unique( vertices.begin(), vertices.end() ), vertices.end() );
-		
+    progHelper::removeBastardTwins(vertices);		
+    
 		return dtGmshModel::toAdequateSurfaceRenderInterface(vertices, elements);
 	}		
 	
@@ -809,9 +871,7 @@ namespace dtOO {
 		if (elements.size() != 0) {
 			return toUnstructured3dSurfaceMesh(vertices, elements);
 		}
-		else {
-			return toDiscrete3dPoints(vertices);
-		}
+		else return toDiscrete3dPoints(vertices);
 	}		
 	
 	void dtGmshModel::dtReadCGNS(const std::string &name) {		
@@ -872,7 +932,11 @@ namespace dtOO {
 					//				
 					cgsize_t zoneSizes[3];				
 					char zoneName[35];
-					__cgnsCheck(cg_zone_read(index_file, index_base, index_zone, zoneName, zoneSizes));
+					__cgnsCheck(
+            cg_zone_read(
+              index_file, index_base, index_zone, zoneName, zoneSizes
+            )
+          );
 					int nNodes = static_cast< int >(zoneSizes[0]);
 					int nCells = static_cast< int >(zoneSizes[1]);
 					dt__info(
@@ -946,7 +1010,11 @@ namespace dtOO {
 					//		
 					for (int iNode = 0; iNode < nNodes; iNode++) {
 						vNum++;
-						::MVertex* mv = new ::MVertex(nodes[iNode][0], nodes[iNode][1], nodes[iNode][2], 0, vNum);
+						::MVertex* mv 
+            = 
+            new ::MVertex(
+              nodes[iNode][0], nodes[iNode][1], nodes[iNode][2], 0, vNum
+            );
 						minVertex = std::min(minVertex, vNum);
 						maxVertex = std::max(maxVertex, vNum);
 						vertexMap[vNum] = mv;
@@ -967,7 +1035,8 @@ namespace dtOO {
 					__cgnsCheck(
 						cg_section_read(
 							index_file, index_base, index_zone, index_section,
-							secName, &elementType, &(bounds[0]), &(bounds[1]), &nBoundary, &parentFlag
+							secName, &elementType, 
+              &(bounds[0]), &(bounds[1]), &nBoundary, &parentFlag
 						)
 					);
 					dt__info(
@@ -1119,65 +1188,84 @@ namespace dtOO {
 
 	int dtGmshModel::getMaxVertexTag( void ) {
 		int maxTag = 0;
-		for( ::GModel::viter v_it=GModel::vertices.begin(); v_it!=GModel::vertices.end(); ++v_it ) {
-			if ( (*v_it)->tag() > maxTag ) maxTag = (*v_it)->tag();
-		}
+		for( 
+      ::GModel::viter v_it=GModel::vertices.begin(); 
+      v_it!=GModel::vertices.end(); 
+      ++v_it 
+    ) if ( (*v_it)->tag() > maxTag ) maxTag = (*v_it)->tag();
 		return maxTag;
 	}
 	
 	int dtGmshModel::getMaxEdgeTag( void ) {
 		int maxTag = 0;
-		for( ::GModel::eiter e_it= GModel::edges.begin(); e_it!=GModel::edges.end(); ++e_it ) {
-			if ( (*e_it)->tag() > maxTag ) maxTag = (*e_it)->tag();
-		}
+		for( 
+      ::GModel::eiter e_it= GModel::edges.begin(); 
+      e_it!=GModel::edges.end(); 
+      ++e_it 
+    ) if ( (*e_it)->tag() > maxTag ) maxTag = (*e_it)->tag();
 		return maxTag;
 	}
 	
 	int dtGmshModel::getMaxFaceTag( void ) {
 		int maxTag = 0;
-		for( ::GModel::fiter f_it= GModel::faces.begin(); f_it!=GModel::faces.end(); ++f_it ) {
-			if ( (*f_it)->tag() > maxTag ) maxTag = (*f_it)->tag();
-		}
+		for( 
+      ::GModel::fiter f_it= GModel::faces.begin(); 
+      f_it!=GModel::faces.end(); 
+      ++f_it 
+    ) if ( (*f_it)->tag() > maxTag ) maxTag = (*f_it)->tag();
 		return maxTag;
 	}	
 	
 	int dtGmshModel::getMaxRegionTag( void ) {
 		int maxTag = 0;
-		for( ::GModel::riter r_it= GModel::regions.begin(); r_it!=GModel::regions.end(); ++r_it ) {
-			if ( (*r_it)->tag() > maxTag ) maxTag = (*r_it)->tag();
-		}
+		for( 
+      ::GModel::riter r_it= GModel::regions.begin(); 
+      r_it!=GModel::regions.end(); 
+      ++r_it 
+    ) if ( (*r_it)->tag() > maxTag ) maxTag = (*r_it)->tag();
 		return maxTag;
 	}		
 	
   std::list< ::GVertex * > dtGmshModel::vertices( void ) const {
 		std::list< ::GVertex * > ll;
-    for( ::GModel::viter it= GModel::vertices.begin(); it!=GModel::vertices.end(); ++it ) {		
-			ll.push_back( *it );
-		}
-		return ll;
+    for( 
+      ::GModel::viter it= GModel::vertices.begin(); 
+      it!=GModel::vertices.end(); 
+      ++it ) ll.push_back( *it );
+		
+    return ll;
 	}
 	
   std::list< ::GEdge * > dtGmshModel::edges( void ) const {
 		std::list< ::GEdge * > ll;
-    for( ::GModel::eiter it= GModel::edges.begin(); it!=GModel::edges.end(); ++it ) {		
-			ll.push_back( *it );
-		}
+    for( 
+      ::GModel::eiter it= GModel::edges.begin(); 
+      it!=GModel::edges.end(); 
+      ++it 
+    ) ll.push_back( *it );
+    
 		return ll;		
 	}
 		
 	std::list< ::GFace * > dtGmshModel::faces( void ) const {
 		std::list< ::GFace * > faceL;
-    for( ::GModel::fiter f_it= GModel::faces.begin(); f_it!=GModel::faces.end(); ++f_it ) {		
-			faceL.push_back( *f_it );
-		}
+    for( 
+      ::GModel::fiter f_it= GModel::faces.begin(); 
+      f_it!=GModel::faces.end(); 
+      ++f_it 
+    ) faceL.push_back( *f_it );
+
 		return faceL;
 	}
 	
 	std::list< ::GRegion * > dtGmshModel::regions( void ) const {
 		std::list< ::GRegion * > regionL;
-    for( ::GModel::riter r_it= GModel::regions.begin(); r_it!=GModel::regions.end(); ++r_it ) {		
-			regionL.push_back( *r_it );
-		}
+    for( 
+      ::GModel::riter r_it= GModel::regions.begin(); 
+      r_it!=GModel::regions.end(); 
+      ++r_it 
+    ) regionL.push_back( *r_it );
+
 		return regionL;
 	}
 	
@@ -1237,7 +1325,9 @@ namespace dtOO {
 		GModel::getMeshVerticesForPhysicalGroup(dim, num, nonConstVertices);
 		vertices.resize(nonConstVertices.size());
 		dt__forAllIndex(nonConstVertices, ii) {
-			vertices.push_back( const_cast< ::MVertex const * >(nonConstVertices[ii]) );
+			vertices.push_back( 
+        const_cast< ::MVertex const * >(nonConstVertices[ii]) 
+      );
 		}
 	}
 
@@ -1254,7 +1344,9 @@ namespace dtOO {
 		return GModel::getPhysicalName(ge->dim(), pInt[0]);
 	}
 	
-  void dtGmshModel::tagPhysical(::GEntity * const ge, std::string const & pName) {		
+  void dtGmshModel::tagPhysical(
+    ::GEntity * const ge, std::string const & pName
+  ) {		
 		ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );
 	}
 	

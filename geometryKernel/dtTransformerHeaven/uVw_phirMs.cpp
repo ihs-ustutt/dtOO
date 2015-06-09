@@ -133,7 +133,7 @@ namespace dtOO {
       float mm = ms[0];        
       float ss = ms[1];
 						
-      dt__info(
+      dt__debug(
         retract(),
         << logMe::dtFormat(
              "Retracting point (u, v, w) = (%E, %E, %E)"

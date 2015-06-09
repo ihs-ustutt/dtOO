@@ -157,7 +157,9 @@ namespace dtOO {
     _v2d->invY( analyticFunction::aFYThreeD(ppUVW.x(), ppUVW.y(), ppUVW.z()) );
     float dist = dtLinearAlgebra::length(ppXYZ - getPoint(xx[0], xx[1]));
     dt__warnIfWithMessage(
-      dist>staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+      dist
+      >
+      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
       reparamOnFace(), 
       << dt__eval(xx) << std::endl
       << dt__point3d( ppXYZ ) << std::endl

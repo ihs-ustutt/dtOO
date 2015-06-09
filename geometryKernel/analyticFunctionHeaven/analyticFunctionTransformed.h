@@ -31,12 +31,16 @@ namespace dtOO {
   }
   
   template < typename funT >  
-  analyticFunctionTransformed< funT >::analyticFunctionTransformed(analyticFunctionTransformed const & orig) : funT(orig) {
+  analyticFunctionTransformed< funT >::analyticFunctionTransformed(
+    analyticFunctionTransformed const & orig
+  ) : funT(orig) {
     _dtT.reset( orig._dtT->clone() );
   }  
   
   template < typename funT >  
-  analyticFunctionTransformed< funT >::analyticFunctionTransformed(funT const & orig) : funT(orig) {
+  analyticFunctionTransformed< funT >::analyticFunctionTransformed(
+    funT const & orig
+  ) : funT(orig) {
     
   }  
   
@@ -46,12 +50,14 @@ namespace dtOO {
   }
   
   template < typename funT >  
-  analyticFunctionTransformed< funT > * analyticFunctionTransformed< funT >::clone( void ) const {
+  analyticFunctionTransformed< funT > * 
+  analyticFunctionTransformed< funT >::clone( void ) const {
     return new analyticFunctionTransformed< funT >(*this);
   }
   
   template < typename funT >  
-  analyticFunctionTransformed< funT > * analyticFunctionTransformed< funT >::create( void ) const {
+  analyticFunctionTransformed< funT > * 
+  analyticFunctionTransformed< funT >::create( void ) const {
     return new analyticFunctionTransformed< funT >();
   }
 

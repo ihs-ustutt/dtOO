@@ -14,7 +14,9 @@ namespace dtOO {
 	rotatingMap2dTo3d::rotatingMap2dTo3d() : map3dTo3d() {
 	}
 
-	rotatingMap2dTo3d::rotatingMap2dTo3d(const rotatingMap2dTo3d& orig) : map3dTo3d(orig) {
+	rotatingMap2dTo3d::rotatingMap2dTo3d(
+    const rotatingMap2dTo3d& orig
+  ) : map3dTo3d(orig) {
 		_m2d.reset( orig._m2d->clone() );
 		_vv = orig._vv;
 		_pp = orig._pp;
@@ -23,7 +25,9 @@ namespace dtOO {
 	rotatingMap2dTo3d::~rotatingMap2dTo3d() {
 	}
 	
-  rotatingMap2dTo3d::rotatingMap2dTo3d( dtVector3 const & vv, map2dTo3d const * const m2d ) : map3dTo3d() {
+  rotatingMap2dTo3d::rotatingMap2dTo3d( 
+    dtVector3 const & vv, map2dTo3d const * const m2d 
+  ) : map3dTo3d() {
 		if (m2d->isClosedU() || m2d->isClosedV() ) {
 			dt__throw(rotatingMap2dTo3d(),
 							<< "Surface is closed. This is not yet supported." << std::endl
@@ -101,7 +105,9 @@ namespace dtOO {
     }    				
 	}
     
-	dtPoint3 rotatingMap2dTo3d::getPoint( float const & uu, float const & vv, float const & ww ) const {
+	dtPoint3 rotatingMap2dTo3d::getPoint( 
+    float const & uu, float const & vv, float const & ww 
+  ) const {
 //    dt__warnIfWithMessage(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
 //		dt__warnIfWithMessage(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
 //		dt__warnIfWithMessage(ww<getWMin(), getPoint(), << ww << " < " << getWMin());

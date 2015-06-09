@@ -289,7 +289,7 @@ namespace dtOO {
   #define dt__solution(cond, solution) \
     if (cond) solution;
   #define dt__makeChapter(chaptername) \
-    if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
+    if (logINFO > FILELog::ReportingLevel() ) {} else { \
       FILELog().Get() \
         << "-------------------------------------------------------------------" << std::endl \
         << "| " << std::endl \

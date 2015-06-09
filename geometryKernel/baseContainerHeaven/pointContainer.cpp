@@ -40,7 +40,7 @@ namespace dtOO {
         }
       }
     }
-    dt__info(add(), << "adding point " << string);
+    dt__debug(add(), << "adding point " << string);
     
     _pair.push_back( std::pair < dtPoint3, std::string >(point, string) );
   }

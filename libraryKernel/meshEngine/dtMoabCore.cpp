@@ -132,14 +132,16 @@ namespace dtOO {
 			y[i] = mv[i]->y();
 			z[i] = mv[i]->z();
 
-				//
-				// ignore duplicate nodes
-				// 
-				dt__warnIfWithMessage(
-					!_node_id_map.insert(std::pair<long, moab::EntityHandle>(id, handle)).second,
-					addVertices(), 
-					<< "Duplicate node ID = " << id
-				);
+      //
+      // ignore duplicate nodes
+      // 
+      dt__warnIfWithMessage(
+        !_node_id_map.insert(
+          std::pair<long, moab::EntityHandle>(id, handle)
+        ).second,
+        addVertices(), 
+        << "Duplicate node ID = " << id
+      );
 			}
 
 		//
@@ -165,7 +167,9 @@ namespace dtOO {
 		handles.clear();
 	}
 	
-  moab::Range dtMoabCore::addElements( std::vector< ::MElement const * > const & me ) {
+  moab::Range dtMoabCore::addElements( 
+    std::vector< ::MElement const * > const & me 
+  ) {
 		dt__throwIf(me.size()==0, addElements());
 
 		//
@@ -252,7 +256,10 @@ namespace dtOO {
 		);
 		moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 
-		memcpy(conn_array, &connectivity[0], connectivity.size() * sizeof(moab::EntityHandle));
+		memcpy(
+      conn_array, 
+      &connectivity[0], connectivity.size() * sizeof(moab::EntityHandle)
+    );
 
 		//
 	  // notify MOAB of the new elements
@@ -260,7 +267,9 @@ namespace dtOO {
 		//
 		result 
 		= 
-		_readUtilIface->update_adjacencies(handle, num_elem, node_per_elem, conn_array);
+		_readUtilIface->update_adjacencies(
+      handle, num_elem, node_per_elem, conn_array
+    );
 		moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 
 		//
