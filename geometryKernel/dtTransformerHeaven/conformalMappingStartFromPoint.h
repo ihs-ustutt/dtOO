@@ -21,8 +21,10 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticGeometry * > const * const aG 
     );
-    virtual std::vector< dtPoint2 * > apply( std::vector< dtPoint2 * > const * const pointVecP ) const;    
-    virtual void handlePoint2d(std::string const name, dtPoint2 const value);
+    virtual std::vector< dtPoint2 * > apply( 
+      std::vector< dtPoint2 * > const * const pointVecP 
+    ) const;    
+    virtual void handleDtPoint2(std::string const name, dtPoint2 const value);
   private:
     dtPoint2 _basePoint;
   };

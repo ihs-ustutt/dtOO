@@ -4,13 +4,19 @@
 #include <progHelper.h>
 
 namespace dtOO {
-  conformalMappingStartFromPoint::conformalMappingStartFromPoint() : conformalMapping() {
+  conformalMappingStartFromPoint::conformalMappingStartFromPoint(
+  ) : conformalMapping() {
+    
   }
 
-  conformalMappingStartFromPoint::conformalMappingStartFromPoint(const conformalMappingStartFromPoint& orig) : conformalMapping(orig) {
+  conformalMappingStartFromPoint::conformalMappingStartFromPoint(
+    const conformalMappingStartFromPoint& orig
+  ) : conformalMapping(orig) {
+    
   }
 
   conformalMappingStartFromPoint::~conformalMappingStartFromPoint() {
+  
   }
 
   dtTransformer * conformalMappingStartFromPoint::clone( void ) const {
@@ -81,10 +87,10 @@ namespace dtOO {
     
 		_basePoint = dtPoint2(0.,0.);
     if ( hasOffsetM ) {
-      handlePoint2d("base_point", _rotSplineP->uv_phiM(offsetPhi, offsetM));
+      handleDtPoint2("base_point", _rotSplineP->uv_phiM(offsetPhi, offsetM));
     }
     else if ( hasOffsetZ ) {
-      handlePoint2d("base_point", _rotSplineP->uv_phiZ(offsetPhi, offsetZ));
+      handleDtPoint2("base_point", _rotSplineP->uv_phiZ(offsetPhi, offsetZ));
     }
 
     dt__info(init(),
@@ -142,26 +148,26 @@ namespace dtOO {
                       );
       dtPoint3 point3d = rS->getPoint(point.x(), point.y());
       pointVec2d[ii] = new dtPoint2(point);      
-//      DTBUFFER(
-//              << dt__eval(deltaPhiR) << " " << dt__eval(deltaMm)
-//              << " >> <cMap> >> uu = " << point.x() << " vv = " << point.y() << " ::> "
-//              << dt__point3d(point3d) << std::endl );
-			itVal.push_back(deltaPhiR); itVal.push_back(deltaMm);
-			itVal.push_back(point.x()); itVal.push_back(point.y());
-			itVal.push_back(point3d.x()); itVal.push_back(point3d.y()); itVal.push_back(point3d.z());			
+			itVal.push_back(deltaPhiR); 
+      itVal.push_back(deltaMm);
+			itVal.push_back(point.x()); 
+      itVal.push_back(point.y());
+			itVal.push_back(point3d.x()); 
+      itVal.push_back(point3d.y()); 
+      itVal.push_back(point3d.z());			
     }  
 	  dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
        
     return pointVec2d;    
   }
   
-  void conformalMappingStartFromPoint::handlePoint2d(std::string const name, dtPoint2 const value) {
+  void conformalMappingStartFromPoint::handleDtPoint2(
+    std::string const name, dtPoint2 const value
+  ) {
     if (name == "base_point") {
       _basePoint = value;
       return;
-    }
-    
-    conformalMapping::handlePoint2d(name, value);
-  }
-    
+    } 
+    conformalMapping::handleDtPoint2(name, value);
+  }  
 }

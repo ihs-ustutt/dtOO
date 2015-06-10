@@ -25,7 +25,7 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG,
       dtTransformer const * const dtTransformerP, 
-      std::vector< dtPoint3 * > * basicP
+      std::vector< dtPoint3 > * basicP
     );
     static void createBasic(
       QDomElement const * toBuildP,
@@ -34,7 +34,7 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG,
       dtTransformer const * const dtTransformerP, 
-      std::vector< dtPoint2 * > * basicP
+      std::vector< dtPoint2 > * basicP
     ); 
     static void createAdvanced( 
       QDomElement const * toBuildP,

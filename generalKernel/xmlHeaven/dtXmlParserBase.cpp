@@ -157,11 +157,11 @@ namespace dtOO {
     //
     //create points
     //
-		vectorHandling< dtPoint3 * > pp;		
+		vectorHandling< dtPoint3 > pp;		
     createBasic(
 			&wEl, bC, cV, aF, aG, dtTransformerP.get(), &pp
 		);		
-		dt__forAllIndex(pp, ii) basicP->push_back( *(pp[ii]) );
+		dt__forAllIndex(pp, ii) basicP->push_back( pp[ii] );
   }
 	
   void dtXmlParserBase::createBasic(
@@ -171,7 +171,7 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const aF, 
 		vectorHandling< analyticGeometry * > const * const aG,
 		dtTransformer const * const dtTransformerP, 
-		std::vector< dtPoint3* > * basicP
+		std::vector< dtPoint3 > * basicP
 	) {
     if ( !is("Point_3", *toBuildP) ) {
       dt__throw(createBasic(), << dt__eval( getTagName(*toBuildP) ) );
@@ -194,8 +194,8 @@ namespace dtOO {
 					pointName += "_";
 					pointName += intToString(ii+1);
 					if ( bC->ptrPointContainer()->has( pointName ) ) {
-						basicP->push_back( new dtPoint3(0,0,0) );
-						*(basicP->back()) = bC->ptrPointContainer()->get( pointName );
+						basicP->push_back( dtPoint3(0,0,0) );
+						basicP->back() = bC->ptrPointContainer()->get( pointName );
 					}
 				}
 				return;
@@ -211,8 +211,8 @@ namespace dtOO {
 					pointName += "_";
 					pointName += intToString(startPoint);
 					if ( bC->ptrPointContainer()->has( pointName ) ) {
-						basicP->push_back( new dtPoint3(0,0,0) );
-						*(basicP->back()) = bC->ptrPointContainer()->get( pointName );
+						basicP->push_back( dtPoint3(0,0,0) );
+						basicP->back() = bC->ptrPointContainer()->get( pointName );
 					}
 					startPoint++;
 				}
@@ -235,7 +235,7 @@ namespace dtOO {
 					pointName += intToString(ii);
 					if ( bC->ptrPointContainer()->has( pointName ) ) {
 						basicP->push_back( 
-						  new dtPoint3(bC->ptrPointContainer()->get(pointName)) 
+						  dtPoint3(bC->ptrPointContainer()->get(pointName)) 
 						);
 					}
 				}
@@ -245,10 +245,14 @@ namespace dtOO {
 			// return a single point
 			//
 			else {
-				if ( bC->ptrPointContainer()->has(toBuildP->attribute("label").toStdString()) ) {
-					basicP->push_back( new dtPoint3(0,0,0) );
-					*(basicP->back()) = bC->ptrPointContainer()->get( toBuildP->attribute("label").toStdString() );
-				return;
+				if ( 
+          bC->ptrPointContainer()->has( getAttributeStr("label", *toBuildP)) 
+        ) {
+					basicP->push_back( dtPoint3(0,0,0) );
+					basicP->back() 
+          = 
+          bC->ptrPointContainer()->get( getAttributeStr("label", *toBuildP) );
+				  return;
 				}
 			}
 		}
@@ -271,7 +275,7 @@ namespace dtOO {
 										 getAttributeStr("z", *toBuildP), cV, aF
 									 )
 								 );        
-			basicP->push_back( new dtPoint3(cX, cY, cZ) );      
+			basicP->push_back( dtPoint3(cX, cY, cZ) );      
 		}
 		/* ---------------------------------------------------------------------- */
 		/* pick point from a part */
@@ -300,7 +304,9 @@ namespace dtOO {
 					//
 					//rotatingSpline
 					//
-					if (rS && hasAttribute("phi", *toBuildP) && hasAttribute("z", *toBuildP) ) {
+					if (
+            rS && hasAttribute("phi", *toBuildP) && hasAttribute("z", *toBuildP) 
+          ) {
 						float cX = muParseString(
 												 replaceUsedFunctions(
 													 getAttributeStr("phi", *toBuildP), cV,  aF
@@ -311,7 +317,7 @@ namespace dtOO {
 													 getAttributeStr("z", *toBuildP), cV, aF
 												 )
 											 );                      
-						basicP->push_back( new dtPoint3( rS->xyz_phiZ(cX, cY) ) );
+						basicP->push_back( dtPoint3( rS->xyz_phiZ(cX, cY) ) );
 					}
 					else if (    hasAttribute("parameter_one_percent", *toBuildP)
 										&& hasAttribute("parameter_two_percent", *toBuildP) ) {
@@ -329,7 +335,7 @@ namespace dtOO {
 													 aF
 												 )
 											 );              
-						basicP->push_back( new dtPoint3( m2d->getPointPercent(cX, cY) ) );
+						basicP->push_back( dtPoint3( m2d->getPointPercent(cX, cY) ) );
 					}
 				}
 		// 
@@ -343,7 +349,7 @@ namespace dtOO {
 												 aF
 											 )
 										 );
-					basicP->push_back( new dtPoint3( m1d->getPointPercent(cX) ) );
+					basicP->push_back( dtPoint3( m1d->getPointPercent(cX) ) );
 				}
 		// 
 		// 3 map3dTo3d
@@ -373,7 +379,7 @@ namespace dtOO {
 													 aF
 												 )
 											 );                
-						basicP->push_back( new dtPoint3( m3d->getPointPercent(cX, cY, cZ) ) );
+						basicP->push_back( dtPoint3( m3d->getPointPercent(cX, cY, cZ) ) );
 					}        
 					else if (    hasAttribute("parameter_one", *toBuildP) 
 							 && hasAttribute("parameter_two", *toBuildP) 
@@ -399,14 +405,16 @@ namespace dtOO {
 													 aF
 												 )
 											 );                
-						basicP->push_back( new dtPoint3( m3d->getPoint(cX, cY, cZ) ) );
+						basicP->push_back( dtPoint3( m3d->getPoint(cX, cY, cZ) ) );
 					} 					
 				}      
 			}
 	//
 	// attribute: pick_order_from_part
 	//      
-			else if ( getAttributeStr("attribute", *toBuildP) == "pick_order_from_part" ) {
+			else if ( 
+        getAttributeStr("attribute", *toBuildP) == "pick_order_from_part" 
+      ) {
 				//
 				// 1 map1dTo3d
 				//        
@@ -426,7 +434,7 @@ namespace dtOO {
 							float iiF = static_cast<float>(ii);
 							float uu = sF->YFloat( iiF / (nPointsOneF-1.) ) ;
 							basicP->push_back( 
-								new dtPoint3( m1d->getPointPercent(uu) )
+								dtPoint3( m1d->getPointPercent(uu) )
 							);              
 						}
 					}
@@ -445,7 +453,7 @@ namespace dtOO {
 							float iiF = static_cast<float>(ii);
 							float uu = sF->YFloat( iiF / (nPointsOneF-1.) );
 							uP = m1d->u_l(uu*length);
-              basicP->push_back( new dtPoint3(m1d->getPoint(uP)) );              					
+              basicP->push_back( dtPoint3(m1d->getPoint(uP)) );              					
 						}
 					}
 				}				
@@ -486,7 +494,7 @@ namespace dtOO {
 							float paraOne = fOne->YFloat( iiF / nPointsOne ) ;
 							float paraTwo = fTwo->YFloat( jjF / nPointsTwo ) ;
 							basicP->push_back( 
-							  new dtPoint3( m2d->getPointPercent( paraOne, paraTwo ) )
+							  dtPoint3( m2d->getPointPercent( paraOne, paraTwo ) )
 							);              
 						}
 					}
@@ -520,7 +528,7 @@ namespace dtOO {
 							getAttributeStr("x_one", *toBuildP), cV,  aF
 						)
 					);
-					basicP->push_back( new dtPoint3( v1D->YdtPoint3(cX) ) );
+					basicP->push_back( dtPoint3( v1D->YdtPoint3(cX) ) );
 				}
 				else if ( v1D && hasAttribute("x_one_percent", *toBuildP) ) {
 					float cX
@@ -530,7 +538,7 @@ namespace dtOO {
 							getAttributeStr("x_one_percent", *toBuildP), cV,  aF
 						)
 					);
-					basicP->push_back( new dtPoint3( v1D->YdtPoint3Percent(cX) ) );
+					basicP->push_back( dtPoint3( v1D->YdtPoint3Percent(cX) ) );
 				}				
 				else if ( 
 					v2D 
@@ -552,7 +560,7 @@ namespace dtOO {
 						)
 					);                      
 					basicP->push_back( 
-					  new dtPoint3( v2D->YdtPoint3( analyticFunction::aFXTwoD(cX, cY) ) )
+					  dtPoint3( v2D->YdtPoint3( analyticFunction::aFXTwoD(cX, cY) ) )
 					);
 				}	
 				else if ( 
@@ -574,7 +582,7 @@ namespace dtOO {
 							getAttributeStr("x_two_percent", *toBuildP), cV, aF
 						)
 					);                      
-					basicP->push_back( new dtPoint3( v2D->YdtPoint3Percent(cX, cY) ) );
+					basicP->push_back( dtPoint3( v2D->YdtPoint3Percent(cX, cY) ) );
 				}				
 			}			
 		}
@@ -585,7 +593,7 @@ namespace dtOO {
 				if (filename.find(".ibl") != std::string::npos) {
 					p3 = dtPoint3_readIBL(filename).result();
 					dt__forAllConstIter(std::vector< dtPoint3 >, p3, it) {
-						basicP->push_back( new dtPoint3(*it) );
+						basicP->push_back( dtPoint3(*it) );
 					}
 				}
 				else dt__throw(createBasic(), << "Unknown file extension.");
@@ -607,15 +615,15 @@ namespace dtOO {
 		//transform points
 		//
 		if ( dtTransformerP->isNecessary() ) {
-			std::vector< dtPoint3 * > basicPTwin;
+			std::vector< dtPoint3 > basicPTwin;
 			for (int ii=0;ii<basicP->size();ii++) {
 				basicPTwin.push_back( basicP->at(ii) );
 			}
 			basicP->clear();
 			*basicP = dtTransformerP->apply( &basicPTwin );
-			for (int ii=0;ii<basicPTwin.size();ii++) {
-				delete basicPTwin[ii];
-			}
+//			for (int ii=0;ii<basicPTwin.size();ii++) {
+//				delete basicPTwin[ii];
+//			}
 			basicPTwin.clear();
 		}
 //		} 
@@ -632,7 +640,9 @@ namespace dtOO {
 		}
 		else {
 			if ( toBuildP->hasAttribute("label") ) {
-				bC->ptrPointContainer()->add( basicP->at(0) , toBuildP->attribute("label").toStdString() );
+				bC->ptrPointContainer()->add(
+          basicP->at(0), getAttributeStr("label", *toBuildP) 
+        );
 			}
 		}
 		//
@@ -640,9 +650,9 @@ namespace dtOO {
 		//
 		std::vector< float > itVal;
 		for (int ii=0;ii<basicP->size();ii++) {
-			itVal.push_back( basicP->at(ii)->x() );
-			itVal.push_back( basicP->at(ii)->y() );
-			itVal.push_back( basicP->at(ii)->z() );
+			itVal.push_back( basicP->at(ii).x() );
+			itVal.push_back( basicP->at(ii).y() );
+			itVal.push_back( basicP->at(ii).z() );
 		}    
 		std::vector< std::string > header;
 		header.push_back("p_x"); header.push_back("p_y"); header.push_back("p_z");
@@ -768,16 +778,23 @@ namespace dtOO {
       // return point and that's it
       //
       if ( toBuildP->hasAttribute("label") ) {
-        if ( bC->ptrVectorContainer()->has(toBuildP->attribute("label").toStdString()) ) {
-//          *basicP = new dtVector3(0,0,0);
-          vv = bC->ptrVectorContainer()->get( toBuildP->attribute("label").toStdString() );
+        if ( 
+          bC->ptrVectorContainer()->has(getAttributeStr("label", *toBuildP)) 
+        ) {
+          vv 
+          = 
+          bC->ptrVectorContainer()->get( getAttributeStr("label", *toBuildP) );
           return vv;
         }
       }
       //
       // check for attribute x, y and z
       //
-      if ( toBuildP->hasAttribute("x") && toBuildP->hasAttribute("y") && toBuildP->hasAttribute("z") ) { 
+      if ( 
+           toBuildP->hasAttribute("x") 
+        && toBuildP->hasAttribute("y") 
+        && toBuildP->hasAttribute("z") 
+      ) { 
         //
         // create coordinates
         //
@@ -810,17 +827,20 @@ namespace dtOO {
       //
       //check if point has a label and add it to the container
       //
-      if ( toBuildP->hasAttribute("label") ) {
-        bC->ptrVectorContainer()->add( vv, toBuildP->attribute("label").toStdString() );
+      if ( hasAttribute("label", *toBuildP) ) {
+        bC->ptrVectorContainer()->add( 
+          vv, getAttributeStr("label", *toBuildP) 
+        );
       }
       //
       //output
       //
-      dt__debug(createBasic(),
-              << "created vector: (" 
-              << vv.x() << " / "
-              << vv.y() << " / "
-              << vv.z() << ")");
+      dt__debug(
+        createBasic(),
+        << "created vector: (" 
+        << vv.x() << " / "
+        << vv.y() << " / "
+        << vv.z() << ")");
 			
 			return vv;
     }
@@ -863,7 +883,9 @@ namespace dtOO {
 		vectorHandling< analyticGeometry * > const * const aG
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
-			return bC->constPtrPointContainer()->get(getAttributeStr("label", *toBuildP));
+			return bC->constPtrPointContainer()->get(
+        getAttributeStr("label", *toBuildP)
+      );
 		}
 		else {
 			return createDtPoint3(toBuildP, NULL, cV, aF, aG);
@@ -877,7 +899,9 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const aF
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
-			return bC->constPtrPointContainer()->get(getAttributeStr("label", *toBuildP));
+			return bC->constPtrPointContainer()->get(
+        getAttributeStr("label", *toBuildP)
+      );
 		}
 		else {
 			return createDtPoint3(toBuildP, NULL, cV, aF);
@@ -892,7 +916,9 @@ namespace dtOO {
 		vectorHandling< analyticGeometry * > const * const aG
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
-			return bC->constPtrVectorContainer()->get(getAttributeStr("label", *toBuildP));
+			return bC->constPtrVectorContainer()->get(
+        getAttributeStr("label", *toBuildP)
+      );
 		}
 		else {
 			return createDtVector3(toBuildP, NULL, cV, aF, aG);
@@ -906,7 +932,9 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const aF
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
-			return bC->constPtrVectorContainer()->get(getAttributeStr("label", *toBuildP));
+			return bC->constPtrVectorContainer()->get(
+        getAttributeStr("label", *toBuildP)
+      );
 		}
 		else {
 			return createDtVector3(toBuildP, NULL, cV, aF);
@@ -1003,9 +1031,9 @@ namespace dtOO {
     if ( is("transformer", *toBuildP) ) {
       wEl = toBuildP->nextSiblingElement();
     }		
-		std::vector< dtPoint2 * > pp;
+		std::vector< dtPoint2 > pp;
     createBasic(&wEl, NULL, cV, aF, NULL, dtT.get(), &pp);      		
-		dt__forAllIndex(pp, ii) basicP->push_back( *(pp[ii]) );
+		dt__forAllIndex(pp, ii) basicP->push_back( pp[ii] );
   }
 
   void dtXmlParserBase::createBasic(
@@ -1029,7 +1057,7 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const aF, 
 		vectorHandling< analyticGeometry * > const * const aG,
 		dtTransformer const * const dtTransformerP, 
-		std::vector< dtPoint2 * > * basicP
+		std::vector< dtPoint2 > * basicP
 	) {
 
     /* ------------------------------------------------------------------------ */
@@ -1065,18 +1093,25 @@ namespace dtOO {
       //
       // create point
       //
-      basicP->push_back( new dtPoint2(cX, cY) );
+      basicP->push_back( dtPoint2(cX, cY) );
     }
     /* ---------------------------------------------------------------------- */
     /* pick point from a part */
     /* ---------------------------------------------------------------------- */          
-    else if ( toBuildP->hasAttribute("attribute") && toBuildP->hasAttribute("part_label") ) {
+    else if ( 
+         hasAttribute("attribute", *toBuildP) 
+      && hasAttribute("part_label", *toBuildP) 
+    ) {
       //
       //look for part to pick point from
       //
       analyticSurface const * analyticSurface_partToPickFromP = NULL;
-      analyticGeometry const * anAG = aG->get( getAttributeStr("part_label", *toBuildP) );
-      analyticSurface_partToPickFromP = dynamic_cast< analyticSurface const * >( anAG );
+      analyticGeometry const * anAG 
+      = 
+      aG->get( getAttributeStr("part_label", *toBuildP) );
+      analyticSurface_partToPickFromP 
+      = 
+      analyticSurface::ConstDownCast(anAG);
       //
       // attribute: pick_from_part
       //      
@@ -1112,41 +1147,18 @@ namespace dtOO {
             // ask analyticSurface for a point
             //
             basicP->push_back( 
-              new dtPoint2(
-                analyticSurface_partToPickFromP->uv_percent( dtPoint2(pX, pY)
-                  
-                )
-              )
+              analyticSurface_partToPickFromP->uv_percent(dtPoint2(pX, pY))
             );
           }
-          else {
-            //
-            // error handling
-            //
-            dt__throw(createBasic(),
-                    << dt__eval(toBuildP->hasAttribute("phi") ) << std::endl
-                    << dt__eval(toBuildP->hasAttribute("r") ) << std::endl
-                    << dt__eval(toBuildP->hasAttribute("z") ) << std::endl
-                    << dt__eval(toBuildP->hasAttribute("parameter_one_percent") ) << std::endl
-                    << dt__eval(toBuildP->hasAttribute("parameter_two_percent") ) << std::endl
-                    << dt__eval( qPrintable(toBuildP->attribute("phi")) ) << std::endl
-                    << dt__eval( qPrintable(toBuildP->attribute("r")) ) << std::endl
-                    << dt__eval( qPrintable(toBuildP->attribute("z")) ) << std::endl
-                    << dt__eval( qPrintable(toBuildP->attribute("parameter_one_percent")) ) << std::endl
-                    << dt__eval( qPrintable(toBuildP->attribute("parameter_two_percent")) ) << std::endl
-                    << dt__eval( analyticSurface_partToPickFromP ) );
-            return;
-          }          
+          else dt__throw(createBasic(), << dt__eval(convertToString(*toBuildP)));      
         }
-        else {
-          dt__throw(createBasic(), 
-                  << dt__eval( toBuildP->hasAttribute("parameter_one_percent") ) << std::endl
-                  << dt__eval( qPrintable(toBuildP->attribute("attribute")) ) << std::endl
-                  << dt__eval( qPrintable(toBuildP->attribute("part_label")) ) );                 
-        }        
+        else dt__throw(createBasic(), << dt__eval(convertToString(*toBuildP)));                       
       }    
     }
-    else if ( toBuildP->hasAttribute("attribute") && toBuildP->hasAttribute("function_label") ) {
+    else if ( 
+         hasAttribute("attribute", *toBuildP) 
+      && hasAttribute("function_label", *toBuildP) 
+    ) {
       //
       //look for function to pick point from
       //
@@ -1157,7 +1169,9 @@ namespace dtOO {
 				)
 			);
 
-      if ( getAttributeStr("attribute", *toBuildP) == "pick_order_from_function" ) {
+      if ( 
+        getAttributeStr("attribute", *toBuildP) == "pick_order_from_function" 
+      ) {
         //
         // 1 analyticFunction
         //        
@@ -1198,19 +1212,11 @@ namespace dtOO {
 //                      << "Function is not a 2-dim function." << std::endl
 //                      << dt__eval(vecValue.size()) );
 //            }
-            basicP->push_back( new dtPoint2(YY) );
+            basicP->push_back( dtPoint2(YY) );
           }
         }
-        else {
-          dt__warning(createBasic(), 
-                  << dt__eval( hasAttribute("parameter_percent_function", *toBuildP) ) << std::endl
-                  << dt__eval( hasAttribute("number_points", *toBuildP) ) << std::endl
-                  << dt__eval( getAttributeStr("parameter_percent_function", *toBuildP) ) << std::endl
-                  << dt__eval( getAttributeStr("number_points", *toBuildP) ) );
-//                  << dt__eval( sF ) );
-          return;        
-        }
-      }      
+        else dt__throw(createBasic(), << dt__eval( convertToString(*toBuildP)));
+      }
     }
 		else if ( toBuildP->attribute("attribute") == "pick_order_from_file") {       
 			if ( getAttributeStr("file_name", *toBuildP) != "" ) {
@@ -1230,11 +1236,14 @@ namespace dtOO {
 
 				for ( int ii=0; ii<fields.size(); ii++ ) {
 					if ( fields[ii].size() != 2 ) {
-						dt__throw(createBasic(),
-										<< "field[" << ii << "] of read point has not a size of 2." << std::endl
-										<< "file_name = " << getAttributeStr("file_name", *toBuildP));
+						dt__throw(
+              createBasic(),
+							<< "field[" << ii << "] of read point has not a size of 2." 
+              << std::endl
+							<< "file_name = " << getAttributeStr("file_name", *toBuildP)
+            );
 					}
-					basicP->push_back( new dtPoint2(fields[ii][0], fields[ii][1]) );          
+					basicP->push_back( dtPoint2(fields[ii][0], fields[ii][1]) );          
 				}
 				//
 				// close file
@@ -1259,7 +1268,7 @@ namespace dtOO {
     //transform points
     //
     if ( dtTransformerP->isNecessary() ) {
-      vectorHandling< dtPoint2 * > basicPTwin;
+      vectorHandling< dtPoint2 > basicPTwin;
       for (int ii=0;ii<basicP->size();ii++) {
         basicPTwin.push_back( basicP->at(ii) );
       }
@@ -1276,7 +1285,7 @@ namespace dtOO {
 //      for (int ii=0;ii<basicPTwin.size();ii++) {
 //        delete basicPTwin[ii];
 //      }
-      basicPTwin.destroy();
+//      basicPTwin.destroy();
     }
 
     //
@@ -1285,7 +1294,7 @@ namespace dtOO {
     for (int ii=0;ii<basicP->size();ii++) {
       dt__debug(
 			  createBasic(),
-        << "created point:" << dt__point2d( (*(basicP->at(ii))) )
+        << "created point:" << dt__point2d( (basicP->at(ii)) )
 			);
     }    
 
@@ -1309,271 +1318,271 @@ namespace dtOO {
     if ( is("transformer", *toBuildP) ) {
       wEl = toBuildP->nextSiblingElement();
     }
-		vectorHandling< dtPoint2 * > pp;
+		vectorHandling< dtPoint2 > pp;
     createBasic(&wEl, bC, cV, aF, aG, dtT.get(), &pp);
-		dt__forAllIndex(pp, ii) basicP->push_back( *(pp[ii]) );		
+		dt__forAllIndex(pp, ii) basicP->push_back( pp[ii] );		
   }
 
-    void dtXmlParserBase::createAdvanced( 
-		  QDomElement const * toBuildP,
-			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cV,
-			vectorHandling< analyticFunction * > const * const aF, 
-			vectorHandling< analyticGeometry * > const * const aG,            
-			vectorHandling< analyticGeometry * > * advancedP 
-		) {
+  void dtXmlParserBase::createAdvanced( 
+    QDomElement const * toBuildP,
+    baseContainer * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF, 
+    vectorHandling< analyticGeometry * > const * const aG,            
+    vectorHandling< analyticGeometry * > * advancedP 
+  ) {
 
+    //
+    // create transformer if necessary
+    //
+    ptrHandling< dtTransformer > dtT(
+      createTransformer(toBuildP, bC, cV, aF, aG)
+    );
+    QDomElement wEl = *toBuildP;
+    if ( is("transformer", *toBuildP) ) {
+      wEl = toBuildP->nextSiblingElement();
+    }
+    createAdvanced(&wEl, bC, cV, aF, aG, dtT.get(), advancedP);      
+  }
+
+  /**
+   * 
+   * @todo Maybe this could be done with builder on analyticGeometry-level.
+   *       This prevents the definition of many classes.
+   */
+  void dtXmlParserBase::createAdvanced( 
+    QDomElement const * toBuildP,
+    baseContainer * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF, 
+    vectorHandling< analyticGeometry * > const * const aG, 
+    dtTransformer const * const dtTransformerP,                          
+    vectorHandling< analyticGeometry * > * advancedP 
+  ) {
+    //
+    // get label
+    //
+    std::string label = getAttributeStr("label", *toBuildP);
+
+    if ( stringContains("*", label) ) {
       //
-      // create transformer if necessary
-      //
-      ptrHandling< dtTransformer > dtT(
-			  createTransformer(toBuildP, bC, cV, aF, aG)
-			);
-			QDomElement wEl = *toBuildP;
-      if ( is("transformer", *toBuildP) ) {
-        wEl = toBuildP->nextSiblingElement();
+      // string contains "*" --> return set of analyticGeometries
+      //				
+      std::string pattern 
+      = 
+      getStringBetween("*", "*", label );
+      for (int ii=0;ii<aG->size();ii++) { 
+        if ( stringContains(pattern, aG->at(ii)->getLabel()) ) {
+          advancedP->push_back( aG->at(ii)->clone() );
+        }					
       }
-      createAdvanced(&wEl, bC, cV, aF, aG, dtT.get(), advancedP);      
+    }
+    else if ( stringContains("~", label) ) {
+      //
+      // string contains "~" --> transform analyticGeometry
+      //
+
+      std::vector< std::string > transLabels;
+      std::string tmpString = getStringBetweenAndRemove("~", "(", &label);
+      while (tmpString != "") {
+        transLabels.push_back( tmpString );
+        tmpString = getStringBetweenAndRemove("~", "(", &label);
+      }
+
+      std::string aGLabel = getStringBetweenAndRemove("", ")", &label);
+      dt__pH(analyticGeometry) toTrans(aG->get(aGLabel)->clone());
+      for (int ii=transLabels.size()-1; ii>=0; ii--) {
+        dt__info(
+          createAdvanced(),
+          << "Applying " << dt__eval(transLabels[ii]) << " to " 
+          << dt__eval(aGLabel) << "."
+        );
+
+        dtTransformer const * const dtT 
+        = 
+        bC->ptrTransformerContainer()->get(transLabels[ii]);
+        toTrans.reset(dtT->apply( toTrans.get() ));
+      }
+      advancedP->push_back( toTrans->clone() );
+    }
+    else {
+      //
+      // normal case
+      //				
+      advancedP->push_back(
+        aG->get( label )->clone()
+      );
     }
 
-		/**
-		 * 
-     * @todo Maybe this could be done with builder on analyticGeometry-level.
-		 *       This prevents the definition of many classes.
-     */
-    void dtXmlParserBase::createAdvanced( 
-		  QDomElement const * toBuildP,
-			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cV,
-			vectorHandling< analyticFunction * > const * const aF, 
-			vectorHandling< analyticGeometry * > const * const aG, 
-			dtTransformer const * const dtTransformerP,                          
-			vectorHandling< analyticGeometry * > * advancedP 
-		) {
-			//
-			// get label
-			//
-			std::string label = getAttributeStr("label", *toBuildP);
-			
-      if ( stringContains("*", label) ) {
-				//
-				// string contains "*" --> return set of analyticGeometries
-				//				
-				std::string pattern 
-				= 
-				getStringBetween("*", "*", label );
-				for (int ii=0;ii<aG->size();ii++) { 
-          if ( stringContains(pattern, aG->at(ii)->getLabel()) ) {
-            advancedP->push_back( aG->at(ii)->clone() );
-          }					
-				}
-			}
-			else if ( stringContains("~", label) ) {
-				//
-				// string contains "~" --> transform analyticGeometry
-				//
-				
-				std::vector< std::string > transLabels;
-				std::string tmpString = getStringBetweenAndRemove("~", "(", &label);
-				while (tmpString != "") {
-          transLabels.push_back( tmpString );
-					tmpString = getStringBetweenAndRemove("~", "(", &label);
-				}
-				
-				std::string aGLabel = getStringBetweenAndRemove("", ")", &label);
-				dt__pH(analyticGeometry) toTrans(aG->get(aGLabel)->clone());
-				for (int ii=transLabels.size()-1; ii>=0; ii--) {
-					dt__info(
-						createAdvanced(),
-						<< "Applying " << dt__eval(transLabels[ii]) << " to " 
-						<< dt__eval(aGLabel) << "."
-					);
-					
-					dtTransformer const * const dtT 
-					= 
-					bC->ptrTransformerContainer()->get(transLabels[ii]);
-					toTrans.reset(dtT->apply( toTrans.get() ));
-				}
-				advancedP->push_back( toTrans->clone() );
-			}
-			else {
-				//
-				// normal case
-				//				
-				advancedP->push_back(
-				  aG->get( label )->clone()
-				);
-			}
-      
-      if ( advancedP->size() == 0) {
-        dt__throw(createAdvanced(),
-                << "Cannot find part " << getAttributeStr("label", *toBuildP) );
-      }
-
-      //
-      // copy
-      //
-      vectorHandling< analyticGeometry * > advancedTwin;
-      for (int ii=0;ii<advancedP->size();ii++) {
-        advancedTwin.push_back( advancedP->at(ii) );
-      }
-      advancedP->clear();
-
-      //
-      // transform
-      //
-      if ( dtTransformerP->isNecessary() ) {
-        *advancedP = dtTransformerP->apply( &advancedTwin );
-      }
-      else {
-        for (int ii=0;ii<advancedTwin.size();ii++) {
-          advancedP->push_back( advancedTwin[ii]->clone() );
-        }   
-      }
-			advancedTwin.destroy();
+    if ( advancedP->size() == 0) {
+      dt__throw(createAdvanced(),
+              << "Cannot find part " << getAttributeStr("label", *toBuildP) );
     }
 
-    analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
-		  QDomElement const * toBuildP,
-			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cV,
-			vectorHandling< analyticFunction * > const * const aF, 
-			vectorHandling< analyticGeometry * > const * const aG
-		) {
-      vectorHandling< analyticGeometry * > advancedVec;
-      createAdvanced(toBuildP, bC, cV, aF, aG, &advancedVec);
-      if (advancedVec.size() != 1) {
-        dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
-      }
-      return advancedVec[0];
+    //
+    // copy
+    //
+    vectorHandling< analyticGeometry * > advancedTwin;
+    for (int ii=0;ii<advancedP->size();ii++) {
+      advancedTwin.push_back( advancedP->at(ii) );
     }
+    advancedP->clear();
+
+    //
+    // transform
+    //
+    if ( dtTransformerP->isNecessary() ) {
+      *advancedP = dtTransformerP->apply( &advancedTwin );
+    }
+    else {
+      for (int ii=0;ii<advancedTwin.size();ii++) {
+        advancedP->push_back( advancedTwin[ii]->clone() );
+      }   
+    }
+    advancedTwin.destroy();
+  }
+
+  analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
+    QDomElement const * toBuildP,
+    baseContainer * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF, 
+    vectorHandling< analyticGeometry * > const * const aG
+  ) {
+    vectorHandling< analyticGeometry * > advancedVec;
+    createAdvanced(toBuildP, bC, cV, aF, aG, &advancedVec);
+    if (advancedVec.size() != 1) {
+      dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
+    }
+    return advancedVec[0];
+  }
 		
-    analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
-		  QDomElement const * toBuildP,
-			vectorHandling< constValue * > const * const cV,
-			vectorHandling< analyticFunction * > const * const aF, 
-			vectorHandling< analyticGeometry * > const * const aG
-		) {
-      return createAnalyticGeometry(toBuildP, NULL, cV, aF, aG);			
-		}		
+  analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
+    QDomElement const * toBuildP,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF, 
+    vectorHandling< analyticGeometry * > const * const aG
+  ) {
+    return createAnalyticGeometry(toBuildP, NULL, cV, aF, aG);			
+  }		
   
-    void dtXmlParserBase::createAdvanced( 
-		  QDomElement const * toBuildP,
-			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cV,
-			vectorHandling< analyticFunction * > const * const aF, 
-			dtTransformer const * const dtTransformerP,                          
-			vectorHandling< analyticFunction * > * advancedP 
-		) {
-			//
-			// get label
-			//
-			std::string label = getAttributeStr("label", *toBuildP);
-		  dt__info(createAdvanced(), << dt__eval(label));
-      
-			if ( stringContains("*", label) ) {
-				//
-				// string contains "*" --> return set of analyticGeometries
-				//				
-				std::string pattern 
-				= 
-				stringRemoveSingle("*", label );
-				for (int ii=0;ii<aF->size();ii++) { 
-          if ( stringContains(pattern, aF->at(ii)->getLabel()) ) {
-            advancedP->push_back( aF->at(ii)->clone() );
-          }					
-				}
-			}
-			else if ( stringContains("~", label) ) {
-				//
-				// string contains "~" --> transform analyticFunction
-				//
-				
-				std::vector< std::string > transLabels;
-				std::string tmpString = getStringBetweenAndRemove("~", "(", &label);
-				while (tmpString != "") {
-          transLabels.push_back( tmpString );
-					tmpString = getStringBetweenAndRemove("~", "(", &label);
-				}
-				
-				std::string aFLabel = getStringBetweenAndRemove("", ")", &label);
-				dt__pH(analyticFunction) toTrans(aF->get(aFLabel)->clone());
-				for (int ii=transLabels.size()-1; ii>=0; ii--) {
-					dt__info(
-						createAdvanced(),
-						<< "Applying " << dt__eval(transLabels[ii]) << " to " 
-						<< dt__eval(aFLabel) << "."
-					);
-					
-					dtTransformer const * const dtT 
-					= 
-					bC->ptrTransformerContainer()->get(transLabels[ii]);
-					toTrans.reset(dtT->apply( toTrans.get() ));
-				}
-				advancedP->push_back( toTrans->clone() );
-			}
-			else {
-				//
-				// normal case
-				//				
-				advancedP->push_back(aF->get( label )->clone());
-			}
-			
-      //
-      // copy
-      //
-      vectorHandling< analyticFunction * > advancedTwin;
-      for (int ii=0;ii<advancedP->size();ii++) {
-        advancedTwin.push_back( advancedP->at(ii) );
-      }
-      advancedP->clear();
+  void dtXmlParserBase::createAdvanced( 
+    QDomElement const * toBuildP,
+    baseContainer * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF, 
+    dtTransformer const * const dtTransformerP,                          
+    vectorHandling< analyticFunction * > * advancedP 
+  ) {
+    //
+    // get label
+    //
+    std::string label = getAttributeStr("label", *toBuildP);
+    dt__info(createAdvanced(), << dt__eval(label));
 
+    if ( stringContains("*", label) ) {
       //
-      // transform
+      // string contains "*" --> return set of analyticGeometries
+      //				
+      std::string pattern 
+      = 
+      stringRemoveSingle("*", label );
+      for (int ii=0;ii<aF->size();ii++) { 
+        if ( stringContains(pattern, aF->at(ii)->getLabel()) ) {
+          advancedP->push_back( aF->at(ii)->clone() );
+        }					
+      }
+    }
+    else if ( stringContains("~", label) ) {
       //
-      if ( dtTransformerP->isNecessary() ) {
-        *advancedP = dtTransformerP->apply( &advancedTwin );
+      // string contains "~" --> transform analyticFunction
+      //
+
+      std::vector< std::string > transLabels;
+      std::string tmpString = getStringBetweenAndRemove("~", "(", &label);
+      while (tmpString != "") {
+        transLabels.push_back( tmpString );
+        tmpString = getStringBetweenAndRemove("~", "(", &label);
       }
-      else {
-        for (int ii=0;ii<advancedTwin.size();ii++) {
-          advancedP->push_back( advancedTwin[ii] );
-        }   
+
+      std::string aFLabel = getStringBetweenAndRemove("", ")", &label);
+      dt__pH(analyticFunction) toTrans(aF->get(aFLabel)->clone());
+      for (int ii=transLabels.size()-1; ii>=0; ii--) {
+        dt__info(
+          createAdvanced(),
+          << "Applying " << dt__eval(transLabels[ii]) << " to " 
+          << dt__eval(aFLabel) << "."
+        );
+
+        dtTransformer const * const dtT 
+        = 
+        bC->ptrTransformerContainer()->get(transLabels[ii]);
+        toTrans.reset(dtT->apply( toTrans.get() ));
       }
-    }  
+      advancedP->push_back( toTrans->clone() );
+    }
+    else {
+      //
+      // normal case
+      //				
+      advancedP->push_back(aF->get( label )->clone());
+    }
+
+    //
+    // copy
+    //
+    vectorHandling< analyticFunction * > advancedTwin;
+    for (int ii=0;ii<advancedP->size();ii++) {
+      advancedTwin.push_back( advancedP->at(ii) );
+    }
+    advancedP->clear();
+
+    //
+    // transform
+    //
+    if ( dtTransformerP->isNecessary() ) {
+      *advancedP = dtTransformerP->apply( &advancedTwin );
+    }
+    else {
+      for (int ii=0;ii<advancedTwin.size();ii++) {
+        advancedP->push_back( advancedTwin[ii] );
+      }   
+    }
+  }  
 		
-    void dtXmlParserBase::createAdvanced( 
-		  QDomElement const * toBuildP,
-			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cV,
-			vectorHandling< analyticFunction * > const * const aF, 
-			vectorHandling< analyticFunction * > * advancedP 
-		) {
+  void dtXmlParserBase::createAdvanced( 
+    QDomElement const * toBuildP,
+    baseContainer * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF, 
+    vectorHandling< analyticFunction * > * advancedP 
+  ) {
 
-      //
-      // create transformer if necessary
-      //
-      ptrHandling< dtTransformer > dtTransformerP(
-			  createTransformer(toBuildP, bC, cV, aF)
-			);
-			QDomElement wEl = *toBuildP;
-      if ( is("transformer", *toBuildP) ) {
-        wEl = toBuildP->nextSiblingElement();
-      }
-      createAdvanced(&wEl, bC, cV, aF, dtTransformerP.get(), advancedP);      
+    //
+    // create transformer if necessary
+    //
+    ptrHandling< dtTransformer > dtTransformerP(
+      createTransformer(toBuildP, bC, cV, aF)
+    );
+    QDomElement wEl = *toBuildP;
+    if ( is("transformer", *toBuildP) ) {
+      wEl = toBuildP->nextSiblingElement();
     }
+    createAdvanced(&wEl, bC, cV, aF, dtTransformerP.get(), advancedP);      
+  }
     
-    analyticFunction * dtXmlParserBase::createAnalyticFunction( 
-			QDomElement const * toBuildP,
-			baseContainer * const bC,
-			vectorHandling< constValue * > const * const cV,
-			vectorHandling< analyticFunction * > const * const aF 
-		) {
+  analyticFunction * dtXmlParserBase::createAnalyticFunction( 
+    QDomElement const * toBuildP,
+    baseContainer * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF 
+  ) {
 
-      vectorHandling< analyticFunction * > advancedVec;
-      createAdvanced(toBuildP, bC, cV, aF, &advancedVec);
-      if (advancedVec.size() != 1) {
-        dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
-      }
-      return advancedVec[0];
+    vectorHandling< analyticFunction * > advancedVec;
+    createAdvanced(toBuildP, bC, cV, aF, &advancedVec);
+    if (advancedVec.size() != 1) {
+      dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
     }
+    return advancedVec[0];
+  }
 }
