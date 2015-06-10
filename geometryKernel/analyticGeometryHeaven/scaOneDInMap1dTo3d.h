@@ -14,8 +14,14 @@ namespace dtOO {
       dt__class(scaOneDInMap1dTo3d, analyticGeometry);
       scaOneDInMap1dTo3d();
       scaOneDInMap1dTo3d(const scaOneDInMap1dTo3d& orig);
-      scaOneDInMap1dTo3d(scaOneD const * const s1d, map1dTo3d const * const m1d);
-      scaOneDInMap1dTo3d(scaOneD const * const s1d, map1dTo3d const * const m1d, bool const & percentF);
+      scaOneDInMap1dTo3d(
+        scaOneD const * const s1d, map1dTo3d const * const m1d
+      );
+      scaOneDInMap1dTo3d(
+        scaOneD const * const s1d, 
+        map1dTo3d const * const m1d, 
+        bool const & percentF
+      );
       virtual ~scaOneDInMap1dTo3d();
       //
       // overload 

@@ -152,20 +152,19 @@ namespace dtOO {
   
   dtPoint2 vec3dTwoDInMap3dTo3d::reparamOnFace(dtPoint3 const & ppXYZ) const {
     dtPoint3 ppUVW = _m3d->reparamInVolume(ppXYZ);
-    aFX xx 
-    = 
-    _v2d->invY( analyticFunction::aFYThreeD(ppUVW.x(), ppUVW.y(), ppUVW.z()) );
-    float dist = dtLinearAlgebra::length(ppXYZ - getPoint(xx[0], xx[1]));
+    aFX xx = _v2d->invY( analyticFunction::aFYThreeD(ppUVW) );
+    
+    dtPoint3 ppXYZReparam;
+    if (!_percentF) ppXYZReparam = getPoint(xx[0], xx[1]);
+    else ppXYZReparam = getPointPercent(xx[0], xx[1]);
+    
+    float dist = dtLinearAlgebra::length(ppXYZ - ppXYZReparam);
     dt__warnIfWithMessage(
       dist
       >
       staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
       reparamOnFace(), 
-      << dt__eval(xx) << std::endl
-      << dt__point3d( ppXYZ ) << std::endl
-      << dt__point3d( _m3d->getPoint(ppUVW) ) << std::endl
-      << dt__point3d( getPoint(xx[0], xx[1]) ) << std::endl
-      << dt__eval(dist) << std::endl
+      << dt__eval(dist)
     );  
     return dtPoint2(xx[0], xx[1]);
   }

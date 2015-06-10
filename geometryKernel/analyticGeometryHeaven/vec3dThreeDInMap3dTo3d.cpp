@@ -75,15 +75,18 @@ namespace dtOO {
     aFX xx 
     = 
     _v3d->invY( analyticFunction::aFYThreeD(ppUVW) );
-    float dist = dtLinearAlgebra::length(ppXYZ - getPoint(xx[0], xx[1], xx[2]));
+    
+    dtPoint3 ppXYZReparam;
+    if (!_percentF) ppXYZReparam = getPoint(xx[0], xx[1], xx[2]);
+    else ppXYZReparam = getPointPercent(xx[0], xx[1], xx[2]);
+    
+    float dist = dtLinearAlgebra::length(ppXYZ - ppXYZReparam);
     dt__warnIfWithMessage(
-      dist>staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+      dist
+      >
+      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
       reparamInVolume(), 
-      << dt__eval(xx) << std::endl
-      << dt__point3d( ppXYZ ) << std::endl
-      << dt__point3d( _m3d->getPoint(ppUVW) ) << std::endl
-      << dt__point3d( getPoint(xx[0], xx[1], xx[2]) ) << std::endl
-      << dt__eval(dist) << std::endl
+      << dt__eval(dist)
     );  
     return dtPoint3(xx[0], xx[1], xx[2]);
   }

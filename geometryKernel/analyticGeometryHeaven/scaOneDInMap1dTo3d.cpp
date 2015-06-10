@@ -7,19 +7,27 @@ namespace dtOO {
 
 	}
 
-	scaOneDInMap1dTo3d::scaOneDInMap1dTo3d(scaOneD const * const s1d, map1dTo3d const * const m1d) : map1dTo3d() {
+ 	scaOneDInMap1dTo3d::scaOneDInMap1dTo3d(
+    scaOneD const * const s1d, map1dTo3d const * const m1d
+  ) : map1dTo3d() {
 		_s1d.reset( s1d->clone() );
 		_m1d.reset( m1d->clone() );
 		_percentF = false;
 	}
 	
-	scaOneDInMap1dTo3d::scaOneDInMap1dTo3d(scaOneD const * const s1d, map1dTo3d const * const m1d, bool const & percentF) : map1dTo3d() {
+	scaOneDInMap1dTo3d::scaOneDInMap1dTo3d(
+    scaOneD const * const s1d, 
+    map1dTo3d const * const m1d, 
+    bool const & percentF
+  ) : map1dTo3d() {
 		_s1d.reset( s1d->clone() );
 		_m1d.reset( m1d->clone() );
 		_percentF = percentF;
 	}
 
-	scaOneDInMap1dTo3d::scaOneDInMap1dTo3d(const scaOneDInMap1dTo3d& orig) : map1dTo3d(orig) {
+	scaOneDInMap1dTo3d::scaOneDInMap1dTo3d(
+    const scaOneDInMap1dTo3d& orig
+  ) : map1dTo3d(orig) {
 		_s1d.reset( orig._s1d->clone() );
 		_m1d.reset( orig._m1d->clone() );	
 		_percentF = orig._percentF;
