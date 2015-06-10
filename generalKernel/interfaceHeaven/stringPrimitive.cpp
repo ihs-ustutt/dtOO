@@ -123,8 +123,8 @@ namespace dtOO {
 		std::string valueStr = str;
 		for (int ii=0; ii<str.length(); ii++) {//while (valueStr.length() != 0) {
 			std::string aVal = getStringBetweenAndRemove(signStart, signEnd, &valueStr);
-			if (aVal.length() == 0 ) break;
 		  values.push_back(aVal);
+      if (valueStr.length() == 0 ) break;      
 		}
 
 		return values;
