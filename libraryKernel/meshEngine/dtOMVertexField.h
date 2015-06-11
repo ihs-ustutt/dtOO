@@ -103,7 +103,7 @@ namespace dtOO {
 		
 		counter = 0;
 		dt__forFromToIter(omConstVertexI, _om.vertices_begin(), _om.vertices_end(), vIt) {
-			_field[*vIt] = av[counter];
+			_field[*vIt] = .5*( _field[*vIt] + av[counter]);
 			counter++;
 		}		
 	}

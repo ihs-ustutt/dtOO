@@ -140,7 +140,9 @@ namespace dtOO {
 		//
 		// create 3d mesh
 		//
-		ptrBoundedVolume()->getModel()->meshRegion();
+		if (!optionTrue("defer_mesh_3")) {
+      ptrBoundedVolume()->getModel()->meshRegion();
+    }
 		
 		//
 		// add elements and vertices to commonReg

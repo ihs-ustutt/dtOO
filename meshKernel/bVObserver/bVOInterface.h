@@ -5,6 +5,7 @@
 
 #include <xmlHeaven/qtXmlBase.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/optionHandling.h>
 
 namespace dtOO {
   class baseContainer;
@@ -13,7 +14,7 @@ namespace dtOO {
   class analyticGeometry;
   class boundedVolume;
   
-  class bVOInterface {
+  class bVOInterface : public optionHandling {
     public:
       dt__classOnlyName(bVOInterface);  
       bVOInterface();

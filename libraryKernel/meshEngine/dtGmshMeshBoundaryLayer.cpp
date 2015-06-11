@@ -280,10 +280,10 @@ namespace dtOO {
 				//
 				dtPoint3 start(mv_omInit->x(), mv_omInit->y(), mv_omInit->z());
 				for (int ii=0;ii<_nShrinkingSteps;ii++) {
+					tF.laplacianSmooth();          
 					dtPoint3 target = start + 2.*tF.at(*it)*nF.at(*it);
 					if ( !omMoved.intersection(neighborFace, start, target) ) break;
-					tF[*it] = .9*tF.at(*it);
-//					tF.laplacianSmooth();
+					tF[*it] = .7*tF.at(*it);
 				}
 				if (tF.at(*it) != _thickness) {
 					dt__info(
