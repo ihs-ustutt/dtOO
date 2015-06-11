@@ -63,15 +63,17 @@ SET(HEADERS
   analyticFunctionHeaven/vec3dTransVolThreeD.h
   analyticFunctionHeaven/vec3dMuParserThreeD.h
   analyticFunctionHeaven/vec3dBoxThreeD.h
+  analyticFunctionHeaven/analyticFunctionCombination.h
   analyticFunctionHeaven/analyticFunctionCompound.h
   analyticFunctionHeaven/analyticFunctionTransformed.h
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
   analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
+  dtTransformerHeaven/dtTransformer.h
+  dtTransformerHeaven/dtStrongTransformer.h
+  dtTransformerHeaven/dtTransformerFactory.h
   dtTransformerHeaven/thicknessIncreasing.h
   dtTransformerHeaven/biThicknessIncreasing.h
-  dtTransformerHeaven/dtTransformer.h
-  dtTransformerHeaven/dtTransformerFactory.h
   dtTransformerHeaven/conformalMapping.h
   dtTransformerHeaven/doNothing.h
   dtTransformerHeaven/offset.h
@@ -163,11 +165,12 @@ SET(SOURCES
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.cpp
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.cpp
   analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.cpp
+  dtTransformerHeaven/dtTransformer.cpp
+  dtTransformerHeaven/dtStrongTransformer.cpp
+  dtTransformerHeaven/dtTransformerFactory.cpp
   dtTransformerHeaven/thicknessIncreasing.cpp
   dtTransformerHeaven/biThicknessIncreasing.cpp
-  dtTransformerHeaven/dtTransformer.cpp
   dtTransformerHeaven/conformalMapping.cpp
-  dtTransformerHeaven/dtTransformerFactory.cpp
   dtTransformerHeaven/doNothing.cpp
   dtTransformerHeaven/offset.cpp
   dtTransformerHeaven/translate.cpp

@@ -1,19 +1,19 @@
 #ifndef ROTATE_H
 #define	ROTATE_H
 
-#include "dtTransformer.h"
+#include "dtStrongTransformer.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class rotate : public dtTransformer {
+  class rotate : public dtStrongTransformer {
   public:    
     dt__classOnlyName(rotate);
     rotate();
     virtual ~rotate();
     rotate(const rotate& orig);    
-    virtual dtTransformer * clone( void ) const;
-    virtual dtTransformer * create( void ) const;       
+    virtual dtStrongTransformer * clone( void ) const;
+    virtual dtStrongTransformer * create( void ) const;       
     virtual bool isNecessary( void ) const;
     void init(
       QDomElement const * tE, 
@@ -27,7 +27,13 @@ namespace dtOO {
     ) const;
     virtual std::vector< dtPoint3 > retract(
       std::vector< dtPoint3 > const * const toRetract
-    ) const;    
+    ) const;
+    virtual std::vector< dtVector3 > apply( 
+      std::vector< dtVector3 > const * const toTrans 
+    ) const;
+    virtual std::vector< dtVector3 > retract(
+      std::vector< dtVector3 > const * const toRetract
+    ) const;        
     virtual vectorHandling< analyticGeometry * > apply( 
       vectorHandling< analyticGeometry * > const * const aGeoVecP 
     ) const;

@@ -13,28 +13,32 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
-  rotate::rotate() : dtTransformer() {
+  rotate::rotate() : dtStrongTransformer() {
   }
 
   rotate::~rotate() {
   }
 	
-	rotate::rotate(const rotate& orig) : dtTransformer(orig) {
+	rotate::rotate(const rotate& orig) : dtStrongTransformer(orig) {
 		_angle = orig._angle;
 		_origin = orig._origin;
 		_rotVector = orig._rotVector;
 	}
 	
-  dtTransformer * rotate::clone( void ) const {
+  dtStrongTransformer * rotate::clone( void ) const {
 	  return new rotate(*this);	
 	}
 	
-  dtTransformer * rotate::create( void ) const {
+  dtStrongTransformer * rotate::create( void ) const {
 		return new rotate();
 	}	
 
-	std::vector< dtPoint3 > rotate::apply( std::vector< dtPoint3 > const * const toTrans ) const {
-		dtAffTransformation3 rot = dtLinearAlgebra::getRotation(_rotVector, _angle);
+	std::vector< dtPoint3 > rotate::apply( 
+    std::vector< dtPoint3 > const * const toTrans 
+  ) const {
+		dtAffTransformation3 rot 
+    = 
+    dtLinearAlgebra::getRotation(_rotVector, _angle);
 	
 		std::vector< dtPoint3 > ret(toTrans->size());
 		dt__forAllIndex(*toTrans, ii) {
@@ -44,6 +48,66 @@ namespace dtOO {
 		
 		return ret;
 	}
+  
+	std::vector< dtPoint3 > rotate::retract( 
+    std::vector< dtPoint3 > const * const toTrans 
+  ) const {
+		dtAffTransformation3 rot 
+    = 
+    dtLinearAlgebra::getRotation(_rotVector, -1.*_angle);
+	
+		std::vector< dtPoint3 > ret(toTrans->size());
+		dt__forAllIndex(*toTrans, ii) {
+			dtVector3 vv = rot.transform( toTrans->at(ii) - _origin );
+		  ret[ii] = _origin + vv;
+
+      dt__debug(
+        retract(),
+        << "Retracting point " << dt__point3d(toTrans->at(ii)) << std::endl
+        << "to point " << dt__point3d(ret[ii])
+      );      
+		}
+		
+		return ret;
+	}  
+  
+	std::vector< dtVector3 > rotate::apply( 
+    std::vector< dtVector3 > const * const toTrans 
+  ) const {
+		dtAffTransformation3 rot 
+    = 
+    dtLinearAlgebra::getRotation(_rotVector, _angle);
+	
+		std::vector< dtVector3 > ret(toTrans->size());
+		dt__forAllIndex(*toTrans, ii) {
+			dtVector3 vv = rot.transform( toTrans->at(ii) );
+		  ret[ii] = vv;
+		}
+		
+		return ret;
+	}
+  
+	std::vector< dtVector3 > rotate::retract( 
+    std::vector< dtVector3 > const * const toTrans 
+  ) const {
+		dtAffTransformation3 rot 
+    = 
+    dtLinearAlgebra::getRotation(_rotVector, -1.*_angle);
+	
+		std::vector< dtVector3 > ret(toTrans->size());
+		dt__forAllIndex(*toTrans, ii) {
+			dtVector3 vv = rot.transform( toTrans->at(ii) );
+		  ret[ii] = vv;
+
+      dt__debug(
+        retract(),
+        << "Retracting vector " << dt__point3d(toTrans->at(ii)) << std::endl
+        << "to point " << dt__point3d(ret[ii])
+      );      
+		}
+		
+		return ret;
+	}  
 	
   vectorHandling< analyticGeometry * > rotate::apply( 
 	  vectorHandling< analyticGeometry * > const * const aGeoVecP 
@@ -72,7 +136,25 @@ namespace dtOO {
 				aGeoP.reset( new analyticSurface(dtS.get()) );
 			}
 			else {
-				aGeoP.reset( m2d->cloneTransformed(this) );
+        dtPoint3 p0 = m2d->getPointPercent(0.5,0.5);
+        dtPoint3 p1 = dtTransformer::apply(p0);
+        dtPoint3 p2 = dtTransformer::retract(p1);
+  			aGeoP.reset( m2d->cloneTransformed(this) );
+
+        dt__info(
+          apply(),
+          << dt__eval(aGeoP->virtualClassName()) << std::endl
+          << "Not-rotated: " << dt__point3d(p0) << std::endl
+          << "Rotated:     " << dt__point3d(p1) << std::endl
+          << "Not-rotated: " << dt__point3d(p2) << std::endl
+          << "Rotated:     " 
+          << dt__point3d(
+            map2dTo3d::ConstSecureCast(aGeoP.get())->getPointPercent(0.5,0.5)
+          ) 
+        ); 
+        dtPoint2 p1Reparam = map2dTo3d::ConstSecureCast(aGeoP.get())->reparamOnFace(p1);
+        p1Reparam = map2dTo3d::ConstSecureCast(aGeoP.get())->percent_uv(p1Reparam);
+        dt__info( apply(), << "Inv(Rotated) " << dt__point2d(p1Reparam) );
 			}
 			//
 			// push translated geometry in vector
