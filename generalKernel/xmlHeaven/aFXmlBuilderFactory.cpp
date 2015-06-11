@@ -18,6 +18,7 @@
 #include "aFXmlBuilder/vec3dMuParserThreeDAFXmlBuilder.h"
 #include "aFXmlBuilder/scaMuParserTwoDAFXmlBuilder.h"
 #include "aFXmlBuilder/muParserAFXmlBuilder.h"
+#include "aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -75,6 +76,10 @@ namespace dtOO {
 		__IFRETCUSTOM(scaMuParserTwoD, scaMuParserTwoDAFXmlBuilder);
 		__IFRET(muParserAFXmlBuilder);
 		__IFRETCUSTOM(muParser, muParserAFXmlBuilder);
+    __IFRET(analyticFunctionCombinationAFXmlBuilder);
+    __IFRETCUSTOM(
+      analyticFunctionCombination, analyticFunctionCombinationAFXmlBuilder
+    );
     
     dt__throw(
       create(), 
