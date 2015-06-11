@@ -54,11 +54,6 @@ namespace dtOO {
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF 
     );
-    static dtVector3 getDtVector3( 
-      QDomElement const element,
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP 
-    );
   protected:
     qtXmlBase();    
   };

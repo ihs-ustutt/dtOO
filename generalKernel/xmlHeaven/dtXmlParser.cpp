@@ -120,7 +120,9 @@ namespace dtOO {
 			//
 			std::string var = getAttributeStr("variable", forElement);
 			std::string valueStr = getAttributeStr("values", forElement);
-			std::vector< std::string > values = convertToStringVector("{", "}", valueStr);
+			std::vector< std::string > values 
+      = 
+      convertToStringVector("{", "}", valueStr);
 			dt__info( 
 			  openFileAndParse(), 
 				<< "Replace element" << std::endl
@@ -135,7 +137,9 @@ namespace dtOO {
 			for (int kk=0; kk<values.size(); kk++) {
   			for (int jj=0; jj<children.size(); jj++) {
 				  QDomElement childClone = children[jj].cloneNode(true).toElement();
-					replaceRecursiveInAllAttributes("{"+var+"}", values[kk], &(childClone));						
+					replaceRecursiveInAllAttributes(
+            "{"+var+"}", values[kk], &(childClone)
+            );
 					QDomNode checkOne 
 					=							
 					_rootRead.back().insertBefore( 
@@ -192,8 +196,9 @@ namespace dtOO {
   ) {  
     QDomElement stateElement = getChildElement( "state", stateName, _rootLoad );
     for (int ii=0;ii<cValRef.size();ii++) {
-      if ( hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) ) {
-          
+      if ( 
+        hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) 
+      ) {    
         QDomElement constValueElement = getChildElement("constValue",
                                           cValRef[ii]->getLabel(),
                                           stateElement
@@ -206,9 +211,12 @@ namespace dtOO {
         );
       }
       else {
-        dt__warning(loadStateToConst(),
-                << cValRef[ii]->getLabel() << "-Element not in state file." << std::endl
-                << "Leave value as it was before load state.");  
+        dt__warning(
+          loadStateToConst(),
+          << cValRef[ii]->getLabel() 
+          << "-Element not in state file." << std::endl
+          << "Leave value as it was before load state."
+        );  
       }
     }
   }
@@ -277,7 +285,9 @@ namespace dtOO {
             << "Save state = " << stateName << " to file = " << fileName );
   }
   
-  void dtXmlParser::writeFile( char const * const fileName, QDomDocument & xmlDocument) {
+  void dtXmlParser::writeFile( 
+    char const * const fileName, QDomDocument & xmlDocument
+  ) {
     //
     // open file and write rootWriteElement to file
     //
@@ -292,7 +302,9 @@ namespace dtOO {
     xmlFile.close();    
   }
   
-  void dtXmlParser::writeFile( std::string const & fileName, QDomNode const & node) {
+  void dtXmlParser::writeFile( 
+    std::string const & fileName, QDomNode const & node
+  ) {
     //
     // open file and write rootWriteElement to file
     //
@@ -315,7 +327,9 @@ namespace dtOO {
     xmlFile.close();    
   }
 	
-  void dtXmlParser::checkFile(char const * const fileName, QDomDocument & xmlDocument) {
+  void dtXmlParser::checkFile(
+    char const * const fileName, QDomDocument & xmlDocument
+  ) {
     //
     // open file for reading
     //
@@ -359,7 +373,11 @@ namespace dtOO {
       //
       xmlDocument = QDomDocument();
       // encoding
-      QDomProcessingInstruction myHeader = xmlDocument.createProcessingInstruction( "xml","version=\"1.0\" encoding=\"ISO-8859-1\"" );
+      QDomProcessingInstruction myHeader 
+      = 
+      xmlDocument.createProcessingInstruction( 
+        "xml","version=\"1.0\" encoding=\"ISO-8859-1\"" 
+      );
       xmlDocument.appendChild( myHeader );
       // machine name of _rootReadElement
       QDomElement _rootWriteElement = xmlDocument.createElement(
@@ -375,14 +393,15 @@ namespace dtOO {
       if ( xmlDocument.documentElement().tagName() 
            == 
            _rootRead[0].tagName() ) {
-        dt__info(checkFile, << "Correct root Element name. Write to this file.");
+        dt__info(
+          checkFile, 
+          << "Correct root Element name. Write to this file."
+        );
       }
       //
       // rootReadElement and rootWriteElement have not same root name
       //
-      else {
-        dt__throw(checkFile, << "Incorrect root Element name.");        
-      }
+      else dt__throw(checkFile, << "Incorrect root Element name.");        
     }
     //
     // close file
@@ -390,9 +409,10 @@ namespace dtOO {
     xmlFile.close();    
   }
 
-  void dtXmlParser::createConstValue(std::string const constValueLabel, 
-                                    vectorHandling< constValue * > * cValP) const {
-
+  void dtXmlParser::createConstValue(
+    std::string const constValueLabel, 
+    vectorHandling< constValue * > * cValP
+  ) const {
     QDomElement const cVElement = getElement( "constValue", constValueLabel );
 
 
@@ -418,13 +438,19 @@ namespace dtOO {
         //
         // set value, min and max
         //
-        aCValP->setValue( muParseString( getAttributeStr( "value", *firstChild ) ) );
-        aCValP->setRange( muParseString( getAttributeStr( "min", *firstChild ) ), 
-                          muParseString( getAttributeStr( "max", *firstChild ) ) );        
+        aCValP->setValue( 
+          muParseString( getAttributeStr( "value", *firstChild ) ) 
+        );
+        aCValP->setRange( 
+          muParseString( getAttributeStr( "min", *firstChild ) ), 
+          muParseString( getAttributeStr( "max", *firstChild ) ) 
+        );
       }
       else {
-        dt__throw(createConstValue(),
-                << "Missing attributes min, max or float");
+        dt__throw(
+          createConstValue(),
+          << "Missing attributes min, max or float"
+        );
       }
     }
     else if (firstChild->tagName().toStdString() == "int" ) {
@@ -432,28 +458,38 @@ namespace dtOO {
         //
         // set value, min and max
         //
-        aCValP->setValue( muParseString( getAttributeStr( "value", *firstChild ) ) );        
+        aCValP->setValue( 
+          muParseString( getAttributeStr( "value", *firstChild ) ) 
+        );
       }
       else {
-        dt__throw(createConstValue(),
-                << "Missing attributes min, max or float");
+        dt__throw(
+          createConstValue(),
+          << "Missing attributes min, max or float"
+        );
       }
     }    
     else {
-      dt__throw( createConstValue(),
-              << dt__eval( qPrintable(firstChild->tagName()) ) );
+      dt__throw( 
+        createConstValue(),
+        << dt__eval( qPrintable(firstChild->tagName()) ) 
+      );
     }
 
     cValP->push_back( aCValP );
   }
 	
-  void dtXmlParser::createConstValue(vectorHandling< constValue * > * cValP) const {
+  void dtXmlParser::createConstValue(
+    vectorHandling< constValue * > * cValP
+  ) const {
     std::vector< std::string > label = getNames("constValue");
 
 		dt__forAllIndex( label, ii) createConstValue(label[ii], cValP);
   }
 	
-  void dtXmlParser::getNames( std::string lookType, std::vector< std::string > * names ) const {
+  void dtXmlParser::getNames( 
+    std::string lookType, std::vector< std::string > * names 
+  ) const {
 		if (_rootRead.size() != 0) {
 			for (int ii=0; ii<_rootRead.size(); ii++) {
 				if (_rootRead[ii].isNull()) {
@@ -469,7 +505,9 @@ namespace dtOO {
 		else dt__throw(getNames(), << "Please parse a XML file.");
   }
 	
-  std::vector< std::string > dtXmlParser::getNames( std::string lookType ) const {
+  std::vector< std::string > dtXmlParser::getNames( 
+    std::string lookType 
+  ) const {
 		std::vector< std::string > names;
 		getNames(lookType, &names);
 		return names;
@@ -481,15 +519,19 @@ namespace dtOO {
     getNames(lookType, &names);
     
     if (names.size() != 1) {
-      dt__warning(getName(),
-              << "More than one " << dt__eval(lookType) << " in file." << std::endl
-              << "Taking the first one.");
+      dt__warning(
+        getName(),
+        << "More than one " << dt__eval(lookType) << " in file." << std::endl
+        << "Taking the first one."
+      );
     }
     
     *name = names[0];
   }  
 
-  QDomElement dtXmlParser::getElement( std::string const lookType, std::string const lookName ) const {
+  QDomElement dtXmlParser::getElement( 
+    std::string const lookType, std::string const lookName 
+  ) const {
 		for (int ii=0; ii<_rootRead.size(); ii++) {
 			if ( hasChildElement(lookType, lookName, _rootRead[ii]) ) {
 				return getChildElement(lookType, lookName, _rootRead[ii]);
@@ -515,7 +557,9 @@ namespace dtOO {
     return QDomElement( getElement(lookType, label[0]) );
   }
   
-	QDomElement dtXmlParser::getUnlabeledElement( std::string const lookType ) const {
+	QDomElement dtXmlParser::getUnlabeledElement( 
+    std::string const lookType 
+  ) const {
 		for (int ii=0; ii<_rootRead.size(); ii++) {
 			if ( hasChild(lookType, _rootRead[ii]) ) {
 				return getChild(lookType, _rootRead[ii]);
@@ -668,7 +712,9 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("part");
 		
-		dt__forAllIndex(label, ii) createAnalyticGeometry(label[ii], bC, cVP, sFP, aGP);
+		dt__forAllIndex(label, ii) {
+      createAnalyticGeometry(label[ii], bC, cVP, sFP, aGP);
+    }
 		
 		dt__forAllIndex(*aGP, ii) aGP->at(ii)->dump();
     
@@ -709,7 +755,9 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("boundedVolume");
 		
-		dt__forAllIndex(label, ii) createBoundedVolume(label[ii], bC, cVP, sFP, aGP, bVP);
+		dt__forAllIndex(label, ii) {
+      createBoundedVolume(label[ii], bC, cVP, sFP, aGP, bVP);
+    }
   }
 
 	void dtXmlParser::createPlugin(
@@ -748,7 +796,9 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("plugin");
 		
-		dt__forAllIndex(label, ii) createPlugin(label[ii], bC, cVP, sFP, aGP, bVP, pLP);
+		dt__forAllIndex(label, ii) {
+      createPlugin(label[ii], bC, cVP, sFP, aGP, bVP, pLP);
+    }
 	}
 		
 	void dtXmlParser::createCase(
@@ -787,7 +837,9 @@ namespace dtOO {
 	) const {
 		std::vector< std::string > label = getNames("case");
 		
-		dt__forAllIndex(label, ii) createCase(label[ii], bC, cVP, sFP, aGP, bVP, dCP);
+		dt__forAllIndex(label, ii) {
+      createCase(label[ii], bC, cVP, sFP, aGP, bVP, dCP);
+    }
 	}
 		
 	void dtXmlParser::destroyAndCreate(

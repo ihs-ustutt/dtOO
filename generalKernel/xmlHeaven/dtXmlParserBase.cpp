@@ -1585,4 +1585,13 @@ namespace dtOO {
     }
     return advancedVec[0];
   }
+
+  analyticFunction * dtXmlParserBase::createAnalyticFunction( 
+    QDomElement const & toBuild,
+    baseContainer * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF 
+  ) {
+    return createAnalyticFunction(&toBuild, bC, cV, aF);
+  }  
 }
