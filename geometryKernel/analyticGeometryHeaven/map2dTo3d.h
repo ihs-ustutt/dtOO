@@ -32,17 +32,9 @@ namespace dtOO {
       //
       virtual vectorHandling< renderInterface * > getRender( void ) const;
       virtual vectorHandling< renderInterface * > getExtRender( void ) const;
-      virtual dtVector3 normal( float const & uu, float const & vv) const;
-      dtVector3 normal( dtPoint2 const & pp ) const;
-      virtual std::vector< dtVector3 > firstDer( 
-        float const & uu, float const & vv
-      ) const;    
-      std::vector< dtVector3 > firstDer( dtPoint2 const & pp) const;
+      virtual dtVector3 normal( float const & uu, float const & vv) const; 
       virtual dtVector3 firstDerU( float const & uu, float const & vv) const;
       virtual dtVector3 firstDerV( float const & uu, float const & vv) const;
-      virtual std::vector< dtVector3 > secondDer( 
-        float const & uu, float const & vv
-      ) const;
       virtual dtVector3 secondDerUU( float const & uu, float const & vv) const;
       virtual dtVector3 secondDerVV( float const & uu, float const & vv) const;
       virtual dtVector3 secondDerUV( float const & uu, float const & vv) const;     
@@ -62,7 +54,7 @@ namespace dtOO {
       ) const;
       virtual map2dTo3d * segmentRectangle( 
         dtPoint2 const & p0, dtPoint2 const & p1 
-      ) const;        
+      ) const;
       //
       //
       //    
@@ -81,7 +73,15 @@ namespace dtOO {
       float getUMax( void ) const;
       float getVMin( void ) const;
       float getVMax( void ) const;     
-      dtVector3 normalPercent( float const & uu, float const & vv ) const;            
+      dtVector3 normal( dtPoint2 const & pp ) const;      
+      dtVector3 normalPercent( float const & uu, float const & vv ) const;   
+      std::vector< dtVector3 > firstDer( 
+        float const & uu, float const & vv
+      ) const;         
+      std::vector< dtVector3 > firstDer( dtPoint2 const & pp) const;      
+      std::vector< dtVector3 > secondDer( 
+        float const & uu, float const & vv
+      ) const;      
       dtPoint2 reparamPercentOnFace(dtPoint3 const & ppXYZ) const;
       int getRenderResolutionU( void ) const;
       int getRenderResolutionV( void ) const;        
