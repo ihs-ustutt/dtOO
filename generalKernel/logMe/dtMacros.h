@@ -6,6 +6,11 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/ptrVectorHandling.h>
 
+#define dt__vH( name ) vectorHandling< name >
+#define dt__pH( name ) ptrHandling< name >
+#define dt__tmpPtr( name, init ) ptrHandling< name >(init).get()
+#define dt__pVH( name ) ptrVectorHandling< name >
+
 #define dt__classOnlyName( name ) \
   static std::string className( void ) { \
     return std::string(#name); \
@@ -29,6 +34,9 @@
   bool Is(dt__CLASSNAME_T obj) const { \
     return (dynamic_cast<dt__CLASSNAME_T const *>(this) == NULL ? false : true); \
   } \
+  static bool Is(castFrom * obj) { \
+    return (dynamic_cast<name *>(obj) == NULL ? false : true); \
+  } \
   static name * DownCast(castFrom * obj) { \
     return dynamic_cast<name *>(obj); \
   } \
@@ -41,15 +49,6 @@
   static name const * ConstSecureCast(castFrom const * obj) { \
     return static_cast<name const *>(obj); \
   }
-
-#define dt__vH( name ) \
-  vectorHandling< name >
-#define dt__pH( name ) \
-  ptrHandling< name >
-#define dt__tmpPtr( name, init ) \
-  ptrHandling< name >(init).get()
-#define dt__pVH( name ) \
-  ptrVectorHandling< name >
 
 #endif	/* DTMACROS_H */
 
