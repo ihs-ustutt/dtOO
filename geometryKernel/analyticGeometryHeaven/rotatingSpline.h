@@ -41,7 +41,10 @@ namespace dtOO {
       virtual float m_v(float const & arg) const;
       virtual dtPoint3 xyz_phiZ(float const & arg0, float const & arg1) const;
       virtual dtPoint2 uv_phiZ(float const & arg0, float const & arg1) const;
-      virtual dtPoint2 uv_deltaPhiRadiusDeltaM(float const & bU, float const & bV, float const & arg0, float const & arg1) const;      
+      virtual dtPoint2 uv_deltaPhiRadiusDeltaM(
+        float const & bU, float const & bV, 
+        float const & arg0, float const & arg1
+      ) const;      
       virtual dtPoint2 uv_phiRadiusM(float const & arg0, float const & arg1) const;
       virtual dtPoint2 uv_phiM(float const & arg0, float const & arg1) const;
       virtual float zMin( void ) const;

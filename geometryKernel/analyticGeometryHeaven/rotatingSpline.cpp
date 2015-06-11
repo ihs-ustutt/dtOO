@@ -12,7 +12,9 @@ namespace dtOO {
   rotatingSpline::rotatingSpline() : analyticSurface() {
   }
 
-  rotatingSpline::rotatingSpline( rotatingSpline const & orig ) : analyticSurface(orig) {
+  rotatingSpline::rotatingSpline( 
+    rotatingSpline const & orig 
+  ) : analyticSurface(orig) {
     _pp = orig._pp;
     _vv = orig._vv;
     _angle = orig._angle;
@@ -65,10 +67,17 @@ namespace dtOO {
   
   float rotatingSpline::phi_u(float const & arg) const {
     if (arg >= 0.) {
-      return ( 2. * M_PI * (arg - map2dTo3d::getUMin()) / (map2dTo3d::getUMax()-map2dTo3d::getUMin()) );    
+      return 
+        2. * M_PI * (arg - map2dTo3d::getUMin()) 
+        / 
+        (map2dTo3d::getUMax()-map2dTo3d::getUMin());    
     }
     else {
-      float uu = 2. * M_PI * (fabs(arg) - map2dTo3d::getUMin()) / (map2dTo3d::getUMax()-map2dTo3d::getUMin());
+      float uu 
+      = 
+      2. * M_PI * (fabs(arg) - map2dTo3d::getUMin()) 
+      / 
+      (map2dTo3d::getUMax()-map2dTo3d::getUMin());
       return (map2dTo3d::getUMax() - uu);
     }
   }
@@ -91,7 +100,9 @@ namespace dtOO {
     return dtPoint2(u_phi(arg0), v_z(arg1));
   }
   
-  dtPoint2 rotatingSpline::uv_deltaPhiRadiusDeltaM(float const & bU, float const & bV, float const & arg0, float const & arg1) const {
+  dtPoint2 rotatingSpline::uv_deltaPhiRadiusDeltaM(
+    float const & bU, float const & bV, float const & arg0, float const & arg1
+  ) const {
     float phi = phi_u(bU);
     float rr = r_v(bV);
     float mm = m_v(bV);
@@ -99,14 +110,18 @@ namespace dtOO {
     return uv_phiRadiusM(phi*rr+arg0, mm+arg1);  
   }
   
-  dtPoint2 rotatingSpline::uv_phiRadiusM(float const & arg0, float const & arg1) const {
+  dtPoint2 rotatingSpline::uv_phiRadiusM(
+    float const & arg0, float const & arg1
+  ) const {
     float const vv = v_m(arg1);
     float const rr = r_v(vv);
     float const phi = arg0 / rr;
     return dtPoint2( u_phi(phi), vv );
   }
   
-  dtPoint2 rotatingSpline::uv_phiM(float const & arg0, float const & arg1) const {
+  dtPoint2 rotatingSpline::uv_phiM(
+    float const & arg0, float const & arg1
+  ) const {
     return dtPoint2( u_phi(arg0), v_m(arg1) );
   }
   

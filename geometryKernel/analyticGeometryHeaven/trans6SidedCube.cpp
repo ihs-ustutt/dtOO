@@ -38,7 +38,9 @@ namespace dtOO {
     
   }
   
-  dtPoint3 trans6SidedCube::getPoint( float const & uu, float const & vv, float const & ww ) const {
+  dtPoint3 trans6SidedCube::getPoint( 
+    float const & uu, float const & vv, float const & ww 
+  ) const {
     return _tI->getValue(uu, vv, ww);
   }
   

@@ -165,7 +165,9 @@ namespace dtOO {
     return rV;		
 	}
 	
-  dtVector3 map3dTo3d::firstDerU( float const & uu, float const & vv, float const & ww) const {
+  dtVector3 map3dTo3d::firstDerU( 
+    float const & uu, float const & vv, float const & ww
+  ) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
     float wP = percent_w(ww);
@@ -180,7 +182,10 @@ namespace dtOO {
     }
     else if ( (uP>=deltaPer) && (uP<=(1.-deltaPer)) ) {
       return (
-        ( getPointPercent(uP+deltaPer, vP, wP) - getPointPercent(uP-deltaPer, vP, wP) )
+        ( 
+            getPointPercent(uP+deltaPer, vP, wP) 
+          - getPointPercent(uP-deltaPer, vP, wP) 
+        )
         /
         ( u_percent(uP+deltaPer) - u_percent(uP-deltaPer) )
       );
@@ -194,7 +199,9 @@ namespace dtOO {
     }
   }
 
-  dtVector3 map3dTo3d::firstDerV( float const & uu, float const & vv, float const & ww) const {
+  dtVector3 map3dTo3d::firstDerV( 
+    float const & uu, float const & vv, float const & ww
+  ) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
     float wP = percent_w(ww);
@@ -209,7 +216,10 @@ namespace dtOO {
     }
     else if ( (vP>=deltaPer) && (vP<=(1.-deltaPer)) ) {
       return (
-        ( getPointPercent(uP, vP+deltaPer, wP) - getPointPercent(uP, vP-deltaPer, wP) )
+        ( 
+            getPointPercent(uP, vP+deltaPer, wP) 
+          - getPointPercent(uP, vP-deltaPer, wP) 
+        )
         /
         ( v_percent(vP+deltaPer) - v_percent(vP-deltaPer) )
       );
@@ -223,7 +233,9 @@ namespace dtOO {
     }
   }  
 
-  dtVector3 map3dTo3d::firstDerW( float const & uu, float const & vv, float const & ww) const {
+  dtVector3 map3dTo3d::firstDerW( 
+    float const & uu, float const & vv, float const & ww
+  ) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
     float wP = percent_w(ww);
@@ -238,7 +250,10 @@ namespace dtOO {
     }
     else if ( (wP>=deltaPer) && (wP<=(1.-deltaPer)) ) {
       return (
-        ( getPointPercent(uP, vP, wP+deltaPer) - getPointPercent(uP, vP, wP-deltaPer) )
+        ( 
+            getPointPercent(uP, vP, wP+deltaPer) 
+          - getPointPercent(uP, vP, wP-deltaPer) 
+        )
         /
         ( w_percent(wP+deltaPer) - w_percent(wP-deltaPer) )
       );
@@ -310,7 +325,9 @@ namespace dtOO {
     return getMax(2);
   }
   
-  dtPoint3 map3dTo3d::getPointPercent( float const & uu, float const & vv, float const & ww ) const {
+  dtPoint3 map3dTo3d::getPointPercent( 
+    float const & uu, float const & vv, float const & ww 
+  ) const {
     return getPoint( u_percent(uu), v_percent(vv), w_percent(ww) );
   }
   
@@ -347,14 +364,18 @@ namespace dtOO {
   }   
   
   dtPoint3 map3dTo3d::percent_uvw(dtPoint3 const & pUVW) const {
-    return dtPoint3( percent_u(pUVW.x()), percent_v(pUVW.y()), percent_w(pUVW.z()) );
+    return dtPoint3( 
+      percent_u(pUVW.x()), percent_v(pUVW.y()), percent_w(pUVW.z()) 
+    );
   }  
 	
   dtPoint3 map3dTo3d::uvw_percent(dtPoint3 const & pp) const {
     return dtPoint3( u_percent(pp.x()), v_percent(pp.y()), w_percent(pp.z()) );
   }
 	
-	map1dTo3d * map3dTo3d::segment( dtPoint3 const & p0, dtPoint3 const & p1 ) const {
+	map1dTo3d * map3dTo3d::segment( 
+    dtPoint3 const & p0, dtPoint3 const & p1 
+  ) const {
 		ptrHandling< dtCurve > dtC( 
 		  trimmedCurve_twoPointsConnectConstructOCC(p0, p1).result() 
 		);	
@@ -362,8 +383,12 @@ namespace dtOO {
 		return new vec3dOneDInMap3dTo3d(&v3d1d, this);
 	}	
 	
-	map2dTo3d * map3dTo3d::segment( twoDArrayHandling< dtPoint3 > const & pp ) const {
-		ptrHandling< dtSurface > dtS( bezierSurface_pointConstructOCC(pp).result() );
+	map2dTo3d * map3dTo3d::segment( 
+    twoDArrayHandling< dtPoint3 > const & pp 
+  ) const {
+		ptrHandling< dtSurface > dtS( 
+      bezierSurface_pointConstructOCC(pp).result() 
+    );
 		
 		vec3dSurfaceTwoD v3d2d(dtS.get());
 		
@@ -410,7 +435,9 @@ namespace dtOO {
 	 *    +--------+ --> (v)
 	 *   (0)      
    */	
-	map2dTo3d * map3dTo3d::segmentConstU( float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map2dTo3d * map3dTo3d::segmentConstU( 
+    float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 	  dtPoint3 p30(uu, p0.x(), p0.y());
 		dtPoint3 p31(uu, p1.x(), p0.y());
 		dtPoint3 p32(uu, p1.x(), p1.y());
@@ -432,7 +459,9 @@ namespace dtOO {
 	 *    +--------+ --> (u)
 	 *   (0)      
    */	  
-	map2dTo3d * map3dTo3d::segmentConstV( float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map2dTo3d * map3dTo3d::segmentConstV( 
+    float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 	  dtPoint3 p30(p0.x(), vv, p0.y());
 		dtPoint3 p31(p1.x(), vv, p0.y());
 		dtPoint3 p32(p1.x(), vv, p1.y());
@@ -454,7 +483,9 @@ namespace dtOO {
 	 *    +--------+ --> (u)
 	 *   (0)      
    */		
-	map2dTo3d * map3dTo3d::segmentConstW( float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map2dTo3d * map3dTo3d::segmentConstW( 
+    float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 	  dtPoint3 p30(p0.x(), p0.y(), ww);
 		dtPoint3 p31(p1.x(), p0.y(), ww);
 		dtPoint3 p32(p1.x(), p1.y(), ww);
@@ -463,7 +494,9 @@ namespace dtOO {
 		return segment(p30, p31, p32, p33);		
 	}
 	
-	map2dTo3d * map3dTo3d::segmentConstUPercent( float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map2dTo3d * map3dTo3d::segmentConstUPercent( 
+    float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 	  float const uP = u_percent(uu);
 		dtPoint2 const p0P( v_percent(p0.x()), w_percent(p0.y()) );
 		dtPoint2 const p1P( v_percent(p1.x()), w_percent(p1.y()) );
@@ -471,7 +504,9 @@ namespace dtOO {
 		return segmentConstU(uP, p0P, p1P);
 	}
 
-	map2dTo3d * map3dTo3d::segmentConstVPercent( float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map2dTo3d * map3dTo3d::segmentConstVPercent( 
+    float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 	  float const vP = v_percent(vv);
 		dtPoint2 const p0P( u_percent(p0.x()), u_percent(p0.y()) );
 		dtPoint2 const p1P( w_percent(p1.x()), w_percent(p1.y()) );
@@ -479,7 +514,9 @@ namespace dtOO {
 		return segmentConstV(vP, p0P, p1P);
 	}
   
-	map2dTo3d * map3dTo3d::segmentConstWPercent( float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map2dTo3d * map3dTo3d::segmentConstWPercent( 
+    float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 	  float const wP = w_percent(ww);
 		dtPoint2 const p0P( u_percent(p0.x()), v_percent(p0.y()) );
 		dtPoint2 const p1P( u_percent(p1.x()), v_percent(p1.y()) );
@@ -527,7 +564,9 @@ namespace dtOO {
 		return segment(pp);
 	}
 	
-	map2dTo3d * map3dTo3d::segmentPercent( twoDArrayHandling< dtPoint3 > const & pp ) const {
+	map2dTo3d * map3dTo3d::segmentPercent( 
+    twoDArrayHandling< dtPoint3 > const & pp 
+  ) const {
 		twoDArrayHandling< dtPoint3 > ppUVW(pp.size(0), pp.size(1));
 		for ( int ii=0; ii<pp.size(0); ii++) {
 			for ( int jj=0; jj<pp.size(1); jj++) {
@@ -537,7 +576,9 @@ namespace dtOO {
 		return segment(ppUVW);
 	}
 	
-	map1dTo3d * map3dTo3d::segmentPercent( dtPoint3 const & p0, dtPoint3 const & p1 ) const {
+	map1dTo3d * map3dTo3d::segmentPercent( 
+    dtPoint3 const & p0, dtPoint3 const & p1 
+  ) const {
     return segment(uvw_percent(p0), uvw_percent(p1));
 	}	
   
@@ -550,7 +591,9 @@ namespace dtOO {
 		);
 	}	
 			
-  dtPoint3 map3dTo3d::reparamInVolume(dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent) const {
+  dtPoint3 map3dTo3d::reparamInVolume(
+    dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent
+  ) const {
 		double X = ppXYZ.x();
     double Y = ppXYZ.y();
     double Z = ppXYZ.z();
@@ -607,9 +650,15 @@ namespace dtOO {
 				reparamInVolume(), 
 				<< logMe::floatVecToTable(addInfo, header, itVal) << std::endl 
 				<< dt__eval(converged) << std::endl
-				<< "p_xyz = (" << ppXYZ.x() << ", " << ppXYZ.y() << ", " << ppXYZ.z() << ")" << std::endl
-				<< "V(p_uvw) = (" << ppRep_xyz.x() << ", " << ppRep_xyz.y() << ", " << ppRep_xyz.z() << ")" << std::endl
-				<< "p_uvw = (" << U << ", " << V << ", " << W << ")" << std::endl
+				<< "p_xyz = (" 
+        << ppXYZ.x() << ", " << ppXYZ.y() << ", " << ppXYZ.z() 
+        << ")" << std::endl
+				<< "V(p_uvw) = (" 
+        << ppRep_xyz.x() << ", " << ppRep_xyz.y() << ", " << ppRep_xyz.z() 
+        << ")" << std::endl
+				<< "p_uvw = (" 
+        << U << ", " << V << ", " << W 
+        << ")" << std::endl
 				<< "distance = (" << sqrt(dist.squared_length()) << ")"
 			);
     }
@@ -664,7 +713,9 @@ namespace dtOO {
 		wmax = wmax + 0.1*wdiff;		
 		wmin = wmin - 0.1*wdiff;
     
-    const double tol = Precision * (SQU(umax - umin) + SQU(vmax-vmin) + SQU(wmax-wmin));
+    const double tol 
+    = 
+    Precision * (SQU(umax - umin) + SQU(vmax-vmin) + SQU(wmax-wmin));
     for(int i = 0; i < NumInitGuess; i++) {
       initu[i] = umin + initu[i] * (umax - umin);
       initv[i] = vmin + initv[i] * (vmax - vmin);
@@ -695,22 +746,30 @@ namespace dtOO {
 							P 
 							= 
 							getPoint(
-								static_cast<float>(U), static_cast<float>(V), static_cast<float>(W)
+								static_cast<float>(U), 
+                static_cast<float>(V), 
+                static_cast<float>(W)
 							);
 							dtVector3 derU 
 							= 
 							firstDerU(
-								static_cast<float>(U), static_cast<float>(V), static_cast<float>(W)
+								static_cast<float>(U), 
+                static_cast<float>(V), 
+                static_cast<float>(W)
 							);
 							dtVector3 derV 
 							= 
 							firstDerV(
-								static_cast<float>(U), static_cast<float>(V), static_cast<float>(W)
+								static_cast<float>(U), 
+                static_cast<float>(V), 
+                static_cast<float>(W)
 							);
 							dtVector3 derW 
 							= 
 							firstDerW(
-								static_cast<float>(U), static_cast<float>(V), static_cast<float>(W)
+								static_cast<float>(U), 
+                static_cast<float>(V), 
+                static_cast<float>(W)
 							);
 							dtMatrix mat(3,3);
 							mat(0,0) = derU.x(); mat(0,1) = derU.y(); mat(0,2) = derU.z();

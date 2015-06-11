@@ -12,12 +12,17 @@
 
 namespace dtOO {
 	infinityMap3dTo3d::infinityMap3dTo3d() : map3dTo3d() {
+    
 	}
 
-	infinityMap3dTo3d::infinityMap3dTo3d(const infinityMap3dTo3d& orig) : map3dTo3d(orig) {
+	infinityMap3dTo3d::infinityMap3dTo3d(
+    const infinityMap3dTo3d& orig
+  ) : map3dTo3d(orig) {
+    
 	}
 
 	infinityMap3dTo3d::~infinityMap3dTo3d() {
+    
 	}
 	
 	infinityMap3dTo3d * infinityMap3dTo3d::clone( void ) const {
@@ -82,7 +87,9 @@ namespace dtOO {
     }    				
 	}
     
-	dtPoint3 infinityMap3dTo3d::getPoint( float const & uu, float const & vv, float const & ww ) const {	
+	dtPoint3 infinityMap3dTo3d::getPoint( 
+    float const & uu, float const & vv, float const & ww 
+  ) const {	
     return dtPoint3(uu, vv, ww);
 	}
 }

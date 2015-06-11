@@ -19,13 +19,23 @@ namespace dtOO {
     virtual vectorHandling< renderInterface * > getRender( void ) const;
     virtual map3dTo3d * clone( void ) const = 0;
     virtual map3dTo3d * create( void ) const = 0;
-    virtual dtPoint3 getPoint( float const & uu, float const & vv, float const & ww ) const = 0;
-    dtPoint3 getPointPercent( float const & uu, float const & vv, float const & ww ) const;
+    virtual dtPoint3 getPoint( 
+      float const & uu, float const & vv, float const & ww 
+    ) const = 0;
+    dtPoint3 getPointPercent( 
+      float const & uu, float const & vv, float const & ww 
+    ) const;
     dtPoint3 getPoint( dtPoint3 const & ppUVW ) const;
     dtPoint3 getPointPercent( dtPoint3 const & ppUVW ) const;
-    virtual dtVector3 firstDerU( float const & uu, float const & vv, float const & ww ) const;
-    virtual dtVector3 firstDerV( float const & uu, float const & vv, float const & ww ) const;    
-    virtual dtVector3 firstDerW( float const & uu, float const & vv, float const & ww ) const;
+    virtual dtVector3 firstDerU( 
+      float const & uu, float const & vv, float const & ww 
+    ) const;
+    virtual dtVector3 firstDerV( 
+      float const & uu, float const & vv, float const & ww 
+    ) const;    
+    virtual dtVector3 firstDerW( 
+      float const & uu, float const & vv, float const & ww 
+    ) const;
     virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;
     dtPoint3 reparamPercentInVolume(dtPoint3 const & ppXYZ) const; 
     virtual bool isClosed( int const & dir) const = 0;
@@ -51,17 +61,33 @@ namespace dtOO {
     int getRenderResolutionU( void ) const;
     int getRenderResolutionV( void ) const;            
     int getRenderResolutionW( void ) const;
-    virtual map1dTo3d * segment( dtPoint3 const & p0, dtPoint3 const & p1 ) const;
-    virtual map2dTo3d * segment( twoDArrayHandling< dtPoint3 > const & pp ) const;
+    virtual map1dTo3d * segment( 
+      dtPoint3 const & p0, dtPoint3 const & p1
+    ) const;
+    virtual map2dTo3d * segment( 
+      twoDArrayHandling< dtPoint3 > const & pp 
+    ) const;
     virtual map2dTo3d * segmentConstU( float const & uu ) const;
     virtual map2dTo3d * segmentConstV( float const & vv ) const;
     virtual map2dTo3d * segmentConstW( float const & ww ) const;    
-    virtual map2dTo3d * segmentConstU( float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
-    virtual map2dTo3d * segmentConstV( float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
-    virtual map2dTo3d * segmentConstW( float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
-    map2dTo3d * segmentConstUPercent( float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
-    map2dTo3d * segmentConstVPercent( float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 ) const;
-    map2dTo3d * segmentConstWPercent( float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 ) const;    
+    virtual map2dTo3d * segmentConstU( 
+      float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
+    ) const;
+    virtual map2dTo3d * segmentConstV( 
+      float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
+    ) const;
+    virtual map2dTo3d * segmentConstW( 
+      float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
+    ) const;
+    map2dTo3d * segmentConstUPercent( 
+      float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
+    ) const;
+    map2dTo3d * segmentConstVPercent( 
+      float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
+    ) const;
+    map2dTo3d * segmentConstWPercent( 
+      float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
+    ) const;    
     map2dTo3d * segmentConstUPercent( float const & uu ) const;
     map2dTo3d * segmentConstVPercent( float const & vv ) const;
     map2dTo3d * segmentConstWPercent( float const & ww ) const;      
@@ -69,14 +95,20 @@ namespace dtOO {
       dtPoint3 const & p0, dtPoint3 const & p1, 
       dtPoint3 const & p2, dtPoint3 const & p3 
     ) const;
-    map2dTo3d * segmentPercent( twoDArrayHandling< dtPoint3 > const & pp ) const;
-    map1dTo3d * segmentPercent( dtPoint3 const & p0, dtPoint3 const & p1 ) const;
+    map2dTo3d * segmentPercent( 
+      twoDArrayHandling< dtPoint3 > const & pp 
+    ) const;
+    map1dTo3d * segmentPercent( 
+      dtPoint3 const & p0, dtPoint3 const & p1 
+    ) const;
     map2dTo3d * segmentPercent( 
       dtPoint3 const & p0, dtPoint3 const & p1, 
       dtPoint3 const & p2, dtPoint3 const & p3 
     ) const;
   protected:
-    dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent) const;    
+    dtPoint3 reparamInVolume(
+      dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent
+    ) const;    
   private:
     bool XYZtoUVW(
       double X, double Y, double Z, 

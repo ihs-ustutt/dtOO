@@ -133,24 +133,21 @@ namespace dtOO {
     return _dtS->normal(uu, vv);
   }
     
-  dtVector3 analyticSurface::firstDerU( float const & uu, float const & vv) const {
-    return _dtS->firstDerU(uu, vv);
+  std::vector< dtVector3 > analyticSurface::firstDer( 
+    float const & uu, float const & vv
+  ) const {
+    std::vector< dtVector3 > dd(2);
+    dd[0] = _dtS->firstDerU(uu, vv);
+    dd[1] = _dtS->firstDerV(uu, vv);
   }
   
-  dtVector3 analyticSurface::firstDerV( float const & uu, float const & vv) const {
-    return _dtS->firstDerV(uu, vv);
-  }
-  
-  dtVector3 analyticSurface::secondDerUU( float const & uu, float const & vv) const {
-    return _dtS->secondDerUU(uu, vv);
-  }
-  
-  dtVector3 analyticSurface::secondDerVV( float const & uu, float const & vv) const {
-    return _dtS->secondDerVV(uu, vv);
-  }
-    
-  dtVector3 analyticSurface::secondDerUV( float const & uu, float const & vv) const {
-    return _dtS->secondDerUV(uu, vv);
+  std::vector< dtVector3 > analyticSurface::secondDer( 
+    float const & uu, float const & vv
+  ) const {
+    std::vector< dtVector3 > dd(3);    
+    dd[0] = _dtS->secondDerUU(uu, vv);
+    dd[1] = _dtS->secondDerUV(uu, vv);
+    dd[2] = _dtS->secondDerVV(uu, vv);
   }
   
   dtPoint2 analyticSurface::reparamOnFace(dtPoint3 const & ppXYZ) const {

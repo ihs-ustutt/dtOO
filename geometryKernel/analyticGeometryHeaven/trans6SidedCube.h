@@ -28,7 +28,9 @@ namespace dtOO {
     virtual bool isClosed( int const & dir) const;
     virtual float getMin( int const & dir) const;
     virtual float getMax( int const & dir) const;
-    virtual dtPoint3 getPoint( float const & uu, float const & vv, float const & ww ) const;
+    virtual dtPoint3 getPoint( 
+      float const & uu, float const & vv, float const & ww 
+    ) const;
   private:
     ptrHandling< transIntCube > _tI;
   };
