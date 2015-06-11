@@ -26,6 +26,7 @@ namespace dtOO {
     virtual void postUpdate( void );
   private:
     std::string _filename;
+    bool _saveAll;
   };
 }
 #endif	/* bVOWriteMSH_H */

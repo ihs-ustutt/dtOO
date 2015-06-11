@@ -32,13 +32,19 @@ namespace dtOO {
     
 //		<bVObserver name="bVOWriteMSH" 
 //		  filename="mesh.msh"
+//		  saveAll="false"
 //		/>									
 		_filename 
 		= 
 		qtXmlBase::getAttributeStr("filename", element);		
+    
+    _saveAll = false;
+    if (qtXmlBase::hasAttribute("saveAll", element)) {
+      _saveAll = qtXmlBase::getAttributeBool("saveAll", element);
+    }
   }
   
   void bVOWriteMSH::postUpdate( void ) {
-		ptrBoundedVolume()->getModel()->writeMSH(_filename, 2.2, false, true);
+		ptrBoundedVolume()->getModel()->writeMSH(_filename, 2.2, false, _saveAll);
   }
 }
