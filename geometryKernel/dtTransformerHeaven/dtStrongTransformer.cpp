@@ -37,5 +37,17 @@ namespace dtOO {
 	
 		return retVec[0];
 	}
+  
+	std::vector< dtVector3 > dtStrongTransformer::apply(
+    std::vector< dtVector3 > const & pp
+  ) const {
+    return apply(&pp);
+	}
+
+	std::vector< dtVector3 > dtStrongTransformer::retract(
+    std::vector< dtVector3 > const & pp
+  ) const {
+		return retract(&pp);
+	}
 }
 

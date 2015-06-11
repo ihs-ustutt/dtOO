@@ -19,15 +19,25 @@ namespace dtOO {
     //
     virtual dtStrongTransformer * clone( void ) const = 0;
     virtual dtStrongTransformer * create( void ) const = 0;    
-    using dtTransformer::apply;
     virtual std::vector< dtVector3 > apply(
       std::vector< dtVector3 > const * const toTrans 
     ) const = 0;
-    using dtTransformer::retract;
+    
     virtual std::vector< dtVector3 > retract(
       std::vector< dtVector3 > const * const toRetract
     ) const = 0;
-    dtVector3 apply(dtVector3 const & pp) const;     
+    //
+    //
+    //
+    using dtTransformer::apply;
+    using dtTransformer::retract;
+    std::vector< dtVector3 > apply(
+      std::vector< dtVector3 > const & toTrans 
+    ) const;
+    std::vector< dtVector3 > retract(
+      std::vector< dtVector3 > const & toRetract
+    ) const;
+    dtVector3 apply(dtVector3 const & pp) const;
     dtVector3 retract(dtVector3 const & toRetract) const;
   };
 }
