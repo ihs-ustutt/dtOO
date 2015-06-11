@@ -39,6 +39,6 @@ namespace dtOO {
   }
   
   void bVOWriteMSH::postUpdate( void ) {
-		ptrBoundedVolume()->getModel()->writeMSH(_filename);
+		ptrBoundedVolume()->getModel()->writeMSH(_filename, 2.2, false, true);
   }
 }
