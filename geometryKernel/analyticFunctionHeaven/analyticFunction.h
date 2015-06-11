@@ -47,6 +47,8 @@ namespace dtOO {
     static aFY aFYThreeD( float const & x0, float const & x1, float const & x2 );    
     static aFY aFYTwoD( dtPoint2 const & pp );    
     static aFY aFYThreeD( dtPoint3 const & pp );    
+    static aFY aFY_aFX( aFX const & xx );    
+    static aFX aFX_aFY( aFY const & yy );    
   private:
 	  double F(double const * xx) const;
     mutable aFY _invY;

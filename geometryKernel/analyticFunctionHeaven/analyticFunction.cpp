@@ -78,10 +78,10 @@ namespace dtOO {
 		//
 		// minimize
 		//
-		{
-			dt__pipeCout(sp, cs)
+//		{
+//			dt__pipeCout(sp, cs)
 			min.Minimize();
-		}
+//		}
 		double const * const theRoot = min.X( );
 
     aFX retX(xDim(),0.);
@@ -182,6 +182,14 @@ namespace dtOO {
 		return analyticFunction::aFYThreeD(pp.x(), pp.y(), pp.z());
 	}    
 
+  aFY analyticFunction::aFY_aFX( aFX const & xx ) {
+    return aFY(xx);
+  }
+  
+  aFX analyticFunction::aFX_aFY( aFY const & yy ) {
+    return aFX(yy);
+  }
+    
 	double analyticFunction::F(double const * xx) const {	
     aFX xxT(xDim(), 0.);
     for (int ii=0; ii<xDim(); ii++) xxT[ii] = xx[ii];
