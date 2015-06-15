@@ -10,6 +10,7 @@
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include <analyticFunctionHeaven/vec3dThickedTwoD.h>
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
 #include <analyticFunctionHeaven/analyticFunctionTransformed.h>
 
 namespace dtOO {
@@ -53,6 +54,9 @@ namespace dtOO {
 			vec3dCurveOneD const * const v1d = vec3dCurveOneD::ConstDownCast(aF);			
 			vec3dSurfaceTwoD const * const v2d = vec3dSurfaceTwoD::ConstDownCast(aF);
 			vec3dThickedTwoD const * const vT2d = vec3dThickedTwoD::ConstDownCast(aF);
+      vec3dTransVolThreeD const * const v3d 
+      = 
+      vec3dTransVolThreeD::ConstDownCast(aF);
 			
 			if (v1d) {			
 				analyticFunctionTransformed<vec3dCurveOneD> * aFT
@@ -61,7 +65,7 @@ namespace dtOO {
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());
 			}			
-      else if (v2d) {			
+      else if (v2d) {
 				analyticFunctionTransformed<vec3dSurfaceTwoD> * aFT
 				= new analyticFunctionTransformed<vec3dSurfaceTwoD>(*v2d);
 				aFT->setTransformer(this);
@@ -74,13 +78,21 @@ namespace dtOO {
 				aFT->setTransformer(this);
 				retV.push_back( aFT );
 				retV.back()->setLabel(aF->getLabel());	
-			}			
+			}	
+      else if (v3d) {			
+				analyticFunctionTransformed<vec3dTransVolThreeD> * aFT
+				= new analyticFunctionTransformed<vec3dTransVolThreeD>(*v3d);
+				aFT->setTransformer(this);
+				retV.push_back( aFT );
+				retV.back()->setLabel(aF->getLabel());	
+			}		      
 			else {
 				dt__throw(
 					apply(),
 					<< dt__eval(v1d) << std::endl
 					<< dt__eval(v2d) << std::endl
 					<< dt__eval(vT2d) << std::endl								
+					<< dt__eval(v3d) << std::endl		          
 					<< "Unknown type."
 				);
 			}
