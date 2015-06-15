@@ -33,7 +33,10 @@ namespace dtOO {
     //
 		// check input
 		//    
-    dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
+    dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticGeometry", toBuild), 
+      buildPart()
+    );
     
     std::vector< map2dTo3d const * > mm(6, NULL);
     std::vector< QDomElement > wElementVec 
@@ -45,7 +48,9 @@ namespace dtOO {
         //
         // get analyticGeometry
         //
-        analyticGeometry const * aG_t = aG->get( dtXmlParserBase::getAttributeStr("label", *it) );
+        analyticGeometry const * aG_t 
+        = 
+        aG->get( dtXmlParserBase::getAttributeStr("label", *it) );
 
         //
         // check if it is a map2dTo3d

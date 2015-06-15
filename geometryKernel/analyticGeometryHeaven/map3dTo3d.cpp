@@ -165,7 +165,7 @@ namespace dtOO {
     return rV;		
 	}
 	
-  dtVector3 map3dTo3d::firstDerU( 
+  std::vector< dtVector3 > map3dTo3d::firstDer( 
     float const & uu, float const & vv, float const & ww
   ) const {
     float uP = percent_u(uu);
@@ -173,99 +173,120 @@ namespace dtOO {
     float wP = percent_w(ww);
     float const deltaPer = 0.01;
     
+    std::vector< dtVector3 > ret(3);
     if (uP<deltaPer) {
-      return (
-        (getPointPercent(deltaPer, vP, wP) - getPointPercent(0., vP, wP))
-        /
-        (u_percent(deltaPer) - u_percent(0.) )
-      );      
+      ret[0] 
+      = 
+      (getPointPercent(deltaPer, vP, wP) - getPointPercent(0., vP, wP))
+      /
+      (u_percent(deltaPer) - u_percent(0.) );      
     }
     else if ( (uP>=deltaPer) && (uP<=(1.-deltaPer)) ) {
-      return (
-        ( 
-            getPointPercent(uP+deltaPer, vP, wP) 
-          - getPointPercent(uP-deltaPer, vP, wP) 
-        )
-        /
-        ( u_percent(uP+deltaPer) - u_percent(uP-deltaPer) )
-      );
+      ret[0]
+      =
+      ( 
+          getPointPercent(uP+deltaPer, vP, wP) 
+        - getPointPercent(uP-deltaPer, vP, wP) 
+      )
+      /
+      ( u_percent(uP+deltaPer) - u_percent(uP-deltaPer) );
     }
     else if (uP>(1.-deltaPer)) {
-      return (
-        (getPointPercent(1., vP, wP) - getPointPercent(1.-deltaPer, vP, wP))
-        /
-        (u_percent(1.) - u_percent(1.-deltaPer) )
-      );      
+      ret[0]
+      =
+      (getPointPercent(1., vP, wP) - getPointPercent(1.-deltaPer, vP, wP))
+      /
+      (u_percent(1.) - u_percent(1.-deltaPer) );      
     }
+//  }
+
+//  dtVector3 map3dTo3d::firstDerV( 
+//    float const & uu, float const & vv, float const & ww
+//  ) const {
+//    float uP = percent_u(uu);
+//    float vP = percent_v(vv);
+//    float wP = percent_w(ww);
+//    float const deltaPer = 0.01;
+    
+    if (vP<deltaPer) {
+      ret[1]
+      =
+      (getPointPercent(uP, deltaPer, wP) - getPointPercent(uP, 0., wP))
+      /
+      (v_percent(deltaPer) - v_percent(0.) );      
+    }
+    else if ( (vP>=deltaPer) && (vP<=(1.-deltaPer)) ) {
+      ret[1]
+      =
+      ( 
+          getPointPercent(uP, vP+deltaPer, wP) 
+        - getPointPercent(uP, vP-deltaPer, wP) 
+      )
+      /
+      ( v_percent(vP+deltaPer) - v_percent(vP-deltaPer) );
+    }
+    else if (vP>(1.-deltaPer)) {
+      ret[1]
+      =
+      (getPointPercent(uP, 1., wP) - getPointPercent(uP, 1.-deltaPer, wP))
+      /
+      (v_percent(1.) - v_percent(1.-deltaPer) );      
+    }
+//  }  
+
+//  dtVector3 map3dTo3d::firstDerW( 
+//    float const & uu, float const & vv, float const & ww
+//  ) const {
+//    float uP = percent_u(uu);
+//    float vP = percent_v(vv);
+//    float wP = percent_w(ww);
+//    float const deltaPer = 0.01;
+    
+    if (wP<deltaPer) {
+      ret[2]
+      =
+      (getPointPercent(uP, vP, deltaPer) - getPointPercent(uP, vP, 0.))
+      /
+      (w_percent(deltaPer) - w_percent(0.) );
+    }
+    else if ( (wP>=deltaPer) && (wP<=(1.-deltaPer)) ) {
+      ret[2]
+      =
+      ( 
+          getPointPercent(uP, vP, wP+deltaPer) 
+        - getPointPercent(uP, vP, wP-deltaPer) 
+      )
+      /
+      ( w_percent(wP+deltaPer) - w_percent(wP-deltaPer) );
+    }
+    else if (wP>(1.-deltaPer)) {
+      ret[2]
+      =
+      (getPointPercent(uP, vP, 1.) - getPointPercent(uP, vP, 1.-deltaPer))
+      /
+      (w_percent(1.) - w_percent(1.-deltaPer));      
+    }
+
+    return ret;
+  }
+  
+  dtVector3 map3dTo3d::firstDerU( 
+    float const & uu, float const & vv, float const & ww 
+  ) const {
+    return firstDer(uu, vv, ww)[0];
   }
 
   dtVector3 map3dTo3d::firstDerV( 
-    float const & uu, float const & vv, float const & ww
+    float const & uu, float const & vv, float const & ww 
   ) const {
-    float uP = percent_u(uu);
-    float vP = percent_v(vv);
-    float wP = percent_w(ww);
-    float const deltaPer = 0.01;
-    
-    if (vP<deltaPer) {
-      return (
-        (getPointPercent(uP, deltaPer, wP) - getPointPercent(uP, 0., wP))
-        /
-        (v_percent(deltaPer) - v_percent(0.) )
-      );      
-    }
-    else if ( (vP>=deltaPer) && (vP<=(1.-deltaPer)) ) {
-      return (
-        ( 
-            getPointPercent(uP, vP+deltaPer, wP) 
-          - getPointPercent(uP, vP-deltaPer, wP) 
-        )
-        /
-        ( v_percent(vP+deltaPer) - v_percent(vP-deltaPer) )
-      );
-    }
-    else if (vP>(1.-deltaPer)) {
-      return (
-        (getPointPercent(uP, 1., wP) - getPointPercent(uP, 1.-deltaPer, wP))
-        /
-        (v_percent(1.) - v_percent(1.-deltaPer) )
-      );      
-    }
-  }  
+    return firstDer(uu, vv, ww)[1];
+  }
 
   dtVector3 map3dTo3d::firstDerW( 
-    float const & uu, float const & vv, float const & ww
+    float const & uu, float const & vv, float const & ww 
   ) const {
-    float uP = percent_u(uu);
-    float vP = percent_v(vv);
-    float wP = percent_w(ww);
-    float const deltaPer = 0.01;
-    
-    if (wP<deltaPer) {
-      return (
-        (getPointPercent(uP, vP, deltaPer) - getPointPercent(uP, vP, 0.))
-        /
-        (w_percent(deltaPer) - w_percent(0.) )
-      );      
-    }
-    else if ( (wP>=deltaPer) && (wP<=(1.-deltaPer)) ) {
-      return (
-        ( 
-            getPointPercent(uP, vP, wP+deltaPer) 
-          - getPointPercent(uP, vP, wP-deltaPer) 
-        )
-        /
-        ( w_percent(wP+deltaPer) - w_percent(wP-deltaPer) )
-      );
-    }
-    else if (wP>(1.-deltaPer)) {
-      return (
-        (getPointPercent(uP, vP, 1.) - getPointPercent(uP, vP, 1.-deltaPer))
-        /
-        (w_percent(1.) - w_percent(1.-deltaPer) )
-      );      
-    }
-  }  
+    return firstDer(uu, vv, ww)[2];
+  }
   
   dtPoint3 map3dTo3d::reparamInVolume(dtPoint3 const & ppXYZ) const {
 		return reparamInVolume(ppXYZ, dtVector3(0,0,0));

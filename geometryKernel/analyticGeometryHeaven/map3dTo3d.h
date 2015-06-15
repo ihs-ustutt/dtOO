@@ -17,50 +17,23 @@ namespace dtOO {
     map3dTo3d(const map3dTo3d& orig);
     virtual ~map3dTo3d();
     virtual vectorHandling< renderInterface * > getRender( void ) const;
+    //
+    // overload
+    //
     virtual map3dTo3d * clone( void ) const = 0;
     virtual map3dTo3d * create( void ) const = 0;
     virtual dtPoint3 getPoint( 
       float const & uu, float const & vv, float const & ww 
     ) const = 0;
-    dtPoint3 getPointPercent( 
-      float const & uu, float const & vv, float const & ww 
-    ) const;
-    dtPoint3 getPoint( dtPoint3 const & ppUVW ) const;
-    dtPoint3 getPointPercent( dtPoint3 const & ppUVW ) const;
-    virtual dtVector3 firstDerU( 
-      float const & uu, float const & vv, float const & ww 
-    ) const;
-    virtual dtVector3 firstDerV( 
-      float const & uu, float const & vv, float const & ww 
-    ) const;    
-    virtual dtVector3 firstDerW( 
-      float const & uu, float const & vv, float const & ww 
-    ) const;
-    virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;
-    dtPoint3 reparamPercentInVolume(dtPoint3 const & ppXYZ) const; 
     virtual bool isClosed( int const & dir) const = 0;
     virtual float getMin( int const & dir) const = 0;
-    virtual float getMax( int const & dir) const = 0;
-    virtual bool isClosedU( void ) const;
-    virtual bool isClosedV( void ) const;
-    virtual bool isClosedW( void ) const;
-    virtual float getUMin( void ) const;
-    virtual float getUMax( void ) const;
-    virtual float getVMin( void ) const;
-    virtual float getVMax( void ) const;     
-    virtual float getWMin( void ) const;
-    virtual float getWMax( void ) const;
-    float u_percent(float const & uu) const;
-    float v_percent(float const & vv) const;
-    float w_percent(float const & ww) const;    
-    float percent_u(float const & uu) const;
-    float percent_v(float const & vv) const;
-    float percent_w(float const & ww) const;        
-    dtPoint3 percent_uvw(dtPoint3 const & pUVW) const;
-    dtPoint3 uvw_percent(dtPoint3 const & pp) const;    
-    int getRenderResolutionU( void ) const;
-    int getRenderResolutionV( void ) const;            
-    int getRenderResolutionW( void ) const;
+    virtual float getMax( int const & dir) const = 0;    
+    //
+    // optional overload
+    //
+    virtual std::vector< dtVector3 > firstDer( 
+      float const & uu, float const & vv, float const & ww
+    ) const;
     virtual map1dTo3d * segment( 
       dtPoint3 const & p0, dtPoint3 const & p1
     ) const;
@@ -79,6 +52,45 @@ namespace dtOO {
     virtual map2dTo3d * segmentConstW( 
       float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;
+    virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;    
+    //
+    //
+    //
+    dtVector3 firstDerU( 
+      float const & uu, float const & vv, float const & ww 
+    ) const;
+    dtVector3 firstDerV( 
+      float const & uu, float const & vv, float const & ww 
+    ) const;    
+    dtVector3 firstDerW( 
+      float const & uu, float const & vv, float const & ww 
+    ) const;
+    dtPoint3 reparamPercentInVolume(dtPoint3 const & ppXYZ) const; 
+    bool isClosedU( void ) const;
+    bool isClosedV( void ) const;
+    bool isClosedW( void ) const;
+    float getUMin( void ) const;
+    float getUMax( void ) const;
+    float getVMin( void ) const;
+    float getVMax( void ) const;     
+    float getWMin( void ) const;
+    float getWMax( void ) const;
+    dtPoint3 getPointPercent( 
+      float const & uu, float const & vv, float const & ww 
+    ) const;
+    dtPoint3 getPoint( dtPoint3 const & ppUVW ) const;
+    dtPoint3 getPointPercent( dtPoint3 const & ppUVW ) const;    
+    float u_percent(float const & uu) const;
+    float v_percent(float const & vv) const;
+    float w_percent(float const & ww) const;    
+    float percent_u(float const & uu) const;
+    float percent_v(float const & vv) const;
+    float percent_w(float const & ww) const;        
+    dtPoint3 percent_uvw(dtPoint3 const & pUVW) const;
+    dtPoint3 uvw_percent(dtPoint3 const & pp) const;    
+    int getRenderResolutionU( void ) const;
+    int getRenderResolutionV( void ) const;            
+    int getRenderResolutionW( void ) const;
     map2dTo3d * segmentConstUPercent( 
       float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;
