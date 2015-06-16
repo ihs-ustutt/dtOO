@@ -8,6 +8,7 @@
 
 namespace dtOO {
   class map2dTo3d;
+  class dtTransformer;
   
   class rotatingMap2dTo3d : public map3dTo3d {
   public:
@@ -16,8 +17,11 @@ namespace dtOO {
     rotatingMap2dTo3d( dtVector3 const & vv, map2dTo3d const * const m2d );
     rotatingMap2dTo3d(const rotatingMap2dTo3d& orig);
     virtual ~rotatingMap2dTo3d();
+    virtual rotatingMap2dTo3d * create( void ) const;        
     virtual rotatingMap2dTo3d * clone( void ) const;
-    virtual rotatingMap2dTo3d * create( void ) const;    
+    virtual rotatingMap2dTo3d * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const;       
     virtual bool isClosed( int const & dir) const;
     virtual float getMin( int const & dir) const;
     virtual float getMax( int const & dir) const;

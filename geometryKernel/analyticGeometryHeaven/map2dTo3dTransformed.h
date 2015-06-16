@@ -36,6 +36,7 @@ namespace dtOO {
       float const & uu, float const & vv
     ) const;    
     virtual dtPoint2 reparamOnFace(dtPoint3 const & ppXYZ) const;  
+    virtual bool isTransformed( void ) const;
   private:
     dt__pH(dtStrongTransformer) _dtT;
   };  
@@ -132,6 +133,11 @@ namespace dtOO {
     dtPoint3 const & ppXYZ
   ) const {
     return map2dTo3d::reparamOnFace( ppXYZ );    
+  }
+  
+  template < typename funT >
+  bool map2dTo3dTransformed< funT >::isTransformed( void ) const {
+    return true;
   }
 }
 #endif	/* MAP2DTO3DTRANSFORMED_H */

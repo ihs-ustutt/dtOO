@@ -18,6 +18,7 @@ SET(HEADERS
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
   analyticGeometryHeaven/analyticGeometryCompound.h
   analyticGeometryHeaven/map2dTo3dTransformed.h
+  analyticGeometryHeaven/map3dTo3dTransformed.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h

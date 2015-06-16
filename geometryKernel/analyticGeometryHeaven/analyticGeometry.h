@@ -25,21 +25,30 @@ namespace dtOO {
     analyticGeometry();
     virtual ~analyticGeometry();
     analyticGeometry( analyticGeometry const & orig );
-    void dump(void) const;
-    virtual std::string dumpToString(void) const;
-    void setRenderResolution(int const & dir, int const & value) const;
-    int getRenderResolution(int const & dir) const;
+    //
+    // overload
+    //
     virtual analyticGeometry * clone( void ) const = 0;
     virtual analyticGeometry * create( void ) const = 0;
-//    virtual void packToExtInfoContainer( extInfoContainer * const eIC ) const;
+    //
+    // optional overload
+    //
+    virtual std::string dumpToString(void) const;
+    virtual bool isTransformed( void ) const;
     virtual bool isCompound( void ) const;
-	  virtual vectorHandling< analyticGeometry const * > compoundInternal( void ) const;
+	  virtual vectorHandling< analyticGeometry const * > compoundInternal( 
+      void 
+    ) const;
+    //
+    //
+    //
+    void dump(void) const;    
+    void setRenderResolution(int const & dir, int const & value) const;
+    int getRenderResolution(int const & dir) const;    
   private:
     mutable int _resU;
     mutable int _resV;
     mutable int _resW;
-    std::vector< std::string > _attType;
-    std::vector< std::string > _attValue;
   };
   
 	//

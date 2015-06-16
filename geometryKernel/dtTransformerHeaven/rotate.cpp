@@ -4,13 +4,15 @@
 #include <geometryEngine/dtSurface.h>
 #include <interfaceHeaven/ptrHandling.h>
 
+#include <analyticGeometryHeaven/map2dTo3d.h>
+#include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/map2dTo3dTransformed.h>
+#include <analyticGeometryHeaven/map3dTo3dTransformed.h>
 #include <geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>
-#include <QtXml/QDomElement>
 
 namespace dtOO {
   rotate::rotate() : dtStrongTransformer() {
@@ -118,48 +120,25 @@ namespace dtOO {
 			//
 			// clone and cast analyticGeometry
 			//
-			dt__pH(analyticGeometry) aGeoP((*it)->clone());
-			map2dTo3d * m2d = map2dTo3d::DownCast(aGeoP.get());
-			analyticSurface * aS = analyticSurface::DownCast(aGeoP.get());
-			map2dTo3dTransformed< analyticSurface > * aST 
-			= 
-			map2dTo3dTransformed< analyticSurface >::DownCast(aGeoP.get());
-			if ( aS && !aST ) {
-				ptrHandling< dtSurface > dtS(
-					geomSurface_surfaceRotateConstructOCC( 
-						aS->ptrDtSurface(), 
-						_origin, 
-						_rotVector, 
-						_angle 
-					).result()
-				);
-				aGeoP.reset( new analyticSurface(dtS.get()) );
-			}
-			else {
-        dtPoint3 p0 = m2d->getPointPercent(0.5,0.5);
-        dtPoint3 p1 = dtTransformer::apply(p0);
-        dtPoint3 p2 = dtTransformer::retract(p1);
-  			aGeoP.reset( m2d->cloneTransformed(this) );
-
-        dt__info(
-          apply(),
-          << dt__eval(aGeoP->virtualClassName()) << std::endl
-          << "Not-rotated: " << dt__point3d(p0) << std::endl
-          << "Rotated:     " << dt__point3d(p1) << std::endl
-          << "Not-rotated: " << dt__point3d(p2) << std::endl
-          << "Rotated:     " 
-          << dt__point3d(
-            map2dTo3d::ConstSecureCast(aGeoP.get())->getPointPercent(0.5,0.5)
+      map2dTo3d const * const m2d = map2dTo3d::ConstDownCast(*it);
+      analyticSurface const * const aS = analyticSurface::ConstDownCast(*it);
+      map3dTo3d const * const m3d = map3dTo3d::ConstDownCast(*it);
+      
+			if ( aS &&  !aS->isTransformed() ) {
+				retAGeo.push_back( 
+          new analyticSurface(
+            dt__tmpPtr(
+              dtSurface,
+              geomSurface_surfaceRotateConstructOCC( 
+                aS->ptrDtSurface(), _origin, _rotVector, _angle 
+              ).result()
+            )
           ) 
-        ); 
-        dtPoint2 p1Reparam = map2dTo3d::ConstSecureCast(aGeoP.get())->reparamOnFace(p1);
-        p1Reparam = map2dTo3d::ConstSecureCast(aGeoP.get())->percent_uv(p1Reparam);
-        dt__info( apply(), << "Inv(Rotated) " << dt__point2d(p1Reparam) );
+        );
 			}
-			//
-			// push translated geometry in vector
-			//      
-			retAGeo.push_back( aGeoP->clone() );
+			else if (m2d) retAGeo.push_back( m2d->cloneTransformed(this) );
+			else if (m3d) retAGeo.push_back( m3d->cloneTransformed(this) );        
+      else dt__throwUnexpected(apply());
     }
     return retAGeo;
   }

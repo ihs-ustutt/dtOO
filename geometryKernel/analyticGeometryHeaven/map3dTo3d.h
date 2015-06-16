@@ -9,6 +9,7 @@
 namespace dtOO {
   class map1dTo3d;
   class map2dTo3d;
+  class dtTransformer;
   
   class map3dTo3d : public analyticGeometry {
   public:
@@ -20,8 +21,11 @@ namespace dtOO {
     //
     // overload
     //
-    virtual map3dTo3d * clone( void ) const = 0;
     virtual map3dTo3d * create( void ) const = 0;
+    virtual map3dTo3d * clone( void ) const = 0;
+    virtual map3dTo3d * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const = 0;    
     virtual dtPoint3 getPoint( 
       float const & uu, float const & vv, float const & ww 
     ) const = 0;
@@ -31,18 +35,19 @@ namespace dtOO {
     //
     // optional overload
     //
-    virtual std::vector< dtVector3 > firstDer( 
+    virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;        
+    virtual std::vector< dtVector3 > firstDer(
       float const & uu, float const & vv, float const & ww
     ) const;
-    virtual map1dTo3d * segment( 
+    virtual map1dTo3d * segment(
       dtPoint3 const & p0, dtPoint3 const & p1
     ) const;
-    virtual map2dTo3d * segment( 
+    virtual map2dTo3d * segment(
       twoDArrayHandling< dtPoint3 > const & pp 
     ) const;
     virtual map2dTo3d * segmentConstU( float const & uu ) const;
     virtual map2dTo3d * segmentConstV( float const & vv ) const;
-    virtual map2dTo3d * segmentConstW( float const & ww ) const;    
+    virtual map2dTo3d * segmentConstW( float const & ww ) const;
     virtual map2dTo3d * segmentConstU( 
       float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;
@@ -52,7 +57,6 @@ namespace dtOO {
     virtual map2dTo3d * segmentConstW( 
       float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;
-    virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;    
     //
     //
     //
@@ -133,6 +137,9 @@ namespace dtOO {
       double relax, double extU, double extV, double extW,
       std::vector< float > &itVal
     ) const;
+	  double F(double const * xx) const;    
+  private:
+    mutable dtPoint3 _pXYZ;
   };
 }
 #endif	/* MAP3DTO3D_H */

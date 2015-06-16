@@ -8,6 +8,7 @@
 namespace dtOO {
   class map2dTo3d;
   class transIntCube;
+  class dtTransformer;
   
   class trans6SidedCube : public map3dTo3d {
   public:
@@ -22,8 +23,11 @@ namespace dtOO {
       map2dTo3d const * const aS4,
       map2dTo3d const * const aS5
     );    
+    virtual trans6SidedCube * create( void ) const;       
     virtual trans6SidedCube * clone( void ) const;
-    virtual trans6SidedCube * create( void ) const;    
+    virtual trans6SidedCube * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const;     
     virtual ~trans6SidedCube();
     virtual bool isClosed( int const & dir) const;
     virtual float getMin( int const & dir) const;

@@ -5,6 +5,8 @@
 #include "map2dTo3d.h"
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/ptrVectorHandling.h>
+#include "map3dTo3dTransformed.h"
+#include <dtTransformerHeaven/dtTransformer.h>
 
 namespace dtOO { 
   trans6SidedCube::trans6SidedCube() : map3dTo3d() {
@@ -26,12 +28,18 @@ namespace dtOO {
     _tI.reset( new transIntCube(aS0, aS1, aS2, aS3, aS4, aS5) );
   }
 
+  trans6SidedCube * trans6SidedCube::create( void ) const {
+    return new trans6SidedCube();
+  }
+  
   trans6SidedCube * trans6SidedCube::clone( void ) const {
     return new trans6SidedCube(*this);
   }
   
-  trans6SidedCube * trans6SidedCube::create( void ) const {
-    return new trans6SidedCube();
+  trans6SidedCube * trans6SidedCube::cloneTransformed( 
+    dtTransformer const * const dtT  
+  ) const {
+    return new map3dTo3dTransformed< trans6SidedCube >(*this, dtT);
   }
     
   trans6SidedCube::~trans6SidedCube() {
@@ -48,13 +56,10 @@ namespace dtOO {
     switch (dir) {
       case 0:
         return false;
-        break;
       case 1:
         return false;
-        break;
       case 2:
-        return false;
-        break;        
+        return false;      
       default:
         dt__throw(isClosed(),
               << dt__eval(dir) << std::endl
@@ -66,13 +71,10 @@ namespace dtOO {
     switch (dir) {
       case 0:
         return 0.;
-        break;
       case 1:
         return 0.;
-        break;
       case 2:
-        return 0.;
-        break;        
+        return 0.;    
       default:
         dt__throw(getMin(),
               << dt__eval(dir) << std::endl
@@ -84,13 +86,10 @@ namespace dtOO {
     switch (dir) {
       case 0:
         return 1.;
-        break;
       case 1:
         return 1.;
-        break;
       case 2:
-        return 1.;
-        break;        
+        return 1.;    
       default:
         dt__throw(getMax(),
               << dt__eval(dir) << std::endl

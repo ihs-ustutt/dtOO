@@ -19,7 +19,10 @@
 #include "vec3dOneDInMap3dTo3d.h"
 #include <discrete3dVector.h>
 
-#define SQU(a)      ((a)*(a))
+#include <Minuit2/Minuit2Minimizer.h>
+#include <Math/Functor.h>
+
+//#define SQU(a)      ((a)*(a))
 
 namespace dtOO { 
   map3dTo3d::map3dTo3d() : analyticGeometry() {
@@ -198,15 +201,6 @@ namespace dtOO {
       /
       (u_percent(1.) - u_percent(1.-deltaPer) );      
     }
-//  }
-
-//  dtVector3 map3dTo3d::firstDerV( 
-//    float const & uu, float const & vv, float const & ww
-//  ) const {
-//    float uP = percent_u(uu);
-//    float vP = percent_v(vv);
-//    float wP = percent_w(ww);
-//    float const deltaPer = 0.01;
     
     if (vP<deltaPer) {
       ret[1]
@@ -232,16 +226,7 @@ namespace dtOO {
       /
       (v_percent(1.) - v_percent(1.-deltaPer) );      
     }
-//  }  
 
-//  dtVector3 map3dTo3d::firstDerW( 
-//    float const & uu, float const & vv, float const & ww
-//  ) const {
-//    float uP = percent_u(uu);
-//    float vP = percent_v(vv);
-//    float wP = percent_w(ww);
-//    float const deltaPer = 0.01;
-    
     if (wP<deltaPer) {
       ret[2]
       =
@@ -686,188 +671,192 @@ namespace dtOO {
     return dtPoint3(U, V, W);      
   }
 	
-	bool map3dTo3d::XYZtoUVW(
-		double X, double Y, double Z, 
-		double &U, double &V, double &W,
-		double relax, double extU, double extV, double extW,
-		std::vector< float > &itVal
-	) const {
-    double const Precision
-    =
-    static_cast<double>(
-      staticPropertiesHandler::getInstance()->getOptionFloat(
-        "reparamInVolume_precision"
-      )
-    );    
-    double const precXYZ
-    =
-    static_cast<double>(
-      staticPropertiesHandler::getInstance()->getOptionFloat(
-        "reparamInVolume_precisionXYZ"
-      )
-    );      		
-    const int MaxIter = 25;
-    const int NumInitGuess = 9;
-
-    double Unew = 0., Vnew = 0., Wnew = 0., err, err2;
-    int iter;
-    double umin, umax, vmin, vmax, wmin, wmax;
-    // don't use 0.9, 0.1 it fails with ruled surfaces
-    double initu[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 1.0, 0.0};
-    double initv[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 1.0, 0.0};
-    double initw[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 1.0, 0.0};
-
-    
-    umax = static_cast<double>(getUMax());
-		umin = static_cast<double>(getUMin());
-		double udiff = extU;
-		umax = umax + 0.1*udiff;
-		umin = umin - 0.1*udiff;
-    vmin = static_cast<double>(getVMin());
-    vmax = static_cast<double>(getVMax());
-		double vdiff = extV;
-		vmax = vmax + 0.1*vdiff;		
-		vmin = vmin - 0.1*vdiff;
-    wmin = static_cast<double>(getWMin());
-    wmax = static_cast<double>(getWMax());
-		double wdiff = extW;
-		wmax = wmax + 0.1*wdiff;		
-		wmin = wmin - 0.1*wdiff;
-    
-    const double tol 
-    = 
-    Precision * (SQU(umax - umin) + SQU(vmax-vmin) + SQU(wmax-wmin));
-    for(int i = 0; i < NumInitGuess; i++) {
-      initu[i] = umin + initu[i] * (umax - umin);
-      initv[i] = vmin + initv[i] * (vmax - vmin);
-      initw[i] = wmin + initw[i] * (wmax - wmin);
-    }
-
-    for(int i = 0; i < NumInitGuess; i++){
-			U = initu[i];
-      for(int j = 0; j < NumInitGuess; j++){
-				V = initv[j];
-        for(int k = 0; k < NumInitGuess; k++){
-					W = initw[k];
-  				err = 1.0;
-					iter = 1;
-					
-          try { /* -------------------------------------------------------TRY */
-  					dtPoint3 P 
-						= 
-						getPoint(
-							static_cast<float>(U), 
-							static_cast<float>(V), 
-							static_cast<float>(W)
-						);
-						err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
-  //      if (err2 < 1.e-8 * CTX::instance()->lc) return;
-
-						while(err > tol && iter < MaxIter) {
-							P 
-							= 
-							getPoint(
-								static_cast<float>(U), 
-                static_cast<float>(V), 
-                static_cast<float>(W)
-							);
-							dtVector3 derU 
-							= 
-							firstDerU(
-								static_cast<float>(U), 
-                static_cast<float>(V), 
-                static_cast<float>(W)
-							);
-							dtVector3 derV 
-							= 
-							firstDerV(
-								static_cast<float>(U), 
-                static_cast<float>(V), 
-                static_cast<float>(W)
-							);
-							dtVector3 derW 
-							= 
-							firstDerW(
-								static_cast<float>(U), 
-                static_cast<float>(V), 
-                static_cast<float>(W)
-							);
-							dtMatrix mat(3,3);
-							mat(0,0) = derU.x(); mat(0,1) = derU.y(); mat(0,2) = derU.z();
-							mat(1,0) = derV.x(); mat(1,1) = derV.y(); mat(1,2) = derV.z();
-							mat(2,0) = derW.x(); mat(2,1) = derW.y(); mat(2,2) = derW.z();            
-							dtMatrix jac = dtLinearAlgebra::invertMatrix(mat);
-
-							Unew = U + relax *
-								(jac(0,0) * (X - P.x()) + jac(1,0) * (Y - P.y()) +
-								 jac(2,0) * (Z - P.z()));
-							Vnew = V + relax *
-								(jac(0,1) * (X - P.x()) + jac(1,1) * (Y - P.y()) +
-								 jac(2,1) * (Z - P.z()));
-							Wnew = W + relax *
-								(jac(0,2) * (X - P.x()) + jac(1,2) * (Y - P.y()) +
-								 jac(2,2) * (Z - P.z()));
-
-							// don't remove this test: it is important
-							if((Unew > umax+tol || Unew < umin-tol) ||
-								 (Vnew > vmax+tol || Vnew < vmin-tol) ||
-								 (Wnew > wmax+tol || Wnew < wmin-tol)) {
-								break;
-							}
-
-							err = SQU(Unew - U) + SQU(Vnew - V) + SQU(Wnew - W);
-							err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
-
-							iter++;
-							U = Unew;
-							V = Vnew;
-							W = Wnew;
-						}
-
-						itVal.push_back(static_cast<float>(i) );
-						itVal.push_back(static_cast<float>(j) );
-						itVal.push_back(static_cast<float>(k) );																	
-						itVal.push_back(static_cast<float>(err2) );
-						itVal.push_back(static_cast<float>(err) );
-						itVal.push_back(static_cast<float>(iter) );
-							
-					bool inRange = (Unew <= umax) && (Vnew <= vmax) && (Wnew <= wmax)
-					               && (Unew >= umin) && (Vnew >= vmin) && (Wnew >= wmin);
-					bool uvwConv = (err <= tol);
-					bool xyzConv = (err2 <= precXYZ);
-					
-					if( ( (iter<MaxIter) && inRange && xyzConv ) 
-						|| ( (iter<MaxIter) && inRange && uvwConv )  
-						) {
-							return true;
-						}
-					}     /* ---------------------------------------------------END TRY */
-					catch (eGeneral & eGenRef) {
-						itVal.push_back(static_cast<float>(i) );
-						itVal.push_back(static_cast<float>(j) );
-						itVal.push_back(static_cast<float>(k) );																								
-						itVal.push_back(static_cast<float>(err2) );
-						itVal.push_back(static_cast<float>(err) );
-						itVal.push_back(static_cast<float>(-iter) );						
-						dt__warning(
-						  XYZtoUVW(), 
-							<< "Break initial guess (" << i << ", " << j << ", " << k 
-							<< ") and try next one." << std::endl
-							<< eGenRef.what());
-					  break;
-					}    						
-				}
-      }
-    }
-
-    if(relax < 1.e-6) {
-      dt__info(XYZtoUVW(), << "Could not converge: surface mesh could be wrong");
-      return false;
-    }
-    else {
-      return XYZtoUVW(X, Y, Z, U, V, W, 0.75 * relax, extU, extV, extW, itVal);
-    }
-  }    
+//	bool map3dTo3d::XYZtoUVW(
+//		double X, double Y, double Z, 
+//		double &U, double &V, double &W,
+//		double relax, double extU, double extV, double extW,
+//		std::vector< float > &itVal
+//	) const {
+//    double const Precision
+//    =
+//    static_cast<double>(
+//      staticPropertiesHandler::getInstance()->getOptionFloat(
+//        "reparamInVolume_precision"
+//      )
+//    );    
+//    double const precXYZ
+//    =
+//    static_cast<double>(
+//      staticPropertiesHandler::getInstance()->getOptionFloat(
+//        "reparamInVolume_precisionXYZ"
+//      )
+//    );      		
+//    const int MaxIter = 25;
+//    const int NumInitGuess = 9;
+//
+//    double Unew = 0., Vnew = 0., Wnew = 0., err, err2;
+//    int iter;
+//    double umin, umax, vmin, vmax, wmin, wmax;
+//    // don't use 0.9, 0.1 it fails with ruled surfaces
+//    double initu[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 1.0, 0.0};
+//    double initv[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 1.0, 0.0};
+//    double initw[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 1.0, 0.0};
+//
+//    
+//    umax = static_cast<double>(getUMax());
+//		umin = static_cast<double>(getUMin());
+//		double udiff = extU;
+//		umax = umax + 0.1*udiff;
+//		umin = umin - 0.1*udiff;
+//    vmin = static_cast<double>(getVMin());
+//    vmax = static_cast<double>(getVMax());
+//		double vdiff = extV;
+//		vmax = vmax + 0.1*vdiff;		
+//		vmin = vmin - 0.1*vdiff;
+//    wmin = static_cast<double>(getWMin());
+//    wmax = static_cast<double>(getWMax());
+//		double wdiff = extW;
+//		wmax = wmax + 0.1*wdiff;		
+//		wmin = wmin - 0.1*wdiff;
+//    
+//    const double tol 
+//    = 
+//    Precision * (SQU(umax - umin) + SQU(vmax-vmin) + SQU(wmax-wmin));
+//    for(int i = 0; i < NumInitGuess; i++) {
+//      initu[i] = umin + initu[i] * (umax - umin);
+//      initv[i] = vmin + initv[i] * (vmax - vmin);
+//      initw[i] = wmin + initw[i] * (wmax - wmin);
+//    }
+//
+//    for(int i = 0; i < NumInitGuess; i++){
+//			U = initu[i];
+//      for(int j = 0; j < NumInitGuess; j++){
+//				V = initv[j];
+//        for(int k = 0; k < NumInitGuess; k++){
+//					W = initw[k];
+//  				err = 1.0;
+//					iter = 1;
+//					
+//          try { /* -------------------------------------------------------TRY */
+//  					dtPoint3 P 
+//						= 
+//						getPoint(
+//							static_cast<float>(U), 
+//							static_cast<float>(V), 
+//							static_cast<float>(W)
+//						);
+//						err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
+//  //      if (err2 < 1.e-8 * CTX::instance()->lc) return;
+//
+//						while(err > tol && iter < MaxIter) {
+//							P 
+//							= 
+//							getPoint(
+//								static_cast<float>(U), 
+//                static_cast<float>(V), 
+//                static_cast<float>(W)
+//							);
+//							dtVector3 derU 
+//							= 
+//							firstDerU(
+//								static_cast<float>(U), 
+//                static_cast<float>(V), 
+//                static_cast<float>(W)
+//							);
+//							dtVector3 derV 
+//							= 
+//							firstDerV(
+//								static_cast<float>(U), 
+//                static_cast<float>(V), 
+//                static_cast<float>(W)
+//							);
+//							dtVector3 derW 
+//							= 
+//							firstDerW(
+//								static_cast<float>(U), 
+//                static_cast<float>(V), 
+//                static_cast<float>(W)
+//							);
+//							dtMatrix mat(3,3);
+//							mat(0,0) = derU.x(); mat(0,1) = derU.y(); mat(0,2) = derU.z();
+//							mat(1,0) = derV.x(); mat(1,1) = derV.y(); mat(1,2) = derV.z();
+//							mat(2,0) = derW.x(); mat(2,1) = derW.y(); mat(2,2) = derW.z();            
+//							dtMatrix jac = dtLinearAlgebra::invertMatrix(mat);
+//
+//							Unew = U + relax *
+//								(jac(0,0) * (X - P.x()) + jac(1,0) * (Y - P.y()) +
+//								 jac(2,0) * (Z - P.z()));
+//							Vnew = V + relax *
+//								(jac(0,1) * (X - P.x()) + jac(1,1) * (Y - P.y()) +
+//								 jac(2,1) * (Z - P.z()));
+//							Wnew = W + relax *
+//								(jac(0,2) * (X - P.x()) + jac(1,2) * (Y - P.y()) +
+//								 jac(2,2) * (Z - P.z()));
+//              
+//							// don't remove this test: it is important
+//							if((Unew > umax+tol || Unew < umin-tol) ||
+//								 (Vnew > vmax+tol || Vnew < vmin-tol) ||
+//								 (Wnew > wmax+tol || Wnew < wmin-tol)) {
+//								break;
+//							}
+//
+//              if ( isnan(Unew) ) break;
+//              if ( isnan(Vnew) ) break;
+//              if ( isnan(Wnew) ) break;
+//              
+//							err = SQU(Unew - U) + SQU(Vnew - V) + SQU(Wnew - W);
+//							err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
+//
+//							iter++;
+//							U = Unew;
+//							V = Vnew;
+//							W = Wnew;
+//						}
+//
+//						itVal.push_back(static_cast<float>(i) );
+//						itVal.push_back(static_cast<float>(j) );
+//						itVal.push_back(static_cast<float>(k) );																	
+//						itVal.push_back(static_cast<float>(err2) );
+//						itVal.push_back(static_cast<float>(err) );
+//						itVal.push_back(static_cast<float>(iter) );
+//							
+//					bool inRange = (Unew <= umax) && (Vnew <= vmax) && (Wnew <= wmax)
+//					               && (Unew >= umin) && (Vnew >= vmin) && (Wnew >= wmin);
+//					bool uvwConv = (err <= tol);
+//					bool xyzConv = (err2 <= precXYZ);
+//					
+//					if( ( (iter<MaxIter) && inRange && xyzConv ) 
+//						|| ( (iter<MaxIter) && inRange && uvwConv )  
+//						) {
+//							return true;
+//						}
+//					}     /* ---------------------------------------------------END TRY */
+//					catch (eGeneral & eGenRef) {
+//						itVal.push_back(static_cast<float>(i) );
+//						itVal.push_back(static_cast<float>(j) );
+//						itVal.push_back(static_cast<float>(k) );																								
+//						itVal.push_back(static_cast<float>(err2) );
+//						itVal.push_back(static_cast<float>(err) );
+//						itVal.push_back(static_cast<float>(-iter) );						
+//						dt__warning(
+//						  XYZtoUVW(), 
+//							<< "Break initial guess (" << i << ", " << j << ", " << k 
+//							<< ") and try next one." << std::endl
+//							<< eGenRef.what());
+//					  break;
+//					}    						
+//				}
+//      }
+//    }
+//
+//    if(relax < 1.e-6) {
+//      dt__info(XYZtoUVW(), << "Could not converge: surface mesh could be wrong");
+//      return false;
+//    }
+//    else {
+//      return XYZtoUVW(X, Y, Z, U, V, W, 0.75 * relax, extU, extV, extW, itVal);
+//    }
+//  }    
 
   bool map3dTo3d::XYZtoUVW(
 		double X, double Y, double Z, 
@@ -876,4 +865,62 @@ namespace dtOO {
   ) const {
 		return XYZtoUVW(X, Y, Z, U, V, W, relax, 0., 0., 0., itVal);
 	}
+
+    bool map3dTo3d::XYZtoUVW(
+      double X, double Y, double Z, 
+      double &U, double &V, double &W,
+      double relax, double extU, double extV, double extW,
+      std::vector< float > &itVal
+    ) const {
+    _pXYZ = dtPoint3(X, Y, Z);
+		// 
+		// multidimensional minimization
+		//
+    ROOT::Minuit2::Minuit2Minimizer min;
+		ROOT::Math::Functor toMin(
+			this, &map3dTo3d::F, 3 
+		);			
+		min.SetFunction(toMin);
+
+		//
+		// set bounds
+		//
+    std::vector< float > ext(3, 0);
+    ext[0] = extU; ext[1] = extV; ext[2] = extW;
+    for (int ii=0; ii<3; ii++) {
+      std::string xStr = "x"+stringPrimitive::intToString(ii);
+		  min.SetVariable( ii, xStr, .5, 0.01 );			
+      min.SetVariableLimits(ii, 0.-ext[ii], 1.+ext[ii]);	
+    }
+    
+		//
+		// minimizer options
+		//
+		min.SetMaxFunctionCalls(1000000);
+		min.SetMaxIterations(100000);
+		min.SetTolerance(0.00001);			
+		min.SetPrintLevel(3);
+
+		//
+		// minimize
+		//
+   	min.Minimize();
+
+    double const * const theRoot = min.X( );
+
+    U = theRoot[0];
+    V = theRoot[1];
+    W = theRoot[2];
+    
+    return true;
+	}
+  
+	double map3dTo3d::F(double const * xx) const {	
+    double objective 
+    = 
+    dtLinearAlgebra::length(
+      _pXYZ - getPointPercent(dtPoint3(xx[0], xx[1], xx[2]))
+    );
+    return objective;
+	}	   
 }

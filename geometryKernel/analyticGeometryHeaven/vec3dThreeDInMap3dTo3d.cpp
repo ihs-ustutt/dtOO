@@ -5,6 +5,8 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <analyticFunctionHeaven/vec3dThreeD.h>
 #include <progHelper.h>
+#include "map3dTo3dTransformed.h"
+#include <dtTransformerHeaven/dtTransformer.h>
 
 namespace dtOO {    
   vec3dThreeDInMap3dTo3d::vec3dThreeDInMap3dTo3d() : map3dTo3d() {
@@ -60,12 +62,18 @@ namespace dtOO {
     return _v3d->xMax(dir);    
   }
 
-  map3dTo3d * vec3dThreeDInMap3dTo3d::create( void ) const {
+  vec3dThreeDInMap3dTo3d * vec3dThreeDInMap3dTo3d::create( void ) const {
     return new vec3dThreeDInMap3dTo3d();
   }
   
-  map3dTo3d * vec3dThreeDInMap3dTo3d::clone( void ) const {
+  vec3dThreeDInMap3dTo3d * vec3dThreeDInMap3dTo3d::clone( void ) const {
     return new vec3dThreeDInMap3dTo3d(*this);
+  }
+  
+  vec3dThreeDInMap3dTo3d * vec3dThreeDInMap3dTo3d::cloneTransformed( 
+    dtTransformer const * const dtT  
+  ) const {
+    return new map3dTo3dTransformed< vec3dThreeDInMap3dTo3d >(*this, dtT);
   }
   
   dtPoint3 vec3dThreeDInMap3dTo3d::reparamInVolume(

@@ -77,7 +77,11 @@ namespace dtOO {
 	std::string analyticGeometry::dumpToString(void) const {
 		return std::string("");
 	}
-	
+
+  bool analyticGeometry::isTransformed( void ) const {
+		return false;
+	}
+    
 	bool analyticGeometry::isCompound( void ) const {
 		return false;
 	}

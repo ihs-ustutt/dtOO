@@ -1,14 +1,7 @@
 #include "infinityMap3dTo3d.h"
 #include <logMe/logMe.h>
-#include "map2dTo3d.h"
-#include "map1dTo3d.h"
-#include "splineCurve3d.h"
-#include "analyticSurface.h"
-#include "rotatingSpline.h"
-#include <geometryEngine/dtSurface.h>
-#include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
-#include <geometryEngine/dtCurve.h>
-#include <geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h>
+#include "map3dTo3dTransformed.h"
+#include <dtTransformerHeaven/dtTransformer.h>
 
 namespace dtOO {
 	infinityMap3dTo3d::infinityMap3dTo3d() : map3dTo3d() {
@@ -25,25 +18,28 @@ namespace dtOO {
     
 	}
 	
+	infinityMap3dTo3d * infinityMap3dTo3d::create( void ) const {
+		return new infinityMap3dTo3d();
+	}
+  
 	infinityMap3dTo3d * infinityMap3dTo3d::clone( void ) const {
 		return new infinityMap3dTo3d( *this );
 	}
     
-	infinityMap3dTo3d * infinityMap3dTo3d::create( void ) const {
-		return new infinityMap3dTo3d();
-	}
+  infinityMap3dTo3d * infinityMap3dTo3d::cloneTransformed( 
+    dtTransformer const * const dtT  
+  ) const {
+    return new map3dTo3dTransformed< infinityMap3dTo3d >(*this, dtT);
+  }  
 	
   bool infinityMap3dTo3d::isClosed( int const & dir) const {
     switch (dir) {
       case 0:
         return false;
-        break;
       case 1:
         return false;
-        break;
       case 2:
-        return false;
-        break;        
+        return false;      
       default:
         dt__throw(isClosed(),
               << dt__eval(dir) << std::endl
@@ -55,13 +51,10 @@ namespace dtOO {
     switch (dir) {
       case 0:
         return -1.;
-        break;
       case 1:
         return -1.;
-        break;
       case 2:
-        return -1.;
-        break;        
+        return -1.;    
       default:
         dt__throw(getMin(),
               << dt__eval(dir) << std::endl
@@ -73,13 +66,10 @@ namespace dtOO {
     switch (dir) {
       case 0:
         return 1.;
-        break;
       case 1:
         return 1.;
-        break;
       case 2:
-        return 1.;
-        break;        
+        return 1.;    
       default:
         dt__throw(getMax(),
               << dt__eval(dir) << std::endl

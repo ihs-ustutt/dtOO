@@ -1,5 +1,7 @@
 #include "rotatingMap2dTo3d.h"
 #include <logMe/logMe.h>
+#include "map3dTo3dTransformed.h"
+#include <dtTransformerHeaven/dtTransformer.h>
 #include "map2dTo3d.h"
 #include "map1dTo3d.h"
 #include "splineCurve3d.h"
@@ -43,25 +45,28 @@ namespace dtOO {
 		correctOrigin();
 	}
   
-	rotatingMap2dTo3d * rotatingMap2dTo3d::clone( void ) const {
-		return new rotatingMap2dTo3d( *this );
-	}
-    
 	rotatingMap2dTo3d * rotatingMap2dTo3d::create( void ) const {
 		return new rotatingMap2dTo3d();
 	}
+  
+	rotatingMap2dTo3d * rotatingMap2dTo3d::clone( void ) const {
+		return new rotatingMap2dTo3d( *this );
+	}
+  
+  rotatingMap2dTo3d * rotatingMap2dTo3d::cloneTransformed( 
+    dtTransformer const * const dtT  
+  ) const {
+    return new map3dTo3dTransformed< rotatingMap2dTo3d >(*this, dtT);
+  }  
 	
   bool rotatingMap2dTo3d::isClosed( int const & dir) const {
     switch (dir) {
       case 0:
         return true;
-        break;
       case 1:
         return false;
-        break;
       case 2:
         return false;
-        break;        
       default:
         dt__throw(isClosed(),
               << dt__eval(dir) << std::endl
@@ -73,13 +78,10 @@ namespace dtOO {
     switch (dir) {
       case 0:
         return 0.;
-        break;
       case 1:
         return _m2d->getUMin();
-        break;
       case 2:
         return _m2d->getVMin();
-        break;        
       default:
         dt__throw(getMin(),
               << dt__eval(dir) << std::endl
@@ -91,13 +93,10 @@ namespace dtOO {
     switch (dir) {
       case 0:
         return 1.;
-        break;
       case 1:
         return _m2d->getUMax();
-        break;
       case 2:
         return _m2d->getVMax();
-        break;        
       default:
         dt__throw(getMax(),
               << dt__eval(dir) << std::endl
@@ -191,10 +190,12 @@ namespace dtOO {
 
 			_pp = _pp + _vv  * adjusting;
 
-			dt__warning(correctOrigin(),
-							<< dt__eval(dist*_vv) << std::endl 
-							<< "Origin of rotSpline is not correct!" << std::endl
-							<< "Move origin to " << dt__point3d(_pp) );        
+			dt__warning(
+        correctOrigin(),
+				<< dt__eval(dist*_vv) << std::endl 
+				<< "Origin of rotSpline is not correct!" << std::endl
+				<< "Move origin to " << dt__point3d(_pp) 
+      );
 		}
 	}
 
