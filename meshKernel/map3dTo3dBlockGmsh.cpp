@@ -110,10 +110,10 @@ namespace dtOO {
 		//
 		// meshing
 		//
-		_gm->mesh(0);
-		_gm->mesh(1);
-		_gm->mesh(2);
-		_gm->mesh(3);
+		if ( !optionHandling::optionTrue("defer_mesh_0") ) _gm->meshPhysical(0);
+		if ( !optionHandling::optionTrue("defer_mesh_1") ) _gm->meshPhysical(1);
+		if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
+		if ( !optionHandling::optionTrue("defer_mesh_3") ) _gm->meshPhysical(3);
 		
 		boundedVolume::postNotify();
 		
