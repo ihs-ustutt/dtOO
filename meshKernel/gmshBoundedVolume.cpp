@@ -45,7 +45,7 @@ namespace dtOO {
 		//
 		// get compound and put pieces as regions to gmsh model
 		//
-		_gm.reset( new dtGmshModel() );
+		_gm.reset( new dtGmshModel( getLabel() ) );
 
     ::GModel::setCurrent(_gm.get());		
     
