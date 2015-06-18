@@ -1,4 +1,5 @@
 #include "map3dTo3dWithInternalGmsh.h"
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/qtXmlBase.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshRegion.h>
@@ -55,12 +56,16 @@ namespace dtOO {
 		= 
 		qtXmlPrimitive::getChildVector("analyticGeometry", element);
 		dt__forAllIter(std::vector< QDomElement >, wElement, it) {
-			std::string label = qtXmlPrimitive::getAttributeStr("label", *it);
 			//
 			// get analyticGeometry, cast and store in region vector
 			//
-			map3dTo3d const * mm3d = map3dTo3d::ConstDownCast( aG->get(label) );
-			map2dTo3d const * mm2d = map2dTo3d::ConstDownCast( aG->get(label) );
+      dt__pH(analyticGeometry) aG_t( 
+        dtXmlParserBase::createAnalyticGeometry(
+          *it, (baseContainer*)bC, cV, aF, aG
+        )
+      );
+			map3dTo3d const * const mm3d = map3dTo3d::ConstDownCast(aG_t.get());
+			map2dTo3d const * const mm2d = map2dTo3d::ConstDownCast(aG_t.get());
 			
 			if (mm3d) {
 				_m3d.reset( mm3d->clone() );

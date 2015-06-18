@@ -48,6 +48,10 @@ namespace dtOO {
 		_gm.reset( new dtGmshModel() );
 
     ::GModel::setCurrent(_gm.get());		
+    
+    if (optionHandling::hasOption("debug")) {
+      _gm->setDebug(optionHandling::getOption("debug"));
+    };
 	}	
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( void ) const {

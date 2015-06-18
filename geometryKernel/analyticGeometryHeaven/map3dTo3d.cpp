@@ -22,8 +22,6 @@
 #include <Minuit2/Minuit2Minimizer.h>
 #include <Math/Functor.h>
 
-//#define SQU(a)      ((a)*(a))
-
 namespace dtOO { 
   map3dTo3d::map3dTo3d() : analyticGeometry() {
   }
@@ -721,7 +719,11 @@ namespace dtOO {
 //    
 //    const double tol 
 //    = 
-//    Precision * (SQU(umax - umin) + SQU(vmax-vmin) + SQU(wmax-wmin));
+//    Precision * (
+//        (umax - umin)*(umax - umin) 
+//      + (vmax - vmin)*(vmax - vmin) 
+//      + (wmax - wmin)*(wmax - wmin)
+//    );
 //    for(int i = 0; i < NumInitGuess; i++) {
 //      initu[i] = umin + initu[i] * (umax - umin);
 //      initv[i] = vmin + initv[i] * (vmax - vmin);
@@ -745,7 +747,13 @@ namespace dtOO {
 //							static_cast<float>(V), 
 //							static_cast<float>(W)
 //						);
-//						err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
+//						err2 
+//            = 
+//            sqrt(
+//                (X - P.x())*(X - P.x()) 
+//              + (Y - P.y())*(Y - P.y())
+//              + (Z - P.z())*(Z - P.z())
+//            );
 //  //      if (err2 < 1.e-8 * CTX::instance()->lc) return;
 //
 //						while(err > tol && iter < MaxIter) {
@@ -804,8 +812,18 @@ namespace dtOO {
 //              if ( isnan(Vnew) ) break;
 //              if ( isnan(Wnew) ) break;
 //              
-//							err = SQU(Unew - U) + SQU(Vnew - V) + SQU(Wnew - W);
-//							err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
+//							err 
+//              = 
+//                (Unew - U)*(Unew - U) 
+//              + (Vnew - V)*(Vnew - V) 
+//              + (Wnew - W)*(Wnew - W);
+//							err2 
+//              = 
+//              sqrt(
+//                  (X - P.x())*(X - P.x()) 
+//                + (Y - P.y())*(Y - P.y()) 
+//                + (Z - P.z())*(Z - P.z())
+//              );
 //
 //							iter++;
 //							U = Unew;
