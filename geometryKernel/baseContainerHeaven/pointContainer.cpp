@@ -16,15 +16,21 @@ namespace dtOO {
     _pair.clear();
   }
 
-  void pointContainer::add( dtPoint3 const * const pointP, std::string const * const stringP ) {
+  void pointContainer::add( 
+    dtPoint3 const * const pointP, std::string const * const stringP 
+  ) {
     this->add(*pointP, *stringP);  
   }
 
-  void pointContainer::add( dtPoint3 const * const pointP, std::string const  string ) {
+  void pointContainer::add( 
+    dtPoint3 const * const pointP, std::string const  string 
+  ) {
     this->add(*pointP, string);  
   }
 
-  void pointContainer::add( dtPoint3 const point, std::string const * const stringP ) {
+  void pointContainer::add( 
+    dtPoint3 const point, std::string const * const stringP 
+  ) {
     this->add(point, *stringP);    
   }
 
@@ -51,6 +57,7 @@ namespace dtOO {
         return ( _pair[ii].first );
       }
     }
+    dt__throw(get(), << string << " not in pointContainer.");
   }
 
   dtPoint3 pointContainer::get(std::string const * const stringP ) const {

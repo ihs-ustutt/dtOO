@@ -22,6 +22,9 @@ namespace dtOO {
     vectorContainer * const ptrVectorContainer( void );
     vectorContainer const * const constPtrVectorContainer( void ) const;
     transformerContainer * const ptrTransformerContainer( void );
+    transformerContainer const * const constPtrTransformerContainer( 
+      void 
+    ) const;
     virtual ~baseContainer();
   private:
     dt__pH(pointContainer) _pC;

@@ -32,7 +32,9 @@ namespace dtOO {
 		return _pC.get();
 	}
 
-	pointContainer const * const baseContainer::constPtrPointContainer( void ) const {
+	pointContainer const * const baseContainer::constPtrPointContainer( 
+    void 
+  ) const {
 	  dt__throwIf(_pC.get() == NULL, constPtrPointContainer());
 		
 		return _pC.get();
@@ -44,7 +46,9 @@ namespace dtOO {
 		return _vC.get();
 	}
 
-	vectorContainer const * const baseContainer::constPtrVectorContainer( void ) const {
+	vectorContainer const * const baseContainer::constPtrVectorContainer( 
+    void 
+  ) const {
 	  dt__throwIf(_vC.get() == NULL, constPtrVectorContainer());
 		
 		return _vC.get();
@@ -55,4 +59,11 @@ namespace dtOO {
 		
 		return _tC.get();
   }
+
+	transformerContainer const * const 
+  baseContainer::constPtrTransformerContainer( void ) const {
+	  dt__throwIf(_tC.get() == NULL, constPtrTransformerContainer);
+		
+		return _tC.get();
+  }  
 }
