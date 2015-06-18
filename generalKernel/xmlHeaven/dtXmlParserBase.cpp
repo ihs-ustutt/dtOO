@@ -1458,12 +1458,31 @@ namespace dtOO {
   }
 		
   analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
+    QDomElement const & toBuildP,
+    baseContainer * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF, 
+    vectorHandling< analyticGeometry * > const * const aG
+  ) {
+    return createAnalyticGeometry(&toBuildP, bC, cV, aF, aG);
+  } 
+  
+  analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
     QDomElement const * toBuildP,
     vectorHandling< constValue * > const * const cV,
     vectorHandling< analyticFunction * > const * const aF, 
     vectorHandling< analyticGeometry * > const * const aG
   ) {
     return createAnalyticGeometry(toBuildP, NULL, cV, aF, aG);			
+  }		
+  
+  analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
+    QDomElement const & toBuildP,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF, 
+    vectorHandling< analyticGeometry * > const * const aG
+  ) {
+    return createAnalyticGeometry(&toBuildP, NULL, cV, aF, aG);			
   }		
   
   void dtXmlParserBase::createAdvanced( 

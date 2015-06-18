@@ -218,11 +218,24 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > const * const aG
     );
     static analyticGeometry * createAnalyticGeometry( 
+      QDomElement const & toBuildP,
+      baseContainer * const bC,
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF, 
+      vectorHandling< analyticGeometry * > const * const aG
+    );    
+    static analyticGeometry * createAnalyticGeometry( 
       QDomElement const * toBuildP,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );      
+    static analyticGeometry * createAnalyticGeometry( 
+      QDomElement const & toBuildP,
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF, 
+      vectorHandling< analyticGeometry * > const * const aG
+    );          
     //
     // analyticFunction
     //
