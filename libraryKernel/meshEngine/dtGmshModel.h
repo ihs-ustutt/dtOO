@@ -116,6 +116,7 @@ namespace dtOO {
     std::string getPhysicalString(::GEntity * const ge ) const;
     void tagPhysical(::GEntity * const ge, std::string const & pName);
     static ::GEntity * guessOnWhat( ::MElement const * const me );
+    void setDebug( std::string const debug );
   private:
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
       std::vector< ::MVertex const * > const & vertices, 
@@ -124,6 +125,8 @@ namespace dtOO {
     static discrete3dPoints * toDiscrete3dPoints( 
       std::vector< ::MVertex const * > const & vertices
     );    
+  private:
+    std::string _debug;
   };
 }
 #endif	/* DTGMSHMODEL_H */

@@ -41,6 +41,7 @@
 
 namespace dtOO {
   dtGmshModel::dtGmshModel(std::string name) : GModel(name){
+    _debug = "";
   }
 
   dtGmshModel::~dtGmshModel() {
@@ -1272,6 +1273,7 @@ namespace dtOO {
   void dtGmshModel::meshPhysical(int const & dim) {
 		if (dim == 0) {
 			GModel::mesh(0);
+      if (!_debug.empty()) writeMSH(_debug, 2.2, false, true);      
 		}
 		else if (dim == 1) {
 			std::list< ::GEdge * > ee = edges();
@@ -1285,6 +1287,7 @@ namespace dtOO {
             );
           }
 					meshEdge( (*it)->tag() );
+          if (!_debug.empty()) writeMSH(_debug, 2.2, false, true);
 				}
 			}
 		}
@@ -1300,6 +1303,7 @@ namespace dtOO {
             );
           }          
 					meshFace( (*it)->tag() );
+          if (!_debug.empty()) writeMSH(_debug, 2.2, false, true);          
 				}
 			}			
 		}
@@ -1308,12 +1312,11 @@ namespace dtOO {
 			dt__forAllIter(std::list< ::GRegion * >, rr, it) {
 				if ( (*it)->getPhysicalEntities().size() != 0 ) {
 					meshRegion( (*it)->tag() );
+          if (!_debug.empty()) writeMSH(_debug, 2.2, false, true);          
 				}
 			}	
 		}
-		else {
-			dt__throw( meshPhysical(), << dt__eval(dim) );
-		}	
+		else dt__throw( meshPhysical(), << dt__eval(dim) );
 	}
 	
 	int dtGmshModel::getMeshVerticesForPhysicalGroup(
@@ -1395,4 +1398,8 @@ namespace dtOO {
 		
 		return NULL;
 	}
+  
+  void dtGmshModel::setDebug( std::string const debug ) {
+    _debug = debug;
+  }
 }
