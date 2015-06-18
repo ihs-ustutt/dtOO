@@ -90,7 +90,7 @@ namespace dtOO {
 		return vectorHandling< analyticGeometry const * >();
 	}		
 	
-  analyticGeometry * new_clone(analyticGeometry const & aG){
+  analyticGeometry * new_clone(analyticGeometry const & aG) {
     return aG.clone();
   }	
 }

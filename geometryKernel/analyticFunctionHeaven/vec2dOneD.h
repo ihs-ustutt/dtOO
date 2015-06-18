@@ -36,6 +36,7 @@ namespace dtOO {
     float _min;
     float _max;
   };
+  dt__H_addCloneForpVH(vec2dOneD);        
 }
 #endif	/* VEC2DFUNCTION_H */
 

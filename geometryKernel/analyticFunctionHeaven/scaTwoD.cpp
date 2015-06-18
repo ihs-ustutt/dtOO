@@ -195,4 +195,6 @@ namespace dtOO {
 		}
 		return rV;
   }	
+  
+  dt__C_addCloneForpVH(scaTwoD);    
 }

@@ -15,8 +15,6 @@ namespace dtOO {
     virtual int yDim( void ) const;    
     dtPoint3 YdtPoint3(aFX const & xx) const;
     virtual bool closed( int const & dir ) const = 0;
-  private:
-
   };
 }
 #endif	/* VEC3DFUNCTION_H */

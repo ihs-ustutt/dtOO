@@ -215,4 +215,6 @@ namespace dtOO {
       
     return curLength;
   }
+  
+  dt__C_addCloneForpVH(scaOneD);        
 }

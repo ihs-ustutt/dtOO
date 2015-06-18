@@ -338,4 +338,6 @@ namespace dtOO {
 
 		return rV;
   }	
+  
+  dt__C_addCloneForpVH(vec3dThreeD);
 }

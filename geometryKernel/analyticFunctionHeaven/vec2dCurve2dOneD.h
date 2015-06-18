@@ -17,8 +17,8 @@ namespace dtOO {
     vec2dCurve2dOneD();
     vec2dCurve2dOneD(const vec2dCurve2dOneD& orig);
     vec2dCurve2dOneD(dtCurve2d const * const dtC2d);
-    virtual vec2dOneD * clone( void ) const;
-    virtual vec2dOneD * create( void ) const;    
+    virtual vec2dCurve2dOneD * clone( void ) const;
+    virtual vec2dCurve2dOneD * create( void ) const;    
     virtual ~vec2dCurve2dOneD();
     using vec2dOneD::Y; // name hiding
     virtual aFY Y( float const & xx) const;

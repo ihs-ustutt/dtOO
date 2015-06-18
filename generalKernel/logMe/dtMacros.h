@@ -50,5 +50,11 @@
     return static_cast<name const *>(obj); \
   }
 
+  #define dt__H_addCloneForpVH( type ) \
+    type * new_clone( type const & aF );
+  #define dt__C_addCloneForpVH( type ) \
+    type * new_clone( type const & aF ) { \
+      return aF.clone(); \
+    }
 #endif	/* DTMACROS_H */
 

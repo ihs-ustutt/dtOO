@@ -36,6 +36,7 @@ namespace dtOO {
     float _min[2];
     float _max[2];  
   };
+  dt__H_addCloneForpVH(scaTwoD);    
 }
 #endif	/* SCATWOD_H */
 

@@ -155,4 +155,6 @@ namespace dtOO {
 		}
 		return L;
 	}		
+  
+  dt__C_addCloneForpVH(vec3dOneD);   
 }

@@ -36,11 +36,11 @@ namespace dtOO {
 		return yy;
 	}
 	
-  vec2dOneD * vec2dCurve2dOneD::clone( void ) const {
+  vec2dCurve2dOneD * vec2dCurve2dOneD::clone( void ) const {
 		return new vec2dCurve2dOneD(*this);
 	}
 	
-  vec2dOneD * vec2dCurve2dOneD::create( void ) const {
+  vec2dCurve2dOneD * vec2dCurve2dOneD::create( void ) const {
 		return new vec2dCurve2dOneD();
 	}
 	

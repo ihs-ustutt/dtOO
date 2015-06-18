@@ -144,4 +144,6 @@ namespace dtOO {
 		}
 		return L;
 	}		
+  
+  dt__C_addCloneForpVH(vec2dOneD);          
 }

@@ -254,4 +254,6 @@ namespace dtOO {
 		
 		return rV;
   }		
+  
+  dt__C_addCloneForpVH(vec2dTwoD);
 }

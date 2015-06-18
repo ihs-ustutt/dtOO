@@ -315,4 +315,5 @@ namespace dtOO {
 //  float vec3dTwoD::length( aFX const & x0, aFX const & x1 ) const {	
 //    return length(20, x0, x1);
 //  }
+  dt__C_addCloneForpVH(vec3dTwoD);      
 }

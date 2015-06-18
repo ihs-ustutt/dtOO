@@ -30,7 +30,7 @@ namespace dtOO {
     virtual aFY Y( aFX const & xx) const;
     virtual bool closed( int const & dir ) const;
   private:
-    ptrVectorHandling<vec3dTwoD> _v3dTwoD;
+    ptrVectorHandling< vec3dTwoD > _v3dTwoD;
     dtVector3 _v3dTwoD_1_0_0;
     dtVector3 _v3dTwoD_1_0_1;
     dtVector3 _v3dTwoD_1_1_0;

@@ -34,6 +34,7 @@ namespace dtOO {
     float _xxMin;
     float _xxMax;    
   };
+  dt__H_addCloneForpVH(scaOneD);      
 }
 #endif	/* SCAONED_H */
 

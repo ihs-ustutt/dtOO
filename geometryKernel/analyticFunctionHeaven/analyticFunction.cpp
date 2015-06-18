@@ -202,4 +202,6 @@ namespace dtOO {
     }
     return objective;
 	}	    
+  
+  dt__C_addCloneForpVH(analyticFunction);  
 }

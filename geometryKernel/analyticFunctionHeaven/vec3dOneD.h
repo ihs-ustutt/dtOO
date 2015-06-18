@@ -36,5 +36,6 @@ namespace dtOO {
     float _min;
     float _max;
   };
+  dt__H_addCloneForpVH(vec3dOneD);   
 }
 #endif	/* VEC3DONED_H */

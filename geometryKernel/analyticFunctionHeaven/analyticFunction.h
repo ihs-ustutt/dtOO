@@ -53,6 +53,7 @@ namespace dtOO {
 	  double F(double const * xx) const;
     mutable aFY _invY;
   };
+  dt__H_addCloneForpVH(analyticFunction);
 }
 #endif	/* ANALYTICFUNCTION_H */
 
