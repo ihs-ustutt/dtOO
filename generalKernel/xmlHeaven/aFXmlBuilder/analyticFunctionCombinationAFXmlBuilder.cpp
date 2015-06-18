@@ -3,6 +3,7 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dThreeD.h>
+#include <analyticFunctionHeaven/vec2dTwoD.h>
 #include <analyticFunctionHeaven/analyticFunctionCombination.h>
 #include <logMe/logMe.h>
 
@@ -53,6 +54,14 @@ namespace dtOO {
         )      
       );
     }
+    else if ( vec2dTwoD::Is(yy.get()) && vec2dTwoD::Is(yyInv.get()) ) {
+      ret->push_back( 
+        new analyticFunctionCombination< vec2dTwoD, vec2dTwoD >( 
+          vec2dTwoD::ConstSecureCast(yy.get()), 
+          vec2dTwoD::ConstSecureCast(yyInv.get()) 
+        )      
+      );
+    }    
     else dt__throwUnexpected(buildPart());
     
 
