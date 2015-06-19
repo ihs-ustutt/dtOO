@@ -29,12 +29,16 @@ namespace dtOO {
     //
 		// check input
 		//    
-    dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
+    dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart()
+    );
 
     //
     // copy
     //
-    QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);     
+    QDomElement wElement 
+    = 
+    dtXmlParserBase::getChild("analyticGeometry", toBuild);     
     vectorHandling< analyticGeometry * > toCopy;
     dtXmlParserBase::createAdvanced(&wElement, bC, cV, aF, aG, &toCopy);
     dt__forAllIndex(toCopy, ii) result->push_back( toCopy[ii] );

@@ -18,11 +18,11 @@ namespace dtOO {
     analyticFunctionAFXmlBuilder();
     virtual ~analyticFunctionAFXmlBuilder();
     virtual void buildPart(
-      QDomElement const & toBuildP,
+      QDomElement const & toBuild, 
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cV,  
+      vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticFunction * > * result 
+      vectorHandling< analyticFunction * > * result
     ) const;
   };
 }

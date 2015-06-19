@@ -17,19 +17,27 @@ namespace dtOO {
   }
 
   void analyticFunctionAFXmlBuilder::buildPart( 
-		QDomElement const & toBuildP, 
+		QDomElement const & toBuild, 
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const depSFunP,
-		vectorHandling< analyticFunction * > * sFunP
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticFunction * > * result
 	) const {
-		std::vector< QDomElement > elV = dtXmlParserBase::getChildVector(toBuildP);
-		for (int ii=0; ii<elV.size(); ii++) {//dt__FORALL(elV, ii,
-		  if ( dtXmlParserBase::hasAttribute("label", elV[ii]) ) {
-				sFunP->push_back( 
-  			  dtXmlParserBase::createAnalyticFunction( &elV[ii], bC, cValP, depSFunP)
-				);
-			}
-		}
+    //
+		// check input
+		//    
+    dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticFunction", toBuild), buildPart()
+    );
+
+    //
+    // copy
+    //
+    QDomElement wElement 
+    = 
+    dtXmlParserBase::getChild("analyticFunction", toBuild);     
+    vectorHandling< analyticFunction * > toCopy;
+    dtXmlParserBase::createAdvanced(&wElement, bC, cV, aF, &toCopy);
+    dt__forAllIndex(toCopy, ii) result->push_back( toCopy[ii] );    
   }
 }
