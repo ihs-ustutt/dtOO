@@ -24,8 +24,15 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticGeometry * > const * const aG 
     );
-    virtual vectorHandling< analyticGeometry * > apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const;
+    virtual vectorHandling< analyticGeometry * > apply( 
+      vectorHandling< analyticGeometry * > const * const aGeoVecP 
+    ) const;
+    virtual vectorHandling< analyticFunction * > apply( 
+      vectorHandling< analyticFunction * > const * const aF 
+    ) const;    
   private:
+    int _dir;
+    int _nSegments;
   };
 }
 #endif	/* closeGapsArithmetic_H */

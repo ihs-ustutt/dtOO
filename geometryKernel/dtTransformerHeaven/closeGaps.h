@@ -23,7 +23,9 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticGeometry * > const * const aG 
     );
-    virtual vectorHandling< analyticGeometry * > apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const;
+    virtual vectorHandling< analyticGeometry * > apply( 
+      vectorHandling< analyticGeometry * > const * const aGeoVecP 
+    ) const;
   private:
     analyticSurface const * _vvStartAGeo;
     analyticSurface const * _vvEndAGeo;
