@@ -70,6 +70,7 @@ SET(HEADERS
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
   analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
+  analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h
   dtTransformerHeaven/dtTransformer.h
   dtTransformerHeaven/dtStrongTransformer.h
   dtTransformerHeaven/dtTransformerFactory.h
@@ -166,6 +167,7 @@ SET(SOURCES
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.cpp
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.cpp
   analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.cpp
+  analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.cpp
   dtTransformerHeaven/dtTransformer.cpp
   dtTransformerHeaven/dtStrongTransformer.cpp
   dtTransformerHeaven/dtTransformerFactory.cpp
