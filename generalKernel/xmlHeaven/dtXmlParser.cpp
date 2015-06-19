@@ -569,27 +569,22 @@ namespace dtOO {
   }
 	
   void dtXmlParser::createAnalyticFunction(
-	  std::string const functionName, 
+	  std::string const label, 
 		baseContainer * const bC,
     vectorHandling< constValue * > const * const cVP, 
     vectorHandling< analyticFunction * > * sFP
 	) const {
-    //
-	  // get function and builder element
-	  //
-    QDomElement aFElement = getElement("function", functionName);
-		QDomElement builderElement = getChild("builder", aFElement);
-		
-		//
-		// logging
-		//
+    QDomElement aFElement = getElement("function", label);
     dt__makeChapter(creating function);
     dt__info(createFunction(), << convertToString(aFElement) );
+    
+
+		QDomElement tE = getChild("builder", aFElement);
 		
 		//
     // create builder
 		//
-		std::string builderName = getAttributeStr("name", builderElement);
+		std::string builderName = getAttributeStr("name", tE);
 		bool buildCompound = false;
 		if ( stringPrimitive::stringContains("[]", builderName) ) {
 			buildCompound = true;
@@ -602,22 +597,33 @@ namespace dtOO {
 		//
 		// call builder
 		//
-    vectorHandling< analyticFunction * > tmpSFun;
-		if (!buildCompound) {
-      builder->buildPart(builderElement, bC, cVP, sFP, &tmpSFun);
-		}
-		else {
-			builder->buildPartCompound(builderElement, bC, cVP, sFP, &tmpSFun);
-		}
+    vectorHandling< analyticFunction * > tmpAF;   
+		if (!buildCompound) builder->buildPart(tE, bC, cVP, sFP, &tmpAF);
+		else builder->buildPartCompound(tE, bC, cVP, sFP, &tmpAF);
 
     //
     // copy analyticFunctions from tmpSFun to sFP
     //
-    for (int ii=0;ii<tmpSFun.size();ii++) {
-      sFP->push_back( tmpSFun[ii] );
-      sFP->back()->setLabel(functionName);
+    for (int ii=0;ii<tmpAF.size();ii++) {			
+      if (label != "*") {
+        if ( tmpAF.size() > 1  ) {
+          tmpAF[ii]->setLabel(label+"_"+intToString(ii) );
+        }
+        else {
+          tmpAF[ii]->setLabel(label);
+        }
+        sFP->push_back( tmpAF[ii] );				
+      }
+      else {
+				//
+				// replace in vector
+				//
+        int pos = sFP->getPosition( tmpAF[ii]->getLabel() );
+        delete sFP->at(pos);
+        sFP->at(pos) = tmpAF[ii];
+      }
     }
-    tmpSFun.clear();
+    tmpAF.clear();    
   }	
 	
   void dtXmlParser::createAnalyticFunction(
@@ -669,20 +675,7 @@ namespace dtOO {
 		if (!buildCompound) builder->buildPart(tE, bC, cVP, sFP, aGP, &tmpAGeo);
 		else builder->buildPartCompound(tE, bC, cVP, sFP, aGP, &tmpAGeo);
 
-    for (int ii=0;ii<tmpAGeo.size();ii++) {
-//      //
-//      // set render attributes
-//      //
-//      if ( partElement.hasAttribute("render_color") ) {
-//        tmpAGeo[ii]->setAttribute( "COLOR", getAttributeStr("render_color", partElement));
-//      }    
-//      if ( partElement.hasAttribute("render_transparency") ) {
-//        tmpAGeo[ii]->setAttribute( "TRANSPARENCY", getAttributeStr("render_transparency", partElement));
-//      }      
-//      if ( partElement.hasAttribute("render_material") ) {
-//        tmpAGeo[ii]->setAttribute( "MATERIAL", getAttributeStr("render_material", partElement));
-//      }  
-			
+    for (int ii=0;ii<tmpAGeo.size();ii++) {			
       if (label != "*") {
         if ( tmpAGeo.size() > 1  ) {
           tmpAGeo[ii]->setLabel(label+"_"+intToString(ii) );

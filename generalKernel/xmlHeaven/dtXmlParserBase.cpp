@@ -1405,6 +1405,15 @@ namespace dtOO {
       }
       advancedP->push_back( toTrans->clone() );
     }
+    else if ( stringContains("{", label) && stringContains("}", label) ) {
+      //
+      // string contains "{" and "}" --> return set of analyticFunctions
+      //				
+      std::vector< std::string > labelV
+      = 
+      convertToStringVector("{", "}", label );
+      dt__forAllIndex(labelV, ii) advancedP->push_back( aG->get(labelV[ii]) );
+    }            
     else {
       //
       // normal case
@@ -1540,6 +1549,15 @@ namespace dtOO {
       }
       advancedP->push_back( toTrans->clone() );
     }
+    else if ( stringContains("{", label) && stringContains("}", label) ) {
+      //
+      // string contains "{" and "}" --> return set of analyticFunctions
+      //				
+      std::vector< std::string > labelV
+      = 
+      convertToStringVector("{", "}", label );
+      dt__forAllIndex(labelV, ii) advancedP->push_back( aF->get(labelV[ii]) );
+    }        
     else {
       //
       // normal case
