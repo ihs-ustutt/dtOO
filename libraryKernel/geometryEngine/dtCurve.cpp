@@ -86,4 +86,6 @@ namespace dtOO {
 	std::string dtCurve::dumpToString(void) const {
 		return std::string("");
 	}    
+  
+  dt__C_addCloneForpVH(dtCurve);        
 }

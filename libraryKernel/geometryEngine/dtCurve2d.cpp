@@ -124,10 +124,5 @@ namespace dtOO {
 		return std::string("");
 	} 
   
-	//
-	// boost requires this method in ptr_vector
-	//    
-	dtCurve2d * new_clone(dtCurve2d const & dtC2d) {
-		return dtC2d.clone();
-	}
+  dt__C_addCloneForpVH(dtCurve2d);    
 }

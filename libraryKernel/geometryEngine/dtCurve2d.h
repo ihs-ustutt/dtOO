@@ -47,11 +47,7 @@ namespace dtOO {
       float u_lPercent( float const percent ) const;
       virtual void setControlPoint( int const nPoint, dtPoint2 const point );
     };
-    
-    //
-    // boost requires this method in ptr_vector
-    //    
-    dtCurve2d * new_clone(dtCurve2d const & dtC2d);    
+    dt__H_addCloneForpVH(dtCurve2d);    
 }
 #endif	/* DTCURVE2D_H */
 

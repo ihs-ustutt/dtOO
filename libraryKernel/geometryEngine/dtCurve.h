@@ -16,7 +16,6 @@ namespace dtOO {
      	virtual dtCurve * clone( void ) const = 0;
       virtual float minPara ( int const & dir ) const = 0;
       virtual float maxPara ( int const & dir ) const = 0;
-//      virtual int getKind( void ) const = 0;
       virtual int order( void ) const = 0;
       virtual bool closed( void ) const = 0;
       virtual dtPoint3 point( float const uu ) const = 0;
@@ -50,9 +49,8 @@ namespace dtOO {
       float u_lPercent( float const percent ) const;
       float uPercent_lPercent( float const percent ) const;
       float uPercent_l( float const percent ) const;      
-    private:
-
     };
+    dt__H_addCloneForpVH(dtCurve);        
 }
 #endif	/* DTCURVE_H */
 

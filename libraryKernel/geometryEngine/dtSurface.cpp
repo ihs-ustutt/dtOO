@@ -228,4 +228,38 @@ namespace dtOO {
 	void dtSurface::offsetNormal(float const nn) {
 		dt__functionNotImplemented(offsetNormal());
 	}
+  
+  dtCurve * dtSurface::segmentConst( 
+    int const & dir, float const at, float const from, float const to
+  ) const {
+    if      (dir==0) return segmentConstU(at, from, to);
+    else if (dir==1) return segmentConstV(at, from, to);
+    else dt__throwUnexpected(segmentConst());
+  }
+  
+  dtCurve * dtSurface::segmentConst( 
+    int const & dir, float const at
+  ) const {
+    if      (dir==0) return segmentConstU(at);
+    else if (dir==1) return segmentConstV(at);
+    else dt__throwUnexpected(segmentConst());    
+  }
+  
+  dtCurve * dtSurface::segmentConstPercent( 
+    int const & dir, float const at
+  ) const {
+    if      (dir==0) return segmentConstUPercent(at);
+    else if (dir==1) return segmentConstVPercent(at);
+    else dt__throwUnexpected(segmentConstPercent());        
+  }
+  
+  dtCurve * dtSurface::segmentConstPercent( 
+    int const & dir, float const at, float const from, float const to
+  ) const {
+    if      (dir==0) return segmentConstUPercent(at, from, to);
+    else if (dir==1) return segmentConstVPercent(at, from, to);
+    else dt__throwUnexpected(segmentConstPercent());            
+  }
+  
+  dt__C_addCloneForpVH(dtSurface);
 }

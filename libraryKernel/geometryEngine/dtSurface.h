@@ -22,16 +22,26 @@ namespace dtOO {
     virtual bool closed( int const dim ) const = 0; 
     virtual dtPoint3 point( float const uu, float const vv) const = 0;
     virtual dtVector3 normal( float const uu, float const vv) const = 0;
-    virtual std::vector<dtVector3> firstDer( float const uu, float const vv) const = 0;
-    virtual std::vector<dtVector3> secondDer( float const uu, float const vv) const = 0;
-	  virtual dtCurve * segmentConstU( float const uu, float const vvMin, float const vvMax) const = 0;
-	  virtual dtCurve * segmentConstV( float const vv, float const uuMin, float const uuMax) const = 0;    
+    virtual std::vector<dtVector3> firstDer( 
+      float const uu, float const vv
+    ) const = 0;
+    virtual std::vector<dtVector3> secondDer( 
+      float const uu, float const vv
+    ) const = 0;
+	  virtual dtCurve * segmentConstU( 
+      float const uu, float const vvMin, float const vvMax
+    ) const = 0;
+	  virtual dtCurve * segmentConstV( 
+      float const vv, float const uuMin, float const uuMax
+    ) const = 0;    
     virtual dtPoint2 reparam(dtPoint3 const point) const = 0;
     //
     // optional overload
     //
     virtual dtPoint3 controlPoint( int const uI, int const vI ) const;
-    virtual void setControlPoint( int const uI, int const vI, dtPoint3 const point );    
+    virtual void setControlPoint( 
+      int const uI, int const vI, dtPoint3 const point 
+    );    
     virtual int nControlPoints( int const dim ) const;    
     void dump(void) const;
     virtual std::string dumpToString(void) const;
@@ -79,10 +89,27 @@ namespace dtOO {
     dtCurve * segmentConstV( float const vv) const;    
     dtCurve * segmentConstUPercent( float const uu) const;
     dtCurve * segmentConstVPercent( float const vv) const;    
-    dtCurve * segmentConstUPercent( float const uu, float const vvMin, float const vvMax) const;
-    dtCurve * segmentConstVPercent( float const vv, float const uuMin, float const uuMax) const;
+    dtCurve * segmentConstUPercent( 
+      float const uu, float const vvMin, float const vvMax
+    ) const;
+    dtCurve * segmentConstVPercent(
+      float const vv, float const uuMin, float const uuMax
+    ) const;    
+	  dtCurve * segmentConst( 
+      int const & dir, float const at, float const from, float const to
+    ) const;
+    dtCurve * segmentConst( 
+      int const & dir, float const at
+    ) const;
+    dtCurve * segmentConstPercent( 
+      int const & dir, float const at
+    ) const;
+    dtCurve * segmentConstPercent( 
+      int const & dir, float const at, float const from, float const to
+    ) const;
     dtPoint2 reparamPercent(dtPoint3 const point) const;
   };
+  dt__H_addCloneForpVH(dtSurface);
 }
 #endif	/* DTSURFACE_H */
 
