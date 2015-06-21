@@ -917,7 +917,7 @@ namespace dtOO {
 		min.SetMaxFunctionCalls(1000000);
 		min.SetMaxIterations(100000);
 		min.SetTolerance(0.00001);			
-		min.SetPrintLevel(3);
+		min.SetPrintLevel(0);
 
 		//
 		// minimize

@@ -29,8 +29,10 @@ namespace dtOO {
 		
   }
 	
-  dtGmshFace::dtGmshFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges, const std::vector< int > &ori )
-    : GFace(m, tag) {
+  dtGmshFace::dtGmshFace(
+    ::GModel *m, int tag, 
+    const std::list< ::GEdge * > &edges, const std::vector< int > &ori 
+  ) : GFace(m, tag) {
     edgeLoops.push_back(GEdgeLoop(edges));
     typedef std::list< ::GEdge * >::const_iterator EIter;
     int ii = 0;
@@ -43,8 +45,9 @@ namespace dtOO {
     }
   }
 
-  dtGmshFace::dtGmshFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges)
-    : GFace(m, tag) {
+  dtGmshFace::dtGmshFace(
+    ::GModel *m, int tag, const std::list< ::GEdge * > &edges
+  ) : GFace(m, tag) {
     edgeLoops.push_back(::GEdgeLoop(edges));
     typedef std::list< ::GEdge * >::const_iterator EIter;
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
@@ -94,18 +97,21 @@ namespace dtOO {
     dtVector3 ddU = _mm->firstDerU( (float) param.x(), (float) param.y() );
     dtVector3 ddV = _mm->firstDerV( (float) param.x(), (float) param.y() );
     
-    return Pair<SVector3, SVector3>( SVector3( (double) ddU.x(), (double) ddU.y(), (double) ddU.z()),
-                                     SVector3( (double) ddV.x(), (double) ddV.y(), (double) ddV.z()) );
+    return Pair<SVector3, SVector3>( 
+      SVector3( (double) ddU.x(), (double) ddU.y(), (double) ddU.z()),
+      SVector3( (double) ddV.x(), (double) ddV.y(), (double) ddV.z()) 
+    );
   }
 
-  void dtGmshFace::secondDer(const SPoint2 &param, 
-                           SVector3 *dudu, SVector3 *dvdv, SVector3 *dudv) const {
+  void dtGmshFace::secondDer(
+    const SPoint2 &param, SVector3 *dudu, SVector3 *dvdv, SVector3 *dudv
+  ) const {
     dtVector3 ddUddU = _mm->secondDerUU( (float) param.x(), (float) param.y() );
     dtVector3 ddVddV = _mm->secondDerVV( (float) param.x(), (float) param.y() );    
     dtVector3 ddUddV = _mm->secondDerUV( (float) param.x(), (float) param.y() );    
-      *dudu = SVector3(ddUddU.x(), ddUddU.y(), ddUddU.z());
-      *dvdv = SVector3(ddVddV.x(), ddVddV.y(), ddVddV.z());
-      *dudv = SVector3(ddUddV.x(), ddUddV.y(), ddUddV.z()); 
+    *dudu = SVector3(ddUddU.x(), ddUddU.y(), ddUddU.z());
+    *dvdv = SVector3(ddVddV.x(), ddVddV.y(), ddVddV.z());
+    *dudv = SVector3(ddUddV.x(), ddUddV.y(), ddUddV.z()); 
   }
 
   GPoint dtGmshFace::point(double par1, double par2) const {
@@ -149,7 +155,11 @@ namespace dtOO {
     ::GVertex * gv = edgeL.front()->getEndVertex();
     edgeL.erase( edgeL.begin() );
     for (int ii=0;edgeL.size();ii++) {
-      for(std::list< ::GEdge * >::iterator it = edgeL.begin(); it != edgeL.end(); ++it ) {
+      for(
+        std::list< ::GEdge * >::iterator it = edgeL.begin(); 
+        it != edgeL.end(); 
+        ++it 
+      ) {
         if ( (*it)->getBeginVertex() == gv ) {
           addEdge(*it, 1);
           gv = (*it)->getEndVertex();
@@ -202,7 +212,9 @@ namespace dtOO {
 		this->meshAttributes.recombine = 1;
 	}
   
-  void dtGmshFace::meshTransfiniteWNElements( int const & nElementsU, int const & nElementsV ) {	
+  void dtGmshFace::meshTransfiniteWNElements( 
+    int const & nElementsU, int const & nElementsV 
+  ) {	
 		meshTransfinite();
 		std::list< dtGmshEdge * > eeList = dtGmshModel::cast2DtGmshEdge(edges());
 		
@@ -272,8 +284,12 @@ namespace dtOO {
 		ee[1]->meshAttributes.nbPointsTransfinite;
 		
 		if (correct[0]) {
-			std::list< dtGmshFace * > faces0 = dtGmshModel::cast2DtGmshFace(ee[0]->faces());
-			std::list< dtGmshFace * > faces2 = dtGmshModel::cast2DtGmshFace(ee[2]->faces());
+			std::list< dtGmshFace * > faces0 
+      = 
+      dtGmshModel::cast2DtGmshFace(ee[0]->faces());
+			std::list< dtGmshFace * > faces2 
+      = 
+      dtGmshModel::cast2DtGmshFace(ee[2]->faces());
 			dt__forAllIter(std::list< dtGmshFace * >, faces0, it) {
 				(*it)->correctIfTransfinite();
 			}
@@ -282,8 +298,12 @@ namespace dtOO {
 			}				
 		}
 		if (correct[1]) {
-			std::list< dtGmshFace * > faces1 = dtGmshModel::cast2DtGmshFace(ee[1]->faces());
-			std::list< dtGmshFace * > faces3 = dtGmshModel::cast2DtGmshFace(ee[3]->faces());
+			std::list< dtGmshFace * > faces1 
+      = 
+      dtGmshModel::cast2DtGmshFace(ee[1]->faces());
+			std::list< dtGmshFace * > faces3 
+      = 
+      dtGmshModel::cast2DtGmshFace(ee[3]->faces());
 			dt__forAllIter(std::list< dtGmshFace * >, faces1, it) {
 				(*it)->correctIfTransfinite();
 			}
@@ -334,7 +354,9 @@ namespace dtOO {
     return isEqual(this, gf);
 	}
 
-  bool dtGmshFace::isEqual( ::GFace const * const gf0, ::GFace const * const gf1 ) {	
+  bool dtGmshFace::isEqual( 
+    ::GFace const * const gf0, ::GFace const * const gf1 
+  ) {	
 		std::list< ::GVertex * > VL0 = gf0->vertices();
 		std::list< ::GVertex * > VL1 = gf1->vertices();
 		
@@ -372,7 +394,9 @@ namespace dtOO {
 		return d1->getNum() < d2->getNum();
 	}
 	
-	twoDArrayHandling< ::MVertex * > dtGmshFace::reconstructEdgesFromSurfaceMesh( void ) const {
+	twoDArrayHandling< ::MVertex * > dtGmshFace::reconstructEdgesFromSurfaceMesh( 
+    void 
+  ) const {
     std::map< ::MVertex *, std::vector< ::MElement * >  > e_v;
 		std::map< ::MVertex *, std::vector< ::MElement * >  >::iterator e_vIt;
 		std::map< ::MElement *, std::vector< ::MVertex * >  > v_e;
@@ -561,7 +585,9 @@ namespace dtOO {
 			
 			std::vector< ::MVertex * > vertices;
 			const_cast< ::MElement *>(me->back())->getVertices(vertices);
-			dt__forAllIter(std::vector< ::MVertex * >, vertices, aV) mv->push_back(*aV);	
+			dt__forAllIter(std::vector< ::MVertex * >, vertices, aV) {
+        mv->push_back(*aV);	
+      }
 		}		
 	}
 	
