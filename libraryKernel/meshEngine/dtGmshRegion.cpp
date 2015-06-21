@@ -61,7 +61,19 @@ namespace dtOO {
 //			(*f_it)->meshAttributes.recombine = 1;
 //		}
   }
+  
+  void dtGmshRegion::meshRecombine( void ) {
+    this->meshAttributes.recombine3D = 1;
+  }  
 	
+  void dtGmshRegion::meshRecombineRecursive( void ) {
+    this->meshAttributes.recombine3D = 1;
+		std::list< ::GFace * > fl = faces();
+    dt__forAllIter(std::list< ::GFace * >, fl, f_it) {
+			(*f_it)->meshAttributes.recombine = 1;
+		}    
+  }  
+  
   void dtGmshRegion::meshUnstructured( void ) {
     this->meshAttributes.method = MESH_UNSTRUCTURED;
     this->meshAttributes.recombine3D = 0;

@@ -23,6 +23,8 @@ namespace dtOO {
       const std::list<dtGmshFace*> &faces, const std::vector<int> &ori 
     );
     void meshTransfinite( void );
+    void meshRecombine( void );        
+    void meshRecombineRecursive( void );    
     void meshUnstructured( void );
     void addFace( ::GFace * face, int const ori );
     void addGEntity( ::GEntity * const gEnt );
