@@ -140,7 +140,7 @@ namespace dtOO {
 			) {			
 			  mvUVW[ii][jj]
 				= 
-				_m3d->reparamInVolume( dtGmshModel::cast2DtPoint3(*it1) );
+				_m3d->reparamInVolume( dtGmshModel::extractPosition(*it1) );
 //				dt__info(
 //					makeGrid(), 
 //					<< logMe::dtFormat("mvUVW[%d][%d] = %f, %f, %f") 

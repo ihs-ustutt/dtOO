@@ -296,7 +296,7 @@ namespace dtOO {
 				// move vertices of surface mesh om and create new vertices with old
 				// position in new surface mesh omT
 				//
-				dtPoint3 target = dtGmshModel::cast2DtPoint3(omInit.at(*it)) + tF.at(*it) * nF.at(*it);
+				dtPoint3 target = dtGmshModel::extractPosition(omInit.at(*it)) + tF.at(*it) * nF.at(*it);
 				omMoved.replacePosition(*it, target);
 		  }
 		}		
@@ -481,7 +481,7 @@ namespace dtOO {
 				tF[*vIt] = .5*tF[*vIt];
 				dtPoint3 target 
 				= 
-				dtGmshModel::cast2DtPoint3(omInit.at(*vIt)) + tF.at(*vIt) * nF.at(*vIt);
+				dtGmshModel::extractPosition(omInit.at(*vIt)) + tF.at(*vIt) * nF.at(*vIt);
 				omMoved.replacePosition(*vIt, target);				
 
 				//
@@ -493,7 +493,7 @@ namespace dtOO {
 						tF[*vIt] = .75*tF.at(*vvIt);
 						dtPoint3 target 
 						= 
-						dtGmshModel::cast2DtPoint3(omInit.at(*vvIt)) 
+						dtGmshModel::extractPosition(omInit.at(*vvIt)) 
 						+ tF.at(*vvIt) * nF.at(*vvIt);
 						omMoved.replacePosition(*vvIt, target);
 					}
@@ -543,8 +543,8 @@ namespace dtOO {
 			omFixedVerticesL[0] = omFixedVertices;
 			omMovedVerticesL[nLayers-1] = omMovedVertices;
 			dt__forAllIndex(omMovedVertices, jj) {
-				dtPoint3 mv0 = dtGmshModel::cast2DtPoint3(omFixedVertices[jj]);
-				dtPoint3 mv1 = dtGmshModel::cast2DtPoint3(omMovedVertices[jj]);
+				dtPoint3 mv0 = dtGmshModel::extractPosition(omFixedVertices[jj]);
+				dtPoint3 mv1 = dtGmshModel::extractPosition(omMovedVertices[jj]);
 				dtVector3 vv = mv1-mv0;
 				dt__toFloat(float nLayersF, nLayers);
 				for (int ii=1; ii<nLayers; ii++) {

@@ -486,13 +486,13 @@ namespace dtOO {
     return ret;    
   }
 
-  dtPoint3 dtGmshModel::cast2DtPoint3( ::GVertex const * const gv ) {
+  dtPoint3 dtGmshModel::extractPosition( ::GVertex const * const gv ) {
     return cast2DtGmshVertex(
 			const_cast< ::GVertex * >(gv)
 		)->cast2DtPoint3();
   }
 
-  dtPoint3 dtGmshModel::cast2DtPoint3( ::MVertex const * const mv ) {
+  dtPoint3 dtGmshModel::extractPosition( ::MVertex const * const mv ) {
     return dtPoint3(
 			const_cast< ::MVertex * >(mv)->x(), 
 			const_cast< ::MVertex * >(mv)->y(), 
@@ -1429,21 +1429,6 @@ namespace dtOO {
 			}	
 		}
 		else dt__throw( meshPhysical(), << dt__eval(dim) );
-	}
-	
-	int dtGmshModel::getMeshVerticesForPhysicalGroup(
-		int const & dim, 
-		int const & num, 
-		std::vector< ::MVertex const * > & vertices
-	) {
-		std::vector< ::MVertex * > nonConstVertices; 
-		GModel::getMeshVerticesForPhysicalGroup(dim, num, nonConstVertices);
-		vertices.resize(nonConstVertices.size());
-		dt__forAllIndex(nonConstVertices, ii) {
-			vertices.push_back( 
-        const_cast< ::MVertex const * >(nonConstVertices[ii]) 
-      );
-		}
 	}
 
   void dtGmshModel::untagPhysical( ::GEntity * const ge ) {
