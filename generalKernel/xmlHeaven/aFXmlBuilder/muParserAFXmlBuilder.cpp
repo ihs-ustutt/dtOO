@@ -46,7 +46,9 @@ namespace dtOO {
 			QDomElement expEl = dtXmlParserBase::getChild("expression", toBuildP);
 			expStr 
 			= 
-			dtXmlParserBase::replaceUsedFunctions(dtXmlParserBase::getAttributeStr("value", expEl), cValP, depSFunP);
+			dtXmlParserBase::replaceUsedFunctions(
+        dtXmlParserBase::getAttributeStr("value", expEl), cValP, depSFunP
+      );
 			yDim = dtXmlParserBase::getAttributeInt("dimension", expEl);
 		}
 		bool isSca = (yDim==1);
@@ -65,8 +67,16 @@ namespace dtOO {
 			  expStr, 
 				dtXmlParserBase::getAttributeStr("name", xOneEl)
 			); 
-			theF->setMin(dtXmlParserBase::getAttributeFloatMuParse("min", xOneEl, cValP, depSFunP));
-			theF->setMax(dtXmlParserBase::getAttributeFloatMuParse("max", xOneEl, cValP, depSFunP));
+			theF->setMin(
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xOneEl, cValP, depSFunP
+        )
+      );
 
 			sFunP->push_back(theF);
     }
@@ -85,10 +95,30 @@ namespace dtOO {
 				dtXmlParserBase::getAttributeStr("name", xTwoEl)
 			); 
 			
-			theF->setMin(0, dtXmlParserBase::getAttributeFloatMuParse("min", xOneEl, cValP, depSFunP));
-			theF->setMin(1, dtXmlParserBase::getAttributeFloatMuParse("min", xTwoEl, cValP, depSFunP));
-			theF->setMax(0, dtXmlParserBase::getAttributeFloatMuParse("max", xOneEl, cValP, depSFunP));
-			theF->setMax(1, dtXmlParserBase::getAttributeFloatMuParse("max", xTwoEl, cValP, depSFunP));
+			theF->setMin(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMin(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xTwoEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xTwoEl, cValP, depSFunP
+        )
+      );
 
 			sFunP->push_back(theF);
     }		
@@ -107,10 +137,30 @@ namespace dtOO {
 				dtXmlParserBase::getAttributeStr("name", xTwoEl)
 			); 
 			
-			theF->setMin(0, dtXmlParserBase::getAttributeFloatMuParse("min", xOneEl, cValP, depSFunP));
-			theF->setMin(1, dtXmlParserBase::getAttributeFloatMuParse("min", xTwoEl, cValP, depSFunP));
-			theF->setMax(0, dtXmlParserBase::getAttributeFloatMuParse("max", xOneEl, cValP, depSFunP));
-			theF->setMax(1, dtXmlParserBase::getAttributeFloatMuParse("max", xTwoEl, cValP, depSFunP));
+			theF->setMin(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMin(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xTwoEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xTwoEl, cValP, depSFunP
+        )
+      );
 
 			sFunP->push_back(theF);
     }				
@@ -129,10 +179,30 @@ namespace dtOO {
 				dtXmlParserBase::getAttributeStr("name", xTwoEl)
 			); 
 			
-			theF->setMin(0, dtXmlParserBase::getAttributeFloatMuParse("min", xOneEl, cValP, depSFunP));
-			theF->setMin(1, dtXmlParserBase::getAttributeFloatMuParse("min", xTwoEl, cValP, depSFunP));
-			theF->setMax(0, dtXmlParserBase::getAttributeFloatMuParse("max", xOneEl, cValP, depSFunP));
-			theF->setMax(1, dtXmlParserBase::getAttributeFloatMuParse("max", xTwoEl, cValP, depSFunP));
+			theF->setMin(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMin(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xTwoEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xTwoEl, cValP, depSFunP
+        )
+      );
 
 			sFunP->push_back(theF);
     }		
@@ -153,12 +223,42 @@ namespace dtOO {
 				dtXmlParserBase::getAttributeStr("name", xThreeEl)
 			); 
 			
-			theF->setMin(0, dtXmlParserBase::getAttributeFloatMuParse("min", xOneEl, cValP, depSFunP));
-			theF->setMin(1, dtXmlParserBase::getAttributeFloatMuParse("min", xTwoEl, cValP, depSFunP));
-			theF->setMin(2, dtXmlParserBase::getAttributeFloatMuParse("min", xThreeEl, cValP, depSFunP));
-			theF->setMax(0, dtXmlParserBase::getAttributeFloatMuParse("max", xOneEl, cValP, depSFunP));
-			theF->setMax(1, dtXmlParserBase::getAttributeFloatMuParse("max", xTwoEl, cValP, depSFunP));
-			theF->setMax(2, dtXmlParserBase::getAttributeFloatMuParse("max", xThreeEl, cValP, depSFunP));
+			theF->setMin(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMin(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xTwoEl, cValP, depSFunP
+        )
+      );
+			theF->setMin(
+        2, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xThreeEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xTwoEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        2, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xThreeEl, cValP, depSFunP
+        )
+      );
 
 			sFunP->push_back(theF);
     }				
