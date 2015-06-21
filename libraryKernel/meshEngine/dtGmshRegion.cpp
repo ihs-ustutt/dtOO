@@ -10,6 +10,7 @@
 #include <gmsh/MPrism.h>
 #include <gmsh/MHexahedron.h>
 #include "dtGmshFace.h"
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
 	dtGmshRegion::dtGmshRegion(::GModel *m, int tag) : GRegion(m, tag) {
@@ -46,19 +47,19 @@ namespace dtOO {
    
   void dtGmshRegion::meshTransfinite( void ) {
     this->meshAttributes.method = MESH_TRANSFINITE;
-    this->meshAttributes.recombine3D = 1;
-		std::list< ::GFace * > fl = faces();
-		for (std::list< ::GFace * >::iterator f_it = fl.begin(); f_it != fl.end(); ++f_it) {
-			std::list< ::GEdge * > el = (*f_it)->edges();
-			for (std::list< ::GEdge * >::iterator e_it = el.begin(); e_it != el.end(); ++e_it) {
-				(*e_it)->meshAttributes.method = MESH_TRANSFINITE;
-				(*e_it)->meshAttributes.nbPointsTransfinite = 2;
-				(*e_it)->meshAttributes.coeffTransfinite = 1.;
-				(*e_it)->meshAttributes.typeTransfinite = 1.;				
-			}
-			(*f_it)->meshAttributes.method = MESH_TRANSFINITE;
-			(*f_it)->meshAttributes.recombine = 1;
-		}
+//    this->meshAttributes.recombine3D = 1;
+//		std::list< ::GFace * > fl = faces();
+//		for (std::list< ::GFace * >::iterator f_it = fl.begin(); f_it != fl.end(); ++f_it) {
+//			std::list< ::GEdge * > el = (*f_it)->edges();
+//			for (std::list< ::GEdge * >::iterator e_it = el.begin(); e_it != el.end(); ++e_it) {
+//				(*e_it)->meshAttributes.method = MESH_TRANSFINITE;
+//				(*e_it)->meshAttributes.nbPointsTransfinite = 2;
+//				(*e_it)->meshAttributes.coeffTransfinite = 1.;
+//				(*e_it)->meshAttributes.typeTransfinite = 1.;				
+//			}
+//			(*f_it)->meshAttributes.method = MESH_TRANSFINITE;
+//			(*f_it)->meshAttributes.recombine = 1;
+//		}
   }
 	
   void dtGmshRegion::meshUnstructured( void ) {
@@ -99,13 +100,53 @@ namespace dtOO {
 		::MHexahedron * mhex = dynamic_cast< ::MHexahedron * >(me);
 		::MPyramid * mpyr = dynamic_cast< ::MPyramid * >(me);
 		::MPrism * mpri = dynamic_cast< ::MPrism * >(me);
-			//
-			// tetrahedron
-			//
-			if (mtet) addTetrahedron(mtet);
-		  else if (mhex) addHexahedron(mhex);
-			else if (mpyr) addPyramid(mpyr);
-      else if (mpri) addPrism(mpri);
-			else dt__throwUnexpected(addElement());
+    //
+    // tetrahedron
+    //
+    if (mtet) addTetrahedron(mtet);
+    else if (mhex) addHexahedron(mhex);
+    else if (mpyr) addPyramid(mpyr);
+    else if (mpri) addPrism(mpri);
+    else dt__throwUnexpected(addElement());
 	}
+  
+	bool dtGmshRegion::isEqual( ::GRegion const * const gr ) const {
+    return isEqual(this, gr);
+	}
+  
+  bool dtGmshRegion::isEqual( 
+    ::GRegion const * const gr0, ::GRegion const * const gr1 
+  ) {	
+		std::list< ::GVertex * > VL0 = gr0->vertices();
+		std::list< ::GVertex * > VL1 = gr1->vertices();
+		
+		if (VL0.size() != VL1.size()) {
+			return false;
+		}
+		
+		float xyzRes 
+		= 
+		staticPropertiesHandler::getInstance()->getOptionFloat(
+      "xyz_resolution"
+    );
+		int counter = 0;
+		std::list< ::GVertex * >::iterator V0_it;
+		std::list< ::GVertex * >::iterator V1_it;
+		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
+			dtPoint3 v0((*V0_it)->x(), (*V0_it)->y(), (*V0_it)->z());
+      for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {
+				dtPoint3 v1((*V1_it)->x(), (*V1_it)->y(), (*V1_it)->z());
+				if ( dtLinearAlgebra::distance(v0, v1) < xyzRes ) {
+					counter++;
+				}
+			}
+		}
+		
+		if (VL0.size() == counter) {
+			return true;
+		}
+		else {
+			return false;
+		}		
+	}  
 }

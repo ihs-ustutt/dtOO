@@ -164,6 +164,88 @@ namespace dtOO {
 		
   	addIfFaceToGmshModel(face, tag, eId[0], eId[1], eId[2], eId[3]);
 	}
+
+  void dtGmshModel::addIfRegionToGmshModel(
+    map3dTo3d const * const region, int * const tag,
+		std::list< ::GFace * > const & faces, std::vector< int > const & ori    
+  ) {
+		*tag = this->getMaxRegionTag()+1;	
+		
+		dtGmshRegion * gr = new dtGmshRegion(this, *tag, faces, ori);
+		
+		int tTag = alreadyInModel(gr);
+		if (tTag) {
+			delete gr;
+			*tag = tTag;
+		}
+		else {
+			this->add(gr);
+		}    
+  }
+
+  void dtGmshModel::addIfRegionToGmshModel( 
+    map3dTo3d const * const region, int * const tag,
+		int const & fId0, int const & fId1, 
+    int const & fId2, int const & fId3, 
+    int const & fId4, int const & fId5
+  ) {
+		std::list< ::GFace * > gf;
+		gf.push_back( this->getFaceByTag(abs(fId0)) );
+		gf.push_back( this->getFaceByTag(abs(fId1)) );
+		gf.push_back( this->getFaceByTag(abs(fId2)) );
+		gf.push_back( this->getFaceByTag(abs(fId3)) );
+    gf.push_back( this->getFaceByTag(abs(fId4)) );
+    gf.push_back( this->getFaceByTag(abs(fId5)) );
+		std::vector<int> ori(6);
+		ori[0] = ( fId0 < 0 ? -1 : 1);
+		ori[1] = ( fId1 < 0 ? -1 : 1);
+		ori[2] = ( fId2 < 0 ? -1 : 1);
+		ori[3] = ( fId3 < 0 ? -1 : 1);  
+    ori[4] = ( fId4 < 0 ? -1 : 1);  
+    ori[5] = ( fId5 < 0 ? -1 : 1);  
+		
+		addIfRegionToGmshModel(region, tag, gf, ori);
+  }
+  
+
+  void dtGmshModel::addIfRegionToGmshModel(
+    map3dTo3d const * const region, int * const tag
+  ) {
+		*tag = this->getMaxRegionTag()+1;		
+		
+    dtPoint3 p0(0., 0., 0.);
+		dtPoint3 p1(1., 0., 0.);
+		dtPoint3 p2(1., 1., 0.);
+		dtPoint3 p3(0., 1., 0.);
+		dtPoint3 p4(0., 0., 1.);
+		dtPoint3 p5(1., 0., 1.);
+		dtPoint3 p6(1., 1., 1.);
+		dtPoint3 p7(0., 1., 1.);
+    
+		std::vector< int > fId(6);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p0, p1, p2, p3)), &(fId[0])
+		);						
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p4, p5, p6, p7)), &(fId[1])
+		);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p0, p1, p5, p4)), &(fId[2])
+		);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p3, p2, p6, p7)), &(fId[3])
+		);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p3, p0, p4, p7)), &(fId[4])
+		);
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p2, p1, p5, p6)), &(fId[5])
+		);    
+
+  	addIfRegionToGmshModel(
+      region, tag, fId[0], fId[1], fId[2], fId[3], fId[4], fId[5]
+    );    
+  }  
 			
 	/**
    * @todo What if region is not 6-sided?
@@ -281,14 +363,14 @@ namespace dtOO {
 	}
 	
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {
-    ::GRegion * region = ::GModel::getRegionByTag(tag);
+    ::GRegion * region = ::GModel::getRegionByTag(abs(tag));
     dt__ptrAss(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
     
     return gRegion;    
   }
   
   dtGmshFace * dtGmshModel::getDtGmshFaceByTag( int const tag ) const {
-    ::GFace * face = ::GModel::getFaceByTag(tag);
+    ::GFace * face = ::GModel::getFaceByTag(abs(tag));
     dt__ptrAss(dtGmshFace * gFace, dtGmshFace::DownCast(face));
     
     return gFace;    
@@ -301,13 +383,25 @@ namespace dtOO {
 		intGEntityVMap gE_pN;
 		__caCThis->getPhysicalGroups(2, gE_pN);
 		
-		dt__throwIf(gE_pN[pN].size()!=1, getDtGmshFaceByPhysical);
+		dt__throwIf(gE_pN[pN].size()!=1, getDtGmshFaceByPhysical());
 		
 		return cast2DtGmshFace(gE_pN[pN][0]);
   }	
   
+  dtGmshRegion * dtGmshModel::getDtGmshRegionByPhysical( 
+    std::string const & physical 
+  ) const {
+    int pN = __caCThis->getPhysicalNumber(3, physical);
+		intGEntityVMap gE_pN;
+		__caCThis->getPhysicalGroups(3, gE_pN);
+		
+		dt__throwIf(gE_pN[pN].size()!=1, getDtGmshRegionByPhysical());
+		
+		return cast2DtGmshRegion(gE_pN[pN][0]);
+  }	  
+  
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByTag( int const tag ) const {
-    ::GEdge * edge = ::GModel::getEdgeByTag(tag);
+    ::GEdge * edge = ::GModel::getEdgeByTag(abs(tag));
     dt__ptrAss(dtGmshEdge * gEdge, dtGmshEdge::DownCast(edge));
     
     return gEdge;    
@@ -532,7 +626,25 @@ namespace dtOO {
 			}
 		}
 		return 0;
-	}	
+	}
+
+  int dtGmshModel::alreadyInModel( ::GRegion const * const gr ) const {
+		for (
+      ::GModel::riter rIt = __caCThis->firstRegion(); 
+      rIt != __caCThis->lastRegion(); 
+      ++rIt
+    ) {
+			if ( dtGmshRegion::isEqual(gr, *rIt) ) {
+				dt__debug(
+					alreadyInModel(),
+					<< "duplicate region = " << gr->tag() 
+          << " equal to region tag = " << (*rIt)->tag()
+				);				
+				return (*rIt)->tag();
+			}
+		}
+		return 0;
+	}	  
 	
   unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( void ) const {
 		//

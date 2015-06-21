@@ -57,5 +57,9 @@ namespace dtOO {
         _nE[0], _nE[1]
       );
     }
+		std::list< ::GFace * > ff = gm->faces();
+		dt__forAllIter(std::list< ::GFace * >, ff, it) {
+			dtGmshModel::cast2DtGmshFace(*it)->correctIfTransfinite();
+		}	    
   }
 }

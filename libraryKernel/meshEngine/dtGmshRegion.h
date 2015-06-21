@@ -27,6 +27,10 @@ namespace dtOO {
     void addFace( ::GFace * face, int const ori );
     void addGEntity( ::GEntity * const gEnt );
     void addElement( ::MElement * me );
+    bool isEqual( ::GRegion const * const gr ) const;    
+    static bool isEqual(
+      ::GRegion const * const gr0, ::GRegion const * const gr1 
+    );
   public:
     mutable ::GEntity::MeshGenerationStatus _status;
   };

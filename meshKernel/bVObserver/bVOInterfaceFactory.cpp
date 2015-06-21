@@ -12,6 +12,8 @@
 #include "bVOPostBLGmsh.h"
 #include "bVOWriteMSH.h"
 #include "bVOTransfiniteFaces.h"
+#include "bVOTransfiniteRegions.h"
+#include "bVOOrientCellVolumes.h"
 
 #define __IFRET(className) \
 	if ( strcmp(str, #className) == 0 ) { \
@@ -35,6 +37,8 @@ namespace dtOO {
 		__IFRET(bVOPostBLGmsh);
 		__IFRET(bVOWriteMSH);
     __IFRET(bVOTransfiniteFaces);
+    __IFRET(bVOTransfiniteRegions);
+    __IFRET(bVOOrientCellVolumes);
 		
     dt__throw(create(), <<  "Could not be created.");
   }

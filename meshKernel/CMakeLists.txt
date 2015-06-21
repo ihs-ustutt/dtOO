@@ -10,6 +10,8 @@ SET(HEADERS
   bVObserver/bVOPostBLGmsh.h
   bVObserver/bVOWriteMSH.h
   bVObserver/bVOTransfiniteFaces.h
+  bVObserver/bVOTransfiniteRegions.h
+  bVObserver/bVOOrientCellVolumes.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dBlockGmsh.h
@@ -18,6 +20,7 @@ SET(HEADERS
   map3dTo3dWithInternalTurboGrid.h
   vec3dInMap3dTo3dWithMeshedSurface.h
   map3dTo3dWithInternalGmsh.h
+  map3dTo3dWithInternalBlockGmsh.h
   readMOABMesh.h
   gmshBoundedVolume.h
   postBLMeshKit.h
@@ -35,6 +38,8 @@ SET(SOURCES
   bVObserver/bVOPostBLGmsh.cpp
   bVObserver/bVOWriteMSH.cpp
   bVObserver/bVOTransfiniteFaces.cpp
+  bVObserver/bVOTransfiniteRegions.cpp
+  bVObserver/bVOOrientCellVolumes.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dBlockGmsh.cpp
@@ -43,6 +48,7 @@ SET(SOURCES
   map3dTo3dWithInternalTurboGrid.cpp
   vec3dInMap3dTo3dWithMeshedSurface.cpp
   map3dTo3dWithInternalGmsh.cpp
+  map3dTo3dWithInternalBlockGmsh.cpp
   readMOABMesh.cpp
   gmshBoundedVolume.cpp
   postBLMeshKit.cpp

@@ -34,6 +34,9 @@ namespace dtOO {
     dtGmshRegion * getDtGmshRegionByTag( int const tag ) const;
     dtGmshFace * getDtGmshFaceByTag( int const tag ) const;
     dtGmshFace * getDtGmshFaceByPhysical( std::string const & physical ) const;
+    dtGmshRegion * getDtGmshRegionByPhysical(
+      std::string const & physical
+    ) const;
     dtGmshEdge * getDtGmshEdgeByTag( int const tag ) const;  
     int getDtGmshEdgeTagByFromTo( int const from, int const to ) const;
     dtGmshEdge * getDtGmshEdgeByFromTo( int const from, int const to ) const;
@@ -68,6 +71,19 @@ namespace dtOO {
       int const & eId0, int const & eId1, int const & eId2, int const & eId3
     );  
     void addIfFaceToGmshModel(map2dTo3d const * const face, int * const tag);    
+    void addIfRegionToGmshModel(
+      map3dTo3d const * const region, int * const tag,
+      std::list< ::GFace * > const & faces, std::vector< int > const & ori   
+    );    
+    void addIfRegionToGmshModel( 
+      map3dTo3d const * const region, int * const tag,
+      int const & fId0, int const & fId1, 
+      int const & fId2, int const & fId3, 
+      int const & fId4, int const & fId5
+    );  
+    void addIfRegionToGmshModel(
+      map3dTo3d const * const region, int * const tag
+    );    
     dtGmshRegion * addRegionToGmshModel( map3dTo3d const * const vol );
     void meshEdgeTransfiniteFromTo(
       int const from, int const to, 
@@ -81,6 +97,7 @@ namespace dtOO {
     int alreadyInModel( ::GVertex const * const gv ) const;
     int alreadyInModel( ::GEdge const * const ge ) const;
     int alreadyInModel( ::GFace const * const gf ) const;
+    int alreadyInModel( ::GRegion const * const gr ) const;    
     unstructured3dMesh * toUnstructured3dMesh( void ) const;
     static unstructured3dMesh * toUnstructured3dMesh(
       std::vector< ::MVertex const * > const & vertices, 
