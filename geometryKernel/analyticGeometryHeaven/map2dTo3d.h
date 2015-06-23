@@ -115,8 +115,7 @@ namespace dtOO {
       dtPoint2 operator%(const dtPoint2 &percent) const;      
     private:
       bool XYZtoUV(
-        double X, double Y, double Z, double &U, double &V,
-        double relax, std::vector< float > &itVal
+        double X, double Y, double Z, double &U, double &V
       ) const;
 	    double F(double const * xx) const;        
     private:

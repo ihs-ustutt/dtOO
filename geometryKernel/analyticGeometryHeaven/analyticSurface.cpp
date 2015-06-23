@@ -151,7 +151,12 @@ namespace dtOO {
   }
   
   dtPoint2 analyticSurface::reparamOnFace(dtPoint3 const & ppXYZ) const {
-    return _dtS->reparam( ppXYZ );
+    dtPoint2 ppUV = _dtS->reparam( ppXYZ );
+    dtPoint3 ppXYZReparam = getPoint(ppUV.x(), ppUV.y());
+
+    analyticGeometry::inXYZTolerance(ppXYZ, ppXYZReparam);
+        
+    return ppUV;    
   }
   
   map1dTo3d * analyticSurface::segmentConstU(

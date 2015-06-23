@@ -158,14 +158,8 @@ namespace dtOO {
     if (!_percentF) ppXYZReparam = getPoint(xx[0], xx[1]);
     else ppXYZReparam = getPointPercent(xx[0], xx[1]);
     
-    float dist = dtLinearAlgebra::length(ppXYZ - ppXYZReparam);
-    dt__warnIfWithMessage(
-      dist
-      >
-      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
-      reparamOnFace(), 
-      << dt__eval(dist)
-    );  
+    analyticGeometry::inXYZTolerance(ppXYZ, ppXYZReparam);
+
     return dtPoint2(xx[0], xx[1]);
   }
 }

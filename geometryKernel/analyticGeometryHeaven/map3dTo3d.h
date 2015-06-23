@@ -128,14 +128,12 @@ namespace dtOO {
   private:
     bool XYZtoUVW(
       double X, double Y, double Z, 
-      double &U, double &V, double &W,
-      double relax, std::vector< float > &itVal
+      double &U, double &V, double &W
     ) const;    
     bool XYZtoUVW(
       double X, double Y, double Z, 
       double &U, double &V, double &W,
-      double relax, double extU, double extV, double extW,
-      std::vector< float > &itVal
+      double extU, double extV, double extW
     ) const;
 	  double F(double const * xx) const;    
   private:

@@ -176,58 +176,20 @@ namespace dtOO {
     double Z = ppXYZ.z();
     double U;
     double V;
-    double relax = 1.;
-    std::vector<float> itVal;
-    bool converged = XYZtoUV(X, Y, Z, U, V, relax, itVal);
     
-    
-    std::vector< std::string > header;
-		header.push_back("i");
-		header.push_back("j");
-    header.push_back("deltaXYZ");
-    header.push_back("deltaUV");
-		header.push_back("nIter");
-
-    std::vector< std::string > addInfo;
-		addInfo.push_back( "tolerance = ");
-    addInfo[0] 
-		+= 
-		stringPrimitive::floatToString(
-		  staticPropertiesHandler::getInstance()->getOptionFloat(
-        "reparamOnFace_precision"
-      )
-		);  
-		addInfo.push_back(
-			"p_xyz = ("
-			+ stringPrimitive::floatToString(ppXYZ.x()) 
-			+ ", " 
-			+ stringPrimitive::floatToString(ppXYZ.y())
-			+ ", "
-			+ stringPrimitive::floatToString(ppXYZ.z())
-			+ ")"
-		);    
-
-		dtPoint3 ppRep_xyz = getPoint(U,V);
-		dtVector3 dist = ppXYZ - ppRep_xyz;		
-
-		float minPDist 
-		= 
-		staticPropertiesHandler::getInstance()->getOptionFloat(
-      "xyz_resolution"
-    );    		
-		if (sqrt(dist.squared_length()) > minPDist) {		
-			dt__debug(
-				reparamOnFace(), 
-				<< dt__eval( getLabel() ) << std::endl
-				<< logMe::floatVecToTable(addInfo, header, itVal) << std::endl 
-				<< dt__eval(converged) << std::endl
-				<< "p_xyz = (" << ppXYZ.x() << ", " << ppXYZ.y() << ", " << ppXYZ.z() << ")" << std::endl
-				<< "S(p_uv) = (" << ppRep_xyz.x() << ", " << ppRep_xyz.y() << ", " << ppRep_xyz.z() << ")" << std::endl
-				<< "p_uv = (" << U << ", " << V << ")" << std::endl
-				<< "distance = (" << sqrt(dist.squared_length()) << ")"
-			);		
+    //
+    // do reparameterization
+    //
+    bool converged = XYZtoUV(X, Y, Z, U, V);
+    if (!converged) {
+      dt__warning(reparamOnFace(), << "Reparameterization not converged.");
     }
-		
+    
+    //
+    // check if point is precise enough
+    //
+    analyticGeometry::inXYZTolerance(ppXYZ, getPoint(U,V));
+    		
 //    dt__warnIfWithMessageAndSolution(
 //      U<getMin(0), U=getMin(0), reparamOnFace(), << dt__eval(U)
 //    );
@@ -248,11 +210,15 @@ namespace dtOO {
     return dtPoint2(U, V);  
   }
   
-  dtVector3 map2dTo3d::normalPercent( float const & uu, float const & vv ) const {
+  dtVector3 map2dTo3d::normalPercent( 
+    float const & uu, float const & vv 
+  ) const {
     return normal(u_percent(uu), v_percent(vv));  
   }
 	
-	std::vector< dtVector3 > map2dTo3d::firstDer( float const & uu, float const & vv) const {
+	std::vector< dtVector3 > map2dTo3d::firstDer( 
+    float const & uu, float const & vv
+  ) const {
 		//
 		// dU
 		//
@@ -324,7 +290,9 @@ namespace dtOO {
     return firstDer(uu, vv)[1];		
   }
 
-  std::vector< dtVector3 > map2dTo3d::secondDer( float const & uu, float const & vv) const {
+  std::vector< dtVector3 > map2dTo3d::secondDer( 
+    float const & uu, float const & vv
+  ) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
     float const deltaPer = 0.01;
@@ -471,14 +439,18 @@ namespace dtOO {
 		return new vec2dOneDInMap2dTo3d(&v2d1d, this);
 	}
  
-	map1dTo3d * map2dTo3d::segmentConstU( float const & uu, float const & p0, float const & p1 ) const {
+	map1dTo3d * map2dTo3d::segmentConstU( 
+    float const & uu, float const & p0, float const & p1 
+  ) const {
 	  dtPoint2 p20(uu, p0);
 		dtPoint2 p21(uu, p1);
 		
 		return segment(p20, p21);
 	}
 
-	map1dTo3d * map2dTo3d::segmentConstV( float const & vv, float const & p0, float const & p1 ) const {
+	map1dTo3d * map2dTo3d::segmentConstV( 
+    float const & vv, float const & p0, float const & p1 
+  ) const {
 	  dtPoint2 p20(p0, vv);
 		dtPoint2 p21(p1, vv);
 		
@@ -521,7 +493,9 @@ namespace dtOO {
 	 *    +--------+ --> (u)
 	 *   (0)      
    */		
-	map2dTo3d * map2dTo3d::segmentRectangle( dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map2dTo3d * map2dTo3d::segmentRectangle( 
+    dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 		return segment(p0, dtPoint2(p1.x(), p0.y()), p1, dtPoint2(p0.x(), p1.y()));
 	}	
 	
@@ -533,11 +507,15 @@ namespace dtOO {
 		return segmentConstV(vv, getUMin(), getUMax());
 	}
   
-	map1dTo3d * map2dTo3d::segmentConstUPercent( float const & uu, float const & p0, float const & p1 ) const {		
+	map1dTo3d * map2dTo3d::segmentConstUPercent( 
+    float const & uu, float const & p0, float const & p1 
+  ) const {		
 		return segmentConstU(u_percent(uu), v_percent(p0), v_percent(p1));
 	}
 
-	map1dTo3d * map2dTo3d::segmentConstVPercent( float const & vv, float const & p0, float const & p1 ) const {
+	map1dTo3d * map2dTo3d::segmentConstVPercent( 
+    float const & vv, float const & p0, float const & p1 
+  ) const {
 		return segmentConstV( v_percent(vv), u_percent(p0), u_percent(p1) );
 	}
 
@@ -549,7 +527,9 @@ namespace dtOO {
 	  return segmentConstV(v_percent(vv));
 	}
 	
-	map1dTo3d * map2dTo3d::segmentPercent( dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map1dTo3d * map2dTo3d::segmentPercent( 
+    dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 		return segment(uv_percent(p0), uv_percent(p1));
 	}
 
@@ -589,7 +569,9 @@ namespace dtOO {
 	 *    +--------+ --> (u)
 	 *   (0)      
    */		
-	map2dTo3d * map2dTo3d::segmentRectanglePercent( dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map2dTo3d * map2dTo3d::segmentRectanglePercent( 
+    dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 		return segmentRectangle(uv_percent(p0), uv_percent(p1));
 	}
 	
@@ -747,10 +729,10 @@ namespace dtOO {
 //    }
 //  }
   bool map2dTo3d::XYZtoUV(
-    double X, double Y, double Z, double &U, double &V,
-    double relax, std::vector< float > &itVal
+    double X, double Y, double Z, double &U, double &V
   ) const {
     _pXYZ = dtPoint3(X, Y, Z);
+    
 		// 
 		// multidimensional minimization
 		//
@@ -771,23 +753,27 @@ namespace dtOO {
     
 		//
 		// minimizer options
-		//
+		//        
 		min.SetMaxFunctionCalls(1000000);
 		min.SetMaxIterations(100000);
-		min.SetTolerance(0.00001);			
-		min.SetPrintLevel(0);
+		min.SetTolerance(
+      staticPropertiesHandler::getInstance()->getOptionFloat(
+        "reparamOnFace_precision"
+      )    
+    );			
+		min.SetPrintLevel(3);
 
 		//
 		// minimize
 		//
-   	min.Minimize();
+   	bool converged = min.Minimize();
 
     double const * const theRoot = min.X( );
 
     U = theRoot[0];
     V = theRoot[1];
     
-    return true;
+    return converged;
 	}
   
 	double map2dTo3d::F(double const * xx) const {	
