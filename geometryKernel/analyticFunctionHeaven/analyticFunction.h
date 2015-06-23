@@ -33,18 +33,24 @@ namespace dtOO {
     virtual aFX percent_x( aFX const & xx ) const;    
     virtual aFX invY(aFY const & yy) const;    
     virtual bool isCompound( void ) const;
-	  virtual vectorHandling< analyticFunction const * > compoundInternal( void ) const;
+	  virtual vectorHandling< analyticFunction const * > compoundInternal( 
+      void 
+    ) const;
     virtual bool isTransformed( void ) const;
     static aFX aFXZeroD( void );
     static aFX aFXOneD( float const & x0 );
     static aFX aFXTwoD( float const & x0, float const & x1 );
-    static aFX aFXThreeD( float const & x0, float const & x1, float const & x2 );
+    static aFX aFXThreeD( 
+      float const & x0, float const & x1, float const & x2 
+    );
     static aFX aFXTwoD( dtPoint2 const & pp );    
     static aFX aFXThreeD( dtPoint3 const & pp );
     static aFY aFYZeroD( void );    
     static aFY aFYOneD( float const & x0 );
     static aFY aFYTwoD( float const & x0, float const & x1 );
-    static aFY aFYThreeD( float const & x0, float const & x1, float const & x2 );    
+    static aFY aFYThreeD( 
+      float const & x0, float const & x1, float const & x2 
+    );    
     static aFY aFYTwoD( dtPoint2 const & pp );    
     static aFY aFYThreeD( dtPoint3 const & pp );    
     static aFY aFY_aFX( aFX const & xx );    

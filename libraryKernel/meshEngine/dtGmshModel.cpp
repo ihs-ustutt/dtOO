@@ -534,8 +534,9 @@ namespace dtOO {
   
   void dtGmshModel::meshEdge( int const tag ) {
     dtGmshEdge * dtge = getDtGmshEdgeByTag(tag);   
-    ::meshGEdge me;
-    if ( dtge->meshStatistics.status == ::GEntity::PENDING ) me(dtge);
+    if ( dtge->meshStatistics.status == ::GEntity::PENDING ) {
+      ::meshGEdge()(dtge);
+    }
   }
   
   void dtGmshModel::meshFace( int const tag ) {
@@ -545,9 +546,8 @@ namespace dtOO {
     std::list< ::GEdge * >::iterator e_it = ee.begin();
     for ( e_it; e_it != ee.end(); ++e_it) meshEdge( (*e_it)->tag() );
     
-    ::meshGFace mf;
     if ( dtgf->meshStatistics.status == ::GEntity::PENDING ) {
-      mf(dtgf);
+      ::meshGFace()(dtgf);
     }
   }
   

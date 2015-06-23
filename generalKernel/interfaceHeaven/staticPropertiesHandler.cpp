@@ -22,6 +22,7 @@ namespace dtOO {
     setOption("geometry_render_resolution_u", "10");
 		setOption("geometry_render_resolution_v", "10");
 		setOption("geometry_render_resolution_w", "10");		
+		setOption("root_printLevel", "0");		    
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {

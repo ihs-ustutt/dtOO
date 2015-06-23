@@ -81,7 +81,11 @@ namespace dtOO {
         "invY_precision"
       )    
     );						
-		min.SetPrintLevel(0);
+		min.SetPrintLevel(
+      staticPropertiesHandler::getInstance()->getOptionInt(
+        "root_printLevel"
+      ) 
+    );
 
 		//
 		// minimize
@@ -95,13 +99,13 @@ namespace dtOO {
     aFX retX(xDim(),0.);
     for (int ii=0; ii<xDim(); ii++) retX[ii] = theRoot[ii];
     
-    dt__info(
-      invY(), 
-      << "label = " << getLabel() << std::endl
-      << "yy = " << yy << std::endl
-      << "xx = " << x_percent(retX) << std::endl
-      << "f(xx) = " << Y(x_percent(retX)) << std::endl
-    );
+//    dt__info(
+//      invY(), 
+//      << "label = " << getLabel() << std::endl
+//      << "yy = " << yy << std::endl
+//      << "xx = " << x_percent(retX) << std::endl
+//      << "f(xx) = " << Y(x_percent(retX)) << std::endl
+//    );
     
     return x_percent(retX);
   }
@@ -110,7 +114,9 @@ namespace dtOO {
 		return false;
 	}
 
-	vectorHandling< analyticFunction const * > analyticFunction::compoundInternal( void ) const {
+	vectorHandling< analyticFunction const * > analyticFunction::compoundInternal( 
+    void 
+  ) const {
 		return vectorHandling< analyticFunction const * >();
 	}			
   
@@ -137,7 +143,9 @@ namespace dtOO {
 		return ret;
 	} 
 	
-  aFX analyticFunction::aFXThreeD( float const & x0, float const & x1, float const & x2 ) {
+  aFX analyticFunction::aFXThreeD( 
+    float const & x0, float const & x1, float const & x2 
+  ) {
 		aFX ret = aFX(3, 0.);
 		ret[0] = x0;
 		ret[1] = x1;
@@ -173,7 +181,9 @@ namespace dtOO {
 		return ret;
 	}
 	
-  aFY analyticFunction::aFYThreeD( float const & x0, float const & x1, float const & x2 ) {
+  aFY analyticFunction::aFYThreeD( 
+    float const & x0, float const & x1, float const & x2 
+  ) {
 		aFY ret = aFY(3, 0.);
 		ret[0] = x0;
 		ret[1] = x1;
