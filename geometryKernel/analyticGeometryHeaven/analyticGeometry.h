@@ -42,6 +42,10 @@ namespace dtOO {
     //
     //
     //
+    bool inXYZTolerance(dtPoint3 const & p0, dtPoint3 const & p1) const;
+    //
+    //
+    //
     void dump(void) const;    
     void setRenderResolution(int const & dir, int const & value) const;
     int getRenderResolution(int const & dir) const;    
