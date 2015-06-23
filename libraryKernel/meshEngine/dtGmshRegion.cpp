@@ -10,6 +10,7 @@
 #include <gmsh/MPrism.h>
 #include <gmsh/MHexahedron.h>
 #include "dtGmshFace.h"
+#include "dtGmshModel.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
@@ -43,6 +44,15 @@ namespace dtOO {
       ii++;
     }
 		_status = ::GEntity::MeshGenerationStatus::PENDING;
+  }
+  
+  dtGmshModel const & dtGmshRegion::refDtGmshModel( void ) const {
+    dt__ptrAss(
+      dtGmshModel const * const gm,
+      dtGmshModel::ConstDownCast(model())
+    );
+    
+    return *gm;
   }
    
   void dtGmshRegion::meshTransfinite( void ) {
@@ -161,4 +171,24 @@ namespace dtOO {
 			return false;
 		}		
 	}  
+  
+  void dtGmshRegion::replaceFace( 
+    ::GFace const * const toReplace, ::GFace * const with 
+  ) {
+    std::list< ::GFace * > faces = l_faces;
+    dt__forAllIter(std::list< GFace * >, faces, it) {
+      if ( (*it) == toReplace ) (*it) = with;
+    }
+    replaceFaces(faces);
+  }  
+
+	std::string dtGmshRegion::dumpToString( void ) const {
+		std::stringstream ss;
+		
+    std::list< ::GFace * > ff = faces(); 
+    dt__forAllConstIter(std::list< ::GFace * >, ff, it) {
+		  ss << "face: " << refDtGmshModel().getPhysicalString(*it) << std::endl;
+		}
+		return ss.str();
+	}	  
 }

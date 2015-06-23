@@ -9,6 +9,7 @@ class GFace;
 
 namespace dtOO {
   class dtGmshFace;
+  class dtGmshModel;
   
   class dtGmshRegion : public ::GRegion {
   public:
@@ -22,6 +23,7 @@ namespace dtOO {
       ::GModel *m, int tag, 
       const std::list<dtGmshFace*> &faces, const std::vector<int> &ori 
     );
+    dtGmshModel const & refDtGmshModel( void ) const;
     void meshTransfinite( void );
     void meshRecombine( void );        
     void meshRecombineRecursive( void );    
@@ -33,6 +35,10 @@ namespace dtOO {
     static bool isEqual(
       ::GRegion const * const gr0, ::GRegion const * const gr1 
     );
+    void replaceFace( 
+      ::GFace const * const toReplace, ::GFace * const with     
+    );
+    std::string dumpToString( void ) const;
   public:
     mutable ::GEntity::MeshGenerationStatus _status;
   };

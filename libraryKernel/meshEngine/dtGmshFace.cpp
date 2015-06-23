@@ -79,6 +79,20 @@ namespace dtOO {
 //		}		
   }
   
+  dtGmshModel const & dtGmshFace::refDtGmshModel( void ) const {
+    dt__ptrAss(
+      dtGmshModel const * const gm, dtGmshModel::ConstDownCast(model())
+    );
+    
+    return *gm;
+  }
+  
+  dtGmshModel & dtGmshFace::refDtGmshModel( void ) {
+    dt__ptrAss(dtGmshModel * gm, dtGmshModel::DownCast(model()));
+    
+    return *gm;
+  }
+  
   Range<double> dtGmshFace::parBounds(int i) const {
     if (i == 0) {
       return Range<double>(_mm->getUMin(), _mm->getUMax());

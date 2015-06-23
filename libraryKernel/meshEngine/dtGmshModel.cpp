@@ -22,7 +22,8 @@
 #include <unstructured3dSurfaceMesh.h>
 #include <gmsh/meshGEdge.h>
 #include <gmsh/meshGFace.h>
-#include <gmsh/meshGRegion.h>
+//#include <gmsh/meshGRegion.h>
+#include "dtMeshGRegion.h"
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
 #include <gmsh/MTetrahedron.h>
@@ -560,11 +561,7 @@ namespace dtOO {
     }
     
 		if (dtgr->_status == ::GEntity::MeshGenerationStatus::PENDING) {
-			std::vector< ::GRegion * > delauny;
-			::meshGRegion mr( delauny );
-			mr(dtgr);    
-			MeshDelaunayVolume(delauny);
-			dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
+      dtMeshGRegion()(dtgr);
 		}
 		
   }
@@ -1299,7 +1296,7 @@ namespace dtOO {
 		this->deleteMesh();
 	}	
 
-	int dtGmshModel::getMaxVertexTag( void ) {
+	int dtGmshModel::getMaxVertexTag( void ) const {
 		int maxTag = 0;
 		for( 
       ::GModel::viter v_it=GModel::vertices.begin(); 
@@ -1309,7 +1306,7 @@ namespace dtOO {
 		return maxTag;
 	}
 	
-	int dtGmshModel::getMaxEdgeTag( void ) {
+	int dtGmshModel::getMaxEdgeTag( void ) const {
 		int maxTag = 0;
 		for( 
       ::GModel::eiter e_it= GModel::edges.begin(); 
@@ -1319,20 +1316,20 @@ namespace dtOO {
 		return maxTag;
 	}
 	
-	int dtGmshModel::getMaxFaceTag( void ) {
+	int dtGmshModel::getMaxFaceTag( void ) const {
 		int maxTag = 0;
 		for( 
-      ::GModel::fiter f_it= GModel::faces.begin(); 
+      ::GModel::fiter f_it = GModel::faces.begin(); 
       f_it!=GModel::faces.end(); 
       ++f_it 
     ) if ( (*f_it)->tag() > maxTag ) maxTag = (*f_it)->tag();
 		return maxTag;
 	}	
 	
-	int dtGmshModel::getMaxRegionTag( void ) {
+	int dtGmshModel::getMaxRegionTag( void ) const {
 		int maxTag = 0;
 		for( 
-      ::GModel::riter r_it= GModel::regions.begin(); 
+      ::GModel::riter r_it = GModel::regions.begin(); 
       r_it!=GModel::regions.end(); 
       ++r_it 
     ) if ( (*r_it)->tag() > maxTag ) maxTag = (*r_it)->tag();
@@ -1342,7 +1339,7 @@ namespace dtOO {
   std::list< ::GVertex * > dtGmshModel::vertices( void ) const {
 		std::list< ::GVertex * > ll;
     for( 
-      ::GModel::viter it= GModel::vertices.begin(); 
+      ::GModel::viter it = GModel::vertices.begin(); 
       it!=GModel::vertices.end(); 
       ++it ) ll.push_back( *it );
 		
@@ -1352,7 +1349,7 @@ namespace dtOO {
   std::list< ::GEdge * > dtGmshModel::edges( void ) const {
 		std::list< ::GEdge * > ll;
     for( 
-      ::GModel::eiter it= GModel::edges.begin(); 
+      ::GModel::eiter it = GModel::edges.begin(); 
       it!=GModel::edges.end(); 
       ++it 
     ) ll.push_back( *it );
@@ -1363,7 +1360,7 @@ namespace dtOO {
 	std::list< ::GFace * > dtGmshModel::faces( void ) const {
 		std::list< ::GFace * > faceL;
     for( 
-      ::GModel::fiter f_it= GModel::faces.begin(); 
+      ::GModel::fiter f_it = GModel::faces.begin(); 
       f_it!=GModel::faces.end(); 
       ++f_it 
     ) faceL.push_back( *f_it );
@@ -1374,7 +1371,7 @@ namespace dtOO {
 	std::list< ::GRegion * > dtGmshModel::regions( void ) const {
 		std::list< ::GRegion * > regionL;
     for( 
-      ::GModel::riter r_it= GModel::regions.begin(); 
+      ::GModel::riter r_it = GModel::regions.begin(); 
       r_it!=GModel::regions.end(); 
       ++r_it 
     ) regionL.push_back( *r_it );
@@ -1437,10 +1434,13 @@ namespace dtOO {
 		ge->physicals.clear();
 	}
 	
-  std::string dtGmshModel::getPhysicalString( ::GEntity * const ge ) const {
-		std::vector< int > pInt = ge->getPhysicalEntities();
-		dt__throwIf(pInt.size()!=1, getPhysicalString());
-		
+  std::string dtGmshModel::getPhysicalString( ::GEntity const * const ge ) const {
+		std::vector< int > pInt = const_cast< ::GEntity * >(ge)->getPhysicalEntities();
+    
+    if(pInt.size() == 0) return std::string("");
+    
+    dt__throwIf(pInt.size()!=1, getPhysicalString());
+    
 		return GModel::getPhysicalName(ge->dim(), pInt[0]);
 	}
 	

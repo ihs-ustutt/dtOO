@@ -110,10 +110,10 @@ namespace dtOO {
     //
     // get max tags of entities
     //
-    int getMaxVertexTag( void );
-    int getMaxEdgeTag( void );
-    int getMaxFaceTag( void );
-    int getMaxRegionTag( void );
+    int getMaxVertexTag( void ) const;
+    int getMaxEdgeTag( void ) const;
+    int getMaxFaceTag( void ) const;
+    int getMaxRegionTag( void ) const;
     //
     // get lists of geometrical entities
     //    
@@ -125,7 +125,7 @@ namespace dtOO {
     // physical handling
     //
     void untagPhysical( ::GEntity * const ge );
-    std::string getPhysicalString(::GEntity * const ge ) const;
+    std::string getPhysicalString(::GEntity const * const ge ) const;
     void tagPhysical(::GEntity * const ge, std::string const & pName);
     //
     // guess entity to which an element belongs

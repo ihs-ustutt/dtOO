@@ -13,6 +13,7 @@ class MVertex;
 namespace dtOO {
   class map2dTo3d;
   class dtOMMesh;
+  class dtGmshModel;
     
   class dtGmshFace : public ::GFace {
   public:
@@ -24,6 +25,8 @@ namespace dtOO {
     );
     dtGmshFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges);
     virtual ~dtGmshFace();
+    dtGmshModel const & refDtGmshModel( void ) const;    
+    dtGmshModel & refDtGmshModel( void );    
     virtual Range<double> parBounds(int i) const; 
     virtual GPoint point(double par1, double par2) const; 
     virtual Pair<SVector3,SVector3> firstDer(const SPoint2 &param) const;
