@@ -91,7 +91,7 @@ namespace dtOO {
 	}		
 	
   bool analyticGeometry::inXYZTolerance(
-    dtPoint3 const & p0, dtPoint3 const & p1
+    dtPoint3 const & p0, dtPoint3 const & p1, bool output
   ) const {
 		float xyzResolution 
 		= 
@@ -101,13 +101,15 @@ namespace dtOO {
     
 		dtVector3 dist = p0 - p1;
 		if (sqrt(dist.squared_length()) > xyzResolution) {		
-			dt__warning(
-				inXYZTolerance(), 
-				<< dt__eval( getLabel() ) << std::endl
-				<< dt__point3d(p0) << std::endl
-        << dt__point3d(p1) << std::endl
-				<< dt__eval( dtLinearAlgebra::length( dist) )
-			);
+      if (output) {
+        dt__warning(
+          inXYZTolerance(), 
+          << dt__eval( getLabel() ) << std::endl
+          << dt__point3d(p0) << std::endl
+          << dt__point3d(p1) << std::endl
+          << dt__eval( dtLinearAlgebra::length( dist) )
+        );
+      }
       return false;
     }
 
