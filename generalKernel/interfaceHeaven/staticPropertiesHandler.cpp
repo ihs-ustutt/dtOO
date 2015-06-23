@@ -10,6 +10,7 @@ namespace dtOO {
     setOption("reparamInVolume_precision", "1.e-2");
     setOption("reparamOnFace_precisionXYZ", "1.e-1");
     setOption("reparamInVolume_precisionXYZ", "1.e-1");		
+    setOption("invY_precision", "1.e-2");
     setOption("xyz_resolution", "1.e-2");
 		setOption("uv_resolution", "1.e-2");
     setOption("point_render_diameter", "1.");
@@ -24,9 +25,7 @@ namespace dtOO {
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {
-    if (!_pH) {
-      _pH = new staticPropertiesHandler();
-    }
+    if (!_pH) _pH = new staticPropertiesHandler();
     return _pH;
   }
   staticPropertiesHandler::~staticPropertiesHandler() {

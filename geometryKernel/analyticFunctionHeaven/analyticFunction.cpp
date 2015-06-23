@@ -2,6 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <Minuit2/Minuit2Minimizer.h>
 #include <Math/Functor.h>
 
@@ -9,7 +10,10 @@ namespace dtOO {
 	analyticFunction::analyticFunction() : optionHandling(), labelHandling() {
 	}
 
-	analyticFunction::analyticFunction(const analyticFunction& orig)  : optionHandling(orig), labelHandling(orig) {
+	analyticFunction::analyticFunction(
+    const analyticFunction& orig
+  ) : optionHandling(orig), labelHandling(orig) {
+    
 	}
 
 	analyticFunction::~analyticFunction() {
@@ -72,7 +76,11 @@ namespace dtOO {
 		//
 		min.SetMaxFunctionCalls(1000000);
 		min.SetMaxIterations(100000);
-		min.SetTolerance(0.00001);			
+		min.SetTolerance(
+      staticPropertiesHandler::getInstance()->getOptionFloat(
+        "invY_precision"
+      )    
+    );						
 		min.SetPrintLevel(0);
 
 		//
