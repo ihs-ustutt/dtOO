@@ -176,38 +176,44 @@ namespace dtOO {
     double Z = ppXYZ.z();
     double U;
     double V;
+    int const NumInitGuess = 11;
+    double initU[NumInitGuess] 
+    = 
+    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
+    double initV[NumInitGuess] 
+    = 
+    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};    
     
-    //
-    // do reparameterization
-    //
-    bool converged = XYZtoUV(X, Y, Z, U, V);
-    if (!converged) {
-      dt__warning(reparamOnFace(), << "Reparameterization not converged.");
+    dt__forFromToIndex(0, NumInitGuess, ii) {
+      dt__forFromToIndex(0, NumInitGuess, jj) {       
+        //
+        // do reparameterization
+        //
+        U = initU[ii];
+        V = initV[jj];
+        bool converged = XYZtoUVPercent(X, Y, Z, U, V);
+        if (!converged) {
+          dt__warning(reparamOnFace(), << "Reparameterization not converged.");
+        }
+
+        //
+        // check if point is precise enough
+        //
+        if (
+          analyticGeometry::inXYZTolerance(ppXYZ, getPointPercent(U,V))
+        ) {
+          analyticGeometry::inXYZTolerance(ppXYZ, getPointPercent(U, V), true);
+//          dt__solution(U<getMin(0), U=getMin(0));
+//          dt__solution(V<getMin(1), V=getMin(1));
+//          dt__solution(U>getMax(0), U=getMax(0));
+//          dt__solution(V>getMax(0), V=getMax(1));    
+
+          return uv_percent( dtPoint2(U, V) );            
+        }
+      }
     }
     
-    //
-    // check if point is precise enough
-    //
-    analyticGeometry::inXYZTolerance(ppXYZ, getPoint(U,V));
-    		
-//    dt__warnIfWithMessageAndSolution(
-//      U<getMin(0), U=getMin(0), reparamOnFace(), << dt__eval(U)
-//    );
-//    dt__warnIfWithMessageAndSolution(
-//      V<getMin(1), V=getMin(1), reparamOnFace(), << dt__eval(V)
-//    );
-//    dt__warnIfWithMessageAndSolution(
-//      U>getMax(0), U=getMax(0), reparamOnFace(), << dt__eval(U)
-//    );
-//    dt__warnIfWithMessageAndSolution(
-//      V>getMax(0), V=getMax(1), reparamOnFace(), << dt__eval(V)
-//    );
-    dt__solution(U<getMin(0), U=getMin(0));
-    dt__solution(V<getMin(1), V=getMin(1));
-    dt__solution(U>getMax(0), U=getMax(0));
-    dt__solution(V>getMax(0), V=getMax(1));    
-    
-    return dtPoint2(U, V);  
+
   }
   
   dtVector3 map2dTo3d::normalPercent( 
@@ -728,7 +734,7 @@ namespace dtOO {
 //      return XYZtoUV(X, Y, Z, U, V, 0.75 * relax, itVal);
 //    }
 //  }
-  bool map2dTo3d::XYZtoUV(
+  bool map2dTo3d::XYZtoUVPercent(
     double X, double Y, double Z, double &U, double &V
   ) const {
     _pXYZ = dtPoint3(X, Y, Z);
@@ -745,9 +751,11 @@ namespace dtOO {
 		//
 		// set bounds
 		//
+    std::vector< double > init(2, 0);
+    init[0] = U; init[1] = V;
     for (int ii=0; ii<2; ii++) {
       std::string xStr = "x"+stringPrimitive::intToString(ii);
-		  min.SetVariable( ii, xStr, .5, 0.01 );			
+		  min.SetVariable( ii, xStr, init[ii], 0.01 );			
       min.SetVariableLimits(ii, 0., 1.);	
     }
     
@@ -761,7 +769,11 @@ namespace dtOO {
         "reparamOnFace_precision"
       )    
     );			
-		min.SetPrintLevel(3);
+		min.SetPrintLevel(
+      staticPropertiesHandler::getInstance()->getOptionInt(
+        "root_printLevel"
+      ) 
+    );
 
 		//
 		// minimize

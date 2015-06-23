@@ -126,11 +126,11 @@ namespace dtOO {
       dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent
     ) const;    
   private:
-    bool XYZtoUVW(
+    bool XYZtoUVWPercent(
       double X, double Y, double Z, 
       double &U, double &V, double &W
     ) const;    
-    bool XYZtoUVW(
+    bool XYZtoUVWPercent(
       double X, double Y, double Z, 
       double &U, double &V, double &W,
       double extU, double extV, double extW

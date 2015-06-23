@@ -604,25 +604,53 @@ namespace dtOO {
     double U;
     double V;
     double W;
+    int const NumInitGuess = 11;
+    double initU[NumInitGuess] 
+    = 
+    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
+    double initV[NumInitGuess] 
+    = 
+    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};        
+    double initW[NumInitGuess] 
+    = 
+    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};        
     
-    bool converged 
-	  = 
-	  XYZtoUVW(
-		  X, Y, Z, 
-			U, V, W, 
-			uvwExtPercent.x(), uvwExtPercent.y(), uvwExtPercent.z()
-    );
-    
-    if (!converged) {
-      dt__warning(reparamInVolume(), << "Reparameterization not converged.");
+    dt__forFromToIndex(0, NumInitGuess, ii) {
+      dt__forFromToIndex(0, NumInitGuess, jj) {       
+        dt__forFromToIndex(0, NumInitGuess, kk) {   
+          //
+          //
+          //
+          U = initU[ii];
+          V = initV[jj];          
+          W = initW[kk];          
+          bool converged 
+          = 
+          XYZtoUVWPercent(
+            X, Y, Z, 
+            U, V, W, 
+            uvwExtPercent.x(), uvwExtPercent.y(), uvwExtPercent.z()
+          );
+
+//          if (!converged) {
+//            dt__warning(reparamInVolume(), 
+//            << "Reparameterization not converged.");
+//          }
+
+          //
+          // check if point is precise enough
+          //
+          if ( 
+            analyticGeometry::inXYZTolerance(ppXYZ, getPointPercent(U, V, W)) 
+          ) {
+            analyticGeometry::inXYZTolerance(
+              ppXYZ, getPointPercent(U, V, W), true
+            );
+            return uvw_percent( dtPoint3(U, V, W) );            
+          }
+        }
+      }
     }
-    
-    //
-    // check if point is precise enough
-    //
-    analyticGeometry::inXYZTolerance(ppXYZ, getPoint(U, V, W));
-    
-    return dtPoint3(U, V, W);      
   }
 	
 //	bool map3dTo3d::XYZtoUVW(
@@ -832,17 +860,17 @@ namespace dtOO {
 //    }
 //  }    
 
-  bool map3dTo3d::XYZtoUVW(
+  bool map3dTo3d::XYZtoUVWPercent(
 		double X, double Y, double Z, double &U, double &V, double &W
   ) const {
-		return XYZtoUVW(X, Y, Z, U, V, W, 0., 0., 0.);
+		return XYZtoUVWPercent(X, Y, Z, U, V, W, 0., 0., 0.);
 	}
 
-    bool map3dTo3d::XYZtoUVW(
-      double X, double Y, double Z, 
-      double &U, double &V, double &W,
-      double extU, double extV, double extW
-    ) const {
+  bool map3dTo3d::XYZtoUVWPercent(
+    double X, double Y, double Z, 
+    double &U, double &V, double &W,
+    double extU, double extV, double extW
+  ) const {
     _pXYZ = dtPoint3(X, Y, Z);
 		// 
 		// multidimensional minimization
@@ -856,11 +884,13 @@ namespace dtOO {
 		//
 		// set bounds
 		//
-    std::vector< float > ext(3, 0);
+    std::vector< double > ext(3, 0);
     ext[0] = extU; ext[1] = extV; ext[2] = extW;
+    std::vector< double > init(3, 0);
+    init[0] = U; init[1] = V; init[2] = W;    
     for (int ii=0; ii<3; ii++) {
       std::string xStr = "x"+stringPrimitive::intToString(ii);
-		  min.SetVariable( ii, xStr, .5, 0.01 );			
+		  min.SetVariable( ii, xStr, init[ii], 0.01 );			
       min.SetVariableLimits(ii, 0.-ext[ii], 1.+ext[ii]);	
     }
     
@@ -874,7 +904,11 @@ namespace dtOO {
         "reparamInVolume_precision"
       )    
     );					
-		min.SetPrintLevel(3);
+		min.SetPrintLevel(
+      staticPropertiesHandler::getInstance()->getOptionInt(
+        "root_printLevel"
+      ) 
+    );
 
 		//
 		// minimize

@@ -114,7 +114,7 @@ namespace dtOO {
       ) const;
       dtPoint2 operator%(const dtPoint2 &percent) const;      
     private:
-      bool XYZtoUV(
+      bool XYZtoUVPercent(
         double X, double Y, double Z, double &U, double &V
       ) const;
 	    double F(double const * xx) const;        
