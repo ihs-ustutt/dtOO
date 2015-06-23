@@ -208,6 +208,7 @@ namespace dtOO {
         << "|    " << className() << "::"#functionname << std::endl \
         message \
         << std::endl \
+        << dtOO::logMe::Backtrace() << std::endl \
         << std::endl; \
     }
   #define dt__debug(functionname, message) \
@@ -298,8 +299,6 @@ namespace dtOO {
         << "-------------------------------------------------------------------" << std::endl \
         << std::endl; \
     }
-  #define dt__functionNotImplemented(functionname) \
-    std::cout << "This function is not yet implemented." << std::endl
   #define dt__tryOcc(cmd, errorOut) \
     try { \
       OCC_CATCH_SIGNALS \

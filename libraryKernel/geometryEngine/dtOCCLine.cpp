@@ -25,18 +25,18 @@ namespace dtOO {
 	}
 	
   int dtOCCLine::order( void ) const {
-		dt__functionNotImplemented(order);		
+		dt__throwUnexpected(order());		
 	}
 	
   int dtOCCLine::nControlPoints( void ) const {
-		dt__functionNotImplemented(nControlPoints);		
+		dt__throwUnexpected(nControlPoints());		
 	}
 	
   dtPoint3 dtOCCLine::controlPoint( int const nPoint ) const {
-		dt__functionNotImplemented(controlPoint);		
+		dt__throwUnexpected(controlPoint());		
 	}
 	
   void dtOCCLine::setControlPoint( int const nPoint, dtPoint3 const point ) {
-		dt__functionNotImplemented(setControlPoint);
+		dt__throwUnexpected(setControlPoint());
 	}
 }

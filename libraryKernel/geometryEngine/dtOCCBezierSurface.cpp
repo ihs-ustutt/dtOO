@@ -29,7 +29,9 @@ namespace dtOO {
 		return new dtOCCBezierSurface( OCCRef() );
 	}
 
-	dtPoint3 dtOCCBezierSurface::controlPoint( int const uI, int const vI ) const {
+	dtPoint3 dtOCCBezierSurface::controlPoint( 
+    int const uI, int const vI 
+  ) const {
 		Standard_Integer uSi = static_cast<Standard_Integer>(uI+1);		
 		Standard_Integer vSi = static_cast<Standard_Integer>(vI+1);		
 		gp_Pnt pp = _ptr->Pole(uSi, vSi);
@@ -41,8 +43,10 @@ namespace dtOO {
 		);				
 	}
 
-	void dtOCCBezierSurface::setControlPoint( int const uI, int const vI, dtPoint3 const point ) {
-		dt__functionNotImplemented(setControlPoint);			
+	void dtOCCBezierSurface::setControlPoint( 
+    int const uI, int const vI, dtPoint3 const point 
+  ) {
+		dt__throwUnexpected(setControlPoint());			
 	}
 
 	int dtOCCBezierSurface::nControlPoints( int const dim ) const {
@@ -52,13 +56,17 @@ namespace dtOO {
 			case 1:		
 				return static_cast<int>(_ptr->NbVPoles());
 			default:
-				dt__throw(getNControlPoints(),
-							<< dt__eval(dim) << std::endl
-							<< "dim should be 0 or 1.");				
+				dt__throw(
+          getNControlPoints(),
+					<< dt__eval(dim) << std::endl
+					<< "dim should be 0 or 1."
+        );				
 		}	
 	}
 
-	dtCurve * dtOCCBezierSurface::segmentConstU( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve * dtOCCBezierSurface::segmentConstU( 
+    float const uu, float const vvMin, float const vvMax
+  ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
 
@@ -75,7 +83,9 @@ namespace dtOO {
 		return new dtOCCBezierCurve(base);
 	}
 
-	dtCurve * dtOCCBezierSurface::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve * dtOCCBezierSurface::segmentConstV( 
+    float const vv, float const uuMin, float const uuMax
+  ) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		Handle(Geom_Curve) cc = _ptr->VIso(vR);
 

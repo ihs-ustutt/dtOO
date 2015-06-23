@@ -25,7 +25,7 @@ namespace dtOO {
 	}
 	
   int dtOCCLine2d::order( void ) const {
-		dt__functionNotImplemented(order());			
+		dt__throwUnexpected(order());			
 	}
 	
   int dtOCCLine2d::nControlPoints( void ) const {
@@ -33,7 +33,7 @@ namespace dtOO {
 	}
 	
   dtPoint2 dtOCCLine2d::controlPoint( int const nPoint ) const {
-		dt__functionNotImplemented(controlPoint());		
+		dt__throwUnexpected(controlPoint());		
 	}
 		
 }

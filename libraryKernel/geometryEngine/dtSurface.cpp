@@ -161,7 +161,9 @@ namespace dtOO {
 		return segmentConstV( v_vPercent(vv) );
 	}
 	
-	dtCurve * dtSurface::segmentConstUPercent( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve * dtSurface::segmentConstUPercent( 
+    float const uu, float const vvMin, float const vvMax
+  ) const {
 		return segmentConstU( 
 		  u_uPercent(uu), 
 			v_vPercent(vvMin), 
@@ -169,7 +171,9 @@ namespace dtOO {
 	  );
 	}
 	
-	dtCurve * dtSurface::segmentConstVPercent( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve * dtSurface::segmentConstVPercent( 
+    float const vv, float const uuMin, float const uuMax
+  ) const {
 		return segmentConstV( 
 		  v_vPercent(vv), 
 			u_uPercent(uuMin),
@@ -189,7 +193,9 @@ namespace dtOO {
 		dt__throw(controlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
-  void dtSurface::setControlPoint( int const uI, int const vI, dtPoint3 const point ) {
+  void dtSurface::setControlPoint( 
+    int const uI, int const vI, dtPoint3 const point 
+  ) {
 		dt__throw(setControlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
@@ -226,7 +232,7 @@ namespace dtOO {
 	}  
 	
 	void dtSurface::offsetNormal(float const nn) {
-		dt__functionNotImplemented(offsetNormal());
+		dt__throwUnexpected(offsetNormal());
 	}
   
   dtCurve * dtSurface::segmentConst( 

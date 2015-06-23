@@ -26,7 +26,7 @@ namespace dtOO {
 	}
 	
   int dtOCCConic::order( void ) const {
-		dt__functionNotImplemented(order());			
+		dt__throwUnexpected(order());			
 	}
 	
   int dtOCCConic::nControlPoints( void ) const {
@@ -34,11 +34,11 @@ namespace dtOO {
 	}
 	
   dtPoint3 dtOCCConic::controlPoint( int const nPoint ) const {
-		dt__functionNotImplemented(controlPoint());		
+		dt__throwUnexpected(controlPoint());		
 	}
 	
   void dtOCCConic::setControlPoint( int const nPoint, dtPoint3 const point ) {
-		dt__functionNotImplemented(setControlPoint());				
+		dt__throwUnexpected(setControlPoint());				
 	}
 	
 //  dtCurve * dtOCCConic::bSplineCurve( void ) const {

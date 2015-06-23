@@ -53,10 +53,6 @@ namespace dtOO {
     }    		
 	}
 	
-//  int dtOCCCurve2d::kind( void ) const {
-//		dt__functionNotImplemented(kind);
-//	}
-	
   bool dtOCCCurve2d::closed( void ) const {
 		return static_cast<bool>(_ptr->IsClosed());
 	}

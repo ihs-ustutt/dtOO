@@ -13,7 +13,9 @@ namespace dtOO {
 		_ptr = NULL;
 	}
 
-	dtOCCBezierCurve::dtOCCBezierCurve( dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
+	dtOCCBezierCurve::dtOCCBezierCurve( 
+    dtOCCCurveBase const & orig
+  ) : dtOCCCurve(orig) {
 		dt__mustCast(OCCRef().getOCC().Access(), Geom_BezierCurve const, _ptr);
 	}
 	
@@ -37,13 +39,15 @@ namespace dtOO {
 		gp_Pnt pp = _ptr->Pole(nPI);
 		
 		return dtPoint3(
-						static_cast<float>(pp.Coord(1)), 
-						static_cast<float>(pp.Coord(2)), 
-						static_cast<float>(pp.Coord(3))
+      static_cast<float>(pp.Coord(1)), 
+      static_cast<float>(pp.Coord(2)), 
+      static_cast<float>(pp.Coord(3))
 		);		
 	}
 	
-  void dtOCCBezierCurve::setControlPoint( int const nPoint, dtPoint3 const point ) {
-		dt__functionNotImplemented(setControlPoint);
+  void dtOCCBezierCurve::setControlPoint( 
+    int const nPoint, dtPoint3 const point 
+  ) {
+		dt__throwUnexpected(setControlPoint());
 	}
 }

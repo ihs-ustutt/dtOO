@@ -21,21 +21,15 @@ namespace dtOO {
 		return new offset();
 	}
 	
-  vectorHandling< analyticGeometry * > offset::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
+  vectorHandling< analyticGeometry * > offset::apply( 
+    vectorHandling< analyticGeometry * > const * const aGeoVecP 
+  ) const {
     vectorHandling< analyticGeometry * > retAGeo;
 
     //each analyticGeometry
     for (int ii=0;ii< aGeoVecP->size();ii++) {
-        //
-        // translation vector
-        //
-        dtVector2 transVec(_paraOneOffsetPercent, _paraTwoOffsetPercent);
-
         //each piece
         for (int jj=1;jj<=_nPieces;jj++) {
-          //convert integer to float      
-          float jjF = (float) jj;
-
           //
           // clone and cast analyticGeometry
           //
@@ -49,9 +43,11 @@ namespace dtOO {
             aS->offsetNormal( _normalOffset );
           }
           else {
-            dt__warning(apply(),
-                    << dt__eval(aS) << std::endl
-                    << "Unknown type");
+            dt__warning(
+              apply(),
+              << dt__eval(aS) << std::endl
+              << "Unknown type"
+            );
           }
 
           //
@@ -63,7 +59,9 @@ namespace dtOO {
     return retAGeo;
   }
 
-  vectorHandling< analyticFunction * > offset::apply( vectorHandling< analyticFunction * > const * const sFunP ) const { 
+  vectorHandling< analyticFunction * > offset::apply( 
+    vectorHandling< analyticFunction * > const * const sFunP 
+  ) const { 
     vectorHandling< analyticFunction * > retSFun;
 
     //each analyticGeometry
@@ -71,17 +69,22 @@ namespace dtOO {
         //
         // clone and cast scaFunction
         //
-        dt__ptrAss( scaOneD * cloneP, scaOneD::DownCast( sFunP->at(ii)->clone() ) );
-        dt__ptrAss( scaCurve2dOneD  * splineP, scaCurve2dOneD::DownCast(cloneP) );
-//        dt__CANDOWNCAST(cloneP, scaCurve2dOneD, splineP);
+        dt__ptrAss( 
+          scaOneD * cloneP, scaOneD::DownCast( sFunP->at(ii)->clone() ) 
+        );
+        dt__ptrAss( 
+          scaCurve2dOneD  * splineP, scaCurve2dOneD::DownCast(cloneP) 
+        );
           
         //
         // translation vector
         //
         dtVector2 transVec;
         if (_xyPercent == true ) {
-          float xRange =  splineP->xMax(0) - splineP->xMin(0);
-          float yRange =  splineP->YFloat(splineP->xMax(0)) - splineP->YFloat(splineP->xMin(0));
+          float xRange = splineP->xMax(0) - splineP->xMin(0);
+          float yRange 
+          = 
+          splineP->YFloat(splineP->xMax(0)) - splineP->YFloat(splineP->xMin(0));
           transVec = dtVector2(_xOffset * xRange, _yOffset * yRange);
         }
         else {

@@ -21,7 +21,9 @@ namespace dtOO {
 		_ptr = NULL;		
 	}
 
-	dtOCCTrimmedCurve::dtOCCTrimmedCurve(dtOCCCurveBase const & orig, float const u0, float const u1) : dtOCCCurve(orig) {
+	dtOCCTrimmedCurve::dtOCCTrimmedCurve(
+    dtOCCCurveBase const & orig, float const u0, float const u1
+  ) : dtOCCCurve(orig) {
 		dt__mustCast(OCCRef().getOCC().Access(), Geom_TrimmedCurve const, _ptr);
 		_u0 = u0;
 		_u1 = u1;
@@ -35,7 +37,7 @@ namespace dtOO {
 	}
 	
   int dtOCCTrimmedCurve::order( void ) const {
-		dt__functionNotImplemented(order());			
+		dt__throwUnexpected(order());			
 	}
 	
   int dtOCCTrimmedCurve::nControlPoints( void ) const {
@@ -43,11 +45,13 @@ namespace dtOO {
 	}
 	
   dtPoint3 dtOCCTrimmedCurve::controlPoint( int const nPoint ) const {
-		dt__functionNotImplemented(controlPoint());		
+		dt__throwUnexpected(controlPoint());		
 	}
 	
-  void dtOCCTrimmedCurve::setControlPoint( int const nPoint, dtPoint3 const point ) {
-		dt__functionNotImplemented(setControlPoint());				
+  void dtOCCTrimmedCurve::setControlPoint( 
+    int const nPoint, dtPoint3 const point 
+  ) {
+		dt__throwUnexpected(setControlPoint());				
 	}
 	
   dtCurve * dtOCCTrimmedCurve::bSplineCurve( void ) const {
@@ -58,7 +62,9 @@ namespace dtOO {
 			pVec.push_back( pointPercent(1.) );
 			bS = bSplineCurve_pointConstructOCC(pVec, 1).result();
 		}
-		else if ( !Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull() ) {
+		else if ( 
+      !Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull() 
+    ) {
 			Handle(Geom_BSplineCurve) bSC = GeomConvert::SplitBSplineCurve(
         Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()->Copy()),
         static_cast<Standard_Real>(_u0), static_cast<Standard_Real>(_u1),
@@ -71,8 +77,12 @@ namespace dtOO {
 		else {
 			dt__throw(
 			  bSplineCurve(),
-				<< dt__eval(Handle(Geom_Line)::DownCast(_ptr->BasisCurve()).IsNull())<< std::endl
-				<< dt__eval(Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull())
+				<< dt__eval(
+          Handle(Geom_Line)::DownCast(_ptr->BasisCurve()).IsNull()
+        ) << std::endl
+				<< dt__eval(
+          Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull()
+        )
 			);
 		}
 //		dt__info(bSplineCurve(),
