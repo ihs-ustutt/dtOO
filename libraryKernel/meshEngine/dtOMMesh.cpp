@@ -170,11 +170,28 @@ namespace dtOO {
 		dt__forFromToIter(omConstFaceVertexI, cfv_begin(fH), cfv_end(fH), it) {
 			v.push_back( toDtPoint3(point(*it)) );
 		}
-		dt__throwIf(v.size()!=3, contains());
 		
-		return dtLinearAlgebra::intersects(
-		  dtTriangle3(v[0], v[1], v[2]), dtLine3(start, target)
-		);
+    if ( v.size()==3 ) {
+      return dtLinearAlgebra::intersects(
+        dtTriangle3(v[0], v[1], v[2]), dtLine3(start, target)
+      );      
+    }
+    else {
+      bool intersectsOne 
+      =
+      dtLinearAlgebra::intersects(
+        dtTriangle3(v[0], v[1], v[2]), dtLine3(start, target)
+      );      
+      bool intersectsTwo
+      =
+      dtLinearAlgebra::intersects(
+        dtTriangle3(v[2], v[3], v[0]), dtLine3(start, target)
+      );            
+      
+      return (intersectsOne || intersectsTwo);
+    }
+		
+
 	}
 
 	void dtOMMesh::replaceMVertex( omVertexH const & vH, ::MVertex * mv ) {

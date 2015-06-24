@@ -21,11 +21,15 @@ namespace dtOO {
   analyticSurface::analyticSurface() : map2dTo3d() {
   }
 
-  analyticSurface::analyticSurface(analyticSurface const & orig) : map2dTo3d(orig) {
+  analyticSurface::analyticSurface(
+    analyticSurface const & orig
+  ) : map2dTo3d(orig) {
     _dtS.reset( orig._dtS->clone() );
   }
 
-  analyticSurface::analyticSurface(dtSurface const * const surface) : map2dTo3d() {
+  analyticSurface::analyticSurface(
+    dtSurface const * const surface
+  ) : map2dTo3d() {
     _dtS.reset( surface->clone() );
   }
  
@@ -37,7 +41,9 @@ namespace dtOO {
     return new analyticSurface();
   }
 	
-	analyticSurface * analyticSurface::cloneTransformed( dtTransformer const * const dtT ) const {
+	analyticSurface * analyticSurface::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
 		return new map2dTo3dTransformed<analyticSurface>(*this, dtT);
 	}
 
@@ -53,7 +59,9 @@ namespace dtOO {
     return _dtS->point(uu, vv);
   }
 	
-  vectorHandling< renderInterface * > analyticSurface::getExtRender( void ) const {
+  vectorHandling< renderInterface * > analyticSurface::getExtRender( 
+    void 
+  ) const {
 		vectorHandling< dtVector3 > vecV;
 		vectorHandling< dtPoint3 > vecP;
 		vectorHandling< dtVector3 > norV;
