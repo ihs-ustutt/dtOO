@@ -38,6 +38,11 @@ namespace dtOO {
     void replaceFace( 
       ::GFace const * const toReplace, ::GFace * const with     
     );
+    void setGrading( std::vector< float > const & grading, std::vector< float > & type );
+    void setGrading( 
+      float const & gU, float const & gV, float const & gW,
+      float const & tU, float const & tV, float const & tW
+    );    
     std::string dumpToString( void ) const;
   public:
     mutable ::GEntity::MeshGenerationStatus _status;

@@ -33,11 +33,16 @@ namespace dtOO {
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
     
 		// <bVObserver 
-		//   name="bVOSetGrading" 
+		//   name="bVOSetGrading"
+    //   regionLabel="{REG1}{REG2}"
 		//   grading="{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}"
+		//   type="{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}"    
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
+		_regionLabel
+		= 
+		dtXmlParserBase::getAttributeStrVector("regionLabel", element);    
 		_grading
 		= 
 		dtXmlParserBase::getAttributeFloatVectorMuParse("grading", element, cV, aF);
@@ -51,13 +56,9 @@ namespace dtOO {
 		dtGmshModel * gm = ptrBoundedVolume()->getModel();
 		
 		dt__throwIf(gm==NULL, preUpdate());
-		
-		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
-		  dtGmshRegionHex * hex = dtGmshRegionHex::DownCast(*r_it);
-
-			dt__warnIf(hex==NULL, preUpdate());
-
-			if (hex) hex->setGrading(_grading, _type);
-		}
+	
+    dt__forAllConstIter(std::vector< std::string >, _regionLabel, rIt) {
+      gm->getDtGmshRegionByPhysical(*rIt)->setGrading(_grading, _type);
+    }    
   }
 }

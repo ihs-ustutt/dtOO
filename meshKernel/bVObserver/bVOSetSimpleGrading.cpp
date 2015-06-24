@@ -34,7 +34,8 @@ namespace dtOO {
     
 		// <bVObserver 
 		//   name="bVOSetSimpleGrading" 
-		//   grading="{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}{1.}"
+		//   grading="{1.}{1.}{1.}"
+		//   type="{1.}{1.}{1.}"    
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
