@@ -3,6 +3,7 @@
 #include <baseContainerHeaven/transformerContainer.h>
 #include <baseContainerHeaven/baseBuilder/dtPoint3_readIBL.h>
 #include <analyticFunctionHeaven/scaOneD.h>
+#include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
 #include <analyticFunctionHeaven/vec3dOneD.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
@@ -121,9 +122,8 @@ namespace dtOO {
 				);
 			}
 		}
-		else {
-			dtTransformerP = dtTransformerFactory::create("doNothing");
-		}
+		else dtTransformerP = dtTransformerFactory::create("doNothing");
+    
 		return dtTransformerP;
   }
 
@@ -173,9 +173,7 @@ namespace dtOO {
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPoint3 > * basicP
 	) {
-    if ( !is("Point_3", *toBuildP) ) {
-      dt__throw(createBasic(), << dt__eval( getTagName(*toBuildP) ) );
-    }
+    dt__throwIf(!is("Point_3", *toBuildP), createBasic());
 
 		//
 		// check if point has a label and point is already created
@@ -190,12 +188,9 @@ namespace dtOO {
 				int nPoints = getAttributeInt("number_points", *toBuildP);
 				for (int ii=0;ii<nPoints;ii++) {
 					std::string pointName;
-					pointName = label;
-					pointName += "_";
-					pointName += intToString(ii+1);
+          pointName = label+"_"+intToString(ii+1);
 					if ( bC->ptrPointContainer()->has( pointName ) ) {
-						basicP->push_back( dtPoint3(0,0,0) );
-						basicP->back() = bC->ptrPointContainer()->get( pointName );
+						basicP->push_back( bC->ptrPointContainer()->get(pointName) );
 					}
 				}
 				return;
@@ -207,12 +202,9 @@ namespace dtOO {
 				int nPoints = endPoint - startPoint + 1;
 				for (int ii=0;ii<nPoints;ii++) {
 					std::string pointName;
-					pointName = label;
-					pointName += "_";
-					pointName += intToString(startPoint);
+					pointName = label+"_"+intToString(startPoint);
 					if ( bC->ptrPointContainer()->has( pointName ) ) {
-						basicP->push_back( dtPoint3(0,0,0) );
-						basicP->back() = bC->ptrPointContainer()->get( pointName );
+						basicP->push_back( bC->ptrPointContainer()->get(pointName) );
 					}
 					startPoint++;
 				}
@@ -230,9 +222,7 @@ namespace dtOO {
 
 				for (int ii=from; ii<=to; ii=ii+spacing) {
 					std::string pointName;
-					pointName = label;
-					pointName += "_";
-					pointName += intToString(ii);
+          pointName = label+"_"+intToString(ii);
 					if ( bC->ptrPointContainer()->has( pointName ) ) {
 						basicP->push_back( 
 						  dtPoint3(bC->ptrPointContainer()->get(pointName)) 
@@ -245,57 +235,49 @@ namespace dtOO {
 			// return a single point
 			//
 			else {
-				if ( 
-          bC->ptrPointContainer()->has( getAttributeStr("label", *toBuildP)) 
-        ) {
-					basicP->push_back( dtPoint3(0,0,0) );
-					basicP->back() 
-          = 
-          bC->ptrPointContainer()->get( getAttributeStr("label", *toBuildP) );
+				if ( bC->ptrPointContainer()->has(label) ) {
+					basicP->push_back( bC->ptrPointContainer()->get(label) );
 				  return;
 				}
 			}
 		}
 
+    //
+    // create simple xyz point with given coordinates
+    //
 		if (    hasAttribute("x", *toBuildP) 
 				 && hasAttribute("y", *toBuildP) 
-				 && hasAttribute("z", *toBuildP) ) { 
-			float cX = muParseString(
-									 replaceUsedFunctions(
-										 getAttributeStr("x", *toBuildP), cV,  aF
-									 )
-								 );
-			float cY = muParseString(
-									 replaceUsedFunctions(
-										 getAttributeStr("y", *toBuildP), cV, aF
-									 )
-								 );
-			float cZ = muParseString(
-									 replaceUsedFunctions(
-										 getAttributeStr("z", *toBuildP), cV, aF
-									 )
-								 );        
+				 && hasAttribute("z", *toBuildP) 
+    ) { 
+			float cX = getAttributeFloatMuParse("x", *toBuildP, cV,  aF);
+			float cY = getAttributeFloatMuParse("y", *toBuildP, cV,  aF);
+			float cZ = getAttributeFloatMuParse("z", *toBuildP, cV,  aF);
 			basicP->push_back( dtPoint3(cX, cY, cZ) );      
-		}
-		/* ---------------------------------------------------------------------- */
-		/* pick point from a part */
-		/* ---------------------------------------------------------------------- */          
-		else if (    hasAttribute("attribute", *toBuildP) 
-						  && hasAttribute("part_label", *toBuildP) ) {
+    }      
+    else if (    
+         hasAttribute("attribute", *toBuildP) 
+			&& hasAttribute("part_label", *toBuildP) 
+    ) {
+      std::string attribute = getAttributeStr("attribute", *toBuildP);
+      std::string partLabel = getAttributeStr("part_label", *toBuildP);
+      
 			analyticGeometry const * anAG 
 			= 
-			aG->get( getAttributeStr("part_label", *toBuildP) );
+			aG->get( partLabel );
 			map1dTo3d const * m1d = map1dTo3d::ConstDownCast(anAG);
 			map2dTo3d const * m2d = map2dTo3d::ConstDownCast(anAG);
 			map3dTo3d const * m3d = map3dTo3d::ConstDownCast(anAG);
 
-			if (!m1d && !m2d && !m3d) {
-				dt__throw(
-				  createBasic(),
-					<< dt__eval( getAttributeStr("part_label", *toBuildP) ) << std::endl
-					<< "No such part or part is not of correct type");     
-			}
-			if ( getAttributeStr("attribute", *toBuildP) == "pick_from_part" ) {
+  		dt__throwIfWithMessage(
+        !m1d&&!m2d&&!m3d,
+				createBasic(),
+				<< dt__eval( partLabel ) << std::endl
+			  << "No such part or part is not of correct type"
+      );     
+	//
+	// attribute: pick_from_part
+	//            
+			if ( attribute == "pick_from_part" ) {
         // 
         // 1 map2dTo3d
         // 				
@@ -307,114 +289,86 @@ namespace dtOO {
 					if (
             rS && hasAttribute("phi", *toBuildP) && hasAttribute("z", *toBuildP) 
           ) {
-						float cX = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("phi", *toBuildP), cV,  aF
-												 )
-											 );
-						float cY = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("z", *toBuildP), cV, aF
-												 )
-											 );                      
+			      float cX = getAttributeFloatMuParse("phi", *toBuildP, cV,  aF);
+			      float cY = getAttributeFloatMuParse("z", *toBuildP, cV,  aF);                 
 						basicP->push_back( dtPoint3( rS->xyz_phiZ(cX, cY) ) );
 					}
-					else if (    hasAttribute("parameter_one_percent", *toBuildP)
-										&& hasAttribute("parameter_two_percent", *toBuildP) ) {
-						float cX = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("parameter_one_percent", *toBuildP),
-													 cV, 
-													 aF
-												 )
-											 );
-						float cY = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("parameter_two_percent", *toBuildP),
-													 cV, 
-													 aF
-												 )
-											 );              
-						basicP->push_back( dtPoint3( m2d->getPointPercent(cX, cY) ) );
+					else if (    
+               hasAttribute("parameter_one_percent", *toBuildP)
+						&& hasAttribute("parameter_two_percent", *toBuildP) 
+          ) {
+			      float cX 
+            = 
+            getAttributeFloatMuParse(
+              "parameter_one_percent", *toBuildP, cV,  aF
+            );
+			      float cY 
+            = 
+            getAttributeFloatMuParse(
+              "parameter_two_percent", *toBuildP, cV,  aF
+            );       
+						basicP->push_back( m2d->getPointPercent(cX, cY) );
 					}
 				}
 		// 
 		// 2 map1dTo3d
 		//         
 				else if (m1d && hasAttribute("parameter_one_percent", *toBuildP) ) {
-					float cX = muParseString(
-											 replaceUsedFunctions(
-												 getAttributeStr("parameter_one_percent", *toBuildP),
-												 cV, 
-												 aF
-											 )
-										 );
-					basicP->push_back( dtPoint3( m1d->getPointPercent(cX) ) );
+          float cX 
+          = 
+          getAttributeFloatMuParse(
+            "parameter_one_percent", *toBuildP, cV,  aF
+          );
+					basicP->push_back( m1d->getPointPercent(cX) );
 				}
 		// 
 		// 3 map3dTo3d
 		//         
 				else if ( m3d ) {
-					if (    hasAttribute("parameter_one_percent", *toBuildP) 
-							 && hasAttribute("parameter_two_percent", *toBuildP) 
-							 && hasAttribute("parameter_three_percent", *toBuildP) ) {
-						float cX = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("parameter_one_percent", *toBuildP),
-													 cV, 
-													 aF
-												 )
-											 );
-						float cY = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("parameter_two_percent", *toBuildP),
-													 cV, 
-													 aF
-												 )
-											 );
-						float cZ = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("parameter_three_percent", *toBuildP),
-													 cV, 
-													 aF
-												 )
-											 );                
-						basicP->push_back( dtPoint3( m3d->getPointPercent(cX, cY, cZ) ) );
+					if (    
+               hasAttribute("parameter_one_percent", *toBuildP) 
+						&& hasAttribute("parameter_two_percent", *toBuildP) 
+						&& hasAttribute("parameter_three_percent", *toBuildP) 
+          ) {
+			      float cX 
+            = 
+            getAttributeFloatMuParse(
+              "parameter_one_percent", *toBuildP, cV,  aF
+            );
+			      float cY 
+            = 
+            getAttributeFloatMuParse(
+              "parameter_two_percent", *toBuildP, cV,  aF
+            );       
+			      float cZ 
+            = 
+            getAttributeFloatMuParse(
+              "parameter_three_percent", *toBuildP, cV,  aF
+            );            
+						basicP->push_back( m3d->getPointPercent(cX, cY, cZ) );
 					}        
-					else if (    hasAttribute("parameter_one", *toBuildP) 
-							 && hasAttribute("parameter_two", *toBuildP) 
-							 && hasAttribute("parameter_three", *toBuildP) ) {
-						float cX = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("parameter_one", *toBuildP),
-													 cV, 
-													 aF
-												 )
-											 );
-						float cY = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("parameter_two", *toBuildP),
-													 cV, 
-													 aF
-												 )
-											 );
-						float cZ = muParseString(
-												 replaceUsedFunctions(
-													 getAttributeStr("parameter_three", *toBuildP),
-													 cV, 
-													 aF
-												 )
-											 );                
-						basicP->push_back( dtPoint3( m3d->getPoint(cX, cY, cZ) ) );
+					else if (    
+               hasAttribute("parameter_one", *toBuildP) 
+						&& hasAttribute("parameter_two", *toBuildP) 
+						&& hasAttribute("parameter_three", *toBuildP) 
+          ) {
+			      float cX 
+            = 
+            getAttributeFloatMuParse("parameter_one", *toBuildP, cV,  aF);
+			      float cY 
+            = 
+            getAttributeFloatMuParse("parameter_two", *toBuildP, cV,  aF);       
+			      float cZ 
+            = 
+            getAttributeFloatMuParse("parameter_three", *toBuildP, cV,  aF);       
+						basicP->push_back( m3d->getPoint(cX, cY, cZ) );
 					} 					
 				}      
 			}
 	//
 	// attribute: pick_order_from_part
 	//      
-			else if ( 
-        getAttributeStr("attribute", *toBuildP) == "pick_order_from_part" 
-      ) {
+			else if ( attribute == "pick_order_from_part" ) {
 				//
 				// 1 map1dTo3d
 				//        
@@ -426,16 +380,15 @@ namespace dtOO {
 							scaOneD const * sF,
 							scaOneD::ConstDownCast(
 								aF->get( 
-									getAttributeStr( "parameter_one_percent_function", *toBuildP )
+									getAttributeStr("parameter_one_percent_function", *toBuildP)
 								)
 							)
 						);
-						for (int ii=0;ii<nPointsOne;ii++) {
-							float iiF = static_cast<float>(ii);
-							float uu = sF->YFloat( iiF / (nPointsOneF-1.) ) ;
-							basicP->push_back( 
-								dtPoint3( m1d->getPointPercent(uu) )
-							);              
+            std::vector< float > ff 
+            = 
+            float_scaOneDPoint(sF, nPointsOne).result();
+            dt__forAllConstIter(std::vector< float >, ff, it) {
+							basicP->push_back(m1d->getPointPercent(*it));              
 						}
 					}
 					else if (hasAttribute("length_one_percent_function", *toBuildP)) {
@@ -448,12 +401,13 @@ namespace dtOO {
 							)
 						);
 						float length = m1d->length();
-						float uP;// = m1d->u_l(0.*length);
-						for (int ii=0; ii<nPointsOne; ii++) {
-							float iiF = static_cast<float>(ii);
-							float uu = sF->YFloat( iiF / (nPointsOneF-1.) );
-							uP = m1d->u_l(uu*length);
-              basicP->push_back( dtPoint3(m1d->getPoint(uP)) );              					
+						float uP;
+            std::vector< float > ff 
+            = 
+            float_scaOneDPoint(sF, nPointsOne).result();
+            dt__forAllConstIter(std::vector< float >, ff, it) {            
+							uP = m1d->u_l((*it)*length);
+              basicP->push_back( m1d->getPoint(uP) );              					
 						}
 					}
 				}				
@@ -504,101 +458,76 @@ namespace dtOO {
 		/* ---------------------------------------------------------------------- */
 		/* pick point from a function */
 		/* ---------------------------------------------------------------------- */          
-		else if (    hasAttribute("attribute", *toBuildP) 
-						  && hasAttribute("function_label", *toBuildP) ) {
+		else if (    
+         hasAttribute("attribute", *toBuildP) 
+			&& hasAttribute("function_label", *toBuildP) 
+    ) {
+      std::string attribute = getAttributeStr("attribute", *toBuildP);
+      std::string functionLabel = getAttributeStr("function_label", *toBuildP);      
 			analyticFunction const * anAF
 			= 
-			aF->get( getAttributeStr("function_label", *toBuildP) );
+			aF->get( functionLabel );
 			vec3dOneD const * v1D = vec3dOneD::ConstDownCast(anAF);
 			vec3dTwoD const * v2D = vec3dTwoD::ConstDownCast(anAF);
 
 			dt__throwIfWithMessage(
 				!v1D&&!v2D,
 				createBasic(),
-				<< dt__eval( getAttributeStr("function_label", *toBuildP) ) << std::endl
+				<< dt__eval(functionLabel) << std::endl
 				<< "No such analyticFunction or analyticFunction has wrong type."
-			);     
+			);
 
-			if ( getAttributeStr("attribute", *toBuildP) == "pick_from_function" ) {
+			if ( attribute == "pick_from_function" ) {
 				if ( v1D && hasAttribute("x_one", *toBuildP) ) {
-					float cX 
-					= 
-					muParseString(
-						replaceUsedFunctions(
-							getAttributeStr("x_one", *toBuildP), cV,  aF
-						)
-					);
-					basicP->push_back( dtPoint3( v1D->YdtPoint3(cX) ) );
+			    float cX = getAttributeFloatMuParse("x_one", *toBuildP, cV,  aF);
+					basicP->push_back( v1D->YdtPoint3(cX) );
 				}
 				else if ( v1D && hasAttribute("x_one_percent", *toBuildP) ) {
-					float cX
-					= 
-					muParseString(
-						replaceUsedFunctions(
-							getAttributeStr("x_one_percent", *toBuildP), cV,  aF
-						)
-					);
-					basicP->push_back( dtPoint3( v1D->YdtPoint3Percent(cX) ) );
+			    float cX 
+          = 
+          getAttributeFloatMuParse("x_one_percent", *toBuildP, cV,  aF);
+					basicP->push_back( v1D->YdtPoint3Percent(cX) );
 				}				
 				else if ( 
 					v2D 
 					&& hasAttribute("x_one", *toBuildP) 
 					&& hasAttribute("x_two", *toBuildP) 
 				) {
-					float cX 
-					= 
-					muParseString(
-						replaceUsedFunctions(
-							getAttributeStr("x_one", *toBuildP), cV,  aF
-						)
-					);
-					float cY 
-					= 
-					muParseString(
-						replaceUsedFunctions(
-							getAttributeStr("x_two", *toBuildP), cV, aF
-						)
-					);                      
-					basicP->push_back( 
-					  dtPoint3( v2D->YdtPoint3( analyticFunction::aFXTwoD(cX, cY) ) )
-					);
+			    float cX = getAttributeFloatMuParse("x_one", *toBuildP, cV,  aF);
+			    float cY = getAttributeFloatMuParse("x_two", *toBuildP, cV,  aF);          
+					basicP->push_back( v2D->YdtPoint3(cX, cY) );
 				}	
 				else if ( 
 				  v2D 
 					&& hasAttribute("x_one_percent", *toBuildP) 
 					&& hasAttribute("x_two_percent", *toBuildP) 
 				) {
-					float cX
-					= 
-					muParseString(
-						replaceUsedFunctions(
-							getAttributeStr("x_one_percent", *toBuildP), cV,  aF
-						)
-					);
-					float cY
-					= 
-					muParseString(
-						replaceUsedFunctions(
-							getAttributeStr("x_two_percent", *toBuildP), cV, aF
-						)
-					);                      
-					basicP->push_back( dtPoint3( v2D->YdtPoint3Percent(cX, cY) ) );
+			    float cX 
+          = 
+          getAttributeFloatMuParse("x_one_percent", *toBuildP, cV,  aF);
+			    float cY 
+          = 
+          getAttributeFloatMuParse("x_two_percent", *toBuildP, cV,  aF);          
+					basicP->push_back( v2D->YdtPoint3Percent(cX, cY) );
 				}				
 			}			
 		}
-		else if ( toBuildP->attribute("attribute") == "pick_order_from_file") {
-			std::string filename = getAttributeStr("file_name", *toBuildP);
-			if ( filename != "" ) {
-				std::vector< dtPoint3 > p3;
-				if (filename.find(".ibl") != std::string::npos) {
-					p3 = dtPoint3_readIBL(filename).result();
-					dt__forAllConstIter(std::vector< dtPoint3 >, p3, it) {
-						basicP->push_back( dtPoint3(*it) );
-					}
-				}
-				else dt__throw(createBasic(), << "Unknown file extension.");
-			}
-			else dt__throw(createBasic(), << "attribute file_name is empty.");
+		else if ( hasAttribute("attribute", *toBuildP) ) {
+      std::string attribute = getAttributeStr("attribute", *toBuildP);      
+      if ( attribute == "pick_order_from_file" ) {
+        std::string filename = getAttributeStr("file_name", *toBuildP);
+        if ( filename != "" ) {
+          std::vector< dtPoint3 > p3;
+          if (filename.find(".ibl") != std::string::npos) {
+            p3 = dtPoint3_readIBL(filename).result();
+            dt__forAllConstIter(std::vector< dtPoint3 >, p3, it) {
+              basicP->push_back( *it );
+            }
+          }
+          else dt__throw(createBasic(), << "Unknown file extension.");
+        }
+        else dt__throw(createBasic(), << "attribute file_name is empty.");
+      }
 		}
 		
 		//
@@ -621,47 +550,40 @@ namespace dtOO {
 			}
 			basicP->clear();
 			*basicP = dtTransformerP->apply( &basicPTwin );
-//			for (int ii=0;ii<basicPTwin.size();ii++) {
-//				delete basicPTwin[ii];
-//			}
 			basicPTwin.clear();
 		}
-//		} 
-		if ( basicP->size() > 1 ) {
-			for (int ii=0;ii<basicP->size();ii++) {
-				if ( toBuildP->hasAttribute("label") ) {
-					std::string pointName;
-					pointName = toBuildP->attribute("label").toStdString();
-					pointName += "_";
-					pointName += intToString(ii+1);
-					bC->ptrPointContainer()->add( basicP->at(ii) , pointName );
-				}
-			}
-		}
-		else {
-			if ( toBuildP->hasAttribute("label") ) {
-				bC->ptrPointContainer()->add(
-          basicP->at(0), getAttributeStr("label", *toBuildP) 
-        );
-			}
-		}
-		//
-		//output
-		//
-		std::vector< float > itVal;
-		for (int ii=0;ii<basicP->size();ii++) {
-			itVal.push_back( basicP->at(ii).x() );
-			itVal.push_back( basicP->at(ii).y() );
-			itVal.push_back( basicP->at(ii).z() );
-		}    
-		std::vector< std::string > header;
-		header.push_back("p_x"); header.push_back("p_y"); header.push_back("p_z");
-		dt__debug(
-  	  createBasic(), 
-			<< "created points" << std::endl
-			<< logMe::floatVecToTable(header, itVal)
-		);
-
+    
+    //
+    // store labeled points
+    //
+		if ( hasAttribute("label", *toBuildP) ) {
+			std::string label = getAttributeStr("label", *toBuildP);    
+      if ( basicP->size() > 1 ) {
+        dt__forAllIndex(*basicP, ii) {
+          bC->ptrPointContainer()->add( 
+            basicP->at(ii) , label+"_"+intToString(ii+1) 
+          );
+        }
+      }
+      else bC->ptrPointContainer()->add(basicP->at(0), label);
+    }
+    
+//		//
+//		//output
+//		//
+//		std::vector< float > itVal;
+//		for (int ii=0;ii<basicP->size();ii++) {
+//			itVal.push_back( basicP->at(ii).x() );
+//			itVal.push_back( basicP->at(ii).y() );
+//			itVal.push_back( basicP->at(ii).z() );
+//		}    
+//		std::vector< std::string > header;
+//		header.push_back("p_x"); header.push_back("p_y"); header.push_back("p_z");
+//		dt__debug(
+//  	  createBasic(), 
+//			<< "created points" << std::endl
+//			<< logMe::floatVecToTable(header, itVal)
+//		);
   }
 
 	/**
@@ -887,9 +809,7 @@ namespace dtOO {
         getAttributeStr("label", *toBuildP)
       );
 		}
-		else {
-			return createDtPoint3(toBuildP, NULL, cV, aF, aG);
-		}
+		else return createDtPoint3(toBuildP, NULL, cV, aF, aG);
 	} 
 	
 	dtPoint3 dtXmlParserBase::getDtPoint3(
@@ -903,9 +823,7 @@ namespace dtOO {
         getAttributeStr("label", *toBuildP)
       );
 		}
-		else {
-			return createDtPoint3(toBuildP, NULL, cV, aF);
-		}		
+		else return createDtPoint3(toBuildP, NULL, cV, aF);
 	}
 		
 	dtVector3 dtXmlParserBase::getDtVector3(
@@ -920,9 +838,7 @@ namespace dtOO {
         getAttributeStr("label", *toBuildP)
       );
 		}
-		else {
-			return createDtVector3(toBuildP, NULL, cV, aF, aG);
-		}
+		else return createDtVector3(toBuildP, NULL, cV, aF, aG);
 	} 
 	
 	dtVector3 dtXmlParserBase::getDtVector3(
@@ -936,9 +852,7 @@ namespace dtOO {
         getAttributeStr("label", *toBuildP)
       );
 		}
-		else {
-			return createDtVector3(toBuildP, NULL, cV, aF);
-		}		
+		else return createDtVector3(toBuildP, NULL, cV, aF);
 	}
 	
   dtVector3 dtXmlParserBase::getDtVector3(
@@ -989,23 +903,15 @@ namespace dtOO {
     baseContainer * const bC,                   
     vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF, 
-		vectorHandling< analyticGeometry * > const * const aG) {
-//		createBasic(toBuildP, pointContainerP, vectorContainerP, cV, aF, aG, &basicP);
+		vectorHandling< analyticGeometry * > const * const aG
+  ) {
     std::vector< dtPoint3 > basicVec;
 
-    createBasic(toBuildP,
-                bC,                    
-                cV,
-                aF, 
-                aG,
-                &basicVec);
-    if (basicVec.size() != 1) {
-      dt__throw(createBasic(),
-              << "Try to create one point, but function "
-              << "createBasic() returns more than one point.");
-    }
-		dtPoint3 ret = basicVec[0];	
-		return ret;
+    createBasic(toBuildP, bC, cV, aF, aG,&basicVec);
+    
+    dt__throwIf(basicVec.size()!=1, createBasic());
+	
+    return basicVec[0];
 	}
 	
   dtPoint3 dtXmlParserBase::createDtPoint3(
@@ -1059,15 +965,7 @@ namespace dtOO {
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPoint2 > * basicP
 	) {
-
-    /* ------------------------------------------------------------------------ */
-    /* error handling */
-    /* ------------------------------------------------------------------------ */
-    bool isdtPoint2 = is("Point_2", *toBuildP);
-    if ( !isdtPoint2  ) {
-      dt__throw(createBasic(), << dt__eval( getTagName(*toBuildP) ) );
-      return;
-    }
+    dt__throwIf(!is("Point_2", *toBuildP), createBasic());
 
     /* ---------------------------------------------------------------------- */
     /* create normal x-y-z-point */
@@ -1414,19 +1312,11 @@ namespace dtOO {
       convertToStringVector("{", "}", label );
       dt__forAllIndex(labelV, ii) advancedP->push_back( aG->get(labelV[ii]) );
     }            
-    else {
-      //
-      // normal case
-      //				
-      advancedP->push_back(
-        aG->get( label )->clone()
-      );
-    }
+    else advancedP->push_back( aG->get( label )->clone() );
 
-    if ( advancedP->size() == 0) {
-      dt__throw(createAdvanced(),
-              << "Cannot find part " << getAttributeStr("label", *toBuildP) );
-    }
+    dt__throwIfWithMessage(
+      advancedP->size()==0, createAdvanced(), << "Cannot find part " << label 
+    );
 
     //
     // copy
@@ -1617,9 +1507,11 @@ namespace dtOO {
 
     vectorHandling< analyticFunction * > advancedVec;
     createAdvanced(toBuildP, bC, cV, aF, &advancedVec);
-    if (advancedVec.size() != 1) {
-      dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
-    }
+    
+    dt__throwIf(
+      advancedVec.size()!=1,
+      createAdvanced()
+    );
     return advancedVec[0];
   }
 
