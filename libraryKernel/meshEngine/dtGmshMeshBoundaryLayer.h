@@ -18,8 +18,13 @@ namespace dtOO {
   class dtGmshMeshBoundaryLayer {
     public:
       dt__classOnlyName(dtGmshMeshBoundaryLayer);      
-      dtGmshMeshBoundaryLayer();
       dtGmshMeshBoundaryLayer( 
+        std::list< dtGmshFace const * > const & face, 
+        std::vector< int > const & ori,
+        std::list< dtGmshFace const * > const & fface, 
+        std::vector< int > const & fori,
+        std::list< dtGmshFace const * > const & mface, 
+        std::vector< int > const & mori,
         float const & thickness, std::vector< float > const & spacing,
         float const & maxDihedralAngle,
         int const nSmoothingSteps, int const nShrinkingSteps 
@@ -27,40 +32,41 @@ namespace dtOO {
       virtual ~dtGmshMeshBoundaryLayer();
       void operator()( 
         dtGmshModel * const wModel,
-        std::list< dtGmshFace const * > const & face, 
-        std::vector< int > const & ori,
-        std::list< dtGmshFace const * > const & fface, 
-        std::vector< int > const & fori,
-        std::vector< ::MVertex * > & vertex, std::vector< ::MElement * > & element
+        std::vector< ::MVertex * > & vertex, 
+        std::vector< ::MElement * > & element
       );    
     private:
       void determineThickness(
-        dtOMMesh const & omInit,
-        dtOMVertexField< dtVector3 > const & nF, dtOMVertexField< bool > const & fixedF, 
-        dtOMMesh & omMoved, dtOMVertexField< float > & tF
-      ) const;
-      void modifyGEntities(
-        dtOMMesh & omInit,      
-        dtOMVertexField< bool > const & fixedF,
-        dtGmshModel * wModel
-      ) const;
+		    dtOMVertexField< dtVector3 > const & nF
+      );
+      void modifyGEntities(dtGmshModel * wModel);
       void dihedralAngleIntersection(
-        dtOMMesh const & omInit, dtOMMesh & omMoved,
-        dtOMEdgeField< float > const & dAF,        
-        dtOMVertexField< bool > const & fixedF, 
-        dtOMVertexField< dtVector3 > const & nF, dtOMVertexField< float > & tF
-      ) const;
+        dtOMEdgeField< float > const & dAF, 
+        dtOMVertexField< dtVector3 > const & nF
+      );
       void createBoundaryLayerElements(
-        dtOMMesh const & omInit, dtOMMesh const & omMoved, 
-        dtOMVertexField< bool > const & fixedF,
-	      std::vector< ::MVertex * > & vertex, std::vector< ::MElement * > & element        
+	      std::vector< ::MVertex * > & vertex, 
+        std::vector< ::MElement * > & element        
       ) const;
+      static bool isSlidable( 
+        dtOMVertexField< bool > const & canSlideF,
+        omVertexH const & vH
+      );      
     private:
       float _thickness;
       int _nSmoothingSteps;
       int _nShrinkingSteps;
       float _maxDihedralAngle;
       std::vector< float > _spacing;
+      //
+      // define two surface meshes with fixed, thickness 
+      // and slidable vertex field
+      //      
+		  dtOMMesh _omInit;
+		  dtOMMesh _omMoved;      
+		  dtOMVertexField< bool > _fixedF;
+      dtOMVertexField< bool > _slidableF;
+	    dtOMVertexField< float > _tF;
   };
 }
 

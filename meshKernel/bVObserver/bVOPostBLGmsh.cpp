@@ -78,7 +78,17 @@ namespace dtOO {
 		qtXmlPrimitive::getAttributeStrVector("fixedFaceLabel", element);
 		_fixedFaceOrientation 
 		= 
-		qtXmlBase::getAttributeIntVectorMuParse("fixedFaceOrientation", element, cV, aF);
+		qtXmlBase::getAttributeIntVectorMuParse(
+      "fixedFaceOrientation", element, cV, aF
+    );
+		_slidableFaceLabel 
+		= 
+		qtXmlPrimitive::getAttributeStrVector("slidableFaceLabel", element);
+		_slidableFaceOrientation 
+		= 
+		qtXmlBase::getAttributeIntVectorMuParse(
+      "slidableFaceOrientation", element, cV, aF
+    );
 		
 		//
 		// gmshBoundedVolume
@@ -109,6 +119,15 @@ namespace dtOO {
 				regVec.push_back( dtGmshRegion::SecureCast(*rIt) );
 			}			
 		}	
+		std::list< dtGmshFace const * > slidableFaceList;
+		dt__forAllConstIter(std::vector< std::string >, _slidableFaceLabel, it) {
+		  slidableFaceList.push_back( ptrBoundedVolume()->getFace(*it) );
+			std::list< ::GRegion * > rr = slidableFaceList.back()->regions();
+			dt__forAllConstIter(std::list< ::GRegion * >, rr, rIt) {
+				dt__throwIf(!dtGmshRegion::DownCast(*rIt), postUpdate());
+				regVec.push_back( dtGmshRegion::SecureCast(*rIt) );
+			}			
+		}	    
 		
 		//
 		// get most frequent region
@@ -127,13 +146,14 @@ namespace dtOO {
     std::vector< ::MVertex * > vv;
 		std::vector< ::MElement * > ee;
 		dtGmshMeshBoundaryLayer(
+			faceList, _faceOrientation, 
+			fixedFaceList, _fixedFaceOrientation,
+      slidableFaceList, _slidableFaceOrientation,            
 		  _thickness, _spacing, 
 			_maxDihedralAngle, 
 			_nSmoothingSteps, _nShrinkingSteps
 		)(
 		  ptrBoundedVolume()->getModel(), 
-			faceList, _faceOrientation, 
-			fixedFaceList, _fixedFaceOrientation,
 			vv, ee
 		);
 				

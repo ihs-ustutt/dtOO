@@ -36,6 +36,8 @@ namespace dtOO {
     std::vector< int > _faceOrientation;
     std::vector< std::string > _fixedFaceLabel;
     std::vector< int > _fixedFaceOrientation;
+    std::vector< std::string > _slidableFaceLabel;
+    std::vector< int > _slidableFaceOrientation;    
   };
 }
 #endif	/* bVOPostBLGmsh_H */

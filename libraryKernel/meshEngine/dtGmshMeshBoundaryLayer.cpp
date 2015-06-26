@@ -19,43 +19,30 @@
 #include <gmsh/MTetrahedron.h>
 
 namespace dtOO {
-	dtGmshMeshBoundaryLayer::dtGmshMeshBoundaryLayer() {
-		_thickness = 0.;
-	}
-
 	dtGmshMeshBoundaryLayer::~dtGmshMeshBoundaryLayer() {
 	}
 	
-	dtGmshMeshBoundaryLayer::dtGmshMeshBoundaryLayer( 
+	dtGmshMeshBoundaryLayer::dtGmshMeshBoundaryLayer(
+	  std::list< dtGmshFace const * > const & face, 
+		std::vector< int > const & ori,
+	  std::list< dtGmshFace const * > const & fface, 
+		std::vector< int > const & fori,
+	  std::list< dtGmshFace const * > const & mface, 
+		std::vector< int > const & mori,  
 		float const & thickness, std::vector< float > const & spacing,
 		float const & maxDihedralAngle,
 		int const nSmoothingSteps, int const nShrinkingSteps 
-	) {
+	) : _fixedF("_fixedF", _omInit, false), 
+      _slidableF("_slidableF", _omInit, false),
+      _tF("_tF", _omInit, thickness)
+  {
 		_thickness = thickness;
 		_spacing = spacing;
 		_nSmoothingSteps = nSmoothingSteps;
 		_nShrinkingSteps = nShrinkingSteps;
 		_maxDihedralAngle = maxDihedralAngle;
-	}
-	
-  void dtGmshMeshBoundaryLayer::operator()( 
-	  dtGmshModel * const wModel,
-	  std::list< dtGmshFace const * > const & face, 
-		std::vector< int > const & ori,
-	  std::list< dtGmshFace const * > const & fface, 
-		std::vector< int > const & fori,
-	  std::vector< ::MVertex * > & vertex, std::vector< ::MElement * > & element
-	) {
-		//--------------------------------------------------------------------------
-		// init
-		dt__info(operator(), << "Start algorithm ...");
-		//
-		// define two surface meshes with fixed and thickness vertex field
-		//
-		dtOMMesh omInit;
-		dtOMMesh omMoved;
-		dtOMVertexField< bool > fixedF("fixedF", omInit, false);
-	  dtOMVertexField< float > tF("tF", omInit, _thickness);
+
+    dtOMVertexField< bool > canSlideF("canSlideF", _omInit, false);
 		
 		//
 		// surface mesh to thick
@@ -63,25 +50,22 @@ namespace dtOO {
 		int itC = 0;
 		dt__forAllConstIter( std::list< dtGmshFace const * >, face, it ) {
 			dtGmshFace const * const &thisFace = *it;
-			//
-			// add current surface mesh
-			//
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
 			if (ori[itC] > 0) {
 				dt__info(
 				  operator(), 
 					<< "Adding normal face (tag = " << thisFace->tag() << ") with."
 				);        
-				omInit.add(*tmpOM);		
-				omMoved.add(*tmpOM);
+				_omInit.add(*tmpOM);		
+				_omMoved.add(*tmpOM);
 			}
 			else if (ori[itC] < 0) {
 				dt__info(
 				  operator(), 
 					<< "Adding inverted face (tag = " << thisFace->tag() << ") with."
 				);                
-				omInit.addInv(*tmpOM);
-				omMoved.addInv(*tmpOM);		
+				_omInit.addInv(*tmpOM);
+				_omMoved.addInv(*tmpOM);		
 			}
 			else {
 				dt__throw(
@@ -92,43 +76,43 @@ namespace dtOO {
 			//
 			// set fixed and thickness field
 			//
-			fixedF.assign(*tmpOM, false);
-			tF.assign(*tmpOM, _thickness);
+			_fixedF.assign(*tmpOM, false);
+      canSlideF.assign(*tmpOM, false);      
+      _slidableF.assign(*tmpOM, false);
+			_tF.assign(*tmpOM, _thickness);
 			
 			itC++;
 		}
 		
 		//
-		// fixed surface mesh
+		// slidable surface mesh
 		//
 		itC = 0;
-		dt__forAllConstIter( std::list< dtGmshFace const * >, fface, it ) {
+		dt__forAllConstIter( std::list< dtGmshFace const * >, mface, it ) {
 			dtGmshFace const * const &thisFace = *it;
-			//
-			// add current surface mesh
-			//
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
 			
-			if (fori[itC] > 0) {
+			if (mori[itC] > 0) {
 				dt__info(
 				  operator(), 
-					<< "Adding normal fixedFace (tag = " << thisFace->tag() << ") with."
+					<< "Adding normal slidableFace (tag = " << thisFace->tag() << ") with."
 				);                
-				omInit.add(*tmpOM);						
-				omMoved.add(*tmpOM);		
+				_omInit.add(*tmpOM);						
+				_omMoved.add(*tmpOM);		
 			}
-			else if (fori[itC] < 0) {
+			else if (mori[itC] < 0) {
 				dt__info(
 				  operator(), 
-					<< "Adding inverted fixedFace (tag = " << thisFace->tag() << ") with."
+					<< "Adding inverted slidableFace (tag = " << thisFace->tag() << ") with."
 				);                
-				omInit.addInv(*tmpOM);						
-				omMoved.addInv(*tmpOM);		
+				_omInit.addInv(*tmpOM);						
+				_omMoved.addInv(*tmpOM);		
 			}
 			else {
 				dt__throw(
 				  operator(), 
-					<< "Undefined orientation of fixedFace (tag = " << thisFace->tag() << ")."
+					<< "Undefined orientation of slidableFace (tag = " 
+          << thisFace->tag() << ")."
 				);
 			}
 			itC++;
@@ -136,24 +120,87 @@ namespace dtOO {
 			//
 			// set fixed and thickness field
 			//
-			fixedF.assign(*tmpOM, true);
-			tF.assign(*tmpOM, 0.);
+			_fixedF.assign(*tmpOM, true);
+      canSlideF.assign(*tmpOM, true);
+      _slidableF.assign(*tmpOM, false);
+			_tF.assign(*tmpOM, _thickness);
+		}
+    
+		//
+		// fixed surface mesh
+		//
+		itC = 0;
+		dt__forAllConstIter( std::list< dtGmshFace const * >, fface, it ) {
+			dtGmshFace const * const &thisFace = *it;
+			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
+			
+			if (fori[itC] > 0) {
+				dt__info(
+				  operator(), 
+					<< "Adding normal fixedFace (tag = " << thisFace->tag() << ") with."
+				);                
+				_omInit.add(*tmpOM);						
+				_omMoved.add(*tmpOM);		
+			}
+			else if (fori[itC] < 0) {
+				dt__info(
+				  operator(), 
+					<< "Adding inverted fixedFace (tag = " << thisFace->tag() << ") with."
+				);                
+				_omInit.addInv(*tmpOM);						
+				_omMoved.addInv(*tmpOM);		
+			}
+			else {
+				dt__throw(
+				  operator(), 
+					<< "Undefined orientation of fixedFace (tag = " 
+          << thisFace->tag() << ")."
+				);
+			}
+			itC++;
+			
+			//
+			// set fixed and thickness field
+			//
+			_fixedF.assign(*tmpOM, true);
+      canSlideF.assign(*tmpOM, false);
+      _slidableF.assign(*tmpOM, false);
+			_tF.assign(*tmpOM, 0.);
 		}		
-		
+
+		//
+		// detect sliders
+		//
+		dt__forFromToIter(
+      omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), it
+    ) {
+      if ( isSlidable(canSlideF, *it) ) {
+        _slidableF[*it] = true;
+        _fixedF[*it] = false;
+      }
+    }
+    
 		//
 		// fix boundary nodes
 		//
-		dt__forFromToIter(omVertexI, omInit.vertices_begin(), omInit.vertices_end(), it) {
-			::MVertex * mv = omInit[*it];	
-			if ( omInit.is_boundary(*it) ) {
-				fixedF[*it] = true;
-				tF[*it] = 0.;
+		dt__forFromToIter(
+      omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), it
+    ) {
+			::MVertex * mv = _omInit[*it];	
+			if ( _omInit.is_boundary(*it) ) {
+				_fixedF[*it] = true;
+				_tF[*it] = 0.;
 			}
 		}
 		
-		omInit.update();
-		omMoved.update();
-
+		_omInit.update();
+		_omMoved.update();    
+	}
+	
+  void dtGmshMeshBoundaryLayer::operator() ( 
+	  dtGmshModel * const wModel,
+	  std::vector< ::MVertex * > & vertex, std::vector< ::MElement * > & element
+	) {
 		dt__info(operator(), << "Initialized");
 
 		//
@@ -162,15 +209,16 @@ namespace dtOO {
 		std::vector< dtOMMeshManifold > omManifolds;		
 		dt__forFromToIter(
 		  omVertexI, 
-			omMoved.vertices_begin(), 
-			omMoved.vertices_end(), v_it
-		) omManifolds.push_back( dtOMMeshManifold(omMoved, *v_it) );
+			_omMoved.vertices_begin(), 
+			_omMoved.vertices_end(), 
+      v_it
+		) omManifolds.push_back( dtOMMeshManifold(_omMoved, *v_it) );
 
 		//
 		// divide manifolds and calculate normals
 		// averaging all normals of manifolds
 		//
-		dtOMVertexField< dtVector3 > nF("nF", omInit, dtVector3(0.,0.,0.) );		
+		dtOMVertexField< dtVector3 > nF("nF", _omInit, dtVector3(0.,0.,0.) );		
 		dt__forAllIter(std::vector< dtOMMeshManifold >, omManifolds, it) {
 			std::vector< dtOMMeshManifold > divOmMs = it->divide(_maxDihedralAngle);
 			std::vector< dtVector3 > nnV;
@@ -196,39 +244,42 @@ namespace dtOO {
     // add new GEntities, find relationships, create new mesh vertices
 		// and add new mesh elements
     //		
-		modifyGEntities(omInit, fixedF, wModel);
+		modifyGEntities(wModel);
 		dt__info(operator(), << "New vertices created.");
 				
 		//
 		// determine thickness
 		// modify omMoved and tF
 		//
-		determineThickness(omInit, nF, fixedF, omMoved, tF);
+		determineThickness(nF);
 		dt__info(operator(), << "Shrinked.");
 	
 		//
 		// create dihedral angle field and check for intersections based on
 		// dihedral angles
 		//		
-		dtOMEdgeField< float > dAF("dA", omInit, 0.);
-		dt__forFromToIter(omEdgeI, omMoved.edges_begin(), omMoved.edges_end(), eIt) {
-		  dAF[*eIt] = omMoved.calc_dihedral_angle(*eIt);
+		dtOMEdgeField< float > dAF("dA", _omInit, 0.);
+		dt__forFromToIter(
+      omEdgeI, _omMoved.edges_begin(), _omMoved.edges_end(), eIt
+    ) {
+		  dAF[*eIt] = _omMoved.calc_dihedral_angle(*eIt);
 		}
-    dihedralAngleIntersection(omInit, omMoved, dAF, fixedF, nF, tF);
+    dihedralAngleIntersection(dAF, nF);
 		
 		//
 		// create new boundary layer elements
 		//
-		createBoundaryLayerElements(omInit, omMoved, fixedF, vertex, element);
+		createBoundaryLayerElements(vertex, element);
     dt__info(operator(), << "Elements created");
 		
 		//
 		// write fields
 		//
-		dtMoabCore mb(tF.refMesh());
-		mb.addVertexField(tF);
+		dtMoabCore mb(_tF.refMesh());
+		mb.addVertexField(_tF);
 		mb.addVertexField(nF);
-		mb.addVertexField(fixedF);
+		mb.addVertexField(_fixedF);
+    mb.addVertexField(_slidableF);
 		mb.write_mesh("dtGmshMeshBoundaryLayer.vtk");
 	  
 		dt__info(operator(), << "Fields written.");
@@ -236,13 +287,13 @@ namespace dtOO {
   }
 	
 	void dtGmshMeshBoundaryLayer::determineThickness(
-		dtOMMesh const & omInit,
-		dtOMVertexField< dtVector3 > const & nF, dtOMVertexField< bool > const & fixedF, 
-		dtOMMesh & omMoved, dtOMVertexField< float > & tF
-	) const {
-		dt__forFromToIter(omConstVertexI, omInit.vertices_begin(), omInit.vertices_end(), it) {
-			if ( !fixedF.at(*it) ) {
-        ::MVertex const * mv_omInit = omInit.at(*it);
+		dtOMVertexField< dtVector3 > const & nF
+	) {
+		dt__forFromToIter(
+      omConstVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), it
+    ) {
+			if ( !_fixedF.at(*it) ) {
+        ::MVertex const * mv_omInit = _omInit.at(*it);
 				dt__throwIf(
 				  floatHandling::isSmall(dtLinearAlgebra::length(nF.at(*it))), 
 					operator()
@@ -254,8 +305,8 @@ namespace dtOO {
 				std::vector< omFaceH > neighborFace;
 				dt__forFromToIter(
 				  omConstVertexVertexI, 
-					omMoved.cvv_begin(*it), 
-					omMoved.cvv_end(*it), 
+					_omMoved.cvv_begin(*it), 
+					_omMoved.cvv_end(*it), 
 					vvIt
 				) {
 //				dt__forFromToIter(
@@ -266,10 +317,10 @@ namespace dtOO {
 //				) {					
 					dt__forFromToIter(
 						omConstVertexFaceI, 
-						omMoved.cvf_begin(*vvIt), 
-						omMoved.cvf_end(*vvIt), 
+						_omMoved.cvf_begin(*vvIt), 
+						_omMoved.cvf_end(*vvIt), 
 						fIt
-					) if ( !omMoved.contains(*fIt, *it) ) neighborFace.push_back(*fIt);
+					) if ( !_omMoved.contains(*fIt, *it) ) neighborFace.push_back(*fIt);
 //					}	
 				}
 				progHelper::removeBastardTwins(neighborFace);
@@ -280,15 +331,15 @@ namespace dtOO {
 				//
 				dtPoint3 start(mv_omInit->x(), mv_omInit->y(), mv_omInit->z());
 				for (int ii=0;ii<_nShrinkingSteps;ii++) {
-					tF.laplacianSmooth();          
-					dtPoint3 target = start + 2.*tF.at(*it)*nF.at(*it);
-					if ( !omMoved.intersection(neighborFace, start, target) ) break;
-					tF[*it] = .7*tF.at(*it);
+					_tF.laplacianSmooth();          
+					dtPoint3 target = start + 2.*_tF.at(*it)*nF.at(*it);
+					if ( !_omMoved.intersection(neighborFace, start, target) ) break;
+					_tF[*it] = .7*_tF.at(*it);
 				}
-				if (tF.at(*it) != _thickness) {
+				if (_tF.at(*it) != _thickness) {
 					dt__info(
 				    operator(), 
-						<< "Intersection => shrink t = " << _thickness << " -> " << tF[*it]
+						<< "Intersection => shrink t = " << _thickness << " -> " << _tF[*it]
 					);
 				}
 				
@@ -296,22 +347,22 @@ namespace dtOO {
 				// move vertices of surface mesh om and create new vertices with old
 				// position in new surface mesh omT
 				//
-				dtPoint3 target = dtGmshModel::extractPosition(omInit.at(*it)) + tF.at(*it) * nF.at(*it);
-				omMoved.replacePosition(*it, target);
+				dtPoint3 target 
+        = 
+        dtGmshModel::extractPosition(_omInit.at(*it)) + _tF.at(*it) * nF.at(*it);
+				_omMoved.replacePosition(*it, target);
 		  }
 		}		
 	}
 	
-	void dtGmshMeshBoundaryLayer::modifyGEntities(
-		dtOMMesh & omInit,      
-		dtOMVertexField< bool > const & fixedF,
-		dtGmshModel * wModel
-	) const {
+	void dtGmshMeshBoundaryLayer::modifyGEntities(dtGmshModel * wModel) {
 		typedef std::map< ::GEntity *, ::GEntity * > GEntGEnt_t;	
 		GEntGEnt_t newOld;
-		dt__forFromToIter(omConstVertexI, omInit.vertices_begin(), omInit.vertices_end(), it) {
-			if ( !fixedF.at(*it) ) {
-				::MVertex const * const mvIt = omInit.at(*it);
+		dt__forFromToIter(
+      omConstVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), it
+    ) {
+			if ( !_fixedF.at(*it) ) {
+				::MVertex const * const mvIt = _omInit.at(*it);
 				if ( newOld.find(mvIt->onWhat()) == newOld.end() ) {
           dtGmshVertex * gv 
 				  = 
@@ -339,7 +390,9 @@ namespace dtOO {
 					  new dtGmshEdge(wModel, wModel->getMaxEdgeTag()+1);
 						wModel->add(newEdge);
 						newOld[ mvIt->onWhat() ] = newEdge;
-						newEdge->meshStatistics.status = GEntity::MeshGenerationStatus::DONE;
+						newEdge->meshStatistics.status 
+            = 
+            GEntity::MeshGenerationStatus::DONE;
 					}
 					else if (gf) {
 						dtGmshFace * newFace 
@@ -349,7 +402,9 @@ namespace dtOO {
 						newOld[gf] = newFace;
 						wModel->tagPhysical(newFace, wModel->getPhysicalString(gf));
 						wModel->untagPhysical(gf);
-						newFace->meshStatistics.status = GEntity::MeshGenerationStatus::DONE;
+						newFace->meshStatistics.status 
+            = 
+            GEntity::MeshGenerationStatus::DONE;
 					}
 					else if (gr) {
 						dtGmshRegion * newRegion 
@@ -379,7 +434,7 @@ namespace dtOO {
         dt__ptrAss(dtGmshVertex * gvn, dtGmshVertex::DownCast(newGE));
 				std::list< ::GEdge * > ee = gv->edges();
 				dt__forAllIter(std::list< ::GEdge * >, ee, eIt) {
-					if (newOld.find(*eIt) != newOld.end()) gvn->addGEntity( newOld[*eIt] );
+					if (newOld.find(*eIt) != newOld.end()) gvn->addGEntity(newOld[*eIt]);
 					else gvn->addGEntity(*eIt);
 				}
 			}
@@ -387,12 +442,12 @@ namespace dtOO {
         dt__ptrAss(dtGmshEdge * gen, dtGmshEdge::DownCast(newGE));
 				std::list< ::GVertex * > vv = ge->vertices();
 				dt__forAllIter(std::list< ::GVertex * >, vv, vIt) {
-					if (newOld.find(*vIt) != newOld.end()) gen->addGEntity( newOld[*vIt] );
+					if (newOld.find(*vIt) != newOld.end()) gen->addGEntity(newOld[*vIt]);
 					else gen->addGEntity(*vIt);
 				}
 				std::list< ::GFace * > ff = ge->faces();
 				dt__forAllIter(std::list< ::GFace * >, ff, fIt) {
-					if (newOld.find(*fIt) != newOld.end()) gen->addGEntity( newOld[*fIt] );
+					if (newOld.find(*fIt) != newOld.end()) gen->addGEntity(newOld[*fIt]);
 					else gen->addGEntity(*fIt);
 				}				
 			}
@@ -400,7 +455,7 @@ namespace dtOO {
         dt__ptrAss(dtGmshFace * gfn, dtGmshFace::DownCast(newGE));
 				std::list< ::GEdge * > ee = gf->edges();
 				dt__forAllIter(std::list< ::GEdge * >, ee, eIt) {
-					if (newOld.find(*eIt) != newOld.end()) gfn->addGEntity( newOld[*eIt] );
+					if (newOld.find(*eIt) != newOld.end()) gfn->addGEntity(newOld[*eIt]);
 					else gfn->addGEntity(*eIt);
 				}
 				std::list< ::GRegion * > rr = gf->regions();
@@ -420,11 +475,15 @@ namespace dtOO {
 		//
 		// create new vertices
 		//
-		dt__forFromToIter(omVertexI, omInit.vertices_begin(), omInit.vertices_end(), it) {
-			if ( !fixedF.at(*it) ) {
-        ::MVertex const * const mv = omInit.at(*it);
-				::MVertex * mvNew = new ::MVertex(mv->x(), mv->y(), mv->z(), newOld[mv->onWhat()]);
-				omInit.replaceMVertex(*it, mvNew);
+		dt__forFromToIter(
+      omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), it
+    ) {
+			if ( !_fixedF.at(*it) ) {
+        ::MVertex const * const mv = _omInit.at(*it);
+				::MVertex * mvNew 
+        = 
+        new ::MVertex(mv->x(), mv->y(), mv->z(), newOld[mv->onWhat()]);
+				_omInit.replaceMVertex(*it, mvNew);
 //				region->addMeshVertex(mvNew);
 				newOld[mv->onWhat()]->addMeshVertex(mvNew);
 			}
@@ -433,13 +492,17 @@ namespace dtOO {
 		//
 		// create new elements
 		//
-		dt__forFromToIter(omFaceI, omInit.faces_begin(), omInit.faces_end(), fIt) {
+		dt__forFromToIter(
+      omFaceI, _omInit.faces_begin(), _omInit.faces_end(), fIt
+    ) {
 			std::vector< ::MVertex * > vertices;
-			dt__forFromToIter(omFaceVertexI, omInit.fv_begin(*fIt), omInit.fv_end(*fIt), vIt) {
-        vertices.push_back( omInit[*vIt] );
+			dt__forFromToIter(
+        omFaceVertexI, _omInit.fv_begin(*fIt), _omInit.fv_end(*fIt), vIt
+      ) {
+        vertices.push_back( _omInit[*vIt] );
 			}
 			::MElement * anEl = ::MElement::createElement(MSH_TRI_3, vertices);
-			omInit.data(*fIt).MElement( anEl );
+			_omInit.data(*fIt).MElement( anEl );
 			GEntity * guess = dtGmshModel::guessOnWhat(anEl);
 			if (guess) {
 				dtGmshFace * gf = dtGmshFace::DownCast(guess);
@@ -450,13 +513,12 @@ namespace dtOO {
 	}
 	
 	void dtGmshMeshBoundaryLayer::dihedralAngleIntersection(
-		dtOMMesh const & omInit, dtOMMesh & omMoved,
-		dtOMEdgeField< float > const & dAF,        
-		dtOMVertexField< bool > const & fixedF, 
-		dtOMVertexField< dtVector3 > const & nF, dtOMVertexField< float > & tF
-	) const {
-		dt__forFromToIter(omConstVertexI, omMoved.vertices_begin(), omMoved.vertices_end(), vIt) {
-			std::vector< omEdgeH > oneRing = omMoved.oneRingEdgeH(*vIt);
+		dtOMEdgeField< float > const & dAF, dtOMVertexField< dtVector3 > const & nF
+	) {
+		dt__forFromToIter(
+      omConstVertexI, _omMoved.vertices_begin(), _omMoved.vertices_end(), vIt
+    ) {
+			std::vector< omEdgeH > oneRing = _omMoved.oneRingEdgeH(*vIt);
 			float min = 0.;
 			float max = 0.;
 			dt__forAllIter(std::vector< omEdgeH >, oneRing, eIt) {
@@ -478,24 +540,31 @@ namespace dtOO {
 				// move vertices of surface mesh om and create new vertices with old
 				// position in new surface mesh omMoved
 				//
-				tF[*vIt] = .5*tF[*vIt];
+				_tF[*vIt] = .5*_tF[*vIt];
 				dtPoint3 target 
 				= 
-				dtGmshModel::extractPosition(omInit.at(*vIt)) + tF.at(*vIt) * nF.at(*vIt);
-				omMoved.replacePosition(*vIt, target);				
+				dtGmshModel::extractPosition(_omInit.at(*vIt)) 
+        + 
+        _tF.at(*vIt) * nF.at(*vIt);
+				_omMoved.replacePosition(*vIt, target);				
 
 				//
 				// move vertices of surface mesh om and create new vertices with old
 				// position in new surface mesh omT
 				//
-				dt__forFromToIter(omConstVertexVertexI, omMoved.vv_begin(*vIt), omMoved.vv_end(*vIt), vvIt) {
-					if ( !fixedF.at(*vIt) ) {
-						tF[*vIt] = .75*tF.at(*vvIt);
+				dt__forFromToIter(
+          omConstVertexVertexI, 
+          _omMoved.vv_begin(*vIt), 
+          _omMoved.vv_end(*vIt), 
+          vvIt
+        ) {
+					if ( !_fixedF.at(*vIt) ) {
+						_tF[*vIt] = .75*_tF.at(*vvIt);
 						dtPoint3 target 
 						= 
-						dtGmshModel::extractPosition(omInit.at(*vvIt)) 
-						+ tF.at(*vvIt) * nF.at(*vvIt);
-						omMoved.replacePosition(*vvIt, target);
+						dtGmshModel::extractPosition(_omInit.at(*vvIt)) 
+						+ _tF.at(*vvIt) * nF.at(*vvIt);
+						_omMoved.replacePosition(*vvIt, target);
 					}
 				}
 				
@@ -506,15 +575,15 @@ namespace dtOO {
 	}
 	
 	void dtGmshMeshBoundaryLayer::createBoundaryLayerElements(
-		dtOMMesh const & omInit, dtOMMesh const & omMoved, 
-		dtOMVertexField< bool > const & fixedF,
 		std::vector< ::MVertex * > & vertex, std::vector< ::MElement * > & element        
 	) const {
 		int nLayers = _spacing.size()+1;
 		dtOMVertexField< std::vector< ::MVertex * > > mvBLayerF(
-		  "mvBLayerF", omInit, std::vector< ::MVertex * >(nLayers-1, NULL)
+		  "mvBLayerF", _omInit, std::vector< ::MVertex * >(nLayers-1, NULL)
 		);		
-		dt__forFromToIter(omFaceI, omInit.faces_begin(), omInit.faces_end(), fIt) {
+		dt__forFromToIter(
+      omFaceI, _omInit.faces_begin(), _omInit.faces_end(), fIt
+    ) {
 		  //
 			// get fix and movable vertices			
 			//
@@ -523,12 +592,12 @@ namespace dtOO {
 			std::vector< ::MVertex * > omMovedVertices;
 			dt__forFromToIter(
 			  omConstFaceVertexI, 
-				omInit.cfv_begin(*fIt), 
-				omInit.cfv_end(*fIt), vIt
+				_omInit.cfv_begin(*fIt), 
+				_omInit.cfv_end(*fIt), vIt
 			) {
-				MVertex const * const mv_omInit = omInit.at(*vIt);
-				MVertex const * const mv_omMoved = omMoved.at(*vIt);
-				if ( fixedF.at(*vIt) ) {
+				MVertex const * const mv_omInit = _omInit.at(*vIt);
+				MVertex const * const mv_omMoved = _omMoved.at(*vIt);
+				if ( _fixedF.at(*vIt) ) {
 					commonVertices.push_back(const_cast< ::MVertex *>(mv_omMoved));
 				}
 				else {
@@ -568,8 +637,12 @@ namespace dtOO {
 					::MPrism * pri 
 					= 
 					new ::MPrism(
-				    omFixedVerticesL[ii][0], omFixedVerticesL[ii][1], omFixedVerticesL[ii][2],
-						omMovedVerticesL[ii][0], omMovedVerticesL[ii][1], omMovedVerticesL[ii][2]
+				    omFixedVerticesL[ii][0], 
+            omFixedVerticesL[ii][1], 
+            omFixedVerticesL[ii][2],
+						omMovedVerticesL[ii][0], 
+            omMovedVerticesL[ii][1], 
+            omMovedVerticesL[ii][2]
 					);
 					if (pri->getVolumeSign()<0.) pri->reverse();
 					element.push_back(pri);
@@ -598,5 +671,31 @@ namespace dtOO {
 			}
 		}		
 	}
+  
+  bool dtGmshMeshBoundaryLayer::isSlidable( 
+    dtOMVertexField< bool > const & canSlideF,
+    omVertexH const & vH
+  ) {
+    //
+    // check if vertex is slidable itself or there is at least one 
+    // vertex in the one-ring-neighborhood that is
+    //
+    if ( !canSlideF.at(vH) ) return false;
+    
+    std::vector< bool > localSlide;
+    dt__forFromToIter(
+      omConstVertexVertexI, 
+      canSlideF.refMesh().cvv_begin(vH), 
+      canSlideF.refMesh().cvv_end(vH), 
+      vvIt
+    ) {
+      bool isSliding = canSlideF.at(*vvIt);
+      dt__forAllConstIter(std::vector< bool >, localSlide, it) {
+        if (*it != isSliding) return true;
+      }
+      localSlide.push_back( isSliding );
+    }
+    
+    return false;
+  }
 }
-
