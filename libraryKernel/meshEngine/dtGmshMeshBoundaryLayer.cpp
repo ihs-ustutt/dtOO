@@ -14,6 +14,8 @@
 #include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
+#include <gmsh/MTriangle.h>
+#include <gmsh/MQuadrangle.h>
 #include <gmsh/MPrism.h>
 #include <gmsh/MPyramid.h>
 #include <gmsh/MTetrahedron.h>
@@ -434,7 +436,7 @@ namespace dtOO {
 						newOld[ mvIt->onWhat() ] = newRegion;
 						newRegion->_status = GEntity::MeshGenerationStatus::DONE;					
 					}
-					else dt__throwUnexpected(operator());
+					else dt__throwUnexpected(modifyGEntities());
 				}
 			}
 		}
@@ -490,7 +492,7 @@ namespace dtOO {
 					}
 				}
 			}
-			else dt__throwUnexpected(operator());
+			else dt__throwUnexpected(modifyGEntities());
 		}
 		//
 		// create new vertices
@@ -521,7 +523,12 @@ namespace dtOO {
       ) {
         vertices.push_back( _omInit[*vIt] );
 			}
-			::MElement * anEl = ::MElement::createElement(MSH_TRI_3, vertices);
+      
+      ::MElement * anEl;
+      if (vertices.size() == 3) anEl = new MTriangle(vertices);
+      else if (vertices.size() == 4) anEl = new MQuadrangle(vertices);
+      else dt__throw(modifyGEntities(), << dt__eval(vertices.size()));
+      
 			_omInit.data(*fIt).MElement( anEl );
 			GEntity * guess = dtGmshModel::guessOnWhat(anEl);
 			if (guess) {
