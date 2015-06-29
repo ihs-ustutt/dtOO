@@ -3,40 +3,41 @@
 
 #include <logMe/dtMacros.h>
 #include <progHelper.h>
-#include <interfaceHeaven/labelHandling.h>
+#include "dtOMField.h"
 #include "dtOMMesh.h"
 
 class MVertex;
 
 namespace dtOO {
   template < typename T >  
-  class dtOMVertexField : public labelHandling {
+  class dtOMVertexField : public dtOMField {
   public:
-    dt__classOnlyName(dtOMVertexField);    
-    dtOMVertexField( std::string const & label, dtOMMesh const & om, T const & init );
+    dt__class(dtOMVertexField, dtOMField);    
+    dtOMVertexField( 
+      std::string const & label, dtOMMesh const & om, T const & init 
+    );
     virtual ~dtOMVertexField();
     T & operator[](omVertexH const & vH);    
     T const & at(omVertexH const & vH) const;    
     T & operator[](::MVertex const * const mv);
     T const & at(::MVertex const * const mv) const;    
-    T const & operator[](::MVertex const * const mv) const;
     void assign( dtOMMesh const & om, T const & value );    
     void execute( T (*executeMe)(T const & member) );
 	  void laplacianSmooth( void );
     long unsigned int size( void ) const;
-    dtOMMesh const & refMesh( void ) const;
+    virtual void update( void );    
   private:
     std::map< omVertexH, T > _field;
-    dtOMMesh const & _om;
+    T _init;
   };
 
   template < typename T >
   dtOMVertexField< T >::dtOMVertexField( 
     std::string const & label, dtOMMesh const & om, T const & init 
-  ) : labelHandling(label), _om(om) {
-		dt__forFromToIter(omConstVertexI, _om.vertices_begin(), _om.vertices_end(), vIt) {
-      _field[*vIt] = init;
-    }
+  ) : dtOMField(label, om), _init(init) {
+		dt__forFromToIter(
+      omConstVertexI, refMesh().vertices_begin(), refMesh().vertices_end(), vIt
+    ) _field[*vIt] = init;
   }
   
   template < typename T >
@@ -56,24 +57,21 @@ namespace dtOO {
 
   template < typename T >
   T & dtOMVertexField< T >::operator[](::MVertex const * const mv) {
-    return _field[_om[mv]];
+    return _field[refMesh().at(mv)];
   }
   
   template < typename T >
   T const & dtOMVertexField< T >::at(::MVertex const * const mv) const {
-    return _field.at(_om[mv]);
+    return _field.at(refMesh().at(mv));
   }  
-  
-  template < typename T >
-  T const & dtOMVertexField< T >::operator[](::MVertex const * const mv) const {
-    return _field[_om[mv]];
-  }
   
   template < typename T >  
   void dtOMVertexField< T >::assign( dtOMMesh const & om, T const & value ) {
-		dt__forFromToIter(omConstVertexI, om.vertices_begin(), om.vertices_end(), vIt) {
+		dt__forFromToIter(
+      omConstVertexI, om.vertices_begin(), om.vertices_end(), vIt
+    ) {
       ::MVertex const * const mv = om.at(*vIt);
-      omVertexH const vH = _om[mv];
+      omVertexH const vH = refMesh().at(mv);
       _field[vH] = value;
     }    
   }
@@ -81,7 +79,7 @@ namespace dtOO {
   template < typename T >
   void dtOMVertexField< T >::execute( T (*executeMe)(T const & member) ) {
     dt__forFromToIter(
-      omConstVertexI, _om.vertices_begin(), _om.vertices_end(), vIt
+      omConstVertexI, refMesh().vertices_begin(), refMesh().vertices_end(), vIt
     ) _field[*vIt] = (*executeMe)(_field[*vIt]);
   }
     
@@ -89,11 +87,18 @@ namespace dtOO {
 	void dtOMVertexField< T >::laplacianSmooth( void ) {
 		std::vector< T > av(_field.size());
 		int counter = 0;
-		dt__forFromToIter(omConstVertexI, _om.vertices_begin(), _om.vertices_end(), vIt) {
-      omConstVertexVertexI vBegin = _om.cvv_begin(*vIt);
+		dt__forFromToIter(
+      omConstVertexI, refMesh().vertices_begin(), refMesh().vertices_end(), vIt
+    ) {
+      omConstVertexVertexI vBegin = refMesh().cvv_begin(*vIt);
 			T tmp = _field[*vBegin];
       float tmpC = 1.;
-			dt__forFromToIter(omConstVertexVertexI, progHelper::next(_om.cvv_begin(*vIt)), _om.cvv_end(*vIt), vvIt) {			
+			dt__forFromToIter(
+        omConstVertexVertexI, 
+        progHelper::next(refMesh().cvv_begin(*vIt)), 
+        refMesh().cvv_end(*vIt), 
+        vvIt
+      ) {			
         tmp = tmp + _field[*vvIt];
         tmpC = tmpC + 1.;
 			}
@@ -102,7 +107,9 @@ namespace dtOO {
 		}
 		
 		counter = 0;
-		dt__forFromToIter(omConstVertexI, _om.vertices_begin(), _om.vertices_end(), vIt) {
+		dt__forFromToIter(
+      omConstVertexI, refMesh().vertices_begin(), refMesh().vertices_end(), vIt
+    ) {
 			_field[*vIt] = .5*( _field[*vIt] + av[counter]);
 			counter++;
 		}		
@@ -110,12 +117,20 @@ namespace dtOO {
 
   template < typename T >
   long unsigned int dtOMVertexField< T >::size( void ) const {
-    return _om.n_vertices();
+    //return _om.n_vertices();
+    return _field.size();
   }
   
   template < typename T >
-  dtOMMesh const & dtOMVertexField< T >::refMesh( void ) const {
-    return _om;
+  void dtOMVertexField< T >::update( void ) {
+    dt__forFromToIter(
+      omConstVertexI, refMesh().vertices_begin(), refMesh().vertices_end(), vIt
+    ) {
+      typename std::map< omVertexH, T >::iterator it = _field.find(*vIt);
+      if (it == _field.end())  {
+        _field[*vIt] = _init;
+      }
+    }    
   }
 }
 #endif	/* DTOMVERTEXFIELD_H */

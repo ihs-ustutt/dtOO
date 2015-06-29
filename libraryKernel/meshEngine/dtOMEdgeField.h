@@ -3,35 +3,35 @@
 
 #include <logMe/dtMacros.h>
 #include <progHelper.h>
-#include <interfaceHeaven/labelHandling.h>
+#include "dtOMField.h"
 #include "dtOMMesh.h"
-
-class MVertex;
 
 namespace dtOO {
   template < typename T >  
-  class dtOMEdgeField : public labelHandling {
+  class dtOMEdgeField : public dtOMField {
   public:
-    dt__classOnlyName(dtOMEdgeField);    
-    dtOMEdgeField( std::string const & label, dtOMMesh const & om, T const & init );
+    dt__class(dtOMEdgeField, dtOMField);    
+    dtOMEdgeField( 
+      std::string const & label, dtOMMesh const & om, T const & init 
+    );
     virtual ~dtOMEdgeField();
     T & operator[](omEdgeH const & eH);    
-    T const & operator[](omEdgeH const & eH) const;    
+    T const & at(omEdgeH const & eH) const;    
     void execute( T (*executeMe)(T const & member) );
     long unsigned int size( void ) const;
-    dtOMMesh const & refMesh( void ) const;
+    virtual void update( void );     
   private:
     std::map< omEdgeH, T > _field;
-    dtOMMesh const & _om;
+    T _init;
   };
 
   template < typename T >
   dtOMEdgeField< T >::dtOMEdgeField( 
     std::string const & label, dtOMMesh const & om, T const & init 
-  ) : labelHandling(label), _om(om) {
-		dt__forFromToIter(omConstEdgeI, _om.edges_begin(), _om.edges_end(), eIt) {
-      _field[*eIt] = init;
-    }
+  ) : dtOMField(label, om), _init(init) {
+		dt__forFromToIter(
+      omConstEdgeI, refMesh().edges_begin(), refMesh().edges_end(), eIt
+    ) _field[*eIt] = init;
   }
   
   template < typename T >
@@ -45,14 +45,14 @@ namespace dtOO {
   }
   
   template < typename T >
-  T const & dtOMEdgeField< T >::operator[](omEdgeH const & eH) const {
+  T const & dtOMEdgeField< T >::at(omEdgeH const & eH) const {
     return _field.at(eH);
   }
   
   template < typename T >
   void dtOMEdgeField< T >::execute( T (*executeMe)(T const & member) ) {
     dt__forFromToIter(
-      omConstEdgeI, _om.edges_begin(), _om.edges_end(), eIt
+      omConstEdgeI, refMesh().edges_begin(), refMesh().edges_end(), eIt
     ) _field[*eIt] = (*executeMe)(_field[*eIt]);
   }
 
@@ -60,11 +60,18 @@ namespace dtOO {
   long unsigned int dtOMEdgeField< T >::size( void ) const {
     return _field.size();
   }
-  
+
   template < typename T >
-  dtOMMesh const & dtOMEdgeField< T >::refMesh( void ) const {
-    return _om;
-  }
+  void dtOMEdgeField< T >::update( void ) {
+    dt__forFromToIter(
+      omConstEdgeI, refMesh().edges_begin(), refMesh().edges_end(), eIt
+    ) {
+      typename std::map< omEdgeH, T >::iterator it = _field.find(*eIt);
+      if (it == _field.end())  {
+        _field[*eIt] = _init;
+      }        
+    }
+  }  
 }
 #endif	/* DTOMEDGEFIELD_H */
 

@@ -77,8 +77,11 @@ SET(HEADERS
   meshEngine/dtOMMesh.h
   meshEngine/dtOMMeshTraits.h
   meshEngine/dtOMMeshManifold.h
+  meshEngine/dtOMField.h
   meshEngine/dtOMVertexField.h
+  meshEngine/dtOMDynamicVertexField.h
   meshEngine/dtOMEdgeField.h
+  meshEngine/dtOMFaceField.h
   dtGaussLegendreIntegration.h
   GSLError.h
 )
@@ -160,6 +163,7 @@ SET(SOURCES
   meshEngine/dtGmshMeshBoundaryLayer.cpp
   meshEngine/dtOMMesh.cpp
   meshEngine/dtOMMeshManifold.cpp
+  meshEngine/dtOMField.cpp
   dtGaussLegendreIntegration.cpp
 )
 

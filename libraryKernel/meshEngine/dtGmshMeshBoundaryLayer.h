@@ -4,8 +4,9 @@
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOMMesh.h"
-#include "dtOMVertexField.h"
+#include "dtOMDynamicVertexField.h"
 #include "dtOMEdgeField.h"
+#include "dtOMFaceField.h"
 
 class GEntity;
 class MVertex;
@@ -64,9 +65,10 @@ namespace dtOO {
       //      
 		  dtOMMesh _omInit;
 		  dtOMMesh _omMoved;      
-		  dtOMVertexField< bool > _fixedF;
-      dtOMVertexField< bool > _slidableF;
-	    dtOMVertexField< float > _tF;
+		  dtOMDynamicVertexField< bool > _fixedF;
+      dtOMDynamicVertexField< bool > _slidableF;
+	    dtOMDynamicVertexField< float > _tF;
+      dtOMFaceField< bool > _extrude;
   };
 }
 

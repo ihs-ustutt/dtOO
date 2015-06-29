@@ -2,10 +2,13 @@
 #include "progHelper.h"
 
 namespace dtOO {
-  dtOMMeshManifold::dtOMMeshManifold(dtOMMesh const & om, omVertexH const & vH) {
-		dt__forFromToIter(omConstVertexFaceI, om.cvf_begin(vH), om.cvf_end(vH), it) {
-			addFace( om.data(*it) );
-		}
+  dtOMMeshManifold::dtOMMeshManifold(
+    dtOMMesh const & om, omVertexH const & vH
+  ) {
+		dt__forFromToIter(
+      omConstVertexFaceI, om.cvf_begin(vH), om.cvf_end(vH), it
+    ) addFace( om.data(*it) );
+
 		omVertexD const & my_vD  = om.data(vH);
 		_centerVertex = omGmsh().at(my_vD.MVertex());
 
@@ -24,7 +27,9 @@ namespace dtOO {
 //		);
 	}
 	
-	dtOMMeshManifold::dtOMMeshManifold( dtOMMeshManifold const & orig) : dtOMMesh(orig) {
+	dtOMMeshManifold::dtOMMeshManifold( 
+    dtOMMeshManifold const & orig
+  ) : dtOMMesh(orig) {
 		_centerVertex = this->omGmsh().at(orig.centerMVertex());
 		
 		update();
@@ -39,7 +44,9 @@ namespace dtOO {
 		_dihedralAngleV.clear();
 		_isBoundary.clear();
 		
-		dt__forFromToIter(omVertexEdgeI, ve_begin(_centerVertex), ve_end(_centerVertex), it) {
+		dt__forFromToIter(
+      omVertexEdgeI, ve_begin(_centerVertex), ve_end(_centerVertex), it
+    ) {
 			_isBoundary.push_back(is_boundary(*it));
 			omEdgeD & eD = data(*it);
 			eD.dihedralAngle( fabs(calc_dihedral_angle(*it)) );
@@ -119,7 +126,9 @@ namespace dtOO {
 				=
 				std::max_element(_dihedralAngleV.begin(), _dihedralAngleV.end());
 				max2ndEdgeIt = ve_begin(_centerVertex);
-				for (int ii=0;ii<(max2ndAngleIt-_dihedralAngleV.begin());ii++) max2ndEdgeIt++;
+				for (
+          int ii=0;ii<(max2ndAngleIt-_dihedralAngleV.begin());ii++
+        ) max2ndEdgeIt++;
 				*max2ndAngleIt = 0.;
 //				if ( 
 //					   (abs(max2ndAngleIt-maxAngleIt) > 0) 
@@ -186,7 +195,9 @@ namespace dtOO {
 		}
 	}
 
-  std::vector< dtOMMeshManifold > dtOMMeshManifold::divide( float const & angle ) {
+  std::vector< dtOMMeshManifold > dtOMMeshManifold::divide( 
+    float const & angle 
+  ) {
 		std::vector< dtOMMeshManifold > manifolds;
 		
 		bool restart = true;
@@ -262,14 +273,16 @@ namespace dtOO {
 		//
 		// create new manifold
 		//
-		return dtOMMeshManifold(retMesh, retMesh.omGmsh().at(vD.MVertex()));
+		return dtOMMeshManifold( retMesh, retMesh.at(vD.MVertex()) );
 	}	
 	
 	dtVector3 dtOMMeshManifold::normal( void ) const {
 		std::vector< dtVector3 > nn;
 		dt__forFromToIter(omConstFaceI, faces_begin(), faces_end(), fIt) {		
 			omNormal const & omN = omMesh::normal(*fIt);
-			nn.push_back( dtLinearAlgebra::normalize(dtVector3(omN[0], omN[1], omN[2])) );
+			nn.push_back( 
+        dtLinearAlgebra::normalize(dtVector3(omN[0], omN[1], omN[2])) 
+      );
 		}
 		return dtLinearAlgebra::meanAverage(nn);
 	}

@@ -34,15 +34,14 @@ namespace dtOO {
 		int const nSmoothingSteps, int const nShrinkingSteps 
 	) : _fixedF("_fixedF", _omInit, false), 
       _slidableF("_slidableF", _omInit, false),
-      _tF("_tF", _omInit, thickness)
-  {
-		_thickness = thickness;
-		_spacing = spacing;
-		_nSmoothingSteps = nSmoothingSteps;
-		_nShrinkingSteps = nShrinkingSteps;
-		_maxDihedralAngle = maxDihedralAngle;
-
-    dtOMVertexField< bool > canSlideF("canSlideF", _omInit, false);
+      _tF("_tF", _omInit, thickness),
+      _extrude("_extrude", _omInit, false),
+      _thickness(thickness),
+      _spacing(spacing),
+      _nSmoothingSteps(nSmoothingSteps),
+      _nShrinkingSteps(nShrinkingSteps),
+      _maxDihedralAngle(maxDihedralAngle) {
+    dtOMDynamicVertexField< bool > canSlideF("canSlideF", _omInit, false);
 		
 		//
 		// surface mesh to thick
@@ -73,13 +72,6 @@ namespace dtOO {
 					<< "Undefined orientation of face (tag = " << thisFace->tag() << ")."
 				);
 			}
-			//
-			// set fixed and thickness field
-			//
-			_fixedF.assign(*tmpOM, false);
-      canSlideF.assign(*tmpOM, false);      
-      _slidableF.assign(*tmpOM, false);
-			_tF.assign(*tmpOM, _thickness);
 			
 			itC++;
 		}
@@ -122,8 +114,6 @@ namespace dtOO {
 			//
 			_fixedF.assign(*tmpOM, true);
       canSlideF.assign(*tmpOM, true);
-      _slidableF.assign(*tmpOM, false);
-			_tF.assign(*tmpOM, _thickness);
 		}
     
 		//
@@ -163,11 +153,15 @@ namespace dtOO {
 			// set fixed and thickness field
 			//
 			_fixedF.assign(*tmpOM, true);
-      canSlideF.assign(*tmpOM, false);
-      _slidableF.assign(*tmpOM, false);
 			_tF.assign(*tmpOM, 0.);
 		}		
 
+    //
+    // update mesh and fields
+    //
+		_omInit.update();
+		_omMoved.update();    
+    
 		//
 		// detect sliders
 		//
@@ -192,9 +186,35 @@ namespace dtOO {
 				_tF[*it] = 0.;
 			}
 		}
-		
-		_omInit.update();
-		_omMoved.update();    
+
+		//
+		// find faces to extrude
+		//
+		dt__forFromToIter(
+      omFaceI, _omInit.faces_begin(), _omInit.faces_end(), fIt
+    ) {
+      _extrude[*fIt] = false;   
+      
+      int nn = 0;
+      int slider = 0;
+      int fixer = 0;
+
+			dt__forFromToIter(
+			  omConstFaceVertexI,_omInit.cfv_begin(*fIt), _omInit.cfv_end(*fIt), vIt
+			) {
+        nn++;
+        if (_slidableF.at(*vIt)) slider++;
+        if (_fixedF.at(*vIt)) fixer++;
+      }
+      
+      //
+      // check if there are free vertices
+      //
+			if ( ( (slider==0) && (fixer==0) ) || ( (slider+fixer)!=nn ) ) {
+        _extrude[*fIt] = true;
+        continue;
+      }
+		}
 	}
 	
   void dtGmshMeshBoundaryLayer::operator() ( 
@@ -522,7 +542,7 @@ namespace dtOO {
 			float min = 0.;
 			float max = 0.;
 			dt__forAllIter(std::vector< omEdgeH >, oneRing, eIt) {
-				float const & dA = dAF[*eIt];
+				float const & dA = dAF.at(*eIt);
 				min = std::min(dA, min);
 				max = std::max(dA, max);
 			}
@@ -584,6 +604,11 @@ namespace dtOO {
 		dt__forFromToIter(
       omFaceI, _omInit.faces_begin(), _omInit.faces_end(), fIt
     ) {
+      //
+      // handle only elements that should be extruded
+      //
+      if (!_extrude.at(*fIt) ) continue;
+      
 		  //
 			// get fix and movable vertices			
 			//

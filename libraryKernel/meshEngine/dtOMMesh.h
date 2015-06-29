@@ -1,5 +1,5 @@
-#ifndef DTMACROMESHSHEET_H
-#define	DTMACROMESHSHEET_H
+#ifndef dtOMMesh_H
+#define	dtOMMesh_H
 
 #include <OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh>
 
@@ -66,6 +66,7 @@ namespace dtOO {
   typedef omMesh::Scalar omScalar;
   typedef omMesh::Normal omNormal;
   
+  class dtOMField;
   /**
    * @brief Interface to OpenMesh
    * 
@@ -76,48 +77,73 @@ namespace dtOO {
   class dtOMMesh : public omMesh {
     public:
       dt__classOnlyName(dtOMMesh);
-    public:
       dtOMMesh();
       dtOMMesh( dtOMMesh const & orig );
       virtual ~dtOMMesh();  
+      void update( void );                  
+      //
+      // add new vertices and elements
+      //
       omFaceH addFace( omFaceD const & fD );      
-      omFaceH addFace( ::MElement const * const me );      
-      void writeMesh(std::string const filename) const;
+      omFaceH addFace( ::MElement const * const me );  
       void add( const dtOMMesh &toAdd );      
       void addInv( const dtOMMesh &toAdd );      
-      std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;
+      //
+      // access
+      //
+      ::MVertex * operator[](omVertexH const & vH);
+      omVertexH const & at( ::MVertex const * const mv ) const;      
+      ::MVertex const * const at(omVertexH const & vH) const; 
+      ::MElement const * const at(omFaceH const & fH) const;      
+      //
+      // check functions
+      //
       bool contains( omFaceH const & fH, omEdgeH const & eH ) const;
       bool contains( omFaceH const & fH, omVertexH const & vH ) const;
-      void replaceMVertex( omVertexH const & vH, ::MVertex * mv );
-      void replacePosition( omVertexH const & vH, dtPoint3 const & pp );
-      bool vertexIsBoundary(MVertex * mv) const;
-      bool isGeometricalEdge( omEdgeH const & eH) const;
-      std::pair< omVertexH const, omVertexH const >
-      foldVertices( omEdgeH const & eH) const;
-      std::pair< omFaceH, omFaceH > foldFaces( omEdgeH const & eH) const;
       bool intersection( 
         std::vector< omFaceH > const & fH, 
         dtPoint3 const & start, dtPoint3 const & target 
-      ) const;
+      ) const;      
+      std::vector< omEdgeH > oneRingEdgeH( omVertexH const & vH ) const;
+      //
+      // conversion and replace positions
+      //
       static dtPoint3 toDtPoint3( omPoint const & oP);
-      static dtVector3 toDtVector3( omNormal const & nP);
-      virtual void update( void );
-      omVertexH const & operator[]( ::MVertex const * const mv ) const;
-      ::MVertex * operator[](omVertexH const & vH);
-      ::MVertex const * const at(omVertexH const & vH) const; 
-      ::MElement const * const at(omFaceH const & fH) const;
-      std::vector< omEdgeH > oneRingEdgeH( omVertexH const & vH ) const; 
+      static dtVector3 toDtVector3( omNormal const & nP);      
+      void replaceMVertex( omVertexH const & vH, ::MVertex * mv );
+      void replacePosition( omVertexH const & vH, dtPoint3 const & pp );      
+      //
+      // attach fields
+      //
+      void enqueueField( dtOMField * omField );
+      void dequeueField( dtOMField * omField );      
+      //
+      // output
+      //
+      void writeMesh(std::string const filename) const;
+//      bool vertexIsBoundary(MVertex * mv) const;
+//      bool isGeometricalEdge( omEdgeH const & eH) const;
+//      std::pair< omVertexH const, omVertexH const >
+//      foldVertices( omEdgeH const & eH) const;
+//      std::pair< omFaceH, omFaceH > foldFaces( omEdgeH const & eH) const;
+      
+    protected:
+      std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;    
     private:
       omVertexH addVertex( ::MVertex const * const &mv );
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          
-      omFaceH addFace( std::vector< ::MVertex * > const & vertices, ::MElement const * const me );      
+      omFaceH addFace( 
+        std::vector< ::MVertex * > const & vertices, 
+        ::MElement const * const me 
+      );      
       omFaceH addFaceInv( ::MElement const * const me );       
       bool intersection( 
         omFaceH const & fH, dtPoint3 const & start, dtPoint3 const & target 
       ) const;
     private:      
       std::map< ::MVertex const *, omVertexH > _om_gmsh;
+      std::vector< dtOMField * > _attachedField;
     
   };
 }
-#endif	/* DTMACROMESHSHEET_H */
+#endif	/* dtOMMesh_H */
