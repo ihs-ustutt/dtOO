@@ -6,7 +6,7 @@
 #include "dtOMMesh.h"
 #include "dtOMDynamicVertexField.h"
 #include "dtOMEdgeField.h"
-#include "dtOMFaceField.h"
+#include "dtOMDynamicFaceField.h"
 
 class GEntity;
 class MVertex;
@@ -68,7 +68,7 @@ namespace dtOO {
 		  dtOMDynamicVertexField< bool > _fixedF;
       dtOMDynamicVertexField< bool > _slidableF;
 	    dtOMDynamicVertexField< float > _tF;
-      dtOMFaceField< bool > _extrude;
+      dtOMDynamicFaceField< int > _extrudeF;
   };
 }
 

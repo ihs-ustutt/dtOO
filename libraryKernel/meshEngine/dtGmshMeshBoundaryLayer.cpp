@@ -37,7 +37,7 @@ namespace dtOO {
 	) : _fixedF("_fixedF", _omInit, false), 
       _slidableF("_slidableF", _omInit, false),
       _tF("_tF", _omInit, thickness),
-      _extrude("_extrude", _omInit, false),
+      _extrudeF("_extrudeF", _omInit, 1),
       _thickness(thickness),
       _spacing(spacing),
       _nSmoothingSteps(nSmoothingSteps),
@@ -116,6 +116,7 @@ namespace dtOO {
 			//
 			_fixedF.assign(*tmpOM, true);
       canSlideF.assign(*tmpOM, true);
+      _extrudeF.assign(*tmpOM, 0);
 		}
     
 		//
@@ -156,6 +157,7 @@ namespace dtOO {
 			//
 			_fixedF.assign(*tmpOM, true);
 			_tF.assign(*tmpOM, 0.);
+      _extrudeF.assign(*tmpOM, 0);
 		}		
 
     //
@@ -190,32 +192,20 @@ namespace dtOO {
 		}
 
 		//
-		// find faces to extrude
+		// find slidable faces and mark them with 2
 		//
 		dt__forFromToIter(
       omFaceI, _omInit.faces_begin(), _omInit.faces_end(), fIt
     ) {
-      _extrude[*fIt] = false;   
-      
-      int nn = 0;
       int slider = 0;
-      int fixer = 0;
-
 			dt__forFromToIter(
 			  omConstFaceVertexI,_omInit.cfv_begin(*fIt), _omInit.cfv_end(*fIt), vIt
-			) {
-        nn++;
-        if (_slidableF.at(*vIt)) slider++;
-        if (_fixedF.at(*vIt)) fixer++;
-      }
-      
+			) if (_slidableF.at(*vIt)) slider++;
+
       //
-      // check if there are free vertices
+      // slidable face is extrudable and has sliders
       //
-			if ( ( (slider==0) && (fixer==0) ) || ( (slider+fixer)!=nn ) ) {
-        _extrude[*fIt] = true;
-        continue;
-      }
+			if ( (slider>0) && _extrudeF.at(*fIt) ) _extrudeF[*fIt] = 2;        
 		}
 	}
 	
@@ -230,10 +220,7 @@ namespace dtOO {
 		//
 		std::vector< dtOMMeshManifold > omManifolds;		
 		dt__forFromToIter(
-		  omVertexI, 
-			_omMoved.vertices_begin(), 
-			_omMoved.vertices_end(), 
-      v_it
+		  omVertexI, _omMoved.vertices_begin(), _omMoved.vertices_end(), v_it
 		) omManifolds.push_back( dtOMMeshManifold(_omMoved, *v_it) );
 
 		//
@@ -302,6 +289,7 @@ namespace dtOO {
 		mb.addVertexField(nF);
 		mb.addVertexField(_fixedF);
     mb.addVertexField(_slidableF);
+    mb.addFaceField(_extrudeF);
 		mb.write_mesh("dtGmshMeshBoundaryLayer.vtk");
 	  
 		dt__info(operator(), << "Fields written.");
@@ -371,7 +359,9 @@ namespace dtOO {
 				//
 				dtPoint3 target 
         = 
-        dtGmshModel::extractPosition(_omInit.at(*it)) + _tF.at(*it) * nF.at(*it);
+        dtGmshModel::extractPosition(_omInit.at(*it)) 
+        + 
+        _tF.at(*it) * nF.at(*it);
 				_omMoved.replacePosition(*it, target);
 		  }
 		}		
@@ -520,16 +510,14 @@ namespace dtOO {
 			std::vector< ::MVertex * > vertices;
 			dt__forFromToIter(
         omFaceVertexI, _omInit.fv_begin(*fIt), _omInit.fv_end(*fIt), vIt
-      ) {
-        vertices.push_back( _omInit[*vIt] );
-			}
+      ) vertices.push_back( _omInit[*vIt] );
       
       ::MElement * anEl;
       if (vertices.size() == 3) anEl = new MTriangle(vertices);
       else if (vertices.size() == 4) anEl = new MQuadrangle(vertices);
       else dt__throw(modifyGEntities(), << dt__eval(vertices.size()));
       
-			_omInit.data(*fIt).MElement( anEl );
+			_omInit.replaceMElement(*fIt, anEl);
 			GEntity * guess = dtGmshModel::guessOnWhat(anEl);
 			if (guess) {
 				dtGmshFace * gf = dtGmshFace::DownCast(guess);
@@ -614,7 +602,7 @@ namespace dtOO {
       //
       // handle only elements that should be extruded
       //
-      if (!_extrude.at(*fIt) ) continue;
+      if (!_extrudeF.at(*fIt) ) continue;
       
 		  //
 			// get fix and movable vertices			
