@@ -95,6 +95,7 @@ namespace dtOO {
       omVertexH const & at( ::MVertex const * const mv ) const;      
       ::MVertex const * const at(omVertexH const & vH) const; 
       ::MElement const * const at(omFaceH const & fH) const;      
+      omFaceH const & at( ::MElement const * const me ) const;      
       //
       // check functions
       //
@@ -111,6 +112,7 @@ namespace dtOO {
       static dtPoint3 toDtPoint3( omPoint const & oP);
       static dtVector3 toDtVector3( omNormal const & nP);      
       void replaceMVertex( omVertexH const & vH, ::MVertex * mv );
+      void replaceMElement( omFaceH const & fH, ::MElement * me );
       void replacePosition( omVertexH const & vH, dtPoint3 const & pp );      
       //
       // attach fields
@@ -126,10 +128,8 @@ namespace dtOO {
 //      std::pair< omVertexH const, omVertexH const >
 //      foldVertices( omEdgeH const & eH) const;
 //      std::pair< omFaceH, omFaceH > foldFaces( omEdgeH const & eH) const;
-      
-    protected:
-      std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;    
     private:
+      std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;      
       omVertexH addVertex( ::MVertex const * const &mv );
       omFaceH addFace( std::vector< ::MVertex * > const & vertices );          
       omFaceH addFace( 
@@ -142,6 +142,7 @@ namespace dtOO {
       ) const;
     private:      
       std::map< ::MVertex const *, omVertexH > _om_gmsh;
+      std::map< ::MElement const *, omFaceH > _om_gmshElement;
       std::vector< dtOMField * > _attachedField;
     
   };

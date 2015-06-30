@@ -97,6 +97,7 @@ namespace dtOO {
 
 		dt__throwIf(const_cast< ::MElement * >(me)->getNumFaces()!=1, addFace());
 		
+    _om_gmshElement[ me ] = fH;
 		return fH;
 	}  
 
@@ -216,6 +217,24 @@ namespace dtOO {
 			omVertexFaceI, vf_begin(vH), vf_end(vH), it
 		) update_normal(*it);
 	}
+  
+	void dtOMMesh::replaceMElement( omFaceH const & fH, ::MElement * me ) {
+		//
+		// replace vertex in mapping
+		//
+		_om_gmshElement.erase( at(fH) );
+		_om_gmshElement[me] = fH;
+				
+		//
+		// replace MVertex on OpenMesh vertex
+		//
+		data(fH).MElement(me);
+		
+		//
+		// update normals
+		//
+    update_normal(fH);
+	}  
 
 	void dtOMMesh::replacePosition( omVertexH const & vH, dtPoint3 const & pp ) {
 		//
@@ -316,7 +335,11 @@ namespace dtOO {
 
 	::MElement const * const dtOMMesh::at(omFaceH const & fH) const {
 		return data(fH).MElement();
-	}	
+	}
+
+  omFaceH const & dtOMMesh::at( ::MElement const * const me ) const {
+		return _om_gmshElement.at(me);
+	}  
 	
 	std::vector< omEdgeH > dtOMMesh::oneRingEdgeH( omVertexH const & vH ) const {
 	  std::vector< omEdgeH > eHV;	

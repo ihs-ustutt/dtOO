@@ -10,7 +10,7 @@ namespace dtOO {
     ) addFace( om.data(*it) );
 
 		omVertexD const & my_vD  = om.data(vH);
-		_centerVertex = omGmsh().at(my_vD.MVertex());
+    _centerVertex = at(my_vD.MVertex());    
 
 		update();
 		
@@ -30,7 +30,7 @@ namespace dtOO {
 	dtOMMeshManifold::dtOMMeshManifold( 
     dtOMMeshManifold const & orig
   ) : dtOMMesh(orig) {
-		_centerVertex = this->omGmsh().at(orig.centerMVertex());
+		_centerVertex = at(orig.centerMVertex());
 		
 		update();
 	}
