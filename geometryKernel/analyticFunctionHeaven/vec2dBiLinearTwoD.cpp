@@ -1,6 +1,7 @@
 #include "vec2dBiLinearTwoD.h"
 
 #include <logMe/logMe.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
   vec2dBiLinearTwoD::vec2dBiLinearTwoD() : vec2dTwoD() {
@@ -112,33 +113,26 @@ namespace dtOO {
       &u0, &v0, &u1, &v1 
     );
     
-    if (num_st==0) {
-      dt__throw(
-        invY(),
-        << dt__point2d(_p0) << std::endl
-        << dt__point2d(_p1) << std::endl
-        << dt__point2d(_p2) << std::endl
-        << dt__point2d(_p3) << std::endl
-        << dt__eval(yy)
+    if (num_st == 1) {
+      return analyticFunction::aFXTwoD(
+        std::min<float>(std::max<float>(u0, 0.), 1.),
+        std::min<float>(std::max<float>(v0, 0.), 1.)
       );
     }
     
-    aFX res = analyticFunction::aFXTwoD(-1., -1.);
-    if (num_st == 1) {
-      res[0] = std::min<float>(std::max<float>(u0, 0.), 1.);
-      res[1] = std::min<float>(std::max<float>(v0, 0.), 1.);
-    }
-   	else if ( num_st == 2 ) {
-      dt__throw(
-        invY(),
-        << dt__eval(u0) << std::endl
-        << dt__eval(v0) << std::endl
-        << dt__eval(u1) << std::endl
-        << dt__eval(v1)
-      );        
-    }
-    
-    return res;
+    //
+    // simple inversion fails
+    //
+    dt__warning(
+      invY(),
+      << dt__point2d(_p0) << std::endl
+      << dt__point2d(_p1) << std::endl
+      << dt__point2d(_p2) << std::endl
+      << dt__point2d(_p3) << std::endl
+      << dt__eval(yy) << std::endl
+      << "Simple invert failed. Try with general analyticFunction::invY()"
+    );    
+    return analyticFunction::invY(yy);
   }
   
   bool vec2dBiLinearTwoD::insideY( aFY const & yy ) const {
@@ -179,6 +173,12 @@ namespace dtOO {
     float x, float y, 
     float* sout, float* tout, float* s2out, float* t2out 
   ) {
+		float tol
+		=
+		staticPropertiesHandler::getInstance()->getOptionFloat(
+      "invY_precision"
+    );		
+    
     int t_valid, t2_valid;
 
     float a  = cross2( x0-x, y0-y, x0-x2, y0-y2 );
@@ -193,99 +193,77 @@ namespace dtOO {
     /* this is how many valid s values we have */
     int num_valid_s = 0;
 
-    if ( equals( am2bpc, 0, 1e-6 ) )
-    {
-      if ( equals( a-c, 0, 1e-6 ) )
-      {
+    if ( equals( am2bpc, 0, tol ) ) {
+      if ( equals( a-c, 0, tol ) ){
         /* Looks like the input is a line */
         /* You could set s=0.5 and solve for t if you wanted to */
         return 0;
       }
       s = a / (a-c);
-      if ( in_range( s, 0, 1, 1e-6 ) )
-        num_valid_s = 1;
+      if ( in_range( s, 0, 1, tol ) ) num_valid_s = 1;
     }
-    else
-    {
+    else {
       float sqrtbsqmac = sqrt( b*b - a*c );
       s  = ((a-b) - sqrtbsqmac) / am2bpc;
       s2 = ((a-b) + sqrtbsqmac) / am2bpc;
       num_valid_s = 0;
-      if ( in_range( s, 0, 1, 1e-6 ) )
-      {
+      if ( in_range( s, 0, 1, tol ) ) {
         num_valid_s++;
-        if ( in_range( s2, 0, 1, 1e-6 ) )
-          num_valid_s++;
+        if ( in_range( s2, 0, 1, tol ) ) num_valid_s++;
       }
-      else
-      {
-        if ( in_range( s2, 0, 1, 1e-6 ) )
-        {
+      else {
+        if ( in_range( s2, 0, 1, tol ) ) {
           num_valid_s++;
           s = s2;
         }
       }
     }
 
-    if ( num_valid_s == 0 )
-      return 0;
+    if ( num_valid_s == 0 ) return 0;
 
     t_valid = 0;
-    if ( num_valid_s >= 1 )
-    {
+    if ( num_valid_s >= 1 ) {
       float tdenom_x = (1-s)*(x0-x2) + s*(x1-x3);
       float tdenom_y = (1-s)*(y0-y2) + s*(y1-y3);
       t_valid = 1;
-      if ( equals( tdenom_x, 0, 1e-6 ) && equals( tdenom_y, 0, 1e-6 ) )
-      {
+      if ( equals( tdenom_x, 0, tol ) && equals( tdenom_y, 0, tol ) ) {
         t_valid = 0;
       }
-      else
-      {
+      else {
         /* Choose the more robust denominator */
-        if ( fabs( tdenom_x ) > fabs( tdenom_y ) )
-        {
+        if ( fabs( tdenom_x ) > fabs( tdenom_y ) ) {
           t = ( (1-s)*(x0-x) + s*(x1-x) ) / ( tdenom_x );
         }
-        else
-        {
+        else {
           t = ( (1-s)*(y0-y) + s*(y1-y) ) / ( tdenom_y );
         }
-        if ( !in_range( t, 0, 1, 1e-6 ) )
-          t_valid = 0;
+        if ( !in_range( t, 0, 1, tol ) ) t_valid = 0;
       }
     }
 
     /* Same thing for s2 and t2 */
     t2_valid = 0;
-    if ( num_valid_s == 2 )
-    {
+    if ( num_valid_s == 2 ) {
       float tdenom_x = (1-s2)*(x0-x2) + s2*(x1-x3);
       float tdenom_y = (1-s2)*(y0-y2) + s2*(y1-y3);
       t2_valid = 1;
-      if ( equals( tdenom_x, 0, 1e-6 ) && equals( tdenom_y, 0, 1e-6 ) )
-      {
+      if ( equals( tdenom_x, 0, 1e-6 ) && equals( tdenom_y, 0, 1e-6 ) ) {
         t2_valid = 0;
       }
-      else
-      {
+      else {
         /* Choose the more robust denominator */
-        if ( fabs( tdenom_x ) > fabs( tdenom_y ) )
-        {
+        if ( fabs( tdenom_x ) > fabs( tdenom_y ) ) {
           t2 = ( (1-s2)*(x0-x) + s2*(x1-x) ) / ( tdenom_x );
         }
-        else
-        {
+        else {
           t2 = ( (1-s2)*(y0-y) + s2*(y1-y) ) / ( tdenom_y );
         }
-        if ( !in_range( t2, 0, 1, 1e-6 ) )
-          t2_valid = 0;
+        if ( !in_range( t2, 0, 1, tol ) ) t2_valid = 0;
       }
     }
 
     /* Final cleanup */
-    if ( t2_valid && !t_valid )
-    {
+    if ( t2_valid && !t_valid ) {
       s = s2;
       t = t2;
       t_valid = t2_valid;
@@ -293,14 +271,12 @@ namespace dtOO {
     }
 
     /* Output */
-    if ( t_valid )
-    {
+    if ( t_valid ) {
       *sout = s;
       *tout = t;
     }
 
-    if ( t2_valid )
-    {
+    if ( t2_valid ) {
       *s2out = s2;
       *t2out = t2;
     }
