@@ -5,7 +5,7 @@
 #include <moab/Range.hpp>
 #include <logMe/dtMacros.h>
 #include "dtOMVertexField.h"
-#include "dtOMEdgeField.h"
+#include "dtOMFaceField.h"
 
 class MElement;
 class MVertex;
@@ -29,10 +29,12 @@ namespace dtOO {
 	  void addVertexField( dtOMVertexField< int > const & field );
     void addVertexField( dtOMVertexField< float > const & fF );
     void addVertexField( dtOMVertexField< dtVector3 > const & vF );
+	  void addFaceField( dtOMFaceField< int > const & field );
 //    void addEdgeField( dtOMEdgeField< float > const & eF );    
   private:
     moab::ReadUtilIface * _readUtilIface;
 		std::map<long, moab::EntityHandle> _node_id_map;
+    std::map<long, moab::EntityHandle> _element_id_map;
 //    std::map<omEdgeH, moab::EntityHandle> _edge_id_map;
 //    dt__pVH(::MElement) _edgeElement;
   };

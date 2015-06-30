@@ -10,7 +10,6 @@
 #include <gmsh/MVertex.h>
 #include <gmsh/MLine.h>
 #include "dtGmshFace.h"
-#include "dtOMVertexField.h"
 
 #include <moab/ReadUtilIface.hpp>
 
@@ -142,7 +141,7 @@ namespace dtOO {
         addVertices(), 
         << "Duplicate node ID = " << id
       );
-			}
+	  }
 
 		//
 		// create reverse map from handle to id
@@ -268,8 +267,15 @@ namespace dtOO {
       //
       // add handle to range and store element id
       //
-      elem_ids.push_back(ii+1);      
+      elem_ids.push_back(ii+1);
       elements.insert(handle);
+      dt__warnIfWithMessage(
+        !_element_id_map.insert(
+          std::pair<long, moab::EntityHandle>(ii+1, handle)
+        ).second,
+        addElements(), 
+        << "Duplicate face ID = " << ii+1
+      );
     }
     
 		//
@@ -349,7 +355,7 @@ namespace dtOO {
 		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}
-	
+	 
 	void dtMoabCore::addVertexField( dtOMVertexField<float> const & fF ) {
 		moab::ErrorCode result;
 		
@@ -450,4 +456,37 @@ namespace dtOO {
 		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}	
+
+	void dtMoabCore::addFaceField( dtOMFaceField< int > const & field ) {
+		moab::ErrorCode result;
+		
+		moab::Tag fieldTag;
+  	result 
+		= 
+		tag_get_handle(
+			field.getLabel().c_str(), 1, moab::MB_TYPE_INTEGER, 
+		  fieldTag, moab::MB_TAG_SPARSE|moab::MB_TAG_CREAT
+		);
+		moab__throwIf(result != moab::MB_SUCCESS, addFaceField());
+		
+		std::vector< int > val(field.size(), 0.);
+		std::vector< moab::EntityHandle > ent(field.size());
+		int ii = 0;
+		dt__forFromToIter(
+			omConstFaceI, 
+			field.refMesh().faces_begin(), 
+			field.refMesh().faces_end(),
+			it
+		) {
+//			::MVertex const * mv = field.refMesh().at(*vIt);
+			ent[ii] = _element_id_map[ii+1];
+			val[ii] = field.at(*it);
+		  ii++;
+		}
+		
+		result 
+		=
+		tag_set_data(fieldTag, &(ent[0]), ent.size(), &(val[0]));
+		moab__throwIf(result != moab::MB_SUCCESS, addFaceField());
+	}  
 }
