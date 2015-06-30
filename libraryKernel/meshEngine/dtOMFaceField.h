@@ -17,6 +17,7 @@ namespace dtOO {
     virtual ~dtOMFaceField();
     T & operator[](omFaceH const & fH);
     T const & at(omFaceH const & fH) const;
+    void assign( dtOMMesh const & om, T const & value );
     void execute( T (*executeMe)(T const & member) );
     long unsigned int size( void ) const;
     virtual void update( void );     
@@ -49,6 +50,17 @@ namespace dtOO {
     return _field.at(fH);
   }  
   
+  template < typename T >  
+  void dtOMFaceField< T >::assign( dtOMMesh const & om, T const & value ) {
+		dt__forFromToIter(
+      omConstFaceI, om.faces_begin(), om.faces_end(), fIt
+    ) {
+      ::MElement const * const me = om.at(*fIt);
+      omFaceH const fH = refMesh().at(me);
+      _field[fH] = value;
+    }    
+  }  
+  
   template < typename T >
   void dtOMFaceField< T >::execute( T (*executeMe)(T const & member) ) {
     dt__forFromToIter(
@@ -67,7 +79,7 @@ namespace dtOO {
       omConstFaceI, refMesh().faces_begin(), refMesh().faces_end(), fIt
     ) {
       typename std::map< omFaceH, T >::iterator it = _field.find(*fIt);
-      if (it == _field.end())  {
+      if (it == _field.end()) {
         _field[*fIt] = _init;
       }
     }

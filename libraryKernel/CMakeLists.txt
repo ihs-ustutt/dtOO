@@ -82,6 +82,7 @@ SET(HEADERS
   meshEngine/dtOMDynamicVertexField.h
   meshEngine/dtOMEdgeField.h
   meshEngine/dtOMFaceField.h
+  meshEngine/dtOMDynamicFaceField.h
   dtGaussLegendreIntegration.h
   GSLError.h
 )
