@@ -3,13 +3,11 @@
 
 #include "dtOMVertexField.h"
 
-class MVertex;
-
 namespace dtOO {
   template < typename T >  
   class dtOMDynamicVertexField : public dtOMVertexField< T > {
     public:
-      dt__class(dtOMDynamicVertexField, dtOMField);    
+      dt__class(dtOMDynamicVertexField, dtOMVertexField< T >);    
       dtOMDynamicVertexField( 
         std::string const & label, dtOMMesh & om, T const & init 
       );
