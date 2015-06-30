@@ -187,95 +187,94 @@ namespace dtOO {
 		);
     moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 		
-		//
-		// first element gives number of nodes per element
-		//
-		const unsigned long num_elem = me.size();
-		const int node_per_elem = me[0]->getNumVertices();
+    std::vector< int > elem_ids;
+		moab::Range elements;    
+    dt__forAllIndex(me, ii) {
+      //
+      // first element gives number of nodes per element
+      //
+      const unsigned long num_elem = 1;//me.size();
+      const int node_per_elem = me[ii]->getNumVertices();
 
-		//
-		// get type
-		//
-		moab::EntityType type;
-		::MQuadrangle const * quad = dynamic_cast< ::MQuadrangle const * >(me[0]);
-		::MTetrahedron const * tet = dynamic_cast< ::MTetrahedron const * >(me[0]);
-		::MHexahedron const * hex = dynamic_cast< ::MHexahedron const * >(me[0]);
-		::MTriangle const * tri = dynamic_cast< ::MTriangle const * >(me[0]);
-		::MLine const * line = dynamic_cast< ::MLine const * >(me[0]);		
-		int elementDim = 0;
-		if (quad) {
-			elementDim = 2;
-			type = moab::MBQUAD;
-		}
-		else if (tet) {
-			elementDim = 3;
-			type = moab::MBTET;
-		}
-		else if (hex) {
-			elementDim = 3;
-			type = moab::MBHEX;
-		}
-		else if (tri) {
-			elementDim = 2;
-			type = moab::MBTRI;
-		}		
-		else if (line) {
-			elementDim = 1;
-			type = moab::MBEDGE;
-		}				
-		else dt__throw(addElements, << "Unknown element type.");
+      //
+      // get type
+      //
+      moab::EntityType type;
+      ::MQuadrangle const * quad = dynamic_cast< ::MQuadrangle const * >(me[ii]);
+      ::MTetrahedron const * tet = dynamic_cast< ::MTetrahedron const * >(me[ii]);
+      ::MHexahedron const * hex = dynamic_cast< ::MHexahedron const * >(me[ii]);
+      ::MTriangle const * tri = dynamic_cast< ::MTriangle const * >(me[ii]);
+      ::MLine const * line = dynamic_cast< ::MLine const * >(me[ii]);		
+      int elementDim = 0;
+      if (quad) {
+        elementDim = 2;
+        type = moab::MBQUAD;
+      }
+      else if (tet) {
+        elementDim = 3;
+        type = moab::MBTET;
+      }
+      else if (hex) {
+        elementDim = 3;
+        type = moab::MBHEX;
+      }
+      else if (tri) {
+        elementDim = 2;
+        type = moab::MBTRI;
+      }		
+      else if (line) {
+        elementDim = 1;
+        type = moab::MBEDGE;
+      }				
+      else dt__throw(addElements, << "Unknown element type.");
 
-		//
-		// create connectivity list
-		//
-		std::vector< moab::EntityHandle > connectivity(num_elem*node_per_elem);
-		std::vector< int > elem_ids; 
-		elem_ids.resize(num_elem);
-		int counter = 0;
-		int elCount;
-    this->get_number_entities_by_dimension(0, elementDim, elCount, true);
-		dt__forAllConstIter(std::vector< ::MElement const * >, me, it) {
-			::MElement const * thisElement = *it;
-			elem_ids.push_back(elCount+1);
-			elCount++;
-			std::vector< ::MVertex * > verts;
-			const_cast< ::MElement * >(thisElement)->getVertices(verts);
-			dt__forAllIndex(verts, ii) {
-				connectivity[counter]	= _node_id_map[verts[ii]->getNum()];
-				counter++;
-			}
-		}
+      //
+      // create connectivity list
+      //
+      std::vector< moab::EntityHandle > connectivity(num_elem*node_per_elem);
+      std::vector< ::MVertex * > verts;
+      const_cast< ::MElement * >(me[ii])->getVertices(verts);
+      dt__forAllIndex(verts, jj) {
+        connectivity[jj]	= _node_id_map[verts[jj]->getNum()];
+      }
 
-		// Create the element sequence
-		moab::EntityHandle handle = 0;
-		moab::EntityHandle * conn_array;
-		result 
-		= 
-		_readUtilIface->get_element_connect(
-			num_elem, node_per_elem, type, 1, handle, conn_array
-		);
-		moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
+      // Create the element sequence
+      moab::EntityHandle handle = 0;
+      moab::EntityHandle * conn_array;
+      int prefStart = 1;
+      result 
+      = 
+      _readUtilIface->get_element_connect(
+        num_elem, node_per_elem, type, prefStart, handle, conn_array
+      );
+      moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
+      
+      memcpy(
+        conn_array, 
+        &connectivity[0], connectivity.size() * sizeof(moab::EntityHandle)
+      );
 
-		memcpy(
-      conn_array, 
-      &connectivity[0], connectivity.size() * sizeof(moab::EntityHandle)
-    );
-
+      //
+      // notify MOAB of the new elements
+      // add adjacencies to moab
+      //
+      result 
+      = 
+      _readUtilIface->update_adjacencies(
+        handle, num_elem, node_per_elem, conn_array
+      );
+      moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
+      
+      //
+      // add handle to range and store element id
+      //
+      elem_ids.push_back(ii+1);      
+      elements.insert(handle);
+    }
+    
 		//
-	  // notify MOAB of the new elements
-		// add adjacencies to moab
+		// store element IDs in tag
 		//
-		result 
-		= 
-		_readUtilIface->update_adjacencies(
-      handle, num_elem, node_per_elem, conn_array
-    );
-		moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
-
-		//
-		// store element IDs
-		//
-		moab::Range elements(handle, handle + num_elem - 1);
 		result = this->tag_set_data(globalId, elements, &elem_ids[0]);
 		moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 
