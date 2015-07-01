@@ -30,7 +30,19 @@ namespace dtOO {
     void addVertexField( dtOMVertexField< float > const & fF );
     void addVertexField( dtOMVertexField< dtVector3 > const & vF );
 	  void addFaceField( dtOMFaceField< int > const & field );
-//    void addEdgeField( dtOMEdgeField< float > const & eF );    
+//    void addEdgeField( dtOMEdgeField< float > const & eF );
+    template< typename T >
+    static void writeVtkVertexField(dtOMVertexField< T > const & field) {
+      dtMoabCore mb(field.refMesh());
+      mb.addVertexField(field);
+      mb.write_mesh((field.getLabel()+".vtk").c_str());
+    }
+    template< typename T >
+    static void writeVtkFaceField(dtOMFaceField< T > const & field) {
+      dtMoabCore mb(field.refMesh());
+      mb.addFaceField(field);
+      mb.write_mesh((field.getLabel()+".vtk").c_str());
+    }    
   private:
     moab::ReadUtilIface * _readUtilIface;
 		std::map<long, moab::EntityHandle> _node_id_map;
