@@ -122,7 +122,6 @@ namespace dtOO {
     //
     //calculate paraValue - coordinates
     //
-//    DTBUFFERINIT();
 		std::vector<float> itVal;       
 		std::vector< std::string > header;
 		header.push_back("P_deltaPhiR");
@@ -156,7 +155,7 @@ namespace dtOO {
       itVal.push_back(point3d.y()); 
       itVal.push_back(point3d.z());			
     }  
-	  dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
+	  dt__debug( apply(), << logMe::vecToTable(header, itVal) );
        
     return pointVec2d;    
   }

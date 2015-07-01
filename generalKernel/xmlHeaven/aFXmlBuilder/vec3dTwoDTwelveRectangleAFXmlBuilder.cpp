@@ -22,7 +22,8 @@ namespace dtOO {
   vec3dTwoDTwelveRectangleAFXmlBuilder::vec3dTwoDTwelveRectangleAFXmlBuilder() {
   }
 
-  vec3dTwoDTwelveRectangleAFXmlBuilder::~vec3dTwoDTwelveRectangleAFXmlBuilder() {
+  vec3dTwoDTwelveRectangleAFXmlBuilder::~vec3dTwoDTwelveRectangleAFXmlBuilder(
+  ) {
 
   }
 
@@ -51,7 +52,9 @@ namespace dtOO {
     //
     bool hasAF = dtXmlParserBase::hasChild("analyticFunction", toBuildP);
     if ( hasAF ) {
-      QDomElement elementP = dtXmlParserBase::getChild("analyticFunction", toBuildP);
+      QDomElement elementP 
+      = 
+      dtXmlParserBase::getChild("analyticFunction", toBuildP);
       //
       // set input
       //
@@ -59,13 +62,17 @@ namespace dtOO {
       while ( !elementP.isNull() ) {
         analyticFunction const * const aF 
 				= 
-				dtXmlParserBase::createAnalyticFunction( &elementP, bC, cValP, depSFunP );
+				dtXmlParserBase::createAnalyticFunction( 
+          &elementP, bC, cValP, depSFunP 
+        );
 				dt__ptrAss(
 				  vec3dCurveOneD const * v3d1d, 
 				  vec3dCurveOneD::ConstDownCast(aF)
 				);
 				cL.push_back( v3d1d->ptrDtCurve()->clone() );
-				elementP = dtXmlParserBase::getNextSibling("analyticFunction", elementP);      
+				elementP 
+        = 
+        dtXmlParserBase::getNextSibling("analyticFunction", elementP);      
       }
 
 			//
@@ -96,7 +103,9 @@ namespace dtOO {
 			header.push_back("alpha_1_1");
 			header.push_back("alpha_0_1");
 			header.push_back("alpha_av");
-			vectorHandling< analyticFunction const * > aFV = vec3dTwoDaFC->compoundInternal();
+			vectorHandling< analyticFunction const * > aFV 
+      = 
+      vec3dTwoDaFC->compoundInternal();
 			for (int ii=0; ii<aFV.size(); ii++) {
 				float av = 0.;
 			  dt__ptrAss(
@@ -120,7 +129,7 @@ namespace dtOO {
 			}
 			dt__info(
 				buildPart(),
-				<< logMe::floatVecToTable(header, itVal)
+				<< logMe::vecToTable(header, itVal)
 			);
     }
     else {
@@ -146,22 +155,30 @@ namespace dtOO {
 //      dtPoint3 t0 = retCC[4]->pointPercent(.25);
 //      dtPoint3 t1 = retCC[4]->pointPercent(.75);
 
-		if ( dtVector3(p1-q0).squared_length() > dtVector3(p0-q0).squared_length() ) {
+		if ( 
+      dtVector3(p1-q0).squared_length() > dtVector3(p0-q0).squared_length() 
+    ) {
 			retCC[0]->revert();
 			p0 = retCC[0]->pointPercent(0.);
 			p1 = retCC[0]->pointPercent(1.);       
 		}
-		if ( dtVector3(p1-q0).squared_length() > dtVector3(p1-q1).squared_length() ) {
+		if ( 
+      dtVector3(p1-q0).squared_length() > dtVector3(p1-q1).squared_length() 
+    ) {
 			retCC[1]->revert();
 			dtPoint3 q0 = retCC[1]->pointPercent(0.);
 			dtPoint3 q1 = retCC[1]->pointPercent(1.);
 		}    
-		if ( dtVector3(q1-r0).squared_length() > dtVector3(q1-r1).squared_length() ) {
+		if ( 
+      dtVector3(q1-r0).squared_length() > dtVector3(q1-r1).squared_length() 
+    ) {
 			retCC[2]->revert();
 			dtPoint3 r0 = retCC[2]->pointPercent(0.);
 			dtPoint3 r1 = retCC[2]->pointPercent(1.);
 		}      
-		if ( dtVector3(p0-s1).squared_length() > dtVector3(p0-s0).squared_length() ) {
+		if ( 
+      dtVector3(p0-s1).squared_length() > dtVector3(p0-s0).squared_length() 
+    ) {
 			retCC[3]->revert();
 //        dtPoint3 s0 = retVec[3]->pointPercent(0.);
 //        dtPoint3 s1 = retVec[3]->pointPercent(1.);

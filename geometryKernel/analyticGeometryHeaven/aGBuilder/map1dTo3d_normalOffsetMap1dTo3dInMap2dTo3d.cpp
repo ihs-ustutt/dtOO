@@ -115,7 +115,7 @@ namespace dtOO {
 		header.push_back("|(T-int(T))/T|");
 		dt__info(
 			map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(),
-			<< logMe::floatVecToTable(header, itVal)
+			<< logMe::vecToTable(header, itVal)
 		);			
 		
 		//

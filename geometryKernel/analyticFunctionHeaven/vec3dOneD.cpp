@@ -126,7 +126,7 @@ namespace dtOO {
 			}
 		}
 
-    dt__debug( length(), << logMe::floatVecToTable(header, itVal) );		
+    dt__debug( length(), << logMe::vecToTable(header, itVal) );		
 		
 		return l1;
 	}

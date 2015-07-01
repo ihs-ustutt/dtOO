@@ -12,7 +12,8 @@
 #include <GeomAdaptor_HCurve.hxx>
 
 namespace dtOO {
-	bSplineCurve_pointConstructArcLengthParaOCC::bSplineCurve_pointConstructArcLengthParaOCC( 
+	bSplineCurve_pointConstructArcLengthParaOCC
+    ::bSplineCurve_pointConstructArcLengthParaOCC( 
 	  dtCurve const * dtC, float const tol, 
 		int const maxOrder, int const segments 
 	) {
@@ -67,11 +68,12 @@ namespace dtOO {
 		header.push_back("l(u)/l_ges");
 		dt__debug(
 			bSplineCurve_pointConstructArcLengthParaOCC(), 
-			<< logMe::floatVecToTable(header, ul)
+			<< logMe::vecToTable(header, ul)
 		);		
 	}
 	
-	bSplineCurve_pointConstructArcLengthParaOCC::~bSplineCurve_pointConstructArcLengthParaOCC() {
+	bSplineCurve_pointConstructArcLengthParaOCC
+    ::~bSplineCurve_pointConstructArcLengthParaOCC() {
 	}
 	
 	dtCurve * bSplineCurve_pointConstructArcLengthParaOCC::result( void ) {

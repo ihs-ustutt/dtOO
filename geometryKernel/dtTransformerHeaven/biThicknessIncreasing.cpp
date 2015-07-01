@@ -32,7 +32,9 @@ namespace dtOO {
 		return new biThicknessIncreasing();
 	}
 	
-  vectorHandling< analyticFunction * > biThicknessIncreasing::apply( vectorHandling< analyticFunction * > const * const sFunP ) const {
+  vectorHandling< analyticFunction * > biThicknessIncreasing::apply( 
+    vectorHandling< analyticFunction * > const * const sFunP 
+  ) const {
     vectorHandling< analyticFunction * > transSFun;
     for (int ii=0;ii<sFunP->size();ii++) {
 			std::vector< dtPoint2 > p2;
@@ -72,7 +74,9 @@ namespace dtOO {
       for (int jj=0;jj<_nPointsOne;jj++) {
         dt__toFloat(float jjF, jj);
         dt__toFloat(float nPointsOneF, _nPointsOne);
-        float paraOne = _para->YFloat( jjF * ( (xMax-xMin) / (nPointsOneF-1.)) ) ;
+        float paraOne 
+        = 
+        _para->YFloat( jjF * ( (xMax-xMin) / (nPointsOneF-1.)) ) ;
         dtPoint2 YY = theF->YdtPoint2Percent( paraOne );
         dtVector2 NN = theF->unitNdtVector2Percent( paraOne );
 				float curLength = theF->length( theF->x_percent(paraOne) );
@@ -87,7 +91,7 @@ namespace dtOO {
 				itVal.push_back(p2[jj].x()); itVal.push_back(p2[jj].y());
 				itVal.push_back(p2Inv[jj].x()); itVal.push_back(p2Inv[jj].y());
       }
-			dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
+			dt__debug( apply(), << logMe::vecToTable(header, itVal) );
 			//
       // reverse orientation of resulting splineCurve
       //			
@@ -113,7 +117,8 @@ namespace dtOO {
 					apply(),
 					<< dt__point2d(p2.back()) << std::endl
 					<< dt__point2d(p2Inv.front()) << std::endl
-					<< dt__eval(dtLinearAlgebra::distance(p2.back(), p2Inv.front())) << std::endl
+					<< dt__eval(dtLinearAlgebra::distance(p2.back(), p2Inv.front())) 
+          << std::endl
 					<< dt__eval(uvRes) << std::endl
 					<< "Removing duplicate point."
 				);
@@ -134,7 +139,8 @@ namespace dtOO {
 					apply(),
 					<< dt__point2d(p2All.back()) << std::endl
 					<< dt__point2d(p2Inv.back()) << std::endl
-					<< dt__eval(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << std::endl
+					<< dt__eval(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) 
+          << std::endl
 					<< dt__eval(uvRes) << std::endl
 					<< "Closing spline."
 				);				
@@ -145,7 +151,8 @@ namespace dtOO {
 					apply(),
 					<< dt__point2d(p2All.back()) << std::endl
 					<< dt__point2d(p2Inv.back()) << std::endl
-					<< dt__eval(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) << std::endl
+					<< dt__eval(dtLinearAlgebra::distance(p2All.front(), p2Inv.back())) 
+          << std::endl
 					<< dt__eval(uvRes) << std::endl
 					<< "Open spline."
 				);								
@@ -185,11 +192,15 @@ namespace dtOO {
     );
     handleAnalyticFunction(
       "function_label_inverted", 
-      aF->get( dtXmlParserBase::getAttributeStr("function_label_inverted", *tE) ) 
+      aF->get( 
+        dtXmlParserBase::getAttributeStr("function_label_inverted", *tE) 
+      ) 
     );		
     handleAnalyticFunction(
       "parameter_one_percent_function", 
-      aF->get( dtXmlParserBase::getAttributeStr("parameter_one_percent_function", *tE) ) 
+      aF->get( 
+        dtXmlParserBase::getAttributeStr("parameter_one_percent_function", *tE) 
+      ) 
     );
     
     handleInt( 
@@ -202,7 +213,9 @@ namespace dtOO {
     return true;
   }
 
-  void biThicknessIncreasing::handleInt(std::string const name, int const value) {
+  void biThicknessIncreasing::handleInt(
+    std::string const name, int const value
+  ) {
     if (name == "order" ) {
       _splineOrder = value;
       return;
@@ -214,7 +227,9 @@ namespace dtOO {
     dtTransformer::handleInt(name, value);
   }
 
-  void biThicknessIncreasing::handleBool(std::string const name, bool const value) {
+  void biThicknessIncreasing::handleBool(
+    std::string const name, bool const value
+  ) {
     if (name == "reverse" ) {
       _reverse = value;
       return;
@@ -222,7 +237,9 @@ namespace dtOO {
     dtTransformer::handleBool(name, value);
   }	
   
-  void biThicknessIncreasing::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
+  void biThicknessIncreasing::handleAnalyticFunction(
+    std::string const name, analyticFunction const * value
+  ) {
     if (name == "function_label") {
       dt__ptrAss( _tD[0], scaOneD::ConstDownCast(value) );
       return;
@@ -238,4 +255,3 @@ namespace dtOO {
     dtTransformer::handleAnalyticFunction(name, value);
   }  
 }
-

@@ -20,7 +20,9 @@ namespace dtOO {
   thicknessIncreasing::~thicknessIncreasing() {
   }
 	
-  thicknessIncreasing::thicknessIncreasing(const thicknessIncreasing& orig) : dtTransformer(orig) {
+  thicknessIncreasing::thicknessIncreasing(
+    const thicknessIncreasing& orig
+  ) : dtTransformer(orig) {
 		_thicknessDistributionP.reset( 
 		scaOneD::SecureCast(orig._thicknessDistributionP->clone())
 		);
@@ -40,14 +42,19 @@ namespace dtOO {
 		return new thicknessIncreasing();
 	}
 		
-  vectorHandling< analyticFunction * > thicknessIncreasing::apply( vectorHandling< analyticFunction * > const * const sFunP ) const {
+  vectorHandling< analyticFunction * > thicknessIncreasing::apply( 
+    vectorHandling< analyticFunction * > const * const sFunP 
+  ) const {
     vectorHandling< analyticFunction * > transSFun;
     for (int ii=0;ii<sFunP->size();ii++) {
 			std::vector< dtPoint2 > p2;
       //
       // cast pointer and check if it is a analyticFunction
       //
-      dt__ptrAss(vec2dOneD const * theF, vec2dOneD::ConstDownCast( sFunP->at(ii) ) );
+      dt__ptrAss(
+        vec2dOneD const * theF, 
+        vec2dOneD::ConstDownCast( sFunP->at(ii) ) 
+      );
 
 			std::vector<float> itVal;       
 			std::vector< std::string > header;
@@ -86,7 +93,9 @@ namespace dtOO {
       for (int jj=1;jj<(_nPointsOne-1);jj++) {
         dt__toFloat(float jjF, jj);
         dt__toFloat(float nPointsOneF, _nPointsOne);
-        paraOne = _paraOnePercentFunP->YFloat( jjF * ( (xMax-xMin) / (nPointsOneF-1.)) ) ;
+        paraOne 
+        = 
+        _paraOnePercentFunP->YFloat( jjF * ( (xMax-xMin) / (nPointsOneF-1.)) );
         YY = theF->YdtPoint2Percent( paraOne );
         NN = theF->unitNdtVector2Percent( paraOne );
 				float curLength = theF->length( theF->x_percent(paraOne) );
@@ -116,7 +125,7 @@ namespace dtOO {
 			itVal.push_back(tt);
 			itVal.push_back(1.);				
     
-			dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
+			dt__debug( apply(), << logMe::vecToTable(header, itVal) );
       //
       // create new function
       //
@@ -154,7 +163,9 @@ namespace dtOO {
     );
     handleAnalyticFunction(
       "parameter_one_percent_function", 
-      aF->get( dtXmlParserBase::getAttributeStr("parameter_one_percent_function", *tE) )->clone()
+      aF->get( 
+        dtXmlParserBase::getAttributeStr("parameter_one_percent_function", *tE) 
+      )->clone()
     );
     
     handleInt( 
@@ -179,7 +190,9 @@ namespace dtOO {
     dtTransformer::handleInt(name, value);
   }
   
-  void thicknessIncreasing::handleAnalyticFunction(std::string const name, analyticFunction const * value) {
+  void thicknessIncreasing::handleAnalyticFunction(
+    std::string const name, analyticFunction const * value
+  ) {
     if (name == "function_label") {
       dt__ptrAss( scaOneD const * s1d, scaOneD::ConstDownCast(value) );
 			_thicknessDistributionP.reset(s1d);
@@ -193,7 +206,9 @@ namespace dtOO {
     dtTransformer::handleAnalyticFunction(name, value);
   }
   
-  void thicknessIncreasing::handleBool(std::string const name, bool const value) {
+  void thicknessIncreasing::handleBool(
+    std::string const name, bool const value
+  ) {
     if (name == "inverted") {
       _isInv = value;
       return;

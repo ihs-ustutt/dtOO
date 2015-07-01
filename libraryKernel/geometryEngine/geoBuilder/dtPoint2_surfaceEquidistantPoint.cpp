@@ -69,7 +69,7 @@ namespace dtOO {
 		}
 	  dt__info(writeTableToLog(), << logMe::floatMatrixToString(mat) );			
 		
-	  dt__info(writeTableToLog(), << logMe::floatVecToString(_sumM) );		
-		dt__info(writeTableToLog(), << logMe::floatVecToString(_sumS) );		
+	  dt__info(writeTableToLog(), << logMe::vecToString(_sumM) );		
+		dt__info(writeTableToLog(), << logMe::vecToString(_sumS) );		
 	}
 }

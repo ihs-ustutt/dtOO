@@ -9,7 +9,9 @@ namespace dtOO {
   conformalMapping::conformalMapping() : dtTransformer() {
   }
 
-  conformalMapping::conformalMapping(conformalMapping const & orig ) : dtTransformer(orig) {
+  conformalMapping::conformalMapping(
+    conformalMapping const & orig 
+  ) : dtTransformer(orig) {
   }
 	
   conformalMapping::~conformalMapping() {
@@ -23,7 +25,9 @@ namespace dtOO {
 		return new conformalMapping();
 	}
 	
-  std::vector< dtPoint2 * > conformalMapping::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
+  std::vector< dtPoint2 * > conformalMapping::apply( 
+    std::vector< dtPoint2 * > const * const pointVecP 
+  ) const {
     
     std::vector< dtPoint2 * > pointVec2d(pointVecP->size());
     
@@ -58,11 +62,13 @@ namespace dtOO {
 //              << dt__point3d(point3d) << std::endl );
 			itVal.push_back(phiR); itVal.push_back(mm);
 			itVal.push_back(point.x()); itVal.push_back(point.y());
-			itVal.push_back(point3d.x()); itVal.push_back(point3d.y()); itVal.push_back(point3d.z());
+			itVal.push_back(point3d.x()); 
+      itVal.push_back(point3d.y()); 
+      itVal.push_back(point3d.z());
 
     }  
 		
-	  dt__debug( apply(), << logMe::floatVecToTable(header, itVal) );
+	  dt__debug( apply(), << logMe::vecToTable(header, itVal) );
        
     return pointVec2d;
   }
@@ -105,7 +111,9 @@ namespace dtOO {
 		);		
   }
 	
-  void conformalMapping::handleFloat(std::string const name, float const value) {
+  void conformalMapping::handleFloat(
+    std::string const name, float const value
+  ) {
     if (name == "tolerance") {
       _tolerance = value;
       return;
@@ -113,7 +121,9 @@ namespace dtOO {
     dtTransformer::handleFloat(name, value);
   }
   
-  void conformalMapping::handleAnalyticGeometry(std::string const name, analyticGeometry const * value) {
+  void conformalMapping::handleAnalyticGeometry(
+    std::string const name, analyticGeometry const * value
+  ) {
     if (name == "part_label") {
       dt__ptrAss( _rotSplineP, rotatingSpline::ConstDownCast(value) );
       return;

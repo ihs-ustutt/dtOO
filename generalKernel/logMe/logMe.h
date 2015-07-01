@@ -14,16 +14,15 @@
 //------------------------------------------------------------------------------
 #include "logBase.h"
 #include "Output2FILE.h"
-#include <logMe/dtMacros.h>
+#include "dtMacros.h"
+#include <progHelper.h>
 
 namespace dtOO {
   template< class T >
   std::ostream& operator<<(std::ostream& os, const std::vector< T >& toLog) {
     typename std::vector< T >::const_iterator cIt;
     os <<  "[ ";
-    for (cIt = toLog.begin(); cIt!=toLog.end(); ++cIt) {  
-      os << *cIt << " | ";
-    }
+    for (cIt = toLog.begin(); cIt!=toLog.end(); ++cIt) os << *cIt << " | ";
     os << " ]";
     return os;
   }  
@@ -38,7 +37,8 @@ namespace dtOO {
       dt__classOnlyName(logMe);
       static std::string initLog( std::string const & logFileName );
       static void closeLog( void );
-      static std::string Backtrace(void); 
+      static std::string Backtrace(void);
+      
       template< class T >
       static inline std::string vecToString( std::vector< T > const & vec ) {
         std::ostringstream os;
@@ -50,8 +50,11 @@ namespace dtOO {
         os << "] ";
         return os.str();
       }
+      
       template< class T >
-      static inline std::string vecToString( std::vector< T > const & vec, int const grouping ) {
+      static inline std::string vecToString( 
+        std::vector< T > const & vec, int const grouping 
+      ) {
         std::ostringstream os;
         os << "[" << std::endl;
         int ii = 0;
@@ -66,8 +69,37 @@ namespace dtOO {
         os << "]";
         return os.str();
       }
+      
+      template< class T, class rT >
+      static inline std::string stringPtrVec( 
+        std::vector< T * > const & vec, rT (T::*TMemFn)() const 
+      ) {
+        std::vector< rT > retVec;
+        
+        for (int ii=0;ii<vec.size();ii++) {
+          retVec.push_back( (vec[ii]->*TMemFn)() );
+        }
+        
+        return vecToString< rT >(retVec);
+      }
+
+      template< class T, class rT >
+      static inline std::string stringPtrVec( 
+        std::vector< T * > const & vec, rT (T::*TMemFn)()
+      ) {
+        std::vector< rT > retVec;
+        
+        for (int ii=0;ii<vec.size();ii++) {
+          retVec.push_back( (vec[ii]->*TMemFn)() );
+        }
+        
+        return vecToString< rT >(retVec);
+      }
+      
       template< class T >
-      static std::string vecToTable( std::vector< std::string > const & header, std::vector< T > const & vec ) {
+      static std::string vecToTable( 
+        std::vector< std::string > const & header, std::vector< T > const & vec 
+      ) {
         std::ostringstream os;
         for (int ii=0; ii<header.size(); ii++) {
          os << boost::format("| %13s ") % header[ii];
@@ -85,6 +117,7 @@ namespace dtOO {
         }
         return os.str();
       }
+      
       template< class T >
       static std::string vecToTable( 
         std::vector< std::string > const & addInfo, 
@@ -111,6 +144,7 @@ namespace dtOO {
         }
         return os.str();
       } 	
+      
       template< class T0, class T1 >
       static std::string mapToTable( 
         std::map< T0, T1 > const & mm 
@@ -123,55 +157,7 @@ namespace dtOO {
         }
         return os.str();
       }       
-      static inline std::string intVecToString( 
-        std::vector< int > const & vec 
-      ) {
-        return vecToString< int >(vec);
-      }
-      static inline std::string floatVecToString( 
-        std::vector< float > const & vec 
-      ) {
-        return vecToString< float >(vec);
-      }
-      static inline std::string stringVecToString( 
-        std::vector< std::string > const & vec 
-      ) {
-        return vecToString< std::string >(vec);
-      }
-      static inline std::string stringVecToString( 
-        std::vector< std::string > const & vec, int const grouping 
-      ) {
-        return vecToString< std::string >(vec, grouping);
-      }
-      static std::string floatVecToString( 
-        std::vector< float > const & vec, int const grouping 
-      ) {
-        return vecToString< float >(vec, grouping);
-      }
-      static std::string floatVecToTable( 
-        std::vector<std::string> const & header, 
-        std::vector< float > const & vec 
-      ) {
-        return vecToTable< float >(header, vec);
-      }
-      static std::string floatVecToTable( 
-        std::string const & header, std::vector< float > const & vec 
-      ) {
-        return floatVecToTable(std::vector< std::string >(1, header), vec);
-      }
-      static std::string stringVecToTable( 
-        std::vector< std::string > const & header, 
-        std::vector< std::string > const & vec 
-      ) {
-        return vecToTable< std::string >(header, vec);
-      }            
-      static std::string floatVecToTable( 
-        std::vector<std::string> const & addInfo, 
-        std::vector<std::string> const & header, 
-        std::vector< float > const & vec 
-      ) {
-        return vecToTable< float >(addInfo, header, vec);
-      }            
+      
       static std::string floatMatrixToString( 
         std::vector< std::vector< float > > const & mat 
       );
@@ -360,23 +346,25 @@ namespace dtOO {
  
   class Spreadbuf : public std::basic_streambuf< char > {
     public:
-      Spreadbuf( std::basic_streambuf< char >* sb1, std::basic_streambuf< char >* sb2 )
-        : m_sb1( sb1 )
-        , m_sb2( sb2 ) {
+      Spreadbuf( 
+        std::basic_streambuf< char >* sb1, std::basic_streambuf< char >* sb2 
+      ) : m_sb1( sb1 ), m_sb2( sb2 ) {
       }
     protected:
       virtual int_type overflow( int_type c = traits_type::eof() ) {
         if( !traits_type::eq_int_type( c, traits_type::eof() ) ) {
-            const char x = traits_type::to_char_type( c );
-            if( traits_type::eq_int_type( m_sb1->sputc( x ), traits_type::eof() )
-                    || traits_type::eq_int_type( m_sb2->sputc( x ), traits_type::eof() ) )
-                return traits_type::eof();
+          const char x = traits_type::to_char_type( c );
+          if( 
+            traits_type::eq_int_type( m_sb1->sputc( x ), traits_type::eof() )
+            || 
+            traits_type::eq_int_type( m_sb2->sputc( x ), traits_type::eof() ) 
+          ) return traits_type::eof();
         }
         return traits_type::not_eof( c );
       }
     private:
-        std::basic_streambuf< char >* m_sb1;
-        std::basic_streambuf< char >* m_sb2;
+      std::basic_streambuf< char >* m_sb1;
+      std::basic_streambuf< char >* m_sb2;
   };
   
   #define dt__pipeCout( spready,  coutswitch ) \

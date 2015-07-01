@@ -322,7 +322,7 @@ namespace dtOO {
       itVal.push_back( obj->virtualClassName() );
     }
     
-    dt__info(dump(), << logMe::stringVecToTable(header, itVal) );
+    dt__info(dump(), << logMe::vecToTable(header, itVal) );
   }
 }
 #endif	/* VECTORHANDLING_H */
