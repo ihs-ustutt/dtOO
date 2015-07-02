@@ -1434,14 +1434,18 @@ namespace dtOO {
 		ge->physicals.clear();
 	}
 	
-  std::string dtGmshModel::getPhysicalString( ::GEntity const * const ge ) const {
-		std::vector< int > pInt = const_cast< ::GEntity * >(ge)->getPhysicalEntities();
+  std::string dtGmshModel::getPhysicalString( 
+    ::GEntity const * const ge 
+  ) const {
+		std::vector< int > pInt 
+    = 
+    const_cast< ::GEntity * >(ge)->getPhysicalEntities();
     
     if(pInt.size() == 0) return std::string("");
     
     dt__throwIf(pInt.size()!=1, getPhysicalString());
     
-		return GModel::getPhysicalName(ge->dim(), pInt[0]);
+		return ::GModel::getPhysicalName(ge->dim(), pInt[0]);
 	}
 	
   void dtGmshModel::tagPhysical(
@@ -1449,53 +1453,7 @@ namespace dtOO {
   ) {		
 		ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );
 	}
-	
-	::GEntity * dtGmshModel::guessOnWhat( ::MElement const * const me ) {
-		std::vector< ::MVertex * > vertices;
-		const_cast< ::MElement * >(me)->getVertices(vertices);
-		
-		//
-		// simplest cast
-		//
-		dt__forAllConstIter(std::vector< ::MVertex * >, vertices, vIt) {
-			if ( (*vIt)->onWhat()->dim() == me->getDim() ) return (*vIt)->onWhat();
-		}
-		
-		//
-		// 1d element
-		//
-		if (me->getDim() == 1) {
-			dt__throw(guessOnWhat(), << "Not yet implemented.");
-		}
-		//
-		// 2d element
-		//		
-		else if (me->getDim() == 2) {
-			std::vector< ::GFace * > pFace;
-			dt__forAllConstIter(std::vector< ::MVertex * >, vertices, vIt) {
-				//
-				// vertex lies on edge
-				// add all faces that contain this edge to possible faces vector
-				//
-				if ( (*vIt)->onWhat()->dim() == 1 ) {
-					::GEdge * ee;
-					dt__mustCast((*vIt)->onWhat(), ::GEdge, ee);
-					std::list< ::GFace * > ff = ee->faces();
-					dt__forAllIter(std::list< ::GFace * >, ff, fIt) pFace.push_back(*fIt);
-				}
-			}
-			if (!pFace.empty()) return progHelper::mostFrequentChild(pFace);
-		}
-		//
-		// 3d element
-		//		
-		else if (me->getDim() == 3) {
-			dt__throw(guessOnWhat(), << "Not yet implemented.");
-		}
-		
-		return NULL;
-	}
-  
+	  
   void dtGmshModel::setDebug( std::string const debug ) {
     _debug = debug;
   }

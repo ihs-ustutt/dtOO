@@ -127,10 +127,7 @@ namespace dtOO {
     void untagPhysical( ::GEntity * const ge );
     std::string getPhysicalString(::GEntity const * const ge ) const;
     void tagPhysical(::GEntity * const ge, std::string const & pName);
-    //
-    // guess entity to which an element belongs
-    //
-    static ::GEntity * guessOnWhat( ::MElement const * const me );
+
     void setDebug( std::string const debug );
   private:
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 

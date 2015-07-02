@@ -69,6 +69,7 @@ namespace dtOO {
       dtOMDynamicVertexField< bool > _slidableF;
 	    dtOMDynamicVertexField< float > _tF;
       dtOMDynamicFaceField< int > _extrudeF;
+      dtOMDynamicFaceField< std::string > _physicalName;
   };
 }
 
