@@ -4,11 +4,18 @@
 namespace dtOO {
   dtOMMeshManifold::dtOMMeshManifold(
     dtOMMesh const & om, omVertexH const & vH
-  ) {
+  ) : _nTri(0), _nQuad(0) {
 		dt__forFromToIter(
       omConstVertexFaceI, om.cvf_begin(vH), om.cvf_end(vH), it
-    ) addFace( om.data(*it) );
-
+    ) {
+      addFace( om.data(*it) );
+      if (om.data(*it).nVertices() == 3) _nTri++;
+      else if (om.data(*it).nVertices() == 4) _nQuad++;
+      else {
+        dt__throw(dtOMMeshManifold(), << dt__eval(om.data(*it).nVertices()) );
+      }
+    }
+      
 		omVertexD const & my_vD  = om.data(vH);
     _centerVertex = at(my_vD.MVertex());    
 
@@ -75,7 +82,12 @@ namespace dtOO {
 		return ret;
 	}	
 	
+  /**
+   * @todo Extent divide() subroutine to mixed quad-tri and quad only meshes.
+   */
 	bool dtOMMeshManifold::divideable( void ) const {
+    if (_nQuad>0) return false;
+    
 		bool isClosed = closed();
 		if ( 
 		     ((_dihedralAngleV.size()>=3) &&  isClosed)
@@ -198,6 +210,7 @@ namespace dtOO {
   std::vector< dtOMMeshManifold > dtOMMeshManifold::divide( 
     float const & angle 
   ) {
+//    if ( )
 		std::vector< dtOMMeshManifold > manifolds;
 		
 		bool restart = true;

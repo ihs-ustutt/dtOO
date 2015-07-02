@@ -4,8 +4,8 @@
 #include <dtLinearAlgebra.h>
 #include <OpenMesh/Core/Mesh/Traits.hh>
 
-class MVertex;
-class MElement;
+#include <gmsh/MVertex.h>
+#include <gmsh/MElement.h>
 
 namespace dtOO {
   struct dtOMMeshTraits : public OpenMesh::DefaultTraits {
@@ -62,13 +62,18 @@ namespace dtOO {
         bool marked( void ) const {
           return _mark;
         }                            
+        int nVertices( void ) const {
+          return _me->getNumVertices();
+        }                  
     };
     //
     // standard attributes
     //
     VertexAttributes( OpenMesh::Attributes::Status );    
     EdgeAttributes( OpenMesh::Attributes::Status );    
-    FaceAttributes( OpenMesh::Attributes::Normal | OpenMesh::Attributes::Status );
+    FaceAttributes( 
+      OpenMesh::Attributes::Normal | OpenMesh::Attributes::Status 
+    );
   };
 }
 

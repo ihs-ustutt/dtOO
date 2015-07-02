@@ -26,6 +26,8 @@ namespace dtOO {
     std::vector< float > _dihedralAngleV;
 		std::vector< bool > _isBoundary;
     omVertexH _centerVertex;
+    int _nTri;
+    int _nQuad;
   };
 }
 #endif	/* DTOMMESHMANIFOLD_H */
