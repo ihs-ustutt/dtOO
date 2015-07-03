@@ -648,4 +648,12 @@ namespace dtOO {
 			if ( (getRegion(0)!=gr) && (getRegion(1)!=gr) ) addRegion(gr);
 		}
 	}	
+  
+  std::string dtGmshFace::getPhysicalString( void ) const {
+    dt__ptrAss( 
+      dtGmshModel const * const gm, 
+      dtGmshModel::ConstDownCast(__caCThis->model()) 
+    );
+    return gm->getPhysicalString(this);
+  }
 }
