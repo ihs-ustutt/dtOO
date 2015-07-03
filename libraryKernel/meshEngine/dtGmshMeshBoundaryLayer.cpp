@@ -211,7 +211,6 @@ namespace dtOO {
 		dt__forFromToIter(
       omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), it
     ) {
-			::MVertex * mv = _omInit[*it];	
 			if ( _omInit.is_boundary(*it) ) {
 				_fixedF[*it] = true;
 				_tF[*it] = 0.;
@@ -454,6 +453,14 @@ namespace dtOO {
       else dt__throwUnexpected(modifyGEntities());
 		}
     
+    dt__info(modifyGEntities(),
+      << logMe::stringPtrVec( 
+        dtGmshModel::cast2DtGmshFace(wM->faces()), 
+        &dtGmshFace::getPhysicalString,
+        1
+      )
+    );
+    
 		//
 		// find relationships
 		//		
@@ -523,8 +530,10 @@ namespace dtOO {
       ::MVertex * mvNew 
       = 
       new ::MVertex(mv->x(), mv->y(), mv->z(), newOld[mv->onWhat()]);
-      _omInit.replaceMVertex(*it, mvNew);
-//				region->addMeshVertex(mvNew);
+
+      if ( !_slidableF.at(*it) ) _omInit.replaceMVertex(*it, mvNew);
+      else _omMoved.replaceMVertex(*it, mvNew);
+      
       newOld[mv->onWhat()]->addMeshVertex(mvNew);
 		}		
 		

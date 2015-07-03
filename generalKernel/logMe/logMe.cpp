@@ -29,37 +29,41 @@ namespace dtOO {
     // set file
     //
 		std::string nameStr = logFileName;
-		Output2FILE::Stream().open( nameStr, std::ofstream::out | std::ofstream::trunc );
+		Output2FILE::Stream().open( 
+      nameStr, std::ofstream::out | std::ofstream::trunc 
+    );
 		if (!Output2FILE::Stream().good()) {
 			nameStr = logFileName+NowDateAndTime()+".log";
-			Output2FILE::Stream().open( nameStr, std::ofstream::out | std::ofstream::trunc );
+			Output2FILE::Stream().open( 
+        nameStr, std::ofstream::out | std::ofstream::trunc 
+      );
 			if ( !Output2FILE::Stream().good()) {
 				dt__throw(compute, << "Cannot open log file " << dt__eval(nameStr) );
 			}
     }
     
-    dt__info(compute(), 
-            << "**************************************************" << std::endl
-            << "*     .___  __    ________   ________   " << std::endl
-            << "*   __| _/_/  |_  \\_____  \\  \\_____  \\  " << std::endl
-            << "*  / __ | \\   __\\  /   |   \\  /   |   \\ " << std::endl
-            << "* / /_/ |  |  |   /    |    \\/    |    \\" << std::endl
-            << "* \\____ |  |__|   \\_______  /\\_______  /" << std::endl
-            << "*      \\/                 \\/         \\/ " << std::endl
-            << "* (d)esign (t)ool (O)bject-(O)riented" << std::endl                    
-            << "* " << std::endl
-//            << "* Version " << SDTOOVERSION_MAJOR << "." << SDTOOVERSION_MINOR << std::endl
-            << "* " << std::endl            
-            << "* " << dt__eval(dtOO::git::branch) << std::endl
-						<< "* " << dt__eval(dtOO::git::version) << std::endl
-						<< "* " << dt__eval(dtOO::git::versionMajor) << std::endl
-						<< "* " << dt__eval(dtOO::git::versionMinor) << std::endl
-						<< "* " << dt__eval(dtOO::git::versionCommitNo) << std::endl
-						<< "* " << dt__eval(dtOO::git::versionSha1) << std::endl
-						<< "* " << dt__eval(dtOO::git::versionShort) << std::endl
-            << "*"  << std::endl
-            << "**************************************************" << std::endl
-            << " "
+    dt__info(
+      compute(), 
+      << "**************************************************" << std::endl
+      << "*     .___  __    ________   ________   " << std::endl
+      << "*   __| _/_/  |_  \\_____  \\  \\_____  \\  " << std::endl
+      << "*  / __ | \\   __\\  /   |   \\  /   |   \\ " << std::endl
+      << "* / /_/ |  |  |   /    |    \\/    |    \\" << std::endl
+      << "* \\____ |  |__|   \\_______  /\\_______  /" << std::endl
+      << "*      \\/                 \\/         \\/ " << std::endl
+      << "* (d)esign (t)ool (O)bject-(O)riented" << std::endl                    
+      << "* " << std::endl
+      << "* " << std::endl
+      << "* " << dt__eval(dtOO::git::branch) << std::endl
+      << "* " << dt__eval(dtOO::git::version) << std::endl
+      << "* " << dt__eval(dtOO::git::versionMajor) << std::endl
+      << "* " << dt__eval(dtOO::git::versionMinor) << std::endl
+      << "* " << dt__eval(dtOO::git::versionCommitNo) << std::endl
+      << "* " << dt__eval(dtOO::git::versionSha1) << std::endl
+      << "* " << dt__eval(dtOO::git::versionShort) << std::endl
+      << "*"  << std::endl
+      << "**************************************************" << std::endl
+      << " "
 		);		
 		
 		return nameStr;
@@ -71,7 +75,7 @@ namespace dtOO {
 		}
   }
 	
-  // This function produces a stack backtrace with demangled function & method names.
+  // Produces a stack backtrace with demangled function & method names.
   std::string logMe::Backtrace(void) {
 		int skip = 1;
 		void *callstack[128];
