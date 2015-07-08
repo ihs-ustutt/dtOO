@@ -128,6 +128,11 @@ namespace dtOO {
 //      std::pair< omVertexH const, omVertexH const >
 //      foldVertices( omEdgeH const & eH) const;
 //      std::pair< omFaceH, omFaceH > foldFaces( omEdgeH const & eH) const;
+      //
+      // mesh navigation
+      //
+      omHalfedgeH sameHalfedgeInNextFace( omHalfedgeH const & heH) const;
+      int nVertices( omFaceH const & fH) const;
     private:
       std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;      
       omVertexH addVertex( ::MVertex const * const &mv );

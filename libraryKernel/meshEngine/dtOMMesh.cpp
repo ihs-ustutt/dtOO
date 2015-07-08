@@ -358,4 +358,33 @@ namespace dtOO {
       std::find(_attachedField.begin(), _attachedField.end(), omField)
     );
   }  
+  
+  omHalfedgeH dtOMMesh::sameHalfedgeInNextFace( omHalfedgeH const & heH) const {
+    dt__throwIf( 
+      nVertices( face_handle(heH) )!=4, 
+      sameHalfedgeInNextFace() 
+    );
+    
+    omHalfedgeH ret
+    =
+    opposite_halfedge_handle( 
+      next_halfedge_handle( next_halfedge_handle(heH) ) 
+    );
+
+    dt__throwIf( 
+      nVertices( face_handle(ret) )!=4, 
+      sameHalfedgeInNextFace() 
+    );    
+    
+    return ret;
+  }
+  
+  int dtOMMesh::nVertices( omFaceH const & fH) const {
+    int counter = 0;
+    dt__forFromToIter(omConstFaceVertexI, cfv_begin(fH), cfv_end(fH), fIt) {
+      counter++;
+    }
+    
+    return counter;
+  }
 }
