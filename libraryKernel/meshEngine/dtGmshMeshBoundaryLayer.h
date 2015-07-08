@@ -15,10 +15,11 @@ class MElement;
 namespace dtOO {
   class dtGmshFace;
   class dtGmshModel;
+  class dtGmshRegion;
   
   class dtGmshMeshBoundaryLayer {
     public:
-      dt__classOnlyName(dtGmshMeshBoundaryLayer);      
+      dt__classOnlyName(dtGmshMeshBoundaryLayer);          
       dtGmshMeshBoundaryLayer( 
         std::list< dtGmshFace const * > const & face, 
         std::vector< int > const & ori,
@@ -37,13 +38,8 @@ namespace dtOO {
         std::vector< ::MElement * > & element
       );    
     private:
-      void determineThickness(
+      void createLayerVertices(
 		    dtOMVertexField< dtVector3 > const & nF
-      );
-      void modifyGEntities(dtGmshModel * wModel);
-      void dihedralAngleIntersection(
-        dtOMEdgeField< float > const & dAF, 
-        dtOMVertexField< dtVector3 > const & nF
       );
       void createBoundaryLayerElements(
 	      std::vector< ::MVertex * > & vertex, 
@@ -53,7 +49,13 @@ namespace dtOO {
         dtOMVertexField< bool > const & canSlideF,
         omVertexH const & vH
       );      
+      omHalfedgeH slidableHalfedgeInFace( omFaceH const & fH ) const;
+      void createRingOfBuddies( MVertex const * const mv0 );
+//      void meshWithGmsh(dtOMMesh const & mesh) const;
     private:
+      static int _NORMAL;
+      static int _SLIDER;
+      static int _FIXER;        
       float _thickness;
       int _nSmoothingSteps;
       int _nShrinkingSteps;
@@ -69,7 +71,8 @@ namespace dtOO {
       dtOMDynamicVertexField< bool > _slidableF;
 	    dtOMDynamicVertexField< float > _tF;
       dtOMDynamicFaceField< int > _extrudeF;
-      dtOMDynamicFaceField< std::string > _physicalName;
+      dtOMDynamicFaceField< int > _typeF;
+      dtOMDynamicVertexField< std::vector< ::MVertex * > > _buddyF;
   };
 }
 
