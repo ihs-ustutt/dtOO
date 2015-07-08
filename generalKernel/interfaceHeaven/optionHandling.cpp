@@ -109,13 +109,13 @@ namespace dtOO {
           return true;
         }
         else if ( _optionValue[ii] == "false" ) {
-          break;
+          return false;
         }
         else {
           dt__warning(optionTrue(),
             << "Option " << dt__eval(name) << " is set to " 
             << _optionValue[ii] << ".");    
-          break;
+          return false;
         }
       }
     }
