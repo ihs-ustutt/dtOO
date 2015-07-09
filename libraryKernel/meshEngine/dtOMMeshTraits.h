@@ -22,11 +22,26 @@ namespace dtOO {
         }             
     };
     
+    HalfedgeTraits {
+      private:
+        bool _mark;
+      public:
+        HalfedgeT() : _mark(false) {
+        }
+        void mark( void ) {
+          _mark = true;
+        }            
+        bool marked( void ) const {
+          return _mark;
+        }           
+    };
+    
     EdgeTraits {
       private:
         float _dihedralAngle;
+        bool _mark;
       public:
-        EdgeT() : _dihedralAngle(0.) {
+        EdgeT() : _dihedralAngle(0.), _mark(false) {
         }
         void dihedralAngle( float const & dihedralAngle ) {
           _dihedralAngle = dihedralAngle;
@@ -34,6 +49,12 @@ namespace dtOO {
         float dihedralAngle( void ) const {
           return _dihedralAngle;
         }
+        void mark( void ) {
+          _mark = true;
+        }            
+        bool marked( void ) const {
+          return _mark;
+        }           
     };
     
     FaceTraits {
