@@ -28,18 +28,25 @@ namespace dtOO {
     //
     // get number of quad faces
     //
+    int quadFaces = 0;
     int quads = 0;
+    int elems = 0;
     dt__forAllIter(std::list< dtGmshFace * >, faces, it) {
+      quads = quads + (*it)->quadrangles.size();
+      elems = elems + (*it)->getNumMeshElements();
       if ( (*it)->quadrangles.size() ) {
-        quads++;
+        quadFaces++;
       }
     }
     
-    if ( (quads>0) && (quads != faces.size()) ) {
+    if ( (quads>0) && (quads != elems) ) {
       dt__info(
         operator(), 
-        << "Bounding faces contain quadrangles." << std::endl
-        << quads << " faces meshed with quads found." << std::endl
+        << "Bounding faces contain " << quads << " quadrangles and "
+        << elems << " elements in general." << std::endl
+        << "=> " << (float) quads / (float) elems 
+        << " % quadrangles" << std::endl
+        << quadFaces << " faces meshed with quads found." << std::endl
         << "Performing createPyramids()."
       );      
       createPyramids(dtgr);
@@ -105,6 +112,29 @@ namespace dtOO {
       // replace face with pseudo face
       //
       dtgr->replaceFace(gf, pseudo);      
+
+      //
+      // copy triangles
+      //
+      std::vector< ::MTriangle * > const & tri = gf->triangles;
+      dt__forAllConstIter(std::vector< ::MTriangle * >, tri, it) {        
+        //
+        // create new pseudo mesh elements (truangles)
+        //
+        pseudo->addTriangle(
+          new ::MTriangle( 
+            (*it)->getVertex(0), (*it)->getVertex(1), (*it)->getVertex(2)
+          )
+        );
+       
+        //
+        // copy old face vertices
+        //
+        dt__forFromToIndex(0, 2, ii) {
+          if ( (*it)->getVertex(ii)->onWhat()->dim()<2) continue;
+          pseudo->addMeshVertex( (*it)->getVertex(ii) );        
+        }        
+      }
       
       //
       // create pyramids
@@ -117,13 +147,20 @@ namespace dtOO {
         SPoint3 bb = (*it)->barycenter();
         SVector3 nn = (*it)->getFace(0).normal();
         double radius = (*it)->getInnerRadius();
+//        .25 * (        
+//          ::distance( (*it)->getVertex(0), (*it)->getVertex(2) )
+//          +
+//          ::distance( (*it)->getVertex(1), (*it)->getVertex(3) )
+//        );
 
         //
         // create new mesh vertex
         //
         vertices.push_back( 
           new ::MVertex(
-            bb.x() - radius*nn.x() , bb.y() - radius*nn.y(), bb.z() - radius*nn.z(),
+            bb.x() - radius*nn.x() , 
+            bb.y() - radius*nn.y(), 
+            bb.z() - radius*nn.z(),
             pseudo
           )
         );
@@ -133,16 +170,24 @@ namespace dtOO {
         // create new pseudo mesh elements (truangles)
         //
         pseudo->addTriangle(
-          new ::MTriangle( (*it)->getVertex(0), (*it)->getVertex(1), vertices.back() )         
+          new ::MTriangle( 
+            (*it)->getVertex(0), (*it)->getVertex(1), vertices.back() 
+          )
         );
         pseudo->addTriangle(
-          new ::MTriangle( (*it)->getVertex(1), (*it)->getVertex(2), vertices.back() )         
+          new ::MTriangle( 
+            (*it)->getVertex(1), (*it)->getVertex(2), vertices.back() 
+          )
         );      
         pseudo->addTriangle(
-          new ::MTriangle( (*it)->getVertex(2), (*it)->getVertex(3), vertices.back() )         
+          new ::MTriangle( 
+            (*it)->getVertex(2), (*it)->getVertex(3), vertices.back() 
+          )
         );      
         pseudo->addTriangle(
-          new ::MTriangle( (*it)->getVertex(3), (*it)->getVertex(0), vertices.back() )         
+          new ::MTriangle( 
+            (*it)->getVertex(3), (*it)->getVertex(0), vertices.back() 
+          )
         );      
        
         //
