@@ -51,7 +51,12 @@ namespace dtOO {
       );      
       omHalfedgeH slidableHalfedgeInFace( omFaceH const & fH ) const;
       void createRingOfBuddies( MVertex const * const mv0 );
-//      void meshWithGmsh(dtOMMesh const & mesh) const;
+      void createMovedMesh( void );
+      void meshWithGmsh(
+        dtOMMesh const & mesh, 
+        std::vector< ::MVertex * > & vertex, 
+        std::vector< ::MElement * > & element
+      ) const;
     private:
       static int _NORMAL;
       static int _SLIDER;

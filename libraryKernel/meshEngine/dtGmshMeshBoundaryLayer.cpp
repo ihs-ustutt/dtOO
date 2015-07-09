@@ -11,6 +11,7 @@
 #include "dtGmshFace.h"
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
+#include <meshEngine/dtMeshGRegion.h>
 #include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
@@ -58,22 +59,23 @@ namespace dtOO {
 		int itC = 0;
 		dt__forAllConstIter( std::list< dtGmshFace const * >, face, it ) {
 			dtGmshFace const * const &thisFace = *it;
-			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
-			if (ori[itC] > 0) {
-				dt__info(
-				  operator(), << "Normal face tag = " << thisFace->tag() << "."
-				);        
+
+		  dt__info(
+			  dtGmshMeshBoundaryLayer(), 
+        << "Normal face tag = " << thisFace->tag() << "." << std::endl
+				<< dt__eval(ori[itC]) 
+      );   
+        
+			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());      
+			if (ori[itC] > 0) {     
 				_omInit.add(*tmpOM);		
 				_omMoved.add(*tmpOM);
 			}
 			else if (ori[itC] < 0) {
-				dt__info(
-				  operator(), << "Normal inv face tag = " << thisFace->tag() << "."
-				);                
 				_omInit.addInv(*tmpOM);
 				_omMoved.addInv(*tmpOM);		
 			}
-			else dt__throwUnexpected(operator());
+			else dt__throwUnexpected(dtGmshMeshBoundaryLayer());
 			
 			itC++;
       
@@ -85,23 +87,25 @@ namespace dtOO {
 		itC = 0;
 		dt__forAllConstIter( std::list< dtGmshFace const * >, mface, it ) {
 			dtGmshFace const * const &thisFace = *it;
+
+		  dt__info(
+			  dtGmshMeshBoundaryLayer(), 
+        << "Sliding face tag = " << thisFace->tag() << "." << std::endl
+				<< dt__eval(ori[itC]) 
+      );   
+
+      
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
 			
 			if (mori[itC] > 0) {
-				dt__info(
-				  operator(), << "Slidable face tag = " << thisFace->tag() << "."
-				);                
 				_omInit.add(*tmpOM);						
 				_omMoved.add(*tmpOM);		
 			}
 			else if (mori[itC] < 0) {
-				dt__info(
-				  operator(), << "Slidable inv face tag = " << thisFace->tag() << "."
-				);                
 				_omInit.addInv(*tmpOM);						
 				_omMoved.addInv(*tmpOM);		
 			}
-			else dt__throwUnexpected(operator());
+			else dt__throwUnexpected(dtGmshMeshBoundaryLayer());
       
 			itC++;
 			
@@ -116,23 +120,25 @@ namespace dtOO {
 		itC = 0;
 		dt__forAllConstIter( std::list< dtGmshFace const * >, fface, it ) {
 			dtGmshFace const * const &thisFace = *it;
+
+		  dt__info(
+			  dtGmshMeshBoundaryLayer(), 
+        << "Fixed face tag = " << thisFace->tag() << "." << std::endl
+				<< dt__eval(ori[itC]) 
+      );   
+
+      
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
 			
 			if (fori[itC] > 0) {
-				dt__info(
-				  operator(), << "Fixed face tag = " << thisFace->tag() << "."
-				);                
 				_omInit.add(*tmpOM);						
 				_omMoved.add(*tmpOM);		
 			}
 			else if (fori[itC] < 0) {
-				dt__info(
-				  operator(), << "Fixed inv face tag = " << thisFace->tag() << "."
-				);
 				_omInit.addInv(*tmpOM);
 				_omMoved.addInv(*tmpOM);
 			}
-			else dt__throwUnexpected(operator());
+			else dt__throwUnexpected(dtGmshMeshBoundaryLayer());
       
 			itC++;
 			
@@ -237,11 +243,22 @@ namespace dtOO {
 		dt__info(operator(), << "Layer vertices created.");
 		
 		//
+		// createMovedMesh
+		//
+		createMovedMesh();
+		dt__info(operator(), << "Moved mesh created.");
+    
+		//
 		// create new boundary layer elements
 		//
 		createBoundaryLayerElements(vertex, element);
     dt__info(operator(), << "Elements created");
-		
+
+		//
+		// create internal unstructured mesh
+		//		
+    meshWithGmsh(_omMoved, vertex, element);
+    
 		//
 		// write fields
 		//
@@ -254,6 +271,8 @@ namespace dtOO {
     mb.addFaceField(_typeF);
 		mb.write_mesh("dtGmshMeshBoundaryLayer_init.vtk");
 
+    dtMoabCore(_omMoved).write_mesh("dtGmshMeshBoundaryLayer_moved.vtk");
+    
 		dt__info(operator(), << "Fields written.");
 		dt__info(operator(), << "Done.");
   }
@@ -267,11 +286,9 @@ namespace dtOO {
 		dt__forFromToIter(
       omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), it
     ) {
-      // keep fixed vertex unchanged
-			if ( _fixedF.at(*it) ) continue;
-      // already modified      
-      if ( !(_buddyF.at(*it).empty()) ) continue;      
-      
+      // keep fixed and already modified vertex unchanged
+			if ( _fixedF.at(*it) || !(_buddyF.at(*it).empty()) ) continue;
+
       if ( _slidableF.at(*it) ) {
         createRingOfBuddies(_omInit.at(*it));
       }
@@ -279,7 +296,7 @@ namespace dtOO {
         ::MVertex const * const mv = _omInit.at(*it);
         _buddyF[*it].push_back( 
           new ::MVertex( mv->x(), mv->y(), mv->z() ) 
-        );
+        );     
       }
 		}
     
@@ -296,18 +313,46 @@ namespace dtOO {
       ::MVertex * mv = _buddyF[*it].front();
       _buddyF[*it].pop_back();
       
-      dt__forFromToIndex(0, _spacing.size()+1, ii) {
+      dt__forAllIndex(_spacing, ii) {
         dtPoint3 newPos
         =
         dtGmshModel::extractPosition(mv) 
         + 
-        ((ii+1.)/(_spacing.size()+1)) * _tF.at(*it) * nF.at(*it);
+        _spacing.at(ii) * _tF.at(*it) * nF.at(*it);
         _buddyF[*it].push_back(
           new ::MVertex( newPos.x(), newPos.y(), newPos.z() )
         );
       }
-		}		
+      dtPoint3 newPos
+      =
+      dtGmshModel::extractPosition(mv) 
+      + 
+      _tF.at(*it) * nF.at(*it);
+      _buddyF[*it].push_back(
+        new ::MVertex( newPos.x(), newPos.y(), newPos.z() )
+      );       
+		}	 
 	}
+  
+  void dtGmshMeshBoundaryLayer::createMovedMesh( void ) {
+		dt__forFromToIter(
+      omConstVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), it
+    ) {
+      if ( !(_buddyF.at(*it).empty()) ) {
+        _omMoved.replaceMVertex(*it, _buddyF.at(*it).back());
+      }
+    }
+    
+    dt__forFromToIter(
+      omHalfedgeI, _omInit.halfedges_begin(), _omInit.halfedges_end(), it
+    ) {
+      if ( _omInit.data(*it).marked() ) {
+        dt__throwIf( !_omMoved.is_collapse_ok(*it), createLayerVertices() );
+        _omMoved.collapse(*it);
+      }
+    }
+    _omMoved.garbage_collection();    
+  }
   
 	void dtGmshMeshBoundaryLayer::createBoundaryLayerElements(
 		std::vector< ::MVertex * > & vertex, std::vector< ::MElement * > & element        
@@ -463,13 +508,17 @@ namespace dtOO {
     
     
     omHalfedgeH slidableHe_init = slidableHalfedgeInFace(face);
-//    omHalfedgeH normalHe_init = _omInit.next_halfedge_handle(slidableHe_init);
     
     omHalfedgeH slidableHe = slidableHe_init;
     do {
       omHalfedgeH wHe = slidableHe;
       dt__forFromToIndex(0, _spacing.size()+1, ii) {
         wHe = _omInit.sameHalfedgeInNextFace(wHe);
+        
+        // mark halfedge
+        _omInit.data(
+          _omInit.next_halfedge_handle(wHe)
+        ).mark();
         
         _buddyF[ 
           _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
@@ -482,6 +531,7 @@ namespace dtOO {
           createRingOfBuddies() 
         );
       }
+      
       slidableHe 
       = 
       _omInit.prev_halfedge_handle(  
@@ -493,54 +543,63 @@ namespace dtOO {
     while (slidableHe != slidableHe_init);
   }
   
-//  void dtGmshMeshBoundaryLayer::meshWithGmsh(dtOMMesh const & mesh) const {
-//    dtGmshModel * gm = new dtGmshModel("myModel");
-//    ::GModel::setCurrent(gm);
-//    
-//    dtGmshFace * gf = new dtGmshFace(gm, 1);
-//    gm->add(gf);
-//    dtGmshRegion * gr = new dtGmshRegion(gm, 1);
-//    gm->add(gr);
-//    
-//    std::map< ::MVertex *, ::MVertex * > n_o;
-//    dt__forFromToIter(
-//      omConstVertexI, mesh.vertices_begin(), mesh.vertices_end(), it
-//    ) {
-//      ::MVertex * mv = mesh.data(*it).MVertex();
-//      n_o[mv] = new ::MVertex(mv->x(), mv->y(), mv->z(), gf);
-//      gf->addMeshVertex( n_o[mv] );
-//    }
-//    
-//    dt__forFromToIter(omConstFaceI, mesh.faces_begin(), mesh.faces_end(), fit) {
-//      ::MElement * me = mesh.data(*fit).MElement();
-//      if ( me->getNumVertices() == 3 ) {
-//        gf->addElement( 
-//          new ::MTriangle(
-//            n_o[ me->getVertex(0) ], 
-//            n_o[ me->getVertex(1) ], 
-//            n_o[ me->getVertex(2) ]
-//          )
-//        );
-//      }
-//      else if ( me->getNumVertices() == 4) {
-//        gf->addElement( 
-//          new ::MQuadrangle(
-//            n_o[ me->getVertex(0) ], 
-//            n_o[ me->getVertex(1) ], 
-//            n_o[ me->getVertex(2) ],
-//            n_o[ me->getVertex(3) ]
-//          )
-//        );        
-//      }      
-//    }
-//    gf->meshStatistics.status = ::GEntity::MeshGenerationStatus::DONE;
-//
-//    gr->addFace(gf, 1);
-//    gf->addRegion(gr);
-//    
-//    gm->tagPhysical(gr, "tmpReg");
-//    gm->meshPhysical(3);
-//
-//    gm->writeMSH("tmpReg.msh");
-//  }
+  void dtGmshMeshBoundaryLayer::meshWithGmsh(
+    dtOMMesh const & mesh, 
+    std::vector< ::MVertex * > & vertex, 
+    std::vector< ::MElement * > & element  
+  ) const {
+    dtGmshModel gm("myModel");
+
+    dtGmshFace * gf = new dtGmshFace(&gm, 1);
+    gm.add(gf);
+    dtGmshRegion * gr = new dtGmshRegion(&gm, 1);
+    gm.add(gr);
+    
+    dt__forFromToIter(
+      omConstVertexI, mesh.vertices_begin(), mesh.vertices_end(), it
+    ) {
+      ::MVertex * mv = mesh.data(*it).MVertex();
+      mv->setEntity(gf); 
+      gf->addMeshVertex( mv );
+    }
+    
+    dt__forFromToIter(omConstFaceI, mesh.faces_begin(), mesh.faces_end(), fit) {
+      std::vector< ::MVertex * > vv;
+      dt__forFromToIter(
+        omConstFaceVertexI, mesh.cfv_begin(*fit), mesh.cfv_end(*fit), it
+      ) vv.push_back( const_cast< ::MVertex * >(mesh.at(*it)) );
+      if ( vv.size() == 3 ) {
+        gf->addElement( new ::MTriangle(vv[0], vv[1], vv[2]) );
+        if ( mesh.data(*fit).inverted() ) gf->triangles.back()->reverse();
+      }
+      else if ( vv.size() == 4 ) {
+        gf->addElement( new ::MQuadrangle( vv[0], vv[1], vv[2], vv[3] ) );        
+        if ( mesh.data(*fit).inverted() ) gf->quadrangles.back()->reverse();
+      }      
+      else dt__throw(meshWithGmsh(), << dt__eval(vv.size()));
+    }
+    gf->meshStatistics.status = ::GEntity::MeshGenerationStatus::DONE;
+
+    gr->addFace( gf, 1 );
+    gf->addRegion( gr );
+
+    dtMeshGRegion()( gr );
+    
+    dt__forFromToIndex(0, gr->getNumMeshElements(), ii) {
+      element.push_back( gr->getMeshElement(ii) );
+    }
+    
+    dt__forFromToIndex(0, gr->getNumMeshVertices(), ii) {
+      vertex.push_back( gr->getMeshVertex(ii) );
+    }
+    //
+    // do not destroy currently created mesh elements
+    //
+    gr->tetrahedra.clear();
+    gr->hexahedra.clear();
+    gr->pyramids.clear();    
+    gr->mesh_vertices.clear();
+    
+    gf->mesh_vertices.clear();
+  }
 }
