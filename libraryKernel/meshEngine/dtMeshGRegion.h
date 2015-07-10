@@ -23,4 +23,3 @@ namespace dtOO {
   };
 }
 #endif	/* DTMESHGREGION_H */
-

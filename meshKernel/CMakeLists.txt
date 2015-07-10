@@ -13,6 +13,7 @@ SET(HEADERS
   bVObserver/bVOTransfiniteRegions.h
   bVObserver/bVOOrientCellVolumes.h
   bVObserver/bVORecombineRecursiveRegions.h
+  bVObserver/bVOMeshRule.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dBlockGmsh.h
@@ -42,6 +43,7 @@ SET(SOURCES
   bVObserver/bVOTransfiniteRegions.cpp
   bVObserver/bVOOrientCellVolumes.cpp
   bVObserver/bVORecombineRecursiveRegions.cpp
+  bVObserver/bVOMeshRule.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dBlockGmsh.cpp
