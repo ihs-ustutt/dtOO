@@ -20,9 +20,8 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <unstructured3dMesh.h>
 #include <unstructured3dSurfaceMesh.h>
-#include <gmsh/meshGEdge.h>
-#include <gmsh/meshGFace.h>
-//#include <gmsh/meshGRegion.h>
+#include "dtMeshGEdge.h"
+#include "dtMeshGFace.h"
 #include "dtMeshGRegion.h"
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
@@ -535,7 +534,7 @@ namespace dtOO {
   void dtGmshModel::meshEdge( int const tag ) {
     dtGmshEdge * dtge = getDtGmshEdgeByTag(tag);   
     if ( dtge->meshStatistics.status == ::GEntity::PENDING ) {
-      ::meshGEdge()(dtge);
+      dtMeshGEdge()(dtge);
     }
   }
   
@@ -547,7 +546,7 @@ namespace dtOO {
     for ( e_it; e_it != ee.end(); ++e_it) meshEdge( (*e_it)->tag() );
     
     if ( dtgf->meshStatistics.status == ::GEntity::PENDING ) {
-      ::meshGFace()(dtgf);
+      dtMeshGFace()(dtgf);
     }
   }
   
@@ -556,9 +555,7 @@ namespace dtOO {
     
     std::list< ::GFace * > ff = dtgr->faces();
     std::list< ::GFace * >::iterator f_it = ff.begin();
-    for ( f_it; f_it != ff.end(); ++f_it) {
-      meshFace( (*f_it)->tag() );
-    }
+    for ( f_it; f_it != ff.end(); ++f_it) meshFace( (*f_it)->tag() );
     
 		if (dtgr->_status == ::GEntity::MeshGenerationStatus::PENDING) {
       dtMeshGRegion()(dtgr);

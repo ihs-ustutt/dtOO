@@ -3,8 +3,6 @@
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
 #include "dtGmshFace.h"
-#include <gmsh/GFace.h>
-#include <gmsh/GRegion.h>
 #include <gmsh/meshGRegion.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTriangle.h>
@@ -12,9 +10,15 @@
 
 namespace dtOO {
   dtMeshGRegion::dtMeshGRegion() {
+    _pyramidHeightScale = .25;
   }
 
+  dtMeshGRegion::dtMeshGRegion( float const & pyramidHeightScale ) {
+    _pyramidHeightScale = pyramidHeightScale;
+  }
+  
   dtMeshGRegion::dtMeshGRegion(const dtMeshGRegion& orig) {
+    _pyramidHeightScale = orig._pyramidHeightScale;
   }
 
   dtMeshGRegion::~dtMeshGRegion() {

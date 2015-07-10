@@ -13,10 +13,13 @@ namespace dtOO {
     dt__classOnlyName(dtMeshGRegion);     
     dtMeshGRegion();
     dtMeshGRegion(const dtMeshGRegion& orig);
+    dtMeshGRegion( float const & pyramidHeightScale );
     virtual ~dtMeshGRegion();
     void operator()( dtGmshRegion * dtgr );    
   private:
     void createPyramids( dtGmshRegion * dtgr );
+  private:
+    float _pyramidHeightScale;
   };
 }
 #endif	/* DTMESHGREGION_H */
