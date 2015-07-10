@@ -146,7 +146,7 @@ namespace dtOO {
         // 
         SPoint3 bb = (*it)->barycenter();
         SVector3 nn = (*it)->getFace(0).normal();
-        double radius = (*it)->getInnerRadius();
+        double radius = .25 * (*it)->getInnerRadius();
 //        .25 * (        
 //          ::distance( (*it)->getVertex(0), (*it)->getVertex(2) )
 //          +

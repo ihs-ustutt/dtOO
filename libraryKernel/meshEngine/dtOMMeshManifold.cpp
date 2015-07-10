@@ -207,6 +207,10 @@ namespace dtOO {
 		}
 	}
 
+  /**
+   * 
+   * @todo Should support also quadrangle meshes.
+   */
   std::vector< dtOMMeshManifold > dtOMMeshManifold::divide( 
     float const & angle 
   ) {

@@ -139,6 +139,10 @@ namespace dtOO {
 			<< ptrBoundedVolume()->getModel()->getPhysicalString(commonReg)
 		);
 				
+    //
+    // delete mesh in region
+    //
+    commonReg->deleteMesh();
 		
 		//
 		// move boundary layer surfaces
@@ -156,12 +160,17 @@ namespace dtOO {
 		  ptrBoundedVolume()->getModel(), 
 			vv, ee
 		);
-				
+    
+    //
+    // set meshing done
+    //
+		commonReg->_status = ::GEntity::MeshGenerationStatus::DONE;		
+    
 		//
 		// create 3d mesh
 		//
 		if (!optionTrue("defer_mesh_3")) {
-      ptrBoundedVolume()->getModel()->meshRegion();
+      ptrBoundedVolume()->getModel()->meshPhysical(3);
     }
 		
 		//
@@ -171,6 +180,9 @@ namespace dtOO {
 			(*vIt)->setEntity(commonReg);
 			commonReg->addMeshVertex(*vIt);
 		}
-		dt__forAllIter(std::vector< ::MElement * >, ee, eIt) commonReg->addElement(*eIt);
+		dt__forAllIter(std::vector< ::MElement * >, ee, eIt) {
+      commonReg->addElement(*eIt);
+    }
+    
   }
 }
