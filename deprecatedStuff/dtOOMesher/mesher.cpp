@@ -238,7 +238,7 @@ namespace dtOO {
       //
       // get configuration element
       //
-      QDomElement element = _parserP->getElement(
+      ::QDomElement element = _parserP->getElement(
                                         "boundedVolume", 
                                         boundedVolumeLabel[ii]
                                       );

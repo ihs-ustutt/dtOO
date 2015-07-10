@@ -27,7 +27,7 @@ namespace dtOO {
 	}
 	
   void map3dTo3dWithInternalGmsh::init( 
-    QDomElement const & element,
+    ::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -52,10 +52,10 @@ namespace dtOO {
     //
 		// get geometries
 		//		
-    std::vector< QDomElement > wElement 
+    std::vector< ::QDomElement > wElement 
 		= 
 		qtXmlPrimitive::getChildVector("analyticGeometry", element);
-		dt__forAllIter(std::vector< QDomElement >, wElement, it) {
+		dt__forAllIter(std::vector< ::QDomElement >, wElement, it) {
 			//
 			// get analyticGeometry, cast and store in region vector
 			//

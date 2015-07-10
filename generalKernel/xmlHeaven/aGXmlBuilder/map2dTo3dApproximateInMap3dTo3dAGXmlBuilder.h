@@ -17,7 +17,7 @@ namespace dtOO {
       map2dTo3dApproximateInMap3dTo3dAGXmlBuilder();
       virtual ~map2dTo3dApproximateInMap3dTo3dAGXmlBuilder();
       virtual void buildPart(
-      QDomElement const & toBuild,
+      ::QDomElement const & toBuild,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF,  

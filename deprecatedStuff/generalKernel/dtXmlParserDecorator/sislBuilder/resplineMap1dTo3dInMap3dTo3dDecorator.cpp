@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   void resplineMap1dTo3dInMap3dTo3dDecorator::buildPart( 
-    QDomElement ** toBuildP,
+    ::QDomElement ** toBuildP,
     pointContainer * const pointContainerP,
     vectorContainer * const vectorContainerP,            
     vectorHandling< constValue * > const * const cValP,           

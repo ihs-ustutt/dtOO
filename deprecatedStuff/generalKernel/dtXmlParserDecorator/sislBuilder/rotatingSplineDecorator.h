@@ -18,7 +18,7 @@ namespace dtOO {
     dt__classOnlyName(rotatingSplineDecorator);
     rotatingSplineDecorator();
     virtual ~rotatingSplineDecorator();
-    virtual void buildPart(QDomElement ** toBuildP,
+    virtual void buildPart(::QDomElement ** toBuildP,
                                   pointContainer * const pointContainerP,
                                   vectorContainer * const vectorContainerP,    
                                   vectorHandling< constValue * > const * const cValP,  

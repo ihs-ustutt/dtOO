@@ -10,7 +10,7 @@ namespace dtOO {
     dt__classOnlyName(loftedSurfaceWrapperDecorator);
     loftedSurfaceWrapperDecorator();
     virtual ~loftedSurfaceWrapperDecorator();
-    virtual void buildPart(QDomElement ** toBuildP,
+    virtual void buildPart(::QDomElement ** toBuildP,
                                   pointContainer * const pointContainerP,
                                   vectorContainer * const vectorContainerP,    
                                   vectorHandling< constValue * > const * const cValP,  

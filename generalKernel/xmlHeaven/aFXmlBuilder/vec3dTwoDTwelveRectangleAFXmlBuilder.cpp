@@ -28,7 +28,7 @@ namespace dtOO {
   }
 
   void vec3dTwoDTwelveRectangleAFXmlBuilder::buildPart(
-    QDomElement const & toBuildP, 
+    ::QDomElement const & toBuildP, 
     baseContainer * const bC,					
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -52,7 +52,7 @@ namespace dtOO {
     //
     bool hasAF = dtXmlParserBase::hasChild("analyticFunction", toBuildP);
     if ( hasAF ) {
-      QDomElement elementP 
+      ::QDomElement elementP 
       = 
       dtXmlParserBase::getChild("analyticFunction", toBuildP);
       //

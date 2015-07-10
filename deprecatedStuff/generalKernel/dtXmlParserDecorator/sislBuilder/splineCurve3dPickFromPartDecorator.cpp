@@ -20,7 +20,7 @@ namespace dtOO {
   }  
 
   void splineCurve3dPickFromPartDecorator::buildPart(
-         QDomElement ** toBuildP,
+         ::QDomElement ** toBuildP,
          pointContainer * const pointContainerP,
          vectorContainer * const vectorContainerP,            
          vectorHandling< constValue * > const * const cValP,           
@@ -53,7 +53,7 @@ namespace dtOO {
       //
       // analyticGeometries
       //
-      QDomElement wElement = getChild("Point_2", **toBuildP);     
+      ::QDomElement wElement = getChild("Point_2", **toBuildP);     
       vectorHandling< dtPoint2 * > tmpPoint;
 			vectorHandling< dtPoint3 > p3Point;
       while ( !wElement.isNull() ) {

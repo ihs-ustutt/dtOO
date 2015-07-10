@@ -51,7 +51,7 @@ namespace dtOO {
   }
   
   void addConstCoordinate::init( 
-		QDomElement const * tE, 
+		::QDomElement const * tE, 
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -70,7 +70,7 @@ namespace dtOO {
 		);
 		handleFloat("coordinate_value", cc);
 
-		QDomElement vvEl = dtXmlParserBase::getChild("Vector_3", *tE);
+		::QDomElement vvEl = dtXmlParserBase::getChild("Vector_3", *tE);
 		dtVector3 vv = dtXmlParserBase::getDtVector3(&vvEl, bC);
 		handleDtVector3("dtVector3", vv);
   }

@@ -19,7 +19,7 @@ namespace dtOO {
   }
 
   void analyticGeometryAGXmlBuilder::buildPart( 
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -36,7 +36,7 @@ namespace dtOO {
     //
     // copy
     //
-    QDomElement wElement 
+    ::QDomElement wElement 
     = 
     dtXmlParserBase::getChild("analyticGeometry", toBuild);     
     vectorHandling< analyticGeometry * > toCopy;

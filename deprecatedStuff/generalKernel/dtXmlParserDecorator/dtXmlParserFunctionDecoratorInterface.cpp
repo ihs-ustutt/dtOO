@@ -10,7 +10,7 @@ namespace dtOO {
   }
 
   void dtXmlParserFunctionDecoratorInterface::buildPartCompound(
-	  QDomElement const & toBuildP, 
+	  ::QDomElement const & toBuildP, 
 		vectorHandling< constValue * > const * const cValP,
 		vectorHandling< analyticFunction * > const * const depSFunP,
 		vectorHandling< analyticFunction * > * sFunP

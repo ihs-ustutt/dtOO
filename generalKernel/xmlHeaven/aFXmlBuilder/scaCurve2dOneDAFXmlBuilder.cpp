@@ -21,7 +21,7 @@ namespace dtOO {
   }
 
   void scaCurve2dOneDAFXmlBuilder::buildPart(
-		QDomElement const & toBuildP, 
+		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -45,7 +45,7 @@ namespace dtOO {
     /* ------------------------------------------------------------------------ */
     if ( hasPoints && hasOrder ) {
 			std::vector< dtPoint2 > pointsArray;
-      QDomElement elementP = dtXmlParserBase::getChild("Point_2", toBuildP);
+      ::QDomElement elementP = dtXmlParserBase::getChild("Point_2", toBuildP);
       //
       //set input
       //
@@ -58,7 +58,7 @@ namespace dtOO {
 //					delete workingPoint[ii];
         }
       // next sibling
-      elementP = QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
+      elementP = ::QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
       }
 			ptrHandling<dtCurve2d> dtC2d( 
 				bSplineCurve2d_pointConstructOCC(pointsArray, order).result() 
@@ -74,7 +74,7 @@ namespace dtOO {
     /* ------------------------------------------------------------------------ */
 //    else if ( hasPoints && hasShapeFactor ) {
 //      std::vector< dtPoint2* > workingPoint;
-//      QDomElement elementP = QDomElement( dtXmlParserBase::getChild("Point_2", toBuildP) );
+//      ::QDomElement elementP = ::QDomElement( dtXmlParserBase::getChild("Point_2", toBuildP) );
 //      //
 //      //set input
 //      //
@@ -101,14 +101,14 @@ namespace dtOO {
 //        }      
 //        workingPoint.clear();      
 //      //goto next sibling
-//      elementP = QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
+//      elementP = ::QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
 //      }
 //    }    
     /* ------------------------------------------------------------------------ */
     // copy an existing scaFunction
     /* ------------------------------------------------------------------------ */  
     else if ( hasScaFunction ) {
-      QDomElement el = dtXmlParserBase::getChild("function", toBuildP);
+      ::QDomElement el = dtXmlParserBase::getChild("function", toBuildP);
 			analyticFunction const * const aF 
 			= 
 			depSFunP->get( dtXmlParserBase::getAttributeStr("label", el) );

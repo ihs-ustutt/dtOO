@@ -17,7 +17,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(sC3dViaCMapToRotSplineDecorator);
     sC3dViaCMapToRotSplineDecorator();
-    virtual void buildPart(QDomElement ** toBuildP,
+    virtual void buildPart(::QDomElement ** toBuildP,
                                   pointContainer * const pointContainerP,
                                   vectorContainer * const vectorContainerP,    
                                   vectorHandling< constValue * > const * const cValP,  

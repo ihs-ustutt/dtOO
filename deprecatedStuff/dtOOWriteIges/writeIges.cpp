@@ -60,7 +60,7 @@ namespace dtOO {
       //
       aWriter.InitFile( _p_igesFilebrowser->getValue() );
       
-      QDomElement wElement;
+      ::QDomElement wElement;
       wElement = parser.getElement("igesWriter");
       wElement = parser.getChild("analyticGeometry", wElement);
       while ( !wElement.isNull() ) {

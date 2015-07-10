@@ -46,7 +46,7 @@ namespace dtOO {
     _markedEdgeTo.clear();
   }
 
-  void coVolume::init( QDomElement const & element,
+  void coVolume::init( ::QDomElement const & element,
                       vectorHandling< constValue * > const * const cValP,
                       vectorHandling< scaFunction * > const * const sFunP,
                       vectorHandling< analyticGeometry * > const * const depAGeoP ) {
@@ -68,7 +68,7 @@ namespace dtOO {
     //
     // set surfaces
     //
-    QDomElement wElement = getChild("analyticGeometry", element);
+    ::QDomElement wElement = getChild("analyticGeometry", element);
     while ( !wElement.isNull() ) {
       //
       // get label of surface

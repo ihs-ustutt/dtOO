@@ -18,7 +18,7 @@ namespace dtOO {
 	}
 	
   void map2dTo3dTriangulated::init( 
-    QDomElement const & element,
+    ::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -33,11 +33,11 @@ namespace dtOO {
     //
 		// region
 		//		
-    std::vector< QDomElement > wElementVec 
+    std::vector< ::QDomElement > wElementVec 
 		= 
 		qtXmlPrimitive::getChildVector("analyticGeometry", element);
     
-		dt__forAllConstIter(std::vector< QDomElement >, wElementVec, it) { 
+		dt__forAllConstIter(std::vector< ::QDomElement >, wElementVec, it) { 
 			//
 			// get analyticGeometry, cast and store in region vector
 			//

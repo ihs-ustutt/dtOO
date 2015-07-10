@@ -32,7 +32,7 @@ namespace dtOO {
 	}
 	
   void map3dTo3dWithInternalTurboGrid::init( 
-    QDomElement const & element,
+    ::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -57,7 +57,7 @@ namespace dtOO {
 		= 
 		dtXmlParserBase::getAttributeIntMuParse("number_points", element, cV, aF);
 		
-		std::vector<QDomElement> eVec = qtXmlPrimitive::getChildVector(element);
+		std::vector<::QDomElement> eVec = qtXmlPrimitive::getChildVector(element);
 		for ( auto &ii : eVec ) {
 		  //
 			// handle analyticGeometries

@@ -18,7 +18,7 @@ namespace dtOO {
     vec3dInMap3dTo3dAGXmlBuilder();
     virtual ~vec3dInMap3dTo3dAGXmlBuilder();
     virtual void buildPart(
-      QDomElement const & toBuild,
+      ::QDomElement const & toBuild,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF,  
@@ -26,7 +26,7 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > * result 
     ) const;
     virtual void buildPartCompound(
-      QDomElement const & toBuild,
+      ::QDomElement const & toBuild,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF,  

@@ -32,7 +32,7 @@ namespace dtOO {
   }
 
 	void writeStep::init( 
-		QDomElement const & element,
+		::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -43,7 +43,7 @@ namespace dtOO {
 	  dtPlugin::init(element, bC, cV, aF, aG, bV, pL);
 		
 		_fn = dtXmlParserBase::getAttributeStr("filename", element);
-		std::vector< QDomElement > aGEl 
+		std::vector< ::QDomElement > aGEl 
 		= 
 		dtXmlParserBase::getChildVector("analyticGeometry", element);
 		for (int ii=0; ii<aGEl.size(); ii++) {

@@ -22,7 +22,7 @@ namespace dtOO {
   }
 
   void vec2dCurve2dOneDAFXmlBuilder::buildPart(
-		QDomElement const & toBuildP, 
+		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -36,7 +36,7 @@ namespace dtOO {
 
     if ( hasPoints && hasOrder ) {
 			std::vector< dtPoint2 > pointsArray;
-      QDomElement elementP = dtXmlParserBase::getChild("Point_2", toBuildP);
+      ::QDomElement elementP = dtXmlParserBase::getChild("Point_2", toBuildP);
       //
       //set input
       //
@@ -49,7 +49,7 @@ namespace dtOO {
 					pointsArray.push_back(workingPoint[ii]);
         }
       // next sibling
-      elementP = QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
+      elementP = ::QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
       }
 			ptrHandling<dtCurve2d> dtC2d( 
 				bSplineCurve2d_pointConstructOCC(pointsArray, order).result() 

@@ -29,7 +29,7 @@ namespace dtOO {
     virtual dtTransformer * clone( void ) const = 0;
     virtual dtTransformer * create( void ) const = 0;    
     virtual void init( 
-      QDomElement const * tE, 
+      ::QDomElement const * tE, 
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP,
@@ -73,7 +73,7 @@ namespace dtOO {
     //
     //
     void init( 
-      QDomElement const * tE,
+      ::QDomElement const * tE,
       baseContainer const * const bC, 
       vectorHandling< constValue * > const * const cValP,
       vectorHandling< analyticFunction * > const * const sFunP

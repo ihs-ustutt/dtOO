@@ -18,7 +18,7 @@ namespace dtOO {
     vec3dInMap3dTo3dWithMeshedSurface();
     virtual ~vec3dInMap3dTo3dWithMeshedSurface();
     virtual void init( 
-      QDomElement const & element,
+      ::QDomElement const & element,
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,

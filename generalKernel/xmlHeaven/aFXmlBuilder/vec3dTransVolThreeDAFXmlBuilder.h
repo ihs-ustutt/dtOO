@@ -18,14 +18,14 @@ namespace dtOO {
     vec3dTransVolThreeDAFXmlBuilder();
     virtual ~vec3dTransVolThreeDAFXmlBuilder();
     virtual void buildPart(
-      QDomElement const & toBuildP, 
+      ::QDomElement const & toBuildP, 
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP, 
       vectorHandling< analyticFunction * > const * const depSFunP,
       vectorHandling< analyticFunction * > * sFunP
     ) const;
     virtual void buildPartCompound(
-      QDomElement const & toBuildP, 
+      ::QDomElement const & toBuildP, 
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP, 
       vectorHandling< analyticFunction * > const * const depSFunP,

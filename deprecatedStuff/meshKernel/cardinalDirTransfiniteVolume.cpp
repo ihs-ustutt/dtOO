@@ -17,7 +17,7 @@ namespace dtOO {
   }
   
   void cardinalDirTransfiniteVolume::init(
-    QDomElement const & element,
+    ::QDomElement const & element,
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP,
     vectorHandling< analyticGeometry * > const * const depAGeoP,
@@ -90,7 +90,7 @@ namespace dtOO {
     //
     // set 6 sided cube
     //
-    QDomElement wElement = getChild("map3dTo3d", element);
+    ::QDomElement wElement = getChild("map3dTo3d", element);
     std::string label = getAttributeStr("label", wElement);
     std::string position = getAttributeStr("position", wElement);      
     analyticGeometry const * aG = depAGeoP->get(label);

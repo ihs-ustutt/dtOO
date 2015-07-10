@@ -16,7 +16,7 @@ namespace dtOO {
     virtual dtStrongTransformer * create( void ) const;       
     virtual bool isNecessary( void ) const;
     void init(
-      QDomElement const * tE, 
+      ::QDomElement const * tE, 
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,

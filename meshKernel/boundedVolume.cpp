@@ -19,7 +19,7 @@ namespace dtOO {
   }
 
   void boundedVolume::init( 
-		QDomElement const & element,
+		::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -40,7 +40,7 @@ namespace dtOO {
     // check for bVObservers
     //
     if ( qtXmlPrimitive::hasChild("bVObserver", element) ) {      
-      std::vector< QDomElement > transElement 
+      std::vector< ::QDomElement > transElement 
 			= 
 			qtXmlPrimitive::getChildVector("bVObserver", element);
       

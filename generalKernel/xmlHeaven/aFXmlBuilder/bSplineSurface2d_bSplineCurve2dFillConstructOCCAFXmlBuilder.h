@@ -19,7 +19,7 @@ namespace dtOO {
     bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder();
     virtual ~bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder();
     virtual void buildPart(
-      QDomElement const & toBuildP, 
+      ::QDomElement const & toBuildP, 
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP, 
       vectorHandling< analyticFunction * > const * const depSFunP,

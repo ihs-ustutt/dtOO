@@ -15,7 +15,7 @@ namespace dtOO {
   }
 
   void baseContainerAGXmlBuilder::buildPart(
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,
     vectorHandling< constValue * > const * const cV,  
     vectorHandling< analyticFunction * > const * const aF,  
@@ -23,7 +23,7 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > * result 
 	) const {
    
-    std::vector< QDomElement > wElement = dtXmlParserBase::getChildVector(toBuild);
+    std::vector< ::QDomElement > wElement = dtXmlParserBase::getChildVector(toBuild);
 		
     //dt__FORALL(wElement, ii,
 		for (int ii=0; ii<wElement.size(); ii++) {

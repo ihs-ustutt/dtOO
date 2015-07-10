@@ -23,7 +23,7 @@ namespace dtOO {
     coVolume(const coVolume& orig);
     virtual ~coVolume();
     virtual void init(
-                   QDomElement const & element,
+                   ::QDomElement const & element,
                    vectorHandling< constValue * > const * const cValP,
                    vectorHandling< scaFunction * > const * const sFunP,
                    vectorHandling< analyticGeometry * > const * const depAGeoP 

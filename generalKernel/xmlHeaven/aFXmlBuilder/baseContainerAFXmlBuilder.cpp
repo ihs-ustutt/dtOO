@@ -15,13 +15,13 @@ namespace dtOO {
   }
 
   void baseContainerAFXmlBuilder::buildPart(
-      QDomElement const & toBuildP,
+      ::QDomElement const & toBuildP,
 			baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP,  
       vectorHandling< analyticFunction * > const * const depSFunP,
       vectorHandling< analyticFunction * > * sFunP
 	) const {
-    std::vector< QDomElement > wElement = dtXmlParserBase::getChildVector(toBuildP);
+    std::vector< ::QDomElement > wElement = dtXmlParserBase::getChildVector(toBuildP);
 		
     //dt__FORALL(wElement, ii,
 		for (int ii=0; ii<wElement.size(); ii++) {

@@ -18,7 +18,7 @@ namespace dtOO {
   }
 
   void infinityMap3dTo3dAGXmlBuilder::buildPart( 
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    

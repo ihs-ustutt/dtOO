@@ -19,7 +19,7 @@ namespace dtOO {
     virtual ~dtXmlParserBase();
   private:
     static void createBasic(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
@@ -28,7 +28,7 @@ namespace dtOO {
       std::vector< dtPoint3 > * basicP
     );
     static void createBasic(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
@@ -37,7 +37,7 @@ namespace dtOO {
       std::vector< dtPoint2 > * basicP
     ); 
     static void createAdvanced( 
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
@@ -46,7 +46,7 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > * advancedP 
     );      
     static void createAdvanced( 
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
@@ -58,7 +58,7 @@ namespace dtOO {
     // string
     //
     static std::string createString(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF
     );    
@@ -66,14 +66,14 @@ namespace dtOO {
     // transformer
     //
     static dtTransformer * createTransformer(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );       
     static dtTransformer * createTransformer(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF
@@ -82,7 +82,7 @@ namespace dtOO {
     // dtPoint3
     //
     static void createBasic(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
@@ -90,34 +90,34 @@ namespace dtOO {
       std::vector< dtPoint3 > * basicP
     );
     static void createBasic(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,      
       vectorHandling< constValue * > const * const cV, 
       vectorHandling< analyticFunction * > const * const aF, 
       std::vector< dtPoint3 > * basicP
     );             
     static dtPoint3 createDtPoint3(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );
     static dtPoint3 createDtPoint3(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF
     );    
     static dtPoint3 getDtPoint3(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );
     static dtPoint3 getDtPoint3(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF
@@ -126,14 +126,14 @@ namespace dtOO {
       std::string const & str, baseContainer const * const bC
     );    
     static dtPoint3 getDtPoint3(
-	    QDomElement const * toBuildP, baseContainer const * const bC
+	    ::QDomElement const * toBuildP, baseContainer const * const bC
 	  );    
     
     //
     // dtPoint2
     //
     static void createBasic(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
@@ -141,7 +141,7 @@ namespace dtOO {
       std::vector< dtPoint2 > * basicP
     );
     static void createBasic(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,      
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,
@@ -151,14 +151,14 @@ namespace dtOO {
     // dtVector2
     //
     static dtVector2 createDtVector2(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );       
     static dtVector2 getDtVector2(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF, 
@@ -168,27 +168,27 @@ namespace dtOO {
     // dtVector3
     //
     static dtVector3 createDtVector3(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );    
     static dtVector3 createDtVector3(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF
     );
     static dtVector3 getDtVector3(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );    
     static dtVector3 getDtVector3(
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF
@@ -197,13 +197,13 @@ namespace dtOO {
       std::string const & str, baseContainer const * const bC
     );    
     static dtVector3 getDtVector3(
-	    QDomElement const * toBuildP, baseContainer const * const bC
+	    ::QDomElement const * toBuildP, baseContainer const * const bC
 	  );
     //
     // analyticGeometry
     //    
     static void createAdvanced( 
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
@@ -211,27 +211,27 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > * advancedP 
     );
     static analyticGeometry * createAnalyticGeometry( 
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );
     static analyticGeometry * createAnalyticGeometry( 
-      QDomElement const & toBuildP,
+      ::QDomElement const & toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );    
     static analyticGeometry * createAnalyticGeometry( 
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
     );      
     static analyticGeometry * createAnalyticGeometry( 
-      QDomElement const & toBuildP,
+      ::QDomElement const & toBuildP,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticGeometry * > const * const aG
@@ -240,20 +240,20 @@ namespace dtOO {
     // analyticFunction
     //
     static void createAdvanced( 
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF, 
       vectorHandling< analyticFunction * > * advancedP 
     );
     static analyticFunction * createAnalyticFunction( 
-      QDomElement const * toBuildP,
+      ::QDomElement const * toBuildP,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF
     ); 
     static analyticFunction * createAnalyticFunction( 
-      QDomElement const & toBuild,
+      ::QDomElement const & toBuild,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF 

@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   void bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder::buildPart(
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -46,7 +46,7 @@ namespace dtOO {
     = 
     dtXmlParserBase::getAttributeFloatMuParse("tolerance", toBuild, cV, aF);
 
-    QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
+    ::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
     analyticGeometry * aG_t 
     =
     dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG);

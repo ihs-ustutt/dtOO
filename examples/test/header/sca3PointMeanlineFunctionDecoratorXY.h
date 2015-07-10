@@ -16,7 +16,7 @@ namespace dtOO {
     dt__class(sca3PointMeanlineFunctionDecoratorXY, dtXmlParserFunctionDecorator);
     sca3PointMeanlineFunctionDecoratorXY();
     virtual ~sca3PointMeanlineFunctionDecoratorXY();
-    virtual void buildPart(QDomElement const & toBuildP, 
+    virtual void buildPart(::QDomElement const & toBuildP, 
                                           vectorHandling< constValue * > const * const cValP, 
                                           vectorHandling< analyticFunction * > const * const depSFunP,
                                           vectorHandling< analyticFunction * > * sFunP) const;

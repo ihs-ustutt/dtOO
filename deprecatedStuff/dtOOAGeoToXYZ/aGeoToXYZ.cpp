@@ -46,7 +46,7 @@ namespace dtOO {
       //
       // get information
       //
-      QDomElement wElement;
+      ::QDomElement wElement;
       wElement = parser.getElement("aGeoToXYZ");
 
       //

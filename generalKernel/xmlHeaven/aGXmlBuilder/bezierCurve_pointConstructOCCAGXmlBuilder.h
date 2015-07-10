@@ -16,7 +16,7 @@ namespace dtOO {
     bezierCurve_pointConstructOCCAGXmlBuilder();
     virtual ~bezierCurve_pointConstructOCCAGXmlBuilder();
     virtual void buildPart(
-      QDomElement const & toBuild,
+      ::QDomElement const & toBuild,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF,  

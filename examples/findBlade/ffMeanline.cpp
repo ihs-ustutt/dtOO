@@ -77,7 +77,7 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
     
     parser1.getNames("Point_2", &label);
     for (int ll = 0;ll<label.size();ll++) {
-	QDomElement p2El = parser1.getElement("Point_2", label[ll]);
+	::QDomElement p2El = parser1.getElement("Point_2", label[ll]);
 	std::vector< dtPoint2 * > p2Vec1, p2Vec2;
 	parser1.createBasic(&p2El, &cV1, &aF1, &p2Vec1);
 	p2Vec2 = getBaseline().apply(&p2Vec1);
@@ -130,9 +130,9 @@ double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one g
      for (int ii = 0;ii<label.size();ii++) {
      
 	if(label[ii]=="f_3pMeanLine") {
-		QDomElement * functionElementP = new QDomElement(parser1.getElement("function", "f_3pMeanLine") );
-		QDomElement builder1 = parser1.getChild("builder", *functionElementP);
-//		QDomElement *builderptr1 = &builder1;
+		::QDomElement * functionElementP = new ::QDomElement(parser1.getElement("function", "f_3pMeanLine") );
+		::QDomElement builder1 = parser1.getChild("builder", *functionElementP);
+//		::QDomElement *builderptr1 = &builder1;
 		sca3PointMeanlineFunctionDecoratorXY qdomEl1;
 		qdomEl1.buildPart( builder1, &cV1, NULL, &aF1);
 		aF1.back()->setLabel("f_3pMeanLine");
@@ -218,7 +218,7 @@ sF beinhaltet jetzt auf:
     /////////////////////////////////////////////
     
 
-	QDomElement qdtransfPr = parser2.getElement("transformer", "thicknessIncreasingPr");
+	::QDomElement qdtransfPr = parser2.getElement("transformer", "thicknessIncreasingPr");
 	
 	thick1 = new thicknessIncreasing();
 	thick1->init(&qdtransfPr, &cV2 , &aF2);
@@ -234,7 +234,7 @@ sF beinhaltet jetzt auf:
 
 	
   
-	QDomElement qdtransfSuct = parser2.getElement("transformer", "thicknessIncreasingSuct");
+	::QDomElement qdtransfSuct = parser2.getElement("transformer", "thicknessIncreasingSuct");
 	
 	thick2 = new thicknessIncreasing();
 	thick2->init(&qdtransfSuct, &cV2 , &aF2);

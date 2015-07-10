@@ -21,7 +21,7 @@ namespace dtOO {
   }  
 
   void loftedSurfaceWrapperDecorator::buildPart(
-         QDomElement ** toBuildP,
+         ::QDomElement ** toBuildP,
          pointContainer * const pointContainerP,
          vectorContainer * const vectorContainerP,            
          vectorHandling< constValue * > const * const cValP,           
@@ -52,7 +52,7 @@ namespace dtOO {
       //
       // analyticGeometries
       //
-      QDomElement wElement = getChild("analyticGeometry", **toBuildP);     
+      ::QDomElement wElement = getChild("analyticGeometry", **toBuildP);     
       analyticGeometry * tmpGeo;
       vectorHandling< analyticGeometry * > cc;
       while ( !wElement.isNull() ) {

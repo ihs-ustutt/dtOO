@@ -13,7 +13,7 @@ namespace dtOO {
     setResValue();
     virtual ~setResValue();
     virtual bool isNecessary( void ) const;
-    virtual void init( QDomElement * transformerElementP,
+    virtual void init( ::QDomElement * transformerElementP,
                        vectorHandling< constValue * > const * const cValP,
                        vectorHandling< scaFunction * > const * const sFunP);
     virtual vectorHandling< scaFunction * > apply( vectorHandling< scaFunction * > const * const sFunP ) const;  

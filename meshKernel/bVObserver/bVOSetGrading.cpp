@@ -19,7 +19,7 @@ namespace dtOO {
   }
   
   void bVOSetGrading::bVOSetGrading::init( 
-		QDomElement const & element,
+		::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,

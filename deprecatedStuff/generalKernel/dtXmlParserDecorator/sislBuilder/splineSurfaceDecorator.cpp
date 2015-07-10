@@ -20,7 +20,7 @@ namespace dtOO {
   }
 
   void splineSurfaceDecorator::buildPart(
-         QDomElement ** toBuildP,
+         ::QDomElement ** toBuildP,
          pointContainer * const pointContainerP,
          vectorContainer * const vectorContainerP,    
          vectorHandling< constValue * > const * const cValP,        
@@ -42,7 +42,7 @@ namespace dtOO {
       /* -------------------------------------------------------------------- */
       /* put splines in builder */
       /* -------------------------------------------------------------------- */
-      QDomElement wElement = getChild( "splineCurve3d", **toBuildP );
+      ::QDomElement wElement = getChild( "splineCurve3d", **toBuildP );
       while ( !wElement.isNull() ) {
         analyticGeometry * aGeoSplineP
 				=
@@ -61,7 +61,7 @@ namespace dtOO {
 			cc.destroy();
     }
     else if (hasSplineSurface) {
-      QDomElement wElement = getChild( "splineSurface", **toBuildP );
+      ::QDomElement wElement = getChild( "splineSurface", **toBuildP );
       createAdvanced(
         &wElement,
         pointContainerP,

@@ -44,7 +44,7 @@ namespace dtOO {
   }
 
   void c14Volume::init(
-          QDomElement const & element,
+          ::QDomElement const & element,
           vectorHandling< constValue * > const * const cValP,
           vectorHandling< analyticFunction * > const * const sFunP,
           vectorHandling< analyticGeometry * > const * const depAGeoP,
@@ -63,7 +63,7 @@ namespace dtOO {
     //
     // set constValues float
     //
-    QDomElement wElement = getChild("constValue", element);
+    ::QDomElement wElement = getChild("constValue", element);
     while ( !wElement.isNull() ) {
       std::string label = getAttributeStr("label", wElement);      
       _valCValTwins.push_back( cValP->get(label)->clone() );

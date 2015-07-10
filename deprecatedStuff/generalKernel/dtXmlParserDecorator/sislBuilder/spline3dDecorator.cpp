@@ -22,7 +22,7 @@ namespace dtOO {
   spline3dDecorator::~spline3dDecorator() {
   }
 
-  void spline3dDecorator::buildPart(QDomElement ** toBuildP,
+  void spline3dDecorator::buildPart(::QDomElement ** toBuildP,
                                            pointContainer * const pointContainerP,
                                            vectorContainer * const vectorContainerP,    
                                            vectorHandling< constValue * > const * const cValP,        
@@ -40,7 +40,7 @@ namespace dtOO {
       int order = getAttributeInt("order", **toBuildP);
 
       std::vector< dtPoint3 > workingPointP;
-      QDomElement wElement = getChild("Point_3", **toBuildP);
+      ::QDomElement wElement = getChild("Point_3", **toBuildP);
       while ( !wElement.isNull() ) {
         this->createBasic( &wElement, 
                            pointContainerP, 
@@ -54,7 +54,7 @@ namespace dtOO {
 			aGeoP->push_back( new splineCurve3d(&workingPointP, order) );
     }
     else if (hasAGeo) {
-      QDomElement wElement = getChild("splineCurve3d", **toBuildP);
+      ::QDomElement wElement = getChild("splineCurve3d", **toBuildP);
       vectorHandling< analyticGeometry * > advanced;
 			while ( !wElement.isNull() ) {
         createAdvanced( &wElement, 

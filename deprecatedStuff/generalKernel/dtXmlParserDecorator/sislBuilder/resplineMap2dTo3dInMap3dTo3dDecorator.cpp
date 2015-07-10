@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   void resplineMap2dTo3dInMap3dTo3dDecorator::buildPart( 
-    QDomElement ** toBuildP,
+    ::QDomElement ** toBuildP,
     pointContainer * const pointContainerP,
     vectorContainer * const vectorContainerP,            
     vectorHandling< constValue * > const * const cValP,           
@@ -34,7 +34,7 @@ namespace dtOO {
     bool hasGeos = hasChild("map2dTo3d", **toBuildP) && hasChild("map3dTo3d", **toBuildP);
     
     if ( hasGeos ) {
-      QDomElement wElement = getChild( "map2dTo3d", **toBuildP );
+      ::QDomElement wElement = getChild( "map2dTo3d", **toBuildP );
       
       //
       // get analyticGeometry

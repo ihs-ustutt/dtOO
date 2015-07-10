@@ -22,7 +22,7 @@ namespace dtOO {
   }
 
   void bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder::buildPart(
-		QDomElement const & toBuildP, 
+		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -35,7 +35,7 @@ namespace dtOO {
     
     if ( hasFunction ) {
 			vectorHandling< dtCurve2d const * > cc;
-      std::vector< QDomElement > elVec 
+      std::vector< ::QDomElement > elVec 
 			= 
 			dtXmlParserBase::getChildVector("analyticFunction", toBuildP);
       dt__forAllIndex(elVec, ii) {

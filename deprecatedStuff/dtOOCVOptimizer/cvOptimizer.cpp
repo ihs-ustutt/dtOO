@@ -106,10 +106,10 @@ namespace dtOO {
       std::string cvOptimizerLabel;
       parser.getName("cvOptimizer", &cvOptimizerLabel);
 
-      QDomElement element = parser.getElement("cvOptimizer", cvOptimizerLabel);
+      ::QDomElement element = parser.getElement("cvOptimizer", cvOptimizerLabel);
 
       _cVal.destroy();
-      QDomElement wElement = parser.getChild("constValue", element);
+      ::QDomElement wElement = parser.getChild("constValue", element);
       while ( !wElement.isNull() ) {
         std::string label = parser.getAttributeStr("label", wElement);          
         _cVal.push_back( cValTmp.get(label)->clone() );

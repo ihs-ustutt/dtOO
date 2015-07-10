@@ -16,7 +16,7 @@ namespace dtOO {
     bSplineSurface_skinConstructOCCAGXmlBuilder();
     virtual ~bSplineSurface_skinConstructOCCAGXmlBuilder();
     virtual void buildPart(
-      QDomElement const & toBuild,
+      ::QDomElement const & toBuild,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV,  
       vectorHandling< analyticFunction * > const * const aF,  

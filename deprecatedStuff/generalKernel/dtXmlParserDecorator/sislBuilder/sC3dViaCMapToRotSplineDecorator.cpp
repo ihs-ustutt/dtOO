@@ -20,7 +20,7 @@ namespace dtOO {
   sC3dViaCMapToRotSplineDecorator::~sC3dViaCMapToRotSplineDecorator() {
   }
   
-  void sC3dViaCMapToRotSplineDecorator::buildPart(QDomElement ** toBuildP,
+  void sC3dViaCMapToRotSplineDecorator::buildPart(::QDomElement ** toBuildP,
     pointContainer * const pointContainerP,
     vectorContainer * const vectorContainerP,    
     vectorHandling< constValue * > const * const cValP,  
@@ -80,7 +80,7 @@ namespace dtOO {
       //
       // analyticGeometries
       //
-      QDomElement wElement = getChild("Point_2", **toBuildP);
+      ::QDomElement wElement = getChild("Point_2", **toBuildP);
       vectorHandling< dtPoint2 * > vH;
       std::vector< dtPoint3 > p3;
       std::vector< dtPoint2 > p2uv;

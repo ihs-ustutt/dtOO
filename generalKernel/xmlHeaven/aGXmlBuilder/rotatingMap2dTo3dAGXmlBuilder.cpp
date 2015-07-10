@@ -21,7 +21,7 @@ namespace dtOO {
   }
 
   void rotatingMap2dTo3dAGXmlBuilder::buildPart( 
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -34,7 +34,7 @@ namespace dtOO {
     dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
     dt__throwIf(!dtXmlParserBase::hasChild("Vector_3", toBuild), buildPart());
     
-    QDomElement wElement;			
+    ::QDomElement wElement;			
     //
     // get analyticGeometry and cast
     //

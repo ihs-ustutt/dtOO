@@ -20,7 +20,7 @@ namespace dtOO {
   }
 
   void muParserAFXmlBuilder::buildPart(
-	  QDomElement const & toBuildP, 
+	  ::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -43,7 +43,7 @@ namespace dtOO {
     int yDim = 0;
 		std::string expStr = "";
 		if ( dtXmlParserBase::hasChild("expression", toBuildP) ) {
-			QDomElement expEl = dtXmlParserBase::getChild("expression", toBuildP);
+			::QDomElement expEl = dtXmlParserBase::getChild("expression", toBuildP);
 			expStr 
 			= 
 			dtXmlParserBase::replaceUsedFunctions(
@@ -59,7 +59,7 @@ namespace dtOO {
 		// scaMuParserOneD
 		//
     if (isSca && isOneD) {		
-			QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
+			::QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
 
 			scaMuParserOneD * theF 
 			= 
@@ -84,8 +84,8 @@ namespace dtOO {
 		// scaMuParserTwoD
 		//		
     else if (isSca && isTwoD) {		
-			QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
-			QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
+			::QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
+			::QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
 
 			scaMuParserTwoD * theF 
 			= 
@@ -126,8 +126,8 @@ namespace dtOO {
 		// vec2dMuParserTwoD
 		//
     else if (isVec2d && isTwoD) {		
-			QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
-			QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
+			::QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
+			::QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
 
 			vec2dMuParserTwoD * theF 
 			= 
@@ -168,8 +168,8 @@ namespace dtOO {
 		// vec3dMuParserTwoD
 		//
     else if (isVec3d && isTwoD) {		
-			QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
-			QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
+			::QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
+			::QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
 
 			vec3dMuParserTwoD * theF 
 			= 
@@ -210,9 +210,9 @@ namespace dtOO {
 		// vec3dMuParserThreeD
 		//
     else if (isVec3d && isThreeD) {		
-			QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
-			QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
-			QDomElement xThreeEl = dtXmlParserBase::getChild("x_three", toBuildP);
+			::QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
+			::QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
+			::QDomElement xThreeEl = dtXmlParserBase::getChild("x_three", toBuildP);
 
 			vec3dMuParserThreeD * theF 
 			= 

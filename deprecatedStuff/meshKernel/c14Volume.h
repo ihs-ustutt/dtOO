@@ -26,7 +26,7 @@ namespace dtOO {
       c14Volume();
       virtual ~c14Volume();
       virtual void init(
-        QDomElement const & element,
+        ::QDomElement const & element,
         vectorHandling< constValue * > const * const cValP,
         vectorHandling< analyticFunction * > const * const sFunP,
         vectorHandling< analyticGeometry * > const * const depAGeoP,

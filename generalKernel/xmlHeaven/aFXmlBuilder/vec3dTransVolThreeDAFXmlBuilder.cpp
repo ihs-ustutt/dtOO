@@ -24,7 +24,7 @@ namespace dtOO {
   }
 
   void vec3dTransVolThreeDAFXmlBuilder::buildPart(
-		QDomElement const & toBuildP, 
+		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -35,7 +35,7 @@ namespace dtOO {
       buildPart()
     );
     
-    std::vector< QDomElement > eVec 
+    std::vector< ::QDomElement > eVec 
     = 
     dtXmlParserBase::getChildVector("analyticFunction", toBuildP);
     
@@ -105,7 +105,7 @@ namespace dtOO {
 	 *       of the function?
    */
   void vec3dTransVolThreeDAFXmlBuilder::buildPartCompound(
-	  QDomElement const & toBuildP, 
+	  ::QDomElement const & toBuildP, 
 	  baseContainer * const bC,
     vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -116,7 +116,7 @@ namespace dtOO {
       buildPartCompound()
     );
     
-    QDomElement elementP 
+    ::QDomElement elementP 
     = 
     dtXmlParserBase::getChild("analyticFunction", toBuildP);
     //

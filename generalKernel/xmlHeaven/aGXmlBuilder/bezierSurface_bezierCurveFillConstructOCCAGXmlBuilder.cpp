@@ -25,7 +25,7 @@ namespace dtOO {
   }
 
   void bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder::buildPart(
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -38,7 +38,7 @@ namespace dtOO {
     dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
 		
     vectorHandling< analyticGeometry * > aG_t;
-    QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
+    ::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
     while ( !wElement.isNull() ) {
       dtXmlParserBase::createAdvanced(&wElement, bC, cV, aF, aG, &aG_t);
       wElement = dtXmlParserBase::getNextSibling("analyticGeometry", wElement);

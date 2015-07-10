@@ -18,7 +18,7 @@ namespace dtOO {
     sca5PointMeanlineAFXmlBuilder();
     virtual ~sca5PointMeanlineAFXmlBuilder();
     virtual void buildPart(
-      QDomElement const & toBuildP, 
+      ::QDomElement const & toBuildP, 
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cValP, 
       vectorHandling< analyticFunction * > const * const depSFunP,

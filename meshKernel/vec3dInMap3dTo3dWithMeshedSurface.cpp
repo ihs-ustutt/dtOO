@@ -44,7 +44,7 @@ namespace dtOO {
 	}
 	
   void vec3dInMap3dTo3dWithMeshedSurface::init( 
-    QDomElement const & element,
+    ::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -59,7 +59,7 @@ namespace dtOO {
     //
 		// region
 		//		
-    QDomElement wElement = qtXmlPrimitive::getChild("analyticGeometry", element);
+    ::QDomElement wElement = qtXmlPrimitive::getChild("analyticGeometry", element);
     std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
 		
 		//

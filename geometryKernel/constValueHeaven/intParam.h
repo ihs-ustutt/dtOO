@@ -13,7 +13,7 @@ namespace dtOO {
     virtual ~intParam();
     virtual intParam * clone( void ) const;    
     virtual void dump(void) const;
-    virtual void writeToElement(QDomDocument & doc, QDomElement & element);
+    virtual void writeToElement(QDomDocument & doc, ::QDomElement & element);
   private:
   };
 }

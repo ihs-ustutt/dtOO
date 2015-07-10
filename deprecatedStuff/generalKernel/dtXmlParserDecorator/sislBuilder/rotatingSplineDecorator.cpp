@@ -28,7 +28,7 @@ namespace dtOO {
    * @todo clean up routine
    */
   void rotatingSplineDecorator::buildPart( 
-               QDomElement ** toBuildP,
+               ::QDomElement ** toBuildP,
                pointContainer * const pointContainerP,
                vectorContainer * const vectorContainerP,            
                vectorHandling< constValue * > const * const cValP,           
@@ -42,7 +42,7 @@ namespace dtOO {
     bool hasAngle = hasChild("float", **toBuildP);
 
     if ( hasAGeo && hasPoint && hasVector ) {
-      QDomElement wElement;
+      ::QDomElement wElement;
       
       //
       // origin

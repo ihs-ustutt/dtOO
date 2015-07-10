@@ -25,7 +25,7 @@ namespace dtOO {
     map3dTo3dWithInternalTurboGrid();
     virtual ~map3dTo3dWithInternalTurboGrid();
     virtual void init( 
-      QDomElement const & element,
+      ::QDomElement const & element,
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,

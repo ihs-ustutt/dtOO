@@ -99,7 +99,7 @@ namespace dtOO {
   }
   
   void optimizer::init( 
-                    QDomElement const & element,
+                    ::QDomElement const & element,
                     vectorHandling< constValue * > * const cValP,
                     vectorHandling< analyticGeometry * > * const aGeoP,
                     vectorHandling< boundedVolume * > * const bVolP,
@@ -115,7 +115,7 @@ namespace dtOO {
     //
     // set options
     //
-    QDomElement option = getChild("option", element);
+    ::QDomElement option = getChild("option", element);
     while ( !option.isNull() ) {
       std::string optionName = getAttributeStr("name", option);
       std::string optionValue = getAttributeStr("value", option);
@@ -136,7 +136,7 @@ namespace dtOO {
     //
     // set constValues
     //
-    QDomElement wElement = getChild("constValue", element);
+    ::QDomElement wElement = getChild("constValue", element);
     while ( !wElement.isNull() ) {
       //
       // get label of constValue

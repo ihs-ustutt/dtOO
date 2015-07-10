@@ -39,9 +39,9 @@ namespace dtOO {
     void getNames(std::string toLookFor, std::vector< std::string > * machinePartNames ) const;
     std::vector< std::string > getNames( std::string lookType ) const;
     void getName( std::string lookType, std::string * name ) const;
-    QDomElement getElement( std::string const lookType, std::string const lookName ) const ;
-    QDomElement getElement( std::string const lookType ) const ;
-	  QDomElement getUnlabeledElement( std::string const lookType ) const;
+    ::QDomElement getElement( std::string const lookType, std::string const lookName ) const ;
+    ::QDomElement getElement( std::string const lookType ) const ;
+	  ::QDomElement getUnlabeledElement( std::string const lookType ) const;
     void createAnalyticFunction(
 	    std::string const functionName,
       baseContainer * const bC,
@@ -126,12 +126,12 @@ namespace dtOO {
   private:
     void checkFile(char const * const fileName, QDomDocument & xmlDocument);
     static void writeFile(char const * const fileName, QDomDocument & xmlDocument);
-    static void writeFile( std::string const & fileName, QDomNode const & node);
+    static void writeFile( std::string const & fileName, ::QDomNode const & node);
     void setStaticProperties( void );
   private:
-    std::vector< QDomElement > _rootRead;
+    std::vector< ::QDomElement > _rootRead;
     std::vector< QDomDocument > _rootReadDoc;
-    QDomElement _rootLoad;
+    ::QDomElement _rootLoad;
     QDomDocument _rootLoadDoc;
   };
 }

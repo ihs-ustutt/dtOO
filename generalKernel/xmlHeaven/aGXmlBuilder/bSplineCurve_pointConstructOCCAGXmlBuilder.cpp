@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   void bSplineCurve_pointConstructOCCAGXmlBuilder::buildPart(
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -38,7 +38,7 @@ namespace dtOO {
 
     int const order = dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV, aF);
     std::vector< dtPoint3 > workingPointP;
-    QDomElement wElement = dtXmlParserBase::getChild("Point_3", toBuild);
+    ::QDomElement wElement = dtXmlParserBase::getChild("Point_3", toBuild);
     while ( !wElement.isNull() ) {
       dtXmlParserBase::createBasic( &wElement, bC, cV, aF, aG, &workingPointP );
       wElement = dtXmlParserBase::getNextSibling("Point_3", wElement);

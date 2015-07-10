@@ -47,7 +47,7 @@ namespace dtOO {
       //
       // get information
       //
-      QDomElement wElement;
+      ::QDomElement wElement;
       wElement = parser.getElement("xyWriter");
       int offset = 1;
       if ( parser.hasAttribute("scaFunction_offset", wElement) ) {

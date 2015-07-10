@@ -20,7 +20,7 @@ namespace dtOO {
     typeCast(const typeCast& orig);
     virtual ~typeCast();
     virtual bool isNecessary( void ) const;
-    void init( QDomElement * transformerElementP, 
+    void init( ::QDomElement * transformerElementP, 
                pointContainer * const pointContainerP,
                vectorContainer * const vectorContainerP,    
                vectorHandling< constValue * > const * const cValP,

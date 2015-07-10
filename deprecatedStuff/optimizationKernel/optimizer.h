@@ -37,7 +37,7 @@ namespace dtOO {
     void optimizeMe(void);
     void cycle( void );
     void init( 
-      QDomElement const & element,
+      ::QDomElement const & element,
       vectorHandling< constValue * > * const cValP,
       vectorHandling< analyticGeometry * > * const aGeoP,
       vectorHandling< boundedVolume * > * const bVolP,

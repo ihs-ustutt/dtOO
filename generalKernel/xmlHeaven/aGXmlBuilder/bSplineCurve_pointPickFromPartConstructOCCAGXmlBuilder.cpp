@@ -26,7 +26,7 @@ namespace dtOO {
   }
 
   void bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder::buildPart(
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -41,7 +41,7 @@ namespace dtOO {
     dt__throwIf(!dtXmlParserBase::hasAttribute("order", toBuild), buildPart());
 		
     std::vector< dtPoint2 > p2;
-    QDomElement wElement = dtXmlParserBase::getChild("Point_2", toBuild);
+    ::QDomElement wElement = dtXmlParserBase::getChild("Point_2", toBuild);
     while ( !wElement.isNull() ) {
       dtXmlParserBase::dtXmlParserBase::createBasic( &wElement, bC, cV, aF, aG, &p2 );
       wElement = dtXmlParserBase::getNextSibling("Point_2", wElement);

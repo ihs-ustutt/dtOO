@@ -16,7 +16,7 @@ namespace dtOO {
   }
 
   void scaMuParserOneDAFXmlBuilder::buildPart(
-	  QDomElement const & toBuildP, 
+	  ::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -38,7 +38,7 @@ namespace dtOO {
       float xMin;
       float xMax;
 
-      QDomElement wElement = toBuildP.firstChildElement();
+      ::QDomElement wElement = toBuildP.firstChildElement();
       while ( !wElement.isNull() ) {
         //
         // string
@@ -79,7 +79,7 @@ namespace dtOO {
         //
         // goto next sibling
         //
-        wElement = QDomElement( wElement.nextSiblingElement() );
+        wElement = ::QDomElement( wElement.nextSiblingElement() );
       }
 			//
 			// create muParser function

@@ -55,7 +55,7 @@ namespace dtOO {
   }
   
   void pickMap3dTo3dRangePercent::init( 
-	  QDomElement const * tE, 
+	  ::QDomElement const * tE, 
     baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,

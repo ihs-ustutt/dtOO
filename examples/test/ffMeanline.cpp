@@ -33,7 +33,7 @@ int main() {
     parser1->getNames("Point_2", &label);
     std::cout<<"label.size() "<< label.size() << std::endl;
     for (int ii = 0;ii<label.size();ii++) {
-	QDomElement p2El = parser1->getElement("Point_2", label[ii]);
+	::QDomElement p2El = parser1->getElement("Point_2", label[ii]);
 	std::vector< dtPoint2 * > p2Vec;
 	parser1->createBasic(&p2El, &cV1, &aF1, &p2Vec);
 	std::vector< dtPoint2 > p2Twin;

@@ -166,7 +166,7 @@ namespace dtOO {
   }
 
   void uVw_phirMs::init( 
-    QDomElement const * tE, 
+    ::QDomElement const * tE, 
     baseContainer const * const bC,
     vectorHandling< constValue * > const * const cV,
     vectorHandling< analyticFunction * > const * const aF,
@@ -175,7 +175,7 @@ namespace dtOO {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		
 		if ( dtXmlParserBase::hasChild("Vector_3", *tE) ) {
-			QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
+			::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
 			handleDtVector3(
 				"Vector_3", 
 				dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG)

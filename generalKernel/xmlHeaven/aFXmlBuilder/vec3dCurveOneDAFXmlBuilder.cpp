@@ -21,7 +21,7 @@ namespace dtOO {
   }
 
   void vec3dCurveOneDAFXmlBuilder::buildPart(
-		QDomElement const & toBuildP, 
+		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -37,7 +37,7 @@ namespace dtOO {
 
     if ( hasPoints && hasOrder ) {
 			std::vector< dtPoint3 > pointsArray;
-      QDomElement elementP = dtXmlParserBase::getChild("Point_3", toBuildP);
+      ::QDomElement elementP = dtXmlParserBase::getChild("Point_3", toBuildP);
       //
       //set input
       //
@@ -51,7 +51,7 @@ namespace dtOO {
 					//delete workingPoint[ii];
         }
       // next sibling
-      elementP = QDomElement( dtXmlParserBase::getNextSibling("Point_3", elementP) );      
+      elementP = ::QDomElement( dtXmlParserBase::getNextSibling("Point_3", elementP) );      
       }
 			ptrHandling<dtCurve> dtC( 
 				bSplineCurve_pointConstructOCC(pointsArray, order).result() 

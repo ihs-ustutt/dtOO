@@ -17,7 +17,7 @@ namespace dtOO {
       vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder();
       virtual ~vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder();
       virtual void buildPart(
-        QDomElement const & toBuild,
+        ::QDomElement const & toBuild,
         baseContainer * const bC,
         vectorHandling< constValue * > const * const cV,  
         vectorHandling< analyticFunction * > const * const aF,  

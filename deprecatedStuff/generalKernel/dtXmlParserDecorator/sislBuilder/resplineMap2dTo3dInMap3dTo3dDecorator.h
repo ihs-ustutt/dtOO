@@ -19,7 +19,7 @@ namespace dtOO {
     dt__classOnlyName(resplineMap2dTo3dInMap3dTo3dDecorator);
     resplineMap2dTo3dInMap3dTo3dDecorator();
     virtual ~resplineMap2dTo3dInMap3dTo3dDecorator();
-    virtual void buildPart(QDomElement ** toBuildP,
+    virtual void buildPart(::QDomElement ** toBuildP,
                                   pointContainer * const pointContainerP,
                                   vectorContainer * const vectorContainerP,    
                                   vectorHandling< constValue * > const * const cValP,  

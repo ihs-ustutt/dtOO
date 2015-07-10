@@ -91,16 +91,16 @@ namespace dtOO {
 		std::vector< std::string > label;
 		getNames("include", &label);
 		for (int ii=0; ii<label.size(); ii++) {
-		  QDomElement wElement = getElement("include", label[ii]);
+		  ::QDomElement wElement = getElement("include", label[ii]);
 			dt__info( 
 			  openFileAndParse(), 
 				<< "Replace include " << dt__eval(label[ii]) << " with "
 				<< dt__eval(getAttributeStr("filename", wElement)) 
 			);
 			label[ii] = getAttributeStr("filename", wElement);
-			QDomNode check 
+			::QDomNode check 
 			= 
-			_rootRead.back().removeChild( static_cast<QDomNode>(wElement) );
+			_rootRead.back().removeChild( static_cast<::QDomNode>(wElement) );
 			if (check.isNull()) {
 				dt__throw(openFileAndParse(), << "Error removing element.");
 			}			
@@ -113,7 +113,7 @@ namespace dtOO {
 		//
 		// handle replace-elements
 		//
-		QDomElement forElement = getUnlabeledElement("replace");
+		::QDomElement forElement = getUnlabeledElement("replace");
 		while ( !forElement.isNull() ) {
 			//
 			// parse variable and values to replace
@@ -133,18 +133,18 @@ namespace dtOO {
 			//
 			// replace
 			//
-			std::vector<QDomElement> children = getChildVector(forElement);
+			std::vector<::QDomElement> children = getChildVector(forElement);
 			for (int kk=0; kk<values.size(); kk++) {
   			for (int jj=0; jj<children.size(); jj++) {
-				  QDomElement childClone = children[jj].cloneNode(true).toElement();
+				  ::QDomElement childClone = children[jj].cloneNode(true).toElement();
 					replaceRecursiveInAllAttributes(
             "{"+var+"}", values[kk], &(childClone)
             );
-					QDomNode checkOne 
+					::QDomNode checkOne 
 					=							
 					_rootRead.back().insertBefore( 
-						static_cast<QDomNode>(childClone),
-						static_cast<QDomNode>(forElement) 
+						static_cast<::QDomNode>(childClone),
+						static_cast<::QDomNode>(forElement) 
 					);
 					if (checkOne.isNull()) {
 						dt__throw(openFileAndParse(), << "Error inserting element.");
@@ -155,9 +155,9 @@ namespace dtOO {
 			//
 			// delete dummy node
 			//
-			QDomNode check 
+			::QDomNode check 
 			= 
-			_rootRead.back().removeChild( static_cast<QDomNode>(forElement) );
+			_rootRead.back().removeChild( static_cast<::QDomNode>(forElement) );
 			if (check.isNull()) {
 				dt__throw(openFileAndParse(), << "Error removing element.");
 			}	
@@ -183,7 +183,7 @@ namespace dtOO {
     checkFile(fileName, xmlDocument);
 
 		//
-		// save QDomNode and QDomDocument because owner after cloning 
+		// save ::QDomNode and QDomDocument because owner after cloning 
 		// remains the same
 		//		
     _rootLoad = xmlDocument.documentElement().cloneNode(true).toElement(); 
@@ -194,12 +194,12 @@ namespace dtOO {
     std::string const stateName, 
     vectorHandling< constValue * > & cValRef
   ) {  
-    QDomElement stateElement = getChildElement( "state", stateName, _rootLoad );
+    ::QDomElement stateElement = getChildElement( "state", stateName, _rootLoad );
     for (int ii=0;ii<cValRef.size();ii++) {
       if ( 
         hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) 
       ) {    
-        QDomElement constValueElement = getChildElement("constValue",
+        ::QDomElement constValueElement = getChildElement("constValue",
                                           cValRef[ii]->getLabel(),
                                           stateElement
                                         );
@@ -240,7 +240,7 @@ namespace dtOO {
     checkFile(fileName, xmlDocument);
     
     //*_rootWriteElement = xmlDocument.toElement();
-    QDomElement newState = createElement(xmlDocument, "state");
+    ::QDomElement newState = createElement(xmlDocument, "state");
     std::string timeStr = NowDateAndTime();
     newState.setAttribute("label", timeStr.c_str());
     appendChildElement(xmlDocument, newState);
@@ -268,7 +268,7 @@ namespace dtOO {
     checkFile(fileName, xmlDocument);
     
     //*_rootWriteElement = xmlDocument.toElement();
-    QDomElement newState = createElement(xmlDocument, "state");
+    ::QDomElement newState = createElement(xmlDocument, "state");
 //    std::string timeStr = std::string(stateName);//NowDateAndTime();
     newState.setAttribute("label", stateName.c_str());
     appendChildElement(xmlDocument, newState);
@@ -303,7 +303,7 @@ namespace dtOO {
   }
   
   void dtXmlParser::writeFile( 
-    std::string const & fileName, QDomNode const & node
+    std::string const & fileName, ::QDomNode const & node
   ) {
     //
     // open file and write rootWriteElement to file
@@ -380,7 +380,7 @@ namespace dtOO {
       );
       xmlDocument.appendChild( myHeader );
       // machine name of _rootReadElement
-      QDomElement _rootWriteElement = xmlDocument.createElement(
+      ::QDomElement _rootWriteElement = xmlDocument.createElement(
         _rootRead[0].tagName()
       );
       xmlDocument.appendChild(_rootWriteElement);
@@ -413,13 +413,13 @@ namespace dtOO {
     std::string const constValueLabel, 
     vectorHandling< constValue * > * cValP
   ) const {
-    QDomElement const cVElement = getElement( "constValue", constValueLabel );
+    ::QDomElement const cVElement = getElement( "constValue", constValueLabel );
 
 
     /* ------------------------------------------------------------------------ */
     /* go to last builder */
     /* ------------------------------------------------------------------------ */
-    QDomElement const wElement = goToLastBuilder(cVElement);
+    ::QDomElement const wElement = goToLastBuilder(cVElement);
 
     constValue * aCValP;
     constValueFactory cValFac;
@@ -430,7 +430,7 @@ namespace dtOO {
     //check first child
     //should be a float
     //
-    QDomElement* firstChild = new QDomElement( wElement.firstChildElement() );
+    ::QDomElement* firstChild = new ::QDomElement( wElement.firstChildElement() );
     if (firstChild->tagName().toStdString() == "float" ) {
       if ( firstChild->hasAttribute("min") 
             && firstChild->hasAttribute("max")
@@ -529,7 +529,7 @@ namespace dtOO {
     *name = names[0];
   }  
 
-  QDomElement dtXmlParser::getElement( 
+  ::QDomElement dtXmlParser::getElement( 
     std::string const lookType, std::string const lookName 
   ) const {
 		for (int ii=0; ii<_rootRead.size(); ii++) {
@@ -543,7 +543,7 @@ namespace dtOO {
 		);
   }
 	
-  QDomElement dtXmlParser::getElement( std::string const lookType ) const {
+  ::QDomElement dtXmlParser::getElement( std::string const lookType ) const {
     std::vector< std::string > label;
 
     getNames(lookType, &label);
@@ -554,10 +554,10 @@ namespace dtOO {
               << "Should be 1.");      
     }
     
-    return QDomElement( getElement(lookType, label[0]) );
+    return ::QDomElement( getElement(lookType, label[0]) );
   }
   
-	QDomElement dtXmlParser::getUnlabeledElement( 
+	::QDomElement dtXmlParser::getUnlabeledElement( 
     std::string const lookType 
   ) const {
 		for (int ii=0; ii<_rootRead.size(); ii++) {
@@ -565,7 +565,7 @@ namespace dtOO {
 				return getChild(lookType, _rootRead[ii]);
 			}
 		}
-		return QDomElement();
+		return ::QDomElement();
   }
 	
   void dtXmlParser::createAnalyticFunction(
@@ -574,12 +574,12 @@ namespace dtOO {
     vectorHandling< constValue * > const * const cVP, 
     vectorHandling< analyticFunction * > * sFP
 	) const {
-    QDomElement aFElement = getElement("function", label);
+    ::QDomElement aFElement = getElement("function", label);
     dt__makeChapter(creating function);
     dt__info(createFunction(), << convertToString(aFElement) );
     
 
-		QDomElement tE = getChild("builder", aFElement);
+		::QDomElement tE = getChild("builder", aFElement);
 		
 		//
     // create builder
@@ -649,7 +649,7 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFP,        
 		vectorHandling< analyticGeometry * > * aGP
 	) const {
-    QDomElement partElement = getElement("part", label);
+    ::QDomElement partElement = getElement("part", label);
     dt__makeChapter(creating part);
     dt__info(createMachinePart(), << convertToString(partElement) );
 
@@ -657,7 +657,7 @@ namespace dtOO {
     // construct via builder
     //
     vectorHandling< analyticGeometry * > tmpAGeo;
-    QDomElement tE = getChild("builder", partElement);
+    ::QDomElement tE = getChild("builder", partElement);
 
     //
     // create builder
@@ -725,7 +725,7 @@ namespace dtOO {
 		//
 		// get configuration element
 		//
-		QDomElement wEl = getElement("boundedVolume", label);
+		::QDomElement wEl = getElement("boundedVolume", label);
 
 		//
 		// create new boundedVolume with factory
@@ -765,7 +765,7 @@ namespace dtOO {
 		//
 		// get configuration element
 		//
-		QDomElement wEl = getElement("plugin", label);
+		::QDomElement wEl = getElement("plugin", label);
 
 		//
 		// create new plugin with factory
@@ -806,7 +806,7 @@ namespace dtOO {
 		//
 		// get configuration element
 		//
-		QDomElement wEl = getElement("case", label);
+		::QDomElement wEl = getElement("case", label);
 
 		//
 		// create new plugin with factory
@@ -871,7 +871,7 @@ namespace dtOO {
   void dtXmlParser::setStaticProperties( void ) {
     for (int ii=0; ii<_rootRead.size(); ii++) {
 			if ( hasChild("staticProperties", _rootRead[ii]) ) {
-		    QDomElement el = getElement("staticProperties");
+		    ::QDomElement el = getElement("staticProperties");
 				staticPropertiesHandler::getInstance()->init( &el );
 				return;
 			}

@@ -77,7 +77,7 @@ namespace dtOO {
   }
   
   void pickLengthPercentRange::init( 
-	  QDomElement const * tE, 
+	  ::QDomElement const * tE, 
     baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,

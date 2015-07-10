@@ -27,7 +27,7 @@ namespace dtOO {
      * @param geoP vector of geometries for storing all construction objects
      * @param aGeoP result vector to store analyticGeometry
      */
-    virtual void buildPart(QDomElement ** toBuildP,
+    virtual void buildPart(::QDomElement ** toBuildP,
                                   pointContainer * const pointContainerP,
                                   vectorContainer * const vectorContainerP,      
                                   vectorHandling< constValue * > const * const cValP,
@@ -35,7 +35,7 @@ namespace dtOO {
                                   vectorHandling< analyticGeometry * > const * const depAGeoP,
                                   vectorHandling< analyticGeometry * > * aGeoP ) const = 0;
     virtual void buildPartCompound(
-      QDomElement ** toBuildP,
+      ::QDomElement ** toBuildP,
       pointContainer * const pointContainerP,
       vectorContainer * const vectorContainerP,      
       vectorHandling< constValue * > const * const cValP,

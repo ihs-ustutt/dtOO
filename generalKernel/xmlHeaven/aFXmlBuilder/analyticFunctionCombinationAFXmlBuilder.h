@@ -18,7 +18,7 @@ namespace dtOO {
     analyticFunctionCombinationAFXmlBuilder();
     virtual ~analyticFunctionCombinationAFXmlBuilder();
     virtual void buildPart(
-      QDomElement const & toBuild, 
+      ::QDomElement const & toBuild, 
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cV, 
       vectorHandling< analyticFunction * > const * const aF,

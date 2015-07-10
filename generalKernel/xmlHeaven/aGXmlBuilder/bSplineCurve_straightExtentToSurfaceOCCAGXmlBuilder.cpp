@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   void bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder::buildPart(
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -38,7 +38,7 @@ namespace dtOO {
 
 		dt__pH(map1dTo3d const) m1d;
 		dt__pH(map2dTo3d const) m2d;     		
-		QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
+		::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
 		while ( !wElement.isNull() ) {
 			analyticGeometry * aG_t 
 			= 

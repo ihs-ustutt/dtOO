@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   void bSplineCurve_curveConnectConstructOCCAGXmlBuilder::buildPart(
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,
     vectorHandling< constValue * > const * const cV,  
     vectorHandling< analyticFunction * > const * const aF,  
@@ -35,7 +35,7 @@ namespace dtOO {
 		//    
     dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
 
-    QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
+    ::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
     vectorHandling< dtCurve const * > ccV;
     while ( !wElement.isNull() ) {
       dt__ptrAss(

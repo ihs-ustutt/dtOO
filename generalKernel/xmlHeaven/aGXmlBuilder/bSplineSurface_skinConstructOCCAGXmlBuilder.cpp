@@ -26,7 +26,7 @@ namespace dtOO {
   }
 
   void bSplineSurface_skinConstructOCCAGXmlBuilder::buildPart(
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -45,7 +45,7 @@ namespace dtOO {
       dtXmlParserBase::getAttributeIntMuParse("analyticGeometry_offset", toBuild, cV, aF);
     }
     vectorHandling< dtCurve const * > ccV;
-    std::vector< QDomElement > wEl 
+    std::vector< ::QDomElement > wEl 
     = 
     dtXmlParserBase::getChildVector("analyticGeometry", toBuild);
     int ii = 0;

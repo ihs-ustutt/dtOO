@@ -40,7 +40,7 @@ namespace dtOO {
     return true;
   }
   
-  void typeCast::init( QDomElement * transformerElementP, 
+  void typeCast::init( ::QDomElement * transformerElementP, 
                    pointContainer * const pointContainerP,
                    vectorContainer * const vectorContainerP,    
                    vectorHandling< constValue * > const * const cValP,

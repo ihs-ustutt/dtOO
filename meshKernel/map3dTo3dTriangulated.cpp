@@ -29,7 +29,7 @@ namespace dtOO {
 	}
 	
   void map3dTo3dTriangulated::init( 
-    QDomElement const & element,
+    ::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -44,7 +44,7 @@ namespace dtOO {
     //
 		// region
 		//		
-    QDomElement wElement = qtXmlPrimitive::getChild("analyticGeometry", element);
+    ::QDomElement wElement = qtXmlPrimitive::getChild("analyticGeometry", element);
     std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
 		//
 		// get analyticGeometry, cast and store in region vector

@@ -16,7 +16,7 @@ namespace dtOO {
   }
 
   void vec3dMuParserThreeDAFXmlBuilder::buildPart(
-	  QDomElement const & toBuildP, 
+	  ::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -32,10 +32,10 @@ namespace dtOO {
     bool hasXThree = dtXmlParserBase::hasChild("x_three", toBuildP);				
     
     if (hasExpression && hasXOne && hasXTwo && hasXThree) {		
-			QDomElement expEl = dtXmlParserBase::getChild("expression", toBuildP);
-			QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
-			QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
-			QDomElement xThreeEl = dtXmlParserBase::getChild("x_three", toBuildP);
+			::QDomElement expEl = dtXmlParserBase::getChild("expression", toBuildP);
+			::QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
+			::QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
+			::QDomElement xThreeEl = dtXmlParserBase::getChild("x_three", toBuildP);
 			
 			std::string expStr 
 			= 

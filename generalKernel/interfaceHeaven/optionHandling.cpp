@@ -26,11 +26,11 @@ namespace dtOO {
     _optionValue.clear();
   }
   
-  void optionHandling::init( QDomElement const * const wElement) {
+  void optionHandling::init( ::QDomElement const * const wElement) {
     _optionName.clear();
     _optionValue.clear();
 
-    QDomElement option = qtXmlPrimitive::getChild("option", *wElement);
+    ::QDomElement option = qtXmlPrimitive::getChild("option", *wElement);
     while ( !option.isNull() ) {
       std::string optionName = qtXmlPrimitive::getAttributeStr("name", option);
       std::string optionValue = qtXmlPrimitive::getAttributeStr("value", option);

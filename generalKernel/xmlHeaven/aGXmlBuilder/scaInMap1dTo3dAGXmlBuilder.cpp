@@ -21,7 +21,7 @@ namespace dtOO {
   }
 
   void scaInMap1dTo3dAGXmlBuilder::buildPart( 
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -39,7 +39,7 @@ namespace dtOO {
     //
     // get analyticGeometry
     //
-    QDomElement aGElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
+    ::QDomElement aGElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
     dt__pH(analyticGeometry const) aG_t(
       dtXmlParserBase::createAnalyticGeometry(&aGElement, bC, cV, aF, aG)
     );
@@ -52,7 +52,7 @@ namespace dtOO {
     //
     // get analyticFunction
     //
-    QDomElement aFElement = dtXmlParserBase::getChild("analyticFunction", toBuild);
+    ::QDomElement aFElement = dtXmlParserBase::getChild("analyticFunction", toBuild);
     dt__pH(analyticFunction const) aF_t(
       dtXmlParserBase::createAnalyticFunction(&aFElement, bC, cV, aF)
     );

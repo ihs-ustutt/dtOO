@@ -15,11 +15,11 @@ namespace dtOO {
     dt__classOnlyName(dtXmlParserFunctionDecoratorInterface);
     dtXmlParserFunctionDecoratorInterface();
     virtual ~dtXmlParserFunctionDecoratorInterface();
-    virtual void buildPart(QDomElement const & toBuildP, 
+    virtual void buildPart(::QDomElement const & toBuildP, 
                                           vectorHandling< constValue * > const * const cValP,
                                           vectorHandling< analyticFunction * > const * const depSFunP,
                                           vectorHandling< analyticFunction * > * sFunP) const = 0;
-    virtual void buildPartCompound(QDomElement const & toBuildP, 
+    virtual void buildPartCompound(::QDomElement const & toBuildP, 
                                           vectorHandling< constValue * > const * const cValP,
                                           vectorHandling< analyticFunction * > const * const depSFunP,
                                           vectorHandling< analyticFunction * > * sFunP) const;    

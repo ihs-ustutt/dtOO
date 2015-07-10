@@ -16,7 +16,7 @@ namespace dtOO {
   }
 
   void scaMuParserTwoDAFXmlBuilder::buildPart(
-	  QDomElement const & toBuildP, 
+	  ::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
 		vectorHandling< analyticFunction * > const * const depSFunP,
@@ -31,9 +31,9 @@ namespace dtOO {
 		bool hasXTwo = dtXmlParserBase::hasChild("x_two", toBuildP);
     
     if (hasExpression && hasXOne && hasXTwo) {		
-			QDomElement expEl = dtXmlParserBase::getChild("expression", toBuildP);
-			QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
-			QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
+			::QDomElement expEl = dtXmlParserBase::getChild("expression", toBuildP);
+			::QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
+			::QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
 			
 			std::string expStr 
 			= 

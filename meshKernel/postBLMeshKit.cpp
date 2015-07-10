@@ -30,7 +30,7 @@ namespace dtOO {
 	}
 	
   void postBLMeshKit::init( 
-		QDomElement const & element,
+		::QDomElement const & element,
     baseContainer const * const bC,					
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -50,7 +50,7 @@ namespace dtOO {
 		//
 		// boundedVolume
 		//		
-    QDomElement wElement = qtXmlPrimitive::getChild("boundedVolume", element);
+    ::QDomElement wElement = qtXmlPrimitive::getChild("boundedVolume", element);
     std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
 		_faceLabel 
 		= 

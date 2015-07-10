@@ -21,7 +21,7 @@ namespace dtOO {
   }
 
   void makeCompoundAGXmlBuilder::buildPart( 
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,           
     vectorHandling< constValue * > const * const cV,           
     vectorHandling< analyticFunction * > const * const aF,    
@@ -36,7 +36,7 @@ namespace dtOO {
     //
     // get analyticGeometry
     //
-    std::vector<QDomElement> aGElVec 
+    std::vector<::QDomElement> aGElVec 
     = 
     dtXmlParserBase::getChildVector("analyticGeometry", toBuild);
 

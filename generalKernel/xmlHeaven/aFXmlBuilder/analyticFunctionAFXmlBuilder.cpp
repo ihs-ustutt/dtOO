@@ -17,7 +17,7 @@ namespace dtOO {
   }
 
   void analyticFunctionAFXmlBuilder::buildPart( 
-		QDomElement const & toBuild, 
+		::QDomElement const & toBuild, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF,
@@ -33,7 +33,7 @@ namespace dtOO {
     //
     // copy
     //
-    QDomElement wElement 
+    ::QDomElement wElement 
     = 
     dtXmlParserBase::getChild("analyticFunction", toBuild);     
     vectorHandling< analyticFunction * > toCopy;

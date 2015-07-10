@@ -20,7 +20,7 @@ namespace dtOO {
     writeStep();
     virtual ~writeStep();
     virtual void init( 
-      QDomElement const & element,
+      ::QDomElement const & element,
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,

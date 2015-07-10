@@ -23,7 +23,7 @@ namespace dtOO {
   }
 
   void trans6SidedCubeAGXmlBuilder::buildPart( 
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,
     vectorHandling< constValue * > const * const cV,  
     vectorHandling< analyticFunction * > const * const aF,  
@@ -39,12 +39,12 @@ namespace dtOO {
     );
     
     std::vector< map2dTo3d const * > mm(6, NULL);
-    std::vector< QDomElement > wElementVec 
+    std::vector< ::QDomElement > wElementVec 
     = 
     dtXmlParserBase::getChildVector( "analyticGeometry", toBuild );
     if (wElementVec.size() == 6) {
       int counter = 0;
-      dt__forAllIter(std::vector< QDomElement >, wElementVec, it) {
+      dt__forAllIter(std::vector< ::QDomElement >, wElementVec, it) {
         //
         // get analyticGeometry
         //

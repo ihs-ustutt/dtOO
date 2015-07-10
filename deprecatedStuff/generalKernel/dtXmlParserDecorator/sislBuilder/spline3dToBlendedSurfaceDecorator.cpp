@@ -21,7 +21,7 @@ namespace dtOO {
   }
 
   void spline3dToBlendedSurfaceDecorator::buildPart(
-         QDomElement ** toBuildP,
+         ::QDomElement ** toBuildP,
          pointContainer * const pointContainerP,
          vectorContainer * const vectorContainerP,    
          vectorHandling< constValue * > const * const cValP,        
@@ -41,7 +41,7 @@ namespace dtOO {
       // put splines in builder
       //
 			vectorHandling< analyticGeometry const * > cc;
-      QDomElement wElement = getChild( "splineCurve3d", **toBuildP );
+      ::QDomElement wElement = getChild( "splineCurve3d", **toBuildP );
       while ( !wElement.isNull() ) {
         analyticGeometry * aGeoSplineP
 				=
@@ -65,7 +65,7 @@ namespace dtOO {
     // copy existing surface
     //
     else if (hasSplineSurface && !hasSplineCurves3d) {
-      QDomElement wElement = getChild( "splineSurface", **toBuildP );
+      ::QDomElement wElement = getChild( "splineSurface", **toBuildP );
       createAdvanced(
         &wElement,
         pointContainerP,

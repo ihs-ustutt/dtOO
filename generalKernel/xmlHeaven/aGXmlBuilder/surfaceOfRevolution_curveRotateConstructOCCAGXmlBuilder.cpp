@@ -27,7 +27,7 @@ namespace dtOO {
   }
 
   void surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder::buildPart(
-    QDomElement const & toBuild,
+    ::QDomElement const & toBuild,
     baseContainer * const bC,
     vectorHandling< constValue * > const * const cV,  
     vectorHandling< analyticFunction * > const * const aF,  
@@ -41,7 +41,7 @@ namespace dtOO {
     dt__throwIf(!dtXmlParserBase::hasChild("Point_3", toBuild), buildPart());
     dt__throwIf(!dtXmlParserBase::hasChild("Vector_3", toBuild), buildPart());
 		
-    QDomElement wElement;
+    ::QDomElement wElement;
     //
     // spline curve
     //

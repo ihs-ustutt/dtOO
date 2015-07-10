@@ -159,7 +159,7 @@ namespace dtOO {
 
   float qtXmlBase::getAttributeFloatMuParse( 
     std::string const attName, 
-    QDomElement const element, 
+    ::QDomElement const element, 
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP 
   ) {
@@ -174,7 +174,7 @@ namespace dtOO {
 
   int qtXmlBase::getAttributeIntMuParse(
     std::string const attName, 
-    QDomElement const element, 
+    ::QDomElement const element, 
     vectorHandling< constValue * > const * const cValP,
     vectorHandling< analyticFunction * > const * const sFunP 
   ) {
@@ -189,7 +189,7 @@ namespace dtOO {
   
 	std::vector< float > qtXmlBase::getAttributeFloatVectorMuParse( 
 		std::string const attName, 
-		QDomElement const element, 
+		::QDomElement const element, 
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF 
 	) {
@@ -206,7 +206,7 @@ namespace dtOO {
 
 	std::vector< int > qtXmlBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
-		QDomElement const element, 
+		::QDomElement const element, 
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF 
 	) {

@@ -20,7 +20,7 @@ namespace dtOO {
     dtCase();
     virtual ~dtCase();
     virtual void init( 
-      QDomElement const & element,
+      ::QDomElement const & element,
       baseContainer const * const bC,
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,

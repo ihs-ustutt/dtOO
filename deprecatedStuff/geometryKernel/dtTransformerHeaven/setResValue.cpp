@@ -21,7 +21,7 @@ namespace dtOO {
     return transSFun;
   }
 
-  void setResValue::init( QDomElement * transformerElementP, 
+  void setResValue::init( ::QDomElement * transformerElementP, 
                                   vectorHandling< constValue * > const * const cValP,
                                   vectorHandling< scaFunction * > const * const sFunP) {
     handleFloat(
