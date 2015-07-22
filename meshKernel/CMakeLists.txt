@@ -17,7 +17,6 @@ SET(HEADERS
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dBlockGmsh.h
-  map3dTo3dTriangulated.h
   map2dTo3dTriangulated.h
   map3dTo3dWithInternalTurboGrid.h
   vec3dInMap3dTo3dWithMeshedSurface.h
@@ -47,7 +46,6 @@ SET(SOURCES
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dBlockGmsh.cpp
-  map3dTo3dTriangulated.cpp
   map2dTo3dTriangulated.cpp
   map3dTo3dWithInternalTurboGrid.cpp
   vec3dInMap3dTo3dWithMeshedSurface.cpp

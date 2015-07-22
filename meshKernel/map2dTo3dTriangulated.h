@@ -23,9 +23,7 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticGeometry * > const * const aG,
       vectorHandling< boundedVolume * > const * const bV
-    );    
-    virtual void makeGrid(void);
-    virtual void makePreGrid(void);   
+    );
   private:
   };
 }

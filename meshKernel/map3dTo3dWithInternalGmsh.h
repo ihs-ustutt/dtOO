@@ -25,8 +25,6 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > const * const aG,
       vectorHandling< boundedVolume * > const * const bV
     );    
-    virtual void makeGrid(void);
-    virtual void makePreGrid(void);
   private:
     dt__pH(map3dTo3d) _m3d;    
     dt__pVH(map2dTo3d) _internal;

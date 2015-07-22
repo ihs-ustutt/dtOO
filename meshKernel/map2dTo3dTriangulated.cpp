@@ -55,47 +55,4 @@ namespace dtOO {
 			_gm->addIfFaceToGmshModel(mm2d, &fId);
 		}
 	}
-	
-  void map2dTo3dTriangulated::makeGrid(void) {
-    //
-    // set options
-    //      
-    optionGroup oG = getOptionGroup("gmsh");      
-    for (int ii=0;ii<oG.size();ii++) {
-      GmshSetOption(oG[ii].first[0], oG[ii].first[1], oG[ii].second);
-    }
-    //
-    // parse gmsh file if option exists
-    //
-    if ( hasOption("gmshMeshFile") ) {
-      ParseFile( getOption("gmshMeshFile"), true, true );
-    }		
-		
-    //
-    // set a bounding box, necessary to set CTX::instance()->lc to prevent
-    // very small elements
-    //
-    SetBoundingBox();
-
-		//
-		// mesh
-		//
-		if ( !optionHandling::optionTrue("defer_mesh_0") ) _gm->meshPhysical(0);
-		if ( !optionHandling::optionTrue("defer_mesh_1") ) _gm->meshPhysical(1);
-		if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
-
-		//
-		// notify observers
-		//
-		boundedVolume::postNotify();
-		
-		//
-		// mark as meshed
-		//
-		boundedVolume::setMeshed();		
-	}
-  
-	void map2dTo3dTriangulated::makePreGrid(void) {
-		boundedVolume::preNotify();
-	}  
 }

@@ -42,7 +42,9 @@ namespace dtOO {
     //
 		// region
 		//		
-    ::QDomElement wElement = qtXmlPrimitive::getChild("analyticGeometry", element);
+    ::QDomElement wElement 
+    = 
+    qtXmlPrimitive::getChild("analyticGeometry", element);
     std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
 		
 		//
@@ -67,63 +69,5 @@ namespace dtOO {
 			_gm->addRegionToGmshModel(map3dTo3d::ConstSecureCast(cI[ii]));
 //		  _gm->getDtGmshRegionByTag(_gm->getNumRegions())->meshUnstructured();
 		}
-	}
-	
-  void map3dTo3dBlockGmsh::makeGrid(void) {
-		//
-		// set current model
-		//
-		::GModel::setCurrent(_gm.get());
-		
-    //
-    // set options
-    //      
-    optionGroup oG = getOptionGroup("gmsh");      
-    for (int ii=0;ii<oG.size();ii++) {
-      GmshSetOption(oG[ii].first[0], oG[ii].first[1], oG[ii].second);
-    }
-		
-    //
-    // parse gmsh file if option exists
-    //
-    if ( hasOption("gmshMeshFile") ) {
-      ParseFile( getOption("gmshMeshFile"), true, true );
-    }
-		
-    //
-    // set a bounding box, necessary to set CTX::instance()->lc to prevent
-    // very small elements
-    //
-    SetBoundingBox();
-
-    //
-		// destroy old mesh
-		//
-		_gm->deleteMesh();
-		
-		//
-		// reset vertex and element numbering
-		//
-		_gm->setMaxVertexNumber(0); 
-		_gm->setMaxElementNumber(0);
-		
-		//
-		// meshing
-		//
-		if ( !optionHandling::optionTrue("defer_mesh_0") ) _gm->meshPhysical(0);
-		if ( !optionHandling::optionTrue("defer_mesh_1") ) _gm->meshPhysical(1);
-		if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
-		if ( !optionHandling::optionTrue("defer_mesh_3") ) _gm->meshPhysical(3);
-		
-		boundedVolume::postNotify();
-		
-		//
-		// mark as meshed
-		//
-		boundedVolume::setMeshed();		
-	}
-  
-	void map3dTo3dBlockGmsh::makePreGrid(void) {
-		boundedVolume::preNotify();
 	}
 }

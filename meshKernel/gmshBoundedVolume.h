@@ -35,6 +35,8 @@ namespace dtOO {
 	  virtual dtGmshFace * getFace( std::string const & tag ) const;
 	  virtual dtGmshRegion * getRegion( std::string const & tag ) const;
     virtual dtGmshModel * getModel( void ) const;
+	  virtual void makePreGrid( void );
+    virtual void makeGrid( void );
   private:
     void updatePhysicals( void ) const;    
     mutable twoDArrayHandling< std::string > _physLabels;    

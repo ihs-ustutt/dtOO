@@ -53,7 +53,6 @@ namespace dtOO {
         bVI->init(transElement[ii], bC, cV, aF, aG, bV, this);
         this->attachBVObserver( bVI );
       }
-
     }
   }
 

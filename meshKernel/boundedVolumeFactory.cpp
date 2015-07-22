@@ -3,7 +3,6 @@
 #include <logMe/logMe.h>
 #include "boundedVolume.h"
 #include "map3dTo3dBlockGmsh.h"
-#include "map3dTo3dTriangulated.h"
 #include "map2dTo3dTriangulated.h"
 #include "map3dTo3dWithInternalTurboGrid.h"
 #include "vec3dInMap3dTo3dWithMeshedSurface.h"
@@ -28,7 +27,6 @@ namespace dtOO {
     dt__info(create(), << "creating " << str <<  "...");
     
 		__IFRET(map3dTo3dBlockGmsh);
-		__IFRET(map3dTo3dTriangulated);
 		__IFRET(map2dTo3dTriangulated);
 		__IFRET(map3dTo3dWithInternalTurboGrid);
 		__IFRET(vec3dInMap3dTo3dWithMeshedSurface);

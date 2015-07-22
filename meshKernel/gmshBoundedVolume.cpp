@@ -17,6 +17,7 @@
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <gmsh/Gmsh.h>
+#include <gmsh/OpenFile.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
 
@@ -220,4 +221,65 @@ namespace dtOO {
 			}
 		}
 	}
+
+	void gmshBoundedVolume::makePreGrid(void) {
+		//
+		// set current model
+		//
+		::GModel::setCurrent(_gm.get());
+		
+    //
+    // set options
+    //      
+    optionGroup oG = getOptionGroup("gmsh");      
+    for (int ii=0;ii<oG.size();ii++) {
+      GmshSetOption(oG[ii].first[0], oG[ii].first[1], oG[ii].second);
+    }
+		
+    //
+    // parse gmsh file if option exists
+    //
+    if ( hasOption("gmshMeshFile") ) {
+      ParseFile( getOption("gmshMeshFile"), true, true );
+    }
+		
+    //
+    // set a bounding box, necessary to set CTX::instance()->lc to prevent
+    // very small elements
+    //
+    SetBoundingBox();
+
+    //
+		// destroy old mesh
+		//
+		_gm->deleteMesh();
+		
+		//
+		// reset vertex and element numbering
+		//
+		_gm->setMaxVertexNumber(0); 
+		_gm->setMaxElementNumber(0);
+    
+		bVOSubject::preNotify();
+	}  
+
+  void gmshBoundedVolume::makeGrid(void) {
+    //
+    // meshing
+    //
+    if ( !optionHandling::optionTrue("defer_mesh_0") ) _gm->meshPhysical(0);
+    if ( !optionHandling::optionTrue("defer_mesh_1") ) _gm->meshPhysical(1);
+    if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
+    if ( !optionHandling::optionTrue("defer_mesh_3") ) _gm->meshPhysical(3);
+
+    //
+    // notify observers
+    //
+    boundedVolume::postNotify();
+
+    //
+    // mark as meshed
+    //
+    boundedVolume::setMeshed();			
+  }  
 }
