@@ -36,6 +36,7 @@ namespace dtOO {
     //
     dtGmshRegion * getDtGmshRegionByTag( int const tag ) const;
     dtGmshFace * getDtGmshFaceByTag( int const tag ) const;
+    dtGmshEdge * getDtGmshEdgeByPhysical( std::string const & physical ) const;
     dtGmshFace * getDtGmshFaceByPhysical( std::string const & physical ) const;
     dtGmshRegion * getDtGmshRegionByPhysical(
       std::string const & physical
@@ -52,13 +53,16 @@ namespace dtOO {
     static std::list< dtGmshFace * > cast2DtGmshFace( 
       std::list< ::GFace * > faces 
     );
+    static std::list< dtGmshRegion * > cast2DtGmshRegion( 
+      std::list< ::GRegion * > regions 
+    );    
     static dtGmshEdge * cast2DtGmshEdge( ::GEntity * ge );  
     static std::list< dtGmshEdge * > cast2DtGmshEdge( 
       std::list< ::GEdge * > edges 
     );
     static dtGmshVertex * cast2DtGmshVertex( ::GEntity * gv );
     //
-    // modify postion of MVertex and GVertex
+    // modify position of MVertex and GVertex
     //
     static dtPoint3 extractPosition( ::GVertex const * const gv );  
     static dtPoint3 extractPosition( ::MVertex const * const mv );
@@ -175,7 +179,7 @@ namespace dtOO {
     int alreadyInModel( ::GVertex const * const gv ) const;
     int alreadyInModel( ::GEdge const * const ge ) const;
     int alreadyInModel( ::GFace const * const gf ) const;
-    int alreadyInModel( ::GRegion const * const gr ) const;     
+    int alreadyInModel( ::GRegion const * const gr ) const;
   private:
     std::string _debug;
   };

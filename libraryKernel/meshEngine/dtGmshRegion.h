@@ -42,7 +42,10 @@ namespace dtOO {
     void setGrading( 
       float const & gU, float const & gV, float const & gW,
       float const & tU, float const & tV, float const & tW
-    );    
+    );
+    std::list< dtGmshFace const * > faceList(
+      std::vector< std::string > const & label
+    ) const;
     std::string dumpToString( void ) const;
   public:
     mutable ::GEntity::MeshGenerationStatus _status;

@@ -248,4 +248,15 @@ namespace dtOO {
 		
 		setGrading(grading, type);
   }	  
+
+  std::list< dtGmshFace const * > dtGmshRegion::faceList(
+    std::vector< std::string > const & label
+  ) const {
+		std::list< dtGmshFace const * > faceList;
+		dt__forAllConstIter(std::vector< std::string >, label, it) {
+		  faceList.push_back( refDtGmshModel().getDtGmshFaceByPhysical(*it) );
+		}
+    
+    return faceList;
+  }  
 }

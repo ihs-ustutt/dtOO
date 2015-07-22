@@ -376,6 +376,18 @@ namespace dtOO {
     return gFace;    
   }
 	
+  dtGmshEdge * dtGmshModel::getDtGmshEdgeByPhysical( 
+    std::string const & physical 
+  ) const {
+    int pN = __caCThis->getPhysicalNumber(1, physical);
+		intGEntityVMap gE_pN;
+		__caCThis->getPhysicalGroups(1, gE_pN);
+		
+		dt__throwIf(gE_pN[pN].size()!=1, getDtGmshEdgeByPhysical());
+		
+		return cast2DtGmshEdge(gE_pN[pN][0]);
+  }	
+  
   dtGmshFace * dtGmshModel::getDtGmshFaceByPhysical( 
     std::string const & physical 
   ) const {
@@ -477,7 +489,17 @@ namespace dtOO {
 			ret.push_back( cast2DtGmshFace(*it) );
 		}
 		return ret;
-	}	
+	}
+
+  std::list< dtGmshRegion * > dtGmshModel::cast2DtGmshRegion( 
+    std::list< ::GRegion * > regions 
+  ) {
+		std::list< dtGmshRegion * > ret;
+		dt__forAllIter(std::list< ::GRegion * >, regions, it) {
+			ret.push_back( cast2DtGmshRegion(*it) );
+		}
+		return ret;
+	}	  
 	
   dtGmshVertex * dtGmshModel::cast2DtGmshVertex( ::GEntity * gv ) {
     dtGmshVertex * ret;
