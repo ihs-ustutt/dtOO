@@ -71,9 +71,15 @@ SET(HEADERS
   meshEngine/dtGmshRegion.h
   meshEngine/dtGmshRegionHex.h
   meshEngine/dtGmshModel.h
+  meshEngine/dtMeshOperator.h
+  meshEngine/dtMeshOperatorFactory.h
+  meshEngine/dtMesh1DOperator.h
+  meshEngine/dtMesh2DOperator.h
+  meshEngine/dtMesh3DOperator.h
   meshEngine/dtMeshGEdge.h
   meshEngine/dtMeshGFace.h
   meshEngine/dtMeshGRegion.h
+  meshEngine/dtMeshGRegionWithBoundaryLayer.h
   meshEngine/dtMoabCore.h
   meshEngine/dtGmshMeshBoundaryLayer.h
   meshEngine/dtOMMesh.h
@@ -161,9 +167,15 @@ SET(SOURCES
   meshEngine/dtGmshRegion.cpp
   meshEngine/dtGmshRegionHex.cpp
   meshEngine/dtGmshModel.cpp
+  meshEngine/dtMeshOperatorFactory.cpp
+  meshEngine/dtMeshOperator.cpp
+  meshEngine/dtMesh1DOperator.cpp
+  meshEngine/dtMesh2DOperator.cpp
+  meshEngine/dtMesh3DOperator.cpp
   meshEngine/dtMeshGEdge.cpp
   meshEngine/dtMeshGFace.cpp
   meshEngine/dtMeshGRegion.cpp
+  meshEngine/dtMeshGRegionWithBoundaryLayer.cpp
   meshEngine/dtMoabCore.cpp
   meshEngine/dtGmshMeshBoundaryLayer.cpp
   meshEngine/dtOMMesh.cpp

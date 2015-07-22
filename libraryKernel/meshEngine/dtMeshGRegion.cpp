@@ -3,25 +3,40 @@
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
 #include "dtGmshFace.h"
+#include "xmlHeaven/qtXmlBase.h"
 #include <gmsh/meshGRegion.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MPyramid.h>
 
 namespace dtOO {
-  dtMeshGRegion::dtMeshGRegion() {
+  dtMeshGRegion::dtMeshGRegion() : dtMesh3DOperator() {
     _pyramidHeightScale = .25;
   }
 
-  dtMeshGRegion::dtMeshGRegion( float const & pyramidHeightScale ) {
-    _pyramidHeightScale = pyramidHeightScale;
-  }
-  
-  dtMeshGRegion::dtMeshGRegion(const dtMeshGRegion& orig) {
+  dtMeshGRegion::dtMeshGRegion(
+    const dtMeshGRegion& orig
+  ) : dtMesh3DOperator(orig) {
     _pyramidHeightScale = orig._pyramidHeightScale;
   }
 
   dtMeshGRegion::~dtMeshGRegion() {
+  }
+  
+  void dtMeshGRegion::init(
+    ::QDomElement const & element,
+    baseContainer const * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF,
+    vectorHandling< analyticGeometry * > const * const aG,
+    vectorHandling< boundedVolume * > const * const bV,
+    vectorHandling< dtMeshOperator * > const * const mO
+  ) {
+    dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
+    
+    _pyramidHeightScale 
+    = 
+    qtXmlBase::getAttributeFloatMuParse("pyramidHeightScale", element, cV, aF);
   }
 
   void dtMeshGRegion::operator()( dtGmshRegion * dtgr) {
@@ -150,12 +165,7 @@ namespace dtOO {
         // 
         SPoint3 bb = (*it)->barycenter();
         SVector3 nn = (*it)->getFace(0).normal();
-        double radius = .25 * (*it)->getInnerRadius();
-//        .25 * (        
-//          ::distance( (*it)->getVertex(0), (*it)->getVertex(2) )
-//          +
-//          ::distance( (*it)->getVertex(1), (*it)->getVertex(3) )
-//        );
+        double radius = _pyramidHeightScale * (*it)->getInnerRadius();
 
         //
         // create new mesh vertex
@@ -226,7 +236,7 @@ namespace dtOO {
     //
     // call meshing again
     //
-    dtMeshGRegion()(dtgr);
+    this->operator()(dtgr);
     
     dt__forAllIter(std::vector< ::MVertex * >, vertices, it) {
       (*it)->setEntity(dtgr);
@@ -242,7 +252,6 @@ namespace dtOO {
       dtgr->replaceFace(it.second, it.first);        
       dtgr->model()->remove(it.second);
     }
-    
   }
 }
 

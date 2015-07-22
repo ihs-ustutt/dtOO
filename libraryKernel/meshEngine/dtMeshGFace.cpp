@@ -4,10 +4,10 @@
 #include <gmsh/meshGFace.h>
 
 namespace dtOO {
-  dtMeshGFace::dtMeshGFace() {
+  dtMeshGFace::dtMeshGFace() : dtMesh2DOperator() {
   }
 
-  dtMeshGFace::dtMeshGFace(const dtMeshGFace& orig) {
+  dtMeshGFace::dtMeshGFace(const dtMeshGFace& orig) : dtMesh2DOperator(orig) {
   }
 
   dtMeshGFace::~dtMeshGFace() {

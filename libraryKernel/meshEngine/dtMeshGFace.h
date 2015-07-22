@@ -3,13 +3,14 @@
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
+#include "dtMesh2DOperator.h"
 
 namespace dtOO {
   class dtGmshFace;
   
-  class dtMeshGFace {
+  class dtMeshGFace : public dtMesh2DOperator {
   public:
-    dt__classOnlyName(dtMeshGFace);     
+    dt__class(dtMeshGFace, dtMeshOperator);     
     dtMeshGFace();
     dtMeshGFace(const dtMeshGFace& orig);
     virtual ~dtMeshGFace();
