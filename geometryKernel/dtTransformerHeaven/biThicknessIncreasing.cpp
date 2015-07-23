@@ -110,7 +110,7 @@ namespace dtOO {
 			float uvRes
 			= 
 			staticPropertiesHandler::getInstance()->getOptionFloat(
-				"uv_resolution"
+				"uvw_resolution"
 			);
 			if ( dtLinearAlgebra::distance(p2.back(), p2Inv.front()) < uvRes ) {
 				dt__info(

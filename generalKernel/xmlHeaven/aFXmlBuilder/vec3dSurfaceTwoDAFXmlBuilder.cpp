@@ -42,15 +42,19 @@ namespace dtOO {
       //
 			vectorHandling< dtCurve const * > cL;
       while ( !elementP.isNull() ) {
-        analyticFunction const * const aF 
-				= 
-				dtXmlParserBase::createAnalyticFunction( &elementP, bC, cValP, depSFunP );
-				dt__ptrAss(
-				  vec3dCurveOneD const * v3d1d, 
-				  vec3dCurveOneD::ConstDownCast(aF)
-				);
-				cL.push_back( v3d1d->ptrDtCurve() );
+        dt__vH(analyticFunction *) aF;
+				dtXmlParserBase::createAdvanced(&elementP, bC, cValP, depSFunP, &aF);
+        
+        dt__forAllIndex(aF, ii) {
+          dt__ptrAss(
+            vec3dCurveOneD const * v3d1d, 
+            vec3dCurveOneD::ConstDownCast(aF[ii])
+          );
+          cL.push_back( v3d1d->ptrDtCurve() );
+        }
+        
 				elementP = dtXmlParserBase::getNextSibling("analyticFunction", elementP);      
+        
       }
 			ptrHandling<dtSurface> dtS( 
 				bSplineSurface_skinConstructOCC(cL).result() 

@@ -152,7 +152,9 @@ namespace dtOO {
 			std::pair< dtPoint3, dtPoint3 > bb = dtLinearAlgebra::boundingBox(mvUVW[ii]);
 			ultraBoxPoints.push_back(bb.first);
 			ultraBoxPoints.push_back(bb.second);
-			float eps = staticPropertiesHandler::getInstance()->getOptionFloat("uv_resolution");
+			float eps 
+      = 
+      staticPropertiesHandler::getInstance()->getOptionFloat("uvw_resolution");
 			if ( dtLinearAlgebra::isStraightLine(bb, eps) ) {
 				dtC.push_back( 
 				  trimmedCurve_twoPointsConnectConstructOCC(
