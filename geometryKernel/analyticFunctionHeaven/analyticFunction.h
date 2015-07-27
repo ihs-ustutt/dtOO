@@ -54,7 +54,8 @@ namespace dtOO {
     static aFY aFYTwoD( dtPoint2 const & pp );    
     static aFY aFYThreeD( dtPoint3 const & pp );    
     static aFY aFY_aFX( aFX const & xx );    
-    static aFX aFX_aFY( aFY const & yy );    
+    static aFX aFX_aFY( aFY const & yy );
+    static float distance( aFX const & x0, aFX const & x1 );
   private:
 	  double F(double const * xx) const;
     mutable aFY _invY;

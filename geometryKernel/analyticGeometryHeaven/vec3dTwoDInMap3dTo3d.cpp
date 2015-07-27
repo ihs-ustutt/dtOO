@@ -149,17 +149,4 @@ namespace dtOO {
 		
 		return ss.str();
 	}
-  
-  dtPoint2 vec3dTwoDInMap3dTo3d::reparamOnFace(dtPoint3 const & ppXYZ) const {
-    dtPoint3 ppUVW = _m3d->reparamInVolume(ppXYZ);
-    aFX xx = _v2d->invY( analyticFunction::aFYThreeD(ppUVW) );
-    
-    dtPoint3 ppXYZReparam;
-    if (!_percentF) ppXYZReparam = getPoint(xx[0], xx[1]);
-    else ppXYZReparam = getPointPercent(xx[0], xx[1]);
-    
-    analyticGeometry::inXYZTolerance(ppXYZ, ppXYZReparam);
-
-    return dtPoint2(xx[0], xx[1]);
-  }
 }

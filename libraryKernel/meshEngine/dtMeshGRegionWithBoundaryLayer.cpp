@@ -363,6 +363,7 @@ namespace dtOO {
 		//
 		// add elements and vertices to commonReg
 		//
+    dtgr->mesh_vertices.reserve(vertex.size());
 		dt__forAllIter(std::vector< ::MVertex * >, vertex, vIt) {
 			(*vIt)->setEntity(dtgr);
 			dtgr->addMeshVertex(*vIt);
@@ -685,10 +686,12 @@ namespace dtOO {
 
     (*_3D)( gr );
     
+    element.reserve(gr->getNumMeshElements());
     dt__forFromToIndex(0, gr->getNumMeshElements(), ii) {
       element.push_back( gr->getMeshElement(ii) );
     }
     
+    vertex.reserve(gr->getNumMeshVertices());
     dt__forFromToIndex(0, gr->getNumMeshVertices(), ii) {
       vertex.push_back( gr->getMeshVertex(ii) );
     }

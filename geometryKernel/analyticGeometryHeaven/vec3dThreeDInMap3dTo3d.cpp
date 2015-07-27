@@ -75,21 +75,4 @@ namespace dtOO {
   ) const {
     return new map3dTo3dTransformed< vec3dThreeDInMap3dTo3d >(*this, dtT);
   }
-  
-  dtPoint3 vec3dThreeDInMap3dTo3d::reparamInVolume(
-    dtPoint3 const & ppXYZ
-  ) const {
-    dtPoint3 ppUVW = _m3d->reparamInVolume(ppXYZ);
-    aFX xx 
-    = 
-    _v3d->invY( analyticFunction::aFYThreeD(ppUVW) );
-    
-    dtPoint3 ppXYZReparam;
-    if (!_percentF) ppXYZReparam = getPoint(xx[0], xx[1], xx[2]);
-    else ppXYZReparam = getPointPercent(xx[0], xx[1], xx[2]);
-    
-    analyticGeometry::inXYZTolerance(ppXYZ, ppXYZReparam);    
-
-    return dtPoint3(xx[0], xx[1], xx[2]);
-  }
 }

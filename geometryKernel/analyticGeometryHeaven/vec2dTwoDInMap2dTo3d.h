@@ -36,10 +36,6 @@ namespace dtOO {
       virtual float getMin( int const & dir) const;
       virtual float getMax( int const & dir) const;
       //
-      // optional overload
-      //
-      virtual dtPoint2 reparamOnFace(dtPoint3 const & ppXYZ) const; 
-      //
       //
       //        
       vec2dTwoD const * ptrToVec2dTwoD( void ) const;

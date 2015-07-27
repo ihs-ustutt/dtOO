@@ -32,10 +32,6 @@ namespace dtOO {
     virtual bool isClosed( int const & dir) const;
     virtual float getMin( int const & dir) const;
     virtual float getMax( int const & dir) const;
-    //
-    // optional overload
-    //
-    virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;
   private:
     ptrHandling< vec3dThreeD > _v3d;
     ptrHandling< map3dTo3d > _m3d;
