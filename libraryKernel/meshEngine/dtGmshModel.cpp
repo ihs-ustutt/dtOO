@@ -46,7 +46,7 @@ namespace dtOO {
 
   dtGmshModel::~dtGmshModel() {
   }
-  	
+  
   void dtGmshModel::addIfVertexToGmshModel( 
     dtPoint3 const & vertex, int * const tag 
   ) {
@@ -525,6 +525,22 @@ namespace dtOO {
 	void dtGmshModel::setPosition( ::MVertex * mv, dtPoint3 const & pp ) {
 		mv->setXYZ(pp.x(), pp.y(), pp.z());
 	}
+  
+  void dtGmshModel::add( ::GEntity * ge) {
+    if ( dtGmshVertex::DownCast(ge) ) {
+      GModel::add( dtGmshVertex::SecureCast(ge) );
+    }
+    else if ( dtGmshEdge::DownCast(ge) ) {
+      GModel::add( dtGmshEdge::SecureCast(ge) );
+    }
+    else if ( dtGmshFace::DownCast(ge) ) {
+      GModel::add( dtGmshFace::SecureCast(ge) );
+    }
+    else if ( dtGmshRegion::DownCast(ge) ) {
+      GModel::add( dtGmshRegion::SecureCast(ge) );
+    }    
+    else dt__throwUnexpected(add);
+  }
 	
   void dtGmshModel::meshEdgeTransfiniteFromTo(
     int const from, int const to, 

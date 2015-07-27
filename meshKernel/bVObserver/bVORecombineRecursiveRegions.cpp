@@ -41,8 +41,7 @@ namespace dtOO {
   }
   
   void bVORecombineRecursiveRegions::preUpdate( void ) {
-		dtGmshModel * gm = ptrBoundedVolume()->getModel();
-		dt__throwIf(gm==NULL, update());
+		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 		
     dt__forAllConstIter(std::vector< std::string >, _regionLabel, rLIt) {
       gm->getDtGmshRegionByPhysical(*rLIt)->meshRecombineRecursive();

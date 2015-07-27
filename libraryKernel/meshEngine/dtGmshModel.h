@@ -86,6 +86,10 @@ namespace dtOO {
       map3dTo3d const * const region, int * const tag
     );    
     dtGmshRegion * addRegionToGmshModel( map3dTo3d const * const vol );
+    //
+    // add general entities
+    //
+    void add( ::GEntity * ge);    
     void meshEdgeTransfiniteFromTo(
       int const from, int const to, 
       int const type, float const coeff, int const nEl

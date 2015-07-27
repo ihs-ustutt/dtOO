@@ -343,22 +343,20 @@ namespace dtOO {
 		//		
     meshWithGmsh(_omMoved, vertex, element);
     
-		//
-		// write fields
-		//
-		dtMoabCore mb(_tF.refMesh());
-		mb.addVertexField(_tF);
-		mb.addVertexField(nF);
-		mb.addVertexField(_fixedF);
-    mb.addVertexField(_slidableF);
-    mb.addFaceField(_extrudeF);
-    mb.addFaceField(_typeF);
-		mb.write_mesh("dtMeshGRegionWithBoundaryLayer_init.vtk");
-
-    dtMoabCore(_omMoved).write_mesh("dtMeshGRegionWithBoundaryLayer_moved.vtk");
-    
-		dt__info(operator(), << "Fields written.");
-		dt__info(operator(), << "Done.");
+//		//
+//		// write fields
+//		//
+//		dtMoabCore mb(_tF.refMesh());
+//		mb.addVertexField(_tF);
+//		mb.addVertexField(nF);
+//		mb.addVertexField(_fixedF);
+//    mb.addVertexField(_slidableF);
+//    mb.addFaceField(_extrudeF);
+//    mb.addFaceField(_typeF);
+//		mb.write_mesh("dtMeshGRegionWithBoundaryLayer_init.vtk");
+//
+//    dtMoabCore(_omMoved).write_mesh("dtMeshGRegionWithBoundaryLayer_moved.vtk");
+//		dt__info(operator(), << "Fields written.");
     
 		//
 		// add elements and vertices to commonReg

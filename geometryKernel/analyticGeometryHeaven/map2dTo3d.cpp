@@ -770,9 +770,7 @@ namespace dtOO {
       )    
     );			
 		min.SetPrintLevel(
-      staticPropertiesHandler::getInstance()->getOptionInt(
-        "root_printLevel"
-      ) 
+      staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel") 
     );
 
 		//
