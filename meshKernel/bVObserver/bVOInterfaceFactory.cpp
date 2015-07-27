@@ -16,6 +16,7 @@
 #include "bVOOrientCellVolumes.h"
 #include "bVORecombineRecursiveRegions.h"
 #include "bVOMeshRule.h"
+#include "bVOPatchRule.h"
 
 #define __IFRET(className) \
 	if ( strcmp(str, #className) == 0 ) { \
@@ -43,6 +44,7 @@ namespace dtOO {
     __IFRET(bVOOrientCellVolumes);
     __IFRET(bVORecombineRecursiveRegions);
     __IFRET(bVOMeshRule);
+    __IFRET(bVOPatchRule);
 		
     dt__throw(create(), <<  "Could not be created.");
   }
