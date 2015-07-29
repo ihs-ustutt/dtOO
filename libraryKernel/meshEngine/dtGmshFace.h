@@ -66,6 +66,9 @@ namespace dtOO {
     void addElement( ::MElement * me );
     void addGEntity( ::GEntity * const gEnt );
     std::string getPhysicalString( void ) const;
+    void setGrading( 
+      std::vector< float > const & grading, std::vector< float > & type
+    );
   private:
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:

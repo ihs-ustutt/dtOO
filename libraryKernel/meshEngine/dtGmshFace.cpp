@@ -656,4 +656,20 @@ namespace dtOO {
     );
     return gm->getPhysicalString(this);
   }
+
+  void dtGmshFace::setGrading(
+    std::vector< float > const & grading, std::vector< float > & type
+  ) {
+    dt__throwIf(grading.size() != 4, setGrading());
+    dt__throwIf(type.size() != 4, setGrading());
+		
+    std::list< GEdge * > ee = edges();
+    int ii = 0;
+    dt__forAllIter(std::list< GEdge * >, ee, it) {
+      if (type[ii]!=2.) (*it)->meshAttributes.coeffTransfinite = grading[ii];
+			else (*it)->meshAttributes.coeffTransfinite = grading[ii];
+			(*it)->meshAttributes.typeTransfinite = type[ii];
+      ii++;
+		}
+  }
 }
