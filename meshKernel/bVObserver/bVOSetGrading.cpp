@@ -7,7 +7,8 @@
 #include <vector>
 #include <math.h>
 #include <xmlHeaven/dtXmlParserBase.h>
-#include <meshEngine/dtGmshRegionHex.h>
+#include <meshEngine/dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 
 namespace dtOO {  
@@ -43,13 +44,18 @@ namespace dtOO {
 		_regionLabel
 		= 
 		dtXmlParserBase::getAttributeStrVector("regionLabel", element);    
-		_grading
+		_faceLabel
+		= 
+		dtXmlParserBase::getAttributeStrVector("faceLabel", element); 
+    
+    dt__throwIf(_regionLabel.size() && _faceLabel.size(), init());
+		
+    _grading
 		= 
 		dtXmlParserBase::getAttributeFloatVectorMuParse("grading", element, cV, aF);
 		_type
 		= 
 		dtXmlParserBase::getAttributeFloatVectorMuParse("type", element, cV, aF);
-//		for ( auto &el : _grading ) dt__info(init(), << el);
   }
   
   void bVOSetGrading::preUpdate( void ) {
@@ -60,5 +66,8 @@ namespace dtOO {
     dt__forAllConstIter(std::vector< std::string >, _regionLabel, rIt) {
       gm->getDtGmshRegionByPhysical(*rIt)->setGrading(_grading, _type);
     }    
+    dt__forAllConstIter(std::vector< std::string >, _faceLabel, fIt) {
+      gm->getDtGmshFaceByPhysical(*fIt)->setGrading(_grading, _type);
+    }        
   }
 }

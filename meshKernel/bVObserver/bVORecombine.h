@@ -1,20 +1,19 @@
-#ifndef bVOSetGrading_H
-#define	bVOSetGrading_H
+#ifndef bVORecombine_H
+#define	bVORecombine_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
-#include <interfaceHeaven/twoDArrayHandling.h>
+#include <vector>
 
 namespace dtOO {
   class boundedVolume;
-  class dtGmshEdge;
   
-  class bVOSetGrading : public bVOInterface {
+  class bVORecombine : public bVOInterface {
   public:
-    dt__class(bVOSetGrading, bVOInterface);
-    bVOSetGrading();
-    virtual ~bVOSetGrading();
+    dt__class(bVORecombine, bVOInterface);
+    bVORecombine();
+    virtual ~bVORecombine();
     virtual void init(
       ::QDomElement const & element,
       baseContainer const * const bC,
@@ -26,11 +25,8 @@ namespace dtOO {
     );    
     virtual void preUpdate( void );
   private:
-    std::vector< std::string > _regionLabel;    
-    std::vector< std::string > _faceLabel;   
-    std::vector< float > _grading;
-    std::vector< float > _type;
+    std::vector< std::string > _faceLabel;
   };
 }
-#endif	/* bVOSetGrading_H */
+#endif	/* bVORecombine_H */
 
