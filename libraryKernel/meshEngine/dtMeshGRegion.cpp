@@ -77,6 +77,12 @@ namespace dtOO {
         << "Performing normal meshing."
       );      
       
+      dtgr->model()->writeMSH(
+        "dtMeshGRegion_"+stringPrimitive::intToString(dtgr->tag())+".msh", 
+        2.2, 
+        false, 
+        true
+      );
       std::vector< ::GRegion * > delauny;
       ::meshGRegion mr( delauny );
       mr(dtgr);    
@@ -230,8 +236,6 @@ namespace dtOO {
       << "Region: " << std::endl
       << dtgr->dumpToString()
     );
-
-    dtgr->model()->writeMSH("dtMeshGRegion.msh");
     
     //
     // call meshing again
