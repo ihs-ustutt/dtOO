@@ -75,9 +75,25 @@ namespace dtOO {
 		std::string const str
 	) {  
     std::pair< int, int > fromTo = getFromToBetween(signStart, signEnd, str);
-		if ( (fromTo.first == 0) && (fromTo.second == 0) ) return std::string("");
-		else return str.substr( fromTo.first+1, fromTo.second-fromTo.first-1);
+		
+    if ( (fromTo.first == 0) && (fromTo.second == 0) ) return std::string("");
+		
+    return str.substr( fromTo.first+1, fromTo.second-fromTo.first-1);
   }
+
+  std::string stringPrimitive::getStringBetweenFirstLast(
+	  std::string const signStart, 
+		std::string const signEnd, 
+		std::string const str
+	) {  
+    std::pair< int, int > fromTo 
+    = 
+    getFromToBetweenFirstLast(signStart, signEnd, str);
+		
+    if ( (fromTo.first == 0) && (fromTo.second == 0) ) return std::string("");
+		
+    return str.substr( fromTo.first+1, fromTo.second-fromTo.first-1);
+  }  
 
   std::string stringPrimitive::getStringBetweenAndRemove(
 	  std::string const signStart, std::string const signEnd, 
@@ -178,5 +194,35 @@ namespace dtOO {
 
     return std::pair< int, int >(from, to);		
 	}
+
+  std::pair< int, int > stringPrimitive::getFromToBetweenFirstLast(
+	  std::string const signStart, std::string const signEnd, std::string const str
+	) {
+    if ( (signStart.size() > 1) || (signEnd.size() > 1) ) {
+      dt__throw(
+				getStringFromTo(),
+        << dt__eval(signStart.size()) << std::endl
+        << dt__eval(signEnd.size()) << std::endl
+        << "Signs should have size equal one."
+			);
+    }
+
+    if ( !stringContains(signStart, str) || !stringContains(signEnd, str) ) {
+      return std::pair< int, int >(0, 0);
+    }
+
+    int from;
+    if ( (signStart.size() == 1) ) {
+      from = str.find_first_of(signStart.c_str());
+    }
+    else from = -1;
+    int to;
+    if ( (signEnd.size() == 1) ) {
+      to = str.find_last_of(signEnd.c_str());
+    }
+    else to = str.length()+1;
+
+    return std::pair< int, int >(from, to);		
+	}  
 		
 }

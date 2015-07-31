@@ -20,6 +20,10 @@ namespace dtOO {
       std::string const signStart, std::string const signEnd, 
       std::string const str
     );
+    static std::string getStringBetweenFirstLast(
+      std::string const signStart, std::string const signEnd, 
+      std::string const str
+    );    
     static std::string getStringBetweenAndRemove(
       std::string const signStart, std::string const signEnd, 
       std::string * const str
@@ -45,6 +49,10 @@ namespace dtOO {
       std::string const signStart, std::string const signEnd, 
       std::string const str
     );
+    static std::pair< int, int > getFromToBetweenFirstLast(
+      std::string const signStart, std::string const signEnd, 
+      std::string const str
+    );    
   };
 }
 #endif	/* STRINGPRIMITIVE_H */
