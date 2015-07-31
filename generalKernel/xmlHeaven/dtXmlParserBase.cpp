@@ -898,6 +898,166 @@ namespace dtOO {
 		}  
   }
 
+  std::string dtXmlParserBase::replaceDependencies( 
+	  std::string const expression, 
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+    vectorHandling< analyticGeometry * > const * const aG
+	) {
+    std::string returnExpression;
+    returnExpression = expression;
+    unsigned int found;
+    //
+    // check if there is a analyticGeometry in expression
+    // @analyticGeometryName(1. * #constValue#, 2.)@
+    //
+    found = returnExpression.find("@");
+    while ( found < returnExpression.size() ) {
+      //
+      // find start and end of function
+      //
+      unsigned int foundEnd = returnExpression.find_last_of("@");
+      int replaceStart = found;
+      int replaceEnd = foundEnd-found+1;
+      std::string replaceString 
+      = 
+      returnExpression.substr(replaceStart+1, replaceEnd-2);
+     
+      //
+      // replace in argument
+      //
+      std::string arg 
+      = 
+      replaceDependencies(
+        getStringBetweenFirstLast("(", ")", replaceString), cV, aF, aG
+      );
+
+      //
+      // get and cast analyticGeometry
+      //
+      std::string aGLabel = getStringBetween("", "(", replaceString);
+      std::string aGOption = "";
+      if ( stringPrimitive::stringContains("[", aGLabel) ) {
+        aGOption 
+        = 
+        stringPrimitive::getStringBetweenAndRemove("[", "]", &aGLabel);
+      }
+      analyticGeometry const * const theAG = aG->get(aGLabel); 
+      
+      map1dTo3d const * const m1d = map1dTo3d::ConstDownCast(theAG);
+      map2dTo3d const * const m2d = map2dTo3d::ConstDownCast(theAG);
+      map3dTo3d const * const m3d = map3dTo3d::ConstDownCast(theAG);
+      
+      if (m1d) {
+        std::vector< float > u 
+        = 
+        muParseCSString( replaceUsedFunctions(arg, cV, aF) );
+        dt__throwIf(u.size()!=1, replaceDependencies());
+        
+        dtPoint3 p3;
+        if (aGOption == "%") {
+          p3 = m1d->getPointPercent(u[0]);
+        }
+        else if (aGOption == "") {
+          p3 = m1d->getPoint( u[0] );
+        }
+        else dt__throwUnexpected(replaceDependencies());        
+        
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(p3.x())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(p3.y())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(p3.z())
+        );        
+      }
+      else if (m2d) {
+        std::vector< float > uv 
+        = 
+        muParseCSString( replaceUsedFunctions(arg, cV, aF) );
+        dt__throwIf(uv.size()!=2, replaceDependencies());
+        
+        //
+        // get dtPoint3
+        //
+        dtPoint3 p3;
+        if (aGOption == "%") {
+          p3 = m2d->getPointPercent( uv[0], uv[1] );
+        }
+        else if (aGOption == "") {
+          p3 = m2d->getPoint( uv[0], uv[1] );
+        }
+        else dt__throwUnexpected(replaceDependencies());
+        
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(p3.x())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(p3.y())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(p3.z())
+        );
+      }
+      else if (m3d) {
+        std::vector< float > uvw 
+        = 
+        muParseCSString( replaceUsedFunctions(arg, cV, aF) );
+        dt__throwIf(uvw.size()!=3, replaceDependencies());
+        
+        //
+        // get dtPoint3
+        //
+        dtPoint3 p3;
+        if (aGOption == "%") {
+          p3 = m3d->getPointPercent( uvw[0], uvw[1], uvw[2] );
+        }
+        else if (aGOption == "-1") {
+          p3 = m3d->reparamInVolume( dtPoint3(uvw[0], uvw[1], uvw[2]) );
+        }
+        else if (aGOption == "") {
+          p3 = m3d->getPoint( uvw[0], uvw[1], uvw[2] );
+        }
+        else dt__throwUnexpected(replaceDependencies());
+        
+        //
+        // replace in return string
+        //
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(p3.x())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(p3.y())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(p3.z())
+        );        
+      }    
+      else dt__throwUnexpected(replaceDependencies());
+      
+      //
+      // go to next function
+      //
+      found = returnExpression.find( "@");//, foundEnd+1);
+    }
+    
+    return replaceUsedFunctions(returnExpression, cV, aF);
+  }
+  
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                   

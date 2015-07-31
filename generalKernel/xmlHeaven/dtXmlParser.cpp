@@ -409,6 +409,9 @@ namespace dtOO {
     xmlFile.close();    
   }
 
+  /**
+   * @todo constValue is dependent on constValue. Fix this.
+   */
   void dtXmlParser::createConstValue(
     std::string const constValueLabel, 
     vectorHandling< constValue * > * cValP
@@ -439,7 +442,7 @@ namespace dtOO {
         // set value, min and max
         //
         aCValP->setValue( 
-          muParseString( getAttributeStr( "value", *firstChild ) ) 
+          getAttributeFloatMuParse( "value", *firstChild, cValP, NULL) 
         );
         aCValP->setRange( 
           muParseString( getAttributeStr( "min", *firstChild ) ), 

@@ -62,6 +62,12 @@ namespace dtOO {
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF
     );    
+    static std::string replaceDependencies( 
+      std::string const expression, 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG
+    );  
     //
     // transformer
     //
