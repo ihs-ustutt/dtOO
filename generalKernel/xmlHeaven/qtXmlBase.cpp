@@ -2,7 +2,6 @@
 #include "analyticFunctionHeaven/scaOneD.h"
 
 #include <muParser.h>
-//using namespace mu;
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <QtXml/QDomNode>
@@ -26,12 +25,13 @@ namespace dtOO {
     returnExpression = expression;
     unsigned int found;
     //
-    //check if there is a function in expression
+    // check if there is a function in expression
+    // $functionName(value * #constValue#)$
     //
     found = returnExpression.find("$");
     while ( found < returnExpression.size() ) {
       //
-      //find start and end of function
+      // find start and end of function
       //
       unsigned int foundEnd = returnExpression.find("$", found+1);
       int replaceStart = found;
@@ -39,100 +39,65 @@ namespace dtOO {
       std::string funString = returnExpression.substr(replaceStart+1, replaceEnd-2);
 
       //
-      // check for options
+      // get and cast function
       //
-      std::string option = getStringBetweenAndRemove("[", "]", &funString);
-      if (option != "") {
-        dt__debug(replaceUsedFunctions(),
-                << "Option found" << std::endl
-                << dt__eval(option) );
-      }
-
-      
-      //
-      //find name and argument value of function
-      //
-      std::string funName = getStringBetween("", "(", funString);//funString.substr( 0, funString.find("(") );
-
-      std::string funArgumentValue = replaceUsedFunctions(
-                                       getStringBetween("(", ")", funString),
-                                       cValP,
-                                       sFunP
-                                     );      
-//      bool getInv = false;
-//      if (getInv) {
-//        funName = funName.substr(0, getInv-1);
-//      }
-      
-      //
-      //evaluate function
-      //
-      float insertMeFloat;
       dt__ptrAss( 
 			  scaOneD const * const sF, 
-				scaOneD::ConstDownCast( sFunP->get(funName) ) 
+				scaOneD::ConstDownCast( 
+          sFunP->get(getStringBetween("", "(", funString)) 
+        )
 			);        
-      if (option == "") {
-        insertMeFloat = sF->YFloat( stringToFloat(funArgumentValue) );
-      }
-      else {
-        dt__throw(replaceUsedFunctions(),
-                << "Function name " << dt__eval(funName) << " has no "
-								<< dt__eval(option) );				
-      }      
-      //
-      //replace function string with value
-      //
-      returnExpression.replace(replaceStart, replaceEnd, floatToString(insertMeFloat));
       
       //
-      //go to next parser function
+      // replace function string by value
+      //
+      returnExpression.replace(
+        replaceStart, 
+        replaceEnd, 
+        floatToString( 
+          sF->YFloat( 
+            stringToFloat(
+              replaceUsedFunctions(
+                getStringBetween("(", ")", funString), cValP, sFunP
+              )
+            ) 
+          ) 
+        )
+      );
+      
+      //
+      // go to next function
       //
       found = returnExpression.find("$");//, foundEnd+1);
     }
+    
     //
-    //check if there is a constValue in expression
+    // check if there is a constValue in expression
     //
     found = returnExpression.find("#");
     while ( found < returnExpression.size() ) {
       //
-      //find start and end of function
+      // find start and end of function
       //
       unsigned int foundEnd = returnExpression.find("#", found+1);
       int replaceStart = found;
       int replaceEnd = foundEnd-found+1;
-      std::string funString = returnExpression.substr(replaceStart+1, replaceEnd-2);
+      
       //
-      //find name of scaValue
+      // replace constValue string by value
       //
-      std::string funName = funString;
+      returnExpression.replace(
+        replaceStart, 
+        replaceEnd, 
+        floatToString(
+          cValP->get(
+            returnExpression.substr(replaceStart+1, replaceEnd-2)
+          )->getValue()
+        )
+      );
+
       //
-      //evaluate function
-      //
-      float insertMeFloat;
-      //convert to float
-      //argumentFloat;
-      bool isFound = false;
-      for (int ii=0; ii<cValP->size(); ii++) {
-        if ( funName == ((*cValP)[ii])->getLabel() ) {
-          insertMeFloat = ((*cValP)[ii])->getValue();
-          isFound = true;
-          break;
-        }
-      }
-      //
-      //replace function string with value
-      //
-      if (isFound) {
-        returnExpression.replace(replaceStart, replaceEnd, floatToString(insertMeFloat));
-      }
-      else {
-        dt__throw(replaceUsedFunctions(),
-                << "ConstValue name " << dt__eval(funName) << " not found.");
-        returnExpression.replace(replaceStart, replaceEnd, floatToString(0.));
-      }
-      //
-      //go to next parser function
+      // go to next constValue
       //
       found = returnExpression.find("#");//, foundEnd+1);
     }
@@ -146,9 +111,9 @@ namespace dtOO {
       return ( (float) parser.Eval() );
     }
     catch (mu::Parser::exception_type &e) {
-      dt__throw( muParseString(),
-              << e.GetMsg() << std::endl
-              << "Error in muParser. Return 0");
+      dt__throw( 
+        muParseString(), << "muParser returns: " << dt__eval(e.GetMsg())
+      );
     }
   }
 
