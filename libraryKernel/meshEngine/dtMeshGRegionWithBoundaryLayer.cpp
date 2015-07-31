@@ -271,16 +271,46 @@ namespace dtOO {
     ) {
       // find slidable faces and mark them with 2
       int slider = 0;
+      int nCanSlider = 0;
 			dt__forFromToIter(
 			  omConstFaceVertexI,_omInit.cfv_begin(*fIt), _omInit.cfv_end(*fIt), vIt
-			) if (_slidableF.at(*vIt)) slider++;
+			) {
+        if (_slidableF.at(*vIt)) slider++;
+        if (canSlideF.at(*vIt)) nCanSlider++;
+      }
 
       //
       // slidable face is extrudable and has sliders
       //
 			if ( (slider>0) && _extrudeF.at(*fIt) ) _extrudeF[*fIt] = 2;        
+      
+      if ( 
+        ( (nCanSlider == _omInit.nVertices(*fIt)) ) && (_typeF.at(*fIt) == 1) 
+      ) {
+        _extrudeF[*fIt] = 2;        
+        dt__forFromToIter(
+          omConstFaceVertexI, 
+          _omInit.cfv_begin(*fIt), 
+          _omInit.cfv_end(*fIt), 
+          vIt
+        ) {
+          _slidableF[*vIt] = true;
+          _fixedF[*vIt] = false;
+        }
+      }
 		}
     
+//		//
+//		// write fields
+//		//
+//		dtMoabCore mb0(_tF.refMesh());
+//		mb0.addVertexField(_fixedF);
+//    mb0.addVertexField(_slidableF);
+//    mb0.addFaceField(_extrudeF);
+//    mb0.addFaceField(_typeF);
+//    mb0.addVertexField(canSlideF);
+//		mb0.write_mesh("dtMeshGRegionWithBoundaryLayer_init_0.vtk");
+
     std::vector< ::MVertex * > vertex;
     std::vector< ::MElement * > element;
     
@@ -337,7 +367,7 @@ namespace dtOO {
 		//
 		createBoundaryLayerElements(vertex, element);
     dt__info(operator(), << "Elements created");
-
+        
 		//
 		// create internal unstructured mesh
 		//		
@@ -346,16 +376,12 @@ namespace dtOO {
 //		//
 //		// write fields
 //		//
-//		dtMoabCore mb(_tF.refMesh());
-//		mb.addVertexField(_tF);
-//		mb.addVertexField(nF);
-//		mb.addVertexField(_fixedF);
-//    mb.addVertexField(_slidableF);
-//    mb.addFaceField(_extrudeF);
-//    mb.addFaceField(_typeF);
-//		mb.write_mesh("dtMeshGRegionWithBoundaryLayer_init.vtk");
+//		dtMoabCore mb1(_tF.refMesh());
+//		mb1.addVertexField(_tF);
+//		mb1.addVertexField(nF);
+//		mb1.write_mesh("dtMeshGRegionWithBoundaryLayer_init_1.vtk");
 //
-//    dtMoabCore(_omMoved).write_mesh("dtMeshGRegionWithBoundaryLayer_moved.vtk");
+//    dtMoabCore(_omMoved).write_mesh("dtMeshGRegionWithBoundaryLayer_moved_1.vtk");
 //		dt__info(operator(), << "Fields written.");
     
 		//
