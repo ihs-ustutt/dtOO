@@ -29,6 +29,7 @@ namespace dtOO {
      * evaluate a string with muparser
      */  
     static float muParseString( std::string const expression ); 
+    static std::vector< float > muParseCSString( std::string const expression ); 
     static int muParseStringInt( std::string const expression );
     static float getAttributeFloatMuParse( 
       std::string const attName, 
