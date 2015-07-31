@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include "dtPlugin.h"
 #include "writeStep.h"
+#include "constValueAssingRule.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -24,6 +25,7 @@ namespace dtOO {
     dt__info(create(), << "creating " << str <<  "...");
     
 		__IFRET(writeStep);
+    __IFRET(constValueAssingRule);
 
     dt__throw(create(), << str <<  " could not be created");  
   }
