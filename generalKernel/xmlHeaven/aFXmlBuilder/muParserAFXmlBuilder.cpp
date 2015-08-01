@@ -46,7 +46,7 @@ namespace dtOO {
 			::QDomElement expEl = dtXmlParserBase::getChild("expression", toBuildP);
 			expStr 
 			= 
-			dtXmlParserBase::replaceUsedFunctions(
+			dtXmlParserBase::replaceDependencies(
         dtXmlParserBase::getAttributeStr("value", expEl), cValP, depSFunP
       );
 			yDim = dtXmlParserBase::getAttributeInt("dimension", expEl);

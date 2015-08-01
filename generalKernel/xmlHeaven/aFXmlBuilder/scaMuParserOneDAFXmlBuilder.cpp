@@ -62,14 +62,14 @@ namespace dtOO {
         //
         else if ( dtXmlParserBase::is( "range", wElement) ) {
           xMin = dtXmlParserBase::muParseString(
-                   dtXmlParserBase::replaceUsedFunctions(
+                   dtXmlParserBase::replaceDependencies(
                      dtXmlParserBase::getAttributeStr("min", wElement),
                      cValP,
                      depSFunP
                    )
                  );
           xMax = dtXmlParserBase::muParseString(
-                   dtXmlParserBase::replaceUsedFunctions(
+                   dtXmlParserBase::replaceDependencies(
                      dtXmlParserBase::getAttributeStr("max", wElement),
                      cValP,
                      depSFunP

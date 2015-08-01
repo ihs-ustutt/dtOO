@@ -80,7 +80,7 @@ namespace dtOO {
 //      //
 //      float shapeFactor = 
 //      dtXmlParserBase::muParseString(
-//        dtXmlParserBase::replaceUsedFunctions(
+//        dtXmlParserBase::replaceDependencies(
 //          dtXmlParserBase::getAttributeStr(
 //            "shape_factor", 
 //            toBuildP

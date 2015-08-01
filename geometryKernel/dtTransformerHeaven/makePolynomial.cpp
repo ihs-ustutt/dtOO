@@ -126,28 +126,28 @@ namespace dtOO {
     dtTransformer::init(tE, bC, cV, aF, aG);		
 		
     if (dtXmlParserBase::hasAttribute("number_points_one", *tE)) {
-      _nPointsOne = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceUsedFunctions(
+      _nPointsOne = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceDependencies(
                       dtXmlParserBase::getAttributeStr("number_points_one", *tE),
                       cV, 
                       aF) 
                     );
     }    
     if (dtXmlParserBase::hasAttribute("number_points_two", *tE)) {
-      _nPointsTwo = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceUsedFunctions(
+      _nPointsTwo = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceDependencies(
                       dtXmlParserBase::getAttributeStr("number_points_two", *tE),
                       cV, 
                       aF) 
                     );
     }    
     if (dtXmlParserBase::hasAttribute("order_one", *tE)) {
-      _orderOne = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceUsedFunctions(
+      _orderOne = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceDependencies(
                     dtXmlParserBase::getAttributeStr("order_one", *tE),
                     cV, 
                     aF) 
                   );
     }        
     if (dtXmlParserBase::hasAttribute("order_two", *tE)) {
-      _orderTwo = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceUsedFunctions(
+      _orderTwo = dtXmlParserBase::muParseStringInt( dtXmlParserBase::replaceDependencies(
                     dtXmlParserBase::getAttributeStr("order_two", *tE),
                     cV, 
                     aF) 

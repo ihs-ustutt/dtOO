@@ -47,7 +47,7 @@ namespace dtOO {
       // get necessary values
       //
       float alphaOne = dtXmlParserBase::muParseString(
-                         dtXmlParserBase::replaceUsedFunctions(
+                         dtXmlParserBase::replaceDependencies(
                            dtXmlParserBase::getAttributeStr(
                              "alpha_one", 
                              toBuildP
@@ -57,7 +57,7 @@ namespace dtOO {
                          )
                        );      
       float alphaTwo = dtXmlParserBase::muParseString(
-                         dtXmlParserBase::replaceUsedFunctions(
+                         dtXmlParserBase::replaceDependencies(
                            dtXmlParserBase::getAttributeStr(
                              "alpha_two", 
                              toBuildP
@@ -67,7 +67,7 @@ namespace dtOO {
                          )
                        );
       float deltaY = dtXmlParserBase::muParseString(
-                       dtXmlParserBase::replaceUsedFunctions(
+                       dtXmlParserBase::replaceDependencies(
                          dtXmlParserBase::getAttributeStr(
                            "delta_y", 
                            toBuildP
@@ -77,7 +77,7 @@ namespace dtOO {
                        )
                      ); 
       float ratio = dtXmlParserBase::muParseString(
-                       dtXmlParserBase::replaceUsedFunctions(
+                       dtXmlParserBase::replaceDependencies(
                          dtXmlParserBase::getAttributeStr(
                            "ratio", 
                            toBuildP
@@ -97,7 +97,7 @@ namespace dtOO {
       // get necessary values
       //
       float alphaOne = dtXmlParserBase::muParseString(
-                         dtXmlParserBase::replaceUsedFunctions(
+                         dtXmlParserBase::replaceDependencies(
                            dtXmlParserBase::getAttributeStr(
                              "alpha_one", 
                              toBuildP
@@ -107,7 +107,7 @@ namespace dtOO {
                          )
                        );      
       float alphaTwo = dtXmlParserBase::muParseString(
-                         dtXmlParserBase::replaceUsedFunctions(
+                         dtXmlParserBase::replaceDependencies(
                            dtXmlParserBase::getAttributeStr(
                              "alpha_two", 
                              toBuildP
@@ -117,7 +117,7 @@ namespace dtOO {
                          )
                        );
       float deltaY = dtXmlParserBase::muParseString(
-                       dtXmlParserBase::replaceUsedFunctions(
+                       dtXmlParserBase::replaceDependencies(
                          dtXmlParserBase::getAttributeStr(
                            "delta_y", 
                            toBuildP
@@ -127,7 +127,7 @@ namespace dtOO {
                        )
                      ); 
       float deltaX = dtXmlParserBase::muParseString(
-                       dtXmlParserBase::replaceUsedFunctions(
+                       dtXmlParserBase::replaceDependencies(
                          dtXmlParserBase::getAttributeStr(
                            "delta_x", 
                            toBuildP

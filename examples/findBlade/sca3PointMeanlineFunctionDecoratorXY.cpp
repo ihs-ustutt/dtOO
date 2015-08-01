@@ -43,7 +43,7 @@ namespace dtOO {
       // get necessary values
       //
       float alphaOne = muParseString(
-                         replaceUsedFunctions(
+                         replaceDependencies(
                            getAttributeStr(
                              "alpha_one", 
                              toBuildP
@@ -53,7 +53,7 @@ namespace dtOO {
                          )
                        );      
       float alphaTwo = muParseString(
-                         replaceUsedFunctions(
+                         replaceDependencies(
                            getAttributeStr(
                              "alpha_two", 
                              toBuildP
@@ -63,7 +63,7 @@ namespace dtOO {
                          )
                        );
       float deltaY = muParseString(
-                       replaceUsedFunctions(
+                       replaceDependencies(
                          getAttributeStr(
                            "delta_y", 
                            toBuildP
@@ -73,7 +73,7 @@ namespace dtOO {
                        )
                      ); 
       float deltaX = muParseString(
-                       replaceUsedFunctions(
+                       replaceDependencies(
                          getAttributeStr(
                            "delta_x", 
                            toBuildP
@@ -83,7 +83,7 @@ namespace dtOO {
                        )
                      );      
       int order = muParseStringInt(
-                    replaceUsedFunctions(
+                    replaceDependencies(
                       getAttributeStr(
                         "order", 
                         toBuildP
@@ -254,7 +254,7 @@ namespace dtOO {
       // get necessary values
       //
       float alphaOne = muParseString(
-                         replaceUsedFunctions(
+                         replaceDependencies(
                            getAttributeStr(
                              "alpha_one", 
                              toBuildP
@@ -264,7 +264,7 @@ namespace dtOO {
                          )
                        );      
       float alphaTwo = muParseString(
-                         replaceUsedFunctions(
+                         replaceDependencies(
                            getAttributeStr(
                              "alpha_two", 
                              toBuildP
@@ -274,7 +274,7 @@ namespace dtOO {
                          )
                        );
       float deltaY = muParseString(
-                       replaceUsedFunctions(
+                       replaceDependencies(
                          getAttributeStr(
                            "delta_y", 
                            toBuildP
@@ -284,7 +284,7 @@ namespace dtOO {
                        )
                      ); 
       float ratio = muParseString(
-                       replaceUsedFunctions(
+                       replaceDependencies(
                          getAttributeStr(
                            "ratio", 
                            toBuildP
@@ -294,7 +294,7 @@ namespace dtOO {
                        )
                      );      
       int order = muParseStringInt(
-                    replaceUsedFunctions(
+                    replaceDependencies(
                       getAttributeStr(
                         "order", 
                         toBuildP

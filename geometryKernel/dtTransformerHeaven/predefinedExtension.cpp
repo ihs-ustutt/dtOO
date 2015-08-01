@@ -188,26 +188,26 @@ namespace dtOO {
     // get input
     //
 		_alphaIn = dtXmlParserBase::muParseString( 
-								 dtXmlParserBase::replaceUsedFunctions(
+								 dtXmlParserBase::replaceDependencies(
 									 dtXmlParserBase::getAttributeStr("alpha_in", *tE),
 									 cV, 
 						       aF
 								 ) 
 							 );
 		_yIn = dtXmlParserBase::muParseString( 
-						 dtXmlParserBase::replaceUsedFunctions(
+						 dtXmlParserBase::replaceDependencies(
 						   dtXmlParserBase::getAttributeStr("y_in", *tE), cV, aF
 						 ) 
 					 );
 		_alphaOut = dtXmlParserBase::muParseString( 
-									dtXmlParserBase::replaceUsedFunctions(
+									dtXmlParserBase::replaceDependencies(
 										dtXmlParserBase::getAttributeStr("alpha_out", *tE),
 										cV, 
 						aF
 									) 
 								);
 		_yOut = dtXmlParserBase::muParseString( 
-							dtXmlParserBase::replaceUsedFunctions(
+							dtXmlParserBase::replaceDependencies(
 								dtXmlParserBase::getAttributeStr("y_out", *tE), cV, aF
 							) 
 						);     

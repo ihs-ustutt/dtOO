@@ -62,7 +62,7 @@ namespace dtOO {
 		float cc 
 		= 
 		dtXmlParserBase::muParseString( 
-			dtXmlParserBase::replaceUsedFunctions(
+			dtXmlParserBase::replaceDependencies(
 				dtXmlParserBase::getAttributeStr("coordinate_value", *tE),
 				cV, 
 				aF

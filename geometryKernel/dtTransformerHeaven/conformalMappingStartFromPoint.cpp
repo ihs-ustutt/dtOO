@@ -55,7 +55,7 @@ namespace dtOO {
     /** @xmlAttribute{offset_z, float, Offset in \f$z\f$-Coordinate} */
     if ( hasOffsetZ ) {
        offsetZ = dtXmlParserBase::muParseString( 
-                   dtXmlParserBase::replaceUsedFunctions(
+                   dtXmlParserBase::replaceDependencies(
                      dtXmlParserBase::getAttributeStr("offset_z", *tE), 
                      cV, 
 							       aF
@@ -66,7 +66,7 @@ namespace dtOO {
     /** @xmlAttribute{offset_phi, float, Offset in \f$\phi\f$-Coordinate} */
     if ( hasOffsetPhi ) {
       offsetPhi = dtXmlParserBase::muParseString( 
-                    dtXmlParserBase::replaceUsedFunctions(
+                    dtXmlParserBase::replaceDependencies(
                       dtXmlParserBase::getAttributeStr("offset_phi", *tE), 
                       cV, 
 							        aF
@@ -77,7 +77,7 @@ namespace dtOO {
     /** @xmlAttribute{offset_m, float, Offset in \f$m\f$-Coordinate} */
     if ( hasOffsetM ) {
       offsetM = dtXmlParserBase::muParseString( 
-                    dtXmlParserBase::replaceUsedFunctions(
+                    dtXmlParserBase::replaceDependencies(
                       dtXmlParserBase::getAttributeStr("offset_m", *tE), 
                       cV, 
 							        aF

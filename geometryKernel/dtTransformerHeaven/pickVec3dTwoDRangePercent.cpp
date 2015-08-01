@@ -89,7 +89,7 @@ namespace dtOO {
 			_x0 
 			= 
 			dtXmlParserBase::muParseString( 
-				dtXmlParserBase::replaceUsedFunctions(
+				dtXmlParserBase::replaceDependencies(
 					dtXmlParserBase::getAttributeStr("x_one_percent", *tE), cV, aF
 				) 
 			);
@@ -98,7 +98,7 @@ namespace dtOO {
 			_x1
 			= 
 			dtXmlParserBase::muParseString( 
-				dtXmlParserBase::replaceUsedFunctions(
+				dtXmlParserBase::replaceDependencies(
 					dtXmlParserBase::getAttributeStr("x_two_percent", *tE), cV, aF
 				) 
 			);

@@ -20,10 +20,14 @@ namespace dtOO {
     /**
      * replace const values and functions with numeric values
      */  
-    static std::string replaceUsedFunctions(
+    static std::string replaceDependencies(
       std::string const expression,
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP
+      vectorHandling< constValue * > const * const cValP
+    );    
+    static std::string replaceDependencies(
+      std::string const expression,
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF
     );
     /**
      * evaluate a string with muparser

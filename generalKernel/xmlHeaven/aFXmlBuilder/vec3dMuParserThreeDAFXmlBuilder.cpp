@@ -39,7 +39,7 @@ namespace dtOO {
 			
 			std::string expStr 
 			= 
-			dtXmlParserBase::replaceUsedFunctions(dtXmlParserBase::getAttributeStr("value", expEl) ,cValP, sFunP);
+			dtXmlParserBase::replaceDependencies(dtXmlParserBase::getAttributeStr("value", expEl) ,cValP, sFunP);
 			
 			vec3dMuParserThreeD * v3d 
 			= 

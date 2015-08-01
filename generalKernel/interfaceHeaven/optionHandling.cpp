@@ -82,7 +82,7 @@ namespace dtOO {
     vectorHandling< analyticFunction * > const * const aF					
 	) const {
      return qtXmlBase::muParseString( 
-      qtXmlBase::replaceUsedFunctions(getOption(name), cV, aF)
+      qtXmlBase::replaceDependencies(getOption(name), cV, aF)
     );
   }
 	
@@ -98,7 +98,7 @@ namespace dtOO {
     vectorHandling< analyticFunction * > const * const aF					
 	) const {
      return qtXmlBase::muParseStringInt( 
-      qtXmlBase::replaceUsedFunctions(getOption(name), cV, aF)
+      qtXmlBase::replaceDependencies(getOption(name), cV, aF)
     );
   }
 	

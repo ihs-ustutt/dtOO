@@ -93,7 +93,7 @@ namespace dtOO {
             && dtXmlParserBase::hasAttribute("length_one_end", *tE)
             && dtXmlParserBase::hasAttribute("length_two_end", *tE) ) {
       if (dtXmlParserBase::hasAttribute("length_one_start", *tE)) {
-        _lengthOneStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+        _lengthOneStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceDependencies(
                                       dtXmlParserBase::getAttributeStr(
                                         "length_one_start",
                                         *tE
@@ -104,7 +104,7 @@ namespace dtOO {
       }
 
       if (dtXmlParserBase::hasAttribute("length_two_start", *tE)) {
-        _lengthTwoStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+        _lengthTwoStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceDependencies(
                                       dtXmlParserBase::getAttributeStr(
                                         "length_two_start",
                                         *tE
@@ -115,7 +115,7 @@ namespace dtOO {
       }
 
       if (dtXmlParserBase::hasAttribute("length_one_end", *tE)) {
-        _lengthOneEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+        _lengthOneEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceDependencies(
                                       dtXmlParserBase::getAttributeStr(
                                         "length_one_end",
                                         *tE
@@ -126,7 +126,7 @@ namespace dtOO {
       }
 
       if (dtXmlParserBase::hasAttribute("length_two_end", *tE)) {
-        _lengthTwoEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+        _lengthTwoEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceDependencies(
                                       dtXmlParserBase::getAttributeStr(
                                         "length_two_end",
                                         *tE

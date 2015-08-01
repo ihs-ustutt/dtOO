@@ -37,7 +37,7 @@ namespace dtOO {
 			
 			std::string expStr 
 			= 
-			dtXmlParserBase::replaceUsedFunctions(dtXmlParserBase::getAttributeStr("value", expEl) ,cValP, sFunP);
+			dtXmlParserBase::replaceDependencies(dtXmlParserBase::getAttributeStr("value", expEl) ,cValP, sFunP);
 			
 			scaMuParserTwoD * s2d 
 			= 

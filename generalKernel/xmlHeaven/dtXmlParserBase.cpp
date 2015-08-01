@@ -622,14 +622,14 @@ namespace dtOO {
         // create coordinates
         //
         float cX = muParseString(
-                     replaceUsedFunctions(
+                     replaceDependencies(
                        getAttributeStr("x", *toBuildP),
                        cV, 
                        aF
                      )
                    );  
         float cY = muParseString(
-                     replaceUsedFunctions(
+                     replaceDependencies(
                        getAttributeStr("y", *toBuildP),
                        cV, 
                        aF
@@ -645,14 +645,14 @@ namespace dtOO {
         // create coordinates
         //
         float cX = muParseString(
-                     replaceUsedFunctions(
+                     replaceDependencies(
                        getAttributeStr("u", *toBuildP),
                        cV, 
                        aF
                      )
                    );  
         float cY = muParseString(
-                     replaceUsedFunctions(
+                     replaceDependencies(
                        getAttributeStr("v", *toBuildP),
                        cV, 
                        aF
@@ -721,21 +721,21 @@ namespace dtOO {
         // create coordinates
         //
         float cX = muParseString(
-                     replaceUsedFunctions(
+                     replaceDependencies(
                        getAttributeStr("x", *toBuildP),
                        cV, 
                        aF
                      )
                    );  
         float cY = muParseString(
-                     replaceUsedFunctions(
+                     replaceDependencies(
                        getAttributeStr("y", *toBuildP),
                        cV, 
                        aF
                      )
                    );
         float cZ = muParseString(
-                     replaceUsedFunctions(
+                     replaceDependencies(
                        getAttributeStr("z", *toBuildP),
                        cV, 
                        aF
@@ -892,7 +892,7 @@ namespace dtOO {
 		//
 		if ( hasAttribute("value", *toBuildP)  ) {
 			// create point
-			return replaceUsedFunctions( 
+			return replaceDependencies( 
 							 getAttributeStr("value", *toBuildP), cV, aF
 						 );
 		}  
@@ -951,7 +951,7 @@ namespace dtOO {
       if (m1d) {
         std::vector< float > u 
         = 
-        muParseCSString( replaceUsedFunctions(arg, cV, aF) );
+        muParseCSString( replaceDependencies(arg, cV, aF) );
         dt__throwIf(u.size()!=1, replaceDependencies());
         
         dtPoint3 p3;
@@ -980,7 +980,7 @@ namespace dtOO {
       else if (m2d) {
         std::vector< float > uv 
         = 
-        muParseCSString( replaceUsedFunctions(arg, cV, aF) );
+        muParseCSString( replaceDependencies(arg, cV, aF) );
         dt__throwIf(uv.size()!=2, replaceDependencies());
         
         //
@@ -1012,7 +1012,7 @@ namespace dtOO {
       else if (m3d) {
         std::vector< float > uvw 
         = 
-        muParseCSString( replaceUsedFunctions(arg, cV, aF) );
+        muParseCSString( replaceDependencies(arg, cV, aF) );
         dt__throwIf(uvw.size()!=3, replaceDependencies());
         
         //
@@ -1052,10 +1052,10 @@ namespace dtOO {
       //
       // go to next function
       //
-      found = returnExpression.find( "@");//, foundEnd+1);
+      found = returnExpression.find("@");//, foundEnd+1);
     }
     
-    return replaceUsedFunctions(returnExpression, cV, aF);
+    return replaceDependencies(returnExpression, cV, aF);
   }
   
   dtPoint3 dtXmlParserBase::createDtPoint3(
@@ -1135,14 +1135,14 @@ namespace dtOO {
       // create coordinates
       //
       float cX = muParseString(
-                   replaceUsedFunctions(
+                   replaceDependencies(
                      getAttributeStr("x", *toBuildP),
                      cV, 
                      aF
                    )
                  );  
       float cY = muParseString(
-                   replaceUsedFunctions(
+                   replaceDependencies(
                      getAttributeStr("y", *toBuildP),
                      cV, 
                      aF
@@ -1188,14 +1188,14 @@ namespace dtOO {
             // create coordinates
             //
             float pX = muParseString(
-                         replaceUsedFunctions(
+                         replaceDependencies(
                            getAttributeStr("parameter_one_percent", *toBuildP),
                            cV, 
                            aF
                          )
                        );  
             float pY = muParseString(
-                         replaceUsedFunctions(
+                         replaceDependencies(
                            getAttributeStr("parameter_two_percent", *toBuildP),
                            cV, 
                            aF

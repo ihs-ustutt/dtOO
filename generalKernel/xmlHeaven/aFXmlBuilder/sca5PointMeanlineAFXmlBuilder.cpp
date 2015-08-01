@@ -54,7 +54,7 @@ namespace dtOO {
       float alphaOne 
 			= 
 			dtXmlParserBase::muParseString(
-				dtXmlParserBase::replaceUsedFunctions(
+				dtXmlParserBase::replaceDependencies(
 					dtXmlParserBase::getAttributeStr(
 						"alpha_one", 
 						toBuildP
@@ -66,7 +66,7 @@ namespace dtOO {
       float alphaTwo 
 			= 
 			dtXmlParserBase::muParseString(
-				dtXmlParserBase::replaceUsedFunctions(
+				dtXmlParserBase::replaceDependencies(
 					dtXmlParserBase::getAttributeStr(
 						"alpha_two", 
 						toBuildP
@@ -78,7 +78,7 @@ namespace dtOO {
       float deltaY 
 			= 
 			dtXmlParserBase::muParseString(
-				dtXmlParserBase::replaceUsedFunctions(
+				dtXmlParserBase::replaceDependencies(
 					dtXmlParserBase::getAttributeStr(
 						"delta_y", 
 						toBuildP
@@ -90,7 +90,7 @@ namespace dtOO {
       float ratio
 			= 
 			dtXmlParserBase::muParseString(
-				dtXmlParserBase::replaceUsedFunctions(
+				dtXmlParserBase::replaceDependencies(
 					dtXmlParserBase::getAttributeStr(
 						"ratio", 
 						toBuildP
@@ -102,7 +102,7 @@ namespace dtOO {
       float pointOne 
 			= 
 			dtXmlParserBase::muParseString(
-				dtXmlParserBase::replaceUsedFunctions(
+				dtXmlParserBase::replaceDependencies(
 					dtXmlParserBase::getAttributeStr(
 						"point_one", 
 						toBuildP
@@ -114,7 +114,7 @@ namespace dtOO {
 	    float pointTwo 
 			= 
 			dtXmlParserBase::muParseString(
-				dtXmlParserBase::replaceUsedFunctions(
+				dtXmlParserBase::replaceDependencies(
 					dtXmlParserBase::getAttributeStr(
 						"point_two", 
 						toBuildP

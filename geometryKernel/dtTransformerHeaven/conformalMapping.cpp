@@ -93,7 +93,7 @@ namespace dtOO {
       handleFloat(
         "tolerance", 
         dtXmlParserBase::muParseString( 
-          dtXmlParserBase::replaceUsedFunctions(
+          dtXmlParserBase::replaceDependencies(
             dtXmlParserBase::getAttributeStr("tolerance", *tE), 
             cV, 
             aF

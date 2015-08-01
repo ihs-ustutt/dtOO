@@ -16,10 +16,51 @@ namespace dtOO {
   qtXmlBase::~qtXmlBase() {
   }
 
-  std::string qtXmlBase::replaceUsedFunctions( 
+  std::string qtXmlBase::replaceDependencies( 
 	  std::string const expression, 
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP
+		vectorHandling< constValue * > const * const cV
+	) {
+    std::string returnExpression;
+    returnExpression = expression;
+    unsigned int found;
+    //
+    // check if there is a constValue in expression
+    // 1. * #cVLabel#
+    //
+    found = returnExpression.find("#");
+    while ( found < returnExpression.size() ) {
+      //
+      // find start and end of function
+      //
+      unsigned int foundEnd = returnExpression.find("#", found+1);
+      int replaceStart = found;
+      int replaceEnd = foundEnd-found+1;
+      
+      //
+      // replace constValue string by value
+      //
+      returnExpression.replace(
+        replaceStart, 
+        replaceEnd, 
+        floatToString(
+          cV->get(
+            returnExpression.substr(replaceStart+1, replaceEnd-2)
+          )->getValue()
+        )
+      );
+
+      //
+      // go to next constValue
+      //
+      found = returnExpression.find("#");
+    }
+    return returnExpression;
+  }
+  
+  std::string qtXmlBase::replaceDependencies( 
+	  std::string const expression, 
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF
 	) {
     std::string returnExpression;
     returnExpression = expression;
@@ -44,7 +85,7 @@ namespace dtOO {
       dt__ptrAss( 
 			  scaOneD const * const sF, 
 				scaOneD::ConstDownCast( 
-          sFunP->get(getStringBetween("", "(", funString)) 
+          aF->get(getStringBetween("", "(", funString)) 
         )
 			);        
       
@@ -57,8 +98,8 @@ namespace dtOO {
         floatToString( 
           sF->YFloat( 
             stringToFloat(
-              replaceUsedFunctions(
-                getStringBetween("(", ")", funString), cValP, sFunP
+              replaceDependencies(
+                getStringBetween("(", ")", funString), cV, aF
               )
             ) 
           ) 
@@ -68,40 +109,40 @@ namespace dtOO {
       //
       // go to next function
       //
-      found = returnExpression.find("$");//, foundEnd+1);
+      found = returnExpression.find("$");
     }
     
-    //
-    // check if there is a constValue in expression
-    //
-    found = returnExpression.find("#");
-    while ( found < returnExpression.size() ) {
-      //
-      // find start and end of function
-      //
-      unsigned int foundEnd = returnExpression.find("#", found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
-      
-      //
-      // replace constValue string by value
-      //
-      returnExpression.replace(
-        replaceStart, 
-        replaceEnd, 
-        floatToString(
-          cValP->get(
-            returnExpression.substr(replaceStart+1, replaceEnd-2)
-          )->getValue()
-        )
-      );
-
-      //
-      // go to next constValue
-      //
-      found = returnExpression.find("#");//, foundEnd+1);
-    }
-    return returnExpression;
+//    //
+//    // check if there is a constValue in expression
+//    //
+//    found = returnExpression.find("#");
+//    while ( found < returnExpression.size() ) {
+//      //
+//      // find start and end of function
+//      //
+//      unsigned int foundEnd = returnExpression.find("#", found+1);
+//      int replaceStart = found;
+//      int replaceEnd = foundEnd-found+1;
+//      
+//      //
+//      // replace constValue string by value
+//      //
+//      returnExpression.replace(
+//        replaceStart, 
+//        replaceEnd, 
+//        floatToString(
+//          cValP->get(
+//            returnExpression.substr(replaceStart+1, replaceEnd-2)
+//          )->getValue()
+//        )
+//      );
+//
+//      //
+//      // go to next constValue
+//      //
+//      found = returnExpression.find("#");
+//    }
+    return replaceDependencies(returnExpression, cV);
   }
 
   float qtXmlBase::muParseString( std::string const expression ) {
@@ -150,7 +191,7 @@ namespace dtOO {
     vectorHandling< analyticFunction * > const * const sFunP 
   ) {
     return muParseString( 
-      replaceUsedFunctions(
+      replaceDependencies(
         getAttributeStr(attName, element), 
         cValP, 
         sFunP
@@ -165,7 +206,7 @@ namespace dtOO {
     vectorHandling< analyticFunction * > const * const sFunP 
   ) {
     return muParseStringInt( 
-      replaceUsedFunctions(
+      replaceDependencies(
         getAttributeStr(attName, element), 
         cValP, 
         sFunP
@@ -184,7 +225,7 @@ namespace dtOO {
 		std::vector< float > floatVec(attVec.size(), 0.);
 		int counter = 0;
 		for ( auto &el : attVec ) {		
-			floatVec[counter] = muParseString( replaceUsedFunctions(el, cV, aF) );
+			floatVec[counter] = muParseString( replaceDependencies(el, cV, aF) );
 			counter++;
 		}		
 		return floatVec;
@@ -201,7 +242,7 @@ namespace dtOO {
 		std::vector< int > intVec(attVec.size(), 0.);
 		int counter = 0;
 		for ( auto &el : attVec ) {		
-			intVec[counter] = muParseStringInt( replaceUsedFunctions(el, cV, aF) );
+			intVec[counter] = muParseStringInt( replaceDependencies(el, cV, aF) );
 			counter++;
 		}		
 		return intVec;

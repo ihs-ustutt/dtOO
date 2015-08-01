@@ -93,7 +93,7 @@ namespace dtOO {
             && dtXmlParserBase::hasAttribute("length_percent_one_end", *tE)
             && dtXmlParserBase::hasAttribute("length_percent_two_end", *tE) ) {
       if (dtXmlParserBase::hasAttribute("length_percent_one_start", *tE)) {
-        _lengthPercentOneStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+        _lengthPercentOneStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceDependencies(
                                       dtXmlParserBase::getAttributeStr(
                                         "length_percent_one_start",
                                         *tE
@@ -104,7 +104,7 @@ namespace dtOO {
       }
 
       if (dtXmlParserBase::hasAttribute("length_percent_two_start", *tE)) {
-        _lengthPercentTwoStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+        _lengthPercentTwoStart = dtXmlParserBase::muParseString( dtXmlParserBase::replaceDependencies(
                                       dtXmlParserBase::getAttributeStr(
                                         "length_percent_two_start",
                                         *tE
@@ -115,7 +115,7 @@ namespace dtOO {
       }
 
       if (dtXmlParserBase::hasAttribute("length_percent_one_end", *tE)) {
-        _lengthPercentOneEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+        _lengthPercentOneEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceDependencies(
                                       dtXmlParserBase::getAttributeStr(
                                         "length_percent_one_end",
                                         *tE
@@ -126,7 +126,7 @@ namespace dtOO {
       }
 
       if (dtXmlParserBase::hasAttribute("length_percent_two_end", *tE)) {
-        _lengthPercentTwoEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceUsedFunctions(
+        _lengthPercentTwoEnd = dtXmlParserBase::muParseString( dtXmlParserBase::replaceDependencies(
                                       dtXmlParserBase::getAttributeStr(
                                         "length_percent_two_end",
                                         *tE

@@ -132,7 +132,7 @@ namespace dtOO {
 		
     if (dtXmlParserBase::hasAttribute("parameter_one_offset_percent", *tE)) {
       _paraOneOffsetPercent = dtXmlParserBase::muParseString( 
-                                dtXmlParserBase::replaceUsedFunctions(
+                                dtXmlParserBase::replaceDependencies(
                                   dtXmlParserBase::getAttributeStr(
                                     "parameter_one_offset_percent", 
                                     *tE
@@ -144,7 +144,7 @@ namespace dtOO {
     }
     if (dtXmlParserBase::hasAttribute("parameter_two_offset_percent", *tE)) {
       _paraTwoOffsetPercent = dtXmlParserBase::muParseString( 
-                                dtXmlParserBase::replaceUsedFunctions(
+                                dtXmlParserBase::replaceDependencies(
                                   dtXmlParserBase::getAttributeStr(
                                     "parameter_two_offset_percent", 
                                     *tE
@@ -156,7 +156,7 @@ namespace dtOO {
     }  
     if (dtXmlParserBase::hasAttribute("number_pieces", *tE)) {
       _nPieces = dtXmlParserBase::muParseString( 
-                   dtXmlParserBase::replaceUsedFunctions(
+                   dtXmlParserBase::replaceDependencies(
                      dtXmlParserBase::getAttributeStr(
                        "number_pieces", 
                        *tE
@@ -168,7 +168,7 @@ namespace dtOO {
     }  
     if (dtXmlParserBase::hasAttribute("x_offset_percent", *tE)) {
       _xOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceUsedFunctions(
+                          dtXmlParserBase::replaceDependencies(
                             dtXmlParserBase::getAttributeStr(
                               "x_offset_percent", 
                               *tE
@@ -181,7 +181,7 @@ namespace dtOO {
     }
     if (dtXmlParserBase::hasAttribute("y_offset_percent", *tE)) {
       _yOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceUsedFunctions(
+                          dtXmlParserBase::replaceDependencies(
                             dtXmlParserBase::getAttributeStr(
                               "y_offset_percent", 
                               *tE
@@ -194,7 +194,7 @@ namespace dtOO {
     }      
     if (dtXmlParserBase::hasAttribute("x_offset", *tE)) {
       _xOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceUsedFunctions(
+                          dtXmlParserBase::replaceDependencies(
                             dtXmlParserBase::getAttributeStr(
                               "x_offset", 
                               *tE
@@ -206,7 +206,7 @@ namespace dtOO {
     }
     if (dtXmlParserBase::hasAttribute("y_offset", *tE)) {
       _yOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceUsedFunctions(
+                          dtXmlParserBase::replaceDependencies(
                             dtXmlParserBase::getAttributeStr(
                               "y_offset", 
                               *tE
@@ -218,7 +218,7 @@ namespace dtOO {
     }      
     if (dtXmlParserBase::hasAttribute("normal_offset", *tE)) {
       _normalOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceUsedFunctions(
+                          dtXmlParserBase::replaceDependencies(
                             dtXmlParserBase::getAttributeStr(
                               "normal_offset", 
                               *tE
