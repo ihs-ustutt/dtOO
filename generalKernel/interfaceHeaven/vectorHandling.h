@@ -43,7 +43,7 @@ namespace dtOO {
     void destroy( std::vector< T > & vec );
     void erase( int const pos );
     void addIndex( void );
-    void dump(void);
+    void dump(void) const;
   };
 
   //----------------------------------------------------------------------------
@@ -309,7 +309,7 @@ namespace dtOO {
     }
   }
   template< typename T >  
-  void vectorHandling< T >::dump(void) {
+  void vectorHandling< T >::dump(void) const {
     std::vector< std::string > header;
     header.push_back("label");
     header.push_back("type");
