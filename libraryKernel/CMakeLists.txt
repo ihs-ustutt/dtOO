@@ -91,6 +91,9 @@ SET(HEADERS
   meshEngine/dtOMEdgeField.h
   meshEngine/dtOMFaceField.h
   meshEngine/dtOMDynamicFaceField.h
+  pluginEngine/pugg/Driver.h
+  pluginEngine/pugg/Kernel.h
+  pluginEngine/pugg/Plugin.h
   dtGaussLegendreIntegration.h
   GSLError.h
 )
