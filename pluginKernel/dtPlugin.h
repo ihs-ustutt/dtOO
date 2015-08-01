@@ -8,6 +8,10 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <interfaceHeaven/vectorHandling.h>
 
+namespace pugg {
+  class Kernel;
+}
+
 namespace dtOO {
   class constValue;
   class analyticFunction;
@@ -30,7 +34,16 @@ namespace dtOO {
       vectorHandling< dtPlugin * > const * const pL
     );
     virtual void apply( void ) = 0;    
+    //
+    // pugg stuff
+    //
+    static const int version = 1;
+    static const std::string server_name() {
+      return "dtPluginServer";
+    }   
+    void setKernel( ::pugg::Kernel * kernel );
   private:
+    dt__pH(::pugg::Kernel) _kernel;
   };
 }
 #endif	/* DTPLUGIN_H */

@@ -749,9 +749,21 @@ namespace dtOO {
 		//
 		// create new plugin with factory
 		//
-		pLP->push_back( 
-			dtPluginFactory::create( getAttributeStr("name", wEl) ) 
-		);
+    if ( hasAttribute("pluginLibrary", wEl) ) {
+      pLP->push_back( 
+        dtPluginFactory::createFromPlugin( 
+          getAttributeStr("name", wEl) ,
+          getAttributeStr("pluginLibrary", wEl),
+          getAttributeStr("pluginDriver", wEl)
+        ) 
+      ); 
+    }
+    else {
+      pLP->push_back( 
+        dtPluginFactory::create( getAttributeStr("name", wEl) ) 
+      );
+    }
+    
 		//
 		// initialize dtPlugin
 		//

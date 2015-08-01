@@ -1,6 +1,7 @@
 SET(HEADERS
   dtPlugin.h
   dtPluginFactory.h
+  dtPluginDriver.h
   writeStep.h
   constValueAssingRule.h
 )
@@ -8,6 +9,7 @@ SET(HEADERS
 SET(SOURCES
   dtPlugin.cpp
   dtPluginFactory.cpp
+  dtPluginDriver.cpp
   writeStep.cpp
   constValueAssingRule.cpp
 )

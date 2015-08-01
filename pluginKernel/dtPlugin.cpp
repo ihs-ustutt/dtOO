@@ -6,7 +6,7 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
-
+#include <pluginEngine/pugg/Kernel.h>
 
 namespace dtOO {  
   dtPlugin::dtPlugin() { 
@@ -36,6 +36,11 @@ namespace dtOO {
     //
     optionHandling::init( &element );
   }
+  
+  void dtPlugin::setKernel( ::pugg::Kernel * kernel ) {
+    _kernel.reset( kernel );
+  }
+  
 }
 
 
