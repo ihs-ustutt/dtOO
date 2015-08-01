@@ -55,14 +55,6 @@ namespace dtOO {
     );    
   public:     
     //
-    // string
-    //
-    static std::string createString(
-      ::QDomElement const * toBuildP,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF
-    );    
-    //
     // replace constValues, analyticFunctions and analyticGeometries
     //
     using qtXmlBase::replaceDependencies;

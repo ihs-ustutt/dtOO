@@ -3,7 +3,6 @@
 #include <logMe/logMe.h>
 #include <string.h>
 #include "aFXmlBuilder/baseContainerAFXmlBuilder.h"
-#include "aFXmlBuilder/scaMuParserOneDAFXmlBuilder.h"
 #include "aFXmlBuilder/scaCurve2dOneDAFXmlBuilder.h"
 #include "aFXmlBuilder/sca3PointMeanlineAFXmlBuilder.h"
 #include "aFXmlBuilder/sca5PointMeanlineAFXmlBuilder.h"
@@ -16,7 +15,6 @@
 #include "aFXmlBuilder/vec3dTransVolThreeDAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/vec3dMuParserThreeDAFXmlBuilder.h"
-#include "aFXmlBuilder/scaMuParserTwoDAFXmlBuilder.h"
 #include "aFXmlBuilder/muParserAFXmlBuilder.h"
 #include "aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.h"
 
@@ -41,8 +39,6 @@ namespace dtOO {
 
     __IFRET(baseContainerAFXmlBuilder);		
 		__IFRETCUSTOM(baseContainer, baseContainerAFXmlBuilder);
-    __IFRET(scaMuParserOneDAFXmlBuilder);
-    __IFRETCUSTOM(scaMuParserOneD, scaMuParserOneDAFXmlBuilder);
     __IFRET(scaCurve2dOneDAFXmlBuilder);
     __IFRETCUSTOM(scaCurve2dOneD, scaCurve2dOneDAFXmlBuilder);
     __IFRET(sca3PointMeanlineAFXmlBuilder);
@@ -72,8 +68,6 @@ namespace dtOO {
 		);
 		__IFRET(vec3dMuParserThreeDAFXmlBuilder);
 		__IFRETCUSTOM(vec3dMuParserThreeD, vec3dMuParserThreeDAFXmlBuilder);
-		__IFRET(scaMuParserTwoDAFXmlBuilder);
-		__IFRETCUSTOM(scaMuParserTwoD, scaMuParserTwoDAFXmlBuilder);
 		__IFRET(muParserAFXmlBuilder);
 		__IFRETCUSTOM(muParser, muParserAFXmlBuilder);
     __IFRET(analyticFunctionCombinationAFXmlBuilder);

@@ -13,22 +13,17 @@ namespace dtOO {
   constValueFactory::~constValueFactory() {
   }
 
-  constValue * constValueFactory::create(char const * const str) const {
+  constValue * constValueFactory::create(char const * const str) {
 
-    dt__info(create(),
-            << str <<  " creating ... ");
+    dt__info(create(), << str <<  " creating ... ");
 
-    if ( strcmp(str, "sliderFloatParam") == 0 ) {
-      return new sliderFloatParam;
-    }  
-    if ( strcmp(str, "intParam") == 0 ) {
-      return new intParam;
-    }    
-    dt__throw(create(),
-            <<  "Could not be created.");
+    if ( strcmp(str, "sliderFloatParam") == 0 ) return new sliderFloatParam;  
+    if ( strcmp(str, "intParam") == 0 ) return new intParam;
+    
+    dt__throw(create(), <<  "Could not be created.");
   }
 
-  constValue* constValueFactory::create(std::string const str) const {
+  constValue* constValueFactory::create(std::string const str) {
     return create( str.c_str() );
   }
 }

@@ -53,10 +53,6 @@ namespace dtOO {
     return element.tagName().toStdString();
   }
       
-  ::QDomElement qtXmlPrimitive::getBuilderSibling( ::QDomElement const element ) {
-    return getSibling("builder", element);
-  }    
-
   bool qtXmlPrimitive::hasSibling(
 	  std::string const sibName, ::QDomElement const element 
 	) {
@@ -224,7 +220,9 @@ namespace dtOO {
   }
   
   ::QDomElement qtXmlPrimitive::getChildByName(
-    std::string const sibName, std::string const name, ::QDomElement const element 
+    std::string const sibName, 
+    std::string const name, 
+    ::QDomElement const element 
 	) {
     
     ::QDomElement wElement = getChild(sibName, element);
@@ -373,7 +371,9 @@ namespace dtOO {
 	  std::string const sibName, ::QDomElement const element 
 	) {
     ::QDomElement tmpElement = ::QDomElement( element.nextSiblingElement() );
-    while ( (tmpElement.tagName().toStdString() != sibName) && (!tmpElement.isNull()) ) {
+    while ( 
+      (tmpElement.tagName().toStdString() != sibName) && (!tmpElement.isNull()) 
+    ) {
       tmpElement = ::QDomElement( tmpElement.nextSiblingElement() );
     }             
     return getSibling(sibName, tmpElement);
@@ -473,36 +473,6 @@ namespace dtOO {
       return false;
     }
   }  
-
-  ::QDomElement qtXmlPrimitive::goToLastBuilder( ::QDomElement const element ) {
-    ::QDomElement tmpElementP 
-		= 
-		::QDomElement( getBuilderSibling( element.firstChildElement() ) );  
-//		if ( tmpElementP.isNull() ) {
-//			return element;
-//		}
-    while( !tmpElementP.isNull() ) {
-      //
-      // found an element, check if it is a builder
-      // if so go to its child, if not go away
-      //
-      if ( isBuilder(tmpElementP) ) {
-				::QDomElement tmpChild = tmpElementP.firstChildElement();
-				if ( tmpChild.isNull() ) return tmpElementP;
-        tmpElementP = ::QDomElement( tmpElementP.firstChildElement() );        
-      }
-      else {
-        if ( getBuilderSibling(tmpElementP).isNull() ) break;
-        else tmpElementP = ::QDomElement( getBuilderSibling(tmpElementP) );
-      }
-    }
-    //
-    // workingNodeAsElement is a null element
-    // go to the parent and that's it
-    //		
-    ::QDomNode tmpNodeP = ::QDomNode( tmpElementP.parentNode() );
-    return ::QDomElement ( tmpNodeP.toElement() );
-  }
 
   ::QDomElement qtXmlPrimitive::createElement(
 	  QDomDocument & doc, std::string const name

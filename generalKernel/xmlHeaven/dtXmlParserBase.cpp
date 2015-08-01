@@ -878,25 +878,6 @@ namespace dtOO {
 	) {
 		return getDtPoint3(getAttributeStr("label", *toBuildP), bC);
 	}	
-	
-  std::string dtXmlParserBase::createString(
-	  ::QDomElement const * toBuildP, 
-		vectorHandling< constValue * > const * const cV, 
-		vectorHandling< analyticFunction * > const * const aF
-	) {
-    if ( getTagName(*toBuildP) != "string" ) {
-      dt__throw(createBasic(), << dt__eval( getTagName(*toBuildP) ) );
-    }
-		//
-		// check for attribute value
-		//
-		if ( hasAttribute("value", *toBuildP)  ) {
-			// create point
-			return replaceDependencies( 
-							 getAttributeStr("value", *toBuildP), cV, aF
-						 );
-		}  
-  }
 
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
@@ -1050,9 +1031,9 @@ namespace dtOO {
       else dt__throwUnexpected(replaceDependencies());
       
       //
-      // go to next function
+      // go to next analyticGeometry
       //
-      found = returnExpression.find("@");//, foundEnd+1);
+      found = returnExpression.find("@");
     }
     
     return replaceDependencies(returnExpression, cV, aF);

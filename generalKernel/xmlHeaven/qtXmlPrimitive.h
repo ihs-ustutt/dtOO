@@ -14,13 +14,21 @@ namespace dtOO {
   public:
     dt__classOnlyName(qtXmlPrimitive);  
     virtual ~qtXmlPrimitive();  
-    static ::QDomElement goToLastBuilder( ::QDomElement const element );
-    static ::QDomElement getBuilderSibling( ::QDomElement const element );
-    static ::QDomElement getSibling(std::string const sibName, ::QDomElement const element );
-    static std::vector< ::QDomElement > getSiblingVector(std::string const sibName, ::QDomElement const element );
-    static std::vector< ::QDomElement > getChildVector(std::string const sibName, ::QDomElement const element );
-    static std::vector< ::QDomElement > getChildVector( ::QDomElement const element );
-    static ::QDomElement getChild(std::string const sibName, ::QDomElement const element );
+    static ::QDomElement getSibling(
+      std::string const sibName, ::QDomElement const element 
+    );
+    static std::vector< ::QDomElement > getSiblingVector(
+      std::string const sibName, ::QDomElement const element 
+    );
+    static std::vector< ::QDomElement > getChildVector(
+      std::string const sibName, ::QDomElement const element 
+    );
+    static std::vector< ::QDomElement > getChildVector( 
+      ::QDomElement const element 
+    );
+    static ::QDomElement getChild(
+      std::string const sibName, ::QDomElement const element 
+    );
     static ::QDomElement getChildByName(
       std::string const sibName, 
       std::string const name, 
@@ -47,23 +55,43 @@ namespace dtOO {
       std::vector< std::string > * labelValue,
       ::QDomElement const & parentElement
     );    
-    static int getNChildren(std::string const sibName, ::QDomElement const element );
-    static bool hasSibling(std::string const sibName, ::QDomElement const element );
-    static bool hasChild(std::string const sibName, ::QDomElement const element );
-    static ::QDomElement getNextSibling(std::string const sibName, ::QDomElement const element );
+    static int getNChildren(
+      std::string const sibName, ::QDomElement const element 
+    );
+    static bool hasSibling(
+      std::string const sibName, ::QDomElement const element 
+    );
+    static bool hasChild(
+      std::string const sibName, ::QDomElement const element 
+    );
+    static ::QDomElement getNextSibling(
+      std::string const sibName, ::QDomElement const element 
+    );
     static bool is( std::string const tagName, ::QDomElement const element );  
     static bool isBuilder( ::QDomElement const element );  
-    static bool hasAttribute(std::string const attName, ::QDomElement const element );
-    static int getAttributeInt( std::string const attName, ::QDomElement const element );
-    static float getAttributeFloat( std::string const attName, ::QDomElement const element );
-    static std::string getAttributeStr( std::string const attName, ::QDomElement const element ); 
-    static bool getAttributeBool(std::string const attName, const ::QDomElement element);
+    static bool hasAttribute(
+      std::string const attName, ::QDomElement const element 
+    );
+    static int getAttributeInt( 
+      std::string const attName, ::QDomElement const element 
+    );
+    static float getAttributeFloat( 
+      std::string const attName, ::QDomElement const element 
+    );
+    static std::string getAttributeStr( 
+      std::string const attName, ::QDomElement const element 
+    ); 
+    static bool getAttributeBool(
+      std::string const attName, const ::QDomElement element
+    );
     static std::vector< std::string > getAttributeStrVector(
       std::string const attName, ::QDomElement const element
     );    
     static std::string convertToString( ::QDomNode const node );
     static std::string getTagName(::QDomElement const element);
-    static ::QDomElement createElement(QDomDocument & doc, std::string const name);
+    static ::QDomElement createElement(
+      QDomDocument & doc, std::string const name
+    );
     static void appendChildElement(QDomDocument & doc, ::QDomElement & element);
     static void appendChildElementInElement(
       QDomDocument &doc, 
@@ -92,7 +120,9 @@ namespace dtOO {
   protected:
     qtXmlPrimitive();        
   private:
-    static std::vector< QDomAttr > getAttributeVector( ::QDomElement const element );
+    static std::vector< QDomAttr > getAttributeVector( 
+      ::QDomElement const element 
+    );
   };
 }
 

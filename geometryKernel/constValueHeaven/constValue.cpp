@@ -9,6 +9,7 @@ namespace dtOO {
   constValue::constValue( constValue const & orig ) : labelHandling(orig) {
     _value = orig._value;
   }
+  
   constValue::~constValue() {
   }
 

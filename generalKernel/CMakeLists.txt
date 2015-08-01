@@ -8,7 +8,6 @@ SET(HEADERS
   xmlHeaven/aFXmlBuilder.h
   xmlHeaven/aFXmlBuilderFactory.h
   xmlHeaven/aFXmlBuilder/baseContainerAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/scaMuParserOneDAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/scaCurve2dOneDAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/sca3PointMeanlineAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/sca5PointMeanlineAFXmlBuilder.h
@@ -21,7 +20,6 @@ SET(HEADERS
   xmlHeaven/aFXmlBuilder/vec3dTransVolThreeDAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/vec3dMuParserThreeDAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/scaMuParserTwoDAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.h
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
@@ -87,12 +85,10 @@ SET(SOURCES
   xmlHeaven/aFXmlBuilder/vec3dCurveOneDAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/vec3dTwoDFiveRectangleAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/vec3dTwoDTwelveRectangleAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/scaMuParserOneDAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/scaCurve2dOneDAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/vec3dTransVolThreeDAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/vec3dMuParserThreeDAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/scaMuParserTwoDAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.cpp

@@ -416,68 +416,44 @@ namespace dtOO {
     std::string const constValueLabel, 
     vectorHandling< constValue * > * cValP
   ) const {
-    ::QDomElement const cVElement = getElement( "constValue", constValueLabel );
+    ::QDomElement const wElement 
+    = 
+    getChild("builder", getElement("constValue", constValueLabel));
 
-
-    /* ------------------------------------------------------------------------ */
-    /* go to last builder */
-    /* ------------------------------------------------------------------------ */
-    ::QDomElement const wElement = goToLastBuilder(cVElement);
-
-    constValue * aCValP;
-    constValueFactory cValFac;
-
-    aCValP = cValFac.create( getAttributeStr("name", wElement) );
+    constValue * aCValP
+    = 
+    constValueFactory::create( getAttributeStr("name", wElement) );
     aCValP->setLabel( constValueLabel );
     //
     //check first child
     //should be a float
     //
-    ::QDomElement* firstChild = new ::QDomElement( wElement.firstChildElement() );
-    if (firstChild->tagName().toStdString() == "float" ) {
-      if ( firstChild->hasAttribute("min") 
-            && firstChild->hasAttribute("max")
-            && firstChild->hasAttribute("value") ) {
-        //
-        // set value, min and max
-        //
-        aCValP->setValue( 
-          getAttributeFloatMuParse( "value", *firstChild, cValP, NULL) 
-        );
-        aCValP->setRange( 
-          muParseString( getAttributeStr( "min", *firstChild ) ), 
-          muParseString( getAttributeStr( "max", *firstChild ) ) 
-        );
-      }
-      else {
-        dt__throw(
-          createConstValue(),
-          << "Missing attributes min, max or float"
-        );
-      }
-    }
-    else if (firstChild->tagName().toStdString() == "int" ) {
-      if ( firstChild->hasAttribute("value") ) {
-        //
-        // set value, min and max
-        //
-        aCValP->setValue( 
-          muParseString( getAttributeStr( "value", *firstChild ) ) 
-        );
-      }
-      else {
-        dt__throw(
-          createConstValue(),
-          << "Missing attributes min, max or float"
-        );
-      }
-    }    
-    else {
-      dt__throw( 
-        createConstValue(),
-        << dt__eval( qPrintable(firstChild->tagName()) ) 
+    ::QDomElement firstChild = wElement.firstChildElement();
+    if ( 
+         ( getTagName(firstChild) == "float" )
+      && hasAttribute("min", firstChild) 
+      && hasAttribute("max", firstChild)
+      && hasAttribute("value", firstChild) 
+    ) {
+      //
+      // set value, min and max
+      //
+      aCValP->setValue( getAttributeFloatMuParse( "value", firstChild, cValP) );
+      aCValP->setRange( 
+        muParseString( getAttributeStr( "min", firstChild ) ), 
+        muParseString( getAttributeStr( "max", firstChild ) ) 
       );
     }
+    else if ( 
+         ( getTagName(firstChild) == "int" )
+      && hasAttribute("value", firstChild) 
+    ) {
+      //
+      // set value, min and max
+      //
+      aCValP->setValue( getAttributeFloatMuParse( "value", firstChild, cValP) );
+    }
+    else dt__throw( createConstValue(), << convertToString( firstChild));
 
     cValP->push_back( aCValP );
   }

@@ -38,14 +38,24 @@ namespace dtOO {
     static float getAttributeFloatMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP 
+      vectorHandling< constValue * > const * const cV
+    );
+    static float getAttributeFloatMuParse( 
+      std::string const attName, 
+      ::QDomElement const element, 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF 
     );
     static int getAttributeIntMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP 
+      vectorHandling< constValue * > const * const cV
+    );    
+    static int getAttributeIntMuParse( 
+      std::string const attName, 
+      ::QDomElement const element, 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF 
     );
     static std::vector< float > getAttributeFloatVectorMuParse( 
 		std::string const attName, 

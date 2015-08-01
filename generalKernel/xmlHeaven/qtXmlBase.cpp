@@ -187,32 +187,44 @@ namespace dtOO {
   float qtXmlBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
-    vectorHandling< constValue * > const * const cValP,
-    vectorHandling< analyticFunction * > const * const sFunP 
+    vectorHandling< constValue * > const * const cV
   ) {
     return muParseString( 
-      replaceDependencies(
-        getAttributeStr(attName, element), 
-        cValP, 
-        sFunP
-      )
+      replaceDependencies( getAttributeStr(attName, element), cV )
+    );
+  }
+  
+  float qtXmlBase::getAttributeFloatMuParse( 
+    std::string const attName, 
+    ::QDomElement const element, 
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF
+  ) {
+    return muParseString( 
+      replaceDependencies( getAttributeStr(attName, element), cV, aF )
     );
   }
 
   int qtXmlBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    vectorHandling< constValue * > const * const cValP,
-    vectorHandling< analyticFunction * > const * const sFunP 
+    vectorHandling< constValue * > const * const cV
   ) {
     return muParseStringInt( 
-      replaceDependencies(
-        getAttributeStr(attName, element), 
-        cValP, 
-        sFunP
-      )
+      replaceDependencies( getAttributeStr(attName, element), cV )
     );
-  }  
+  }
+  
+  int qtXmlBase::getAttributeIntMuParse(
+    std::string const attName, 
+    ::QDomElement const element, 
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF 
+  ) {
+    return muParseStringInt( 
+      replaceDependencies( getAttributeStr(attName, element), cV, aF )
+    );
+  }
   
 	std::vector< float > qtXmlBase::getAttributeFloatVectorMuParse( 
 		std::string const attName, 
