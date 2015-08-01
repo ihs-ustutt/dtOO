@@ -144,7 +144,7 @@ namespace dtOO {
       std::vector< ::MTriangle * > const & tri = gf->triangles;
       dt__forAllConstIter(std::vector< ::MTriangle * >, tri, it) {        
         //
-        // create new pseudo mesh elements (truangles)
+        // create new pseudo mesh elements (triangles)
         //
         pseudo->addTriangle(
           new ::MTriangle( 
