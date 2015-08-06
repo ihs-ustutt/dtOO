@@ -14,15 +14,6 @@ namespace dtOO {
     dtMeshGEdge();
     dtMeshGEdge(const dtMeshGEdge& orig);
     virtual ~dtMeshGEdge();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG,
-      vectorHandling< boundedVolume * > const * const bV,
-      vectorHandling< dtMeshOperator * > const * const mO
-    );    
     virtual void operator()( dtGmshEdge * dtge );    
   };
 }

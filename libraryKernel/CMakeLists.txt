@@ -80,6 +80,8 @@ SET(HEADERS
   meshEngine/dtMeshGFace.h
   meshEngine/dtMeshGRegion.h
   meshEngine/dtMeshGRegionWithBoundaryLayer.h
+  meshEngine/dtMeshAndOrientGEdge.h
+  meshEngine/dtMeshAndOrientGFace.h
   meshEngine/dtMoabCore.h
   meshEngine/dtGmshMeshBoundaryLayer.h
   meshEngine/dtOMMesh.h
@@ -179,6 +181,8 @@ SET(SOURCES
   meshEngine/dtMeshGFace.cpp
   meshEngine/dtMeshGRegion.cpp
   meshEngine/dtMeshGRegionWithBoundaryLayer.cpp
+  meshEngine/dtMeshAndOrientGEdge.cpp
+  meshEngine/dtMeshAndOrientGFace.cpp
   meshEngine/dtMoabCore.cpp
   meshEngine/dtGmshMeshBoundaryLayer.cpp
   meshEngine/dtOMMesh.cpp

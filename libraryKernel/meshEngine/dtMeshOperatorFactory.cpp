@@ -6,6 +6,8 @@
 #include "dtMeshGFace.h"
 #include "dtMeshGRegion.h"
 #include "dtMeshGRegionWithBoundaryLayer.h"
+#include "dtMeshAndOrientGEdge.h"
+#include "dtMeshAndOrientGFace.h"
 
 namespace dtOO {
   dtMeshOperatorFactory::dtMeshOperatorFactory() {
@@ -23,6 +25,8 @@ namespace dtOO {
     if (str == "dtMeshGRegionWithBoundaryLayer") {
       return new dtMeshGRegionWithBoundaryLayer();
     }
+    if (str == "dtMeshAndOrientGEdge") return new dtMeshAndOrientGEdge();
+    if (str == "dtMeshAndOrientGFace") return new dtMeshAndOrientGFace();
 
     dt__throw(create(), << str <<  " could not be created");  
   }
