@@ -3,20 +3,17 @@
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
-
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <unstructured3dMesh.h>
-
 #include <gmsh/GmshDefines.h>
 #include <gmsh/Gmsh.h>
 #include <gmsh/OpenFile.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshFace.h>
-
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
@@ -37,7 +34,9 @@
 #include <geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.h>
 
 namespace dtOO {
-	vec3dInMap3dTo3dWithMeshedSurface::vec3dInMap3dTo3dWithMeshedSurface() : gmshBoundedVolume() {
+	vec3dInMap3dTo3dWithMeshedSurface::vec3dInMap3dTo3dWithMeshedSurface(
+  ) : gmshBoundedVolume() {
+    
 	}
 
 	vec3dInMap3dTo3dWithMeshedSurface::~vec3dInMap3dTo3dWithMeshedSurface() {
@@ -59,7 +58,9 @@ namespace dtOO {
     //
 		// region
 		//		
-    ::QDomElement wElement = qtXmlPrimitive::getChild("analyticGeometry", element);
+    ::QDomElement wElement 
+    = 
+    qtXmlPrimitive::getChild("analyticGeometry", element);
     std::string label = qtXmlPrimitive::getAttributeStr("label", wElement);
 		
 		//
@@ -149,7 +150,9 @@ namespace dtOO {
 				jj++;
 			}
 			
-			std::pair< dtPoint3, dtPoint3 > bb = dtLinearAlgebra::boundingBox(mvUVW[ii]);
+			std::pair< dtPoint3, dtPoint3 > bb 
+      = 
+      dtLinearAlgebra::boundingBox(mvUVW[ii]);
 			ultraBoxPoints.push_back(bb.first);
 			ultraBoxPoints.push_back(bb.second);
 			float eps 
@@ -250,7 +253,9 @@ namespace dtOO {
 		//
 		// create couplingBox
 		//
-		std::pair< dtPoint3, dtPoint3 > ultraBox = dtLinearAlgebra::boundingBox(ultraBoxPoints);
+		std::pair< dtPoint3, dtPoint3 > ultraBox 
+    = 
+    dtLinearAlgebra::boundingBox(ultraBoxPoints);
 		dt__info(
 			makeGrid(),
 			<< logMe::dtFormat("ultraBox(%f, %f, %f : %f, %f, %f)")
@@ -259,7 +264,9 @@ namespace dtOO {
 		);
 		_couplingBox.reset(
 		  new vec3dThreeDInMap3dTo3d(
-		    dt__pH(vec3dThreeD)(new vec3dBoxThreeD(ultraBox.first, ultraBox.second) ).get(),
+		    dt__tmpPtr(
+          vec3dThreeD, new vec3dBoxThreeD(ultraBox.first, ultraBox.second) 
+        ),
 				_m3d.get()
 		  ) 
 		);
@@ -317,7 +324,8 @@ namespace dtOO {
 	void vec3dInMap3dTo3dWithMeshedSurface::makePreGrid(void) {
 	}
 
-	vectorHandling< renderInterface * > vec3dInMap3dTo3dWithMeshedSurface::getExtRender( void ) const {
+	vectorHandling< renderInterface * > 
+  vec3dInMap3dTo3dWithMeshedSurface::getExtRender( void ) const {
 		::GModel::setCurrent(_gm.get());
 		
 		std::string toRender = extRenderWhat();
@@ -339,7 +347,9 @@ namespace dtOO {
 		}
 	}		
 	
-	std::vector< std::string > vec3dInMap3dTo3dWithMeshedSurface::getMeshTags( void ) const {
+	std::vector< std::string > vec3dInMap3dTo3dWithMeshedSurface::getMeshTags( 
+    void 
+  ) const {
 		std::vector< std::string > tags = gmshBoundedVolume::getMeshTags();
 
 		//

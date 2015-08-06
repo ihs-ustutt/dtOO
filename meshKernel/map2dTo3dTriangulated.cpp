@@ -1,5 +1,5 @@
 #include "map2dTo3dTriangulated.h"
-#include <meshEngine/dtGmshModel.h>
+
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -7,8 +7,8 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-#include <gmsh/Gmsh.h>
-#include <gmsh/OpenFile.h>
+#include <meshEngine/dtGmshModel.h>
+
 
 namespace dtOO {
 	map2dTo3dTriangulated::map2dTo3dTriangulated() : gmshBoundedVolume() {

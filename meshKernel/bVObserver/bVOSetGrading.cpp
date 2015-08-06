@@ -1,11 +1,11 @@
 #include "bVOSetGrading.h"
 
-#include <map3dTo3dBlockGmsh.h>
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <vector>
 #include <math.h>
+#include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>

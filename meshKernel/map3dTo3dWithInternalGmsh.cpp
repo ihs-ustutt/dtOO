@@ -1,23 +1,18 @@
 #include "map3dTo3dWithInternalGmsh.h"
-#include <xmlHeaven/dtXmlParserBase.h>
+
+#include <logMe/logMe.h>
 #include <xmlHeaven/qtXmlBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
+#include <baseContainerHeaven/baseContainer.h>
+#include <constValueHeaven/constValue.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticGeometryHeaven/map1dTo3d.h>
+#include <analyticGeometryHeaven/map2dTo3d.h>
+#include <analyticGeometryHeaven/map3dTo3d.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshFace.h>
-#include <logMe/logMe.h>
-#include <interfaceHeaven/ptrHandling.h>
-#include <analyticGeometryHeaven/map3dTo3d.h>
-#include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticGeometryHeaven/map1dTo3d.h>
-#include <analyticFunctionHeaven/analyticFunction.h>
-#include <baseContainerHeaven/baseContainer.h>
-#include <constValueHeaven/constValue.h>
-#include <gmsh/Context.h>
-#include <gmsh/GmshDefines.h>
-#include <gmsh/Gmsh.h>
-#include <gmsh/OpenFile.h>
-#include <gmsh/GModel.h>
 
 namespace dtOO {
 	map3dTo3dWithInternalGmsh::map3dTo3dWithInternalGmsh() : gmshBoundedVolume() {

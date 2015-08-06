@@ -1,23 +1,18 @@
 #include "map3dTo3dWithInternalBlockGmsh.h"
+
+#include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/qtXmlBase.h>
-#include <meshEngine/dtGmshEdge.h>
-#include <meshEngine/dtGmshRegion.h>
-#include <meshEngine/dtGmshModel.h>
-#include <meshEngine/dtGmshFace.h>
-#include <logMe/logMe.h>
-#include <interfaceHeaven/ptrHandling.h>
-#include <analyticGeometryHeaven/map3dTo3d.h>
-#include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticGeometryHeaven/map1dTo3d.h>
-#include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
-#include <gmsh/Context.h>
-#include <gmsh/GmshDefines.h>
-#include <gmsh/Gmsh.h>
-#include <gmsh/OpenFile.h>
-#include <gmsh/GModel.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticGeometryHeaven/map1dTo3d.h>
+#include <analyticGeometryHeaven/map2dTo3d.h>
+#include <analyticGeometryHeaven/map3dTo3d.h>
+#include <meshEngine/dtGmshEdge.h>
+#include <meshEngine/dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
+#include <meshEngine/dtGmshModel.h>
 
 namespace dtOO {
 	map3dTo3dWithInternalBlockGmsh::map3dTo3dWithInternalBlockGmsh(

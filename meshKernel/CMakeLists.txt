@@ -19,7 +19,7 @@ SET(HEADERS
   bVObserver/bVOWriteSTL.h
   boundedVolume.h
   boundedVolumeFactory.h
-  map3dTo3dBlockGmsh.h
+  map3dTo3dGmsh.h
   map2dTo3dTriangulated.h
   map3dTo3dWithInternalTurboGrid.h
   vec3dInMap3dTo3dWithMeshedSurface.h
@@ -27,7 +27,6 @@ SET(HEADERS
   map3dTo3dWithInternalBlockGmsh.h
   readMOABMesh.h
   gmshBoundedVolume.h
-  postBLMeshKit.h
 )
 
 SET(SOURCES
@@ -51,7 +50,7 @@ SET(SOURCES
   bVObserver/bVOWriteSTL.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
-  map3dTo3dBlockGmsh.cpp
+  map3dTo3dGmsh.cpp
   map2dTo3dTriangulated.cpp
   map3dTo3dWithInternalTurboGrid.cpp
   vec3dInMap3dTo3dWithMeshedSurface.cpp
@@ -59,7 +58,6 @@ SET(SOURCES
   map3dTo3dWithInternalBlockGmsh.cpp
   readMOABMesh.cpp
   gmshBoundedVolume.cpp
-  postBLMeshKit.cpp
 )
 
 APPEND_DTOO_SOURCE(meshKernel "${SOURCES}")
