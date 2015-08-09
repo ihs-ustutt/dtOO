@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <string>
+#include <boost/format.hpp>
 
 namespace dtOO {
   std::string NowTime();
@@ -16,12 +17,15 @@ namespace dtOO {
       logBase();
       virtual ~logBase();
       std::ostringstream& Get(TLogLevel level = logINFO);
+      std::ostringstream& GetNoHeader( TLogLevel level = logINFO );
     public:
       static TLogLevel& ReportingLevel(void);
       static std::string ToString(TLogLevel level);
       static TLogLevel FromString(const std::string& level);
     protected:
       std::ostringstream os;
+    private:
+      static clock_t startTime;
     private:
       logBase(const logBase&);
       logBase& operator =(const logBase&);
@@ -32,6 +36,9 @@ namespace dtOO {
   // methods
   //
   template < typename T > 
+  clock_t logBase< T >::startTime = clock();
+  
+  template < typename T > 
   logBase< T >::logBase() {
     
   }
@@ -39,18 +46,24 @@ namespace dtOO {
   template < typename T > 
   std::ostringstream& logBase< T >::Get(TLogLevel level) {
     os 
-    << "*--> " << NowTime()
-    << " < " << ToString(level) << " >"
-    << std::string(level > logDEBUG ? level - logDEBUG : 0, '\t')
-    << std::endl;
-    
+    << std::endl
+    << std::endl
+    << ::boost::format("[ %12d ][ " ) % (clock() - startTime)
+    << ToString(level) << " ]";
+
     myLogLevel = level;
     return os;
   }
 
   template < typename T > 
+  std::ostringstream& logBase< T >::GetNoHeader( TLogLevel level ) {   
+    myLogLevel = level;
+    return os;
+  }  
+
+  template < typename T > 
   logBase< T >::~logBase() {
-    os << std::endl;
+//    os << std::endl;
     T::Output(os.str(), myLogLevel);
   }
 
@@ -62,7 +75,7 @@ namespace dtOO {
 
   template < typename T > 
   std::string logBase< T >::ToString(TLogLevel level) {
-    static const char* const buffer[] = {"ERROR  ", "WARNING", "INFO   ", "DEBUG  "};
+    static const char* const buffer[] = {"E", "W", "I", "D"};
     return buffer[level];
   }
 

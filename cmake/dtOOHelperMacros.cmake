@@ -20,7 +20,7 @@ MACRO(MAKE_DTOO_VERSION VERSION_MAJOR VERSION_MINOR VERSION_COMMIT)
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
   include(GetGitRevisionDescription)
-  git_describe(DTOO_VERSION --tags --dirty)
+  git_describe(DTOO_VERSION --tags)
 
   #parse the version information into pieces.
   string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" DTOO_VERSION_MAJOR "${DTOO_VERSION}")

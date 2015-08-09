@@ -32,7 +32,7 @@ namespace dtOO {
   //
   class logMe {
     public:
-      typedef boost::format dtFormat;
+      typedef ::boost::format dtFormat;
     public:
       dt__classOnlyName(logMe);
       static std::string initLog( std::string const & logFileName );
@@ -147,32 +147,36 @@ namespace dtOO {
   #define dt__info(functionname, message) \
     if (logINFO > FILELog::ReportingLevel() ) {} else { \
       FILELog().Get(logINFO) \
-        << "|    " << className() << "::"#functionname << std::endl \
-        message \
-        << std::endl \
-        << std::endl; \
+        << "[ " << className() << "::"#functionname << " ]" << std::endl \
+        message;\
+    }
+  #define dt__debug(functionname, message) \
+    if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
+      FILELog().Get(logDEBUG) \
+        << "[ " << className() << "::"#functionname << " ]" << std::endl \
+        message;\
     }
   #define dt__warning(functionname, message) \
     if (logWARNING > FILELog::ReportingLevel() ) {} else { \
       FILELog().Get(logWARNING) \
-        << "|    " << className() << "::"#functionname << std::endl \
+        << "[ " << className() << "::"#functionname << " ]" << std::endl \
         message \
         << std::endl \
         << dtOO::logMe::Backtrace() << std::endl \
         << std::endl; \
     }
-  #define dt__debug(functionname, message) \
+  #define dt__quickinfo(message) \
+    if (logINFO > FILELog::ReportingLevel() ) {} else { \
+      FILELog().GetNoHeader(logDEBUG) message;\
+    }
+  #define dt__quickdebug(message) \
     if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logDEBUG) \
-        << "|    " << className() << "::"#functionname << std::endl \
-        message \
-        << std::endl \
-        << std::endl ;\
+      FILELog().GetNoHeader(logDEBUG) message; \
     }
   #define dt__throw(functionname, message) \
     throw dtOO::eGeneral( \
       std::ostringstream().flush() \
-        << className() << "::"#functionname << std::endl \
+        << "[ " << className() << "::"#functionname << " ]" << std::endl \
         << "*-> file '" <<  __FILE__ << "'" << std::endl \
         << "*-> line '" << __LINE__ << "'" << std::endl \
         << std::endl \
@@ -244,14 +248,13 @@ namespace dtOO {
   #define dt__makeChapter(cName) \
     if (logINFO > FILELog::ReportingLevel() ) {} else { \
       FILELog().Get() \
+        << std::endl \
         << "-----------------------------------------------------------------" \
         << std::endl \
         << "| " << std::endl \
         << "| "#cName << " (send from " << className() << ")" << std::endl \
         << "| " << std::endl \
-        << "-----------------------------------------------------------------" \
-        << std::endl \
-        << std::endl; \
+        << "-----------------------------------------------------------------" ;\
     }
   #define dt__tryOcc(cmd, errorOut) \
     try { \
