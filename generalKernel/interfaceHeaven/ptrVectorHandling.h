@@ -15,11 +15,17 @@ namespace dtOO {
   // cpp
   //----------------------------------------------------------------------------  
   template < typename T >
-  ptrVectorHandling< T >::ptrVectorHandling() : boost::ptr_vector< T >() {
+  ptrVectorHandling< T >::ptrVectorHandling(
+  
+  ) : boost::ptr_vector< T >() {
+    
   }  
   
   template < typename T >
-  ptrVectorHandling< T >::ptrVectorHandling(int const & size) : boost::ptr_vector< T >(size) {
+  ptrVectorHandling< T >::ptrVectorHandling(
+    int const & size
+  ) : boost::ptr_vector< T >(size) {
+    
   }  
 }
 

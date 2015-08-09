@@ -55,6 +55,16 @@ namespace dtOO {
         return ee;
       }
       template < class T >
+      static void removeChildren( std::vector< T > & toMod, T const & toDel) {
+        toMod.erase( 
+          std::remove(
+            toMod.begin(), toMod.end(), toDel
+          ),
+          toMod.end()
+        );  
+      }
+      
+      template < class T >
       static void removeBastardTwins( std::vector< T > & toMod) {
 		    progHelper::sort(toMod);
         toMod.erase( 
@@ -112,6 +122,11 @@ namespace dtOO {
         }
         return mostFrequentElement;
       }
+
+      template < class T >      
+      static void reverse( std::vector< T > & vec ) {
+        std::reverse(vec.begin(), vec.end());
+      }      
       
       template <class T> 
       static T prior(T x) { 

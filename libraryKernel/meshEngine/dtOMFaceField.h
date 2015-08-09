@@ -17,6 +17,7 @@ namespace dtOO {
     virtual ~dtOMFaceField();
     T & operator[](omFaceH const & fH);
     T const & at(omFaceH const & fH) const;
+    void erase( omFaceH const & fH );
     void assign( dtOMMesh const & om, T const & value );
     void execute( T (*executeMe)(T const & member) );
     long unsigned int size( void ) const;
@@ -49,6 +50,11 @@ namespace dtOO {
   T const & dtOMFaceField< T >::at(omFaceH const & fH) const {
     return _field.at(fH);
   }  
+  
+  template < typename T >
+  void dtOMFaceField< T >::erase( omFaceH const & fH ) {
+    _field.erase(fH);
+  }
   
   template < typename T >  
   void dtOMFaceField< T >::assign( dtOMMesh const & om, T const & value ) {

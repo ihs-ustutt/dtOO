@@ -30,6 +30,7 @@ namespace dtOO {
     void addVertexField( dtOMVertexField< float > const & fF );
     void addVertexField( dtOMVertexField< dtVector3 > const & vF );
 	  void addFaceField( dtOMFaceField< int > const & field );
+    void addFaceField( dtOMFaceField< bool > const & field );    
 //    void addEdgeField( dtOMEdgeField< float > const & eF );
     template< typename T >
     static void writeVtkVertexField(dtOMVertexField< T > const & field) {
