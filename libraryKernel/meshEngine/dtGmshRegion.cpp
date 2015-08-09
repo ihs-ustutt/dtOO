@@ -247,12 +247,23 @@ namespace dtOO {
 		grading[10] = gW; grading[11] = gW;						
 		
 		setGrading(grading, type);
-  }	  
-
-  std::list< dtGmshFace const * > dtGmshRegion::faceList(
+  }	 
+  
+  std::list< dtGmshFace const * > dtGmshRegion::constFaceList(
     std::vector< std::string > const & label
   ) const {
 		std::list< dtGmshFace const * > faceList;
+		dt__forAllConstIter(std::vector< std::string >, label, it) {
+		  faceList.push_back( refDtGmshModel().getDtGmshFaceByPhysical(*it) );
+		}
+    
+    return faceList;
+  }    
+
+  std::list< dtGmshFace * > dtGmshRegion::faceList(
+    std::vector< std::string > const & label
+  ) {
+		std::list< dtGmshFace * > faceList;
 		dt__forAllConstIter(std::vector< std::string >, label, it) {
 		  faceList.push_back( refDtGmshModel().getDtGmshFaceByPhysical(*it) );
 		}

@@ -43,9 +43,12 @@ namespace dtOO {
       float const & gU, float const & gV, float const & gW,
       float const & tU, float const & tV, float const & tW
     );
-    std::list< dtGmshFace const * > faceList(
+    std::list< dtGmshFace const * > constFaceList(
       std::vector< std::string > const & label
     ) const;
+    std::list< dtGmshFace * > faceList(
+      std::vector< std::string > const & label
+    );    
     std::string dumpToString( void ) const;
   public:
     mutable ::GEntity::MeshGenerationStatus _status;

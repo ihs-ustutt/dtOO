@@ -96,6 +96,7 @@ namespace dtOO {
       ::MVertex * operator[](omVertexH const & vH);
       omVertexH const & at( ::MVertex const * const mv ) const;      
       ::MVertex const * const at(omVertexH const & vH) const; 
+      ::MElement * operator[](omFaceH const & fH);      
       ::MElement const * const at(omFaceH const & fH) const;      
       omFaceH const & at( ::MElement const * const me ) const;      
       //

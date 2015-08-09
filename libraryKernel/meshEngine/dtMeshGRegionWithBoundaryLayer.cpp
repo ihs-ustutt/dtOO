@@ -115,13 +115,13 @@ namespace dtOO {
 		//
 		// init faces and regions
 		//
-		std::list< dtGmshFace const * > faceList = dtgr->faceList(_faceLabel);
+		std::list< dtGmshFace const * > faceList = dtgr->constFaceList(_faceLabel);
 		std::list< dtGmshFace const * > fixedFaceList 
     = 
-    dtgr->faceList(_fixedFaceLabel);
+    dtgr->constFaceList(_fixedFaceLabel);
 		std::list< dtGmshFace const * > slidableFaceList 
     = 
-    dtgr->faceList(_slidableFaceLabel);
+    dtgr->constFaceList(_slidableFaceLabel);    
 		
 		dt__info(
 			postUpdate(), 
@@ -321,8 +321,8 @@ namespace dtOO {
 		//
 		std::vector< dtOMMeshManifold > omManifolds;		
 		dt__forFromToIter(
-		  omVertexI, _omMoved.vertices_begin(), _omMoved.vertices_end(), v_it
-		) omManifolds.push_back( dtOMMeshManifold(_omMoved, *v_it) );
+		  omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
+		) omManifolds.push_back( dtOMMeshManifold(_omInit, *v_it) );
 
 		//
 		// divide manifolds and calculate normals
@@ -355,7 +355,7 @@ namespace dtOO {
 		//
 		createLayerVertices(nF);
 		dt__info(operator(), << "Layer vertices created.");
-		
+    
 		//
 		// createMovedMesh
 		//
@@ -367,7 +367,7 @@ namespace dtOO {
 		//
 		createBoundaryLayerElements(vertex, element);
     dt__info(operator(), << "Elements created");
-        
+    
 		//
 		// create internal unstructured mesh
 		//		

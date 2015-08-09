@@ -333,6 +333,10 @@ namespace dtOO {
 		return data(vH).MVertex();
 	}
 
+  ::MElement * dtOMMesh::operator[](omFaceH const & fH) {
+    return data(fH).MElement();
+  }
+  
 	::MElement const * const dtOMMesh::at(omFaceH const & fH) const {
 		return data(fH).MElement();
 	}
