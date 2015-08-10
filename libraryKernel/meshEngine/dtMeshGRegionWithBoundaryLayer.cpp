@@ -637,9 +637,7 @@ namespace dtOO {
     omHalfedgeH slidableHe = slidableHe_init;
     do {
       omHalfedgeH wHe = slidableHe;
-      dt__forFromToIndex(0, _spacing.size()+1, ii) {
-        wHe = _omInit.sameHalfedgeInNextFace(wHe);
-        
+      dt__forFromToIndex(0, _spacing.size(), ii) {
         // mark halfedge
         _omInit.data(
           _omInit.next_halfedge_handle(wHe)
@@ -648,15 +646,31 @@ namespace dtOO {
         _buddyF[ 
           _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
         ].push_back(
-          _omInit[ _omInit.to_vertex_handle( wHe ) ]
+          _omInit[ 
+            _omInit.to_vertex_handle( _omInit.next_halfedge_handle(wHe) ) 
+          ]
         );
         
         dt__throwIf( 
           _typeF.at(_omInit.face_handle(wHe))!=_SLIDER, 
           createRingOfBuddies() 
         );
+        wHe = _omInit.sameHalfedgeInNextFace(wHe);        
       }
-      
+      //
+      // mark last halfedge and add last buddy
+      //
+      _omInit.data(
+        _omInit.next_halfedge_handle(wHe)
+      ).mark();      
+      _buddyF[ 
+        _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
+      ].push_back(
+        _omInit[ 
+          _omInit.to_vertex_handle( _omInit.next_halfedge_handle(wHe) ) 
+        ]
+      );
+        
       slidableHe 
       = 
       _omInit.prev_halfedge_handle(  
