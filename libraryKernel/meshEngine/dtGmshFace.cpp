@@ -87,6 +87,14 @@ namespace dtOO {
     return *gm;
   }
   
+  ::GEntity::GeomType dtGmshFace::geomType( void ) const {
+    return _geomType;
+  }
+  
+  void dtGmshFace::setGeomType( ::GEntity::GeomType const & gT ) {
+    _geomType = gT;
+  }  
+  
   dtGmshModel & dtGmshFace::refDtGmshModel( void ) {
     dt__ptrAss(dtGmshModel * gm, dtGmshModel::DownCast(model()));
     

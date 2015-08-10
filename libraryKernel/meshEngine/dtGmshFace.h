@@ -27,6 +27,8 @@ namespace dtOO {
     virtual ~dtGmshFace();
     dtGmshModel const & refDtGmshModel( void ) const;    
     dtGmshModel & refDtGmshModel( void );    
+    virtual ::GEntity::GeomType geomType( void ) const; 
+    void setGeomType( ::GEntity::GeomType const & gT );    
     virtual Range<double> parBounds(int i) const; 
     virtual GPoint point(double par1, double par2) const; 
     virtual Pair<SVector3,SVector3> firstDer(const SPoint2 &param) const;
@@ -73,6 +75,7 @@ namespace dtOO {
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:
     dt__pH(map2dTo3d) _mm;
+    ::GEntity::GeomType _geomType;    
   };
 }
 

@@ -15,11 +15,15 @@
 
 namespace dtOO {
 	dtGmshRegion::dtGmshRegion(::GModel *m, int tag) : GRegion(m, tag) {
-	  _status = ::GEntity::MeshGenerationStatus::PENDING;	
+	  _status = ::GEntity::MeshGenerationStatus::PENDING;
+    _geomType = ::GEntity::GeomType::Unknown;
 	}
 	
-  dtGmshRegion::dtGmshRegion(::GModel *m, int tag, const std::list< ::GFace * > &faces, const std::vector<int> &ori )
-    : GRegion(m, tag) {
+  dtGmshRegion::dtGmshRegion(
+    ::GModel *m, int tag, 
+    const std::list< ::GFace * > &faces, 
+    const std::vector<int> &ori 
+  ) : GRegion(m, tag) {
     typedef std::list< ::GFace * >::const_iterator FIter;
     int ii = 0;
     for (FIter fi=faces.begin(); fi != faces.end(); ++fi) {
@@ -30,10 +34,14 @@ namespace dtOO {
       ii++;
     }
 		_status = ::GEntity::MeshGenerationStatus::PENDING;
+    _geomType = ::GEntity::GeomType::Unknown;
   }
 
-  dtGmshRegion::dtGmshRegion(::GModel *m, int tag, const std::list< dtGmshFace* > &faces, const std::vector<int> &ori )
-    : GRegion(m, tag) {
+  dtGmshRegion::dtGmshRegion(
+    ::GModel *m, int tag, 
+    const std::list< dtGmshFace* > &faces, 
+    const std::vector<int> &ori 
+  ) : GRegion(m, tag) {
     typedef std::list< dtGmshFace* >::const_iterator FIter;
     int ii = 0;
     for (FIter fi=faces.begin(); fi != faces.end(); ++fi) {
@@ -44,6 +52,7 @@ namespace dtOO {
       ii++;
     }
 		_status = ::GEntity::MeshGenerationStatus::PENDING;
+    _geomType = ::GEntity::GeomType::Unknown;
   }
   
   dtGmshModel const & dtGmshRegion::refDtGmshModel( void ) const {
@@ -54,6 +63,15 @@ namespace dtOO {
     
     return *gm;
   }
+  
+  ::GEntity::GeomType dtGmshRegion::geomType( void ) const {
+    return _geomType;
+  }
+  
+  void dtGmshRegion::setGeomType( ::GEntity::GeomType const & gT ) {
+    _geomType = gT;
+  }
+    
    
   void dtGmshRegion::meshTransfinite( void ) {
     this->meshAttributes.method = MESH_TRANSFINITE;
@@ -88,11 +106,17 @@ namespace dtOO {
     this->meshAttributes.method = MESH_UNSTRUCTURED;
     this->meshAttributes.recombine3D = 0;
 		std::list< ::GFace * > fl = faces();
-		for (std::list< ::GFace * >::iterator f_it = fl.begin(); f_it != fl.end(); ++f_it) {
+		for (
+      std::list< ::GFace * >::iterator f_it = fl.begin(); 
+      f_it != fl.end(); 
+      ++f_it
+    ) {
 			std::list< ::GEdge * > el = (*f_it)->edges();
-			for (std::list< ::GEdge * >::iterator e_it = el.begin(); e_it != el.end(); ++e_it) {
-				(*e_it)->meshAttributes.method = MESH_UNSTRUCTURED;
-			}
+			for (
+        std::list< ::GEdge * >::iterator e_it = el.begin(); 
+        e_it != el.end(); 
+        ++e_it
+      ) (*e_it)->meshAttributes.method = MESH_UNSTRUCTURED;
 			(*f_it)->meshAttributes.method = MESH_UNSTRUCTURED;
 			(*f_it)->meshAttributes.recombine = 0;
 		}

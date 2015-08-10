@@ -24,6 +24,8 @@ namespace dtOO {
       const std::list<dtGmshFace*> &faces, const std::vector<int> &ori 
     );
     dtGmshModel const & refDtGmshModel( void ) const;
+    virtual ::GEntity::GeomType geomType( void ) const; 
+    void setGeomType( ::GEntity::GeomType const & gT );     
     void meshTransfinite( void );
     void meshRecombine( void );        
     void meshRecombineRecursive( void );    
@@ -38,7 +40,9 @@ namespace dtOO {
     void replaceFace( 
       ::GFace const * const toReplace, ::GFace * const with     
     );
-    void setGrading( std::vector< float > const & grading, std::vector< float > & type );
+    void setGrading( 
+      std::vector< float > const & grading, std::vector< float > & type 
+    );
     void setGrading( 
       float const & gU, float const & gV, float const & gW,
       float const & tU, float const & tV, float const & tW
@@ -52,6 +56,7 @@ namespace dtOO {
     std::string dumpToString( void ) const;
   public:
     mutable ::GEntity::MeshGenerationStatus _status;
+    ::GEntity::GeomType _geomType;
   };
 }
 #endif	/* DTGMSHREGION_H */
