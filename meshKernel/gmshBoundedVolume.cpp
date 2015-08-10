@@ -17,6 +17,7 @@
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <gmsh/Gmsh.h>
+#include <gmsh/Context.h>
 #include <gmsh/OpenFile.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
@@ -249,6 +250,18 @@ namespace dtOO {
     //
     SetBoundingBox();
 
+    dt__info(makePreGrid(),
+      << "Gmsh boundingBox:"
+      << logMe::dtFormat("min: (%d, %d, %d)")
+        % CTX::instance()->min[0] 
+        % CTX::instance()->min[1] 
+        % CTX::instance()->min[2]
+      << std::endl
+      << logMe::dtFormat("max: (%d, %d, %d)")
+        % CTX::instance()->max[0] 
+        % CTX::instance()->max[1] 
+        % CTX::instance()->max[2]
+    );
     //
 		// destroy old mesh
 		//

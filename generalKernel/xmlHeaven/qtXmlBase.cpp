@@ -184,6 +184,16 @@ namespace dtOO {
     return ret;
   }  
 
+  std::vector< int > qtXmlBase::muParseCSStringInt( 
+    std::string const expression 
+  ) {
+    std::vector< float > vec = muParseCSString(expression);
+    std::vector< int > retVec(vec.size());
+    dt__forAllIndex(vec, ii) retVec[ii] = static_cast< int >(vec[ii]);
+
+    return retVec;
+  }  
+  
   float qtXmlBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 

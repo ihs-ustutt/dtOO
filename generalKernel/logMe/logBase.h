@@ -57,7 +57,9 @@ namespace dtOO {
 
   template < typename T > 
   std::ostringstream& logBase< T >::GetNoHeader( TLogLevel level ) {   
-    myLogLevel = level;
+    os << std::endl;    
+
+    myLogLevel = level;    
     return os;
   }  
 

@@ -19,7 +19,7 @@
 
 namespace dtOO {  
   dtGmshEdge::dtGmshEdge(::GModel *m, int tag)
-    : GEdge(m, tag) {
+    : GEdge(m, tag, NULL, NULL) {
     _isSeamU = false;
     _isSeamV = false;		
   }
