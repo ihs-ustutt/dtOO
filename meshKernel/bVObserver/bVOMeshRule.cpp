@@ -4,6 +4,9 @@
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <xmlHeaven/qtXmlPrimitive.h>
+#include <meshEngine/dtGmshEdge.h>
+#include <meshEngine/dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtMeshOperator.h>
 #include <meshEngine/dtMeshOperatorFactory.h>
@@ -149,8 +152,12 @@ namespace dtOO {
         = 
         dtGmshModel::cast2DtGmshEdge( gm->edges() );
 			  dt__forAllIter(std::list< dtGmshEdge * >, ee, it) {
-          (*current1D)(*it);
-        }    
+          if ( 
+            (*it)->meshStatistics.status 
+            !=
+            ::GEntity::MeshGenerationStatus::DONE 
+          ) (*current1D)(*it); 
+        }
       }
       else dt__throw(preUpdate(), << "Only (*)-meshing is currently supported.");
     }
@@ -174,7 +181,11 @@ namespace dtOO {
         = 
         dtGmshModel::cast2DtGmshFace( gm->faces() );
 			  dt__forAllIter(std::list< dtGmshFace * >, ff, it) {
-          (*current2D)(*it);
+          if ( 
+            (*it)->meshStatistics.status 
+            !=
+            ::GEntity::MeshGenerationStatus::DONE 
+          ) (*current2D)(*it);           
         }    
       }
       else (*current2D)( gm->getDtGmshFaceByPhysical(currentGEntityStr) );
@@ -199,7 +210,11 @@ namespace dtOO {
         = 
         dtGmshModel::cast2DtGmshRegion( gm->regions() );
 			  dt__forAllIter(std::list< dtGmshRegion * >, rr, it) {
-          (*current3D)(*it);
+          if ( 
+            (*it)->_status 
+            !=
+            ::GEntity::MeshGenerationStatus::DONE 
+          ) (*current3D)(*it);                  
         }    
       }
       else (*current3D)( gm->getDtGmshRegionByPhysical(currentGEntityStr) );
