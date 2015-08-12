@@ -1489,6 +1489,15 @@ namespace dtOO {
 		ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );
 	}
 	  
+  int dtGmshModel::getPhysicalNumber(
+    const int &dim, const std::string &name
+  ) const {
+    return 
+      const_cast< dtGmshModel * >(
+        this
+      )->GModel::getPhysicalNumber(dim, name);
+  }
+
   void dtGmshModel::setDebug( std::string const debug ) {
     _debug = debug;
   }

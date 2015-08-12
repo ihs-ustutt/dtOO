@@ -370,7 +370,7 @@ namespace dtOO {
     
 		//
 		// create internal unstructured mesh
-		//		
+		//
     meshWithGmsh(_omMoved, vertex, element);
     
 //		//
@@ -445,7 +445,7 @@ namespace dtOO {
         + 
         _spacing.at(ii) * _tF.at(*it) * nF.at(*it);
         _buddyF[*it].push_back(
-          new ::MVertex( newPos.x(), newPos.y(), newPos.z() )
+          new ::MVertex( newPos.x(), newPos.y(), newPos.z(), NULL )
         );
       }
       dtPoint3 newPos
@@ -477,6 +477,7 @@ namespace dtOO {
       }
     }
     _omMoved.garbage_collection();    
+    _omMoved.updateMap();
   }
   
 	void dtMeshGRegionWithBoundaryLayer::createBoundaryLayerElements(

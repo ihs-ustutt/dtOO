@@ -7,9 +7,11 @@
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <gmsh/MFace.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
-#include <gmsh/MFace.h>
+#include <gmsh/MTriangle.h>
+#include <gmsh/MQuadrangle.h>
 #include <OpenMesh/Core/IO/MeshIO.hh>
 
 
@@ -391,4 +393,69 @@ namespace dtOO {
     
     return counter;
   }
+  
+  void dtOMMesh::createNewElements( void ) {
+		dt__forFromToIter(omFaceI, faces_begin(), faces_end(), it) {
+      //
+      // get vertices
+      //
+      std::vector< ::MVertex * > vv;
+      faceVertices(*it, vv);
+      
+      //
+      // create element and push it into tmp element vector
+      //
+      if (vv.size()==3) _elements.push_back( new ::MTriangle(vv) );
+      else if (vv.size()==4) _elements.push_back( new ::MQuadrangle(vv) );
+      else dt__throwUnexpected(createNewElements());
+      
+      //
+      // add element to mesh face
+      //
+      data(*it).MElement( &(_elements.back()) );
+		}
+    
+    //
+    // udpate only face map
+    //
+    updateMap(false, true);
+  }
+  
+  void dtOMMesh::updateMap( bool vv, bool ff ) {
+    //
+    // vertex map
+    //
+    if (vv) {
+      // destroy face map
+      _om_gmsh.clear();
+      // create new map
+      dt__forFromToIter(omVertexI, vertices_begin(), vertices_end(), it) {
+        _om_gmsh[ data(*it).MVertex() ] = *it;
+      } 
+    }
+    
+    //
+    // face map
+    //
+    if (ff) {
+      // destroy face map
+      _om_gmshElement.clear();
+      // create new map
+      dt__forFromToIter(omFaceI, faces_begin(), faces_end(), it) {
+        _om_gmshElement[ data(*it).MElement() ] = *it;
+      } 
+    }
+        
+  }
+  
+  void dtOMMesh::faceVertices( 
+    omFaceH const & fH, std::vector< ::MVertex * > & vertices
+  ) const {
+    vertices.resize( nVertices(fH) );
+    int ii = 0;
+    dt__forFromToIter(omConstFaceVertexI, cfv_begin(fH), cfv_end(fH), fIt) {
+      vertices[ii] = data(*fIt).MVertex();
+      ii++;
+    }
+  }  
 }

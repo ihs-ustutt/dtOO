@@ -136,6 +136,8 @@ namespace dtOO {
       //
       omHalfedgeH sameHalfedgeInNextFace( omHalfedgeH const & heH) const;
       int nVertices( omFaceH const & fH) const;
+      void createNewElements( void );
+      void updateMap( bool vv = true, bool ff = true );
     private:
       std::map< ::MVertex const *, omVertexH > const & omGmsh( void ) const;      
       omVertexH addVertex( ::MVertex const * const &mv );
@@ -148,10 +150,14 @@ namespace dtOO {
       bool intersection( 
         omFaceH const & fH, dtPoint3 const & start, dtPoint3 const & target 
       ) const;
+      void faceVertices( 
+        omFaceH const & fH, std::vector< ::MVertex * > & vertices
+      ) const;
     private:      
       std::map< ::MVertex const *, omVertexH > _om_gmsh;
       std::map< ::MElement const *, omFaceH > _om_gmshElement;
       std::vector< dtOMField * > _attachedField;
+      dt__pVH(::MElement) _elements;
     
   };
 }
