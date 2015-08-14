@@ -28,6 +28,7 @@ namespace dtOO {
       void operator()( dtGmshFace * dtgr );    
     private:
       std::map< std::pair< int, int >, bool > _recombineRule;
+      int _transfiniteArrangement;
   };
 }
 #endif	/* dtMeshTransfiniteRecombineSelectionGFace_H */

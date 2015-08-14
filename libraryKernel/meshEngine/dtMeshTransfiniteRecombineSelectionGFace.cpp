@@ -30,6 +30,15 @@ namespace dtOO {
   ) {
     dtMeshGFace::init(element, bC, cV, aF, aG, bV, mO);
     
+    //
+    // transfinite arrangement
+    //
+    _transfiniteArrangement 
+    = 
+    dtXmlParserBase::getAttributeIntMuParse(
+      "transfiniteArrangement", element, cV, aF
+    );
+    
     std::vector< std::string > recombineRule 
     = 
     qtXmlPrimitive::getAttributeStrVector("recombineRule", element);
@@ -72,11 +81,19 @@ namespace dtOO {
     dtMeshGFace::operator()( dtgf );
     
     std::vector< ::MTriangle * > &tri(dtgf->triangles);
+    std::vector< ::MQuadrangle * > &quad(dtgf->quadrangles);
+    std::vector< std::vector< MVertex * > > &transVert(dtgf->transfinite_vertices);
+
+    dt__info(operator(), 
+      << "Destroy " << tri.size() << " triangles" << std::endl
+      << "Destroy " << quad.size() << " quadrangles"
+    );
+    
     dt__forAllIter(std::vector< ::MTriangle * >, tri, it) delete (*it);
     tri.clear();
-    
-    std::vector< ::MQuadrangle * > &quad(dtgf->quadrangles);
-    std::vector<std::vector<MVertex*> > &transVert(dtgf->transfinite_vertices);
+    dt__forAllIter(std::vector< ::MQuadrangle * >, quad, it) delete (*it);
+    quad.clear();    
+
     
     for(int i = 0; i < (transVert.size()-1) ; i++) {
       for(int j = 0; j < (transVert[i].size()-1); j++) {
@@ -119,8 +136,35 @@ namespace dtOO {
           quad.push_back(new ::MQuadrangle(v[0], v[1], v[2], v[3]));
         }
         else{
-          tri.push_back(new MTriangle(v[0], v[1], v[2]));
-          tri.push_back(new MTriangle(v[2], v[3], v[0]));
+          if(
+            _transfiniteArrangement == 1 
+            ||
+            (
+              _transfiniteArrangement == 2 
+              &&
+              (
+                (i % 2 == 0 && j % 2 == 1) || (i % 2 == 1 && j % 2 == 0)
+              )
+            ) 
+            ||
+            (
+              _transfiniteArrangement == -2 
+              &&
+              (
+                (i % 2 == 0 && j % 2 == 0) || (i % 2 == 1 && j % 2 == 1)
+              )
+            )
+          ) {
+            tri.push_back(new MTriangle(v[0], v[1], v[2]));
+            tri.push_back(new MTriangle(v[2], v[3], v[0]));
+          }
+          else {
+            tri.push_back(new MTriangle(v[0], v[1], v[3]));
+            tri.push_back(new MTriangle(v[3], v[1], v[2]));
+          }
+        
+//          tri.push_back(new MTriangle(v[0], v[1], v[2]));
+//          tri.push_back(new MTriangle(v[2], v[3], v[0]));
         }
       }
     }      
