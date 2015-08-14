@@ -136,7 +136,8 @@ namespace dtOO {
     std::string getPhysicalString(::GEntity const * const ge ) const;
     void tagPhysical(::GEntity * const ge, std::string const & pName);
     int getPhysicalNumber(const int &dim, const std::string &name) const;
-
+    void removeEmptyPhysicals( void );
+    
     void setDebug( std::string const debug );
   private:
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 

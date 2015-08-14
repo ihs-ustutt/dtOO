@@ -116,5 +116,10 @@ namespace dtOO {
         gm->getPhysicalNumber(2, toDelPhysical[ii])
       );
     }
+    
+    //
+    // remove empty physical groups
+    //
+    gm->removeEmptyPhysicals();
   }
 }

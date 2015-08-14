@@ -1497,6 +1497,22 @@ namespace dtOO {
         this
       )->GModel::getPhysicalNumber(dim, name);
   }
+  
+  void dtGmshModel::removeEmptyPhysicals( void ) {
+    dtGmshModel::intGEntityVMap ge_number;
+    //
+    // for each dimension
+    //
+    dt__forFromToIndex(0, 3, dim) {
+      GModel::getPhysicalGroups(dim, ge_number);     
+      //
+      // for each physical group
+      //
+      dt__forAllConstIter(dtGmshModel::intGEntityVMap, ge_number, nIt) {
+        if (nIt->second.empty()) GModel::deletePhysicalGroup(dim, nIt->first);
+      }
+    }
+  }
 
   void dtGmshModel::setDebug( std::string const debug ) {
     _debug = debug;
