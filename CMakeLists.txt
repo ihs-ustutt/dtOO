@@ -67,6 +67,7 @@ find_package(
   COMPONENTS 
   filesystem 
   system 
+  timer
   REQUIRED
 )
 find_package(CGNS REQUIRED)

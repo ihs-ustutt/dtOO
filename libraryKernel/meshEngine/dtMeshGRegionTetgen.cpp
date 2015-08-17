@@ -3,15 +3,16 @@
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <xmlHeaven/qtXmlBase.h>
-#include <meshEngine/dtGmshRegion.h>
-#define TETLIBRARY ;
-#include "tetgen/tetgen.h"
+
 #include "dtMeshGRegion.h"
 #include "dtGmshModel.h"
 #include "dtGmshRegion.h"
 #include "dtGmshFace.h"
 #include "dtGmshEdge.h"
 #include "dtGmshVertex.h"
+
+#define TETLIBRARY ;
+#include "tetgen/tetgen.h"
 
 #include <gmsh/meshGRegion.h>
 #include <gmsh/MVertex.h>
@@ -81,7 +82,7 @@ namespace dtOO {
     dtGmshRegion * gr, tetgenio * in,
     std::map< int, ::MVertex * > & MVertexInt,
     std::map< ::MVertex *, int > & intMVertex    
-  ) {
+  ) {   
     //
     // start indexing with one
     //

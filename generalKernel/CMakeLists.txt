@@ -62,6 +62,7 @@ SET(HEADERS
   interfaceHeaven/intHandling.h
   interfaceHeaven/twoDArrayHandling.h
   interfaceHeaven/profilingHandling.h
+  interfaceHeaven/timeHandling.h
   logMe/logBase.h
   logMe/Output2FILE.h
   logMe/logMe.h
@@ -124,6 +125,7 @@ SET(SOURCES
   interfaceHeaven/renderInterface.cpp
   interfaceHeaven/floatHandling.cpp
   interfaceHeaven/intHandling.cpp
+  interfaceHeaven/timeHandling.cpp
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp
