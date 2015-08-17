@@ -9,6 +9,7 @@
 #include "dtMeshAndOrientGEdge.h"
 #include "dtMeshAndOrientGFace.h"
 #include "dtMeshTransfiniteRecombineSelectionGFace.h"
+#include "dtMeshGRegionTetgen.h"
 
 namespace dtOO {
   dtMeshOperatorFactory::dtMeshOperatorFactory() {
@@ -31,6 +32,7 @@ namespace dtOO {
     if (str == "dtMeshTransfiniteRecombineSelectionGFace") {
       return new dtMeshTransfiniteRecombineSelectionGFace();
     }
+    if ( str == "dtMeshGRegionTetgen" ) return new dtMeshGRegionTetgen();
     
     dt__throw(create(), << str <<  " could not be created");  
   }

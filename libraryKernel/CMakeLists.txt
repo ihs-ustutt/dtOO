@@ -1,3 +1,5 @@
+add_subdirectory(meshEngine/tetgen)
+
 SET(HEADERS
   dtLinearAlgebra.h
   geometryEngine/dtCurve.h
@@ -83,6 +85,7 @@ SET(HEADERS
   meshEngine/dtMeshAndOrientGEdge.h
   meshEngine/dtMeshAndOrientGFace.h
   meshEngine/dtMeshTransfiniteRecombineSelectionGFace.h
+  meshEngine/dtMeshGRegionTetgen.h
   meshEngine/dtMoabCore.h
   meshEngine/dtGmshMeshBoundaryLayer.h
   meshEngine/dtOMMesh.h
@@ -185,6 +188,7 @@ SET(SOURCES
   meshEngine/dtMeshAndOrientGEdge.cpp
   meshEngine/dtMeshAndOrientGFace.cpp
   meshEngine/dtMeshTransfiniteRecombineSelectionGFace.cpp
+  meshEngine/dtMeshGRegionTetgen.cpp
   meshEngine/dtMoabCore.cpp
   meshEngine/dtGmshMeshBoundaryLayer.cpp
   meshEngine/dtOMMesh.cpp
