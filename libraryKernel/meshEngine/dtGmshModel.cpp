@@ -470,7 +470,7 @@ namespace dtOO {
     
     return ret;    
   }
-	
+  
   std::list< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( 
     std::list< ::GEdge * > edges 
   ) {
@@ -508,6 +508,16 @@ namespace dtOO {
     return ret;    
   }
 
+  std::list< dtGmshVertex * > dtGmshModel::cast2DtGmshVertex( 
+    std::list< ::GVertex * > vertices 
+  ) {
+		std::list< dtGmshVertex * > retVertices;
+		dt__forAllIter(std::list< ::GVertex * >, vertices, it) {
+			retVertices.push_back( cast2DtGmshVertex(*it) );
+		}
+		return retVertices;
+	}
+  
   dtPoint3 dtGmshModel::extractPosition( ::GVertex const * const gv ) {
     return cast2DtGmshVertex(
 			const_cast< ::GVertex * >(gv)

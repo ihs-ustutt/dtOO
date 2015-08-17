@@ -61,6 +61,9 @@ namespace dtOO {
       std::list< ::GEdge * > edges 
     );
     static dtGmshVertex * cast2DtGmshVertex( ::GEntity * gv );
+    static std::list< dtGmshVertex * > cast2DtGmshVertex( 
+      std::list< ::GVertex * > vertices
+    );    
     //
     // modify position of MVertex and GVertex
     //

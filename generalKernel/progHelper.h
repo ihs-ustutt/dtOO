@@ -24,6 +24,8 @@
     iter!=(vector).end(); \
     ++iter \
   )
+#define dt__forAllRefAuto(vector, iterator) \
+  for ( auto & iterator : vector )
 #define dt__forFromToIter(iterator_type, from, to, iter) \
   for ( \
     iterator_type iter = from; \
