@@ -36,14 +36,20 @@ namespace dtOO {
     //
 		// check input
 		//    
-    dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
-		dt__throwIf(!dtXmlParserBase::hasChild("analyticFunction", toBuild), buildPart());
+    dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart()
+    );
+		dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticFunction", toBuild), buildPart()
+    );
     bool optionPercent = dtXmlParserBase::getAttributeBool("percent", toBuild);
     
     //
     // get analyticGeometry
     //
-    ::QDomElement aGElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
+    ::QDomElement aGElement 
+    = 
+    dtXmlParserBase::getChild("analyticGeometry", toBuild);
     dt__pH(analyticGeometry const) aG_t(
       dtXmlParserBase::createAnalyticGeometry(&aGElement, bC, cV, aF, aG)
     );
@@ -56,7 +62,9 @@ namespace dtOO {
     //
     // get analyticFunction
     //
-    ::QDomElement aFElement = dtXmlParserBase::getChild("analyticFunction", toBuild);
+    ::QDomElement aFElement 
+    = 
+    dtXmlParserBase::getChild("analyticFunction", toBuild);
     dt__pH(analyticFunction const) aF_t(
       dtXmlParserBase::createAnalyticFunction(&aFElement, bC, cV, aF)
     );
@@ -92,8 +100,12 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > const * const aG,
     vectorHandling< analyticGeometry * > * result 
   ) const {
-    dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
-		dt__throwIf(!dtXmlParserBase::hasChild("analyticFunction", toBuild), buildPart());
+    dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart()
+    );
+		dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticFunction", toBuild), buildPart()
+    );
 
 //    if ( hasAG && hasAF ) {
       //
@@ -102,7 +114,9 @@ namespace dtOO {
       analyticGeometry const * aG_t 
       = 
       aG->get( 
-        dtXmlParserBase::getAttributeStr("label", dtXmlParserBase::getChild( "analyticGeometry", toBuild )) 
+        dtXmlParserBase::getAttributeStr(
+          "label", dtXmlParserBase::getChild( "analyticGeometry", toBuild )
+        ) 
       );
       //
       // check if it is a map3dTo3d
@@ -118,7 +132,9 @@ namespace dtOO {
       analyticFunction const * aF_t
       = 
       aF->get( 
-        dtXmlParserBase::getAttributeStr("label", dtXmlParserBase::getChild( "analyticFunction", toBuild )) 
+        dtXmlParserBase::getAttributeStr(
+          "label", dtXmlParserBase::getChild( "analyticFunction", toBuild )
+        ) 
       );
 
 //			vec3dOneD const * v1d = vec3dOneD::ConstDownCast(aF);
@@ -134,9 +150,13 @@ namespace dtOO {
 //			  aGeoP->push_back( new vec3dTwoDInMap3dTo3d(v2d, m3d) );
 //			}
 			if (v3d) {
-				vec3dThreeDInMap3dTo3dCompound * v3dC = new vec3dThreeDInMap3dTo3dCompound();
+				vec3dThreeDInMap3dTo3dCompound * v3dC 
+        = 
+        new vec3dThreeDInMap3dTo3dCompound();
 				for (int ii=0; ii<v3d->nComponents(); ii++) {
-					v3dC->addComponent( vec3dThreeDInMap3dTo3d( &(v3d->component(ii)), m3d) );
+					v3dC->addComponent( 
+            vec3dThreeDInMap3dTo3d( &(v3d->component(ii)), m3d) 
+          );
 //			    aGeoP->push_back( new vec3dThreeDInMap3dTo3d(v3d, m3d) );
 				}
 				result->push_back( v3dC );

@@ -12,9 +12,10 @@ namespace dtOO {
     static void command(std::string const & cmd);
     static void commandAndWait(std::string const & cmd);
     static bool createDirectory( std::string const & dirPath );
-    static bool fileExists(std::string const filename);
-    static void deleteFile( std::string const filename );
-    static void deleteDirectory( std::string const dirname );    
+    static bool fileExists(std::string const & filename);
+    static bool directoryExists(std::string const & dirname);
+    static void deleteFile( std::string const & filename );
+    static void deleteDirectory( std::string const & dirname );    
     static void copyDirectory( std::string const & from, std::string const & to);
   private:
     systemHandling();    

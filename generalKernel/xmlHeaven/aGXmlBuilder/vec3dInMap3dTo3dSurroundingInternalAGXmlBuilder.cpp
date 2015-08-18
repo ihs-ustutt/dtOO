@@ -36,14 +36,22 @@ namespace dtOO {
     //
 		// check input
 		//
-    dt__throwIf(!dtXmlParserBase::getNChildren("analyticGeometry", toBuild), buildPart());
-		dt__throwIf(!dtXmlParserBase::hasAttribute("number_points_one", toBuild), buildPart());
-		dt__throwIf(!dtXmlParserBase::hasAttribute("number_points_two", toBuild), buildPart());
+    dt__throwIf(
+      !dtXmlParserBase::getNChildren("analyticGeometry", toBuild), buildPart()
+    );
+		dt__throwIf(
+      !dtXmlParserBase::hasAttribute("number_points_one", toBuild), buildPart()
+    );
+		dt__throwIf(
+      !dtXmlParserBase::hasAttribute("number_points_two", toBuild), buildPart()
+    );
 		dt__throwIf(!dtXmlParserBase::hasAttribute("order", toBuild), buildPart());
 		
 		dt__pH(map2dTo3d const) m2d;
 		dt__pH(map3dTo3d const) m3d;     		
-		::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
+		::QDomElement wElement 
+    = 
+    dtXmlParserBase::getChild("analyticGeometry", toBuild);
 		while ( !wElement.isNull() ) {
 			analyticGeometry * aG_t 
 			= 
@@ -54,9 +62,19 @@ namespace dtOO {
 		}
     dt__throwIf(m2d.isNull() && m3d.isNull(), buildPart());
 		
-		int nU = dtXmlParserBase::getAttributeIntMuParse("number_points_one", toBuild, cV, aF);
-		int nV = dtXmlParserBase::getAttributeIntMuParse("number_points_two", toBuild, cV, aF);
-		int order = dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV, aF);
+		int nU 
+    = 
+    dtXmlParserBase::getAttributeIntMuParse(
+      "number_points_one", toBuild, cV, aF
+    );
+		int nV 
+    = 
+    dtXmlParserBase::getAttributeIntMuParse(
+      "number_points_two", toBuild, cV, aF
+    );
+		int order 
+    = 
+    dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV, aF);
 
     dt__pH(map2dTo3d) toRet(
 			map2dTo3d_approximateMap2dTo3dInMap3dTo3d(

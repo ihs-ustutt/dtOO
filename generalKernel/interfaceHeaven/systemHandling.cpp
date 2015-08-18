@@ -74,7 +74,7 @@ namespace dtOO {
     return true;
   }
 
-  bool systemHandling::fileExists(std::string const filename) {
+  bool systemHandling::fileExists(std::string const & filename) {
     if ( FILE *file = fopen(filename.c_str(), "r") ) {
       fclose(file);
       return true;
@@ -84,13 +84,17 @@ namespace dtOO {
     }   
   }
   
-  void systemHandling::deleteFile( std::string const filename ) {
+  bool systemHandling::directoryExists(std::string const & dirname) {
+    return ::boost::filesystem::is_directory(dirname);  
+  }
+  
+  void systemHandling::deleteFile( std::string const & filename ) {
     if( remove( filename.c_str() ) != 0 ) {
       dt__throw(deleteFile(), << "Error deleting " << dt__eval(filename) );
     }
   }
 
-  void systemHandling::deleteDirectory( std::string const dirname ) {
+  void systemHandling::deleteDirectory( std::string const & dirname ) {
   try {
 		boost::filesystem::remove_all( 
 		  boost::filesystem::path(dirname.c_str()) 
