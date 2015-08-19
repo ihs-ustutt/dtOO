@@ -13,23 +13,25 @@
 IF( NOT OpenFOAM_FOUND STREQUAL TRUE )
   set( 
     _incsearchpath 
-    $ENV{FOAM_SRC}/foam/lnInclude 
-    $ENV{FOAM_SRC}/OpenFOAM/lnInclude 
-    $ENV{FOAM_SRC}/OSspecific/POSIX/lnInclude 
+    $ENV{FOAM_SRC}
+#    $ENV{FOAM_SRC}/foam/lnInclude 
+#    $ENV{FOAM_SRC}/OpenFOAM/lnInclude 
+#    $ENV{FOAM_SRC}/OSspecific/POSIX/lnInclude 
   )
   set( _testlibname libODE.so )
   set( _libsearchpath $ENV{FOAM_LIBBIN} )
   #find the include dir by looking for Standard_Real.hxx
-  FIND_PATH( OpenFOAM_foam_INCLUDE_DIR entry.H PATHS ${_incsearchpath} DOC "Path to OF foam includes" )
-  FIND_PATH( OpenFOAM_OSspecific_INCLUDE_DIR sigFpe.H PATHS ${_incsearchpath} DOC "Path to OF OSspecific includes" )
-  IF( OpenFOAM_foam_INCLUDE_DIR STREQUAL OpenFOAM_foam_INCLUDE_DIR-NOTFOUND )
-    SET( OpenFOAM_FOUND FALSE CACHE BOOL FORCE )
-    MESSAGE( FATAL_ERROR "Cannot find OF include dir. Install openfoam." )
-  ENDIF( OpenFOAM_foam_INCLUDE_DIR STREQUAL OpenFOAM_foam_INCLUDE_DIR-NOTFOUND )
-  IF( OpenFOAM_OSspecific_INCLUDE_DIR STREQUAL OpenFOAM_OSspecific_INCLUDE_DIR-NOTFOUND )
-    SET( OpenFOAM_FOUND FALSE CACHE BOOL FORCE )
-    MESSAGE( FATAL_ERROR "Cannot find OF include dir. Install openfoam." )
-  ENDIF( OpenFOAM_OSspecific_INCLUDE_DIR STREQUAL OpenFOAM_OSspecific_INCLUDE_DIR-NOTFOUND )
+  FIND_PATH( OpenFOAM_INCLUDE_DIR foam PATHS ${_incsearchpath} DOC "Path to OF includes" )
+ # FIND_PATH( OpenFOAM_foam_INCLUDE_DIR entry.H PATHS ${_incsearchpath} DOC "Path to OF foam includes" )
+ # FIND_PATH( OpenFOAM_OSspecific_INCLUDE_DIR sigFpe.H PATHS ${_incsearchpath} DOC "Path to OF OSspecific includes" )
+#  IF( OpenFOAM_foam_INCLUDE_DIR STREQUAL OpenFOAM_foam_INCLUDE_DIR-NOTFOUND )
+#    SET( OpenFOAM_FOUND FALSE CACHE BOOL FORCE )
+#    MESSAGE( FATAL_ERROR "Cannot find OF include dir. Install openfoam." )
+#  ENDIF( OpenFOAM_foam_INCLUDE_DIR STREQUAL OpenFOAM_foam_INCLUDE_DIR-NOTFOUND )
+#  IF( OpenFOAM_OSspecific_INCLUDE_DIR STREQUAL OpenFOAM_OSspecific_INCLUDE_DIR-NOTFOUND )
+#    SET( OpenFOAM_FOUND FALSE CACHE BOOL FORCE )
+#    MESSAGE( FATAL_ERROR "Cannot find OF include dir. Install openfoam." )
+#  ENDIF( OpenFOAM_OSspecific_INCLUDE_DIR STREQUAL OpenFOAM_OSspecific_INCLUDE_DIR-NOTFOUND )
 
   # Find one lib and save its directory to OpenFOAM_LINK_DIRECTORY. Because
   # OF has so many libs, there is increased risk of a name collision.
