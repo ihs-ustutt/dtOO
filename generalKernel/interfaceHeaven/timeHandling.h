@@ -2,6 +2,7 @@
 #define	TIMEHANDLING_H
 
 #include <logMe/dtMacros.h>
+#include <sstream>
 
 namespace boost {
   namespace timer {

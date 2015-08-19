@@ -1,11 +1,5 @@
 #include "constValueAssingRule.h"
 #include "xmlHeaven/dtXmlParser.h"
-#include <geometryEngine/dtOCCCurve2d.h>
-#include <geometryEngine/dtOCCCurve2dBase.h>
-#include <geometryEngine/dtOCCSurface.h>
-#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
-#include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>
 
 #include <logMe/logMe.h>
 #include <baseContainerHeaven/baseContainer.h>

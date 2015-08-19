@@ -1,6 +1,3 @@
-#ifndef PREPAREOPENFOAM_H
-#define	PREPAREOPENFOAM_H
-
 #include "unsetGmsh.h"
 
 // avoid issues with pre-processor defines
@@ -17,6 +14,3 @@
 #undef NONE
 #undef PLACEHOLDER
 #undef INVALID
-
-#endif	/* PREPAREOPENFOAM_H */
-

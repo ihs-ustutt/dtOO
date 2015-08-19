@@ -2,7 +2,6 @@
 #define	DTMACROS_H
 
 #include <string>
-#include <sstream>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/ptrVectorHandling.h>
 
