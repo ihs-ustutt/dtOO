@@ -97,6 +97,7 @@ SET(HEADERS
   meshEngine/dtOMEdgeField.h
   meshEngine/dtOMFaceField.h
   meshEngine/dtOMDynamicFaceField.h
+  meshEngine/dtFoamLibrary.h
   pluginEngine/pugg/Driver.h
   pluginEngine/pugg/Kernel.h
   pluginEngine/pugg/Plugin.h
@@ -194,6 +195,7 @@ SET(SOURCES
   meshEngine/dtOMMesh.cpp
   meshEngine/dtOMMeshManifold.cpp
   meshEngine/dtOMField.cpp
+  meshEngine/dtFoamLibrary.cpp
   dtGaussLegendreIntegration.cpp
 )
 
