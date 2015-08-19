@@ -39,27 +39,17 @@ namespace dtOO {
 
       // Go through all these faces and check if there is one which uses all of
       // meshF vertices (in any order ;-)
-      forAll(pFaces, i)
-      {
-          ::Foam::label faceI = pFaces[i];
+      forAll(pFaces, i) {
+        ::Foam::label faceI = pFaces[i];
 
-          const ::Foam::face& f = pp[faceI];
+        const ::Foam::face& f = pp[faceI];
 
-          // Count uses of vertices of meshF for f
-          ::Foam::label nMatched = 0;
+        // Count uses of vertices of meshF for f
+        ::Foam::label nMatched = 0;
 
-          forAll(f, fp)
-          {
-              if (::Foam::findIndex(meshF, f[fp]) != -1)
-              {
-                  nMatched++;
-              }
-          }
+        forAll(f, fp) if (::Foam::findIndex(meshF, f[fp]) != -1) nMatched++;
 
-          if (nMatched == meshF.size())
-          {
-              return faceI;
-          }
+        if (nMatched == meshF.size()) return faceI;
       }
 
       return -1;
@@ -70,27 +60,17 @@ namespace dtOO {
   ) {
       const ::Foam::labelList& pFaces = mesh.pointFaces()[meshF[0]];
 
-      forAll(pFaces, i)
-      {
-          ::Foam::label faceI = pFaces[i];
+      forAll(pFaces, i) {
+        ::Foam::label faceI = pFaces[i];
 
-          const ::Foam::face& f = mesh.faces()[faceI];
+        const ::Foam::face& f = mesh.faces()[faceI];
 
-          // Count uses of vertices of meshF for f
-          ::Foam::label nMatched = 0;
+        // Count uses of vertices of meshF for f
+        ::Foam::label nMatched = 0;
 
-          forAll(f, fp)
-          {
-              if (::Foam::findIndex(meshF, f[fp]) != -1)
-              {
-                  nMatched++;
-              }
-          }
+        forAll(f, fp) if (::Foam::findIndex(meshF, f[fp]) != -1) nMatched++;
 
-          if (nMatched == meshF.size())
-          {
-              return faceI;
-          }
+        if (nMatched == meshF.size()) return faceI;
       }
       return -1;
   }
@@ -106,16 +86,15 @@ namespace dtOO {
 
       forAll(faces, i)
       {
-          const ::Foam::face& f = faces[i];
+        const ::Foam::face& f = faces[i];
 
-          ::Foam::vector n(f.normal(points));
+        ::Foam::vector n(f.normal(points));
 
-          // Check if vector from any point on face to cc points outwards
-          if (((points[f[0]] - cc) & n) < 0)
-          {
-              // Incorrectly oriented
-              return false;
-          }
+        // Check if vector from any point on face to cc points outwards
+        if (((points[f[0]] - cc) & n) < 0) {
+            // Incorrectly oriented            
+            return false;
+        }
       }
 
       return true;
