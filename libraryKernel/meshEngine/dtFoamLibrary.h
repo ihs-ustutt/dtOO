@@ -2,6 +2,7 @@
 #define	DTFOAMLIBRARY_H
 
 #include <logMe/dtMacros.h>
+#include <map>
 
 #include <criticalHeaven/prepareOpenFOAM.h>
 #include <polyMesh.H>
@@ -18,6 +19,13 @@ namespace dtOO {
   class dtFoamLibrary {
   public:
     dt__classOnlyName(dtFoamLibrary);
+    static ::Foam::polyMesh * readMesh(     
+      std::vector< ::MVertex * > allVerts,
+      std::vector< std::pair< ::MElement *, int > > allElems,
+      std::map< int, std::string > physicalInt,
+      ::Foam::Time const & runTime
+    ); 
+  private:
     dtFoamLibrary();
     virtual ~dtFoamLibrary();
     static void renumber(
@@ -56,7 +64,7 @@ namespace dtOO {
       ::Foam::List< ::Foam::DynamicList< ::Foam::face > >& patchFaces,
       ::Foam::labelList& zoneToPhys,
       ::Foam::List< ::Foam::DynamicList< ::Foam::label > >& zoneCells
-    );    
+    );
   private:
   public:
     static const ::Foam::label MSHTRI   = 2;

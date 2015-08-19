@@ -35,14 +35,14 @@ namespace dtOO {
     );    
     virtual void apply(void);
   private:
-    void initMeshVectors( void );
+    void initMeshVectors( 
+      std::vector< ::MVertex * > & allVerts, 
+      std::vector< std::pair< ::MElement *, int > > & allElems,
+      std::map< int, std::string > & physicalNames    
+    );
   private:
     std::string _workingDirectory;
-    std::vector< boundedVolume * > _toWrite;
-    std::vector< ::MVertex * > _allVerts;
-    std::vector< std::pair< ::MElement *, int > > _allElems;
-    std::map< int, std::string > _physicalNames;
-
+    std::vector< boundedVolume * > _bV;
   };
 }
 #endif	/* CREATEOPENFOAMCASE_H */
