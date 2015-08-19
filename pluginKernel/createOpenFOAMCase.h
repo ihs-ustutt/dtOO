@@ -17,6 +17,8 @@ namespace dtOO {
   class boundedVolume;
   class baseContainer;
   
+  class dtGmshModel;
+  
   class createOpenFOAMCase : public dtPlugin {
   public:
     dt__class(createOpenFOAMCase, dtPlugin);    
@@ -36,9 +38,10 @@ namespace dtOO {
     void initMeshVectors( void );
   private:
     std::string _workingDirectory;
-    boundedVolume * _toWrite;
+    std::vector< boundedVolume * > _toWrite;
     std::vector< ::MVertex * > _allVerts;
     std::vector< std::pair< ::MElement *, int > > _allElems;
+    std::map< int, std::string > _physicalNames;
 
   };
 }

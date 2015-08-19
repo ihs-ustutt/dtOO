@@ -56,57 +56,99 @@ namespace dtOO {
     = 
     dtXmlParser::getAttributeStr("workingDirectory", element);
     
-    _toWrite 
-    = 
-    bV->get( 
-      dtXmlParser::getAttributeStr(
-        "label", qtXmlBase::getChild("boundedVolume", element) 
-      )      
-    );
+    std::vector< ::QDomElement > bVChild
+    =
+    qtXmlBase::getChildVector("boundedVolume", element);
+      
+    dt__forAllRefAuto(bVChild, aChild) {
+      _toWrite.push_back(
+        bV->get( dtXmlParser::getAttributeStr("label", aChild) )
+      );
+    }
   }
   
   void createOpenFOAMCase::initMeshVectors( void ) {
-		dt__ptrAss( dtGmshModel * gm, _toWrite->getModel() );
-    std::vector< ::GEntity * > entities;
-    gm->getEntities(entities);
-
-    //
-    // get number of elements and vertices
-    //
+    std::map< std::pair< dtGmshModel *, int >, int > globLoc;
     int nVerts = 0;
     int nElems = 0;    
-    dt__forAllRefAuto(entities, anEntity) {
-      nVerts = nVerts + anEntity->getNumMeshVertices();
-      nElems = nElems + anEntity->getNumMeshElements();
-    }
 
+    
+    dt__forAllRefAuto(_toWrite, aBV) {
+      dt__ptrAss( dtGmshModel * gm, aBV->getModel() );    
+      std::vector< ::GEntity * > entities;
+      gm->getEntities(entities);
+
+      //
+      // get number of elements and vertices
+      //
+      dt__forAllRefAuto(entities, anEntity) {
+        nVerts = nVerts + anEntity->getNumMeshVertices();
+        nElems = nElems + anEntity->getNumMeshElements();
+      }
+    }
+    
     //
     // allocate
     //    
     _allVerts.resize(nVerts);
     _allElems.resize(nElems);
+
     int vC = 0;
     int eC = 0;
-    dt__forAllRefAuto(entities, anEntity) {
-      dt__forFromToIndex(0, anEntity->getNumMeshVertices(), ii) {
-        _allVerts[ vC ] = anEntity->getMeshVertex(ii);
-        vC++;
-      }
-      dt__forFromToIndex(0, anEntity->getNumMeshElements(), ii) {
-        _allElems[ eC ] 
-        = 
-        std::pair< ::MElement * , int >(
-          anEntity->getMeshElement(ii), 
-          gm->getPhysicalNumber(anEntity->dim(), gm->getPhysicalString(anEntity))
-        );
-        eC++;
-      }
-    }    
+    dt__forAllRefAuto(_toWrite, aBV) {
+      dt__ptrAss( dtGmshModel * gm, aBV->getModel() );    
+      std::vector< ::GEntity * > entities;
+      gm->getEntities(entities);
+      
+      dt__forAllRefAuto(entities, anEntity) {
+        dt__forFromToIndex(0, anEntity->getNumMeshVertices(), ii) {
+          _allVerts[ vC ] = anEntity->getMeshVertex(ii);
+          vC++;
+        }
+        dt__forFromToIndex(0, anEntity->getNumMeshElements(), ii) {
+          //
+          // local physical number
+          //
+          int locPhysInt 
+          = 
+          gm->getPhysicalNumber(
+            anEntity->dim(), gm->getPhysicalString(anEntity)
+          );
+          int globPhysInt = -1;
+
+          //
+          // check if  it is already in map
+          //
+          std::map< std::pair< dtGmshModel *, int >, int >::iterator thisPhysical
+          =
+          globLoc.find(
+            std::pair< dtGmshModel *, int >(gm, locPhysInt)
+          );
+
+          // not in map
+          if ( thisPhysical == globLoc.end() ) {
+            globPhysInt = globLoc.size()+1;
+            globLoc[ std::pair< dtGmshModel *, int >(gm, locPhysInt) ]
+            =
+            globPhysInt; 
+
+            _physicalNames[globPhysInt] = gm->getPhysicalString(anEntity);
+          }
+          // in map
+          else globPhysInt = thisPhysical->second;
+
+          _allElems[ eC ] 
+          = 
+          std::pair< ::MElement * , int >(
+            anEntity->getMeshElement(ii), globPhysInt
+          );
+          eC++;
+        }
+      }    
+    }
   }
   
   void createOpenFOAMCase::apply(void) {
-		dt__ptrAss( dtGmshModel * gm, _toWrite->getModel() );
-
     //
     // enable exception throwing
     //
@@ -164,7 +206,15 @@ namespace dtOO {
       //
       // read physicals
       //
-      dtFoamLibrary::readPhysNames(gm, physicalNames);
+//      dtFoamLibrary::readPhysNames(gm, physicalNames);
+      dt__forAllRefAuto(_physicalNames, aPair) {
+        if (aPair.second == "") continue;
+        
+        physicalNames.insert( 
+          ::Foam::label(aPair.first), 
+          ::Foam::string::validate< ::Foam::word >(aPair.second)
+        );                
+      }
 
       //
       // read vertices
