@@ -4,6 +4,8 @@
 #include "dtPlugin.h"
 #include "writeStep.h"
 #include "constValueAssingRule.h"
+#include "createOpenFOAMCase.h"
+
 #include "dtPluginDriver.h"
 #include <pluginEngine/pugg/Kernel.h>
 
@@ -28,6 +30,7 @@ namespace dtOO {
     
 		__IFRET(writeStep);
     __IFRET(constValueAssingRule);
+    __IFRET(createOpenFOAMCase);
     
     dt__throw(create(), << str <<  " could not be created");  
   } 
@@ -42,45 +45,44 @@ namespace dtOO {
     std::string const & pluginName, 
     std::string const & pluginDriver
   ) {
-    dt__info(
-      createFromPlugin(), 
-      << "create dtPlugin " << str <<  " ..."
-    );
+    dt__info( createFromPlugin(), << "creating " << str <<  "..." );
   
+    //
+    // init kernel
+    //
     ::pugg::Kernel * kernel = new ::pugg::Kernel();
     kernel->add_server(dtPlugin::server_name(), dtPlugin::version);  
 
+    //
+    // output
+    //
     dt__info(
       createFromPlugin(), 
-      << "load " << pluginName <<  " ..."
+      << dt__eval(pluginName) << std::endl
+      << dt__eval(pluginDriver)
     );    
     
-// #ifdef WIN32      
-//     kernel.load_plugin(pluginName); // Cat class is in this dll.
-// #else
-    kernel->load_plugin(pluginName);
-// #endif
+    //
+    // load shared library
+    //
+    dt__throwIf( 
+      !kernel->load_plugin(pluginName), << "Loading plugin failed."
+    );
 
-    dt__info(
-      createFromPlugin(), 
-      << "using " << pluginDriver <<  " ..."
-    );    
-    
-
-
+    //
+    // create plugin using plugin driver
+    //
     dtPlugin *  ret 
     = 
     kernel->get_driver< dtPluginDriver >(
       dtPlugin::server_name(), pluginDriver
     )->create();
 
-    ret->apply();
-    
+    //
+    // store kernel in plugin
+    //
     ret->setKernel(kernel);
     
-//    return new dtPlugin( *plugin );
-    
     return ret;
-//    dt__throw(create(), << str <<  " could not be created");  
   }  
 }
