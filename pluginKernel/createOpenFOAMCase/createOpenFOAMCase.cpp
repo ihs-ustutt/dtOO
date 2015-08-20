@@ -19,6 +19,9 @@
 #include <argList.H>
 #include <Time.H>
 #include <polyMesh.H>
+#include <repatchPolyTopoChanger.H>
+
+#include "openFOAMSetupRule.h"
 
 namespace dtOO { 
   createOpenFOAMCase::createOpenFOAMCase() {
@@ -38,9 +41,39 @@ namespace dtOO {
 	) {
 	  dtPlugin::init(element, bC, cV, aF, aG, bV, pL);
     
+    //
+    // get working directory
+    //
     _workingDirectory
     = 
     dtXmlParser::getAttributeStr("workingDirectory", element);
+    
+    //
+    // get setup rule
+    //
+    std::vector< std::string > tmpSetupRule 
+    = 
+    qtXmlPrimitive::getAttributeStrVector("setupRule", element);
+    
+    _setupRule.resize(tmpSetupRule.size());
+    dt__forAllIndex(tmpSetupRule, ii) {
+      _setupRule[ii] 
+      = 
+      stringPrimitive::convertToStringVector(":", ":", tmpSetupRule[ii]);
+      
+      //
+      // create mapping
+      //
+      if ( stringPrimitive::stringContains(",", _setupRule[ii][1]) ) {
+        std::vector< std::string > csvString
+        =
+        stringPrimitive::convertToCSVStringVector( _setupRule[ii][1] );
+        dt__forAllRefAuto(csvString, aStr) _indexPhysName[ aStr ] = ii;
+      }
+      else {
+        _indexPhysName[ _setupRule[ii][1] ] = ii;
+      }
+    }
     
     std::vector< ::QDomElement > bVChild
     =
@@ -191,8 +224,28 @@ namespace dtOO {
       dt__pH(::Foam::polyMesh) mesh( 
         dtFoamLibrary::readMesh(allVerts, allElems, physicalNames, runTime) 
       );
+      
+//      ::Foam::DynamicList< ::Foam::polyPatch * > newPatches;
+      //newPatches.resize(mesh->boundaryMesh().size());
+      
+      //
+      // execute rules
+      //
+//      if (!_setupRule.empty()) {
+      dt__forAllRefAuto(_setupRule, aRule) {
+        dt__pH(openFOAMSetupRule) exRule(
+          openFOAMSetupRule::create( aRule[0] )
+        );
+        exRule->executeOnMesh(aRule, *mesh);
+      }
+//        ::Foam::repatchPolyTopoChanger(*mesh).changePatches(newPatches);
+//      }
+      
+      //
+      // write mesh
+      //
       mesh->write();
-
+      
       dt__info(apply(), << "Done");    
     }
     catch (::Foam::error & err) {

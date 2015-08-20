@@ -4,7 +4,7 @@
 #include "dtPlugin.h"
 #include "writeStep.h"
 #include "constValueAssingRule.h"
-#include "createOpenFOAMCase.h"
+#include "createOpenFOAMCase/createOpenFOAMCase.h"
 
 #include "dtPluginDriver.h"
 #include <pluginEngine/pugg/Kernel.h>
