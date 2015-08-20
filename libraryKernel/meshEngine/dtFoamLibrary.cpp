@@ -7,18 +7,10 @@
 #include <gmsh/MElement.h>
 
 #include <criticalHeaven/prepareOpenFOAM.h>
-//#include <argList.H>
 #include <Time.H>
-//#include <IOdictionary.H>
-//#include <OFstream.H>
-//#include <IFstream.H>
-//#include <IOstream.H>
-//#include <IOobject.H>
-//#include <polyMesh.H>
-//#include <cellModeller.H>
 #include <repatchPolyTopoChanger.H>
-//#include <cellSet.H>
-//#include <faceSet.H>
+#include <patchToFace.H>
+#include <SortableList.H>
 
 namespace dtOO {
   dtFoamLibrary::dtFoamLibrary() {
@@ -777,4 +769,65 @@ namespace dtOO {
 
     return ptrMesh;
   }
+
+  void dtFoamLibrary::patchToFaceZoneNoFlipMap(
+    ::Foam::polyPatch const & patch, 
+    ::Foam::word const & faceZone, 
+    ::Foam::polyMesh & mesh
+  ) {
+    ::Foam::topoSet tS(
+      mesh, 
+      "faceSet", 
+      faceZone,
+      ::Foam::IOobject::READ_IF_PRESENT,
+      ::Foam::IOobject::AUTO_WRITE
+    );
+    
+    ::Foam::patchToFace(
+      mesh, patch.name()
+    ).applyToSet(
+      ::Foam::topoSetSource::ADD, tS
+    );
+    
+    ::Foam::SortableList< ::Foam::label > faceLabels(tS.toc());
+
+    ::Foam::DynamicList< ::Foam::label > addressing(tS.size());
+    ::Foam::DynamicList< bool > flipMap(tS.size());
+
+    forAll(faceLabels, i) {
+     ::Foam::label faceI = faceLabels[i];
+     addressing.append(faceI);
+     flipMap.append(false);
+    }
+    
+    ::Foam::label zoneID = mesh.faceZones().findZoneID(tS.name());
+    if (zoneID == -1) {
+      dt__info(
+        patchToFaceZoneNoFlipMap(), 
+        << "Adding set " << tS.name() << " as a faceZone."
+      );
+      ::Foam::label sz = mesh.faceZones().size();
+      mesh.faceZones().setSize(sz+1);
+      mesh.faceZones().set(
+        sz, 
+        new ::Foam::faceZone(
+          tS.name(), addressing.shrink(), flipMap.shrink(), sz, mesh.faceZones()
+        )
+      );
+      mesh.faceZones().writeOpt() = ::Foam::IOobject::AUTO_WRITE;
+      mesh.faceZones().instance() = mesh.facesInstance();
+    }
+    else {
+      dt__info(patchToFaceZoneNoFlipMap(),
+        << "Overwriting contents of existing faceZone " << zoneID
+        << " with that of set " << tS.name() << "."
+      );
+      mesh.faceZones()[zoneID].resetAddressing(
+        addressing.shrink(), flipMap.shrink()
+      );
+      mesh.faceZones().writeOpt() = ::Foam::IOobject::AUTO_WRITE;
+      mesh.faceZones().instance() = mesh.facesInstance();
+    }    
+  }
+    
 }

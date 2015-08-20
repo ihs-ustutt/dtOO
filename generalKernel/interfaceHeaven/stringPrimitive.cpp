@@ -130,7 +130,7 @@ namespace dtOO {
     
     return retStr;
   }
-	
+  
 	std::vector< std::string > stringPrimitive::convertToStringVector(
 	  std::string const signStart, std::string const signEnd, 
 		std::string const str
@@ -146,6 +146,27 @@ namespace dtOO {
 		return values;
 	}
 
+  std::vector< std::string > stringPrimitive::convertToCSVStringVector(
+    std::string str
+  ) {
+    std::vector< std::string > retStr;    
+    
+    //
+    // get all inner elements
+    //
+    do {
+      retStr.push_back( getStringBetweenAndRemove("", ",", &str) );
+    }
+    while ( stringContains(",", str) );
+    
+    //
+    // last element
+    //
+    retStr.push_back(str);
+    
+    return retStr;
+  }
+  
   std::string stringPrimitive::replaceStringInString(
 	  std::string const toReplace, std::string const with, std::string const str
 	) {

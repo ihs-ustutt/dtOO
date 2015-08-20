@@ -25,6 +25,11 @@ namespace dtOO {
       std::map< int, std::string > physicalInt,
       ::Foam::Time const & runTime
     ); 
+    static void patchToFaceZoneNoFlipMap(
+      ::Foam::polyPatch const & patch, 
+      ::Foam::word const & faceZone,
+      ::Foam::polyMesh & mesh
+    );
   private:
     dtFoamLibrary();
     virtual ~dtFoamLibrary();
@@ -65,7 +70,6 @@ namespace dtOO {
       ::Foam::labelList& zoneToPhys,
       ::Foam::List< ::Foam::DynamicList< ::Foam::label > >& zoneCells
     );
-  private:
   public:
     static const ::Foam::label MSHTRI   = 2;
     static const ::Foam::label MSHQUAD  = 3;
