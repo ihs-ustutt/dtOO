@@ -74,7 +74,7 @@ find_package(CGNS REQUIRED)
 find_package(
   OpenFOAM
   COMPONENTS 
-  foam meshTools dynamicMesh Pstream
+  foam meshTools dynamicMesh finiteVolume Pstream
 )
 find_package(CGM)
 find_package(LASSO)
@@ -136,6 +136,7 @@ include_directories(
   ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
   ${OpenFOAM_INCLUDE_DIR}/meshTools/lnInclude
   ${OpenFOAM_INCLUDE_DIR}/dynamicMesh/dynamicMesh/lnInclude
+  ${OpenFOAM_INCLUDE_DIR}/finiteVolume/lnInclude
   ${CGM_INCLUDE_DIR}
   ${LASSO_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}
