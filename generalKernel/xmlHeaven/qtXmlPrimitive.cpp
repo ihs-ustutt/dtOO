@@ -440,6 +440,12 @@ namespace dtOO {
 	  );
     return str;
   }
+  
+  std::string qtXmlPrimitive::getAttributeRareStr(
+	  std::string const attName, const ::QDomElement element
+	) {
+    return element.attribute( attName.c_str(), "" ).toStdString();
+  }  
 
   bool qtXmlPrimitive::getAttributeBool(
 	  std::string const attName, const ::QDomElement element

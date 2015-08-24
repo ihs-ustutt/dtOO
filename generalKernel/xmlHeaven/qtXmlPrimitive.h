@@ -81,6 +81,9 @@ namespace dtOO {
     static std::string getAttributeStr( 
       std::string const attName, ::QDomElement const element 
     ); 
+    static std::string getAttributeRareStr( 
+      std::string const attName, ::QDomElement const element 
+    );     
     static bool getAttributeBool(
       std::string const attName, const ::QDomElement element
     );
