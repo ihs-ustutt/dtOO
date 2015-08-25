@@ -12,7 +12,7 @@ namespace dtOO {
     virtual ~openFOAMGgiRule();
     virtual void executeOnMesh(
       std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-    ) const;    
+    ) const;
   private:
 
   };

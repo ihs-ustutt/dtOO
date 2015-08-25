@@ -1,10 +1,12 @@
 #include "openFOAMGgiRule.h"
+#include "fvMesh.H"
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
 #include <meshEngine/dtFoamLibrary.h>
 
+#include <typeInfo.H>
 #include <polyMesh.H>
 #include <polyBoundaryMesh.H>
 #include <polyPatch.H>
@@ -49,12 +51,8 @@ namespace dtOO {
       bM[ id1 ], csvString[1]+"_zone", mesh
     );    
     
-    bool bridgeOverlap = false;
-    if ( stringPrimitive::stringContains("bridgeOverlap", rule[2]) ) {
-      if ( stringPrimitive::getStringBetween("(", ")", rule[2]) == "true") {
-        bridgeOverlap = true;
-      }
-    }
+    bool bridgeOverlap = parseOptionBool("bridgeOverlap", rule[2]);
+
     //
     // create new ggi patches
     //
