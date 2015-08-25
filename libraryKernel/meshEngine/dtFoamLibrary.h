@@ -30,6 +30,9 @@ namespace dtOO {
       ::Foam::word const & faceZone,
       ::Foam::polyMesh & mesh
     );
+    static void writeDicts( 
+      std::string const & workingDirectory, std::string const & content
+    );    
   private:
     dtFoamLibrary();
     virtual ~dtFoamLibrary();

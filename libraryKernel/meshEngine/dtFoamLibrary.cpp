@@ -11,6 +11,8 @@
 #include <repatchPolyTopoChanger.H>
 #include <patchToFace.H>
 #include <SortableList.H>
+#include <IStringStream.H>
+#include <dictionary.H>
 
 namespace dtOO {
   dtFoamLibrary::dtFoamLibrary() {
@@ -829,5 +831,46 @@ namespace dtOO {
       mesh.faceZones().instance() = mesh.facesInstance();
     }    
   }
+   
+  void dtFoamLibrary::writeDicts(
+    std::string const & workingDirectory, std::string const & content
+  ) {
+    //
+    // create content dict
+    //
+    ::Foam::IStringStream is(content);
+    ::Foam::dictionary contentDict( is() );
     
+    //
+    // create controlDict if subDict exists
+    //
+    if ( !contentDict.subOrEmptyDict("controlDict").empty() ) {      
+      ::Foam::OFstream os(
+        ::Foam::fileName(workingDirectory+"/system/controlDict")
+      );
+
+      dt__info(
+        writeDicts(),
+        << "Create controlDict:" << std::endl
+        << dt__eval( ::Foam::fileName(workingDirectory) ) << std::endl
+        << dt__eval( ::Foam::fileName(workingDirectory).name() )
+      );
+      
+      ::Foam::Time(
+          contentDict.subDict("controlDict"),
+          ::Foam::fileName(workingDirectory),
+          ::Foam::fileName(workingDirectory).name(),
+          "system",
+          "constant"
+      ).controlDict().writeHeader(os());
+
+      forAllConstIter(
+        ::Foam::dictionary, contentDict.subDict("controlDict"), it
+      ) {
+        it().write( os() );
+        os.endl();
+      }
+      os.flush();    
+    }
+  }
 }
