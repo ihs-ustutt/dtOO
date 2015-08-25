@@ -9,6 +9,7 @@
 #include <cellModeller.H>
 #include <cellSet.H>
 #include <faceSet.H>
+#include <fvMesh.H>
 
 class MVertex;
 class MElement;
@@ -30,9 +31,14 @@ namespace dtOO {
       ::Foam::word const & faceZone,
       ::Foam::polyMesh & mesh
     );
-    static void writeDicts( 
+    static void writeControlDict( 
       std::string const & workingDirectory, std::string const & content
     );    
+    static void writeDicts( 
+      ::Foam::fvMesh & fvMesh, 
+      std::string const & workingDirectory, 
+      std::string const & content 
+    );        
   private:
     dtFoamLibrary();
     virtual ~dtFoamLibrary();

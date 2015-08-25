@@ -13,6 +13,9 @@
 #include <SortableList.H>
 #include <IStringStream.H>
 #include <dictionary.H>
+#include <IOdictionary.H>
+#include <fvMesh.H>
+#include <wordList.H>
 
 namespace dtOO {
   dtFoamLibrary::dtFoamLibrary() {
@@ -832,7 +835,7 @@ namespace dtOO {
     }    
   }
    
-  void dtFoamLibrary::writeDicts(
+  void dtFoamLibrary::writeControlDict(
     std::string const & workingDirectory, std::string const & content
   ) {
     //
@@ -842,35 +845,106 @@ namespace dtOO {
     ::Foam::dictionary contentDict( is() );
     
     //
-    // create controlDict if subDict exists
+    // create controlDict
+    //    
+    ::Foam::dictionary currentDict = contentDict.subOrEmptyDict("controlDict");    
+    dt__throwIf(currentDict.empty(), writeControlDict()); 
+
+    ::Foam::fileName fn 
+    = 
+    currentDict.lookupOrDefault< ::Foam::fileName >("dtOOFileName", "", false, "");
+    dt__throwIf(fn.empty(), writeControlDict());
+    ::Foam::OFstream os(workingDirectory/fn);
+
+    dt__info(
+      writeControlDict(),
+      << "Create controlDict:" << std::endl
+      << dt__eval( ::Foam::fileName(workingDirectory) ) << std::endl
+      << dt__eval( ::Foam::fileName(workingDirectory).name() )
+    );
+
     //
-    if ( !contentDict.subOrEmptyDict("controlDict").empty() ) {      
-      ::Foam::OFstream os(
-        ::Foam::fileName(workingDirectory+"/system/controlDict")
-      );
+    // pseudo time for writing
+    //
+    ::Foam::Time(
+        contentDict.subDict("controlDict"),
+        ::Foam::fileName(workingDirectory),
+        ::Foam::fileName(workingDirectory).name(),
+        "system",
+        "constant"
+    ).controlDict().writeHeader(os());
 
-      dt__info(
-        writeDicts(),
-        << "Create controlDict:" << std::endl
-        << dt__eval( ::Foam::fileName(workingDirectory) ) << std::endl
-        << dt__eval( ::Foam::fileName(workingDirectory).name() )
-      );
-      
-      ::Foam::Time(
-          contentDict.subDict("controlDict"),
-          ::Foam::fileName(workingDirectory),
-          ::Foam::fileName(workingDirectory).name(),
-          "system",
-          "constant"
-      ).controlDict().writeHeader(os());
+    forAllConstIter(
+      ::Foam::dictionary, contentDict.subDict("controlDict"), it
+    ) {
+      it().write( os() );
+      os.endl();
+    }
+    os.flush();    
+  }
 
-      forAllConstIter(
-        ::Foam::dictionary, contentDict.subDict("controlDict"), it
+  void dtFoamLibrary::writeDicts( 
+    ::Foam::fvMesh & fvMesh, 
+    std::string const & workingDirectory, 
+    std::string const & content 
+  ) {
+    //
+    // create content dict
+    //
+    ::Foam::IStringStream is(content);
+    ::Foam::dictionary contentDict( is() );
+    
+    ::Foam::wordList toc = contentDict.toc();
+    
+    forAll(toc, i) {
+      if ( 
+        (toc[i] != "controlDict") 
+        && 
+        !contentDict.subOrEmptyDict(toc[i]).empty() 
       ) {
-        it().write( os() );
-        os.endl();
+        ::Foam::dictionary currentDict = contentDict.subOrEmptyDict(toc[i]);
+        
+        //
+        // create output stream
+        //
+        ::Foam::fileName fn 
+        = 
+        currentDict.lookupOrDefault< ::Foam::fileName >(
+          "dtOOFileName", "", false, ""
+        );
+        dt__throwIf(fn.empty(), writeDicts());
+        ::Foam::OFstream os(workingDirectory/fn);
+
+        //
+        // create IODictionary
+        //
+        ::Foam::IOdictionary ioDict(
+          ::Foam::IOobject(
+            fn.name(),
+            fn.path(),
+            fvMesh,
+            ::Foam::IOobject::NO_READ,
+            ::Foam::IOobject::AUTO_WRITE
+          )
+        );
+
+        dt__info(
+          writeDicts(),
+          << "Create " << toc[i] << std::endl
+          << dt__eval( ioDict.filePath() ) << std::endl
+          << dt__eval( ioDict.caseName() )
+        );
+        
+        //
+        // write header and add current dictionary
+        //
+        ioDict.writeHeader(os());
+        forAllConstIter(::Foam::dictionary, currentDict, it) {
+          it().write( os() );
+          os.endl();
+        }
+        os.flush();
       }
-      os.flush();    
     }
   }
 }
