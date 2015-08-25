@@ -41,6 +41,9 @@ namespace dtOO {
     dtVector3 parseOptionDtVector3(
       std::string const & name, std::string const & str
     ) const;
+    float parseOptionFloat(
+      std::string const & name, std::string const & str
+    ) const;    
   private:
 
   };

@@ -12,10 +12,7 @@ namespace dtOO {
     virtual ~openFOAMWallRule();
     virtual void executeOnMesh(
       std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-    ) const;    
-    virtual void executeOnVolVectorField(
-      std::vector< std::string > const & rule, ::Foam::volVectorField & field
-    ) const;
+    ) const;       
   private:
 
   };

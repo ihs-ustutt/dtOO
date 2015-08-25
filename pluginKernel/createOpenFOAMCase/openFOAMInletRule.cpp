@@ -1,4 +1,4 @@
-#include "openFOAMWallRule.h"
+#include "openFOAMInletRule.h"
 #include "interfaceHeaven/stringPrimitive.h"
 
 #include <logMe/logMe.h>
@@ -6,17 +6,16 @@
 #include <polyMesh.H>
 #include <polyBoundaryMesh.H>
 #include <polyPatch.H>
-#include <wallPolyPatch.H>
 #include <volFields.H>
 
 namespace dtOO {
-  openFOAMWallRule::openFOAMWallRule() {
+  openFOAMInletRule::openFOAMInletRule() {
   }
 
-  openFOAMWallRule::~openFOAMWallRule() {
+  openFOAMInletRule::~openFOAMInletRule() {
   }
   
-  void openFOAMWallRule::executeOnMesh(
+  void openFOAMInletRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
     //
@@ -33,7 +32,7 @@ namespace dtOO {
     //
     bM.set(
       id,
-      new ::Foam::wallPolyPatch(
+      new ::Foam::polyPatch(
         bM[ id ].name(), 
         bM[ id ].size(),
         bM[ id ].start(), 
