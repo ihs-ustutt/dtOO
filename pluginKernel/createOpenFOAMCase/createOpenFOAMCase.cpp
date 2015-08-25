@@ -19,7 +19,8 @@
 #include <argList.H>
 #include <Time.H>
 #include <polyMesh.H>
-#include <repatchPolyTopoChanger.H>
+#include <volFields.H>
+
 
 #include "openFOAMSetupRule.h"
 
@@ -48,6 +49,11 @@ namespace dtOO {
     = 
     dtXmlParser::getAttributeStr("workingDirectory", element);
     
+    
+    _dictRule
+    = 
+    dtXmlParser::getAttributeRareStr("dictRule", element);    
+    
     //
     // get setup rule
     //
@@ -57,10 +63,18 @@ namespace dtOO {
     
     _setupRule.resize(tmpSetupRule.size());
     dt__forAllIndex(tmpSetupRule, ii) {
+      //
+      // replace dependencies
+      //
+      dt__forAllRefAuto(tmpSetupRule, aRule) {
+        aRule = dtXmlParser::replaceDependencies(aRule, cV, aF, aG);
+      }
+      
       _setupRule[ii] 
       = 
       stringPrimitive::convertToStringVector(":", ":", tmpSetupRule[ii]);
       
+      dt__info(init(), << "_setupRule[ " << ii << " ] = " << _setupRule[ii]);
       //
       // create mapping
       //
@@ -215,36 +229,137 @@ namespace dtOO {
 		// create openFOAM rootCase and time
 		//
     try {
-      #include "setRootCase.H"
-      #include "createTime.H"
+//      #include "setRootCase.H"
+//      #include "createTime.H"
 
-      //Get polyMesh to write to constant
-      runTime.setTime( ::Foam::instant(runTime.constant()), 0 );
-      
+      //
+      // create rootCase
+      //
+      ::Foam::argList args(argc, argv);
+      if (!args.checkRootCase()) {
+        Foam::FatalError.exit();
+      }
+    
+      //
+      // write user dictionaries according to dictRule
+      //
+      dtFoamLibrary::writeDicts(_workingDirectory, _dictRule);
+
+    
+      dt__info(apply(), << "Create time");
+
+      ::Foam::Time runTime(
+          Foam::Time::controlDictName,
+          args.rootPath(),
+          args.caseName(),
+          "system",
+          "constant",
+          !args.optionFound("noFunctionObjects")
+      );
+    
+      //
+      // create mesh
+      //
       dt__pH(::Foam::polyMesh) mesh( 
         dtFoamLibrary::readMesh(allVerts, allElems, physicalNames, runTime) 
       );
-      
-//      ::Foam::DynamicList< ::Foam::polyPatch * > newPatches;
-      //newPatches.resize(mesh->boundaryMesh().size());
-      
+            
       //
       // execute rules
       //
-//      if (!_setupRule.empty()) {
       dt__forAllRefAuto(_setupRule, aRule) {
         dt__pH(openFOAMSetupRule) exRule(
           openFOAMSetupRule::create( aRule[0] )
         );
         exRule->executeOnMesh(aRule, *mesh);
       }
-//        ::Foam::repatchPolyTopoChanger(*mesh).changePatches(newPatches);
-//      }
+
+      //
+      // set runTime to timestep consant
+      // - write mesh to constant
+      //
+      runTime.setTime( ::Foam::instant(runTime.constant()), 0 );
       
       //
       // write mesh
       //
       mesh->write();
+
+      //
+      // set runTime to timestep 0
+      // - write fields to 0
+      //
+      runTime.setTime( ::Foam::instant("0"), 1 );            
+
+      //
+      // create fvMesh for fields
+      //
+      ::Foam::fvMesh fvMesh(*mesh);
+      
+      ::Foam::volVectorField U_(
+        ::Foam::IOobject(
+          "U",
+          runTime.timeName(),
+          runTime,
+          ::Foam::IOobject::NO_READ,
+          ::Foam::IOobject::AUTO_WRITE
+        ),
+        fvMesh,
+        ::Foam::dimensionedVector("U", ::Foam::dimVelocity, ::Foam::vector::zero)
+      );     
+      ::Foam::volScalarField p(
+        ::Foam::IOobject(
+          "p",
+          runTime.timeName(),
+          runTime,
+          ::Foam::IOobject::NO_READ,
+          ::Foam::IOobject::AUTO_WRITE
+        ),
+        fvMesh,
+        ::Foam::dimensionedScalar("p", ::Foam::dimPressure, ::Foam::scalar(0.))
+      );            
+      
+
+      //
+      // execute rules
+      //
+      dt__forAllRefAuto(_setupRule, aRule) {   
+        dt__pH(openFOAMSetupRule) exRule(
+          openFOAMSetupRule::create( aRule[0] )
+        );
+        exRule->executeOnVolVectorField(aRule, U_);
+//        exRule->executeOnVolVectorField(aRule, U_);
+      }
+
+      
+
+      U_.write();
+      p.write();
+      
+//      fvMesh.boundary()
+      
+
+//      ::Foam::volVectorField U_(
+//      "U",
+//        ::Foam::IOobject(
+//          "U",
+//          runTime.timeName(),
+//          *mesh,
+//          ::Foam::IOobject::READ_IF_PRESENT,
+//          ::Foam::IOobject::AUTO_WRITE
+//        ),
+//        *mesh
+//      );
+//        runTime.write();
+//        runTime++;
+//        runTime.write();
+  
+
+      
+//      //
+//      // write mesh
+//      //
+//      mesh->write();
       
       dt__info(apply(), << "Done");    
     }

@@ -42,6 +42,7 @@ namespace dtOO {
     );
   private:
     std::string _workingDirectory;
+    std::string _dictRule;
     std::vector< std::vector< std::string > > _setupRule;
     std::map< std::string, int > _indexPhysName;
     std::vector< boundedVolume * > _bV;
