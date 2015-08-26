@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include "openFOAMWallRule.h"
 #include "openFOAMGgiRule.h"
+#include "openFOAMCyclicGgiRule.h"
 #include "openFOAMEmptyRule.h"
 #include "openFOAMInletRule.h"
 #include "openFOAMOutletRule.h"
@@ -16,6 +17,10 @@
 #include <volFields.H>
 #include <fixedValueFvPatchField.H>
 #include <zeroGradientFvPatchField.H>
+#include <epsilonWallFunctionFvPatchScalarField.H>
+#include <kqRWallFunctionFvPatchField.H>
+#include <nutWallFunctionFvPatchScalarField.H>
+#include <dictionary.H>
 
 namespace dtOO {
   openFOAMSetupRule::openFOAMSetupRule() {
@@ -32,6 +37,7 @@ namespace dtOO {
     if (name == "openFOAMEmptyRule") return new openFOAMEmptyRule();
     if (name == "openFOAMInletRule") return new openFOAMInletRule();
     if (name == "openFOAMOutletRule") return new openFOAMOutletRule();
+    if (name == "openFOAMCyclicGgiRule") return new openFOAMCyclicGgiRule();
     
     dt__throw(create(), << "Cannot create " << name);
   }
@@ -53,43 +59,43 @@ namespace dtOO {
       // get patch according to rule
       //
       if ( field.mesh().boundary()[i].name() ==  rule[1] ) {
-        if ( stringPrimitive::stringContains("uniform", thisRule) ) {
+        dt__info(
+          executeOnVolVectorField(),
+          << "Executing" << std::endl
+          << dt__eval(thisRule) << std::endl
+          << "on" << std::endl
+          << "field.mesh().boundary()[" << i << "].name() = " 
+          << field.mesh().boundary()[i].name() << std::endl
+          << "of" << std::endl
+          << dt__eval(field.name())
+        );        
+        if ( stringPrimitive::stringContains("fixedValue", thisRule) ) {
           //
-          // create a new fixedValue patch
+          // create and set new patch
           //
-          ::Foam::fixedValueFvPatchField< ::Foam::vector > * fix
-          = 
-          new ::Foam::fixedValueFvPatchField< ::Foam::vector >(
-            field.mesh().boundary()[i], field
+          bF.set(
+            i, 
+            new ::Foam::fixedValueFvPatchField< ::Foam::vector >(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("fixedValue", thisRule)
+            )
           );
-
-          //
-          // set new patch to boundaryField
-          //
-          bF.set(i, fix);
-          
-          //
-          // set fixed value to patch
-          //        
-          dtVector3 uVal = parseOptionDtVector3("uniform", thisRule);
-          bF[i] == ::Foam::vector(uVal.x(), uVal.y(), uVal.z());
           
           return;
         }
         else if ( stringPrimitive::stringContains("zeroGradient", thisRule) ) {
           //
-          // create a new fixedValue patch
+          // create and set new patch
           //
-          ::Foam::zeroGradientFvPatchField< ::Foam::vector > * zeroGradient
-          = 
-          new ::Foam::zeroGradientFvPatchField< ::Foam::vector >(
-            field.mesh().boundary()[i], field
+          bF.set(
+            i, 
+            new ::Foam::zeroGradientFvPatchField< ::Foam::vector >(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("zeroGradient", thisRule)
+            )            
           );
-
-          //
-          // set new patch to boundaryField
-          //
-          bF.set(i, zeroGradient);
           
           return;
         }
@@ -115,54 +121,102 @@ namespace dtOO {
       // get patch according to rule
       //
       if ( field.mesh().boundary()[i].name() ==  rule[1] ) {
-        if ( stringPrimitive::stringContains("uniform", thisRule) ) {
+        dt__info(
+          executeOnVolScalarField(),
+          << "Executing" << std::endl
+          << dt__eval(thisRule) << std::endl
+          << "on" << std::endl
+          << "field.mesh().boundary()[" << i << "].name() = " 
+          << field.mesh().boundary()[i].name() << std::endl
+          << "of" << std::endl
+          << dt__eval(field.name())
+        );
+        if ( stringPrimitive::stringContains("fixedValue", thisRule) ) {
           //
-          // create a new fixedValue patch
+          // create and set new patch
           //
-          ::Foam::fixedValueFvPatchField< ::Foam::scalar > * fix
-          = 
-          new ::Foam::fixedValueFvPatchField< ::Foam::scalar >(
-            field.mesh().boundary()[i], field
+          bF.set(
+            i, 
+            new ::Foam::fixedValueFvPatchField< ::Foam::scalar >(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("fixedValue", thisRule)
+            )
           );
-
-          //
-          // set new patch to boundaryField
-          //
-          bF.set(i, fix);
-          
-          //
-          // set fixed value to patch
-          //        
-          float uVal = parseOptionFloat("uniform", thisRule);
-          bF[i] == ::Foam::scalar(uVal);
           
           return;
         }
         else if ( stringPrimitive::stringContains("zeroGradient", thisRule) ) {
           //
-          // create a new fixedValue patch
+          // create and set new patch
           //
-          ::Foam::zeroGradientFvPatchField< ::Foam::scalar > * zeroGradient
-          = 
-          new ::Foam::zeroGradientFvPatchField< ::Foam::scalar >(
-            field.mesh().boundary()[i], field
+          bF.set(
+            i, 
+            new ::Foam::zeroGradientFvPatchField< ::Foam::scalar >(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("zeroGradient", thisRule)
+            )
           );
-
-          //
-          // set new patch to boundaryField
-          //
-          bF.set(i, zeroGradient);
           
           return;
         }
-        else dt__throwUnexpected(executeOnVolVectorField());
+        else if( stringPrimitive::stringContains("kqRWallFunction", thisRule) ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::incompressible::RASModels
+              ::kqRWallFunctionFvPatchField< ::Foam::scalar >(
+                field.mesh().boundary()[i], 
+                field, 
+                parseOptionDict("kqRWallFunction", thisRule)
+            )
+          );
+          
+          return;          
+        }
+        else if( stringPrimitive::stringContains("epsilonWallFunction", thisRule) ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::incompressible::RASModels
+              ::epsilonWallFunctionFvPatchScalarField(
+                field.mesh().boundary()[i], 
+                field, 
+                parseOptionDict("epsilonWallFunction", thisRule)
+            ) 
+          );
+          
+          return;          
+        }      
+        else if( stringPrimitive::stringContains("nutWallFunction", thisRule) ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::incompressible::RASModels
+              ::nutWallFunctionFvPatchScalarField(
+                field.mesh().boundary()[i], 
+                field, 
+                parseOptionDict("nutWallFunction", thisRule)
+            ) 
+          );
+          
+          return;          
+        }                
+        else dt__throwUnexpected(executeOnVolScalarField());
       }
     }
   }
     
   std::string openFOAMSetupRule::getRuleOfField(
     std::string const & fieldName, std::vector< std::string > const & rule
-  ) const {  
+  ) {  
     //
     // start at position 3
     //
@@ -180,37 +234,60 @@ namespace dtOO {
   
   std::string openFOAMSetupRule::parseOptionStr(
     std::string const & name, std::string const & str
-  ) const {
+  ) {
     if ( stringPrimitive::stringContains(name, str) ) {
-      return stringPrimitive::getStringBetween("(", ")", str);
+      return stringPrimitive::getStringBetween(
+        "(", ")", str.substr(str.find(name))
+      );
+    
     }
+    dt__warning(
+      parseOptionStr(),
+      << "Cannot find option. Return empty string." << std::endl
+      << dt__eval(name) << std::endl
+      << dt__eval(str)
+    );
     return std::string("");
   }    
   
   bool openFOAMSetupRule::parseOptionBool(
     std::string const & name, std::string const & str
-  ) const {
+  ) {
     if ( parseOptionStr(name, str) == "true") return true;
     return false;    
   }
    
-  dtVector3 openFOAMSetupRule::parseOptionDtVector3(
+  ::Foam::vector openFOAMSetupRule::parseOptionVector(
     std::string const & name, std::string const & str
-  ) const {
+  ) {
     std::vector< float > ff
     =
     qtXmlBase::muParseCSString( parseOptionStr(name, str) );
     
-    dt__throwIf(ff.size()!=3, parseOptionDtVector3());
+    dt__throwIf(ff.size()!=3, parseOptionVector());
     
-    return dtVector3(ff[0], ff[1], ff[2]);
+    return ::Foam::vector(ff[0], ff[1], ff[2]);
   }
 
-  float openFOAMSetupRule::parseOptionFloat(
+  ::Foam::scalar openFOAMSetupRule::parseOptionScalar(
     std::string const & name, std::string const & str
-  ) const {
-    float ff = qtXmlBase::muParseString( parseOptionStr(name, str) );
-    
-    return ff;
+  ) {
+    return ::Foam::scalar(
+      qtXmlBase::muParseString( parseOptionStr(name, str) )
+    );
   }  
+
+  ::Foam::dictionary openFOAMSetupRule::parseOptionDict(
+    std::string const & name, std::string const & str
+  ) {
+    ::Foam::IStringStream is(
+      "{"
+      +
+      parseOptionStr(name, str)
+      +
+      "}"
+    );
+    
+    return ::Foam::dictionary(is());
+  }    
 }

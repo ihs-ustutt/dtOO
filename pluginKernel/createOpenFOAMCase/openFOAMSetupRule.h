@@ -28,22 +28,28 @@ namespace dtOO {
     virtual void executeOnVolScalarField(
       std::vector< std::string > const & rule, ::Foam::volScalarField & field
     ) const;        
-  protected:
-    std::string getRuleOfField( 
+  public:
+    static std::string getRuleOfField( 
       std::string const & fieldName, std::vector< std::string > const & rule
-    ) const;
-    std::string parseOptionStr(
+    );
+    static std::string parseOptionStr(
       std::string const & name, std::string const & str
-    ) const;    
-    bool parseOptionBool(
+    );    
+    static bool parseOptionBool(
       std::string const & name, std::string const & str
-    ) const;
-    dtVector3 parseOptionDtVector3(
+    );
+    static ::Foam::vector parseOptionVector(    
       std::string const & name, std::string const & str
-    ) const;
-    float parseOptionFloat(
+    );    
+    static ::Foam::scalar parseOptionScalar(
       std::string const & name, std::string const & str
-    ) const;    
+    );
+    static float parseOptionFloat(
+      std::string const & name, std::string const & str
+    );    
+    static ::Foam::dictionary parseOptionDict(
+      std::string const & name, std::string const & str
+    );    
   private:
 
   };
