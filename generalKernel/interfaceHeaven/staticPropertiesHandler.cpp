@@ -1,4 +1,5 @@
 #include "staticPropertiesHandler.h"
+#include "systemHandling.h"
 
 #include <logMe/logMe.h>
 
@@ -22,6 +23,7 @@ namespace dtOO {
 		setOption("geometry_render_resolution_v", "10");
 		setOption("geometry_render_resolution_w", "10");		
 		setOption("root_printLevel", "0");
+    setOption("workingDirectory", systemHandling::currentDirectory());
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {
