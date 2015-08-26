@@ -90,6 +90,9 @@ namespace dtOO {
     static std::vector< std::string > getAttributeStrVector(
       std::string const attName, ::QDomElement const element
     );    
+    static std::vector< std::string > getAttributeRareStrVector(
+      std::string const attName, ::QDomElement const element
+    );        
     static std::string convertToString( ::QDomNode const node );
     static std::string getTagName(::QDomElement const element);
     static ::QDomElement createElement(

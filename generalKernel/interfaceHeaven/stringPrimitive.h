@@ -55,7 +55,11 @@ namespace dtOO {
     static std::pair< int, int > getFromToBetweenFirstLast(
       std::string const signStart, std::string const signEnd, 
       std::string const str
-    );    
+    );
+    static std::vector< int > getOccurences(
+      std::string const & pattern, std::string const & str, 
+      int from = 0, int to = 0 
+    );
   };
 }
 #endif	/* STRINGPRIMITIVE_H */

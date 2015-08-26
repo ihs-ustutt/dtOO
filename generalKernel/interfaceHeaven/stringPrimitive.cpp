@@ -140,7 +140,13 @@ namespace dtOO {
 		for (int ii=0; ii<str.length(); ii++) {//while (valueStr.length() != 0) {
 			std::string aVal = getStringBetweenAndRemove(signStart, signEnd, &valueStr);
 		  values.push_back(aVal);
-      if (valueStr.length() == 0 ) break;      
+      if (
+        valueStr.length() == 0 
+        || 
+        !stringContains(signStart, valueStr) 
+        ||
+        !stringContains(signEnd, valueStr) 
+      ) break;      
 		}
 
 		return values;
@@ -189,18 +195,21 @@ namespace dtOO {
   std::pair< int, int > stringPrimitive::getFromToBetween(
 	  std::string const signStart, std::string const signEnd, std::string const str
 	) {
-    if ( (signStart.size() > 1) || (signEnd.size() > 1) ) {
-      dt__throw(
-				getStringFromTo(),
-        << dt__eval(signStart.size()) << std::endl
-        << dt__eval(signEnd.size()) << std::endl
-        << "Signs should have size equal one."
-			);
-    }
+    dt__throwIfWithMessage(
+      (signStart.size() > 1) || (signEnd.size() > 1),
+      getFromToBetween(),
+      << dt__eval(signStart) << std::endl
+      << dt__eval(signEnd)
+    );
 
-    if ( !stringContains(signStart, str) || !stringContains(signEnd, str) ) {
-      return std::pair< int, int >(0, 0);
-    }
+    //
+    // return empty string if signStart and signEnd are not part of the string
+    //
+    if ( 
+      !stringContains(signStart, str) 
+      || 
+      !stringContains(signEnd, str) 
+    ) return std::pair< int, int >(0, 0);
 
     int from;
     if ( (signStart.size() == 1) ) {
@@ -213,9 +222,33 @@ namespace dtOO {
     }
     else to = str.length()+1;
 
+    //
+    // check if there is one more occurrence of signStart between from and to
+    //
+    if (
+      (signStart != signEnd)
+      &&
+      (str.find_first_of(signStart.c_str(), from+1) < to)
+    ) {
+      //
+      // get occurrences of signStart and signEnd
+      //
+      std::vector< int > ocSignStart 
+      = 
+      getOccurences(signStart, str, from+1, to-1);
+      std::vector< int > ocSignEnd 
+      = 
+      getOccurences(signEnd, str, to+1);      
+      
+      //
+      // adjust to
+      //
+      to = ocSignEnd[ocSignStart.size()-1];
+    }
+    
     return std::pair< int, int >(from, to);		
 	}
-
+  
   std::pair< int, int > stringPrimitive::getFromToBetweenFirstLast(
 	  std::string const signStart, std::string const signEnd, std::string const str
 	) {
@@ -244,6 +277,28 @@ namespace dtOO {
     else to = str.length()+1;
 
     return std::pair< int, int >(from, to);		
-	}  
-		
+	}
+  
+  std::vector< int > stringPrimitive::getOccurences(
+    std::string const & pattern, std::string const & str, int from, int to
+  ) {
+    int aMatch = from;
+    if (to==0) to = str.size();
+    
+    std::vector< int > matches(0);
+    while (true) {
+      aMatch = str.find_first_of(pattern, aMatch);
+      
+      //
+      // if no more match return vector
+      //
+      if ( (aMatch == std::string::npos) || (aMatch>to) ) return matches;
+      
+      //
+      // store position and increment
+      //
+      matches.push_back(aMatch);
+      aMatch++;
+    }
+  }		
 }

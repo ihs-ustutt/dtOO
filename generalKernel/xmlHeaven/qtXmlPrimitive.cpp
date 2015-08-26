@@ -468,6 +468,13 @@ namespace dtOO {
 		std::string att = getAttributeStr(attName, element);
 		return convertToStringVector("{", "}", att);
 	}
+
+	std::vector< std::string > qtXmlPrimitive::getAttributeRareStrVector(
+		std::string const attName, ::QDomElement const element
+	) {
+		std::string att = getAttributeRareStr(attName, element);
+		return convertToStringVector("{", "}", att);
+	}
 	
   bool qtXmlPrimitive::is(
 	  std::string const tagName, ::QDomElement const element 
