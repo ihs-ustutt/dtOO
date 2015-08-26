@@ -9,6 +9,7 @@
 
 #include <xmlHeaven/dtXmlParser.h>
 #include <interfaceHeaven/systemHandling.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <meshEngine/dtFoamLibrary.h>
 #include <meshEngine/dtGmshModel.h>
 
@@ -20,7 +21,6 @@
 #include <Time.H>
 #include <polyMesh.H>
 #include <volFields.H>
-
 
 #include "openFOAMSetupRule.h"
 
@@ -43,24 +43,35 @@ namespace dtOO {
 	  dtPlugin::init(element, bC, cV, aF, aG, bV, pL);
     
     //
-    // get working directory
+    // get working directory and cVTag if available
     //
-    _workingDirectory
+    _workingDirectoryPattern
     = 
     dtXmlParser::getAttributeStr("workingDirectory", element);
-    
-    
+    if ( stringPrimitive::stringContains("#", _workingDirectoryPattern) ) {
+      std::vector< std::string > cVLabels 
+      = 
+      stringPrimitive::convertToStringVector(
+        "#", "#", _workingDirectoryPattern
+      );
+      
+      dt__forAllRefAuto(cVLabels, aLabel) _cVTag.push_back( cV->get(aLabel) );
+    }
+   
     _dictRule
     = 
     dtXmlParser::getAttributeRareStr("dictRule", element);    
     
     //
-    // get setup rule
+    // get setupRules
     //
     std::vector< std::string > tmpSetupRule 
     = 
-    qtXmlPrimitive::getAttributeStrVector("setupRule", element);
+    qtXmlPrimitive::getAttributeRareStrVector("setupRule", element);
     
+    //
+    // prepare setupRules
+    //
     _setupRule.resize(tmpSetupRule.size());
     dt__forAllIndex(tmpSetupRule, ii) {
       //
@@ -74,21 +85,46 @@ namespace dtOO {
       = 
       stringPrimitive::convertToStringVector(":", ":", tmpSetupRule[ii]);
       
+      dt__throwIf( _setupRule[ii].size()<3, init());
+      
       dt__info(init(), << "_setupRule[ " << ii << " ] = " << _setupRule[ii]);
-      //
-      // create mapping
-      //
-      if ( stringPrimitive::stringContains(",", _setupRule[ii][1]) ) {
-        std::vector< std::string > csvString
-        =
-        stringPrimitive::convertToCSVStringVector( _setupRule[ii][1] );
-        dt__forAllRefAuto(csvString, aStr) _indexPhysName[ aStr ] = ii;
-      }
-      else {
-        _indexPhysName[ _setupRule[ii][1] ] = ii;
-      }
     }
     
+    //
+    // get fieldRules
+    //
+    std::vector< std::string > tmpFieldRule 
+    = 
+    qtXmlPrimitive::getAttributeRareStrVector("fieldRule", element);
+    
+    //
+    // prepare fieldRules
+    //
+    _fieldRule.resize(tmpFieldRule.size());
+    dt__forAllIndex(tmpFieldRule, ii) {
+//      //
+//      // replace dependencies
+//      //
+//      dt__forAllRefAuto(tmpFieldRule, aRule) {
+//        aRule = dtXmlParser::replaceDependencies(aRule, cV, aF, aG);
+//      }
+      
+      _fieldRule[ii] 
+      = 
+      stringPrimitive::convertToStringVector(":", ":", tmpFieldRule[ii]);
+      
+      dt__throwIfWithMessage( 
+        _fieldRule[ii].size()<3, 
+        init(),
+        << dt__eval(_fieldRule[ii])
+      );
+      
+      dt__info(init(), << "_fieldRule[ " << ii << " ] = " << _fieldRule[ii]);
+    }
+    
+    //
+    // get boundedVolumes
+    //
     std::vector< ::QDomElement > bVChild
     =
     qtXmlBase::getChildVector("boundedVolume", element);
@@ -98,6 +134,8 @@ namespace dtOO {
         bV->get( dtXmlParser::getAttributeStr("label", aChild) )
       );
     }
+    
+    _runCommand = qtXmlPrimitive::getAttributeRareStr("runCommand", element);
   }
   
   void createOpenFOAMCase::initMeshVectors( 
@@ -199,6 +237,28 @@ namespace dtOO {
     }
     
     //
+    // modify wDir for each run if necessary
+    //
+    std::string wDir = _workingDirectoryPattern;
+    if (!_cVTag.empty()) wDir = dtXmlParser::replaceDependencies(wDir, &_cVTag);
+    
+    dt__info(
+      apply(),
+      << dt__eval(_workingDirectoryPattern) << std::endl
+      << dt__eval(_cVTag) << std::endl
+      << dt__eval(wDir)
+    );
+    
+    //
+    // create system folder
+    //
+    if ( systemHandling::directoryExists(wDir) ) {      
+      systemHandling::deleteDirectory(wDir);
+    }
+    systemHandling::createDirectory(wDir);
+    systemHandling::createDirectory(wDir+"/system");
+    
+    //
     // enable exception throwing
     //
     ::Foam::FatalError.throwExceptions();    
@@ -209,12 +269,12 @@ namespace dtOO {
 		char ** argv = new char*[3];
 		argv[0] = const_cast< char * >(getLabel().c_str());
 		argv[1] = const_cast< char * >("-case");
-		argv[2] = const_cast< char * >(_workingDirectory.c_str());
+		argv[2] = const_cast< char * >(wDir.c_str());
 
 		//
 		// check if working directory exists
 		//				
-		dt__throwIf( !systemHandling::directoryExists(_workingDirectory), init() );
+		dt__throwIf( !systemHandling::directoryExists(wDir), init() );
 
     std::vector< ::MVertex * > allVerts;
     std::vector< std::pair< ::MElement *, int > > allElems;
@@ -229,9 +289,6 @@ namespace dtOO {
 		// create openFOAM rootCase and time
 		//
     try {
-//      #include "setRootCase.H"
-//      #include "createTime.H"
-
       //
       // create rootCase
       //
@@ -243,7 +300,7 @@ namespace dtOO {
       //
       // write user dictionaries according to dictRule
       //
-      dtFoamLibrary::writeDicts(_workingDirectory, _dictRule);
+      dtFoamLibrary::writeControlDict(wDir, _dictRule);
 
     
       dt__info(apply(), << "Create time");
@@ -263,7 +320,7 @@ namespace dtOO {
       dt__pH(::Foam::polyMesh) mesh( 
         dtFoamLibrary::readMesh(allVerts, allElems, physicalNames, runTime) 
       );
-            
+    
       //
       // execute rules
       //
@@ -296,29 +353,62 @@ namespace dtOO {
       //
       ::Foam::fvMesh fvMesh(*mesh);
       
-      ::Foam::volVectorField U_(
-        ::Foam::IOobject(
-          "U",
-          runTime.timeName(),
-          runTime,
-          ::Foam::IOobject::NO_READ,
-          ::Foam::IOobject::AUTO_WRITE
-        ),
-        fvMesh,
-        ::Foam::dimensionedVector("U", ::Foam::dimVelocity, ::Foam::vector::zero)
-      );     
-      ::Foam::volScalarField p(
-        ::Foam::IOobject(
-          "p",
-          runTime.timeName(),
-          runTime,
-          ::Foam::IOobject::NO_READ,
-          ::Foam::IOobject::AUTO_WRITE
-        ),
-        fvMesh,
-        ::Foam::dimensionedScalar("p", ::Foam::dimPressure, ::Foam::scalar(0.))
-      );            
+      std::vector< ::Foam::volVectorField > volVector_;
+      std::vector< ::Foam::volScalarField > volScalar;
       
+      dt__forAllRefAuto(_fieldRule, aRule) {
+        if (aRule[0] == "volVectorField") {
+          ::Foam::IStringStream is(aRule[2]);
+          
+          volVector_.push_back(
+            ::Foam::volVectorField(
+              ::Foam::IOobject(
+                aRule[1],
+                runTime.timeName(),
+                runTime,
+                ::Foam::IOobject::NO_READ,
+                ::Foam::IOobject::AUTO_WRITE
+              ),
+              fvMesh,
+              ::Foam::dimensionedVector(
+                aRule[1], 
+                ::Foam::dimensionSet(::Foam::IStringStream(aRule[2])()), 
+                ::Foam::vector::zero
+              )
+            )            
+          );
+          if (aRule.size() == 4) {            
+            volVector_.back().internalField() 
+            = 
+            ::Foam::vector(::Foam::IStringStream(aRule[3])());
+          };          
+        }
+        else if (aRule[0] == "volScalarField") {
+          volScalar.push_back(
+            ::Foam::volScalarField(
+              ::Foam::IOobject(
+                aRule[1],
+                runTime.timeName(),
+                runTime,
+                ::Foam::IOobject::NO_READ,
+                ::Foam::IOobject::AUTO_WRITE
+              ),
+              fvMesh,
+              ::Foam::dimensionedScalar(
+                aRule[1], 
+                ::Foam::dimensionSet(::Foam::IStringStream(aRule[2])()), 
+                ::Foam::scalar(0.)
+              )
+            )           
+          );
+          if (aRule.size() == 4) {
+            volScalar.back().internalField() 
+            = 
+            ::Foam::scalar(qtXmlBase::muParseString(aRule[3]));
+          };
+        }
+        else dt__throwUnexpected(apply());
+      };
 
       //
       // execute rules
@@ -327,39 +417,21 @@ namespace dtOO {
         dt__pH(openFOAMSetupRule) exRule(
           openFOAMSetupRule::create( aRule[0] )
         );
-        exRule->executeOnVolVectorField(aRule, U_);
-//        exRule->executeOnVolVectorField(aRule, U_);
+        dt__forAllRefAuto(volVector_, aField) {
+          exRule->executeOnVolVectorField(aRule, aField);
+        }
+        dt__forAllRefAuto(volScalar, aField) {
+          exRule->executeOnVolScalarField(aRule, aField);
+        }        
       }
 
+      //
+      // write all fields
+      //
+      dt__forAllRefAuto(volVector_, aField) aField.write();
+      dt__forAllRefAuto(volScalar, aField) aField.write();
       
-
-      U_.write();
-      p.write();
-      
-//      fvMesh.boundary()
-      
-
-//      ::Foam::volVectorField U_(
-//      "U",
-//        ::Foam::IOobject(
-//          "U",
-//          runTime.timeName(),
-//          *mesh,
-//          ::Foam::IOobject::READ_IF_PRESENT,
-//          ::Foam::IOobject::AUTO_WRITE
-//        ),
-//        *mesh
-//      );
-//        runTime.write();
-//        runTime++;
-//        runTime.write();
-  
-
-      
-//      //
-//      // write mesh
-//      //
-//      mesh->write();
+      dtFoamLibrary::writeDicts(fvMesh, wDir, _dictRule);
       
       dt__info(apply(), << "Done");    
     }
@@ -369,6 +441,20 @@ namespace dtOO {
         << "Instance of ::Foam::error thrown." << std::endl
         << dt__eval(err.what()) << std::endl
         << dt__eval(err.message())
+      );
+    }
+    
+    if (!_runCommand.empty()) {
+      systemHandling::command(
+        "cd "+wDir
+        +
+        " && "
+        +
+        _runCommand
+        +
+        " && "
+        +
+        "cd "+staticPropertiesHandler::getInstance()->getOption("workingDirectory")    
       );
     }
   }    

@@ -41,11 +41,13 @@ namespace dtOO {
       std::map< int, std::string > & physicalNames    
     );
   private:
-    std::string _workingDirectory;
+    std::string _workingDirectoryPattern;
+    vectorHandling< constValue * > _cVTag;
     std::string _dictRule;
     std::vector< std::vector< std::string > > _setupRule;
-    std::map< std::string, int > _indexPhysName;
+    std::vector< std::vector< std::string > > _fieldRule;
     std::vector< boundedVolume * > _bV;
+    std::string _runCommand;    
   };
 }
 #endif	/* CREATEOPENFOAMCASE_H */
