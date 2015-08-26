@@ -17,6 +17,7 @@ namespace dtOO {
     static void deleteFile( std::string const & filename );
     static void deleteDirectory( std::string const & dirname );    
     static void copyDirectory( std::string const & from, std::string const & to);
+    static std::string currentDirectory( void );
   private:
     systemHandling();    
   };

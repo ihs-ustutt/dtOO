@@ -74,7 +74,7 @@ find_package(CGNS REQUIRED)
 find_package(
   OpenFOAM
   COMPONENTS 
-  foam meshTools dynamicMesh finiteVolume Pstream
+  foam meshTools dynamicMesh finiteVolume Pstream incompressibleRASModels
 )
 find_package(CGM)
 find_package(LASSO)
@@ -137,6 +137,7 @@ include_directories(
   ${OpenFOAM_INCLUDE_DIR}/meshTools/lnInclude
   ${OpenFOAM_INCLUDE_DIR}/dynamicMesh/dynamicMesh/lnInclude
   ${OpenFOAM_INCLUDE_DIR}/finiteVolume/lnInclude
+  ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/lnInclude
   ${CGM_INCLUDE_DIR}
   ${LASSO_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}

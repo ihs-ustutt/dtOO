@@ -216,4 +216,10 @@ namespace dtOO {
 		}
 //		return true;
 	}	
+  
+  std::string systemHandling::currentDirectory( void ) {
+    return ::boost::filesystem::path( 
+      ::boost::filesystem::current_path() 
+    ).string();    
+  }
 }

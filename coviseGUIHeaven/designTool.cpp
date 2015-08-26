@@ -20,7 +20,9 @@
 #include <abstractModule.h>
 
 namespace dtOO {
-  designTool::designTool(int argc, char *argv[]) : covise::coModule(argc, argv, "designTool") {
+  designTool::designTool(
+    int argc, char *argv[]) : covise::coModule(argc, argv, "designTool"
+  ) {
     _logName = addStringParam("_logName", "_logNameDescription");
 		_moduleChoice = addChoiceParam("_moduleChoice", "_moduleChoiceDescription");		
     _xmlBrowser = addFileBrowserParam("_xmlBrowser", "_xmlBrowserDescrition");
@@ -37,7 +39,9 @@ namespace dtOO {
     _cVInt = addInt32Param("_cVInt", "_cVIntDescription");
     _cVInt->setValue(0.);
     _cVInt->disable();
-    _cVStateBrowser = addFileBrowserParam("_cVStateBrowser", "_cVStateBrowserDescription");
+    _cVStateBrowser 
+    = 
+    addFileBrowserParam("_cVStateBrowser", "_cVStateBrowserDescription");
     _cVStateBrowser->setValue(".", "*.xml/*");
     _cVStateBrowser->disable();
     _cVStateLabel = addStringParam("_cVStateLabel", "_cVStateLabelDescription");
@@ -46,36 +50,58 @@ namespace dtOO {
     _cVStateSave->setValue(false);    
     _cVStateLoad = addBooleanParam("_cVStateLoad", "_cVStateLoadDescription");
     _cVStateLoad->setValue(false);
-    _cVStateChoice = addChoiceParam("_cVStateChoice", "_cVStateChoiceDescription");
+    _cVStateChoice 
+    = 
+    addChoiceParam("_cVStateChoice", "_cVStateChoiceDescription");
     _cVStateChoice->disable();
 
     _aFChoice = addChoiceParam("_aFChoice", "_aFChoiceDescription");
     _aFChoice->disable();
-    _aFRenderChoice = addChoiceParam("_aFRenderChoice", "_aFRenderChoiceDescription");
+    _aFRenderChoice 
+    = 
+    addChoiceParam("_aFRenderChoice", "_aFRenderChoiceDescription");
     _aFRenderChoice->disable();
     //_aFRenderVector = addInt32VectorParam("_aGRenderVector", "_aGRenderVectorDescription");
     //_aFRenderVector->disable();
-    _aFRenderCurrentToggle = addBooleanParam("_aFRenderCurrentToggle", "_aFRenderCurrentToggleDescription");
+    _aFRenderCurrentToggle 
+    = 
+    addBooleanParam(
+      "_aFRenderCurrentToggle", "_aFRenderCurrentToggleDescription"
+    );
     _aFRenderCurrentToggle->disable();
     _aFRenderCurrentToggle->setValue(false);	
 		
 		_aGChoice = addChoiceParam("_aGChoice", "_aGChoiceDescription");
     _aGChoice->disable();
-    _aGRenderChoice = addChoiceParam("_aGRenderChoice", "_aGRenderChoiceDescription");
+    _aGRenderChoice 
+    = 
+    addChoiceParam("_aGRenderChoice", "_aGRenderChoiceDescription");
     _aGRenderChoice->disable();
-    _aGRenderVector = addInt32VectorParam("_aGRenderVector", "_aGRenderVectorDescription");
+    _aGRenderVector 
+    = 
+    addInt32VectorParam("_aGRenderVector", "_aGRenderVectorDescription");
     _aGRenderVector->disable();
-    _aGRenderCurrentToggle = addBooleanParam("_aGRenderCurrentToggle", "_aGRenderCurrentToggleDescription");
+    _aGRenderCurrentToggle 
+    = 
+    addBooleanParam(
+      "_aGRenderCurrentToggle", "_aGRenderCurrentToggleDescription"
+    );
     _aGRenderCurrentToggle->disable();
     _aGRenderCurrentToggle->setValue(false);	
 
 		_bVChoice = addChoiceParam("_bVChoice", "_bVChoiceDescription");
     _bVChoice->disable();
-    _bVRenderChoice = addChoiceParam("_bVRenderChoice", "_bVRenderChoiceDescription");
+    _bVRenderChoice 
+    = 
+    addChoiceParam("_bVRenderChoice", "_bVRenderChoiceDescription");
     _bVRenderChoice->disable();
     _bVRenderTags = addChoiceParam("_bVRenderTags", "_bVRenderTagsDescription");
     _bVRenderTags->disable();
-    _bVRenderCurrentToggle = addBooleanParam("_bVRenderCurrentToggle", "_bVRenderCurrentToggleDescription");
+    _bVRenderCurrentToggle 
+    = 
+    addBooleanParam(
+      "_bVRenderCurrentToggle", "_bVRenderCurrentToggleDescription"
+    );
     _bVRenderCurrentToggle->disable();
     _bVRenderCurrentToggle->setValue(false);	
 		
@@ -83,8 +109,18 @@ namespace dtOO {
     _pLChoice->disable();
 		
 		_aFOut = addOutputPort("_aFOut", "Vec2", "_aFOutDescription");
-    _aGOut = addOutputPort("_aGOut", "Points|Lines|Polygons|StructuredGrid", "_aGOutDescription");				
-		_bVOut = addOutputPort("_bVOut", "UnstructuredGrid|Points|Lines|Polygons|StructuredGrid", "_bVOutDescription");				
+    _aGOut 
+    = 
+    addOutputPort(
+      "_aGOut", "Points|Lines|Polygons|StructuredGrid", "_aGOutDescription"
+    );				
+		_bVOut 
+    = 
+    addOutputPort(
+      "_bVOut", 
+      "UnstructuredGrid|Points|Lines|Polygons|StructuredGrid", 
+      "_bVOutDescription"
+    );				
 		std::vector< covise::coUifPara * > tmp;
 		//
 		// constValues
@@ -570,7 +606,7 @@ namespace dtOO {
 			else {
 			  _recreate = true;
 			}
-			
+      
 			//
 			// rendering
 			//

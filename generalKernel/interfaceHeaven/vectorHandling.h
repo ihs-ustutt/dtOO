@@ -22,9 +22,14 @@ namespace dtOO {
     vectorHandling();
     vectorHandling(const vectorHandling& orig);
     vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1);        
-    vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1, const vectorHandling& orig2);    
+    vectorHandling(
+      const vectorHandling& orig0, 
+      const vectorHandling& orig1, 
+      const vectorHandling& orig2
+    );    
     vectorHandling(const std::vector< T >& orig);    
     vectorHandling(int const dim);
+    vectorHandling(int const dim, T init);
     virtual ~vectorHandling();
     T * set( T const & toSet);
     T * set( T const * toSet);
@@ -54,13 +59,16 @@ namespace dtOO {
   }
 
   template < typename T >
-  vectorHandling< T >::vectorHandling(const vectorHandling& orig) : std::vector< T >(orig.size()) {
+  vectorHandling< T >::vectorHandling(
+    const vectorHandling& orig
+  ) : std::vector< T >(orig.size()) {
     dt__forAllIndex(orig, ii) this->at(ii) = orig[ii];
   }
   
   template < typename T >
-  vectorHandling< T >::vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1) 
-    : std::vector< T >(orig0.size()+orig1.size()) {
+  vectorHandling< T >::vectorHandling(
+    const vectorHandling& orig0, const vectorHandling& orig1
+  ) : std::vector< T >(orig0.size()+orig1.size()) {
     int counter = 0;
     dt__forAllIndex(orig0, ii) {
       this->at(counter) = orig0[ii];
@@ -73,8 +81,11 @@ namespace dtOO {
   }
   
   template < typename T >
-  vectorHandling< T >::vectorHandling(const vectorHandling& orig0, const vectorHandling& orig1, const vectorHandling& orig2) 
-    : std::vector< T >(orig0.size()+orig1.size()+orig2.size()) {
+  vectorHandling< T >::vectorHandling(
+    const vectorHandling& orig0, 
+    const vectorHandling& orig1, 
+    const vectorHandling& orig2
+  ) : std::vector< T >(orig0.size()+orig1.size()+orig2.size()) {
     int counter = 0;
     dt__forAllIndex(orig0, ii) {
       this->at(counter) = orig0[ii];
@@ -91,7 +102,9 @@ namespace dtOO {
   }
   
   template < typename T >
-  vectorHandling< T >::vectorHandling(const std::vector< T >& orig) : std::vector< T >(orig.size()) {
+  vectorHandling< T >::vectorHandling(
+    const std::vector< T >& orig
+  ) : std::vector< T >(orig.size()) {
     dt__forAllIndex(orig, ii) {
       this->at(ii) = orig[ii];
     }
@@ -99,6 +112,13 @@ namespace dtOO {
 
   template < typename T >
   vectorHandling< T >::vectorHandling(int const dim) : std::vector<T>(dim) {
+    
+  }
+  
+  template < typename T >
+  vectorHandling< T >::vectorHandling(
+    int const dim, T init
+  ) : std::vector<T>(dim, init) {
     
   }
   
@@ -258,7 +278,9 @@ namespace dtOO {
   }  
 
   template< typename T >
-  typename vectorHandling< T >::iterator vectorHandling< T >::getIterator( int const pos ) {
+  typename vectorHandling< T >::iterator vectorHandling< T >::getIterator( 
+    int const pos 
+  ) {
     typename vectorHandling< T >::iterator it;
     int counter = 0;
     for (it = std::vector<T>::begin(); it != std::vector<T>::end(); ++it) {
@@ -272,7 +294,10 @@ namespace dtOO {
       }
       counter++;
     }
-    dt__throw(getIterator(), << "No position " << dt__eval(pos) << " in vector." );
+    dt__throw(
+      getIterator(), 
+      << "No position " << dt__eval(pos) << " in vector." 
+    );
   }    
 
   /**
