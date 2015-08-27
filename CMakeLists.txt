@@ -41,7 +41,9 @@ option(DTOO_BUILDANDINSTALL_DOC "Use Doxygen to create the HTML based API docume
 # required packages
 #
 #------------------------------------------------------------------------------#
-find_package(Qt4 COMPONENTS QtCore QtXml REQUIRED)
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Xml REQUIRED)
+
 find_package(CGAL REQUIRED)
 find_package(GMSH REQUIRED)
 find_package(
@@ -125,9 +127,9 @@ include_directories(
   ${Boost_INCLUDE_DIR} 
   ${CGAL_INCLUDE_DIR} 
   ${GMSH_INCLUDE_DIR} 
-  ${MUPARSER_INCLUDE_DIR} 
-  ${QT_QTCORE_INCLUDE_DIR}
-  ${QT_QTXML_INCLUDE_DIR} 
+  ${MUPARSER_INCLUDE_DIR}
+  ${Qt5Core_INCLUDE_DIRS}
+  ${Qt5Xml_INCLUDE_DIRS}
   ${ROOT_INCLUDE_DIR} 
   ${GSL_INCLUDE_DIR} 
   ${OpenCASCADE_INCLUDE_DIR}
@@ -187,8 +189,8 @@ target_link_libraries(dtOO
   ${GMSH_LIBRARIES} 
   ${MUPARSER_LIBRARIES} 
   ${OpenCASCADE_LIBRARIES} 
-  ${QT_QTCORE_LIBRARY}
-  ${QT_QTXML_LIBRARY} 
+  Qt5::Core
+  Qt5::Xml
   ${ROOT_LIBRARIES} 
   ${GSL_LIBRARIES}
   ${Boost_LIBRARIES}
