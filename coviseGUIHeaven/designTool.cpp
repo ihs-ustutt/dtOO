@@ -105,8 +105,11 @@ namespace dtOO {
     _bVRenderCurrentToggle->disable();
     _bVRenderCurrentToggle->setValue(false);	
 		
-		_pLChoice = addChoiceParam("_pLChoice", "_pLChoiceDescription");
-    _pLChoice->disable();
+		_dCChoice = addChoiceParam("_dCChoice", "_dCChoiceDescription");
+    _dCChoice->disable();
+    
+		_dPChoice = addChoiceParam("_dPChoice", "_dPChoiceDescription");
+    _dPChoice->disable();
 		
 		_aFOut = addOutputPort("_aFOut", "Vec2", "_aFOutDescription");
     _aGOut 
@@ -166,11 +169,18 @@ namespace dtOO {
     tmp.push_back( _bVRenderCurrentToggle );
 		_uifPara.push_back( tmp );		
 		//
+		// case
+		//
+		tmp.clear();
+		_moduleChoices.push_back("dCGen");
+		tmp.push_back( _dCChoice );
+		_uifPara.push_back( tmp );    
+		//
 		// plugin
 		//
 		tmp.clear();
-		_moduleChoices.push_back("pL");
-		tmp.push_back( _pLChoice );
+		_moduleChoices.push_back("dPGen");
+		tmp.push_back( _dPChoice );
 		_uifPara.push_back( tmp );
 		
 		_recreate = true;
@@ -184,9 +194,17 @@ namespace dtOO {
 	
   void designTool::param(const char* paramName, bool inMapLoading) {
 		try {
-			_logName->setValue("");
+      //
+      // init log file
+      //
+      std::string logFileName = std::string( covise::coModule::getTitle() );
+      logFileName = abstractModule::initializeLogFile( "./"+logFileName+".log" );
+	    _logName->setValue(logFileName.c_str());
+      
+//			_logName->setValue("");
 			_logName->show();
 			_logName->disable();			
+      
 			if (strcmp(paramName, "_moduleChoice") == 0) {
 				if ( _moduleChoice->getValue() == 0 ) {
 					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->show();
@@ -194,6 +212,7 @@ namespace dtOO {
 					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
 					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
 					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
+          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
 				}
 				else if (_moduleChoice->getValue() == 1) {
 					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
@@ -201,6 +220,7 @@ namespace dtOO {
 					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();				
 					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
 					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
+          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
 				}
 				else if (_moduleChoice->getValue() == 2) {
 					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
@@ -208,6 +228,7 @@ namespace dtOO {
 					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->show();
 					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
 					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
+          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
 				}			
 				else if (_moduleChoice->getValue() == 3) {
 					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
@@ -215,6 +236,7 @@ namespace dtOO {
 					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
 					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->show();
 					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
+          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
 				}				
 				else if (_moduleChoice->getValue() == 4) {
 					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
@@ -222,7 +244,16 @@ namespace dtOO {
 					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
 					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
 					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->show();
+          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
 				}										
+				else if (_moduleChoice->getValue() == 5) {
+					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
+					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
+					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
+					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
+					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
+          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->show();
+				}										        
 			}
 			//--------------------------------------------------------------------------
 			//
@@ -546,22 +577,40 @@ namespace dtOO {
 			}
 			//--------------------------------------------------------------------------
 			//
+			// case param
+			//		
+			if ( _dC.size() != 0 ) {
+				if ( strcmp(paramName, "_dCChoice") == 0 ) {
+				  int pos = _dCChoice->getValue();
+					_dCApply.push_back( _dC[pos] );
+					_recreate = false;
+					setExecGracePeriod(0.1);
+					selfExec();		
+				}		
+			}	      
+			//--------------------------------------------------------------------------
+			//
 			// plugin param
 			//		
-			if ( _pL.size() != 0 ) {
-				if ( strcmp(paramName, "_pLChoice") == 0 ) {
-				  int pos = _pLChoice->getValue();
-					_pLApply.push_back( _pL[pos] );
+			if ( _dP.size() != 0 ) {
+				if ( strcmp(paramName, "_dPChoice") == 0 ) {
+				  int pos = _dPChoice->getValue();
+					_dPApply.push_back( _dP[pos] );
 					_recreate = false;
 					setExecGracePeriod(0.1);
 					selfExec();		
 				}		
 			}			
+
+			abstractModule::closeLogFile();
+			return;
+      
 		}		
 		catch (eGeneral & eGenRef) {
-			dt__catch(compute(), eGenRef.what());
+      dt__catch(param(), eGenRef.what());
+      abstractModule::closeLogFile();
 			return;
-		}
+    }
   }
 
   
@@ -586,7 +635,7 @@ namespace dtOO {
 				
 				_parser.reset( new dtXmlParser() );
 				_parser->openFileAndParse( _xmlBrowser->getValue() );
-				_parser->destroyAndCreate(_cV, _aF, _bC, _aG, _bV, _dC, _pL);
+				_parser->destroyAndCreate(_cV, _aF, _bC, _aG, _bV, _dC, _dP);
 
 				//
 				// try to remake visualization
@@ -601,7 +650,9 @@ namespace dtOO {
 				
 				abstractModule::updateChoiceParam(_bVChoice, &_bV);
 				
-				abstractModule::updateChoiceParam(_pLChoice, &_pL);
+        abstractModule::updateChoiceParam(_dCChoice, &_dC);
+        
+				abstractModule::updateChoiceParam(_dPChoice, &_dP);
 			}
 			else {
 			  _recreate = true;
@@ -681,8 +732,11 @@ namespace dtOO {
         }
       }   			
 
-			dt__forAllIndex( _pLApply, ii) _pLApply[ii]->apply();
-			_pLApply.clear();					
+			dt__forAllIndex( _dCApply, ii) _dCApply[ii]->apply();
+			_dCApply.clear();
+      
+			dt__forAllIndex( _dPApply, ii) _dPApply[ii]->apply();
+			_dPApply.clear();
 			
 			abstractModule::closeLogFile();
 			
@@ -722,7 +776,7 @@ namespace dtOO {
   void designTool::loadCVState(void) {
     if (_parser.get() != NULL ) {			
 			std::string stateName = _cVStateChoice->getLabel( _cVStateChoice->getValue() );
-			dt__info(loadStateToConst,
+			dt__info(loadCVState,
 							<< "Loading state:" << std::endl
 							<< dt__eval(_cVStateChoice->getValue()) << std::endl
 							<< dt__eval(stateName) << std::endl
