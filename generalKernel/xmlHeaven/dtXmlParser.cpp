@@ -10,7 +10,6 @@
 #include <boundedVolume.h>
 #include <boundedVolumeFactory.h>
 #include <baseContainerHeaven/baseContainer.h>
-#include <constValueHeaven/constValueFactory.h>
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <xmlHeaven/aFXmlBuilder.h>
@@ -191,17 +190,24 @@ namespace dtOO {
   }
   
   void dtXmlParser::loadStateToConst(
-    std::string const stateName, 
-    vectorHandling< constValue * > & cValRef
+    std::string const stateName, vectorHandling< constValue * > & cValRef
   ) {
     ::QDomElement stateElement 
     = 
     getChildElement("state", stateName, _rootLoad);
     
+    //
+    // check for old style
+    //
+    if ( hasChild( "builder", getChild("constValue", stateElement) ) ) {
+      loadRetroStateToConst(stateName, cValRef);
+      return;
+    }
+    
     dt__forAllIndex(cValRef, ii) {
       if ( 
         hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) 
-      ) {    
+      ) {
         cValRef[ii]->setValue(
           getAttributeFloat(
             "value",
@@ -209,6 +215,61 @@ namespace dtOO {
               "constValue", cValRef[ii]->getLabel(), stateElement
             )
           )
+        );
+      }
+      else {
+        dt__warning(
+          loadStateToConst(),
+          << cValRef[ii]->getLabel() 
+          << "-Element not in state file." << std::endl
+          << "Leave value as it was before load state."
+        );  
+      }
+    }
+  }
+  
+  void dtXmlParser::loadRetroStateToConst(
+    std::string const stateName, 
+    vectorHandling< constValue * > & cValRef
+  ) {
+
+    dt__warning(
+      loadRetroStateToConst(), 
+      << "Style of declaration has changed. Please modify your xml file." 
+      << std::endl
+      << "> -------------------------------------------------------" 
+      << std::endl
+      << "> Old style:" << std::endl
+      << ">  <constValue label=""label"">" << std::endl
+      << ">    <builder  name=""intParam|sliderFloatParam"">"  << std::endl
+      << ">      <int value=""0"" min=""0"" max=""500""/>"  << std::endl
+      << ">    </builder>"  << std::endl
+      << ">  </constValue>"  << std::endl
+      << "> New style:" << std::endl
+      << ">  <constValue " << std::endl
+      << ">    label=""label"" " << std::endl
+      << ">    name=""intParam|sliderFloatParam"" " << std::endl
+      << ">    value=""0"" " << std::endl
+      << ">    min=""0"" " << std::endl
+      << ">    max=""500"""  << std::endl
+      << ">  />" << std::endl
+      << "> -------------------------------------------------------"
+    );       
+
+    ::QDomElement stateElement = getChildElement( "state", stateName, _rootLoad );
+    for (int ii=0;ii<cValRef.size();ii++) {
+      if ( 
+        hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) 
+      ) {    
+        ::QDomElement constValueElement = getChildElement("constValue",
+                                          cValRef[ii]->getLabel(),
+                                          stateElement
+                                        );
+        cValRef[ii]->setValue( 
+          getAttributeFloat( 
+            "value",
+            constValueElement.firstChildElement().firstChildElement() 
+          ) 
         );
       }
       else {
@@ -431,8 +492,9 @@ namespace dtOO {
     
     constValue * aCV 
     = 
-    constValueFactory::create( getAttributeStr("name", wElement) );
-    aCV->setLabel(constValueLabel);
+    constValue::create( 
+      getAttributeStr("name", wElement), constValueLabel, this
+    );
     
     aCV->setValue( 
       getAttributeFloatMuParse( "value", wElement, cValP) 
@@ -480,8 +542,10 @@ namespace dtOO {
 
     constValue * aCValP
     = 
-    constValueFactory::create( getAttributeStr("name", wElement) );
-    aCValP->setLabel( constValueLabel );
+    constValue::create( 
+      getAttributeStr("name", wElement), constValueLabel, this
+    );
+    
     //
     //check first child
     //should be a float
@@ -527,19 +591,17 @@ namespace dtOO {
   void dtXmlParser::getNames( 
     std::string lookType, std::vector< std::string > * names 
   ) const {
-		if (_rootRead.size() != 0) {
-			for (int ii=0; ii<_rootRead.size(); ii++) {
-				if (_rootRead[ii].isNull()) {
-					dt__throw(getNames(),
-									<< dt__eval(_rootRead[ii].isNull()) << std::endl
-									<< "Parsed file results in a NULL Pointer.");
-				}
-				std::vector< std::string > locNames;
-				getChildLabels(lookType, &locNames, _rootRead[ii]);
-				dt__forAllIndex(locNames, jj) names->push_back(locNames[jj]);
-			}
-		}
-		else dt__throw(getNames(), << "Please parse a XML file.");
+		dt__throwIfWithMessage(
+      _rootRead.size()==0, getNames(), << "No XML file parsed."
+    );
+
+    dt__forAllIndex(_rootRead, ii) {
+      dt__throwIf(_rootRead[ii].isNull(), getName());
+      
+      std::vector< std::string > locNames;
+      getChildLabels(lookType, &locNames, _rootRead[ii]);
+      dt__forAllIndex(locNames, jj) names->push_back(locNames[jj]);
+    }
   }
 	
   std::vector< std::string > dtXmlParser::getNames( 
@@ -893,9 +955,7 @@ namespace dtOO {
 		vectorHandling< dtCase * > & dC,
 	  vectorHandling< dtPlugin * > & pL
 	) const {
-		if ( cV.size() == 0 ) {
-			createConstValue(&cV);
-		}
+		if ( cV.size() == 0 ) createConstValue(&cV);
 		
 		//
 		// destroy

@@ -2,6 +2,9 @@
 #include <logMe/logMe.h>
 #include <progHelper.h>
 
+#include "sliderFloatParam.h"
+#include "intParam.h"
+
 namespace dtOO {
   constValue::constValue() : labelHandling() {
   }
@@ -11,6 +14,21 @@ namespace dtOO {
   }
   
   constValue::~constValue() {
+  }
+
+  constValue * constValue::create(
+    std::string const & type, 
+    std::string const & label, 
+    dtXmlParser const * const parser
+  ) {
+    constValue * aCV;
+    if (type == "sliderFloatParam") aCV = new sliderFloatParam();  
+    else if (type == "intParam") aCV = new intParam();
+    else dt__throwUnexpected(create());
+    
+    aCV->setLabel(label);
+    aCV->_parser = parser;
+    return aCV;
   }
 
   void constValue::setRange(float const min, float const max) {
@@ -32,4 +50,8 @@ namespace dtOO {
   float constValue::getMin(void) const {
     return 0.;
   }
+
+  dtXmlParser const & constValue::constRefParser( void ) const {
+    return *_parser;
+  }  
 }

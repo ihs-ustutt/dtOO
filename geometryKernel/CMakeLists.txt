@@ -33,7 +33,6 @@ SET(HEADERS
   baseContainerHeaven/transformerContainer.h
   baseContainerHeaven/baseBuilder/dtPoint3_readIBL.h
   constValueHeaven/constValue.h
-  constValueHeaven/constValueFactory.h
   constValueHeaven/sliderFloatParam.h
   constValueHeaven/intParam.h
   analyticFunctionHeaven/analyticFunction.h
@@ -133,7 +132,6 @@ SET(SOURCES
   baseContainerHeaven/transformerContainer.cpp
   baseContainerHeaven/baseBuilder/dtPoint3_readIBL.cpp
   constValueHeaven/constValue.cpp
-  constValueHeaven/constValueFactory.cpp
   constValueHeaven/sliderFloatParam.cpp
   constValueHeaven/intParam.cpp
   analyticFunctionHeaven/analyticFunction.cpp
