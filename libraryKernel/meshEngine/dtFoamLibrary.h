@@ -80,12 +80,14 @@ namespace dtOO {
       ::Foam::List< ::Foam::DynamicList< ::Foam::label > >& zoneCells
     );
   public:
+    static const ::Foam::label MSHLINE  = 1;
     static const ::Foam::label MSHTRI   = 2;
     static const ::Foam::label MSHQUAD  = 3;
     static const ::Foam::label MSHTET   = 4;
     static const ::Foam::label MSHPYR   = 7;
     static const ::Foam::label MSHPRISM = 6;
     static const ::Foam::label MSHHEX   = 5;    
+    static const ::Foam::label MSHPNT   = 15;
 
   };
 }

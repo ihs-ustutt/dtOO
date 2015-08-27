@@ -265,10 +265,12 @@ namespace dtOO {
     cells.setSize(nElems);
 
     ::Foam::label cellI = 0;
+    ::Foam::label nLine = 0;
     ::Foam::label nTet = 0;
     ::Foam::label nPyr = 0;
     ::Foam::label nPrism = 0;
     ::Foam::label nHex = 0;
+    ::Foam::label nPnt = 0;
 
 
     // From gmsh physical region to Foam patch
@@ -283,8 +285,10 @@ namespace dtOO {
       ::Foam::label elmNumber(eC);
       ::Foam::label elmType(aPair.first->getTypeForMSH());
       ::Foam::label regPhys(aPair.second);
-
-      if (elmType == dtFoamLibrary::MSHTRI) {
+      if (elmType == dtFoamLibrary::MSHLINE) {
+        ++nLine;
+      }
+      else if (elmType == dtFoamLibrary::MSHTRI) {
         dt__forFromToIndex(0, 3, ii) {
           triPoints[ii] = aPair.first->getVertex(ii)->getIndex();
         }
@@ -445,6 +449,9 @@ namespace dtOO {
 
         nHex++;
       }
+      else if (elmType == dtFoamLibrary::MSHPNT) {
+        ++nPnt;
+      }
       else dt__info( readCells(), << "Unhandled element " << elmType );
 
       //
@@ -464,7 +471,9 @@ namespace dtOO {
       << "    hex  :" << nHex << std::endl
       << "    prism:" << nPrism << std::endl
       << "    pyr  :" << nPyr << std::endl
-      << "    tet  :" << nTet 
+      << "    tet  :" << nTet << std::endl
+      << "    line :" << nLine << " (ignored)" << std::endl
+      << "    point:" << nPnt << " (ignored)"
     );
 
     if (cells.size() == 0) dt__throw(readCells(), << "No cells read." );
