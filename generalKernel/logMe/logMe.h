@@ -160,11 +160,11 @@ namespace dtOO {
     if (logWARNING > FILELog::ReportingLevel() ) {} else { \
       FILELog().Get(logWARNING) \
         << "[ " << className() << "::"#functionname << " ]" << std::endl \
-        message \
-        << std::endl \
-        << dtOO::logMe::Backtrace() << std::endl \
-        << std::endl; \
+        message;\
     }
+//        << std::endl \
+//        << dtOO::logMe::Backtrace() << std::endl \
+//        << std::endl; \
   #define dt__quickinfo(message) \
     if (logINFO > FILELog::ReportingLevel() ) {} else { \
       FILELog().GetNoHeader(logDEBUG) message;\
