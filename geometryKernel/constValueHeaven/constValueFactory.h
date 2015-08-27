@@ -12,7 +12,7 @@ namespace dtOO {
       dt__classOnlyName(constValueFactory);    
       constValueFactory();
       virtual ~constValueFactory();
-      static constValue * create(char const * const str) ;
+//      static constValue * create(char const * const str) ;
       static constValue * create(std::string const str) ;
     private:
 

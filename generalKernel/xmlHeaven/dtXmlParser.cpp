@@ -193,21 +193,22 @@ namespace dtOO {
   void dtXmlParser::loadStateToConst(
     std::string const stateName, 
     vectorHandling< constValue * > & cValRef
-  ) {  
-    ::QDomElement stateElement = getChildElement( "state", stateName, _rootLoad );
-    for (int ii=0;ii<cValRef.size();ii++) {
+  ) {
+    ::QDomElement stateElement 
+    = 
+    getChildElement("state", stateName, _rootLoad);
+    
+    dt__forAllIndex(cValRef, ii) {
       if ( 
         hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) 
       ) {    
-        ::QDomElement constValueElement = getChildElement("constValue",
-                                          cValRef[ii]->getLabel(),
-                                          stateElement
-                                        );
-        cValRef[ii]->setValue( 
-          getAttributeFloat( 
+        cValRef[ii]->setValue(
+          getAttributeFloat(
             "value",
-            constValueElement.firstChildElement().firstChildElement() 
-          ) 
+            getChildElement(
+              "constValue", cValRef[ii]->getLabel(), stateElement
+            )
+          )
         );
       }
       else {
@@ -230,9 +231,9 @@ namespace dtOO {
     return labels;
   }
     
-  void dtXmlParser::openFileAndWrite(char const * const fileName,
-                                     vectorHandling< constValue * > * cValP) {
-
+  void dtXmlParser::openFileAndWrite(
+    char const * const fileName, vectorHandling< constValue * > * cValP
+  ) {
     QDomDocument xmlDocument;
     //
     // check and initialize file
@@ -257,9 +258,11 @@ namespace dtOO {
             << "Save state = " << timeStr << " to file = " << fileName );
   }
 
-  void dtXmlParser::openFileAndWrite(char const * const fileName,
-                                     std::string const stateName,
-                                     vectorHandling< constValue * > * cValP) {
+  void dtXmlParser::openFileAndWrite(
+    char const * const fileName, 
+    std::string const stateName, 
+    vectorHandling< constValue * > * cValP
+  ) {
 
     QDomDocument xmlDocument;
     //
@@ -416,6 +419,61 @@ namespace dtOO {
     std::string const constValueLabel, 
     vectorHandling< constValue * > * cValP
   ) const {
+    ::QDomElement const wElement = getElement("constValue", constValueLabel);
+    
+    //
+    // retro style
+    //
+    if ( hasChild("builder", wElement) ) {
+      createRetroConstValue(constValueLabel, cValP); 
+      return;
+    }
+    
+    constValue * aCV 
+    = 
+    constValueFactory::create( getAttributeStr("name", wElement) );
+    aCV->setLabel(constValueLabel);
+    
+    aCV->setValue( 
+      getAttributeFloatMuParse( "value", wElement, cValP) 
+    );
+    if ( hasAttribute("min", wElement) && hasAttribute("max", wElement) ) {
+      aCV->setRange( 
+        muParseString( getAttributeStr( "min", wElement ) ), 
+        muParseString( getAttributeStr( "max", wElement ) ) 
+      );      
+    }
+    
+    cValP->push_back( aCV );      
+  }
+
+  void dtXmlParser::createRetroConstValue(
+    std::string const constValueLabel, 
+    vectorHandling< constValue * > * cValP
+  ) const {
+    dt__warning(
+      createConstValue(), 
+      << "Creating constValue = " << constValueLabel << std::endl
+      << "Style of declaration has changed. Please modify your xml file." 
+      << std::endl
+      << "> -------------------------------------------------------" 
+      << std::endl
+      << "> Old style:" << std::endl
+      << ">  <constValue label=""label"">" << std::endl
+      << ">    <builder  name=""intParam|sliderFloatParam"">"  << std::endl
+      << ">      <int value=""0"" min=""0"" max=""500""/>"  << std::endl
+      << ">    </builder>"  << std::endl
+      << ">  </constValue>"  << std::endl
+      << "> New style:" << std::endl
+      << ">  <constValue " << std::endl
+      << ">    label=""label"" " << std::endl
+      << ">    name=""intParam|sliderFloatParam"" " << std::endl
+      << ">    value=""0"" " << std::endl
+      << ">    min=""0"" " << std::endl
+      << ">    max=""500"""  << std::endl
+      << ">  />" << std::endl
+      << "> -------------------------------------------------------"
+    );          
     ::QDomElement const wElement 
     = 
     getChild("builder", getElement("constValue", constValueLabel));
@@ -456,7 +514,7 @@ namespace dtOO {
     else dt__throw( createConstValue(), << convertToString( firstChild));
 
     cValP->push_back( aCValP );
-  }
+  }  
 	
   void dtXmlParser::createConstValue(
     vectorHandling< constValue * > * cValP

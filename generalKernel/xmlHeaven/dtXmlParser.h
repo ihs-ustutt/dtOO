@@ -25,21 +25,31 @@ namespace dtOO {
     dtXmlParser();
     virtual ~dtXmlParser();
     void openFileAndParse(char const * const fileName);
-    void openFileAndWrite(char const * const fileName, 
-                          vectorHandling< constValue * > * cValP);
-    void openFileAndWrite(char const * const fileName,
-                          std::string const stateName,
-                          vectorHandling< constValue * > * cValP);
+    void openFileAndWrite(
+      char const * const fileName, vectorHandling< constValue * > * cValP
+    );
+    void openFileAndWrite(
+      char const * const fileName, 
+      std::string const stateName, 
+      vectorHandling< constValue * > * cValP
+    );
     void openFileAndLoad(char const * const fileName);
     std::vector< std::string > getStates( void );
-    void loadStateToConst(std::string const stateName, vectorHandling< constValue * > &cValRef);
-    void createConstValue(std::string const constValueLabel, 
-                          vectorHandling< constValue * > * cValP) const;
+    void loadStateToConst(
+      std::string const stateName, vectorHandling< constValue * > &cValRef
+    );
+    void createConstValue(
+      std::string const constValueLabel, vectorHandling< constValue * > * cValP
+    ) const;
     void createConstValue(vectorHandling< constValue * > * cValP) const;
-    void getNames(std::string toLookFor, std::vector< std::string > * machinePartNames ) const;
+    void getNames(
+      std::string toLookFor, std::vector< std::string > * machinePartNames 
+    ) const;
     std::vector< std::string > getNames( std::string lookType ) const;
     void getName( std::string lookType, std::string * name ) const;
-    ::QDomElement getElement( std::string const lookType, std::string const lookName ) const ;
+    ::QDomElement getElement( 
+      std::string const lookType, std::string const lookName 
+    ) const ;
     ::QDomElement getElement( std::string const lookType ) const ;
 	  ::QDomElement getUnlabeledElement( std::string const lookType ) const;
     void createAnalyticFunction(
@@ -128,6 +138,9 @@ namespace dtOO {
     static void writeFile(char const * const fileName, QDomDocument & xmlDocument);
     static void writeFile( std::string const & fileName, ::QDomNode const & node);
     void setStaticProperties( void );
+    void createRetroConstValue(
+      std::string const constValueLabel, vectorHandling< constValue * > * cValP
+    ) const;     
   private:
     std::vector< ::QDomElement > _rootRead;
     std::vector< QDomDocument > _rootReadDoc;

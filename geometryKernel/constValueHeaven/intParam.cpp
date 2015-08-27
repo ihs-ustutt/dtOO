@@ -17,33 +17,22 @@ namespace dtOO {
   }  
 
   void intParam::dump(void) const {
-    dt__info( dump(),
-            << getLabel() << std::endl
-            << dt__eval( getValue() ) );  
+    dt__info( 
+      dump(),
+      << getLabel() << std::endl
+      << dt__eval( getValue() ) 
+    );  
   }
 
-  void intParam::writeToElement(QDomDocument & doc, ::QDomElement & element) {
-    //
-    // const Value
-    //
+  void intParam::writeToElement(
+    ::QDomDocument & doc, ::QDomElement & element
+  ) {
     ::QDomElement cValElement = qtXmlPrimitive::createElement(doc, "constValue");
     cValElement.setAttribute("label", getLabel().c_str());
+    cValElement.setAttribute("name", "intParam");
+    cValElement.setAttribute("value", getValue());
 
-    //
-    // builder
-    //
-    ::QDomElement builderElement = qtXmlPrimitive::createElement(doc, "builder");
-    builderElement.setAttribute("name", "intParam");
-    
-    //
-    //float
-    //
-    ::QDomElement intElement = qtXmlPrimitive::createElement(doc, "int");
-    intElement.setAttribute("value", getValue());
-
-    builderElement.appendChild(intElement);    
-    cValElement.appendChild(builderElement);
-    element.appendChild(cValElement);    
+    element.appendChild(cValElement);   
   }  
   
 }

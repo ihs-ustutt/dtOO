@@ -16,7 +16,9 @@ namespace dtOO {
     virtual void setRange(float const min, float const max);
     virtual float getMin(void) const;
     virtual float getMax(void) const;
-    virtual void writeToElement(QDomDocument & doc, ::QDomElement & element);
+    virtual void writeToElement(
+      ::QDomDocument & doc, ::QDomElement & element
+    );
   private:
     float _min;
     float _max;

@@ -18,11 +18,13 @@ namespace dtOO {
   }
 
   void sliderFloatParam::dump(void) const {
-    dt__info( dump(),
-            << getLabel() << std::endl
-            << dt__eval( getValue() ) << std::endl
-            << dt__eval( _min ) << std::endl
-            << dt__eval( _max ) );
+    dt__info( 
+      dump(),
+      << getLabel() << std::endl
+      << dt__eval( getValue() ) << std::endl
+      << dt__eval( _min ) << std::endl
+      << dt__eval( _max ) 
+    );
   }
 
   void sliderFloatParam::setRange(float const min, float const max) {
@@ -30,29 +32,16 @@ namespace dtOO {
     _min = min;
   }
 
-  void sliderFloatParam::writeToElement(QDomDocument & doc, ::QDomElement & element) {
-    //
-    // const Value
-    //
+  void sliderFloatParam::writeToElement(
+   ::QDomDocument & doc, ::QDomElement & element
+  ) {
     ::QDomElement cValElement = qtXmlPrimitive::createElement(doc, "constValue");
     cValElement.setAttribute("label", getLabel().c_str());
+    cValElement.setAttribute("name", "sliderFloatParam");
+    cValElement.setAttribute("value", getValue());
+    cValElement.setAttribute("min", _min);
+    cValElement.setAttribute("max", _max);
 
-    //
-    // builder
-    //
-    ::QDomElement builderElement = qtXmlPrimitive::createElement(doc, "builder");
-    builderElement.setAttribute("name", "sliderFloatParam");
-    
-    //
-    //float
-    //
-    ::QDomElement floatElement = qtXmlPrimitive::createElement(doc, "float");
-    floatElement.setAttribute("value", getValue());
-    floatElement.setAttribute("min", _min);
-    floatElement.setAttribute("max", _max);
-
-    builderElement.appendChild(floatElement);    
-    cValElement.appendChild(builderElement);
     element.appendChild(cValElement);
   }
   
