@@ -1,5 +1,5 @@
-#ifndef DTCASE_H
-#define	DTCASE_H
+#ifndef dtCase_H
+#define	dtCase_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -13,8 +13,7 @@ namespace dtOO {
   class analyticGeometry;
   class boundedVolume;
   
-  class dtCase : public labelHandling,
-                 public optionHandling {
+  class dtCase : public labelHandling, public optionHandling {
   public:
     dt__classOnlyName(dtCase);    
     dtCase();
@@ -33,5 +32,5 @@ namespace dtOO {
 
   };
 }
-#endif	/* SOLVERCASE_H */
+#endif	/* dtCase_H */
 

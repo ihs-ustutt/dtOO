@@ -4,7 +4,7 @@
 #include "dtPlugin.h"
 #include "writeStep.h"
 #include "constValueAssingRule.h"
-#include "createOpenFOAMCase/createOpenFOAMCase.h"
+//#include "createOpenFOAMCase/createOpenFOAMCase.h"
 
 #include "dtPluginDriver.h"
 #include <pluginEngine/pugg/Kernel.h>
@@ -25,18 +25,23 @@ namespace dtOO {
   dtPluginFactory::~dtPluginFactory() {
   }
 
-  dtPlugin * dtPluginFactory::create(char const * const str) {
-    dt__info(create(), << "creating " << str <<  "...");
-    
-		__IFRET(writeStep);
-    __IFRET(constValueAssingRule);
-    __IFRET(createOpenFOAMCase);
-    
-    dt__throw(create(), << str <<  " could not be created");  
-  } 
+//  dtPlugin * dtPluginFactory::create(char const * const str) {
+//    dt__info(create(), << "creating " << str <<  "...");
+//    
+//		__IFRET(writeStep);
+//    __IFRET(constValueAssingRule);
+////    __IFRET(createOpenFOAMCase);
+//    
+//    dt__throw(create(), << str <<  " could not be created");  
+//  } 
 
   dtPlugin * dtPluginFactory::create( std::string const str ) {
-    return create( str.c_str() );
+    dt__info(create(), << "creating " << str <<  "...");
+    
+		if (str == "writeStep") return new writeStep();
+    if (str == "constValueAssingRule") return new constValueAssingRule();
+    
+    dt__throw(create(), << str <<  " could not be created");  
   }
   
   

@@ -1,13 +1,27 @@
 SET(HEADERS
   dtCase.h
   dtCaseFactory.h
-  openFOAM.h
+  OpenFOAMCase/OpenFOAMCase.h
+  OpenFOAMCase/openFOAMSetupRule.h
+  OpenFOAMCase/openFOAMWallRule.h
+  OpenFOAMCase/openFOAMGgiRule.h
+  OpenFOAMCase/openFOAMCyclicGgiRule.h
+  OpenFOAMCase/openFOAMEmptyRule.h
+  OpenFOAMCase/openFOAMInletRule.h
+  OpenFOAMCase/openFOAMOutletRule.h
 )
 
 SET(SOURCES
   dtCase.cpp
   dtCaseFactory.cpp
-  openFOAM.cpp
+  OpenFOAMCase/OpenFOAMCase.cpp
+  OpenFOAMCase/openFOAMSetupRule.cpp
+  OpenFOAMCase/openFOAMWallRule.cpp
+  OpenFOAMCase/openFOAMGgiRule.cpp
+  OpenFOAMCase/openFOAMCyclicGgiRule.cpp
+  OpenFOAMCase/openFOAMEmptyRule.cpp
+  OpenFOAMCase/openFOAMInletRule.cpp
+  OpenFOAMCase/openFOAMOutletRule.cpp
 )
 
 APPEND_DTOO_SOURCE(solverKernel "${SOURCES}")

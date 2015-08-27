@@ -12,7 +12,7 @@ namespace dtOO {
     dt__classOnlyName(dtCaseFactory);
     dtCaseFactory();
     virtual ~dtCaseFactory();
-    static dtCase * create(char const * const str);
+//    static dtCase * create(char const * const str);
     static dtCase * create( std::string const str );
   private:
 

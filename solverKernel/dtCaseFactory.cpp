@@ -3,12 +3,7 @@
 #include <logMe/logMe.h>
 #include "dtCase.h"
 
-#include "openFOAM.h"
-
-#define __IFRET(className) \
-    if ( strcmp(str, #className) == 0 ) { \
-      return new className; \
-    }
+#include "OpenFOAMCase/OpenFOAMCase.h"
 
 namespace dtOO {
   dtCaseFactory::dtCaseFactory() {
@@ -17,15 +12,19 @@ namespace dtOO {
   dtCaseFactory::~dtCaseFactory() {
   }
 
-  dtCase * dtCaseFactory::create(char const * const str) {
-    dt__info(create(), << "creating " << str <<  "...");
-    
-		__IFRET(openFOAM);
-
-    dt__throw(create(), << str <<  " could not be created");  
-  }
+//  dtCase * dtCaseFactory::create(char const * const str) {
+//    dt__info(create(), << "creating " << str <<  "...");
+//    
+//		if ()
+//
+//    dt__throw(create(), << str <<  " could not be created");  
+//  }
 
   dtCase * dtCaseFactory::create( std::string const str ) {
-    return create( str.c_str() );
+    dt__info(create(), << "creating " << str <<  "...");    
+    
+    if (str == "OpenFOAMCase") return new OpenFOAMCase();
+
+    dt__throw(create(), << str <<  " could not be created");      
   }
 }

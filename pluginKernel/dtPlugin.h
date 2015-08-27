@@ -18,32 +18,31 @@ namespace dtOO {
   class analyticGeometry;
   class boundedVolume;
   
-  class dtPlugin : public labelHandling,
-                   public optionHandling {
-  public:
-    dt__classOnlyName(dtPlugin);
-    dtPlugin();
-    virtual ~dtPlugin();
-    virtual void init( 
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG,
-      vectorHandling< boundedVolume * > const * const bV,
-      vectorHandling< dtPlugin * > const * const pL
-    );
-    virtual void apply( void ) = 0;    
-    //
-    // pugg stuff
-    //
-    static const int version = 1;
-    static const std::string server_name() {
-      return "dtPluginServer";
-    }   
-    void setKernel( ::pugg::Kernel * kernel );
-  private:
-    dt__pH(::pugg::Kernel) _kernel;
+  class dtPlugin : public labelHandling, public optionHandling {
+    public:
+      dt__classOnlyName(dtPlugin);
+      dtPlugin();
+      virtual ~dtPlugin();
+      virtual void init( 
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        vectorHandling< constValue * > const * const cV,
+        vectorHandling< analyticFunction * > const * const aF,
+        vectorHandling< analyticGeometry * > const * const aG,
+        vectorHandling< boundedVolume * > const * const bV,
+        vectorHandling< dtPlugin * > const * const pL
+      );
+      virtual void apply( void ) = 0;    
+      //
+      // pugg stuff
+      //
+      static const int version = 1;
+      static const std::string server_name() {
+        return "dtPluginServer";
+      }   
+      void setKernel( ::pugg::Kernel * kernel );
+    private:
+      dt__pH(::pugg::Kernel) _kernel;
   };
 }
 #endif	/* DTPLUGIN_H */
