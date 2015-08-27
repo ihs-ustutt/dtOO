@@ -34,7 +34,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
 #
 #------------------------------------------------------------------------------#
 option(DTOO_USE_GOOGLEPERFTOOLS "Use GooglePerformance Tools" OFF)
-option(DTOO_BUILDANDINSTALL_DOC "Use Doxygen to create the HTML based API documentation" OFF)
 
 #------------------------------------------------------------------------------#
 #
@@ -88,15 +87,6 @@ if(DTOO_USE_GOOGLEPERFTOOLS)
   find_package(GOOGLEPERFTOOLS REQUIRED)
 endif(DTOO_USE_GOOGLEPERFTOOLS)
 
-
-#------------------------------------------------------------------------------#
-#
-# make documentation
-#
-#------------------------------------------------------------------------------#
-if (DTOO_BUILDANDINSTALL_DOC)
-  CREATE_DTOO_DOC()
-endif(DTOO_BUILDANDINSTALL_DOC)
 
 #------------------------------------------------------------------------------#
 #
@@ -234,9 +224,6 @@ set_target_properties(dtOO PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 
 install(TARGETS dtOO DESTINATION lib)
-if (DTOO_BUILDANDINSTALL_DOC)
-  install(DIRECTORY ${CMAKE_BINARY_DIR}/html DESTINATION doc)
-endif (DTOO_BUILDANDINSTALL_DOC)
 install(DIRECTORY pluginKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY meshKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY generalKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
