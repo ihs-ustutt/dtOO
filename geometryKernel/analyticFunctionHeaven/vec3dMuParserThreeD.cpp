@@ -79,7 +79,7 @@ namespace dtOO {
 		
     try {
 			for (int ii=0; ii<3; ii++) {			
-        const_cast< double& >(_arg[0]) = static_cast<double>(xx[ii]);
+        const_cast< double& >(_arg[ii]) = static_cast<double>(xx[ii]);
 		  }
 			int nDim;
       double * yyD = _parser->Eval(nDim);
