@@ -34,12 +34,8 @@ namespace dtOO {
     
     return ss.str();
   }
-    
-
-	dtOCCSurfaceBase::dtOCCSurfaceBase(const dtOCCSurfaceBase& orig) {
-	}
 
 	dtOCCSurfaceBase::~dtOCCSurfaceBase() {
-    _hanWrap.get()->occHandle.~Handle_Standard_Transient();    
+
 	}
 }

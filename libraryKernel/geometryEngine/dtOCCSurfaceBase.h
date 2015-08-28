@@ -12,7 +12,6 @@ namespace dtOO {
     dt__classOnlyName(dtOCCSurfaceBase);  
     dtOCCSurfaceBase();
 	  dtOCCSurfaceBase(Handle_Geom_Surface & orig);
-    dtOCCSurfaceBase(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCSurfaceBase();
     void setOCC(Handle_Geom_Surface);    
     Handle_Geom_Surface const getOCC( void ) const;

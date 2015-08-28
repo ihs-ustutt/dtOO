@@ -34,10 +34,7 @@ namespace dtOO {
     return ss.str();
   }  
 
-	dtOCCCurve2dBase::dtOCCCurve2dBase(const dtOCCCurve2dBase& orig) {
-	}
-
 	dtOCCCurve2dBase::~dtOCCCurve2dBase() {
-    _hanWrap.get()->occHandle.~Handle_Standard_Transient();    
+
 	}
 }

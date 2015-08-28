@@ -11,7 +11,6 @@ namespace dtOO {
   public:
     dt__classOnlyName(dtOCCCurveBase);
     dtOCCCurveBase();
-    dtOCCCurveBase(const dtOCCCurveBase& orig);
     virtual ~dtOCCCurveBase();
     void setOCC(Handle_Geom_Curve occCurve);    
     Handle_Geom_Curve const getOCC( void ) const;
