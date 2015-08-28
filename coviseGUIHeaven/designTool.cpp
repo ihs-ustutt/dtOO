@@ -331,7 +331,7 @@ namespace dtOO {
 						_cVStateChoice->disable();
 					}
 				}
-				//
+        //
 				// state choice param
 				//
 				else if(strcmp(paramName, "_cVStateChoice") == 0) {
@@ -600,17 +600,14 @@ namespace dtOO {
 					setExecGracePeriod(0.1);
 					selfExec();		
 				}		
-			}			
-
-			abstractModule::closeLogFile();
-			return;
-      
+			}			      
 		}		
 		catch (eGeneral & eGenRef) {
       dt__catch(param(), eGenRef.what());
-      abstractModule::closeLogFile();
-			return;
     }
+
+    abstractModule::closeLogFile();
+    return;
   }
 
   
@@ -753,13 +750,9 @@ namespace dtOO {
   void designTool::saveCVState(void) {
     if (_parser.get() != NULL ) {
       std::string sLabel = std::string(_cVStateLabel->getValue());
-      if (sLabel == "") {
-        _parser->openFileAndWrite( _cVStateBrowser->getValue(), &_cV );
-      }
-      else {
-        _cVStateLabel->setValue("");
-        _parser->openFileAndWrite( _cVStateBrowser->getValue(), sLabel, &_cV );  
-      }
+      if (sLabel == "") sLabel = NowDateAndTime();
+      _cVStateLabel->setValue("");
+      _parser->openFileAndWrite( _cVStateBrowser->getValue(), sLabel, &_cV );  
       _cVStateSave->setValue(false);
     }
   }	
@@ -784,7 +777,7 @@ namespace dtOO {
 
 			_parser->loadStateToConst(stateName, _cV);
 
-			_cVChoice->disable();
+			_cVStateChoice->disable();
 			_cVStateLoad->setValue(false);
 		}
   }
