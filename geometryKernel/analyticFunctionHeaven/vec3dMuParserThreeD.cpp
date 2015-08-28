@@ -5,15 +5,15 @@
 
 namespace dtOO {
   vec3dMuParserThreeD::vec3dMuParserThreeD() : vec3dThreeD() {
-    _parser = NULL;
+    
   }
 
   vec3dMuParserThreeD::vec3dMuParserThreeD(
     vec3dMuParserThreeD const & orig
-  ) : vec3dThreeD(orig) {
-    _parser = new mu::Parser;
+  ) : vec3dThreeD(orig), _parser(new mu::Parser) {
+    
 		for (int ii=0; ii<3; ii++) {
-      _arg[ii] = new double(0.);
+      _arg.push_back( new double(0.) );
 		  _argStr[ii] = orig._argStr[ii];
 		}
     _expressionStr = orig._expressionStr;
@@ -24,7 +24,7 @@ namespace dtOO {
       // create parser
       //
 			for (int ii=0; ii<3; ii++) {
-        _parser->DefineVar( _argStr[ii].c_str(), _arg[ii] );
+        _parser->DefineVar( _argStr[ii].c_str(), &(_arg[ii]) );
 			}
       _parser->SetExpr( _expressionStr.c_str() );
     }
@@ -41,10 +41,10 @@ namespace dtOO {
     std::string const argOne, 
     std::string const argTwo, 
     std::string const argThree  
-	) : vec3dThreeD() {
-    _parser = new mu::Parser;
+	) : vec3dThreeD(), _parser( new mu::Parser()) {
+    
 		for (int ii=0; ii<3; ii++) {
-      _arg[ii] = new double(0.);
+      _arg.push_back( new double(0.) );
 		}
 		_argStr[0] = argOne;
 		_argStr[1] = argTwo;
@@ -57,7 +57,7 @@ namespace dtOO {
       // create parser
       //
 			for (int ii=0; ii<3; ii++) {
-        _parser->DefineVar( _argStr[ii].c_str(), _arg[ii] );
+        _parser->DefineVar( _argStr[ii].c_str(), &(_arg[ii]) );
 			}
       _parser->SetExpr( _expressionStr.c_str() );
     }
@@ -71,7 +71,6 @@ namespace dtOO {
 
 
   vec3dMuParserThreeD::~vec3dMuParserThreeD() {
-    delete _parser;
   }
 
   aFY vec3dMuParserThreeD::Y( aFX const & xx ) const {
@@ -80,7 +79,7 @@ namespace dtOO {
 		
     try {
 			for (int ii=0; ii<3; ii++) {			
-        *_arg[ii] = static_cast<double>(xx[ii]);
+        const_cast< double& >(_arg[0]) = static_cast<double>(xx[ii]);
 		  }
 			int nDim;
       double * yyD = _parser->Eval(nDim);

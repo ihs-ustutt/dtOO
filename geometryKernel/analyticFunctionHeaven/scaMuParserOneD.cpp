@@ -9,12 +9,11 @@
 
 namespace dtOO {
   scaMuParserOneD::scaMuParserOneD() : scaOneD() {
-    _parser = NULL;
   }
 
-  scaMuParserOneD::scaMuParserOneD(scaMuParserOneD const & orig) : scaOneD(orig) {
-    _parser = new mu::Parser;
-    _argument = new double(0);
+  scaMuParserOneD::scaMuParserOneD(
+    scaMuParserOneD const & orig
+  ) : scaOneD(orig), _parser(new mu::Parser()), _argument(new double(0)) {
     _expressionStr = orig._expressionStr;
     _argumentStr = orig._argumentStr;
     
@@ -22,21 +21,20 @@ namespace dtOO {
       //
       // create parser
       //
-      _parser->DefineVar( _argumentStr.c_str(), _argument );
+      _parser->DefineVar( _argumentStr.c_str(), _argument.get() );
       _parser->SetExpr( _expressionStr.c_str() );
     }
     //
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__throw( scaMuParserOneD(), 
-              << e.GetMsg() );
+      dt__throw( scaMuParserOneD(), << e.GetMsg() );
     }  
   }
 
-  scaMuParserOneD::scaMuParserOneD(std::string const expression, std::string const argument) : scaOneD() {
-    _parser = new mu::Parser;
-    _argument = new double(0);
+  scaMuParserOneD::scaMuParserOneD(
+    std::string const expression, std::string const argument
+  ) : scaOneD(), _parser(new mu::Parser()), _argument(new double(0)) {
     _expressionStr = expression;
     _argumentStr = argument;
 
@@ -44,7 +42,7 @@ namespace dtOO {
       //
       // create parser
       //
-      _parser->DefineVar( _argumentStr.c_str(), _argument );
+      _parser->DefineVar( _argumentStr.c_str(), _argument.get() );
       _parser->SetExpr( _expressionStr.c_str() );
     }
     //
@@ -56,17 +54,8 @@ namespace dtOO {
     }  
   }
 
-
-  scaMuParserOneD::scaMuParserOneD(mu::Parser * parserP, double * argumentP, float const * const xxMin, float const * const xxMax) : scaOneD() {
-    _parser = parserP;
-    _argument = argumentP;
-    
-    scaOneD::setMinMax(*xxMin, *xxMax);
-  }
-
   scaMuParserOneD::~scaMuParserOneD() {
-    delete _argument;
-    delete _parser;
+
   }
 
   scaMuParserOneD * scaMuParserOneD::clone( void ) const {

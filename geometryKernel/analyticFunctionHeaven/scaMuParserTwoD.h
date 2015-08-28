@@ -27,8 +27,8 @@ namespace dtOO {
     virtual float YFloat( float const & x0, float const & x1 ) const;
     virtual bool closed( int const & dir ) const;    
   private:
-    mu::Parser * _parser;
-    double * _arg[2];
+    dt__pH(mu::Parser) _parser;
+    dt__pVH(double) _arg;
     std::string _expressionStr;
     std::string _argStr[2];
   };

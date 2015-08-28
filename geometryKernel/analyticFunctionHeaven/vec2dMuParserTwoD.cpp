@@ -5,13 +5,14 @@
 
 namespace dtOO {
   vec2dMuParserTwoD::vec2dMuParserTwoD() : vec2dTwoD() {
-    _parser = NULL;
+
   }
 
-  vec2dMuParserTwoD::vec2dMuParserTwoD(vec2dMuParserTwoD const & orig) : vec2dTwoD(orig) {
-    _parser = new mu::Parser;
+  vec2dMuParserTwoD::vec2dMuParserTwoD(
+    vec2dMuParserTwoD const & orig
+  ) : vec2dTwoD(orig), _parser(new mu::Parser()) {
 		for (int ii=0; ii<2; ii++) {
-      _arg[ii] = new double(0.);
+      _arg.push_back( new double(0.) );
 		  _argStr[ii] = orig._argStr[ii];
 		}
     _expressionStr = orig._expressionStr;
@@ -22,7 +23,7 @@ namespace dtOO {
       // create parser
       //
 			for (int ii=0; ii<2; ii++) {
-        _parser->DefineVar( _argStr[ii].c_str(), _arg[ii] );
+        _parser->DefineVar( _argStr[ii].c_str(), &(_arg[ii]) );
 			}
       _parser->SetExpr( _expressionStr.c_str() );
     }
@@ -37,10 +38,9 @@ namespace dtOO {
   vec2dMuParserTwoD::vec2dMuParserTwoD(
 	  std::string const expression, 
     std::string const argOne, std::string const argTwo
-	) : vec2dTwoD() {
-    _parser = new mu::Parser;
+	) : vec2dTwoD(), _parser(new mu::Parser()) {
 		for (int ii=0; ii<2; ii++) {
-      _arg[ii] = new double(0.);
+      _arg.push_back( new double(0.) );
 		}
 		_argStr[0] = argOne;
 		_argStr[1] = argTwo;
@@ -52,7 +52,7 @@ namespace dtOO {
       // create parser
       //
 			for (int ii=0; ii<2; ii++) {
-        _parser->DefineVar( _argStr[ii].c_str(), _arg[ii] );
+        _parser->DefineVar( _argStr[ii].c_str(), &(_arg[ii]) );
 			}
       _parser->SetExpr( _expressionStr.c_str() );
     }
@@ -66,7 +66,6 @@ namespace dtOO {
 
 
   vec2dMuParserTwoD::~vec2dMuParserTwoD() {
-    delete _parser;
   }
 
   aFY vec2dMuParserTwoD::Y( aFX const & xx ) const {
@@ -75,7 +74,7 @@ namespace dtOO {
 		
     try {
 			for (int ii=0; ii<2; ii++) {			
-        *_arg[ii] = static_cast<double>(xx[ii]);
+        const_cast< double& >(_arg[ii]) = static_cast<double>(xx[ii]);
 		  }
 			int nDim;
       double * yyD = _parser->Eval(nDim);

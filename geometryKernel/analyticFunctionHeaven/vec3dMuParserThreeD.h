@@ -28,8 +28,8 @@ namespace dtOO {
     virtual aFY Y( aFX const & xx ) const;
     virtual bool closed( int const & dir ) const;    
   private:
-    mu::Parser * _parser;
-    double * _arg[3];
+    dt__pH(mu::Parser) _parser;
+    dt__pVH(double) _arg;
     std::string _expressionStr;
     std::string _argStr[3];
   };

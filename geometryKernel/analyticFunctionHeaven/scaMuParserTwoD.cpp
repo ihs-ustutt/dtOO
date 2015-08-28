@@ -5,13 +5,13 @@
 
 namespace dtOO {
   scaMuParserTwoD::scaMuParserTwoD() : scaTwoD() {
-    _parser = NULL;
   }
 
-  scaMuParserTwoD::scaMuParserTwoD(scaMuParserTwoD const & orig) : scaTwoD(orig) {
-    _parser = new mu::Parser;
+  scaMuParserTwoD::scaMuParserTwoD(
+    scaMuParserTwoD const & orig
+  ) : scaTwoD(orig), _parser(new mu::Parser()) {
 		for (int ii=0; ii<2; ii++) {
-      _arg[ii] = new double(0.);
+      _arg.push_back( new double(0.) );
 		  _argStr[ii] = orig._argStr[ii];
 		}
     _expressionStr = orig._expressionStr;
@@ -22,7 +22,7 @@ namespace dtOO {
       // create parser
       //
 			for (int ii=0; ii<2; ii++) {
-        _parser->DefineVar( _argStr[ii].c_str(), _arg[ii] );
+        _parser->DefineVar( _argStr[ii].c_str(), &(_arg[ii]) );
 			}
       _parser->SetExpr( _expressionStr.c_str() );
     }
@@ -38,10 +38,9 @@ namespace dtOO {
 	  std::string const expression, 
     std::string const argOne, 
     std::string const argTwo  
-	) : scaTwoD() {
-    _parser = new mu::Parser;
+	) : scaTwoD(), _parser(new mu::Parser()) {
 		for (int ii=0; ii<2; ii++) {
-      _arg[ii] = new double(0.);
+      _arg.push_back( new double(0.) );
 		}
 		_argStr[0] = argOne;
 		_argStr[1] = argTwo;
@@ -53,7 +52,7 @@ namespace dtOO {
       // create parser
       //
 			for (int ii=0; ii<2; ii++) {
-        _parser->DefineVar( _argStr[ii].c_str(), _arg[ii] );
+        _parser->DefineVar( _argStr[ii].c_str(), &(_arg[ii]) );
 			}
       _parser->SetExpr( _expressionStr.c_str() );
     }
@@ -67,15 +66,14 @@ namespace dtOO {
 
 
   scaMuParserTwoD::~scaMuParserTwoD() {
-    delete _parser;
   }
 
   float scaMuParserTwoD::YFloat( float const & x0, float const & x1 ) const {
     float yy;
 		
     try {
-      *_arg[0] = static_cast<double>(x0);
-			*_arg[1] = static_cast<double>(x1);
+      const_cast< double& >(_arg[0]) = static_cast<double>(x0);
+			const_cast< double& >(_arg[1]) = static_cast<double>(x1);
 			
 			int nDim;
       double * yyD = _parser->Eval(nDim);

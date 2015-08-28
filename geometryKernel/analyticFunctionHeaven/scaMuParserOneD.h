@@ -17,7 +17,6 @@ namespace dtOO {
     scaMuParserOneD();
     scaMuParserOneD(scaMuParserOneD const & orig);
     scaMuParserOneD(std::string const expression, std::string const argument);
-    scaMuParserOneD(mu::Parser * parserP, double * argumentP, float const * const xxMin, float const * const xxMax);
     scaMuParserOneD * clone( void ) const;
     scaMuParserOneD * create( void ) const;    
     virtual ~scaMuParserOneD();
@@ -25,8 +24,8 @@ namespace dtOO {
     void setArgumentRange(float xMin, float xMax);  
     vectorHandling< renderInterface * > getRender( void ) const;   
   private:
-    mu::Parser * _parser;
-    double * _argument;
+    dt__pH(mu::Parser) _parser;
+    dt__pH(double) _argument;
     std::string _expressionStr;
     std::string _argumentStr;
 //    scaMuParserOneD * _derivative;
