@@ -20,7 +20,7 @@ namespace dtOO {
   }
 
   bVOMeshRule::~bVOMeshRule() {
-    
+    _meshOperator.destroy();
   }
   
   void bVOMeshRule::bVOMeshRule::init( 

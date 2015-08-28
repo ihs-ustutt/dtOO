@@ -794,11 +794,12 @@ namespace dtOO {
     );
     return objective;
 	}	   	
+  
 	dtPoint2 map2dTo3d::operator%(const dtPoint2 &percent) const {
 		return dtPoint2( this->uv_percent(percent) );
 	}
 	
   map2dTo3d * new_clone(map2dTo3d const & m2d){
     return m2d.clone();
-  }		
+  }
 }
