@@ -25,14 +25,17 @@
   const_cast< dtGmshFace * >(this)
 
 namespace dtOO {    
-  dtGmshFace::dtGmshFace(::GModel *m, int tag) : GFace(m, tag) {
-		
+  dtGmshFace::dtGmshFace(::GModel *m, int tag) 
+  : GFace(m, tag), 
+    _geomType( ::GEntity::GeomType::Unknown ) {
+    
   }
 	
   dtGmshFace::dtGmshFace(
     ::GModel *m, int tag, 
     const std::list< ::GEdge * > &edges, const std::vector< int > &ori 
-  ) : GFace(m, tag) {
+  ) : GFace(m, tag),
+      _geomType( ::GEntity::GeomType::Unknown ) {
     edgeLoops.push_back(GEdgeLoop(edges));
     typedef std::list< ::GEdge * >::const_iterator EIter;
     int ii = 0;
@@ -47,7 +50,8 @@ namespace dtOO {
 
   dtGmshFace::dtGmshFace(
     ::GModel *m, int tag, const std::list< ::GEdge * > &edges
-  ) : GFace(m, tag) {
+  ) : GFace(m, tag),
+      _geomType( ::GEntity::GeomType::Unknown ) {
     edgeLoops.push_back(::GEdgeLoop(edges));
     typedef std::list< ::GEdge * >::const_iterator EIter;
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {

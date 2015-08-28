@@ -14,16 +14,19 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
-	dtGmshRegion::dtGmshRegion(::GModel *m, int tag) : GRegion(m, tag) {
+	dtGmshRegion::dtGmshRegion(::GModel *m, int tag) 
+    : GRegion(m, tag),
+      _geomType( ::GEntity::GeomType::Unknown ) {
 	  _status = ::GEntity::MeshGenerationStatus::PENDING;
-    _geomType = ::GEntity::GeomType::Unknown;
 	}
 	
   dtGmshRegion::dtGmshRegion(
     ::GModel *m, int tag, 
     const std::list< ::GFace * > &faces, 
     const std::vector<int> &ori 
-  ) : GRegion(m, tag) {
+  ) 
+    : GRegion(m, tag),
+      _geomType( ::GEntity::GeomType::Unknown ) {
     typedef std::list< ::GFace * >::const_iterator FIter;
     int ii = 0;
     for (FIter fi=faces.begin(); fi != faces.end(); ++fi) {
@@ -34,14 +37,15 @@ namespace dtOO {
       ii++;
     }
 		_status = ::GEntity::MeshGenerationStatus::PENDING;
-    _geomType = ::GEntity::GeomType::Unknown;
   }
 
   dtGmshRegion::dtGmshRegion(
     ::GModel *m, int tag, 
     const std::list< dtGmshFace* > &faces, 
     const std::vector<int> &ori 
-  ) : GRegion(m, tag) {
+  ) 
+    : GRegion(m, tag),
+      _geomType( ::GEntity::GeomType::Unknown ) {
     typedef std::list< dtGmshFace* >::const_iterator FIter;
     int ii = 0;
     for (FIter fi=faces.begin(); fi != faces.end(); ++fi) {
@@ -52,7 +56,6 @@ namespace dtOO {
       ii++;
     }
 		_status = ::GEntity::MeshGenerationStatus::PENDING;
-    _geomType = ::GEntity::GeomType::Unknown;
   }
   
   dtGmshModel const & dtGmshRegion::refDtGmshModel( void ) const {
