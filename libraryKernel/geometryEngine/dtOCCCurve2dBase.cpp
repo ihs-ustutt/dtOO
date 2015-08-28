@@ -8,15 +8,19 @@ namespace dtOO {
     Handle_Geom2d_Curve occHandle;
   };
 	
-	dtOCCCurve2dBase::dtOCCCurve2dBase() {	
-		_hanWrap = OCCHanWrapPtr(new OCCHanWrap);
+	dtOCCCurve2dBase::dtOCCCurve2dBase() 
+    : _hanWrap(new OCCHanWrap) {
 	}
 
   void dtOCCCurve2dBase::setOCC(Handle_Geom2d_Curve occCurve) {
+		dt__throwIf(occCurve.IsNull(), setOCC() );    
+
     _hanWrap->occHandle = occCurve;
   }
 	
   Handle_Geom2d_Curve const dtOCCCurve2dBase::getOCC( void ) const {
+		dt__throwIf(_hanWrap->occHandle.IsNull(), getOCC());
+    
     return _hanWrap->occHandle;
   }
   
@@ -34,5 +38,6 @@ namespace dtOO {
 	}
 
 	dtOCCCurve2dBase::~dtOCCCurve2dBase() {
+    _hanWrap.get()->occHandle.~Handle_Standard_Transient();    
 	}
 }

@@ -19,8 +19,7 @@ namespace dtOO {
 	  std::string dumpToString(void) const;    
   private:
     class OCCHanWrap;
-    typedef boost::shared_ptr<OCCHanWrap> OCCHanWrapPtr;    
-    OCCHanWrapPtr _hanWrap;
+    dt__pH(OCCHanWrap) _hanWrap;
   };
 }
 #endif	/* DTOCCCURVE2DBASE_H */

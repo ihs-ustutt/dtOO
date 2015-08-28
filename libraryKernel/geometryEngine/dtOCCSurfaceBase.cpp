@@ -8,12 +8,12 @@ namespace dtOO {
     Handle_Geom_Surface occHandle;
   };
 		
-	dtOCCSurfaceBase::dtOCCSurfaceBase() {	
-		_hanWrap = OCCHanWrapPtr(new OCCHanWrap);
+	dtOCCSurfaceBase::dtOCCSurfaceBase() 
+    : _hanWrap(new OCCHanWrap()) {	
 	}
 	
-	dtOCCSurfaceBase::dtOCCSurfaceBase(Handle_Geom_Surface & orig) {
-		_hanWrap = OCCHanWrapPtr(new OCCHanWrap);		
+	dtOCCSurfaceBase::dtOCCSurfaceBase(Handle_Geom_Surface & orig) 
+    : _hanWrap(new OCCHanWrap()) {
 	  _hanWrap->occHandle = orig;
 	}
 
@@ -40,5 +40,6 @@ namespace dtOO {
 	}
 
 	dtOCCSurfaceBase::~dtOCCSurfaceBase() {
+    _hanWrap.get()->occHandle.~Handle_Standard_Transient();    
 	}
 }

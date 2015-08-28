@@ -3,7 +3,6 @@
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-#include <boost/shared_ptr.hpp>
 
 class Handle_Geom_Surface;
 
@@ -20,8 +19,7 @@ namespace dtOO {
     std::string dumpToString(void) const;
   private:
     class OCCHanWrap;
-    typedef boost::shared_ptr<OCCHanWrap> OCCHanWrapPtr;    
-    OCCHanWrapPtr _hanWrap;
+    dt__pH(OCCHanWrap) _hanWrap;
   };
 }
 #endif	/* DTOCCSURFACEBASE_H */
