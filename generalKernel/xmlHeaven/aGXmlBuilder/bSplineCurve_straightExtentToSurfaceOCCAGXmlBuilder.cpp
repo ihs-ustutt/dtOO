@@ -35,20 +35,22 @@ namespace dtOO {
 		//
     dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
 		dt__throwIf(!dtXmlParserBase::hasAttribute("attribute", toBuild), buildPart());
-
-		dt__pH(map1dTo3d const) m1d;
-		dt__pH(map2dTo3d const) m2d;     		
+     		
+    map1dTo3d const * m1d = NULL;
+		map2dTo3d const * m2d = NULL;
 		::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
 		while ( !wElement.isNull() ) {
-			analyticGeometry * aG_t 
-			= 
-			dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG);
-			if ( map1dTo3d::DownCast(aG_t) ) m1d.reset(map1dTo3d::SecureCast(aG_t));
-			if ( map2dTo3d::DownCast(aG_t) ) m2d.reset(map2dTo3d::SecureCast(aG_t));				
-			wElement = dtXmlParserBase::getNextSibling("analyticGeometry", wElement);				
+			dt__pH(analyticGeometry) aG_t(
+		    dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
+       );
+
+		  m1d = map1dTo3d::SecureCast(aG_t.get());
+			m2d = map2dTo3d::SecureCast(aG_t.get());				
+      
+			wElement = dtXmlParserBase::getNextSibling("analyticGeometry", wElement);
 		}
 
-		dt__throwIf(m1d.isNull() && m2d.isNull(), buildPart());
+		dt__throwIf(!m1d && !m2d, buildPart());
 
 		dtVector3 v0;
 		std::vector< dtPoint3 > pV(2);
@@ -60,7 +62,7 @@ namespace dtOO {
 			// 			
 		  pV[1]
 			= 
-			dtPoint3_straightIntersectToMap2dTo3d(pV[0], v0, m2d.get()).result();			
+			dtPoint3_straightIntersectToMap2dTo3d(pV[0], v0, m2d).result();			
 		}
 		else if (dtXmlParserBase::getAttributeStr("attribute", toBuild) == "forward") {
 		  v0 = dtLinearAlgebra::normalize(m1d->firstDerU((*m1d) % 0.));
@@ -70,7 +72,7 @@ namespace dtOO {
 			// 			
       pV[0]
 			= 
-			dtPoint3_straightIntersectToMap2dTo3d(pV[1], -v0, m2d.get()).result();
+			dtPoint3_straightIntersectToMap2dTo3d(pV[1], -v0, m2d).result();
 		}
 		else {
 			dt__throw(

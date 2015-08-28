@@ -41,7 +41,10 @@ namespace dtOO {
       dt__ptrAss(
         splineCurve3d const * s3, 
         splineCurve3d::ConstDownCast(
-          dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
+          dt__tmpPtr(
+            analyticGeometry, 
+            dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
+          )
         )
       );					
       ccV.push_back(s3->ptrConstDtCurve());

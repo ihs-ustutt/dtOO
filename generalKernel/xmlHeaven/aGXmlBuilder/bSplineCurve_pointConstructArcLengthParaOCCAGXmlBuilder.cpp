@@ -47,10 +47,13 @@ namespace dtOO {
     dtXmlParserBase::getAttributeFloatMuParse("tolerance", toBuild, cV, aF);
 
     ::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
-    analyticGeometry * aG_t 
-    =
-    dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG);
-    dt__ptrAss(splineCurve3d const * sC3, splineCurve3d::ConstDownCast(aG_t));
+    dt__pH(analyticGeometry) aG_t( 
+      dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
+    );
+    dt__ptrAss(
+      splineCurve3d const * sC3, 
+      splineCurve3d::ConstDownCast(aG_t.get())
+    );
     result->push_back( 
       new splineCurve3d(
         bSplineCurve_pointConstructArcLengthParaOCC(

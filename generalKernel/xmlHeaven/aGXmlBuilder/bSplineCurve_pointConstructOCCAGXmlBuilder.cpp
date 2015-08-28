@@ -36,7 +36,9 @@ namespace dtOO {
     dt__throwIf(!dtXmlParserBase::hasChild("Point_3", toBuild), buildPart());
     dt__throwIf(!dtXmlParserBase::hasAttribute("order", toBuild), buildPart());
 
-    int const order = dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV, aF);
+    int const order 
+    = 
+    dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV, aF);
     std::vector< dtPoint3 > workingPointP;
     ::QDomElement wElement = dtXmlParserBase::getChild("Point_3", toBuild);
     while ( !wElement.isNull() ) {
@@ -45,7 +47,10 @@ namespace dtOO {
     }
     result->push_back( 
       new splineCurve3d(
-        bSplineCurve_pointConstructOCC(workingPointP, order).result()
+        dt__tmpPtr(
+          dtCurve, 
+          bSplineCurve_pointConstructOCC(workingPointP, order).result()
+        )
       )
     );
   }

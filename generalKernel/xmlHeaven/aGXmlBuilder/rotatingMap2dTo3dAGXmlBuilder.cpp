@@ -1,6 +1,5 @@
 #include "rotatingMap2dTo3dAGXmlBuilder.h"
 
-
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -31,7 +30,9 @@ namespace dtOO {
     //
 		// check input
 		//    
-    dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
+    dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart()
+    );
     dt__throwIf(!dtXmlParserBase::hasChild("Vector_3", toBuild), buildPart());
     
     ::QDomElement wElement;			
@@ -39,10 +40,10 @@ namespace dtOO {
     // get analyticGeometry and cast
     //
     wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
-    analyticGeometry * aG_t
-    =
-    dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG);
-    dt__ptrAss(map2dTo3d const * m2d, map2dTo3d::ConstDownCast(aG_t));
+    dt__pH(analyticGeometry) aG_t(
+      dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
+    );
+    dt__ptrAss(map2dTo3d const * m2d, map2dTo3d::ConstDownCast(aG_t.get()));
 
     //
     // get vector

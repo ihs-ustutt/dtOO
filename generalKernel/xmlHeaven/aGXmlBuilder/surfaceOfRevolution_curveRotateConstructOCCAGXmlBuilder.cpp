@@ -46,10 +46,10 @@ namespace dtOO {
     // spline curve
     //
     wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
-    analyticGeometry * aG_t
-    =
-    dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG);
-    dt__ptrAss(splineCurve3d * s3, splineCurve3d::DownCast(aG_t) );
+    dt__pH(analyticGeometry) aG_t(
+      dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
+    );
+    dt__ptrAss(splineCurve3d * s3, splineCurve3d::DownCast(aG_t.get()) );
     dtCurve const * cc = s3->ptrConstDtCurve();
     //
     // vector

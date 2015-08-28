@@ -49,18 +49,18 @@ namespace dtOO {
       !dtXmlParserBase::hasAttribute("order", toBuild), buildPart()
     );
 		
-		dt__pH(map2dTo3d const) m2d;
-		dt__pH(map3dTo3d const) m3d;     		
+		map2dTo3d const * m2d = NULL;
+		map3dTo3d const * m3d = NULL;     		
 		::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
 		while ( !wElement.isNull() ) {
-			analyticGeometry * aG_t 
-			= 
-			dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG);
-			if ( map2dTo3d::DownCast(aG_t) ) m2d.reset(map2dTo3d::SecureCast(aG_t));
-			if ( map3dTo3d::DownCast(aG_t) ) m3d.reset(map3dTo3d::SecureCast(aG_t));				
+			dt__pH(analyticGeometry) aG_t(
+			  dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
+      );
+			m2d = map2dTo3d::SecureCast(aG_t.get());
+			m3d = map3dTo3d::SecureCast(aG_t.get());				
 			wElement = dtXmlParserBase::getNextSibling("analyticGeometry", wElement);				
 		}
-    dt__throwIf(m2d.isNull() && m3d.isNull(), buildPart());
+    dt__throwIf(!m2d && !m3d, buildPart());
 		
 		int nU 
     = 
@@ -74,7 +74,7 @@ namespace dtOO {
 
 		result->push_back( 
     	map2dTo3d_approximateMap2dTo3dInMap3dTo3d(
-		    m2d.get(), m3d.get(), nU, nV, order
+		    m2d, m3d, nU, nV, order
 		  ).result()				
     );
    		

@@ -33,25 +33,28 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > const * const aG,
     vectorHandling< analyticGeometry * > * result 
 	) const {  
-    //
-		// check input
-		//    
-    dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
+    dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticGeometry", toBuild), 
+      buildPart()
+    );
 
     int aGOff = 1;
     if ( dtXmlParserBase::hasAttribute("analyticGeometry_offset", toBuild) ) {
       aGOff 
       = 
-      dtXmlParserBase::getAttributeIntMuParse("analyticGeometry_offset", toBuild, cV, aF);
+      dtXmlParserBase::getAttributeIntMuParse(
+        "analyticGeometry_offset", toBuild, cV, aF
+      );
     }
-    vectorHandling< dtCurve const * > ccV;
+    
     std::vector< ::QDomElement > wEl 
     = 
     dtXmlParserBase::getChildVector("analyticGeometry", toBuild);
-    int ii = 0;
+    vectorHandling< dtCurve const * > ccV;    
     vectorHandling< splineCurve3d const * > s3Vec(aGOff);
     vectorHandling< dtCurve const * > dtCVec(aGOff);
-    while ( ii < wEl.size() ) {			
+    int ii = 0;    
+    while ( ii < wEl.size() ) {
       for (int jj=0;jj<aGOff;jj++) {
         analyticGeometry * aG_t
         =
@@ -60,17 +63,16 @@ namespace dtOO {
         dtCVec[jj] = s3Vec[jj]->ptrConstDtCurve();
         ii++;
       }
-      splineCurve3d const * s3;
       if (aGOff == 1) {
-        dt__ptrAss(s3, splineCurve3d::ConstDownCast( s3Vec[0]) );
+        dt__ptrAss(
+          splineCurve3d const * s3, 
+          splineCurve3d::ConstDownCast( s3Vec[0]) 
+        );
         ccV.push_back( s3->ptrConstDtCurve()->clone() );
       }
       else {
         ccV.push_back(
-          dt__tmpPtr(
-            dtCurve, 
-            bSplineCurve_curveConnectConstructOCC(dtCVec).result()
-          )
+          bSplineCurve_curveConnectConstructOCC(dtCVec).result()
         );
       }
     }
@@ -82,5 +84,8 @@ namespace dtOO {
         )
       )
     );
+    
+    ccV.destroy();
+    s3Vec.destroy();
   }
 }

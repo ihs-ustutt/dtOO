@@ -266,11 +266,16 @@ namespace dtOO {
 		
     ::Foam::argList::noParallel();
 		int argc = 3;
-		char ** argv = new char*[3];
-		argv[0] = const_cast< char * >(getLabel().c_str());
-		argv[1] = const_cast< char * >("-case");
-		argv[2] = const_cast< char * >(wDir.c_str());
+    std::vector< std::string > argvStr(3);
+		argvStr[0] = getLabel();
+		argvStr[1] = std::string("-case");
+		argvStr[2] = wDir;
 
+    char ** argv = new char*[3];
+    argv[0] = const_cast< char *>(argvStr[0].c_str());
+    argv[1] = const_cast< char *>(argvStr[1].c_str());
+    argv[2] = const_cast< char *>(argvStr[2].c_str());
+    
 		//
 		// check if working directory exists
 		//				
@@ -457,5 +462,10 @@ namespace dtOO {
         "cd "+staticPropertiesHandler::getInstance()->getOption("workingDirectory")    
       );
     }
+    
+    //
+    // destroy pseudo arguments
+    //
+    delete [] argv;
   }    
 }
