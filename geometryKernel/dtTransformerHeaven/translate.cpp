@@ -10,7 +10,7 @@
 
 namespace dtOO {
   translate::translate() : dtTransformer() {
-		_v2 = dtVector2(0,0,0);
+		_v2 = dtVector2(0,0);
 		_v3 = dtVector3(0,0,0);
   }
 
