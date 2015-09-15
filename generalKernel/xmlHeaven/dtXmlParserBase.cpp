@@ -1006,6 +1006,10 @@ namespace dtOO {
         else if (aGOption == "-1") {
           p3 = m3d->reparamInVolume( dtPoint3(uvw[0], uvw[1], uvw[2]) );
         }
+        else if (aGOption == "-1%") {
+          p3 = m3d->reparamPercentInVolume( dtPoint3(uvw[0], uvw[1], uvw[2]) );
+        }
+        
         else if (aGOption == "") {
           p3 = m3d->getPoint( uvw[0], uvw[1], uvw[2] );
         }
