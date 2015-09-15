@@ -59,11 +59,18 @@ namespace dtOO {
     //
     using qtXmlBase::replaceDependencies;
     static std::string replaceDependencies( 
-      std::string const expression, 
+      std::string const expression,      
       vectorHandling< constValue * > const * const cV,
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticGeometry * > const * const aG
-    );  
+    );
+    static std::string replaceDependencies( 
+      std::string const expression,
+      baseContainer const * const bC,      
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG
+    );    
     //
     // transformer
     //

@@ -1039,6 +1039,94 @@ namespace dtOO {
     return replaceDependencies(returnExpression, cV, aF);
   }
   
+  std::string dtXmlParserBase::replaceDependencies( 
+	  std::string const expression, 
+    baseContainer const * const bC,       
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+    vectorHandling< analyticGeometry * > const * const aG
+	) {
+    std::string returnExpression;
+    returnExpression = expression;
+    unsigned int found;
+    //
+    // check if there is a transformer in expression
+    // ~dtT(@aG_1[-1](@aG_0[%](0.00, 0.00)@)@)~
+    //
+    found = returnExpression.find("~");
+    while ( found < returnExpression.size() ) {
+      //
+      // find start and end
+      //
+      unsigned int foundEnd = returnExpression.find_last_of("~");
+      int replaceStart = found;
+      int replaceEnd = foundEnd-found+1;
+      std::string replaceString 
+      = 
+      returnExpression.substr(replaceStart+1, replaceEnd-2);
+     
+      //
+      // replace in argument
+      //
+      std::string arg 
+      = 
+      replaceDependencies(
+        getStringBetweenFirstLast("(", ")", replaceString), bC, cV, aF, aG
+      );
+
+      //
+      // get and cast analyticGeometry
+      //
+      std::string TLabel = getStringBetween("", "(", replaceString);
+      std::string aGOption = "";
+      if ( stringPrimitive::stringContains("[", TLabel) ) {
+        aGOption 
+        = 
+        stringPrimitive::getStringBetweenAndRemove("[", "]", &TLabel);
+      }
+      dtTransformer const * const theT 
+      = 
+      bC->constPtrTransformerContainer()->get(TLabel); 
+      
+      std::vector< float > argVec 
+      = 
+      muParseCSString( replaceDependencies(arg, cV, aF, aG) );
+        
+      if (argVec.size() == 3) {
+        dtPoint3 p3(argVec[0], argVec[1], argVec[2]);
+        if (aGOption == "-1") {
+          p3 = theT->retract( p3 );
+        }
+        else if (aGOption == "") {
+          p3 = theT->apply( p3 );
+        }
+        else dt__throwUnexpected(replaceDependencies());        
+        
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(p3.x())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(p3.y())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(p3.z())
+        );        
+      }
+      else dt__throwUnexpected(replaceDependencies());
+      
+      //
+      // go to next transformer
+      //
+      found = returnExpression.find("~");
+    }
+    
+    return replaceDependencies(returnExpression, cV, aF, aG);    
+  } 
+  
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                   
