@@ -45,6 +45,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomSurface_geomCurveFillConstructOCC.h
   geometryEngine/geoBuilder/dtPoint2_surfaceEquidistantPoint.h
   geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h
+  geometryEngine/geoBuilder/bSplineCurve2d_pointInterpolateConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve2d_curveConnectConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h
   geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h
@@ -150,6 +151,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomSurface_geomCurveFillConstructOCC.cpp
   geometryEngine/geoBuilder/dtPoint2_surfaceEquidistantPoint.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineCurve2d_pointInterpolateConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_curveConnectConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.cpp
   geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.cpp

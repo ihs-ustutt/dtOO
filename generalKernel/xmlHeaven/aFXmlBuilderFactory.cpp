@@ -17,6 +17,7 @@
 #include "aFXmlBuilder/vec3dMuParserThreeDAFXmlBuilder.h"
 #include "aFXmlBuilder/muParserAFXmlBuilder.h"
 #include "aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.h"
+#include "aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -73,6 +74,11 @@ namespace dtOO {
     __IFRET(analyticFunctionCombinationAFXmlBuilder);
     __IFRETCUSTOM(
       analyticFunctionCombination, analyticFunctionCombinationAFXmlBuilder
+    );
+    __IFRET(bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder);
+    __IFRETCUSTOM(
+      bSplineCurve2d_pointInterpolateConstructOCC,
+      bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder
     );
     
     dt__throw(

@@ -22,6 +22,7 @@ SET(HEADERS
   xmlHeaven/aFXmlBuilder/vec3dMuParserThreeDAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.h
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.h
@@ -92,6 +93,7 @@ SET(SOURCES
   xmlHeaven/aFXmlBuilder/vec3dMuParserThreeDAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.cpp
