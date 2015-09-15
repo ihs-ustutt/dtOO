@@ -11,7 +11,9 @@ namespace dtOO {
   pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent() : dtTransformer() {
   }
 
-  pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent(const pickMap3dTo3dRangePercent& orig) : dtTransformer(orig) {
+  pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent(
+    const pickMap3dTo3dRangePercent& orig
+  ) : dtTransformer(orig) {
 		_u0 = orig._u0;
 		_v0 = orig._v0;
 		_w0 = orig._w0;
@@ -28,7 +30,9 @@ namespace dtOO {
 		return new pickMap3dTo3dRangePercent();
 	}
 	
-  vectorHandling< analyticGeometry * > pickMap3dTo3dRangePercent::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
+  vectorHandling< analyticGeometry * > pickMap3dTo3dRangePercent::apply( 
+    vectorHandling< analyticGeometry * > const * const aGeoVecP 
+  ) const {
     vectorHandling< analyticGeometry * > aGeoRet;
     
     for (int ii=0;ii<aGeoVecP->size();ii++) {
@@ -103,9 +107,9 @@ namespace dtOO {
 		
     if ( (_u0 >= 0.) && (_v0 >= 0.) && (_w0 >= 0.) ) {
 			dt__throw(
-				init(),
-				<< dt__eval(_u0) << std::endl
-				<< dt__eval(_v0) << std::endl
+      init(),
+      << dt__eval(_u0) << std::endl
+      << dt__eval(_v0) << std::endl
 				<< dt__eval(_w0) << std::endl
 				<< "Only one value should be greater than zero. Check input."
 			);

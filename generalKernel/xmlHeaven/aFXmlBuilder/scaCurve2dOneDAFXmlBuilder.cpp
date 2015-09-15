@@ -52,13 +52,17 @@ namespace dtOO {
       int order = dtXmlParserBase::getAttributeInt("order", toBuildP);
       while ( !elementP.isNull() ) {
 				std::vector< dtPoint2 > workingPoint;
-        dtXmlParserBase::dtXmlParserBase::createBasic( &elementP, bC, cValP, depSFunP, &workingPoint );
+        dtXmlParserBase::dtXmlParserBase::createBasic( 
+          &elementP, bC, cValP, depSFunP, &workingPoint 
+        );
         for (int ii=0; ii<workingPoint.size();ii++) {
 					pointsArray.push_back( workingPoint[ii] );
 //					delete workingPoint[ii];
         }
       // next sibling
-      elementP = ::QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
+      elementP 
+      = 
+      ::QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
       }
 			ptrHandling<dtCurve2d> dtC2d( 
 				bSplineCurve2d_pointConstructOCC(pointsArray, order).result() 
@@ -68,51 +72,6 @@ namespace dtOO {
       // create scaCurve2dOneD
       //
       sFunP->push_back( new scaCurve2dOneD( dtC2d.get() ) );			
-    }
-    /* ------------------------------------------------------------------------ */
-    // create conic arc spline out of points and a shape factor
-    /* ------------------------------------------------------------------------ */
-//    else if ( hasPoints && hasShapeFactor ) {
-//      std::vector< dtPoint2* > workingPoint;
-//      ::QDomElement elementP = ::QDomElement( dtXmlParserBase::getChild("Point_2", toBuildP) );
-//      //
-//      //set input
-//      //
-//      float shapeFactor = 
-//      dtXmlParserBase::muParseString(
-//        dtXmlParserBase::replaceDependencies(
-//          dtXmlParserBase::getAttributeStr(
-//            "shape_factor", 
-//            toBuildP
-//          ),
-//          cValP,
-//          depSFunP
-//        )
-//      );
-//      sFunBuilderP->setAttribute( &shapeFactor );      
-//      while ( !elementP.isNull() ) {
-//        this->dtXmlParserBase::createBasic( &elementP, cValP, depSFunP, &workingPoint );
-//        for (int ii=0;ii<workingPoint.size();ii++) {
-//          // put in point builder
-//          sFunBuilderP->setAttribute(workingPoint[ii]);
-//        }
-//        for (int ii=0;ii<workingPoint.size();ii++) {
-//          delete workingPoint[ii];
-//        }      
-//        workingPoint.clear();      
-//      //goto next sibling
-//      elementP = ::QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
-//      }
-//    }    
-    /* ------------------------------------------------------------------------ */
-    // copy an existing scaFunction
-    /* ------------------------------------------------------------------------ */  
-    else if ( hasScaFunction ) {
-      ::QDomElement el = dtXmlParserBase::getChild("function", toBuildP);
-			analyticFunction const * const aF 
-			= 
-			depSFunP->get( dtXmlParserBase::getAttributeStr("label", el) );
-			sFunP->push_back( aF->clone() );
     }
     else {
       dt__throw(buildPart(),
