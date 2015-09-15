@@ -16,10 +16,8 @@
 #include "vec2dOneDInMap2dTo3d.h"
 #include "vec2dTwoDInMap2dTo3d.h"
 
-#include <Minuit2/Minuit2Minimizer.h>
+#include <dtAnalysis.h>
 #include <Math/Functor.h>
-
-//#define SQU(a)      ((a)*(a))
 
 namespace dtOO {  
   map2dTo3d::map2dTo3d() : analyticGeometry() {
@@ -63,7 +61,9 @@ namespace dtOO {
     return getMax(1);
   }
   
-  dtPoint3 map2dTo3d::getPointPercent( float const & uu, float const & vv ) const {
+  dtPoint3 map2dTo3d::getPointPercent( 
+    float const & uu, float const & vv 
+  ) const {
     return getPoint( u_percent(uu), v_percent(vv) );
   }    
 	
@@ -153,7 +153,9 @@ namespace dtOO {
     return analyticGeometry::getRenderResolution(1);
   }  
   
-  dtVector3 map2dTo3d::getPointPercentVector( float const & uu, float const & vv ) const {
+  dtVector3 map2dTo3d::getPointPercentVector( 
+    float const & uu, float const & vv 
+  ) const {
     return dtLinearAlgebra::toDtVector3( getPointPercent(uu, vv) );
   }
   
@@ -191,10 +193,7 @@ namespace dtOO {
         //
         U = initU[ii];
         V = initV[jj];
-        bool converged = XYZtoUVPercent(X, Y, Z, U, V);
-        if (!converged) {
-          dt__warning(reparamOnFace(), << "Reparameterization not converged.");
-        }
+        XYZtoUVPercent(X, Y, Z, U, V);
 
         //
         // check if point is precise enough
@@ -203,17 +202,10 @@ namespace dtOO {
           analyticGeometry::inXYZTolerance(ppXYZ, getPointPercent(U,V))
         ) {
           analyticGeometry::inXYZTolerance(ppXYZ, getPointPercent(U, V), true);
-//          dt__solution(U<getMin(0), U=getMin(0));
-//          dt__solution(V<getMin(1), V=getMin(1));
-//          dt__solution(U>getMax(0), U=getMax(0));
-//          dt__solution(V>getMax(0), V=getMax(1));    
-
           return uv_percent( dtPoint2(U, V) );            
         }
       }
     }
-    
-
   }
   
   dtVector3 map2dTo3d::normalPercent( 
@@ -437,7 +429,9 @@ namespace dtOO {
     return ( (vv - getVMin()) / (getVMax() - getVMin()) );
   }
 
-	map1dTo3d * map2dTo3d::segment( dtPoint2 const & p0, dtPoint2 const & p1 ) const {
+	map1dTo3d * map2dTo3d::segment( 
+    dtPoint2 const & p0, dtPoint2 const & p1 
+  ) const {
 		ptrHandling< dtCurve2d > dtC2d( 
 		  trimmedCurve2d_twoPointsConnectConstructOCC(p0, p1).result() 
 		);	
@@ -742,11 +736,17 @@ namespace dtOO {
 		// 
 		// multidimensional minimization
 		//
-    ROOT::Minuit2::Minuit2Minimizer min;
-		ROOT::Math::Functor toMin(
+    dt__pH(dtMinimizer) min(
+      dtAnalysis::createMinimizer(
+        staticPropertiesHandler::getInstance()->getOption(
+          "reparamOnFace_minimizer"
+        )
+      )
+    );        
+		::ROOT::Math::Functor toMin(
 			this, &map2dTo3d::F, 2 
 		);			
-		min.SetFunction(toMin);
+		min->SetFunction(toMin);
 
 		//
 		// set bounds
@@ -755,33 +755,33 @@ namespace dtOO {
     init[0] = U; init[1] = V;
     for (int ii=0; ii<2; ii++) {
       std::string xStr = "x"+stringPrimitive::intToString(ii);
-		  min.SetVariable( ii, xStr, init[ii], 0.01 );			
-      min.SetVariableLimits(ii, 0., 1.);	
+		  min->SetVariable( ii, xStr, init[ii], 0.01 );			
+      min->SetVariableLimits(ii, 0., 1.);	
     }
     
 		//
 		// minimizer options
 		//        
-		min.SetMaxFunctionCalls(1000000);
-		min.SetMaxIterations(100000);
-		min.SetTolerance(
+		min->SetMaxFunctionCalls(10000);
+		min->SetMaxIterations(1000);
+		min->SetTolerance(
       staticPropertiesHandler::getInstance()->getOptionFloat(
         "reparamOnFace_precision"
       )    
     );			
-		min.SetPrintLevel(
+		min->SetPrintLevel(
       staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel") 
     );
 
 		//
 		// minimize
 		//
-   	bool converged = min.Minimize();
+   	bool converged = min->Minimize();
 
-    double const * const theRoot = min.X( );
+    double const * const theRoot = min->X( );
 
-    U = theRoot[0];
-    V = theRoot[1];
+    U = std::max<double>( std::min<double>( theRoot[0], getUMax() ), getUMin());
+    V = std::max<double>( std::min<double>( theRoot[1], getVMax() ), getVMin());
     
     return converged;
 	}

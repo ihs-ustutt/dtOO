@@ -19,7 +19,7 @@
 #include "vec3dOneDInMap3dTo3d.h"
 #include <discrete3dVector.h>
 
-#include <Minuit2/Minuit2Minimizer.h>
+#include <dtAnalysis.h>
 #include <Math/Functor.h>
 
 namespace dtOO { 
@@ -624,18 +624,12 @@ namespace dtOO {
           U = initU[ii];
           V = initV[jj];          
           W = initW[kk];          
-          bool converged 
-          = 
+
           XYZtoUVWPercent(
             X, Y, Z, 
             U, V, W, 
             uvwExtPercent.x(), uvwExtPercent.y(), uvwExtPercent.z()
           );
-
-//          if (!converged) {
-//            dt__warning(reparamInVolume(), 
-//            << "Reparameterization not converged.");
-//          }
 
           //
           // check if point is precise enough
@@ -875,11 +869,17 @@ namespace dtOO {
 		// 
 		// multidimensional minimization
 		//
-    ROOT::Minuit2::Minuit2Minimizer min;
-		ROOT::Math::Functor toMin(
+    dt__pH(dtMinimizer) min(
+      dtAnalysis::createMinimizer(
+        staticPropertiesHandler::getInstance()->getOption(
+          "reparamInVolume_minimizer"
+        )
+      )
+    );    
+		::ROOT::Math::Functor toMin(
 			this, &map3dTo3d::F, 3 
 		);			
-		min.SetFunction(toMin);
+		min->SetFunction(toMin);
 
 		//
 		// set bounds
@@ -890,21 +890,21 @@ namespace dtOO {
     init[0] = U; init[1] = V; init[2] = W;    
     for (int ii=0; ii<3; ii++) {
       std::string xStr = "x"+stringPrimitive::intToString(ii);
-		  min.SetVariable( ii, xStr, init[ii], 0.01 );			
-      min.SetVariableLimits(ii, 0.-ext[ii], 1.+ext[ii]);	
+		  min->SetVariable( ii, xStr, init[ii], 0.01 );			
+      min->SetVariableLimits(ii, 0.-ext[ii], 1.+ext[ii]);	
     }
     
 		//
 		// minimizer options
 		//
-		min.SetMaxFunctionCalls(1000000);
-		min.SetMaxIterations(100000);
-		min.SetTolerance(
+		min->SetMaxFunctionCalls(10000);
+		min->SetMaxIterations(1000);
+		min->SetTolerance(
       staticPropertiesHandler::getInstance()->getOptionFloat(
         "reparamInVolume_precision"
       )    
     );					
-		min.SetPrintLevel(
+		min->SetPrintLevel(
       staticPropertiesHandler::getInstance()->getOptionInt(
         "root_printLevel"
       ) 
@@ -913,13 +913,13 @@ namespace dtOO {
 		//
 		// minimize
 		//
-   	bool converged = min.Minimize();
+   	bool converged = min->Minimize();
 
-    double const * const theRoot = min.X( );
+    double const * const theRoot = min->X( );
 
-    U = theRoot[0];
-    V = theRoot[1];
-    W = theRoot[2];
+    U = std::max<double>( std::min<double>( theRoot[0], getUMax() ), getUMin());
+    V = std::max<double>( std::min<double>( theRoot[1], getVMax() ), getVMin());
+    W = std::max<double>( std::min<double>( theRoot[2], getWMax() ), getWMin());
     
     return converged;
 	}
