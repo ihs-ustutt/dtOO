@@ -25,7 +25,9 @@ namespace dtOO {
       virtual ~optionHandling();
       virtual void init(::QDomElement const * const wElement);
       void setOption(std::string const name, std::string const value);
-      std::string getOption(std::string const name, std::string const val) const;
+      std::string getOption(
+        std::string const name, std::string const val
+      ) const;
       std::string getOption(std::string const name) const;
       float getOptionFloat(std::string const name) const;
       float getOptionFloat(
@@ -46,7 +48,6 @@ namespace dtOO {
     private:
       std::vector< std::string > _optionName;
       std::vector< std::string > _optionValue;
-      optionGroupElement _emptyOptionGroupElement;
   };
 }
 

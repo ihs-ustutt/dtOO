@@ -24,6 +24,8 @@ namespace dtOO {
 		setOption("geometry_render_resolution_w", "10");		
 		setOption("root_printLevel", "0");
     setOption("workingDirectory", systemHandling::currentDirectory());
+    setOption("reparamOnFace_minimizer", ":Minuit2:kMigrad:");
+    setOption("reparamInVolume_minimizer", ":Minuit2:kMigrad:");
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {

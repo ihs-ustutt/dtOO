@@ -5,6 +5,7 @@
 #include <xmlHeaven/qtXmlPrimitive.h>
 #include <xmlHeaven/qtXmlBase.h>
 #include <sstream>
+#include <algorithm>
 
 namespace dtOO {  
   optionHandling::optionHandling() {
@@ -27,24 +28,39 @@ namespace dtOO {
   }
   
   void optionHandling::init( ::QDomElement const * const wElement) {
-    _optionName.clear();
-    _optionValue.clear();
-
     ::QDomElement option = qtXmlPrimitive::getChild("option", *wElement);
     while ( !option.isNull() ) {
-      std::string optionName = qtXmlPrimitive::getAttributeStr("name", option);
-      std::string optionValue = qtXmlPrimitive::getAttributeStr("value", option);
-      optionHandling::setOption(optionName, optionValue);
+      optionHandling::setOption(
+        qtXmlPrimitive::getAttributeStr("name", option), 
+        qtXmlPrimitive::getAttributeStr("value", option)
+      );
       option = option.nextSiblingElement("option");
     }
   }
   
-  void optionHandling::setOption(std::string const name, std::string const value) {
-    _optionName.push_back(name);
-    _optionValue.push_back(value);
+  void optionHandling::setOption(
+    std::string const name, std::string const value
+  ) {
+    std::vector< std::string >::iterator it 
+    = 
+    std::find(_optionName.begin(), _optionName.end(), name);
+    
+    if (it == _optionName.end()) {
+      _optionName.push_back(name);
+      _optionValue.push_back(value);
+    }
+    else {
+      _optionValue[
+        static_cast< int >(it - _optionName.begin())
+      ]
+      =
+      value;
+    }
   }
   
-  std::string optionHandling::getOption(std::string const name, std::string const val) const {
+  std::string optionHandling::getOption(
+    std::string const name, std::string const val
+  ) const {
     for (int ii=0;ii<_optionName.size();ii++) {
       if (_optionName[ii] == name) {
         return _optionValue[ii];
@@ -131,18 +147,22 @@ namespace dtOO {
     optionGroup group;
     
     for (int ii=0;ii<_optionName.size();ii++) {
-      if ( stringPrimitive::getStringBetween("[", "]", _optionName[ii]) == name ) {
+      if ( 
+        stringPrimitive::getStringBetween("[", "]", _optionName[ii]) == name 
+      ) {
         std::string optionNameTwin = _optionName[ii];
-        stringPrimitive::getStringBetweenAndRemove( "[", "]", &(optionNameTwin) );
+        stringPrimitive::getStringBetweenAndRemove( 
+          "[", "]", &(optionNameTwin) 
+        );
         optionGroupElement toAdd;
         while ( stringPrimitive::stringContains(".", optionNameTwin) ) {
           toAdd.first.push_back(
-            stringPrimitive::getStringBetweenAndRemove( "", ".", &(optionNameTwin) )
+            stringPrimitive::getStringBetweenAndRemove( 
+              "", ".", &optionNameTwin 
+            )
           );
         }
-        toAdd.first.push_back(
-          optionNameTwin
-        );
+        toAdd.first.push_back( optionNameTwin );
         toAdd.second = stringPrimitive::stringToFloat( _optionValue[ii] );
         group.push_back(toAdd);
       }
@@ -150,17 +170,25 @@ namespace dtOO {
     return group;
   }  
 
-  optionGroupInt optionHandling::getOptionGroupInt( std::string const name ) const {
+  optionGroupInt optionHandling::getOptionGroupInt( 
+    std::string const name 
+  ) const {
     optionGroup group;
     
     for (int ii=0;ii<_optionName.size();ii++) {
-      if ( stringPrimitive::getStringBetween("[", "]", _optionName[ii]) == name ) {
+      if ( 
+        stringPrimitive::getStringBetween("[", "]", _optionName[ii]) == name 
+      ) {
         std::string optionNameTwin = _optionName[ii];
-        stringPrimitive::getStringBetweenAndRemove( "[", "]", &(optionNameTwin) );
+        stringPrimitive::getStringBetweenAndRemove( 
+          "[", "]", &(optionNameTwin) 
+        );
         optionGroupElement toAdd;
         while ( stringPrimitive::stringContains(".", optionNameTwin) ) {
           toAdd.first.push_back(
-            stringPrimitive::getStringBetweenAndRemove( "", ".", &(optionNameTwin) )
+            stringPrimitive::getStringBetweenAndRemove( 
+              "", ".", &(optionNameTwin) 
+            )
           );
         }
         toAdd.first.push_back(
