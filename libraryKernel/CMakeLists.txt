@@ -2,6 +2,7 @@ add_subdirectory(meshEngine/tetgen)
 
 SET(HEADERS
   dtLinearAlgebra.h
+  dtAnalysis.h
   geometryEngine/dtCurve.h
   geometryEngine/dtCurve2d.h
   geometryEngine/dtSurface.h
@@ -106,6 +107,7 @@ SET(HEADERS
 )
 SET(SOURCES
   dtLinearAlgebra.cpp
+  dtAnalysis.cpp
   geometryEngine/dtCurve.cpp
   geometryEngine/dtCurve2d.cpp
   geometryEngine/dtSurface.cpp

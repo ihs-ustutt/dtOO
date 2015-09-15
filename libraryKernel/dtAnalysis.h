@@ -4,16 +4,10 @@
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 
-namespace ROOT {
-  namespace Math {
-    class Minimizer;
-    class IBaseFunctionMultiDim;
-  }  
-}
+#include <Math/GSLMinimizer.h>
 
 namespace dtOO {
   typedef ROOT::Math::Minimizer dtMinimizer;
-  typedef ROOT::Math::IBaseFunctionMultiDim dtMultiFunction;
   
   class dtAnalysis {
   public:
@@ -21,8 +15,7 @@ namespace dtOO {
     dtAnalysis();
     dtAnalysis(const dtAnalysis& orig);
     virtual ~dtAnalysis();
-    dtMinimizer * createMinimizer( ptrHandling< dtMultiFunction > const & fun ) const;
-	  dtMultiFunction * createFunction( double (*fPtr)(double const * xx ), int const & dim ) const;
+    static dtMinimizer * createMinimizer( std::string minType );
   private:
 
   };
