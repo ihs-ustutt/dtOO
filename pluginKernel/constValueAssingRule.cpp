@@ -60,7 +60,8 @@ namespace dtOO {
         dtXmlParser::replaceDependencies(
           stringPrimitive::getStringBetweenAndRemove(
             ":", ":", &theString
-          ), 
+          ),
+          bC,
           cV, 
           aF, 
           aG
