@@ -111,37 +111,7 @@ namespace dtOO {
       //
       found = returnExpression.find("$");
     }
-    
-//    //
-//    // check if there is a constValue in expression
-//    //
-//    found = returnExpression.find("#");
-//    while ( found < returnExpression.size() ) {
-//      //
-//      // find start and end of function
-//      //
-//      unsigned int foundEnd = returnExpression.find("#", found+1);
-//      int replaceStart = found;
-//      int replaceEnd = foundEnd-found+1;
-//      
-//      //
-//      // replace constValue string by value
-//      //
-//      returnExpression.replace(
-//        replaceStart, 
-//        replaceEnd, 
-//        floatToString(
-//          cValP->get(
-//            returnExpression.substr(replaceStart+1, replaceEnd-2)
-//          )->getValue()
-//        )
-//      );
-//
-//      //
-//      // go to next constValue
-//      //
-//      found = returnExpression.find("#");
-//    }
+
     return replaceDependencies(returnExpression, cV);
   }
 
