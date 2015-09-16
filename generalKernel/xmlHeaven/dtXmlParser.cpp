@@ -960,7 +960,7 @@ namespace dtOO {
 		//
 		// destroy
 		//
-		bC.reset( new baseContainer() );
+		bC->clear();
 		aF.destroy();
 		aG.destroy();
 		bV.destroy();
