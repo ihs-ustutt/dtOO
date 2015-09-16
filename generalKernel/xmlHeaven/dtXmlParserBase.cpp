@@ -245,13 +245,27 @@ namespace dtOO {
     //
     // create simple xyz point with given coordinates
     //
-		if (    hasAttribute("x", *toBuildP) 
-				 && hasAttribute("y", *toBuildP) 
-				 && hasAttribute("z", *toBuildP) 
+		if (
+         hasAttribute("x", *toBuildP) 
+			&& hasAttribute("y", *toBuildP) 
+			&& hasAttribute("z", *toBuildP) 
     ) { 
-			float cX = getAttributeFloatMuParse("x", *toBuildP, cV,  aF);
-			float cY = getAttributeFloatMuParse("y", *toBuildP, cV,  aF);
-			float cZ = getAttributeFloatMuParse("z", *toBuildP, cV,  aF);
+      float cX 
+      = 
+      muParseString(
+        replaceDependencies( getAttributeStr("x", *toBuildP), bC, cV, aF, aG )
+      );
+      float cY 
+      = 
+      muParseString(
+        replaceDependencies( getAttributeStr("y", *toBuildP), bC, cV, aF, aG )
+      );
+      
+      float cZ 
+      = 
+      muParseString(
+        replaceDependencies( getAttributeStr("z", *toBuildP), bC, cV, aF, aG )
+      );
 			basicP->push_back( dtPoint3(cX, cY, cZ) );      
     }      
     else if (    
@@ -1053,6 +1067,79 @@ namespace dtOO {
     std::string returnExpression;
     returnExpression = expression;
     unsigned int found;
+    
+    //
+    // check if there is a point in expression
+    // %aPoint% or %aPoint[x]%
+    //
+    found = returnExpression.find("!");
+    while ( found < returnExpression.size() ) {
+      //
+      // find start and end
+      //
+      unsigned int foundEnd = returnExpression.find_first_of("!", found+1);
+      int replaceStart = found;
+      int replaceEnd = foundEnd-found+1;
+      std::string replaceString 
+      = 
+      returnExpression.substr(replaceStart+1, replaceEnd-2);
+     
+      //
+      // get and cast analyticGeometry
+      //
+      std::string label = replaceString;
+      std::string option = "";
+      if ( stringPrimitive::stringContains("[", label) ) {
+        option 
+        = 
+        stringPrimitive::getStringBetweenAndRemove("[", "]", &label);
+      }
+      dtPoint3 const thePoint = bC->constPtrPointContainer()->get(label); 
+      
+      if (option == "x") {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(thePoint.x())
+        );        
+      }
+      else if (option == "y") {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(thePoint.y())
+        );        
+      }
+      else if (option == "z") {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(thePoint.z())
+        );        
+      }      
+      else if (option == "") {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(thePoint.x())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(thePoint.y())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(thePoint.z())
+        );        
+      }
+      else dt__throwUnexpected(replaceDependencies());        
+
+      //
+      // go to next transformer
+      //
+      found = returnExpression.find("!");
+    }
+    
     //
     // check if there is a transformer in expression
     // ~dtT(@aG_1[-1](@aG_0[%](0.00, 0.00)@)@)~
