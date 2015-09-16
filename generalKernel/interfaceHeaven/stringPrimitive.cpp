@@ -137,9 +137,30 @@ namespace dtOO {
 	) {
 		std::vector< std::string > values;
 		std::string valueStr = str;
-		for (int ii=0; ii<str.length(); ii++) {//while (valueStr.length() != 0) {
+		for (int ii=0; ii<str.length(); ii++) {
 			std::string aVal = getStringBetweenAndRemove(signStart, signEnd, &valueStr);
-		  values.push_back(aVal);
+      if ( stringContains(":replace:", aVal) ) {
+        std::string replaceRule = aVal;
+        aVal = getStringBetweenAndRemove(signStart, signEnd, &replaceRule);
+        std::vector< std::string > replaceVec 
+        = 
+        convertToStringVector(":", ":", replaceRule);
+        
+        dt__info(
+          convertToStringVector(), 
+          << dt__eval(aVal) << std::endl
+          << dt__eval(replaceRule) << std::endl
+          << dt__eval(replaceVec)
+        );
+        
+        for (int ii=2; ii<replaceVec.size(); ii++) {
+          values.push_back( 
+            replaceStringInString(replaceVec[1], replaceVec[ii], aVal) 
+          );
+        }
+      }
+      else values.push_back(aVal);
+      
       if (
         valueStr.length() == 0 
         || 
