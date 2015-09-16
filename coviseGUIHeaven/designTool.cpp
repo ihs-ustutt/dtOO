@@ -184,6 +184,11 @@ namespace dtOO {
 		_uifPara.push_back( tmp );
 		
 		_recreate = true;
+    
+    //
+    // create baseContainer
+    //
+    _bC.reset( new baseContainer() );
   }
 
 	void designTool::postInst() {
@@ -595,8 +600,8 @@ namespace dtOO {
 			if ( _dP.size() != 0 ) {
 				if ( strcmp(paramName, "_dPChoice") == 0 ) {
 				  int pos = _dPChoice->getValue();
-					_dPApply.push_back( _dP[pos] );
-					_recreate = false;
+					_dP[pos]->apply();
+					_recreate = true;
 					setExecGracePeriod(0.1);
 					selfExec();		
 				}		
@@ -731,10 +736,7 @@ namespace dtOO {
 
 			dt__forAllIndex( _dCApply, ii) _dCApply[ii]->apply();
 			_dCApply.clear();
-      
-			dt__forAllIndex( _dPApply, ii) _dPApply[ii]->apply();
-			_dPApply.clear();
-			
+		
 			abstractModule::closeLogFile();
 			
 			return CONTINUE_PIPELINE;

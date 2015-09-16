@@ -91,7 +91,6 @@ namespace dtOO {
       vectorHandling< boundedVolume * > _bV;
       vectorHandling< dtCase * > _dC;
       vectorHandling< dtPlugin * > _dP;
-      vectorHandling< dtPlugin * > _dPApply;
       vectorHandling< dtCase * > _dCApply;
       coDoSetHandling _aGToRender;
       coDoSetHandling _aFToRender;
