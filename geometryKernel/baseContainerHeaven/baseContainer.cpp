@@ -14,6 +14,12 @@ namespace dtOO {
 	baseContainer::~baseContainer() {
 	}
   
+  void baseContainer::clear( void ) {
+		_pC.reset(new pointContainer());
+		_vC.reset(new vectorContainer());
+		_tC.reset(new transformerContainer());   
+  }
+  
 //  dt__pH(pointContainer) & baseContainer::refPtrHPointContainer( void ) {
 //		return _pC;
 //	}

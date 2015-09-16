@@ -14,9 +14,6 @@ namespace dtOO {
   public:
     dt__classOnlyName(baseContainer);    
     baseContainer();
-//    dt__pH(pointContainer) & refPtrHPointContainer( void );
-//    dt__pH(vectorContainer) & refPtrHVectorContainer( void );
-//    dt__pH(transformerContainer) & refPtrHTransformerContainer( void );
     pointContainer * const ptrPointContainer( void );
 	  pointContainer const * const constPtrPointContainer( void ) const;
     vectorContainer * const ptrVectorContainer( void );
@@ -26,6 +23,7 @@ namespace dtOO {
       void 
     ) const;
     virtual ~baseContainer();
+    void clear( void );
   private:
     dt__pH(pointContainer) _pC;
     dt__pH(vectorContainer) _vC;
