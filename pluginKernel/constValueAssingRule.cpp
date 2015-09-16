@@ -47,11 +47,21 @@ namespace dtOO {
 //		<option name="percent" value="true"/>
 //	</plugin>    
         
-    std::vector< std::string > assignRule 
+    _assignRule 
     = 
     dtXmlParser::getAttributeStrVector("assignRule", element);
+  
+    _bC = bC;
+    _cV = cV;
+    _aF = aF;
+    _aG = aG;
+	}
+		
+  void constValueAssingRule::apply(void) {
+    std::vector< constValue * > cV;
+    std::vector< float > cVVal;    
     
-    dt__forAllConstIter(std::vector< std::string >, assignRule, it) {
+    dt__forAllConstIter(std::vector< std::string >, _assignRule, it) {
       std::string theString = *it;
 
       std::vector< float > val 
@@ -61,10 +71,10 @@ namespace dtOO {
           stringPrimitive::getStringBetweenAndRemove(
             ":", ":", &theString
           ),
-          bC,
-          cV, 
-          aF, 
-          aG
+          _bC,
+          _cV, 
+          _aF, 
+          _aG
         )
       ); 
 
@@ -72,25 +82,22 @@ namespace dtOO {
       =
       dtXmlParser::convertToStringVector(":", ":", theString);
 
-      dt__throwIf(cVLabel.size()>val.size(), init());
+      dt__throwIf(cVLabel.size()>val.size(), apply());
 
       dt__forAllIndex(cVLabel, ii) {
-        _cV.push_back( cV->get(cVLabel[ii]) );
-        _val.push_back( val[ii] );
+        cV.push_back( _cV->get(cVLabel[ii]) );
+        cVVal.push_back( val[ii] );
       }
     }
     
     dt__info(
       init(), 
-      << "_cV = " << logMe::stringPtrVec(_cV, &constValue::getLabel, 1 ) 
+      << "cV = " << logMe::stringPtrVec(cV, &constValue::getLabel, 1 ) 
       << std::endl
-      << "_val = " << logMe::vecToString(_val, 1)
+      << "cVVal = " << logMe::vecToString(cVVal, 1)
     );
     
-	}
-		
-  void constValueAssingRule::apply(void) {  
-    dt__forAllIndex(_cV, ii) _cV[ii]->setValue( _val[ii] );
+    dt__forAllIndex(cV, ii) cV[ii]->setValue( cVVal[ii] );
   }
 }
 

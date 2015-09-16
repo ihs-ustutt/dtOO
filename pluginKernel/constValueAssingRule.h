@@ -30,8 +30,11 @@ namespace dtOO {
     );    
     virtual void apply(void);
   private:
-    std::vector< constValue * > _cV;
-    std::vector< float > _val;
+		baseContainer const * _bC;
+		vectorHandling< constValue * > const * _cV;
+		vectorHandling< analyticFunction * > const * _aF;
+		vectorHandling< analyticGeometry * > const * _aG;
+    std::vector< std::string > _assignRule;
   };
 }
 #endif	/* constValueAssingRule_H */
