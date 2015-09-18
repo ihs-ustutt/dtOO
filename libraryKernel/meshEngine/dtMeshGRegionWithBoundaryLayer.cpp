@@ -30,19 +30,21 @@ namespace dtOO {
   dtMeshGRegionWithBoundaryLayer::dtMeshGRegionWithBoundaryLayer(
   ) 
   : 
-  _thickness(0.),
-  _nSmoothingSteps(0),
-  _nShrinkingSteps(0),
+  _nNormalSmoothingSteps(0),
+  _nGrowingSmoothingSteps(0),
+  _maxGrowingRatePerStep(1.0),
   _maxDihedralAngle(0.),
-  _spacing(0,0.),  
+  _nSpacingSteps(0),
   _omInit(),
   _omMoved(),    
   _fixedF("_fixedF", _omInit, false),
   _slidableF("_slidableF", _omInit, false),
-  _tF("_tF", _omInit, _thickness),
+  _tF("_tF", _omInit, 0.),
+   _nF("nF", _omInit, dtVector3(0.,0.,0.)),		
   _extrudeF("_extrudeF", _omInit, 1),
   _typeF("_type", _omInit, 0),
-  _buddyF("_buddyF", _omInit, std::vector< ::MVertex * >(0,NULL)) {
+  _buddyF("_buddyF", _omInit, std::vector< ::MVertex * >(0,NULL)),
+  _realSpacing("_realSpacing", _omInit, std::vector< float >(0,0.)) {
     _3D = NULL;
 	}
 
@@ -61,22 +63,22 @@ namespace dtOO {
   ) {
     dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
     
-    _spacing 
+    _nSpacingSteps
+    =
+    qtXmlBase::getAttributeIntMuParse("nSpacingSteps", element, cV, aF);
+    _maxGrowingRatePerStep 
 		= 
-		qtXmlBase::getAttributeFloatVectorMuParse("spacing", element, cV, aF);		
-    _thickness 
+		qtXmlBase::getAttributeFloatMuParse("maxGrowingRatePerStep", element, cV, aF);
+		_nNormalSmoothingSteps 
 		= 
-		qtXmlBase::getAttributeFloatMuParse("thickness", element, cV, aF);
-		_nSmoothingSteps 
-		= 
-		qtXmlBase::getAttributeIntMuParse("nSmoothingSteps", element, cV, aF);		
-		_nShrinkingSteps 
+		qtXmlBase::getAttributeIntMuParse("nNormalSmoothingSteps", element, cV, aF);		
+		_nGrowingSmoothingSteps 
 		=
-		qtXmlBase::getAttributeIntMuParse("nShrinkingSteps", element, cV, aF);		
+		qtXmlBase::getAttributeIntMuParse("nGrowingSmoothingSteps", element, cV, aF);		
 		_maxDihedralAngle 
 		= 
 		qtXmlBase::getAttributeFloatMuParse("maxDihedralAngle", element, cV, aF);		
-		
+    
 		//
 		// boundedVolume
 		//		
@@ -164,7 +166,7 @@ namespace dtOO {
 			itC++;
       
 			// set fields
-			_tF.assign(*tmpOM, _thickness);       
+			_tF.assign(*tmpOM, 0.);       
 			_typeF.assign(*tmpOM, dtMeshGRegionWithBoundaryLayer::_NORMAL);
 		}
 		
@@ -198,7 +200,7 @@ namespace dtOO {
 			
 			// set fields
 			_fixedF.assign(*tmpOM, true);
-			_tF.assign(*tmpOM, _thickness);      
+			_tF.assign(*tmpOM, 0.);      
       canSlideF.assign(*tmpOM, true);
       _extrudeF.assign(*tmpOM, 0);
       _typeF.assign(*tmpOM, dtMeshGRegionWithBoundaryLayer::_SLIDER);
@@ -323,12 +325,17 @@ namespace dtOO {
 		dt__forFromToIter(
 		  omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
 		) omManifolds.push_back( dtOMMeshManifold(_omInit, *v_it) );
+    
+		//
+		// createLayerVertices
+		//
+		createLayerVertices();
+		dt__info(operator(), << "Layer vertices created.");
 
 		//
 		// divide manifolds and calculate normals
 		// averaging all normals of manifolds
 		//
-		dtOMVertexField< dtVector3 > nF("nF", _omInit, dtVector3(0.,0.,0.) );		
 		dt__forAllIter(std::vector< dtOMMeshManifold >, omManifolds, it) {
 			std::vector< dtOMMeshManifold > divOmMs = it->divide(_maxDihedralAngle);
 			std::vector< dtVector3 > nnV;
@@ -337,24 +344,14 @@ namespace dtOO {
 			}
 			dtVector3 nn = dtLinearAlgebra::meanAverage(nnV);
 			
-			nF[it->centerMVertex()] = nn;
+			_nF[it->centerMVertex()] = nn;
 		}
-
-		//
-		// laplacian smoothing
-		//
-		for (int ii=0;ii<_nSmoothingSteps;ii++) {
-			nF.laplacianSmooth();
-			nF.execute( &dtLinearAlgebra::normalize );
-		}
-
 		dt__info(operator(), << "Normals calculated.");
-
-		//
-		// createLayerVertices
-		//
-		createLayerVertices(nF);
-		dt__info(operator(), << "Layer vertices created.");
+    
+    //
+    // adjust thickness
+    //
+    adjustThickness();
     
 		//
 		// createMovedMesh
@@ -402,9 +399,7 @@ namespace dtOO {
     dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
   }
   
-	void dtMeshGRegionWithBoundaryLayer::createLayerVertices(
-		dtOMVertexField< dtVector3 > const & nF
-	) {
+	void dtMeshGRegionWithBoundaryLayer::createLayerVertices( void ) {
 		//
 		// create new vertices
 		//
@@ -435,27 +430,13 @@ namespace dtOO {
       // move vertices of surface mesh om and create new vertices with old
       // position in new surface mesh omT
       //      
-      ::MVertex * mv = _buddyF[*it].front();
       _buddyF[*it].pop_back();
-      
-      dt__forAllIndex(_spacing, ii) {
-        dtPoint3 newPos
-        =
-        dtGmshModel::extractPosition(mv) 
-        + 
-        _spacing.at(ii) * _tF.at(*it) * nF.at(*it);
-        _buddyF[*it].push_back(
-          new ::MVertex( newPos.x(), newPos.y(), newPos.z(), NULL )
-        );
+      _realSpacing[*it].clear();
+      dt__forFromToIndex(0, _nSpacingSteps, ii) {
+        _buddyF[*it].push_back( new ::MVertex(0., 0., 0., NULL));
+        _realSpacing[*it].push_back(0.);
       }
-      dtPoint3 newPos
-      =
-      dtGmshModel::extractPosition(mv) 
-      + 
-      _tF.at(*it) * nF.at(*it);
-      _buddyF[*it].push_back(
-        new ::MVertex( newPos.x(), newPos.y(), newPos.z() )
-      );       
+      _buddyF[*it].push_back( new ::MVertex(0., 0., 0., NULL) );
 		}	 
 	}
   
@@ -489,8 +470,8 @@ namespace dtOO {
       // handle only elements that should be extruded
       if (!_extrudeF.at(*fIt) ) continue;
       
-			// create elements and add it to given region
-      dt__forFromToIndex(0, _spacing.size()+1, ii) {
+			// create elements and add them to given region
+      dt__forFromToIndex(0, _nSpacingSteps+1, ii) {
         std::vector< ::MVertex * > fixedVertices;
         std::vector< ::MVertex * > movedVertices;		      
         std::vector< ::MVertex * > commonVertices;		              
@@ -638,7 +619,7 @@ namespace dtOO {
     omHalfedgeH slidableHe = slidableHe_init;
     do {
       omHalfedgeH wHe = slidableHe;
-      dt__forFromToIndex(0, _spacing.size(), ii) {
+      dt__forFromToIndex(0, _nSpacingSteps, ii) {
         // mark halfedge
         _omInit.data(
           _omInit.next_halfedge_handle(wHe)
@@ -671,7 +652,49 @@ namespace dtOO {
           _omInit.to_vertex_handle( _omInit.next_halfedge_handle(wHe) ) 
         ]
       );
-        
+      
+      
+      std::vector< MVertex * > & thisBuddies 
+      =
+      _buddyF[ 
+        _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
+      ];
+      std::vector< float > & thisRealSpacing 
+      =
+      _realSpacing[ 
+        _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
+      ];
+      thisRealSpacing.clear();
+      float tmpSpace = 0.;
+      dt__forAllIndex(thisBuddies, ii) {
+        if (ii==0) {
+          thisRealSpacing.push_back( 
+            dtLinearAlgebra::length(
+              dtGmshModel::extractPosition( thisBuddies[ii] )
+              -
+              dtGmshModel::extractPosition( 
+                _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
+              )
+            )
+          );          
+        }
+        else {
+          thisRealSpacing.push_back( 
+            dtLinearAlgebra::length(
+              dtGmshModel::extractPosition( thisBuddies[ii] )
+              -
+              dtGmshModel::extractPosition( thisBuddies[ii-1] )
+            )
+          );
+        }
+        tmpSpace = tmpSpace + thisRealSpacing.back();
+      }
+      float tmpASpace = 0.;
+      dt__forAllRefAuto(thisRealSpacing, aSpace) {
+        tmpASpace = aSpace + tmpASpace;
+        aSpace = tmpASpace/tmpSpace;
+      }
+      _tF[ _omInit.to_vertex_handle(slidableHe) ] = tmpSpace;
       slidableHe 
       = 
       _omInit.prev_halfedge_handle(  
@@ -743,5 +766,177 @@ namespace dtOO {
     gr->mesh_vertices.clear();
     
     gf->mesh_vertices.clear();
+  }
+  
+  void dtMeshGRegionWithBoundaryLayer::adjustThickness( void ) { 
+    determinMinMaxAverageAtSliders();
+    dt__info(
+      operator(),
+      //<< dt__eval(nodeCount) << std::endl 
+      << dt__eval(_avT) << std::endl
+      << dt__eval(_minT) << " " << dt__eval(_minT/_avT) << std::endl
+      << dt__eval(_maxT) << " " << dt__eval(_maxT/_avT) << std::endl
+      << dt__eval(_avSpacing) << std::endl
+      << dt__eval(_minSpacing) << std::endl
+      << dt__eval(_maxSpacing)
+    );      
+    
+    //
+    // init thickness and normals
+    //
+    dt__forFromToIter(
+      omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
+    ) {
+      if ( _buddyF.at(*v_it).empty() ) continue;
+      
+      if ( !_slidableF.at(*v_it) ) {
+        dt__forAllIndex(_realSpacing[ *v_it ], ii) {
+          _realSpacing[ *v_it ][ii] = _avSpacing[ii];
+        }
+        _tF[ *v_it ] = _minT;
+      }
+      else {
+        _nF[ *v_it ]
+        =
+        2. * dtLinearAlgebra::normalize(
+          dtGmshModel::extractPosition(_buddyF[ *v_it ].back())
+          - 
+          dtGmshModel::extractPosition(_buddyF[ *v_it ].front())
+        );
+      }
+    }
+      
+    //
+    // smooth normals
+    //
+    dt__forFromToIndex(0, _nNormalSmoothingSteps, ii) {
+      dtOMVertexField< dtVector3 > nFTwin("nFTwin", _omInit, dtVector3(0,0,0));
+      dt__forFromToIter(
+        omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
+      ) {    
+        if ( _buddyF.at(*v_it).empty() || _slidableF.at(*v_it) ) continue;
+        
+        nFTwin[ *v_it ] 
+        = 
+        dtLinearAlgebra::normalize(_nF.oneRingAverage( *v_it ));
+      }
+      dt__forFromToIter(
+        omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
+      ) {    
+        if ( _buddyF.at(*v_it).empty() || _slidableF.at(*v_it) ) continue;
+        
+        _nF[ *v_it ] = nFTwin[ *v_it ];
+      }
+    }
+    
+    //
+    // smooth
+    //
+    dt__forFromToIndex(0, _nGrowingSmoothingSteps, ii) {
+      dtOMVertexField< float > tFTwin("tFTwin", _omInit, 0.);
+      
+      dt__forFromToIter(
+        omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
+      ) {    
+        if ( _buddyF.at(*v_it).empty() || _slidableF.at(*v_it) ) continue;
+        
+        tFTwin[ *v_it ] = std::max( _tF.oneRingAverage( *v_it ), _minT );
+      }
+      dt__forFromToIter(
+        omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
+      ) {    
+        if ( _buddyF.at(*v_it).empty() || _slidableF.at(*v_it) ) continue;
+        
+        float _maxGrowingRatePerStep = 1.1;
+        
+        _tF[ *v_it ] 
+         = 
+        std::min(
+          _maxT,
+           std::min(
+             _maxGrowingRatePerStep * _tF[ *v_it ], 
+             tFTwin[ *v_it ]
+          )
+        );
+      }
+    }
+      
+    //
+    // adjust thickness
+    //
+    dt__forFromToIndex(0, _nGrowingSmoothingSteps, ii) {
+      dt__forFromToIter(
+        omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
+      ) {    
+        dt__forFromToIter(
+          omVertexVertexI, _omInit.vv_begin(*v_it), _omInit.vv_end(*v_it), vv_it
+        ) {
+          if ( _buddyF.at(*vv_it).empty() || _slidableF.at(*vv_it) ) continue;
+          
+          std::vector< ::MVertex * > & thisBuddies = _buddyF[ *vv_it ];
+          std::vector< float > & thisRealSpacing = _realSpacing[ *vv_it ];
+          float & thisThickness = _tF[ *vv_it ];
+          dtVector3 & thisNormal = _nF[ *vv_it ];
+          dtPoint3 thisStart 
+          = 
+          dtGmshModel::extractPosition(_omInit[ *vv_it ]);
+          dt__forAllIndex(thisRealSpacing, ii) {
+            dtGmshModel::setPosition(
+              thisBuddies[ii],
+              thisStart + thisRealSpacing[ii] * thisThickness * thisNormal
+            );
+          }
+          dtGmshModel::setPosition(
+            thisBuddies.back(),
+            thisStart + thisThickness * thisNormal
+          );          
+        }
+      } 
+    }
+    
+    determinMinMaxAverageAtSliders();
+    dt__info(
+      operator(),
+      //<< dt__eval(nodeCount) << std::endl 
+      << dt__eval(_avT) << std::endl
+      << dt__eval(_minT) << " " << dt__eval(_minT/_avT) << std::endl
+      << dt__eval(_maxT) << " " << dt__eval(_maxT/_avT) << std::endl
+      << dt__eval(_avSpacing) << std::endl
+      << dt__eval(_minSpacing) << std::endl
+      << dt__eval(_maxSpacing)
+    );      
+  }  
+  
+  void dtMeshGRegionWithBoundaryLayer::determinMinMaxAverageAtSliders(void) {
+    float nodeCount = 0.;
+    _avSpacing.resize( _nSpacingSteps, 0.);
+    _maxSpacing.resize(_nSpacingSteps, std::numeric_limits<float>::min());
+    _minSpacing.resize(_nSpacingSteps, std::numeric_limits<float>::max());
+    _avT = 0.;
+    _maxT = std::numeric_limits<float>::min();
+    _minT = std::numeric_limits<float>::max();
+
+		dt__forFromToIter(
+		  omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
+		) {
+      if ( _buddyF.at( *v_it ).empty() || !_slidableF.at( *v_it ) ) continue;
+      
+      nodeCount = nodeCount + 1.;
+      
+      _avT = _avT + _tF.at( *v_it );
+      _minT = std::min( _minT, _tF.at(*v_it) );
+      _maxT = std::max( _maxT, _tF.at(*v_it) );
+      dt__forAllIndex(_realSpacing.at( *v_it ), ii) {
+        _avSpacing[ii] = _avSpacing[ii] + _realSpacing.at( *v_it )[ii];
+        _minSpacing[ii] 
+        = 
+        std::min(_minSpacing[ii], _realSpacing.at( *v_it )[ii]);
+        _maxSpacing[ii] 
+        = 
+        std::max(_maxSpacing[ii], _realSpacing.at( *v_it )[ii]);
+      }
+    }
+    _avT = _avT/nodeCount;
+    dt__forAllRefAuto(_avSpacing, aSpacing) aSpacing = aSpacing/nodeCount;
   }
 }

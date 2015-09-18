@@ -34,9 +34,7 @@ namespace dtOO {
       );            
       virtual void operator()( dtGmshRegion * dtgr );
     private:
-      void createLayerVertices(
-		    dtOMVertexField< dtVector3 > const & nF
-      );
+      void createLayerVertices(void);
       void createBoundaryLayerElements(
 	      std::vector< ::MVertex * > & vertex, 
         std::vector< ::MElement * > & element        
@@ -53,15 +51,17 @@ namespace dtOO {
         std::vector< ::MVertex * > & vertex, 
         std::vector< ::MElement * > & element
       ) const;
+      void adjustThickness( void );
+      void determinMinMaxAverageAtSliders(void);
     private:
       static int _NORMAL;
       static int _SLIDER;
       static int _FIXER;        
-      float _thickness;
-      int _nSmoothingSteps;
-      int _nShrinkingSteps;
+      int _nNormalSmoothingSteps;
+      int _nGrowingSmoothingSteps;
+      float _maxGrowingRatePerStep;
       float _maxDihedralAngle;
-      std::vector< float > _spacing;
+      int _nSpacingSteps;
       //
       // define two surface meshes with fixed, thickness 
       // and slidable vertex field
@@ -71,9 +71,11 @@ namespace dtOO {
 		  dtOMDynamicVertexField< bool > _fixedF;
       dtOMDynamicVertexField< bool > _slidableF;
 	    dtOMDynamicVertexField< float > _tF;
+		  dtOMDynamicVertexField< dtVector3 > _nF;
       dtOMDynamicFaceField< int > _extrudeF;
       dtOMDynamicFaceField< int > _typeF;
       dtOMDynamicVertexField< std::vector< ::MVertex * > > _buddyF;
+      dtOMDynamicVertexField< std::vector< float > > _realSpacing;
       std::vector< std::string > _faceLabel;
       std::vector< int > _faceOrientation;
       std::vector< std::string > _fixedFaceLabel;
@@ -81,6 +83,12 @@ namespace dtOO {
       std::vector< std::string > _slidableFaceLabel;
       std::vector< int > _slidableFaceOrientation;
       dtMesh3DOperator * _3D;
+      std::vector< float > _avSpacing;
+      std::vector< float > _maxSpacing;
+      std::vector< float > _minSpacing;
+      float _avT;
+      float _maxT;
+      float _minT;      
   };
 }
 
