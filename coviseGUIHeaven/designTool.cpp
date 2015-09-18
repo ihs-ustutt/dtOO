@@ -198,15 +198,8 @@ namespace dtOO {
 	}
 	
   void designTool::param(const char* paramName, bool inMapLoading) {
-		try {
-      //
-      // init log file
-      //
-      std::string logFileName = std::string( covise::coModule::getTitle() );
-      logFileName = abstractModule::initializeLogFile( "./"+logFileName+".log" );
-	    _logName->setValue(logFileName.c_str());
-      
-//			_logName->setValue("");
+		try {      
+			_logName->setValue("");
 			_logName->show();
 			_logName->disable();			
       
@@ -611,7 +604,6 @@ namespace dtOO {
       dt__catch(param(), eGenRef.what());
     }
 
-    abstractModule::closeLogFile();
     return;
   }
 
