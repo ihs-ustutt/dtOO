@@ -23,7 +23,7 @@ namespace dtOO {
     T const & at(::MVertex const * const mv) const;    
     void assign( dtOMMesh const & om, T const & value );    
     void execute( T (*executeMe)(T const & member) );
-	  void laplacianSmooth( void );
+	  T oneRingAverage( omVertexH const & vH ) const;
     long unsigned int size( void ) const;
     virtual void update( void );    
   private:
@@ -84,35 +84,16 @@ namespace dtOO {
   }
     
   template < typename T >
-	void dtOMVertexField< T >::laplacianSmooth( void ) {
-		std::vector< T > av(_field.size());
-		int counter = 0;
-		dt__forFromToIter(
-      omConstVertexI, refMesh().vertices_begin(), refMesh().vertices_end(), vIt
-    ) {
-      omConstVertexVertexI vBegin = refMesh().cvv_begin(*vIt);
-			T tmp = _field[*vBegin];
-      float tmpC = 1.;
-			dt__forFromToIter(
-        omConstVertexVertexI, 
-        progHelper::next(refMesh().cvv_begin(*vIt)), 
-        refMesh().cvv_end(*vIt), 
-        vvIt
-      ) {			
-        tmp = tmp + _field[*vvIt];
-        tmpC = tmpC + 1.;
-			}
-			av[counter] = tmp/tmpC;
-			counter++;
-		}
-		
-		counter = 0;
-		dt__forFromToIter(
-      omConstVertexI, refMesh().vertices_begin(), refMesh().vertices_end(), vIt
-    ) {
-			_field[*vIt] = .5*( _field[*vIt] + av[counter]);
-			counter++;
-		}		
+	T dtOMVertexField< T >::oneRingAverage( omVertexH const & vH ) const {
+    T tmp = _field.at(vH);
+    float tmpC = 1.;
+    dt__forFromToIter(
+      omConstVertexVertexI, refMesh().cvv_begin(vH), refMesh().cvv_end(vH), vvIt
+    ) {			
+      tmp = tmp + _field.at(*vvIt);
+      tmpC = tmpC + 1.;
+    }
+    return (1./tmpC) * tmp;
 	}
 
   template < typename T >
