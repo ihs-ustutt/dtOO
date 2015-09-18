@@ -645,6 +645,11 @@ namespace dtOO {
         }
       }
     }
+    dt__throw(
+      reparamInVolume(), 
+      << "Reparametization fails." << std::endl
+      << dt__point3d(ppXYZ)
+    );
   }
 	
 //	bool map3dTo3d::XYZtoUVW(
@@ -917,9 +922,9 @@ namespace dtOO {
 
     double const * const theRoot = min->X( );
 
-    U = std::max<double>( std::min<double>( theRoot[0], getUMax() ), getUMin());
-    V = std::max<double>( std::min<double>( theRoot[1], getVMax() ), getVMin());
-    W = std::max<double>( std::min<double>( theRoot[2], getWMax() ), getWMin());
+    U = theRoot[0];//std::max<double>( std::min<double>( theRoot[0], getUMax() ), getUMin());
+    V = theRoot[1];//std::max<double>( std::min<double>( theRoot[1], getVMax() ), getVMin());
+    W = theRoot[2];//std::max<double>( std::min<double>( theRoot[2], getWMax() ), getWMin());
     
     return converged;
 	}

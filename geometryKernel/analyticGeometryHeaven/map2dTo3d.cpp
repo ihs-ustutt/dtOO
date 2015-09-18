@@ -206,6 +206,12 @@ namespace dtOO {
         }
       }
     }
+    dt__throw(
+      reparamOnFace(), 
+      << "Reparametization fails." << std::endl
+      << dt__point3d(ppXYZ) << std::endl
+      << dumpToString()
+    );    
   }
   
   dtVector3 map2dTo3d::normalPercent( 
@@ -780,8 +786,8 @@ namespace dtOO {
 
     double const * const theRoot = min->X( );
 
-    U = std::max<double>( std::min<double>( theRoot[0], getUMax() ), getUMin());
-    V = std::max<double>( std::min<double>( theRoot[1], getVMax() ), getVMin());
+    U = theRoot[0];//std::max<double>( std::min<double>( theRoot[0], getUMax() ), getUMin());
+    V = theRoot[1];//std::max<double>( std::min<double>( theRoot[1], getVMax() ), getVMin());
     
     return converged;
 	}
