@@ -89,7 +89,6 @@ SET(HEADERS
   meshEngine/dtMeshTransfiniteRecombineSelectionGFace.h
   meshEngine/dtMeshGRegionTetgen.h
   meshEngine/dtMoabCore.h
-  meshEngine/dtGmshMeshBoundaryLayer.h
   meshEngine/dtOMMesh.h
   meshEngine/dtOMMeshTraits.h
   meshEngine/dtOMMeshManifold.h
@@ -195,7 +194,6 @@ SET(SOURCES
   meshEngine/dtMeshTransfiniteRecombineSelectionGFace.cpp
   meshEngine/dtMeshGRegionTetgen.cpp
   meshEngine/dtMoabCore.cpp
-  meshEngine/dtGmshMeshBoundaryLayer.cpp
   meshEngine/dtOMMesh.cpp
   meshEngine/dtOMMeshManifold.cpp
   meshEngine/dtOMField.cpp

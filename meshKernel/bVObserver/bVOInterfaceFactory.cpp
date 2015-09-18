@@ -9,7 +9,6 @@
 #include "bVOSetSimpleGrading.h"
 #include "bVONameFaces.h"
 #include "bVONameRegions.h"
-#include "bVOPostBLGmsh.h"
 #include "bVOWriteMSH.h"
 #include "bVOTransfiniteFaces.h"
 #include "bVOTransfiniteRegions.h"
@@ -39,7 +38,6 @@ namespace dtOO {
 		__IFRET(bVOSetSimpleGrading);
 		__IFRET(bVONameFaces);
 		__IFRET(bVONameRegions);
-		__IFRET(bVOPostBLGmsh);
 		__IFRET(bVOWriteMSH);
     __IFRET(bVOTransfiniteFaces);
     __IFRET(bVOTransfiniteRegions);

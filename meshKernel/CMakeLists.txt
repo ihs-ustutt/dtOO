@@ -7,7 +7,6 @@ SET(HEADERS
   bVObserver/bVOSetSimpleGrading.h
   bVObserver/bVONameFaces.h
   bVObserver/bVONameRegions.h
-  bVObserver/bVOPostBLGmsh.h
   bVObserver/bVOWriteMSH.h
   bVObserver/bVOTransfiniteFaces.h
   bVObserver/bVOTransfiniteRegions.h
@@ -38,7 +37,6 @@ SET(SOURCES
   bVObserver/bVOSetSimpleGrading.cpp
   bVObserver/bVONameFaces.cpp
   bVObserver/bVONameRegions.cpp
-  bVObserver/bVOPostBLGmsh.cpp
   bVObserver/bVOWriteMSH.cpp
   bVObserver/bVOTransfiniteFaces.cpp
   bVObserver/bVOTransfiniteRegions.cpp
