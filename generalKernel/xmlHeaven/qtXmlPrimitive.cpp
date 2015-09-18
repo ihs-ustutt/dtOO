@@ -425,8 +425,14 @@ namespace dtOO {
   std::string qtXmlPrimitive::getAttributeStr(
 	  std::string const attName, const ::QDomElement element
 	) {
-    std::string str = element.attribute( attName.c_str(), "" ).toStdString();
-		
+    dt__warnIfWithMessage(
+      !element.hasAttribute(attName.c_str()), 
+      getAttributeStr(),
+      << dt__eval(attName) << std::endl
+      << "Return empty string."
+    );
+		std::string str = element.attribute( attName.c_str(), "" ).toStdString();
+    
 		//
 		// remove whitespaces
 		//

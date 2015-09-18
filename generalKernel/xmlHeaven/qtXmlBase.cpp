@@ -123,7 +123,9 @@ namespace dtOO {
     }
     catch (mu::Parser::exception_type &e) {
       dt__throw( 
-        muParseString(), << "muParser returns: " << dt__eval(e.GetMsg())
+        muParseString(), 
+        << dt__eval(expression) << std::endl
+        << "muParser returns: " << dt__eval(e.GetMsg())
       );
     }
   }
