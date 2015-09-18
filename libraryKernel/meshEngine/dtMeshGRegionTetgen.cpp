@@ -56,6 +56,13 @@ namespace dtOO {
     std::map< ::MVertex *, int > intMVertex;    
 
     //
+    // debug output
+    //
+    const_cast<dtGmshModel&>(
+      dtgr->refDtGmshModel()
+    ).writeSTL("transferToTetgen.stl");
+    
+    //
     // convert gmsh to tetgen
     //
     convertToTetgen(dtgr, &tetIn, MVertexInt, intMVertex);
