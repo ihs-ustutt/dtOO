@@ -143,7 +143,8 @@ namespace dtOO {
     std::vector< std::pair< ::MElement *, int > > & allElems,
     std::map< int, std::string > & physicalNames
   ) {
-    std::map< std::pair< dtGmshModel *, int >, int > globLoc;
+    // model, dimension, physical number
+    std::map< std::tuple< dtGmshModel *, int, int >, int > globLoc;
     int nVerts = 0;
     int nElems = 0;    
 
@@ -187,20 +188,27 @@ namespace dtOO {
         //
         // local and global physical number
         //
+        int dimension = anEntity->dim();
         int locPhysInt 
         = 
         gm->getPhysicalNumber(
-          anEntity->dim(), gm->getPhysicalString(anEntity)
+          dimension, gm->getPhysicalString(anEntity)
         );
         int globPhysInt = -1;                
         // check if  it is already in map
-        std::map< std::pair< dtGmshModel *, int >, int >::iterator thisPhysical
+        std::map< 
+          std::tuple< dtGmshModel *, int, int >, int 
+        >::iterator thisPhysical
         =
-        globLoc.find( std::pair< dtGmshModel *, int >(gm, locPhysInt) );
+        globLoc.find( 
+          std::tuple< dtGmshModel *, int, int >(gm, dimension, locPhysInt) 
+        );
         // not in map
         if ( thisPhysical == globLoc.end() ) {
           globPhysInt = globLoc.size()+1;
-          globLoc[ std::pair< dtGmshModel *, int >(gm, locPhysInt) ]
+          globLoc[ 
+            std::tuple< dtGmshModel *, int, int >(gm, dimension, locPhysInt) 
+          ]
           =
           globPhysInt; 
 
@@ -223,6 +231,7 @@ namespace dtOO {
         }
       }    
     }
+    dt__info( initMeshVectors(), << "physicalNames = " << physicalNames );
   }
   
   void OpenFOAMCase::apply(void) {
@@ -459,7 +468,9 @@ namespace dtOO {
         +
         " && "
         +
-        "cd "+staticPropertiesHandler::getInstance()->getOption("workingDirectory")    
+        "cd "
+        +
+        staticPropertiesHandler::getInstance()->getOption("workingDirectory")    
       );
     }
     
