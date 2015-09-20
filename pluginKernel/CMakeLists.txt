@@ -4,14 +4,6 @@ SET(HEADERS
   dtPluginDriver.h
   writeStep.h
   constValueAssingRule.h
-#  createOpenFOAMCase/createOpenFOAMCase.h
-#  createOpenFOAMCase/openFOAMSetupRule.h
-#  createOpenFOAMCase/openFOAMWallRule.h
-#  createOpenFOAMCase/openFOAMGgiRule.h
-#  createOpenFOAMCase/openFOAMCyclicGgiRule.h
-#  createOpenFOAMCase/openFOAMEmptyRule.h
-#  createOpenFOAMCase/openFOAMInletRule.h
-#  createOpenFOAMCase/openFOAMOutletRule.h
 )
 
 SET(SOURCES
@@ -20,14 +12,6 @@ SET(SOURCES
   dtPluginDriver.cpp
   writeStep.cpp
   constValueAssingRule.cpp
-#  createOpenFOAMCase/createOpenFOAMCase.cpp
-#  createOpenFOAMCase/openFOAMSetupRule.cpp
-#  createOpenFOAMCase/openFOAMWallRule.cpp
-#  createOpenFOAMCase/openFOAMGgiRule.cpp
-#  createOpenFOAMCase/openFOAMCyclicGgiRule.cpp
-#  createOpenFOAMCase/openFOAMEmptyRule.cpp
-#  createOpenFOAMCase/openFOAMInletRule.cpp
-#  createOpenFOAMCase/openFOAMOutletRule.cpp
 )
 
 APPEND_DTOO_SOURCE(pluginKernel "${SOURCES}")
