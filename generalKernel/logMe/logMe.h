@@ -25,7 +25,17 @@ namespace dtOO {
     for (cIt = toLog.begin(); cIt!=toLog.end(); ++cIt) os << *cIt << " | ";
     os << " ]";
     return os;
-  }  
+  }
+  template< class T0, class T1 >  
+  std::ostream& operator<<(std::ostream& os, const std::map< T0, T1 >& toLog) {
+    typename std::map< T0, T1 >::const_iterator cIt;
+    os <<  "[ " << std::endl;
+    for (cIt = toLog.begin(); cIt!=toLog.end(); ++cIt) {
+      os << cIt->first << " -> " << cIt->second << std::endl;
+    }
+    os << " ]";
+    return os;
+  }    
   
   //
   // functions
