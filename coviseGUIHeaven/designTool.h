@@ -45,6 +45,7 @@ namespace dtOO {
       void tryToRemakeAGRender(void);      
     private:
       covise::coStringParam * _logName;
+      covise::coStringParam * _stateName;
       covise::coChoiceParam * _moduleChoice;
       covise::coFileBrowserParam * _xmlBrowser;
 

@@ -24,7 +24,10 @@
 #include <QtCore/QTextStream>
 
 namespace dtOO {
-  dtXmlParser::dtXmlParser() {
+  dtXmlParser::dtXmlParser(
+    std::string const & inFile, std::string const & outFile
+  ) : _inFile(inFile), _outFile(outFile) {
+    _currentState = "";
   }
 
   dtXmlParser::~dtXmlParser() {
@@ -34,9 +37,14 @@ namespace dtOO {
 		_rootReadDoc.clear();		
 		_rootLoad.clear();
 		_rootLoadDoc.clear();
+    _currentState = "";
   }
-
-  void dtXmlParser::openFileAndParse(char const * const fileName) {
+  
+  void dtXmlParser::parse( void ) {
+    parse(_inFile.c_str());
+  }
+  
+  void dtXmlParser::parse(char const * const fileName) {
     QFile xmlFile(fileName);
     QDomDocument xmlDocument;
 
@@ -44,7 +52,7 @@ namespace dtOO {
     // open file
 		//
     if( !xmlFile.open(QIODevice::ReadOnly | QIODevice::Text) ) {
-      dt__throw(openFileAndParse, << "Failed to open " << dt__eval(fileName));
+      dt__throw(parse, << "Failed to open " << dt__eval(fileName));
     }
 
     //
@@ -53,13 +61,14 @@ namespace dtOO {
     QString qString;
     int line;
     int column;
-    if( !xmlDocument.setContent( &xmlFile, &qString, &line, &column ) ) {
-      dt__throw( openFileAndParse(),
-              << dt__eval(qPrintable(qString) ) << std::endl
-              << dt__eval(line) << std::endl
-              << dt__eval(column) << std::endl    
-              << "Failed to parse file " << fileName);
-    }
+    dt__throwIfWithMessage(
+      !xmlDocument.setContent( &xmlFile, &qString, &line, &column ),
+      parse(),
+      << dt__eval(qPrintable(qString) ) << std::endl
+      << dt__eval(line) << std::endl
+      << dt__eval(column) << std::endl    
+      << "Failed to parse file " << fileName
+    );
 
     //
     // close file
@@ -74,12 +83,12 @@ namespace dtOO {
 		//
 		_rootReadDoc.push_back( xmlDocument );
 
-		if (_rootRead.size() == 0) {
-			dt__throw(
-			  openFileAndParse(), 
-				<< "Error parsing file " << fileName << std::endl
-				<< dt__eval(_rootRead.size()) );
-		}
+    dt__throwIfWithMessage(
+      _rootRead.size()==0,
+      parse(), 
+      << "Error parsing file " << fileName << std::endl
+      << dt__eval(_rootRead.size()) 
+    );
 		
 	
 		//
@@ -92,7 +101,7 @@ namespace dtOO {
 		for (int ii=0; ii<label.size(); ii++) {
 		  ::QDomElement wElement = getElement("include", label[ii]);
 			dt__info( 
-			  openFileAndParse(), 
+			  parse(), 
 				<< "Replace include " << dt__eval(label[ii]) << " with "
 				<< dt__eval(getAttributeStr("filename", wElement)) 
 			);
@@ -100,14 +109,10 @@ namespace dtOO {
 			::QDomNode check 
 			= 
 			_rootRead.back().removeChild( static_cast<::QDomNode>(wElement) );
-			if (check.isNull()) {
-				dt__throw(openFileAndParse(), << "Error removing element.");
-			}			
+		  dt__throwIf(check.isNull(), parse());
 		}
     // parse included files
-		for (int ii=0; ii<label.size(); ii++) {
-			this->openFileAndParse( label[ii].c_str() );
-		}
+		for (int ii=0; ii<label.size(); ii++) this->parse( label[ii].c_str() );
     
 		//
 		// handle replace-elements
@@ -123,7 +128,7 @@ namespace dtOO {
       = 
       convertToStringVector("{", "}", valueStr);
 			dt__info( 
-			  openFileAndParse(), 
+			  parse(), 
 				<< "Replace element" << std::endl
 				<< " > " << dt__eval(var) << std::endl
 				<< " > " << dt__eval(valueStr)
@@ -145,9 +150,7 @@ namespace dtOO {
 						static_cast<::QDomNode>(childClone),
 						static_cast<::QDomNode>(forElement) 
 					);
-					if (checkOne.isNull()) {
-						dt__throw(openFileAndParse(), << "Error inserting element.");
-					}
+				  dt__throwIf(checkOne.isNull(), parse());
 				}
 			}
 			
@@ -157,9 +160,7 @@ namespace dtOO {
 			::QDomNode check 
 			= 
 			_rootRead.back().removeChild( static_cast<::QDomNode>(forElement) );
-			if (check.isNull()) {
-				dt__throw(openFileAndParse(), << "Error removing element.");
-			}	
+		  dt__throwIf(check.isNull(), parse());
 
 			//
 			// get new replace element
@@ -173,7 +174,8 @@ namespace dtOO {
     setStaticProperties();
   }
 
-  void dtXmlParser::openFileAndLoad(char const * const fileName) {
+  void dtXmlParser::load( void ) {
+    char const * const fileName = _outFile.c_str();
 
     QDomDocument xmlDocument;
     //
@@ -195,12 +197,15 @@ namespace dtOO {
     ::QDomElement stateElement 
     = 
     getChildElement("state", stateName, _rootLoad);
-    
+       
     //
     // check for old style
     //
     if ( hasChild( "builder", getChild("constValue", stateElement) ) ) {
       loadRetroStateToConst(stateName, cValRef);
+      dt__info(
+        loadStateToConst(), << "Current working state: " << _currentState
+      );      
       return;
     }
     
@@ -226,6 +231,12 @@ namespace dtOO {
         );  
       }
     }
+    
+    //
+    // store this state name in parser
+    //
+    _currentState = stateName;
+    dt__info(loadStateToConst(), << "Current working state: " << _currentState);
   }
   
   void dtXmlParser::loadRetroStateToConst(
@@ -274,13 +285,22 @@ namespace dtOO {
       }
       else {
         dt__warning(
-          loadStateToConst(),
+          loadRetroStateToConst(),
           << cValRef[ii]->getLabel() 
           << "-Element not in state file." << std::endl
           << "Leave value as it was before load state."
         );  
       }
     }
+    
+    //
+    // store this state name in parser
+    //
+    _currentState = stateName;
+    dt__info(
+      loadRetroStateToConst(), 
+      << "Current working state: " << _currentState
+    );    
   }
   
   std::vector< std::string > dtXmlParser::getStates(void) {
@@ -292,61 +312,36 @@ namespace dtOO {
     return labels;
   }
     
-  void dtXmlParser::openFileAndWrite(
-    char const * const fileName, vectorHandling< constValue * > * cValP
-  ) {
-    QDomDocument xmlDocument;
-    //
-    // check and initialize file
-    //
-    checkFile(fileName, xmlDocument);
-    
-    //*_rootWriteElement = xmlDocument.toElement();
-    ::QDomElement newState = createElement(xmlDocument, "state");
-    std::string timeStr = NowDateAndTime();
-    newState.setAttribute("label", timeStr.c_str());
-    appendChildElement(xmlDocument, newState);
-    
-    for (int ii=0;ii<cValP->size();ii++) {
-      cValP->at(ii)->writeToElement(xmlDocument, newState);
-    }
-    
-    //
-    // write file
-    //
-    writeFile(fileName, xmlDocument);
-    dt__info(openFileAndWrite,
-            << "Save state = " << timeStr << " to file = " << fileName );
+  void dtXmlParser::write( vectorHandling< constValue * > * cValP ) {
+    write(NowDateAndTime(), cValP);
   }
 
-  void dtXmlParser::openFileAndWrite(
-    char const * const fileName, 
+  void dtXmlParser::write(
     std::string const stateName, 
     vectorHandling< constValue * > * cValP
   ) {
-
+    char const * const fileName = _outFile.c_str();
+    
     QDomDocument xmlDocument;
     //
     // check and initialize file
     //
     checkFile(fileName, xmlDocument);
     
-    //*_rootWriteElement = xmlDocument.toElement();
     ::QDomElement newState = createElement(xmlDocument, "state");
-//    std::string timeStr = std::string(stateName);//NowDateAndTime();
     newState.setAttribute("label", stateName.c_str());
     appendChildElement(xmlDocument, newState);
     
-    for (int ii=0;ii<cValP->size();ii++) {
-      cValP->at(ii)->writeToElement(xmlDocument, newState);
-    }
+    dt__forAllRefAuto(*cValP, aCV) aCV->writeToElement(xmlDocument, newState);
     
     //
     // write file
     //
     writeFile(fileName, xmlDocument);
-    dt__info(openFileAndWrite,
-            << "Save state = " << stateName << " to file = " << fileName );
+    dt__info(
+      openFileAndWrite,
+      << "Save state = " << stateName << " to file = " << fileName 
+    );
   }
   
   void dtXmlParser::writeFile( 
@@ -472,7 +467,24 @@ namespace dtOO {
     //
     xmlFile.close();    
   }
+  
+  std::string dtXmlParser::currentState( void ) const {
+    return _currentState;
+  }
+  
+  void dtXmlParser::setState( std::string const & newState) const {
+    _currentState = newState;
+  }
+  
+  void dtXmlParser::freeState( void ) const {
+    _currentState = "";
+  }
 
+  bool dtXmlParser::stateLoaded( void ) const {
+    if (_currentState == "") return false;
+    else return true;
+  }  
+  
   /**
    * @todo constValue is dependent on constValue. Fix this.
    */

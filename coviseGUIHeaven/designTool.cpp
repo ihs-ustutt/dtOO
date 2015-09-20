@@ -24,6 +24,7 @@ namespace dtOO {
     int argc, char *argv[]) : covise::coModule(argc, argv, "designTool"
   ) {
     _logName = addStringParam("_logName", "_logNameDescription");
+    _stateName = addStringParam("_stateName", "_stateNameDescription");
 		_moduleChoice = addChoiceParam("_moduleChoice", "_moduleChoiceDescription");		
     _xmlBrowser = addFileBrowserParam("_xmlBrowser", "_xmlBrowserDescrition");
     _xmlBrowser->setValue(".", "*.xml/*");
@@ -195,13 +196,16 @@ namespace dtOO {
 		abstractModule::updateChoiceParam(_moduleChoice, &_moduleChoices);
     _moduleChoice->show();
 		_xmlBrowser->show();
+    _logName->show();
+		_logName->disable();
+    _stateName->show();
+		_stateName->disable();    
+    
 	}
 	
   void designTool::param(const char* paramName, bool inMapLoading) {
 		try {      
-			_logName->setValue("");
-			_logName->show();
-			_logName->disable();			
+//			_logName->setValue("");
       
 			if (strcmp(paramName, "_moduleChoice") == 0) {
 				if ( _moduleChoice->getValue() == 0 ) {
@@ -260,10 +264,12 @@ namespace dtOO {
 			if ( _cV.size() != 0 ) {
 				if (strcmp(paramName, "_parseXml") == 0) {
 					if ( _parseXml->getValue() ) {
-						_cV.destroy();
+            _parser.reset(NULL);
 						_parseXml->setValue(false);
-						setExecGracePeriod(0.1);
-						selfExec();
+            _xmlBrowser->enable();
+            _cVStateBrowser->enable();
+//						setExecGracePeriod(0.1);
+//						selfExec();
 					}		
 				}
 				//
@@ -604,6 +610,12 @@ namespace dtOO {
       dt__catch(param(), eGenRef.what());
     }
 
+    //
+    // update state label
+    //
+    if (!_parser.isNull()) {
+      _stateName->setValue(_parser->currentState().c_str());
+    }
     return;
   }
 
@@ -627,8 +639,18 @@ namespace dtOO {
 				_aFToRender.clear();
 				_bVToRender.clear();
 				
-				_parser.reset( new dtXmlParser() );
-				_parser->openFileAndParse( _xmlBrowser->getValue() );
+        if (_parser.isNull()) {
+          _parser.reset( 
+            new dtXmlParser(
+              std::string(_xmlBrowser->getValue()), 
+              std::string(_cVStateBrowser->getValue())
+            ) 
+          );
+				  _parser->parse();          
+          _xmlBrowser->disable();
+          _cVStateBrowser->disable();
+          _cV.clear();
+        }
 				_parser->destroyAndCreate(_cV, _aF, _bC, _aG, _bV, _dC, _dP);
 
 				//
@@ -651,6 +673,11 @@ namespace dtOO {
 			else {
 			  _recreate = true;
 			}
+      
+      //
+      // update state label
+      //
+      _stateName->setValue(_parser->currentState().c_str());
       
 			//
 			// rendering
@@ -746,14 +773,15 @@ namespace dtOO {
       std::string sLabel = std::string(_cVStateLabel->getValue());
       if (sLabel == "") sLabel = NowDateAndTime();
       _cVStateLabel->setValue("");
-      _parser->openFileAndWrite( _cVStateBrowser->getValue(), sLabel, &_cV );  
+      _parser->write( sLabel, &_cV );  
       _cVStateSave->setValue(false);
+      _stateName->setValue(_parser->currentState().c_str());
     }
   }	
 	
 	void designTool::loadCVStateLabels(void) {
     if (_parser.get() != NULL ) {		
-			_parser->openFileAndLoad( _cVStateBrowser->getValue() );
+			_parser->load();
 			std::vector< std::string > choices = _parser->getStates();
 			_cVStateChoice->setValue(choices.size(), choices, 0);
 			_cVStateChoice->enable();
@@ -773,6 +801,7 @@ namespace dtOO {
 
 			_cVStateChoice->disable();
 			_cVStateLoad->setValue(false);
+      _stateName->setValue(_parser->currentState().c_str());
 		}
   }
 	

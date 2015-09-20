@@ -22,22 +22,22 @@ namespace dtOO {
   class dtXmlParser : public dtXmlParserBase {
   public:  
     dt__classOnlyName(dtXmlParser);
-    dtXmlParser();
+    dtXmlParser(std::string const & inFile, std::string const & outFile);
     virtual ~dtXmlParser();
-    void openFileAndParse(char const * const fileName);
-    void openFileAndWrite(
-      char const * const fileName, vectorHandling< constValue * > * cValP
+    void parse(void);
+    void write( vectorHandling< constValue * > * cValP );
+    void write(
+      std::string const stateName, vectorHandling< constValue * > * cValP
     );
-    void openFileAndWrite(
-      char const * const fileName, 
-      std::string const stateName, 
-      vectorHandling< constValue * > * cValP
-    );
-    void openFileAndLoad(char const * const fileName);
+    void load( void );
     std::vector< std::string > getStates( void );
     void loadStateToConst(
       std::string const stateName, vectorHandling< constValue * > &cValRef
     );
+    std::string currentState( void ) const;
+    void setState( std::string const & newState) const;
+    void freeState( void ) const;
+    bool stateLoaded( void ) const;
     void createConstValue(
       std::string const constValueLabel, vectorHandling< constValue * > * cValP
     ) const;
@@ -134,6 +134,7 @@ namespace dtOO {
       vectorHandling< dtPlugin * > & pL
     ) const;    
   private:
+    void parse(char const * const fileName);
     void checkFile(char const * const fileName, QDomDocument & xmlDocument);
     static void writeFile(char const * const fileName, QDomDocument & xmlDocument);
     static void writeFile( std::string const & fileName, ::QDomNode const & node);
@@ -149,6 +150,9 @@ namespace dtOO {
     std::vector< QDomDocument > _rootReadDoc;
     ::QDomElement _rootLoad;
     QDomDocument _rootLoadDoc;
+    mutable std::string _currentState;
+    std::string const _inFile;
+    std::string const _outFile;
   };
 }
 #endif	/* DTXMLPARSER_H */

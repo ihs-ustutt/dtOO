@@ -4,6 +4,7 @@
 
 #include "sliderFloatParam.h"
 #include "intParam.h"
+#include <xmlHeaven/dtXmlParser.h>
 
 namespace dtOO {
   constValue::constValue() : labelHandling() {
@@ -40,7 +41,10 @@ namespace dtOO {
   }
 
   void constValue::setValue(float const toSet) {
-    _value = toSet;
+    if (toSet != _value) {
+      _parser->freeState();
+      _value = toSet;
+    }
   }
 
   float constValue::getMax(void) const {
