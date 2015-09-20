@@ -10,6 +10,8 @@
 #include <Time.H>
 #include <repatchPolyTopoChanger.H>
 #include <patchToFace.H>
+#include <boxToCell.H>
+#include <treeBoundBox.H>
 #include <SortableList.H>
 #include <IStringStream.H>
 #include <dictionary.H>
@@ -285,9 +287,15 @@ namespace dtOO {
       ::Foam::label elmNumber(eC);
       ::Foam::label elmType(aPair.first->getTypeForMSH());
       ::Foam::label regPhys(aPair.second);
+      //------------------------------------------------------------------------
+      // line (ignore)
+      //
       if (elmType == dtFoamLibrary::MSHLINE) {
         ++nLine;
       }
+      //------------------------------------------------------------------------
+      // triangle
+      //
       else if (elmType == dtFoamLibrary::MSHTRI) {
         dt__forFromToIndex(0, 3, ii) {
           triPoints[ii] = aPair.first->getVertex(ii)->getIndex();
@@ -320,6 +328,9 @@ namespace dtOO {
         // Add triangle to correct patchFaces.
         patchFaces[patchI].append(triPoints);
       }
+      //------------------------------------------------------------------------
+      // quadrangle
+      //
       else if (elmType == dtFoamLibrary::MSHQUAD) {
         dt__forFromToIndex(0, 4, ii) {
           quadPoints[ii] = aPair.first->getVertex(ii)->getIndex();
@@ -352,6 +363,9 @@ namespace dtOO {
         // Add quad to correct patchFaces.
         patchFaces[patchI].append(quadPoints);
       }
+      //------------------------------------------------------------------------
+      // tetrahedra
+      //
       else if (elmType == dtFoamLibrary::MSHTET) {
         dtFoamLibrary::storeCellInZone(
           regPhys, cellI, physToZone, zoneToPhys, zoneCells
@@ -364,8 +378,11 @@ namespace dtOO {
 
         cells[cellI++] = ::Foam::cellShape(tet, tetPoints);
 
-        nTet++;
+        nTet++;   
       }
+      //------------------------------------------------------------------------
+      // pyramids
+      //
       else if (elmType == dtFoamLibrary::MSHPYR) {
         dtFoamLibrary::storeCellInZone(
           regPhys, cellI, physToZone, zoneToPhys, zoneCells
@@ -380,6 +397,9 @@ namespace dtOO {
 
         nPyr++;
       }
+      //------------------------------------------------------------------------
+      // prisms
+      //
       else if (elmType == dtFoamLibrary::MSHPRISM) {
         dtFoamLibrary::storeCellInZone(
           regPhys, cellI, physToZone, zoneToPhys, zoneCells
@@ -414,6 +434,9 @@ namespace dtOO {
 
         nPrism++;
       }
+      //------------------------------------------------------------------------
+      // hexahedron
+      //
       else if (elmType == dtFoamLibrary::MSHHEX) {
         dtFoamLibrary::storeCellInZone(
           regPhys, cellI, physToZone, zoneToPhys, zoneCells
@@ -449,6 +472,9 @@ namespace dtOO {
 
         nHex++;
       }
+      //------------------------------------------------------------------------
+      // points (irgnore)
+      //
       else if (elmType == dtFoamLibrary::MSHPNT) {
         ++nPnt;
       }
@@ -547,9 +573,9 @@ namespace dtOO {
     );
 
 
-//    ::Foam::label nValidCellZones = 0;
-//
-//    forAll(zoneCells, zoneI) if (zoneCells[zoneI].size()) nValidCellZones++;
+    ::Foam::label nValidCellZones = 0;
+
+    forAll(zoneCells, zoneI) if (zoneCells[zoneI].size()) nValidCellZones++;
 
 
     // Problem is that the orientation of the patchFaces does not have to
@@ -659,7 +685,7 @@ namespace dtOO {
           if (meshFaceI != -1) zoneFaces[patchI].append(meshFaceI);
           else {
             dt__warning(apply(), 
-//                << "Could not match gmsh face " << f
+              << "Could not match gmsh face "
               << " to any of the interior or exterior faces"
               << " that share the same 0th point"
             );
@@ -687,50 +713,50 @@ namespace dtOO {
 
     repatcher.repatch();
 
-//    ::Foam::List< ::Foam::cellZone * > cz;
-//    ::Foam::List< ::Foam::faceZone * > fz;
-//
-//    // Construct and add the zones. Note that cell ordering does not change
-//    // because of repatch() and neither does internal faces so we can
-//    // use the zoneCells/zoneFaces as is.
-//
-//    if (nValidCellZones > 0) {
-//      cz.setSize(nValidCellZones);
-//
-//      nValidCellZones = 0;
-//
-//      forAll(zoneCells, zoneI) {
-//        if (zoneCells[zoneI].size()) {
-//          ::Foam::label physReg = zoneToPhys[zoneI];
-//
-//          ::Foam::Map< ::Foam::word >::const_iterator iter 
-//          = 
-//          physicalNames.find(physReg);
-//
-//          ::Foam::word zoneName = "cellZone_" + ::Foam::name(zoneI);
-//
-//          if (iter != physicalNames.end()) zoneName = iter();
-//
-//          dt__info(
-//            apply(), 
-//            << "Writing zone " << zoneI << " to cellZone "
-//            << zoneName << " and cellSet"
-//          );
-//
-//          ::Foam::cellSet cset(
-//            mesh, zoneName, ::Foam::labelHashSet(zoneCells[zoneI])
-//          );
-//          cset.write();
-//
-//          cz[nValidCellZones] 
-//          = 
-//          new ::Foam::cellZone(
-//            zoneName, zoneCells[zoneI], nValidCellZones, mesh.cellZones()
-//          );
-//          nValidCellZones++;
-//        }
-//      }
-//    }
+    ::Foam::List< ::Foam::cellZone * > cz;
+    ::Foam::List< ::Foam::faceZone * > fz;
+
+    // Construct and add the zones. Note that cell ordering does not change
+    // because of repatch() and neither does internal faces so we can
+    // use the zoneCells/zoneFaces as is.
+
+    if (nValidCellZones > 0) {
+      cz.setSize(nValidCellZones);
+
+      nValidCellZones = 0;
+
+      forAll(zoneCells, zoneI) {
+        if (zoneCells[zoneI].size()) {
+          ::Foam::label physReg = zoneToPhys[zoneI];
+
+          ::Foam::Map< ::Foam::word >::const_iterator iter 
+          = 
+          physicalNames.find(physReg);
+
+          ::Foam::word zoneName = "cellZone_" + ::Foam::name(zoneI);
+
+          if (iter != physicalNames.end()) zoneName = iter();
+
+          dt__info(
+            apply(), 
+            << "Writing zone " << zoneI << " to cellZone "
+            << zoneName << " and cellSet"
+          );
+
+          ::Foam::cellSet cset(
+            mesh, zoneName, ::Foam::labelHashSet(zoneCells[zoneI])
+          );
+          cset.write();
+
+          cz[nValidCellZones] 
+          = 
+          new ::Foam::cellZone(
+            zoneName, zoneCells[zoneI], nValidCellZones, mesh.cellZones()
+          );
+          nValidCellZones++;
+        }
+      }
+    }
 
 //    if (nValidFaceZones > 0) {
 //      fz.setSize(nValidFaceZones);
@@ -776,10 +802,10 @@ namespace dtOO {
 //        }
 //      }
 //    }
-//
-//    if (cz.size() || fz.size()) {
-//      mesh.addZones( ::Foam::List< ::Foam::pointZone * >(0), fz, cz);
-//    }    
+
+    if (cz.size() || fz.size()) {
+      mesh.addZones( ::Foam::List< ::Foam::pointZone * >(0), fz, cz);
+    }    
 
     return ptrMesh;
   }
@@ -844,6 +870,60 @@ namespace dtOO {
     }    
   }
    
+  void dtFoamLibrary::boxToCellZone(
+    ::Foam::point const & min, 
+    ::Foam::point const & max,
+    ::Foam::word const & cellZone,
+    ::Foam::polyMesh & mesh
+  ) {
+    ::Foam::topoSet tS(
+      mesh, 
+      "cellSet", 
+      cellZone,
+      ::Foam::IOobject::READ_IF_PRESENT,
+      ::Foam::IOobject::AUTO_WRITE
+    );
+    
+    ::Foam::boxToCell(
+      mesh, ::Foam::treeBoundBox(min, max)
+    ).applyToSet(
+      ::Foam::topoSetSource::ADD, tS
+    );
+    
+    ::Foam::SortableList< ::Foam::label > cellLabels(tS.toc());
+
+    ::Foam::DynamicList< ::Foam::label > addressing(tS.size());
+
+    forAll(cellLabels, i) {
+     ::Foam::label faceI = cellLabels[i];
+     addressing.append(faceI);
+    }
+    
+    ::Foam::label zoneID = mesh.cellZones().findZoneID(tS.name());
+    if (zoneID == -1) {
+      dt__info(
+        boxToCellSet(), 
+        << "Adding set " << tS.name() << " as a cellZone."
+      );
+      ::Foam::label sz = mesh.cellZones().size();
+      mesh.cellZones().setSize(sz+1);
+      mesh.cellZones().set(
+        sz, 
+        new ::Foam::cellZone(
+          tS.name(), addressing.shrink(), sz, mesh.cellZones()
+        )
+      );
+      mesh.cellZones().writeOpt() = ::Foam::IOobject::AUTO_WRITE;
+    }
+    else {
+      dt__info(boxToCellSet(),
+        << "Overwriting contents of existing cellZone " << zoneID
+        << " with that of set " << tS.name() << "."
+      );
+      mesh.cellZones().writeOpt() = ::Foam::IOobject::AUTO_WRITE;
+    }        
+  }    
+    
   void dtFoamLibrary::writeControlDict(
     std::string const & workingDirectory, std::string const & content
   ) {

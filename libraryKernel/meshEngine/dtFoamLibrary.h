@@ -31,6 +31,12 @@ namespace dtOO {
       ::Foam::word const & faceZone,
       ::Foam::polyMesh & mesh
     );
+    static void boxToCellZone(
+      ::Foam::point const & min, 
+      ::Foam::point const & max,
+      ::Foam::word const & cellZone,
+      ::Foam::polyMesh & mesh
+    );    
     static void writeControlDict( 
       std::string const & workingDirectory, std::string const & content
     );    

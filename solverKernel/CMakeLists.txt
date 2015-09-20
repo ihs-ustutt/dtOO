@@ -9,6 +9,7 @@ SET(HEADERS
   OpenFOAMCase/openFOAMEmptyRule.h
   OpenFOAMCase/openFOAMInletRule.h
   OpenFOAMCase/openFOAMOutletRule.h
+  OpenFOAMCase/openFOAMCellZoneRule.h
 )
 
 SET(SOURCES
@@ -22,6 +23,7 @@ SET(SOURCES
   OpenFOAMCase/openFOAMEmptyRule.cpp
   OpenFOAMCase/openFOAMInletRule.cpp
   OpenFOAMCase/openFOAMOutletRule.cpp
+  OpenFOAMCase/openFOAMCellZoneRule.cpp
 )
 
 APPEND_DTOO_SOURCE(solverKernel "${SOURCES}")
