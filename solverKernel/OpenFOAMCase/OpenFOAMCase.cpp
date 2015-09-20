@@ -303,6 +303,9 @@ namespace dtOO {
 		// create openFOAM rootCase and time
 		//
     try {
+      // disable floating point exception trapping
+      systemHandling::unsetEnv("FOAM_SIGFPE");
+      
       //
       // create rootCase
       //

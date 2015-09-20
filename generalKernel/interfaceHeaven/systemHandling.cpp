@@ -222,4 +222,13 @@ namespace dtOO {
       ::boost::filesystem::current_path() 
     ).string();    
   }
+  
+  void systemHandling::unsetEnv(std::string const & envName) {
+    if (unsetenv(envName.c_str()) < 0) {
+      dt__throw(
+        unsetEnv(), 
+        << "Cannot unset environment variable " << envName
+      );
+    }
+  }
 }
