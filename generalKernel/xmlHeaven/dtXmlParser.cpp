@@ -312,14 +312,14 @@ namespace dtOO {
     return labels;
   }
     
-  void dtXmlParser::write( vectorHandling< constValue * > * cValP ) {
+  void dtXmlParser::write( vectorHandling< constValue * > const * const cValP ) const {
     write(NowDateAndTime(), cValP);
   }
 
   void dtXmlParser::write(
     std::string const stateName, 
-    vectorHandling< constValue * > * cValP
-  ) {
+    vectorHandling< constValue * > const * const cValP
+  ) const {
     char const * const fileName = _outFile.c_str();
     
     QDomDocument xmlDocument;
@@ -338,9 +338,16 @@ namespace dtOO {
     // write file
     //
     writeFile(fileName, xmlDocument);
+    
+    //
+    // set state label
+    //
+    setState(stateName);
+    
     dt__info(
-      openFileAndWrite,
-      << "Save state = " << stateName << " to file = " << fileName 
+      write(),
+      << "Save state = " << stateName << " to file = " << fileName << std::endl
+      << dt__eval(currentState())
     );
   }
   
@@ -388,7 +395,7 @@ namespace dtOO {
 	
   void dtXmlParser::checkFile(
     char const * const fileName, QDomDocument & xmlDocument
-  ) {
+  ) const {
     //
     // open file for reading
     //

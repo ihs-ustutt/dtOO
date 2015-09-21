@@ -249,9 +249,8 @@ namespace dtOO {
     // very small elements
     //
     SetBoundingBox();
-
     dt__info(makePreGrid(),
-      << "Gmsh boundingBox:"
+      << "Gmsh boundingBox:" << std::endl
       << logMe::dtFormat("min: (%d, %d, %d)")
         % CTX::instance()->min[0] 
         % CTX::instance()->min[1] 
@@ -262,6 +261,7 @@ namespace dtOO {
         % CTX::instance()->max[1] 
         % CTX::instance()->max[2]
     );
+    
     //
 		// destroy old mesh
 		//

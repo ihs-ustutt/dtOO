@@ -25,10 +25,11 @@ namespace dtOO {
     dtXmlParser(std::string const & inFile, std::string const & outFile);
     virtual ~dtXmlParser();
     void parse(void);
-    void write( vectorHandling< constValue * > * cValP );
+    void write( vectorHandling< constValue * > const * const cValP ) const;
     void write(
-      std::string const stateName, vectorHandling< constValue * > * cValP
-    );
+      std::string const stateName, 
+      vectorHandling< constValue * > const * const cValP
+    ) const;
     void load( void );
     std::vector< std::string > getStates( void );
     void loadStateToConst(
@@ -135,7 +136,9 @@ namespace dtOO {
     ) const;    
   private:
     void parse(char const * const fileName);
-    void checkFile(char const * const fileName, QDomDocument & xmlDocument);
+    void checkFile(
+      char const * const fileName, QDomDocument & xmlDocument
+    ) const;
     static void writeFile(char const * const fileName, QDomDocument & xmlDocument);
     static void writeFile( std::string const & fileName, ::QDomNode const & node);
     void setStaticProperties( void );
