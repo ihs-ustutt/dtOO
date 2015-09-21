@@ -108,6 +108,12 @@ namespace dtOO {
 		
 		_dCChoice = addChoiceParam("_dCChoice", "_dCChoiceDescription");
     _dCChoice->disable();
+    _dCRunCurrentState = addBooleanParam("_dCRunCurrentState", "_dCRunCurrentStateDescription");
+    _dCRunCurrentState->setValue(false);
+		_dCStateChoice = addChoiceParam("_dCStateChoice", "_dCStateChoiceDescription");
+    _dCStateChoice->disable();
+    _dCStateString = addStringParam("_dCStateString", "_dCStateStringDescription");
+    _dCStateString->disable();
     
 		_dPChoice = addChoiceParam("_dPChoice", "_dPChoiceDescription");
     _dPChoice->disable();
@@ -175,7 +181,11 @@ namespace dtOO {
 		tmp.clear();
 		_moduleChoices.push_back("dCGen");
 		tmp.push_back( _dCChoice );
+    tmp.push_back( _dCRunCurrentState );
+    tmp.push_back( _dCStateChoice );
+    tmp.push_back( _dCStateString );
 		_uifPara.push_back( tmp );    
+    
 		//
 		// plugin
 		//
@@ -200,6 +210,8 @@ namespace dtOO {
 		_logName->disable();
     _stateName->show();
 		_stateName->disable();    
+//    _dCStateString->show();
+    _dCStateString->disable();
     
 	}
 	
@@ -584,13 +596,31 @@ namespace dtOO {
 			// case param
 			//		
 			if ( _dC.size() != 0 ) {
-				if ( strcmp(paramName, "_dCChoice") == 0 ) {
+				if ( 
+          (strcmp(paramName, "_dCChoice") == 0)
+          ||
+          (strcmp(paramName, "_dCRunCurrentState") == 0)
+        ) {
 				  int pos = _dCChoice->getValue();
-					_dCApply.push_back( _dC[pos] );
+					_dCApply = _dC[pos];
 					_recreate = false;
 					setExecGracePeriod(0.1);
 					selfExec();		
 				}		
+				else if ( strcmp(paramName, "_dCStateChoice") == 0 ) {
+          _dCStateString->setValue(
+            _dC[ _dCChoice->getValue() ]->statusStr( 
+              std::string(_dCStateChoice->getActLabel()) 
+            ).c_str()
+          );
+//          if (_dCRunCurrentState->getValue() ) {
+//            int pos = _dCChoice->getValue();
+//            _dCApply = _dC[pos];
+//            _recreate = false;
+//            setExecGracePeriod(0.1);
+//            selfExec();
+//          }
+				}		        
 			}	      
 			//--------------------------------------------------------------------------
 			//
@@ -679,6 +709,21 @@ namespace dtOO {
       //
       _stateName->setValue(_parser->currentState().c_str());
       
+      //
+      // update case states
+      //
+      if (_dCApply) {
+        _dCApply->update();
+        abstractModule::updateChoiceParam(_dCStateChoice, _dCApply->allStates());
+        if (_dCRunCurrentState->getValue()) {
+          _dCRunCurrentState->disable();
+          _dCApply->runCurrentState();
+          _dCRunCurrentState->setValue(false);
+          _dCRunCurrentState->enable();
+        }
+        _dCApply = NULL;
+      }
+      
 			//
 			// rendering
 			//
@@ -753,8 +798,8 @@ namespace dtOO {
         }
       }   			
 
-			dt__forAllIndex( _dCApply, ii) _dCApply[ii]->apply();
-			_dCApply.clear();
+//			if (_dCApply) _dCApply->update();
+//			_dCApply = NULL;
 		
 			abstractModule::closeLogFile();
 			

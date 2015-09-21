@@ -43,21 +43,13 @@ namespace dtOO {
 	  dtCase::init(element, bC, cV, aF, aG, bV, dC);
     
     //
-    // get working directory and cVTag if available
+    // hold constValues
     //
-    _workingDirectoryPattern
-    = 
-    dtXmlParser::getAttributeStr("workingDirectory", element);
-    if ( stringPrimitive::stringContains("#", _workingDirectoryPattern) ) {
-      std::vector< std::string > cVLabels 
-      = 
-      stringPrimitive::convertToStringVector(
-        "#", "#", _workingDirectoryPattern
-      );
-      
-      dt__forAllRefAuto(cVLabels, aLabel) _cVTag.push_back( cV->get(aLabel) );
-    }
-   
+    _cV = cV;
+
+    //
+    // get dict rules
+    //
     _dictRule
     = 
     dtXmlParser::getAttributeRareStr("dictRule", element);    
@@ -101,14 +93,7 @@ namespace dtOO {
     // prepare fieldRules
     //
     _fieldRule.resize(tmpFieldRule.size());
-    dt__forAllIndex(tmpFieldRule, ii) {
-//      //
-//      // replace dependencies
-//      //
-//      dt__forAllRefAuto(tmpFieldRule, aRule) {
-//        aRule = dtXmlParser::replaceDependencies(aRule, cV, aF, aG);
-//      }
-      
+    dt__forAllIndex(tmpFieldRule, ii) {      
       _fieldRule[ii] 
       = 
       stringPrimitive::convertToStringVector(":", ":", tmpFieldRule[ii]);
@@ -118,7 +103,6 @@ namespace dtOO {
         init(),
         << dt__eval(_fieldRule[ii])
       );
-      
       dt__info(init(), << "_fieldRule[ " << ii << " ] = " << _fieldRule[ii]);
     }
     
@@ -136,6 +120,9 @@ namespace dtOO {
     }
     
     _runCommand = qtXmlPrimitive::getAttributeRareStr("runCommand", element);
+    _checkStatus = qtXmlPrimitive::getAttributeRareStr("checkStatus", element);
+    dt__throwIf(_runCommand.empty(), init());
+    dt__throwIf(_checkStatus.empty(), init());
   }
   
   void OpenFOAMCase::initMeshVectors( 
@@ -233,8 +220,42 @@ namespace dtOO {
     }
     dt__info( initMeshVectors(), << "physicalNames = " << physicalNames );
   }
-  
-  void OpenFOAMCase::apply(void) {
+
+  void OpenFOAMCase::runCurrentState(void) {
+    //
+    // modify wDir for each run if necessary
+    //
+    dt__throwIf(_cV->size()==0, runCurrentState());
+    std::string dirName = getLabel();
+    if ( !_cV->empty()) {
+      //
+      // check if dtXmlParser is in a state, if not create a new state
+      //
+      if ( !_cV->at(0)->constRefParser().stateLoaded() ) {
+        _cV->at(0)->constRefParser().write(_cV);
+      }
+      dirName = dirName+"_"+_cV->at(0)->constRefParser().currentState();
+    }
+    
+    //
+    // check if already simulated
+    //
+    if ( inPipeline(_cV->at(0)->constRefParser().currentState()) ) return;
+    
+    std::string wDir 
+    = 
+    staticPropertiesHandler::getInstance()->getOption("workingDirectory")
+    +
+    "/"
+    +
+    dirName;
+    
+    dt__info(
+      runCurrentState(),
+      << dt__eval(dirName) << std::endl
+      << dt__eval(wDir)
+    );
+    
     //
     // check if boundedVolumes already meshed
     //
@@ -244,19 +265,6 @@ namespace dtOO {
         aBV->makeGrid();
       }
     }
-    
-    //
-    // modify wDir for each run if necessary
-    //
-    std::string wDir = _workingDirectoryPattern;
-    if (!_cVTag.empty()) wDir = dtXmlParser::replaceDependencies(wDir, &_cVTag);
-    
-    dt__info(
-      apply(),
-      << dt__eval(_workingDirectoryPattern) << std::endl
-      << dt__eval(_cVTag) << std::endl
-      << dt__eval(wDir)
-    );
     
     //
     // create system folder
@@ -320,7 +328,7 @@ namespace dtOO {
       dtFoamLibrary::writeControlDict(wDir, _dictRule);
 
     
-      dt__info(apply(), << "Create time");
+      dt__info(runCurrentState(), << "Create time");
 
       ::Foam::Time runTime(
           Foam::Time::controlDictName,
@@ -424,7 +432,7 @@ namespace dtOO {
             ::Foam::scalar(qtXmlBase::muParseString(aRule[3]));
           };
         }
-        else dt__throwUnexpected(apply());
+        else dt__throwUnexpected(runCurrentState());
       };
 
       //
@@ -450,11 +458,11 @@ namespace dtOO {
       
       dtFoamLibrary::writeDicts(fvMesh, wDir, _dictRule);
       
-      dt__info(apply(), << "Done");    
+      dt__info(runCurrentState(), << "Done");    
     }
     catch (::Foam::error & err) {
       dt__throw(
-        apply(), 
+        runCurrentState(), 
         << "Instance of ::Foam::error thrown." << std::endl
         << dt__eval(err.what()) << std::endl
         << dt__eval(err.message())
@@ -481,5 +489,21 @@ namespace dtOO {
     // destroy pseudo arguments
     //
     delete [] argv;
-  }    
+  }
+  
+  void OpenFOAMCase::createStatus( std::string const & directory ) const {
+    systemHandling::command(
+      "cd "+directory
+      +
+      " && "
+      +
+      _checkStatus
+      +
+      " && "
+      +
+      "cd "
+      +
+      staticPropertiesHandler::getInstance()->getOption("workingDirectory")    
+    );
+  }
 }

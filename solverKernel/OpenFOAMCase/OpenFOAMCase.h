@@ -16,9 +16,9 @@ namespace dtOO {
   class analyticGeometry;
   class boundedVolume;
   class baseContainer;
-  
   class dtGmshModel;
-  
+  class dtXmlParser;
+      
   class OpenFOAMCase : public dtCase {
   public:
     dt__class(OpenFOAMCase, dtCase);    
@@ -33,7 +33,8 @@ namespace dtOO {
       vectorHandling< boundedVolume * > const * const bV,
       vectorHandling< dtCase * > const * const dC
     );    
-    virtual void apply(void);
+    virtual void runCurrentState(void);
+    virtual void createStatus( std::string const & directory ) const;
   private:
     void initMeshVectors( 
       std::vector< ::MVertex * > & allVerts, 
@@ -41,13 +42,13 @@ namespace dtOO {
       std::map< int, std::string > & physicalNames    
     );
   private:
-    std::string _workingDirectoryPattern;
-    vectorHandling< constValue * > _cVTag;
+    vectorHandling< constValue * > const * _cV;
     std::string _dictRule;
     std::vector< std::vector< std::string > > _setupRule;
     std::vector< std::vector< std::string > > _fieldRule;
     std::vector< boundedVolume * > _bV;
     std::string _runCommand;    
+    std::string _checkStatus;
   };
 }
 #endif	/* CREATEOPENFOAMCASE_H */

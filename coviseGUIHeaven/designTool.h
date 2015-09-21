@@ -74,6 +74,9 @@ namespace dtOO {
       covise::coBooleanParam * _bVRenderCurrentToggle;
 
 		  covise::coChoiceParam * _dCChoice;
+      covise::coBooleanParam * _dCRunCurrentState;
+      covise::coChoiceParam * _dCStateChoice;
+      covise::coStringParam * _dCStateString;
       
 		  covise::coChoiceParam * _dPChoice;
       
@@ -92,7 +95,7 @@ namespace dtOO {
       vectorHandling< boundedVolume * > _bV;
       vectorHandling< dtCase * > _dC;
       vectorHandling< dtPlugin * > _dP;
-      vectorHandling< dtCase * > _dCApply;
+      dtCase * _dCApply;
       coDoSetHandling _aGToRender;
       coDoSetHandling _aFToRender;
       coDoSetHandling _bVToRender;
