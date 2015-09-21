@@ -17,10 +17,8 @@ namespace dtOO {
   }
   
   void abstractModule::updateChoiceParam(
-         covise::coChoiceParam * choiceParamP, 
-         std::vector< std::string > * vecHP
-       ) {
-
+    covise::coChoiceParam * choiceParamP, std::vector< std::string > const * const vecHP
+  ) {
 		if (vecHP->size() == 0) {
 			choiceParamP->disable();
 			return;
@@ -49,6 +47,13 @@ namespace dtOO {
     choiceParamP->setValue(label);
   }  
 
+  void abstractModule::updateChoiceParam(
+    covise::coChoiceParam * choiceParamP, 
+    std::vector< std::string > const & vecHP
+  ) {
+    updateChoiceParam(choiceParamP, &vecHP);  
+  }
+      
 	std::string abstractModule::blankReConvert(std::string const & str) {
 		return stringPrimitive::replaceStringInString("\177", " ", str);
 	}   	

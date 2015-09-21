@@ -19,9 +19,13 @@ namespace dtOO {
     static std::string initializeLogFile( std::string const logFileName ) ; 
     static void closeLogFile( void );
     static void updateChoiceParam(
-         covise::coChoiceParam * choiceParamP, 
-         std::vector< std::string > * vecHP
-       );    
+      covise::coChoiceParam * choiceParamP, 
+      std::vector< std::string > const * const vecHP
+    );    
+    static void updateChoiceParam(
+      covise::coChoiceParam * choiceParamP, 
+      std::vector< std::string > const & vecHP
+    );        
     template< class T >
     static void updateChoiceParam(
       covise::coChoiceParam * choiceParamP, 
