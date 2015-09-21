@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <sys/stat.h>
 #include <stdio.h>
-#include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
 #include <iostream> 
 
 namespace dtOO { 
@@ -230,5 +230,29 @@ namespace dtOO {
         << "Cannot unset environment variable " << envName
       );
     }
+  }
+  
+  std::vector< fpath > systemHandling::directoryList( 
+    std::string const & path
+  ) {
+    ::boost::filesystem::path targetDir(path);
+
+    dt__info( directoryList(), << dt__eval(path) );
+    ::boost::filesystem::directory_iterator iter(targetDir), eod;
+
+    std::vector< fpath > dL;
+    BOOST_FOREACH(
+      ::boost::filesystem::path const & i, std::make_pair(iter, eod)
+    ) {
+      if ( ::boost::filesystem::is_directory(i) ) {
+//        dt__quickdebug( << "<directory> " << dt__eval(i.string()));
+        dL.push_back( i.string() );
+      }
+//      else {
+//        dt__quickdebug( << dt__eval(i.string()) );
+//      }
+    }    
+    
+    return dL;
   }
 }

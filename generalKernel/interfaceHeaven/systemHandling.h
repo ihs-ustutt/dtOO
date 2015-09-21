@@ -3,8 +3,11 @@
 
 #include <logMe/dtMacros.h>
 #include <string>
+#include <boost/filesystem.hpp>
 
 namespace dtOO {
+  typedef ::boost::filesystem::path fpath;
+  
   class systemHandling {
   public:
     dt__classOnlyName(systemHandling);
@@ -19,6 +22,9 @@ namespace dtOO {
     static void copyDirectory( std::string const & from, std::string const & to);
     static std::string currentDirectory( void );
     static void unsetEnv(std::string const & envName);
+    static std::vector< fpath > directoryList( 
+      std::string const & path 
+    );
   private:
     systemHandling();    
   };
