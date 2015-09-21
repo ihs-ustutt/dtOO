@@ -25,9 +25,13 @@ MACRO(MAKE_DTOO_VERSION VERSION_MAJOR VERSION_MINOR VERSION_COMMIT)
   #parse the version information into pieces.
   string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" DTOO_VERSION_MAJOR "${DTOO_VERSION}")
   string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" DTOO_VERSION_MINOR "${DTOO_VERSION}")
-  string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\-([0-9]+).*" "\\1" DTOO_VERSION_COMMIT "${DTOO_VERSION}")
-  string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\-[0-9]+\\-([0-9]+).*" "\\1" DTOO_VERSION_SHA1 "${DTOO_VERSION}")
-
+  if("${DTOO_VERSION}" MATCHES "-")
+    string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\-([0-9]+).*" "\\1" DTOO_VERSION_COMMIT "${DTOO_VERSION}")
+    string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\-[0-9]+\\-([0-9]+).*" "\\1" DTOO_VERSION_SHA1 "${DTOO_VERSION}")
+  else("${DTOO_VERSION}" MATCHES "-")
+    set(DTOO_VERSION_COMMIT "0")
+    set(DTOO_VERSION_SHA1 "")
+  endif("${DTOO_VERSION}" MATCHES "-")
   configure_file(
     ${CMAKE_SOURCE_DIR}/cmake/dtOOVersion.h.in
     ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h

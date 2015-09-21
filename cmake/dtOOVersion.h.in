@@ -6,12 +6,12 @@
 namespace dtOO {
   namespace git {
     static const std::string branch("@DTOO_BRANCH@");
-    static const std::string version = "@DTOO_VERSION@";
-    static const std::string versionMajor = "@DTOO_VERSION_MAJOR@";
-    static const std::string versionMinor = "@DTOO_VERSION_MINOR@";
-    static const std::string versionCommitNo = "@DTOO_VERSION_COMMIT@";
-    static const std::string versionSha1 = "@DTOO_VERSION_SHA1@";
-    static const std::string versionShort = "@DTOO_VERSION_MAJOR@.@DTOO_VERSION_MINOR@.@DTOO_VERSION_COMMIT@";
+    static const std::string version("@DTOO_VERSION@");
+    static const std::string versionMajor("@DTOO_VERSION_MAJOR@");
+    static const std::string versionMinor("@DTOO_VERSION_MINOR@");
+    static const std::string versionCommitNo("@DTOO_VERSION_COMMIT@");
+    static const std::string versionSha1("@DTOO_VERSION_SHA1@");
+    static const std::string versionShort("@DTOO_VERSION_MAJOR@.@DTOO_VERSION_MINOR@.@DTOO_VERSION_COMMIT@");
   }
 }
 
