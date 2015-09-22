@@ -18,6 +18,7 @@
 #include "aFXmlBuilder/muParserAFXmlBuilder.h"
 #include "aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.h"
+#include "aFXmlBuilder/vec3dTriLinearThreeDAFXmlBuilder.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -80,6 +81,8 @@ namespace dtOO {
       bSplineCurve2d_pointInterpolateConstructOCC,
       bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder
     );
+    __IFRET(vec3dTriLinearThreeDAFXmlBuilder);
+    __IFRETCUSTOM(vec3dTriLinearThreeD, vec3dTriLinearThreeDAFXmlBuilder);
     
     dt__throw(
       create(), 
