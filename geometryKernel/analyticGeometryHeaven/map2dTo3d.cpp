@@ -768,8 +768,16 @@ namespace dtOO {
 		//
 		// minimizer options
 		//        
-		min->SetMaxFunctionCalls(10000);
-		min->SetMaxIterations(1000);
+		min->SetMaxFunctionCalls(
+      staticPropertiesHandler::getInstance()->getOptionInt(
+        "root_maxFunctionCalls"
+      )        
+    );
+		min->SetMaxIterations(
+      staticPropertiesHandler::getInstance()->getOptionInt(
+        "root_maxIterations"
+      )      
+    );
 		min->SetTolerance(
       staticPropertiesHandler::getInstance()->getOptionFloat(
         "reparamOnFace_precision"

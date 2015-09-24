@@ -23,6 +23,8 @@ namespace dtOO {
 		setOption("geometry_render_resolution_v", "10");
 		setOption("geometry_render_resolution_w", "10");		
 		setOption("root_printLevel", "0");
+    setOption("root_maxIterations", "1000");
+    setOption("root_maxFunctionCalls", "10000");
     setOption("workingDirectory", systemHandling::currentDirectory());
     setOption("reparamOnFace_minimizer", ":Minuit2:kMigrad:");
     setOption("reparamInVolume_minimizer", ":Minuit2:kMigrad:");
