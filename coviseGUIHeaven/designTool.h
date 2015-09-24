@@ -41,8 +41,8 @@ namespace dtOO {
       void saveCVState(void);
       void loadCVStateLabels(void);
       void loadCVState(void);
-      void tryToStoreAGRender();
-      void tryToRemakeAGRender(void);      
+      void tryToStore();
+      void tryToRemake(void);      
     private:
       covise::coStringParam * _logName;
       covise::coStringParam * _stateName;
@@ -102,7 +102,8 @@ namespace dtOO {
       
       bool _recreate;
       
-      std::vector< std::string > _memento;
+      std::vector< std::string > _AGmemento;
+      std::vector< std::string > _AFmemento;
   };
 }
 #endif

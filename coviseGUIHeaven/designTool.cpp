@@ -663,7 +663,7 @@ namespace dtOO {
 				//
 				// try to store visualization
 				//
-				tryToStoreAGRender();
+				tryToStore();
 				
 				_aGToRender.clear();
 				_aFToRender.clear();
@@ -686,7 +686,7 @@ namespace dtOO {
 				//
 				// try to remake visualization
 				//				
-				tryToRemakeAGRender();
+				tryToRemake();
 				
 				abstractModule::updateChoiceParam(_cVChoice, &_cV);
 
@@ -853,20 +853,32 @@ namespace dtOO {
   designTool::~designTool() {
   }
 	
-	void designTool::tryToStoreAGRender( void ) {
-		if (_aGToRender.empty()) return;
-		_memento.clear();
-		dt__forAllConstIter(coDoSetHandling, _aGToRender, it) {
-			labelHandling const * const labelIt = dynamic_cast< labelHandling const * const >(*it);
-			if (labelIt) _memento.push_back(labelIt->getLabel());
-		}
+	void designTool::tryToStore( void ) {
+    _AGmemento.clear();
+    _AFmemento.clear();
+		if ( !_aGToRender.empty() ) {
+      dt__forAllConstIter(coDoSetHandling, _aGToRender, it) {
+        labelHandling const * const labelIt = dynamic_cast< labelHandling const * const >(*it);
+        if (labelIt) _AGmemento.push_back(labelIt->getLabel());
+      }
+    }
+		if ( !_aFToRender.empty() ) {
+      dt__forAllConstIter(coDoSetHandling, _aFToRender, it) {
+        labelHandling const * const labelIt = dynamic_cast< labelHandling const * const >(*it);
+        if (labelIt) _AFmemento.push_back(labelIt->getLabel());
+      }
+    }    
 	} 
 
-	void designTool::tryToRemakeAGRender( void ) {
-		dt__forAllConstIter(std::vector< std::string >, _memento, it) {
+	void designTool::tryToRemake( void ) {
+		dt__forAllConstIter(std::vector< std::string >, _AGmemento, it) {
 		  if (_aG.has(*it) ) _aGToRender.push_back( _aG.get(*it) );
 		}
 		dt__forAllIndex(_aGToRender,ii) _aGToRender[ii]->extRender(false);
+		dt__forAllConstIter(std::vector< std::string >, _AFmemento, it) {
+		  if (_aF.has(*it) ) _aFToRender.push_back( _aF.get(*it) );
+		}
+		dt__forAllIndex(_aFToRender,ii) _aFToRender[ii]->extRender(false);
 	}
 }
 
