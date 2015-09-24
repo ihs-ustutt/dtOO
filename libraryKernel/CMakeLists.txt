@@ -81,6 +81,7 @@ SET(HEADERS
   meshEngine/dtMesh2DOperator.h
   meshEngine/dtMesh3DOperator.h
   meshEngine/dtMeshGEdge.h
+  meshEngine/dtMeshFixedBoundaryElementGEdge.h
   meshEngine/dtMeshGFace.h
   meshEngine/dtMeshGRegion.h
   meshEngine/dtMeshGRegionWithBoundaryLayer.h
@@ -186,6 +187,7 @@ SET(SOURCES
   meshEngine/dtMesh2DOperator.cpp
   meshEngine/dtMesh3DOperator.cpp
   meshEngine/dtMeshGEdge.cpp
+  meshEngine/dtMeshFixedBoundaryElementGEdge.cpp
   meshEngine/dtMeshGFace.cpp
   meshEngine/dtMeshGRegion.cpp
   meshEngine/dtMeshGRegionWithBoundaryLayer.cpp
