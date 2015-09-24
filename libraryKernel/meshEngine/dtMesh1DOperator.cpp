@@ -6,9 +6,6 @@ namespace dtOO {
   dtMesh1DOperator::dtMesh1DOperator() {
   }
 
-  dtMesh1DOperator::dtMesh1DOperator(const dtMesh1DOperator& orig) {
-  }
-
   dtMesh1DOperator::~dtMesh1DOperator() {
   }
 

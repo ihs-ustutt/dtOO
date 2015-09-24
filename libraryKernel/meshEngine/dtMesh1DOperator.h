@@ -17,7 +17,6 @@ namespace dtOO {
   public:
     dt__class(dtMesh1DOperator, dtMeshOperator);    
     dtMesh1DOperator();
-    dtMesh1DOperator(const dtMesh1DOperator& orig);
     virtual ~dtMesh1DOperator();
     virtual void init(
       ::QDomElement const & element,

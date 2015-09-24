@@ -6,10 +6,6 @@ namespace dtOO {
   dtMeshOperator::dtMeshOperator() {
   }
 
-  dtMeshOperator::dtMeshOperator(const dtMeshOperator& orig) {
-    labelHandling::setLabel( orig.getLabel() );
-  }
-
   dtMeshOperator::~dtMeshOperator() {
   }
 
