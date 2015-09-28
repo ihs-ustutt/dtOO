@@ -4,6 +4,7 @@
 #include "analyticGeometry.h"
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
+#include <interfaceHeaven/threadSafe.h>
 
 namespace dtOO {
   class map1dTo3d;
@@ -119,7 +120,7 @@ namespace dtOO {
       ) const;
 	    double F(double const * xx) const;        
     private:
-      mutable dtPoint3 _pXYZ;      
+      mutable threadSafe< dtPoint3 > _pXYZ;      
   };
   
 	//

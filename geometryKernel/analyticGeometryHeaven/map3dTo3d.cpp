@@ -24,9 +24,11 @@
 
 namespace dtOO { 
   map3dTo3d::map3dTo3d() : analyticGeometry() {
+    
   }
 
   map3dTo3d::map3dTo3d(const map3dTo3d& orig) : analyticGeometry(orig) {
+
   }
 
   map3dTo3d::~map3dTo3d() {
@@ -870,7 +872,7 @@ namespace dtOO {
     double &U, double &V, double &W,
     double extU, double extV, double extW
   ) const {
-    _pXYZ = dtPoint3(X, Y, Z);
+    _pXYZ() = dtPoint3(X, Y, Z);
 		// 
 		// multidimensional minimization
 		//
@@ -938,11 +940,8 @@ namespace dtOO {
 	}
   
 	double map3dTo3d::F(double const * xx) const {	
-    double objective 
-    = 
-    dtLinearAlgebra::length(
-      _pXYZ - getPointPercent(dtPoint3(xx[0], xx[1], xx[2]))
+    return dtLinearAlgebra::length(
+      _pXYZ() - getPointPercent(dtPoint3(xx[0], xx[1], xx[2]))
     );
-    return objective;
 	}	   
 }

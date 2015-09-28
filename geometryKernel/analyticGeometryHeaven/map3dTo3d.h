@@ -5,6 +5,7 @@
 #include "analyticGeometry.h"
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
+#include <interfaceHeaven/threadSafe.h>
 
 namespace dtOO {
   class map1dTo3d;
@@ -137,7 +138,7 @@ namespace dtOO {
     ) const;
 	  double F(double const * xx) const;    
   private:
-    mutable dtPoint3 _pXYZ;
+    mutable threadSafe< dtPoint3 > _pXYZ;
   };
 }
 #endif	/* MAP3DTO3D_H */

@@ -5,15 +5,17 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <Minuit2/Minuit2Minimizer.h>
 #include <Math/Functor.h>
+#include <omp.h>
 
 namespace dtOO {
 	analyticFunction::analyticFunction() : optionHandling(), labelHandling() {
+
 	}
 
 	analyticFunction::analyticFunction(
     const analyticFunction& orig
   ) : optionHandling(orig), labelHandling(orig) {
-    
+
 	}
 
 	analyticFunction::~analyticFunction() {
@@ -55,7 +57,7 @@ namespace dtOO {
     //
     // save target value in mutable variable
     //
-    _invY = yy;
+    _invY() = yy;
 
     int const numInitGuess = 11;    
     double initGuess[numInitGuess] 
@@ -126,7 +128,11 @@ namespace dtOO {
           //
           // convergence check
           //
-          float currentDistance = distance( Y(x_percent(retX)), _invY );
+          float currentDistance 
+          = 
+          distance( 
+            Y(x_percent(retX)), _invY()
+          );
           bestDistance = std::min(bestDistance, currentDistance);
           std::cout << "currentDistance = " << currentDistance << std::endl;
           if ( currentDistance <= prec ) {
@@ -157,7 +163,7 @@ namespace dtOO {
     dt__throw( 
       invY(),
       << dt__eval(getLabel()) << std::endl
-      << dt__eval(_invY) << std::endl
+      << dt__eval(_invY()) << std::endl
       << dt__eval( Y(xxMin) ) << std::endl
       << dt__eval( Y(xxMiddle) ) << std::endl
       << dt__eval( Y(xxMax) ) << std::endl
@@ -283,7 +289,17 @@ namespace dtOO {
     
     double objective = 0.;
     for (int ii=0; ii<yDim(); ii++) {
-      objective = objective + (yy[ii]-_invY[ii])*(yy[ii]-_invY[ii]);
+      objective 
+      = 
+      objective 
+      + 
+      (
+        yy[ii] - _invY()[ii]
+      )
+      *
+      (
+        yy[ii] - _invY()[ii]
+      );
     }
     return sqrt(objective);
 	}	    

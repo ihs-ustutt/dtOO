@@ -737,7 +737,7 @@ namespace dtOO {
   bool map2dTo3d::XYZtoUVPercent(
     double X, double Y, double Z, double &U, double &V
   ) const {
-    _pXYZ = dtPoint3(X, Y, Z);
+    _pXYZ() = dtPoint3(X, Y, Z);
     
 		// 
 		// multidimensional minimization
@@ -804,7 +804,7 @@ namespace dtOO {
     double objective 
     = 
     dtLinearAlgebra::length(
-      _pXYZ - getPointPercent(dtPoint2(xx[0], xx[1]))
+      _pXYZ() - getPointPercent(dtPoint2(xx[0], xx[1]))
     );
     return objective;
 	}	   	
