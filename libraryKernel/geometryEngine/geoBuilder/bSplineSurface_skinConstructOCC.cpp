@@ -54,12 +54,17 @@ namespace dtOO {
 		  << ""
 		);		
 		
-		Handle(Geom_Surface) aRes = new Geom_BSplineSurface(
-			anAlgo.SurfPoles(), anAlgo.SurfWeights(),
-			anAlgo.SurfUKnots(), anAlgo.SurfVKnots(),
-			anAlgo.SurfUMults(), anAlgo.SurfVMults(),
-			anAlgo.UDegree(), anAlgo.VDegree()
-		);
+		Handle(Geom_Surface) aRes;
+		dt__tryOcc(
+      aRes = new Geom_BSplineSurface(
+        anAlgo.SurfPoles(), anAlgo.SurfWeights(),
+        anAlgo.SurfUKnots(), anAlgo.SurfVKnots(),
+        anAlgo.SurfUMults(), anAlgo.SurfVMults(),
+        anAlgo.UDegree(), anAlgo.VDegree()
+      );
+    ,
+      << ""
+    );
 		
 		dtOCCSurfaceBase base;
 		base.setOCC(aRes);
