@@ -2,6 +2,7 @@
 #include "systemHandling.h"
 
 #include <logMe/logMe.h>
+#include <omp.h>
 
 namespace dtOO {
   staticPropertiesHandler * staticPropertiesHandler::_pH = NULL;
@@ -28,6 +29,7 @@ namespace dtOO {
     setOption("workingDirectory", systemHandling::currentDirectory());
     setOption("reparamOnFace_minimizer", ":Minuit2:kMigrad:");
     setOption("reparamInVolume_minimizer", ":Minuit2:kMigrad:");
+    setOption("ompNumThreads", "1");
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {
@@ -36,5 +38,17 @@ namespace dtOO {
   }
   staticPropertiesHandler::~staticPropertiesHandler() {
 
+  }
+  
+  void staticPropertiesHandler::init(::QDomElement const * const wElement) {
+    optionHandling::init(wElement);
+    
+    omp_set_num_threads( getOptionInt("ompNumThreads") );
+    dt__info(
+      init(),
+      << dt__eval(omp_get_num_threads()) << std::endl
+      << dt__eval(omp_get_thread_limit()) << std::endl
+      << dt__eval(omp_get_max_threads())
+      )
   }
 }

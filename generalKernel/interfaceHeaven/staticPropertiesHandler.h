@@ -10,6 +10,7 @@ namespace dtOO {
     dt__classOnlyName(staticPropertiesHandler);
     static staticPropertiesHandler * getInstance( void );
     virtual ~staticPropertiesHandler();
+    virtual void init(::QDomElement const * const wElement);    
   private:
     staticPropertiesHandler();
   private:
