@@ -86,6 +86,9 @@ if(DTOO_USE_GOOGLEPERFTOOLS)
   add_definitions(-DDTOO_USE_GOOGLEPROFTOOLS)
   find_package(GOOGLEPERFTOOLS REQUIRED)
 endif(DTOO_USE_GOOGLEPERFTOOLS)
+find_package(OpenMP REQUIRED)
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
 
 #------------------------------------------------------------------------------#

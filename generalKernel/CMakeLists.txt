@@ -65,6 +65,7 @@ SET(HEADERS
   interfaceHeaven/twoDArrayHandling.h
   interfaceHeaven/profilingHandling.h
   interfaceHeaven/timeHandling.h
+  interfaceHeaven/threadSafe.h
   logMe/logBase.h
   logMe/Output2FILE.h
   logMe/logMe.h
