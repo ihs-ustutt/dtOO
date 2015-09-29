@@ -11,6 +11,7 @@
 #include "dtMeshTransfiniteRecombineSelectionGFace.h"
 #include "dtMeshGRegionTetgen.h"
 #include "dtMeshFixedBoundaryElementGEdge.h"
+#include "dtMeshTransfiniteGFace.h"
 
 namespace dtOO {
   dtMeshOperatorFactory::dtMeshOperatorFactory() {
@@ -37,6 +38,8 @@ namespace dtOO {
     if ( str == "dtMeshFixedBoundaryElementGEdge" ) {
       return new dtMeshFixedBoundaryElementGEdge();
     }
+    if ( str == "dtMeshTransfiniteGFace" ) return new dtMeshTransfiniteGFace();
+    
     dt__throw(create(), << str <<  " could not be created");  
   }
 }
