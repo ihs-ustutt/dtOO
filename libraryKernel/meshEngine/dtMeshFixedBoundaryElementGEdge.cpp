@@ -8,6 +8,8 @@
 #include <gmsh/GmshDefines.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/GVertex.h>
+#include <interfaceHeaven/timeHandling.h>
+#include <omp.h>
 
 namespace dtOO {
   dtMeshFixedBoundaryElementGEdge::dtMeshFixedBoundaryElementGEdge(
@@ -57,16 +59,24 @@ namespace dtOO {
       if (dtge->meshAttributes.coeffTransfinite < 1.) {
         dt__forAllRefAuto(gg, aGG) aGG = 1.-aGG;
         progHelper::reverse(gg);
-      }      
+      }
+
+      std::vector< float > uu(gg.size());
+      #pragma omp parallel 
+      {
+        #pragma omp for
+        dt__forFromToIndex(1, nP-1, ii) {
+          uu[ii] = m1d->u_l( gg[ii] * ll );          
+        }
+      }
+      
       dt__forFromToIndex(1, nP-1, ii) {
-        float uu = m1d->u_l( gg[ii] * ll );
-        dtPoint3 pp( m1d->getPoint(uu) );
+        dtPoint3 pp( m1d->getPoint(uu[ii]) );
         
         dtge->mesh_vertices.push_back( 
-          new ::MEdgeVertex(
-            pp.x(), pp.y(), pp.z(), dtge, static_cast<double>(uu)
-          )
+          new ::MEdgeVertex(pp.x(), pp.y(), pp.z(), dtge, uu[ii])
         );
+        
       }
       dtge->meshStatistics.status = ::GEntity::MeshGenerationStatus::DONE;
     }
