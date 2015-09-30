@@ -8,6 +8,7 @@
 #include "openFOAMInletRule.h"
 #include "openFOAMOutletRule.h"
 #include "openFOAMCellZoneRule.h"
+#include "openFOAMCylindricalInletRule.h"
 #include <xmlHeaven/qtXmlBase.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
@@ -40,7 +41,9 @@ namespace dtOO {
     if (name == "openFOAMOutletRule") return new openFOAMOutletRule();
     if (name == "openFOAMCyclicGgiRule") return new openFOAMCyclicGgiRule();
     if (name == "openFOAMCellZoneRule") return new openFOAMCellZoneRule();
-    
+    if (name == "openFOAMCylindricalInletRule") {
+      return new openFOAMCylindricalInletRule();
+    }
     dt__throw(create(), << "Cannot create " << name);
   }
   
