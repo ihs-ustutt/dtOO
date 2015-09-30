@@ -127,6 +127,23 @@ target_link_libraries(
 
 #------------------------------------------------------------------------------#
 #                                                                              #
+# RelAbs module                                                             #
+#                                                                              #
+#------------------------------------------------------------------------------#
+set(RA_HEADERS
+  relabs.h
+)
+set(RA_SOURCES
+  relabs.cpp
+)
+add_executable(dtOOrelAbs ${RA_HEADERS} ${RA_SOURCES})
+target_link_libraries(
+  dtOOrelAbs 
+  coApi coAppl coCore coUtil coDo coShm
+)
+
+#------------------------------------------------------------------------------#
+#                                                                              #
 # linking                                                                      #
 #                                                                              #
 #------------------------------------------------------------------------------#
@@ -150,6 +167,6 @@ set_target_properties(dtOODesignTool PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE
 set_target_properties(dtOOSimCaller PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 install(
-  TARGETS dtOODesignTool dtOOSimCaller 
+  TARGETS dtOODesignTool dtOOSimCaller dtOOrelAbs
   DESTINATION ${DTOO_COVISE_ARCHSUFFIX}/bin/${DTOO_COVISE_MODULE_FOLDER}
 )
