@@ -48,6 +48,13 @@ namespace dtOO {
     _cV = cV;
 
     //
+    // get noWriteRules
+    //
+    _noWriteRule
+    = 
+    qtXmlPrimitive::getAttributeRareStrVector("noWriteRule", element);
+    
+    //
     // get dict rules
     //
     _dictRule
@@ -456,7 +463,7 @@ namespace dtOO {
       dt__forAllRefAuto(volVector_, aField) aField.write();
       dt__forAllRefAuto(volScalar, aField) aField.write();
       
-      dtFoamLibrary::writeDicts(fvMesh, wDir, _dictRule);
+      dtFoamLibrary::writeDicts(fvMesh, wDir, _dictRule, _noWriteRule);
       
       dt__info(runCurrentState(), << "Done");    
     }

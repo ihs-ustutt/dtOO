@@ -43,7 +43,8 @@ namespace dtOO {
     static void writeDicts( 
       ::Foam::fvMesh & fvMesh, 
       std::string const & workingDirectory, 
-      std::string const & content 
+      std::string const & content,
+      std::vector< std::string > const & noWriteRule
     );        
   private:
     dtFoamLibrary();

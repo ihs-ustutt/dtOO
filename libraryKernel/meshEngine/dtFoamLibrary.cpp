@@ -219,35 +219,35 @@ namespace dtOO {
     std::vector< ::MVertex * > allVerts,  
     ::Foam::pointField& points, ::Foam::Map< ::Foam::label >& mshToFoam
   ) {
-      points.setSize( ::Foam::label(allVerts.size()) );
-      mshToFoam.resize( 2* ::Foam::label(allVerts.size()) );
+    points.setSize( ::Foam::label(allVerts.size()) );
+    mshToFoam.resize( 2* ::Foam::label(allVerts.size()) );
 
-      int counter = 0;
-      dt__forAllRefAuto(allVerts, mv) {
+    int counter = 0;
+    dt__forAllRefAuto(allVerts, mv) {
 
-        ::Foam::point & pt = points[ ::Foam::label(counter) ];
+      ::Foam::point & pt = points[ ::Foam::label(counter) ];
 
-        pt.x() = ::Foam::scalar(mv->x());
-        pt.y() = ::Foam::scalar(mv->y());
-        pt.z() = ::Foam::scalar(mv->z());
+      pt.x() = ::Foam::scalar(mv->x());
+      pt.y() = ::Foam::scalar(mv->y());
+      pt.z() = ::Foam::scalar(mv->z());
 
-        mv->setIndex(counter+1);
-        mshToFoam.insert( ::Foam::label(counter+1), ::Foam::label(counter) );
-        counter++;
-      }
-      dt__info( readPoints(), << "Vertices read: " << mshToFoam.size() );
+      mv->setIndex(counter+1);
+      mshToFoam.insert( ::Foam::label(counter+1), ::Foam::label(counter) );
+      counter++;
+    }
+    dt__info( readPoints(), << "Vertices read: " << mshToFoam.size() );
   }  
   
   void dtFoamLibrary::readCells(
-      std::vector< std::pair< ::MElement *, int > > allElems,
-      const bool keepOrientation,
-      const ::Foam::pointField& points,
-      const ::Foam::Map< ::Foam::label >& mshToFoam,
-      ::Foam::cellShapeList& cells,
-      ::Foam::labelList& patchToPhys,
-      ::Foam::List< ::Foam::DynamicList< ::Foam::face > >& patchFaces,
-      ::Foam::labelList& zoneToPhys,
-      ::Foam::List< ::Foam::DynamicList< ::Foam::label > >& zoneCells
+    std::vector< std::pair< ::MElement *, int > > allElems,
+    const bool keepOrientation,
+    const ::Foam::pointField& points,
+    const ::Foam::Map< ::Foam::label >& mshToFoam,
+    ::Foam::cellShapeList& cells,
+    ::Foam::labelList& patchToPhys,
+    ::Foam::List< ::Foam::DynamicList< ::Foam::face > >& patchFaces,
+    ::Foam::labelList& zoneToPhys,
+    ::Foam::List< ::Foam::DynamicList< ::Foam::label > >& zoneCells
   ) {
     const ::Foam::cellModel& hex = *(::Foam::cellModeller::lookup("hex"));
     const ::Foam::cellModel& prism = *(::Foam::cellModeller::lookup("prism"));
@@ -975,7 +975,8 @@ namespace dtOO {
   void dtFoamLibrary::writeDicts( 
     ::Foam::fvMesh & fvMesh, 
     std::string const & workingDirectory, 
-    std::string const & content 
+    std::string const & content,
+    std::vector< std::string > const & noWriteRule
   ) {
     //
     // create content dict
@@ -1029,8 +1030,14 @@ namespace dtOO {
         //
         ioDict.writeHeader(os());
         forAllConstIter(::Foam::dictionary, currentDict, it) {
-          it().write( os() );
-          os.endl();
+          if ( it().keyword() == "noWriteRule") {
+            ::Foam::label pos = ::Foam::readLabel(it().stream());
+            os() << noWriteRule[ pos ].c_str();
+          }
+          else {
+            it().write( os() );
+            os.endl();
+          }
         }
         os.flush();
       }

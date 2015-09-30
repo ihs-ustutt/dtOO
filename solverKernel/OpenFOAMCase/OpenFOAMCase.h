@@ -49,6 +49,7 @@ namespace dtOO {
     std::vector< boundedVolume * > _bV;
     std::string _runCommand;    
     std::string _checkStatus;
+    std::vector< std::string > _noWriteRule;
   };
 }
 #endif	/* CREATEOPENFOAMCASE_H */
