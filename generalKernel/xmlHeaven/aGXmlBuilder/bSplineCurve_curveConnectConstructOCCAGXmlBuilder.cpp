@@ -39,20 +39,19 @@ namespace dtOO {
     vectorHandling< dtCurve const * > ccV;
     while ( !wElement.isNull() ) {
       dt__ptrAss(
-        splineCurve3d const * s3, 
-        splineCurve3d::ConstDownCast(
-          dt__tmpPtr(
-            analyticGeometry, 
-            dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
-          )
+        splineCurve3d * s3, 
+        splineCurve3d::DownCast(
+          dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
         )
-      );					
-      ccV.push_back(s3->ptrConstDtCurve());
+      );
+      ccV.push_back(s3->ptrConstDtCurve()->clone());
+      delete s3;
       wElement = dtXmlParserBase::getNextSibling("analyticGeometry", wElement);
     }
     ptrHandling< dtCurve > dtC(
       bSplineCurve_curveConnectConstructOCC(ccV).result()
     );
     result->push_back( new splineCurve3d(dtC.get()) );
+    ccV.destroy();
   }
 }
