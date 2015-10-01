@@ -1,6 +1,7 @@
 #include "dtFoamLibrary.h"
 
 #include <logMe/logMe.h>
+#include <interfaceHeaven/stringPrimitive.h>
 
 #include <meshEngine/dtGmshModel.h>
 #include <gmsh/MVertex.h>
@@ -1030,16 +1031,17 @@ namespace dtOO {
         //
         ioDict.writeHeader(os());
         forAllConstIter(::Foam::dictionary, currentDict, it) {
-          if ( it().keyword() == "noWriteRule") {
+          if ( stringPrimitive::stringContains("noWriteRule", it().keyword()) ) {
             ::Foam::label pos = ::Foam::readLabel(it().stream());
             os() << noWriteRule[ pos ].c_str();
+            os.endl();
           }
           else {
             it().write( os() );
             os.endl();
           }
         }
-        os.flush();
+        
       }
     }
   }
