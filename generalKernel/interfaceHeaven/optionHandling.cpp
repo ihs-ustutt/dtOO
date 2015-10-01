@@ -37,6 +37,23 @@ namespace dtOO {
       option = option.nextSiblingElement("option");
     }
   }
+
+  void optionHandling::init(
+    ::QDomElement const & wElement,
+    vectorHandling< constValue * > const * const cV
+  ) {
+    std::vector< ::QDomElement > option 
+    = 
+    qtXmlPrimitive::getChildVector("option", wElement);
+    dt__forAllRefAuto(option, anOption) {
+      optionHandling::setOption(
+        qtXmlPrimitive::getAttributeStr("name", anOption), 
+        qtXmlBase::replaceDependencies(
+          qtXmlPrimitive::getAttributeStr("value", anOption), cV
+        )
+      );
+    }    
+  } 
   
   void optionHandling::setOption(
     std::string const name, std::string const value

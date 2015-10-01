@@ -24,6 +24,10 @@ namespace dtOO {
       optionHandling(const optionHandling& orig);
       virtual ~optionHandling();
       virtual void init(::QDomElement const * const wElement);
+      virtual void init(
+        ::QDomElement const & wElement,
+        vectorHandling< constValue * > const * const cV
+      );
       void setOption(std::string const name, std::string const value);
       std::string getOption(
         std::string const name, std::string const val
