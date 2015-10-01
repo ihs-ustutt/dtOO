@@ -20,6 +20,13 @@ namespace dtOO {
     ::bSplineCurve_pointInterpolateConstructOCC( 
     std::vector < dtPoint3 > const & pp 
   ) {
+    _dtC.reset( bSplineCurve_pointInterpolateConstructOCC(pp, 3, 8).result() );
+	}
+	
+  bSplineCurve_pointInterpolateConstructOCC
+    ::bSplineCurve_pointInterpolateConstructOCC( 
+    std::vector < dtPoint3 > const & pp, int const & degMin, int const & degMax
+  ) {
     //
 		// number of points
 		//
@@ -43,15 +50,15 @@ namespace dtOO {
 
 		dtOCCCurveBase base;
     dt__tryOcc(    
-      GeomAPI_PointsToBSpline Interp(arr2);
+      GeomAPI_PointsToBSpline Interp(arr2, degMin, degMax);
       Handle(Geom_BSplineCurve) curve = Interp.Curve();
       base.setOCC( curve );
       ,
       << "Interpolation failed."
     );
-		_dtC.reset( new dtOCCBSplineCurve(base) );
-	}
-	
+		_dtC.reset( new dtOCCBSplineCurve(base) );    
+  } 
+  
 	bSplineCurve_pointInterpolateConstructOCC
     ::~bSplineCurve_pointInterpolateConstructOCC() {
 	}

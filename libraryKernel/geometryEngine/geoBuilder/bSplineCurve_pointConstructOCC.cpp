@@ -12,7 +12,9 @@
 #include <TColStd_Array1OfInteger.hxx>
 
 namespace dtOO {
-	bSplineCurve_pointConstructOCC::bSplineCurve_pointConstructOCC( std::vector< dtPoint3 > const & pp, int const & order ) {
+	bSplineCurve_pointConstructOCC::bSplineCurve_pointConstructOCC( 
+    std::vector< dtPoint3 > const & pp, int const & order 
+  ) {
     //
 		// number of points
 		//
