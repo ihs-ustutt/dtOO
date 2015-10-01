@@ -34,7 +34,7 @@ namespace dtOO {
     //
     // set options
     //
-    optionHandling::init( &element );
+    optionHandling::init( element, cV );
   }
   
   void dtPlugin::setKernel( ::pugg::Kernel * kernel ) {

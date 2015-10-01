@@ -42,7 +42,7 @@ namespace dtOO {
     //
     // set options
     //
-    optionHandling::init( &element );
+    optionHandling::init( element, cV );
   }	
 
   void dtCase::update( void ) {

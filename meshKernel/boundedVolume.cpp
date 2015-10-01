@@ -34,7 +34,7 @@ namespace dtOO {
     //
     // set options
     //
-    optionHandling::init( &element );
+    optionHandling::init( element, cV );
     
     //
     // check for bVObservers

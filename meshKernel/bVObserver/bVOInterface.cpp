@@ -24,7 +24,7 @@ namespace dtOO {
     vectorHandling< boundedVolume * > const * const bV,
     boundedVolume * attachTo
   ) {
-    optionHandling::init( &element );
+    optionHandling::init( element, cV );
     _bV = attachTo;
   }  
 	
