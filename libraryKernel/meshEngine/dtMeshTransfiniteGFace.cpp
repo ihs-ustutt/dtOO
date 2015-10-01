@@ -179,31 +179,80 @@ namespace dtOO {
       dt__throwIf(Lb != L, operator());
     }
 
-    std::vector<double> lengths_i, lengths_j;
-    double L_i = 0, L_j = 0;
+    std::vector<double> lengths_i;//(L+1);
+    std::vector<double> lengths_j;//(H+1);
+    std::vector<double> lengths_k;//(L+1);
+    std::vector<double> lengths_l;//(H+1);
+    double L_i = 0.;
+    double L_j = 0.;
+    double L_k = 0.;
+    double L_l = 0.;
     lengths_i.push_back(0.);
     lengths_j.push_back(0.);
-    for(int i = 0; i < L; i++){
+    lengths_k.push_back(0.);
+    lengths_l.push_back(0.);          
+    m_vertices.push_back(m_vertices.front());
+    for(int i = 0; i < L; i++) {
       MVertex *v1 = m_vertices[i];
       MVertex *v2 = m_vertices[i + 1];
       L_i += v1->distance(v2);
       lengths_i.push_back(L_i);
     }
-    for(int i = L; i < L + H; i++){
+    for(int i = L; i < (L+H); i++) {
       MVertex *v1 = m_vertices[i];
       MVertex *v2 = m_vertices[i + 1];
       L_j += v1->distance(v2);
       lengths_j.push_back(L_j);
     }
+    for(int i = (L+H); i < (2*L+H); i++) {
+      MVertex *v1 = m_vertices[i];
+      MVertex *v2 = m_vertices[i + 1];
+      L_k += v1->distance(v2);
+      lengths_k.push_back(L_k);
+    }
+    for(int i = (2*L+H); i < (2*L + 2*H); i++) {
+      MVertex *v1 = m_vertices[i];
+      MVertex *v2 = m_vertices[i + 1];
+      L_l += v1->distance(v2);
+      lengths_l.push_back(L_l);
+    }
+    m_vertices.pop_back();
+//    lengths_k.push_back(0.);
+//    lengths_l.push_back(0.);    
+//    progHelper::reverse(lengths_k);
+//    progHelper::reverse(lengths_l);
 
-  /*
+//    dt__info(
+//      operator(),
+//      << dt__eval(L) << std::endl
+//      << dt__eval(H) << std::endl
+//      << dt__eval(m_vertices.size()) << std::endl
+//      << dt__eval(lengths_i.size()) << std::endl
+//      << dt__eval(lengths_k.size()) << std::endl
+//      << dt__eval(lengths_j.size()) << std::endl
+//      << dt__eval(lengths_l.size()) << std::endl
+//      << dt__eval(L_i) << std::endl
+//      << dt__eval(L_k) << std::endl
+//      << dt__eval(L_j) << std::endl
+//      << dt__eval(L_l) << std::endl
+//      << dt__eval(lengths_i) << std::endl
+//      << dt__eval(lengths_k) << std::endl
+//      << dt__eval(lengths_j) << std::endl
+//      << dt__eval(lengths_l) << std::endl
+//      << dt__eval(u_i) << std::endl
+//      << dt__eval(u_k) << std::endl
+//      << dt__eval(v_j) << std::endl
+//      << dt__eval(v_l) << std::endl    
+//    );
+    
+  /*             k
       2L+H +------------+ L+H
            |            |
            |            |
+         l |            | j
            |            |
-           |            |
-   2L+2H+2 +------------+
-           0            L
+     2L+2H +------------+
+           0     i      L
   */
 
     std::vector<std::vector<MVertex*> > &tab(dtgf->transfinite_vertices);
@@ -230,9 +279,22 @@ namespace dtOO {
     double UC4 = U[N4];
     double VC4 = V[N4];
     for(int i = 1; i < L; i++){
-      double u = lengths_i[i] / L_i;
+      double u0 = lengths_i[i] / L_i;
+      double u1 = lengths_k[i] / L_k;
       for(int j = 1; j < H; j++){
-        double v = lengths_j[j] / L_j;
+        double v0 = lengths_j[j] / L_j;
+        double v1 = lengths_l[j] / L_l;
+        
+        float iF = static_cast< float >(i);
+        float jF = static_cast< float >(j);
+        double v = ((v1-v0) / (L-2)) * iF + ( v0 - ((v1-v0) / (L-2)) );
+        double u = ((u1-u0) / (H-2)) * jF + ( u0 - ((u1-u0) / (H-2)) );
+//        dt__info(
+//          operator(), 
+//          << "(i, j) = (" << i << ", " << j << ")" << std::endl
+//          << "Linear blending: u " << u0 << " :: " << u1 << " >> " << u << std::endl
+//          << "Linear blending: v " << v0 << " :: " << v1 << " >> " << v
+//        );        
         int iP1 = N1 + i;
         int iP2 = N2 + j;
         int iP3 = N4 - i;
