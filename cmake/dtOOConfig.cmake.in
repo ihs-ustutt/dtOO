@@ -1,0 +1,28 @@
+# - Config file for the dtOO package
+# It defines the following variables
+#  DTOO_INCLUDE_DIRS - include directories for dtOO
+#  DTOO_LIBRARIES    - libraries to link against
+ 
+set(
+  DTOO_3RD_INCLUDE_DIRS 
+  "@CONF_DTOO_3RD_INCLUDE_DIRS@"
+  CACHE STRING "3rd party include directories"
+)
+
+set(
+  DTOO_3RD_LIBRARIES 
+  "@CONF_DTOO_3RD_LIBRARIES@"
+  CACHE STRING "3rd party libraries"
+)
+
+set(
+  DTOO_CXX_FLAGS 
+  "@CONF_DTOO_CXX_FLAGS@"
+  CACHE STRING "compile flags"
+)
+
+set(
+  DTOO_3RD_LINKER_FLAGS 
+  "@CONF_DTOO_3RD_LINKER_FLAGS@" 
+  CACHE STRING "3rd party linker flags"
+)
