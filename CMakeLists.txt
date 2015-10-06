@@ -76,6 +76,7 @@ find_package(
   OpenFOAM
   COMPONENTS 
   foam meshTools dynamicMesh finiteVolume Pstream incompressibleRASModels
+  triSurface decompositionMethods lagrangian incompressibleTurbulenceModel
 )
 find_package(CGM)
 find_package(LASSO)
@@ -197,6 +198,24 @@ target_link_libraries(dtOO
 )
 
 set(
+  _libList
+  ${CGAL_LIBRARIES} 
+  ${GMSH_LIBRARIES} 
+  ${MUPARSER_LIBRARIES} 
+  ${OpenCASCADE_LIBRARIES} 
+  ${ROOT_LIBRARIES} 
+  ${GSL_LIBRARIES}
+  ${Boost_LIBRARIES}
+  ${CGNS_LIBRARIES}
+  ${OpenFOAM_LIBRARIES}
+  ${CGM_LIBRARIES}
+  ${LASSO_LIBRARIES}
+  ${MOAB_LIBRARIES}
+  ${MESHKIT_LIBRARIES}
+  ${OpenMesh_LIBRARIES}
+)
+
+set(
   _rpathList
   ${CGAL_LINK_DIRECTORY}
   ${GMSH_LINK_DIRECTORY} 
@@ -225,6 +244,29 @@ endforeach(_rpath)
 #------------------------------------------------------------------------------#
 set_target_properties(dtOO PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
 
+set(
+  CONF_DTOO_3RD_INCLUDE_DIRS 
+  ${CGAL_INCLUDE_DIR}
+  ${ROOT_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIR} 
+)
+set(
+  CONF_DTOO_3RD_LIBRARIES 
+  ${_libList}
+)
+set(
+  CONF_DTOO_CXX_FLAGS 
+  "-std=c++11 -ldl -lgmp -DCGAL_DISABLE_ROUNDING_MATH_CHECK"
+)
+set(
+  CONF_DTOO_3RD_LINKER_FLAGS 
+  "${CMAKE_SHARED_LINKER_FLAGS}"
+)
+
+configure_file(
+  ${CMAKE_SOURCE_DIR}/cmake/dtOOConfig.cmake.in
+  ${CMAKE_SOURCE_DIR}/cmake/dtOOConfig.cmake @ONLY
+)
 
 install(TARGETS dtOO DESTINATION lib)
 install(DIRECTORY pluginKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
