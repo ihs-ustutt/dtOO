@@ -7,6 +7,7 @@ namespace dtOO {
   template< typename T >
   class threadSafe {
   public:
+    dt__classOnlyName( mpiDistributed );
     threadSafe() : _t(omp_get_max_threads()) {
     }
     
