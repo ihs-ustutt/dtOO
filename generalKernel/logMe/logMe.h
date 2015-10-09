@@ -136,7 +136,7 @@ namespace dtOO {
   };
   
   //
-  // FILELog
+  // dtOO::FILELog
   //
   class FILELog : public logBase<Output2FILE> {};
 
@@ -155,35 +155,48 @@ namespace dtOO {
     #point" = ( " << point.x() << ", " << point.y() << ", " << point.z() << ")"
   #define dt__eval( eval ) #eval" = " << eval
   #define dt__info(functionname, message) \
-    if (logINFO > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logINFO) \
+    if (dtOO::logINFO > dtOO::FILELog::ReportingLevel() ) {} else { \
+      dtOO::FILELog().Get(dtOO::logINFO) \
         << "[ " << className() << "::"#functionname << " ]" << std::endl \
         message;\
     }
   #define dt__debug(functionname, message) \
-    if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logDEBUG) \
+    if (dtOO::logDEBUG > dtOO::FILELog::ReportingLevel() ) {} else { \
+      dtOO::FILELog().Get(dtOO::logDEBUG) \
         << "[ " << className() << "::"#functionname << " ]" << std::endl \
         message;\
     }
   #define dt__warning(functionname, message) \
-    if (logWARNING > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get(logWARNING) \
+    if (dtOO::logWARNING > dtOO::FILELog::ReportingLevel() ) {} else { \
+      dtOO::FILELog().Get(dtOO::logWARNING) \
         << "[ " << className() << "::"#functionname << " ]" << std::endl \
         message;\
     }
   #define dt__quickinfo(message) \
-    if (logINFO > FILELog::ReportingLevel() ) {} else { \
-      FILELog().GetNoHeader(logDEBUG) message;\
+    if (dtOO::logINFO > dtOO::FILELog::ReportingLevel() ) {} else { \
+      dtOO::FILELog().GetNoHeader(dtOO::logDEBUG) message;\
     }
   #define dt__quickdebug(message) \
-    if (logDEBUG > FILELog::ReportingLevel() ) {} else { \
-      FILELog().GetNoHeader(logDEBUG) message; \
+    if (dtOO::logDEBUG > dtOO::FILELog::ReportingLevel() ) {} else { \
+      dtOO::FILELog().GetNoHeader(dtOO::logDEBUG) message; \
     }
   #define dt__throw(functionname, message) \
     throw dtOO::eGeneral( \
       std::ostringstream().flush() \
         << "[ " << className() << "::"#functionname << " ]" << std::endl \
+        << "*-> file '" <<  __FILE__ << "'" << std::endl \
+        << "*-> line '" << __LINE__ << "'" << std::endl \
+        << std::endl \
+        message \
+        << std::endl \
+        << dtOO::logMe::Backtrace() \
+        << std::endl \
+        << "Honor thy error as a hidden intention. (Brian Eno)"\
+    )
+  #define dt__throwNoClass(functionname, message) \
+    throw dtOO::eGeneral( \
+      std::ostringstream().flush() \
+        << "[ ::"#functionname << " ]" << std::endl \
         << "*-> file '" <<  __FILE__ << "'" << std::endl \
         << "*-> line '" << __LINE__ << "'" << std::endl \
         << std::endl \
@@ -244,8 +257,15 @@ namespace dtOO {
         << "Honor thy error as a hidden intention. (Brian Eno)"\
     )
   #define dt__catch(functionname, eGWhat) \
-    FILELog().Get(logERROR) \
+    dtOO::FILELog().Get(dtOO::logERROR) \
       << "|    " << className() << "::"#functionname \
+      << " >> Catching instance of eGeneral from " \
+      << eGWhat \
+      << std::endl \
+      << std::endl
+  #define dt__catchNoClass(functionname, eGWhat) \
+    dtOO::FILELog().Get(dtOO::logERROR) \
+      << "|    " << "::"#functionname \
       << " >> Catching instance of eGeneral from " \
       << eGWhat \
       << std::endl \
@@ -253,8 +273,8 @@ namespace dtOO {
   #define dt__solution(cond, solution) \
     if (cond) solution;
   #define dt__makeChapter(cName) \
-    if (logINFO > FILELog::ReportingLevel() ) {} else { \
-      FILELog().Get() \
+    if (dtOO::logINFO > dtOO::FILELog::ReportingLevel() ) {} else { \
+      dtOO::FILELog().Get() \
         << std::endl \
         << "-----------------------------------------------------------------" \
         << std::endl \

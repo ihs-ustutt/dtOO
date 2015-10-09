@@ -30,6 +30,7 @@ namespace dtOO {
     setOption("reparamOnFace_minimizer", ":Minuit2:kMigrad:");
     setOption("reparamInVolume_minimizer", ":Minuit2:kMigrad:");
     setOption("ompNumThreads", "1");
+    setOption("mpiParallel", "false");
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {
@@ -49,6 +50,10 @@ namespace dtOO {
       << dt__eval(omp_get_num_threads()) << std::endl
       << dt__eval(omp_get_thread_limit()) << std::endl
       << dt__eval(omp_get_max_threads())
-      )
+    );
+  }
+  
+  bool staticPropertiesHandler::mpiParallel( void ) {
+    return staticPropertiesHandler::getInstance()->optionTrue("mpiParallel");
   }
 }
