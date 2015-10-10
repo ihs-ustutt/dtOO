@@ -13,6 +13,7 @@
 #include <gmsh/GVertex.h>
 #include <gmsh/GModel.h>
 #include <gmsh/GFace.h>
+#include <gmsh/MLine.h>
 
 #include <logMe/logMe.h>
 #include <progHelper.h>
@@ -116,6 +117,14 @@ namespace dtOO {
 		}
 	}
 	
+  void dtGmshEdge::addElement( ::MElement * me ) {
+    dt__ptrAss(
+      ::MLine * aLine,
+      dynamic_cast< ::MLine * >(me)
+    );
+    GEdge::addLine(aLine);
+  }
+  
 	void dtGmshEdge::addVertex( ::GVertex * gv) {
 	  if (std::find(l_vertices.begin(), l_vertices.end(), gv) == l_vertices.end()) 
 		  l_vertices.push_back(gv);
