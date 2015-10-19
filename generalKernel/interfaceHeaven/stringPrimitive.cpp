@@ -216,12 +216,6 @@ namespace dtOO {
   std::pair< int, int > stringPrimitive::getFromToBetween(
 	  std::string const signStart, std::string const signEnd, std::string const str
 	) {
-    dt__throwIfWithMessage(
-      (signStart.size() > 1) || (signEnd.size() > 1),
-      getFromToBetween(),
-      << dt__eval(signStart) << std::endl
-      << dt__eval(signEnd)
-    );
 
     //
     // return empty string if signStart and signEnd are not part of the string
@@ -233,13 +227,13 @@ namespace dtOO {
     ) return std::pair< int, int >(0, 0);
 
     int from;
-    if ( (signStart.size() == 1) ) {
-      from = str.find_first_of(signStart.c_str());
+    if (!signStart.empty()) {
+      from = str.find_first_of(signStart.c_str()) + signStart.size()-1;
     }
     else from = -1;
     int to;
-    if ( (signEnd.size() == 1) ) {
-      to = str.find_first_of(signEnd.c_str(), from+1);
+    if (!signEnd.empty()) {
+      to = str.find_first_of(signEnd.c_str(), from+1) + signEnd.size()-1;
     }
     else to = str.length()+1;
 
