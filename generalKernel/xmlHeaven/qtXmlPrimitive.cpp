@@ -404,7 +404,7 @@ namespace dtOO {
     }
     return rInt;
   }
-
+  
   float qtXmlPrimitive::getAttributeFloat(
 	  std::string const attName, const ::QDomElement element
 	) {
@@ -482,6 +482,34 @@ namespace dtOO {
 		return convertToStringVector("{", "}", att);
 	}
 	
+	std::vector< int > qtXmlPrimitive::getAttributeIntVector( 
+		std::string const attName, ::QDomElement const element
+	) {
+		std::string att = getAttributeStr(attName, element);
+		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
+		std::vector< int > intVec(attVec.size(), 0.);
+		int counter = 0;
+		dt__forAllRefAuto(attVec, el) {	
+			intVec[counter] = stringToInt(el);
+			counter++;
+		}		
+		return intVec;
+	}  
+  
+	std::vector< float > qtXmlPrimitive::getAttributeFloatVector( 
+		std::string const attName, ::QDomElement const element
+	) {
+		std::string att = getAttributeStr(attName, element);
+		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
+		std::vector< float > floatVec(attVec.size(), 0.);
+		int counter = 0;
+		dt__forAllRefAuto(attVec, el) {	
+			floatVec[counter] = stringToFloat(el);
+			counter++;
+		}		
+		return floatVec;
+	}    
+  
   bool qtXmlPrimitive::is(
 	  std::string const tagName, ::QDomElement const element 
 	) {
