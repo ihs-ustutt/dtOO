@@ -23,6 +23,7 @@
 #include <volFields.H>
 
 #include "openFOAMSetupRule.h"
+#include <logMe/dtParMacros.h>
 
 namespace dtOO { 
   OpenFOAMCase::OpenFOAMCase() {
@@ -276,226 +277,228 @@ namespace dtOO {
     //
     // create system folder
     //
-    if ( systemHandling::directoryExists(wDir) ) {      
-      systemHandling::deleteDirectory(wDir);
-    }
-    systemHandling::createDirectory(wDir);
-    systemHandling::createDirectory(wDir+"/system");
-    
-    //
-    // enable exception throwing
-    //
-    ::Foam::FatalError.throwExceptions();    
-    ::Foam::FatalIOError.throwExceptions();    
-		
-    ::Foam::argList::noParallel();
-		int argc = 3;
-    std::vector< std::string > argvStr(3);
-		argvStr[0] = getLabel();
-		argvStr[1] = std::string("-case");
-		argvStr[2] = wDir;
-
-    char ** argv = new char*[3];
-    argv[0] = const_cast< char *>(argvStr[0].c_str());
-    argv[1] = const_cast< char *>(argvStr[1].c_str());
-    argv[2] = const_cast< char *>(argvStr[2].c_str());
-    
-		//
-		// check if working directory exists
-		//				
-		dt__throwIf( !systemHandling::directoryExists(wDir), init() );
-
-    std::vector< ::MVertex * > allVerts;
-    std::vector< std::pair< ::MElement *, int > > allElems;
-    std::map< int, std::string > physicalNames;
-    
-    //
-    // read vertices and elements
-    //
-    initMeshVectors(allVerts, allElems, physicalNames);
-      
-		//
-		// create openFOAM rootCase and time
-		//
-    try {
-      // disable floating point exception trapping
-      systemHandling::unsetEnv("FOAM_SIGFPE");
-      
-      //
-      // create rootCase
-      //
-      ::Foam::argList args(argc, argv);
-      if (!args.checkRootCase()) {
-        Foam::FatalError.exit();
+    dt__onlyMaster {
+      if ( systemHandling::directoryExists(wDir) ) {      
+        systemHandling::deleteDirectory(wDir);
       }
+      systemHandling::createDirectory(wDir);
+      systemHandling::createDirectory(wDir+"/system");
     
       //
-      // write user dictionaries according to dictRule
+      // enable exception throwing
       //
-      dtFoamLibrary::writeControlDict(wDir, _dictRule);
+      ::Foam::FatalError.throwExceptions();    
+      ::Foam::FatalIOError.throwExceptions();    
 
-    
-      dt__info(runCurrentState(), << "Create time");
+      ::Foam::argList::noParallel();
+      int argc = 3;
+      std::vector< std::string > argvStr(3);
+      argvStr[0] = getLabel();
+      argvStr[1] = std::string("-case");
+      argvStr[2] = wDir;
 
-      ::Foam::Time runTime(
-          Foam::Time::controlDictName,
-          args.rootPath(),
-          args.caseName(),
-          "system",
-          "constant",
-          !args.optionFound("noFunctionObjects")
-      );
-    
+      char ** argv = new char*[3];
+      argv[0] = const_cast< char *>(argvStr[0].c_str());
+      argv[1] = const_cast< char *>(argvStr[1].c_str());
+      argv[2] = const_cast< char *>(argvStr[2].c_str());
+
       //
-      // create mesh
+      // check if working directory exists
+      //				
+      dt__throwIf( !systemHandling::directoryExists(wDir), init() );
+
+      std::vector< ::MVertex * > allVerts;
+      std::vector< std::pair< ::MElement *, int > > allElems;
+      std::map< int, std::string > physicalNames;
+
       //
-      dt__pH(::Foam::polyMesh) mesh( 
-        dtFoamLibrary::readMesh(allVerts, allElems, physicalNames, runTime) 
-      );
-    
+      // read vertices and elements
       //
-      // execute rules
+      initMeshVectors(allVerts, allElems, physicalNames);
+
       //
-      dt__forAllRefAuto(_setupRule, aRule) {
-        dt__pH(openFOAMSetupRule) exRule(
-          openFOAMSetupRule::create( aRule[0] )
+      // create openFOAM rootCase and time
+      //
+      try {
+        // disable floating point exception trapping
+        systemHandling::unsetEnv("FOAM_SIGFPE");
+
+        //
+        // create rootCase
+        //
+        ::Foam::argList args(argc, argv);
+        if (!args.checkRootCase()) {
+          Foam::FatalError.exit();
+        }
+
+        //
+        // write user dictionaries according to dictRule
+        //
+        dtFoamLibrary::writeControlDict(wDir, _dictRule);
+
+
+        dt__info(runCurrentState(), << "Create time");
+
+        ::Foam::Time runTime(
+            Foam::Time::controlDictName,
+            args.rootPath(),
+            args.caseName(),
+            "system",
+            "constant",
+            !args.optionFound("noFunctionObjects")
         );
-        exRule->executeOnMesh(aRule, *mesh);
-      }
 
-      //
-      // set runTime to timestep consant
-      // - write mesh to constant
-      //
-      runTime.setTime( ::Foam::instant(runTime.constant()), 0 );
-      
-      //
-      // write mesh
-      //
-      mesh->write();
-
-      //
-      // set runTime to timestep 0
-      // - write fields to 0
-      //
-      runTime.setTime( ::Foam::instant("0"), 1 );            
-
-      //
-      // create fvMesh for fields
-      //
-      ::Foam::fvMesh fvMesh(*mesh);
-      
-      std::vector< ::Foam::volVectorField > volVector_;
-      std::vector< ::Foam::volScalarField > volScalar;
-      
-      dt__forAllRefAuto(_fieldRule, aRule) {
-        if (aRule[0] == "volVectorField") {
-          ::Foam::IStringStream is(aRule[2]);
-          
-          volVector_.push_back(
-            ::Foam::volVectorField(
-              ::Foam::IOobject(
-                aRule[1],
-                runTime.timeName(),
-                runTime,
-                ::Foam::IOobject::NO_READ,
-                ::Foam::IOobject::AUTO_WRITE
-              ),
-              fvMesh,
-              ::Foam::dimensionedVector(
-                aRule[1], 
-                ::Foam::dimensionSet(::Foam::IStringStream(aRule[2])()), 
-                ::Foam::vector::zero
-              )
-            )            
-          );
-          if (aRule.size() == 4) {            
-            volVector_.back().internalField() 
-            = 
-            ::Foam::vector(::Foam::IStringStream(aRule[3])());
-          };          
-        }
-        else if (aRule[0] == "volScalarField") {
-          volScalar.push_back(
-            ::Foam::volScalarField(
-              ::Foam::IOobject(
-                aRule[1],
-                runTime.timeName(),
-                runTime,
-                ::Foam::IOobject::NO_READ,
-                ::Foam::IOobject::AUTO_WRITE
-              ),
-              fvMesh,
-              ::Foam::dimensionedScalar(
-                aRule[1], 
-                ::Foam::dimensionSet(::Foam::IStringStream(aRule[2])()), 
-                ::Foam::scalar(0.)
-              )
-            )           
-          );
-          if (aRule.size() == 4) {
-            volScalar.back().internalField() 
-            = 
-            ::Foam::scalar(qtXmlBase::muParseString(aRule[3]));
-          };
-        }
-        else dt__throwUnexpected(runCurrentState());
-      };
-
-      //
-      // execute rules
-      //
-      dt__forAllRefAuto(_setupRule, aRule) {   
-        dt__pH(openFOAMSetupRule) exRule(
-          openFOAMSetupRule::create( aRule[0] )
+        //
+        // create mesh
+        //
+        dt__pH(::Foam::polyMesh) mesh( 
+          dtFoamLibrary::readMesh(allVerts, allElems, physicalNames, runTime) 
         );
-        dt__forAllRefAuto(volVector_, aField) {
-          exRule->executeOnVolVectorField(aRule, aField);
+
+        //
+        // execute rules
+        //
+        dt__forAllRefAuto(_setupRule, aRule) {
+          dt__pH(openFOAMSetupRule) exRule(
+            openFOAMSetupRule::create( aRule[0] )
+          );
+          exRule->executeOnMesh(aRule, *mesh);
         }
-        dt__forAllRefAuto(volScalar, aField) {
-          exRule->executeOnVolScalarField(aRule, aField);
-        }        
+
+        //
+        // set runTime to timestep consant
+        // - write mesh to constant
+        //
+        runTime.setTime( ::Foam::instant(runTime.constant()), 0 );
+
+        //
+        // write mesh
+        //
+        mesh->write();
+
+        //
+        // set runTime to timestep 0
+        // - write fields to 0
+        //
+        runTime.setTime( ::Foam::instant("0"), 1 );            
+
+        //
+        // create fvMesh for fields
+        //
+        ::Foam::fvMesh fvMesh(*mesh);
+
+        std::vector< ::Foam::volVectorField > volVector_;
+        std::vector< ::Foam::volScalarField > volScalar;
+
+        dt__forAllRefAuto(_fieldRule, aRule) {
+          if (aRule[0] == "volVectorField") {
+            ::Foam::IStringStream is(aRule[2]);
+
+            volVector_.push_back(
+              ::Foam::volVectorField(
+                ::Foam::IOobject(
+                  aRule[1],
+                  runTime.timeName(),
+                  runTime,
+                  ::Foam::IOobject::NO_READ,
+                  ::Foam::IOobject::AUTO_WRITE
+                ),
+                fvMesh,
+                ::Foam::dimensionedVector(
+                  aRule[1], 
+                  ::Foam::dimensionSet(::Foam::IStringStream(aRule[2])()), 
+                  ::Foam::vector::zero
+                )
+              )            
+            );
+            if (aRule.size() == 4) {            
+              volVector_.back().internalField() 
+              = 
+              ::Foam::vector(::Foam::IStringStream(aRule[3])());
+            };          
+          }
+          else if (aRule[0] == "volScalarField") {
+            volScalar.push_back(
+              ::Foam::volScalarField(
+                ::Foam::IOobject(
+                  aRule[1],
+                  runTime.timeName(),
+                  runTime,
+                  ::Foam::IOobject::NO_READ,
+                  ::Foam::IOobject::AUTO_WRITE
+                ),
+                fvMesh,
+                ::Foam::dimensionedScalar(
+                  aRule[1], 
+                  ::Foam::dimensionSet(::Foam::IStringStream(aRule[2])()), 
+                  ::Foam::scalar(0.)
+                )
+              )           
+            );
+            if (aRule.size() == 4) {
+              volScalar.back().internalField() 
+              = 
+              ::Foam::scalar(qtXmlBase::muParseString(aRule[3]));
+            };
+          }
+          else dt__throwUnexpected(runCurrentState());
+        };
+
+        //
+        // execute rules
+        //
+        dt__forAllRefAuto(_setupRule, aRule) {   
+          dt__pH(openFOAMSetupRule) exRule(
+            openFOAMSetupRule::create( aRule[0] )
+          );
+          dt__forAllRefAuto(volVector_, aField) {
+            exRule->executeOnVolVectorField(aRule, aField);
+          }
+          dt__forAllRefAuto(volScalar, aField) {
+            exRule->executeOnVolScalarField(aRule, aField);
+          }        
+        }
+
+        //
+        // write all fields
+        //
+        dt__forAllRefAuto(volVector_, aField) aField.write();
+        dt__forAllRefAuto(volScalar, aField) aField.write();
+
+        dtFoamLibrary::writeDicts(fvMesh, wDir, _dictRule, _noWriteRule);
+
+        dt__info(runCurrentState(), << "Done");    
+      }
+      catch (::Foam::error & err) {
+        dt__throw(
+          runCurrentState(), 
+          << "Instance of ::Foam::error thrown." << std::endl
+          << dt__eval(err.what()) << std::endl
+          << dt__eval(err.message())
+        );
+      }
+    
+      if (!_runCommand.empty()) {
+        systemHandling::command(
+          "cd "+wDir
+          +
+          " && "
+          +
+          _runCommand
+          +
+          " && "
+          +
+          "cd "
+          +
+          staticPropertiesHandler::getInstance()->getOption("workingDirectory")    
+        );
       }
 
       //
-      // write all fields
+      // destroy pseudo arguments
       //
-      dt__forAllRefAuto(volVector_, aField) aField.write();
-      dt__forAllRefAuto(volScalar, aField) aField.write();
-      
-      dtFoamLibrary::writeDicts(fvMesh, wDir, _dictRule, _noWriteRule);
-      
-      dt__info(runCurrentState(), << "Done");    
+      delete [] argv;
     }
-    catch (::Foam::error & err) {
-      dt__throw(
-        runCurrentState(), 
-        << "Instance of ::Foam::error thrown." << std::endl
-        << dt__eval(err.what()) << std::endl
-        << dt__eval(err.message())
-      );
-    }
-    
-    if (!_runCommand.empty()) {
-      systemHandling::command(
-        "cd "+wDir
-        +
-        " && "
-        +
-        _runCommand
-        +
-        " && "
-        +
-        "cd "
-        +
-        staticPropertiesHandler::getInstance()->getOption("workingDirectory")    
-      );
-    }
-    
-    //
-    // destroy pseudo arguments
-    //
-    delete [] argv;
   }
   
   void OpenFOAMCase::createStatus( std::string const & directory ) const {

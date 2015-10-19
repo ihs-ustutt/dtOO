@@ -1,6 +1,7 @@
 #include "bVOWriteMSH.h"
 
 #include <logMe/logMe.h>
+#include <logMe/dtParMacros.h>
 #include <xmlHeaven/qtXmlBase.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -45,6 +46,8 @@ namespace dtOO {
   }
   
   void bVOWriteMSH::postUpdate( void ) {
-		ptrBoundedVolume()->getModel()->writeMSH(_filename, 2.2, false, _saveAll);
+    dt__onlyMaster {
+		  ptrBoundedVolume()->getModel()->writeMSH(_filename, 2.2, false, _saveAll);
+    }
   }
 }

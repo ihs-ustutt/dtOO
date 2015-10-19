@@ -13,6 +13,7 @@
 
 #define TETLIBRARY ;
 #include "tetgen/tetgen.h"
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 #include <gmsh/meshGRegion.h>
 #include <gmsh/MVertex.h>
@@ -60,7 +61,15 @@ namespace dtOO {
     //
     const_cast<dtGmshModel&>(
       dtgr->refDtGmshModel()
-    ).writeSTL("transferToTetgen.stl");
+    ).writeSTL(
+      "transferToTetgen"
+      +
+      stringPrimitive::intToString(
+        staticPropertiesHandler::getInstance()->thisRank()
+      )
+      +
+      ".stl"
+    );
     
     //
     // convert gmsh to tetgen
