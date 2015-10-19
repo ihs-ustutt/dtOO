@@ -3,13 +3,13 @@
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-#include "dtMesh1DOperator.h"
+#include "dtMeshGEdge.h"
 
 namespace dtOO {
   class dtGmshEdge;
   class scaOneD;
   
-  class dtMeshFixedBoundaryElementGEdge : public dtMesh1DOperator {
+  class dtMeshFixedBoundaryElementGEdge : public dtMeshGEdge {
     public:
       dt__class(dtMeshFixedBoundaryElementGEdge, dtMeshOperator);     
       dtMeshFixedBoundaryElementGEdge();
@@ -25,8 +25,9 @@ namespace dtOO {
       );
       virtual void operator()( dtGmshEdge * dtge );  
     private:
-      dt__pH(scaOneD const) _grading;
-      int _typeTransfinite;
+      dt__pVH(scaOneD) _grading;
+      std::vector< int > _typeTransfinite;
+      std::map< int, scaOneD * > _gradingInt;
   };
 }
 #endif	/* dtMeshFixedBoundaryElementGEdge_H */
