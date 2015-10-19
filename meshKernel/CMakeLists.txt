@@ -13,6 +13,7 @@ SET(HEADERS
   bVObserver/bVOOrientCellVolumes.h
   bVObserver/bVORecombineRecursiveRegions.h
   bVObserver/bVOMeshRule.h
+  bVObserver/bVOPMeshRule.h
   bVObserver/bVOPatchRule.h
   bVObserver/bVORecombine.h
   bVObserver/bVOWriteSTL.h
@@ -43,6 +44,7 @@ SET(SOURCES
   bVObserver/bVOOrientCellVolumes.cpp
   bVObserver/bVORecombineRecursiveRegions.cpp
   bVObserver/bVOMeshRule.cpp
+  bVObserver/bVOPMeshRule.cpp
   bVObserver/bVOPatchRule.cpp
   bVObserver/bVORecombine.cpp
   bVObserver/bVOWriteSTL.cpp

@@ -15,6 +15,7 @@
 #include "bVOOrientCellVolumes.h"
 #include "bVORecombineRecursiveRegions.h"
 #include "bVOMeshRule.h"
+#include "bVOPMeshRule.h"
 #include "bVOPatchRule.h"
 #include "bVORecombine.h"
 #include "bVOWriteSTL.h"
@@ -44,6 +45,7 @@ namespace dtOO {
     __IFRET(bVOOrientCellVolumes);
     __IFRET(bVORecombineRecursiveRegions);
     __IFRET(bVOMeshRule);
+    __IFRET(bVOPMeshRule);
     __IFRET(bVOPatchRule);
     __IFRET(bVORecombine);
     __IFRET(bVOWriteSTL);
