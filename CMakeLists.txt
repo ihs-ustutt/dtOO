@@ -34,6 +34,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
 #
 #------------------------------------------------------------------------------#
 option(DTOO_USE_GOOGLEPERFTOOLS "Use GooglePerformance Tools" OFF)
+option(DTOO_USE_MPI "Use MPI" ON)
 
 #------------------------------------------------------------------------------#
 #
@@ -63,14 +64,6 @@ find_package(
 find_package(MUPARSER REQUIRED)
 find_package(ROOT REQUIRED)
 find_package(GSL REQUIRED)
-find_package(
-  Boost 
-  COMPONENTS 
-  filesystem 
-  system 
-  timer
-  REQUIRED
-)
 find_package(CGNS REQUIRED)
 find_package(
   OpenFOAM
@@ -91,6 +84,32 @@ find_package(OpenMP REQUIRED)
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
+if (DTOO_USE_MPI)
+  find_package(MPI)
+endif (DTOO_USE_MPI)
+
+if (MPI_FOUND)
+  find_package(
+    Boost 
+    COMPONENTS 
+    filesystem 
+    system 
+    timer
+    mpi
+    serialization
+    REQUIRED
+  )
+  add_definitions(-DDTOO_HAS_MPI)
+else (MPI_FOUND)
+  find_package(
+    Boost 
+    COMPONENTS 
+    filesystem 
+    system 
+    timer
+    REQUIRED
+  )
+endif (MPI_FOUND)
 
 #------------------------------------------------------------------------------#
 #
@@ -141,6 +160,13 @@ include_directories(
   ${OpenMesh_INCLUDE_DIR}
 )
 
+if (MPI_FOUND)
+  include_directories(
+    AFTER 
+    ${MPI_CXX_INCLUDE_PATH} 
+)
+endif (MPI_FOUND)
+
 #------------------------------------------------------------------------------#
 #
 # parse version and write header version.h
@@ -178,7 +204,8 @@ add_dependencies(dtOO version)
 # linking
 #
 #------------------------------------------------------------------------------#
-target_link_libraries(dtOO 
+target_link_libraries(
+  dtOO 
   ${CGAL_LIBRARIES} 
   ${GMSH_LIBRARIES} 
   ${MUPARSER_LIBRARIES} 
@@ -198,7 +225,7 @@ target_link_libraries(dtOO
 )
 
 set(
-  _libList
+  _configLibList
   ${CGAL_LIBRARIES} 
   ${GMSH_LIBRARIES} 
   ${MUPARSER_LIBRARIES} 
@@ -231,6 +258,15 @@ set(
   ${MESHKIT_LINK_DIRECTORY}
 )
 
+if (MPI_FOUND)
+  target_link_libraries( dtOO ${MPI_CXX_LIBRARIES} )
+  set(_configLibList "${_configLibList};${MPI_CXX_LIBRARIES}")
+  set(_rpathList "${_rpathList};${MPI_CXX_LIBRARIES}")
+endif (MPI_FOUND)
+
+list(REMOVE_DUPLICATES _configLibList)
+list(REMOVE_DUPLICATES _rpathList)
+
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
 foreach(_rpath ${_rpathList})
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${_rpath}")
@@ -248,11 +284,11 @@ set(
   CONF_DTOO_3RD_INCLUDE_DIRS 
   ${CGAL_INCLUDE_DIR}
   ${ROOT_INCLUDE_DIR}
-  ${Boost_INCLUDE_DIR} 
+  ${Boost_INCLUDE_DIR}
 )
 set(
   CONF_DTOO_3RD_LIBRARIES 
-  ${_libList}
+  ${_configLibList}
 )
 set(
   CONF_DTOO_CXX_FLAGS 
@@ -262,6 +298,21 @@ set(
   CONF_DTOO_3RD_LINKER_FLAGS 
   "${CMAKE_SHARED_LINKER_FLAGS}"
 )
+
+if (MPI_FOUND)
+  set(
+    CONF_DTOO_3RD_INCLUDE_DIRS 
+    "${CONF_DTOO_3RD_INCLUDE_DIRS};${MPI_CXX_INCLUDE_PATH}"
+  )
+  set(
+    CONF_DTOO_3RD_LIBRARIES 
+    "${CONF_DTOO_3RD_LIBRARIES};${MPI_CXX_LIBRARIES}"
+  )
+  set(
+    CONF_DTOO_CXX_FLAGS 
+    "${CONF_DTOO_CXX_FLAGS} -DDTOO_HAS_MPI"
+  )
+endif (MPI_FOUND)
 
 configure_file(
   ${CMAKE_SOURCE_DIR}/cmake/dtOOConfig.cmake.in

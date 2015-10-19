@@ -66,9 +66,13 @@ SET(HEADERS
   interfaceHeaven/profilingHandling.h
   interfaceHeaven/timeHandling.h
   interfaceHeaven/threadSafe.h
+  interfaceHeaven/meshWhisperer.h
+  interfaceHeaven/mpiDistributed.h
   logMe/logBase.h
   logMe/Output2FILE.h
   logMe/logMe.h
+  logMe/dtMacros.h
+  logMe/dtParMacros.h
   progHelper.h
 )
 SET(SOURCES
@@ -131,6 +135,7 @@ SET(SOURCES
   interfaceHeaven/floatHandling.cpp
   interfaceHeaven/intHandling.cpp
   interfaceHeaven/timeHandling.cpp
+  interfaceHeaven/meshWhisperer.cpp
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp
