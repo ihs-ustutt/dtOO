@@ -12,10 +12,14 @@ namespace dtOO {
     virtual ~staticPropertiesHandler();
     virtual void init(::QDomElement const * const wElement);
     static bool mpiParallel( void );
+    int thisRank( void ) const; 
+    int nRanks( void ) const;
   private:
     staticPropertiesHandler();
   private:
     static staticPropertiesHandler * _pH;
+    int _thisRank;
+    int _nRanks;
   };
 }
 #endif	/* staticPropertiesHandler_H */

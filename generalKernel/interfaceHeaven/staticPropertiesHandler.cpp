@@ -3,6 +3,10 @@
 
 #include <logMe/logMe.h>
 #include <omp.h>
+#ifdef DTOO_HAS_MPI  
+#include <boost/mpi/communicator.hpp>
+#include <boost/mpi/environment.hpp>
+#endif
 
 namespace dtOO {
   staticPropertiesHandler * staticPropertiesHandler::_pH = NULL;
@@ -30,13 +34,13 @@ namespace dtOO {
     setOption("reparamOnFace_minimizer", ":Minuit2:kMigrad:");
     setOption("reparamInVolume_minimizer", ":Minuit2:kMigrad:");
     setOption("ompNumThreads", "1");
-    setOption("mpiParallel", "false");
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {
     if (!_pH) _pH = new staticPropertiesHandler();
     return _pH;
   }
+  
   staticPropertiesHandler::~staticPropertiesHandler() {
 
   }
@@ -45,15 +49,38 @@ namespace dtOO {
     optionHandling::init(wElement);
     
     omp_set_num_threads( getOptionInt("ompNumThreads") );
+    _nRanks = 1;
+    _thisRank = 0;    
+#ifdef DTOO_HAS_MPI    
+    if ( ::boost::mpi::environment::initialized() ) {
+      _nRanks = ::boost::mpi::communicator().size();
+      _thisRank = ::boost::mpi::communicator().rank();
+    }
+#endif    
     dt__info(
       init(),
       << dt__eval(omp_get_num_threads()) << std::endl
       << dt__eval(omp_get_thread_limit()) << std::endl
-      << dt__eval(omp_get_max_threads())
-    );
+      << dt__eval(omp_get_max_threads()) << std::endl
+      << dt__eval(mpiParallel()) << std::endl
+      << dt__eval(thisRank()) << std::endl
+      << dt__eval(nRanks())
+    );    
   }
   
   bool staticPropertiesHandler::mpiParallel( void ) {
-    return staticPropertiesHandler::getInstance()->optionTrue("mpiParallel");
+#ifdef DTOO_HAS_MPI        
+    return ::boost::mpi::environment::initialized();
+#else
+    return false;
+#endif
   }
+
+  int staticPropertiesHandler::thisRank( void ) const {
+    return _thisRank;
+  }
+
+  int staticPropertiesHandler::nRanks( void ) const {
+    return _nRanks;
+  }  
 }
