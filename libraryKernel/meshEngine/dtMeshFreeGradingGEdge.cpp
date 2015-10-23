@@ -1,4 +1,4 @@
-#include "dtMeshFixedBoundaryElementGEdge.h"
+#include "dtMeshFreeGradingGEdge.h"
 
 #include "dtGmshEdge.h"
 #include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
@@ -13,16 +13,16 @@
 #include <omp.h>
 
 namespace dtOO {
-  dtMeshFixedBoundaryElementGEdge::dtMeshFixedBoundaryElementGEdge(
+  dtMeshFreeGradingGEdge::dtMeshFreeGradingGEdge(
   ) : dtMeshGEdge() {
     
   }
 
-  dtMeshFixedBoundaryElementGEdge::~dtMeshFixedBoundaryElementGEdge() {
+  dtMeshFreeGradingGEdge::~dtMeshFreeGradingGEdge() {
     
   } 
     
-  void dtMeshFixedBoundaryElementGEdge::init(
+  void dtMeshFreeGradingGEdge::init(
     ::QDomElement const & element,
     baseContainer const * const bC,
     vectorHandling< constValue * > const * const cV,
@@ -48,7 +48,7 @@ namespace dtOO {
     }
   }
 
-  void dtMeshFixedBoundaryElementGEdge::operator()( dtGmshEdge * dtge) {
+  void dtMeshFreeGradingGEdge::operator()( dtGmshEdge * dtge) {
     int transType = dtge->meshAttributes.typeTransfinite;
     if (
       dtge->meshAttributes.method == MESH_TRANSFINITE
@@ -56,7 +56,7 @@ namespace dtOO {
       _gradingInt.find(transType) != _gradingInt.end()
     ) {
       ::Msg::Info(
-        "Meshing curve %d ( dtMeshFixedBoundaryElementGEdge transType=%d)", 
+        "Meshing curve %d ( dtMeshFreeGradingGEdge transType=%d)", 
         dtge->tag(), transType
       );      
       map1dTo3d const * const m1d = dtge->getMap1dTo3d();

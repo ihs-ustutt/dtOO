@@ -10,8 +10,9 @@
 #include "dtMeshAndOrientGFace.h"
 #include "dtMeshTransfiniteRecombineSelectionGFace.h"
 #include "dtMeshGRegionTetgen.h"
-#include "dtMeshFixedBoundaryElementGEdge.h"
+#include "dtMeshFreeGradingGEdge.h"
 #include "dtMeshTransfiniteGFace.h"
+#include "dtMeshCustom2x3TransfiniteGFace.h"
 
 namespace dtOO {
   dtMeshOperatorFactory::dtMeshOperatorFactory() {
@@ -35,10 +36,11 @@ namespace dtOO {
       return new dtMeshTransfiniteRecombineSelectionGFace();
     }
     if ( str == "dtMeshGRegionTetgen" ) return new dtMeshGRegionTetgen();
-    if ( str == "dtMeshFixedBoundaryElementGEdge" ) {
-      return new dtMeshFixedBoundaryElementGEdge();
+    if ( str == "dtMeshFreeGradingGEdge" ) {
+      return new dtMeshFreeGradingGEdge();
     }
     if ( str == "dtMeshTransfiniteGFace" ) return new dtMeshTransfiniteGFace();
+    if ( str == "dtMeshCustom2x3TransfiniteGFace" ) return new dtMeshCustom2x3TransfiniteGFace();
     
     dt__throw(create(), << str <<  " could not be created");  
   }

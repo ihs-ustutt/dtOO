@@ -88,7 +88,7 @@ namespace dtOO {
       std::vector< float > _minSpacing;
       float _avT;
       float _maxT;
-      float _minT;      
+      float _minT;
   };
 }
 

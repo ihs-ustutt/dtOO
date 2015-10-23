@@ -82,7 +82,7 @@ SET(HEADERS
   meshEngine/dtMesh2DOperator.h
   meshEngine/dtMesh3DOperator.h
   meshEngine/dtMeshGEdge.h
-  meshEngine/dtMeshFixedBoundaryElementGEdge.h
+  meshEngine/dtMeshFreeGradingGEdge.h
   meshEngine/dtMeshGFace.h
   meshEngine/dtMeshGRegion.h
   meshEngine/dtMeshGRegionWithBoundaryLayer.h
@@ -90,6 +90,7 @@ SET(HEADERS
   meshEngine/dtMeshAndOrientGFace.h
   meshEngine/dtMeshTransfiniteRecombineSelectionGFace.h
   meshEngine/dtMeshTransfiniteGFace.h
+  meshEngine/dtMeshCustom2x3TransfiniteGFace.h
   meshEngine/dtMeshGRegionTetgen.h
   meshEngine/dtMoabCore.h
   meshEngine/dtOMMesh.h
@@ -190,7 +191,7 @@ SET(SOURCES
   meshEngine/dtMesh2DOperator.cpp
   meshEngine/dtMesh3DOperator.cpp
   meshEngine/dtMeshGEdge.cpp
-  meshEngine/dtMeshFixedBoundaryElementGEdge.cpp
+  meshEngine/dtMeshFreeGradingGEdge.cpp
   meshEngine/dtMeshGFace.cpp
   meshEngine/dtMeshGRegion.cpp
   meshEngine/dtMeshGRegionWithBoundaryLayer.cpp
@@ -198,6 +199,7 @@ SET(SOURCES
   meshEngine/dtMeshAndOrientGFace.cpp
   meshEngine/dtMeshTransfiniteRecombineSelectionGFace.cpp
   meshEngine/dtMeshTransfiniteGFace.cpp
+  meshEngine/dtMeshCustom2x3TransfiniteGFace.cpp
   meshEngine/dtMeshGRegionTetgen.cpp
   meshEngine/dtMoabCore.cpp
   meshEngine/dtOMMesh.cpp

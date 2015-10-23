@@ -1,5 +1,5 @@
-#ifndef dtMeshFixedBoundaryElementGEdge_H
-#define	dtMeshFixedBoundaryElementGEdge_H
+#ifndef dtMeshFreeGradingGEdge_H
+#define	dtMeshFreeGradingGEdge_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -9,11 +9,11 @@ namespace dtOO {
   class dtGmshEdge;
   class scaOneD;
   
-  class dtMeshFixedBoundaryElementGEdge : public dtMeshGEdge {
+  class dtMeshFreeGradingGEdge : public dtMeshGEdge {
     public:
-      dt__class(dtMeshFixedBoundaryElementGEdge, dtMeshOperator);     
-      dtMeshFixedBoundaryElementGEdge();
-      virtual ~dtMeshFixedBoundaryElementGEdge();
+      dt__class(dtMeshFreeGradingGEdge, dtMeshOperator);     
+      dtMeshFreeGradingGEdge();
+      virtual ~dtMeshFreeGradingGEdge();
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -30,5 +30,5 @@ namespace dtOO {
       std::map< int, scaOneD * > _gradingInt;
   };
 }
-#endif	/* dtMeshFixedBoundaryElementGEdge_H */
+#endif	/* dtMeshFreeGradingGEdge_H */
 
