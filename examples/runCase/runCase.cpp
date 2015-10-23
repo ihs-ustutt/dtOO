@@ -91,7 +91,12 @@ int main( int ac, char* av[] ) {
     // create objects and mesh
     //
     parser.createConstValue(&cV);
-    parser.loadStateToConst(vm["state"].as<std::string>(), cV);
+    if (vm["state"].as<std::string>() == "lastState") {
+      parser.loadStateToConst(parser.getStates().back(), cV);      
+    }
+    else {
+      parser.loadStateToConst(vm["state"].as<std::string>(), cV);
+    }
     parser.createAnalyticFunction(&bC, &cV, &aF);
     parser.createAnalyticGeometry(&bC, &cV, &aF, &aG);
     parser.createBoundedVolume(&bC, &cV, &aF, &aG, &bV);
