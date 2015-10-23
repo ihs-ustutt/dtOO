@@ -14,8 +14,8 @@ namespace dtOO {
   staticPropertiesHandler::staticPropertiesHandler() : optionHandling() {
     setOption("reparamOnFace_precision", "1.e-2");
     setOption("reparamInVolume_precision", "1.e-2");
-    setOption("reparamOnFace_precisionXYZ", "1.e-1");
-    setOption("reparamInVolume_precisionXYZ", "1.e-1");		
+    setOption("reparam_restarts", "0");
+    setOption("reparam_restartIncreasePrecision", "1.e+1");		
     setOption("invY_precision", "1.e-2");
     setOption("xyz_resolution", "1.e-2");
 		setOption("uvw_resolution", "1.e-2");

@@ -91,11 +91,11 @@ namespace dtOO {
 	}		
 	
   bool analyticGeometry::inXYZTolerance(
-    dtPoint3 const & p0, dtPoint3 const & p1, bool output
+    dtPoint3 const & p0, dtPoint3 const & p1, bool output, float inc
   ) const {
 		float xyzResolution 
 		= 
-		staticPropertiesHandler::getInstance()->getOptionFloat(
+		inc * staticPropertiesHandler::getInstance()->getOptionFloat(
       "xyz_resolution"
     );    		
     

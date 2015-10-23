@@ -616,36 +616,55 @@ namespace dtOO {
     double initW[NumInitGuess] 
     = 
     {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};        
-    
-    dt__forFromToIndex(0, NumInitGuess, ii) {
-      dt__forFromToIndex(0, NumInitGuess, jj) {       
-        dt__forFromToIndex(0, NumInitGuess, kk) {   
-          //
-          //
-          //
-          U = initU[ii];
-          V = initV[jj];          
-          W = initW[kk];          
+        int maxRestarts 
+    = 
+    staticPropertiesHandler::getInstance()->getOptionInt("reparam_restarts");
+    int restartIncreasePrec
+    = 
+    staticPropertiesHandler::getInstance()->getOptionInt(
+      "reparam_restartIncreasePrecision"
+    );
+    float currentPrec = 1.;
+    dt__forFromToIndex(0, maxRestarts+1, thisRun) {    
+      dt__forFromToIndex(0, NumInitGuess, ii) {
+        dt__forFromToIndex(0, NumInitGuess, jj) {       
+          dt__forFromToIndex(0, NumInitGuess, kk) {   
+            //
+            //
+            //
+            U = initU[ii];
+            V = initV[jj];          
+            W = initW[kk];          
 
-          XYZtoUVWPercent(
-            X, Y, Z, 
-            U, V, W, 
-            uvwExtPercent.x(), uvwExtPercent.y(), uvwExtPercent.z()
-          );
-
-          //
-          // check if point is precise enough
-          //
-          if ( 
-            analyticGeometry::inXYZTolerance(ppXYZ, getPointPercent(U, V, W)) 
-          ) {
-            analyticGeometry::inXYZTolerance(
-              ppXYZ, getPointPercent(U, V, W), true
+            XYZtoUVWPercent(
+              X, Y, Z, 
+              U, V, W, 
+              uvwExtPercent.x(), uvwExtPercent.y(), uvwExtPercent.z()
             );
-            return uvw_percent( dtPoint3(U, V, W) );            
+
+            //
+            // check if point is precise enough
+            //
+            if ( 
+              analyticGeometry::inXYZTolerance(
+                ppXYZ, getPointPercent(U, V, W), false, currentPrec
+              ) 
+            ) {
+              analyticGeometry::inXYZTolerance(
+                ppXYZ, getPointPercent(U, V, W), true, currentPrec
+              );
+              return uvw_percent( dtPoint3(U, V, W) );            
+            }
           }
         }
       }
+      dt__warning(
+        reparamInVolume(), 
+        << "Increasing reparamInVolume tolerance. Multiply inital precision by:" 
+        << std::endl
+        << restartIncreasePrec * currentPrec
+      );        
+      currentPrec = restartIncreasePrec * currentPrec;      
     }
     dt__throw(
       reparamInVolume(), 

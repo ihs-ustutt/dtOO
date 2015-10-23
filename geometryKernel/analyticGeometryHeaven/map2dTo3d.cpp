@@ -185,26 +185,47 @@ namespace dtOO {
     double initV[NumInitGuess] 
     = 
     {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};    
-    
-    dt__forFromToIndex(0, NumInitGuess, ii) {
-      dt__forFromToIndex(0, NumInitGuess, jj) {       
-        //
-        // do reparameterization
-        //
-        U = initU[ii];
-        V = initV[jj];
-        XYZtoUVPercent(X, Y, Z, U, V);
+    int maxRestarts 
+    = 
+    staticPropertiesHandler::getInstance()->getOptionInt("reparam_restarts");
+    int restartIncreasePrec
+    = 
+    staticPropertiesHandler::getInstance()->getOptionInt(
+      "reparam_restartIncreasePrecision"
+    );
+    float currentPrec = 1.;
+    dt__forFromToIndex(0, maxRestarts+1, thisRun) {
+      dt__forFromToIndex(0, NumInitGuess, ii) {
+        dt__forFromToIndex(0, NumInitGuess, jj) {       
+          //
+          // do reparameterization
+          //
+          U = initU[ii];
+          V = initV[jj];
+          XYZtoUVPercent(X, Y, Z, U, V);
 
-        //
-        // check if point is precise enough
-        //
-        if (
-          analyticGeometry::inXYZTolerance(ppXYZ, getPointPercent(U,V))
-        ) {
-          analyticGeometry::inXYZTolerance(ppXYZ, getPointPercent(U, V), true);
-          return uv_percent( dtPoint2(U, V) );            
+          //
+          // check if point is precise enough
+          //
+          if (
+            analyticGeometry::inXYZTolerance(
+              ppXYZ, getPointPercent(U,V), false, currentPrec
+            )
+          ) {
+            analyticGeometry::inXYZTolerance(
+              ppXYZ, getPointPercent(U, V), true, currentPrec
+            );
+            return uv_percent( dtPoint2(U, V) );            
+          }
         }
       }
+      dt__warning(
+        reparamOnFace(), 
+        << "Increasing reparamOnFace tolerance. Multiply inital precision by:" 
+        << std::endl
+        << restartIncreasePrec * currentPrec
+      );        
+      currentPrec = restartIncreasePrec * currentPrec;
     }
     dt__throw(
       reparamOnFace(), 

@@ -43,7 +43,8 @@ namespace dtOO {
     //
     //
     bool inXYZTolerance(
-      dtPoint3 const & p0, dtPoint3 const & p1, bool output = false
+      dtPoint3 const & p0, dtPoint3 const & p1, 
+      bool output = false, float inc = 1.
     ) const;
     //
     //
