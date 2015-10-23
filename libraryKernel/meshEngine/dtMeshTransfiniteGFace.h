@@ -26,8 +26,6 @@ namespace dtOO {
       std::vector< ::MVertex * > & all_mvertices, 
       std::vector< int > & indices
     );  
-      std::map< std::pair< int, int >, bool > _recombineRule;
-      int _transfiniteArrangement;
   };
 }
 #endif	/* dtMeshTransfiniteGFace_H */
