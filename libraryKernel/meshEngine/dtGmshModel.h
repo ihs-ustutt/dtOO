@@ -137,6 +137,9 @@ namespace dtOO {
     //
     void untagPhysical( ::GEntity * const ge );
     std::string getPhysicalString(::GEntity const * const ge ) const;
+    std::vector< std::string > getPhysicalNames(
+      int const & dim, std::vector< int > const & number
+    ) const;
     void tagPhysical(::GEntity * const ge, std::string const & pName);
     int getPhysicalNumber(const int &dim, const std::string &name) const;
     void removeEmptyPhysicals( void );

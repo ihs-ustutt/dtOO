@@ -1488,15 +1488,40 @@ namespace dtOO {
     
     if(pInt.size() == 0) return std::string("");
     
-    dt__throwIf(pInt.size()!=1, getPhysicalString());
+    dt__throwIfWithMessage(
+      pInt.size()!=1, 
+      getPhysicalString(),
+      << dt__eval(pInt) << std::endl
+      << dt__eval( getPhysicalNames(ge->dim(), pInt) )
+    );
     
 		return ::GModel::getPhysicalName(ge->dim(), pInt[0]);
 	}
 	
+  std::vector< std::string > dtGmshModel::getPhysicalNames(
+    int const & dim, std::vector< int > const & number
+  ) const {
+    std::vector< std::string > names;
+    dt__forAllRefAuto(number, aNumber) {
+      names.push_back( 
+        ::GModel::getPhysicalName(dim, aNumber)
+      );
+    }
+    return names;
+  }
+
   void dtGmshModel::tagPhysical(
     ::GEntity * const ge, std::string const & pName
   ) {		
-		ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );
+    //
+    // check if already tagged with same string
+    //
+		std::vector< int > pInt = ge->getPhysicalEntities();
+    dt__forAllRefAuto(pInt, anInt) {
+      if ( anInt == GModel::setPhysicalName(pName, ge->dim()) ) return;
+    }
+    
+    ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );
 	}
 	  
   int dtGmshModel::getPhysicalNumber(
