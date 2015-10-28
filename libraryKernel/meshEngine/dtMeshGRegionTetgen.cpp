@@ -41,7 +41,11 @@ namespace dtOO {
   ) {
     dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
     
-    _tetOpt = qtXmlBase::getAttributeStr("tetgenOption", element);
+    _tetOpt 
+    = 
+    qtXmlBase::replaceDependencies(
+      qtXmlBase::getAttributeStr("tetgenOption", element), cV
+    );
     _tetOpt.append("Y");    
     dt__info( init(), << dt__eval(_tetOpt) );    
 	}

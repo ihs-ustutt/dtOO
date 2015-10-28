@@ -110,6 +110,14 @@ namespace dtOO {
         =
         (
           _recombineRule.find(
+            std::pair< int, int >(-1, -1)  
+          )
+          != 
+          _recombineRule.end()
+        )
+        ||        
+        (
+          _recombineRule.find(
             std::pair< int, int >(-1, j)  
           )
           != 
