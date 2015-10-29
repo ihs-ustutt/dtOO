@@ -13,6 +13,12 @@ class GEntity;
 class MVertex;
 class MElement;
 
+void setRand(double r[6]);
+int intersect_line_triangle(
+  double X[3], double Y[3], double Z[3] ,
+  double P[3], double N[3], const double eps_prec
+);
+
 namespace dtOO {
   class dtGmshFace;
   class dtGmshModel;
@@ -53,6 +59,7 @@ namespace dtOO {
       ) const;
       void adjustThickness( void );
       void determinMinMaxAverageAtSliders(void);
+      void meshNormalsPointOutOfTheRegion( dtGmshRegion * dtgr );
     private:
       static int _NORMAL;
       static int _SLIDER;
