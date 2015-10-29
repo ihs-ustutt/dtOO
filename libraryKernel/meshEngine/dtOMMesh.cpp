@@ -101,7 +101,7 @@ namespace dtOO {
 		
     _om_gmshElement[ me ] = fH;
 		return fH;
-	}  
+	}
 
   omFaceH dtOMMesh::addFace( omFaceD const & fD ) {
     if ( !fD.inverted() ) {
@@ -138,7 +138,12 @@ namespace dtOO {
 		dt__forFromToIter(omFaceI, toAdd.faces_begin(), toAdd.faces_end(), f_it) {
 			omFaceD const & fD = toAdd.data(*f_it);
 			::MElement const * const me = fD.MElement();
-			addFace(me);
+			if ( fD.inverted() ) {
+        addFaceInv(me);
+      }
+      else {
+        addFace(me);
+      }
 		}
 	}
 	
@@ -146,7 +151,12 @@ namespace dtOO {
 		dt__forFromToIter(omFaceI, toAdd.faces_begin(), toAdd.faces_end(), f_it) {
 			omFaceD const & fD = toAdd.data(*f_it);
 			::MElement const * const me = fD.MElement();
-			addFaceInv(me);
+			if ( fD.inverted() ) {
+        addFace(me);
+      }
+      else {
+        addFaceInv(me);      
+      }
 		}
 	}	
 	
@@ -322,7 +332,7 @@ namespace dtOO {
       (*it)->update();
     }
 	}
-
+ 
   omVertexH const & dtOMMesh::at( ::MVertex const * const mv ) const {
 		return _om_gmsh.at(mv);
 	}
@@ -346,6 +356,14 @@ namespace dtOO {
   omFaceH const & dtOMMesh::at( ::MElement const * const me ) const {
 		return _om_gmshElement.at(me);
 	}  
+
+  bool dtOMMesh::contains( ::MVertex const * const mv ) const {
+		if ( _om_gmsh.find(mv) == _om_gmsh.end() ) {
+      return false;
+    }
+    
+    return true;
+	}
 	
 	std::vector< omEdgeH > dtOMMesh::oneRingEdgeH( omVertexH const & vH ) const {
 	  std::vector< omEdgeH > eHV;	

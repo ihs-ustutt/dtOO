@@ -81,33 +81,34 @@ namespace dtOO {
       dt__classOnlyName(dtOMMesh);
       dtOMMesh();
       dtOMMesh( dtOMMesh const & orig );
-      virtual ~dtOMMesh();  
-      void update( void );                  
+      virtual ~dtOMMesh();
+      void update( void );
       //
       // add new vertices and elements
       //
-      omFaceH addFace( omFaceD const & fD );      
-      omFaceH addFace( ::MElement const * const me );  
-      void add( const dtOMMesh &toAdd );      
-      void addInv( const dtOMMesh &toAdd );      
+      omFaceH addFace( omFaceD const & fD );
+      omFaceH addFace( ::MElement const * const me );
+      void add( const dtOMMesh &toAdd );
+      void addInv( const dtOMMesh &toAdd );
       //
       // access
       //
       ::MVertex * operator[](omVertexH const & vH);
-      omVertexH const & at( ::MVertex const * const mv ) const;      
-      ::MVertex const * const at(omVertexH const & vH) const; 
-      ::MElement * operator[](omFaceH const & fH);      
+      omVertexH const & at( ::MVertex const * const mv ) const;
+      ::MVertex const * const at(omVertexH const & vH) const;
+      ::MElement * operator[](omFaceH const & fH);
       ::MElement const * const at(omFaceH const & fH) const;      
-      omFaceH const & at( ::MElement const * const me ) const;      
+      omFaceH const & at( ::MElement const * const me ) const;
       //
       // check functions
       //
+      bool contains( ::MVertex const * const mv ) const;      
       bool contains( omFaceH const & fH, omEdgeH const & eH ) const;
       bool contains( omFaceH const & fH, omVertexH const & vH ) const;
       bool intersection( 
         std::vector< omFaceH > const & fH, 
         dtPoint3 const & start, dtPoint3 const & target 
-      ) const;      
+      ) const;
       std::vector< omEdgeH > oneRingEdgeH( omVertexH const & vH ) const;
       //
       // conversion and replace positions
@@ -145,8 +146,8 @@ namespace dtOO {
       omFaceH addFace( 
         std::vector< ::MVertex * > const & vertices, 
         ::MElement const * const me 
-      );      
-      omFaceH addFaceInv( ::MElement const * const me );       
+      );             
+      omFaceH addFaceInv( ::MElement const * const me );      
       bool intersection( 
         omFaceH const & fH, dtPoint3 const & start, dtPoint3 const & target 
       ) const;

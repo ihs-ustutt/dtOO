@@ -94,6 +94,7 @@ SET(HEADERS
   meshEngine/dtMeshGRegionTetgen.h
   meshEngine/dtMoabCore.h
   meshEngine/dtOMMesh.h
+  meshEngine/dtOMMeshDivided.h
   meshEngine/dtOMMeshTraits.h
   meshEngine/dtOMMeshManifold.h
   meshEngine/dtOMField.h
@@ -203,6 +204,7 @@ SET(SOURCES
   meshEngine/dtMeshGRegionTetgen.cpp
   meshEngine/dtMoabCore.cpp
   meshEngine/dtOMMesh.cpp
+  meshEngine/dtOMMeshDivided.cpp
   meshEngine/dtOMMeshManifold.cpp
   meshEngine/dtOMField.cpp
   meshEngine/dtFoamLibrary.cpp
