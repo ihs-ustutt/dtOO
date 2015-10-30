@@ -5,6 +5,7 @@
 
 #include "dtGmshFace.h"
 #include "dtOMMeshManifold.h"
+#include "dtOMMeshDivided.h"
 #include "dtMoabCore.h"
 #include "dtGmshVertex.h"
 #include "dtGmshEdge.h"
@@ -85,25 +86,12 @@ namespace dtOO {
 		_faceLabel 
 		= 
 		qtXmlPrimitive::getAttributeStrVector("faceLabel", element);
-		_faceOrientation 
-		= 
-		qtXmlBase::getAttributeIntVectorMuParse("faceOrientation", element, cV, aF);
 		_fixedFaceLabel 
 		= 
 		qtXmlPrimitive::getAttributeStrVector("fixedFaceLabel", element);
-		_fixedFaceOrientation 
-		= 
-		qtXmlBase::getAttributeIntVectorMuParse(
-      "fixedFaceOrientation", element, cV, aF
-    );
 		_slidableFaceLabel 
 		= 
 		qtXmlPrimitive::getAttributeStrVector("slidableFaceLabel", element);
-		_slidableFaceOrientation 
-		= 
-		qtXmlBase::getAttributeIntVectorMuParse(
-      "slidableFaceOrientation", element, cV, aF
-    );    
     
     dt__ptrAss(
       _3D, 
@@ -127,6 +115,30 @@ namespace dtOO {
     = 
     dtgr->constFaceList(_slidableFaceLabel);    
 		
+    dtOMMeshDivided omInitDiv;
+    dtOMMeshDivided omMovedDiv;
+		dt__forAllConstIter( std::list< dtGmshFace const * >, faceList, it ) {
+      dtGmshFace const * const &thisFace = *it;
+			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
+      omInitDiv.add(*tmpOM);      
+      omMovedDiv.add(*tmpOM);      
+    } 
+		dt__forAllConstIter( std::list< dtGmshFace const * >, fixedFaceList, it ) {
+      dtGmshFace const * const &thisFace = *it;
+			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
+      omInitDiv.add(*tmpOM);      
+      omMovedDiv.add(*tmpOM);      
+    }
+		dt__forAllConstIter( std::list< dtGmshFace const * >, slidableFaceList, it ) {
+      dtGmshFace const * const &thisFace = *it;
+			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
+      omInitDiv.add(*tmpOM);      
+      omMovedDiv.add(*tmpOM);      
+    } 
+    
+    _omInit.add( omInitDiv.connect() );
+    _omMoved.add( omMovedDiv.connect() );
+    
 		dt__info(
 			postUpdate(), 
 			<< "Adding elements to region with label " 
@@ -144,61 +156,23 @@ namespace dtOO {
     // add different surface meshes and initialize fields
     //
 		// normal surface
-		int itC = 0;
 		dt__forAllConstIter( std::list< dtGmshFace const * >, faceList, it ) {
 			dtGmshFace const * const &thisFace = *it;
 
-		  dt__info(
-			  dtMeshGRegionWithBoundaryLayer(), 
-        << "Normal face tag = " << thisFace->tag() << "." << std::endl
-				<< dt__eval(_faceOrientation[itC]) 
-      );   
-        
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());      
-			if (_faceOrientation[itC] > 0) {     
-				_omInit.add(*tmpOM);		
-				_omMoved.add(*tmpOM);
-			}
-			else if (_faceOrientation[itC] < 0) {
-				_omInit.addInv(*tmpOM);
-				_omMoved.addInv(*tmpOM);		
-			}
-			else dt__throwUnexpected(dtMeshGRegionWithBoundaryLayer());
-			
-			itC++;
-      
+
 			// set fields
 			_tF.assign(*tmpOM, 0.);       
 			_typeF.assign(*tmpOM, dtMeshGRegionWithBoundaryLayer::_NORMAL);
 		}
 		
 		// slidable surface
-		itC = 0;
 		dt__forAllConstIter( 
       std::list< dtGmshFace const * >, slidableFaceList, it 
     ) {
 			dtGmshFace const * const &thisFace = *it;
 
-		  dt__info(
-			  dtMeshGRegionWithBoundaryLayer(), 
-        << "Sliding face tag = " << thisFace->tag() << "." << std::endl
-				<< dt__eval(_slidableFaceOrientation[itC]) 
-      );   
-
-      
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
-			
-			if (_slidableFaceOrientation[itC] > 0) {
-				_omInit.add(*tmpOM);						
-				_omMoved.add(*tmpOM);		
-			}
-			else if (_slidableFaceOrientation[itC] < 0) {
-				_omInit.addInv(*tmpOM);						
-				_omMoved.addInv(*tmpOM);		
-			}
-			else dt__throwUnexpected(dtMeshGRegionWithBoundaryLayer());
-      
-			itC++;
 			
 			// set fields
 			_fixedF.assign(*tmpOM, true);
@@ -209,30 +183,10 @@ namespace dtOO {
 		}
     
 		// fixed surface
-		itC = 0;
 		dt__forAllConstIter( std::list< dtGmshFace const * >, fixedFaceList, it ) {
 			dtGmshFace const * const &thisFace = *it;
 
-		  dt__info(
-			  dtMeshGRegionWithBoundaryLayer(), 
-        << "Fixed face tag = " << thisFace->tag() << "." << std::endl
-				<< dt__eval(_fixedFaceOrientation[itC]) 
-      );   
-
-      
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
-			
-			if (_fixedFaceOrientation[itC] > 0) {
-				_omInit.add(*tmpOM);						
-				_omMoved.add(*tmpOM);		
-			}
-			else if (_fixedFaceOrientation[itC] < 0) {
-				_omInit.addInv(*tmpOM);
-				_omMoved.addInv(*tmpOM);
-			}
-			else dt__throwUnexpected(dtMeshGRegionWithBoundaryLayer());
-      
-			itC++;
 			
 			// set fields
 			_fixedF.assign(*tmpOM, true);
@@ -735,11 +689,11 @@ namespace dtOO {
       ) vv.push_back( const_cast< ::MVertex * >(mesh.at(*it)) );
       if ( vv.size() == 3 ) {
         gf->addElement( new ::MTriangle(vv[0], vv[1], vv[2]) );
-        if ( mesh.data(*fit).inverted() ) gf->triangles.back()->reverse();
+//        if ( mesh.data(*fit).inverted() ) gf->triangles.back()->reverse();
       }
       else if ( vv.size() == 4 ) {
         gf->addElement( new ::MQuadrangle( vv[0], vv[1], vv[2], vv[3] ) );        
-        if ( mesh.data(*fit).inverted() ) gf->quadrangles.back()->reverse();
+//        if ( mesh.data(*fit).inverted() ) gf->quadrangles.back()->reverse();
       }      
       else dt__throw(meshWithGmsh(), << dt__eval(vv.size()));
     }

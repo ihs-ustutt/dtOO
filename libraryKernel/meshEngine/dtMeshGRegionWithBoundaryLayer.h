@@ -84,11 +84,8 @@ namespace dtOO {
       dtOMDynamicVertexField< std::vector< ::MVertex * > > _buddyF;
       dtOMDynamicVertexField< std::vector< float > > _realSpacing;
       std::vector< std::string > _faceLabel;
-      std::vector< int > _faceOrientation;
       std::vector< std::string > _fixedFaceLabel;
-      std::vector< int > _fixedFaceOrientation;
       std::vector< std::string > _slidableFaceLabel;
-      std::vector< int > _slidableFaceOrientation;
       dtMesh3DOperator * _3D;
       std::vector< float > _avSpacing;
       std::vector< float > _maxSpacing;
