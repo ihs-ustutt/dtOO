@@ -27,8 +27,6 @@ namespace dtOO {
     void operator()( dtGmshRegion * dtgr );    
   private:
     void createPyramids( dtGmshRegion * dtgr );
-  private:
-    float _pyramidHeightScale;
   };
 }
 #endif	/* DTMESHGREGION_H */

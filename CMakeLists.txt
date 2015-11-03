@@ -33,7 +33,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
 # options
 #
 #------------------------------------------------------------------------------#
-option(DTOO_USE_GOOGLEPERFTOOLS "Use GooglePerformance Tools" OFF)
 option(DTOO_USE_MPI "Use MPI" ON)
 
 #------------------------------------------------------------------------------#
@@ -44,8 +43,8 @@ option(DTOO_USE_MPI "Use MPI" ON)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Xml REQUIRED)
 
-find_package(CGAL REQUIRED)
-find_package(GMSH REQUIRED)
+find_package(CGAL REQUIRED COMPONENTS CGAL)
+find_package(GMSH REQUIRED Gmsh)
 find_package(
   OpenCASCADE 
   COMPONENTS 
@@ -61,25 +60,20 @@ find_package(
 #TKFeat TKSTEPAttr TKHLR TKBO TKPrim TKAdvTools 
 #TKSTEP209 TKSTEPBase 
 
-find_package(MUPARSER REQUIRED)
+find_package(MUPARSER REQUIRED muparser)
 find_package(ROOT REQUIRED)
 find_package(GSL REQUIRED)
-find_package(CGNS REQUIRED)
+find_package(CGNS REQUIRED COMPONENTS cgns)
 find_package(
   OpenFOAM
   COMPONENTS 
   foam meshTools dynamicMesh finiteVolume Pstream incompressibleRASModels
   triSurface decompositionMethods lagrangian incompressibleTurbulenceModel
 )
-find_package(CGM)
-find_package(LASSO)
-find_package(MOAB COMPONENTS MOAB iMesh)
-find_package(MESHKIT)
-find_package(OpenMesh COMPONENTS OpenMeshCore OpenMeshTools)
-if(DTOO_USE_GOOGLEPERFTOOLS)
-  add_definitions(-DDTOO_USE_GOOGLEPROFTOOLS)
-  find_package(GOOGLEPERFTOOLS REQUIRED)
-endif(DTOO_USE_GOOGLEPERFTOOLS)
+find_package(CGM REQUIRED COMPONENTS iGeom)
+find_package(MOAB REQUIRED COMPONENTS MOAB iMesh)
+find_package(OpenMesh REQUIRED COMPONENTS OpenMeshCore OpenMeshTools)
+find_package(OpenVolumeMesh REQUIRED COMPONENTS OpenVolumeMesh)
 find_package(OpenMP REQUIRED)
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
@@ -154,10 +148,9 @@ include_directories(
   ${OpenFOAM_INCLUDE_DIR}/finiteVolume/lnInclude
   ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/lnInclude
   ${CGM_INCLUDE_DIR}
-  ${LASSO_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}
-  ${MESHKIT_INCLUDE_DIR}
   ${OpenMesh_INCLUDE_DIR}
+  ${OpenVolumeMesh_INCLUDE_DIR}
 )
 
 if (MPI_FOUND)
@@ -218,10 +211,9 @@ target_link_libraries(
   ${CGNS_LIBRARIES}
   ${OpenFOAM_LIBRARIES}
   ${CGM_LIBRARIES}
-  ${LASSO_LIBRARIES}
   ${MOAB_LIBRARIES}
-  ${MESHKIT_LIBRARIES}
   ${OpenMesh_LIBRARIES}
+  ${OpenVolumeMesh_LIBRARIES}
 )
 
 set(
@@ -236,10 +228,9 @@ set(
   ${CGNS_LIBRARIES}
   ${OpenFOAM_LIBRARIES}
   ${CGM_LIBRARIES}
-  ${LASSO_LIBRARIES}
   ${MOAB_LIBRARIES}
-  ${MESHKIT_LIBRARIES}
   ${OpenMesh_LIBRARIES}
+  ${OpenVolumeMesh_LIBRARIES}
 )
 
 set(
@@ -253,9 +244,8 @@ set(
   ${OpenFOAM_LINK_DIRECTORY}
   ${OpenFOAM_LINK_DIRECTORY}/openmpi-system
   ${CGM_LINK_DIRECTORY}
-  ${LASSO_LINK_DIRECTORY}
   ${MOAB_LINK_DIRECTORY}
-  ${MESHKIT_LINK_DIRECTORY}
+  ${OpenVolumeMesh_LINK_DIRECTORY}
 )
 
 if (MPI_FOUND)
@@ -273,6 +263,7 @@ foreach(_rpath ${_rpathList})
   set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH}:${_rpath}")
 endforeach(_rpath)
 
+message("CMAKE_SHARED_LINKER_FLAGS=${CMAKE_SHARED_LINKER_FLAGS}")
 #------------------------------------------------------------------------------#
 #
 # install

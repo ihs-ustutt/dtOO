@@ -69,12 +69,11 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.h
   geometryEngine/geoBuilder/geomCurve_closeGapsArithmeticOCC.h
   geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.h
-  meshEngine/dtPostBL.h
+  meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
   meshEngine/dtGmshFace.h
   meshEngine/dtGmshRegion.h
-  meshEngine/dtGmshRegionHex.h
   meshEngine/dtGmshModel.h
   meshEngine/dtMeshOperator.h
   meshEngine/dtMeshOperatorFactory.h
@@ -94,6 +93,7 @@ SET(HEADERS
   meshEngine/dtMeshGRegionTetgen.h
   meshEngine/dtMoabCore.h
   meshEngine/dtOMMesh.h
+  meshEngine/dtOVMMesh.h
   meshEngine/dtOMMeshDivided.h
   meshEngine/dtOMMeshTraits.h
   meshEngine/dtOMMeshManifold.h
@@ -179,12 +179,11 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.cpp
   geometryEngine/geoBuilder/geomCurve_closeGapsArithmeticOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.cpp
-  meshEngine/dtPostBL.cpp
+  meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp
   meshEngine/dtGmshFace.cpp
   meshEngine/dtGmshRegion.cpp
-  meshEngine/dtGmshRegionHex.cpp
   meshEngine/dtGmshModel.cpp
   meshEngine/dtMeshOperatorFactory.cpp
   meshEngine/dtMeshOperator.cpp
@@ -204,6 +203,7 @@ SET(SOURCES
   meshEngine/dtMeshGRegionTetgen.cpp
   meshEngine/dtMoabCore.cpp
   meshEngine/dtOMMesh.cpp
+  meshEngine/dtOVMMesh.cpp
   meshEngine/dtOMMeshDivided.cpp
   meshEngine/dtOMMeshManifold.cpp
   meshEngine/dtOMField.cpp

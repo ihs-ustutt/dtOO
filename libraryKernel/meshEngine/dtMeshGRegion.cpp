@@ -8,16 +8,19 @@
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MPyramid.h>
+#include <gmsh/MElementOctree.h>
+#include "qShapeMetric.h"
+#include "dtOVMMesh.h"
 
 namespace dtOO {
   dtMeshGRegion::dtMeshGRegion() : dtMesh3DOperator() {
-    _pyramidHeightScale = .25;
+    
   }
 
   dtMeshGRegion::dtMeshGRegion(
     const dtMeshGRegion& orig
   ) : dtMesh3DOperator(orig) {
-    _pyramidHeightScale = orig._pyramidHeightScale;
+    
   }
 
   dtMeshGRegion::~dtMeshGRegion() {
@@ -33,10 +36,6 @@ namespace dtOO {
     vectorHandling< dtMeshOperator * > const * const mO
   ) {
     dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
-    
-    _pyramidHeightScale 
-    = 
-    qtXmlBase::getAttributeFloatMuParse("pyramidHeightScale", element, cV, aF);
   }
 
   void dtMeshGRegion::operator()( dtGmshRegion * dtgr) {
@@ -77,16 +76,12 @@ namespace dtOO {
         << "Performing normal meshing."
       );      
       
-      dtgr->model()->writeMSH(
-        "dtMeshGRegion_"+stringPrimitive::intToString(dtgr->tag())+".msh", 
-        2.2, 
-        false, 
-        true
-      );
       std::vector< ::GRegion * > delauny;
       ::meshGRegion mr( delauny );
       mr(dtgr);    
       MeshDelaunayVolume(delauny);
+      ::optimizeMeshGRegionGmsh()(dtgr);
+
       dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
     }
   }
@@ -101,7 +96,7 @@ namespace dtOO {
     std::vector< ::MVertex * > vertices;    
     
     dt__forAllIter(std::list< dtGmshFace * >, faces, it) {
-      dtGmshFace * gf = *it;
+      dtGmshFace * gf = *it;    
       
       //
       // modify only quadrangle surfaces
@@ -113,7 +108,6 @@ namespace dtOO {
         << "Face " << gf->tag() << " contains quadrangles." << std::endl
         << "Remove face temporarily."
       );
-      
 
       //
       // create new pseudo face
@@ -142,7 +136,7 @@ namespace dtOO {
       // copy triangles
       //
       std::vector< ::MTriangle * > const & tri = gf->triangles;
-      dt__forAllConstIter(std::vector< ::MTriangle * >, tri, it) {        
+      dt__forAllConstIter(std::vector< ::MTriangle * >, tri, it) {
         //
         // create new pseudo mesh elements (triangles)
         //
@@ -170,24 +164,15 @@ namespace dtOO {
         // calculate barycenter, inner radius and normal
         // 
         SPoint3 bb = (*it)->barycenter();
-        SVector3 nn = (*it)->getFace(0).normal();
-        double radius = _pyramidHeightScale * (*it)->getInnerRadius();
 
         //
         // create new mesh vertex
         //
-        vertices.push_back( 
-          new ::MVertex(
-            bb.x() - radius*nn.x() , 
-            bb.y() - radius*nn.y(), 
-            bb.z() - radius*nn.z(),
-            pseudo
-          )
-        );
+        vertices.push_back( new ::MVertex( bb.x(), bb.y(), bb.z(), pseudo ) );
         pseudo->addMeshVertex(vertices.back());
         
         //
-        // create new pseudo mesh elements (truangles)
+        // create new pseudo mesh elements (triangles)
         //
         pseudo->addTriangle(
           new ::MTriangle( 
@@ -242,6 +227,9 @@ namespace dtOO {
     //
     this->operator()(dtgr);
     
+    //
+    // add mesh vertices and pyramids to old volume
+    //
     dt__forAllIter(std::vector< ::MVertex * >, vertices, it) {
       (*it)->setEntity(dtgr);
       dtgr->addMeshVertex(*it);
@@ -250,12 +238,99 @@ namespace dtOO {
       dtgr->addPyramid( (*it) );
     }
     
+    //
+    // delete created pseudo GFace
+    //
     for (auto it : pseudo_org) {
       it.second->mesh_vertices.clear();
       it.second->deleteMesh();
       dtgr->replaceFace(it.second, it.first);        
       dtgr->model()->remove(it.second);
     }
+    
+    //
+    // create overall element vector
+    //
+    std::vector< ::MElement * > me(dtgr->getNumMeshElements());
+    dt__forFromToIndex(0, dtgr->getNumMeshElements(), ii) {
+     me[ii] = dtgr->getMeshElement(ii);
+    }
+    
+    //
+    // create octree
+    //
+    ::MElementOctree oct(me);
+    
+    //
+    // create OpenVolumeMesh
+    //
+    dtOVMMesh ovm;
+    dt__forAllRefAuto(vertices, aVert) {
+      std::vector< ::MElement * > meVec 
+      = 
+      oct.findAll(aVert->x(), aVert->y(), aVert->z(), -1);
+      dt__forAllRefAuto(meVec, aMe) ovm.addCell(aMe);
+    }
+    
+    //
+    // pyramid open method
+    //
+    float minQShapeMetric = 1.;
+    float maxQShapeMetric = -1.;    
+    dt__forAllRefAuto(vertices, aVert) {
+      ovmVertexH const & vH = ovm.at( aVert );
+      dt__throwIf(!vH.is_valid(), createPyramids());
+      dtVector3 c0 
+      =
+      dtLinearAlgebra::toDtVector3( dtGmshModel::extractPosition(aVert) );
+
+      //
+      // collect all adjacent vertex positions
+      //
+      std::vector< dtVector3 > pp;
+      for (
+        ovmVertexOHalfedgeI heIt = ovm.voh_iter(vH); heIt.valid(); heIt++
+      ) {
+        pp.push_back( 
+          dtLinearAlgebra::toDtVector3(
+            dtGmshModel::extractPosition(
+              ovm.at( ovm.halfedge(*heIt).to_vertex() )
+            )
+          )
+        );
+      }
+      dtVector3 cc = (1./pp.size()) * dtLinearAlgebra::sum(pp);
+      ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3( cc ) );
+      
+      float relax = .9;
+      dt__forFromToIndex(0, 10, ii) {
+        std::vector< float > qq;
+        for(
+          ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
+        ) {
+          qq.push_back( qShapeMetric()( ovm.at(*vcIt) ) );
+        }
+        minQShapeMetric = std::min( progHelper::min(qq), minQShapeMetric);
+        maxQShapeMetric = std::max( progHelper::max(qq), maxQShapeMetric);
+               
+        float curRelax = std::pow(relax, static_cast< float >(ii));
+//        dt__quickinfo( 
+//          << dt__eval(curRelax) << std::endl
+//          << dt__eval(minQShapeMetric) << std::endl
+//          << dt__eval(maxQShapeMetric) 
+//        );
+        cc = (1. - curRelax) * c0 + curRelax * cc;
+        
+        ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3(cc) );        
+        
+        if (minQShapeMetric > .1) break;
+      }
+    }
+    dt__info(
+      createPyramids(), 
+      << dt__eval(minQShapeMetric) << std::endl
+      << dt__eval(maxQShapeMetric) << std::endl
+    );
   }
 }
 

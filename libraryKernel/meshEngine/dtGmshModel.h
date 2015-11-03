@@ -88,7 +88,6 @@ namespace dtOO {
     void addIfRegionToGmshModel(
       map3dTo3d const * const region, int * const tag
     );    
-    dtGmshRegion * addRegionToGmshModel( map3dTo3d const * const vol );
     //
     // add general entities
     //

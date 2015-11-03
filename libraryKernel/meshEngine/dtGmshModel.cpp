@@ -9,7 +9,6 @@
 #include <gmsh/GRegion.h>
 
 #include "dtGmshRegion.h"
-#include "dtGmshRegionHex.h"
 #include "dtGmshFace.h"
 #include "dtGmshEdge.h"
 #include "dtGmshVertex.h"
@@ -247,121 +246,6 @@ namespace dtOO {
     );    
   }  
 			
-	/**
-   * @todo What if region is not 6-sided?
-   */
-	dtGmshRegion * dtGmshModel::addRegionToGmshModel( 
-    map3dTo3d const * const vol 
-  ) {
-		int rId = ::GModel::getNumRegions()+1;
-		
-    dtPoint3 p0(0., 0., 0.);
-		dtPoint3 p1(1., 0., 0.);
-		dtPoint3 p2(1., 1., 0.);
-		dtPoint3 p3(0., 1., 0.);
-		dtPoint3 p4(0., 0., 1.);
-		dtPoint3 p5(1., 0., 1.);
-		dtPoint3 p6(1., 1., 1.);
-		dtPoint3 p7(0., 1., 1.);
-		
-		//
-		// vertices
-		//
-	  std::vector< int > vId(8,0);		
-		this->addIfVertexToGmshModel( vol->getPointPercent(p0), &(vId[0]) );
-		this->addIfVertexToGmshModel( vol->getPointPercent(p1), &(vId[1]) );		
-		this->addIfVertexToGmshModel( vol->getPointPercent(p2), &(vId[2]) );
-		this->addIfVertexToGmshModel( vol->getPointPercent(p3), &(vId[3]) );		
-		this->addIfVertexToGmshModel( vol->getPointPercent(p4), &(vId[4]) );
-		this->addIfVertexToGmshModel( vol->getPointPercent(p5), &(vId[5]) );		
-		this->addIfVertexToGmshModel( vol->getPointPercent(p6), &(vId[6]) );
-		this->addIfVertexToGmshModel( vol->getPointPercent(p7), &(vId[7]) );	
-		
-		//
-		// edges
-		//
-		std::vector< int > eId(12, 0);
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p0, p1), &(eId[0]), vId[0], vId[1]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p1, p2), &(eId[1]), vId[1], vId[2]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p2, p3), &(eId[2]), vId[2], vId[3]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p3, p0), &(eId[3]), vId[3], vId[0]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p4, p5), &(eId[4]), vId[4], vId[5]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p5, p6), &(eId[5]), vId[5], vId[6]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p6, p7), &(eId[6]), vId[6], vId[7]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p7, p4), &(eId[7]), vId[7], vId[4]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p0, p4), &(eId[8]), vId[0], vId[4]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p1, p5), &(eId[9]), vId[1], vId[5]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p2, p6), &(eId[10]), vId[2], vId[6]
-    );
-		this->addIfEdgeToGmshModel(
-      vol->segmentPercent(p3, p7), &(eId[11]), vId[3], vId[7]
-    );
-
-    //
-    // faces
-    //		
-		std::vector< int > fId(6);
-		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p0, p1, p2, p3)),
-			&(fId[0]), eId[0], eId[1], eId[2], eId[3]
-		);						
-		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p4, p5, p6, p7)),
-			&(fId[1]), eId[4], eId[5], eId[6], eId[7]
-		);
-		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p0, p1, p5, p4)),
-			&(fId[2]), eId[0], eId[9], -eId[4], -eId[8]
-		);
-		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p3, p2, p6, p7)),
-			&(fId[3]), -eId[2], eId[10], eId[6], -eId[11]
-		);
-		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p3, p0, p4, p7)),
-			&(fId[4]), eId[3], eId[8], -eId[7], -eId[11]
-		);
-		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, vol->segmentPercent(p2, p1, p5, p6)),
-			&(fId[5]), -eId[1], eId[9], eId[5], -eId[10]
-		);
-				
-		//
-		// region
-		//
-		std::vector<int> fori;
-	  std::list< dtGmshFace * > gf;		
-		dt__forAllIndex(fId, ii) {
-			gf.push_back( this->getDtGmshFaceByTag(fId[ii]) );
-			fori.push_back(1);
-		}
-		dtGmshRegion * gr = new dtGmshRegionHex(this, rId, eId, gf, fori);
-		this->add(gr);		
-		
-		return gr;
-	}
-	
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {
     ::GRegion * region = ::GModel::getRegionByTag(abs(tag));
     dt__ptrAss(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
