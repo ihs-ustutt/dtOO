@@ -88,6 +88,7 @@ namespace dtOO {
       //
       omFaceH addFace( omFaceD const & fD );
       omFaceH addFace( ::MElement const * const me );
+      omFaceH addFaceInv( ::MElement const * const me ); 
       void add( const dtOMMesh &toAdd );
       void addInv( const dtOMMesh &toAdd );
       //
@@ -146,8 +147,7 @@ namespace dtOO {
       omFaceH addFace( 
         std::vector< ::MVertex * > const & vertices, 
         ::MElement const * const me 
-      );             
-      omFaceH addFaceInv( ::MElement const * const me );      
+      );                  
       bool intersection( 
         omFaceH const & fH, dtPoint3 const & start, dtPoint3 const & target 
       ) const;
