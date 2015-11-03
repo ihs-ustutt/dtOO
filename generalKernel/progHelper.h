@@ -138,6 +138,24 @@ namespace dtOO {
       static T next(T x) { 
         return ++x; 
       }        
+      template < class T > 
+      static T min( std::vector< T > const & x) { 
+        typename std::vector< T >::const_iterator result 
+        = 
+        std::min_element(
+          std::begin(x), std::end(x)
+        );
+        return *result;        
+      }
+      template < class T > 
+      static T max( std::vector< T > const & x) { 
+        typename std::vector< T >::const_iterator result 
+        = 
+        std::max_element(
+          std::begin(x), std::end(x)
+        );
+        return *result;        
+      }      
     private:
       progHelper();
   };

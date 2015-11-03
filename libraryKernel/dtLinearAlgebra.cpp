@@ -91,6 +91,14 @@ namespace dtOO {
 		return (1./sqrt(sqL)) * v0;
 	}	  
 	
+  dtVector3 dtLinearAlgebra::sum( std::vector< dtVector3 > const & vv ) {
+		dtVector3 nn(0, 0, 0);
+		dt__forAllConstIter(std::vector< dtVector3 >, vv, it) {
+			nn = nn + (*it);
+		}
+		return nn;
+	}
+  
   dtVector3 dtLinearAlgebra::meanAverage( std::vector< dtVector3 > const & vv ) {
 		dtVector3 nn(0, 0, 0);
 		dt__forAllConstIter(std::vector< dtVector3 >, vv, it) {
