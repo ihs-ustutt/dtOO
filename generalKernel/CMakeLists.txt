@@ -63,7 +63,6 @@ SET(HEADERS
   interfaceHeaven/floatHandling.h
   interfaceHeaven/intHandling.h
   interfaceHeaven/twoDArrayHandling.h
-  interfaceHeaven/profilingHandling.h
   interfaceHeaven/timeHandling.h
   interfaceHeaven/threadSafe.h
   interfaceHeaven/meshWhisperer.h
