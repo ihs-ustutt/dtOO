@@ -2,7 +2,7 @@ find_path(
   ROOTSYS_DIR 
   include/TObject.h 
   PATHS
-  "${DTOO_EXTERNLIBS}/root"
+  "/usr/ihs/"
 )
 
 if(ROOTSYS_DIR)
@@ -54,12 +54,7 @@ if(ROOTSYS_DIR)
   )
   FIND_PATH(
     ROOT_LINK_DIRECTORY libRootAuth.so
-    ${DTOO_EXTERNLIBS}/ALL/lib
-    $ENV{DTOO_ROOTDIR}/lib
-    /usr/lib
-    /usr/local/lib
-    /usr/lib64
-    /usr/local/lib64
+    ${ROOTSYS_DIR}/lib
   )
 else(ROOTSYS_DIR)
   message(STATUS "ROOT NOT found!")

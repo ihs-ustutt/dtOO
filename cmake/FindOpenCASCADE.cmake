@@ -11,39 +11,59 @@
 
 # ${OpenCASCADE_FOUND} is cached, so once OCC is found this block shouldn't have to run again
 IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
-  IF(UNIX)
-    set( _incsearchpath ${DTOO_EXTERNLIBS}/OpenCASCADE/include/oce /usr/include/opencascade /opt/occ/inc $ENV{CASROOT}/inc )
-    if (APPLE)
-    set( _testlibname libTKernel.dylib )
-    else (APPLE)
-    set( _testlibname libTKernel.so )
-    endif (APPLE)
-    set( _libsearchpath ${DTOO_EXTERNLIBS}/OpenCASCADE/lib /usr/lib /opt/occ/lib $ENV{CASROOT}/lib )
-  ELSE(UNIX)
-    IF (WIN32)
-      MESSAGE("************ FindOpenCASCADE.cmake has not been tried on windows and may or may not work! *************")
-      set( _incsearchpath $ENV{CASROOT}\\inc C:\\OpenCASCADE6.3.0\\ros\\inc )
-      set( _testlibname TKernel.dll )
-      set( _libsearchpath $ENV{CASROOT}\\win32\\bin C:\\OpenCASCADE6.3.0\\ros\\win32\\bin )
-    ELSE(WIN32)
-      message( FATAL_ERROR "Unknown system! Exiting." )
-    ENDIF (WIN32)
-  ENDIF (UNIX)
+  set( _testlibname libTKernel.so )
+  set( 
+    _incsearchpath 
+    /usr/ihs/include/oce
+    ${DTOO_EXTERNLIBS}/OpenCASCADE/include/oce 
+    $ENV{CASROOT}/inc 
+  )
+  set( 
+    _libsearchpath 
+    /usr/ihs/lib
+    /usr/ihs/lib64
+    ${DTOO_EXTERNLIBS}/OpenCASCADE/lib 
+    $ENV{CASROOT}/lib 
+  )
 
   #find the include dir by looking for Standard_Real.hxx
-  FIND_PATH( OpenCASCADE_INCLUDE_DIR Standard_Real.hxx PATHS ${_incsearchpath} DOC "Path to OCC includes" )
+  FIND_PATH( 
+    OpenCASCADE_INCLUDE_DIR 
+    Standard_Real.hxx PATHS 
+    ${_incsearchpath} 
+    DOC 
+    "Path to OCC includes" 
+  )
+
   IF( OpenCASCADE_INCLUDE_DIR STREQUAL Standard_Real.hxx-NOTFOUND )
     SET( OpenCASCADE_FOUND FALSE CACHE BOOL FORCE )
-    MESSAGE( FATAL_ERROR "Cannot find OCC include dir. Install opencascade or set CASROOT or create a symlink /opt/occ/inc pointing to the correct directory." )
+    MESSAGE( 
+      FATAL_ERROR 
+      "Cannot find OCC include dir. Install opencascade or set CASROOT or \
+       create a symlink /opt/occ/inc pointing to the correct directory." 
+    )
   ENDIF( OpenCASCADE_INCLUDE_DIR STREQUAL Standard_Real.hxx-NOTFOUND )
 
   # Find one lib and save its directory to OpenCASCADE_LINK_DIRECTORY. Because
   # OCC has so many libs, there is increased risk of a name collision.
   # Requiring that all libs be in the same directory reduces the risk.
-  FIND_PATH( OpenCASCADE_LINK_DIRECTORY ${_testlibname} PATH ${_libsearchpath} DOC "Path to OCC libs" )
+  FIND_PATH( 
+    OpenCASCADE_LINK_DIRECTORY 
+    ${_testlibname} 
+    PATH 
+    ${_libsearchpath} 
+    DOC 
+    "Path to OCC libs" 
+  )
+
   IF( OpenCASCADE_LINK_DIRECTORY STREQUAL ${_testlibname}-NOTFOUND )
     SET( OpenCASCADE_FOUND FALSE CACHE BOOL FORCE )
-    MESSAGE( FATAL_ERROR "Cannot find OCC lib dir. Install opencascade or set CASROOT or create a symlink /opt/occ/lib pointing to the dir where the OCC libs are." )
+    MESSAGE( 
+      FATAL_ERROR 
+      "Cannot find OCC lib dir. Install opencascade or set CASROOT or \
+       create a symlink /opt/occ/lib pointing to the dir where the OCC \
+       libs are."
+    )
   ELSE( OpenCASCADE_LINK_DIRECTORY STREQUAL ${_testlibname}-NOTFOUND )
     SET( OpenCASCADE_FOUND TRUE CACHE BOOL "Has OCC been found?" FORCE )
     SET( _firsttime TRUE ) #so that messages are only printed once
@@ -58,10 +78,19 @@ IF( OpenCASCADE_FOUND STREQUAL TRUE )
   IF( DEFINED OpenCASCADE_FIND_COMPONENTS )
     FOREACH( _libname ${OpenCASCADE_FIND_COMPONENTS} )
       #look for libs in OpenCASCADE_LINK_DIRECTORY
-      FIND_LIBRARY( ${_libname}_OCCLIB ${_libname} ${OpenCASCADE_LINK_DIRECTORY} NO_DEFAULT_PATH)
+      FIND_LIBRARY( 
+        ${_libname}_OCCLIB ${_libname} 
+        ${OpenCASCADE_LINK_DIRECTORY} NO_DEFAULT_PATH
+      )
       SET( _foundlib ${${_libname}_OCCLIB} )
       IF( _foundlib STREQUAL ${_libname}_OCCLIB-NOTFOUND )
-        MESSAGE( FATAL_ERROR "Cannot find ${_libname}. Is it spelled correctly? Correct capitalization? Do you have another package with similarly-named libraries, installed at ${OpenCASCADE_LINK_DIRECTORY}? (That is where this script thinks the OCC libs are.)" )
+        MESSAGE( 
+          FATAL_ERROR 
+          "Cannot find ${_libname}. Is it spelled correctly? Correct \
+           capitalization? Do you have another package with similarly-named \
+           libraries, installed at ${OpenCASCADE_LINK_DIRECTORY}? (That is \
+           where this script thinks the OCC libs are.)" 
+        )
       ENDIF( _foundlib STREQUAL ${_libname}_OCCLIB-NOTFOUND )
       SET( OpenCASCADE_LIBRARIES ${OpenCASCADE_LIBRARIES} ${_foundlib} )
     ENDFOREACH( _libname ${OpenCASCADE_FIND_COMPONENTS} )
@@ -87,6 +116,13 @@ IF( OpenCASCADE_FOUND STREQUAL TRUE )
 
     ADD_DEFINITIONS( -DHAVE_CONFIG_H -DHAVE_IOSTREAM -DHAVE_FSTREAM -DHAVE_LIMITS_H -DHAVE_IOMANIP )
   ELSE( DEFINED OpenCASCADE_FIND_COMPONENTS )
-    MESSAGE( AUTHOR_WARNING "Developer must specify required libraries to link against in the cmake file, i.e. find_package( OpenCASCADE REQUIRED COMPONENTS TKernel TKBRep) . Otherwise no libs will be added - linking against ALL OCC libraries is slow!")
+    MESSAGE( 
+      AUTHOR_WARNING 
+      "Developer must specify required libraries to link \
+       against in the cmake file, i.e. \
+       find_package( OpenCASCADE REQUIRED COMPONENTS TKernel TKBRep) . \
+       Otherwise no libs will be added - linking against ALL OCC libraries \
+       is slow!"
+      )
   ENDIF( DEFINED OpenCASCADE_FIND_COMPONENTS )
 ENDIF( OpenCASCADE_FOUND STREQUAL TRUE )
