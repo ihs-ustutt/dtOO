@@ -4,9 +4,7 @@
 #include <string>
 #include "bVOInterfaceFactory.h"
 #include "bVOInterface.h"
-#include "bVOSetNElements.h"
 #include "bVOSetGrading.h"
-#include "bVOSetSimpleGrading.h"
 #include "bVONameFaces.h"
 #include "bVONameRegions.h"
 #include "bVOWriteMSH.h"
@@ -34,9 +32,7 @@ namespace dtOO {
   bVOInterface * bVOInterfaceFactory::create(char const * const str) {
     dt__info(create(), << str <<  " creating ... ");
     
-    __IFRET(bVOSetNElements);
 		__IFRET(bVOSetGrading);
-		__IFRET(bVOSetSimpleGrading);
 		__IFRET(bVONameFaces);
 		__IFRET(bVONameRegions);
 		__IFRET(bVOWriteMSH);

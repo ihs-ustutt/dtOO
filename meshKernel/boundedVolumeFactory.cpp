@@ -4,7 +4,6 @@
 #include "boundedVolume.h"
 #include "map2dTo3dTriangulated.h"
 #include "map3dTo3dWithInternalTurboGrid.h"
-#include "vec3dInMap3dTo3dWithMeshedSurface.h"
 #include "readMOABMesh.h"
 #include "map3dTo3dWithInternalGmsh.h"
 #include "map3dTo3dWithInternalBlockGmsh.h"
@@ -27,7 +26,6 @@ namespace dtOO {
     
 		__IFRET(map2dTo3dTriangulated);
 		__IFRET(map3dTo3dWithInternalTurboGrid);
-		__IFRET(vec3dInMap3dTo3dWithMeshedSurface);
 		__IFRET(readMOABMesh);
 		__IFRET(map3dTo3dWithInternalGmsh);
     __IFRET(map3dTo3dWithInternalBlockGmsh);

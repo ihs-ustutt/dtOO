@@ -2,9 +2,7 @@ SET(HEADERS
   bVObserver/bVOInterface.h
   bVObserver/bVOSubject.h
   bVObserver/bVOInterfaceFactory.h
-  bVObserver/bVOSetNElements.h
   bVObserver/bVOSetGrading.h
-  bVObserver/bVOSetSimpleGrading.h
   bVObserver/bVONameFaces.h
   bVObserver/bVONameRegions.h
   bVObserver/bVOWriteMSH.h
@@ -22,7 +20,6 @@ SET(HEADERS
   map3dTo3dGmsh.h
   map2dTo3dTriangulated.h
   map3dTo3dWithInternalTurboGrid.h
-  vec3dInMap3dTo3dWithMeshedSurface.h
   map3dTo3dWithInternalGmsh.h
   map3dTo3dWithInternalBlockGmsh.h
   readMOABMesh.h
@@ -33,9 +30,7 @@ SET(SOURCES
   bVObserver/bVOInterface.cpp
   bVObserver/bVOSubject.cpp
   bVObserver/bVOInterfaceFactory.cpp
-  bVObserver/bVOSetNElements.cpp
   bVObserver/bVOSetGrading.cpp
-  bVObserver/bVOSetSimpleGrading.cpp
   bVObserver/bVONameFaces.cpp
   bVObserver/bVONameRegions.cpp
   bVObserver/bVOWriteMSH.cpp
@@ -53,7 +48,6 @@ SET(SOURCES
   map3dTo3dGmsh.cpp
   map2dTo3dTriangulated.cpp
   map3dTo3dWithInternalTurboGrid.cpp
-  vec3dInMap3dTo3dWithMeshedSurface.cpp
   map3dTo3dWithInternalGmsh.cpp
   map3dTo3dWithInternalBlockGmsh.cpp
   readMOABMesh.cpp

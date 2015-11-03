@@ -7,7 +7,6 @@
 #include <math.h>
 #include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParserBase.h>
-#include <meshEngine/dtGmshRegionHex.h>
 #include <meshEngine/dtGmshModel.h>
 
 namespace dtOO {  
