@@ -31,6 +31,7 @@ namespace dtOO {
   typedef ::OpenVolumeMesh::VertexIter ovmVertexI;
   typedef ::OpenVolumeMesh::VertexOHalfEdgeIter ovmVertexOHalfedgeI;
   typedef ::OpenVolumeMesh::VertexCellIter ovmVertexCellI;
+  typedef ::OpenVolumeMesh::CellVertexIter ovmCellVertexI;
   //
   // misc
   //

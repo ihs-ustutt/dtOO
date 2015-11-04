@@ -67,6 +67,11 @@ namespace dtOO {
     _nSpacingSteps
     =
     qtXmlBase::getAttributeIntMuParse("nSpacingSteps", element, cV, aF);
+    _flipNormal = false;
+    if (_nSpacingSteps < 0) {
+      _flipNormal = true;
+    }
+    _nSpacingSteps = abs(_nSpacingSteps);
     _maxGrowingRatePerStep 
 		= 
 		qtXmlBase::getAttributeFloatMuParse("maxGrowingRatePerStep", element, cV, aF);
@@ -300,7 +305,10 @@ namespace dtOO {
 			}
 			dtVector3 nn = dtLinearAlgebra::meanAverage(nnV);
 			
-			_nF[it->centerMVertex()] = nn;
+      _nF[it->centerMVertex()] = nn;
+      if (_flipNormal) {
+        _nF[it->centerMVertex()] = -1. * _nF[it->centerMVertex()];
+      }
 		}
 		dt__info(operator(), << "Normals calculated.");
     

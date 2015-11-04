@@ -69,6 +69,7 @@ namespace dtOO {
       float _maxGrowingRatePerStep;
       float _maxDihedralAngle;
       int _nSpacingSteps;
+      bool _flipNormal;
       //
       // define two surface meshes with fixed, thickness 
       // and slidable vertex field
