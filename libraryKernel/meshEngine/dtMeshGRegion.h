@@ -4,6 +4,7 @@
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMesh3DOperator.h"
+#include "dtOVMMesh.h"
 
 namespace dtOO {
   class dtGmshRegion;
@@ -27,6 +28,12 @@ namespace dtOO {
     void operator()( dtGmshRegion * dtgr );    
   private:
     void createPyramids( dtGmshRegion * dtgr );
+    void doLaplacianSmooth( dtOVMMesh & ovm ) const;
+  private:
+    float _relax;
+    float _minQShapeMetric;
+    int _nPyramidOpenSteps;
+    int _nLaplacianSmooths;
   };
 }
 #endif	/* DTMESHGREGION_H */

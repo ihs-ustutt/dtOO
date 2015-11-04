@@ -7,6 +7,7 @@
 #include <gmsh/meshGRegion.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTriangle.h>
+#include <gmsh/MTetrahedron.h>
 #include <gmsh/MPyramid.h>
 #include <gmsh/MElementOctree.h>
 #include "qShapeMetric.h"
@@ -14,13 +15,15 @@
 
 namespace dtOO {
   dtMeshGRegion::dtMeshGRegion() : dtMesh3DOperator() {
-    
   }
 
   dtMeshGRegion::dtMeshGRegion(
     const dtMeshGRegion& orig
   ) : dtMesh3DOperator(orig) {
-    
+    _relax = orig._relax;
+    _minQShapeMetric = orig._minQShapeMetric;
+    _nPyramidOpenSteps = orig._nPyramidOpenSteps;
+    _nLaplacianSmooths = orig._nLaplacianSmooths;
   }
 
   dtMeshGRegion::~dtMeshGRegion() {
@@ -36,6 +39,19 @@ namespace dtOO {
     vectorHandling< dtMeshOperator * > const * const mO
   ) {
     dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
+    
+    _relax 
+    = 
+    qtXmlBase::getAttributeFloatMuParse("relax", element, cV, aF);
+    _minQShapeMetric 
+    = 
+    qtXmlBase::getAttributeFloatMuParse("minQShapeMetric", element, cV, aF);    
+    _nPyramidOpenSteps
+    = 
+    qtXmlBase::getAttributeIntMuParse("nPyramidOpenSteps", element, cV, aF);     
+    _nLaplacianSmooths
+    = 
+    qtXmlBase::getAttributeIntMuParse("nLaplacianSmooths", element, cV, aF);         
   }
 
   void dtMeshGRegion::operator()( dtGmshRegion * dtgr) {
@@ -80,6 +96,7 @@ namespace dtOO {
       ::meshGRegion mr( delauny );
       mr(dtgr);    
       MeshDelaunayVolume(delauny);
+      ::optimizeMeshGRegionNetgen()(dtgr);
       ::optimizeMeshGRegionGmsh()(dtgr);
 
       dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
@@ -265,11 +282,22 @@ namespace dtOO {
     // create OpenVolumeMesh
     //
     dtOVMMesh ovm;
-    dt__forAllRefAuto(vertices, aVert) {
-      std::vector< ::MElement * > meVec 
-      = 
-      oct.findAll(aVert->x(), aVert->y(), aVert->z(), -1);
-      dt__forAllRefAuto(meVec, aMe) ovm.addCell(aMe);
+    ovm.request_cell_property< float >("iV");
+    dt__forAllRefAuto(pyramids, aPyr) {
+      dt__forFromToIndex(0, 5, ii) {
+        std::vector< ::MElement * > meVec 
+        = 
+        oct.findAll(
+          aPyr->getVertex(ii)->x(), 
+          aPyr->getVertex(ii)->y(), 
+          aPyr->getVertex(ii)->z(), 
+          -1
+        );
+        dt__forAllRefAuto(meVec, aMe) {
+          ovmCellH cH = ovm.addCell(aMe);
+          ovm.request_cell_property< float >("iV")[cH] = aMe->getVolume();
+        }
+      }
     }
     
     //
@@ -291,6 +319,88 @@ namespace dtOO {
       for (
         ovmVertexOHalfedgeI heIt = ovm.voh_iter(vH); heIt.valid(); heIt++
       ) {
+        pp.push_back(
+          dtLinearAlgebra::toDtVector3(
+            dtGmshModel::extractPosition(
+              ovm.at( ovm.halfedge(*heIt).to_vertex() )
+          )          
+          )
+        );
+      }
+      dtVector3 cc = (1./pp.size()) * dtLinearAlgebra::sum(pp);
+      ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3( cc ) );
+      
+      dt__forFromToIndex(0, _nPyramidOpenSteps, ii) {
+        std::vector< float > qq;
+        for(
+          ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
+        ) {
+          qq.push_back( qShapeMetric()( ovm.at(*vcIt) ) );          
+          
+          if ( ovm.at(*vcIt)->getNumVertices() == 4 ) {
+            if ( 
+              (
+                ovm.request_cell_property< float >("iV")[*vcIt]
+                *
+                ovm[ *vcIt ]->getVolume()
+              )
+              <
+              0.
+            ) {
+              qq[ qq.size() - 1 ] = -1. * qq[ qq.size() - 1 ];
+            }
+          }
+        }
+        minQShapeMetric = std::min( progHelper::min(qq), minQShapeMetric);
+        maxQShapeMetric = std::max( progHelper::max(qq), maxQShapeMetric);
+               
+        float curRelax = _relax;//;std::pow(_relax, static_cast< float >(ii));
+        cc = (1. - curRelax) * c0 + curRelax * cc;
+        
+        ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3(cc) );        
+        
+        if (minQShapeMetric > _minQShapeMetric) break;
+      }
+    }
+    dt__info(
+      createPyramids(),
+      << dt__eval(minQShapeMetric) << std::endl
+      << dt__eval(maxQShapeMetric) << std::endl
+    );
+    
+    dt__forFromToIndex(0, _nLaplacianSmooths, ii) doLaplacianSmooth(ovm);
+  }
+  
+  void dtMeshGRegion::doLaplacianSmooth( dtOVMMesh & ovm ) const {    
+    dt__info(doLaplacianSmooth(), << "Start smoothing");    
+    
+    for( 
+      ovmVertexI vIt = ovm.vertices_begin(); 
+      vIt != ovm.vertices_end(); 
+      ++vIt 
+    ) {
+      ovmVertexH const & vH = *vIt;
+      
+      //
+      // do not smooth boundary vertices
+      //
+      if ( ovm[vH]->onWhat()->dim() < 3 ) continue;
+      
+      std::vector< float > qq;
+      for(
+        ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
+      ) {
+        qq.push_back( qShapeMetric()( ovm.at(*vcIt) ) );
+      }
+      
+      float minQShapeMetric = progHelper::min(qq);
+
+      dtPoint3 c0 = dtGmshModel::extractPosition(ovm.at(vH));
+
+      std::vector< dtVector3 > pp;
+      for (
+        ovmVertexOHalfedgeI heIt = ovm.voh_iter(vH); heIt.valid(); heIt++
+      ) {
         pp.push_back( 
           dtLinearAlgebra::toDtVector3(
             dtGmshModel::extractPosition(
@@ -299,38 +409,24 @@ namespace dtOO {
           )
         );
       }
-      dtVector3 cc = (1./pp.size()) * dtLinearAlgebra::sum(pp);
-      ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3( cc ) );
-      
-      float relax = .9;
-      dt__forFromToIndex(0, 10, ii) {
-        std::vector< float > qq;
-        for(
-          ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
-        ) {
-          qq.push_back( qShapeMetric()( ovm.at(*vcIt) ) );
+      ovm.replacePosition( 
+        vH, 
+        dtLinearAlgebra::toDtPoint3((1./pp.size()) * dtLinearAlgebra::sum(pp)) 
+      );
+      int counter = 0;
+      for(
+        ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
+      ) {
+        //
+        // do not reposition vertex, because quality is not improved
+        //
+        if ( minQShapeMetric > qShapeMetric()( ovm.at(*vcIt) ) ) {
+          ovm.replacePosition( vH, c0 );
+          break;
         }
-        minQShapeMetric = std::min( progHelper::min(qq), minQShapeMetric);
-        maxQShapeMetric = std::max( progHelper::max(qq), maxQShapeMetric);
-               
-        float curRelax = std::pow(relax, static_cast< float >(ii));
-//        dt__quickinfo( 
-//          << dt__eval(curRelax) << std::endl
-//          << dt__eval(minQShapeMetric) << std::endl
-//          << dt__eval(maxQShapeMetric) 
-//        );
-        cc = (1. - curRelax) * c0 + curRelax * cc;
-        
-        ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3(cc) );        
-        
-        if (minQShapeMetric > .1) break;
-      }
+        counter++;
+      }        
     }
-    dt__info(
-      createPyramids(), 
-      << dt__eval(minQShapeMetric) << std::endl
-      << dt__eval(maxQShapeMetric) << std::endl
-    );
   }
 }
 
