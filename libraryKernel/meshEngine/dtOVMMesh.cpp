@@ -94,13 +94,17 @@ namespace dtOO {
     }
     
     ovmHalffaceH hfH;
-    if ( already <= 2 ) {
+    if ( already <= 1 ) {
 		  hfH = halfface_handle( ovmMesh::add_face(handle), 0);
     }
     else {
       hfH = halfface(handle);
+      
       if ( !hfH.is_valid() ) {
         hfH = halfface_handle( ovmMesh::add_face(handle), 0);
+      }
+      else {
+        if ( !is_boundary( hfH ) ) hfH = opposite_halfface_handle( hfH );
       }
     }
 		dt__throwIfWithMessage(

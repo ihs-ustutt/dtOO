@@ -28,7 +28,9 @@ namespace dtOO {
     void operator()( dtGmshRegion * dtgr );    
   private:
     void createPyramids( dtGmshRegion * dtgr );
-    void doLaplacianSmooth( dtOVMMesh & ovm ) const;
+    void doLaplacianSmooth( 
+      dtOVMMesh & ovm, float const & minQShapeMetric 
+    ) const;
   private:
     float _relax;
     float _minQShapeMetric;
