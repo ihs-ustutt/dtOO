@@ -72,6 +72,7 @@ SET(HEADERS
   logMe/logMe.h
   logMe/dtMacros.h
   logMe/dtParMacros.h
+  logMe/logBarChart.h
   progHelper.h
 )
 SET(SOURCES
@@ -138,6 +139,7 @@ SET(SOURCES
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp
+  logMe/logBarChart.cpp
   progHelper.cpp
 )
 
