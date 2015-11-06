@@ -13,6 +13,7 @@
 #include "dtMeshFreeGradingGEdge.h"
 #include "dtMeshTransfiniteGFace.h"
 #include "dtMeshCustom2x3TransfiniteGFace.h"
+#include "dtOptimizeMeshGRegion.h"
 
 namespace dtOO {
   dtMeshOperatorFactory::dtMeshOperatorFactory() {
@@ -40,7 +41,10 @@ namespace dtOO {
       return new dtMeshFreeGradingGEdge();
     }
     if ( str == "dtMeshTransfiniteGFace" ) return new dtMeshTransfiniteGFace();
-    if ( str == "dtMeshCustom2x3TransfiniteGFace" ) return new dtMeshCustom2x3TransfiniteGFace();
+    if ( str == "dtMeshCustom2x3TransfiniteGFace" ) {
+      return new dtMeshCustom2x3TransfiniteGFace();
+    }
+    if (str == "dtOptimizeMeshGRegion") return new dtOptimizeMeshGRegion();
     
     dt__throw(create(), << str <<  " could not be created");  
   }
