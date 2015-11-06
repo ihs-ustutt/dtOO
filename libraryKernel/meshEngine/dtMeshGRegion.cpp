@@ -13,6 +13,7 @@
 #include "qShapeMetric.h"
 #include "dtOVMMesh.h"
 #include <logMe/logBarChart.h>
+#include "dtOptimizeMeshGRegion.h"
 
 namespace dtOO {
   dtMeshGRegion::dtMeshGRegion() : dtMesh3DOperator() {
@@ -24,7 +25,7 @@ namespace dtOO {
     _relax = orig._relax;
     _minQShapeMetric = orig._minQShapeMetric;
     _nPyramidOpenSteps = orig._nPyramidOpenSteps;
-    _nLaplacianSmooths = orig._nLaplacianSmooths;
+    _nSmooths = orig._nSmooths;
   }
 
   dtMeshGRegion::~dtMeshGRegion() {
@@ -50,9 +51,9 @@ namespace dtOO {
     _nPyramidOpenSteps
     = 
     qtXmlBase::getAttributeIntMuParse("nPyramidOpenSteps", element, cV, aF);     
-    _nLaplacianSmooths
+    _nSmooths
     = 
-    qtXmlBase::getAttributeIntMuParse("nLaplacianSmooths", element, cV, aF);         
+    qtXmlBase::getAttributeIntMuParse("nSmooths", element, cV, aF);         
   }
 
   void dtMeshGRegion::operator()( dtGmshRegion * dtgr) {
@@ -97,8 +98,8 @@ namespace dtOO {
       ::meshGRegion mr( delauny );
       mr(dtgr);    
       MeshDelaunayVolume(delauny);
-      ::optimizeMeshGRegionNetgen()(dtgr);
-      ::optimizeMeshGRegionGmsh()(dtgr);
+      dtOptimizeMeshGRegion()(dtgr);
+//      ::optimizeMeshGRegionGmsh()(dtgr);
 
       dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
     }
@@ -270,9 +271,7 @@ namespace dtOO {
     // create barChart
     //
     logBarChart QTet_0("QTet_0", -1., 1., 30);
-    dt__forAllRefAuto(dtgr->tetrahedra, aTet) {
-      QTet_0( qShapeMetric()(aTet) );
-    }
+    dt__forAllRefAuto(dtgr->tetrahedra, aTet) QTet_0( qShapeMetric()(aTet) );
     dt__info(createPyramids(), << QTet_0);
     
     //
@@ -340,8 +339,8 @@ namespace dtOO {
             )          
           )
         );
-      }
-      dtVector3 cc = (1./pp.size()) * dtLinearAlgebra::sum(pp);      
+      }      
+      dtVector3 cc = (1./pp.size()) * dtLinearAlgebra::sum(pp);
       ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3( cc ) );
       
       for (
@@ -365,36 +364,36 @@ namespace dtOO {
                 *
                 ovm[ *vcIt ]->getVolume()
               )
-              <
+              <=
               0.
-            ) {
-              dtgr->model()->writeMSH(
-                "boundaryVertex_part_"
-                +
-                stringPrimitive::intToString(abs(vH.idx()))
-                +
-                "_"
-                +
-                stringPrimitive::intToString(ii+1)        
-                +
-                ".msh", 
-                2.2, 
-                false, 
-                true,
-                false, 
-                1.,
-                0,
-                abs(vH.idx())
-              );        
+            ) {     
               qq[ qq.size() - 1 ] = -1. * fabs(qq[ qq.size() - 1 ]);
             }
           }
         }
         
-        if (progHelper::min(qq) > dynamicMinQShapeMetric) break;
+        if (progHelper::min(qq) > _minQShapeMetric) break;
         
+//        dtgr->model()->writeMSH(
+//          "boundaryVertex_part_"
+//          +
+//          stringPrimitive::intToString(abs(vH.idx()))
+//          +
+//          "_"
+//          +
+//          stringPrimitive::intToString(ii+1)        
+//          +
+//          ".msh", 
+//          2.2, 
+//          false, 
+//          true,
+//          false, 
+//          1.,
+//          0,
+//          abs(vH.idx())
+//        );
         float curRelax = _relax;//;std::pow(_relax, static_cast< float >(ii));
-        cc = (1. - curRelax) * c0 + curRelax * cc;
+        cc = c0 + curRelax * (cc - c0);
         
         ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3(cc) );        
       }
@@ -412,10 +411,8 @@ namespace dtOO {
     }
     dt__info(createPyramids(), << QPyr_1);
     
-    dt__forFromToIndex(0, _nLaplacianSmooths, ii) {
-      doLaplacianSmooth(ovm, QTet_1.globalMin());
-    }
-
+    dt__forFromToIndex(0, _nSmooths, ii) dtOptimizeMeshGRegion()(dtgr);
+              
     logBarChart QTet_2("QTet_2", -1., 1., 30);
     dt__forAllRefAuto(dtgr->tetrahedra, aTet) {
       QTet_2( fabs(qShapeMetric()(aTet)) );
@@ -427,62 +424,6 @@ namespace dtOO {
       QPyr_2( fabs(qShapeMetric()(aPyr)) );
     }
     dt__info(createPyramids(), << QPyr_2);
-  }
-  
-  void dtMeshGRegion::doLaplacianSmooth( 
-    dtOVMMesh & ovm, float const & minQShapeMetric 
-  ) const {    
-    dt__info(doLaplacianSmooth(), << "Start smoothing");    
-    
-    for( 
-      ovmVertexI vIt = ovm.vertices_begin(); 
-      vIt != ovm.vertices_end(); 
-      ++vIt 
-    ) {
-      ovmVertexH const & vH = *vIt;
-      
-      //
-      // do not smooth boundary vertices
-      //
-      if ( ovm[vH]->onWhat()->dim() < 3 ) continue;
-      
-      std::vector< float > qq;
-//      for(
-//        ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
-//      ) qq.push_back( qShapeMetric()( ovm.at(*vcIt) ) );
-      
-//      float minQShapeMetric = progHelper::min(qq);
-
-      dtPoint3 c0 = dtGmshModel::extractPosition(ovm.at(vH));
-
-      std::vector< dtVector3 > pp;
-      for (
-        ovmVertexOHalfedgeI heIt = ovm.voh_iter(vH); heIt.valid(); heIt++
-      ) {
-        pp.push_back( 
-          dtLinearAlgebra::toDtVector3(
-            dtGmshModel::extractPosition(
-              ovm.at( ovm.halfedge(*heIt).to_vertex() )
-            )
-          )
-        );
-      }
-      ovm.replacePosition( 
-        vH, 
-        dtLinearAlgebra::toDtPoint3((1./pp.size()) * dtLinearAlgebra::sum(pp)) 
-      );
-      for(
-        ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
-      ) {
-        //
-        // do not reposition vertex, because quality is not improved
-        //
-        if ( minQShapeMetric > qShapeMetric()( ovm.at(*vcIt) ) ) {
-          ovm.replacePosition( vH, c0 );
-          break;
-        }
-      }        
-    }
   }
 }
 

@@ -28,14 +28,11 @@ namespace dtOO {
     void operator()( dtGmshRegion * dtgr );    
   private:
     void createPyramids( dtGmshRegion * dtgr );
-    void doLaplacianSmooth( 
-      dtOVMMesh & ovm, float const & minQShapeMetric 
-    ) const;
   private:
     float _relax;
     float _minQShapeMetric;
     int _nPyramidOpenSteps;
-    int _nLaplacianSmooths;
+    int _nSmooths;
   };
 }
 #endif	/* DTMESHGREGION_H */
