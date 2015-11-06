@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project (dtOO)
+project (designTool)
 
 #------------------------------------------------------------------------------#
 #                                                                              #
@@ -319,3 +319,8 @@ install(DIRECTORY geometryKernel/ DESTINATION include FILES_MATCHING PATTERN "*.
 install(DIRECTORY renderKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY solverKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY cmake/ DESTINATION cmake FILES_MATCHING PATTERN "*")
+
+#
+# add applications
+#
+add_subdirectory(application)
