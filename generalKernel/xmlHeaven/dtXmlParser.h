@@ -30,6 +30,11 @@ namespace dtOO {
       std::string const stateName, 
       vectorHandling< constValue * > const * const cValP
     ) const;
+    void write( vectorHandling< constValue * > const & cValP ) const;
+    void write(
+      std::string const stateName, 
+      vectorHandling< constValue * > const & cValP
+    ) const;    
     void load( void );
     std::vector< std::string > getStates( void );
     void loadStateToConst(
@@ -43,11 +48,11 @@ namespace dtOO {
       std::string const constValueLabel, vectorHandling< constValue * > * cValP
     ) const;
     void createConstValue(vectorHandling< constValue * > * cValP) const;
-    void getNames(
+    void getLabels(
       std::string toLookFor, std::vector< std::string > * machinePartNames 
     ) const;
-    std::vector< std::string > getNames( std::string lookType ) const;
-    void getName( std::string lookType, std::string * name ) const;
+    std::vector< std::string > getLabels( std::string lookType ) const;
+    void getLabel( std::string lookType, std::string * name ) const;
     ::QDomElement getElement( 
       std::string const lookType, std::string const lookName 
     ) const ;
@@ -150,9 +155,9 @@ namespace dtOO {
     );    
   private:
     std::vector< ::QDomElement > _rootRead;
-    std::vector< QDomDocument > _rootReadDoc;
+    std::vector< ::QDomDocument > _rootReadDoc;
     ::QDomElement _rootLoad;
-    QDomDocument _rootLoadDoc;
+    ::QDomDocument _rootLoadDoc;
     mutable std::string _currentState;
     std::string const _inFile;
     std::string const _outFile;

@@ -97,7 +97,7 @@ namespace dtOO {
 		// get labels and store filename in label
 		// and remove include nodes
 		std::vector< std::string > label;
-		getNames("include", &label);
+		getLabels("include", &label);
 		for (int ii=0; ii<label.size(); ii++) {
 		  ::QDomElement wElement = getElement("include", label[ii]);
 			dt__info( 
@@ -349,6 +349,19 @@ namespace dtOO {
       << "Save state = " << stateName << " to file = " << fileName << std::endl
       << dt__eval(currentState())
     );
+  }
+
+  void dtXmlParser::write( 
+    vectorHandling< constValue * > const & cValP 
+  ) const {
+    return write(&cValP);
+  }
+  
+  void dtXmlParser::write(
+    std::string const stateName, 
+    vectorHandling< constValue * > const & cValP
+  ) const {
+    return write(stateName, &cValP);
   }
   
   void dtXmlParser::writeFile( 
@@ -602,20 +615,20 @@ namespace dtOO {
   void dtXmlParser::createConstValue(
     vectorHandling< constValue * > * cValP
   ) const {
-    std::vector< std::string > label = getNames("constValue");
+    std::vector< std::string > label = getLabels("constValue");
 
 		dt__forAllIndex( label, ii) createConstValue(label[ii], cValP);
   }
 	
-  void dtXmlParser::getNames( 
+  void dtXmlParser::getLabels( 
     std::string lookType, std::vector< std::string > * names 
   ) const {
 		dt__throwIfWithMessage(
-      _rootRead.size()==0, getNames(), << "No XML file parsed."
+      _rootRead.size()==0, getLabels(), << "No XML file parsed."
     );
 
     dt__forAllIndex(_rootRead, ii) {
-      dt__throwIf(_rootRead[ii].isNull(), getName());
+      dt__throwIf(_rootRead[ii].isNull(), getLabel());
       
       std::vector< std::string > locNames;
       getChildLabels(lookType, &locNames, _rootRead[ii]);
@@ -623,22 +636,22 @@ namespace dtOO {
     }
   }
 	
-  std::vector< std::string > dtXmlParser::getNames( 
+  std::vector< std::string > dtXmlParser::getLabels( 
     std::string lookType 
   ) const {
 		std::vector< std::string > names;
-		getNames(lookType, &names);
+		getLabels(lookType, &names);
 		return names;
   }	
 
-  void dtXmlParser::getName( std::string lookType, std::string * name ) const {
+  void dtXmlParser::getLabel( std::string lookType, std::string * name ) const {
     std::vector< std::string > names;
     
-    getNames(lookType, &names);
+    getLabels(lookType, &names);
     
     if (names.size() != 1) {
       dt__warning(
-        getName(),
+        getLabel(),
         << "More than one " << dt__eval(lookType) << " in file." << std::endl
         << "Taking the first one."
       );
@@ -664,7 +677,7 @@ namespace dtOO {
   ::QDomElement dtXmlParser::getElement( std::string const lookType ) const {
     std::vector< std::string > label;
 
-    getNames(lookType, &label);
+    getLabels(lookType, &label);
 
     if (label.size() != 1) {
       dt__throw(getElement(),
@@ -749,7 +762,7 @@ namespace dtOO {
     vectorHandling< constValue * > const * const cVP, 
     vectorHandling< analyticFunction * > * sFP
 	) const {
-		std::vector< std::string > label = getNames("function");
+		std::vector< std::string > label = getLabels("function");
 		
 		dt__forAllIndex(label, ii) createAnalyticFunction(label[ii], bC, cVP, sFP);
 		
@@ -821,7 +834,7 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFP,        
 		vectorHandling< analyticGeometry * > * aGP
 	) const {
-		std::vector< std::string > label = getNames("part");
+		std::vector< std::string > label = getLabels("part");
 		
 		dt__forAllIndex(label, ii) {
       createAnalyticGeometry(label[ii], bC, cVP, sFP, aGP);
@@ -864,7 +877,7 @@ namespace dtOO {
 		vectorHandling< analyticGeometry * > const * const aGP,
 		vectorHandling< boundedVolume * > * bVP
 	) const {
-		std::vector< std::string > label = getNames("boundedVolume");
+		std::vector< std::string > label = getLabels("boundedVolume");
 		
 		dt__forAllIndex(label, ii) {
       createBoundedVolume(label[ii], bC, cVP, sFP, aGP, bVP);
@@ -917,7 +930,7 @@ namespace dtOO {
 		vectorHandling< boundedVolume * > * bVP,
 		vectorHandling< dtPlugin * > * pLP
 	) const {
-		std::vector< std::string > label = getNames("plugin");
+		std::vector< std::string > label = getLabels("plugin");
 		
 		dt__forAllIndex(label, ii) {
       createPlugin(label[ii], bC, cVP, sFP, aGP, bVP, pLP);
@@ -958,7 +971,7 @@ namespace dtOO {
 		vectorHandling< boundedVolume * > * bVP,
 		vectorHandling< dtCase * > * dCP
 	) const {
-		std::vector< std::string > label = getNames("case");
+		std::vector< std::string > label = getLabels("case");
 		
 		dt__forAllIndex(label, ii) {
       createCase(label[ii], bC, cVP, sFP, aGP, bVP, dCP);
