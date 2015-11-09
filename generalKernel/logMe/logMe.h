@@ -172,6 +172,24 @@ namespace dtOO {
         << "[ " << className() << "::"#functionname << " ]" << std::endl \
         message;\
     }
+  #define dt__infoNoClass(functionname, message) \
+    if (dtOO::logINFO > dtOO::FILELog::ReportingLevel() ) {} else { \
+      dtOO::FILELog().Get(dtOO::logINFO) \
+        << "[ ::"#functionname << " ]" << std::endl \
+        message;\
+    }
+  #define dt__debugNoClass(functionname, message) \
+    if (dtOO::logDEBUG > dtOO::FILELog::ReportingLevel() ) {} else { \
+      dtOO::FILELog().Get(dtOO::logDEBUG) \
+        << "[ ::"#functionname << " ]" << std::endl \
+        message;\
+    }
+  #define dt__warningNoClass(functionname, message) \
+    if (dtOO::logWARNING > dtOO::FILELog::ReportingLevel() ) {} else { \
+      dtOO::FILELog().Get(dtOO::logWARNING) \
+        << "[ ::"#functionname << " ]" << std::endl \
+        message;\
+    }
   #define dt__quickinfo(message) \
     if (dtOO::logINFO > dtOO::FILELog::ReportingLevel() ) {} else { \
       dtOO::FILELog().GetNoHeader(dtOO::logDEBUG) message;\

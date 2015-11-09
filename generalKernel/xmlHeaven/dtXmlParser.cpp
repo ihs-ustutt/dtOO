@@ -426,7 +426,7 @@ namespace dtOO {
     }
     
     //
-    //open file
+    // open file
     //
     if( !xmlFile.open(QIODevice::ReadOnly | QIODevice::Text) ) {
       dt__throw(checkFile,
