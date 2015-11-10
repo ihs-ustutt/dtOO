@@ -49,6 +49,11 @@ int main( int ac, char* av[] ) {
       ("xmlIn", po::value<std::string>(), "set input xml file (required)")
       ("xmlOut", po::value<std::string>(), "set output xml file (required)")
       (
+        "lastState", 
+        po::value< bool >()->default_value(false), 
+        "parse last state before creation? (optional)"
+      )    
+      (
         "constValue,c", 
         po::value< std::vector< std::string > >(), 
         "define constValue to modify (required)"
@@ -62,8 +67,8 @@ int main( int ac, char* av[] ) {
         "prefix", 
         po::value< std::string >()->default_value("pair"), 
         "define prefix of state label (optional)"
-      )    
-      ("log", po::value<std::string>(), "define logfile (required)")    
+      )
+      ("log", po::value<std::string>(), "define logfile (required)")
     ;
     po::variables_map vm;        
     po::store(po::parse_command_line(ac, av, desc), vm);
@@ -104,11 +109,18 @@ int main( int ac, char* av[] ) {
     );
     parser.parse();
     parser.load();
-
+    
     //
     // create constValues
     //
     parser.createConstValue(&cV);
+
+    //
+    // load last state
+    //
+    if ( vm["lastState"].as< bool >() ) {
+      parser.loadStateToConst( parser.getStates().back(), cV );
+    }
     
     std::vector< std::string > constValueString 
     = 
@@ -178,7 +190,7 @@ int main( int ac, char* av[] ) {
       } 
       parser.write(
         prefix+"_"+stringPrimitive::intToString(pairCounter), 
-        constValuePtrVec
+        cV
       );
       pairCounter++;
     }

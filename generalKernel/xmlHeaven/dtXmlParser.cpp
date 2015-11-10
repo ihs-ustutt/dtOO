@@ -418,9 +418,11 @@ namespace dtOO {
     // check if file exists, if not create
     //
     if ( !xmlFile.exists() ) {
-      dt__warning(checkFile,
-              << "Failed to open " << dt__eval(fileName) << std::endl
-              << "File does not exist. Try to create file.");
+      dt__warning(
+        checkFile,
+        << "Failed to open " << dt__eval(fileName) << std::endl
+        << "File does not exist. Try to create file."
+      );
       xmlFile.open(QIODevice::WriteOnly | QIODevice::Text);
       xmlFile.close();
     }
@@ -429,8 +431,10 @@ namespace dtOO {
     // open file
     //
     if( !xmlFile.open(QIODevice::ReadOnly | QIODevice::Text) ) {
-      dt__throw(checkFile,
-              << "Failed to open " << dt__eval(fileName));
+      dt__throw(
+        checkFile(),
+        << "Failed to open " << dt__eval(fileName)
+      );
     }
 
     // try to read file and check if it is correct
@@ -441,12 +445,15 @@ namespace dtOO {
     // parsing error
     //
     if( !xmlDocument.setContent( &xmlFile, &qString, &line, &column ) ) {
-      dt__warning( checkFile(),
-              << dt__eval(qPrintable(qString) ) << std::endl
-              << dt__eval(line) << std::endl
-              << dt__eval(column) << std::endl    
-              << "Failed to parse file " << fileName << std::endl
-              << "Recreate file.");
+      dt__warning( 
+        checkFile(),
+        << dt__eval(qPrintable(qString) ) << std::endl
+        << dt__eval(line) << std::endl
+        << dt__eval(column) << std::endl    
+        << "Failed to parse file " << fileName << std::endl
+        << "Recreate file."
+      );
+      
       //
       // initialize new file
       //
