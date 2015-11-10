@@ -57,6 +57,22 @@ namespace dtOO {
   }
 
   void dtMeshGRegion::operator()( dtGmshRegion * dtgr) {
+    //
+    // transfinite meshing
+    //
+    if (
+      dtgr->meshAttributes.method == MESH_TRANSFINITE
+    ) {
+      std::vector< ::GRegion * > delauny;      
+      ::meshGRegion mr( delauny );
+      mr(dtgr);    
+      MeshDelaunayVolume(delauny);   
+      
+      dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;      
+      
+      return;
+    }
+    
     std::list< dtGmshFace * > faces 
     = 
     dtGmshModel::cast2DtGmshFace( dtgr->faces() );

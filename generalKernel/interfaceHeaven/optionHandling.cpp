@@ -88,12 +88,15 @@ namespace dtOO {
   
   std::string optionHandling::getOption(std::string const name) const {
     std::string val = getOption(name, "");
-    if (  val != "") {
-      return val;
-    }
-    else {
-      dt__throw(getOption(), << "Option " << dt__eval(name) << " not found.");
-    }
+    
+    dt__throwIfWithMessage(
+      val == "",
+      getOption(), 
+      << "Option " << dt__eval(name) << " not found."
+    );    
+    
+    
+    return val;
   }
   
   bool optionHandling::hasOption(std::string const name) const {
@@ -145,9 +148,11 @@ namespace dtOO {
           return false;
         }
         else {
-          dt__warning(optionTrue(),
+          dt__warning(
+            optionTrue(),
             << "Option " << dt__eval(name) << " is set to " 
-            << _optionValue[ii] << ".");    
+            << _optionValue[ii] << "."
+          );    
           return false;
         }
       }
@@ -180,7 +185,7 @@ namespace dtOO {
           );
         }
         toAdd.first.push_back( optionNameTwin );
-        toAdd.second = stringPrimitive::stringToFloat( _optionValue[ii] );
+        toAdd.second = qtXmlBase::muParseString( _optionValue[ii] );
         group.push_back(toAdd);
       }
     }
@@ -211,7 +216,7 @@ namespace dtOO {
         toAdd.first.push_back(
           optionNameTwin
         );
-        toAdd.second = stringPrimitive::stringToInt( _optionValue[ii] );
+        toAdd.second = qtXmlBase::muParseStringInt( _optionValue[ii] );
         group.push_back(toAdd);
       }
     }

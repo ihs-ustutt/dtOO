@@ -26,25 +26,29 @@ namespace dtOO {
       pyr->getVertex(0), 
       pyr->getVertex(2),
       pyr->getVertex(4),
-      pyr->getVertex(3)
+      pyr->getVertex(3),
+      -1
     );
     ::MTetrahedron tet1(
       pyr->getVertex(4), 
       pyr->getVertex(2),
       pyr->getVertex(0),
-      pyr->getVertex(1)
+      pyr->getVertex(1),
+      -1
     );
     ::MTetrahedron tet2(
       pyr->getVertex(4), 
       pyr->getVertex(3),
       pyr->getVertex(1),
-      pyr->getVertex(2)
+      pyr->getVertex(2),
+      -1
     );
     ::MTetrahedron tet3(
       pyr->getVertex(1), 
       pyr->getVertex(3),
       pyr->getVertex(4),
-      pyr->getVertex(0)
+      pyr->getVertex(0),
+      -1
     );  
     if( pyr->getVolume()<0. ) {
       tet0.reverse();
