@@ -77,6 +77,8 @@ namespace dtOO {
       covise::coBooleanParam * _dCRunCurrentState;
       covise::coChoiceParam * _dCStateChoice;
       covise::coStringParam * _dCStateString;
+      covise::coChoiceParam * _dCStateResValueChoice;
+      covise::coFloatParam * _dCStateResValue;
       
 		  covise::coChoiceParam * _dPChoice;
       

@@ -13,6 +13,7 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
+#include <resultValueHeaven/resultValue.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <exceptionHeaven/eGeneral.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -114,6 +115,16 @@ namespace dtOO {
     _dCStateChoice->disable();
     _dCStateString = addStringParam("_dCStateString", "_dCStateStringDescription");
     _dCStateString->disable();
+    _dCStateResValueChoice 
+    = 
+    addChoiceParam(
+      "_dCStateResValueChoice", "_dCStateResValueChoiceDescription"
+    );
+    _dCStateResValueChoice->disable();
+    _dCStateResValue 
+    = 
+    addFloatParam("_dCStateResValue", "_dCStateResValueDescription");
+    _dCStateResValue->disable();
     
 		_dPChoice = addChoiceParam("_dPChoice", "_dPChoiceDescription");
     _dPChoice->disable();
@@ -184,6 +195,8 @@ namespace dtOO {
     tmp.push_back( _dCRunCurrentState );
     tmp.push_back( _dCStateChoice );
     tmp.push_back( _dCStateString );
+    tmp.push_back( _dCStateResValueChoice );
+    tmp.push_back( _dCStateResValue );
 		_uifPara.push_back( tmp );    
     
 		//
@@ -613,13 +626,36 @@ namespace dtOO {
               std::string(_dCStateChoice->getActLabel()) 
             ).c_str()
           );
-//          if (_dCRunCurrentState->getValue() ) {
-//            int pos = _dCChoice->getValue();
-//            _dCApply = _dC[pos];
-//            _recreate = false;
-//            setExecGracePeriod(0.1);
-//            selfExec();
-//          }
+          vectorHandling< resultValue * > result
+          =
+          _dC[ _dCChoice->getValue() ]->result(
+            std::string(_dCStateChoice->getActLabel()) 
+          );
+          abstractModule::updateChoiceParam(
+            _dCStateResValueChoice, &result
+          );  
+          result.destroy();
+				}		        
+				else if ( strcmp(paramName, "_dCStateResValueChoice") == 0 ) {
+//          _dCStateString->setValue(
+//            _dC[ _dCChoice->getValue() ]->statusStr( 
+//              std::string(_dCStateChoice->getActLabel()) 
+//            ).c_str()
+//          );
+          vectorHandling< resultValue * > result
+          =
+          _dC[ _dCChoice->getValue() ]->result(
+            std::string(_dCStateChoice->getActLabel()) 
+          );
+//          abstractModule::updateChoiceParam(
+//            _dCStateResValueChoice, &result
+//          );  
+          _dCStateResValue->setValue( 
+            result.get(
+              std::string(_dCStateResValueChoice->getActLabel())
+            )->operator()()
+          );
+          result.destroy();
 				}		        
 			}	      
 			//--------------------------------------------------------------------------
