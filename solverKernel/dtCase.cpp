@@ -1,12 +1,22 @@
 #include "dtCase.h"
+
 #include <logMe/logMe.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
+#include <resultValueHeaven/resultValue.h>
+#include <resultValueHeaven/floatValue.h>
 #include <interfaceHeaven/systemHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+
+#include <interfaceHeaven/stringPrimitive.h>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/trim_all.hpp>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 namespace dtOO {
   int const dtCase::SUCCESS = 0;
@@ -71,7 +81,8 @@ namespace dtOO {
     
     _status.clear();
     dt__forAllRefAuto(_directory, aDir) {
-      createStatus(aDir);
+      if ( systemHandling::directoryExists(aDir) ) createStatus(aDir);
+      
       std::string statusFile = aDir+"/status";
       if ( systemHandling::fileExists(statusFile) ) {
         std::ifstream in( statusFile.c_str() );
@@ -127,6 +138,7 @@ namespace dtOO {
   std::string dtCase::statusStr( std::string const & state ) const {
     return STATUSSTRING[ status(state) ];
   }
+  
   std::string dtCase::getDirectory( std::string const & state ) const {
     std::vector< std::string >::const_iterator it
     =
@@ -136,4 +148,45 @@ namespace dtOO {
     
     return _directory.at( static_cast<int>(it-_state.begin()) );
   }
+
+  vectorHandling< resultValue * > dtCase::result( 
+    std::string const & state 
+  ) const {
+    vectorHandling< resultValue * > ret(0);
+    
+    if ( status(state) == SUCCESS ) {
+      std::ifstream in( 
+        (getDirectory(state)+"/resultValue").c_str() 
+      );
+      if (in) {
+        //
+        // read file
+        //
+        std::string line;
+        while (getline(in, line)) {
+          boost::algorithm::trim_all(line);
+          std::vector< std::string > parts;
+          boost::split(
+            parts, line, boost::is_any_of(","), boost::token_compress_on
+          );
+
+          dt__throwIf(parts.size()!=3, result());
+          //
+          // add new resultValue
+          //
+          if (parts[0] == "floatValue") {
+            ret.push_back( 
+              new floatValue( 
+                parts[1], stringPrimitive::stringToFloat(parts[2])
+              ) 
+            );
+          }
+          else dt__throwUnexpected(result());
+        }
+      }
+      in.close();    
+    }
+    
+    return ret; 
+ }
 }

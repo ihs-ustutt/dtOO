@@ -12,6 +12,7 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class boundedVolume;
+  class resultValue;
   
   class dtCase : public labelHandling, public optionHandling {
     public:
@@ -35,6 +36,7 @@ namespace dtOO {
       std::string getDirectory( std::string const & state ) const;
       int status( std::string const & state ) const;
       std::string statusStr( std::string const & state ) const;
+      vectorHandling< resultValue * > result( std::string const & state ) const;
     public:
       static const int SUCCESS;
       static const int RUNNING;
