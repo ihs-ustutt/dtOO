@@ -22,11 +22,13 @@ namespace dtOO {
     int status = system( cmd.c_str() );
     int wExitStatus = WEXITSTATUS(status);
     
-    dt__info(command(),
-            << dt__eval(cmd) << std::endl
-            << dt__eval(nullStatus) << std::endl
-            << dt__eval(status) << std::endl
-            << dt__eval(wExitStatus) );
+    dt__debug(
+      command(),
+      << dt__eval(cmd) << std::endl
+      << dt__eval(nullStatus) << std::endl
+      << dt__eval(status) << std::endl
+      << dt__eval(wExitStatus) 
+    );
   }
 
   void systemHandling::commandAndWait( std::string const & cmd ) {
@@ -48,8 +50,8 @@ namespace dtOO {
     }
     pclose( status );
     
-    dt__info(
-			command(),
+    dt__debug(
+      commandAndWait(),
       << dt__eval(cmd) << std::endl
       << dt__eval(nullStatus) << std::endl
       << dt__eval(status)
@@ -65,9 +67,11 @@ namespace dtOO {
     //
     // output
     //    
-    dt__info(createDirectory(),
-            << dt__eval(dirPath) << std::endl
-            << dt__eval(status) );
+    dt__debug(
+      createDirectory(),
+      << dt__eval(dirPath) << std::endl
+      << dt__eval(status) 
+    );
     if (status) {
       return false;
     }

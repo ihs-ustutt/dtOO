@@ -226,6 +226,8 @@ namespace dtOO {
     )
   #define dt__throwUnexpected(functionname) \
     dt__throw(functionname, << "Unexpected")
+  #define dt__throwUnexpectedNoClass(functionname) \
+    dt__throwNoClass(functionname, << "Unexpected")
   #define dt__throwIfWithMessage(cond, functionname, message) \
     if (cond) { \
       dt__throw(functionname, \
@@ -235,6 +237,10 @@ namespace dtOO {
   #define dt__throwIf(cond, functionname) \
     if (cond) { \
       dt__throw(functionname, << "condition: "#cond" is true."); \
+    }
+  #define dt__throwIfNoClass(cond, functionname) \
+    if (cond) { \
+      dt__throwNoClass(functionname, << "condition: "#cond" is true."); \
     }
   #define dt__warnIfWithMessage(cond, functionname, message) \
     if (cond) { \
