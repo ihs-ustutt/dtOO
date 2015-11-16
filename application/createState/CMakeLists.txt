@@ -7,7 +7,6 @@ find_package(
   Boost 
   COMPONENTS 
   program_options
-#  mpi
   REQUIRED
 )
 #find_package(MPI REQUIRED)
