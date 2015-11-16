@@ -41,6 +41,7 @@ int main( int ac, char* av[] ) {
       ("log", po::value<std::string>(), "define logfile (required)")
       ("x", po::value< std::vector< std::string > >(), "define x values (required)")
       ("y", po::value< std::vector< std::string > >(), "define y values (required)")
+      ("yWorst", po::value< std::vector< float > >(), "define worst y values (required)")
     ;
     po::variables_map vm;        
     po::store(po::parse_command_line(ac, av, desc), vm);
@@ -54,6 +55,8 @@ int main( int ac, char* av[] ) {
       !vm.count("statePattern") || !vm.count("log")
       || 
       !vm.count("x") || !vm.count("y")      
+      ||
+      !vm.count("yWorst")
     ) {
       std::cout << desc << "\n";
       return 0;
@@ -102,6 +105,9 @@ int main( int ac, char* av[] ) {
     std::vector< std::string > yLabel 
     = 
     vm["y"].as< std::vector< std::string > >();
+    std::vector< float > yWorst 
+    = 
+    vm["yWorst"].as< std::vector< float > >();    
     
     dt__infoNoClass(main(), << "xLabel = " << xLabel);
     dt__infoNoClass(main(), << "yLabel = " << yLabel);
@@ -157,10 +163,17 @@ int main( int ac, char* av[] ) {
       dt__forAllIndex(xLabel, ii) {
         *(xOf[ii]) << cV.get(xLabel[ii])->getValue() << std::endl;
       }
-      dt__forAllIndex(yLabel, ii) {
-        *(yOf[ii]) << result.get(yLabel[ii])->operator()() << std::endl;
+      if ( !result.empty() ) {
+        dt__forAllIndex(yLabel, ii) {
+          *(yOf[ii]) << result.get(yLabel[ii])->operator()() << std::endl;
+        }
+        result.destroy();
       }
-      result.destroy();
+      else {
+        dt__forAllIndex(yLabel, ii) {
+          *(yOf[ii]) << yWorst[ii] << std::endl;
+        }   
+      }
     }
     //
     // destroy objects

@@ -92,9 +92,7 @@ namespace dtOO {
           _status.push_back(status);
           in.close();
         }
-        else _status.push_back(UNEXPECTED);
       }
-      else _status.push_back(UNEXPECTED);
     }
   }
 
@@ -132,7 +130,7 @@ namespace dtOO {
     ) {
       return _status.at( static_cast<int>(it-_state.begin()) );
     }
-    else dt__throwUnexpected(status());
+    else return UNEXPECTED;//dt__throwUnexpected(status());
   }
 
   std::string dtCase::statusStr( std::string const & state ) const {
