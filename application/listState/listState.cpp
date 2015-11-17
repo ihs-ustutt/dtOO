@@ -21,20 +21,17 @@ int main( int ac, char* av[] ) {
       ("help", "produce help message")
       ("xmlIn", po::value<std::string>(), "set input xml file (required)")
       ("xmlOut", po::value<std::string>(), "set output xml file (required)")
-//      ("type", po::value<std::string>(), "define type to output labels (required)")
-      ("log", po::value<std::string>(), "define logfile (required)")
+      (
+        "log", 
+        po::value<std::string>()->default_value("listState.log"), 
+        "define logfile (optional)"
+      )
     ;
     po::variables_map vm;        
     po::store(po::parse_command_line(ac, av, desc), vm);
     po::notify(vm);  
 
-    if (
-      vm.count("help")
-      ||
-      !vm.count("xmlIn") || !vm.count("xmlOut") 
-      || 
-      !vm.count("log")
-    ) {
+    if (vm.count("help") || !vm.count("xmlIn") || !vm.count("xmlOut") ) {
       std::cout << desc << "\n";
       return 0;
     }
@@ -47,6 +44,11 @@ int main( int ac, char* av[] ) {
       vm["log"].as<std::string>(), 
       std::ofstream::out | std::ofstream::trunc 
     );					
+    dt__infoNoClass(
+      main(), 
+      << "Call command:" << std::endl
+      << std::vector<std::string>(av, av+ac)
+    );
     
     //
     // create parser and parse

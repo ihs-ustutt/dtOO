@@ -38,7 +38,11 @@ int main( int ac, char* av[] ) {
       ("xmlIn", po::value<std::string>(), "set input xml file (required)")
       ("xmlOut", po::value<std::string>(), "set output xml file (required)")
       ("statePattern", po::value<std::string>(), "define state (required)")
-      ("log", po::value<std::string>(), "define logfile (required)")
+      (
+        "log", 
+        po::value<std::string>()->default_value("dtOOToSAFE.log"), 
+        "define logfile (optional)"
+      )
       ("x", po::value< std::vector< std::string > >(), "define x values (required)")
       ("y", po::value< std::vector< std::string > >(), "define y values (required)")
       ("yWorst", po::value< std::vector< float > >(), "define worst y values (required)")
@@ -52,7 +56,7 @@ int main( int ac, char* av[] ) {
       ||
       !vm.count("xmlIn") || !vm.count("xmlOut") 
       || 
-      !vm.count("statePattern") || !vm.count("log")
+      !vm.count("statePattern")
       || 
       !vm.count("x") || !vm.count("y")      
       ||
@@ -69,6 +73,11 @@ int main( int ac, char* av[] ) {
     Output2FILE::Stream().open( 
       vm["log"].as<std::string>(), std::ofstream::out | std::ofstream::trunc 
     );					
+    dt__infoNoClass(
+      main(), 
+      << "Call command:" << std::endl
+      << std::vector<std::string>(av, av+ac)
+    );
     
     dtXmlParser parser(
       vm["xmlIn"].as<std::string>(), vm["xmlOut"].as<std::string>()
@@ -77,6 +86,9 @@ int main( int ac, char* av[] ) {
     parser.parse();
     parser.load();
 
+    //
+    // create directory
+    //
     systemHandling::createDirectory("dtOOToSAFE");
     
     //

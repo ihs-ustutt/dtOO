@@ -35,7 +35,11 @@ int main( int ac, char* av[] ) {
       ("xmlIn", po::value<std::string>(), "set input xml file (required)")
       ("xmlOut", po::value<std::string>(), "set output xml file (required)")
       ("state", po::value<std::string>(), "define state to run (required)")
-      ("log", po::value<std::string>(), "define logfile (required)")
+      (
+        "log", 
+        po::value<std::string>()->default_value("runCase.log"), 
+        "define logfile (optional)"
+      )
     ;
     po::variables_map vm;        
     po::store(po::parse_command_line(ac, av, desc), vm);
@@ -46,7 +50,7 @@ int main( int ac, char* av[] ) {
       ||
       !vm.count("xmlIn") || !vm.count("xmlOut") 
       || 
-      !vm.count("state") || !vm.count("log")
+      !vm.count("state")
     ) {
       std::cout << desc << "\n";
       return 0;
@@ -81,6 +85,11 @@ int main( int ac, char* av[] ) {
       stringPrimitive::intToString(world.rank()), 
       std::ofstream::out | std::ofstream::trunc 
     );					
+    dt__infoNoClass(
+      main(), 
+      << "Call command:" << std::endl
+      << std::vector<std::string>(av, av+ac)
+    );    
 
     //
     // output states

@@ -161,7 +161,11 @@ int main( int ac, char* av[] ) {
         po::value< std::string >()->default_value("pair"), 
         "define prefix of state label (optional)"
       )
-      ("log", po::value<std::string>(), "define logfile (required)")
+      (
+        "log", 
+        po::value<std::string>()->default_value("createState.log"), 
+        "define logfile (optional)"
+      )
     ;
     po::variables_map vm;        
     po::store(po::parse_command_line(ac, av, desc), vm);
@@ -175,8 +179,6 @@ int main( int ac, char* av[] ) {
       !vm.count("constValue") 
       || 
       ( !vm.count("nSamples") && !vm.count("readCsv") )
-      || 
-      !vm.count("log")
     ) {
       std::cout << desc << std::endl;
       return 0;
@@ -190,7 +192,12 @@ int main( int ac, char* av[] ) {
       vm["log"].as<std::string>(), 
       std::ofstream::out | std::ofstream::trunc 
     );	
-   
+    dt__infoNoClass(
+      main(), 
+      << "Call command:" << std::endl
+      << std::vector<std::string>(av, av+ac)
+    );
+    
     //
     // create parser and parse
     //
@@ -199,7 +206,7 @@ int main( int ac, char* av[] ) {
     );
     parser.parse();
     parser.load();
-    
+        
     //
     // create constValues
     //

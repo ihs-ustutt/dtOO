@@ -5,6 +5,7 @@
 #include <interfaceHeaven/vectorHandling.h>
 #include <constValueHeaven/constValue.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <interfaceHeaven/systemHandling.h>
 
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
@@ -27,19 +28,17 @@ int main( int ac, char* av[] ) {
         po::value< std::string >()->default_value("stateToCSV"), 
         "define prefix of csv output file (optional)"
       )
-      ("log", po::value<std::string>(), "define logfile (required)")
+      (
+        "log", 
+        po::value<std::string>()->default_value("stateToCSV.log"), 
+        "define logfile (optional)"
+      )
     ;
     po::variables_map vm;        
     po::store(po::parse_command_line(ac, av, desc), vm);
     po::notify(vm);
 
-    if (
-      vm.count("help")
-      ||
-      !vm.count("xmlIn") || !vm.count("xmlOut") 
-      || 
-      !vm.count("log")
-    ) {
+    if ( vm.count("help") || !vm.count("xmlIn") || !vm.count("xmlOut") ) {
       std::cout << desc << std::endl;
       return 0;
     }
@@ -52,6 +51,11 @@ int main( int ac, char* av[] ) {
       vm["log"].as<std::string>(), 
       std::ofstream::out | std::ofstream::trunc 
     );	
+    dt__infoNoClass(
+      main(), 
+      << "Call command:" << std::endl
+      << std::vector<std::string>(av, av+ac)
+    );
 
     //
     // vectorHandling of constValues
@@ -68,6 +72,11 @@ int main( int ac, char* av[] ) {
     parser.load();
     
     //
+    // create directory
+    //
+    systemHandling::createDirectory("stateToCSV");
+    
+    //
     // create constValues
     //
     parser.createConstValue(&cV);
@@ -75,14 +84,14 @@ int main( int ac, char* av[] ) {
     //
     // get state labels
     //
-    std::vector< std::string > state= parser.getStates();
+    std::vector< std::string > state = parser.getStates();
 
     //
     // create output file
     //
     std::fstream of;
     of.open(
-      (vm["prefix"].as<std::string>()+".csv").c_str(),
+      ("./stateToCSV/"+vm["prefix"].as<std::string>()+".csv").c_str(),
       std::ios::out | std::ios::trunc
     );    
 
