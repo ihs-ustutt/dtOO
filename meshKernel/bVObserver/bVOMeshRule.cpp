@@ -124,7 +124,6 @@ namespace dtOO {
   
   void bVOMeshRule::preUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
-//		dt__throwIf(gm==NULL, preUpdate());
     
     ::GModel::setCurrent(gm);
     
@@ -185,7 +184,7 @@ namespace dtOO {
             (*it)->meshStatistics.status 
             !=
             ::GEntity::MeshGenerationStatus::DONE 
-          ) (*current2D)(*it);           
+          ) (*current2D)(*it);                            
         }    
       }
       else (*current2D)( gm->getDtGmshFaceByPhysical(currentGEntityStr) );
@@ -214,7 +213,7 @@ namespace dtOO {
             (*it)->_status 
             !=
             ::GEntity::MeshGenerationStatus::DONE 
-          ) (*current3D)(*it);                  
+          ) (*current3D)(*it);                                    
         }    
       }
       else (*current3D)( gm->getDtGmshRegionByPhysical(currentGEntityStr) );

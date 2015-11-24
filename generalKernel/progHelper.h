@@ -49,7 +49,7 @@ namespace dtOO {
     public:
       dt__classOnlyName(progHelper);
       template < class T >
-      static std::vector< T > list2Vector(std::list< T > & eeList) {
+      static std::vector< T > list2Vector(std::list< T > const & eeList) {
         std::vector< T > ee { 
           std::begin(eeList), 
           std::end(eeList) 
