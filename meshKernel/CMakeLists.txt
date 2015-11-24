@@ -7,6 +7,7 @@ SET(HEADERS
   bVObserver/bVONameRegions.h
   bVObserver/bVOWriteMSH.h
   bVObserver/bVOTransfiniteFaces.h
+  bVObserver/bVOSetNElements.h
   bVObserver/bVOTransfiniteRegions.h
   bVObserver/bVOOrientCellVolumes.h
   bVObserver/bVORecombineRecursiveRegions.h
@@ -35,6 +36,7 @@ SET(SOURCES
   bVObserver/bVONameRegions.cpp
   bVObserver/bVOWriteMSH.cpp
   bVObserver/bVOTransfiniteFaces.cpp
+  bVObserver/bVOSetNElements.cpp
   bVObserver/bVOTransfiniteRegions.cpp
   bVObserver/bVOOrientCellVolumes.cpp
   bVObserver/bVORecombineRecursiveRegions.cpp
