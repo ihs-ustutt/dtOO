@@ -92,6 +92,7 @@ SET(HEADERS
   meshEngine/dtMeshCustom2x3TransfiniteGFace.h
   meshEngine/dtMeshGRegionTetgen.h
   meshEngine/dtOptimizeMeshGRegion.h
+  meshEngine/dtMeshGFaceWithTransfiniteLayer.h
   meshEngine/dtMoabCore.h
   meshEngine/dtOMMesh.h
   meshEngine/dtOVMMesh.h
@@ -203,6 +204,7 @@ SET(SOURCES
   meshEngine/dtMeshCustom2x3TransfiniteGFace.cpp
   meshEngine/dtMeshGRegionTetgen.cpp
   meshEngine/dtOptimizeMeshGRegion.cpp
+  meshEngine/dtMeshGFaceWithTransfiniteLayer.cpp
   meshEngine/dtMoabCore.cpp
   meshEngine/dtOMMesh.cpp
   meshEngine/dtOVMMesh.cpp

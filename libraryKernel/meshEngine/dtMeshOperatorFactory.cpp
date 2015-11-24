@@ -14,6 +14,7 @@
 #include "dtMeshTransfiniteGFace.h"
 #include "dtMeshCustom2x3TransfiniteGFace.h"
 #include "dtOptimizeMeshGRegion.h"
+#include "dtMeshGFaceWithTransfiniteLayer.h"
 
 namespace dtOO {
   dtMeshOperatorFactory::dtMeshOperatorFactory() {
@@ -45,6 +46,9 @@ namespace dtOO {
       return new dtMeshCustom2x3TransfiniteGFace();
     }
     if (str == "dtOptimizeMeshGRegion") return new dtOptimizeMeshGRegion();
+    if (str == "dtMeshGFaceWithTransfiniteLayer") {
+      return new dtMeshGFaceWithTransfiniteLayer();
+    }
     
     dt__throw(create(), << str <<  " could not be created");  
   }
