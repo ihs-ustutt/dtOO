@@ -4,7 +4,6 @@
 #include <dtLinearAlgebra.h>
 #include "analyticGeometry.h"
 #include <logMe/dtMacros.h>
-#include <interfaceHeaven/threadSafe.h>
 
 namespace dtOO {
   class map1dTo3d : public analyticGeometry {
@@ -50,7 +49,7 @@ namespace dtOO {
       float l_u( float const & uu, int const & nP ) const;
 	    double funValue(const double xx ) const;
     private:
-      mutable threadSafe< float > _tmpL;
+      mutable float _tmpL;
   };  
   
 	//

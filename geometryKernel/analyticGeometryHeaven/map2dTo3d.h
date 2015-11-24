@@ -120,7 +120,7 @@ namespace dtOO {
       ) const;
 	    double F(double const * xx) const;        
     private:
-      mutable threadSafe< dtPoint3 > _pXYZ;      
+      mutable dtPoint3 _pXYZ;      
   };
   
 	//

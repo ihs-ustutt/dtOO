@@ -130,7 +130,7 @@ namespace dtOO {
 
 	double map1dTo3d::funValue(const double xx ) const {	
 		float ll = l_u( static_cast<float>(xx) );
-		return static_cast< double >( ll - _tmpL() );
+		return static_cast< double >( ll - _tmpL );
 	}
 	
   float map1dTo3d::u_l( float const & ll ) const {
@@ -148,7 +148,7 @@ namespace dtOO {
 		}
 		
 		if (mustIterate) {
-			_tmpL() = ll;
+			_tmpL = ll;
 
 			// Create the Integrator
 			bool check = false;

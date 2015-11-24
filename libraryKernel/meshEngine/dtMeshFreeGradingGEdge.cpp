@@ -10,6 +10,7 @@
 #include <gmsh/GVertex.h>
 #include <gmsh/MLine.h>
 #include <interfaceHeaven/timeHandling.h>
+#include <interfaceHeaven/threadSafe.h>
 #include <omp.h>
 
 namespace dtOO {
@@ -72,10 +73,12 @@ namespace dtOO {
       std::vector< float > uu(gg.size());
       #pragma omp parallel 
       {
+        threadSafe< dt__pH(map1dTo3d) > wMap;
+        wMap().reset( m1d->clone() );
         #pragma omp for
         dt__forFromToIndex(1, nP-1, ii) {
-          uu[ii] = m1d->u_l( gg[ii] * ll );
-        }
+          uu[ii] = wMap()->u_l( gg[ii] * ll );
+        }     
       }
       
       //
@@ -92,20 +95,11 @@ namespace dtOO {
       //
       // add mesh elements
       //
-      if ( dtge->meshAttributes.coeffTransfinite < 1. ) {
-        dtge->addLine( 
-          new ::MLine( 
-            dtge->mesh_vertices.front(), dtge->getEndVertex()->mesh_vertices[0]
-          )
-        );
-      }
-      else {
-        dtge->addLine( 
-          new ::MLine( 
-            dtge->getBeginVertex()->mesh_vertices[0], dtge->mesh_vertices.front()
-          )
-        );        
-      }
+      dtge->addLine( 
+        new ::MLine( 
+          dtge->getBeginVertex()->mesh_vertices[0], dtge->mesh_vertices.front()
+        )
+      );        
       dt__forFromToIndex(1, dtge->mesh_vertices.size(), ii) {
         dtge->addLine( 
           new ::MLine( 
@@ -113,20 +107,11 @@ namespace dtOO {
           )
         );        
       }
-      if ( dtge->meshAttributes.coeffTransfinite < 1. ) {
-        dtge->addLine( 
-          new ::MLine( 
-            dtge->getBeginVertex()->mesh_vertices[0], dtge->mesh_vertices.back()
-          )
-        );            
-      }
-      else {
-        dtge->addLine( 
-          new ::MLine( 
-            dtge->mesh_vertices.back(), dtge->getEndVertex()->mesh_vertices[0]
-          )
-        );                    
-      }
+      dtge->addLine( 
+        new ::MLine( 
+          dtge->mesh_vertices.back(), dtge->getEndVertex()->mesh_vertices[0]
+        )
+      );                    
       dtge->meshStatistics.status = ::GEntity::MeshGenerationStatus::DONE;
     }
     else dtMeshGEdge::operator()( dtge );
