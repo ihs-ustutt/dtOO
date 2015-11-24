@@ -215,7 +215,15 @@ namespace dtOO {
       }
     }
     mW.distribute();
-        
+
+    if (optionHandling::optionTrue("debug")) {
+      dt__onlyMaster {
+        gm->writeMSH(
+          ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+        );
+      }
+    }
+            
     tag.clear();
     onRank.clear();
     currentRank = 0;
@@ -303,6 +311,14 @@ namespace dtOO {
       }
     }
     mW.distribute();
+    
+    if (optionHandling::optionTrue("debug")) {
+      dt__onlyMaster {
+        gm->writeMSH(
+          ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+        );
+      }
+    }
     
 //    //
 //    // 3D
@@ -420,6 +436,14 @@ namespace dtOO {
         ::GEntity::MeshGenerationStatus::DONE;
       }
     }
-    mW.distribute();    
+    mW.distribute();  
+
+    if (optionHandling::optionTrue("debug")) {
+      dt__onlyMaster {
+        gm->writeMSH(
+          ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+        );
+      }
+    }    
   }
 }

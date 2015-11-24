@@ -156,6 +156,11 @@ namespace dtOO {
             !=
             ::GEntity::MeshGenerationStatus::DONE 
           ) (*current1D)(*it); 
+          if (optionHandling::optionTrue("debug")) {
+            gm->writeMSH(
+              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+            );
+          }
         }
       }
       else dt__throw(preUpdate(), << "Only (*)-meshing is currently supported.");
@@ -184,7 +189,12 @@ namespace dtOO {
             (*it)->meshStatistics.status 
             !=
             ::GEntity::MeshGenerationStatus::DONE 
-          ) (*current2D)(*it);                            
+          ) (*current2D)(*it);            
+          if (optionHandling::optionTrue("debug")) {
+            gm->writeMSH(
+              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+            );
+          }          
         }    
       }
       else (*current2D)( gm->getDtGmshFaceByPhysical(currentGEntityStr) );
@@ -214,6 +224,11 @@ namespace dtOO {
             !=
             ::GEntity::MeshGenerationStatus::DONE 
           ) (*current3D)(*it);                                    
+          if (optionHandling::optionTrue("debug")) {
+            gm->writeMSH(
+              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+            );
+          }          
         }    
       }
       else (*current3D)( gm->getDtGmshRegionByPhysical(currentGEntityStr) );
