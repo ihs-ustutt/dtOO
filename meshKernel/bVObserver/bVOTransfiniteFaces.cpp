@@ -53,7 +53,8 @@ namespace dtOO {
 		dt__throwIf(gm==NULL, update());
 		
     dt__forAllConstIter(std::vector< std::string >, _faceLabel, fLIt) {
-      gm->getDtGmshFaceByPhysical(*fLIt)->meshTransfiniteWNElements(
+      gm->getDtGmshFaceByPhysical(*fLIt)->meshTransfinite();
+      gm->getDtGmshFaceByPhysical(*fLIt)->meshWNElements(
         _nE[0], _nE[1]
       );
     }

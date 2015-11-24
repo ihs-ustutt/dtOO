@@ -46,8 +46,12 @@ namespace dtOO {
     bool isClosed( int const dim ) const;
     void meshTransfinite( void );
     void meshRecombine( void );
-    void meshTransfiniteWNElements( 
+    void meshWNElements( 
       int const & nElementsU, int const & nElementsV 
+    );
+    void meshWNElements(
+      int const & nElements0, int const & nElements1, 
+      int const & nElements2, int const & nElements3 
     );
     std::vector< int > estimateTransfiniteNElements( 
       float const & uWidth, float const & vWidth 

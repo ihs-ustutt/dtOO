@@ -238,16 +238,15 @@ namespace dtOO {
 		this->meshAttributes.recombine = 1;
 	}
   
-  void dtGmshFace::meshTransfiniteWNElements( 
+  void dtGmshFace::meshWNElements( 
     int const & nElementsU, int const & nElementsV 
   ) {	
-		meshTransfinite();
 		std::list< dtGmshEdge * > eeList = dtGmshModel::cast2DtGmshEdge(edges());
 		
 		//
 		// only supported for 4-sided faces
 		//
-		dt__throwIf(eeList.size()!=4, meshTransfiniteWNElements());
+		dt__throwIf(eeList.size()!=4, meshWNElements());
 		std::vector< dtGmshEdge * > ee = progHelper::list2Vector(eeList);
 		
 		//
@@ -258,6 +257,27 @@ namespace dtOO {
 		ee[2]->meshTransfiniteWNElements(1, 1., nElementsU);
     ee[3]->meshTransfiniteWNElements(1, 1., nElementsV);		
 	}
+
+  void dtGmshFace::meshWNElements( 
+    int const & nElements0, int const & nElements1, 
+    int const & nElements2, int const & nElements3 
+  ) {	
+		std::list< dtGmshEdge * > eeList = dtGmshModel::cast2DtGmshEdge(edges());
+		
+		//
+		// only supported for 4-sided faces
+		//
+		dt__throwIf(eeList.size()!=4, meshWNElements());
+		std::vector< dtGmshEdge * > ee = progHelper::list2Vector(eeList);
+		
+		//
+		// set number of elements
+		//
+		ee[0]->meshTransfiniteWNElements(1, 1., nElements0);
+    ee[1]->meshTransfiniteWNElements(1, 1., nElements1);
+		ee[2]->meshTransfiniteWNElements(1, 1., nElements2);
+    ee[3]->meshTransfiniteWNElements(1, 1., nElements3);		
+	}  
 	
   void dtGmshFace::correctIfTransfinite( void ) {
 		//
