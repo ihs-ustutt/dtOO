@@ -27,6 +27,7 @@ namespace dtOO {
     virtual dtPoint3 getPoint( 
       float const & uu, float const & vv, float const & ww     
     ) const; 
+    virtual std::string dumpToString(void) const;    
     //
     //
     //
@@ -121,6 +122,21 @@ namespace dtOO {
   bool map3dTo3dTransformed< funT >::isTransformed( void ) const {
     return true;
   }  
+
+  template < typename funT >  
+	std::string map3dTo3dTransformed< funT >::dumpToString(void) const {
+		std::stringstream ss;
+		
+		ss
+    << 
+    dt__dumpToString(
+      << "funT = " << funT::virtualClassName() << std::endl
+      << funT::dumpToString() << std::endl
+      << "_dtT = " << _dtT->virtualClassName()
+    );
+		
+		return ss.str();
+	}  
 }
 #endif	/* map3dTo3dTransformed_H */
 

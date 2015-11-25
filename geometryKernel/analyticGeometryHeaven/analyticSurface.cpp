@@ -205,9 +205,12 @@ namespace dtOO {
 	std::string analyticSurface::dumpToString( void ) const {
 		std::stringstream ss;
 		
-		ss 
-    << dt__eval(_dtS->virtualClassName()) << std::endl
-    << _dtS->dumpToString();
+		ss
+    << 
+    dt__dumpToString( 
+      << "_dtS = " << _dtS->virtualClassName() << std::endl
+      << _dtS->dumpToString()
+    );
 		
 		return ss.str();
 	}	

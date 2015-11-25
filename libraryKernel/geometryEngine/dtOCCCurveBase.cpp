@@ -29,7 +29,12 @@ namespace dtOO {
     
     Handle(Geom_Curve) const & cH = getOCC();
     Handle(Standard_Type) const & stH = cH->DynamicType();
-    ss << stH->Name();
+
+    ss 
+    << dt__dumpToString(
+      << dt__eval(stH->Name()) << std::endl
+      << dt__eval( _hanWrap->occHandle.Access() )
+    );    
     
     return ss.str();
   }

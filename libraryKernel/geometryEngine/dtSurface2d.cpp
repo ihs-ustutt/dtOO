@@ -182,6 +182,10 @@ namespace dtOO {
 	}		
   
 	std::string dtSurface2d::dumpToString(void) const {
-		return std::string("");
+		std::stringstream ss;
+		
+		ss << dt__dumpToString( << "" );
+		
+		return ss.str();
 	}   
 }

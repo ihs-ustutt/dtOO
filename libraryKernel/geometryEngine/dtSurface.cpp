@@ -228,7 +228,11 @@ namespace dtOO {
 	}	
   
 	std::string dtSurface::dumpToString(void) const {
-		return std::string("");
+		std::stringstream ss;
+		
+		ss << dt__dumpToString( << "" );
+		
+		return ss.str();
 	}  
 	
 	void dtSurface::offsetNormal(float const nn) {

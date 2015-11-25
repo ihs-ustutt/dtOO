@@ -210,11 +210,15 @@ namespace dtOO {
   std::string rotatingMap2dTo3d::dumpToString( void ) const {
 		std::stringstream ss;
 		
-		ss 
-		<< dt__eval(_m2d->virtualClassName()) << std::endl
-    << dt__point3d(_pp) << std::endl
-		<< dt__vector3d(_vv);
-		
+		ss
+    << 
+    dt__dumpToString( 
+      << "_m2d = " << _m2d->virtualClassName() << std::endl
+      << _m2d->dumpToString() << std::endl
+      << dt__point3d(_pp) << std::endl
+		  << dt__vector3d(_vv)     
+    );    
+
 		return ss.str();		
 	}
   

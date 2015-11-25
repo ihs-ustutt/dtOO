@@ -292,7 +292,11 @@ namespace dtOO {
 	std::string dtOCCSurface2d::dumpToString( void ) const {
 		std::stringstream ss;
 		
-		ss << dt__eval(_surface->dumpToString());
+		ss 
+    << 
+    dt__dumpToString( 
+      << dt__eval(_surface->dumpToString())
+    );
 		
 		return ss.str();
 	}

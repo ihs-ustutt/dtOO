@@ -140,13 +140,16 @@ namespace dtOO {
 	std::string vec3dTwoDInMap3dTo3d::dumpToString( void ) const {
 		std::stringstream ss;
 		
-		ss 
-		<< dt__eval(_m3d->virtualClassName()) << std::endl
-	  << _m3d->dumpToString() << std::endl
-    << dt__eval(_v2d->virtualClassName()) << std::endl
-		<< _v2d->dumpToString() << std::endl
-    << dt__eval(_percentF);
-		
+		ss
+    << 
+    dt__dumpToString( 
+      << "_m3d = " << _m3d->virtualClassName() << std::endl
+      << _m3d->dumpToString() << std::endl
+      << "_v2d = " << _v2d->virtualClassName() << std::endl
+      << _v2d->dumpToString() << std::endl
+      << "_percentF = " << _percentF
+    );    
+    
 		return ss.str();
 	}
 }

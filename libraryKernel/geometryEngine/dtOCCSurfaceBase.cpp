@@ -30,7 +30,12 @@ namespace dtOO {
     
     Handle(Geom_Surface) const & sH = getOCC();
     Handle(Standard_Type) const & stH = sH->DynamicType();
-    ss << stH->Name();
+
+    ss 
+    << dt__dumpToString(
+      << dt__eval(stH->Name()) << std::endl
+      << dt__eval( _hanWrap->occHandle.Access() )
+    );    
     
     return ss.str();
   }

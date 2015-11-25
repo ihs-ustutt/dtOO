@@ -121,7 +121,11 @@ namespace dtOO {
 	}
 	
 	std::string dtCurve2d::dumpToString(void) const {
-		return std::string("");
+		std::stringstream ss;
+		
+		ss << dt__dumpToString( << "" );
+		
+		return ss.str();
 	} 
   
   dt__C_addCloneForpVH(dtCurve2d);    

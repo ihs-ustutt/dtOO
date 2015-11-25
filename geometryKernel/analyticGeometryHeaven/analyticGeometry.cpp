@@ -69,13 +69,16 @@ namespace dtOO {
 			dump(), 
 			<< dt__eval(getLabel()) << std::endl
 		  << dt__eval(virtualClassName()) << std::endl
-			<< "dumpToString()" << std::endl
 			<< dumpToString()
 		);
   }
 	
 	std::string analyticGeometry::dumpToString(void) const {
-		return std::string("");
+		std::stringstream ss;
+		
+		ss << dt__dumpToString( << "" );
+		
+		return ss.str();
 	}
 
   bool analyticGeometry::isTransformed( void ) const {

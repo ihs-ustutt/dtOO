@@ -144,7 +144,11 @@ namespace dtOO {
 	std::string dtOCCCurve2d::dumpToString( void ) const {
 		std::stringstream ss;
 		
-		ss << dt__eval(_curve->dumpToString());
+		ss 
+    << 
+    dt__dumpToString( 
+      << dt__eval(_curve->dumpToString())
+    );
 		
 		return ss.str();
 	}	
