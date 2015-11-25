@@ -154,6 +154,10 @@ namespace dtOO {
   #define dt__point3d( point ) \
     #point" = ( " << point.x() << ", " << point.y() << ", " << point.z() << ")"
   #define dt__eval( eval ) #eval" = " << eval
+  #define dt__dumpToString( log ) \
+    this << " {" << std::endl \
+    log << std::endl \
+		<< "}"
   #define dt__info(functionname, message) \
     if (dtOO::logINFO > dtOO::FILELog::ReportingLevel() ) {} else { \
       dtOO::FILELog().Get(dtOO::logINFO) \
