@@ -57,7 +57,7 @@ namespace dtOO {
     //
     // save target value in mutable variable
     //
-    _invY() = yy;
+    _invY = yy;
 
     int const numInitGuess = 11;    
     double initGuess[numInitGuess] 
@@ -131,7 +131,7 @@ namespace dtOO {
           float currentDistance 
           = 
           distance( 
-            Y(x_percent(retX)), _invY()
+            Y(x_percent(retX)), _invY
           );
           bestDistance = std::min(bestDistance, currentDistance);
           std::cout << "currentDistance = " << currentDistance << std::endl;
@@ -163,7 +163,7 @@ namespace dtOO {
     dt__throw( 
       invY(),
       << dt__eval(getLabel()) << std::endl
-      << dt__eval(_invY()) << std::endl
+      << dt__eval(_invY) << std::endl
       << dt__eval( Y(xxMin) ) << std::endl
       << dt__eval( Y(xxMiddle) ) << std::endl
       << dt__eval( Y(xxMax) ) << std::endl
@@ -294,11 +294,11 @@ namespace dtOO {
       objective 
       + 
       (
-        yy[ii] - _invY()[ii]
+        yy[ii] - _invY[ii]
       )
       *
       (
-        yy[ii] - _invY()[ii]
+        yy[ii] - _invY[ii]
       );
     }
     return sqrt(objective);

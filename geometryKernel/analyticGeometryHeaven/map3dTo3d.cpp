@@ -891,7 +891,7 @@ namespace dtOO {
     double &U, double &V, double &W,
     double extU, double extV, double extW
   ) const {
-    _pXYZ() = dtPoint3(X, Y, Z);
+    _pXYZ = dtPoint3(X, Y, Z);
 		// 
 		// multidimensional minimization
 		//
@@ -960,7 +960,7 @@ namespace dtOO {
   
 	double map3dTo3d::F(double const * xx) const {	
     return dtLinearAlgebra::length(
-      _pXYZ() - getPointPercent(dtPoint3(xx[0], xx[1], xx[2]))
+      _pXYZ - getPointPercent(dtPoint3(xx[0], xx[1], xx[2]))
     );
 	}	   
 }

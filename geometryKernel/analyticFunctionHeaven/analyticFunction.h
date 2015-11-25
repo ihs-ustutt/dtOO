@@ -7,7 +7,6 @@
 #include <vector>
 #include <interfaceHeaven/renderInterface.h>
 #include <dtLinearAlgebra.h>
-#include <interfaceHeaven/threadSafe.h>
 
 namespace dtOO {
   typedef std::vector< float > aFX;
@@ -59,7 +58,7 @@ namespace dtOO {
     static float distance( aFX const & x0, aFX const & x1 );
   private:
 	  double F(double const * xx) const;
-    mutable threadSafe< aFY > _invY;
+    mutable aFY _invY;
   };
   dt__H_addCloneForpVH(analyticFunction);
 }

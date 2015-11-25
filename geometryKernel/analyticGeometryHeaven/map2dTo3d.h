@@ -4,7 +4,6 @@
 #include "analyticGeometry.h"
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
-#include <interfaceHeaven/threadSafe.h>
 
 namespace dtOO {
   class map1dTo3d;
