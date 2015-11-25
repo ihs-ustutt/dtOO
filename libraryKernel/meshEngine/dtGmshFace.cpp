@@ -140,6 +140,11 @@ namespace dtOO {
     *dudv = SVector3(ddUddV.x(), ddUddV.y(), ddUddV.z()); 
   }
 
+  dtVector3 dtGmshFace::normal( dtPoint2 const & uv ) const {
+    ::SVector3 s3 = GFace::normal( ::SPoint2( uv.x(), uv.y() ) );  
+    return dtVector3( s3.x(), s3.y(), s3.z() );
+  }
+  
   GPoint dtGmshFace::point(double par1, double par2) const {
     double pp[2] = {par1, par2};
     

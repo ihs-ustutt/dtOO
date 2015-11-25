@@ -35,6 +35,8 @@ namespace dtOO {
     virtual void secondDer(
       const SPoint2 &param, SVector3 *dudu, SVector3 *dvdv, SVector3 *dudv
     ) const;
+    using GFace::normal;
+    dtVector3 normal( dtPoint2 const & uv ) const;
     SPoint2 reparamOnFace( dtPoint3 const ppXYZ ) const;
     SPoint2 reparamOnFace(::GVertex const * gv) const;
     virtual SPoint2 parFromPoint(const SPoint3 &, bool onSurface) const;    
