@@ -14,7 +14,7 @@ namespace dtOO {
   }
 
   void dtMeshGFace::operator()( dtGmshFace * dtgf) {
-      ::meshGFace()( dtgf );
+    ::meshGFace()( dtgf );
   }
 }
 

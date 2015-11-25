@@ -16,8 +16,8 @@ namespace dtOO {
   }
 
   void dtMeshAndOrientGFace::operator()( dtGmshFace * dtgf) {
-      dtMeshGFace()( dtgf );
-      ::orientMeshGFace()(dtgf);
+    dtMeshGFace()( dtgf );
+    ::orientMeshGFace()(dtgf);
   }
 }
 
