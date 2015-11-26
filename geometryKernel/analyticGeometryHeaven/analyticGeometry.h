@@ -9,6 +9,7 @@
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/threadSafeRoot.h>
 
 namespace dtOO { 
   /**
@@ -56,6 +57,7 @@ namespace dtOO {
     mutable int _resU;
     mutable int _resV;
     mutable int _resW;
+    threadSafeRoot _threadRoot;
   };
   
 	//
