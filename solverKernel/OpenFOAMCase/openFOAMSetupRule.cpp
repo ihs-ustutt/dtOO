@@ -22,6 +22,8 @@
 #include <epsilonWallFunctionFvPatchScalarField.H>
 #include <kqRWallFunctionFvPatchField.H>
 #include <nutWallFunctionFvPatchScalarField.H>
+#include <turbulentIntensityKineticEnergyInletFvPatchScalarField.H>
+#include <turbulentMixingLengthDissipationRateInletFvPatchScalarField.H>
 #include <dictionary.H>
 
 namespace dtOO {
@@ -166,7 +168,9 @@ namespace dtOO {
           
           return;
         }
-        else if( stringPrimitive::stringContains("kqRWallFunction", thisRule) ) {
+        else if ( 
+          stringPrimitive::stringContains("kqRWallFunction", thisRule) 
+        ) {
           //
           // create and set new patch
           //
@@ -182,7 +186,9 @@ namespace dtOO {
           
           return;          
         }
-        else if( stringPrimitive::stringContains("epsilonWallFunction", thisRule) ) {
+        else if ( 
+          stringPrimitive::stringContains("epsilonWallFunction", thisRule) 
+        ) {
           //
           // create and set new patch
           //
@@ -198,7 +204,9 @@ namespace dtOO {
           
           return;          
         }      
-        else if( stringPrimitive::stringContains("nutWallFunction", thisRule) ) {
+        else if ( 
+          stringPrimitive::stringContains("nutWallFunction", thisRule) 
+        ) {
           //
           // create and set new patch
           //
@@ -213,7 +221,50 @@ namespace dtOO {
           );
           
           return;          
-        }                
+        }            
+        else if ( 
+          stringPrimitive::stringContains(
+            "turbulentIntensityKineticEnergyInlet", thisRule
+          ) 
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::turbulentIntensityKineticEnergyInletFvPatchScalarField(
+                field.mesh().boundary()[i], 
+                field, 
+                parseOptionDict(
+                  "turbulentIntensityKineticEnergyInlet", thisRule
+                )
+            ) 
+          );
+          
+          return;          
+        }     
+        else if ( 
+          stringPrimitive::stringContains(
+            "turbulentMixingLengthDissipationRateInlet", thisRule
+          ) 
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::incompressible
+              ::turbulentMixingLengthDissipationRateInletFvPatchScalarField(
+                field.mesh().boundary()[i], 
+                field, 
+                parseOptionDict(
+                  "turbulentMixingLengthDissipationRateInlet", thisRule
+                )
+            ) 
+          );
+          
+          return;          
+        }         
         else dt__throwUnexpected(executeOnVolScalarField());
       }
     }
