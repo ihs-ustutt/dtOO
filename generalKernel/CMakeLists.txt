@@ -65,6 +65,7 @@ SET(HEADERS
   interfaceHeaven/twoDArrayHandling.h
   interfaceHeaven/timeHandling.h
   interfaceHeaven/threadSafe.h
+  interfaceHeaven/threadSafeRoot.h
   interfaceHeaven/meshWhisperer.h
   interfaceHeaven/mpiDistributed.h
   logMe/logBase.h
@@ -135,6 +136,7 @@ SET(SOURCES
   interfaceHeaven/floatHandling.cpp
   interfaceHeaven/intHandling.cpp
   interfaceHeaven/timeHandling.cpp
+  interfaceHeaven/threadSafeRoot.cpp
   interfaceHeaven/meshWhisperer.cpp
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
