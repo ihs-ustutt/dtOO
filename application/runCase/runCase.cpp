@@ -35,6 +35,7 @@ int main( int ac, char* av[] ) {
       ("xmlIn", po::value<std::string>(), "set input xml file (required)")
       ("xmlOut", po::value<std::string>(), "set output xml file (required)")
       ("state", po::value<std::string>(), "define state to run (required)")
+      ("case", po::value<std::string>(), "define case to run (required)")
       (
         "log", 
         po::value<std::string>()->default_value("runCase.log"), 
@@ -50,7 +51,7 @@ int main( int ac, char* av[] ) {
       ||
       !vm.count("xmlIn") || !vm.count("xmlOut") 
       || 
-      !vm.count("state")
+      !vm.count("state") || !vm.count("case")
     ) {
       std::cout << desc << "\n";
       return 0;
@@ -110,7 +111,11 @@ int main( int ac, char* av[] ) {
     parser.createAnalyticGeometry(&bC, &cV, &aF, &aG);
     parser.createBoundedVolume(&bC, &cV, &aF, &aG, &bV);
     parser.createCase(&bC, &cV, &aF, &aG, &bV, &dtC);
-    dtC.back()->runCurrentState();
+    
+    //
+    // run current case
+    //
+    dtC.get(vm["case"].as<std::string>())->runCurrentState();
 
     //
     // destroy objects
