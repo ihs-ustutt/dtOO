@@ -61,7 +61,7 @@ find_package(
 #TKSTEP209 TKSTEPBase 
 
 find_package(MUPARSER REQUIRED muparser)
-find_package(ROOT REQUIRED)
+find_package(ROOT REQUIRED Core Matrix MathCore MathMore Minuit2 Thread)
 find_package(GSL REQUIRED)
 find_package(CGNS REQUIRED COMPONENTS cgns)
 find_package(
