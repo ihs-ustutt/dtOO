@@ -242,6 +242,9 @@ namespace dtOO {
         dtMesh2DOperator::DownCast(_meshOperator.get(currentOperatorStr) )
       );
       
+      //
+      // general wild card
+      //      
       if (currentGEntityStr == "*") {
 			  std::list< dtGmshFace * > ff 
         = 
@@ -261,7 +264,50 @@ namespace dtOO {
           }
         }    
       }
-      else {
+      //
+      // specific wild card
+      //
+      else if ( stringPrimitive::stringContains("*", currentGEntityStr) ) {
+        //
+        // clean specific wild card
+        //
+        std::string patternGE
+        = 
+        stringPrimitive::replaceStringInString("*", "", currentGEntityStr);
+        
+        //
+        // determine entities
+        //
+			  std::list< dtGmshFace * > ff 
+        = 
+        dtGmshModel::cast2DtGmshFace( gm->faces() );        
+			  dt__forAllIter(std::list< dtGmshFace * >, ff, it) {
+          if ( 
+            (
+              (*it)->meshStatistics.status 
+              !=
+              ::GEntity::MeshGenerationStatus::DONE 
+            )
+            &&
+            (
+              stringPrimitive::stringContains(
+                patternGE, gm->getPhysicalString(*it)
+              )
+            )
+          ) {
+            moTwo.push_back(current2D);
+            tag.push_back((*it)->tag());
+            onRank.push_back(currentRank);
+            (*it)->meshStatistics.status 
+            = 
+            ::GEntity::MeshGenerationStatus::DONE;   
+          }
+        }            
+      }      
+      //
+      // no wild card
+      //      
+      else if ( !stringPrimitive::stringContains("*", currentGEntityStr) ) {
         moTwo.push_back(current2D);
         tag.push_back(gm->getDtGmshFaceByPhysical(currentGEntityStr)->tag());
         onRank.push_back(currentRank);  
@@ -269,6 +315,8 @@ namespace dtOO {
         = 
         ::GEntity::MeshGenerationStatus::DONE;
       }
+      else dt__throw( preUpdate(), << dt__eval(currentGEntityStr) );
+      
       dt__info(
         preUpdate(),
         << "Meshing face " << tag.back() << " on rank " << onRank.back()

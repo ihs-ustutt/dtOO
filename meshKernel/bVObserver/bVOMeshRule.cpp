@@ -180,6 +180,9 @@ namespace dtOO {
         dtMesh2DOperator::DownCast(_meshOperator.get(currentOperatorStr) )
       );
       
+      //
+      // general wild card
+      //
       if (currentGEntityStr == "*") {
 			  std::list< dtGmshFace * > ff 
         = 
@@ -189,7 +192,7 @@ namespace dtOO {
             (*it)->meshStatistics.status 
             !=
             ::GEntity::MeshGenerationStatus::DONE 
-          ) (*current2D)(*it);            
+          ) (*current2D)(*it);
           if (optionHandling::optionTrue("debug")) {
             gm->writeMSH(
               ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
@@ -197,7 +200,56 @@ namespace dtOO {
           }          
         }    
       }
-      else (*current2D)( gm->getDtGmshFaceByPhysical(currentGEntityStr) );
+      //
+      // specific wild card
+      //
+      else if ( stringPrimitive::stringContains("*", currentGEntityStr) ) {
+        //
+        // clean specific wild card
+        //
+        std::string patternGE
+        = 
+        stringPrimitive::replaceStringInString("*", "", currentGEntityStr);
+        
+        //
+        // determine entities
+        //
+			  std::list< dtGmshFace * > ff 
+        = 
+        dtGmshModel::cast2DtGmshFace( gm->faces() );        
+			  dt__forAllIter(std::list< dtGmshFace * >, ff, it) {
+          if ( 
+            (
+              (*it)->meshStatistics.status 
+              !=
+              ::GEntity::MeshGenerationStatus::DONE 
+            )
+            &&
+            (
+              stringPrimitive::stringContains(
+                patternGE, gm->getPhysicalString(*it)
+              )
+            )
+          ) (*current2D)(*it);
+          if (optionHandling::optionTrue("debug")) {
+            gm->writeMSH(
+              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+            );
+          }          
+        }            
+      }
+      //
+      // no wild card
+      //
+      else if ( !stringPrimitive::stringContains("*", currentGEntityStr) ) {
+        (*current2D)( gm->getDtGmshFaceByPhysical(currentGEntityStr) );
+        if (optionHandling::optionTrue("debug")) {        
+          gm->writeMSH(
+            ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+          );        
+        }
+      }
+      else dt__throw( preUpdate(), << dt__eval(currentGEntityStr) );
     }        
 
     //
