@@ -46,18 +46,20 @@ namespace dtOO {
 
 		SS = (EE + ( dSnake*sinAngle ) + ( (dSnake*dSnake) * (one-cosAngle) ));
 
-		return dtAffTransformation3(SS(0,0), SS(0,1), SS(0,2),
-																SS(1,0), SS(1,1), SS(1,2),
-																SS(2,0), SS(2,1), SS(2,2),
-																1
+		return dtAffTransformation3(
+      SS(0,0), SS(0,1), SS(0,2),
+			SS(1,0), SS(1,1), SS(1,2),
+			SS(2,0), SS(2,1), SS(2,2),
+			1
 		);
 	}
 
 	dtAffTransformation3 dtLinearAlgebra::getDiagTrans( dtVector3 const vector) {
-		return dtAffTransformation3(vector.x(), 0., 0.,
-																0., vector.y(), 0.,
-																0., 0., vector.z(),
-																1.
+		return dtAffTransformation3(
+      vector.x(), 0., 0.,
+			0., vector.y(), 0.,
+      0., 0., vector.z(),
+			1.
 		);      
 	}
 
@@ -99,7 +101,9 @@ namespace dtOO {
 		return nn;
 	}
   
-  dtVector3 dtLinearAlgebra::meanAverage( std::vector< dtVector3 > const & vv ) {
+  dtVector3 dtLinearAlgebra::meanAverage( 
+    std::vector< dtVector3 > const & vv 
+  ) {
 		dtVector3 nn(0, 0, 0);
 		dt__forAllConstIter(std::vector< dtVector3 >, vv, it) {
 			nn = nn + (*it);
@@ -228,7 +232,9 @@ namespace dtOO {
 //			<< floatMatrixToString(mat2d) 
 //		);
 
-		TMatrixD rootMat(TMatrixD::kZero, TMatrixD(mat.row_dimension(),mat.column_dimension()));
+		TMatrixD rootMat(
+      TMatrixD::kZero, TMatrixD(mat.row_dimension(),mat.column_dimension())
+    );
 		for (int rr=0; rr<mat.row_dimension(); rr++) {
 			for (int cc=0; cc<mat.column_dimension(); cc++) {		
 		    rootMat(rr,cc) = mat(rr, cc);
@@ -249,7 +255,9 @@ namespace dtOO {
 			if (ok) {
 				bool invOk = svd.Invert(invRootMat);
 				if (!invOk) {		
-					twoDArrayHandling<float> mat2d(mat.dimension().first, mat.dimension().second);
+					twoDArrayHandling<float> mat2d(
+            mat.dimension().first, mat.dimension().second
+          );
 					for (int ii=0; ii<mat2d.size(0);ii++) {
 						for (int jj=0; jj<mat2d.size(1);jj++) {
 							mat2d[ii][jj] = mat(ii,jj);
@@ -269,7 +277,9 @@ namespace dtOO {
 				}
 			}
 			else {
-				twoDArrayHandling<float> mat2d(mat.dimension().first, mat.dimension().second);
+				twoDArrayHandling<float> mat2d(
+          mat.dimension().first, mat.dimension().second
+        );
 				for (int ii=0; ii<mat2d.size(0);ii++) {
 					for (int jj=0; jj<mat2d.size(1);jj++) {
 						mat2d[ii][jj] = mat(ii,jj);
@@ -332,7 +342,9 @@ namespace dtOO {
   dtMatrixVector dtLinearAlgebra::solveMatrix(
 	  dtMatrix const & mat, dtMatrixVector const & rhs
 	) {
-		TMatrixD rootMat(TMatrixD::kZero, TMatrixD(mat.row_dimension(),mat.column_dimension()));
+ 		TMatrixD rootMat(
+      TMatrixD::kZero, TMatrixD(mat.row_dimension(),mat.column_dimension())
+    );
 		for (int rr=0; rr<mat.row_dimension(); rr++) {
 			for (int cc=0; cc<mat.column_dimension(); cc++) {		
 		    rootMat(rr,cc) = mat(rr, cc);
@@ -430,7 +442,9 @@ namespace dtOO {
 //		return matInv;      
 //	}        
 
-	dtPoint3 dtLinearAlgebra::returnFarthestPointTo(dtPoint3 pp, dtPoint3 p0, dtPoint3 p1) {
+	dtPoint3 dtLinearAlgebra::returnFarthestPointTo(
+    dtPoint3 pp, dtPoint3 p0, dtPoint3 p1
+  ) {
 		if ( (pp - p0).squared_length() >  (pp - p1).squared_length() ) {
 			return p0;
 		}
@@ -440,9 +454,12 @@ namespace dtOO {
 	}
 
 	void dtLinearAlgebra::makeOrdered(std::vector< dtPoint3 > & pp) {
-		if (pp.size() != 8) {
-			dt__throw(makeOrdered(), << "Currently only supported for vectors with size 8.");
-		}
+    dt__throwIfWithMessage(
+      pp.size()!=8,
+      makeOrdered(), 
+      << "Currently only supported for vectors with size 8."
+    );
+      
 		dtPoint3 p0 = pp[0]; //0
 		dtPoint3 p1 = pp[1]; //0
 		dtPoint3 q0 = pp[2]; //1
@@ -452,21 +469,17 @@ namespace dtOO {
 		dtPoint3 s0 = pp[6]; //3
 		dtPoint3 s1 = pp[7]; //3
 
-		if ( dtVector3(p1-q0).squared_length() > dtVector3(p0-q0).squared_length() ) {
-//        retVec[0]->revert();
+		if ( (p1-q0).squared_length() > (p0-q0).squared_length() ) {
 			p0 = pp[1]; p1 = pp[0];
 		}
-		if ( dtVector3(p1-q0).squared_length() > dtVector3(p1-q1).squared_length() ) {
-//        retVec[1]->revert();
+		if ( (p1-q0).squared_length() > (p1-q1).squared_length() ) {
 			q0 = pp[3]; q1 = pp[2];
 		}
-		if ( dtVector3(q1-r0).squared_length() > dtVector3(q1-r1).squared_length() ) {
-//        retVec[2]->revert();
+		if ( (q1-r0).squared_length() > (q1-r1).squared_length() ) {
 			r0 = pp[5]; r1 = pp[4];
 
 		}      
-		if ( dtVector3(r1-s0).squared_length() > dtVector3(r1-s1).squared_length() ) {
-//        retVec[3]->revert();
+		if ( (r1-s0).squared_length() > (r1-s1).squared_length() ) {
 			s0 = pp[7]; s1 = pp[6];
 		}         
 
@@ -493,19 +506,25 @@ namespace dtOO {
 		return p2;
 	}
 	
-	std::pair< dtPoint2, dtPoint2 > dtLinearAlgebra::boundingBox( std::vector< dtPoint2 > const & pp ) {
+	std::pair< dtPoint2, dtPoint2 > dtLinearAlgebra::boundingBox( 
+    std::vector< dtPoint2 > const & pp 
+  ) {
 		 dtKernel::Iso_rectangle_2 c2 = CGAL::bounding_box(pp.begin(), pp.end());
 		 std::pair< dtPoint2, dtPoint2 > minMax(c2.min(), c2.max());
 		 return minMax;
 	}
 
-	std::pair< dtPoint3, dtPoint3 > dtLinearAlgebra::boundingBox( std::vector< dtPoint3 > const & pp ) {
+	std::pair< dtPoint3, dtPoint3 > dtLinearAlgebra::boundingBox( 
+    std::vector< dtPoint3 > const & pp 
+  ) {
 		 dtKernel::Iso_cuboid_3 c3 = CGAL::bounding_box(pp.begin(), pp.end());
 		 std::pair< dtPoint3, dtPoint3 > minMax(c3.min(), c3.max());			
 		 return minMax;
 	}
 	
-	bool dtLinearAlgebra::isStraightLine( std::pair< dtPoint3, dtPoint3 > const & bBox, float const & eps ) {
+	bool dtLinearAlgebra::isStraightLine( 
+    std::pair< dtPoint3, dtPoint3 > const & bBox, float const & eps 
+  ) {
 		dtVector3 diff = bBox.first - bBox.second;
 		std::vector< bool > isSmall(3, false);
 
@@ -544,7 +563,9 @@ namespace dtOO {
 		);
 	}
 
-	float dtLinearAlgebra::angleDegree( dtVector3 const & v0, dtVector3 const & v1 ) {
+	float dtLinearAlgebra::angleDegree( 
+    dtVector3 const & v0, dtVector3 const & v1 
+  ) {
 		return dtLinearAlgebra::angle(v0, v1) * 180./M_PI;
 	}
 
@@ -571,7 +592,9 @@ namespace dtOO {
 		}
 	}
 	
-	bool dtLinearAlgebra::intersects(dtTriangle3 const & triangle, dtLine3 const & line) {
+	bool dtLinearAlgebra::intersects(
+    dtTriangle3 const & triangle, dtLine3 const & line
+  ) {
 		dtPoint3 iPoint;   
 		dtSegment3 iSegment;   
     
@@ -609,7 +632,9 @@ namespace dtOO {
 		return false;
 	}
 	
-	bool dtLinearAlgebra::intersects(dtTriangle3 const & triangle0, dtTriangle3 const & triangle1) {
+	bool dtLinearAlgebra::intersects(
+    dtTriangle3 const & triangle0, dtTriangle3 const & triangle1
+  ) {
 		dtPoint3 iPoint;   
 		dtSegment3 iSegment;   
 		dtTriangle3 iTriangle;   

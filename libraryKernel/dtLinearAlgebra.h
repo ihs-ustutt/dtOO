@@ -72,22 +72,36 @@ namespace dtOO {
       std::vector< double > const & zz
     );
     static dtVector2 unitNormal( dtVector2 const & vv);
-    static dtMatrix createMatrixGiveColumns( std::vector< dtVector3 > const & cols );
-    static dtMatrix createMatrixGiveRows( std::vector< dtVector3 > const & rows );
+    static dtMatrix createMatrixGiveColumns( 
+      std::vector< dtVector3 > const & cols 
+    );
+    static dtMatrix createMatrixGiveRows( 
+      std::vector< dtVector3 > const & rows 
+    );
     static dtMatrixVector createMatrixVector( dtVector3 const & vec );
     static dtMatrixVector createMatrixVector( dtVector2 const & vec );
     static dtVector2 toDtVector2(dtMatrixVector const & vec);
     static dtVector3 toDtVector3(dtMatrixVector const & vec);
     static dtMatrix invertMatrix(dtMatrix const & mat);
-    static dtMatrixVector solveMatrix(dtMatrix const & mat, dtMatrixVector const & rhs);
+    static dtMatrixVector solveMatrix(
+      dtMatrix const & mat, dtMatrixVector const & rhs
+    );
     static dtMatrix transposeMatrix(dtMatrix const mat);
     static dtMatrix invert2x3Matrix(dtMatrix const mat);
-    static dtPoint3 returnFarthestPointTo(dtPoint3 pp, dtPoint3 p0, dtPoint3 p1);
+    static dtPoint3 returnFarthestPointTo(
+      dtPoint3 pp, dtPoint3 p0, dtPoint3 p1
+    );
     static void makeOrdered(std::vector< dtPoint3 > & pp);
     static std::vector<dtPoint2> getGaussLegendre(int const & nPoints);
-    static std::pair< dtPoint2, dtPoint2 > boundingBox( std::vector< dtPoint2 > const & pp );
-    static std::pair< dtPoint3, dtPoint3 > boundingBox( std::vector< dtPoint3 > const & pp );
-	  static bool isStraightLine( std::pair< dtPoint3, dtPoint3 > const & bBox, float const & eps );
+    static std::pair< dtPoint2, dtPoint2 > boundingBox( 
+      std::vector< dtPoint2 > const & pp 
+    );
+    static std::pair< dtPoint3, dtPoint3 > boundingBox( 
+      std::vector< dtPoint3 > const & pp 
+    );
+	  static bool isStraightLine( 
+      std::pair< dtPoint3, dtPoint3 > const & bBox, float const & eps 
+    );
     static float distance( dtPoint2 const & p0, dtPoint2 const & p1 );
     static float distance( dtPoint3 const & p0, dtPoint3 const & p1 );
     static float angle( dtVector3 const & v0, dtVector3 const & v1 );
@@ -96,7 +110,9 @@ namespace dtOO {
     static dtPoint2 ignoreZ( dtPoint3 const & v0 );
     static std::string directionString( dtVector3 const & vv );
     static bool intersects(dtTriangle3 const & triangle, dtLine3 const & line);
-    static bool intersects(dtTriangle3 const & triangle0, dtTriangle3 const & triangle1);
+    static bool intersects(
+      dtTriangle3 const & triangle0, dtTriangle3 const & triangle1
+    );
     static std::vector< float > solveQuadraticEquation(
       float const & aa, float const & bb, float const & cc
     );
