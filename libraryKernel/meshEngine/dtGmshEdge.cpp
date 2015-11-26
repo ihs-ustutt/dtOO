@@ -90,9 +90,13 @@ namespace dtOO {
     this->meshAttributes.coeffTransfinite = coeff;
   }
 
-  void dtGmshEdge::meshTransfiniteWNElements( int const type, float const coeff, int const nElements ) {
-    setNElements(nElements);
-    meshTransfinite(type, coeff);
+  void dtGmshEdge::meshTransfiniteWNElements( 
+    int const type, float const coeff, int const nElements 
+  ) {
+    if (nElements != 0) {
+      setNElements(nElements);
+      meshTransfinite(type, coeff);
+    }
   }
 	
 	void dtGmshEdge::addGEntity( ::GEntity * const gEnt ) {
@@ -126,11 +130,16 @@ namespace dtOO {
   }
   
 	void dtGmshEdge::addVertex( ::GVertex * gv) {
-	  if (std::find(l_vertices.begin(), l_vertices.end(), gv) == l_vertices.end()) 
+	  if (
+      std::find(l_vertices.begin(), l_vertices.end(), gv) == l_vertices.end()
+    ) { 
 		  l_vertices.push_back(gv);
+    }
 	}
 	
-  bool dtGmshEdge::isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 ) {	
+  bool dtGmshEdge::isEqual( 
+    ::GEdge const * const ge0, ::GEdge const * const ge1 
+  ) {	
 		std::list< ::GVertex * > VL0 = ge0->vertices();
 		std::list< ::GVertex * > VL1 = ge1->vertices();
 		

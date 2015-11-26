@@ -703,9 +703,10 @@ namespace dtOO {
     std::list< GEdge * > ee = edges();
     int ii = 0;
     dt__forAllIter(std::list< GEdge * >, ee, it) {
-      if (type[ii]!=2.) (*it)->meshAttributes.coeffTransfinite = grading[ii];
-			else (*it)->meshAttributes.coeffTransfinite = grading[ii];
-			(*it)->meshAttributes.typeTransfinite = type[ii];
+      if (type[ii] != 0) {
+        (*it)->meshAttributes.coeffTransfinite = grading[ii];
+        (*it)->meshAttributes.typeTransfinite = type[ii];
+      }
       ii++;
 		}
   }
