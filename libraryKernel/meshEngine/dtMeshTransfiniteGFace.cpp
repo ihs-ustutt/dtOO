@@ -9,6 +9,8 @@
 #include <gmsh/MTriangle.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/Context.h>
+#include <interfaceHeaven/threadSafe.h>
+#include <analyticGeometryHeaven/map2dTo3d.h>
 
 #define SQU(a)      ((a)*(a))
 
@@ -132,15 +134,20 @@ namespace dtOO {
     // first two corners (if the second found corner is not the second
     // corner, just reverse the list)
     bool reverse = false;
-    for(unsigned int i = 1; i < m_vertices.size(); i++){
+    for( unsigned int i = 1; i < m_vertices.size(); i++ ) {
       MVertex *v = m_vertices[i];
-      if(v == corners[1] || v == corners[2] ||
-         (corners.size() == 4 && v == corners[3])){
-        if(v != corners[1]) reverse = true;
+      if(
+        v == corners[1] || v == corners[2] 
+        ||
+        (
+          corners.size() == 4 && v == corners[3]
+        )
+      ) {
+        if (v != corners[1]) reverse = true;
         break;
       }
     }
-    if(reverse){
+    if (reverse) {
       std::vector <MVertex *> tmp;
       tmp.push_back(m_vertices[0]);
       for(int i = m_vertices.size() - 1; i > 0; i--)
@@ -154,18 +161,36 @@ namespace dtOO {
     std::vector< double > U( m_vertices.size(), 0. );
     std::vector< double > V( m_vertices.size(), 0. );
 
+    //
+    // reparam
+    //
+    std::vector< dtPoint2 > reparamUV(m_vertices.size());
+    #pragma omp parallel     
+    {
+      //
+      // make threadSafe
+      //
+      threadSafe< dt__pH(map2dTo3d) > m2d;
+      m2d().reset( dtgf->getMap2dTo3d()->clone() );
+      
+      #pragma omp for        
+      dt__forAllIndex(m_vertices, ii) {
+        reparamUV[ii] 
+        = 
+        m2d()->reparamOnFace( dtGmshModel::extractPosition(m_vertices[ii]) );        
+      } 
+    }
+    
     int iCorner = 0, N[4] = {0, 0, 0, 0};  
-    for(unsigned int i = 0; i < m_vertices.size(); i++){
+    for(unsigned int i = 0; i < m_vertices.size(); i++) {
       MVertex *v = m_vertices[i];
       if(v == corners[0] || v == corners[1] || v == corners[2] ||
          (corners.size() == 4 && v == corners[3])) {
         dt__throwIf(iCorner>3, operator());
         N[iCorner++] = i;
       }
-      SPoint2 param;
-      reparamMeshVertexOnFace(m_vertices[i], dtgf, param);
-      U[i] = param[0];
-      V[i] = param[1];    
+      U[i] = reparamUV[i].x();
+      V[i] = reparamUV[i].y();
     }
 
     int N1 = N[0], N2 = N[1], N3 = N[2], N4 = N[3];
@@ -181,16 +206,10 @@ namespace dtOO {
 
     std::vector<double> lengths_i;//(L+1);
     std::vector<double> lengths_j;//(H+1);
-    std::vector<double> lengths_k;//(L+1);
-    std::vector<double> lengths_l;//(H+1);
     double L_i = 0.;
     double L_j = 0.;
-    double L_k = 0.;
-    double L_l = 0.;
     lengths_i.push_back(0.);
     lengths_j.push_back(0.);
-    lengths_k.push_back(0.);
-    lengths_l.push_back(0.);          
     m_vertices.push_back(m_vertices.front());
     for(int i = 0; i < L; i++) {
       MVertex *v1 = m_vertices[i];
@@ -204,52 +223,13 @@ namespace dtOO {
       L_j += v1->distance(v2);
       lengths_j.push_back(L_j);
     }
-    for(int i = (L+H); i < (2*L+H); i++) {
-      MVertex *v1 = m_vertices[i];
-      MVertex *v2 = m_vertices[i + 1];
-      L_k += v1->distance(v2);
-      lengths_k.push_back(L_k);
-    }
-    for(int i = (2*L+H); i < (2*L + 2*H); i++) {
-      MVertex *v1 = m_vertices[i];
-      MVertex *v2 = m_vertices[i + 1];
-      L_l += v1->distance(v2);
-      lengths_l.push_back(L_l);
-    }
     m_vertices.pop_back();
-//    lengths_k.push_back(0.);
-//    lengths_l.push_back(0.);    
-//    progHelper::reverse(lengths_k);
-//    progHelper::reverse(lengths_l);
 
-//    dt__info(
-//      operator(),
-//      << dt__eval(L) << std::endl
-//      << dt__eval(H) << std::endl
-//      << dt__eval(m_vertices.size()) << std::endl
-//      << dt__eval(lengths_i.size()) << std::endl
-//      << dt__eval(lengths_k.size()) << std::endl
-//      << dt__eval(lengths_j.size()) << std::endl
-//      << dt__eval(lengths_l.size()) << std::endl
-//      << dt__eval(L_i) << std::endl
-//      << dt__eval(L_k) << std::endl
-//      << dt__eval(L_j) << std::endl
-//      << dt__eval(L_l) << std::endl
-//      << dt__eval(lengths_i) << std::endl
-//      << dt__eval(lengths_k) << std::endl
-//      << dt__eval(lengths_j) << std::endl
-//      << dt__eval(lengths_l) << std::endl
-//      << dt__eval(u_i) << std::endl
-//      << dt__eval(u_k) << std::endl
-//      << dt__eval(v_j) << std::endl
-//      << dt__eval(v_l) << std::endl    
-//    );
-    
-  /*             k
+  /*              
       2L+H +------------+ L+H
            |            |
            |            |
-         l |            | j
+           |            | j
            |            |
      2L+2H +------------+
            0     i      L
@@ -263,13 +243,18 @@ namespace dtOO {
     tab[L][0] = m_vertices[L];
     tab[L][H] = m_vertices[L+H];
     tab[0][H] = m_vertices[2*L+H];
-    for (int i = 1; i < L; i++){
-      tab[i][0] = m_vertices[i];
-      tab[i][H] = m_vertices[2*L+H-i];
-    }
-    for(int i = 1; i < H; i++){
-      tab[L][i] = m_vertices[L+i];
-      tab[0][i] = m_vertices[2*L+2*H-i];
+    #pragma omp parallel
+    {
+      #pragma omp for    
+      for (int i = 1; i < L; i++){
+        tab[i][0] = m_vertices[i];
+        tab[i][H] = m_vertices[2*L+H-i];
+      }
+      #pragma omp for    
+      for(int i = 1; i < H; i++){
+        tab[L][i] = m_vertices[L+i];
+        tab[0][i] = m_vertices[2*L+2*H-i];
+      }
     }
 
   double UC1 = U[N1], UC2 = U[N2], UC3 = U[N3];
@@ -278,23 +263,10 @@ namespace dtOO {
   //create points using transfinite interpolation
     double UC4 = U[N4];
     double VC4 = V[N4];
-    for(int i = 1; i < L; i++){
-      double u0 = lengths_i[i] / L_i;
-      double u1 = lengths_k[i] / L_k;
-      for(int j = 1; j < H; j++){
-        double v0 = lengths_j[j] / L_j;
-        double v1 = lengths_l[j] / L_l;
-        
-        float iF = static_cast< float >(i);
-        float jF = static_cast< float >(j);
-        double v = ((v1-v0) / (L-2)) * iF + ( v0 - ((v1-v0) / (L-2)) );
-        double u = ((u1-u0) / (H-2)) * jF + ( u0 - ((u1-u0) / (H-2)) );
-//        dt__info(
-//          operator(), 
-//          << "(i, j) = (" << i << ", " << j << ")" << std::endl
-//          << "Linear blending: u " << u0 << " :: " << u1 << " >> " << u << std::endl
-//          << "Linear blending: v " << v0 << " :: " << v1 << " >> " << v
-//        );        
+    for(int i = 1; i < L; i++) {
+      double u = lengths_i[i] / L_i;
+      for(int j = 1; j < H; j++) {
+        double v = lengths_j[j] / L_j;
         int iP1 = N1 + i;
         int iP2 = N2 + j;
         int iP3 = N4 - i;
@@ -309,33 +281,70 @@ namespace dtOO {
     }
 
     // create elements
-    for(int i = 0; i < L ; i++){
-      for(int j = 0; j < H; j++){
-        MVertex *v1 = tab[i][j];
-        MVertex *v2 = tab[i + 1][j];
-        MVertex *v3 = tab[i + 1][j + 1];
-        MVertex *v4 = tab[i][j + 1];
-        if(CTX::instance()->mesh.recombineAll || dtgf->meshAttributes.recombine)
-          dtgf->quadrangles.push_back(new MQuadrangle(v1, v2, v3, v4));
-        else if(dtgf->meshAttributes.transfiniteArrangement == 1 ||
-                (dtgf->meshAttributes.transfiniteArrangement == 2 &&
-                 ((i % 2 == 0 && j % 2 == 1) ||
-                  (i % 2 == 1 && j % 2 == 0))) ||
-		(dtgf->meshAttributes.transfiniteArrangement == -2 &&
-                 ((i % 2 == 0 && j % 2 == 0) ||
-                  (i % 2 == 1 && j % 2 == 1)))
-		){
-          dtgf->triangles.push_back(new MTriangle(v1, v2, v3));
-          dtgf->triangles.push_back(new MTriangle(v3, v4, v1));
-        }
-        else{
-          dtgf->triangles.push_back(new MTriangle(v1, v2, v4));
-          dtgf->triangles.push_back(new MTriangle(v4, v2, v3));
+    int maxLin = L * H;
+    if (
+      CTX::instance()->mesh.recombineAll 
+      || 
+      dtgf->meshAttributes.recombine      
+    ) {
+      dt__throwIf(dtgf->quadrangles.size(), operator()());
+      dtgf->quadrangles.resize(maxLin);      
+    }
+    else {
+      dt__throwIf(dtgf->triangles.size(), operator()());
+      dtgf->triangles.resize(2*maxLin);
+    }
+    #pragma omp parallel
+    {
+      #pragma omp for
+      for(int i = 0; i < L ; i++) {
+        for(int j = 0; j < H; j++) {
+          int lin = i * H + j;
+          MVertex *v1 = tab[i][j];
+          MVertex *v2 = tab[i + 1][j];
+          MVertex *v3 = tab[i + 1][j + 1];
+          MVertex *v4 = tab[i][j + 1];
+          if (
+            CTX::instance()->mesh.recombineAll 
+            || 
+            dtgf->meshAttributes.recombine
+          ) {
+//            dtgf->quadrangles.push_back( new MQuadrangle(v1, v2, v3, v4) );
+            dtgf->quadrangles[lin] = new MQuadrangle(v1, v2, v3, v4);
+          }
+          else if (
+            dtgf->meshAttributes.transfiniteArrangement == 1 
+            ||
+            (
+              dtgf->meshAttributes.transfiniteArrangement == 2 
+              &&
+              (
+                (i % 2 == 0 && j % 2 == 1) || (i % 2 == 1 && j % 2 == 0)
+              )
+            ) 
+            ||
+            (
+              dtgf->meshAttributes.transfiniteArrangement == -2 
+              &&
+              (
+                (i % 2 == 0 && j % 2 == 0) || (i % 2 == 1 && j % 2 == 1)
+              )
+            )
+          ) {
+//            dtgf->triangles.push_back( new MTriangle(v1, v2, v3) );
+//            dtgf->triangles.push_back( new MTriangle(v3, v4, v1) );
+            dtgf->triangles[lin] = new MTriangle(v1, v2, v3);
+            dtgf->triangles[maxLin + lin] = new MTriangle(v3, v4, v1);
+          }
+          else {
+//            dtgf->triangles.push_back( new MTriangle(v1, v2, v4) );
+//            dtgf->triangles.push_back( new MTriangle(v4, v2, v3) );
+            dtgf->triangles[lin] = new MTriangle(v1, v2, v4);
+            dtgf->triangles[maxLin + lin] = new MTriangle(v4, v2, v3);            
+          }
         }
       }
     }
-
     dtgf->meshStatistics.status = GFace::DONE;
   }
 }
-

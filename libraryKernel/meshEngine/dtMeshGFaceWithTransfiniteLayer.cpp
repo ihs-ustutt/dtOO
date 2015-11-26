@@ -10,6 +10,7 @@
 #include <gmsh/MLine.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MQuadrangle.h>
+#include <interfaceHeaven/threadSafe.h>
 
 namespace dtOO {
   dtMeshGFaceWithTransfiniteLayer::dtMeshGFaceWithTransfiniteLayer() 
@@ -96,56 +97,133 @@ namespace dtOO {
              +------------+
              0,0   >(0)   L,0
     */    
-    twoDArrayHandling< ::MVertex * > edgeVertex(4,0);
+    twoDArrayHandling< std::pair< ::MVertex *, dtPoint2 > > edgeVertex(4,0);
     dt__forFromToIndex(0, 4, ii) {
-      edgeVertex[ii].push_back( 
-        ordered[ii].second->getBeginVertex()->mesh_vertices[0] 
-      );
-      dt__forAllRefAuto(ordered[ii].second->mesh_vertices, aVert) {
-       edgeVertex[ii].push_back( aVert );
-      }
-      edgeVertex[ii].push_back( 
-        ordered[ii].second->getEndVertex()->mesh_vertices[0] 
-      );
+      //
+      // allocate
+      //
+      edgeVertex[ii].resize( ordered[ii].second->mesh_vertices.size() + 2 );
       
+      //
+      // first vertex
+      //
+      ::MVertex * mv = ordered[ii].second->getBeginVertex()->mesh_vertices[0];
+      SPoint2 param;
+      reparamMeshVertexOnFace(mv, dtgf, param);        
+      edgeVertex[ii][0] = std::make_pair( mv, dtPoint2(param[0], param[1]) );
+
+      //
+      // inner vertex
+      //      
+      #pragma omp parallel 
+      {
+        //
+        // make threadSafe
+        //
+        threadSafe< dt__pH(map2dTo3d) > m2d;
+        m2d().reset( dtgf->getMap2dTo3d()->clone() );
+
+        #pragma omp for        
+        dt__forAllIndex(ordered[ii].second->mesh_vertices, jj) {
+          ::MVertex * aVert = ordered[ii].second->mesh_vertices[jj];
+          edgeVertex[ii][jj+1] 
+          = 
+          std::make_pair( 
+            aVert, 
+            m2d()->reparamOnFace( dtGmshModel::extractPosition(aVert) )
+          );        
+        }
+      }
+      
+      //
+      // last vertex
+      //
+      mv = ordered[ii].second->getEndVertex()->mesh_vertices[0] ;
+      reparamMeshVertexOnFace(mv, dtgf, param);        
+      edgeVertex[ii].back()
+      =
+      std::make_pair( mv, dtPoint2(param[0], param[1]) );      
+      
+      //
+      // correct orientation
+      //
       if ( ordered[ii].first != 1) progHelper::reverse( edgeVertex[ii] );
     }
     progHelper::reverse( edgeVertex[2] );
     progHelper::reverse( edgeVertex[3] );
     
-    //
-    // reparam edgeVertex array
-    //
-    twoDArrayHandling< dtPoint2 > edgeVertexUV(4, 0);    
-    dt__forFromToIndex(0, 4, ii) {
-      dt__forAllRefAuto( edgeVertex[ii], aVert) {
-      SPoint2 param;
-      reparamMeshVertexOnFace(aVert, dtgf, param);        
-        edgeVertexUV[ii].push_back( dtPoint2(param[0], param[1]) );
-      }
-    }
     
     //
     // sheet 0
     //
     twoDArrayHandling< ::MVertex * > sheet0(edgeVertex[0].size(), _nLayers+1);
-    dt__forAllIndex(edgeVertex[0], ii) sheet0[ii][0] = edgeVertex[0][ii];
+    dt__forAllIndex(edgeVertex[0], ii) sheet0[ii][0] = edgeVertex[0][ii].first;
     dt__forFromToIndex(1, _nLayers+1, layer) {
-      sheet0[0                     ][layer] = edgeVertex[3][layer];
-      sheet0[edgeVertex[0].size()-1][layer] = edgeVertex[1][layer];
+      sheet0[0                     ][layer] = edgeVertex[3][layer].first;
+      sheet0[edgeVertex[0].size()-1][layer] = edgeVertex[1][layer].first;
+
+      //
+      // determine spacing
+      //
+      dtVector3 dist(
+        edgeVertex[3][layer].first->x() - edgeVertex[3][0].first->x(),
+        edgeVertex[3][layer].first->y() - edgeVertex[3][0].first->y(),
+        edgeVertex[3][layer].first->z() - edgeVertex[3][0].first->z()
+      );
       dt__forInnerIndex(sheet0.fixJ(layer), node) {
-        dtPoint2 uv
+        //
+        // get normal to boundary
+        //
+        dtVector3 nn
         =
-        edgeVertexUV[0][node]
-        +
-        (edgeVertexUV[3][layer] - edgeVertexUV[3][0]);
-        
+        dtLinearAlgebra::normalize(
+          dtLinearAlgebra::crossProduct(
+            dtVector3(
+              edgeVertex[0][node+1].first->x() 
+              - 
+              edgeVertex[0][node-1].first->x(),
+              edgeVertex[0][node+1].first->y() 
+              - 
+              edgeVertex[0][node-1].first->y(),
+              edgeVertex[0][node+1].first->z() 
+              - 
+              edgeVertex[0][node-1].first->z()
+            ),
+            dtgf->normal( edgeVertex[0][node].second )
+          )
+        );
+
+        //
+        // correct orientation
+        //
+        if (dtLinearAlgebra::dotProduct(nn, dist) < 0.) nn = -1. * nn;
+
+        //
+        // transform normal to parameter coordinates
+        //
+        dtVector2 nnUV
+        =
+        dtLinearAlgebra::toDtVector2(
+          dtLinearAlgebra::solveMatrix(
+            dtgf->getMap2dTo3d()->jacobi( edgeVertex[0][node].second )
+            ,
+            dtLinearAlgebra::createMatrixVector(
+              dtLinearAlgebra::length( dist ) * nn
+            )
+          )
+        );
+
+        //
+        // create new point
+        //
+        dtPoint2 uv = edgeVertex[0][node].second + nnUV;
         ::GPoint pp = dtgf->point(uv.x(), uv.y());
         sheet0[node][layer]
         = 
         new ::MFaceVertex(pp.x(), pp.y(), pp.z(), dtgf, uv.x(), uv.y());
       }
     }
+//    }
 
     //
     // sheet 1
@@ -153,21 +231,61 @@ namespace dtOO {
     progHelper::reverse( edgeVertex[1] );    
     progHelper::reverse( edgeVertex[2] );
     progHelper::reverse( edgeVertex[3] );    
-    progHelper::reverse( edgeVertexUV[1] );
-    progHelper::reverse( edgeVertexUV[2] );
-    progHelper::reverse( edgeVertexUV[3] );      
     twoDArrayHandling< ::MVertex * > sheet1(edgeVertex[2].size(), _nLayers+1);
-    dt__forAllIndex(edgeVertex[2], ii) sheet1[ii][0] = edgeVertex[2][ii];
+    dt__forAllIndex(edgeVertex[2], ii) sheet1[ii][0] = edgeVertex[2][ii].first;
     dt__forFromToIndex(1, _nLayers+1, layer) {
-      sheet1[0                     ][layer] = edgeVertex[1][layer];
-      sheet1[edgeVertex[2].size()-1][layer] = edgeVertex[3][layer];
+      sheet1[0                     ][layer] = edgeVertex[1][layer].first;
+      sheet1[edgeVertex[2].size()-1][layer] = edgeVertex[3][layer].first;
+
+      //
+      // determine spacing
+      //
+      dtVector3 dist(
+        edgeVertex[3][layer].first->x() - edgeVertex[3][0].first->x(),
+        edgeVertex[3][layer].first->y() - edgeVertex[3][0].first->y(),
+        edgeVertex[3][layer].first->z() - edgeVertex[3][0].first->z()
+      );
       dt__forInnerIndex(sheet1.fixJ(layer), node) {
-        dtPoint2 uv
+        //
+        // get normal to boundary
+        //        
+        dtVector3 nn
         =
-        edgeVertexUV[2][node]
-        +
-        (edgeVertexUV[3][layer] - edgeVertexUV[3][0]);
-        
+        dtLinearAlgebra::normalize(
+          dtLinearAlgebra::crossProduct(
+            dtVector3(
+              edgeVertex[2][node+1].first->x() - edgeVertex[2][node-1].first->x(),
+              edgeVertex[2][node+1].first->y() - edgeVertex[2][node-1].first->y(),
+              edgeVertex[2][node+1].first->z() - edgeVertex[2][node-1].first->z()
+            ),
+            dtgf->normal( edgeVertex[2][node].second )
+          )
+        );
+
+        //
+        // correct orientation
+        //        
+        if (dtLinearAlgebra::dotProduct(nn, dist) < 0.) nn = -1. * nn;
+
+        //
+        // transform normal to parameter coordinates
+        //        
+        dtVector2 nnUV
+        =
+        dtLinearAlgebra::toDtVector2(
+          dtLinearAlgebra::solveMatrix(
+            dtgf->getMap2dTo3d()->jacobi( edgeVertex[2][node].second )
+            ,
+            dtLinearAlgebra::createMatrixVector(
+              dtLinearAlgebra::length( dist ) * nn
+            )
+          )
+        );
+
+        //
+        // create new point
+        //        
+        dtPoint2 uv = edgeVertex[2][node].second + nnUV;        
         ::GPoint pp = dtgf->point(uv.x(), uv.y());
         sheet1[node][layer] 
         = 
@@ -176,12 +294,10 @@ namespace dtOO {
         );
       }
     }
+//    }
     progHelper::reverse( edgeVertex[1] );
     progHelper::reverse( edgeVertex[2] );
     progHelper::reverse( edgeVertex[3] );  
-    progHelper::reverse( edgeVertexUV[1] );
-    progHelper::reverse( edgeVertexUV[2] );
-    progHelper::reverse( edgeVertexUV[3] );      
     
     //
     // create pseudo model, face and edge
@@ -200,13 +316,13 @@ namespace dtOO {
     //
     dt__forAllRefAuto(sheet0.fixJ(_nLayers), aVert) ge->addMeshVertex(aVert);
     dt__forFromToIndex(_nLayers+1, edgeVertex[1].size()-_nLayers-1, ii) {
-      ge->addMeshVertex( edgeVertex[1][ii] );
+      ge->addMeshVertex( edgeVertex[1][ii].first );
     }
     std::vector< ::MVertex * > tmpSheet = sheet1.fixJ(_nLayers);
     dt__forAllRefAuto(tmpSheet, aVert) ge->addMeshVertex(aVert);
     progHelper::reverse( edgeVertex[3] );
     dt__forFromToIndex(_nLayers+1, edgeVertex[3].size()-_nLayers-1, ii) {
-      ge->addMeshVertex( edgeVertex[3][ii] );
+      ge->addMeshVertex( edgeVertex[3][ii].first );
     }
     progHelper::reverse( edgeVertex[3] );
     
