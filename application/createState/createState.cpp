@@ -247,20 +247,42 @@ int main( int ac, char* av[] ) {
     else dt__throwUnexpectedNoClass(main());
 
     //
-    // create states
+    // create state vector
     //
+    std::vector< vectorHandling< constValue * > > stateToWrite;
+    std::vector< std::string > stateLabel;
     std::string prefix = vm["prefix"].as< std::string >();
     int pairCounter = 0;
     dt__forAllRefAuto(samples, samplesVec) {
+      //
+      // label
+      //
+      stateLabel.push_back(
+        prefix+"_"+stringPrimitive::intToString(pairCounter) 
+      );      
+      //
+      // set desired values
+      //
       dt__forAllRefAuto(samplesVec, samplesVecVec) {
         samplesVecVec.first->setValue( samplesVecVec.second );
-      } 
-      parser.write(
-        prefix+"_"+stringPrimitive::intToString(pairCounter), 
-        cV
-      );
+      }
+
+      //
+      // constValue vector
+      //
+      stateToWrite.push_back( vectorHandling< constValue * >(0) );      
+      dt__forAllRefAuto(cV, aCV) {
+        stateToWrite.back().push_back( aCV->clone() );
+      }
+      
       pairCounter++;
     }
+    
+    //
+    // write states
+    //
+    parser.write( stateLabel, stateToWrite );
+
   }
   //
   // catch dtOO exceptions

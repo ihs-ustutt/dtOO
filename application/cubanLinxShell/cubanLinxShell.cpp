@@ -41,11 +41,14 @@ std::string parseCommand(
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
-  std::string addRule = "";
+  std::vector< std::string > addRule;
   if ( stringPrimitive::stringContains("(", aRule) ) {
     addRule
     = 
-    stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule);
+    stringPrimitive::convertToCSVStringVector(
+      stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule)
+    );
+    dt__infoNoClass(main(), << "addRule = " << addRule);
   }
   dt__commandIf( aRule, help, "parse", "parse input xml" ) {
     parser.parse();
@@ -67,21 +70,25 @@ std::string parseCommand(
     return std::string("");    
   }           
   dt__commandIf( aRule, help, "loadStateToConst", "load a state" ) { 
-    parser.loadStateToConst(addRule, cV);
+    parser.loadStateToConst(addRule[0], cV);
     return std::string("");    
   }      
   dt__commandIf( aRule, help, "write", "write current state" ) {
-    parser.write(addRule, cV);
+    parser.write(addRule[0], cV);
     return std::string("");    
   }      
   dt__commandIf( aRule, help, "writeUpdate", "write update of a state" ) {
-    parser.writeUpdate(addRule, cV);
+    parser.writeUpdate(addRule[0], cV);
     return std::string("");    
   }
   dt__commandIf( aRule, help, "remove", "remove a state" ) {
-    parser.remove(addRule);
+    parser.remove(addRule[0]);
     return std::string("");    
-  }     
+  } 
+  dt__commandIf( aRule, help, "extract", "extract a state" ) {
+    parser.extract(addRule[0], cV, addRule[1]);
+    return std::string("");    
+  }       
   dt__commandIf( 
     aRule, help, "createAnalyticFunction", "create analyticFunctions" 
   ) {
@@ -118,7 +125,7 @@ std::string parseCommand(
     return std::string("");
   }        
   dt__commandIf( aRule, help, "applyPlugin", "apply a plugin") {      
-    dtP.get(addRule)->apply();
+    dtP.get(addRule[0])->apply();
     return std::string("");
   }     
   
