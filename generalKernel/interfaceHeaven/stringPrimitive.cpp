@@ -175,8 +175,10 @@ namespace dtOO {
 
   std::vector< std::string > stringPrimitive::convertToCSVStringVector(
     std::string str
-  ) {
-    std::vector< std::string > retStr;    
+  ) {    
+    if ( !stringContains(",", str) ) return std::vector< std::string >(1, str);
+      
+    std::vector< std::string > retStr;        
     
     //
     // get all inner elements
