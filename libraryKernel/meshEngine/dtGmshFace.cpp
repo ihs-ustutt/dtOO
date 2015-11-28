@@ -2,6 +2,7 @@
 
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
+#include "dtGmshVertex.h"
 #include "dtGmshEdge.h"
 #include "dtGmshModel.h"
 #include "dtOMMesh.h"
@@ -415,19 +416,12 @@ namespace dtOO {
 			return false;
 		}
 		
-		float xyzRes 
-		= 
-		staticPropertiesHandler::getInstance()->getOptionFloat(
-      "xyz_resolution"
-    );
 		int counter = 0;
 		std::list< ::GVertex * >::iterator V0_it;
 		std::list< ::GVertex * >::iterator V1_it;
 		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
-			dtPoint3 v0((*V0_it)->x(), (*V0_it)->y(), (*V0_it)->z());
       for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {
-				dtPoint3 v1((*V1_it)->x(), (*V1_it)->y(), (*V1_it)->z());
-				if ( dtLinearAlgebra::distance(v0, v1) < xyzRes ) {
+				if ( dtGmshVertex::isEqual(*V0_it, *V1_it) ) {
 					counter++;
 				}
 			}
