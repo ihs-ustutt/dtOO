@@ -34,8 +34,13 @@ namespace dtOO {
     void write(
       std::string const stateName, 
       vectorHandling< constValue * > const & cValP
-    ) const;    
-    void load( void );
+    ) const;   
+    void writeUpdate(
+      std::string const stateName, 
+      vectorHandling< constValue * > const & cValP
+    ) const;
+    void remove( std::string const stateName ) const;
+    void load( void ) const;
     std::vector< std::string > getStates( void );
     void loadStateToConst(
       std::string const stateName, vectorHandling< constValue * > &cValRef
@@ -165,8 +170,8 @@ namespace dtOO {
   private:
     std::vector< ::QDomElement > _rootRead;
     std::vector< ::QDomDocument > _rootReadDoc;
-    ::QDomElement _rootLoad;
-    ::QDomDocument _rootLoadDoc;
+    mutable ::QDomElement _rootLoad;
+    mutable ::QDomDocument _rootLoadDoc;
     mutable std::string _currentState;
     std::string const _inFile;
     std::string const _outFile;

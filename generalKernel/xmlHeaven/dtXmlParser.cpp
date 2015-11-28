@@ -174,21 +174,19 @@ namespace dtOO {
     setStaticProperties();
   }
 
-  void dtXmlParser::load( void ) {
-    char const * const fileName = _outFile.c_str();
-
-    QDomDocument xmlDocument;
+  void dtXmlParser::load( void ) const {
+    _rootLoad.clear();
+    _rootLoadDoc.clear();
     //
     // check and initialize file
     //
-    checkFile(fileName, xmlDocument);
+    checkFile(_outFile.c_str(), _rootLoadDoc);
 
 		//
 		// save ::QDomNode and QDomDocument because owner after cloning 
 		// remains the same
 		//		
-    _rootLoad = xmlDocument.documentElement().cloneNode(true).toElement(); 
-		_rootLoadDoc = xmlDocument;
+    _rootLoad = _rootLoadDoc.documentElement().cloneNode(true).toElement(); 
   }
   
   void dtXmlParser::loadStateToConst(
@@ -312,7 +310,9 @@ namespace dtOO {
     return labels;
   }
     
-  void dtXmlParser::write( vectorHandling< constValue * > const * const cValP ) const {
+  void dtXmlParser::write( 
+    vectorHandling< constValue * > const * const cValP 
+  ) const {
     write(NowDateAndTime(), cValP);
   }
 
@@ -320,24 +320,26 @@ namespace dtOO {
     std::string const stateName, 
     vectorHandling< constValue * > const * const cValP
   ) const {
+    //
+    // filename
+    //
     char const * const fileName = _outFile.c_str();
-    
-    QDomDocument xmlDocument;
-    //
-    // check and initialize file
-    //
-    checkFile(fileName, xmlDocument);
-    
-    ::QDomElement newState = createElement(xmlDocument, "state");
+       
+    ::QDomElement newState = createElement(_rootLoadDoc, "state");
     newState.setAttribute("label", stateName.c_str());
-    appendChildElement(xmlDocument, newState);
+    appendChildElement(_rootLoadDoc, newState);
     
-    dt__forAllRefAuto(*cValP, aCV) aCV->writeToElement(xmlDocument, newState);
+    dt__forAllRefAuto(*cValP, aCV) aCV->writeToElement(_rootLoadDoc, newState);
     
     //
     // write file
     //
-    writeFile(fileName, xmlDocument);
+    writeFile(fileName, _rootLoadDoc);
+    
+    //
+    // update rootLoad and rootLoadDoc
+    //
+    load();
     
     //
     // set state label
@@ -354,15 +356,100 @@ namespace dtOO {
   void dtXmlParser::write( 
     vectorHandling< constValue * > const & cValP 
   ) const {
-    return write(&cValP);
+    write(&cValP);
   }
   
   void dtXmlParser::write(
     std::string const stateName, 
     vectorHandling< constValue * > const & cValP
   ) const {
-    return write(stateName, &cValP);
+    write(stateName, &cValP);
   }
+
+  void dtXmlParser::writeUpdate(
+    std::string const stateName, 
+    vectorHandling< constValue * > const & cValP
+  ) const {
+    //
+    // filename
+    //
+    char const * const fileName = _outFile.c_str();
+    
+    //
+    // remove old state element
+    //
+    ::QDomElement toRemove
+    =
+    getChildElement("state", stateName, _rootLoadDoc.documentElement());
+    ::QDomNode removedNode = toRemove.parentNode().removeChild( toRemove );
+    dt__throwIf( removedNode.isNull(), writeUpdate() );
+    removedNode.clear();
+    
+    //
+    // update state element by create a new one
+    //
+    ::QDomElement newState = createElement(_rootLoadDoc, "state");
+    newState.setAttribute("label", stateName.c_str());
+    appendChildElement(_rootLoadDoc, newState);
+    
+    //
+    // write constValues to QDomDocument
+    //
+    dt__forAllRefAuto(cValP, aCV) aCV->writeToElement(_rootLoadDoc, newState);
+    
+    //
+    // write file
+    //
+    writeFile(fileName, _rootLoadDoc);
+    
+    //
+    // update rootLoad and rootLoadDoc
+    //
+    load();
+    
+    //
+    // set state label
+    //
+    setState(stateName);
+    
+    dt__info(
+      writeUpdate(),
+      << "Update state = " << stateName << " to file = " << fileName << std::endl
+      << dt__eval(currentState())
+    );
+  }  
+
+  void dtXmlParser::remove( std::string const stateName ) const {
+    //
+    // filename
+    //
+    char const * const fileName = _outFile.c_str();
+    
+    //
+    // remove old state element
+    //
+    ::QDomElement toRemove
+    =
+    getChildElement("state", stateName, _rootLoadDoc.documentElement());
+    ::QDomNode removedNode = toRemove.parentNode().removeChild( toRemove );
+    dt__throwIf( removedNode.isNull(), writeUpdate() );
+    removedNode.clear();
+    
+    //
+    // write file
+    //
+    writeFile(fileName, _rootLoadDoc);
+    
+    //
+    // update rootLoad and rootLoadDoc
+    //
+    load();
+
+    dt__info(
+      writeUpdate(),
+      << "Remove state = " << stateName << " in file = " << fileName
+    );
+  }    
   
   void dtXmlParser::writeFile( 
     char const * const fileName, QDomDocument & xmlDocument
