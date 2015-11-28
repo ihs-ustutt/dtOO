@@ -984,7 +984,7 @@ namespace dtOO {
       createCase(label[ii], bC, cVP, sFP, aGP, bVP, dCP);
     }
 	}
-		
+
 	void dtXmlParser::destroyAndCreate(
 		vectorHandling< constValue * > & cV,
 		vectorHandling< analyticFunction* > & aF,
@@ -1015,6 +1015,37 @@ namespace dtOO {
 		createCase(bC.get(), &cV, &aF, &aG, &bV, &dC);
 		createPlugin(bC.get(), &cV, &aF, &aG, &bV, &pL);
 	}
+  
+	void dtXmlParser::destroyAndCreate(
+    baseContainer & bC,
+		vectorHandling< constValue * > & cV,
+		vectorHandling< analyticFunction* > & aF,
+		vectorHandling< analyticGeometry * > & aG,
+		vectorHandling< boundedVolume * > & bV,
+		vectorHandling< dtCase * > & dC,
+	  vectorHandling< dtPlugin * > & pL
+	) const {
+		if ( cV.size() == 0 ) createConstValue(&cV);
+		
+		//
+		// destroy
+		//
+		bC.clear();
+		aF.destroy();
+		aG.destroy();
+		bV.destroy();
+		dC.destroy();
+    pL.destroy();
+		
+		//
+		// create
+		//
+		createAnalyticFunction(&bC, &cV, &aF);
+		createAnalyticGeometry(&bC, &cV, &aF, &aG);
+		createBoundedVolume(&bC, &cV, &aF, &aG, &bV);
+		createCase(&bC, &cV, &aF, &aG, &bV, &dC);
+		createPlugin(&bC, &cV, &aF, &aG, &bV, &pL);
+	} 
   
   void dtXmlParser::setStaticProperties( void ) {
     for (int ii=0; ii<_rootRead.size(); ii++) {

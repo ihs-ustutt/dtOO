@@ -139,6 +139,15 @@ namespace dtOO {
       vectorHandling< dtCase * > & dC,
       vectorHandling< dtPlugin * > & pL
     ) const;    
+    void destroyAndCreate(
+      baseContainer & bC,
+      vectorHandling< constValue * > & cV,
+      vectorHandling< analyticFunction* > & aF,
+      vectorHandling< analyticGeometry * > & aG,
+      vectorHandling< boundedVolume * > & bV,
+      vectorHandling< dtCase * > & dC,
+      vectorHandling< dtPlugin * > & pL
+    ) const;  
   private:
     void parse(char const * const fileName);
     void checkFile(
