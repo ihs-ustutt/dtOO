@@ -30,14 +30,23 @@ namespace dtOO {
       std::string const stateName, 
       vectorHandling< constValue * > const * const cValP
     ) const;
+    void write(
+      std::vector< std::string > const stateName, 
+      std::vector< vectorHandling< constValue * > > const & cValP
+    ) const;
     void write( vectorHandling< constValue * > const & cValP ) const;
     void write(
       std::string const stateName, 
       vectorHandling< constValue * > const & cValP
-    ) const;   
+    ) const;       
     void writeUpdate(
       std::string const stateName, 
       vectorHandling< constValue * > const & cValP
+    ) const;
+    void extract(
+      std::string const stateName, 
+      vectorHandling< constValue * > const & cValP,
+      std::string const fileName
     ) const;
     void remove( std::string const stateName ) const;
     void load( void ) const;

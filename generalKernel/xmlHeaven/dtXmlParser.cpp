@@ -353,6 +353,45 @@ namespace dtOO {
     );
   }
 
+  void dtXmlParser::write(
+    std::vector< std::string > const stateName, 
+    std::vector< vectorHandling< constValue * > > const & cValP
+  ) const {
+    //
+    // filename
+    //
+    char const * const fileName = _outFile.c_str();
+       
+    dt__forAllIndex(stateName, ii) {
+      ::QDomElement newState = createElement(_rootLoadDoc, "state");
+      newState.setAttribute("label", stateName[ii].c_str());
+      appendChildElement(_rootLoadDoc, newState);    
+      dt__forAllRefAuto(cValP[ii], aCV) aCV->writeToElement(_rootLoadDoc, newState);
+    }
+    
+    //
+    // write file
+    //
+    writeFile(fileName, _rootLoadDoc);
+    
+    //
+    // update rootLoad and rootLoadDoc
+    //
+    load();
+    
+    //
+    // set state label
+    //
+    setState(stateName.back());
+    
+    dt__info(
+      write(),
+      << "Save " << stateName.size() << " states  to file = " 
+      << fileName << std::endl
+      << dt__eval(currentState())
+    );
+  }
+
   void dtXmlParser::write( 
     vectorHandling< constValue * > const & cValP 
   ) const {
@@ -416,6 +455,32 @@ namespace dtOO {
       writeUpdate(),
       << "Update state = " << stateName << " to file = " << fileName << std::endl
       << dt__eval(currentState())
+    );
+  }  
+  
+  void dtXmlParser::extract(
+    std::string const stateName, 
+    vectorHandling< constValue * > const & cValP,
+    std::string const fileName
+  ) const {
+    ::QDomDocument doc;
+
+    checkFile(fileName.c_str(), doc);
+    
+    ::QDomElement newState = createElement(doc, "state");
+    newState.setAttribute("label", stateName.c_str());
+    appendChildElement(doc, newState);
+    
+    dt__forAllRefAuto(cValP, aCV) aCV->writeToElement(doc, newState);
+    
+    //
+    // write file
+    //
+    writeFile(fileName, doc);
+
+    dt__info(
+      extract(),
+      << "Extract state = " << stateName << " to separate file = " << fileName
     );
   }  
 
@@ -545,13 +610,13 @@ namespace dtOO {
       // initialize new file
       //
       xmlDocument = QDomDocument();
-      // encoding
-      QDomProcessingInstruction myHeader 
-      = 
-      xmlDocument.createProcessingInstruction( 
-        "xml","version=\"1.0\" encoding=\"ISO-8859-1\"" 
-      );
-      xmlDocument.appendChild( myHeader );
+//      // encoding
+//      QDomProcessingInstruction myHeader 
+//      = 
+//      xmlDocument.createProcessingInstruction( 
+//        "xml","version=\"1.0\" encoding=\"ISO-8859-1\"" 
+//      );
+//      xmlDocument.appendChild( myHeader );
       // machine name of _rootReadElement
       ::QDomElement _rootWriteElement = xmlDocument.createElement(
         _rootRead[0].tagName()
