@@ -18,12 +18,16 @@
 namespace po = boost::program_options;
 #include <iostream>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+
 using namespace dtOO;
 
 #define dt__commandIf( str, helpStr, name, description ) \
   helpStr << name << " : " << std::endl \
   << "    " << description << std::endl; \
   if ( str == name )
+
 std::string parseCommand(
   std::string aRule,
   dtXmlParser & parser,
@@ -69,7 +73,15 @@ std::string parseCommand(
   dt__commandIf( aRule, help, "write", "write current state" ) {
     parser.write(addRule, cV);
     return std::string("");    
-  }                        
+  }      
+  dt__commandIf( aRule, help, "writeUpdate", "write update of a state" ) {
+    parser.writeUpdate(addRule, cV);
+    return std::string("");    
+  }
+  dt__commandIf( aRule, help, "remove", "remove a state" ) {
+    parser.remove(addRule);
+    return std::string("");    
+  }     
   dt__commandIf( 
     aRule, help, "createAnalyticFunction", "create analyticFunctions" 
   ) {
@@ -120,9 +132,6 @@ std::string parseCommand(
 }
 
 int main( int ac, char* av[] ) {
-//  ::boost::mpi::environment env;
-//  ::boost::mpi::communicator world;    
-  
   try {
     //
     // options
@@ -179,11 +188,29 @@ int main( int ac, char* av[] ) {
     vectorHandling< dtPlugin * > dtP;      
     
     while (true) {
-      std::cout << "cubanLinxShell ::> ";
-
-      std::string command;
-      std::cin >> command;
-
+      //
+      // get command
+      //
+      char * line = readline("cubanLinxShell ::> ");
+      
+      if (!line) break;
+      
+      //
+      // make history
+      //
+      if (*line) add_history(line);
+      
+      //
+      // make command string
+      //
+      std::string command(line);
+      if ( command.empty() ) continue;
+      
+      //
+      // free line
+      //
+      free(line);      
+      
       if ( command == "exit" || std::cin.eof() ) {
         break;
       }
@@ -197,9 +224,9 @@ int main( int ac, char* av[] ) {
           std::cout << eGenRef.what() << std::endl;
         }
       }
-
     }
 
+    std::cout << "# Free memory" << std::endl;    
     //
     // destroy objects
     //
@@ -207,6 +234,7 @@ int main( int ac, char* av[] ) {
     aF.destroy();
     aG.destroy();
     bV.destroy();
+    std::cout << "# Goodbye" << std::endl;    
   }
   //
   // catch dtOO exceptions
