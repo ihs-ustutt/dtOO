@@ -58,6 +58,21 @@ std::string parseCommand(
     parser.load();
     return std::string("");    
   }
+  dt__commandIf( 
+    aRule, help, "info", "show quick info of current environment" 
+  ) {
+    std::stringstream ss;
+    ss 
+    << "parser " << parser.currentState() << std::endl
+    << "cV " << cV.size() << std::endl
+    << "aF " << aF.size() << std::endl
+    << "aG " << aG.size() << std::endl
+    << "bV " << bV.size() << std::endl      
+    << "dtC " << dtC.size() << std::endl      
+    << "dtP " << dtP.size() << std::endl;
+    
+    return ss.str();
+  }       
   dt__commandIf( aRule, help, "getStates", "get state labels" ) {
     std::vector< std::string > state = parser.getStates();
 		std::stringstream ss;
@@ -127,15 +142,13 @@ std::string parseCommand(
   dt__commandIf( aRule, help, "applyPlugin", "apply a plugin") {      
     dtP.get(addRule[0])->apply();
     return std::string("");
-  }     
+  }
+  dt__commandIf( aRule, help, "help", "This help") {
+    help << std::endl;
+    return help.str();
+  }
   
-  
-  help 
-  << std::endl
-  << "Command " << aRule << " not found." 
-  << std::endl;
-
-  return help.str();
+  return std::string( "Unknown command: " + aRule + "\n");
 }
 
 int main( int ac, char* av[] ) {
@@ -150,7 +163,7 @@ int main( int ac, char* av[] ) {
       ("xmlOut,o", po::value<std::string>(), "set output xml file (required)")
       (
         "log", 
-        po::value<std::string>()->default_value("cubanLinxShell.log"), 
+        po::value<std::string>()->default_value("built4CubanLinx.log"), 
         "define logfile (optional)"
       )
     ;
@@ -167,7 +180,7 @@ int main( int ac, char* av[] ) {
 
     std::cout 
     << "#" << std::endl
-    << "# Starting cubanLinxShell" << std::endl
+    << "# Starting built4CubanLinx" << std::endl
     << "#" << std::endl
     << "# log: " << vm["log"].as<std::string>() << std::endl
     << "# xmlIn: " << vm["xmlIn"].as<std::string>() << std::endl
@@ -194,11 +207,21 @@ int main( int ac, char* av[] ) {
     vectorHandling< dtCase * > dtC; 
     vectorHandling< dtPlugin * > dtP;      
     
+    std::cout 
+    << "# define standard variables" << std::endl
+    << "#   baseContainer bC" << std::endl
+    << "#   vectorHandling< analyticGeometry * > aG" << std::endl
+    << "#   vectorHandling< constValue * > cV" << std::endl 
+    << "#   vectorHandling< analyticFunction * > aF" << std::endl
+    << "#   vectorHandling< boundedVolume * > bV" << std::endl
+    << "#   vectorHandling< dtCase * > dtC" << std::endl
+    << "#   vectorHandling< dtPlugin * > dtP" << std::endl;
+    
     while (true) {
       //
       // get command
       //
-      char * line = readline("cubanLinxShell ::> ");
+      char * line = readline("built4CubanLinx ::> ");
       
       if (!line) break;
       

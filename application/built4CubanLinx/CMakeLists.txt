@@ -16,7 +16,7 @@ find_package(MPI REQUIRED)
 # executable
 #
 #
-add_executable(cubanLinxShell cubanLinxShell.cpp)
+add_executable(built4CubanLinx built4CubanLinx.cpp)
 
 #
 #
@@ -24,7 +24,7 @@ add_executable(cubanLinxShell cubanLinxShell.cpp)
 #
 #
 target_link_libraries(
-  cubanLinxShell 
+  built4CubanLinx 
   dtOO
   ${Boost_LIBRARIES}
 )
@@ -40,4 +40,4 @@ set(
   "${CMAKE_EXE_LINKER_FLAGS},-rpath,${CMAKE_INSTALL_PREFIX}/lib"
 )
 
-install(TARGETS cubanLinxShell DESTINATION bin)
+install(TARGETS built4CubanLinx DESTINATION bin)

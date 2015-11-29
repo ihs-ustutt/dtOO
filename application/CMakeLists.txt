@@ -4,7 +4,7 @@
 #
 #------------------------------------------------------------------------------#
 add_subdirectory(runCase)
-add_subdirectory(cubanLinxShell)
+add_subdirectory(built4CubanLinx)
 add_subdirectory(createState)
 add_subdirectory(listLabel)
 add_subdirectory(listState)
