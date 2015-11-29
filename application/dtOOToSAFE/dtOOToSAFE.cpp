@@ -140,7 +140,12 @@ int main( int ac, char* av[] ) {
           std::ios::out | std::ios::trunc 
         ) 
       );
-    }    
+    }
+    
+    //
+    // adjust yWorst vector
+    //
+    if (yWorst.size() == 1) yWorst.resize(yOf.size(), yWorst.front());
 //    dt__forAllRefAuto(vm["x"].as< std::vector< std::string > >(), aCV) {
 //      
 //    }
