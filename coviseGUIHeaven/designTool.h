@@ -45,6 +45,7 @@ namespace dtOO {
       void tryToRemake(void);      
     private:
       covise::coStringParam * _logName;
+      covise::coBooleanParam * _clearLog;      
       covise::coStringParam * _stateName;
       covise::coChoiceParam * _moduleChoice;
       covise::coFileBrowserParam * _xmlBrowser;

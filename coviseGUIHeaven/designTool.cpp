@@ -23,14 +23,16 @@
 namespace dtOO {
   designTool::designTool(
     int argc, char *argv[]) : covise::coModule(argc, argv, "designTool"
-  ) {
+  ) {      
     _logName = addStringParam("_logName", "_logNameDescription");
     _stateName = addStringParam("_stateName", "_stateNameDescription");
+    _clearLog = addBooleanParam("_clearLog", "_clearLogDescription");
+    _clearLog->setValue(false);    
 		_moduleChoice = addChoiceParam("_moduleChoice", "_moduleChoiceDescription");		
     _xmlBrowser = addFileBrowserParam("_xmlBrowser", "_xmlBrowserDescrition");
     _xmlBrowser->setValue(".", "*.xml/*");
     _xmlBrowser->disable();
-
+    
     _parseXml = addBooleanParam("_parseXml", "_parseXmlDescription");
     _parseXml->setValue(false);
     _cVChoice = addChoiceParam("_cVChoice", "_cVChoiceDescription");
@@ -212,7 +214,7 @@ namespace dtOO {
     //
     // create baseContainer
     //
-    _bC.reset( new baseContainer() );
+    _bC.reset( new baseContainer() );   
   }
 
 	void designTool::postInst() {
@@ -223,14 +225,38 @@ namespace dtOO {
 		_logName->disable();
     _stateName->show();
 		_stateName->disable();    
+    _clearLog->show();
 //    _dCStateString->show();
     _dCStateString->disable();
+    //
+    // init log file
+    //
+    std::string logFileName = std::string( covise::coModule::getTitle() );
+    logFileName = abstractModule::initializeLogFile( "./"+logFileName+".log" );
+    _logName->setValue(logFileName.c_str()); 
     
 	}
 	
   void designTool::param(const char* paramName, bool inMapLoading) {
 		try {      
 //			_logName->setValue("");
+      
+      if ( strcmp(paramName, "_clearLog") == 0 ) {
+        if ( _clearLog->getValue() ) {
+          std::string logFileName 
+          = 
+          std::string( covise::coModule::getTitle() );
+          logFileName 
+          = 
+          abstractModule::initializeLogFile( "./"+logFileName+".log" );
+          _logName->setValue(logFileName.c_str());  
+          
+          _clearLog->setValue(false);          
+        }
+        else {
+          _clearLog->setValue(false);
+        }        
+      }
       
 			if (strcmp(paramName, "_moduleChoice") == 0) {
 				if ( _moduleChoice->getValue() == 0 ) {
@@ -687,14 +713,7 @@ namespace dtOO {
 
   
   int designTool::compute(const char *port) {
-    try {    
-      //
-      // init log file
-      //
-      std::string logFileName = std::string( covise::coModule::getTitle() );
-      logFileName = abstractModule::initializeLogFile( "./"+logFileName+".log" );
-	    _logName->setValue(logFileName.c_str());
-			
+    try {    			
 			if ( _recreate ) {
 				//
 				// try to store visualization
@@ -837,16 +856,16 @@ namespace dtOO {
 //			if (_dCApply) _dCApply->update();
 //			_dCApply = NULL;
 		
-			abstractModule::closeLogFile();
+//			abstractModule::closeLogFile();
 			
 			return CONTINUE_PIPELINE;
 		}
 		catch (eGeneral & eGenRef) {
 			dt__catch(compute(), eGenRef.what());
 			
-			abstractModule::closeLogFile();
+//			abstractModule::closeLogFile();
 			return STOP_PIPELINE;
-		}    		
+		}
   }
 	
   void designTool::saveCVState(void) {
@@ -887,6 +906,7 @@ namespace dtOO {
   }
 	
   designTool::~designTool() {
+	  abstractModule::closeLogFile();    
   }
 	
 	void designTool::tryToStore( void ) {
