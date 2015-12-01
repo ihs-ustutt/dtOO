@@ -26,6 +26,11 @@ namespace dtOO {
       }
     }
     //
+    // close first
+    //
+		if ( Output2FILE::Stream().is_open() ) Output2FILE::Stream().close();
+    
+    //
     // set file
     //
 		std::string nameStr = logFileName;
@@ -68,7 +73,7 @@ namespace dtOO {
 		
 		return nameStr;
 	}
-	
+  
   void logMe::closeLog( void ) {
 		if (Output2FILE::Stream().is_open()) {
 			Output2FILE::Stream().close();
