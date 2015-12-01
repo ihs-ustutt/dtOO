@@ -7,7 +7,7 @@
 //#include "createOpenFOAMCase/createOpenFOAMCase.h"
 
 #include "dtPluginDriver.h"
-#include <pluginEngine/pugg/Kernel.h>
+#include "dtPluginKernel.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -55,7 +55,7 @@ namespace dtOO {
     //
     // init kernel
     //
-    ::pugg::Kernel * kernel = new ::pugg::Kernel();
+    dtPluginKernel * kernel = new dtPluginKernel();
     kernel->add_server(dtPlugin::server_name(), dtPlugin::version);  
 
     //
