@@ -16,6 +16,7 @@ if (DTOO_EXTERNLIBS STREQUAL "")
   message( FATAL_ERROR "Please set DTOO_EXTERNLIBS." )
 endif (DTOO_EXTERNLIBS STREQUAL "")
 
+INCLUDE("${DTOO_ROOTDIR}/cmake/dtOOHelperMacros.cmake")
 set(
   CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DTOO_ROOTDIR}/cmake/"
 )
