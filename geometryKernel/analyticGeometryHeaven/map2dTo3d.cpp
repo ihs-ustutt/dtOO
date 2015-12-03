@@ -61,6 +61,14 @@ namespace dtOO {
     return getMax(1);
   }
   
+  bool map2dTo3d::inRange( dtPoint2 const & pUV ) const {
+    if ( pUV.x() > getUMax() ) return false;
+    if ( pUV.x() < getUMin() ) return false;
+    if ( pUV.y() > getVMax() ) return false;
+    if ( pUV.y() < getVMin() ) return false;
+    return true;
+  }
+  
   dtPoint3 map2dTo3d::getPointPercent( 
     float const & uu, float const & vv 
   ) const {
@@ -178,16 +186,23 @@ namespace dtOO {
     double Z = ppXYZ.z();
     double U;
     double V;
-    int const NumInitGuess = 11;
-    double initU[NumInitGuess] 
-    = 
-    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
-    double initV[NumInitGuess] 
-    = 
-    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};    
+//    int const NumInitGuess = 11;
+//    double initU[NumInitGuess] 
+//    = 
+//    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
+//    double initV[NumInitGuess] 
+//    = 
+//    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};    
+    int const NumInitGuess = 3;
+    double initU[NumInitGuess] = {0.5, 0.75, 0.25};
+    double initV[NumInitGuess] = {0.5, 0.75, 0.25};
     int maxRestarts 
     = 
     staticPropertiesHandler::getInstance()->getOptionInt("reparam_restarts");
+    int maxInternalRestarts 
+    = 
+    staticPropertiesHandler
+      ::getInstance()->getOptionInt("reparam_internalRestarts");    
     int restartIncreasePrec
     = 
     staticPropertiesHandler::getInstance()->getOptionInt(
@@ -200,39 +215,63 @@ namespace dtOO {
           //
           // do reparameterization
           //
+
           U = initU[ii];
           V = initV[jj];
-          XYZtoUVPercent(X, Y, Z, U, V);
 
-          //
-          // check if point is precise enough
-          //
-          if (
-            analyticGeometry::inXYZTolerance(
-              ppXYZ, getPointPercent(U,V), false, currentPrec
-            )
-          ) {
-            analyticGeometry::inXYZTolerance(
-              ppXYZ, getPointPercent(U, V), true, currentPrec
-            );
-            return uv_percent( dtPoint2(U, V) );            
+          dt__forFromToIndex(0, maxInternalRestarts, thisRestart) {
+            double stepU = .01;
+            double stepV = .01;
+            double prec = 1.;
+            double uMin = 0.;
+            double uMax = 1.;
+            double vMin = 0.;
+            double vMax = 1.;            
+            try {
+              XYZtoUVPercent(
+                X, Y, Z, 
+                U, V, uMin, uMax, vMin, vMax, 
+                stepU, stepV, prec
+              );
+            }
+            catch( eGeneral & eGen ) {
+              dt__warning(
+                reparamOnFace(),
+                << logMe::dtFormat(
+                  "Error for initU = %12.4e initV = %12.4e at internalRestart = %i"
+                ) 
+                % initU[ii] % initV[jj] % thisRestart
+              );                 
+            }
+            //
+            // increase precision for restart
+            //
+            prec = 0.1 * prec;
+            
+            //
+            // check if point is precise enough
+            //
+            if (
+              analyticGeometry::inXYZTolerance(
+                ppXYZ, getPointPercent(U,V), false, currentPrec
+              )
+            ) return uv_percent( dtPoint2(U, V) );            
           }
         }
       }
       dt__warning(
         reparamOnFace(), 
-        << "Increasing reparamOnFace tolerance. Multiply inital precision by:" 
-        << std::endl
+        << "Increasing reparamOnFace tolerance. Multiply inital precision by "
         << restartIncreasePrec * currentPrec
       );        
       currentPrec = restartIncreasePrec * currentPrec;
     }
     dt__throw(
       reparamOnFace(), 
-      << "Reparametization fails." << std::endl
-      << dt__point3d(ppXYZ) << std::endl
+      << "Reparameterization of " << dt__point3d(ppXYZ) << " fails." 
+      << std::endl
       << dumpToString()
-    );    
+    );
   }
   
   dtVector3 map2dTo3d::normalPercent( 
@@ -756,7 +795,9 @@ namespace dtOO {
 //    }
 //  }
   bool map2dTo3d::XYZtoUVPercent(
-    double X, double Y, double Z, double &U, double &V
+    double X, double Y, double Z, double &U, double &V, 
+    double const uMin, double const uMax, double const vMin, double const vMax, 
+    double const stepU, double const stepV, double const prec
   ) const {
     _pXYZ = dtPoint3(X, Y, Z);
     
@@ -778,13 +819,10 @@ namespace dtOO {
 		//
 		// set bounds
 		//
-    std::vector< double > init(2, 0);
-    init[0] = U; init[1] = V;
-    for (int ii=0; ii<2; ii++) {
-      std::string xStr = "x"+stringPrimitive::intToString(ii);
-		  min->SetVariable( ii, xStr, init[ii], 0.01 );			
-      min->SetVariableLimits(ii, 0., 1.);	
-    }
+    min->SetVariable( 0, "U", U, stepU );
+    min->SetVariableLimits(0, uMin, uMax);	
+    min->SetVariable( 1, "V", V, stepV );
+    min->SetVariableLimits(1, vMin, vMax);	
     
 		//
 		// minimizer options
@@ -802,7 +840,7 @@ namespace dtOO {
 		min->SetTolerance(
       staticPropertiesHandler::getInstance()->getOptionFloat(
         "reparamOnFace_precision"
-      )    
+      ) * prec    
     );			
 		min->SetPrintLevel(
       staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel") 
@@ -822,13 +860,27 @@ namespace dtOO {
 	}
   
 	double map2dTo3d::F(double const * xx) const {	
-    double objective 
-    = 
-    dtLinearAlgebra::length(
-      _pXYZ - getPointPercent(dtPoint2(xx[0], xx[1]))
-    );
-    return objective;
+    dtPoint2 uv(xx[0], xx[1]);
+    double objective;
+    if ( inRange(uv) ) {
+      objective 
+      = 
+      dtLinearAlgebra::length(
+        _pXYZ - getPointPercent(dtPoint2(xx[0], xx[1]))
+      );
+    }
+    else dt__throwUnexpected(F());
+    
+    return objective;    
 	}	   	
+
+	double map2dTo3d::FWrap(double const & x0, double const & x1) const {	
+    std::vector< double > uv(2);
+    uv[0] = x0;
+    uv[1] = x1;
+    
+    return F(&(uv[0]));
+	}	   
   
 	dtPoint2 map2dTo3d::operator%(const dtPoint2 &percent) const {
 		return dtPoint2( this->uv_percent(percent) );

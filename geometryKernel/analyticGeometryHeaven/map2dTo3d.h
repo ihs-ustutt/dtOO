@@ -71,7 +71,8 @@ namespace dtOO {
       float getUMin( void ) const;
       float getUMax( void ) const;
       float getVMin( void ) const;
-      float getVMax( void ) const;     
+      float getVMax( void ) const;
+      bool inRange( dtPoint2 const & pUV ) const;
       dtVector3 normal( dtPoint2 const & pp ) const;      
       dtVector3 normalPercent( float const & uu, float const & vv ) const;   
       std::vector< dtVector3 > firstDer( 
@@ -115,9 +116,13 @@ namespace dtOO {
       dtPoint2 operator%(const dtPoint2 &percent) const;      
     private:
       bool XYZtoUVPercent(
-        double X, double Y, double Z, double &U, double &V
+        double X, double Y, double Z, double &U, double &V, 
+        double const uMin, double const uMax, 
+        double const vMin, double const vMax, 
+        double const stepU, double const stepV, double const prec
       ) const;
 	    double F(double const * xx) const;        
+	    double FWrap(double const & x0, double const & x1) const;
     private:
       mutable dtPoint3 _pXYZ;      
   };

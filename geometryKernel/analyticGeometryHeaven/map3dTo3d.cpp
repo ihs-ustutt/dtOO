@@ -649,27 +649,22 @@ namespace dtOO {
               analyticGeometry::inXYZTolerance(
                 ppXYZ, getPointPercent(U, V, W), false, currentPrec
               ) 
-            ) {
-              analyticGeometry::inXYZTolerance(
-                ppXYZ, getPointPercent(U, V, W), true, currentPrec
-              );
-              return uvw_percent( dtPoint3(U, V, W) );            
-            }
+            ) return uvw_percent( dtPoint3(U, V, W) );
           }
         }
       }
       dt__warning(
         reparamInVolume(), 
-        << "Increasing reparamInVolume tolerance. Multiply inital precision by:" 
-        << std::endl
+        << "Increasing reparamInVolume tolerance. Multiply inital precision by " 
         << restartIncreasePrec * currentPrec
       );        
       currentPrec = restartIncreasePrec * currentPrec;      
     }
     dt__throw(
       reparamInVolume(), 
-      << "Reparametization fails." << std::endl
-      << dt__point3d(ppXYZ)
+      << "Reparameterization of " << dt__point3d(ppXYZ) << " fails." 
+      << std::endl
+      << dumpToString()
     );
   }
 	
@@ -962,5 +957,16 @@ namespace dtOO {
     return dtLinearAlgebra::length(
       _pXYZ - getPointPercent(dtPoint3(xx[0], xx[1], xx[2]))
     );
-	}	   
+	}
+  
+	double map3dTo3d::FWrap(
+    double const & x0, double const & x1, double const & x2 
+  ) const {	
+    std::vector< double > uv(3);
+    uv[0] = x0;
+    uv[1] = x1;
+    uv[2] = x2;
+    
+    return F(&(uv[0]));
+	}	     
 }

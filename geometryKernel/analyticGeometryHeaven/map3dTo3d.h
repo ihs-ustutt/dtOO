@@ -135,7 +135,10 @@ namespace dtOO {
       double &U, double &V, double &W,
       double extU, double extV, double extW
     ) const;
-	  double F(double const * xx) const;    
+	  double F(double const * xx) const;  
+    double FWrap(
+      double const & x0, double const & x1, double const & x2 
+    ) const;
   private:
     mutable dtPoint3 _pXYZ;
   };
