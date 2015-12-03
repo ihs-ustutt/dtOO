@@ -22,6 +22,7 @@ namespace dtOO {
     vectorHandling< analyticFunction * > const * const aF,
     vectorHandling< analyticGeometry * > const * const aG,
     vectorHandling< boundedVolume * > const * const bV,
+    vectorHandling< dtCase * > const * const dC,
     vectorHandling< dtPlugin * > const * const pL
 	) {  
     //

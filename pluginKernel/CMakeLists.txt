@@ -5,6 +5,7 @@ SET(HEADERS
   dtPluginKernel.h
   writeStep.h
   constValueAssingRule.h
+  analyticFunctionToCSV.h
 )
 
 SET(SOURCES
@@ -14,6 +15,7 @@ SET(SOURCES
   dtPluginKernel.cpp
   writeStep.cpp
   constValueAssingRule.cpp
+  analyticFunctionToCSV.cpp
 )
 
 APPEND_DTOO_SOURCE(pluginKernel "${SOURCES}")

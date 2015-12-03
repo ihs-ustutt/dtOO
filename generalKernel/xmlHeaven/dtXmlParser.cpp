@@ -1050,6 +1050,7 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFP,        
 		vectorHandling< analyticGeometry * > const * const aGP,
 		vectorHandling< boundedVolume * > * bVP,
+    vectorHandling< dtCase * > const * const dCP,
 		vectorHandling< dtPlugin * > * pLP
 	) const {
 		//
@@ -1078,7 +1079,7 @@ namespace dtOO {
 		//
 		// initialize dtPlugin
 		//
-		pLP->back()->init( wEl, bC, cVP, sFP, aGP, bVP, pLP );		
+		pLP->back()->init( wEl, bC, cVP, sFP, aGP, bVP, dCP, pLP );		
 	} 
 	
 	void dtXmlParser::createPlugin(
@@ -1087,12 +1088,13 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const sFP,        
 		vectorHandling< analyticGeometry * > const * const aGP,
 		vectorHandling< boundedVolume * > * bVP,
+    vectorHandling< dtCase * > const * const dCP,
 		vectorHandling< dtPlugin * > * pLP
 	) const {
 		std::vector< std::string > label = getLabels("plugin");
 		
 		dt__forAllIndex(label, ii) {
-      createPlugin(label[ii], bC, cVP, sFP, aGP, bVP, pLP);
+      createPlugin(label[ii], bC, cVP, sFP, aGP, bVP, dCP, pLP);
     }
 	}
 		
@@ -1165,7 +1167,7 @@ namespace dtOO {
 		createAnalyticGeometry(bC.get(), &cV, &aF, &aG);
 		createBoundedVolume(bC.get(), &cV, &aF, &aG, &bV);
 		createCase(bC.get(), &cV, &aF, &aG, &bV, &dC);
-		createPlugin(bC.get(), &cV, &aF, &aG, &bV, &pL);
+		createPlugin(bC.get(), &cV, &aF, &aG, &bV, &dC, &pL);
 	}
   
 	void dtXmlParser::destroyAndCreate(
@@ -1196,7 +1198,7 @@ namespace dtOO {
 		createAnalyticGeometry(&bC, &cV, &aF, &aG);
 		createBoundedVolume(&bC, &cV, &aF, &aG, &bV);
 		createCase(&bC, &cV, &aF, &aG, &bV, &dC);
-		createPlugin(&bC, &cV, &aF, &aG, &bV, &pL);
+		createPlugin(&bC, &cV, &aF, &aG, &bV, &dC, &pL);
 	} 
   
   void dtXmlParser::setStaticProperties( void ) {

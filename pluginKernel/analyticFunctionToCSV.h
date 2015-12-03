@@ -1,5 +1,5 @@
-#ifndef constValueAssingRule_H
-#define	constValueAssingRule_H
+#ifndef analyticFunctionToCSV_H
+#define	analyticFunctionToCSV_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -8,6 +8,7 @@
 #include "dtPlugin.h"
 
 namespace dtOO {
+  class dtXmlParser;
   class constValue;
   class analyticFunction;
   class analyticGeometry;
@@ -15,11 +16,11 @@ namespace dtOO {
   class baseContainer;
   class dtCase;
   
-  class constValueAssingRule : public dtPlugin {
+  class analyticFunctionToCSV : public dtPlugin {
   public:
-    dt__class(constValueAssingRule, dtPlugin);
-    constValueAssingRule();
-    virtual ~constValueAssingRule();
+    dt__class(analyticFunctionToCSV, dtPlugin);
+    analyticFunctionToCSV();
+    virtual ~analyticFunctionToCSV();
     virtual void init( 
       ::QDomElement const & element,
       baseContainer const * const bC,
@@ -32,12 +33,12 @@ namespace dtOO {
     );    
     virtual void apply(void);
   private:
-		baseContainer const * _bC;
-		vectorHandling< constValue * > const * _cV;
-		vectorHandling< analyticFunction * > const * _aF;
-		vectorHandling< analyticGeometry * > const * _aG;
-    std::vector< std::string > _assignRule;
+		vectorHandling< analyticFunction const * > _aF;
+    std::vector< int > _nP;
+    dtXmlParser const * _parser;
+    dtCase const * _case;
+    
   };
 }
-#endif	/* constValueAssingRule_H */
+#endif	/* analyticFunctionToCSV_H */
 

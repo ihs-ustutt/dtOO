@@ -100,6 +100,23 @@ namespace dtOO {
     return _state;
   }
 
+  std::string dtCase::createDirectory( std::string const & state ) const {
+    std::string wDir 
+    = 
+    staticPropertiesHandler::getInstance()->getOption("workingDirectory")
+    +
+    "/"
+    +
+    getLabel()+"_"+state;
+    
+    if ( !systemHandling::directoryExists(wDir) ) {
+      systemHandling::createDirectory(wDir);
+    }
+    
+    dt__info( createDirectory(), << dt__eval(wDir) );    
+
+    return wDir;
+  }  
 //  std::vector< std::string > dtCase::finishedStates( void ) const {
 //    std::vector< std::string > running = runningStates();
 //    std::vector< std::string > finished = finishedStates();
@@ -142,9 +159,16 @@ namespace dtOO {
     =
     std::find(_state.begin(), _state.end(), state);
     
-    dt__throwIf(it==_state.end(), getDirectory());
-    
-    return _directory.at( static_cast<int>(it-_state.begin()) );
+    //dt__throwIf(it==_state.end(), getDirectory());
+    //
+    // create if directory not listed and does not exist
+    //
+    if( it != _state.end() ) {
+      return _directory.at( static_cast<int>(it-_state.begin()) );
+    }
+    else {
+      return createDirectory(state);
+    }
   }
 
   vectorHandling< resultValue * > dtCase::result( 

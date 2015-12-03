@@ -13,6 +13,7 @@ namespace dtOO {
   class analyticGeometry;
   class boundedVolume;
   class baseContainer;
+  class dtCase;
   
   class writeStep : public dtPlugin {
   public:
@@ -26,6 +27,7 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticGeometry * > const * const aG,
       vectorHandling< boundedVolume * > const * const bV,
+      vectorHandling< dtCase * > const * const dC,      
       vectorHandling< dtPlugin * > const * const pL
     );    
     virtual void apply(void);

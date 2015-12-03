@@ -117,6 +117,7 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFP,        
       vectorHandling< analyticGeometry * > const * const aGP,
       vectorHandling< boundedVolume * > * bVP,
+      vectorHandling< dtCase * > const * const dCP,
       vectorHandling< dtPlugin * > * pLP
     ) const;      
     void createPlugin(
@@ -125,6 +126,7 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const sFP,        
       vectorHandling< analyticGeometry * > const * const aGP,
       vectorHandling< boundedVolume * > * bVP,
+      vectorHandling< dtCase * > const * const dCP,
       vectorHandling< dtPlugin * > * pLP
     ) const;        
     void createCase(

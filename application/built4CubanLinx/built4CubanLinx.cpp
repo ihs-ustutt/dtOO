@@ -127,7 +127,7 @@ std::string parseCommand(
     return std::string("");    
   }            
   dt__commandIf( aRule, help, "createPlugin", "create plugins" ) {
-    parser.createPlugin(&bC, &cV, &aF, &aG, &bV, &dtP);
+    parser.createPlugin(&bC, &cV, &aF, &aG, &bV, &dtC, &dtP);
     return std::string("");    
   }
   dt__commandIf( 

@@ -4,7 +4,7 @@
 #include "dtPlugin.h"
 #include "writeStep.h"
 #include "constValueAssingRule.h"
-//#include "createOpenFOAMCase/createOpenFOAMCase.h"
+#include "analyticFunctionToCSV.h"
 
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
@@ -40,6 +40,7 @@ namespace dtOO {
     
 		if (str == "writeStep") return new writeStep();
     if (str == "constValueAssingRule") return new constValueAssingRule();
+    if (str == "analyticFunctionToCSV") return new analyticFunctionToCSV();
     
     dt__throw(create(), << str <<  " could not be created");  
   }
