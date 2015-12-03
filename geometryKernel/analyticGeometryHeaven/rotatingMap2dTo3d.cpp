@@ -118,26 +118,6 @@ namespace dtOO {
 		return rot.transform( _m2d->getPoint(vv, ww) );
 	}	
 	
-	dtPoint3 rotatingMap2dTo3d::reparamInVolume(dtPoint3 const & ppXYZ) const {
-		float const extU = .0;
-		float const extV = .1;
-		float const extW = .1;
-//	  dt__info(
-//			reparamInVolume(), 
-//			<< logMe::dtFormat("Extension of uvw-range by (%d, %d, %d)") % extU % extV % extW
-//		);
-		
-    dtPoint3 ppUVW
-    =
-    map3dTo3d::reparamInVolume(ppXYZ, dtVector3(extU, extV, extW) );
-    
-    return dtPoint3(
-      std::max<float>( std::min<float>( ppUVW.x(), getUMax() ), getUMin()),
-      std::max<float>( std::min<float>( ppUVW.y(), getVMax() ), getVMin()),
-      std::max<float>( std::min<float>( ppUVW.z(), getWMax() ), getWMin())
-    );
-	}
-	
 	map2dTo3d * rotatingMap2dTo3d::segmentConstU( float const & uu ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
