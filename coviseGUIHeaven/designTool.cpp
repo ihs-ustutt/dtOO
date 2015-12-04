@@ -25,6 +25,7 @@ namespace dtOO {
     int argc, char *argv[]) : covise::coModule(argc, argv, "designTool"
   ) {      
     _logName = addStringParam("_logName", "_logNameDescription");
+    _infoStr = addStringParam("_infoStr", "_infoStrDescription");    
     _stateName = addStringParam("_stateName", "_stateNameDescription");
     _clearLog = addBooleanParam("_clearLog", "_clearLogDescription");
     _clearLog->setValue(false);    
@@ -223,8 +224,13 @@ namespace dtOO {
 		_xmlBrowser->show();
     _logName->show();
 		_logName->disable();
+    _logName->setValue("");
+    _infoStr->show();
+		_infoStr->disable();        
+    _infoStr->setValue("");
     _stateName->show();
 		_stateName->disable();    
+    _stateName->setValue("");
     _clearLog->show();
 //    _dCStateString->show();
     _dCStateString->disable();
@@ -238,9 +244,8 @@ namespace dtOO {
 	}
 	
   void designTool::param(const char* paramName, bool inMapLoading) {
-		try {      
-//			_logName->setValue("");
-      
+    _infoStr->setValue("");
+		try {
       if ( strcmp(paramName, "_clearLog") == 0 ) {
         if ( _clearLog->getValue() ) {
           std::string logFileName 
@@ -699,6 +704,7 @@ namespace dtOO {
 			}			      
 		}		
 		catch (eGeneral & eGenRef) {
+      _infoStr->setValue("catchException");
       dt__catch(param(), eGenRef.what());
     }
 
@@ -713,6 +719,7 @@ namespace dtOO {
 
   
   int designTool::compute(const char *port) {
+    _infoStr->setValue("");
     try {    			
 			if ( _recreate ) {
 				//
@@ -853,17 +860,15 @@ namespace dtOO {
         }
       }   			
 
-//			if (_dCApply) _dCApply->update();
-//			_dCApply = NULL;
-		
-//			abstractModule::closeLogFile();
-			
 			return CONTINUE_PIPELINE;
 		}
 		catch (eGeneral & eGenRef) {
+      std::string infoStr("catchException::");
+      infoStr = infoStr+eGenRef.where();
+      _infoStr->setValue( infoStr.c_str() );      
+      
 			dt__catch(compute(), eGenRef.what());
 			
-//			abstractModule::closeLogFile();
 			return STOP_PIPELINE;
 		}
   }
