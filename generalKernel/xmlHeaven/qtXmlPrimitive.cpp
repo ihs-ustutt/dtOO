@@ -446,6 +446,15 @@ namespace dtOO {
 	  );
     return str;
   }
+
+  std::string qtXmlPrimitive::getAttributeStr(
+	  std::string const attName, const ::QDomElement element, 
+    std::string const def
+	) {
+    if ( !hasAttribute(attName, element) ) return def;
+    
+		return getAttributeStr(attName, element);
+  }  
   
   std::string qtXmlPrimitive::getAttributeRareStr(
 	  std::string const attName, const ::QDomElement element
