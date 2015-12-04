@@ -196,7 +196,12 @@ namespace dtOO {
         //
         // correct orientation
         //
-        if (dtLinearAlgebra::dotProduct(nn, dist) < 0.) nn = -1. * nn;
+        dtVector3 checkDist(
+          sheet0[node-1][layer]->x() - sheet0[node-1][layer-1]->x(),
+          sheet0[node-1][layer]->y() - sheet0[node-1][layer-1]->y(),
+          sheet0[node-1][layer]->z() - sheet0[node-1][layer-1]->z()
+        );
+        if (dtLinearAlgebra::dotProduct(nn, checkDist) < 0.) nn = -1. * nn;        
 
         //
         // transform normal to parameter coordinates
@@ -265,7 +270,12 @@ namespace dtOO {
         //
         // correct orientation
         //        
-        if (dtLinearAlgebra::dotProduct(nn, dist) < 0.) nn = -1. * nn;
+        dtVector3 checkDist(
+          sheet1[node-1][layer]->x() - sheet1[node-1][layer-1]->x(),
+          sheet1[node-1][layer]->y() - sheet1[node-1][layer-1]->y(),
+          sheet1[node-1][layer]->z() - sheet1[node-1][layer-1]->z()
+        );
+        if (dtLinearAlgebra::dotProduct(nn, checkDist) < 0.) nn = -1. * nn;
 
         //
         // transform normal to parameter coordinates
