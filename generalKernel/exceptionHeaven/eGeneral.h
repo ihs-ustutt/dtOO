@@ -16,6 +16,7 @@ namespace dtOO {
     virtual ~eGeneral() _GLIBCXX_USE_NOEXCEPT;
     void clear(void);
     virtual const char* what() const _GLIBCXX_USE_NOEXCEPT;
+    virtual const char* where() const _GLIBCXX_USE_NOEXCEPT;
   private:
     std::string _exceptionMsg;
   };
