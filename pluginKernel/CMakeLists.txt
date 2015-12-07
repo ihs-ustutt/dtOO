@@ -6,6 +6,7 @@ SET(HEADERS
   writeStep.h
   constValueAssingRule.h
   analyticFunctionToCSV.h
+  circumferentialAverage.h
 )
 
 SET(SOURCES
@@ -16,6 +17,7 @@ SET(SOURCES
   writeStep.cpp
   constValueAssingRule.cpp
   analyticFunctionToCSV.cpp
+  circumferentialAverage.cpp
 )
 
 APPEND_DTOO_SOURCE(pluginKernel "${SOURCES}")

@@ -5,6 +5,7 @@
 #include "writeStep.h"
 #include "constValueAssingRule.h"
 #include "analyticFunctionToCSV.h"
+#include "circumferentialAverage.h"
 
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
@@ -41,6 +42,7 @@ namespace dtOO {
 		if (str == "writeStep") return new writeStep();
     if (str == "constValueAssingRule") return new constValueAssingRule();
     if (str == "analyticFunctionToCSV") return new analyticFunctionToCSV();
+    if (str == "circumferentialAverage") return new circumferentialAverage();
     
     dt__throw(create(), << str <<  " could not be created");  
   }
