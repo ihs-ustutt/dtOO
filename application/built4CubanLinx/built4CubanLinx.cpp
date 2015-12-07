@@ -21,6 +21,10 @@ namespace po = boost::program_options;
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#include <analyticGeometryHeaven/map1dTo3d.h>
+#include <analyticGeometryHeaven/map2dTo3d.h>
+#include <analyticGeometryHeaven/map3dTo3d.h>
+
 using namespace dtOO;
 
 #define dt__commandIf( str, helpStr, name, description ) \
@@ -28,6 +32,9 @@ using namespace dtOO;
   << "    " << description << std::endl; \
   if ( str == name )
 
+//
+// dtXmlParser commands
+//
 std::string parseCommand(
   std::string aRule,
   dtXmlParser & parser,
@@ -48,7 +55,7 @@ std::string parseCommand(
     stringPrimitive::convertToCSVStringVector(
       stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule)
     );
-    dt__infoNoClass(main(), << "addRule = " << addRule);
+    dt__infoNoClass(parseCommand(), << "addRule = " << addRule);
   }
   dt__commandIf( aRule, help, "parse", "parse input xml" ) {
     parser.parse();
@@ -143,12 +150,170 @@ std::string parseCommand(
     dtP.get(addRule[0])->apply();
     return std::string("");
   }
+  dt__commandIf( 
+    aRule, help, "replaceDependencies", "replace all dependencies in string" 
+  ) {
+    std::stringstream in;
+    dt__forFromToIndex(0, addRule.size()-1, ii) {
+      in << addRule[ii] << ",";
+    }
+    in << addRule.back();
+    
+    std::stringstream ss;
+    ss 
+    << parser.replaceDependencies(in.str(), &bC, &cV, &aF, &aG) << std::endl;
+		return ss.str();    
+  }    
   dt__commandIf( aRule, help, "help", "This help") {
     help << std::endl;
     return help.str();
   }
   
   return std::string( "Unknown command: " + aRule + "\n");
+}
+
+//
+// constValue commands
+//
+std::string parseCommand(
+  std::string aRule, dtXmlParser & parser, vectorHandling< constValue * > & cV
+) {
+  std::stringstream help;  
+  help << "Commands:" << std::endl;
+  std::vector< std::string > addRule;
+  if ( stringPrimitive::stringContains("(", aRule) ) {
+    addRule
+    = 
+    stringPrimitive::convertToCSVStringVector(
+      stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule)
+    );
+    dt__infoNoClass(parseCommand(), << "addRule = " << addRule);
+  }
+  dt__commandIf( aRule, help, "set", "set a constValue" ) {
+    std::stringstream ss;
+    ss << "cV[ " << addRule[0] << " ] = " << cV.get(addRule[0])->getValue();
+    cV.get(addRule[0])->setValue( qtXmlBase::muParseString( addRule[1] ) );
+		ss << " -> " << cV.get(addRule[0])->getValue() << std::endl;
+		return ss.str();        
+  }      
+  dt__commandIf( 
+    aRule, help, "info", "show info of cV" 
+  ) {
+    std::stringstream ss;
+    int cc = 0;
+    dt__forAllRefAuto(cV, aCV) {
+      ss 
+      << logMe::dtFormat(
+        "%4i | cV[ %32s ] = %16.8e ( %16.8e -- %16.8e ) %5.2f %%"
+        ) 
+        % cc 
+        % aCV->getLabel() % aCV->getValue() % aCV->getMin() % aCV->getMax()
+        % ((aCV->getValue() - aCV->getMin()) / (aCV->getMax() - aCV->getMin()))
+      << std::endl;
+      cc++;
+    }
+    
+    return ss.str();
+  }       
+  dt__commandIf( aRule, help, "help", "This help") {
+    help << std::endl;
+    return help.str();
+  }
+  
+  return std::string( "Unknown command: " + aRule + "\n");
+}
+
+//
+// constValue commands
+//
+std::string parseCommand(
+  std::string aRule, 
+  dtXmlParser & parser, 
+  vectorHandling< analyticGeometry * > & aG
+) {
+  std::stringstream help;  
+  help << "Commands:" << std::endl;
+  std::vector< std::string > addRule;
+  if ( stringPrimitive::stringContains("(", aRule) ) {
+    addRule
+    = 
+    stringPrimitive::convertToCSVStringVector(
+      stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule)
+    );
+    dt__infoNoClass(parseCommand(), << "addRule = " << addRule);
+  }
+  dt__commandIf( aRule, help, "getPointPercent", "get a point" ) {
+    std::stringstream ss;
+    dtPoint3 thePoint;
+    //
+    // map1dTo3d
+    //
+    if (addRule.size() == 2) {
+      dt__throwIfNoClass( 
+        !map1dTo3d::ConstDownCast( aG.get(addRule[0]) ), parseCommand() 
+      );
+      thePoint 
+      = 
+      map1dTo3d::ConstSecureCast(aG.get(addRule[0]))->getPointPercent( 
+        qtXmlBase::muParseString(addRule[1]) 
+      );
+    }
+    //
+    // map1dTo3d
+    //
+    else if (addRule.size() == 3) {
+      dt__throwIfNoClass( 
+        !map2dTo3d::ConstDownCast( aG.get(addRule[0]) ), parseCommand() 
+      );
+      thePoint 
+      = 
+      map2dTo3d::ConstSecureCast(aG.get(addRule[0]))->getPointPercent( 
+        qtXmlBase::muParseString(addRule[1]),
+        qtXmlBase::muParseString(addRule[2])
+      );
+    }
+    //
+    // map1dTo3d
+    //
+    else if (addRule.size() == 4) {
+      dt__throwIfNoClass( 
+        !map3dTo3d::ConstDownCast( aG.get(addRule[0]) ), parseCommand() 
+      );
+      thePoint 
+      = 
+      map3dTo3d::ConstSecureCast(aG.get(addRule[0]))->getPointPercent( 
+        qtXmlBase::muParseString(addRule[1]),
+        qtXmlBase::muParseString(addRule[2]),
+        qtXmlBase::muParseString(addRule[3]) 
+      );
+    }    
+    ss 
+    << logMe::dtFormat("aG[ %32s ] = ( %16.8e %16.8e %16.8e )")
+      % aG.get(addRule[0])->getLabel() 
+      % thePoint.x() % thePoint.y() % thePoint.z()
+    << std::endl;
+    
+    return ss.str();
+  }      
+  dt__commandIf( 
+    aRule, help, "info", "show info of aG" 
+  ) {
+    std::stringstream ss;
+    dt__forAllRefAuto(aG, anAG) {
+      ss 
+      << logMe::dtFormat("aG[ %32s ] = %32s") 
+        % anAG->getLabel() % anAG->virtualClassName()
+      << std::endl;
+    }
+    
+    return ss.str();
+  }       
+  dt__commandIf( aRule, help, "help", "This help") {
+    help << std::endl;
+    return help.str();
+  }
+  
+  return std::string( "Unknown command: " + aRule + "\n");  
 }
 
 int main( int ac, char* av[] ) {
@@ -241,14 +406,32 @@ int main( int ac, char* av[] ) {
       //
       free(line);      
       
-      if ( command == "exit" || std::cin.eof() ) {
-        break;
-      }
+      if ( command == "exit" || std::cin.eof() ) break;
       else {
         try {
-          std::cout 
-          << 
-          parseCommand(command, parser, bC, cV, aF, aG, bV, dtC, dtP);
+          if ( stringPrimitive::stringContains("->", command) ) {
+            std::string onClass 
+            = 
+            stringPrimitive::getStringBetweenAndRemove("", ">", &command);
+            onClass = stringPrimitive::replaceStringInString("-", "", onClass);
+            
+            if (onClass == "cV") {
+              std::cout 
+              << 
+              parseCommand(command, parser, cV);              
+            }
+            else if (onClass == "aG") {
+              std::cout 
+              << 
+              parseCommand(command, parser, aG);              
+            }
+            else dt__throwNoClass(main(), << onClass << " not defined.");
+          }
+          else {
+            std::cout 
+            << 
+            parseCommand(command, parser, bC, cV, aF, aG, bV, dtC, dtP);
+          }
         }
         catch (eGeneral & eGenRef) {
           std::cout << eGenRef.what() << std::endl;
