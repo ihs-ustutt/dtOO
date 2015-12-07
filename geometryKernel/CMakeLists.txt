@@ -27,6 +27,7 @@ SET(HEADERS
   analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h
+  analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h
   baseContainerHeaven/baseContainer.h
   baseContainerHeaven/pointContainer.h
   baseContainerHeaven/vectorContainer.h
@@ -129,6 +130,7 @@ SET(SOURCES
   analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.cpp
+  analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.cpp
   baseContainerHeaven/baseContainer.cpp
   baseContainerHeaven/pointContainer.cpp
   baseContainerHeaven/vectorContainer.cpp
