@@ -192,6 +192,8 @@ namespace dtOO {
   void dtXmlParser::loadStateToConst(
     std::string const stateName, vectorHandling< constValue * > & cValRef
   ) {
+    dt__throwIf(cValRef.empty(), loadStateToConst());
+    
     ::QDomElement stateElement 
     = 
     getChildElement("state", stateName, _rootLoad);
