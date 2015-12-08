@@ -1,4 +1,4 @@
-#include "bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC.h"
+#include "bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC.h"
 #include "progHelper.h"
 
 #include <logMe/logMe.h>
@@ -6,10 +6,10 @@
 #include "bSplineCurve2d_pointConstructOCC.h"
 
 namespace dtOO {
-	bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC
-    ::bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC( 
+	bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC
+    ::bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC( 
 	  float angleIn, float angleOut, 
-    float const & ratio, float const & deltaY, 
+    float const & deltaX, float const & deltaY, 
     float const & pointOne, float const & pointTwo	
 	) {
 		//
@@ -17,7 +17,7 @@ namespace dtOO {
 		//
 		if ( angleIn < 0.) {
 			dt__warning(
-				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
+				bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC(),
 				<< "Adjusting angleIn from " << dt__eval(angleIn) 
         << " to " << 0. << "."
 			);
@@ -25,19 +25,19 @@ namespace dtOO {
 		}
 		if ( angleOut < 0.) {
 			dt__warning(
-				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
+				bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC(),
 				<< "Adjusting angleOut from " << dt__eval(angleOut) 
         << " to " << 0. << "." 
 			);
 			angleOut = 0.;        
 		}            
-		if ( (ratio < 0.) || (ratio > 1.) ) {
-			dt__throw(
-				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
-				<< dt__eval(ratio) << std::endl        
-				<< "Ratio is smaller than zero or bigger than one."
-			);
-		}
+//		if ( (ratio < 0.) || (ratio > 1.) ) {
+//			dt__throw(
+//				bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC(),
+//				<< dt__eval(ratio) << std::endl        
+//				<< "Ratio is smaller than zero or bigger than one."
+//			);
+//		}
 	
 		
 		if (angleIn == angleOut) {
@@ -53,7 +53,7 @@ namespace dtOO {
 			pV.push_back( dtPoint2(deltaX, deltaY));
 
 			dt__info(
-				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
+				bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC(),
 				<< dt__eval(angleIn) << std::endl
 				<< dt__eval(angleOut) << std::endl              
 				<< dt__eval(deltaX) << std::endl 
@@ -81,7 +81,8 @@ namespace dtOO {
 				deltaXMax = deltaY / tan(angleIn);        
 			}
 
-			float deltaX = deltaXMin + ratio * (deltaXMax - deltaXMin);
+//			float deltaX = deltaXMin + ratio * (deltaXMax - deltaXMin);
+	    float ratio = (deltaX - deltaXMin) / (deltaXMax - deltaXMin);      
 
 			//
 			// calculate points
@@ -117,7 +118,7 @@ namespace dtOO {
 			pV.push_back( dtPoint2(deltaX, deltaY) );
 
 			dt__info(
-				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
+				bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC(),
 				<< dt__eval(angleIn) << std::endl
 				<< dt__eval(angleOut) << std::endl              
 				<< dt__eval(deltaXMin) << std::endl 
@@ -140,11 +141,11 @@ namespace dtOO {
 		}
 	}
 	
-	bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC
-    ::~bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC() {
+	bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC
+    ::~bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC() {
 	}
 	
-	dtCurve2d * bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC
+	dtCurve2d * bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC
     ::result( void ) {
 		return _dtC2d->clone();
 	}

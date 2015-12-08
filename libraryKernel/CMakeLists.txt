@@ -64,6 +64,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h
   geometryEngine/geoBuilder/geomCurve2d_closeGapsArithmeticOCC.h
   geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC.h
+  geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurface_extentSurfaceByLength.h
   geometryEngine/geoBuilder/compositeSurface_surfaceConnectConstructOCC.h
   geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.h
@@ -176,6 +177,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.cpp
   geometryEngine/geoBuilder/geomCurve2d_closeGapsArithmeticOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_extentSurfaceByLength.cpp
   geometryEngine/geoBuilder/compositeSurface_surfaceConnectConstructOCC.cpp
   geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.cpp

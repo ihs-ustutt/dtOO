@@ -28,44 +28,48 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const depSFunP,
 		vectorHandling< analyticFunction * > * sFunP 
 	) const {
-    //
-    // check input
-    //
-    bool hasAlphaOne = dtXmlParserBase::hasAttribute("alpha_one", toBuildP);
-    bool hasAlphaTwo = dtXmlParserBase::hasAttribute("alpha_two", toBuildP);
+    dt__throwIf(
+      !dtXmlParserBase::hasAttribute("alpha_one", toBuildP), buildPart()
+    );
+    dt__throwIf(
+      !dtXmlParserBase::hasAttribute("alpha_two", toBuildP), buildPart()
+    );        
     bool hasRatio = dtXmlParserBase::hasAttribute("ratio", toBuildP);
 		bool hasDeltaX = dtXmlParserBase::hasAttribute("delta_x", toBuildP);
     bool hasDeltaY = dtXmlParserBase::hasAttribute("delta_y", toBuildP);
-    bool hasOrder = dtXmlParserBase::hasAttribute("order", toBuildP);		
 
+    float alphaOne 
+    = 
+    dtXmlParserBase::muParseString(
+      dtXmlParserBase::replaceDependencies(
+        dtXmlParserBase::getAttributeStr(
+          "alpha_one", 
+          toBuildP
+        ), 
+        cValP, 
+        depSFunP
+      )
+    );      
+    float alphaTwo 
+    = 
+    dtXmlParserBase::muParseString(
+      dtXmlParserBase::replaceDependencies(
+        dtXmlParserBase::getAttributeStr(
+          "alpha_two", 
+          toBuildP
+        ), 
+        cValP, 
+        depSFunP
+      )
+    );          
     //
     //
     //
 		dt__pH(dtCurve2d) dtC2d;
-    if ( hasAlphaOne && hasAlphaTwo && hasRatio && !hasDeltaX && hasDeltaY && hasOrder ) {
+    if ( hasRatio && !hasDeltaX && hasDeltaY ) {
       //
       // get necessary values
       //
-      float alphaOne = dtXmlParserBase::muParseString(
-                         dtXmlParserBase::replaceDependencies(
-                           dtXmlParserBase::getAttributeStr(
-                             "alpha_one", 
-                             toBuildP
-                           ), 
-                           cValP, 
-                           depSFunP
-                         )
-                       );      
-      float alphaTwo = dtXmlParserBase::muParseString(
-                         dtXmlParserBase::replaceDependencies(
-                           dtXmlParserBase::getAttributeStr(
-                             "alpha_two", 
-                             toBuildP
-                           ), 
-                           cValP, 
-                           depSFunP
-                         )
-                       );
       float deltaY = dtXmlParserBase::muParseString(
                        dtXmlParserBase::replaceDependencies(
                          dtXmlParserBase::getAttributeStr(
@@ -92,30 +96,10 @@ namespace dtOO {
 				).result()
 			);
     }
-    else if ( hasAlphaOne && hasAlphaTwo && !hasRatio && hasDeltaX && hasDeltaY && hasOrder ) {
+    else if ( !hasRatio && hasDeltaX && hasDeltaY ) {
       //
       // get necessary values
       //
-      float alphaOne = dtXmlParserBase::muParseString(
-                         dtXmlParserBase::replaceDependencies(
-                           dtXmlParserBase::getAttributeStr(
-                             "alpha_one", 
-                             toBuildP
-                           ), 
-                           cValP, 
-                           depSFunP
-                         )
-                       );      
-      float alphaTwo = dtXmlParserBase::muParseString(
-                         dtXmlParserBase::replaceDependencies(
-                           dtXmlParserBase::getAttributeStr(
-                             "alpha_two", 
-                             toBuildP
-                           ), 
-                           cValP, 
-                           depSFunP
-                         )
-                       );
       float deltaY = dtXmlParserBase::muParseString(
                        dtXmlParserBase::replaceDependencies(
                          dtXmlParserBase::getAttributeStr(
@@ -142,15 +126,8 @@ namespace dtOO {
 				).result()
 			);
     }		
-    else {
-      dt__throw(buildPart(),
-              << dt__eval(hasOrder) << std::endl
-              << dt__eval(hasAlphaOne) << std::endl
-              << dt__eval(hasAlphaTwo) << std::endl
-              << dt__eval(hasRatio) << std::endl
-							<< dt__eval(hasDeltaX) << std::endl
-              << dt__eval(hasDeltaY) );
-    }
+    else dt__throwUnexpected(buildPart());
+    
 		if ( dtXmlParserBase::hasAttribute("revert", toBuildP) ) {
 			if ( dtXmlParserBase::getAttributeBool("revert", toBuildP) ) {
 				dtOCCBSplineCurve2d::SecureCast(dtC2d.get())->revert();
