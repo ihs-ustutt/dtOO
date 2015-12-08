@@ -13,9 +13,6 @@ namespace dtOO {
     void executeOnVolVectorField(
       std::vector< std::string > const & rule, ::Foam::volVectorField & field
     ) const;
-    virtual void executeOnMesh(
-      std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-    ) const;    
   private:
 
   };

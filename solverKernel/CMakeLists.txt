@@ -7,9 +7,7 @@ SET(HEADERS
   OpenFOAMCase/openFOAMGgiRule.h
   OpenFOAMCase/openFOAMCyclicGgiRule.h
   OpenFOAMCase/openFOAMEmptyRule.h
-  OpenFOAMCase/openFOAMInletRule.h
   OpenFOAMCase/openFOAMCylindricalInletRule.h
-  OpenFOAMCase/openFOAMOutletRule.h
   OpenFOAMCase/openFOAMCellZoneRule.h
 )
 
@@ -22,9 +20,7 @@ SET(SOURCES
   OpenFOAMCase/openFOAMGgiRule.cpp
   OpenFOAMCase/openFOAMCyclicGgiRule.cpp
   OpenFOAMCase/openFOAMEmptyRule.cpp
-  OpenFOAMCase/openFOAMInletRule.cpp
   OpenFOAMCase/openFOAMCylindricalInletRule.cpp
-  OpenFOAMCase/openFOAMOutletRule.cpp
   OpenFOAMCase/openFOAMCellZoneRule.cpp
 )
 

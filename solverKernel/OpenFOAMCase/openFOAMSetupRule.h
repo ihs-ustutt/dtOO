@@ -21,7 +21,7 @@ namespace dtOO {
     static openFOAMSetupRule * create( std::string const & name );
     virtual void executeOnMesh(
       std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-    ) const = 0;
+    ) const;
     virtual void executeOnVolVectorField(
       std::vector< std::string > const & rule, ::Foam::volVectorField & field
     ) const;    

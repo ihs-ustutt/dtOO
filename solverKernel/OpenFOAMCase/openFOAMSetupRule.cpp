@@ -5,8 +5,6 @@
 #include "openFOAMGgiRule.h"
 #include "openFOAMCyclicGgiRule.h"
 #include "openFOAMEmptyRule.h"
-#include "openFOAMInletRule.h"
-#include "openFOAMOutletRule.h"
 #include "openFOAMCellZoneRule.h"
 #include "openFOAMCylindricalInletRule.h"
 #include <xmlHeaven/qtXmlBase.h>
@@ -24,6 +22,7 @@
 #include <nutWallFunctionFvPatchScalarField.H>
 #include <turbulentIntensityKineticEnergyInletFvPatchScalarField.H>
 #include <turbulentMixingLengthDissipationRateInletFvPatchScalarField.H>
+#include <profile1DfixedValueFvPatchField.H>
 #include <dictionary.H>
 
 namespace dtOO {
@@ -36,11 +35,10 @@ namespace dtOO {
   openFOAMSetupRule * openFOAMSetupRule::create( 
     std::string const & name 
   ) {
+    if (name == "openFOAMSetupRule") return new openFOAMSetupRule();    
     if (name == "openFOAMWallRule") return new openFOAMWallRule();
     if (name == "openFOAMGgiRule") return new openFOAMGgiRule();
     if (name == "openFOAMEmptyRule") return new openFOAMEmptyRule();
-    if (name == "openFOAMInletRule") return new openFOAMInletRule();
-    if (name == "openFOAMOutletRule") return new openFOAMOutletRule();
     if (name == "openFOAMCyclicGgiRule") return new openFOAMCyclicGgiRule();
     if (name == "openFOAMCellZoneRule") return new openFOAMCellZoneRule();
     if (name == "openFOAMCylindricalInletRule") {
@@ -48,6 +46,33 @@ namespace dtOO {
     }
     dt__throw(create(), << "Cannot create " << name);
   }
+
+  void openFOAMSetupRule::executeOnMesh(
+    std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
+  ) const {
+    //
+    // get boundary patch and id
+    //
+    ::Foam::polyBoundaryMesh & bM
+    =
+    const_cast<::Foam::polyBoundaryMesh&>(mesh.boundaryMesh());
+    ::Foam::label id = bM.findPatchID( rule[1] );
+    dt__throwIf(id<0, executeOnMesh());
+    
+    //
+    // replace old patch
+    //
+    bM.set(
+      id,
+      new ::Foam::polyPatch(
+        bM[ id ].name(), 
+        bM[ id ].size(),
+        bM[ id ].start(), 
+        bM[ id ].index(),
+        bM[ id ].boundaryMesh()
+      )
+    );
+  }  
   
   void openFOAMSetupRule::executeOnVolVectorField(
     std::vector< std::string > const & rule, ::Foam::volVectorField & field
@@ -76,7 +101,9 @@ namespace dtOO {
           << "of" << std::endl
           << dt__eval(field.name())
         );        
-        if ( stringPrimitive::stringContains("fixedValue", thisRule) ) {
+        if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) == "fixedValue" 
+        ) {
           //
           // create and set new patch
           //
@@ -91,7 +118,9 @@ namespace dtOO {
           
           return;
         }
-        else if ( stringPrimitive::stringContains("zeroGradient", thisRule) ) {
+        else if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) == "zeroGradient"           
+        ) {
           //
           // create and set new patch
           //
@@ -106,6 +135,25 @@ namespace dtOO {
           
           return;
         }
+        else if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          == 
+          "profile1DfixedValue"           
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::profile1DfixedValueFvPatchField< ::Foam::vector >(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("profile1DfixedValue", thisRule)
+            )            
+          );
+          
+          return;
+        }        
         else dt__throwUnexpected(executeOnVolVectorField());
       }
     }
@@ -138,7 +186,11 @@ namespace dtOO {
           << "of" << std::endl
           << dt__eval(field.name())
         );
-        if ( stringPrimitive::stringContains("fixedValue", thisRule) ) {
+        if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          ==
+          "fixedValue"                     
+        ) {
           //
           // create and set new patch
           //
@@ -153,7 +205,11 @@ namespace dtOO {
           
           return;
         }
-        else if ( stringPrimitive::stringContains("zeroGradient", thisRule) ) {
+        else if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          ==
+          "zeroGradient"           
+        ) {
           //
           // create and set new patch
           //
@@ -169,7 +225,9 @@ namespace dtOO {
           return;
         }
         else if ( 
-          stringPrimitive::stringContains("kqRWallFunction", thisRule) 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          ==
+          "kqRWallFunction"            
         ) {
           //
           // create and set new patch
@@ -187,7 +245,9 @@ namespace dtOO {
           return;          
         }
         else if ( 
-          stringPrimitive::stringContains("epsilonWallFunction", thisRule) 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          ==
+          "epsilonWallFunction"                          
         ) {
           //
           // create and set new patch
@@ -205,7 +265,9 @@ namespace dtOO {
           return;          
         }      
         else if ( 
-          stringPrimitive::stringContains("nutWallFunction", thisRule) 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          ==
+          "nutWallFunction"                    
         ) {
           //
           // create and set new patch
@@ -223,9 +285,9 @@ namespace dtOO {
           return;          
         }            
         else if ( 
-          stringPrimitive::stringContains(
-            "turbulentIntensityKineticEnergyInlet", thisRule
-          ) 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          ==
+          "turbulentIntensityKineticEnergyInlet"          
         ) {
           //
           // create and set new patch
@@ -244,9 +306,9 @@ namespace dtOO {
           return;          
         }     
         else if ( 
-          stringPrimitive::stringContains(
-            "turbulentMixingLengthDissipationRateInlet", thisRule
-          ) 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          ==
+          "turbulentMixingLengthDissipationRateInlet"  
         ) {
           //
           // create and set new patch
@@ -265,6 +327,25 @@ namespace dtOO {
           
           return;          
         }         
+        else if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          == 
+          "profile1DfixedValue"           
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::profile1DfixedValueFvPatchField< ::Foam::scalar >(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("profile1DfixedValue", thisRule)
+            )            
+          );
+          
+          return;
+        }              
         else dt__throwUnexpected(executeOnVolScalarField());
       }
     }
