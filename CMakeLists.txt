@@ -70,6 +70,7 @@ find_package(
   foam meshTools dynamicMesh finiteVolume Pstream incompressibleRASModels
   triSurface decompositionMethods lagrangian incompressibleTurbulenceModel
 )
+find_package(OpenFoamTurbo COMPONENTS OpenFoamTurbo)
 find_package(CGM REQUIRED COMPONENTS iGeom)
 find_package(MOAB REQUIRED COMPONENTS MOAB iMesh)
 find_package(OpenMesh REQUIRED COMPONENTS OpenMeshCore OpenMeshTools)
@@ -151,6 +152,7 @@ include_directories(
   ${MOAB_INCLUDE_DIR}
   ${OpenMesh_INCLUDE_DIR}
   ${OpenVolumeMesh_INCLUDE_DIR}
+  ${OpenFoamTurbo_INCLUDE_DIR}
 )
 
 if (MPI_FOUND)
@@ -214,6 +216,7 @@ target_link_libraries(
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
+  ${OpenFoamTurbo_LIBRARIES}
 )
 
 set(
@@ -231,6 +234,7 @@ set(
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
+  ${OpenFoamTurbo_LIBRARIES}
 )
 
 set(
@@ -246,6 +250,7 @@ set(
   ${CGM_LINK_DIRECTORY}
   ${MOAB_LINK_DIRECTORY}
   ${OpenVolumeMesh_LINK_DIRECTORY}
+  ${OpenFoamTurbo_LINK_DIRECTORY}
 )
 
 if (MPI_FOUND)
