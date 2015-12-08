@@ -101,6 +101,14 @@ namespace dtOO {
 		return nn;
 	}
   
+  float dtLinearAlgebra::sum( std::vector< float > const & vv ) {
+		float nn = 0.;
+		dt__forAllConstIter(std::vector< float >, vv, it) {
+			nn = nn + (*it);
+		}
+		return nn;
+	}  
+  
   dtVector3 dtLinearAlgebra::meanAverage( 
     std::vector< dtVector3 > const & vv 
   ) {

@@ -863,11 +863,7 @@ namespace dtOO {
     dtPoint2 uv(xx[0], xx[1]);
     double objective;
     if ( inRange(uv) ) {
-      objective 
-      = 
-      dtLinearAlgebra::length(
-        _pXYZ - getPointPercent(dtPoint2(xx[0], xx[1]))
-      );
+      objective = dtLinearAlgebra::length( _pXYZ - getPointPercent(uv) );
     }
     else dt__throwUnexpected(F());
     

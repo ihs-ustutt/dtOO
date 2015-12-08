@@ -6,7 +6,8 @@
 #include "bSplineCurve2d_pointConstructOCC.h"
 
 namespace dtOO {
-	bSplineCurve2d_angleDeltaXDeltaYConstructOCC::bSplineCurve2d_angleDeltaXDeltaYConstructOCC( 
+	bSplineCurve2d_angleDeltaXDeltaYConstructOCC
+    ::bSplineCurve2d_angleDeltaXDeltaYConstructOCC( 
 	  float angleIn, float angleOut, float const & deltaX, float const & deltaY
 	) {
       //
@@ -14,7 +15,7 @@ namespace dtOO {
       //
       if ( angleIn < 0.) {
         dt__warning(
-				  functionBuilderDecorator(),
+				  bSplineCurve2d_angleDeltaXDeltaYConstructOCC(),
           << "Adjusting angleIn from " << dt__eval(angleIn) 
           << " to " << 0. << "." 
 			  );
@@ -22,7 +23,7 @@ namespace dtOO {
       }
       if ( angleOut < 0.) {
         dt__warning(
-				  functionBuilderDecorator(),
+				  bSplineCurve2d_angleDeltaXDeltaYConstructOCC(),
           << "Adjusting angleOut from " << dt__eval(angleOut) 
           << " to " << 0. << "." 
 			  );
@@ -42,7 +43,7 @@ namespace dtOO {
 //          }
           
           dt__info(
-            functionBuilderDecorator(),
+            bSplineCurve2d_angleDeltaXDeltaYConstructOCC(),
             << dt__eval(angleIn) << std::endl
             << dt__eval(angleOut) << std::endl              
             << dt__eval(deltaX) << std::endl 
@@ -99,7 +100,7 @@ namespace dtOO {
 //          pV.push_back( dtPoint2(-deltaX, deltaY) );          
 //        }
         dt__info(
-          functionBuilderDecorator(),
+          bSplineCurve2d_angleDeltaXDeltaYConstructOCC(),
           << dt__eval(angleIn) << std::endl
           << dt__eval(angleOut) << std::endl              
           << dt__eval(deltaXMin) << std::endl 
@@ -122,7 +123,8 @@ namespace dtOO {
       }
 	}
 	
-	bSplineCurve2d_angleDeltaXDeltaYConstructOCC::~bSplineCurve2d_angleDeltaXDeltaYConstructOCC() {
+	bSplineCurve2d_angleDeltaXDeltaYConstructOCC
+    ::~bSplineCurve2d_angleDeltaXDeltaYConstructOCC() {
 	}
 	
 	dtCurve2d * bSplineCurve2d_angleDeltaXDeltaYConstructOCC::result( void ) {

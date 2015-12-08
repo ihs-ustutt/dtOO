@@ -6,8 +6,11 @@
 #include "bSplineCurve2d_pointConstructOCC.h"
 
 namespace dtOO {
-	bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC::bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC( 
-	  float angleIn, float angleOut, float const & ratio, float const & deltaY, float const & pointOne, float const & pointTwo	
+	bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC
+    ::bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC( 
+	  float angleIn, float angleOut, 
+    float const & ratio, float const & deltaY, 
+    float const & pointOne, float const & pointTwo	
 	) {
 		//
 		// check values
@@ -15,14 +18,16 @@ namespace dtOO {
 		if ( angleIn < 0.) {
 			dt__warning(
 				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
-				<< "Adjusting angleIn from " << dt__eval(angleIn) << " to " << 0. << "."
+				<< "Adjusting angleIn from " << dt__eval(angleIn) 
+        << " to " << 0. << "."
 			);
 			angleIn = 0.;
 		}
 		if ( angleOut < 0.) {
 			dt__warning(
 				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
-				<< "Adjusting angleOut from " << dt__eval(angleOut) << " to " << 0. << "." 
+				<< "Adjusting angleOut from " << dt__eval(angleOut) 
+        << " to " << 0. << "." 
 			);
 			angleOut = 0.;        
 		}            
@@ -45,12 +50,7 @@ namespace dtOO {
 			//
 			std::vector< dtPoint2 > pV;
 			pV.push_back( dtPoint2(0.,0.) );
-//				if (!mirrorY) {
 			pV.push_back( dtPoint2(deltaX, deltaY));
-//				}
-//				else {
-//					pV.push_back( dtPoint2(-deltaX, deltaY));
-//				}
 
 			dt__info(
 				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
@@ -95,7 +95,7 @@ namespace dtOO {
 							 /
 							 ( sin(angleIn) - (cos(angleIn)*sin(angleOut) / cos(angleOut)) );  
 			float ll = ( deltaY - sin(angleIn) * tt ) / sin(angleOut);
-//			if (!mirrorY) {
+
 			pV.push_back(
 				dtPoint2(
 					cos(angleIn) * tt * pointOne,
@@ -113,19 +113,9 @@ namespace dtOO {
 					deltaX - cos(angleOut) * ll * pointTwo,
 					deltaY - sin(angleOut) * ll * pointTwo
 				)
-			); 
-			
+			); 			
 			pV.push_back( dtPoint2(deltaX, deltaY) );
-//			}
-//			else {
-//				pV.push_back(
-//					dtPoint2(
-//						-cos(angleIn) * tt,
-//						sin(angleIn) * tt
-//					)
-//				);      
-//				pV.push_back( dtPoint2(-deltaX, deltaY) );          
-//			}
+
 			dt__info(
 				bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC(),
 				<< dt__eval(angleIn) << std::endl
@@ -150,10 +140,12 @@ namespace dtOO {
 		}
 	}
 	
-	bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC::~bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC() {
+	bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC
+    ::~bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC() {
 	}
 	
-	dtCurve2d * bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC::result( void ) {
+	dtCurve2d * bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC
+    ::result( void ) {
 		return _dtC2d->clone();
 	}
 }

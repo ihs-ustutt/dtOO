@@ -1,5 +1,5 @@
-#ifndef BSPLINECURVE2D_ANGLERATIODELTAYPOINTONEPOINTTWOCONSTRUCTOCC_H
-#define	BSPLINECURVE2D_ANGLERATIODELTAYPOINTONEPOINTTWOCONSTRUCTOCC_H
+#ifndef bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC_H
+#define	bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -10,10 +10,12 @@ namespace dtOO {
   
   class bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC {
   public:
-    dt__classOnlyName(bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC);
+    dt__classOnlyName(
+      bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC
+    );
     bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC( 
       float angleIn, float angleOut, float const & ratio, float const & deltaY, 
-      float const & pointOne, float const & pointTwo    	/*nicht sicher mi dem &*/
+      float const & pointOne, float const & pointTwo
     );
     virtual ~bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC();
     dtCurve2d * result( void );
@@ -21,5 +23,5 @@ namespace dtOO {
     ptrHandling<dtCurve2d> _dtC2d;
   };
 }
-#endif	/* BSPLINECURVE2D_ANGLERATIODELTAYPOINTONEPOINTTWOCONSTRUCTOCC_H */
+#endif	/* bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC_H */
 

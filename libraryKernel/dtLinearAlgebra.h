@@ -59,6 +59,7 @@ namespace dtOO {
 	  static dtVector3 normalize( dtVector3 const & v0 );
 	  static dtVector2 normalize( dtVector2 const & v0 );    
     static dtVector3 sum( std::vector< dtVector3 > const & vv );
+    static float sum( std::vector< float > const & vv );
     static dtVector3 meanAverage( std::vector< dtVector3 > const & vv );
     static float length( dtVector3 const & v0 );    
     static float length( dtVector2 const & v0 );    
