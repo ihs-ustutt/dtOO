@@ -27,6 +27,15 @@ namespace dtOO {
   bSplineSurface_skinConstructOCC::bSplineSurface_skinConstructOCC(
 	  vectorHandling< dtCurve const * > const &  cL
 	) {
+    _dtS.reset(
+      bSplineSurface_skinConstructOCC(cL, 1, BSplCLib::MaxDegree(), 0).result()
+    );    
+	}
+  
+  bSplineSurface_skinConstructOCC::bSplineSurface_skinConstructOCC(
+	  vectorHandling< dtCurve const * > const &  cL, 
+    int const & minDeg, int const & maxDeg, int const & nIter
+	) {
 		GeomFill_SectionGenerator aSecGen;
 		dt__forAllIndex(cL, ii) {
 		  dt__ptrAss( dtOCCCurve * bC, dtOCCCurve::DownCast(cL[ii]->clone()) );
@@ -36,9 +45,9 @@ namespace dtOO {
 		aSecGen.Perform( Precision::Parametric(Precision::Confusion()) );
 		
 		Handle(GeomFill_Line) aLine = new GeomFill_Line(cL.size() );
-		const Standard_Integer aMinDeg = 1;
-		const Standard_Integer aMaxDeg = BSplCLib::MaxDegree();
-		const Standard_Integer aNbIt = 0;
+		const Standard_Integer aMinDeg = minDeg;
+		const Standard_Integer aMaxDeg = maxDeg;
+		const Standard_Integer aNbIt = nIter;
 		Standard_Real aTol3d = Precision::Confusion();
 		Standard_Real aTol2d = Precision::Parametric(aTol3d);
 		
@@ -70,7 +79,7 @@ namespace dtOO {
 		base.setOCC(aRes);
 		
 		_dtS.reset( new dtOCCBSplineSurface(base) );
-	}
+	}  
 	
   bSplineSurface_skinConstructOCC::~bSplineSurface_skinConstructOCC() {
 		

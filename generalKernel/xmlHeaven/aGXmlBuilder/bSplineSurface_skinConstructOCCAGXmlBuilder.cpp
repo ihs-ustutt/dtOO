@@ -38,54 +38,45 @@ namespace dtOO {
       buildPart()
     );
 
-    int aGOff = 1;
-    if ( dtXmlParserBase::hasAttribute("analyticGeometry_offset", toBuild) ) {
-      aGOff 
-      = 
-      dtXmlParserBase::getAttributeIntMuParse(
-        "analyticGeometry_offset", toBuild, cV, aF
-      );
-    }
-    
-    std::vector< ::QDomElement > wEl 
-    = 
-    dtXmlParserBase::getChildVector("analyticGeometry", toBuild);
     vectorHandling< dtCurve const * > ccV;    
-    vectorHandling< splineCurve3d const * > s3Vec(aGOff);
-    vectorHandling< dtCurve const * > dtCVec(aGOff);
-    int ii = 0;    
-    while ( ii < wEl.size() ) {
-      for (int jj=0;jj<aGOff;jj++) {
-        analyticGeometry * aG_t
-        =
-        dtXmlParserBase::createAnalyticGeometry(&(wEl[ii]), bC, cV, aF, aG);
-        dt__ptrAss(s3Vec[jj], splineCurve3d::ConstDownCast(aG_t));
-        dtCVec[jj] = s3Vec[jj]->ptrConstDtCurve();
-        ii++;
-      }
-      if (aGOff == 1) {
-        dt__ptrAss(
-          splineCurve3d const * s3, 
-          splineCurve3d::ConstDownCast( s3Vec[0]) 
-        );
-        ccV.push_back( s3->ptrConstDtCurve()->clone() );
-      }
-      else {
-        ccV.push_back(
-          bSplineCurve_curveConnectConstructOCC(dtCVec).result()
-        );
-      }
+    dt__forAllRefAuto(
+      dtXmlParserBase::getChildVector("analyticGeometry", toBuild), anEl
+    ) {
+      analyticGeometry * aG_t
+      =
+      dtXmlParserBase::createAnalyticGeometry(anEl, bC, cV, aF, aG);
+      dt__ptrAss(
+        splineCurve3d const * s3, splineCurve3d::ConstDownCast(aG_t)
+      );
+      ccV.push_back( s3->ptrConstDtCurve()->clone() );
     }
+
+    int nIter = 0;
+    if ( dtXmlParserBase::hasAttribute("nIterations", toBuild) ) {
+      nIter 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("nIterations", toBuild, cV, aF);
+    }
+    int minDeg = 1;
+    if ( dtXmlParserBase::hasAttribute("orderMin", toBuild) ) {
+      minDeg 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("orderMin", toBuild, cV, aF);
+    }    
+    int maxDeg = 25;
+    if ( dtXmlParserBase::hasAttribute("orderMax", toBuild) ) {
+      maxDeg 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("orderMax", toBuild, cV, aF);
+    }          
     result->push_back( 
       new analyticSurface(
         dt__tmpPtr(
           dtSurface, 
-          bSplineSurface_skinConstructOCC(ccV).result()
+          bSplineSurface_skinConstructOCC(ccV, minDeg, maxDeg, nIter).result()
         )
       )
     );
-    
     ccV.destroy();
-    s3Vec.destroy();
   }
 }

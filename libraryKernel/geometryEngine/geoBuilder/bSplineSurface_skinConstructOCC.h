@@ -14,7 +14,13 @@ namespace dtOO {
   public:
     dt__classOnlyName(bSplineSurface_skinConstructOCC);
     bSplineSurface_skinConstructOCC();
-    bSplineSurface_skinConstructOCC(vectorHandling< dtCurve const * > const &  cL);
+    bSplineSurface_skinConstructOCC(
+    	vectorHandling< dtCurve const * > const &  cL
+    );    
+    bSplineSurface_skinConstructOCC(
+    	vectorHandling< dtCurve const * > const &  cL, 
+      int const & minDeg, int const & maxDeg, int const & nIter
+    );
     virtual ~bSplineSurface_skinConstructOCC();
     dtSurface * result( void );
   private:
