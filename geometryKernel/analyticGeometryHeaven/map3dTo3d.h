@@ -79,6 +79,7 @@ namespace dtOO {
     float getVMax( void ) const;     
     float getWMin( void ) const;
     float getWMax( void ) const;
+    bool inRange( dtPoint3 const & pUVW ) const;
     dtPoint3 getPointPercent( 
       float const & uu, float const & vv, float const & ww 
     ) const;
@@ -128,12 +129,12 @@ namespace dtOO {
   private:
     bool XYZtoUVWPercent(
       double X, double Y, double Z, 
-      double &U, double &V, double &W
-    ) const;    
-    bool XYZtoUVWPercent(
-      double X, double Y, double Z, 
       double &U, double &V, double &W,
-      double extU, double extV, double extW
+      double const uMin, double const uMax, 
+      double const vMin, double const vMax, 
+      double const wMin, double const wMax,     
+      double const stepU, double const stepV, double const stepW, 
+      double const prec    
     ) const;
 	  double F(double const * xx) const;  
     double FWrap(
