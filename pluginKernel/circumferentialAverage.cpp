@@ -211,6 +211,7 @@ namespace dtOO {
           = 
           dtPoint3_map2dTo3dPoint(m2d, _nP[0], _nP[1]).result();
           twoDArrayHandling< dtVector3 > value(grid.size(0), grid.size(1));
+          twoDArrayHandling< float > vol(grid.size(0), grid.size(1));
 
           //
           // get values
@@ -219,7 +220,9 @@ namespace dtOO {
             dt__forAllIndex(grid[ii], jj) {
               dtPoint3 const & xyz = grid[ii][jj];
               ::Foam::vector probePoint(xyz.x(), xyz.y(), xyz.z());
-              ::Foam::vector ofValue = volField[ mesh.findCell(probePoint) ];
+              ::Foam::label cId = mesh.findCell(probePoint);
+              vol[ii][jj] = mesh.V()[ cId ];
+              ::Foam::vector ofValue = vol[ii][jj] * volField[ cId ];
               value[ii][jj] = dtVector3( ofValue.x(), ofValue.y(), ofValue.z() );
             }
           }
@@ -248,7 +251,11 @@ namespace dtOO {
           // write values
           //
           dt__forFromToIndex(0, value[0].size(), jj) {
-            dtVector3 av = dtLinearAlgebra::meanAverage( value.fixJ(jj) );
+            dtVector3 av 
+            = 
+            dtLinearAlgebra::sum( value.fixJ(jj) ) 
+            / 
+            dtLinearAlgebra::sum( vol.fixJ(jj) );
             of 
             << logMe::dtFormat("%16.8e %16.8e %16.8e") 
               % av.x() % av.y() % av.z()
