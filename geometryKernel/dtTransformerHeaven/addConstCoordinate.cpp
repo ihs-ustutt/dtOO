@@ -70,8 +70,11 @@ namespace dtOO {
 		);
 		handleFloat("coordinate_value", cc);
 
-		::QDomElement vvEl = dtXmlParserBase::getChild("Vector_3", *tE);
-		dtVector3 vv = dtXmlParserBase::getDtVector3(&vvEl, bC);
+		dtVector3 vv 
+    = 
+    dtXmlParserBase::getDtVector3(
+      dtXmlParserBase::getChild("Vector_3", *tE), bC
+    );
 		handleDtVector3("dtVector3", vv);
   }
 	

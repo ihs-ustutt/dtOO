@@ -135,7 +135,7 @@ namespace dtOO {
       std::string const & str, baseContainer const * const bC
     );    
     static dtPoint3 getDtPoint3(
-	    ::QDomElement const * toBuildP, baseContainer const * const bC
+	    ::QDomElement const & toBuildP, baseContainer const * const bC
 	  );    
     
     //
@@ -206,7 +206,7 @@ namespace dtOO {
       std::string const & str, baseContainer const * const bC
     );    
     static dtVector3 getDtVector3(
-	    ::QDomElement const * toBuildP, baseContainer const * const bC
+	    ::QDomElement const & toBuildP, baseContainer const * const bC
 	  );
     //
     // analyticGeometry

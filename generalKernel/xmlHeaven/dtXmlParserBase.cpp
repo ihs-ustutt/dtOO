@@ -876,9 +876,9 @@ namespace dtOO {
 	}
 
   dtVector3 dtXmlParserBase::getDtVector3(
-	  ::QDomElement const * toBuildP, baseContainer const * const bC
+	  ::QDomElement const & toBuildP, baseContainer const * const bC
 	) {
-		return getDtVector3(getAttributeStr("label", *toBuildP), bC);
+		return getDtVector3(getAttributeStr("label", toBuildP), bC);
 	}
 	
   dtPoint3 dtXmlParserBase::getDtPoint3(
@@ -888,9 +888,9 @@ namespace dtOO {
 	}
 
   dtPoint3 dtXmlParserBase::getDtPoint3(
-	  ::QDomElement const * toBuildP, baseContainer const * const bC
+	  ::QDomElement const & toBuildP, baseContainer const * const bC
 	) {
-		return getDtPoint3(getAttributeStr("label", *toBuildP), bC);
+		return getDtPoint3(getAttributeStr("label", toBuildP), bC);
 	}	
 
   std::string dtXmlParserBase::replaceDependencies( 
