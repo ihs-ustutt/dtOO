@@ -1,5 +1,5 @@
-#ifndef circumferentialAverage_H
-#define	circumferentialAverage_H
+#ifndef volScalarFieldVersusL_H
+#define	volScalarFieldVersusL_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -16,11 +16,11 @@ namespace dtOO {
   class baseContainer;
   class dtCase;
   
-  class circumferentialAverage : public dtPlugin {
+  class volScalarFieldVersusL : public dtPlugin {
   public:
-    dt__class(circumferentialAverage, dtPlugin);
-    circumferentialAverage();
-    virtual ~circumferentialAverage();
+    dt__class(volScalarFieldVersusL, dtPlugin);
+    volScalarFieldVersusL();
+    virtual ~volScalarFieldVersusL();
     virtual void init( 
       ::QDomElement const & element,
       baseContainer const * const bC,
@@ -37,9 +37,11 @@ namespace dtOO {
     dtXmlParser const * _parser;
     dtCase const * _case;
     std::string _field;
-    std::vector< int > _nP;
+    int _nP;
+//    dtVector3 _axis;
+//    dtPoint3 _origin;
   };
 }
 
-#endif	/* circumferentialAverage_H */
+#endif	/* volScalarFieldVersusL_H */
 

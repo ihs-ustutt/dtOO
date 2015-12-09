@@ -5,7 +5,8 @@
 #include "writeStep.h"
 #include "constValueAssingRule.h"
 #include "analyticFunctionToCSV.h"
-#include "circumferentialAverage.h"
+#include "volVectorFieldVersusRZ.h"
+#include "volScalarFieldVersusL.h"
 
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
@@ -42,7 +43,8 @@ namespace dtOO {
 		if (str == "writeStep") return new writeStep();
     if (str == "constValueAssingRule") return new constValueAssingRule();
     if (str == "analyticFunctionToCSV") return new analyticFunctionToCSV();
-    if (str == "circumferentialAverage") return new circumferentialAverage();
+    if (str == "volVectorFieldVersusRZ") return new volVectorFieldVersusRZ();
+    if (str == "volScalarFieldVersusL") return new volScalarFieldVersusL();
     
     dt__throw(create(), << str <<  " could not be created");  
   }

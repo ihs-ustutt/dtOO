@@ -1,4 +1,4 @@
-#include "circumferentialAverage.h"
+#include "volScalarFieldVersusL.h"
 
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParser.h>
@@ -6,8 +6,8 @@
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h>
+#include <analyticGeometryHeaven/map1dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
 #include <boundedVolume.h>
 #include <dtCase.h>
 
@@ -24,13 +24,13 @@
 #include <logMe/dtParMacros.h>
 
 namespace dtOO {  
-  circumferentialAverage::circumferentialAverage() { 
+  volScalarFieldVersusL::volScalarFieldVersusL() { 
   }
 
-  circumferentialAverage::~circumferentialAverage() {
+  volScalarFieldVersusL::~volScalarFieldVersusL() {
   }
 
-	void circumferentialAverage::init( 
+	void volScalarFieldVersusL::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
@@ -43,10 +43,10 @@ namespace dtOO {
 	  dtPlugin::init(element, bC, cV, aF, aG, bV, dC, pL);
     
 //	<plugin 
-//		name="circumferentialAverage" 
-//		label="circumferentialAverage"
+//		name="volScalarFieldVersusL" 
+//		label="volScalarFieldVersusL"
 //    field="URel"   
-//    numPoints="{10}{10}"
+//    numPoints="10"
 //	>
 //    <case label="myCase"/>
 //    <analyticGeometry label="myAnalyticGeometry"
@@ -96,10 +96,10 @@ namespace dtOO {
     //
     _nP 
     = 
-    dtXmlParser::getAttributeIntVectorMuParse("numPoints", element, cV, aF);    
+    dtXmlParser::getAttributeIntMuParse("numPoints", element, cV, aF);   
 	}
 		
-  void circumferentialAverage::apply(void) {    
+  void volScalarFieldVersusL::apply(void) {    
     //
     // get directory
     //
@@ -180,10 +180,10 @@ namespace dtOO {
         );
         
         //
-        // currently only volVectorField supported
+        // only volScalarField
         // 
         dt__throwIf( !fieldHeader.headerOk(), apply());
-        dt__throwIf(fieldHeader.headerClassName() != "volVectorField", apply());
+        dt__throwIf(fieldHeader.headerClassName() != "volScalarField", apply());
         
         //
         // update field 
@@ -193,38 +193,38 @@ namespace dtOO {
         //
         // read desired field
         //
-        ::Foam::volVectorField volField(fieldHeader, mesh);
+        ::Foam::volScalarField volField(fieldHeader, mesh);
 
-        //
-        // do circumferential averaging
-        //
         dt__forAllRefAuto(_aG, anAG) {
           //
-          // only two dimensional mappings
+          // only one dimensional mappings
           //
-          dt__ptrAss(map2dTo3d const * m2d, map2dTo3d::ConstDownCast(anAG));
+          dt__ptrAss(map1dTo3d const * m1d, map1dTo3d::ConstDownCast(anAG));
 
           //
-          // create surface and value grid
+          // create vector and value grid
           //
-          twoDArrayHandling< dtPoint3 > grid 
-          = 
-          dtPoint3_map2dTo3dPoint(m2d, _nP[0], _nP[1]).result();
-          twoDArrayHandling< dtVector3 > value(grid.size(0), grid.size(1));
-          twoDArrayHandling< float > vol(grid.size(0), grid.size(1));
+          std::vector< float > grid = dtLinearAlgebra::unitGrid(_nP);
+          vectorHandling< float > value(grid.size());
+          vectorHandling< float > ll(grid.size());
 
           //
           // get values
           //
           dt__forAllIndex(grid, ii) {
-            dt__forAllIndex(grid[ii], jj) {
-              dtPoint3 const & xyz = grid[ii][jj];
-              ::Foam::vector probePoint(xyz.x(), xyz.y(), xyz.z());
-              ::Foam::label cId = mesh.findCell(probePoint);
-              vol[ii][jj] = mesh.V()[ cId ];
-              ::Foam::vector ofValue = vol[ii][jj] * volField[ cId ];
-              value[ii][jj] = dtVector3( ofValue.x(), ofValue.y(), ofValue.z() );
+            dtPoint3 const & xyz = m1d->getPointPercent( grid[ii] );
+            ::Foam::vector probePoint(xyz.x(), xyz.y(), xyz.z());
+            ::Foam::label cId = mesh.findNearestCell(probePoint);
+            if (cId == -1) {
+              dt__warning(
+                apply(), 
+                << "Cannot find " << dt__point3d(xyz) << " in mesh."
+              );
+              continue;
             }
+            ::Foam::scalar ofValue = volField[ cId ];
+            value[ii] = ofValue;
+            ll[ii] = m1d->l_u( (*m1d) % grid[ii] );
           }
 
           //
@@ -236,7 +236,7 @@ namespace dtOO {
           +
           "/"
           +
-          m2d->getLabel()+"_"+fieldHeader.name()+".csv";
+          m1d->getLabel()+"_"+fieldHeader.name()+".csv";
           std::fstream of;
           of.open( filename.c_str(), std::ios::out | std::ios::trunc );
           
@@ -244,23 +244,19 @@ namespace dtOO {
           // write header
           //
           of 
-          << logMe::dtFormat("# %16i %16i") % _nP[0] % _nP[1] 
-          << std::endl;          
+          << logMe::dtFormat("# %16i") % _nP << std::endl
+          << logMe::dtFormat("# %16s %16s") % "length" % "value"
+          << std::endl;
           
           //
           // write values
           //
-          dt__forFromToIndex(0, value[0].size(), jj) {
-            dtVector3 av 
-            = 
-            dtLinearAlgebra::sum( value.fixJ(jj) ) 
-            / 
-            dtLinearAlgebra::sum( vol.fixJ(jj) );
+          dt__forFromToIndex(0, value.size(), ii) {
             of 
-            << logMe::dtFormat("%16.8e %16.8e %16.8e") 
-              % av.x() % av.y() % av.z()
+            << logMe::dtFormat("%16.8e %16.8e") 
+              % ll[ii] % value[ii] 
             << std::endl;
-          }          
+          }
           of.close();
         }
       }
