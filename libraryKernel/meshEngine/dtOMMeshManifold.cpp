@@ -301,7 +301,7 @@ namespace dtOO {
         dtLinearAlgebra::normalize(dtVector3(omN[0], omN[1], omN[2])) 
       );
 		}
-		return dtLinearAlgebra::meanAverage(nn);
+		return dtLinearAlgebra::normalize( dtLinearAlgebra::sum(nn) );
 	}
 	
 	MVertex * dtOMMeshManifold::centerMVertex( void ) const {

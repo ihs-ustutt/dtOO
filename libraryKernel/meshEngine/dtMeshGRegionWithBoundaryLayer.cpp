@@ -303,7 +303,7 @@ namespace dtOO {
 			dt__forAllIter(std::vector< dtOMMeshManifold >, divOmMs, itDiv) {
 				nnV.push_back(itDiv->normal());
 			}
-			dtVector3 nn = dtLinearAlgebra::meanAverage(nnV);
+			dtVector3 nn = dtLinearAlgebra::normalize( dtLinearAlgebra::sum(nnV) );
 			
       _nF[it->centerMVertex()] = nn;
       if (_flipNormal) {

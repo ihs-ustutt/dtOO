@@ -108,16 +108,6 @@ namespace dtOO {
 		}
 		return nn;
 	}  
-  
-  dtVector3 dtLinearAlgebra::meanAverage( 
-    std::vector< dtVector3 > const & vv 
-  ) {
-		dtVector3 nn(0, 0, 0);
-		dt__forAllConstIter(std::vector< dtVector3 >, vv, it) {
-			nn = nn + (*it);
-		}
-		return normalize(nn);
-	}
 	
 	float dtLinearAlgebra::length( dtVector3 const & v0 ) {
 		return sqrt(v0.squared_length());
@@ -701,6 +691,17 @@ namespace dtOO {
       case CGAL::ON_UNBOUNDED_SIDE:
         return false;
     }
+  }
+
+  float dtLinearAlgebra::area(
+    dtPoint3 const & p0, dtPoint3 const & p1, 
+    dtPoint3 const & p2, dtPoint3 const & p3
+  ) {
+    return sqrt( 
+      dtTriangle3(p0, p1, p2).squared_area() 
+      + 
+      dtTriangle3(p2, p3, p0).squared_area()
+    );
   }
   
   std::vector< float > dtLinearAlgebra::unitGrid(int const & nU) {
