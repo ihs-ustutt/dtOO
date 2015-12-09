@@ -1,17 +1,15 @@
 #include "sca3PointMeanlineAFXmlBuilder.h"
 
+#include <QtXml/QDomElement>
+
+#include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParserBase.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
-#include <geometryEngine/dtCurve2d.h>
-#include <geometryEngine/dtOCCBSplineCurve2d.h>
+#include <geometryEngine/dtOCCCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
-#include <interfaceHeaven/ptrHandling.h>
-#include <baseContainerHeaven/baseContainer.h>
-#include <logMe/logMe.h>
-#include <math.h>
-#include <QtXml/QDomElement>
 
 namespace dtOO {
   sca3PointMeanlineAFXmlBuilder::sca3PointMeanlineAFXmlBuilder() { 
@@ -130,7 +128,7 @@ namespace dtOO {
     
 		if ( dtXmlParserBase::hasAttribute("revert", toBuildP) ) {
 			if ( dtXmlParserBase::getAttributeBool("revert", toBuildP) ) {
-				dtOCCBSplineCurve2d::SecureCast(dtC2d.get())->revert();
+				dtOCCCurve2d::SecureCast(dtC2d.get())->revert();
 			}
 		}		
 		sFunP->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );
