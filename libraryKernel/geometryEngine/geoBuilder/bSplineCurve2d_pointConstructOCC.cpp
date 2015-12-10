@@ -13,17 +13,21 @@
 #include <TColStd_Array1OfInteger.hxx>
 
 namespace dtOO {
-	bSplineCurve2d_pointConstructOCC::bSplineCurve2d_pointConstructOCC( std::vector< dtPoint2 > const & pp, int const & order ) {
+	bSplineCurve2d_pointConstructOCC::bSplineCurve2d_pointConstructOCC( 
+    std::vector< dtPoint2 > const & pp, int const & order 
+  ) {
     //
 		// number of points
 		//
 		int const nP = pp.size();
 		int const nOnes = nP - (order+1);
 		if (nOnes < 0) {
-			dt__throw(bSplineCurve2d_pointConstructOCC(),
-							<< "Order too high. Please reduce order of the spline." << std::endl
-							<< dt__eval(order) << std::endl
-							<< dt__eval(nOnes) );
+			dt__throw(
+        bSplineCurve2d_pointConstructOCC(),
+				<< "Order too high. Please reduce order of the spline." << std::endl
+				<< dt__eval(order) << std::endl
+				<< dt__eval(nOnes) 
+      );
 		}
 		
 		//
