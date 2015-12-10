@@ -27,6 +27,7 @@
 #include "aGXmlBuilder/bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.h"
+#include "aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.h"
 
 
 #define __IFRET(className) \
@@ -139,6 +140,11 @@ namespace dtOO {
     __IFRETCUSTOM(
       map2dTo3dApproximateInMap3dTo3d,
       map2dTo3dApproximateInMap3dTo3dAGXmlBuilder
+    );
+    __IFRET(vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder);
+    __IFRETCUSTOM(
+      vec2dOneDInMap2dTo3d_closestCurve,
+      vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder
     );
 
     dt__throw(
