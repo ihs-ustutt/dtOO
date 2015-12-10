@@ -6,6 +6,8 @@
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+  class dtTransformer;
+  
   class map1dTo3d : public analyticGeometry {
     public:
       dt__class(map1dTo3d, analyticGeometry);
@@ -17,6 +19,9 @@ namespace dtOO {
       //
       virtual map1dTo3d * create( void ) const = 0;
       virtual map1dTo3d * clone( void ) const = 0;
+      virtual map1dTo3d * cloneTransformed( 
+        dtTransformer const * const dtT 
+      ) const = 0;      
       virtual bool isClosed( int const & dir) const = 0;
       virtual float getMin( int const & dir) const = 0;
       virtual float getMax( int const & dir) const = 0;    

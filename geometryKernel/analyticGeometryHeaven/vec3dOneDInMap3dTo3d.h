@@ -22,8 +22,11 @@ namespace dtOO {
 		  bool percentF = false
     );        
     virtual ~vec3dOneDInMap3dTo3d();
-    virtual map1dTo3d * clone( void ) const;
-    virtual map1dTo3d * create( void ) const;
+    virtual vec3dOneDInMap3dTo3d * clone( void ) const;
+    virtual vec3dOneDInMap3dTo3d * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const;     
+    virtual vec3dOneDInMap3dTo3d * create( void ) const;
     virtual dtPoint3 getPoint( float const & uu ) const;
     virtual bool isClosed( int const & dir) const;
     virtual float getMin( int const & dir) const;

@@ -17,6 +17,7 @@ SET(HEADERS
   analyticGeometryHeaven/vec2dTwoDInMap2dTo3d.h
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
   analyticGeometryHeaven/analyticGeometryCompound.h
+  analyticGeometryHeaven/map1dTo3dTransformed.h
   analyticGeometryHeaven/map2dTo3dTransformed.h
   analyticGeometryHeaven/map3dTo3dTransformed.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h
@@ -28,6 +29,7 @@ SET(HEADERS
   analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h
   analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h
+  analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h
   baseContainerHeaven/baseContainer.h
   baseContainerHeaven/pointContainer.h
   baseContainerHeaven/vectorContainer.h
@@ -131,6 +133,7 @@ SET(SOURCES
   analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.cpp
+  analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.cpp
   baseContainerHeaven/baseContainer.cpp
   baseContainerHeaven/pointContainer.cpp
   baseContainerHeaven/vectorContainer.cpp

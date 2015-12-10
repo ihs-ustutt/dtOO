@@ -4,6 +4,8 @@
 #include <discrete3dPoints.h>
 #include <geometryEngine/dtCurve.h>
 #include <progHelper.h>
+#include "map1dTo3dTransformed.h"
+#include <dtTransformerHeaven/dtTransformer.h>
 
 namespace dtOO {
   splineCurve3d::splineCurve3d() : map1dTo3d() {
@@ -25,6 +27,12 @@ namespace dtOO {
     return new splineCurve3d( *this );
   }
 
+	splineCurve3d * splineCurve3d::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new map1dTo3dTransformed<splineCurve3d>(*this, dtT);
+	}
+  
   splineCurve3d * splineCurve3d::create( void ) const {
     return new splineCurve3d();
   }

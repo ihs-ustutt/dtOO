@@ -27,6 +27,9 @@ namespace dtOO {
       // overload 
       //
       virtual scaOneDInMap1dTo3d * clone( void ) const;
+      virtual scaOneDInMap1dTo3d * cloneTransformed( 
+        dtTransformer const * const dtT 
+      ) const;       
       virtual scaOneDInMap1dTo3d * create( void ) const;    
       virtual dtPoint3 getPoint( float const & uu ) const;
       virtual bool isClosed( int const & dir) const;

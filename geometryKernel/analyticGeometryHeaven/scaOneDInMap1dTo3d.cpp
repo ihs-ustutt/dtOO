@@ -1,6 +1,8 @@
 #include "scaOneDInMap1dTo3d.h"
 #include <logMe/logMe.h>
 #include <analyticFunctionHeaven/scaOneD.h>
+#include "map1dTo3dTransformed.h"
+#include <dtTransformerHeaven/dtTransformer.h>
 
 namespace dtOO { 
 	scaOneDInMap1dTo3d::scaOneDInMap1dTo3d() : map1dTo3d() {
@@ -41,6 +43,12 @@ namespace dtOO {
     return new scaOneDInMap1dTo3d(*this);
 	}
 
+  scaOneDInMap1dTo3d * scaOneDInMap1dTo3d::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new map1dTo3dTransformed<scaOneDInMap1dTo3d>(*this, dtT);
+	}  
+    
 	scaOneDInMap1dTo3d * scaOneDInMap1dTo3d::create( void ) const {
 		return new scaOneDInMap1dTo3d();
 	}

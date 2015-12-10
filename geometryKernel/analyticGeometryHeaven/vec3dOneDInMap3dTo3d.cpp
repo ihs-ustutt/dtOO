@@ -10,6 +10,8 @@
 #include <progHelper.h>
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
+#include "map1dTo3dTransformed.h"
+#include <dtTransformerHeaven/dtTransformer.h>
 
 namespace dtOO {    
   vec3dOneDInMap3dTo3d::vec3dOneDInMap3dTo3d() : map1dTo3d() {
@@ -58,13 +60,19 @@ namespace dtOO {
     return _v1d->xMax(dir);    
   }
   
-  map1dTo3d * vec3dOneDInMap3dTo3d::create( void ) const {
+  vec3dOneDInMap3dTo3d * vec3dOneDInMap3dTo3d::create( void ) const {
     return new vec3dOneDInMap3dTo3d();
   }
   
-  map1dTo3d * vec3dOneDInMap3dTo3d::clone( void ) const {
+  vec3dOneDInMap3dTo3d * vec3dOneDInMap3dTo3d::clone( void ) const {
     return new vec3dOneDInMap3dTo3d(*this);
   }
+
+	vec3dOneDInMap3dTo3d * vec3dOneDInMap3dTo3d::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new map1dTo3dTransformed<vec3dOneDInMap3dTo3d>(*this, dtT);
+	}  
     
   vec3dOneD const * vec3dOneDInMap3dTo3d::refToVec3dOneD( void ) const {
     return _v1d.get();

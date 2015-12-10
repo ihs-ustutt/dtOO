@@ -24,6 +24,9 @@ namespace dtOO {
       //
       virtual splineCurve3d * create( void ) const;       
       virtual splineCurve3d * clone( void ) const;
+      virtual splineCurve3d * cloneTransformed( 
+        dtTransformer const * const dtT 
+      ) const;       
       virtual bool isClosed( int const & dir) const;
       virtual float getMin( int const & dir) const;
       virtual float getMax( int const & dir) const;        

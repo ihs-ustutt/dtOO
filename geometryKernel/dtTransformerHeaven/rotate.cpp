@@ -7,6 +7,7 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
+#include <analyticGeometryHeaven/map1dTo3dTransformed.h>
 #include <analyticGeometryHeaven/map2dTo3dTransformed.h>
 #include <analyticGeometryHeaven/map3dTo3dTransformed.h>
 #include <geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h>
@@ -120,8 +121,9 @@ namespace dtOO {
 			//
 			// clone and cast analyticGeometry
 			//
+      analyticSurface const * const aS = analyticSurface::ConstDownCast(*it);      
+      map1dTo3d const * const m1d = map1dTo3d::ConstDownCast(*it);      
       map2dTo3d const * const m2d = map2dTo3d::ConstDownCast(*it);
-      analyticSurface const * const aS = analyticSurface::ConstDownCast(*it);
       map3dTo3d const * const m3d = map3dTo3d::ConstDownCast(*it);
       
 			if ( aS &&  !aS->isTransformed() ) {
@@ -136,6 +138,7 @@ namespace dtOO {
           ) 
         );
 			}
+      else if (m1d) retAGeo.push_back( m1d->cloneTransformed(this) );        
 			else if (m2d) retAGeo.push_back( m2d->cloneTransformed(this) );
 			else if (m3d) retAGeo.push_back( m3d->cloneTransformed(this) );        
       else dt__throwUnexpected(apply());

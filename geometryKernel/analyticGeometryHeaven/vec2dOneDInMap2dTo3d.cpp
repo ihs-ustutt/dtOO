@@ -2,6 +2,8 @@
 #include <logMe/logMe.h>
 #include "map2dTo3d.h"
 #include <analyticFunctionHeaven/vec2dOneD.h>
+#include "map1dTo3dTransformed.h"
+#include <dtTransformerHeaven/dtTransformer.h>
 
 namespace dtOO { 
 	vec2dOneDInMap2dTo3d::vec2dOneDInMap2dTo3d() : map1dTo3d() {
@@ -41,6 +43,12 @@ namespace dtOO {
 	vec2dOneDInMap2dTo3d * vec2dOneDInMap2dTo3d::clone( void ) const {
     return new vec2dOneDInMap2dTo3d(*this);
 	}
+
+  vec2dOneDInMap2dTo3d * vec2dOneDInMap2dTo3d::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new map1dTo3dTransformed<vec2dOneDInMap2dTo3d>(*this, dtT);
+	}    
 
 	vec2dOneDInMap2dTo3d * vec2dOneDInMap2dTo3d::create( void ) const {
 		return new vec2dOneDInMap2dTo3d();
