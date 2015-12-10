@@ -8,6 +8,7 @@ SET(HEADERS
   analyticFunctionToCSV.h
   volVectorFieldVersusRZ.h
   volScalarFieldVersusL.h
+  pOnBlade.h
 )
 
 SET(SOURCES
@@ -20,6 +21,7 @@ SET(SOURCES
   analyticFunctionToCSV.cpp
   volVectorFieldVersusRZ.cpp
   volScalarFieldVersusL.cpp
+  pOnBlade.cpp
 )
 
 APPEND_DTOO_SOURCE(pluginKernel "${SOURCES}")
