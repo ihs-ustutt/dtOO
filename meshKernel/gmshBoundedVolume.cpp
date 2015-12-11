@@ -71,7 +71,9 @@ namespace dtOO {
 		return rV;
 	}	
 	
-	vectorHandling< renderInterface * > gmshBoundedVolume::getExtRender( void ) const {
+	vectorHandling< renderInterface * > gmshBoundedVolume::getExtRender( 
+    void 
+  ) const {
 		//
 		// update
 		//
@@ -230,18 +232,31 @@ namespace dtOO {
 		::GModel::setCurrent(_gm.get());
 		
     //
+    // parse gmsh file if option exists
+    //
+    if ( hasOption("gmshMeshFile") ) {
+      dt__info(
+        makePreGrid(),
+        << "ParseFile( " << getOption("gmshMeshFile") << ", true, true );"
+      );
+      ParseFile( getOption("gmshMeshFile"), true, true );
+    }
+    
+    //
     // set options
     //      
     optionGroup oG = getOptionGroup("gmsh");      
     for (int ii=0;ii<oG.size();ii++) {
+      dt__info(
+        makePreGrid(),
+        << "GmshSetOption(" 
+        << oG[ii].first[0] 
+        << ", " 
+        << oG[ii].first[1] 
+        << ", " 
+        << oG[ii].second << ");"
+      );
       GmshSetOption(oG[ii].first[0], oG[ii].first[1], oG[ii].second);
-    }
-		
-    //
-    // parse gmsh file if option exists
-    //
-    if ( hasOption("gmshMeshFile") ) {
-      ParseFile( getOption("gmshMeshFile"), true, true );
     }
 		
     //
