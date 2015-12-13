@@ -1,9 +1,9 @@
-#include "logBarChart.h"
+#include "barChart.h"
 
 #include <logMe/logMe.h>
 
 namespace dtOO {  
-  logBarChart::logBarChart(
+  barChart::barChart(
     std::string const & title,
     float const & min, float const & max, int const & nBars 
   ) {
@@ -11,6 +11,7 @@ namespace dtOO {
     _max = max;
     _nBars = nBars;
     _bar.resize(nBars, 0);
+    _barValue.resize(nBars, 0.);
     _globalMin = max;
     _globalMax = min;
     _step = (max - min) / nBars;
@@ -18,10 +19,10 @@ namespace dtOO {
     _title = title;
   }
 
-  logBarChart::~logBarChart() {
+  barChart::~barChart() {
   }
   
-  void logBarChart::operator()( float const & val ) {
+  void barChart::operator()( float const & val ) {
     int location = (val - _min) / _step;
     
     location
@@ -32,6 +33,7 @@ namespace dtOO {
     );
     
     _bar[location] = _bar[location] + 1;
+    _barValue[location] = _barValue[location] + val;
     
     _globalMax = std::max(_globalMax, val);
     _globalMin = std::min(_globalMin, val);
@@ -39,15 +41,23 @@ namespace dtOO {
     _nValues++;    
   }
   
-  float logBarChart::globalMin( void ) const {
+  float barChart::globalMin( void ) const {
     return _globalMin;  
   }
   
-  float logBarChart::globalMax( void ) const {
+  float barChart::globalMax( void ) const {
     return _globalMax;
   }
   
-  std::ostream& operator<<(std::ostream& os, const logBarChart& toLog) {
+  int barChart::nBars( void ) const {
+    return _nBars;
+  }
+  
+  float barChart::barAverage( int const & location ) const {
+    return _barValue[location] / _bar[location];
+  }
+  
+  std::ostream& operator<<(std::ostream& os, const barChart& toLog) {
     std::vector< float > percent(toLog._bar.size(), 0.);
     std::vector< float > scale(toLog._bar.size(), 0.);
     
@@ -85,10 +95,11 @@ namespace dtOO {
       int nSigns = scale[ii] * 30;
       std::string barString(nSigns, '+');
       os 
-      << logMe::dtFormat(" %-32s %+6.2f %% | %i ") 
+      << logMe::dtFormat(" %-32s %+6.2f %% | %i ( %5.2e )") 
            % barString.c_str()
            % (100. * percent[ii]) 
-           % toLog._bar[ii];
+           % toLog._bar[ii]
+           % (toLog._barValue[ii]/toLog._bar[ii]);
       os << std::endl;
     }
     return os;

@@ -69,12 +69,12 @@ SET(HEADERS
   interfaceHeaven/threadSafeRoot.h
   interfaceHeaven/meshWhisperer.h
   interfaceHeaven/mpiDistributed.h
+  interfaceHeaven/barChart.h
   logMe/logBase.h
   logMe/Output2FILE.h
   logMe/logMe.h
   logMe/dtMacros.h
   logMe/dtParMacros.h
-  logMe/logBarChart.h
   progHelper.h
 )
 SET(SOURCES
@@ -140,10 +140,10 @@ SET(SOURCES
   interfaceHeaven/timeHandling.cpp
   interfaceHeaven/threadSafeRoot.cpp
   interfaceHeaven/meshWhisperer.cpp
+  interfaceHeaven/barChart.cpp
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp
-  logMe/logBarChart.cpp
   progHelper.cpp
 )
 

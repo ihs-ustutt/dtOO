@@ -12,7 +12,7 @@
 #include <gmsh/MElementOctree.h>
 #include "qShapeMetric.h"
 #include "dtOVMMesh.h"
-#include <logMe/logBarChart.h>
+#include <interfaceHeaven/barChart.h>
 #include "dtOptimizeMeshGRegion.h"
 
 namespace dtOO {
@@ -286,7 +286,7 @@ namespace dtOO {
     //
     // create barChart
     //
-    logBarChart QTet_0("QTet_0", -1., 1., 30);
+    barChart QTet_0("QTet_0", -1., 1., 30);
     dt__forAllRefAuto(dtgr->tetrahedra, aTet) QTet_0( qShapeMetric()(aTet) );
     dt__info(createPyramids(), << QTet_0);
     
@@ -415,13 +415,13 @@ namespace dtOO {
       }
     }
 
-    logBarChart QTet_1("QTet_1", -1., 1., 30);
+    barChart QTet_1("QTet_1", -1., 1., 30);
     dt__forAllRefAuto(dtgr->tetrahedra, aTet) {
       QTet_1( fabs(qShapeMetric()(aTet)) );
     }
     dt__info(createPyramids(), << QTet_1);    
     
-    logBarChart QPyr_1("QPyr_1", -1., 1., 30);
+    barChart QPyr_1("QPyr_1", -1., 1., 30);
     dt__forAllRefAuto(dtgr->pyramids, aPyr) {
       QPyr_1( fabs(qShapeMetric()(aPyr)) );
     }
@@ -429,13 +429,13 @@ namespace dtOO {
     
     dt__forFromToIndex(0, _nSmooths, ii) dtOptimizeMeshGRegion()(dtgr);
               
-    logBarChart QTet_2("QTet_2", -1., 1., 30);
+    barChart QTet_2("QTet_2", -1., 1., 30);
     dt__forAllRefAuto(dtgr->tetrahedra, aTet) {
       QTet_2( fabs(qShapeMetric()(aTet)) );
     }
     dt__info(createPyramids(), << QTet_2);    
     
-    logBarChart QPyr_2("QPyr_2", -1., 1., 30);
+    barChart QPyr_2("QPyr_2", -1., 1., 30);
     dt__forAllRefAuto(dtgr->pyramids, aPyr) {
       QPyr_2( fabs(qShapeMetric()(aPyr)) );
     }
