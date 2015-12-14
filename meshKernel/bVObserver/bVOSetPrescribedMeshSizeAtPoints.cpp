@@ -1,6 +1,7 @@
 #include "bVOSetPrescribedMeshSizeAtPoints.h"
 
 #include <logMe/logMe.h>
+#include <logMe/logContainer.h>
 #include <progHelper.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <vector>
@@ -51,12 +52,12 @@ namespace dtOO {
     //
     // output
     //
+    logContainer< bVOSetPrescribedMeshSizeAtPoints > logC(logINFO, "preUpdate()");
     dt__forAllRefAuto(gm->vertices(), aV) {
-      dt__info(
-        preUpdate(),
+      logC() 
         << logMe::dtFormat("dtGmshVertex[ %3i ]: meshSize = %f")
-          % aV->tag() % aV->prescribedMeshSizeAtVertex()
-      );
+          % aV->tag() % aV->prescribedMeshSizeAtVertex() 
+        << std::endl;
     }        
   }
 }

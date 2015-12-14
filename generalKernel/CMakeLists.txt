@@ -75,6 +75,7 @@ SET(HEADERS
   logMe/logMe.h
   logMe/dtMacros.h
   logMe/dtParMacros.h
+  logMe/logContainer.h
   progHelper.h
 )
 SET(SOURCES
