@@ -167,6 +167,7 @@ namespace dtOO {
   }  
   
   void dtGmshFace::setMap2dTo3d( map2dTo3d const * const base ) {
+    _geomType = ::GEntity::GeomType::ParametricSurface;
     _mm.reset( base->clone() );
   }
 
@@ -704,4 +705,4 @@ namespace dtOO {
       ii++;
 		}
   }
-}
+	}
