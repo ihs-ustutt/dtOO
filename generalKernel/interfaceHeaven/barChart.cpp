@@ -103,7 +103,7 @@ namespace dtOO {
            % barString.c_str()
            % (100. * percent[ii]) 
            % toLog._bar[ii]
-           % (toLog._barValue[ii]/toLog._bar[ii]);
+           % toLog.barAverage(ii);
       os << std::endl;
     }
     return os;
