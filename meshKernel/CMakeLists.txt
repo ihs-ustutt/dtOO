@@ -16,6 +16,7 @@ SET(HEADERS
   bVObserver/bVOPatchRule.h
   bVObserver/bVORecombine.h
   bVObserver/bVOWriteSTL.h
+  bVObserver/bVOSetPrescribedMeshSizeAtPoints.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dGmsh.h
@@ -45,6 +46,7 @@ SET(SOURCES
   bVObserver/bVOPatchRule.cpp
   bVObserver/bVORecombine.cpp
   bVObserver/bVOWriteSTL.cpp
+  bVObserver/bVOSetPrescribedMeshSizeAtPoints.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dGmsh.cpp

@@ -167,7 +167,7 @@ namespace dtOO {
             moOne.push_back(current1D);
             tag.push_back((*it)->tag());
             onRank.push_back(currentRank);
-            dt__info(
+            dt__debug(
               preUpdate(),
               << "Meshing edge " << tag.back() << " on rank " << onRank.back()
             );
@@ -200,7 +200,7 @@ namespace dtOO {
         ==
         ::GEntity::MeshGenerationStatus::DONE       
        ) {
-        dt__info(
+        dt__debug(
           preUpdate(),
           << "Setting edge " << (*it)->tag() 
           << " on rank " << staticPropertiesHandler::getInstance()->thisRank()
@@ -317,7 +317,7 @@ namespace dtOO {
       }
       else dt__throw( preUpdate(), << dt__eval(currentGEntityStr) );
       
-      dt__info(
+      dt__debug(
         preUpdate(),
         << "Meshing face " << tag.back() << " on rank " << onRank.back()
       );
@@ -344,7 +344,7 @@ namespace dtOO {
         ==
         ::GEntity::MeshGenerationStatus::DONE       
        ) {
-        dt__info(
+        dt__debug(
           preUpdate(),
           << "Setting face " << (*it)->tag() 
           << " on rank " << staticPropertiesHandler::getInstance()->thisRank()
@@ -447,7 +447,7 @@ namespace dtOO {
       if (currentRank == staticPropertiesHandler::getInstance()->nRanks()) {
         currentRank = 0;
       }      
-      dt__info(
+      dt__debug(
         preUpdate(),
         << "Meshing region " << tag.back() << " on rank " << onRank.back()
       );      
@@ -470,7 +470,7 @@ namespace dtOO {
         ==
         ::GEntity::MeshGenerationStatus::DONE       
        ) {
-        dt__info(
+        dt__debug(
           preUpdate(),
           << "Setting region " << (*it)->tag() 
           << " on rank " << staticPropertiesHandler::getInstance()->thisRank()
