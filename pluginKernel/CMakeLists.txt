@@ -6,9 +6,10 @@ SET(HEADERS
   writeStep.h
   constValueAssingRule.h
   analyticFunctionToCSV.h
-  volVectorFieldVersusRZ.h
+  volVectorFieldVersusXYZ.h
   volScalarFieldVersusL.h
   pOnBlade.h
+  UcylInChannel.h
 )
 
 SET(SOURCES
@@ -19,9 +20,10 @@ SET(SOURCES
   writeStep.cpp
   constValueAssingRule.cpp
   analyticFunctionToCSV.cpp
-  volVectorFieldVersusRZ.cpp
+  volVectorFieldVersusXYZ.cpp
   volScalarFieldVersusL.cpp
   pOnBlade.cpp
+  UcylInChannel.cpp
 )
 
 APPEND_DTOO_SOURCE(pluginKernel "${SOURCES}")

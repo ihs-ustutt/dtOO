@@ -1,4 +1,4 @@
-#include "volVectorFieldVersusRZ.h"
+#include "volVectorFieldVersusXYZ.h"
 
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParser.h>
@@ -24,13 +24,13 @@
 #include <logMe/dtParMacros.h>
 
 namespace dtOO {  
-  volVectorFieldVersusRZ::volVectorFieldVersusRZ() { 
+  volVectorFieldVersusXYZ::volVectorFieldVersusXYZ() { 
   }
 
-  volVectorFieldVersusRZ::~volVectorFieldVersusRZ() {
+  volVectorFieldVersusXYZ::~volVectorFieldVersusXYZ() {
   }
 
-	void volVectorFieldVersusRZ::init( 
+	void volVectorFieldVersusXYZ::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
@@ -43,8 +43,8 @@ namespace dtOO {
 	  dtPlugin::init(element, bC, cV, aF, aG, bV, dC, pL);
     
 //	<plugin 
-//		name="volVectorFieldVersusRZ" 
-//		label="volVectorFieldVersusRZ"
+//		name="volVectorFieldVersusXYZ" 
+//		label="volVectorFieldVersusXYZ"
 //    field="URel"   
 //    numPoints="{10}{10}"
 //	>
@@ -97,20 +97,9 @@ namespace dtOO {
     _nP 
     = 
     dtXmlParser::getAttributeIntVectorMuParse("numPoints", element, cV, aF);   
-    
-    _axis
-    =
-    dtXmlParser::getDtVector3(
-      dtXmlParser::getChild("Vector_3", element), bC
-    );
-    _origin
-    =
-    dtXmlParser::getDtPoint3(
-      dtXmlParser::getChild("Point_3", element), bC
-    );    
 	}
 		
-  void volVectorFieldVersusRZ::apply(void) {    
+  void volVectorFieldVersusXYZ::apply(void) {    
     //
     // get directory
     //
@@ -176,19 +165,6 @@ namespace dtOO {
         );
         
         //
-        // radius and height of cell center
-        //
-        ::Foam::vector axis(_axis.x(), _axis.y(), _axis.z());
-        ::Foam::point origin(_origin.x(), _origin.y(), _origin.z());
-        
-        const ::Foam::vectorField& c = mesh.C();
-        ::Foam::vector hatAxis = axis / ::Foam::mag(axis);
-        ::Foam::vectorField r_c = (c - origin);
-        
-        ::Foam::vectorField rCoord =  r_c - (hatAxis & r_c)*hatAxis;
-        ::Foam::vectorField zCoord =  (hatAxis & r_c)*hatAxis;
-        
-        //
         // lastTime
         //
         runTime.setTime(runTime.times().last(), runTime.times().size()-1);
@@ -204,10 +180,14 @@ namespace dtOO {
         );
         
         //
-        // only volVectorField
+        // check header and make sure it is a volVectorField
         // 
-        dt__throwIf( !fieldHeader.headerOk(), apply());
-        dt__throwIf(fieldHeader.headerClassName() != "volVectorField", apply());
+        dt__throwIf(
+          !fieldHeader.headerOk()
+          ||
+          fieldHeader.headerClassName() != "volVectorField", 
+          apply()
+        );
         
         //
         // update field 
@@ -228,27 +208,79 @@ namespace dtOO {
           //
           // create surface and value grid
           //
-          twoDArrayHandling< dtPoint3 > grid 
+          twoDArrayHandling< dtPoint3 > gridPre 
           = 
-          dtPoint3_map2dTo3dPoint(m2d, _nP[0], _nP[1]).result();
-          twoDArrayHandling< dtVector3 > value(grid.size(0), grid.size(1));
-          twoDArrayHandling< float > rr(grid.size(0), grid.size(1));
-          twoDArrayHandling< float > zz(grid.size(0), grid.size(1));
-//          twoDArrayHandling< float > vol(grid.size(0), grid.size(1));
-
+          dtPoint3_map2dTo3dPoint(m2d, _nP[0]+1, _nP[1]+1).result();
+          
+          twoDArrayHandling< dtPoint3 > grid(_nP[0], _nP[1]);
+          twoDArrayHandling< float > area(_nP[0], _nP[1]);
+          twoDArrayHandling< dtVector3 > normal(_nP[0], _nP[1]);
+          dt__forFromToIndex(0, _nP[0], ii) {
+            dt__forFromToIndex(0, _nP[1], jj) {
+              grid[ii][jj]
+              =
+              dtLinearAlgebra::toDtPoint3(
+                (
+                  dtLinearAlgebra::toDtVector3(gridPre[ii][jj])
+                  +
+                  dtLinearAlgebra::toDtVector3(gridPre[ii+1][jj])
+                  +
+                  dtLinearAlgebra::toDtVector3(gridPre[ii+1][jj+1])
+                  +
+                  dtLinearAlgebra::toDtVector3(gridPre[ii][jj+1])
+                )
+                /
+                4.
+              );
+              normal[ii][jj] 
+              = 
+              dtLinearAlgebra::normalize(
+                dtLinearAlgebra::crossProduct(
+                  gridPre[ii+1][jj  ] - gridPre[ii][jj],
+                  gridPre[ii  ][jj+1] - gridPre[ii][jj]
+                )
+              );
+              area[ii][jj]
+              =
+              dtLinearAlgebra::area(
+                gridPre[ii  ][jj  ], gridPre[ii+1][jj  ], 
+                gridPre[ii+1][jj+1], gridPre[ii  ][jj+1]
+              );
+            }
+          }
+          
           //
           // get values
-          //
+          //          
+          float sumArea = 0.;
+          twoDArrayHandling< dtVector3 > value(grid.size(0), grid.size(1));
+          twoDArrayHandling< float > valueN(grid.size(0), grid.size(1));
+          float sumValueN = 0.;
           dt__forAllIndex(grid, ii) {
             dt__forAllIndex(grid[ii], jj) {
               dtPoint3 const & xyz = grid[ii][jj];
               ::Foam::vector probePoint(xyz.x(), xyz.y(), xyz.z());
               ::Foam::label cId = mesh.findCell(probePoint);
-//              vol[ii][jj] = mesh.V()[ cId ];
-              ::Foam::vector ofValue = volField[ cId ];
+              //
+              // set not found cells area to zero
+              //
+              ::Foam::vector ofValue;
+              if (cId == -1) {
+                area[ii][jj] = 0.;
+                ofValue = ::Foam::vector::zero;
+              }
+              else {
+                ofValue = volField[ cId ];
+              }
+              
+              sumArea = sumArea + area[ii][jj];              
+              
+              
               value[ii][jj] = dtVector3( ofValue.x(), ofValue.y(), ofValue.z() );
-              rr[ii][jj] = ::Foam::mag( rCoord[ cId ] );
-              zz[ii][jj] = ::Foam::mag( zCoord[ cId ] );
+              valueN[ii][jj] 
+              = 
+              dtLinearAlgebra::dotProduct(value[ii][jj], normal[ii][jj]);
+              sumValueN = sumValueN + valueN[ii][jj];
             }
           }
 
@@ -269,33 +301,42 @@ namespace dtOO {
           // write header
           //
           of 
-          << logMe::dtFormat("# %16i %16i") % _nP[0] % _nP[1] << std::endl
-          << logMe::dtFormat("# %16s %16s %16s %16s %16s") 
-            % "r" % "z" % "valueX" % "valueY" % "valueZ" 
-          << std::endl;          
+          << "# 1  i" << std::endl
+          << "# 2  j" << std::endl
+          << "# 3  x" << std::endl
+          << "# 4  y" << std::endl
+          << "# 5  z" << std::endl
+          << "# 6  valueX" << std::endl
+          << "# 7  valueY" << std::endl
+          << "# 8  valueZ" << std::endl
+          << "# 9  area" << std::endl
+          << "# 10 valueN" << std::endl
+          << "# 11 area/sum(area)" << std::endl
+          << "# 12 valueN/sum(valueN)" << std::endl;          
           
           //
           // write values
           //
           dt__forFromToIndex(0, value.size(), ii) {
-//            dtVector3 av 
-//            = 
-//            dtLinearAlgebra::sum( value.fixJ(jj) );
-//            / 
-//            dtLinearAlgebra::sum( vol.fixJ(jj) );
-//            float avRad 
-//            = 
-//            dtLinearAlgebra::sum( rr.fixJ(jj) ) 
-//            / 
-//            rr.fixJ(jj).size();
-            dt__forFromToIndex(0, value[ii].size(), jj) {            
+            dt__forFromToIndex(0, value[ii].size(), jj) {
+              if (area[ii][jj] == 0.) continue;
+              
               of 
-              << logMe::dtFormat("%16.8e %16.8e %16.8e %16.8e %16.8e") 
-                % rr[ii][jj] % zz[ii][jj] 
+              << logMe::dtFormat(
+                "%16i, %16i, "
+                "%16.8e, %16.8e, %16.8e, "
+                "%16.8e, %16.8e, %16.8e, "
+                "%16.8e, %16.8e, "
+                "%16.8e, %16.8e"
+                ) 
+                % ii % jj
+                % grid[ii][jj].x() % grid[ii][jj].y() % grid[ii][jj].z()
                 % value[ii][jj].x() % value[ii][jj].y() % value[ii][jj].z()
+                % area[ii][jj] % valueN[ii][jj] 
+                % (area[ii][jj]/sumArea) % (valueN[ii][jj]/sumValueN)
               << std::endl;
             }
-          }          
+          }
           of.close();
         }
       }

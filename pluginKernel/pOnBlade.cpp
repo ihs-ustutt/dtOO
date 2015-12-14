@@ -252,10 +252,9 @@ namespace dtOO {
         //
         // write header
         //
-        of 
-        << logMe::dtFormat("# %16i %16i") % _nP[0] % _nP[1] << std::endl
-        << logMe::dtFormat("# %16s %16s") % "length" % "value"
-        << std::endl;
+        of
+        << "1 length" << std::endl
+        << "2 value" << std::endl;
         
         int cc = 0;
         dt__forAllRefAuto(bladeCut, aBladeCut) {
@@ -292,7 +291,7 @@ namespace dtOO {
           //
           dt__forFromToIndex(0, value.size(), ii) {
             of 
-            << logMe::dtFormat("%16.8e %16.8e") % ll[ii] % value[ii] 
+            << logMe::dtFormat("%16.8e, %16.8e") % ll[ii] % value[ii] 
             << std::endl;
           }
           //

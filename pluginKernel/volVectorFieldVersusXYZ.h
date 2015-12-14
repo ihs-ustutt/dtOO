@@ -1,5 +1,5 @@
-#ifndef volVectorFieldVersusRZ_H
-#define	volVectorFieldVersusRZ_H
+#ifndef volVectorFieldVersusXYZ_H
+#define	volVectorFieldVersusXYZ_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -16,11 +16,11 @@ namespace dtOO {
   class baseContainer;
   class dtCase;
   
-  class volVectorFieldVersusRZ : public dtPlugin {
+  class volVectorFieldVersusXYZ : public dtPlugin {
   public:
-    dt__class(volVectorFieldVersusRZ, dtPlugin);
-    volVectorFieldVersusRZ();
-    virtual ~volVectorFieldVersusRZ();
+    dt__class(volVectorFieldVersusXYZ, dtPlugin);
+    volVectorFieldVersusXYZ();
+    virtual ~volVectorFieldVersusXYZ();
     virtual void init( 
       ::QDomElement const & element,
       baseContainer const * const bC,
@@ -38,10 +38,8 @@ namespace dtOO {
     dtCase const * _case;
     std::string _field;
     std::vector< int > _nP;
-    dtVector3 _axis;
-    dtPoint3 _origin;
   };
 }
 
-#endif	/* volVectorFieldVersusRZ_H */
+#endif	/* volVectorFieldVersusXYZ_H */
 

@@ -5,10 +5,10 @@
 #include "writeStep.h"
 #include "constValueAssingRule.h"
 #include "analyticFunctionToCSV.h"
-#include "volVectorFieldVersusRZ.h"
+#include "volVectorFieldVersusXYZ.h"
 #include "volScalarFieldVersusL.h"
 #include "pOnBlade.h"
-
+#include "UcylInChannel.h"
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
 
@@ -44,9 +44,10 @@ namespace dtOO {
 		if (str == "writeStep") return new writeStep();
     if (str == "constValueAssingRule") return new constValueAssingRule();
     if (str == "analyticFunctionToCSV") return new analyticFunctionToCSV();
-    if (str == "volVectorFieldVersusRZ") return new volVectorFieldVersusRZ();
+    if (str == "volVectorFieldVersusXYZ") return new volVectorFieldVersusXYZ();
     if (str == "volScalarFieldVersusL") return new volScalarFieldVersusL();
     if (str == "pOnBlade") return new pOnBlade();
+    if (str == "UcylInChannel") return new UcylInChannel();
     
     dt__throw(create(), << str <<  " could not be created");  
   }

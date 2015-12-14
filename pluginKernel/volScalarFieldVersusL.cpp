@@ -244,16 +244,15 @@ namespace dtOO {
           // write header
           //
           of 
-          << logMe::dtFormat("# %16i") % _nP << std::endl
-          << logMe::dtFormat("# %16s %16s") % "length" % "value"
-          << std::endl;
+          << "# 1 length" << std::endl
+          << "# 2 value" << std::endl;
           
           //
           // write values
           //
           dt__forFromToIndex(0, value.size(), ii) {
             of 
-            << logMe::dtFormat("%16.8e %16.8e") 
+            << logMe::dtFormat("%16.8e, %16.8e") 
               % ll[ii] % value[ii] 
             << std::endl;
           }
