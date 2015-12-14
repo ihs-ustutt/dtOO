@@ -77,15 +77,9 @@ int main( int ac, char* av[] ) {
     //
     // create log files
     //
-    FILELog::ReportingLevel() = logDEBUG;
-    Output2FILE::Stream().open( 
-      vm["log"].as<std::string>()
-      +
-      "_"
-      +
-      stringPrimitive::intToString(world.rank()), 
-      std::ofstream::out | std::ofstream::trunc 
-    );					
+    logMe::initLog(
+      vm["log"].as<std::string>()+"_"+stringPrimitive::intToString(world.rank())  
+    );
     dt__infoNoClass(
       main(), 
       << "Call command:" << std::endl

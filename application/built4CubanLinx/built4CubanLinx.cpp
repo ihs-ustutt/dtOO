@@ -351,14 +351,11 @@ int main( int ac, char* av[] ) {
     << "# xmlIn: " << vm["xmlIn"].as<std::string>() << std::endl
     << "# xmlOut: " << vm["xmlOut"].as<std::string>() << std::endl
     << "#" << std::endl;      
+
     //
     // create log files
     //
-    FILELog::ReportingLevel() = logDEBUG;
-    Output2FILE::Stream().open( 
-      vm["log"].as<std::string>(), 
-      std::ofstream::out | std::ofstream::trunc 
-    );	
+    logMe::initLog(vm["log"].as<std::string>()  );    
     
     dtXmlParser parser(
       vm["xmlIn"].as<std::string>(), vm["xmlOut"].as<std::string>()

@@ -67,12 +67,10 @@ int main( int ac, char* av[] ) {
     }
 
     //
-    // create log file
+    // create log files
     //
-    FILELog::ReportingLevel() = logDEBUG;
-    Output2FILE::Stream().open( 
-      vm["log"].as<std::string>(), std::ofstream::out | std::ofstream::trunc 
-    );					
+    logMe::initLog(vm["log"].as<std::string>()  );
+    
     dt__infoNoClass(
       main(), 
       << "Call command:" << std::endl
