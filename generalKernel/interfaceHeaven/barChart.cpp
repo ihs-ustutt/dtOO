@@ -54,7 +54,11 @@ namespace dtOO {
   }
   
   float barChart::barAverage( int const & location ) const {
-    return _barValue[location] / _bar[location];
+    if (_bar[location] != 0) {    
+      return _barValue[location] / _bar[location];
+    }
+
+    return 0.;
   }
   
   std::ostream& operator<<(std::ostream& os, const barChart& toLog) {

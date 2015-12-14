@@ -697,11 +697,10 @@ namespace dtOO {
     dtPoint3 const & p0, dtPoint3 const & p1, 
     dtPoint3 const & p2, dtPoint3 const & p3
   ) {
-    return sqrt( 
-      dtTriangle3(p0, p1, p2).squared_area() 
+    return  
+      sqrt(dtTriangle3(p0, p1, p2).squared_area()) 
       + 
-      dtTriangle3(p2, p3, p0).squared_area()
-    );
+      sqrt(dtTriangle3(p2, p3, p0).squared_area());
   }
   
   std::vector< float > dtLinearAlgebra::unitGrid(int const & nU) {
