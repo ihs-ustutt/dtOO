@@ -9,9 +9,10 @@
 #endif
 
 namespace dtOO {
-  staticPropertiesHandler * staticPropertiesHandler::_pH = NULL;
+  dt__pH(staticPropertiesHandler) staticPropertiesHandler::_pH(NULL);
   
-  staticPropertiesHandler::staticPropertiesHandler() : optionHandling() {
+  staticPropertiesHandler::staticPropertiesHandler() 
+  : optionHandling(), _initialized(false) {
     setOption("reparamOnFace_precision", "1.e-2");
     setOption("reparamInVolume_precision", "1.e-2");
     setOption("reparam_internalRestarts", "10");
@@ -38,15 +39,16 @@ namespace dtOO {
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {
-    if (!_pH) _pH = new staticPropertiesHandler();
-    return _pH;
+    if (_pH.isNull()) _pH.reset( new staticPropertiesHandler() );
+    return _pH.get();
   }
   
   staticPropertiesHandler::~staticPropertiesHandler() {
-
   }
   
   void staticPropertiesHandler::init(::QDomElement const * const wElement) {
+    if (_initialized) return;
+    
     optionHandling::init(wElement);
     
     omp_set_num_threads( getOptionInt("ompNumThreads") );
@@ -67,6 +69,8 @@ namespace dtOO {
       << dt__eval(thisRank()) << std::endl
       << dt__eval(nRanks())
     );    
+    
+    _initialized = true;
   }
   
   bool staticPropertiesHandler::mpiParallel( void ) {
@@ -84,4 +88,8 @@ namespace dtOO {
   int staticPropertiesHandler::nRanks( void ) const {
     return _nRanks;
   }  
+  
+  bool staticPropertiesHandler::initialized( void ) const {
+    return _initialized;
+  }
 }

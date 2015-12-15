@@ -14,12 +14,14 @@ namespace dtOO {
     static bool mpiParallel( void );
     int thisRank( void ) const; 
     int nRanks( void ) const;
+    bool initialized( void ) const;
   private:
     staticPropertiesHandler();
   private:
-    static staticPropertiesHandler * _pH;
+    static dt__pH(staticPropertiesHandler) _pH;
     int _thisRank;
     int _nRanks;
+    bool _initialized;
   };
 }
 #endif	/* staticPropertiesHandler_H */
