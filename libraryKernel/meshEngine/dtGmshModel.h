@@ -10,6 +10,7 @@ class GRegion;
 class GFace;
 class GEdge;
 class GVertex;
+class FieldManager;
 
 namespace dtOO {
   class map1dTo3d;
@@ -30,6 +31,7 @@ namespace dtOO {
   public:
     dt__class(dtGmshModel, ::GModel);      
     dtGmshModel(std::string name="");
+    dtGmshModel( std::string name, ::FieldManager * fm );
     virtual ~dtGmshModel();
     //
     // get GEntitys
@@ -142,7 +144,6 @@ namespace dtOO {
     void tagPhysical(::GEntity * const ge, std::string const & pName);
     int getPhysicalNumber(const int &dim, const std::string &name) const;
     void removeEmptyPhysicals( void );
-    
     void setDebug( std::string const debug );
   private:
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
@@ -193,6 +194,7 @@ namespace dtOO {
     int alreadyInModel( ::GRegion const * const gr ) const;
   private:
     std::string _debug;
+    ::FieldManager * _fmTwin;
   };
 }
 #endif	/* DTGMSHMODEL_H */

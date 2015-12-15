@@ -22,6 +22,7 @@
 #include <gmsh/MPrism.h>
 #include <gmsh/MPyramid.h>
 #include <gmsh/MTetrahedron.h>
+#include <gmsh/Field.h>
 
 namespace dtOO {
   int dtMeshGRegionWithBoundaryLayer::_NORMAL = 1;
@@ -332,7 +333,7 @@ namespace dtOO {
 		//
 		// create internal unstructured mesh
 		//
-    meshWithGmsh(_omMoved, vertex, element);
+    meshWithGmsh(_omMoved, vertex, element, dtgr->model()->getFields());
     
 //		//
 //		// write fields
@@ -673,9 +674,10 @@ namespace dtOO {
   void dtMeshGRegionWithBoundaryLayer::meshWithGmsh(
     dtOMMesh const & mesh, 
     std::vector< ::MVertex * > & vertex, 
-    std::vector< ::MElement * > & element  
+    std::vector< ::MElement * > & element,
+    ::FieldManager * fm
   ) const {
-    dtGmshModel gm("myModel");
+    dtGmshModel gm("myModel", fm);
 
     dtGmshFace * gf = new dtGmshFace(&gm, 1);
     gm.add(gf);

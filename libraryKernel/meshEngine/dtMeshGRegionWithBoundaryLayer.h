@@ -12,6 +12,7 @@
 class GEntity;
 class MVertex;
 class MElement;
+class FieldManager;
 
 void setRand(double r[6]);
 int intersect_line_triangle(
@@ -55,7 +56,8 @@ namespace dtOO {
       void meshWithGmsh(
         dtOMMesh const & mesh, 
         std::vector< ::MVertex * > & vertex, 
-        std::vector< ::MElement * > & element
+        std::vector< ::MElement * > & element,
+        ::FieldManager * fm
       ) const;
       void adjustThickness( void );
       void determinMinMaxAverageAtSliders(void);
@@ -74,12 +76,12 @@ namespace dtOO {
       // define two surface meshes with fixed, thickness 
       // and slidable vertex field
       //      
-		  dtOMMesh _omInit;
-		  dtOMMesh _omMoved;      
-		  dtOMDynamicVertexField< bool > _fixedF;
+      dtOMMesh _omInit;
+      dtOMMesh _omMoved;      
+      dtOMDynamicVertexField< bool > _fixedF;
       dtOMDynamicVertexField< bool > _slidableF;
-	    dtOMDynamicVertexField< float > _tF;
-		  dtOMDynamicVertexField< dtVector3 > _nF;
+      dtOMDynamicVertexField< float > _tF;
+      dtOMDynamicVertexField< dtVector3 > _nF;
       dtOMDynamicFaceField< int > _extrudeF;
       dtOMDynamicFaceField< int > _typeF;
       dtOMDynamicVertexField< std::vector< ::MVertex * > > _buddyF;

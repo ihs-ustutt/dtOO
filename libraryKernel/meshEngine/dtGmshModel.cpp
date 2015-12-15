@@ -41,9 +41,30 @@
 namespace dtOO {
   dtGmshModel::dtGmshModel(std::string name) : GModel(name){
     _debug = "";
+    _fmTwin = NULL;
   }
 
+  dtGmshModel::dtGmshModel(
+    std::string name, ::FieldManager * fm
+  ) : GModel(name){
+    _debug = "";
+    
+    //
+    // temporarly store field
+    //
+    _fmTwin = GModel::_fields;
+    
+    //
+    // set given field to model
+    //
+    GModel::_fields = fm;
+  }
+  
   dtGmshModel::~dtGmshModel() {
+    //
+    // if initialized with field, change to old one before destruction
+    //
+    if (_fmTwin) GModel::_fields = _fmTwin;
   }
   
   void dtGmshModel::addIfVertexToGmshModel( 
@@ -1432,7 +1453,7 @@ namespace dtOO {
       }
     }
   }
-
+  
   void dtGmshModel::setDebug( std::string const debug ) {
     _debug = debug;
   }
