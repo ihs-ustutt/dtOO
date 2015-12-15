@@ -158,6 +158,20 @@ namespace dtOO {
 
     return retVec;
   }  
+  
+  std::vector< ::QDomElement > qtXmlPrimitive::getDescendantVector(
+	  std::string const tagName, ::QDomElement const element 
+	) {
+		::QDomNodeList list = element.elementsByTagName(::QString(tagName.c_str()));
+		std::vector< ::QDomElement > retVec;
+
+		for (int jj=0; jj<list.length(); jj++) {
+			::QDomElement tmpEl = list.at(jj).toElement();
+			if ( !tmpEl.isNull() ) retVec.push_back( tmpEl );
+		}
+
+    return retVec;
+  }    
 	
 	std::vector< ::QDomElement > qtXmlPrimitive::getChildVector( 
 	  ::QDomElement const element 

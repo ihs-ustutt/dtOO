@@ -23,6 +23,9 @@ namespace dtOO {
     static std::vector< ::QDomElement > getChildVector(
       std::string const sibName, ::QDomElement const element 
     );
+    static std::vector< ::QDomElement > getDescendantVector(
+      std::string const sibName, ::QDomElement const element 
+    );
     static std::vector< ::QDomElement > getChildVector( 
       ::QDomElement const element 
     );
