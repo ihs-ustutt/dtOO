@@ -1,6 +1,7 @@
 #include "dtXmlParser.h"
 
 #include <logMe/logMe.h>
+#include <logMe/logContainer.h>
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <interfaceHeaven/stringPrimitive.h>
@@ -91,62 +92,63 @@ namespace dtOO {
     );
 		
 	
+    //
+    // get labels of includes
+    //
+		std::vector< std::string > label = getLabels("include");
+    
 		//
 		// handle includes
 		//
 		// get labels and store filename in label
-		// and remove include nodes
-		std::vector< std::string > label;
-		getLabels("include", &label);
-		for (int ii=0; ii<label.size(); ii++) {
-		  ::QDomElement wElement = getElement("include", label[ii]);
-			dt__info( 
-			  parse(), 
-				<< "Replace include " << dt__eval(label[ii]) << " with "
-				<< dt__eval(getAttributeStr("filename", wElement)) 
-			);
-			label[ii] = getAttributeStr("filename", wElement);
-			::QDomNode check 
-			= 
-			_rootRead.back().removeChild( static_cast<::QDomNode>(wElement) );
-		  dt__throwIf(check.isNull(), parse());
-		}
+		// and remove include nodes    
+    if ( !label.empty() ) {
+      logContainer< dtXmlParser > logC(logINFO, "parse()");
+      logC() 
+        << "include files:" 
+        << std::endl
+        << logMe::dtFormat("[ %23s ] -> %s") % "<label>" % "<filename> "
+        << std::endl;
+      for (int ii=0; ii<label.size(); ii++) {
+        ::QDomElement wElement = getElement("include", label[ii]);
+        logC() 
+          << logMe::dtFormat("[ %23s ] -> %s") 
+            % label[ii] % getAttributeStr("filename", wElement) 
+          << std::endl;
+        label[ii] = getAttributeStr("filename", wElement);
+        ::QDomNode check 
+        = 
+        _rootRead.back().removeChild( static_cast<::QDomNode>(wElement) );
+        dt__throwIf(check.isNull(), parse());
+      }
+    }
+
+    //
     // parse included files
-		for (int ii=0; ii<label.size(); ii++) this->parse( label[ii].c_str() );
+    //
+    for (int ii=0; ii<label.size(); ii++) this->parse( label[ii].c_str() );
+    
     
 		//
 		// handle replace-elements
 		//
-		::QDomElement forElement = getUnlabeledElement("replace");
-		while ( !forElement.isNull() ) {
+    dt__forAllRefAuto( getElementRecursive("replace"), forElement ) {
 			//
 			// parse variable and values to replace
 			//
 			std::string var = getAttributeStr("variable", forElement);
 			std::string valueStr = getAttributeStr("values", forElement);
-			std::vector< std::string > values 
-      = 
-      convertToStringVector("{", "}", valueStr);
-			dt__info( 
-			  parse(), 
-				<< "Replace element" << std::endl
-				<< " > " << dt__eval(var) << std::endl
-				<< " > " << dt__eval(valueStr)
-			);			
 			
 			//
 			// replace
 			//
-			std::vector<::QDomElement> children = getChildVector(forElement);
-			for (int kk=0; kk<values.size(); kk++) {
-  			for (int jj=0; jj<children.size(); jj++) {
-				  ::QDomElement childClone = children[jj].cloneNode(true).toElement();
-					replaceRecursiveInAllAttributes(
-            "{"+var+"}", values[kk], &(childClone)
-            );
+      dt__forAllRefAuto(convertToStringVector("{", "}", valueStr), aValue) {
+        dt__forAllRefAuto(getChildVector(forElement), aChild) {
+				  ::QDomElement childClone = aChild.cloneNode(true).toElement();
+					replaceRecursiveInAllAttributes( "{"+var+"}", aValue, &(childClone) );
 					::QDomNode checkOne 
 					=							
-					_rootRead.back().insertBefore( 
+          forElement.parentNode().insertBefore( 
 						static_cast<::QDomNode>(childClone),
 						static_cast<::QDomNode>(forElement) 
 					);
@@ -159,14 +161,9 @@ namespace dtOO {
 			//
 			::QDomNode check 
 			= 
-			_rootRead.back().removeChild( static_cast<::QDomNode>(forElement) );
+			forElement.parentNode().removeChild( static_cast<::QDomNode>(forElement) );
 		  dt__throwIf(check.isNull(), parse());
-
-			//
-			// get new replace element
-			//
-			forElement = getUnlabeledElement("replace");
-		}
+	  }
 		
 		//
     // set static properties on classes
@@ -859,6 +856,18 @@ namespace dtOO {
 		}
 		return ::QDomElement();
   }
+
+	std::vector< ::QDomElement > dtXmlParser::getElementRecursive( 
+    std::string const lookType 
+  ) const {
+    std::vector< ::QDomElement > retVec(0);
+		dt__forAllRefAuto(_rootRead, aRoot) {
+      dt__forAllRefAuto(getDescendantVector(lookType, aRoot), anEl) {
+        retVec.push_back( anEl );          
+      }
+		}
+		return retVec;
+  }  
 	
   void dtXmlParser::createAnalyticFunction(
 	  std::string const label, 

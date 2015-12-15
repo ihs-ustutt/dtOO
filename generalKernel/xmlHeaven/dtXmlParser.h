@@ -71,7 +71,10 @@ namespace dtOO {
       std::string const lookType, std::string const lookName 
     ) const ;
     ::QDomElement getElement( std::string const lookType ) const ;
-	  ::QDomElement getUnlabeledElement( std::string const lookType ) const;
+    ::QDomElement getUnlabeledElement( std::string const lookType ) const;
+    std::vector< ::QDomElement > getElementRecursive( 
+      std::string const lookType 
+    ) const;
     void createAnalyticFunction(
 	    std::string const functionName,
       baseContainer * const bC,
