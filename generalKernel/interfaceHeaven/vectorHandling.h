@@ -7,6 +7,7 @@
 #include <progHelper.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
+#include <logMe/logContainer.h>
 #include "stringPrimitive.h"
 
 namespace dtOO {
@@ -335,19 +336,20 @@ namespace dtOO {
   }
   template< typename T >  
   void vectorHandling< T >::dump(void) const {
-    std::vector< std::string > header;
-    header.push_back("label");
-    header.push_back("type");
+    logContainer< vectorHandling< T > > logC(logINFO, "dump()");
+    logC() 
+      << logMe::dtFormat("[ %40s ] -> %s") % "label" % "type" 
+      << std::endl;
     std::vector< std::string > itVal;
     dt__forAllIndex(*this, ii) {
       labelHandling * obj;
       dt__mustCast(this->at(ii), labelHandling, obj);
       
-      itVal.push_back( obj->getLabel());
-      itVal.push_back( obj->virtualClassName() );
+      logC() 
+        << logMe::dtFormat("[ %40s ] -> %s") 
+          % obj->getLabel() % obj->virtualClassName()
+        << std::endl;
     }
-    
-    dt__info(dump(), << logMe::vecToTable(header, itVal) );
   }
 }
 #endif	/* VECTORHANDLING_H */
