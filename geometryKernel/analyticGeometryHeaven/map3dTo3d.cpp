@@ -5,7 +5,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <solid3dLine.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtCurve.h>

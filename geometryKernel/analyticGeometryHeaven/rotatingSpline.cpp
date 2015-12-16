@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include "splineCurve3d.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtCurve.h>
 #include <interfaceHeaven/ptrHandling.h>

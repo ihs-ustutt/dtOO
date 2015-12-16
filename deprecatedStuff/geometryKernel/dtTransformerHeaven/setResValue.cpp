@@ -1,7 +1,7 @@
 #include "setResValue.h"
 #include <analyticFunctionHeaven/scaFunction.h>
 
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {

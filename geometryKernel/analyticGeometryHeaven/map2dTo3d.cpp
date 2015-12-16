@@ -4,7 +4,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include "map1dTo3d.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <solid3dSurface.h>
 #include <discrete3dPoints.h>

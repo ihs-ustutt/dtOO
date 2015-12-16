@@ -1,6 +1,6 @@
 #include "float_scaOneDPoint.h"
 
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <analyticFunctionHeaven/scaOneD.h>
 
 namespace dtOO {

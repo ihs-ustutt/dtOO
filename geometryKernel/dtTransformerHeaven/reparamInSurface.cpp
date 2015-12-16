@@ -3,7 +3,7 @@
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtCurve2d.h>

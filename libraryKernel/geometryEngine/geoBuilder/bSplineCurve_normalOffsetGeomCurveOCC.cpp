@@ -1,7 +1,7 @@
 #include "bSplineCurve_normalOffsetGeomCurveOCC.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include "bSplineCurve_pointConstructOCC.h"
 #include "geometryEngine/dtCurve.h"

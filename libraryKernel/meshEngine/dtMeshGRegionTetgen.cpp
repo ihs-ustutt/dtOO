@@ -1,7 +1,7 @@
 #include "dtMeshGRegionTetgen.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <xmlHeaven/qtXmlBase.h>
 
 #include "dtMeshGRegion.h"

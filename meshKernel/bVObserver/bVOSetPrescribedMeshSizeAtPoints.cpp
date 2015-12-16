@@ -2,7 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <logMe/logContainer.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <vector>
 #include <math.h>

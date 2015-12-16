@@ -8,7 +8,7 @@
 #include <analyticFunctionHeaven/scaFunction.h>
 #include <analyticFunctionHeaven/constValue.h>
 #include <libraryKernel/dtIntersection.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
   rotationalCardinalDirVolume::rotationalCardinalDirVolume() {

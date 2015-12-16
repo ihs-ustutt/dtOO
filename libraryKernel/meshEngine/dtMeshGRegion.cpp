@@ -3,7 +3,7 @@
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
 #include "dtGmshFace.h"
-#include "xmlHeaven/qtXmlBase.h"
+#include <xmlHeaven/qtXmlBase.h>
 #include <gmsh/meshGRegion.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTriangle.h>
@@ -14,6 +14,7 @@
 #include "dtOVMMesh.h"
 #include <interfaceHeaven/barChart.h>
 #include "dtOptimizeMeshGRegion.h"
+#include <progHelper.h>
 
 namespace dtOO {
   dtMeshGRegion::dtMeshGRegion() : dtMesh3DOperator() {

@@ -3,7 +3,7 @@
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
 
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include <logMe/logMe.h>
 #include <gmsh/MVertex.h>

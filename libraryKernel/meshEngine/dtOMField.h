@@ -2,7 +2,7 @@
 #define	DTOMFIELD_H
 
 #include <logMe/dtMacros.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/labelHandling.h>
 #include "dtOMMesh.h"
 

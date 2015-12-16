@@ -9,7 +9,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <algorithm>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {

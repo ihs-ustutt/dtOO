@@ -1,5 +1,5 @@
 #include "dtSurface.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include <logMe/logMe.h>
 #include "dtCurve.h"

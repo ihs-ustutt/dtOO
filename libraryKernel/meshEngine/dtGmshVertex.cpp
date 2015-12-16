@@ -6,7 +6,7 @@
 #include "dtGmshFace.h"
 #include "dtGmshEdge.h"
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO { 

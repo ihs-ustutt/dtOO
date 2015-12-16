@@ -1,6 +1,6 @@
 #include "characterizable.h"
 
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>

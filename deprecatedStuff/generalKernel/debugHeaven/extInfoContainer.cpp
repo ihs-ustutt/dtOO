@@ -7,7 +7,7 @@
 #include <do/coDoSet.h>
 #include <analyticFunctionHeaven/scaMuParserOneD.h>
 #include <interfaceHeaven/stringPrimitive.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
   extInfoContainer::extInfoContainer() {

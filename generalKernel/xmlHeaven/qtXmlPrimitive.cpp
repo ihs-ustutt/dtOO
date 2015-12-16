@@ -4,7 +4,7 @@
 #include <logMe/logMe.h>
 #include <iomanip>
 #include <interfaceHeaven/ptrHandling.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
   qtXmlPrimitive::qtXmlPrimitive() {

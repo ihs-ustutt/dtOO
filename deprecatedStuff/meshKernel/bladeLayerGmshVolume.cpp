@@ -11,7 +11,7 @@
 #include <dtGmshRegion.h>
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <gmsh/OpenFile.h>
 #include "blockGridModel.h"
 #include "cardinalDirGModel.h"

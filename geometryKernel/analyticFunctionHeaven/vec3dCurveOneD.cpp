@@ -2,7 +2,7 @@
 #include "dtLinearAlgebra.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <geometryEngine/dtCurve.h>
 #include <solid2dLine.h>
 #include <discrete2dPoints.h>

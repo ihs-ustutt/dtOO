@@ -13,7 +13,7 @@
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>

@@ -1,7 +1,7 @@
 #include "bSplineSurface_skinConstructOCC.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCCurve.h>
 #include <geometryEngine/dtOCCBSplineSurface.h>

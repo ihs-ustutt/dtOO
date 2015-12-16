@@ -1,7 +1,7 @@
 #include "dtGmshMeshBoundaryLayer.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include "dtGmshFace.h"
 #include "dtOMMeshManifold.h"

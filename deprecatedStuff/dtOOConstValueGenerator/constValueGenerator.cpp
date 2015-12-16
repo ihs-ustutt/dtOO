@@ -2,7 +2,7 @@
 
 #include <logMe/logMe.h>
 
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <constValueHeaven/constValue.h>
 #include <dtXmlParserDecorator/dtXmlParser.h>
 #include <exceptionHandling/eGeneral.h>

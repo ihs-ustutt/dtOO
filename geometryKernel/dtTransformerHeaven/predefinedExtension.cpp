@@ -10,7 +10,7 @@
 #include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
 #include <dtLinearAlgebra.h>
 
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {

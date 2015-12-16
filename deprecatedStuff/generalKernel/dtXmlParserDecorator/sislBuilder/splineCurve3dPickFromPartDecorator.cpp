@@ -1,5 +1,5 @@
 #include "splineCurve3dPickFromPartDecorator.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <logMe/logMe.h>
 

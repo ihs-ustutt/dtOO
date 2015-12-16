@@ -1,7 +1,7 @@
 #include "bSplineSurface_extentSurfaceByLength.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include "geomSurface_baseConstructOCC.h"
 

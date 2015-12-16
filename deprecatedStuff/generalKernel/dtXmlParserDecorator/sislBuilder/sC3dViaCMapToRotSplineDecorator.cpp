@@ -1,7 +1,7 @@
 #include "sC3dViaCMapToRotSplineDecorator.h"
 
 #include <dtLinearAlgebra.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <dtTransformerHeaven/conformalMappingStartFromPoint.h>
 #include <dtXmlParserDecorator/dtXmlParserDecoratorInterface.h>

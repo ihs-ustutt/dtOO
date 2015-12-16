@@ -2,7 +2,7 @@
 
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 #include <logMe/logMe.h>

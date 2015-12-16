@@ -16,7 +16,7 @@
 #include <gmsh/MLine.h>
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {  
   dtGmshEdge::dtGmshEdge(::GModel *m, int tag)

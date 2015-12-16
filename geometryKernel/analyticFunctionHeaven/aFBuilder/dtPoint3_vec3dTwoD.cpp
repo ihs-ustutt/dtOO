@@ -1,6 +1,6 @@
 #include "dtPoint3_vec3dTwoD.h"
 
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
 
 namespace dtOO {

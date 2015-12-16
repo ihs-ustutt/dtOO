@@ -12,6 +12,7 @@
 #include <interfaceHeaven/timeHandling.h>
 #include <interfaceHeaven/threadSafe.h>
 #include <omp.h>
+#include <progHelper.h>
 
 namespace dtOO {
   dtMeshFreeGradingGEdge::dtMeshFreeGradingGEdge(

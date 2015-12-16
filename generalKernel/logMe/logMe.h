@@ -15,7 +15,7 @@
 #include "logBase.h"
 #include "Output2FILE.h"
 #include "dtMacros.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
   template< class T >

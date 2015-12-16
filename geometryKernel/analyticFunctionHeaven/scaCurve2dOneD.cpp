@@ -2,7 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <geometryEngine/dtCurve2d.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>

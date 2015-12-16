@@ -1,5 +1,5 @@
 #include "bSplineCurve_curveConnectConstructOCC.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include <logMe/logMe.h>
 #include <geometryEngine/dtOCCCurveBase.h>

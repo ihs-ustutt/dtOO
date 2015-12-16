@@ -1,6 +1,6 @@
 #include "closeGaps.h"
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <geometryEngine/dtSurface.h>
 

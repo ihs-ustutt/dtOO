@@ -11,6 +11,7 @@
 #include <gmsh/MTriangle.h>
 #include <gmsh/MQuadrangle.h>
 #include <interfaceHeaven/threadSafe.h>
+#include <progHelper.h>
 
 namespace dtOO {
   dtMeshGFaceWithTransfiniteLayer::dtMeshGFaceWithTransfiniteLayer() 

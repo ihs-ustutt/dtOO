@@ -3,7 +3,7 @@
 
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
   class analyticFunction;

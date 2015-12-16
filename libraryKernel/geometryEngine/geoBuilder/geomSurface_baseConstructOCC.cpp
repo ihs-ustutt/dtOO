@@ -1,5 +1,5 @@
 #include "geomSurface_baseConstructOCC.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include <logMe/logMe.h>
 #include <geometryEngine/dtOCCSurfaceBase.h>

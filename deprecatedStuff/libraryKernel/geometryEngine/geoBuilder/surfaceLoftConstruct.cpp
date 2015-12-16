@@ -1,7 +1,7 @@
 #include "surfaceLoftConstruct.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <geometryEngine/dtSislCurve.h>
 #include <geometryEngine/dtSislSurf.h>
 #include <sisl.h>

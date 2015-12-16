@@ -5,7 +5,7 @@
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
 #include <analyticFunctionHeaven/vec2dMultiBiLinearTwoD.h>
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include <analyticFunctionHeaven/vec3dThickedTwoD.h>

@@ -1,7 +1,7 @@
 #include "floatValue.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
   floatValue::floatValue( 

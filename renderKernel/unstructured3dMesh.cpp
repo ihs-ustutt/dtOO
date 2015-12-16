@@ -1,5 +1,5 @@
 #include "unstructured3dMesh.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 
 namespace dtOO {

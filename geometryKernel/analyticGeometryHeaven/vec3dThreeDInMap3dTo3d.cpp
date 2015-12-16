@@ -4,7 +4,7 @@
 #include "map3dTo3d.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <analyticFunctionHeaven/vec3dThreeD.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include "map3dTo3dTransformed.h"
 #include <dtTransformerHeaven/dtTransformer.h>
 

@@ -1,7 +1,7 @@
 #include "scaFunctionReconstructor.h"
 #include "scaFunction.h"
 #include "scaOneD.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <do/coDoSet.h>
 
 namespace dtOO {

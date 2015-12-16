@@ -10,7 +10,7 @@
 
 #include <dtLinearAlgebra.h>
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>

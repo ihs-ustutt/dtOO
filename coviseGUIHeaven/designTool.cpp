@@ -1,7 +1,7 @@
 #include "designTool.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <constValueHeaven/constValue.h>
 #include <constValueHeaven/intParam.h>
 #include <constValueHeaven/sliderFloatParam.h>

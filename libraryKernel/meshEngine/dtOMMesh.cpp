@@ -3,7 +3,7 @@
 #include "dtOMField.h"
 #include "dtGmshModel.h"
 #include "dtGmshEdge.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>

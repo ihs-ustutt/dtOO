@@ -1,6 +1,7 @@
 #include "barChart.h"
 
 #include <logMe/logMe.h>
+#include <progHelper.h>
 
 namespace dtOO {  
   barChart::barChart(

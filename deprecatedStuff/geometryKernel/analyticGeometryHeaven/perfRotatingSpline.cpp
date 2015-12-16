@@ -5,7 +5,7 @@
 #include <do/coDoSet.h>
 #include <analyticFunctionHeaven/scaFunctionReconstructor.h>
 #include <analyticFunctionHeaven/scaCurve2dOneD.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtSislCurve.h>
 #include <interfaceHeaven/ptrHandling.h>

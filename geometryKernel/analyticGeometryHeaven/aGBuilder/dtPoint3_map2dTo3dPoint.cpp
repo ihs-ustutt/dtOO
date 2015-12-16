@@ -1,6 +1,6 @@
 #include "dtPoint3_map2dTo3dPoint.h"
 
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 
 namespace dtOO {

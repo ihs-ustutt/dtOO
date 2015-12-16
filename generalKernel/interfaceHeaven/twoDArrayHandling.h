@@ -2,7 +2,7 @@
 #define	twoDArrayHandling_H
 
 #include <boost/multi_array.hpp>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 

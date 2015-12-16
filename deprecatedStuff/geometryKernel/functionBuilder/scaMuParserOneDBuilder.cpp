@@ -1,7 +1,7 @@
 #include "scaMuParserOneDBuilder.h"
 
 #include <analyticFunctionHeaven/scaMuParserOneD.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {

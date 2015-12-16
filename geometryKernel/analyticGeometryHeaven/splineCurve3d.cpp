@@ -3,7 +3,7 @@
 #include <discrete3dVector.h>
 #include <discrete3dPoints.h>
 #include <geometryEngine/dtCurve.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include "map1dTo3dTransformed.h"
 #include <dtTransformerHeaven/dtTransformer.h>
 

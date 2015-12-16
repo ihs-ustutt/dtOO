@@ -4,7 +4,7 @@
 #include <vector>
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
   template <typename T> class vectorTemplate {

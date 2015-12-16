@@ -4,7 +4,7 @@
 #include "dtOCCSurfaceBase.h"
 #include "dtOCCCurveBase.h"
 #include "dtOCCBSplineCurve.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include <Standard_Failure.hxx>
 #include <Standard_ErrorHandler.hxx>

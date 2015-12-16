@@ -2,7 +2,7 @@
 
 #include <math.h>
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include "dtSislCurve2d.h"
 #include "dtSislCurve.h"
 #include "dtLinearAlgebra.h"

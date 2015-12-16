@@ -6,7 +6,7 @@
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {

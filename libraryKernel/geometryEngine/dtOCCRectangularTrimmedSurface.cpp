@@ -5,7 +5,7 @@
 #include "dtOCCCurveBase.h"
 #include "dtOCCBezierCurve.h"
 #include "dtOCCTrimmedCurve.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include <Standard_Failure.hxx>
 #include <Standard_TypeDef.hxx>

@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include "labelHandling.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <logMe/logContainer.h>

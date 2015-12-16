@@ -1,7 +1,7 @@
 #include "conformalMappingStartFromPoint.h"
 #include <analyticGeometryHeaven/rotatingSpline.h>
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
   conformalMappingStartFromPoint::conformalMappingStartFromPoint(

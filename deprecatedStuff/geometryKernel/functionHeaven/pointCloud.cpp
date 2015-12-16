@@ -2,7 +2,7 @@
 #include <interfaceHeaven/stringPrimitive.h>
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <do/coDoSet.h>
 #include <do/coDoData.h>
 

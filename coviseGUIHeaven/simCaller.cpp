@@ -4,7 +4,7 @@
 #include <do/coDoIntArr.h>
 #include <api/coSimLib.h>
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 const int SUCCESS = 1;
 const int FAILURE = 0;

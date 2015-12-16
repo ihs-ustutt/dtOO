@@ -6,7 +6,7 @@
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
 #include "splineCurve3d.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include "map1dTo3d.h"
 #include <geometryEngine/dtCurve2d.h>

@@ -1,7 +1,7 @@
 #include "writeIges.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <do/coDoSet.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <dtXmlParserDecorator/dtXmlParser.h>

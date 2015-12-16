@@ -1,7 +1,7 @@
 #include "bVORecombineRecursiveRegions.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>

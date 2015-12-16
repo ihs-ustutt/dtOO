@@ -7,7 +7,7 @@
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <interfaceHeaven/ptrVectorHandling.h>
 #include <geometryEngine/dtCurve.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
 #include "map1dTo3dTransformed.h"

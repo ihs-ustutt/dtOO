@@ -6,44 +6,6 @@
 #include <vector>
 #include <list>
 
-#define dt__forAllIndex(vector, index) \
-  for (int index = 0; index<((vector).size());index++)
-#define dt__forInnerIndex(vector, index) \
-    for (int index = 1; index<((vector).size()-1);index++)
-#define dt__forFromToIndex(from, to, index) \
-  for (int index = from; index<to;index++)
-#define dt__forAllIter(type, vector, iter) \
-  for ( \
-    type::iterator iter = (vector).begin(); \
-    iter!=(vector).end(); \
-    ++iter \
-  )
-#define dt__forAllConstIter(type, vector, iter) \
-  for ( \
-    type::const_iterator iter = (vector).begin(); \
-    iter!=(vector).end(); \
-    ++iter \
-  )
-#define dt__forAllRefAuto(vector, iterator) \
-  for ( auto & iterator : vector )
-#define dt__forFromToIter(iterator_type, from, to, iter) \
-  for ( \
-    iterator_type iter = from; \
-    iter != to; \
-    ++iter \
-  )
-#define dt__mustCast( object, type, result ) \
-  result = dynamic_cast< type * >( object ); \
-  if (result == NULL ) \
-    dt__throw(dt__mustCast, << "dynamic_cast of "#object" to "#type" fails" );
-
-#define dt__ptrAss( toAss, ptr ) \
-  if (ptr == NULL ) \
-    dt__throw( dt__ptrAss, << "object "#ptr" cannot assigned to "#toAss ); \
-  toAss = ptr
-
-#define dt__toFloat(toAss, value ) toAss = static_cast<float>(value)
-
 namespace dtOO {
   class progHelper {
     public:
@@ -68,11 +30,11 @@ namespace dtOO {
       
       template < class T >
       static void removeBastardTwins( std::vector< T > & toMod) {
-		    progHelper::sort(toMod);
+        progHelper::sort(toMod);
         toMod.erase( 
-				  std::unique(toMod.begin(), toMod.end() ), 
-					toMod.end()
-				);        
+          std::unique(toMod.begin(), toMod.end() ), 
+                toMod.end()
+        );        
       }     
 
       /** Moves duplicates to front, returning end of duplicates range.

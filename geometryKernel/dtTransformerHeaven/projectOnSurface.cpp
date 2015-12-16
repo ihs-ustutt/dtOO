@@ -1,7 +1,7 @@
 #include "projectOnSurface.h"
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>

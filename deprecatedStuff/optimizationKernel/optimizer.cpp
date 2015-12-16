@@ -11,7 +11,7 @@
 #include <analyticFunctionHeaven/scaFunction.h>
 #include <analyticFunctionHeaven/scaPiecewiseLinear.h>
 #include <boundedVolume.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/optimizationCyclingDecorator.h>
 
 namespace dtOO { 

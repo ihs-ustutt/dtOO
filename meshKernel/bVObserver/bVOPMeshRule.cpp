@@ -4,7 +4,7 @@
 #include "logMe/dtParMacros.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <xmlHeaven/qtXmlPrimitive.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>

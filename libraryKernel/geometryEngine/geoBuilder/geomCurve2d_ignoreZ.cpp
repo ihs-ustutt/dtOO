@@ -1,6 +1,6 @@
 #include "geomCurve2d_ignoreZ.h"
 #include "interfaceHeaven/vectorHandling.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 #include <geometryEngine/dtOCCCurve2dBase.h>

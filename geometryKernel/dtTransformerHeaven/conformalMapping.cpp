@@ -1,7 +1,7 @@
 #include "conformalMapping.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/rotatingSpline.h>
 //#include <geometryEngine/dtSislBase.h>
 

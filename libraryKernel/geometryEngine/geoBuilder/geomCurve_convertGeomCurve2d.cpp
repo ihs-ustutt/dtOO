@@ -1,5 +1,5 @@
 #include "geomCurve_convertGeomCurve2d.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 #include <geometryEngine/dtOCCCurve2dBase.h>

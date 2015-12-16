@@ -8,7 +8,7 @@
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
 #include <dtTransformerHeaven/dtTransformer.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {    
   vec3dTwoDInMap3dTo3d::vec3dTwoDInMap3dTo3d() : map2dTo3d() {

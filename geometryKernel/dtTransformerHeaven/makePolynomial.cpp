@@ -4,7 +4,7 @@
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <geometryEngine/dtCurve.h>
 #include <interfaceHeaven/ptrHandling.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 

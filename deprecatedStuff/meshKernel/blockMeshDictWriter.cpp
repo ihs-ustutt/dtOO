@@ -7,7 +7,7 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <dtXmlParserDecorator/qtXmlPrimitive.h>
 #include <do/coDoSet.h>
 #include <analyticFunctionHeaven/scaCurve2dOneD.h>

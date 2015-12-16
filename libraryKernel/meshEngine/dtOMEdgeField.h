@@ -2,7 +2,7 @@
 #define	DTOMEDGEFIELD_H
 
 #include <logMe/dtMacros.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include "dtOMField.h"
 #include "dtOMMesh.h"
 

@@ -1,7 +1,7 @@
 #include "analyticGeometryAGXmlBuilder.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticFunctionHeaven/analyticFunction.h>

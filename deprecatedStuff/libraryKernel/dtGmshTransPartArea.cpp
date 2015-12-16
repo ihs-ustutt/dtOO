@@ -4,7 +4,7 @@
 #include <gmsh/GModel.h>
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include "dtGmshEdge.h"
 #include "dtGmshFace.h"
 #include <analyticGeometryHeaven/map2dTo3d.h>

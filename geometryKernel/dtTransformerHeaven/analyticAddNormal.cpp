@@ -3,7 +3,7 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
 #include <analyticFunctionHeaven/vec3dThickedTwoD.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {

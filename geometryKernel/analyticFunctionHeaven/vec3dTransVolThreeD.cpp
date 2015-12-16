@@ -1,7 +1,7 @@
 #include "vec3dTransVolThreeD.h"
 #include "dtLinearAlgebra.h"
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include "vec3dTwoD.h"
 

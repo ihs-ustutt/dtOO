@@ -1,6 +1,6 @@
 #include "constValue.h"
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include "sliderFloatParam.h"
 #include "intParam.h"

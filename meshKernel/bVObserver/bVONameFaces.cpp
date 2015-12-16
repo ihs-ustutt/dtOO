@@ -1,7 +1,7 @@
 #include "bVONameFaces.h"
 
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <vector>
 #include <math.h>

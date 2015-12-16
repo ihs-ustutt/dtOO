@@ -5,7 +5,7 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h>
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 

@@ -6,7 +6,7 @@
 #include <interfaceHeaven/ptrVectorHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <do/coDoSet.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {    
   map2dTo3dInMap3dTo3d::map2dTo3dInMap3dTo3d() : map2dTo3d() {

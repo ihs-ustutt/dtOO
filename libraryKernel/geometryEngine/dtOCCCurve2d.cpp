@@ -2,7 +2,7 @@
 
 #include <logMe/logMe.h>
 #include "dtOCCCurve2dBase.h"
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 #include <Standard_TypeDef.hxx>
 #include <gp_Pnt2d.hxx>

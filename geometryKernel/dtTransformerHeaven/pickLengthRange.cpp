@@ -1,7 +1,7 @@
 #include "pickLengthRange.h"
 #include "geometryEngine/dtCurve.h"
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <geometryEngine/dtSurface.h>
 #include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>

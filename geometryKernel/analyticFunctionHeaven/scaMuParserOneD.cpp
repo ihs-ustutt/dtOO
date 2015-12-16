@@ -2,7 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <muParser.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <solid2dLine.h>

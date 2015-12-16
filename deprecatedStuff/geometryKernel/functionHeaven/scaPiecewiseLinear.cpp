@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <do/coDoSet.h>
 #include <do/coDoData.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
   scaPiecewiseLinear::scaPiecewiseLinear() : scaFunction() {

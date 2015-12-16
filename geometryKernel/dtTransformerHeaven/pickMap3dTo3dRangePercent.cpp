@@ -3,7 +3,7 @@
 #include "pickLengthPercentRange.h"
 //#include "analyticGeometryHeaven/map3dTo3d.h"
 #include <logMe/logMe.h>
-#include <progHelper.h>
+#include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 
