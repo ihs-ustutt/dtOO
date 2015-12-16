@@ -28,6 +28,7 @@ namespace dtOO {
       std::vector< std::string > _rule1D;
       std::vector< std::string > _rule2D;
       std::vector< std::string > _rule3D;
+      std::vector< std::string > _only;
   };
 }
 #endif	/* bVOMeshRule_H */

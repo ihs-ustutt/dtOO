@@ -112,13 +112,15 @@ namespace dtOO {
     qtXmlBase::convertToStringVector(
       "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
     );
+    _only = qtXmlBase::getAttributeStrVector("only", element);
     
     dt__info(
       preUpdate(),
       << "rule = " << rule << std::endl
       << "_rule1D = " << _rule1D << std::endl
       << "_rule2D = " << _rule2D << std::endl
-      << "_rule3D = " << _rule3D
+      << "_rule3D = " << _rule3D << std::endl
+      << "_only = " << _only
     );
   }
   
@@ -131,6 +133,37 @@ namespace dtOO {
     // 0D
     //
     gm->mesh(0);
+    
+    std::list< dtGmshEdge * > ee;
+    std::list< dtGmshFace * > ff;
+    std::list< dtGmshRegion * > rr;   
+    
+    if (_only.empty()) {    
+      ee = dtGmshModel::cast2DtGmshEdge( gm->edges() );
+      ff = dtGmshModel::cast2DtGmshFace( gm->faces() );        
+      rr = dtGmshModel::cast2DtGmshRegion( gm->regions() );   
+    }
+    else {
+      dt__forAllRefAuto(_only, anOnly) {
+        ::GEntity * ge = gm->getGEntityByPhysical(anOnly);
+        
+        if (dtGmshFace::DownCast(ge)) {
+          dtGmshFace * gf = dtGmshFace::SecureCast(ge);
+          dt__forAllRefAuto(
+            dtGmshModel::cast2DtGmshEdge(gf->edges()), anEdge
+          ) ee.push_back(anEdge);
+          ff.push_back(gf);
+        }
+        else dt__throwUnexpected(preUpdate());
+      }
+      
+      //
+      // make unique
+      //
+      ee.unique();
+      ff.unique();
+      rr.unique();
+    }    
     
     //
     // 1D
@@ -147,9 +180,9 @@ namespace dtOO {
       );
       
       if (currentGEntityStr == "*") {
-			  std::list< dtGmshEdge * > ee 
-        = 
-        dtGmshModel::cast2DtGmshEdge( gm->edges() );
+//			  std::list< dtGmshEdge * > ee 
+//        = 
+//        dtGmshModel::cast2DtGmshEdge( gm->edges() );
 			  dt__forAllIter(std::list< dtGmshEdge * >, ee, it) {
           if ( 
             (*it)->meshStatistics.status 
@@ -184,9 +217,9 @@ namespace dtOO {
       // general wild card
       //
       if (currentGEntityStr == "*") {
-			  std::list< dtGmshFace * > ff 
-        = 
-        dtGmshModel::cast2DtGmshFace( gm->faces() );
+//			  std::list< dtGmshFace * > ff 
+//        = 
+//        dtGmshModel::cast2DtGmshFace( gm->faces() );
 			  dt__forAllIter(std::list< dtGmshFace * >, ff, it) {
           if ( 
             (*it)->meshStatistics.status 
@@ -214,9 +247,9 @@ namespace dtOO {
         //
         // determine entities
         //
-			  std::list< dtGmshFace * > ff 
-        = 
-        dtGmshModel::cast2DtGmshFace( gm->faces() );        
+//			  std::list< dtGmshFace * > ff 
+//        = 
+//        dtGmshModel::cast2DtGmshFace( gm->faces() );        
 			  dt__forAllIter(std::list< dtGmshFace * >, ff, it) {
           if ( 
             (
@@ -242,11 +275,15 @@ namespace dtOO {
       // no wild card
       //
       else if ( !stringPrimitive::stringContains("*", currentGEntityStr) ) {
-        (*current2D)( gm->getDtGmshFaceByPhysical(currentGEntityStr) );
-        if (optionHandling::optionTrue("debug")) {        
-          gm->writeMSH(
-            ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
-          );        
+			  dt__forAllRefAuto(ff, aFace) {
+          if ( aFace->getPhysicalString() !=  currentGEntityStr ) continue;
+          
+          (*current2D)( aFace );//gm->getDtGmshFaceByPhysical(currentGEntityStr) );
+          if (optionHandling::optionTrue("debug")) {        
+            gm->writeMSH(
+              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+            );        
+          }
         }
       }
       else dt__throw( preUpdate(), << dt__eval(currentGEntityStr) );
@@ -267,9 +304,9 @@ namespace dtOO {
       );
       
       if (currentGEntityStr == "*") {
-			  std::list< dtGmshRegion * > rr 
-        = 
-        dtGmshModel::cast2DtGmshRegion( gm->regions() );
+//			  std::list< dtGmshRegion * > rr 
+//        = 
+//        dtGmshModel::cast2DtGmshRegion( gm->regions() );
 			  dt__forAllIter(std::list< dtGmshRegion * >, rr, it) {
           if ( 
             (*it)->_status 
@@ -283,7 +320,12 @@ namespace dtOO {
           }          
         }    
       }
-      else (*current3D)( gm->getDtGmshRegionByPhysical(currentGEntityStr) );
+      else {
+			  dt__forAllRefAuto(rr, aReg) {
+          if ( aReg->getPhysicalString() !=  currentGEntityStr ) continue;        
+          (*current3D)( gm->getDtGmshRegionByPhysical(currentGEntityStr) );
+        }
+      }
     }    
   }
 }
