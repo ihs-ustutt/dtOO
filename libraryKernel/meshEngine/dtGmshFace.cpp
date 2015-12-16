@@ -22,8 +22,7 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <interfaceHeaven/intHandling.h>
 
-#define __caCThis \
-  const_cast< dtGmshFace * >(this)
+#define __caCThis const_cast< dtGmshFace * >(this)
 
 namespace dtOO {    
   dtGmshFace::dtGmshFace(::GModel *m, int tag) 

@@ -54,6 +54,7 @@ namespace dtOO {
       std::vector< std::string > const & label
     );    
     std::string dumpToString( void ) const;
+    std::string getPhysicalString( void ) const;
   public:
     mutable ::GEntity::MeshGenerationStatus _status;
     ::GEntity::GeomType _geomType;

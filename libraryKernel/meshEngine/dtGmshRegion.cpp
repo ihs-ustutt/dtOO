@@ -15,6 +15,8 @@
 #include "dtGmshModel.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
+#define __caCThis const_cast< dtGmshRegion * >(this)
+
 namespace dtOO {
 	dtGmshRegion::dtGmshRegion(::GModel *m, int tag) 
     : GRegion(m, tag),
@@ -292,5 +294,13 @@ namespace dtOO {
 		}
     
     return faceList;
+  }  
+
+  std::string dtGmshRegion::getPhysicalString( void ) const {
+    dt__ptrAss( 
+      dtGmshModel const * const gm, 
+      dtGmshModel::ConstDownCast(__caCThis->model()) 
+    );
+    return gm->getPhysicalString(this);
   }  
 }

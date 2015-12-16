@@ -281,6 +281,29 @@ namespace dtOO {
     return gFace;    
   }
 	
+  ::GEntity * dtGmshModel::getGEntityByPhysical( 
+    std::string const & physical 
+  ) const {
+    dtGmshModel::intGEntityVMap ge_number;
+    
+    dt__forFromToIndex(0, 3, dim) {
+      GModel::getPhysicalGroups(dim, ge_number);     
+      //
+      // for each physical group
+      //
+      dt__forAllConstIter(dtGmshModel::intGEntityVMap, ge_number, nIt) {
+        if ( getPhysicalName(dim, nIt->first) == physical ) {
+          dt__throwIf( nIt->second.size()!=1, getGEntityByPhysical() );
+          return nIt->second[0];
+        }
+      }
+    }
+    dt__throw(
+      getGEntityByPhysical(), 
+      << "No GEntity with physical " << physical
+    );
+  }
+  
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByPhysical( 
     std::string const & physical 
   ) const {

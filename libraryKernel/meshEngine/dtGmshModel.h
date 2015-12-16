@@ -35,7 +35,7 @@ namespace dtOO {
     virtual ~dtGmshModel();
     //
     // get GEntitys
-    //
+    //   
     dtGmshRegion * getDtGmshRegionByTag( int const tag ) const;
     dtGmshFace * getDtGmshFaceByTag( int const tag ) const;
     dtGmshEdge * getDtGmshEdgeByPhysical( std::string const & physical ) const;
@@ -47,6 +47,7 @@ namespace dtOO {
     int getDtGmshEdgeTagByFromTo( int const from, int const to ) const;
     dtGmshEdge * getDtGmshEdgeByFromTo( int const from, int const to ) const;
     dtGmshVertex * getDtGmshVertexByTag( int const tag ) const;
+    ::GEntity * getGEntityByPhysical( std::string const & physical ) const;     
     //
     // casts
     //
