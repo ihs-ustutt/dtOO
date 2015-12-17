@@ -18,10 +18,10 @@ namespace dtOO {
 	  std::string extRenderWhat( void ) const;
     virtual vectorHandling< renderInterface * > getExtRender( void ) const;
     virtual vectorHandling< renderInterface * > getRender( void ) const;
-	  void setMin(int const & dir, float const & value) const;
-	  float getMin(int const & dir) const;	    
-	  void setMax(int const & dir, float const & value) const;
-	  float getMax(int const & dir) const;	     
+	  void geoBoundMin(int const & dir, float const & value) const;
+	  float geoBoundMin(int const & dir) const;	    
+	  void geoBoundMax(int const & dir, float const & value) const;
+	  float geoBoundMax(int const & dir) const;	     
   private:
     mutable bool _extRender;
     mutable std::string _extRenderOption;

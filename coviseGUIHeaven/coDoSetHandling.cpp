@@ -14,7 +14,7 @@
 #include <unstructured3dSurfaceMesh.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <boost/smart_ptr/scoped_ptr.hpp>
+#include <progHelper.h>
 
 namespace dtOO {  
   coDoSetHandling::coDoSetHandling() {
@@ -67,16 +67,14 @@ namespace dtOO {
 	}
 	
   covise::coDoSet * coDoSetHandling::render3d( 
-                      coDoSetHandling const & vec,
-                      char const * str
-                    ) const {
+    coDoSetHandling const & vec, char const * str
+  ) const {
 		return render3d(vec.begin(), vec.end(), str);
   }
 
   covise::coDoSet * coDoSetHandling::render2d( 
-                      coDoSetHandling const & vec,
-                      char const * str
-                    ) const {
+    coDoSetHandling const & vec, char const * str
+  ) const {
     covise::coDoSet * bigCoDoSetP = NULL;  
 		float xMin = 0.;
 		float xMax = 0.; 
@@ -100,20 +98,20 @@ namespace dtOO {
       //
       renderInterface const * cDSI = vec[ii];
 
-		  if ( vec[ii]->getMin(0) < xMin ) xMin = vec[ii]->getMin(0);
-			if ( vec[ii]->getMin(1) < yMin ) yMin = vec[ii]->getMin(1);
-		  if ( vec[ii]->getMax(0) > xMax ) xMax = vec[ii]->getMax(0);
-			if ( vec[ii]->getMax(1) > yMax ) yMax = vec[ii]->getMax(1);
+		  if ( vec[ii]->geoBoundMin(0) < xMin ) xMin = vec[ii]->geoBoundMin(0);
+			if ( vec[ii]->geoBoundMin(1) < yMin ) yMin = vec[ii]->geoBoundMin(1);
+		  if ( vec[ii]->geoBoundMax(0) > xMax ) xMax = vec[ii]->geoBoundMax(0);
+			if ( vec[ii]->geoBoundMax(1) > yMax ) yMax = vec[ii]->geoBoundMax(1);
       
       //
       // find fist element
       //
       if (bigCoDoSetP == NULL) {
         bigCoDoSetP = renderElement2d(cDSI, str);
-		    xMin = vec[ii]->getMin(0); 
-		    xMax = vec[ii]->getMax(0); 
-		    yMin = vec[ii]->getMin(1); 
-		    yMax = vec[ii]->getMax(1);	        
+		    xMin = vec[ii]->geoBoundMin(0); 
+		    xMax = vec[ii]->geoBoundMax(0); 
+		    yMin = vec[ii]->geoBoundMin(1); 
+		    yMax = vec[ii]->geoBoundMax(1);	        
         //continue;
       }
       else {
@@ -142,9 +140,13 @@ namespace dtOO {
 //	  for (int ii=0;ii<bigCoDoSetP->getNumElements();ii++) {
 //      outStream << "S" << ii << " COLOR " << ii+1 << "\n";
 //    }
-		outStream << "WORLD " << xMin << "," << yMin << "," << xMax << "," << yMax << "\n";
-		outStream << "YAXIS TICK MAJOR " << (yMax-yMin)/5 << "\nYAXIS TICK MINOR " << (yMax-yMin)/10 << "\n"
-							<< "XAXIS TICK MAJOR " << (xMax-xMin)/5 << "\nXAXIS TICK MINOR " << (xMax-xMin)/10 << "\n";
+		outStream 
+      << "WORLD " << xMin << "," << yMin << "," << xMax << "," << yMax << "\n";
+		outStream 
+      << "YAXIS TICK MAJOR " << (yMax-yMin)/5 
+      << "\nYAXIS TICK MINOR " << (yMax-yMin)/10 << "\n"
+			<< "XAXIS TICK MAJOR " << (xMax-xMin)/5 
+      << "\nXAXIS TICK MINOR " << (xMax-xMin)/10 << "\n";
 		plbuf = outStream.str();      
 		bigCoDoSetP->addAttribute("COMMANDS", plbuf.c_str());    
     
@@ -166,10 +168,8 @@ namespace dtOO {
   }     
 	
   covise::coDoSet * coDoSetHandling::toCoDoSet( 
-                      covise::coDoSet * setOne,
-                      covise::coDoSet * setTwo,
-                      char const * str
-                    ) {
+    covise::coDoSet * setOne, covise::coDoSet * setTwo, char const * str
+  ) {
 		dt__throwIf(setOne==NULL, toCoDoSet());
 		
 		//
@@ -184,14 +184,20 @@ namespace dtOO {
     return setOne;   
   }      
 	
-	covise::coDoSet * coDoSetHandling::toCoDoSet( renderInterface const * const rI, char const * str ) {
+	covise::coDoSet * coDoSetHandling::toCoDoSet( 
+    renderInterface const * const rI, char const * str 
+  ) {
 		discrete2dPoints const * const d2dP = discrete2dPoints::ConstDownCast(rI);
 		discrete3dPoints const * const d3dP = discrete3dPoints::ConstDownCast(rI);
 		solid2dLine const * const s2dL = solid2dLine::ConstDownCast(rI);
 		solid3dLine const * const s3dL = solid3dLine::ConstDownCast(rI);
 		solid3dSurface const * const s3dS = solid3dSurface::ConstDownCast(rI);
-		unstructured3dMesh const * const u3dM = unstructured3dMesh::ConstDownCast(rI);
-		unstructured3dSurfaceMesh const * const u3dSM = unstructured3dSurfaceMesh::ConstDownCast(rI);
+		unstructured3dMesh const * const u3dM 
+    = 
+    unstructured3dMesh::ConstDownCast(rI);
+		unstructured3dSurfaceMesh const * const u3dSM 
+    = 
+    unstructured3dSurfaceMesh::ConstDownCast(rI);
 		discrete3dVector const * const d3dV = discrete3dVector::ConstDownCast(rI);
 		
 		if (d2dP) {
@@ -227,32 +233,36 @@ namespace dtOO {
 		}
 	}
 	
-	covise::coDoSet * coDoSetHandling::renderElement2d( renderInterface const * const rI, char const * const str) {
+	covise::coDoSet * coDoSetHandling::renderElement2d( 
+    renderInterface const * const rI, char const * const str
+  ) {
 		vectorHandling< renderInterface * > vec = rI->getRender();
 		covise::coDoSet * set	= NULL;
 		if (vec.size() != 0) {
 			set = toCoDoSet(vec[0], str);
-			float xMin = vec[0]->getMin(0); 
-			float xMax = vec[0]->getMax(0); 
-			float yMin = vec[0]->getMin(1); 
-			float yMax = vec[0]->getMax(1);		
+			float xMin = vec[0]->geoBoundMin(0); 
+			float xMax = vec[0]->geoBoundMax(0); 
+			float yMin = vec[0]->geoBoundMin(1); 
+			float yMax = vec[0]->geoBoundMax(1);		
 			for (int ii=1; ii<vec.size(); ii++) {
-				if ( vec[ii]->getMin(0) < xMin ) xMin = vec[ii]->getMin(0);
-				if ( vec[ii]->getMin(1) < yMin ) yMin = vec[ii]->getMin(1);
-				if ( vec[ii]->getMax(0) > xMax ) xMax = vec[ii]->getMax(0);
-				if ( vec[ii]->getMax(1) > yMax ) yMax = vec[ii]->getMax(1);
+				if ( vec[ii]->geoBoundMin(0) < xMin ) xMin = vec[ii]->geoBoundMin(0);
+				if ( vec[ii]->geoBoundMin(1) < yMin ) yMin = vec[ii]->geoBoundMin(1);
+				if ( vec[ii]->geoBoundMax(0) > xMax ) xMax = vec[ii]->geoBoundMax(0);
+				if ( vec[ii]->geoBoundMax(1) > yMax ) yMax = vec[ii]->geoBoundMax(1);
 				set = toCoDoSet( set, toCoDoSet(vec[ii], str), str );
 			}
 
-			rI->setMin(0, xMin);
-			rI->setMin(1, yMin);
-			rI->setMax(0, xMax);
-			rI->setMax(1, yMax);
+			rI->geoBoundMin(0, xMin);
+			rI->geoBoundMin(1, yMin);
+			rI->geoBoundMax(0, xMax);
+			rI->geoBoundMax(1, yMax);
 		}
 		return set;		
 	}
 
-	covise::coDoSet * coDoSetHandling::renderElement3d( renderInterface const * const rI, char const * const str) {
+	covise::coDoSet * coDoSetHandling::renderElement3d( 
+    renderInterface const * const rI, char const * const str
+  ) {
 		vectorHandling< renderInterface * > vec = rI->getRender();
 		covise::coDoSet * set	= NULL;
 		if ( (vec.size() != 0) && !rI->mustExtRender() ) {
@@ -299,13 +309,15 @@ namespace dtOO {
 		return set;
 	}	
 	
-	covise::coDoSet * coDoSetHandling::discrete2dPointsToCoDoSet( discrete2dPoints const * const rI, char const * str ) {
+	covise::coDoSet * coDoSetHandling::discrete2dPointsToCoDoSet( 
+    discrete2dPoints const * const rI, char const * str 
+  ) {
     float * xpl = new float[rI->refP2().size()];
     float * ypl = new float[rI->refP2().size()];
-    float xMin = rI->getMin(0);
-    float xMax = rI->getMax(0);  
-    float yMin = rI->getMin(1);
-    float yMax = rI->getMax(1);
+    float xMin = rI->geoBoundMin(0);
+    float xMax = rI->geoBoundMax(0);  
+    float yMin = rI->geoBoundMin(1);
+    float yMax = rI->geoBoundMax(1);
     for (int ii=0;ii<rI->refP2().size();ii++) {
       xpl[ii] = rI->refP2()[ii].x();
       ypl[ii] = rI->refP2()[ii].y();
@@ -362,8 +374,12 @@ namespace dtOO {
 		return returnSet;		
 	}
 	
-	covise::coDoSet * coDoSetHandling::discrete3dPointsToCoDoSet( discrete3dPoints const * const rI, char const * str ) {
-    covise::coDistributedObject ** objects = new covise::coDistributedObject*[2];
+	covise::coDoSet * coDoSetHandling::discrete3dPointsToCoDoSet( 
+    discrete3dPoints const * const rI, char const * str 
+  ) {
+    covise::coDistributedObject ** objects 
+    = 
+    new covise::coDistributedObject*[2];
     objects[1] = NULL;
     ptrHandling<char> objName( new char[strlen(str)+5] );
     sprintf(objName.get(),"%s_%d", str,0);
@@ -386,14 +402,18 @@ namespace dtOO {
     float* zCoords;
     int* firstList; //corners
     int* secondList; //polygons
-    oneObject->getAddresses(&xCoords, &yCoords, &zCoords, &firstList, &secondList);
+    oneObject->getAddresses(
+      &xCoords, &yCoords, &zCoords, &firstList, &secondList
+    );
 		
 		//
 		// get point height
 		//
 		float height 
     = 
-    staticPropertiesHandler::getInstance()->getOptionFloat("point_render_diameter");  		
+    staticPropertiesHandler::getInstance()->getOptionFloat(
+      "point_render_diameter"
+    );  		
 		//
 		// fill data arraies
 		//
@@ -483,11 +503,15 @@ namespace dtOO {
 		return retSet;		
 	}
 	
-  covise::coDoSet * coDoSetHandling::solid2dLineToCoDoSet( solid2dLine const * const rI, char const * str ) {
+  covise::coDoSet * coDoSetHandling::solid2dLineToCoDoSet( 
+    solid2dLine const * const rI, char const * str 
+  ) {
 		return discrete2dPointsToCoDoSet(rI, str);
 	}
 	
-  covise::coDoSet * coDoSetHandling::solid3dLineToCoDoSet( solid3dLine const * const rI, char const * str ) {
+  covise::coDoSet * coDoSetHandling::solid3dLineToCoDoSet( 
+    solid3dLine const * const rI, char const * str 
+  ) {
     char * objName = new char[strlen(str)+5];
     sprintf(objName,"%s_%d", str, 0);
 
@@ -526,7 +550,9 @@ namespace dtOO {
     return retSet;		
 	}
 	
-  covise::coDoSet * coDoSetHandling::solid3dSurfaceToCoDoSet( solid3dSurface const * const rI, char const * str ) {
+  covise::coDoSet * coDoSetHandling::solid3dSurfaceToCoDoSet( 
+    solid3dSurface const * const rI, char const * str 
+  ) {
 		int renderResU = rI->refP3().size(0)-1;
 		int renderResV = rI->refP3().size(1)-1;	
     //
@@ -546,7 +572,9 @@ namespace dtOO {
     float * zCoord;
     int * cornerList;
     int * polygonList;		
-    polygonP->getAddresses(&xCoord, &yCoord, &zCoord, &cornerList, &polygonList);
+    polygonP->getAddresses(
+      &xCoord, &yCoord, &zCoord, &cornerList, &polygonList
+    );
 
     //
     //write points to coDoPolygons
@@ -581,7 +609,9 @@ namespace dtOO {
     }
     //finish lineSet
 //    addAttributesToCoDoDis( polygonP.get() );
-    covise::coDistributedObject ** polygonObjects = new covise::coDistributedObject* [2];
+    covise::coDistributedObject ** polygonObjects 
+    = 
+    new covise::coDistributedObject* [2];
     polygonObjects[0] = polygonP.get();
     polygonObjects[1] = NULL;
     //create line set 
@@ -592,8 +622,12 @@ namespace dtOO {
     return retSet;		
 	}
 	
-  covise::coDoSet * coDoSetHandling::unstructured3dMeshToCoDoSet( unstructured3dMesh const * const rI, char const * str ) {
-    int nElemTot = rI->getNHex() + rI->getNTet() + rI->getNPri() + rI->getNPyr();
+  covise::coDoSet * coDoSetHandling::unstructured3dMeshToCoDoSet( 
+    unstructured3dMesh const * const rI, char const * str 
+  ) {
+    int nElemTot 
+    = 
+    rI->getNHex() + rI->getNTet() + rI->getNPri() + rI->getNPyr();
 		std::string objName = std::string(str)+"_uns3dGrid";
 		ptrHandling< covise::coDoUnstructuredGrid > cug( 
       new covise::coDoUnstructuredGrid( 
@@ -695,13 +729,17 @@ namespace dtOO {
 			}
 		}
 		
-    ptrHandling< covise::coDistributedObject * > cdo( new covise::coDistributedObject*[2] );
+    ptrHandling< covise::coDistributedObject * > cdo( 
+      new covise::coDistributedObject*[2] 
+    );
     cdo.get()[0] = cug.get();
     cdo.get()[1] = NULL;
     return new covise::coDoSet(str, cdo.get());				
 	}
 
-  covise::coDoSet * coDoSetHandling::unstructured3dSurfaceMeshToCoDoSet( unstructured3dSurfaceMesh const * const rI, char const * str ) {
+  covise::coDoSet * coDoSetHandling::unstructured3dSurfaceMeshToCoDoSet( 
+    unstructured3dSurfaceMesh const * const rI, char const * str 
+  ) {
     int nElemTot = rI->getNQuads() + rI->getNTris();
 		std::string objName = std::string(str)+"_uns3dSGrid";
 		ptrHandling< covise::coDoUnstructuredGrid > cug( 
@@ -767,16 +805,22 @@ namespace dtOO {
 			}
 		}
 		
-    ptrHandling< covise::coDistributedObject * > cdo( new covise::coDistributedObject*[2] );
+    ptrHandling< covise::coDistributedObject * > cdo( 
+      new covise::coDistributedObject*[2] 
+    );
     cdo.get()[0] = cug.get();
     cdo.get()[1] = NULL;
     return new covise::coDoSet(str, cdo.get());				
 	}
 	
-  covise::coDoSet * coDoSetHandling::discrete3dVectorToCoDoSet( discrete3dVector const * const rI, char const * str ) {
+  covise::coDoSet * coDoSetHandling::discrete3dVectorToCoDoSet( 
+    discrete3dVector const * const rI, char const * str 
+  ) {
     float tipSize
 		=
-		staticPropertiesHandler::getInstance()->getOptionFloat("vector_render_size");
+		staticPropertiesHandler::getInstance()->getOptionFloat(
+      "vector_render_size"
+    );
 		
     ptrHandling<char> objName(new char[strlen(str)+5]);
     sprintf(objName.get(),"%s_%d", str,0);
@@ -788,14 +832,18 @@ namespace dtOO {
     int nPolyCorners = rI->refP3().size() * 6; 
     int nPolyPolygons = rI->refP3().size() * 2;  
     ptrHandling< covise::coDoPolygons > onePolyObject(
-		  new covise::coDoPolygons(objName.get() ,nPolyPoints, nPolyCorners, nPolyPolygons)
+		  new covise::coDoPolygons(
+        objName.get() ,nPolyPoints, nPolyCorners, nPolyPolygons
+      )
 		); 
     float* xCoords;
     float* yCoords;
     float* zCoords;
     int* polyPolyList; 
     int* polyCornerList; 		
-    onePolyObject->getAddresses(&xCoords, &yCoords, &zCoords, &polyCornerList, &polyPolyList);
+    onePolyObject->getAddresses(
+      &xCoords, &yCoords, &zCoords, &polyCornerList, &polyPolyList
+    );
     int polyCoordsCounter = 0;
     int polyCornerCounter = 0;
     int polyPolyCounter = 0;
@@ -840,7 +888,9 @@ namespace dtOO {
       dtVector3 nVec(nx,ny,0.);
       corner[1] = baseMiddle - tipSize * nVec;
       corner[2] = baseMiddle + tipSize * nVec;
-      dtVector3 nVecOrtho = dtLinearAlgebra::crossProduct (rI->refV3()[ii], nVec);
+      dtVector3 nVecOrtho 
+      = 
+      dtLinearAlgebra::crossProduct (rI->refV3()[ii], nVec);
       float nVecOrthoLength = sqrt( nVecOrtho.squared_length() );
       dtVector3 nVecOrthoNorm = nVecOrtho / (nVecOrthoLength);
       corner[3] = baseMiddle - tipSize * nVecOrthoNorm;
@@ -886,7 +936,9 @@ namespace dtOO {
 		//
 		// create set
 		//
-    covise::coDistributedObject ** objects = new covise::coDistributedObject*[2];
+    covise::coDistributedObject ** objects 
+    = 
+    new covise::coDistributedObject*[2];
     objects[0] = onePolyObject.get();
 //    objects[1] = oneLineObject.get();
 		objects[1] = NULL;

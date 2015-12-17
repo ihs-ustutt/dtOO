@@ -40,7 +40,7 @@ namespace dtOO {
 		return _extRenderOption;
 	}  	
 	
-	void renderInterface::setMin(int const & dir, float const & value) const {
+	void renderInterface::geoBoundMin(int const & dir, float const & value) const {
     switch (dir) {
       case 0:
 				_u[0] = value;
@@ -58,7 +58,7 @@ namespace dtOO {
     }		
 	}	
 
-	float renderInterface::getMin(int const & dir) const {
+	float renderInterface::geoBoundMin(int const & dir) const {
     switch (dir) {
       case 0:
 				return _u[0];
@@ -73,7 +73,7 @@ namespace dtOO {
     }		
 	}		
 
-	void renderInterface::setMax(int const & dir, float const & value) const {
+	void renderInterface::geoBoundMax(int const & dir, float const & value) const {
     switch (dir) {
       case 0:
 				_u[1] = value;
@@ -91,7 +91,7 @@ namespace dtOO {
     }		
 	}	
 
-	float renderInterface::getMax(int const & dir) const {
+	float renderInterface::geoBoundMax(int const & dir) const {
     switch (dir) {
       case 0:
 				return _u[1];

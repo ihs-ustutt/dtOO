@@ -14,6 +14,7 @@ namespace dtOO {
       map1dTo3d();
       map1dTo3d(const map1dTo3d& orig);
       virtual ~map1dTo3d();
+      virtual int dim( void ) const;            
       //
       // overload
       //
@@ -22,9 +23,6 @@ namespace dtOO {
       virtual map1dTo3d * cloneTransformed( 
         dtTransformer const * const dtT 
       ) const = 0;      
-      virtual bool isClosed( int const & dir) const = 0;
-      virtual float getMin( int const & dir) const = 0;
-      virtual float getMax( int const & dir) const = 0;    
       virtual dtPoint3 getPoint( float const & uu ) const = 0;
       //
       // optional overload

@@ -13,10 +13,10 @@ namespace dtOO {
   discrete2dPoints::discrete2dPoints(vectorHandling< dtPoint2 > const & pp) : renderInterface() {
 		_p2 = pp;
 		std::pair<dtPoint2, dtPoint2> minMax = dtLinearAlgebra::boundingBox(_p2);
-		setMin( 0, minMax.first.x() );
-		setMin( 1, minMax.first.y() );
-		setMax( 0, minMax.second.x() );
-		setMax( 1, minMax.second.y() );
+		geoBoundMin( 0, minMax.first.x() );
+		geoBoundMin( 1, minMax.first.y() );
+		geoBoundMax( 0, minMax.second.x() );
+		geoBoundMax( 1, minMax.second.y() );
 		//							<< "S0 LINESTYLE 3\n"
 //							<< "SETS LINEWIDTH 2\n"
 //							<< "S0 LINEWIDTH 1\n"

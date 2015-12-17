@@ -31,6 +31,10 @@ namespace dtOO {
     //
     virtual analyticGeometry * clone( void ) const = 0;
     virtual analyticGeometry * create( void ) const = 0;
+    virtual int dim( void ) const = 0;
+    virtual bool isClosed( int const & dir) const = 0;
+    virtual float getMin( int const & dir) const = 0;
+    virtual float getMax( int const & dir) const = 0;     
     //
     // optional overload
     //

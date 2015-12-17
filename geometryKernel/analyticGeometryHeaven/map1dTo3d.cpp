@@ -23,6 +23,10 @@ namespace dtOO {
   map1dTo3d::~map1dTo3d() {
   }
   
+  int map1dTo3d::dim( void ) const {
+    return 1;
+  }
+  
   dtPoint3 map1dTo3d::getPointPercent( float const & uu ) const {
     return getPoint( u_percent(uu) );
   }

@@ -17,6 +17,7 @@ namespace dtOO {
     map3dTo3d();
     map3dTo3d(const map3dTo3d& orig);
     virtual ~map3dTo3d();
+    virtual int dim( void ) const;                
     virtual vectorHandling< renderInterface * > getRender( void ) const;
     //
     // overload
@@ -28,10 +29,7 @@ namespace dtOO {
     ) const = 0;    
     virtual dtPoint3 getPoint( 
       float const & uu, float const & vv, float const & ww 
-    ) const = 0;
-    virtual bool isClosed( int const & dir) const = 0;
-    virtual float getMin( int const & dir) const = 0;
-    virtual float getMax( int const & dir) const = 0;    
+    ) const = 0;   
     //
     // optional overload
     //

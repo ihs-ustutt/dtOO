@@ -29,6 +29,10 @@ namespace dtOO {
   map2dTo3d::~map2dTo3d() {
   }
   
+  int map2dTo3d::dim( void ) const {
+    return 2;
+  }
+  
   dtPoint3 map2dTo3d::getPoint( dtPoint2 const & pUV ) const {
     return getPoint(pUV.x(), pUV.y());
   }

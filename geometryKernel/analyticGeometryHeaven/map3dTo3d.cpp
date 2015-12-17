@@ -34,6 +34,10 @@ namespace dtOO {
   map3dTo3d::~map3dTo3d() {
   }
   
+  int map3dTo3d::dim( void ) const {
+    return 3;
+  }
+    
 	vectorHandling< renderInterface * > map3dTo3d::getRender( void ) const {
 		vectorHandling< renderInterface * > rV;
     //
