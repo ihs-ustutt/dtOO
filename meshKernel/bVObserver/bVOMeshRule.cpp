@@ -147,12 +147,30 @@ namespace dtOO {
       dt__forAllRefAuto(_only, anOnly) {
         ::GEntity * ge = gm->getGEntityByPhysical(anOnly);
         
+        //
+        // dtGmshFace
+        //
         if (dtGmshFace::DownCast(ge)) {
           dtGmshFace * gf = dtGmshFace::SecureCast(ge);
           dt__forAllRefAuto(
             dtGmshModel::cast2DtGmshEdge(gf->edges()), anEdge
           ) ee.push_back(anEdge);
           ff.push_back(gf);
+        }
+        //
+        // dtGmshRegion
+        //
+        else if (dtGmshRegion::DownCast(ge)) {
+          dtGmshRegion * gr = dtGmshRegion::SecureCast(ge);
+          dt__forAllRefAuto(
+            dtGmshModel::cast2DtGmshFace(gr->faces()), aFace
+          ) {
+            ff.push_back(aFace);
+            dt__forAllRefAuto(
+              dtGmshModel::cast2DtGmshEdge(aFace->edges()), anEdge
+            ) ee.push_back(anEdge);
+          }
+          rr.push_back(gr);
         }
         else dt__throwUnexpected(preUpdate());
       }
