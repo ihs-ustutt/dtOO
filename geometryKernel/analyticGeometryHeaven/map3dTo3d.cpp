@@ -38,6 +38,10 @@ namespace dtOO {
     return 3;
   }
     
+  dtPoint3 map3dTo3d::getPoint( float const * const uvw ) const {
+    return getPoint( uvw[0], uvw[1], uvw[2] );
+  }
+  
 	vectorHandling< renderInterface * > map3dTo3d::getRender( void ) const {
 		vectorHandling< renderInterface * > rV;
     //

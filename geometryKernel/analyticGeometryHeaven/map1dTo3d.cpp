@@ -27,6 +27,10 @@ namespace dtOO {
     return 1;
   }
   
+  dtPoint3 map1dTo3d::getPoint( float const * const uvw ) const {
+    return getPoint( *uvw );
+  }
+  
   dtPoint3 map1dTo3d::getPointPercent( float const & uu ) const {
     return getPoint( u_percent(uu) );
   }

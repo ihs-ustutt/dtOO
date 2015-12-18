@@ -15,6 +15,7 @@ namespace dtOO {
       map1dTo3d(const map1dTo3d& orig);
       virtual ~map1dTo3d();
       virtual int dim( void ) const;            
+      virtual dtPoint3 getPoint( float const * const uvw ) const;      
       //
       // overload
       //

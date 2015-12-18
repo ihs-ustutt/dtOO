@@ -26,6 +26,7 @@ namespace dtOO {
     analyticGeometry();
     virtual ~analyticGeometry();
     analyticGeometry( analyticGeometry const & orig );
+    dtPoint3 getPointPercent( float const * const uvw ) const;    
     //
     // overload
     //
@@ -34,7 +35,8 @@ namespace dtOO {
     virtual int dim( void ) const = 0;
     virtual bool isClosed( int const & dir) const = 0;
     virtual float getMin( int const & dir) const = 0;
-    virtual float getMax( int const & dir) const = 0;     
+    virtual float getMax( int const & dir) const = 0;
+    virtual dtPoint3 getPoint( float const * const uvw ) const = 0;
     //
     // optional overload
     //
@@ -44,6 +46,10 @@ namespace dtOO {
 	  virtual vectorHandling< analyticGeometry const * > compoundInternal( 
       void 
     ) const;
+    std::pair< dtPoint3, dtPoint3 > boundingBox( void ) const;
+    void boundingBox( std::pair< dtPoint3, dtPoint3 > boundingBox);
+    void updateBoundingBox( void ) const;
+    float characteristicLength( void ) const;
     //
     //
     //
@@ -61,6 +67,8 @@ namespace dtOO {
     mutable int _resU;
     mutable int _resV;
     mutable int _resW;
+    mutable float _characteristicLength;
+    mutable std::pair< dtPoint3, dtPoint3 > _boundingBox;
     threadSafeRoot _threadRoot;
   };
   
