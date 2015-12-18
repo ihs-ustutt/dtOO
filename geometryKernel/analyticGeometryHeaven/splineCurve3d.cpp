@@ -44,7 +44,9 @@ namespace dtOO {
     return (_dtC->point( uu ));
   }
 	
-  vectorHandling< renderInterface * > splineCurve3d::getExtRender( void ) const {
+  vectorHandling< renderInterface * > splineCurve3d::getExtRender( 
+    void 
+  ) const {
 		vectorHandling< dtVector3 > vv;
 		vectorHandling< dtPoint3 > vp;
 		vectorHandling< dtPoint3 > pp;
