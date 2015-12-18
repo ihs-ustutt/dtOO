@@ -284,16 +284,19 @@ namespace dtOO {
   ::GEntity * dtGmshModel::getGEntityByPhysical( 
     std::string const & physical 
   ) const {
-    dtGmshModel::intGEntityVMap ge_number;
-    
-    dt__forFromToIndex(0, 3, dim) {
+    dt__forFromToIndex(0, 4, dim) {
+      dtGmshModel::intGEntityVMap ge_number;      
       GModel::getPhysicalGroups(dim, ge_number);     
       //
       // for each physical group
       //
       dt__forAllConstIter(dtGmshModel::intGEntityVMap, ge_number, nIt) {
         if ( getPhysicalName(dim, nIt->first) == physical ) {
-          dt__throwIf( nIt->second.size()!=1, getGEntityByPhysical() );
+          dt__throwIfWithMessage( 
+            nIt->second.size()!=1, 
+            getGEntityByPhysical(),
+            << dt__eval(nIt->second.size())
+          );
           return nIt->second[0];
         }
       }
@@ -1466,7 +1469,7 @@ namespace dtOO {
     //
     // for each dimension
     //
-    dt__forFromToIndex(0, 3, dim) {
+    dt__forFromToIndex(0, 4, dim) {
       GModel::getPhysicalGroups(dim, ge_number);     
       //
       // for each physical group
