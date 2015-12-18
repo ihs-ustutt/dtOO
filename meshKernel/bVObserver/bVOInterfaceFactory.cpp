@@ -19,6 +19,7 @@
 #include "bVORecombine.h"
 #include "bVOWriteSTL.h"
 #include "bVOSetPrescribedMeshSizeAtPoints.h"
+#include "bVODumpModel.h"
 
 #define __IFRET(className) \
 	if ( strcmp(str, #className) == 0 ) { \
@@ -49,6 +50,7 @@ namespace dtOO {
     __IFRET(bVORecombine);
     __IFRET(bVOWriteSTL);
     __IFRET(bVOSetPrescribedMeshSizeAtPoints);
+    __IFRET(bVODumpModel);
 		
     dt__throw(create(), <<  "Could not be created.");
   }
