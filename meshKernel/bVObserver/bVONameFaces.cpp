@@ -2,9 +2,9 @@
 
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+#include <logMe/logContainer.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <vector>
-#include <math.h>
 #include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
@@ -43,40 +43,40 @@ namespace dtOO {
   }
   
   void bVONameFaces::preUpdate( void ) {
-		dtGmshModel * gm = ptrBoundedVolume()->getModel();
+		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 		
-		dt__throwIf(gm==NULL, update());
-		
-//		for(::GModel::riter r_it = gm->firstRegion(); r_it != gm->lastRegion(); ++r_it) {
-			std::list< ::GFace * > faceL = gm->faces();
-			std::list< ::GFace * >::iterator f_it;
+    std::list< ::GFace * > faceL = gm->faces();
+    std::list< ::GFace * >::iterator f_it;
 
-			//
-			// check size
-			//
-			dt__throwIfWithMessage(
-				_faceLabel.size()!=faceL.size(), preUpdate(),
-				<< dt__eval(_faceLabel.size()) << std::endl
-        << dt__eval(faceL.size()) 
-			);
-			
-			int counter = 0;
-			for (f_it = faceL.begin(); f_it!=faceL.end(); ++f_it) {
-				std::vector< int > pInt = (*f_it)->getPhysicalEntities();
-				dt__throwIf(pInt.size()!=0, preUpdate());
+    //
+    // check size
+    //
+    dt__throwIfWithMessage(
+      _faceLabel.size()!=faceL.size(), preUpdate(),
+      << dt__eval(_faceLabel.size()) << std::endl
+      << dt__eval(faceL.size()) 
+    );
 
-				std::string newL = _faceLabel[counter];
-				if (newL != "") {
-					int pTag = (*f_it)->model()->setPhysicalName(newL, 2, 0);
-					(*f_it)->addPhysicalEntity(pTag);
-					dt__info(
-						preUpdate(),
-						<< logMe::dtFormat("Name physical group %s (%d) and add face %d of %s") 
-							% pTag % newL % counter % ptrBoundedVolume()->getLabel()
-					);						
-				}
-				counter++;				
-			}
-//		}
+    int counter = 0;
+    logContainer< bVONameFaces > logC(logINFO, "preUpdate()");      
+    for (f_it = faceL.begin(); f_it!=faceL.end(); ++f_it) {
+      std::vector< int > pInt = (*f_it)->getPhysicalEntities();
+      dt__throwIf(pInt.size()!=0, preUpdate());
+
+      std::string newL = _faceLabel[counter];
+      if (newL != "") {
+        int pTag = (*f_it)->model()->setPhysicalName(newL, 2, 0);
+        (*f_it)->addPhysicalEntity(pTag);
+        dtGmshModel::intGEntityVMap map;
+        gm->getPhysicalGroups(2, map);          
+        logC()
+          << logMe::dtFormat(
+            "Physical group %d / %s ( %d faces ) -> add face %d"
+          ) 
+          % newL % pTag % map[ pTag ].size() % (*f_it)->tag() 
+          << std::endl;
+      }
+      counter++;				
+    }
   }
 }
