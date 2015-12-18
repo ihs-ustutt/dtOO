@@ -8,6 +8,7 @@
 class MElement;
 class GVertex;
 class GEntity;
+class SBoundingBox3d;
 
 namespace dtOO {
   class map1dTo3d;
@@ -31,6 +32,7 @@ namespace dtOO {
     void addGEntity( ::GEntity * const gEnt );
     void addVertex( ::GVertex * gv);
     void addElement( ::MElement * me );
+    virtual ::SBoundingBox3d bounds( void ) const;
     static bool isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 );
   private:
     void setNElements( int const nE );    

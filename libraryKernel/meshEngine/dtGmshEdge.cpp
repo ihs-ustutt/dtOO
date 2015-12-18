@@ -137,6 +137,14 @@ namespace dtOO {
     }
 	}
 	
+  ::SBoundingBox3d dtGmshEdge::bounds( void ) const {
+    std::pair< dtPoint3, dtPoint3 > bb = _mm->boundingBox();
+    return ::SBoundingBox3d(
+      bb.first.x(), bb.first.y(), bb.first.z(),
+      bb.second.x(), bb.second.y(), bb.second.z()
+    );
+  }
+      
   bool dtGmshEdge::isEqual( 
     ::GEdge const * const ge0, ::GEdge const * const ge1 
   ) {	
