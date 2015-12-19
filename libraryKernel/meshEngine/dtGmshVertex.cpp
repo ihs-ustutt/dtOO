@@ -67,15 +67,12 @@ namespace dtOO {
 	
   bool dtGmshVertex::isEqual( 
     ::GVertex const * const gv0, ::GVertex const * const gv1 
-  ) {	
-    ::SBoundingBox3d bb( ::SPoint3(0,0,0) );
-    dt__forAllRefAuto( gv0->edges(), anEdge) bb += anEdge->bounds();
-    dt__forAllRefAuto( gv1->edges(), anEdge) bb += anEdge->bounds();
-    
-		float xyzRes = 1.0E-03 * bb.min().distance(bb.max());
-//		staticPropertiesHandler::getInstance()->getOptionFloat(
-//      "xyz_resolution"
-//    );
+  ) {	   
+		float xyzRes 
+    = 
+		staticPropertiesHandler::getInstance()->getOptionFloat(
+      "XYZ_resolution"
+    );
   	dtPoint3 v0(gv0->x(), gv0->y(), gv0->z());
 		dtPoint3 v1(gv1->x(), gv1->y(), gv1->z());
 		if ( dtLinearAlgebra::distance(v0, v1) < xyzRes ) {

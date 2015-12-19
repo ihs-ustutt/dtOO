@@ -67,6 +67,13 @@ int main( int ac, char* av[] ) {
     vectorHandling< boundedVolume * > bV; 
     vectorHandling< dtCase * > dtC; 
 
+    //
+    // create log files
+    //
+    logMe::initLog(
+      vm["log"].as<std::string>()+"_"+stringPrimitive::intToString(world.rank())  
+    );
+    
     dtXmlParser parser(
       vm["xmlIn"].as<std::string>(), vm["xmlOut"].as<std::string>()
     );
@@ -74,12 +81,6 @@ int main( int ac, char* av[] ) {
     parser.parse();
     parser.load();
 
-    //
-    // create log files
-    //
-    logMe::initLog(
-      vm["log"].as<std::string>()+"_"+stringPrimitive::intToString(world.rank())  
-    );
     dt__infoNoClass(
       main(), 
       << "Call command:" << std::endl
