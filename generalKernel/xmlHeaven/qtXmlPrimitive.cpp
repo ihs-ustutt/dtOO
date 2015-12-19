@@ -148,6 +148,36 @@ namespace dtOO {
     return sibVec;
   }
   
+  std::vector< ::QDomElement > qtXmlPrimitive::getSiblingVector(
+    ::QDomElement const element 
+	) {
+    std::vector< ::QDomElement > sibVec;
+    bool goBack = false;
+    
+    ::QDomElement tmpElementP( element.nextSiblingElement() );
+    if ( tmpElementP.isNull() ) {
+      goBack = true;
+      tmpElementP = element.previousSiblingElement();
+    }
+    
+    if ( tmpElementP.isNull() ) return sibVec;
+    
+    while( !tmpElementP.isNull() ) {
+      sibVec.push_back( tmpElementP );
+      //
+      // found an element, check if it has correct name
+      // if so break
+      //
+      if ( !goBack ) {
+        tmpElementP = tmpElementP.nextSiblingElement();
+      }
+      else if (goBack) {
+        tmpElementP = tmpElementP.previousSiblingElement();
+      }
+    }
+    return sibVec;
+  }
+  
   std::vector< ::QDomElement > qtXmlPrimitive::getChildVector(
 	  std::string const sibName, ::QDomElement const element 
 	) {

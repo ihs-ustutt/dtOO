@@ -91,7 +91,21 @@ namespace dtOO {
       << dt__eval(_rootRead.size()) 
     );
 		
-	
+	  //
+    // handle constant expressions
+    //
+    dt__forAllRefAuto( 
+      getChildVector("constant", _rootRead.back()), aConstant 
+    ) {
+      dt__forAllRefAuto(getSiblingVector(aConstant), aSib) {
+        replaceRecursiveInAllAttributes(
+          getAttributeStr("label", aConstant), 
+          getAttributeStr("value", aConstant), 
+          &aSib
+        );
+      }
+    }
+    
     //
     // get labels of includes
     //
@@ -137,7 +151,7 @@ namespace dtOO {
 			// parse variable and values to replace
 			//
 			std::string var = getAttributeStr("variable", forElement);
-			std::string valueStr = getAttributeStr("values", forElement);
+			  std::string valueStr = getAttributeStr("values", forElement);
 			
 			//
 			// replace
