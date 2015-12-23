@@ -10,6 +10,7 @@ SET(HEADERS
   volScalarFieldVersusL.h
   pOnBlade.h
   UcylInChannel.h
+  uRelInChannel.h
 )
 
 SET(SOURCES
@@ -24,6 +25,7 @@ SET(SOURCES
   volScalarFieldVersusL.cpp
   pOnBlade.cpp
   UcylInChannel.cpp
+  uRelInChannel.cpp
 )
 
 APPEND_DTOO_SOURCE(pluginKernel "${SOURCES}")

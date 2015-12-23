@@ -9,6 +9,7 @@
 #include "volScalarFieldVersusL.h"
 #include "pOnBlade.h"
 #include "UcylInChannel.h"
+#include "uRelInChannel.h"
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
 
@@ -28,16 +29,6 @@ namespace dtOO {
   dtPluginFactory::~dtPluginFactory() {
   }
 
-//  dtPlugin * dtPluginFactory::create(char const * const str) {
-//    dt__info(create(), << "creating " << str <<  "...");
-//    
-//		__IFRET(writeStep);
-//    __IFRET(constValueAssingRule);
-////    __IFRET(createOpenFOAMCase);
-//    
-//    dt__throw(create(), << str <<  " could not be created");  
-//  } 
-
   dtPlugin * dtPluginFactory::create( std::string const str ) {
     dt__info(create(), << "creating " << str <<  "...");
     
@@ -48,6 +39,7 @@ namespace dtOO {
     if (str == "volScalarFieldVersusL") return new volScalarFieldVersusL();
     if (str == "pOnBlade") return new pOnBlade();
     if (str == "UcylInChannel") return new UcylInChannel();
+    if (str == "uRelInChannel") return new uRelInChannel();
     
     dt__throw(create(), << str <<  " could not be created");  
   }
