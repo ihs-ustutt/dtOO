@@ -21,6 +21,7 @@
 #include <gmsh/OpenFile.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
+#include <gmsh/Field.h>
 
 namespace dtOO {
 	gmshBoundedVolume::gmshBoundedVolume() {
@@ -241,6 +242,15 @@ namespace dtOO {
       );
       ParseFile( getOption("gmshMeshFile"), true, true );
     }
+
+    if ( hasOption("gmshMeshStr") ) {
+      dt__info(
+        makePreGrid(),
+        << "ParseString( " << getOption("gmshMeshStr") << " );"
+      );
+      ParseString( getOption("gmshMeshStr") );
+    }
+
     
     //
     // set options
@@ -275,6 +285,9 @@ namespace dtOO {
         % CTX::instance()->max[0] 
         % CTX::instance()->max[1] 
         % CTX::instance()->max[2]
+      << std::endl
+      << "Gmsh fieldManager:" << std::endl
+      << "size: " << _gm->getFields()->size()
     );
     
     //
