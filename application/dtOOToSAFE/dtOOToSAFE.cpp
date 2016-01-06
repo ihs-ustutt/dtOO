@@ -139,11 +139,19 @@ int main( int ac, char* av[] ) {
         ) 
       );
     }
+    std::fstream stateOf("./dtOOToSAFE/state", std::ios::out | std::ios::trunc); 
     
     //
     // adjust yWorst vector
     //
-    if (yWorst.size() == 1) yWorst.resize(yOf.size(), yWorst.front());
+    if (yWorst.size() == 1) {
+      dt__infoNoClass(
+        main(), 
+        << "Adjust yWorst vector to size = " << yOf.size() << " and value = "
+        << yWorst.front() << "."
+      );
+      yWorst.resize(yOf.size(), yWorst.front());
+    }
 //    dt__forAllRefAuto(vm["x"].as< std::vector< std::string > >(), aCV) {
 //      
 //    }
@@ -175,6 +183,7 @@ int main( int ac, char* av[] ) {
       =
       dtC.back()->result( aState );
       
+      stateOf << aState << std::endl;
       dt__forAllIndex(xLabel, ii) {
         *(xOf[ii]) << cV.get(xLabel[ii])->getValue() << std::endl;
       }
@@ -199,6 +208,7 @@ int main( int ac, char* av[] ) {
     bV.destroy();
     dtC.destroy();
 
+    stateOf.close();
     dt__forAllRefAuto(xOf, aFile) {
       aFile->close();
       delete aFile;
