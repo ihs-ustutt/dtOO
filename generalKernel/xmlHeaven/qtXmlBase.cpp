@@ -54,6 +54,37 @@ namespace dtOO {
       //
       found = returnExpression.find("#");
     }
+    //
+    // check if there is an instruction to calculate in expression
+    // `#cVLabel# + #cVLabel#`
+    //
+    found = returnExpression.find("`");
+    while ( found < returnExpression.size() ) {
+      //
+      // find start and end of function
+      //
+      unsigned int foundEnd = returnExpression.find("`", found+1);
+      int replaceStart = found;
+      int replaceEnd = foundEnd-found+1;
+      
+      //
+      // muparse string
+      //
+      returnExpression.replace(
+        replaceStart, 
+        replaceEnd, 
+        floatToString(
+          muParseString(        
+            returnExpression.substr(replaceStart+1, replaceEnd-2)
+          )
+        )
+      );
+
+      //
+      // go to next constValue
+      //
+      found = returnExpression.find("`");
+    }    
     return returnExpression;
   }
   
