@@ -79,17 +79,21 @@ namespace dtOO {
       }
     }
     
-    _status.clear();
-    dt__forAllRefAuto(_directory, aDir) {
-      if ( systemHandling::directoryExists(aDir) ) createStatus(aDir);
+    _status.resize(_directory.size(), UNEXPECTED);
+    //dt__forAllRefAuto(_directory, aDir) {
+    dt__forAllIndex(_directory, ii) {
+      std::string statusFile = _directory[ii]+"/status";
       
-      std::string statusFile = aDir+"/status";
+      if ( !systemHandling::fileExists(statusFile) ) {
+        createStatus(_directory[ii]);
+      }
+      
       if ( systemHandling::fileExists(statusFile) ) {
         std::ifstream in( statusFile.c_str() );
         if (in) {
-          int status;
-          in >> status;
-          _status.push_back(status);
+//          int status;
+          in >> _status[ii];
+//          _status[ii] = status;
           in.close();
         }
       }
