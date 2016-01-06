@@ -211,22 +211,27 @@ namespace dtOO {
           //
           // get values
           //
+          dtPoint3 xyz0 = m1d->getPointPercent( grid[0] );
           dt__forAllIndex(grid, ii) {
-            dtPoint3 const & xyz = m1d->getPointPercent( grid[ii] );
-            ::Foam::vector probePoint(xyz.x(), xyz.y(), xyz.z());
+            dtPoint3 const & xyz1 = m1d->getPointPercent( grid[ii] );
+            ::Foam::vector probePoint(xyz1.x(), xyz1.y(), xyz1.z());
             ::Foam::label cId = mesh.findNearestCell(probePoint);
             if (cId == -1) {
               dt__warning(
                 apply(), 
-                << "Cannot find " << dt__point3d(xyz) << " in mesh."
+                << "Cannot find " << dt__point3d(xyz1) << " in mesh."
               );
               continue;
             }
             ::Foam::scalar ofValue = volField[ cId ];
             value[ii] = ofValue;
-            ll[ii] = m1d->l_u( (*m1d) % grid[ii] );
+            ll[ii] = dtLinearAlgebra::distance(xyz1, xyz0);//m1d->l_u( (*m1d) % grid[ii] );
+            xyz0 = xyz1;
           }
 
+          dt__forFromToIndex(1, ll.size(), ii) {
+            ll[ii] = ll[ii-1] + ll[ii];
+          }
           //
           // open file
           //

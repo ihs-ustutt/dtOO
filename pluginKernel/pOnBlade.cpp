@@ -26,6 +26,7 @@
 #include <Time.H>
 #include <fvMesh.H>
 #include <volFields.H>
+#include <interpolationCellPoint.H>
 
 #include <logMe/dtParMacros.h>
 
@@ -61,8 +62,6 @@ namespace dtOO {
       !dtXmlParser::hasChild("case", element)
       &&
       !dtXmlParser::hasChild("analyticGeometry", element)
-      &&
-      !dtXmlParser::hasAttribute("field", element)
       &&
       !dtXmlParser::hasAttribute("numPoints", element), 
       init()
@@ -214,8 +213,14 @@ namespace dtOO {
         //
         ::Foam::volScalarField volField(fieldHeader, mesh);
 
+        //
+        // interpolation
+        //
+        ::Foam::interpolationCellPoint< ::Foam::scalar > 
+        anInterpolation(volField);
+        
         dt__pVH(map1dTo3d) bladeCut;
-        std::vector< float > bladeStagPoint;
+        std::vector< float > percent_bladeStagPoint;
         dt__forAllRefAuto( dtLinearAlgebra::unitGrid(_nP[1]), vCut ) {
           bladeCut.push_back( _blade->segmentConstVPercent(vCut) );
           std::pair< float, float > pairU 
@@ -223,17 +228,14 @@ namespace dtOO {
           pairU_map1dTo3dClosestPointToMap1dTo3d(
             _stagnationLine, &(bladeCut.back()) 
           ).result();
+          percent_bladeStagPoint.push_back( 
+            bladeCut.back().percent_u( pairU.second ) 
+          );
           dt__info(
             apply(),
-            << "distance stagPoint on currentBladeCut = " 
-            << dtLinearAlgebra::length(
-              _stagnationLine->getPoint(pairU.first)
-              -
-              bladeCut.back().getPoint(pairU.second)
-            )
-          );
-          bladeStagPoint.push_back( bladeCut.back().l_u( pairU.second ) );
-    
+            << "uPercent_stagPoint on currentBladeCut = " 
+            << percent_bladeStagPoint.back() << "."
+          );          
         }
         
         //
@@ -253,8 +255,8 @@ namespace dtOO {
         // write header
         //
         of
-        << "1 length" << std::endl
-        << "2 value" << std::endl;
+        << "# 1 length" << std::endl
+        << "# 2 value" << std::endl;
         
         int cc = 0;
         dt__forAllRefAuto(bladeCut, aBladeCut) {
@@ -268,30 +270,68 @@ namespace dtOO {
           //
           // get values
           //
-          dt__forAllIndex(grid, ii) {
-            dtPoint3 const & xyz = aBladeCut.getPointPercent( grid[ii] );
-            ;
+          dtPoint3 xyz0 = aBladeCut.getPointPercent( grid[0] );          
+          float uStagCorrect = 0.;
+          int uStagCorrectIndex = 0;
+          dt__forAllIndex(grid, ii) {            
+            dtPoint3 const & xyz1 = aBladeCut.getPointPercent( grid[ii] );
+            
             ::Foam::label cId 
             = 
-            mesh.findNearestCell( ::Foam::vector(xyz.x(), xyz.y(), xyz.z()) );
+            mesh.findNearestCell( ::Foam::vector(xyz1.x(), xyz1.y(), xyz1.z()) );
 
             if (cId == -1) {
               dt__warning(
                 apply(), 
-                << "Cannot find " << dt__point3d(xyz) << " in mesh."
+                << "Cannot find " << dt__point3d(xyz1) << " in mesh."
               );
               continue;
             }
-            value[ii] = volField[ cId ];
-            ll[ii] = aBladeCut.l_u( aBladeCut % grid[ii] ) - bladeStagPoint[cc];
+            
+//            value[ii] = volField[ cId ];            
+            //
+            // do interpolation
+            //            
+            value[ii]
+            =
+            anInterpolation.interpolate(
+              ::Foam::vector(xyz1.x(), xyz1.y(), xyz1.z()), cId
+            );
+            ll[ii] = dtLinearAlgebra::distance(xyz1, xyz0);
+            
+            xyz0 = xyz1;            
+            
+            //
+            // stagnation correction
+            //
+            if ( 
+              ( uStagCorrectIndex == 0 )
+              &&
+              (grid[ii] >= percent_bladeStagPoint[cc]) 
+            ) {
+              uStagCorrect = percent_bladeStagPoint[cc] / grid[ii-1];
+              uStagCorrectIndex = ii-1;
+              dt__info(
+                apply(),
+                << logMe::dtFormat(
+                  "Stagnation point correction between %4.3f and %4.3f\n"
+                  "l = %f and l = %f\n"
+                  "Set uStagCorrect = %f. and uStagCorrectIndex = %d"
+                ) % grid[ii-1] % grid[ii] % ll[ii-1] % ll[ii] % uStagCorrect % uStagCorrectIndex
+              );                 
+            }            
           }
-                   
+          dt__forFromToIndex(1, ll.size(), ii) {
+            ll[ii] = ll[ii-1] + ll[ii];
+          }          
           //
           // write values
           //
+          float lStagCorrect = uStagCorrect * ll[uStagCorrectIndex];
           dt__forFromToIndex(0, value.size(), ii) {
             of 
-            << logMe::dtFormat("%16.8e, %16.8e") % ll[ii] % value[ii] 
+            << logMe::dtFormat("%16.8e, %16.8e") 
+              % ( ll[ii] - lStagCorrect ) % value[ii] 
             << std::endl;
           }
           //

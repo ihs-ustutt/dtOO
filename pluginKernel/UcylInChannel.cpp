@@ -20,6 +20,7 @@
 #include <Time.H>
 #include <polyMesh.H>
 #include <volFields.H>
+#include <interpolationCellPoint.H>
 
 #include <logMe/dtParMacros.h>
 
@@ -237,6 +238,12 @@ namespace dtOO {
         ::Foam::volVectorField UcylField(UcylHeader, mesh);
         ::Foam::volVectorField UField(UHeader, mesh);
 
+        //
+        // interpolation
+        //
+        ::Foam::interpolationCellPoint< ::Foam::vector > interUCyl(UcylField);
+        ::Foam::interpolationCellPoint< ::Foam::vector > interU(UField);
+        
         dt__forAllRefAuto(_aG, anAG) {
           //
           // only two dimensional mappings
@@ -332,8 +339,21 @@ namespace dtOO {
                   UcylValue = ::Foam::vector::zero;
                 }
                 else {
-                  UValue = UField[ cId ];
-                  UcylValue = UcylField[ cId ];
+//                  UValue = UField[ cId ];
+//                  UcylValue = UcylField[ cId ];
+                  //
+                  // do interpolation
+                  //            
+                  UValue
+                  =
+                  interU.interpolate(
+                    ::Foam::vector(xyz.x(), xyz.y(), xyz.z()), cId
+                  );                  
+                  UcylValue
+                  =
+                  interUCyl.interpolate(
+                    ::Foam::vector(xyz.x(), xyz.y(), xyz.z()), cId
+                  );                                      
                 }
 
                 //
