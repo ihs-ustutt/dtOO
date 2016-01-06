@@ -2,6 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <interfaceHeaven/systemHandling.h>
 
 #include <meshEngine/dtGmshModel.h>
 #include <gmsh/MVertex.h>
@@ -971,6 +972,20 @@ namespace dtOO {
       os.endl();
     }
     os.flush();    
+    
+    //
+    // make sure that file is written
+    //
+    bool isWritten = false;
+    dt__forFromToIndex(1, 10, ii) {
+      if ( systemHandling::fileExists( workingDirectory/fn ) ) {
+        isWritten = true;
+        break;
+      }
+      dt__warning(writeDicts(), << "File not written. Sleep 1 s.");
+      sleep(1);
+    }
+    dt__throwIf(!isWritten, writeDicts());    
   }
 
   void dtFoamLibrary::writeDicts( 
@@ -1041,7 +1056,21 @@ namespace dtOO {
             os.endl();
           }
         }
+        os.flush();
         
+        //
+        // make sure that file is written
+        //
+        bool isWritten = false;
+        dt__forFromToIndex(1, 10, ii) {
+          if ( systemHandling::fileExists( workingDirectory/fn ) ) {
+            isWritten = true;
+            break;
+          }
+          dt__warning(writeDicts(), << "File not written. Sleep 1 s.");
+          sleep(1);
+        }
+        dt__throwIf(!isWritten, writeDicts());
       }
     }
   }
