@@ -13,9 +13,8 @@
 #include <dtCase.h>
 #include <dtPlugin.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <dtArg.h>
 
-#include <boost/program_options.hpp>
-namespace po = boost::program_options;
 #include <iostream>
 
 #include <readline/readline.h>
@@ -24,6 +23,8 @@ namespace po = boost::program_options;
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
+
+#include "interfaceHeaven/systemHandling.h"
 
 using namespace dtOO;
 
@@ -164,6 +165,11 @@ std::string parseCommand(
     << parser.replaceDependencies(in.str(), &bC, &cV, &aF, &aG) << std::endl;
 		return ss.str();    
   }    
+  dt__commandIf( aRule, help, "commandAndWait", "call system command" ) {
+    std::stringstream ss;
+    ss << systemHandling::commandAndWait(addRule[0]) << std::endl;
+    return ss.str();
+  }  
   dt__commandIf( aRule, help, "help", "This help") {
     help << std::endl;
     return help.str();
@@ -321,28 +327,21 @@ int main( int ac, char* av[] ) {
     //
     // options
     //
-    po::options_description desc("Allowed options");
-    desc.add_options()
-      ("help", "produce help message")
-      ("xmlIn,i", po::value<std::string>(), "set input xml file (required)")
-      ("xmlOut,o", po::value<std::string>(), "set output xml file (required)")
-      (
-        "log", 
-        po::value<std::string>()->default_value("built4CubanLinx.log"), 
-        "define logfile (optional)"
-      )
-    ;
-    po::variables_map vm;        
-    po::store(po::parse_command_line(ac, av, desc), vm);
-    po::notify(vm);  
+    dtArg vm("built4CubanLinx", ac, av);    
+    
+    //
+    // set machine
+    //
+    vm.setMachine();
+    
+    //
+    // update arguments
+    //
+    vm.update();
 
-    if (
-      vm.count("help") || !vm.count("xmlIn") || !vm.count("xmlOut") 
-    ) {
-      std::cout << desc << "\n";
-      return 0;
-    }
-
+    //
+    // output welcome header
+    //
     std::cout 
     << "#" << std::endl
     << "# Starting built4CubanLinx" << std::endl
@@ -356,6 +355,11 @@ int main( int ac, char* av[] ) {
     // create log files
     //
     logMe::initLog(vm["log"].as<std::string>()  );    
+    dt__infoNoClass(
+      main(), 
+      << "Call command:" << std::endl
+      << vm.callCommand()
+    );
     
     dtXmlParser parser(
       vm["xmlIn"].as<std::string>(), vm["xmlOut"].as<std::string>()
