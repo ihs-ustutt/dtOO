@@ -1,6 +1,7 @@
 #include "systemHandling.h"
 
 #include <logMe/logMe.h>
+#include <logMe/logContainer.h>
 #include <cstdlib>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -31,31 +32,34 @@ namespace dtOO {
     );
   }
 
-  void systemHandling::commandAndWait( std::string const & cmd ) {
+  std::string systemHandling::commandAndWait( std::string const & cmd ) {
     //
     // call system
     //
     int nullStatus = system(NULL);
     FILE * status = popen( cmd.c_str(), "r" );
-//    int wExitStatus = WEXITSTATUS(status);
     dt__throwIf(status == 0, commandAndWait());
 
+    logContainer< systemHandling > logC(logINFO, "commandAndWait()");
     const int BUFSIZE = 80;
     char buf[ BUFSIZE ];
     while( fgets( buf, BUFSIZE,  status ) ) {
-      dt__info(
-				commandAndWait(),
-				<< dt__eval(buf)  
-			);
+      logC() << buf << " ";
     }
     pclose( status );
-    
-    dt__debug(
-      commandAndWait(),
+
+    //
+    // return only output of command
+    //    
+    std::string retStr = logC().str();
+
+    logC()       
+      << std::endl
       << dt__eval(cmd) << std::endl
       << dt__eval(nullStatus) << std::endl
-      << dt__eval(status)
-		);
+      << dt__eval(status);
+    
+    return retStr;
   }
   
   bool systemHandling::createDirectory(std::string const & dirPath) {
