@@ -12,9 +12,8 @@
 #include <boundedVolume.h>
 #include <dtCase.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <dtArg.h>
 
-#include <boost/program_options.hpp>
-namespace po = boost::program_options;
 #include <iostream>
 
 #include <boost/mpi.hpp>
@@ -29,33 +28,29 @@ int main( int ac, char* av[] ) {
     //
     // options
     //
-    po::options_description desc("Allowed options");
-    desc.add_options()
-      ("help", "produce help message")
-      ("xmlIn", po::value<std::string>(), "set input xml file (required)")
-      ("xmlOut", po::value<std::string>(), "set output xml file (required)")
-      ("state", po::value<std::string>(), "define state to run (required)")
-      ("case", po::value<std::string>(), "define case to run (required)")
+    dtArg vm("createState", ac, av);
+    
+    //
+    // create machine
+    //
+    vm.setMachine();
+    
+    //
+    // additional arguments
+    //
+    vm.description().add_options()
       (
-        "log", 
-        po::value<std::string>()->default_value("runCase.log"), 
-        "define logfile (optional)"
+        "state", 
+        dtPO::value<std::string>()->required(), 
+        "define state to run (required)"
+      )
+      (
+        "case", 
+        dtPO::value<std::string>()->required(), 
+        "define case to run (required)"
       )
     ;
-    po::variables_map vm;        
-    po::store(po::parse_command_line(ac, av, desc), vm);
-    po::notify(vm);  
-
-    if (
-      vm.count("help")
-      ||
-      !vm.count("xmlIn") || !vm.count("xmlOut") 
-      || 
-      !vm.count("state") || !vm.count("case")
-    ) {
-      std::cout << desc << "\n";
-      return 0;
-    }
+    vm.update();
 
     //
     //
@@ -80,12 +75,11 @@ int main( int ac, char* av[] ) {
 
     parser.parse();
     parser.load();
-
     dt__infoNoClass(
       main(), 
       << "Call command:" << std::endl
-      << std::vector<std::string>(av, av+ac)
-    );    
+      << vm.callCommand()
+    );
 
     //
     // output states

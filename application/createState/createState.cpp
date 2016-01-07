@@ -5,12 +5,11 @@
 #include <interfaceHeaven/vectorHandling.h>
 #include <constValueHeaven/constValue.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <dtArg.h>
 
-#include <boost/program_options.hpp>
-namespace po = boost::program_options;
-#include <iostream>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/trim_all.hpp>
+#include <iostream>
 
 using namespace dtOO;
 
@@ -88,7 +87,7 @@ std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
   vectorHandling< constValue * > & constValuePtrVec,
   std::string const & filename
 ) {
-  std::cout << "Create CSV.";
+  dt__infoNoClass(csvCreate(), << "Create CSV.");
   std::vector< std::vector< std::pair< constValue *, float > > > samples;
   std::ifstream in( filename.c_str() );
   dt__throwIfNoClass(!in, csvCreate());
@@ -131,68 +130,58 @@ int main( int ac, char* av[] ) {
     //
     // options
     //
-    po::options_description desc("Allowed options");
-    desc.add_options()
-      ("help", "produce help message")
-      ("xmlIn", po::value<std::string>(), "set input xml file (required)")
-      ("xmlOut", po::value<std::string>(), "set output xml file (required)")
+    dtArg vm("createState", ac, av);
+    
+    //
+    // create machine
+    //
+    vm.setMachine();
+    
+    //
+    // additional arguments
+    //
+    vm.description().add_options()
       (
         "lastState", 
-        po::value< bool >()->default_value(false), 
+        dtPO::value< bool >()->default_value(false), 
         "parse last state before creation? (optional)"
       )    
       (
         "constValue,c", 
-        po::value< std::vector< std::string > >(), 
+        dtPO::value< std::vector< std::string > >()->required(), 
         "define constValue to modify (required)"
       )
       (
         "nSamples,n", 
-        po::value< std::vector< int > >(), 
+        dtPO::value< std::vector< int > >(), 
         "number of samples (optional)"
       )
       (
         "readCsv", 
-        po::value< std::string >(), 
+        dtPO::value< std::string >(), 
         "read from csv file (optional)"
       )    
       (
         "prefix", 
-        po::value< std::string >()->default_value("pair"), 
+        dtPO::value< std::string >()->default_value("pair"), 
         "define prefix of state label (optional)"
       )
-      (
-        "log", 
-        po::value<std::string>()->default_value("createState.log"), 
-        "define logfile (optional)"
-      )
     ;
-    po::variables_map vm;        
-    po::store(po::parse_command_line(ac, av, desc), vm);
-    po::notify(vm);  
+    vm.update();
 
-    if (
-      vm.count("help")
-      ||
-      !vm.count("xmlIn") || !vm.count("xmlOut") 
-      || 
-      !vm.count("constValue") 
-      || 
-      ( !vm.count("nSamples") && !vm.count("readCsv") )
-    ) {
-      std::cout << desc << std::endl;
-      return 0;
-    }
+    dt__throwIfNoClass( 
+      !vm.count("nSamples")&&!vm.count("readCsv"), 
+      main() 
+    );
     
     //
     // create log files
     //
     logMe::initLog(vm["log"].as<std::string>()  );
-    
     dt__infoNoClass(
       main(), 
       << "Call command:" << std::endl
-      << std::vector<std::string>(av, av+ac)
+      << vm.callCommand()
     );
     
     //

@@ -4,9 +4,8 @@
 #include <logMe/dtParMacros.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <dtArg.h>
 
-#include <boost/program_options.hpp>
-namespace po = boost::program_options;
 #include <iostream>
 
 using namespace dtOO;
@@ -16,46 +15,30 @@ int main( int ac, char* av[] ) {
     //
     // options
     //
-    po::options_description desc("Allowed options");
-    desc.add_options()
-      ("help", "produce help message")
-      ("xmlIn", po::value<std::string>(), "set input xml file (required)")
-      ("xmlOut", po::value<std::string>(), "set output xml file (required)")
+    dtArg vm("createState", ac, av);
+    
+    //
+    // create machine
+    //
+    vm.setMachine();
+    
+    vm.description().add_options()
       (
         "type", 
-        po::value<std::string>(), 
+        dtPO::value<std::string>()->required(), 
         "define type to output labels (required)"
       )
-      (
-        "log", 
-        po::value<std::string>()->default_value("listLabel.log"), 
-        "define logfile (optional)"
-      )
     ;
-    po::variables_map vm;        
-    po::store(po::parse_command_line(ac, av, desc), vm);
-    po::notify(vm);  
-
-    if (
-      vm.count("help")
-      ||
-      !vm.count("xmlIn") || !vm.count("xmlOut") 
-      || 
-      !vm.count("type")
-    ) {
-      std::cout << desc << "\n";
-      return 0;
-    }
-
+    vm.update();
+    
     //
     // create log files
     //
     logMe::initLog(vm["log"].as<std::string>()  );
-		
     dt__infoNoClass(
       main(), 
       << "Call command:" << std::endl
-      << std::vector<std::string>(av, av+ac)
+      << vm.callCommand()
     );
     
     //

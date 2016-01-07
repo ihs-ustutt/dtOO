@@ -9,6 +9,8 @@
 namespace po = boost::program_options;
 #include <iostream>
 
+#include "dtArg.h"
+
 using namespace dtOO;
 
 int main( int ac, char* av[] ) {
@@ -16,35 +18,23 @@ int main( int ac, char* av[] ) {
     //
     // options
     //
-    po::options_description desc("Allowed options");
-    desc.add_options()
-      ("help", "produce help message")
-      ("xmlIn", po::value<std::string>(), "set input xml file (required)")
-      ("xmlOut", po::value<std::string>(), "set output xml file (required)")
-      (
-        "log", 
-        po::value<std::string>()->default_value("listState.log"), 
-        "define logfile (optional)"
-      )
-    ;
-    po::variables_map vm;        
-    po::store(po::parse_command_line(ac, av, desc), vm);
-    po::notify(vm);  
+    dtArg vm("createState", ac, av);
+    
+    //
+    // create machine
+    //
+    vm.setMachine();
+    vm.update();
 
-    if (vm.count("help") || !vm.count("xmlIn") || !vm.count("xmlOut") ) {
-      std::cout << desc << "\n";
-      return 0;
-    }
 
     //
     // create log files
     //
     logMe::initLog(vm["log"].as<std::string>()  );
-    
     dt__infoNoClass(
       main(), 
       << "Call command:" << std::endl
-      << std::vector<std::string>(av, av+ac)
+      << vm.callCommand()
     );
     
     //
