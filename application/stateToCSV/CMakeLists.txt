@@ -34,7 +34,13 @@ target_link_libraries(
 # add install rpath of dtOO lib
 #
 #
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${CMAKE_INSTALL_PREFIX}/lib")
+set(
+  CMAKE_EXE_LINKER_FLAGS 
+  "-Wl,--no-undefined"
+)
+set(
+  CMAKE_EXE_LINKER_FLAGS 
+  "${CMAKE_EXE_LINKER_FLAGS},-rpath,${CMAKE_INSTALL_PREFIX}/lib"
+)
 
 install(TARGETS stateToCSV DESTINATION bin)
