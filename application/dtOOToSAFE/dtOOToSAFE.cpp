@@ -4,6 +4,7 @@
 #include <logMe/dtParMacros.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <interfaceHeaven/systemHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -13,68 +14,59 @@
 #include <dtCase.h>
 #include <resultValueHeaven/resultValue.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <dtArg.h>
 
-#include <boost/program_options.hpp>
-namespace po = boost::program_options;
 #include <iostream>
-
-#include "interfaceHeaven/systemHandling.h"
-
-//#include <boost/mpi.hpp>
 
 using namespace dtOO;
 
 int main( int ac, char* av[] ) {
-//  ::boost::mpi::environment env;
-//  ::boost::mpi::communicator world;    
-  
   try {
     //
     // options
     //
-    po::options_description desc("Allowed options");
-    desc.add_options()
-      ("help", "produce help message")
-      ("xmlIn", po::value<std::string>(), "set input xml file (required)")
-      ("xmlOut", po::value<std::string>(), "set output xml file (required)")
-      ("statePattern", po::value<std::string>(), "define state (required)")
-      (
-        "log", 
-        po::value<std::string>()->default_value("dtOOToSAFE.log"), 
-        "define logfile (optional)"
-      )
-      ("x", po::value< std::vector< std::string > >(), "define x values (required)")
-      ("y", po::value< std::vector< std::string > >(), "define y values (required)")
-      ("yWorst", po::value< std::vector< float > >(), "define worst y values (required)")
-    ;
-    po::variables_map vm;        
-    po::store(po::parse_command_line(ac, av, desc), vm);
-    po::notify(vm);  
+    dtArg vm("dtOOToSAFE", ac, av);    
+    
+    //
+    // set machine
+    //
+    vm.setMachine();
 
-    if (
-      vm.count("help")
-      ||
-      !vm.count("xmlIn") || !vm.count("xmlOut") 
-      || 
-      !vm.count("statePattern")
-      || 
-      !vm.count("x") || !vm.count("y")      
-      ||
-      !vm.count("yWorst")
-    ) {
-      std::cout << desc << "\n";
-      return 0;
-    }
+    //
+    // additional arguments
+    //    
+    vm.description().add_options()
+      (
+        "statePattern", 
+        dtPO::value<std::string>()->required(), 
+        "define state (required)"
+      )
+      (
+        "x", 
+        dtPO::value< std::vector< std::string > >()->required(), 
+        "define x values (required)"
+      )
+      (
+        "y", 
+        dtPO::value< std::vector< std::string > >()->required(), 
+        "define y values (required)"
+      )
+      (
+        "yWorst", 
+        dtPO::value< std::vector< float > >()->required(), 
+        "define worst y values (required)"
+      )
+    ;
+    vm.update();
 
     //
     // create log files
     //
     logMe::initLog(vm["log"].as<std::string>()  );
-    
     dt__infoNoClass(
       main(), 
       << "Call command:" << std::endl
-      << std::vector<std::string>(av, av+ac)
+      << vm.callCommand()
     );
     
     dtXmlParser parser(
