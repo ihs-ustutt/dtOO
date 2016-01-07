@@ -90,6 +90,7 @@ if (MPI_FOUND)
     filesystem 
     system 
     timer
+    program_options
     mpi
     serialization
     REQUIRED
@@ -102,6 +103,7 @@ else (MPI_FOUND)
     filesystem 
     system 
     timer
+    program_options
     REQUIRED
   )
 endif (MPI_FOUND)
@@ -118,6 +120,7 @@ add_subdirectory(meshKernel)
 add_subdirectory(renderKernel)
 add_subdirectory(pluginKernel)
 add_subdirectory(solverKernel)
+add_subdirectory(applicationKernel)
 
 #------------------------------------------------------------------------------#
 #
@@ -132,6 +135,7 @@ include_directories(
   renderKernel 
   pluginKernel
   solverKernel
+  applicationKernel
   ${Boost_INCLUDE_DIR} 
   ${CGAL_INCLUDE_DIR} 
   ${GMSH_INCLUDE_DIR} 
@@ -323,6 +327,7 @@ install(DIRECTORY libraryKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h
 install(DIRECTORY geometryKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY renderKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY solverKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY applicationKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY cmake/ DESTINATION cmake FILES_MATCHING PATTERN "*")
 
 #
