@@ -59,7 +59,7 @@ int main( int ac, char* av[] ) {
         parts, line, boost::is_any_of(","), boost::token_compress_on
       );
 
-      std::cout << "--x=" << parts[1] << " ";
+      std::cout << "--y=" << parts[1] << " ";
     }
     in.close();   
 
