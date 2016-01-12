@@ -35,12 +35,7 @@ namespace dtOO {
           //
           std::vector< dtPoint2 > pV;
           pV.push_back( dtPoint2(0.,0.) );
-//          if (!mirrorY) {
 					pV.push_back( dtPoint2(deltaX, deltaY));
-//          }
-//          else {
-//            pV.push_back( dtPoint2(-deltaX, deltaY));
-//          }
           
           dt__info(
             bSplineCurve2d_angleDeltaXDeltaYConstructOCC(),
@@ -56,7 +51,48 @@ namespace dtOO {
       }
       else {
         //
-        // calculate deltaX
+        // calculate points
+        //
+        std::vector< dtPoint2 > pV;
+        pV.push_back( dtPoint2(0.,0.) );
+        float ss 
+        = 
+        ( deltaY - deltaX * sin(angleIn) / cos(angleIn) )
+        /
+        ( sin(angleOut) - (cos(angleOut)*sin(angleIn) / cos(angleIn)) );
+        float tt 
+        = 
+        ( deltaY - deltaX * sin(angleOut) / cos(angleOut) )
+        /
+        ( sin(angleIn) - (cos(angleIn)*sin(angleOut) / cos(angleOut)) );      
+
+				pV.push_back(
+					dtPoint2(
+						cos(angleIn) * tt,
+						sin(angleIn) * tt
+					)
+				);      
+				pV.push_back( dtPoint2(deltaX, deltaY) );
+
+        dt__info(
+          bSplineCurve2d_angleDeltaXDeltaYConstructOCC(),
+          << dt__eval(angleIn) << " rad ( " 
+          << angleIn * ( 180./M_PI ) << " deg )" 
+          << std::endl
+          << dt__eval(angleOut) << " rad ( " 
+          << angleOut * ( 180./M_PI ) << " deg )" 
+          << std::endl
+          << dt__eval(ss) << std::endl
+          << dt__eval(tt) << std::endl
+          << dt__eval(deltaX) << std::endl 
+          << dt__eval(deltaY) << std::endl
+          << dt__point2d(pV[0]) << std::endl
+          << dt__point2d(pV[1]) << std::endl
+          << dt__point2d(pV[2]) 
+        );
+        
+        //
+        // calculate deltaX and check solution
         //
         float deltaXMax;
         float deltaXMin;
@@ -69,51 +105,14 @@ namespace dtOO {
           deltaXMax = deltaY / tan(angleIn);        
         }
 	      float ratio = (deltaX - deltaXMin) / (deltaXMax - deltaXMin);
-
-        //
-        // calculate points
-        //
-        std::vector< dtPoint2 > pV;
-        pV.push_back( dtPoint2(0.,0.) );
-//        int ss = ( deltaY - deltaX * sin(angleIn) / cos(angleIn) )
-//                 /
-//                 ( sin(angleOut) - (cos(angleOut)*sin(angleIn) / cos(angleIn)) );
-        float tt = ( deltaY - deltaX * sin(angleOut) / cos(angleOut) )
-                 /
-                 ( sin(angleIn) - (cos(angleIn)*sin(angleOut) / cos(angleOut)) );      
-//        if (!mirrorY) {
-				pV.push_back(
-					dtPoint2(
-						cos(angleIn) * tt,
-						sin(angleIn) * tt
-					)
-				);      
-				pV.push_back( dtPoint2(deltaX, deltaY) );
-//        }
-//        else {
-//          pV.push_back(
-//            dtPoint2(
-//              -cos(angleIn) * tt,
-//              sin(angleIn) * tt
-//            )
-//          );      
-//          pV.push_back( dtPoint2(-deltaX, deltaY) );          
-//        }
-        dt__info(
+        dt__throwIfWithMessage( 
+          ratio<0. || ratio>1., 
           bSplineCurve2d_angleDeltaXDeltaYConstructOCC(),
-          << dt__eval(angleIn) << std::endl
-          << dt__eval(angleOut) << std::endl              
-          << dt__eval(deltaXMin) << std::endl 
-          << dt__eval(deltaXMax) << std::endl               
-          << dt__eval(ratio) << std::endl
-//          << dt__eval(ss) << std::endl
-          << dt__eval(tt) << std::endl
-          << dt__eval(deltaX) << std::endl 
-          << dt__eval(deltaY) << std::endl
-          << dt__point2d(pV[0]) << std::endl
-          << dt__point2d(pV[1]) << std::endl
-          << dt__point2d(pV[2]) 
-        );
+          << dt__eval( deltaXMin ) << std::endl
+          << dt__eval( deltaXMax ) << std::endl
+          << dt__eval( ratio ) << std::endl
+          << "deltaX should be bettween deltaXMin and deltaXMax."
+        );        
            
 				ptrHandling<dtCurve2d> dtC2d( 
 					bSplineCurve2d_pointConstructOCC(pV, 2).result() 
