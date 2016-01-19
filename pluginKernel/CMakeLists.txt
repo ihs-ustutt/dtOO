@@ -11,6 +11,7 @@ SET(HEADERS
   pOnBlade.h
   UcylInChannel.h
   uRelInChannel.h
+  meshQuality.h
 )
 
 SET(SOURCES
@@ -26,6 +27,7 @@ SET(SOURCES
   pOnBlade.cpp
   UcylInChannel.cpp
   uRelInChannel.cpp
+  meshQuality.cpp
 )
 
 APPEND_DTOO_SOURCE(pluginKernel "${SOURCES}")

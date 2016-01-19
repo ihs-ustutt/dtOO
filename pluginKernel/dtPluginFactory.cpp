@@ -10,6 +10,7 @@
 #include "pOnBlade.h"
 #include "UcylInChannel.h"
 #include "uRelInChannel.h"
+#include "meshQuality.h"
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
 
@@ -40,6 +41,7 @@ namespace dtOO {
     if (str == "pOnBlade") return new pOnBlade();
     if (str == "UcylInChannel") return new UcylInChannel();
     if (str == "uRelInChannel") return new uRelInChannel();
+    if (str == "meshQuality") return new meshQuality();
     
     dt__throw(create(), << str <<  " could not be created");  
   }
