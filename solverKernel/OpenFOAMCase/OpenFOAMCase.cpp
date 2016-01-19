@@ -128,9 +128,7 @@ namespace dtOO {
     }
     
     _runCommand = qtXmlPrimitive::getAttributeRareStr("runCommand", element);
-    _checkStatus = qtXmlPrimitive::getAttributeRareStr("checkStatus", element);
     dt__throwIf(_runCommand.empty(), init());
-    dt__throwIf(_checkStatus.empty(), init());
   }
   
   void OpenFOAMCase::initMeshVectors( 
@@ -479,18 +477,10 @@ namespace dtOO {
       }
     
       if (!_runCommand.empty()) {
-        systemHandling::command(
-          "cd "+wDir
-          +
-          " && "
-          +
-          _runCommand
-          +
-          " && "
-          +
-          "cd "
-          +
-          staticPropertiesHandler::getInstance()->getOption("workingDirectory")    
+        systemHandling::changeDirectory(wDir);
+        systemHandling::command(_runCommand);
+        systemHandling::changeDirectory(
+          staticPropertiesHandler::getInstance()->getOption("workingDirectory")   
         );
       }
 
@@ -499,21 +489,5 @@ namespace dtOO {
       //
       delete [] argv;
     }
-  }
-  
-  void OpenFOAMCase::createStatus( std::string const & directory ) const {
-    systemHandling::command(
-      "cd "+directory
-      +
-      " && "
-      +
-      _checkStatus
-      +
-      " && "
-      +
-      "cd "
-      +
-      staticPropertiesHandler::getInstance()->getOption("workingDirectory")    
-    );
   }
 }

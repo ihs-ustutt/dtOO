@@ -34,7 +34,6 @@ namespace dtOO {
       vectorHandling< dtCase * > const * const dC
     );    
     virtual void runCurrentState(void);
-    virtual void createStatus( std::string const & directory ) const;
   private:
     void initMeshVectors( 
       std::vector< ::MVertex * > & allVerts, 
@@ -48,7 +47,6 @@ namespace dtOO {
     std::vector< std::vector< std::string > > _fieldRule;
     std::vector< boundedVolume * > _bV;
     std::string _runCommand;    
-    std::string _checkStatus;
     std::vector< std::string > _noWriteRule;
   };
 }

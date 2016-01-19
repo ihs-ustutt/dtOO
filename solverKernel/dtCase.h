@@ -33,7 +33,6 @@ namespace dtOO {
       bool inPipeline( std::string const & state) const;
       std::vector< std::string > allStates( void ) const;
       std::string createDirectory( std::string const & state ) const;
-      virtual void createStatus( std::string const & directory ) const = 0;
       std::string getDirectory( std::string const & state ) const;
       int status( std::string const & state ) const;
       std::string statusStr( std::string const & state ) const;
