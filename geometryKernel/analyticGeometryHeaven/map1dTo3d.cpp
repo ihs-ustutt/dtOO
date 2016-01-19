@@ -116,20 +116,46 @@ namespace dtOO {
 	}
 	
 	float map1dTo3d::l_u( float const & uu, int const & nP ) const {
-		std::vector<dtPoint2> glp = dtLinearAlgebra::getGaussLegendre(nP);
-		float L = 0.0;
-		float const u0 = getUMin();
-		float const u1 = uu;
-		const float rapJ = (u1 - u0) * .5;
-		for (int i = 0; i < nP; i++){
-			float const tt = glp[i].x();
-			float const ww = glp[i].y();
-			const float ui = u0 * 0.5 * (1. - tt) + u1 * 0.5 * (1. + tt);
-			dtVector3 der = firstDerU(ui);
-			const float d = sqrt(der.squared_length());
-			L += d * ww * rapJ;
-		}
-		return L;
+    //
+    // return if u = 0
+    //
+    if (uu == 0.) return 0.;
+    
+    //
+    // determine length
+    //
+    std::vector< float > L(2, 0.0);
+    dt__forFromToIndex(2, 4, nParts) {
+      std::vector< float > curGrid = dtLinearAlgebra::unitGrid(nParts);
+      dt__forFromToIndex(1, nParts, aPart) {
+        std::vector< dtPoint2 > glp = dtLinearAlgebra::getGaussLegendre(nP);
+        //float L = 0.0;
+        float const u0 = curGrid[aPart-1] * uu;
+        float const u1 = curGrid[aPart] * uu;
+        const float rapJ = (u1 - u0) * .5;
+        for (int i = 0; i < nP; i++){
+          float const tt = glp[i].x();
+          float const ww = glp[i].y();
+          const float ui = u0 * 0.5 * (1. - tt) + u1 * 0.5 * (1. + tt);
+          dtVector3 der = firstDerU(ui);
+          const float d = sqrt(der.squared_length());
+          L[1] += d * ww * rapJ;
+        }
+      }
+
+      //
+      // convergence check
+      //
+      if( fabs( (L[0] - L[1]) / L[1] ) < 1.e-3 ) return L[0];
+      
+      //
+      // make new residual old
+      //
+      L[0] = L[1];
+      L[1] = 0.;
+    }
+    
+    return L[0];
 	}
 
 	float map1dTo3d::l_u( float const & uu ) const {
