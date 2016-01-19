@@ -18,12 +18,15 @@ namespace dtOO {
     _step = (max - min) / nBars;
     _nValues = 0;
     _title = title;
+    _sum = 0.;
   }
 
   barChart::~barChart() {
   }
   
   void barChart::operator()( float const & val ) {
+    _sum = val + _sum;
+    
     int location = (val - _min) / _step;
     
     location
@@ -60,6 +63,10 @@ namespace dtOO {
     }
 
     return 0.;
+  }
+  
+  float barChart::average( void ) const {
+    return _sum / _nValues;
   }
   
   std::ostream& operator<<(std::ostream& os, const barChart& toLog) {

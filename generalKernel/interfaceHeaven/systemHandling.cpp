@@ -62,6 +62,26 @@ namespace dtOO {
     return retStr;
   }
   
+  bool systemHandling::changeDirectory( std::string const & dirPath ) {
+    //
+    // change directory
+    //
+    int status = chdir(dirPath.c_str());
+
+    //
+    // output
+    //    
+    dt__debug(
+      changeDirectory(),
+      << dt__eval(dirPath) << std::endl
+      << dt__eval(status) 
+    );
+    
+    if (status) return false;
+    
+    return true;
+  }
+  
   bool systemHandling::createDirectory(std::string const & dirPath) {
     //
     // create directory

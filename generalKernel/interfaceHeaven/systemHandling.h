@@ -14,6 +14,7 @@ namespace dtOO {
     virtual ~systemHandling();
     static void command(std::string const & cmd);
     static std::string commandAndWait(std::string const & cmd);
+    static bool changeDirectory(std::string const & dir);
     static bool createDirectory( std::string const & dirPath );
     static bool fileExists(std::string const & filename);
     static bool directoryExists(std::string const & dirname);

@@ -17,6 +17,7 @@ namespace dtOO {
       float globalMax( void ) const;
       int nBars( void ) const;
       float barAverage( int const & location ) const;
+      float average( void ) const;
     private:
       friend std::ostream& operator<<(std::ostream& os, const barChart& toLog);    
     private:
@@ -30,6 +31,7 @@ namespace dtOO {
       float _step;
       int _nValues;
       std::string _title;
+      float _sum;
   };
   
   std::ostream& operator<<(std::ostream& os, const barChart& toLog);
