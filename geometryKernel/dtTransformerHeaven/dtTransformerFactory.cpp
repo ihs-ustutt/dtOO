@@ -28,6 +28,7 @@
 #include "approxInSurface.h"
 #include "normalOffsetInSurface.h"
 #include "closeGapsArithmetic.h"
+#include "scale.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -74,6 +75,7 @@ namespace dtOO {
 		__IFRET( approxInSurface );
 		__IFRET( normalOffsetInSurface );
 		__IFRET( closeGapsArithmetic );
+    __IFRET( scale );
 
     dt__throw(create(), << str <<  " could not be created");  
   }
