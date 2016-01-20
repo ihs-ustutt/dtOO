@@ -268,7 +268,6 @@ int main( int ac, char* av[] ) {
     // write states
     //
     parser.write( stateLabel, stateToWrite );
-
   }
   //
   // catch dtOO exceptions

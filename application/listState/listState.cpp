@@ -18,7 +18,7 @@ int main( int ac, char* av[] ) {
     //
     // options
     //
-    dtArg vm("createState", ac, av);
+    dtArg vm("listState", ac, av);
     
     //
     // create machine

@@ -26,12 +26,14 @@ namespace dtOO {
     _desc.add_options()
       (
         "xmlIn,i", 
-        dtPO::value<std::string>()->required(), 
+        dtPO::value<std::string>()->required()->default_value("machine.xml"), 
         "set input xml file (required)"
       )
       (
         "xmlOut,o", 
-        dtPO::value<std::string>()->required(), 
+        dtPO::value<std::string>()->required()->default_value(
+          "machineSave.xml"
+        ), 
         "set output xml file (required)"
       )
     ;
