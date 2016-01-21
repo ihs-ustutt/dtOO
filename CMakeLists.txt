@@ -329,6 +329,12 @@ install(DIRECTORY renderKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h"
 install(DIRECTORY solverKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY applicationKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY cmake/ DESTINATION cmake FILES_MATCHING PATTERN "*")
+install(
+  DIRECTORY scripts/ 
+  DESTINATION scripts 
+  FILES_MATCHING PATTERN "*"
+  PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
+)
 
 #
 # add applications
