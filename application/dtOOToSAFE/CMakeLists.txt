@@ -17,6 +17,7 @@ find_package(
 #
 add_executable(dtOOToSAFE dtOOToSAFE.cpp)
 add_executable(resultValueParseArg resultValueParseArg.cpp)
+add_executable(readCsvParseArg readCsvParseArg.cpp)
 
 #
 #
@@ -30,6 +31,11 @@ target_link_libraries(
 )
 target_link_libraries(
   resultValueParseArg 
+  dtOO
+  ${Boost_LIBRARIES}
+)
+target_link_libraries(
+  readCsvParseArg 
   dtOO
   ${Boost_LIBRARIES}
 )
@@ -50,3 +56,4 @@ set(
 
 install(TARGETS dtOOToSAFE DESTINATION bin)
 install(TARGETS resultValueParseArg DESTINATION bin)
+install(TARGETS readCsvParseArg DESTINATION bin)

@@ -84,6 +84,7 @@ std::vector< std::vector< std::pair< constValue *, float > > > simpleCreate(
   return samples;
 }
 std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
+  vectorHandling< constValue * > & cV,
   vectorHandling< constValue * > & constValuePtrVec,
   std::string const & filename
 ) {
@@ -91,11 +92,25 @@ std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
   std::vector< std::vector< std::pair< constValue *, float > > > samples;
   std::ifstream in( filename.c_str() );
   dt__throwIfNoClass(!in, csvCreate());
-  //
-  // read file
-  //
+  
   std::string line;
-  while (getline(in, line)) {
+  //
+  // read first line of file
+  //
+  dt__throwIfNoClass( !getline(in, line), csvCreate() );
+  ::boost::algorithm::trim_all(line);
+  std::vector< std::string > parts;
+  boost::split(
+    parts, line, boost::is_any_of(","), boost::token_compress_on
+  );
+  dt__forAllRefAuto(parts, aConstValue) {
+    constValuePtrVec.push_back( cV.get( aConstValue ) );
+  }
+  
+  //
+  // read remaining file
+  //  
+  while ( getline(in, line) ) {
     boost::algorithm::trim_all(line);
     std::vector< std::string > parts;
     boost::split(
@@ -148,7 +163,7 @@ int main( int ac, char* av[] ) {
       )    
       (
         "constValue,c", 
-        dtPO::value< std::vector< std::string > >()->required(), 
+        dtPO::value< std::vector< std::string > >(), 
         "define constValue to modify (required)"
       )
       (
@@ -170,7 +185,13 @@ int main( int ac, char* av[] ) {
     vm.update();
 
     dt__throwIfNoClass( 
-      !vm.count("nSamples")&&!vm.count("readCsv"), 
+      ( vm.count("constValue")&&vm.count("nSamples")&&vm.count("readCsv") )
+      ||
+      ( !vm.count("constValue")&&!vm.count("nSamples")&&!vm.count("readCsv") )
+      ||
+      ( vm.count("constValue")&&!vm.count("nSamples")&&vm.count("readCsv") )
+      ||
+      ( !vm.count("constValue")&&vm.count("nSamples")&&vm.count("readCsv") ), 
       main() 
     );
     
@@ -210,17 +231,19 @@ int main( int ac, char* av[] ) {
     // create vector
     //
     vectorHandling< constValue * > constValuePtrVec;
-    dt__forAllRefAuto(
-      vm["constValue"].as< std::vector< std::string > >(), aConstValue
-    ) {
-      constValuePtrVec.push_back( cV.get( aConstValue ) );
-    }
+
     
     //
     // create samples
     //
     std::vector< std::vector< std::pair< constValue *, float > > > samples;
     if ( vm.count("nSamples") && !vm.count("readCsv") ) {
+      dt__forAllRefAuto(
+        vm["constValue"].as< std::vector< std::string > >(), aConstValue
+      ) {
+        constValuePtrVec.push_back( cV.get( aConstValue ) );
+      }
+    
       std::vector< int > nSamples = vm["nSamples"].as< std::vector< int > >();
       dt__throwIfNoClass( nSamples.size()!=constValuePtrVec.size(), main() );
       samples = simpleCreate( constValuePtrVec, nSamples);
@@ -228,7 +251,7 @@ int main( int ac, char* av[] ) {
     else if ( !vm.count("nSamples") && vm.count("readCsv") ) {
       samples 
       = 
-      csvCreate( constValuePtrVec, vm["readCsv"].as< std::string >() );
+      csvCreate( cV, constValuePtrVec, vm["readCsv"].as< std::string >() );
     }
     else dt__throwUnexpectedNoClass(main());
 

@@ -14,11 +14,11 @@ int main( int ac, char* av[] ) {
     //
     // options
     //
-    dtArg vm("resultValueParseArg", ac, av);
+    dtArg vm("readCsvParseArg", ac, av);
     vm.description().add_options()
       (
-        "resultValue", dtPO::value<std::string>()->required(), 
-        "set resultValue file (required)"
+        "readCsv", dtPO::value<std::string>()->required(), 
+        "read from csv file (required)"
       )
     ;
     vm.update();
@@ -40,27 +40,26 @@ int main( int ac, char* av[] ) {
     //
     // open file
     //
-    std::ifstream in( vm["resultValue"].as<std::string>().c_str() );    
+    std::ifstream in( vm["readCsv"].as<std::string>().c_str() );    
     dt__throwIfNoClass(!in, main());
     
     //
     // write every second element to std::cout
     //
-    std::cout << "Possible y Arguments: " << std::endl;
+    std::cout << "Possible x Arguments: " << std::endl;
     
     //
     // read file
     //
     std::string line;
-    while (getline(in, line)) {
-      boost::algorithm::trim_all(line);
-      std::vector< std::string > parts;
-      boost::split(
-        parts, line, boost::is_any_of(","), boost::token_compress_on
-      );
-
-      std::cout << "--y=" << parts[1] << " ";
-    }
+    dt__throwIfNoClass( !getline(in, line), main() );
+    ::boost::algorithm::trim_all(line);
+    std::vector< std::string > parts;
+    boost::split(
+      parts, line, boost::is_any_of(","), boost::token_compress_on
+    );
+    dt__forAllRefAuto(parts, aPart) std::cout << "--x=" << aPart << " ";
+    
     in.close();   
 
     std::cout << std::endl;
