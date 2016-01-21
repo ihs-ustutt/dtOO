@@ -2,8 +2,11 @@
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
-#include <xmlHeaven/qtXmlPrimitive.h>
-#include <xmlHeaven/qtXmlBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
+#include <baseContainerHeaven/baseContainer.h>
+#include <constValueHeaven/constValue.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticGeometryHeaven/analyticGeometry.h>
 #include <sstream>
 #include <algorithm>
 
@@ -40,21 +43,23 @@ namespace dtOO {
 
   void optionHandling::init(
     ::QDomElement const & wElement,
-    vectorHandling< constValue * > const * const cV
+    baseContainer const * const bC,      
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF,
+    vectorHandling< analyticGeometry * > const * const aG
   ) {
-    std::vector< ::QDomElement > option 
-    = 
-    qtXmlPrimitive::getChildVector("option", wElement);
-    dt__forAllRefAuto(option, anOption) {
+    dt__forAllRefAuto(
+      qtXmlPrimitive::getChildVector("option", wElement), anOption
+    ) {
       optionHandling::setOption(
-        qtXmlPrimitive::getAttributeStr("name", anOption), 
-        qtXmlBase::replaceDependencies(
-          qtXmlPrimitive::getAttributeStr("value", anOption), cV
+        dtXmlParserBase::getAttributeStr("name", anOption), 
+        dtXmlParserBase::replaceDependencies(
+          dtXmlParserBase::getAttributeStr("value", anOption), bC, cV, aF, aG
         )
       );
-    }    
-  } 
-  
+    }        
+  }
+      
   void optionHandling::setOption(
     std::string const name, std::string const value
   ) {

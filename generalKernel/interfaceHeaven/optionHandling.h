@@ -14,7 +14,9 @@ namespace dtOO {
   typedef std::vector< optionGroupElement > optionGroup;
   typedef std::vector< optionGroupElementInt > optionGroupInt;
   
+  class baseContainer;
   class constValue;
+  class analyticGeometry;
   class analyticFunction;
   
   class optionHandling {
@@ -26,8 +28,11 @@ namespace dtOO {
       virtual void init(::QDomElement const * const wElement);
       virtual void init(
         ::QDomElement const & wElement,
-        vectorHandling< constValue * > const * const cV
-      );
+        baseContainer const * const bC,      
+        vectorHandling< constValue * > const * const cV,
+        vectorHandling< analyticFunction * > const * const aF,
+        vectorHandling< analyticGeometry * > const * const aG
+      );      
       void setOption(std::string const name, std::string const value);
       std::string getOption(
         std::string const name, std::string const val
