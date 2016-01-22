@@ -54,13 +54,15 @@ namespace dtOO {
     _noWriteRule
     = 
     qtXmlPrimitive::getAttributeRareStrVector("noWriteRule", element);
-    
+      
     //
     // get dict rules
     //
     _dictRule
     = 
-    dtXmlParser::getAttributeRareStr("dictRule", element);    
+    dtXmlParser::replaceDependencies(
+      dtXmlParser::getAttributeRareStr("dictRule", element), bC, cV, aF, aG
+    );
     
     //
     // get setupRules
