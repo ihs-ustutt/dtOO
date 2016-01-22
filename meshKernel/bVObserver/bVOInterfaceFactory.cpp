@@ -8,6 +8,7 @@
 #include "bVONameFaces.h"
 #include "bVONameRegions.h"
 #include "bVOWriteMSH.h"
+#include "bVOReadMSH.h"
 #include "bVOTransfiniteFaces.h"
 #include "bVOSetNElements.h"
 #include "bVOTransfiniteRegions.h"
@@ -39,6 +40,7 @@ namespace dtOO {
 		__IFRET(bVONameFaces);
 		__IFRET(bVONameRegions);
 		__IFRET(bVOWriteMSH);
+    __IFRET(bVOReadMSH);
     __IFRET(bVOTransfiniteFaces);
     __IFRET(bVOSetNElements);
     __IFRET(bVOTransfiniteRegions);

@@ -6,6 +6,7 @@ SET(HEADERS
   bVObserver/bVONameFaces.h
   bVObserver/bVONameRegions.h
   bVObserver/bVOWriteMSH.h
+  bVObserver/bVOReadMSH.h
   bVObserver/bVOTransfiniteFaces.h
   bVObserver/bVOSetNElements.h
   bVObserver/bVOTransfiniteRegions.h
@@ -37,6 +38,7 @@ SET(SOURCES
   bVObserver/bVONameFaces.cpp
   bVObserver/bVONameRegions.cpp
   bVObserver/bVOWriteMSH.cpp
+  bVObserver/bVOReadMSH.cpp
   bVObserver/bVOTransfiniteFaces.cpp
   bVObserver/bVOSetNElements.cpp
   bVObserver/bVOTransfiniteRegions.cpp
