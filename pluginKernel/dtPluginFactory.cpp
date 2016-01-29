@@ -11,6 +11,7 @@
 #include "UcylInChannel.h"
 #include "uRelInChannel.h"
 #include "meshQuality.h"
+#include "volScalarFieldRange.h"
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
 
@@ -42,6 +43,7 @@ namespace dtOO {
     if (str == "UcylInChannel") return new UcylInChannel();
     if (str == "uRelInChannel") return new uRelInChannel();
     if (str == "meshQuality") return new meshQuality();
+    if (str == "volScalarFieldRange" ) return new volScalarFieldRange();
     
     dt__throw(create(), << str <<  " could not be created");  
   }
