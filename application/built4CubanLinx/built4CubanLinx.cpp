@@ -229,8 +229,49 @@ std::string parseCommand(
   return std::string( "Unknown command: " + aRule + "\n");
 }
 
+std::string parseCommand(
+  std::string aRule, 
+  dtXmlParser & parser, 
+  vectorHandling< analyticFunction * > & aF
+) {
+  std::stringstream help;  
+  help << "Commands:" << std::endl;
+  std::vector< std::string > addRule;
+  if ( stringPrimitive::stringContains("(", aRule) ) {
+    addRule
+    = 
+    stringPrimitive::convertToCSVStringVector(
+      stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule)
+    );
+    dt__infoNoClass(parseCommand(), << "addRule = " << addRule);
+  }
+  dt__commandIf( aRule, help, "getPointPercent", "get a point" ) {
+    std::stringstream ss;    
+    return ss.str();
+  }      
+  dt__commandIf( 
+    aRule, help, "info", "show info of aF" 
+  ) {
+    std::stringstream ss;
+    dt__forAllRefAuto(aF, anAF) {
+      ss 
+      << logMe::dtFormat("aF[ %32s ] = %32s") 
+        % anAF->getLabel() % anAF->virtualClassName()
+      << std::endl;
+    }
+    
+    return ss.str();
+  }       
+  dt__commandIf( aRule, help, "help", "This help") {
+    help << std::endl;
+    return help.str();
+  }
+  
+  return std::string( "Unknown command: " + aRule + "\n");  
+}
+
 //
-// constValue commands
+// analyticGeometry commands
 //
 std::string parseCommand(
   std::string aRule, 
@@ -387,25 +428,27 @@ int main( int ac, char* av[] ) {
       //
       // get command
       //
-      char * line = readline("built4CubanLinx ::> ");
+      //char * line = readline("built4CubanLinx ::> ");
+      std::cout << "built4CubanLinx ::> ";
       
-      if (!line) break;
+//      if (!line) break;
       
       //
       // make history
       //
-      if (*line) add_history(line);
+//      if (*line) add_history(line);
       
       //
       // make command string
       //
-      std::string command(line);
+      std::string command;
+      std::cin >> command;
       if ( command.empty() ) continue;
       
       //
       // free line
       //
-      free(line);      
+//      free(line);      
       
       if ( command == "exit" || std::cin.eof() ) break;
       else {
@@ -419,13 +462,18 @@ int main( int ac, char* av[] ) {
             if (onClass == "cV") {
               std::cout 
               << 
-              parseCommand(command, parser, cV);              
+              parseCommand(command, parser, cV);
             }
             else if (onClass == "aG") {
               std::cout 
               << 
-              parseCommand(command, parser, aG);              
+              parseCommand(command, parser, aG);
             }
+            else if (onClass == "aF") {
+              std::cout 
+              << 
+              parseCommand(command, parser, aF);
+            }            
             else dt__throwNoClass(main(), << onClass << " not defined.");
           }
           else {
