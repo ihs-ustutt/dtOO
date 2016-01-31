@@ -1,6 +1,7 @@
 #include "bVOEvilGodfather.h"
 
 #include <logMe/logMe.h>
+#include <progHelper.h>
 #include <logMe/dtParMacros.h>
 #include <xmlHeaven/qtXmlBase.h>
 #include <constValueHeaven/constValue.h>
@@ -14,6 +15,7 @@
 
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
+#include <gmsh/MVertex.h>
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MPyramid.h>
@@ -91,6 +93,15 @@ namespace dtOO {
         }
       }
       
+      dt__info(
+        postUpdate(), 
+        << "MHexahedron: " << hex.size() << std::endl
+        << "MTetrahedron: " << tet.size() << std::endl
+        << "MPyramid: " << pyr.size() << std::endl
+        << "MPrism: " << pri.size() << std::endl
+        << "MElement: " << me.size()
+      );
+
       //
       // create octree
       //
@@ -104,10 +115,25 @@ namespace dtOO {
       //
       // tetrahedra
       //
+      std::vector< bool > perturbedTet(tet.size(), false);
+      std::vector< ::MTetrahedron * > newTetrahedra;
+      std::vector< ::MVertex * > newVertices;
+      std::vector< ::MTetrahedron * > oldTetrahedra;
       dt__forFromToIndex( 0, static_cast< int >( _perTet * tet.size() ), ii ) {
         logContainer< bVOEvilGodfather > logC( logDEBUG, "postUpdate()" );
         
-        ::MTetrahedron * jinx = tet[ rand.Integer( tet.size() ) ];
+        int toPerturb = rand.Integer( tet.size() );        
+        //
+        // check if already perturbed
+        //
+        if ( perturbedTet[ toPerturb ] ) {
+          logC() << "Jinx already perturbed." << std::endl; 
+          continue;
+        }
+        
+        perturbedTet[ toPerturb ] = true;
+        
+        ::MTetrahedron * jinx = tet[ toPerturb ];
         
         std::vector< ::MVertex * > jinxNode;
         jinx->getVertices( jinxNode );
@@ -154,25 +180,72 @@ namespace dtOO {
           % jinx->rhoShapeMeasure()
           << std::endl;
         
-        perturbElement(jinx, _perturbTet);
-        
-        logC() 
-          << logMe::dtFormat(
-            "(1) MTetrahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
-          ) 
-          % jinx->getNum() 
-          % jinx->getVolume() % jinx->skewness()
-          % jinx->rhoShapeMeasure()
-          << std::endl;        
+        //
+        // do perturbation
+        //
+        if (_perturbTet > 0.) {
+          perturbElement(jinx, _perturbTet);
+          
+          logC() 
+            << logMe::dtFormat(
+              "(1) MTetrahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+            ) 
+            % jinx->getNum() 
+            % jinx->getVolume() % jinx->skewness()
+            % jinx->rhoShapeMeasure()
+            << std::endl;  
+        }
+        else if (_perturbTet < 0.) {
+          //
+          // divide tetrahedron
+          //
+          std::vector< ::MTetrahedron * > nT;
+          ::MVertex * nV;
+          divideTetrahedron(jinx, nT, nV);
+          //
+          // store old and new tetrahedra and vertex
+          //
+          newVertices.push_back( nV );
+          oldTetrahedra.push_back( jinx );
+          dt__forAllIndex(nT, jj) newTetrahedra.push_back( nT[jj] );
+          
+          //
+          // output
+          //
+          dt__forAllIndex(nT, jj) {
+            logC() 
+              << logMe::dtFormat(
+                "(1a) MTetrahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+              ) 
+              % nT[jj]->getNum() 
+              % nT[jj]->getVolume() % nT[jj]->skewness()
+              % nT[jj]->rhoShapeMeasure()
+              << std::endl; 
+          }
+        }     
       }
       
       //
       // hexahedra
       //
+      std::vector< bool > perturbedHex(hex.size(), false);    
+      std::vector< ::MPyramid * > newPyramids;
+      std::vector< ::MHexahedron * > oldHexahedra;      
       dt__forFromToIndex( 0, static_cast< int >( _perHex * hex.size() ), ii ) {
         logContainer< bVOEvilGodfather > logC( logDEBUG, "postUpdate()" );
         
-        ::MHexahedron * jinx = hex[ rand.Integer( hex.size() ) ];
+        int toPerturb = rand.Integer( hex.size() );
+        //
+        // check if already perturbed
+        //
+        if ( perturbedHex[ toPerturb ] ) {
+          logC() << "Jinx already perturbed." << std::endl; 
+          continue;
+        }
+        
+        perturbedHex[ toPerturb ] = true;        
+        
+        ::MHexahedron * jinx = hex[ toPerturb ];
         
         std::vector< ::MVertex * > jinxNode;
         jinx->getVertices( jinxNode );
@@ -219,19 +292,147 @@ namespace dtOO {
           % jinx->rhoShapeMeasure()
           << std::endl;
         
-        perturbElement(jinx, _perturbHex);
-        
-        logC() 
-          << logMe::dtFormat(
-            "(1) MHexahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
-          ) 
-          % jinx->getNum() 
-          % jinx->getVolume() % jinx->skewness()
-          % jinx->rhoShapeMeasure()
-          << std::endl;    
+        //
+        // do perturbation
+        //
+        if (_perturbHex > 0.) {
+          perturbElement(jinx, _perturbHex);
+
+          logC() 
+            << logMe::dtFormat(
+              "(1) MHexahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+            ) 
+            % jinx->getNum() 
+            % jinx->getVolume() % jinx->skewness()
+            % jinx->rhoShapeMeasure()
+            << std::endl;              
+        }
+        else if (_perturbHex < 0.) {
+          //
+          // divide hexahedron
+          //
+          std::vector< ::MPyramid * > nP;
+          ::MVertex * nV;
+          divideHexahedron(jinx, nP, nV);
+          //
+          // store old and new tetrahedra and vertex
+          //
+          newVertices.push_back( nV );
+          oldHexahedra.push_back( jinx );
+          dt__forAllIndex(nP, jj) newPyramids.push_back( nP[jj] );
+          
+          //
+          // output
+          //
+          dt__forAllIndex(nP, jj) {
+            logC() 
+              << logMe::dtFormat(
+                "(1a) MPyramid[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+              ) 
+              % nP[jj]->getNum() 
+              % nP[jj]->getVolume() % nP[jj]->skewness()
+              % nP[jj]->rhoShapeMeasure()
+              << std::endl; 
+          }
+        }
       }
+      
+      //
+      // add new vertices
+      //
+      dt__info(postUpdate(), << "Add new vertices.");
+      dt__forAllRefAuto(newVertices, aVert) {
+        dt__ptrAss( 
+          ::GRegion * gr, dynamic_cast< ::GRegion * >(aVert->onWhat())
+        );
+
+        gr->mesh_vertices.push_back( aVert );
+      }      
+      //
+      // delete old tetrahedra
+      //
+      dt__info(postUpdate(), << "Remove old tetrahedra.");
+      dt__forAllRefAuto(oldTetrahedra, aTet) {
+//        dt__ptrAss( 
+//          ::GRegion * gr, 
+//          dynamic_cast< ::GRegion * >(aTet->getVertex(0)->onWhat())
+//        );
+//        progHelper::removeChildren(gr->tetrahedra, aTet);
+//
+//        delete aTet;
+        bool found = false;
+        dt__forFromToIndex(0, aTet->getNumVertices(), ii) {
+          dt__ptrAss(
+            ::GRegion * gr, 
+            dynamic_cast< ::GRegion * >(aTet->getVertex(ii)->onWhat())
+          );
+          std::vector< ::MTetrahedron * >::iterator tIt
+          =
+          std::find(gr->tetrahedra.begin(), gr->tetrahedra.end(), aTet);
+  
+          if ( tIt != gr->tetrahedra.end() ) {
+            found = true;
+            gr->tetrahedra.erase(tIt);
+            break;
+          }
+        }
+        dt__throwIf(!found, postUpdate());
+
+        delete aTet;
+      }
+      //
+      // delete old hexahedra
+      //      
+      dt__info(postUpdate(), << "Remove old hexahedra.");
+      dt__forAllRefAuto(oldHexahedra, aHex) {
+        bool found = false;
+        dt__forFromToIndex(0, aHex->getNumVertices(), ii) {
+          dt__ptrAss(
+            ::GRegion * gr, 
+            dynamic_cast< ::GRegion * >(aHex->getVertex(ii)->onWhat())
+          );
+          std::vector< ::MHexahedron * >::iterator hIt
+          =
+          std::find(gr->hexahedra.begin(), gr->hexahedra.end(), aHex);
+  
+          if ( hIt != gr->hexahedra.end() ) {
+            found = true;
+            gr->hexahedra.erase(hIt);
+            break;
+          }
+        }
+        dt__throwIf(!found, postUpdate());
+
+        delete aHex;
+      }
+      //
+      // add new tetrahedra
+      //
+      dt__info(postUpdate(), << "Add new tetrahedra.");
+      dt__forAllRefAuto(newTetrahedra, aTet) {
+        dt__ptrAss( 
+          ::GRegion * gr, 
+          dynamic_cast< ::GRegion * >(aTet->getVertex(0)->onWhat())
+        );
+        
+        gr->tetrahedra.push_back(aTet);
+      }      
+      //
+      // add new pyramids
+      //
+      dt__info(postUpdate(), << "Add new pyramids.");
+      dt__forAllRefAuto(newPyramids, aPyr) {
+        dt__ptrAss( 
+          ::GRegion * gr, 
+          dynamic_cast< ::GRegion * >(aPyr->getVertex(0)->onWhat())
+        );
+        
+        gr->pyramids.push_back(aPyr);
+      }
+      
+      gm->destroyMeshCaches();
+      
     }
-    
   }
   
   void bVOEvilGodfather::perturbElement(
@@ -263,5 +464,75 @@ namespace dtOO {
         jinxEdge[1]->z() - perturbFactor * perturbVector[jj].z()
       );            
     }            
+  }
+
+  void bVOEvilGodfather::divideTetrahedron(
+    ::MTetrahedron * const jinx, 
+    std::vector< ::MTetrahedron * > & newTets,
+    ::MVertex * & newVertex
+  ) {
+    ::SPoint3 baryUVW = jinx->barycenterUVW();
+    ::SPoint3 baryXYZ;
+    jinx->pnt(baryUVW.x(), baryUVW.y(), baryUVW.z(), baryXYZ);
+    
+    newVertex
+    =
+    new ::MVertex(
+      baryXYZ.x(), baryXYZ.y(), baryXYZ.z(), jinx->getVertex(0)->onWhat()
+    );
+    
+    dt__forFromToIndex(0, jinx->getNumFaces(), ii) {
+      std::vector< ::MVertex * > verts;
+      jinx->getFaceVertices(ii, verts);
+      newTets.push_back(
+        new ::MTetrahedron( verts[0], verts[1], verts[2], newVertex )
+      );
+    }
+    
+    if (jinx->getVolume() > 0.) {
+      dt__forFromToIndex(0, newTets.size(), ii) {
+        if (newTets[ii]->getVolume() < 0.) newTets[ii]->reverse();
+      }
+    }
+    else {
+      dt__forFromToIndex(0, newTets.size(), ii) {
+        if (newTets[ii]->getVolume() > 0.) newTets[ii]->reverse();
+      }
+    }             
+  }  
+    
+  void bVOEvilGodfather::divideHexahedron(
+    ::MHexahedron * const jinx,
+    std::vector< ::MPyramid * > & newPyrs,
+    ::MVertex * & newVertex
+  ) {
+    ::SPoint3 baryUVW = jinx->barycenterUVW();
+    ::SPoint3 baryXYZ;
+    jinx->pnt(baryUVW.x(), baryUVW.y(), baryUVW.z(), baryXYZ);
+    
+    newVertex
+    =
+    new ::MVertex(
+      baryXYZ.x(), baryXYZ.y(), baryXYZ.z(), jinx->getVertex(0)->onWhat()
+    );
+    
+    dt__forFromToIndex(0, jinx->getNumFaces(), ii) {
+      std::vector< ::MVertex * > verts;
+      jinx->getFaceVertices(ii, verts);
+      newPyrs.push_back(
+        new ::MPyramid( verts[0], verts[1], verts[2], verts[3], newVertex )
+      );
+    }
+    
+    if (jinx->getVolume() > 0.) {
+      dt__forFromToIndex(0, newPyrs.size(), ii) {
+        if (newPyrs[ii]->getVolume() < 0.) newPyrs[ii]->reverse();
+      }
+    }
+    else {
+      dt__forFromToIndex(0, newPyrs.size(), ii) {
+        if (newPyrs[ii]->getVolume() > 0.) newPyrs[ii]->reverse();
+      }
+    }           
   }
 }

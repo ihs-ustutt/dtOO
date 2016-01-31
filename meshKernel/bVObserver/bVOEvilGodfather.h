@@ -5,6 +5,10 @@
 #include "bVOInterface.h"
 
 class MElement;
+class MTetrahedron;
+class MHexahedron;
+class MPyramid;
+class MVertex;
 
 namespace dtOO {
   class constValue;
@@ -30,6 +34,16 @@ namespace dtOO {
     static void perturbElement( 
       ::MElement * const jinx, float const & perturbFactor
     );
+    static void divideTetrahedron(
+      ::MTetrahedron * const jinx, 
+      std::vector< ::MTetrahedron * > & newTets,
+      ::MVertex * & newVertex
+    );    
+    static void divideHexahedron(
+      ::MHexahedron * const jinx,
+      std::vector< ::MPyramid * > & newPyrs,
+      ::MVertex * & newVertex     
+    );        
   private:
     float _perHex;
     float _perTet;
