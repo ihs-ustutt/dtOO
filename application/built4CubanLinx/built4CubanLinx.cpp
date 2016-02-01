@@ -428,27 +428,25 @@ int main( int ac, char* av[] ) {
       //
       // get command
       //
-      //char * line = readline("built4CubanLinx ::> ");
-      std::cout << "built4CubanLinx ::> ";
+      char * line = readline("built4CubanLinx ::> ");
       
-//      if (!line) break;
+      if (!line) break;
       
       //
       // make history
       //
-//      if (*line) add_history(line);
+      if (*line) add_history(line);
       
       //
       // make command string
       //
-      std::string command;
-      std::cin >> command;
+      std::string command(line);
       if ( command.empty() ) continue;
       
       //
       // free line
       //
-//      free(line);      
+      free(line);      
       
       if ( command == "exit" || std::cin.eof() ) break;
       else {
