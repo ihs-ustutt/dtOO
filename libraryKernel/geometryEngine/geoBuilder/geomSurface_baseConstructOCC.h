@@ -15,6 +15,7 @@ namespace dtOO {
     dt__classOnlyName(geomSurface_baseConstructOCC);
     geomSurface_baseConstructOCC( dtOCCSurfaceBase const & base );
     virtual ~geomSurface_baseConstructOCC();
+    static bool support( dtOCCSurfaceBase const & base );
     dtSurface * result( void );
   private:
     ptrHandling<dtSurface> _dtS;

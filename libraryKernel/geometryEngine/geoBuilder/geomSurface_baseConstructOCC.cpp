@@ -21,7 +21,9 @@
 #include <Geom_SurfaceOfRevolution.hxx>
 
 namespace dtOO {
-	geomSurface_baseConstructOCC::geomSurface_baseConstructOCC( dtOCCSurfaceBase const & base ) {
+	geomSurface_baseConstructOCC::geomSurface_baseConstructOCC( 
+    dtOCCSurfaceBase const & base 
+  ) {
 		Handle(Geom_Surface) occS = base.getOCC();
 		if ( !(Handle(Geom_BSplineSurface)::DownCast(occS).IsNull()) ) {
 		  _dtS.reset( new dtOCCBSplineSurface(base) );			
@@ -29,7 +31,9 @@ namespace dtOO {
 		else if ( !(Handle(Geom_BezierSurface)::DownCast(occS).IsNull()) ) {
 		  _dtS.reset( new dtOCCBezierSurface(base) );			
 		}
-		else if ( !(Handle(Geom_RectangularTrimmedSurface)::DownCast(occS).IsNull()) ) {
+		else if ( 
+      !(Handle(Geom_RectangularTrimmedSurface)::DownCast(occS).IsNull()) 
+    ) {
 		  _dtS.reset( new dtOCCRectangularTrimmedSurface(base) );
 		}		
 		else if ( !(Handle(Geom_SurfaceOfRevolution)::DownCast(occS).IsNull()) ) {
@@ -43,6 +47,27 @@ namespace dtOO {
 			);			
 		}
 	}
+
+  bool geomSurface_baseConstructOCC::support( 
+    dtOCCSurfaceBase const & base 
+  ) {
+		Handle(Geom_Surface) occS = base.getOCC();
+		if ( !(Handle(Geom_BSplineSurface)::DownCast(occS).IsNull()) ) {
+		  return true;
+		}
+		else if ( !(Handle(Geom_BezierSurface)::DownCast(occS).IsNull()) ) {
+		  return true;
+		}
+		else if ( 
+      !(Handle(Geom_RectangularTrimmedSurface)::DownCast(occS).IsNull()) 
+    ) {
+		  return true;
+		}
+		else if ( !(Handle(Geom_SurfaceOfRevolution)::DownCast(occS).IsNull()) ) {
+		  return true;
+		}
+		else return false;
+	}  
 	
 	geomSurface_baseConstructOCC::~geomSurface_baseConstructOCC() {
 	}
