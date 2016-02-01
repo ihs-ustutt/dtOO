@@ -28,7 +28,7 @@
 #include "aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.h"
-
+#include "aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -146,7 +146,8 @@ namespace dtOO {
       vec2dOneDInMap2dTo3d_closestCurve,
       vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder
     );
-
+    __IFRET(geomSurface_readStepOCCAGXmlBuilder);
+    __IFRETCUSTOM(geomSurface_readStepOCC, geomSurface_readStepOCCAGXmlBuilder);
     dt__throw(
       create(), 
       << str <<  " could not be created." << std::endl

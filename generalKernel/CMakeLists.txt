@@ -48,6 +48,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.h  
   xmlHeaven/aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -128,6 +129,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp

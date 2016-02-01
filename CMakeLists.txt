@@ -54,6 +54,7 @@ find_package(
   TKTopAlgo TKBRep 
   TKGeomBase TKGeomAlgo 
   TKG3d TKG2d
+  TKXSBase
   REQUIRED 
 )
 #TKMesh TKIGES TKXSBase TKOffset TKBool
