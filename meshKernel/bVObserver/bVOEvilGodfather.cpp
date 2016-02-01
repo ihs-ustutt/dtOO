@@ -60,9 +60,6 @@ namespace dtOO {
   }
   
   void bVOEvilGodfather::postUpdate( void ) {
-    dt__throwIf( !ptrBoundedVolume()->isMeshed(), postUpdate() );
-    
-    
     dt__onlyMaster {
 		  dt__ptrAss( dtGmshModel * gm, ptrBoundedVolume()->getModel() );
       
@@ -147,6 +144,7 @@ namespace dtOO {
               << std::endl;            
             isFree = false;
           }
+          if (!isFree) break;          
           std::vector< ::MElement * > meVec 
           =           
           oct.findAll( aNode->x(), aNode->y(), aNode->z(), -1 );
@@ -259,6 +257,7 @@ namespace dtOO {
               << std::endl;            
             isFree = false;
           }
+          if (!isFree) break;          
           std::vector< ::MElement * > meVec 
           =           
           oct.findAll( aNode->x(), aNode->y(), aNode->z(), -1 );
@@ -353,13 +352,6 @@ namespace dtOO {
       //
       dt__info(postUpdate(), << "Remove old tetrahedra.");
       dt__forAllRefAuto(oldTetrahedra, aTet) {
-//        dt__ptrAss( 
-//          ::GRegion * gr, 
-//          dynamic_cast< ::GRegion * >(aTet->getVertex(0)->onWhat())
-//        );
-//        progHelper::removeChildren(gr->tetrahedra, aTet);
-//
-//        delete aTet;
         bool found = false;
         dt__forFromToIndex(0, aTet->getNumVertices(), ii) {
           dt__ptrAss(

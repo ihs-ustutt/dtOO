@@ -39,7 +39,7 @@ namespace dtOO {
     //
     // check for bVObservers
     //
-    if ( qtXmlPrimitive::hasChild("bVObserver", element) ) {      
+    if ( qtXmlPrimitive::hasChild("bVObserver", element) ) {
       std::vector< ::QDomElement > transElement 
 			= 
 			qtXmlPrimitive::getChildVector("bVObserver", element);
