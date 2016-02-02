@@ -31,8 +31,7 @@ namespace dtOO {
         << "[ " << T::className() << "::" << _function << " ]" << std::endl
         << _ss.str();      
       
-      _function.clear();
-      _ss.clear();
+      _ss.str("");
     }
   private:
     TLogLevel _mode;
