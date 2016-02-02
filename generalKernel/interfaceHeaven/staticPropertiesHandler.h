@@ -15,6 +15,7 @@ namespace dtOO {
     int thisRank( void ) const; 
     int nRanks( void ) const;
     bool initialized( void ) const;
+    static void mpiBarrier( void );
   private:
     staticPropertiesHandler();
   private:

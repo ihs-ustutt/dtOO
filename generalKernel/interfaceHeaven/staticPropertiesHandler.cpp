@@ -82,6 +82,12 @@ namespace dtOO {
 #endif
   }
 
+  void staticPropertiesHandler::mpiBarrier( void ) {
+#ifdef DTOO_HAS_MPI        
+    ::boost::mpi::communicator().barrier();
+#endif
+  }
+  
   int staticPropertiesHandler::thisRank( void ) const {
     return _thisRank;
   }
