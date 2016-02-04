@@ -19,6 +19,14 @@ namespace dtOO {
         return ee;
       }
       template < class T >
+      static std::list< T > vector2List(std::vector< T > const & eeVec) {
+        std::list< T > ee { 
+          std::begin(eeVec), 
+          std::end(eeVec) 
+        };		
+        return ee;
+      }      
+      template < class T >
       static void removeChildren( std::vector< T > & toMod, T const & toDel) {
         toMod.erase( 
           std::remove(
