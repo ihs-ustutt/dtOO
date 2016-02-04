@@ -134,6 +134,10 @@ namespace dtOO {
 //      foldVertices( omEdgeH const & eH) const;
 //      std::pair< omFaceH, omFaceH > foldFaces( omEdgeH const & eH) const;
       //
+      // input
+      //
+      void readMesh(std::string const filename);
+      //
       // mesh navigation
       //
       omHalfedgeH sameHalfedgeInNextFace( omHalfedgeH const & heH) const;

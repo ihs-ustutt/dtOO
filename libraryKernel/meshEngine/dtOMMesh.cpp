@@ -133,6 +133,10 @@ namespace dtOO {
   void dtOMMesh::writeMesh(std::string const filename) const {
     OpenMesh::IO::write_mesh(*this, filename);
   }
+
+  void dtOMMesh::readMesh(std::string const filename) {
+    OpenMesh::IO::read_mesh(*this, filename);
+  }
 	
 	void dtOMMesh::add(const dtOMMesh &toAdd) {
 		dt__forFromToIter(omFaceI, toAdd.faces_begin(), toAdd.faces_end(), f_it) {
