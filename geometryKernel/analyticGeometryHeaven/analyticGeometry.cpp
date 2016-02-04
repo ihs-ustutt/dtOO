@@ -209,7 +209,7 @@ namespace dtOO {
   
   bool analyticGeometry::inXYZTolerance(
     dtPoint3 const & p0, dtPoint3 const & p1, bool output, float inc
-  ) const {
+  ) {
 		float xyzResolution 
 		= 
 		inc 
@@ -223,7 +223,6 @@ namespace dtOO {
       if (output) {
         dt__warning(
           inXYZTolerance(), 
-          << dt__eval( getLabel() ) << std::endl
           << dt__point3d(p0) << std::endl
           << dt__point3d(p1) << std::endl
           << dt__eval( dtLinearAlgebra::length( dist) )
