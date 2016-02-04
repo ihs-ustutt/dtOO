@@ -4,6 +4,7 @@
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 
+class GRegion;
 class MElement;
 class MTetrahedron;
 class MHexahedron;
@@ -31,17 +32,17 @@ namespace dtOO {
     );    
     virtual void postUpdate( void );
   private:
-    static void perturbElement( 
+    static void perturbElement(
       ::MElement * const jinx, float const & perturbFactor
     );
     static void divideTetrahedron(
       ::MTetrahedron * const jinx, 
-      std::vector< ::MTetrahedron * > & newTets,
+      std::pair< std::vector< ::MTetrahedron * >, ::GRegion * > & newTets,
       ::MVertex * & newVertex
     );    
     static void divideHexahedron(
       ::MHexahedron * const jinx,
-      std::vector< ::MPyramid * > & newPyrs,
+      std::pair< std::vector< ::MPyramid * >, ::GRegion * > & newPyrs,
       ::MVertex * & newVertex     
     );        
   private:

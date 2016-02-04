@@ -60,9 +60,9 @@ namespace dtOO {
   }
   
   void bVOEvilGodfather::postUpdate( void ) {
-    dt__onlyMaster {
-		  dt__ptrAss( dtGmshModel * gm, ptrBoundedVolume()->getModel() );
+		dt__ptrAss( dtGmshModel * gm, ptrBoundedVolume()->getModel() );
       
+    dt__onlyMaster {
       //
       // collect all elements
       //
@@ -113,9 +113,11 @@ namespace dtOO {
       // tetrahedra
       //
       std::vector< bool > perturbedTet(tet.size(), false);
-      std::vector< ::MTetrahedron * > newTetrahedra;
+      std::vector< 
+        std::pair< std::vector< ::MTetrahedron * >, ::GRegion * > 
+      > newTetrahedra;
       std::vector< ::MVertex * > newVertices;
-      std::vector< ::MTetrahedron * > oldTetrahedra;
+      std::vector< std::pair< ::MTetrahedron *, ::GRegion * > > oldTetrahedra;
       dt__forFromToIndex( 0, static_cast< int >( _perTet * tet.size() ), ii ) {
         logContainer< bVOEvilGodfather > logC( logDEBUG, "postUpdate()" );
         
@@ -197,27 +199,30 @@ namespace dtOO {
           //
           // divide tetrahedron
           //
-          std::vector< ::MTetrahedron * > nT;
+          std::pair< std::vector< ::MTetrahedron * >, ::GRegion * > nT;
           ::MVertex * nV;
           divideTetrahedron(jinx, nT, nV);
           //
           // store old and new tetrahedra and vertex
           //
           newVertices.push_back( nV );
-          oldTetrahedra.push_back( jinx );
-          dt__forAllIndex(nT, jj) newTetrahedra.push_back( nT[jj] );
+          oldTetrahedra.push_back( 
+            std::pair< ::MTetrahedron *, ::GRegion * >(jinx, nT.second )
+          );
+          //dt__forAllIndex(nT, jj) newTetrahedra.push_back( nT[jj] );
+          newTetrahedra.push_back( nT );
           
           //
           // output
           //
-          dt__forAllIndex(nT, jj) {
+          dt__forAllRefAuto(nT.first, aTet) {
             logC() 
               << logMe::dtFormat(
                 "(1a) MTetrahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
               ) 
-              % nT[jj]->getNum() 
-              % nT[jj]->getVolume() % nT[jj]->skewness()
-              % nT[jj]->rhoShapeMeasure()
+              % aTet->getNum() 
+              % aTet->getVolume() % aTet->skewness()
+              % aTet->rhoShapeMeasure()
               << std::endl; 
           }
         }     
@@ -227,8 +232,10 @@ namespace dtOO {
       // hexahedra
       //
       std::vector< bool > perturbedHex(hex.size(), false);    
-      std::vector< ::MPyramid * > newPyramids;
-      std::vector< ::MHexahedron * > oldHexahedra;      
+      std::vector< 
+        std::pair< std::vector< ::MPyramid * >, ::GRegion * > 
+      > newPyramids;
+      std::vector< std::pair< ::MHexahedron *, ::GRegion * > > oldHexahedra;      
       dt__forFromToIndex( 0, static_cast< int >( _perHex * hex.size() ), ii ) {
         logContainer< bVOEvilGodfather > logC( logDEBUG, "postUpdate()" );
         
@@ -310,27 +317,29 @@ namespace dtOO {
           //
           // divide hexahedron
           //
-          std::vector< ::MPyramid * > nP;
+          std::pair< std::vector< ::MPyramid * >, ::GRegion * > nP;
           ::MVertex * nV;
           divideHexahedron(jinx, nP, nV);
           //
           // store old and new tetrahedra and vertex
           //
           newVertices.push_back( nV );
-          oldHexahedra.push_back( jinx );
-          dt__forAllIndex(nP, jj) newPyramids.push_back( nP[jj] );
+          oldHexahedra.push_back( 
+            std::pair< ::MHexahedron *, ::GRegion * >(jinx, nP.second )          
+          );
+          newPyramids.push_back( nP );
           
           //
           // output
           //
-          dt__forAllIndex(nP, jj) {
+          dt__forAllRefAuto(nP.first, aPyr) {
             logC() 
               << logMe::dtFormat(
                 "(1a) MPyramid[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
               ) 
-              % nP[jj]->getNum() 
-              % nP[jj]->getVolume() % nP[jj]->skewness()
-              % nP[jj]->rhoShapeMeasure()
+              % aPyr->getNum() 
+              % aPyr->getVolume() % aPyr->skewness()
+              % aPyr->rhoShapeMeasure()
               << std::endl; 
           }
         }
@@ -346,85 +355,54 @@ namespace dtOO {
         );
 
         gr->mesh_vertices.push_back( aVert );
-      }      
+      }
       //
       // delete old tetrahedra
       //
       dt__info(postUpdate(), << "Remove old tetrahedra.");
-      dt__forAllRefAuto(oldTetrahedra, aTet) {
-        bool found = false;
-        dt__forFromToIndex(0, aTet->getNumVertices(), ii) {
-          dt__ptrAss(
-            ::GRegion * gr, 
-            dynamic_cast< ::GRegion * >(aTet->getVertex(ii)->onWhat())
-          );
-          std::vector< ::MTetrahedron * >::iterator tIt
-          =
-          std::find(gr->tetrahedra.begin(), gr->tetrahedra.end(), aTet);
-  
-          if ( tIt != gr->tetrahedra.end() ) {
-            found = true;
-            gr->tetrahedra.erase(tIt);
-            break;
-          }
-        }
-        dt__throwIf(!found, postUpdate());
-
-        delete aTet;
+      dt__forAllRefAuto(oldTetrahedra, aTetPair) {
+        progHelper::removeChildren( 
+          aTetPair.second->tetrahedra, aTetPair.first 
+        );
+        delete aTetPair.first;
       }
       //
       // delete old hexahedra
       //      
       dt__info(postUpdate(), << "Remove old hexahedra.");
-      dt__forAllRefAuto(oldHexahedra, aHex) {
-        bool found = false;
-        dt__forFromToIndex(0, aHex->getNumVertices(), ii) {
-          dt__ptrAss(
-            ::GRegion * gr, 
-            dynamic_cast< ::GRegion * >(aHex->getVertex(ii)->onWhat())
-          );
-          std::vector< ::MHexahedron * >::iterator hIt
-          =
-          std::find(gr->hexahedra.begin(), gr->hexahedra.end(), aHex);
-  
-          if ( hIt != gr->hexahedra.end() ) {
-            found = true;
-            gr->hexahedra.erase(hIt);
-            break;
-          }
-        }
-        dt__throwIf(!found, postUpdate());
-
-        delete aHex;
+      dt__forAllRefAuto(oldHexahedra, aHexPair) {
+        progHelper::removeChildren( 
+          aHexPair.second->hexahedra, aHexPair.first 
+        );
+        delete aHexPair.first;
       }
       //
       // add new tetrahedra
       //
       dt__info(postUpdate(), << "Add new tetrahedra.");
-      dt__forAllRefAuto(newTetrahedra, aTet) {
-        dt__ptrAss( 
-          ::GRegion * gr, 
-          dynamic_cast< ::GRegion * >(aTet->getVertex(0)->onWhat())
-        );
-        
-        gr->tetrahedra.push_back(aTet);
+      dt__forAllRefAuto(newTetrahedra, aTetPair) {
+        dt__forAllRefAuto( aTetPair.first, aTet) {
+          aTetPair.second->tetrahedra.push_back(aTet);
+        }
       }      
       //
       // add new pyramids
       //
       dt__info(postUpdate(), << "Add new pyramids.");
-      dt__forAllRefAuto(newPyramids, aPyr) {
-        dt__ptrAss( 
-          ::GRegion * gr, 
-          dynamic_cast< ::GRegion * >(aPyr->getVertex(0)->onWhat())
-        );
-        
-        gr->pyramids.push_back(aPyr);
-      }
-      
+      dt__forAllRefAuto(newPyramids, aPyrPair) {
+        dt__forAllRefAuto( aPyrPair.first, aPyr) {
+          aPyrPair.second->pyramids.push_back(aPyr);
+        }
+      }    
+
+      //
+      // force rebuilding mesh caches
+      //
       gm->destroyMeshCaches();
-      
     }
+    else gm->destroy();
+    
+    staticPropertiesHandler::mpiBarrier();
   }
   
   void bVOEvilGodfather::perturbElement(
@@ -460,9 +438,32 @@ namespace dtOO {
 
   void bVOEvilGodfather::divideTetrahedron(
     ::MTetrahedron * const jinx, 
-    std::vector< ::MTetrahedron * > & newTets,
+    std::pair< std::vector< ::MTetrahedron * >, ::GRegion * > & newTets,
     ::MVertex * & newVertex
   ) {
+    //
+    // determine GRegion
+    //
+    bool found = false;
+    dt__forFromToIndex(0, jinx->getNumVertices(), ii) {
+      ::GRegion * gr
+      = 
+      dynamic_cast< ::GRegion * >(jinx->getVertex(ii)->onWhat());
+      
+      if (!gr) continue;
+      
+      std::vector< ::MTetrahedron * >::iterator hIt
+      =
+      std::find(gr->tetrahedra.begin(), gr->tetrahedra.end(), jinx);
+
+      if ( hIt != gr->tetrahedra.end() ) {
+        found = true;
+        newTets.second = gr;
+        break;
+      }
+    }
+    dt__throwIf(!found, divideTetrahedron());
+    
     ::SPoint3 baryUVW = jinx->barycenterUVW();
     ::SPoint3 baryXYZ;
     jinx->pnt(baryUVW.x(), baryUVW.y(), baryUVW.z(), baryXYZ);
@@ -470,34 +471,60 @@ namespace dtOO {
     newVertex
     =
     new ::MVertex(
-      baryXYZ.x(), baryXYZ.y(), baryXYZ.z(), jinx->getVertex(0)->onWhat()
+      baryXYZ.x(), baryXYZ.y(), baryXYZ.z(), newTets.second
     );
     
     dt__forFromToIndex(0, jinx->getNumFaces(), ii) {
       std::vector< ::MVertex * > verts;
       jinx->getFaceVertices(ii, verts);
-      newTets.push_back(
+      newTets.first.push_back(
         new ::MTetrahedron( verts[0], verts[1], verts[2], newVertex )
       );
     }
     
     if (jinx->getVolume() > 0.) {
-      dt__forFromToIndex(0, newTets.size(), ii) {
-        if (newTets[ii]->getVolume() < 0.) newTets[ii]->reverse();
+      dt__forFromToIndex(0, newTets.first.size(), ii) {
+        if (newTets.first[ii]->getVolume() < 0.) newTets.first[ii]->reverse();
       }
     }
     else {
-      dt__forFromToIndex(0, newTets.size(), ii) {
-        if (newTets[ii]->getVolume() > 0.) newTets[ii]->reverse();
+      dt__forFromToIndex(0, newTets.first.size(), ii) {
+        if (newTets.first[ii]->getVolume() > 0.) newTets.first[ii]->reverse();
       }
     }             
   }  
     
   void bVOEvilGodfather::divideHexahedron(
     ::MHexahedron * const jinx,
-    std::vector< ::MPyramid * > & newPyrs,
+    std::pair< std::vector< ::MPyramid * >, ::GRegion * > & newPyrs,
     ::MVertex * & newVertex
   ) {
+    //
+    // determine GRegion
+    //
+    bool found = false;
+    dt__forFromToIndex(0, jinx->getNumVertices(), ii) {
+      ::GRegion * gr
+      =
+      dynamic_cast< ::GRegion * >(jinx->getVertex(ii)->onWhat());
+      
+      if (!gr) continue;
+      
+      std::vector< ::MHexahedron * >::iterator hIt
+      =
+      std::find(gr->hexahedra.begin(), gr->hexahedra.end(), jinx);
+
+      if ( hIt != gr->hexahedra.end() ) {
+        found = true;
+        newPyrs.second = gr;
+        break;
+      }
+    }
+    dt__throwIf(!found, divideHexahedron());
+        
+    //
+    //
+    //
     ::SPoint3 baryUVW = jinx->barycenterUVW();
     ::SPoint3 baryXYZ;
     jinx->pnt(baryUVW.x(), baryUVW.y(), baryUVW.z(), baryXYZ);
@@ -505,25 +532,25 @@ namespace dtOO {
     newVertex
     =
     new ::MVertex(
-      baryXYZ.x(), baryXYZ.y(), baryXYZ.z(), jinx->getVertex(0)->onWhat()
+      baryXYZ.x(), baryXYZ.y(), baryXYZ.z(), newPyrs.second
     );
     
     dt__forFromToIndex(0, jinx->getNumFaces(), ii) {
       std::vector< ::MVertex * > verts;
       jinx->getFaceVertices(ii, verts);
-      newPyrs.push_back(
+      newPyrs.first.push_back(
         new ::MPyramid( verts[0], verts[1], verts[2], verts[3], newVertex )
       );
     }
     
     if (jinx->getVolume() > 0.) {
-      dt__forFromToIndex(0, newPyrs.size(), ii) {
-        if (newPyrs[ii]->getVolume() < 0.) newPyrs[ii]->reverse();
+      dt__forFromToIndex(0, newPyrs.first.size(), ii) {
+        if (newPyrs.first[ii]->getVolume() < 0.) newPyrs.first[ii]->reverse();
       }
     }
     else {
-      dt__forFromToIndex(0, newPyrs.size(), ii) {
-        if (newPyrs[ii]->getVolume() > 0.) newPyrs[ii]->reverse();
+      dt__forFromToIndex(0, newPyrs.first.size(), ii) {
+        if (newPyrs.first[ii]->getVolume() > 0.) newPyrs.first[ii]->reverse();
       }
     }           
   }
