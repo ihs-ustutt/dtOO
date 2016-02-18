@@ -21,9 +21,12 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const aF,
 		vectorHandling< analyticGeometry * > const * const aG 
     ); 
-    virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const sFunP ) const; 
-    virtual void handleDtVector3(std::string const name, dtVector3 const value);
-    virtual void handleDtVector2(std::string const name, dtVector2 const value);    
+    virtual std::vector< dtPoint3 > apply( 
+      std::vector< dtPoint3 > const * const toTrans 
+    ) const;   
+    virtual vectorHandling< analyticFunction * > apply( 
+      vectorHandling< analyticFunction * > const * const sFunP 
+    ) const; 
   private:
     dtVector2 _v2;
     dtVector3 _v3;

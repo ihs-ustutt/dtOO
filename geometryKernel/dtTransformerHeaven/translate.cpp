@@ -30,7 +30,21 @@ namespace dtOO {
 		return new translate();
 	}
 
-  vectorHandling< analyticFunction * > translate::apply( vectorHandling< analyticFunction * > const * const sFunP ) const { 
+	std::vector< dtPoint3 > translate::apply( 
+    std::vector< dtPoint3 > const * const toTrans 
+  ) const {
+		std::vector< dtPoint3 > ret(toTrans->size());
+    
+		dt__forAllIndex(*toTrans, ii) {
+		  ret[ii] = toTrans->at(ii) + _v3;
+		}
+		
+		return ret;
+	}
+  
+  vectorHandling< analyticFunction * > translate::apply( 
+    vectorHandling< analyticFunction * > const * const sFunP 
+  ) const { 
     vectorHandling< analyticFunction * > retSFun;
 
 		
@@ -38,9 +52,15 @@ namespace dtOO {
       //
       // clone and cast scaFunction
       //
-			scaCurve2dOneD  const * const sC2d1d = scaCurve2dOneD::ConstDownCast( sFunP->at(ii) );
-		  vec2dCurve2dOneD  const * const v2dC1d = vec2dCurve2dOneD::ConstDownCast( sFunP->at(ii) );
-			vec3dCurveOneD  const * const v3dC1d = vec3dCurveOneD::ConstDownCast( sFunP->at(ii) );
+			scaCurve2dOneD  const * const sC2d1d 
+      = 
+      scaCurve2dOneD::ConstDownCast( sFunP->at(ii) );
+		  vec2dCurve2dOneD  const * const v2dC1d 
+      = 
+      vec2dCurve2dOneD::ConstDownCast( sFunP->at(ii) );
+			vec3dCurveOneD  const * const v3dC1d 
+      = 
+      vec3dCurveOneD::ConstDownCast( sFunP->at(ii) );
 			
 			if ( sC2d1d ) {
 				dtCurve2d * dtC2d = sC2d1d->ptrDtCurve2d()->clone();
@@ -88,25 +108,11 @@ namespace dtOO {
 		
     if ( dtXmlParserBase::hasChild("Vector_2", *tE) ) {
 			::QDomElement v2El = dtXmlParserBase::getChild("Vector_2", *tE);
-			dtVector2 v2 = dtXmlParserBase::getDtVector2(&v2El, bC, cV, aF, aG);
-			handleDtVector2("", v2);
+			_v2 = dtXmlParserBase::getDtVector2(&v2El, bC, cV, aF, aG);
     }
     if ( dtXmlParserBase::hasChild("Vector_3", *tE) ) {
 			::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
-			dtVector3 v3 = dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG);
-			handleDtVector3("", v3);
+			_v3 = dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG);
     }
   }
-	
-	void translate::handleDtVector3(std::string const name, dtVector3 const value) {
-    _v3 = value;
-		return;
-//		dtTransformer::handleDtVector3(name, value);
-	}
-
-	void translate::handleDtVector2(std::string const name, dtVector2 const value) {
-		_v2 = value;
-		return;
-//    dtTransformer::handleDtVector2(name, value);
-	}		
 }
