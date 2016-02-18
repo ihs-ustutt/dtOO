@@ -35,6 +35,7 @@ namespace dtOO {
     // optional overload
     //
     virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;        
+    virtual dtPoint3 approxInVolume(dtPoint3 const & ppXYZ) const; 
     virtual std::vector< dtVector3 > firstDer(
       float const & uu, float const & vv, float const & ww
     ) const;
@@ -69,6 +70,7 @@ namespace dtOO {
       float const & uu, float const & vv, float const & ww 
     ) const;
     dtPoint3 reparamPercentInVolume(dtPoint3 const & ppXYZ) const; 
+    dtPoint3 approxPercentInVolume(dtPoint3 const & ppXYZ) const;     
     bool isClosedU( void ) const;
     bool isClosedV( void ) const;
     bool isClosedW( void ) const;

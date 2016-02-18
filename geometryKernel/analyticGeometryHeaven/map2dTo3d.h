@@ -37,6 +37,7 @@ namespace dtOO {
       ) const;            
       virtual dtVector3 normal( float const & uu, float const & vv) const; 
       virtual dtPoint2 reparamOnFace(dtPoint3 const & ppXYZ) const;
+      virtual dtPoint2 approxOnFace(dtPoint3 const & ppXYZ) const;
       virtual map1dTo3d * segment( 
         dtPoint2 const & p0, dtPoint2 const & p1 
       ) const;
@@ -83,6 +84,7 @@ namespace dtOO {
       dtVector3 secondDerVV( float const & uu, float const & vv) const;
       dtVector3 secondDerUV( float const & uu, float const & vv) const;           
       dtPoint2 reparamPercentOnFace(dtPoint3 const & ppXYZ) const;
+      dtPoint2 approxPercentOnFace(dtPoint3 const & ppXYZ) const;      
       int getRenderResolutionU( void ) const;
       int getRenderResolutionV( void ) const;        
       dtPoint2 uv_percent(dtPoint2 const & pUV) const;

@@ -11,6 +11,7 @@
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/bezierSurface_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
+#include <analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h>
 #include <analyticFunctionHeaven/vec3dOneD.h>
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
@@ -290,6 +291,12 @@ namespace dtOO {
     
     return percent_uvw(ppUVW);    
 	}
+
+  dtPoint3 map3dTo3d::approxPercentInVolume(dtPoint3 const & ppXYZ) const {
+    dtPoint3 ppUVW = approxPercentInVolume(ppXYZ);
+    
+    return percent_uvw(ppUVW);    
+	}    
 		 	
   int map3dTo3d::getRenderResolutionU( void ) const { 
     return analyticGeometry::getRenderResolution(0);
@@ -721,6 +728,10 @@ namespace dtOO {
       << dumpToString()
     );
   }
+  
+  dtPoint3 map3dTo3d::approxInVolume( dtPoint3 const & ppXYZ ) const {
+    return uvw_map3dTo3dClosestPointToPoint(this, ppXYZ).result();
+  }  
 	
 //	bool map3dTo3d::XYZtoUVW(
 //		double X, double Y, double Z, 

@@ -11,6 +11,7 @@
 #include <discrete3dVector.h>
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
+#include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <analyticFunctionHeaven/vec2dBiLinearTwoD.h>
 #include "vec2dOneDInMap2dTo3d.h"
@@ -281,6 +282,10 @@ namespace dtOO {
       << dumpToString()
     );
   }
+
+  dtPoint2 map2dTo3d::approxOnFace(dtPoint3 const & ppXYZ) const {
+    return uv_map2dTo3dClosestPointToPoint(this, ppXYZ).result();
+  }  
   
   dtVector3 map2dTo3d::normalPercent( 
     float const & uu, float const & vv 
@@ -474,6 +479,12 @@ namespace dtOO {
     
     return percent_uv(ppUV);
   }
+
+  dtPoint2 map2dTo3d::approxPercentOnFace( dtPoint3 const & ppXYZ ) const {
+    dtPoint2 ppUV = approxOnFace(ppXYZ);
+    
+    return percent_uv(ppUV);
+  }  
 
   dtPoint2 map2dTo3d::uv_percent(dtPoint2 const & pUV) const {
     return dtPoint2( u_percent(pUV.x()), v_percent(pUV.y()) );
