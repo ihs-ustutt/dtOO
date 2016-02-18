@@ -87,6 +87,8 @@ namespace dtOO {
       dt__throwIf(cVLabel.size()>val.size(), apply());
 
       dt__forAllIndex(cVLabel, ii) {
+        if ( cVLabel[ii] == "" ) continue;
+        
         cV.push_back( _cV->get(cVLabel[ii]) );
         cVVal.push_back( val[ii] );
       }
