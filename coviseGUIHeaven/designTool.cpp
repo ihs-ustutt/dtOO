@@ -31,7 +31,7 @@ namespace dtOO {
     _clearLog->setValue(false);    
 		_moduleChoice = addChoiceParam("_moduleChoice", "_moduleChoiceDescription");		
     _xmlBrowser = addFileBrowserParam("_xmlBrowser", "_xmlBrowserDescrition");
-    _xmlBrowser->setValue(".", "*.xml/*");
+    _xmlBrowser->setValue("./machine.xml", "*.xml/*");
     _xmlBrowser->disable();
     
     _parseXml = addBooleanParam("_parseXml", "_parseXmlDescription");
@@ -47,7 +47,7 @@ namespace dtOO {
     _cVStateBrowser 
     = 
     addFileBrowserParam("_cVStateBrowser", "_cVStateBrowserDescription");
-    _cVStateBrowser->setValue(".", "*.xml/*");
+    _cVStateBrowser->setValue("./machineSave.xml", "*.xml/*");
     _cVStateBrowser->disable();
     _cVStateLabel = addStringParam("_cVStateLabel", "_cVStateLabelDescription");
     _cVStateLabel->setValue("");
@@ -112,11 +112,17 @@ namespace dtOO {
 		
 		_dCChoice = addChoiceParam("_dCChoice", "_dCChoiceDescription");
     _dCChoice->disable();
-    _dCRunCurrentState = addBooleanParam("_dCRunCurrentState", "_dCRunCurrentStateDescription");
+    _dCRunCurrentState 
+    = 
+    addBooleanParam("_dCRunCurrentState", "_dCRunCurrentStateDescription");
     _dCRunCurrentState->setValue(false);
-		_dCStateChoice = addChoiceParam("_dCStateChoice", "_dCStateChoiceDescription");
+		_dCStateChoice 
+    = 
+    addChoiceParam("_dCStateChoice", "_dCStateChoiceDescription");
     _dCStateChoice->disable();
-    _dCStateString = addStringParam("_dCStateString", "_dCStateStringDescription");
+    _dCStateString 
+    = 
+    addStringParam("_dCStateString", "_dCStateStringDescription");
     _dCStateString->disable();
     _dCStateResValueChoice 
     = 
@@ -529,21 +535,35 @@ namespace dtOO {
 					selfExec();		
 				}
 				else if ( strcmp(paramName, "_aGRenderVector") == 0 ) {
-					int pos = _aG.getPosition( std::string(_aGRenderChoice->getActLabel()) );
+					int pos 
+          = 
+          _aG.getPosition( std::string(_aGRenderChoice->getActLabel()) );
 					map1dTo3d * m1d = map1dTo3d::DownCast(_aG[pos]);
 					map2dTo3d * m2d = map2dTo3d::DownCast(_aG[pos]);
 					map3dTo3d * m3d = map3dTo3d::DownCast(_aG[pos]);
 					if (m1d) {
-						m1d->setRenderResolution( 0, static_cast<int>(_aGRenderVector->getValue(0)) );
+						m1d->setRenderResolution( 
+              0, static_cast<int>(_aGRenderVector->getValue(0)) 
+            );
 					}
 					else if (m2d) {
-						m2d->setRenderResolution( 0, static_cast<int>(_aGRenderVector->getValue(0)) );
-						m2d->setRenderResolution( 1, static_cast<int>(_aGRenderVector->getValue(1)) );
+						m2d->setRenderResolution( 
+              0, static_cast<int>(_aGRenderVector->getValue(0)) 
+            );
+						m2d->setRenderResolution( 
+              1, static_cast<int>(_aGRenderVector->getValue(1)) 
+            );
 					}
 					else if (m3d) {
-						m3d->setRenderResolution( 0, static_cast<int>(_aGRenderVector->getValue(0)) );
-						m3d->setRenderResolution( 1, static_cast<int>(_aGRenderVector->getValue(1)) );
-						m3d->setRenderResolution( 2, static_cast<int>(_aGRenderVector->getValue(2)) );
+						m3d->setRenderResolution( 
+              0, static_cast<int>(_aGRenderVector->getValue(0)) 
+            );
+						m3d->setRenderResolution( 
+              1, static_cast<int>(_aGRenderVector->getValue(1))
+            );
+						m3d->setRenderResolution(
+              2, static_cast<int>(_aGRenderVector->getValue(2)) 
+            );
 					}
 					_recreate = false;
 					setExecGracePeriod(0.1);
@@ -602,7 +622,9 @@ namespace dtOO {
 					boundedVolume const * bV = _bV.get(str);
           std::vector< std::string > tags = bV->getMeshTags();
 					abstractModule::updateChoiceParam(_bVRenderTags, &tags);
-					bV->extRender(true, abstractModule::blankReConvert(_bVRenderTags->getActLabel()) );
+					bV->extRender(
+            true, abstractModule::blankReConvert(_bVRenderTags->getActLabel()) 
+          );
 				
 					_bVRenderTags->enable();
 					
@@ -614,7 +636,9 @@ namespace dtOO {
 					std::string str(_bVRenderChoice->getActLabel());
 					
 					boundedVolume const * bV = _bV.get(str);
-					bV->extRender(true, abstractModule::blankReConvert(_bVRenderTags->getActLabel()) );
+					bV->extRender(
+            true, abstractModule::blankReConvert(_bVRenderTags->getActLabel()) 
+          );
 					_recreate = false;
 					setExecGracePeriod(0.1);
 					selfExec();		
@@ -776,7 +800,9 @@ namespace dtOO {
       //
       if (_dCApply) {
         _dCApply->update();
-        abstractModule::updateChoiceParam(_dCStateChoice, _dCApply->allStates());
+        abstractModule::updateChoiceParam(
+          _dCStateChoice, _dCApply->allStates()
+        );
         if (_dCRunCurrentState->getValue()) {
           _dCRunCurrentState->disable();
           _dCApply->runCurrentState();
@@ -844,7 +870,9 @@ namespace dtOO {
 				covise::coDoSet * set = NULL;
         if (_bVToRender.size() != 0) {
 					dt__forAllIndex(_bVToRender, ii) {
-						boundedVolume * bV = static_cast< boundedVolume * >(_bVToRender[ii]);
+						boundedVolume * bV 
+            = 
+            static_cast< boundedVolume * >(_bVToRender[ii]);
 						if ( !bV->isMeshed() ) {
 							bV->makePreGrid();
 							bV->makeGrid();
@@ -853,7 +881,7 @@ namespace dtOO {
           set
 					= 
 					_bVToRender.render3d( 
-					  _bVToRender.begin(), _bVToRender.end(),//dt__PRIOR(_bVToRender.end()), 
+					  _bVToRender.begin(), _bVToRender.end(),
 						_bVOut->getObjName() 
 					);
 				  _bVOut->setCurrentObject( set );					
@@ -895,12 +923,16 @@ namespace dtOO {
 
   void designTool::loadCVState(void) {
     if (_parser.get() != NULL ) {			
-			std::string stateName = _cVStateChoice->getLabel( _cVStateChoice->getValue() );
-			dt__info(loadCVState,
-							<< "Loading state:" << std::endl
-							<< dt__eval(_cVStateChoice->getValue()) << std::endl
-							<< dt__eval(stateName) << std::endl
-							<< " to constValue.");
+			std::string stateName 
+      = 
+      _cVStateChoice->getLabel( _cVStateChoice->getValue() );
+			dt__info(
+        loadCVState,
+        << "Loading state:" << std::endl
+        << dt__eval(_cVStateChoice->getValue()) << std::endl
+        << dt__eval(stateName) << std::endl
+        << " to constValue."
+      );
 
 			_parser->loadStateToConst(stateName, _cV);
 
@@ -919,13 +951,17 @@ namespace dtOO {
     _AFmemento.clear();
 		if ( !_aGToRender.empty() ) {
       dt__forAllConstIter(coDoSetHandling, _aGToRender, it) {
-        labelHandling const * const labelIt = dynamic_cast< labelHandling const * const >(*it);
+        labelHandling const * const labelIt 
+        = 
+        dynamic_cast< labelHandling const * const >(*it);
         if (labelIt) _AGmemento.push_back(labelIt->getLabel());
       }
     }
 		if ( !_aFToRender.empty() ) {
       dt__forAllConstIter(coDoSetHandling, _aFToRender, it) {
-        labelHandling const * const labelIt = dynamic_cast< labelHandling const * const >(*it);
+        labelHandling const * const labelIt 
+        = 
+        dynamic_cast< labelHandling const * const >(*it);
         if (labelIt) _AFmemento.push_back(labelIt->getLabel());
       }
     }    
@@ -943,7 +979,5 @@ namespace dtOO {
 	}
 }
 
-
 using namespace covise;
 MODULE_MAIN(designTool, dtOO::designTool)
-//}

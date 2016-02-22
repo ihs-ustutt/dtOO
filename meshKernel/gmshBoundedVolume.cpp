@@ -57,7 +57,9 @@ namespace dtOO {
     };
 	}	
 	
-	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( void ) const {
+	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( 
+    void 
+  ) const {
 		if (mustExtRender()) return vectorHandling< renderInterface * >(0);
 
 		//

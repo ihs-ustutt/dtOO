@@ -27,7 +27,9 @@ namespace dtOO {
 		_dtC.reset( new dtOCCBSplineCurve(base) );		
 	}
 	
-	bSplineCurve_curveConnectConstructOCC::~bSplineCurve_curveConnectConstructOCC() {
+	bSplineCurve_curveConnectConstructOCC
+    ::~bSplineCurve_curveConnectConstructOCC() {
+    
 	}
 	
 	dtCurve * bSplineCurve_curveConnectConstructOCC::result( void ) {
