@@ -148,6 +148,36 @@ namespace dtOO {
 		
 		return pp;
 	}
+  
+  std::vector< float > dtLinearAlgebra::toStdVector( dtPoint3 const & pp ) {
+    return std::vector< float > {
+      static_cast<float>(pp.x()), 
+      static_cast<float>(pp.y()), 
+      static_cast<float>(pp.z())
+    };
+  }
+  
+  std::vector< float > dtLinearAlgebra::toStdVector( dtPoint2 const & pp) {
+    return std::vector< float > {
+      static_cast<float>(pp.x()), 
+      static_cast<float>(pp.y())
+    };
+  }
+  
+  std::vector< float > dtLinearAlgebra::toStdVector( dtVector3 const & pp ) {
+    return std::vector< float > {
+      static_cast<float>(pp.x()), 
+      static_cast<float>(pp.y()), 
+      static_cast<float>(pp.z())
+    };
+  }
+  
+  std::vector< float > dtLinearAlgebra::toStdVector( dtVector2 const & pp ) {
+    return std::vector< float > {
+      static_cast<float>(pp.x()), 
+      static_cast<float>(pp.y())
+    };
+  }
 		
 	dtVector2 dtLinearAlgebra::unitNormal( dtVector2 const & vv) {
 	  dtVector2 nn = dtVector2(-vv.y(), vv.x());
