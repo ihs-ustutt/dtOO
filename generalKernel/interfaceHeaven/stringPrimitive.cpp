@@ -215,10 +215,44 @@ namespace dtOO {
     return retStr;
   }	
 	
+  std::vector< std::string > stringPrimitive::crumbleDown(
+    std::string const signStart, std::string const signEnd, 
+    std::string const str    
+  ) {
+    std::vector< std::string > ret;
+    
+    int counter = 0;
+    while ( counter < str.length() ) {
+      std::pair< int, int > fromTo 
+      = 
+      getFromToBetween(signStart, signEnd, str.substr(counter));
+      
+      if ( (fromTo.first == 0) && (fromTo.second == 0) ) break;
+      
+      fromTo.first = fromTo.first + counter;
+      fromTo.second = fromTo.second + counter;
+      counter = fromTo.second+1;
+      
+      ret.push_back(
+        str.substr(
+          fromTo.first+1,  fromTo.second-fromTo.first-1
+        )
+      );
+    }
+    
+//    dt__debug(
+//      crumbleDown(),
+//      << "str = " << str << std::endl
+//      << ret
+//    );
+    
+    return ret;
+  }
+      
   std::pair< int, int > stringPrimitive::getFromToBetween(
-	  std::string const signStart, std::string const signEnd, std::string const str
+	  std::string const signStart, std::string const signEnd, 
+    std::string const str
 	) {
-
     //
     // return empty string if signStart and signEnd are not part of the string
     //

@@ -45,6 +45,10 @@ namespace dtOO {
       std::string const toReplace, std::string const with, 
       std::string const str
     );
+    static std::vector< std::string > crumbleDown(
+      std::string const signStart, std::string const signEnd, 
+      std::string const str    
+    );
   protected:
     stringPrimitive();       
   private:
