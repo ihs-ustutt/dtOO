@@ -268,6 +268,14 @@ namespace dtOO {
       );
 			basicP->push_back( dtPoint3(cX, cY, cZ) );      
     }      
+		else if ( hasAttribute("xyz", *toBuildP) ) { 
+      std::vector< float > cXYZ 
+      = 
+      muParseCSString(
+        replaceDependencies( getAttributeStr("xyz", *toBuildP), bC, cV, aF, aG )
+      );
+			basicP->push_back( dtPoint3(cXYZ[0], cXYZ[1], cXYZ[2]) );      
+    }       
     else if (    
          hasAttribute("attribute", *toBuildP) 
 			&& hasAttribute("part_label", *toBuildP) 
@@ -581,23 +589,6 @@ namespace dtOO {
       }
       else bC->ptrPointContainer()->add(basicP->at(0), label);
     }
-    
-//		//
-//		//output
-//		//
-//		std::vector< float > itVal;
-//		for (int ii=0;ii<basicP->size();ii++) {
-//			itVal.push_back( basicP->at(ii).x() );
-//			itVal.push_back( basicP->at(ii).y() );
-//			itVal.push_back( basicP->at(ii).z() );
-//		}    
-//		std::vector< std::string > header;
-//		header.push_back("p_x"); header.push_back("p_y"); header.push_back("p_z");
-//		dt__debug(
-//  	  createBasic(), 
-//			<< "created points" << std::endl
-//			<< logMe::floatVecToTable(header, itVal)
-//		);
   }
 
 	/**
@@ -618,37 +609,30 @@ namespace dtOO {
     }
     else {
       //
-      // check if vector has a label and point is already created
-      // return point and that's it
-      //
-//      if ( toBuildP->hasAttribute("label") ) {
-//        if ( bC->ptrVectorContainer()->has(toBuildP->attribute("label").toStdString()) ) {
-////          *basicP = new dtVector3(0,0,0);
-//          vv = bC->ptrVectorContainer()->get( toBuildP->attribute("label").toStdString() );
-//          return vv;
-//        }
-//      }
-      //
       // check for attribute x, y and z
       //
       if ( toBuildP->hasAttribute("x") && toBuildP->hasAttribute("y") ) { 
         //
         // create coordinates
         //
-        float cX = muParseString(
-                     replaceDependencies(
-                       getAttributeStr("x", *toBuildP),
-                       cV, 
-                       aF
-                     )
-                   );  
-        float cY = muParseString(
-                     replaceDependencies(
-                       getAttributeStr("y", *toBuildP),
-                       cV, 
-                       aF
-                     )
-                   );            
+        float cX 
+        = 
+        muParseString(
+          replaceDependencies(
+            getAttributeStr("x", *toBuildP),
+            cV, 
+            aF
+          )
+        );  
+        float cY 
+        = 
+        muParseString(
+          replaceDependencies(
+            getAttributeStr("y", *toBuildP),
+            cV, 
+            aF
+          )
+        );            
         //
         // create vector
         //
@@ -658,31 +642,29 @@ namespace dtOO {
         //
         // create coordinates
         //
-        float cX = muParseString(
-                     replaceDependencies(
-                       getAttributeStr("u", *toBuildP),
-                       cV, 
-                       aF
-                     )
-                   );  
-        float cY = muParseString(
-                     replaceDependencies(
-                       getAttributeStr("v", *toBuildP),
-                       cV, 
-                       aF
-                     )
-                   );            
+        float cX 
+        =
+        muParseString(
+          replaceDependencies(
+            getAttributeStr("u", *toBuildP),
+            cV, 
+            aF
+          )
+        );  
+        float cY 
+        = 
+        muParseString(
+          replaceDependencies(
+            getAttributeStr("v", *toBuildP),
+            cV, 
+            aF
+          )
+        );            
         //
         // create vector
         //
         vv = dtVector2(cX, cY);
       }			
-//      //
-//      //check if point has a label and add it to the container
-//      //
-//      if ( toBuildP->hasAttribute("label") ) {
-//        bC->ptrVectorContainer()->add( vv, toBuildP->attribute("label").toStdString() );
-//      }
       //
       //output
       //
@@ -705,8 +687,10 @@ namespace dtOO {
 		dtVector3 vv;
 
     if ( !is("Vector_3", *toBuildP) ) {
-      dt__throw(createBasic(),
-              << dt__eval(qPrintable( toBuildP->tagName() ) ) );
+      dt__throw(
+        createDtVector3(),
+        << dt__eval(qPrintable( toBuildP->tagName() ) ) 
+      );
     }
     else {
       //
@@ -734,27 +718,33 @@ namespace dtOO {
         //
         // create coordinates
         //
-        float cX = muParseString(
-                     replaceDependencies(
-                       getAttributeStr("x", *toBuildP),
-                       cV, 
-                       aF
-                     )
-                   );  
-        float cY = muParseString(
-                     replaceDependencies(
-                       getAttributeStr("y", *toBuildP),
-                       cV, 
-                       aF
-                     )
-                   );
-        float cZ = muParseString(
-                     replaceDependencies(
-                       getAttributeStr("z", *toBuildP),
-                       cV, 
-                       aF
-                     )
-                   );              
+        float cX 
+        = 
+        muParseString(
+          replaceDependencies(
+            getAttributeStr("x", *toBuildP),
+            cV, 
+            aF
+          )
+        );  
+        float cY 
+        = 
+        muParseString(
+          replaceDependencies(
+            getAttributeStr("y", *toBuildP),
+            cV, 
+            aF
+          )
+        );
+        float cZ 
+        = 
+        muParseString(
+          replaceDependencies(
+            getAttributeStr("z", *toBuildP),
+            cV, 
+            aF
+          )
+        );              
         //
         // create vector
         //
@@ -772,11 +762,12 @@ namespace dtOO {
       //output
       //
       dt__debug(
-        createBasic(),
+        createDtVector3(),
         << "created vector: (" 
         << vv.x() << " / "
         << vv.y() << " / "
-        << vv.z() << ")");
+        << vv.z() << ")"
+      );
 			
 			return vv;
     }
@@ -791,16 +782,6 @@ namespace dtOO {
     return createDtVector3(toBuildP, bC, cV, aF, NULL); 
   }	
 
-//	dtPoint3 dtXmlParserBase::getDtPoint3(
-//		::QDomElement const * toBuildP,
-//		baseContainer const * const bC,
-//		vectorHandling< constValue * > const * const cV,
-//		vectorHandling< analyticFunction * > const * const aF, 
-//		vectorHandling< analyticGeometry * > const * const aG
-//	) {
-//		return createDtPoint3(toBuildP, NULL, cV, aF, aG);		
-//	}
-	
 	dtVector2 dtXmlParserBase::getDtVector2(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
@@ -899,14 +880,28 @@ namespace dtOO {
 		vectorHandling< analyticFunction * > const * const aF,
     vectorHandling< analyticGeometry * > const * const aG
 	) {
-    std::string returnExpression;
-    returnExpression = expression;
-    unsigned int found;
+    std::string returnExpression = expression;
+          
+    //
+    // crumble string down, respect brackets
+    //
+    std::vector< std::string > crumbles = crumbleDown("(", ")", expression);
+    dt__forAllRefAuto(crumbles, aCrumble) {
+      if ( !stringContains("@", aCrumble) ) continue;
+      returnExpression 
+      = 
+      replaceStringInString(
+        aCrumble, 
+        replaceDependencies(aCrumble, cV, aF, aG),
+        returnExpression
+      );
+    }
+    
     //
     // check if there is a analyticGeometry in expression
     // @analyticGeometryName(1. * #constValue#, 2.)@
     //
-    found = returnExpression.find("@");
+    unsigned int found = returnExpression.find("@");
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
@@ -943,111 +938,327 @@ namespace dtOO {
       map2dTo3d const * const m2d = map2dTo3d::ConstDownCast(theAG);
       map3dTo3d const * const m3d = map3dTo3d::ConstDownCast(theAG);
       
+      std::vector< float > pp; 
+      std::vector< float > argCS 
+      = 
+      muParseCSString( replaceDependencies(arg, cV, aF) );
+
+        
       if (m1d) {
-        std::vector< float > u 
-        = 
-        muParseCSString( replaceDependencies(arg, cV, aF) );
-        dt__throwIf(u.size()!=1, replaceDependencies());
-        
-        dtPoint3 p3;
-        if (aGOption == "%") {
-          p3 = m1d->getPointPercent(u[0]);
+        dt__throwIf(argCS.size()!=1, replaceDependencies());       
+
+        if (aGOption == "") {
+          pp = dtLinearAlgebra::toStdVector( m1d->getPoint( argCS[0] ) );
+        }        
+        else if (aGOption == "%") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector( m1d->getPoint( (*m1d) % argCS[0] ) );
         }
-        else if (aGOption == "") {
-          p3 = m1d->getPoint( u[0] );
+        else if (aGOption == "%x") {
+          pp.push_back( m1d->getPoint( (*m1d) % argCS[0] ).x() );
         }
+        else if (aGOption == "%y") {
+          pp.push_back( m1d->getPoint( (*m1d) % argCS[0] ).y() );
+        }        
+        else if (aGOption == "%z") {
+          pp.push_back( m1d->getPoint( (*m1d) % argCS[0] ).z() );
+        }
+        else if (aGOption == "%dU") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              m1d->firstDerU( (*m1d) % argCS[0] )
+            )
+          );
+        }        
+        else if (aGOption == "%ndU") {
+          pp
+          =
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              dtLinearAlgebra::normalize( m1d->firstDerU( (*m1d) % argCS[0] ) )
+            )
+          );
+        }        
+        else if (aGOption == "%ndUx") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m1d->firstDerU( (*m1d) % argCS[0] ) 
+            ).x()
+          );
+        }                  
+        else if (aGOption == "%ndUy") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m1d->firstDerU( (*m1d) % argCS[0] ) 
+            ).y()
+          );
+        }                 
+        else if (aGOption == "%ndUz") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m1d->firstDerU( (*m1d) % argCS[0] ) 
+            ).z()
+          );
+        }               
         else dt__throwUnexpected(replaceDependencies());        
-        
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(p3.x())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(p3.y())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(p3.z())
-        );        
       }
       else if (m2d) {
-        std::vector< float > uv 
-        = 
-        muParseCSString( replaceDependencies(arg, cV, aF) );
-        dt__throwIf(uv.size()!=2, replaceDependencies());
-        
-        //
-        // get dtPoint3
-        //
-        dtPoint3 p3;
-        if (aGOption == "%") {
-          p3 = m2d->getPointPercent( uv[0], uv[1] );
-        }
-        else if (aGOption == "") {
-          p3 = m2d->getPoint( uv[0], uv[1] );
-        }
-        else dt__throwUnexpected(replaceDependencies());
-        
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(p3.x())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(p3.y())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(p3.z())
+        dt__throwIf(
+          (argCS.size()!=2)&&(argCS.size()!=3), 
+          replaceDependencies()
         );
-      }
-      else if (m3d) {
-        std::vector< float > uvw 
-        = 
-        muParseCSString( replaceDependencies(arg, cV, aF) );
-        dt__throwIf(uvw.size()!=3, replaceDependencies());
         
         //
         // get dtPoint3
         //
-        dtPoint3 p3;
-        if (aGOption == "%") {
-          p3 = m3d->getPointPercent( uvw[0], uvw[1], uvw[2] );
+        if (aGOption == "") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m2d->getPoint( argCS[0], argCS[1] )
+          );
+        }        
+        else if (aGOption == "%") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m2d->getPointPercent( argCS[0], argCS[1] )
+          );          
         }
+        else if (aGOption == "%x") {
+          pp.push_back( m2d->getPointPercent( argCS[0], argCS[1] ).x() );          
+        }        
+        else if (aGOption == "%y") {
+          pp.push_back( m2d->getPointPercent( argCS[0], argCS[1] ).y() );          
+        }        
+        else if (aGOption == "%z") {
+          pp.push_back( m2d->getPointPercent( argCS[0], argCS[1] ).z() );          
+        }                
+        else if (aGOption == "dU") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              m2d->firstDerU( argCS[0], argCS[1] )
+            )
+          );
+        }        
+        else if (aGOption == "dV") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              m2d->firstDerV( argCS[0], argCS[1] )
+            )
+          );
+        }  
+        else if (aGOption == "ndU") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              dtLinearAlgebra::normalize( m2d->firstDerU( argCS[0], argCS[1] ) )
+            )
+          );
+        }        
+        else if (aGOption == "ndV") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              dtLinearAlgebra::normalize( m2d->firstDerV( argCS[0], argCS[1] ) )
+            )
+          );
+        }          
+        else if (aGOption == "ndUx") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerU( argCS[0], argCS[1] ) 
+            ).x()
+          );
+        }                  
+        else if (aGOption == "ndUy") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerU( argCS[0], argCS[1] ) 
+            ).y()
+          );
+        }                 
+        else if (aGOption == "ndUz") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerU( argCS[0], argCS[1] ) 
+            ).z()
+          );
+        }            
+        else if (aGOption == "%ndUx") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerU( 
+                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
+              ) 
+            ).x()
+          );
+        }                  
+        else if (aGOption == "%ndUy") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerU( 
+                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
+              ) 
+            ).y()
+          );
+        }                 
+        else if (aGOption == "%ndUz") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerU( 
+                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
+              ) 
+            ).z()
+          );
+        }                    
+        else if (aGOption == "ndVx") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerV( argCS[0], argCS[1] ) 
+            ).x()
+          );
+        }                  
+        else if (aGOption == "ndVy") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerV( argCS[0], argCS[1] ) 
+            ).y()
+          );
+        }                 
+        else if (aGOption == "ndVz") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerV( argCS[0], argCS[1] ) 
+            ).z()
+          );
+        }            
         else if (aGOption == "-1") {
-          p3 = m3d->reparamInVolume( dtPoint3(uvw[0], uvw[1], uvw[2]) );
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m2d->reparamOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
+          );
         }
         else if (aGOption == "-1%") {
-          p3 = m3d->reparamPercentInVolume( dtPoint3(uvw[0], uvw[1], uvw[2]) );
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m2d->reparamPercentOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
+          );
+        }        
+        else if (aGOption == "-a") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m2d->approxOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
+          );
         }
-        
-        else if (aGOption == "") {
-          p3 = m3d->getPoint( uvw[0], uvw[1], uvw[2] );
-        }
+        else if (aGOption == "-a%") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m2d->approxPercentOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
+          );
+        }                
         else dt__throwUnexpected(replaceDependencies());
+      }
+      else if (m3d) {
+        dt__throwIf( argCS.size()!=3, replaceDependencies() );
         
         //
-        // replace in return string
+        // get dtPoint3
         //
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(p3.x())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(p3.y())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(p3.z())
-        );        
+        if (aGOption == "") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m3d->getPoint( argCS[0], argCS[1], argCS[2] )
+          );
+        }        
+        else if (aGOption == "%") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m3d->getPointPercent( argCS[0], argCS[1], argCS[2] )
+          );
+        }
+        else if (aGOption == "-1") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m3d->reparamInVolume(dtPoint3(argCS[0], argCS[1], argCS[2]))
+          );
+        }
+        else if (aGOption == "-1%") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m3d->reparamPercentInVolume(dtPoint3(argCS[0], argCS[1], argCS[2]))
+          );
+        }
+        else if (aGOption == "-a") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m3d->approxInVolume( dtPoint3(argCS[0], argCS[1], argCS[2]) )
+          );
+        }
+        else if (aGOption == "-a%") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            m3d->approxPercentInVolume(dtPoint3(argCS[0], argCS[1], argCS[2]))
+          );
+        }        
+        else dt__throwUnexpected(replaceDependencies());
       }    
       else dt__throwUnexpected(replaceDependencies());
       
+      if (pp.size() == 3) {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(pp[0])
+          +
+          ","
+          +
+          stringPrimitive::floatToString(pp[1])
+          +
+          ","
+          +
+          stringPrimitive::floatToString(pp[2])
+        );
+      }
+      else if (pp.size() == 2) {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(pp[0])
+          +
+          ","
+          +
+          stringPrimitive::floatToString(pp[1])
+        );
+      }        
+      else if (pp.size() == 1) {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(pp[0])
+        );
+      }            
+      else dt__throwUnexpected(replaceDependencies());
+        
       //
       // go to next analyticGeometry
       //
@@ -1294,20 +1505,24 @@ namespace dtOO {
       //
       // create coordinates
       //
-      float cX = muParseString(
-                   replaceDependencies(
-                     getAttributeStr("x", *toBuildP),
-                     cV, 
-                     aF
-                   )
-                 );  
-      float cY = muParseString(
-                   replaceDependencies(
-                     getAttributeStr("y", *toBuildP),
-                     cV, 
-                     aF
-                   )
-                 );              
+      float cX 
+      = 
+      muParseString(
+        replaceDependencies(
+          getAttributeStr("x", *toBuildP),
+          cV, 
+          aF
+        )
+      );  
+      float cY 
+      = 
+      muParseString(
+        replaceDependencies(
+          getAttributeStr("y", *toBuildP),
+          cV, 
+          aF
+        )
+      );              
       //
       // create point
       //
@@ -1341,26 +1556,32 @@ namespace dtOO {
           //
           // analyticSurface
           //
-          if (analyticSurface_partToPickFromP 
-              && toBuildP->hasAttribute("parameter_one_percent")
-              && toBuildP->hasAttribute("parameter_two_percent") ) {
+          if (
+               analyticSurface_partToPickFromP 
+            && toBuildP->hasAttribute("parameter_one_percent")
+            && toBuildP->hasAttribute("parameter_two_percent") 
+          ) {
             //
             // create coordinates
             //
-            float pX = muParseString(
-                         replaceDependencies(
-                           getAttributeStr("parameter_one_percent", *toBuildP),
-                           cV, 
-                           aF
-                         )
-                       );  
-            float pY = muParseString(
-                         replaceDependencies(
-                           getAttributeStr("parameter_two_percent", *toBuildP),
-                           cV, 
-                           aF
-                         )
-                       );              
+            float pX 
+            = 
+            muParseString(
+              replaceDependencies(
+                getAttributeStr("parameter_one_percent", *toBuildP),
+                cV, 
+                aF
+              )
+            );  
+            float pY 
+            = 
+            muParseString(
+              replaceDependencies(
+                getAttributeStr("parameter_two_percent", *toBuildP),
+                cV, 
+                aF
+              )
+            );              
             //
             // ask analyticSurface for a point
             //
@@ -1368,9 +1589,9 @@ namespace dtOO {
               analyticSurface_partToPickFromP->uv_percent(dtPoint2(pX, pY))
             );
           }
-          else dt__throw(createBasic(), << dt__eval(convertToString(*toBuildP)));      
+          else dt__throwUnexpected(createBasic());      
         }
-        else dt__throw(createBasic(), << dt__eval(convertToString(*toBuildP)));                       
+        else dt__throwUnexpected(createBasic());
       }    
     }
     else if ( 
@@ -1378,7 +1599,7 @@ namespace dtOO {
       && hasAttribute("function_label", *toBuildP) 
     ) {
       //
-      //look for function to pick point from
+      // look for function to pick point from
       //
 			dt__ptrAss(
 				vec2dOneD const * const theF,
@@ -1393,13 +1614,15 @@ namespace dtOO {
         //
         // 1 analyticFunction
         //        
-        if (theF && hasAttribute("parameter_percent_function", *toBuildP)
-            && hasAttribute("number_points", *toBuildP) ) {
+        if (
+             theF 
+          && hasAttribute("parameter_percent_function", *toBuildP)
+          && hasAttribute("number_points", *toBuildP) 
+        ) {
           int nPoints
 				  = 
-					getAttributeIntMuParse(
-            "number_points", *toBuildP, cV, aF
-					);
+					getAttributeIntMuParse("number_points", *toBuildP, cV, aF);
+          
           //
           // search functions
           //
@@ -1416,24 +1639,16 @@ namespace dtOO {
           for (int ii=0;ii<nPoints;ii++) {
             dt__toFloat(float iiF, ii);
 						dt__toFloat(float nPointsF, nPoints);
-//            float para = thePara->YFloat( iiF / (nPointsF-1.) );
-//            dtPoint2 YY;            
-            //get value of scaFunction
-            //pick points out of range
-            dtPoint2 YY 
-						=
-						theF->YdtPoint2Percent(
-						  thePara->YFloat( iiF / (nPointsF-1.) )
-						);
-//            if (vecValue.size() != 2) {
-//              dt__THROW(createBasic(),
-//                      << "Function is not a 2-dim function." << std::endl
-//                      << dt__eval(vecValue.size()) );
-//            }
-            basicP->push_back( dtPoint2(YY) );
+            // get value of scaFunction
+            // pick points out of range
+            basicP->push_back( 
+              theF->YdtPoint2Percent(
+                thePara->YFloat( iiF / (nPointsF-1.) )
+              )            
+            );
           }
         }
-        else dt__throw(createBasic(), << dt__eval( convertToString(*toBuildP)));
+        else dt__throwUnexpected(createBasic());
       }
     }
 		else if ( toBuildP->attribute("attribute") == "pick_order_from_file") {       
@@ -1468,9 +1683,7 @@ namespace dtOO {
 				//
 				in.close();
 			}
-			else {
-				dt__throw(createBasic(), << "Attribute file_name is empty");
-			}
+			else dt__throw(createBasic(), << "Attribute file_name is empty");
 		}  		
     //
     // 4 unknown attribute
@@ -1492,18 +1705,6 @@ namespace dtOO {
       }
       basicP->clear();
       *basicP = dtTransformerP->apply( &basicPTwin );
-      //
-      // output
-      //
-//      DTBUFFERINIT();
-//      dt__FORALL(basicPTwin, ii,
-//        DTBUFFER(<< dt__point2dP(basicPTwin[ii]) << "=>" << dt__point2dP(basicP->at(ii)) << std::endl );          
-//      );
-//      dt__debug_BUFFER(createBase());
-//      for (int ii=0;ii<basicPTwin.size();ii++) {
-//        delete basicPTwin[ii];
-//      }
-//      basicPTwin.destroy();
     }
 
     //
@@ -1804,7 +2005,6 @@ namespace dtOO {
     vectorHandling< analyticFunction * > const * const aF, 
     vectorHandling< analyticFunction * > * advancedP 
   ) {
-
     //
     // create transformer if necessary
     //
@@ -1824,14 +2024,10 @@ namespace dtOO {
     vectorHandling< constValue * > const * const cV,
     vectorHandling< analyticFunction * > const * const aF 
   ) {
-
     vectorHandling< analyticFunction * > advancedVec;
     createAdvanced(toBuildP, bC, cV, aF, &advancedVec);
     
-    dt__throwIf(
-      advancedVec.size()!=1,
-      createAdvanced()
-    );
+    dt__throwIf(advancedVec.size()!=1, createAdvanced());
     return advancedVec[0];
   }
 

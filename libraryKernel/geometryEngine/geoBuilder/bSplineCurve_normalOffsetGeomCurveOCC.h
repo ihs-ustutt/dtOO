@@ -11,7 +11,9 @@ namespace dtOO {
   class bSplineCurve_normalOffsetGeomCurveOCC {
   public:
     dt__classOnlyName(bSplineCurve_normalOffsetGeomCurveOCC);    
-    bSplineCurve_normalOffsetGeomCurveOCC(dtCurve const * const dtC, float const & offset);
+    bSplineCurve_normalOffsetGeomCurveOCC(
+      dtCurve const * const dtC, float const & offset
+    );
     virtual ~bSplineCurve_normalOffsetGeomCurveOCC();
     dtCurve * result( void );
   private:

@@ -7,8 +7,12 @@
 #include "geometryEngine/dtCurve.h"
 
 namespace dtOO {
-	bSplineCurve_normalOffsetGeomCurveOCC::bSplineCurve_normalOffsetGeomCurveOCC(dtCurve const * const dtC, float const & offset) {
-    dt__throwIf(dtC->nControlPoints()<3, bSplineCurve_normalOffsetGeomCurveOCC());
+	bSplineCurve_normalOffsetGeomCurveOCC::bSplineCurve_normalOffsetGeomCurveOCC(
+    dtCurve const * const dtC, float const & offset
+  ) {
+    dt__throwIf(
+      dtC->nControlPoints()<3, bSplineCurve_normalOffsetGeomCurveOCC()
+    );
 		
 		int numCP = dtC->nControlPoints();
 		vectorHandling< dtPoint3 > pp;
@@ -57,7 +61,8 @@ namespace dtOO {
 		_dtC.reset( bSplineCurve_pointConstructOCC(pp, dtC->order()).result() );
 	}
 
-	bSplineCurve_normalOffsetGeomCurveOCC::~bSplineCurve_normalOffsetGeomCurveOCC() {
+	bSplineCurve_normalOffsetGeomCurveOCC
+    ::~bSplineCurve_normalOffsetGeomCurveOCC() {
 	}
 	
 	dtCurve * bSplineCurve_normalOffsetGeomCurveOCC::result( void ) {

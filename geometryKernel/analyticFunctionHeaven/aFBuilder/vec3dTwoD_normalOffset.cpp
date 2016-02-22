@@ -46,9 +46,6 @@ namespace dtOO {
     cL.destroy();
   }
 
-//  vec3dTwoD_normalOffset::vec3dTwoD_normalOffset(const vec3dTwoD_normalOffset& orig) {
-//  }
-
   vec3dTwoD_normalOffset::~vec3dTwoD_normalOffset() {
   }
 
