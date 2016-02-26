@@ -11,6 +11,8 @@ namespace mu {
 }
 
 namespace dtOO {
+  class dtTransformer;
+  
   class scaMuParserOneD : public scaOneD {
   public:
     dt__class(scaMuParserOneD, analyticFunction);     
@@ -18,6 +20,9 @@ namespace dtOO {
     scaMuParserOneD(scaMuParserOneD const & orig);
     scaMuParserOneD(std::string const expression, std::string const argument);
     scaMuParserOneD * clone( void ) const;
+    scaMuParserOneD * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;        
     scaMuParserOneD * create( void ) const;    
     virtual ~scaMuParserOneD();
     virtual float YFloat(float const & xx) const;

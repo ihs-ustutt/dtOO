@@ -9,6 +9,8 @@
 #include <discrete2dPoints.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
 	vec3dCurve2dInSurfaceOneD::vec3dCurve2dInSurfaceOneD() : vec3dOneD() {
 	}
@@ -46,6 +48,12 @@ namespace dtOO {
   vec3dCurve2dInSurfaceOneD * vec3dCurve2dInSurfaceOneD::clone( void ) const {
 		return new vec3dCurve2dInSurfaceOneD(*this);
 	}
+  
+	vec3dCurve2dInSurfaceOneD * vec3dCurve2dInSurfaceOneD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< vec3dCurve2dInSurfaceOneD >(*this, dtT);
+	}    
 	
   vec3dCurve2dInSurfaceOneD * vec3dCurve2dInSurfaceOneD::create( void ) const {
 		return new vec3dCurve2dInSurfaceOneD();

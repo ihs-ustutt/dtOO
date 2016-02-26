@@ -8,6 +8,8 @@
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+  class dtTransformer;
+  
   class vec2dMultiBiLinearTwoD : public vec2dTwoD {
   public:
     dt__class(vec2dMultiBiLinearTwoD, analyticFunction);     
@@ -15,6 +17,9 @@ namespace dtOO {
     vec2dMultiBiLinearTwoD( vec2dMultiBiLinearTwoD const & orig );
     vec2dMultiBiLinearTwoD( twoDArrayHandling< dtPoint2 > const & pp );
     vec2dMultiBiLinearTwoD * clone( void ) const;
+    virtual vec2dMultiBiLinearTwoD * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;           
     vec2dMultiBiLinearTwoD * create( void ) const;    
     virtual ~vec2dMultiBiLinearTwoD();
     virtual aFY Y( aFX const & xx ) const;

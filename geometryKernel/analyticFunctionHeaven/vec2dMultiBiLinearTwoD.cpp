@@ -3,6 +3,8 @@
 
 #include <logMe/logMe.h>
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
   vec2dMultiBiLinearTwoD::vec2dMultiBiLinearTwoD() : vec2dTwoD() {
   }
@@ -96,6 +98,12 @@ namespace dtOO {
   vec2dMultiBiLinearTwoD * vec2dMultiBiLinearTwoD::clone( void ) const {
     return new vec2dMultiBiLinearTwoD( *this );
   }
+
+	vec2dMultiBiLinearTwoD * vec2dMultiBiLinearTwoD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< vec2dMultiBiLinearTwoD >(*this, dtT);
+	}    
   
   vec2dMultiBiLinearTwoD * vec2dMultiBiLinearTwoD::create( void ) const {
     return new vec2dMultiBiLinearTwoD();

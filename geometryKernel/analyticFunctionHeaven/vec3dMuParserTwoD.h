@@ -11,6 +11,8 @@ namespace mu {
 }
 
 namespace dtOO {
+  class dtTransformer;
+  
   class vec3dMuParserTwoD : public vec3dTwoD {
   public:
     dt__class(vec3dMuParserTwoD, analyticFunction);     
@@ -22,6 +24,9 @@ namespace dtOO {
       std::string const argTwo
     );
     vec3dMuParserTwoD * clone( void ) const;
+    virtual vec3dMuParserTwoD * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;       
     vec3dMuParserTwoD * create( void ) const;    
     virtual ~vec3dMuParserTwoD();
     virtual aFY Y( aFX const & xx ) const;

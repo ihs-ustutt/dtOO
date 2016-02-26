@@ -9,6 +9,8 @@
 #include <dtLinearAlgebra.h>
 
 namespace dtOO {
+  class dtTransformer;
+  
   typedef std::vector< float > aFX;
   typedef std::vector< float > aFY;
   
@@ -21,6 +23,9 @@ namespace dtOO {
     analyticFunction(const analyticFunction& orig);
     virtual ~analyticFunction();
     virtual analyticFunction * clone( void ) const = 0;
+    virtual analyticFunction * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const = 0;    
     virtual analyticFunction * create( void ) const = 0;
     void dump(void) const;    
     virtual std::string dumpToString(void) const;

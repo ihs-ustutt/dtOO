@@ -7,6 +7,8 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <solid2dLine.h>
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
   scaMuParserOneD::scaMuParserOneD() : scaOneD() {
   }
@@ -61,6 +63,12 @@ namespace dtOO {
   scaMuParserOneD * scaMuParserOneD::clone( void ) const {
     return new scaMuParserOneD( *this );
   }
+  
+	scaMuParserOneD * scaMuParserOneD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< scaMuParserOneD >(*this, dtT);
+	}  
   
   scaMuParserOneD * scaMuParserOneD::create( void ) const {
     return new scaMuParserOneD();

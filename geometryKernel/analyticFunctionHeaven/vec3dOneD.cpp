@@ -101,6 +101,34 @@ namespace dtOO {
     _max = max;
   }  	
 
+  void vec3dOneD::setMin(int const & dir, float const & min) {
+    switch (dir) {
+      case 0:
+        setMin(min);
+        break;
+      default:
+        dt__throw(
+          setMin(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0."
+        );
+    }
+  }
+
+  void vec3dOneD::setMax(int const & dir, float const & max) {
+    switch (dir) {
+      case 0:
+        setMax(max);
+        break;
+      default:
+        dt__throw(
+          setMax(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0."
+        );
+    }
+  }
+  
   float vec3dOneD::length( float const & x1 ) const {
     std::vector<float> itVal;       
     std::vector< std::string > header;

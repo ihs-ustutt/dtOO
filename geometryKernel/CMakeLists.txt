@@ -64,6 +64,7 @@ SET(HEADERS
   analyticFunctionHeaven/vec3dThickedTwoD.h
   analyticFunctionHeaven/vec3dMuParserTwoD.h
   analyticFunctionHeaven/vec3dOneD.h
+  analyticFunctionHeaven/vec3dMuParserOneD.h
   analyticFunctionHeaven/vec3dCurveOneD.h
   analyticFunctionHeaven/vec3dCurve2dInSurfaceOneD.h
   analyticFunctionHeaven/vec3dThreeD.h
@@ -98,6 +99,7 @@ SET(HEADERS
   dtTransformerHeaven/pickLengthRange.h
   dtTransformerHeaven/pickLengthPercentRange.h
   dtTransformerHeaven/uVw_phirMs.h
+  dtTransformerHeaven/uVw_phiMs.h
   dtTransformerHeaven/averagePoints.h
   dtTransformerHeaven/projectOnSurface.h
   dtTransformerHeaven/reparamInSurface.h
@@ -171,6 +173,7 @@ SET(SOURCES
   analyticFunctionHeaven/vec3dThickedTwoD.cpp
   analyticFunctionHeaven/vec3dMuParserTwoD.cpp
   analyticFunctionHeaven/vec3dOneD.cpp
+  analyticFunctionHeaven/vec3dMuParserOneD.cpp
   analyticFunctionHeaven/vec3dCurveOneD.cpp
   analyticFunctionHeaven/vec3dCurve2dInSurfaceOneD.cpp
   analyticFunctionHeaven/vec3dThreeD.cpp
@@ -202,6 +205,7 @@ SET(SOURCES
   dtTransformerHeaven/pickLengthRange.cpp
   dtTransformerHeaven/pickLengthPercentRange.cpp
   dtTransformerHeaven/uVw_phirMs.cpp
+  dtTransformerHeaven/uVw_phiMs.cpp
   dtTransformerHeaven/averagePoints.cpp
   dtTransformerHeaven/projectOnSurface.cpp
   dtTransformerHeaven/reparamInSurface.cpp

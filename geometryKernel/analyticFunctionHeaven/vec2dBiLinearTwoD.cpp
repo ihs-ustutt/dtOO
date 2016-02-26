@@ -3,6 +3,8 @@
 #include <logMe/logMe.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
   vec2dBiLinearTwoD::vec2dBiLinearTwoD() : vec2dTwoD() {
   }
@@ -91,6 +93,12 @@ namespace dtOO {
   vec2dBiLinearTwoD * vec2dBiLinearTwoD::clone( void ) const {
     return new vec2dBiLinearTwoD( *this );
   }
+
+	vec2dBiLinearTwoD * vec2dBiLinearTwoD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< vec2dBiLinearTwoD >(*this, dtT);
+	}     
   
   vec2dBiLinearTwoD * vec2dBiLinearTwoD::create( void ) const {
     return new vec2dBiLinearTwoD();

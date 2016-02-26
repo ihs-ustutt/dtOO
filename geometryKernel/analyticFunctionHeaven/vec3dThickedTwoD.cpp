@@ -5,6 +5,8 @@
 #include <logMe/dtMacros.h>
 #include "scaTwoD.h"
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
 	vec3dThickedTwoD::vec3dThickedTwoD() : vec3dTwoD() {
 	}
@@ -59,6 +61,12 @@ namespace dtOO {
   vec3dThickedTwoD * vec3dThickedTwoD::clone( void ) const {
 		return new vec3dThickedTwoD(*this);
 	}
+
+	vec3dThickedTwoD * vec3dThickedTwoD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< vec3dThickedTwoD >(*this, dtT);
+	}  
 	
   vec3dThickedTwoD * vec3dThickedTwoD::create( void ) const {
 		return new vec3dThickedTwoD();

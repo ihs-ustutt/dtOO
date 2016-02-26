@@ -3,6 +3,8 @@
 #include <logMe/logMe.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
   vec3dTriLinearThreeD::vec3dTriLinearThreeD() : vec3dThreeD() {
   }
@@ -108,6 +110,12 @@ namespace dtOO {
   vec3dTriLinearThreeD * vec3dTriLinearThreeD::clone( void ) const {
     return new vec3dTriLinearThreeD( *this );
   }
+
+	vec3dTriLinearThreeD * vec3dTriLinearThreeD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< vec3dTriLinearThreeD >(*this, dtT);
+	}    
   
   vec3dTriLinearThreeD * vec3dTriLinearThreeD::create( void ) const {
     return new vec3dTriLinearThreeD();

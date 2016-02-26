@@ -19,6 +19,7 @@
 #include "pickLengthPercentRange.h"
 #include "addConstCoordinate.h"
 #include "uVw_phirMs.h"
+#include "uVw_phiMs.h"
 #include "averagePoints.h"
 #include "projectOnSurface.h"
 #include "reparamInSurface.h"
@@ -66,6 +67,7 @@ namespace dtOO {
 		__IFRET( pickLengthPercentRange );
 		__IFRET( addConstCoordinate );
 		__IFRET( uVw_phirMs );
+    __IFRET( uVw_phiMs );
 		__IFRET( averagePoints );
 		__IFRET( projectOnSurface );
 		__IFRET( reparamInSurface );

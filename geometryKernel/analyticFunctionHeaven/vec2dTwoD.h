@@ -8,6 +8,7 @@
 
 namespace dtOO {
   class renderInterface;
+  class dtTransformer;
   
   class vec2dTwoD : public vec2dFunction {
   public:
@@ -16,6 +17,9 @@ namespace dtOO {
     vec2dTwoD(const vec2dTwoD& orig);
     virtual ~vec2dTwoD();
     virtual vec2dTwoD * clone( void ) const = 0;
+    virtual vec2dTwoD * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const = 0;  
     virtual vec2dTwoD * create( void ) const = 0;    
     virtual aFY Y( aFX const & xx ) const = 0;
     virtual aFY Y( float const & x0, float const & x1 ) const;

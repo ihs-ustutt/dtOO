@@ -14,8 +14,12 @@ namespace dtOO {
     analyticFunctionTransformed();
     analyticFunctionTransformed( analyticFunctionTransformed const & orig);      
     analyticFunctionTransformed(funT const & orig );
+    analyticFunctionTransformed(funT const & orig, dtTransformer const * const dtT);    
     virtual ~analyticFunctionTransformed();
     virtual analyticFunctionTransformed * clone( void ) const;
+    virtual analyticFunctionTransformed * cloneTransformed(
+      dtTransformer const * const dtT
+    ) const;    
     virtual analyticFunctionTransformed * create( void ) const;
     virtual aFY Y( aFX const & xx ) const;
     virtual aFX invY( aFY const & yy ) const;
@@ -44,6 +48,13 @@ namespace dtOO {
     
   }  
   
+  template < typename funT >
+  analyticFunctionTransformed< funT >::analyticFunctionTransformed(
+    funT const & orig, dtTransformer const * const dtT
+  ) : funT(orig) {
+    _dtT.reset( dtT->clone() );
+  }  
+  
   template < typename funT >  
   analyticFunctionTransformed< funT >::~analyticFunctionTransformed() {
     
@@ -53,6 +64,14 @@ namespace dtOO {
   analyticFunctionTransformed< funT > * 
   analyticFunctionTransformed< funT >::clone( void ) const {
     return new analyticFunctionTransformed< funT >(*this);
+  }
+  
+  template < typename funT >  
+  analyticFunctionTransformed< funT > * 
+  analyticFunctionTransformed< funT >::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< funT >(*this, dtT);
   }
   
   template < typename funT >  

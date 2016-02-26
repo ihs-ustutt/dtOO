@@ -7,6 +7,8 @@
 #include "scaFunction.h"
 
 namespace dtOO {
+  class dtTransformer;
+  
   class scaOneD : public scaFunction {
   public:
     dt__class(scaOneD, analyticFunction); 
@@ -14,6 +16,9 @@ namespace dtOO {
     scaOneD( scaOneD const & orig);  
     virtual ~scaOneD();
     virtual scaOneD * clone( void ) const = 0;
+    virtual scaOneD * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const = 0;      
     virtual scaOneD * create( void ) const = 0;       
     virtual float YFloat(aFX const & xx) const;
     virtual float YFloat(float const & xx) const = 0;

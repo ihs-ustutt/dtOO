@@ -10,6 +10,7 @@
 namespace dtOO {
   class dtCurve2d;
   class renderInterface;
+  class dtTransformer;
   
   class vec2dCurve2dOneD : public vec2dOneD {
   public:
@@ -18,6 +19,9 @@ namespace dtOO {
     vec2dCurve2dOneD(const vec2dCurve2dOneD& orig);
     vec2dCurve2dOneD(dtCurve2d const * const dtC2d);
     virtual vec2dCurve2dOneD * clone( void ) const;
+    virtual vec2dCurve2dOneD * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;          
     virtual vec2dCurve2dOneD * create( void ) const;    
     virtual ~vec2dCurve2dOneD();
     using vec2dOneD::Y; // name hiding

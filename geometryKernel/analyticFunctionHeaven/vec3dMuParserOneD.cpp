@@ -1,4 +1,4 @@
-#include "vec3dMuParserThreeD.h"
+#include "vec3dMuParserOneD.h"
 
 #include <logMe/logMe.h>
 #include <muParser.h>
@@ -6,15 +6,14 @@
 #include "analyticFunctionTransformed.h"
 
 namespace dtOO {
-  vec3dMuParserThreeD::vec3dMuParserThreeD() : vec3dThreeD() {
+  vec3dMuParserOneD::vec3dMuParserOneD() : vec3dOneD() {
     
   }
 
-  vec3dMuParserThreeD::vec3dMuParserThreeD(
-    vec3dMuParserThreeD const & orig
-  ) : vec3dThreeD(orig), _parser(new mu::Parser) {
-    
-		for (int ii=0; ii<3; ii++) {
+  vec3dMuParserOneD::vec3dMuParserOneD(
+    vec3dMuParserOneD const & orig
+  ) : vec3dOneD(orig), _parser(new mu::Parser) {
+		for (int ii=0; ii<1; ii++) {
       _arg.push_back( new double(0.) );
 		  _argStr[ii] = orig._argStr[ii];
 		}
@@ -25,7 +24,7 @@ namespace dtOO {
       //
       // create parser
       //
-			for (int ii=0; ii<3; ii++) {
+			for (int ii=0; ii<1; ii++) {
         _parser->DefineVar( _argStr[ii].c_str(), &(_arg[ii]) );
 			}
       _parser->SetExpr( _expressionStr.c_str() );
@@ -34,23 +33,18 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__throw( vec3dMuParserThreeD(), << e.GetMsg() );
+      dt__throw( vec3dMuParserOneD(), << e.GetMsg() );
     }  
   }
 
-  vec3dMuParserThreeD::vec3dMuParserThreeD(
+  vec3dMuParserOneD::vec3dMuParserOneD(
 	  std::string const expression, 
-    std::string const argOne, 
-    std::string const argTwo, 
-    std::string const argThree  
-	) : vec3dThreeD(), _parser( new mu::Parser()) {
-    
-		for (int ii=0; ii<3; ii++) {
+    std::string const argOne
+	) : vec3dOneD(), _parser(new mu::Parser()) {
+		for (int ii=0; ii<2; ii++) {
       _arg.push_back( new double(0.) );
 		}
 		_argStr[0] = argOne;
-		_argStr[1] = argTwo;
-		_argStr[2] = argThree;
     _expressionStr = expression;
 
 
@@ -58,7 +52,7 @@ namespace dtOO {
       //
       // create parser
       //
-			for (int ii=0; ii<3; ii++) {
+			for (int ii=0; ii<1; ii++) {
         _parser->DefineVar( _argStr[ii].c_str(), &(_arg[ii]) );
 			}
       _parser->SetExpr( _expressionStr.c_str() );
@@ -67,20 +61,20 @@ namespace dtOO {
     //error handling
     //
     catch (mu::Parser::exception_type &e) {
-      dt__throw( vec3dMuParserThreeD(), << e.GetMsg() );
+      dt__throw( vec3dMuParserOneD(), << e.GetMsg() );
     }  
   }
 
 
-  vec3dMuParserThreeD::~vec3dMuParserThreeD() {
+  vec3dMuParserOneD::~vec3dMuParserOneD() {
   }
 
-  aFY vec3dMuParserThreeD::Y( aFX const & xx ) const {
-    dt__throwIf(xx.size()!=3, Y());
+  aFY vec3dMuParserOneD::Y( aFX const & xx ) const {
+    dt__throwIf(xx.size()!=1, Y());
     aFY yy(3,0.);
 		
     try {
-			for (int ii=0; ii<3; ii++) {			
+			for (int ii=0; ii<1; ii++) {
         const_cast< double& >(_arg[ii]) = static_cast<double>(xx[ii]);
 		  }
 			int nDim;
@@ -96,22 +90,22 @@ namespace dtOO {
     return yy;		
 	}
 	
-	bool vec3dMuParserThreeD::closed( int const & dir ) const {
-		dt__throwIf( (dir!=0) && (dir!=1) && (dir!=2), closed );
+	bool vec3dMuParserOneD::closed( int const & dir ) const {
+		dt__throwIf(dir!=0, closed() );
 		return false;
 	}
 	
-  vec3dMuParserThreeD * vec3dMuParserThreeD::clone( void ) const {
-    return new vec3dMuParserThreeD( *this );
+  vec3dMuParserOneD * vec3dMuParserOneD::clone( void ) const {
+    return new vec3dMuParserOneD( *this );
   }
-
-	vec3dMuParserThreeD * vec3dMuParserThreeD::cloneTransformed( 
+  
+	vec3dMuParserOneD * vec3dMuParserOneD::cloneTransformed( 
     dtTransformer const * const dtT 
   ) const {
-		return new analyticFunctionTransformed< vec3dMuParserThreeD >(*this, dtT);
+		return new analyticFunctionTransformed< vec3dMuParserOneD >(*this, dtT);
 	}    
   
-  vec3dMuParserThreeD * vec3dMuParserThreeD::create( void ) const {
-    return new vec3dMuParserThreeD();
+  vec3dMuParserOneD * vec3dMuParserOneD::create( void ) const {
+    return new vec3dMuParserOneD();
   }
 }

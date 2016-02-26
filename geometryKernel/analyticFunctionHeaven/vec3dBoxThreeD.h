@@ -10,6 +10,7 @@
 
 namespace dtOO {
   class vec3dTwoD;
+  class dtTransformer;  
   
   class vec3dBoxThreeD : public vec3dThreeD {
   public:
@@ -18,6 +19,9 @@ namespace dtOO {
     vec3dBoxThreeD(const vec3dBoxThreeD& orig);
     vec3dBoxThreeD(dtPoint3 const & p0, dtPoint3 const & p1);
     virtual vec3dBoxThreeD * clone( void ) const;
+    virtual vec3dBoxThreeD * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;      
     virtual vec3dBoxThreeD * create( void ) const;    
     virtual ~vec3dBoxThreeD();
     virtual aFY Y( aFX const & xx) const;

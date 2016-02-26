@@ -8,6 +8,7 @@
 
 namespace dtOO {
   class dtSurface2d;
+  class dtTransformer;  
   
   class vec2dSurface2dTwoD : public vec2dTwoD {
   public:
@@ -16,6 +17,9 @@ namespace dtOO {
     vec2dSurface2dTwoD(const vec2dSurface2dTwoD& orig);
     vec2dSurface2dTwoD(dtSurface2d const * const dtS2d);
     virtual vec2dSurface2dTwoD * clone( void ) const;
+    virtual vec2dSurface2dTwoD * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;          
     virtual vec2dSurface2dTwoD * create( void ) const;    
     virtual ~vec2dSurface2dTwoD();
     virtual aFY Y( aFX const & xx) const;

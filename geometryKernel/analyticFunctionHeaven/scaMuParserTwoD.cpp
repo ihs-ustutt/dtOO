@@ -3,6 +3,8 @@
 #include <logMe/logMe.h>
 #include <muParser.h>
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
   scaMuParserTwoD::scaMuParserTwoD() : scaTwoD() {
   }
@@ -94,6 +96,12 @@ namespace dtOO {
   scaMuParserTwoD * scaMuParserTwoD::clone( void ) const {
     return new scaMuParserTwoD( *this );
   }
+  
+	scaMuParserTwoD * scaMuParserTwoD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< scaMuParserTwoD >(*this, dtT);
+	}    
   
   scaMuParserTwoD * scaMuParserTwoD::create( void ) const {
     return new scaMuParserTwoD();

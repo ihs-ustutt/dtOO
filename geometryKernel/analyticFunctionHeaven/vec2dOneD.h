@@ -6,6 +6,8 @@
 #include "vec2dFunction.h"
 
 namespace dtOO {
+  class dtTransformer;
+  
   class vec2dOneD : public vec2dFunction {
   public:
     dt__class(vec2dOneD, analyticFunction);     
@@ -13,6 +15,9 @@ namespace dtOO {
     vec2dOneD(const vec2dOneD& orig);
     virtual ~vec2dOneD();
     virtual vec2dOneD * clone( void ) const = 0;
+    virtual vec2dOneD * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const = 0;      
     virtual vec2dOneD * create( void ) const = 0;     
     virtual aFY Y( float const & xx) const = 0;
     virtual aFY Y(aFX const & xx) const;

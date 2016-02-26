@@ -1,4 +1,5 @@
 #include "scaCurve2dOneD.h"
+#include "analyticFunctionTransformed.h"
 
 #include <logMe/logMe.h>
 #include <geometryEngine/dtCurve2d.h>
@@ -45,6 +46,12 @@ namespace dtOO {
   scaCurve2dOneD * scaCurve2dOneD::clone( void ) const {
     return new scaCurve2dOneD( *this );
   }
+
+	scaCurve2dOneD * scaCurve2dOneD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< scaCurve2dOneD >(*this, dtT);
+	}  
   
   scaCurve2dOneD * scaCurve2dOneD::create( void ) const {
     return new scaCurve2dOneD();

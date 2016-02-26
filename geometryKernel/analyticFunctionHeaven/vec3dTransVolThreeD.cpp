@@ -5,6 +5,8 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include "vec3dTwoD.h"
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
 	vec3dTransVolThreeD::vec3dTransVolThreeD() : vec3dThreeD() {
 	}
@@ -114,6 +116,12 @@ namespace dtOO {
   vec3dTransVolThreeD * vec3dTransVolThreeD::clone( void ) const {
 		return new vec3dTransVolThreeD(*this);
 	}
+
+	vec3dTransVolThreeD * vec3dTransVolThreeD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< vec3dTransVolThreeD >(*this, dtT);
+	}    
 	
   vec3dTransVolThreeD * vec3dTransVolThreeD::create( void ) const {
 		return new vec3dTransVolThreeD();

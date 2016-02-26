@@ -5,6 +5,8 @@
 #include <logMe/dtMacros.h>
 #include <geometryEngine/dtSurface2d.h>
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
 	vec2dSurface2dTwoD::vec2dSurface2dTwoD() : vec2dTwoD() {
 	}
@@ -42,6 +44,12 @@ namespace dtOO {
   vec2dSurface2dTwoD * vec2dSurface2dTwoD::clone( void ) const {
 		return new vec2dSurface2dTwoD(*this);
 	}
+
+	vec2dSurface2dTwoD * vec2dSurface2dTwoD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< vec2dSurface2dTwoD >(*this, dtT);
+	}  
 	
   vec2dSurface2dTwoD * vec2dSurface2dTwoD::create( void ) const {
 		return new vec2dSurface2dTwoD();

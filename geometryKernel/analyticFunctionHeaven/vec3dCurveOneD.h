@@ -11,6 +11,7 @@
 namespace dtOO {
   class dtCurve;
   class renderInterface;
+  class dtTransformer;  
   
   class vec3dCurveOneD : public vec3dOneD {
   public:
@@ -19,6 +20,9 @@ namespace dtOO {
     vec3dCurveOneD(const vec3dCurveOneD& orig);
     vec3dCurveOneD(dtCurve const * const dtC);
     virtual vec3dCurveOneD * clone( void ) const;
+    virtual vec3dCurveOneD * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;      
     virtual vec3dCurveOneD * create( void ) const;    
     virtual ~vec3dCurveOneD();
     virtual aFY Y( aFX const & xx) const;    

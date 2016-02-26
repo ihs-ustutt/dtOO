@@ -7,6 +7,8 @@
 #include <interfaceHeaven/ptrHandling.h>
 
 namespace dtOO { 
+  class dtTransformer;
+  
   /**
    * Add a scalar function \f$s(\underline{x})\f$ value to a vector
    * function \f$\underline{f}(u,v)\f$ according to
@@ -40,6 +42,9 @@ namespace dtOO {
       dtVector3 const nf
     );
     virtual vec3dThickedTwoD * clone( void ) const;
+    virtual vec3dThickedTwoD * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;             
     virtual vec3dThickedTwoD * create( void ) const;    
     virtual ~vec3dThickedTwoD();
     virtual aFY Y( aFX const & xx) const;

@@ -5,7 +5,11 @@
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
+  class dtTransformer;
+  
   template < typename funT, typename invFunT >
   class analyticFunctionCombination : public funT {
   public:
@@ -16,6 +20,9 @@ namespace dtOO {
       funT const * const fun, invFunT const * const invFun
     );
     analyticFunctionCombination * clone( void ) const;
+    virtual analyticFunctionCombination * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;          
     analyticFunctionCombination * create( void ) const;    
     virtual ~analyticFunctionCombination();
     virtual aFY Y( aFX const & xx ) const;
@@ -58,6 +65,17 @@ namespace dtOO {
   ) const {
     return new analyticFunctionCombination< funT, invFunT >( *this );    
   }
+
+  template < typename funT, typename invFunT >  
+	analyticFunctionCombination< funT, invFunT > * 
+  analyticFunctionCombination< funT, invFunT >::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return 
+      new analyticFunctionTransformed< 
+        analyticFunctionCombination< funT, invFunT > 
+      >(*this, dtT);
+	}   
   
   template < typename funT, typename invFunT >
   analyticFunctionCombination < funT, invFunT > * 

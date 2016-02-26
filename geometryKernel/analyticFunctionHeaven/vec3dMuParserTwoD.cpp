@@ -3,6 +3,8 @@
 #include <logMe/logMe.h>
 #include <muParser.h>
 
+#include "analyticFunctionTransformed.h"
+
 namespace dtOO {
   vec3dMuParserTwoD::vec3dMuParserTwoD() : vec3dTwoD() {
     
@@ -97,6 +99,12 @@ namespace dtOO {
   vec3dMuParserTwoD * vec3dMuParserTwoD::clone( void ) const {
     return new vec3dMuParserTwoD( *this );
   }
+  
+	vec3dMuParserTwoD * vec3dMuParserTwoD::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+		return new analyticFunctionTransformed< vec3dMuParserTwoD >(*this, dtT);
+	}    
   
   vec3dMuParserTwoD * vec3dMuParserTwoD::create( void ) const {
     return new vec3dMuParserTwoD();

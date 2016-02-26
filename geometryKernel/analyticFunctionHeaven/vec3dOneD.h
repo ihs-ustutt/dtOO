@@ -6,6 +6,8 @@
 #include "vec3dFunction.h"
 
 namespace dtOO {
+  class dtTransformer;
+  
   class vec3dOneD : public vec3dFunction {
   public:
     dt__class(vec3dOneD, analyticFunction);     
@@ -13,12 +15,17 @@ namespace dtOO {
     vec3dOneD(const vec3dOneD& orig);
     virtual ~vec3dOneD();
     virtual vec3dOneD * clone( void ) const = 0;
+    virtual vec3dOneD * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const = 0;      
     virtual vec3dOneD * create( void ) const = 0;    
     virtual aFY Y( float const & xx) const;
     virtual aFY Y(aFX const & xx) const = 0;
     virtual int xDim( void ) const;
     void setMin( float const & min );
     void setMax( float const & max );
+    void setMax(int const & dir, float const & max);
+    void setMin(int const & dir, float const & min);    
     virtual float xMin( int const & dir) const;
     virtual float xMax( int const & dir) const;   
     virtual dtVector3 DYdtVector3( float const & xx ) const;

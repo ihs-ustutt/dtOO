@@ -7,6 +7,8 @@
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+  class dtTransformer;
+  
   class vec3dTriLinearThreeD : public vec3dThreeD {
   public:
     dt__class(vec3dTriLinearThreeD, analyticFunction);     
@@ -22,6 +24,9 @@ namespace dtOO {
       dtPoint3 const & p000, dtPoint3 const & p111
     );    
     vec3dTriLinearThreeD * clone( void ) const;
+    virtual vec3dTriLinearThreeD * cloneTransformed(
+      dtTransformer const * const dtT 
+    ) const;     
     vec3dTriLinearThreeD * create( void ) const;    
     virtual ~vec3dTriLinearThreeD();
     virtual aFY Y( aFX const & xx ) const;

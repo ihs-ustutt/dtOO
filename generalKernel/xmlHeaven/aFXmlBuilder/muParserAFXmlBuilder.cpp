@@ -3,8 +3,9 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/scaMuParserOneD.h>
 #include <analyticFunctionHeaven/scaMuParserTwoD.h>
-#include <analyticFunctionHeaven/vec3dMuParserTwoD.h>
 #include <analyticFunctionHeaven/vec2dMuParserTwoD.h>
+#include <analyticFunctionHeaven/vec3dMuParserOneD.h>
+#include <analyticFunctionHeaven/vec3dMuParserTwoD.h>
 #include <analyticFunctionHeaven/vec3dMuParserThreeD.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -164,6 +165,34 @@ namespace dtOO {
 
 			sFunP->push_back(theF);
     }				
+		//
+		// vec3dMuParserOneD
+		//
+    else if (isVec3d && isOneD) {		
+			::QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
+
+			vec3dMuParserOneD * theF 
+			= 
+			new vec3dMuParserOneD(
+			  expStr, 
+			  dtXmlParserBase::getAttributeStr("name", xOneEl)
+			); 
+			
+			theF->setMin(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xOneEl, cValP, depSFunP
+        )
+      );
+
+			sFunP->push_back(theF);
+    }		    
 		//
 		// vec3dMuParserTwoD
 		//

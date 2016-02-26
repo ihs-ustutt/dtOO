@@ -8,6 +8,7 @@
 
 namespace dtOO {
   class renderInterface;
+  class dtTransformer;
   
   class scaTwoD : public scaFunction {
   public:
@@ -16,6 +17,9 @@ namespace dtOO {
     scaTwoD( scaTwoD const & orig);  
     virtual ~scaTwoD();
     virtual scaTwoD * clone( void ) const = 0;
+    virtual scaTwoD * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const = 0;        
     virtual scaTwoD * create( void ) const = 0;       
     virtual float YFloat(aFX const & xx) const;
     virtual float YFloat(float const & x0, float const & x1) const = 0;
