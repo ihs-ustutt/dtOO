@@ -1072,6 +1072,32 @@ namespace dtOO {
               dtLinearAlgebra::normalize( m2d->firstDerV( argCS[0], argCS[1] ) )
             )
           );
+        }        
+        else if (aGOption == "%ndU") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              dtLinearAlgebra::normalize( 
+                m2d->firstDerU( 
+                  m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1])             
+                ) 
+              )
+            )
+          );
+        }        
+        else if (aGOption == "%ndV") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              dtLinearAlgebra::normalize( 
+                m2d->firstDerU( 
+                  m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1])             
+                ) 
+              )
+            )
+          );
         }          
         else if (aGOption == "ndUx") {
           pp.push_back(
