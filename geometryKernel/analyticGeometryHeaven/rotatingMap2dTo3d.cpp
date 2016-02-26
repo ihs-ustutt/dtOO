@@ -31,10 +31,12 @@ namespace dtOO {
     dtVector3 const & vv, map2dTo3d const * const m2d 
   ) : map3dTo3d() {
 		if (m2d->isClosedU() || m2d->isClosedV() ) {
-			dt__throw(rotatingMap2dTo3d(),
-							<< "Surface is closed. This is not yet supported." << std::endl
-							<< dt__eval(m2d->isClosedU()) << std::endl
-							<< dt__eval(m2d->isClosedV()) );
+			dt__throw(
+        rotatingMap2dTo3d(),
+				<< "Surface is closed. This is not yet supported." << std::endl
+				<< dt__eval(m2d->isClosedU()) << std::endl
+				<< dt__eval(m2d->isClosedV()) 
+      );
 		}
 		_pp = dtPoint3(0.,0.,0.);
 		_vv = dtLinearAlgebra::normalize(vv);
@@ -68,9 +70,11 @@ namespace dtOO {
       case 2:
         return false;
       default:
-        dt__throw(isClosed(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0, 1 or 2.");
+        dt__throw(
+          isClosed(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0, 1 or 2."
+        );
     }
 	}
   
@@ -83,9 +87,11 @@ namespace dtOO {
       case 2:
         return _m2d->getVMin();
       default:
-        dt__throw(getMin(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0, 1 or 2.");
+        dt__throw(
+          getMin(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0, 1 or 2."
+        );
     }    		
 	}
   
@@ -98,9 +104,11 @@ namespace dtOO {
       case 2:
         return _m2d->getVMax();
       default:
-        dt__throw(getMax(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0, 1 or 2.");
+        dt__throw(
+          getMax(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0, 1 or 2."
+        );
     }    				
 	}
     
