@@ -92,23 +92,28 @@ std::string parseCommand(
     parser.createConstValue(&cV);
     return std::string("");    
   }           
-  dt__commandIf( aRule, help, "loadStateToConst", "load a state" ) { 
+  dt__commandIf( aRule, help, "loadStateToConst", "load a state" ) {
+    dt__throwIfNoClass(addRule.size()!=1, parseCommand());
     parser.loadStateToConst(addRule[0], cV);
     return std::string("");    
   }      
   dt__commandIf( aRule, help, "write", "write current state" ) {
+    dt__throwIfNoClass(addRule.size()!=1, parseCommand());
     parser.write(addRule[0], cV);
     return std::string("");    
   }      
   dt__commandIf( aRule, help, "writeUpdate", "write update of a state" ) {
+    dt__throwIfNoClass(addRule.size()!=1, parseCommand());
     parser.writeUpdate(addRule[0], cV);
     return std::string("");    
   }
   dt__commandIf( aRule, help, "remove", "remove a state" ) {
+    dt__throwIfNoClass(addRule.size()!=1, parseCommand());
     parser.remove(addRule[0]);
     return std::string("");    
   } 
   dt__commandIf( aRule, help, "extract", "extract a state" ) {
+    dt__throwIfNoClass(addRule.size()!=1, parseCommand());
     parser.extract(addRule[0], cV, addRule[1]);
     return std::string("");    
   }       
@@ -166,6 +171,7 @@ std::string parseCommand(
 		return ss.str();    
   }    
   dt__commandIf( aRule, help, "commandAndWait", "call system command" ) {
+    dt__throwIfNoClass(addRule.size()!=1, parseCommand());
     std::stringstream ss;
     ss << systemHandling::commandAndWait(addRule[0]) << std::endl;
     return ss.str();
@@ -425,17 +431,23 @@ int main( int ac, char* av[] ) {
     << "#   vectorHandling< dtPlugin * > dtP" << std::endl;
     
     while (true) {
+      std::cout << "built4CubanLinx ::> ";
       //
       // get command
       //
-      char * line = readline("built4CubanLinx ::> ");
+      std::string line;
+      std::getline(std::cin, line);
+//      char * line = readline("built4CubanLinx ::> ");
+//      for ( std::string line; std::getline(std::cin, line); ) {
+//          std::cout << line << std::endl;
+//      }      
       
-      if (!line) break;
+      if (line.empty()) break;
       
       //
       // make history
       //
-      if (*line) add_history(line);
+//      if (*line) add_history(line);
       
       //
       // make command string
@@ -443,10 +455,10 @@ int main( int ac, char* av[] ) {
       std::string command(line);
       if ( command.empty() ) continue;
       
-      //
-      // free line
-      //
-      free(line);      
+//      //
+//      // free line
+//      //
+//      free(line);      
       
       if ( command == "exit" || std::cin.eof() ) break;
       else {
