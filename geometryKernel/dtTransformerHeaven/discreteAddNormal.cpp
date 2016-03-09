@@ -2,6 +2,7 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
+#include <analyticFunctionHeaven/vec3dOneD.h>
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
@@ -38,12 +39,19 @@ namespace dtOO {
 
 			vec3dTwoD const * const vec3d2d = vec3dTwoD::ConstDownCast(aF);
       if (vec3d2d) {
-				retV.push_back( 
-					vec3dTwoD_normalOffset(
-            vec3d2d, _tt.get(), _nf, _nU, _nV, _order
-          ).result()
-				);
-				retV.back()->setLabel(aF->getLabel());				
+        vec3dTwoD_normalOffset anOffset( 
+          vec3d2d, _tt.get(), _nf, _nU, _nV, _order
+        );       
+        retV.push_back( anOffset.result() );
+        
+        //
+        // append wire if debug option set
+        //
+        if ( optionHandling::optionTrue("debug") ) {
+          dt__forAllRefAuto(anOffset.resultWire(), aCurve) {
+            retV.push_back( aCurve.clone() );
+          }
+        }
 			}
 			else dt__throwUnexpected(apply());
 		}
@@ -60,101 +68,57 @@ namespace dtOO {
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 				
+    dt__throwIf(
+      !dtXmlParserBase::hasAttribute("function_label", *tE)
+      ||
+      !dtXmlParserBase::hasAttribute("number_points_one", *tE)
+      || 
+      !dtXmlParserBase::hasAttribute("number_points_two", *tE)
+      ||
+      !dtXmlParserBase::hasAttribute("order", *tE),
+      init()
+    );
     //
     // get functions
-    //     
-		if ( dtXmlParserBase::hasAttribute("function_label", *tE) ) {
-			handleAnalyticFunction(
-				"function_label", 
-				aF->get( dtXmlParserBase::getAttributeStr("function_label", *tE) ) 
-			);
-		}
+    //  
+		dt__ptrAss(
+      vec3dTwoD const * const tt,
+      vec3dTwoD::ConstDownCast(
+        aF->get( dtXmlParserBase::getAttributeStr("function_label", *tE) )
+      )
+    );
+    _tt.reset(tt->clone());
+       
+    //
+    // get number of points
+    //
+		_nU
+    =
+    dtXmlParserBase::getAttributeIntMuParse("number_points_one", *tE, cV, aF);
+  	_nV 
+    = 
+	  dtXmlParserBase::getAttributeIntMuParse("number_points_two", *tE, cV, aF);
+
+    //
+    // get order
+    //
+		_order = dtXmlParserBase::getAttributeIntMuParse("order", *tE, cV, aF);
+    
 		//
 		// set vector
 		//
 		_nf = dtVector3(0,0,0);
 		if ( dtXmlParserBase::hasAttribute("scale_vector", *tE) ) {
-			handleDtVector3(
-				"scale_vector",
-				dtXmlParserBase::getDtVector3(
-					dtXmlParserBase::getAttributeStr("scale_vector", *tE), bC 
-				)
-			);
-		}
-    //
-    // get number of points
-    //
-		_nU = 0;
-    _nV = 0;
-		if ( dtXmlParserBase::hasAttribute("number_points_one", *tE) ) {
-			handleInt(
-				"number_points_one",
-				dtXmlParserBase::getAttributeIntMuParse(
-					"number_points_one", *tE, cV, aF 
-				)
-			);
+      _nf
+      =
+      dtXmlParserBase::getDtVector3(
+        dtXmlParserBase::getAttributeStr("scale_vector", *tE), bC 
+      );
 		}    
-		if ( dtXmlParserBase::hasAttribute("number_points_two", *tE) ) {
-			handleInt(
-				"number_points_two",
-				dtXmlParserBase::getAttributeIntMuParse(
-					"number_points_two", *tE, cV, aF 
-				)
-			);
-		}    
-    //
-    // get order
-    //    
-		if ( dtXmlParserBase::hasAttribute("order", *tE) ) {
-			handleInt(
-				"order",
-				dtXmlParserBase::getAttributeIntMuParse(
-					"order", *tE, cV, aF 
-				)
-			);
-		}        
   }
 
   bool discreteAddNormal::isNecessary( void ) const {
     return true;
   }
-  
-  void discreteAddNormal::handleAnalyticFunction(
-    std::string const name, analyticFunction const * value
-  ) {
-		vec3dTwoD const * const tt = vec3dTwoD::ConstDownCast(value);
-
-    if (name == "function_label") {
-      _tt.reset(tt->clone());
-			return;
-    }
-    dtTransformer::handleAnalyticFunction(name, value);
-  }  
-
-  void discreteAddNormal::handleDtVector3(
-    std::string const name, dtVector3 const value
-  ) {
-    if (name == "scale_vector" ) {
-      _nf = value;
-      return;
-    }
-    dtTransformer::handleDtVector3(name, value);
-  }		
-
-  void discreteAddNormal::handleInt(std::string const name, int const value) {
-    if (name == "order" ) {
-      _order = value;
-      return;
-    }
-    else if (name == "number_points_one") {
-      _nU = value;
-      return;
-    }
-    else if (name == "number_points_two") {
-      _nV = value;
-      return;
-    }    
-    dtTransformer::handleInt(name, value);
-  }  
 }
 

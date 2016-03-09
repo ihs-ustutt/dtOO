@@ -27,11 +27,6 @@ namespace dtOO {
     );
     virtual vectorHandling< analyticFunction * > 
     apply( vectorHandling< analyticFunction * > const * const aFP ) const;
-    virtual void handleAnalyticFunction(
-      std::string const name, analyticFunction const * value
-    );
-    virtual void handleDtVector3(std::string const name, dtVector3 const value);
-    virtual void handleInt(std::string const name, int const value);
   private:
     dt__pH(vec3dTwoD) _tt;
     dtVector3 _nf;
