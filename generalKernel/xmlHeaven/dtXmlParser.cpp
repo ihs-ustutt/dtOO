@@ -887,11 +887,15 @@ namespace dtOO {
 	  std::string const label, 
 		baseContainer * const bC,
     vectorHandling< constValue * > const * const cVP, 
-    vectorHandling< analyticFunction * > * sFP
+    vectorHandling< analyticFunction * > * aFP
 	) const {
     ::QDomElement aFElement = getElement("function", label);
+    
+    //
+    // log
+    //
     dt__makeChapter(creating function);
-    dt__info(createFunction(), << convertToString(aFElement) );
+    dt__info(createAnalyticFunction(), << convertToString(aFElement) );
     
 
 		::QDomElement tE = getChild("builder", aFElement);
@@ -913,44 +917,80 @@ namespace dtOO {
 		// call builder
 		//
     vectorHandling< analyticFunction * > tmpAF;   
-		if (!buildCompound) builder->buildPart(tE, bC, cVP, sFP, &tmpAF);
-		else builder->buildPartCompound(tE, bC, cVP, sFP, &tmpAF);
+		if (!buildCompound) builder->buildPart(tE, bC, cVP, aFP, &tmpAF);
+		else builder->buildPartCompound(tE, bC, cVP, aFP, &tmpAF);
 
+    logContainer< dtXmlParser > logC(logINFO, "createAnalyticFunction()");
+    
     //
-    // copy analyticFunctions from tmpSFun to sFP
+    // no labeling necessary
+    //      
+    if ( tmpAF.empty() ) return;
+    
     //
-    for (int ii=0;ii<tmpAF.size();ii++) {			
-      if (label != "*") {
-        if ( tmpAF.size() > 1  ) {
-          tmpAF[ii]->setLabel(label+"_"+intToString(ii) );
+    // vector of labels
+    //
+    if ( stringPrimitive::stringContains("{", label) ) {
+      std::vector< std::string > labelVector
+      =
+      stringPrimitive::convertToStringVector("{", "}", label);
+      std::string baseName = labelVector[0];
+      
+      logC() 
+        << "label = " << label << std::endl
+        << "baseName = " << baseName << std::endl;
+      
+      int counterLabel = 0;
+      dt__forAllIndex(tmpAF, ii) {
+        if ( !labelVector.empty() ) {
+          tmpAF[ii]->setLabel( labelVector.front() );
+          logC() << "setLabel( " << labelVector.front() << " )" << std::endl;
+          labelVector.erase( labelVector.begin() );
         }
         else {
-          tmpAF[ii]->setLabel(label);
+          tmpAF[ii]->setLabel( baseName+"_"+intToString(counterLabel) );            
+          logC() 
+            << "setLabel( " 
+            << baseName+"_"+intToString(counterLabel) 
+            << " )" 
+            << std::endl;          
+          counterLabel++;
         }
-        sFP->push_back( tmpAF[ii] );				
-      }
-      else {
-				//
-				// replace in vector
-				//
-        int pos = sFP->getPosition( tmpAF[ii]->getLabel() );
-        delete sFP->at(pos);
-        sFP->at(pos) = tmpAF[ii];
+        aFP->push_back( tmpAF[ii] );				
       }
     }
-    tmpAF.clear();    
+    //
+    // single label
+    //
+    else {
+      if ( tmpAF.size() > 1  ) {
+        dt__forAllIndex(tmpAF, ii) {
+          logC() 
+            << "setLabel( " 
+            << label+"_"+intToString(ii) 
+            << " )" 
+            << std::endl;           
+          tmpAF[ii]->setLabel( label+"_"+intToString(ii) );
+          aFP->push_back( tmpAF[ii] );            
+        }
+      }
+      else {
+        tmpAF[0]->setLabel(label);
+        aFP->push_back( tmpAF[0] );
+      }
+    }   
   }	
 	
   void dtXmlParser::createAnalyticFunction(
 	  baseContainer * const bC,
     vectorHandling< constValue * > const * const cVP, 
-    vectorHandling< analyticFunction * > * sFP
+    vectorHandling< analyticFunction * > * aFP
 	) const {
 		std::vector< std::string > label = getLabels("function");
 		
-		dt__forAllIndex(label, ii) createAnalyticFunction(label[ii], bC, cVP, sFP);
+		dt__forAllIndex(label, ii) createAnalyticFunction(label[ii], bC, cVP, aFP);
 		
-		sFP->dump();
+		aFP->dump();
   }		
 
 	/**

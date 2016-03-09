@@ -79,11 +79,12 @@ namespace dtOO {
 	    std::string const functionName,
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cVP, 
-      vectorHandling< analyticFunction * > * sFP) const;
+      vectorHandling< analyticFunction * > * aFP
+    ) const;
     void createAnalyticFunction(
       baseContainer * const bC,
       vectorHandling< constValue * > const * const cVP, 
-      vectorHandling< analyticFunction * > * sFP
+      vectorHandling< analyticFunction * > * aFP
 	  ) const;
     void createAnalyticGeometry(
       std::string const label,
@@ -172,8 +173,12 @@ namespace dtOO {
     void checkFile(
       char const * const fileName, QDomDocument & xmlDocument
     ) const;
-    static void writeFile(char const * const fileName, QDomDocument & xmlDocument);
-    static void writeFile( std::string const & fileName, ::QDomNode const & node);
+    static void writeFile(
+      char const * const fileName, QDomDocument & xmlDocument
+    );
+    static void writeFile( 
+      std::string const & fileName, ::QDomNode const & node
+    );
     void setStaticProperties( void );
     void createRetroConstValue(
       std::string const constValueLabel, vectorHandling< constValue * > * cValP
