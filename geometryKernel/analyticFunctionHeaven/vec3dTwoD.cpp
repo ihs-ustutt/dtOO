@@ -132,8 +132,16 @@ namespace dtOO {
 		yy[1][1] = YdtPoint3( x_percent(xP[0], uv[1][1]) );
 		
 		std::vector<dtVector3> dxdy(2);
-		dxdy[0] = (yy[0][1] - yy[0][0]) / ( x_percent(uv[0][1], xP[1])[0] - x_percent(uv[0][0], xP[1])[0] );
-		dxdy[1] = (yy[1][1] - yy[1][0]) / ( x_percent(xP[0], uv[1][1])[1] - x_percent(xP[0], uv[1][0])[1] );
+		dxdy[0] 
+    = 
+    (yy[0][1] - yy[0][0]) 
+    / 
+    ( x_percent(uv[0][1], xP[1])[0] - x_percent(uv[0][0], xP[1])[0] );
+		dxdy[1] 
+    =
+    (yy[1][1] - yy[1][0]) 
+    / 
+    ( x_percent(xP[0], uv[1][1])[1] - x_percent(xP[0], uv[1][0])[1] );
 		
 		return dxdy;
 	}
@@ -241,7 +249,6 @@ namespace dtOO {
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMin(1);
 			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );
@@ -252,7 +259,6 @@ namespace dtOO {
 			xx[0] = xMin(0);
 			xx[1] = xMin(1) + jjF * intervalV;
 			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );			
@@ -263,7 +269,6 @@ namespace dtOO {
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMax(1);
 			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );
@@ -274,7 +279,6 @@ namespace dtOO {
 			xx[0] = xMax(0);
 			xx[1] = xMin(1) + jjF * intervalV;
 			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
 			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
 		}
 		rV.push_back( new solid2dLine(p2) );			
