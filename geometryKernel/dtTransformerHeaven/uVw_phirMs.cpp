@@ -39,10 +39,6 @@ namespace dtOO {
 		return new uVw_phirMs();
 	}
 	
-	/**
-	 * @todo ConstDownCast to current types is not a satisfying solution. Maybe
-	 * "transformed cloning" is a better solution?!
-   */
   vectorHandling< analyticFunction * > uVw_phirMs::apply( 
 	  vectorHandling< analyticFunction * > const * const aFP 
 	) const {
@@ -51,51 +47,8 @@ namespace dtOO {
     for (int ii=0; ii<aFP->size(); ii++) {
 			analyticFunction * aF = aFP->at(ii);
 
-			vec3dCurveOneD const * const v1d = vec3dCurveOneD::ConstDownCast(aF);			
-			vec3dSurfaceTwoD const * const v2d = vec3dSurfaceTwoD::ConstDownCast(aF);
-			vec3dThickedTwoD const * const vT2d = vec3dThickedTwoD::ConstDownCast(aF);
-      vec3dTransVolThreeD const * const v3d 
-      = 
-      vec3dTransVolThreeD::ConstDownCast(aF);
-			
-			if (v1d) {			
-				analyticFunctionTransformed<vec3dCurveOneD> * aFT
-				= new analyticFunctionTransformed<vec3dCurveOneD>(*v1d);
-				aFT->setTransformer(this);
-				retV.push_back( aFT );
-				retV.back()->setLabel(aF->getLabel());
-			}			
-      else if (v2d) {
-				analyticFunctionTransformed<vec3dSurfaceTwoD> * aFT
-				= new analyticFunctionTransformed<vec3dSurfaceTwoD>(*v2d);
-				aFT->setTransformer(this);
-				retV.push_back( aFT );
-				retV.back()->setLabel(aF->getLabel());				
-			}
-      else if (vT2d) {			
-				analyticFunctionTransformed<vec3dThickedTwoD> * aFT
-				= new analyticFunctionTransformed<vec3dThickedTwoD>(*vT2d);
-				aFT->setTransformer(this);
-				retV.push_back( aFT );
-				retV.back()->setLabel(aF->getLabel());	
-			}	
-      else if (v3d) {			
-				analyticFunctionTransformed<vec3dTransVolThreeD> * aFT
-				= new analyticFunctionTransformed<vec3dTransVolThreeD>(*v3d);
-				aFT->setTransformer(this);
-				retV.push_back( aFT );
-				retV.back()->setLabel(aF->getLabel());	
-			}		      
-			else {
-				dt__throw(
-					apply(),
-					<< dt__eval(v1d) << std::endl
-					<< dt__eval(v2d) << std::endl
-					<< dt__eval(vT2d) << std::endl								
-					<< dt__eval(v3d) << std::endl		          
-					<< "Unknown type."
-				);
-			}
+      retV.push_back( aF->cloneTransformed( this ) );
+      retV.back()->setLabel( aF->getLabel() );
 		}
 		
 		return retV;
@@ -324,9 +277,12 @@ namespace dtOO {
 		//
     dtVector3 vXYZ 
     = 
-    dtLinearAlgebra::toDtVector3(
+    _rM2d->origin()
+    -
+//    dtLinearAlgebra::toDtVector3(
       _rM2d->constRefMap2dTo3d().getPoint(vv, ww)
-    );
+//    );
+      ;
     dtVector3 pointOnRotAx 
     = 
     _rM2d->rotationAxis() 
@@ -357,9 +313,11 @@ namespace dtOO {
   ) const {
     dtVector3 vXYZ 
     = 
-    dtLinearAlgebra::toDtVector3(
+    _rM2d->origin() -
+//    dtLinearAlgebra::toDtVector3(
       _rM2d->constRefMap2dTo3d().getPoint(vv, ww)
-    );
+//    );
+      ;
     dtVector3 pointOnRotAx 
     = 
     _rM2d->rotationAxis() 
