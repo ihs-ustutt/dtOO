@@ -8,7 +8,7 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
-  dtTransformer::dtTransformer() : labelHandling() {
+  dtTransformer::dtTransformer() : labelHandling(), optionHandling() {
   }
 
   dtTransformer::~dtTransformer() {
@@ -23,13 +23,14 @@ namespace dtOO {
   void dtTransformer::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF,
+		vectorHandling< analyticGeometry * > const * const aG
 	) {
 		if ( dtXmlParserBase::hasAttribute("label", *tE) ) {
 			labelHandling::setLabel(dtXmlParserBase::getAttributeStr("label", *tE));
 		}
+    optionHandling::init(*tE, bC, cV, aF, aG);
   }
     
   void dtTransformer::init( 

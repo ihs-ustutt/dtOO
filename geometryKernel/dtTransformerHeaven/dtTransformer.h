@@ -5,6 +5,7 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/labelHandling.h>
+#include <interfaceHeaven/optionHandling.h>
 #include <vector>
 #include <string>
 #include <logMe/dtMacros.h>
@@ -17,7 +18,7 @@ namespace dtOO {
   class analyticGeometry;
   class analyticFunction;
   
-  class dtTransformer : public labelHandling {
+  class dtTransformer : public labelHandling, public optionHandling {
   public:
     dt__classOnlyName(dtTransformer);
     dtTransformer();
@@ -31,9 +32,9 @@ namespace dtOO {
     virtual void init( 
       ::QDomElement const * tE, 
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP,
-      vectorHandling< analyticGeometry * > const * const depAGeoP 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG 
     ) = 0;
     virtual bool isNecessary( void ) const = 0;
     //
