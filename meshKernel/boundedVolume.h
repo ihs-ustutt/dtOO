@@ -40,10 +40,10 @@ namespace dtOO {
     virtual void makePreGrid(void) = 0;
     bool isMeshed( void ) const;
     void setMeshed( void );
-    virtual std::vector< std::string > getMeshTags( void ) const;
-	  virtual dtGmshFace * getFace( std::string const & tag ) const;
-    virtual dtGmshRegion * getRegion( std::string const & tag ) const;
-    virtual dtGmshModel * getModel( void ) const;
+    virtual std::vector< std::string > getMeshTags( void ) const = 0;
+	  virtual dtGmshFace * getFace( std::string const & tag ) const = 0;
+    virtual dtGmshRegion * getRegion( std::string const & tag ) const = 0;
+    virtual dtGmshModel * getModel( void ) const = 0;
   private:
     bool _meshed;
   };

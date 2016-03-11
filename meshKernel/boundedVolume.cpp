@@ -63,22 +63,4 @@ namespace dtOO {
   void boundedVolume::setMeshed( void ) {
 		_meshed = true;
 	}
-	
-	std::vector< std::string > boundedVolume::getMeshTags( void ) const {
-		return std::vector< std::string >(0);
-	}
-	
-	dtGmshRegion * boundedVolume::getRegion( std::string const & tag ) const {
-		return NULL;
-	}
-	
-	dtGmshFace * boundedVolume::getFace( std::string const & tag ) const {
-		return NULL;
-	}
-
-	dtGmshModel * boundedVolume::getModel( void ) const {
-		return NULL;
-	}
 }
-
-
