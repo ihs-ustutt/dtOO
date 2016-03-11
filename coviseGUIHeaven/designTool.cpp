@@ -247,6 +247,8 @@ namespace dtOO {
     logFileName = abstractModule::initializeLogFile( "./"+logFileName+".log" );
     _logName->setValue(logFileName.c_str()); 
     
+    _moduleChoice->setValue(0);
+    param("_moduleChoice", false);
 	}
 	
   void designTool::param(const char* paramName, bool inMapLoading) {
@@ -622,11 +624,10 @@ namespace dtOO {
 					boundedVolume const * bV = _bV.get(str);
           std::vector< std::string > tags = bV->getMeshTags();
 					abstractModule::updateChoiceParam(_bVRenderTags, &tags);
-					bV->extRender(
-            true, abstractModule::blankReConvert(_bVRenderTags->getActLabel()) 
-          );
-				
-					_bVRenderTags->enable();
+//					bV->extRender(
+//            true, abstractModule::blankReConvert(_bVRenderTags->getActLabel()) 
+//          );
+//					_bVRenderTags->enable();
 					
 					_recreate = false;
 					setExecGracePeriod(0.1);
