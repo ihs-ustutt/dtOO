@@ -13,12 +13,12 @@ namespace Foam {
 };
 
 namespace dtOO {
-  class openFOAMSetupRule {
+  class OpenFOAMSetupRule {
   public:
-    dt__classOnlyName(openFOAMSetupRule);    
-    openFOAMSetupRule();
-    virtual ~openFOAMSetupRule();
-    static openFOAMSetupRule * create( std::string const & name );
+    dt__classOnlyName(OpenFOAMSetupRule);    
+    OpenFOAMSetupRule();
+    virtual ~OpenFOAMSetupRule();
+    static OpenFOAMSetupRule * create( std::string const & name );
     virtual void executeOnMesh(
       std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
     ) const;

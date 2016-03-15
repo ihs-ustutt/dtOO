@@ -1,4 +1,4 @@
-#include "openFOAMWallRule.h"
+#include "OpenFOAMWallRule.h"
 #include "interfaceHeaven/stringPrimitive.h"
 
 #include <logMe/logMe.h>
@@ -10,13 +10,13 @@
 #include <volFields.H>
 
 namespace dtOO {
-  openFOAMWallRule::openFOAMWallRule() {
+  OpenFOAMWallRule::OpenFOAMWallRule() {
   }
 
-  openFOAMWallRule::~openFOAMWallRule() {
+  OpenFOAMWallRule::~OpenFOAMWallRule() {
   }
   
-  void openFOAMWallRule::executeOnMesh(
+  void OpenFOAMWallRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
     //

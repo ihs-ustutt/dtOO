@@ -1,4 +1,4 @@
-#include "openFOAMCellZoneRule.h"
+#include "OpenFOAMCellZoneRule.h"
 #include "fvMesh.H"
 
 #include <logMe/logMe.h>
@@ -13,17 +13,17 @@
 #include <emptyPolyPatch.H>
 
 namespace dtOO {
-  openFOAMCellZoneRule::openFOAMCellZoneRule() {
+  OpenFOAMCellZoneRule::OpenFOAMCellZoneRule() {
   }
 
-  openFOAMCellZoneRule::~openFOAMCellZoneRule() {
+  OpenFOAMCellZoneRule::~OpenFOAMCellZoneRule() {
   }
   
-  void openFOAMCellZoneRule::executeOnMesh(
+  void OpenFOAMCellZoneRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
-    std::string min = openFOAMSetupRule::parseOptionStr("min", rule[2]);
-    std::string max = openFOAMSetupRule::parseOptionStr("max", rule[2]);
+    std::string min = OpenFOAMSetupRule::parseOptionStr("min", rule[2]);
+    std::string max = OpenFOAMSetupRule::parseOptionStr("max", rule[2]);
     
     if (min == "" && max == "") {
       dtFoamLibrary::boxToCellZone(

@@ -22,7 +22,7 @@
 #include <polyMesh.H>
 #include <volFields.H>
 
-#include "openFOAMSetupRule.h"
+#include "OpenFOAMSetupRule.h"
 #include <logMe/dtParMacros.h>
 
 namespace dtOO { 
@@ -317,7 +317,7 @@ namespace dtOO {
       initMeshVectors(allVerts, allElems, physicalNames);
 
       //
-      // create openFOAM rootCase and time
+      // create OpenFOAM rootCase and time
       //
       try {
         // disable floating point exception trapping
@@ -362,8 +362,8 @@ namespace dtOO {
         // execute rules
         //
         dt__forAllRefAuto(_setupRule, aRule) {
-          dt__pH(openFOAMSetupRule) exRule(
-            openFOAMSetupRule::create( aRule[0] )
+          dt__pH(OpenFOAMSetupRule) exRule(
+            OpenFOAMSetupRule::create( aRule[0] )
           );
           exRule->executeOnMesh(aRule, *mesh);
         }
@@ -451,8 +451,8 @@ namespace dtOO {
         // execute rules
         //
         dt__forAllRefAuto(_setupRule, aRule) {   
-          dt__pH(openFOAMSetupRule) exRule(
-            openFOAMSetupRule::create( aRule[0] )
+          dt__pH(OpenFOAMSetupRule) exRule(
+            OpenFOAMSetupRule::create( aRule[0] )
           );
           dt__forAllRefAuto(volVector_, aField) {
             exRule->executeOnVolVectorField(aRule, aField);

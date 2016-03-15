@@ -1,4 +1,4 @@
-#include "openFOAMCylindricalInletRule.h"
+#include "OpenFOAMCylindricalInletRule.h"
 
 #include <logMe/logMe.h>
 
@@ -11,13 +11,13 @@
 #include <fixedValueFvPatchField.H>
 
 namespace dtOO {
-  openFOAMCylindricalInletRule::openFOAMCylindricalInletRule() {
+  OpenFOAMCylindricalInletRule::OpenFOAMCylindricalInletRule() {
   }
 
-  openFOAMCylindricalInletRule::~openFOAMCylindricalInletRule() {
+  OpenFOAMCylindricalInletRule::~OpenFOAMCylindricalInletRule() {
   }
 
-  void openFOAMCylindricalInletRule::executeOnVolVectorField(
+  void OpenFOAMCylindricalInletRule::executeOnVolVectorField(
     std::vector< std::string > const & rule, ::Foam::volVectorField & field
   ) const {
     std::string thisRule = getRuleOfField(field.name(), rule);
@@ -90,7 +90,7 @@ namespace dtOO {
 
           return;
         }
-        else openFOAMSetupRule::executeOnVolVectorField(rule, field);
+        else OpenFOAMSetupRule::executeOnVolVectorField(rule, field);
       }
     }    
   }  

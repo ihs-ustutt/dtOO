@@ -1,4 +1,4 @@
-#include "openFOAMCyclicGgiRule.h"
+#include "OpenFOAMCyclicGgiRule.h"
 #include "fvMesh.H"
 
 #include <logMe/logMe.h>
@@ -14,13 +14,13 @@
 #include <volFields.H>
 
 namespace dtOO {
-  openFOAMCyclicGgiRule::openFOAMCyclicGgiRule() {
+  OpenFOAMCyclicGgiRule::OpenFOAMCyclicGgiRule() {
   }
 
-  openFOAMCyclicGgiRule::~openFOAMCyclicGgiRule() {
+  OpenFOAMCyclicGgiRule::~OpenFOAMCyclicGgiRule() {
   }
   
-  void openFOAMCyclicGgiRule::executeOnMesh(
+  void OpenFOAMCyclicGgiRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
     //
@@ -93,10 +93,10 @@ namespace dtOO {
     bM.set( id1, ggi1);
   }
   
-  void openFOAMCyclicGgiRule::executeOnVolVectorField(
+  void OpenFOAMCyclicGgiRule::executeOnVolVectorField(
     std::vector< std::string > const & rule, ::Foam::volVectorField & field
   ) const {
-    openFOAMSetupRule::executeOnVolVectorField(rule, field);
+    OpenFOAMSetupRule::executeOnVolVectorField(rule, field);
     //
     // get ggi patch labels
     //
@@ -125,10 +125,10 @@ namespace dtOO {
     }
   }
   
-  void openFOAMCyclicGgiRule::executeOnVolScalarField(
+  void OpenFOAMCyclicGgiRule::executeOnVolScalarField(
     std::vector< std::string > const & rule, ::Foam::volScalarField & field
   ) const {
-    openFOAMSetupRule::executeOnVolScalarField(rule, field);
+    OpenFOAMSetupRule::executeOnVolScalarField(rule, field);
     //
     // get ggi patch labels
     //

@@ -2,26 +2,26 @@ SET(HEADERS
   dtCase.h
   dtCaseFactory.h
   OpenFOAMCase/OpenFOAMCase.h
-  OpenFOAMCase/openFOAMSetupRule.h
-  OpenFOAMCase/openFOAMWallRule.h
-  OpenFOAMCase/openFOAMGgiRule.h
-  OpenFOAMCase/openFOAMCyclicGgiRule.h
-  OpenFOAMCase/openFOAMEmptyRule.h
-  OpenFOAMCase/openFOAMCylindricalInletRule.h
-  OpenFOAMCase/openFOAMCellZoneRule.h
+  OpenFOAMCase/OpenFOAMSetupRule.h
+  OpenFOAMCase/OpenFOAMWallRule.h
+  OpenFOAMCase/OpenFOAMGgiRule.h
+  OpenFOAMCase/OpenFOAMCyclicGgiRule.h
+  OpenFOAMCase/OpenFOAMEmptyRule.h
+  OpenFOAMCase/OpenFOAMCylindricalInletRule.h
+  OpenFOAMCase/OpenFOAMCellZoneRule.h
 )
 
 SET(SOURCES
   dtCase.cpp
   dtCaseFactory.cpp
   OpenFOAMCase/OpenFOAMCase.cpp
-  OpenFOAMCase/openFOAMSetupRule.cpp
-  OpenFOAMCase/openFOAMWallRule.cpp
-  OpenFOAMCase/openFOAMGgiRule.cpp
-  OpenFOAMCase/openFOAMCyclicGgiRule.cpp
-  OpenFOAMCase/openFOAMEmptyRule.cpp
-  OpenFOAMCase/openFOAMCylindricalInletRule.cpp
-  OpenFOAMCase/openFOAMCellZoneRule.cpp
+  OpenFOAMCase/OpenFOAMSetupRule.cpp
+  OpenFOAMCase/OpenFOAMWallRule.cpp
+  OpenFOAMCase/OpenFOAMGgiRule.cpp
+  OpenFOAMCase/OpenFOAMCyclicGgiRule.cpp
+  OpenFOAMCase/OpenFOAMEmptyRule.cpp
+  OpenFOAMCase/OpenFOAMCylindricalInletRule.cpp
+  OpenFOAMCase/OpenFOAMCellZoneRule.cpp
 )
 
 APPEND_DTOO_SOURCE(solverKernel "${SOURCES}")

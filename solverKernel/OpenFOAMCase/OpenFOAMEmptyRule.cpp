@@ -1,4 +1,4 @@
-#include "openFOAMEmptyRule.h"
+#include "OpenFOAMEmptyRule.h"
 #include "fvMesh.H"
 
 #include <logMe/logMe.h>
@@ -13,13 +13,13 @@
 #include <emptyPolyPatch.H>
 
 namespace dtOO {
-  openFOAMEmptyRule::openFOAMEmptyRule() {
+  OpenFOAMEmptyRule::OpenFOAMEmptyRule() {
   }
 
-  openFOAMEmptyRule::~openFOAMEmptyRule() {
+  OpenFOAMEmptyRule::~OpenFOAMEmptyRule() {
   }
   
-  void openFOAMEmptyRule::executeOnMesh(
+  void OpenFOAMEmptyRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
     
