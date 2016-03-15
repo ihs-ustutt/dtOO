@@ -24,7 +24,8 @@ namespace dtOO {
       std::vector< ::MVertex * > allVerts,
       std::vector< std::pair< ::MElement *, int > > allElems,
       std::map< int, std::string > physicalInt,
-      ::Foam::Time const & runTime
+      ::Foam::Time const & runTime,
+      bool keepOrientation
     ); 
     static void patchToFaceZoneNoFlipMap(
       ::Foam::polyPatch const & patch, 

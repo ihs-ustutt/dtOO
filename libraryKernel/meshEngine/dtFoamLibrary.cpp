@@ -128,24 +128,24 @@ namespace dtOO {
 
       if (zoneFnd == physToZone.end())
       {
-          // New region. Allocate zone for it.
-          ::Foam::label zoneI = zoneCells.size();
-          zoneCells.setSize(zoneI+1);
-          zoneToPhys.setSize(zoneI+1);
+        // New region. Allocate zone for it.
+        ::Foam::label zoneI = zoneCells.size();
+        zoneCells.setSize(zoneI+1);
+        zoneToPhys.setSize(zoneI+1);
 
-          dt__info(
-            storeCellInZone(),
-            << "Mapping region " << regPhys << " to Foam cellZone " << zoneI
-          );
-          physToZone.insert(regPhys, zoneI);
+        dt__info(
+          storeCellInZone(),
+          << "Mapping region " << regPhys << " to Foam cellZone " << zoneI
+        );
+        physToZone.insert(regPhys, zoneI);
 
-          zoneToPhys[zoneI] = regPhys;
-          zoneCells[zoneI].append(cellI);
+        zoneToPhys[zoneI] = regPhys;
+        zoneCells[zoneI].append(cellI);
       }
       else
       {
-          // Existing zone for region
-          zoneCells[zoneFnd()].append(cellI);
+        // Existing zone for region
+        zoneCells[zoneFnd()].append(cellI);
       }
   }
 
@@ -475,7 +475,7 @@ namespace dtOO {
         nHex++;
       }
       //------------------------------------------------------------------------
-      // points (irgnore)
+      // points (ignore)
       //
       else if (elmType == dtFoamLibrary::MSHPNT) {
         ++nPnt;
@@ -523,10 +523,9 @@ namespace dtOO {
     std::vector< ::MVertex * > allVerts,
     std::vector< std::pair< ::MElement *, int > > allElems,
     std::map< int, std::string > physicalInt,
-    ::Foam::Time const & runTime    
+    ::Foam::Time const & runTime,
+    bool keepOrientation
   ) {
-    bool keepOrientation = false;
-
     // Storage for points
     ::Foam::pointField points;
     ::Foam::Map< ::Foam::label > mshToFoam;

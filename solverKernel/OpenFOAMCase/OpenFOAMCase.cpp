@@ -352,7 +352,10 @@ namespace dtOO {
         // create mesh
         //
         dt__pH(::Foam::polyMesh) mesh( 
-          dtFoamLibrary::readMesh(allVerts, allElems, physicalNames, runTime) 
+          dtFoamLibrary::readMesh(
+            allVerts, allElems, physicalNames, runTime, 
+            optionHandling::optionTrue("keepOrientation")
+          ) 
         );
 
         //
