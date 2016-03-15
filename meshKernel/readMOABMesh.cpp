@@ -16,13 +16,15 @@
 #include <iostream>
 
 #include <meshEngine/dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MQuadrangle.h>
+#include <gmsh/MHexahedron.h>
 
 namespace dtOO {
 	readMOABMesh::readMOABMesh() {
-  _mb.reset( new moab::Core() );
+    _mb.reset( new moab::Core() );
 	}
 
 	readMOABMesh::~readMOABMesh() {
@@ -30,17 +32,17 @@ namespace dtOO {
 	}
 	
   void readMOABMesh::init( 
-		::QDomElement const & element,
-    baseContainer const * const bC,					
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP,
-		vectorHandling< boundedVolume * > const * const depBVolP
+      ::QDomElement const & element,
+      baseContainer const * const bC,
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF,
+      vectorHandling< analyticGeometry * > const * const aG,
+      vectorHandling< boundedVolume * > const * const bV
 	) {
     //
-    // init boundedVolume
+    // init gmshBoundedVolume
     //
-    boundedVolume::init(element, bC, cValP, sFunP, depAGeoP, depBVolP);
+    gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 		
 		_fileName = getOption("mesh_file");
 	}
@@ -87,31 +89,7 @@ namespace dtOO {
     //
 		boundedVolume::preNotify();
 	}
-  
-  vectorHandling< renderInterface * > readMOABMesh::getRender( void ) const {
-    return vectorHandling< renderInterface * >(0);
-  }
-  
- vectorHandling< renderInterface * > readMOABMesh::getExtRender( 
-    void 
-  ) const {
-		vectorHandling< renderInterface * > rV;
-    
-    if ( _ff_string.find(extRenderWhat()) != _ff_string.end()) {
-      dtGmshFace * gf = _ff_string.find( extRenderWhat() )->second;
-			std::vector< ::MElement const * > elTwoD;
-			for (int jj=0;jj<gf->getNumMeshElements(); jj++) {
-			  elTwoD.push_back( gf->getMeshElement(jj) );	
-			}
-			rV.push_back(
-			  dtGmshModel::toAdequateSurfaceRenderInterface(elTwoD)
-			);
-	  }
 
-		return rV;
-	}
-    
-  
 	void readMOABMesh::convertToGmsh( void ) {
     //
     // create type-string map
@@ -134,11 +112,6 @@ namespace dtOO {
     // create error status
     //		
 		moab::ErrorCode rval;
-		
-//    //
-//    // create a range
-//    //
-//		moab::Range aRange;
     
     //
     // logContainer
@@ -158,161 +131,43 @@ namespace dtOO {
           << std::endl;
       }
     }
-    
+
     //
     // create vertices
     //
-    _mv_MOAB = createVertices(*_mb);
+    _mv_MOAB = createVertices(_gm.get(), *_mb);
     
-    _ff_string = createFaces(*_mb, _mv_MOAB);
+    //
+    // create faces
+    //
+    _ff_string = createFaces(_gm.get(), *_mb, _mv_MOAB);
     
-//    //
-//    // get vertices
-//    //
-//    aRange.clear();
-//		rval = _mb->get_entities_by_type(0, moab::MBVERTEX, aRange);
-//		moab__throwIf(rval != moab::MB_SUCCESS, getRender());
-//    
-//    //
-//    // store coordinates in vector
-//    //
-//		std::vector<double> xx(aRange.size());
-//		std::vector<double> yy(aRange.size());
-//		std::vector<double> zz(aRange.size());
-//		rval = _mb->get_coords(aRange, &xx[0], &yy[0], &zz[0]);
-//		moab__throwIf(rval != moab::MB_SUCCESS, getRender());
-//		
-//    //
-//    // create unstructured mesh
-//    //
-//		unstructured3dMesh * um = new unstructured3dMesh();
-//    
-//    //
-//    // store vertices in unstructured mesh
-//    //
-//		um->addPoints(
-//		  vectorHandling<dtPoint3>(dtLinearAlgebra::toDtPoint3Vector(xx, yy, zz))
-//		);
-//		
-//    //
-//    // hexahedrons
-//    //
-//    aRange.clear();    
-//    rval = _mb->get_entities_by_type(0, moab::MBHEX, aRange);
-//		moab__throwIf(rval != moab::MB_SUCCESS, getRender());
-//		
-//    // store in unstructured mesh
-//		for (moab::Range::iterator it = aRange.begin(); it != aRange.end(); it++) {
-//			moab::EntityHandle const * conn;
-//			int nNodes;
-//			rval = _mb->get_connectivity(*it, conn, nNodes);
-//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());
-//
-//			vectorHandling< int > tmp(nNodes);
-//      dt__forAllIndex(tmp, i) tmp[i] = conn[i]-1;
-//			um->addElement(tmp);
-//    }
-//	       
-//		int nMeshSets;
-//		rval = _mb->num_contained_meshsets(0, &nMeshSets, 0);
-//		moab__throwIf(rval != moab::MB_SUCCESS, getRender());
-//
-//    logC() 
-//      << logMe::dtFormat("[ x ] --- MeshSets ( %3i ) --- ") % nMeshSets 
-//      << std::endl;    
-//		
-//		moab::Range allSets;
-//    rval = _mb->get_entities_by_type(0, moab::MBENTITYSET, allSets, true);
-//		moab__throwIf(rval != moab::MB_SUCCESS, getRender());
-//		
-//    int meshSetCounter = 0;
-//		for (moab::Range::iterator it=allSets.begin(); it!=allSets.end(); it++) {
-//		  moab::EntityHandle currentSet = *it;
-//      
-//      //
-//      // get dimension of entities
-//      //
-//			std::vector< int > dim(3,0);
-//			rval = _mb->get_number_entities_by_dimension(currentSet, 1, dim[0], true);
-//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());		
-//			rval = _mb->get_number_entities_by_dimension(currentSet, 2, dim[1], true);
-//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());		
-//			rval = _mb->get_number_entities_by_dimension(currentSet, 3, dim[2], true);
-//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());
-//
-//      logC()
-//				<< logMe::dtFormat("[ %i ] handle %i") % meshSetCounter % currentSet
-//        << std::endl        
-//				<< logMe::dtFormat(
-//          "[ %i ] number of entities (1D, 2D, 3D) = (%i, %i, %i)"
-//        ) % meshSetCounter % dim[0] % dim[1] % dim[2] 
-//        << std::endl;
-//      
-//      dt__forAllRefAuto(typeString, aTypeString) {
-//        aRange.clear();
-//        rval = _mb->get_entities_by_type(currentSet, aTypeString.first, aRange);
-//        moab__throwIf(rval != moab::MB_SUCCESS, getRender());
-//        logC() 
-//          << logMe::dtFormat(
-//            "[ %i ] %i number of entities of type %s "
-//          ) % meshSetCounter % aRange.size() % aTypeString.second
-//          << std::endl;
-//      }      
-//      meshSetCounter++;
-//		} 		
-		
-//		std::vector< moab::Tag > tag_handles;
-//		_mb->tag_get_tags(tag_handles);
-//
-//    logC() 
-//      << logMe::dtFormat("[ x ] --- MeshTags ( %3i ) --- ") % tag_handles.size()
-//      << std::endl;    
-//            
-//		dt__forAllIter(std::vector< moab::Tag >, tag_handles, it) {
-//			moab::Tag currentTag = *it;
-//			std::string tagName;
-//			rval = _mb->tag_get_name(currentTag, tagName);
-//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());		
-//
-//      moab::DataType tagDataType;
-//			rval = _mb->tag_get_data_type(currentTag, tagDataType);
-//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());		      
-//      
-//      int tagLength;
-//			rval = _mb->tag_get_length(currentTag, tagLength);
-//			moab__throwIf(rval != moab::MB_SUCCESS, getRender());		
-//      
-//      logC()
-//				<< logMe::dtFormat(
-//          "[ %s ] length %i, type %s"
-//        ) % tagName % tagLength % moab::DataTypeStr[ tagDataType ]
-//        << std::endl;
-//      
-//      dt__forAllRefAuto(typeString, aTypeString) {
-//        aRange.clear();
-//        rval
-//        =
-//        _mb->get_entities_by_type_and_tag(
-//          0, aTypeString.first, &currentTag, NULL, 1, aRange, 
-//          moab::Interface::UNION, true
-//        );
-//        moab__throwIf(rval != moab::MB_SUCCESS, getRender());
-//        logC() 
-//          << logMe::dtFormat(
-//            "[ %s ] %i number of entities of type %s "
-//          ) % tagName % aRange.size() % aTypeString.second
-//          << std::endl;    
-//      }
-//		}
-		
-//		return vectorHandling< renderInterface * > rV(0);
-//		rV[0] = um;
-//    
-//		return rV;
+    //
+    // create regions
+    //
+    _rr_string = createRegions(_gm.get(),  *_mb, _mv_MOAB);
+   
+    //
+    // put all vertices in region
+    //
+    dt__forAllRefAuto(_mv_MOAB, aPair) {
+      ::MVertex * mv = aPair.second;
+      mv->setEntity( _rr_string.begin()->second );
+      _rr_string.begin()->second->addMeshVertex( mv );
+    }
+    //
+    // create physicals
+    //
+    dt__forAllRefAuto(_ff_string, aPair) {
+      _gm->tagPhysical( aPair.second, aPair.first );
+    }
+    dt__forAllRefAuto(_rr_string, aPair) {
+      _gm->tagPhysical( aPair.second, aPair.first );
+    }
 	}	
   
-  std::map< int, ::MVertex * > readMOABMesh::createVertices(
-    moab::Interface const & mb
+  std::map< ::moab::EntityHandle, ::MVertex * > readMOABMesh::createVertices(
+    dtGmshModel * gm, moab::Interface const & mb
   ) {
     //
     // create error status
@@ -329,52 +184,33 @@ namespace dtOO {
     //
     // store coordinates in vector
     //
-		std::vector<double> xx(aRange.size());
-		std::vector<double> yy(aRange.size());
-		std::vector<double> zz(aRange.size());
+		std::vector< double > xx(aRange.size());
+		std::vector< double > yy(aRange.size());
+		std::vector< double > zz(aRange.size());
 		rval = mb.get_coords(aRange, &xx[0], &yy[0], &zz[0]);
 		moab__throwIf(rval != moab::MB_SUCCESS, createVertices());    
-
-    //
-    // global id
-    //    
-    // get tag
-		moab::Tag globalId;
-		int zero = 0;
-		rval 
-		= 
-		mb.tag_get_handle(
-			"GLOBAL_ID", 1, moab::MB_TYPE_INTEGER,
-			globalId, 
-			moab::MB_TAG_DENSE | moab::MB_TAG_CREAT, &zero
-		);
-    moab__throwIf(rval != moab::MB_SUCCESS, createVertices());
-    // get data
-    std::vector< int > id(aRange.size());
-		rval = mb.tag_get_data(globalId, aRange, &id[0]);
-    
+   
     //
     // create map
     //
-    std::map< int, ::MVertex * > mv_MOAB;
-    dt__forAllIndex(id, ii) {
+    std::map< ::moab::EntityHandle, ::MVertex * > mv_MOAB;
+    int ii = 0;
+		for (moab::Range::iterator vIt=aRange.begin(); vIt!=aRange.end(); vIt++) {
+		  moab::EntityHandle currentVertex = *vIt;
       
-//      dt__debug(
-//        createVertices(),
-//        << logMe::dtFormat(
-//          "Create Vertex %i, id = %i,  xyz = (%12.4e, %12.4e, %12.4e"
-//        ) % ii % id[ii] % xx[ii] % yy[ii] % zz[ii]
-//      );
-      mv_MOAB[ id[ii] ] 
+      mv_MOAB[ currentVertex ] 
       = 
-      new ::MVertex(xx[ii], yy[ii], zz[ii], NULL);
+      new ::MVertex(xx[ii], yy[ii], zz[ii]);
+      ii++;
     }
     
     return mv_MOAB;
   }
   
   std::map< std::string, dtGmshFace * > readMOABMesh::createFaces( 
-    moab::Interface const & mb, std::map< int, ::MVertex * > & mv_MOAB
+    dtGmshModel * gm,
+    moab::Interface const & mb, 
+    std::map< ::moab::EntityHandle, ::MVertex * > & mv_MOAB
   ) {
     //
     // create error status
@@ -386,43 +222,6 @@ namespace dtOO {
     //
     logContainer< readMOABMesh > logC(logINFO, "createFaces()");
     
-//    //
-//    // get all tags
-//    //
-//		std::vector< moab::Tag > tagHandles;
-//		mb.tag_get_tags(tagHandles);
-//
-//    logC() 
-//      << logMe::dtFormat("[ x ] --- MeshTags ( %3i ) --- ") % tagHandles.size()
-//      << std::endl;    
-//            
-//    //
-//    // create map between tag and string
-//    //
-//    std::map< moab::Tag, std::string > string_tag;
-//		dt__forAllIter(std::vector< moab::Tag >, tagHandles, it) {
-//			moab::Tag currentTag = *it;
-//			std::string tagName;
-//			rval = mb.tag_get_name(currentTag, tagName);
-//			moab__throwIf(rval != moab::MB_SUCCESS, createFaces());	  
-//
-//      string_tag[ currentTag ] = tagName;
-//      
-//      moab::DataType tagDataType;
-//			rval = mb.tag_get_data_type(currentTag, tagDataType);
-//			moab__throwIf(rval != moab::MB_SUCCESS, createFaces());		      
-//      
-//      int tagLength;
-//			rval = mb.tag_get_length(currentTag, tagLength);
-//			moab__throwIf(rval != moab::MB_SUCCESS, createFaces());
-//      
-//      logC()
-//				<< logMe::dtFormat(
-//          "[ %s ] length %i, type %s"
-//        ) % tagName % tagLength % moab::DataTypeStr[ tagDataType ]
-//        << std::endl;
-//    }
-
 		int nMeshSets;
 		rval = mb.num_contained_meshsets(0, &nMeshSets, 0);
 		moab__throwIf(rval != moab::MB_SUCCESS, createFaces());
@@ -456,7 +255,7 @@ namespace dtOO {
       // only 2D elements
       //
       if (dim[1] == 0) continue;
-      
+           
       logC()
 				<< logMe::dtFormat("[ %i ] handle %i") % meshSetCounter % currentSet
         << std::endl        
@@ -465,11 +264,18 @@ namespace dtOO {
         ) % meshSetCounter % dim[0] % dim[1] % dim[2] 
         << std::endl;
       
-      dtGmshFace * thisFace = new dtGmshFace(NULL, meshSetCounter+1);
-      ff_string[ "meshSet_"+stringPrimitive::intToString(meshSetCounter) ] 
+      //
+      // create new dtGmshFace
+      //
+      dtGmshFace * thisFace = new dtGmshFace(gm, gm->getMaxFaceTag()+1);
+      gm->add(thisFace);
+      ff_string[ "meshSet_2d_"+stringPrimitive::intToString(meshSetCounter) ] 
       =
       thisFace;
 
+      //
+      // get quadrangles
+      //
       moab::Range aRange;
       rval = mb.get_entities_by_type(currentSet, moab::MBQUAD, aRange);
       moab__throwIf(rval != moab::MB_SUCCESS, createFaces());
@@ -479,6 +285,9 @@ namespace dtOO {
           % meshSetCounter % aRange.size()
         << std::endl;
       
+      //
+      // create MQuadrangle
+      //
       for (
         moab::Range::iterator it = aRange.begin(); it != aRange.end(); it++
       ) {   
@@ -504,25 +313,115 @@ namespace dtOO {
     
     return ff_string;
   }
-    
   
-	std::vector< std::string > readMOABMesh::getMeshTags( void ) const {
-		std::vector< std::string > tags;
-    dt__forAllRefAuto(_ff_string, aPair) tags.push_back( aPair.first );
+  std::map< std::string, dtGmshRegion * > readMOABMesh::createRegions( 
+    dtGmshModel * gm,
+    moab::Interface const & mb, 
+    std::map< ::moab::EntityHandle, ::MVertex * > & mv_MOAB
+  ) {
+    //
+    // create error status
+    //		
+		moab::ErrorCode rval;    
     
-    return tags;
-	}
-	
-	dtGmshRegion * readMOABMesh::getRegion( std::string const & tag ) const {
-		dt__throwUnexpected(getRegion());
-	}
-	
-	dtGmshFace * readMOABMesh::getFace( std::string const & tag ) const {
-		//dt__throwUnexpected(getFace());
-    return _ff_string.at( tag );
-	}
+    //
+    // logContainer
+    //
+    logContainer< readMOABMesh > logC(logINFO, "createRegions()");
 
-	dtGmshModel * readMOABMesh::getModel( void ) const {
-		dt__throwUnexpected(getModel());
-	}  
+		int nMeshSets;
+		rval = mb.num_contained_meshsets(0, &nMeshSets, 0);
+		moab__throwIf(rval != moab::MB_SUCCESS, createRegions());
+
+    logC() 
+      << logMe::dtFormat("[ x ] --- MeshSets ( %3i ) --- ") % nMeshSets 
+      << std::endl;  
+    
+		moab::Range allSets;
+    rval = mb.get_entities_by_type(0, moab::MBENTITYSET, allSets, true);
+		moab__throwIf(rval != moab::MB_SUCCESS, createRegions());
+		
+    
+    int meshSetCounter = 0;
+    std::map< std::string, dtGmshRegion * > rr_string;
+		for (moab::Range::iterator it=allSets.begin(); it!=allSets.end(); it++) {
+		  moab::EntityHandle currentSet = *it;
+      
+      //
+      // get dimension of entities
+      //
+			std::vector< int > dim(3,0);
+			rval = mb.get_number_entities_by_dimension(currentSet, 1, dim[0], true);
+			moab__throwIf(rval != moab::MB_SUCCESS, createRegions());		
+			rval = mb.get_number_entities_by_dimension(currentSet, 2, dim[1], true);
+			moab__throwIf(rval != moab::MB_SUCCESS, createRegions());		
+			rval = mb.get_number_entities_by_dimension(currentSet, 3, dim[2], true);
+			moab__throwIf(rval != moab::MB_SUCCESS, createRegions());
+
+      //
+      // only 3D elements
+      //
+      if (dim[2] == 0) continue;
+      
+      logC()
+				<< logMe::dtFormat("[ %i ] handle %i") % meshSetCounter % currentSet
+        << std::endl        
+				<< logMe::dtFormat(
+          "[ %i ] number of entities (1D, 2D, 3D) = (%i, %i, %i)"
+        ) % meshSetCounter % dim[0] % dim[1] % dim[2] 
+        << std::endl;
+      
+      //
+      // create dtGmshRegion
+      //
+      dtGmshRegion * thisRegion = new dtGmshRegion(gm, gm->getMaxRegionTag()+1);
+      gm->add(thisRegion);
+      rr_string[ "meshSet_3d_"+stringPrimitive::intToString(meshSetCounter) ]
+      =
+      thisRegion;
+
+      //
+      // get hexahedrons
+      //
+      moab::Range aRange;
+      rval = mb.get_entities_by_type(currentSet, moab::MBHEX, aRange);
+      moab__throwIf(rval != moab::MB_SUCCESS, createRegions());
+
+      logC()
+				<< logMe::dtFormat("[ %i ] number of hexahedra %i") 
+          % meshSetCounter % aRange.size()
+        << std::endl;
+      
+      //
+      // create MHexahedron
+      //
+      for (
+        moab::Range::iterator it = aRange.begin(); it != aRange.end(); it++
+      ) {   
+        //
+        // connectivities
+        //
+        moab::EntityHandle const * conn;
+        int nNodes;
+        rval = mb.get_connectivity(*it, conn, nNodes);
+        moab__throwIf(rval != moab::MB_SUCCESS, createRegions());
+
+        thisRegion->addHexahedron(
+          new ::MHexahedron(
+            mv_MOAB[ conn[0] ],
+            mv_MOAB[ conn[1] ],
+            mv_MOAB[ conn[2] ],
+            mv_MOAB[ conn[3] ],
+            mv_MOAB[ conn[4] ],
+            mv_MOAB[ conn[5] ],
+            mv_MOAB[ conn[6] ],
+            mv_MOAB[ conn[7] ]
+          )
+        );
+      } 
+      meshSetCounter++;
+		} 		
+    
+    return rr_string;
+  }  
 }
