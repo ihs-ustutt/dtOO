@@ -42,9 +42,15 @@ namespace dtOO {
     //
     // model check
     //
-		dtGmshModel * gm = ptrBoundedVolume()->getModel();
-		dt__throwIf(gm==NULL, update());
+		dt__ptrAss( dtGmshModel * gm, ptrBoundedVolume()->getModel() );
 		
+    //
+    // counter
+    //
+    int gCount = 0;
+    int pCount = 0;
+    int nCount = 0;
+    
     //
     // revert element if necessary
     //
@@ -52,18 +58,35 @@ namespace dtOO {
     dt__forAllConstIter(std::list< GRegion * >, reg, it) {
       if (_positive) {
         dt__forFromToIndex( 0, (*it)->getNumMeshElements(), ii) {
+          gCount++;
           if ( (*it)->getMeshElement(ii)->getVolume() < 0.) {
+            nCount++;
             (*it)->getMeshElement(ii)->reverse();
+          }
+          else {
+            pCount++;
           }
         }
       }
       else {
         dt__forFromToIndex( 0, (*it)->getNumMeshElements(), ii) {
+          gCount++;
           if ( (*it)->getMeshElement(ii)->getVolume() > 0.) {
+            pCount++;
             (*it)->getMeshElement(ii)->reverse();
+          }
+          else {
+            nCount++;
           }
         }
       }
     }
+    dt__info(
+      postUpdate(), 
+      << " _positive = " << _positive << std::endl
+      << "Number of cells: " << gCount << std::endl
+      << "Positive number of cells: " << pCount << std::endl
+      << "Negative number of cells: " << nCount
+    );
   }
 }
