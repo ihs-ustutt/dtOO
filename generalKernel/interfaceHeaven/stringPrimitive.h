@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-
+#include <map>
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
@@ -27,6 +27,11 @@ namespace dtOO {
     static std::string getStringBetweenAndRemove(
       std::string const signStart, std::string const signEnd, 
       std::string * const str
+    );
+    static std::string getStringBetweenRespectOcc(
+      std::string const signStart, 
+      std::string const signEnd, 
+      std::string const str
     );
     static bool stringContains(
       std::string const pattern, std::string const str
@@ -63,6 +68,10 @@ namespace dtOO {
     static std::vector< int > getOccurences(
       std::string const & pattern, std::string const & str, 
       int from = 0, int to = 0 
+    );
+    static std::map< int, int > getOccurenceMap(
+      std::string const & signStart, std::string const & signEnd, 
+      std::string const & str
     );
   };
 }

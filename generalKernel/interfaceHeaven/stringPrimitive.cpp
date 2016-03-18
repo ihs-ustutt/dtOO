@@ -1,4 +1,5 @@
 #include "stringPrimitive.h"
+#include "progHelper.h"
 #include <sstream>
 #include <istream>
 #include <ostream>
@@ -80,7 +81,7 @@ namespace dtOO {
 		
     return str.substr( fromTo.first+1, fromTo.second-fromTo.first-1);
   }
-
+  
   std::string stringPrimitive::getStringBetweenFirstLast(
 	  std::string const signStart, 
 		std::string const signEnd, 
@@ -130,6 +131,21 @@ namespace dtOO {
     
     return retStr;
   }
+  
+  std::string stringPrimitive::getStringBetweenRespectOcc(
+	  std::string const signStart, 
+		std::string const signEnd, 
+		std::string const str
+	) {  
+    int pos = str.find_first_of( signStart.c_str() );
+    dt__throwIf(pos==std::string::npos, getStringBetweenRespectOcc());
+    
+    std::map< int, int > occMap = getOccurenceMap(signStart, signEnd, str);
+		
+    dt__throwIf(occMap.find(pos)==occMap.end(), getStringBetweenRespectOcc());
+    
+    return str.substr( pos+1, occMap[pos]-pos-1);
+  }  
   
 	std::vector< std::string > stringPrimitive::convertToStringVector(
 	  std::string const signStart, std::string const signEnd, 
@@ -256,7 +272,7 @@ namespace dtOO {
     //
     // return empty string if signStart and signEnd are not part of the string
     //
-    if ( 
+    if (
       !stringContains(signStart, str) 
       || 
       !stringContains(signEnd, str) 
@@ -352,4 +368,39 @@ namespace dtOO {
       aMatch++;
     }
   }		
+  
+  std::map< int, int > stringPrimitive::getOccurenceMap(
+    std::string const & signStart, std::string const & signEnd, 
+    std::string const & str
+  ) {
+    std::vector< int > matchStart = getOccurences(signStart, str);
+    std::vector< int > matchEnd = getOccurences(signEnd, str);
+
+    dt__throwIfWithMessage(
+      matchStart.size() != matchEnd.size(), 
+      getOccurenceMap(),
+      << dt__eval(signStart) << std::endl
+      << dt__eval(signEnd) << std::endl
+      << dt__eval(str) 
+    );
+    
+    progHelper::reverse(matchStart);
+    
+    std::map< int, int > occMap;
+    dt__forAllIndex(matchStart, ii) {
+      std::vector< int > dist(matchEnd.size(), 0);
+      dt__forAllIndex(matchEnd, jj) {
+        dist[jj] = matchEnd[jj] - matchStart[ii];
+        if (dist[jj] <= 0) dist[jj] = std::numeric_limits<int>::max();
+      }
+      std::vector< int >::iterator minIt 
+      = 
+      std::min_element( dist.begin(), dist.end() );
+      occMap[ matchStart[ii] ] 
+      = 
+      matchEnd[ std::distance(dist.begin(), minIt) ];
+      matchEnd.erase( matchEnd.begin() + std::distance(dist.begin(), minIt) );
+    }
+    return occMap;    
+  }
 }
