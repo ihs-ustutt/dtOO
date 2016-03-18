@@ -24,6 +24,7 @@
 #include <turbulentMixingLengthDissipationRateInletFvPatchScalarField.H>
 #include <profile1DfixedValueFvPatchField.H>
 #include <inletOutletFvPatchField.H>
+#include <rotatingWallVelocityFvPatchVectorField.H>
 #include <dictionary.H>
 
 namespace dtOO {
@@ -48,6 +49,22 @@ namespace dtOO {
     dt__throw(create(), << "Cannot create " << name);
   }
 
+  void OpenFOAMSetupRule::init(
+    baseContainer const * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF,
+    vectorHandling< analyticGeometry * > const * const aG,
+    vectorHandling< boundedVolume * > const * const bV,
+    vectorHandling< dtCase * > const * const dC
+  ) {
+    _bC = bC;
+    _cV = cV;
+    _aF = aF;
+    _aG = aG;
+    _bV = bV;
+    _dC = dC;
+  }
+    
   void OpenFOAMSetupRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
@@ -173,7 +190,26 @@ namespace dtOO {
           );
           
           return;
-        }               
+        }   
+        else if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          == 
+          "rotatingWallVelocity"           
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i,
+            new ::Foam::rotatingWallVelocityFvPatchVectorField(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("rotatingWallVelocity", thisRule)
+            )
+          );
+          
+          return;
+        }           
         else dt__throwUnexpected(executeOnVolVectorField());
       }
     }
@@ -393,7 +429,7 @@ namespace dtOO {
     std::string const & name, std::string const & str
   ) {
     if ( stringPrimitive::stringContains(name, str) ) {
-      return stringPrimitive::getStringBetween(
+      return stringPrimitive::getStringBetweenRespectOcc(
         "(", ")", str.substr(str.find(name))
       );
     
@@ -447,4 +483,10 @@ namespace dtOO {
     
     return ::Foam::dictionary(is());
   }    
+  
+  vectorHandling< analyticFunction * > const & OpenFOAMSetupRule::refAF( 
+    void 
+  ) const {
+    return *_aF;
+  }
 }
