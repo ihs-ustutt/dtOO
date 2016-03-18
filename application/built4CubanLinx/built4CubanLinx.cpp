@@ -113,7 +113,7 @@ std::string parseCommand(
     return std::string("");    
   } 
   dt__commandIf( aRule, help, "extract", "extract a state" ) {
-    dt__throwIfNoClass(addRule.size()!=1, parseCommand());
+    dt__throwIfNoClass(addRule.size()!=2, parseCommand());
     parser.extract(addRule[0], cV, addRule[1]);
     return std::string("");    
   }       
