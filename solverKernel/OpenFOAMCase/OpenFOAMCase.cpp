@@ -74,7 +74,6 @@ namespace dtOO {
     //
     // prepare setupRules
     //
-    _setupRule.resize(tmpSetupRule.size());
     dt__forAllIndex(tmpSetupRule, ii) {
       //
       // replace dependencies
@@ -83,13 +82,29 @@ namespace dtOO {
         aRule = dtXmlParser::replaceDependencies(aRule, cV, aF, aG);
       }
       
-      _setupRule[ii] 
-      = 
+      //
+      // rule string vector
+      //
+      std::vector< std::string > ruleStrVec 
+      =
       stringPrimitive::convertToStringVector(":", ":", tmpSetupRule[ii]);
+      dt__throwIf( ruleStrVec.size()<3, init());
       
-      dt__throwIf( _setupRule[ii].size()<3, init());
+      //
+      // create and init rule
+      //
+      OpenFOAMSetupRule * rulePtr = OpenFOAMSetupRule::create(ruleStrVec[0]);
+      rulePtr->init(bC, cV, aF, aG, bV, dC);
       
-      dt__info(init(), << "_setupRule[ " << ii << " ] = " << _setupRule[ii]);
+      //
+      // enqueue rule
+      //
+      _setupRule[ ruleStrVec ].reset( rulePtr );
+      
+      dt__info(
+        init(), 
+        << "OpenFOAMSetupRule[ " << ii << " ] = " << ruleStrVec
+      );
     }
     
     //
@@ -103,7 +118,14 @@ namespace dtOO {
     // prepare fieldRules
     //
     _fieldRule.resize(tmpFieldRule.size());
-    dt__forAllIndex(tmpFieldRule, ii) {      
+    dt__forAllIndex(tmpFieldRule, ii) {
+      //
+      // replace dependencies
+      //
+      dt__forAllRefAuto(tmpFieldRule, aRule) {
+        aRule = dtXmlParser::replaceDependencies(aRule, cV, aF, aG);
+      }
+      
       _fieldRule[ii] 
       = 
       stringPrimitive::convertToStringVector(":", ":", tmpFieldRule[ii]);
@@ -361,10 +383,10 @@ namespace dtOO {
         //
         // execute rules
         //
-        dt__forAllRefAuto(_setupRule, aRule) {
-          dt__pH(OpenFOAMSetupRule) exRule(
-            OpenFOAMSetupRule::create( aRule[0] )
-          );
+        dt__forAllRefAuto(_setupRule, aRulePair) {
+          std::vector< std::string > const & aRule = aRulePair.first;
+          dt__pH(OpenFOAMSetupRule) const & exRule = aRulePair.second;        
+          
           exRule->executeOnMesh(aRule, *mesh);
         }
 
@@ -450,10 +472,10 @@ namespace dtOO {
         //
         // execute rules
         //
-        dt__forAllRefAuto(_setupRule, aRule) {   
-          dt__pH(OpenFOAMSetupRule) exRule(
-            OpenFOAMSetupRule::create( aRule[0] )
-          );
+        dt__forAllRefAuto(_setupRule, aRulePair) {   
+          std::vector< std::string > const & aRule = aRulePair.first;
+          dt__pH(OpenFOAMSetupRule) const & exRule = aRulePair.second;
+          
           dt__forAllRefAuto(volVector_, aField) {
             exRule->executeOnVolVectorField(aRule, aField);
           }

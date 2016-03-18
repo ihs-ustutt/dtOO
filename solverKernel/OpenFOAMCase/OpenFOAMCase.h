@@ -18,6 +18,7 @@ namespace dtOO {
   class baseContainer;
   class dtGmshModel;
   class dtXmlParser;
+  class OpenFOAMSetupRule;
       
   class OpenFOAMCase : public dtCase {
   public:
@@ -43,7 +44,7 @@ namespace dtOO {
   private:
     vectorHandling< constValue * > const * _cV;
     std::string _dictRule;
-    std::vector< std::vector< std::string > > _setupRule;
+    std::map< std::vector< std::string >, dt__pH(OpenFOAMSetupRule) > _setupRule;
     std::vector< std::vector< std::string > > _fieldRule;
     std::vector< boundedVolume * > _bV;
     std::string _runCommand;    
