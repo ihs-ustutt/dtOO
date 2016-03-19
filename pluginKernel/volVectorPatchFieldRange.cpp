@@ -1,4 +1,4 @@
-#include "volScalarFieldRange.h"
+#include "volVectorPatchFieldRange.h"
 
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParser.h>
@@ -25,13 +25,13 @@
 #include <logMe/dtParMacros.h>
 
 namespace dtOO {  
-  volScalarFieldRange::volScalarFieldRange() { 
+  volVectorPatchFieldRange::volVectorPatchFieldRange() { 
   }
 
-  volScalarFieldRange::~volScalarFieldRange() {
+  volVectorPatchFieldRange::~volVectorPatchFieldRange() {
   }
 
-	void volScalarFieldRange::init( 
+	void volVectorPatchFieldRange::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
@@ -44,11 +44,12 @@ namespace dtOO {
 	  dtPlugin::init(element, bC, cV, aF, aG, bV, dC, pL);
     
 //	<plugin 
-//		name="volScalarFieldRange" 
-//		label="volScalarFieldRange"
-//    field="p"   
-//    min="-10."
-//    max="10."
+//		name="volVectorPatchFieldRange" 
+//		label="volVectorPatchFieldRange"
+//    field="wallShearStress"
+//    patchName="DT_WALL"    
+//    min="0.00"
+//    max="0.02"
 //	>
 //    <case label="myCase"/>
 //  </plugin>  
@@ -59,7 +60,9 @@ namespace dtOO {
       &&
       !dtXmlParser::hasAttribute("min", element)
       &&
-      !dtXmlParser::hasAttribute("max", element), 
+      !dtXmlParser::hasAttribute("max", element)
+      &&
+      !dtXmlParser::hasAttribute("patchName", element),
       init()
     );
     
@@ -86,9 +89,14 @@ namespace dtOO {
     //
     _min = dtXmlParser::getAttributeFloatMuParse("min", element, cV, aF);
     _max = dtXmlParser::getAttributeFloatMuParse("max", element, cV, aF);
+    
+    //
+    // patchName
+    //
+    _patchName = dtXmlParser::getAttributeStr("patchName", element);
 	}
 		
-  void volScalarFieldRange::apply(void) {    
+  void volVectorPatchFieldRange::apply(void) {    
     //
     // get directory
     //
@@ -172,7 +180,7 @@ namespace dtOO {
         // only volScalarField
         // 
         dt__throwIf( !fieldHeader.headerOk(), apply());
-        dt__throwIf(fieldHeader.headerClassName() != "volScalarField", apply());
+        dt__throwIf(fieldHeader.headerClassName() != "volVectorField", apply());
         
         //
         // update field 
@@ -182,25 +190,37 @@ namespace dtOO {
         //
         // read desired field
         //
-        ::Foam::volScalarField volField(fieldHeader, mesh);
+        ::Foam::volVectorField volField(fieldHeader, mesh);
         
         std::vector< dtPoint3 > pXYZ;
         std::vector< float > val;
-        std::vector< float > vol;
+        std::vector< float > area;
+        
+        
         //
         // cell list
         //
-        forAll(mesh.cells(), ii) {
-          float cVal = volField[ ii ];
+        ::Foam::polyPatch const & thisPatch 
+        =
+        mesh.boundaryMesh()[ mesh.boundaryMesh().findPatchID( _patchName ) ];
+        ::Foam::volVectorField::PatchFieldType const & thisPatchField
+        =
+        volField.boundaryField()[ 
+          mesh.boundaryMesh().findPatchID( _patchName ) 
+        ]
+        ;
+        
+        forAll( thisPatch, ii ) {
+          ::Foam::scalar cVal = ::Foam::mag( thisPatchField[ ii ] );
           if ( (cVal > _min) && (cVal < _max) ) {
             dtPoint3 cPoint( 
-              mesh.C()[ ii ].component(0), 
-              mesh.C()[ ii ].component(1), 
-              mesh.C()[ ii ].component(2) 
+              mesh.faceCentres()[ii].component(0), 
+              mesh.faceCentres()[ii].component(1), 
+              mesh.faceCentres()[ii].component(2) 
             );
             pXYZ.push_back( cPoint );
             val.push_back( cVal );
-            vol.push_back( mesh.V()[ ii ] );
+            area.push_back( mesh.magSf()[ ii ] );
           }
         }
         //
@@ -212,7 +232,7 @@ namespace dtOO {
         +
         "/"
         +
-        "volScalarFieldRange_"+fieldHeader.name()+".csv";
+        "volVectorPatchFieldRange_"+fieldHeader.name()+".csv";
         std::fstream of;
         of.open( filename.c_str(), std::ios::out | std::ios::trunc );
 
@@ -224,7 +244,7 @@ namespace dtOO {
         << "# 2 y" << std::endl
         << "# 3 z" << std::endl
         << "# 4 value" << std::endl
-        << "# 5 volume" << std::endl;
+        << "# 5 area" << std::endl;
 
         //
         // write values
@@ -236,7 +256,7 @@ namespace dtOO {
             % pXYZ[ii].y() 
             % pXYZ[ii].z() 
             % val[ii]
-            % vol[ii]
+            % area[ii]
           << std::endl;
         }
         of.close();
