@@ -598,10 +598,10 @@ namespace dtOO {
     for (int ii=0;ii<elements.size();ii++) {
       ::QDomElement foundEl = elements.at(ii).toElement();
       if ( foundEl.hasAttribute( elAttribute.c_str() ) ) {
-        if ( getAttributeStr(elAttribute, foundEl)
-             ==
-             elAttributeValue ) {
-        elements.at(ii).toElement().appendChild(element);            
+        if ( 
+          getAttributeStr(elAttribute, foundEl) == elAttributeValue 
+        ) {
+          elements.at(ii).toElement().appendChild(element);            
         } 
       }
     }
@@ -618,9 +618,8 @@ namespace dtOO {
     for (int ii=0;ii<elements.size();ii++) {
       ::QDomElement foundEl = elements.at(ii).toElement();
       if ( foundEl.hasAttribute( elAttribute.c_str() ) ) {
-        if ( getAttributeStr(elAttribute, foundEl)
-             ==
-             elAttributeValue 
+        if ( 
+          getAttributeStr(elAttribute, foundEl) == elAttributeValue 
 				) elements.at(ii).toElement().appendChild(element);            
       }
     }

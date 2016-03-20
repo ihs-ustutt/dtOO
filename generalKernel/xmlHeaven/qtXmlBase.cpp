@@ -10,6 +10,14 @@
 
 
 namespace dtOO {
+  std::string qtXmlBase::_CALCSIGN = "`";
+  std::string qtXmlBase::_POINTSIGN = "!";
+  std::string qtXmlBase::_DTTSIGN = "~";
+  std::string qtXmlBase::_CVSIGN = "#";
+  std::string qtXmlBase::_AFSIGN = "$";
+  std::string qtXmlBase::_AGSIGN = "@";
+  
+  
   qtXmlBase::qtXmlBase() {
   }
 
@@ -27,12 +35,12 @@ namespace dtOO {
     // check if there is a constValue in expression
     // 1. * #cVLabel#
     //
-    found = returnExpression.find("#");
+    found = returnExpression.find(_CVSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find("#", found+1);
+      unsigned int foundEnd = returnExpression.find(_CVSIGN, found+1);
       int replaceStart = found;
       int replaceEnd = foundEnd-found+1;
       
@@ -52,18 +60,18 @@ namespace dtOO {
       //
       // go to next constValue
       //
-      found = returnExpression.find("#");
+      found = returnExpression.find(_CVSIGN);
     }
     //
     // check if there is an instruction to calculate in expression
     // `#cVLabel# + #cVLabel#`
     //
-    found = returnExpression.find("`");
+    found = returnExpression.find(_CALCSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find("`", found+1);
+      unsigned int foundEnd = returnExpression.find(_CALCSIGN, found+1);
       int replaceStart = found;
       int replaceEnd = foundEnd-found+1;
       
@@ -83,7 +91,7 @@ namespace dtOO {
       //
       // go to next constValue
       //
-      found = returnExpression.find("`");
+      found = returnExpression.find(_CALCSIGN);
     }    
     return returnExpression;
   }
@@ -100,15 +108,17 @@ namespace dtOO {
     // check if there is a function in expression
     // $functionName(value * #constValue#)$
     //
-    found = returnExpression.find("$");
+    found = returnExpression.find(_AFSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find("$", found+1);
+      unsigned int foundEnd = returnExpression.find(_AFSIGN, found+1);
       int replaceStart = found;
       int replaceEnd = foundEnd-found+1;
-      std::string funString = returnExpression.substr(replaceStart+1, replaceEnd-2);
+      std::string funString 
+      = 
+      returnExpression.substr(replaceStart+1, replaceEnd-2);
 
       //
       // get and cast function
@@ -140,7 +150,7 @@ namespace dtOO {
       //
       // go to next function
       //
-      found = returnExpression.find("$");
+      found = returnExpression.find(_AFSIGN);
     }
 
     return replaceDependencies(returnExpression, cV);

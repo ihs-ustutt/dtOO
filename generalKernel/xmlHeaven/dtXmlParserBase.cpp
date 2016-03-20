@@ -887,7 +887,7 @@ namespace dtOO {
     //
     std::vector< std::string > crumbles = crumbleDown("(", ")", expression);
     dt__forAllRefAuto(crumbles, aCrumble) {
-      if ( !stringContains("@", aCrumble) ) continue;
+      if ( !stringContains(_AGSIGN, aCrumble) ) continue;
       returnExpression 
       = 
       replaceStringInString(
@@ -901,12 +901,12 @@ namespace dtOO {
     // check if there is a analyticGeometry in expression
     // @analyticGeometryName(1. * #constValue#, 2.)@
     //
-    unsigned int found = returnExpression.find("@");
+    unsigned int found = returnExpression.find(_AGSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find_last_of("@");
+      unsigned int foundEnd = returnExpression.find_last_of(_AGSIGN);
       int replaceStart = found;
       int replaceEnd = foundEnd-found+1;
       std::string replaceString 
@@ -1288,7 +1288,7 @@ namespace dtOO {
       //
       // go to next analyticGeometry
       //
-      found = returnExpression.find("@");
+      found = returnExpression.find(_AGSIGN);
     }
     
     return replaceDependencies(returnExpression, cV, aF);
@@ -1309,12 +1309,12 @@ namespace dtOO {
     // check if there is a point in expression
     // %aPoint% or %aPoint[x]%
     //
-    found = returnExpression.find("!");
+    found = returnExpression.find(_POINTSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end
       //
-      unsigned int foundEnd = returnExpression.find_first_of("!", found+1);
+      unsigned int foundEnd = returnExpression.find_first_of(_POINTSIGN, found+1);
       int replaceStart = found;
       int replaceEnd = foundEnd-found+1;
       std::string replaceString 
@@ -1374,19 +1374,19 @@ namespace dtOO {
       //
       // go to next transformer
       //
-      found = returnExpression.find("!");
+      found = returnExpression.find(_POINTSIGN);
     }
     
     //
     // check if there is a transformer in expression
     // ~dtT(@aG_1[-1](@aG_0[%](0.00, 0.00)@)@)~
     //
-    found = returnExpression.find("~");
+    found = returnExpression.find(_DTTSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end
       //
-      unsigned int foundEnd = returnExpression.find_last_of("~");
+      unsigned int foundEnd = returnExpression.find_last_of(_DTTSIGN);
       int replaceStart = found;
       int replaceEnd = foundEnd-found+1;
       std::string replaceString 
@@ -1449,7 +1449,7 @@ namespace dtOO {
       //
       // go to next transformer
       //
-      found = returnExpression.find("~");
+      found = returnExpression.find(_DTTSIGN);
     }
     
     return replaceDependencies(returnExpression, cV, aF, aG);    
