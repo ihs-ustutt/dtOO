@@ -35,6 +35,7 @@ int main( int ac, char* av[] ) {
     //
     // additional arguments
     //    
+    std::vector< std::string > def(0);
     vm.description().add_options()
       (
         "statePattern", 
@@ -43,17 +44,23 @@ int main( int ac, char* av[] ) {
       )
       (
         "x", 
-        dtPO::value< std::vector< std::string > >()->required(), 
+        dtPO::value< std::vector< std::string > >()->required()->default_value(
+          std::vector< std::string >(0), ""
+        ), 
         "define x values (required)"
       )
       (
         "y", 
-        dtPO::value< std::vector< std::string > >()->required(), 
+        dtPO::value< std::vector< std::string > >()->required()->default_value(
+          std::vector< std::string >(0), ""    
+        ), 
         "define y values (required)"
       )
       (
         "yWorst", 
-        dtPO::value< std::vector< float > >()->required(), 
+        dtPO::value< std::vector< float > >()->required()->default_value(
+          std::vector< float >(0), "0"    
+        ),
         "define worst y values (required)"
       )
     ;
