@@ -15,6 +15,7 @@ namespace dtOO {
     dt__classOnlyName(geomCurve_baseConstructOCC);
     geomCurve_baseConstructOCC( dtOCCCurveBase const & base );
     virtual ~geomCurve_baseConstructOCC();
+    static bool support( dtOCCCurveBase const & base );    
     dtCurve * result( void );
   private:
     ptrHandling<dtCurve> _dtC;

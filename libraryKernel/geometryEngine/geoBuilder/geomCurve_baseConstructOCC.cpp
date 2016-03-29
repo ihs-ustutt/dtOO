@@ -48,6 +48,24 @@ namespace dtOO {
 		}
 	}
 	
+  bool geomCurve_baseConstructOCC::support( 
+    dtOCCCurveBase const & base 
+  ) {
+		Handle(Geom_Curve) occC = base.getOCC();
+		if ( !(Handle(Geom_BSplineCurve)::DownCast(occC).IsNull()) ) {
+		  return true;
+		}
+		else if ( !(Handle(Geom_BezierCurve)::DownCast(occC).IsNull()) ) {
+		  return true;
+		}
+		else if ( 
+      !(Handle(Geom_Line)::DownCast(occC).IsNull()) 
+    ) {
+		  return true;
+		}
+		else return false;
+	}  
+  
 	geomCurve_baseConstructOCC::~geomCurve_baseConstructOCC() {
 	}
 	
