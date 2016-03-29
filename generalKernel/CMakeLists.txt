@@ -50,6 +50,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -132,6 +133,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp

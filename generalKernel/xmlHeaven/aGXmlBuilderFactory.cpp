@@ -30,6 +30,7 @@
 #include "aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.h"
 #include "aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h"
+#include "aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -151,6 +152,9 @@ namespace dtOO {
     __IFRETCUSTOM(geomSurface_readStepOCC, geomSurface_readStepOCCAGXmlBuilder);
     __IFRET(geomSurface_readStlOCCAGXmlBuilder);
     __IFRETCUSTOM(geomSurface_readStlOCC, geomSurface_readStlOCCAGXmlBuilder);    
+    __IFRET(geomShape_readIgesOCCAGXmlBuilder);
+    __IFRETCUSTOM(geomShape_readIgesOCC, geomShape_readIgesOCCAGXmlBuilder);
+    
     dt__throw(
       create(), 
       << str <<  " could not be created." << std::endl

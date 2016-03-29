@@ -49,7 +49,7 @@ find_package(
   OpenCASCADE 
   COMPONENTS 
   TKernel TKMath
-  TKSTEP 
+  TKSTEP TKIGES
   TKFillet TKShHealing 
   TKTopAlgo TKBRep 
   TKGeomBase TKGeomAlgo 
