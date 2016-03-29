@@ -12,6 +12,11 @@ namespace dtOO {
     : _hanWrap(new OCCHanWrap) {
 	}
 
+	dtOCCCurveBase::dtOCCCurveBase(Handle_Geom_Curve & orig) 
+    : _hanWrap(new OCCHanWrap()) {
+	  _hanWrap->occHandle = orig;
+	}
+  
   void dtOCCCurveBase::setOCC(Handle_Geom_Curve occCurve) {
 		dt__throwIf(occCurve.IsNull(), setOCC() );
     

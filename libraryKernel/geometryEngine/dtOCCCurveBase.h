@@ -12,6 +12,7 @@ namespace dtOO {
     dt__classOnlyName(dtOCCCurveBase);
     dtOCCCurveBase();
     virtual ~dtOCCCurveBase();
+	  dtOCCCurveBase(Handle_Geom_Curve & orig);    
     void setOCC(Handle_Geom_Curve occCurve);    
     Handle_Geom_Curve const getOCC( void ) const;
 	  std::string dumpToString(void) const;
