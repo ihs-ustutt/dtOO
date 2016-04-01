@@ -85,21 +85,21 @@ namespace dtOO {
 		_x0 = -1.;
 		_x1 = -1.;
 
-		if ( dtXmlParserBase::hasAttribute("x_one_percent", *tE) ) {
+		if ( dtXmlParserBase::hasAttribute("x_percent_one", *tE) ) {
 			_x0 
 			= 
 			dtXmlParserBase::muParseString( 
 				dtXmlParserBase::replaceDependencies(
-					dtXmlParserBase::getAttributeStr("x_one_percent", *tE), cV, aF
+					dtXmlParserBase::getAttributeStr("x_percent_one", *tE), cV, aF
 				) 
 			);
 		}
-		if ( dtXmlParserBase::hasAttribute("x_two_percent", *tE) ) {
+		if ( dtXmlParserBase::hasAttribute("x_percent_two", *tE) ) {
 			_x1
 			= 
 			dtXmlParserBase::muParseString( 
 				dtXmlParserBase::replaceDependencies(
-					dtXmlParserBase::getAttributeStr("x_two_percent", *tE), cV, aF
+					dtXmlParserBase::getAttributeStr("x_percent_two", *tE), cV, aF
 				) 
 			);
 		}
