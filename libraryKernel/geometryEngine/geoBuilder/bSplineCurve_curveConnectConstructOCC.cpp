@@ -10,7 +10,7 @@
 #include <Geom_BSplineCurve.hxx>
 #include <GeomConvert_CompCurveToBSplineCurve.hxx>
 
-namespace dtOO {
+namespace dtOO {   
 	bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
@@ -27,6 +27,15 @@ namespace dtOO {
 		_dtC.reset( new dtOCCBSplineCurve(base) );		
 	}
 	
+  bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
+    dtCurve const * const c0,  dtCurve const * const c1 
+  ) {
+    vectorHandling< dtCurve const * > cc;
+    cc.push_back(c0);
+    cc.push_back(c1);
+    _dtC.reset( bSplineCurve_curveConnectConstructOCC(cc).result() );
+  }
+  
 	bSplineCurve_curveConnectConstructOCC
     ::~bSplineCurve_curveConnectConstructOCC() {
     
