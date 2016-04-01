@@ -31,6 +31,7 @@ SET(HEADERS
   geometryEngine/GeomFill_BSplineCurvesExtPrecision.h
   geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.h
+  geometryEngine/geoBuilder/bSplineCurve_bSplineCurveSplitConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h
   geometryEngine/geoBuilder/bezierCurve_pointConstructOCC.h
   geometryEngine/geoBuilder/bezierSurface_pointConstructOCC.h
@@ -144,6 +145,7 @@ SET(SOURCES
   geometryEngine/GeomFill_BSplineCurvesExtPrecision.cpp
   geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineCurve_bSplineCurveSplitConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.cpp
   geometryEngine/geoBuilder/bezierCurve_pointConstructOCC.cpp
   geometryEngine/geoBuilder/bezierSurface_pointConstructOCC.cpp
