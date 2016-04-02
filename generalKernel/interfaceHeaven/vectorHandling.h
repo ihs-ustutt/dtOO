@@ -35,7 +35,7 @@ namespace dtOO {
     T * set( T const & toSet);
     T * set( T const * toSet);
     T const & get( int const ii) const;
-    T const & get( std::string const label) const;
+    T const & get( std::string const & label) const;
     std::string getLabel( int const pos ) const;
     T & getRef( std::string const label);
     bool has( std::string const label) const;
@@ -150,7 +150,7 @@ namespace dtOO {
   }  
 
   template< typename T >
-  T const & vectorHandling< T >::get( std::string const label ) const {
+  T const & vectorHandling< T >::get( std::string const & label ) const {
     dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling

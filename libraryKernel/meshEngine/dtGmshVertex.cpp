@@ -10,14 +10,16 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO { 
-  dtGmshVertex::dtGmshVertex(::GModel *m, int tag, double ms) : GVertex(m, tag, ms) {
+  dtGmshVertex::dtGmshVertex(
+    ::GModel *m, int tag, double ms
+  ) : GVertex(m, tag, ms) {
     _dtP = dtPoint3(0., 0., 0.);  
   }
 
   dtGmshVertex::dtGmshVertex(::GModel *m, int tag) : GVertex(m, tag) {
     _dtP = dtPoint3(0., 0., 0.);  
   }
-  
+
   dtGmshVertex::~dtGmshVertex() {
   }
   
