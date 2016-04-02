@@ -20,6 +20,7 @@ SET(HEADERS
   bVObserver/bVOSetPrescribedMeshSizeAtPoints.h
   bVObserver/bVODumpModel.h
   bVObserver/bVOEvilGodfather.h
+  bVObserver/bVOAddInternalEdge.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dGmsh.h
@@ -53,6 +54,7 @@ SET(SOURCES
   bVObserver/bVOSetPrescribedMeshSizeAtPoints.cpp
   bVObserver/bVODumpModel.cpp
   bVObserver/bVOEvilGodfather.cpp
+  bVObserver/bVOAddInternalEdge.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dGmsh.cpp
