@@ -23,7 +23,9 @@
 namespace dtOO {
   designTool::designTool(
     int argc, char *argv[]) : covise::coModule(argc, argv, "designTool"
-  ) {      
+  ) {
+    _logFileName = "dtOODesignTool";
+    
     _logName = addStringParam("_logName", "_logNameDescription");
     _infoStr = addStringParam("_infoStr", "_infoStrDescription");    
     _stateName = addStringParam("_stateName", "_stateNameDescription");
@@ -243,8 +245,9 @@ namespace dtOO {
     //
     // init log file
     //
-    std::string logFileName = std::string( covise::coModule::getTitle() );
-    logFileName = abstractModule::initializeLogFile( "./"+logFileName+".log" );
+    std::string logFileName 
+    = 
+    abstractModule::initializeLogFile( "./"+_logFileName+".log" );
     _logName->setValue(logFileName.c_str()); 
     
     _moduleChoice->setValue(0);
@@ -258,10 +261,7 @@ namespace dtOO {
         if ( _clearLog->getValue() ) {
           std::string logFileName 
           = 
-          std::string( covise::coModule::getTitle() );
-          logFileName 
-          = 
-          abstractModule::initializeLogFile( "./"+logFileName+".log" );
+          abstractModule::initializeLogFile( "./"+_logFileName+".log" );
           _logName->setValue(logFileName.c_str());  
           
           _clearLog->setValue(false);          

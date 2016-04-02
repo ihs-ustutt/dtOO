@@ -108,6 +108,8 @@ namespace dtOO {
       
       std::vector< std::string > _AGmemento;
       std::vector< std::string > _AFmemento;
+      
+      std::string _logFileName;
   };
 }
 #endif
