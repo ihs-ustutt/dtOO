@@ -259,9 +259,9 @@ set(
 )
 
 if (MPI_FOUND)
-  target_link_libraries( dtOO ${MPI_CXX_LIBRARIES} )
-  set(_configLibList "${_configLibList};${MPI_CXX_LIBRARIES}")
-  set(_rpathList "${_rpathList};${MPI_CXX_LIBRARIES}")
+  target_link_libraries( dtOO ${MPI_LIBRARIES} ${MPI_CXX_LIBRARIES} )
+  set(_configLibList "${_configLibList};${MPI_CXX_LIBRARIES};${MPI_LIBRARIES}")
+  set(_rpathList "${_rpathList};${MPI_CXX_LIBRARIES};${MPI_LIBRARIES}")
 endif (MPI_FOUND)
 
 list(REMOVE_DUPLICATES _configLibList)
