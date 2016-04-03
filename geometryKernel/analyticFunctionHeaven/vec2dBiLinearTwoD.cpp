@@ -255,7 +255,7 @@ namespace dtOO {
       float tdenom_x = (1-s2)*(x0-x2) + s2*(x1-x3);
       float tdenom_y = (1-s2)*(y0-y2) + s2*(y1-y3);
       t2_valid = 1;
-      if ( equals( tdenom_x, 0, 1e-6 ) && equals( tdenom_y, 0, 1e-6 ) ) {
+      if ( equals( tdenom_x, 0, tol ) && equals( tdenom_y, 0, tol ) ) {
         t2_valid = 0;
       }
       else {

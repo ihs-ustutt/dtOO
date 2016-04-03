@@ -134,12 +134,7 @@ namespace dtOO {
             Y(x_percent(retX)), _invY
           );
           bestDistance = std::min(bestDistance, currentDistance);
-          std::cout << "currentDistance = " << currentDistance << std::endl;
-          if ( currentDistance <= prec ) {
-            dt__info(invY(), << "Converged at iteration ijk = " << ijk);
-            return x_percent(retX);  
-          }
-        
+          if ( currentDistance <= prec ) return x_percent(retX);  
         }
         else {
           depth++;
