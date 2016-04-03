@@ -1,10 +1,8 @@
 #include "bSplineCurve_pointConstructArcLengthParaOCC.h"
-#include "progHelper.h"
 
 #include <logMe/logMe.h>
 #include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCBSplineCurve.h>
-//#include "bSplineCurve_pointConstructOCC.h"
 #include <Standard_Failure.hxx>
 #include <Standard_ErrorHandler.hxx>
 #include <Geom_BSplineCurve.hxx>

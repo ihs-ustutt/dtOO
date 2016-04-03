@@ -15,7 +15,13 @@ namespace dtOO {
     bSplineCurve_curveConnectConstructOCC( 
       dtCurve const * const c0,  dtCurve const * const c1 
     );    
-    bSplineCurve_curveConnectConstructOCC( vectorHandling< dtCurve const * > const & cc );
+    bSplineCurve_curveConnectConstructOCC( 
+      vectorHandling< dtCurve const * > const & cc,
+      float const & tol
+    );
+    bSplineCurve_curveConnectConstructOCC( 
+      vectorHandling< dtCurve const * > const & cc
+    );    
     virtual ~bSplineCurve_curveConnectConstructOCC();
     dtCurve * result( void );
   private:

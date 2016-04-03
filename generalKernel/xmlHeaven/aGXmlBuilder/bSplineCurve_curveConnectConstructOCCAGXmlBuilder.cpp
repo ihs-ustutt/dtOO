@@ -29,15 +29,16 @@ namespace dtOO {
     vectorHandling< analyticFunction * > const * const aF,  
     vectorHandling< analyticGeometry * > const * const aG,
     vectorHandling< analyticGeometry * > * result 
-	) const {
-    //
-		// check input
-		//    
-    dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
+	) const {   
+    dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticGeometry", toBuild), 
+      buildPart()
+    );
 
-    ::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
     vectorHandling< dtCurve const * > ccV;
-    while ( !wElement.isNull() ) {
+    dt__forAllRefAuto(
+      dtXmlParserBase::getChildVector("analyticGeometry", toBuild), wElement
+    ) {
       dt__ptrAss(
         splineCurve3d * s3, 
         splineCurve3d::DownCast(
@@ -46,11 +47,23 @@ namespace dtOO {
       );
       ccV.push_back(s3->ptrConstDtCurve()->clone());
       delete s3;
-      wElement = dtXmlParserBase::getNextSibling("analyticGeometry", wElement);
     }
-    ptrHandling< dtCurve > dtC(
-      bSplineCurve_curveConnectConstructOCC(ccV).result()
-    );
+    
+    ptrHandling< dtCurve > dtC;
+    if ( !dtXmlParserBase::hasAttribute("tolerance", toBuild) ) {
+      dtC.reset(
+        bSplineCurve_curveConnectConstructOCC(ccV).result()
+      );
+    }
+    else {
+      dtC.reset(
+        bSplineCurve_curveConnectConstructOCC(
+          ccV, 
+          dtXmlParserBase::getAttributeFloatMuParse("tolerance", toBuild, cV)
+        ).result()
+      );      
+    }
+    
     result->push_back( new splineCurve3d(dtC.get()) );
     ccV.destroy();
   }

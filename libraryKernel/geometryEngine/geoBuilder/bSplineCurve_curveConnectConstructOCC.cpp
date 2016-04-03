@@ -9,10 +9,12 @@
 #include <Geom_BoundedCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <GeomConvert_CompCurveToBSplineCurve.hxx>
+#include <Standard_Failure.hxx>
+#include <Standard_ErrorHandler.hxx>
 
 namespace dtOO {   
 	bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
-	  vectorHandling< dtCurve const * > const & cc 
+	  vectorHandling< dtCurve const * > const & cc, float const & tol 
 	) {
 		GeomConvert_CompCurveToBSplineCurve conv;
 		dt__forAllIndex(cc, ii) {
@@ -20,13 +22,25 @@ namespace dtOO {
 			Handle(Geom_BoundedCurve) boundedC
 			=
 			Handle(Geom_BoundedCurve)::DownCast( occC->OCCRef().getOCC() );
-      conv.Add(boundedC, Precision::Confusion());//Precision::Confusion());			
+      dt__tryOcc(
+        conv.Add(boundedC, tol);
+      ,
+      << ""
+      );
     }
 		dtOCCCurveBase base;
 		base.setOCC( conv.BSplineCurve() );
 		_dtC.reset( new dtOCCBSplineCurve(base) );		
 	}
 	
+	bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
+	  vectorHandling< dtCurve const * > const & cc
+	) {
+    _dtC.reset(
+      bSplineCurve_curveConnectConstructOCC(cc, Precision::Confusion()
+    ).result());
+  } 
+  
   bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
     dtCurve const * const c0,  dtCurve const * const c1 
   ) {
