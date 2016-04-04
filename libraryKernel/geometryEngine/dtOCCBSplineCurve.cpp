@@ -56,4 +56,24 @@ namespace dtOO {
 		
 		occBsc->SetPole(nPI, pp);
 	}
+
+	std::string dtOCCBSplineCurve::dumpToString( void ) const {
+		std::stringstream ss;
+		
+		ss 
+    << 
+    dt__dumpToString(
+      << dtOCCCurve::dumpToString() << std::endl
+      << dt__eval(_ptr->FirstParameter()) << std::endl
+      << dt__eval(_ptr->LastParameter()) << std::endl
+      << dt__eval(_ptr->IsRational()) << std::endl
+      << dt__eval(_ptr->IsPeriodic()) << std::endl
+      << dt__eval(_ptr->Continuity()) << std::endl
+      << "GeomAbs_C0=0, GeomAbs_G1, GeomAbs_C1, GeomAbs_G2," << std::endl
+      << "GeomAbs_C2, GeomAbs_C3, GeomAbs_CN"
+    );
+    
+		
+		return ss.str();
+	}    
 }

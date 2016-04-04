@@ -185,6 +185,18 @@ namespace dtOO {
       }
     }
     _ms_uSPercentVSPercent.reset( new vec2dMultiBiLinearTwoD(ms) );
+    
+    dt__info(
+      init(),
+      << dt__eval(_rM2d->constRefMap2dTo3d().getUMin()) << std::endl
+      << dt__eval(_rM2d->constRefMap2dTo3d().getUMax()) << std::endl
+      << dt__eval(_rM2d->constRefMap2dTo3d().getVMin()) << std::endl
+      << dt__eval(_rM2d->constRefMap2dTo3d().getVMax()) << std::endl
+      << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(0.,0.) ) << std::endl
+      << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(1.,0.) ) << std::endl
+      << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(1.,1.) ) << std::endl
+      << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(0.,1.) ) << std::endl
+    );
 //    //
 //    // write csv of mapping
 //    //
@@ -258,7 +270,8 @@ namespace dtOO {
 		ptrHandling< map1dTo3d > m1d( 
       _rM2d->constRefMap2dTo3d().segmentConstV(vv) 
     );
-		return m1d->l_u(uu);		
+    dt__quickdebug( << dt__eval(uu) << ", " << dt__eval(m1d->l_u(uu)) );
+		return m1d->l_u(uu);
 	}
   
 	float uVw_phirMs::s_uSVS(float const & uu, float const & vv) const {

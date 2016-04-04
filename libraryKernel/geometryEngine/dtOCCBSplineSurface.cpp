@@ -139,12 +139,23 @@ namespace dtOO {
 	}
   
 	std::string dtOCCBSplineSurface::dumpToString( void ) const {
+    Standard_Real U1;
+    Standard_Real U2;
+    Standard_Real V1;
+    Standard_Real V2;
+    
+    _ptr->Bounds(U1, U2, V1, V2);
+    
 		std::stringstream ss;
 		
 		ss 
     << 
     dt__dumpToString(
       << dtOCCSurface::dumpToString() << std::endl
+      << dt__eval(U1) << std::endl
+      << dt__eval(U2) << std::endl      
+      << dt__eval(V1) << std::endl
+      << dt__eval(V2) << std::endl            
       << dt__eval(_ptr->IsURational()) << std::endl
       << dt__eval(_ptr->IsVRational()) << std::endl
       << dt__eval(_ptr->Continuity()) << std::endl
