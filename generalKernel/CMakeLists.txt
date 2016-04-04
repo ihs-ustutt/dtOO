@@ -51,6 +51,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -134,6 +135,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp

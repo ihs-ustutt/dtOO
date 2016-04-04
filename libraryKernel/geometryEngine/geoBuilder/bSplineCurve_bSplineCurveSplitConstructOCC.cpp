@@ -34,23 +34,16 @@ namespace dtOO {
 		dtOCCCurveBase base;
 
     dt__tryOcc(        
-      Handle(Geom_BSplineCurve) newBSpline
-      =
-      GeomConvert::SplitBSplineCurve(
-        geomBSpline, 
-        Standard_Real(u0), Standard_Real(u1), Precision::PConfusion()
-      );
-
       base.setOCC( 
         GeomConvert::SplitBSplineCurve(
           geomBSpline, 
-          Standard_Real(u0), Standard_Real(u1), Precision::PConfusion()
+          Standard_Real(u0), Standard_Real(u1), Precision::Confusion()
         )
       );
       ,
       << "Split fails."
     );
-		_dtC.reset( new dtOCCBSplineCurve(base) );    
+		_dtC.reset( new dtOCCBSplineCurve(base) );
   } 
   
 	bSplineCurve_bSplineCurveSplitConstructOCC

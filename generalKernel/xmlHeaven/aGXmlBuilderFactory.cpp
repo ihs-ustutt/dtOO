@@ -31,6 +31,7 @@
 #include "aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.h"
+#include "aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -154,6 +155,11 @@ namespace dtOO {
     __IFRETCUSTOM(geomSurface_readStlOCC, geomSurface_readStlOCCAGXmlBuilder);    
     __IFRET(geomShape_readIgesOCCAGXmlBuilder);
     __IFRETCUSTOM(geomShape_readIgesOCC, geomShape_readIgesOCCAGXmlBuilder);
+    __IFRET(bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder);
+    __IFRETCUSTOM(
+      bSplineCurve_bSplineCurveSplitConstructOCC,
+      bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder
+    );
     
     dt__throw(
       create(), 
