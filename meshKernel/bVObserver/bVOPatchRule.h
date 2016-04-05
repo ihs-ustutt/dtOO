@@ -26,6 +26,7 @@ namespace dtOO {
     virtual void postUpdate( void );
   private:
     std::vector< std::string > _patchRule;
+    std::vector< std::string > _regRule;
   };
 }
 #endif	/* bVOPatchRule_H */
