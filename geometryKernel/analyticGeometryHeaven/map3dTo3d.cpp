@@ -690,12 +690,13 @@ namespace dtOO {
               catch( eGeneral & eGen ) {
                 dt__warning(
                   reparamInVolume(),
+                  << eGen.what() << std::endl
                   << logMe::dtFormat(
                     "Error for initU = %12.4e initV = %12.4e initW = %12.4e "
                     "at internalRestart = %i"
                   ) 
                   % initU[ii] % initV[jj] % initW[kk] % thisRestart
-                );                 
+                );
               }
               //
               // increase precision for restart
@@ -1016,10 +1017,10 @@ namespace dtOO {
 	double map3dTo3d::F(double const * xx) const {	
     dtPoint3 uvw(xx[0], xx[1], xx[2]);
     double objective;
-    if ( inRange(uvw) ) {
+//    if ( inRange(uvw) ) {
       objective = dtLinearAlgebra::length( _pXYZ - getPointPercent(uvw) );
-    }
-    else dt__throwUnexpected(F());
+//    }
+//    else dt__throwUnexpected(F());
     
     return objective;    
 	}
