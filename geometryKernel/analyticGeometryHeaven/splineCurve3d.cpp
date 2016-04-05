@@ -90,6 +90,14 @@ namespace dtOO {
   dtVector3 splineCurve3d::firstDerU( float const uu) const {
     return _dtC->firstDer(uu);
   }
+
+	float splineCurve3d::l_u( float const & uu ) const {
+		return _dtC->l_u(uu);	
+	}	
+  
+  float splineCurve3d::u_l( float const & ll ) const {
+    return _dtC->u_l(ll);
+  } 
   
   bool splineCurve3d::isClosed( int const & dir) const {
     return _dtC->closed();
@@ -102,4 +110,17 @@ namespace dtOO {
   float splineCurve3d::getMax( int const & dir) const {
     return _dtC->maxPara(dir);
   }  
+
+	std::string splineCurve3d::dumpToString( void ) const {
+		std::stringstream ss;
+		
+		ss
+    << 
+    dt__dumpToString( 
+      << "_dtC = " << _dtC->virtualClassName() << std::endl
+      << _dtC->dumpToString()
+    );
+		
+		return ss.str();
+	}	  
 }
