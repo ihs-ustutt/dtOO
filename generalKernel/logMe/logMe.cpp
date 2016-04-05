@@ -66,6 +66,9 @@ namespace dtOO {
       << "* " << dt__eval(dtOO::git::versionCommitNo) << std::endl
       << "* " << dt__eval(dtOO::git::versionSha1) << std::endl
       << "* " << dt__eval(dtOO::git::versionShort) << std::endl
+      << "* " << std::endl
+      << "* " << dt__eval(std::numeric_limits<float>::epsilon()) << std::endl
+      << "* " << dt__eval(std::numeric_limits<double>::epsilon()) << std::endl
       << "*"  << std::endl
       << "**************************************************" << std::endl
       << " "
