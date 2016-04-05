@@ -24,6 +24,10 @@
 #include <Math/Functor.h>
 
 namespace dtOO { 
+  float map3dTo3d::_deltaPer 
+  = 
+  staticPropertiesHandler::getInstance()->getOptionFloat("map3dTo3d_deltaPer");
+
   map3dTo3d::map3dTo3d() : analyticGeometry() {
     
   }
@@ -183,82 +187,81 @@ namespace dtOO {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
     float wP = percent_w(ww);
-    float const deltaPer = 0.01;
     
     std::vector< dtVector3 > ret(3);
-    if (uP<deltaPer) {
+    if (uP<_deltaPer) {
       ret[0] 
       = 
-      (getPointPercent(deltaPer, vP, wP) - getPointPercent(0., vP, wP))
+      (getPointPercent(_deltaPer, vP, wP) - getPointPercent(0., vP, wP))
       /
-      (u_percent(deltaPer) - u_percent(0.) );      
+      (u_percent(_deltaPer) - u_percent(0.) );      
     }
-    else if ( (uP>=deltaPer) && (uP<=(1.-deltaPer)) ) {
+    else if ( (uP>=_deltaPer) && (uP<=(1.-_deltaPer)) ) {
       ret[0]
       =
       ( 
-          getPointPercent(uP+deltaPer, vP, wP) 
-        - getPointPercent(uP-deltaPer, vP, wP) 
+          getPointPercent(uP+_deltaPer, vP, wP) 
+        - getPointPercent(uP-_deltaPer, vP, wP) 
       )
       /
-      ( u_percent(uP+deltaPer) - u_percent(uP-deltaPer) );
+      ( u_percent(uP+_deltaPer) - u_percent(uP-_deltaPer) );
     }
-    else if (uP>(1.-deltaPer)) {
+    else if (uP>(1.-_deltaPer)) {
       ret[0]
       =
-      (getPointPercent(1., vP, wP) - getPointPercent(1.-deltaPer, vP, wP))
+      (getPointPercent(1., vP, wP) - getPointPercent(1.-_deltaPer, vP, wP))
       /
-      (u_percent(1.) - u_percent(1.-deltaPer) );      
+      (u_percent(1.) - u_percent(1.-_deltaPer) );      
     }
     
-    if (vP<deltaPer) {
+    if (vP<_deltaPer) {
       ret[1]
       =
-      (getPointPercent(uP, deltaPer, wP) - getPointPercent(uP, 0., wP))
+      (getPointPercent(uP, _deltaPer, wP) - getPointPercent(uP, 0., wP))
       /
-      (v_percent(deltaPer) - v_percent(0.) );      
+      (v_percent(_deltaPer) - v_percent(0.) );      
     }
-    else if ( (vP>=deltaPer) && (vP<=(1.-deltaPer)) ) {
+    else if ( (vP>=_deltaPer) && (vP<=(1.-_deltaPer)) ) {
       ret[1]
       =
       ( 
-          getPointPercent(uP, vP+deltaPer, wP) 
-        - getPointPercent(uP, vP-deltaPer, wP) 
+          getPointPercent(uP, vP+_deltaPer, wP) 
+        - getPointPercent(uP, vP-_deltaPer, wP) 
       )
       /
-      ( v_percent(vP+deltaPer) - v_percent(vP-deltaPer) );
+      ( v_percent(vP+_deltaPer) - v_percent(vP-_deltaPer) );
     }
-    else if (vP>(1.-deltaPer)) {
+    else if (vP>(1.-_deltaPer)) {
       ret[1]
       =
-      (getPointPercent(uP, 1., wP) - getPointPercent(uP, 1.-deltaPer, wP))
+      (getPointPercent(uP, 1., wP) - getPointPercent(uP, 1.-_deltaPer, wP))
       /
-      (v_percent(1.) - v_percent(1.-deltaPer) );      
+      (v_percent(1.) - v_percent(1.-_deltaPer) );      
     }
 
-    if (wP<deltaPer) {
+    if (wP<_deltaPer) {
       ret[2]
       =
-      (getPointPercent(uP, vP, deltaPer) - getPointPercent(uP, vP, 0.))
+      (getPointPercent(uP, vP, _deltaPer) - getPointPercent(uP, vP, 0.))
       /
-      (w_percent(deltaPer) - w_percent(0.) );
+      (w_percent(_deltaPer) - w_percent(0.) );
     }
-    else if ( (wP>=deltaPer) && (wP<=(1.-deltaPer)) ) {
+    else if ( (wP>=_deltaPer) && (wP<=(1.-_deltaPer)) ) {
       ret[2]
       =
       ( 
-          getPointPercent(uP, vP, wP+deltaPer) 
-        - getPointPercent(uP, vP, wP-deltaPer) 
+          getPointPercent(uP, vP, wP+_deltaPer) 
+        - getPointPercent(uP, vP, wP-_deltaPer) 
       )
       /
-      ( w_percent(wP+deltaPer) - w_percent(wP-deltaPer) );
+      ( w_percent(wP+_deltaPer) - w_percent(wP-_deltaPer) );
     }
-    else if (wP>(1.-deltaPer)) {
+    else if (wP>(1.-_deltaPer)) {
       ret[2]
       =
-      (getPointPercent(uP, vP, 1.) - getPointPercent(uP, vP, 1.-deltaPer))
+      (getPointPercent(uP, vP, 1.) - getPointPercent(uP, vP, 1.-_deltaPer))
       /
-      (w_percent(1.) - w_percent(1.-deltaPer));      
+      (w_percent(1.) - w_percent(1.-_deltaPer));      
     }
 
     return ret;

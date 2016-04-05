@@ -143,6 +143,7 @@ namespace dtOO {
     ) const;
   private:
     mutable dtPoint3 _pXYZ;
+    static float _deltaPer;
   };
 }
 #endif	/* MAP3DTO3D_H */

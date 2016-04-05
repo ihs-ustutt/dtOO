@@ -37,6 +37,9 @@ namespace dtOO {
     setOption("reparamOnFace_minimizer", ":Minuit2:kMigrad:");
     setOption("reparamInVolume_minimizer", ":Minuit2:kMigrad:");
     setOption("ompNumThreads", "1");
+    setOption("map1dTo3d_deltaPer", "0.01");    
+    setOption("map2dTo3d_deltaPer", "0.01");    
+    setOption("map3dTo3d_deltaPer", "0.01");    
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {

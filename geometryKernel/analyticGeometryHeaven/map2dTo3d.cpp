@@ -21,6 +21,10 @@
 #include <Math/Functor.h>
 
 namespace dtOO {  
+  float map2dTo3d::_deltaPer 
+  = 
+  staticPropertiesHandler::getInstance()->getOptionFloat("map2dTo3d_deltaPer");
+  
   map2dTo3d::map2dTo3d() : analyticGeometry() {
   }
 
@@ -301,28 +305,27 @@ namespace dtOO {
 		//
     float uP = percent_u(uu);
     float vP = percent_v(vv);
-    float const deltaPer = 0.01;
-    float const deltaPerInv = 1. - deltaPer;
+    float const deltaPerInv = 1. - _deltaPer;
 		std::vector< dtVector3 > dd(2);
     
-    if (uP<deltaPer) {
+    if (uP<_deltaPer) {
       dd[0] 
 			= 
-			(getPointPercent(deltaPer, vP) - getPointPercent(0., vP))
+			(getPointPercent(_deltaPer, vP) - getPointPercent(0., vP))
 			/
-			(u_percent(deltaPer) - u_percent(0.) );      
+			(u_percent(_deltaPer) - u_percent(0.) );      
     }
-    else if ( (uP>=deltaPer) && (uP<=deltaPerInv) ) {
+    else if ( (uP>=_deltaPer) && (uP<=deltaPerInv) ) {
       dd[0] 
 			= 
-			( getPointPercent(uP+deltaPer, vP) - getPointPercent(uP-deltaPer, vP) )
+			( getPointPercent(uP+_deltaPer, vP) - getPointPercent(uP-_deltaPer, vP) )
 			/
-			( u_percent(uP+deltaPer) - u_percent(uP-deltaPer) );
+			( u_percent(uP+_deltaPer) - u_percent(uP-_deltaPer) );
     }
     else if (uP>deltaPerInv) {
       dd[0] 
 			= 
-			(getPointPercent(1., vP) - getPointPercent(1.-deltaPer, vP))
+			(getPointPercent(1., vP) - getPointPercent(1.-_deltaPer, vP))
 			/
 			(u_percent(1.) - u_percent(deltaPerInv) );    
     }
@@ -330,24 +333,24 @@ namespace dtOO {
 		//
 		// dV
 		//
-    if (vP<deltaPer) {
+    if (vP<_deltaPer) {
       dd[1] 
 			= 
-			(getPointPercent(uP, deltaPer) - getPointPercent(uP, 0.))
+			(getPointPercent(uP, _deltaPer) - getPointPercent(uP, 0.))
 			/
-			(v_percent(deltaPer) - v_percent(0.) );
+			(v_percent(_deltaPer) - v_percent(0.) );
     }
-    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
+    else if ( (vP>=_deltaPer) && (vP<=deltaPerInv) ) {
       dd[1] 
 			= 
-			(getPointPercent(uP, vP+deltaPer) - getPointPercent(uP, vP-deltaPer))
+			(getPointPercent(uP, vP+_deltaPer) - getPointPercent(uP, vP-_deltaPer))
 			/
-			(v_percent(vP+deltaPer) - v_percent(vP-deltaPer) );
+			(v_percent(vP+_deltaPer) - v_percent(vP-_deltaPer) );
     }
     else if (vP>deltaPerInv) {
       dd[1] 
 			= 
-			(getPointPercent(uP, 1.) - getPointPercent(uP, 1.-deltaPer))
+			(getPointPercent(uP, 1.) - getPointPercent(uP, 1.-_deltaPer))
 			/
 			(v_percent(1.) - v_percent(deltaPerInv) );      
     }
@@ -372,31 +375,30 @@ namespace dtOO {
   ) const {
     float uP = percent_u(uu);
     float vP = percent_v(vv);
-    float const deltaPer = 0.01;
-    float const deltaPerInv = 1. - deltaPer;		
+    float const deltaPerInv = 1. - _deltaPer;		
     std::vector< dtVector3 > dd(3);
 		
 		//
 		// dUU
 		//
-    if (uP<deltaPer) {
+    if (uP<_deltaPer) {
       dd[0]
 			=
-			(firstDerU(deltaPer, vP) - firstDerU(0., vP))
+			(firstDerU(_deltaPer, vP) - firstDerU(0., vP))
 			/
-			(u_percent(deltaPer) - u_percent(0.) );      
+			(u_percent(_deltaPer) - u_percent(0.) );      
     }
-    else if ( (uP>=deltaPer) && (uP<=deltaPerInv) ) {
+    else if ( (uP>=_deltaPer) && (uP<=deltaPerInv) ) {
       dd[0]
 			=
-			(firstDerU(uP+deltaPer, vP) - firstDerU(uP-deltaPer, vP))
+			(firstDerU(uP+_deltaPer, vP) - firstDerU(uP-_deltaPer, vP))
 			/
-			(u_percent(uP+deltaPer) - u_percent(uP-deltaPer) );
+			(u_percent(uP+_deltaPer) - u_percent(uP-_deltaPer) );
     }
     else if (uP>deltaPerInv) {
       dd[0]
 			=
-			(firstDerU(1., vP) - firstDerU(1.-deltaPer, vP))
+			(firstDerU(1., vP) - firstDerU(1.-_deltaPer, vP))
 			/
 			(u_percent(1.) - u_percent(deltaPerInv) );      
     }       
@@ -404,24 +406,24 @@ namespace dtOO {
 		//
 		// ddUV
 		//
-    if (vP<deltaPer) {
+    if (vP<_deltaPer) {
       dd[1]
 			=
-			(firstDerV(uP, deltaPer) - firstDerV(uP, 0.))
+			(firstDerV(uP, _deltaPer) - firstDerV(uP, 0.))
 			/
-			(u_percent(deltaPer) - u_percent(0.) );      
+			(u_percent(_deltaPer) - u_percent(0.) );      
     }
-    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
+    else if ( (vP>=_deltaPer) && (vP<=deltaPerInv) ) {
       dd[1]
 			=
-			(firstDerV(uP, vP+deltaPer) - firstDerV(uP, vP-deltaPer))
+			(firstDerV(uP, vP+_deltaPer) - firstDerV(uP, vP-_deltaPer))
 			/
-			(u_percent(uP+deltaPer) - u_percent(uP-deltaPer) );
+			(u_percent(uP+_deltaPer) - u_percent(uP-_deltaPer) );
     }
     else if (vP>deltaPerInv) {
       dd[1]
 			=
-			(firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
+			(firstDerV(uP, 1.) - firstDerV(uP, 1.-_deltaPer))
 			/
 			(u_percent(1.) - u_percent(deltaPerInv) );      
     }       
@@ -429,24 +431,24 @@ namespace dtOO {
 		//
 		// dVV
 		//
-    if (vP<deltaPer) {
+    if (vP<_deltaPer) {
       dd[2]
 			=
-			(firstDerV(uP, deltaPer) - firstDerV(uP, 0.))
+			(firstDerV(uP, _deltaPer) - firstDerV(uP, 0.))
 			/
-			(v_percent(deltaPer) - v_percent(0.) );      
+			(v_percent(_deltaPer) - v_percent(0.) );      
     }
-    else if ( (vP>=deltaPer) && (vP<=deltaPerInv) ) {
+    else if ( (vP>=_deltaPer) && (vP<=deltaPerInv) ) {
       dd[2]
 			=
-			(firstDerV(uP, vP+deltaPer) - firstDerU(uP, vP-deltaPer))
+			(firstDerV(uP, vP+_deltaPer) - firstDerU(uP, vP-_deltaPer))
 			/
-			(v_percent(vP+deltaPer) - v_percent(vP-deltaPer) );
+			(v_percent(vP+_deltaPer) - v_percent(vP-_deltaPer) );
     }
     else if (vP>deltaPerInv) {
       dd[2]
 			=
-			(firstDerV(uP, 1.) - firstDerV(uP, 1.-deltaPer))
+			(firstDerV(uP, 1.) - firstDerV(uP, 1.-_deltaPer))
 			/
 			(v_percent(1.) - v_percent(deltaPerInv) );      
     }    		

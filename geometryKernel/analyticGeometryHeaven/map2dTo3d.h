@@ -126,6 +126,7 @@ namespace dtOO {
 	    double FWrap(double const & x0, double const & x1) const;
     private:
       mutable dtPoint3 _pXYZ;      
+      static float _deltaPer;      
   };
   
 	//

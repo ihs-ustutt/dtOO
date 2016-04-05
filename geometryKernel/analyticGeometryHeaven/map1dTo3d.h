@@ -54,6 +54,7 @@ namespace dtOO {
 	    double funValue(const double xx ) const;
     private:
       mutable float _tmpL;
+      static float _deltaPer;      
   };  
   
 	//

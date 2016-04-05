@@ -14,6 +14,10 @@
 #include <GSLError.h>
 
 namespace dtOO { 
+  float map1dTo3d::_deltaPer 
+  = 
+  staticPropertiesHandler::getInstance()->getOptionFloat("map1dTo3d_deltaPer");
+  
   map1dTo3d::map1dTo3d() : analyticGeometry() {
   }
 
@@ -61,27 +65,26 @@ namespace dtOO {
 
   dtVector3 map1dTo3d::firstDerU( float const & uu) const {
     float uP = percent_u(uu);
-    float const deltaPer = 0.01;
     
     if (uP<0.01) {
       return (
-        (getPointPercent(deltaPer) - getPointPercent(0.))
+        (getPointPercent(_deltaPer) - getPointPercent(0.))
         /
-        (u_percent(deltaPer) - u_percent(0.) )
+        (u_percent(_deltaPer) - u_percent(0.) )
       );      
     }
     else if ( (uP>=0.01) && (uP<=0.99) ) {
       return (
-        ( getPointPercent(uP+deltaPer) - getPointPercent(uP-deltaPer) )
+        ( getPointPercent(uP+_deltaPer) - getPointPercent(uP-_deltaPer) )
         /
-        ( u_percent(uP+deltaPer) - u_percent(uP-deltaPer) )
+        ( u_percent(uP+_deltaPer) - u_percent(uP-_deltaPer) )
       );
     }
     else if (uP>0.99) {
       return (
-        (getPointPercent(1.) - getPointPercent(1.-deltaPer))
+        (getPointPercent(1.) - getPointPercent(1.-_deltaPer))
         /
-        (u_percent(1.) - u_percent(1.-deltaPer) )
+        (u_percent(1.) - u_percent(1.-_deltaPer) )
       );      
     }
   }
