@@ -16,6 +16,7 @@ namespace dtOO {
     bVODumpModel();
     virtual ~bVODumpModel();
     virtual void preUpdate( void );
+    virtual void postUpdate( void );
     using bVOInterface::postUpdate;
   private:
     std::vector< std::string > _regionLabel;

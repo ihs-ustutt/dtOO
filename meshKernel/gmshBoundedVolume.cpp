@@ -214,18 +214,21 @@ namespace dtOO {
 	
 	void gmshBoundedVolume::updatePhysicals( void ) const {
 		::GModel::setCurrent(_gm.get());
-		
-		dtGmshModel::intGEntityVMap groups;		
+    _physLabels.clear();
 		_physLabels.resize(4);
-		for (int ii=0; ii<4; ii++) {
-			_physLabels[ii].clear();
-			_gm->getPhysicalGroups(ii, groups);
-			dt__forAllIter(dtGmshModel::intGEntityVMap, groups, it) {
-				int num = it->first;
-				std::string pName = _gm->getPhysicalName(ii, num);
-				if (pName != "") _physLabels[ii].push_back(pName);
-			}
-		}
+    dt__forFromToIndex(0, 4, dim) {
+      dtGmshModel::intGEntityVMap map;
+      _gm->getPhysicalGroups(dim, map);
+      dt__forAllRefAuto(map, aPair) {
+        dt__info(updatePhysicals,
+          << logMe::dtFormat(
+            "Physical group: name = %s, dim = %d ( %d entities )"
+          )
+          % _gm->getPhysicalName(dim, aPair.first) % dim % aPair.second.size()
+        );
+        _physLabels[dim].push_back( _gm->getPhysicalName(dim, aPair.first) );
+      }
+		}    
 	}
 
 	void gmshBoundedVolume::makePreGrid(void) {

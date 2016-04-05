@@ -47,6 +47,12 @@ namespace dtOO {
   
   void bVOWriteMSH::postUpdate( void ) {
     dt__onlyMaster {
+      dt__info(
+        postUpdate(),
+        << "Write " << _filename << "." << std::endl
+        << dt__eval(_saveAll)
+      );
+      
 		  ptrBoundedVolume()->getModel()->writeMSH(_filename, 2.2, false, _saveAll);
     }
   }
