@@ -21,6 +21,7 @@ SET(HEADERS
   bVObserver/bVODumpModel.h
   bVObserver/bVOEvilGodfather.h
   bVObserver/bVOAddInternalEdge.h
+  bVObserver/bVOAddFace.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dGmsh.h
@@ -55,6 +56,7 @@ SET(SOURCES
   bVObserver/bVODumpModel.cpp
   bVObserver/bVOEvilGodfather.cpp
   bVObserver/bVOAddInternalEdge.cpp
+  bVObserver/bVOAddFace.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dGmsh.cpp

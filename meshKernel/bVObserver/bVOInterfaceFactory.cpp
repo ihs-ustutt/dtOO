@@ -23,6 +23,7 @@
 #include "bVODumpModel.h"
 #include "bVOEvilGodfather.h"
 #include "bVOAddInternalEdge.h"
+#include "bVOAddFace.h"
 
 #define __IFRET(className) \
 	if ( strcmp(str, #className) == 0 ) { \
@@ -57,6 +58,7 @@ namespace dtOO {
     __IFRET(bVODumpModel);
     __IFRET(bVOEvilGodfather)
     __IFRET(bVOAddInternalEdge);
+    __IFRET(bVOAddFace);
 		
     dt__throw(create(), <<  "Could not be created.");
   }
