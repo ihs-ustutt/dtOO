@@ -312,6 +312,8 @@ namespace dtOO {
     = 
     ovm.request_cell_property< float >("iV");
     ovm.set_persistent( iV );
+    
+    int zeroVol = 0;
     dt__forAllRefAuto(pyramids, aPyr) {
       dt__forFromToIndex(0, 5, ii) {
         std::vector< ::MElement * > meVec 
@@ -321,13 +323,18 @@ namespace dtOO {
           aPyr->getVertex(ii)->y(), 
           aPyr->getVertex(ii)->z(), 
           -1
-        );
+        );       
         dt__forAllRefAuto(meVec, aMe) {
+          if ( aMe->getVolume()==0. ) zeroVol++;
           ovmCellH cH = ovm.addCell(aMe);
           ovm.request_cell_property< float >("iV")[cH] = aMe->getVolume();
         }
       }
     }
+    dt__info(
+      createPyramids(), 
+      << zeroVol << " zero-volumes detected."
+    );    
         
     //
     // pyramid open method
@@ -364,6 +371,7 @@ namespace dtOO {
         ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); vcIt++
       ) ovm[ *vcIt ]->setPartition(abs(vH.idx()));        
       
+      logContainer< dtMeshGRegion > logC(logDEBUG, "createPyramids()");
       dt__forFromToIndex(0, _nPyramidOpenSteps, ii) {
         std::vector< float > qq;
         for(
@@ -375,21 +383,45 @@ namespace dtOO {
             //
             // detect volume sign change --> element gets inverted
             //
+            double vol = ovm[ *vcIt ]->getVolume();
+            
             if ( 
-              (
-                ovm.request_cell_property< float >("iV")[*vcIt]
-                *
-                ovm[ *vcIt ]->getVolume()
+              ( 
+                ( ovm.request_cell_property< float >("iV")[*vcIt] * vol ) 
+                <= 
+                0. 
               )
-              <=
-              0.
+              ||
+              ( 
+                fabs(vol)
+                <
+                fabs( 0.1 * ovm.request_cell_property< float >("iV")[*vcIt] ) 
+              )
             ) {     
               qq[ qq.size() - 1 ] = -1. * fabs(qq[ qq.size() - 1 ]);
             }
-          }
+
+            logC() 
+              << logMe::dtFormat("%3i : qq = %12.4e, V = %12.4e, V0 = %12.4e") 
+                % ii
+                % qq.back() 
+                % vol 
+                % ovm.request_cell_property< float >("iV")[*vcIt]
+              << std::endl;            
+          }        
         }
         
-        if (progHelper::min(qq) > _minQShapeMetric) break;
+        float minQ = progHelper::min(qq);
+        logC() << logMe::dtFormat("==> minQ = %12.4e") % minQ<< std::endl;   
+            
+        if (minQ > _minQShapeMetric) {
+
+        logC() 
+          << logMe::dtFormat("Vertex : %10i ==> %3i relax steps") 
+            % aVert->getNum() % ii 
+          << std::endl;   
+          break;
+        }
         
 //        dtgr->model()->writeMSH(
 //          "boundaryVertex_part_"
