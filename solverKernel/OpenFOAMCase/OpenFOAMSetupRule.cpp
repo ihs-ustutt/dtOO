@@ -4,6 +4,7 @@
 #include "OpenFOAMWallRule.h"
 #include "OpenFOAMGgiRule.h"
 #include "OpenFOAMCyclicGgiRule.h"
+#include "OpenFOAMMixingPlaneRule.h"
 #include "OpenFOAMEmptyRule.h"
 #include "OpenFOAMCellZoneRule.h"
 #include "OpenFOAMCylindricalInletRule.h"
@@ -45,6 +46,9 @@ namespace dtOO {
     if (name == "OpenFOAMCellZoneRule") return new OpenFOAMCellZoneRule();
     if (name == "OpenFOAMCylindricalInletRule") {
       return new OpenFOAMCylindricalInletRule();
+    }
+    if (name == "OpenFOAMMixingPlaneRule" ) {
+      return new OpenFOAMMixingPlaneRule();
     }
     dt__throw(create(), << "Cannot create " << name);
   }
