@@ -45,7 +45,9 @@ SET(HEADERS
   analyticFunctionHeaven/analyticFunction.h
   analyticFunctionHeaven/scaFunction.h
   analyticFunctionHeaven/scaOneD.h
+  analyticFunctionHeaven/scaMultiOneD.h
   analyticFunctionHeaven/scaMuParserOneD.h
+  analyticFunctionHeaven/scaLinearOneD.cpp
   analyticFunctionHeaven/scaCurve2dOneD.h
   analyticFunctionHeaven/scaTwoD.h
   analyticFunctionHeaven/scaMuParserTwoD.h
@@ -155,6 +157,7 @@ SET(SOURCES
   analyticFunctionHeaven/scaFunction.cpp
   analyticFunctionHeaven/scaOneD.cpp
   analyticFunctionHeaven/scaMuParserOneD.cpp
+  analyticFunctionHeaven/scaLinearOneD.cpp
   analyticFunctionHeaven/scaCurve2dOneD.cpp
   analyticFunctionHeaven/scaTwoD.cpp
   analyticFunctionHeaven/scaMuParserTwoD.cpp
