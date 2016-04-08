@@ -22,6 +22,7 @@ namespace dtOO {
     virtual scaOneD * create( void ) const = 0;       
     virtual float YFloat(aFX const & xx) const;
     virtual float YFloat(float const & xx) const = 0;
+    virtual float invYFloat(float const & yy) const;     
     float YFloatPercent( float const & xP ) const;
     void setMinMax( float const min, float const max);
     void setMin(float const min);
@@ -33,6 +34,7 @@ namespace dtOO {
     float x_percent(float const & xx) const;
     float percent_x(float const & xx) const;
     float DYFloat( float const & xx ) const;    
+    virtual vectorHandling< renderInterface * > getRender( void ) const;
 //  private:
 //    float simpleNewton( float const yy) const;
   private:

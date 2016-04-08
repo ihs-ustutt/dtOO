@@ -27,7 +27,7 @@ namespace dtOO {
       dtTransformer const * const dtT 
     ) const = 0;    
     virtual analyticFunction * create( void ) const = 0;
-    void dump(void) const;    
+    virtual void dump(void) const;    
     virtual std::string dumpToString(void) const;
     virtual aFY Y(aFX const & xx) const = 0;
     virtual int xDim( void ) const = 0;

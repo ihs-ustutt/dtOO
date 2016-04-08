@@ -2,8 +2,13 @@
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 
+#include <interfaceHeaven/staticPropertiesHandler.h>
+#include <solid2dLine.h>
+
 namespace dtOO {
   scaOneD::scaOneD() : scaFunction() {
+    _xxMax = std::numeric_limits<float>::min();
+    _xxMin = std::numeric_limits<float>::max();
   }
 
   scaOneD::scaOneD( scaOneD const & orig) : scaFunction(orig) {
@@ -25,74 +30,14 @@ namespace dtOO {
 		
 		return YFloat( xx[0] );
 	}
+  
+  float scaOneD::invYFloat(float const & yy) const {
+		return invY( analyticFunction::aFYOneD(yy) )[0];
+  }
 	
   float scaOneD::YFloatPercent( float const & xP ) const {
     return YFloat( x_percent(xP) );
   }	
-  
-//  float scaOneD::optionFunction(std::string const option, float const yy) const {
-//    if (option == "invertSimpleNewton") {
-//      return simpleNewton(yy);
-//    }
-//    else if (option == "getVectorValuePercent().x()") {
-//      return getVectorValuePercent(yy)[0];
-//    }    
-//    if (option == "getVectorValuePercent().y()") {
-//      return getVectorValuePercent(yy)[1];
-//    }        
-//    else {
-//      dt__THROW(optionFunction(),
-//              << "Unknown " << dt__eval(option));
-//    }
-//  }
-  
-//  float scaOneD::simpleNewton( float const yy) const {
-//    DTBUFFERINIT();
-//    
-//    DTBUFFER( << dt__eval(yy) << std::endl);
-//    
-//    float xx[3];
-//    
-////    float diff = getMaxX() - getMinX();
-//    xx[1] = xMin(0);// + .25 * diff;
-//    xx[2] = xMax(0);// - .25 * diff;
-//       
-//    for (int ii=0;ii<100;ii++) {
-//      float diffF = YFloat(xx[1]) - YFloat(xx[2]);
-//      if ( diffF != 0. ) {
-//        xx[0] = xx[1] - (xx[1] - xx[2])/(diffF) * (YFloat(xx[1]) - yy);
-//      }
-//      else {
-//        DTBUFFER( 
-//          << dt__eval(YFloat(xx[1])) << std::endl
-//          << dt__eval(YFloat(xx[2])) << std::endl
-//          << "Unexpected end of iteration. Set xx[0] = xx[1]"
-//          << std::endl );
-//        xx[0] = xx[1];
-//        break;
-//      }
-//      float res = xx[0] - xx[1];
-//      
-//      DTBUFFER( 
-//        << dt__eval(ii) << " | "
-//        << dt__eval(xx[0]) << " | " 
-//        << dt__eval(xx[1]) << " | " 
-//        << dt__eval(xx[2]) << " | " 
-//        << dt__eval(res) << std::endl ); 
-//      xx[2] = xx[1];
-//      xx[1] = xx[0];
-//      
-//      if (res == 0.) {
-//        break;
-//      }
-//    }
-//    
-//    DTBUFFER( << "f(" << xx[0] << ") = " << YFloat(xx[0]) << std::endl);
-//    
-//    dt__debug_BUFFER( simpleNewton() );
-//    
-//    return xx[0];
-//  }
   
   int scaOneD::xDim( void ) const {
 		return 1;
@@ -216,5 +161,26 @@ namespace dtOO {
     return curLength;
   }
   
+  vectorHandling< renderInterface * > scaOneD::getRender( void ) const {
+		int nU
+		=
+		staticPropertiesHandler::getInstance()->getOptionInt(
+      "function_render_resolution_u"
+    );		
+		
+		vectorHandling< dtPoint2 > p2(nU);
+    float interval = (xMax(0) - xMin(0)) / (nU-1);
+    for (int ii=0;ii<nU;ii++) {
+			float iiF = static_cast<float>(ii);
+      float xx = xMin(0) + iiF * interval;
+      float yy = YFloat(xx);
+			p2[ii] = dtPoint2(xx, yy);
+    }
+		
+		vectorHandling< renderInterface * > rV(1);
+		rV[0] = new solid2dLine(p2);
+		
+		return rV;
+  }  
   dt__C_addCloneForpVH(scaOneD);        
 }

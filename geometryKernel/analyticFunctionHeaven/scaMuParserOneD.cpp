@@ -89,26 +89,4 @@ namespace dtOO {
   void scaMuParserOneD::setArgumentRange(float xMin, float xMax) {
     scaOneD::setMinMax(xMin, xMax);
   }
-  
-  vectorHandling< renderInterface * > scaMuParserOneD::getRender( void ) const {
-		int nU
-		=
-		staticPropertiesHandler::getInstance()->getOptionInt(
-      "function_render_resolution_u"
-    );		
-		
-		vectorHandling< dtPoint2 > p2(nU);
-    float interval = (xMax(0) - xMin(0)) / (nU-1);
-    for (int ii=0;ii<nU;ii++) {
-			float iiF = static_cast<float>(ii);
-      float xx = xMin(0) + iiF * interval;
-      float yy = YFloat(xx);
-			p2[ii] = dtPoint2(xx, yy);
-    }
-		
-		vectorHandling< renderInterface * > rV(1);
-		rV[0] = new solid2dLine(p2);
-		
-		return rV;
-  }
 }

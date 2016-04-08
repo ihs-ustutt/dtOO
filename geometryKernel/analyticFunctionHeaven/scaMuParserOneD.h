@@ -27,13 +27,11 @@ namespace dtOO {
     virtual ~scaMuParserOneD();
     virtual float YFloat(float const & xx) const;
     void setArgumentRange(float xMin, float xMax);  
-    vectorHandling< renderInterface * > getRender( void ) const;   
   private:
     dt__pH(mu::Parser) _parser;
     dt__pH(double) _argument;
     std::string _expressionStr;
     std::string _argumentStr;
-//    scaMuParserOneD * _derivative;
   };
 }
 #endif	/* SCAMUPARSERONED_H */
