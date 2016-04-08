@@ -262,10 +262,10 @@ namespace dtOO {
     cond, solution, functionname, message \
   ) \
     if (cond) { \
-      solution; \
       dt__warning(functionname, \
       << "condition: "#cond" is true." << std::endl \
       message); \
+      solution; \
     }
   #define dt__warnIf(cond, functionname) \
     if (cond) { \
