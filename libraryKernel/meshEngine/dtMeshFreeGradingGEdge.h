@@ -28,6 +28,8 @@ namespace dtOO {
       dt__pVH(scaOneD) _grading;
       std::vector< int > _typeTransfinite;
       std::map< int, scaOneD * > _gradingInt;
+      float _tol;
+      int _maxSmooth;
   };
 }
 #endif	/* dtMeshFreeGradingGEdge_H */
