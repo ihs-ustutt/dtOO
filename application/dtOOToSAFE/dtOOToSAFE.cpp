@@ -38,6 +38,11 @@ int main( int ac, char* av[] ) {
     std::vector< std::string > def(0);
     vm.description().add_options()
       (
+        "case", 
+        dtPO::value<std::string>()->required(), 
+        "define case to run (required)"
+      )    
+      (
         "statePattern", 
         dtPO::value<std::string>()->required(), 
         "define state (required)"
@@ -138,7 +143,12 @@ int main( int ac, char* av[] ) {
         ) 
       );
     }
-    std::fstream stateOf("./dtOOToSAFE/state", std::ios::out | std::ios::trunc); 
+    std::fstream stateOf(
+      "./dtOOToSAFE/state", std::ios::out | std::ios::trunc
+    ); 
+    std::fstream statusOf(
+      "./dtOOToSAFE/status", std::ios::out | std::ios::trunc
+    );     
     
     //
     // adjust yWorst vector
@@ -173,16 +183,18 @@ int main( int ac, char* av[] ) {
     parser.createAnalyticGeometry(&bC, &cV, &aF, &aG);
     parser.createBoundedVolume(&bC, &cV, &aF, &aG, &bV);
     parser.createCase(&bC, &cV, &aF, &aG, &bV, &dtC);
+    dtCase * const wCase = dtC.get(vm["case"].as<std::string>());
     
-    dtC.back()->update();
-
+    wCase->update();    
+    
     dt__forAllRefAuto(stateToWrite, aState) {
       parser.loadStateToConst(aState, cV);
       vectorHandling< resultValue * > result
       =
-      dtC.back()->result( aState );
+      wCase->result( aState );
       
       stateOf << aState << std::endl;
+      statusOf << wCase->status(aState) << std::endl;
       dt__forAllIndex(xLabel, ii) {
         *(xOf[ii]) << cV.get(xLabel[ii])->getValue() << std::endl;
       }
