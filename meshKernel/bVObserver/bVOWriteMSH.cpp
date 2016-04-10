@@ -43,6 +43,10 @@ namespace dtOO {
     if (qtXmlBase::hasAttribute("saveAll", element)) {
       _saveAll = qtXmlBase::getAttributeBool("saveAll", element);
     }
+    _saveParametric = false;
+//    if (qtXmlBase::hasAttribute("saveParametric", element)) {
+//      _saveParametric = qtXmlBase::getAttributeBool("saveParametric", element);
+//    } 
   }
   
   void bVOWriteMSH::postUpdate( void ) {
@@ -50,10 +54,13 @@ namespace dtOO {
       dt__info(
         postUpdate(),
         << "Write " << _filename << "." << std::endl
-        << dt__eval(_saveAll)
+        << dt__eval(_saveAll) << std::endl
+        << dt__eval(_saveParametric)
       );
       
-		  ptrBoundedVolume()->getModel()->writeMSH(_filename, 2.2, false, _saveAll);
+		  ptrBoundedVolume()->getModel()->writeMSH(
+        _filename, 2.2, false, _saveAll, _saveParametric
+      );
     }
   }
 }

@@ -27,6 +27,7 @@ namespace dtOO {
   private:
     std::string _filename;
     bool _saveAll;
+    bool _saveParametric;
   };
 }
 #endif	/* bVOWriteMSH_H */
