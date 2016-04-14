@@ -61,11 +61,17 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const aF 
     );
     static std::vector< float > getAttributeFloatVectorMuParse( 
-		std::string const attName, 
-		::QDomElement const element, 
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF 
+      std::string const attName, 
+      ::QDomElement const element, 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF 
     );        
+    static std::vector< double > getAttributeDoubleVectorMuParse( 
+      std::string const attName, 
+      ::QDomElement const element, 
+      vectorHandling< constValue * > const * const cV,
+      vectorHandling< analyticFunction * > const * const aF 
+    );            
     static std::vector< int > getAttributeIntVectorMuParse( 
       std::string const attName, 
       ::QDomElement const element, 

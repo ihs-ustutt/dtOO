@@ -266,6 +266,19 @@ namespace dtOO {
 		return floatVec;
 	}
 
+	std::vector< double > qtXmlBase::getAttributeDoubleVectorMuParse( 
+		std::string const attName, 
+		::QDomElement const element, 
+		vectorHandling< constValue * > const * const cV,
+		vectorHandling< analyticFunction * > const * const aF 
+	) {
+		std::vector< float > floatVec
+    =
+    getAttributeFloatVectorMuParse(attName, element, cV, aF);
+    
+    return std::vector< double >( floatVec.begin(), floatVec.end() );
+	}  
+
 	std::vector< int > qtXmlBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
