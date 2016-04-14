@@ -61,6 +61,7 @@ namespace dtOO {
       << "* " << std::endl
       << "* " << dt__eval(dtOO::git::branch) << std::endl
       << "* " << dt__eval(dtOO::git::version) << std::endl
+      << "* " << dt__eval(dtOO::git::versionName) << std::endl      
       << "* " << dt__eval(dtOO::git::versionMajor) << std::endl
       << "* " << dt__eval(dtOO::git::versionMinor) << std::endl
       << "* " << dt__eval(dtOO::git::versionCommitNo) << std::endl

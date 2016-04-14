@@ -23,11 +23,32 @@ MACRO(MAKE_DTOO_VERSION VERSION_MAJOR VERSION_MINOR VERSION_COMMIT)
   git_describe(DTOO_VERSION --tags)
 
   #parse the version information into pieces.
-  string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" DTOO_VERSION_MAJOR "${DTOO_VERSION}")
-  string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" DTOO_VERSION_MINOR "${DTOO_VERSION}")
+  string(
+    REGEX REPLACE 
+    "^([a-z/A-Z]+)[0-9]+\\..*" "\\1" DTOO_VERSION_NAME 
+    "${DTOO_VERSION}"
+  )
+  string(
+    REGEX REPLACE 
+    "^[a-z/A-Z]+([0-9]+)\\..*" "\\1" DTOO_VERSION_MAJOR 
+    "${DTOO_VERSION}"
+  )
+  string(
+    REGEX REPLACE 
+    "^[a-z/A-Z]+[0-9]+\\.([0-9]+).*" "\\1" DTOO_VERSION_MINOR 
+    "${DTOO_VERSION}"
+  )
   if("${DTOO_VERSION}" MATCHES "-")
-    string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\-([0-9]+).*" "\\1" DTOO_VERSION_COMMIT "${DTOO_VERSION}")
-    string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\-[0-9]+\\-([0-9]+).*" "\\1" DTOO_VERSION_SHA1 "${DTOO_VERSION}")
+    string(
+      REGEX REPLACE 
+      "^[a-z/A-Z]+[0-9]+\\.[0-9]+\\-([0-9]+).*" "\\1" DTOO_VERSION_COMMIT 
+      "${DTOO_VERSION}"
+    )
+    string(
+      REGEX REPLACE 
+      "^[a-z/A-Z]+[0-9]+\\.[0-9]+\\-[0-9]+\\-([0-9]+).*" "\\1" DTOO_VERSION_SHA1 
+      "${DTOO_VERSION}"
+    )
   else("${DTOO_VERSION}" MATCHES "-")
     set(DTOO_VERSION_COMMIT "0")
     set(DTOO_VERSION_SHA1 "")
@@ -43,7 +64,12 @@ MACRO(MAKE_DTOO_VERSION VERSION_MAJOR VERSION_MINOR VERSION_COMMIT)
   )
 
   message(STATUS "|")
-  message(STATUS "| Compiling dtOO v${DTOO_VERSION_MAJOR}.${DTOO_VERSION_MINOR}.${DTOO_VERSION_COMMIT}")
+  message(
+    STATUS 
+    "| Compiling dtOO ${DTOO_VERSION_NAME}"
+    "${DTOO_VERSION_MAJOR}.${DTOO_VERSION_MINOR}.${DTOO_VERSION_COMMIT}"
+  )
+  message(STATUS "|   ")
   message(STATUS "|")
   set(VERSION_MAJOR "${DTOO_VERSION_MAJOR}")
   set(VERSION_MINOR "${DTOO_VERSION_MINOR}")
