@@ -14,24 +14,26 @@ namespace dtOO {
   class analyticGeometry;
   class boundedVolume;
   class baseContainer;
+  class dtCase;  
   
   class helloWorldPlugin : public dtPlugin {
-  public:
-    dt__class(helloWorldPlugin, dtPlugin);
-    helloWorldPlugin();
-    virtual ~helloWorldPlugin();
-    virtual void init( 
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG,
-      vectorHandling< boundedVolume * > const * const bV,
-      vectorHandling< dtPlugin * > const * const pL
-    );
-    
-    virtual void apply(void);
-  private:
+    public:
+      dt__class(helloWorldPlugin, dtPlugin);
+      helloWorldPlugin();
+      virtual ~helloWorldPlugin();
+      virtual void init( 
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        vectorHandling< constValue * > const * const cV,
+        vectorHandling< analyticFunction * > const * const aF,
+        vectorHandling< analyticGeometry * > const * const aG,
+        vectorHandling< boundedVolume * > const * const bV,
+        vectorHandling< dtCase * > const * const dC,        
+        vectorHandling< dtPlugin * > const * const pL
+      );
+
+      virtual void apply(void);
+    private:
   };
 }
 
