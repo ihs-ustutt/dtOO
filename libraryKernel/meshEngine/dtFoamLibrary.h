@@ -10,6 +10,7 @@
 #include <cellSet.H>
 #include <faceSet.H>
 #include <fvMesh.H>
+#include <argList.H>
 
 class MVertex;
 class MElement;
@@ -47,6 +48,9 @@ namespace dtOO {
       std::string const & content,
       std::vector< std::string > const & noWriteRule
     );        
+    static ::Foam::argList initCase(
+      std::string const & appName, std::string const & wDir
+    );    
   private:
     dtFoamLibrary();
     virtual ~dtFoamLibrary();

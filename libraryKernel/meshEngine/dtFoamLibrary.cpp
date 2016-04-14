@@ -518,7 +518,7 @@ namespace dtOO {
       }
     }
   }
-
+  
   ::Foam::polyMesh * dtFoamLibrary::readMesh(
     std::vector< ::MVertex * > allVerts,
     std::vector< std::pair< ::MElement *, int > > allElems,
@@ -1073,4 +1073,41 @@ namespace dtOO {
       }
     }
   }
+  
+  ::Foam::argList dtFoamLibrary::initCase(
+    std::string const & appName, std::string const & wDir
+  ) {
+    //
+    // enable exception throwing
+    //
+    ::Foam::FatalError.throwExceptions();    
+    ::Foam::FatalIOError.throwExceptions();    
+
+    //
+    // argList
+    //
+    ::Foam::argList::noParallel();
+    int argc = 3;
+    std::vector< std::string > argvStr(3);
+    argvStr[0] = appName;
+    argvStr[1] = std::string("-case");
+    argvStr[2] = wDir;
+    char ** argv = new char*[3];
+    argv[0] = const_cast< char *>(argvStr[0].c_str());
+    argv[1] = const_cast< char *>(argvStr[1].c_str());
+    argv[2] = const_cast< char *>(argvStr[2].c_str());    
+
+    // disable floating point exception trapping
+    systemHandling::unsetEnv("FOAM_SIGFPE");
+
+    //
+    // create rootCase
+    //
+    ::Foam::argList args(argc, argv);
+    if (!args.checkRootCase()) {
+      Foam::FatalError.exit();
+    }      
+    
+    return args;
+  }  
 }
