@@ -62,7 +62,12 @@ find_package(
 #TKSTEP209 TKSTEPBase 
 
 find_package(MUPARSER REQUIRED muparser)
-find_package(ROOT REQUIRED Core Matrix MathCore MathMore Minuit2 Thread)
+find_package(
+  ROOT 
+  REQUIRED 
+  COMPONENTS
+  Core Matrix MathCore MathMore Minuit2 Thread Hist
+)
 find_package(GSL REQUIRED)
 find_package(CGNS REQUIRED COMPONENTS cgns)
 find_package(
@@ -70,6 +75,7 @@ find_package(
   COMPONENTS 
   foam meshTools dynamicMesh finiteVolume Pstream incompressibleRASModels
   triSurface decompositionMethods lagrangian incompressibleTurbulenceModel
+  incompressibleTransportModels
 )
 find_package(OpenFoamTurbo COMPONENTS OpenFoamTurbo)
 find_package(CGM REQUIRED COMPONENTS iGeom)
@@ -153,6 +159,10 @@ include_directories(
   ${OpenFOAM_INCLUDE_DIR}/dynamicMesh/dynamicMesh/lnInclude
   ${OpenFOAM_INCLUDE_DIR}/finiteVolume/lnInclude
   ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/lnInclude
+  ${OpenFOAM_INCLUDE_DIR}/transportModels/incompressible/lnInclude
+  ${OpenFOAM_INCLUDE_DIR}/transportModels
+  ${OpenFOAM_INCLUDE_DIR}/turbulenceModels
+  ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/RASModel
   ${CGM_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}
   ${OpenMesh_INCLUDE_DIR}

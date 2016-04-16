@@ -13,6 +13,7 @@
 #include "meshQuality.h"
 #include "volScalarFieldRange.h"
 #include "volVectorPatchFieldRange.h"
+#include "analyzeDraftTube.h"
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
 
@@ -47,6 +48,9 @@ namespace dtOO {
     if (str == "volScalarFieldRange" ) return new volScalarFieldRange();
     if (str == "volVectorPatchFieldRange" ) {
       return new volVectorPatchFieldRange();
+    }
+    if (str == "analyzeDraftTube" ) {
+      return new analyzeDraftTube();
     }
     
     dt__throw(create(), << str <<  " could not be created");  

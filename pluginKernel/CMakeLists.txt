@@ -14,6 +14,7 @@ SET(HEADERS
   meshQuality.h
   volScalarFieldRange.h
   volVectorPatchFieldRange.h
+  analyzeDraftTube.h
 )
 
 SET(SOURCES
@@ -32,6 +33,7 @@ SET(SOURCES
   meshQuality.cpp
   volScalarFieldRange.cpp
   volVectorPatchFieldRange.cpp
+  analyzeDraftTube.cpp
 )
 
 APPEND_DTOO_SOURCE(pluginKernel "${SOURCES}")
