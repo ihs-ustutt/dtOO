@@ -21,7 +21,5 @@ namespace dtOO {
     labelHandling::setLabel(
       qtXmlPrimitive::getAttributeStr("label", element ) 
     );
-    
-    
   }
 }

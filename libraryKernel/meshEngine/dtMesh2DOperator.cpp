@@ -1,6 +1,9 @@
 #include "dtMesh2DOperator.h"
 
 #include <xmlHeaven/qtXmlPrimitive.h>
+#include "dtGmshFace.h"
+#include <gmsh/meshGEdge.h>
+void copyMesh(GFace *source, GFace *target, bool fastCopy);
 
 namespace dtOO {
   dtMesh2DOperator::dtMesh2DOperator() {
@@ -22,5 +25,12 @@ namespace dtOO {
     vectorHandling< dtMeshOperator * > const * const mO    
   ) {
     dtMeshOperator::init(element, bC, cV, aF, aG, bV, mO);
+  }
+
+  void dtMesh2DOperator::copyMesh( dtGmshFace * from, dtGmshFace *to) {
+    //
+    //@todo: Should be checked if this fast copy method is ok!
+    //
+    ::copyMesh( (::GFace *) from, (::GFace *) to, true );
   }
 }

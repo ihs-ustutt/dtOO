@@ -29,6 +29,7 @@ namespace dtOO {
       vectorHandling< dtMeshOperator * > const * const mO      
     );
     virtual void operator()( dtGmshFace * dtgf ) = 0;    
+    static void copyMesh( dtGmshFace * from, dtGmshFace * to );        
   private:
 
   };

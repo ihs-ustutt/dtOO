@@ -1,6 +1,9 @@
 #include "dtMesh1DOperator.h"
 
 #include <xmlHeaven/qtXmlPrimitive.h>
+#include "dtGmshEdge.h"
+#include <gmsh/meshGEdge.h>
+void copyMesh(GEdge *from, GEdge *to, int direction);
 
 namespace dtOO {
   dtMesh1DOperator::dtMesh1DOperator() {
@@ -20,4 +23,9 @@ namespace dtOO {
   ) {
     dtMeshOperator::init(element, bC, cV, aF, aG, bV, mO);
   }
+  
+  void dtMesh1DOperator::copyMesh( dtGmshEdge * from, dtGmshEdge * to) {
+    ::copyMesh( (::GEdge*) from, (::GEdge*) to, to->masterOrientation );
+  }
+
 }
