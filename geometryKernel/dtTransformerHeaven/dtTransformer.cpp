@@ -134,6 +134,14 @@ namespace dtOO {
 		return retVec[0];
 	}	  
   
+  dtPoint3 dtTransformer::operator()( 
+    dtPoint3 const & pp, int const dir
+  ) const {
+    if (dir == 1) return apply(pp);
+    else if (dir == -1) return retract(pp);
+    else dt__throwUnexpected(operator());
+  }
+  
   void dtTransformer::handleFloat(std::string const name, float const value) {
     dt__throw(
       handleFloat(),

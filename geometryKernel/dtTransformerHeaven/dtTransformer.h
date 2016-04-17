@@ -83,6 +83,7 @@ namespace dtOO {
     dtPoint2 apply(dtPoint2 const & pp) const;        
     dtPoint3 retract(dtPoint3 const & toRetract) const;
     dtPoint2 retract(dtPoint2 const & toRetract) const;
+    dtPoint3 operator()( dtPoint3 const & pp, int const dir = 1 ) const;
     analyticFunction * apply(analyticFunction const * const sF) const;
     analyticGeometry * apply(analyticGeometry const * const aG) const;
 

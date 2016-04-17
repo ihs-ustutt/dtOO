@@ -112,6 +112,7 @@ SET(HEADERS
   dtTransformerHeaven/normalOffsetInSurface.h
   dtTransformerHeaven/closeGapsArithmetic.h
   dtTransformerHeaven/scale.h
+  dtTransformerHeaven/xYz_rPhiZ.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -219,6 +220,7 @@ SET(SOURCES
   dtTransformerHeaven/normalOffsetInSurface.cpp
   dtTransformerHeaven/closeGapsArithmetic.cpp
   dtTransformerHeaven/scale.cpp
+  dtTransformerHeaven/xYz_rPhiZ.cpp
 )
 
 APPEND_DTOO_SOURCE(geometryKernel "${SOURCES}")
