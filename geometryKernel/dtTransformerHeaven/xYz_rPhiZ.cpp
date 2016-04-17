@@ -96,6 +96,18 @@ namespace dtOO {
 		return retVec;
 	}
   
+  dtVector3 const & xYz_rPhiZ::rotationAxis( void ) const {
+    return _rotAxis;
+  }
+  
+  dtVector3 const & xYz_rPhiZ::referenceAxis( void ) const {
+    return _refAxis;
+  }
+  
+  dtPoint3 const & xYz_rPhiZ::origin( void ) const {
+    return _origin;
+  }
+    
   bool xYz_rPhiZ::isNecessary( void ) const {
     return true;
   }
