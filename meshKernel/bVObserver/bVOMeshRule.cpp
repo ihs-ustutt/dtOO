@@ -138,7 +138,7 @@ namespace dtOO {
     std::list< dtGmshFace * > ff;
     std::list< dtGmshRegion * > rr;   
     
-    if (_only.empty()) {    
+    if (_only.empty()) {
       ee = dtGmshModel::cast2DtGmshEdge( gm->edges() );
       ff = dtGmshModel::cast2DtGmshFace( gm->faces() );        
       rr = dtGmshModel::cast2DtGmshRegion( gm->regions() );   
@@ -198,15 +198,16 @@ namespace dtOO {
       );
       
       if (currentGEntityStr == "*") {
-//			  std::list< dtGmshEdge * > ee 
-//        = 
-//        dtGmshModel::cast2DtGmshEdge( gm->edges() );
-			  dt__forAllIter(std::list< dtGmshEdge * >, ee, it) {
+			  dt__forAllRefAuto(ee, aEdge) {
           if ( 
-            (*it)->meshStatistics.status 
-            !=
-            ::GEntity::MeshGenerationStatus::DONE 
-          ) (*current1D)(*it); 
+            (
+              aEdge->meshStatistics.status 
+              !=
+              ::GEntity::MeshGenerationStatus::DONE 
+            )
+            &&
+            (aEdge->meshMaster() == aEdge)
+          ) (*current1D)(aEdge); 
           if (optionHandling::optionTrue("debug")) {
             gm->writeMSH(
               ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
@@ -215,6 +216,17 @@ namespace dtOO {
         }
       }
       else dt__throw(preUpdate(), << "Only (*)-meshing is currently supported.");
+    }
+    
+    //
+    // copy slave edges
+    //
+	  dt__forAllRefAuto(ee, aEdge) {    
+      if ( aEdge->meshMaster() != aEdge ) {
+        dtMesh1DOperator::copyMesh( 
+          dtGmshModel::cast2DtGmshEdge( aEdge->meshMaster()), aEdge 
+        );
+      }
     }
     
     //
@@ -235,15 +247,18 @@ namespace dtOO {
       // general wild card
       //
       if (currentGEntityStr == "*") {
-//			  std::list< dtGmshFace * > ff 
-//        = 
-//        dtGmshModel::cast2DtGmshFace( gm->faces() );
-			  dt__forAllIter(std::list< dtGmshFace * >, ff, it) {
+			  dt__forAllRefAuto(ff, aFace) {
           if ( 
-            (*it)->meshStatistics.status 
-            !=
-            ::GEntity::MeshGenerationStatus::DONE 
-          ) (*current2D)(*it);
+            (
+              aFace->meshStatistics.status 
+              !=
+              ::GEntity::MeshGenerationStatus::DONE
+            )
+            &&
+            (
+              aFace->meshMaster() == aFace
+            )
+          ) (*current2D)(aFace);
           if (optionHandling::optionTrue("debug")) {
             gm->writeMSH(
               ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
@@ -268,20 +283,24 @@ namespace dtOO {
 //			  std::list< dtGmshFace * > ff 
 //        = 
 //        dtGmshModel::cast2DtGmshFace( gm->faces() );        
-			  dt__forAllIter(std::list< dtGmshFace * >, ff, it) {
+			  dt__forAllRefAuto(ff, aFace) {
           if ( 
             (
-              (*it)->meshStatistics.status 
+              aFace->meshStatistics.status 
               !=
               ::GEntity::MeshGenerationStatus::DONE 
             )
             &&
             (
               stringPrimitive::stringContains(
-                patternGE, gm->getPhysicalString(*it)
+                patternGE, gm->getPhysicalString(aFace)
               )
             )
-          ) (*current2D)(*it);
+            &&
+            (
+              aFace->meshMaster() == aFace
+            )
+          ) (*current2D)(aFace);
           if (optionHandling::optionTrue("debug")) {
             gm->writeMSH(
               ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
@@ -295,8 +314,17 @@ namespace dtOO {
       else if ( !stringPrimitive::stringContains("*", currentGEntityStr) ) {
 			  dt__forAllRefAuto(ff, aFace) {
           if ( aFace->getPhysicalString() !=  currentGEntityStr ) continue;
-          
-          (*current2D)( aFace );//gm->getDtGmshFaceByPhysical(currentGEntityStr) );
+          if ( 
+            (
+              aFace->meshStatistics.status 
+              !=
+              ::GEntity::MeshGenerationStatus::DONE 
+            )
+            &&
+            (
+              aFace->meshMaster() == aFace
+            )
+          ) (*current2D)( aFace );
           if (optionHandling::optionTrue("debug")) {        
             gm->writeMSH(
               ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
@@ -306,6 +334,16 @@ namespace dtOO {
       }
       else dt__throw( preUpdate(), << dt__eval(currentGEntityStr) );
     }        
+    //
+    // copy slave faces
+    //
+	  dt__forAllRefAuto(ff, aFace) {    
+      if ( aFace->meshMaster() != aFace ) {
+        dtMesh2DOperator::copyMesh( 
+          dtGmshModel::cast2DtGmshFace( aFace->meshMaster()), aFace 
+        );
+      }
+    }    
 
     //
     // 3D

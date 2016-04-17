@@ -22,6 +22,7 @@ SET(HEADERS
   bVObserver/bVOEvilGodfather.h
   bVObserver/bVOAddInternalEdge.h
   bVObserver/bVOAddFace.h
+  bVObserver/bVOSetRotationalPeriodicity.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dGmsh.h
@@ -57,6 +58,7 @@ SET(SOURCES
   bVObserver/bVOEvilGodfather.cpp
   bVObserver/bVOAddInternalEdge.cpp
   bVObserver/bVOAddFace.cpp
+  bVObserver/bVOSetRotationalPeriodicity.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dGmsh.cpp
