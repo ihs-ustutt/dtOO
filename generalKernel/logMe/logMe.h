@@ -143,6 +143,7 @@ namespace dtOO {
   //
   // macros
   //
+  #define dt__quote(name) #name
   #define dt__vector2d( vector ) \
     #vector" = ( " << vector.x() << ", " << vector.y() << ")"  
   #define dt__point2d( point ) \

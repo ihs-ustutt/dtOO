@@ -5,6 +5,10 @@
 #include "logBase.h"
 #include "logMe.h"
 
+#define dt__debugContainer(name) name(logDEBUG, dt__quote(__FUNCTION__))
+#define dt__infoContainer(name) name(logINFO, dt__quote(__FUNCTION__))
+#define dt__warningContainer(name) name(logWARNING, dt__quote(__FUNCTION__))
+
 namespace dtOO {
   template< class T >
   class logContainer {

@@ -360,15 +360,12 @@ namespace dtOO {
       );
       
       if (currentGEntityStr == "*") {
-//			  std::list< dtGmshRegion * > rr 
-//        = 
-//        dtGmshModel::cast2DtGmshRegion( gm->regions() );
-			  dt__forAllIter(std::list< dtGmshRegion * >, rr, it) {
+			  dt__forAllRefAuto(rr, aRegion) {
           if ( 
-            (*it)->_status 
+            aRegion->_status 
             !=
             ::GEntity::MeshGenerationStatus::DONE 
-          ) (*current3D)(*it);                                    
+          ) (*current3D)(aRegion);
           if (optionHandling::optionTrue("debug")) {
             gm->writeMSH(
               ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
