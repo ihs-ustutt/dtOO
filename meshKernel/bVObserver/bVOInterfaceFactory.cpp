@@ -25,6 +25,7 @@
 #include "bVOAddInternalEdge.h"
 #include "bVOAddFace.h"
 #include "bVOSetRotationalPeriodicity.h"
+#include "bVOTransformMeshPoints.h"
 
 #define __IFRET(className) \
 	if ( strcmp(str, #className) == 0 ) { \
@@ -61,6 +62,7 @@ namespace dtOO {
     __IFRET(bVOAddInternalEdge);
     __IFRET(bVOAddFace);
     __IFRET(bVOSetRotationalPeriodicity);
+    __IFRET(bVOTransformMeshPoints);
 		
     dt__throw(create(), <<  "Could not be created.");
   }

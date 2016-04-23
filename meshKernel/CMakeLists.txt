@@ -23,6 +23,7 @@ SET(HEADERS
   bVObserver/bVOAddInternalEdge.h
   bVObserver/bVOAddFace.h
   bVObserver/bVOSetRotationalPeriodicity.h
+  bVObserver/bVOTransformMeshPoints.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dGmsh.h
@@ -59,6 +60,7 @@ SET(SOURCES
   bVObserver/bVOAddInternalEdge.cpp
   bVObserver/bVOAddFace.cpp
   bVObserver/bVOSetRotationalPeriodicity.cpp
+  bVObserver/bVOTransformMeshPoints.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dGmsh.cpp
