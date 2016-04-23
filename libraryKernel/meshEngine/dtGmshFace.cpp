@@ -181,6 +181,16 @@ namespace dtOO {
     edgeLoops.clear();
     edgeLoops.push_back( ::GEdgeLoop(l_edges) );
   }  
+
+  int dtGmshFace::edgeOrientation( ::GEdge * edge ) const {
+    typedef std::list< ::GEdge * >::const_iterator EIter;
+    std::list< int >::const_iterator OriIter = l_dirs.begin();
+
+    for (EIter ei = l_edges.begin(); ei != l_edges.end(); ++ei) {
+      if (*ei == edge) return *OriIter;
+      ++OriIter;
+    }    
+  }    
 	
   void dtGmshFace::addEdgeLoop( std::list< ::GEdge * > edgeL ) {
     addEdge( edgeL.front(), 1);

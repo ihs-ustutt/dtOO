@@ -44,6 +44,7 @@ namespace dtOO {
     virtual void setMap2dTo3d( map2dTo3d const * const base );
     virtual map2dTo3d const * getMap2dTo3d( void ) const;
     void addEdge( ::GEdge * edge, int const ori );
+    int edgeOrientation( ::GEdge * edge ) const;
     void addEdgeLoop( std::list< ::GEdge * > edgeL );
     bool isClosed( int const dim ) const;
     void meshTransfinite( void );

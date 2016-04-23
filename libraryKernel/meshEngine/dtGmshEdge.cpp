@@ -90,6 +90,14 @@ namespace dtOO {
     return _mm.get();
   }
   
+  void dtGmshEdge::setBeginVertex( ::GVertex * gv ) {
+    GEdge::v0 = gv;
+  }
+   
+  void dtGmshEdge::setEndVertex( ::GVertex * gv ) {
+    GEdge::v1 = gv;
+  }
+  
   void dtGmshEdge::setNElements( int const nE ) {
     this->meshAttributes.nbPointsTransfinite = nE+1;
   }

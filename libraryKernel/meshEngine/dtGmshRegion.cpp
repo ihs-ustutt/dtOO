@@ -136,6 +136,16 @@ namespace dtOO {
 		}
   }  	
 	
+  int dtGmshRegion::faceOrientation( ::GFace * face ) const {
+    typedef std::list< ::GFace * >::const_iterator FIter;
+    std::list< int >::const_iterator OriIter = l_dirs.begin();
+
+    for (FIter fi = l_faces.begin(); fi != l_faces.end(); ++fi) {
+      if (*fi == face) return *OriIter;
+      ++OriIter;
+    }    
+  }      
+  
 	void dtGmshRegion::addGEntity( ::GEntity * const gEnt ) {
 		//
 		// cast

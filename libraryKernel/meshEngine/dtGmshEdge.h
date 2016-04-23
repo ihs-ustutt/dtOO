@@ -25,6 +25,8 @@ namespace dtOO {
     void setMap1dTo3d( map1dTo3d const * const base );
     void setMap1dTo3dNoClone( map1dTo3d * base );
     map1dTo3d const * getMap1dTo3d( void ) const;
+    void setBeginVertex( ::GVertex * gv );
+    void setEndVertex( ::GVertex * gv );
     void meshTransfinite( int const type, float const coeff );
     void meshTransfiniteWNElements( 
       int const type, float const coeff, int const nElements 
