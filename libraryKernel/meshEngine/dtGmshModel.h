@@ -146,7 +146,13 @@ namespace dtOO {
     int getPhysicalNumber(const int &dim, const std::string &name) const;
     void removeEmptyPhysicals( void );
     void setDebug( std::string const debug );
-  private:
+    //
+    //
+    //
+    std::map< ::GEntity *, ::GEntity * > createTwin( 
+      int const dim0Tag, int const dim1Tag, int const dim2Tag, int const dim3Tag 
+    ) const;
+  private:    
     static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
       std::vector< ::MVertex const * > const & vertices, 
       std::vector< ::MElement const * > const & elements
@@ -193,6 +199,19 @@ namespace dtOO {
     int alreadyInModel( ::GEdge const * const ge ) const;
     int alreadyInModel( ::GFace const * const gf ) const;
     int alreadyInModel( ::GRegion const * const gr ) const;
+    //
+    //
+    //
+    std::map< dtGmshVertex *, dtGmshVertex * > createVertexTwins( int startTag ) const;
+    std::map< dtGmshEdge *, dtGmshEdge * > createEdgeTwins( int startTag ) const;
+    std::map< dtGmshFace *, dtGmshFace * > createFaceTwins( int startTag ) const;
+    std::map< dtGmshRegion *, dtGmshRegion * > createRegionTwins( int startTag ) const;
+    void updateAssociations( 
+      std::map< dtGmshVertex *, dtGmshVertex * > & dim0, 
+      std::map< dtGmshEdge *, dtGmshEdge * > & dim1,
+      std::map< dtGmshFace *, dtGmshFace * > & dim2,
+      std::map< dtGmshRegion *, dtGmshRegion * > & dim3
+    ) const;    
   private:
     std::string _debug;
     ::FieldManager * _fmTwin;

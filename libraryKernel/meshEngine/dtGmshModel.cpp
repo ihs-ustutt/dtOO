@@ -1483,4 +1483,209 @@ namespace dtOO {
   void dtGmshModel::setDebug( std::string const debug ) {
     _debug = debug;
   }
+  
+  std::map< ::GEntity *, ::GEntity * > dtGmshModel::createTwin( 
+    int const dim0Tag, int const dim1Tag, int const dim2Tag, int const dim3Tag 
+  ) const {
+    std::map< dtGmshVertex *, dtGmshVertex * > dim0 = createVertexTwins(dim0Tag);
+    std::map< dtGmshEdge *, dtGmshEdge * > dim1 = createEdgeTwins(dim1Tag);
+    std::map< dtGmshFace *, dtGmshFace * > dim2 = createFaceTwins(dim2Tag);
+    std::map< dtGmshRegion *, dtGmshRegion * > dim3 = createRegionTwins(dim3Tag);
+    
+    updateAssociations( dim0, dim1, dim2, dim3 );
+    
+    std::map< ::GEntity *, ::GEntity * > retMap;
+    dt__forAllRefAuto(dim0, aPair) {
+      retMap[ (::GEntity *) aPair.first ] = (::GEntity *) aPair.second;
+    }
+    dt__forAllRefAuto(dim1, aPair) {
+      retMap[ (::GEntity *) aPair.first ] = (::GEntity *) aPair.second;
+    }
+    dt__forAllRefAuto(dim2, aPair) {
+      retMap[ (::GEntity *) aPair.first ] = (::GEntity *) aPair.second;
+    }
+    dt__forAllRefAuto(dim3, aPair) {
+      retMap[ (::GEntity *) aPair.first ] = (::GEntity *) aPair.second;
+    }
+    
+    return retMap;
+  }
+ 
+  std::map< dtGmshVertex *, dtGmshVertex * > 
+  dtGmshModel::createVertexTwins( int startTag ) const {
+    std::map< dtGmshVertex *, dtGmshVertex * > newOld;
+    
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshVertex(vertices()), aGV ) {
+      //
+      // clone
+      //
+      startTag++;
+      dtGmshVertex * twin = new dtGmshVertex( NULL, startTag );
+      twin->setPosition( dtGmshModel::extractPosition( aGV ) );
+      newOld[ aGV ] = twin;
+//      //
+//      // copy mesh vertices
+//      //
+//      dt__forAllRefAuto( aGV->mesh_vertices, aMV ) {
+//        twin->mesh_vertices.push_back( 
+//          new ::MVertex(aMV->x(), aMV->y(), aMV->z(), twin) 
+//        );
+//      }
+    }
+    
+    return newOld;
+  }
+  
+  std::map< dtGmshEdge *, dtGmshEdge * >
+  dtGmshModel::createEdgeTwins( int startTag ) const {
+    std::map< dtGmshEdge *, dtGmshEdge * > newOld;
+    
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshEdge(edges()), aGE ) {
+      //
+      // clone
+      //
+      startTag++;
+      dtGmshEdge * twin = new dtGmshEdge( NULL, startTag );
+      newOld[ aGE ] = twin;
+      
+//      //
+//      // copy mesh vertices
+//      //
+//      dt__forAllRefAuto( aGE->mesh_vertices, aMV ) {
+//        twin->mesh_vertices.push_back( 
+//          new ::MVertex(aMV->x(), aMV->y(), aMV->z(), twin) 
+//        );
+//      }
+    }
+    
+    return newOld;
+  }
+
+  std::map< dtGmshFace *, dtGmshFace * >
+  dtGmshModel::createFaceTwins( int startTag ) const {
+    std::map< dtGmshFace *, dtGmshFace * > newOld;
+    
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshFace(faces()), aGF ) {
+      //
+      // clone
+      //
+      startTag++;      
+      dtGmshFace * twin = new dtGmshFace( NULL, startTag );
+      newOld[ aGF ] = twin;
+      
+//      //
+//      // copy mesh vertices
+//      //
+//      dt__forAllRefAuto( aGF->mesh_vertices, aMV ) {
+//        twin->mesh_vertices.push_back( 
+//          new ::MVertex(aMV->x(), aMV->y(), aMV->z(), twin) 
+//        );
+//      }
+    }
+    
+    return newOld;
+  }
+
+  std::map< dtGmshRegion *, dtGmshRegion * >
+  dtGmshModel::createRegionTwins( int startTag ) const {
+    std::map< dtGmshRegion *, dtGmshRegion * > newOld;
+    
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshRegion(regions()), aGR ) {
+      //
+      // clone
+      //
+      startTag++; 
+      dtGmshRegion * twin = new dtGmshRegion( NULL, startTag );
+      newOld[ aGR ] = twin;
+      
+//      //
+//      // copy mesh vertices
+//      //
+//      dt__forAllRefAuto( aGR->mesh_vertices, aMV ) {
+//        twin->mesh_vertices.push_back( 
+//          new ::MVertex(aMV->x(), aMV->y(), aMV->z(), twin) 
+//        );
+//      }
+    }
+    
+    return newOld;
+  }
+
+  void dtGmshModel::updateAssociations( 
+    std::map< dtGmshVertex *, dtGmshVertex * > & dim0, 
+    std::map< dtGmshEdge *, dtGmshEdge * > & dim1,
+    std::map< dtGmshFace *, dtGmshFace * > & dim2,
+    std::map< dtGmshRegion *, dtGmshRegion * > & dim3
+  ) const {
+    //
+    // vertex associations
+    //
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshVertex(vertices()), aGV ) {
+      dtGmshVertex * clone = dim0[ aGV ];
+      // update edge associations
+      dt__forAllRefAuto( 
+        dtGmshModel::cast2DtGmshEdge(aGV->edges()), aGE 
+      ) {
+        clone->addGEntity( dim1[ aGE ] );
+      }
+    }
+
+    //
+    // edge associations
+    //
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshEdge(edges()), aGE ) {
+      dtGmshEdge * clone = dim1[ aGE ];
+      // update begin and end vertex
+      clone->setBeginVertex( 
+        dim0[ dtGmshVertex::DownCast( aGE->getBeginVertex()) ] 
+      );
+      clone->setEndVertex( 
+        dim0[ dtGmshVertex::DownCast( aGE->getEndVertex()) ] 
+      );      
+      // update vertices
+      dt__forAllRefAuto( 
+        dtGmshModel::cast2DtGmshVertex(aGE->vertices()), aGV 
+      ) {
+        clone->addVertex( dim0[ aGV ] );
+      }
+      // update faces
+      dt__forAllRefAuto( 
+        dtGmshModel::cast2DtGmshFace(aGE->faces()), aGF
+      ) {
+        clone->addFace( dim2[ aGF ] );
+      }      
+    }
+
+    //
+    // face associations
+    //
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshFace(faces()), aGF ) {
+      dtGmshFace * clone = dim2[ aGF ];
+      // update edges
+      dt__forAllRefAuto( 
+        dtGmshModel::cast2DtGmshEdge(aGF->edges()), aGE
+      ) {
+        clone->addEdge( dim1[ aGE ], aGF->edgeOrientation( aGE ) );
+      }
+      // update regions
+      dt__forAllRefAuto( 
+        dtGmshModel::cast2DtGmshRegion(aGF->regions()), aGR
+      ) {
+        clone->addRegion( dim3[ aGR ] );
+      }      
+    }    
+
+    //
+    // region associations
+    //
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshRegion(regions()), aGR ) {
+      dtGmshRegion * clone = dim3[ aGR ];
+      // update faces
+      dt__forAllRefAuto( 
+        dtGmshModel::cast2DtGmshFace(aGR->faces()), aGF
+      ) {
+        clone->addFace( dim2[ aGF ], aGR->faceOrientation( aGF ) );
+      }
+    }        
+  }
 }
