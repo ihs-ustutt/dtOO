@@ -4,3 +4,4 @@ nbproject/
 doc/html/
 generalKernel/dtOOVersion.h
 /cmake/dtOOConfig.cmake
+*.m~
