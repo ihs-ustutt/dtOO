@@ -36,6 +36,7 @@ namespace dtOO {
     dtXmlParser const * _parser;
     dtCase const * _case;
     std::string _field;
+    std::string _weight;
     float _min;
     float _max;
     std::string _patchName;

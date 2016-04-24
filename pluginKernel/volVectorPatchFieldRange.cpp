@@ -58,11 +58,9 @@ namespace dtOO {
       &&
       !dtXmlParser::hasAttribute("field", element)
       &&
-      !dtXmlParser::hasAttribute("min", element)
+      !dtXmlParser::hasAttribute("patchName", element)
       &&
-      !dtXmlParser::hasAttribute("max", element)
-      &&
-      !dtXmlParser::hasAttribute("patchName", element),
+      !dtXmlParser::hasAttribute("weight", element),
       init()
     );
     
@@ -85,10 +83,21 @@ namespace dtOO {
     _field = dtXmlParser::getAttributeStr("field", element);
 
     //
+    // get field weight
+    //
+    _weight = dtXmlParser::getAttributeStr("weight", element);
+    
+    //
     // get min and max
     //
-    _min = dtXmlParser::getAttributeFloatMuParse("min", element, cV, aF);
-    _max = dtXmlParser::getAttributeFloatMuParse("max", element, cV, aF);
+    if ( dtXmlParser::hasAttribute("min", element) ) {
+      _min = dtXmlParser::getAttributeFloatMuParse("min", element, cV, aF);      
+    }
+    else _min = std::numeric_limits<float>::min();
+    if ( dtXmlParser::hasAttribute("max", element) ) {
+      _max = dtXmlParser::getAttributeFloatMuParse("max", element, cV, aF);      
+    }
+    else _max = std::numeric_limits<float>::max();
     
     //
     // patchName
@@ -96,7 +105,7 @@ namespace dtOO {
     _patchName = dtXmlParser::getAttributeStr("patchName", element);
 	}
 		
-  void volVectorPatchFieldRange::apply(void) {    
+  void volVectorPatchFieldRange::apply(void) {
     //
     // get directory
     //
@@ -183,44 +192,68 @@ namespace dtOO {
         dt__throwIf(fieldHeader.headerClassName() != "volVectorField", apply());
         
         //
-        // update field 
-        //
-        mesh.readUpdate();
-
-        //
         // read desired field
         //
         ::Foam::volVectorField volField(fieldHeader, mesh);
-        
+       
         std::vector< dtPoint3 > pXYZ;
-        std::vector< float > val;
-        std::vector< float > area;
+        std::vector< dtVector3 > val;
+        std::vector< float > weight;
         
+        //
+        // read phi
+        //
+        ::Foam::surfaceScalarField phi(
+          ::Foam::IOobject(
+            "phi",
+            runTime.timeName(),
+            mesh,
+            ::Foam::IOobject::MUST_READ
+          ), 
+          mesh
+        );
+
+        //
+        // update field 
+        //
+        mesh.readUpdate();
         
         //
         // cell list
         //
+        ::Foam::label thisPatchID 
+        = 
+        mesh.boundaryMesh().findPatchID( _patchName );
         ::Foam::polyPatch const & thisPatch 
         =
-        mesh.boundaryMesh()[ mesh.boundaryMesh().findPatchID( _patchName ) ];
+        mesh.boundaryMesh()[ thisPatchID ];
         ::Foam::volVectorField::PatchFieldType const & thisPatchField
         =
-        volField.boundaryField()[ 
-          mesh.boundaryMesh().findPatchID( _patchName ) 
-        ]
-        ;
-        
+        volField.boundaryField()[ thisPatchID ];
+
         forAll( thisPatch, ii ) {
           ::Foam::scalar cVal = ::Foam::mag( thisPatchField[ ii ] );
           if ( (cVal > _min) && (cVal < _max) ) {
             dtPoint3 cPoint( 
-              mesh.faceCentres()[ii].component(0), 
-              mesh.faceCentres()[ii].component(1), 
-              mesh.faceCentres()[ii].component(2) 
+              mesh.Cf().boundaryField()[thisPatchID][ii].component(0), 
+              mesh.Cf().boundaryField()[thisPatchID][ii].component(1), 
+              mesh.Cf().boundaryField()[thisPatchID][ii].component(2) 
             );
             pXYZ.push_back( cPoint );
-            val.push_back( cVal );
-            area.push_back( mesh.magSf()[ ii ] );
+            val.push_back( 
+              dtVector3(
+                thisPatchField[ ii ].component(0),
+                thisPatchField[ ii ].component(1),
+                thisPatchField[ ii ].component(2)
+              )
+            );
+            if ( _weight == "area" ) {
+              weight.push_back( mesh.magSf().boundaryField()[thisPatchID][ ii ] );
+            }
+            else if ( _weight == "massflow" ) {
+              weight.push_back( phi.boundaryField()[thisPatchID][ ii ] );
+            }
+            else dt__throwUnexpected(apply());
           }
         }
         //
@@ -243,21 +276,27 @@ namespace dtOO {
         << "# 1 x" << std::endl
         << "# 2 y" << std::endl
         << "# 3 z" << std::endl
-        << "# 4 value" << std::endl
-        << "# 5 area" << std::endl;
+        << "# 4 valueX" << std::endl
+        << "# 5 valueY" << std::endl
+        << "# 6 valueZ" << std::endl
+        << "# 7 weight ( " << _weight << " )" << std::endl;
 
         //
         // write values
         //
         dt__forFromToIndex(0, pXYZ.size(), ii) {
           of 
-          << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e") 
+            << logMe::dtFormat(
+              "%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e"
+            ) 
             % pXYZ[ii].x() 
             % pXYZ[ii].y() 
             % pXYZ[ii].z() 
-            % val[ii]
-            % area[ii]
-          << std::endl;
+            % val[ii].x()
+            % val[ii].y()
+            % val[ii].z()
+            % weight[ii]
+            << std::endl;
         }
         of.close();
       }
