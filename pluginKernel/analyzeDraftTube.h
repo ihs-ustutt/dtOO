@@ -35,14 +35,12 @@ namespace dtOO {
   private:
     dtXmlParser const * _parser;
     dtCase const * _case;
-//    std::string _field;
-//    float _min;
+    int _nBins;
     float _max;
     std::string _wallName;
     std::string _inletName;
     std::string _outletName;
     std::vector< double > _quantileWallShear;
-//    dtPoint3 _origin;
   };
 }
 

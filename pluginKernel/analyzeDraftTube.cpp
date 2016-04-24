@@ -99,9 +99,16 @@ namespace dtOO {
     dtXmlParser::getAttributeDoubleVectorMuParse(
       "quantileWallShear", element, cV, aF
     );
-    _max 
-    = 
-    dtXmlParser::getAttributeFloatMuParse("maxWallShear", element, cV, aF);    
+    if ( dtXmlParser::hasAttribute("maxWallShear", element) ) {
+      _max 
+      = 
+      dtXmlParser::getAttributeFloatMuParse("maxWallShear", element, cV, aF);    
+    }
+    else _max = std::numeric_limits< float >::max();
+    
+    _nBins
+    =
+    dtXmlParser::getAttributeIntMuParse("nBins", element, cV, aF);    
 	}
 		
   void analyzeDraftTube::apply(void) {    
@@ -236,7 +243,7 @@ namespace dtOO {
         ::TH1F hh(
           "hh", 
           "hh",
-          100,
+          _nBins,
           ::Foam::min( ::Foam::mag( wallPatchWallShearStress ) ),
           ::Foam::max( ::Foam::mag( wallPatchWallShearStress ) )
         );
@@ -250,13 +257,13 @@ namespace dtOO {
            hh.Fill( cVal );//, 1.);//mesh.magSf()[ ii ] ); //count++;
            if ( cVal < _max ) {
              dtPoint3 cPoint( 
-               mesh.faceCentres()[ii].component(0), 
-               mesh.faceCentres()[ii].component(1), 
-               mesh.faceCentres()[ii].component(2) 
+              mesh.Cf().boundaryField()[wallPatchI][ii].component(0), 
+              mesh.Cf().boundaryField()[wallPatchI][ii].component(1), 
+              mesh.Cf().boundaryField()[wallPatchI][ii].component(2) 
              );
              pXYZ.push_back( cPoint );
              value.push_back( cVal );
-             area.push_back( mesh.magSf()[ ii ] );
+             area.push_back( mesh.magSf().boundaryField()[wallPatchI][ ii ] );
            }
          }
          std::vector< double > resQuantile(_quantileWallShear.size(), 0.);
@@ -334,7 +341,7 @@ namespace dtOO {
           << "# 1 x" << std::endl
           << "# 2 y" << std::endl
           << "# 3 z" << std::endl
-          << "# 4 value" << std::endl
+          << "# 4 value ( < " << _max << " )" << std::endl
           << "# 5 area" << std::endl;
 
         //
