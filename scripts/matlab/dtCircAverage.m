@@ -44,6 +44,20 @@ classdef dtCircAverage
           obj.binMean_( thisBin ) = obj.binMean_( thisBin ) + value(i);
           obj.binRMean_( thisBin ) = obj.binRMean_( thisBin ) + r(i);
         end
+        
+        emptyBins = find( obj.binNValues_==0 );
+        if ( size(emptyBins,1) > 0)
+          warning('size(emptyBins,1) = %d', size(emptyBins,1))
+          obj.bin_(emptyBins) = [];
+          obj.binMin_(emptyBins) = [];
+          obj.binMax_(emptyBins) = [];
+          obj.binMean_(emptyBins) = [];
+          obj.binSumWeight_(emptyBins) = [];
+          obj.binNValues_(emptyBins) = [];
+          obj.binRMean_(emptyBins) = [];
+        end
+        obj.nBins_ = size(obj.bin_, 1)        
+        
         for i=1:obj.nBins_
           obj.binMean_(i) = obj.binMean_(i) / obj.binNValues_(i);
           obj.binRMean_(i) = obj.binRMean_(i) / obj.binNValues_(i);
