@@ -13,6 +13,7 @@
 #include "meshQuality.h"
 #include "volScalarFieldRange.h"
 #include "volVectorPatchFieldRange.h"
+#include "volScalarPatchFieldRange.h"
 #include "analyzeDraftTube.h"
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
@@ -48,6 +49,9 @@ namespace dtOO {
     if (str == "volScalarFieldRange" ) return new volScalarFieldRange();
     if (str == "volVectorPatchFieldRange" ) {
       return new volVectorPatchFieldRange();
+    }
+    if ( str == "volScalarPatchFieldRange" ) {
+      return new volScalarPatchFieldRange();
     }
     if (str == "analyzeDraftTube" ) {
       return new analyzeDraftTube();
