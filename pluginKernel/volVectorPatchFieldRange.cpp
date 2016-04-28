@@ -16,11 +16,10 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 #include <criticalHeaven/prepareOpenFOAM.h>
-#include <argList.H>
+#include <meshEngine/dtFoamLibrary.h>
 #include <Time.H>
 #include <polyMesh.H>
 #include <volFields.H>
-//#include <cellList.H>
 
 #include <logMe/dtParMacros.h>
 
@@ -58,9 +57,7 @@ namespace dtOO {
       &&
       !dtXmlParser::hasAttribute("field", element)
       &&
-      !dtXmlParser::hasAttribute("patchName", element)
-      &&
-      !dtXmlParser::hasAttribute("weight", element),
+      !dtXmlParser::hasAttribute("patchName", element),
       init()
     );
     
@@ -81,21 +78,19 @@ namespace dtOO {
     // get field label
     //
     _field = dtXmlParser::getAttributeStr("field", element);
-
-    //
-    // get field weight
-    //
-    _weight = dtXmlParser::getAttributeStr("weight", element);
     
     //
     // get min and max
     //
+    _noRange = true;
     if ( dtXmlParser::hasAttribute("min", element) ) {
       _min = dtXmlParser::getAttributeFloatMuParse("min", element, cV, aF);      
+      _noRange = false;
     }
     else _min = std::numeric_limits<float>::min();
     if ( dtXmlParser::hasAttribute("max", element) ) {
       _max = dtXmlParser::getAttributeFloatMuParse("max", element, cV, aF);      
+      _noRange = false;
     }
     else _max = std::numeric_limits<float>::max();
     
@@ -114,38 +109,9 @@ namespace dtOO {
     dt__onlyMaster {
       dt__throwIf( !systemHandling::directoryExists(wDir), apply() );
     
-      //
-      // enable exception throwing
-      //
-      ::Foam::FatalError.throwExceptions();    
-      ::Foam::FatalIOError.throwExceptions();    
-
-      //
-      // argList
-      //
-      ::Foam::argList::noParallel();
-      int argc = 3;
-      std::vector< std::string > argvStr(3);
-      argvStr[0] = getLabel();
-      argvStr[1] = std::string("-case");
-      argvStr[2] = wDir;
-      char ** argv = new char*[3];
-      argv[0] = const_cast< char *>(argvStr[0].c_str());
-      argv[1] = const_cast< char *>(argvStr[1].c_str());
-      argv[2] = const_cast< char *>(argvStr[2].c_str());
-
       try {
-        // disable floating point exception trapping
-        systemHandling::unsetEnv("FOAM_SIGFPE");
-
-        //
-        // create rootCase
-        //
-        ::Foam::argList args(argc, argv);
-        if (!args.checkRootCase()) {
-          Foam::FatalError.exit();
-        }
-
+        ::Foam::argList args = dtFoamLibrary::initCase( getLabel(), wDir );
+        
         //
         // create time
         //
@@ -198,12 +164,13 @@ namespace dtOO {
        
         std::vector< dtPoint3 > pXYZ;
         std::vector< dtVector3 > val;
-        std::vector< float > weight;
+        std::vector< dtVector3 > sf;
+        std::vector< float > phi;
         
         //
         // read phi
         //
-        ::Foam::surfaceScalarField phi(
+        ::Foam::surfaceScalarField phiField(
           ::Foam::IOobject(
             "phi",
             runTime.timeName(),
@@ -232,30 +199,37 @@ namespace dtOO {
         volField.boundaryField()[ thisPatchID ];
 
         forAll( thisPatch, ii ) {
-          ::Foam::scalar cVal = ::Foam::mag( thisPatchField[ ii ] );
-          if ( (cVal > _min) && (cVal < _max) ) {
-            dtPoint3 cPoint( 
-              mesh.Cf().boundaryField()[thisPatchID][ii].component(0), 
-              mesh.Cf().boundaryField()[thisPatchID][ii].component(1), 
-              mesh.Cf().boundaryField()[thisPatchID][ii].component(2) 
-            );
-            pXYZ.push_back( cPoint );
-            val.push_back( 
-              dtVector3(
-                thisPatchField[ ii ].component(0),
-                thisPatchField[ ii ].component(1),
-                thisPatchField[ ii ].component(2)
-              )
-            );
-            if ( _weight == "area" ) {
-              weight.push_back( mesh.magSf().boundaryField()[thisPatchID][ ii ] );
-            }
-            else if ( _weight == "massflow" ) {
-              weight.push_back( phi.boundaryField()[thisPatchID][ ii ] );
-            }
-            else dt__throwUnexpected(apply());
-          }
+          ::Foam::scalar cVal = ::Foam::mag( thisPatchField[ ii ] );           
+          
+          //
+          // range check
+          //
+          if ( !_noRange && ( (cVal < _min) || (cVal > _max) ) )  continue;
+         
+          dtPoint3 cPoint( 
+            mesh.Cf().boundaryField()[thisPatchID][ii].component(0), 
+            mesh.Cf().boundaryField()[thisPatchID][ii].component(1), 
+            mesh.Cf().boundaryField()[thisPatchID][ii].component(2) 
+          );
+          pXYZ.push_back( cPoint );
+          val.push_back( 
+            dtVector3(
+              thisPatchField[ ii ].component(0),
+              thisPatchField[ ii ].component(1),
+              thisPatchField[ ii ].component(2)
+            )
+          );
+          sf.push_back(
+            dtVector3(
+              mesh.Sf().boundaryField()[thisPatchID][ ii ].component(0),
+              mesh.Sf().boundaryField()[thisPatchID][ ii ].component(1),
+              mesh.Sf().boundaryField()[thisPatchID][ ii ].component(2)
+            )
+          );
+          phi.push_back( phiField.boundaryField()[thisPatchID][ ii ] );            
+//          }
         }
+        
         //
         // open file
         //
@@ -265,7 +239,7 @@ namespace dtOO {
         +
         "/"
         +
-        "volVectorPatchFieldRange_"+fieldHeader.name()+".csv";
+        virtualClassName()+"_"+getLabel()+"_"+fieldHeader.name()+".csv";
         std::fstream of;
         of.open( filename.c_str(), std::ios::out | std::ios::trunc );
 
@@ -273,13 +247,16 @@ namespace dtOO {
         // write header
         //
         of 
-        << "# 1 x" << std::endl
-        << "# 2 y" << std::endl
-        << "# 3 z" << std::endl
-        << "# 4 valueX" << std::endl
-        << "# 5 valueY" << std::endl
-        << "# 6 valueZ" << std::endl
-        << "# 7 weight ( " << _weight << " )" << std::endl;
+        << "# 1  x" << std::endl
+        << "# 2  y" << std::endl
+        << "# 3  z" << std::endl
+        << "# 4  valueX" << std::endl
+        << "# 5  valueY" << std::endl
+        << "# 6  valueZ" << std::endl
+        << "# 7  sfX " << std::endl          
+        << "# 8  sfY " << std::endl
+        << "# 9  sfZ " << std::endl
+        << "# 10 phi" << std::endl;
 
         //
         // write values
@@ -287,7 +264,7 @@ namespace dtOO {
         dt__forFromToIndex(0, pXYZ.size(), ii) {
           of 
             << logMe::dtFormat(
-              "%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e"
+              "%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e"
             ) 
             % pXYZ[ii].x() 
             % pXYZ[ii].y() 
@@ -295,7 +272,10 @@ namespace dtOO {
             % val[ii].x()
             % val[ii].y()
             % val[ii].z()
-            % weight[ii]
+            % sf[ii].x()
+            % sf[ii].y()
+            % sf[ii].z()
+            % phi[ii]
             << std::endl;
         }
         of.close();

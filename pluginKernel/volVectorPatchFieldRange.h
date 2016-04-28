@@ -40,7 +40,7 @@ namespace dtOO {
     float _min;
     float _max;
     std::string _patchName;
-//    dtPoint3 _origin;
+    bool _noRange;
   };
 }
 

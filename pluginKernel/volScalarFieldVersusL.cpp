@@ -241,7 +241,8 @@ namespace dtOO {
           +
           "/"
           +
-          m1d->getLabel()+"_"+fieldHeader.name()+".csv";
+          virtualClassName()+"_"+getLabel()+"_"+fieldHeader.name()
+          +"_"+m1d->getLabel()+".csv";            
           std::fstream of;
           of.open( filename.c_str(), std::ios::out | std::ios::trunc );
           

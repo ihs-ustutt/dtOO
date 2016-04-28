@@ -212,7 +212,7 @@ namespace dtOO {
         +
         "/"
         +
-        "volScalarFieldRange_"+fieldHeader.name()+".csv";
+        virtualClassName()+"_"+getLabel()+"_"+fieldHeader.name()+".csv";
         std::fstream of;
         of.open( filename.c_str(), std::ios::out | std::ios::trunc );
 
