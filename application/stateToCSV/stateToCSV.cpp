@@ -33,6 +33,18 @@ int main( int ac, char* av[] ) {
         dtPO::value< std::string >()->default_value("stateToCSV"), 
         "define prefix of csv output file (optional)"
       )
+      (
+        "x", 
+        dtPO::value< std::vector< std::string > >()->required()->default_value(
+          std::vector< std::string >(0), ""
+        ), 
+        "define x values"
+      )  
+      (
+        "percent", 
+        dtPO::value< bool >()->required()->default_value(false), 
+        "normalize x values"
+      )      
     ;
     vm.update();
 
@@ -70,6 +82,14 @@ int main( int ac, char* av[] ) {
     //
     parser.createConstValue(&cV);
 
+    std::vector< std::string > xLabel 
+    = 
+    vm["x"].as< std::vector< std::string > >();
+    if (xLabel.empty()) {
+      dt__forAllRefAuto(cV, aCV) {      
+        xLabel.push_back( aCV->getLabel() );
+      }
+    }
     //
     // get state labels
     //
@@ -88,7 +108,10 @@ int main( int ac, char* av[] ) {
     // write header
     //
     of << "# state";
-    dt__forAllRefAuto(cV, aCV) of << ", " << aCV->getLabel();
+//    dt__forAllRefAuto(cV, aCV) of << ", " << aCV->getLabel();
+    dt__forAllIndex(xLabel, ii) {
+       of << ", " << cV.get(xLabel[ii])->getLabel();
+    }            
     of << std::endl;
     
     //
@@ -98,7 +121,22 @@ int main( int ac, char* av[] ) {
       parser.loadStateToConst( aState, cV );
       
       of << aState;
-      dt__forAllRefAuto(cV, aCV) of << ", " << aCV->getValue();
+//      dt__forAllRefAuto(cV, aCV) {
+        //of << ", " << aCV->getValue();
+      dt__forAllIndex(xLabel, ii) {
+        if ( vm["percent"].as< bool >() ) {
+          of 
+            << ", " 
+            << 
+              ( cV.get(xLabel[ii])->getValue() - cV.get(xLabel[ii])->getMin() )
+              /
+              ( cV.get(xLabel[ii])->getMax() - cV.get(xLabel[ii])->getMin() );
+        }
+        else {
+         of << ", " << cV.get(xLabel[ii])->getValue();
+        }
+      }        
+//      }
       of << std::endl;      
     }
     of.close();    
