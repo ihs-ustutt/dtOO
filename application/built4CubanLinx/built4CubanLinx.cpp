@@ -152,8 +152,20 @@ std::string parseCommand(
     parser.destroyAndCreate(bC, cV, aF, aG, bV, dtC, dtP);
     return std::string("");
   }        
-  dt__commandIf( aRule, help, "applyPlugin", "apply a plugin") {      
-    dtP.get(addRule[0])->apply();
+  dt__commandIf( aRule, help, "applyPlugin", "apply a plugin") {
+    if ( !stringPrimitive::stringContains("*", addRule[0]) ) {
+      dtP.get(addRule[0])->apply();
+    }
+    else {
+      dt__forAllRefAuto(dtP, aP) {
+        if (
+          stringPrimitive::stringContains(
+            stringPrimitive::replaceStringInString("*", "", addRule[0]), 
+            aP->getLabel()
+          )
+        ) aP->apply();
+      }  
+    }
     return std::string("");
   }
   dt__commandIf( 
@@ -369,6 +381,47 @@ std::string parseCommand(
   return std::string( "Unknown command: " + aRule + "\n");  
 }
 
+std::string parseCommand(
+  std::string aRule, 
+  dtXmlParser & parser, 
+  vectorHandling< dtPlugin * > & dtP
+) {
+  std::stringstream help;  
+  help << "Commands:" << std::endl;
+  std::vector< std::string > addRule;
+  if ( stringPrimitive::stringContains("(", aRule) ) {
+    addRule
+    = 
+    stringPrimitive::convertToCSVStringVector(
+      stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule)
+    );
+    dt__infoNoClass(parseCommand(), << "addRule = " << addRule);
+  }
+//  dt__commandIf( aRule, help, "info", "get a point" ) {
+//    std::stringstream ss;    
+//    return ss.str();
+//  }      
+  dt__commandIf( 
+    aRule, help, "info", "show info of dtP" 
+  ) {
+    std::stringstream ss;
+    dt__forAllRefAuto(dtP, anDtP) {
+      ss 
+      << logMe::dtFormat("dtP[ %32s ] = %32s") 
+        % anDtP->getLabel() % anDtP->virtualClassName()
+      << std::endl;
+    }
+    
+    return ss.str();
+  }       
+  dt__commandIf( aRule, help, "help", "This help") {
+    help << std::endl;
+    return help.str();
+  }
+  
+  return std::string( "Unknown command: " + aRule + "\n");  
+}
+
 int main( int ac, char* av[] ) {
   try {
     //
@@ -483,6 +536,11 @@ int main( int ac, char* av[] ) {
               std::cout 
               << 
               parseCommand(command, parser, aF);
+            }
+            else if (onClass == "dtP") {
+              std::cout 
+              << 
+              parseCommand(command, parser, dtP);
             }            
             else dt__throwNoClass(main(), << onClass << " not defined.");
           }
