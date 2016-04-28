@@ -10,17 +10,19 @@ classdef dtVector3Field
           error(sprintf('exist() of file %s does not return 2', obj.filename_));
         end
       end 
-      function [coord, value, weight] = Field( obj )
-        field = readGnu(obj.filename_, '%f,%f,%f,%f,%f,%f,%f');
+      function [coord, value, sf, q] = Field( obj )
+        field = readGnu(obj.filename_, '%f,%f,%f,%f,%f,%f,%f,%f,%f,%f');
 
         coord = zeros(size(field{1}, 1), 3);
         value = zeros(size(field{1}, 1), 3);
-        weight = zeros(size(field{1}, 1), 1);
+        sf = zeros(size(field{1}, 1), 3);
+        q = zeros(size(field{1}, 1), 1);
         for i = 1:size(field{1}, 1)
           coord(i, 1:3) = field{1}(i,1:3);
           value(i, 1:3) = field{1}(i,4:6);
-          weight(i, 1) = field{1}(i,7);
+          sf(i, 1:3) = field{1}(i,7:9);
+          q(i, 1) = field{1}(i,10);
         end
-      end       
+      end
    end
 end
