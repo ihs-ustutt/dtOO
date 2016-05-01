@@ -13,11 +13,6 @@ classdef dtCylTrf
       function [ r ] = T1( obj )
         r = obj.r_(:,1);
       end
-%       function [ r ] = RVec( obj )
-%         if( obj.trf_~=1 ); error('Object is not transformed!'); end
-%         r = obj.coord_(:,1:3);
-%         r(:,3) = r(:,3) - obj.z_(:);
-%       end        
       function [ phi ] = T2( obj )
         phi = obj.phi_(:,1);
       end        

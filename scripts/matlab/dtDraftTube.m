@@ -2,8 +2,6 @@ classdef dtDraftTube < dtState
    properties (SetAccess = private, GetAccess = public)
      wallShearAreaField_
      uCylInletField_
-%      uCircumInletFieldCircAverage_
-%      uAxialInletFieldCircAverage_
      uCylInCircAverage_
      pInCircAverage_
      uInletField_
@@ -19,6 +17,9 @@ classdef dtDraftTube < dtState
      deltaHLoss_
      cpI_
      cp_
+     rXvInletField_
+     eulerHeadIn_
+     E_c_
    end
    methods
       function obj = dtDraftTube(stateDir, prefix, sepBound)
@@ -72,7 +73,7 @@ classdef dtDraftTube < dtState
         %
         % transform u to cylindrical coordinates
         %
-        ucyl = valueDtVector3Field( obj.uCylInletField_ ).Cyl();
+        ucyl = dtValueVector3Field( obj.uCylInletField_ ).Cyl();
         
         %
         % circumferential velocity (circumferential massflow average)
@@ -83,7 +84,7 @@ classdef dtDraftTube < dtState
         % calculate separation area and set min and max shear
         %
         obj.sepBound_ = sepBound;
-        tau = valueDtVector3Field(obj.wallShearAreaField_);
+        tau = dtValueVector3Field(obj.wallShearAreaField_);
         obj.sepArea_ = sum( dt.Mag( tau.sf_( find(tau.mag_<obj.sepBound_) ) ) );
         obj.minWallShear_ = min(tau.mag_);
         obj.maxWallShear_ = max(tau.mag_);
@@ -93,20 +94,20 @@ classdef dtDraftTube < dtState
         = ...
         ( obj.pTotInTime_.MeanLast(200) - obj.pTotOutTime_.MeanLast(200) ) / dtGod.G;
 
-        uIn = valueDtVector3Field( obj.uInletField_ );
-%        uOut = valueDtVector3Field( obj.uOutletField_ );        
-        pIn = valueDtScalarField( obj.pInletField_ ).Cyl;
+        uIn = dtValueVector3Field( obj.uInletField_ );
+%        uOut = dtValueVector3Field( obj.uOutletField_ );        
+        pIn = dtValueScalarField( obj.pInletField_ ).Cyl;
         obj.pInCircAverage_ = dtCircAverage(pIn, 100);
         
-        pOut = valueDtScalarField( obj.pOutletField_ );    
+        pOut = dtValueScalarField( obj.pOutletField_ );    
         % kinetic energy inlet
         e_uIn ...
         = ...
-        valueDtScalarField( ...
+        dtValueScalarField( ...
           dtScalarMemField( ...
             [obj.Path(), '/dtScalarMField_e_uIn.csv'], ...
             uIn.coord_, ...
-            (1/2) * dt.Mag( uIn.value_ ) .* dt.Mag( uIn.value_ ), ...
+            (1./2.) * dt.Mag( uIn.value_ ) .* dt.Mag( uIn.value_ ), ...
             uIn.sf_, uIn.q_ ...
           ) ...
         );
@@ -118,17 +119,17 @@ classdef dtDraftTube < dtState
         (pOut.intQSf_ - pIn.intQSf_) / e_uIn.intQSf_;
         
         % eulerHeadIn
-        eulerHeadIn ...
+        obj.rXvInletField_ ...
         = ...
-        valueDtVector3Field( ...
-          dtVector3MemField( ...
-            [obj.Path(), '/dtScalarMField_eulerHeadIn.csv'], ...
-            uIn.coord_, ...
-            cross([ ucyl.R .* cos(ucyl.Phi) ucyl.R .* sin(ucyl.Phi) ucyl.Z .* 0], uIn.value_), ...
-            uIn.sf_, uIn.q_ ...
-          ) ...
+        dtVector3MemField( ...
+          [obj.Path(), '/dtScalarMField_eulerHeadIn.csv'], ...
+          uIn.coord_, ...
+          cross([ ucyl.R .* cos(ucyl.Phi) ucyl.R .* sin(ucyl.Phi) ucyl.Z .* 0], uIn.value_), ...
+          uIn.sf_, uIn.q_ ...
         );
-      
+        rXv = dtValueVector3Field( obj.rXvInletField_ );
+        obj.eulerHeadIn_ = rXv.intQSf_;
+        obj.E_c_ = 2. * (e_uIn.intQSf_/e_uIn.Q_) / (e_uIn.Q_/e_uIn.A_)^2;
       end
    end
 end

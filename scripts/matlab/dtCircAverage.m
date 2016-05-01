@@ -18,13 +18,10 @@ classdef dtCircAverage
       function obj = dtCircAverage(field, nBins)
         r = field.R;
         value = field.value_;
-%         phi = field.Phi;
-%         z = field.Z;
         
         obj.rMin_ = min(r);
         obj.rMax_ = max(r);
         obj.nBins_ = nBins;
-        %obj.sumWeight_ = sum(weight);
         
         % determine number of bins
         % make sure that no bin is empty

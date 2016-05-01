@@ -3,12 +3,19 @@ classdef dtState
     case_
     label_
     path_
+    ok_
   end
   methods
     function obj = dtState(stateDir, prefix)
-      if ~isdir(stateDir)
-        error([ stateDir, ' is not a directory']);
-      end
+        obj.ok_ = 1;
+        if (exist(stateDir, 'dir') == 0);
+          throw(  ...
+            MException( ...
+              'dtState:dtState', ...
+              sprintf('> %s < is not a directory.', stateDir) ...
+            ) ...
+          );
+        end
       [pathstr, name, ext] = fileparts(stateDir);
       obj.path_ = stateDir;
       
@@ -30,6 +37,9 @@ classdef dtState
     end        
     function str = Case(obj)
       str = obj.case_;
-    end            
+    end
+    function obj = MakeFail(obj)
+      obj.ok_ = 0;
+    end
   end
 end
