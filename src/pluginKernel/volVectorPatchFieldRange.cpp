@@ -39,7 +39,7 @@ namespace dtOO {
 		vectorHandling< boundedVolume * > const * const bV,
     vectorHandling< dtCase * > const * const dC,
 		vectorHandling< dtPlugin * > const * const pL
-	) {   
+	) {
 	  dtPlugin::init(element, bC, cV, aF, aG, bV, dC, pL);
     
 //	<plugin 
@@ -227,7 +227,6 @@ namespace dtOO {
             )
           );
           phi.push_back( phiField.boundaryField()[thisPatchID][ ii ] );            
-//          }
         }
         
         //
