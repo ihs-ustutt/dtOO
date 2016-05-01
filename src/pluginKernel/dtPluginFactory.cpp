@@ -17,6 +17,7 @@
 #include "analyzeDraftTube.h"
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
+#include "volVectorInChannelFieldRange.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -55,6 +56,9 @@ namespace dtOO {
     }
     if (str == "analyzeDraftTube" ) {
       return new analyzeDraftTube();
+    }
+    if ( str == "volVectorInChannelFieldRange" ) {
+      return new volVectorInChannelFieldRange();
     }
     
     dt__throw(create(), << str <<  " could not be created");  
