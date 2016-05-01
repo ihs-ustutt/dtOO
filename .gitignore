@@ -2,6 +2,6 @@ build*
 install*
 nbproject/
 doc/html/
-generalKernel/dtOOVersion.h
+src/generalKernel/dtOOVersion.h
 /cmake/dtOOConfig.cmake
 *.m~

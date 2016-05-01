@@ -1,0 +1,11 @@
+add_subdirectory(geometryKernel)
+add_subdirectory(generalKernel)
+add_subdirectory(libraryKernel)
+add_subdirectory(meshKernel)
+add_subdirectory(renderKernel)
+add_subdirectory(pluginKernel)
+add_subdirectory(solverKernel)
+add_subdirectory(applicationKernel)
+
+set(DTOO_SOURCES ${DTOO_SOURCES} PARENT_SCOPE)
+set(DTOO_HEADERS ${DTOO_HEADERS} PARENT_SCOPE)

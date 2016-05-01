@@ -55,22 +55,21 @@ MACRO(MAKE_DTOO_VERSION VERSION_MAJOR VERSION_MINOR VERSION_COMMIT)
   endif("${DTOO_VERSION}" MATCHES "-")
   configure_file(
     ${CMAKE_SOURCE_DIR}/cmake/dtOOVersion.h.in
-    ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
+    ${CMAKE_SOURCE_DIR}/src/generalKernel/dtOOVersion.h
   )
 
   add_custom_target(
       version ALL
-      DEPENDS ${CMAKE_SOURCE_DIR}/generalKernel/dtOOVersion.h
+      DEPENDS ${CMAKE_SOURCE_DIR}/src/generalKernel/dtOOVersion.h
   )
 
-  message(STATUS "|")
+  message(STATUS "|----------------------------------------------------")
   message(
     STATUS 
     "| Compiling dtOO ${DTOO_VERSION_NAME}"
     "${DTOO_VERSION_MAJOR}.${DTOO_VERSION_MINOR}.${DTOO_VERSION_COMMIT}"
   )
-  message(STATUS "|   ")
-  message(STATUS "|")
+  message(STATUS "|----------------------------------------------------")
   set(VERSION_MAJOR "${DTOO_VERSION_MAJOR}")
   set(VERSION_MINOR "${DTOO_VERSION_MINOR}")
   set(VERSION_COMMIT "${DTOO_VERSION_COMMIT}")

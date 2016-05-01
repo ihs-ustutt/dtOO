@@ -117,17 +117,10 @@ endif (MPI_FOUND)
 
 #------------------------------------------------------------------------------#
 #
-# add directories
+# add src directory
 #
 #------------------------------------------------------------------------------#
-add_subdirectory(geometryKernel)
-add_subdirectory(generalKernel)
-add_subdirectory(libraryKernel)
-add_subdirectory(meshKernel)
-add_subdirectory(renderKernel)
-add_subdirectory(pluginKernel)
-add_subdirectory(solverKernel)
-add_subdirectory(applicationKernel)
+add_subdirectory(src)
 
 #------------------------------------------------------------------------------#
 #
@@ -135,14 +128,14 @@ add_subdirectory(applicationKernel)
 #
 #------------------------------------------------------------------------------#
 include_directories(
-  geometryKernel 
-  generalKernel 
-  libraryKernel 
-  meshKernel 
-  renderKernel 
-  pluginKernel
-  solverKernel
-  applicationKernel
+  src/geometryKernel 
+  src/generalKernel 
+  src/libraryKernel 
+  src/meshKernel 
+  src/renderKernel 
+  src/pluginKernel
+  src/solverKernel
+  src/applicationKernel
   ${Boost_INCLUDE_DIR} 
   ${CGAL_INCLUDE_DIR} 
   ${GMSH_INCLUDE_DIR} 
@@ -283,7 +276,6 @@ foreach(_rpath ${_rpathList})
   set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH}:${_rpath}")
 endforeach(_rpath)
 
-message("CMAKE_SHARED_LINKER_FLAGS=${CMAKE_SHARED_LINKER_FLAGS}")
 #------------------------------------------------------------------------------#
 #
 # install
@@ -331,14 +323,14 @@ configure_file(
 )
 
 install(TARGETS dtOO DESTINATION lib)
-install(DIRECTORY pluginKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY meshKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY generalKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY libraryKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY geometryKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY renderKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY solverKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY applicationKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY src/pluginKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY src/meshKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY src/generalKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY src/libraryKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY src/geometryKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY src/renderKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY src/solverKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY src/applicationKernel/ DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY cmake/ DESTINATION cmake FILES_MATCHING PATTERN "*")
 install(
   DIRECTORY scripts/ 
