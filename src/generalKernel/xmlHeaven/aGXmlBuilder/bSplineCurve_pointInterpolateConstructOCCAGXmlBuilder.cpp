@@ -30,16 +30,15 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > const * const aG,
     vectorHandling< analyticGeometry * > * result 
   ) const {
-    //
-		// check input
-		//    
     dt__throwIf(!dtXmlParserBase::hasChild("Point_3", toBuild), buildPart());
 
     std::vector< dtPoint3 > workingPointP;
-    ::QDomElement wElement = dtXmlParserBase::getChild("Point_3", toBuild);
-    while ( !wElement.isNull() ) {
+    std::vector< ::QDomElement > wElementV
+    = 
+    dtXmlParserBase::getChildVector("Point_3", toBuild);
+    
+    dt__forAllRefAuto(wElementV, wElement) {
       dtXmlParserBase::createBasic( &wElement, bC, cV, aF, aG, &workingPointP );
-      wElement = dtXmlParserBase::getNextSibling("Point_3", wElement);
     }
     result->push_back( 
       new splineCurve3d(

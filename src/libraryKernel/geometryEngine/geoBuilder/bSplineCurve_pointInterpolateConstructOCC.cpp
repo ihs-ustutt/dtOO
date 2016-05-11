@@ -33,17 +33,15 @@ namespace dtOO {
 		int nP = pp.size();
 		
 		//
-		// allocate arraies
+		// allocate arrays
 		//
-		Handle(TColgp_HArray1OfPnt) arr = new TColgp_HArray1OfPnt(1, nP);
 		TColgp_Array1OfPnt arr2(1, nP);
 		Handle(TColStd_HArray1OfReal) para = new TColStd_HArray1OfReal(1, nP);
 
 		//
-		// set arraies
+		// set arrays
 		//
 		dt__forAllIndex(pp, ii) {		        
-		  arr->SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) ); 
 			arr2.SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) ); 
 		  para->SetValue( ii+1, static_cast<float>(ii) );
 	  }
