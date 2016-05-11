@@ -37,6 +37,7 @@ SET(HEADERS
   baseContainerHeaven/vectorContainer.h
   baseContainerHeaven/transformerContainer.h
   baseContainerHeaven/baseBuilder/dtPoint3_readIBL.h
+  baseContainerHeaven/baseBuilder/dtPoint3_readCSV.h
   constValueHeaven/constValue.h
   constValueHeaven/sliderFloatParam.h
   constValueHeaven/intParam.h
@@ -149,6 +150,7 @@ SET(SOURCES
   baseContainerHeaven/vectorContainer.cpp
   baseContainerHeaven/transformerContainer.cpp
   baseContainerHeaven/baseBuilder/dtPoint3_readIBL.cpp
+  baseContainerHeaven/baseBuilder/dtPoint3_readCSV.cpp
   constValueHeaven/constValue.cpp
   constValueHeaven/sliderFloatParam.cpp
   constValueHeaven/intParam.cpp

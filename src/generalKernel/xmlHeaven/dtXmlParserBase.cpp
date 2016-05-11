@@ -2,6 +2,7 @@
 #include "interfaceHeaven/ptrHandling.h"
 #include <baseContainerHeaven/transformerContainer.h>
 #include <baseContainerHeaven/baseBuilder/dtPoint3_readIBL.h>
+#include <baseContainerHeaven/baseBuilder/dtPoint3_readCSV.h>
 #include <analyticFunctionHeaven/scaOneD.h>
 #include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
@@ -65,7 +66,7 @@ namespace dtOO {
 		//
 		// check if there is a transformer
 		//
-		if ( !wElement.isNull() ) {	
+		if ( !wElement.isNull() ) {
 			bool hasLabel = hasAttribute("label", wElement);
 			bool hasName = hasAttribute("name", wElement);
 			bool inContainer = false;
@@ -147,8 +148,8 @@ namespace dtOO {
     //
     // create transformer if necessary
     //
-		::QDomElement wEl = *toBuildP;
-    ptrHandling<dtTransformer> dtTransformerP(   
+		::QDomElement wEl = *toBuildP;      
+    ptrHandling<dtTransformer> dtTransformerP(
       createTransformer(toBuildP, bC, cV, aF, aG)
 	  );
     if ( is("transformer", *toBuildP) ) {
@@ -546,6 +547,12 @@ namespace dtOO {
               basicP->push_back( *it );
             }
           }
+          else if (filename.find(".csv") != std::string::npos) {
+            p3 = dtPoint3_readCSV(filename).result();
+            dt__forAllConstIter(std::vector< dtPoint3 >, p3, it) {
+              basicP->push_back( *it );
+            }
+          }          
           else dt__throw(createBasic(), << "Unknown file extension.");
         }
         else dt__throw(createBasic(), << "attribute file_name is empty.");
@@ -714,7 +721,7 @@ namespace dtOO {
            toBuildP->hasAttribute("x") 
         && toBuildP->hasAttribute("y") 
         && toBuildP->hasAttribute("z") 
-      ) { 
+      ) {
         //
         // create coordinates
         //
@@ -750,6 +757,14 @@ namespace dtOO {
         //
         vv = dtVector3(cX, cY, cZ);      
       }
+      else if ( hasAttribute("xyz", *toBuildP) ) { 
+        std::vector< float > cXYZ 
+        = 
+        muParseCSString(
+          replaceDependencies( getAttributeStr("xyz", *toBuildP), bC, cV, aF, aG )
+        );
+        vv = dtVector3(cXYZ[0], cXYZ[1], cXYZ[2]);      
+      }      
       //
       //check if point has a label and add it to the container
       //
