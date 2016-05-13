@@ -78,6 +78,7 @@ SET(HEADERS
   analyticFunctionHeaven/analyticFunctionCombination.h
   analyticFunctionHeaven/analyticFunctionCompound.h
   analyticFunctionHeaven/analyticFunctionTransformed.h
+  analyticFunctionHeaven/muParserFunctions.h
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
   analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
@@ -187,6 +188,7 @@ SET(SOURCES
   analyticFunctionHeaven/vec3dMuParserThreeD.cpp
   analyticFunctionHeaven/vec3dBoxThreeD.cpp
   analyticFunctionHeaven/vec3dTriLinearThreeD.cpp
+  analyticFunctionHeaven/muParserFunctions.cpp
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.cpp
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.cpp
   analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.cpp
