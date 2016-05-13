@@ -11,7 +11,7 @@
 #include "UcylInChannel.h"
 #include "uRelInChannel.h"
 #include "meshQuality.h"
-#include "volScalarFieldRange.h"
+#include "volScalarInChannelFieldRange.h"
 #include "volVectorPatchFieldRange.h"
 #include "volScalarPatchFieldRange.h"
 #include "analyzeDraftTube.h"
@@ -47,7 +47,9 @@ namespace dtOO {
     if (str == "UcylInChannel") return new UcylInChannel();
     if (str == "uRelInChannel") return new uRelInChannel();
     if (str == "meshQuality") return new meshQuality();
-    if (str == "volScalarFieldRange" ) return new volScalarFieldRange();
+    if (str == "volScalarInChannelFieldRange" ) {
+      return new volScalarInChannelFieldRange();
+    }
     if (str == "volVectorPatchFieldRange" ) {
       return new volVectorPatchFieldRange();
     }

@@ -1,5 +1,5 @@
-#ifndef volScalarFieldRange_H
-#define	volScalarFieldRange_H
+#ifndef volScalarInChannelFieldRange_H
+#define	volScalarInChannelFieldRange_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -16,11 +16,11 @@ namespace dtOO {
   class baseContainer;
   class dtCase;
   
-  class volScalarFieldRange : public dtPlugin {
+  class volScalarInChannelFieldRange : public dtPlugin {
   public:
-    dt__class(volScalarFieldRange, dtPlugin);
-    volScalarFieldRange();
-    virtual ~volScalarFieldRange();
+    dt__class(volScalarInChannelFieldRange, dtPlugin);
+    volScalarInChannelFieldRange();
+    virtual ~volScalarInChannelFieldRange();
     virtual void init( 
       ::QDomElement const & element,
       baseContainer const * const bC,
@@ -33,15 +33,16 @@ namespace dtOO {
     );    
     virtual void apply(void);
   private:
+		analyticGeometry const * _aG;    
     dtXmlParser const * _parser;
     dtCase const * _case;
     std::string _field;
     float _min;
-    float _max;
-//    dtVector3 _axis;
-//    dtPoint3 _origin;
+    float _max;    
+    std::vector< int > _nP;
+    bool _noRange;
   };
 }
 
-#endif	/* volScalarFieldRange_H */
+#endif	/* volScalarInChannelFieldRange_H */
 

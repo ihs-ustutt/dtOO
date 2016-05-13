@@ -12,10 +12,10 @@ SET(HEADERS
   UcylInChannel.h
   uRelInChannel.h
   meshQuality.h
-  volScalarFieldRange.h
   volVectorPatchFieldRange.h
   volScalarPatchFieldRange.h
   analyzeDraftTube.h
+  volScalarInChannelFieldRange.h
   volVectorInChannelFieldRange.h
 )
 
@@ -33,10 +33,10 @@ SET(SOURCES
   UcylInChannel.cpp
   uRelInChannel.cpp
   meshQuality.cpp
-  volScalarFieldRange.cpp
   volVectorPatchFieldRange.cpp
   volScalarPatchFieldRange.cpp
   analyzeDraftTube.cpp
+  volScalarInChannelFieldRange.cpp
   volVectorInChannelFieldRange.cpp
 )
 
