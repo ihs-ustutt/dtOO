@@ -57,8 +57,8 @@ namespace dtOO {
             stringPrimitive::stringContains("value", thisRule)
           ) {
             ::Foam::vector value = parseOptionVector("value", thisRule);
-            ::Foam::scalar const tangential = value.x();
-            ::Foam::scalar const radial = value.y();
+            ::Foam::scalar const radial = value.x();
+            ::Foam::scalar const tangential = value.y();
             ::Foam::scalar const axial = value.z();
             
             //
@@ -104,14 +104,6 @@ namespace dtOO {
               scale = parseOptionBool("scale", thisRule);
             }
 
-            //
-            // volume flow
-            //
-            ::Foam::scalar targetVolFlow(0.);
-            if ( stringPrimitive::stringContains("volumeFlow", thisRule) ) {
-              targetVolFlow = parseOptionScalar("volumeFlow", thisRule);
-            }
-            
             //
             // get function (r, phi, z) -> (u_t, u_r, u_a)
             //
@@ -188,15 +180,16 @@ namespace dtOO {
             }
             
             //
-            // volume flow
+            // volume and swirl flow
             //
             ::Foam::scalar volFlow(0.);
+            ::Foam::vector swirlFlow = ::Foam::vector::zero;
             ::Foam::scalar patchArea(0.);
             const ::Foam::scalarField& magSf = bF[i].patch().magSf();
-            ::Foam::vectorField nf( bF[i].patch().nf() );            
+            const ::Foam::vectorField& Sf = bF[i].patch().Sf();
             
             //
-            // set fixedValues and calculate volume flow at patch
+            // set values and calculate volume and swirl flow
             //
             forAll(bF[i], j) {
               dtPoint3 u_ = v3d->YdtPoint3(r[j], phi[j], z[j]);
@@ -204,35 +197,76 @@ namespace dtOO {
               = 
               u_.z() * axis // c_a
               + 
-              u_.y() * ( r_[j] / ::Foam::mag(r_[j]) ) // c_r
+              u_.x() * ( r_[j] / ::Foam::mag(r_[j]) ) // c_r
               +
-              u_.x() * ( (r_[j] ^ axis) / ::Foam::mag(r_[j] ^ axis) ); // c_t
+              u_.y() * ( (r_[j] ^ axis) / ::Foam::mag(r_[j] ^ axis) ); // c_t
               
               //
               // patch area and volume flow of patch
               //
               patchArea = patchArea + magSf[j];
-              volFlow = volFlow + (nf[j] & bF[i][j]) * magSf[j];                
+              volFlow = volFlow + (Sf[j] & bF[i][j]);
+              swirlFlow = swirlFlow + (r_[j] ^ bF[i][j]) * (Sf[j] & bF[i][j]);
             }
             
             //
-            // scale values if target volume flow is given
+            // prevent scaling if target values are set
             //
-            if ( targetVolFlow != 0. ) {
-              ::Foam::scalar scaleFac(targetVolFlow/volFlow);
-              volFlow = 0.;
-              forAll(bF[i], j) {
-                bF[i][j] = scaleFac * bF[i][j];
-                volFlow = volFlow + (nf[j] & bF[i][j]) * magSf[j];
-              }              
+            //
+            ::Foam::scalar targetVolFlow = volFlow;
+            if ( stringPrimitive::stringContains("volumeFlow", thisRule) ) {
+              targetVolFlow = parseOptionScalar("volumeFlow", thisRule);
             }
-  
+            ::Foam::scalar targetSwirlFlowZ = swirlFlow.z();
+            if ( stringPrimitive::stringContains("swirlFlowZ", thisRule) ) {
+              targetSwirlFlowZ = parseOptionScalar("swirlFlowZ", thisRule);
+            }                       
+            
+            ::Foam::scalar volFlow2 = 0.;
+            ::Foam::vector swirlFlow2 = ::Foam::vector::zero;
+            forAll(bF[i], j) {
+              //
+              // extract components
+              //
+              ::Foam::vector n_m = Sf[j]/magSf[j];
+              ::Foam::vector n_t = (r_[j] ^ axis) / ::Foam::mag(r_[j] ^ axis);
+              ::Foam::vector cM = n_m * (bF[i][j] & n_m);
+              ::Foam::vector cT = n_t * (bF[i][j] & n_t);
+              ::Foam::vector cR = bF[i][j] - cM - cT;
+              
+              //
+              // scale
+              //
+              bF[i][j] 
+              = 
+              cM * (targetVolFlow/volFlow)
+              +
+              cT * ( (targetSwirlFlowZ/swirlFlow.z()) / (targetVolFlow/volFlow) )
+              +
+              cR;
+              
+              //
+              // sum of volume and swirl flow
+              //
+              volFlow2 = volFlow2 + (Sf[j] & bF[i][j]);
+              swirlFlow2 = swirlFlow2 + (r_[j] ^ bF[i][j]) * (Sf[j] & bF[i][j]);                
+            }
+            
             dt__info(
               executeOnVolVectorField(), 
-              << "patch area         : " << patchArea << std::endl
-              << "volume flow        : " << volFlow << std::endl
-              << "target volume flow : " << targetVolFlow
-            );
+              << "patch area            : " << patchArea << std::endl
+              << "volume flow           : " << volFlow << std::endl
+              << "volume flow (target)  : " << targetVolFlow << std::endl    
+              << "volume flow (adjust)  : " << volFlow2 << std::endl
+              << "swirl flow X          : " << swirlFlow.x() << std::endl
+              << "swirl flow Y          : " << swirlFlow.y() << std::endl
+              << "swirl flow Z          : " << swirlFlow.z() << std::endl
+              << "swirl flow Z (target) : " << targetSwirlFlowZ << std::endl
+              << "swirl flow X (adjust) : " << swirlFlow2.x() << std::endl
+              << "swirl flow Y (adjust) : " << swirlFlow2.y() << std::endl
+              << "swirl flow Z (adjust) : " << swirlFlow2.z()
+            );              
+  
             return;
           }          
         }
