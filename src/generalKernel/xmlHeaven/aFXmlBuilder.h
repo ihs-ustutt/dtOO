@@ -17,6 +17,7 @@ namespace dtOO {
     dt__classOnlyName(aFXmlBuilder);
     aFXmlBuilder();
     ~aFXmlBuilder();
+    virtual aFXmlBuilder * create( void ) const = 0;
     virtual void buildPart(
       ::QDomElement const & toBuild, 
       baseContainer * const bC,
@@ -31,6 +32,7 @@ namespace dtOO {
       vectorHandling< analyticFunction * > const * const aF,
       vectorHandling< analyticFunction * > * result
     ) const;     
+    virtual std::vector< std::string > factoryAlias( void ) const;
   };
 }
 #endif	/* aFXmlBuilder_H */

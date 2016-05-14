@@ -16,7 +16,10 @@ namespace dtOO {
     dt__info(buildPartCompound(), << "Call on aFXmlBuilder");
   }
 	
-
   aFXmlBuilder::~aFXmlBuilder() {
+  }
+  
+  std::vector< std::string > aFXmlBuilder::factoryAlias( void ) const {
+    return std::vector< std::string>(0);
   }
 }

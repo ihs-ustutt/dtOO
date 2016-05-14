@@ -3,6 +3,7 @@
 
 #include <string>
 #include <logMe/dtMacros.h>
+#include <vector>
 
 namespace dtOO {
   class aFXmlBuilder;
@@ -10,11 +11,14 @@ namespace dtOO {
   class aFXmlBuilderFactory {
   public:  
     dt__classOnlyName(aFXmlBuilderFactory);
-    aFXmlBuilderFactory();
     virtual ~aFXmlBuilderFactory();
     static aFXmlBuilder * create( char const * const str );
     static aFXmlBuilder * create( std::string const str );
+    static aFXmlBuilderFactory * instance( void );
   private:
+    std::vector< aFXmlBuilder * > _builder;
+    static dt__pH(aFXmlBuilderFactory) _instance;
+    aFXmlBuilderFactory();
   };
 }
 #endif	/* aFXmlBuilderFactory_H */

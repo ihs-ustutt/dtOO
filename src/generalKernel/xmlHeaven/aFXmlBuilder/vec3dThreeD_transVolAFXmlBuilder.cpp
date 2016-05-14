@@ -1,4 +1,4 @@
-#include "vec3dTransVolThreeDAFXmlBuilder.h"
+#include "vec3dThreeD_transVolAFXmlBuilder.h"
 
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
@@ -12,18 +12,26 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
 
+#include <boost/assign.hpp>
 #include <QtXml/QDomElement>
-#include <QtXml/QDomNode>
 
 namespace dtOO {
-  vec3dTransVolThreeDAFXmlBuilder::vec3dTransVolThreeDAFXmlBuilder() {
+  vec3dThreeD_transVolAFXmlBuilder::vec3dThreeD_transVolAFXmlBuilder() {
   }
 
-  vec3dTransVolThreeDAFXmlBuilder::~vec3dTransVolThreeDAFXmlBuilder() {
+  vec3dThreeD_transVolAFXmlBuilder::~vec3dThreeD_transVolAFXmlBuilder() {
 
   }
 
-  void vec3dTransVolThreeDAFXmlBuilder::buildPart(
+  std::vector< std::string > vec3dThreeD_transVolAFXmlBuilder::factoryAlias( 
+  void 
+  ) const {
+    return ::boost::assign::list_of
+      ("vec3dTransVolThreeD")
+      ("vec3dTransVolThreeDAFXmlBuilder");
+  }
+  
+  void vec3dThreeD_transVolAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 
@@ -104,7 +112,7 @@ namespace dtOO {
    * @todo Is this a memory bug? Should cL0 - cL4 be destroyed at the end
 	 *       of the function?
    */
-  void vec3dTransVolThreeDAFXmlBuilder::buildPartCompound(
+  void vec3dThreeD_transVolAFXmlBuilder::buildPartCompound(
 	  ::QDomElement const & toBuildP, 
 	  baseContainer * const bC,
     vectorHandling< constValue * > const * const cValP, 

@@ -1,5 +1,5 @@
-#ifndef vec3dTransVolThreeDAFXmlBuilder_H
-#define	vec3dTransVolThreeDAFXmlBuilder_H
+#ifndef vec3dThreeD_transVolAFXmlBuilder_H
+#define	vec3dThreeD_transVolAFXmlBuilder_H
 
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
@@ -12,11 +12,13 @@ namespace dtOO {
   class constValue;
   class baseContainer;
   
-  class vec3dTransVolThreeDAFXmlBuilder : public aFXmlBuilder {
+  class vec3dThreeD_transVolAFXmlBuilder : public aFXmlBuilder {
   public:
-    dt__classOnlyName(vec3dTransVolThreeDAFXmlBuilder);    
-    vec3dTransVolThreeDAFXmlBuilder();
-    virtual ~vec3dTransVolThreeDAFXmlBuilder();
+    dt__classOnlyName(vec3dThreeD_transVolAFXmlBuilder);    
+    dt__classSelfCreate(vec3dThreeD_transVolAFXmlBuilder);
+    vec3dThreeD_transVolAFXmlBuilder();
+    virtual ~vec3dThreeD_transVolAFXmlBuilder();
+    virtual std::vector< std::string > factoryAlias( void ) const;    
     virtual void buildPart(
       ::QDomElement const & toBuildP, 
       baseContainer * const bC,
@@ -33,5 +35,5 @@ namespace dtOO {
     ) const;    
   };
 }
-#endif	/* vec3dTransVolThreeDAFXmlBuilder_H */
+#endif	/* vec3dThreeD_transVolAFXmlBuilder_H */
 

@@ -22,6 +22,9 @@
     return (dynamic_cast<dt__CLASSNAME_T const *>(this) == NULL ? false : true); \
   }
 
+#define dt__classSelfCreate( name ) \
+  name * create( void ) const { return new name(); }
+
 #define dt__class( name, castFrom ) \
   static std::string className( void ) { \
     return std::string(#name); \

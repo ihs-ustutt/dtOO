@@ -1,4 +1,4 @@
-#include "vec3dCurveOneDAFXmlBuilder.h"
+#include "bSplineCurve_pointConstructOCCAFXmlBuilder.h"
 
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/dtXmlParser.h>
@@ -11,18 +11,27 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
 
+#include <boost/assign.hpp>
 #include <QtXml/QDomElement>
-#include <QtXml/QDomNode>
 
 namespace dtOO {
-  vec3dCurveOneDAFXmlBuilder::vec3dCurveOneDAFXmlBuilder() {
+  bSplineCurve_pointConstructOCCAFXmlBuilder
+    ::bSplineCurve_pointConstructOCCAFXmlBuilder() {
   }
 
-  vec3dCurveOneDAFXmlBuilder::~vec3dCurveOneDAFXmlBuilder() {
+  bSplineCurve_pointConstructOCCAFXmlBuilder
+    ::~bSplineCurve_pointConstructOCCAFXmlBuilder() {
 
   }
 
-  void vec3dCurveOneDAFXmlBuilder::buildPart(
+  std::vector< std::string > bSplineCurve_pointConstructOCCAFXmlBuilder
+    ::factoryAlias( void ) const {
+    return ::boost::assign::list_of
+      ("vec3dCurveOneD")
+      ("vec3dCurveOneDAFXmlBuilder");
+  }  
+
+  void bSplineCurve_pointConstructOCCAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 

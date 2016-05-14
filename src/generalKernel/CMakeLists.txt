@@ -7,23 +7,20 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilderFactory.h
   xmlHeaven/aFXmlBuilder.h
   xmlHeaven/aFXmlBuilderFactory.h
-  xmlHeaven/aFXmlBuilder/baseContainerAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/scaCurve2dOneDAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/sca3PointMeanlineAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/sca5PointMeanlineAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/analyticFunctionAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/vec2dCurve2dOneDAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/vec3dSurfaceTwoDAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/vec3dCurveOneDAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/vec3dTwoDFiveRectangleAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/vec3dTwoDTwelveRectangleAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/vec3dTransVolThreeDAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/vec3dMuParserThreeDAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/baseContainerAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/vec3dTriLinearThreeDAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineCurve_pointConstructOCCAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineSurface_skinConstructOCCAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/scaOneD_forceBSplineCurve2dAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/vec3dThreeD_transVolAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/vec3dThreeD_triLinearPointConstructAFXmlBuilder.h
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.h
@@ -91,23 +88,20 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilderFactory.cpp
   xmlHeaven/aFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilderFactory.cpp
-  xmlHeaven/aFXmlBuilder/baseContainerAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/sca3PointMeanlineAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/sca5PointMeanlineAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/analyticFunctionAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/vec2dCurve2dOneDAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/vec3dSurfaceTwoDAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/vec3dCurveOneDAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/vec3dTwoDFiveRectangleAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/vec3dTwoDTwelveRectangleAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/scaCurve2dOneDAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/vec3dTransVolThreeDAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/vec3dMuParserThreeDAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/baseContainerAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.cpp
-  xmlHeaven/aFXmlBuilder/vec3dTriLinearThreeDAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineCurve_pointConstructOCCAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineSurface_skinConstructOCCAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/scaOneD_forceBSplineCurve2dAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/vec3dThreeD_transVolAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/vec3dThreeD_triLinearPointConstructAFXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.cpp

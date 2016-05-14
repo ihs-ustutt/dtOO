@@ -12,11 +12,13 @@ namespace dtOO {
   class constValue;
   class baseContainer;
 
-  class vec3dSurfaceTwoDAFXmlBuilder : public aFXmlBuilder {
+  class bSplineSurface_skinConstructOCCAFXmlBuilder : public aFXmlBuilder {
   public:
-    dt__classOnlyName(vec3dSurfaceTwoDAFXmlBuilder);    
-    vec3dSurfaceTwoDAFXmlBuilder();
-    virtual ~vec3dSurfaceTwoDAFXmlBuilder();
+    dt__classOnlyName(bSplineSurface_skinConstructOCCAFXmlBuilder);   
+    dt__classSelfCreate(bSplineSurface_skinConstructOCCAFXmlBuilder);     
+    bSplineSurface_skinConstructOCCAFXmlBuilder();
+    virtual ~bSplineSurface_skinConstructOCCAFXmlBuilder();
+    virtual std::vector< std::string > factoryAlias( void ) const;     
     virtual void buildPart(
      ::QDomElement const & toBuildP, 
       baseContainer * const bC,

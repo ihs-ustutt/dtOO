@@ -16,6 +16,7 @@ namespace dtOO {
     : public aFXmlBuilder {
   public:
     dt__classOnlyName(bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder);    
+    dt__classSelfCreate(bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder);    
     bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder();
     virtual ~bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder();
     virtual void buildPart(

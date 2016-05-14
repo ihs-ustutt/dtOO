@@ -15,6 +15,7 @@ namespace dtOO {
   class muParserAFXmlBuilder : public aFXmlBuilder {
   public:  
     dt__classOnlyName(muParserAFXmlBuilder);
+    dt__classSelfCreate(muParserAFXmlBuilder);
     muParserAFXmlBuilder();
     virtual ~muParserAFXmlBuilder();
     virtual void buildPart(

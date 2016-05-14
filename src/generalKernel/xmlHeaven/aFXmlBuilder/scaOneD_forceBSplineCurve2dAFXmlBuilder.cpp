@@ -1,4 +1,4 @@
-#include "scaCurve2dOneDAFXmlBuilder.h"
+#include "scaOneD_forceBSplineCurve2dAFXmlBuilder.h"
 
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -10,17 +10,24 @@
 #include <baseContainerHeaven/baseContainer.h>
 
 #include <QtXml/QDomElement>
-#include <QtXml/QDomNode>
+#include <boost/assign.hpp>
 
 namespace dtOO {
-  scaCurve2dOneDAFXmlBuilder::scaCurve2dOneDAFXmlBuilder() {
+  scaOneD_forceBSplineCurve2dAFXmlBuilder
+    ::scaOneD_forceBSplineCurve2dAFXmlBuilder() {
   }
 
-  scaCurve2dOneDAFXmlBuilder::~scaCurve2dOneDAFXmlBuilder() {
+  scaOneD_forceBSplineCurve2dAFXmlBuilder
+    ::~scaOneD_forceBSplineCurve2dAFXmlBuilder() {
 
   }
+  
+  std::vector< std::string > scaOneD_forceBSplineCurve2dAFXmlBuilder
+    ::factoryAlias( void ) const {
+    return ::boost::assign::list_of("scaCurve2dOneD");
+  }
 
-  void scaCurve2dOneDAFXmlBuilder::buildPart(
+  void scaOneD_forceBSplineCurve2dAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 

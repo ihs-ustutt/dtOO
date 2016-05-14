@@ -13,8 +13,9 @@ namespace dtOO {
   class baseContainer;
 
   class baseContainerAFXmlBuilder : public aFXmlBuilder {
-    dt__classOnlyName(baseContainerAFXmlBuilder);
   public:
+    dt__classOnlyName(baseContainerAFXmlBuilder);
+    dt__classSelfCreate(baseContainerAFXmlBuilder);    
     baseContainerAFXmlBuilder();
     virtual ~baseContainerAFXmlBuilder();
     virtual void buildPart(

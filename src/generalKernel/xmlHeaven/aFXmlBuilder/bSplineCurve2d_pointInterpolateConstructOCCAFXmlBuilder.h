@@ -15,7 +15,8 @@ namespace dtOO {
   class bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder 
     : public aFXmlBuilder {
   public:
-    dt__classOnlyName(bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder);    
+    dt__classOnlyName(bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder); 
+    dt__classSelfCreate(bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder);  
     bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder();
     virtual ~bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder();
     virtual void buildPart(

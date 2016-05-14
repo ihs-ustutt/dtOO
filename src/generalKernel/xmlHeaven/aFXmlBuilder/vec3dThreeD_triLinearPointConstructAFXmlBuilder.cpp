@@ -1,4 +1,4 @@
-#include "vec3dTriLinearThreeDAFXmlBuilder.h"
+#include "vec3dThreeD_triLinearPointConstructAFXmlBuilder.h"
 
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -7,18 +7,27 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
 
+#include <boost/assign.hpp>
 #include <QtXml/QDomElement>
-#include <QtXml/QDomNode>
 
 namespace dtOO {
-  vec3dTriLinearThreeDAFXmlBuilder::vec3dTriLinearThreeDAFXmlBuilder() {
+  vec3dThreeD_triLinearPointConstructAFXmlBuilder
+    ::vec3dThreeD_triLinearPointConstructAFXmlBuilder() {
   }
 
-  vec3dTriLinearThreeDAFXmlBuilder::~vec3dTriLinearThreeDAFXmlBuilder() {
+  vec3dThreeD_triLinearPointConstructAFXmlBuilder
+    ::~vec3dThreeD_triLinearPointConstructAFXmlBuilder() {
 
   }
 
-  void vec3dTriLinearThreeDAFXmlBuilder::buildPart(
+  std::vector< std::string > vec3dThreeD_triLinearPointConstructAFXmlBuilder
+    ::factoryAlias( void ) const {
+    return ::boost::assign::list_of
+      ("vec3dTriLinearThreeD")
+      ("vec3dTriLinearThreeDAFXmlBuilder");
+  }
+  
+  void vec3dThreeD_triLinearPointConstructAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cV, 

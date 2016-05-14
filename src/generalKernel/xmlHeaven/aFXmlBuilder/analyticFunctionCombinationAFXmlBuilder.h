@@ -15,6 +15,7 @@ namespace dtOO {
   class analyticFunctionCombinationAFXmlBuilder : public aFXmlBuilder {
   public:  
     dt__classOnlyName(analyticFunctionCombinationAFXmlBuilder);
+    dt__classSelfCreate(analyticFunctionCombinationAFXmlBuilder);
     analyticFunctionCombinationAFXmlBuilder();
     virtual ~analyticFunctionCombinationAFXmlBuilder();
     virtual void buildPart(

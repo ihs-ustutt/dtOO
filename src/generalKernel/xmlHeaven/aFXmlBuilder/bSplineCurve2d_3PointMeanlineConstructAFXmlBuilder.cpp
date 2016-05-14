@@ -1,6 +1,4 @@
-#include "sca3PointMeanlineAFXmlBuilder.h"
-
-#include <QtXml/QDomElement>
+#include "bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder.h"
 
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParserBase.h>
@@ -11,15 +9,25 @@
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 
+#include <boost/assign.hpp>
+#include <QtXml/QDomElement>
+
 namespace dtOO {
-  sca3PointMeanlineAFXmlBuilder::sca3PointMeanlineAFXmlBuilder() { 
+  bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder
+    ::bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder() { 
   }
 
-  sca3PointMeanlineAFXmlBuilder::~sca3PointMeanlineAFXmlBuilder() {
+  bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder
+    ::~bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder() {
 
   }
 
-  void sca3PointMeanlineAFXmlBuilder::buildPart(
+  std::vector< std::string > bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder
+    ::factoryAlias( void ) const {
+    return ::boost::assign::list_of("sca3PointMeanline");
+  }
+  
+  void bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 

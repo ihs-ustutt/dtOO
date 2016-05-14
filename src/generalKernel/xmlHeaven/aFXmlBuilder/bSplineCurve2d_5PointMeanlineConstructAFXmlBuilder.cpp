@@ -1,4 +1,4 @@
-#include "sca5PointMeanlineAFXmlBuilder.h"
+#include "bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder.h"
 
 #include <QtXml/QDomElement>
 
@@ -12,14 +12,16 @@
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC.h>
 
 namespace dtOO {
-  sca5PointMeanlineAFXmlBuilder::sca5PointMeanlineAFXmlBuilder() { 
+  bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder
+    ::bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder() { 
   }
 
-  sca5PointMeanlineAFXmlBuilder::~sca5PointMeanlineAFXmlBuilder() {
+  bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder
+    ::~bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder() {
 
   }
 
-  void sca5PointMeanlineAFXmlBuilder::buildPart(
+  void bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
 		vectorHandling< constValue * > const * const cValP, 

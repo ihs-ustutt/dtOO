@@ -1,5 +1,5 @@
-#ifndef ANALYTICFUNCTIONAFXmlBuilder_H
-#define	ANALYTICFUNCTIONAFXmlBuilder_H
+#ifndef analyticFunctionAFXmlBuilder_H
+#define	analyticFunctionAFXmlBuilder_H
 
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
@@ -15,6 +15,7 @@ namespace dtOO {
   class analyticFunctionAFXmlBuilder : public aFXmlBuilder {
   public:  
     dt__classOnlyName(analyticFunctionAFXmlBuilder);
+    dt__classSelfCreate(analyticFunctionAFXmlBuilder);
     analyticFunctionAFXmlBuilder();
     virtual ~analyticFunctionAFXmlBuilder();
     virtual void buildPart(
@@ -26,5 +27,5 @@ namespace dtOO {
     ) const;
   };
 }
-#endif	/* ANALYTICFUNCTIONAFXmlBuilder_H */
+#endif	/* analyticFunctionAFXmlBuilder_H */
 

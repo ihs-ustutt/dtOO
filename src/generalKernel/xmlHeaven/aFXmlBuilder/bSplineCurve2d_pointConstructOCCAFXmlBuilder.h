@@ -1,5 +1,5 @@
-#ifndef scaCurve2dOneDAFXmlBuilder_H
-#define	scaCurve2dOneDAFXmlBuilder_H
+#ifndef bSplineCurve2d_pointConstructOCCAFXmlBuilder_H
+#define	bSplineCurve2d_pointConstructOCCAFXmlBuilder_H
 
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
@@ -12,11 +12,12 @@ namespace dtOO {
   class constValue;
   class baseContainer;
 
-  class scaCurve2dOneDAFXmlBuilder : public aFXmlBuilder {
+  class bSplineCurve2d_pointConstructOCCAFXmlBuilder : public aFXmlBuilder {
   public:
-    dt__classOnlyName(scaCurve2dOneDAFXmlBuilder);    
-    scaCurve2dOneDAFXmlBuilder();
-    virtual ~scaCurve2dOneDAFXmlBuilder();
+    dt__classOnlyName(bSplineCurve2d_pointConstructOCCAFXmlBuilder);    
+    dt__classSelfCreate(bSplineCurve2d_pointConstructOCCAFXmlBuilder);    
+    bSplineCurve2d_pointConstructOCCAFXmlBuilder();
+    virtual ~bSplineCurve2d_pointConstructOCCAFXmlBuilder();
     virtual void buildPart(
       ::QDomElement const & toBuildP, 
       baseContainer * const bC,
@@ -26,5 +27,5 @@ namespace dtOO {
     ) const;
   };
 }
-#endif	/* scaCurve2dOneDAFXmlBuilder_H */
+#endif	/* bSplineCurve2d_pointConstructOCCAFXmlBuilder_H */
 
