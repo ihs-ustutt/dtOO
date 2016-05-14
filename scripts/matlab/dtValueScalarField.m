@@ -21,6 +21,12 @@ classdef dtValueScalarField < dtScalarField
          obj.intSf_ = dt.SumMag( obj.value_ .* dt.Mag(obj.sf_) );
          obj.intQSf_ = dt.SumMag( obj.value_ .* obj.q_ );
       end
+      function value = Min( obj )
+        value = min(obj.value_);
+      end
+      function value = Max( obj )
+        value = max(obj.value_);
+      end    
       function obj = Cyl( obj )
         obj.trf_ = dtCylTrf( obj.coord_ );
       end

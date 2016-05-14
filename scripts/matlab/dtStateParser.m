@@ -4,6 +4,15 @@ classdef dtStateParser
      stateLabel_
      filename_
      handle_
+     handleFig_
+     epsSizeX_
+     epsSizeY_
+     fontName_;
+     fontSize_;
+     lc_;
+     lcH_;
+     lw_;
+     lwH_;
    end
    methods
       function obj = dtStateParser( filename )
@@ -11,18 +20,52 @@ classdef dtStateParser
         obj.stateLabel_ = {};
         obj.filename_ = filename;%strrep(filename, '.xml', '');
         obj.handle_ = {};
-      end     
+        obj.epsSizeX_ = 7.;
+        obj.epsSizeY_ = 6.;
+        obj.fontName_ = 'Helvetica';
+        obj.fontSize_ = 8;
+        obj.lc_  = [150 150 150]/256;
+        obj.lcH_ = [0 0 0];
+        obj.lw_  = 0.5;
+        obj.lwH_ = 1;             
+      end
+      function obj = adjustPlotSize(obj, sizeX, sizeY)
+        obj.epsSizeX_ = sizeX;
+        obj.epsSizeY_ = sizeY;
+      end
+      function fig = GivePlot(obj, labelX, labelY)
+        fig = figure('Visible', 'Off');
+        epssetup(obj.epsSizeX_, obj.epsSizeY_, 0, [1 1 1], 1, 0);
+
+        xlabel(...
+          labelX,'FontSize', ...
+          obj.fontSize_,'FontName',obj.fontName_, 'Interpreter', 'latex' ...
+        );        
+        ylabel(...
+          labelY,'FontSize', ...
+          obj.fontSize_,'FontName',obj.fontName_, 'Interpreter', 'latex' ...
+        );      
+      end 
+      function [] = SavePlot(obj, fig, filename)
+        print(fig,  '-depsc', filename);
+        close(fig);
+      end
       function obj = AddToHandle( obj, varargin )
         %obj.cV_{end+1} = cV;
         for i=2:nargin
           obj.handle_{end+1} = varargin{i-1};
         end
       end
+      function obj = AddToHandleFig( obj, varargin )
+        for i=2:nargin
+          obj.handleFig_{end+1} = varargin{i-1};
+        end
+      end      
       function obj = ClearHandle( obj )
         obj.handle_ = {};
       end      
       function [ sH ] = ValueOfHandle( obj, state )
-        stateId = find( ismember(obj.stateLabel_, state )==1 )
+        stateId = find( ismember(obj.stateLabel_, state )==1 );
         
         %obj.cV_{end+1} = cV;
         %obj.handle_{end+1} = label;
@@ -37,7 +80,7 @@ classdef dtStateParser
         end
       end      
       function [ sH ] = MinOfHandle( obj, state )
-        stateId = find( ismember(obj.stateLabel_, state )==1 )
+        stateId = find( ismember(obj.stateLabel_, state )==1 );
         
         %obj.cV_{end+1} = cV;
         %obj.handle_{end+1} = label;
@@ -52,7 +95,7 @@ classdef dtStateParser
         end
       end            
       function [ sH ] = MaxOfHandle( obj, state )
-        stateId = find( ismember(obj.stateLabel_, state )==1 )
+        stateId = find( ismember(obj.stateLabel_, state )==1 );
         
         %obj.cV_{end+1} = cV;
         %obj.handle_{end+1} = label;
@@ -67,7 +110,7 @@ classdef dtStateParser
         end
       end                  
       function [ sH ] = ValuePercentOfHandle( obj, state )
-        stateId = find( ismember(obj.stateLabel_, state )==1 )
+        stateId = find( ismember(obj.stateLabel_, state )==1 );
         
         %obj.cV_{end+1} = cV;
         %obj.handle_{end+1} = label;
@@ -127,6 +170,48 @@ classdef dtStateParser
             end
           end
         end
+      end
+      function [] = XPlot( obj, filename, stateList )
+        % extract all states
+        XAll = [];
+        for i=1:size(obj.stateLabel_,2)
+          XAll(i, 1:size(obj.handle_,2)) = obj.ValuePercentOfHandle( obj.stateLabel_{i} );
+        end
+        
+        % extract states to highlight
+        XHigh = [];
+        for i=1:size(stateList,2)
+          XHigh(i, 1:size(obj.handle_,2)) = obj.ValuePercentOfHandle( stateList{i} );
+        end
+        
+        %figure
+        fig = figure('Visible', 'Off');
+        epssetup(obj.epsSizeX_, obj.epsSizeY_, 0, [1 1 1], 1, 0);
+
+        XAll = XAll';
+        XHigh = XHigh';
+         
+        plot(XAll,'Color',obj.lc_,'LineWidth',obj.lw_);
+        for j =1:size(XHigh,2)
+          hold on
+          plot(XHigh(:,j),'Color',obj.lcH_,'LineWidth',obj.lwH_);
+        end
+
+        % Costumize horizontal axis:
+        M = size(XAll,1);
+        set( ...
+          gca,'XTick',1:M,'XTickLabel', obj.handleFig_, 'XLim',[0.7 M+0.3], ...
+          'TickLabelInterpreter', 'latex' ...
+        );
+        % Add vertical grid:
+        set(gca,'XGrid','On','GridLineStyle','-')
+        % Costumize font
+        set(gca,'FontSize',obj.fontSize_,'FontName',obj.fontName_)
+        ylabel(...
+          'Input [-]','FontSize', ...
+          obj.fontSize_,'FontName',obj.fontName_, 'Interpreter', 'latex' ...
+        );
+        print(fig,  '-depsc', filename);
       end
    end
    methods (Static)
