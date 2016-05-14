@@ -16,9 +16,11 @@ namespace dtOO {
   muParserFunctions::~muParserFunctions() {
   }
   
-  mu::value_type muParserFunctions::evalAF(mu::char_type const * cc) { 
-    //return muParserFunctions::instance()->one(v);
-    std::cout << "Wixxen: " << cc << std::endl;
-    return 1.;
+  mu::value_type muParserFunctions::oneInRange(
+    mu::value_type low, mu::value_type high, mu::value_type value
+  ) {
+    if ( (value >= low) || (value < high) ) return 1.;
+    
+    return 0.;
   }  
 }

@@ -28,6 +28,8 @@ SET(HEADERS
   geometryEngine/dtOCCBSplineCurve2d.h
   geometryEngine/dtOCCTrimmedCurve2d.h
   geometryEngine/dtOCCLine2d.h
+  geometryEngine/dtMuParser.h
+  geometryEngine/muParserFunctions.h
   geometryEngine/GeomFill_BSplineCurvesExtPrecision.h
   geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.h
@@ -142,6 +144,8 @@ SET(SOURCES
   geometryEngine/dtOCCBSplineCurve2d.cpp
   geometryEngine/dtOCCTrimmedCurve2d.cpp
   geometryEngine/dtOCCLine2d.cpp
+  geometryEngine/dtMuParser.cpp
+  geometryEngine/muParserFunctions.cpp
   geometryEngine/GeomFill_BSplineCurvesExtPrecision.cpp
   geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.cpp

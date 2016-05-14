@@ -1,7 +1,6 @@
 #ifndef muParserFunctions_H
 #define	muParserFunctions_H
 
-//#include "optionHandling.h"
 #include <logMe/dtMacros.h>
 #include <muParser.h>
 
@@ -11,11 +10,13 @@ namespace dtOO {
     dt__classOnlyName(muParserFunctions);
     static muParserFunctions * instance( void );
     virtual ~muParserFunctions();
-    static mu::value_type evalAF(mu::char_type const * cc);
+    static mu::value_type oneInRange(
+      mu::value_type low, mu::value_type high, mu::value_type value
+    );
   private:
     muParserFunctions();
   private:
-    static dt__pH(muParserFunctions) _pH;..
+    static dt__pH(muParserFunctions) _pH;
             
   };
 }
