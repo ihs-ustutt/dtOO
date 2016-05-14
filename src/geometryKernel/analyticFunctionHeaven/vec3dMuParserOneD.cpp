@@ -1,7 +1,7 @@
 #include "vec3dMuParserOneD.h"
 
 #include <logMe/logMe.h>
-#include <muParser.h>
+#include <geometryEngine/dtMuParser.h>
 
 #include "analyticFunctionTransformed.h"
 
@@ -40,7 +40,7 @@ namespace dtOO {
   vec3dMuParserOneD::vec3dMuParserOneD(
 	  std::string const expression, 
     std::string const argOne
-	) : vec3dOneD(), _parser(new mu::Parser()) {
+	) : vec3dOneD(), _parser(new dtMuParser()) {
 		for (int ii=0; ii<2; ii++) {
       _arg.push_back( new double(0.) );
 		}

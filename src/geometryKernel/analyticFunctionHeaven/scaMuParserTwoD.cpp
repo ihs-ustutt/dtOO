@@ -1,7 +1,7 @@
 #include "scaMuParserTwoD.h"
 
 #include <logMe/logMe.h>
-#include <muParser.h>
+#include <geometryEngine/dtMuParser.h>
 
 #include "analyticFunctionTransformed.h"
 
@@ -11,7 +11,7 @@ namespace dtOO {
 
   scaMuParserTwoD::scaMuParserTwoD(
     scaMuParserTwoD const & orig
-  ) : scaTwoD(orig), _parser(new mu::Parser()) {
+  ) : scaTwoD(orig), _parser(new dtMuParser()) {
 		for (int ii=0; ii<2; ii++) {
       _arg.push_back( new double(0.) );
 		  _argStr[ii] = orig._argStr[ii];
@@ -40,7 +40,7 @@ namespace dtOO {
 	  std::string const expression, 
     std::string const argOne, 
     std::string const argTwo  
-	) : scaTwoD(), _parser(new mu::Parser()) {
+	) : scaTwoD(), _parser(new dtMuParser()) {
 		for (int ii=0; ii<2; ii++) {
       _arg.push_back( new double(0.) );
 		}

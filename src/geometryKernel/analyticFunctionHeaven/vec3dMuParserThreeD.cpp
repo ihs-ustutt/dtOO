@@ -1,7 +1,7 @@
 #include "vec3dMuParserThreeD.h"
 
 #include <logMe/logMe.h>
-#include <muParser.h>
+#include <geometryEngine/dtMuParser.h>
 
 #include "analyticFunctionTransformed.h"
 
@@ -43,7 +43,7 @@ namespace dtOO {
     std::string const argOne, 
     std::string const argTwo, 
     std::string const argThree  
-	) : vec3dThreeD(), _parser( new mu::Parser()) {
+	) : vec3dThreeD(), _parser( new dtMuParser()) {
     
 		for (int ii=0; ii<3; ii++) {
       _arg.push_back( new double(0.) );

@@ -1,7 +1,7 @@
 #include "vec2dMuParserTwoD.h"
 
 #include <logMe/logMe.h>
-#include <muParser.h>
+#include <geometryEngine/dtMuParser.h>
 
 #include "analyticFunctionTransformed.h"
 
@@ -12,7 +12,7 @@ namespace dtOO {
 
   vec2dMuParserTwoD::vec2dMuParserTwoD(
     vec2dMuParserTwoD const & orig
-  ) : vec2dTwoD(orig), _parser(new mu::Parser()) {
+  ) : vec2dTwoD(orig), _parser(new dtMuParser()) {
 		for (int ii=0; ii<2; ii++) {
       _arg.push_back( new double(0.) );
 		  _argStr[ii] = orig._argStr[ii];
@@ -40,7 +40,7 @@ namespace dtOO {
   vec2dMuParserTwoD::vec2dMuParserTwoD(
 	  std::string const expression, 
     std::string const argOne, std::string const argTwo
-	) : vec2dTwoD(), _parser(new mu::Parser()) {
+	) : vec2dTwoD(), _parser(new dtMuParser()) {
 		for (int ii=0; ii<2; ii++) {
       _arg.push_back( new double(0.) );
 		}

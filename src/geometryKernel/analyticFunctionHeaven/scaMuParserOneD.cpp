@@ -1,7 +1,7 @@
 #include "scaMuParserOneD.h"
 
 #include <logMe/logMe.h>
-#include <muParser.h>
+#include <geometryEngine/dtMuParser.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
@@ -15,7 +15,7 @@ namespace dtOO {
 
   scaMuParserOneD::scaMuParserOneD(
     scaMuParserOneD const & orig
-  ) : scaOneD(orig), _parser(new mu::Parser()), _argument(new double(0)) {
+  ) : scaOneD(orig), _parser(new dtMuParser()), _argument(new double(0)) {
     _expressionStr = orig._expressionStr;
     _argumentStr = orig._argumentStr;
     
@@ -36,7 +36,7 @@ namespace dtOO {
 
   scaMuParserOneD::scaMuParserOneD(
     std::string const expression, std::string const argument
-  ) : scaOneD(), _parser(new mu::Parser()), _argument(new double(0)) {
+  ) : scaOneD(), _parser(new dtMuParser()), _argument(new double(0)) {
     _expressionStr = expression;
     _argumentStr = argument;
 

@@ -1,7 +1,7 @@
 #include "qtXmlBase.h"
 #include "analyticFunctionHeaven/scaOneD.h"
 
-#include <muParser.h>
+#include <geometryEngine/dtMuParser.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <QtXml/QDomNode>
@@ -157,7 +157,7 @@ namespace dtOO {
   }
 
   float qtXmlBase::muParseString( std::string const expression ) {
-    mu::Parser parser;
+    dtMuParser parser;
     try {
       parser.SetExpr( expression );
       return ( (float) parser.Eval() );
@@ -174,7 +174,7 @@ namespace dtOO {
   std::vector< float > qtXmlBase::muParseCSString( 
     std::string const expression 
   ) {
-    mu::Parser parser;
+    dtMuParser parser;
     try {
       parser.SetExpr( expression );
       
