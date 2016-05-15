@@ -13,7 +13,8 @@ namespace dtOO {
   class vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder 
     : public aGXmlBuilder {
     public:
-      dt__classOnlyName(vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder);      
+      dt__classOnlyName(vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder);
+      dt__classSelfCreate(vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder);
       vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder();
       virtual ~vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder();
       virtual void buildPart(

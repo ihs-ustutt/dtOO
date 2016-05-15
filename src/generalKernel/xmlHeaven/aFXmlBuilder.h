@@ -1,11 +1,10 @@
 #ifndef aFXmlBuilder_H
 #define	aFXmlBuilder_H
 
+#include "dtXmlParserBase.h"
 #include "aFXmlBuilder.h"
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>
-
-class QDomElement;
 
 namespace dtOO {
   class baseContainer;  

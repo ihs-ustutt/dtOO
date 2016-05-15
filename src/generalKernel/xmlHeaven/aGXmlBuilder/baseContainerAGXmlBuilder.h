@@ -17,6 +17,7 @@ namespace dtOO {
   class baseContainerAGXmlBuilder : public aGXmlBuilder {
   public:
     dt__classOnlyName(baseContainerAGXmlBuilder);    
+    dt__classSelfCreate(baseContainerAGXmlBuilder);    
     baseContainerAGXmlBuilder();
     virtual ~baseContainerAGXmlBuilder();
     virtual void buildPart(

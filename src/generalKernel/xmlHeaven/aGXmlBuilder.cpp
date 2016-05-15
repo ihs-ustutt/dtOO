@@ -22,4 +22,8 @@ namespace dtOO {
 	) const {
     dt__info(buildPartCompound(), << "Call on aGXmlBuilder");		
 	}
+
+  std::vector< std::string > aGXmlBuilder::factoryAlias( void ) const {
+    return std::vector< std::string>(0);
+  }  
 }

@@ -15,6 +15,7 @@ namespace dtOO {
   class infinityMap3dTo3dAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(infinityMap3dTo3dAGXmlBuilder);
+    dt__classSelfCreate(infinityMap3dTo3dAGXmlBuilder);
     infinityMap3dTo3dAGXmlBuilder();
     virtual ~infinityMap3dTo3dAGXmlBuilder();
     virtual void buildPart(

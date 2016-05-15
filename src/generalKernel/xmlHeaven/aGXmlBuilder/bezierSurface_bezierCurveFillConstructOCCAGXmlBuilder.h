@@ -13,6 +13,7 @@ namespace dtOO {
   class bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder);
+    dt__classSelfCreate(bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder);
     bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder();
     virtual ~bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder();
     virtual void buildPart(

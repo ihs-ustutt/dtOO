@@ -13,6 +13,7 @@ namespace dtOO {
   class bSplineCurve_pointConstructOCCAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(bSplineCurve_pointConstructOCCAGXmlBuilder);
+    dt__classSelfCreate(bSplineCurve_pointConstructOCCAGXmlBuilder);
     bSplineCurve_pointConstructOCCAGXmlBuilder();
     virtual ~bSplineCurve_pointConstructOCCAGXmlBuilder();
     virtual void buildPart(

@@ -13,6 +13,7 @@ namespace dtOO {
   class surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder);
+    dt__classSelfCreate(surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder);
     surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder();
     virtual ~surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder();
     virtual void buildPart(

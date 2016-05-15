@@ -33,146 +33,137 @@
 #include "aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h"
 
-#define __IFRET(className) \
-    if ( strcmp(str, #className) == 0 ) { \
-      return new className; \
-    }
-#define __IFRETCUSTOM(className, retClass) \
-  if ( strcmp(str, #className) == 0 ) { \
-    return new retClass; \
-  }
-
 namespace dtOO {
-  aGXmlBuilderFactory::aGXmlBuilderFactory() {
-  }
-
+  dt__pH(aGXmlBuilderFactory) aGXmlBuilderFactory::_instance(NULL);
+  
   aGXmlBuilderFactory::~aGXmlBuilderFactory() {
+    _builder.destroy();    
   }
 
   aGXmlBuilder * aGXmlBuilderFactory::create(char const * const str) {
-    dt__info(create(), << str <<  " creating ... ");
-		
-    __IFRET(baseContainerAGXmlBuilder);   
-		__IFRETCUSTOM(baseContainer, baseContainerAGXmlBuilder);
-    __IFRETCUSTOM(pointDefinition, baseContainerAGXmlBuilder);
-		__IFRETCUSTOM(vectorDefinition, baseContainerAGXmlBuilder);
-    __IFRET(analyticGeometryAGXmlBuilder);   
-    __IFRETCUSTOM(analyticGeometry, analyticGeometryAGXmlBuilder);
-    __IFRET(trans6SidedCubeAGXmlBuilder);
-    __IFRETCUSTOM(trans6SidedCube, trans6SidedCubeAGXmlBuilder);
-		__IFRET(bezierCurve_pointConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-		  bezierCurve_pointConstructOCC, bezierCurve_pointConstructOCCAGXmlBuilder
-		);
-		__IFRET(bSplineSurface_skinConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-		  bSplineSurface_skinConstructOCC, bSplineSurface_skinConstructOCCAGXmlBuilder
-		);
-		__IFRET(surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-		  surfaceOfRevolution_curveRotateConstructOCC, 
-			surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder
-		);
-		__IFRET(bezierCurvePointPickFromPartConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-		  bezierCurvePointPickFromPartConstructOCC, 
-			bezierCurvePointPickFromPartConstructOCCAGXmlBuilder
-		);
-    __IFRET(bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder);
-    __IFRETCUSTOM(
-			bSplineCurve_pointPickFromPartConstructOCC, 
-			bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder
-		);		
-		__IFRET(bSplineCurve_curveConnectConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-			bSplineCurve_curveConnectConstructOCC, 
-			bSplineCurve_curveConnectConstructOCCAGXmlBuilder
-		);
-		__IFRET(bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-			bezierSurface_bezierCurveFillConstructOCC, 
-			bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder
-		);
-		__IFRET(bSplineCurve_pointInterpolateConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-			bSplineCurve_pointInterpolateConstructOCC, 
-			bSplineCurve_pointInterpolateConstructOCCAGXmlBuilder
-		);
-		__IFRET(bSplineCurve_pointConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-			bSplineCurve_pointConstructOCC, bSplineCurve_pointConstructOCCAGXmlBuilder
-		);
-		__IFRET(bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-			bSplineSurface_bSplineCurveFillConstructOCC, 
-			bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder
-		);
-		__IFRET(rotatingMap2dTo3dAGXmlBuilder);
-		__IFRETCUSTOM(rotatingMap2dTo3d, rotatingMap2dTo3dAGXmlBuilder);
-		__IFRET(bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-			bSplineCurve_pointPickFromPartConstructOCC, 
-			bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder
-		);
-		__IFRET(bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-			bSplineCurve_pointConstructArcLengthParaOCC, 
-			bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder
-		);
-		__IFRET(bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder);
-		__IFRETCUSTOM(
-			bSplineCurve_straightExtentToSurfaceOCC, 
-			bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder
-		);
-		__IFRET(scaInMap1dTo3dAGXmlBuilder);
-		__IFRETCUSTOM(scaInMap1dTo3d, scaInMap1dTo3dAGXmlBuilder);
-    __IFRET( vec2dInMap2dTo3dAGXmlBuilder );
-		__IFRETCUSTOM( vec2dInMap2dTo3d, vec2dInMap2dTo3dAGXmlBuilder );
-		__IFRET(vec3dInMap3dTo3dAGXmlBuilder);
-		__IFRETCUSTOM(vec3dInMap3dTo3d, vec3dInMap3dTo3dAGXmlBuilder);
-		__IFRET(infinityMap3dTo3dAGXmlBuilder);
-		__IFRETCUSTOM(infinityMap3dTo3d, infinityMap3dTo3dAGXmlBuilder);	
-		__IFRET(makeCompoundAGXmlBuilder);
-		__IFRETCUSTOM(makeCompound, makeCompoundAGXmlBuilder);
-		__IFRET(vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder);
-		__IFRETCUSTOM(
-			vec3dInMap3dTo3dSurroundingInternal, 
-			vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder
-		);		
-    __IFRET(map2dTo3dApproximateInMap3dTo3dAGXmlBuilder);
-    __IFRETCUSTOM(
-      map2dTo3dApproximateInMap3dTo3d,
-      map2dTo3dApproximateInMap3dTo3dAGXmlBuilder
-    );
-    __IFRET(vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder);
-    __IFRETCUSTOM(
-      vec2dOneDInMap2dTo3d_closestCurve,
-      vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder
-    );
-    __IFRET(geomSurface_readStepOCCAGXmlBuilder);
-    __IFRETCUSTOM(geomSurface_readStepOCC, geomSurface_readStepOCCAGXmlBuilder);
-    __IFRET(geomSurface_readStlOCCAGXmlBuilder);
-    __IFRETCUSTOM(geomSurface_readStlOCC, geomSurface_readStlOCCAGXmlBuilder);    
-    __IFRET(geomShape_readIgesOCCAGXmlBuilder);
-    __IFRETCUSTOM(geomShape_readIgesOCC, geomShape_readIgesOCCAGXmlBuilder);
-    __IFRET(bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder);
-    __IFRETCUSTOM(
-      bSplineCurve_bSplineCurveSplitConstructOCC,
-      bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder
-    );
-    
-    dt__throw(
-      create(), 
-      << str <<  " could not be created." << std::endl
-      << "> -------------------------------------------------------" << std::endl
-      << "> Please note: ""Decorator"" at the end of the" << std::endl
-      << "> builder name is no longer supported. Please erase it" << std::endl
-      << "> or replace it by ""AGXmlBuilder""." << std::endl
-      << "> -------------------------------------------------------"
-      );
+    return create( std::string(str) );
   }
 
   aGXmlBuilder* aGXmlBuilderFactory::create( std::string const str ) {
-    return create( str.c_str() );
+    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
+      //
+      // check virtual class name
+      //
+      if ( aBuilder->virtualClassName() == str ) {
+        return aBuilder->create();
+      }
+      
+      //
+      // check virtual class name without postFix
+      //
+      if ( 
+        stringPrimitive::replaceStringInString(
+          "AGXmlBuilder", "", aBuilder->virtualClassName() 
+        ) 
+        == 
+        str
+      ) {
+        return aBuilder->create();
+      }
+      
+      //
+      // check alias
+      //
+      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
+        if ( anAlias == str ) return aBuilder->create();
+      }
+    }
+
+    std::vector< std::string > av;
+    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
+      av.push_back( aBuilder->virtualClassName() );
+      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
+        av.push_back("  -> "+anAlias); 
+      }      
+    }
+    dt__throw(
+      create(), 
+      << str <<  " could not be created." << std::endl
+      << "Implemented builder:" << std::endl
+      << logMe::vecToString(av,1) << std::endl
+    );          
   }
+
+  aGXmlBuilderFactory * aGXmlBuilderFactory::instance( void ) {
+    if ( !_instance.isNull() ) return _instance.get();
+    
+    _instance.reset( new aGXmlBuilderFactory() );
+    
+    //
+    // add builder
+    //
+    _instance->_builder.push_back( new baseContainerAGXmlBuilder() );
+    _instance->_builder.push_back( new analyticGeometryAGXmlBuilder() );
+    _instance->_builder.push_back( new trans6SidedCubeAGXmlBuilder() );
+    _instance->_builder.push_back( new scaInMap1dTo3dAGXmlBuilder() );
+    _instance->_builder.push_back( new vec2dInMap2dTo3dAGXmlBuilder() );
+    _instance->_builder.push_back( new vec3dInMap3dTo3dAGXmlBuilder() );
+    _instance->_builder.push_back( new rotatingMap2dTo3dAGXmlBuilder() );
+    _instance->_builder.push_back( new infinityMap3dTo3dAGXmlBuilder() );
+    _instance->_builder.push_back( new makeCompoundAGXmlBuilder() );
+    _instance->_builder.push_back( 
+      new vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new map2dTo3dApproximateInMap3dTo3dAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bezierCurve_pointConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineCurve_curveConnectConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineSurface_skinConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bezierCurvePointPickFromPartConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineCurve_pointInterpolateConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineCurve_pointConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( new geomSurface_readStepOCCAGXmlBuilder() );
+    _instance->_builder.push_back( new geomSurface_readStlOCCAGXmlBuilder() );
+    _instance->_builder.push_back( new geomShape_readIgesOCCAGXmlBuilder() );
+    _instance->_builder.push_back( 
+      new bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder() 
+    );
+    
+    return _instance.get();
+  }  
+
+  aGXmlBuilderFactory::aGXmlBuilderFactory() {
+  }  
 }

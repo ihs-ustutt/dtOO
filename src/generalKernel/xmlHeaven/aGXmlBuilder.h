@@ -17,6 +17,7 @@ namespace dtOO {
       dt__classOnlyName(aGXmlBuilder);
       aGXmlBuilder();
       virtual ~aGXmlBuilder();
+      virtual aGXmlBuilder * create( void ) const = 0;      
       virtual void buildPart(
         ::QDomElement const & toBuild,
         baseContainer * const bC,   
@@ -33,6 +34,7 @@ namespace dtOO {
         vectorHandling< analyticGeometry * > const * const aG,
         vectorHandling< analyticGeometry * > * result 
       ) const;
+      virtual std::vector< std::string > factoryAlias( void ) const;      
   };
 }
 

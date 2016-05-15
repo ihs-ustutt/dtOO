@@ -17,6 +17,7 @@ namespace dtOO {
   class vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder : public aGXmlBuilder {
     public:  
       dt__classOnlyName(vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder);
+      dt__classSelfCreate(vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder);
       vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder();
       virtual ~vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder();
       virtual void buildPart(

@@ -23,6 +23,7 @@ namespace dtOO {
   dt__pH(aFXmlBuilderFactory) aFXmlBuilderFactory::_instance(NULL);
   
   aFXmlBuilderFactory::~aFXmlBuilderFactory() {
+    _builder.destroy();
   }
 
   aFXmlBuilder * aFXmlBuilderFactory::create(char const * const str) {
@@ -117,7 +118,7 @@ namespace dtOO {
       new vec3dThreeD_triLinearPointConstructAFXmlBuilder() 
     );
     _instance->_builder.push_back(
-    new bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder()
+      new bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder()
     );
     
     return _instance.get();

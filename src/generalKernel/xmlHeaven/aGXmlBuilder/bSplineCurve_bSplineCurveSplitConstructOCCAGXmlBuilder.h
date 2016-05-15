@@ -14,6 +14,7 @@ namespace dtOO {
     : public aGXmlBuilder {
   public:  
     dt__classOnlyName(bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder);
+    dt__classSelfCreate(bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder);
     bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder();
     virtual ~bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder();
     virtual void buildPart(

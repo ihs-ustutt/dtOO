@@ -13,6 +13,7 @@ namespace dtOO {
   class geomSurface_readStlOCCAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(geomSurface_readStlOCCAGXmlBuilder);
+    dt__classSelfCreate(geomSurface_readStlOCCAGXmlBuilder);
     geomSurface_readStlOCCAGXmlBuilder();
     virtual ~geomSurface_readStlOCCAGXmlBuilder();
     virtual void buildPart(

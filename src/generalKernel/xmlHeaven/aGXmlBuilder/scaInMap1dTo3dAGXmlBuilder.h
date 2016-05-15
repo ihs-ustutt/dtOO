@@ -15,6 +15,7 @@ namespace dtOO {
   class scaInMap1dTo3dAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(scaInMap1dTo3dAGXmlBuilder);
+    dt__classSelfCreate(scaInMap1dTo3dAGXmlBuilder);
     scaInMap1dTo3dAGXmlBuilder();
     virtual ~scaInMap1dTo3dAGXmlBuilder();
     virtual void buildPart(

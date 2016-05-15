@@ -15,6 +15,7 @@ namespace dtOO {
   class rotatingMap2dTo3dAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(rotatingMap2dTo3dAGXmlBuilder);
+    dt__classSelfCreate(rotatingMap2dTo3dAGXmlBuilder);
     rotatingMap2dTo3dAGXmlBuilder();
     virtual ~rotatingMap2dTo3dAGXmlBuilder();
     virtual void buildPart(

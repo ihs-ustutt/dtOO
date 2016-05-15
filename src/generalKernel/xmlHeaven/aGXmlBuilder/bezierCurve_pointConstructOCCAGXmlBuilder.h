@@ -13,6 +13,7 @@ namespace dtOO {
   class bezierCurve_pointConstructOCCAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(bezierCurve_pointConstructOCCAGXmlBuilder);
+    dt__classSelfCreate(bezierCurve_pointConstructOCCAGXmlBuilder);
     bezierCurve_pointConstructOCCAGXmlBuilder();
     virtual ~bezierCurve_pointConstructOCCAGXmlBuilder();
     virtual void buildPart(

@@ -15,6 +15,7 @@ namespace dtOO {
   class analyticGeometryAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(analyticGeometryAGXmlBuilder);
+    dt__classSelfCreate(analyticGeometryAGXmlBuilder);
     analyticGeometryAGXmlBuilder();
     virtual ~analyticGeometryAGXmlBuilder();
     virtual void buildPart(

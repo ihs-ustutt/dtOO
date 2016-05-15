@@ -13,6 +13,7 @@ namespace dtOO {
   class bSplineSurface_skinConstructOCCAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(bSplineSurface_skinConstructOCCAGXmlBuilder);
+    dt__classSelfCreate(bSplineSurface_skinConstructOCCAGXmlBuilder);
     bSplineSurface_skinConstructOCCAGXmlBuilder();
     virtual ~bSplineSurface_skinConstructOCCAGXmlBuilder();
     virtual void buildPart(

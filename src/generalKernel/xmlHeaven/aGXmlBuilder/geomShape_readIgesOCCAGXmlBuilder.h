@@ -13,6 +13,7 @@ namespace dtOO {
   class geomShape_readIgesOCCAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(geomShape_readIgesOCCAGXmlBuilder);
+    dt__classSelfCreate(geomShape_readIgesOCCAGXmlBuilder);
     geomShape_readIgesOCCAGXmlBuilder();
     virtual ~geomShape_readIgesOCCAGXmlBuilder();
     virtual void buildPart(

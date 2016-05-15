@@ -13,6 +13,7 @@ namespace dtOO {
   class geomSurface_readStepOCCAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(geomSurface_readStepOCCAGXmlBuilder);
+    dt__classSelfCreate(geomSurface_readStepOCCAGXmlBuilder);
     geomSurface_readStepOCCAGXmlBuilder();
     virtual ~geomSurface_readStepOCCAGXmlBuilder();
     virtual void buildPart(

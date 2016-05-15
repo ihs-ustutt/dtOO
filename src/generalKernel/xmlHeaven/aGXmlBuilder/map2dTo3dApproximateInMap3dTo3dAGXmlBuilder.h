@@ -14,6 +14,7 @@ namespace dtOO {
     : public aGXmlBuilder {
     public:
       dt__classOnlyName(map2dTo3dApproximateInMap3dTo3dAGXmlBuilder);      
+      dt__classSelfCreate(map2dTo3dApproximateInMap3dTo3dAGXmlBuilder);      
       map2dTo3dApproximateInMap3dTo3dAGXmlBuilder();
       virtual ~map2dTo3dApproximateInMap3dTo3dAGXmlBuilder();
       virtual void buildPart(

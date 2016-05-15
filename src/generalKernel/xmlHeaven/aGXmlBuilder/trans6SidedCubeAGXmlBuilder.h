@@ -13,18 +13,19 @@ namespace dtOO {
   class baseContainer;
 
   class trans6SidedCubeAGXmlBuilder : public aGXmlBuilder {
-  public:  
-    dt__classOnlyName(trans6SidedCubeAGXmlBuilder);
-    trans6SidedCubeAGXmlBuilder();
-    virtual ~trans6SidedCubeAGXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild,
-      baseContainer * const bC,
-      vectorHandling< constValue * > const * const cV,  
-      vectorHandling< analyticFunction * > const * const aF,  
-      vectorHandling< analyticGeometry * > const * const aG,
-      vectorHandling< analyticGeometry * > * result
-    ) const; 
+    public:  
+      dt__classOnlyName(trans6SidedCubeAGXmlBuilder);
+      dt__classSelfCreate(trans6SidedCubeAGXmlBuilder);
+      trans6SidedCubeAGXmlBuilder();
+      virtual ~trans6SidedCubeAGXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild,
+        baseContainer * const bC,
+        vectorHandling< constValue * > const * const cV,  
+        vectorHandling< analyticFunction * > const * const aF,  
+        vectorHandling< analyticGeometry * > const * const aG,
+        vectorHandling< analyticGeometry * > * result
+      ) const; 
   };
 }
 #endif	/* trans6SidedCubeAGXmlBuilder_H */

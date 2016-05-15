@@ -13,6 +13,7 @@ namespace dtOO {
   class bSplineCurve_curveConnectConstructOCCAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(bSplineCurve_curveConnectConstructOCCAGXmlBuilder);
+    dt__classSelfCreate(bSplineCurve_curveConnectConstructOCCAGXmlBuilder);
     bSplineCurve_curveConnectConstructOCCAGXmlBuilder();
     virtual ~bSplineCurve_curveConnectConstructOCCAGXmlBuilder();
     virtual void buildPart(

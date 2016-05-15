@@ -15,6 +15,7 @@ namespace dtOO {
   class makeCompoundAGXmlBuilder : public aGXmlBuilder {
   public:  
     dt__classOnlyName(makeCompoundAGXmlBuilder);
+    dt__classSelfCreate(makeCompoundAGXmlBuilder);
     makeCompoundAGXmlBuilder();
     virtual ~makeCompoundAGXmlBuilder();
     virtual void buildPart(

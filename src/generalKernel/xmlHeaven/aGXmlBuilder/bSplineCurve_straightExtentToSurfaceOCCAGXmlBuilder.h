@@ -10,9 +10,11 @@ namespace dtOO {
   class constValue;
   class baseContainer;
   
-  class bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder : public aGXmlBuilder {
+  class bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder 
+    : public aGXmlBuilder {
     public:  
       dt__classOnlyName(bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder);
+      dt__classSelfCreate(bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder);
       bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder();
       virtual ~bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder();
       virtual void buildPart(
