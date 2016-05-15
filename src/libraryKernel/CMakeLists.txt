@@ -73,6 +73,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.h
   geometryEngine/geoBuilder/geomCurve_closeGapsArithmeticOCC.h
   geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.h
+  geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
@@ -189,6 +190,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.cpp
   geometryEngine/geoBuilder/geomCurve_closeGapsArithmeticOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp

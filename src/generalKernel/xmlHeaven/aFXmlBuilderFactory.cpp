@@ -11,6 +11,7 @@
 #include "aFXmlBuilder/bSplineCurve2d_pointConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineCurve_pointConstructOCCAFXmlBuilder.h"
+#include "aFXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineSurface_skinConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/muParserAFXmlBuilder.h"
@@ -114,6 +115,9 @@ namespace dtOO {
     _instance->_builder.push_back( new vec3dThreeD_transVolAFXmlBuilder() );
     _instance->_builder.push_back( 
       new vec3dThreeD_triLinearPointConstructAFXmlBuilder() 
+    );
+    _instance->_builder.push_back(
+    new bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder()
     );
     
     return _instance.get();

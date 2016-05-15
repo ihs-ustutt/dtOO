@@ -15,6 +15,7 @@ SET(HEADERS
   xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineCurve_pointConstructOCCAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineSurface_skinConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.h
@@ -96,6 +97,7 @@ SET(SOURCES
   xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/bSplineCurve_pointConstructOCCAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/bSplineSurface_skinConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/muParserAFXmlBuilder.cpp

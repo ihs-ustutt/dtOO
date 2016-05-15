@@ -1,5 +1,5 @@
-#ifndef BSPLINECURVE_POINTCONSTRUCTOCC_H
-#define	BSPLINECURVE_POINTCONSTRUCTOCC_H
+#ifndef bSplineCurve_pointConstructOCC_H
+#define	bSplineCurve_pointConstructOCC_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -16,8 +16,8 @@ namespace dtOO {
     virtual ~bSplineCurve_pointConstructOCC();
     dtCurve * result( void );
   private:
-    ptrHandling<dtCurve> _dtC;
+    dt__pH(dtCurve) _dtC;
   };
 }
-#endif	/* BSPLINECURVE_POINTCONSTRUCTOCC_H */
+#endif	/* bSplineCurve_pointConstructOCC_H */
 
