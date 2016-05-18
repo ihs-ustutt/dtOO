@@ -7,6 +7,7 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
+#include <interfaceHeaven/systemHandling.h>
 #include <meshEngine/dtGmshVertex.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
@@ -39,19 +40,31 @@ namespace dtOO {
 //		  filename="mesh.msh"
 //		/>									
 		_filename = qtXmlBase::getAttributeStr("filename", element);		
+    _mustRead = qtXmlBase::getAttributeBool("mustRead", element);		
   }
   
   void bVOReadMSH::preUpdate( void ) {
     dt__onlyMaster {
 		  dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());      
+           
+      if ( !systemHandling::fileExists(_filename) && !_mustRead ) {
+        dt__info(
+          preUpdate(), 
+          << "No file " << _filename << ". Do not read!" << std::endl
+          << "mustRead = " << _mustRead
+        );
+        return;
+      }
       
-		  int status = gm->readMSH(_filename);
+      int status = gm->readMSH(_filename);
       
       dt__info(
         preUpdate(),
         << "Read MSH file = " << _filename << "." << std::endl
         << "Return status = " << status << "."
       );
+      dt__throwIf( !status, preUpdate() );
+      
       ptrBoundedVolume()->setMeshed();
     }
   }
