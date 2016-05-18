@@ -27,8 +27,8 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > const * const aGeoVecP 
     ) const;
   private:
-    analyticSurface const * _vvStartAGeo;
-    analyticSurface const * _vvEndAGeo;
+    dt__pH(analyticSurface) _vvStartAGeo;
+    dt__pH(analyticSurface) _vvEndAGeo;
   };
 }
 #endif	/* CLOSEGAPS_H */

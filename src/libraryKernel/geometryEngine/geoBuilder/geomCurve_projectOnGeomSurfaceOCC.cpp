@@ -18,7 +18,9 @@ namespace dtOO {
       dtCurve const * const dtC, 
       dtSurface const * const dtS
 	) {
-		dt__ptrAss( dtOCCSurface const * const ss, dtOCCSurface::ConstDownCast(dtS) );
+		dt__ptrAss( 
+      dtOCCSurface const * const ss, dtOCCSurface::ConstDownCast(dtS) 
+    );
 		dt__ptrAss( dtOCCCurve const * const cc, dtOCCCurve::ConstDownCast(dtC) );
 		
 		Geom_Surface const * sP;

@@ -6,8 +6,8 @@
 
 namespace dtOO {
   closeGaps::closeGaps() : dtTransformer() {
-    _vvStartAGeo = NULL;
-    _vvEndAGeo = NULL;
+    _vvStartAGeo.reset(NULL);
+    _vvEndAGeo.reset(NULL);
   }
 
   closeGaps::~closeGaps() {
@@ -21,30 +21,20 @@ namespace dtOO {
 		return new closeGaps();
 	}
 	
-	/**
-	 * 
-   * @todo: Rational check was removed.
-   */
-  vectorHandling< analyticGeometry * > closeGaps::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
+  vectorHandling< analyticGeometry * > closeGaps::apply( 
+    vectorHandling< analyticGeometry * > const * const toTrans 
+  ) const {
     vectorHandling< analyticGeometry * > retAGeo;
 
-    //each analyticGeometry
-    for (int ii=0;ii< aGeoVecP->size();ii++) {
+    dt__forAllRefAuto( *toTrans, aTrans ) {
       //
-      // clone and cast analyticGeometry
+      // clone and cast
       //
-      analyticGeometry * aGeoP = aGeoVecP->at(ii)->clone();
-      dt__ptrAss(analyticSurface * aS, analyticSurface::DownCast(aGeoP));
+      dt__ptrAss(
+        analyticSurface * aS, analyticSurface::DownCast( aTrans->clone() )
+      );
 
-//      //
-//      // check if it is rotational
-//      //
-//      if (aS->isRational()) {
-//        dt__THROW(apply(),
-//                << "Closing gaps of a rotational surface is not yet supported.");
-//      }
-
-      if (_vvStartAGeo) {
+      if ( !_vvStartAGeo.isNull() ) {
         for (int ii = 0;ii<aS->ptrDtSurface()->nControlPointsU();ii++) {
           dtPoint3 cP = aS->ptrDtSurface()->controlPoint(ii, 0);
           dtPoint2 nearest = _vvStartAGeo->ptrDtSurface()->reparam( cP );
@@ -55,7 +45,7 @@ namespace dtOO {
           aS->ptrDtSurface()->setControlPoint(ii, 0, cPNearest);
         }
       }
-      if (_vvEndAGeo) {
+      if ( !_vvEndAGeo.isNull() ) {
         int nV = aS->ptrDtSurface()->nControlPointsV();
         for (int ii = 0;ii<aS->ptrDtSurface()->nControlPointsU();ii++) {        
           dtPoint3 cP = aS->ptrDtSurface()->controlPoint(ii, nV-1);
@@ -71,10 +61,10 @@ namespace dtOO {
       //
       // push translated geometry in vector
       //      
-      retAGeo.push_back( aGeoP );
+      retAGeo.push_back( aS );
     }
     return retAGeo;
-  }
+  }  
 
   bool closeGaps::isNecessary( void ) const {
     return true;
@@ -88,41 +78,32 @@ namespace dtOO {
 		vectorHandling< analyticGeometry * > const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
-		
-    //
-    // check input
-    //
-    bool hasVStart = dtXmlParserBase::hasAttribute("parameter_two_start_part_label", *tE);
-    bool hasVEnd = dtXmlParserBase::hasAttribute("parameter_two_end_part_label", *tE);
-    
-    //
-    // get pointers to parts
-    //
-    if (hasVStart && hasVEnd) {
-      std::string vStartLabel = dtXmlParserBase::getAttributeStr(
-                                  "parameter_two_start_part_label", 
-                                  *tE
-                                );
-      std::string vEndLabel = dtXmlParserBase::getAttributeStr(
-                                  "parameter_two_end_part_label", 
-                                  *tE
-                                );      
-      for (int ii = 0; ii<aG->size();ii++) {
-         if ( aG->at(ii)->getLabel() == vStartLabel ) {
-           dt__ptrAss(_vvStartAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
-         }
-         if ( aG->at(ii)->getLabel() == vEndLabel ) {
-           dt__ptrAss(_vvEndAGeo, analyticSurface::ConstDownCast(aG->at(ii)) );
-         }
-         if (_vvStartAGeo && _vvEndAGeo) {
-           break;
-         }
-      }
-    }
-    else {
-      dt__throw(init(),
-              << dt__eval(hasVStart) << std::endl
-              << dt__eval(hasVEnd) );
-    }
+
+    dt__throwIf(
+      !dtXmlParserBase::hasAttribute("parameter_two_start_part_label", *tE) 
+      || 
+      !dtXmlParserBase::hasAttribute("parameter_two_end_part_label", *tE),
+      init()
+    );
+      
+    _vvStartAGeo.reset(
+      analyticSurface::DownCast(
+        aG->get(
+          dtXmlParserBase::getAttributeStr(
+            "parameter_two_start_part_label", *tE
+          )
+        )->clone()
+      )
+    );
+    _vvEndAGeo.reset(
+      analyticSurface::DownCast(
+        aG->get(
+          dtXmlParserBase::getAttributeStr(
+            "parameter_two_end_part_label", *tE
+          )
+        )->clone()
+      )
+    );  
+    dt__throwIf( _vvStartAGeo.isNull() || _vvEndAGeo.isNull(), init() );
   }
 }

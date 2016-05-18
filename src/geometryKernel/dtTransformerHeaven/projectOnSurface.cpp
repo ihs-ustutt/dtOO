@@ -22,13 +22,15 @@ namespace dtOO {
 		return new projectOnSurface();
 	}
 	
-  vectorHandling< analyticGeometry * > projectOnSurface::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
+  vectorHandling< analyticGeometry * > projectOnSurface::apply( 
+    vectorHandling< analyticGeometry * > const * const toTrans 
+  ) const {
     vectorHandling< analyticGeometry * > retAGeo;
-    for (int ii=0; ii<aGeoVecP->size(); ii++) {
+    for (int ii=0; ii<toTrans->size(); ii++) {
       //
       // clone and cast analyticGeometry
       //
-      analyticGeometry const * aGeoP = aGeoVecP->at(ii);
+      analyticGeometry const * aGeoP = toTrans->at(ii);
       splineCurve3d const *  constSc;
       dt__ptrAss(constSc, splineCurve3d::ConstDownCast(aGeoP));
 
