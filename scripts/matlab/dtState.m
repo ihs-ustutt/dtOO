@@ -4,6 +4,7 @@ classdef dtState
     label_
     path_
     ok_
+    prefix_
   end
   methods
     function obj = dtState(stateDir, prefix)
@@ -18,7 +19,7 @@ classdef dtState
         end
       [pathstr, name, ext] = fileparts(stateDir);
       obj.path_ = stateDir;
-      
+      obj.prefix_ = prefix;
       if isempty(prefix)
         pos = findstr('_', name);
         obj.case_ = name(1:pos(end)-1);
@@ -38,6 +39,9 @@ classdef dtState
     function str = Case(obj)
       str = obj.case_;
     end
+    function str = Prefix(obj)
+      str = obj.prefix_;
+    end    
     function obj = MakeFail(obj)
       obj.ok_ = 0;
     end
