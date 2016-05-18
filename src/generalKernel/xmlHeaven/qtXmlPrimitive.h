@@ -141,6 +141,7 @@ namespace dtOO {
     );    
   protected:
     qtXmlPrimitive();        
+    static std::string _STRSIGN;    
   private:
     static std::vector< QDomAttr > getAttributeVector( 
       ::QDomElement const element 

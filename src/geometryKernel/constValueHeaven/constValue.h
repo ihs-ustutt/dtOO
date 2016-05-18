@@ -9,17 +9,13 @@
 #include <interfaceHeaven/renderInterface.h>
 
 namespace dtOO {
-  class dtXmlParser;
-  
   class constValue : public labelHandling {
   public:
     dt__classOnlyName(constValue);    
     constValue( constValue const & orig );
     virtual ~constValue();
     static constValue * create(
-      std::string const & type, 
-      std::string const & label, 
-      dtXmlParser const * const parser
+      std::string const & type, std::string const & label
     );
     virtual constValue * clone( void ) const = 0;    
     virtual void dump(void) const = 0;
@@ -29,12 +25,10 @@ namespace dtOO {
     virtual void writeToElement(QDomDocument & doc, ::QDomElement & element) = 0;
     virtual float getMin(void) const;
     virtual float getMax(void) const;
-    dtXmlParser const & constRefParser( void ) const;
   protected:
     constValue();    
   private:
     float _value;
-    dtXmlParser const * _parser;
   };
 }
 #endif	/* CONSTVALUE_H */

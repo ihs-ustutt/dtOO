@@ -21,9 +21,13 @@ namespace dtOO {
   
   class dtXmlParser : public dtXmlParserBase {
   public:  
-    dt__classOnlyName(dtXmlParser);
-    dtXmlParser(std::string const & inFile, std::string const & outFile);
-    virtual ~dtXmlParser();
+    dt__classOnlyName(dtXmlParser);   
+    static dtXmlParser * init(
+      std::string const & inFile, std::string const & outFile
+    );
+    static dtXmlParser * ptr( void );
+    static dtXmlParser const & constReference( void );
+    static dtXmlParser & reference( void );
     void parse(void);
     void write( vectorHandling< constValue * > const * const cValP ) const;
     void write(
@@ -169,6 +173,8 @@ namespace dtOO {
       vectorHandling< dtPlugin * > & pL
     ) const;  
   private:
+    dtXmlParser(std::string const & inFile, std::string const & outFile);
+    virtual ~dtXmlParser();    
     void parse(char const * const fileName);
     void checkFile(
       char const * const fileName, QDomDocument & xmlDocument
@@ -194,6 +200,7 @@ namespace dtOO {
     mutable std::string _currentState;
     std::string const _inFile;
     std::string const _outFile;
+    static dtXmlParser * _pH;
   };
 }
 #endif	/* DTXMLPARSER_H */

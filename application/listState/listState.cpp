@@ -40,9 +40,10 @@ int main( int ac, char* av[] ) {
     //
     // create parser and parse
     //
-    dtXmlParser parser(
+    dtXmlParser::init(
       vm["xmlIn"].as<std::string>(), vm["xmlOut"].as<std::string>()
     );
+    dtXmlParser & parser = dtXmlParser::reference();
     parser.parse();
     parser.load();
 

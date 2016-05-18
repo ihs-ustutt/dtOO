@@ -261,16 +261,16 @@ namespace dtOO {
       //
       // check if dtXmlParser is in a state, if not create a new state
       //
-      if ( !_cV->at(0)->constRefParser().stateLoaded() ) {
-        _cV->at(0)->constRefParser().write(_cV);
+      if ( !dtXmlParser::constReference().stateLoaded() ) {
+        dtXmlParser::constReference().write(_cV);
       }
-      dirName = dirName+"_"+_cV->at(0)->constRefParser().currentState();
+      dirName = dirName+"_"+dtXmlParser::constReference().currentState();
     }
     
     //
     // check if already simulated
     //
-    if ( inPipeline(_cV->at(0)->constRefParser().currentState()) ) return;
+    if ( inPipeline(dtXmlParser::constReference().currentState()) ) return;
     
     std::string wDir 
     = 

@@ -69,10 +69,11 @@ int main( int ac, char* av[] ) {
       vm["log"].as<std::string>()+"_"+stringPrimitive::intToString(world.rank())  
     );
     
-    dtXmlParser parser(
+    dtXmlParser::init(
       vm["xmlIn"].as<std::string>(), vm["xmlOut"].as<std::string>()
     );
-
+    dtXmlParser & parser = dtXmlParser::reference();
+    
     parser.parse();
     parser.load();
     dt__infoNoClass(

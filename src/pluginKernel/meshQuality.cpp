@@ -63,8 +63,7 @@ namespace dtOO {
         "label", dtXmlParser::getChild("case", element)
       )
     );
-    dt__throwIf(cV->empty(), init());
-    _parser = &(cV->get(0)->constRefParser());    
+    _parser = dtXmlParser::ptr();
 	}
 		
   void meshQuality::apply(void) {

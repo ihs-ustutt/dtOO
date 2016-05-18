@@ -81,10 +81,10 @@ int main( int ac, char* av[] ) {
       << vm.callCommand()
     );
     
-    dtXmlParser parser(
+    dtXmlParser::init(
       vm["xmlIn"].as<std::string>(), vm["xmlOut"].as<std::string>()
     );
-
+    dtXmlParser & parser = dtXmlParser::reference();
     parser.parse();
     parser.load();
 

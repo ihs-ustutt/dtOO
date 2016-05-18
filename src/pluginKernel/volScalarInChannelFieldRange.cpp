@@ -77,7 +77,7 @@ namespace dtOO {
       )
     );
     dt__throwIf(cV->empty(), init());
-    _parser = &(cV->get(0)->constRefParser());
+    _parser = dtXmlParser::ptr();
     
     //
     // get analyticGeometry

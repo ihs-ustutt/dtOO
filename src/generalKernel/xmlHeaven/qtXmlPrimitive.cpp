@@ -1,4 +1,5 @@
 #include "qtXmlPrimitive.h"
+#include "dtXmlParser.h"
 
 #include <QtXml/QDomNode>
 #include <logMe/logMe.h>
@@ -7,6 +8,8 @@
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
+  std::string qtXmlPrimitive::_STRSIGN = "|";
+  
   qtXmlPrimitive::qtXmlPrimitive() {
   }
 
@@ -476,6 +479,15 @@ namespace dtOO {
       << "Return empty string."
     );
 		std::string str = element.attribute( attName.c_str(), "" ).toStdString();
+    
+    //
+    // replace state
+    //
+    str 
+    = 
+    stringPrimitive::replaceStringInString(
+      "STATE", dtXmlParser::constReference().currentState(), str
+    );
     
 		//
 		// remove whitespaces

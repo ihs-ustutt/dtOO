@@ -18,9 +18,7 @@ namespace dtOO {
   }
 
   constValue * constValue::create(
-    std::string const & type, 
-    std::string const & label, 
-    dtXmlParser const * const parser
+    std::string const & type, std::string const & label
   ) {
     constValue * aCV;
     if (type == "sliderFloatParam") aCV = new sliderFloatParam();  
@@ -28,7 +26,6 @@ namespace dtOO {
     else dt__throwUnexpected(create());
     
     aCV->setLabel(label);
-    aCV->_parser = parser;
     return aCV;
   }
 
@@ -42,7 +39,7 @@ namespace dtOO {
 
   void constValue::setValue(float const toSet) {
     if (toSet != _value) {
-      _parser->freeState();
+      dtXmlParser::reference().freeState();
       _value = toSet;
     }
   }
@@ -54,8 +51,4 @@ namespace dtOO {
   float constValue::getMin(void) const {
     return 0.;
   }
-
-  dtXmlParser const & constValue::constRefParser( void ) const {
-    return *_parser;
-  }  
 }

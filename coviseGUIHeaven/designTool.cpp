@@ -758,7 +758,7 @@ namespace dtOO {
 				
         if (_parser.isNull()) {
           _parser.reset( 
-            new dtXmlParser(
+            dtXmlParser::init(
               std::string(_xmlBrowser->getValue()), 
               std::string(_cVStateBrowser->getValue())
             ) 

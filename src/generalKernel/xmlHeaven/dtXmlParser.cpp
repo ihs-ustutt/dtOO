@@ -25,6 +25,33 @@
 #include <QtCore/QTextStream>
 
 namespace dtOO {
+  dtXmlParser * dtXmlParser::_pH = NULL;
+  
+  dtXmlParser * dtXmlParser::init(
+    std::string const & inFile, std::string const & outFile
+  ) {
+    if (_pH) delete _pH;
+    
+    _pH = new dtXmlParser(inFile, outFile);
+    
+    return _pH;
+  }
+  
+  dtXmlParser * dtXmlParser::ptr( void ) {
+    dt__throwIf(!_pH, ptr());
+    return _pH;  
+  }
+  
+  dtXmlParser const & dtXmlParser::constReference( void ) {
+    dt__throwIf( !_pH, constReference() );
+    return *_pH;
+  }
+
+  dtXmlParser & dtXmlParser::reference( void ) {
+    dt__throwIf( !_pH, reference() );
+    return *_pH;  
+  }
+  
   dtXmlParser::dtXmlParser(
     std::string const & inFile, std::string const & outFile
   ) : _inFile(inFile), _outFile(outFile) {
@@ -32,13 +59,14 @@ namespace dtOO {
   }
 
   dtXmlParser::~dtXmlParser() {
-		dt__forAllIndex(_rootRead, ii) _rootRead[ii].clear();
-		_rootRead.clear();
-		dt__forAllIndex(_rootReadDoc, ii) _rootReadDoc[ii].clear();
-		_rootReadDoc.clear();		
-		_rootLoad.clear();
-		_rootLoadDoc.clear();
-    _currentState = "";
+		dt__forAllIndex( _pH->_rootRead, ii) _pH->_rootRead[ii].clear();
+		_pH->_rootRead.clear();
+		dt__forAllIndex(_pH->_rootReadDoc, ii) _pH->_rootReadDoc[ii].clear();
+		_pH->_rootReadDoc.clear();		
+		_pH->_rootLoad.clear();
+		_pH->_rootLoadDoc.clear();
+    _pH->_currentState = "";
+    _pH = NULL;
   }
   
   void dtXmlParser::parse( void ) {
@@ -466,7 +494,8 @@ namespace dtOO {
     
     dt__info(
       writeUpdate(),
-      << "Update state = " << stateName << " to file = " << fileName << std::endl
+      << "Update state = " << stateName 
+      << " to file = " << fileName << std::endl
       << dt__eval(currentState())
     );
   }  
@@ -535,10 +564,11 @@ namespace dtOO {
     //
     // open file and write rootWriteElement to file
     //
-    QFile xmlFile(fileName);
-    xmlFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
-    QTextStream stream(&xmlFile);
-    stream << xmlDocument.toString();
+    ::QFile xmlFile(fileName);
+    xmlFile.open(
+      ::QIODevice::WriteOnly | ::QIODevice::Truncate | ::QIODevice::Text
+    );
+    ::QTextStream(&xmlFile) << xmlDocument.toString();
 
     //
     // close file
@@ -585,8 +615,8 @@ namespace dtOO {
     if ( !xmlFile.exists() ) {
       dt__warning(
         checkFile,
-        << "Failed to open " << dt__eval(fileName) << std::endl
-        << "File does not exist. Try to create file."
+        << "File " << dt__eval(fileName) 
+        << " does not exist. Try to create file."
       );
       xmlFile.open(QIODevice::WriteOnly | QIODevice::Text);
       xmlFile.close();
@@ -595,20 +625,16 @@ namespace dtOO {
     //
     // open file
     //
-    if( !xmlFile.open(QIODevice::ReadOnly | QIODevice::Text) ) {
-      dt__throw(
-        checkFile(),
-        << "Failed to open " << dt__eval(fileName)
-      );
+    if( !xmlFile.open(QIODevice::ReadWrite | QIODevice::Text) ) {
+      dt__throw( checkFile(), << "Failed to open " << dt__eval(fileName) );
     }
 
+    //
     // try to read file and check if it is correct
+    //
     QString qString;
     int line;
     int column;
-    //
-    // parsing error
-    //
     if( !xmlDocument.setContent( &xmlFile, &qString, &line, &column ) ) {
       dt__warning( 
         checkFile(),
@@ -618,42 +644,48 @@ namespace dtOO {
         << "Failed to parse file " << fileName << std::endl
         << "Recreate file."
       );
-      
+           
       //
       // initialize new file
       //
-      xmlDocument = QDomDocument();
-//      // encoding
-//      QDomProcessingInstruction myHeader 
-//      = 
-//      xmlDocument.createProcessingInstruction( 
-//        "xml","version=\"1.0\" encoding=\"ISO-8859-1\"" 
-//      );
-//      xmlDocument.appendChild( myHeader );
-      // machine name of _rootReadElement
-      ::QDomElement _rootWriteElement = xmlDocument.createElement(
-        _rootRead[0].tagName()
+      xmlDocument = ::QDomDocument();
+      // encoding
+      xmlDocument.appendChild(
+        xmlDocument.createProcessingInstruction( 
+          "xml","version=\"1.0\" encoding=\"ISO-8859-1\"" 
+        )
       );
-      xmlDocument.appendChild(_rootWriteElement);
+      // machine name
+      xmlDocument.appendChild(
+        xmlDocument.createElement( _rootRead[0].tagName() )
+      );
+      // write to file
+      ::QTextStream( &xmlFile ) << xmlDocument.toString();
     }
-    //
-    // successful parsing
-    //
     else {
       // check if root element has correct name
-      if ( xmlDocument.documentElement().tagName() 
-           == 
-           _rootRead[0].tagName() ) {
-        dt__info(
-          checkFile, 
-          << "Correct root Element name. Write to this file."
-        );
+      if ( 
+        xmlDocument.documentElement().tagName() 
+        == 
+        _rootRead[0].tagName() 
+      ) {
+        dt__info( checkFile, << "Correct root Element name. Write to file." );
       }
       //
       // rootReadElement and rootWriteElement have not same root name
       //
-      else dt__throw(checkFile, << "Incorrect root Element name.");        
+      else {
+        dt__throw(
+          checkFile(), 
+          << "Incorrect root element name." << std::endl
+          << "Root element name of file           : " 
+          << getTagName( xmlDocument.documentElement() ) << std::endl
+          << "Root element name of current parser : " 
+          << getTagName(_rootRead[0])
+        );
+      }
     }
+    
     //
     // close file
     //
@@ -696,9 +728,7 @@ namespace dtOO {
     
     constValue * aCV 
     = 
-    constValue::create( 
-      getAttributeStr("name", wElement), constValueLabel, this
-    );
+    constValue::create( getAttributeStr("name", wElement), constValueLabel );
     
     aCV->setValue( 
       getAttributeFloatMuParse( "value", wElement, cValP) 
@@ -746,9 +776,7 @@ namespace dtOO {
 
     constValue * aCValP
     = 
-    constValue::create( 
-      getAttributeStr("name", wElement), constValueLabel, this
-    );
+    constValue::create( getAttributeStr("name", wElement), constValueLabel );
     
     //
     //check first child
@@ -790,6 +818,19 @@ namespace dtOO {
     std::vector< std::string > label = getLabels("constValue");
 
 		dt__forAllIndex( label, ii) createConstValue(label[ii], cValP);
+    
+    ::QDomElement cVInit = getUnlabeledElement("constValueInit");
+    
+    if ( !cVInit.isNull() ) {
+      dt__info(
+        createConstValue(), 
+        << "Load init state " << getAttributeStr("state", cVInit)
+      );
+      dtXmlParser::reference().load();
+      dtXmlParser::reference().loadStateToConst( 
+        getAttributeStr("state", cVInit), *cValP
+      );
+    }
   }
 	
   void dtXmlParser::getLabels( 
