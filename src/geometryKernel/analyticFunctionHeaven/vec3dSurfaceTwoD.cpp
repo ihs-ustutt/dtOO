@@ -56,9 +56,13 @@ namespace dtOO {
 		return new vec3dSurfaceTwoD();
 	}
 	
-	dtSurface const * vec3dSurfaceTwoD::ptrDtSurface( void ) const {
+	dtSurface * vec3dSurfaceTwoD::ptrDtSurface( void ) const {
 		return _dtS.get();
 	}
+  
+	dtSurface const * vec3dSurfaceTwoD::constPtrDtSurface( void ) const {
+		return _dtS.get();
+	}  
 	
   bool vec3dSurfaceTwoD::closed( int const & dir ) const {
 		return _dtS->closed(dir);

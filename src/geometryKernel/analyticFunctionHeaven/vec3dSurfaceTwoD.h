@@ -24,7 +24,8 @@ namespace dtOO {
       virtual vec3dSurfaceTwoD * create( void ) const;    
       virtual ~vec3dSurfaceTwoD();
       virtual aFY Y( aFX const & xx) const;
-      dtSurface const * ptrDtSurface( void ) const;
+      dtSurface * ptrDtSurface( void ) const;
+      dtSurface const * constPtrDtSurface( void ) const;
       virtual bool closed( int const & dir ) const;
       virtual aFX invY(aFY const & yy) const;    
     private:
