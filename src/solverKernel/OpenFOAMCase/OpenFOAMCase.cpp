@@ -371,6 +371,12 @@ namespace dtOO {
         );
 
         //
+        // set runTime to timestep constant
+        // - write mesh to constant
+        //
+        runTime.setTime( ::Foam::instant(runTime.constant()), 0 );
+        
+        //
         // create mesh
         //
         dt__pH(::Foam::polyMesh) mesh( 
@@ -389,12 +395,6 @@ namespace dtOO {
           
           exRule->executeOnMesh(aRule, *mesh);
         }
-
-        //
-        // set runTime to timestep consant
-        // - write mesh to constant
-        //
-        runTime.setTime( ::Foam::instant(runTime.constant()), 0 );
 
         //
         // write mesh
