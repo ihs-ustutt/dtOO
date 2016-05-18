@@ -127,6 +127,7 @@ namespace dtOO {
   
   void bVOPMeshRule::preUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
+    if ( ptrBoundedVolume()->isMeshed() ) return;
     
     ::GModel::setCurrent(gm);
     
