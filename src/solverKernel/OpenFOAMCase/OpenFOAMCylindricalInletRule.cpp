@@ -220,7 +220,8 @@ namespace dtOO {
             ::Foam::scalar targetSwirlFlowZ = swirlFlow.z();
             if ( stringPrimitive::stringContains("swirlFlowZ", thisRule) ) {
               targetSwirlFlowZ = parseOptionScalar("swirlFlowZ", thisRule);
-            }                       
+              if (targetSwirlFlowZ == 0.) swirlFlow.replace(2, 1.);
+            }
             
             ::Foam::scalar volFlow2 = 0.;
             ::Foam::vector swirlFlow2 = ::Foam::vector::zero;
