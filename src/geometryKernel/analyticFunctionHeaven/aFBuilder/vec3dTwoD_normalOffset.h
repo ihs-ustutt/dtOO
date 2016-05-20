@@ -14,7 +14,7 @@ namespace dtOO {
       vec3dTwoD_normalOffset(
         vec3dTwoD const * const v3d, vec3dTwoD const * const thick,
         dtVector3 const & nf, int const & nU, int const & nV,
-        int const & order      
+        int const & order
       );
       virtual ~vec3dTwoD_normalOffset();
       vec3dTwoD * result(void) const;

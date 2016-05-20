@@ -16,6 +16,9 @@ namespace dtOO {
   ) : dtTransformer(orig) {
     _tt.reset( orig._tt->clone() );
     _nf = orig._nf;
+    _nU = orig._nU;
+    _nV = orig._nV;
+    _order = orig._order;
   }	
   
   discreteAddNormal::~discreteAddNormal() {
@@ -75,7 +78,9 @@ namespace dtOO {
       || 
       !dtXmlParserBase::hasAttribute("number_points_two", *tE)
       ||
-      !dtXmlParserBase::hasAttribute("order", *tE),
+      !dtXmlParserBase::hasAttribute("order", *tE)
+      ||
+      !dtXmlParserBase::hasAttribute("nf", *tE),
       init()
     );
     //
@@ -105,16 +110,13 @@ namespace dtOO {
 		_order = dtXmlParserBase::getAttributeIntMuParse("order", *tE, cV, aF);
     
 		//
-		// set vector
+		// get vector
 		//
-		_nf = dtVector3(0,0,0);
-		if ( dtXmlParserBase::hasAttribute("scale_vector", *tE) ) {
-      _nf
-      =
-      dtXmlParserBase::getDtVector3(
-        dtXmlParserBase::getAttributeStr("scale_vector", *tE), bC 
-      );
-		}    
+    _nf
+    =
+    dtXmlParserBase::getDtVector3(
+      dtXmlParserBase::getAttributeStr("nf", *tE), bC 
+    );    
   }
 
   bool discreteAddNormal::isNecessary( void ) const {

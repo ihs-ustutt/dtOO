@@ -29,10 +29,14 @@ namespace dtOO {
     apply( vectorHandling< analyticFunction * > const * const aFP ) const;
   private:
     dt__pH(vec3dTwoD) _tt;
+//    dtVector3 _min;
+//    dtVector3 _max;
+//    int _nSmooth;
     dtVector3 _nf;
     int _nU;
     int _nV;
     int _order;
+    int _nSteps;
   };
 }    
 
