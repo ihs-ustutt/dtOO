@@ -109,6 +109,35 @@ namespace dtOO {
 		return nn;
 	}  
 	
+  float dtLinearAlgebra::euclidianNorm( std::vector< float > const & vv ) {
+		float nn = 0.;
+		dt__forAllRefAuto(vv, it) {
+			nn = nn + it*it;
+		}
+		return nn;
+	}  
+  
+  std::vector< float > dtLinearAlgebra::subtract( 
+    std::vector< float > const & aa, std::vector< float > const & bb 
+  ) {
+    dt__throwIf( aa.size()!=bb.size(), subtract() );
+    
+    std::vector< float > ret(aa.size());
+    dt__forAllIndex(aa, ii) ret[ii] = aa[ii] - bb[ii];
+    
+    return ret;
+  }
+
+  std::vector< float > dtLinearAlgebra::add( 
+    std::vector< float > const & aa, std::vector< float > const & bb 
+  ) {
+    dt__throwIf( aa.size()!=bb.size(), add() );
+    
+    std::vector< float > ret(aa.size());
+    dt__forAllIndex(aa, ii) ret[ii] = aa[ii] + bb[ii];
+    
+    return ret;
+  }  
 	float dtLinearAlgebra::length( dtVector3 const & v0 ) {
 		return sqrt(v0.squared_length());
 	}

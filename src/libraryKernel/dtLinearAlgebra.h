@@ -60,6 +60,13 @@ namespace dtOO {
 	  static dtVector2 normalize( dtVector2 const & v0 );    
     static dtVector3 sum( std::vector< dtVector3 > const & vv );
     static float sum( std::vector< float > const & vv );
+    static float euclidianNorm( std::vector< float > const & vv );
+    static std::vector< float > subtract( 
+      std::vector< float > const & aa, std::vector< float > const & bb 
+    );    
+    static std::vector< float > add( 
+      std::vector< float > const & aa, std::vector< float > const & bb 
+    );        
     static float length( dtVector3 const & v0 );    
     static float length( dtVector2 const & v0 );    
     static dtVector3 toDtVector3(dtPoint3 const & pp);
