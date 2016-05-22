@@ -108,6 +108,16 @@ namespace dtOO {
 		}
 		return nn;
 	}  
+
+  float dtLinearAlgebra::sum( 
+    std::vector< float > const & vv, int const & from, int const & to 
+  ) {
+		float nn = 0.;
+		dt__forFromToIndex(from, to, ii) {
+			nn = nn + vv[ii];
+		}
+		return nn;    
+  }
 	
   float dtLinearAlgebra::euclidianNorm( std::vector< float > const & vv ) {
 		float nn = 0.;

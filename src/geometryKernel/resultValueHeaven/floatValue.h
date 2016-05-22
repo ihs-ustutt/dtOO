@@ -3,6 +3,7 @@
 
 #include <string>
 #include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 #include <interfaceHeaven/labelHandling.h>
 
 #include "resultValue.h"

@@ -50,7 +50,17 @@
   } \
   static name const * ConstSecureCast(castFrom const * obj) { \
     return static_cast<name const *>(obj); \
-  }
+  } \
+  static name * MustDownCast(castFrom * obj) { \
+    name * ptr = dynamic_cast<name *>(obj); \
+    dt__throwIfNoClass( !ptr, MustDownCast() ); \
+    return ptr; \
+  } \
+  static name const * MustConstDownCast(castFrom const * obj) { \
+    name const * ptr = dynamic_cast<name const *>(obj); \
+    dt__throwIfNoClass( !ptr, MustConstDownCast() ); \
+    return ptr; \
+  }  
 
   #define dt__H_addCloneForpVH( type ) \
     type * new_clone( type const & aF );

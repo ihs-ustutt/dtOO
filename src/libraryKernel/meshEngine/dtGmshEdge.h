@@ -2,6 +2,7 @@
 #define	DTGMSHEDGE_H
 
 #include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <gmsh/GEdge.h>
 

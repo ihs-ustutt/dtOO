@@ -3,6 +3,7 @@
 
 #include <gmsh/GRegion.h>
 #include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 
 class GModel;
 class GFace;
