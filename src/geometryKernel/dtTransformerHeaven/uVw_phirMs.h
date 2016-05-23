@@ -8,6 +8,7 @@
 namespace dtOO {
   class rotatingMap2dTo3d;
   class vec2dMultiBiLinearTwoD;
+  class scaOneD;
   
   /**
    * \brief Coordinate transformation for rotatingMap2dTo3d mapping according to
@@ -42,11 +43,6 @@ namespace dtOO {
     apply( std::vector< dtPoint3 > const * const toTrans ) const;        
     std::vector< dtPoint3 > 
     retract(std::vector< dtPoint3 > const * const toRetract) const;    
-    virtual void handleAnalyticGeometry(
-      std::string const name, analyticGeometry const * value
-    );
-    virtual void handleDtVector3(std::string const name, dtVector3 const value);
-    virtual void handleInt(std::string const name, int const value);
   private:
     /**
      * @todo Should be on map3dto3d
@@ -84,8 +80,8 @@ namespace dtOO {
     dt__pH(rotatingMap2dTo3d const) _rM2d;
     dtVector3 _ss;
     dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
-    int _nU;
     int _nV;
+    int _nW;
   };
 }
 

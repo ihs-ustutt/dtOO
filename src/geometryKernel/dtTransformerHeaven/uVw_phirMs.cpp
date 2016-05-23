@@ -1,11 +1,12 @@
 #include "uVw_phirMs.h"
-#include "interfaceHeaven/systemHandling.h"
+
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
 #include <analyticFunctionHeaven/vec2dMultiBiLinearTwoD.h>
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+#include <logMe/logContainer.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include <analyticFunctionHeaven/vec3dThickedTwoD.h>
@@ -15,16 +16,18 @@
 
 namespace dtOO {
   uVw_phirMs::uVw_phirMs() : dtTransformer() {
+    _ss = dtVector3(1.,1.,1.);
+    _nV = 11;
+    _nW = 11;    
   }
 
-  uVw_phirMs::uVw_phirMs(
-	  uVw_phirMs const & orig 
-	) : dtTransformer(orig) {
+  uVw_phirMs::uVw_phirMs( uVw_phirMs const & orig ) 
+    : dtTransformer(orig) {
 		_rM2d.reset( orig._rM2d->clone() );
 		_ss = orig._ss;
     _ms_uSPercentVSPercent.reset( orig._ms_uSPercentVSPercent->clone() );
-    _nU = orig._nU;
     _nV = orig._nV;
+    _nW = orig._nW;
   }
 	
   uVw_phirMs::~uVw_phirMs() {
@@ -126,50 +129,44 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
-		
+		    
 		if ( dtXmlParserBase::hasChild("Vector_3", *tE) ) {
 			::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
-			handleDtVector3(
-				"Vector_3", 
-				dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG)
-			);
+      _ss = dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG);
 		}
-		else {
-      handleDtVector3("Vector_3", dtVector3(1.,1.,1.));			
-		}
-		handleAnalyticGeometry(
-			"part_label", 
-			aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
-		);
     
+    dt__ptrAss(
+      rotatingMap2dTo3d const * const rM2d, 
+      rotatingMap2dTo3d::ConstDownCast(
+        aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
+      )
+    );
+    _rM2d.reset( rM2d->clone() );
+
 		if ( dtXmlParserBase::hasAttribute("number_points_two", *tE) ) {
-      handleInt(
-        "number_points_two", 
-        dtXmlParserBase::getAttributeIntMuParse(
-          "number_points_two", *tE, cV, aF
-        )
-  		);
+      _nV 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse(
+        "number_points_two", *tE, cV, aF
+      );
     } 
-    else handleInt("number_points_two", 11);
 
 		if ( dtXmlParserBase::hasAttribute("number_points_three", *tE) ) {
-      handleInt(
-        "number_points_three", 
-        dtXmlParserBase::getAttributeIntMuParse(
-          "number_points_three", *tE, cV, aF
-        )
-  		);
+      _nW
+      = 
+      dtXmlParserBase::getAttributeIntMuParse(
+        "number_points_three", *tE, cV, aF
+      );
     } 
-    else handleInt("number_points_three", 11);
     
     //
     // create piecewise bilinear mapping
     //
-    twoDArrayHandling< dtPoint2 > ms(_nU, _nV);
+    twoDArrayHandling< dtPoint2 > ms(_nV, _nW);
     dt__forAllIndex(ms, ii) {
       dt__forAllIndex(ms[ii], jj) {
-        float uPercent = static_cast<float>(ii)/(_nU-1);
-        float vPercent = static_cast<float>(jj)/(_nV-1);
+        float uPercent = static_cast<float>(ii)/(_nV-1);
+        float vPercent = static_cast<float>(jj)/(_nW-1);
         ms[ii][jj] 
         = 
         dtPoint2(
@@ -207,8 +204,8 @@ namespace dtOO {
 //    of << "x_coord,y_coord,z_coord,u_p,v_p,m,s,m_p,s_p" << std::endl;
 //    dt__forAllIndex(ms, ii) {
 //      dt__forAllIndex(ms[ii], jj) {
-//        float uPercent = static_cast<float>(ii)/(_nU-1);
-//        float vPercent = static_cast<float>(jj)/(_nV-1);
+//        float uPercent = static_cast<float>(ii)/(_nV-1);
+//        float vPercent = static_cast<float>(jj)/(_nW-1);
 //
 //        dtPoint3 pXYZ 
 //        = 
@@ -226,51 +223,10 @@ namespace dtOO {
 //    of.close();
   }
   
-  void uVw_phirMs::handleAnalyticGeometry(
-    std::string const name, analyticGeometry const * value
-  ) {
-    if (name == "part_label") {
-      dt__ptrAss(
-        rotatingMap2dTo3d const * const m3d, 
-        rotatingMap2dTo3d::ConstDownCast(value)
-      );
-			_rM2d.reset( m3d->clone() );
-      return;
-    }
-    dtTransformer::handleAnalyticGeometry(name, value);
-  }
-	
-  void uVw_phirMs::handleDtVector3(
-    std::string const name, dtVector3 const value
-  ) {
-    if (name == "Vector_3") {
-      _ss = value;
-      return;
-    }
-    dtTransformer::handleDtVector3(name, value);
-  }	
-  
-  void uVw_phirMs::handleInt(std::string const name, int const value) {
-    dt__info(handleInt(),
-      << dt__eval(name) << std::endl
-      << dt__eval(value) 
-    );
-    if (name == "number_points_two") {
-      _nU = value;
-      return;
-    }
-    else if (name == "number_points_three") {
-      _nV = value;
-      return;
-    }
-    dtTransformer::handleInt(name, value);
-  }	  
-  
 	float uVw_phirMs::m_uSVS(float const & uu, float const & vv) const {
 		ptrHandling< map1dTo3d > m1d( 
       _rM2d->constRefMap2dTo3d().segmentConstV(vv) 
     );
-    dt__quickdebug( << dt__eval(uu) << ", " << dt__eval(m1d->l_u(uu)) );
 		return m1d->l_u(uu);
 	}
   
@@ -286,22 +242,16 @@ namespace dtOO {
     float const & phir, float const & vv, float const & ww
   ) const {
     //
-		// get radius
+		// radius
 		//
     dtVector3 vXYZ 
     = 
-    _rM2d->origin()
-    -
-//    dtLinearAlgebra::toDtVector3(
-      _rM2d->constRefMap2dTo3d().getPoint(vv, ww)
-//    );
-      ;
+    _rM2d->origin() - _rM2d->constRefMap2dTo3d().getPoint(vv, ww);
     dtVector3 pointOnRotAx 
     = 
     _rM2d->rotationAxis() 
     * 
     dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
-    
     dtVector3 rr = vXYZ - pointOnRotAx;
     
 		return (phir/dtLinearAlgebra::length(rr)) / (2.*M_PI);
@@ -324,20 +274,18 @@ namespace dtOO {
   float uVw_phirMs::phir_uVvVwV(
     float const & uu, float const & vv, float const & ww
   ) const {
+    //
+		// radius
+		//    
     dtVector3 vXYZ 
     = 
-    _rM2d->origin() -
-//    dtLinearAlgebra::toDtVector3(
-      _rM2d->constRefMap2dTo3d().getPoint(vv, ww)
-//    );
-      ;
+    _rM2d->origin() - _rM2d->constRefMap2dTo3d().getPoint(vv, ww);
     dtVector3 pointOnRotAx 
     = 
     _rM2d->rotationAxis() 
     * 
     dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
     dtVector3 rr = vXYZ - pointOnRotAx;
-		
 		
 		return uu*dtLinearAlgebra::length(rr) * (2.*M_PI);
   }
