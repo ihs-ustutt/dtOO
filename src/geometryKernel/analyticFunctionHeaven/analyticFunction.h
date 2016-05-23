@@ -34,6 +34,8 @@ namespace dtOO {
     virtual int yDim( void ) const = 0;
     virtual float xMin( int const & dir) const = 0;
     virtual float xMax( int const & dir) const = 0;
+    virtual aFX xMin( void ) const;
+    virtual aFX xMax( void ) const;        
 	  virtual aFX x_percent( aFX const & xx ) const;
     virtual aFX percent_x( aFX const & xx ) const;    
     virtual aFX invY(aFY const & yy) const;    

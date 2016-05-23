@@ -26,6 +26,8 @@ namespace dtOO {
     virtual int xDim( void ) const;
     void setMax(int const & dir, float const & max);
     void setMin(int const & dir, float const & min);
+    using analyticFunction::xMin;
+    using analyticFunction::xMax;
     virtual float xMin( int const & dir) const;
     virtual float xMax( int const & dir) const;   
     virtual std::vector<dtVector3> DYdtVector3( aFX const & xx ) const;
@@ -34,9 +36,13 @@ namespace dtOO {
 	  aFX x_percent(float const & x0, float const & x1, float const & x2) const;
 	  aFX percent_x(float const & x0, float const & x1, float const & x2) const;
     dtPoint3 YdtPoint3(aFX const & xx) const;
-    dtPoint3 YdtPoint3(float const & x0, float const & x1, float const & x2) const;
+    dtPoint3 YdtPoint3(
+      float const & x0, float const & x1, float const & x2
+    ) const;
     dtPoint3 YdtPoint3Percent(aFX const & xx) const;
-    dtPoint3 YdtPoint3Percent(float const & x0, float const & x1, float const & x2) const;    
+    dtPoint3 YdtPoint3Percent(
+      float const & x0, float const & x1, float const & x2
+    ) const;    
     virtual vectorHandling< renderInterface * > getRender( void ) const;    
   private:    
     float _min[3];

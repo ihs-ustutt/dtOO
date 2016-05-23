@@ -35,6 +35,20 @@ namespace dtOO {
 		return std::string("");
 	}	
   
+  aFX analyticFunction::xMin( void ) const {
+    aFX ret(xDim(), 0.);
+    
+    dt__forFromToIndex(0, xDim(), ii) ret[ii] = xMin(ii);
+    return ret;        
+  }
+  
+  aFX analyticFunction::xMax( void ) const {
+    aFX ret(xDim(), 0.);
+    
+    dt__forFromToIndex(0, xDim(), ii) ret[ii] = xMax(ii);
+    return ret;            
+  }
+  
 	aFX analyticFunction::x_percent( aFX const & xx ) const {
     aFX ret(xDim(), 0.);
     

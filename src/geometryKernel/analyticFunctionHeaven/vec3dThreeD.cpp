@@ -25,7 +25,9 @@ namespace dtOO {
 		return 3;
 	}
 
-  aFY vec3dThreeD::Y(float const & x0, float const & x1, float const & x2) const {	
+  aFY vec3dThreeD::Y(
+    float const & x0, float const & x1, float const & x2
+  ) const {	
 		aFX xx(3,0);
 		
 		xx[0] = x0;
@@ -39,7 +41,9 @@ namespace dtOO {
 		return vec3dFunction::YdtPoint3( xx );
 	}
 
-  dtPoint3 vec3dThreeD::YdtPoint3(float const & x0, float const & x1, float const & x2) const {
+  dtPoint3 vec3dThreeD::YdtPoint3(
+    float const & x0, float const & x1, float const & x2
+  ) const {
 		aFX xx(3,0);
 		
 		xx[0] = x0;
@@ -53,7 +57,9 @@ namespace dtOO {
 		return YdtPoint3( x_percent(xx) );
 	}
 	
-	dtPoint3 vec3dThreeD::YdtPoint3Percent(float const & x0, float const & x1, float const & x2) const {
+	dtPoint3 vec3dThreeD::YdtPoint3Percent(
+    float const & x0, float const & x1, float const & x2
+  ) const {
 		aFX xx(3,0);
 		
 		xx[0] = x0;
@@ -63,7 +69,9 @@ namespace dtOO {
 		return YdtPoint3( x_percent(xx) );
 	}
 	
-	aFX vec3dThreeD::x_percent(float const & x0, float const & x1, float const & x2) const {
+	aFX vec3dThreeD::x_percent(
+    float const & x0, float const & x1, float const & x2
+  ) const {
 		aFX xx(3, 0.);
     xx[0] = x0;
 		xx[1] = x1;
@@ -72,7 +80,9 @@ namespace dtOO {
 		return x_percent(xx);
   }  
 	
-	aFX vec3dThreeD::percent_x(float const & x0, float const & x1, float const & x2) const {
+	aFX vec3dThreeD::percent_x(
+    float const & x0, float const & x1, float const & x2
+  ) const {
 		aFX xx(3, 0.);
     xx[0] = x0;
 		xx[1] = x1;
@@ -113,9 +123,33 @@ namespace dtOO {
 		yy[2][1] = YdtPoint3( x_percent(xP[0], xP[1], uv[2][1]) );
 		
 		std::vector<dtVector3> dxdy(3);
-		dxdy[0] = (yy[0][1] - yy[0][0]) / ( x_percent(uv[0][1], xP[1], xP[2])[0] - x_percent(uv[0][0], xP[1], xP[2])[0] );
-		dxdy[1] = (yy[1][1] - yy[1][0]) / ( x_percent(xP[0], uv[1][1], xP[2])[1] - x_percent(xP[0], uv[1][0], xP[2])[1] );
-		dxdy[2] = (yy[2][1] - yy[2][0]) / ( x_percent(xP[0], xP[1], uv[2][1])[2] - x_percent(xP[0], xP[1], uv[2][0])[2] );
+		dxdy[0] 
+    = 
+    (yy[0][1] - yy[0][0]) 
+    / 
+    ( 
+      x_percent(uv[0][1], xP[1], xP[2])[0] 
+      - 
+      x_percent(uv[0][0], xP[1], xP[2])[0] 
+    );
+		dxdy[1] 
+    = 
+    (yy[1][1] - yy[1][0]) 
+    / 
+    ( 
+      x_percent(xP[0], uv[1][1], xP[2])[1] 
+      - 
+      x_percent(xP[0], uv[1][0], xP[2])[1] 
+    );
+		dxdy[2] 
+    = 
+    (yy[2][1] - yy[2][0]) 
+    / 
+    ( 
+      x_percent(xP[0], xP[1], uv[2][1])[2] 
+      - 
+      x_percent(xP[0], xP[1], uv[2][0])[2] 
+    );
 		
 		return dxdy;
 	}
