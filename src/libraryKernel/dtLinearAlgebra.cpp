@@ -147,7 +147,17 @@ namespace dtOO {
     dt__forAllIndex(aa, ii) ret[ii] = aa[ii] + bb[ii];
     
     return ret;
-  }  
+  }
+
+  std::vector< float > dtLinearAlgebra::multiply( 
+    float const & aa, std::vector< float > const & bb 
+  ) {
+    std::vector< float > ret(bb.size());
+    dt__forAllIndex(bb, ii) ret[ii] = aa * bb[ii];
+    
+    return ret;    
+  }
+    
 	float dtLinearAlgebra::length( dtVector3 const & v0 ) {
 		return sqrt(v0.squared_length());
 	}

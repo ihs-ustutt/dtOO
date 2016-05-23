@@ -69,7 +69,10 @@ namespace dtOO {
     );    
     static std::vector< float > add( 
       std::vector< float > const & aa, std::vector< float > const & bb 
-    );        
+    );
+    static std::vector< float > multiply( 
+      float const & aa, std::vector< float > const & bb 
+    );    
     static float length( dtVector3 const & v0 );    
     static float length( dtVector2 const & v0 );    
     static dtVector3 toDtVector3(dtPoint3 const & pp);
