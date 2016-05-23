@@ -63,6 +63,35 @@ namespace dtOO {
   }
 
   vec3dTriLinearThreeD::vec3dTriLinearThreeD(
+      dtPoint3 const & p000, dtPoint3 const & p100,
+      dtPoint3 const & p010, dtPoint3 const & p110,
+      dtPoint3 const & p001, dtPoint3 const & p101,
+      dtPoint3 const & p011, dtPoint3 const & p111,
+      dtPoint3 const & xMin, dtPoint3 const & xMax
+	) : vec3dThreeD() {
+    _p000 = p000;
+    _p100 = p100;
+    _p010 = p010;
+    _p110 = p110;
+    _p001 = p001;
+    _p101 = p101;
+    _p011 = p011;
+    _p111 = p111;  
+    _v000 = dtLinearAlgebra::toDtVector3(p000);
+    _v100 = dtLinearAlgebra::toDtVector3(p100);
+    _v010 = dtLinearAlgebra::toDtVector3(p010);
+    _v110 = dtLinearAlgebra::toDtVector3(p110);
+    _v001 = dtLinearAlgebra::toDtVector3(p001);
+    _v101 = dtLinearAlgebra::toDtVector3(p101);
+    _v011 = dtLinearAlgebra::toDtVector3(p011);
+    _v111 = dtLinearAlgebra::toDtVector3(p111);    
+		dt__forFromToIndex(0, 3, ii) {
+			setMin( ii, xMin[ii] );
+			setMax( ii, xMax[ii] );
+		}				
+  }  
+
+  vec3dTriLinearThreeD::vec3dTriLinearThreeD(
       dtPoint3 const & p000, dtPoint3 const & p111
 	) : vec3dTriLinearThreeD(
       p000, 
@@ -82,9 +111,11 @@ namespace dtOO {
   aFY vec3dTriLinearThreeD::Y( aFX const & xx ) const {
     dt__throwIf(xx.size()!=3, Y());
 
-		float uu = xx[0];
-		float vv = xx[1];
-    float ww = xx[2];
+    aFX xP = percent_x(xx);
+    
+		float uu = xP[0];
+		float vv = xP[1];
+    float ww = xP[2];
     
     dtVector3 c00(_v000 * (1.-uu) + _v100 * uu);
     dtVector3 c10(_v010 * (1.-uu) + _v110 * uu);
@@ -99,7 +130,7 @@ namespace dtOO {
 		yy[1] = cc.y();
     yy[2] = cc.z();
     
-    return yy;		
+    return yy;
 	}
 	
 	bool vec3dTriLinearThreeD::closed( int const & dir ) const {

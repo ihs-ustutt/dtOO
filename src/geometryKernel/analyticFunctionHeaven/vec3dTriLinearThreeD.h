@@ -21,6 +21,13 @@ namespace dtOO {
       dtPoint3 const & p011, dtPoint3 const & p111
     );
     vec3dTriLinearThreeD(
+      dtPoint3 const & p000, dtPoint3 const & p100,
+      dtPoint3 const & p010, dtPoint3 const & p110,
+      dtPoint3 const & p001, dtPoint3 const & p101,
+      dtPoint3 const & p011, dtPoint3 const & p111,
+      dtPoint3 const & xMin, dtPoint3 const & xMax
+    );    
+    vec3dTriLinearThreeD(
       dtPoint3 const & p000, dtPoint3 const & p111
     );    
     vec3dTriLinearThreeD * clone( void ) const;
