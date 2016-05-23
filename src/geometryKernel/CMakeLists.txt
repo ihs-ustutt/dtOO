@@ -71,6 +71,7 @@ SET(HEADERS
   analyticFunctionHeaven/vec3dCurveOneD.h
   analyticFunctionHeaven/vec3dCurve2dInSurfaceOneD.h
   analyticFunctionHeaven/vec3dThreeD.h
+  analyticFunctionHeaven/vec3dMultiThreeD.h
   analyticFunctionHeaven/vec3dTransVolThreeD.h
   analyticFunctionHeaven/vec3dMuParserThreeD.h
   analyticFunctionHeaven/vec3dBoxThreeD.h
