@@ -19,6 +19,7 @@
 #include "pickLengthPercentRange.h"
 #include "addConstCoordinate.h"
 #include "uVw_phirMs.h"
+#include "uVw_skewPhirMs.h"
 #include "uVw_phiMs.h"
 #include "averagePoints.h"
 #include "projectOnSurface.h"
@@ -80,6 +81,7 @@ namespace dtOO {
 		__IFRET( closeGapsArithmetic );
     __IFRET( scale );
     __IFRET( xYz_rPhiZ );
+    __IFRET( uVw_skewPhirMs );
 
     dt__throw(create(), << str <<  " could not be created");  
   }
