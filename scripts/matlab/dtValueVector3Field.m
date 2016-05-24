@@ -6,7 +6,11 @@ classdef dtValueVector3Field < dtVector3Field
       q_
       mag_
       A_
+      APos_
+      ANeg_      
       Q_
+      QPos_
+      QNeg_
       intSf_
       intQSf_      
       trf_
@@ -20,7 +24,11 @@ classdef dtValueVector3Field < dtVector3Field
         obj.mag_ = dt.Mag( obj.value_ );        
              
         obj.A_ = dt.SumMag( obj.sf_ );
+        obj.APos_ = dt.SumMag( obj.sf_( find(obj.q_>0) ) );
+        obj.ANeg_ = dt.SumMag( obj.sf_( find(obj.q_<0) ) );        
         obj.Q_ = dt.SumMag( obj.q_ );
+        obj.QPos_ = dt.Sum( obj.q_( find(obj.q_>0) ) );
+        obj.QNeg_ = dt.Sum( obj.q_( find(obj.q_<0) ) );
         for i=1:3
           obj.intSf_(i) = dt.Sum( obj.value_(:,i) .* dt.Mag(obj.sf_) );
           obj.intQSf_(i) = dt.Sum( obj.value_(:,i) .* obj.q_ );    
