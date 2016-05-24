@@ -44,6 +44,8 @@ namespace dtOO {
       void 
     ) const;
     virtual bool isTransformed( void ) const;
+    virtual std::pair< aFY, aFY > yBoundingBox( void ) const;
+    virtual bool yBounded( void ) const;
     static aFX aFXZeroD( void );
     static aFX aFXOneD( float const & x0 );
     static aFX aFXTwoD( float const & x0, float const & x1 );

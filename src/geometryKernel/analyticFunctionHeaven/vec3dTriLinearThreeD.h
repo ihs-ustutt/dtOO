@@ -37,7 +37,8 @@ namespace dtOO {
     vec3dTriLinearThreeD * create( void ) const;    
     virtual ~vec3dTriLinearThreeD();
     virtual aFY Y( aFX const & xx ) const;
-    virtual bool closed( int const & dir ) const;    
+    virtual bool closed( int const & dir ) const;
+    virtual std::pair< aFY, aFY > yBoundingBox( void ) const;
   private:
     dtVector3 _v000;
     dtVector3 _v100;

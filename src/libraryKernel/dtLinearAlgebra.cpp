@@ -19,7 +19,7 @@ namespace dtOO {
 
 	}
 
-	dtLinearAlgebra::~dtLinearAlgebra() {  
+	dtLinearAlgebra::~dtLinearAlgebra() {
 	}
 
 	dtAffTransformation3 dtLinearAlgebra::getRotation(
@@ -771,6 +771,42 @@ namespace dtOO {
         return false;
     }
   }
+
+  bool dtLinearAlgebra::isInsideHexahedron(
+    dtPoint3 const & pt,
+    dtPoint3 const & p000, dtPoint3 const & p100,
+    dtPoint3 const & p010, dtPoint3 const & p110,
+    dtPoint3 const & p001, dtPoint3 const & p101,
+    dtPoint3 const & p011, dtPoint3 const & p111
+  ) {
+    if (
+      dtTetrahedron3(p000, p001, p011, p101).bounded_side(pt) 
+      != 
+      CGAL::ON_UNBOUNDED_SIDE
+    ) return true;
+    if (
+      dtTetrahedron3(p011, p101, p111, p110).bounded_side(pt) 
+      != 
+      CGAL::ON_UNBOUNDED_SIDE
+    ) return true;
+    if (
+      dtTetrahedron3(p000, p100, p110, p101).bounded_side(pt) 
+      != 
+      CGAL::ON_UNBOUNDED_SIDE
+    ) return true;
+    if (
+      dtTetrahedron3(p000, p010, p110, p011).bounded_side(pt) 
+      != 
+      CGAL::ON_UNBOUNDED_SIDE
+    ) return true;
+    if (
+      dtTetrahedron3(p011, p101, p000, p110).bounded_side(pt) 
+      != 
+      CGAL::ON_UNBOUNDED_SIDE
+    ) return true;    
+    
+    return false;
+  }  
 
   float dtLinearAlgebra::area(
     dtPoint3 const & p0, dtPoint3 const & p1, 

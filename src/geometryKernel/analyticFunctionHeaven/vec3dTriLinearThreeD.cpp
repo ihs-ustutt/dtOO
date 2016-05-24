@@ -137,7 +137,21 @@ namespace dtOO {
 		dt__throwIf( (dir!=0) && (dir!=1) && (dir!=2), closed() );
 		return false;
 	}
-	
+  
+	std::pair< aFY, aFY > vec3dTriLinearThreeD::yBoundingBox( void ) const {
+    std::pair< dtPoint3, dtPoint3 > bBox 
+    = 
+    dtLinearAlgebra::boundingBox(  
+      std::vector< dtPoint3 >( 
+        {_p000, _p001, _p010, _p011, _p100, _p101, _p110, _p111} 
+      )
+    );
+    return std::pair< aFY, aFY >(
+      analyticFunction::aFYThreeD(bBox.first), 
+      analyticFunction::aFYThreeD(bBox.second)
+    );
+  }
+  
   vec3dTriLinearThreeD * vec3dTriLinearThreeD::clone( void ) const {
     return new vec3dTriLinearThreeD( *this );
   }

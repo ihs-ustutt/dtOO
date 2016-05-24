@@ -11,6 +11,7 @@
 #include <CGAL/Line_3.h>
 #include <CGAL/Triangle_3.h>
 #include <CGAL/Segment_3.h>
+#include <CGAL/Tetrahedron_3.h>
 #include <CGAL/Origin.h>
 #include <CGAL/Linear_algebraCd.h>
 
@@ -18,18 +19,19 @@
 
 namespace dtOO {
   typedef float dtFt;
-  typedef CGAL::Exact_predicates_inexact_constructions_kernel dtKernel;
-  typedef CGAL::Point_3< dtKernel > dtPoint3;
-  typedef CGAL::Vector_3< dtKernel > dtVector3;
-  typedef CGAL::Aff_transformation_3< dtKernel > dtAffTransformation3;
-  typedef CGAL::Point_2< dtKernel > dtPoint2;
-  typedef CGAL::Vector_2< dtKernel > dtVector2;
-  typedef CGAL::Aff_transformation_2< dtKernel > dtAffTransformation2;
-  typedef CGAL::Line_3< dtKernel > dtLine3;
-  typedef CGAL::Triangle_3< dtKernel > dtTriangle3;
-  typedef CGAL::Segment_3< dtKernel > dtSegment3;
-  typedef CGAL::Linear_algebraCd< dtFt >::Matrix dtMatrix;
-  typedef CGAL::Linear_algebraCd< dtFt >::Vector dtMatrixVector;
+  typedef ::CGAL::Exact_predicates_inexact_constructions_kernel dtKernel;
+  typedef ::CGAL::Point_3< dtKernel > dtPoint3;
+  typedef ::CGAL::Vector_3< dtKernel > dtVector3;
+  typedef ::CGAL::Aff_transformation_3< dtKernel > dtAffTransformation3;
+  typedef ::CGAL::Point_2< dtKernel > dtPoint2;
+  typedef ::CGAL::Vector_2< dtKernel > dtVector2;
+  typedef ::CGAL::Aff_transformation_2< dtKernel > dtAffTransformation2;
+  typedef ::CGAL::Line_3< dtKernel > dtLine3;
+  typedef ::CGAL::Triangle_3< dtKernel > dtTriangle3;
+  typedef ::CGAL::Segment_3< dtKernel > dtSegment3;
+  typedef ::CGAL::Tetrahedron_3< dtKernel > dtTetrahedron3;
+  typedef ::CGAL::Linear_algebraCd< dtFt >::Matrix dtMatrix;
+  typedef ::CGAL::Linear_algebraCd< dtFt >::Vector dtMatrixVector;
   
   class dtLinearAlgebra {
   public:
@@ -138,6 +140,13 @@ namespace dtOO {
       dtPoint2 const & p0, dtPoint2 const & p1, 
       dtPoint2 const & p2, dtPoint2 const & p3
     );
+    static bool isInsideHexahedron(
+      dtPoint3 const & pt,
+      dtPoint3 const & p000, dtPoint3 const & p100,
+      dtPoint3 const & p010, dtPoint3 const & p110,
+      dtPoint3 const & p001, dtPoint3 const & p101,
+      dtPoint3 const & p011, dtPoint3 const & p111
+    );    
     static float area(
       dtPoint3 const & p0, dtPoint3 const & p1, 
       dtPoint3 const & p2, dtPoint3 const & p3

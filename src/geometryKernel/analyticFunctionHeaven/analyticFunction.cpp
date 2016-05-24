@@ -196,6 +196,24 @@ namespace dtOO {
 	bool analyticFunction::isTransformed( void ) const {
 		return false;
 	}
+  
+  std::pair< aFY, aFY > analyticFunction::yBoundingBox( void ) const {
+    return std::pair< aFY, aFY >(
+      aFY(yDim(), std::numeric_limits<float>::min()),
+      aFY(yDim(), std::numeric_limits<float>::max())
+    );
+  }
+  
+  bool analyticFunction::yBounded( void ) const {
+    std::pair< aFY, aFY > bBox = yBoundingBox();
+    dt__forAllRefAuto(bBox.first, aBound) {
+      if ( aBound == std::numeric_limits<float>::min() ) return false;
+    }
+    dt__forAllRefAuto(bBox.second, aBound) {
+      if ( aBound == std::numeric_limits<float>::max() ) return false;
+    }
+  }
+    
 	
   aFX analyticFunction::aFXZeroD( void ) {
 		return aFX(0);
