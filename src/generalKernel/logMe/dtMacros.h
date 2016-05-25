@@ -23,7 +23,7 @@
   }
 
 #define dt__classSelfCreate( name ) \
-  name * create( void ) const { return new name(); }
+  virtual name * create( void ) const { return new name(); }
 
 #define dt__class( name, castFrom ) \
   static std::string className( void ) { \
