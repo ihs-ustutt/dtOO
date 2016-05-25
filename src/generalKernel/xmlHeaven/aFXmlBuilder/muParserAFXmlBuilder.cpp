@@ -3,6 +3,7 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/scaMuParserOneD.h>
 #include <analyticFunctionHeaven/scaMuParserTwoD.h>
+#include <analyticFunctionHeaven/scaMuParserThreeD.h>
 #include <analyticFunctionHeaven/vec2dMuParserTwoD.h>
 #include <analyticFunctionHeaven/vec3dMuParserOneD.h>
 #include <analyticFunctionHeaven/vec3dMuParserTwoD.h>
@@ -123,6 +124,62 @@ namespace dtOO {
 
 			sFunP->push_back(theF);
     }		
+		//
+		// scaMuParserThreeD
+		//		
+    else if (isSca && isThreeD) {		
+			::QDomElement xOneEl = dtXmlParserBase::getChild("x_one", toBuildP);
+			::QDomElement xTwoEl = dtXmlParserBase::getChild("x_two", toBuildP);
+      ::QDomElement xThreeEl = dtXmlParserBase::getChild("x_three", toBuildP);
+
+			scaMuParserThreeD * theF 
+			= 
+			new scaMuParserThreeD(
+			  expStr, 
+			  dtXmlParserBase::getAttributeStr("name", xOneEl), 
+				dtXmlParserBase::getAttributeStr("name", xTwoEl),
+        dtXmlParserBase::getAttributeStr("name", xThreeEl)
+			); 
+			
+			theF->setMin(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMin(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xTwoEl, cValP, depSFunP
+        )
+      );
+			theF->setMin(
+        2, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "min", xThreeEl, cValP, depSFunP
+        )
+      );
+      
+			theF->setMax(
+        0, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xOneEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xTwoEl, cValP, depSFunP
+        )
+      );
+			theF->setMax(
+        2, 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "max", xThreeEl, cValP, depSFunP
+        )
+      );
+			sFunP->push_back(theF);
+    }		    
 		//
 		// vec2dMuParserTwoD
 		//
