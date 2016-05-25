@@ -21,7 +21,8 @@ namespace dtOO {
   
   class dtXmlParser : public dtXmlParserBase {
   public:  
-    dt__classOnlyName(dtXmlParser);   
+    dt__classOnlyName(dtXmlParser);  
+    virtual ~dtXmlParser();        
     static dtXmlParser * init(
       std::string const & inFile, std::string const & outFile
     );
@@ -174,7 +175,6 @@ namespace dtOO {
     ) const;  
   private:
     dtXmlParser(std::string const & inFile, std::string const & outFile);
-    virtual ~dtXmlParser();    
     void parse(char const * const fileName);
     void checkFile(
       char const * const fileName, QDomDocument & xmlDocument
