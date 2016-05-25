@@ -18,6 +18,7 @@ namespace dtOO {
   class writeStep : public dtPlugin {
   public:
     dt__class(writeStep, dtPlugin);
+    dt__classSelfCreate(writeStep);    
     writeStep();
     virtual ~writeStep();
     virtual void init( 

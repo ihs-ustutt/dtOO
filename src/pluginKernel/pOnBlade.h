@@ -21,6 +21,7 @@ namespace dtOO {
   class pOnBlade : public dtPlugin {
   public:
     dt__class(pOnBlade, dtPlugin);
+    dt__classSelfCreate(pOnBlade);    
     pOnBlade();
     virtual ~pOnBlade();
     virtual void init( 

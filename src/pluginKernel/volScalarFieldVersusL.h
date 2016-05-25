@@ -19,6 +19,7 @@ namespace dtOO {
   class volScalarFieldVersusL : public dtPlugin {
   public:
     dt__class(volScalarFieldVersusL, dtPlugin);
+    dt__classSelfCreate(volScalarFieldVersusL);    
     volScalarFieldVersusL();
     virtual ~volScalarFieldVersusL();
     virtual void init( 

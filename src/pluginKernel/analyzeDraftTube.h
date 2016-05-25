@@ -19,6 +19,7 @@ namespace dtOO {
   class analyzeDraftTube : public dtPlugin {
   public:
     dt__class(analyzeDraftTube, dtPlugin);
+    dt__classSelfCreate(analyzeDraftTube);    
     analyzeDraftTube();
     virtual ~analyzeDraftTube();
     virtual void init( 

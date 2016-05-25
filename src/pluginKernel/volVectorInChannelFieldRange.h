@@ -19,6 +19,7 @@ namespace dtOO {
   class volVectorInChannelFieldRange : public dtPlugin {
   public:
     dt__class(volVectorInChannelFieldRange, dtPlugin);
+    dt__classSelfCreate(volVectorInChannelFieldRange);    
     volVectorInChannelFieldRange();
     virtual ~volVectorInChannelFieldRange();
     virtual void init( 

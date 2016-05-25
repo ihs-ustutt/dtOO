@@ -38,6 +38,10 @@ namespace dtOO {
     optionHandling::init( element, bC, cV, aF, aG );
   }
   
+  std::vector< std::string > dtPlugin::factoryAlias( void ) const {
+    return std::vector< std::string>(0);
+  }  
+  
   void dtPlugin::setKernel( ::pugg::Kernel * kernel ) {
     _kernel.reset( kernel );
   }

@@ -19,6 +19,7 @@ namespace dtOO {
   class volScalarPatchFieldRange : public dtPlugin {
   public:
     dt__class(volScalarPatchFieldRange, dtPlugin);
+    dt__classSelfCreate(volScalarPatchFieldRange);    
     volScalarPatchFieldRange();
     virtual ~volScalarPatchFieldRange();
     virtual void init( 

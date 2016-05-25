@@ -19,6 +19,7 @@ namespace dtOO {
   class UcylInChannel : public dtPlugin {
   public:
     dt__class(UcylInChannel, dtPlugin);
+    dt__classSelfCreate(UcylInChannel);    
     UcylInChannel();
     virtual ~UcylInChannel();
     virtual void init( 

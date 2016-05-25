@@ -18,52 +18,46 @@
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
 #include "volVectorInChannelFieldRange.h"
-
-#define __IFRET(className) \
-    if ( strcmp(str, #className) == 0 ) { \
-      return new className; \
-    }
-#define __IFRETCUSTOM(className, retClass) \
-  if ( strcmp(str, #className) == 0 ) { \
-    return new retClass; \
-  }
+#include "volVectorFieldRange.h"
 
 namespace dtOO {
-  dtPluginFactory::dtPluginFactory() {
-  }
+  dt__pH(dtPluginFactory) dtPluginFactory::_instance(NULL);
 
   dtPluginFactory::~dtPluginFactory() {
+    _builder.destroy();
   }
 
   dtPlugin * dtPluginFactory::create( std::string const str ) {
-    dt__info(create(), << "creating " << str <<  "...");
-    
-		if (str == "writeStep") return new writeStep();
-    if (str == "constValueAssingRule") return new constValueAssingRule();
-    if (str == "analyticFunctionToCSV") return new analyticFunctionToCSV();
-    if (str == "volVectorFieldVersusXYZ") return new volVectorFieldVersusXYZ();
-    if (str == "volScalarFieldVersusL") return new volScalarFieldVersusL();
-    if (str == "pOnBlade") return new pOnBlade();
-    if (str == "UcylInChannel") return new UcylInChannel();
-    if (str == "uRelInChannel") return new uRelInChannel();
-    if (str == "meshQuality") return new meshQuality();
-    if (str == "volScalarInChannelFieldRange" ) {
-      return new volScalarInChannelFieldRange();
-    }
-    if (str == "volVectorPatchFieldRange" ) {
-      return new volVectorPatchFieldRange();
-    }
-    if ( str == "volScalarPatchFieldRange" ) {
-      return new volScalarPatchFieldRange();
-    }
-    if (str == "analyzeDraftTube" ) {
-      return new analyzeDraftTube();
-    }
-    if ( str == "volVectorInChannelFieldRange" ) {
-      return new volVectorInChannelFieldRange();
+    dt__info( create(), << "str = " << str);
+    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
+      //
+      // check virtual class name
+      //
+      if ( aBuilder->virtualClassName() == str ) {
+        return aBuilder->create();
+      }
+            
+      //
+      // check alias
+      //
+      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
+        if ( anAlias == str ) return aBuilder->create();
+      }
     }
     
-    dt__throw(create(), << str <<  " could not be created");  
+    std::vector< std::string > av;
+    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
+      av.push_back( aBuilder->virtualClassName() );
+      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
+        av.push_back("  -> "+anAlias); 
+      }      
+    }
+    dt__throw(
+      create(), 
+      << str <<  " could not be created." << std::endl
+      << "Implemented builder:" << std::endl
+      << logMe::vecToString(av,1) << std::endl
+    );        
   }
   
   
@@ -111,5 +105,35 @@ namespace dtOO {
     ret->setKernel(kernel);
     
     return ret;
+  }  
+
+  dtPluginFactory * dtPluginFactory::instance( void ) {
+    if ( !_instance.isNull() ) return _instance.get();
+    
+    _instance.reset( new dtPluginFactory() );
+    
+    //
+    // add builder
+    //
+    _instance->_builder.push_back( new writeStep() );
+    _instance->_builder.push_back( new constValueAssingRule() );
+    _instance->_builder.push_back( new analyticFunctionToCSV() );
+    _instance->_builder.push_back( new volVectorFieldVersusXYZ() );
+    _instance->_builder.push_back( new volScalarFieldVersusL() );
+    _instance->_builder.push_back( new pOnBlade() );
+    _instance->_builder.push_back( new UcylInChannel() );
+    _instance->_builder.push_back( new uRelInChannel() );
+    _instance->_builder.push_back( new meshQuality() );
+    _instance->_builder.push_back( new volScalarInChannelFieldRange() );
+    _instance->_builder.push_back( new volVectorPatchFieldRange() );
+    _instance->_builder.push_back( new volScalarPatchFieldRange() );
+    _instance->_builder.push_back( new analyzeDraftTube() );
+    _instance->_builder.push_back( new volVectorInChannelFieldRange() );
+    _instance->_builder.push_back( new volVectorFieldRange() );
+    
+    return _instance.get();
+  }
+  
+  dtPluginFactory::dtPluginFactory() {   
   }  
 }

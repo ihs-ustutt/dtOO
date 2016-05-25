@@ -19,6 +19,7 @@ namespace dtOO {
   class meshQuality : public dtPlugin {
   public:
     dt__class(meshQuality, dtPlugin);
+    dt__classSelfCreate(meshQuality);    
     meshQuality();
     virtual ~meshQuality();
     virtual void init( 

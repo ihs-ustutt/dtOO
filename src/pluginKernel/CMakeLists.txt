@@ -17,6 +17,7 @@ SET(HEADERS
   analyzeDraftTube.h
   volScalarInChannelFieldRange.h
   volVectorInChannelFieldRange.h
+  volVectorFieldRange.h
 )
 
 SET(SOURCES
@@ -38,6 +39,7 @@ SET(SOURCES
   analyzeDraftTube.cpp
   volScalarInChannelFieldRange.cpp
   volVectorInChannelFieldRange.cpp
+  volVectorFieldRange.cpp
 )
 
 APPEND_DTOO_SOURCE(src/pluginKernel "${SOURCES}")

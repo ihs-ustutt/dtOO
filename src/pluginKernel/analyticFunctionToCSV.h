@@ -19,6 +19,7 @@ namespace dtOO {
   class analyticFunctionToCSV : public dtPlugin {
   public:
     dt__class(analyticFunctionToCSV, dtPlugin);
+    dt__classSelfCreate(analyticFunctionToCSV);    
     analyticFunctionToCSV();
     virtual ~analyticFunctionToCSV();
     virtual void init( 

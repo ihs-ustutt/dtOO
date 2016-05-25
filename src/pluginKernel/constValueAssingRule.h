@@ -18,6 +18,7 @@ namespace dtOO {
   class constValueAssingRule : public dtPlugin {
   public:
     dt__class(constValueAssingRule, dtPlugin);
+    dt__classSelfCreate(constValueAssingRule);     
     constValueAssingRule();
     virtual ~constValueAssingRule();
     virtual void init( 

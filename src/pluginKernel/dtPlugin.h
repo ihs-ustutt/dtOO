@@ -24,6 +24,7 @@ namespace dtOO {
       dt__classOnlyName(dtPlugin);
       dtPlugin();
       virtual ~dtPlugin();
+      virtual dtPlugin * create( void ) const = 0;      
       virtual void init( 
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -35,6 +36,7 @@ namespace dtOO {
         vectorHandling< dtPlugin * > const * const pL
       );
       virtual void apply( void ) = 0;    
+      virtual std::vector< std::string > factoryAlias( void ) const;      
       //
       // pugg stuff
       //

@@ -19,6 +19,7 @@ namespace dtOO {
   class uRelInChannel : public dtPlugin {
   public:
     dt__class(uRelInChannel, dtPlugin);
+    dt__classSelfCreate(uRelInChannel);    
     uRelInChannel();
     virtual ~uRelInChannel();
     virtual void init( 

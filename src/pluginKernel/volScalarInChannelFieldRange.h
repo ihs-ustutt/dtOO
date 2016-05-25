@@ -19,6 +19,7 @@ namespace dtOO {
   class volScalarInChannelFieldRange : public dtPlugin {
   public:
     dt__class(volScalarInChannelFieldRange, dtPlugin);
+    dt__classSelfCreate(volScalarInChannelFieldRange);    
     volScalarInChannelFieldRange();
     virtual ~volScalarInChannelFieldRange();
     virtual void init( 
