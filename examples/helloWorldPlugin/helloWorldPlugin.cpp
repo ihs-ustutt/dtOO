@@ -18,6 +18,10 @@ namespace dtOO {
     );
   }
 
+  helloWorldPlugin * helloWorldPlugin::create( void ) const {
+    return new helloWorldPlugin();  
+  }
+  
   void helloWorldPlugin::init( 
     ::QDomElement const & element,
     baseContainer const * const bC,

@@ -21,6 +21,7 @@ namespace dtOO {
       dt__class(helloWorldPlugin, dtPlugin);
       helloWorldPlugin();
       virtual ~helloWorldPlugin();
+      virtual helloWorldPlugin * create( void ) const;
       virtual void init( 
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -31,7 +32,6 @@ namespace dtOO {
         vectorHandling< dtCase * > const * const dC,        
         vectorHandling< dtPlugin * > const * const pL
       );
-
       virtual void apply(void);
     private:
   };
