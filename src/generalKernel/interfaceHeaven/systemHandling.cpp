@@ -122,6 +122,12 @@ namespace dtOO {
     }
   }
 
+  void systemHandling::renameFile( 
+    std::string const & from, std::string const & to 
+  ) {
+    ::boost::filesystem::rename( from.c_str(), to.c_str() );
+  }
+  
   void systemHandling::deleteDirectory( std::string const & dirname ) {
   try {
 		boost::filesystem::remove_all( 

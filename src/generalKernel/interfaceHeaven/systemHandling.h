@@ -19,6 +19,7 @@ namespace dtOO {
     static bool fileExists(std::string const & filename);
     static bool directoryExists(std::string const & dirname);
     static void deleteFile( std::string const & filename );
+    static void renameFile( std::string const & from, std::string const & to );
     static void deleteDirectory( std::string const & dirname );    
     static void copyDirectory( std::string const & from, std::string const & to);
     static std::string currentDirectory( void );
