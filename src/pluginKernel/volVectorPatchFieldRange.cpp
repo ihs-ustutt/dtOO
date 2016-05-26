@@ -20,6 +20,7 @@
 #include <Time.H>
 #include <polyMesh.H>
 #include <volFields.H>
+#include <linear.H>
 
 #include <logMe/dtParMacros.h>
 
@@ -167,16 +168,31 @@ namespace dtOO {
         std::vector< float > phi;
         
         //
-        // read phi
+        // read velocity
+        //        
+        ::Foam::volVectorField U(
+          ::Foam::IOobject(
+            "U",
+            runTime.timeName(),
+            mesh,
+            ::Foam::IOobject::MUST_READ,
+            ::Foam::IOobject::NO_WRITE
+          ),
+          mesh
+        );
+        
+        //
+        // read face flux
         //
         ::Foam::surfaceScalarField phiField(
           ::Foam::IOobject(
             "phi",
             runTime.timeName(),
             mesh,
-            ::Foam::IOobject::MUST_READ
-          ), 
-          mesh
+            ::Foam::IOobject::READ_IF_PRESENT,
+            ::Foam::IOobject::NO_WRITE
+          ),
+          ::Foam::linearInterpolate(U) & mesh.Sf()
         );
 
         //
