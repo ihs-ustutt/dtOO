@@ -1,4 +1,5 @@
 #include "dtXmlParser.h"
+#include <interfaceHeaven/systemHandling.h>
 
 #include <logMe/logMe.h>
 #include <logMe/logContainer.h>
@@ -220,7 +221,7 @@ namespace dtOO {
     // check and initialize file
     //
     checkFile(_outFile.c_str(), _rootLoadDoc);
-
+    
 		//
 		// save ::QDomNode and QDomDocument because owner after cloning 
 		// remains the same
@@ -558,16 +559,24 @@ namespace dtOO {
     );
   }    
   
-  void dtXmlParser::writeFile( 
-    char const * const fileName, QDomDocument & xmlDocument
+  void dtXmlParser::writeFile(
+    std::string const & fileName, QDomDocument & xmlDocument
   ) {
     //
-    // open file and write rootWriteElement to file
+    // backup file if already exists
     //
-    ::QFile xmlFile(fileName);
-    xmlFile.open(
-      ::QIODevice::WriteOnly | ::QIODevice::Truncate | ::QIODevice::Text
+    if ( systemHandling::fileExists(fileName) ) {
+      systemHandling::renameFile(fileName, fileName+".backup");
+    }
+    
+    //
+    // create and open file
+    //
+    ::QFile xmlFile(fileName.c_str());
+    dt__throwIf( 
+      !xmlFile.open(QIODevice::WriteOnly | QIODevice::Text), writeFile() 
     );
+    
     ::QTextStream(&xmlFile) << xmlDocument.toString();
 
     //
@@ -575,32 +584,7 @@ namespace dtOO {
     //
     xmlFile.close();    
   }
-  
-  void dtXmlParser::writeFile( 
-    std::string const & fileName, ::QDomNode const & node
-  ) {
-    //
-    // open file and write rootWriteElement to file
-    //
-		QDomDocument xmlDocument;
-    QDomProcessingInstruction myHeader 
-		= 
-		xmlDocument.createProcessingInstruction( 
-		  "xml","version=\"1.0\" encoding=\"ISO-8859-1\"" 
-		);
-    xmlDocument.appendChild( myHeader );		
-		xmlDocument.appendChild(node);
-    QFile xmlFile(fileName.c_str());
-    xmlFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
-    QTextStream stream(&xmlFile);
-    stream << xmlDocument.toString();
-
-    //
-    // close file
-    //
-    xmlFile.close();    
-  }
-	
+  	
   void dtXmlParser::checkFile(
     char const * const fileName, QDomDocument & xmlDocument
   ) const {
@@ -625,9 +609,11 @@ namespace dtOO {
     //
     // open file
     //
-    if( !xmlFile.open(QIODevice::ReadWrite | QIODevice::Text) ) {
-      dt__throw( checkFile(), << "Failed to open " << dt__eval(fileName) );
-    }
+    dt__throwIfWithMessage( 
+      !xmlFile.open(QIODevice::ReadWrite | QIODevice::Text), 
+      checkFile(), 
+      << "Failed to open " << dt__eval(fileName) 
+    );
 
     //
     // try to read file and check if it is correct
@@ -636,7 +622,7 @@ namespace dtOO {
     int line;
     int column;
     if( !xmlDocument.setContent( &xmlFile, &qString, &line, &column ) ) {
-      dt__warning( 
+      dt__warning(
         checkFile(),
         << dt__eval(qPrintable(qString) ) << std::endl
         << dt__eval(line) << std::endl
@@ -675,6 +661,11 @@ namespace dtOO {
       // rootReadElement and rootWriteElement have not same root name
       //
       else {
+        //
+        // close file
+        //
+        xmlFile.close();
+        
         dt__throw(
           checkFile(), 
           << "Incorrect root element name." << std::endl

@@ -180,10 +180,7 @@ namespace dtOO {
       char const * const fileName, QDomDocument & xmlDocument
     ) const;
     static void writeFile(
-      char const * const fileName, QDomDocument & xmlDocument
-    );
-    static void writeFile( 
-      std::string const & fileName, ::QDomNode const & node
+      std::string const & fileName, QDomDocument & xmlDocument
     );
     void setStaticProperties( void );
     void createRetroConstValue(
