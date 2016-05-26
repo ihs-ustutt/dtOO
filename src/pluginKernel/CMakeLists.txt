@@ -14,7 +14,6 @@ SET(HEADERS
   meshQuality.h
   volVectorPatchFieldRange.h
   volScalarPatchFieldRange.h
-  analyzeDraftTube.h
   volScalarInChannelFieldRange.h
   volVectorInChannelFieldRange.h
   volVectorFieldRange.h
@@ -36,7 +35,6 @@ SET(SOURCES
   meshQuality.cpp
   volVectorPatchFieldRange.cpp
   volScalarPatchFieldRange.cpp
-  analyzeDraftTube.cpp
   volScalarInChannelFieldRange.cpp
   volVectorInChannelFieldRange.cpp
   volVectorFieldRange.cpp

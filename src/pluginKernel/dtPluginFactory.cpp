@@ -14,7 +14,6 @@
 #include "volScalarInChannelFieldRange.h"
 #include "volVectorPatchFieldRange.h"
 #include "volScalarPatchFieldRange.h"
-#include "analyzeDraftTube.h"
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
 #include "volVectorInChannelFieldRange.h"
@@ -127,7 +126,6 @@ namespace dtOO {
     _instance->_builder.push_back( new volScalarInChannelFieldRange() );
     _instance->_builder.push_back( new volVectorPatchFieldRange() );
     _instance->_builder.push_back( new volScalarPatchFieldRange() );
-    _instance->_builder.push_back( new analyzeDraftTube() );
     _instance->_builder.push_back( new volVectorInChannelFieldRange() );
     _instance->_builder.push_back( new volVectorFieldRange() );
     
