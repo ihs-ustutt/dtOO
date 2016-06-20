@@ -213,14 +213,24 @@ namespace dtOO {
             // prevent scaling if target values are set
             //
             //
+            float s_cM = 1.0;
+            float s_cT = 1.0;           
             ::Foam::scalar targetVolFlow = volFlow;
             if ( stringPrimitive::stringContains("volumeFlow", thisRule) ) {
               targetVolFlow = parseOptionScalar("volumeFlow", thisRule);
+              s_cM = targetVolFlow/volFlow;
             }
             ::Foam::scalar targetSwirlFlowZ = swirlFlow.z();
             if ( stringPrimitive::stringContains("swirlFlowZ", thisRule) ) {
-              targetSwirlFlowZ = parseOptionScalar("swirlFlowZ", thisRule);
-              if (targetSwirlFlowZ == 0.) swirlFlow.replace(2, 1.);
+              if ( parseOptionStr("swirlFlowZ", thisRule).empty() ) {
+                s_cT = s_cM;
+                targetSwirlFlowZ = s_cT * s_cM * swirlFlow.z();
+              }
+              else {
+                targetSwirlFlowZ = parseOptionScalar("swirlFlowZ", thisRule);
+                if (targetSwirlFlowZ == 0.)  swirlFlow.replace(2, 1.);
+                s_cT = (targetSwirlFlowZ/swirlFlow.z())/(targetVolFlow/volFlow);              
+              }
             }
             
             ::Foam::scalar volFlow2 = 0.;
@@ -234,17 +244,11 @@ namespace dtOO {
               ::Foam::vector cM = n_m * (bF[i][j] & n_m);
               ::Foam::vector cT = n_t * (bF[i][j] & n_t);
               ::Foam::vector cR = bF[i][j] - cM - cT;
-              
+                             
               //
               // scale
               //
-              bF[i][j] 
-              = 
-              cM * (targetVolFlow/volFlow)
-              +
-              cT * ( (targetSwirlFlowZ/swirlFlow.z()) / (targetVolFlow/volFlow) )
-              +
-              cR;
+              bF[i][j] = cM * s_cM + cT * s_cT + cR;
               
               //
               // sum of volume and swirl flow
@@ -255,7 +259,10 @@ namespace dtOO {
             
             dt__info(
               executeOnVolVectorField(), 
+              << "scale                 : " << scale << std::endl
               << "patch area            : " << patchArea << std::endl
+              << "s_cT                  : " << s_cT << std::endl
+              << "s_cM                  : " << s_cM << std::endl
               << "volume flow           : " << volFlow << std::endl
               << "volume flow (target)  : " << targetVolFlow << std::endl    
               << "volume flow (adjust)  : " << volFlow2 << std::endl
