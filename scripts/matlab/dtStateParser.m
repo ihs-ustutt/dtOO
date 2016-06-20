@@ -53,12 +53,26 @@ classdef dtStateParser
       function obj = AddToHandle( obj, varargin )
         %obj.cV_{end+1} = cV;
         for i=2:nargin
-          obj.handle_{end+1} = varargin{i-1};
+          if iscell(varargin{i-1})
+            thisCell = varargin{i-1};
+            for j=1:length(thisCell)
+              obj.handle_{end+1} = thisCell{j};  
+            end
+          else
+            obj.handle_{end+1} = varargin{i-1};
+          end
         end
       end
       function obj = AddToHandleFig( obj, varargin )
         for i=2:nargin
-          obj.handleFig_{end+1} = varargin{i-1};
+          if iscell(varargin{i-1})
+            thisCell = varargin{i-1};
+            for j=1:length(thisCell)
+              obj.handleFig_{end+1} = thisCell{j};  
+            end
+          else
+            obj.handleFig_{end+1} = varargin{i-1};
+          end
         end
       end      
       function obj = ClearHandle( obj )
@@ -67,8 +81,6 @@ classdef dtStateParser
       function [ sH ] = ValueOfHandle( obj, state )
         stateId = find( ismember(obj.stateLabel_, state )==1 );
         
-        %obj.cV_{end+1} = cV;
-        %obj.handle_{end+1} = label;
         cV_label = containers.Map('KeyType','char','ValueType','int32');
         for i=1:size( obj.cV_{stateId}, 2 )
           cV_label( obj.cV_{stateId}{i}.label_ ) = i;
@@ -213,6 +225,32 @@ classdef dtStateParser
         );
         print(fig,  '-depsc', filename);
       end
+      function hasState = HasState(obj, state )
+        hasState = 1;
+        if isempty( find( ismember(obj.stateLabel_, state )==1 ) )
+          hasState = 0;        
+        end
+      end
+      function [ stateIndex ] = StateIndex(obj, state )
+        %ind = find( ismember(obj.stateLabel_, state )==1 );
+        if ischar(state)
+          stateIndex = find( strcmp(obj.stateLabel_, state ) );
+        elseif iscell(state)
+          stateIndex = zeros(length(state),1);
+          for i=1:length(state)
+            stateIndex(i) = find( strcmp(obj.stateLabel_, state{i} ) );
+          end
+        else          
+            throw(  ...
+              MException( ...
+                'dtStateParser:StateIndex', sprintf('> %s < is not a state label.', state) ...
+              ) ...
+            );            
+        end
+      end  
+      function ret = NumberOfStates(obj )
+        ret = length( obj.stateLabel_ );
+      end        
    end
    methods (Static)
       function [ cV ] = extractCV( aState )

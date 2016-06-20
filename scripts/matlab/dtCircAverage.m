@@ -86,11 +86,11 @@ classdef dtCircAverage
       end 
       function v = ValueA( obj, r )
         bins = discretize(r, linspace(obj.rMin_, obj.rMax_, obj.nBins_+1));
-        v = obj.binA_( bins ); 
+        v = obj.binA_( bins, : ); 
       end
       function v = ValueQ( obj, r )
         bins = discretize(r, linspace(obj.rMin_, obj.rMax_, obj.nBins_+1));
-        v = obj.binQ_( bins ); 
+        v = obj.binQ_( bins, : ); 
       end      
    end
 end

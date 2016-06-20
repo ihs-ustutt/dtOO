@@ -1,5 +1,5 @@
 classdef dtState
-  properties (SetAccess = private, GetAccess = private)
+  properties (SetAccess = private, GetAccess = public)
     case_
     label_
     path_
@@ -10,12 +10,15 @@ classdef dtState
     function obj = dtState(stateDir, prefix)
         obj.ok_ = 1;
         if (exist(stateDir, 'dir') == 0);
-          throw(  ...
-            MException( ...
-              'dtState:dtState', ...
-              sprintf('> %s < is not a directory.', stateDir) ...
-            ) ...
-          );
+          obj.ok_ = 0;
+          fprintf('> %s < is not a directory.\n', stateDir);          
+          fprintf('Create failed state.\n');          
+%           throw(  ...
+%             MException( ...
+%               'dtState:dtState', ...
+%               sprintf('> %s < is not a directory.', stateDir) ...
+%             ) ...
+%           );
         end
       [pathstr, name, ext] = fileparts(stateDir);
       obj.path_ = stateDir;
@@ -45,5 +48,22 @@ classdef dtState
     function obj = MakeFail(obj)
       obj.ok_ = 0;
     end
+  end
+  methods (Static)
+    function str = GiveStateDirectoyName(caseName, prefixStr, number)
+      str = caseName;
+      if ~isempty(prefixStr)
+        str = strcat(str, '_', prefixStr);
+      end
+      str = strcat(str, '_', num2str(number));
+    end    
+    function ind = GiveIndex(str)
+      oc = strfind(str, '_');
+      if ~isempty(oc)
+        ind = str2double( str( oc(end)+1:end) );
+      else
+        ind = str2double( str );
+      end
+    end     
   end
 end
