@@ -12,25 +12,25 @@
 namespace dtOO {
   class splineCurve3d;
 
-  class rotatingSpline : public analyticSurface {
+  class rotatingMap1dTo3d : public analyticSurface {
     public:
-      dt__class(rotatingSpline, analyticGeometry);
-      rotatingSpline();
-      rotatingSpline(
+      dt__class(rotatingMap1dTo3d, analyticGeometry);
+      rotatingMap1dTo3d();
+      rotatingMap1dTo3d(
         dtSurface const & dtS, 
         dtPoint3 const & pp,
         dtVector3 const & vv,
         float const & angle = 2.*M_PI
       );
-      rotatingSpline(
+      rotatingMap1dTo3d(
         dtSurface const & dtS, 
         dtVector3 const & vv,
         float const & angle = 2.*M_PI
       );      
-      rotatingSpline( rotatingSpline const & orig );
-      virtual rotatingSpline * clone( void ) const;
-      virtual rotatingSpline * create( void ) const;        
-      virtual ~rotatingSpline();
+      rotatingMap1dTo3d( rotatingMap1dTo3d const & orig );
+      virtual rotatingMap1dTo3d * clone( void ) const;
+      virtual rotatingMap1dTo3d * create( void ) const;        
+      virtual ~rotatingMap1dTo3d();
       dtPoint3 getOrigin( void ) const;
       dtVector3 getRotVector( void ) const;
       float getAngle( void ) const;

@@ -1,4 +1,4 @@
-#include "rotatingSpline.h"
+#include "rotatingMap1dTo3d.h"
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
@@ -9,18 +9,18 @@
 #include <interfaceHeaven/ptrHandling.h>
 
 namespace dtOO {
-  rotatingSpline::rotatingSpline() : analyticSurface() {
+  rotatingMap1dTo3d::rotatingMap1dTo3d() : analyticSurface() {
   }
 
-  rotatingSpline::rotatingSpline( 
-    rotatingSpline const & orig 
+  rotatingMap1dTo3d::rotatingMap1dTo3d( 
+    rotatingMap1dTo3d const & orig 
   ) : analyticSurface(orig) {
     _pp = orig._pp;
     _vv = orig._vv;
     _angle = orig._angle;
   }
 
-  rotatingSpline::rotatingSpline(
+  rotatingMap1dTo3d::rotatingMap1dTo3d(
     dtSurface const & dtS, 
     dtPoint3 const & pp,
     dtVector3 const & vv,
@@ -31,7 +31,7 @@ namespace dtOO {
 		_angle = angle;		
   }
 
-  rotatingSpline::rotatingSpline(
+  rotatingMap1dTo3d::rotatingMap1dTo3d(
     dtSurface const & dtS, 
     dtVector3 const & vv,
     float const & angle) : analyticSurface(&dtS) {
@@ -43,19 +43,19 @@ namespace dtOO {
 		correctOrigin();
   }
   
-  dtPoint3 rotatingSpline::getOrigin( void ) const {
+  dtPoint3 rotatingMap1dTo3d::getOrigin( void ) const {
     return _pp;
   }
   
-  dtVector3 rotatingSpline::getRotVector( void ) const {
+  dtVector3 rotatingMap1dTo3d::getRotVector( void ) const {
     return _vv;
   }
 
-  float rotatingSpline::getAngle( void ) const {
+  float rotatingMap1dTo3d::getAngle( void ) const {
     return _angle;
   }  
       
-  float rotatingSpline::u_phi(float const & arg) const {
+  float rotatingMap1dTo3d::u_phi(float const & arg) const {
     return 
         map2dTo3d::getUMin() 
       + arg * (
@@ -65,7 +65,7 @@ namespace dtOO {
         (2. * M_PI);
   }
   
-  float rotatingSpline::phi_u(float const & arg) const {
+  float rotatingMap1dTo3d::phi_u(float const & arg) const {
     if (arg >= 0.) {
       return 
         2. * M_PI * (arg - map2dTo3d::getUMin()) 
@@ -82,25 +82,25 @@ namespace dtOO {
     }
   }
   
-  float rotatingSpline::v_m(float const & arg) const {
+  float rotatingMap1dTo3d::v_m(float const & arg) const {
 //    ptrHandling<dtCurve const> rr( getRadiusCurve() );
     return ptrConstRadiusCurve()->u_l(arg);
   }
   
-  float rotatingSpline::m_v(float const & arg) const {
+  float rotatingMap1dTo3d::m_v(float const & arg) const {
 //    ptrHandling<dtCurve const> rr( getRadiusCurve() );
     return ptrConstRadiusCurve()->l_u(arg);    
   }
   
-  dtPoint3 rotatingSpline::xyz_phiZ(float const & arg0, float const & arg1) const {
+  dtPoint3 rotatingMap1dTo3d::xyz_phiZ(float const & arg0, float const & arg1) const {
     return getPoint( u_phi(arg0), v_z(arg1) );
   }
   
-  dtPoint2 rotatingSpline::uv_phiZ(float const & arg0, float const & arg1) const {
+  dtPoint2 rotatingMap1dTo3d::uv_phiZ(float const & arg0, float const & arg1) const {
     return dtPoint2(u_phi(arg0), v_z(arg1));
   }
   
-  dtPoint2 rotatingSpline::uv_deltaPhiRadiusDeltaM(
+  dtPoint2 rotatingMap1dTo3d::uv_deltaPhiRadiusDeltaM(
     float const & bU, float const & bV, float const & arg0, float const & arg1
   ) const {
     float phi = phi_u(bU);
@@ -110,7 +110,7 @@ namespace dtOO {
     return uv_phiRadiusM(phi*rr+arg0, mm+arg1);  
   }
   
-  dtPoint2 rotatingSpline::uv_phiRadiusM(
+  dtPoint2 rotatingMap1dTo3d::uv_phiRadiusM(
     float const & arg0, float const & arg1
   ) const {
     float const vv = v_m(arg1);
@@ -119,21 +119,21 @@ namespace dtOO {
     return dtPoint2( u_phi(phi), vv );
   }
   
-  dtPoint2 rotatingSpline::uv_phiM(
+  dtPoint2 rotatingMap1dTo3d::uv_phiM(
     float const & arg0, float const & arg1
   ) const {
     return dtPoint2( u_phi(arg0), v_m(arg1) );
   }
   
-  float rotatingSpline::zMin( void ) const {
+  float rotatingMap1dTo3d::zMin( void ) const {
     return z_v( getMin(1) );
   }
   
-  float rotatingSpline::zMax( void ) const {
+  float rotatingMap1dTo3d::zMax( void ) const {
     return z_v( getMax(1) );
   }
   
-  float rotatingSpline::z_v(float const & arg) const {
+  float rotatingMap1dTo3d::z_v(float const & arg) const {
     //
     //get point in x,y,z coordinates
     //
@@ -144,7 +144,7 @@ namespace dtOO {
     return _vv * (pointXYZ - _pp);
   }
 
-  float rotatingSpline::v_z(float const & arg) const {
+  float rotatingMap1dTo3d::v_z(float const & arg) const {
     float minZ = zMin();
     float maxZ = zMax();
     
@@ -180,7 +180,7 @@ namespace dtOO {
     return vv;    
   }
   
-  float rotatingSpline::r_v(float const & arg0) const {
+  float rotatingMap1dTo3d::r_v(float const & arg0) const {
     //
     //get point in x,y,z coordinates
     //
@@ -194,23 +194,23 @@ namespace dtOO {
     return sqrt(distance.squared_length());    
   }
   
-  float rotatingSpline::r_m(float const & arg0) const {
+  float rotatingMap1dTo3d::r_m(float const & arg0) const {
     float const vv = v_m(arg0);
     return r_v(vv);
   }
 
-  rotatingSpline * rotatingSpline::clone( void ) const {
-    return new rotatingSpline( *this );
+  rotatingMap1dTo3d * rotatingMap1dTo3d::clone( void ) const {
+    return new rotatingMap1dTo3d( *this );
   }
 
-  rotatingSpline * rotatingSpline::create( void ) const {
-    return new rotatingSpline();
+  rotatingMap1dTo3d * rotatingMap1dTo3d::create( void ) const {
+    return new rotatingMap1dTo3d();
   }
 
-  rotatingSpline::~rotatingSpline() {
+  rotatingMap1dTo3d::~rotatingMap1dTo3d() {
   }
   
-  dtCurve const * rotatingSpline::ptrConstRadiusCurve( void ) const {
+  dtCurve const * rotatingMap1dTo3d::ptrConstRadiusCurve( void ) const {
     map1dTo3d * m1d = segmentConstUPercent(0., 0., 1.);
 		dt__ptrAss(
 		  splineCurve3d const * sC3,
@@ -219,7 +219,7 @@ namespace dtOO {
 		return sC3->ptrConstDtCurve();
   }
   
-//  dtCurve * rotatingSpline::getCircleCurve( float const & vv ) const {
+//  dtCurve * rotatingMap1dTo3d::getCircleCurve( float const & vv ) const {
 //    map1dTo3d * m1d = pickConstVPercent(0., 0., 1.);
 //		dt__ptrAss(
 //		  splineCurve3d const * sC3,
@@ -229,7 +229,7 @@ namespace dtOO {
 //    
 //  }
 	
-	void rotatingSpline::correctOrigin() {
+	void rotatingMap1dTo3d::correctOrigin() {
 		dtPoint3 start = map2dTo3d::getPointPercent(0.,0.);
 		dtVector3 dist = start - _pp;
 		if ( (dist*_vv) != 0. ) {
@@ -244,12 +244,12 @@ namespace dtOO {
 		}
 	}
 	
-  map2dTo3d * rotatingSpline::segmentRectangle(
+  map2dTo3d * rotatingMap1dTo3d::segmentRectangle(
 	  dtPoint2 const & p0, dtPoint2 const & p1
   ) const {
 		ptrHandling<analyticSurface> aS( 
 			analyticSurface::SecureCast(analyticSurface::segmentRectangle(p0, p1)) 
 		);
-		return new rotatingSpline( *(aS.get()->ptrDtSurface()), _pp, _vv, _angle);
+		return new rotatingMap1dTo3d( *(aS.get()->ptrDtSurface()), _pp, _vv, _angle);
   }	
 }

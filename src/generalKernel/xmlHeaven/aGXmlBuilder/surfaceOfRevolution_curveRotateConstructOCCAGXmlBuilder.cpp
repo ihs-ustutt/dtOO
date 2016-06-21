@@ -5,7 +5,7 @@
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtCurve.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/rotatingSpline.h>
+#include <analyticGeometryHeaven/rotatingMap1dTo3d.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
@@ -90,7 +90,7 @@ namespace dtOO {
         rectangularTrimmedSurface_curveRotateConstructOCC(*cc, pp, vv, angle).result()
       );
     }
-    rotatingSpline * rS = new rotatingSpline(*dtS, pp, vv, angle);
+    rotatingMap1dTo3d * rS = new rotatingMap1dTo3d(*dtS, pp, vv, angle);
 
     rS->correctOrigin();
 

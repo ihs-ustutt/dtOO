@@ -2,7 +2,7 @@
 #include <logMe/logMe.h>
 #include "analyticGeometry.h"
 #include "splineCurve3d.h"
-#include "rotatingSpline.h"
+#include "rotatingMap1dTo3d.h"
 #include "analyticSurface.h"
 #include "trans6SidedCube.h"
 #include "rotatingMap2dTo3d.h"
@@ -33,7 +33,7 @@ namespace dtOO {
     
     __IFRET(splineCurve3d);
     __IFRET(analyticSurface);
-    __IFRET(rotatingSpline);
+    __IFRET(rotatingMap1dTo3d);
     __IFRET(trans6SidedCube);
 		__IFRET(rotatingMap2dTo3d);
 		__IFRET(scaOneDInMap1dTo3d);

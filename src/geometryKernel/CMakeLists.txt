@@ -2,7 +2,7 @@ SET(HEADERS
   analyticGeometryHeaven/analyticGeometry.h
   analyticGeometryHeaven/analyticGeometryFactory.h
   analyticGeometryHeaven/splineCurve3d.h
-  analyticGeometryHeaven/rotatingSpline.h
+  analyticGeometryHeaven/rotatingMap1dTo3d.h
   analyticGeometryHeaven/analyticSurface.h
   analyticGeometryHeaven/map3dTo3d.h
   analyticGeometryHeaven/map2dTo3d.h
@@ -91,7 +91,6 @@ SET(HEADERS
   dtTransformerHeaven/dtTransformerFactory.h
   dtTransformerHeaven/thicknessIncreasing.h
   dtTransformerHeaven/biThicknessIncreasing.h
-  dtTransformerHeaven/conformalMapping.h
   dtTransformerHeaven/doNothing.h
   dtTransformerHeaven/offset.h
   dtTransformerHeaven/translate.h
@@ -99,7 +98,6 @@ SET(HEADERS
   dtTransformerHeaven/pickMap3dTo3dRangePercent.h
   dtTransformerHeaven/pickMap2dTo3dRangePercent.h
   dtTransformerHeaven/addConstCoordinate.h
-  dtTransformerHeaven/conformalMappingStartFromPoint.h
   dtTransformerHeaven/makePolynomial.h
   dtTransformerHeaven/predefinedExtension.h
   dtTransformerHeaven/closeGaps.h
@@ -124,7 +122,7 @@ SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
   analyticGeometryHeaven/analyticGeometryFactory.cpp
   analyticGeometryHeaven/splineCurve3d.cpp
-  analyticGeometryHeaven/rotatingSpline.cpp
+  analyticGeometryHeaven/rotatingMap1dTo3d.cpp
   analyticGeometryHeaven/analyticSurface.cpp
   analyticGeometryHeaven/map3dTo3d.cpp
   analyticGeometryHeaven/map2dTo3d.cpp
@@ -204,7 +202,6 @@ SET(SOURCES
   dtTransformerHeaven/dtTransformerFactory.cpp
   dtTransformerHeaven/thicknessIncreasing.cpp
   dtTransformerHeaven/biThicknessIncreasing.cpp
-  dtTransformerHeaven/conformalMapping.cpp
   dtTransformerHeaven/doNothing.cpp
   dtTransformerHeaven/offset.cpp
   dtTransformerHeaven/translate.cpp
@@ -212,7 +209,6 @@ SET(SOURCES
   dtTransformerHeaven/pickMap3dTo3dRangePercent.cpp
   dtTransformerHeaven/pickMap2dTo3dRangePercent.cpp
   dtTransformerHeaven/addConstCoordinate.cpp
-  dtTransformerHeaven/conformalMappingStartFromPoint.cpp
   dtTransformerHeaven/makePolynomial.cpp
   dtTransformerHeaven/predefinedExtension.cpp
   dtTransformerHeaven/closeGaps.cpp

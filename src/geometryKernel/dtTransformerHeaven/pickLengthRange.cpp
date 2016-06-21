@@ -8,7 +8,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/rotatingSpline.h>
+#include <analyticGeometryHeaven/splineCurve3d.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
 

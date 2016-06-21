@@ -33,20 +33,15 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > const * const aG,
     vectorHandling< analyticGeometry * > * result 
 	) const {
-    //
-		// check input
-		//
     dt__throwIf(
-      !dtXmlParserBase::getNChildren("analyticGeometry", toBuild), buildPart()
-    );
-		dt__throwIf(
-      !dtXmlParserBase::hasAttribute("number_points_one", toBuild), buildPart()
-    );
-		dt__throwIf(
-      !dtXmlParserBase::hasAttribute("number_points_two", toBuild), buildPart()
-    );
-		dt__throwIf(
-      !dtXmlParserBase::hasAttribute("order", toBuild), buildPart()
+      !dtXmlParserBase::getNChildren("analyticGeometry", toBuild)
+      || 
+      !dtXmlParserBase::hasAttribute("number_points_one", toBuild)
+      ||
+      !dtXmlParserBase::hasAttribute("number_points_two", toBuild)
+      ||
+      !dtXmlParserBase::hasAttribute("order", toBuild), 
+      buildPart()
     );
 		
 		map2dTo3d const * m2d = NULL;
