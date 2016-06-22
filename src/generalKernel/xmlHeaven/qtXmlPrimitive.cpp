@@ -515,7 +515,14 @@ namespace dtOO {
   std::string qtXmlPrimitive::getAttributeRareStr(
 	  std::string const attName, const ::QDomElement element
 	) {
-    return element.attribute( attName.c_str(), "" ).toStdString();
+    std::string str = element.attribute( attName.c_str(), "" ).toStdString();
+    
+    //
+    // replace state
+    //
+    return stringPrimitive::replaceStringInString(
+      "STATE", dtXmlParser::constReference().currentState(), str
+    );
   }  
 
   bool qtXmlPrimitive::getAttributeBool(
