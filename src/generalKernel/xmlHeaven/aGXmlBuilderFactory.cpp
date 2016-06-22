@@ -10,6 +10,7 @@
 #include "aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/rotatingMap2dTo3dAGXmlBuilder.h"
+#include "aGXmlBuilder/rotatingMap1dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/infinityMap3dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/makeCompoundAGXmlBuilder.h"
 #include "aGXmlBuilder/vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder.h"
@@ -32,6 +33,7 @@
 #include "aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h"
+#include "aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.h"
 
 namespace dtOO {
   dt__pH(aGXmlBuilderFactory) aGXmlBuilderFactory::_instance(NULL);
@@ -104,6 +106,7 @@ namespace dtOO {
     _instance->_builder.push_back( new vec2dInMap2dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new vec3dInMap3dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new rotatingMap2dTo3dAGXmlBuilder() );
+    _instance->_builder.push_back( new rotatingMap1dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new infinityMap3dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new makeCompoundAGXmlBuilder() );
     _instance->_builder.push_back( 
@@ -159,6 +162,9 @@ namespace dtOO {
     _instance->_builder.push_back( new geomShape_readIgesOCCAGXmlBuilder() );
     _instance->_builder.push_back( 
       new bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new geomCurve_map2dTo3dIntersectAGXmlBuilder() 
     );
     
     return _instance.get();

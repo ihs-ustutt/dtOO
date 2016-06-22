@@ -5,7 +5,7 @@
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtCurve.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/rotatingMap1dTo3d.h>
+#include <analyticGeometryHeaven/analyticRotatingMap1dTo3d.h>
 #include <analyticGeometryHeaven/splineCurve3d.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
@@ -34,12 +34,14 @@ namespace dtOO {
     vectorHandling< analyticGeometry * > const * const aG,
     vectorHandling< analyticGeometry * > * result
 	) const {
-    //
-		// check input
-		//    
-    dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
-    dt__throwIf(!dtXmlParserBase::hasChild("Point_3", toBuild), buildPart());
-    dt__throwIf(!dtXmlParserBase::hasChild("Vector_3", toBuild), buildPart());
+    dt__throwIf(
+      !dtXmlParserBase::hasChild("analyticGeometry", toBuild)
+      ||
+      !dtXmlParserBase::hasChild("Point_3", toBuild)
+      ||
+      !dtXmlParserBase::hasChild("Vector_3", toBuild), 
+      buildPart()
+    );
 		
     ::QDomElement wElement;
     //
@@ -87,10 +89,14 @@ namespace dtOO {
     }
     else {
       dtS.reset(
-        rectangularTrimmedSurface_curveRotateConstructOCC(*cc, pp, vv, angle).result()
+        rectangularTrimmedSurface_curveRotateConstructOCC(
+          *cc, pp, vv, angle
+        ).result()
       );
     }
-    rotatingMap1dTo3d * rS = new rotatingMap1dTo3d(*dtS, pp, vv, angle);
+    analyticRotatingMap1dTo3d * rS 
+    = 
+    new analyticRotatingMap1dTo3d(*dtS, pp, vv, angle);
 
     rS->correctOrigin();
 

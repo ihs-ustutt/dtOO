@@ -6,7 +6,7 @@
 #include "map1dTo3d.h"
 #include "splineCurve3d.h"
 #include "analyticSurface.h"
-#include "rotatingMap1dTo3d.h"
+#include "analyticRotatingMap1dTo3d.h"
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
 #include <geometryEngine/dtCurve.h>
@@ -152,7 +152,7 @@ namespace dtOO {
 			  ).result()
 			);
 			
-			return new rotatingMap1dTo3d(*dtS, _pp, _vv);
+			return new analyticRotatingMap1dTo3d(*dtS, _pp, _vv);
 		}
 		else {
 			return map3dTo3d::segmentConstV(vv);
@@ -170,7 +170,7 @@ namespace dtOO {
 			  ).result()
 			);
 			
-			return new rotatingMap1dTo3d(*dtS, _pp, _vv);
+			return new analyticRotatingMap1dTo3d(*dtS, _pp, _vv);
 		}
 		else {
 			return map3dTo3d::segmentConstW(ww);

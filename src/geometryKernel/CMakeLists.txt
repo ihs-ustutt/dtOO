@@ -2,6 +2,7 @@ SET(HEADERS
   analyticGeometryHeaven/analyticGeometry.h
   analyticGeometryHeaven/analyticGeometryFactory.h
   analyticGeometryHeaven/splineCurve3d.h
+  analyticGeometryHeaven/analyticRotatingMap1dTo3d.h
   analyticGeometryHeaven/rotatingMap1dTo3d.h
   analyticGeometryHeaven/analyticSurface.h
   analyticGeometryHeaven/map3dTo3d.h
@@ -32,6 +33,7 @@ SET(HEADERS
   analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h
   analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h
   analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h
+  analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h
   baseContainerHeaven/baseContainer.h
   baseContainerHeaven/pointContainer.h
   baseContainerHeaven/vectorContainer.h
@@ -122,6 +124,7 @@ SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
   analyticGeometryHeaven/analyticGeometryFactory.cpp
   analyticGeometryHeaven/splineCurve3d.cpp
+  analyticGeometryHeaven/analyticRotatingMap1dTo3d.cpp
   analyticGeometryHeaven/rotatingMap1dTo3d.cpp
   analyticGeometryHeaven/analyticSurface.cpp
   analyticGeometryHeaven/map3dTo3d.cpp
@@ -148,6 +151,7 @@ SET(SOURCES
   analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.cpp
   analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.cpp
+  analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.cpp
   baseContainerHeaven/baseContainer.cpp
   baseContainerHeaven/pointContainer.cpp
   baseContainerHeaven/vectorContainer.cpp

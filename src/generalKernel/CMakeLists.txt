@@ -29,6 +29,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/rotatingMap2dTo3dAGXmlBuilder.h  
+  xmlHeaven/aGXmlBuilder/rotatingMap1dTo3dAGXmlBuilder.h  
   xmlHeaven/aGXmlBuilder/infinityMap3dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/makeCompoundAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder.h
@@ -50,6 +51,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -111,6 +113,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/rotatingMap2dTo3dAGXmlBuilder.cpp  
+  xmlHeaven/aGXmlBuilder/rotatingMap1dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/infinityMap3dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/makeCompoundAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder.cpp
@@ -132,6 +135,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp

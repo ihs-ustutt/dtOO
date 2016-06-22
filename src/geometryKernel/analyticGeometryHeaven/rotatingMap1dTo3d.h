@@ -1,70 +1,42 @@
-#ifndef ROTATINGSPLINE_H
-#define	ROTATINGSPLINE_H
+#ifndef rotatingMap1dTo3d_H
+#define	rotatingMap1dTo3d_H
 
-#define _USE_MATH_DEFINES 
-#include <math.h>
 #include <dtLinearAlgebra.h>
-#include <vector>
-#include "analyticSurface.h"
-#include "splineCurve3d.h"
+#include "map2dTo3d.h"
 #include <logMe/dtMacros.h>
+#include <interfaceHeaven/ptrHandling.h>
 
 namespace dtOO {
-  class splineCurve3d;
-
-  class rotatingMap1dTo3d : public analyticSurface {
-    public:
-      dt__class(rotatingMap1dTo3d, analyticGeometry);
-      rotatingMap1dTo3d();
-      rotatingMap1dTo3d(
-        dtSurface const & dtS, 
-        dtPoint3 const & pp,
-        dtVector3 const & vv,
-        float const & angle = 2.*M_PI
-      );
-      rotatingMap1dTo3d(
-        dtSurface const & dtS, 
-        dtVector3 const & vv,
-        float const & angle = 2.*M_PI
-      );      
-      rotatingMap1dTo3d( rotatingMap1dTo3d const & orig );
-      virtual rotatingMap1dTo3d * clone( void ) const;
-      virtual rotatingMap1dTo3d * create( void ) const;        
-      virtual ~rotatingMap1dTo3d();
-      dtPoint3 getOrigin( void ) const;
-      dtVector3 getRotVector( void ) const;
-      float getAngle( void ) const;
-      // coordinate transformations
-      virtual float u_phi(float const & arg) const;
-      virtual float phi_u(float const & arg) const;
-      virtual float v_m(float const & arg) const;
-      virtual float m_v(float const & arg) const;
-      virtual dtPoint3 xyz_phiZ(float const & arg0, float const & arg1) const;
-      virtual dtPoint2 uv_phiZ(float const & arg0, float const & arg1) const;
-      virtual dtPoint2 uv_deltaPhiRadiusDeltaM(
-        float const & bU, float const & bV, 
-        float const & arg0, float const & arg1
-      ) const;      
-      virtual dtPoint2 uv_phiRadiusM(float const & arg0, float const & arg1) const;
-      virtual dtPoint2 uv_phiM(float const & arg0, float const & arg1) const;
-      virtual float zMin( void ) const;
-      virtual float zMax( void ) const;
-      virtual float z_v(float const & arg) const;
-      virtual float v_z(float const & arg) const;
-      virtual float r_v(float const & arg0) const;
-      virtual float r_m(float const & arg0) const;
-      void correctOrigin( void );
-      virtual map2dTo3d * segmentRectangle(
-        dtPoint2 const & p0, dtPoint2 const & p1
-      ) const;      
-    private:
-      dtCurve const * ptrConstRadiusCurve( void ) const;
-//      dtCurve * getCircleCurve( float const & vv ) const;      
-    private:
-      dtPoint3 _pp;
-      dtVector3 _vv;
-      float _angle;
+  class map1dTo3d;
+  class dtTransformer;
+  
+  class rotatingMap1dTo3d : public map2dTo3d {
+  public:
+    dt__class(rotatingMap1dTo3d, analyticGeometry);
+    rotatingMap1dTo3d();
+    rotatingMap1dTo3d( dtVector3 const & vv, map1dTo3d const * const m1d );
+    rotatingMap1dTo3d( const rotatingMap1dTo3d& orig );
+    virtual ~rotatingMap1dTo3d();
+    virtual rotatingMap1dTo3d * create( void ) const;        
+    virtual rotatingMap1dTo3d * clone( void ) const;
+    virtual rotatingMap1dTo3d * cloneTransformed( 
+      dtTransformer const * const dtT 
+    ) const;       
+    virtual bool isClosed( int const & dir) const;
+    virtual float getMin( int const & dir) const;
+    virtual float getMax( int const & dir) const;
+    virtual dtPoint3 getPoint( float const & uu, float const & vv ) const; 
+    virtual std::string dumpToString( void ) const;
+    map1dTo3d const & constRefMap1dTo3d( void ) const;
+    dtVector3 const & rotationAxis( void ) const;
+    dtPoint3 const & origin( void ) const;    
+  private:
+	  void correctOrigin( void );
+  private:
+    ptrHandling< map1dTo3d > _m1d;
+    dtVector3 _vv;
+    dtPoint3 _pp;
   };
 }
-#endif	/* ROTATINGSPLINE_H */
+#endif	/* rotatingMap1dTo3d_H */
 

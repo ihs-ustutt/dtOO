@@ -31,7 +31,7 @@
 #include <dtTransformerHeaven/dtTransformer.h>
 #include <dtTransformerHeaven/doNothing.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/rotatingMap1dTo3d.h>
+#include <analyticGeometryHeaven/analyticRotatingMap1dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
@@ -305,9 +305,11 @@ namespace dtOO {
         // 1 map2dTo3d
         // 				
 				if (m2d) {
-					rotatingMap1dTo3d const * rS = rotatingMap1dTo3d::ConstDownCast(m2d);
+					analyticRotatingMap1dTo3d const * rS 
+          = 
+          analyticRotatingMap1dTo3d::ConstDownCast(m2d);
 					//
-					//rotatingMap1dTo3d
+					//analyticRotatingMap1dTo3d
 					//
 					if (
             rS && hasAttribute("phi", *toBuildP) && hasAttribute("z", *toBuildP) 
