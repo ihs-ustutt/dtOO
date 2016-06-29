@@ -124,17 +124,24 @@ namespace dtOO {
           const std::pair< std::pair< float, float >, funT * >& fnA, 
           const std::pair< std::pair< float, float >, funT * >& fnB 
         ) {  
-          return 
-            std::min(
-              std::min(
-                fabs(yy-fnA.second->YFloat(fnA.first.first)),
-                fabs(yy-fnA.second->YFloat(fnA.first.second))
-              ),
-              std::min(
-                fabs(yy-fnB.second->YFloat(fnB.first.first)),
-                fabs(yy-fnB.second->YFloat(fnB.first.second))
-              )
-            );
+          float thisMinA 
+          =
+          std::min(
+            fabs(yy-fnA.second->YFloat(fnA.first.first)),
+            fabs(yy-fnA.second->YFloat(fnA.first.second))
+          );
+          float thisMinB 
+          =
+          std::min(
+            fabs(yy-fnB.second->YFloat(fnB.first.first)),
+            fabs(yy-fnB.second->YFloat(fnB.first.second))
+          );
+          if (thisMinA < thisMinB) {
+            return true;
+          }
+          else {
+            return false;
+          }
         }
       );    
     }
