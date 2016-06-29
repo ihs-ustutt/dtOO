@@ -89,8 +89,10 @@ classdef dtCircAverage
         v = obj.binA_( bins, : ); 
       end
       function v = ValueQ( obj, r )
+        r( r<obj.rMin_ ) = obj.rMin_;
+        r( r>obj.rMax_ ) = obj.rMax_;
         bins = discretize(r, linspace(obj.rMin_, obj.rMax_, obj.nBins_+1));
-        v = obj.binQ_( bins, : ); 
+        v = obj.binQ_( bins, : );
       end  
       function [] = WriteCSV( obj, field )
         [pathstr, name, ext] = fileparts( field.filename_ );

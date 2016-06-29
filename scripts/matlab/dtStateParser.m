@@ -77,6 +77,7 @@ classdef dtStateParser
       end      
       function obj = ClearHandle( obj )
         obj.handle_ = {};
+        obj.handleFig_ = {};
       end      
       function [ sH ] = ValueOfHandle( obj, state )
         stateId = find( ismember(obj.stateLabel_, state )==1 );
@@ -149,7 +150,7 @@ classdef dtStateParser
         fprintf('Ext     = %s\n', ext);
         
         if ( strfind(name, '*') )
-          fprintf('Name of %s contains *.', obj.filename_);
+          fprintf('Name of %s contains *.\n', obj.filename_);
           cFiles = dir(pathstr);
           
           for i=1:size(cFiles)
@@ -183,7 +184,7 @@ classdef dtStateParser
           end
         end
       end
-      function [] = XPlot( obj, filename, stateList )
+      function [] = XPlot( obj, stateList )
         % extract all states
         XAll = [];
         for i=1:size(obj.stateLabel_,2)
@@ -197,7 +198,7 @@ classdef dtStateParser
         end
         
         %figure
-        fig = figure('Visible', 'Off');
+        fig = figure();
         epssetup(obj.epsSizeX_, obj.epsSizeY_, 0, [1 1 1], 1, 0);
 
         XAll = XAll';
@@ -223,7 +224,7 @@ classdef dtStateParser
           'Input [-]','FontSize', ...
           obj.fontSize_,'FontName',obj.fontName_, 'Interpreter', 'latex' ...
         );
-        print(fig,  '-depsc', filename);
+%        print(fig,  '-depsc', filename);
       end
       function hasState = HasState(obj, state )
         hasState = 1;
@@ -267,12 +268,18 @@ classdef dtStateParser
             % get min
             thisAttributes = thisCV.Attributes;
             id = find(strcmp({thisAttributes.Name}, 'min')==1);
-            cvMin = thisAttributes(id).Value;            
+            cVMin = '0.';            
+            if ~isempty(id)
+              cvMin = thisAttributes(id).Value;                          
+            end
 
             % get max
             thisAttributes = thisCV.Attributes;
             id = find(strcmp({thisAttributes.Name}, 'max')==1);
-            cvMax = thisAttributes(id).Value;  
+            cVMax = '0.';            
+            if ~isempty(id)            
+              cvMax = thisAttributes(id).Value;  
+            end
 
             % get value
             thisAttributes = thisCV.Attributes;
