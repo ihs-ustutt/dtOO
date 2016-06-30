@@ -247,6 +247,9 @@ std::string parseCommand(
   return std::string( "Unknown command: " + aRule + "\n");
 }
 
+//
+// analyticFunction commands
+//
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
@@ -373,6 +376,75 @@ std::string parseCommand(
     
     return ss.str();
   }       
+  dt__commandIf( aRule, help, "help", "This help") {
+    help << std::endl;
+    return help.str();
+  }
+  
+  return std::string( "Unknown command: " + aRule + "\n");  
+}
+
+std::string parseCommand(
+  std::string aRule, 
+  dtXmlParser & parser, 
+  vectorHandling< boundedVolume * > & bV
+) {
+  std::stringstream help;  
+  help << "Commands:" << std::endl;
+  std::vector< std::string > addRule;
+  if ( stringPrimitive::stringContains("(", aRule) ) {
+    addRule
+    = 
+    stringPrimitive::convertToCSVStringVector(
+      stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule)
+    );
+    dt__infoNoClass(parseCommand(), << "addRule = " << addRule);
+  }
+  dt__commandIf( 
+    aRule, help, "info", "show info of dtP" 
+  ) {
+    std::stringstream ss;
+    dt__forAllRefAuto(bV, anBV) {
+      ss 
+      << logMe::dtFormat("bV[ %32s ] = %32s") 
+        % anBV->getLabel() % anBV->virtualClassName()
+      << std::endl;
+    }
+    
+    return ss.str();
+  }       
+  dt__commandIf( aRule, help, "makePreGrid", "make pre grid") {
+    if ( !stringPrimitive::stringContains("*", addRule[0]) ) {
+      bV.get(addRule[0])->makePreGrid();
+    }
+    else {
+      dt__forAllRefAuto(bV, aBV) {
+        if (
+          stringPrimitive::stringContains(
+            stringPrimitive::replaceStringInString("*", "", addRule[0]), 
+            aBV->getLabel()
+          )
+        ) aBV->makePreGrid();
+      }  
+    }
+    return std::string("");
+  }
+  dt__commandIf( aRule, help, "makeGrid", "make grid") {
+    if ( !stringPrimitive::stringContains("*", addRule[0]) ) {
+      bV.get(addRule[0])->makeGrid();
+    }
+    else {
+      dt__forAllRefAuto(bV, aBV) {
+        if (
+          stringPrimitive::stringContains(
+            stringPrimitive::replaceStringInString("*", "", addRule[0]), 
+            aBV->getLabel()
+          )
+        ) aBV->makeGrid();
+      }  
+    }
+    return std::string("");
+  }  
   dt__commandIf( aRule, help, "help", "This help") {
     help << std::endl;
     return help.str();
@@ -528,16 +600,21 @@ int main( int ac, char* av[] ) {
               << 
               parseCommand(command, parser, cV);
             }
+            else if (onClass == "aF") {
+              std::cout 
+              << 
+              parseCommand(command, parser, aF);
+            }            
             else if (onClass == "aG") {
               std::cout 
               << 
               parseCommand(command, parser, aG);
             }
-            else if (onClass == "aF") {
+            else if (onClass == "bV") {
               std::cout 
               << 
-              parseCommand(command, parser, aF);
-            }
+              parseCommand(command, parser, bV);
+            }            
             else if (onClass == "dtP") {
               std::cout 
               << 
