@@ -41,6 +41,7 @@ namespace dtOO {
     private:
       int _direction;
       int _nLayers;
+      int _nSmooth;
 //      dt__pH(scaOneD) _alpha_2;
 //      dt__pH(scaOneD) _beta_1;
 //      dt__pH(scaOneD) _beta_2;

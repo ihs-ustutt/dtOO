@@ -7,6 +7,7 @@
 #include "dtMeshGFace.h"
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <gmsh/meshGFace.h>
+#include "dtMeshTransfiniteGFace.h"
 #include <gmsh/MLine.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MQuadrangle.h>
@@ -25,6 +26,7 @@ namespace dtOO {
   ) : dtMesh2DOperator(orig) {
     _direction = orig._direction;
     _nLayers = orig._nLayers;
+    _nSmooth = orig._nSmooth;
   }
 
   dtMeshGFaceWithTransfiniteLayer::~dtMeshGFaceWithTransfiniteLayer() {
@@ -44,6 +46,10 @@ namespace dtOO {
     
     _direction = qtXmlBase::getAttributeIntMuParse("direction", element, cV);
     _nLayers = qtXmlBase::getAttributeIntMuParse("nLayers", element, cV);     
+    _nSmooth = 0;
+    if ( qtXmlBase::hasAttribute("nSmooth", element) ) {
+      _nSmooth = qtXmlBase::getAttributeIntMuParse("nSmooth", element, cV);       
+    }
   }
       
   void dtMeshGFaceWithTransfiniteLayer::operator()( dtGmshFace * dtgf ) {
@@ -166,16 +172,49 @@ namespace dtOO {
       //
       // determine spacing
       //
-      dtVector3 dist(
+      dtVector3 dist0(
         edgeVertex[3][layer].first->x() - edgeVertex[3][0].first->x(),
         edgeVertex[3][layer].first->y() - edgeVertex[3][0].first->y(),
         edgeVertex[3][layer].first->z() - edgeVertex[3][0].first->z()
       );
+      dtVector3 dist1(
+        edgeVertex[1][layer].first->x() - edgeVertex[1][0].first->x(),
+        edgeVertex[1][layer].first->y() - edgeVertex[1][0].first->y(),
+        edgeVertex[1][layer].first->z() - edgeVertex[1][0].first->z()
+      );
+      float distInc 
+      = 
+      ( 
+        dtLinearAlgebra::length( dist1 )
+        -
+        dtLinearAlgebra::length( dist0 )
+      )
+      /
+      ( sheet0.fixJ(layer).size() - 1);
+      dt__info(
+        operator()(),
+        << "layer = " << layer << std::endl
+        << "|dist0| = " << dtLinearAlgebra::length( dist0 ) << std::endl
+        << "|dist1| = " << dtLinearAlgebra::length( dist1 ) << std::endl
+        << "distInc = " << distInc << std::endl
+      );
+      
+      //
+      // calculate normals
+      //
+      std::vector< dtVector3 > NN(sheet0.fixJ(layer).size());
+      NN[ 0 ] 
+      = 
+      dtLinearAlgebra::normalize( dist0 );
+      NN[ sheet0.fixJ(layer).size() - 1 ] 
+      = 
+      dtLinearAlgebra::normalize( dist1 );
+        
       dt__forInnerIndex(sheet0.fixJ(layer), node) {
         //
         // get normal to boundary
         //
-        dtVector3 nn
+        NN[ node ]
         =
         dtLinearAlgebra::normalize(
           dtLinearAlgebra::crossProduct(
@@ -193,7 +232,34 @@ namespace dtOO {
             dtgf->normal( edgeVertex[0][node].second )
           )
         );
-
+        if (dtLinearAlgebra::dotProduct(NN[ node ], NN[ node - 1 ]) < 0.) {
+          NN[ node ] = -1. * NN[ node ];          
+        }
+      }
+      if (
+        dtLinearAlgebra::dotProduct(
+          NN[ sheet0.fixJ(layer).size() - 1 ], 
+          NN[ sheet0.fixJ(layer).size() - 2 ]
+        ) < 0.
+      ) {
+        NN[ sheet0.fixJ(layer).size() - 1 ] 
+        = 
+        -1. * NN[ sheet0.fixJ(layer).size() - 1 ];          
+      }
+      
+      //
+      // smooth normals
+      //
+      dt__forFromToIndex(0, _nSmooth, thisSmooth) {
+        dt__forInnerIndex(sheet0.fixJ(layer), node) {
+          NN[ node ]
+          =
+          dtLinearAlgebra::normalize( NN[ node - 1] + NN[ node + 1] );
+        }
+      }
+      
+      dt__forInnerIndex(sheet0.fixJ(layer), node) {
+        dtVector3 nn = NN[ node ];
         //
         // correct orientation
         //
@@ -214,7 +280,7 @@ namespace dtOO {
             dtgf->getMap2dTo3d()->jacobi( edgeVertex[0][node].second )
             ,
             dtLinearAlgebra::createMatrixVector(
-              dtLinearAlgebra::length( dist ) * nn
+              ( dtLinearAlgebra::length( dist0 ) + distInc * node ) * nn
             )
           )
         );
@@ -246,16 +312,44 @@ namespace dtOO {
       //
       // determine spacing
       //
-      dtVector3 dist(
+      dtVector3 dist0(
+        edgeVertex[1][layer].first->x() - edgeVertex[1][0].first->x(),
+        edgeVertex[1][layer].first->y() - edgeVertex[1][0].first->y(),
+        edgeVertex[1][layer].first->z() - edgeVertex[1][0].first->z()
+      );
+      dtVector3 dist1(
         edgeVertex[3][layer].first->x() - edgeVertex[3][0].first->x(),
         edgeVertex[3][layer].first->y() - edgeVertex[3][0].first->y(),
         edgeVertex[3][layer].first->z() - edgeVertex[3][0].first->z()
       );
+      float distInc 
+      = 
+      ( 
+        dtLinearAlgebra::length( dist1 )
+        -
+        dtLinearAlgebra::length( dist0 )
+      )
+      /
+      ( sheet0.fixJ(layer).size() - 1);
+      dt__info(
+        operator()(),
+        << "layer = " << layer << std::endl
+        << "|dist0| = " << dtLinearAlgebra::length( dist0 ) << std::endl
+        << "|dist1| = " << dtLinearAlgebra::length( dist1 ) << std::endl
+        << "distInc = " << distInc << std::endl
+      );
+      
+      std::vector< dtVector3 > NN( sheet1.fixJ(layer).size() );
+      NN[ 0 ] = -1. * dtLinearAlgebra::normalize( dist0 );      
+      NN[ sheet1.fixJ(layer).size() - 1 ] 
+      = 
+      -1. * dtLinearAlgebra::normalize( dist1 );
+      
       dt__forInnerIndex(sheet1.fixJ(layer), node) {
         //
         // get normal to boundary
         //        
-        dtVector3 nn
+        NN[ node ]
         =
         dtLinearAlgebra::normalize(
           dtLinearAlgebra::crossProduct(
@@ -267,7 +361,28 @@ namespace dtOO {
             dtgf->normal( edgeVertex[2][node].second )
           )
         );
-
+      }
+      if (
+        dtLinearAlgebra::dotProduct(
+          NN[ sheet1.fixJ(layer).size() - 1 ], 
+          NN[ sheet1.fixJ(layer).size() - 2 ]
+        ) < 0.
+      ) {
+        NN[ sheet1.fixJ(layer).size() - 1 ] 
+        = 
+        -1. * NN[ sheet1.fixJ(layer).size() - 1 ];          
+      }
+      
+      dt__forFromToIndex(0, _nSmooth, thisSmooth) {
+        dt__forInnerIndex(sheet1.fixJ(layer), node) {
+          NN[ node ]
+          =
+          dtLinearAlgebra::normalize( NN[ node - 1] + NN[ node + 1] );
+        }
+      }
+      
+      dt__forInnerIndex(sheet1.fixJ(layer), node) {
+        dtVector3 nn = NN[ node ];        
         //
         // correct orientation
         //        
@@ -288,7 +403,7 @@ namespace dtOO {
             dtgf->getMap2dTo3d()->jacobi( edgeVertex[2][node].second )
             ,
             dtLinearAlgebra::createMatrixVector(
-              dtLinearAlgebra::length( dist ) * nn
+              ( dtLinearAlgebra::length( dist0 ) + distInc * node ) * nn
             )
           )
         );
@@ -357,7 +472,8 @@ namespace dtOO {
 //      dtgf->getMap2dTo3d()->getLabel()+"dtMeshGFaceWithTransfiniteLayer_0.msh", 
 //      2.2, false, true
 //    );    
-    dtMeshGFace()( gf );
+//    dtMeshGFace()( gf );
+    dtMeshTransfiniteGFace()( gf );
 //    gm.writeMSH(
 //      dtgf->getMap2dTo3d()->getLabel()+"dtMeshGFaceWithTransfiniteLayer_1.msh", 
 //      2.2, false, true
