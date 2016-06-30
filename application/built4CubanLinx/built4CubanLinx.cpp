@@ -89,6 +89,7 @@ std::string parseCommand(
 		return ss.str();    
   }  
   dt__commandIf( aRule, help, "createConstValue", "create constValues" ) {
+    cV.destroy();
     parser.createConstValue(&cV);
     return std::string("");    
   }           
@@ -557,23 +558,23 @@ int main( int ac, char* av[] ) {
     << "#   vectorHandling< dtPlugin * > dtP" << std::endl;
     
     while (true) {
-      std::cout << "built4CubanLinx ::> ";
+//      std::cout << "built4CubanLinx ::> ";
       //
       // get command
       //
-      std::string line;
-      std::getline(std::cin, line);
-//      char * line = readline("built4CubanLinx ::> ");
+//      std::string line;
+//      std::getline(std::cin, line);
+      char * line = readline("built4CubanLinx ::> ");
 //      for ( std::string line; std::getline(std::cin, line); ) {
 //          std::cout << line << std::endl;
 //      }      
       
-      if (line.empty()) break;
+//      if (line.empty()) break;
       
       //
       // make history
       //
-//      if (*line) add_history(line);
+      if (*line) add_history(line);
       
       //
       // make command string
@@ -581,12 +582,13 @@ int main( int ac, char* av[] ) {
       std::string command(line);
       if ( command.empty() ) continue;
       
-//      //
-//      // free line
-//      //
-//      free(line);      
+      //
+      // free line
+      //
+      free(line);      
       
       if ( command == "exit" || std::cin.eof() ) break;
+      
       else {
         try {
           if ( stringPrimitive::stringContains("->", command) ) {
@@ -596,29 +598,19 @@ int main( int ac, char* av[] ) {
             onClass = stringPrimitive::replaceStringInString("-", "", onClass);
             
             if (onClass == "cV") {
-              std::cout 
-              << 
-              parseCommand(command, parser, cV);
+              std::cout << parseCommand(command, parser, cV);
             }
             else if (onClass == "aF") {
-              std::cout 
-              << 
-              parseCommand(command, parser, aF);
+              std::cout << parseCommand(command, parser, aF);
             }            
             else if (onClass == "aG") {
-              std::cout 
-              << 
-              parseCommand(command, parser, aG);
+              std::cout << parseCommand(command, parser, aG);
             }
             else if (onClass == "bV") {
-              std::cout 
-              << 
-              parseCommand(command, parser, bV);
+              std::cout << parseCommand(command, parser, bV);
             }            
             else if (onClass == "dtP") {
-              std::cout 
-              << 
-              parseCommand(command, parser, dtP);
+              std::cout << parseCommand(command, parser, dtP);
             }            
             else dt__throwNoClass(main(), << onClass << " not defined.");
           }
