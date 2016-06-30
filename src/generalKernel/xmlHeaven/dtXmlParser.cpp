@@ -236,18 +236,7 @@ namespace dtOO {
     
     ::QDomElement stateElement 
     = 
-    getChildElement("state", stateName, _rootLoad);
-       
-    //
-    // check for old style
-    //
-    if ( hasChild( "builder", getChild("constValue", stateElement) ) ) {
-      loadRetroStateToConst(stateName, cValRef);
-      dt__info(
-        loadStateToConst(), << "Current working state: " << _currentState
-      );      
-      return;
-    }
+    getChildElement("state", stateName, _rootLoad);      
     
     dt__forAllIndex(cValRef, ii) {
       if ( 
@@ -278,71 +267,7 @@ namespace dtOO {
     _currentState = stateName;
     dt__info(loadStateToConst(), << "Current working state: " << _currentState);
   }
-  
-  void dtXmlParser::loadRetroStateToConst(
-    std::string const stateName, 
-    vectorHandling< constValue * > & cValRef
-  ) {
-
-    dt__warning(
-      loadRetroStateToConst(), 
-      << "Style of declaration has changed. Please modify your xml file." 
-      << std::endl
-      << "> -------------------------------------------------------" 
-      << std::endl
-      << "> Old style:" << std::endl
-      << ">  <constValue label=""label"">" << std::endl
-      << ">    <builder  name=""intParam|sliderFloatParam"">"  << std::endl
-      << ">      <int value=""0"" min=""0"" max=""500""/>"  << std::endl
-      << ">    </builder>"  << std::endl
-      << ">  </constValue>"  << std::endl
-      << "> New style:" << std::endl
-      << ">  <constValue " << std::endl
-      << ">    label=""label"" " << std::endl
-      << ">    name=""intParam|sliderFloatParam"" " << std::endl
-      << ">    value=""0"" " << std::endl
-      << ">    min=""0"" " << std::endl
-      << ">    max=""500"""  << std::endl
-      << ">  />" << std::endl
-      << "> -------------------------------------------------------"
-    );       
-
-    ::QDomElement stateElement = getChildElement( "state", stateName, _rootLoad );
-    for (int ii=0;ii<cValRef.size();ii++) {
-      if ( 
-        hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) 
-      ) {    
-        ::QDomElement constValueElement = getChildElement("constValue",
-                                          cValRef[ii]->getLabel(),
-                                          stateElement
-                                        );
-        cValRef[ii]->setValue( 
-          getAttributeFloat( 
-            "value",
-            constValueElement.firstChildElement().firstChildElement() 
-          ) 
-        );
-      }
-      else {
-        dt__warning(
-          loadRetroStateToConst(),
-          << cValRef[ii]->getLabel() 
-          << "-Element not in state file." << std::endl
-          << "Leave value as it was before load state."
-        );  
-      }
-    }
-    
-    //
-    // store this state name in parser
-    //
-    _currentState = stateName;
-    dt__info(
-      loadRetroStateToConst(), 
-      << "Current working state: " << _currentState
-    );    
-  }
-  
+   
   std::vector< std::string > dtXmlParser::getStates(void) {
     if (_rootLoad.isNull()) {
       dt__throw(getStates, << dt__eval(_rootLoad.isNull()) );
@@ -709,20 +634,24 @@ namespace dtOO {
   ) const {
     ::QDomElement const wElement = getElement("constValue", constValueLabel);
     
-    //
-    // retro style
-    //
-    if ( hasChild("builder", wElement) ) {
-      createRetroConstValue(constValueLabel, cValP); 
-      return;
-    }
+//    //
+//    // retro style
+//    //
+//    if ( hasChild("builder", wElement) ) {
+//      createRetroConstValue(constValueLabel, cValP); 
+//      return;
+//    }
     
     constValue * aCV 
     = 
-    constValue::create( getAttributeStr("name", wElement), constValueLabel );
+    constValue::create( 
+      getAttributeStr("name", wElement), 
+      constValueLabel, 
+      getAttributeStr("value", wElement)
+    );
     
-    aCV->setValue( 
-      getAttributeFloatMuParse( "value", wElement, cValP) 
+    aCV->setValue(
+      getAttributeFloatMuParse( "value", wElement, cValP )
     );
     if ( hasAttribute("min", wElement) && hasAttribute("max", wElement) ) {
       aCV->setRange( 
@@ -733,75 +662,6 @@ namespace dtOO {
     
     cValP->push_back( aCV );      
   }
-
-  void dtXmlParser::createRetroConstValue(
-    std::string const constValueLabel, 
-    vectorHandling< constValue * > * cValP
-  ) const {
-    dt__warning(
-      createConstValue(), 
-      << "Creating constValue = " << constValueLabel << std::endl
-      << "Style of declaration has changed. Please modify your xml file." 
-      << std::endl
-      << "> -------------------------------------------------------" 
-      << std::endl
-      << "> Old style:" << std::endl
-      << ">  <constValue label=""label"">" << std::endl
-      << ">    <builder  name=""intParam|sliderFloatParam"">"  << std::endl
-      << ">      <int value=""0"" min=""0"" max=""500""/>"  << std::endl
-      << ">    </builder>"  << std::endl
-      << ">  </constValue>"  << std::endl
-      << "> New style:" << std::endl
-      << ">  <constValue " << std::endl
-      << ">    label=""label"" " << std::endl
-      << ">    name=""intParam|sliderFloatParam"" " << std::endl
-      << ">    value=""0"" " << std::endl
-      << ">    min=""0"" " << std::endl
-      << ">    max=""500"""  << std::endl
-      << ">  />" << std::endl
-      << "> -------------------------------------------------------"
-    );          
-    ::QDomElement const wElement 
-    = 
-    getChild("builder", getElement("constValue", constValueLabel));
-
-    constValue * aCValP
-    = 
-    constValue::create( getAttributeStr("name", wElement), constValueLabel );
-    
-    //
-    //check first child
-    //should be a float
-    //
-    ::QDomElement firstChild = wElement.firstChildElement();
-    if ( 
-         ( getTagName(firstChild) == "float" )
-      && hasAttribute("min", firstChild) 
-      && hasAttribute("max", firstChild)
-      && hasAttribute("value", firstChild) 
-    ) {
-      //
-      // set value, min and max
-      //
-      aCValP->setValue( getAttributeFloatMuParse( "value", firstChild, cValP) );
-      aCValP->setRange( 
-        muParseString( getAttributeStr( "min", firstChild ) ), 
-        muParseString( getAttributeStr( "max", firstChild ) ) 
-      );
-    }
-    else if ( 
-         ( getTagName(firstChild) == "int" )
-      && hasAttribute("value", firstChild) 
-    ) {
-      //
-      // set value, min and max
-      //
-      aCValP->setValue( getAttributeFloatMuParse( "value", firstChild, cValP) );
-    }
-    else dt__throw( createConstValue(), << convertToString( firstChild));
-
-    cValP->push_back( aCValP );
-  }  
 	
   void dtXmlParser::createConstValue(
     vectorHandling< constValue * > * cValP
@@ -822,6 +682,8 @@ namespace dtOO {
         getAttributeStr("state", cVInit), *cValP
       );
     }
+    
+    dt__forAllRefAuto(*cValP, aCV) aCV->resolveConstraint( cValP );
   }
 	
   void dtXmlParser::getLabels( 

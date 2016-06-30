@@ -183,12 +183,12 @@ namespace dtOO {
       std::string const & fileName, QDomDocument & xmlDocument
     );
     void setStaticProperties( void );
-    void createRetroConstValue(
-      std::string const constValueLabel, vectorHandling< constValue * > * cValP
-    ) const;     
-    void loadRetroStateToConst(
-      std::string const stateName, vectorHandling< constValue * > &cValRef
-    );    
+//    void createRetroConstValue(
+//      std::string const constValueLabel, vectorHandling< constValue * > * cValP
+//    ) const;     
+//    void loadRetroStateToConst(
+//      std::string const stateName, vectorHandling< constValue * > &cValRef
+//    );    
   private:
     std::vector< ::QDomElement > _rootRead;
     std::vector< ::QDomDocument > _rootReadDoc;

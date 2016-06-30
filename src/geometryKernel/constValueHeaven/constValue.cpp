@@ -4,6 +4,7 @@
 
 #include "sliderFloatParam.h"
 #include "intParam.h"
+#include "constrainedFloatParam.h"
 #include <xmlHeaven/dtXmlParser.h>
 
 namespace dtOO {
@@ -18,11 +19,16 @@ namespace dtOO {
   }
 
   constValue * constValue::create(
-    std::string const & type, std::string const & label
+    std::string const & type, 
+    std::string const & label, 
+    std::string const & valueStr
   ) {
     constValue * aCV;
     if (type == "sliderFloatParam") aCV = new sliderFloatParam();  
     else if (type == "intParam") aCV = new intParam();
+    else if (type == "constrainedFloatParam") {
+      aCV = new constrainedFloatParam( valueStr );
+    }
     else dt__throwUnexpected(create());
     
     aCV->setLabel(label);
@@ -50,5 +56,11 @@ namespace dtOO {
 
   float constValue::getMin(void) const {
     return 0.;
+  }
+  
+  void constValue::resolveConstraint( 
+    vectorHandling< constValue * > const * const cVArr
+  ) {
+    
   }
 }

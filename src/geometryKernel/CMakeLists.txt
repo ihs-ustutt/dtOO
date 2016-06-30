@@ -43,6 +43,7 @@ SET(HEADERS
   constValueHeaven/constValue.h
   constValueHeaven/sliderFloatParam.h
   constValueHeaven/intParam.h
+  constValueHeaven/constrainedFloatParam.h
   resultValueHeaven/resultValue.h
   resultValueHeaven/floatValue.h
   analyticFunctionHeaven/analyticFunction.h
@@ -161,6 +162,7 @@ SET(SOURCES
   constValueHeaven/constValue.cpp
   constValueHeaven/sliderFloatParam.cpp
   constValueHeaven/intParam.cpp
+  constValueHeaven/constrainedFloatParam.cpp
   resultValueHeaven/resultValue.cpp
   resultValueHeaven/floatValue.cpp
   analyticFunctionHeaven/analyticFunction.cpp
