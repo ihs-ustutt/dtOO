@@ -59,7 +59,9 @@ classdef dtScalarTime
         
         obj.nValues_ = size( obj.value_, 1);
       end
-      
+      function [val] = LastTime( obj )
+        val = max( obj.time_ );
+      end      
       function [val] = MeanLast( obj, nAverageSteps )
         val = mean( obj.value_(obj.nValues_ - nAverageSteps:end) );
       end       

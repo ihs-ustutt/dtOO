@@ -29,6 +29,11 @@ classdef dtStateParser
         obj.lw_  = 0.5;
         obj.lwH_ = 1;             
       end
+      function obj = Unique( obj )
+        [C,IA,IC] = unique( obj.stateLabel_ );
+        obj.stateLabel_ = obj.stateLabel_( IA );
+        obj.cV_ = obj.cV_( IA );
+      end      
       function obj = adjustPlotSize(obj, sizeX, sizeY)
         obj.epsSizeX_ = sizeX;
         obj.epsSizeY_ = sizeY;
@@ -184,7 +189,7 @@ classdef dtStateParser
           end
         end
       end
-      function [] = XPlot( obj, stateList )
+      function [ fig ] = XPlot( obj, stateList )
         % extract all states
         XAll = [];
         for i=1:size(obj.stateLabel_,2)
@@ -198,16 +203,18 @@ classdef dtStateParser
         end
         
         %figure
-        fig = figure();
-        epssetup(obj.epsSizeX_, obj.epsSizeY_, 0, [1 1 1], 1, 0);
+        fig = dtPlot('');
+        fig.GiveSinglePlot(5, 5, '', 'Input [-]');
+%        epssetup(obj.epsSizeX_, obj.epsSizeY_, 0, [1 1 1], 1, 0);
 
         XAll = XAll';
         XHigh = XHigh';
-         
-        plot(XAll,'Color',obj.lc_,'LineWidth',obj.lw_);
+
+        fig.MakeCurrent();        
+        plot(XAll,'Color', fig.lc_, 'LineWidth', fig.lw_);
         for j =1:size(XHigh,2)
           hold on
-          plot(XHigh(:,j),'Color',obj.lcH_,'LineWidth',obj.lwH_);
+          plot(XHigh(:,j),'Color', fig.lcH_,'LineWidth', fig.lwH_);
         end
 
         % Costumize horizontal axis:
@@ -219,13 +226,69 @@ classdef dtStateParser
         % Add vertical grid:
         set(gca,'XGrid','On','GridLineStyle','-')
         % Costumize font
-        set(gca,'FontSize',obj.fontSize_,'FontName',obj.fontName_)
-        ylabel(...
-          'Input [-]','FontSize', ...
-          obj.fontSize_,'FontName',obj.fontName_, 'Interpreter', 'latex' ...
-        );
+        set(gca,'FontSize', fig.fontSize_,'FontName', fig.fontName_)
+%         ylabel(...
+%           'Input [-]','FontSize', ...
+%           fig.fontSize_,'FontName', fig.fontName_, 'Interpreter', 'latex' ...
+%         );
 %        print(fig,  '-depsc', filename);
       end
+      function [ fig ] = XPlotReduceIntersections( obj, stateList )
+        % extract states to highlight
+        XHigh = [];
+        XHighOrder = [];
+        for i=1:size(stateList,2)
+          XHigh(i, 1:size(obj.handle_,2)) = obj.ValuePercentOfHandle( stateList{i} );
+%          [tmp,theOrder] = sort( XHigh(i,:) );
+%          theOrder
+%          XHighOrder( i, 1:size(obj.handle_,2) )  = theOrder;
+        end
+        
+%         cPtr = 1;
+%         maxPtr = size(XHigh,1);
+%         while (cPtr<maxPtr)
+%           maxEqual = 0;
+%           for i=cPtr+1:maxPtr
+%             thisEqual = sum( XHighOrder(cPtr,:) == XHighOrder(i,:) );
+%             
+%             if (thisEqual>maxEqual) 
+%               maxEqual = thisEqual;
+%               maxPtrPos = i;
+%             end
+%           end
+%           maxEqual
+%           cPtr = cPtr+1;
+%         end
+        [a,b] = sort( std(XHigh) );
+        XHigh=XHigh( :, b)
+        %figure
+        fig = dtPlot('');
+        fig.GiveSinglePlot(5,5,'','Input [-]');
+        fig.MakeCurrent();
+        %epssetup(obj.epsSizeX_, obj.epsSizeY_, 0, [1 1 1], 1, 0);
+
+        XHigh = XHigh';
+         
+        for j =1:size(XHigh,2)
+          hold on;
+          plot(XHigh(:,j),'Color',fig.lcH_,'LineWidth',fig.lwH_);
+        end
+
+        % Costumize horizontal axis:
+        M = size(XHigh,1);
+        set( ...
+          gca,'XTick',1:M,'XTickLabel', obj.handleFig_(b), 'XLim',[0.7 M+0.3], ...
+          'TickLabelInterpreter', 'latex' ...
+        );
+        % Add vertical grid:
+        set(gca,'XGrid','On','GridLineStyle','-')
+        % Customize font
+        set(gca,'FontSize',fig.fontSize_,'FontName', fig.fontName_)
+        ylabel(...
+          'Input [-]','FontSize', ...
+          fig.fontSize_,'FontName',fig.fontName_, 'Interpreter', 'latex' ...
+        );
+      end      
       function hasState = HasState(obj, state )
         hasState = 1;
         if isempty( find( ismember(obj.stateLabel_, state )==1 ) )

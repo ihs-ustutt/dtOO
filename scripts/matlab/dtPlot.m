@@ -18,22 +18,34 @@ classdef dtPlot
         obj.lcH_ = [0 0 0];
         obj.lw_  = 0.5;
         obj.lwH_ = 1;
-        obj.fig_ = figure('Visible', 'Off');
+        obj.fig_ = figure();
       end
+      function [] = MakeCurrent( obj )
+        figure( obj.fig_ );
+      end      
       function fig = GiveSinglePlot(obj, sizeX, sizeY, labelX, labelY)
         fig = obj.fig_;
         figure(obj.fig_);
         epssetup(sizeX, sizeY, 0, [1 1 1], 1, 0);
 
-        xlabel(...
-          labelX,'FontSize', ...
-          obj.fontSize_,'FontName',obj.fontName_, 'Interpreter', 'latex' ...
-        );        
-        ylabel(...
-          labelY,'FontSize', ...
-          obj.fontSize_,'FontName',obj.fontName_, 'Interpreter', 'latex' ...
-        );      
+        if ~isempty(labelX)
+          xlabel(...
+            labelX,'FontSize', ...
+            obj.fontSize_,'FontName',obj.fontName_, 'Interpreter', 'latex' ...
+          );        
+        end
+        if ~isempty(labelY)
+          ylabel(...
+            labelY,'FontSize', ...
+            obj.fontSize_,'FontName',obj.fontName_, 'Interpreter', 'latex' ...
+          );
+        end
       end 
+      function [ fig ] = AdjustSize(obj, sizeX, sizeY)
+        figure(obj.fig_);
+        epssetup(sizeX, sizeY, 0, [1 1 1], 1, 0);
+        fig = obj.fig_;
+      end       
       function [] = Close(obj)       
         close(obj.fig_);
       end
