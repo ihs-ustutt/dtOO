@@ -24,8 +24,8 @@ classdef dtValueVector3Field < dtVector3Field
         obj.mag_ = dt.Mag( obj.value_ );        
              
         obj.A_ = dt.SumMag( obj.sf_ );
-        obj.APos_ = dt.SumMag( obj.sf_( find(obj.q_>0) ) );
-        obj.ANeg_ = dt.SumMag( obj.sf_( find(obj.q_<0) ) );        
+        obj.APos_ = dt.SumMag( obj.sf_( find(obj.q_>0, :) ) );
+        obj.ANeg_ = dt.SumMag( obj.sf_( find(obj.q_<0, :) ) );        
         obj.Q_ = dt.SumMag( obj.q_ );
         obj.QPos_ = dt.Sum( obj.q_( find(obj.q_>0) ) );
         obj.QNeg_ = dt.Sum( obj.q_( find(obj.q_<0) ) );
