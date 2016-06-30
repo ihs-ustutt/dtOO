@@ -34,9 +34,14 @@ classdef dtResultStateParser < dtStateParser
         if ~isempty(toRemove)
           obj.resultName_(toRemove) = [];
           obj.resultNameFig_(toRemove) = [];
+          obj.result_(:, toRemove) = [];          
         end
-        obj.result_(:, toRemove) = [];
-      end  
+      end 
+      function [ obj ] = RemoveAllResult( obj )
+        obj.resultName_ = [];
+        obj.resultNameFig_ = [];
+        obj.result_ = [];                  
+      end       
       function [ sH ] = ValueOfResult( obj, stateIn )
         state = {};
         if ~iscell(stateIn)

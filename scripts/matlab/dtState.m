@@ -13,12 +13,6 @@ classdef dtState
           obj.ok_ = 0;
           fprintf('> %s < is not a directory.\n', stateDir);          
           fprintf('Create failed state.\n');          
-%           throw(  ...
-%             MException( ...
-%               'dtState:dtState', ...
-%               sprintf('> %s < is not a directory.', stateDir) ...
-%             ) ...
-%           );
         end
       [pathstr, name, ext] = fileparts(stateDir);
       obj.path_ = stateDir;
@@ -48,6 +42,11 @@ classdef dtState
     function obj = MakeFail(obj)
       obj.ok_ = 0;
     end
+    function [ ok ] = Ok( obj )
+% Ok Check function.
+%   ok : Return 1 if is ok, otherwise 0
+      ok = obj.ok_;
+    end         
   end
   methods (Static)
     function str = GiveStateDirectoyName(caseName, prefixStr, number)
