@@ -284,6 +284,10 @@ namespace dtOO {
       }
     }
     
-    gm->removeDuplicateMeshVertices( 1.e-5 );
+    gm->removeDuplicateMeshVertices( 
+      0.5 
+      * 
+      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
+    );
   }
 }

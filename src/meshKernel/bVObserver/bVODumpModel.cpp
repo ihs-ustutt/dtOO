@@ -37,6 +37,12 @@ namespace dtOO {
           << std::endl;											        
       }
 		}
+    dt__forAllRefAuto(gm->vertices(), aV) {
+      logC() 
+        << logMe::dtFormat("dtGmshVertex[ %3i ]: meshSize = %f")
+          % aV->tag() % aV->prescribedMeshSizeAtVertex() 
+        << std::endl;
+    }      
   }
 
   void bVODumpModel::postUpdate( void ) {

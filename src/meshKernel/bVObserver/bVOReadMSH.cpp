@@ -45,6 +45,8 @@ namespace dtOO {
   
   void bVOReadMSH::preUpdate( void ) {
     dt__onlyMaster {
+      if ( ptrBoundedVolume()->isMeshed() ) return;
+      
 		  dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());      
            
       if ( !systemHandling::fileExists(_filename) && !_mustRead ) {
