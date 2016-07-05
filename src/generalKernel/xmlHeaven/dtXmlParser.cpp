@@ -228,6 +228,11 @@ namespace dtOO {
 		//		
     _rootLoad = _rootLoadDoc.documentElement().cloneNode(true).toElement(); 
   }
+
+  bool dtXmlParser::hasState( std::string const stateName ) const {    
+    return hasChildElement("state", stateName, _rootLoad);      
+  }
+  
   
   void dtXmlParser::loadStateToConst(
     std::string const stateName, vectorHandling< constValue * > & cValRef
@@ -633,15 +638,7 @@ namespace dtOO {
     vectorHandling< constValue * > * cValP
   ) const {
     ::QDomElement const wElement = getElement("constValue", constValueLabel);
-    
-//    //
-//    // retro style
-//    //
-//    if ( hasChild("builder", wElement) ) {
-//      createRetroConstValue(constValueLabel, cValP); 
-//      return;
-//    }
-    
+       
     constValue * aCV 
     = 
     constValue::create( 
@@ -678,9 +675,23 @@ namespace dtOO {
         << "Load init state " << getAttributeStr("state", cVInit)
       );
       dtXmlParser::reference().load();
-      dtXmlParser::reference().loadStateToConst( 
-        getAttributeStr("state", cVInit), *cValP
-      );
+      
+      if ( 
+        dtXmlParser::reference().hasState( getAttributeStr("state", cVInit) )
+      ) {
+        dtXmlParser::reference().loadStateToConst( 
+          getAttributeStr("state", cVInit), *cValP
+        );
+      }
+      else {
+        dt__warning(
+          createConstValue(), 
+          << "Parser does not contain state = " 
+          << getAttributeStr("state", cVInit)
+        );        
+        
+        return;
+      }
     }
     
     dt__forAllRefAuto(*cValP, aCV) aCV->resolveConstraint( cValP );

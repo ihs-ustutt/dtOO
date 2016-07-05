@@ -56,6 +56,7 @@ namespace dtOO {
     void remove( std::string const stateName ) const;
     void load( void ) const;
     std::vector< std::string > getStates( void );
+    bool hasState( std::string const stateName ) const;
     void loadStateToConst(
       std::string const stateName, vectorHandling< constValue * > &cValRef
     );
