@@ -569,7 +569,7 @@ int main( int ac, char* av[] ) {
 //          std::cout << line << std::endl;
 //      }      
       
-//      if (line.empty()) break;
+      if (line == NULL) break;
       
       //
       // make history
@@ -587,7 +587,7 @@ int main( int ac, char* av[] ) {
       //
       free(line);      
       
-      if ( command == "exit" || std::cin.eof() ) break;
+      if ( command == "exit" ) break;
       
       else {
         try {
