@@ -8,6 +8,7 @@
 #include "map3dTo3dWithInternalGmsh.h"
 #include "map3dTo3dWithInternalBlockGmsh.h"
 #include "map3dTo3dGmsh.h"
+#include "combineGmsh.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -30,6 +31,7 @@ namespace dtOO {
 		__IFRET(map3dTo3dWithInternalGmsh);
     __IFRET(map3dTo3dWithInternalBlockGmsh);
     __IFRET(map3dTo3dGmsh);
+    __IFRET(combineGmsh);
 
     dt__throw(create(), << str <<  " could not be created");  
   }

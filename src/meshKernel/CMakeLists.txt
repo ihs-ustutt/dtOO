@@ -33,6 +33,7 @@ SET(HEADERS
   map3dTo3dWithInternalBlockGmsh.h
   readMOABMesh.h
   gmshBoundedVolume.h
+  combineGmsh.h
 )
 
 SET(SOURCES
@@ -70,6 +71,7 @@ SET(SOURCES
   map3dTo3dWithInternalBlockGmsh.cpp
   readMOABMesh.cpp
   gmshBoundedVolume.cpp
+  combineGmsh.cpp
 )
 
 APPEND_DTOO_SOURCE(src/meshKernel "${SOURCES}")
