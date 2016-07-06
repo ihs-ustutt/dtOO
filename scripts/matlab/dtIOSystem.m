@@ -3,6 +3,8 @@ classdef dtIOSystem
      nSamples_
      nX_
      x_
+     minX_
+     maxX_     
      nY_
      y_
      yName_
@@ -73,6 +75,9 @@ classdef dtIOSystem
         obj.xNameFig_{end+1} = xNameFig;
         obj.x_(:,end+1) = x;
         obj.nX_ = obj.nX_ + 1;
+        
+        obj.minX_ = min(obj.x_);
+        obj.maxX_ = max(obj.x_);
       end  
       function [ thisX ] = OneX( obj, xName )
 %

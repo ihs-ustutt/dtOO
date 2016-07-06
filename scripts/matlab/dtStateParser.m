@@ -87,6 +87,16 @@ classdef dtStateParser
       function [ sH ] = ValueOfHandle( obj, state )
         stateId = find( ismember(obj.stateLabel_, state )==1 );
         
+        if ~obj.HasState( state )
+        if (exist(obj.filename_, 'file') == 0);
+          throw(  ...
+            MException( ...
+              'dtStateParser:HasState', ...
+              sprintf('> %s < is not a file.', state) ...
+            ) ...
+          );
+        end          
+        end
         cV_label = containers.Map('KeyType','char','ValueType','int32');
         for i=1:size( obj.cV_{stateId}, 2 )
           cV_label( obj.cV_{stateId}{i}.label_ ) = i;

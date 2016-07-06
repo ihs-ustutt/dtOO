@@ -73,5 +73,20 @@ classdef dtLSSVM < dtIOSystem
       function [ y ] = SimLSSVM( obj, x )
         [y, z, obj.model_] = simlssvm( obj.model_, x );
       end
+      function [ y ] = SimLSSVMLimitRange( obj, x, range )
+        y = [];
+        thisXMin = obj.minX_ - range * abs(obj.minX_);
+        thisXMax = obj.maxX_ + range * abs(obj.maxX_);
+        for i=1:size(x,1)
+          xUp = find( x(i,:)>thisXMax );
+          xDown = find( x(i,:)<thisXMin );
+          sumL = length(xUp) + length(xDown)
+          if ( sumL == 0 )
+            [y(end+1,1), z, obj.model_] = simlssvm( obj.model_, x(i,:) );
+          else
+            y(end+1,1) = nan();
+          end
+        end
+      end      
    end
 end
