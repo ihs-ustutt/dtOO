@@ -341,15 +341,15 @@ classdef dtStateParser
             % get min
             thisAttributes = thisCV.Attributes;
             id = find(strcmp({thisAttributes.Name}, 'min')==1);
-            cVMin = '0.';            
+            cvMin = '0.';            
             if ~isempty(id)
-              cvMin = thisAttributes(id).Value;                          
+              cvMin = thisAttributes(id).Value;
             end
 
             % get max
             thisAttributes = thisCV.Attributes;
             id = find(strcmp({thisAttributes.Name}, 'max')==1);
-            cVMax = '0.';            
+            cvMax = '0.';            
             if ~isempty(id)            
               cvMax = thisAttributes(id).Value;  
             end
@@ -358,7 +358,7 @@ classdef dtStateParser
             thisAttributes = thisCV.Attributes;
             id = find(strcmp({thisAttributes.Name}, 'value')==1);
             cvValue = thisAttributes(id).Value;  
-             
+            
             cV{end+1} ...
             = ...
             dtCV( ...

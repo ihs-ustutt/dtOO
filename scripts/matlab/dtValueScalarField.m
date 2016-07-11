@@ -18,8 +18,8 @@ classdef dtValueScalarField < dtScalarField
         
          obj.A_ = dt.SumMag( obj.sf_ );
          obj.Q_ = dt.SumMag( obj.q_ );
-         obj.intSf_ = dt.SumMag( obj.value_ .* dt.Mag(obj.sf_) );
-         obj.intQSf_ = dt.SumMag( obj.value_ .* obj.q_ );
+         obj.intSf_ = dt.Sum( obj.value_ .* dt.Mag(obj.sf_) );
+         obj.intQSf_ = dt.Sum( obj.value_ .* obj.q_ );
       end
       function value = Min( obj )
         value = min(obj.value_);

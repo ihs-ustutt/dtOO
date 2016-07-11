@@ -63,5 +63,15 @@ classdef dtResultStateParser < dtStateParser
            sH = obj.result_(stateId, resultId);
 %         end
       end
+      function hasResult = HasResult(obj, result )
+        hasResult = 1;
+        if isempty( find( ismember(obj.resultName_, result )==1 ) )
+          hasResult = 0;        
+        end
+      end      
+      function resultNameFig = ResultNameFig(obj, result )
+        resultPos = find( ismember(obj.resultName_, result )==1 );
+        resultNameFig = obj.resultNameFig_{ resultPos };
+      end            
    end
 end
