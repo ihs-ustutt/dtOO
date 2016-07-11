@@ -7,6 +7,7 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
+#include <xmlHeaven/dtXmlParser.h>
 #include <meshEngine/dtGmshModel.h>
 
 namespace dtOO {  
@@ -51,15 +52,42 @@ namespace dtOO {
   
   void bVOWriteMSH::postUpdate( void ) {
     dt__onlyMaster {
+      if ( !ptrBoundedVolume()->isMeshed() ) {
+        dt__info(postUpdate(), << "Not yet meshed.");        
+        
+        return;      
+      }
+
+      //
+      // create filename string if empty
+      //
+      std::string cFileName = _filename;
+      if ( 
+        ( cFileName == "" )
+        && 
+        ( dtXmlParser::constReference().currentState() != "" )
+      ) {
+        cFileName 
+        = 
+        dtXmlParser::constReference().currentState()
+        +
+        "_"
+        +
+        ptrBoundedVolume()->getLabel()
+        +
+        ".msh";
+      }
+//      else dt__throwUnexpected(postUpdate);
+      
       dt__info(
         postUpdate(),
-        << "Write " << _filename << "." << std::endl
+        << "Write " << cFileName << "." << std::endl
         << dt__eval(_saveAll) << std::endl
         << dt__eval(_saveParametric)
       );
       
 		  ptrBoundedVolume()->getModel()->writeMSH(
-        _filename, 2.2, false, _saveAll, _saveParametric
+        cFileName, 2.2, false, _saveAll, _saveParametric
       );
     }
   }

@@ -8,6 +8,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <interfaceHeaven/systemHandling.h>
+#include <xmlHeaven/dtXmlParser.h>
 #include <meshEngine/dtGmshVertex.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
@@ -45,24 +46,49 @@ namespace dtOO {
   
   void bVOReadMSH::preUpdate( void ) {
     dt__onlyMaster {
-      if ( ptrBoundedVolume()->isMeshed() ) return;
+      if ( ptrBoundedVolume()->isMeshed() ) {
+        dt__info(preUpdate(), << "Already meshed.");
+        
+        return;
+      }
       
 		  dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());      
-           
-      if ( !systemHandling::fileExists(_filename) && !_mustRead ) {
+
+      //
+      // create filename string if empty
+      //
+      std::string cFileName = _filename;
+      if ( 
+        ( cFileName == "" )
+        && 
+        ( dtXmlParser::constReference().currentState() != "" )
+      ) {
+        cFileName 
+        = 
+        dtXmlParser::constReference().currentState()
+        +
+        "_"
+        +
+        ptrBoundedVolume()->getLabel()
+        +
+        ".msh";
+      }
+//      else dt__throwUnexpected(preUpdate);
+      
+      if ( !systemHandling::fileExists(cFileName) && !_mustRead ) {
         dt__info(
           preUpdate(), 
-          << "No file " << _filename << ". Do not read!" << std::endl
+          << "No file " << cFileName << ". Do not read!" << std::endl
           << "mustRead = " << _mustRead
         );
         return;
       }
       
-      int status = gm->readMSH(_filename);
+      int status = gm->readMSH(cFileName);
       
       dt__info(
         preUpdate(),
-        << "Read MSH file = " << _filename << "." << std::endl
+        << "Read MSH file = " << cFileName << "." << std::endl
         << "Return status = " << status << "."
       );
       dt__throwIf( !status, preUpdate() );

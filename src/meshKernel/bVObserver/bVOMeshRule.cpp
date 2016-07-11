@@ -382,5 +382,7 @@ namespace dtOO {
         }
       }
     }    
+    
+    ptrBoundedVolume()->setMeshed();
   }
 }
