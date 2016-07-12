@@ -85,26 +85,25 @@ classdef dtStateParser
         obj.handleFig_ = {};
       end      
       function [ sH ] = ValueOfHandle( obj, state )
-        stateId = find( ismember(obj.stateLabel_, state )==1 );
-        
-        if ~obj.HasState( state )
-        if (exist(obj.filename_, 'file') == 0);
-          throw(  ...
-            MException( ...
-              'dtStateParser:HasState', ...
-              sprintf('> %s < is not a file.', state) ...
-            ) ...
-          );
-        end          
-        end
-        cV_label = containers.Map('KeyType','char','ValueType','int32');
-        for i=1:size( obj.cV_{stateId}, 2 )
-          cV_label( obj.cV_{stateId}{i}.label_ ) = i;
-        end
-        sH = [];
-        for i=1:size( obj.handle_, 2 )
-          str = obj.handle_{i};
-          sH(end+1) = obj.cV_{stateId}{ cV_label( str ) }.value_;
+        sH = zeros( length(state), size(obj.handle_, 2) );
+        for j=1:length(state)
+          stateId = find( ismember(obj.stateLabel_, state{j} )==1 );
+          if isempty(stateId)
+            throw(  ...
+              MException( ...
+                'dtStateParser:ValueOfHandle', ...
+                sprintf('> %s < is not a state.', state{j}) ...
+              ) ...
+            );
+          end
+          cV_label = containers.Map('KeyType','char','ValueType','int32');
+          for i=1:size( obj.cV_{stateId}, 2 )
+            cV_label( obj.cV_{stateId}{i}.label_ ) = i;
+          end
+          for i=1:size( obj.handle_, 2 )
+            str = obj.handle_{i};
+            sH(j, i) = obj.cV_{stateId}{ cV_label( str ) }.value_;
+          end
         end
       end      
       function [ sH ] = MinOfHandle( obj, state )

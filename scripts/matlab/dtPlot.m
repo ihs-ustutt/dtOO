@@ -49,10 +49,14 @@ classdef dtPlot
       function [] = Close(obj)       
         close(obj.fig_);
       end
+      function [ obj ] = ChangeFilename(obj, str)
+        obj.filename_ = str;
+      end      
       function [] = SaveEps(obj)
         figure( obj.fig_ );
         hold on;
         print(obj.fig_,  '-depsc', obj.filename_);
+        hold off;
       end
       function [] = PlotTextAtPoints(obj, x, y, str)
         figure( obj.fig_ );
@@ -69,8 +73,9 @@ classdef dtPlot
       end
       function [] = Plot(obj, x, y, str)
         figure( obj.fig_ );
-        hold all;
+        hold on;
         plot( x, y, str, 'Linewidth', obj.lw_);
+        hold off;
       end      
    end
 end
