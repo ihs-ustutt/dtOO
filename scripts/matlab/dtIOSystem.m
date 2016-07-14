@@ -14,15 +14,11 @@ classdef dtIOSystem
    end
    methods
       function [ obj ] = dtIOSystem( nSamples )
-%
 % dtIOSystem Constructor
-%
         obj = obj.Update( nSamples);
       end
       function [ obj ] = Update(obj, nSamples )
-%
 % Update Updates system to given number of samples
-%        
         obj.nSamples_ = nSamples;
         obj.nX_ = 0;
         obj.nY_ = 0;
@@ -34,9 +30,7 @@ classdef dtIOSystem
         obj.xNameFig_ = {};  
       end
       function [ obj ] = SetY( obj, yName, yNameFig, y )
-%
-% SetY Set an output to the system
-%                
+% SetY Set an output to the system  
         %
         % check size
         %
@@ -55,10 +49,7 @@ classdef dtIOSystem
         obj.nY_ = obj.nY_ + 1;
       end
       function [ obj ] = SetX( obj, xName, xNameFig, x )
-%
 % SetX Set an input to the system
-%                
-        
         %
         % check size
         %
@@ -80,9 +71,7 @@ classdef dtIOSystem
         obj.maxX_ = max(obj.x_);
       end  
       function [ thisX ] = OneX( obj, xName )
-%
 % OneX Return single input
-%                
         x_i = find( ismember(obj.xName_, xName )==1 );
         if ( isempty(x_i) || length(x_i)>1 )
            throw(  ...
@@ -93,9 +82,7 @@ classdef dtIOSystem
         thisX = obj.x_(:,x_i);
       end      
       function [ thisY ] = OneY( obj, yName )
-%
 % OneY Return single output
-%                
         y_i = find( ismember(obj.yName_, yName )==1 );
         if ( isempty(y_i) || length(y_i)>1 )
            throw(  ...

@@ -54,9 +54,9 @@ classdef dtPlot
       end      
       function [] = SaveEps(obj)
         figure( obj.fig_ );
-        hold on;
+        %hold on;
         print(obj.fig_,  '-depsc', obj.filename_);
-        hold off;
+        %hold off;
       end
       function [] = PlotTextAtPoints(obj, x, y, str)
         figure( obj.fig_ );

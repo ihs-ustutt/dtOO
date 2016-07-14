@@ -12,25 +12,28 @@ classdef dtLSSVM < dtIOSystem
         %
         % dimension checks
         %
-        if (length(yName)~=1)
-          throw(  ...
-            MException( 'dtLSSVM:dtLSSVM', sprintf('Length of yName is not 1.') ) ...
-          );          
-        end        
+%         if (length(yName)~=1)
+%           throw(  ...
+%             MException( 'dtLSSVM:dtLSSVM', sprintf('Length of yName is not 1.') ) ...
+%           );          
+%         end        
         
         inRes = [];
         outRes = [];
         for i=1:length(xName)
           inRes(end+1) = find( ismember(parser.resultName_, xName{i} )==1 );
         end
-        outRes = find( ismember(parser.resultName_, yName{1} )==1 );
+        %outRes = find( ismember(parser.resultName_, yName{1} )==1 );
+        for i=1:length(yName)
+          outRes(end+1) = find( ismember(parser.resultName_, yName{i} )==1 );
+        end        
         if length(inRes)~=length(xName)
           throw(  ...
             MException( 'dtLSSVM:dtLSSVM', sprintf('Length of inRes and xName is not equal.') ) ...
           );          
         end
 
-        resMat = zeros( length(states), length(inRes)+1 );
+        resMat = zeros( length(states), length(inRes)+length(outRes) );
         for i=1:length(states)
           res = parser.ValueOfResult(states{i});
           resMat(i, 1:end) = res([inRes outRes]);
@@ -57,13 +60,16 @@ classdef dtLSSVM < dtIOSystem
         %
         % output
         %
-        obj ...
-        = ...
-        obj.SetY( ...
-          parser.resultName_( outRes ), ...
-          parser.resultNameFig_( outRes ), ...
-          resMat(:,end) ...
-        ); 
+        offset = length(xName);
+        for i=1:length(yName);         
+          obj ...
+          = ...
+          obj.SetY( ...
+            parser.resultName_( outRes ), ...
+            parser.resultNameFig_( outRes ), ...
+            resMat(:,offset+i) ...
+          ); 
+        end
 
         %
         % create lssvm

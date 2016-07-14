@@ -63,6 +63,61 @@ classdef dtState
       else
         ind = str2double( str );
       end
+    end
+    function [ state, successLabel, failLabel ] ...
+    = ...
+    CheckSortUnify( state, successLabel, failLabel )
+% CheckSortUnify Check state vector by calling function Ok and make
+%   successLabel vector and failLabel vector unique. successLabel vector is
+%   sorted in the same order as state vector.
+      %
+      % call Ok function
+      %
+      markToDel = [];
+      for i=1:length(state)
+        ok = state(i).Ok();
+        if ~ok
+          fprintf( 'state( %d ) [ %s ] : Ok = %d\n', i, class(state(i)), ok );
+
+          successMember = find( ismember(successLabel, state(i).Label)==1 );
+      
+          if ( size(successMember) ); 
+            successLabel( successMember ) = [];
+            failLabel{end+1} = state(i).Label;
+            markToDel(end+1) = i;
+          end;
+        end
+      end
+      state( markToDel ) = [];
+      
+      %
+      % unify
+      %
+      failLabel = unique( failLabel );
+      successLabel = unique( successLabel );
+      
+      %
+      % correct ordering
+      %
+      for i=1:length(state)
+        successLabel{i} = state(i).Label();
+      end      
+    end
+    function [ has ] = Contains(stateLabelVector, state)
+% Contains Check if stateLabelVector contains state. Return 1 if
+%   state is part of stateLabelVector, otherwise return 0.
+      has = 0;
+      ind = find( ismember(stateLabelVector, state.Label() )==1 );
+      if (~isempty(ind))
+        has = 1;
+      end
+    end      
+    function [ stateLabelVector ] = Remove(stateLabelVector, state)
+% Remove Remove state in stateLabelVector if present.
+      ind = find( ismember(stateLabelVector, state.Label() )==1 );
+      if ( ~isempty(ind) )
+        stateLabelVector( ind ) = [];
+      end
     end     
   end
 end
