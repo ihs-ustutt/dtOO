@@ -9,15 +9,6 @@ classdef dtLSSVM < dtIOSystem
    end
    methods
       function obj = dtLSSVM(parser, states, xName, yName)
-        %
-        % dimension checks
-        %
-%         if (length(yName)~=1)
-%           throw(  ...
-%             MException( 'dtLSSVM:dtLSSVM', sprintf('Length of yName is not 1.') ) ...
-%           );          
-%         end        
-        
         inRes = [];
         outRes = [];
         for i=1:length(xName)
