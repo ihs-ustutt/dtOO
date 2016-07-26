@@ -2,6 +2,7 @@
 #define	DTMESHOPERATOR_H
 
 #include <interfaceHeaven/labelHandling.h>
+#include <interfaceHeaven/optionHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
 
 class QDomElement;
@@ -13,7 +14,7 @@ namespace dtOO {
   class analyticGeometry;
   class boundedVolume;
   
-  class dtMeshOperator : public labelHandling {
+  class dtMeshOperator : public labelHandling, public optionHandling {
   public:
     dt__classOnlyName(dtMeshOperator);    
     dtMeshOperator();

@@ -12,6 +12,7 @@
 #include "dtGmshFace.h"
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
+#include "interfaceHeaven/optionHandling.h"
 
 #include <xmlHeaven/qtXmlBase.h>
 #include <interfaceHeaven/floatHandling.h>
@@ -712,6 +713,10 @@ namespace dtOO {
     gr->addFace( gf, 1 );
     gf->addRegion( gr );
 
+    if ( optionTrue("debug")  ) {
+      gm.writeMSH(getLabel()+"_0.msh", 4.0, false, true);
+    }
+    
     (*_3D)( gr );
     
     element.reserve(gr->getNumMeshElements());
