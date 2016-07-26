@@ -50,15 +50,16 @@ classdef dtResultStateParser < dtStateParser
           state = stateIn;
         end
         stateId = obj.StateIndex(state);
-        sH = zeros( length(state), length( obj.resultName_ ) );
+        sH = nan( length(state), length( obj.resultName_ ) );
         for i=1:length( state )
           sH(i, :) = obj.result_(stateId(i), :);
         end
       end
       function [ sH ] = ValueOfOneResult( obj, state, resultName )
          stateId = obj.StateIndex(state);%find( ismember(state, obj.stateLabel_ )==1 );
+         sH = nan( length(state), length( obj.resultName_ ) );         
          resultId = find( strcmp(obj.resultName_, resultName ) );
-         sH = [];
+         %sH = [];
 %         for i=1:length( obj.resultName_ )
            sH = obj.result_(stateId, resultId);
 %         end
