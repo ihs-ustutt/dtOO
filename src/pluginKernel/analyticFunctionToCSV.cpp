@@ -97,8 +97,10 @@ namespace dtOO {
       // write header
       //
       of 
-      << logMe::dtFormat("# %16i %16i %16i") 
-        % _nP[0] % _nP[1] % _nP[2] 
+      << logMe::dtFormat("# xDim %16i") % theF->xDim() << std::endl
+      << logMe::dtFormat("# yDim %16i") % theF->yDim() << std::endl
+      << logMe::dtFormat("# nP %16i %16i %16i")
+        % _nP[0] % _nP[1] % _nP[2]
       << std::endl;
       
       //
@@ -121,8 +123,8 @@ namespace dtOO {
           //
           // blockwise gnuplot selection
           //
-          of << std::endl;
-          of << std::endl;
+          of << "#" << std::endl;
+          of << "#" << std::endl;
         }
       }
       else dt__throwUnexpected(apply());
