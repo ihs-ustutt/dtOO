@@ -13,8 +13,6 @@ classdef dtSensAn < dtIOSystem
      samplingStrategySA_
      designTypeSA_
      failed_
-     minX_
-     maxX_
    end
    methods
      function obj = dtSensAn( wDir, caseName, prefixStr, firstSample, lastSample, samplingStrategySA, designTypeSA )
@@ -93,8 +91,8 @@ classdef dtSensAn < dtIOSystem
           end
         end
         
-        obj.minX_ = min( X(find(obj.failed_==0), : ) );
-        obj.maxX_ = max( X(find(obj.failed_==0), : ) );
+%         obj.minX_ = min( X(find(obj.failed_==0), : ) );
+%         obj.maxX_ = max( X(find(obj.failed_==0), : ) );
 
         obj.rSA_ = nSamples / (nX+1); 
 %         [ obj.rSA_, X, Y, obj.failed_ ] ...

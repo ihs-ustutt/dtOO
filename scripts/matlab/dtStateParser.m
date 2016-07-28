@@ -84,7 +84,14 @@ classdef dtStateParser
         obj.handle_ = {};
         obj.handleFig_ = {};
       end      
-      function [ sH ] = ValueOfHandle( obj, state )
+      function [ sH ] = ValueOfHandle( obj, stateIn )
+        state = {};
+        if ~iscell(stateIn)
+          state{1} = stateIn;
+        else
+          state = stateIn;
+        end
+        
         sH = zeros( length(state), size(obj.handle_, 2) );
         for j=1:length(state)
           stateId = find( ismember(obj.stateLabel_, state{j} )==1 );
