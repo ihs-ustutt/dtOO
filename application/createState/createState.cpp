@@ -86,7 +86,8 @@ std::vector< std::vector< std::pair< constValue *, float > > > simpleCreate(
 std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
   vectorHandling< constValue * > & cV,
   vectorHandling< constValue * > & constValuePtrVec,
-  std::string const & filename
+  std::string const & filename,
+  bool sampleAroundState
 ) {
   dt__infoNoClass(csvCreate(), << "Create CSV.");
   std::vector< std::vector< std::pair< constValue *, float > > > samples;
@@ -122,16 +123,26 @@ std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
     std::vector< std::pair< constValue *, float > > aSample;
 
     dt__forAllIndex(parts, ii) {
-      aSample.push_back(
-        std::pair< constValue *, float >(
-          constValuePtrVec[ii], 
-          constValuePtrVec[ii]->getMin()
-          +
-          stringPrimitive::stringToFloat( parts[ii] ) 
-          * 
-          (constValuePtrVec[ii]->getMax()-constValuePtrVec[ii]->getMin())
-        )
-      );
+      if ( sampleAroundState ) {
+        aSample.push_back(
+          std::pair< constValue *, float >(
+            constValuePtrVec[ii], 
+            cV[ii]->getValue() * stringPrimitive::stringToFloat( parts[ii] )   
+          )
+        );
+      }
+      else {
+        aSample.push_back(
+          std::pair< constValue *, float >(
+            constValuePtrVec[ii], 
+            constValuePtrVec[ii]->getMin()
+            +
+            stringPrimitive::stringToFloat( parts[ii] ) 
+            * 
+            (constValuePtrVec[ii]->getMax()-constValuePtrVec[ii]->getMin())
+          )
+        );        
+      }
     }
     samples.push_back(aSample);
   }
@@ -157,8 +168,8 @@ int main( int ac, char* av[] ) {
     //
     vm.description().add_options()
       (
-        "lastState", 
-        dtPO::value< bool >()->default_value(false), 
+        "state", 
+        dtPO::value< std::string >()->default_value(""), 
         "parse last state before creation? (optional)"
       )    
       (
@@ -181,6 +192,11 @@ int main( int ac, char* av[] ) {
         dtPO::value< std::string >()->default_value("pair"), 
         "define prefix of state label (optional)"
       )
+      (
+        "sampleAroundState", 
+        dtPO::value< bool >()->default_value(false), 
+        "put all samples around loaded state (optional)"
+      )    
     ;
     vm.update();
 
@@ -222,10 +238,10 @@ int main( int ac, char* av[] ) {
     parser.createConstValue(&cV);
 
     //
-    // load last state
+    // load state
     //
-    if ( vm["lastState"].as< bool >() ) {
-      parser.loadStateToConst( parser.getStates().back(), cV );
+    if ( vm["state"].as< std::string >() != "" ) {
+      parser.loadStateToConst( vm["state"].as< std::string >(), cV );
     }
     
     //
@@ -252,7 +268,11 @@ int main( int ac, char* av[] ) {
     else if ( !vm.count("nSamples") && vm.count("readCsv") ) {
       samples 
       = 
-      csvCreate( cV, constValuePtrVec, vm["readCsv"].as< std::string >() );
+      csvCreate(
+        cV, 
+        constValuePtrVec, vm["readCsv"].as< std::string >(), 
+        vm["sampleAroundState"].as< bool >() 
+      );
     }
     else dt__throwUnexpectedNoClass(main());
 
