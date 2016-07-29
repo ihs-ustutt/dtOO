@@ -184,7 +184,7 @@ classdef dtStateParser
             end
           end
         else
-          fileToParse{end+1} = [pathstr, name, ext];%obj.filename_;
+          fileToParse{end+1} = [pathstr, '/', name, ext];%obj.filename_;
         end
         
         for i=1:size(fileToParse,2)
