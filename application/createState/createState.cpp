@@ -127,7 +127,7 @@ std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
         aSample.push_back(
           std::pair< constValue *, float >(
             constValuePtrVec[ii], 
-            cV[ii]->getValue() * stringPrimitive::stringToFloat( parts[ii] )   
+            cV.get( constValuePtrVec[ii]->getLabel() )->getValue() * stringPrimitive::stringToFloat( parts[ii] )   
           )
         );
       }
