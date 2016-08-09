@@ -3,7 +3,8 @@
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-#include "dtMesh2DOperator.h"
+#include "dtMeshTransfinite2DOperator.h"
+#include <interfaceHeaven/twoDArrayHandling.h>
 
 class GFace;
 class MVertex;
@@ -11,7 +12,7 @@ class MVertex;
 namespace dtOO {
   class dtGmshFace;
   
-  class dtMeshTransfiniteGFace : public dtMesh2DOperator {
+  class dtMeshTransfiniteGFace : public dtMeshTransfinite2DOperator {
     public:
       dt__class(dtMeshTransfiniteGFace, dtMeshOperator);     
       dtMeshTransfiniteGFace();
@@ -19,13 +20,30 @@ namespace dtOO {
         const dtMeshTransfiniteGFace& orig
       );
       virtual ~dtMeshTransfiniteGFace();
-      void operator()( dtGmshFace * dtgr );    
+      void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        vectorHandling< constValue * > const * const cV,
+        vectorHandling< analyticFunction * > const * const aF,
+        vectorHandling< analyticGeometry * > const * const aG,
+        vectorHandling< boundedVolume * > const * const bV,
+        vectorHandling< dtMeshOperator * > const * const mO      
+      ); 
+      void operator()( dtGmshFace * dtgr );
     private:
-    static void computeEdgeLoops(
-      const ::GFace *gf, 
-      std::vector< ::MVertex * > & all_mvertices, 
-      std::vector< int > & indices
-    );  
+      twoDArrayHandling< dtPoint2 > correctConstV( 
+        dtGmshFace const * const dtgf, twoDArrayHandling< dtPoint2 > pUV,
+        int const & pos, int const & nSteps, 
+        std::vector< double > const & lengths_i, double const & L_i
+      ) const;
+      static twoDArrayHandling< dtPoint2 > linearInterpolateU( 
+        twoDArrayHandling< dtPoint2 > pUV, int const & vStart, int const & vEnd
+      );
+    private:
+//      std::vector< float > _uCorrPos;
+//      int _uCorrSteps;
+      std::vector< float > _vCorrPos;
+      int _vCorrSteps;
   };
 }
 #endif	/* dtMeshTransfiniteGFace_H */

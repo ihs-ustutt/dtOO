@@ -1,18 +1,17 @@
 #include "dtMeshTransfiniteGFace.h"
 #include "dtMeshGFace.h"
+#include <xmlHeaven/dtXmlParser.h>
 
 #include <xmlHeaven/qtXmlPrimitive.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshModel.h>
 #include <gmsh/meshGFace.h>
-#include <gmsh/MTriangle.h>
-#include <gmsh/MQuadrangle.h>
-#include <gmsh/Context.h>
-#include <interfaceHeaven/threadSafe.h>
+#include <gmsh/GmshDefines.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 
-#define SQU(a)      ((a)*(a))
+#include <analyticFunctionHeaven/scaMultiOneD.h>
+#include <analyticFunctionHeaven/scaLinearOneD.h>
 
 /*
    s4 +-----c3-----+ s3
@@ -30,74 +29,51 @@
    (1.-u)*c4+u*c2+(1.-v)*c1+v*c3-((1.-u)*(1.-v)*s1+u*(1.-v)*s2+u*v*s3+(1.-u)*v*s4)
 
 namespace dtOO {
-  void dtMeshTransfiniteGFace::computeEdgeLoops(
-    const ::GFace *gf, 
-    std::vector< ::MVertex * > &all_mvertices, 
-    std::vector< int > &indices
-  ) {
-    std::list<GEdge*> edges = gf->edges();
-    std::list<int> ori = gf->orientations();
-    std::list<GEdge*>::iterator it = edges.begin();
-    std::list<int>::iterator ito = ori.begin();
-
-    indices.push_back(0);
-    GVertex *start = ((*ito) == 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-    GVertex *v_end = ((*ito) != 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-    all_mvertices.push_back(start->mesh_vertices[0]);
-    if(*ito == 1)
-      for(unsigned int i = 0; i < (*it)->mesh_vertices.size(); i++)
-        all_mvertices.push_back((*it)->mesh_vertices[i]);
-    else
-      for(int i = (*it)->mesh_vertices.size() - 1; i >= 0; i--)
-        all_mvertices.push_back((*it)->mesh_vertices[i]);
-
-    GVertex *v_start = start;
-    while(1){
-      ++it;
-      ++ito;
-      if(v_end == start){
-        indices.push_back(all_mvertices.size());
-        if(it == edges.end ()) break;
-        start = ((*ito) == 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-        v_end = ((*ito) != 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-        v_start = start;
-      }
-      else{
-        if(it == edges.end ()){
-          Msg::Error("Something wrong in edge loop computation");
-          return;
-        }
-        v_start = ((*ito) == 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-        if(v_start != v_end){
-          Msg::Error("Something wrong in edge loop computation");
-          return;
-        }
-        v_end = ((*ito) != 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-      }
-      all_mvertices.push_back(v_start->mesh_vertices[0]);
-      if(*ito == 1)
-        for(unsigned int i = 0; i < (*it)->mesh_vertices.size(); i++)
-          all_mvertices.push_back((*it)->mesh_vertices[i]);
-      else
-        for(int i = (*it)->mesh_vertices.size()-1; i >= 0; i--)
-          all_mvertices.push_back((*it)->mesh_vertices[i]);
-    }
-  }
-
-  dtMeshTransfiniteGFace::dtMeshTransfiniteGFace() : dtMesh2DOperator() {
+  dtMeshTransfiniteGFace::dtMeshTransfiniteGFace() : dtMeshTransfinite2DOperator() {
     
   }
 
   dtMeshTransfiniteGFace::dtMeshTransfiniteGFace(
     const dtMeshTransfiniteGFace& orig
-  ) : dtMesh2DOperator(orig) {
-    
+  ) : dtMeshTransfinite2DOperator(orig) {
+    _vCorrPos = orig._vCorrPos;
+    _vCorrSteps = orig._vCorrSteps;
   }
 
   dtMeshTransfiniteGFace::~dtMeshTransfiniteGFace() {
     
   }
 
+  void dtMeshTransfiniteGFace::init(
+    ::QDomElement const & element,
+    baseContainer const * const bC,
+    vectorHandling< constValue * > const * const cV,
+    vectorHandling< analyticFunction * > const * const aF,
+    vectorHandling< analyticGeometry * > const * const aG,
+    vectorHandling< boundedVolume * > const * const bV,
+    vectorHandling< dtMeshOperator * > const * const mO      
+  ) {
+    dtMeshTransfinite2DOperator::init(element, bC, cV, aF, aG, bV, mO);
+    
+    _vCorrPos = std::vector< float >(0);
+    _vCorrSteps = 0;
+    
+    if ( dtXmlParser::hasAttribute( "v_correction_position", element ) ) {
+      _vCorrPos 
+      = 
+      dtXmlParser::getAttributeFloatVectorMuParse(
+        "v_correction_position", element, cV, aF
+      );
+    }
+    if ( dtXmlParser::hasAttribute( "v_correction_steps", element ) ) {
+      _vCorrSteps 
+      = 
+      dtXmlParser::getAttributeIntMuParse(
+        "v_correction_steps", element, cV, aF
+      );
+    }
+  }
+  
   void dtMeshTransfiniteGFace::operator()( dtGmshFace * dtgf ) {
 
     dtgf->model()->setCurrentMeshEntity(dtgf);
@@ -111,240 +87,205 @@ namespace dtOO {
     deMeshGFace()(dtgf);    
     Msg::Info("Meshing surface %d ( dtMeshTransfiniteGFace )", dtgf->tag());
 
-    std::vector<MVertex*> corners;
-    findTransfiniteCorners(dtgf, corners);
-    dt__throwIf(corners.size ()!= 4, operator());
-
-    std::vector<MVertex*> d_vertices;
-    std::vector<int> indices;
-    computeEdgeLoops(dtgf, d_vertices, indices);
-
-    dt__throwIf(indices.size ()!=2, operator());
-
-    // create a list of all boundary vertices, starting at the first
-    // transfinite corner
-    std::vector <MVertex *> m_vertices;
-    unsigned int I;
-    for(I = 0; I < d_vertices.size(); I++)
-      if(d_vertices[I] == corners[0]) break;
-    for(unsigned int j = 0; j < d_vertices.size(); j++)
-      m_vertices.push_back(d_vertices[(I + j) % d_vertices.size()]);
-
-    // make the ordering of the list consistent with the ordering of the
-    // first two corners (if the second found corner is not the second
-    // corner, just reverse the list)
-    bool reverse = false;
-    for( unsigned int i = 1; i < m_vertices.size(); i++ ) {
-      MVertex *v = m_vertices[i];
-      if(
-        v == corners[1] || v == corners[2] 
-        ||
-        (
-          corners.size() == 4 && v == corners[3]
-        )
-      ) {
-        if (v != corners[1]) reverse = true;
-        break;
-      }
-    }
-    if (reverse) {
-      std::vector <MVertex *> tmp;
-      tmp.push_back(m_vertices[0]);
-      for(int i = m_vertices.size() - 1; i > 0; i--)
-        tmp.push_back(m_vertices[i]);
-      m_vertices = tmp;
-    }
-
-    // get the indices of the interpolation corners as well as the u,v
-    // coordinates of all the boundary vertices
-
-    std::vector< double > U( m_vertices.size(), 0. );
-    std::vector< double > V( m_vertices.size(), 0. );
 
     //
-    // reparam
+    // reparam vertices
     //
-    std::vector< dtPoint2 > reparamUV(m_vertices.size());
-    #pragma omp parallel     
-    {
-      //
-      // make threadSafe
-      //
-      threadSafe< dt__pH(map2dTo3d) > m2d;
-      m2d().reset( dtgf->getMap2dTo3d()->clone() );
-      
-      #pragma omp for        
-      dt__forAllIndex(m_vertices, ii) {
-        reparamUV[ii] 
-        = 
-        m2d()->reparamOnFace( dtGmshModel::extractPosition(m_vertices[ii]) );        
-      } 
-    }
+    twoDArrayHandling< dtPoint2 > pUV
+    = 
+    dtMeshTransfinite2DOperator::computeEdgeLoops(dtgf);
+    std::vector< std::vector< ::MVertex * > > & tab = dtgf->transfinite_vertices;
     
-    int iCorner = 0, N[4] = {0, 0, 0, 0};  
-    for(unsigned int i = 0; i < m_vertices.size(); i++) {
-      MVertex *v = m_vertices[i];
-      if(v == corners[0] || v == corners[1] || v == corners[2] ||
-         (corners.size() == 4 && v == corners[3])) {
-        dt__throwIf(iCorner>3, operator());
-        N[iCorner++] = i;
-      }
-      U[i] = reparamUV[i].x();
-      V[i] = reparamUV[i].y();
-    }
+    //
+    // get array size and set boundaries
+    //
+    /*             k
+        2L+H +------------+ L+H
+             |            |
+             |            |
+           l |            | j
+             |            |
+       2L+2H +------------+
+             0     i      L
+    */    
+    int L = pUV.size(0)-1;
+    int H = pUV.size(1)-1;
+    double UC1 = pUV[0][0].x();
+    double UC2 = pUV[L][0].x();
+    double UC3 = pUV[L][H].x();
+    double UC4 = pUV[0][H].x();
+    double VC1 = pUV[0][0].y();
+    double VC2 = pUV[L][0].y();
+    double VC3 = pUV[L][H].y();
+    double VC4 = pUV[0][H].y();
 
-    int N1 = N[0], N2 = N[1], N3 = N[2], N4 = N[3];
-    int L = N2 - N1, H = N3 - N2;
-    if(corners.size() == 4){
-      int Lb = N4 - N3, Hb = m_vertices.size() - N4;
-      dt__throwIf(Lb != L || Hb != H, operator());
-    }
-    else{
-      int Lb = m_vertices.size() - N3;
-      dt__throwIf(Lb != L, operator());
-    }
-
-    std::vector<double> lengths_i;//(L+1);
-    std::vector<double> lengths_j;//(H+1);
+    //
+    // boundary length
+    //    
+    std::vector<double> lengths_i(L+1, 0.);
+    std::vector<double> lengths_j(H+1, 0.);
     double L_i = 0.;
     double L_j = 0.;
-    lengths_i.push_back(0.);
-    lengths_j.push_back(0.);
-    m_vertices.push_back(m_vertices.front());
     for(int i = 0; i < L; i++) {
-      MVertex *v1 = m_vertices[i];
-      MVertex *v2 = m_vertices[i + 1];
+      MVertex * v1 = tab[i][0];
+      MVertex * v2 = tab[i+1][0];
       L_i += v1->distance(v2);
-      lengths_i.push_back(L_i);
+      lengths_i[i+1] = L_i;
     }
-    for(int i = L; i < (L+H); i++) {
-      MVertex *v1 = m_vertices[i];
-      MVertex *v2 = m_vertices[i + 1];
+    for(int i = 0; i < H; i++) {
+      MVertex * v1 = tab[0][i];
+      MVertex * v2 = tab[0][i+1];
       L_j += v1->distance(v2);
-      lengths_j.push_back(L_j);
+      lengths_j[i+1] = L_j;
     }
-    m_vertices.pop_back();
-
-  /*              
-      2L+H +------------+ L+H
-           |            |
-           |            |
-           |            | j
-           |            |
-     2L+2H +------------+
-           0     i      L
-  */
-
-    std::vector<std::vector<MVertex*> > &tab(dtgf->transfinite_vertices);
-    tab.resize(L + 1);
-    for(int i = 0; i <= L; i++) tab[i].resize(H + 1);
-  
-    tab[0][0] = m_vertices[0];
-    tab[L][0] = m_vertices[L];
-    tab[L][H] = m_vertices[L+H];
-    tab[0][H] = m_vertices[2*L+H];
-    #pragma omp parallel
-    {
-      #pragma omp for    
-      for (int i = 1; i < L; i++){
-        tab[i][0] = m_vertices[i];
-        tab[i][H] = m_vertices[2*L+H-i];
-      }
-      #pragma omp for    
-      for(int i = 1; i < H; i++){
-        tab[L][i] = m_vertices[L+i];
-        tab[0][i] = m_vertices[2*L+2*H-i];
-      }
-    }
-
-  double UC1 = U[N1], UC2 = U[N2], UC3 = U[N3];
-  double VC1 = V[N1], VC2 = V[N2], VC3 = V[N3];
-
-  //create points using transfinite interpolation
-    double UC4 = U[N4];
-    double VC4 = V[N4];
+    
     for(int i = 1; i < L; i++) {
-      double u = lengths_i[i] / L_i;
       for(int j = 1; j < H; j++) {
+        double u = lengths_i[i] / L_i;        
         double v = lengths_j[j] / L_j;
-        int iP1 = N1 + i;
-        int iP2 = N2 + j;
-        int iP3 = N4 - i;
-        int iP4 = (N4 + (N3 - N2) - j) % m_vertices.size();
-        double Up = TRAN_QUA(U[iP1], U[iP2], U[iP3], U[iP4], UC1, UC2, UC3, UC4, u, v);
-        double Vp = TRAN_QUA(V[iP1], V[iP2], V[iP3], V[iP4], VC1, VC2, VC3, VC4, u, v);
-        GPoint gp = dtgf->point(Up, Vp);
-        MFaceVertex *newv = new MFaceVertex(gp.x(), gp.y(), gp.z(), dtgf, Up, Vp);
-        dtgf->mesh_vertices.push_back(newv);
-        tab[i][j] = newv;
+        double Up 
+        = 
+        TRAN_QUA(
+          pUV[i][0].x(), pUV[L][j].x(), pUV[i][H].x(), pUV[0][j].x(), 
+          UC1, UC2, UC3, UC4, u, v
+        );
+        double Vp 
+        = 
+        TRAN_QUA(
+          pUV[i][0].y(), pUV[L][j].y(), pUV[i][H].y(), pUV[0][j].y(), 
+          VC1, VC2, VC3, VC4, u, v
+        );
+        pUV[i][j] = dtPoint2(Up, Vp);
       }
     }
+    
+    //
+    // correction at constant v
+    //
+    dt__forAllRefAuto( _vCorrPos, constV ) {
+      int pos = static_cast< int >(constV * H);
+      pUV = correctConstV( dtgf, pUV, pos, _vCorrSteps, lengths_i, L_i );
+    }
+    if ( ! _vCorrPos.empty() ) {
+      pUV 
+      = 
+      linearInterpolateU( pUV, 0, static_cast< int >(_vCorrPos.front() * H) );
+      
+      dt__forFromToIndex( 1, _vCorrPos.size(), ii ) {
+        pUV 
+        = 
+        linearInterpolateU(
+          pUV, 
+          static_cast< int >(_vCorrPos[ii-1] * H), 
+          static_cast< int >(_vCorrPos[ii  ] * H)
+        );      
+      }
+    
+      pUV 
+      = 
+      linearInterpolateU( pUV, static_cast< int >(_vCorrPos.back() * H), H );      
+    }
+    
 
-    // create elements
-    int maxLin = L * H;
-    if (
-      CTX::instance()->mesh.recombineAll 
-      || 
-      dtgf->meshAttributes.recombine      
-    ) {
-      dt__throwIf(dtgf->quadrangles.size(), operator()());
-      dtgf->quadrangles.resize(maxLin);      
-    }
-    else {
-      dt__throwIf(dtgf->triangles.size(), operator()());
-      dtgf->triangles.resize(2*maxLin);
-    }
-    #pragma omp parallel
-    {
-      #pragma omp for
-      for(int i = 0; i < L ; i++) {
-        for(int j = 0; j < H; j++) {
-          int lin = i * H + j;
-          MVertex *v1 = tab[i][j];
-          MVertex *v2 = tab[i + 1][j];
-          MVertex *v3 = tab[i + 1][j + 1];
-          MVertex *v4 = tab[i][j + 1];
-          if (
-            CTX::instance()->mesh.recombineAll 
-            || 
-            dtgf->meshAttributes.recombine
-          ) {
-//            dtgf->quadrangles.push_back( new MQuadrangle(v1, v2, v3, v4) );
-            dtgf->quadrangles[lin] = new MQuadrangle(v1, v2, v3, v4);
-          }
-          else if (
-            dtgf->meshAttributes.transfiniteArrangement == 1 
-            ||
-            (
-              dtgf->meshAttributes.transfiniteArrangement == 2 
-              &&
-              (
-                (i % 2 == 0 && j % 2 == 1) || (i % 2 == 1 && j % 2 == 0)
-              )
-            ) 
-            ||
-            (
-              dtgf->meshAttributes.transfiniteArrangement == -2 
-              &&
-              (
-                (i % 2 == 0 && j % 2 == 0) || (i % 2 == 1 && j % 2 == 1)
-              )
-            )
-          ) {
-//            dtgf->triangles.push_back( new MTriangle(v1, v2, v3) );
-//            dtgf->triangles.push_back( new MTriangle(v3, v4, v1) );
-            dtgf->triangles[lin] = new MTriangle(v1, v2, v3);
-            dtgf->triangles[maxLin + lin] = new MTriangle(v3, v4, v1);
-          }
-          else {
-//            dtgf->triangles.push_back( new MTriangle(v1, v2, v4) );
-//            dtgf->triangles.push_back( new MTriangle(v4, v2, v3) );
-            dtgf->triangles[lin] = new MTriangle(v1, v2, v4);
-            dtgf->triangles[maxLin + lin] = new MTriangle(v4, v2, v3);            
-          }
-        }
+    for(int i = 1; i < L; i++) {
+      for(int j = 1; j < H; j++) {
+        GPoint gp = dtgf->point( pUV[i][j].x(), pUV[i][j].y() );
+        tab[i][j]
+        = 
+        new MFaceVertex(
+          gp.x(), gp.y(), gp.z(), dtgf, pUV[i][j].x(), pUV[i][j].y()
+        );
+        dtgf->mesh_vertices.push_back(tab[i][j]);
       }
     }
+    
+    dtMeshTransfinite2DOperator::createTransfiniteElements( dtgf );
+    
     dtgf->meshStatistics.status = GFace::DONE;
   }
+  
+  twoDArrayHandling< dtPoint2 > dtMeshTransfiniteGFace::correctConstV( 
+    dtGmshFace const * const dtgf, twoDArrayHandling< dtPoint2 > pUV,
+    int const & pos, int const & nSteps,
+    std::vector< double > const & lengths_i, double const & L_i
+  ) const {
+    int L = pUV.size(0)-1;
+    int H = pUV.size(1)-1;
+    
+    logContainer< dtMeshTransfiniteGFace > logC(logDEBUG, "correctConstV()");
+
+    std::vector< float > uu(L+1);
+    std::vector< float > vv(L+1);
+    std::vector< dtPoint3 > p3_u(L+1);
+
+    dt__forFromToIndex(0, L+1, ii) {
+      uu[ii] = pUV[ii][pos].x();
+      vv[ii] = pUV[ii][pos].y();
+      p3_u[ii] = dtgf->getMap2dTo3d()->getPoint(uu[ii], vv[ii]);
+    }
+        
+    dt__forFromToIndex(0, _vCorrSteps, smoothIt) {
+      std::vector< float > dL(L+1, 0.);      
+      dt__forFromToIndex(1, L+1, ii) {
+        p3_u[ii] = dtgf->getMap2dTo3d()->getPoint(uu[ii], vv[ii]);
+        dL[ii] = dtLinearAlgebra::length( p3_u[ii] - p3_u[ii-1] );
+      }     
+
+
+      float sumL = dtLinearAlgebra::sum(dL);
+      std::vector< float > ll(L+1, 0.);      
+      scaMultiOneD< scaLinearOneD > l_u;
+      dt__forFromToIndex(1, L, ii) {
+        ll[ii] = ll[ii-1] + dL[ii];        
+        l_u.add( scaLinearOneD(uu[ii-1], uu[ii], ll[ii-1], ll[ii]) );
+      }  
+
+      float sumEps = 0;
+      float maxEps = std::numeric_limits<float>::min();
+      dt__forFromToIndex(1, L, ii) {
+        sumEps = sumEps + fabs(lengths_i[ii] / L_i-(ll[ii]/sumL));
+        maxEps = std::max( maxEps, std::fabs<float>(lengths_i[ii] / L_i-(ll[ii]/sumL)) );
+        uu[ii] = l_u.invYFloat( lengths_i[ii] / L_i * sumL );
+      }
+
+      logC() 
+        << logMe::dtFormat(
+          "[ %3i ] sumEps = %12.5e maxEps = %12.5e"
+        ) % smoothIt % sumEps % maxEps 
+        << std::endl;
+
+    }
+      
+    dt__forFromToIndex(1, L, ii) {
+      pUV[ii][pos] = dtPoint2( uu[ii], vv[ii] );
+    }      
+    
+    return pUV;
+  }
+
+  twoDArrayHandling< dtPoint2 > dtMeshTransfiniteGFace::linearInterpolateU( 
+    twoDArrayHandling< dtPoint2 > pUV, int const & vStart, int const & vEnd
+  ) {
+    float theStep = 1. / static_cast< float >(vEnd - vStart);
+    float cStep = 0.;
+    dt__forFromToIndex(vStart+1, vEnd, vI) {
+      cStep = cStep + theStep;
+      
+      dt__forInnerIndex( pUV.fixJ( vI ), ii ) {
+        pUV[ii][vI] 
+        = 
+        dtPoint2( 
+          pUV[ii][vStart].x() 
+          + 
+          cStep * (
+            pUV[ii][vEnd].x() - pUV[ii][vStart].x()
+          ),  
+          pUV[ii][vI].y()
+        );
+      }
+    }
+    
+    return pUV;
+  }
+
 }
