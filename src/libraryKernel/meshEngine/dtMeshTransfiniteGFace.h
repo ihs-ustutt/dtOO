@@ -34,7 +34,7 @@ namespace dtOO {
       twoDArrayHandling< dtPoint2 > correctConstV( 
         dtGmshFace const * const dtgf, twoDArrayHandling< dtPoint2 > pUV,
         int const & pos, int const & nSteps, 
-        std::vector< double > const & lengths_i, double const & L_i
+        std::vector< double > lengths_i, double const & L_i
       ) const;
       static twoDArrayHandling< dtPoint2 > linearInterpolateU( 
         twoDArrayHandling< dtPoint2 > pUV, int const & vStart, int const & vEnd

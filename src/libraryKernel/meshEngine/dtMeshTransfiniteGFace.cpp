@@ -1,5 +1,6 @@
 #include "dtMeshTransfiniteGFace.h"
 #include "dtMeshGFace.h"
+#include "progHelper.h"
 #include <xmlHeaven/dtXmlParser.h>
 
 #include <xmlHeaven/qtXmlPrimitive.h>
@@ -207,7 +208,7 @@ namespace dtOO {
   twoDArrayHandling< dtPoint2 > dtMeshTransfiniteGFace::correctConstV( 
     dtGmshFace const * const dtgf, twoDArrayHandling< dtPoint2 > pUV,
     int const & pos, int const & nSteps,
-    std::vector< double > const & lengths_i, double const & L_i
+    std::vector< double > lengths_i, double const & L_i
   ) const {
     int L = pUV.size(0)-1;
     int H = pUV.size(1)-1;
@@ -223,6 +224,22 @@ namespace dtOO {
       vv[ii] = pUV[ii][pos].y();
       p3_u[ii] = dtgf->getMap2dTo3d()->getPoint(uu[ii], vv[ii]);
     }
+    
+    //
+    // sort in ascending order
+    //
+    bool mustInvert = false;
+    if (uu[0] > uu[1]) {
+      mustInvert = true;
+      progHelper::reverse( uu );
+      progHelper::reverse( vv );
+      progHelper::reverse( p3_u );
+      dt__forAllIndex( lengths_i, anL ) {
+        lengths_i[ anL ] = lengths_i.back() - lengths_i[ anL ];
+      }
+      progHelper::reverse( lengths_i );
+    }
+
         
     dt__forFromToIndex(0, _vCorrSteps, smoothIt) {
       std::vector< float > dL(L+1, 0.);      
@@ -256,6 +273,14 @@ namespace dtOO {
 
     }
       
+    //
+    // revert
+    //
+    if ( mustInvert ) {
+      progHelper::reverse( uu );
+      progHelper::reverse( vv );
+    }
+    
     dt__forFromToIndex(1, L, ii) {
       pUV[ii][pos] = dtPoint2( uu[ii], vv[ii] );
     }      
