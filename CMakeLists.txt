@@ -342,3 +342,8 @@ install(
 # add applications
 #
 add_subdirectory(application)
+
+#
+# add tools
+#
+add_subdirectory(tools)
