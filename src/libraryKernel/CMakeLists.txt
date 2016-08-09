@@ -93,6 +93,7 @@ SET(HEADERS
   meshEngine/dtMeshGRegionWithBoundaryLayer.h
   meshEngine/dtMeshAndOrientGEdge.h
   meshEngine/dtMeshAndOrientGFace.h
+  meshEngine/dtMeshTransfinite2DOperator.h
   meshEngine/dtMeshTransfiniteRecombineSelectionGFace.h
   meshEngine/dtMeshTransfiniteGFace.h
   meshEngine/dtMeshCustom2x3TransfiniteGFace.h
@@ -210,6 +211,7 @@ SET(SOURCES
   meshEngine/dtMeshGRegionWithBoundaryLayer.cpp
   meshEngine/dtMeshAndOrientGEdge.cpp
   meshEngine/dtMeshAndOrientGFace.cpp
+  meshEngine/dtMeshTransfinite2DOperator.cpp
   meshEngine/dtMeshTransfiniteRecombineSelectionGFace.cpp
   meshEngine/dtMeshTransfiniteGFace.cpp
   meshEngine/dtMeshCustom2x3TransfiniteGFace.cpp
