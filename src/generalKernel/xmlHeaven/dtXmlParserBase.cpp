@@ -398,8 +398,9 @@ namespace dtOO {
 				// 1 map1dTo3d
 				//        
 				if ( m1d && hasAttribute("number_points_one", *toBuildP) ) {
-					int nPointsOne = getAttributeInt("number_points_one", *toBuildP);					
-				  float nPointsOneF = static_cast<float>(nPointsOne);              					
+					int nPointsOne 
+          = 
+          getAttributeIntMuParse("number_points_one", *toBuildP, cV);					       					
 					if ( hasAttribute("parameter_one_percent_function", *toBuildP) ) {
 						dt__ptrAss(
 							scaOneD const * sF,
