@@ -177,7 +177,8 @@ classdef dtStateParser
           for i=1:size(cFiles)
             if ( ~cFiles(i).isdir )
               if( strfind( cFiles(i).name, strrep(name,'*','')) )
-                if( strfind( cFiles(i).name, '.xml') )
+                [pathstr2, name2, ext2] = fileparts( cFiles(i).name );
+                if strcmp(ext2,'.xml')
                   fileToParse{end+1} = [pathstr, '/', cFiles(i).name];%obj.filename_;
                 end
               end
@@ -252,29 +253,21 @@ classdef dtStateParser
       function [ fig ] = XPlotReduceIntersections( obj, stateList )
         % extract states to highlight
         XHigh = [];
-        XHighOrder = [];
         for i=1:size(stateList,2)
-          XHigh(i, 1:size(obj.handle_,2)) = obj.ValuePercentOfHandle( stateList{i} );
-%          [tmp,theOrder] = sort( XHigh(i,:) );
-%          theOrder
-%          XHighOrder( i, 1:size(obj.handle_,2) )  = theOrder;
+          XHigh(i, 1:size(obj.handle_,2)) = obj.ValueOfHandle( stateList{i} );
         end
-        
-%         cPtr = 1;
-%         maxPtr = size(XHigh,1);
-%         while (cPtr<maxPtr)
-%           maxEqual = 0;
-%           for i=cPtr+1:maxPtr
-%             thisEqual = sum( XHighOrder(cPtr,:) == XHighOrder(i,:) );
-%             
-%             if (thisEqual>maxEqual) 
-%               maxEqual = thisEqual;
-%               maxPtrPos = i;
-%             end
-%           end
-%           maxEqual
-%           cPtr = cPtr+1;
-%         end
+        XAll = [];
+        for i=1:size(obj.stateLabel_,2)
+          XAll(i, 1:size(obj.handle_,2)) = obj.ValueOfHandle( obj.stateLabel_{i} );
+        end
+        minX = min(XAll);
+        maxX = max(XAll);        
+        for i=1:size(XHigh,1)
+          XHigh(i,:) = (XHigh(i,:) - minX) ./ (maxX-minX)
+        end
+        for i=1:size(XAll,1)
+          XAll(i,:) = (XAll(i,:) - minX) ./ (maxX-minX)
+        end        
         [a,b] = sort( std(XHigh) );
         XHigh=XHigh( :, b)
         %figure
@@ -283,8 +276,13 @@ classdef dtStateParser
         fig.MakeCurrent();
         %epssetup(obj.epsSizeX_, obj.epsSizeY_, 0, [1 1 1], 1, 0);
 
-        XHigh = XHigh';
-         
+        XAll = XAll';
+        for j =1:size(XAll,2)
+          hold on;
+          plot(XAll(:,j),'Color',fig.lc_,'LineWidth',fig.lw_);
+        end
+        
+        XHigh = XHigh';         
         for j =1:size(XHigh,2)
           hold on;
           plot(XHigh(:,j),'Color',fig.lcH_,'LineWidth',fig.lwH_);
