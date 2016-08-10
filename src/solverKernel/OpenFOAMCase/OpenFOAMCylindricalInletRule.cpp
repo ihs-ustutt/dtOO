@@ -105,7 +105,7 @@ namespace dtOO {
             }
 
             //
-            // get function (r, phi, z) -> (u_t, u_r, u_a)
+            // get function (r, phi, z) -> (u_r, u_t, u_a)
             //
             dt__ptrAss(
               vec3dThreeD const * const v3d,
