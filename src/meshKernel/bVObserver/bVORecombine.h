@@ -12,6 +12,7 @@ namespace dtOO {
   class bVORecombine : public bVOInterface {
   public:
     dt__class(bVORecombine, bVOInterface);
+    dt__classSelfCreate(bVORecombine);
     bVORecombine();
     virtual ~bVORecombine();
     virtual void init(

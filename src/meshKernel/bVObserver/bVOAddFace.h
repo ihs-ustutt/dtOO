@@ -14,6 +14,7 @@ namespace dtOO {
   class bVOAddFace : public bVOInterface {
   public:
     dt__class(bVOAddFace, bVOInterface);
+    dt__classSelfCreate(bVOAddFace);
     bVOAddFace();
     virtual ~bVOAddFace();
     virtual void init(

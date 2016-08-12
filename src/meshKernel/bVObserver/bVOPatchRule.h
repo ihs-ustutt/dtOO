@@ -12,6 +12,7 @@ namespace dtOO {
   class bVOPatchRule : public bVOInterface {
   public:
     dt__class(bVOPatchRule, bVOInterface);
+    dt__classSelfCreate(bVOPatchRule);
     bVOPatchRule();
     virtual ~bVOPatchRule();
     virtual void init(

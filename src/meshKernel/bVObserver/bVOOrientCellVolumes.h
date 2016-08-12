@@ -12,6 +12,7 @@ namespace dtOO {
   class bVOOrientCellVolumes : public bVOInterface {
   public:
     dt__class(bVOOrientCellVolumes, bVOInterface);
+    dt__classSelfCreate(bVOOrientCellVolumes);
     bVOOrientCellVolumes();
     virtual ~bVOOrientCellVolumes();
     virtual void init(

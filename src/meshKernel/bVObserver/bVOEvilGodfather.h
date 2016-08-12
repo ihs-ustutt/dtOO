@@ -19,6 +19,7 @@ namespace dtOO {
   class bVOEvilGodfather : public bVOInterface {
   public:
     dt__class(bVOEvilGodfather, bVOInterface);
+    dt__classSelfCreate(bVOEvilGodfather);
     bVOEvilGodfather();
     virtual ~bVOEvilGodfather();
     virtual void init(

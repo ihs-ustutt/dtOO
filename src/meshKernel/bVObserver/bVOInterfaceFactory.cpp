@@ -27,47 +27,83 @@
 #include "bVOSetRotationalPeriodicity.h"
 #include "bVOTransformMeshPoints.h"
 
-#define __IFRET(className) \
-	if ( strcmp(str, #className) == 0 ) { \
-		return new className; \
-	}
 namespace dtOO {
+  dt__pH(bVOInterfaceFactory) bVOInterfaceFactory::_instance(NULL);
+  
   bVOInterfaceFactory::bVOInterfaceFactory() {
   }
 
   bVOInterfaceFactory::~bVOInterfaceFactory() {
+    _builder.destroy();        
   }
 
-  bVOInterface * bVOInterfaceFactory::create(char const * const str) {
-    dt__info(create(), << str <<  " creating ... ");
-    
-		__IFRET(bVOSetGrading);
-		__IFRET(bVONameFaces);
-		__IFRET(bVONameRegions);
-		__IFRET(bVOWriteMSH);
-    __IFRET(bVOReadMSH);
-    __IFRET(bVOTransfiniteFaces);
-    __IFRET(bVOSetNElements);
-    __IFRET(bVOTransfiniteRegions);
-    __IFRET(bVOOrientCellVolumes);
-    __IFRET(bVORecombineRecursiveRegions);
-    __IFRET(bVOMeshRule);
-    __IFRET(bVOPMeshRule);
-    __IFRET(bVOPatchRule);
-    __IFRET(bVORecombine);
-    __IFRET(bVOWriteSTL);
-    __IFRET(bVOSetPrescribedMeshSizeAtPoints);
-    __IFRET(bVODumpModel);
-    __IFRET(bVOEvilGodfather)
-    __IFRET(bVOAddInternalEdge);
-    __IFRET(bVOAddFace);
-    __IFRET(bVOSetRotationalPeriodicity);
-    __IFRET(bVOTransformMeshPoints);
-		
-    dt__throw(create(), <<  "Could not be created.");
+  bVOInterface * bVOInterfaceFactory::create( std::string const str ) {
+    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
+      //
+      // check virtual class name
+      //
+      if ( aBuilder->virtualClassName() == str ) {
+        return aBuilder->create();
+      }
+            
+      //
+      // check alias
+      //
+      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
+        if ( anAlias == str ) return aBuilder->create();
+      }
+    }
+
+    std::vector< std::string > av;
+    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
+      av.push_back( aBuilder->virtualClassName() );
+      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
+        av.push_back("  -> "+anAlias); 
+      }      
+    }
+    dt__throw(
+      create(), 
+      << str <<  " could not be created." << std::endl
+      << "Implemented builder:" << std::endl
+      << logMe::vecToString(av,1) << std::endl
+    );              
   }
   
-  bVOInterface * bVOInterfaceFactory::create(std::string const str) {
-    return create(str.c_str());
+  bVOInterface * bVOInterfaceFactory::create( char const * const str ) {
+    return create( std::string(str) );
   }
+
+  bVOInterfaceFactory * bVOInterfaceFactory::instance( void ) {
+    if ( !_instance.isNull() ) return _instance.get();
+    
+    _instance.reset( new bVOInterfaceFactory() );
+    
+    //
+    // add builder
+    //
+    _instance->_builder.push_back( new bVOSetGrading() );
+    _instance->_builder.push_back( new bVONameFaces() );
+    _instance->_builder.push_back( new bVONameRegions() );
+    _instance->_builder.push_back( new bVOWriteMSH() );
+    _instance->_builder.push_back( new bVOReadMSH() );
+    _instance->_builder.push_back( new bVOTransfiniteFaces() );
+    _instance->_builder.push_back( new bVOSetNElements() );
+    _instance->_builder.push_back( new bVOTransfiniteRegions() );
+    _instance->_builder.push_back( new bVOOrientCellVolumes() );
+    _instance->_builder.push_back( new bVORecombineRecursiveRegions() );
+    _instance->_builder.push_back( new bVOMeshRule() );
+    _instance->_builder.push_back( new bVOPMeshRule() );
+    _instance->_builder.push_back( new bVOPatchRule() );
+    _instance->_builder.push_back( new bVORecombine() );
+    _instance->_builder.push_back( new bVOWriteSTL() );
+    _instance->_builder.push_back( new bVOSetPrescribedMeshSizeAtPoints() );
+    _instance->_builder.push_back( new bVODumpModel() );
+    _instance->_builder.push_back( new bVOEvilGodfather);
+    _instance->_builder.push_back( new bVOAddInternalEdge() );
+    _instance->_builder.push_back( new bVOAddFace() );
+    _instance->_builder.push_back( new bVOSetRotationalPeriodicity() );
+    _instance->_builder.push_back( new bVOTransformMeshPoints() );
+    
+    return _instance.get();
+  }    
 }

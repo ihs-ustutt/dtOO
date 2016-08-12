@@ -12,6 +12,7 @@ namespace dtOO {
   class bVOReadMSH : public bVOInterface {
   public:
     dt__class(bVOReadMSH, bVOInterface);
+    dt__classSelfCreate(bVOReadMSH);
     bVOReadMSH();
     virtual ~bVOReadMSH();
     virtual void init(

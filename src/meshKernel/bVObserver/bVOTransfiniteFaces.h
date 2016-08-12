@@ -13,6 +13,7 @@ namespace dtOO {
   class bVOTransfiniteFaces : public bVOInterface {
   public:
     dt__class(bVOTransfiniteFaces, bVOInterface);
+    dt__classSelfCreate(bVOTransfiniteFaces);
     bVOTransfiniteFaces();
     virtual ~bVOTransfiniteFaces();
     virtual void init(

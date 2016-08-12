@@ -28,6 +28,10 @@ namespace dtOO {
     _bV = attachTo;
   }  
 	
+  std::vector< std::string > bVOInterface::factoryAlias( void ) const {
+    return std::vector< std::string>(0);
+  }  
+  
   boundedVolume * bVOInterface::ptrBoundedVolume( void ) {
 		return _bV;
 	}

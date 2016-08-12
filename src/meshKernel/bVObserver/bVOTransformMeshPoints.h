@@ -13,6 +13,7 @@ namespace dtOO {
   class bVOTransformMeshPoints : public bVOInterface {
   public:
     dt__class(bVOTransformMeshPoints, bVOInterface);
+    dt__classSelfCreate(bVOTransformMeshPoints);
     bVOTransformMeshPoints();
     virtual ~bVOTransformMeshPoints();
     virtual void init(

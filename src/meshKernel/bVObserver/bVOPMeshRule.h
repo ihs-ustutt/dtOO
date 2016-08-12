@@ -13,6 +13,7 @@ namespace dtOO {
   class bVOPMeshRule : public bVOInterface {
     public:
       dt__class(bVOPMeshRule, bVOInterface);
+      dt__classSelfCreate(bVOPMeshRule);
       bVOPMeshRule();
       virtual ~bVOPMeshRule();
       virtual void init(

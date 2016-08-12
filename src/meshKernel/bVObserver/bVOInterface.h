@@ -19,6 +19,7 @@ namespace dtOO {
       dt__classOnlyName(bVOInterface);  
       bVOInterface();
       virtual ~bVOInterface();
+      virtual bVOInterface * create( void ) const = 0;           
       virtual void preUpdate( void );
       virtual void postUpdate( void );
       virtual void init( 
@@ -30,6 +31,7 @@ namespace dtOO {
         vectorHandling< boundedVolume * > const * const bV,
         boundedVolume * attachTo
       );
+      virtual std::vector< std::string > factoryAlias( void ) const;            
     protected:
       boundedVolume * ptrBoundedVolume(void);
     private:

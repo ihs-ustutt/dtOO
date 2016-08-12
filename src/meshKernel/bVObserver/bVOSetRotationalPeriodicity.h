@@ -14,6 +14,7 @@ namespace dtOO {
   class bVOSetRotationalPeriodicity : public bVOInterface {
   public:
     dt__class(bVOSetRotationalPeriodicity, bVOInterface);
+    dt__classSelfCreate(bVOSetRotationalPeriodicity);
     bVOSetRotationalPeriodicity();
     virtual ~bVOSetRotationalPeriodicity();
     virtual void init(

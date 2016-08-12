@@ -11,6 +11,7 @@ namespace dtOO {
   class bVOMeshRule : public bVOInterface {
     public:
       dt__class(bVOMeshRule, bVOInterface);
+      dt__classSelfCreate(bVOMeshRule);
       bVOMeshRule();
       virtual ~bVOMeshRule();
       virtual void init(

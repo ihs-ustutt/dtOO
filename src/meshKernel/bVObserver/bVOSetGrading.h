@@ -13,6 +13,7 @@ namespace dtOO {
   class bVOSetGrading : public bVOInterface {
   public:
     dt__class(bVOSetGrading, bVOInterface);
+    dt__classSelfCreate(bVOSetGrading);
     bVOSetGrading();
     virtual ~bVOSetGrading();
     virtual void init(

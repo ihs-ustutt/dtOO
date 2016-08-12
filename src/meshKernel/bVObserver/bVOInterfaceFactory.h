@@ -2,6 +2,7 @@
 #define	BVOINTERFACEFACTORY_H
 
 #include <logMe/dtMacros.h>
+#include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO {
   class bVOInterface;
@@ -9,10 +10,15 @@ namespace dtOO {
   class bVOInterfaceFactory {
     public:    
       dt__classOnlyName(bVOInterfaceFactory);
-      bVOInterfaceFactory();
       virtual ~bVOInterfaceFactory();
       static bVOInterface * create(char const * const str);
       static bVOInterface * create(std::string const str);
+      static bVOInterfaceFactory * instance( void );       
+    private:
+      bVOInterfaceFactory();    
+    private:
+      vectorHandling< bVOInterface * > _builder;
+      static dt__pH(bVOInterfaceFactory) _instance;       
   };
 }
 #endif	/* BVOINTERFACEFACTORY_H */

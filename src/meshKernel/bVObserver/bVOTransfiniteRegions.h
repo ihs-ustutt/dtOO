@@ -13,6 +13,7 @@ namespace dtOO {
   class bVOTransfiniteRegions : public bVOInterface {
   public:
     dt__class(bVOTransfiniteRegions, bVOInterface);
+    dt__classSelfCreate(bVOTransfiniteRegions);
     bVOTransfiniteRegions();
     virtual ~bVOTransfiniteRegions();
     virtual void init(

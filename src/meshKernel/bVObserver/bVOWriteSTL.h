@@ -12,6 +12,7 @@ namespace dtOO {
   class bVOWriteSTL : public bVOInterface {
   public:
     dt__class(bVOWriteSTL, bVOInterface);
+    dt__classSelfCreate(bVOWriteSTL);
     bVOWriteSTL();
     virtual ~bVOWriteSTL();
     virtual void init(

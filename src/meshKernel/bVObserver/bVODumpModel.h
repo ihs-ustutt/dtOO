@@ -13,6 +13,7 @@ namespace dtOO {
   class bVODumpModel : public bVOInterface {
   public:
     dt__class(bVODumpModel, bVOInterface);
+    dt__classSelfCreate(bVODumpModel);
     bVODumpModel();
     virtual ~bVODumpModel();
     virtual void preUpdate( void );

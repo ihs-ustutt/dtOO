@@ -13,6 +13,7 @@ namespace dtOO {
   class bVORecombineRecursiveRegions : public bVOInterface {
   public:
     dt__class(bVORecombineRecursiveRegions, bVOInterface);
+    dt__classSelfCreate(bVORecombineRecursiveRegions);
     bVORecombineRecursiveRegions();
     virtual ~bVORecombineRecursiveRegions();
     virtual void init(

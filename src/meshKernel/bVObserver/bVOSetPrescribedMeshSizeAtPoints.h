@@ -13,6 +13,7 @@ namespace dtOO {
   class bVOSetPrescribedMeshSizeAtPoints : public bVOInterface {
   public:
     dt__class(bVOSetPrescribedMeshSizeAtPoints, bVOInterface);
+    dt__classSelfCreate(bVOSetPrescribedMeshSizeAtPoints);
     bVOSetPrescribedMeshSizeAtPoints();
     virtual ~bVOSetPrescribedMeshSizeAtPoints();
     virtual void init(

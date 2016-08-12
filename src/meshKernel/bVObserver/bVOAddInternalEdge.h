@@ -14,6 +14,7 @@ namespace dtOO {
   class bVOAddInternalEdge : public bVOInterface {
   public:
     dt__class(bVOAddInternalEdge, bVOInterface);
+    dt__classSelfCreate(bVOAddInternalEdge);
     bVOAddInternalEdge();
     virtual ~bVOAddInternalEdge();
     virtual void init(
