@@ -42,6 +42,7 @@ namespace dtOO {
     
 //		<bVObserver 
 //			name="bVOTransformMeshPoints" 
+//			relative_tolerance="0.5"     
 //			transformer="{rot_0.5pi_NZ}{rot_1.0pi_NZ}{rot_1.5pi_NZ}"
 //		/>			
 								
@@ -57,11 +58,24 @@ namespace dtOO {
         bC->constPtrTransformerContainer()->get( aLabel )
       );
     }
+    
+    _relTol = 0.5;
+    if ( dtXmlParserBase::hasAttribute("relative_tolerance", element) ) {
+      _relTol
+      =
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "relative_tolerance", element, cV
+      );
+    }
   }
   
   void bVOTransformMeshPoints::postUpdate( void ) {
 		dt__ptrAss( dtGmshModel * gm, ptrBoundedVolume()->getModel() );
-
+		//
+		// set current model
+		//
+		::GModel::setCurrent(gm);
+    
     std::vector< std::map< ::GEntity *, ::GEntity * > > ge_newOldV;
     dt__forAllIndex( _dtT, ii ) {
       ge_newOldV.push_back( 
@@ -107,6 +121,7 @@ namespace dtOO {
       //
       // edge
       //
+      // add vertices
       dt__forAllRefAuto( gm->edges(), ge ) {
         dt__ptrAss( dtGmshEdge * edge, dtGmshEdge::DownCast(ge) );
         dt__ptrAss( 
@@ -123,7 +138,13 @@ namespace dtOO {
 
           mv_newOld[ mv ] = mv_clone;
         }
-        
+      }      
+      // add elements
+      dt__forAllRefAuto( gm->edges(), ge ) {
+        dt__ptrAss( dtGmshEdge * edge, dtGmshEdge::DownCast(ge) );
+        dt__ptrAss( 
+          dtGmshEdge * cloneEdge, dtGmshEdge::DownCast( ge_newOld[ ge ] ) 
+        );        
         dt__forAllRefAuto( edge->lines, aLine ) {
           cloneEdge->lines.push_back(
           new ::MLine(
@@ -137,6 +158,7 @@ namespace dtOO {
       //
       // face
       //
+      // add vertices
       dt__forAllRefAuto( gm->faces(), gf ) {
         dt__ptrAss( dtGmshFace * face, dtGmshFace::DownCast(gf) );
         dt__ptrAss( 
@@ -153,7 +175,13 @@ namespace dtOO {
 
           mv_newOld[ mv ] = mv_clone;
         }
-
+      }
+      // add elements
+      dt__forAllRefAuto( gm->faces(), gf ) {
+        dt__ptrAss( dtGmshFace * face, dtGmshFace::DownCast(gf) );
+        dt__ptrAss( 
+          dtGmshFace * cloneFace, dtGmshFace::DownCast( ge_newOld[ gf ] ) 
+        );        
         dt__forAllRefAuto( face->triangles, aTri ) {
           cloneFace->triangles.push_back(
             new ::MTriangle(
@@ -178,6 +206,7 @@ namespace dtOO {
       //
       // region
       //      
+      // add vertices
       dt__forAllRefAuto( gm->regions(), gr ) {
         dt__ptrAss( dtGmshRegion * region, dtGmshRegion::DownCast(gr) );
         dt__ptrAss( 
@@ -194,7 +223,13 @@ namespace dtOO {
           
           mv_newOld[ mv ] = mv_clone;
         }
-        
+      }      
+      // add elements
+      dt__forAllRefAuto( gm->regions(), gr ) {
+        dt__ptrAss( dtGmshRegion * region, dtGmshRegion::DownCast(gr) );
+        dt__ptrAss( 
+          dtGmshRegion * cloneRegion, dtGmshRegion::DownCast( ge_newOld[ gr ] ) 
+        );               
         dt__forAllRefAuto( region->tetrahedra, aTet ) {
           cloneRegion->tetrahedra.push_back(
             new ::MTetrahedron(
@@ -285,7 +320,7 @@ namespace dtOO {
     }
     
     gm->removeDuplicateMeshVertices( 
-      0.5 
+      _relTol
       * 
       staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
     );

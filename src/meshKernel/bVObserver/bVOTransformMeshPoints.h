@@ -27,6 +27,7 @@ namespace dtOO {
     virtual void postUpdate( void );
   private:
     std::vector< dtTransformer const * > _dtT;
+    float _relTol;
   };
 }
 #endif	/* bVOTransformMeshPoints_H */
