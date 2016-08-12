@@ -48,6 +48,11 @@ namespace dtOO {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 		
     //
+    // set current model
+    //
+    ::GModel::setCurrent(gm);
+    
+    //
     // 2D
     //
     dtGmshModel::intGEntityVMap gf_number;

@@ -326,6 +326,11 @@ namespace dtOO {
 	}  
 
   void gmshBoundedVolume::makeGrid(void) {
+		//
+		// set current model
+		//
+		::GModel::setCurrent(_gm.get());
+    
     //
     // meshing
     //
