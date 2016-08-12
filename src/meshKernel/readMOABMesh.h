@@ -31,8 +31,7 @@ namespace dtOO {
       vectorHandling< analyticGeometry * > const * const aG,
       vectorHandling< boundedVolume * > const * const bV
     );    
-    virtual void makeGrid(void);
-    virtual void makePreGrid(void);    
+    virtual void makeGrid(void); 
   private:
     void convertToGmsh( void );
     static std::map< ::moab::EntityHandle, ::MVertex * > createVertices( 

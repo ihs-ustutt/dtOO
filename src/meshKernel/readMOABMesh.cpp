@@ -40,7 +40,7 @@ namespace dtOO {
       vectorHandling< boundedVolume * > const * const bV
 	) {
     //
-    // init gmshBoundedVolume
+    // init
     //
     gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 		
@@ -48,6 +48,11 @@ namespace dtOO {
 	}
 	
   void readMOABMesh::makeGrid(void) {
+		//
+		// set current model
+		//
+		::GModel::setCurrent(_gm.get());
+    
 		dt__throwIf(_mb == NULL, makeGrid());
 
     //
@@ -80,14 +85,7 @@ namespace dtOO {
     //
     // mark as meshed
     //
-    boundedVolume::setMeshed();			    
-	}
-  
-	void readMOABMesh::makePreGrid(void) {
-    //
-    // call observers
-    //
-		boundedVolume::preNotify();
+    boundedVolume::setMeshed();
 	}
 
 	void readMOABMesh::convertToGmsh( void ) {
@@ -148,12 +146,17 @@ namespace dtOO {
     _rr_string = createRegions(_gm.get(),  *_mb, _mv_MOAB);
    
     //
-    // put all vertices in region
+    // put all vertices that are not on a face in the first region
     //
     dt__forAllRefAuto(_mv_MOAB, aPair) {
       ::MVertex * mv = aPair.second;
-      mv->setEntity( _rr_string.begin()->second );
-      _rr_string.begin()->second->addMeshVertex( mv );
+      if ( mv->onWhat() == NULL ) {
+        mv->setEntity( _rr_string.begin()->second );
+        _rr_string.begin()->second->addMeshVertex( mv );
+      }
+      else {
+        mv->onWhat()->addMeshVertex( mv );        
+      }
     }
     //
     // create physicals
@@ -307,6 +310,16 @@ namespace dtOO {
             mv_MOAB[ conn[3] ]
           )
         );
+        
+        //
+        // add MVertex to this GFace
+        // - if another element on another face also contains one of these 
+        //   vertices then the owner (face) will change.
+        //
+        mv_MOAB[ conn[0] ]->setEntity( thisFace );
+        mv_MOAB[ conn[1] ]->setEntity( thisFace );
+        mv_MOAB[ conn[2] ]->setEntity( thisFace );
+        mv_MOAB[ conn[3] ]->setEntity( thisFace );
       } 
       meshSetCounter++;
 		} 		
