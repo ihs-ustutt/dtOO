@@ -61,8 +61,8 @@ std::vector< std::vector< std::pair< constValue *, float > > > simpleCreate(
     //
     // store samples
     //
-    samples.push_back( std::vector< std::pair< constValue *, float > >(0) );
     dt__forFromToIndex(0, nSamples[jj], ii) {
+      samples.push_back( std::vector< std::pair< constValue *, float > >(0) );      
       float iiF = static_cast< float >(ii);
 
       samples.back().push_back(
@@ -80,7 +80,7 @@ std::vector< std::vector< std::pair< constValue *, float > > > simpleCreate(
   std::vector< std::pair< constValue *, float > > accum;
   int counter = 0;
   combinations(samples, counter, accum, out);
-  
+
   return samples;
 }
 std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
