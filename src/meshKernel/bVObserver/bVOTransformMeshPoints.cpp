@@ -59,7 +59,7 @@ namespace dtOO {
       );
     }
     
-    _relTol = 0.5;
+    _relTol = 1.0;
     if ( dtXmlParserBase::hasAttribute("relative_tolerance", element) ) {
       _relTol
       =
@@ -319,10 +319,6 @@ namespace dtOO {
       }
     }
     
-    gm->removeDuplicateMeshVertices( 
-      _relTol
-      * 
-      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
-    );
+    gm->removeDuplicateMeshVertices( _relTol );
   }
 }
