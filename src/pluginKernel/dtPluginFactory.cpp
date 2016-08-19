@@ -19,6 +19,7 @@
 #include "volVectorInChannelFieldRange.h"
 #include "volVectorFieldRange.h"
 #include "volScalarFieldRange.h"
+#include "volVectorOnRotatingLineFieldRange.h"
 
 namespace dtOO {
   dt__pH(dtPluginFactory) dtPluginFactory::_instance(NULL);
@@ -130,6 +131,7 @@ namespace dtOO {
     _instance->_builder.push_back( new volVectorInChannelFieldRange() );
     _instance->_builder.push_back( new volVectorFieldRange() );
     _instance->_builder.push_back( new volScalarFieldRange() );
+    _instance->_builder.push_back( new volVectorOnRotatingLineFieldRange() );
     
     return _instance.get();
   }

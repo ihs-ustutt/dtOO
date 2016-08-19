@@ -18,6 +18,7 @@ SET(HEADERS
   volVectorInChannelFieldRange.h
   volVectorFieldRange.h
   volScalarFieldRange.h
+  volVectorOnRotatingLineFieldRange.h
 )
 
 SET(SOURCES
@@ -40,6 +41,7 @@ SET(SOURCES
   volVectorInChannelFieldRange.cpp
   volVectorFieldRange.cpp
   volScalarFieldRange.cpp
+  volVectorOnRotatingLineFieldRange.cpp
 )
 
 APPEND_DTOO_SOURCE(src/pluginKernel "${SOURCES}")
