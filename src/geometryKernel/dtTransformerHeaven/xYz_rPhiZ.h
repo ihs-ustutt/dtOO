@@ -11,6 +11,7 @@ namespace dtOO {
     dt__class(xYz_rPhiZ, dtTransformer);
     xYz_rPhiZ();
     xYz_rPhiZ( xYz_rPhiZ const & orig );
+    xYz_rPhiZ( dtPoint3 origin, dtVector3 rotAxis, dtVector3 refAxis );
     virtual ~xYz_rPhiZ();
     virtual dtTransformer * clone( void ) const;
     virtual dtTransformer * create( void ) const;     

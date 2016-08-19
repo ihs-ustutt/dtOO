@@ -17,13 +17,19 @@ namespace dtOO {
   xYz_rPhiZ::xYz_rPhiZ() : dtTransformer() {
   }
 
-  xYz_rPhiZ::xYz_rPhiZ(
-	  xYz_rPhiZ const & orig 
-	) : dtTransformer(orig) {
+  xYz_rPhiZ::xYz_rPhiZ( xYz_rPhiZ const & orig ) : dtTransformer(orig) {
     _rotAxis = orig._rotAxis;
     _refAxis = orig._refAxis;
     _origin = orig._origin;
   }
+  
+  xYz_rPhiZ::xYz_rPhiZ( 
+    dtPoint3 origin, dtVector3 rotAxis, dtVector3 refAxis 
+  ) : dtTransformer() {
+    _rotAxis = rotAxis;
+    _refAxis = refAxis;
+    _origin = origin;
+  }  
 	
   xYz_rPhiZ::~xYz_rPhiZ() {
 		
