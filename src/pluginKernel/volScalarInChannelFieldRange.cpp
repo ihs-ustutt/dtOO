@@ -344,6 +344,8 @@ namespace dtOO {
         //
         dt__forFromToIndex(0, grid.size(0), ii) {
           dt__forFromToIndex(0, grid.size(1), jj) {
+            if ( phi[ii][jj] == 0.) continue;
+            
             of 
               << logMe::dtFormat(
                 "%16.8e, %16.8e, %16.8e, "
