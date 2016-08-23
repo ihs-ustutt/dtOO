@@ -1,9 +1,9 @@
 #include "bVOMeshRule.h"
-#include "meshEngine/dtGmshRegion.h"
 
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <xmlHeaven/qtXmlPrimitive.h>
+#include <xmlHeaven/dtXmlParser.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
@@ -212,7 +212,14 @@ namespace dtOO {
           ) (*current1D)(aEdge); 
           if (optionHandling::optionTrue("debug")) {
             gm->writeMSH(
-              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+              dtXmlParser::reference().currentState()
+              +
+              "_"
+              +
+              ptrBoundedVolume()->getLabel()
+              +
+              "_debug.msh", 
+              2.2, false, true
             );
           }
         }
@@ -263,7 +270,14 @@ namespace dtOO {
           ) (*current2D)(aFace);
           if (optionHandling::optionTrue("debug")) {
             gm->writeMSH(
-              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+              dtXmlParser::reference().currentState()
+              +
+              "_"
+              +
+              ptrBoundedVolume()->getLabel()
+              +
+              "_debug.msh", 
+              2.2, false, true
             );
           }          
         }    
@@ -305,7 +319,14 @@ namespace dtOO {
           ) (*current2D)(aFace);
           if (optionHandling::optionTrue("debug")) {
             gm->writeMSH(
-              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+              dtXmlParser::reference().currentState()
+              +
+              "_"
+              +
+              ptrBoundedVolume()->getLabel()
+              +
+              "_debug.msh", 
+              2.2, false, true
             );
           }          
         }            
@@ -329,7 +350,14 @@ namespace dtOO {
           ) (*current2D)( aFace );
           if (optionHandling::optionTrue("debug")) {        
             gm->writeMSH(
-              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+              dtXmlParser::reference().currentState()
+              +
+              "_"
+              +
+              ptrBoundedVolume()->getLabel()
+              +
+              "_debug.msh", 
+              2.2, false, true
             );        
           }
         }
@@ -370,7 +398,14 @@ namespace dtOO {
           ) (*current3D)(aRegion);
           if (optionHandling::optionTrue("debug")) {
             gm->writeMSH(
-              ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
+              dtXmlParser::reference().currentState()
+              +
+              "_"
+              +
+              ptrBoundedVolume()->getLabel()
+              +
+              "_debug.msh", 
+              2.2, false, true
             );
           }          
         }    
