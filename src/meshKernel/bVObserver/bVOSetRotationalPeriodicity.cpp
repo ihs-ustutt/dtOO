@@ -151,6 +151,10 @@ namespace dtOO {
         (*_dtT)( dtGmshModel::extractPosition(aVertex), -1 ).y()
       );
       
+      if ( angle.back() < 0. ) {
+        angle.back() = angle.back()+2.*M_PI;
+      }
+      
       //
       // output
       //
