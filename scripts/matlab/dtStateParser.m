@@ -312,11 +312,25 @@ classdef dtStateParser
       function [ stateIndex ] = StateIndex(obj, state )
         %ind = find( ismember(obj.stateLabel_, state )==1 );
         if ischar(state)
-          stateIndex = find( strcmp(obj.stateLabel_, state ) );
+%          stateIndex = find( strcmp(obj.stateLabel_, state ) );
+          for j=1:length(obj.stateLabel_)
+            strFind = strfind(obj.stateLabel_(j), state);
+            if ( ~isempty( strFind{1} ) )
+              stateIndex = j;
+              break;
+            end
+          end
         elseif iscell(state)
           stateIndex = zeros(length(state),1);
           for i=1:length(state)
-            stateIndex(i) = find( strcmp(obj.stateLabel_, state{i} ) );
+            %stateIndex(i) = find( strcmp(obj.stateLabel_, state{i} ) );
+            for j=1:length(obj.stateLabel_)
+              strFind = strfind(obj.stateLabel_(j), state(i));
+              if ( ~isempty( strFind{1} ) )
+                stateIndex(i) = j;
+                break;
+              end
+            end
           end
         else          
             throw(  ...
