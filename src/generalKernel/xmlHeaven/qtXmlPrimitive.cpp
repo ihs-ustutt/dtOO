@@ -184,11 +184,15 @@ namespace dtOO {
   std::vector< ::QDomElement > qtXmlPrimitive::getChildVector(
 	  std::string const sibName, ::QDomElement const element 
 	) {
+    std::vector< ::QDomElement > retVec(0);
+    
     ::QDomElement first = getChild(sibName, element);
-    std::vector< ::QDomElement > retVec = getSiblingVector(sibName, first);
+    if ( !first.isNull() ) {
+      retVec = getSiblingVector(sibName, first);
 
-    retVec.insert(retVec.begin(), first);
-
+      retVec.insert(retVec.begin(), first);
+    }
+    
     return retVec;
   }  
   
@@ -472,13 +476,13 @@ namespace dtOO {
   std::string qtXmlPrimitive::getAttributeStr(
 	  std::string const attName, const ::QDomElement element
 	) {
-    dt__warnIfWithMessage(
-      !element.hasAttribute(attName.c_str()), 
+    dt__throwIfWithMessage( 
+      !hasAttribute(attName, element), 
       getAttributeStr(),
-      << dt__eval(attName) << std::endl
-      << "Return empty string."
+      << qtXmlPrimitive::convertToString( element ) << std::endl
+      << "attName = " << attName
     );
-		std::string str = element.attribute( attName.c_str(), "" ).toStdString();
+		std::string str = element.attribute( attName.c_str() ).toStdString();
     
     //
     // replace state
@@ -493,12 +497,7 @@ namespace dtOO {
 		// remove whitespaces
 		//
     str.erase(
-		  std::remove_if(
-		    str.begin(), 
-				str.end(), 
-				::isspace
-		  ), 
-			str.end()
+		  std::remove_if( str.begin(), str.end(), ::isspace ),  str.end()
 	  );
     return str;
   }
