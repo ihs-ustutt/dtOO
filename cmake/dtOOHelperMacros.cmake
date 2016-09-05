@@ -182,3 +182,43 @@ DTOO_FIND_LIBRARY_EXT(
 )
 
 ENDMACRO()
+
+MACRO(
+  DTOO_FIND_LIBRARY_HEADERONLY_EXT
+  LIB_FOUND TESTINCNAME
+  LIB_INCLUDE_DIR
+  LIB_ADD_INCSEARCHPATH
+)
+  IF( NOT ${LIB_FOUND} STREQUAL TRUE )
+    set( _testincname ${TESTINCNAME} )
+    set( 
+      _incsearchpath 
+      /usr/ihs/include/
+      ${LIB_ADD_INCSEARCHPATH}
+    )
+    
+    #find the include dir by looking for moab/Version.h
+    FIND_PATH( 
+      ${LIB_INCLUDE_DIR} ${_testincname}
+      PATHS 
+      ${_incsearchpath}
+    )
+    IF( ${LIB_INCLUDE_DIR} STREQUAL ${LIB_INCLUDE_DIR}-NOTFOUND )
+      SET( ${LIB_FOUND} FALSE CACHE BOOL FORCE )
+      MESSAGE( FATAL_ERROR "Cannot find ${_testincname} include dir." )
+    ENDIF( ${LIB_INCLUDE_DIR} STREQUAL ${LIB_INCLUDE_DIR}-NOTFOUND )
+
+
+      SET( ${LIB_FOUND} TRUE CACHE BOOL "Has been found?" FORCE )
+      SET( _firsttime TRUE )
+      MESSAGE( 
+        STATUS 
+        "|\n"
+        "| ${LIB_FOUND}=${${LIB_FOUND}}\n"
+        "| ${LIB_INCLUDE_DIR}=${${LIB_INCLUDE_DIR}}\n"
+        "|" 
+        )
+  ELSE( NOT ${LIB_FOUND} STREQUAL TRUE )
+    SET( _firsttime FALSE ) #so that messages are only printed once
+  ENDIF( NOT ${LIB_FOUND} STREQUAL TRUE )
+ENDMACRO()

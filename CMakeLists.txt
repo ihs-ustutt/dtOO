@@ -27,7 +27,8 @@ endif (DTOO_EXTERNLIBS STREQUAL "")
 #------------------------------------------------------------------------------#
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl") #for dladdr in Backtrace
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp -lmpfr") #for cgal
+
 #------------------------------------------------------------------------------#
 #
 # options
@@ -42,7 +43,6 @@ option(DTOO_USE_MPI "Use MPI" ON)
 #------------------------------------------------------------------------------#
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Xml REQUIRED)
-
 find_package(CGAL REQUIRED COMPONENTS CGAL)
 find_package(GMSH REQUIRED Gmsh)
 find_package(
@@ -85,6 +85,7 @@ find_package(OpenVolumeMesh REQUIRED COMPONENTS OpenVolumeMesh)
 find_package(OpenMP REQUIRED)
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+find_package(IGL REQUIRED COMPONENTS iglcork iglcgal cork igl)
 
 if (DTOO_USE_MPI)
   find_package(MPI)
@@ -100,6 +101,7 @@ if (MPI_FOUND)
     program_options
     mpi
     serialization
+    thread-mt
     REQUIRED
   )
   add_definitions(-DDTOO_HAS_MPI)
@@ -111,6 +113,7 @@ else (MPI_FOUND)
     system 
     timer
     program_options
+    thread-mt
     REQUIRED
   )
 endif (MPI_FOUND)
@@ -161,6 +164,7 @@ include_directories(
   ${OpenMesh_INCLUDE_DIR}
   ${OpenVolumeMesh_INCLUDE_DIR}
   ${OpenFoamTurbo_INCLUDE_DIR}
+  ${IGL_INCLUDE_DIR}
 )
 
 if (MPI_FOUND)
@@ -225,6 +229,7 @@ target_link_libraries(
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
   ${OpenFoamTurbo_LIBRARIES}
+  ${IGL_LIBRARIES}
 )
 
 set(
@@ -288,6 +293,7 @@ set(
   ${CGAL_INCLUDE_DIR}
   ${ROOT_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
+  ${IGL_INCLUDE_DIR}
 )
 set(
   CONF_DTOO_3RD_LIBRARIES 
