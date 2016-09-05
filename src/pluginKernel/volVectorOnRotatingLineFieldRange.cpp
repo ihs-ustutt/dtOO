@@ -63,7 +63,17 @@ namespace dtOO {
       &&
       !dtXmlParser::hasAttribute("field", element)
       &&
-      !dtXmlParser::hasAttribute("numPoints", element), 
+      !dtXmlParser::hasAttribute("numPoints", element)
+      &&
+      !dtXmlParser::hasAttribute("relBandwithR", element)
+      &&
+      !dtXmlParser::hasAttribute("relBandwithZ", element)
+      &&
+      !dtXmlParser::hasAttribute("origin", element)
+      &&
+      !dtXmlParser::hasAttribute("rotationAxis", element)
+      &&
+      !dtXmlParser::hasAttribute("referenceAxis", element), 
       init()
     );
     
@@ -99,9 +109,12 @@ namespace dtOO {
     = 
     dtXmlParser::getAttributeIntMuParse("numPoints", element, cV, aF);   
 
-    _relBandwith
+    _relBandwithR
     = 
-    dtXmlParser::getAttributeFloatMuParse("relBandwith", element, cV, aF); 
+    dtXmlParser::getAttributeFloatMuParse("relBandwithR", element, cV, aF); 
+    _relBandwithZ
+    = 
+    dtXmlParser::getAttributeFloatMuParse("relBandwithZ", element, cV, aF);     
     
     _origin
     =
@@ -278,8 +291,8 @@ namespace dtOO {
         std::vector< dtPoint3 > grid_cyl = dtT.retract( &grid_cart );
         
         twoDArrayHandling< std::pair< int, dtPoint3 > > meshPair(grid_cyl.size(), 0);
-        float deltaR = _relBandwith * m1d->length();
-        float deltaZ = _relBandwith * m1d->length();
+        float deltaR = _relBandwithR * m1d->length();
+        float deltaZ = _relBandwithZ * m1d->length();
         forAll(mesh.cells(), ii) {
           dt__forAllIndex(grid_cyl, jj) {
             dtPoint3 const & aPoint = grid_cyl[jj];

@@ -45,7 +45,8 @@ namespace dtOO {
     dtVector3 _rotAxis;
     dtVector3 _refAxis;
     dtPoint3 _origin;
-    float _relBandwith;
+    float _relBandwithR;
+    float _relBandwithZ;
   };
 }
 
