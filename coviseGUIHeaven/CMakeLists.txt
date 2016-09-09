@@ -41,14 +41,13 @@ message(STATUS "dtOO::> extent CMAKE_MODULE_PATH by ${DTOO_ROOTDIR}/cmake/")
 #                                                                              #
 #------------------------------------------------------------------------------#
 find_package(COVISE REQUIRED)
+
 #------------------------------------------------------------------------------#
 #                                                                              #
 # find dependencies                                                            #
 #                                                                              #
 #------------------------------------------------------------------------------#
-find_package(CGAL)
-add_definitions(-DCGAL_DISABLE_ROUNDING_MATH_CHECK)
-USE_DTOO()
+find_package( DTOO REQUIRED )
 
 #------------------------------------------------------------------------------#
 #                                                                              #
@@ -56,9 +55,8 @@ USE_DTOO()
 #                                                                              #
 #------------------------------------------------------------------------------#
 include_directories(
-  ${BOOST_INCLUDE_DIR} 
-  ${DTOO_INCLUDE_DIR} 
-  ${CGAL_INCLUDE_DIR}
+  ${DTOO_INCLUDE_DIR}
+  ${DTOO_3RD_INCLUDE_DIRS}
   ${COVISE_INCLUDE_DIR} 
 )
 
@@ -67,7 +65,7 @@ include_directories(
 # compiler flags                                                               #
 #                                                                              #
 #------------------------------------------------------------------------------#
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS ${DTOO_CXX_FLAGS})
 
 #------------------------------------------------------------------------------#
 #                                                                              #
@@ -88,7 +86,7 @@ include_directories(
 add_library(dtOOAbstractModule STATIC ${AM_SOURCES} ${AM_HEADERS})
 target_link_libraries(
   dtOOAbstractModule 
-  coApi coAppl coCore coUtil coDo coShm ${EXTRA_LIBS}
+  coApi coAppl coCore coUtil coDo coShm ${DTOO_LIBRARIES}
 )
 
 #------------------------------------------------------------------------------#
@@ -105,7 +103,7 @@ set(DT_SOURCES
 add_executable(dtOODesignTool ${DT_HEADERS} ${DT_SOURCES})
 target_link_libraries(
   dtOODesignTool 
-  dtOOAbstractModule coApi coAppl coCore coUtil coDo coShm ${EXTRA_LIBS}
+  dtOOAbstractModule coApi coAppl coCore coUtil coDo coShm ${DTOO_LIBRARIES}
 )
 
 #------------------------------------------------------------------------------#
@@ -122,7 +120,7 @@ set(SC_SOURCES
 add_executable(dtOOSimCaller ${SC_HEADERS} ${SC_SOURCES})
 target_link_libraries(
   dtOOSimCaller 
-  dtOOAbstractModule coApi coAppl coCore coUtil coDo coShm ${EXTRA_LIBS}
+  dtOOAbstractModule coApi coAppl coCore coUtil coDo coShm ${DTOO_LIBRARIES}
 )
 
 #------------------------------------------------------------------------------#
