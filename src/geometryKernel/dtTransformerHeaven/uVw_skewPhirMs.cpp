@@ -24,8 +24,6 @@ namespace dtOO {
     _nU = 11;
     _nV = 11;
     _nW = 11;    
-    _fU.reset(NULL);
-    _fV.reset(NULL);
     _relaxM = 0.50;    
     _relaxPhir = 0.50;     
     _nSteps = 10;    

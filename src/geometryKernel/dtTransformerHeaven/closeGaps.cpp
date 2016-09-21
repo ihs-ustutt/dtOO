@@ -6,8 +6,6 @@
 
 namespace dtOO {
   closeGaps::closeGaps() : dtTransformer() {
-    _vvStartAGeo.reset(NULL);
-    _vvEndAGeo.reset(NULL);
   }
 
   closeGaps::~closeGaps() {
