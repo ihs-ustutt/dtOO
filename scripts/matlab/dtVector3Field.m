@@ -3,17 +3,8 @@ classdef dtVector3Field
       filename_
    end
    methods
-      function obj = dtVector3Field(filename)
-        obj.filename_ = filename;
-
-        if ( exist(obj.filename_, 'file') == 0);
-          throw(  ...
-            MException( ...
-              'dtVector3Field:dtVector3Field', ...
-              sprintf('> %s < is not a file.', obj.filename_) ...
-            ) ...
-          );
-        end
+      function obj = dtVector3Field(filepattern)
+        obj.filename_ = dtFile( filepattern ).FileName();
       end 
       function [coord, value, sf, q] = Field( obj )
         field = readGnu(obj.filename_, '%f,%f,%f,%f,%f,%f,%f,%f,%f,%f');

@@ -3,16 +3,8 @@ classdef dtScalarField
       filename_
    end
    methods
-      function obj = dtScalarField(filename)
-        obj.filename_ = filename;
-        if (exist(obj.filename_, 'file') == 0);
-          throw(  ...
-            MException( ...
-              'dtScalarField:dtScalarField', ...
-              sprintf('> %s < is not a file.', obj.filename_) ...
-            ) ...
-          );
-        end
+      function obj = dtScalarField(filepattern)
+        obj.filename_ = dtFile( filepattern ).FileName();
       end 
       function [coord, value, sf, q] = Field( obj )
         field = readGnu(obj.filename_, '%f,%f,%f,%f,%f,%f,%f,%f');

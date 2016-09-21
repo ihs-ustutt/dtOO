@@ -1,0 +1,33 @@
+classdef dtFile
+   properties (SetAccess = private, GetAccess = public)
+      filepattern_
+   end
+   methods
+      function obj = dtFile( filepattern )
+        obj.filepattern_ = filepattern;
+      end
+      function [ filename ] = FileName( obj )       
+        dirList = dir( obj.filepattern_ );
+        
+        if ( size( dirList, 1 ) > 1 )
+          throw(  ...
+            MException( ...
+              'dtFile:FileName', ...
+               sprintf('> %s < is not a unique file or directory.', obj.filepattern_) ...
+            ) ...
+          );
+        else
+          if ( dirList(1).isdir )
+            throw(  ...
+              MException( ...
+                'dtFile:FileName', ...
+                 sprintf('> %s < is a unique directory.', obj.filepattern_) ...
+              ) ...
+            );            
+          end
+        end
+        
+        filename = dirList(1).name;
+      end       
+   end
+end
