@@ -1,10 +1,14 @@
 classdef dtFile
    properties (SetAccess = private, GetAccess = public)
-      filepattern_
+     filepattern_
+     dir_
+     file_
+     ext_
    end
    methods
       function obj = dtFile( filepattern )
         obj.filepattern_ = filepattern;
+        [obj.dir_, obj.file_, obj.ext_] = fileparts( filepattern );
       end
       function [ filename ] = FileName( obj )       
         dirList = dir( obj.filepattern_ );
@@ -27,7 +31,7 @@ classdef dtFile
           end
         end
         
-        filename = dirList(1).name;
+        filename = [obj.dir_, '/', dirList(1).name];
       end       
    end
 end
