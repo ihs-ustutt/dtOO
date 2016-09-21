@@ -10,7 +10,7 @@ classdef dtScalarTime
    end
    methods
       function obj = dtScalarTime(dirname, format)
-        obj.dirname_ = dirname;
+        obj.dirname_ = dtDirectory(dirname).DirectoryName();
         obj.format_ = format;
         if (exist(obj.dirname_, 'dir') == 0);
           throw(  ...
