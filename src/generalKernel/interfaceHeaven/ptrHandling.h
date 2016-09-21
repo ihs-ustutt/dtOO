@@ -1,11 +1,11 @@
 #ifndef PTRHANDLING_H
 #define	PTRHANDLING_H
 
-#include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace dtOO {
   template < typename T >
-  class ptrHandling : public boost::scoped_ptr< T > {
+  class ptrHandling : public boost::shared_ptr< T > {
     public:
       ptrHandling();
       ptrHandling( T * ptr );
@@ -16,11 +16,11 @@ namespace dtOO {
   // cpp
   //----------------------------------------------------------------------------
   template < typename T >
-  ptrHandling< T >::ptrHandling() : boost::scoped_ptr< T >() {
+  ptrHandling< T >::ptrHandling() : boost::shared_ptr< T >() {
   }
 
   template < typename T >
-  ptrHandling< T >::ptrHandling( T * ptr ) : boost::scoped_ptr< T >(ptr) {
+  ptrHandling< T >::ptrHandling( T * ptr ) : boost::shared_ptr< T >(ptr) {
   }
 
   template < typename T >
