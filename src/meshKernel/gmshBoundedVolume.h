@@ -41,7 +41,7 @@ namespace dtOO {
     void updatePhysicals( void ) const;    
     mutable twoDArrayHandling< std::string > _physLabels;    
   protected:
-    dt__pH(dtGmshModel) _gm;
+    dtGmshModel * _gm;
   };
 }
 #endif	/* GMSHBOUNDEDVOLUME_H */

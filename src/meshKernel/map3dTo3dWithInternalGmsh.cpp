@@ -73,7 +73,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 	
 		dt__pVH(map2dTo3d) m2dV;
 		m2dV.push_back( _m3d->segmentConstWPercent(0.) );
@@ -131,7 +131,7 @@ namespace dtOO {
 		//
 		// correct transfinite surfaces and create region
 		//
-		dtGmshRegion * gr = new dtGmshRegion(_gm.get(), _gm->getMaxRegionTag()+1);
+		dtGmshRegion * gr = new dtGmshRegion( _gm , _gm->getMaxRegionTag()+1);
 		std::list< ::GFace * > ff = _gm->faces();
 		dt__forAllIter(std::list< ::GFace * >, ff, it) {
 			dtGmshModel::cast2DtGmshFace(*it)->correctIfTransfinite();

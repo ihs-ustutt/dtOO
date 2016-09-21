@@ -67,7 +67,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 	
     //
     // add all faces of outer channel

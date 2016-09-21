@@ -29,6 +29,9 @@ namespace dtOO {
 	}
 
 	gmshBoundedVolume::~gmshBoundedVolume() {
+    //
+    // gmsh deletes also the models
+    //
 	  GmshFinalize();		
 	}
 
@@ -48,9 +51,9 @@ namespace dtOO {
 		//
 		// get compound and put pieces as regions to gmsh model
 		//
-		_gm.reset( new dtGmshModel( getLabel() ) );
+		_gm = new dtGmshModel( getLabel() );
 
-    ::GModel::setCurrent(_gm.get());		
+    ::GModel::setCurrent( _gm );		
     
     if (optionHandling::hasOption("debug")) {
       _gm->setDebug(optionHandling::getOption("debug"));
@@ -67,7 +70,7 @@ namespace dtOO {
 		//
 		updatePhysicals();		
 		
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 		
 		vectorHandling< renderInterface * > rV(1);
 		rV[0] = _gm->toUnstructured3dMesh();//_vertices, _elements);
@@ -82,7 +85,7 @@ namespace dtOO {
 		//
 		updatePhysicals();
 		
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 		
 		vectorHandling< renderInterface * > rV;
 		std::string toRender = extRenderWhat();
@@ -153,7 +156,7 @@ namespace dtOO {
 		//
 		updatePhysicals();
 		
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 		
 		dt__forAllIndex(_physLabels[2], jj) {
 			if (_physLabels[2][jj] == tag) {
@@ -181,11 +184,11 @@ namespace dtOO {
 		//
 		updatePhysicals();
 		
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 		
 		dt__forAllIndex(_physLabels[3], jj) {
 			if (_physLabels[3][jj] == tag) {
-				int pNum = _gm->getPhysicalNumber(3, tag);
+//				int pNum = _gm->getPhysicalNumber(3, tag);
 				dtGmshModel::intGEntityVMap groups;
 				_gm->getPhysicalGroups(3, groups);
 				std::vector< ::GEntity * > & geV
@@ -209,11 +212,11 @@ namespace dtOO {
 		//
 		updatePhysicals();
 		
-		return _gm.get();
+		return  _gm ;
 	}
 	
 	void gmshBoundedVolume::updatePhysicals( void ) const {
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
     _physLabels.clear();
 		_physLabels.resize(4);
     dt__forFromToIndex(0, 4, dim) {
@@ -235,7 +238,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 		
     //
     // parse gmsh file if option exists
@@ -329,7 +332,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
     
     //
     // meshing

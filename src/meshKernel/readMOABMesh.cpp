@@ -51,7 +51,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
     
 		dt__throwIf(_mb == NULL, makeGrid());
 
@@ -133,17 +133,17 @@ namespace dtOO {
     //
     // create vertices
     //
-    _mv_MOAB = createVertices(_gm.get(), *_mb);
+    _mv_MOAB = createVertices( _gm , *_mb);
     
     //
     // create faces
     //
-    _ff_string = createFaces(_gm.get(), *_mb, _mv_MOAB);
+    _ff_string = createFaces( _gm , *_mb, _mv_MOAB);
     
     //
     // create regions
     //
-    _rr_string = createRegions(_gm.get(),  *_mb, _mv_MOAB);
+    _rr_string = createRegions( _gm ,  *_mb, _mv_MOAB);
    
     //
     // put all vertices that are not on a face in the first region

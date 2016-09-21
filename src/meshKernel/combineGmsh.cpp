@@ -51,7 +51,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 
     _dtGM.resize( wEl.size() );
     _bV.resize( wEl.size() );
@@ -78,7 +78,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 
     std::vector< std::map< ::GEntity *, ::GEntity * > > ge_newOldV;    
 		dt__forAllIndex(_dtGM, ii) {
@@ -129,7 +129,7 @@ namespace dtOO {
     // vertex
     //
     dt__forAllRefAuto( _dtGM[cc]->vertices(), gv ) {
-      ge_newOld[ gv ]->setModel( _gm.get() );
+      ge_newOld[ gv ]->setModel(  _gm  );
       dt__forAllRefAuto( gv->mesh_vertices, mv ) {
         dtPoint3 pT = dtGmshModel::extractPosition( mv );
         ::MVertex * mv_clone
@@ -150,7 +150,7 @@ namespace dtOO {
       dt__ptrAss( 
         dtGmshEdge * cloneEdge, dtGmshEdge::DownCast( ge_newOld[ ge ] ) 
       );
-      cloneEdge->setModel( _gm.get() );
+      cloneEdge->setModel(  _gm  );
       dt__forAllRefAuto( edge->mesh_vertices, mv ) {
         dtPoint3 pT = dtGmshModel::extractPosition( mv );
         ::MVertex * mv_clone
@@ -180,7 +180,7 @@ namespace dtOO {
         dt__ptrAss( 
           dtGmshFace * cloneFace, dtGmshFace::DownCast( ge_newOld[ gf ] ) 
         );        
-        cloneFace->setModel( _gm.get() );
+        cloneFace->setModel(  _gm  );
         dt__forAllRefAuto( gf->mesh_vertices, mv ) {
           dtPoint3 pT = dtGmshModel::extractPosition( mv );
           ::MVertex * mv_clone
@@ -221,7 +221,7 @@ namespace dtOO {
         dt__ptrAss( 
           dtGmshRegion * cloneRegion, dtGmshRegion::DownCast( ge_newOld[ gr ] ) 
         );               
-        cloneRegion->setModel( _gm.get() );
+        cloneRegion->setModel(  _gm  );
         dt__forAllRefAuto( gr->mesh_vertices, mv ) {
           dtPoint3 pT = dtGmshModel::extractPosition( mv );
           ::MVertex * mv_clone

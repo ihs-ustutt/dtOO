@@ -91,7 +91,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
     _gm->clearModel();
 		
 		systemHandling::createDirectory(_directory);

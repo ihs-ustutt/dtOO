@@ -42,7 +42,7 @@ namespace dtOO {
 		//
 		// set current model
 		//
-		::GModel::setCurrent(_gm.get());
+		::GModel::setCurrent( _gm );
 
 		dt__forAllIndex(wEl, ii) {
       dt__ptrAss(
