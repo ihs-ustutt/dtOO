@@ -26,10 +26,11 @@ namespace dtOO {
         vectorHandling< boundedVolume * > const * const bV
       );    
 //	  virtual void makePreGrid( void );
-    virtual void makeGrid( void );      
+      virtual void makeGrid( void );      
     private:
       vectorHandling< boundedVolume * > _bV;
       vectorHandling< dtGmshModel const * > _dtGM;
+      float _duplicatePrecision;
   };
 }
 #endif	/* combineGmsh_H */

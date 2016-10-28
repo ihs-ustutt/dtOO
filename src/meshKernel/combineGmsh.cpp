@@ -6,6 +6,7 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
+#include <xmlHeaven/qtXmlBase.h>
 
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
@@ -23,12 +24,13 @@
 
 namespace dtOO {
 	combineGmsh::combineGmsh() : gmshBoundedVolume() {
+    _duplicatePrecision = 1.e-8;
 	}
 
 	combineGmsh::~combineGmsh() {
 	}
 	
-    void combineGmsh::init( 
+  void combineGmsh::init( 
     ::QDomElement const & element,
 		baseContainer const * const bC,
 		vectorHandling< constValue * > const * const cV,
@@ -58,10 +60,22 @@ namespace dtOO {
 		dt__forAllIndex(wEl, ii) {
       dt__ptrAss(
         _bV[ii], bV->get( qtXmlPrimitive::getAttributeStr("label", wEl[ii]) )
-      );      
+      );
       
       dt__ptrAss(
         _dtGM[ii], dtGmshModel::ConstDownCast( _bV[ii]->getModel() )
+      );      
+    }
+    
+    //
+    // get precision for removing duplicate vertices
+    //
+    if ( qtXmlPrimitive::hasAttribute("duplicatePrecision", element) ) {
+      _duplicatePrecision
+      =
+      qtXmlBase::getAttributeFloatMuParse("duplicatePrecision", element, cV, aF);
+      dt__info(
+        makeGrid(), << "_duplicatePrecision = " << _duplicatePrecision
       );      
     }
   }
@@ -284,11 +298,7 @@ namespace dtOO {
       cc++;
     }
 
-    _gm->removeDuplicateMeshVertices( 
-      0.5 
-      * 
-      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
-    );
+    _gm->removeDuplicateMeshVertices( _duplicatePrecision );
     
     //
     // mark as meshed
