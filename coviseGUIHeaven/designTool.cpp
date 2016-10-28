@@ -328,7 +328,7 @@ namespace dtOO {
 			if ( _cV.size() != 0 ) {
 				if (strcmp(paramName, "_parseXml") == 0) {
 					if ( _parseXml->getValue() ) {
-//            _parser.reset(NULL);
+            _parser.reset();
 						_parseXml->setValue(false);
             _xmlBrowser->enable();
             _cVStateBrowser->enable();
