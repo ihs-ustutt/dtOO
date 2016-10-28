@@ -15,13 +15,22 @@ DTOO_FIND_LIBRARY_HEADERONLY_EXT(
 )
 
 #
+# tetgen header
+#
+DTOO_FIND_LIBRARY_HEADERONLY_EXT(
+  "TETGEN_FOUND" "tetgen.h"
+  "TETGEN_INCLUDE_DIR"
+  "/mnt/opt.net/src/libigl/external/tetgen"
+)
+
+#
 # eigen library
 #
 find_package(EIGEN REQUIRED)
 
 set(
   IGL_INCLUDE_DIR 
-  "${IGL_INCLUDE_DIR};${CORK_INCLUDE_DIR};${EIGEN_INCLUDE_DIR}"
+  "${IGL_INCLUDE_DIR};${CORK_INCLUDE_DIR};${EIGEN_INCLUDE_DIR};${TETGEN_INCLUDE_DIR}"
 )
 
 #
