@@ -1405,7 +1405,11 @@ namespace dtOO {
 	}
 
   void dtGmshModel::untagPhysical( ::GEntity * const ge ) {
-		dt__throwIf(ge->physicals.size()!=1, untagPhysical());
+		dt__throwIfWithMessage(
+      ge->physicals.size()!=1, 
+      untagPhysical(),
+      << getPhysicalNames(ge->dim(), ge->physicals)
+    );
 		
 		ge->physicals.clear();
 	}
@@ -1449,7 +1453,13 @@ namespace dtOO {
     //
 		std::vector< int > pInt = ge->getPhysicalEntities();
     dt__forAllRefAuto(pInt, anInt) {
-      if ( anInt == GModel::setPhysicalName(pName, ge->dim()) ) return;
+      if ( anInt == GModel::setPhysicalName(pName, ge->dim()) ) {
+        dt__warning(
+          tagPhysical(),
+          << "Physical > " << pName << " < already exists."
+        );
+        return;
+      }
     }
     
     ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );

@@ -105,7 +105,7 @@ namespace dtOO {
               << "To     :> " << newPhys
             );
 
-            addThis = true;
+            addThis = true;           
           }
         }
 
@@ -114,6 +114,7 @@ namespace dtOO {
         //
         if (addThis) {
           dt__forAllIndex(nIt->second, ii) {
+            gm->untagPhysical( nIt->second[ii] );
             if (!newPhys.empty()) {
               gm->tagPhysical( nIt->second[ii], newPhys );
             }

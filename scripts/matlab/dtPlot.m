@@ -64,12 +64,23 @@ classdef dtPlot
         obj.filename_ = str;
       end      
       function [] = SaveEps(obj)
-        %figure( obj.fig_ );
-        %hold on;
         obj.MakeCurrent
-        print(obj.fig_,  '-depsc', obj.filename_);
-        %hold off;
+        print(obj.fig_,  '-depsc2', strcat(obj.filename_,'.eps') );
+%         exportfig( ...
+%           obj.fig_, strcat(obj.filename_,'.2.pdf'), 'bounds', 'tight', ...
+%           'Color','rgb','Resolution',30000 ...
+%         );
       end
+      function [] = SavePng(obj)
+        obj.MakeCurrent
+        print(obj.fig_,  '-dpng', strcat(obj.filename_,'.png'));
+%        print(obj.fig_,'-dpdf','-r300', strcat(obj.filename_,'.pdf'));
+      end   
+      function [] = SaveJpg(obj)
+        obj.MakeCurrent
+        print(obj.fig_,  '-djpeg100', '-r1200', strcat(obj.filename_,'.jpg'));
+%        print(obj.fig_,'-dpdf','-r300', strcat(obj.filename_,'.pdf'));
+      end            
       function [] = PlotTextAtPoints(obj, x, y, str)
         %figure( obj.fig_ );
         obj.MakeCurrent
@@ -84,6 +95,14 @@ classdef dtPlot
           );     
         end
       end
+      function [] = PlotAndSizeMarkers(obj, x, y, scale, str)
+        obj.MakeCurrent
+        hold on;
+        for j = 1:length(x)
+          plot( x(j), y(j), str, 'MarkerSize', scale(j));
+        end
+        hold off;
+      end    
       function [] = Plot(obj, x, y, str)
         %figure( obj.fig_ );
         obj.MakeCurrent
@@ -97,5 +116,13 @@ classdef dtPlot
       function [ ] = Show(obj)
         obj.fig_.Visible = 'on';
       end      
+      function [legh,objh,outh,outm] = Legend(obj, legendLabels, loc)
+        obj.MakeCurrent();
+        hold on;
+        [legh,objh,outh,outm] ...
+        = ...
+        legend(legendLabels, 'Location', loc, 'Interpreter', 'latex');
+        hold off;
+      end
    end
 end
