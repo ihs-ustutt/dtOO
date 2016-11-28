@@ -17,8 +17,7 @@
 
 #include <iostream>
 
-#include <readline/readline.h>
-#include <readline/history.h>
+#include <linenoise/linenoise.h>
 
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
@@ -267,10 +266,6 @@ std::string parseCommand(
     );
     dt__infoNoClass(parseCommand(), << "addRule = " << addRule);
   }
-  dt__commandIf( aRule, help, "getPointPercent", "get a point" ) {
-    std::stringstream ss;    
-    return ss.str();
-  }      
   dt__commandIf( 
     aRule, help, "info", "show info of aF" 
   ) {
@@ -557,24 +552,20 @@ int main( int ac, char* av[] ) {
     << "#   vectorHandling< dtCase * > dtC" << std::endl
     << "#   vectorHandling< dtPlugin * > dtP" << std::endl;
     
+    linenoiseHistorySetMaxLen(50);
+    
     while (true) {
-//      std::cout << "built4CubanLinx ::> ";
       //
       // get command
       //
-//      std::string line;
-//      std::getline(std::cin, line);
-      char * line = readline("built4CubanLinx ::> ");
-//      for ( std::string line; std::getline(std::cin, line); ) {
-//          std::cout << line << std::endl;
-//      }      
+      char * line = linenoise("built4CubanLinx ::> ");
       
       if (line == NULL) break;
       
       //
       // make history
       //
-      if (*line) add_history(line);
+      if (*line) linenoiseHistoryAdd(line);
       
       //
       // make command string

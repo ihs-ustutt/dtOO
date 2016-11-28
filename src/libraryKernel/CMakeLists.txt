@@ -4,6 +4,7 @@ SET(HEADERS
   dtLinearAlgebra.h
   dtAnalysis.h
   RTree.h
+  linenoise/linenoise.h
   geometryEngine/dtCurve.h
   geometryEngine/dtCurve2d.h
   geometryEngine/dtSurface.h
@@ -122,6 +123,7 @@ SET(HEADERS
 SET(SOURCES
   dtLinearAlgebra.cpp
   dtAnalysis.cpp
+  linenoise/linenoise.c
   geometryEngine/dtCurve.cpp
   geometryEngine/dtCurve2d.cpp
   geometryEngine/dtSurface.cpp
