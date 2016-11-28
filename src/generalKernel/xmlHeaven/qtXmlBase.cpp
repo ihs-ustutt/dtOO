@@ -1,5 +1,4 @@
 #include "qtXmlBase.h"
-#include "analyticFunctionHeaven/scaOneD.h"
 
 #include <geometryEngine/dtMuParser.h>
 #include <constValueHeaven/constValue.h>
@@ -8,6 +7,9 @@
 #include <logMe/logMe.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 
+#include <analyticFunctionHeaven/scaOneD.h>
+#include <analyticFunctionHeaven/vec2dFunction.h>
+#include <analyticFunctionHeaven/vec3dFunction.h>
 
 namespace dtOO {
   std::string qtXmlBase::_CALCSIGN = "`";
@@ -101,56 +103,134 @@ namespace dtOO {
 		vectorHandling< constValue * > const * const cV,
 		vectorHandling< analyticFunction * > const * const aF
 	) {
-    std::string returnExpression;
-    returnExpression = expression;
-    unsigned int found;
+    dt__debug( replaceDependencies(), << "expression = " << expression );    
+    
+    std::string returnExpression = expression;
+          
+    //
+    // crumble string down, respect brackets
+    //
+    std::vector< std::string > crumbles = crumbleDown("(", ")", expression);
+    
+    dt__debug( replaceDependencies(), << "crumbles = " << crumbles );
+    dt__forAllRefAuto(crumbles, aCrumble) {
+      if ( !stringContains(_AFSIGN, aCrumble) ) continue;
+      returnExpression 
+      = 
+      replaceStringInString(
+        aCrumble, 
+        replaceDependencies(aCrumble, cV, aF),
+        returnExpression
+      );
+    }
+    
     //
     // check if there is a function in expression
     // $functionName(value * #constValue#)$
     //
-    found = returnExpression.find(_AFSIGN);
+    unsigned int found = returnExpression.find(_AFSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find(_AFSIGN, found+1);
+      //unsigned int foundEnd = returnExpression.find_last_of(_AFSIGN);
+      unsigned int foundEnd = returnExpression.find_first_of(_AFSIGN, found+1);
       int replaceStart = found;
       int replaceEnd = foundEnd-found+1;
-      std::string funString 
+      std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
+     
+      //
+      // replace in argument
+      //
+      std::string arg 
+      = 
+      replaceDependencies(
+        getStringBetweenFirstLast("(", ")", replaceString), cV, aF
+      );
 
       //
-      // get and cast function
+      // get and cast analyticFunction
       //
-      dt__ptrAss( 
-			  scaOneD const * const sF, 
-				scaOneD::ConstDownCast( 
-          aF->get(getStringBetween("", "(", funString)) 
-        )
-			);        
+      std::string aFLabel = getStringBetween("", "(", replaceString);
+      std::string aFOption = "";
+      if ( stringPrimitive::stringContains("[", aFLabel) ) {
+        aFOption 
+        = 
+        stringPrimitive::getStringBetweenAndRemove("[", "]", &aFLabel);
+      }
+      analyticFunction const * const theAF = aF->get(aFLabel); 
       
-      //
-      // replace function string by value
-      //
-      returnExpression.replace(
-        replaceStart, 
-        replaceEnd, 
-        floatToString( 
-          sF->YFloat( 
-            stringToFloat(
-              replaceDependencies(
-                getStringBetween("(", ")", funString), cV, aF
-              )
-            ) 
-          ) 
-        )
-      );
+      scaFunction const * const sF = scaFunction::ConstDownCast(theAF);
+      vec2dFunction const * const v2dF = vec2dFunction::ConstDownCast(theAF);
+      vec3dFunction const * const v3dF = vec3dFunction::ConstDownCast(theAF);
       
+      std::vector< float > pp; 
+      std::vector< float > argCS 
+      = 
+      muParseCSString( replaceDependencies(arg, cV, aF) );
+
+        
+      if (sF) {
+        if (aFOption == "") {
+          pp = sF->Y( argCS );
+        }        
+        else dt__throwUnexpected(replaceDependencies());        
+      }
+      else if (v2dF) {
+        if (aFOption == "") {
+          pp = v2dF->Y( argCS );
+        }        
+        else dt__throwUnexpected(replaceDependencies()); 
+      }
+      else if (v3dF) {
+        if (aFOption == "") {
+          pp = v3dF->Y( argCS );
+        }        
+        else dt__throwUnexpected(replaceDependencies()); 
+      }      
+      else dt__throwUnexpected(replaceDependencies());
+      
+      if (pp.size() == 3) {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(pp[0])
+          +
+          ","
+          +
+          stringPrimitive::floatToString(pp[1])
+          +
+          ","
+          +
+          stringPrimitive::floatToString(pp[2])
+        );
+      }
+      else if (pp.size() == 2) {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(pp[0])
+          +
+          ","
+          +
+          stringPrimitive::floatToString(pp[1])
+        );
+      }        
+      else if (pp.size() == 1) {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(pp[0])
+        );
+      }            
+      else dt__throwUnexpected(replaceDependencies());
+        
       //
-      // go to next function
+      // go to next analyticGeometry
       //
-      found = returnExpression.find(_AFSIGN);
+      found = returnExpression.find(_AFSIGN);  
     }
 
     return replaceDependencies(returnExpression, cV);

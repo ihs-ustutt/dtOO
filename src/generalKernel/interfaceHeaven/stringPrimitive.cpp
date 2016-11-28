@@ -241,7 +241,7 @@ namespace dtOO {
     while ( counter < str.length() ) {
       std::pair< int, int > fromTo 
       = 
-      getFromToBetween(signStart, signEnd, str.substr(counter));
+      getFromToBetweenRespectOcc(signStart, signEnd, str.substr(counter));
       
       if ( (fromTo.first == 0) && (fromTo.second == 0) ) break;
       
@@ -345,6 +345,26 @@ namespace dtOO {
 
     return std::pair< int, int >(from, to);		
 	}
+  
+  std::pair< int, int > stringPrimitive::getFromToBetweenRespectOcc(
+	  std::string const signStart, 
+		std::string const signEnd, 
+		std::string const str
+	) {  
+    if ( !stringContains(signStart, str) || !stringContains(signEnd, str) ) {
+      return std::pair< int, int >(0, 0);
+    }
+    
+    int pos = str.find_first_of( signStart.c_str() );
+    dt__throwIf(pos==std::string::npos, getStringBetweenRespectOcc());
+    
+    std::map< int, int > occMap = getOccurenceMap(signStart, signEnd, str);
+		
+    dt__throwIf(occMap.find(pos)==occMap.end(), getStringBetweenRespectOcc());
+    
+    return std::pair< int, int >(pos, occMap[pos]);
+    //return str.substr( pos+1, occMap[pos]-pos-1);
+  }  
   
   std::vector< int > stringPrimitive::getOccurences(
     std::string const & pattern, std::string const & str, int from, int to
