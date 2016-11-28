@@ -30,6 +30,10 @@ namespace dtOO {
     vec3dTriLinearThreeD(
       dtPoint3 const & p000, dtPoint3 const & p111
     );    
+    vec3dTriLinearThreeD(
+      dtPoint3 const & p000, dtPoint3 const & p111,
+      dtPoint3 const & xMin, dtPoint3 const & xMax    
+    );    
     vec3dTriLinearThreeD * clone( void ) const;
     virtual vec3dTriLinearThreeD * cloneTransformed(
       dtTransformer const * const dtT 

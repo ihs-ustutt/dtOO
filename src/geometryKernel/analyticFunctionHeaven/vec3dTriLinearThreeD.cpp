@@ -35,10 +35,10 @@ namespace dtOO {
    * 
    */  
   vec3dTriLinearThreeD::vec3dTriLinearThreeD(
-      dtPoint3 const & p000, dtPoint3 const & p100,
-      dtPoint3 const & p010, dtPoint3 const & p110,
-      dtPoint3 const & p001, dtPoint3 const & p101,
-      dtPoint3 const & p011, dtPoint3 const & p111
+    dtPoint3 const & p000, dtPoint3 const & p100,
+    dtPoint3 const & p010, dtPoint3 const & p110,
+    dtPoint3 const & p001, dtPoint3 const & p101,
+    dtPoint3 const & p011, dtPoint3 const & p111
 	) : vec3dThreeD() {
     _p000 = p000;
     _p100 = p100;
@@ -63,11 +63,11 @@ namespace dtOO {
   }
 
   vec3dTriLinearThreeD::vec3dTriLinearThreeD(
-      dtPoint3 const & p000, dtPoint3 const & p100,
-      dtPoint3 const & p010, dtPoint3 const & p110,
-      dtPoint3 const & p001, dtPoint3 const & p101,
-      dtPoint3 const & p011, dtPoint3 const & p111,
-      dtPoint3 const & xMin, dtPoint3 const & xMax
+    dtPoint3 const & p000, dtPoint3 const & p100,
+    dtPoint3 const & p010, dtPoint3 const & p110,
+    dtPoint3 const & p001, dtPoint3 const & p101,
+    dtPoint3 const & p011, dtPoint3 const & p111,
+    dtPoint3 const & xMin, dtPoint3 const & xMax
 	) : vec3dThreeD() {
     _p000 = p000;
     _p100 = p100;
@@ -92,16 +92,32 @@ namespace dtOO {
   }  
 
   vec3dTriLinearThreeD::vec3dTriLinearThreeD(
-      dtPoint3 const & p000, dtPoint3 const & p111
+    dtPoint3 const & p000, dtPoint3 const & p111
 	) : vec3dTriLinearThreeD(
-      p000, 
-      dtPoint3(p111.x(), p000.y(), p000.z()), 
-      dtPoint3(p000.x(), p111.y(), p000.z()), 
-      dtPoint3(p111.x(), p111.y(), p000.z()), 
-      dtPoint3(p000.x(), p000.y(), p111.z()), 
-      dtPoint3(p111.x(), p000.y(), p111.z()), 
-      dtPoint3(p000.x(), p111.y(), p111.z()), 
-      p111     
+    p000, 
+    dtPoint3(p111.x(), p000.y(), p000.z()), 
+    dtPoint3(p000.x(), p111.y(), p000.z()), 
+    dtPoint3(p111.x(), p111.y(), p000.z()), 
+    dtPoint3(p000.x(), p000.y(), p111.z()), 
+    dtPoint3(p111.x(), p000.y(), p111.z()), 
+    dtPoint3(p000.x(), p111.y(), p111.z()), 
+    p111     
+    ) {
+  }
+  
+  vec3dTriLinearThreeD::vec3dTriLinearThreeD(
+    dtPoint3 const & p000, dtPoint3 const & p111,
+    dtPoint3 const & xMin, dtPoint3 const & xMax    
+	) : vec3dTriLinearThreeD(
+    p000, 
+    dtPoint3(p111.x(), p000.y(), p000.z()), 
+    dtPoint3(p000.x(), p111.y(), p000.z()), 
+    dtPoint3(p111.x(), p111.y(), p000.z()), 
+    dtPoint3(p000.x(), p000.y(), p111.z()), 
+    dtPoint3(p111.x(), p000.y(), p111.z()), 
+    dtPoint3(p000.x(), p111.y(), p111.z()), 
+    p111,
+    xMin, xMax
     ) {
   }
   
