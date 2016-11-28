@@ -18,6 +18,7 @@
 #include "aFXmlBuilder/scaOneD_forceBSplineCurve2dAFXmlBuilder.h"
 #include "aFXmlBuilder/vec3dThreeD_transVolAFXmlBuilder.h"
 #include "aFXmlBuilder/vec3dThreeD_triLinearPointConstructAFXmlBuilder.h"
+#include "aFXmlBuilder/vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder.h"
 
 namespace dtOO {
   dt__pH(aFXmlBuilderFactory) aFXmlBuilderFactory::_instance(NULL);
@@ -120,7 +121,9 @@ namespace dtOO {
     _instance->_builder.push_back(
       new bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder()
     );
-    
+    _instance->_builder.push_back(
+      new vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder()
+    );
     return _instance.get();
   }
   
