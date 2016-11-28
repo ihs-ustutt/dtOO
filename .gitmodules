@@ -1,0 +1,4 @@
+[submodule "src/libraryKernel/linenoise"]
+	path = src/libraryKernel/linenoise
+	url = https://github.com/antirez/linenoise
+  ignore = dirty
