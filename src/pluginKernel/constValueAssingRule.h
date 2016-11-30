@@ -24,19 +24,19 @@ namespace dtOO {
     virtual void init( 
       ::QDomElement const & element,
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG,
-      vectorHandling< boundedVolume * > const * const bV,
-      vectorHandling< dtCase * > const * const dC,      
-      vectorHandling< dtPlugin * > const * const pL
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG,
+      bVPtrVec const * const bV,
+      dCPtrVec const * const dC,      
+      dPPtrVec const * const pL
     );    
     virtual void apply(void);
   private:
 		baseContainer const * _bC;
-		vectorHandling< constValue * > const * _cV;
-		vectorHandling< analyticFunction * > const * _aF;
-		vectorHandling< analyticGeometry * > const * _aG;
+		cVPtrVec const * _cV;
+		aFPtrVec const * _aF;
+		aGPtrVec const * _aG;
     std::vector< std::string > _assignRule;
   };
 }

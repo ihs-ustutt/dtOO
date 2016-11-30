@@ -30,27 +30,27 @@ namespace dtOO {
     static dtXmlParser const & constReference( void );
     static dtXmlParser & reference( void );
     void parse(void);
-    void write( vectorHandling< constValue * > const * const cValP ) const;
+    void write( cVPtrVec const * const cValP ) const;
     void write(
       std::string const stateName, 
-      vectorHandling< constValue * > const * const cValP
+      cVPtrVec const * const cValP
     ) const;
     void write(
       std::vector< std::string > const stateName, 
-      std::vector< vectorHandling< constValue * > > const & cValP
+      std::vector< cVPtrVec > const & cValP
     ) const;
-    void write( vectorHandling< constValue * > const & cValP ) const;
+    void write( cVPtrVec const & cValP ) const;
     void write(
       std::string const stateName, 
-      vectorHandling< constValue * > const & cValP
+      cVPtrVec const & cValP
     ) const;       
     void writeUpdate(
       std::string const stateName, 
-      vectorHandling< constValue * > const & cValP
+      cVPtrVec const & cValP
     ) const;
     void extract(
       std::string const stateName, 
-      vectorHandling< constValue * > const & cValP,
+      cVPtrVec const & cValP,
       std::string const fileName
     ) const;
     void remove( std::string const stateName ) const;
@@ -58,16 +58,16 @@ namespace dtOO {
     std::vector< std::string > getStates( void );
     bool hasState( std::string const stateName ) const;
     void loadStateToConst(
-      std::string const stateName, vectorHandling< constValue * > &cValRef
+      std::string const stateName, cVPtrVec &cValRef
     );
     std::string currentState( void ) const;
     void setState( std::string const & newState) const;
     void freeState( void ) const;
     bool stateLoaded( void ) const;
     void createConstValue(
-      std::string const constValueLabel, vectorHandling< constValue * > * cValP
+      std::string const constValueLabel, cVPtrVec * cValP
     ) const;
-    void createConstValue(vectorHandling< constValue * > * cValP) const;
+    void createConstValue(cVPtrVec * cValP) const;
     void getLabels(
       std::string toLookFor, std::vector< std::string > * machinePartNames 
     ) const;
@@ -84,95 +84,86 @@ namespace dtOO {
     void createAnalyticFunction(
 	    std::string const functionName,
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP, 
-      vectorHandling< analyticFunction * > * aFP
+      cVPtrVec const * const cVP, 
+      aFPtrVec * aFP
     ) const;
     void createAnalyticFunction(
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP, 
-      vectorHandling< analyticFunction * > * aFP
+      cVPtrVec const * const cVP, 
+      aFPtrVec * aFP
 	  ) const;
     void createAnalyticGeometry(
       std::string const label,
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP,        
-      vectorHandling< analyticFunction * > const * const sFP,        
-      vectorHandling< analyticGeometry * > * aGP
+      cVPtrVec const * const cVP,        
+      aFPtrVec const * const sFP,        
+      aGPtrVec * aGP
     ) const;    
     void createAnalyticGeometry(
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP,        
-      vectorHandling< analyticFunction * > const * const sFP,        
-      vectorHandling< analyticGeometry * > * aGP
+      cVPtrVec const * const cVP,        
+      aFPtrVec const * const sFP,        
+      aGPtrVec * aGP
     ) const;    
     void createBoundedVolume(
       std::string const label,
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP,        
-      vectorHandling< analyticFunction * > const * const sFP,        
-      vectorHandling< analyticGeometry * > const * const aGP,
-      vectorHandling< boundedVolume * > * bVP
+      cVPtrVec const * const cVP,        
+      aFPtrVec const * const sFP,        
+      aGPtrVec const * const aGP,
+      bVPtrVec * bVP
     ) const;    
     void createBoundedVolume(
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP,        
-      vectorHandling< analyticFunction * > const * const sFP,        
-      vectorHandling< analyticGeometry * > const * const aGP,
-      vectorHandling< boundedVolume * > * bVP
+      cVPtrVec const * const cVP,        
+      aFPtrVec const * const sFP,        
+      aGPtrVec const * const aGP,
+      bVPtrVec * bVP
     ) const;
     void createPlugin(
       std::string const label,
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP,        
-      vectorHandling< analyticFunction * > const * const sFP,        
-      vectorHandling< analyticGeometry * > const * const aGP,
-      vectorHandling< boundedVolume * > * bVP,
-      vectorHandling< dtCase * > const * const dCP,
-      vectorHandling< dtPlugin * > * pLP
+      cVPtrVec const * const cVP,        
+      aFPtrVec const * const sFP,        
+      aGPtrVec const * const aGP,
+      bVPtrVec * bVP,
+      dCPtrVec const * const dCP,
+      dPPtrVec * pLP
     ) const;      
     void createPlugin(
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP,        
-      vectorHandling< analyticFunction * > const * const sFP,        
-      vectorHandling< analyticGeometry * > const * const aGP,
-      vectorHandling< boundedVolume * > * bVP,
-      vectorHandling< dtCase * > const * const dCP,
-      vectorHandling< dtPlugin * > * pLP
+      cVPtrVec const * const cVP,        
+      aFPtrVec const * const sFP,        
+      aGPtrVec const * const aGP,
+      bVPtrVec * bVP,
+      dCPtrVec const * const dCP,
+      dPPtrVec * pLP
     ) const;        
     void createCase(
       std::string const label,
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP,        
-      vectorHandling< analyticFunction * > const * const sFP,        
-      vectorHandling< analyticGeometry * > const * const aGP,
-      vectorHandling< boundedVolume * > * bVP,
-      vectorHandling< dtCase * > * dCP
+      cVPtrVec const * const cVP,        
+      aFPtrVec const * const sFP,        
+      aGPtrVec const * const aGP,
+      bVPtrVec * bVP,
+      dCPtrVec * dCP
     ) const;      
     void createCase(
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cVP,        
-      vectorHandling< analyticFunction * > const * const sFP,        
-      vectorHandling< analyticGeometry * > const * const aGP,
-      vectorHandling< boundedVolume * > * bVP,
-      vectorHandling< dtCase * > * dCP
+      cVPtrVec const * const cVP,        
+      aFPtrVec const * const sFP,        
+      aGPtrVec const * const aGP,
+      bVPtrVec * bVP,
+      dCPtrVec * dCP
     ) const;       
     void destroyAndCreate(
-      vectorHandling< constValue * > & cV,
-      vectorHandling< analyticFunction* > & aF,
-      ptrHandling< baseContainer > & bC,
-      vectorHandling< analyticGeometry * > & aG,
-		  vectorHandling< boundedVolume * > & bV,
-      vectorHandling< dtCase * > & dC,
-      vectorHandling< dtPlugin * > & pL
-    ) const;    
-    void destroyAndCreate(
       baseContainer & bC,
-      vectorHandling< constValue * > & cV,
-      vectorHandling< analyticFunction* > & aF,
-      vectorHandling< analyticGeometry * > & aG,
-      vectorHandling< boundedVolume * > & bV,
-      vectorHandling< dtCase * > & dC,
-      vectorHandling< dtPlugin * > & pL
+      cVPtrVec & cV,
+      aFPtrVec & aF,
+      aGPtrVec & aG,
+      bVPtrVec & bV,
+      dCPtrVec & dC,
+      dPPtrVec & pL
     ) const;  
   private:
     dtXmlParser(std::string const & inFile, std::string const & outFile);
@@ -184,12 +175,6 @@ namespace dtOO {
       std::string const & fileName, QDomDocument & xmlDocument
     );
     void setStaticProperties( void );
-//    void createRetroConstValue(
-//      std::string const constValueLabel, vectorHandling< constValue * > * cValP
-//    ) const;     
-//    void loadRetroStateToConst(
-//      std::string const stateName, vectorHandling< constValue * > &cValRef
-//    );    
   private:
     std::vector< ::QDomElement > _rootRead;
     std::vector< ::QDomDocument > _rootReadDoc;

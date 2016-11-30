@@ -25,10 +25,10 @@ namespace dtOO {
   void bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder::buildPart(
     ::QDomElement const & toBuild,
     baseContainer * const bC,           
-    vectorHandling< constValue * > const * const cV,           
-    vectorHandling< analyticFunction * > const * const aF,    
-    vectorHandling< analyticGeometry * > const * const aG,
-    vectorHandling< analyticGeometry * > * result 
+    cVPtrVec const * const cV,           
+    aFPtrVec const * const aF,    
+    aGPtrVec const * const aG,
+    aGPtrVec * result 
 	) const {
     //
 		// check input

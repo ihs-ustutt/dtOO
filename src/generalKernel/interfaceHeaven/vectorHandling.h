@@ -15,7 +15,7 @@ namespace dtOO {
   // h
   //----------------------------------------------------------------------------
   template < typename T >
-  class vectorHandling : public std::vector< T >{
+  class vectorHandling : public std::vector< T > {
   public:
     typedef typename std::vector< T >::iterator iterator;    
   public:
@@ -35,21 +35,21 @@ namespace dtOO {
     T * set( T const & toSet);
     T * set( T const * toSet);
     T const & get( int const ii) const;
-    T const & get( std::string const & label) const;
-    std::string getLabel( int const pos ) const;
-    T & getRef( std::string const label);
-    bool has( std::string const label) const;
-    bool hasTwice( std::string const label ) const;
-    void checkForBastardTwins( void ) const;
-    void checkForBastardTwinsAndMakeUnique( void );
+//    T const & get( std::string const & label) const;
+//    std::string getLabel( int const pos ) const;
+//    T & getRef( std::string const label);
+//    bool has( std::string const label) const;
+//    bool hasTwice( std::string const label ) const;
+//    void checkForBastardTwins( void ) const;
+//    void checkForBastardTwinsAndMakeUnique( void );
     void nullify( void );
-    int getPosition( std::string const label) const;
+//    int getPosition( std::string const label) const;
     vectorHandling< T >::iterator getIterator( int const pos );
     void destroy( void );
     void destroy( std::vector< T > & vec );
     void erase( int const pos );
-    void addIndex( void );
-    void dump(void) const;
+//    void addIndex( void );
+//    void dump(void) const;
   };
 
   //----------------------------------------------------------------------------
@@ -144,139 +144,139 @@ namespace dtOO {
     return this->at(ii);
   }
 
-  template< typename T >
-  T & vectorHandling< T >::getRef( std::string const label ) {
-    return this->at( this->getPosition(label) );
-  }  
+//  template< typename T >
+//  T & vectorHandling< T >::getRef( std::string const label ) {
+//    return this->at( this->getPosition(label) );
+//  }  
 
-  template< typename T >
-  T const & vectorHandling< T >::get( std::string const & label ) const {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling const * obj;
-      dt__mustCast(this->at(ii), labelHandling const, obj);
-      
-      if (obj->getLabel() == label ) {
-        return this->at(ii);
-      }
-    }
-  dt__throw(get(), << "No element with " << dt__eval(label) );
-  }
+//  template< typename T >
+//  T const & vectorHandling< T >::get( std::string const & label ) const {
+//    dt__forAllIndex(*this, ii) {
+//      //
+//      // check if class is of type labelHandling
+//      //
+//      labelHandling const * obj;
+//      dt__mustCast(this->at(ii), labelHandling const, obj);
+//      
+//      if (obj->getLabel() == label ) {
+//        return this->at(ii);
+//      }
+//    }
+//  dt__throw(get(), << "No element with " << dt__eval(label) );
+//  }
 
-  template< typename T >
-  std::string vectorHandling< T >::getLabel( int const pos ) const {
-    labelHandling const * obj 
-    = 
-    dynamic_cast< labelHandling const * >(this->at(pos));
-
-    if (obj ) {
-      return obj->getLabel();
-    }
-    else {
-      dt__throw(
-        getLabel(), 
-        << "No labelHandling at " << dt__eval(pos) << " in vector."
-      );
-    }
-  }  
+//  template< typename T >
+//  std::string vectorHandling< T >::getLabel( int const pos ) const {
+//    labelHandling const * obj 
+//    = 
+//    dynamic_cast< labelHandling const * >(this->at(pos));
+//
+//    if (obj ) {
+//      return obj->getLabel();
+//    }
+//    else {
+//      dt__throw(
+//        getLabel(), 
+//        << "No labelHandling at " << dt__eval(pos) << " in vector."
+//      );
+//    }
+//  }  
   
-  template< typename T >
-  bool vectorHandling< T >::has( std::string const label ) const {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling const * obj;
-      dt__mustCast(this->at(ii), labelHandling const, obj);
-      
-      if (obj->getLabel() == label ) {
-        return true;
-      }
-    }
-    return false;
-  }
+//  template< typename T >
+//  bool vectorHandling< T >::has( std::string const label ) const {
+//    dt__forAllIndex(*this, ii) {
+//      //
+//      // check if class is of type labelHandling
+//      //
+//      labelHandling const * obj;
+//      dt__mustCast(this->at(ii), labelHandling const, obj);
+//      
+//      if (obj->getLabel() == label ) {
+//        return true;
+//      }
+//    }
+//    return false;
+//  }
 
-  template< typename T >
-  bool vectorHandling< T >::hasTwice( std::string const label ) const {
-    int counter = 0;
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling const * obj;
-      dt__mustCast(this->at(ii), labelHandling const, obj);
-      
-      if (obj->getLabel() == label ) {
-        counter++;
-      }
-      if (counter == 2) {
-        return true;
-      }
-    }
-    return false;
-  }
+//  template< typename T >
+//  bool vectorHandling< T >::hasTwice( std::string const label ) const {
+//    int counter = 0;
+//    dt__forAllIndex(*this, ii) {
+//      //
+//      // check if class is of type labelHandling
+//      //
+//      labelHandling const * obj;
+//      dt__mustCast(this->at(ii), labelHandling const, obj);
+//      
+//      if (obj->getLabel() == label ) {
+//        counter++;
+//      }
+//      if (counter == 2) {
+//        return true;
+//      }
+//    }
+//    return false;
+//  }
   
-  template< typename T >
-  void vectorHandling< T >::checkForBastardTwins( void ) const {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling const * obj;
-      dt__mustCast(this->at(ii), labelHandling const, obj);
-    
-      //
-      // check
-      //
-      if ( this->hasTwice( obj->getLabel() ) ) {
-        dt__throw(checkForBastardTwins(),
-                 << "Duplicate element " << dt__eval( obj->getLabel() ) );
-      }
-    }
-  }
+//  template< typename T >
+//  void vectorHandling< T >::checkForBastardTwins( void ) const {
+//    dt__forAllIndex(*this, ii) {
+//      //
+//      // check if class is of type labelHandling
+//      //
+//      labelHandling const * obj;
+//      dt__mustCast(this->at(ii), labelHandling const, obj);
+//    
+//      //
+//      // check
+//      //
+//      if ( this->hasTwice( obj->getLabel() ) ) {
+//        dt__throw(checkForBastardTwins(),
+//                 << "Duplicate element " << dt__eval( obj->getLabel() ) );
+//      }
+//    }
+//  }
 
-  template< typename T >
-  void vectorHandling< T >::checkForBastardTwinsAndMakeUnique( void ) {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling * obj;
-      dt__mustCast(this->at(ii), labelHandling, obj);
-    
-      //
-      // check
-      //
-      if ( this->hasTwice( obj->getLabel() ) ) {
-        dt__warning(checkForBastardTwinsAndMakeUnique(),
-                << "Make label " << dt__eval(obj->getLabel()) << " unique!");          
-        obj->setLabel( obj->getLabel()+"_" );
-      }
-    }
-  }  
+//  template< typename T >
+//  void vectorHandling< T >::checkForBastardTwinsAndMakeUnique( void ) {
+//    dt__forAllIndex(*this, ii) {
+//      //
+//      // check if class is of type labelHandling
+//      //
+//      labelHandling * obj;
+//      dt__mustCast(this->at(ii), labelHandling, obj);
+//    
+//      //
+//      // check
+//      //
+//      if ( this->hasTwice( obj->getLabel() ) ) {
+//        dt__warning(checkForBastardTwinsAndMakeUnique(),
+//                << "Make label " << dt__eval(obj->getLabel()) << " unique!");          
+//        obj->setLabel( obj->getLabel()+"_" );
+//      }
+//    }
+//  }  
 
   template< typename T >
   void vectorHandling< T >::nullify( void ) {
     dt__forAllIndex(*this, ii) this->at(ii) = NULL;
   }  
   
-  template< typename T >
-  int vectorHandling< T >::getPosition( std::string const label ) const {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling const * obj = dynamic_cast< labelHandling const * >(
-                              this->at(ii)
-                            );
-      if (obj->getLabel() == label ) {
-        return ii;
-      }
-    }
-    return -1;
-  }  
+//  template< typename T >
+//  int vectorHandling< T >::getPosition( std::string const label ) const {
+//    dt__forAllIndex(*this, ii) {
+//      //
+//      // check if class is of type labelHandling
+//      //
+//      labelHandling const * obj = dynamic_cast< labelHandling const * >(
+//                              this->at(ii)
+//                            );
+//      if (obj->getLabel() == label ) {
+//        return ii;
+//      }
+//    }
+//    return -1;
+//  }  
 
   template< typename T >
   typename vectorHandling< T >::iterator vectorHandling< T >::getIterator( 
@@ -285,14 +285,7 @@ namespace dtOO {
     typename vectorHandling< T >::iterator it;
     int counter = 0;
     for (it = std::vector<T>::begin(); it != std::vector<T>::end(); ++it) {
-//      labelHandling const * obj;
-//      dt__CANDOWNCAST(*it, labelHandling const, obj);
-//      if (obj) {
-//        dt__info( getIterator(), << dt__eval(obj->getLabel()) );
-//      }      
-      if (counter == pos) {
-        return it;
-      }
+      if (counter == pos) return it;
       counter++;
     }
     dt__throw(
@@ -322,35 +315,35 @@ namespace dtOO {
     std::vector<T>::erase(it);
   }
   
-  template< typename T >
-  void vectorHandling< T >::addIndex( void ) {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling * obj;
-      dt__mustCast(this->at(ii), labelHandling, obj);
-      
-      obj->setLabel( stringPrimitive().intToString(ii)+"_"+obj->getLabel() );
-    }
-  }
-  template< typename T >  
-  void vectorHandling< T >::dump(void) const {
-    logContainer< vectorHandling< T > > logC(logINFO, "dump()");
-    logC() 
-      << logMe::dtFormat("[ %40s ] -> %s") % "label" % "type" 
-      << std::endl;
-    std::vector< std::string > itVal;
-    dt__forAllIndex(*this, ii) {
-      labelHandling * obj;
-      dt__mustCast(this->at(ii), labelHandling, obj);
-      
-      logC() 
-        << logMe::dtFormat("[ %40s ] -> %s") 
-          % obj->getLabel() % obj->virtualClassName()
-        << std::endl;
-    }
-  }
+//  template< typename T >
+//  void vectorHandling< T >::addIndex( void ) {
+//    dt__forAllIndex(*this, ii) {
+//      //
+//      // check if class is of type labelHandling
+//      //
+//      labelHandling * obj;
+//      dt__mustCast(this->at(ii), labelHandling, obj);
+//      
+//      obj->setLabel( stringPrimitive().intToString(ii)+"_"+obj->getLabel() );
+//    }
+//  }
+//  template< typename T >  
+//  void vectorHandling< T >::dump(void) const {
+//    logContainer< vectorHandling< T > > logC(logINFO, "dump()");
+//    logC() 
+//      << logMe::dtFormat("[ %40s ] -> %s") % "label" % "type" 
+//      << std::endl;
+//    std::vector< std::string > itVal;
+//    dt__forAllIndex(*this, ii) {
+//      labelHandling * obj;
+//      dt__mustCast(this->at(ii), labelHandling, obj);
+//      
+//      logC() 
+//        << logMe::dtFormat("[ %40s ] -> %s") 
+//          % obj->getLabel() % obj->virtualClassName()
+//        << std::endl;
+//    }
+//  }
 }
 #endif	/* VECTORHANDLING_H */
 

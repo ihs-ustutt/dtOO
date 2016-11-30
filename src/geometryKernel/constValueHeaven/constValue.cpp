@@ -59,7 +59,7 @@ namespace dtOO {
   }
   
   void constValue::resolveConstraint( 
-    vectorHandling< constValue * > const * const cVArr
+    cVPtrVec const * const cVArr
   ) {
     
   }

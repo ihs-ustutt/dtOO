@@ -14,9 +14,9 @@ using namespace dtOO;
 int main( void ) {
 	baseContainer bC;
 //	vectorContainer vC;
-	vectorHandling< analyticGeometry * > aG; 
-	vectorHandling< constValue * > cV; 
-	vectorHandling< analyticFunction * > aF; 
+	aGPtrVec aG; 
+	cVPtrVec cV; 
+	aFPtrVec aF; 
 	std::vector< std::string > label;    
 	dtXmlParser parser;
 

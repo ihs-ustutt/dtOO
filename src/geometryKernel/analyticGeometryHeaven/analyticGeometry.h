@@ -1,5 +1,5 @@
-#ifndef ANALYTICGEOMETRY_H
-#define	ANALYTICGEOMETRY_H
+#ifndef analyticGeometry_H
+#define	analyticGeometry_H
 
 #include <dtLinearAlgebra.h>
 #include <vector>
@@ -9,7 +9,9 @@
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <interfaceHeaven/threadSafeRoot.h>
+#include <mainConceptFwd.h>
 
 namespace dtOO { 
   /**
@@ -18,6 +20,7 @@ namespace dtOO {
    * @brief Abstract analytic geometry class
    * Defines basic interfaces of an analyticGeometry.
    */
+  
   class analyticGeometry : public optionHandling,
                            public labelHandling,
                            public renderInterface {
@@ -77,5 +80,5 @@ namespace dtOO {
 	//  
   analyticGeometry * new_clone(analyticGeometry const & aG);
 }
-#endif	/* ANALYTICGEOMETRY_H */
+#endif	/* analyticGeometry_H */
 

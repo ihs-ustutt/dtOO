@@ -4,7 +4,7 @@
 #include <dtLinearAlgebra.h>
 #include <string>
 #include <logMe/dtMacros.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 
 namespace dtOO {
   class dtTransformer;
@@ -20,7 +20,7 @@ namespace dtOO {
       bool has(std::string const string) const;
       bool isEmpty( void ) const;
     private:
-      vectorHandling< dtTransformer * > _dtT;
+      labeledVectorHandling< dtTransformer * > _dtT;
   };
 }
 #endif	/* TRANSFORMERCONTAINER_H */

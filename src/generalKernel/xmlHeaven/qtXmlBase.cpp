@@ -28,7 +28,7 @@ namespace dtOO {
 
   std::string qtXmlBase::replaceDependencies( 
 	  std::string const expression, 
-		vectorHandling< constValue * > const * const cV
+		cVPtrVec const * const cV
 	) {
     std::string returnExpression;
     returnExpression = expression;
@@ -100,8 +100,8 @@ namespace dtOO {
   
   std::string qtXmlBase::replaceDependencies( 
 	  std::string const expression, 
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF
 	) {
     dt__debug( replaceDependencies(), << "expression = " << expression );    
     
@@ -174,19 +174,19 @@ namespace dtOO {
         
       if (sF) {
         if (aFOption == "") {
-          pp = sF->Y( argCS );
+          pp = sF->Y( argCS ).stdVector();
         }        
         else dt__throwUnexpected(replaceDependencies());        
       }
       else if (v2dF) {
         if (aFOption == "") {
-          pp = v2dF->Y( argCS );
+          pp = v2dF->Y( argCS ).stdVector();
         }        
         else dt__throwUnexpected(replaceDependencies()); 
       }
       else if (v3dF) {
         if (aFOption == "") {
-          pp = v3dF->Y( argCS );
+          pp = v3dF->Y( argCS ).stdVector();
         }        
         else dt__throwUnexpected(replaceDependencies()); 
       }      
@@ -290,7 +290,7 @@ namespace dtOO {
   float qtXmlBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
-    vectorHandling< constValue * > const * const cV
+    cVPtrVec const * const cV
   ) {
     return muParseString( 
       replaceDependencies( getAttributeStr(attName, element), cV )
@@ -300,8 +300,8 @@ namespace dtOO {
   float qtXmlBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
-    vectorHandling< constValue * > const * const cV,
-    vectorHandling< analyticFunction * > const * const aF
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF
   ) {
     return muParseString( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF )
@@ -311,7 +311,7 @@ namespace dtOO {
   int qtXmlBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    vectorHandling< constValue * > const * const cV
+    cVPtrVec const * const cV
   ) {
     return muParseStringInt( 
       replaceDependencies( getAttributeStr(attName, element), cV )
@@ -321,8 +321,8 @@ namespace dtOO {
   int qtXmlBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    vectorHandling< constValue * > const * const cV,
-    vectorHandling< analyticFunction * > const * const aF 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF 
   ) {
     return muParseStringInt( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF )
@@ -332,8 +332,8 @@ namespace dtOO {
 	std::vector< float > qtXmlBase::getAttributeFloatVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF 
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
@@ -349,8 +349,8 @@ namespace dtOO {
 	std::vector< double > qtXmlBase::getAttributeDoubleVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF 
 	) {
 		std::vector< float > floatVec
     =
@@ -362,8 +362,8 @@ namespace dtOO {
 	std::vector< int > qtXmlBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF 
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);

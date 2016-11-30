@@ -33,7 +33,7 @@ namespace dtOO {
 	aFY vec3dSurfaceTwoD::Y( aFX const & xx) const {
 		dtPoint3 p3d = _dtS->point(xx[0], xx[1]);
 		
-		aFY yy(3);
+		aFY yy(3, 0.);
 		
 		yy[0] = p3d.x();
 		yy[1] = p3d.y();

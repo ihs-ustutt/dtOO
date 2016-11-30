@@ -35,9 +35,9 @@ namespace dtOO {
   void bSplineSurface_skinConstructOCCAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cValP, 
-		vectorHandling< analyticFunction * > const * const depSFunP,
-		vectorHandling< analyticFunction * > * sFunP 
+		cVPtrVec const * const cValP, 
+		aFPtrVec const * const depSFunP,
+		aFPtrVec * sFunP 
 	) const {
     dt__throwIf(
       !dtXmlParserBase::hasChild("analyticFunction", toBuildP), 
@@ -52,7 +52,7 @@ namespace dtOO {
     //
     vectorHandling< dtCurve const * > cL;
     while ( !elementP.isNull() ) {
-      dt__vH(analyticFunction *) aF;
+      aFPtrVec aF;
       dtXmlParserBase::createAdvanced(&elementP, bC, cValP, depSFunP, &aF);
 
       dt__forAllIndex(aF, ii) {

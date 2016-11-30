@@ -56,11 +56,11 @@ int main( int ac, char* av[] ) {
     //
     //
     baseContainer bC;
-    vectorHandling< analyticGeometry * > aG; 
-    vectorHandling< constValue * > cV; 
-    vectorHandling< analyticFunction * > aF; 
-    vectorHandling< boundedVolume * > bV; 
-    vectorHandling< dtCase * > dtC; 
+    aGPtrVec aG; 
+    cVPtrVec cV; 
+    aFPtrVec aF; 
+    bVPtrVec bV; 
+    dCPtrVec dtC; 
 
     //
     // create log files

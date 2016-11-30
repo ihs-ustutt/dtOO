@@ -30,9 +30,9 @@ namespace dtOO {
   void scaOneD_forceBSplineCurve2dAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cValP, 
-		vectorHandling< analyticFunction * > const * const depSFunP,
-		vectorHandling< analyticFunction * > * sFunP 
+		cVPtrVec const * const cValP, 
+		aFPtrVec const * const depSFunP,
+		aFPtrVec * sFunP 
 	) const {
     //
     //check input

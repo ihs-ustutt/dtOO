@@ -23,7 +23,7 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 
-#include "interfaceHeaven/systemHandling.h"
+#include <interfaceHeaven/systemHandling.h>
 
 using namespace dtOO;
 
@@ -39,12 +39,12 @@ std::string parseCommand(
   std::string aRule,
   dtXmlParser & parser,
   baseContainer & bC,
-  vectorHandling< constValue * > & cV,
-  vectorHandling< analyticFunction* > & aF,
-  vectorHandling< analyticGeometry * > & aG,
-  vectorHandling< boundedVolume * > & bV,
-  vectorHandling< dtCase * > & dtC,
-  vectorHandling< dtPlugin * > & dtP
+  cVPtrVec & cV,
+  aFPtrVec & aF,
+  aGPtrVec & aG,
+  bVPtrVec & bV,
+  dCPtrVec & dtC,
+  dPPtrVec & dtP
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -200,7 +200,7 @@ std::string parseCommand(
 // constValue commands
 //
 std::string parseCommand(
-  std::string aRule, dtXmlParser & parser, vectorHandling< constValue * > & cV
+  std::string aRule, dtXmlParser & parser, cVPtrVec & cV
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -253,7 +253,7 @@ std::string parseCommand(
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
-  vectorHandling< analyticFunction * > & aF
+  aFPtrVec & aF
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -293,7 +293,7 @@ std::string parseCommand(
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
-  vectorHandling< analyticGeometry * > & aG
+  aGPtrVec & aG
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -383,7 +383,7 @@ std::string parseCommand(
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
-  vectorHandling< boundedVolume * > & bV
+  bVPtrVec & bV
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -452,7 +452,7 @@ std::string parseCommand(
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
-  vectorHandling< dtPlugin * > & dtP
+  dPPtrVec & dtP
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -535,22 +535,22 @@ int main( int ac, char* av[] ) {
     dtXmlParser & parser = dtXmlParser::reference();
     
     baseContainer bC;
-    vectorHandling< analyticGeometry * > aG; 
-    vectorHandling< constValue * > cV; 
-    vectorHandling< analyticFunction * > aF; 
-    vectorHandling< boundedVolume * > bV; 
-    vectorHandling< dtCase * > dtC; 
-    vectorHandling< dtPlugin * > dtP;      
+    aGPtrVec aG; 
+    cVPtrVec cV; 
+    aFPtrVec aF; 
+    bVPtrVec bV; 
+    dCPtrVec dtC; 
+    dPPtrVec dtP;      
     
     std::cout 
     << "# define standard variables" << std::endl
     << "#   baseContainer bC" << std::endl
-    << "#   vectorHandling< analyticGeometry * > aG" << std::endl
-    << "#   vectorHandling< constValue * > cV" << std::endl 
-    << "#   vectorHandling< analyticFunction * > aF" << std::endl
-    << "#   vectorHandling< boundedVolume * > bV" << std::endl
-    << "#   vectorHandling< dtCase * > dtC" << std::endl
-    << "#   vectorHandling< dtPlugin * > dtP" << std::endl;
+    << "#   aGPtrVec aG" << std::endl
+    << "#   cVPtrVec cV" << std::endl 
+    << "#   aFPtrVec aF" << std::endl
+    << "#   bVPtrVec bV" << std::endl
+    << "#   dCPtrVec dtC" << std::endl
+    << "#   dPPtrVec dtP" << std::endl;
     
     linenoiseHistorySetMaxLen(50);
     

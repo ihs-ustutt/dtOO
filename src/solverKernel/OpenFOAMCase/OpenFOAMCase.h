@@ -28,11 +28,11 @@ namespace dtOO {
     virtual void init( 
       ::QDomElement const & element,
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG,
-      vectorHandling< boundedVolume * > const * const bV,
-      vectorHandling< dtCase * > const * const dC
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG,
+      bVPtrVec const * const bV,
+      dCPtrVec const * const dC
     );    
     virtual void runCurrentState(void);
   private:
@@ -42,7 +42,7 @@ namespace dtOO {
       std::map< int, std::string > & physicalNames    
     );
   private:
-    vectorHandling< constValue * > const * _cV;
+    cVPtrVec const * _cV;
     std::string _dictRule;
     std::map< std::vector< std::string >, dt__pH(OpenFOAMSetupRule) > _setupRule;
     std::vector< std::vector< std::string > > _fieldRule;

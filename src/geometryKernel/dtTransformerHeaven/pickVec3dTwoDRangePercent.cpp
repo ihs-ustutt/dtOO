@@ -31,10 +31,10 @@ namespace dtOO {
 		return new pickVec3dTwoDRangePercent();
 	}
 	
-  vectorHandling< analyticFunction * > pickVec3dTwoDRangePercent::apply( 
-	  vectorHandling< analyticFunction * > const * const aFVecP 
+  aFPtrVec pickVec3dTwoDRangePercent::apply( 
+	  aFPtrVec const * const aFVecP 
 	) const {
-    vectorHandling< analyticFunction * > ret;
+    aFPtrVec ret;
     
     for (int ii=0;ii<aFVecP->size();ii++) {
       dt__ptrAss(
@@ -76,9 +76,9 @@ namespace dtOO {
   void pickVec3dTwoDRangePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

@@ -9,9 +9,9 @@ namespace dtOO {
   void aFXmlBuilder::buildPartCompound(
     ::QDomElement const & toBuild, 
     baseContainer * const bC,
-    vectorHandling< constValue * > const * const cV,
-    vectorHandling< analyticFunction * > const * const aF,
-    vectorHandling< analyticFunction * > * result
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    aFPtrVec * result
 	) const {
     dt__info(buildPartCompound(), << "Call on aFXmlBuilder");
   }

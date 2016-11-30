@@ -5,6 +5,7 @@
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <volFieldsFwd.H>
+#include <mainConceptFwd.h>
 
 namespace Foam {
   class polyMesh;
@@ -15,11 +16,6 @@ namespace Foam {
 
 namespace dtOO {
   class baseContainer;
-  class constValue;
-  class analyticFunction;
-  class analyticGeometry;
-  class boundedVolume;
-  class dtCase;
   
   class OpenFOAMSetupRule {
   public:
@@ -29,11 +25,11 @@ namespace dtOO {
     static OpenFOAMSetupRule * create( std::string const & name );
     virtual void init(       
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG,
-      vectorHandling< boundedVolume * > const * const bV,
-      vectorHandling< dtCase * > const * const dC
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG,
+      bVPtrVec const * const bV,
+      dCPtrVec const * const dC
     );
     virtual void executeOnMesh(
       std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
@@ -67,14 +63,14 @@ namespace dtOO {
       std::string const & name, std::string const & str
     );    
   protected:
-    vectorHandling< analyticFunction * > const & refAF( void ) const;
+    aFPtrVec const & refAF( void ) const;
   private:
     baseContainer const * _bC;
-    vectorHandling< constValue * > const * _cV;
-    vectorHandling< analyticFunction * > const * _aF;
-    vectorHandling< analyticGeometry * > const * _aG;
-    vectorHandling< boundedVolume * > const * _bV;
-    vectorHandling< dtCase * > const * _dC;
+    cVPtrVec const * _cV;
+    aFPtrVec const * _aF;
+    aGPtrVec const * _aG;
+    bVPtrVec const * _bV;
+    dCPtrVec const * _dC;
   };
 }
 #endif	/* OPENFOAMSETUPRULE_H */

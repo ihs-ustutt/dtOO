@@ -51,7 +51,7 @@ namespace dtOO {
 		
 		dtPoint3 p3 = yy + tt * nn;
 
-		aFY retY(3);		
+		aFY retY(3, 0.);		
 		retY[0] = p3.x();
 		retY[1] = p3.y();
 		retY[2] = p3.z();

@@ -1,5 +1,5 @@
-#ifndef VEC3DSURFACETWODAFXmlBuilder_H
-#define	VEC3DSURFACETWODAFXmlBuilder_H
+#ifndef bSplineSurface_skinConstructOCCAFXmlBuilder_H
+#define	bSplineSurface_skinConstructOCCAFXmlBuilder_H
 
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
@@ -22,11 +22,11 @@ namespace dtOO {
     virtual void buildPart(
      ::QDomElement const & toBuildP, 
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cValP, 
-      vectorHandling< analyticFunction * > const * const depSFunP,
-      vectorHandling< analyticFunction * > * sFunP
+      cVPtrVec const * const cValP, 
+      aFPtrVec const * const depSFunP,
+      aFPtrVec * sFunP
     ) const;
   };
 }
-#endif	/* VEC3DSURFACETWODAFXmlBuilder_H */
+#endif	/* bSplineSurface_skinConstructOCCAFXmlBuilder_H */
 

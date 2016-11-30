@@ -30,8 +30,8 @@ using namespace dtOO;
 double ffMeanline(const std::vector<double> &_ind) {	//_ind = variables in one genotypes (vgl. GenerationalGenericAlgorithm.cpp (General)
     pointContainer pC;
     vectorContainer vC;
-    vectorHandling< constValue * > cV1, cV2;			
-    vectorHandling< analyticFunction * > aF1, aF2;
+    cVPtrVec cV1, cV2;			
+    aFPtrVec aF1, aF2;
    	vectorHandling< dtCurve2d const * > cc;
     std::vector<std::string > label;
     dtXmlParser parser1, parser2;

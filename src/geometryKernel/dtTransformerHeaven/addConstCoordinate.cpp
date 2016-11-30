@@ -29,10 +29,10 @@ namespace dtOO {
 		return new addConstCoordinate();
 	}
 	
-  vectorHandling< analyticFunction * > addConstCoordinate::apply( 
-	  vectorHandling< analyticFunction * > const * const aFVecP 
+  aFPtrVec addConstCoordinate::apply( 
+	  aFPtrVec const * const aFVecP 
 	) const {
-    vectorHandling< analyticFunction * > aFVecRet;
+    aFPtrVec aFVecRet;
     
     for (int ii=0;ii<aFVecP->size();ii++) {
       dt__ptrAss(vec2dCurve2dOneD const * v2d1d, vec2dCurve2dOneD::DownCast(aFVecP->at(ii)));
@@ -53,9 +53,9 @@ namespace dtOO {
   void addConstCoordinate::init( 
 		::QDomElement const * tE, 
 		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
   ) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

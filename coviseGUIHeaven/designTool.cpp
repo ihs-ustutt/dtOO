@@ -698,7 +698,7 @@ namespace dtOO {
 //              std::string(_dCStateChoice->getActLabel()) 
 //            ).c_str()
 //          );
-          vectorHandling< resultValue * > result
+          labeledVectorHandling< resultValue * > result
           =
           _dC[ _dCChoice->getValue() ]->result(
             std::string(_dCStateChoice->getActLabel()) 
@@ -768,7 +768,7 @@ namespace dtOO {
           _cVStateBrowser->disable();
           _cV.clear();
         }
-				_parser->destroyAndCreate(_cV, _aF, _bC, _aG, _bV, _dC, _dP);
+				_parser->destroyAndCreate(*_bC, _cV, _aF, _aG, _bV, _dC, _dP);
 
 				//
 				// try to remake visualization

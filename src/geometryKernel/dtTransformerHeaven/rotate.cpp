@@ -112,12 +112,12 @@ namespace dtOO {
 		return ret;
 	}  
 	
-  vectorHandling< analyticGeometry * > rotate::apply( 
-	  vectorHandling< analyticGeometry * > const * const aGeoVecP 
+  aGPtrVec rotate::apply( 
+	  aGPtrVec const * const aGeoVecP 
 	) const {
-    vectorHandling< analyticGeometry * > retAGeo;
+    aGPtrVec retAGeo;
 
-    dt__forAllConstIter(vectorHandling< analyticGeometry * >, *aGeoVecP, it) {
+    dt__forAllConstIter(aGPtrVec, *aGeoVecP, it) {
 			//
 			// clone and cast analyticGeometry
 			//
@@ -153,9 +153,9 @@ namespace dtOO {
   void rotate::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

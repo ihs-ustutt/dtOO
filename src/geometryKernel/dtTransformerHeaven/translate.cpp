@@ -42,10 +42,10 @@ namespace dtOO {
 		return ret;
 	}
   
-  vectorHandling< analyticFunction * > translate::apply( 
-    vectorHandling< analyticFunction * > const * const sFunP 
+  aFPtrVec translate::apply( 
+    aFPtrVec const * const sFunP 
   ) const { 
-    vectorHandling< analyticFunction * > retSFun;
+    aFPtrVec retSFun;
 
 		
     for (int ii=0; ii<sFunP->size(); ii++) {
@@ -100,9 +100,9 @@ namespace dtOO {
   void translate::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

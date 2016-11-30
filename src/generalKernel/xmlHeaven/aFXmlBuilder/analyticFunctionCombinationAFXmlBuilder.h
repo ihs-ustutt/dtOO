@@ -21,9 +21,9 @@ namespace dtOO {
     virtual void buildPart(
       ::QDomElement const & toBuild, 
       baseContainer * const bC,
-      vectorHandling< constValue * > const * const cV, 
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticFunction * > * ret
+      cVPtrVec const * const cV, 
+      aFPtrVec const * const aF,
+      aFPtrVec * ret
     ) const;
   };
 }

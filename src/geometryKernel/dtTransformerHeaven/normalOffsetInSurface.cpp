@@ -28,8 +28,8 @@ namespace dtOO {
 		return new normalOffsetInSurface();
 	}
 	
-  vectorHandling< analyticGeometry * > normalOffsetInSurface::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
-    vectorHandling< analyticGeometry * > retAGeo;
+  aGPtrVec normalOffsetInSurface::apply( aGPtrVec const * const aGeoVecP ) const {
+    aGPtrVec retAGeo;
     for (int ii=0; ii<aGeoVecP->size(); ii++) {
       //
       // cast analyticGeometry
@@ -58,9 +58,9 @@ namespace dtOO {
   void normalOffsetInSurface::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

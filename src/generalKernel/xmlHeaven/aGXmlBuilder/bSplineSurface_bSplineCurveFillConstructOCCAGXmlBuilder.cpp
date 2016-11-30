@@ -27,17 +27,17 @@ namespace dtOO {
   void bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder::buildPart(
     ::QDomElement const & toBuild,
     baseContainer * const bC,           
-    vectorHandling< constValue * > const * const cV,           
-    vectorHandling< analyticFunction * > const * const aF,    
-    vectorHandling< analyticGeometry * > const * const aG,
-    vectorHandling< analyticGeometry * > * result 
+    cVPtrVec const * const cV,           
+    aFPtrVec const * const aF,    
+    aGPtrVec const * const aG,
+    aGPtrVec * result 
 	) const {
     //
 		// check input
 		//    
     dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
 		
-    vectorHandling< analyticGeometry * > aG_t;
+    aGPtrVec aG_t;
     ::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
     while ( !wElement.isNull() ) {
       dtXmlParserBase::createAdvanced( &wElement, bC, cV, aF, aG, &aG_t );

@@ -8,11 +8,9 @@
 #include <logMe/dtMacros.h>
 #include "qtXmlPrimitive.h"
 #include <interfaceHeaven/vectorHandling.h>
+#include <mainConceptFwd.h>
 
-namespace dtOO {
-  class analyticFunction;
-  class constValue;
-  
+namespace dtOO {  
   class qtXmlBase : public qtXmlPrimitive {
   public:  
     dt__classOnlyName(qtXmlBase);  
@@ -22,12 +20,12 @@ namespace dtOO {
      */  
     static std::string replaceDependencies(
       std::string const expression,
-      vectorHandling< constValue * > const * const cValP
+      cVPtrVec const * const cValP
     );    
     static std::string replaceDependencies(
       std::string const expression,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF
     );
     /**
      * evaluate a string with muparser
@@ -41,42 +39,42 @@ namespace dtOO {
     static float getAttributeFloatMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
-      vectorHandling< constValue * > const * const cV
+      cVPtrVec const * const cV
     );
     static float getAttributeFloatMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF 
     );
     static int getAttributeIntMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
-      vectorHandling< constValue * > const * const cV
+      cVPtrVec const * const cV
     );    
     static int getAttributeIntMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF 
     );
     static std::vector< float > getAttributeFloatVectorMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF 
     );        
     static std::vector< double > getAttributeDoubleVectorMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF 
     );            
     static std::vector< int > getAttributeIntVectorMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF 
     );
   protected:
     qtXmlBase();    

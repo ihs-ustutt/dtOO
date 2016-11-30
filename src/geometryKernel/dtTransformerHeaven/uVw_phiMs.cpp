@@ -43,10 +43,10 @@ namespace dtOO {
 	 * @todo ConstDownCast to current types is not a satisfying solution. Maybe
 	 * "transformed cloning" is a better solution?!
    */
-  vectorHandling< analyticFunction * > uVw_phiMs::apply( 
-	  vectorHandling< analyticFunction * > const * const aFP 
+  aFPtrVec uVw_phiMs::apply( 
+	  aFPtrVec const * const aFP 
 	) const {
-		vectorHandling< analyticFunction * > retV;
+		aFPtrVec retV;
 		
     for (int ii=0; ii<aFP->size(); ii++) {
 			analyticFunction * aF = aFP->at(ii);
@@ -171,9 +171,9 @@ namespace dtOO {
   void uVw_phiMs::init( 
     ::QDomElement const * tE, 
     baseContainer const * const bC,
-    vectorHandling< constValue * > const * const cV,
-    vectorHandling< analyticFunction * > const * const aF,
-    vectorHandling< analyticGeometry * > const * const aG 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    aGPtrVec const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

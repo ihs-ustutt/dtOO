@@ -19,9 +19,9 @@ namespace dtOO {
   void analyticFunctionAFXmlBuilder::buildPart( 
 		::QDomElement const & toBuild, 
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticFunction * > * result
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aFPtrVec * result
 	) const {
     //
 		// check input
@@ -36,7 +36,7 @@ namespace dtOO {
     ::QDomElement wElement 
     = 
     dtXmlParserBase::getChild("analyticFunction", toBuild);     
-    vectorHandling< analyticFunction * > toCopy;
+    aFPtrVec toCopy;
     dtXmlParserBase::createAdvanced(&wElement, bC, cV, aF, &toCopy);
     dt__forAllIndex(toCopy, ii) result->push_back( toCopy[ii] );    
   }

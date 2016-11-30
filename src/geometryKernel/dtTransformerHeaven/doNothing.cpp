@@ -23,20 +23,20 @@ namespace dtOO {
 
   }
 
-  vectorHandling< analyticGeometry * > doNothing::apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const {
+  aGPtrVec doNothing::apply( aGPtrVec const * const aGeoVecP ) const {
 
   }
 
-  vectorHandling< analyticFunction * > doNothing::apply( vectorHandling< analyticFunction * > const * const sFunVecP ) const {
+  aFPtrVec doNothing::apply( aFPtrVec const * const sFunVecP ) const {
 
   }
 
 	void doNothing::init( 
 		::QDomElement const * tE, 
 		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP,
-		vectorHandling< analyticGeometry * > const * const depAGeoP 
+		cVPtrVec const * const cValP,
+		aFPtrVec const * const sFunP,
+		aGPtrVec const * const depAGeoP 
 	) {
 		
 	}

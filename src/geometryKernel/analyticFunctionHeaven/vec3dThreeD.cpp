@@ -98,7 +98,7 @@ namespace dtOO {
 		deltaPer[1] = 0.0001;
 		deltaPer[2] = 0.0001;
 
-		std::vector< aFX > uv(3, aFX(2));    
+		std::vector< aFX > uv(3, aFX(2, 0.));    
 		for (int ii=0; ii<3; ii++) {
 			if (xP[ii]<deltaPer[ii]) {
 				uv[ii][0] = 0.;

@@ -21,10 +21,10 @@ namespace dtOO {
   void analyticGeometryAGXmlBuilder::buildPart( 
     ::QDomElement const & toBuild,
     baseContainer * const bC,           
-    vectorHandling< constValue * > const * const cV,           
-    vectorHandling< analyticFunction * > const * const aF,    
-    vectorHandling< analyticGeometry * > const * const aG,
-    vectorHandling< analyticGeometry * > * result 
+    cVPtrVec const * const cV,           
+    aFPtrVec const * const aF,    
+    aGPtrVec const * const aG,
+    aGPtrVec * result 
   ) const {
     //
 		// check input
@@ -39,7 +39,7 @@ namespace dtOO {
     ::QDomElement wElement 
     = 
     dtXmlParserBase::getChild("analyticGeometry", toBuild);     
-    vectorHandling< analyticGeometry * > toCopy;
+    aGPtrVec toCopy;
     dtXmlParserBase::createAdvanced(&wElement, bC, cV, aF, aG, &toCopy);
     dt__forAllIndex(toCopy, ii) result->push_back( toCopy[ii] );
   }

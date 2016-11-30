@@ -42,10 +42,10 @@ namespace dtOO {
 		return new thicknessIncreasing();
 	}
 		
-  vectorHandling< analyticFunction * > thicknessIncreasing::apply( 
-    vectorHandling< analyticFunction * > const * const sFunP 
+  aFPtrVec thicknessIncreasing::apply( 
+    aFPtrVec const * const sFunP 
   ) const {
-    vectorHandling< analyticFunction * > transSFun;
+    aFPtrVec transSFun;
     for (int ii=0;ii<sFunP->size();ii++) {
 			std::vector< dtPoint2 > p2;
       //
@@ -145,9 +145,9 @@ namespace dtOO {
   void thicknessIncreasing::init( 
 	  ::QDomElement const * tE, 
 		baseContainer const * const bC,
-    vectorHandling< constValue * > const * const cV,
-    vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 					
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+		aGPtrVec const * const aG 					
 	) {
 		dtTransformer::init(tE, bC, cV, aF, aG);
 		

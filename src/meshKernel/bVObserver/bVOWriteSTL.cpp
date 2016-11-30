@@ -24,10 +24,10 @@ namespace dtOO {
   void bVOWriteSTL::bVOWriteSTL::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG,
-		vectorHandling< boundedVolume * > const * const bV,
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG,
+		bVPtrVec const * const bV,
 		boundedVolume * attachTo
   ) {
     //

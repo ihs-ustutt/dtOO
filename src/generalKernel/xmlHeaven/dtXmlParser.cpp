@@ -235,7 +235,7 @@ namespace dtOO {
   
   
   void dtXmlParser::loadStateToConst(
-    std::string const stateName, vectorHandling< constValue * > & cValRef
+    std::string const stateName, cVPtrVec & cValRef
   ) {
     dt__throwIf(cValRef.empty(), loadStateToConst());
     
@@ -283,14 +283,14 @@ namespace dtOO {
   }
     
   void dtXmlParser::write( 
-    vectorHandling< constValue * > const * const cValP 
+    cVPtrVec const * const cValP 
   ) const {
     write(NowDateAndTime(), cValP);
   }
 
   void dtXmlParser::write(
     std::string const stateName, 
-    vectorHandling< constValue * > const * const cValP
+    cVPtrVec const * const cValP
   ) const {
     //
     // filename
@@ -327,7 +327,7 @@ namespace dtOO {
 
   void dtXmlParser::write(
     std::vector< std::string > const stateName, 
-    std::vector< vectorHandling< constValue * > > const & cValP
+    std::vector< cVPtrVec > const & cValP
   ) const {
     //
     // filename
@@ -365,21 +365,21 @@ namespace dtOO {
   }
 
   void dtXmlParser::write( 
-    vectorHandling< constValue * > const & cValP 
+    cVPtrVec const & cValP 
   ) const {
     write(&cValP);
   }
   
   void dtXmlParser::write(
     std::string const stateName, 
-    vectorHandling< constValue * > const & cValP
+    cVPtrVec const & cValP
   ) const {
     write(stateName, &cValP);
   }
 
   void dtXmlParser::writeUpdate(
     std::string const stateName, 
-    vectorHandling< constValue * > const & cValP
+    cVPtrVec const & cValP
   ) const {
     //
     // filename
@@ -433,7 +433,7 @@ namespace dtOO {
   
   void dtXmlParser::extract(
     std::string const stateName, 
-    vectorHandling< constValue * > const & cValP,
+    cVPtrVec const & cValP,
     std::string const fileName
   ) const {
     ::QDomDocument doc;
@@ -635,7 +635,7 @@ namespace dtOO {
    */
   void dtXmlParser::createConstValue(
     std::string const constValueLabel, 
-    vectorHandling< constValue * > * cValP
+    cVPtrVec * cValP
   ) const {
     ::QDomElement const wElement = getElement("constValue", constValueLabel);
        
@@ -661,7 +661,7 @@ namespace dtOO {
   }
 	
   void dtXmlParser::createConstValue(
-    vectorHandling< constValue * > * cValP
+    cVPtrVec * cValP
   ) const {
     std::vector< std::string > label = getLabels("constValue");
 
@@ -791,8 +791,8 @@ namespace dtOO {
   void dtXmlParser::createAnalyticFunction(
 	  std::string const label, 
 		baseContainer * const bC,
-    vectorHandling< constValue * > const * const cVP, 
-    vectorHandling< analyticFunction * > * aFP
+    cVPtrVec const * const cVP, 
+    aFPtrVec * aFP
 	) const {
     ::QDomElement aFElement = getElement("function", label);
     
@@ -821,7 +821,7 @@ namespace dtOO {
 		//
 		// call builder
 		//
-    vectorHandling< analyticFunction * > tmpAF;   
+    aFPtrVec tmpAF;   
 		if (!buildCompound) builder->buildPart(tE, bC, cVP, aFP, &tmpAF);
 		else builder->buildPartCompound(tE, bC, cVP, aFP, &tmpAF);
 
@@ -888,8 +888,8 @@ namespace dtOO {
 	
   void dtXmlParser::createAnalyticFunction(
 	  baseContainer * const bC,
-    vectorHandling< constValue * > const * const cVP, 
-    vectorHandling< analyticFunction * > * aFP
+    cVPtrVec const * const cVP, 
+    aFPtrVec * aFP
 	) const {
 		std::vector< std::string > label = getLabels("function");
 		
@@ -905,9 +905,9 @@ namespace dtOO {
   void dtXmlParser::createAnalyticGeometry(
 	  std::string const label,
     baseContainer * const bC,
-		vectorHandling< constValue * > const * const cVP,        
-		vectorHandling< analyticFunction * > const * const sFP,        
-		vectorHandling< analyticGeometry * > * aGP
+		cVPtrVec const * const cVP,        
+		aFPtrVec const * const sFP,        
+		aGPtrVec * aGP
 	) const {
     ::QDomElement partElement = getElement("part", label);
     dt__makeChapter(creating part);
@@ -916,7 +916,7 @@ namespace dtOO {
     //
     // construct via builder
     //
-    vectorHandling< analyticGeometry * > tmpAGeo;
+    aGPtrVec tmpAGeo;
     ::QDomElement tE = getChild("builder", partElement);
 
     //
@@ -959,9 +959,9 @@ namespace dtOO {
 
   void dtXmlParser::createAnalyticGeometry(
     baseContainer * const bC,
-		vectorHandling< constValue * > const * const cVP,        
-		vectorHandling< analyticFunction * > const * const sFP,        
-		vectorHandling< analyticGeometry * > * aGP
+		cVPtrVec const * const cVP,        
+		aFPtrVec const * const sFP,        
+		aGPtrVec * aGP
 	) const {
 		std::vector< std::string > label = getLabels("part");
 		
@@ -977,10 +977,10 @@ namespace dtOO {
   void dtXmlParser::createBoundedVolume(
 		std::string const label,
     baseContainer * const bC,
-		vectorHandling< constValue * > const * const cVP,        
-		vectorHandling< analyticFunction * > const * const sFP,        
-		vectorHandling< analyticGeometry * > const * const aGP,
-	  vectorHandling< boundedVolume * > * bVP
+		cVPtrVec const * const cVP,        
+		aFPtrVec const * const sFP,        
+		aGPtrVec const * const aGP,
+	  bVPtrVec * bVP
 	) const {
 		//
 		// get configuration element
@@ -1001,10 +1001,10 @@ namespace dtOO {
 	
   void dtXmlParser::createBoundedVolume(
     baseContainer * const bC,
-		vectorHandling< constValue * > const * const cVP,        
-		vectorHandling< analyticFunction * > const * const sFP,        
-		vectorHandling< analyticGeometry * > const * const aGP,
-		vectorHandling< boundedVolume * > * bVP
+		cVPtrVec const * const cVP,        
+		aFPtrVec const * const sFP,        
+		aGPtrVec const * const aGP,
+		bVPtrVec * bVP
 	) const {
 		std::vector< std::string > label = getLabels("boundedVolume");
 		
@@ -1016,12 +1016,12 @@ namespace dtOO {
 	void dtXmlParser::createPlugin(
 		std::string const label,
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cVP,        
-		vectorHandling< analyticFunction * > const * const sFP,        
-		vectorHandling< analyticGeometry * > const * const aGP,
-		vectorHandling< boundedVolume * > * bVP,
-    vectorHandling< dtCase * > const * const dCP,
-		vectorHandling< dtPlugin * > * pLP
+		cVPtrVec const * const cVP,        
+		aFPtrVec const * const sFP,        
+		aGPtrVec const * const aGP,
+		bVPtrVec * bVP,
+    dCPtrVec const * const dCP,
+		dPPtrVec * pLP
 	) const {
 		//
 		// get configuration element
@@ -1054,12 +1054,12 @@ namespace dtOO {
 	
 	void dtXmlParser::createPlugin(
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cVP,        
-		vectorHandling< analyticFunction * > const * const sFP,        
-		vectorHandling< analyticGeometry * > const * const aGP,
-		vectorHandling< boundedVolume * > * bVP,
-    vectorHandling< dtCase * > const * const dCP,
-		vectorHandling< dtPlugin * > * pLP
+		cVPtrVec const * const cVP,        
+		aFPtrVec const * const sFP,        
+		aGPtrVec const * const aGP,
+		bVPtrVec * bVP,
+    dCPtrVec const * const dCP,
+		dPPtrVec * pLP
 	) const {
 		std::vector< std::string > label = getLabels("plugin");
 		
@@ -1071,11 +1071,11 @@ namespace dtOO {
 	void dtXmlParser::createCase(
 		std::string const label,
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cVP,        
-		vectorHandling< analyticFunction * > const * const sFP,        
-		vectorHandling< analyticGeometry * > const * const aGP,
-		vectorHandling< boundedVolume * > * bVP,
-		vectorHandling< dtCase * > * dCP
+		cVPtrVec const * const cVP,        
+		aFPtrVec const * const sFP,        
+		aGPtrVec const * const aGP,
+		bVPtrVec * bVP,
+		dCPtrVec * dCP
 	) const {
 		//
 		// get configuration element
@@ -1096,11 +1096,11 @@ namespace dtOO {
 	
 	void dtXmlParser::createCase(
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cVP,        
-		vectorHandling< analyticFunction * > const * const sFP,        
-		vectorHandling< analyticGeometry * > const * const aGP,
-		vectorHandling< boundedVolume * > * bVP,
-		vectorHandling< dtCase * > * dCP
+		cVPtrVec const * const cVP,        
+		aFPtrVec const * const sFP,        
+		aGPtrVec const * const aGP,
+		bVPtrVec * bVP,
+		dCPtrVec * dCP
 	) const {
 		std::vector< std::string > label = getLabels("case");
 		
@@ -1110,44 +1110,13 @@ namespace dtOO {
 	}
 
 	void dtXmlParser::destroyAndCreate(
-		vectorHandling< constValue * > & cV,
-		vectorHandling< analyticFunction* > & aF,
-		ptrHandling< baseContainer > & bC,
-		vectorHandling< analyticGeometry * > & aG,
-		vectorHandling< boundedVolume * > & bV,
-		vectorHandling< dtCase * > & dC,
-	  vectorHandling< dtPlugin * > & pL
-	) const {
-		if ( cV.size() == 0 ) createConstValue(&cV);
-		
-		//
-		// destroy
-		//
-		bC->clear();
-		aF.destroy();
-		aG.destroy();
-		bV.destroy();
-		dC.destroy();
-    pL.destroy();
-		
-		//
-		// create
-		//
-		createAnalyticFunction(bC.get(), &cV, &aF);
-		createAnalyticGeometry(bC.get(), &cV, &aF, &aG);
-		createBoundedVolume(bC.get(), &cV, &aF, &aG, &bV);
-		createCase(bC.get(), &cV, &aF, &aG, &bV, &dC);
-		createPlugin(bC.get(), &cV, &aF, &aG, &bV, &dC, &pL);
-	}
-  
-	void dtXmlParser::destroyAndCreate(
     baseContainer & bC,
-		vectorHandling< constValue * > & cV,
-		vectorHandling< analyticFunction* > & aF,
-		vectorHandling< analyticGeometry * > & aG,
-		vectorHandling< boundedVolume * > & bV,
-		vectorHandling< dtCase * > & dC,
-	  vectorHandling< dtPlugin * > & pL
+		cVPtrVec & cV,
+		aFPtrVec & aF,
+		aGPtrVec & aG,
+		bVPtrVec & bV,
+		dCPtrVec & dC,
+	  dPPtrVec & pL
 	) const {
 		if ( cV.size() == 0 ) createConstValue(&cV);
 		

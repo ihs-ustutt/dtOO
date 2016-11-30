@@ -62,6 +62,8 @@
     return ptr; \
   }  
 
+  #define dt__handling( name ) \
+    typedef labeledVectorHandling< name * > ptrVec
   #define dt__H_addCloneForpVH( type ) \
     type * new_clone( type const & aF );
   #define dt__C_addCloneForpVH( type ) \

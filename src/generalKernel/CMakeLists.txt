@@ -1,4 +1,5 @@
 SET(HEADERS
+  mainConceptFwd.h
   xmlHeaven/dtXmlParserBase.h
   xmlHeaven/qtXmlBase.h
   xmlHeaven/qtXmlPrimitive.h
@@ -62,6 +63,7 @@ SET(HEADERS
   interfaceHeaven/staticPropertiesHandler.h
   interfaceHeaven/labelHandling.h
   interfaceHeaven/vectorHandling.h
+  interfaceHeaven/labeledVectorHandling.h
   interfaceHeaven/ptrVectorHandling.h
   interfaceHeaven/ptrHandling.h
   interfaceHeaven/systemHandling.h

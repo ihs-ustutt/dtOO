@@ -30,7 +30,7 @@ namespace dtOO {
 	aFY vec3dCurveOneD::Y( aFX const & xx ) const {
 		dtPoint3 p2d = _dtC->point(xx[0]);
 		
-		aFY yy(3);
+		aFY yy(3, 0.);
 		
 		yy[0] = p2d.x();
 		yy[1] = p2d.y();

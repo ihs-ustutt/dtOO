@@ -1,17 +1,17 @@
-#ifndef CONSTVALUE_H
-#define	CONSTVALUE_H
+#ifndef constValue_H
+#define	constValue_H
 
 #include <string>
 #include <logMe/dtMacros.h>
 #include <xmlHeaven/qtXmlPrimitive.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/renderInterface.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <mainConceptFwd.h>
 
 namespace dtOO {
   class constValue : public labelHandling {
   public:
-    dt__classOnlyName(constValue);    
+    dt__class(constValue, constValue);
     constValue( constValue const & orig );
     virtual ~constValue();
     static constValue * create(
@@ -28,7 +28,7 @@ namespace dtOO {
     virtual float getMin(void) const;
     virtual float getMax(void) const;
     virtual void resolveConstraint( 
-      vectorHandling< constValue * > const * const cVArr
+      cVPtrVec const * const cVArr
     );
   protected:
     constValue();    
@@ -36,5 +36,5 @@ namespace dtOO {
     float _value;
   };
 }
-#endif	/* CONSTVALUE_H */
+#endif	/* constValue_H */
 

@@ -19,10 +19,10 @@ namespace dtOO {
 		return new closeGaps();
 	}
 	
-  vectorHandling< analyticGeometry * > closeGaps::apply( 
-    vectorHandling< analyticGeometry * > const * const toTrans 
+  aGPtrVec closeGaps::apply( 
+    aGPtrVec const * const toTrans 
   ) const {
-    vectorHandling< analyticGeometry * > retAGeo;
+    aGPtrVec retAGeo;
 
     dt__forAllRefAuto( *toTrans, aTrans ) {
       //
@@ -71,9 +71,9 @@ namespace dtOO {
   void closeGaps::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 

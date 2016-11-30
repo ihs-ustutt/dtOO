@@ -44,9 +44,9 @@ namespace dtOO {
   void optionHandling::init(
     ::QDomElement const & wElement,
     baseContainer const * const bC,      
-    vectorHandling< constValue * > const * const cV,
-    vectorHandling< analyticFunction * > const * const aF,
-    vectorHandling< analyticGeometry * > const * const aG
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    aGPtrVec const * const aG
   ) {
     dt__forAllRefAuto(
       qtXmlPrimitive::getChildVector("option", wElement), anOption
@@ -119,8 +119,8 @@ namespace dtOO {
 
   float optionHandling::getOptionFloat(
 	  std::string const name,
-    vectorHandling< constValue * > const * const cV,
-    vectorHandling< analyticFunction * > const * const aF					
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF					
 	) const {
      return qtXmlBase::muParseString( 
       qtXmlBase::replaceDependencies(getOption(name), cV, aF)
@@ -135,8 +135,8 @@ namespace dtOO {
   
   int optionHandling::getOptionInt(
 	  std::string const name,
-    vectorHandling< constValue * > const * const cV,
-    vectorHandling< analyticFunction * > const * const aF					
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF					
 	) const {
      return qtXmlBase::muParseStringInt( 
       qtXmlBase::replaceDependencies(getOption(name), cV, aF)

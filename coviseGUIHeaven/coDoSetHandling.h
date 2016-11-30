@@ -2,7 +2,7 @@
 #define	CODOSETHANDLING_H
 
 #include <logMe/dtMacros.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 
 namespace covise {
   class coDoSet;  
@@ -20,7 +20,7 @@ namespace dtOO {
   class unstructured3dSurfaceMesh;
   class discrete3dVector;
   
-  class coDoSetHandling : public vectorHandling< renderInterface * > {
+  class coDoSetHandling : public labeledVectorHandling< renderInterface * > {
     public:
       dt__classOnlyName(coDoSetHandling);
       coDoSetHandling();

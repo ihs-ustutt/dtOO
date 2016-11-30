@@ -52,7 +52,7 @@ namespace dtOO {
 	x_vec3dTwoDClosestPointToPoint::~x_vec3dTwoDClosestPointToPoint() {
 	}
 	
-	aFY x_vec3dTwoDClosestPointToPoint::result( void ) {
+	aFX x_vec3dTwoDClosestPointToPoint::result( void ) {
 		return _yy;
 	}
   

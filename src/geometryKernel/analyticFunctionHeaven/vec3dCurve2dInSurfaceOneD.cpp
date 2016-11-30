@@ -36,7 +36,7 @@ namespace dtOO {
 		dtPoint2 pX = _dtC2d->point(xx[0]);
 		dtPoint3 pY = _dtS->getPoint3d(pX);
 		
-		aFY yy(3);
+		aFY yy(3, 0.);
 		
 		yy[0] = pY.x();
 		yy[1] = pY.y();

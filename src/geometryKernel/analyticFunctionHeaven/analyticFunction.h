@@ -1,5 +1,5 @@
-#ifndef ANALYTICFUNCTION_H
-#define	ANALYTICFUNCTION_H
+#ifndef analyticFunction_H
+#define	analyticFunction_H
 
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/optionHandling.h>
@@ -8,17 +8,19 @@
 #include <interfaceHeaven/renderInterface.h>
 #include <dtLinearAlgebra.h>
 
+#include "aFX.h"
+#include "aFY.h"
+
+#include <mainConceptFwd.h>
+
 namespace dtOO {
   class dtTransformer;
   
-  typedef std::vector< float > aFX;
-  typedef std::vector< float > aFY;
-  
   class analyticFunction : public optionHandling,
-                           public labelHandling, 
+                           public labelHandling,
                            public renderInterface {
   public:
-    dt__class(analyticFunction, analyticFunction);    
+    dt__class(analyticFunction, analyticFunction);
     analyticFunction();
     analyticFunction(const analyticFunction& orig);
     virtual ~analyticFunction();
@@ -62,6 +64,8 @@ namespace dtOO {
     );    
     static aFY aFYTwoD( dtPoint2 const & pp );    
     static aFY aFYThreeD( dtPoint3 const & pp );    
+//    static aFX aFX( std::vector< float > const & xx );    
+//    static aFY aFY( std::vector< float > const & xx );
     static aFY aFY_aFX( aFX const & xx );    
     static aFX aFX_aFY( aFY const & yy );
     static float distance( aFX const & x0, aFX const & x1 );
@@ -71,5 +75,5 @@ namespace dtOO {
   };
   dt__H_addCloneForpVH(analyticFunction);
 }
-#endif	/* ANALYTICFUNCTION_H */
+#endif	/* analyticFunction_H */
 

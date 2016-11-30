@@ -30,10 +30,10 @@ namespace dtOO {
 		return new makePolynomial();
 	}	
 
-  vectorHandling< analyticGeometry * > makePolynomial::apply( 
-              vectorHandling< analyticGeometry * > const * const aGeoVecP 
+  aGPtrVec makePolynomial::apply( 
+              aGPtrVec const * const aGeoVecP 
   ) const {
-    vectorHandling< analyticGeometry * > retAGeo;
+    aGPtrVec retAGeo;
     
     for (int ii=0;ii<aGeoVecP->size();ii++) {
       //
@@ -119,9 +119,9 @@ namespace dtOO {
   void makePolynomial::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
 	) {     
     dtTransformer::init(tE, bC, cV, aF, aG);		
 		

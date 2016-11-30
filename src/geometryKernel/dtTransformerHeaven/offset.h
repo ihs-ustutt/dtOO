@@ -16,12 +16,12 @@ namespace dtOO {
     void init( 
       ::QDomElement const * tE, 
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG 
     );
-    virtual vectorHandling< analyticGeometry * > apply( vectorHandling< analyticGeometry * > const * const aGeoVecP ) const;
-    virtual vectorHandling< analyticFunction * > apply( vectorHandling< analyticFunction * > const * const sFunP ) const; 
+    virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
+    virtual aFPtrVec apply( aFPtrVec const * const sFunP ) const; 
   private:
     float _paraOneOffsetPercent;
     float _paraTwoOffsetPercent;

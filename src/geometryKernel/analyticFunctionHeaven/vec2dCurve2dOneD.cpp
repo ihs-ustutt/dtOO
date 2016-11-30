@@ -30,7 +30,7 @@ namespace dtOO {
 	aFY vec2dCurve2dOneD::Y( float const & xx) const {
 		dtPoint2 p2d = _dtC2d->point(xx);
 		
-		aFY yy(2);
+		aFY yy(2, 0.);
 		
 		yy[0] = p2d.x();
 		yy[1] = p2d.y();

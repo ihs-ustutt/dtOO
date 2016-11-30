@@ -6,6 +6,7 @@
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
 #include <xmlHeaven/dtXmlParserBase.h>
+#include <mainConceptFwd.h>
 
 namespace dtOO {
   class constValue;
@@ -16,17 +17,17 @@ namespace dtOO {
   
   class dtCase : public labelHandling, public optionHandling {
     public:
-      dt__classOnlyName(dtCase);    
+      dt__class(dtCase, dtCase);
       dtCase();
       virtual ~dtCase();
       virtual void init( 
         ::QDomElement const & element,
         baseContainer const * const bC,
-        vectorHandling< constValue * > const * const cV,
-        vectorHandling< analyticFunction * > const * const aF,
-        vectorHandling< analyticGeometry * > const * const aG,
-        vectorHandling< boundedVolume * > const * const bV,
-        vectorHandling< dtCase * > const * const dC
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        dCPtrVec const * const dC
       );    
       virtual void runCurrentState( void ) = 0;
       void update( void );

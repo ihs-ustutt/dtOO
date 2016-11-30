@@ -19,11 +19,11 @@ namespace dtOO {
     virtual void init(
       ::QDomElement const & element,
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG,
-      vectorHandling< boundedVolume * > const * const bV,
-      vectorHandling< dtMeshOperator * > const * const mO
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG,
+      bVPtrVec const * const bV,
+      labeledVectorHandling< dtMeshOperator * > const * const mO
     );    
     void operator()( dtGmshRegion * dtgr );    
   private:

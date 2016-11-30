@@ -31,13 +31,13 @@ namespace dtOO {
 		return new closeGapsArithmetic();
 	}
 	
-  vectorHandling< analyticGeometry * > closeGapsArithmetic::apply( 
-    vectorHandling< analyticGeometry * > const * const aG 
+  aGPtrVec closeGapsArithmetic::apply( 
+    aGPtrVec const * const aG 
   ) const {
-    vectorHandling< analyticGeometry * > ret;
+    aGPtrVec ret;
 		
 		dt__pVH(map1dTo3d) m1dV;
-    dt__forAllConstIter(vectorHandling< analyticGeometry * >, (*aG), it) {
+    dt__forAllConstIter(aGPtrVec, (*aG), it) {
 			analyticGeometry * const & theAG = *it;
       //
       // cast analyticGeometry
@@ -58,15 +58,15 @@ namespace dtOO {
     return ret;
   }
 
-  vectorHandling< analyticFunction * > closeGapsArithmetic::apply( 
-    vectorHandling< analyticFunction * > const * const aF 
+  aFPtrVec closeGapsArithmetic::apply( 
+    aFPtrVec const * const aF 
   ) const {
     dt__throwIf(_dir<0, apply());
     dt__throwIf(_nSegments<0, apply());
     
-    vectorHandling< analyticFunction * > ret;
+    aFPtrVec ret;
 		dt__pVH(vec3dTwoD) v3dV;
-    dt__forAllConstIter(vectorHandling< analyticFunction * >, (*aF), it) {
+    dt__forAllConstIter(aFPtrVec, (*aF), it) {
 			analyticFunction * const & theAF = *it;
       //
       // cast analyticFunction
@@ -96,9 +96,9 @@ namespace dtOO {
   void closeGapsArithmetic::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

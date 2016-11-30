@@ -22,13 +22,13 @@ namespace dtOO {
       ::QDomDocument & doc, ::QDomElement & element
     );
     virtual void resolveConstraint( 
-      vectorHandling< constValue * > const * const cVArr
+      cVPtrVec const * const cVArr
     );
   private:
     float _min;
     float _max;
     std::string _valueStr;
-    vectorHandling< constValue * > const * _cVArr;
+    cVPtrVec const * _cVArr;
   };
 }
 #endif	/* constrainedFloatParam_H */

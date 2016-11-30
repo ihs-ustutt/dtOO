@@ -1,5 +1,5 @@
-#ifndef BOUNDEDVOLUME_H
-#define	BOUNDEDVOLUME_H
+#ifndef boundedVolume_H
+#define	boundedVolume_H
 
 #include <string>
 #include <map>
@@ -7,9 +7,9 @@
 #include <bVObserver/bVOSubject.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
-#include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include <dtLinearAlgebra.h>
+#include <mainConceptFwd.h>
 
 namespace dtOO {
   class analyticGeometry;
@@ -25,16 +25,16 @@ namespace dtOO {
                         public optionHandling,
                         public renderInterface {
   public:
-    dt__classOnlyName(boundedVolume);
+    dt__class(boundedVolume, boundedVolume);
     boundedVolume();
     virtual ~boundedVolume();
     virtual void init( 
       ::QDomElement const & element,
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const sF,
-      vectorHandling< analyticGeometry * > const * const aF,
-      vectorHandling< boundedVolume * > const * const bV
+      cVPtrVec const * const cV,
+      aFPtrVec const * const sF,
+      aGPtrVec const * const aF,
+      bVPtrVec const * const bV
     );
     virtual void makeGrid(void) = 0;
     virtual void makePreGrid(void) = 0;
@@ -48,5 +48,5 @@ namespace dtOO {
     bool _meshed;
   };
 }
-#endif	/* BOUNDEDVOLUME_H */
+#endif	/* boundedVolume_H */
 

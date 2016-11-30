@@ -61,7 +61,7 @@ int main( int ac, char* av[] ) {
     //
     // vectorHandling of constValues
     //
-    vectorHandling< constValue * > cV; 
+    cVPtrVec cV; 
     
     //
     // create parser and parse

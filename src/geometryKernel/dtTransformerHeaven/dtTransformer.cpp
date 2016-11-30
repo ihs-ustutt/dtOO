@@ -23,9 +23,9 @@ namespace dtOO {
   void dtTransformer::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG
 	) {
 		if ( dtXmlParserBase::hasAttribute("label", *tE) ) {
 			labelHandling::setLabel(dtXmlParserBase::getAttributeStr("label", *tE));
@@ -36,8 +36,8 @@ namespace dtOO {
   void dtTransformer::init( 
 	  ::QDomElement const * tE,
 	  baseContainer const * const bC, 
-		vectorHandling< constValue * > const * const cValP,
-		vectorHandling< analyticFunction * > const * const sFunP
+		cVPtrVec const * const cValP,
+		aFPtrVec const * const sFunP
 	) {
     init(tE, bC, cValP, sFunP, NULL);
   }
@@ -54,14 +54,14 @@ namespace dtOO {
     dt__warning(init(), << "Call on abstract class!");
   }
 
-  vectorHandling< analyticFunction * > dtTransformer::apply( 
-    vectorHandling< analyticFunction * > const * const sFunP 
+  aFPtrVec dtTransformer::apply( 
+    aFPtrVec const * const sFunP 
   ) const {
     dt__warning(apply(), << "Call on abstract class!");    
   }
 
-  vectorHandling< analyticGeometry * > dtTransformer::apply( 
-    vectorHandling< analyticGeometry * > const * const sFunP 
+  aGPtrVec dtTransformer::apply( 
+    aGPtrVec const * const sFunP 
   ) const {
     dt__warning(apply(), << "Call on abstract class!");    
   }
@@ -87,9 +87,9 @@ namespace dtOO {
   analyticFunction * dtTransformer::apply(
     analyticFunction const * const sF
   ) const {
-    vectorHandling< analyticFunction * > vHIn;
+    aFPtrVec vHIn;
     vHIn.push_back(const_cast< analyticFunction *>(sF));
-    vectorHandling< analyticFunction * > vHOut = this->apply( &vHIn );
+    aFPtrVec vHOut = this->apply( &vHIn );
     
     return vHOut[0];
   }
@@ -97,9 +97,9 @@ namespace dtOO {
   analyticGeometry * dtTransformer::apply(
     analyticGeometry const * const aG
   ) const {
-    vectorHandling< analyticGeometry * > vHIn;
+    aGPtrVec vHIn;
     vHIn.push_back(const_cast< analyticGeometry *>(aG));
-    vectorHandling< analyticGeometry * > vHOut = this->apply( &vHIn );
+    aGPtrVec vHOut = this->apply( &vHIn );
     
     return vHOut[0];
   }  

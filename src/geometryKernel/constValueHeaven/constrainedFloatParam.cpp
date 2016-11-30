@@ -77,7 +77,7 @@ namespace dtOO {
   }  
   
   void constrainedFloatParam::resolveConstraint( 
-    vectorHandling< constValue * > const * const cVArr 
+    cVPtrVec const * const cVArr 
   ) {
     _cVArr = cVArr;
   }

@@ -25,9 +25,9 @@ namespace dtOO {
   void analyticFunctionCombinationAFXmlBuilder::buildPart(
 	  ::QDomElement const & toBuildP, 
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cV, 
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticFunction * > * ret
+		cVPtrVec const * const cV, 
+		aFPtrVec const * const aF,
+		aFPtrVec * ret
 	) const {
     //
     // clone functions

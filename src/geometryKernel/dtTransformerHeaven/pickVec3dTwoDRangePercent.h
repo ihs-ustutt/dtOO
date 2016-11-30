@@ -19,12 +19,12 @@ namespace dtOO {
     void init( 
       ::QDomElement const * tE, 
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG 
     );
-    virtual vectorHandling< analyticFunction * > 
-    apply( vectorHandling< analyticFunction * > const * const aFVecP ) const;
+    virtual aFPtrVec 
+    apply( aFPtrVec const * const aFVecP ) const;
   private:
     float _x0;
     float _x1;

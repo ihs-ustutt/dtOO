@@ -13,8 +13,8 @@ using namespace dtOO;
 
 int main() {
   
-    vectorHandling< constValue * > cV1;			
-    vectorHandling< analyticFunction * > aF1;
+    cVPtrVec cV1;			
+    aFPtrVec aF1;
     std::vector<std::string > label;
     dtXmlParser *parser1;
         

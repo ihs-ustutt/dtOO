@@ -22,10 +22,10 @@ namespace dtOO {
 		return new projectOnSurface();
 	}
 	
-  vectorHandling< analyticGeometry * > projectOnSurface::apply( 
-    vectorHandling< analyticGeometry * > const * const toTrans 
+  aGPtrVec projectOnSurface::apply( 
+    aGPtrVec const * const toTrans 
   ) const {
-    vectorHandling< analyticGeometry * > retAGeo;
+    aGPtrVec retAGeo;
     for (int ii=0; ii<toTrans->size(); ii++) {
       //
       // clone and cast analyticGeometry
@@ -65,9 +65,9 @@ namespace dtOO {
   void projectOnSurface::init( 
 	  ::QDomElement const * tE, 
     baseContainer const * const bC,
-		vectorHandling< constValue * > const * const cV,
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticGeometry * > const * const aG 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

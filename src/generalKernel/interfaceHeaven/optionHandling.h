@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <mainConceptFwd.h>
+
 class QDomElement;
 
 namespace dtOO {
@@ -15,9 +17,6 @@ namespace dtOO {
   typedef std::vector< optionGroupElementInt > optionGroupInt;
   
   class baseContainer;
-  class constValue;
-  class analyticGeometry;
-  class analyticFunction;
   
   class optionHandling {
     public:    
@@ -29,9 +28,9 @@ namespace dtOO {
       virtual void init(
         ::QDomElement const & wElement,
         baseContainer const * const bC,      
-        vectorHandling< constValue * > const * const cV,
-        vectorHandling< analyticFunction * > const * const aF,
-        vectorHandling< analyticGeometry * > const * const aG
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG
       );      
       void setOption(std::string const name, std::string const value);
       std::string getOption(
@@ -41,14 +40,14 @@ namespace dtOO {
       float getOptionFloat(std::string const name) const;
       float getOptionFloat(
         std::string const name,
-        vectorHandling< constValue * > const * const cV,
-        vectorHandling< analyticFunction * > const * const aF					
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF					
       ) const;
       int getOptionInt(std::string const name) const;
       int getOptionInt(
         std::string const name,
-        vectorHandling< constValue * > const * const cV,
-        vectorHandling< analyticFunction * > const * const aF					
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF					
       ) const;
       bool optionTrue(std::string const name) const;
       bool hasOption(std::string const name) const;

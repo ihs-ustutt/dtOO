@@ -15,9 +15,9 @@ namespace dtOO {
     void init( 
       ::QDomElement const * tE, 
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP,
-      vectorHandling< analyticGeometry * > const * const depAGeoP 
+      cVPtrVec const * const cValP,
+      aFPtrVec const * const sFunP,
+      aGPtrVec const * const depAGeoP 
     );    
     virtual ~averagePoints();
     virtual bool isNecessary( void ) const;

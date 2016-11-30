@@ -18,9 +18,9 @@ namespace dtOO {
     void init(
       ::QDomElement const * tE, 
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG 
     );
     virtual std::vector< dtPoint3 > apply( 
       std::vector< dtPoint3 > const * const toTrans 

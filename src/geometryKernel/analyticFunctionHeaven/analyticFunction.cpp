@@ -216,7 +216,7 @@ namespace dtOO {
     
 	
   aFX analyticFunction::aFXZeroD( void ) {
-		return aFX(0);
+		return aFX(0, 0.);
 	}
   
   aFX analyticFunction::aFXOneD( float const & x0 ) {
@@ -254,7 +254,7 @@ namespace dtOO {
 	}  
   
   aFY analyticFunction::aFYZeroD( void ) {
-		return aFY(0);
+		return aFY(0, 0.);
 	}
   
   aFY analyticFunction::aFYOneD( float const & x0 ) {
@@ -291,6 +291,14 @@ namespace dtOO {
 		return analyticFunction::aFYThreeD(pp.x(), pp.y(), pp.z());
 	}    
 
+//  aFX analyticFunction::aFX( std::vector< float > const & xx ) {
+//    return std::vector< float >(xx);
+//  }
+//  
+//  aFY analyticFunction::aFY( std::vector< float > const & xx ) {
+//    return std::vector< float >(xx);
+//  }
+  
   aFY analyticFunction::aFY_aFX( aFX const & xx ) {
     return aFY(xx);
   }

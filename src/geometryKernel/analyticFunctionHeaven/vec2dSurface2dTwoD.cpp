@@ -33,7 +33,7 @@ namespace dtOO {
 	aFY vec2dSurface2dTwoD::Y( aFX const & xx) const {
 		dtPoint2 p2d = _dtS2d->point(xx[0], xx[1]);
 		
-		aFY yy(2);
+		aFY yy(2, 0.);
 		
 		yy[0] = p2d.x();
 		yy[1] = p2d.y();

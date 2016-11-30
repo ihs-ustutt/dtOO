@@ -40,7 +40,7 @@ namespace dtOO {
   dtPoint3 vec3dTwoDInMap3dTo3d::getPoint( 
     float const & uu, float const & vv 
   ) const {
-		aFX xx(2,0);
+		aFX xx(2, 0.);
 		xx[0] = uu; xx[1] = vv;
     dtPoint3 pUVW = _v2d->YdtPoint3(xx);
 		if (!_percentF) {

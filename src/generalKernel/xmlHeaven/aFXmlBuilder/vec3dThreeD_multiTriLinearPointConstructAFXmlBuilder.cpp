@@ -24,9 +24,9 @@ namespace dtOO {
   void vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
-		vectorHandling< constValue * > const * const cV, 
-		vectorHandling< analyticFunction * > const * const aF,
-		vectorHandling< analyticFunction * > * result
+		cVPtrVec const * const cV, 
+		aFPtrVec const * const aF,
+		aFPtrVec * result
 	) const {
     dt__throwIf( !dtXmlParserBase::hasChild("Point_3", toBuildP), buildPart() );
     

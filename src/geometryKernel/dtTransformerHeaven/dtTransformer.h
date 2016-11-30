@@ -32,9 +32,9 @@ namespace dtOO {
     virtual void init( 
       ::QDomElement const * tE, 
       baseContainer const * const bC,
-      vectorHandling< constValue * > const * const cV,
-      vectorHandling< analyticFunction * > const * const aF,
-      vectorHandling< analyticGeometry * > const * const aG 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG 
     ) = 0;
     virtual bool isNecessary( void ) const = 0;
     //
@@ -46,11 +46,11 @@ namespace dtOO {
     virtual std::vector< dtPoint3 > apply( 
       std::vector< dtPoint3 > const * const toTrans 
     ) const;
-    virtual vectorHandling< analyticGeometry * > apply( 
-      vectorHandling< analyticGeometry * > const * const toTrans 
+    virtual aGPtrVec apply( 
+      aGPtrVec const * const toTrans 
     ) const;
-    virtual vectorHandling< analyticFunction * > apply( 
-      vectorHandling< analyticFunction * > const * const toTrans 
+    virtual aFPtrVec apply( 
+      aFPtrVec const * const toTrans 
     ) const;
     virtual std::vector< dtPoint3 > retract(
       std::vector< dtPoint3 > const * const toRetract
@@ -76,8 +76,8 @@ namespace dtOO {
     void init( 
       ::QDomElement const * tE,
       baseContainer const * const bC, 
-      vectorHandling< constValue * > const * const cValP,
-      vectorHandling< analyticFunction * > const * const sFunP
+      cVPtrVec const * const cValP,
+      aFPtrVec const * const sFunP
     );              
     dtPoint3 apply(dtPoint3 const & pp) const;    
     dtPoint2 apply(dtPoint2 const & pp) const;        

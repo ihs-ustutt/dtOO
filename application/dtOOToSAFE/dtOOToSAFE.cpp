@@ -7,7 +7,7 @@
 #include <interfaceHeaven/systemHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <analyticFunctionHeaven/scaFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <boundedVolume.h>
@@ -169,11 +169,11 @@ int main( int ac, char* av[] ) {
     //
     //
     baseContainer bC;
-    vectorHandling< analyticGeometry * > aG; 
-    vectorHandling< constValue * > cV; 
-    vectorHandling< analyticFunction * > aF; 
-    vectorHandling< boundedVolume * > bV; 
-    vectorHandling< dtCase * > dtC; 
+    aGPtrVec aG; 
+    cVPtrVec cV; 
+    aFPtrVec aF; 
+    bVPtrVec bV; 
+    dCPtrVec dtC; 
     
     //
     // create objects
@@ -189,7 +189,7 @@ int main( int ac, char* av[] ) {
     
     dt__forAllRefAuto(stateToWrite, aState) {
       parser.loadStateToConst(aState, cV);
-      vectorHandling< resultValue * > result
+      labeledVectorHandling< resultValue * > result
       =
       wCase->result( aState );
       

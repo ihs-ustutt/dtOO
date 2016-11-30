@@ -85,7 +85,7 @@ namespace dtOO {
 //          )            
 //        );      
 		
-		aFY yy(3);
+		aFY yy(3, 0.);
 		yy[0] = rV.x();
 		yy[1] = rV.y();
 		yy[2] = rV.z();

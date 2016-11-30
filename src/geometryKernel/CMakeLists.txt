@@ -47,6 +47,8 @@ SET(HEADERS
   resultValueHeaven/resultValue.h
   resultValueHeaven/floatValue.h
   analyticFunctionHeaven/analyticFunction.h
+  analyticFunctionHeaven/aFX.h
+  analyticFunctionHeaven/aFY.h
   analyticFunctionHeaven/scaFunction.h
   analyticFunctionHeaven/scaOneD.h
   analyticFunctionHeaven/scaMultiOneD.h
@@ -166,6 +168,8 @@ SET(SOURCES
   resultValueHeaven/resultValue.cpp
   resultValueHeaven/floatValue.cpp
   analyticFunctionHeaven/analyticFunction.cpp
+  analyticFunctionHeaven/aFX.cpp
+  analyticFunctionHeaven/aFY.cpp
   analyticFunctionHeaven/scaFunction.cpp
   analyticFunctionHeaven/scaOneD.cpp
   analyticFunctionHeaven/scaMuParserOneD.cpp

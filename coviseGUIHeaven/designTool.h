@@ -8,6 +8,7 @@
 #include <interfaceHeaven/vectorHandling.h>
 #include "coDoSetHandling.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
+#include <mainConceptFwd.h>
 
 namespace covise {
   class coFileBrowserParam;
@@ -20,12 +21,6 @@ namespace covise {
 
 namespace dtOO {
   class baseContainer;
-  class constValue;
-  class analyticFunction;
-  class analyticGeometry;
-  class boundedVolume;
-  class dtCase;
-  class dtPlugin;
   class dtXmlParser;
   class renderInterface;
   
@@ -93,12 +88,12 @@ namespace dtOO {
      
       ptrHandling< dtXmlParser > _parser;
       ptrHandling< baseContainer > _bC;      
-      vectorHandling< constValue * > _cV;
-      vectorHandling< analyticGeometry * > _aG;
-      vectorHandling< analyticFunction * > _aF;
-      vectorHandling< boundedVolume * > _bV;
-      vectorHandling< dtCase * > _dC;
-      vectorHandling< dtPlugin * > _dP;
+      cVPtrVec _cV;
+      aGPtrVec _aG;
+      aFPtrVec _aF;
+      bVPtrVec _bV;
+      dCPtrVec _dC;
+      dPPtrVec _dP;
       dtCase * _dCApply;
       coDoSetHandling _aGToRender;
       coDoSetHandling _aFToRender;
