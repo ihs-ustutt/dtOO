@@ -58,11 +58,7 @@ namespace dtOO {
       // create filename string if empty
       //
       std::string cFileName = _filename;
-      if ( 
-        ( cFileName == "" )
-        && 
-        ( dtXmlParser::constReference().currentState() != "" )
-      ) {
+      if ( cFileName == "" ) {
         cFileName 
         = 
         dtXmlParser::constReference().currentState()
@@ -78,7 +74,7 @@ namespace dtOO {
       if ( !systemHandling::fileExists(cFileName) && !_mustRead ) {
         dt__info(
           preUpdate(), 
-          << "No file " << cFileName << ". Do not read!" << std::endl
+          << "No file >" << cFileName << "<. Do not read!" << std::endl
           << "mustRead = " << _mustRead
         );
         return;

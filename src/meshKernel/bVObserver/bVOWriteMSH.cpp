@@ -62,11 +62,7 @@ namespace dtOO {
       // create filename string if empty
       //
       std::string cFileName = _filename;
-      if ( 
-        ( cFileName == "" )
-        && 
-        ( dtXmlParser::constReference().currentState() != "" )
-      ) {
+      if ( cFileName == "" ) {
         cFileName 
         = 
         dtXmlParser::constReference().currentState()
@@ -81,7 +77,7 @@ namespace dtOO {
       
       dt__info(
         postUpdate(),
-        << "Write " << cFileName << "." << std::endl
+        << "Write >" << cFileName << "<." << std::endl
         << dt__eval(_saveAll) << std::endl
         << dt__eval(_saveParametric)
       );
