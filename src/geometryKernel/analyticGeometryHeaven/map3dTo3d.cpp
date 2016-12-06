@@ -655,11 +655,16 @@ namespace dtOO {
     = 
     staticPropertiesHandler
       ::getInstance()->getOptionInt("reparam_internalRestarts");    
-    int restartIncreasePrec
+    float restartIncreasePrec
     = 
-    staticPropertiesHandler::getInstance()->getOptionInt(
+    staticPropertiesHandler::getInstance()->getOptionFloat(
       "reparam_restartIncreasePrecision"
     );
+    float internalRestartDecreasePrec
+    = 
+    staticPropertiesHandler::getInstance()->getOptionFloat(
+      "reparam_internalRestartDecreasePrecision"
+    );    
     float currentPrec = 1.;  
     dt__forFromToIndex(0, maxRestarts+1, thisRun) {    
       dt__forFromToIndex(0, NumInitGuess, ii) {
@@ -704,7 +709,7 @@ namespace dtOO {
               //
               // increase precision for restart
               //
-              prec = 0.1 * prec;
+              prec = internalRestartDecreasePrec * prec;
 
               //
               // check if point is precise enough

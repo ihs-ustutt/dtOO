@@ -216,11 +216,16 @@ namespace dtOO {
     = 
     staticPropertiesHandler
       ::getInstance()->getOptionInt("reparam_internalRestarts");    
-    int restartIncreasePrec
+    float restartIncreasePrec
     = 
-    staticPropertiesHandler::getInstance()->getOptionInt(
+    staticPropertiesHandler::getInstance()->getOptionFloat(
       "reparam_restartIncreasePrecision"
     );
+    float internalRestartDecreasePrec
+    = 
+    staticPropertiesHandler::getInstance()->getOptionFloat(
+      "reparam_internalRestartDecreasePrecision"
+    );    
     float currentPrec = 1.;
     dt__forFromToIndex(0, maxRestarts+1, thisRun) {
       dt__forFromToIndex(0, NumInitGuess, ii) {
@@ -259,7 +264,7 @@ namespace dtOO {
             //
             // increase precision for restart
             //
-            prec = 0.1 * prec;
+            prec = internalRestartDecreasePrec * prec;
             
             //
             // check if point is precise enough
@@ -662,12 +667,12 @@ namespace dtOO {
 		return segmentRectangle(uv_percent(p0), uv_percent(p1));
 	}
 	
-//  /**
-//   * 
-//   * @todo: Make precision adjustable. Maybe increase precision automatically.
-//   */
-//  bool map2dTo3d::XYZtoUV(double X, double Y, double Z, double &U, double &V,
-//                          double relax, std::vector< float > &itVal) const {
+//  bool map2dTo3d::XYZtoUVPercentGmsh(
+//    double X, double Y, double Z, double &U, double &V, 
+//    double const uMin, double const uMax, 
+//    double const vMin, double const vMax, 
+//    double const stepU, double const stepV, double const prec
+//  ) const {
 //    double const Precision
 //    =
 //    static_cast<double>(
@@ -692,17 +697,18 @@ namespace dtOO {
 //    double initu[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
 //    double initv[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
 //
-//    umin = static_cast<double>(getUMin());
-//    umax = static_cast<double>(getUMax());
+//    umin = uMin;//static_cast<double>(getUMin());
+//    umax = uMax;//static_cast<double>(getUMax());
 //		double udiff = umax - umin;
 //		umax = umax + 0.1*udiff;
 //		umin = umin - 0.1*udiff;		
-//    vmin = static_cast<double>(getVMin());
-//    vmax = static_cast<double>(getVMax());
+//    vmin = vMin;//static_cast<double>(getVMin());
+//    vmax = vMax;//static_cast<double>(getVMax());
 //		double vdiff = vmax - vmin;
 //		vmax = vmax + 0.1*vdiff;
 //		vmin = vmin - 0.1*vdiff;		
-//    const double tol = Precision * (SQU(umax - umin) + SQU(vmax-vmin));
+//    const double tol = Precision * ((umax-umin)*(umax-umin) + (vmax-vmin)*(vmax-vmin));
+//    const double relax = prec;
 //		
 //    for(int i = 0; i < NumInitGuess; i++) {
 //      initu[i] = umin + initu[i] * (umax - umin);
@@ -718,7 +724,15 @@ namespace dtOO {
 //        
 //				try {
 //					dtPoint3 P = getPoint(static_cast<float>(U), static_cast<float>(V));
-//					err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
+//					err2 
+//          = 
+//          sqrt(
+//            (X - P.x())*(X - P.x()) 
+//            + 
+//            (Y - P.y())*(Y - P.y()) 
+//            + 
+//            (Z - P.z())*(Z - P.z())
+//          );
 //		//      if (err2 < 1.e-8 * CTX::instance()->lc) return;
 //
 //					while(err > tol && iter < MaxIter) {
@@ -757,19 +771,27 @@ namespace dtOO {
 //						if ( isnan(Unew) ) break;
 //						if ( isnan(Vnew) ) break;
 //						
-//						err = SQU(Unew - U) + SQU(Vnew - V);
-//						err2 = sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
+//						err = (Unew - U)*(Unew - U) + (Vnew - V)*(Vnew - V);
+//						err2 //= sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
+//            =
+//            sqrt(
+//              (X - P.x())*(X - P.x()) 
+//              + 
+//              (Y - P.y())*(Y - P.y()) 
+//              + 
+//              (Z - P.z())*(Z - P.z())
+//            );
 //
 //						iter++;
 //						U = Unew;
 //						V = Vnew;
 //					}
 //
-//					itVal.push_back( static_cast<float>(i) );
-//					itVal.push_back( static_cast<float>(j) );
-//					itVal.push_back( static_cast<float>(err2) );
-//					itVal.push_back( static_cast<float>(err) );
-//					itVal.push_back( static_cast<float>(iter) );
+////					itVal.push_back( static_cast<float>(i) );
+////					itVal.push_back( static_cast<float>(j) );
+////					itVal.push_back( static_cast<float>(err2) );
+////					itVal.push_back( static_cast<float>(err) );
+////					itVal.push_back( static_cast<float>(iter) );
 //						
 //					bool inRange = (Unew <= umax) && (Vnew <= vmax) 
 //					               && (Unew >= umin) && (Vnew >= vmin);
@@ -797,24 +819,29 @@ namespace dtOO {
 //						<< "Break initial guess (" << i << ", " << j 
 //						<< ") and try next one." << std::endl
 //						<< eGenRef.what());
-//					itVal.push_back( static_cast<float>(i) );
-//					itVal.push_back( static_cast<float>(j) );
-//					itVal.push_back( static_cast<float>(err2) );
-//					itVal.push_back( static_cast<float>(err) );
-//					itVal.push_back( static_cast<float>(iter) );					
+////					itVal.push_back( static_cast<float>(i) );
+////					itVal.push_back( static_cast<float>(j) );
+////					itVal.push_back( static_cast<float>(err2) );
+////					itVal.push_back( static_cast<float>(err) );
+////					itVal.push_back( static_cast<float>(iter) );					
 //					break;
 //				}				
 //      }
 //    }
 //
-//    if(relax < 1.e-6) {
-//      dt__info(XYZtoUV(), << "Could not converge: surface mesh could be wrong");
-//      return false;
-//    }
-//    else {
-//      return XYZtoUV(X, Y, Z, U, V, 0.75 * relax, itVal);
-//    }
+////    if(relax < 1.e-6) {
+////      dt__info(XYZtoUV(), << "Could not converge: surface mesh could be wrong");
+////      return false;
+////    }
+////    else {
+////      return XYZtoUV(X, Y, Z, U, V, 0.75 * relax, itVal);
+////    }
+//    U = percent_u( U );
+//    V = percent_v( V );
+//    
+//    return true;
 //  }
+  
   bool map2dTo3d::XYZtoUVPercent(
     double X, double Y, double Z, double &U, double &V, 
     double const uMin, double const uMax, double const vMin, double const vMax, 
@@ -880,7 +907,7 @@ namespace dtOO {
     return converged;
 	}
   
-	double map2dTo3d::F(double const * xx) const {	
+	double map2dTo3d::F(double const * xx) const {
     dtPoint2 uv(xx[0], xx[1]);
     double objective;
     if ( inRange(uv) ) {

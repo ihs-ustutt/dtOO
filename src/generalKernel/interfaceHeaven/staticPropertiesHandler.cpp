@@ -18,6 +18,7 @@ namespace dtOO {
     setOption("reparam_internalRestarts", "10");
     setOption("reparam_restarts", "5");
     setOption("reparam_restartIncreasePrecision", "1.e+1");
+    setOption("reparam_internalRestartDecreasePrecision", "0.1");    
     setOption("invY_precision", "1.e-2");
     setOption("xyz_resolution", "1.e-4");
     setOption("XYZ_resolution", "1.e-3");
@@ -39,7 +40,7 @@ namespace dtOO {
     setOption("ompNumThreads", "1");
     setOption("map1dTo3d_deltaPer", "0.01");    
     setOption("map2dTo3d_deltaPer", "0.01");    
-    setOption("map3dTo3d_deltaPer", "0.01");    
+    setOption("map3dTo3d_deltaPer", "0.01");   
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {
