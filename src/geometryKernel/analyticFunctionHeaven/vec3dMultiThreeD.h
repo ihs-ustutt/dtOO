@@ -253,27 +253,9 @@ namespace dtOO {
     //
     // adjust parameter range
     //
-    if (
-      (funT::xMin(0) > thisMin[0])
-      ||
-      (funT::xMin(1) > thisMin[1])
-      ||
-      (funT::xMin(2) > thisMin[2])
-    ) {
-      funT::setMin(0, thisMin[0]);
-      funT::setMin(1, thisMin[1]);
-      funT::setMin(2, thisMin[2]);
-    }
-    if (
-      (funT::xMax(0) < thisMax[0])
-      ||
-      (funT::xMax(1) < thisMax[1])
-      ||
-      (funT::xMax(2) < thisMax[2])
-    ) {
-      funT::setMax(0, thisMax[0]);
-      funT::setMax(1, thisMax[1]);
-      funT::setMax(2, thisMax[2]);
+    dt__forFromToIndex(0, 3, ii) {
+      if ( funT::xMin(ii) > thisMin[ii] ) funT::setMin(ii, thisMin[ii]);
+      if ( funT::xMax(ii) < thisMax[ii] ) funT::setMax(ii, thisMax[ii]);
     }
     
     //

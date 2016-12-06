@@ -278,7 +278,15 @@ std::string parseCommand(
     }
     
     return ss.str();
-  }       
+  }
+  dt__commandIf( 
+    aRule, help, "dump", "show info of aF" 
+  ) {
+    std::stringstream ss;
+    dt__forAllRefAuto(aF, anAF) anAF->dump();
+    
+    return ss.str();
+  }         
   dt__commandIf( aRule, help, "help", "This help") {
     help << std::endl;
     return help.str();
