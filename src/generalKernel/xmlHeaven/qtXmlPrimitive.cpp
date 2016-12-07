@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <interfaceHeaven/ptrHandling.h>
 #include <logMe/dtMacros.h>
+#include <boost/algorithm/string.hpp>
 
 namespace dtOO {
   std::string qtXmlPrimitive::_STRSIGN = "|";
@@ -438,7 +439,18 @@ namespace dtOO {
   bool qtXmlPrimitive::hasAttribute(
 	  std::string const attName, const ::QDomElement element
 	) {
-    return element.hasAttribute(attName.c_str());
+    if ( stringContains("|", attName) ) {
+      std::vector< std::string > attNameV;
+      ::boost::split(
+        attNameV, attName, ::boost::is_any_of("|"), ::boost::token_compress_on
+      );
+      std::vector< std::string > existing = getAttributeLabelVector( element );
+      
+      return ::boost::algorithm::contains(existing, attNameV);
+    }
+    else {
+      return element.hasAttribute(attName.c_str());
+    }
   }
     
   int qtXmlPrimitive::getAttributeInt(
@@ -581,6 +593,19 @@ namespace dtOO {
 		return floatVec;
 	}    
   
+  std::vector< std::string > qtXmlPrimitive::getAttributeLabelVector(
+    ::QDomElement const & element
+  ) {
+    std::vector< std::string > labels;
+    ::QDomNamedNodeMap attrs = element.attributes();
+    dt__forFromToIndex(0, attrs.length(), ii) {
+      ::QDomNode aNode = attrs.item(ii);
+      if ( !aNode.isAttr() ) continue;
+      labels.push_back( aNode.toAttr().name().toStdString() );
+    }
+    return labels;
+  }
+      
   bool qtXmlPrimitive::is(
 	  std::string const tagName, ::QDomElement const element 
 	) {
@@ -593,7 +618,7 @@ namespace dtOO {
   }  
 
   ::QDomElement qtXmlPrimitive::createElement(
-	  QDomDocument & doc, std::string const name
+	 ::QDomDocument & doc, std::string const name
 	) {
     return doc.createElement( name.c_str() );
   }
