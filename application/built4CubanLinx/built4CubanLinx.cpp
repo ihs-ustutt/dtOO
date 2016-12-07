@@ -60,23 +60,41 @@ std::string parseCommand(
   dt__commandIf( aRule, help, "parse", "parse input xml" ) {
     parser.parse();
     return std::string("");    
-  }      
+  }
+  dt__commandIf( aRule, help, "reparse", "reparse input xml" ) {
+    //
+    // destroy existing stuff
+    //
+    cV.destroy();
+    aF.destroy();
+    aG.destroy();
+    bV.destroy();
+    dtC.destroy();
+    dtP.destroy();
+    
+    //
+    // reinit and parse again
+    //
+    parser.reinit();
+    parser.parse();
+    return std::string("");    
+  }  
   dt__commandIf( aRule, help, "load", "parse output xml" ) {
     parser.load();
     return std::string("");    
   }
-  dt__commandIf( 
+  dt__commandIf(
     aRule, help, "info", "show quick info of current environment" 
   ) {
     std::stringstream ss;
     ss 
-    << "parser " << parser.currentState() << std::endl
-    << "cV " << cV.size() << std::endl
-    << "aF " << aF.size() << std::endl
-    << "aG " << aG.size() << std::endl
-    << "bV " << bV.size() << std::endl      
-    << "dtC " << dtC.size() << std::endl      
-    << "dtP " << dtP.size() << std::endl;
+    << "dtXmlParser -> state > " << parser.currentState() << " <" << std::endl
+    << "constValue       [cV ] size = " << cV.size() << std::endl
+    << "analyticFunction [aF ] size = " << aF.size() << std::endl
+    << "analyticGeometry [aG ] size = " << aG.size() << std::endl
+    << "boundedVolume    [bV ] size = " << bV.size() << std::endl      
+    << "dtCase           [dtC] size = " << dtC.size() << std::endl      
+    << "dtPlugin         [dtP] size = " << dtP.size() << std::endl;
     
     return ss.str();
   }       

@@ -26,6 +26,7 @@ namespace dtOO {
     static dtXmlParser * init(
       std::string const & inFile, std::string const & outFile
     );
+    static dtXmlParser * reinit( void );    
     static dtXmlParser * ptr( void );
     static dtXmlParser const & constReference( void );
     static dtXmlParser & reference( void );

@@ -27,7 +27,7 @@
 
 namespace dtOO {
   dtXmlParser * dtXmlParser::_pH = NULL;
-  
+    
   dtXmlParser * dtXmlParser::init(
     std::string const & inFile, std::string const & outFile
   ) {
@@ -36,6 +36,12 @@ namespace dtOO {
     _pH = new dtXmlParser(inFile, outFile);
     
     return _pH;
+  }
+  
+  dtXmlParser * dtXmlParser::reinit( void ) {
+    dt__throwIf(_pH==NULL, reinit() );
+    
+    return init( _pH->_inFile, _pH->_outFile );
   }
   
   dtXmlParser * dtXmlParser::ptr( void ) {

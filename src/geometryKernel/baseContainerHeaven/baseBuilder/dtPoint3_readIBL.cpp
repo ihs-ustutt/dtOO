@@ -28,11 +28,13 @@ namespace dtOO {
 					// break loop if next "begin" found
 					//
 				  if ( line.find("begin") != std::string::npos ) break;
-					boost::algorithm::trim_all(line);
+					::boost::algorithm::trim_all(line);
 //					dt__info(dtPoint3_readIBL(), << "line = " << line);
 					
           std::vector< std::string > parts;
-          boost::split(parts, line, boost::is_any_of("\t "), boost::token_compress_on);
+          ::boost::split(
+            parts, line, ::boost::is_any_of("\t "), ::boost::token_compress_on
+          );
 //					dt__info(
 //						dtPoint3_readIBL(), 
 //						<< "parts = " << parts << std::endl
