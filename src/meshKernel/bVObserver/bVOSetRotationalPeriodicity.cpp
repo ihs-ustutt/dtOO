@@ -65,6 +65,11 @@ namespace dtOO {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 
     //
+		// set current model
+		//
+		::GModel::setCurrent( gm );
+    
+    //
     // get faces
     //		
     dtGmshFace * const masterF = gm->getDtGmshFaceByPhysical(_faceMaster);

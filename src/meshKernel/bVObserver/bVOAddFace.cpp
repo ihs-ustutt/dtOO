@@ -49,6 +49,11 @@ namespace dtOO {
   void bVOAddFace::preUpdate( void ) {
 		dt__ptrAss( dtGmshModel * gm, ptrBoundedVolume()->getModel() );
 		
+    //
+		// set current model
+		//
+		::GModel::setCurrent( gm );
+    
     dtGmshRegion * const gr = gm->getDtGmshRegionByPhysical(_regionLabel);
 
     dt__forAllRefAuto(_faceLabel, aFace) {

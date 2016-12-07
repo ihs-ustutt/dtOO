@@ -23,6 +23,11 @@ namespace dtOO {
   void bVODumpModel::preUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 		
+    //
+		// set current model
+		//
+		::GModel::setCurrent( gm );
+   
 		//
 		// check size
 		//		

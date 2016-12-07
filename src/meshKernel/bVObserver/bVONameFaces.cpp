@@ -45,6 +45,11 @@ namespace dtOO {
   void bVONameFaces::preUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 		
+		//
+		// set current model
+		//
+		::GModel::setCurrent( gm );
+    
     std::list< ::GFace * > faceL = gm->faces();
     std::list< ::GFace * >::iterator f_it;
 

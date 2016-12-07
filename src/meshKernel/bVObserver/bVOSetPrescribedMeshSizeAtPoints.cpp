@@ -45,6 +45,11 @@ namespace dtOO {
   void bVOSetPrescribedMeshSizeAtPoints::preUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 			
+    //
+		// set current model
+		//
+		::GModel::setCurrent( gm );
+    
     dt__forAllRefAuto(gm->vertices(), aV) {
       aV->setPrescribedMeshSizeAtVertex(_meshSize);
     }

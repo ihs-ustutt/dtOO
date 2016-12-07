@@ -58,6 +58,11 @@ namespace dtOO {
   void bVOAddInternalEdge::preUpdate( void ) {
 		dt__ptrAss( dtGmshModel * gm, ptrBoundedVolume()->getModel() );
 		
+    //
+		// set current model
+		//
+		::GModel::setCurrent( gm );
+    
     dtGmshFace * const gf = gm->getDtGmshFaceByPhysical(_faceLabel);
     
     dt__forAllRefAuto(_internalEdge, anEdge) {

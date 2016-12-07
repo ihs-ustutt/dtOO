@@ -62,6 +62,11 @@ namespace dtOO {
   void bVOEvilGodfather::postUpdate( void ) {
 		dt__ptrAss( dtGmshModel * gm, ptrBoundedVolume()->getModel() );
       
+    //
+		// set current model
+		//
+		::GModel::setCurrent( gm );
+    
     dt__onlyMaster {
       //
       // collect all elements

@@ -43,6 +43,11 @@ namespace dtOO {
   void bVORecombine::preUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 		
+    //
+		// set current model
+		//
+		::GModel::setCurrent( gm );
+    
     dt__forAllConstIter(std::vector< std::string >, _faceLabel, fIt) {
       gm->getDtGmshFaceByPhysical(*fIt)->meshRecombine();
     }
