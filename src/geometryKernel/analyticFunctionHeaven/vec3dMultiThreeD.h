@@ -24,19 +24,15 @@ namespace dtOO {
       virtual vec3dMultiThreeD * clone( void ) const;
       virtual vec3dMultiThreeD * create( void ) const;       
       virtual aFY Y( aFX const & xx ) const;
-      virtual aFX invY( aFY const & yy ) const;
       virtual void add( funT * aFun );
       virtual void dump( void ) const;      
       static bool rTreeCallback(funT * aFun, void *ctx);
     private:
       funT const & findF_x( aFX const & xx ) const;
-      funT const & findF_y( aFY const & yy ) const;
     private:
       std::map< std::pair< aFX, aFX >, funT * > _ff;
       RTree< funT *, float, 3, float > _x_rTree;
       RTree< funT *, float, 3, float > _y_rTree;
-      dtVector3 _dX;
-      dtVector3 _dY;
       constexpr static float _tol = 1.e-8;
   };
   
@@ -49,41 +45,12 @@ namespace dtOO {
   
   template < typename funT >  
   vec3dMultiThreeD< funT >::vec3dMultiThreeD() : funT() {
-    _dX 
-    = 
-    dtVector3(
-      std::numeric_limits<double>::min(), 
-      std::numeric_limits<double>::min(), 
-      std::numeric_limits<double>::min()
-    );
-    _dY 
-    = 
-    dtVector3(
-      std::numeric_limits<double>::min(), 
-      std::numeric_limits<double>::min(), 
-      std::numeric_limits<double>::min()
-    );    
   }
 
   template < typename funT >      
   vec3dMultiThreeD< funT >::vec3dMultiThreeD( 
     vec3dMultiThreeD const & orig
-  ) : funT(orig) {
-    _dX 
-    = 
-    dtVector3(
-      std::numeric_limits<double>::min(), 
-      std::numeric_limits<double>::min(), 
-      std::numeric_limits<double>::min()
-    );
-    _dY
-    = 
-    dtVector3(
-      std::numeric_limits<double>::min(), 
-      std::numeric_limits<double>::min(), 
-      std::numeric_limits<double>::min()
-    );
-    
+  ) : funT(orig) {   
     //
     // copy functions
     //
@@ -109,19 +76,7 @@ namespace dtOO {
   aFY vec3dMultiThreeD< funT >::Y(aFX const & xx) const {
     return findF_x(xx).Y(xx);
   }
-
-  template < typename funT >      
-  aFX vec3dMultiThreeD< funT >::invY(aFY const & yy) const {
-    funT const & toInv = findF_y(yy);
-    
-    if ( &toInv == this ) {
-      return analyticFunction::invY(yy);
-    }
-    else {
-      return toInv.invY(yy);
-    }
-  }
-  
+ 
   template < typename funT >
   funT const & vec3dMultiThreeD< funT >::findF_x( aFX const & xx ) const {
     aFX glMinX = funT::xMin();
@@ -141,12 +96,10 @@ namespace dtOO {
     std::vector< funT * > out;
     std::vector< float > min
     = 
-    ::boost::assign::list_of
-      (xx[0] - 0.60 * _dX[0])(xx[1] - 0.60 * _dX[1])(xx[2] - 0.60 * _dX[2]);
+    ::boost::assign::list_of(xx[0]-_tol)(xx[1]-_tol)(xx[2]-_tol);
     std::vector< float > max
     = 
-    ::boost::assign::list_of
-      (xx[0] + 0.60 * _dX[0])(xx[1] + 0.60 * _dX[1])(xx[2] + 0.60 * _dX[2]);
+    ::boost::assign::list_of(xx[0]+_tol)(xx[1]+_tol)(xx[2]+_tol);
     int nEnt 
     = 
     const_cast< vec3dMultiThreeD< funT > * >(this)->_x_rTree.Search( 
@@ -176,74 +129,12 @@ namespace dtOO {
       << "nEnt = " << nEnt
     );          
   }
-      
-  template < typename funT >
-  funT const & vec3dMultiThreeD< funT >::findF_y( aFY const & yy ) const {
-    std::vector< funT * > out;
-    std::vector< float > min
-    = 
-    ::boost::assign::list_of
-      (yy[0] - 0.60 * _dY[0])(yy[1] - 0.60 * _dY[1])(yy[2] - 0.60 * _dY[2]);
-    std::vector< float > max
-    = 
-    ::boost::assign::list_of
-      (yy[0] + 0.60 * _dY[0])(yy[1] + 0.60 * _dY[1])(yy[2] + 0.60 * _dY[2]);
-    int nEnt 
-    = 
-    const_cast< vec3dMultiThreeD< funT > * >(this)->_y_rTree.Search( 
-      &min[0], &max[0], vec3dMultiThreeD< funT >::rTreeCallback, &out 
-    );
-
-    if ( nEnt == 1 ) {
-//      dt__debug(
-//        findF_y(),
-//        << "Range " << dt__eval(yy) << " determined." << std::endl
-//        << "nEnt = " << nEnt
-//      );      
-      return *out[0];
-    }
-    else if ( nEnt > 1 ) {
-      dt__forFromToIndex(0, nEnt, ii) {
-        if(
-          dtLinearAlgebra::isInsideHexahedron(
-            dtPoint3(yy[0], yy[1], yy[2]),
-            out[ii]->YdtPoint3Percent(0, 0, 0),
-            out[ii]->YdtPoint3Percent(1, 0, 0),
-            out[ii]->YdtPoint3Percent(0, 1, 0),
-            out[ii]->YdtPoint3Percent(1, 1, 0),
-            out[ii]->YdtPoint3Percent(0, 0, 1),
-            out[ii]->YdtPoint3Percent(1, 0, 1),
-            out[ii]->YdtPoint3Percent(0, 1, 1),
-            out[ii]->YdtPoint3Percent(1, 1, 1)                
-          )
-        ) {
-//          dt__debug(
-//            findF_y(),
-//            << "Range " << dt__eval(yy) << " determined." << std::endl
-//            << "nEnt = " << nEnt
-//          );                
-          return *out[ii];
-        }
-      }
-    }
-    
-    dt__debug(
-      findF_y(),
-      << "Cannot determine range " << dt__eval(yy) << std::endl
-      << "nEnt = " << nEnt << std::endl
-      << "Return this pointer."
-    );
-    
-    return *this;
-  }
-  
+       
   template < typename funT >      
   void vec3dMultiThreeD< funT >::add( funT * aFun ) {
     aFX thisMin = aFun->xMin();
     aFX thisMax = aFun->xMax();
     std::pair< aFY, aFY > yBB = aFun->yBoundingBox();
-    aFY thisYMin = yBB.first;
-    aFY thisYMax = yBB.second;
     
     //
     // add function
@@ -264,66 +155,16 @@ namespace dtOO {
     std::vector< float > min
     = 
     ::boost::assign::list_of
-      (.5*(thisMin[0] + thisMax[0]) - _tol)
-      (.5*(thisMin[1] + thisMax[1]) - _tol)
-      (.5*(thisMin[2] + thisMax[2]) - _tol);
+      (thisMin[0] - _tol)
+      (thisMin[1] - _tol)
+      (thisMin[2] - _tol);
     std::vector< float > max 
     = 
     ::boost::assign::list_of
-      (.5*(thisMin[0] + thisMax[0]) + _tol)
-      (.5*(thisMin[1] + thisMax[1]) + _tol)
-      (.5*(thisMin[2] + thisMax[2]) + _tol);
+      (thisMax[0] + _tol)
+      (thisMax[1] + _tol)
+      (thisMax[2] + _tol);
     _x_rTree.Insert(&min[0], &max[0], aFun);
-    std::vector< float > minY
-    = 
-    ::boost::assign::list_of
-      (.5*(thisYMin[0] + thisYMax[0]) - _tol)
-      (.5*(thisYMin[1] + thisYMax[1]) - _tol)
-      (.5*(thisYMin[2] + thisYMax[2]) - _tol);
-    std::vector< float > maxY 
-    = 
-    ::boost::assign::list_of
-      (.5*(thisYMin[0] + thisYMax[0]) + _tol)
-      (.5*(thisYMin[1] + thisYMax[1]) + _tol)
-      (.5*(thisYMin[2] + thisYMax[2]) + _tol);
-    _y_rTree.Insert(&minY[0], &maxY[0], aFun);    
-    
-    //
-    // adjust _dX
-    //
-    if (
-      ( fabs(thisMax[0]-thisMin[0]) > _dX[0] )
-      ||
-      ( fabs(thisMax[1]-thisMin[1]) > _dX[1] )
-      ||
-      ( fabs(thisMax[2]-thisMin[2]) > _dX[2] )            
-    ) {
-      _dX
-      =
-      dtVector3(
-        fabs(thisMax[0]-thisMin[0]),
-        fabs(thisMax[1]-thisMin[1]),
-        fabs(thisMax[2]-thisMin[2])
-      );
-    }
-    //
-    // adjust _dY
-    //
-    if (
-      ( fabs(thisYMax[0]-thisYMin[0]) > _dY[0] )
-      ||
-      ( fabs(thisYMax[1]-thisYMin[1]) > _dY[1] )
-      ||
-      ( fabs(thisYMax[2]-thisYMin[2]) > _dY[2] )            
-    ) {
-      _dY
-      =
-      dtVector3(
-        fabs(thisYMax[0]-thisYMin[0]),
-        fabs(thisYMax[1]-thisYMin[1]),
-        fabs(thisYMax[2]-thisYMin[2])
-      );
-    }    
   }
   
   template < typename funT >    
@@ -373,10 +214,7 @@ namespace dtOO {
         "max() : F( [%12.6e %12.6e %12.6e] ) = [%12.6e %12.6e %12.6e]"
       ) 
         % xMax[0] % xMax[1] % xMax[2]
-        % yMax[0] % yMax[1] % yMax[2]              
-      << std::endl
-      << logMe::dtFormat("dX : [%12.6e %12.6e %12.6e]") 
-        % _dX[0] % _dX[1] % _dX[2];
+        % yMax[0] % yMax[1] % yMax[2];
   }  
 }
 #endif	/* vec3dMultiThreeD_H */
