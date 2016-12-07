@@ -25,6 +25,15 @@ namespace dtOO {
       aFPtrVec const * const aF, 
       aGPtrVec const * const aG,
       dtTransformer const * const dtTransformerP, 
+      std::vector< dtPointD > * basicP
+    );    
+    static void createBasic(
+      ::QDomElement const * toBuildP,
+      baseContainer * const bC,
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF, 
+      aGPtrVec const * const aG,
+      dtTransformer const * const dtTransformerP, 
       std::vector< dtPoint3 > * basicP
     );
     static void createBasic(
@@ -86,7 +95,17 @@ namespace dtOO {
       baseContainer * const bC,
       cVPtrVec const * const cV,
       aFPtrVec const * const aF
-    );     
+    );
+    //
+    // dtPointD
+    //
+    static void createBasic(
+      ::QDomElement const * toBuildP,
+      baseContainer * const bC,      
+      cVPtrVec const * const cV, 
+      aFPtrVec const * const aF, 
+      std::vector< dtPointD > * basicP
+    );                    
     //
     // dtPoint3
     //

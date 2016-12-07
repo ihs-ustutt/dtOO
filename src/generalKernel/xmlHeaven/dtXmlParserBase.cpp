@@ -172,6 +172,46 @@ namespace dtOO {
 		aFPtrVec const * const aF, 
 		aGPtrVec const * const aG,
 		dtTransformer const * const dtTransformerP, 
+		std::vector< dtPointD > * basicP
+	) {
+    dt__throwIf(!is("Point_D", *toBuildP), createBasic());
+
+		if ( hasAttribute("coordinates", *toBuildP) ) {
+      std::vector< float > cXYZ 
+      = 
+      muParseCSString(
+        replaceDependencies( getAttributeStr("coordinates", *toBuildP), bC, cV, aF, aG )
+      );
+			basicP->push_back( dtPointD(cXYZ.size(), cXYZ.begin(), cXYZ.end()) );      
+    }
+
+		//
+		// check if a point was created
+		//
+		dt__throwIfWithMessage(
+			basicP->size()==0,
+			createBasic(), 
+			<< "No point could be created." << std::endl
+			<< convertToString(*toBuildP) 
+		);	
+		
+		//
+		//transform points
+		//
+		if ( dtTransformerP->isNecessary() ) {
+      dt__throw(
+        createBasic(), << "Transformation of Point_D is not supported."
+      );
+		}
+  }
+  
+  void dtXmlParserBase::createBasic(
+	  ::QDomElement const * toBuildP,
+    baseContainer * const bC,		
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF, 
+		aGPtrVec const * const aG,
+		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPoint3 > * basicP
 	) {
     dt__throwIf(!is("Point_3", *toBuildP), createBasic());
@@ -196,8 +236,7 @@ namespace dtOO {
 				}
 				return;
 			}
-			else if ( hasAttribute("start_number", *toBuildP) 
-								 && hasAttribute("end_number", *toBuildP) ) {
+			else if ( hasAttribute("start_number|start_number", *toBuildP) ) {
 				int startPoint = getAttributeInt("start_number", *toBuildP);
 				int endPoint = getAttributeInt("end_number", *toBuildP);
 				int nPoints = endPoint - startPoint + 1;
@@ -246,11 +285,7 @@ namespace dtOO {
     //
     // create simple xyz point with given coordinates
     //
-		if (
-         hasAttribute("x", *toBuildP) 
-			&& hasAttribute("y", *toBuildP) 
-			&& hasAttribute("z", *toBuildP) 
-    ) { 
+		if ( hasAttribute("x|y|z", *toBuildP) ) {
       float cX 
       = 
       muParseString(
@@ -277,10 +312,7 @@ namespace dtOO {
       );
 			basicP->push_back( dtPoint3(cXYZ[0], cXYZ[1], cXYZ[2]) );      
     }       
-    else if (    
-         hasAttribute("attribute", *toBuildP) 
-			&& hasAttribute("part_label", *toBuildP) 
-    ) {
+    else if ( hasAttribute("attribute|part_label", *toBuildP) ) {
       std::string attribute = getAttributeStr("attribute", *toBuildP);
       std::string partLabel = getAttributeStr("part_label", *toBuildP);
       
@@ -311,16 +343,15 @@ namespace dtOO {
 					//
 					//analyticRotatingMap1dTo3d
 					//
-					if (
-            rS && hasAttribute("phi", *toBuildP) && hasAttribute("z", *toBuildP) 
-          ) {
+					if ( rS && hasAttribute("phi|z", *toBuildP) ) {
 			      float cX = getAttributeFloatMuParse("phi", *toBuildP, cV,  aF);
 			      float cY = getAttributeFloatMuParse("z", *toBuildP, cV,  aF);                 
 						basicP->push_back( dtPoint3( rS->xyz_phiZ(cX, cY) ) );
 					}
 					else if (    
-               hasAttribute("parameter_one_percent", *toBuildP)
-						&& hasAttribute("parameter_two_percent", *toBuildP) 
+            hasAttribute(
+              "parameter_one_percent|parameter_two_percent", *toBuildP
+            )
           ) {
 			      float cX 
             = 
@@ -351,9 +382,11 @@ namespace dtOO {
 		//         
 				else if ( m3d ) {
 					if (    
-               hasAttribute("parameter_one_percent", *toBuildP) 
-						&& hasAttribute("parameter_two_percent", *toBuildP) 
-						&& hasAttribute("parameter_three_percent", *toBuildP) 
+            hasAttribute(
+              "parameter_one_percent|parameter_two_percent"
+              "|parameter_three_percent", 
+              *toBuildP
+            ) 
           ) {
 			      float cX 
             = 
@@ -373,9 +406,9 @@ namespace dtOO {
 						basicP->push_back( m3d->getPointPercent(cX, cY, cZ) );
 					}        
 					else if (    
-               hasAttribute("parameter_one", *toBuildP) 
-						&& hasAttribute("parameter_two", *toBuildP) 
-						&& hasAttribute("parameter_three", *toBuildP) 
+            hasAttribute(
+              "parameter_one|parameter_two|parameter_three", *toBuildP
+            ) 
           ) {
 			      float cX 
             = 
@@ -440,11 +473,14 @@ namespace dtOO {
 				//
 				// 1 map2dTo3d
 				//        
-				else if ( m2d
-									&& hasAttribute("parameter_one_percent_function", *toBuildP)
-									&& hasAttribute("parameter_two_percent_function", *toBuildP)
-									&& hasAttribute("number_points_one", *toBuildP)
-									&& hasAttribute("number_points_two", *toBuildP) 
+				else if ( 
+          m2d
+					&& 
+          hasAttribute(
+            "parameter_one_percent_function|parameter_two_percent_function"
+            "|number_points_one|number_points_two", 
+            *toBuildP
+          ) 
 				) {
 					int nPointsOne = getAttributeInt("number_points_one", *toBuildP);
 					int nPointsTwo = getAttributeInt("number_points_two", *toBuildP);
@@ -484,10 +520,7 @@ namespace dtOO {
 		/* ---------------------------------------------------------------------- */
 		/* pick point from a function */
 		/* ---------------------------------------------------------------------- */          
-		else if (    
-         hasAttribute("attribute", *toBuildP) 
-			&& hasAttribute("function_label", *toBuildP) 
-    ) {
+		else if ( hasAttribute("attribute|function_label", *toBuildP) ) {
       std::string attribute = getAttributeStr("attribute", *toBuildP);
       std::string functionLabel = getAttributeStr("function_label", *toBuildP);      
 			analyticFunction const * anAF
@@ -514,19 +547,13 @@ namespace dtOO {
           getAttributeFloatMuParse("x_one_percent", *toBuildP, cV,  aF);
 					basicP->push_back( v1D->YdtPoint3Percent(cX) );
 				}				
-				else if ( 
-					v2D 
-					&& hasAttribute("x_one", *toBuildP) 
-					&& hasAttribute("x_two", *toBuildP) 
-				) {
+				else if ( v2D && hasAttribute("x_one|x_two", *toBuildP) ) {
 			    float cX = getAttributeFloatMuParse("x_one", *toBuildP, cV,  aF);
 			    float cY = getAttributeFloatMuParse("x_two", *toBuildP, cV,  aF);          
 					basicP->push_back( v2D->YdtPoint3(cX, cY) );
 				}	
-				else if ( 
-				  v2D 
-					&& hasAttribute("x_one_percent", *toBuildP) 
-					&& hasAttribute("x_two_percent", *toBuildP) 
+				else if (
+				  v2D && hasAttribute("x_one_percent|x_two_percent", *toBuildP)
 				) {
 			    float cX 
           = 
@@ -544,13 +571,13 @@ namespace dtOO {
         std::string filename = getAttributeStr("file_name", *toBuildP);
         if ( filename != "" ) {
           std::vector< dtPoint3 > p3;
-          if (filename.find(".ibl") != std::string::npos) {
+          if ( stringContains(".ibl", filename) ) {
             p3 = dtPoint3_readIBL(filename).result();
             dt__forAllConstIter(std::vector< dtPoint3 >, p3, it) {
               basicP->push_back( *it );
             }
           }
-          else if (filename.find(".csv") != std::string::npos) {
+          else if ( stringContains(".csv", filename) ) {
             p3 = dtPoint3_readCSV(filename).result();
             dt__forAllConstIter(std::vector< dtPoint3 >, p3, it) {
               basicP->push_back( *it );
@@ -1517,6 +1544,22 @@ namespace dtOO {
 		dt__forAllIndex(pp, ii) basicP->push_back( pp[ii] );
   }
 
+  void dtXmlParserBase::createBasic(
+	  ::QDomElement const * toBuildP,
+    baseContainer * const bC,					
+		cVPtrVec const * const cV, 
+		aFPtrVec const * const aF, 
+		std::vector< dtPointD > * basicP
+	) {
+    ptrHandling< dtTransformer > dtT(
+		  createTransformer(toBuildP, bC, cV, aF)
+		);		
+		::QDomElement wEl = *toBuildP;
+    if ( is("transformer", *toBuildP) ) wEl = toBuildP->nextSiblingElement();
+    
+    createBasic(&wEl, bC, cV, aF, NULL, dtT.get(), basicP);      		
+  }	
+  
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,					
