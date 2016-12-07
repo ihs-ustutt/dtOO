@@ -14,6 +14,7 @@
 #include <CGAL/Tetrahedron_3.h>
 #include <CGAL/Origin.h>
 #include <CGAL/Linear_algebraCd.h>
+#include <CGAL/point_generators_d.h>
 
 #include <interfaceHeaven/twoDArrayHandling.h>
 
@@ -32,6 +33,8 @@ namespace dtOO {
   typedef ::CGAL::Tetrahedron_3< dtKernel > dtTetrahedron3;
   typedef ::CGAL::Linear_algebraCd< dtFt >::Matrix dtMatrix;
   typedef ::CGAL::Linear_algebraCd< dtFt >::Vector dtMatrixVector;
+  typedef ::CGAL::Cartesian_d< dtFt > dtCD;
+  typedef dtCD::Point_d dtPointD;
   
   class dtLinearAlgebra {
   public:
