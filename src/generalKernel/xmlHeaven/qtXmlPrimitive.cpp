@@ -7,6 +7,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <logMe/dtMacros.h>
 #include <boost/algorithm/string.hpp>
+#include <algorithm>
 
 namespace dtOO {
   std::string qtXmlPrimitive::_STRSIGN = "|";
@@ -445,8 +446,17 @@ namespace dtOO {
         attNameV, attName, ::boost::is_any_of("|"), ::boost::token_compress_on
       );
       std::vector< std::string > existing = getAttributeLabelVector( element );
+
+      //
+      // check if one attName is not included in existing
+      //
+      dt__forAllRefAuto(attNameV, anAtt) {
+        if ( 
+          std::find(existing.begin(), existing.end(), anAtt) == existing.end()
+        ) return false;
+      }
       
-      return ::boost::algorithm::contains(existing, attNameV);
+      return true;
     }
     else {
       return element.hasAttribute(attName.c_str());
