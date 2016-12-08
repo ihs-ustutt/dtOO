@@ -44,7 +44,7 @@ namespace dtOO {
     const int BUFSIZE = 80;
     char buf[ BUFSIZE ];
     while( fgets( buf, BUFSIZE,  status ) ) {
-      logC() << buf << " ";
+      logC() << buf;
     }
     pclose( status );
 

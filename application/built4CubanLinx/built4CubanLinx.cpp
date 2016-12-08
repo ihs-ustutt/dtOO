@@ -25,6 +25,8 @@
 
 #include <interfaceHeaven/systemHandling.h>
 
+#include <dtOOVersion.h>
+
 using namespace dtOO;
 
 #define dt__commandIf( str, helpStr, name, description ) \
@@ -590,13 +592,13 @@ int main( int ac, char* av[] ) {
     // output welcome header
     //
     std::cout 
-    << "#" << std::endl
-    << "# Starting built4CubanLinx" << std::endl
-    << "#" << std::endl
-    << "# log: " << vm["log"].as<std::string>() << std::endl
-    << "# xmlIn: " << vm["xmlIn"].as<std::string>() << std::endl
-    << "# xmlOut: " << vm["xmlOut"].as<std::string>() << std::endl
-    << "#" << std::endl;      
+      << "#" << std::endl
+      << "# Starting built4CubanLinx" << std::endl
+      << "#   dtOO version : " << git::version << std::endl
+      << "#   log: " << vm["log"].as<std::string>() << std::endl
+      << "#   xmlIn: " << vm["xmlIn"].as<std::string>() << std::endl
+      << "#   xmlOut: " << vm["xmlOut"].as<std::string>() << std::endl
+      << "#" << std::endl;      
 
     //
     // create log files
@@ -622,14 +624,14 @@ int main( int ac, char* av[] ) {
     dPPtrVec dtP;      
     
     std::cout 
-    << "# define standard variables" << std::endl
-    << "#   baseContainer bC" << std::endl
-    << "#   aGPtrVec aG" << std::endl
-    << "#   cVPtrVec cV" << std::endl 
-    << "#   aFPtrVec aF" << std::endl
-    << "#   bVPtrVec bV" << std::endl
-    << "#   dCPtrVec dtC" << std::endl
-    << "#   dPPtrVec dtP" << std::endl;
+      << "# define standard variables" << std::endl
+      << "#   baseContainer bC" << std::endl
+      << "#   aGPtrVec aG" << std::endl
+      << "#   cVPtrVec cV" << std::endl 
+      << "#   aFPtrVec aF" << std::endl
+      << "#   bVPtrVec bV" << std::endl
+      << "#   dCPtrVec dtC" << std::endl
+      << "#   dPPtrVec dtP" << std::endl;
     
     linenoiseHistorySetMaxLen(50);
     
@@ -637,7 +639,7 @@ int main( int ac, char* av[] ) {
       //
       // get command
       //
-      char * line = linenoise("built4CubanLinx ::> ");
+      char * line = linenoise("built4CubanLinx::> ");
       
       if (line == NULL) break;
       
