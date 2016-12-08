@@ -205,7 +205,7 @@ std::string parseCommand(
     std::stringstream ss;
     ss << systemHandling::commandAndWait(addRule[0]) << std::endl;
     return ss.str();
-  }  
+  }
   dt__commandIf( aRule, help, "help", "This help") {
     help << std::endl;
     return help.str();
@@ -467,6 +467,59 @@ std::string parseCommand(
     }
     return std::string("");
   }  
+  dt__commandIf( aRule, help, "getMeshTags", "get mesh tags") {
+    std::stringstream ss;
+    std::vector< std::string > tags = bV.get(addRule[0])->getMeshTags();
+    dt__forAllRefAuto(tags, aTag) ss << aTag << std::endl;
+    return ss.str();
+  }
+  dt__commandIf( aRule, help, "help", "This help") {
+    help << std::endl;
+    return help.str();
+  }
+  
+  return std::string( "Unknown command: " + aRule + "\n");  
+}
+
+std::string parseCommand(
+  std::string aRule, 
+  dtXmlParser & parser, 
+  dCPtrVec & dtC
+) {
+  std::stringstream help;  
+  help << "Commands:" << std::endl;
+  std::vector< std::string > addRule;
+  if ( stringPrimitive::stringContains("(", aRule) ) {
+    addRule
+    = 
+    stringPrimitive::convertToCSVStringVector(
+      stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule)
+    );
+    dt__infoNoClass(parseCommand(), << "addRule = " << addRule);
+  }
+  dt__commandIf( 
+    aRule, help, "info", "show info of dtP" 
+  ) {
+    std::stringstream ss;
+    dt__forAllRefAuto(dtC, anDtC) {
+      ss 
+      << logMe::dtFormat("dtC[ %32s ] = %32s") 
+        % anDtC->getLabel() % anDtC->virtualClassName()
+      << std::endl;
+    }
+    
+    return ss.str();
+  }
+  dt__commandIf( 
+    aRule, help, "runCurrentState", "show info of dtP" 
+  ) {
+    std::stringstream ss;
+    dtC.get( addRule[0] )->runCurrentState();
+    
+    ss << "Done.";
+  
+    return ss.str();
+  }    
   dt__commandIf( aRule, help, "help", "This help") {
     help << std::endl;
     return help.str();
@@ -596,7 +649,7 @@ int main( int ac, char* av[] ) {
       //
       // make command string
       //
-      std::string command(line);
+      ::std::string command(line);
       if ( command.empty() ) continue;
       
       //
@@ -609,7 +662,7 @@ int main( int ac, char* av[] ) {
       else {
         try {
           if ( stringPrimitive::stringContains("->", command) ) {
-            std::string onClass 
+            ::std::string onClass 
             = 
             stringPrimitive::getStringBetweenAndRemove("", ">", &command);
             onClass = stringPrimitive::replaceStringInString("-", "", onClass);
@@ -619,18 +672,30 @@ int main( int ac, char* av[] ) {
             }
             else if (onClass == "aF") {
               std::cout << parseCommand(command, parser, aF);
-            }            
+            }
             else if (onClass == "aG") {
               std::cout << parseCommand(command, parser, aG);
             }
             else if (onClass == "bV") {
               std::cout << parseCommand(command, parser, bV);
-            }            
+            }
+            else if (onClass == "dtC") {
+              std::cout << parseCommand(command, parser, dtC);
+            }
             else if (onClass == "dtP") {
               std::cout << parseCommand(command, parser, dtP);
             }            
             else dt__throwNoClass(main(), << onClass << " not defined.");
           }
+          else if ( command.find_first_of(".") == 0 ) {
+            command.erase(0, 1);
+            std::cout 
+            << 
+            parseCommand(
+              "commandAndWait("+command+")", 
+              parser, bC, cV, aF, aG, bV, dtC, dtP
+            );
+          }          
           else {
             std::cout 
             << 
