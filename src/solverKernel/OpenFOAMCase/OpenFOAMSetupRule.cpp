@@ -79,7 +79,11 @@ namespace dtOO {
     =
     const_cast<::Foam::polyBoundaryMesh&>(mesh.boundaryMesh());
     ::Foam::label id = bM.findPatchID( rule[1] );
-    dt__throwIf(id<0, executeOnMesh());
+    dt__throwIfWithMessage(
+      id<0, 
+      executeOnMesh(),
+      << "rule = " << rule
+    );
     
     //
     // replace old patch
