@@ -77,13 +77,17 @@ namespace dtOO {
     _nSpacingSteps = abs(_nSpacingSteps);
     _maxGrowingRatePerStep 
 		= 
-		qtXmlBase::getAttributeFloatMuParse("maxGrowingRatePerStep", element, cV, aF);
+		qtXmlBase::getAttributeFloatMuParse(
+      "maxGrowingRatePerStep", element, cV, aF
+    );
 		_nNormalSmoothingSteps 
 		= 
 		qtXmlBase::getAttributeIntMuParse("nNormalSmoothingSteps", element, cV, aF);		
 		_nGrowingSmoothingSteps 
 		=
-		qtXmlBase::getAttributeIntMuParse("nGrowingSmoothingSteps", element, cV, aF);		
+		qtXmlBase::getAttributeIntMuParse(
+      "nGrowingSmoothingSteps", element, cV, aF
+    );		
 		_maxDihedralAngle 
 		= 
 		qtXmlBase::getAttributeFloatMuParse("maxDihedralAngle", element, cV, aF);		
@@ -137,7 +141,9 @@ namespace dtOO {
       omInitDiv.add(*tmpOM);      
       omMovedDiv.add(*tmpOM);      
     }
-		dt__forAllConstIter( std::list< dtGmshFace const * >, slidableFaceList, it ) {
+		dt__forAllConstIter( 
+      std::list< dtGmshFace const * >, slidableFaceList, it 
+    ) {
       dtGmshFace const * const &thisFace = *it;
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
       omInitDiv.add(*tmpOM);      
@@ -818,9 +824,7 @@ namespace dtOO {
         omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
       ) {    
         if ( _buddyF.at(*v_it).empty() || _slidableF.at(*v_it) ) continue;
-        
-        float _maxGrowingRatePerStep = 1.1;
-        
+               
         _tF[ *v_it ] 
          = 
         std::min(
@@ -934,9 +938,21 @@ namespace dtOO {
       int nb_intersect = 0;
       for(unsigned int i = 0; i < gf->triangles.size(); i++){
         MTriangle *t = gf->triangles[i];
-        double X[3] = {t->getVertex(0)->x(), t->getVertex(1)->x(), t->getVertex(2)->x()};
-        double Y[3] = {t->getVertex(0)->y(), t->getVertex(1)->y(), t->getVertex(2)->y()};
-        double Z[3] = {t->getVertex(0)->z(), t->getVertex(1)->z(), t->getVertex(2)->z()};
+        double X[3] 
+        = 
+        {
+          t->getVertex(0)->x(), t->getVertex(1)->x(), t->getVertex(2)->x()
+        };
+        double Y[3] 
+        = 
+        {
+          t->getVertex(0)->y(), t->getVertex(1)->y(), t->getVertex(2)->y()
+        };
+        double Z[3] 
+        = 
+        {
+          t->getVertex(0)->z(), t->getVertex(1)->z(), t->getVertex(2)->z()
+        };
         for(int i = 0; i < 3; i++){
           X[i] /= scaling;
           Y[i] /= scaling;
@@ -980,8 +996,11 @@ namespace dtOO {
           }
           ++it_b;
         }
-        Msg::Info("Region %d Face %d, %d intersect", gr->tag(), gf->tag(), nb_intersect);
-        if(nb_intersect >= 0) break; // negative value means intersection is not "robust"
+        Msg::Info(
+          "Region %d Face %d, %d intersect", gr->tag(), gf->tag(), nb_intersect
+        );
+        // negative value means intersection is not "robust"
+        if(nb_intersect >= 0) break;
       }
 
       if(nb_intersect < 0){
