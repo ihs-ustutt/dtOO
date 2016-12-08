@@ -3,6 +3,7 @@
 #include <baseContainerHeaven/transformerContainer.h>
 #include <baseContainerHeaven/baseBuilder/dtPoint3_readIBL.h>
 #include <baseContainerHeaven/baseBuilder/dtPoint3_readCSV.h>
+#include <baseContainerHeaven/baseBuilder/dtPointD_readCSV.h>
 #include <analyticFunctionHeaven/scaOneD.h>
 #include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
@@ -184,6 +185,20 @@ namespace dtOO {
       );
 			basicP->push_back( dtPointD(cXYZ.size(), cXYZ.begin(), cXYZ.end()) );      
     }
+		else if ( hasAttribute("attribute", *toBuildP) ) {
+      std::string attribute = getAttributeStr("attribute", *toBuildP);      
+      if ( attribute == "pick_order_from_file" ) {
+        std::string filename = getAttributeStr("file_name", *toBuildP);
+        std::vector< dtPointD > pD;
+        if ( stringContains(".csv", filename) ) {
+          pD = dtPointD_readCSV(filename).result();
+          dt__forAllConstIter(std::vector< dtPointD >, pD, it) {
+            basicP->push_back( *it );
+          }
+        }          
+        else dt__throw(createBasic(), << "Unknown file extension.");
+      }
+		}    
 
 		//
 		// check if a point was created
