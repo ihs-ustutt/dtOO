@@ -28,15 +28,15 @@ namespace dtOO {
 		aFPtrVec const * const aF,
 		aFPtrVec * result
 	) const {
-    dt__throwIf( !dtXmlParserBase::hasChild("Point_3", toBuildP), buildPart() );
+    dt__throwIf( !dtXmlParserBase::hasChild("Point_D", toBuildP), buildPart() );
     
-    std::vector< dtPoint3 > pA;
+    std::vector< dtPointD > pA;
     std::vector< ::QDomElement > wEl 
     = 
-    dtXmlParserBase::getChildVector("Point_3", toBuildP);
+    dtXmlParserBase::getChildVector("Point_D", toBuildP);
 
     dt__forAllRefAuto(wEl, anEl) {
-      std::vector< dtPoint3 > wPoint;
+      std::vector< dtPointD > wPoint;
       dtXmlParserBase::createBasic( &anEl, bC, cV, aF, &wPoint );
       dt__forAllRefAuto(wPoint, aPoint) pA.push_back( aPoint );
     }
@@ -51,12 +51,28 @@ namespace dtOO {
     //
     // iterate points
     //
-    dt__forAllIndex(pA, ii) {
-      if (ii==0) continue;
+    for( int ii=0; ii<pA.size(); ii = ii + 2 ) {
+      dt__throwIf( pA[ii  ].dimension()!=6, buildPart() );
+      dt__throwIf( pA[ii+1].dimension()!=6, buildPart() );
       
-      v3d->add( 
-        new vec3dTriLinearThreeD( 
-          pA[ii-1], pA[ii], dtPoint3(ii-1, ii-1, ii-1), dtPoint3(ii, ii, ii) 
+      dt__info(
+        buildPart(),
+        << "Create function component with points:" << std::endl
+        << logMe::dtFormat("Y[0] = (%f, %f, %f)") 
+          % pA[ii  ][3] % pA[ii  ][4] % pA[ii  ][5] << std::endl
+        << logMe::dtFormat("Y[1] = (%f, %f, %f)") 
+          % pA[ii+1][3] % pA[ii+1][4] % pA[ii+1][5] << std::endl
+        << logMe::dtFormat("X[0] = (%f, %f, %f)") 
+          % pA[ii  ][0] % pA[ii  ][1] % pA[ii  ][2] << std::endl
+        << logMe::dtFormat("X[1] = (%f, %f, %f)") 
+          % pA[ii+1][0] % pA[ii+1][1] % pA[ii+1][2] << std::endl        
+      );
+      v3d->add(
+        new vec3dTriLinearThreeD(
+          dtPoint3( pA[ii  ][3], pA[ii  ][4], pA[ii  ][5] ),
+          dtPoint3( pA[ii+1][3], pA[ii+1][4], pA[ii+1][5] ),      
+          dtPoint3( pA[ii  ][0], pA[ii  ][1], pA[ii  ][2] ),
+          dtPoint3( pA[ii+1][0], pA[ii+1][1], pA[ii+1][2] ) 
         )
       );
     }
