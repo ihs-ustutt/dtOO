@@ -47,7 +47,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/bSplineCurve_pointConstructArcLengthParaOCC.h
   geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.h
-  geometryEngine/geoBuilder/geomSurface_geomCurveFillConstructOCC.h
+  geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h
   geometryEngine/geoBuilder/dtPoint2_surfaceEquidistantPoint.h
   geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve2d_pointInterpolateConstructOCC.h
@@ -76,6 +76,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomCurve_closeGapsArithmeticOCC.h
   geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h
+  geometryEngine/geoBuilder/bSplineCurve_convertOCC.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
@@ -166,7 +167,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/bSplineCurve_pointConstructArcLengthParaOCC.cpp
   geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.cpp
-  geometryEngine/geoBuilder/geomSurface_geomCurveFillConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.cpp
   geometryEngine/geoBuilder/dtPoint2_surfaceEquidistantPoint.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve2d_pointInterpolateConstructOCC.cpp
@@ -195,6 +196,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomCurve_closeGapsArithmeticOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineCurve_convertOCC.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp

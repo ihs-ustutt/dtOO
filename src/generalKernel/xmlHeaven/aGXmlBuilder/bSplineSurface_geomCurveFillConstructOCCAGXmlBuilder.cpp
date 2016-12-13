@@ -1,4 +1,4 @@
-#include "bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder.h"
+#include "bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder.h"
 
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
@@ -7,7 +7,7 @@
 #include <analyticGeometryHeaven/splineCurve3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
-#include <geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -15,16 +15,26 @@
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
+#include <boost/assign.hpp>
+
 namespace dtOO {
-  bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder
-    ::bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder() {
+  bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder
+    ::bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder() {
   }
 
-  bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder
-    ::~bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder() {
+  bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder
+    ::~bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder() {
   }
 
-  void bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder::buildPart(
+  std::vector< std::string > 
+    bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder::factoryAlias( 
+      void 
+  ) const {
+    return 
+      ::boost::assign::list_of("bSplineSurface_bSplineCurveFillConstructOCC");
+  }
+  
+  void bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder::buildPart(
     ::QDomElement const & toBuild,
     baseContainer * const bC,           
     cVPtrVec const * const cV,           
@@ -53,7 +63,7 @@ namespace dtOO {
     }
 
     ptrHandling<dtSurface> dtS(
-      bSplineSurface_bSplineCurveFillConstructOCC(dtC).result()
+      bSplineSurface_geomCurveFillConstructOCC(dtC).result()
     );
     result->push_back( new analyticSurface(dtS.get()) );
   }

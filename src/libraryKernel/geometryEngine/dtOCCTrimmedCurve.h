@@ -21,7 +21,6 @@ namespace dtOO {
     virtual int nControlPoints( void ) const;
     virtual dtPoint3 controlPoint( int const nPoint ) const;
     virtual void setControlPoint( int const nPoint, dtPoint3 const point );  
-    dtCurve * bSplineCurve( void ) const;
   private:
     Geom_TrimmedCurve const * _ptr;
     float _u0;

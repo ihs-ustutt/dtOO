@@ -24,9 +24,12 @@ namespace dtOO {
 		_ptr = NULL;
 	}
 
-	dtOCCSurfaceOfRevolution::dtOCCSurfaceOfRevolution(const dtOCCSurfaceBase& orig) 
-		: dtOCCSurface(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_SurfaceOfRevolution const, _ptr);
+	dtOCCSurfaceOfRevolution::dtOCCSurfaceOfRevolution(
+    const dtOCCSurfaceBase& orig
+  ) : dtOCCSurface(orig) {
+		dt__mustCast(
+      OCCRef().getOCC().Access(), Geom_SurfaceOfRevolution const, _ptr
+    );
 	}
 
 	dtOCCSurfaceOfRevolution::~dtOCCSurfaceOfRevolution() {
@@ -37,7 +40,9 @@ namespace dtOO {
 		return new dtOCCSurfaceOfRevolution( OCCRef() );
 	}
 
-	dtCurve * dtOCCSurfaceOfRevolution::segmentConstU( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve * dtOCCSurfaceOfRevolution::segmentConstU( 
+    float const uu, float const vvMin, float const vvMax
+  ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
 
@@ -70,7 +75,9 @@ namespace dtOO {
 		}
 	}
 
-	dtCurve * dtOCCSurfaceOfRevolution::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve * dtOCCSurfaceOfRevolution::segmentConstV( 
+    float const vv, float const uuMin, float const uuMax
+  ) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		Handle(Geom_Curve) cc = _ptr->VIso(vR);
 

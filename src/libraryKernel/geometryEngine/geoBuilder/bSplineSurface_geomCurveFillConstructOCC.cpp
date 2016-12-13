@@ -1,4 +1,4 @@
-#include "geomSurface_geomCurveFillConstructOCC.h"
+#include "bSplineSurface_geomCurveFillConstructOCC.h"
 
 #include <logMe/logMe.h>
 #include <geometryEngine/dtCurve.h>
@@ -10,6 +10,7 @@
 #include <geometryEngine/dtOCCTrimmedCurve.h>
 #include "bSplineCurve_pointConstructOCC.h"
 #include "bSplineSurface_bSplineCurveFillConstructOCC.h"
+#include "bSplineCurve_convertOCC.h"
 #include <Standard_Failure.hxx>
 #include <Standard_ErrorHandler.hxx>
 #include <Standard_TypeDef.hxx>
@@ -19,13 +20,13 @@
 #include <Precision.hxx>
 
 namespace dtOO {
-	geomSurface_geomCurveFillConstructOCC::geomSurface_geomCurveFillConstructOCC( 
+	bSplineSurface_geomCurveFillConstructOCC::bSplineSurface_geomCurveFillConstructOCC( 
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
 		init(cc);
 	}
 	
-	geomSurface_geomCurveFillConstructOCC::geomSurface_geomCurveFillConstructOCC( 
+	bSplineSurface_geomCurveFillConstructOCC::bSplineSurface_geomCurveFillConstructOCC( 
 	  dt__pVH(dtCurve) const & cc 
 	) {
 	  vectorHandling< dtCurve const * > ccV;
@@ -40,7 +41,7 @@ namespace dtOO {
 		init(ccV);
 	}		
 	
-	geomSurface_geomCurveFillConstructOCC::geomSurface_geomCurveFillConstructOCC( 
+	bSplineSurface_geomCurveFillConstructOCC::bSplineSurface_geomCurveFillConstructOCC( 
 		dtCurve const * c0, dtCurve const * c1, 
 		dtCurve const * c2, dtCurve const * c3 
 	) {
@@ -53,32 +54,33 @@ namespace dtOO {
 		init(cc);
 	}	
 
-	void geomSurface_geomCurveFillConstructOCC::init( 
+	void bSplineSurface_geomCurveFillConstructOCC::init( 
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
 		dt__throwIfWithMessage(
 			cc.size() != 4, 
-			geomSurface_geomCurveFillConstructOCC(),
+			bSplineSurface_geomCurveFillConstructOCC(),
 			<< "Only supported with 4 curves." << std::endl
 			<< dt__eval(cc.size())
 		);
 		vectorHandling< dtCurve const * > C(4);
-		for (int ii=0; ii<4; ii++) {
-			dtOCCBSplineCurve const * occBsc = dtOCCBSplineCurve::ConstDownCast(cc[ii]);
-			dtOCCTrimmedCurve const * occTc = dtOCCTrimmedCurve::ConstDownCast(cc[ii]);
-			if (occBsc) {
-				C[ii] = occBsc->clone();
-			}
-			else if (occTc) {
-  			C[ii] = occTc->bSplineCurve();
-			}
-      else {
-				dt__throw(
-				  geomSurface_geomCurveFillConstructOCC(), 
-					<< dt__eval(occBsc) << std::endl
-					<< dt__eval(occTc)
-				);
-			}			
+		dt__forFromToIndex(0, 4, ii) {
+      C[ii] = bSplineCurve_convertOCC( *(cc[ii]) ).result();
+//			dtOCCBSplineCurve const * occBsc = dtOCCBSplineCurve::ConstDownCast(cc[ii]);
+//			dtOCCTrimmedCurve const * occTc = dtOCCTrimmedCurve::ConstDownCast(cc[ii]);
+//			if (occBsc) {
+//				C[ii] = occBsc->clone();
+//			}
+//			else if (occTc) {
+//  			C[ii] = occTc->bSplineCurve();
+//			}
+//      else {
+//				dt__throw(
+//				  bSplineSurface_geomCurveFillConstructOCC(), 
+//					<< dt__eval(occBsc) << std::endl
+//					<< dt__eval(occTc)
+//				);
+//			}			
 		}
 
     _dtS.reset( bSplineSurface_bSplineCurveFillConstructOCC(C).result() );
@@ -86,10 +88,10 @@ namespace dtOO {
 		C.destroy();
 	}
 	
-	geomSurface_geomCurveFillConstructOCC::~geomSurface_geomCurveFillConstructOCC() {
+	bSplineSurface_geomCurveFillConstructOCC::~bSplineSurface_geomCurveFillConstructOCC() {
 	}
 	
-	dtSurface * geomSurface_geomCurveFillConstructOCC::result( void ) {
+	dtSurface * bSplineSurface_geomCurveFillConstructOCC::result( void ) {
 		return _dtS->clone();
 	}
 }

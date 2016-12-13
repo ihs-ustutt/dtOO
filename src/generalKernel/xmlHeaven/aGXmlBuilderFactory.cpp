@@ -24,7 +24,7 @@
 #include "aGXmlBuilder/bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_pointInterpolateConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_pointConstructOCCAGXmlBuilder.h"
-#include "aGXmlBuilder/bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder.h"
+#include "aGXmlBuilder/bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.h"
@@ -143,7 +143,7 @@ namespace dtOO {
       new bSplineCurve_pointConstructOCCAGXmlBuilder() 
     );
     _instance->_builder.push_back( 
-      new bSplineSurface_bSplineCurveFillConstructOCCAGXmlBuilder() 
+      new bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder() 
     );
     _instance->_builder.push_back( 
       new bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder() 

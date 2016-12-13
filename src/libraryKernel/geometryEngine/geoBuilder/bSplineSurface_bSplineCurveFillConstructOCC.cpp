@@ -17,7 +17,8 @@
 #include <geometryEngine/GeomFill_BSplineCurvesExtPrecision.h>
 
 namespace dtOO {
-	bSplineSurface_bSplineCurveFillConstructOCC::bSplineSurface_bSplineCurveFillConstructOCC( 
+	bSplineSurface_bSplineCurveFillConstructOCC
+    ::bSplineSurface_bSplineCurveFillConstructOCC( 
 	  vectorHandling< dtCurve const * > const & cc 
 	) {
 		dt__throwIfWithMessage(
@@ -65,7 +66,8 @@ namespace dtOO {
 		_dtS.reset( new dtOCCBSplineSurface(base) );
 	}
 
-	bSplineSurface_bSplineCurveFillConstructOCC::bSplineSurface_bSplineCurveFillConstructOCC( 
+	bSplineSurface_bSplineCurveFillConstructOCC
+    ::bSplineSurface_bSplineCurveFillConstructOCC( 
 	  dt__pVH(dtCurve) const & cc 
 	) {
 	  vectorHandling< dtCurve const * > ccV;
@@ -80,7 +82,8 @@ namespace dtOO {
 		_dtS.reset( bSplineSurface_bSplineCurveFillConstructOCC(ccV).result() );
 	}	
 	
-	bSplineSurface_bSplineCurveFillConstructOCC::~bSplineSurface_bSplineCurveFillConstructOCC() {
+	bSplineSurface_bSplineCurveFillConstructOCC
+    ::~bSplineSurface_bSplineCurveFillConstructOCC() {
 	}
 	
 	dtSurface * bSplineSurface_bSplineCurveFillConstructOCC::result( void ) {
