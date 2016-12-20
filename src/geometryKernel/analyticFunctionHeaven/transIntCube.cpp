@@ -64,34 +64,63 @@ namespace dtOO {
     _aS.destroy();
   }
   
-  dtPoint3 transIntCube::getValue(float const xx, float const yy, float const zz) const {
+  dtPoint3 transIntCube::getValue(
+    float const xx, float const yy, float const zz
+  ) const {
     dtVector3 rV =
-        (1.-xx) * _aS[1]->getPointPercentVector(yy, zz) + xx * _aS[3]->getPointPercentVector(yy, zz)
-      + (1.-yy) * _aS[4]->getPointPercentVector(xx, zz) + yy * _aS[5]->getPointPercentVector(xx, zz)
-      + (1.-zz) * _aS[2]->getPointPercentVector(xx, yy) + zz * _aS[0]->getPointPercentVector(xx, yy)
-      - (1.-xx) * ( (1.-yy) * _aS[1]->getPointPercentVector(0., zz) + yy * _aS[1]->getPointPercentVector(1., zz) )
-      - xx      * ( (1.-yy) * _aS[3]->getPointPercentVector(0., zz) + yy * _aS[3]->getPointPercentVector(1., zz) )
-      - (1.-yy) * ( (1.-zz) * _aS[4]->getPointPercentVector(xx, 0.) + zz * _aS[4]->getPointPercentVector(xx, 1.) )
-      - yy      * ( (1.-zz) * _aS[5]->getPointPercentVector(xx, 0.) + zz * _aS[5]->getPointPercentVector(xx, 1.) )
-      - (1.-zz) * ( (1.-xx) * _aS[2]->getPointPercentVector(0., yy) + xx * _aS[2]->getPointPercentVector(1., yy) )
-      - zz      * ( (1.-xx) * _aS[0]->getPointPercentVector(0., yy) + xx * _aS[0]->getPointPercentVector(1., yy) )
-      + (1.-xx) * ( 
-          (1.-yy) * ( 
+        (1.-xx) * _aS[1]->getPointPercentVector(yy, zz) 
+      + xx * _aS[3]->getPointPercentVector(yy, zz)
+      + (1.-yy) * _aS[4]->getPointPercentVector(xx, zz) 
+      + yy * _aS[5]->getPointPercentVector(xx, zz)
+      + (1.-zz) * _aS[2]->getPointPercentVector(xx, yy) 
+      + zz * _aS[0]->getPointPercentVector(xx, yy)
+      - (1.-xx) * ( 
+        (1.-yy) * _aS[1]->getPointPercentVector(0., zz) 
+        + 
+        yy * _aS[1]->getPointPercentVector(1., zz) 
+      )
+      - xx      * ( 
+        (1.-yy) * _aS[3]->getPointPercentVector(0., zz) 
+        + 
+        yy * _aS[3]->getPointPercentVector(1., zz) 
+      )
+      - (1.-yy) * ( 
+        (1.-zz) * _aS[4]->getPointPercentVector(xx, 0.) 
+        + 
+        zz * _aS[4]->getPointPercentVector(xx, 1.) 
+      )
+      - yy      * ( 
+        (1.-zz) * _aS[5]->getPointPercentVector(xx, 0.) 
+        + 
+        zz * _aS[5]->getPointPercentVector(xx, 1.) 
+      )
+      - (1.-zz) * ( 
+        (1.-xx) * _aS[2]->getPointPercentVector(0., yy) 
+        + 
+        xx * _aS[2]->getPointPercentVector(1., yy) 
+      )
+      - zz      * ( 
+        (1.-xx) * _aS[0]->getPointPercentVector(0., yy) 
+        + 
+        xx * _aS[0]->getPointPercentVector(1., yy) 
+      )
+      + (1.-xx) * (
+          (1.-yy) * (
             (1.-zz) * _aS_1_0_0 + zz * _aS_1_0_1
           )
           +
-          yy * ( 
+          yy * (
             (1.-zz) * _aS_1_1_0 + zz * _aS_1_1_1
-          )            
+          )
         )
       + xx * ( 
-          (1.-yy) * ( 
+          (1.-yy) * (
             (1.-zz) * _aS_3_0_0 + zz * _aS_3_0_1
           )
           +
-          yy * ( 
+          yy * (
             (1.-zz) * _aS_3_1_0 + zz * _aS_3_1_1
-          )            
+          )
         );            
     return dtLinearAlgebra::toDtPoint3( rV );
   }
@@ -167,7 +196,8 @@ namespace dtOO {
 //    return dtPoint3( rV[0], rV[1], rV[2] );
 //  }
   
-  vectorHandling< map2dTo3d const * > const & transIntCube::getConstRefToMap2dTo3d( void ) const {
+  vectorHandling< map2dTo3d const * > const & 
+  transIntCube::getConstRefToMap2dTo3d( void ) const {
     return _aS;
   }
 }
