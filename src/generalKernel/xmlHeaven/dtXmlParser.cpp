@@ -253,14 +253,23 @@ namespace dtOO {
       if ( 
         hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) 
       ) {
-        cValRef[ii]->setValue(
-          getAttributeFloat(
-            "value",
-            getChildElement(
-              "constValue", cValRef[ii]->getLabel(), stateElement
+        if ( cValRef[ii]->loadable() ) {
+          cValRef[ii]->setValue(
+            getAttributeFloat(
+              "value",
+              getChildElement(
+                "constValue", cValRef[ii]->getLabel(), stateElement
+              )
             )
-          )
-        );
+          );
+        }
+        else {
+          dt__warning(
+            loadStateToConst(),
+            << "Defer not loadable constValue > " 
+            << cValRef[ii]->getLabel() << " <."
+          );
+        }
       }
       else {
         dt__warning(
@@ -271,6 +280,11 @@ namespace dtOO {
         );  
       }
     }
+    
+    //
+    // resolve constraints
+    //
+    dt__forAllRefAuto(cValRef, aCV) aCV->resolveConstraint( &cValRef );    
     
     //
     // store this state name in parser

@@ -76,6 +76,10 @@ namespace dtOO {
     );
   }  
   
+  bool constrainedFloatParam::loadable( void ) const {
+    return false;  
+  }
+  
   void constrainedFloatParam::resolveConstraint( 
     cVPtrVec const * const cVArr 
   ) {

@@ -21,6 +21,7 @@ namespace dtOO {
     virtual void writeToElement(
       ::QDomDocument & doc, ::QDomElement & element
     );
+    virtual bool loadable( void ) const;    
     virtual void resolveConstraint( 
       cVPtrVec const * const cVArr
     );

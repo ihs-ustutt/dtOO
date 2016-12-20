@@ -27,6 +27,7 @@ namespace dtOO {
     virtual void writeToElement(QDomDocument & doc, ::QDomElement & element) = 0;
     virtual float getMin(void) const;
     virtual float getMax(void) const;
+    virtual bool loadable( void ) const;
     virtual void resolveConstraint( 
       cVPtrVec const * const cVArr
     );

@@ -58,6 +58,10 @@ namespace dtOO {
     return 0.;
   }
   
+  bool constValue::loadable( void ) const {
+    return true;  
+  }
+  
   void constValue::resolveConstraint( 
     cVPtrVec const * const cVArr
   ) {
