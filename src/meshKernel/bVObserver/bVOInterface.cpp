@@ -31,6 +31,10 @@ namespace dtOO {
   std::vector< std::string > bVOInterface::factoryAlias( void ) const {
     return std::vector< std::string>(0);
   }  
+
+  boundedVolume const & bVOInterface::constRefBoundedVolume( void ) {
+		return *_bV;
+	}
   
   boundedVolume * bVOInterface::ptrBoundedVolume( void ) {
 		return _bV;

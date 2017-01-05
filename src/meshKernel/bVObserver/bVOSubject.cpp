@@ -2,6 +2,7 @@
 
 #include <logMe/logMe.h>
 #include "bVOInterface.h"
+#include <boundedVolume.h>
 
 namespace dtOO {
   bVOSubject::bVOSubject() {
@@ -17,10 +18,14 @@ namespace dtOO {
   }
 
   void bVOSubject::preNotify( void ) {
-    dt__forAllIndex(_observers, ii) _observers[ii]->preUpdate();
+    dt__forAllRefAuto(_observers, anObserver) {
+      if ( ! anObserver->constRefBoundedVolume().isMeshed() ) {
+        anObserver->preUpdate();
+      }
+    }
   }
 	
   void bVOSubject::postNotify( void ) {
-    dt__forAllIndex(_observers, ii) _observers[ii]->postUpdate();
+    dt__forAllRefAuto(_observers, anObserver) anObserver->postUpdate();
   }	
 }

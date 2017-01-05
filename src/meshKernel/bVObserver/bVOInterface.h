@@ -32,6 +32,7 @@ namespace dtOO {
         boundedVolume * attachTo
       );
       virtual std::vector< std::string > factoryAlias( void ) const;            
+      boundedVolume const & constRefBoundedVolume(void);
     protected:
       boundedVolume * ptrBoundedVolume(void);
     private:
