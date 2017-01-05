@@ -112,7 +112,6 @@ namespace dtOO {
     //
     std::vector< std::string > crumbles = crumbleDown("(", ")", expression);
     
-    dt__debug( replaceDependencies(), << "crumbles = " << crumbles );
     dt__forAllRefAuto(crumbles, aCrumble) {
       if ( !stringContains(_AFSIGN, aCrumble) ) continue;
       returnExpression 
