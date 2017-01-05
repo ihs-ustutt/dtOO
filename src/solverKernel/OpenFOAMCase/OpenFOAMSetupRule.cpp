@@ -26,6 +26,7 @@
 #include <profile1DfixedValueFvPatchField.H>
 #include <inletOutletFvPatchField.H>
 #include <rotatingWallVelocityFvPatchVectorField.H>
+#include <flowRateInletVelocityFvPatchVectorField.H>
 #include <dictionary.H>
 
 namespace dtOO {
@@ -214,6 +215,25 @@ namespace dtOO {
               field, 
               parseOptionDict("rotatingWallVelocity", thisRule)
             )
+          );
+          
+          return;
+        }
+        else if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          == 
+          "flowRateInletVelocity"           
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::flowRateInletVelocityFvPatchVectorField(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("flowRateInletVelocity", thisRule)
+            )            
           );
           
           return;
