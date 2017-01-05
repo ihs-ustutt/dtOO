@@ -48,9 +48,12 @@ namespace dtOO {
   }
   
   void bVOTransfiniteFaces::preUpdate( void ) {
-		dtGmshModel * gm = ptrBoundedVolume()->getModel();
-		
-		dt__throwIf(gm==NULL, update());
+		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
+    
+		//
+		// set current model
+		//
+		::GModel::setCurrent( gm );
 		
     dt__forAllConstIter(std::vector< std::string >, _faceLabel, fLIt) {
       gm->getDtGmshFaceByPhysical(*fLIt)->meshTransfinite();

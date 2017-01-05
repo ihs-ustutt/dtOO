@@ -48,10 +48,12 @@ namespace dtOO {
   }
   
   void bVOSetNElements::preUpdate( void ) {
-		dt__ptrAss(
-      dtGmshModel * gm, 
-      ptrBoundedVolume()->getModel()
-    );
+		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
+    
+		//
+		// set current model
+		//
+		::GModel::setCurrent( gm );
 		
     dt__forAllConstIter(std::vector< std::string >, _faceLabel, fLIt) {
       if (_nE.size() == 2) {

@@ -59,9 +59,12 @@ namespace dtOO {
   }
   
   void bVOSetGrading::preUpdate( void ) {
-		dtGmshModel * gm = ptrBoundedVolume()->getModel();
-		
-		dt__throwIf(gm==NULL, preUpdate());
+		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
+    
+		//
+		// set current model
+		//
+		::GModel::setCurrent( gm );
 	
     dt__forAllConstIter(std::vector< std::string >, _regionLabel, rIt) {
       gm->getDtGmshRegionByPhysical(*rIt)->setGrading(_grading, _type);

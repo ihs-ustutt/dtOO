@@ -39,10 +39,12 @@ namespace dtOO {
   }
   
   void bVOOrientCellVolumes::postUpdate( void ) {
-    //
-    // model check
-    //
-		dt__ptrAss( dtGmshModel * gm, ptrBoundedVolume()->getModel() );
+		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
+    
+		//
+		// set current model
+		//
+		::GModel::setCurrent( gm );
 		
     //
     // counter

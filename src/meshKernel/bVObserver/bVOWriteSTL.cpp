@@ -45,7 +45,12 @@ namespace dtOO {
   
   void bVOWriteSTL::postUpdate( void ) {
     dt__onlyMaster {
-      dtGmshModel * gm = ptrBoundedVolume()->getModel();
+      dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
+
+      //
+      // set current model
+      //
+      ::GModel::setCurrent( gm );
 
       std::fstream of;
       of.open(

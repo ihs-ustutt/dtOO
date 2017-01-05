@@ -55,6 +55,11 @@ namespace dtOO {
 		  dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());      
 
       //
+      // set current model
+      //
+      ::GModel::setCurrent( gm );
+    
+      //
       // create filename string if empty
       //
       std::string cFileName = _filename;
