@@ -13,6 +13,8 @@
 #include <dtTransformerHeaven/xYz_rPhiZ.h>
 #include <progHelper.h>
 
+#include <gmsh/Context.h>
+
 namespace dtOO {  
   bVOSetRotationalPeriodicity::bVOSetRotationalPeriodicity() {
   }
@@ -58,7 +60,7 @@ namespace dtOO {
           dtXmlParserBase::getAttributeStr("transformer", element)
         )
       )
-    );
+    );   
   }
   
   void bVOSetRotationalPeriodicity::preUpdate( void ) {
@@ -213,12 +215,12 @@ namespace dtOO {
     tfo[0*4+2] = ux*uz*(1.-cos(ANGLE)) + uy * sin(ANGLE);
 
     tfo[1*4+0] = ux*uy*(1.-cos(ANGLE)) + uz * sin(ANGLE);
-    tfo[1*4+1] = cos (ANGLE) + uy*uy*(1.-cos(ANGLE));
+    tfo[1*4+1] = cos(ANGLE) + uy*uy*(1.-cos(ANGLE));
     tfo[1*4+2] = uy*uz*(1.-cos(ANGLE)) - ux * sin(ANGLE);
 
     tfo[2*4+0] = ux*uz*(1.-cos(ANGLE)) - uy * sin(ANGLE);
     tfo[2*4+1] = uy*uz*(1.-cos(ANGLE)) + ux * sin(ANGLE);
-    tfo[2*4+2] = cos (ANGLE) + uz*uz*(1.-cos(ANGLE));
+    tfo[2*4+2] = cos(ANGLE) + uz*uz*(1.-cos(ANGLE));
 
     double origin[3] 
     = 
@@ -233,10 +235,65 @@ namespace dtOO {
       }
     }
     for (int i=0;i<4;i++) tfo[12+i] = 0;
-
+    tfo[15] = 1;
+    
+    double scale = 1.;
+    dt__forAllIndex(masterVertex, ii) {
+      ::SPoint3 xyzOri(masterVertex[ii]->x(), masterVertex[ii]->y(), masterVertex[ii]->z());
+      ::SPoint3 xyzSlv(slaveVertex[ii]->x(), slaveVertex[ii]->y(), slaveVertex[ii]->z());
+      ::SPoint3 xyzTfo(0,0,0);
+      int idx = 0;
+      for (int i=0;i<3;i++) {
+        for (int j=0;j<3;j++) xyzTfo[i] += xyzOri[j] * tfo[idx++];
+        xyzTfo[i] += tfo[idx++];
+      }
+      
+      //
+      // hack to handle very high precision in gmsh
+      //
+      if (
+        xyzSlv.distance(xyzTfo) 
+        > 
+        CTX::instance()->geom.tolerance * CTX::instance()->lc
+      ) {
+        
+        double cScale 
+        = 
+        xyzSlv.distance(xyzTfo) 
+        / 
+        ( CTX::instance()->geom.tolerance * CTX::instance()->lc );
+        
+        scale = std::max( scale, cScale );
+        dt__warning(
+          preUpdate(), 
+            << "Distance of corresponding vertices is bigger than gmsh "
+              "internal tolerance." 
+            << std::endl
+            << logMe::dtFormat("distance = %.16e, cScale = %.16e") 
+              % xyzSlv.distance(xyzTfo) % cScale
+            << std::endl
+            << "Use force option for this bVOObserver."
+        );
+      }
+    }
+    
+    double const gTol = CTX::instance()->geom.tolerance;
+    if ( optionHandling::optionTrue("force") ) {
+      CTX::instance()->geom.tolerance 
+      = 
+      1.1*scale * CTX::instance()->geom.tolerance;
+      dt__info(
+        preUpdate(),
+        << "Use force option: Geom.Tolerance = " 
+        << CTX::instance()->geom.tolerance
+      );      
+    }
+    
     //
     // set master face and affine transformation
     //
-    slaveF->setMeshMaster(masterF, tfo);    
+    slaveF->setMeshMaster(masterF, tfo); 
+    
+    CTX::instance()->geom.tolerance = gTol;
   }
 }
