@@ -16,7 +16,7 @@ classdef dtScalarSpace
         end
       end 
       function [coord, value, v] = Space( obj )
-        field = readGnu(obj.filename_, '%f,%f,%f,%f,%f,%f,%f');
+        field = readGnu(obj.filename_, '%f,%f,%f,%f,%f');
 
         coord = zeros(size(field{1}, 1), 3);
         value = zeros(size(field{1}, 1), 1);
