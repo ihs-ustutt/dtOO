@@ -5,7 +5,11 @@ classdef dtValueScalarField < dtScalarField
       sf_
       q_
       A_
+      APos_
+      ANeg_      
       Q_
+      QPos_
+      QNeg_
       intSf_
       intQSf_
       absIntSf_
