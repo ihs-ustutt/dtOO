@@ -170,7 +170,7 @@ int main( int ac, char* av[] ) {
       (
         "state", 
         dtPO::value< std::string >()->default_value(""), 
-        "parse last state before creation? (optional)"
+        "parse state arg before creation (optional)"
       )    
       (
         "constValue,c", 

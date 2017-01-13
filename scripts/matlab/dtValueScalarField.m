@@ -18,12 +18,16 @@ classdef dtValueScalarField < dtScalarField
 
         [obj.coord_, obj.value_, obj.sf_, obj.q_] = obj.Field();
         
-         obj.A_ = dt.SumMag( obj.sf_ );
-         obj.Q_ = dt.SumMag( obj.q_ );
-         obj.intSf_ = dt.Sum( obj.value_ .* dt.Mag(obj.sf_) );
-         obj.intQSf_ = dt.Sum( obj.value_ .* obj.q_ );
-         obj.absIntSf_ = abs( obj.intSf_ );
-         obj.absIntQSf_ = abs( obj.intQSf_ );
+        obj.A_ = dt.SumMag( obj.sf_ );
+        obj.APos_ = dt.SumMag( obj.sf_( find(obj.q_>0), : ) );
+        obj.ANeg_ = dt.SumMag( obj.sf_( find(obj.q_<0), : ) );          
+        obj.Q_ = dt.Sum( obj.q_ );
+        obj.QPos_ = dt.Sum( obj.q_( find(obj.q_>0) ) );
+        obj.QNeg_ = dt.Sum( obj.q_( find(obj.q_<0) ) );        
+        obj.intSf_ = dt.Sum( obj.value_ .* dt.Mag(obj.sf_) );
+        obj.intQSf_ = dt.Sum( obj.value_ .* obj.q_ );
+        obj.absIntSf_ = abs( obj.intSf_ );
+        obj.absIntQSf_ = abs( obj.intQSf_ );
       end
       function value = Min( obj )
         value = min(obj.value_);
