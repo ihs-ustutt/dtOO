@@ -12,7 +12,9 @@ classdef dtValueVector3Field < dtVector3Field
       QPos_
       QNeg_
       intSf_
-      intQSf_      
+      intQSf_
+      absIntSf_
+      absIntQSf_        
       trf_
    end
    methods
