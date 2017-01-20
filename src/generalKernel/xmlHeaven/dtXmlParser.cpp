@@ -709,8 +709,6 @@ namespace dtOO {
           << "Parser does not contain state = " 
           << getAttributeStr("state", cVInit)
         );        
-        
-        return;
       }
     }
     
