@@ -387,6 +387,8 @@ namespace dtOO {
 					else {
 						_cVStateSave->setValue(false);
 					}
+					setExecGracePeriod(0.1);
+				  selfExec();               
 				}
 				//
 				// load state
