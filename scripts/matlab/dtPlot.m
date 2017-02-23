@@ -36,7 +36,7 @@ classdef dtPlot
         fig = obj.fig_;
         %figure(obj.fig_);
         obj.MakeCurrent
-        epssetup(sizeX, sizeY, 0, [1 1 1], 1, 0);
+%        epssetup(sizeX, sizeY, 0, [1 1 1], 1, 0);
 
         if ~isempty(labelX)
           xlabel(...
@@ -76,12 +76,29 @@ classdef dtPlot
         print(obj.fig_,  '-dpng', strcat(obj.filename_,'.png'));
 %        print(obj.fig_,'-dpdf','-r300', strcat(obj.filename_,'.pdf'));
       end   
-      function [] = SaveJpg(obj)
+      function [] = SaveJpg(obj, varargin)
+        res = 120;
+        if ( length(varargin)==1 )
+          res = varargin{1};
+        end        
         obj.MakeCurrent
-        print(obj.fig_,  '-djpeg100', '-r1200', strcat(obj.filename_,'.jpg'));
+        print( ...
+          obj.fig_,  ...
+          '-djpeg100', ...
+          strcat('-r', num2str(res)), ...
+          strcat(obj.filename_,'.jpg') ...
+        ); %-r1200
 %        print(obj.fig_,'-dpdf','-r300', strcat(obj.filename_,'.pdf'));
       end            
-      function [] = PlotTextAtPoints(obj, x, y, str)
+      function [] = PlotTextAtPoints(obj, x, y, str, varargin)
+        sScale = 1.;
+        cScale = 0.;
+        if ( length(varargin)==1 )
+          sScale = varargin{1};
+        elseif ( length(varargin)==2 )
+          sScale = varargin{1};
+          cScale = varargin{2};
+        end            
         %figure( obj.fig_ );
         obj.MakeCurrent
         hold all;
@@ -91,8 +108,9 @@ classdef dtPlot
             x(j), y(j), str{j}, ...
             'HorizontalAlignment','center', ...
             'FontSize', obj.fontSize_, 'FontName', obj.fontName_, ...
-            'Interpreter', 'latex' ...
-          );     
+            'Interpreter', 'latex', ...
+            'Color', cScale * [1 1 1] ...
+          );
         end
       end
       function [] = PlotAndSizeMarkers(obj, x, y, scale, str)

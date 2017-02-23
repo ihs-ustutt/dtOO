@@ -25,7 +25,7 @@ classdef dt
       end          
       function ret = Sum( field )
         ret = sum( field );
-      end   
+      end
       function [ind] = ExtractPareto(xx, yy, nBins)
         ind = zeros(nBins,1);
         xBin = discretize( xx, linspace(min(xx), max(xx), nBins+1) );
@@ -35,5 +35,21 @@ classdef dt
           ind(i,1) = XWithInd(tmpInd,2);
         end
       end
+      function [val] = MeanLast( value, nAverageSteps )
+        val = mean( value(length(value) - nAverageSteps:end) );
+      end       
+      function [val] = MinLast( value, nAverageSteps )
+        val = min( value(length(value) - nAverageSteps:end) );
+      end             
+      function [val] = MaxLast( value, nAverageSteps )
+        val = max( value(length(value) - nAverageSteps:end) );
+      end
+      function [val] = ChangeLast( value, nAverageSteps )
+        val ...
+        = ...
+        ( dt.MaxLast(value, nAverageSteps) - dt.MinLast(value, nAverageSteps) ) ...
+        / ...
+        dt.MeanLast(value, nAverageSteps);
+      end       
    end
 end

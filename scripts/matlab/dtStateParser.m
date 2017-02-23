@@ -187,11 +187,15 @@ classdef dtStateParser
         else
           fileToParse{end+1} = [pathstr, '/', name, ext];%obj.filename_;
         end
-        
+
+        parfor i=1:size(fileToParse,2)
+          fprintf('Read %s.\n', fileToParse{i});
+          pXmlIn{i} = xml2struct(fileToParse{i});
+        end
         for i=1:size(fileToParse,2)
           fprintf('Parse %s.\n', fileToParse{i});
-          xmlIn = xml2struct(fileToParse{i});
-          
+          xmlIn = pXmlIn{i};%xml2struct(fileToParse{i});
+%          fprintf('Done.\n', fileToParse{i});
 %           fprintf('Head node = %s\n', xmlIn.Name);
           for j=1:size(xmlIn.Children,2)
             if ( strcmp( xmlIn.Children(j).Name, 'state' ) )

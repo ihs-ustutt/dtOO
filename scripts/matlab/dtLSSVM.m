@@ -8,7 +8,34 @@ classdef dtLSSVM < dtIOSystem
      model_
    end
    methods
-      function obj = dtLSSVM(parser, states, xName, yName)
+      function obj = dtLSSVM( n )
+        obj@dtIOSystem( n );
+      end
+      function obj = CreateByMatrix(obj, x, y)
+%        obj@dtIOSystem( size(x,1) );
+%         obj.x_ = x;
+%         obj.y_ = y;
+         
+        %
+        % input
+        %
+        for i=1:size(x,2); 
+          obj = obj.SetX( strcat('x_', num2str(i)) , strcat('xFig_', num2str(i)), x(:,i) ); 
+        end
+        
+        %
+        % output
+        %
+        for i=1:size(y,2)
+          obj = obj.SetY( strcat('y_', num2str(i)) , strcat('yFig_', num2str(i)), y(:,i) ); 
+        end
+
+        %
+        % create lssvm
+        %
+       [ obj.yp_, obj.alpha_, obj.b_, obj.gam_, obj.sig2_, obj.model_] = lssvm(obj.x_, obj.y_, 'f');      
+      end     
+      function obj = CreateByParser(obj, parser, states, xName, yName)
         inRes = [];
         outRes = [];
         for i=1:length(xName)
@@ -33,7 +60,7 @@ classdef dtLSSVM < dtIOSystem
         %
         % create empty IOSystem
         %
-        obj@dtIOSystem( length(states) );
+ %       obj@dtIOSystem( length(states) );
         
         %
         % input

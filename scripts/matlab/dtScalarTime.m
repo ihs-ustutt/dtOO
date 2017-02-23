@@ -70,6 +70,13 @@ classdef dtScalarTime
       end             
       function [val] = MaxLast( obj, nAverageSteps )
         val = max( obj.value_(obj.nValues_ - nAverageSteps:end) );
-      end              
+      end
+      function [val] = ChangeLast( obj, nAverageSteps )
+        val ...
+        = ...
+        ( obj.MaxLast(nAverageSteps) - obj.MinLast(nAverageSteps) ) ...
+        / ...
+        obj.MeanLast(nAverageSteps);
+      end      
    end
 end
