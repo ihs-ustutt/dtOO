@@ -87,7 +87,7 @@ std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
   cVPtrVec & cV,
   cVPtrVec & constValuePtrVec,
   std::string const & filename,
-  bool sampleAroundState
+  bool noPercent
 ) {
   dt__infoNoClass(csvCreate(), << "Create CSV.");
   std::vector< std::vector< std::pair< constValue *, float > > > samples;
@@ -123,13 +123,13 @@ std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
     std::vector< std::pair< constValue *, float > > aSample;
 
     dt__forAllIndex(parts, ii) {
-      if ( sampleAroundState ) {
+      if ( noPercent ) {
         aSample.push_back(
           std::pair< constValue *, float >(
             constValuePtrVec[ii], 
-            cV.get( constValuePtrVec[ii]->getLabel() )->getValue() * stringPrimitive::stringToFloat( parts[ii] )   
+            stringPrimitive::stringToFloat( parts[ii] )
           )
-        );
+        );     
       }
       else {
         aSample.push_back(
@@ -193,9 +193,9 @@ int main( int ac, char* av[] ) {
         "define prefix of state label (optional)"
       )
       (
-        "sampleAroundState", 
+        "noPercent", 
         dtPO::value< bool >()->default_value(false), 
-        "put all samples around loaded state (optional)"
+        "treat csv input not as perentage (optional)"
       )    
     ;
     vm.update();
@@ -271,7 +271,7 @@ int main( int ac, char* av[] ) {
       csvCreate(
         cV, 
         constValuePtrVec, vm["readCsv"].as< std::string >(), 
-        vm["sampleAroundState"].as< bool >() 
+        vm["noPercent"].as< bool >() 
       );
     }
     else dt__throwUnexpectedNoClass(main());
