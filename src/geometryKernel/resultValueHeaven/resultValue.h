@@ -2,13 +2,14 @@
 #define	resultValue_H
 
 #include <string>
+#include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/labelHandling.h>
 
 namespace dtOO {
   class resultValue : public labelHandling {
   public:
-    dt__classOnlyName(resultValue);    
+    dt__class(resultValue, resultValue);    
     resultValue( resultValue const & orig );
     virtual ~resultValue();
     virtual resultValue * clone( void ) const = 0;    

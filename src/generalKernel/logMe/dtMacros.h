@@ -17,9 +17,9 @@
   virtual std::string virtualClassName( void ) const { \
     return std::string(#name); \
   } \
-  template< class dt__CLASSNAME_T > \
-  bool Is(dt__CLASSNAME_T obj) const { \
-    return (dynamic_cast<dt__CLASSNAME_T const *>(this) == NULL ? false : true); \
+  template< class name > \
+  bool Is(name obj) const { \
+    return (dynamic_cast<name const *>(this) == NULL ? false : true); \
   }
 
 #define dt__classSelfCreate( name ) \

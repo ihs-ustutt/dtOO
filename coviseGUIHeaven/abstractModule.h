@@ -45,7 +45,7 @@ namespace dtOO {
 
       std::vector<std::string> choicesFun(vecHP->size(), "empty");
       for (int ii = 0;ii<vecHP->size();ii++) {
-        if ( !vecHP->at(ii)->Is( labelHandling() ) ) {
+        if ( ! dynamic_cast< labelHandling const * >( vecHP->at(ii) ) ) {
           dt__throw(
             updateChoiceParam(), 
             << "vecHP< T >: T is not a baseclass of labelHandling" << std::endl
