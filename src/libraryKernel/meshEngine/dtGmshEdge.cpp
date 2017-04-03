@@ -22,7 +22,8 @@ namespace dtOO {
   dtGmshEdge::dtGmshEdge(::GModel *m, int tag)
     : GEdge(m, tag, NULL, NULL) {
     _isSeamU = false;
-    _isSeamV = false;		
+    _isSeamV = false;
+    l_vertices.remove( NULL );
   }
 	
   dtGmshEdge::dtGmshEdge(::GModel *m, int tag, ::GVertex *v1, ::GVertex *v2)
@@ -150,7 +151,7 @@ namespace dtOO {
 	void dtGmshEdge::addVertex( ::GVertex * gv) {
 	  if (
       std::find(l_vertices.begin(), l_vertices.end(), gv) == l_vertices.end()
-    ) { 
+    ) {
 		  l_vertices.push_back(gv);
     }
 	}
