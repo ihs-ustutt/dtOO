@@ -26,6 +26,7 @@
 #include "bVOAddFace.h"
 #include "bVOSetRotationalPeriodicity.h"
 #include "bVOTransformMeshPoints.h"
+#include "bVOWriteSU2.h"
 
 namespace dtOO {
   dt__pH(bVOInterfaceFactory) bVOInterfaceFactory::_instance(NULL);
@@ -103,6 +104,7 @@ namespace dtOO {
     _instance->_builder.push_back( new bVOAddFace() );
     _instance->_builder.push_back( new bVOSetRotationalPeriodicity() );
     _instance->_builder.push_back( new bVOTransformMeshPoints() );
+    _instance->_builder.push_back( new bVOWriteSU2() );
     
     return _instance.get();
   }    
