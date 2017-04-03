@@ -6,7 +6,10 @@
 #include <logMe/logMe.h>
 #include <iomanip>
 
-namespace dtOO { 
+namespace dtOO {
+  std::string stringPrimitive::_WILD = "*";
+  std::string stringPrimitive::_WILDSIGN = "?";
+  
   stringPrimitive::stringPrimitive() {
   }
 
@@ -265,6 +268,59 @@ namespace dtOO {
     return ret;
   }
       
+  bool stringPrimitive::isWildcard( std::string const str ) {
+    return (
+      ( str.find(stringPrimitive::_WILD) != std::string::npos )
+      ||
+      ( str.find(stringPrimitive::_WILDSIGN) != std::string::npos )
+    );
+  }
+  
+  bool stringPrimitive::matchWildcard(
+    std::string const & pWildStr, std::string const & pStringStr
+  ) {
+    const char * pWild = pWildStr.c_str();
+    const char * pString = pStringStr.c_str();
+      
+    int ii, star;
+
+    new_segment:
+
+       star = 0;
+       while (pWild[0] == '*')
+       {
+          star = 1;
+          pWild++;
+       }
+
+    test_match:
+
+       for (ii = 0; pWild[ii] && (pWild[ii] != '*'); ii++)
+       {
+          if (pWild[ii] != pString[ii])
+          {
+             if (! pString[ii]) return 0;
+             if (pWild[ii] == '?') continue;
+             if (! star) return 0;
+             pString++;
+             goto test_match;
+          }
+       }
+
+       if (pWild[ii] == '*')
+       {
+          pString += ii;
+          pWild += ii;
+          goto new_segment;
+       }
+
+       if (! pString[ii]) return true;
+       if (ii && pWild[ii-1] == '*') return true;
+       if (! star) return false;
+       pString++;
+       goto test_match;
+  }
+  
   std::pair< int, int > stringPrimitive::getFromToBetween(
 	  std::string const signStart, std::string const signEnd, 
     std::string const str
@@ -422,5 +478,5 @@ namespace dtOO {
       matchEnd.erase( matchEnd.begin() + std::distance(dist.begin(), minIt) );
     }
     return occMap;    
-  }
+  }  
 }

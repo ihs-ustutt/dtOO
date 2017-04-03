@@ -69,18 +69,14 @@ namespace dtOO {
       dt__forAllConstIter(dtGmshModel::intGEntityVMap, gf_number, nIt) {
         std::string currentPhysical = gm->getPhysicalName(2, nIt->first);
         bool addThis = false;
-        if ( qtXmlBase::stringContains("*", oldPhys) ) {
-          std::string wildCardString 
-          = 
-          qtXmlBase::stringRemoveSingle("*", oldPhys);
+        if ( qtXmlBase::isWildcard(oldPhys) ) {
           //
           // pattern with wildcard (*)
           //
-          if ( qtXmlBase::stringContains(wildCardString, currentPhysical) ) {
+          if ( qtXmlBase::matchWildcard(oldPhys, currentPhysical) ) {
             dt__info(
               postUpdate(), 
-              << "Handling wildcard string :> " 
-              << oldPhys << " = " << wildCardString << std::endl
+              << "Handling wildcard string :> " << oldPhys << std::endl
               << "Adding :> " << currentPhysical << std::endl
               << "To     :> " << newPhys
             );
@@ -152,18 +148,14 @@ namespace dtOO {
       dt__forAllConstIter(dtGmshModel::intGEntityVMap, gr_number, nIt) {
         std::string currentPhysical = gm->getPhysicalName(3, nIt->first);
         bool addThis = false;
-        if ( qtXmlBase::stringContains("*", oldPhys) ) {
-          std::string wildCardString 
-          = 
-          qtXmlBase::stringRemoveSingle("*", oldPhys);
+        if ( qtXmlBase::isWildcard(oldPhys) ) {
           //
           // pattern with wildcard (*)
           //
-          if ( qtXmlBase::stringContains(wildCardString, currentPhysical) ) {
+          if ( qtXmlBase::matchWildcard(oldPhys, currentPhysical) ) {
             dt__info(
               postUpdate(), 
-              << "Handling wildcard string :> " 
-              << oldPhys << " = " << wildCardString << std::endl
+              << "Handling wildcard string :> " << oldPhys << std::endl
               << "Adding :> " << currentPhysical << std::endl
               << "To     :> " << newPhys
             );

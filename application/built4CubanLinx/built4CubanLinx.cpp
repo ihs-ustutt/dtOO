@@ -173,19 +173,11 @@ std::string parseCommand(
     return std::string("");
   }        
   dt__commandIf( aRule, help, "applyPlugin", "apply a plugin") {
-    if ( !stringPrimitive::stringContains("*", addRule[0]) ) {
-      dtP.get(addRule[0])->apply();
-    }
-    else {
-      dt__forAllRefAuto(dtP, aP) {
-        if (
-          stringPrimitive::stringContains(
-            stringPrimitive::replaceStringInString("*", "", addRule[0]), 
-            aP->getLabel()
-          )
-        ) aP->apply();
-      }  
-    }
+    dt__forAllRefAuto(dtP, aP) {
+      if ( stringPrimitive::matchWildcard(addRule[0], aP->getLabel()) ) {
+        aP->apply();
+      }
+    }  
     return std::string("");
   }
   dt__commandIf( 
@@ -438,35 +430,19 @@ std::string parseCommand(
     return ss.str();
   }       
   dt__commandIf( aRule, help, "makePreGrid", "make pre grid") {
-    if ( !stringPrimitive::stringContains("*", addRule[0]) ) {
-      bV.get(addRule[0])->makePreGrid();
-    }
-    else {
-      dt__forAllRefAuto(bV, aBV) {
-        if (
-          stringPrimitive::stringContains(
-            stringPrimitive::replaceStringInString("*", "", addRule[0]), 
-            aBV->getLabel()
-          )
-        ) aBV->makePreGrid();
-      }  
-    }
+    dt__forAllRefAuto(bV, aBV) {
+      if (
+        stringPrimitive::matchWildcard( addRule[0], aBV->getLabel() )
+      ) aBV->makePreGrid();
+    }  
     return std::string("");
   }
   dt__commandIf( aRule, help, "makeGrid", "make grid") {
-    if ( !stringPrimitive::stringContains("*", addRule[0]) ) {
-      bV.get(addRule[0])->makeGrid();
-    }
-    else {
-      dt__forAllRefAuto(bV, aBV) {
-        if (
-          stringPrimitive::stringContains(
-            stringPrimitive::replaceStringInString("*", "", addRule[0]), 
-            aBV->getLabel()
-          )
-        ) aBV->makeGrid();
-      }  
-    }
+    dt__forAllRefAuto(bV, aBV) {
+      if (
+        stringPrimitive::matchWildcard( addRule[0], aBV->getLabel() )
+      ) aBV->makeGrid();
+    }  
     return std::string("");
   }  
   dt__commandIf( aRule, help, "getMeshTags", "get mesh tags") {

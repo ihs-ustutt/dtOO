@@ -253,116 +253,39 @@ namespace dtOO {
       );
       
       //
-      // general wild card
+      // determine entities
       //
-      if (currentGEntityStr == "*") {
-			  dt__forAllRefAuto(ff, aFace) {
-          if ( 
-            (
-              aFace->meshStatistics.status 
-              !=
-              ::GEntity::MeshGenerationStatus::DONE
+      dt__forAllRefAuto(ff, aFace) {
+        if ( 
+          (
+            aFace->meshStatistics.status 
+            !=
+            ::GEntity::MeshGenerationStatus::DONE 
+          )
+          &&
+          (
+            stringPrimitive::matchWildcard(
+              currentGEntityStr, gm->getPhysicalString(aFace)
             )
-            &&
-            (
-              aFace->meshMaster() == aFace
-            )
-          ) (*current2D)(aFace);
-          if (optionHandling::optionTrue("debug")) {
-            gm->writeMSH(
-              dtXmlParser::reference().currentState()
-              +
-              "_"
-              +
-              ptrBoundedVolume()->getLabel()
-              +
-              "_debug.msh", 
-              2.2, false, true
-            );
-          }          
-        }    
+          )
+          &&
+          (
+            aFace->meshMaster() == aFace
+          )
+        ) (*current2D)(aFace);
+        if (optionHandling::optionTrue("debug")) {
+          gm->writeMSH(
+            dtXmlParser::reference().currentState()
+            +
+            "_"
+            +
+            ptrBoundedVolume()->getLabel()
+            +
+            "_debug.msh", 
+            2.2, false, true
+          );
+        }          
       }
-      //
-      // specific wild card
-      //
-      else if ( stringPrimitive::stringContains("*", currentGEntityStr) ) {
-        //
-        // clean specific wild card
-        //
-        std::string patternGE
-        = 
-        stringPrimitive::replaceStringInString("*", "", currentGEntityStr);
-        
-        //
-        // determine entities
-        //
-//			  std::list< dtGmshFace * > ff 
-//        = 
-//        dtGmshModel::cast2DtGmshFace( gm->faces() );        
-			  dt__forAllRefAuto(ff, aFace) {
-          if ( 
-            (
-              aFace->meshStatistics.status 
-              !=
-              ::GEntity::MeshGenerationStatus::DONE 
-            )
-            &&
-            (
-              stringPrimitive::stringContains(
-                patternGE, gm->getPhysicalString(aFace)
-              )
-            )
-            &&
-            (
-              aFace->meshMaster() == aFace
-            )
-          ) (*current2D)(aFace);
-          if (optionHandling::optionTrue("debug")) {
-            gm->writeMSH(
-              dtXmlParser::reference().currentState()
-              +
-              "_"
-              +
-              ptrBoundedVolume()->getLabel()
-              +
-              "_debug.msh", 
-              2.2, false, true
-            );
-          }          
-        }            
-      }
-      //
-      // no wild card
-      //
-      else if ( !stringPrimitive::stringContains("*", currentGEntityStr) ) {
-			  dt__forAllRefAuto(ff, aFace) {
-          if ( aFace->getPhysicalString() !=  currentGEntityStr ) continue;
-          if ( 
-            (
-              aFace->meshStatistics.status 
-              !=
-              ::GEntity::MeshGenerationStatus::DONE 
-            )
-            &&
-            (
-              aFace->meshMaster() == aFace
-            )
-          ) (*current2D)( aFace );
-          if (optionHandling::optionTrue("debug")) {        
-            gm->writeMSH(
-              dtXmlParser::reference().currentState()
-              +
-              "_"
-              +
-              ptrBoundedVolume()->getLabel()
-              +
-              "_debug.msh", 
-              2.2, false, true
-            );        
-          }
-        }
-      }
-      else dt__throw( preUpdate(), << dt__eval(currentGEntityStr) );
     }        
     //
     // copy slave faces
@@ -388,34 +311,37 @@ namespace dtOO {
         dtMesh3DOperator * current3D,
         dtMesh3DOperator::DownCast(_meshOperator.get(currentOperatorStr) )
       );
-      
-      if (currentGEntityStr == "*") {
-			  dt__forAllRefAuto(rr, aRegion) {
-          if ( 
-            aRegion->_status 
+      dt__forAllRefAuto(rr, aReg) {
+        if ( 
+          (
+            aReg->_status
             !=
             ::GEntity::MeshGenerationStatus::DONE 
-          ) (*current3D)(aRegion);
-          if (optionHandling::optionTrue("debug")) {
-            gm->writeMSH(
-              dtXmlParser::reference().currentState()
-              +
-              "_"
-              +
-              ptrBoundedVolume()->getLabel()
-              +
-              "_debug.msh", 
-              2.2, false, true
-            );
-          }          
-        }    
-      }
-      else {
-			  dt__forAllRefAuto(rr, aReg) {
-          if ( aReg->getPhysicalString() !=  currentGEntityStr ) continue;        
-          (*current3D)( gm->getDtGmshRegionByPhysical(currentGEntityStr) );
-        }
-      }
+          )
+          &&
+          (
+            stringPrimitive::matchWildcard(
+              currentGEntityStr, gm->getPhysicalString(aReg)
+            )
+          )
+          &&
+          (
+            aReg->meshMaster() == aReg
+          )
+        ) (*current3D)(aReg);
+        if (optionHandling::optionTrue("debug")) {
+          gm->writeMSH(
+            dtXmlParser::reference().currentState()
+            +
+            "_"
+            +
+            ptrBoundedVolume()->getLabel()
+            +
+            "_debug.msh", 
+            2.2, false, true
+          );
+        }          
+      }       
     }    
     
     ptrBoundedVolume()->setMeshed();

@@ -54,6 +54,10 @@ namespace dtOO {
       std::string const signStart, std::string const signEnd, 
       std::string const str    
     );
+    static bool isWildcard( std::string const str );
+    static bool matchWildcard(
+      std::string const & pWildStr, std::string const & pStringStr
+    );    
   protected:
     stringPrimitive();       
   private:
@@ -78,6 +82,9 @@ namespace dtOO {
       std::string const & signStart, std::string const & signEnd, 
       std::string const & str
     );
+  protected:    
+    static std::string _WILD;
+    static std::string _WILDSIGN;    
   };
 }
 #endif	/* STRINGPRIMITIVE_H */
