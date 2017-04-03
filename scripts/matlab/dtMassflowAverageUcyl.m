@@ -1,4 +1,4 @@
-function [] = dtMassflowAverageUcyl( filename, nBins )
+function [ucyl, ucyl_ca] = dtMassflowAverageUcyl( filename, nBins )
   ucyl = dtValueVector3Field( dtVector3Field(filename ) ).Cyl
   ucyl_ca = dtCircAverage( ucyl, nBins )
   [tDir, tName, tSuffix] = fileparts(filename);

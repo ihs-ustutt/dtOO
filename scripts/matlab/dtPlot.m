@@ -36,7 +36,15 @@ classdef dtPlot
         fig = obj.fig_;
         %figure(obj.fig_);
         obj.MakeCurrent
-%        epssetup(sizeX, sizeY, 0, [1 1 1], 1, 0);
+        
+        % Veraendern der Figure
+        set(gcf,'PaperType','a4');                          % a4-Papier waehlen
+        set(gcf,'PaperOrientation','portrait');             % Portrait
+        set(gcf,'PaperUnits','centimeters');                % eps-Einheit Zentimeter
+        set(gcf,'PaperPosition', [4 4 sizeX sizeY]);  % Groesse des spaeteren eps-files
+        set(gcf,'Units','centimeters');                     % Figure-Einheit Zentimeter
+        fp=get(gcf,'Position');                             % Figure Pos. holen
+        set(gcf,'Position',[fp(1) fp(2) sizeX sizeY]);% Figure wysiwyg machen
 
         if ~isempty(labelX)
           xlabel(...
@@ -54,7 +62,7 @@ classdef dtPlot
       function [ fig ] = AdjustSize(obj, sizeX, sizeY)
         %figure(obj.fig_);
         obj.MakeCurrent
-        epssetup(sizeX, sizeY, 0, [1 1 1], 1, 0);
+%        epssetup(sizeX, sizeY, 0, [1 1 1], 1, 0);
         fig = obj.fig_;
       end       
       function [] = Close(obj)       
@@ -65,15 +73,16 @@ classdef dtPlot
       end      
       function [] = SaveEps(obj)
         obj.MakeCurrent
-        print(obj.fig_,  '-depsc2', strcat(obj.filename_,'.eps') );
-%         exportfig( ...
-%           obj.fig_, strcat(obj.filename_,'.2.pdf'), 'bounds', 'tight', ...
-%           'Color','rgb','Resolution',30000 ...
-%         );
+%        epssetup(sizeX, sizeY);        
+        print(obj.fig_,  '-depsc2', '-painters', strcat(obj.filename_,'.eps') );
+%       print -depsc2 -painters test3.eps
+%          exportfig( ...
+%            obj.fig_, strcat(obj.filename_,'.eps') ...
+%          );
       end
       function [] = SavePng(obj)
         obj.MakeCurrent
-        print(obj.fig_,  '-dpng', strcat(obj.filename_,'.png'));
+        print(obj.fig_,  '-dpng', '-popengl', strcat(obj.filename_,'.png'));
 %        print(obj.fig_,'-dpdf','-r300', strcat(obj.filename_,'.pdf'));
       end   
       function [] = SaveJpg(obj, varargin)
@@ -82,12 +91,36 @@ classdef dtPlot
           res = varargin{1};
         end        
         obj.MakeCurrent
+
+        oldscreenunits = get(gcf,'Units');
+        oldpaperunits = get(gcf,'PaperUnits');
+        oldpaperpos = get(gcf,'PaperPosition');
+        set(gcf,'Units','pixels');
+        scrpos = get(gcf,'Position');
+        newpos = scrpos/100;
+        set(gcf,'PaperUnits','inches','PaperPosition',newpos)
+%         print('-djpeg', filename, '-r100');
         print( ...
           obj.fig_,  ...
           '-djpeg100', ...
           strcat('-r', num2str(res)), ...
           strcat(obj.filename_,'.jpg') ...
-        ); %-r1200
+        );
+
+        drawnow
+
+        set( ...
+          gcf,'Units',oldscreenunits, 'PaperUnits', oldpaperunits, ...
+          'PaperPosition',oldpaperpos ...
+        );
+     
+        
+%         print( ...
+%           obj.fig_,  ...
+%           '-djpeg100', ...
+%           strcat('-r', num2str(res)), ...
+%           strcat(obj.filename_,'.jpg') ...
+%         ); %-r1200
 %        print(obj.fig_,'-dpdf','-r300', strcat(obj.filename_,'.pdf'));
       end            
       function [] = PlotTextAtPoints(obj, x, y, str, varargin)

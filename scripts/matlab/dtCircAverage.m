@@ -26,15 +26,25 @@ classdef dtCircAverage
         % determine number of bins
         % make sure that no bin is empty
         bins = [];
-        for i=1:obj.nBins_
-          bins = discretize(r, linspace(obj.rMin_, obj.rMax_, obj.nBins_+1));
-          if ( size( unique( sort(bins) ), 1 ) ~= obj.nBins_ )
-            obj.nBins_ = obj.nBins_ - 1;
-            bins = [];
-          else
-            break;
-          end          
+        if ( obj.nBins_ > 0 )
+          for i=1:obj.nBins_
+            bins = discretize(r, linspace(obj.rMin_, obj.rMax_, obj.nBins_+1));
+            if ( size( unique( sort(bins) ), 1 ) ~= obj.nBins_ )
+              obj.nBins_ = obj.nBins_ - 1;
+              bins = [];
+            else
+              break;
+            end          
+          end
+        else
+          obj.nBins_ = abs(obj.nBins_);
+          rs = sort(r);
+          edges = rs(1:floor(length(r)/obj.nBins_)-1:end);
+          edges(1) = min( rs);
+          edges(end) = max( rs);
+          bins = discretize(r, edges);
         end
+        obj.nBins_ = max(bins);
         
         obj.binA_ = zeros(obj.nBins_, size(value,2));
         obj.binQ_ = zeros(obj.nBins_, size(value,2));

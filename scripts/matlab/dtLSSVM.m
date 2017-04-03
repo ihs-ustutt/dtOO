@@ -97,6 +97,11 @@ classdef dtLSSVM < dtIOSystem
       function [ y ] = SimLSSVM( obj, x )
         [y, z, obj.model_] = simlssvm( obj.model_, x );
       end
+      function [ y ] = SimPercentLSSVM( obj, x )
+        %xx = obj.minX_ + x .* ( obj.maxX_ - obj.minX_ );
+        y = SimLSSVM( obj,  obj.minX_ + x .* ( obj.maxX_ - obj.minX_ ));
+        %[y, z, obj.model_] = simlssvm( obj.model_, x );
+      end      
       function [ y ] = SimLSSVMLimitRange( obj, x, range )
         y = [];
         thisXMin = obj.minX_ - range * abs(obj.minX_);
