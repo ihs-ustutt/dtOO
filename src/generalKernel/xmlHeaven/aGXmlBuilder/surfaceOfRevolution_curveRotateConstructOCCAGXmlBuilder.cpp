@@ -82,7 +82,7 @@ namespace dtOO {
     }
     ptrHandling<dtSurface> dtS;
 
-    if (!hasAngle) {
+    if ( !hasAngle || (angle>=2.*M_PI) ) {
       dtS.reset(
         surfaceOfRevolution_curveRotateConstructOCC(*cc, pp, vv).result()
       );
