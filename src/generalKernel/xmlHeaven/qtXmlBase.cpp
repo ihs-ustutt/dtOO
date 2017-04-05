@@ -47,16 +47,28 @@ namespace dtOO {
       int replaceEnd = foundEnd-found+1;
       
       //
-      // replace constValue string by value
+      // extract constValue label and option
+      std::string cVLabel
+      = 
+      returnExpression.substr(replaceStart+1, replaceEnd-2);
+      dt__debug( replaceDependencies(), << "cVLabel = " << cVLabel );
+      if ( stringContains("[", cVLabel) ) {
+        std::string cVOption
+        = 
+        stringPrimitive::getStringBetweenAndRemove("[", "]", &cVLabel);
+        dt__debug( replaceDependencies(), << "cVOption = " << cVOption );
+        //
+        // add array index i -> label_i
+        //
+        cVLabel = cVLabel + "_" + intToString( muParseStringInt(cVOption) );
+      }
+      dt__debug( replaceDependencies(), << "cVLabel = " << cVLabel );
+      
       //
+      // replace constValue string by value
+      //      
       returnExpression.replace(
-        replaceStart, 
-        replaceEnd, 
-        floatToString(
-          cV->get(
-            returnExpression.substr(replaceStart+1, replaceEnd-2)
-          )->getValue()
-        )
+        replaceStart, replaceEnd, floatToString( cV->get(cVLabel)->getValue() )
       );
 
       //
