@@ -1,4 +1,4 @@
-#include "dtOCCConic.h"
+#include "dtOCCCircle.h"
 
 #include <logMe/logMe.h>
 #include "dtOCCCurveBase.h"
@@ -6,42 +6,42 @@
 
 #include <Standard_TypeDef.hxx>
 #include <gp_Pnt.hxx>
-#include <Geom_Conic.hxx>
+#include <Geom_Curve.hxx>
 #include <Precision.hxx>
 
 namespace dtOO {
-	dtOCCConic::dtOCCConic() : dtOCCCurve() {
+	dtOCCCircle::dtOCCCircle() : dtOCCCurve() {
 		_ptr = NULL;		
 	}
 
-	dtOCCConic::dtOCCConic(dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_Conic const, _ptr);	
+	dtOCCCircle::dtOCCCircle(dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);	
 	}
 
-	dtOCCConic::~dtOCCConic() {
+	dtOCCCircle::~dtOCCCircle() {
 	}
 
-  dtCurve * dtOCCConic::clone( void ) const {
-		return new dtOCCConic( OCCRef() );		
+  dtCurve * dtOCCCircle::clone( void ) const {
+		return new dtOCCCircle( OCCRef() );		
 	}
 	
-  int dtOCCConic::order( void ) const {
+  int dtOCCCircle::order( void ) const {
 		dt__throwUnexpected(order());			
 	}
 	
-  int dtOCCConic::nControlPoints( void ) const {
-		return 0;			
+  int dtOCCCircle::nControlPoints( void ) const {
+		return 0;
 	}
 	
-  dtPoint3 dtOCCConic::controlPoint( int const nPoint ) const {
+  dtPoint3 dtOCCCircle::controlPoint( int const nPoint ) const {
 		dt__throwUnexpected(controlPoint());		
 	}
 	
-  void dtOCCConic::setControlPoint( int const nPoint, dtPoint3 const point ) {
+  void dtOCCCircle::setControlPoint( int const nPoint, dtPoint3 const point ) {
 		dt__throwUnexpected(setControlPoint());				
 	}
 	
-//  dtCurve * dtOCCConic::bSplineCurve( void ) const {
+//  dtCurve * dtOCCCircle::bSplineCurve( void ) const {
 //		dtCurve * bS;
 //	  if ( !Handle(Geom_Line)::DownCast(_ptr->BasisCurve()).IsNull() )	{
 //			std::vector< dtPoint3 > pVec;

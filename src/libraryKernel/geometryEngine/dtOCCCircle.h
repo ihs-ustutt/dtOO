@@ -1,21 +1,21 @@
-#ifndef DTOCCCONIC_H
-#define	DTOCCCONIC_H
+#ifndef dtOCCCircle_H
+#define	dtOCCCircle_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOCCCurve.h"
 
-class Geom_Conic;
+class Geom_Curve;
 
 namespace dtOO {
   class dtOCCCurveBase; 
   
-  class dtOCCConic : public dtOCCCurve {
+  class dtOCCCircle : public dtOCCCurve {
   public:
-    dt__class(dtOCCConic, dtCurve);    
-    dtOCCConic();
-    dtOCCConic(dtOCCCurveBase const & orig);
-    virtual ~dtOCCConic();
+    dt__class(dtOCCCircle, dtCurve);    
+    dtOCCCircle();
+    dtOCCCircle(dtOCCCurveBase const & orig);
+    virtual ~dtOCCCircle();
     virtual dtCurve * clone( void ) const;
     virtual int order( void ) const;
     virtual int nControlPoints( void ) const;
@@ -23,9 +23,9 @@ namespace dtOO {
     virtual void setControlPoint( int const nPoint, dtPoint3 const point );  
 //    dtCurve * bSplineCurve( void ) const;
   private:
-    Geom_Conic const * _ptr;
+    Geom_Curve const * _ptr;
   };
 }
 
-#endif	/* DTOCCCONIC_H */
+#endif	/* dtOCCCircle_H */
 

@@ -16,7 +16,7 @@ SET(HEADERS
   geometryEngine/dtOCCBSplineCurve.h
   geometryEngine/dtOCCBezierCurve.h
   geometryEngine/dtOCCTrimmedCurve.h
-  geometryEngine/dtOCCConic.h
+  geometryEngine/dtOCCCircle.h
   geometryEngine/dtOCCLine.h
   geometryEngine/dtOCCSurfaceBase.h
   geometryEngine/dtOCCSurface.h
@@ -77,6 +77,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_convertOCC.h
+  geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
@@ -136,7 +137,7 @@ SET(SOURCES
   geometryEngine/dtOCCBSplineCurve.cpp
   geometryEngine/dtOCCBezierCurve.cpp
   geometryEngine/dtOCCTrimmedCurve.cpp
-  geometryEngine/dtOCCConic.cpp
+  geometryEngine/dtOCCCircle.cpp
   geometryEngine/dtOCCLine.cpp
   geometryEngine/dtOCCSurfaceBase.cpp
   geometryEngine/dtOCCSurface.cpp
@@ -197,6 +198,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_convertOCC.cpp
+  geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp
