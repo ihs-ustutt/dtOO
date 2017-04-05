@@ -6,7 +6,6 @@
 #include "dtOCCRectangularTrimmedSurface.h"
 #include "dtOCCBezierCurve.h"
 #include "dtOCCBSplineCurve.h"
-#include "dtOCCConic.h"
 #include "dtOCCTrimmedCurve.h"
 #include <logMe/dtMacros.h>
 
