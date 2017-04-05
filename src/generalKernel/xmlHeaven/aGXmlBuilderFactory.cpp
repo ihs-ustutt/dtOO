@@ -34,6 +34,7 @@
 #include "aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.h"
+#include "aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.h"
 
 namespace dtOO {
   dt__pH(aGXmlBuilderFactory) aGXmlBuilderFactory::_instance(NULL);
@@ -165,6 +166,9 @@ namespace dtOO {
     );
     _instance->_builder.push_back( 
       new geomCurve_map2dTo3dIntersectAGXmlBuilder() 
+    );
+    _instance->_builder.push_back(
+      new circle_radiusCoordinateSystemOCCAGXmlBuilder()
     );
     
     return _instance.get();
