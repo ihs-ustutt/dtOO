@@ -40,9 +40,7 @@ namespace dtOO {
   private:
     void setNElements( int const nE );    
   private:
-    ptrHandling< map1dTo3d > _mm;
-    bool _isSeamU;
-    bool _isSeamV;    
+    ptrHandling< map1dTo3d > _mm;    
   };
 }
 #endif	/* DTGMSHEDGE_H */
