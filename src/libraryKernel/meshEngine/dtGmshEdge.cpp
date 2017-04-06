@@ -25,7 +25,9 @@ namespace dtOO {
 	
   dtGmshEdge::dtGmshEdge(::GModel *m, int tag, ::GVertex *v1, ::GVertex *v2)
     : GEdge(m, tag, v1, v2) {
-		
+		if (v1) l_vertices.push_back( v1 );
+    if (v2) l_vertices.push_back( v2 );
+    
     if ( 
       !analyticGeometry::inXYZTolerance(
         dtPoint3(v1->x(), v1->y(), v1->z()), dtPoint3(v2->x(), v2->y(), v2->z())
@@ -158,6 +160,10 @@ namespace dtOO {
       bb.second.x(), bb.second.y(), bb.second.z()
     );
   }
+  
+  std::list< ::GVertex * > dtGmshEdge::vertices( void ) const { 
+    return l_vertices; 
+  }    
       
   bool dtGmshEdge::isEqual( 
     ::GEdge const * const ge0, ::GEdge const * const ge1 

@@ -4,12 +4,15 @@
 #include <logMe/dtMacros.h>
 #include <xmlHeaven/qtXmlPrimitive.h>
 #include <xmlHeaven/dtXmlParser.h>
+#include <meshEngine/dtGmshVertex.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtMeshOperator.h>
 #include <meshEngine/dtMeshOperatorFactory.h>
+#include <meshEngine/dtMesh0DOperator.h>
+#include <meshEngine/dtMeshGVertex.h>
 #include <meshEngine/dtMesh1DOperator.h>
 #include <meshEngine/dtMesh2DOperator.h>
 #include <meshEngine/dtMesh3DOperator.h>
@@ -130,12 +133,7 @@ namespace dtOO {
     if ( ptrBoundedVolume()->isMeshed() ) return;
     
     ::GModel::setCurrent(gm);
-    
-    //
-    // 0D
-    //
-    gm->mesh(0);
-    
+        
     std::list< dtGmshEdge * > ee;
     std::list< dtGmshFace * > ff;
     std::list< dtGmshRegion * > rr;   
@@ -184,6 +182,42 @@ namespace dtOO {
       ff.unique();
       rr.unique();
     }    
+    
+    gm->prepareToMesh();
+  
+    //
+    // 0D
+    //
+//    gm->mesh(0);
+    std::list< dtGmshVertex * > vv 
+    = 
+    dtGmshModel::cast2DtGmshVertex( gm->vertices() );
+    
+    dt__forAllRefAuto(vv, aVertex) {  
+      if ( 
+        (
+          aVertex->_status != ::GEntity::MeshGenerationStatus::DONE 
+        )
+        &&
+        (
+          aVertex->meshMaster() == aVertex
+        )
+      )
+      dtMeshGVertex()( aVertex );
+    }
+
+    //
+    // corresponding vertices
+    //
+	  dt__forAllRefAuto(vv, aVertex) {    
+      if ( aVertex->meshMaster() != aVertex ) {
+        dtMesh0DOperator::correspondingVertex( 
+          dtGmshModel::cast2DtGmshVertex( aVertex->meshMaster()), aVertex 
+        );
+      }
+    }    
+    
+    gm->prepareToMesh();
     
     //
     // 1D
@@ -237,6 +271,8 @@ namespace dtOO {
         );
       }
     }
+    
+    gm->prepareToMesh();
     
     //
     // 2D
@@ -297,6 +333,8 @@ namespace dtOO {
         );
       }
     }    
+    
+    gm->prepareToMesh();
 
     //
     // 3D
@@ -341,8 +379,8 @@ namespace dtOO {
             2.2, false, true
           );
         }          
-      }       
-    }    
+      }
+    }
     
     ptrBoundedVolume()->setMeshed();
   }

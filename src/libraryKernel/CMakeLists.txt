@@ -86,9 +86,11 @@ SET(HEADERS
   meshEngine/dtGmshModel.h
   meshEngine/dtMeshOperator.h
   meshEngine/dtMeshOperatorFactory.h
+  meshEngine/dtMesh0DOperator.h
   meshEngine/dtMesh1DOperator.h
   meshEngine/dtMesh2DOperator.h
   meshEngine/dtMesh3DOperator.h
+  meshEngine/dtMeshGVertex.h
   meshEngine/dtMeshGEdge.h
   meshEngine/dtMeshFreeGradingGEdge.h
   meshEngine/dtMeshGFace.h
@@ -207,9 +209,11 @@ SET(SOURCES
   meshEngine/dtGmshModel.cpp
   meshEngine/dtMeshOperatorFactory.cpp
   meshEngine/dtMeshOperator.cpp
+  meshEngine/dtMesh0DOperator.cpp
   meshEngine/dtMesh1DOperator.cpp
   meshEngine/dtMesh2DOperator.cpp
   meshEngine/dtMesh3DOperator.cpp
+  meshEngine/dtMeshGVertex.cpp
   meshEngine/dtMeshGEdge.cpp
   meshEngine/dtMeshFreeGradingGEdge.cpp
   meshEngine/dtMeshGFace.cpp

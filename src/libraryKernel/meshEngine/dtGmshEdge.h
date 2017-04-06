@@ -36,11 +36,13 @@ namespace dtOO {
     void addVertex( ::GVertex * gv);
     void addElement( ::MElement * me );
     virtual ::SBoundingBox3d bounds( void ) const;
+    virtual std::list< ::GVertex * > vertices( void ) const;
     static bool isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 );
   private:
-    void setNElements( int const nE );    
+    void setNElements( int const nE );
   private:
     ptrHandling< map1dTo3d > _mm;    
+    std::list< ::GVertex * > l_vertices;
   };
 }
 #endif	/* DTGMSHEDGE_H */

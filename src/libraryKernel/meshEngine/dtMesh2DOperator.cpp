@@ -3,7 +3,7 @@
 #include <xmlHeaven/qtXmlPrimitive.h>
 #include "dtGmshFace.h"
 #include <gmsh/meshGEdge.h>
-void copyMesh(GFace *source, GFace *target, bool fastCopy);
+void copyMesh(GFace *source, GFace *target);
 
 namespace dtOO {
   dtMesh2DOperator::dtMesh2DOperator() {
@@ -28,9 +28,6 @@ namespace dtOO {
   }
 
   void dtMesh2DOperator::copyMesh( dtGmshFace * from, dtGmshFace *to) {
-    //
-    //@todo: Should be checked if this fast copy method is ok!
-    //
-    ::copyMesh( (::GFace *) from, (::GFace *) to, false );
+    ::copyMesh( (::GFace *) from, (::GFace *) to );
   }
 }

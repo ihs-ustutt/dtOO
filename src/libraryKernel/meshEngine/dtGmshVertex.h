@@ -24,6 +24,8 @@ namespace dtOO {
     dtPoint3 cast2DtPoint3( void ) const;
     void addGEntity( ::GEntity * const gEnt );
     static bool isEqual( ::GVertex const * const gv0, ::GVertex const * const gv1 );
+  public:
+    mutable ::GEntity::MeshGenerationStatus _status;
   private:
     dtPoint3 _dtP;
   };

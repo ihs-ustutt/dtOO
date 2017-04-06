@@ -90,7 +90,7 @@ namespace dtOO {
     //
     void addIfRegionToGmshModel(
       map3dTo3d const * const region, int * const tag
-    );    
+    );
     //
     // add general entities
     //
@@ -102,6 +102,7 @@ namespace dtOO {
     //
     // mesh entities
     //
+    void prepareToMesh( void );
     void meshVertex( int const tag = 0 );
     void meshEdge( int const tag );
     void meshFace( int const tag );

@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include <progHelper.h>
 
+#include <gmsh/HighOrder.h>
 #include <gmsh/GEdge.h>
 #include <gmsh/GFace.h>
 #include <gmsh/GVertex.h>
@@ -226,8 +227,7 @@ namespace dtOO {
 		
 		addIfRegionToGmshModel(region, tag, gf, ori);
   }
-  
-
+    
   void dtGmshModel::addIfRegionToGmshModel(
     map3dTo3d const * const region, int * const tag
   ) {
@@ -498,6 +498,14 @@ namespace dtOO {
       dtge->meshTransfiniteWNElements(type, 1./coeff, nEl);
     }
   }
+  
+  void dtGmshModel::prepareToMesh( void ) {
+    // Change any high order elements back into first order ones    
+    // Initialize pseudo random mesh generator with the same seed
+    srand(1);
+    SetOrder1(this);    
+  }
+  
   void dtGmshModel::meshVertex( int const tag ) {
     if (tag == 0) {
       this->mesh(0);
