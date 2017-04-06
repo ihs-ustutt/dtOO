@@ -16,6 +16,8 @@ namespace dtOO {
     int nRanks( void ) const;
     bool initialized( void ) const;
     static void mpiBarrier( void );
+    bool gDebug( void ) const;
+    void setGDebug( void );
   private:
     staticPropertiesHandler();
   private:
@@ -23,6 +25,7 @@ namespace dtOO {
     int _thisRank;
     int _nRanks;
     bool _initialized;
+    bool _gDebug;
   };
 }
 #endif	/* staticPropertiesHandler_H */

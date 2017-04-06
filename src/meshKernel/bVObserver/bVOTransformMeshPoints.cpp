@@ -331,7 +331,7 @@ namespace dtOO {
       }
     }
   
-    if ( optionHandling::optionTrue("debug") ) {
+    if ( optionHandling::debugTrue() ) {
       gm->writeMSH( 
         constRefBoundedVolume().getLabel()+"_"+className()+"_debug.msh", 
         2.2, 

@@ -217,7 +217,7 @@ namespace dtOO {
     }
     mW.distribute();
 
-    if (optionHandling::optionTrue("debug")) {
+    if (optionHandling::debugTrue()) {
       dt__onlyMaster {
         gm->writeMSH(
           ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
@@ -361,7 +361,7 @@ namespace dtOO {
     }
     mW.distribute();
     
-    if (optionHandling::optionTrue("debug")) {
+    if (optionHandling::debugTrue()) {
       dt__onlyMaster {
         gm->writeMSH(
           ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true
@@ -487,7 +487,7 @@ namespace dtOO {
     }
     mW.distribute();  
 
-    if (optionHandling::optionTrue("debug")) {
+    if (optionHandling::debugTrue()) {
       dt__onlyMaster {
         gm->writeMSH(
           ptrBoundedVolume()->getLabel()+"_building.msh", 2.2, false, true

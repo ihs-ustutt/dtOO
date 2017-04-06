@@ -2,6 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
@@ -226,5 +227,12 @@ namespace dtOO {
       }
     }
     return group;
-  }  	
+  }
+  
+  bool optionHandling::debugTrue( void ) const {
+    return 
+      staticPropertiesHandler::getInstance()->gDebug()
+      ||
+      optionTrue("debug");
+  }
 }

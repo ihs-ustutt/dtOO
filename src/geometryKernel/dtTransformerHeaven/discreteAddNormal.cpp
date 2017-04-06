@@ -50,7 +50,7 @@ namespace dtOO {
         //
         // append wire if debug option set
         //
-        if ( optionHandling::optionTrue("debug") ) {
+        if ( optionHandling::debugTrue() ) {
           dt__forAllRefAuto(anOffset.resultWire(), aCurve) {
             retV.push_back( aCurve.clone() );
           }

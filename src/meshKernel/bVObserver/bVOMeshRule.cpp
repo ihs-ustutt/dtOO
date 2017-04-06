@@ -244,7 +244,7 @@ namespace dtOO {
             &&
             (aEdge->meshMaster() == aEdge)
           ) (*current1D)(aEdge); 
-          if (optionHandling::optionTrue("debug")) {
+          if (optionHandling::debugTrue()) {
             gm->writeMSH(
               dtXmlParser::reference().currentState()
               +
@@ -309,7 +309,7 @@ namespace dtOO {
             aFace->meshMaster() == aFace
           )
         ) (*current2D)(aFace);
-        if (optionHandling::optionTrue("debug")) {
+        if (optionHandling::debugTrue()) {
           gm->writeMSH(
             dtXmlParser::reference().currentState()
             +
@@ -367,7 +367,7 @@ namespace dtOO {
             aReg->meshMaster() == aReg
           )
         ) (*current3D)(aReg);
-        if (optionHandling::optionTrue("debug")) {
+        if (optionHandling::debugTrue()) {
           gm->writeMSH(
             dtXmlParser::reference().currentState()
             +

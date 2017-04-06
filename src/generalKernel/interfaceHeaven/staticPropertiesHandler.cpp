@@ -13,6 +13,9 @@ namespace dtOO {
   
   staticPropertiesHandler::staticPropertiesHandler() 
   : optionHandling(), _initialized(false) {
+    dt__info(
+      staticPropertiesHandler(), << "Create staticPropertiesHandler ..."
+    );
     setOption("reparamOnFace_precision", "1.e-2");
     setOption("reparamInVolume_precision", "1.e-2");
     setOption("reparam_internalRestarts", "10");
@@ -41,10 +44,14 @@ namespace dtOO {
     setOption("map1dTo3d_deltaPer", "0.01");    
     setOption("map2dTo3d_deltaPer", "0.01");    
     setOption("map3dTo3d_deltaPer", "0.01");   
+    
+    _gDebug = false;
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {
-    if (_pH.isNull()) _pH.reset( new staticPropertiesHandler() );
+    if (_pH.isNull()) {    
+      _pH.reset( new staticPropertiesHandler() );
+    }
     return _pH.get();
   }
   
@@ -72,8 +79,9 @@ namespace dtOO {
       << dt__eval(omp_get_max_threads()) << std::endl
       << dt__eval(mpiParallel()) << std::endl
       << dt__eval(thisRank()) << std::endl
-      << dt__eval(nRanks())
-    );    
+      << dt__eval(nRanks()) << std::endl
+      << dt__eval(_gDebug)
+    );
     
     _initialized = true;
   }
@@ -102,5 +110,13 @@ namespace dtOO {
   
   bool staticPropertiesHandler::initialized( void ) const {
     return _initialized;
+  }
+  
+  bool staticPropertiesHandler::gDebug( void ) const {
+    return _gDebug;
+  }
+  
+  void staticPropertiesHandler::setGDebug( void ) {
+    _gDebug = true;
   }
 }

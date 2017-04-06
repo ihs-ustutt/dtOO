@@ -720,7 +720,7 @@ namespace dtOO {
     gr->addFace( gf, 1 );
     gf->addRegion( gr );
 
-    if ( optionTrue("debug")  ) {
+    if ( debugTrue()  ) {
       gm.writeMSH(getLabel()+"_0.msh", 4.0, false, true);
     }
     

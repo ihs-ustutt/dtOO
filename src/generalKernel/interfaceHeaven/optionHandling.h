@@ -53,6 +53,7 @@ namespace dtOO {
       bool hasOption(std::string const name) const;
       optionGroup getOptionGroup( std::string const name ) const;
       optionGroupInt getOptionGroupInt( std::string const name ) const;
+      bool debugTrue( void ) const;
     private:
       std::vector< std::string > _optionName;
       std::vector< std::string > _optionValue;

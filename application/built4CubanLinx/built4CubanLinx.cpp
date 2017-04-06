@@ -193,6 +193,10 @@ std::string parseCommand(
     ss 
     << parser.replaceDependencies(in.str(), &bC, &cV, &aF, &aG) << std::endl;
 		return ss.str();    
+  }
+  dt__commandIf( aRule, help, "gDebug", "Set global debug option") {
+    staticPropertiesHandler::getInstance()->setGDebug();
+    return "";
   }    
   dt__commandIf( aRule, help, "commandAndWait", "call system command" ) {
     dt__throwIfNoClass(addRule.size()!=1, parseCommand());
