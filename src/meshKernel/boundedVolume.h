@@ -40,12 +40,15 @@ namespace dtOO {
     virtual void makePreGrid(void) = 0;
     bool isMeshed( void ) const;
     void setMeshed( void );
+    bool isPreMeshed( void ) const;
+    void setPreMeshed( void );    
     virtual std::vector< std::string > getMeshTags( void ) const = 0;
 	  virtual dtGmshFace * getFace( std::string const & tag ) const = 0;
     virtual dtGmshRegion * getRegion( std::string const & tag ) const = 0;
     virtual dtGmshModel * getModel( void ) const = 0;
   private:
     bool _meshed;
+    bool _preMeshed;
   };
 }
 #endif	/* boundedVolume_H */

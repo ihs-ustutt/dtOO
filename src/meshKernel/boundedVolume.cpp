@@ -63,4 +63,12 @@ namespace dtOO {
   void boundedVolume::setMeshed( void ) {
 		_meshed = true;
 	}
+
+  bool boundedVolume::isPreMeshed( void ) const {
+		return _preMeshed;
+	}
+	
+  void boundedVolume::setPreMeshed( void ) {
+		_preMeshed = true;
+	}  
 }

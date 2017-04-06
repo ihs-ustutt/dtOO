@@ -235,6 +235,11 @@ namespace dtOO {
 	}
 
 	void gmshBoundedVolume::makePreGrid(void) {
+    //
+    // check if already pre meshed
+    //
+    if ( isPreMeshed() ) return;
+    
 		//
 		// set current model
 		//
@@ -326,10 +331,25 @@ namespace dtOO {
 		_gm->setMaxElementNumber(0);
     
 		bVOSubject::preNotify();
+    
+    //
+    // set pre meshed flag
+    //
+    setPreMeshed();
 	}  
 
   void gmshBoundedVolume::makeGrid(void) {
-		//
+    //
+    // check if already meshed
+    //
+    if ( isMeshed() ) return;
+    
+    //
+    // check if pre meshed
+    //
+		if ( !isPreMeshed() ) makePreGrid();
+    
+    //
 		// set current model
 		//
 		::GModel::setCurrent( _gm );
