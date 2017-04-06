@@ -59,14 +59,26 @@ namespace dtOO {
       );
     }
     
-    _relTol = 1.0;
-    if ( dtXmlParserBase::hasAttribute("relative_tolerance", element) ) {
+    _relTol = std::numeric_limits<float>::max();
+    if ( 
+      dtXmlParserBase::hasAttribute("relative_tolerance", element)
+    ) {
       _relTol
       =
       dtXmlParserBase::getAttributeFloatMuParse(
         "relative_tolerance", element, cV
       );
     }
+    _absTol = std::numeric_limits<float>::max();
+    if ( 
+      dtXmlParserBase::hasAttribute("absolute_tolerance", element)
+    ) {
+      _absTol
+      =
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "absolute_tolerance", element, cV
+      );
+    }    
   }
   
   void bVOTransformMeshPoints::postUpdate( void ) {
@@ -318,7 +330,28 @@ namespace dtOO {
         gm->add( ge_newOld[ gr ] );
       }
     }
+  
+    if ( optionHandling::optionTrue("debug") ) {
+      gm->writeMSH( 
+        constRefBoundedVolume().getLabel()+"_"+className()+"_debug.msh", 
+        2.2, 
+        false, 
+        true
+      );
+    }
     
-    gm->removeDuplicateMeshVertices( _relTol );
+    SBoundingBox3d bbox = gm->bounds();
+    float lc = bbox.empty() ? 1. : norm(SVector3(bbox.max(), bbox.min()));  
+    
+    dt__info(
+      postUpdate(),
+      << "relTol = " << _relTol << std::endl
+      << "absTol = " << _absTol << std::endl
+      << "lc = " << lc << std::endl
+      << "absTol / lc = " << _absTol / lc << std::endl
+      << "==> min(absTol / lc, relTol) = " << std::min( _absTol/lc, _relTol )
+    );
+    
+    gm->removeDuplicateMeshVertices( std::min( _absTol / lc, _relTol ) );
   }
 }

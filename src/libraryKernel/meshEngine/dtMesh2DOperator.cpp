@@ -31,6 +31,6 @@ namespace dtOO {
     //
     //@todo: Should be checked if this fast copy method is ok!
     //
-    ::copyMesh( (::GFace *) from, (::GFace *) to, true );
+    ::copyMesh( (::GFace *) from, (::GFace *) to, false );
   }
 }
