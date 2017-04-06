@@ -238,9 +238,17 @@ namespace dtOO {
     tfo[15] = 1;
     
     double scale = 1.;
+    double minDistance = std::numeric_limits< double >::max();
+    double maxDistance = std::numeric_limits< double >::min();
     dt__forAllIndex(masterVertex, ii) {
-      ::SPoint3 xyzOri(masterVertex[ii]->x(), masterVertex[ii]->y(), masterVertex[ii]->z());
-      ::SPoint3 xyzSlv(slaveVertex[ii]->x(), slaveVertex[ii]->y(), slaveVertex[ii]->z());
+      ::SPoint3 xyzOri(
+        masterVertex[ii]->x(), masterVertex[ii]->y(), masterVertex[ii]->z()
+      );
+      ::SPoint3 xyzSlv( 
+        slave_master_v[ masterVertex[ii] ]->x(), 
+        slave_master_v[ masterVertex[ii] ]->y(),
+        slave_master_v[ masterVertex[ii] ]->z()
+      );      
       ::SPoint3 xyzTfo(0,0,0);
       int idx = 0;
       for (int i=0;i<3;i++) {
@@ -249,8 +257,14 @@ namespace dtOO {
       }
       
       //
-      // hack to handle very high precision in gmsh
+      // get min and max distance of rotating vertices
       //
+      minDistance = std::min( xyzSlv.distance(xyzTfo), minDistance );
+      maxDistance = std::max( xyzSlv.distance(xyzTfo), maxDistance );
+      
+      //
+      // hack to handle very high precision in gmsh
+      //      
       if (
         xyzSlv.distance(xyzTfo) 
         > 
@@ -276,6 +290,17 @@ namespace dtOO {
         );
       }
     }
+    
+    SBoundingBox3d bbox = gm->bounds();
+    double lc = bbox.empty() ? 1. : norm(SVector3(bbox.max(), bbox.min()));  
+    dt__info(
+      preUpdate(),
+      << "lc = " << lc << std::endl
+      << "minDistance = " << minDistance << std::endl
+      << "maxDistance = " << maxDistance << std::endl
+      << "==> tolerance = minDistance / lc = " << minDistance/lc << std::endl
+      << "==> tolerance = maxDistance / lc = " << maxDistance/lc
+    );
     
     double const gTol = CTX::instance()->geom.tolerance;
     if ( optionHandling::optionTrue("force") ) {
