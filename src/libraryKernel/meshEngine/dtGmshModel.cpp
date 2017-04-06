@@ -505,55 +505,6 @@ namespace dtOO {
     srand(1);
     SetOrder1(this);    
   }
-  
-  void dtGmshModel::meshVertex( int const tag ) {
-    if (tag == 0) {
-      this->mesh(0);
-    }
-    else {
-      dt__info(
-        meshVertex(), 
-        << dt__eval(tag) << std::endl
-        << "Should be 0.");
-    }
-  }
-  
-  void dtGmshModel::meshEdge( int const tag ) {
-    dtGmshEdge * dtge = getDtGmshEdgeByTag(tag);   
-    if ( dtge->meshStatistics.status == ::GEntity::PENDING ) {
-      dtMeshGEdge()(dtge);
-    }
-  }
-  
-  void dtGmshModel::meshFace( int const tag ) {
-    dtGmshFace * dtgf = getDtGmshFaceByTag(tag);
-    
-    std::list< ::GEdge * > ee = dtgf->edges();
-    std::list< ::GEdge * >::iterator e_it = ee.begin();
-    for ( e_it; e_it != ee.end(); ++e_it) meshEdge( (*e_it)->tag() );
-    
-    if ( dtgf->meshStatistics.status == ::GEntity::PENDING ) {
-      dtMeshGFace()(dtgf);
-    }
-  }
-  
-  void dtGmshModel::meshRegion( int const tag ) {
-    dtGmshRegion * dtgr = getDtGmshRegionByTag(tag);
-    
-    std::list< ::GFace * > ff = dtgr->faces();
-    std::list< ::GFace * >::iterator f_it = ff.begin();
-    for ( f_it; f_it != ff.end(); ++f_it) meshFace( (*f_it)->tag() );
-    
-		if (dtgr->_status == ::GEntity::MeshGenerationStatus::PENDING) {
-      dtMeshGRegion()(dtgr);
-		}
-		
-  }
-	
-	void dtGmshModel::meshRegion( void ) {
-		std::list< ::GRegion * > rr = regions();
-		dt__forAllIter(std::list< ::GRegion * >, rr, it) meshRegion((*it)->tag());
-	}
 
   int dtGmshModel::alreadyInModel( ::GVertex const * const gv ) const {
 		for (
@@ -1361,55 +1312,6 @@ namespace dtOO {
     ) regionL.push_back( *r_it );
 
 		return regionL;
-	}
-	
-  void dtGmshModel::meshPhysical(int const & dim) {
-		if (dim == 0) {
-			GModel::mesh(0);
-      if (!_debug.empty()) writeMSH(_debug, 2.2, false, true);      
-		}
-		else if (dim == 1) {
-			std::list< ::GEdge * > ee = edges();
-			dt__forAllIter(std::list< ::GEdge * >, ee, it) {
-				if ( (*it)->getPhysicalEntities().size() != 0 ) {
-          if (dtGmshEdge::ConstDownCast(*it)) {
-            dt__info(
-              meshPhysical(),
-              << "Meshing edge " 
-              << dtGmshEdge::ConstDownCast(*it)->getMap1dTo3d()->getLabel()
-            );
-          }
-					meshEdge( (*it)->tag() );
-          if (!_debug.empty()) writeMSH(_debug, 2.2, false, true);
-				}
-			}
-		}
-		else if (dim == 2) {
-			std::list< ::GFace * > ff = faces();
-			dt__forAllIter(std::list< ::GFace * >, ff, it) {
-				if ( (*it)->getPhysicalEntities().size() != 0 ) {
-          if (dtGmshFace::ConstDownCast(*it)) {
-            dt__info(
-              meshPhysical(),
-              << "Meshing face " 
-              << dtGmshFace::ConstDownCast(*it)->getMap2dTo3d()->getLabel()
-            );
-          }          
-					meshFace( (*it)->tag() );
-          if (!_debug.empty()) writeMSH(_debug, 2.2, false, true);          
-				}
-			}			
-		}
-		else if (dim == 3) {
-			std::list< ::GRegion * > rr = regions();
-			dt__forAllIter(std::list< ::GRegion * >, rr, it) {
-				if ( (*it)->getPhysicalEntities().size() != 0 ) {
-					meshRegion( (*it)->tag() );
-          if (!_debug.empty()) writeMSH(_debug, 2.2, false, true);          
-				}
-			}	
-		}
-		else dt__throw( meshPhysical(), << dt__eval(dim) );
 	}
 
   void dtGmshModel::untagPhysical( ::GEntity * const ge ) {

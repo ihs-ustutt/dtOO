@@ -24,7 +24,7 @@
 #include <gmsh/Field.h>
 
 namespace dtOO {
-	gmshBoundedVolume::gmshBoundedVolume() {
+	gmshBoundedVolume::gmshBoundedVolume() : boundedVolume() {
 	  GmshInitialize();		
 	}
 
@@ -55,8 +55,8 @@ namespace dtOO {
 
     ::GModel::setCurrent( _gm );		
     
-    if (optionHandling::hasOption("debug")) {
-      _gm->setDebug(optionHandling::getOption("debug"));
+    if (optionHandling::debugTrue()) {
+      _gm->setDebug( getLabel()+"_debug.msh" );
     };
 	}	
 	
@@ -234,12 +234,7 @@ namespace dtOO {
 		}    
 	}
 
-	void gmshBoundedVolume::makePreGrid(void) {
-    //
-    // check if already pre meshed
-    //
-    if ( isPreMeshed() ) return;
-    
+	void gmshBoundedVolume::makePreGrid(void) {    
 		//
 		// set current model
 		//
@@ -333,43 +328,30 @@ namespace dtOO {
 		bVOSubject::preNotify();
     
     //
-    // set pre meshed flag
+    // set pre meshed
     //
     setPreMeshed();
 	}  
 
   void gmshBoundedVolume::makeGrid(void) {
-    //
-    // check if already meshed
-    //
-    if ( isMeshed() ) return;
-    
-    //
-    // check if pre meshed
-    //
-		if ( !isPreMeshed() ) makePreGrid();
+    if ( !isPreMeshed() ) makePreGrid();
     
     //
 		// set current model
 		//
 		::GModel::setCurrent( _gm );
     
-    //
-    // meshing
-    //
-    if ( !optionHandling::optionTrue("defer_mesh_0") ) _gm->meshPhysical(0);
-    if ( !optionHandling::optionTrue("defer_mesh_1") ) _gm->meshPhysical(1);
-    if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
-    if ( !optionHandling::optionTrue("defer_mesh_3") ) _gm->meshPhysical(3);
+//    //
+//    // meshing
+//    //
+//    if ( !optionHandling::optionTrue("defer_mesh_0") ) _gm->meshPhysical(0);
+//    if ( !optionHandling::optionTrue("defer_mesh_1") ) _gm->meshPhysical(1);
+//    if ( !optionHandling::optionTrue("defer_mesh_2") ) _gm->meshPhysical(2);
+//    if ( !optionHandling::optionTrue("defer_mesh_3") ) _gm->meshPhysical(3);
 
     //
     // notify observers
     //
     boundedVolume::postNotify();
-
-    //
-    // mark as meshed
-    //
-    boundedVolume::setMeshed();			
   }  
 }

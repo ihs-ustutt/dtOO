@@ -13,6 +13,7 @@
 namespace dtOO {  
   boundedVolume::boundedVolume() { 
 		_meshed = false;
+    _preMeshed = false;
   }
 
   boundedVolume::~boundedVolume() {
@@ -61,6 +62,7 @@ namespace dtOO {
 	}
 	
   void boundedVolume::setMeshed( void ) {
+    dt__info(setMeshed(), << "Set " << getLabel() << " -> meshed.");
 		_meshed = true;
 	}
 
@@ -69,6 +71,7 @@ namespace dtOO {
 	}
 	
   void boundedVolume::setPreMeshed( void ) {
+    dt__info(setPreMeshed(), << "Set " << getLabel() << " -> preMeshed.");
 		_preMeshed = true;
 	}  
 }
