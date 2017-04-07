@@ -56,15 +56,32 @@ namespace dtOO {
     ::QDomElement wE = dtXmlParserBase::getChild("Point_3", toBuild);
     dtPoint3 pp = dtXmlParserBase::createDtPoint3( &wE, bC, cV, aF, aG );
     
+    dt__pH(dtCurve) dtC;
+    
     //
     // main direction ( x axis )
     //
-    wE = dtXmlParserBase::getChild("Vector_3", toBuild);
-    dtVector3 xx = dtXmlParserBase::createDtVector3( &wE, bC, cV, aF, aG );
+    std::vector< ::QDomElement > wE_v 
+    = 
+    dtXmlParserBase::getChildVector("Vector_3", toBuild);
     
-    dt__pH(dtCurve) dtC(
-      circle_radiusCoordinateSystemConstructOCC(pp, xx, rr).result()
-    );
+    if (wE_v.size() == 1) {
+      dtVector3 xx = dtXmlParserBase::createDtVector3( &(wE_v[0]), bC, cV, aF, aG );
+    
+      dtC.reset(
+        circle_radiusCoordinateSystemConstructOCC(pp, xx, rr).result()
+      );
+    }
+    else if ( wE_v.size() == 2 ) {
+      dtVector3 nn = dtXmlParserBase::createDtVector3( &(wE_v[0]), bC, cV, aF, aG );
+      dtVector3 xx = dtXmlParserBase::createDtVector3( &(wE_v[1]), bC, cV, aF, aG );      
+      
+      dtC.reset(
+        circle_radiusCoordinateSystemConstructOCC(pp, nn, xx, rr).result()
+      );      
+    }
+    else dt__throwUnexpected(buildPart());
+    
     if ( dtXmlParserBase::hasAttribute("angle", toBuild) ) {
       //
       // get angle
