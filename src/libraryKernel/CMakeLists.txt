@@ -78,6 +78,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_convertOCC.h
   geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h
+  geometryEngine/geoBuilder/geomCurve_curveRotateConstructOCC.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
@@ -201,6 +202,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_convertOCC.cpp
   geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.cpp
+  geometryEngine/geoBuilder/geomCurve_curveRotateConstructOCC.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp
