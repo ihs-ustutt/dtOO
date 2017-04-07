@@ -9,6 +9,7 @@
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/dtOCCTrimmedCurve.h>
 #include <geometryEngine/dtOCCLine.h>
+#include <geometryEngine/dtOCCCircle.h>
 
 #include <Precision.hxx>
 #include <Standard_Failure.hxx>
@@ -19,6 +20,7 @@
 #include <Geom_BezierCurve.hxx>
 #include <Geom_TrimmedCurve.hxx>
 #include <Geom_Line.hxx>
+#include <Geom_Circle.hxx>
 
 namespace dtOO {
 	geomCurve_baseConstructOCC::geomCurve_baseConstructOCC( dtOCCCurveBase const & base ) {
@@ -29,13 +31,16 @@ namespace dtOO {
 		else if ( !(Handle(Geom_BezierCurve)::DownCast(occC).IsNull()) ) {
 		  _dtC.reset( new dtOCCBezierCurve(base) );			
 		}
-//		else if ( !(Handle(Geom_TrimmedCurve)::DownCast(occC).IsNull()) ) {
-//			dt__ptrAss(
-//				dtOCCTrimmedCurve2d const * const tC2d, 
-//				dtOCCTrimmedCurve2d::ConstDownCast(dtC2d)
-//			);
-//		  _dtC.reset( new dtOCCTrimmedCurve(base, tC2d->getU0(), tC2d->getU1() ) );
-//		}		
+		else if ( !(Handle(Geom_Circle)::DownCast(occC).IsNull()) ) {
+		  _dtC.reset( new dtOCCCircle(base) );			
+		}    
+		else if ( !(Handle(Geom_TrimmedCurve)::DownCast(occC).IsNull()) ) {
+		  _dtC.reset( 
+        new dtOCCTrimmedCurve( 
+          base, occC->FirstParameter(), occC->LastParameter() 
+        ) 
+      );
+		}		
 		else if ( !(Handle(Geom_Line)::DownCast(occC).IsNull()) ) {
 		  _dtC.reset( new dtOCCLine(base) );			
 		}
