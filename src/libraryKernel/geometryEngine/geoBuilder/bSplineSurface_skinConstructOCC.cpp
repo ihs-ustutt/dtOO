@@ -39,10 +39,18 @@ namespace dtOO {
 		GeomFill_SectionGenerator aSecGen;
 		dt__forAllIndex(cL, ii) {
 		  dt__ptrAss( dtOCCCurve * bC, dtOCCCurve::DownCast(cL[ii]->clone()) );
-      aSecGen.AddCurve( bC->OCCRef().getOCC() );
+		  dt__tryOcc(      
+        aSecGen.AddCurve( bC->OCCRef().getOCC() );
+        ,
+        << ""
+      );
       delete bC;			
 		}
-		aSecGen.Perform( Precision::Parametric(Precision::Confusion()) );
+		dt__tryOcc(          
+		  aSecGen.Perform( Precision::Parametric(Precision::Confusion()) );
+      ,
+      << ""
+    );
 		
 		Handle(GeomFill_Line) aLine = new GeomFill_Line(cL.size() );
 		const Standard_Integer aMinDeg = minDeg;
