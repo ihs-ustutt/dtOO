@@ -692,10 +692,16 @@ namespace dtOO {
     dtGmshRegion * gr = new dtGmshRegion(&gm, 1);
     gm.add(gr);
     
+    //
+    // change underlying GEntities
+    //
+    std::map< ::MVertex *, ::GEntity * > geStore;
     dt__forFromToIter(
       omConstVertexI, mesh.vertices_begin(), mesh.vertices_end(), it
     ) {
       ::MVertex * mv = mesh.data(*it).MVertex();
+      
+      geStore[ mv ] = mv->onWhat();
       mv->setEntity(gf); 
       gf->addMeshVertex( mv );
     }
@@ -744,6 +750,17 @@ namespace dtOO {
     gr->mesh_vertices.clear();
     
     gf->mesh_vertices.clear();
+    
+    //
+    // change back underlying GEntities
+    //
+    dt__forFromToIter(
+      omConstVertexI, mesh.vertices_begin(), mesh.vertices_end(), it
+    ) {
+      ::MVertex * mv = mesh.data(*it).MVertex();
+      
+      mv->setEntity( geStore[ mv ] );
+    }    
   }
   
   void dtMeshGRegionWithBoundaryLayer::adjustThickness( void ) { 
