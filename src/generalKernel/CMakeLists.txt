@@ -27,6 +27,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/map2dTo3dGroupAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/scaInMap1dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.h
@@ -39,6 +40,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/bezierCurve_pointConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_curveConnectConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineSurface_skinConstructOCCAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/bSplineSurface_pipeConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bezierCurvePointPickFromPartConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder.h
@@ -114,6 +116,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/map2dTo3dGroupAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/scaInMap1dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.cpp
@@ -126,6 +129,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/bezierCurve_pointConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_curveConnectConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineSurface_skinConstructOCCAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/bSplineSurface_pipeConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bezierCurvePointPickFromPartConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder.cpp

@@ -5,6 +5,7 @@
 #include <string.h>
 #include "aGXmlBuilder/baseContainerAGXmlBuilder.h"
 #include "aGXmlBuilder/analyticGeometryAGXmlBuilder.h"
+#include "aGXmlBuilder/map2dTo3dGroupAGXmlBuilder.h"
 #include "aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h"
 #include "aGXmlBuilder/scaInMap1dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.h"
@@ -18,6 +19,7 @@
 #include "aGXmlBuilder/bezierCurve_pointConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_curveConnectConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineSurface_skinConstructOCCAGXmlBuilder.h"
+#include "aGXmlBuilder/bSplineSurface_pipeConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bezierCurvePointPickFromPartConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder.h"
@@ -102,6 +104,7 @@ namespace dtOO {
     //
     _instance->_builder.push_back( new baseContainerAGXmlBuilder() );
     _instance->_builder.push_back( new analyticGeometryAGXmlBuilder() );
+    _instance->_builder.push_back( new map2dTo3dGroupAGXmlBuilder() );
     _instance->_builder.push_back( new trans6SidedCubeAGXmlBuilder() );
     _instance->_builder.push_back( new scaInMap1dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new vec2dInMap2dTo3dAGXmlBuilder() );
@@ -124,6 +127,9 @@ namespace dtOO {
     );
     _instance->_builder.push_back( 
       new bSplineSurface_skinConstructOCCAGXmlBuilder() 
+    );
+    _instance->_builder.push_back( 
+      new bSplineSurface_pipeConstructOCCAGXmlBuilder()
     );
     _instance->_builder.push_back( 
       new surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder() 
