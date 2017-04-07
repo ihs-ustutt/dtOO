@@ -17,6 +17,12 @@ namespace dtOO {
       dtCurve const * const aSecOne, 
       dtCurve const * const aSecTwo            
     );
+    bSplineSurface_pipeConstructOCC(
+      dtCurve const * const aPath, dtCurve const * const aSecOne
+    );    
+    bSplineSurface_pipeConstructOCC(
+      dtCurve const * const aPath, float const & rr
+    );
     virtual ~bSplineSurface_pipeConstructOCC();
     dtSurface * result( void );
   private:

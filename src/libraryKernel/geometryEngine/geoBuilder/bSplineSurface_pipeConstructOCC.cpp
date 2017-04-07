@@ -57,6 +57,72 @@ namespace dtOO {
 		dtOCCSurfaceBase base(aSurface);
 	  _dtS.reset( geomSurface_baseConstructOCC(base).result() );
   }
+  
+  bSplineSurface_pipeConstructOCC::bSplineSurface_pipeConstructOCC(
+    dtCurve const * const aPath, 
+    dtCurve const * const aSecOne
+  ) {
+		dt__throwIf(
+			!dtOCCCurve::ConstDownCast(aPath) || !dtOCCCurve::ConstDownCast(aSecOne), 
+			bSplineSurface_pipeConstructOCC()
+		);    
+    
+		//
+		// cast curves
+		//		
+		dtOCCCurve const * const occCPath = dtOCCCurve::ConstSecureCast(aPath);	
+    dtOCCCurve const * const occCSecOne = dtOCCCurve::ConstSecureCast(aSecOne);	
+    
+    GeomFill_Pipe aPipe(
+      dtOCCCurve::ConstSecureCast(aPath)->OCCRef().getOCC(), 
+      dtOCCCurve::ConstSecureCast(aSecOne)->OCCRef().getOCC()
+    );
+    aPipe.Perform(
+      Precision::Confusion(), Standard_False
+    );
+    Handle(Geom_Surface) aSurface 
+    = 
+    Handle(Geom_Surface)::DownCast( aPipe.Surface()->Copy() );
+    ;
+
+		//
+		// create new surface
+		//
+		dtOCCSurfaceBase base(aSurface);
+	  _dtS.reset( geomSurface_baseConstructOCC(base).result() );
+  }  
+
+  bSplineSurface_pipeConstructOCC::bSplineSurface_pipeConstructOCC(
+    dtCurve const * const aPath, float const & rr
+  ) {
+		dt__throwIf(
+      !dtOCCCurve::ConstDownCast(aPath), 
+			bSplineSurface_pipeConstructOCC()
+		);    
+    
+		//
+		// cast curves
+		//		
+		dtOCCCurve const * const occCPath = dtOCCCurve::ConstSecureCast(aPath);	
+    
+    GeomFill_Pipe aPipe(
+      dtOCCCurve::ConstSecureCast(aPath)->OCCRef().getOCC(), 
+      static_cast< Standard_Real >(rr)
+    );
+    aPipe.Perform(
+      Precision::Confusion(), Standard_False
+    );
+    Handle(Geom_Surface) aSurface 
+    = 
+    Handle(Geom_Surface)::DownCast( aPipe.Surface()->Copy() );
+    ;
+
+		//
+		// create new surface
+		//
+		dtOCCSurfaceBase base(aSurface);
+	  _dtS.reset( geomSurface_baseConstructOCC(base).result() );    
+  }  
 
   bSplineSurface_pipeConstructOCC::~bSplineSurface_pipeConstructOCC() {
   }
