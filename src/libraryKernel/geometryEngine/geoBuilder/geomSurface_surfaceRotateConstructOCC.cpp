@@ -3,6 +3,7 @@
 #include "geometryEngine/dtOCCBSplineSurface.h"
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/dtOCCSurfaceBase.h>
+#include "geomSurface_baseConstructOCC.h"
 
 #include <Geom_Surface.hxx>
 #include <gp_Pnt.hxx>
@@ -42,26 +43,12 @@ namespace dtOO {
 		
 		Handle(Geom_Surface) aRes = Handle(Geom_Surface)::DownCast( sP->Copy() );
 		aRes->Rotate(rotAx, angleR);
-		
-		Handle(Geom_BezierSurface) bezier = Handle(Geom_BezierSurface)::DownCast(aRes);
-		Handle(Geom_BSplineSurface) bSpline = Handle(Geom_BSplineSurface)::DownCast(aRes);
-		
-		dtOCCSurfaceBase base;
-		base.setOCC(aRes);
-		
-		if ( !bezier.IsNull() ) {
-			_dtS.reset( new dtOCCBezierSurface(base) );		
-		}
-		else if( !bSpline.IsNull() ) {
-		  _dtS.reset( new dtOCCBSplineSurface(base) );		
-		}
-		else {
-			dt__throw(
-			  geomSurface_surfaceRotateConstructOCC(),
-				<< dt__eval(bezier) << std::endl
-				<< dt__eval(bSpline)
-			);
-		}
+    
+		//
+		// create new surface
+		//
+	  dtOCCSurfaceBase base(aRes);		
+		_dtS.reset( geomSurface_baseConstructOCC(base).result() );
 	}
 
 	geomSurface_surfaceRotateConstructOCC::~geomSurface_surfaceRotateConstructOCC() {
