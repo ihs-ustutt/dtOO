@@ -4,12 +4,17 @@
 #include <geometryEngine/dtSurface.h>
 #include <interfaceHeaven/ptrHandling.h>
 
+#include <analyticGeometryHeaven/map1dTo3d.h>
+#include <analyticGeometryHeaven/splineCurve3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/map1dTo3dTransformed.h>
 #include <analyticGeometryHeaven/map2dTo3dTransformed.h>
 #include <analyticGeometryHeaven/map3dTo3dTransformed.h>
+#include <geometryEngine/dtCurve.h>
+#include <geometryEngine/dtSurface.h>
+#include <geometryEngine/geoBuilder/geomCurve_curveRotateConstructOCC.h>
 #include <geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
@@ -121,26 +126,49 @@ namespace dtOO {
 			//
 			// clone and cast analyticGeometry
 			//
-      analyticSurface const * const aS = analyticSurface::ConstDownCast(*it);      
       map1dTo3d const * const m1d = map1dTo3d::ConstDownCast(*it);      
       map2dTo3d const * const m2d = map2dTo3d::ConstDownCast(*it);
       map3dTo3d const * const m3d = map3dTo3d::ConstDownCast(*it);
       
-			if ( aS &&  !aS->isTransformed() ) {
-				retAGeo.push_back( 
-          new analyticSurface(
-            dt__tmpPtr(
-              dtSurface,
-              geomSurface_surfaceRotateConstructOCC( 
-                aS->ptrDtSurface(), _origin, _rotVector, _angle 
-              ).result()
-            )
-          ) 
-        );
-			}
-      else if (m1d) retAGeo.push_back( m1d->cloneTransformed(this) );        
-			else if (m2d) retAGeo.push_back( m2d->cloneTransformed(this) );
-			else if (m3d) retAGeo.push_back( m3d->cloneTransformed(this) );        
+      if (m1d) {
+        splineCurve3d const * const s3 = splineCurve3d::ConstDownCast(*it);
+        if ( s3 &&  !s3->isTransformed() ) {
+          retAGeo.push_back( 
+            new splineCurve3d(
+              dt__tmpPtr(
+                dtCurve,
+                geomCurve_curveRotateConstructOCC( 
+                  s3->ptrConstDtCurve(), _origin, _rotVector, _angle 
+                ).result()
+              )
+            ) 
+          );
+        }
+        else {
+          retAGeo.push_back( m1d->cloneTransformed(this) );
+        }
+      }
+			else if (m2d) {
+        analyticSurface const * const aS = analyticSurface::ConstDownCast(*it);
+        if ( aS &&  !aS->isTransformed() ) {
+          retAGeo.push_back( 
+            new analyticSurface(
+              dt__tmpPtr(
+                dtSurface,
+                geomSurface_surfaceRotateConstructOCC( 
+                  aS->ptrDtSurface(), _origin, _rotVector, _angle 
+                ).result()
+              )
+            ) 
+          );
+        }
+        else {        
+          retAGeo.push_back( m2d->cloneTransformed(this) );
+        }
+      }
+			else if (m3d) {
+        retAGeo.push_back( m3d->cloneTransformed(this) );
+      }
       else dt__throwUnexpected(apply());
     }
     return retAGeo;
