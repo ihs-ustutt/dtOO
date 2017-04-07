@@ -38,6 +38,7 @@ namespace dtOO {
       virtual float l_u( float const & uu ) const;
       virtual float u_l( float const & ll ) const;      
       virtual vectorHandling< renderInterface * > getExtRender( void ) const;
+      dtCurve * ptrDtCurve(void) const;
       dtCurve const * const ptrConstDtCurve(void) const;
 	    std::string dumpToString( void ) const;
     private:

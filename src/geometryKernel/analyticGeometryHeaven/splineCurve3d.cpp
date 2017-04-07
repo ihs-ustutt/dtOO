@@ -83,6 +83,10 @@ namespace dtOO {
 		return retVec;
   }
 
+  dtCurve * splineCurve3d::ptrDtCurve(void) const {
+    return _dtC.get();
+  }
+  
   dtCurve const * const splineCurve3d::ptrConstDtCurve(void) const {
     return _dtC.get();
   }
