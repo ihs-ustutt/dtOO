@@ -8,7 +8,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h>
@@ -85,7 +85,7 @@ namespace dtOO {
 		// create and return bSplineCurve
 		//
 		result->push_back(
-		  new splineCurve3d( 
+		  new analyticCurve( 
 		    dt__tmpPtr(dtCurve, bSplineCurve_pointConstructOCC(pV, 1).result())  
 		  ) 
 		);

@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -41,7 +41,7 @@ namespace dtOO {
       dtXmlParserBase::createBasic( &wElement, bC, cV, aF, aG, &workingPointP );
     }
     result->push_back( 
-      new splineCurve3d(
+      new analyticCurve(
         bSplineCurve_pointInterpolateConstructOCC(workingPointP).result()
       )
     );

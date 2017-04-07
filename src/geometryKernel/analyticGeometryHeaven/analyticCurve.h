@@ -1,5 +1,5 @@
-#ifndef SPLINECURVE3D_H
-#define	SPLINECURVE3D_H
+#ifndef analyticCurve_H
+#define	analyticCurve_H
 
 #include "map1dTo3d.h"
 #include <vector>
@@ -11,20 +11,20 @@
 namespace dtOO {
   class dtCurve;
 
-  class splineCurve3d : public map1dTo3d {
+  class analyticCurve : public map1dTo3d {
     public:
-      dt__class(splineCurve3d, analyticGeometry);
-      splineCurve3d();
-      splineCurve3d( splineCurve3d const & orig );
-      splineCurve3d( dtCurve const & orig );
-      splineCurve3d( dtCurve * orig );
-      virtual ~splineCurve3d();
+      dt__class(analyticCurve, analyticGeometry);
+      analyticCurve();
+      analyticCurve( analyticCurve const & orig );
+      analyticCurve( dtCurve const & orig );
+      analyticCurve( dtCurve * orig );
+      virtual ~analyticCurve();
       //
       // overload
       //
-      virtual splineCurve3d * create( void ) const;       
-      virtual splineCurve3d * clone( void ) const;
-      virtual splineCurve3d * cloneTransformed( 
+      virtual analyticCurve * create( void ) const;       
+      virtual analyticCurve * clone( void ) const;
+      virtual analyticCurve * cloneTransformed( 
         dtTransformer const * const dtT 
       ) const;       
       virtual bool isClosed( int const & dir) const;
@@ -45,5 +45,5 @@ namespace dtOO {
       dt__pH(dtCurve) _dtC;
   };
 }
-#endif	/* SPLINECURVE3D_H */
+#endif	/* analyticCurve_H */
 

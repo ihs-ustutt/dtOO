@@ -6,7 +6,7 @@
 #include <geometryEngine/dtCurve.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticRotatingMap1dTo3d.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h>
@@ -51,7 +51,7 @@ namespace dtOO {
     dt__pH(analyticGeometry) aG_t(
       dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
     );
-    dt__ptrAss(splineCurve3d * s3, splineCurve3d::DownCast(aG_t.get()) );
+    dt__ptrAss(analyticCurve * s3, analyticCurve::DownCast(aG_t.get()) );
     dtCurve const * cc = s3->ptrConstDtCurve();
     //
     // vector

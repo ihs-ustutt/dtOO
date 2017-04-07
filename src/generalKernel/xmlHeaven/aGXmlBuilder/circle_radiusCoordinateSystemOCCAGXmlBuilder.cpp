@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
@@ -88,6 +88,6 @@ namespace dtOO {
       );
     }
     
-    result->push_back( new splineCurve3d( dtC.get() ) );
+    result->push_back( new analyticCurve( dtC.get() ) );
   }
 }

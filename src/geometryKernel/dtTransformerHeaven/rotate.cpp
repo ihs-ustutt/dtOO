@@ -5,7 +5,7 @@
 #include <interfaceHeaven/ptrHandling.h>
 
 #include <analyticGeometryHeaven/map1dTo3d.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
@@ -131,10 +131,10 @@ namespace dtOO {
       map3dTo3d const * const m3d = map3dTo3d::ConstDownCast(*it);
       
       if (m1d) {
-        splineCurve3d const * const s3 = splineCurve3d::ConstDownCast(*it);
+        analyticCurve const * const s3 = analyticCurve::ConstDownCast(*it);
         if ( s3 &&  !s3->isTransformed() ) {
           retAGeo.push_back( 
-            new splineCurve3d(
+            new analyticCurve(
               dt__tmpPtr(
                 dtCurve,
                 geomCurve_curveRotateConstructOCC( 

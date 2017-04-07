@@ -5,7 +5,7 @@
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
-#include "splineCurve3d.h"
+#include "analyticCurve.h"
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include "map1dTo3d.h"
@@ -173,7 +173,7 @@ namespace dtOO {
     ptrHandling< dtCurve > cc(
       _dtS->segmentConstU(uu, p0, p1)
     );
-    return new splineCurve3d(cc.get());
+    return new analyticCurve(cc.get());
   }
   
   map1dTo3d * analyticSurface::segmentConstV(
@@ -182,7 +182,7 @@ namespace dtOO {
       ptrHandling< dtCurve > cc(
         _dtS->segmentConstV(vv, p0, p1)
       );
-    return new splineCurve3d(cc.get());
+    return new analyticCurve(cc.get());
   }
 
   map2dTo3d * analyticSurface::segmentRectangle(

@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_bSplineCurveSplitConstructOCC.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -46,8 +46,8 @@ namespace dtOO {
     );
     
     dt__ptrAss(
-      splineCurve3d const * const sC, 
-      splineCurve3d::ConstDownCast( toSplit.get() )
+      analyticCurve const * const sC, 
+      analyticCurve::ConstDownCast( toSplit.get() )
     );
     
     //
@@ -131,7 +131,7 @@ namespace dtOO {
       << dt__eval(u1)
     );
     result->push_back( 
-      new splineCurve3d(
+      new analyticCurve(
         dt__tmpPtr(
           dtCurve, 
           bSplineCurve_bSplineCurveSplitConstructOCC(

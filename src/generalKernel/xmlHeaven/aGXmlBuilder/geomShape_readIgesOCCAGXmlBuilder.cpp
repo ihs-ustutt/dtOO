@@ -11,7 +11,7 @@
 #include <geometryEngine/geoBuilder/geomCurve_baseConstructOCC.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -128,7 +128,7 @@ namespace dtOO {
           dtOCCCurveBase base(aCurve);
           if ( geomCurve_baseConstructOCC::support( base ) ) {
             result->push_back(
-              new splineCurve3d(
+              new analyticCurve(
                 dt__tmpPtr(
                   dtCurve, 
                   geomCurve_baseConstructOCC( base ).result()

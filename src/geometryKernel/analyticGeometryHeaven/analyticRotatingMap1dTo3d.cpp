@@ -2,7 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include "splineCurve3d.h"
+#include "analyticCurve.h"
 #include <logMe/dtMacros.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtCurve.h>
@@ -217,8 +217,8 @@ namespace dtOO {
   dtCurve const * analyticRotatingMap1dTo3d::ptrConstRadiusCurve( void ) const {
     map1dTo3d * m1d = segmentConstUPercent(0., 0., 1.);
 		dt__ptrAss(
-		  splineCurve3d const * sC3,
-		  splineCurve3d::ConstDownCast(m1d)
+		  analyticCurve const * sC3,
+		  analyticCurve::ConstDownCast(m1d)
 		);
 		return sC3->ptrConstDtCurve();
   }

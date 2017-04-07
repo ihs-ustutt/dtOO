@@ -1,6 +1,6 @@
 #include "projectOnSurface.h"
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <geometryEngine/dtCurve.h>
@@ -31,8 +31,8 @@ namespace dtOO {
       // clone and cast analyticGeometry
       //
       analyticGeometry const * aGeoP = toTrans->at(ii);
-      splineCurve3d const *  constSc;
-      dt__ptrAss(constSc, splineCurve3d::ConstDownCast(aGeoP));
+      analyticCurve const *  constSc;
+      dt__ptrAss(constSc, analyticCurve::ConstDownCast(aGeoP));
 
 			dt__info(
 				apply(),
@@ -44,7 +44,7 @@ namespace dtOO {
       // push translated geometry in vector
       //      
       retAGeo.push_back( 
-				new splineCurve3d(
+				new analyticCurve(
 					dt__tmpPtr(
 			      dtCurve,
 						geomCurve_projectOnGeomSurfaceOCC(

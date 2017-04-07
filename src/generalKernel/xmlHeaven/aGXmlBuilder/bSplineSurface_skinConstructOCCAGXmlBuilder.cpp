@@ -5,7 +5,7 @@
 #include <geometryEngine/dtCurve.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
@@ -46,7 +46,7 @@ namespace dtOO {
       =
       dtXmlParserBase::createAnalyticGeometry(anEl, bC, cV, aF, aG);
       dt__ptrAss(
-        splineCurve3d const * s3, splineCurve3d::ConstDownCast(aG_t)
+        analyticCurve const * s3, analyticCurve::ConstDownCast(aG_t)
       );
       ccV.push_back( s3->ptrConstDtCurve()->clone() );
     }

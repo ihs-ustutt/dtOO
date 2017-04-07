@@ -6,11 +6,11 @@
 #include <dtLinearAlgebra.h>
 #include <vector>
 #include "analyticSurface.h"
-#include "splineCurve3d.h"
+#include "analyticCurve.h"
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class splineCurve3d;
+  class analyticCurve;
 
   class analyticRotatingMap1dTo3d : public analyticSurface {
     public:

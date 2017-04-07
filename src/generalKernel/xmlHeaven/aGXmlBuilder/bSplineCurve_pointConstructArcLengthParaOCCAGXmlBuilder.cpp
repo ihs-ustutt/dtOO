@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructArcLengthParaOCC.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -51,11 +51,11 @@ namespace dtOO {
       dtXmlParserBase::createAnalyticGeometry(&wElement, bC, cV, aF, aG)
     );
     dt__ptrAss(
-      splineCurve3d const * sC3, 
-      splineCurve3d::ConstDownCast(aG_t.get())
+      analyticCurve const * sC3, 
+      analyticCurve::ConstDownCast(aG_t.get())
     );
     result->push_back( 
-      new splineCurve3d(
+      new analyticCurve(
         bSplineCurve_pointConstructArcLengthParaOCC(
           sC3->ptrConstDtCurve(), tol, maxOrder, nSegments
         ).result()

@@ -1,6 +1,6 @@
 #include "makePolynomial.h"
 #include <analyticGeometryHeaven/map1dTo3d.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <geometryEngine/dtCurve.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -97,7 +97,7 @@ namespace dtOO {
 				ptrHandling<dtCurve> dtC(
 				  bSplineCurve_pointConstructOCC(point, _orderOne).result()
 				);
-        splineCurve3d * s3 = new splineCurve3d(dtC.get());
+        analyticCurve * s3 = new analyticCurve(dtC.get());
         s3->setLabel( retAGeo[ii]->getLabel() );
         delete retAGeo[ii];
         retAGeo[ii] = s3;        

@@ -8,7 +8,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
 
@@ -47,11 +47,11 @@ namespace dtOO {
       }
       else if (_createAnalyticSurface) {
 				dt__pH(map1dTo3d) m1dU(aSP->segmentConstVPercent(0., 0., 1.));
-				dt__ptrAss(splineCurve3d * s3dU, splineCurve3d::DownCast(m1dU.get()));
+				dt__ptrAss(analyticCurve * s3dU, analyticCurve::DownCast(m1dU.get()));
 				float u0 = s3dU->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentOneStart);
 				float u1 = s3dU->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentOneEnd);
 				dt__pH(map1dTo3d) m1dV(aSP->segmentConstUPercent(0., 0., 1.));
-				dt__ptrAss(splineCurve3d * s3dV, splineCurve3d::DownCast(m1dV.get()));
+				dt__ptrAss(analyticCurve * s3dV, analyticCurve::DownCast(m1dV.get()));
 				float v0 = s3dV->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentTwoStart);
 				float v1 = s3dV->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentTwoEnd);
 				

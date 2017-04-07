@@ -4,7 +4,7 @@
 #include <dtTransformerHeaven/dtTransformer.h>
 #include "map2dTo3d.h"
 #include "map1dTo3d.h"
-#include "splineCurve3d.h"
+#include "analyticCurve.h"
 #include "analyticSurface.h"
 #include "analyticRotatingMap1dTo3d.h"
 #include <geometryEngine/dtSurface.h>
@@ -145,7 +145,7 @@ namespace dtOO {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstUPercent(percent_v(vv), 0., 1.);
-			dt__ptrAss(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
+			dt__ptrAss(analyticCurve * s3d, analyticCurve::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
 					*(s3d->ptrConstDtCurve()), _pp, _vv
@@ -163,7 +163,7 @@ namespace dtOO {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstVPercent(percent_w(ww), 0., 1.);
-			dt__ptrAss(splineCurve3d * s3d, splineCurve3d::DownCast(m1d));
+			dt__ptrAss(analyticCurve * s3d, analyticCurve::DownCast(m1d));
 			dt__pH(dtSurface) dtS(
 			  surfaceOfRevolution_curveRotateConstructOCC(
 					*(s3d->ptrConstDtCurve()), _pp, _vv

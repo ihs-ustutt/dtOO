@@ -6,7 +6,7 @@
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtOCCCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -62,7 +62,7 @@ namespace dtOO {
 
     int order = dtXmlParserBase::getAttributeInt("order", toBuild);
     result->push_back( 
-      new splineCurve3d(
+      new analyticCurve(
         bSplineCurve_pointConstructOCC(p3, order).result()
       )
     );

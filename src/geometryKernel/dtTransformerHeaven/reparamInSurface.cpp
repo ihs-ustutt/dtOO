@@ -1,7 +1,7 @@
 #include "reparamInSurface.h"
 #include "analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h"
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
@@ -34,8 +34,8 @@ namespace dtOO {
       // clone and cast analyticGeometry
       //
       analyticGeometry const * aGeoP = aGeoVecP->at(ii);
-      splineCurve3d const *  constSc;
-      dt__ptrAss(constSc, splineCurve3d::ConstDownCast(aGeoP));
+      analyticCurve const *  constSc;
+      dt__ptrAss(constSc, analyticCurve::ConstDownCast(aGeoP));
 
 			dt__info(
 				apply(),

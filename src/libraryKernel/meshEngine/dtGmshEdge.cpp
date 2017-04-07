@@ -1,7 +1,7 @@
 #include "dtGmshEdge.h"
 
 #include <analyticGeometryHeaven/map1dTo3d.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <geometryEngine/dtCurve.h>
@@ -34,7 +34,7 @@ namespace dtOO {
       )
     ) {
       _mm.reset(
-        new splineCurve3d(
+        new analyticCurve(
           dt__tmpPtr(
             dtCurve, 
             trimmedCurve_twoPointsConnectConstructOCC(

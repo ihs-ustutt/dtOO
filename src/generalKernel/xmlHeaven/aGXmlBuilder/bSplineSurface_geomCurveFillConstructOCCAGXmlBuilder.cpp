@@ -4,7 +4,7 @@
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtSurface.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h>
@@ -57,7 +57,7 @@ namespace dtOO {
     vectorHandling< dtCurve const * > dtC( aG_t.size() );
     dt__forAllIndex(aG_t, ii) {
       dt__ptrAss(
-        splineCurve3d const * s3, splineCurve3d::ConstDownCast(aG_t[ii])
+        analyticCurve const * s3, analyticCurve::ConstDownCast(aG_t[ii])
       );
       dtC[ii] = s3->ptrConstDtCurve();
     }

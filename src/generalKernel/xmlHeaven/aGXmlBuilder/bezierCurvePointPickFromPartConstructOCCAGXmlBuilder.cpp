@@ -5,7 +5,7 @@
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/bezierCurve_pointConstructOCC.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -59,7 +59,7 @@ namespace dtOO {
     dt__forAllIndex(p2, ii) p3[ii] = map->getPoint( p2[ii] );
 
     result->push_back( 
-      new splineCurve3d( bezierCurve_pointConstructOCC(p3).result() )
+      new analyticCurve( bezierCurve_pointConstructOCC(p3).result() )
     );
   }
 }

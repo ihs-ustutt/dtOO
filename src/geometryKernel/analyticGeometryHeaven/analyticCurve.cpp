@@ -1,4 +1,4 @@
-#include "splineCurve3d.h"
+#include "analyticCurve.h"
 #include <logMe/logMe.h>
 #include <discrete3dVector.h>
 #include <discrete3dPoints.h>
@@ -8,43 +8,43 @@
 #include <dtTransformerHeaven/dtTransformer.h>
 
 namespace dtOO {
-  splineCurve3d::splineCurve3d() : map1dTo3d() {
+  analyticCurve::analyticCurve() : map1dTo3d() {
   }
 
-  splineCurve3d::splineCurve3d(splineCurve3d const & orig) : map1dTo3d(orig){
+  analyticCurve::analyticCurve(analyticCurve const & orig) : map1dTo3d(orig){
     _dtC.reset( orig._dtC->clone() );
   }
   
-  splineCurve3d::splineCurve3d(dtCurve const & orig) : map1dTo3d() {
+  analyticCurve::analyticCurve(dtCurve const & orig) : map1dTo3d() {
     _dtC.reset( orig.clone() );
   }  
 
-  splineCurve3d::splineCurve3d(dtCurve * orig) : map1dTo3d() {
+  analyticCurve::analyticCurve(dtCurve * orig) : map1dTo3d() {
     _dtC.reset( orig->clone());
   }
 	
-  splineCurve3d * splineCurve3d::clone( void ) const {
-    return new splineCurve3d( *this );
+  analyticCurve * analyticCurve::clone( void ) const {
+    return new analyticCurve( *this );
   }
 
-	splineCurve3d * splineCurve3d::cloneTransformed( 
+	analyticCurve * analyticCurve::cloneTransformed( 
     dtTransformer const * const dtT 
   ) const {
-		return new map1dTo3dTransformed<splineCurve3d>(*this, dtT);
+		return new map1dTo3dTransformed<analyticCurve>(*this, dtT);
 	}
   
-  splineCurve3d * splineCurve3d::create( void ) const {
-    return new splineCurve3d();
+  analyticCurve * analyticCurve::create( void ) const {
+    return new analyticCurve();
   }
 
-  splineCurve3d::~splineCurve3d() {
+  analyticCurve::~analyticCurve() {
   }
 
-  dtPoint3 splineCurve3d::getPoint(float const & uu) const {
+  dtPoint3 analyticCurve::getPoint(float const & uu) const {
     return (_dtC->point( uu ));
   }
 	
-  vectorHandling< renderInterface * > splineCurve3d::getExtRender( 
+  vectorHandling< renderInterface * > analyticCurve::getExtRender( 
     void 
   ) const {
 		vectorHandling< dtVector3 > vv;
@@ -83,39 +83,39 @@ namespace dtOO {
 		return retVec;
   }
 
-  dtCurve * splineCurve3d::ptrDtCurve(void) const {
+  dtCurve * analyticCurve::ptrDtCurve(void) const {
     return _dtC.get();
   }
   
-  dtCurve const * const splineCurve3d::ptrConstDtCurve(void) const {
+  dtCurve const * const analyticCurve::ptrConstDtCurve(void) const {
     return _dtC.get();
   }
   
-  dtVector3 splineCurve3d::firstDerU( float const uu) const {
+  dtVector3 analyticCurve::firstDerU( float const uu) const {
     return _dtC->firstDer(uu);
   }
 
-	float splineCurve3d::l_u( float const & uu ) const {
+	float analyticCurve::l_u( float const & uu ) const {
 		return _dtC->l_u(uu);	
 	}	
   
-  float splineCurve3d::u_l( float const & ll ) const {
+  float analyticCurve::u_l( float const & ll ) const {
     return _dtC->u_l(ll);
   } 
   
-  bool splineCurve3d::isClosed( int const & dir) const {
+  bool analyticCurve::isClosed( int const & dir) const {
     return _dtC->closed();
   }
   
-  float splineCurve3d::getMin( int const & dir) const {
+  float analyticCurve::getMin( int const & dir) const {
     return _dtC->minPara(dir);
   }
 
-  float splineCurve3d::getMax( int const & dir) const {
+  float analyticCurve::getMax( int const & dir) const {
     return _dtC->maxPara(dir);
   }  
 
-	std::string splineCurve3d::dumpToString( void ) const {
+	std::string analyticCurve::dumpToString( void ) const {
 		std::stringstream ss;
 		
 		ss

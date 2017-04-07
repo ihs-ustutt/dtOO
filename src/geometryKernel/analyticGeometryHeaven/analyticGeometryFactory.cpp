@@ -1,7 +1,7 @@
 #include "analyticGeometryFactory.h"
 #include <logMe/logMe.h>
 #include "analyticGeometry.h"
-#include "splineCurve3d.h"
+#include "analyticCurve.h"
 #include "analyticRotatingMap1dTo3d.h"
 #include "analyticSurface.h"
 #include "trans6SidedCube.h"
@@ -31,7 +31,7 @@ namespace dtOO {
   analyticGeometry * analyticGeometryFactory::create(char const * const str) {
     dt__info(create(), << str <<  " creating ... ");
     
-    __IFRET(splineCurve3d);
+    __IFRET(analyticCurve);
     __IFRET(analyticSurface);
     __IFRET(analyticRotatingMap1dTo3d);
     __IFRET(trans6SidedCube);

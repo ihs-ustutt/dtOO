@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/splineCurve3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/bezierCurve_pointConstructOCC.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -42,7 +42,7 @@ namespace dtOO {
       wElement = dtXmlParserBase::getNextSibling("Point_3", wElement);
     }
     result->push_back( 
-      new splineCurve3d(
+      new analyticCurve(
         bezierCurve_pointConstructOCC(workingPointP).result()
       )
     );
