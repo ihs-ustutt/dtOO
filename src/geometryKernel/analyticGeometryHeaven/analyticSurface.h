@@ -52,7 +52,7 @@ namespace dtOO {
       // read and modify member attributes
       //
       dtSurface * ptrDtSurface( void ) const;
-      dtSurface const * constPtrDtSurface( void ) const; 
+      dtSurface const * ptrConstDtSurface( void ) const; 
 
       virtual void offsetNormal( float const nn );
     private:

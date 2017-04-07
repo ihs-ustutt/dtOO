@@ -117,7 +117,7 @@ namespace dtOO {
     return _dtS.get();
   }
 
-  dtSurface const * analyticSurface::constPtrDtSurface( void ) const {
+  dtSurface const * analyticSurface::ptrConstDtSurface( void ) const {
     return _dtS.get();
   }   
   

@@ -62,7 +62,7 @@ namespace dtOO {
 			analyticSurface * aS = analyticSurface::DownCast(_aG[ii]);
 			vec2dOneDInMap2dTo3d * v2d1d = vec2dOneDInMap2dTo3d::DownCast(_aG[ii]);
 			if ( aS ) {
-				dt__ptrAss(dtSurface const * dtS, aS->constPtrDtSurface());
+				dt__ptrAss(dtSurface const * dtS, aS->ptrConstDtSurface());
 				dt__ptrAss(dtOCCSurface const * dtOccS, dtOCCSurface::ConstDownCast(dtS));
 				
 		    writer.Transfer(
