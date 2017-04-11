@@ -6,7 +6,7 @@
 
 #include <Standard_TypeDef.hxx>
 #include <gp_Pnt.hxx>
-#include <Geom_Curve.hxx>
+#include <Geom_Circle.hxx>
 #include <Precision.hxx>
 
 namespace dtOO {
@@ -15,7 +15,7 @@ namespace dtOO {
 	}
 
 	dtOCCCircle::dtOCCCircle(dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);	
+		dt__mustCast(OCCRef().getOCC().Access(), Geom_Circle const, _ptr);	
 	}
 
 	dtOCCCircle::~dtOCCCircle() {
