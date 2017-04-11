@@ -28,6 +28,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/map2dTo3dGroupAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/map3dTo3dGroupAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/scaInMap1dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.h
@@ -57,6 +58,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -117,6 +119,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/map2dTo3dGroupAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/map3dTo3dGroupAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/scaInMap1dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.cpp
@@ -146,6 +149,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp
