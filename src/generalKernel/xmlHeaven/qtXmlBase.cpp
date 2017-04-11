@@ -198,9 +198,24 @@ namespace dtOO {
       else if (v3dF) {
         if (aFOption == "") {
           pp = v3dF->Y( argCS ).stdVector();
-        }        
+        }       
+        else if (aFOption == "%x") {
+          aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[0];
+        }           
+        else if (aFOption == "%y") {
+          aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[1];
+        } 
+        else if (aFOption == "%z") {
+          aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[2];
+        }         
         else dt__throwUnexpected(replaceDependencies()); 
-      }      
+      }
       else dt__throwUnexpected(replaceDependencies());
       
       if (pp.size() == 3) {
