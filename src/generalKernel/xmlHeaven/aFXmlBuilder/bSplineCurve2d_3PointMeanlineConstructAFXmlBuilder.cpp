@@ -134,6 +134,22 @@ namespace dtOO {
     }		
     else dt__throwUnexpected(buildPart());
     
+    if ( 
+      dtXmlParserBase::hasAttribute("originOnLengthPercent", toBuildP) 
+    ) {
+      float lP 
+      =
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "originOnLengthPercent", toBuildP, cValP
+      );
+      dtPoint2 adjustP = dtC2d->point( dtC2d->u_lPercent( lP ) );
+      dt__forFromToIndex(0, dtC2d->nControlPoints(), ii) {
+        dtC2d->setControlPoint(
+          ii,
+          dtLinearAlgebra::toDtPoint2( dtC2d->controlPoint(ii) - adjustP )
+        );
+      }
+    } 
 		if ( dtXmlParserBase::hasAttribute("revert", toBuildP) ) {
 			if ( dtXmlParserBase::getAttributeBool("revert", toBuildP) ) {
 				dtOCCCurve2d::SecureCast(dtC2d.get())->revert();
