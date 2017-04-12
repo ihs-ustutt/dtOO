@@ -59,6 +59,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -150,6 +151,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp

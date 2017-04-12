@@ -39,6 +39,7 @@
 #include "aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.h"
 #include "aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.h"
+#include "aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h"
 
 namespace dtOO {
   dt__pH(aGXmlBuilderFactory) aGXmlBuilderFactory::_instance(NULL);
@@ -181,6 +182,9 @@ namespace dtOO {
     );
     _instance->_builder.push_back(
       new ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder()
+    );
+    _instance->_builder.push_back(
+      new compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder()
     );
     
     return _instance.get();
