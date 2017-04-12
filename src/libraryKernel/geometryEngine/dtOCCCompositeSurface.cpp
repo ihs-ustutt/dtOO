@@ -16,6 +16,10 @@
 #include <Geom_BezierCurve.hxx>
 #include <Geom_Line.hxx>
 
+#include "dtCurve.h"
+#include "geoBuilder/geomCurve_baseConstructOCC.h"
+#include "geoBuilder/bSplineCurve_curveConnectConstructOCC.h"
+
 namespace dtOO {	
 	dtOCCCompositeSurface::dtOCCCompositeSurface() : dtOCCSurface() {
 		_ptr = NULL;
@@ -34,133 +38,97 @@ namespace dtOO {
 		return new dtOCCCompositeSurface( OCCRef() );
 	}
 
-	dtCurve * dtOCCCompositeSurface::segmentConstU( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve * dtOCCCompositeSurface::segmentConstU( 
+    float const uu, float const vvMin, float const vvMax
+  ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
-		Handle(Geom_Curve) cc = _ptr->UIso(uR);
+    Standard_Real v0R = static_cast<Standard_Real>(vvMin);
+    Standard_Real v1R = static_cast<Standard_Real>(vvMax);
+          
+    if (_ptr->Patch(uR, v0R).Access() == _ptr->Patch(uR, v1R).Access() ) {
+      Handle(Geom_Surface) ss = _ptr->Patch(uR, v0R);
+      Handle(Geom_Curve) cc
+      =
+      ss->UIso(
+        _ptr->UGlobalToLocal( 
+          _ptr->LocateUParameter(uR), _ptr->LocateVParameter(v0R), uR 
+        )
+      );
 
-		Handle(Geom_BSplineCurve) ccB = Handle(Geom_BSplineCurve)::DownCast(cc);
-		Handle(Geom_BezierCurve) ccBezier = Handle(Geom_BezierCurve)::DownCast(cc);
-
-		Standard_Real v1R = static_cast<Standard_Real>(vvMin);
-		Standard_Real v2R = static_cast<Standard_Real>(vvMax);
-			
-		if ( !ccB.IsNull() ) {
-			dt__warnIfWithMessageAndSolution(
-				v1R<ccB->FirstParameter(), 
-				v1R = ccB->FirstParameter();,
-				segmentConstU(),
-				<< "v1R = ccB->FirstParameter();"				
-			);			
-			dt__warnIfWithMessageAndSolution(
-				v2R>ccB->LastParameter(), 
-				v2R = ccB->LastParameter();,
-				segmentConstU(),
-				<< "v2R = ccB->LastParameter();"				
-			);	
-			
-			dt__tryOcc(
-				ccB->Segment(v1R, v2R);
-				,
-				<< dt__eval(v1R) << std::endl
-				<< dt__eval(v2R)							
-			);
-
-			dtOCCCurveBase base;
-			base.setOCC(ccB);
-
-			return new dtOCCBSplineCurve(base);
-		}
-		else if ( !ccBezier.IsNull() ) {
-			dt__warnIfWithMessageAndSolution(
-				v1R<ccBezier->FirstParameter(), 
-				v1R = ccBezier->FirstParameter();,
-				segmentConstU(),
-				<< "v1R = ccB->FirstParameter();"				
-			);			
-			dt__warnIfWithMessageAndSolution(
-				v2R>ccBezier->LastParameter(), 
-				v2R = ccBezier->LastParameter();,
-				segmentConstU(),
-				<< "v2R = ccB->LastParameter();"				
-			);	
-			
-			dt__tryOcc(
-				ccBezier->Segment(v1R, v2R);
-				,
-				<< dt__eval(v1R) << std::endl
-				<< dt__eval(v2R)							
-			);
-
-			dtOCCCurveBase base;
-			base.setOCC(ccBezier);
-
-			return new dtOCCBezierCurve(base);			
-		}
-		else dt__throwUnexpected(segmentConstU());
+      dtOCCCurveBase base;
+      base.setOCC(cc);      
+      
+      return geomCurve_baseConstructOCC( base ).result();        
+    }
+    else {
+      Standard_Integer I = _ptr->LocateUParameter(uR);
+      Standard_Integer J0 = _ptr->LocateVParameter(v0R);
+      Standard_Integer J1 = _ptr->LocateVParameter(v1R);
+      
+      vectorHandling< dtCurve const * > ccV;
+      dt__forFromToIndex(J0, J1, jj) {
+        Handle(Geom_Surface) ss = _ptr->Patch(I, jj);
+        Handle(Geom_Curve) cLoc
+        =
+        ss->UIso( 
+          _ptr->UGlobalToLocal( 
+            _ptr->LocateVParameter(uR), _ptr->LocateUParameter(uR), uR 
+          )          
+        );
+        dtOCCCurveBase baseLoc;
+        baseLoc.setOCC( cLoc );
+        ccV.push_back( geomCurve_baseConstructOCC(baseLoc).result() );
+      }
+      dtCurve * cc = bSplineCurve_curveConnectConstructOCC(ccV).result();
+      ccV.destroy();
+      return cc;
+    }
 	}
 
-	dtCurve * dtOCCCompositeSurface::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve * dtOCCCompositeSurface::segmentConstV( 
+    float const vv, float const uuMin, float const uuMax
+  ) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
-		Handle(Geom_Curve) cc = _ptr->VIso(vR);
-
-		Handle(Geom_BSplineCurve) ccB = Handle(Geom_BSplineCurve)::DownCast(cc);
-		Handle(Geom_BezierCurve) ccBezier = Handle(Geom_BezierCurve)::DownCast(cc);
-
-		Standard_Real u1R = static_cast<Standard_Real>(uuMin);
-		Standard_Real u2R = static_cast<Standard_Real>(uuMax);
-			
-		if ( !ccB.IsNull() ) {
-			dt__warnIfWithMessageAndSolution(
-				u1R<ccB->FirstParameter(), 
-				u1R = ccB->FirstParameter();,
-				segmentConstV(),
-				<< "u1R = ccB->FirstParameter();"				
-			);			
-			dt__warnIfWithMessageAndSolution(
-				u2R>ccB->LastParameter(), 
-				u2R = ccB->LastParameter();,
-				segmentConstV(),
-				<< "u2R = ccB->LastParameter();"				
-			);	
-			
-			dt__tryOcc(
-				ccB->Segment(u1R, u2R);
-				,
-				<< dt__eval(u1R) << std::endl
-				<< dt__eval(u2R)							
-			);
-
-			dtOCCCurveBase base;
-			base.setOCC(ccB);
-
-			return new dtOCCBSplineCurve(base);
-		}
-		else if ( !ccBezier.IsNull() ) {
-			dt__warnIfWithMessageAndSolution(
-				u1R<ccBezier->FirstParameter(), 
-				u1R = ccBezier->FirstParameter();,
-				segmentConstV(),
-				<< "v1R = ccB->FirstParameter();"				
-			);			
-			dt__warnIfWithMessageAndSolution(
-				u2R>ccBezier->LastParameter(), 
-				u2R = ccBezier->LastParameter();,
-				segmentConstV(),
-				<< "v2R = ccB->LastParameter();"				
-			);	
-			
-			dt__tryOcc(
-				ccBezier->Segment(u1R, u2R);
-				,
-				<< dt__eval(u1R) << std::endl
-				<< dt__eval(u2R)							
-			);
-
-			dtOCCCurveBase base;
-			base.setOCC(ccBezier);
-
-			return new dtOCCBezierCurve(base);			
-		}
-		else dt__throwUnexpected(segmentConstV());
+    Standard_Real u0R = static_cast<Standard_Real>(uuMin);
+    Standard_Real u1R = static_cast<Standard_Real>(uuMax);
+    
+    
+    if ( _ptr->Patch(u0R, vR).Access() == _ptr->Patch(u1R, vR).Access() ) {
+      Handle(Geom_Surface) ss = _ptr->Patch(u0R, vR);
+      Handle(Geom_Curve) cc
+      =
+      ss->VIso(
+        _ptr->VGlobalToLocal( 
+          _ptr->LocateUParameter(u0R), _ptr->LocateVParameter(vR), vR 
+        )
+      );
+      dtOCCCurveBase base;      
+      base.setOCC(cc);      
+      
+      return geomCurve_baseConstructOCC( base ).result();      
+    }
+    else {
+      Standard_Integer I0 = _ptr->LocateUParameter(u0R);
+      Standard_Integer I1 = _ptr->LocateUParameter(u1R);
+      Standard_Integer J = _ptr->LocateVParameter(vR);
+      
+      vectorHandling< dtCurve const * > ccV;
+      dt__forFromToIndex(I0, I1, ii) {
+        Handle(Geom_Surface) ss = _ptr->Patch(ii, J);
+        Handle(Geom_Curve) cLoc
+        =
+        ss->VIso( 
+          _ptr->VGlobalToLocal( 
+            _ptr->LocateUParameter(u0R), _ptr->LocateVParameter(vR), vR 
+          )          
+        );
+        dtOCCCurveBase baseLoc;
+        baseLoc.setOCC( cLoc );
+        ccV.push_back( geomCurve_baseConstructOCC(baseLoc).result() );
+      }
+      dtCurve * cc = bSplineCurve_curveConnectConstructOCC(ccV).result();
+      ccV.destroy();
+      return cc;
+    }
 	}		
 }
