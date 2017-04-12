@@ -51,9 +51,7 @@ namespace dtOO {
     dt__throwIf(
       !dtXmlParser::hasChild("case", element)
       &&
-      !dtXmlParser::hasAttribute("field", element)
-      &&
-      !dtXmlParser::hasAttribute("inRangeFunction", element), 
+      !dtXmlParser::hasAttribute("field", element), 
       init()
     );
     
@@ -69,15 +67,26 @@ namespace dtOO {
     );
     
     //
-    // get analyticGeometry
+    // get analyticFunctions
     //
-    _inRange.reset(
-      scaThreeD::MustDownCast(      
-        aF->get( 
-          dtXmlParser::getAttributeStr("inRangeFunction", element)
-        )
-      )->clone()
-    );
+    if ( dtXmlParser::hasAttribute("inRangeFunction", element) ) {    
+      _inRange.reset(
+        scaThreeD::MustDownCast(      
+          aF->get( 
+            dtXmlParser::getAttributeStr("inRangeFunction", element)
+          )
+        )->clone()
+      );
+    }
+    if ( dtXmlParser::hasAttribute("inPositionFunction", element) ) {
+      _inPosition.reset(
+        scaThreeD::MustDownCast(
+          aF->get( 
+            dtXmlParser::getAttributeStr("inPositionFunction", element)
+          )
+        )->clone()
+      );
+    }
     
     //
     // get field label
@@ -163,14 +172,31 @@ namespace dtOO {
         forAll(volField, cId) {
           ::Foam::vector volFieldValue = volField[cId];
 
-          float thisUserValue
-          =
-          _inRange->YFloat(
-            volFieldValue.x(), volFieldValue.y(), volFieldValue.z()
-          );
-
-          if (thisUserValue == 0) continue;
-
+          if (
+            !_inRange.isNull()
+            &&
+            (
+              _inRange->YFloat(
+                volFieldValue.x(), volFieldValue.y(), volFieldValue.z()
+              ) 
+              == 
+              0
+            )
+          ) continue;
+          if ( 
+            !_inPosition.isNull()
+            &&
+            (
+              _inPosition->YFloat( 
+                mesh.C()[cId].component(0), 
+                mesh.C()[cId].component(1),
+                mesh.C()[cId].component(2) 
+              ) 
+              == 
+              0
+            )
+          ) continue;
+          
           //
           // get location
           //

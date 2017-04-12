@@ -8,7 +8,6 @@
 #include "dtPlugin.h"
 
 namespace dtOO {
-//  class dtXmlParser;
   class constValue;
   class analyticFunction;
   class analyticGeometry;
@@ -35,7 +34,8 @@ namespace dtOO {
       );    
       virtual void apply(void);
     private:
-      dt__pH(scaThreeD const) _inRange;    
+      dt__pH(scaThreeD const) _inRange;
+      dt__pH(scaThreeD const) _inPosition;
       dtCase const * _case;
       std::string _field;
   };

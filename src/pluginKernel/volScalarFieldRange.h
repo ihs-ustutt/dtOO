@@ -16,6 +16,7 @@ namespace dtOO {
   class baseContainer;
   class dtCase;
   class scaOneD;
+  class scaThreeD;
   
   class volScalarFieldRange : public dtPlugin {
     public:
@@ -36,6 +37,7 @@ namespace dtOO {
       virtual void apply(void);
     private:
       dt__pH(scaOneD const) _inRange;    
+      dt__pH(scaThreeD const) _inPosition;    
       dtCase const * _case;
       std::string _field;
   };
