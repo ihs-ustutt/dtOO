@@ -78,7 +78,7 @@ namespace dtOO {
   
   void pickLengthRange::init( 
 	  ::QDomElement const * tE, 
-    baseContainer const * const bC,
+    baseContainer * const bC,
 		cVPtrVec const * const cV,
 		aFPtrVec const * const aF,
 		aGPtrVec const * const aG 

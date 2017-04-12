@@ -10,7 +10,9 @@ namespace dtOO {
   pickMap2dTo3dRangePercent::pickMap2dTo3dRangePercent() : dtTransformer() {
   }
 
-  pickMap2dTo3dRangePercent::pickMap2dTo3dRangePercent(const pickMap2dTo3dRangePercent& orig) : dtTransformer(orig) {
+  pickMap2dTo3dRangePercent
+    ::pickMap2dTo3dRangePercent(const pickMap2dTo3dRangePercent& orig)
+    : dtTransformer(orig) {
 		_u0 = orig._u0;
 		_v0 = orig._v0;
   }
@@ -26,7 +28,9 @@ namespace dtOO {
 		return new pickMap2dTo3dRangePercent();
 	}
 	
-  aGPtrVec pickMap2dTo3dRangePercent::apply( aGPtrVec const * const aGeoVecP ) const {
+  aGPtrVec pickMap2dTo3dRangePercent::apply( 
+    aGPtrVec const * const aGeoVecP 
+  ) const {
     aGPtrVec aGeoRet;
     
     for (int ii=0;ii<aGeoVecP->size();ii++) {
@@ -51,7 +55,7 @@ namespace dtOO {
   
   void pickMap2dTo3dRangePercent::init( 
 	  ::QDomElement const * tE, 
-    baseContainer const * const bC,
+    baseContainer * const bC,
 		cVPtrVec const * const cV,
 		aFPtrVec const * const aF,
 		aGPtrVec const * const aG 
@@ -64,33 +68,18 @@ namespace dtOO {
 		if ( dtXmlParserBase::hasAttribute("parameter_percent_one", *tE) ) {
 			_u0 
 			= 
-			dtXmlParserBase::muParseString( 
-				dtXmlParserBase::replaceDependencies(
-					dtXmlParserBase::getAttributeStr("parameter_percent_one", *tE),
-					cV, 
-					aF
-				) 
+			dtXmlParserBase::getAttributeFloatMuParse( 
+        "parameter_percent_one", *tE, cV, aF
 			);
 		}
 		if ( dtXmlParserBase::hasAttribute("parameter_percent_two", *tE) ) {
 			_v0
 			= 
-			dtXmlParserBase::muParseString( 
-				dtXmlParserBase::replaceDependencies(
-					dtXmlParserBase::getAttributeStr("parameter_percent_two", *tE),
-					cV, 
-					aF
-				) 
+			dtXmlParserBase::getAttributeFloatMuParse( 
+        "parameter_percent_two", *tE, cV, aF
 			);
 		}
 		
-    if ( (_u0 >= 0.) && (_v0 >= 0.) ) {
-			dt__throw(
-				init(),
-				<< dt__eval(_u0) << std::endl
-				<< dt__eval(_v0) << std::endl
-				<< "Only one value should be greater than zero. Check input."
-			);
-    }
+    dt__throwIf( (_u0 >= 0.) && (_v0 >= 0.), init() );
   }  
 }

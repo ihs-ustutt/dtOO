@@ -125,6 +125,7 @@ SET(HEADERS
   dtTransformerHeaven/closeGapsArithmetic.h
   dtTransformerHeaven/scale.h
   dtTransformerHeaven/xYz_rPhiZ.h
+  dtTransformerHeaven/pickMap2dTo3dRectanglePercent.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -244,6 +245,7 @@ SET(SOURCES
   dtTransformerHeaven/closeGapsArithmetic.cpp
   dtTransformerHeaven/scale.cpp
   dtTransformerHeaven/xYz_rPhiZ.cpp
+  dtTransformerHeaven/pickMap2dTo3dRectanglePercent.cpp
 )
 
 APPEND_DTOO_SOURCE(src/geometryKernel "${SOURCES}")

@@ -14,7 +14,7 @@ namespace dtOO {
     virtual dtTransformer * create( void ) const;      
     void init( 
       ::QDomElement const * tE, 
-      baseContainer const * const bC,
+      baseContainer * const bC,
       cVPtrVec const * const cValP,
       aFPtrVec const * const sFunP,
       aGPtrVec const * const depAGeoP 

@@ -29,6 +29,7 @@
 #include "closeGapsArithmetic.h"
 #include "scale.h"
 #include "xYz_rPhiZ.h"
+#include "pickMap2dTo3dRectanglePercent.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -77,6 +78,7 @@ namespace dtOO {
     __IFRET( scale );
     __IFRET( xYz_rPhiZ );
     __IFRET( uVw_skewPhirMs );
+    __IFRET( pickMap2dTo3dRectanglePercent )
 
     dt__throw(create(), << str <<  " could not be created");  
   }

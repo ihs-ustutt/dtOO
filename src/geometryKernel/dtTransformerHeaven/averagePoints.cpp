@@ -53,7 +53,7 @@ namespace dtOO {
 
 	void averagePoints::init( 
 		::QDomElement const * tE, 
-		baseContainer const * const bC,
+		baseContainer * const bC,
 		cVPtrVec const * const cValP,
 		aFPtrVec const * const sFunP,
 		aGPtrVec const * const depAGeoP 

@@ -22,7 +22,7 @@ namespace dtOO {
 
   void dtTransformer::init( 
 	  ::QDomElement const * tE, 
-    baseContainer const * const bC,
+    baseContainer * const bC,
 		cVPtrVec const * const cV,
 		aFPtrVec const * const aF,
 		aGPtrVec const * const aG
@@ -35,7 +35,7 @@ namespace dtOO {
     
   void dtTransformer::init( 
 	  ::QDomElement const * tE,
-	  baseContainer const * const bC, 
+	  baseContainer * const bC, 
 		cVPtrVec const * const cValP,
 		aFPtrVec const * const sFunP
 	) {

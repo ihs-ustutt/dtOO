@@ -1,5 +1,5 @@
-#ifndef PICKMAP3DTO3DRANGEPERCENT_H
-#define	PICKMAP3DTO3DRANGEPERCENT_H
+#ifndef pickMap2dTo3dRectanglePercent_H
+#define	pickMap2dTo3dRectanglePercent_H
 
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
@@ -8,12 +8,12 @@ namespace dtOO {
   class analyticFunction;
   class vec2dOneD;
   
-  class pickMap3dTo3dRangePercent : public dtTransformer {
+  class pickMap2dTo3dRectanglePercent : public dtTransformer {
   public:
-    dt__classOnlyName(pickMap3dTo3dRangePercent);   
-    pickMap3dTo3dRangePercent();
-    pickMap3dTo3dRangePercent(const pickMap3dTo3dRangePercent& orig);
-    virtual ~pickMap3dTo3dRangePercent();
+    dt__classOnlyName(pickMap2dTo3dRectanglePercent);   
+    pickMap2dTo3dRectanglePercent();
+    pickMap2dTo3dRectanglePercent(const pickMap2dTo3dRectanglePercent& orig);
+    virtual ~pickMap2dTo3dRectanglePercent();
     virtual dtTransformer * clone( void ) const;
     virtual dtTransformer * create( void ) const;     
     virtual bool isNecessary( void ) const; 
@@ -27,11 +27,9 @@ namespace dtOO {
     virtual aGPtrVec 
     apply( aGPtrVec const * const aGeoVecP ) const;
   private:
-    float _u0;
-    float _v0;
-    float _w0;
+    dtPoint2 _p0;
+    dtPoint2 _p1;
   };
 }
 
-#endif	/* PICKMAP3DTO3DRANGEPERCENT_H */
-
+#endif	/* pickMap2dTo3dRectanglePercent_H */
