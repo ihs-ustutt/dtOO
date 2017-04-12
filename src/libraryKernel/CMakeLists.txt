@@ -81,6 +81,10 @@ SET(HEADERS
   geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h
   geometryEngine/geoBuilder/ellipse_radiusRadiusCoordinateSystemConstructOCC.h
   geometryEngine/geoBuilder/geomCurve_curveRotateConstructOCC.h
+  geometryEngine/geoBuilder/geomSurface_surfaceTranslateConstructOCC.h
+  geometryEngine/geoBuilder/geomCurve_curveTranslateConstructOCC.h
+  geometryEngine/geoBuilder/geomCurve2d_baseConstructOCC.h
+  geometryEngine/geoBuilder/geomCurve2d_curve2dTranslateConstructOCC.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
@@ -207,6 +211,10 @@ SET(SOURCES
   geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.cpp
   geometryEngine/geoBuilder/ellipse_radiusRadiusCoordinateSystemConstructOCC.cpp
   geometryEngine/geoBuilder/geomCurve_curveRotateConstructOCC.cpp
+  geometryEngine/geoBuilder/geomSurface_surfaceTranslateConstructOCC.cpp
+  geometryEngine/geoBuilder/geomCurve_curveTranslateConstructOCC.cpp
+  geometryEngine/geoBuilder/geomCurve2d_baseConstructOCC.cpp
+  geometryEngine/geoBuilder/geomCurve2d_curve2dTranslateConstructOCC.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp

@@ -7,11 +7,11 @@
 #include <geometryEngine/dtOCCBSplineCurve.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/dtOCCBSplineCurve2d.h>
+#include "geomCurve2d_baseConstructOCC.h"
 
 #include <Geom_Surface.hxx>
 #include <Geom_Curve.hxx>
 #include <Geom2d_Curve.hxx>
-#include <Geom2d_BSplineCurve.hxx>
 #include <GeomProjLib.hxx>
 
 namespace dtOO {
@@ -44,18 +44,7 @@ namespace dtOO {
 
 		dtOCCCurve2dBase base;
 		base.setOCC(pC);
-//		if ( dtOCCBezierCurve::ConstDownCast(dtC) ) {
-//			_dtC2d.reset( new dtOCCBezierCurve(base) );		
-//		}
-		if( !(Handle(Geom2d_BSplineCurve)::DownCast(pC).IsNull()) ) {
-		  _dtC2d.reset( new dtOCCBSplineCurve2d(base) );		
-		}
-		else {
-			dt__throw(
-			  geomCurve2d_reparamInGeomSurfaceOCC(),
-				<< dt__eval(Handle(Geom2d_BSplineCurve)::DownCast(pC).IsNull())
-			);
-		}
+    _dtC2d.reset( geomCurve2d_baseConstructOCC(base).result() );
 	}
 
 	geomCurve2d_reparamInGeomSurfaceOCC::~geomCurve2d_reparamInGeomSurfaceOCC() {

@@ -1,18 +1,5 @@
 #include "geomCurve2d_closeGapsArithmeticOCC.h"
 #include <geometryEngine/dtCurve2d.h>
-//#include "geometryEngine/dtOCCCurve2d.h"
-//#include "geometryEngine/dtOCCSurface.h"
-//#include <geometryEngine/dtOCCCurveBase.h>
-//#include <geometryEngine/dtOCCCurve2dBase.h>
-//#include <geometryEngine/dtOCCBSplineCurve.h>
-//#include <geometryEngine/dtOCCBezierCurve.h>
-//#include <geometryEngine/dtOCCBSplineCurve2d.h>
-
-//#include <Geom_Surface.hxx>
-//#include <Geom_Curve.hxx>
-//#include <Geom2d_Curve.hxx>
-//#include <Geom2d_BSplineCurve.hxx>
-//#include <GeomProjLib.hxx>
 
 namespace dtOO {
 	geomCurve2d_closeGapsArithmeticOCC::geomCurve2d_closeGapsArithmeticOCC() {
