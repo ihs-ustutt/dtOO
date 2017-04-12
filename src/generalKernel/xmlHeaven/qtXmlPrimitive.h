@@ -8,6 +8,7 @@
 #include <QtXml/QDomElement>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <interfaceHeaven/twoDArrayHandling.h>
 
 namespace dtOO {
   class qtXmlPrimitive : public stringPrimitive {
@@ -24,6 +25,9 @@ namespace dtOO {
       ::QDomElement const element 
     );
     static std::vector< ::QDomElement > getChildVector(
+      std::string const sibName, ::QDomElement const element 
+    );
+    static twoDArrayHandling< ::QDomElement > getChildMatrix(
       std::string const sibName, ::QDomElement const element 
     );
     static std::vector< ::QDomElement > getDescendantVector(

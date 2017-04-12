@@ -198,6 +198,19 @@ namespace dtOO {
     return retVec;
   }  
   
+  twoDArrayHandling< ::QDomElement > qtXmlPrimitive::getChildMatrix(
+	  std::string const sibName, ::QDomElement const element 
+	) {
+    twoDArrayHandling< ::QDomElement > retMat(0, 0);
+    std::vector< ::QDomElement > row
+    = 
+    getChildVector( "row", getChild("matrix", element) );
+    dt__forAllRefAuto(row, aRow) {
+      retMat.push_back( getChildVector(sibName, aRow) );
+    }
+    return retMat;
+  }    
+  
   std::vector< ::QDomElement > qtXmlPrimitive::getDescendantVector(
 	  std::string const tagName, ::QDomElement const element 
 	) {
