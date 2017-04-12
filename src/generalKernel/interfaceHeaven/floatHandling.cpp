@@ -22,6 +22,16 @@ namespace dtOO {
     float ret = nextafterf(b, std::numeric_limits<float>::infinity());
     return ret;
   }
+
+  float floatHandling::nextIfSmaller(double a) {
+    float b = a;
+    if ( b >= a ) {
+      return b;
+    }
+    else {
+      return next(a);
+    }
+  }  
   
   float floatHandling::prev(double a) {
     float b = a;
@@ -33,17 +43,25 @@ namespace dtOO {
     return ret;
   }  
   
-  double floatHandling::boundToRange(float const value, double const a, double const b) {
-    double valueD = (double) value;
-    
-    if (valueD > b) {
+  float floatHandling::prevIfBigger(double a) {
+    float b = a;
+    if ( b <= a ) {
       return b;
     }
-    else if (valueD < a) {
+    else {
+      return prev(a);
+    }
+  }  
+  
+  float floatHandling::boundToRange(float const value, float const a, float const b) {
+    if (value > b) {
+      return b;
+    }
+    else if (value < a) {
       return a;
     }
     
-    return valueD;
+    return value;
   }
   
   bool floatHandling::isAscending( std::vector< float > const & check) {
