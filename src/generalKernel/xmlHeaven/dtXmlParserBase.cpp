@@ -1540,6 +1540,31 @@ namespace dtOO {
     return createDtPoint3(toBuildP, bC, cV, aF, NULL); 
   }	
 	
+  dtPoint2 dtXmlParserBase::createDtPoint2(
+	  ::QDomElement const * toBuildP,
+    baseContainer * const bC,                   
+    cVPtrVec const * const cV,
+		aFPtrVec const * const aF, 
+		aGPtrVec const * const aG
+  ) {
+    std::vector< dtPoint2 > basicVec;
+
+    createBasic(toBuildP, bC, cV, aF, aG,&basicVec);
+    
+    dt__throwIf(basicVec.size()!=1, createBasic());
+	
+    return basicVec[0];
+	}
+	
+  dtPoint2 dtXmlParserBase::createDtPoint2(
+	  ::QDomElement const * toBuildP,
+		baseContainer * const bC,
+		cVPtrVec const * const cV,  
+		aFPtrVec const * const aF
+	) {  
+    return createDtPoint2(toBuildP, bC, cV, aF, NULL); 
+  }	
+  
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP, 
     baseContainer * const bC,      					

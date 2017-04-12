@@ -175,6 +175,19 @@ namespace dtOO {
       aFPtrVec const * const aF,
       std::vector< dtPoint2 > * basicP
     );     
+    static dtPoint2 createDtPoint2(
+      ::QDomElement const * toBuildP,
+      baseContainer * const bC,
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF, 
+      aGPtrVec const * const aG
+    );
+    static dtPoint2 createDtPoint2(
+      ::QDomElement const * toBuildP,
+      baseContainer * const bC,
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF
+    );        
     //
     // dtVector2
     //
