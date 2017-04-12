@@ -1,12 +1,29 @@
 #include "translate.h"
-#include "progHelper.h"
+#include <progHelper.h>
+#include <logMe/logMe.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
-#include <geometryEngine/dtCurve2d.h>
+
+#include <analyticGeometryHeaven/map1dTo3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
+#include <analyticGeometryHeaven/map2dTo3d.h>
+#include <analyticGeometryHeaven/map3dTo3d.h>
+#include <analyticGeometryHeaven/analyticSurface.h>
+#include <analyticGeometryHeaven/map1dTo3dTransformed.h>
+#include <analyticGeometryHeaven/map2dTo3dTransformed.h>
+#include <analyticGeometryHeaven/map3dTo3dTransformed.h>
+
 #include <geometryEngine/dtCurve.h>
-#include <logMe/logMe.h>
+#include <geometryEngine/dtCurve2d.h>
+#include <geometryEngine/dtSurface.h>
+#include <geometryEngine/geoBuilder/geomCurve_curveTranslateConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve2d_curve2dTranslateConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_surfaceTranslateConstructOCC.h>
+#include <baseContainerHeaven/baseContainer.h>
+#include <baseContainerHeaven/pointContainer.h>
+#include <baseContainerHeaven/vectorContainer.h>
 
 namespace dtOO {
   translate::translate() : dtTransformer() {
@@ -42,42 +59,61 @@ namespace dtOO {
 		return ret;
 	}
   
-  aFPtrVec translate::apply( 
-    aFPtrVec const * const sFunP 
-  ) const { 
+  aFPtrVec translate::apply( aFPtrVec const * const aFunVecP ) const {
     aFPtrVec retSFun;
 
 		
-    for (int ii=0; ii<sFunP->size(); ii++) {
+    dt__forAllRefAuto(*aFunVecP, aF) {
       //
       // clone and cast scaFunction
       //
 			scaCurve2dOneD  const * const sC2d1d 
       = 
-      scaCurve2dOneD::ConstDownCast( sFunP->at(ii) );
+      scaCurve2dOneD::ConstDownCast( aF );
 		  vec2dCurve2dOneD  const * const v2dC1d 
       = 
-      vec2dCurve2dOneD::ConstDownCast( sFunP->at(ii) );
+      vec2dCurve2dOneD::ConstDownCast( aF );
 			vec3dCurveOneD  const * const v3dC1d 
       = 
-      vec3dCurveOneD::ConstDownCast( sFunP->at(ii) );
+      vec3dCurveOneD::ConstDownCast( aF );
 			
 			if ( sC2d1d ) {
-				dtCurve2d * dtC2d = sC2d1d->ptrDtCurve2d()->clone();
-				dtC2d->translate(_v2);
-				retSFun.push_back( new scaCurve2dOneD(dtC2d) );
+				retSFun.push_back( 
+          new scaCurve2dOneD( 
+            dt__tmpPtr(
+              dtCurve2d, 
+              geomCurve2d_curve2dTranslateConstructOCC(
+                sC2d1d->ptrDtCurve2d(), _v2
+              ).result()
+            )
+          ) 
+        );
 				retSFun.back()->setLabel(sC2d1d->getLabel());
 			}
 			else if ( v2dC1d ) {
-				dtCurve2d * dtC2d = v2dC1d->ptrDtCurve2d()->clone();
-				dtC2d->translate(_v2);
-				retSFun.push_back( new vec2dCurve2dOneD(dtC2d) );
+				retSFun.push_back( 
+          new vec2dCurve2dOneD(
+            dt__tmpPtr(
+              dtCurve2d, 
+              geomCurve2d_curve2dTranslateConstructOCC(
+                v2dC1d->ptrDtCurve2d(), _v2
+              ).result()
+            )
+          ) 
+        );
 				retSFun.back()->setLabel(v2dC1d->getLabel());
 			}			
 			else if ( v3dC1d ) {
-				dtCurve * dtC = v3dC1d->ptrDtCurve()->clone();
-				dtC->translate(_v3);
-				retSFun.push_back( new vec3dCurveOneD(dtC) );
+				retSFun.push_back( 
+          new vec3dCurveOneD(
+            dt__tmpPtr(
+              dtCurve, 
+              geomCurve_curveTranslateConstructOCC(
+                v3dC1d->ptrDtCurve(), _v3
+              ).result()
+            )
+          ) 
+        );
 				retSFun.back()->setLabel(v3dC1d->getLabel());
 			}
 			else {
@@ -93,6 +129,63 @@ namespace dtOO {
     return retSFun;    
   }
 
+  aGPtrVec translate::apply( 
+	  aGPtrVec const * const aGeoVecP 
+	) const {
+    aGPtrVec retAGeo;
+
+    dt__forAllConstIter(aGPtrVec, *aGeoVecP, it) {
+			//
+			// clone and cast analyticGeometry
+			//
+      map1dTo3d const * const m1d = map1dTo3d::ConstDownCast(*it);      
+      map2dTo3d const * const m2d = map2dTo3d::ConstDownCast(*it);
+      map3dTo3d const * const m3d = map3dTo3d::ConstDownCast(*it);
+      
+      if (m1d) {
+        analyticCurve const * const s3 = analyticCurve::ConstDownCast(*it);
+        if ( s3 &&  !s3->isTransformed() ) {
+          retAGeo.push_back( 
+            new analyticCurve(
+              dt__tmpPtr(
+                dtCurve,
+                geomCurve_curveTranslateConstructOCC( 
+                  s3->ptrConstDtCurve(), _v3
+                ).result()
+              )
+            ) 
+          );
+        }
+        else {
+          retAGeo.push_back( m1d->cloneTransformed(this) );
+        }
+      }
+			else if (m2d) {
+        analyticSurface const * const aS = analyticSurface::ConstDownCast(*it);
+        if ( aS &&  !aS->isTransformed() ) {
+          retAGeo.push_back( 
+            new analyticSurface(
+              dt__tmpPtr(
+                dtSurface,
+                geomSurface_surfaceTranslateConstructOCC( 
+                  aS->ptrDtSurface(), _v3
+                ).result()
+              )
+            ) 
+          );
+        }
+        else {        
+          retAGeo.push_back( m2d->cloneTransformed(this) );
+        }
+      }
+			else if (m3d) {
+        retAGeo.push_back( m3d->cloneTransformed(this) );
+      }
+      else dt__throwUnexpected(apply());
+    }
+    return retAGeo;
+  }
+  
   bool translate::isNecessary( void ) const {
     return true;
   }

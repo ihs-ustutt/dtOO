@@ -27,6 +27,9 @@ namespace dtOO {
     virtual aFPtrVec apply( 
       aFPtrVec const * const sFunP 
     ) const; 
+    virtual aGPtrVec apply( 
+      aGPtrVec const * const aGeoVecP 
+    ) const;    
   private:
     dtVector2 _v2;
     dtVector3 _v3;
