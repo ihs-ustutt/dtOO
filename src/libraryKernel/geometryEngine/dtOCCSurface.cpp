@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include "dtOCCSurfaceBase.h"
 #include <logMe/dtMacros.h>
+#include <interfaceHeaven/floatHandling.h>
 
 #include <Standard_Failure.hxx>
 #include <Standard_ErrorHandler.hxx>
@@ -46,13 +47,15 @@ namespace dtOO {
 			_ptr->Bounds(U1, U2, V1, V2);
 			switch (dim) {
 				case 0:		
-					return static_cast<float>(U1);
+					return floatHandling::nextIfSmaller(U1);//static_cast<float>(U1);
 				case 1:		
-					return static_cast<float>(V1);
+					return floatHandling::nextIfSmaller(V1);//static_cast<float>(V1);
 				default:
-					dt__throw(minPara(),
-								<< dt__eval(dim) << std::endl
-								<< "dim should be 0 or 1.");				
+					dt__throw(
+            minPara(),
+						<< dt__eval(dim) << std::endl
+						<< "dim should be 0 or 1."
+          );
 			}
 		, << dt__eval(U1) << std::endl
 		  << dt__eval(U2) << std::endl
@@ -70,13 +73,15 @@ namespace dtOO {
 			_ptr->Bounds(U1, U2, V1, V2);
 			switch (dim) {
 				case 0:		
-					return static_cast<float>(U2);
+					return floatHandling::prevIfBigger(U2);//static_cast<float>(U2);
 				case 1:		
-					return static_cast<float>(V2);
+					return floatHandling::prevIfBigger(V2);//static_cast<float>(V2);
 				default:
-					dt__throw(getMax(),
-								<< dt__eval(dim) << std::endl
-								<< "dim should be 0 or 1.");				
+					dt__throw(
+            getMax(),
+						<< dt__eval(dim) << std::endl
+						<< "dim should be 0 or 1."
+          );
 			}
 		, << dt__eval(U1) << std::endl
 		  << dt__eval(U2) << std::endl

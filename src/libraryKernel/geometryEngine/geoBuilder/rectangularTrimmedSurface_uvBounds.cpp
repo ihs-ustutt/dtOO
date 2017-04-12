@@ -2,15 +2,12 @@
 
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
-//#include <geometryEngine/dtOCCCurveBase.h>
-//#include <geometryEngine/dtOCCCurve.h>
 #include <geometryEngine/dtOCCRectangularTrimmedSurface.h>
 
+#include <Precision.hxx>
+#include <Standard_Failure.hxx>
+#include <Standard_ErrorHandler.hxx>
 #include <Standard_TypeDef.hxx>
-//#include <gp_Pnt.hxx>
-//#include <gp_Dir.hxx>
-//#include <gp_Ax1.hxx>
-//#include <Geom_SurfaceOfRevolution.hxx>
 #include <Geom_RectangularTrimmedSurface.hxx>
 
 namespace dtOO {
@@ -22,18 +19,22 @@ namespace dtOO {
 			dtOCCSurface::ConstDownCast(dtS)
 		);
 		
-//		occS->OCCRef().getOCC()
-		
 		Standard_Real U1 = static_cast<Standard_Real>(min.x());
 		Standard_Real U2 = static_cast<Standard_Real>(max.x());
 		Standard_Real V1 = static_cast<Standard_Real>(min.y());
 		Standard_Real V2 = static_cast<Standard_Real>(max.y());
 		
-		Handle(Geom_RectangularTrimmedSurface) rts
-		=
-		new Geom_RectangularTrimmedSurface(
-		  occS->OCCRef().getOCC(), U1, U2, V1, V2
-		);
+		Handle(Geom_RectangularTrimmedSurface) rts;
+    
+		dt__tryOcc(
+      rts
+      =
+      new Geom_RectangularTrimmedSurface(
+        occS->OCCRef().getOCC(), U1, U2, V1, V2
+      );
+      ,
+      << ""
+    );
 		
 		dtOCCSurfaceBase base;
 		base.setOCC(rts);

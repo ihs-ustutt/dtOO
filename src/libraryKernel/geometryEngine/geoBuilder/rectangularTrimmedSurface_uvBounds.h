@@ -12,7 +12,9 @@ namespace dtOO {
   class rectangularTrimmedSurface_uvBounds {
   public:
     dt__classOnlyName(rectangularTrimmedSurface_uvBounds);
-    rectangularTrimmedSurface_uvBounds(dtSurface const * dtS, dtPoint2 const & min, dtPoint2 const & max);
+    rectangularTrimmedSurface_uvBounds(
+      dtSurface const * dtS, dtPoint2 const & min, dtPoint2 const & max
+    );
     virtual ~rectangularTrimmedSurface_uvBounds();
     dtSurface * result( void );
     private:
