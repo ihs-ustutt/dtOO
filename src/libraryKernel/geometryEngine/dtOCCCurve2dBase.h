@@ -1,5 +1,5 @@
-#ifndef DTOCCCURVE2DBASE_H
-#define	DTOCCCURVE2DBASE_H
+#ifndef dtOCCCurve2dBase_H
+#define	dtOCCCurve2dBase_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -12,6 +12,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(dtOCCCurve2dBase);
     dtOCCCurve2dBase();
+    dtOCCCurve2dBase(Handle_Geom2d_Curve & orig);        
     virtual ~dtOCCCurve2dBase();
     void setOCC(Handle_Geom2d_Curve occCurve);    
     Handle_Geom2d_Curve const getOCC( void ) const;    
@@ -21,5 +22,5 @@ namespace dtOO {
     dt__pH(OCCHanWrap) _hanWrap;
   };
 }
-#endif	/* DTOCCCURVE2DBASE_H */
+#endif	/* dtOCCCurve2dBase_H */
 
