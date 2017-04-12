@@ -1,5 +1,5 @@
-#ifndef GEOMCURVE_BASECONSTRUCTOCC_H
-#define	GEOMCURVE_BASECONSTRUCTOCC_H
+#ifndef geomCurve_baseConstructOCC_H
+#define	geomCurve_baseConstructOCC_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -15,11 +15,10 @@ namespace dtOO {
     dt__classOnlyName(geomCurve_baseConstructOCC);
     geomCurve_baseConstructOCC( dtOCCCurveBase const & base );
     virtual ~geomCurve_baseConstructOCC();
-    static bool support( dtOCCCurveBase const & base );    
     dtCurve * result( void );
   private:
-    ptrHandling<dtCurve> _dtC;
+    ptrHandling< dtCurve > _dtC;
   };
 }
-#endif	/* GEOMCURVE_BASECONSTRUCTOCC_H */
+#endif	/* geomCurve_baseConstructOCC_H */
 

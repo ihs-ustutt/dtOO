@@ -126,16 +126,13 @@ namespace dtOO {
         Handle(Geom_Curve) aCurve = ::BRep_Tool::Curve( aEdge, U0, U1 );
         if ( !aCurve.IsNull() ) {
           dtOCCCurveBase base(aCurve);
-          if ( geomCurve_baseConstructOCC::support( base ) ) {
-            result->push_back(
-              new analyticCurve(
-                dt__tmpPtr(
-                  dtCurve, 
-                  geomCurve_baseConstructOCC( base ).result()
-                )
+          result->push_back(
+            new analyticCurve(
+              dt__tmpPtr(
+                dtCurve, geomCurve_baseConstructOCC( base ).result()
               )
-            );
-          }
+            )
+          );
         }
       }         
     }    

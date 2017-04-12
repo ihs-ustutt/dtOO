@@ -10,6 +10,7 @@
 #include <geometryEngine/dtOCCTrimmedCurve.h>
 #include <geometryEngine/dtOCCLine.h>
 #include <geometryEngine/dtOCCCircle.h>
+#include <geometryEngine/dtOCCEllipse.h>
 
 #include <Precision.hxx>
 #include <Standard_Failure.hxx>
@@ -21,6 +22,7 @@
 #include <Geom_TrimmedCurve.hxx>
 #include <Geom_Line.hxx>
 #include <Geom_Circle.hxx>
+#include <Geom_Ellipse.hxx>
 
 namespace dtOO {
 	geomCurve_baseConstructOCC::geomCurve_baseConstructOCC( dtOCCCurveBase const & base ) {
@@ -34,6 +36,9 @@ namespace dtOO {
 		else if ( !(Handle(Geom_Circle)::DownCast(occC).IsNull()) ) {
 		  _dtC.reset( new dtOCCCircle(base) );			
 		}    
+		else if ( !(Handle(Geom_Ellipse)::DownCast(occC).IsNull()) ) {
+		  _dtC.reset( new dtOCCEllipse(base) );			
+		}        
 		else if ( !(Handle(Geom_TrimmedCurve)::DownCast(occC).IsNull()) ) {
 		  _dtC.reset( 
         new dtOCCTrimmedCurve( 
@@ -52,24 +57,6 @@ namespace dtOO {
 			);			
 		}
 	}
-	
-  bool geomCurve_baseConstructOCC::support( 
-    dtOCCCurveBase const & base 
-  ) {
-		Handle(Geom_Curve) occC = base.getOCC();
-		if ( !(Handle(Geom_BSplineCurve)::DownCast(occC).IsNull()) ) {
-		  return true;
-		}
-		else if ( !(Handle(Geom_BezierCurve)::DownCast(occC).IsNull()) ) {
-		  return true;
-		}
-		else if ( 
-      !(Handle(Geom_Line)::DownCast(occC).IsNull()) 
-    ) {
-		  return true;
-		}
-		else return false;
-	}  
   
 	geomCurve_baseConstructOCC::~geomCurve_baseConstructOCC() {
 	}
