@@ -193,11 +193,7 @@ namespace dtOO {
 		float vv0 = p0.y();
 		float vv1 = p1.y();
     ptrHandling< dtSurface > ss(		
-			rectangularTrimmedSurface_uvBounds(
-				_dtS.get(), 
-				dtPoint2(u_percent(uu0), v_percent(vv0)), 
-				dtPoint2(u_percent(uu1), v_percent(vv1))
-			).result()
+			rectangularTrimmedSurface_uvBounds( _dtS.get(), p0, p1 ).result()
 		);		
     return new analyticSurface(ss.get());
   }
