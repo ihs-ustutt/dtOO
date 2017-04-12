@@ -51,7 +51,7 @@ namespace dtOO {
         dtPoint2 const & p0, dtPoint2 const & p1, 
         dtPoint2 const & p2, dtPoint2 const & p3 
       ) const;
-      virtual map2dTo3d * segmentRectangle( 
+      virtual map2dTo3d * segmentRectangle(
         dtPoint2 const & p0, dtPoint2 const & p1 
       ) const;
       //

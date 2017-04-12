@@ -6,6 +6,7 @@
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <interfaceHeaven/floatHandling.h>
 #include <solid3dSurface.h>
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
@@ -502,11 +503,15 @@ namespace dtOO {
   }
     
   float map2dTo3d::u_percent(float const & uu) const {
-    return (getUMin() +  (getUMax() - getUMin() ) * uu);
+    return floatHandling::boundToRange( 
+      getUMin() +  (getUMax() - getUMin() ) * uu, getUMin(), getUMax()
+    );
   }
     
   float map2dTo3d::v_percent(float const & vv) const {
-    return (getVMin() +  (getVMax() - getVMin() ) * vv);
+    return floatHandling::boundToRange( 
+      getVMin() +  (getVMax() - getVMin() ) * vv, getVMin(), getVMax()
+    );
   }
   
   dtPoint2 map2dTo3d::percent_uv(dtPoint2 const & pUV) const {
@@ -514,11 +519,15 @@ namespace dtOO {
   }
   
   float map2dTo3d::percent_u(float const & uu) const {
-    return ( (uu - getUMin()) / (getUMax() - getUMin()) );
+    return floatHandling::boundToRange( 
+      (uu - getUMin()) / (getUMax() - getUMin()), 0., 1.
+    );
   }
   
   float map2dTo3d::percent_v(float const & vv) const {
-    return ( (vv - getVMin()) / (getVMax() - getVMin()) );
+    return floatHandling::boundToRange( 
+      (vv - getVMin()) / (getVMax() - getVMin()), 0., 1.
+    );
   }
 
 	map1dTo3d * map2dTo3d::segment( 
