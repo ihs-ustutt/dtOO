@@ -69,14 +69,14 @@ namespace dtOO {
 			_u0 
 			= 
 			dtXmlParserBase::getAttributeFloatMuParse( 
-        "parameter_percent_one", *tE, cV, aF
+        "parameter_percent_one", *tE, cV, aF, aG
 			);
 		}
 		if ( dtXmlParserBase::hasAttribute("parameter_percent_two", *tE) ) {
 			_v0
 			= 
 			dtXmlParserBase::getAttributeFloatMuParse( 
-        "parameter_percent_two", *tE, cV, aF
+        "parameter_percent_two", *tE, cV, aF, aG
 			);
 		}
 		
