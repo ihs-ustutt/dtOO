@@ -129,9 +129,7 @@ namespace dtOO {
     return retSFun;    
   }
 
-  aGPtrVec translate::apply( 
-	  aGPtrVec const * const aGeoVecP 
-	) const {
+  aGPtrVec translate::apply( aGPtrVec const * const aGeoVecP ) const {
     aGPtrVec retAGeo;
 
     dt__forAllConstIter(aGPtrVec, *aGeoVecP, it) {

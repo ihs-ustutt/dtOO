@@ -24,12 +24,8 @@ namespace dtOO {
     virtual std::vector< dtPoint3 > apply( 
       std::vector< dtPoint3 > const * const toTrans 
     ) const;   
-    virtual aFPtrVec apply( 
-      aFPtrVec const * const sFunP 
-    ) const; 
-    virtual aGPtrVec apply( 
-      aGPtrVec const * const aGeoVecP 
-    ) const;    
+    virtual aFPtrVec apply( aFPtrVec const * const sFunP ) const; 
+    virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;    
   private:
     dtVector2 _v2;
     dtVector3 _v3;
