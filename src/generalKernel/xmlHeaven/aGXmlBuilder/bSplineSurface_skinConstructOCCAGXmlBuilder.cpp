@@ -8,7 +8,7 @@
 #include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -68,15 +68,22 @@ namespace dtOO {
       maxDeg 
       = 
       dtXmlParserBase::getAttributeIntMuParse("orderMax", toBuild, cV, aF);
-    }          
-    result->push_back( 
-      new analyticSurface(
-        dt__tmpPtr(
-          dtSurface, 
-          bSplineSurface_skinConstructOCC(ccV, minDeg, maxDeg, nIter).result()
-        )
-      )
+    }
+    
+    dt__pH(dtSurface) dtS(
+      bSplineSurface_skinConstructOCC(ccV, minDeg, maxDeg, nIter).result()
     );
+              
+    if ( 
+      dtXmlParserBase::hasAttribute("exchange", toBuild)  
+      && 
+      dtXmlParserBase::getAttributeBool("exchange", toBuild)
+    ) {
+      dtS.reset( 
+        bSplineSurface_exchangeSurfaceConstructOCC(dtS.get()).result()
+      );
+    }
+    result->push_back( new analyticSurface( dtS.get() ) );
     ccV.destroy();
   }
 }
