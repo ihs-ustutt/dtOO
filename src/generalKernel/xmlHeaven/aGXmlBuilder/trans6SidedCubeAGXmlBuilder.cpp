@@ -1,6 +1,7 @@
 #include "trans6SidedCubeAGXmlBuilder.h"
 
 #include <logMe/logMe.h>
+#include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/trans6SidedCube.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -38,7 +39,7 @@ namespace dtOO {
       buildPart()
     );
     
-    std::vector< map2dTo3d const * > mm(6, NULL);
+    dt__pVH(map2dTo3d) mm;
     std::vector< ::QDomElement > wElementVec 
     = 
     dtXmlParserBase::getChildVector( "analyticGeometry", toBuild );
@@ -48,14 +49,13 @@ namespace dtOO {
         //
         // get analyticGeometry
         //
-        analyticGeometry const * aG_t 
-        = 
-        aG->get( dtXmlParserBase::getAttributeStr("label", *it) );
-
+        dt__pH(analyticGeometry const) aG_t(
+          dtXmlParserBase::createAnalyticGeometry(*it, bC, cV, aF, aG)
+        );          
         //
         // check if it is a map2dTo3d
         //
-        dt__ptrAss(mm[counter], map2dTo3d::ConstDownCast(aG_t));
+        mm.push_back( map2dTo3d::MustDownCast(aG_t->clone()) );
         counter++;
       }
     }
@@ -63,21 +63,20 @@ namespace dtOO {
       //
       // get analyticGeometry
       //
-      analyticGeometry const * aG0_t 
-      = 
-      aG->get( dtXmlParserBase::getAttributeStr("label", wElementVec[0]) );
-      analyticGeometry const * aG1_t 
-      = 
-      aG->get( dtXmlParserBase::getAttributeStr("label", wElementVec[1]) );
-
+      dt__pH(analyticGeometry const) aG0_t(
+        dtXmlParserBase::createAnalyticGeometry(&wElementVec[0], bC, cV, aF, aG)
+      );      
+      dt__pH(analyticGeometry const) aG1_t(
+        dtXmlParserBase::createAnalyticGeometry(&wElementVec[1], bC, cV, aF, aG)
+      );            
       //
       // check if it is a map2dTo3d
       //
       dt__ptrAss(
-        analyticSurface const * aS0, analyticSurface::ConstDownCast(aG0_t)
+        analyticSurface const * aS0, analyticSurface::ConstDownCast(aG0_t.get())
       );
       dt__ptrAss(
-        analyticSurface const * aS1, analyticSurface::ConstDownCast(aG1_t)
+        analyticSurface const * aS1, analyticSurface::ConstDownCast(aG1_t.get())
       );
 
       vectorHandling< dtSurface const * > cDtS;
@@ -86,7 +85,7 @@ namespace dtOO {
       cDtS.push_back( aS1->ptrDtSurface() );
       dtS = bSplineSurfaces_bSplineSurfaceSkinConstructOCC(cDtS).result();
       dt__forAllIndex(dtS, ii) {
-        mm[ii] = new analyticSurface(dtS[ii]);
+        mm.push_back( new analyticSurface(dtS[ii]) );
       }
 
       dtS.destroy();
@@ -103,7 +102,9 @@ namespace dtOO {
     // create analyticGeometry
     //      
     result->push_back( 
-      new trans6SidedCube(mm[0], mm[1], mm[2], mm[3], mm[4], mm[5]) 
+      new trans6SidedCube(
+        &(mm[0]), &(mm[1]), &(mm[2]), &(mm[3]), &(mm[4]), &(mm[5])
+      ) 
     );
   }
 }
