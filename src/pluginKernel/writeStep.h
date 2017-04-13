@@ -35,6 +35,7 @@ namespace dtOO {
   private:
     aGPtrVec _aG;
     std::string _fn;
+    int _translator;
   };
 }
 #endif	/* WRITESTEP_H */

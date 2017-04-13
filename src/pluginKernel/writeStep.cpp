@@ -26,6 +26,7 @@
 
 namespace dtOO {  
   writeStep::writeStep() { 
+    _translator = 0;
   }
 
   writeStep::~writeStep() {
@@ -52,9 +53,12 @@ namespace dtOO {
 			  dtXmlParserBase::createAnalyticGeometry(&aGEl[ii], cV, aF, aG)
 			);
 		}
+    if ( dtXmlParserBase::hasAttribute("translator", element) ) {
+      _translator = dtXmlParserBase::getAttributeInt("translator", element);
+    }
 	}
 		
-  void writeStep::apply(void) {  
+  void writeStep::apply(void) {
 		STEPControl_Writer writer;
 	  Handle(StepData_StepModel) model = writer.Model();
 //		dt__FORALL(_aG, ii,
@@ -69,7 +73,7 @@ namespace dtOO {
 					BRepBuilderAPI_MakeFace(
 						dtOccS->OCCRef().getOCC(), Precision::Confusion()
 					).Shape(),
-					STEPControl_StepModelType::STEPControl_AsIs								
+					static_cast< STEPControl_StepModelType >(_translator)
 				);
 			}
 			else if ( v2d1d ) {
@@ -98,7 +102,9 @@ namespace dtOO {
 					).Face()
 				);
 //				TopoDS_Shape shape(edge);
-		    writer.Transfer( edge, STEPControl_StepModelType::STEPControl_AsIs	);
+		    writer.Transfer( 
+          edge, static_cast< STEPControl_StepModelType >(_translator)
+        );
 			}			
 		}
 		writer.Write(_fn.c_str());
