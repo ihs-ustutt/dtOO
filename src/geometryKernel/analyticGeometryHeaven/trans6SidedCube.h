@@ -35,6 +35,9 @@ namespace dtOO {
     virtual dtPoint3 getPoint( 
       float const & uu, float const & vv, float const & ww 
     ) const;
+    virtual map2dTo3d * segmentConstU( float const & uu ) const;
+    virtual map2dTo3d * segmentConstV( float const & vv ) const;
+    virtual map2dTo3d * segmentConstW( float const & ww ) const;    
   private:
     ptrHandling< transIntCube > _tI;
   };

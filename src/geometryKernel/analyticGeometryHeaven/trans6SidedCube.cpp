@@ -96,4 +96,40 @@ namespace dtOO {
               << "dir should be 0, 1 or 2.");
     }    
   }
+
+  map2dTo3d * trans6SidedCube::segmentConstU( float const & uu ) const {
+    if ( analyticGeometry::inUVWTolerance(uu, getUMin()) ) {
+      return _tI->getConstRefToMap2dTo3d()[1]->clone();
+    }
+    else if ( analyticGeometry::inUVWTolerance(uu, getUMax()) ) {
+      return _tI->getConstRefToMap2dTo3d()[3]->clone();
+    }
+    else {
+      return map3dTo3d::segmentConstU(uu);
+    }
+  }
+    
+  map2dTo3d * trans6SidedCube::segmentConstV( float const & vv ) const {
+    if ( analyticGeometry::inUVWTolerance(vv, getVMin()) ) {
+      return _tI->getConstRefToMap2dTo3d()[4]->clone();      
+    }
+    else if ( analyticGeometry::inUVWTolerance(vv, getVMax()) ) {
+      return _tI->getConstRefToMap2dTo3d()[5]->clone();      
+    }
+    else {
+      return map3dTo3d::segmentConstV(vv);
+    }
+  }
+    
+  map2dTo3d * trans6SidedCube::segmentConstW( float const & ww ) const {
+    if ( analyticGeometry::inUVWTolerance(ww, getWMin()) ) {
+      return _tI->getConstRefToMap2dTo3d()[2]->clone();      
+    }
+    else if ( analyticGeometry::inUVWTolerance(ww, getWMax()) ) {
+      return _tI->getConstRefToMap2dTo3d()[0]->clone();      
+    }
+    else {
+      return map3dTo3d::segmentConstW(ww);
+    }
+  }
 }
