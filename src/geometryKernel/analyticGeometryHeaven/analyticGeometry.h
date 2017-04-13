@@ -60,6 +60,9 @@ namespace dtOO {
       dtPoint3 const & p0, dtPoint3 const & p1, 
       bool output = false, float inc = 1.
     );
+    static bool inUVWTolerance( dtPoint3 const & p0, dtPoint3 const & p1 );
+    static bool inUVWTolerance( dtPoint2 const & p0, dtPoint2 const & p1 );    
+    static bool inUVWTolerance( float const & p0, float const & p1 );     
     //
     //
     //

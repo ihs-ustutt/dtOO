@@ -232,6 +232,51 @@ namespace dtOO {
     }
 
     return true;    
+  }
+
+  bool analyticGeometry::inUVWTolerance(
+    dtPoint3 const & p0, dtPoint3 const & p1
+  ) {
+		float uvwResolution 
+		=
+    staticPropertiesHandler::getInstance()->getOptionFloat(
+      "uvw_resolution"
+    );
+    
+		dtVector3 dist = p0 - p1;
+		if (sqrt(dist.squared_length()) > uvwResolution) return false;
+
+    return true;    
+  }
+  
+  bool analyticGeometry::inUVWTolerance(
+    dtPoint2 const & p0, dtPoint2 const & p1
+  ) {
+		float uvwResolution 
+		=
+    staticPropertiesHandler::getInstance()->getOptionFloat(
+      "uvw_resolution"
+    );
+    
+		dtVector2 dist = p0 - p1;
+		if (sqrt(dist.squared_length()) > uvwResolution) return false;
+
+    return true;    
+  }
+
+  bool analyticGeometry::inUVWTolerance(
+    float const & p0, float const & p1
+  ) {
+		float uvwResolution 
+		=
+    staticPropertiesHandler::getInstance()->getOptionFloat(
+      "uvw_resolution"
+    );
+    
+		float dist = p0 - p1;
+		if ( fabs(dist) > uvwResolution ) return false;
+
+    return true;    
   }  
   
   analyticGeometry * new_clone(analyticGeometry const & aG) {
