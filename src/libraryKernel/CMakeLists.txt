@@ -85,6 +85,8 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomCurve_curveTranslateConstructOCC.h
   geometryEngine/geoBuilder/geomCurve2d_baseConstructOCC.h
   geometryEngine/geoBuilder/geomCurve2d_curve2dTranslateConstructOCC.h
+  geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.h
+  geometryEngine/geoBuilder/geomCurve_curveReverseConstructOCC.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
@@ -215,6 +217,8 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomCurve_curveTranslateConstructOCC.cpp
   geometryEngine/geoBuilder/geomCurve2d_baseConstructOCC.cpp
   geometryEngine/geoBuilder/geomCurve2d_curve2dTranslateConstructOCC.cpp
+  geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.cpp
+  geometryEngine/geoBuilder/geomCurve_curveReverseConstructOCC.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp

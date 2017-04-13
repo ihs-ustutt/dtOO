@@ -30,6 +30,7 @@
 #include "scale.h"
 #include "xYz_rPhiZ.h"
 #include "pickMap2dTo3dRectanglePercent.h"
+#include "reverse.h"
 
 #define __IFRET(className) \
     if ( strcmp(str, #className) == 0 ) { \
@@ -79,6 +80,7 @@ namespace dtOO {
     __IFRET( xYz_rPhiZ );
     __IFRET( uVw_skewPhirMs );
     __IFRET( pickMap2dTo3dRectanglePercent )
+    __IFRET( reverse )
 
     dt__throw(create(), << str <<  " could not be created");  
   }
