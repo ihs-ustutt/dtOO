@@ -79,7 +79,15 @@ namespace dtOO {
       cVPtrVec const * const cV,
       aFPtrVec const * const aF,
       aGPtrVec const * const aG
-    );    
+    );
+    using qtXmlBase::getAttributeFloatMuParse;
+    static float getAttributeFloatMuParse( 
+      std::string const attName, 
+      ::QDomElement const element, 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG
+    );  
     //
     // transformer
     //

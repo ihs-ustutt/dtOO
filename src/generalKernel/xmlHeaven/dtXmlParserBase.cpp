@@ -36,6 +36,7 @@
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
 
 namespace dtOO {
   dtXmlParserBase::dtXmlParserBase() {
@@ -1062,7 +1063,28 @@ namespace dtOO {
               m1d->firstDerU( (*m1d) % argCS[0] ) 
             ).z()
           );
-        }               
+        }
+        else if (aGOption == "-1%X=") {
+          pp.push_back(
+            m1d->percent_u(
+              float_map1dTo3dPointConstCartesian(m1d, 0, argCS[0]).result()
+            )
+          );
+        }
+        else if (aGOption == "-1%Y=") {
+          pp.push_back(
+            m1d->percent_u(
+              float_map1dTo3dPointConstCartesian(m1d, 1, argCS[0]).result()
+            )
+          );
+        }        
+        else if (aGOption == "-1%Z=") {
+          pp.push_back(
+            m1d->percent_u(
+              float_map1dTo3dPointConstCartesian(m1d, 2, argCS[0]).result()
+            )
+          );
+        }
         else dt__throwUnexpected(replaceDependencies());        
       }
       else if (m2d) {
@@ -1515,6 +1537,18 @@ namespace dtOO {
     return replaceDependencies(returnExpression, cV, aF, aG);    
   } 
   
+  float dtXmlParserBase::getAttributeFloatMuParse( 
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    aGPtrVec const * const aG  
+  ) {
+    return muParseString( 
+      replaceDependencies( getAttributeStr(attName, element), cV, aF, aG )
+    );
+  } 
+  
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                   
@@ -1628,33 +1662,25 @@ namespace dtOO {
     /* ---------------------------------------------------------------------- */
     /* create normal x-y-z-point */
     /* ---------------------------------------------------------------------- */
-    if ( toBuildP->hasAttribute("x") && toBuildP->hasAttribute("y") ) { 
+    if ( hasAttribute("x|y", *toBuildP) ) {
       //
       // create coordinates
       //
-      float cX 
-      = 
-      muParseString(
-        replaceDependencies(
-          getAttributeStr("x", *toBuildP),
-          cV, 
-          aF
-        )
-      );  
-      float cY 
-      = 
-      muParseString(
-        replaceDependencies(
-          getAttributeStr("y", *toBuildP),
-          cV, 
-          aF
-        )
-      );              
+      float cX = getAttributeFloatMuParse("x", *toBuildP, cV, aF, aG);
+      float cY = getAttributeFloatMuParse("y", *toBuildP, cV, aF, aG);
       //
       // create point
       //
       basicP->push_back( dtPoint2(cX, cY) );
     }
+		else if ( hasAttribute("xy", *toBuildP) ) { 
+      std::vector< float > cXY 
+      = 
+      muParseCSString(
+        replaceDependencies( getAttributeStr("xy", *toBuildP), bC, cV, aF, aG )
+      );
+			basicP->push_back( dtPoint2(cXY[0], cXY[1]) );      
+    }     
     /* ---------------------------------------------------------------------- */
     /* pick point from a part */
     /* ---------------------------------------------------------------------- */          
@@ -1778,7 +1804,11 @@ namespace dtOO {
         else dt__throwUnexpected(createBasic());
       }
     }
-		else if ( toBuildP->attribute("attribute") == "pick_order_from_file") {       
+		else if ( 
+      hasAttribute("attribute", *toBuildP) 
+      &&
+      (getAttributeStr("attribute", *toBuildP) == "pick_order_from_file") 
+    ) {       
 			if ( getAttributeStr("file_name", *toBuildP) != "" ) {
 				std::ifstream in( getAttributeStr("file_name", *toBuildP).c_str() );
 				std::vector< std::vector < double > > fields;
