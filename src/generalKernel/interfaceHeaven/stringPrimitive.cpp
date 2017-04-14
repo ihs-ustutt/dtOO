@@ -46,6 +46,17 @@ namespace dtOO {
     return buff.str();
   } 
 
+  bool stringPrimitive::stringToBool(std::string const value) {
+    if ( (value == "true") || (value=="1") ) return true;
+    if ( (value == "false") || (value=="0") || (value=="") ) return false;
+		dt__warning(
+			stringToBool(),
+      << "Value of " << dt__eval(value) << std::endl
+      << "Should be true, 1, false, 0 or empty."
+		);
+    return false;
+  }
+  
   bool stringPrimitive::stringContains(
 	  std::string const pattern, std::string const str
 	) {

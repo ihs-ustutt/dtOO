@@ -562,18 +562,25 @@ namespace dtOO {
   bool qtXmlPrimitive::getAttributeBool(
 	  std::string const attName, const ::QDomElement element
 	) {
-    std::string attValue;
-    attValue = element.attribute( attName.c_str() ).toStdString();
-    if (attValue == "true") return true;
-    else if (attValue == "false") return false;
-		dt__warning(
-			getAttributeBool(),
-      << "Value of " << dt__eval(attValue) << std::endl
-      << "Should be true or false."
-		);
-		return false;
+    return stringToBool(
+      element.attribute( attName.c_str() ).toStdString()
+    );
   }    
 
+	std::vector< bool > qtXmlPrimitive::getAttributeBoolVector( 
+		std::string const attName, ::QDomElement const element
+	) {
+		std::string att = getAttributeStr(attName, element);
+		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
+		std::vector< bool > vec(attVec.size(), false);
+		int counter = 0;
+		dt__forAllRefAuto(attVec, el) {	
+			vec[counter] = stringToBool(el);
+			counter++;
+		}		
+		return vec;
+	}    
+  
 	std::vector< std::string > qtXmlPrimitive::getAttributeStrVector(
 		std::string const attName, ::QDomElement const element
 	) {

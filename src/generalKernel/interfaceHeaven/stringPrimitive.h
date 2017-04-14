@@ -16,6 +16,7 @@ namespace dtOO {
     static int stringToInt(std::string const value);
     static std::string intToString(int const value);
     static std::string intToStringLZ(int const value, int const nZeros);   
+    static bool stringToBool(std::string const value);
     static std::string getStringBetween(
       std::string const signStart, std::string const signEnd, 
       std::string const str
