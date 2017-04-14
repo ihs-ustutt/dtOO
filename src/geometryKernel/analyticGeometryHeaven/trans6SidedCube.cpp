@@ -61,9 +61,11 @@ namespace dtOO {
       case 2:
         return false;      
       default:
-        dt__throw(isClosed(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0, 1 or 2.");
+        dt__throw(
+          isClosed(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0, 1 or 2."
+        );
     }
   }
   
@@ -76,9 +78,11 @@ namespace dtOO {
       case 2:
         return 0.;    
       default:
-        dt__throw(getMin(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0, 1 or 2.");
+        dt__throw(
+          getMin(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0, 1 or 2."
+        );
     }    
   }
   
@@ -91,9 +95,11 @@ namespace dtOO {
       case 2:
         return 1.;    
       default:
-        dt__throw(getMax(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0, 1 or 2.");
+        dt__throw(
+          getMax(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0, 1 or 2."
+        );
     }    
   }
 
