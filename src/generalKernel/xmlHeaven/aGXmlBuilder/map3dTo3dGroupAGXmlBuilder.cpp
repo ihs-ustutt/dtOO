@@ -40,11 +40,29 @@ namespace dtOO {
     dt__forAllRefAuto( 
       dtXmlParserBase::getChildVector("analyticGeometry", toBuild), wE
     ) {
-      m3d.push_back( 
-        map3dTo3d::MustDownCast(
-          dtXmlParserBase::createAnalyticGeometry(wE, bC, cV, aF, aG)
+      if ( 
+        !dtXmlParserBase::isWildcard( 
+          dtXmlParserBase::getAttributeStr("label", wE) 
         )
-      );
+      ) {
+        m3d.push_back( 
+          map3dTo3d::MustDownCast(
+            dtXmlParserBase::createAnalyticGeometry(wE, bC, cV, aF, aG)
+          )
+        );
+      }
+      else {
+        std::string wCard = dtXmlParserBase::getAttributeStr("label", wE);
+        dt__forAllRefAuto(*aG, anAG) {
+          if (
+            dtXmlParserBase::matchWildcard( wCard, anAG->getLabel() )
+            &&          
+            map3dTo3d::Is( anAG )
+          ) {
+            m3d.push_back( map3dTo3d::MustDownCast( anAG->clone() ) );            
+          }
+        }
+      }
     }
     
     result->push_back( new map3dTo3dGroup(m3d) );
