@@ -11,6 +11,7 @@
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h>
 #include <geometryEngine/dtSurface.h>
 
 #include <QtXml/QDomElement>
@@ -60,6 +61,14 @@ namespace dtOO {
       }
     }
     else if (wElementVec.size() == 2) {
+      std::vector< bool > exchange(2, false);
+      if ( dtXmlParserBase::hasAttribute("exchange", toBuild) ) {
+        exchange 
+        = 
+        dtXmlParserBase::getAttributeBoolVector( "exchange", toBuild );    
+      }
+    
+      dt__info(buildPart(), << "exchange = " << exchange);
       //
       // get analyticGeometry
       //
@@ -80,14 +89,35 @@ namespace dtOO {
       );
 
       vectorHandling< dtSurface const * > cDtS;
-      vectorHandling< dtSurface * > dtS;
-      cDtS.push_back( aS0->ptrDtSurface() );
-      cDtS.push_back( aS1->ptrDtSurface() );
-      dtS = bSplineSurfaces_bSplineSurfaceSkinConstructOCC(cDtS).result();
+      
+      if ( !exchange[0] ) {
+        cDtS.push_back( aS0->ptrDtSurface()->clone() );
+      }
+      else {
+        cDtS.push_back(
+          bSplineSurface_exchangeSurfaceConstructOCC( 
+            aS0->ptrDtSurface() 
+          ).result()
+        );
+      }
+      if ( !exchange[1] ) {
+        cDtS.push_back( aS1->ptrDtSurface()->clone() );
+      }
+      else {
+        cDtS.push_back(
+          bSplineSurface_exchangeSurfaceConstructOCC( 
+            aS1->ptrDtSurface() 
+          ).result()
+        );
+      }
+      
+      vectorHandling< dtSurface * > dtS
+      = 
+      bSplineSurfaces_bSplineSurfaceSkinConstructOCC(cDtS).result();
       dt__forAllIndex(dtS, ii) {
         mm.push_back( new analyticSurface(dtS[ii]) );
       }
-
+      cDtS.destroy();
       dtS.destroy();
     }			
     else {
