@@ -1983,13 +1983,13 @@ namespace dtOO {
     }
     else if ( stringContains("{", label) && stringContains("}", label) ) {
       //
-      // string contains "{" and "}" --> return set of analyticFunctions
+      // string contains "{" and "}" --> return set of analyticGeometries
       //				
       std::vector< std::string > labelV
       = 
       convertToStringVector("{", "}", label );
       dt__forAllIndex(labelV, ii) advancedP->push_back( aG->get(labelV[ii]) );
-    }            
+    }
     else advancedP->push_back( aG->get( label )->clone() );
 
     dt__throwIfWithMessage(
