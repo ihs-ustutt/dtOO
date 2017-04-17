@@ -42,6 +42,10 @@ namespace dtOO {
     init(tE, bC, cValP, sFunP, NULL);
   }
   
+  std::vector< std::string > dtTransformer::factoryAlias( void ) const {
+    return std::vector< std::string>(0);
+  }    
+  
   std::vector< dtPoint2 > dtTransformer::apply( 
     std::vector< dtPoint2 > const * const pointVecP 
   ) const {

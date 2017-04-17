@@ -32,60 +32,91 @@
 #include "pickMap2dTo3dRectanglePercent.h"
 #include "reverse.h"
 
-#define __IFRET(className) \
-    if ( strcmp(str, #className) == 0 ) { \
-      return new className; \
-    }
-#define __IFRETCUSTOM(className, retClass) \
-  if ( strcmp(str, #className) == 0 ) { \
-    return new retClass; \
-  }
-
 namespace dtOO {
+  dt__pH(dtTransformerFactory) dtTransformerFactory::_instance(NULL);
+  
   dtTransformerFactory::dtTransformerFactory() {
   }
 
   dtTransformerFactory::~dtTransformerFactory() {
+    _transformer.destroy();      
   }
 
-  dtTransformer* dtTransformerFactory::create(char const * const str) {
-    dt__info(create(), << "creating " << str <<  "...");
+  dtTransformer* dtTransformerFactory::create( std::string const str ) {
+    dt__forAllRefAuto( instance()->_transformer, aTransformer ) {
+      //
+      // check virtual class name
+      //
+      if ( aTransformer->virtualClassName() == str ) {
+        return aTransformer->create();
+      }
+            
+      //
+      // check alias
+      //
+      dt__forAllRefAuto(aTransformer->factoryAlias(), anAlias) {
+        if ( anAlias == str ) return aTransformer->create();
+      }
+    }
+
+    std::vector< std::string > av;
+    dt__forAllRefAuto( instance()->_transformer, aTrans ) {
+      av.push_back( aTrans->virtualClassName() );
+      dt__forAllRefAuto(aTrans->factoryAlias(), anAlias) {
+        av.push_back("  -> "+anAlias); 
+      }      
+    }
+    dt__throw(
+      create(), 
+      << str <<  " could not be created." << std::endl
+      << "Implemented transformer:" << std::endl
+      << logMe::vecToString(av,1) << std::endl
+    );                 
+  }
+
+  dtTransformer* dtTransformerFactory::create( char const * const str ) {
+    return create( std::string(str) );
+  }
+  
+  dtTransformerFactory * dtTransformerFactory::instance( void ) {
+    if ( !_instance.isNull() ) return _instance.get();
     
-    __IFRET( doNothing );
-    __IFRET( thicknessIncreasing );
-		__IFRET( biThicknessIncreasing );
-    __IFRET( offset );
-		__IFRET( translate );
-    __IFRET( rotate );
-    __IFRET( pickMap3dTo3dRangePercent );
-		__IFRET( pickMap2dTo3dRangePercent );
-    __IFRET( makePolynomial );
-    __IFRET( predefinedExtension );
-    __IFRET( closeGaps );
-		__IFRET( pickLengthRange );
-		__IFRET( pickLengthPercentRange );
-		__IFRET( addConstCoordinate );
-		__IFRET( uVw_phirMs );
-    __IFRET( uVw_phiMs );
-		__IFRET( averagePoints );
-		__IFRET( projectOnSurface );
-		__IFRET( reparamInSurface );
-		__IFRET( pickVec3dTwoDRangePercent );
-		__IFRET( analyticAddNormal );
-    __IFRET( discreteAddNormal );
-		__IFRET( approxInSurface );
-		__IFRET( normalOffsetInSurface );
-		__IFRET( closeGapsArithmetic );
-    __IFRET( scale );
-    __IFRET( xYz_rPhiZ );
-    __IFRET( uVw_skewPhirMs );
-    __IFRET( pickMap2dTo3dRectanglePercent )
-    __IFRET( reverse )
-
-    dt__throw(create(), << str <<  " could not be created");  
-  }
-
-  dtTransformer* dtTransformerFactory::create( std::string const str) {
-    return create( str.c_str() );
-  }
+    _instance.reset( new dtTransformerFactory() );
+    
+    //
+    // add builder
+    //
+    _instance->_transformer.push_back( new doNothing() );
+    _instance->_transformer.push_back( new thicknessIncreasing() );
+    _instance->_transformer.push_back( new biThicknessIncreasing() );
+    _instance->_transformer.push_back( new offset() );
+    _instance->_transformer.push_back( new translate() );
+    _instance->_transformer.push_back( new rotate() );
+    _instance->_transformer.push_back( new pickMap3dTo3dRangePercent() );
+    _instance->_transformer.push_back( new pickMap2dTo3dRangePercent() );
+    _instance->_transformer.push_back( new makePolynomial() );
+    _instance->_transformer.push_back( new predefinedExtension() );
+    _instance->_transformer.push_back( new closeGaps() );
+    _instance->_transformer.push_back( new pickLengthRange() );
+    _instance->_transformer.push_back( new pickLengthPercentRange() );
+    _instance->_transformer.push_back( new addConstCoordinate() );
+    _instance->_transformer.push_back( new uVw_phirMs() );
+    _instance->_transformer.push_back( new uVw_phiMs() );
+    _instance->_transformer.push_back( new averagePoints() );
+    _instance->_transformer.push_back( new projectOnSurface() );
+    _instance->_transformer.push_back( new reparamInSurface() );
+    _instance->_transformer.push_back( new pickVec3dTwoDRangePercent() );
+    _instance->_transformer.push_back( new analyticAddNormal() );
+    _instance->_transformer.push_back( new discreteAddNormal() );
+    _instance->_transformer.push_back( new approxInSurface() );
+    _instance->_transformer.push_back( new normalOffsetInSurface() );
+    _instance->_transformer.push_back( new closeGapsArithmetic() );
+    _instance->_transformer.push_back( new scale() );
+    _instance->_transformer.push_back( new xYz_rPhiZ() );
+    _instance->_transformer.push_back( new uVw_skewPhirMs() );
+    _instance->_transformer.push_back( new pickMap2dTo3dRectanglePercent() );
+    _instance->_transformer.push_back( new reverse() );
+    
+    return _instance.get();
+  }      
 }

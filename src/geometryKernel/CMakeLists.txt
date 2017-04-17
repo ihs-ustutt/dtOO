@@ -1,6 +1,5 @@
 SET(HEADERS
   analyticGeometryHeaven/analyticGeometry.h
-  analyticGeometryHeaven/analyticGeometryFactory.h
   analyticGeometryHeaven/analyticCurve.h
   analyticGeometryHeaven/analyticRotatingMap1dTo3d.h
   analyticGeometryHeaven/rotatingMap1dTo3d.h
@@ -130,7 +129,6 @@ SET(HEADERS
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
-  analyticGeometryHeaven/analyticGeometryFactory.cpp
   analyticGeometryHeaven/analyticCurve.cpp
   analyticGeometryHeaven/analyticRotatingMap1dTo3d.cpp
   analyticGeometryHeaven/rotatingMap1dTo3d.cpp

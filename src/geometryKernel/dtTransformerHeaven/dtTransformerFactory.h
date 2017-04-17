@@ -3,6 +3,7 @@
 
 #include <string>
 #include <logMe/dtMacros.h>
+#include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO {
   class dtTransformer;
@@ -12,9 +13,12 @@ namespace dtOO {
     dt__classOnlyName(dtTransformerFactory);
     dtTransformerFactory();
     virtual ~dtTransformerFactory();
-    static dtTransformer* create(char const * const str);
-    static dtTransformer* create( std::string const str); 
+    static dtTransformer * create(char const * const str);
+    static dtTransformer * create( std::string const str); 
+    static dtTransformerFactory * instance( void );         
   private:
+    vectorHandling< dtTransformer * > _transformer;
+    static dt__pH(dtTransformerFactory) _instance;      
 
   };
 }

@@ -36,6 +36,7 @@ namespace dtOO {
       aFPtrVec const * const aF,
       aGPtrVec const * const aG 
     ) = 0;
+    virtual std::vector< std::string > factoryAlias( void ) const;
     virtual bool isNecessary( void ) const = 0;
     //
     // optional overload
