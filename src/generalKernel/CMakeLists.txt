@@ -27,8 +27,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.h
-  xmlHeaven/aGXmlBuilder/map2dTo3dGroupAGXmlBuilder.h
-  xmlHeaven/aGXmlBuilder/map3dTo3dGroupAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/analyticGeometryGroupAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/scaInMap1dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.h
@@ -119,8 +118,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.cpp
-  xmlHeaven/aGXmlBuilder/map2dTo3dGroupAGXmlBuilder.cpp
-  xmlHeaven/aGXmlBuilder/map3dTo3dGroupAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/analyticGeometryGroupAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/scaInMap1dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.cpp

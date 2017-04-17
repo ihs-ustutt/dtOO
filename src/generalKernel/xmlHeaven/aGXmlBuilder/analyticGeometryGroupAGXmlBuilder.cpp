@@ -1,11 +1,7 @@
-#include "map3dTo3dGroupAGXmlBuilder.h"
+#include "analyticGeometryGroupAGXmlBuilder.h"
 
-#include <logMe/logMe.h>
-#include <logMe/dtMacros.h>
-#include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/map3dTo3d.h>
-#include <analyticGeometryHeaven/map3dTo3dGroup.h>
+#include <analyticGeometryHeaven/analyticGeometryGroup.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -13,18 +9,30 @@
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
+#include <boost/assign.hpp>
+
 namespace dtOO {
-  map3dTo3dGroupAGXmlBuilder::map3dTo3dGroupAGXmlBuilder() {
-  }
+  analyticGeometryGroupAGXmlBuilder::analyticGeometryGroupAGXmlBuilder() {
 
-  map3dTo3dGroupAGXmlBuilder::~map3dTo3dGroupAGXmlBuilder() {
   }
+  analyticGeometryGroupAGXmlBuilder::~analyticGeometryGroupAGXmlBuilder() {
 
-  void map3dTo3dGroupAGXmlBuilder::buildPart( 
+  }
+    
+  std::vector< std::string > analyticGeometryGroupAGXmlBuilder
+    ::factoryAlias( void ) const {
+    return 
+      ::boost::assign::list_of
+        ("map1dTo3dGroup")
+        ("map2dTo3dGroup")
+        ("map3dTo3dGroup");
+  }
+  
+  void analyticGeometryGroupAGXmlBuilder::buildPart(
     ::QDomElement const & toBuild,
-    baseContainer * const bC,           
-    cVPtrVec const * const cV,           
-    aFPtrVec const * const aF,    
+    baseContainer * const bC,
+    cVPtrVec const * const cV,  
+    aFPtrVec const * const aF,  
     aGPtrVec const * const aG,
     aGPtrVec * result 
   ) const {
@@ -35,7 +43,7 @@ namespace dtOO {
       !dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart()
     );
 
-    vectorHandling< map3dTo3d const * > m3d;
+    vectorHandling< analyticGeometry const * > mXd;
     
     dt__forAllRefAuto( 
       dtXmlParserBase::getChildVector("analyticGeometry", toBuild), wE
@@ -45,10 +53,8 @@ namespace dtOO {
           dtXmlParserBase::getAttributeStr("label", wE) 
         )
       ) {
-        m3d.push_back( 
-          map3dTo3d::MustDownCast(
+        mXd.push_back( 
             dtXmlParserBase::createAnalyticGeometry(wE, bC, cV, aF, aG)
-          )
         );
       }
       else {
@@ -56,20 +62,19 @@ namespace dtOO {
         dt__forAllRefAuto(*aG, anAG) {
           if (
             dtXmlParserBase::matchWildcard( wCard, anAG->getLabel() )
-            &&          
-            map3dTo3d::Is( anAG )
           ) {
-            m3d.push_back( map3dTo3d::MustDownCast( anAG->clone() ) );            
+            mXd.push_back( anAG->clone() );            
           }
         }
       }
     }
     
-    result->push_back( new map3dTo3dGroup(m3d) );
+    result->push_back( new analyticGeometryGroup(mXd) );
       
     //
     // free memory
     //
-    m3d.destroy();
+    mXd.destroy();      
   }
 }
+
