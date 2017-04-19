@@ -1940,15 +1940,12 @@ namespace dtOO {
     //
     std::string label = getAttributeStr("label", *toBuildP);
 
-    if ( stringContains("*", label) ) {
+    if ( qtXmlBase::isWildcard(label) ) {
       //
       // string contains "*" --> return set of analyticGeometries
       //				
-      std::string pattern 
-      = 
-      getStringBetween("*", "*", label );
       for (int ii=0;ii<aG->size();ii++) { 
-        if ( stringContains(pattern, aG->at(ii)->getLabel()) ) {
+        if ( qtXmlBase::matchWildcard(label, aG->at(ii)->getLabel()) ) {
           advancedP->push_back( aG->at(ii)->clone() );
         }					
       }
