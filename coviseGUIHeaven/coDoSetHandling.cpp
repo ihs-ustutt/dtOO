@@ -871,7 +871,7 @@ namespace dtOO {
       dtPoint3 corner[5];			
       float vecLengthU = sqrt( rI->refV3()[ii].squared_length() );
       dtVector3 normVecU = rI->refV3()[ii] / (vecLengthU);
-      dtPoint3 topCorner = rI->refP3()[ii] + rI->refV3()[ii];
+      dtPoint3 topCorner = rI->refP3()[ii] + tipSize * normVecU;//rI->refV3()[ii];
       dtPoint3 baseMiddle = topCorner - tipSize * normVecU;
       corner[0] = topCorner;
       float ny, nx, uyx;
