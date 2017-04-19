@@ -40,9 +40,23 @@ namespace dtOO {
     dt__forAllRefAuto(wElementV, wElement) {
       dtXmlParserBase::createBasic( &wElement, bC, cV, aF, aG, &workingPointP );
     }
+    
+    int minDeg = 3;
+    if ( dtXmlParserBase::hasAttribute("orderMin", toBuild) ) {
+      minDeg 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("orderMin", toBuild, cV, aF);
+    }    
+    int maxDeg = 8;
+    if ( dtXmlParserBase::hasAttribute("orderMax", toBuild) ) {
+      maxDeg 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("orderMax", toBuild, cV, aF);
+    }
+    
     result->push_back( 
       new analyticCurve(
-        bSplineCurve_pointInterpolateConstructOCC(workingPointP).result()
+        bSplineCurve_pointInterpolateConstructOCC(workingPointP, minDeg, maxDeg).result()
       )
     );
   }
