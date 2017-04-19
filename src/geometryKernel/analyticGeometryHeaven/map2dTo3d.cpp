@@ -127,31 +127,36 @@ namespace dtOO {
 		vectorHandling< renderInterface * > rV;
 		rV.push_back( new solid3dSurface(surfacePoints) );
 		
-		return rV;
-	}
-	
-  vectorHandling< renderInterface * > map2dTo3d::getExtRender( void ) const {
-		vectorHandling< dtVector3 > vecV;
-		vectorHandling< dtPoint3 > vecP;
-		vectorHandling< dtVector3 > norV;
-		vectorHandling< dtPoint3 > norP;
-		
     //
     // get surface directions
-    //
+    //    
+		vectorHandling< dtVector3 > vecV;
+		vectorHandling< dtPoint3 > vecP;
     dtPoint3 startPointU = map2dTo3d::getPointPercent(0.05, 0.);
     dtPoint3 topPointU = map2dTo3d::getPointPercent(0.1, 0.);
     dtPoint3 startPointV = map2dTo3d::getPointPercent(0., 0.05);
     dtPoint3 topPointV = map2dTo3d::getPointPercent(0., 0.10);
     dtVector3 uu = topPointU - startPointU;  
     dtVector3 vv = topPointV - startPointV;  
-
     //
     // add direction to vector container
     //
 		vecV.push_back(uu); vecP.push_back(startPointU); 
 		vecV.push_back(vv); vecP.push_back(startPointV);
 		vecV.push_back(vv); vecP.push_back(topPointV);
+    
+    rV.push_back( new discrete3dVector(vecV, vecP) );
+		return rV;
+	}
+	
+  vectorHandling< renderInterface * > map2dTo3d::getExtRender( void ) const {
+		vectorHandling< dtVector3 > norV;
+		vectorHandling< dtPoint3 > norP;
+		
+
+    //
+    // add normals
+    //
 		norV.push_back(map2dTo3d::normalPercent(.25, .25)); 
 		norP.push_back(map2dTo3d::getPointPercent(.25, .25));
 		norV.push_back(map2dTo3d::normalPercent(.25, .75)); 
@@ -161,9 +166,8 @@ namespace dtOO {
 		norV.push_back(map2dTo3d::normalPercent(.75, .75)); 
 		norP.push_back(map2dTo3d::getPointPercent(.75, .75));		
 		
-		vectorHandling< renderInterface * > retVec(2);
-		retVec[0] = new discrete3dVector(vecV, vecP);
-		retVec[1] = new discrete3dVector(norV, norP);		
+		vectorHandling< renderInterface * > retVec(1);
+		retVec[0] = new discrete3dVector(norV, norP);		
 		return retVec;
   }
    
