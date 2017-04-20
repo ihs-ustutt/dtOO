@@ -7,7 +7,7 @@
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
 
-namespace dtOO {
+namespace dtOO {  
   struct dtOMMeshTraits : public OpenMesh::DefaultTraits {
     VertexTraits {
       private:

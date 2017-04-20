@@ -116,7 +116,9 @@ SET(HEADERS
   meshEngine/dtOptimizeMeshGRegion.h
   meshEngine/dtMeshGFaceWithTransfiniteLayer.h
   meshEngine/dtMoabCore.h
+  meshEngine/dtOMTypedef.h
   meshEngine/dtOMMesh.h
+  meshEngine/dtOVMTypedef.h
   meshEngine/dtOVMMesh.h
   meshEngine/dtOMMeshDivided.h
   meshEngine/dtOMMeshTraits.h

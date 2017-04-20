@@ -1,42 +1,15 @@
 #ifndef dtOVMMesh_H
 #define	dtOVMMesh_H
 
-#include <OpenVolumeMesh/Mesh/PolyhedralMesh.hh>
-#include <OpenVolumeMesh/Core/OpenVolumeMeshProperty.hh>
-
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
 class MVertex;
 class MElement;
-class MTetrahedron;
 
-namespace dtOO {  
-  //
-  // typedefs
-  //
-  typedef ::OpenVolumeMesh::GeometricPolyhedralMeshV3f ovmMesh;
-  //
-  // handles
-  //
-  typedef ::OpenVolumeMesh::VertexHandle ovmVertexH;
-  typedef ::OpenVolumeMesh::HalfEdgeHandle ovmHalfedgeH;
-  typedef ::OpenVolumeMesh::EdgeHandle ovmEdgeH;
-  typedef ::OpenVolumeMesh::HalfFaceHandle ovmHalffaceH;
-  typedef ::OpenVolumeMesh::FaceHandle ovmFaceH;
-  typedef ::OpenVolumeMesh::CellHandle ovmCellH;
-  //
-  // iterators
-  //
-  typedef ::OpenVolumeMesh::VertexIter ovmVertexI;
-  typedef ::OpenVolumeMesh::VertexOHalfEdgeIter ovmVertexOHalfedgeI;
-  typedef ::OpenVolumeMesh::VertexCellIter ovmVertexCellI;
-  typedef ::OpenVolumeMesh::CellVertexIter ovmCellVertexI;
-  //
-  // misc
-  //
-  typedef ::OpenVolumeMesh::Vec3f ovmPoint;
+#include "dtOVMTypedef.h"
 
+namespace dtOO {
   class dtOVMMesh : public ovmMesh {
     public:
       dt__classOnlyName(dtOVMMesh);
