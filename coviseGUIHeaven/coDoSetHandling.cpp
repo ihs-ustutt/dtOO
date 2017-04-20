@@ -833,7 +833,7 @@ namespace dtOO {
     int nPolyPolygons = rI->refP3().size() * 2;  
     ptrHandling< covise::coDoPolygons > onePolyObject(
 		  new covise::coDoPolygons(
-        objName.get() ,nPolyPoints, nPolyCorners, nPolyPolygons
+        objName.get(), nPolyPoints, nPolyCorners, nPolyPolygons
       )
 		); 
     float* xCoords;
@@ -851,22 +851,6 @@ namespace dtOO {
     //
 		// create line object
 		//
-//    int nLinePoints = rI->refP3().size() * 2; 
-//    int nLineCorners = rI->refP3().size() * 2; 
-//    int nLines = rI->refP3().size();  
-//    ptrHandling< covise::coDoLines > oneLineObject(
-//		  new covise::coDoLines(objName.get(), nLinePoints, nLineCorners, nLines)
-//		); 
-//    float* xLineCoords;
-//    float* yLineCoords;
-//    float* zLineCoords;
-//    int* lineList; 
-//    int* lineCornerList; 		
-//    oneLineObject->getAddresses(&xLineCoords, &yLineCoords, &zLineCoords, &lineCornerList, &lineList);
-
-//    int lineCoordsCounter = 0;
-//    int lineCornerCounter = 0;
-//    int lineLineCounter = 0;
     for(int ii=0;ii<rI->refP3().size();ii++) {
       dtPoint3 corner[5];			
       float vecLengthU = sqrt( rI->refV3()[ii].squared_length() );
@@ -890,7 +874,7 @@ namespace dtOO {
       corner[2] = baseMiddle + tipSize * nVec;
       dtVector3 nVecOrtho 
       = 
-      dtLinearAlgebra::crossProduct (rI->refV3()[ii], nVec);
+      dtLinearAlgebra::crossProduct(rI->refV3()[ii], nVec);
       float nVecOrthoLength = sqrt( nVecOrtho.squared_length() );
       dtVector3 nVecOrthoNorm = nVecOrtho / (nVecOrthoLength);
       corner[3] = baseMiddle - tipSize * nVecOrthoNorm;
@@ -916,21 +900,7 @@ namespace dtOO {
       polyCornerList[polyCornerCounter+4] = idC[3];
       polyCornerList[polyCornerCounter+5] = idC[4];
       polyCornerCounter = polyCornerCounter+6;
-      polyPolyCounter = polyPolyCounter+2;     
-
-
-//      *(xLineCoords+lineCoordsCounter) = topCorner.x();
-//      *(yLineCoords+lineCoordsCounter) = topCorner.y();
-//      *(zLineCoords+lineCoordsCounter) = topCorner.z();
-//      *(xLineCoords+lineCoordsCounter+1) = rI->refP3()[ii].x();
-//      *(yLineCoords+lineCoordsCounter+1) = rI->refP3()[ii].y();
-//      *(zLineCoords+lineCoordsCounter+1) = rI->refP3()[ii].z();
-//      lineList[0+lineLineCounter] = 0+lineCornerCounter;
-//      lineCornerList[0+lineCornerCounter] = lineCoordsCounter+0;
-//      lineCornerList[1+lineCornerCounter] = lineCoordsCounter+1;
-//      lineCoordsCounter = lineCoordsCounter+2;
-//      lineLineCounter++;      
-//      lineCornerCounter = lineCornerCounter + 2;
+      polyPolyCounter = polyPolyCounter+2;
     }
     
 		//
@@ -940,7 +910,6 @@ namespace dtOO {
     = 
     new covise::coDistributedObject*[2];
     objects[0] = onePolyObject.get();
-//    objects[1] = oneLineObject.get();
 		objects[1] = NULL;
     objects[0]->addAttribute("COLOR", "magenta");
     
