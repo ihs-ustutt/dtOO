@@ -50,7 +50,7 @@ namespace dtOO {
 	vectorHandling< renderInterface * > map3dTo3d::getRender( void ) const {
 		vectorHandling< renderInterface * > rV;
     //
-    //calculate interval to create points
+    // calculate interval to create points
     //
     float intU = (getUMax() - getUMin()) / (getRenderResolutionU()-1);
     float intV = (getVMax() - getVMin()) / (getRenderResolutionV()-1);
@@ -68,7 +68,12 @@ namespace dtOO {
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
-		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]) );
+		rV.push_back( 
+      new discrete3dVector(
+        getPointPercent(0.26, 0.10, 0.10) - getPointPercent(0.25, 0.10, 0.10), 
+        getPointPercent(0.25, 0.10, 0.10)
+      ) 
+    );
 		pp.clear();
 		// u=0, w=0
 		for(int ii=0; ii<getRenderResolutionV(); ii++){
@@ -78,8 +83,18 @@ namespace dtOO {
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
-		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]) );
-		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]+0.5*(pp[1]-pp[0])) );
+		rV.push_back( 
+      new discrete3dVector(
+        getPointPercent(0.10, 0.26, 0.10) - getPointPercent(0.10, 0.25, 0.10), 
+        getPointPercent(0.10, 0.25, 0.10)
+      ) 
+    );    
+		rV.push_back( 
+      new discrete3dVector(
+        getPointPercent(0.10, 0.51, 0.10) - getPointPercent(0.10, 0.50, 0.10), 
+        getPointPercent(0.10, 0.50, 0.10)
+      ) 
+    );        
 		pp.clear();		
 		// u=0, v=0
 		for(int ii=0; ii<getRenderResolutionW(); ii++){
@@ -89,13 +104,46 @@ namespace dtOO {
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
-		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]) );
-		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]+0.5*(pp[1]-pp[0])) );
-		rV.push_back( new discrete3dVector(pp[1]-pp[0], pp[0]+1.0*(pp[1]-pp[0])) );
+		rV.push_back( 
+      new discrete3dVector(
+        getPointPercent(0.10, 0.10, 0.26) - getPointPercent(0.10, 0.10, 0.25), 
+        getPointPercent(0.10, 0.10, 0.25)
+      ) 
+    );    
+		rV.push_back( 
+      new discrete3dVector(
+        getPointPercent(0.10, 0.10, 0.51) - getPointPercent(0.10, 0.10, 0.50), 
+        getPointPercent(0.10, 0.10, 0.50)
+      ) 
+    );    
+		rV.push_back( 
+      new discrete3dVector(
+        getPointPercent(0.00, 0.00, 0.76) - getPointPercent(0.00, 0.00, 0.75), 
+        getPointPercent(0.10, 0.10, 0.75)
+      ) 
+    );        
 		pp.clear();				
 		
+    // u
+    pp.push_back( getPointPercent(0.10, 0.10, 0.10) );
+    pp.push_back( getPointPercent(0.25, 0.10, 0.10) );
+    rV.push_back( new solid3dLine(pp) );
+    pp.clear();
+    // v
+    pp.push_back( getPointPercent(0.10, 0.10, 0.10) );
+    pp.push_back( getPointPercent(0.10, 0.25, 0.10) );
+    pp.push_back( getPointPercent(0.10, 0.50, 0.10) );
+    rV.push_back( new solid3dLine(pp) );
+    pp.clear();
+    // v
+    pp.push_back( getPointPercent(0.10, 0.10, 0.10) );
+    pp.push_back( getPointPercent(0.10, 0.10, 0.25) );
+    pp.push_back( getPointPercent(0.10, 0.10, 0.50) );
+    pp.push_back( getPointPercent(0.10, 0.10, 0.75) );
+    rV.push_back( new solid3dLine(pp) );
+    pp.clear();    
 		// v=0, w=0
-		for(int ii=0; ii<getRenderResolutionU(); ii++){
+		for(int ii=0; ii<getRenderResolutionU(); ii++) {
 			float uu = (getUMin() + ii * intU);
 			float vv = getVMax();// + jj * intV);
 			float ww = getWMax();// + kk * intW);
