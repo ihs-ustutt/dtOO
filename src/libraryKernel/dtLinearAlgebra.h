@@ -113,6 +113,9 @@ namespace dtOO {
     static dtPoint3 returnFarthestPointTo(
       dtPoint3 pp, dtPoint3 p0, dtPoint3 p1
     );
+    static int returnNearestPointIndexTo(
+      dtPoint3 const & pp, std::vector< dtPoint3 > const & pV
+    );
     static void makeOrdered(std::vector< dtPoint3 > & pp);
     static std::vector<dtPoint2> getGaussLegendre(int const & nPoints);
     static std::pair< dtPoint2, dtPoint2 > boundingBox( 

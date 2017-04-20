@@ -530,6 +530,23 @@ namespace dtOO {
 		}      
 	}
 
+  int dtLinearAlgebra::returnNearestPointIndexTo(
+    dtPoint3 const & pp, std::vector< dtPoint3 > const & pV
+  ) {
+    float dist = std::numeric_limits<float>::max();
+    int minIndex = -1;
+    dt__forAllIndex(pV, ii) {      
+      float newDist = distance(pp, pV[ii]);
+      if ( newDist < dist ) {
+        dist = newDist;
+        minIndex = ii;
+      }
+    }
+    dt__throwIf(minIndex<0, returnNearestPointIndexTo());
+    
+    return minIndex;
+  }
+    
 	void dtLinearAlgebra::makeOrdered(std::vector< dtPoint3 > & pp) {
     dt__throwIfWithMessage(
       pp.size()!=8,
