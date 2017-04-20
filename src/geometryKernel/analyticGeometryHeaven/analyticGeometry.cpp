@@ -1,5 +1,7 @@
 #include "analyticGeometry.h"
+
 #include <logMe/logMe.h>
+#include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
@@ -143,7 +145,7 @@ namespace dtOO {
     
       std::vector< dtPoint3 > bb(nOne);
       dt__forFromToIndex(0, nOne, ii) {
-        bb[ii] = getPoint( (float*) &(uvwOne[ii]) );
+        bb[ii] = getPointPercent( (float*) &(uvwOne[ii]) );
       }
       
       _boundingBox = dtLinearAlgebra::boundingBox(bb);
@@ -163,7 +165,7 @@ namespace dtOO {
       
       std::vector< dtPoint3 > bb(nTwo);
       dt__forFromToIndex(0, nTwo, ii) {
-        bb[ii] = getPoint( (float*) &(uvwTwo[ii]) );
+        bb[ii] = getPointPercent( (float*) &(uvwTwo[ii]) );
       }
       
       _boundingBox = dtLinearAlgebra::boundingBox(bb);
@@ -189,7 +191,7 @@ namespace dtOO {
 
       std::vector< dtPoint3 > bb(nThree);
       dt__forFromToIndex(0, nThree, ii) {
-        bb[ii] = getPoint( (float*) &(uvwThree[ii]) );
+        bb[ii] = getPointPercent( (float*) &(uvwThree[ii]) );
       }
       
       _boundingBox = dtLinearAlgebra::boundingBox(bb);
@@ -199,6 +201,61 @@ namespace dtOO {
     _characteristicLength 
     = 
     dtLinearAlgebra::length(_boundingBox.first - _boundingBox.second);
+  }
+  
+  std::vector< dtPoint3 > analyticGeometry::cornerPoints( void ) const {
+    //
+    // 1D
+    //
+    if (dim() == 1) {
+      int nOne = 2;
+      float uvwOne[2] = {0.00, 1.00};
+    
+      std::vector< dtPoint3 > bb(nOne);
+      dt__forFromToIndex(0, nOne, ii) {
+        bb[ii] = getPointPercent( (float*) &(uvwOne[ii]) );
+      }
+      
+      return bb;
+    }
+    //
+    // 2D
+    //
+    else if (dim() == 2) {
+      int nTwo = 4;
+      float uvwTwo[4][2] 
+      = 
+      { {0.00, 0.00}, {0.00, 1.00}, {1.00, 0.00}, {1.00, 1.00} };
+      
+      std::vector< dtPoint3 > bb(nTwo);
+      dt__forFromToIndex(0, nTwo, ii) {
+        bb[ii] = getPointPercent( (float*) &(uvwTwo[ii]) );
+      }
+      
+      return bb;
+    }
+    //
+    // 3D
+    //
+    else if (dim() == 3) {
+      int nThree = 8;
+      float uvwThree[8][3] 
+      = 
+      {
+        {0.00, 0.00, 0.00}, {0.00, 0.00, 1.00},
+        {0.00, 1.00, 0.00}, {0.00, 1.00, 1.00},
+        {1.00, 0.00, 0.00}, {1.00, 0.00, 1.00},
+        {1.00, 1.00, 0.00}, {1.00, 1.00, 1.00}
+      };
+
+      std::vector< dtPoint3 > bb(nThree);
+      dt__forFromToIndex(0, nThree, ii) {
+        bb[ii] = getPointPercent( (float*) &(uvwThree[ii]) );
+      }
+
+      return bb;      
+    }
+    else dt__throwUnexpected(updateBoundingBox());    
   }  
   
   float analyticGeometry::characteristicLength( void ) const {
@@ -278,6 +335,31 @@ namespace dtOO {
 
     return true;    
   }  
+  
+  bool analyticGeometry::equal(const analyticGeometry & other) const {
+    dt__throwIf( this->dim()!=other.dim(), equal() );
+    
+    std::vector< dtPoint3 > thisCP = this->cornerPoints();
+    std::vector< dtPoint3 > otherCP = other.cornerPoints();
+    
+    std::vector< int > matchCP;
+    dt__forAllRefAuto(thisCP, aCP) {
+      matchCP.push_back(
+        dtLinearAlgebra::returnNearestPointIndexTo(aCP, otherCP)
+      );
+      
+      if ( !inXYZTolerance(aCP, otherCP[matchCP.back()] ) ) return false;
+    }
+    
+    progHelper::removeBastardTwins( matchCP );
+    if ( matchCP.size() != thisCP.size() )  return false;
+    
+    return true;
+  }
+  
+  bool analyticGeometry::equal( analyticGeometry const * const other) const {    
+    return this->equal(*other);
+  }
   
   analyticGeometry * new_clone(analyticGeometry const & aG) {
     return aG.clone();

@@ -24,58 +24,64 @@ namespace dtOO {
   class analyticGeometry : public optionHandling,
                            public labelHandling,
                            public renderInterface {
-  public:  
-    dt__class(analyticGeometry, analyticGeometry);
-    analyticGeometry();
-    virtual ~analyticGeometry();
-    analyticGeometry( analyticGeometry const & orig );
-    dtPoint3 getPointPercent( float const * const uvw ) const;    
-    //
-    // overload
-    //
-    virtual analyticGeometry * clone( void ) const = 0;
-    virtual analyticGeometry * create( void ) const = 0;
-    virtual int dim( void ) const = 0;
-    virtual bool isClosed( int const & dir) const = 0;
-    virtual float getMin( int const & dir) const = 0;
-    virtual float getMax( int const & dir) const = 0;
-    virtual dtPoint3 getPoint( float const * const uvw ) const = 0;
-    //
-    // optional overload
-    //
-    virtual std::string dumpToString(void) const;
-    virtual bool isTransformed( void ) const;
-    virtual bool isCompound( void ) const;
-	  virtual vectorHandling< analyticGeometry const * > compoundInternal( 
-      void 
-    ) const;
-    std::pair< dtPoint3, dtPoint3 > boundingBox( void ) const;
-    void boundingBox( std::pair< dtPoint3, dtPoint3 > boundingBox);
-    void updateBoundingBox( void ) const;
-    float characteristicLength( void ) const;
-    //
-    //
-    //
-    static bool inXYZTolerance(
-      dtPoint3 const & p0, dtPoint3 const & p1, 
-      bool output = false, float inc = 1.
-    );
-    static bool inUVWTolerance( dtPoint3 const & p0, dtPoint3 const & p1 );
-    static bool inUVWTolerance( dtPoint2 const & p0, dtPoint2 const & p1 );    
-    static bool inUVWTolerance( float const & p0, float const & p1 );     
-    //
-    //
-    //
-    void dump(void) const;    
-    void setRenderResolution(int const & dir, int const & value) const;
-    int getRenderResolution(int const & dir) const;    
-  private:
-    mutable int _resU;
-    mutable int _resV;
-    mutable int _resW;
-    mutable float _characteristicLength;
-    mutable std::pair< dtPoint3, dtPoint3 > _boundingBox;
-    threadSafeRoot _threadRoot;
+    public:  
+      dt__class(analyticGeometry, analyticGeometry);
+      analyticGeometry();
+      virtual ~analyticGeometry();
+      analyticGeometry( analyticGeometry const & orig );
+      dtPoint3 getPointPercent( float const * const uvw ) const;    
+      //
+      // overload
+      //
+      virtual analyticGeometry * clone( void ) const = 0;
+      virtual analyticGeometry * create( void ) const = 0;
+      virtual int dim( void ) const = 0;
+      virtual bool isClosed( int const & dir) const = 0;
+      virtual float getMin( int const & dir) const = 0;
+      virtual float getMax( int const & dir) const = 0;
+      virtual dtPoint3 getPoint( float const * const uvw ) const = 0;
+      //
+      // optional overload
+      //
+      virtual std::string dumpToString(void) const;
+      virtual bool isTransformed( void ) const;
+      virtual bool isCompound( void ) const;
+      virtual vectorHandling< analyticGeometry const * > compoundInternal( 
+        void 
+      ) const;
+      std::pair< dtPoint3, dtPoint3 > boundingBox( void ) const;
+      void boundingBox( std::pair< dtPoint3, dtPoint3 > boundingBox);
+      void updateBoundingBox( void ) const;
+      float characteristicLength( void ) const;
+      std::vector< dtPoint3 > cornerPoints( void ) const;
+      //
+      //
+      //
+      static bool inXYZTolerance(
+        dtPoint3 const & p0, dtPoint3 const & p1, 
+        bool output = false, float inc = 1.
+      );
+      static bool inUVWTolerance( dtPoint3 const & p0, dtPoint3 const & p1 );
+      static bool inUVWTolerance( dtPoint2 const & p0, dtPoint2 const & p1 );    
+      static bool inUVWTolerance( float const & p0, float const & p1 );     
+      //
+      //
+      //
+      bool equal( const analyticGeometry & other ) const;
+      bool equal( analyticGeometry const * const other) const;
+      //
+      //
+      //
+      void dump(void) const;    
+      void setRenderResolution(int const & dir, int const & value) const;
+      int getRenderResolution(int const & dir) const;
+    private:
+      mutable int _resU;
+      mutable int _resV;
+      mutable int _resW;
+      mutable float _characteristicLength;
+      mutable std::pair< dtPoint3, dtPoint3 > _boundingBox;
+      threadSafeRoot _threadRoot;
   };
   
 	//
