@@ -41,6 +41,7 @@ namespace dtOO {
     int getPosition( std::string const label) const;
     void addIndex( void );
     void dump(void) const;
+    void sort(void);
   };
 
   //----------------------------------------------------------------------------
@@ -256,6 +257,20 @@ namespace dtOO {
         << std::endl;
     }
   }
+  template< typename T >  
+  void labeledVectorHandling< T >::sort(void) {
+    std::vector< std::string > L;
+    dt__forAllIndex(*this, ii) {
+      labelHandling * obj;
+      dt__mustCast(this->at(ii), labelHandling, obj);
+      L.push_back( obj->getLabel() );
+    }
+    std::sort( L.begin(), L.end() );
+    dt__forAllIndex(L, ii) {
+      int pos = this->getPosition( L[ii] );
+      std::iter_swap( this->begin() + pos, this->begin() + ii);
+    }    
+  }  
 }
 #endif	/* labeledVectorHandling_H */
 

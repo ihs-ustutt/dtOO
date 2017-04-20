@@ -56,6 +56,7 @@ namespace dtOO {
       std::string const str    
     );
     static bool isWildcard( std::string const str );
+    static bool isFullWildcard( std::string const str );
     static bool matchWildcard(
       std::string const & pWildStr, std::string const & pStringStr
     );    

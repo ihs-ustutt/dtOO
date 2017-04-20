@@ -953,8 +953,8 @@ namespace dtOO {
 		if (!buildCompound) builder->buildPart(tE, bC, cVP, sFP, aGP, &tmpAGeo);
 		else builder->buildPartCompound(tE, bC, cVP, sFP, aGP, &tmpAGeo);
 
-    for (int ii=0;ii<tmpAGeo.size();ii++) {			
-      if (label != "*") {
+    for (int ii=0;ii<tmpAGeo.size();ii++) {
+      if ( !isWildcard( label ) ) {
         if ( tmpAGeo.size() > 1  ) {
           tmpAGeo[ii]->setLabel(label+"_"+intToString(ii) );
         }
@@ -964,12 +964,25 @@ namespace dtOO {
         aGP->push_back( tmpAGeo[ii] );				
       }
       else {
-				//
-				// replace in vector
-				//
-        int pos = aGP->getPosition( tmpAGeo[ii]->getLabel() );
-        delete aGP->at(pos);
-        aGP->at(pos) = tmpAGeo[ii];
+        if ( !isFullWildcard(label) ) {
+          //
+          // modify label and push back to vector
+          //          
+          tmpAGeo[ii]->setLabel(
+            tmpAGeo[ii]->getLabel() 
+            + 
+            stringPrimitive::replaceStringInString("*", "", label)
+          );
+          aGP->push_back( tmpAGeo[ii] );
+        }
+        else {          
+          //
+          // replace in vector
+          //          
+          int pos = aGP->getPosition( tmpAGeo[ii]->getLabel() );
+          delete aGP->at(pos);
+          aGP->at(pos) = tmpAGeo[ii];
+        }
       }
     }
     tmpAGeo.clear();
@@ -987,6 +1000,10 @@ namespace dtOO {
       createAnalyticGeometry(label[ii], bC, cVP, sFP, aGP);
     }
 		
+    if ( staticPropertiesHandler::getInstance()->optionTrue("geometry_sort") ) {
+      aGP->sort();
+    }
+    
 		dt__forAllIndex(*aGP, ii) aGP->at(ii)->dump();
     
     aGP->dump();

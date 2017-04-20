@@ -286,6 +286,10 @@ namespace dtOO {
       ( str.find(stringPrimitive::_WILDSIGN) != std::string::npos )
     );
   }
+
+  bool stringPrimitive::isFullWildcard( std::string const str ) {
+    return ( str == stringPrimitive::_WILD );
+  }  
   
   bool stringPrimitive::matchWildcard(
     std::string const & pWildStr, std::string const & pStringStr
