@@ -88,6 +88,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.h
   geometryEngine/geoBuilder/geomCurve_curveReverseConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h
+  geometryEngine/geoBuilder/bSplineSurface_convertOCC.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
@@ -223,6 +224,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.cpp
   geometryEngine/geoBuilder/geomCurve_curveReverseConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineSurface_convertOCC.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp
