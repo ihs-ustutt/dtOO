@@ -72,7 +72,7 @@ namespace dtOO {
           retAGeo.push_back( m1d->cloneTransformed(this) );
         }
       }
-			if (m2d) {
+			else if (m2d) {
         analyticSurface const * const aS = analyticSurface::ConstDownCast(*it);
         if ( aS &&  !aS->isTransformed() ) {
           retAGeo.push_back( 
