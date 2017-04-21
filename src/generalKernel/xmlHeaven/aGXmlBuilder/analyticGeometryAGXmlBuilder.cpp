@@ -36,11 +36,13 @@ namespace dtOO {
     //
     // copy
     //
-    ::QDomElement wElement 
+    std::vector< ::QDomElement > wE
     = 
-    dtXmlParserBase::getChild("analyticGeometry", toBuild);     
-    aGPtrVec toCopy;
-    dtXmlParserBase::createAdvanced(&wElement, bC, cV, aF, aG, &toCopy);
-    dt__forAllIndex(toCopy, ii) result->push_back( toCopy[ii] );
+    dtXmlParserBase::getChildVector("analyticGeometry", toBuild);     
+    dt__forAllRefAuto(wE, anEl) {
+      aGPtrVec toCopy;
+      dtXmlParserBase::createAdvanced(&anEl, bC, cV, aF, aG, &toCopy);
+      dt__forAllIndex(toCopy, ii) result->push_back( toCopy[ii] );
+    }
   }
 }
