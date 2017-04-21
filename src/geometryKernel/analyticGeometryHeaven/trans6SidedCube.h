@@ -38,7 +38,8 @@ namespace dtOO {
       virtual map2dTo3d * segmentConstU( float const & uu ) const;
       virtual map2dTo3d * segmentConstV( float const & vv ) const;
       virtual map2dTo3d * segmentConstW( float const & ww ) const;
-      vectorHandling< map2dTo3d const * > const & constRefMap2dTo3d( void ) const;
+      vectorHandling< map2dTo3d const * > const & 
+      constRefMap2dTo3d( void ) const;
       void reverseU( void );
       void reverseV( void );
       void reverseW( void );
