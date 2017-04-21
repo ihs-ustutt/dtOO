@@ -34,10 +34,10 @@ namespace dtOO {
 	  virtual dtCurve * segmentConstV( 
       float const vv, float const uuMin, float const uuMax
     ) const = 0;    
-    virtual dtPoint2 reparam(dtPoint3 const point) const = 0;
     //
     // optional overload
     //
+    virtual dtPoint2 reparam(dtPoint3 const point) const;    
     virtual dtPoint3 controlPoint( int const uI, int const vI ) const;
     virtual void setControlPoint( 
       int const uI, int const vI, dtPoint3 const point 

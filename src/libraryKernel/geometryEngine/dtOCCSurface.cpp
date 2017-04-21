@@ -280,9 +280,9 @@ namespace dtOO {
 		);
 		
 		if ( !ext.IsDone() ) {
-			dt__throw(
+			dt__warning(
 			  reparam(), 
-				<< dt__eval(ext.IsDone()) 
+				<< dt__eval(ext.IsDone()) << std::endl
 			  << dt__point3d(point) << std::endl
 			  << dt__eval(Utol) << std::endl
 			  << dt__eval(Vtol) << std::endl
@@ -293,6 +293,8 @@ namespace dtOO {
 			  << dt__point3d(getPointPercent3d(1.,0.)) << std::endl
 			  << dt__point3d(getPointPercent3d(1.,1.)) 
 			);
+      
+      return dtSurface::reparam(point);
 		}
 		Extrema_POnSurf epp = ext.Point(1); 
 		epp.Parameter(U, V);

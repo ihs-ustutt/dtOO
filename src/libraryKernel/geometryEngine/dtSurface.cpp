@@ -7,6 +7,8 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <vector>
 
+#include "geoBuilder/uv_geomSurfaceClosestPoint.h"
+
 namespace dtOO {	
 	dtSurface::dtSurface() {
 		
@@ -16,6 +18,10 @@ namespace dtOO {
 		
 	}
 	
+  dtPoint2 dtSurface::reparam(dtPoint3 const ppXYZ) const {
+    return uv_geomSurfaceClosestPoint(this, ppXYZ).result();
+  }
+  
 	float dtSurface::minU ( void ) const {
 	  return minPara(0);	
 	}
