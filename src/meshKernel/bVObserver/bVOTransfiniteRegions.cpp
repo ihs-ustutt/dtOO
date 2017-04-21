@@ -6,6 +6,7 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
+#include <meshEngine/dtGmshFace.h>
 
 namespace dtOO {  
   bVOTransfiniteRegions::bVOTransfiniteRegions() {
@@ -33,11 +34,17 @@ namespace dtOO {
 		//   name="bVOTransfiniteRegions" 
 		//   regionLabel="{name0}{name1}{name2}{name3}{name4}{name5}"
 		// />
-								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
+    
 		_regionLabel
 		= 
 		dtXmlParserBase::getAttributeStrVector("regionLabel", element);
+		_nE
+		= 
+		dtXmlParserBase::getAttributeIntVectorMuParse(
+			"numberElements", element, cV, aF
+		);
+    dt__throwIf(_nE.size()!=3, init());      
   }
   
   void bVOTransfiniteRegions::preUpdate( void ) {
@@ -48,8 +55,14 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
 		
-    dt__forAllConstIter(std::vector< std::string >, _regionLabel, rLIt) {
-      gm->getDtGmshRegionByPhysical(*rLIt)->meshTransfinite();
+    dt__forAllRefAuto(_regionLabel, aLabel) {
+      gm->getDtGmshRegionByPhysical(aLabel)->meshTransfiniteRecursive();
+      gm->getDtGmshRegionByPhysical(aLabel)->meshWNElements(
+        _nE[0], _nE[1], _nE[2]
+      );
     }
+		dt__forAllRefAuto(gm->faces(), aFace) {
+			dtGmshModel::cast2DtGmshFace(aFace)->correctIfTransfinite();
+		}	        
   }
 }
