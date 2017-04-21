@@ -51,37 +51,58 @@ namespace dtOO {
 		::GModel::setCurrent( gm );
     
     std::list< ::GFace * > faceL = gm->faces();
-    std::list< ::GFace * >::iterator f_it;
-
+//    std::list< ::GFace * >::iterator f_it;
+    std::list< ::GRegion * > regionL = gm->regions();
+//    std::list< ::GRegion * >::iterator r_it;
+    
     //
     // check size
     //
-    dt__throwIfWithMessage(
-      _faceLabel.size()!=faceL.size(), preUpdate(),
-      << dt__eval(_faceLabel.size()) << std::endl
-      << dt__eval(faceL.size()) 
+    dt__throwIf( 
+      (!_faceLabel.empty())&&(_faceLabel.size()!=faceL.size()), preUpdate()
     );
-
-    int counter = 0;
-    logContainer< bVONameFaces > logC(logINFO, "preUpdate()");      
-    for (f_it = faceL.begin(); f_it!=faceL.end(); ++f_it) {
-      std::vector< int > pInt = (*f_it)->getPhysicalEntities();
-      dt__throwIf(pInt.size()!=0, preUpdate());
-
-      std::string newL = _faceLabel[counter];
-      if (newL != "") {
-        int pTag = (*f_it)->model()->setPhysicalName(newL, 2, 0);
-        (*f_it)->addPhysicalEntity(pTag);
-        dtGmshModel::intGEntityVMap map;
-        gm->getPhysicalGroups(2, map);          
-        logC()
-          << logMe::dtFormat(
-            "Physical group %d / %s ( %d faces ) -> add face %d"
-          ) 
-          % newL % pTag % map[ pTag ].size() % (*f_it)->tag() 
-          << std::endl;
+    logContainer< bVONameFaces > logC(logINFO, "preUpdate()");
+    if ( _faceLabel.empty() ) {
+      logC() << "Apply automatic naming" << std::endl;
+      dt__forAllRefAuto(regionL, aReg) {
+        int cc = 0;
+        logC() << "Region : " << gm->getPhysicalString(aReg) << std::endl;
+        dt__forAllRefAuto( aReg->faces(), aFace ) {
+          if ( gm->getPhysicalString(aFace) == "" ) {
+            gm->tagPhysical( 
+              aFace,
+              gm->getPhysicalString(aReg)+"_F_"+stringPrimitive::intToString(cc)
+            );
+          }          
+          logC() 
+            << "  Face " << cc << " : " << gm->getPhysicalString(aFace) 
+            << std::endl;
+          cc++;
+          
+        }
       }
-      counter++;				
+    }
+    else {
+      int counter = 0;      
+      dt__forAllRefAuto(faceL, aFace) {
+        std::vector< int > pInt = aFace->getPhysicalEntities();
+        dt__throwIf(pInt.size()!=0, preUpdate());
+
+        std::string newL = _faceLabel[counter];
+        if (newL != "") {
+          int pTag = aFace->model()->setPhysicalName(newL, 2, 0);
+          aFace->addPhysicalEntity(pTag);
+          dtGmshModel::intGEntityVMap map;
+          gm->getPhysicalGroups(2, map);          
+          logC()
+            << logMe::dtFormat(
+              "Physical group %d / %s ( %d faces ) -> add face %d"
+            ) 
+            % newL % pTag % map[ pTag ].size() % aFace->tag() 
+            << std::endl;
+        }
+        counter++;				
+      }
     }
   }
 }
