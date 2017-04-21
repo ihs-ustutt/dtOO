@@ -6,7 +6,6 @@
 #include <interfaceHeaven/ptrHandling.h>
 
 namespace dtOO {
-//  class dtSurface;
   class dtCurve;
   
   class trimmedCurve_uBounds {
