@@ -32,8 +32,8 @@
   virtual std::string virtualClassName( void ) const { \
     return std::string(#name); \
   } \
-  static bool Is(castFrom * obj) { \
-    return (dynamic_cast<name *>(obj) == NULL ? false : true); \
+  static bool Is(castFrom const * const obj) { \
+    return (dynamic_cast<name const * const >(obj) == NULL ? false : true); \
   } \
   static name * DownCast(castFrom * obj) { \
     return dynamic_cast<name *>(obj); \
