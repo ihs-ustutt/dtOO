@@ -28,6 +28,10 @@ namespace dtOO {
     virtual ::GEntity::GeomType geomType( void ) const; 
     void setGeomType( ::GEntity::GeomType const & gT );     
     void meshTransfinite( void );
+    void meshTransfiniteRecursive( void );
+    void meshWNElements( 
+      int const & nElementsU, int const & nElementsV, int const & nElementsW
+    );
     void meshRecombine( void );        
     void meshRecombineRecursive( void );    
     void meshUnstructured( void );

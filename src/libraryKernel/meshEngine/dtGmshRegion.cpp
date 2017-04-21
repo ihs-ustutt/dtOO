@@ -14,6 +14,7 @@
 #include "dtGmshFace.h"
 #include "dtGmshModel.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <progHelper.h>
 
 #define __caCThis const_cast< dtGmshRegion * >(this)
 
@@ -97,6 +98,34 @@ namespace dtOO {
 //		}
   }
   
+  void dtGmshRegion::meshTransfiniteRecursive( void ) {
+    this->meshAttributes.method = MESH_TRANSFINITE;
+		dt__forAllRefAuto( dtGmshModel::cast2DtGmshFace( this->faces() ), aFace ) {
+      aFace->meshTransfinite();
+		}
+  }
+  
+  void dtGmshRegion::meshWNElements( 
+    int const & nElementsU, int const & nElementsV, int const & nElementsW
+  ) {
+		//
+		// only supported for 6-sided dtGmshRegions
+		//    
+		std::vector< dtGmshFace * > ff 
+    = 
+    progHelper::list2Vector( dtGmshModel::cast2DtGmshFace(faces()) );
+		dt__throwIf(ff.size()!=6, meshWNElements());
+		
+		//
+		// set number of elements
+		//
+		ff[0]->meshWNElements(nElementsU, nElementsV);
+    ff[1]->meshWNElements(nElementsU, nElementsV);
+		ff[2]->meshWNElements(nElementsU, nElementsW);
+    ff[3]->meshWNElements(nElementsU, nElementsW);    
+		ff[4]->meshWNElements(nElementsV, nElementsW);
+    ff[5]->meshWNElements(nElementsV, nElementsW);	    
+  }  
   void dtGmshRegion::meshRecombine( void ) {
     this->meshAttributes.recombine3D = 1;
   }  
