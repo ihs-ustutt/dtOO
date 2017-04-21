@@ -969,9 +969,9 @@ namespace dtOO {
           // modify label and push back to vector
           //          
           tmpAGeo[ii]->setLabel(
-            tmpAGeo[ii]->getLabel() 
-            + 
-            stringPrimitive::replaceStringInString("*", "", label)
+            stringPrimitive::replaceStringInString(
+              "*", tmpAGeo[ii]->getLabel(), label
+            )
           );
           aGP->push_back( tmpAGeo[ii] );
         }
