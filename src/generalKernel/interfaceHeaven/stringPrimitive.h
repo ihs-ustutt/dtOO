@@ -34,6 +34,11 @@ namespace dtOO {
       std::string const signEnd, 
       std::string const str
     );
+    static std::string getStringBetweenAndRemoveRespectOcc(
+      std::string const signStart, 
+      std::string const signEnd, 
+      std::string * const str
+    );
     static bool stringContains(
       std::string const pattern, std::string const str
     );
@@ -46,6 +51,9 @@ namespace dtOO {
     );
     static std::vector< std::string > convertToCSVStringVector( 
       std::string str 
+    );    
+    static std::string replaceOnceStringInString(
+      std::string const toReplace, std::string const with, std::string const str
     );    
     static std::string replaceStringInString(
       std::string const toReplace, std::string const with, 

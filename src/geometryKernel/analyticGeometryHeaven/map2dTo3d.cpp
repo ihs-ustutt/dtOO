@@ -293,6 +293,10 @@ namespace dtOO {
       reparamOnFace(), 
       << "Reparameterization of " << dt__point3d(ppXYZ) << " fails." 
       << std::endl
+      << "(0,0) -> " << getPointPercent(0,0) << std::endl
+      << "(1,0) -> " << getPointPercent(1,0) << std::endl
+      << "(0,1) -> " << getPointPercent(0,1) << std::endl
+      << "(1,1) -> " << getPointPercent(1,1) << std::endl
       << dumpToString()
     );
   }

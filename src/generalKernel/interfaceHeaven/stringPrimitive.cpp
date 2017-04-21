@@ -161,6 +161,21 @@ namespace dtOO {
     return str.substr( pos+1, occMap[pos]-pos-1);
   }  
   
+  std::string stringPrimitive::getStringBetweenAndRemoveRespectOcc(
+	  std::string const signStart, 
+		std::string const signEnd, 
+		std::string * const str
+	) {  
+    std::string strBetween 
+    = 
+    getStringBetweenRespectOcc(signStart, signEnd, *str);
+    
+    *str 
+    = 
+    replaceOnceStringInString(signStart + strBetween + signEnd, "", *str);
+    return strBetween;
+  }
+  
 	std::vector< std::string > stringPrimitive::convertToStringVector(
 	  std::string const signStart, std::string const signEnd, 
 		std::string const str
@@ -168,20 +183,18 @@ namespace dtOO {
 		std::vector< std::string > values;
 		std::string valueStr = str;
 		for (int ii=0; ii<str.length(); ii++) {
-			std::string aVal = getStringBetweenAndRemove(signStart, signEnd, &valueStr);
+			std::string aVal 
+      = 
+      getStringBetweenAndRemoveRespectOcc(signStart, signEnd, &valueStr);
+
       if ( stringContains(":replace:", aVal) ) {
         std::string replaceRule = aVal;
-        aVal = getStringBetweenAndRemove(signStart, signEnd, &replaceRule);
+        aVal 
+        = 
+        getStringBetweenAndRemoveRespectOcc(signStart, signEnd, &replaceRule);
         std::vector< std::string > replaceVec 
         = 
         convertToStringVector(":", ":", replaceRule);
-        
-        dt__info(
-          convertToStringVector(), 
-          << dt__eval(aVal) << std::endl
-          << dt__eval(replaceRule) << std::endl
-          << dt__eval(replaceVec)
-        );
         
         for (int ii=2; ii<replaceVec.size(); ii++) {
           values.push_back( 
@@ -199,6 +212,13 @@ namespace dtOO {
         !stringContains(signEnd, valueStr) 
       ) break;      
 		}
+    
+    dt__debug(
+      convertToStringVector(), 
+      << "Convert >" << std::endl << str << std::endl << "<" << std::endl
+      << "to" << std::endl
+      << ">" << std::endl << values << std::endl << "<"
+    );    
 
 		return values;
 	}
@@ -226,7 +246,7 @@ namespace dtOO {
     return retStr;
   }
   
-  std::string stringPrimitive::replaceStringInString(
+  std::string stringPrimitive::replaceOnceStringInString(
 	  std::string const toReplace, std::string const with, std::string const str
 	) {
 		if ( !stringContains(toReplace, str) ) return str;
@@ -237,6 +257,14 @@ namespace dtOO {
 			toReplace.length(), 
 			with
 	  );
+
+    return retStr;
+  }
+  
+  std::string stringPrimitive::replaceStringInString(
+	  std::string const toReplace, std::string const with, std::string const str
+	) {
+		std::string retStr = replaceOnceStringInString(toReplace, with, str);
 		
 		if ( stringContains(toReplace, retStr) ) {
 			retStr = replaceStringInString(toReplace, with, retStr);
@@ -244,7 +272,7 @@ namespace dtOO {
 
     return retStr;
   }	
-	
+  
   std::vector< std::string > stringPrimitive::crumbleDown(
     std::string const signStart, std::string const signEnd, 
     std::string const str    

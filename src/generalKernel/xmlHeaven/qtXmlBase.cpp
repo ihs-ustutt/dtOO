@@ -51,7 +51,6 @@ namespace dtOO {
       std::string cVLabel
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
-      dt__debug( replaceDependencies(), << "cVLabel = " << cVLabel );
       if ( stringContains("[", cVLabel) ) {
         std::string cVOption
         = 
@@ -62,7 +61,6 @@ namespace dtOO {
         //
         cVLabel = cVLabel + "_" + intToString( muParseStringInt(cVOption) );
       }
-      dt__debug( replaceDependencies(), << "cVLabel = " << cVLabel );
       
       //
       // replace constValue string by value
@@ -115,8 +113,6 @@ namespace dtOO {
 		cVPtrVec const * const cV,
 		aFPtrVec const * const aF
 	) {
-    dt__debug( replaceDependencies(), << "expression = " << expression );    
-    
     std::string returnExpression = expression;
           
     //
