@@ -86,7 +86,10 @@ namespace dtOO {
 
     // destroy the mesh if it exists
     deMeshGFace()(dtgf);    
-    Msg::Info("Meshing surface %d ( dtMeshTransfiniteGFace )", dtgf->tag());
+    Msg::Info(
+      "Meshing surface %d / %s ( dtMeshTransfiniteGFace )", 
+      dtgf->tag(), dtgf->getPhysicalString().c_str()
+    );
 
 
     //
