@@ -35,6 +35,7 @@ namespace dtOO {
       // optional overload
       //
       virtual dtVector3 firstDerU( float const uu) const;
+      virtual map1dTo3d * segment( float const & u0, float const & u1 ) const;  
       virtual float l_u( float const & uu ) const;
       virtual float u_l( float const & ll ) const;      
       virtual vectorHandling< renderInterface * > getExtRender( void ) const;

@@ -6,6 +6,7 @@
 #include <logMe/dtMacros.h>
 #include "map1dTo3dTransformed.h"
 #include <dtTransformerHeaven/dtTransformer.h>
+#include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
 
 namespace dtOO {
   analyticCurve::analyticCurve() : map1dTo3d() {
@@ -44,6 +45,18 @@ namespace dtOO {
     return (_dtC->point( uu ));
   }
 	
+  map1dTo3d * analyticCurve::segment( 
+    float const & u0, float const & u1 
+  ) const {
+    return new analyticCurve(
+      dt__pH(dtCurve)(
+        trimmedCurve_uBounds( _dtC.get(), u0, u1 ).result()
+      ).get()
+    );
+//    scaLinearOneD fun(0, 1, u0, u1);
+//    return new scaOneDInMap1dTo3d(&fun, this);
+  }
+  
   vectorHandling< renderInterface * > analyticCurve::getExtRender( 
     void 
   ) const {

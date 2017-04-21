@@ -29,6 +29,7 @@ namespace dtOO {
       // optional overload
       //
       virtual dtVector3 firstDerU( float const & uu) const;
+      virtual map1dTo3d * segment( float const & u0, float const & u1 ) const;      
       virtual float l_u( float const & uu ) const;
       virtual float u_l( float const & ll ) const;
       virtual vectorHandling< renderInterface * > getRender( void ) const;
@@ -36,6 +37,7 @@ namespace dtOO {
       //
       //
       dtPoint3 getPointPercent( float const & uu ) const;  
+      map1dTo3d * segmentPercent( float const & u0, float const & u1 ) const;     
       int getRenderResolutionU( void ) const;
       float u_percent(float const & uu) const;
       float u_lPercent(float const & lP) const;
@@ -48,7 +50,7 @@ namespace dtOO {
       float length( void ) const;
       float operator%( const float &percent ) const;        
       float operator|( const float &length ) const;  
-      float operator&( const float &lengthPercent ) const;  
+      float operator&( const float &lengthPercent ) const;
     private:
       float l_u( float const & uu, int const & nP ) const;
 	    double funValue(const double xx ) const;

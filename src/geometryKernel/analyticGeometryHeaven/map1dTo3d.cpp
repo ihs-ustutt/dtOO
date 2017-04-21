@@ -13,6 +13,9 @@
 #include <Math/Functor.h>
 #include <GSLError.h>
 
+#include <analyticFunctionHeaven/scaLinearOneD.h>
+#include "scaOneDInMap1dTo3d.h"
+
 namespace dtOO { 
   float map1dTo3d::_deltaPer 
   = 
@@ -39,6 +42,12 @@ namespace dtOO {
     return getPoint( u_percent(uu) );
   }
 
+  map1dTo3d * map1dTo3d::segmentPercent( 
+    float const & u0, float const & u1 
+  ) const {
+    return segment( u_percent(u0), u_percent(u1) );
+  }
+  
   float map1dTo3d::u_percent(float const & uu) const {
     return (getUMin() +  (getUMax() - getUMin() ) * uu);
   }  
@@ -89,6 +98,11 @@ namespace dtOO {
     }
   }
 
+  map1dTo3d * map1dTo3d::segment( float const & u0, float const & u1 ) const {
+    scaLinearOneD fun(0, 1, u0, u1);
+    return new scaOneDInMap1dTo3d(&fun, this);
+  }
+  
   vectorHandling< renderInterface * > map1dTo3d::getRender( void ) const {
 		vectorHandling< dtPoint3 > pp(getRenderResolutionU());
     float interval = (getUMax() - getUMin()) / (getRenderResolutionU()-1);
