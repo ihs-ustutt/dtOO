@@ -37,6 +37,7 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
+#include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
 
 namespace dtOO {
   dtXmlParserBase::dtXmlParserBase() {
@@ -138,7 +139,21 @@ namespace dtOO {
 	) {
 		return createTransformer(toBuildP, bC, cV, aF, NULL);
   }
+ 
+  float dtXmlParserBase::createFloat(
+    ::QDomElement const & toBuildP,
+    baseContainer * const bC,
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF, 
+    aGPtrVec const * const aG
+  ) {
+    std::vector< float > vec;
+    createBasic(&toBuildP, bC, cV, aF, aG, &vec);
+    dt__throwIf( vec.size()!=1, createAdvanced() );
 
+    return vec[0];
+  }
+    
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                  
@@ -156,7 +171,7 @@ namespace dtOO {
 	  );
     if ( is("transformer", *toBuildP) ) {
       wEl = toBuildP->nextSiblingElement();
-    }    
+    }
     //
     //create points
     //
@@ -1085,6 +1100,20 @@ namespace dtOO {
             )
           );
         }
+        else if ( matchWildcard("-1%ClosestPointTo*", aGOption) ) {
+          map2dTo3d const * const closeMap2d
+          = 
+          map2dTo3d::MustConstDownCast(
+            aG->get( stringPrimitive::getStringBetween("@", "@", aGOption ) )
+          );
+          pp.push_back(
+            m1d->percent_u(
+              pairUUV_map1dTo3dClosestPointToMap2dTo3d(
+                m1d, closeMap2d
+              ).result().first
+            )
+          );
+        }
         else dt__throwUnexpected(replaceDependencies());        
       }
       else if (m2d) {
@@ -1249,7 +1278,34 @@ namespace dtOO {
               m2d->firstDerV( argCS[0], argCS[1] ) 
             ).z()
           );
-        }            
+        }
+        else if (aGOption == "%ndVx") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerV( 
+                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
+              ) 
+            ).x()
+          );
+        }                  
+        else if (aGOption == "%ndVy") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerV( 
+                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
+              ) 
+            ).y()
+          );
+        }                 
+        else if (aGOption == "%ndVz") {
+          pp.push_back(
+            dtLinearAlgebra::normalize( 
+              m2d->firstDerV( 
+                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
+              ) 
+            ).z()
+          );
+        }        
         else if (aGOption == "-1") {
           pp 
           = 
@@ -1876,6 +1932,23 @@ namespace dtOO {
 
   }
 
+  void dtXmlParserBase::createBasic(
+    ::QDomElement const * toBuildP,
+    baseContainer * const bC,
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF, 
+    aGPtrVec const * const aG,
+    std::vector< float > * basicP
+  ) {
+    dt__throwIf(!is("float", *toBuildP), createBasic());    
+    
+    if ( hasAttribute("value", *toBuildP) ) {
+      float val = getAttributeFloatMuParse("value", *toBuildP, cV, aF, aG);
+      basicP->push_back( val );
+    }
+    else dt__throwUnexpected(createBasic());
+  }
+    
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
