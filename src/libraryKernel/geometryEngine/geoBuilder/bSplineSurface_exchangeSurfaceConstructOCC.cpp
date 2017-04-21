@@ -4,6 +4,7 @@
 #include <logMe/dtMacros.h>
 #include <geometryEngine/dtOCCBSplineSurface.h>
 #include "geomSurface_baseConstructOCC.h"
+#include "bSplineSurface_convertOCC.h"
 
 #include <Precision.hxx>
 #include <Standard_Failure.hxx>
@@ -17,13 +18,14 @@ namespace dtOO {
     ::bSplineSurface_exchangeSurfaceConstructOCC(
 		dtSurface const * const dtS
 	) {
+    dt__pH(dtSurface) dtBS( bSplineSurface_convertOCC(dtS).result() );
 		//
 		// cast and check surface type
 		//		
     Handle(Geom_BSplineSurface) cc 
 		= 
 		Handle(Geom_BSplineSurface)::DownCast( 
-      dtOCCBSplineSurface::MustConstDownCast(dtS)->OCCRef().getOCC()->Copy() 
+      dtOCCBSplineSurface::ConstSecureCast(dtBS.get())->OCCRef().getOCC()->Copy() 
     );
     
     //
