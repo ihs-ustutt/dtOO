@@ -50,14 +50,8 @@ namespace dtOO {
     ::QDomElement aGElement 
     = 
     dtXmlParserBase::getChild("analyticGeometry", toBuild);
-    dt__pH(analyticGeometry const) aG_t(
-      dtXmlParserBase::createAnalyticGeometry(&aGElement, bC, cV, aF, aG)
-    );
-
-    //
-    // check if it is a map3dTo3d
-    //
-    dt__ptrAss( map3dTo3d const * m3d, map3dTo3d::ConstDownCast(aG_t.get()) );
+    aGPtrVec aGV;
+    dtXmlParserBase::createAdvanced(&aGElement, bC, cV, aF, aG, &aGV);
 
     //
     // get analyticFunction
@@ -73,23 +67,24 @@ namespace dtOO {
     vec3dTwoD const * v2d = vec3dTwoD::ConstDownCast(aF_t.get());
     vec3dThreeD const * v3d = vec3dThreeD::ConstDownCast(aF_t.get());
 
-    if (v1d) {
-      result->push_back( new vec3dOneDInMap3dTo3d(v1d, m3d, optionPercent) );
+    dt__forAllRefAuto(aGV, anAG) {
+      //
+      // check if it is a map3dTo3d
+      //      
+      map3dTo3d const * const m3d = map3dTo3d::MustConstDownCast(anAG);
+      
+      if (v1d) {
+        result->push_back( new vec3dOneDInMap3dTo3d(v1d, m3d, optionPercent) );
+      }
+      else if (v2d) {
+        result->push_back( new vec3dTwoDInMap3dTo3d(v2d, m3d, optionPercent) );
+      }
+      else if (v3d) {
+        result->push_back( new vec3dThreeDInMap3dTo3d(v3d, m3d, optionPercent) );
+      }
+      else dt__throwUnexpected(buildPart());
     }
-    else if (v2d) {
-      result->push_back( new vec3dTwoDInMap3dTo3d(v2d, m3d, optionPercent) );
-    }
-    else if (v3d) {
-      result->push_back( new vec3dThreeDInMap3dTo3d(v3d, m3d, optionPercent) );
-    }
-    else {
-      dt__throw(
-        buildPart(), 
-        << dt__eval(v1d) << std::endl
-        << dt__eval(v2d) << std::endl
-        << dt__eval(v3d)
-      );
-    }
+    aGV.destroy();
   }
 	
   void vec3dInMap3dTo3dAGXmlBuilder::buildPartCompound( 
