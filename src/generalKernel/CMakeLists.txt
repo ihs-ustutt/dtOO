@@ -25,6 +25,7 @@ SET(HEADERS
   xmlHeaven/aFXmlBuilder/vec3dThreeD_triLinearPointConstructAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder.h
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/analyticGeometryGroupAGXmlBuilder.h
@@ -116,6 +117,7 @@ SET(SOURCES
   xmlHeaven/aFXmlBuilder/vec3dThreeD_triLinearPointConstructAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/baseContainerAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/analyticGeometryAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/analyticGeometryGroupAGXmlBuilder.cpp
