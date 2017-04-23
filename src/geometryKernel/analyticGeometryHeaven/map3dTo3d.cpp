@@ -16,6 +16,7 @@
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dBiLinearTwoD.h>
 #include "vec3dTwoDInMap3dTo3d.h"
 #include "vec3dOneDInMap3dTo3d.h"
 #include <discrete3dVector.h>
@@ -636,14 +637,8 @@ namespace dtOO {
 		dtPoint3 const & p0, dtPoint3 const & p1, 
 		dtPoint3 const & p2, dtPoint3 const & p3 
 	) const {
-		twoDArrayHandling< dtPoint3 > pp(2,2);
-		
-		pp[0][0] = p0;
-		pp[1][0] = p1;
-		pp[0][1] = p3;
-		pp[1][1] = p2;
-		
-		return segment(pp);
+    vec3dBiLinearTwoD v3d(p0, p1, p2, p3);
+    return new vec3dTwoDInMap3dTo3d(&v3d, this);
 	}
 	
 	map2dTo3d * map3dTo3d::segmentPercent( 
