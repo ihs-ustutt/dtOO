@@ -232,34 +232,24 @@ namespace dtOO {
     map3dTo3d const * const region, int * const tag
   ) {
 		*tag = this->getMaxRegionTag()+1;		
-		
-    dtPoint3 p0(0., 0., 0.);
-		dtPoint3 p1(1., 0., 0.);
-		dtPoint3 p2(1., 1., 0.);
-		dtPoint3 p3(0., 1., 0.);
-		dtPoint3 p4(0., 0., 1.);
-		dtPoint3 p5(1., 0., 1.);
-		dtPoint3 p6(1., 1., 1.);
-		dtPoint3 p7(0., 1., 1.);
-    
 		std::vector< int > fId(6);
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p0, p1, p2, p3)), &(fId[0])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(0)), &(fId[0])
 		);						
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p4, p5, p6, p7)), &(fId[1])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(1)), &(fId[1])
 		);
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p0, p1, p5, p4)), &(fId[2])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(0)), &(fId[2])
 		);
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p3, p2, p6, p7)), &(fId[3])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(1)), &(fId[3])
 		);
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p3, p0, p4, p7)), &(fId[4])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(0)), &(fId[4])
 		);
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentPercent(p2, p1, p5, p6)), &(fId[5])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(1)), &(fId[5])
 		);    
 
   	addIfRegionToGmshModel(
