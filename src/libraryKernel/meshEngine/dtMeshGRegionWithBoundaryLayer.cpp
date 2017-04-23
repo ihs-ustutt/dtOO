@@ -15,7 +15,6 @@
 #include "interfaceHeaven/optionHandling.h"
 
 #include <xmlHeaven/qtXmlBase.h>
-#include <interfaceHeaven/floatHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
 
