@@ -3,15 +3,10 @@
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
-#include <analyticGeometryHeaven/trans6SidedCube.h>
-#include <analyticGeometryHeaven/analyticGeometry.h>
-#include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticFunctionHeaven/analyticFunction.h>
-#include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
-#include <geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h>
+#include <constValueHeaven/constValue.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticGeometryHeaven/trans6SidedCube.h>
 #include <geometryEngine/dtSurface.h>
 
 #include <QtXml/QDomElement>
@@ -61,9 +56,9 @@ namespace dtOO {
         if (anOrient == "exchangeVW") t6->exchangeVW();
         else if (anOrient == "exchangeUV") t6->exchangeUV();
         else if (anOrient == "exchangeUW") t6->exchangeUW();
-        else if (anOrient == "reverseU") t6->reverseU();        
-        else if (anOrient == "reverseV") t6->reverseV();        
-        else if (anOrient == "reverseW") t6->reverseW();        
+        else if (anOrient == "reverseU") t6->reverseU();
+        else if (anOrient == "reverseV") t6->reverseV();
+        else if (anOrient == "reverseW") t6->reverseW();
         else dt__throwUnexpected(buildPart()); 
       }
       
