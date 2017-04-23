@@ -158,6 +158,13 @@ namespace dtOO {
       aGPtrVec const * const aG
     );
     static dtPoint3 createDtPoint3(
+      ::QDomElement const & toBuild,
+      baseContainer * const bC,                   
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF, 
+      aGPtrVec const * const aG
+    );
+    static dtPoint3 createDtPoint3(
       ::QDomElement const * toBuildP,
       baseContainer * const bC,
       cVPtrVec const * const cV,
@@ -269,6 +276,14 @@ namespace dtOO {
     //
     // analyticGeometry
     //    
+    static void createAdvanced( 
+      ::QDomElement const & toBuild,
+      baseContainer * const bC,
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF, 
+      aGPtrVec const * const aG,            
+      aGPtrVec * advancedP 
+    );
     static void createAdvanced( 
       ::QDomElement const * toBuildP,
       baseContainer * const bC,

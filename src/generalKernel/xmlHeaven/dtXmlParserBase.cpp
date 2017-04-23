@@ -1620,6 +1620,16 @@ namespace dtOO {
 	
     return basicVec[0];
 	}
+  
+  dtPoint3 dtXmlParserBase::createDtPoint3(
+	  ::QDomElement const & toBuild,
+    baseContainer * const bC,                   
+    cVPtrVec const * const cV,
+		aFPtrVec const * const aF, 
+		aGPtrVec const * const aG
+  ) {
+    return createDtPoint3(&toBuild, bC, cV, aF, aG);
+	}  
 	
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const * toBuildP,
@@ -1972,6 +1982,17 @@ namespace dtOO {
 		dt__forAllIndex(pp, ii) basicP->push_back( pp[ii] );		
   }
 
+  void dtXmlParserBase::createAdvanced( 
+    ::QDomElement const & toBuild,
+    baseContainer * const bC,
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF, 
+    aGPtrVec const * const aG,            
+    aGPtrVec * advancedP 
+  ) {
+    createAdvanced( &toBuild, bC, cV, aF, aG, advancedP );
+  }  
+  
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
