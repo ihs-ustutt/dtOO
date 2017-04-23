@@ -12,8 +12,16 @@ namespace dtOO {
   class bSplineSurface_bSplineCurveFillConstructOCC {
     public:
       dt__classOnlyName(bSplineSurface_bSplineCurveFillConstructOCC);
-      bSplineSurface_bSplineCurveFillConstructOCC( vectorHandling< dtCurve const * > const & cc );
-      bSplineSurface_bSplineCurveFillConstructOCC( dt__pVH(dtCurve) const & cc );
+      bSplineSurface_bSplineCurveFillConstructOCC( 
+        vectorHandling< dtCurve const * > const & cc 
+      );
+      bSplineSurface_bSplineCurveFillConstructOCC( 
+        dt__pVH(dtCurve) const & cc 
+      );
+      bSplineSurface_bSplineCurveFillConstructOCC( 
+        dtCurve const * const c0, dtCurve const * const c1, 
+        dtCurve const * const c2, dtCurve const * const c3
+      );      
       virtual ~bSplineSurface_bSplineCurveFillConstructOCC();
       dtSurface * result( void );
     private:

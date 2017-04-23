@@ -80,7 +80,22 @@ namespace dtOO {
 		}
 		
 		_dtS.reset( bSplineSurface_bSplineCurveFillConstructOCC(ccV).result() );
-	}	
+	}
+
+  bSplineSurface_bSplineCurveFillConstructOCC
+    ::bSplineSurface_bSplineCurveFillConstructOCC( 
+      dtCurve const * const c0, dtCurve const * const c1, 
+      dtCurve const * const c2, dtCurve const * const c3
+    ) {
+    vectorHandling< dtCurve const * > ccV(4, NULL);
+    ccV[0] = c0;
+    ccV[1] = c1;
+    ccV[2] = c2;
+    ccV[3] = c3;
+    _dtS.reset( 
+      bSplineSurface_bSplineCurveFillConstructOCC(ccV).result() 
+    );
+  }  
 	
 	bSplineSurface_bSplineCurveFillConstructOCC
     ::~bSplineSurface_bSplineCurveFillConstructOCC() {
