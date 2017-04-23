@@ -5,6 +5,7 @@
 #include "dtCurve.h"
 #include "dtCurve2d.h"
 #include <interfaceHeaven/ptrHandling.h>
+#include <interfaceHeaven/calculationTypeHandling.h>
 #include <vector>
 
 #include "geoBuilder/uv_geomSurfaceClosestPoint.h"
@@ -47,25 +48,33 @@ namespace dtOO {
 	}
 	
 	float dtSurface::u_uPercent(float const percent) const {
-    return minPara(0) + percent * (maxPara(0)-minPara(0));
+    return 
+      floatHandling::boundToRange(
+        minPara(0) + percent * (maxPara(0)-minPara(0)),
+        minPara(0), maxPara(0)
+      );
 	}
 
 	float dtSurface::uPercent_u(float const uu) const {
-    float uMin = minPara(0);
-		float uMax = maxPara(0);
-		
-		return (uu-uMin)/(uMax-uMin);
+		return 
+      floatHandling::boundToRange(
+        (uu-minPara(0))/(maxPara(0)-minPara(0)), 0, 1        
+      );
 	}
 	
 	float dtSurface::v_vPercent(float const percent) const {
-    return minPara(1) + percent * (maxPara(1)-minPara(1));
+    return
+      floatHandling::boundToRange(
+        minPara(1) + percent * (maxPara(1)-minPara(1)),
+        minPara(1), maxPara(1)
+      );
 	}
 
 	float dtSurface::vPercent_v(float const vv) const {
-    float vMin = minPara(1);
-		float vMax = maxPara(1);
-		
-		return (vv-vMin)/(vMax-vMin);
+    return
+      floatHandling::boundToRange(
+        (vv-minPara(1))/(maxPara(1)-minPara(1)), 0, 1        
+      );
 	}
 	
 	dtPoint3 dtSurface::getPoint3d( dtPoint2 const & pUV) const {

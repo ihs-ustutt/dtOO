@@ -1,6 +1,6 @@
 #include "map1dTo3d.h"
 #include "interfaceHeaven/staticPropertiesHandler.h"
-#include "interfaceHeaven/floatHandling.h"
+#include "interfaceHeaven/calculationTypeHandling.h"
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <solid3dLine.h>

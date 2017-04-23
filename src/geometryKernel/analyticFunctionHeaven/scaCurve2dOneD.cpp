@@ -5,7 +5,7 @@
 #include <geometryEngine/dtCurve2d.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/stringPrimitive.h>
-#include <interfaceHeaven/floatHandling.h>
+#include <interfaceHeaven/calculationTypeHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <solid2dLine.h>
 #include <RConfigure.h>

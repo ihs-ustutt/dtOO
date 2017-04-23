@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include "dtOCCSurfaceBase.h"
 #include <logMe/dtMacros.h>
-#include <interfaceHeaven/floatHandling.h>
+#include <interfaceHeaven/calculationTypeHandling.h>
 
 #include <Standard_Failure.hxx>
 #include <Standard_ErrorHandler.hxx>
@@ -106,9 +106,26 @@ namespace dtOO {
 	}
 	
   dtPoint3 dtOCCSurface::point( float const uu, float const vv) const {
-  	Standard_Real uR = static_cast<Standard_Real>(uu);
-		Standard_Real vR = static_cast<Standard_Real>(vv);
+//  	Standard_Real uR = static_cast<Standard_Real>(uu);
+//		Standard_Real vR = static_cast<Standard_Real>(vv);
 		
+    Standard_Real U1;
+    Standard_Real U2;
+    Standard_Real V1;
+    Standard_Real V2;
+    _ptr->Bounds(U1, U2, V1, V2);
+    
+    Standard_Real uR 
+    = 
+    calculationTypeHandling< Standard_Real, float >::boundToRange(
+      uu, U1, U2
+    );
+    Standard_Real vR 
+    = 
+    calculationTypeHandling< Standard_Real, float >::boundToRange(
+      vv, V1, V2
+    );
+    
 		gp_Pnt pp;
 		dt__tryOcc(	
 			pp = _ptr->Value(uR, vR);
@@ -117,11 +134,12 @@ namespace dtOO {
 			<< dt__eval(uR) << std::endl
 			<< dt__eval(vR)			
 	  );
-		return dtPoint3(
-						static_cast<float>(pp.Coord(1)), 
-						static_cast<float>(pp.Coord(2)), 
-						static_cast<float>(pp.Coord(3))
-		);
+		return 
+      dtPoint3(
+        static_cast<float>(pp.Coord(1)), 
+				static_cast<float>(pp.Coord(2)), 
+				static_cast<float>(pp.Coord(3))
+      );
 	}
 	
   dtVector3 dtOCCSurface::normal( float const uu, float const vv) const {
@@ -230,7 +248,7 @@ namespace dtOO {
 			static_cast<Standard_Real>(point.x()),
 			static_cast<Standard_Real>(point.y()),
 			static_cast<Standard_Real>(point.z()) 
-		);
+		);   
 		Standard_Real Utol 
 		= 
 		static_cast<Standard_Real>(
@@ -238,7 +256,7 @@ namespace dtOO {
 				"reparamOnFace_precision"
 			)
 		);
-		Standard_Real Vtol 
+    Standard_Real Vtol 
 		= 
 		static_cast<Standard_Real>(
 			staticPropertiesHandler::getInstance()->getOptionFloat(
@@ -252,54 +270,47 @@ namespace dtOO {
 		Standard_Real V1;		
 		Standard_Real U2;
 		Standard_Real V2;		
-		
-		_ptr->Bounds(U1, U2, V1, V2);
-		
+
+    _ptr->Bounds(U1, U2, V1, V2);
 		GeomAdaptor_Surface gas;
 		Extrema_ExtPS ext;	
-		dt__tryOcc(	
+    dt__tryOcc(	
 			gas.Load( _surface->getOCC() );
 			ext.Initialize(
 				gas, 
 				U1, U2, V1, V2,				
 				Utol, Vtol
 			);
-		ext.SetFlag( Extrema_ExtFlag::Extrema_ExtFlag_MIN );
-		ext.SetAlgo(Extrema_ExtAlgo::Extrema_ExtAlgo_Grad);				
+      ext.SetFlag( Extrema_ExtFlag::Extrema_ExtFlag_MIN );
+      ext.SetAlgo(Extrema_ExtAlgo::Extrema_ExtAlgo_Grad);				
 			ext.Perform(pp);
-		, << dt__point3d(point) << std::endl
-			<< dt__eval(Utol) << std::endl
-			<< dt__eval(Vtol) << std::endl
-			<< dt__eval(U) << std::endl
-			<< dt__eval(V) << std::endl
+      , 
+      << dt__point3d(point) << std::endl
 			<< dt__point3d(getPointPercent3d(0.,0.)) << std::endl
 			<< dt__point3d(getPointPercent3d(0.,1.)) << std::endl
 			<< dt__point3d(getPointPercent3d(1.,0.)) << std::endl
-			<< dt__point3d(getPointPercent3d(1.,1.)) << std::endl
-		  << dt__eval(ext.NbExt())
+			<< dt__point3d(getPointPercent3d(1.,1.))
 		);
-		
-		if ( !ext.IsDone() ) {
-			dt__warning(
-			  reparam(), 
-				<< dt__eval(ext.IsDone()) << std::endl
-			  << dt__point3d(point) << std::endl
-			  << dt__eval(Utol) << std::endl
-			  << dt__eval(Vtol) << std::endl
-			  << dt__eval(U) << std::endl
-			  << dt__eval(V) << std::endl
-			  << dt__point3d(getPointPercent3d(0.,0.)) << std::endl
-			  << dt__point3d(getPointPercent3d(0.,1.)) << std::endl
-			  << dt__point3d(getPointPercent3d(1.,0.)) << std::endl
-			  << dt__point3d(getPointPercent3d(1.,1.)) 
-			);
       
-      return dtSurface::reparam(point);
-		}
-		Extrema_POnSurf epp = ext.Point(1); 
-		epp.Parameter(U, V);
-		
-		return dtPoint2(static_cast<float>(U), static_cast<float>(V));
+    dt__warnIfWithSolution(
+      !ext.IsDone(), return dtSurface::reparam(point), reparam()
+    );
+    dt__warnIfWithSolution(
+      ext.NbExt()==0, return dtSurface::reparam(point), reparam() 
+    );
+    dt__warnIf(ext.NbExt()>1, reparam());
+
+		Extrema_POnSurf epp;
+    dt__tryOcc(
+      epp = ext.Point(1); 
+      epp.Parameter(U, V);
+      , << ""
+    );
+
+    return dtPoint2(
+      floatHandling::boundToRange(U, minU(), maxU()),
+      floatHandling::boundToRange(V, minV(), maxV())
+    );
 	}
 	
 	std::string dtOCCSurface::dumpToString( void ) const {

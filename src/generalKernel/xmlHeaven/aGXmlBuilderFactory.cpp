@@ -8,6 +8,7 @@
 #include "aGXmlBuilder/analyticGeometryGroupAGXmlBuilder.h"
 #include "aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h"
 #include "aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.h"
+#include "aGXmlBuilder/splitTrans6SidedCubeAGXmlBuilder.h"
 #include "aGXmlBuilder/scaInMap1dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.h"
@@ -110,6 +111,7 @@ namespace dtOO {
     _instance->_builder.push_back( new analyticGeometryGroupAGXmlBuilder() );
     _instance->_builder.push_back( new trans6SidedCubeAGXmlBuilder() );
     _instance->_builder.push_back( new orientTrans6SidedCubeAGXmlBuilder() );
+    _instance->_builder.push_back( new splitTrans6SidedCubeAGXmlBuilder() );
     _instance->_builder.push_back( new scaInMap1dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new vec2dInMap2dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new vec3dInMap3dTo3dAGXmlBuilder() );

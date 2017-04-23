@@ -6,7 +6,7 @@
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <interfaceHeaven/floatHandling.h>
+#include <interfaceHeaven/calculationTypeHandling.h>
 #include <solid3dSurface.h>
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
