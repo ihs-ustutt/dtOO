@@ -14,6 +14,8 @@ namespace dtOO {
   class map2dTo3d;
   class dtOMMesh;
   class dtGmshModel;
+  class dtGmshVertex;
+  class dtGmshEdge;
     
   class dtGmshFace : public ::GFace {
   public:
@@ -78,6 +80,8 @@ namespace dtOO {
     void setGrading( 
       std::vector< float > const & grading, std::vector< float > & type
     );
+    std::list< dtGmshVertex * > dtVertices( void ) const;   
+    std::list< dtGmshEdge * > dtEdges( void ) const;     
   private:
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:

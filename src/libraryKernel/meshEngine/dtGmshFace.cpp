@@ -714,4 +714,12 @@ namespace dtOO {
       ii++;
 		}
   }
+
+  std::list< dtGmshVertex * > dtGmshFace::dtVertices( void ) const {
+    return refDtGmshModel().cast2DtGmshVertex( vertices() );
 	}
+	
+  std::list< dtGmshEdge * > dtGmshFace::dtEdges( void ) const {
+    return refDtGmshModel().cast2DtGmshEdge( edges() );
+	}  
+}
