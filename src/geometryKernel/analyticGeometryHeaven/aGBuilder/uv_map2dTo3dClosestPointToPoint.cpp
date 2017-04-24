@@ -48,6 +48,7 @@ namespace dtOO {
     double const * const theRoot = min->X();
     
     _closestUV = ( _m2d % dtPoint2(theRoot[0], theRoot[1]) );
+    _distance = dtLinearAlgebra::distance( _pXYZ, _m2d.getPoint( _closestUV ) );
 	}
 
 	uv_map2dTo3dClosestPointToPoint::~uv_map2dTo3dClosestPointToPoint() {
@@ -56,6 +57,10 @@ namespace dtOO {
 	dtPoint2 uv_map2dTo3dClosestPointToPoint::result( void ) {
 		return _closestUV;
 	}
+  
+  float uv_map2dTo3dClosestPointToPoint::distance( void ) {
+    return _distance;  
+  }
   
 	double uv_map2dTo3dClosestPointToPoint::F(
     double const * xx
