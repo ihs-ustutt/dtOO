@@ -1,4 +1,4 @@
-#include "bVOPatchRule.h"
+#include "bVOFaceToPatchRule.h"
 
 #include <logMe/logMe.h>
 #include <xmlHeaven/qtXmlBase.h>
@@ -8,15 +8,20 @@
 #include <boundedVolume.h>
 #include <meshEngine/dtGmshModel.h>
 
+#include <boost/assign.hpp>
 namespace dtOO {  
-  bVOPatchRule::bVOPatchRule() {
+  bVOFaceToPatchRule::bVOFaceToPatchRule() {
   }
 
-  bVOPatchRule::~bVOPatchRule() {
+  bVOFaceToPatchRule::~bVOFaceToPatchRule() {
     
   }
   
-  void bVOPatchRule::bVOPatchRule::init( 
+  std::vector< std::string > bVOFaceToPatchRule::factoryAlias( void ) const {
+    return ::boost::assign::list_of("bVOPatchRule");
+  }
+  
+  void bVOFaceToPatchRule::bVOFaceToPatchRule::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		cVPtrVec const * const cV,
@@ -30,7 +35,7 @@ namespace dtOO {
     //
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
     
-//		<bVObserver name="bVOPatchRule" 
+//		<bVObserver name="bVOFaceToPatchRule" 
 //  		patchRule="
 //    		{:HUB*::HUB:}
 //		  	{:LAIN::LAIN:}
@@ -44,7 +49,7 @@ namespace dtOO {
     _regRule = qtXmlBase::getAttributeStrVector("regRule", element);
   }
   
-  void bVOPatchRule::postUpdate( void ) {
+  void bVOFaceToPatchRule::postUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 		
     //

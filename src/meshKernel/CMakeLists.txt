@@ -14,7 +14,8 @@ SET(HEADERS
   bVObserver/bVORecombineRecursiveRegions.h
   bVObserver/bVOMeshRule.h
   bVObserver/bVOPMeshRule.h
-  bVObserver/bVOPatchRule.h
+  bVObserver/bVOFaceToPatchRule.h
+  bVObserver/bVOAnalyticGeometryToFace.h
   bVObserver/bVORecombine.h
   bVObserver/bVOWriteSTL.h
   bVObserver/bVOSetPrescribedMeshSizeAtPoints.h
@@ -53,7 +54,8 @@ SET(SOURCES
   bVObserver/bVORecombineRecursiveRegions.cpp
   bVObserver/bVOMeshRule.cpp
   bVObserver/bVOPMeshRule.cpp
-  bVObserver/bVOPatchRule.cpp
+  bVObserver/bVOFaceToPatchRule.cpp
+  bVObserver/bVOAnalyticGeometryToFace.cpp
   bVObserver/bVORecombine.cpp
   bVObserver/bVOWriteSTL.cpp
   bVObserver/bVOSetPrescribedMeshSizeAtPoints.cpp

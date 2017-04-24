@@ -16,7 +16,8 @@
 #include "bVORecombineRecursiveRegions.h"
 #include "bVOMeshRule.h"
 #include "bVOPMeshRule.h"
-#include "bVOPatchRule.h"
+#include "bVOFaceToPatchRule.h"
+#include "bVOAnalyticGeometryToFace.h"
 #include "bVORecombine.h"
 #include "bVOWriteSTL.h"
 #include "bVOSetPrescribedMeshSizeAtPoints.h"
@@ -94,7 +95,8 @@ namespace dtOO {
     _instance->_builder.push_back( new bVORecombineRecursiveRegions() );
     _instance->_builder.push_back( new bVOMeshRule() );
     _instance->_builder.push_back( new bVOPMeshRule() );
-    _instance->_builder.push_back( new bVOPatchRule() );
+    _instance->_builder.push_back( new bVOFaceToPatchRule() );
+    _instance->_builder.push_back( new bVOAnalyticGeometryToFace() );
     _instance->_builder.push_back( new bVORecombine() );
     _instance->_builder.push_back( new bVOWriteSTL() );
     _instance->_builder.push_back( new bVOSetPrescribedMeshSizeAtPoints() );

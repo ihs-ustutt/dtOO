@@ -1,5 +1,5 @@
-#ifndef bVOPatchRule_H
-#define	bVOPatchRule_H
+#ifndef bVOFaceToPatchRule_H
+#define	bVOFaceToPatchRule_H
 
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
@@ -9,12 +9,13 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   
-  class bVOPatchRule : public bVOInterface {
+  class bVOFaceToPatchRule : public bVOInterface {
   public:
-    dt__class(bVOPatchRule, bVOInterface);
-    dt__classSelfCreate(bVOPatchRule);
-    bVOPatchRule();
-    virtual ~bVOPatchRule();
+    dt__class(bVOFaceToPatchRule, bVOInterface);
+    dt__classSelfCreate(bVOFaceToPatchRule);
+    bVOFaceToPatchRule();
+    virtual ~bVOFaceToPatchRule();
+    virtual std::vector< std::string > factoryAlias( void ) const;         
     virtual void init(
       ::QDomElement const & element,
       baseContainer const * const bC,
@@ -30,5 +31,5 @@ namespace dtOO {
     std::vector< std::string > _regRule;
   };
 }
-#endif	/* bVOPatchRule_H */
+#endif	/* bVOFaceToPatchRule_H */
 
