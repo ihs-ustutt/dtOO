@@ -76,7 +76,7 @@ namespace dtOO {
     //		
     dtGmshFace * const masterF = gm->getDtGmshFaceByPhysical(_faceMaster);
     dtGmshFace * const slaveF = gm->getDtGmshFaceByPhysical(_faceSlave);
-    
+    dt__throwIf(masterF==slaveF, preUpdate());
     //
     // get edges
     //
