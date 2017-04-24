@@ -33,6 +33,8 @@
 #include <gmsh/MTriangle.h>
 #include <cgnslib.h>
 
+#include <boost/assign.hpp>
+
 #define __caCThis \
   const_cast< dtGmshModel * >(this)
 
@@ -40,6 +42,15 @@
   if (cmd) dt__throw(__cgnsCheck(), << dt__eval(cg_get_error()))
 
 namespace dtOO {
+    std::map< std::string, int > dtGmshModel::_facePositionStr
+    =
+    ::boost::assign::map_list_of
+      ("SOUTH", 0)("south", 0)("0", 0)("S", 0)("s", 0)
+      ("NORTH", 1)("north", 1)("1", 1)("N", 1)("n", 1)
+      ("FRONT", 2)("front", 2)("2", 2)("F", 2)("f", 2)
+      ("BACK", 3) ("back", 3) ("3", 3)("B", 3)("b", 3)
+      ("WEST", 4) ("west", 4) ("4", 4)("W", 4)("w", 4)  
+      ("EAST", 5) ("east", 5) ("5", 5)("E", 5)("e", 5);      
   dtGmshModel::dtGmshModel(std::string name) : GModel(name){
     _debug = "";
     _fmTwin = NULL;
@@ -312,13 +323,31 @@ namespace dtOO {
   dtGmshFace * dtGmshModel::getDtGmshFaceByPhysical( 
     std::string const & physical 
   ) const {
-    int pN = __caCThis->getPhysicalNumber(2, physical);
-		intGEntityVMap gE_pN;
-		__caCThis->getPhysicalGroups(2, gE_pN);
-		
-		dt__throwIf(gE_pN[pN].size()!=1, getDtGmshFaceByPhysical());
-		
-		return cast2DtGmshFace(gE_pN[pN][0]);
+    
+    if ( stringPrimitive::stringContains("::", physical) ) {
+      dtGmshRegion * gr 
+      = 
+      getDtGmshRegionByPhysical( 
+        stringPrimitive::getStringBetween("", "::", physical) 
+      );
+      
+      return dtGmshFace::MustDownCast(
+        progHelper::list2Vector( gr->faces() )[ 
+          _facePositionStr[ 
+            stringPrimitive::getStringBetween("::", "", physical)  
+          ] 
+        ]
+      );
+    }
+    else {
+      int pN = __caCThis->getPhysicalNumber(2, physical);  
+      intGEntityVMap gE_pN;
+      __caCThis->getPhysicalGroups(2, gE_pN);
+
+      dt__throwIf(gE_pN[pN].size()!=1, getDtGmshFaceByPhysical());
+
+      return cast2DtGmshFace(gE_pN[pN][0]);    
+    }
   }	
   
   dtGmshRegion * dtGmshModel::getDtGmshRegionByPhysical( 
@@ -328,7 +357,12 @@ namespace dtOO {
 		intGEntityVMap gE_pN;
 		__caCThis->getPhysicalGroups(3, gE_pN);
 		
-		dt__throwIf(gE_pN[pN].size()!=1, getDtGmshRegionByPhysical());
+		dt__throwIfWithMessage(
+      gE_pN[pN].size()!=1, 
+      getDtGmshRegionByPhysical(),
+      << "physical = " << physical << std::endl
+      << "gE_pN[" << pN << "].size() = " << gE_pN[pN].size()
+    );
 		
 		return cast2DtGmshRegion(gE_pN[pN][0]);
   }	  
