@@ -18,7 +18,7 @@ namespace dtOO {
     static std::string intToStringLZ(int const value, int const nZeros);   
     static bool stringToBool(std::string const value);
     static std::string getStringBetween(
-      std::string const signStart, std::string const signEnd, 
+      std::string signStart, std::string signEnd, 
       std::string const str
     );
     static std::string getStringBetweenFirstLast(
@@ -92,6 +92,7 @@ namespace dtOO {
       std::string const & signStart, std::string const & signEnd, 
       std::string const & str
     );
+    static std::string regex_escape( std::string text );
   protected:    
     static std::string _WILD;
     static std::string _WILDSIGN;    

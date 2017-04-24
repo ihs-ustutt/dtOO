@@ -6,6 +6,9 @@
 #include <logMe/logMe.h>
 #include <iomanip>
 
+#include <boost/regex.hpp>
+#include <boost/xpressive/xpressive.hpp>
+
 namespace dtOO {
   std::string stringPrimitive::_WILD = "*";
   std::string stringPrimitive::_WILDSIGN = "?";
@@ -85,15 +88,34 @@ namespace dtOO {
   }
 
   std::string stringPrimitive::getStringBetween(
-	  std::string const signStart, 
-		std::string const signEnd, 
+	  std::string signStart, 
+		std::string signEnd, 
 		std::string const str
-	) {  
-    std::pair< int, int > fromTo = getFromToBetween(signStart, signEnd, str);
-		
-    if ( (fromTo.first == 0) && (fromTo.second == 0) ) return std::string("");
-		
-    return str.substr( fromTo.first+1, fromTo.second-fromTo.first-1);
+	) {
+    if ( signStart.empty() ) signStart = "^";
+    else signStart = regex_escape(signStart);
+    
+    if ( signEnd.empty() ) signEnd = "$";
+    else signEnd = regex_escape(signEnd);
+    
+    dt__debug(
+      getStringBetween(),
+      << "signStart = " << signStart << std::endl
+      << "signEnd = " << signEnd
+      << "str = " << str
+      << "regex = " << signStart + "(.*?)" + signEnd
+    );
+    ::boost::smatch what;
+    if ( 
+      ::boost::regex_search(
+        str, 
+        what, 
+        ::boost::regex(signStart + "(.*?)" + signEnd)
+      ) 
+    ) {
+      if (what.size() == 2) return what[1].str();
+    }
+    return std::string("");
   }
   
   std::string stringPrimitive::getStringBetweenFirstLast(
@@ -413,10 +435,7 @@ namespace dtOO {
     }
     
     return 
-      std::pair< int, int >(
-        from + ( std::max<int>(signStart.size(),1) - 1 ), 
-        to - ( std::max<int>(signEnd.size(),1) - 1 )
-      );		
+      std::pair< int, int >(from, to);		
 	}
   
   std::pair< int, int > stringPrimitive::getFromToBetweenFirstLast(
@@ -526,4 +545,18 @@ namespace dtOO {
     }
     return occMap;    
   }  
+  
+  std::string stringPrimitive::regex_escape( std::string text ) {
+    const ::boost::xpressive::sregex re_escape_text 
+    = 
+    ::boost::xpressive::sregex::compile(
+      "([\\^\\.\\$\\|\\(\\)\\[\\]\\*\\+\\?\\/\\\\])"
+    );
+    text 
+    = 
+    ::boost::xpressive::regex_replace( 
+      text, re_escape_text, std::string("\\$1") 
+    );
+    return text;
+  }
 }

@@ -99,9 +99,10 @@ if (MPI_FOUND)
     system 
     timer
     program_options
+    thread-mt
+    regex
     mpi
     serialization
-    thread-mt
     REQUIRED
   )
   add_definitions(-DDTOO_HAS_MPI)
@@ -114,6 +115,7 @@ else (MPI_FOUND)
     timer
     program_options
     thread-mt
+    regex
     REQUIRED
   )
 endif (MPI_FOUND)
