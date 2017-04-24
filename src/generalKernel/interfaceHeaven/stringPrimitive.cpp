@@ -412,7 +412,11 @@ namespace dtOO {
       to = ocSignEnd[ocSignStart.size()-1];
     }
     
-    return std::pair< int, int >(from, to);		
+    return 
+      std::pair< int, int >(
+        from + ( std::max<int>(signStart.size(),1) - 1 ), 
+        to - ( std::max<int>(signEnd.size(),1) - 1 )
+      );		
 	}
   
   std::pair< int, int > stringPrimitive::getFromToBetweenFirstLast(
