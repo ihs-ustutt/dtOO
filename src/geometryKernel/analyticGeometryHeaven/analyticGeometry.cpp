@@ -291,6 +291,22 @@ namespace dtOO {
     return true;    
   }
 
+  bool analyticGeometry::inXYZTolerance( 
+    float const dist, float inc 
+  ) {
+		float xyzResolution 
+		= 
+		inc 
+    *    
+    staticPropertiesHandler::getInstance()->getOptionFloat(
+      "xyz_resolution"
+    );    		
+    
+		if ( dist > xyzResolution ) return false;
+
+    return true;    
+  }  
+
   bool analyticGeometry::inUVWTolerance(
     dtPoint3 const & p0, dtPoint3 const & p1
   ) {
