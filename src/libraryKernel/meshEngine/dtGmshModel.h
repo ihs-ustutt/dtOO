@@ -133,6 +133,10 @@ namespace dtOO {
       std::list< ::GEdge * > edges( void ) const;    
       std::list< ::GFace * > faces( void ) const;
       std::list< ::GRegion * > regions( void ) const;
+      std::list< dtGmshVertex * > dtVertices( void ) const;   
+      std::list< dtGmshEdge * > dtEdges( void ) const; 
+      std::list< dtGmshFace * > dtFaces( void ) const;
+      std::list< dtGmshRegion * > dtRegions( void ) const;
       //
       // physical handling
       //

@@ -48,9 +48,9 @@ namespace dtOO {
       ("SOUTH", 0)("south", 0)("0", 0)("S", 0)("s", 0)
       ("NORTH", 1)("north", 1)("1", 1)("N", 1)("n", 1)
       ("FRONT", 2)("front", 2)("2", 2)("F", 2)("f", 2)
-      ("BACK", 3) ("back", 3) ("3", 3)("B", 3)("b", 3)
-      ("WEST", 4) ("west", 4) ("4", 4)("W", 4)("w", 4)  
-      ("EAST", 5) ("east", 5) ("5", 5)("E", 5)("e", 5);      
+      ("BACK", 3)("back", 3)("3", 3)("B", 3)("b", 3)
+      ("WEST", 4)("west", 4)("4", 4)("W", 4)("w", 4)  
+      ("EAST", 5)("east", 5)("5", 5)("E", 5)("e", 5);      
   dtGmshModel::dtGmshModel(std::string name) : GModel(name){
     _debug = "";
     _fmTwin = NULL;
@@ -331,6 +331,15 @@ namespace dtOO {
         stringPrimitive::getStringBetween("", "::", physical) 
       );
       
+      dt__debug(
+        getDtGmshFaceByPhysical(), 
+        << "_facePositionStr[ " 
+        << stringPrimitive::getStringBetween("::", "", physical)
+        << " ] = " 
+        << _facePositionStr[ 
+             stringPrimitive::getStringBetween("::", "", physical)  
+           ]
+        );
       return dtGmshFace::MustDownCast(
         progHelper::list2Vector( gr->faces() )[ 
           _facePositionStr[ 
@@ -1338,6 +1347,22 @@ namespace dtOO {
 		return regionL;
 	}
 
+  std::list< dtGmshVertex * > dtGmshModel::dtVertices( void ) const {
+    return cast2DtGmshVertex( vertices() );
+	}
+	
+  std::list< dtGmshEdge * > dtGmshModel::dtEdges( void ) const {
+    return cast2DtGmshEdge( edges() );
+	}
+		
+	std::list< dtGmshFace * > dtGmshModel::dtFaces( void ) const {
+    return cast2DtGmshFace( faces() );    
+	}
+	
+	std::list< dtGmshRegion * > dtGmshModel::dtRegions( void ) const {
+    return cast2DtGmshRegion( regions() );
+	}
+  
   void dtGmshModel::untagPhysical( ::GEntity * const ge ) {
 		dt__throwIfWithMessage(
       ge->physicals.size()!=1, 
