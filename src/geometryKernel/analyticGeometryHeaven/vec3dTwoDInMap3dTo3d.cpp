@@ -20,8 +20,6 @@ namespace dtOO {
     _v2d.reset( orig._v2d->clone() );
     _m3d.reset( orig._m3d->clone() );
 		_percentF = orig._percentF;
-		
-		labelHandling::setLabel( _v2d->getLabel()+"_in_"+_m3d->getLabel() );
   }
 	
   vec3dTwoDInMap3dTo3d::vec3dTwoDInMap3dTo3d(    
@@ -30,8 +28,6 @@ namespace dtOO {
     _v2d.reset( v2d->clone() );
     _m3d.reset( m3d->clone() );
 		_percentF = percentF;
-		
-		labelHandling::setLabel( _v2d->getLabel()+"_in_"+_m3d->getLabel() );		
 	}
 
   vec3dTwoDInMap3dTo3d::~vec3dTwoDInMap3dTo3d() {

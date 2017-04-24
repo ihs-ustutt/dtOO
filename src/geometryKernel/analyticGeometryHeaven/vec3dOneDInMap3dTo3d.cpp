@@ -17,12 +17,12 @@ namespace dtOO {
   vec3dOneDInMap3dTo3d::vec3dOneDInMap3dTo3d() : map1dTo3d() {
   }
 
-  vec3dOneDInMap3dTo3d::vec3dOneDInMap3dTo3d(const vec3dOneDInMap3dTo3d& orig) : map1dTo3d(orig) { 
+  vec3dOneDInMap3dTo3d::vec3dOneDInMap3dTo3d(
+    const vec3dOneDInMap3dTo3d& orig
+  ) : map1dTo3d(orig) { 
     _v1d.reset( orig._v1d->clone() );
     _m3d.reset( orig._m3d->clone() );
 		_percentF = orig._percentF;
-		
-		labelHandling::setLabel( _v1d->getLabel()+"_in_"+_m3d->getLabel() );
   }
 
   vec3dOneDInMap3dTo3d::vec3dOneDInMap3dTo3d(    
@@ -31,8 +31,6 @@ namespace dtOO {
     _v1d.reset( v1d->clone() );
     _m3d.reset( m3d->clone() );
 		_percentF = percentF;
-		
-		labelHandling::setLabel( _v1d->getLabel()+"_in_"+_m3d->getLabel() );		
 	}
 	
   vec3dOneDInMap3dTo3d::~vec3dOneDInMap3dTo3d() {
