@@ -23,20 +23,4 @@ namespace dtOO {
   const char* eGeneral::what( void ) const _GLIBCXX_USE_NOEXCEPT {
     return _exceptionMsg.c_str();
   }
-  
-  const char* eGeneral::where( void ) const _GLIBCXX_USE_NOEXCEPT {
-    if ( 
-      ( _exceptionMsg.find_first_of("[") != std::string::npos )
-      &&
-      ( _exceptionMsg.find_first_of("]") != std::string::npos )
-    ) {
-      return _exceptionMsg.substr(
-        _exceptionMsg.find_first_of("[")+1, 
-        _exceptionMsg.find_first_of("]") - _exceptionMsg.find_first_of("[") - 1
-      ).c_str();
-    }
-    else {
-      return std::string("").c_str();
-    }
-  }  
 }

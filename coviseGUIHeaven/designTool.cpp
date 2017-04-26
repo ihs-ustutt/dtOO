@@ -730,7 +730,7 @@ namespace dtOO {
 				}		
 			}			      
 		}		
-		catch (eGeneral & eGenRef) {
+		catch (std::exception & eGenRef) {
       _infoStr->setValue("catchException");
       dt__catch(param(), eGenRef.what());
     }
@@ -893,10 +893,8 @@ namespace dtOO {
 
 			return CONTINUE_PIPELINE;
 		}
-		catch (eGeneral & eGenRef) {
-      std::string infoStr("catchException::");
-      infoStr = infoStr+eGenRef.where();
-      _infoStr->setValue( infoStr.c_str() );      
+		catch (std::exception & eGenRef) {
+      _infoStr->setValue( "catchException" );      
       
 			dt__catch(compute(), eGenRef.what());
 			

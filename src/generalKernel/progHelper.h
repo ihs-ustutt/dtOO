@@ -126,6 +126,11 @@ namespace dtOO {
         );
         return *result;        
       }      
+      template < class T > 
+      static T contains( std::list< T > const & x, T const & y) { 
+        if ( std::find(x.begin(), x.end(), y) == x.end() ) return false;
+        return true;
+      }            
     private:
       progHelper();
   };
