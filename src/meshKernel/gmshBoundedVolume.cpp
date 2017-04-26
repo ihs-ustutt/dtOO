@@ -6,14 +6,18 @@
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/systemHandling.h>
 #include <xmlHeaven/dtXmlParserBase.h>
+#include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <unstructured3dMesh.h>
 #include <discrete3dPoints.h>
+#include <discrete3dVector.h>
+#include <solid3dLine.h>
 
 #include <iostream>
 #include <meshEngine/dtGmshModel.h>
+#include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <gmsh/Gmsh.h>
@@ -134,6 +138,33 @@ namespace dtOO {
 				}
 			}
 		}
+    
+    if (toRender == "gmsh") {
+      dt__forAllRefAuto(_gm->dtEdges(), anEdge) {
+        vectorHandling< dtPoint3 > ppV(5);
+        vectorHandling< dtPoint3 > vpV(3);
+        vectorHandling< dtVector3 > vvV(3);
+        ppV[0] = anEdge->getMap1dTo3d()->getPointPercent(0.0);
+        ppV[1] = anEdge->getMap1dTo3d()->getPointPercent(0.1);
+        ppV[2] = anEdge->getMap1dTo3d()->getPointPercent(0.5);
+        ppV[3] = anEdge->getMap1dTo3d()->getPointPercent(0.9);
+        ppV[4] = anEdge->getMap1dTo3d()->getPointPercent(1.0);
+        
+        vvV[0] = anEdge->getMap1dTo3d()->firstDerUPercent(0.1);
+        vpV[0] = anEdge->getMap1dTo3d()->getPointPercent(0.1);
+        vvV[1] = anEdge->getMap1dTo3d()->firstDerUPercent(0.9);        
+        vpV[1] = anEdge->getMap1dTo3d()->getPointPercent(0.9);
+        vvV[2] 
+        = 
+        dtGmshModel::extractPosition(anEdge->getEndVertex())
+        -
+        dtGmshModel::extractPosition(anEdge->getBeginVertex());
+        vpV[2] = anEdge->getMap1dTo3d()->getPointPercent(0.5);
+        
+        rV.push_back( new solid3dLine( ppV ) );
+        rV.push_back( new discrete3dVector( vvV, vpV ) );
+      }
+    }
 		return rV;
 	}		
 	
@@ -144,7 +175,7 @@ namespace dtOO {
 		updatePhysicals();
 		
 		std::vector< std::string > tags;
-    for (int ii=0; ii<4; ii++) {
+    for (int ii=0; ii<5; ii++) {
 			dt__forAllIndex(_physLabels[ii], jj) tags.push_back(_physLabels[ii][jj]);
 		}		
 		return tags;		
@@ -218,20 +249,16 @@ namespace dtOO {
 	void gmshBoundedVolume::updatePhysicals( void ) const {
 		::GModel::setCurrent( _gm );
     _physLabels.clear();
-		_physLabels.resize(4);
+		_physLabels.resize(5);
     dt__forFromToIndex(0, 4, dim) {
       dtGmshModel::intGEntityVMap map;
       _gm->getPhysicalGroups(dim, map);
       dt__forAllRefAuto(map, aPair) {
-        dt__info(updatePhysicals,
-          << logMe::dtFormat(
-            "Physical group: name = %s, dim = %d ( %d entities )"
-          )
-          % _gm->getPhysicalName(dim, aPair.first) % dim % aPair.second.size()
-        );
         _physLabels[dim].push_back( _gm->getPhysicalName(dim, aPair.first) );
       }
-		}    
+		}
+    
+    _physLabels[4].push_back("gmsh");
 	}
 
 	void gmshBoundedVolume::makePreGrid(void) {    
