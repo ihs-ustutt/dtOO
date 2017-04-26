@@ -98,20 +98,13 @@ namespace dtOO {
     if ( signEnd.empty() ) signEnd = "$";
     else signEnd = regex_escape(signEnd);
     
-    dt__debug(
-      getStringBetween(),
-      << "signStart = " << signStart << std::endl
-      << "signEnd = " << signEnd
-      << "str = " << str
-      << "regex = " << signStart + "(.*?)" + signEnd
-    );
     ::boost::smatch what;
-    if ( 
+    if (
       ::boost::regex_search(
-        str, 
-        what, 
+        str,
+        what,
         ::boost::regex(signStart + "(.*?)" + signEnd)
-      ) 
+      )
     ) {
       if (what.size() == 2) return what[1].str();
     }
