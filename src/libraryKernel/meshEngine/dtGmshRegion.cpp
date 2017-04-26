@@ -265,10 +265,10 @@ namespace dtOO {
 //		for (int ii=0; ii<grading.size(); ii++) {
     int ii = 0;
     dt__forAllIter(std::list< GEdge * >, ee, it) {
-      if (type[ii] != 0) {
-        (*it)->meshAttributes.coeffTransfinite = grading[ii];
-        (*it)->meshAttributes.typeTransfinite = type[ii];
-      }
+      if ( ( grading[ii] == 0. ) && ( type[ii] == 0. ) ) continue;
+      
+      (*it)->meshAttributes.coeffTransfinite = grading[ii];
+      (*it)->meshAttributes.typeTransfinite = type[ii];
       ii++;
 		}
   }	

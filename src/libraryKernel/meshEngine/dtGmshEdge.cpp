@@ -192,5 +192,12 @@ namespace dtOO {
 		else {
 			return false;
 		}		
-	}	
+	}
+  
+	void dtGmshEdge::setGrading( float const & grading, float const & type ) {
+    if ( ( grading == 0. ) && ( type == 0. ) ) return;
+    
+    this->meshAttributes.coeffTransfinite = grading;
+    this->meshAttributes.typeTransfinite = type;
+  }
 }
