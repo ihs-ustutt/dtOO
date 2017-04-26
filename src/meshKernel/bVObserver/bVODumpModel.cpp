@@ -42,43 +42,23 @@ namespace dtOO {
       dt__forAllRefAuto(map, aPair) {
         logC()
           << logMe::dtFormat(
-            "Physical group: name = %s, dim = %d ( %d entities )"
+            "Physical group ( %d ): name = %s, dim = %d ( %d entities )"
           )
-          % gm->getPhysicalName(dim, aPair.first) % dim % aPair.second.size()
+          % aPair.first % gm->getPhysicalName(dim, aPair.first) 
+          % dim % aPair.second.size()
           << std::endl;											        
       }
 		}
-    dt__forAllRefAuto(gm->vertices(), aV) {
-      logC() 
-        << logMe::dtFormat("dtGmshVertex[ %3i ]: meshSize = %f, is(dtGmshVertex) = %i")
-          % aV->tag() % aV->prescribedMeshSizeAtVertex() % dtGmshVertex::Is(aV)
-        << std::endl;
-    }
-    dt__forAllRefAuto(gm->edges(), aE) {
-      logC() 
-        << logMe::dtFormat("dtGmshEdge[ %3i ]: is(dtGmshEdge) = %i")
-          % aE->tag() % dtGmshEdge::Is(aE) << std::endl
-        << logMe::dtFormat("dtGmshEdge[]: is(getBeginVertex) = %i, is(getEndVertex) = %i")
-          % dtGmshVertex::Is( aE->getBeginVertex() )        
-          % dtGmshVertex::Is( aE->getEndVertex() )        
-        << std::endl;
-      dt__forAllRefAuto( aE->vertices(), aEV ) {
-        logC()
-          << logMe::dtFormat("dtGmshEdge[]: is(vertices[]) = %i")
-            % dtGmshVertex::Is( aEV )
-          << std::endl;
-      }
-    }      
     dt__forAllRefAuto(gm->faces(), aF) {
       logC() 
-        << logMe::dtFormat("dtGmshFace[ %3i ]: is(dtGmshFace) = %i")
-          % aF->tag() % dtGmshFace::Is(aF)
+        << logMe::dtFormat("dtGmshFace[ %3i ] = %s")
+          % aF->tag() % gm->getPhysicalString(aF)
         << std::endl;
     }
     dt__forAllRefAuto(gm->regions(), aR) {
       logC() 
-        << logMe::dtFormat("dtGmshRegion[ %3i ]: is(dtGmshRegion) = %i")
-          % aR->tag() % dtGmshRegion::Is(aR)
+        << logMe::dtFormat("dtGmshRegion[ %3i ] = %s")
+          % aR->tag() % gm->getPhysicalString(aR)
         << std::endl;
     }              
     logC()

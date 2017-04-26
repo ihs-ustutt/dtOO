@@ -72,9 +72,11 @@ namespace dtOO {
       &&
       _gradingInt.find(transType) != _gradingInt.end()
     ) {
+      bool reverse = false;
+      if (dtge->meshAttributes.coeffTransfinite < 0.) reverse = true;
       ::Msg::Info(
-        "Meshing curve %d ( dtMeshFreeGradingGEdge transType=%d)", 
-        dtge->tag(), transType
+        "Meshing curve %d ( dtMeshFreeGradingGEdge transType=%d, reverse=%d)", 
+        dtge->tag(), transType, reverse
       );      
       map1dTo3d const * const m1d = dtge->getMap1dTo3d();
       
@@ -82,7 +84,7 @@ namespace dtOO {
       std::vector< float > gg 
       = 
       float_scaOneDPoint(_gradingInt[transType], nP).result();
-      if (dtge->meshAttributes.coeffTransfinite < 1.) {
+      if ( reverse ) {
         dt__forAllRefAuto(gg, aGG) aGG = 1.-aGG;
         progHelper::reverse(gg);
       }
