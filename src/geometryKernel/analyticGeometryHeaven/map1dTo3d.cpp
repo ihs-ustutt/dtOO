@@ -98,6 +98,10 @@ namespace dtOO {
     }
   }
 
+  dtVector3 map1dTo3d::firstDerUPercent( float const & uP) const {  
+    return firstDerU( u_percent(uP) );
+  }
+  
   map1dTo3d * map1dTo3d::segment( float const & u0, float const & u1 ) const {
     scaLinearOneD fun(0, 1, u0, u1);
     return new scaOneDInMap1dTo3d(&fun, this);

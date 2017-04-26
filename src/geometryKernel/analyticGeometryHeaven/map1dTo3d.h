@@ -37,6 +37,7 @@ namespace dtOO {
       //
       //
       dtPoint3 getPointPercent( float const & uu ) const;  
+      dtVector3 firstDerUPercent( float const & uP) const;
       map1dTo3d * segmentPercent( float const & u0, float const & u1 ) const;     
       int getRenderResolutionU( void ) const;
       float u_percent(float const & uu) const;
