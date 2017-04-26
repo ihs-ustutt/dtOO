@@ -175,26 +175,21 @@ namespace dtOO {
     map2dTo3d const * const face, int * const tag
   ) {
 		*tag = this->getMaxFaceTag()+1;		
-		
-    dtPoint2 p0(0., 0.);
-		dtPoint2 p1(1., 0.);
-		dtPoint2 p2(1., 1.);
-		dtPoint2 p3(0., 1.);		
 		std::vector< int > eId(4);
 		addIfEdgeToGmshModel(
-      dt__tmpPtr(map1dTo3d, face->segmentPercent(p0, p1)), &(eId[0]) 
+      dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(0)), &(eId[0]) 
     );
 		addIfEdgeToGmshModel(
-      dt__tmpPtr(map1dTo3d, face->segmentPercent(p1, p2)), &(eId[1]) 
+      dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(1)), &(eId[1]) 
     );
 		addIfEdgeToGmshModel(
-      dt__tmpPtr(map1dTo3d, face->segmentPercent(p2, p3)), &(eId[2]) 
+      dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(1)), &(eId[2]) 
     );
 		addIfEdgeToGmshModel(
-      dt__tmpPtr(map1dTo3d, face->segmentPercent(p3, p0)), &(eId[3]) 
+      dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(0)), &(eId[3]) 
     );
 		
-  	addIfFaceToGmshModel(face, tag, eId[0], eId[1], eId[2], eId[3]);
+  	addIfFaceToGmshModel(face, tag, eId[0], eId[1], -eId[2], -eId[3]);
 	}
 
   void dtGmshModel::addIfRegionToGmshModel(
@@ -612,13 +607,7 @@ namespace dtOO {
 	}	  
 	
   unstructured3dMesh * dtGmshModel::toUnstructured3dMesh( void ) const {
-		//
-		// set current model
-		// 
-		dt__info( 
-      toUnstructured3dMesh(), 
-      << dt__eval(::GModel::setCurrent(__caCThis)) 
-    );
+		::GModel::setCurrent(__caCThis);
 			
 		//
 		// get all entities
@@ -1407,21 +1396,7 @@ namespace dtOO {
   void dtGmshModel::tagPhysical(
     ::GEntity * const ge, std::string const & pName
   ) {		
-    //
-    // check if already tagged with same string
-    //
-		std::vector< int > pInt = ge->getPhysicalEntities();
-    dt__forAllRefAuto(pInt, anInt) {
-      if ( anInt == GModel::setPhysicalName(pName, ge->dim()) ) {
-        dt__warning(
-          tagPhysical(),
-          << "Physical > " << pName << " < already exists."
-        );
-        return;
-      }
-    }
-    
-    ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim()) );
+    ge->addPhysicalEntity( GModel::setPhysicalName(pName, ge->dim(), 0) );
 	}
 	  
   int dtGmshModel::getPhysicalNumber(
