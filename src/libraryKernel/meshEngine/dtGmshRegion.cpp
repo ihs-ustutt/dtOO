@@ -342,4 +342,8 @@ namespace dtOO {
     );
     return gm->getPhysicalString(this);
   }  
+
+  std::list< dtGmshFace * > dtGmshRegion::dtFaces( void ) const {
+    return refDtGmshModel().cast2DtGmshFace( faces() );
+	}    
 }

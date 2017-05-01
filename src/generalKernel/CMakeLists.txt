@@ -170,7 +170,6 @@ SET(SOURCES
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp
-  progHelper.cpp
 )
 
 APPEND_DTOO_SOURCE(src/generalKernel "${SOURCES}")

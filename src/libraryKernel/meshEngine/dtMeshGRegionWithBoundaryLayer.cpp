@@ -425,7 +425,7 @@ namespace dtOO {
       omHalfedgeI, _omInit.halfedges_begin(), _omInit.halfedges_end(), it
     ) {
       if ( _omInit.data(*it).marked() ) {
-        dt__throwIf( !_omMoved.is_collapse_ok(*it), createLayerVertices() );
+        dt__throwIf( !_omMoved.is_collapse_ok(*it), createMovedMesh() );
         _omMoved.collapse(*it);
       }
     }

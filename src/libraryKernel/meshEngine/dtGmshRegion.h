@@ -61,6 +61,7 @@ namespace dtOO {
     );    
     std::string dumpToString( void ) const;
     std::string getPhysicalString( void ) const;
+    std::list< dtGmshFace * > dtFaces( void ) const;
   public:
     mutable ::GEntity::MeshGenerationStatus _status;
     ::GEntity::GeomType _geomType;

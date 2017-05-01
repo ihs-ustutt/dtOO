@@ -191,13 +191,6 @@ namespace dtOO {
       )
       /
       ( sheet0.fixJ(layer).size() - 1);
-      dt__info(
-        operator()(),
-        << "layer = " << layer << std::endl
-        << "|dist0| = " << dtLinearAlgebra::length( dist0 ) << std::endl
-        << "|dist1| = " << dtLinearAlgebra::length( dist1 ) << std::endl
-        << "distInc = " << distInc << std::endl
-      );
       
       //
       // calculate normals
@@ -331,13 +324,6 @@ namespace dtOO {
       )
       /
       ( sheet0.fixJ(layer).size() - 1);
-      dt__info(
-        operator()(),
-        << "layer = " << layer << std::endl
-        << "|dist0| = " << dtLinearAlgebra::length( dist0 ) << std::endl
-        << "|dist1| = " << dtLinearAlgebra::length( dist1 ) << std::endl
-        << "distInc = " << distInc << std::endl
-      );
       
       std::vector< dtVector3 > NN( sheet1.fixJ(layer).size() );
       NN[ 0 ] = -1. * dtLinearAlgebra::normalize( dist0 );      
