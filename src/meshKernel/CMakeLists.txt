@@ -4,6 +4,7 @@ SET(HEADERS
   bVObserver/bVOInterfaceFactory.h
   bVObserver/bVOSetGrading.h
   bVObserver/bVONameFaces.h
+  bVObserver/bVOSetGradingToFaceRule.h
   bVObserver/bVONameRegions.h
   bVObserver/bVOWriteMSH.h
   bVObserver/bVOReadMSH.h
@@ -44,6 +45,7 @@ SET(SOURCES
   bVObserver/bVOInterfaceFactory.cpp
   bVObserver/bVOSetGrading.cpp
   bVObserver/bVONameFaces.cpp
+  bVObserver/bVOSetGradingToFaceRule.cpp
   bVObserver/bVONameRegions.cpp
   bVObserver/bVOWriteMSH.cpp
   bVObserver/bVOReadMSH.cpp

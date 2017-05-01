@@ -6,6 +6,7 @@
 #include "bVOInterface.h"
 #include "bVOSetGrading.h"
 #include "bVONameFaces.h"
+#include "bVOSetGradingToFaceRule.h"
 #include "bVONameRegions.h"
 #include "bVOWriteMSH.h"
 #include "bVOReadMSH.h"
@@ -107,6 +108,7 @@ namespace dtOO {
     _instance->_builder.push_back( new bVOSetRotationalPeriodicity() );
     _instance->_builder.push_back( new bVOTransformMeshPoints() );
     _instance->_builder.push_back( new bVOWriteSU2() );
+    _instance->_builder.push_back( new bVOSetGradingToFaceRule() );
     
     return _instance.get();
   }    
