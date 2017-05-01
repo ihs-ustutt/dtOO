@@ -148,6 +148,9 @@ namespace dtOO {
       void tagPhysical(::GEntity * const ge, std::string const & pName);
       int getPhysicalNumber(const int &dim, const std::string &name) const;
       void removeEmptyPhysicals( void );
+      bool matchWildCardPhysical( 
+        std::string wildStr, ::GEntity const * const ge 
+      ) const;
       void setDebug( std::string const debug );
       //
       //

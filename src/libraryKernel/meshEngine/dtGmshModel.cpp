@@ -34,6 +34,7 @@
 #include <cgnslib.h>
 
 #include <boost/assign.hpp>
+#include <boost/regex.hpp>
 
 #define __caCThis \
   const_cast< dtGmshModel * >(this)
@@ -1421,6 +1422,118 @@ namespace dtOO {
       dt__forAllConstIter(dtGmshModel::intGEntityVMap, ge_number, nIt) {
         if (nIt->second.empty()) GModel::deletePhysicalGroup(dim, nIt->first);
       }
+    }
+  }
+  
+  bool dtGmshModel::matchWildCardPhysical( 
+    std::string wildStr, ::GEntity const * const ge 
+  ) const {
+    if ( stringPrimitive::stringContains("::", wildStr) ) {
+      ::boost::smatch what;
+      std::vector< bool > rareV;
+      std::vector< std::string > physV;
+      
+      std::string::const_iterator st = wildStr.begin();
+      std::string::const_iterator en = wildStr.end();       
+      while ( 
+        ::boost::regex_search(
+          st, en, what, ::boost::regex("([:]{2})?+([^:]+)")
+        )
+      ) {
+        physV.push_back( what.str(2) );
+        if ( what.str(1).empty() ) rareV.push_back( false );
+        else rareV.push_back( true );
+
+        st = what[0].second;
+      }
+    
+      if (ge->dim() == 0) {
+        dt__throwUnexpected(matchWildCardPhysical());
+      }
+      else if (ge->dim() == 1) {
+        dt__throwUnexpected(matchWildCardPhysical());
+      }
+      else if (ge->dim() == 2) {
+        //
+        // check region
+        //
+        dtGmshRegion const * reg = NULL;
+        if (rareV[0]) {
+          if (
+            !progHelper::contains(
+              dtRegions(), 
+              progHelper::list2Vector( dtRegions() )[
+                stringPrimitive::stringToInt( physV[0] )
+              ]            
+            )
+          ) return false;
+        }
+        else {
+          dt__forAllRefAuto(ge->regions(), aReg) {
+            if (
+              stringPrimitive::matchWildcard(
+                physV[0], this->getPhysicalString( aReg ) 
+              )
+            ) {
+              reg = dtGmshRegion::MustConstDownCast( aReg );
+              break;
+            }
+          }
+        }
+        if (!reg) return false;
+        
+        //
+        // check face
+        //
+        if (rareV[1]) {
+          if (
+            ge
+            ==
+            progHelper::list2Vector( reg->faces() )[
+              _facePositionStr[ physV[1] ]
+            ]            
+          ) {
+            return true;
+          }
+        }
+        else {
+          dt__forAllRefAuto(reg->faces(), aFace) {
+            if (
+              stringPrimitive::matchWildcard(
+                physV[1], this->getPhysicalString( aFace ) 
+              )
+            ) {
+              return true;
+            }
+          }
+        }        
+        return false;
+      }
+      else if (ge->dim() == 3) {
+        if ( rareV[0] ) {
+          return 
+            ( 
+              ge 
+              == 
+              (
+                progHelper::list2Vector( dtRegions() )[
+                  stringPrimitive::stringToInt( physV[0] )
+                ]
+              ) 
+            );
+        }
+        else {
+          return stringPrimitive::matchWildcard( 
+            wildStr, this->getPhysicalString(ge) 
+          );          
+        }
+      }
+
+    }
+    else {
+      return stringPrimitive::matchWildcard( 
+        wildStr, this->getPhysicalString(ge) 
+      );
     }
   }
   

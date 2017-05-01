@@ -103,17 +103,17 @@ namespace dtOO {
     _rule1D 
     = 
     qtXmlBase::convertToStringVector(
-      "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
+      "{", "}", qtXmlPrimitive::getStringBetweenAndRemoveRespectOcc("{", "}", &rule)
     );
     _rule2D 
     = 
     qtXmlBase::convertToStringVector(
-      "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
+      "{", "}", qtXmlPrimitive::getStringBetweenAndRemoveRespectOcc("{", "}", &rule)
     );
     _rule3D 
     = 
     qtXmlBase::convertToStringVector(
-      "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
+      "{", "}", qtXmlPrimitive::getStringBetweenAndRemoveRespectOcc("{", "}", &rule)
     );
     _only = qtXmlBase::getAttributeStrVector("only", element);
     
@@ -129,7 +129,7 @@ namespace dtOO {
   
   void bVOMeshRule::preUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
-    
+         
     if ( ptrBoundedVolume()->isMeshed() ) return;
     
     ::GModel::setCurrent(gm);
@@ -299,11 +299,7 @@ namespace dtOO {
             ::GEntity::MeshGenerationStatus::DONE 
           )
           &&
-          (
-            stringPrimitive::matchWildcard(
-              currentGEntityStr, gm->getPhysicalString(aFace)
-            )
-          )
+          gm->matchWildCardPhysical(currentGEntityStr, aFace)
           &&
           (
             aFace->meshMaster() == aFace
@@ -357,11 +353,7 @@ namespace dtOO {
             ::GEntity::MeshGenerationStatus::DONE 
           )
           &&
-          (
-            stringPrimitive::matchWildcard(
-              currentGEntityStr, gm->getPhysicalString(aReg)
-            )
-          )
+          gm->matchWildCardPhysical(currentGEntityStr, aReg)
           &&
           (
             aReg->meshMaster() == aReg
