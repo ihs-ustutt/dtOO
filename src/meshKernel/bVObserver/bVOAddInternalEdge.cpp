@@ -9,6 +9,10 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
+
+#include <gmsh/GEdgeLoop.h>
+#include <progHelper.h>
 
 namespace dtOO {  
   bVOAddInternalEdge::bVOAddInternalEdge() {
@@ -34,25 +38,13 @@ namespace dtOO {
     
 		// <bVObserver 
 		//   name="bVOAddInternalEdge" 
-		//   faceLabel="name0"
-		//   edgeAnalyticGeometry="{labelA}{labelB}"
+		//   regionLabel="name0"
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_faceLabel
+		_regionLabel
 		= 
-		dtXmlParserBase::getAttributeStr("faceLabel", element);
-
-    dt__forAllRefAuto(
-      dtXmlParserBase::getAttributeStrVector("edgeAnalyticGeometry", element), 
-      aLabel
-    ) {
-      dt__ptrAss( 
-        map1dTo3d const * const m1d, 
-        map1dTo3d::ConstDownCast( aG->get(aLabel) )
-      );
-      _internalEdge.push_back( m1d );
-    }
+		dtXmlParserBase::getAttributeStr("regionLabel", element);
   }
   
   void bVOAddInternalEdge::preUpdate( void ) {
@@ -63,19 +55,25 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
     
-    dtGmshFace * const gf = gm->getDtGmshFaceByPhysical(_faceLabel);
+    dtGmshRegion * const gr = gm->getDtGmshRegionByPhysical(_regionLabel);
     
-    dt__forAllRefAuto(_internalEdge, anEdge) {
-      int edgeTag;
-      gm->addIfEdgeToGmshModel( anEdge, &edgeTag );
-      
-      dt__info( 
-        preUpdate(),
-        << "Adding internal edge = " 
-        << edgeTag << " to faceLabel = " << _faceLabel
-      );
-      
-      gf->addEdge( gm->getEdgeByTag(edgeTag), 1);
+    std::vector< dtGmshFace * > fV = progHelper::list2Vector( gr->dtFaces() );
+    
+    std::list< GEdge * > e0;
+    std::list< GEdge * > e2;
+    dt__forFromToIndex(6, fV.size(), ii) {
+      std::vector< ::GEdge * > eV = progHelper::list2Vector( fV[ii]->edges() );
+      e0.push_back( eV[0] );
+      e2.push_back( eV[2] );
+    }
+    
+    ::GEdgeLoop el0(e0);
+    for(::GEdgeLoop::citer it = el0.begin(); it != el0.end(); ++it){
+      fV[0]->addEdge( it->ge, it->_sign );
+    }
+    ::GEdgeLoop el2(e2);
+    for(::GEdgeLoop::citer it = el2.begin(); it != el2.end(); ++it){
+      fV[1]->addEdge( it->ge, it->_sign );
     }
   }
 }

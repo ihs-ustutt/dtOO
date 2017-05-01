@@ -28,8 +28,7 @@ namespace dtOO {
     );    
     virtual void preUpdate( void );
   private:
-    std::string _faceLabel;
-		std::vector< map1dTo3d const * > _internalEdge;
+    std::string _regionLabel;
   };
 }
 #endif	/* bVOAddInternalEdge_H */
