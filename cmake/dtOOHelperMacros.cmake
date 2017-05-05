@@ -88,12 +88,15 @@ MACRO(
     set( 
       _incsearchpath 
       /usr/ihs/include/
+      /usr/include/
       ${LIB_ADD_INCSEARCHPATH}
     )
     set( 
       _libsearchpath 
       /usr/ihs/lib/
       /usr/ihs/lib64/
+      /usr/lib/
+      /usr/lib64/
       ${LIB_ADD_LIBSEARCHPATH}
     )
     
@@ -102,6 +105,7 @@ MACRO(
       ${LIB_INCLUDE_DIR} ${_testincname}
       PATHS 
       ${_incsearchpath}
+      NO_DEFAULT_PATH
     )
     IF( ${LIB_INCLUDE_DIR} STREQUAL ${LIB_INCLUDE_DIR}-NOTFOUND )
       SET( ${LIB_FOUND} FALSE CACHE BOOL FORCE )
@@ -194,6 +198,7 @@ MACRO(
     set( 
       _incsearchpath 
       /usr/ihs/include/
+      /usr/include/
       ${LIB_ADD_INCSEARCHPATH}
     )
     
