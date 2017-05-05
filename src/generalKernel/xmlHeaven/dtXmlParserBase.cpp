@@ -1319,7 +1319,7 @@ namespace dtOO {
           dtLinearAlgebra::toStdVector(
             m2d->reparamPercentOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
           );
-        }        
+        }
         else if (aGOption == "-a") {
           pp 
           = 
@@ -1332,6 +1332,20 @@ namespace dtOO {
           = 
           dtLinearAlgebra::toStdVector(
             m2d->approxPercentOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
+          );
+        }            
+        else if (aGOption == "-1%u") {
+          pp.push_back(
+            m2d->reparamPercentOnFace( 
+              dtPoint3(argCS[0], argCS[1], argCS[2]) 
+            ).x()
+          );
+        }        
+        else if (aGOption == "-1%v") {
+          pp.push_back(
+            m2d->reparamPercentOnFace( 
+              dtPoint3(argCS[0], argCS[1], argCS[2]) 
+            ).y()
           );
         }                
         else dt__throwUnexpected(replaceDependencies());
