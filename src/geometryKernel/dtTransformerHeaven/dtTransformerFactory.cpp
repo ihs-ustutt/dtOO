@@ -32,6 +32,7 @@
 #include "pickMap2dTo3dRectanglePercent.h"
 #include "reverse.h"
 #include "pickMap1dTo3dLinePercent.h"
+#include "applyVec3dThreeD.h"
 
 namespace dtOO {
   dt__pH(dtTransformerFactory) dtTransformerFactory::_instance(NULL);
@@ -118,6 +119,7 @@ namespace dtOO {
     _instance->_transformer.push_back( new pickMap2dTo3dRectanglePercent() );
     _instance->_transformer.push_back( new reverse() );
     _instance->_transformer.push_back( new pickMap1dTo3dLinePercent() );
+    _instance->_transformer.push_back( new applyVec3dThreeD() );
     
     return _instance.get();
   }      

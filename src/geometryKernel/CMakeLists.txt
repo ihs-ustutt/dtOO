@@ -129,6 +129,7 @@ SET(HEADERS
   dtTransformerHeaven/pickMap2dTo3dRectanglePercent.h
   dtTransformerHeaven/reverse.h
   dtTransformerHeaven/pickMap1dTo3dLinePercent.h
+  dtTransformerHeaven/applyVec3dThreeD.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -252,6 +253,7 @@ SET(SOURCES
   dtTransformerHeaven/pickMap2dTo3dRectanglePercent.cpp
   dtTransformerHeaven/reverse.cpp
   dtTransformerHeaven/pickMap1dTo3dLinePercent.cpp
+  dtTransformerHeaven/applyVec3dThreeD.cpp
 )
 
 APPEND_DTOO_SOURCE(src/geometryKernel "${SOURCES}")
