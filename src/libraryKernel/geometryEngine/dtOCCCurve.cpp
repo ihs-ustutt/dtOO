@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include "dtOCCCurveBase.h"
 #include <logMe/dtMacros.h>
+#include <interfaceHeaven/calculationTypeHandling.h>
 
 #include <Standard_Failure.hxx>
 #include <Standard_ErrorHandler.hxx>
@@ -34,35 +35,31 @@ namespace dtOO {
 	}
 
   float dtOCCCurve::minPara ( int const & dir ) const {
-    switch (dir) {
-      case 0:
-				dt__tryOcc(
-          return static_cast<float>(_ptr->FirstParameter());
-				,
-				  << dt__eval(dir)
-				);
-        break;
-      default:
-        dt__throw(minPara(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0.");
-    }    		    
+    dt__throwIf(dir!=0, minPara());
+		Standard_Real U1;
+		Standard_Real U2;
+		dt__tryOcc(
+			U1 = _ptr->FirstParameter();
+      U2 = _ptr->LastParameter();
+			return floatHandling::nextIfSmaller(U1);
+  		, 
+      << dt__eval(U1) << std::endl
+		  << dt__eval(U2)
+		);       
 	}
 	
   float dtOCCCurve::maxPara ( int const & dir ) const {
-    switch (dir) {
-      case 0:
-				dt__tryOcc(
-          return static_cast<float>(_ptr->LastParameter());
-				, 
-					<< dt__eval(dir) 
-				);
-        break;
-      default:
-        dt__throw(minPara(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0.");
-    }    		
+    dt__throwIf(dir!=0, maxPara());
+		Standard_Real U1;
+		Standard_Real U2;
+		dt__tryOcc(
+			U1 = _ptr->FirstParameter();
+      U2 = _ptr->LastParameter();
+			return floatHandling::prevIfBigger(U2);
+  		, 
+      << dt__eval(U1) << std::endl
+		  << dt__eval(U2)
+		);        
 	}
 	
   bool dtOCCCurve::closed( void ) const {

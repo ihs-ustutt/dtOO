@@ -145,7 +145,7 @@ namespace dtOO {
       }
     }
     
-    dt__throw(
+    dt__warning(
       invY(),
       << dt__eval(yy) << std::endl
       << "rangeX0" << std::endl
@@ -154,6 +154,6 @@ namespace dtOO {
       << logMe::floatMatrixToString(rangeX1) << std::endl
       << "Cannot determine interval."
     );
-    
+    return analyticFunction::invY(yy);
   }
 }
