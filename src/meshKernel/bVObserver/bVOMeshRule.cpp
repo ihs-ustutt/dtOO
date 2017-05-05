@@ -103,17 +103,17 @@ namespace dtOO {
     _rule1D 
     = 
     qtXmlBase::convertToStringVector(
-      "{", "}", qtXmlPrimitive::getStringBetweenAndRemoveRespectOcc("{", "}", &rule)
+      "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
     );
     _rule2D 
     = 
     qtXmlBase::convertToStringVector(
-      "{", "}", qtXmlPrimitive::getStringBetweenAndRemoveRespectOcc("{", "}", &rule)
+      "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
     );
     _rule3D 
     = 
     qtXmlBase::convertToStringVector(
-      "{", "}", qtXmlPrimitive::getStringBetweenAndRemoveRespectOcc("{", "}", &rule)
+      "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
     );
     _only = qtXmlBase::getAttributeStrVector("only", element);
     
