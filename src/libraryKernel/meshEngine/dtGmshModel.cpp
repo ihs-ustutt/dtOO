@@ -319,29 +319,17 @@ namespace dtOO {
   dtGmshFace * dtGmshModel::getDtGmshFaceByPhysical( 
     std::string const & physical 
   ) const {
-    
-    if ( stringPrimitive::stringContains("::", physical) ) {
-      dtGmshRegion * gr 
-      = 
-      getDtGmshRegionByPhysical( 
-        stringPrimitive::getStringBetween("", "::", physical) 
-      );
-      
-      dt__debug(
-        getDtGmshFaceByPhysical(), 
-        << "_facePositionStr[ " 
-        << stringPrimitive::getStringBetween("::", "", physical)
-        << " ] = " 
-        << _facePositionStr[ 
-             stringPrimitive::getStringBetween("::", "", physical)  
-           ]
-        );
-      return dtGmshFace::MustDownCast(
-        progHelper::list2Vector( gr->faces() )[ 
-          _facePositionStr[ 
-            stringPrimitive::getStringBetween("::", "", physical)  
-          ] 
-        ]
+    dt__throwIf( 
+      stringPrimitive::isWildcard( physical), getDtGmshFaceByPhysical() 
+    );
+    if ( stringPrimitive::stringContains("->", physical) ) {
+      dt__forAllRefAuto( dtFaces(), aFace ) {
+        if ( matchWildCardPhysical( physical, aFace ) ) {
+          return aFace;
+        }
+      }
+      dt__throw(
+        getDtGmshFaceByPhysical(), << "face[ " << physical << " ] not found."
       );
     }
     else {
@@ -349,7 +337,11 @@ namespace dtOO {
       intGEntityVMap gE_pN;
       __caCThis->getPhysicalGroups(2, gE_pN);
 
-      dt__throwIf(gE_pN[pN].size()!=1, getDtGmshFaceByPhysical());
+      dt__throwIfWithMessage(
+        gE_pN[pN].size()!=1, 
+        getDtGmshFaceByPhysical(),
+        << "face[ " << physical << " ] not found."
+      );
 
       return cast2DtGmshFace(gE_pN[pN][0]);    
     }
@@ -1354,7 +1346,7 @@ namespace dtOO {
 	}
   
   void dtGmshModel::untagPhysical( ::GEntity * const ge ) {
-		dt__throwIfWithMessage(
+		dt__warnIfWithMessage(
       ge->physicals.size()!=1, 
       untagPhysical(),
       << getPhysicalNames(ge->dim(), ge->physicals)
@@ -1410,17 +1402,27 @@ namespace dtOO {
   }
   
   void dtGmshModel::removeEmptyPhysicals( void ) {
+    logContainer< dtGmshModel > logC(logDEBUG, "removeEmptyPhysicals()");
+    
     dtGmshModel::intGEntityVMap ge_number;
     //
     // for each dimension
     //
     dt__forFromToIndex(0, 4, dim) {
+      logC() << "dim = " << dim << std::endl;
       GModel::getPhysicalGroups(dim, ge_number);     
       //
       // for each physical group
       //
       dt__forAllConstIter(dtGmshModel::intGEntityVMap, ge_number, nIt) {
-        if (nIt->second.empty()) GModel::deletePhysicalGroup(dim, nIt->first);
+        logC() << "  id = " << nIt->first << " / " 
+          << getPhysicalName(dim, nIt->first) << " has " 
+          << nIt->second.size() << " GEntities"
+          << std::endl;
+        if (nIt->second.empty()) {
+          logC() << "    --> delete" << std::endl;
+          GModel::deletePhysicalGroup(dim, nIt->first);
+        }
       }
     }
   }
@@ -1428,7 +1430,7 @@ namespace dtOO {
   bool dtGmshModel::matchWildCardPhysical( 
     std::string wildStr, ::GEntity const * const ge 
   ) const {
-    if ( stringPrimitive::stringContains("::", wildStr) ) {
+    if ( stringPrimitive::stringContains("->", wildStr) ) {
       ::boost::smatch what;
       std::vector< bool > rareV;
       std::vector< std::string > physV;
@@ -1437,7 +1439,7 @@ namespace dtOO {
       std::string::const_iterator en = wildStr.end();       
       while ( 
         ::boost::regex_search(
-          st, en, what, ::boost::regex("([:]{2})?+([^:]+)")
+          st, en, what, ::boost::regex("([-][>])?+([^->]+)")
         )
       ) {
         physV.push_back( what.str(2) );

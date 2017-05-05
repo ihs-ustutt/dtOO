@@ -7,6 +7,8 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <meshEngine/dtGmshModel.h>
+#include <meshEngine/dtGmshRegion.h>
+#include <meshEngine/dtGmshFace.h>
 
 #include <boost/assign.hpp>
 namespace dtOO {  
@@ -63,7 +65,6 @@ namespace dtOO {
     dtGmshModel::intGEntityVMap gf_number;
     gm->getPhysicalGroups(2, gf_number);      
 
-    std::vector< std::string > gf_toDelPhysical; 
     dt__forAllConstIter(std::vector< std::string >, _patchRule, it) {
       std::string newPhys = *it;
       std::string oldPhys 
@@ -71,64 +72,18 @@ namespace dtOO {
       qtXmlBase::getStringBetweenAndRemove(":", ":", &newPhys);
       newPhys = qtXmlBase::getStringBetween(":", ":", newPhys);
 
-      dt__forAllConstIter(dtGmshModel::intGEntityVMap, gf_number, nIt) {
-        std::string currentPhysical = gm->getPhysicalName(2, nIt->first);
-        bool addThis = false;
-        if ( qtXmlBase::isWildcard(oldPhys) ) {
-          //
-          // pattern with wildcard (*)
-          //
-          if ( qtXmlBase::matchWildcard(oldPhys, currentPhysical) ) {
-            dt__info(
-              postUpdate(), 
-              << "Handling wildcard string :> " << oldPhys << std::endl
-              << "Adding :> " << currentPhysical << std::endl
-              << "To     :> " << newPhys
-            );
-            //
-            // do not delete existing patches
-            //
-            if (currentPhysical != newPhys ) {
-              gf_toDelPhysical.push_back( currentPhysical );
-            }
-            addThis = true;
-          }
-        }
-        else {
-          //
-          // physical matches exactly given pattern
-          //
-          if ( oldPhys == currentPhysical ) {
-            dt__info(
-              postUpdate(), 
-              << "Handling normal string :> " << oldPhys << std::endl
-              << "Adding :> " << currentPhysical << std::endl
-              << "To     :> " << newPhys
-            );
-
-            addThis = true;           
-          }
-        }
-
-        //
-        // add patches
-        //
-        if (addThis) {
-          dt__forAllIndex(nIt->second, ii) {
-            gm->untagPhysical( nIt->second[ii] );
-            if (!newPhys.empty()) {
-              gm->tagPhysical( nIt->second[ii], newPhys );
-            }
-          }            
+      dt__forAllRefAuto(gm->dtFaces(), aFace) {
+        if ( gm->matchWildCardPhysical( oldPhys, aFace ) ) {
+          dt__info(
+            postUpdate(), 
+            << "Handling rule :> " << oldPhys << std::endl
+            << "Adding :> " << aFace->getPhysicalString() << std::endl
+            << "To     :> " << newPhys
+          );
+          gm->untagPhysical( aFace );
+          if ( !newPhys.empty() ) gm->tagPhysical( aFace, newPhys );
         }
       }
-    }
-    dt__info(postUpdate(), << "Delete :> " << gf_toDelPhysical);      
-    dt__forAllIndex(gf_toDelPhysical, ii) {
-      gm->deletePhysicalGroup(
-        2, 
-        gm->getPhysicalNumber(2, gf_toDelPhysical[ii])
-      );
     }
     
     //
@@ -142,7 +97,6 @@ namespace dtOO {
     dtGmshModel::intGEntityVMap gr_number;
     gm->getPhysicalGroups(3, gr_number);      
 
-    std::vector< std::string > gr_toDelPhysical; 
     dt__forAllConstIter(std::vector< std::string >, _regRule, it) {
       std::string newPhys = *it;
       std::string oldPhys 
@@ -150,63 +104,18 @@ namespace dtOO {
       qtXmlBase::getStringBetweenAndRemove(":", ":", &newPhys);
       newPhys = qtXmlBase::getStringBetween(":", ":", newPhys);
 
-      dt__forAllConstIter(dtGmshModel::intGEntityVMap, gr_number, nIt) {
-        std::string currentPhysical = gm->getPhysicalName(3, nIt->first);
-        bool addThis = false;
-        if ( qtXmlBase::isWildcard(oldPhys) ) {
-          //
-          // pattern with wildcard (*)
-          //
-          if ( qtXmlBase::matchWildcard(oldPhys, currentPhysical) ) {
-            dt__info(
-              postUpdate(), 
-              << "Handling wildcard string :> " << oldPhys << std::endl
-              << "Adding :> " << currentPhysical << std::endl
-              << "To     :> " << newPhys
-            );
-            //
-            // do not delete existing patches
-            //
-            if (currentPhysical != newPhys ) {
-              gr_toDelPhysical.push_back( currentPhysical );
-            }
-            addThis = true;
-          }
-        }
-        else {
-          //
-          // physical matches exactly given pattern
-          //
-          if ( oldPhys == currentPhysical ) {
-            dt__info(
-              postUpdate(), 
-              << "Handling normal string :> " << oldPhys << std::endl
-              << "Adding :> " << currentPhysical << std::endl
-              << "To     :> " << newPhys
-            );
-
-            addThis = true;
-          }
-        }
-
-        //
-        // add patches
-        //
-        if (addThis) {
-          dt__forAllIndex(nIt->second, ii) {
-            if (!newPhys.empty()) {
-              gm->tagPhysical( nIt->second[ii], newPhys );
-            }
-          }            
+      dt__forAllRefAuto(gm->dtRegions(), aRegion) {
+        if ( gm->matchWildCardPhysical( oldPhys, aRegion ) ) {
+          dt__info(
+            postUpdate(), 
+            << "Handling rule :> " << oldPhys << std::endl
+            << "Adding :> " << aRegion->getPhysicalString() << std::endl
+            << "To     :> " << newPhys
+          );
+          gm->untagPhysical( aRegion );
+          if ( !newPhys.empty() ) gm->tagPhysical( aRegion, newPhys );
         }
       }
-    }
-    dt__info(postUpdate(), << "Delete :> " << gr_toDelPhysical);      
-    dt__forAllIndex(gr_toDelPhysical, ii) {
-      gm->deletePhysicalGroup(
-        3, 
-        gm->getPhysicalNumber(3, gr_toDelPhysical[ii])
-      );
     }
     
     //
