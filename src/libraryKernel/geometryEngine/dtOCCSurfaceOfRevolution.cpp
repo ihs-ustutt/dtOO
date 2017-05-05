@@ -114,7 +114,7 @@ namespace dtOO {
 			dtOCCCurveBase base;
 			base.setOCC(trim);
 
-			return new dtOCCTrimmedCurve(base, uuMin, uuMax);				
+			return new dtOCCTrimmedCurve(base);				
 		}		
 		else {
 			dt__throw(

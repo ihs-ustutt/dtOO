@@ -54,7 +54,7 @@ namespace dtOO {
 
 		dtOCCCurveBase baseC;
 		baseC.setOCC( curve );
-		_dtC.reset( new dtOCCTrimmedCurve(baseC, static_cast<float>(U0), static_cast<float>(U1)) );
+		_dtC.reset( new dtOCCTrimmedCurve(baseC) );
 	}
 	
 	trimmedCurve_twoPointsConnectConstructOCC::~trimmedCurve_twoPointsConnectConstructOCC() {

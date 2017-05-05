@@ -40,11 +40,7 @@ namespace dtOO {
 		  _dtC.reset( new dtOCCEllipse(base) );			
 		}        
 		else if ( !(Handle(Geom_TrimmedCurve)::DownCast(occC).IsNull()) ) {
-		  _dtC.reset( 
-        new dtOCCTrimmedCurve( 
-          base, occC->FirstParameter(), occC->LastParameter() 
-        ) 
-      );
+		  _dtC.reset( new dtOCCTrimmedCurve(base) );
 		}		
 		else if ( !(Handle(Geom_Line)::DownCast(occC).IsNull()) ) {
 		  _dtC.reset( new dtOCCLine(base) );			

@@ -44,7 +44,7 @@ namespace dtOO {
 		dtOCCCurveBase base;
 		base.setOCC(ccB);
 
-		return new dtOCCTrimmedCurve(base, vvMin, vvMax);
+		return new dtOCCTrimmedCurve(base);
 	}
 
 	dtCurve * dtOCCRectangularTrimmedSurface::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
@@ -61,6 +61,6 @@ namespace dtOO {
 			dtOCCCurveBase base;
 			base.setOCC(ccB);
 
-			return new dtOCCTrimmedCurve(base, uuMin, uuMax);
+			return new dtOCCTrimmedCurve(base);
 	}		
 }

@@ -2,6 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+#include <interfaceHeaven/calculationTypeHandling.h>
 #include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCCurve.h>
 #include <geometryEngine/dtOCCTrimmedCurve.h>
@@ -18,19 +19,26 @@ namespace dtOO {
 			dtOCCCurve::ConstDownCast(dtC)
 		);
 		
-		Standard_Real U1 = static_cast<Standard_Real>(min);
-		Standard_Real U2 = static_cast<Standard_Real>(max);
-
+    Standard_Real U1
+    = 
+    calculationTypeHandling< Standard_Real, float >::boundToRange(
+      min, dtC->getUMin(), dtC->getUMax()
+    );
+    Standard_Real U2
+    = 
+    calculationTypeHandling< Standard_Real, float >::boundToRange(
+      max, dtC->getUMin(), dtC->getUMax()
+    );    
 		Handle(Geom_TrimmedCurve) ts
-		=
-		new Geom_TrimmedCurve(
-		  occC->OCCRef().getOCC(), U1, U2
-		);
+      =
+      new Geom_TrimmedCurve(
+        occC->OCCRef().getOCC(), U1, U2
+      );
 		
 		dtOCCCurveBase base;
 		base.setOCC(ts);
 
-		_dtC.reset( new dtOCCTrimmedCurve(base, min, max) );		
+		_dtC.reset( new dtOCCTrimmedCurve(base) );		
 	}
 
   dtCurve * trimmedCurve_uBounds::result( void ) {

@@ -14,7 +14,7 @@ namespace dtOO {
   public:
     dt__class(dtOCCTrimmedCurve, dtCurve);    
     dtOCCTrimmedCurve();
-    dtOCCTrimmedCurve(dtOCCCurveBase const & orig, float const u0, float const u1);
+    dtOCCTrimmedCurve(dtOCCCurveBase const & orig);
     virtual ~dtOCCTrimmedCurve();
     virtual dtCurve * clone( void ) const;
     virtual int order( void ) const;
@@ -23,8 +23,6 @@ namespace dtOO {
     virtual void setControlPoint( int const nPoint, dtPoint3 const point );  
   private:
     Geom_TrimmedCurve const * _ptr;
-    float _u0;
-    float _u1;
   };
 }
 

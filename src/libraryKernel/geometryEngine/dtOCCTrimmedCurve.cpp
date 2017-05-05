@@ -20,18 +20,16 @@ namespace dtOO {
 	}
 
 	dtOCCTrimmedCurve::dtOCCTrimmedCurve(
-    dtOCCCurveBase const & orig, float const u0, float const u1
+    dtOCCCurveBase const & orig
   ) : dtOCCCurve(orig) {
 		dt__mustCast(OCCRef().getOCC().Access(), Geom_TrimmedCurve const, _ptr);
-		_u0 = u0;
-		_u1 = u1;
-	}
+	}  
 
 	dtOCCTrimmedCurve::~dtOCCTrimmedCurve() {
 	}
 
   dtCurve * dtOCCTrimmedCurve::clone( void ) const {
-		return new dtOCCTrimmedCurve( OCCRef(), _u0, _u1 );		
+		return new dtOCCTrimmedCurve( OCCRef());		
 	}
 	
   int dtOCCTrimmedCurve::order( void ) const {
