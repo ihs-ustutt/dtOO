@@ -11,14 +11,17 @@
 
 # ${OpenFOAM_FOUND} is cached, so once OF is found this block shouldn't have to run again
 IF( NOT OpenFOAM_FOUND STREQUAL TRUE )
-  set( 
-    _incsearchpath 
-    $ENV{FOAM_SRC}
-  )
+  set( _incsearchpath $ENV{FOAM_SRC})
   set( _testlibname libODE.so )
   set( _libsearchpath $ENV{FOAM_LIBBIN} )
   #find the include dir by looking for Standard_Real.hxx
-  FIND_PATH( OpenFOAM_INCLUDE_DIR foam PATHS ${_incsearchpath} DOC "Path to OF includes" )
+  FIND_PATH( 
+    OpenFOAM_INCLUDE_DIR 
+    foam 
+    PATHS ${_incsearchpath} 
+    DOC "Path to OF includes" 
+    NO_DEFAULT_PATH
+  )
 
   # Find one lib and save its directory to OpenFOAM_LINK_DIRECTORY. Because
   # OF has so many libs, there is increased risk of a name collision.
@@ -30,6 +33,10 @@ IF( NOT OpenFOAM_FOUND STREQUAL TRUE )
     ${_libsearchpath} 
     DOC 
     "Path to OF libs" 
+  )
+  file( 
+    GLOB OpenFOAM_OPENMPI_DIR
+    "${OpenFOAM_LINK_DIRECTORY}/openmpi*"
   )
   IF( OpenFOAM_LINK_DIRECTORY STREQUAL ${_testlibname}-NOTFOUND )
     SET( OpenFOAM_FOUND FALSE CACHE BOOL FORCE )
@@ -52,7 +59,7 @@ IF( OpenFOAM_FOUND STREQUAL TRUE )
         ${_libname}_OFLIB 
         ${_libname} 
         ${OpenFOAM_LINK_DIRECTORY} 
-        ${OpenFOAM_LINK_DIRECTORY}/openmpi-system 
+        ${OpenFOAM_OPENMPI_DIR}
         NO_DEFAULT_PATH
       )
       SET( _foundlib ${${_libname}_OFLIB} )

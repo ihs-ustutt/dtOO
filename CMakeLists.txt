@@ -34,7 +34,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp -lmpfr") #for cgal
 # options
 #
 #------------------------------------------------------------------------------#
-option(DTOO_USE_MPI "Use MPI" ON)
+option(DTOO_USE_MPI "Use MPI" OFF)
 
 #------------------------------------------------------------------------------#
 #
@@ -85,7 +85,7 @@ find_package(OpenVolumeMesh REQUIRED COMPONENTS OpenVolumeMesh)
 find_package(OpenMP REQUIRED)
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-find_package(IGL REQUIRED COMPONENTS iglcork iglcgal cork igl)
+#find_package(IGL REQUIRED COMPONENTS iglcork iglcgal cork igl)
 
 if (DTOO_USE_MPI)
   find_package(MPI)

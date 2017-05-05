@@ -15,6 +15,7 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
   set( 
     _incsearchpath 
     /usr/ihs/include/oce
+    /usr/include/oce
     ${DTOO_EXTERNLIBS}/OpenCASCADE/include/oce 
     $ENV{CASROOT}/inc 
   )
@@ -22,6 +23,8 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
     _libsearchpath 
     /usr/ihs/lib
     /usr/ihs/lib64
+    /usr/lib/oce
+    /usr/lib64/oce
     ${DTOO_EXTERNLIBS}/OpenCASCADE/lib 
     $ENV{CASROOT}/lib 
   )
