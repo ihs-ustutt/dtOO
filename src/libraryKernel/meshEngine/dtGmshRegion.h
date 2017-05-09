@@ -9,6 +9,7 @@ class GModel;
 class GFace;
 
 namespace dtOO {
+  class dtGmshEdge;
   class dtGmshFace;
   class dtGmshModel;
   
@@ -49,10 +50,6 @@ namespace dtOO {
     void setGrading( 
       std::vector< float > const & grading, std::vector< float > & type 
     );
-    void setGrading( 
-      float const & gU, float const & gV, float const & gW,
-      float const & tU, float const & tV, float const & tW
-    );
     std::list< dtGmshFace const * > constFaceList(
       std::vector< std::string > const & label
     ) const;
@@ -62,6 +59,7 @@ namespace dtOO {
     std::string dumpToString( void ) const;
     std::string getPhysicalString( void ) const;
     std::list< dtGmshFace * > dtFaces( void ) const;
+    std::list< dtGmshEdge * > dtEdges( void ) const;
   public:
     mutable ::GEntity::MeshGenerationStatus _status;
     ::GEntity::GeomType _geomType;

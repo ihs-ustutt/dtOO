@@ -66,11 +66,11 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
 	
-    dt__forAllConstIter(std::vector< std::string >, _regionLabel, rIt) {
-      gm->getDtGmshRegionByPhysical(*rIt)->setGrading(_grading, _type);
+    dt__forAllRefAuto(_regionLabel, aLabel) {
+      gm->getDtGmshRegionByPhysical(aLabel)->setGrading(_grading, _type);
     }    
-    dt__forAllConstIter(std::vector< std::string >, _faceLabel, fIt) {
-      gm->getDtGmshFaceByPhysical(*fIt)->setGrading(_grading, _type);
+    dt__forAllRefAuto(_faceLabel, aLabel) {
+      gm->getDtGmshFaceByPhysical(aLabel)->setGrading(_grading, _type);
     }        
   }
 }

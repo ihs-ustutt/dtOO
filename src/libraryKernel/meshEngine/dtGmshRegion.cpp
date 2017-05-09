@@ -261,57 +261,18 @@ namespace dtOO {
     dt__throwIf(grading.size() != 12, setGrading());
     dt__throwIf(type.size() != 12, setGrading());
 		
-    std::list< GEdge * > ee = edges();
-//		for (int ii=0; ii<grading.size(); ii++) {
+    dt__debug(
+      setGrading(),
+      << "Region[ " << tag() << " / " << getPhysicalString()
+      << " ] : grading = " << grading << ", type = " << type
+    );
+    
     int ii = 0;
-    dt__forAllIter(std::list< GEdge * >, ee, it) {
-      if ( ( grading[ii] == 0. ) && ( type[ii] == 0. ) ) continue;
-      
-      (*it)->meshAttributes.coeffTransfinite = grading[ii];
-      (*it)->meshAttributes.typeTransfinite = type[ii];
+    dt__forAllRefAuto(dtEdges(), ee) {
+      ee->setGrading( grading[ii], type[ii] );
       ii++;
 		}
   }	
-	
-  void dtGmshRegion::setGrading( 
-	  float const & gU, float const & gV, float const & gW,
-	  float const & tU, float const & tV, float const & tW
-  ) {
-    std::vector< float > grading(12);
-		std::vector< float > type(12);
-		//
-		// types
-		//
-		type[0] = tU; type[2] = tU;
-		type[6] = tU; type[4] = tU;
-		type[3] = tV; type[1] = tV;
-		type[5] = tV; type[7] = tV;		
-		type[8] = tW; type[9] = tW;
-		type[10] = tW; type[11] = tW;				
-    //
-		// gradings
-		//
-		if (tU!=2.) {
-			grading[0] = gU; grading[2] = 1./gU;
-			grading[6] = 1./gU; grading[4] = gU;
-		}
-		else {
-			grading[0] = gU; grading[2] = gU;
-			grading[6] = gU; grading[4] = gU;			
-		}
-		if (tV!=2.) {
-			grading[3] = 1./gV; grading[1] = gV;
-			grading[5] = gV; grading[7] = 1./gV;		
-		}
-		else {
-			grading[3] = gV; grading[1] = gV;
-			grading[5] = gV; grading[7] = gV;					
-		}
-		grading[8] = gW; grading[9] = gW;
-		grading[10] = gW; grading[11] = gW;						
-		
-		setGrading(grading, type);
-  }	 
   
   std::list< dtGmshFace const * > dtGmshRegion::constFaceList(
     std::vector< std::string > const & label
@@ -346,4 +307,8 @@ namespace dtOO {
   std::list< dtGmshFace * > dtGmshRegion::dtFaces( void ) const {
     return refDtGmshModel().cast2DtGmshFace( faces() );
 	}    
+
+  std::list< dtGmshEdge * > dtGmshRegion::dtEdges( void ) const {
+    return refDtGmshModel().cast2DtGmshEdge( edges() );
+	}      
 }
