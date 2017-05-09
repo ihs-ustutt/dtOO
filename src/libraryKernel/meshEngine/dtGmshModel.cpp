@@ -281,26 +281,20 @@ namespace dtOO {
   ::GEntity * dtGmshModel::getGEntityByPhysical( 
     std::string const & physical 
   ) const {
-    dt__forFromToIndex(0, 4, dim) {
-      dtGmshModel::intGEntityVMap ge_number;      
-      GModel::getPhysicalGroups(dim, ge_number);     
-      //
-      // for each physical group
-      //
-      dt__forAllConstIter(dtGmshModel::intGEntityVMap, ge_number, nIt) {
-        if ( getPhysicalName(dim, nIt->first) == physical ) {
-          dt__throwIfWithMessage( 
-            nIt->second.size()!=1, 
-            getGEntityByPhysical(),
-            << dt__eval(nIt->second.size())
-          );
-          return nIt->second[0];
-        }
-      }
+    dt__throwIf( 
+      stringPrimitive::isWildcard( physical), getGEntityByPhysical() 
+    );
+    dt__forAllRefAuto( dtEdges(), aEdge ) {
+      if ( matchWildCardPhysical( physical, aEdge ) ) return aEdge;
+    }    
+    dt__forAllRefAuto( dtFaces(), aFace ) {
+      if ( matchWildCardPhysical( physical, aFace ) ) return aFace;
     }
+    dt__forAllRefAuto( dtRegions(), aRegion ) {
+      if ( matchWildCardPhysical( physical, aRegion ) ) return aRegion;
+    }      
     dt__throw(
-      getGEntityByPhysical(), 
-      << "No GEntity with physical " << physical
+      getGEntityByPhysical(), << "entity[ " << physical << " ] not found."
     );
   }
   
@@ -1448,14 +1442,27 @@ namespace dtOO {
 
         st = what[0].second;
       }
-    
-      if (ge->dim() == 0) {
-        dt__throwUnexpected(matchWildCardPhysical());
-      }
-      else if (ge->dim() == 1) {
-        dt__throwUnexpected(matchWildCardPhysical());
-      }
-      else if (ge->dim() == 2) {
+
+      dt__warnIfWithMessageAndSolution(
+        ge->dim()==0, 
+        return false, 
+        matchWildCardPhysical(), 
+          << "Not yet implemented."
+      ); 
+      dt__warnIfWithMessageAndSolution(
+        ge->dim()==1, 
+        return false, 
+        matchWildCardPhysical(), 
+          << "Not yet implemented."
+      );        
+//      if (ge->dim() == 0) {
+//        dt__warning(matchWildCardPhysical(), << "Returns always false.");
+//        return false;
+//      }
+//      else if (ge->dim() == 1) {
+//        dt__throwUnexpected(matchWildCardPhysical());
+//      }
+      if (ge->dim() == 2) {
         //
         // check region
         //

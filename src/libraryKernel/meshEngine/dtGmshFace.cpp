@@ -704,13 +704,15 @@ namespace dtOO {
     dt__throwIf(grading.size() != 4, setGrading());
     dt__throwIf(type.size() != 4, setGrading());
 		
-    std::list< GEdge * > ee = edges();
+    dt__debug(
+      setGrading(),
+      << "Face[ " << tag() << " / " << getPhysicalString()
+      << " ] : grading = " << grading << ", type = " << type
+    );
+    
     int ii = 0;
-    dt__forAllIter(std::list< GEdge * >, ee, it) {
-      if ( ( grading[ii] == 0. ) && ( type[ii] == 0. ) ) continue;
-      
-      (*it)->meshAttributes.coeffTransfinite = grading[ii];
-      (*it)->meshAttributes.typeTransfinite = type[ii];
+    dt__forAllRefAuto(dtEdges(), ee) {
+      ee->setGrading(grading[ii], type[ii]);
       ii++;
 		}
   }

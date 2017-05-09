@@ -195,8 +195,14 @@ namespace dtOO {
 	}
   
 	void dtGmshEdge::setGrading( float const & grading, float const & type ) {
+    dt__debug(
+      setGrading(),
+      << "edge[ " << tag() << " ] : grading = " << grading << ", type = " 
+      << type
+    );
     if ( ( grading == 0. ) && ( type == 0. ) ) return;
     
+    this->meshAttributes.method = MESH_TRANSFINITE;    
     this->meshAttributes.coeffTransfinite = grading;
     this->meshAttributes.typeTransfinite = type;
   }
