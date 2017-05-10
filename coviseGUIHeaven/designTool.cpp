@@ -5,6 +5,7 @@
 #include <constValueHeaven/constValue.h>
 #include <constValueHeaven/intParam.h>
 #include <constValueHeaven/sliderFloatParam.h>
+#include <constValueHeaven/constrainedFloatParam.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
@@ -344,17 +345,27 @@ namespace dtOO {
 					constValue const * cVptr = _cV.get(label);
 					sliderFloatParam const * sfp = sliderFloatParam::ConstDownCast(cVptr);
 					intParam const * ip = intParam::ConstDownCast(cVptr);
+          constrainedFloatParam const * cfp = constrainedFloatParam::ConstDownCast(cVptr);
 					
 					if (ip) {
+            _infoStr->setValue(ip->className().c_str());
 						_cVSlider->disable();
 						_cVInt->enable();
 						_cVInt->setValue(ip->getValue());
 					}
 					else if (sfp) {
+            _infoStr->setValue(sfp->className().c_str());
 						_cVSlider->enable();
 						_cVInt->disable();
 						_cVSlider->setValue(sfp->getMin(), sfp->getMax(), sfp->getValue());				
 					}
+					else if (cfp) {
+            _infoStr->setValue(cfp->className().c_str());
+            _cVSlider->enable();
+						_cVSlider->setValue(cfp->getMin(), cfp->getMax(), cfp->getValue());				
+            _cVSlider->disable();
+            _cVInt->disable();
+					}          
 				}
 				//
 				// update constValue from GUI
