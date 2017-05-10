@@ -54,7 +54,7 @@ namespace dtOO {
     qtXmlBase::getAttributeIntMuParse("nPyramidOpenSteps", element, cV, aF);     
     _nSmooths
     = 
-    qtXmlBase::getAttributeIntMuParse("nSmooths", element, cV, aF);         
+    qtXmlBase::getAttributeIntMuParse("nSmooths", element, cV, aF);   
   }
 
   void dtMeshGRegion::operator()( dtGmshRegion * dtgr) {
@@ -363,16 +363,22 @@ namespace dtOO {
             )          
           )
         );
-      }      
-      dtVector3 cc = (1./pp.size()) * dtLinearAlgebra::sum(pp);
-      ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3( cc ) );
+      }
+      dtVector3 c1
+      = 
+      (1./pp.size()) * dtLinearAlgebra::sum(pp);
+      ovm.replacePosition( 
+        vH, dtLinearAlgebra::toDtPoint3( c0 + .01 * (c1-c0) ) 
+      );
       
       for (
         ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); vcIt++
       ) ovm[ *vcIt ]->setPartition(abs(vH.idx()));        
       
       logContainer< dtMeshGRegion > logC(logDEBUG, "createPyramids()");
+      float minQ = std::numeric_limits<float>::lowest();
       dt__forFromToIndex(0, _nPyramidOpenSteps, ii) {
+        float pyrShape = std::numeric_limits<float>::min();
         std::vector< float > qq;
         for(
           ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
@@ -397,31 +403,27 @@ namespace dtOO {
                 <
                 fabs( 0.1 * ovm.request_cell_property< float >("iV")[*vcIt] ) 
               )
-            ) {     
+            ) {
               qq[ qq.size() - 1 ] = -1. * fabs(qq[ qq.size() - 1 ]);
             }
-
-            logC() 
-              << logMe::dtFormat("%3i : qq = %12.4e, V = %12.4e, V0 = %12.4e") 
-                % ii
-                % qq.back() 
-                % vol 
-                % ovm.request_cell_property< float >("iV")[*vcIt]
-              << std::endl;            
-          }        
+          }
+          else pyrShape = qq.back();
         }
         
-        float minQ = progHelper::min(qq);
-        logC() << logMe::dtFormat("==> minQ = %12.4e") % minQ<< std::endl;   
-            
-        if (minQ > _minQShapeMetric) {
-
         logC() 
-          << logMe::dtFormat("Vertex : %10i ==> %3i relax steps") 
-            % aVert->getNum() % ii 
+          << logMe::dtFormat(
+            "%3i / %3i : min = %12.4e -> mean = %12.4e -> max = %12.4e, pyramid = %12.4e"
+          )
+            % ii
+            % _nPyramidOpenSteps
+            % progHelper::min(qq) 
+            % (dtLinearAlgebra::sum(qq) / qq.size() )
+            % progHelper::max(qq) 
+            % pyrShape
           << std::endl;   
-          break;
-        }
+            
+        if ( progHelper::min(qq) < minQ ) break;
+        minQ = progHelper::min(qq);
         
 //        dtgr->model()->writeMSH(
 //          "boundaryVertex_part_"
@@ -441,10 +443,9 @@ namespace dtOO {
 //          0,
 //          abs(vH.idx())
 //        );
-        float curRelax = _relax;//;std::pow(_relax, static_cast< float >(ii));
-        cc = c0 + curRelax * (cc - c0);
         
-        ovm.replacePosition( vH, dtLinearAlgebra::toDtPoint3(cc) );        
+        dtPoint3 cC = dtGmshModel::extractPosition( ovm[vH] );
+        ovm.replacePosition( vH,  cC + _relax * (c1 - c0) );
       }
     }
 
