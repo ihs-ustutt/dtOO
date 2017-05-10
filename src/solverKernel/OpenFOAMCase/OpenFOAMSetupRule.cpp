@@ -447,7 +447,24 @@ namespace dtOO {
           );
           
           return;
-        }              
+        }   
+        else if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) == "slip" 
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::slipFvPatchField< ::Foam::scalar >(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("slip", thisRule)
+            )
+          );
+          
+          return;
+        }          
         else dt__throwUnexpected(executeOnVolScalarField());
       }
     }
