@@ -187,10 +187,16 @@ namespace dtOO {
 		return false;
 	}
 
-	vectorHandling< analyticFunction const * > analyticFunction::compoundInternal( 
+	vectorHandling< analyticFunction * > const & analyticFunction::vecRef( 
     void 
   ) const {
-		return vectorHandling< analyticFunction const * >();
+		dt__throwUnexpected(vecRef);
+	}			
+
+	std::map< int, int > const & analyticFunction::mapRef(
+    void 
+  ) const {
+		dt__throwUnexpected(mapRef);
 	}			
   
 	bool analyticFunction::isTransformed( void ) const {

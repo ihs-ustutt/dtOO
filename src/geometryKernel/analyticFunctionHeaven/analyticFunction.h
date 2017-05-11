@@ -27,7 +27,7 @@ namespace dtOO {
     virtual analyticFunction * clone( void ) const = 0;
     virtual analyticFunction * cloneTransformed( 
       dtTransformer const * const dtT 
-    ) const = 0;    
+    ) const = 0;
     virtual analyticFunction * create( void ) const = 0;
     virtual void dump(void) const;    
     virtual std::string dumpToString(void) const;
@@ -42,9 +42,8 @@ namespace dtOO {
     virtual aFX percent_x( aFX const & xx ) const;    
     virtual aFX invY(aFY const & yy) const;    
     virtual bool isCompound( void ) const;
-	  virtual vectorHandling< analyticFunction const * > compoundInternal( 
-      void 
-    ) const;
+    virtual vectorHandling< analyticFunction * > const & vecRef( void ) const;
+    virtual std::map< int, int > const & mapRef( void ) const;
     virtual bool isTransformed( void ) const;
     virtual std::pair< aFY, aFY > yBoundingBox( void ) const;
     virtual bool yBounded( void ) const;
