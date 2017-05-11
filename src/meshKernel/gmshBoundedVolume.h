@@ -41,6 +41,8 @@ namespace dtOO {
     void updatePhysicals( void ) const;    
     mutable twoDArrayHandling< std::string > _physLabels;    
   protected:
+    void updateBoundingBox( void );
+  protected:
     dtGmshModel * _gm;
   };
 }

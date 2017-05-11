@@ -305,41 +305,9 @@ namespace dtOO {
     }
 		
     //
-    // set a bounding box, necessary to set CTX::instance()->lc to prevent
-    // very small elements
+    // update bounding box
     //
-    dtPoint3 bbMin(
-      CTX::instance()->min[0], CTX::instance()->min[1], CTX::instance()->min[2]
-    );
-    dtPoint3 bbMax(
-      CTX::instance()->max[0], CTX::instance()->max[1], CTX::instance()->max[2]
-    );    
-    SetBoundingBox();
-    dt__info(makePreGrid(),
-      << "Gmsh boundingBox:" << std::endl
-      << logMe::dtFormat("min: (%d, %d, %d)")
-        % CTX::instance()->min[0] 
-        % CTX::instance()->min[1] 
-        % CTX::instance()->min[2]
-      << std::endl
-      << logMe::dtFormat("max: (%d, %d, %d)")
-        % CTX::instance()->max[0] 
-        % CTX::instance()->max[1] 
-        % CTX::instance()->max[2]
-      << std::endl
-      << "Gmsh fieldManager:" << std::endl
-      << "size: " << _gm->getFields()->size()
-      << std::endl
-      << "meshRand * lcMin / (modelSize * machEpsilon) = "
-      << 
-        CTX::instance()->mesh.randFactor * CTX::instance()->mesh.lcMin
-        /
-        (
-          dtLinearAlgebra::length( bbMax - bbMin) 
-          * 
-          std::numeric_limits<float>::epsilon()
-        )
-    );
+    updateBoundingBox();
     
     //
 		// destroy old mesh
@@ -381,4 +349,46 @@ namespace dtOO {
     //
     boundedVolume::postNotify();
   }  
+
+  void gmshBoundedVolume::updateBoundingBox( void ) {
+    //
+    // set a bounding box, necessary to set CTX::instance()->lc to prevent
+    // very small elements
+    //
+    SetBoundingBox();
+    
+    dtPoint3 bbMin(
+      CTX::instance()->min[0], CTX::instance()->min[1], CTX::instance()->min[2]
+    );
+    dtPoint3 bbMax(
+      CTX::instance()->max[0], CTX::instance()->max[1], CTX::instance()->max[2]
+    );    
+    dt__info(makePreGrid(),
+      << "Gmsh boundingBox:" << std::endl
+      << logMe::dtFormat("min: (%d, %d, %d)")
+        % CTX::instance()->min[0] 
+        % CTX::instance()->min[1] 
+        % CTX::instance()->min[2]
+      << std::endl
+      << logMe::dtFormat("max: (%d, %d, %d)")
+        % CTX::instance()->max[0] 
+        % CTX::instance()->max[1] 
+        % CTX::instance()->max[2]
+      << std::endl
+      << "Gmsh fieldManager:" << std::endl
+      << "size: " << _gm->getFields()->size()
+      << std::endl
+      << "meshRand * lcMin / (modelSize * machEpsilon) = "
+      << 
+        CTX::instance()->mesh.randFactor * CTX::instance()->mesh.lcMin
+        /
+        (
+          dtLinearAlgebra::length( bbMax - bbMin) 
+          * 
+          std::numeric_limits<float>::epsilon()
+        )
+      << std::endl
+      << "lc = " << CTX::instance()->lc
+    );    
+  }
 }
