@@ -1,5 +1,5 @@
-#ifndef scaSingleTanhGradingOneD_H
-#define	scaSingleTanhGradingOneD_H
+#ifndef scaTanhGradingOneD_H
+#define	scaTanhGradingOneD_H
 
 #include "scaOneD.h"
 #include "scaOneDPolyInterface.h"
@@ -11,21 +11,22 @@
 namespace dtOO {
   class dtTransformer;
   
-  class scaSingleTanhGradingOneD 
+  class scaTanhGradingOneD 
     : public virtual scaOneD, public scaOneDPolyInterface {
     public:
-      dt__class(scaSingleTanhGradingOneD, analyticFunction);     
-      scaSingleTanhGradingOneD();
-      scaSingleTanhGradingOneD(scaSingleTanhGradingOneD const & orig);
-      scaSingleTanhGradingOneD( 
+      dt__class(scaTanhGradingOneD, analyticFunction);     
+      scaTanhGradingOneD();
+      scaTanhGradingOneD(scaTanhGradingOneD const & orig);
+      scaTanhGradingOneD( 
+        std::vector< float > cc,               
         float const & gg, float const & ggMin, float const & ggMax
       );
-      scaSingleTanhGradingOneD * clone( void ) const;
-      scaSingleTanhGradingOneD * cloneTransformed(
+      scaTanhGradingOneD * clone( void ) const;
+      scaTanhGradingOneD * cloneTransformed(
         dtTransformer const * const dtT 
       ) const;        
-      scaSingleTanhGradingOneD * create( void ) const;    
-      virtual ~scaSingleTanhGradingOneD();
+      scaTanhGradingOneD * create( void ) const;    
+      virtual ~scaTanhGradingOneD();
       virtual float YFloat(float const & xx) const;  
       virtual int nDOF( void ) const;
       virtual void setDOF( std::vector< float > const value );    
@@ -33,9 +34,10 @@ namespace dtOO {
       float _gg;
       float _ggMin;
       float _ggMax;
+      std::vector< float > _cc;
   };
   typedef 
-    analyticFunctionCompound< scaSingleTanhGradingOneD >
-    scaSingleTanhGradingOneDCompound;
+    analyticFunctionCompound< scaTanhGradingOneD >
+    scaTanhGradingOneDCompound;
 }
-#endif	/* scaSingleTanhGradingOneD_H */
+#endif	/* scaTanhGradingOneD_H */

@@ -1,7 +1,7 @@
-#include "scaSingleTanhGradingOneDAFXmlBuilder.h"
+#include "scaTanhGradingOneDAFXmlBuilder.h"
 
 #include <xmlHeaven/dtXmlParserBase.h>
-#include <analyticFunctionHeaven/scaSingleTanhGradingOneD.h>
+#include <analyticFunctionHeaven/scaTanhGradingOneD.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <logMe/logMe.h>
@@ -9,13 +9,13 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
-  scaSingleTanhGradingOneDAFXmlBuilder::scaSingleTanhGradingOneDAFXmlBuilder() {
+  scaTanhGradingOneDAFXmlBuilder::scaTanhGradingOneDAFXmlBuilder() {
   }
 
-  scaSingleTanhGradingOneDAFXmlBuilder::~scaSingleTanhGradingOneDAFXmlBuilder() {
+  scaTanhGradingOneDAFXmlBuilder::~scaTanhGradingOneDAFXmlBuilder() {
   }
 
-  void scaSingleTanhGradingOneDAFXmlBuilder::buildPart(
+  void scaTanhGradingOneDAFXmlBuilder::buildPart(
 	  ::QDomElement const & toBuild, 
 		baseContainer * const bC,
 		cVPtrVec const * const cV, 
@@ -23,7 +23,8 @@ namespace dtOO {
 		aFPtrVec * result
 	) const {
     result->push_back( 
-      new scaSingleTanhGradingOneD(
+      new scaTanhGradingOneD(
+        dtXmlParserBase::getAttributeFloatVectorMuParse("c", toBuild, cV, aF ),
         dtXmlParserBase::getAttributeFloatMuParse("g", toBuild, cV, aF ),
         dtXmlParserBase::getAttributeFloatMuParse("gMin", toBuild, cV, aF ),
         dtXmlParserBase::getAttributeFloatMuParse("gMax", toBuild, cV, aF )
@@ -31,7 +32,7 @@ namespace dtOO {
     );
   }
 
-  void scaSingleTanhGradingOneDAFXmlBuilder::buildPartCompound(
+  void scaTanhGradingOneDAFXmlBuilder::buildPartCompound(
 	  ::QDomElement const & toBuild, 
 		baseContainer * const bC,
 		cVPtrVec const * const cV, 
@@ -39,8 +40,9 @@ namespace dtOO {
 		aFPtrVec * result
 	) const {
     result->push_back( 
-      new scaSingleTanhGradingOneDCompound( 
-        scaSingleTanhGradingOneD(
+      new scaTanhGradingOneDCompound( 
+        scaTanhGradingOneD(
+        dtXmlParserBase::getAttributeFloatVectorMuParse("c", toBuild, cV, aF ),
         dtXmlParserBase::getAttributeFloatMuParse("g", toBuild, cV, aF ),
         dtXmlParserBase::getAttributeFloatMuParse("gMin", toBuild, cV, aF ),
         dtXmlParserBase::getAttributeFloatMuParse("gMax", toBuild, cV, aF )

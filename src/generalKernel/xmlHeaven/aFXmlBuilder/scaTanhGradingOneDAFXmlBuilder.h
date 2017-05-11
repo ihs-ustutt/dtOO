@@ -1,5 +1,5 @@
-#ifndef scaSingleTanhGradingOneDAFXmlBuilder_H
-#define	scaSingleTanhGradingOneDAFXmlBuilder_H
+#ifndef scaTanhGradingOneDAFXmlBuilder_H
+#define	scaTanhGradingOneDAFXmlBuilder_H
 
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
@@ -12,12 +12,12 @@ namespace dtOO {
   class constValue;
   class baseContainer;
 
-  class scaSingleTanhGradingOneDAFXmlBuilder : public aFXmlBuilder {
+  class scaTanhGradingOneDAFXmlBuilder : public aFXmlBuilder {
   public:  
-    dt__classOnlyName(scaSingleTanhGradingOneDAFXmlBuilder);
-    dt__classSelfCreate(scaSingleTanhGradingOneDAFXmlBuilder);
-    scaSingleTanhGradingOneDAFXmlBuilder();
-    virtual ~scaSingleTanhGradingOneDAFXmlBuilder();
+    dt__classOnlyName(scaTanhGradingOneDAFXmlBuilder);
+    dt__classSelfCreate(scaTanhGradingOneDAFXmlBuilder);
+    scaTanhGradingOneDAFXmlBuilder();
+    virtual ~scaTanhGradingOneDAFXmlBuilder();
     virtual void buildPart(
       ::QDomElement const & toBuild, 
       baseContainer * const bC,
@@ -34,4 +34,4 @@ namespace dtOO {
     ) const;
   };
 }
-#endif	/* scaSingleTanhGradingOneDAFXmlBuilder_H */
+#endif	/* scaTanhGradingOneDAFXmlBuilder_H */

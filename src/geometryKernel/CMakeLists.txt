@@ -87,7 +87,7 @@ SET(HEADERS
   analyticFunctionHeaven/vec3dBoxThreeD.h
   analyticFunctionHeaven/vec3dTriLinearThreeD.h
   analyticFunctionHeaven/vec3dBiLinearTwoD.h
-  analyticFunctionHeaven/scaSingleTanhGradingOneD.h
+  analyticFunctionHeaven/scaTanhGradingOneD.h
   analyticFunctionHeaven/scaOneDPolyInterface.h
   analyticFunctionHeaven/analyticFunctionCombination.h
   analyticFunctionHeaven/analyticFunctionCompound.h
@@ -217,7 +217,7 @@ SET(SOURCES
   analyticFunctionHeaven/vec3dBoxThreeD.cpp
   analyticFunctionHeaven/vec3dTriLinearThreeD.cpp
   analyticFunctionHeaven/vec3dBiLinearTwoD.cpp
-  analyticFunctionHeaven/scaSingleTanhGradingOneD.cpp
+  analyticFunctionHeaven/scaTanhGradingOneD.cpp
   analyticFunctionHeaven/scaOneDPolyInterface.cpp
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.cpp
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.cpp
