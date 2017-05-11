@@ -376,6 +376,15 @@ namespace dtOO {
       ) ovm[ *vcIt ]->setPartition(abs(vH.idx()));        
       
       logContainer< dtMeshGRegion > logC(logDEBUG, "createPyramids()");
+        logC() 
+          << logMe::dtFormat(
+            "%3s / %3s : %8s | %8s | %8s | %8s | %8s %8s %8s"
+          )      
+            % "-" % "-"
+            % "min" % "mean" % "max"
+            % "pyr"
+            % "cC[0]" % "cC[1]" % "cC[2]"      
+          << std::endl;
       float minQ = std::numeric_limits<float>::lowest();
       dt__forFromToIndex(0, _nPyramidOpenSteps, ii) {
         float pyrShape = std::numeric_limits<float>::min();
@@ -410,9 +419,10 @@ namespace dtOO {
           else pyrShape = qq.back();
         }
         
+        dtPoint3 cC = dtGmshModel::extractPosition( ovm[vH] );
         logC() 
           << logMe::dtFormat(
-            "%3i / %3i : min = %12.4e -> mean = %12.4e -> max = %12.4e, pyramid = %12.4e"
+            "%3i / %3i : %8.2e | %8.2e | %8.2e | %8.2e | %8.2e %8.2e %8.2e"
           )
             % ii
             % _nPyramidOpenSteps
@@ -420,9 +430,25 @@ namespace dtOO {
             % (dtLinearAlgebra::sum(qq) / qq.size() )
             % progHelper::max(qq) 
             % pyrShape
+            % cC.x()
+            % cC.y()
+            % cC.z()
           << std::endl;   
             
-        if ( progHelper::min(qq) < minQ ) break;
+        if ( (progHelper::min(qq) < minQ) && (pyrShape>=_minQShapeMetric) ) {
+          //
+          // revert last step
+          //
+          
+          ovm.replacePosition( vH,  cC - _relax * (c1 - c0) );          
+          cC = dtGmshModel::extractPosition( ovm[vH] );
+          logC() 
+            << logMe::dtFormat( " ==> %8.2e %8.2e %8.2e" ) 
+              % cC.x() % cC.y() % cC.z() 
+            << std::endl;   
+        
+          break;
+        }
         minQ = progHelper::min(qq);
         
 //        dtgr->model()->writeMSH(
@@ -443,8 +469,6 @@ namespace dtOO {
 //          0,
 //          abs(vH.idx())
 //        );
-        
-        dtPoint3 cC = dtGmshModel::extractPosition( ovm[vH] );
         ovm.replacePosition( vH,  cC + _relax * (c1 - c0) );
       }
     }
