@@ -1686,6 +1686,7 @@ namespace dtOO {
     //
     // vertex associations
     //
+    dt__info(updateAssociations(), << "Vertex associations.");
     dt__forAllRefAuto( dtGmshModel::cast2DtGmshVertex(vertices()), aGV ) {
       dtGmshVertex * clone = dim0[ aGV ];
       // update edge associations
@@ -1699,6 +1700,7 @@ namespace dtOO {
     //
     // edge associations
     //
+    dt__info(updateAssociations(), << "Edge associations.");
     dt__forAllRefAuto( dtGmshModel::cast2DtGmshEdge(edges()), aGE ) {
       dtGmshEdge * clone = dim1[ aGE ];
       // update begin and end vertex
@@ -1725,6 +1727,7 @@ namespace dtOO {
     //
     // face associations
     //
+    dt__info(updateAssociations(), << "Face associations.");
     dt__forAllRefAuto( dtGmshModel::cast2DtGmshFace(faces()), aGF ) {
       dtGmshFace * clone = dim2[ aGF ];
       // update edges
@@ -1744,6 +1747,7 @@ namespace dtOO {
     //
     // region associations
     //
+    dt__info(updateAssociations(), << "Region associations.");
     dt__forAllRefAuto( dtGmshModel::cast2DtGmshRegion(regions()), aGR ) {
       dtGmshRegion * clone = dim3[ aGR ];
       // update faces
