@@ -33,21 +33,18 @@ namespace dtOO {
       void parse(void);
       void write( cVPtrVec const * const cValP ) const;
       void write(
-        std::string const stateName, 
-        cVPtrVec const * const cValP
+        std::string const stateName, cVPtrVec const * const cValP
       ) const;
       void write(
-        std::vector< std::string > const stateName, 
+        std::vector< std::string > const stateName,
         std::vector< cVPtrVec > const & cValP
       ) const;
       void write( cVPtrVec const & cValP ) const;
       void write(
-        std::string const stateName, 
-        cVPtrVec const & cValP
+        std::string const stateName, cVPtrVec const & cValP
       ) const;       
       void writeUpdate(
-        std::string const stateName, 
-        cVPtrVec const & cValP
+        std::string const stateName, cVPtrVec const & cValP
       ) const;
       void extract(
         std::string const stateName, 
@@ -58,9 +55,7 @@ namespace dtOO {
       void load( void ) const;
       std::vector< std::string > getStates( void );
       bool hasState( std::string const stateName ) const;
-      void loadStateToConst(
-        std::string const stateName, cVPtrVec &cValRef
-      );
+      void loadStateToConst( std::string const stateName, cVPtrVec &cValRef );
       std::string currentState( void ) const;
       void setState( std::string const & newState) const;
       void freeState( void ) const;
