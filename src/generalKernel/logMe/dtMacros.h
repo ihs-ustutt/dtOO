@@ -39,13 +39,13 @@
     return dynamic_cast<name *>(obj); \
   } \
   static name * SecureCast(castFrom * obj) { \
-    return static_cast<name *>(obj); \
+    return dynamic_cast<name *>(obj); \
   } \
   static name const * ConstDownCast(castFrom const * obj) { \
     return dynamic_cast<name const *>(obj); \
   } \
   static name const * ConstSecureCast(castFrom const * obj) { \
-    return static_cast<name const *>(obj); \
+    return dynamic_cast<name const *>(obj); \
   } \
   static name * MustDownCast(castFrom * obj) { \
     name * ptr = dynamic_cast<name *>(obj); \
