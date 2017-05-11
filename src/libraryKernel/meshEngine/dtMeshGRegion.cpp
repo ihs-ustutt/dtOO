@@ -435,7 +435,13 @@ namespace dtOO {
             % cC.z()
           << std::endl;   
             
-        if ( (progHelper::min(qq) < minQ) && (pyrShape>=_minQShapeMetric) ) {
+        if ( 
+          (progHelper::min(qq) < minQ) 
+          && 
+          (pyrShape>=_minQShapeMetric) 
+          ||
+          (progHelper::min(qq)<0.)
+        ) {
           //
           // revert last step
           //
