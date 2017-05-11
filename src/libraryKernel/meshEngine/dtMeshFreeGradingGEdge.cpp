@@ -1,6 +1,7 @@
 #include "dtMeshFreeGradingGEdge.h"
 
 #include "dtGmshEdge.h"
+#include <analyticFunctionHeaven/analyticFunctionCompoundTrojanHorse.h>
 #include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticFunctionHeaven/scaOneD.h>
@@ -17,8 +18,7 @@
 #include <progHelper.h>
 
 namespace dtOO {
-  dtMeshFreeGradingGEdge::dtMeshFreeGradingGEdge(
-  ) : dtMeshGEdge() {
+  dtMeshFreeGradingGEdge::dtMeshFreeGradingGEdge( void ) : dtMeshGEdge() {
     
   }
 
@@ -44,13 +44,10 @@ namespace dtOO {
     = 
     qtXmlBase::getAttributeStrVector("gradingLabel", element);
     dt__forAllRefAuto(aFLabel, aLabel) {
-      dt__ptrAss( 
-        scaOneD const * theF, scaOneD::ConstDownCast(aF->get(aLabel)) 
-      );
-      _grading.push_back( theF->clone() );
+      _grading.push_back( scaOneD::MustConstDownCast(aF->get(aLabel)) );
     }
     dt__forAllIndex(_typeTransfinite, ii) {
-      _gradingInt[ _typeTransfinite[ii] ] = &(_grading[ ii ]);
+      _gradingInt[ _typeTransfinite[ii] ] = _grading[ ii ];
     }
     
     _tol = 1.e-8;
@@ -79,11 +76,41 @@ namespace dtOO {
         dtge->tag(), transType, reverse
       );      
       map1dTo3d const * const m1d = dtge->getMap1dTo3d();
-      
-      int nP = dtge->meshAttributes.nbPointsTransfinite;
-      std::vector< float > gg 
-      = 
-      float_scaOneDPoint(_gradingInt[transType], nP).result();
+
+      int const nP = dtge->meshAttributes.nbPointsTransfinite;
+      std::vector< float > gg
+      =
+      float_scaOneDPoint( _gradingInt[transType], nP ).result();
+      if (
+        _gradingInt[transType]->isCompound()
+      ) {
+        dt__info(
+          operator()(), 
+          << "Grading type = " << transType << " is a analyticFunctionCompound."
+        );
+        analyticFunctionCompoundTrojanHorse< scaOneD > trojanHorse(
+          _gradingInt[transType],
+          _gradingInt[transType]->vecRef(), 
+          _gradingInt[transType]->mapRef()
+        );
+        
+        if ( trojanHorse.hasTag( dtge->tag() ) ) {
+          dt__info(
+            operator()(), 
+            << "Grading type = " 
+            << transType << " contains a tagged compound of tag = "
+            << dtge->tag() << "."
+          );
+          
+          gg 
+          = 
+          float_scaOneDPoint(
+            trojanHorse.componentFromTag( dtge->tag() ), nP
+          ).result();
+            
+        }
+      }
+
       if ( reverse ) {
         dt__forAllRefAuto(gg, aGG) aGG = 1.-aGG;
         progHelper::reverse(gg);

@@ -25,9 +25,9 @@ namespace dtOO {
       );
       virtual void operator()( dtGmshEdge * dtge );  
     private:
-      dt__pVH(scaOneD) _grading;
+      dt__vH(scaOneD const *) _grading;
       std::vector< int > _typeTransfinite;
-      std::map< int, scaOneD * > _gradingInt;
+      std::map< int, scaOneD const * > _gradingInt;
       float _tol;
       int _maxSmooth;
   };
