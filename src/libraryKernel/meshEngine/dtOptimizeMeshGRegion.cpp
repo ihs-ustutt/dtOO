@@ -137,7 +137,6 @@ namespace dtOO {
     //
     ::optimizeMeshGRegionNetgen()(&cloneRegion);
     ::optimizeMeshGRegionGmsh()(&cloneRegion);
-    dtgr->model()->destroyMeshCaches();
     
     //
     // clean and reset dtgr mesh
