@@ -29,6 +29,7 @@
 #include "bVOSetRotationalPeriodicity.h"
 #include "bVOTransformMeshPoints.h"
 #include "bVOWriteSU2.h"
+#include "bVOSetPrescribedFirstElementSize.h"
 
 namespace dtOO {
   dt__pH(bVOInterfaceFactory) bVOInterfaceFactory::_instance(NULL);
@@ -109,6 +110,7 @@ namespace dtOO {
     _instance->_builder.push_back( new bVOTransformMeshPoints() );
     _instance->_builder.push_back( new bVOWriteSU2() );
     _instance->_builder.push_back( new bVOSetGradingToFaceRule() );
+    _instance->_builder.push_back( new bVOSetPrescribedFirstElementSize() );
     
     return _instance.get();
   }    

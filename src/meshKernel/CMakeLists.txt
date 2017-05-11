@@ -27,6 +27,7 @@ SET(HEADERS
   bVObserver/bVOSetRotationalPeriodicity.h
   bVObserver/bVOTransformMeshPoints.h
   bVObserver/bVOWriteSU2.h
+  bVObserver/bVOSetPrescribedFirstElementSize.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dGmsh.h
@@ -67,6 +68,7 @@ SET(SOURCES
   bVObserver/bVOAddFace.cpp
   bVObserver/bVOSetRotationalPeriodicity.cpp
   bVObserver/bVOTransformMeshPoints.cpp
+  bVObserver/bVOSetPrescribedFirstElementSize.cpp
   bVObserver/bVOWriteSU2.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
