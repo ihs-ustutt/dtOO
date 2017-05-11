@@ -85,10 +85,10 @@ namespace dtOO {
 //  }    
   
   void combineGmsh::makeGrid(void) {
-    dt__forAllRefAuto(_bV, aBV) {
-      aBV->makePreGrid();
-      aBV->makeGrid();
-    }
+    if ( !isPreMeshed() ) makePreGrid();
+    
+    dt__forAllRefAuto(_bV, aBV) if ( !aBV->isMeshed() ) aBV->makeGrid();
+        
 		//
 		// set current model
 		//
@@ -298,6 +298,11 @@ namespace dtOO {
       cc++;
     }
 
+    //
+    // update bounding box
+    //
+    gmshBoundedVolume::updateBoundingBox();
+    
     _gm->removeDuplicateMeshVertices( _duplicatePrecision );
     
     //
