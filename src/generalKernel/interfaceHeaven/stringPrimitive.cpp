@@ -227,13 +227,6 @@ namespace dtOO {
         !stringContains(signEnd, valueStr) 
       ) break;      
 		}
-    
-    dt__debug(
-      convertToStringVector(), 
-      << "Convert >" << std::endl << str << std::endl << "<" << std::endl
-      << "to" << std::endl
-      << ">" << std::endl << values << std::endl << "<"
-    );    
 
 		return values;
 	}
