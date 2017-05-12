@@ -49,29 +49,18 @@ namespace dtOO {
     
     dt__info(
       compute(), 
-      << "**************************************************" << std::endl
-      << "*     .___  __    ________   ________   " << std::endl
-      << "*   __| _/_/  |_  \\_____  \\  \\_____  \\  " << std::endl
-      << "*  / __ | \\   __\\  /   |   \\  /   |   \\ " << std::endl
-      << "* / /_/ |  |  |   /    |    \\/    |    \\" << std::endl
-      << "* \\____ |  |__|   \\_______  /\\_______  /" << std::endl
-      << "*      \\/                 \\/         \\/ " << std::endl
+      << "**********************************************"
+         "**********************************" << std::endl
+      << "* " << std::endl
       << "* (d)esign (t)ool (O)bject-(O)riented" << std::endl                    
       << "* " << std::endl
+      << "* version : " << dtOO::git::versionMajor
+      << "." << dtOO::git::versionMinor
+      << "." << dtOO::git::versionCommitNo
+      << " ( " << dtOO::git::versionName << " )" << std::endl
       << "* " << std::endl
-      << "* " << dt__eval(dtOO::git::branch) << std::endl
-      << "* " << dt__eval(dtOO::git::version) << std::endl
-      << "* " << dt__eval(dtOO::git::versionName) << std::endl      
-      << "* " << dt__eval(dtOO::git::versionMajor) << std::endl
-      << "* " << dt__eval(dtOO::git::versionMinor) << std::endl
-      << "* " << dt__eval(dtOO::git::versionCommitNo) << std::endl
-      << "* " << dt__eval(dtOO::git::versionSha1) << std::endl
-      << "* " << dt__eval(dtOO::git::versionShort) << std::endl
-      << "* " << std::endl
-      << "* " << dt__eval(std::numeric_limits<float>::epsilon()) << std::endl
-      << "* " << dt__eval(std::numeric_limits<double>::epsilon()) << std::endl
-      << "*"  << std::endl
-      << "**************************************************" << std::endl
+      << "**********************************************"
+         "**********************************" << std::endl
       << " "
 		);		
 		
