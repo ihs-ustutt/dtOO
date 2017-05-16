@@ -137,6 +137,11 @@ std::string parseCommand(
     parser.extract(addRule[0], cV, addRule[1]);
     return std::string("");    
   }       
+  dt__commandIf( aRule, help, "extractAll", "extract all states" ) {
+    dt__throwIfNoClass(addRule.size()!=0, parseCommand());
+    parser.extractAll(cV);
+    return std::string("");
+  }         
   dt__commandIf( 
     aRule, help, "createAnalyticFunction", "create analyticFunctions" 
   ) {

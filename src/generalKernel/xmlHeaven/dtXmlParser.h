@@ -51,9 +51,10 @@ namespace dtOO {
         cVPtrVec const & cValP,
         std::string const fileName
       ) const;
+      void extractAll( cVPtrVec & cValP );
       void remove( std::string const stateName ) const;
       void load( void ) const;
-      std::vector< std::string > getStates( void );
+      std::vector< std::string > getStates( void ) const;
       bool hasState( std::string const stateName ) const;
       void loadStateToConst( std::string const stateName, cVPtrVec &cValRef );
       std::string currentState( void ) const;

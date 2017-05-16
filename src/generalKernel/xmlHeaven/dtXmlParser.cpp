@@ -293,10 +293,9 @@ namespace dtOO {
     dt__info(loadStateToConst(), << "Current working state: " << _currentState);
   }
    
-  std::vector< std::string > dtXmlParser::getStates(void) {
-    if (_rootLoad.isNull()) {
-      dt__throw(getStates, << dt__eval(_rootLoad.isNull()) );
-    }
+  std::vector< std::string > dtXmlParser::getStates(void) const {
+    dt__throwIf( _rootLoad.isNull(), getStates() );
+      
     std::vector< std::string > labels;
     getChildLabels("state", &labels, _rootLoad);
     return labels;
@@ -475,6 +474,13 @@ namespace dtOO {
       extract(),
       << "Extract state = " << stateName << " to separate file = " << fileName
     );
+  }
+  
+  void dtXmlParser::extractAll( cVPtrVec & cValP ) {
+    dt__forAllRefAuto( getStates(), aState) {
+      loadStateToConst(aState, cValP);
+      extract(aState, cValP, aState+".xml");
+    }
   }  
 
   void dtXmlParser::remove( std::string const stateName ) const {
