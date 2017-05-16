@@ -164,6 +164,28 @@ namespace dtOO {
 			l_dirs.push_back( ori );
 		}
   }  	
+
+  void dtGmshRegion::deleteFace( ::GFace * face ) {
+    std::list< ::GFace * > ff;
+    std::list< int > oo;    
+    std::list< ::GFace * >::iterator i;
+    std::list< int >::iterator j;
+    for( 
+      i = l_faces.begin(), 
+      j = l_dirs.begin(); 
+      i != l_faces.end() 
+      && 
+      j != l_dirs.end(); 
+      ++i, ++j
+    ) {
+      if ( (*i) != face ) {
+        ff.push_back( *i );
+        oo.push_back( *j );
+      }
+    }
+    l_faces = ff;
+    l_dirs = oo;
+  }  	
 	
   int dtGmshRegion::faceOrientation( ::GFace * face ) const {
     typedef std::list< ::GFace * >::const_iterator FIter;
@@ -243,6 +265,8 @@ namespace dtOO {
       if ( (*it) == toReplace ) (*it) = with;
     }
     replaceFaces(faces);
+    
+    dt__forAllRefAuto(dtEdges(), ee) ee->delFace( (::GFace*) toReplace );
   }  
 
 	std::string dtGmshRegion::dumpToString( void ) const {
@@ -305,10 +329,10 @@ namespace dtOO {
   }  
 
   std::list< dtGmshFace * > dtGmshRegion::dtFaces( void ) const {
-    return refDtGmshModel().cast2DtGmshFace( faces() );
+    return dtGmshModel::cast2DtGmshFace( faces() );
 	}    
 
   std::list< dtGmshEdge * > dtGmshRegion::dtEdges( void ) const {
-    return refDtGmshModel().cast2DtGmshEdge( edges() );
+    return dtGmshModel::cast2DtGmshEdge( edges() );
 	}      
 }

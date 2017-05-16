@@ -397,24 +397,18 @@ namespace dtOO {
   }  
 
   dtGmshRegion * dtGmshModel::cast2DtGmshRegion( ::GEntity * gr ){
-    dtGmshRegion * ret;
-    dt__mustCast(gr, dtGmshRegion, ret);
-    
-    return ret;
+    assert( gr!=NULL );
+    return dtGmshRegion::MustDownCast(gr);
   }
   
-  dtGmshFace * dtGmshModel::cast2DtGmshFace( ::GEntity * gf ){
-    dtGmshFace * ret;
-    dt__mustCast(gf, dtGmshFace, ret);
-    
-    return ret;
+  dtGmshFace * dtGmshModel::cast2DtGmshFace( ::GEntity * gf ){   
+    assert( gf!=NULL );
+    return dtGmshFace::MustDownCast(gf);
   }
   
   dtGmshEdge * dtGmshModel::cast2DtGmshEdge( ::GEntity * ge ) {
-    dtGmshEdge * ret;
-    dt__mustCast(ge, dtGmshEdge, ret);
-    
-    return ret;    
+    assert( ge!=NULL );
+    return dtGmshEdge::MustDownCast(ge);
   }
   
   std::list< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( 
@@ -448,10 +442,8 @@ namespace dtOO {
 	}	  
 	
   dtGmshVertex * dtGmshModel::cast2DtGmshVertex( ::GEntity * gv ) {
-    dtGmshVertex * ret;
-    dt__mustCast(gv, dtGmshVertex, ret);
-    
-    return ret;    
+    assert( gv!=NULL );
+    return dtGmshVertex::MustDownCast(gv);
   }
 
   std::list< dtGmshVertex * > dtGmshModel::cast2DtGmshVertex( 
@@ -1345,7 +1337,7 @@ namespace dtOO {
       untagPhysical(),
       << getPhysicalNames(ge->dim(), ge->physicals)
     );
-		
+		  
 		ge->physicals.clear();
 	}
 	
@@ -1398,6 +1390,10 @@ namespace dtOO {
   void dtGmshModel::removeEmptyPhysicals( void ) {
     logContainer< dtGmshModel > logC(logDEBUG, "removeEmptyPhysicals()");
     
+    std::map< std::pair< int, int >, bool > keepName;
+    dt__forAllRefAuto( GModel::physicalNames, aPair ) {
+      keepName[ aPair.first ] = false;
+    }
     dtGmshModel::intGEntityVMap ge_number;
     //
     // for each dimension
@@ -1417,8 +1413,18 @@ namespace dtOO {
           logC() << "    --> delete" << std::endl;
           GModel::deletePhysicalGroup(dim, nIt->first);
         }
+        else keepName[ std::pair< int, int >(dim, nIt->first) ] = true;
       }
     }
+    dt__forAllRefAuto( keepName, aPair ) {
+      logC() << "Check " << GModel::physicalNames[aPair.first] << std::endl;
+      if ( !aPair.second ) {
+        GModel::physicalNames.erase(
+          GModel::physicalNames.find( aPair.first )
+        );
+        logC() << "  --> erase" << std::endl;
+      }
+    }    
   }
   
   bool dtGmshModel::matchWildCardPhysical( 

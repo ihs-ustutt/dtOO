@@ -37,6 +37,7 @@ namespace dtOO {
     void meshRecombineRecursive( void );    
     void meshUnstructured( void );
     void addFace( ::GFace * face, int const ori );
+    void deleteFace( ::GFace * face );
     int faceOrientation( ::GFace * face ) const;
     void addGEntity( ::GEntity * const gEnt );
     void addElement( ::MElement * me );
