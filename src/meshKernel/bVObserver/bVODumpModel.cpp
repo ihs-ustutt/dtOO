@@ -49,17 +49,53 @@ namespace dtOO {
           << std::endl;											        
       }
 		}
-    dt__forAllRefAuto(gm->faces(), aF) {
+    dt__forAllRefAuto(gm->vertices(), aV) {
+      if (!aV) {
+        logC() << "dtGmshVertex[] = NULL" << std::endl;
+        continue;
+      }
       logC() 
-        << logMe::dtFormat("dtGmshFace[ %3i ] = %s")
-          % aF->tag() % gm->getPhysicalString(aF)
-        << std::endl;
+        << logMe::dtFormat("dtGmshVertex[ %3i ] = %s ( %x )")
+          % aV->tag() % gm->getPhysicalString(aV) % aV
+        << std::endl
+        << "  edges = " << aV->edges() << std::endl;
+    }        
+    dt__forAllRefAuto(gm->edges(), aE) {
+      if (!aE) {
+        logC() << "dtGmshEdge[] = NULL" << std::endl;
+        continue;
+      }
+      logC() 
+        << logMe::dtFormat("dtGmshEdge[ %3i ] = %s ( %x )")
+          % aE->tag() % gm->getPhysicalString(aE) % aE
+        << std::endl
+        << "  faces = " << aE->faces() << std::endl      
+        << "  vertices = " << aE->vertices() << std::endl;      
+    }    
+    dt__forAllRefAuto(gm->faces(), aF) {
+      if (!aF) {
+        logC() << "dtGmshFace[] = NULL" << std::endl;
+        continue;
+      }
+      logC() 
+        << logMe::dtFormat("dtGmshFace[ %3i ] = %s ( %x )")
+          % aF->tag() % gm->getPhysicalString(aF) % aF
+        << std::endl
+        << "  edges = " << aF->edges() << std::endl
+        << "  orientations = " << aF->orientations() << std::endl
+        << "  regions = " << aF->regions() << std::endl;
     }
     dt__forAllRefAuto(gm->regions(), aR) {
+      if (!aR) {
+        logC() << "dtGmshRegion[] = NULL" << std::endl;
+        continue;
+      }      
       logC() 
-        << logMe::dtFormat("dtGmshRegion[ %3i ] = %s")
-          % aR->tag() % gm->getPhysicalString(aR)
-        << std::endl;
+        << logMe::dtFormat("dtGmshRegion[ %3i ] = %s ( %x )")
+          % aR->tag() % gm->getPhysicalString(aR) % aR
+        << std::endl
+        << "  faceList = " << aR->faces() << std::endl
+        << "  faceOrientations = " << aR->faceOrientations() << std::endl;
     }              
     logC()
       << "Gmsh fieldManager:" << std::endl
