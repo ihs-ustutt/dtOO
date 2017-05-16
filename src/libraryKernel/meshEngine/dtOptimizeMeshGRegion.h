@@ -28,11 +28,13 @@ namespace dtOO {
   public:
     dt__classOnlyName(dtOptimizeMeshGRegion);     
     dtOptimizeMeshGRegion();
+    dtOptimizeMeshGRegion( bool gmsh, bool netgen );
     dtOptimizeMeshGRegion(const dtOptimizeMeshGRegion& orig);    
     virtual ~dtOptimizeMeshGRegion();
     void operator()( dtGmshRegion * dtgr );    
   private:
-
+    bool _gmsh;
+    bool _netgen;
   };
 }
 #endif	/* DTOPTIMIZEMESHGREGION_H */

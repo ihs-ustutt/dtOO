@@ -14,15 +14,25 @@
 
 namespace dtOO {
   dtOptimizeMeshGRegion::dtOptimizeMeshGRegion() : dtMesh3DOperator() {
+    _gmsh = true;
+    _netgen = true;
   }
 
+  dtOptimizeMeshGRegion::dtOptimizeMeshGRegion(
+    bool gmsh, bool netgen
+  ) : dtMesh3DOperator() {
+    _gmsh = gmsh;
+    _netgen = netgen;
+  }
+  
   dtOptimizeMeshGRegion::~dtOptimizeMeshGRegion() {
   }
   
   dtOptimizeMeshGRegion::dtOptimizeMeshGRegion(
     const dtOptimizeMeshGRegion& orig
   ) : dtMesh3DOperator(orig) {
-    
+    _gmsh = orig._gmsh;
+    _netgen = orig._netgen;
   }
   
   void dtOptimizeMeshGRegion::operator()( dtGmshRegion * dtgr) {
@@ -44,8 +54,8 @@ namespace dtOO {
     //
     // add region to model
     //
-    cloneRegion.addFace( &cloneFace, 1 );
-    cloneRegion.addFace( &cloneFaceApex, 1 );
+    cloneRegion.addGEntity( &cloneFace );
+    cloneRegion.addGEntity( &cloneFaceApex );
     dtgr->model()->add( &cloneFace );
     dtgr->model()->add( &cloneFaceApex );
     dtgr->model()->add( &cloneRegion );    
@@ -135,8 +145,8 @@ namespace dtOO {
     //
     // do optimization
     //
-    ::optimizeMeshGRegionNetgen()(&cloneRegion);
-    ::optimizeMeshGRegionGmsh()(&cloneRegion);
+    if (_gmsh) ::optimizeMeshGRegionGmsh()(&cloneRegion);    
+    if (_netgen) ::optimizeMeshGRegionNetgen()(&cloneRegion);
     
     //
     // clean and reset dtgr mesh
@@ -176,6 +186,11 @@ namespace dtOO {
     cloneFaceApex.mesh_vertices.clear();
     cloneFaceApex.triangles.clear();
     
+    
+    cloneRegion.deleteFace(&cloneFace);
+    cloneRegion.deleteFace(&cloneFaceApex);
+    cloneFace.delRegion(&cloneRegion);
+    cloneFaceApex.delRegion(&cloneRegion);
     
     dtgr->model()->remove(&cloneRegion);
     dtgr->model()->remove(&cloneFace);    
