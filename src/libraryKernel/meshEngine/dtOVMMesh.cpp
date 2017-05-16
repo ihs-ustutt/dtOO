@@ -166,4 +166,21 @@ namespace dtOO {
       const_cast< ::MElement *>(anEl)->setPartition(num);
     }
   }
+  std::vector< dtPoint3 > dtOVMMesh::adjacentVertices( 
+    ovmVertexH const & vH
+  ) const {
+    std::vector< dtPoint3 > pp;
+    for (
+      ovmVertexOHalfedgeI heIt = voh_iter(vH); heIt.valid(); heIt++
+    ) {
+      dt__throwIf(halfedge(*heIt).to_vertex()==vH, createPyramids());
+      pp.push_back(
+        dtGmshModel::extractPosition(
+          at( halfedge(*heIt).to_vertex() )
+        )
+      );
+    }
+    
+    return pp;
+  }
 }

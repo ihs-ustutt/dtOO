@@ -35,6 +35,7 @@ namespace dtOO {
       // misc
       //
       void makePartition( int const & num ) const;
+      std::vector< dtPoint3 > adjacentVertices( ovmVertexH const & vH) const;
     private:
       ovmVertexH addVertex( ::MVertex * mv );
       ovmHalffaceH addFace( ::MVertex * mv0, ::MVertex * mv1, ::MVertex * mv2 );      
