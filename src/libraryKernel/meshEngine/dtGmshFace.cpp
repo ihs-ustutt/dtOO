@@ -70,17 +70,17 @@ namespace dtOO {
 //		dt__info(
 //			~dtGmshFace(), << "Removing face tag = " << tag() << " on all edges."	
 //		);
-//		std::list< ::GEdge * > ee = edges();
-//		dt__forAllIter(std::list< ::GEdge * >, ee, it) {
-//			(*it)->delFace(this);
-//		}
-//		this->model()->remove(this);
-//		std::list< ::GRegion * > rr = regions();
-//		dt__forAllIter(std::list< ::GRegion * >, rr, it) {
-//			std::list< ::GFace * > ff = (*it)->faces();
-//			std::list< ::GFace * >::iterator itF = std::find(ff.begin(), ff.end(), this);
-//			if(itF != ff.end()) ff.erase(itF);		
-//		}		
+//		dt__forAllRefAuto(edges(), ee) ee->delFace(this);
+//		   
+//		dt__info(
+//			~dtGmshFace(), << "Removing face tag = " << tag() << " on all regions."	
+//		);
+//		dt__forAllRefAuto(dtRegions(), rr) rr->deleteFace( this );
+//    
+//    dt__info(
+//			~dtGmshFace(), << "Removing face tag = " << tag() << " on model."	
+//		);    
+//		if ( model() ) model()->remove(this);    
   }
   
   dtGmshModel const & dtGmshFace::refDtGmshModel( void ) const {
@@ -718,10 +718,14 @@ namespace dtOO {
   }
 
   std::list< dtGmshVertex * > dtGmshFace::dtVertices( void ) const {
-    return refDtGmshModel().cast2DtGmshVertex( vertices() );
+    return dtGmshModel::cast2DtGmshVertex( vertices() );
 	}
 	
   std::list< dtGmshEdge * > dtGmshFace::dtEdges( void ) const {
-    return refDtGmshModel().cast2DtGmshEdge( edges() );
+    return dtGmshModel::cast2DtGmshEdge( edges() );
 	}  
+
+  std::list< dtGmshRegion * > dtGmshFace::dtRegions( void ) const {
+    return dtGmshModel::cast2DtGmshRegion( regions() );
+	}
 }

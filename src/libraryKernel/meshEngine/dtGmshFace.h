@@ -16,6 +16,7 @@ namespace dtOO {
   class dtGmshModel;
   class dtGmshVertex;
   class dtGmshEdge;
+  class dtGmshRegion;
     
   class dtGmshFace : public ::GFace {
   public:
@@ -82,6 +83,7 @@ namespace dtOO {
     );
     std::list< dtGmshVertex * > dtVertices( void ) const;   
     std::list< dtGmshEdge * > dtEdges( void ) const;     
+    std::list< dtGmshRegion * > dtRegions( void ) const;     
   private:
     static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
   private:
