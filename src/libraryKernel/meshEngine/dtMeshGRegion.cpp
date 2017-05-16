@@ -61,33 +61,27 @@ namespace dtOO {
     //
     // transfinite meshing
     //
-    if (
-      dtgr->meshAttributes.method == MESH_TRANSFINITE
-    ) {
-      std::vector< ::GRegion * > delauny;      
+    if ( dtgr->meshAttributes.method == MESH_TRANSFINITE ) {
+      std::vector< ::GRegion * > delauny;
       ::meshGRegion mr( delauny );
-      mr(dtgr);    
-      MeshDelaunayVolume(delauny);   
+      mr(dtgr);
+      MeshDelaunayVolume(delauny);
       
       dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;      
       
       return;
     }
-    
-    std::list< dtGmshFace * > faces 
-    = 
-    dtGmshModel::cast2DtGmshFace( dtgr->faces() );
-    
+       
     //
     // get number of quad faces
     //
     int quadFaces = 0;
     int quads = 0;
     int elems = 0;
-    dt__forAllIter(std::list< dtGmshFace * >, faces, it) {
-      quads = quads + (*it)->quadrangles.size();
-      elems = elems + (*it)->getNumMeshElements();
-      if ( (*it)->quadrangles.size() ) {
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshFace( dtgr->faces() ), gf ) {
+      quads = quads + gf->quadrangles.size();
+      elems = elems + gf->getNumMeshElements();
+      if ( gf->quadrangles.size() ) {
         quadFaces++;
       }
     }
@@ -116,34 +110,27 @@ namespace dtOO {
       mr(dtgr);    
       MeshDelaunayVolume(delauny);
       dtOptimizeMeshGRegion()(dtgr);
-//      ::optimizeMeshGRegionGmsh()(dtgr);
 
       dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
     }
   }
   
-  void dtMeshGRegion::createPyramids( dtGmshRegion * dtgr ) {
-    std::list< dtGmshFace * > faces 
-    = 
-    dtGmshModel::cast2DtGmshFace( dtgr->faces() );
+  void dtMeshGRegion::createPyramids( dtGmshRegion * dtgr ) {   
+    logContainer< dtMeshGRegion > logC(logINFO, "createPyramids()");
     
     std::map< dtGmshFace *, dtGmshFace * > pseudo_org;
     std::vector< ::MPyramid * > pyramids;
     std::vector< ::MVertex * > vertices;    
     
-    dt__forAllIter(std::list< dtGmshFace * >, faces, it) {
-      dtGmshFace * gf = *it;    
-      
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshFace( dtgr->faces() ), gf ) {
       //
       // modify only quadrangle surfaces
       //
       if (gf->quadrangles.size() == 0) continue;
 
-      dt__info(
-        createPyramids(), 
+      logC()
         << "Face " << gf->tag() << " contains quadrangles." << std::endl
-        << "Remove face temporarily."
-      );
+        << "Remove face temporarily." << std::endl;
 
       //
       // create new pseudo face
@@ -252,11 +239,10 @@ namespace dtOO {
       pseudo->meshStatistics.status = ::GEntity::MeshGenerationStatus::DONE;
     }
     
-    dt__debug(
-      createPyramids(), 
+    logC()
       << "Region: " << std::endl
       << dtgr->dumpToString()
-    );
+      << std::endl;
     
     //
     // call meshing again
@@ -266,22 +252,33 @@ namespace dtOO {
     //
     // add mesh vertices and pyramids to old volume
     //
-    dt__forAllIter(std::vector< ::MVertex * >, vertices, it) {
-      (*it)->setEntity(dtgr);
-      dtgr->addMeshVertex(*it);
+    std::map< ::MVertex *, float > minQ_mv;
+    dt__forAllRefAuto(vertices, aVert) {
+      aVert->setEntity(dtgr);
+      dtgr->addMeshVertex(aVert);
+      minQ_mv[ aVert ] = std::numeric_limits<float>::min();
     }
-    dt__forAllIter(std::vector< ::MPyramid * >, pyramids, it) {
-      dtgr->addPyramid( (*it) );
-    }
+    dt__forAllRefAuto(pyramids, aPyr) dtgr->addPyramid( aPyr );
     
     //
     // delete created pseudo GFace
     //
-    for (auto it : pseudo_org) {
-      it.second->mesh_vertices.clear();
-      it.second->deleteMesh();
-      dtgr->replaceFace(it.second, it.first);        
-      dtgr->model()->remove(it.second);
+    dt__forAllRefAuto(pseudo_org, aPair) {
+      //
+      // clear mesh
+      //
+      aPair.second->mesh_vertices.clear();
+      aPair.second->deleteMesh();
+      
+      //
+      // replace face
+      //
+      dtgr->replaceFace(aPair.second, aPair.first);
+
+      //
+      // remove in model
+      //
+      dtgr->model()->remove(aPair.second);
     }
     
     //
@@ -290,195 +287,122 @@ namespace dtOO {
     barChart QTet_0("QTet_0", -1., 1., 30);
     dt__forAllRefAuto(dtgr->tetrahedra, aTet) QTet_0( qShapeMetric()(aTet) );
     dt__info(createPyramids(), << QTet_0);
-    
-    //
-    // create overall element vector
-    //
-    std::vector< ::MElement * > me(dtgr->getNumMeshElements());
-    dt__forFromToIndex(0, dtgr->getNumMeshElements(), ii) {
-     me[ii] = dtgr->getMeshElement(ii);
-    }
-    
-    //
-    // create octree
-    //
-    ::MElementOctree oct(me);
-    
-    //
-    // create OpenVolumeMesh
-    //
+          
     dtOVMMesh ovm;
-    ::OpenVolumeMesh::CellPropertyT< float > iV 
-    = 
-    ovm.request_cell_property< float >("iV");
-    ovm.set_persistent( iV );
+    createOVM(dtgr, ovm);
     
-    int zeroVol = 0;
-    dt__forAllRefAuto(pyramids, aPyr) {
-      dt__forFromToIndex(0, 5, ii) {
-        std::vector< ::MElement * > meVec 
-        = 
-        oct.findAll(
-          aPyr->getVertex(ii)->x(), 
-          aPyr->getVertex(ii)->y(), 
-          aPyr->getVertex(ii)->z(), 
-          -1
-        );       
-        dt__forAllRefAuto(meVec, aMe) {
-          if ( aMe->getVolume()==0. ) zeroVol++;
-          ovmCellH cH = ovm.addCell(aMe);
-          ovm.request_cell_property< float >("iV")[cH] = aMe->getVolume();
-        }
-      }
-    }
-    dt__info(
-      createPyramids(), 
-      << zeroVol << " zero-volumes detected."
-    );    
-        
     //
-    // pyramid open method
+    // first open
     //
-    float dynamicMinQShapeMetric = QTet_0.globalMin();
     dt__forAllRefAuto(vertices, aVert) {
       ovmVertexH const & vH = ovm.at( aVert );
       dt__throwIf(!vH.is_valid(), createPyramids());
-      
-      dtVector3 c0 
-      =
-      dtLinearAlgebra::toDtVector3( dtGmshModel::extractPosition(aVert) );
+
+      dtPoint3 cC = dtGmshModel::extractPosition(aVert);
 
       //
-      // collect all adjacent vertex positions
+      // set vertex position
       //
-      std::vector< dtVector3 > pp;
-      for (
-        ovmVertexOHalfedgeI heIt = ovm.voh_iter(vH); heIt.valid(); heIt++
-      ) {
-        dt__throwIf(ovm.halfedge(*heIt).to_vertex()==vH, createPyramids());
-        pp.push_back(
-          dtLinearAlgebra::toDtVector3(
-            dtGmshModel::extractPosition(
-              ovm.at( ovm.halfedge(*heIt).to_vertex() )
-            )          
-          )
-        );
-      }
-      dtVector3 c1
+      std::vector< dtPoint3 > pp = ovm.adjacentVertices(vH);
+      dtPoint3 c1
       = 
-      (1./pp.size()) * dtLinearAlgebra::sum(pp);
-      ovm.replacePosition( 
-        vH, dtLinearAlgebra::toDtPoint3( c0 + .01 * (c1-c0) ) 
+      dtLinearAlgebra::toDtPoint3( 
+        (1./pp.size()) 
+        * 
+        dtLinearAlgebra::sum( dtLinearAlgebra::toDtVector3(pp) )
       );
-      
-      for (
-        ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); vcIt++
-      ) ovm[ *vcIt ]->setPartition(abs(vH.idx()));        
-      
-      logContainer< dtMeshGRegion > logC(logDEBUG, "createPyramids()");
-        logC() 
-          << logMe::dtFormat(
-            "%3s / %3s : %8s | %8s | %8s | %8s | %8s %8s %8s"
-          )      
-            % "-" % "-"
-            % "min" % "mean" % "max"
-            % "pyr"
-            % "cC[0]" % "cC[1]" % "cC[2]"      
-          << std::endl;
-      float minQ = std::numeric_limits<float>::lowest();
-      dt__forFromToIndex(0, _nPyramidOpenSteps, ii) {
+      ovm.replacePosition( vH,  cC + 0.01 * (c1 - cC) );
+    }
+    dt__forAllRefAuto(pyramids, aPyr) {
+      if (aPyr->getVolume() < 0.) aPyr->reverse();
+    }
+        
+    //
+    // get minimal shape metric
+    //
+    float gMinQ = std::numeric_limits<float>::max();
+    dt__forAllRefAuto(dtgr->tetrahedra, aTet) {
+      gMinQ = std::min( qShapeMetric()( aTet ), gMinQ );
+    }
+    dt__forAllRefAuto(dtgr->pyramids, aPyr) {
+      gMinQ = std::min( qShapeMetric()( aPyr ), gMinQ );
+    }
+    
+    //
+    // pyramid open method
+    //
+    dt__forFromToIndex(0, _nPyramidOpenSteps, ii) {
+      int vertMove = 0;
+      int vertFix = 0;
+      dt__forAllRefAuto(vertices, aVert) {
+        ovmVertexH const & vH = ovm.at( aVert );
+        dt__throwIf(!vH.is_valid(), createPyramids());
+
+        dtPoint3 cC = dtGmshModel::extractPosition(aVert);
+
+        //
+        // set vertex position
+        //
+        std::vector< dtPoint3 > pp = ovm.adjacentVertices(vH);
+        dtPoint3 c1
+        = 
+        dtLinearAlgebra::toDtPoint3( 
+          (1./pp.size()) 
+          * 
+          dtLinearAlgebra::sum( dtLinearAlgebra::toDtVector3(pp) )
+        );
+        ovm.replacePosition( vH,  cC + _relax * (c1 - cC) );
+
         float pyrShape = std::numeric_limits<float>::min();
+        
         std::vector< float > qq;
         for(
           ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
         ) {
           qq.push_back( qShapeMetric()( ovm.at(*vcIt) ) );          
-          
+
+          // tetrahedra
           if ( ovm.at(*vcIt)->getNumVertices() == 4 ) { 
             //
             // detect volume sign change --> element gets inverted
             //
-            double vol = ovm[ *vcIt ]->getVolume();
-            
-            if ( 
-              ( 
-                ( ovm.request_cell_property< float >("iV")[*vcIt] * vol ) 
-                <= 
-                0. 
-              )
-              ||
-              ( 
-                fabs(vol)
-                <
-                fabs( 0.1 * ovm.request_cell_property< float >("iV")[*vcIt] ) 
-              )
-            ) {
+            float vol = ovm[ *vcIt ]->getVolume();
+            float iVol = ovm.request_cell_property< float >("iV")[*vcIt];
+            if ( ( iVol * vol ) <= 0. ) {
               qq[ qq.size() - 1 ] = -1. * fabs(qq[ qq.size() - 1 ]);
             }
           }
+          // pyramid
           else pyrShape = qq.back();
         }
-        
-        dtPoint3 cC = dtGmshModel::extractPosition( ovm[vH] );
-        logC() 
-          << logMe::dtFormat(
-            "%3i / %3i : %8.2e | %8.2e | %8.2e | %8.2e | %8.2e %8.2e %8.2e"
-          )
-            % ii
-            % _nPyramidOpenSteps
-            % progHelper::min(qq) 
-            % (dtLinearAlgebra::sum(qq) / qq.size() )
-            % progHelper::max(qq) 
-            % pyrShape
-            % cC.x()
-            % cC.y()
-            % cC.z()
-          << std::endl;   
-            
-        if ( 
-          (progHelper::min(qq) < minQ) 
-          && 
-          (pyrShape>=_minQShapeMetric) 
-          ||
-          (progHelper::min(qq)<0.)
-        ) {
-          //
-          // revert last step
-          //
-          
-          ovm.replacePosition( vH,  cC - _relax * (c1 - c0) );          
-          cC = dtGmshModel::extractPosition( ovm[vH] );
-          logC() 
-            << logMe::dtFormat( " ==> %8.2e %8.2e %8.2e" ) 
-              % cC.x() % cC.y() % cC.z() 
-            << std::endl;   
-        
-          break;
-        }
-        minQ = progHelper::min(qq);
-        
-//        dtgr->model()->writeMSH(
-//          "boundaryVertex_part_"
-//          +
-//          stringPrimitive::intToString(abs(vH.idx()))
-//          +
-//          "_"
-//          +
-//          stringPrimitive::intToString(ii+1)        
-//          +
-//          ".msh", 
-//          2.2, 
-//          false, 
-//          true,
-//          false, 
-//          1.,
-//          0,
-//          abs(vH.idx())
-//        );
-        ovm.replacePosition( vH,  cC + _relax * (c1 - c0) );
-      }
-    }
 
+        //
+        // check if step is not ok
+        //        
+        if ( 
+          (
+            (progHelper::min(qq) < gMinQ)// min shape metric should not decrease
+            && 
+            (pyrShape < _minQShapeMetric)// check pyramid shape metric
+          )
+          ||
+          (progHelper::min(qq)<0.)// inverted element
+        ) {
+          // revert last step
+          ovm.replacePosition( vH,  cC );
+          vertFix++;
+        }
+        else {
+          gMinQ = std::min( progHelper::min(qq), gMinQ );
+          minQ_mv[ aVert ] = progHelper::min(qq);
+          vertMove++;
+        }
+      }
+      logC() 
+        << logMe::dtFormat("%3i / %3i : %8i / %8i => Q = %8.2e")
+          % ii % _nPyramidOpenSteps % vertMove % vertFix % gMinQ
+        << std::endl;
+    }
     barChart QTet_1("QTet_1", -1., 1., 30);
     dt__forAllRefAuto(dtgr->tetrahedra, aTet) {
       QTet_1( fabs(qShapeMetric()(aTet)) );
@@ -504,6 +428,48 @@ namespace dtOO {
       QPyr_2( fabs(qShapeMetric()(aPyr)) );
     }
     dt__info(createPyramids(), << QPyr_2);
+  }
+  
+  void  dtMeshGRegion::createOVM(dtGmshRegion * dtgr, dtOVMMesh & ovm) {
+    //
+    // create overall element vector
+    //
+    std::vector< ::MElement * > me(dtgr->getNumMeshElements());
+    dt__forFromToIndex(0, dtgr->getNumMeshElements(), ii) {
+     me[ii] = dtgr->getMeshElement(ii);
+    }
+    
+    //
+    // create octree
+    //
+    ::MElementOctree oct(me);
+    
+    //
+    // create OpenVolumeMesh
+    //
+    ::OpenVolumeMesh::CellPropertyT< float > iV 
+    = 
+    ovm.request_cell_property< float >("iV");
+    ovm.set_persistent( iV );
+    
+    int zeroVol = 0;
+    dt__forAllRefAuto(dtgr->pyramids, aPyr) {
+      dt__forFromToIndex(0, 5, ii) {
+        std::vector< ::MElement * > meVec 
+        = 
+        oct.findAll(
+          aPyr->getVertex(ii)->x(), 
+          aPyr->getVertex(ii)->y(), 
+          aPyr->getVertex(ii)->z(), 
+          -1
+        );       
+        dt__forAllRefAuto(meVec, aMe) {
+          if ( aMe->getVolume()==0. ) zeroVol++;
+          ovmCellH cH = ovm.addCell(aMe);
+          ovm.request_cell_property< float >("iV")[cH] = aMe->getVolume();
+        }
+      }
+    }
   }
 }
 

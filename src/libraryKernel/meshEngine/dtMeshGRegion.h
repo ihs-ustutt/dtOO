@@ -5,6 +5,7 @@
 #include <logMe/dtMacros.h>
 #include "dtMesh3DOperator.h"
 #include "dtOVMMesh.h"
+#include "dtGmshRegion.h"
 
 namespace dtOO {
   class dtGmshRegion;
@@ -28,6 +29,7 @@ namespace dtOO {
     void operator()( dtGmshRegion * dtgr );    
   private:
     void createPyramids( dtGmshRegion * dtgr );
+    void createOVM(dtGmshRegion * dtgr, dtOVMMesh & ovm);
   private:
     float _relax;
     float _minQShapeMetric;
