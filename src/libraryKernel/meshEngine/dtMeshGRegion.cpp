@@ -27,6 +27,7 @@ namespace dtOO {
     _minQShapeMetric = orig._minQShapeMetric;
     _nPyramidOpenSteps = orig._nPyramidOpenSteps;
     _nSmooths = orig._nSmooths;
+    _maxHeight = orig._maxHeight;
   }
 
   dtMeshGRegion::~dtMeshGRegion() {
@@ -55,6 +56,12 @@ namespace dtOO {
     _nSmooths
     = 
     qtXmlBase::getAttributeIntMuParse("nSmooths", element, cV, aF);   
+    _maxHeight = std::numeric_limits<float>::max();
+    if ( qtXmlBase::hasAttribute("maxHeight", element) ) {
+      _maxHeight
+      = 
+      qtXmlBase::getAttributeFloatMuParse("maxHeight", element, cV, aF);       
+    }
   }
 
   void dtMeshGRegion::operator()( dtGmshRegion * dtgr) {
@@ -109,7 +116,7 @@ namespace dtOO {
       ::meshGRegion mr( delauny );
       mr(dtgr);    
       MeshDelaunayVolume(delauny);
-      dtOptimizeMeshGRegion()(dtgr);
+      dt__forFromToIndex(0, _nSmooths, ii) dtOptimizeMeshGRegion()(dtgr);
 
       dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
     }
@@ -321,11 +328,17 @@ namespace dtOO {
     // get minimal shape metric
     //
     float gMinQ = std::numeric_limits<float>::max();
+    float gPyrMinQ = std::numeric_limits<float>::max();
+    float gMinL = std::numeric_limits<float>::max();
+    float gMaxL = std::numeric_limits<float>::min();
     dt__forAllRefAuto(dtgr->tetrahedra, aTet) {
       gMinQ = std::min( qShapeMetric()( aTet ), gMinQ );
+      gMinL = std::min<float>(aTet->minEdge(), gMinL);
+      gMaxL = std::max<float>(aTet->maxEdge(), gMaxL);
     }
     dt__forAllRefAuto(dtgr->pyramids, aPyr) {
       gMinQ = std::min( qShapeMetric()( aPyr ), gMinQ );
+      gPyrMinQ = std::min( qShapeMetric()( aPyr ), gPyrMinQ );
     }
     
     //
@@ -354,7 +367,7 @@ namespace dtOO {
         ovm.replacePosition( vH,  cC + _relax * (c1 - cC) );
 
         float pyrShape = std::numeric_limits<float>::min();
-        
+        ::MPyramid * pyr = NULL;;
         std::vector< float > qq;
         for(
           ovmVertexCellI vcIt = ovm.vc_iter(vH); vcIt.valid(); ++vcIt
@@ -373,34 +386,41 @@ namespace dtOO {
             }
           }
           // pyramid
-          else pyrShape = qq.back();
+          else {
+            pyrShape = qq.back();
+            pyr = dynamic_cast< ::MPyramid * >( ovm[*vcIt] );            
+          }
         }
-
+            
         //
         // check if step is not ok
         //        
-        if ( 
-          (
-            (progHelper::min(qq) < gMinQ)// min shape metric should not decrease
-            && 
-            (pyrShape < _minQShapeMetric)// check pyramid shape metric
-          )
-          ||
-          (progHelper::min(qq)<0.)// inverted element
-        ) {
+        // min shape metric should not decrease
+        if ( progHelper::min(qq) < gMinQ ) {
+          ovm.replacePosition( vH,  cC );
+          vertFix++;          
+        }
+        // inverted element
+        else if (progHelper::min(qq)<0.) {
+          ovm.replacePosition( vH,  cC );
+          vertFix++;          
+        }
+        // pyramid violates maxHeight
+        else if ( pyramidHeight(pyr) > _maxHeight ) {
           // revert last step
           ovm.replacePosition( vH,  cC );
           vertFix++;
         }
         else {
           gMinQ = std::min( progHelper::min(qq), gMinQ );
+          gPyrMinQ = std::min( pyrShape, gPyrMinQ );
           minQ_mv[ aVert ] = progHelper::min(qq);
           vertMove++;
         }
       }
       logC() 
-        << logMe::dtFormat("%3i / %3i : %8i / %8i => Q = %8.2e")
-          % ii % _nPyramidOpenSteps % vertMove % vertFix % gMinQ
+        << logMe::dtFormat("%3i / %3i : %8i / %8i => Q = %8.2e / Q_pyr = %8.2e")
+          % ii % _nPyramidOpenSteps % vertMove % vertFix % gMinQ % gPyrMinQ
         << std::endl;
     }
     barChart QTet_1("QTet_1", -1., 1., 30);
@@ -470,6 +490,24 @@ namespace dtOO {
         }
       }
     }
+  }
+  
+  float dtMeshGRegion::pyramidHeight( ::MPyramid * pyr ) {
+    SPoint3 bary = pyr->getFace(4).barycenter();
+    return
+      sqrt(
+        (bary.x() - pyr->getVertex(4)->x())
+        *
+        (bary.x() - pyr->getVertex(4)->x())
+        +
+        (bary.y() - pyr->getVertex(4)->y())
+        *
+        (bary.y() - pyr->getVertex(4)->y())
+        +
+        (bary.z() - pyr->getVertex(4)->z())
+        *
+        (bary.z() - pyr->getVertex(4)->z())
+      );
   }
 }
 

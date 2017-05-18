@@ -7,6 +7,8 @@
 #include "dtOVMMesh.h"
 #include "dtGmshRegion.h"
 
+class MPyramid;
+
 namespace dtOO {
   class dtGmshRegion;
   class dtGmshFace;
@@ -30,9 +32,11 @@ namespace dtOO {
   private:
     void createPyramids( dtGmshRegion * dtgr );
     void createOVM(dtGmshRegion * dtgr, dtOVMMesh & ovm);
+    static float pyramidHeight( ::MPyramid * pyr );
   private:
     float _relax;
     float _minQShapeMetric;
+    float _maxHeight;
     int _nPyramidOpenSteps;
     int _nSmooths;
   };
