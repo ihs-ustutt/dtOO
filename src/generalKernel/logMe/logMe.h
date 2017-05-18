@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <vector>
 #include <map>
+#include <list>
 #include <boost/format.hpp>
 //------------------------------------------------------------------------------
 #include <exceptionHeaven/eGeneral.h>
@@ -36,6 +37,14 @@ namespace dtOO {
     os << " ]";
     return os;
   }    
+  template< class T >
+  std::ostream& operator<<(std::ostream& os, const std::list< T >& toLog) {
+    typename std::list< T >::const_iterator cIt;
+    os <<  "[ ";
+    for (cIt = toLog.begin(); cIt!=toLog.end(); ++cIt) os << *cIt << " | ";
+    os << " ]";
+    return os;
+  }
   
   //
   // functions
