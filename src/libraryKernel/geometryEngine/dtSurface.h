@@ -108,6 +108,9 @@ namespace dtOO {
       int const & dir, float const at, float const from, float const to
     ) const;
     dtPoint2 reparamPercent(dtPoint3 const point) const;
+    static bool inXYZTolerance(
+      dtPoint3 const & p0, dtPoint3 const & p1
+    );
   };
   dt__H_addCloneForpVH(dtSurface);
 }

@@ -298,20 +298,25 @@ namespace dtOO {
     dt__warnIfWithSolution(
       ext.NbExt()==0, return dtSurface::reparam(point), reparam() 
     );
-    dt__warnIf(ext.NbExt()>1, reparam());
 
 		Extrema_POnSurf epp;
-    dt__tryOcc(
-      epp = ext.Point(1); 
+    dt__forFromToIndex( 0, ext.NbExt(), i ) {
+      epp = ext.Point(i+1);
       epp.Parameter(U, V);
-      , << ""
-    );
-
-    return dtPoint2(
-      floatHandling::boundToRange(U, minU(), maxU()),
-      floatHandling::boundToRange(V, minV(), maxV())
-    );
-	}
+      if ( 
+        dtSurface::inXYZTolerance(
+          dtPoint3(epp.Value().X(), epp.Value().Y(), epp.Value().Z()), point
+        ) 
+      ) {
+        return dtPoint2(
+          floatHandling::boundToRange(U, minU(), maxU()),
+          floatHandling::boundToRange(V, minV(), maxV())
+        );        
+      }
+    }
+    dt__warning( reparam(), << "No point found that is in tolerance.");
+    return dtSurface::reparam(point);
+  }
 	
 	std::string dtOCCSurface::dumpToString( void ) const {
 		std::stringstream ss;

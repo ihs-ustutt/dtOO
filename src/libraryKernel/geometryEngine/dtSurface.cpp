@@ -6,6 +6,7 @@
 #include "dtCurve2d.h"
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/calculationTypeHandling.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <vector>
 
 #include "geoBuilder/uv_geomSurfaceClosestPoint.h"
@@ -200,6 +201,19 @@ namespace dtOO {
 		dtPoint2 ppUV = reparam(point);
 		return dtPoint2( uPercent_u(ppUV.x()), vPercent_v(ppUV.y()) );
 	}
+  
+  bool dtSurface::inXYZTolerance( dtPoint3 const & p0, dtPoint3 const & p1 ) {
+		float xyzResolution 
+		= 
+    staticPropertiesHandler::getInstance()->getOptionFloat(
+      "xyz_resolution"
+    );    		
+    
+		dtVector3 dist = p0 - p1;
+		if (sqrt(dist.squared_length()) > xyzResolution)  return false;
+
+    return true;    
+  }  
 	
 	//
 	//
