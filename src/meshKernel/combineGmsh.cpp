@@ -6,7 +6,7 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
-#include <xmlHeaven/qtXmlBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
@@ -24,7 +24,6 @@
 
 namespace dtOO {
 	combineGmsh::combineGmsh() : gmshBoundedVolume() {
-    _duplicatePrecision = 1.e-8;
 	}
 
 	combineGmsh::~combineGmsh() {
@@ -70,20 +69,28 @@ namespace dtOO {
     //
     // get precision for removing duplicate vertices
     //
-    if ( qtXmlPrimitive::hasAttribute("duplicatePrecision", element) ) {
-      _duplicatePrecision
+    _relTol = std::numeric_limits<float>::max();
+    if ( 
+      dtXmlParserBase::hasAttribute("relative_tolerance", element)
+    ) {
+      _relTol
       =
-      qtXmlBase::getAttributeFloatMuParse("duplicatePrecision", element, cV, aF);
-      dt__info(
-        makeGrid(), << "_duplicatePrecision = " << _duplicatePrecision
-      );      
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "relative_tolerance", element, cV
+      );
     }
+    _absTol = std::numeric_limits<float>::max();
+    if ( 
+      dtXmlParserBase::hasAttribute("absolute_tolerance", element)
+    ) {
+      _absTol
+      =
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "absolute_tolerance", element, cV
+      );
+    }    
   }
     
-//  void combineGmsh::makePreGrid(void) {
-//
-//  }    
-  
   void combineGmsh::makeGrid(void) {
     if ( !isPreMeshed() ) makePreGrid();
     
@@ -303,7 +310,19 @@ namespace dtOO {
     //
     gmshBoundedVolume::updateBoundingBox();
     
-    _gm->removeDuplicateMeshVertices( _duplicatePrecision );
+    SBoundingBox3d bbox = _gm->bounds();
+    float lc = bbox.empty() ? 1. : norm(SVector3(bbox.max(), bbox.min()));  
+    
+    dt__info(
+      makeGrid(),
+      << "relTol = " << _relTol << std::endl
+      << "absTol = " << _absTol << std::endl
+      << "lc = " << lc << std::endl
+      << "absTol / lc = " << _absTol / lc << std::endl
+      << "==> min(absTol / lc, relTol) = " << std::min( _absTol/lc, _relTol )
+    );
+    
+    _gm->removeDuplicateMeshVertices( std::min( _absTol / lc, _relTol ) );
     
     //
     // mark as meshed

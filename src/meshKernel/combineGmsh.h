@@ -24,13 +24,13 @@ namespace dtOO {
         aFPtrVec const * const aF,
         aGPtrVec const * const aG,
         bVPtrVec const * const bV
-      );    
-//	  virtual void makePreGrid( void );
+      );
       virtual void makeGrid( void );      
     private:
       bVPtrVec _bV;
       vectorHandling< dtGmshModel const * > _dtGM;
-      float _duplicatePrecision;
+      float _relTol;
+      float _absTol;
   };
 }
 #endif	/* combineGmsh_H */
