@@ -20,6 +20,7 @@ namespace dtOO {
     );    
     virtual ~analyticFunctionCompound();
     virtual analyticFunctionCompound * clone( void ) const;
+    virtual funT * weakClone( void ) const;
     virtual analyticFunctionCompound * create( void ) const;     
     void trojanHorse( 
       vectorHandling< analyticFunction * > const & vec, 
@@ -55,7 +56,7 @@ namespace dtOO {
       _pos_tag[ aPair.first ] = aPair.second;
     }
     _trojan = orig._trojan;
-  }  
+  }
 
   template < typename funT >  
   analyticFunctionCompound< funT >::analyticFunctionCompound(
@@ -86,6 +87,11 @@ namespace dtOO {
   analyticFunctionCompound< funT > * 
   analyticFunctionCompound< funT >::clone( void ) const {
     return new analyticFunctionCompound< funT >(*this);
+  }
+
+  template < typename funT >  
+  funT * analyticFunctionCompound< funT >::weakClone( void ) const {
+    return new funT(*this);
   }
   
   template < typename funT >  

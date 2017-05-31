@@ -20,7 +20,11 @@ namespace dtOO {
 
 	analyticFunction::~analyticFunction() {
 	}
-	
+
+  analyticFunction * analyticFunction::weakClone( void ) const {
+    return clone();
+  }
+
   void analyticFunction::dump(void) const {
     dt__info(
 			dump(), 

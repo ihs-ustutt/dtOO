@@ -25,6 +25,7 @@ namespace dtOO {
     analyticFunction(const analyticFunction& orig);
     virtual ~analyticFunction();
     virtual analyticFunction * clone( void ) const = 0;
+    virtual analyticFunction * weakClone( void ) const;
     virtual analyticFunction * cloneTransformed( 
       dtTransformer const * const dtT 
     ) const = 0;

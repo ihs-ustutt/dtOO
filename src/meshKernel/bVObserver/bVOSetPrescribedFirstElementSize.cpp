@@ -52,6 +52,7 @@ namespace dtOO {
       s1dPoly, s1dPoly->vecRef(), s1dPoly->mapRef()
     );
     
+    _polyI.reset( scaOneDPolyInterface::MustDownCast( s1dPoly->weakClone() ) );
 //			<bVObserver 
 //				name="bVOSetPrescribedFirstElementSize"
 //				type="7"
@@ -88,9 +89,7 @@ namespace dtOO {
         // reset pointer to new clone
         //
         _polyI.reset( 
-          scaOneDPolyInterface::MustDownCast(
-            _grading.constRefPtr()->clone() 
-          )
+          scaOneDPolyInterface::MustDownCast( _polyI->weakClone() )
         );
         
         // 
