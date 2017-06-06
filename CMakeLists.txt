@@ -15,10 +15,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 # externlibs path                                                              #
 #                                                                              #
 #------------------------------------------------------------------------------#
-set(DTOO_EXTERNLIBS $ENV{EXTERNLIBS} CACHE FILEPATH "externlibs folder")
-if (DTOO_EXTERNLIBS STREQUAL "")
-  message( FATAL_ERROR "Please set DTOO_EXTERNLIBS." )
-endif (DTOO_EXTERNLIBS STREQUAL "")
+#set(DTOO_EXTERNLIBS $ENV{EXTERNLIBS} CACHE FILEPATH "externlibs folder")
+#if (DTOO_EXTERNLIBS STREQUAL "")
+#  message( FATAL_ERROR "Please set DTOO_EXTERNLIBS." )
+#endif (DTOO_EXTERNLIBS STREQUAL "")
 
 #------------------------------------------------------------------------------#
 #

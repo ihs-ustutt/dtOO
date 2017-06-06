@@ -14,19 +14,15 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
   set( _testlibname libTKernel.so )
   set( 
     _incsearchpath 
-    /usr/ihs/include/oce
+    /usr/include  
     /usr/include/oce
-    ${DTOO_EXTERNLIBS}/OpenCASCADE/include/oce 
-    $ENV{CASROOT}/inc 
   )
   set( 
     _libsearchpath 
-    /usr/ihs/lib
-    /usr/ihs/lib64
+    /usr/lib                                         
+    /usr/lib64                                       
     /usr/lib/oce
     /usr/lib64/oce
-    ${DTOO_EXTERNLIBS}/OpenCASCADE/lib 
-    $ENV{CASROOT}/lib 
   )
 
   #find the include dir by looking for Standard_Real.hxx
