@@ -20,6 +20,7 @@
 #include "aFXmlBuilder/vec3dThreeD_triLinearPointConstructAFXmlBuilder.h"
 #include "aFXmlBuilder/vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder.h"
 #include "aFXmlBuilder/scaTanhGradingOneDAFXmlBuilder.h"
+#include "aFXmlBuilder/scaTanhUnitGradingOneDAFXmlBuilder.h"
 
 namespace dtOO {
   dt__pH(aFXmlBuilderFactory) aFXmlBuilderFactory::_instance(NULL);
@@ -126,8 +127,11 @@ namespace dtOO {
       new vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder()
     );
     _instance->_builder.push_back(
-    new scaTanhGradingOneDAFXmlBuilder()
+      new scaTanhGradingOneDAFXmlBuilder()
     );
+    _instance->_builder.push_back(
+      new scaTanhUnitGradingOneDAFXmlBuilder()
+    );    
     return _instance.get();
   }
   
