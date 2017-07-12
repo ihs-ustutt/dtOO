@@ -12,6 +12,10 @@ namespace dtOO {
   public:
     dt__classOnlyName(float_map1dTo3dPointConstCartesian);     
     float_map1dTo3dPointConstCartesian(
+      map1dTo3d const * const m1d, int const & dir, float const & value,
+      float const & initGuess
+    );        
+    float_map1dTo3dPointConstCartesian(
       map1dTo3d const * const m1d, int const & dir, float const & value
     );
     virtual ~float_map1dTo3dPointConstCartesian();

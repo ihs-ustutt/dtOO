@@ -7,7 +7,8 @@
 
 namespace dtOO {
 	float_map1dTo3dPointConstCartesian::float_map1dTo3dPointConstCartesian(
-    map1dTo3d const * const m1d, int const & dir, float const & value
+    map1dTo3d const * const m1d, int const & dir, float const & value,
+    float const & initGuess
 	) : _m1d(*m1d) {
     _dir = dir;
     _value = value;
@@ -26,7 +27,7 @@ namespace dtOO {
     //
     // set bounds
     //
-    min->SetVariable( 0, "U", 0.5, 0.01 );
+    min->SetVariable( 0, "U", initGuess, 0.01 );
     min->SetVariableLimits(0, 0., 1.);
     
     //
@@ -47,8 +48,22 @@ namespace dtOO {
     double const * const theRoot = min->X();
     
     _u = _m1d.u_percent( theRoot[0] );
+    
+    dt__info(
+      float_map1dTo3dPointConstCartesian(),
+      << "Point xyz = (" << _m1d.getPoint( _u ) << " / u = " << _u 
+      << " ) should have " << _value
+      << " at cartesian direction " << _dir << "." << std::endl
+      << "distance = " << _m1d.getPoint( _u )[_dir] - _value
+    );
 	}
 
+  float_map1dTo3dPointConstCartesian::float_map1dTo3dPointConstCartesian(
+    map1dTo3d const * const m1d, int const & dir, float const & value
+	) : float_map1dTo3dPointConstCartesian(m1d, dir, value, 0.5) {
+      
+  }
+    
 	float_map1dTo3dPointConstCartesian::~float_map1dTo3dPointConstCartesian() {
 	}
 	

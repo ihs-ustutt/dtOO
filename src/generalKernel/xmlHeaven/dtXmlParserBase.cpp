@@ -1079,26 +1079,62 @@ namespace dtOO {
             ).z()
           );
         }
-        else if (aGOption == "-1%X=") {
-          pp.push_back(
-            m1d->percent_u(
-              float_map1dTo3dPointConstCartesian(m1d, 0, argCS[0]).result()
-            )
-          );
+        else if ( matchWildcard("-1%*X=", aGOption) ) {
+          std::string initGuessStr = getStringBetween("%", "X", aGOption);
+          if ( initGuessStr.empty() ) {
+            pp.push_back(
+              m1d->percent_u(
+                float_map1dTo3dPointConstCartesian(m1d, 0, argCS[0]).result()
+              )
+            );
+          }
+          else {
+            pp.push_back(
+              m1d->percent_u(
+                float_map1dTo3dPointConstCartesian(
+                  m1d, 0, argCS[0], muParseString(initGuessStr)
+                ).result()
+              )
+            );            
+          }
         }
-        else if (aGOption == "-1%Y=") {
-          pp.push_back(
-            m1d->percent_u(
-              float_map1dTo3dPointConstCartesian(m1d, 1, argCS[0]).result()
-            )
-          );
+        else if ( matchWildcard("-1%*Y=", aGOption) ) {
+          std::string initGuessStr = getStringBetween("%", "Y", aGOption);
+          if ( initGuessStr.empty() ) {
+            pp.push_back(
+              m1d->percent_u(
+                float_map1dTo3dPointConstCartesian(m1d, 1, argCS[0]).result()
+              )
+            );
+          }
+          else {
+            pp.push_back(
+              m1d->percent_u(
+                float_map1dTo3dPointConstCartesian(
+                  m1d, 1, argCS[0], muParseString(initGuessStr)
+                ).result()
+              )
+            );            
+          }
         }        
-        else if (aGOption == "-1%Z=") {
-          pp.push_back(
-            m1d->percent_u(
-              float_map1dTo3dPointConstCartesian(m1d, 2, argCS[0]).result()
-            )
-          );
+        else if ( matchWildcard("-1%*Z=", aGOption) ) {
+          std::string initGuessStr = getStringBetween("%", "Z", aGOption);
+          if ( initGuessStr.empty() ) {
+            pp.push_back(
+              m1d->percent_u(
+                float_map1dTo3dPointConstCartesian(m1d, 2, argCS[0]).result()
+              )
+            );
+          }
+          else {
+            pp.push_back(
+              m1d->percent_u(
+                float_map1dTo3dPointConstCartesian(
+                  m1d, 2, argCS[0], muParseString(initGuessStr)
+                ).result()
+              )
+            );            
+          }
         }
         else if ( matchWildcard("-1%ClosestPointTo*", aGOption) ) {
           map2dTo3d const * const closeMap2d
