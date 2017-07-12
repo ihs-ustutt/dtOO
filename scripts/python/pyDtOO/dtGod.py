@@ -12,12 +12,13 @@ class dtGod:
   def __init__(self, g=9.81, rho=1000.):
     if not dtGod.instance:
       dtGod.instance = dtGod.__dtGod(g, rho)
-    else:
-      dtGod.instance.g_ = g
-      dtGod.instance.rho_ = rho
 
-  def G(self):
-      return self.instance.g_
+  def Murder( self ):
+    logging.info('Murder dtGod')
+    dtGod.instance = None
 
-  def Rho(self):
-      return self.instance.rho_
+  def G( self ):
+    return dtGod.instance.g_
+
+  def Rho( self ):
+    return dtGod.instance.rho_
