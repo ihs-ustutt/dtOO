@@ -117,6 +117,7 @@ SET(HEADERS
   meshEngine/dtMeshGRegionTetgen.h
   meshEngine/dtOptimizeMeshGRegion.h
   meshEngine/dtMeshGFaceWithTransfiniteLayer.h
+  meshEngine/dtMeshLaplacianGFace.h
   meshEngine/dtMoabCore.h
   meshEngine/dtOMTypedef.h
   meshEngine/dtOMMesh.h
@@ -255,6 +256,7 @@ SET(SOURCES
   meshEngine/dtOptimizeMeshGRegion.cpp
   meshEngine/dtMeshGFaceWithTransfiniteLayer.cpp
   meshEngine/dtMoabCore.cpp
+  meshEngine/dtMeshLaplacianGFace.cpp
   meshEngine/dtOMMesh.cpp
   meshEngine/dtOVMMesh.cpp
   meshEngine/dtOMMeshDivided.cpp
