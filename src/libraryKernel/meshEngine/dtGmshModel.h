@@ -44,6 +44,9 @@ namespace dtOO {
       dtGmshFace * getDtGmshFaceByPhysical( 
         std::string const & physical 
       ) const;
+      std::list< dtGmshFace * > getDtGmshFaceListByPhysical( 
+        std::string const & physical 
+      ) const;      
       dtGmshRegion * getDtGmshRegionByPhysical(
         std::string const & physical
       ) const;
@@ -60,6 +63,10 @@ namespace dtOO {
       static std::list< dtGmshFace * > cast2DtGmshFace( 
         std::list< ::GFace * > faces 
       );
+      static std::list< dtGmshFace * > cast2DtGmshFace( 
+        std::list< ::GEntity * > faces 
+      );
+      
       static std::list< dtGmshRegion * > cast2DtGmshRegion( 
         std::list< ::GRegion * > regions 
       );    

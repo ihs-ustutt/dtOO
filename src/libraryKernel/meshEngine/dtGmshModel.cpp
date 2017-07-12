@@ -340,6 +340,28 @@ namespace dtOO {
       return cast2DtGmshFace(gE_pN[pN][0]);    
     }
   }	
+
+  std::list< dtGmshFace * > dtGmshModel::getDtGmshFaceListByPhysical( 
+    std::string const & physical 
+  ) const {
+    std::list< dtGmshFace * > faceL;
+    if ( stringPrimitive::stringContains("->", physical) ) {
+      dt__forAllRefAuto( dtFaces(), aFace ) {
+        if ( matchWildCardPhysical( physical, aFace ) ) {
+          faceL.push_back( aFace );
+        }
+      }
+    }
+    else {
+      int pN = __caCThis->getPhysicalNumber(2, physical);  
+      intGEntityVMap gE_pN;
+      __caCThis->getPhysicalGroups(2, gE_pN);
+
+      faceL = cast2DtGmshFace( progHelper::vector2List(gE_pN[pN]) );    
+    }
+    
+    return faceL;
+  }
   
   dtGmshRegion * dtGmshModel::getDtGmshRegionByPhysical( 
     std::string const & physical 
@@ -425,12 +447,18 @@ namespace dtOO {
     std::list< ::GFace * > faces 
   ) {
 		std::list< dtGmshFace * > ret;
-		dt__forAllIter(std::list< ::GFace * >, faces, it) {
-			ret.push_back( cast2DtGmshFace(*it) );
-		}
+		dt__forAllRefAuto(faces, aFace) ret.push_back( cast2DtGmshFace(aFace) );
 		return ret;
 	}
 
+  std::list< dtGmshFace * > dtGmshModel::cast2DtGmshFace( 
+    std::list< ::GEntity * > faces 
+  ) {
+		std::list< dtGmshFace * > ret;
+		dt__forAllRefAuto(faces, aFace) ret.push_back( cast2DtGmshFace(aFace) );
+		return ret;
+	}
+  
   std::list< dtGmshRegion * > dtGmshModel::cast2DtGmshRegion( 
     std::list< ::GRegion * > regions 
   ) {

@@ -28,6 +28,7 @@ namespace dtOO {
   typedef ::CGAL::Vector_2< dtKernel > dtVector2;
   typedef ::CGAL::Aff_transformation_2< dtKernel > dtAffTransformation2;
   typedef ::CGAL::Line_3< dtKernel > dtLine3;
+  typedef ::CGAL::Line_2< dtKernel > dtLine2;
   typedef ::CGAL::Triangle_3< dtKernel > dtTriangle3;
   typedef ::CGAL::Segment_3< dtKernel > dtSegment3;
   typedef ::CGAL::Tetrahedron_3< dtKernel > dtTetrahedron3;
@@ -140,6 +141,9 @@ namespace dtOO {
     static bool intersects(dtTriangle3 const & triangle, dtLine3 const & line);
     static bool intersects(
       dtTriangle3 const & triangle0, dtTriangle3 const & triangle1
+    );
+    static dtPoint2 intersectionPoint(
+      dtLine2 const & line0, dtLine2 const & line1
     );
     static std::vector< float > solveQuadraticEquation(
       float const & aa, float const & bb, float const & cc

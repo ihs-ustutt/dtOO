@@ -759,6 +759,19 @@ namespace dtOO {
 		return false;
 	}
 
+	dtPoint2 dtLinearAlgebra::intersectionPoint(
+    dtLine2 const & line0, dtLine2 const & line1
+  ) {
+		dtPoint2 iPoint;   
+    
+		CGAL::Object res = CGAL::intersection(line0, line1);
+    
+    if (CGAL::assign(iPoint, res)) {
+				return iPoint;
+    }
+    else dt__throwUnexpected(intersectionPoint());
+	}
+  
   std::vector< float > dtLinearAlgebra::solveQuadraticEquation(
     float const & aa, float const & bb, float const & cc
   ) {
