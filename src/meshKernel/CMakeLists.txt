@@ -28,6 +28,7 @@ SET(HEADERS
   bVObserver/bVOTransformMeshPoints.h
   bVObserver/bVOWriteSU2.h
   bVObserver/bVOSetPrescribedFirstElementSize.h
+  bVObserver/bVOForceMeshPointCoordinates.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dGmsh.h
@@ -70,6 +71,7 @@ SET(SOURCES
   bVObserver/bVOTransformMeshPoints.cpp
   bVObserver/bVOSetPrescribedFirstElementSize.cpp
   bVObserver/bVOWriteSU2.cpp
+  bVObserver/bVOForceMeshPointCoordinates.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dGmsh.cpp
