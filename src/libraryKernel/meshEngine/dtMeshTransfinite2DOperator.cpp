@@ -198,6 +198,60 @@ namespace dtOO {
       pUV[0][i] = dtPoint2(U[2*L+2*H-i], V[2*L+2*H-i]);     
     }    
     
+    std::vector< dtPoint2 > bound0P = pUV.fixJ(0);
+    std::vector< dtPoint2 > bound1P = pUV.fixI(L);
+    std::vector< dtPoint2 > bound2P = pUV.fixJ(H);
+    std::vector< dtPoint2 > bound3P = pUV.fixI(0);
+    std::vector< float > bound[4];
+    dt__forAllRefAuto(bound0P, aPoint) bound[0].push_back(aPoint.x());
+    dt__forAllRefAuto(bound1P, aPoint) bound[1].push_back(aPoint.y());
+    dt__forAllRefAuto(bound2P, aPoint) bound[2].push_back(aPoint.x());
+    dt__forAllRefAuto(bound3P, aPoint) bound[3].push_back(aPoint.y());
+    
+    dt__forFromToIndex(0, 4, ii) {
+      if(
+        !std::is_sorted(bound[ii].begin(), bound[ii].end())
+        &&
+        !std::is_sorted(bound[ii].rbegin(), bound[ii].rend())
+      ) {
+        dt__warning(
+          computeEdgeLoops(), 
+          << "Bound[ " << ii << " ] is not ascending nor descending." 
+          << std::endl
+          << bound[ii]
+        );
+        
+        // ascending
+        if ( bound[ii].front() < bound[ii].back() ) {
+          dt__forInnerIndex(bound[ii], jj) {
+            if ( bound[ii][jj-1] > bound[ii][jj] ) {
+              bound[ii][jj] = .5 * (bound[ii][jj+1] + bound[ii][jj-1]);
+            }
+          }
+        }
+        // descending
+        else {
+          dt__forInnerIndex(bound[ii], jj) {
+            if ( bound[ii][jj-1] < bound[ii][jj] ) {
+              bound[ii][jj] = .5 * (bound[ii][jj+1] + bound[ii][jj-1]);
+            }
+          }
+        }        
+        dt__warning(
+          computeEdgeLoops(), 
+          << "Fixed bound[ " << ii << " ] :" << std::endl
+          << bound[ii]
+        );
+        
+        dt__forAllIndex(bound[ii], jj) {
+          if      (ii=0) pUV[jj][0] = dtPoint2( bound[ii][jj], pUV[jj][0].y() );
+          else if (ii=1) pUV[L][jj] = dtPoint2( pUV[L][jj].x(), bound[ii][jj] );
+          else if (ii=2) pUV[jj][H] = dtPoint2( bound[ii][jj], pUV[jj][H].y() );
+          else if (ii=3) pUV[0][jj] = dtPoint2( pUV[0][jj].x(), bound[ii][jj] );
+        }
+      }
+    }
+    
     return pUV;
   }
   
