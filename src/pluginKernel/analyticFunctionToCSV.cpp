@@ -1,5 +1,4 @@
 #include "analyticFunctionToCSV.h"
-#include "xmlHeaven/dtXmlParser.h"
 
 #include <logMe/logMe.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -10,6 +9,7 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <dtCase.h>
+#include <xmlHeaven/dtXmlParser.h>
 
 namespace dtOO {  
   analyticFunctionToCSV::analyticFunctionToCSV() { 
@@ -87,7 +87,13 @@ namespace dtOO {
         theF->getLabel()+".csv";
       }
       else {
-        filename = theF->getLabel()+".csv";
+        filename 
+        = 
+        _parser->currentState()
+        +
+        "_"
+        +
+        theF->getLabel()+".csv";
       }
       dt__info(apply(), << "Write to " << filename);
       std::fstream of;
