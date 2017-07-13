@@ -6,6 +6,7 @@ SET(HEADERS
   writeStep.h
   constValueAssingRule.h
   analyticFunctionToCSV.h
+  analyticGeometryToCSV.h
   volVectorFieldVersusXYZ.h
   volScalarFieldVersusL.h
   pOnBlade.h
@@ -29,6 +30,7 @@ SET(SOURCES
   writeStep.cpp
   constValueAssingRule.cpp
   analyticFunctionToCSV.cpp
+  analyticGeometryToCSV.cpp
   volVectorFieldVersusXYZ.cpp
   volScalarFieldVersusL.cpp
   pOnBlade.cpp

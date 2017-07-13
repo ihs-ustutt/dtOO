@@ -5,6 +5,7 @@
 #include "writeStep.h"
 #include "constValueAssingRule.h"
 #include "analyticFunctionToCSV.h"
+#include "analyticGeometryToCSV.h"
 #include "volVectorFieldVersusXYZ.h"
 #include "volScalarFieldVersusL.h"
 #include "pOnBlade.h"
@@ -60,7 +61,6 @@ namespace dtOO {
       << logMe::vecToString(av,1) << std::endl
     );        
   }
-  
   
   dtPlugin * dtPluginFactory::createFromPlugin(
     std::string const & str, 
@@ -132,6 +132,7 @@ namespace dtOO {
     _instance->_builder.push_back( new volVectorFieldRange() );
     _instance->_builder.push_back( new volScalarFieldRange() );
     _instance->_builder.push_back( new volVectorOnRotatingLineFieldRange() );
+    _instance->_builder.push_back( new analyticGeometryToCSV() );
     
     return _instance.get();
   }
