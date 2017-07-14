@@ -6,4 +6,5 @@ from .dtField import dtField
 from .dtFile import dtFile
 from .dtForceDeveloping import dtForceDeveloping
 from .dtGod import dtGod
+from .dtScalarDeveloping import dtScalarDeveloping
 from .dtValueField import dtValueField

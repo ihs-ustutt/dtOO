@@ -22,18 +22,9 @@ class dtDeveloping:
         data = tmp
       else:
         data = numpy.append(data, tmp, axis=0)
-        #data = [data, tmp]
-#    print data
-#    data = sorted(data, key=lambda row: row[0])
     return data
-  def LastTime(self):
-    return max( data[:,0] )
-  
-  def MeanLast(self, nAverageSteps):
-    return mean( data[-nAverageSteps:,1:] )
   
   def __GetFilepaths(self, directory):
-
     file_paths = []  # List which will store all of the full filepaths.
 
     # Walk the tree.
