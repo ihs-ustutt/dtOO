@@ -94,17 +94,9 @@ namespace dtOO {
         //
         dt__forAllRefAuto(anEdge->getBeginVertex()->faces(), aFaceStart) {
           if (breakEdge) break;
-          if (
-            dtXmlParserBase::matchWildcard( 
-              fStr0, gm->getPhysicalString(aFaceStart) 
-            )
-          ) {
+          if ( gm->matchWildCardPhysical(fStr0, aFaceStart) ) {
             dt__forAllRefAuto(anEdge->getEndVertex()->faces(), aFaceEnd) {
-              if (
-                dtXmlParserBase::matchWildcard( 
-                  fStr1, gm->getPhysicalString(aFaceEnd) 
-                )
-              ) {
+              if ( gm->matchWildCardPhysical(fStr1, aFaceEnd) ) {
                 logC() 
                   << "  edge[ tag = " << anEdge->tag() << " ] : ( " 
                   << gm->getPhysicalString(aFaceStart) << " ) -> ( " 
@@ -122,17 +114,9 @@ namespace dtOO {
         //
         dt__forAllRefAuto(anEdge->getBeginVertex()->faces(), aFaceStart) {
           if (breakEdge) break;
-          if (
-            dtXmlParserBase::matchWildcard( 
-              fStr1, gm->getPhysicalString(aFaceStart) 
-            )
-          ) {
+          if ( gm->matchWildCardPhysical(fStr1, aFaceStart) ) {
             dt__forAllRefAuto(anEdge->getEndVertex()->faces(), aFaceEnd) {
-              if (
-                dtXmlParserBase::matchWildcard( 
-                  fStr0, gm->getPhysicalString(aFaceEnd) 
-                )
-              ) {
+              if ( gm->matchWildCardPhysical(fStr0, aFaceEnd) ) {
             
                 logC() 
                   << "  reverse edge[ tag = " << anEdge->tag() << " ] : ( " 
