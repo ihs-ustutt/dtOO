@@ -1,4 +1,4 @@
-#include "volScalarFieldVersusL.h"
+#include "volScalarOnLineFieldRange.h"
 
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParser.h>
@@ -14,23 +14,24 @@
 #include <xmlHeaven/dtXmlParser.h>
 #include <interfaceHeaven/systemHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <logMe/dtParMacros.h>
 
 #include <criticalHeaven/prepareOpenFOAM.h>
+#include <meshEngine/dtFoamLibrary.h>
 #include <argList.H>
 #include <Time.H>
 #include <polyMesh.H>
 #include <volFields.H>
 
-#include <logMe/dtParMacros.h>
 
 namespace dtOO {  
-  volScalarFieldVersusL::volScalarFieldVersusL() { 
+  volScalarOnLineFieldRange::volScalarOnLineFieldRange() { 
   }
 
-  volScalarFieldVersusL::~volScalarFieldVersusL() {
+  volScalarOnLineFieldRange::~volScalarOnLineFieldRange() {
   }
 
-	void volScalarFieldVersusL::init( 
+	void volScalarOnLineFieldRange::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		cVPtrVec const * const cV,
@@ -43,8 +44,8 @@ namespace dtOO {
 	  dtPlugin::init(element, bC, cV, aF, aG, bV, dC, pL);
     
 //	<plugin 
-//		name="volScalarFieldVersusL" 
-//		label="volScalarFieldVersusL"
+//		name="volScalarOnLineFieldRange" 
+//		label="volScalarOnLineFieldRange"
 //    field="URel"   
 //    numPoints="10"
 //	>
@@ -98,7 +99,7 @@ namespace dtOO {
     dtXmlParser::getAttributeIntMuParse("numPoints", element, cV, aF);   
 	}
 		
-  void volScalarFieldVersusL::apply(void) {    
+  void volScalarOnLineFieldRange::apply(void) {    
     //
     // get directory
     //
@@ -128,17 +129,8 @@ namespace dtOO {
       argv[2] = const_cast< char *>(argvStr[2].c_str());
 
       try {
-        // disable floating point exception trapping
-        systemHandling::unsetEnv("FOAM_SIGFPE");
-
-        //
-        // create rootCase
-        //
-        ::Foam::argList args(argc, argv);
-        if (!args.checkRootCase()) {
-          Foam::FatalError.exit();
-        }
-
+        ::Foam::argList args = dtFoamLibrary::initCase( getLabel(), wDir );
+        
         //
         // create time
         //
@@ -203,34 +195,30 @@ namespace dtOO {
           //
           // create vector and value grid
           //
-          std::vector< float > grid = dtLinearAlgebra::unitGrid(_nP);
+          std::vector< dtPoint3 > grid 
+          = 
+          dtPoint3_map1dTo3dPoint(m1d, _nP+1).result();//dtLinearAlgebra::unitGrid(_nP);
           vectorHandling< float > value(grid.size());
-          vectorHandling< float > ll(grid.size());
 
           //
           // get values
           //
-          dtPoint3 xyz0 = m1d->getPointPercent( grid[0] );
-          dt__forAllIndex(grid, ii) {
-            dtPoint3 const & xyz1 = m1d->getPointPercent( grid[ii] );
-            ::Foam::vector probePoint(xyz1.x(), xyz1.y(), xyz1.z());
-            ::Foam::label cId = mesh.findNearestCell(probePoint);
-            if (cId == -1) {
-              dt__warning(
-                apply(), 
-                << "Cannot find " << dt__point3d(xyz1) << " in mesh."
-              );
-              continue;
+          #pragma omp parallel
+          {
+            #pragma omp for
+            dt__forAllIndex(grid, ii) {
+              dtPoint3 const & xyz = grid[ii];
+              ::Foam::vector probePoint(xyz.x(), xyz.y(), xyz.z());
+              ::Foam::label cId = mesh.findNearestCell(probePoint);
+              if (cId == -1) {
+                dt__warning(apply(), << "Ignore point at " dt__point3d(xyz) );
+                continue;
+              }
+              ::Foam::scalar ofValue = volField[ cId ];
+              value[ii] = ofValue;
             }
-            ::Foam::scalar ofValue = volField[ cId ];
-            value[ii] = ofValue;
-            ll[ii] = dtLinearAlgebra::distance(xyz1, xyz0);//m1d->l_u( (*m1d) % grid[ii] );
-            xyz0 = xyz1;
           }
-
-          dt__forFromToIndex(1, ll.size(), ii) {
-            ll[ii] = ll[ii-1] + ll[ii];
-          }
+          
           //
           // open file
           //
@@ -240,8 +228,7 @@ namespace dtOO {
           +
           "/"
           +
-          virtualClassName()+"_"+getLabel()+"_"+fieldHeader.name()
-          +"_"+m1d->getLabel()+".csv";            
+          virtualClassName()+"_"+getLabel()+"_"+fieldHeader.name()+".csv";
           std::fstream of;
           of.open( filename.c_str(), std::ios::out | std::ios::trunc );
           
@@ -249,16 +236,21 @@ namespace dtOO {
           // write header
           //
           of 
-          << "# 1 length" << std::endl
-          << "# 2 value" << std::endl;
+          << "# 1  x" << std::endl
+          << "# 2  y" << std::endl
+          << "# 3  z" << std::endl
+          << "# 4  value" << std::endl;
           
           //
           // write values
           //
           dt__forFromToIndex(0, value.size(), ii) {
             of 
-            << logMe::dtFormat("%16.8e, %16.8e") 
-              % ll[ii] % value[ii] 
+            << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e") 
+              % grid[ii].x() 
+              % grid[ii].y() 
+              % grid[ii].z() 
+              % value[ii] 
             << std::endl;
           }
           of.close();

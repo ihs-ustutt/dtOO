@@ -1,5 +1,5 @@
-#ifndef volScalarFieldVersusL_H
-#define	volScalarFieldVersusL_H
+#ifndef volScalarOnLineFieldRange_H
+#define	volScalarOnLineFieldRange_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -16,12 +16,12 @@ namespace dtOO {
   class baseContainer;
   class dtCase;
   
-  class volScalarFieldVersusL : public dtPlugin {
+  class volScalarOnLineFieldRange : public dtPlugin {
   public:
-    dt__class(volScalarFieldVersusL, dtPlugin);
-    dt__classSelfCreate(volScalarFieldVersusL);    
-    volScalarFieldVersusL();
-    virtual ~volScalarFieldVersusL();
+    dt__class(volScalarOnLineFieldRange, dtPlugin);
+    dt__classSelfCreate(volScalarOnLineFieldRange);    
+    volScalarOnLineFieldRange();
+    virtual ~volScalarOnLineFieldRange();
     virtual void init( 
       ::QDomElement const & element,
       baseContainer const * const bC,
@@ -44,5 +44,5 @@ namespace dtOO {
   };
 }
 
-#endif	/* volScalarFieldVersusL_H */
+#endif	/* volScalarOnLineFieldRange_H */
 

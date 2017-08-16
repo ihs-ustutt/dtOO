@@ -7,7 +7,7 @@
 #include "analyticFunctionToCSV.h"
 #include "analyticGeometryToCSV.h"
 #include "volVectorFieldVersusXYZ.h"
-#include "volScalarFieldVersusL.h"
+#include "volScalarOnLineFieldRange.h"
 #include "pOnBlade.h"
 #include "UcylInChannel.h"
 #include "uRelInChannel.h"
@@ -120,7 +120,7 @@ namespace dtOO {
     _instance->_builder.push_back( new constValueAssingRule() );
     _instance->_builder.push_back( new analyticFunctionToCSV() );
     _instance->_builder.push_back( new volVectorFieldVersusXYZ() );
-    _instance->_builder.push_back( new volScalarFieldVersusL() );
+    _instance->_builder.push_back( new volScalarOnLineFieldRange() );
     _instance->_builder.push_back( new pOnBlade() );
     _instance->_builder.push_back( new UcylInChannel() );
     _instance->_builder.push_back( new uRelInChannel() );

@@ -8,7 +8,7 @@ SET(HEADERS
   analyticFunctionToCSV.h
   analyticGeometryToCSV.h
   volVectorFieldVersusXYZ.h
-  volScalarFieldVersusL.h
+  volScalarOnLineFieldRange.h
   pOnBlade.h
   UcylInChannel.h
   uRelInChannel.h
@@ -32,7 +32,7 @@ SET(SOURCES
   analyticFunctionToCSV.cpp
   analyticGeometryToCSV.cpp
   volVectorFieldVersusXYZ.cpp
-  volScalarFieldVersusL.cpp
+  volScalarOnLineFieldRange.cpp
   pOnBlade.cpp
   UcylInChannel.cpp
   uRelInChannel.cpp
