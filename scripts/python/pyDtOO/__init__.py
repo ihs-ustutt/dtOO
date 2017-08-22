@@ -1,5 +1,6 @@
 from .dtAverageValueField import dtAverageValueField
 from .dtCylField import dtCylField
+from .dtCylXRField import dtCylXRField
 from .dtCylTrf import dtCylTrf
 from .dtDeveloping import dtDeveloping
 from .dtField import dtField

@@ -7,6 +7,7 @@ class dtValueField:
     data_shape = numpy.shape(data)
 
     self.coord_ = data[:,0:3]
+    self.nValues_ = data_shape[0]
     
     if data_shape[1] == 8:
       logging.info( 'Create dtValueField of scalar')    
@@ -62,3 +63,6 @@ class dtValueField:
   
   def VDim(self):
     return self.vDim_
+  
+  def NumValues(self):
+    return self.nValues_
