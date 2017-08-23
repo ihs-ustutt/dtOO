@@ -16,19 +16,19 @@ class dtForceDeveloping:
   
   def MomentMeanLast(self, nAverageSteps):
     return numpy.mean( 
-      self.momentPressure_[-nAverageSteps:,:] + self.momentPressure_[-nAverageSteps:,:], 
+      self.momentPressure_[-nAverageSteps:,:] + self.momentViscous_[-nAverageSteps:,:], 
       axis=0 
     )
     
   def MomentMinLast(self, nAverageSteps):
     return numpy.min( 
-      self.momentPressure_[-nAverageSteps:,:] + self.momentPressure_[-nAverageSteps:,:], 
+      self.momentPressure_[-nAverageSteps:,:] + self.momentViscous_[-nAverageSteps:,:], 
       axis=0 
     )
 
   def MomentMaxLast(self, nAverageSteps):
     return numpy.max( 
-      self.momentPressure_[-nAverageSteps:,:] + self.momentPressure_[-nAverageSteps:,:], 
+      self.momentPressure_[-nAverageSteps:,:] + self.momentViscous_[-nAverageSteps:,:], 
       axis=0 
     )    
     
