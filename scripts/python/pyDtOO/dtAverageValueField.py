@@ -4,7 +4,7 @@ from pyDtOO.dtValueField import dtValueField
 
 class dtAverageValueField(dtValueField):
   HEADER_ = {
-    'r_ur_uphi_uz' 
+    'r_ur_uphi_uz'
     : 
     '[Data]\nR [ m ], Velocity Radial [ m s^-1 ], '
                      'Velocity Circumferential [ m s^-1 ], '
@@ -14,7 +14,10 @@ class dtAverageValueField(dtValueField):
     '[Data]\nR [ m ], Turbulence Kinetic Energy [ m^2 s^-2 ]',
     'r_epsilon'
     :
-    '[Data]\nR [ m ], Turbulence Eddy Dissipation [ m^2 s^-3 ]'
+    '[Data]\nR [ m ], Turbulence Eddy Dissipation [ m^2 s^-3 ]',
+    'r_p'
+    :
+    '[Data]\nR [ m ], Pressure [ Pa ]'
   }
   def __init__(self, data, nBinsOne, nBinsTwo, nBinsThree):
     dtValueField.__init__(self, data)
