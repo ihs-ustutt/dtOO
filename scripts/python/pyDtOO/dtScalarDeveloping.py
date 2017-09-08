@@ -22,6 +22,7 @@ class dtScalarDeveloping:
   
   def ChangeLast(self, nAverageSteps ):
     return (self.MaxLast(nAverageSteps) - self.MinLast(nAverageSteps))/self.MeanLast(nAverageSteps)
+
   def __add__(self, other):
     if not numpy.array_equal(self.time_,other.time_):
       raise ValueError('Times are not equal.')

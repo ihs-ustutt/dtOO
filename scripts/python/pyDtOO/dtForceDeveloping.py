@@ -13,6 +13,9 @@ class dtForceDeveloping:
     
   def LastTime(self):
     return max( self.time_[:] )
+
+  def Moment(self):
+    return self.momentPressure_ + self.momentViscous_
   
   def MomentMeanLast(self, nAverageSteps):
     return numpy.mean( 

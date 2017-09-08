@@ -22,7 +22,10 @@ class dtDeveloping:
         data = tmp
       else:
         data = numpy.append(data, tmp, axis=0)
-    return data
+  
+      timeSort = numpy.argsort( data[:,0] )
+
+    return data[timeSort, :]
   
   def __GetFilepaths(self, directory):
     file_paths = []  # List which will store all of the full filepaths.
