@@ -213,6 +213,67 @@ namespace dtOO {
 			forElement.parentNode().removeChild( static_cast<::QDomNode>(forElement) );
 		  dt__throwIf(check.isNull(), parse());
 	  }
+    
+		//
+		// handle vectorReplace-elements
+		//
+    dt__forAllRefAuto( getElementRecursive("vectorReplace"), forElement ) {
+			//
+			// parse variable and values to replace
+			//
+			std::vector< std::string > varStr
+      = 
+      getAttributeStrVector("variables", forElement);
+			std::vector< std::string > valueStr 
+      = 
+      getAttributeStrVector("values", forElement);
+			
+			//
+			// replace
+			//
+      int iiInd = 0;
+      dt__forAllRefAuto(valueStr, aValueVec) {
+        dt__debug(
+          parse(),
+          << "vectorReplace[ " << iiInd << " ] = " << aValueVec
+        );
+        dt__forAllRefAuto(getChildVector(forElement), aChild) {
+          ::QDomElement childClone = aChild.cloneNode(true).toElement();
+          
+          int jjInd = 0;          
+          dt__forAllRefAuto(convertToStringVector("{", "}", aValueVec), aValue) {            
+            std::string var = varStr[jjInd];
+
+            dt__debug(
+              parse(),
+              << "vectorReplace[  " << iiInd << " ] " << var << " < with > " 
+              << aValue << " <."
+            );            
+            
+            replaceRecursiveInAllAttributes( "{"+var+"}", aValue, &(childClone) );
+            
+            jjInd = jjInd + 1;
+          }
+          ::QDomNode checkOne 
+          =							          
+          forElement.parentNode().insertBefore( 
+            static_cast<::QDomNode>(childClone),
+            static_cast<::QDomNode>(forElement) 
+          );
+          dt__throwIf(checkOne.isNull(), parse());
+                    
+        }
+        iiInd = iiInd + 1;
+      }
+			
+			//
+			// delete dummy node
+			//
+			::QDomNode check 
+			= 
+			forElement.parentNode().removeChild( static_cast<::QDomNode>(forElement) );
+		  dt__throwIf(check.isNull(), parse());
+	  }    
 		
 		//
     // set static properties on classes
