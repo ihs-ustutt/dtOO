@@ -1406,6 +1406,21 @@ namespace dtOO {
             m3d->getPointPercent( argCS[0], argCS[1], argCS[2] )
           );
         }
+        else if (aGOption == "%x") {
+          pp.push_back(
+            m3d->getPointPercent( argCS[0], argCS[1], argCS[2] ).x() 
+          );
+        }        
+        else if (aGOption == "%y") {
+          pp.push_back(
+            m3d->getPointPercent( argCS[0], argCS[1], argCS[2] ).y() 
+          );
+        }        
+        else if (aGOption == "%z") {
+          pp.push_back(
+            m3d->getPointPercent( argCS[0], argCS[1], argCS[2] ).z() 
+          );
+        }              
         else if (aGOption == "-1") {
           pp 
           = 
