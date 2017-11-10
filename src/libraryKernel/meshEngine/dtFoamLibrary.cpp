@@ -286,7 +286,6 @@ namespace dtOO {
 
     int eC = 0;
     dt__forAllRefAuto(allElems, aPair) {
-      ::Foam::label elmNumber(eC);
       ::Foam::label elmType(aPair.first->getTypeForMSH());
       ::Foam::label regPhys(aPair.second);
       //------------------------------------------------------------------------

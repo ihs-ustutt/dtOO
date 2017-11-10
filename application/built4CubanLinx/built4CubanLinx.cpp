@@ -55,7 +55,7 @@ std::string parseCommand(
     addRule
     = 
     stringPrimitive::convertToCSVStringVector(
-      stringPrimitive::getStringBetweenAndRemove("(", ")", &aRule)
+      stringPrimitive::getStringBetweenAndRemoveRespectOcc("(", ")", &aRule)
     );
     dt__infoNoClass(parseCommand(), << "addRule = " << addRule);
   }
