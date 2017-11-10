@@ -565,8 +565,21 @@ namespace dtOO {
     return stringToBool(
       element.attribute( attName.c_str() ).toStdString()
     );
-  }    
+  }
 
+  bool qtXmlPrimitive::getIfAttributeBool(
+	  std::string const attName, const ::QDomElement element, bool const & dBool
+	) {
+    if ( ! hasAttribute(attName, element) ) {
+      return dBool;
+    }
+    else {
+      return stringToBool(
+        element.attribute( attName.c_str() ).toStdString()
+      );
+    }
+  }
+  
 	std::vector< bool > qtXmlPrimitive::getAttributeBoolVector( 
 		std::string const attName, ::QDomElement const element
 	) {
