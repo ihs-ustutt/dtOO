@@ -10,3 +10,4 @@ from .dtGod import dtGod
 from .dtScalarDeveloping import dtScalarDeveloping
 from .dtValueField import dtValueField
 from .dtValueSpace import dtValueSpace
+from .dtSingletonState import dtSingletonState
