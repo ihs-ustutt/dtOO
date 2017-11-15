@@ -731,7 +731,8 @@ namespace dtOO {
     constValue::create( 
       getAttributeStr("name", wElement), 
       constValueLabel, 
-      getAttributeStr("value", wElement)
+      getAttributeStr("value", wElement),
+      getIfAttributeBool("loadable", wElement, true)
     );
     
     aCV->setValue(

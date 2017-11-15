@@ -21,7 +21,8 @@ namespace dtOO {
   constValue * constValue::create(
     std::string const & type, 
     std::string const & label, 
-    std::string const & valueStr
+    std::string const & valueStr,
+    bool const loadable
   ) {
     constValue * aCV;
     if (type == "sliderFloatParam") aCV = new sliderFloatParam();  
@@ -32,6 +33,7 @@ namespace dtOO {
     else dt__throwUnexpected(create());
     
     aCV->setLabel(label);
+    aCV->_loadable = loadable;
     return aCV;
   }
 
@@ -59,7 +61,7 @@ namespace dtOO {
   }
   
   bool constValue::loadable( void ) const {
-    return true;  
+    return this->_loadable;  
   }
   
   void constValue::resolveConstraint( 

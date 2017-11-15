@@ -17,7 +17,8 @@ namespace dtOO {
     static constValue * create(
       std::string const & type, 
       std::string const & label, 
-      std::string const & valueStr
+      std::string const & valueStr,
+      bool const loadable
     );
     virtual constValue * clone( void ) const = 0;    
     virtual void dump(void) const = 0;
@@ -35,6 +36,7 @@ namespace dtOO {
     constValue();    
   private:
     float _value;
+    bool _loadable;
   };
 }
 #endif	/* constValue_H */
