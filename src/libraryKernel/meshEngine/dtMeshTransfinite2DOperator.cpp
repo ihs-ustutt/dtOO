@@ -228,6 +228,18 @@ namespace dtOO {
               bound[ii][jj] = .5 * (bound[ii][jj+1] + bound[ii][jj-1]);
             }
           }
+          // last
+          if ( 
+            bound[ii][bound[ii].size()-2] 
+            > 
+            bound[ii][bound[ii].size()-1] 
+          ) {
+            bound[ii][bound[ii].size()-2] 
+            = 
+            .5 * (
+              bound[ii][bound[ii].size()-3] + bound[ii][bound[ii].size()-1]
+            );
+          }          
         }
         // descending
         else {
@@ -236,6 +248,18 @@ namespace dtOO {
               bound[ii][jj] = .5 * (bound[ii][jj+1] + bound[ii][jj-1]);
             }
           }
+          // last
+          if ( 
+            bound[ii][bound[ii].size()-2] 
+            < 
+            bound[ii][bound[ii].size()-1] 
+          ) {
+            bound[ii][bound[ii].size()-2] 
+            = 
+            .5 * (
+              bound[ii][bound[ii].size()-3] + bound[ii][bound[ii].size()-1]
+            );
+          }             
         }        
         dt__warning(
           computeEdgeLoops(), 
