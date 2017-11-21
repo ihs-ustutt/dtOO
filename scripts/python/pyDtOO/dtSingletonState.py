@@ -14,7 +14,7 @@ class dtSingletonState:
   DATADIR = 'runData'
   ITERDIR = 'runIter'
   NPROC = 1
-  SIMSH = 'simulate.'+CASE+'.sh'
+  SIMSH = ''
   ADDDATA = []
 
   @lockutils.synchronized('__init__', external=True, lock_path='./runLock/')
@@ -331,8 +331,9 @@ class dtSingletonState:
         bestId, obj, bestFit
       )
     return bestId
-
+  
   @staticmethod
+  @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
   def fullRead():
     FIT = np.genfromtxt('runData/fitness')
     OBJ = np.genfromtxt('runData/objective')
