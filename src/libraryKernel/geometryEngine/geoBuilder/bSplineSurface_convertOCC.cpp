@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 
+#include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/dtOCCBSplineSurface.h>
 #include "geomSurface_baseConstructOCC.h"

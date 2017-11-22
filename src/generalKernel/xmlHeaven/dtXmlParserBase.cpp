@@ -2129,7 +2129,7 @@ namespace dtOO {
           << "Applying " << dt__eval(transLabels[ii]) << " to " 
           << dt__eval(aGLabel) << "."
         );
-
+        dt__throwIf( bC==NULL, createAdvanced() );
         dtTransformer const * const dtT 
         = 
         bC->ptrTransformerContainer()->get(transLabels[ii]);

@@ -1,6 +1,7 @@
 #include "bSplineSurface_pipeConstructOCC.h"
-#include "geometryEngine/dtOCCCurveBase.h"
+#include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCCurve.h>
+#include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>

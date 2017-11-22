@@ -2,6 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+#include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCRectangularTrimmedSurface.h>
 
 #include <Precision.hxx>

@@ -1,9 +1,8 @@
 #ifndef DTOCCCURVE_H
 #define	DTOCCCURVE_H
 
-#include <logMe/dtMacros.h>
-#include "dtCurve.h"
 #include <interfaceHeaven/ptrHandling.h>
+#include "dtCurve.h"
 
 class Geom_Curve;
 

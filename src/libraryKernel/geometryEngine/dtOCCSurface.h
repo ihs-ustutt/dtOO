@@ -2,7 +2,6 @@
 #define	DTOCCSURFACE_H
 
 #include <interfaceHeaven/ptrHandling.h>
-#include "dtOCCSurfaceBase.h"
 #include "dtSurface.h"
 
 class Geom_Surface;

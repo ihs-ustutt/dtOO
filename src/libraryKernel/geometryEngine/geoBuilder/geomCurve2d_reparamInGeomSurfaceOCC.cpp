@@ -1,7 +1,8 @@
 #include "geomCurve2d_reparamInGeomSurfaceOCC.h"
-#include "geometryEngine/dtOCCCurve.h"
-#include "geometryEngine/dtOCCCurve2d.h"
-#include "geometryEngine/dtOCCSurface.h"
+#include <geometryEngine/dtOCCCurve.h>
+#include <geometryEngine/dtOCCCurve2d.h>
+#include <geometryEngine/dtOCCSurfaceBase.h>
+#include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCCurve2dBase.h>
 #include <geometryEngine/dtOCCBSplineCurve.h>

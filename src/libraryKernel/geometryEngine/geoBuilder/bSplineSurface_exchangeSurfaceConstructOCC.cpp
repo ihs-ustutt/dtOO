@@ -2,6 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+#include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCBSplineSurface.h>
 #include "geomSurface_baseConstructOCC.h"
 #include "bSplineSurface_convertOCC.h"

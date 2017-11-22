@@ -4,6 +4,7 @@
 #include <logMe/dtMacros.h>
 #include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCCurve.h>
+#include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCSurfaceOfRevolution.h>
 
 //#include <Precision.hxx>

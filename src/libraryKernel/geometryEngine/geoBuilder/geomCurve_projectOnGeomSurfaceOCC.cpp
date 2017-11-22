@@ -1,9 +1,10 @@
 #include "geomCurve_projectOnGeomSurfaceOCC.h"
-#include "geometryEngine/dtOCCCurve.h"
-#include "geometryEngine/dtOCCSurface.h"
 #include <geometryEngine/dtOCCCurveBase.h>
+#include <geometryEngine/dtOCCCurve.h>
 #include <geometryEngine/dtOCCBSplineCurve.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
+#include <geometryEngine/dtOCCSurfaceBase.h>
+#include <geometryEngine/dtOCCSurface.h>
 
 #include <Geom_Surface.hxx>
 #include <Geom_Curve.hxx>

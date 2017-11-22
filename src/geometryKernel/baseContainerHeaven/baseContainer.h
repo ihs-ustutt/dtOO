@@ -2,8 +2,6 @@
 #define	BASECONTAINER_H
 
 #include <logMe/dtMacros.h>
-#include <logMe/dtMacros.h>
-
 
 namespace dtOO {
   class pointContainer;

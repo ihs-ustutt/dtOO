@@ -4,9 +4,9 @@
 #include <logMe/dtMacros.h>
 #include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCCurve.h>
+#include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCRectangularTrimmedSurface.h>
 
-//#include <Precision.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Ax1.hxx>
