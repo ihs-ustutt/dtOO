@@ -69,7 +69,8 @@ namespace dtOO {
   void constrainedFloatParam::setValue(float const toSet) {
     dt__warning(
       setValue(), 
-      << "Try to set a constrainedFloatParam. Not possible. Set to constraint."
+      << "Try to set a constrainedFloatParam > " 
+      << getLabel() << " <. Not possible. Set to constraint."
     );
     constValue::setValue(
       std::numeric_limits< float >::infinity()

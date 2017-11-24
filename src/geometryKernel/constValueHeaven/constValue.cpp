@@ -9,10 +9,13 @@
 
 namespace dtOO {
   constValue::constValue() : labelHandling() {
+    _loadable = true;
+    _value = 0.;
   }
 
   constValue::constValue( constValue const & orig ) : labelHandling(orig) {
     _value = orig._value;
+    _loadable = orig._loadable;
   }
   
   constValue::~constValue() {
