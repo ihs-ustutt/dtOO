@@ -717,9 +717,6 @@ namespace dtOO {
     else return true;
   }  
   
-  /**
-   * @todo constValue is dependent on constValue. Fix this.
-   */
   void dtXmlParser::createConstValue(
     std::string const constValueLabel, 
     cVPtrVec * cValP
@@ -735,9 +732,6 @@ namespace dtOO {
       getIfAttributeBool("loadable", wElement, true)
     );
     
-    aCV->setValue(
-      getAttributeFloatMuParse( "value", wElement, cValP )
-    );
     if ( hasAttribute("min", wElement) && hasAttribute("max", wElement) ) {
       aCV->setRange( 
         muParseString( getAttributeStr( "min", wElement ) ), 
@@ -753,10 +747,32 @@ namespace dtOO {
   ) const {
     std::vector< std::string > label = getLabels("constValue");
 
+    //
+    // create const values
+    //
 		dt__forAllIndex( label, ii) createConstValue(label[ii], cValP);
+       
+    //
+    // resolve constraints
+    //
+    dt__forAllRefAuto(*cValP, aCV) aCV->resolveConstraint( cValP );
     
+    //
+    // init values
+    //
+    dt__forAllRefAuto( *cValP, aCV) {
+      aCV->setValue(
+        getAttributeFloatMuParse( 
+          "value", 
+          getElement("constValue", aCV->getLabel()), cValP 
+        )
+      );         
+    }
+    
+    //
+    // load from state
+    //
     ::QDomElement cVInit = getUnlabeledElement("constValueInit");
-    
     if ( !cVInit.isNull() ) {
       dt__info(
         createConstValue(), 
@@ -778,9 +794,7 @@ namespace dtOO {
           << getAttributeStr("state", cVInit)
         );        
       }
-    }
-    
-    dt__forAllRefAuto(*cValP, aCV) aCV->resolveConstraint( cValP );
+    }    
   }
 	
   void dtXmlParser::getLabels( 
