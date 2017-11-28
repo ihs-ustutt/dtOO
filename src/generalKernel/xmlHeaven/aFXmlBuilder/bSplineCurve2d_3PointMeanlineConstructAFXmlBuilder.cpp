@@ -30,15 +30,15 @@ namespace dtOO {
   void bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
-		cVPtrVec const * const cValP, 
-		aFPtrVec const * const depSFunP,
-		aFPtrVec * sFunP 
+		cVPtrVec const * const cV, 
+		aFPtrVec const * const aF,
+		aFPtrVec * result 
 	) const {
     dt__throwIf(
-      !dtXmlParserBase::hasAttribute("alpha_one", toBuildP), buildPart()
-    );
-    dt__throwIf(
-      !dtXmlParserBase::hasAttribute("alpha_two", toBuildP), buildPart()
+      !dtXmlParserBase::hasAttribute("alpha_one", toBuildP)
+      ||
+      !dtXmlParserBase::hasAttribute("alpha_two", toBuildP), 
+      buildPart()
     );        
     bool hasRatio = dtXmlParserBase::hasAttribute("ratio", toBuildP);
 		bool hasDeltaX = dtXmlParserBase::hasAttribute("delta_x", toBuildP);
@@ -46,28 +46,14 @@ namespace dtOO {
 
     float alphaOne 
     = 
-    dtXmlParserBase::muParseString(
-      dtXmlParserBase::replaceDependencies(
-        dtXmlParserBase::getAttributeStr(
-          "alpha_one", 
-          toBuildP
-        ), 
-        cValP, 
-        depSFunP
-      )
+    dtXmlParserBase::getAttributeFloatMuParse(
+      "alpha_one", toBuildP, cV, aF
     );      
     float alphaTwo 
     = 
-    dtXmlParserBase::muParseString(
-      dtXmlParserBase::replaceDependencies(
-        dtXmlParserBase::getAttributeStr(
-          "alpha_two", 
-          toBuildP
-        ), 
-        cValP, 
-        depSFunP
-      )
-    );          
+    dtXmlParserBase::getAttributeFloatMuParse(
+      "alpha_two", toBuildP, cV, aF
+    );           
     //
     //
     //
@@ -76,26 +62,16 @@ namespace dtOO {
       //
       // get necessary values
       //
-      float deltaY = dtXmlParserBase::muParseString(
-                       dtXmlParserBase::replaceDependencies(
-                         dtXmlParserBase::getAttributeStr(
-                           "delta_y", 
-                           toBuildP
-                         ), 
-                         cValP, 
-                         depSFunP
-                       )
-                     ); 
-      float ratio = dtXmlParserBase::muParseString(
-                       dtXmlParserBase::replaceDependencies(
-                         dtXmlParserBase::getAttributeStr(
-                           "ratio", 
-                           toBuildP
-                         ), 
-                         cValP, 
-                         depSFunP
-                       )
-                     );      
+      float deltaY 
+      = 
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "delta_y", toBuildP, cV, aF
+      );   
+      float ratio
+      = 
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "ratio", toBuildP, cV, aF
+      );   
 			dtC2d.reset(
 				bSplineCurve2d_angleRatioDeltaYConstructOCC(
 					alphaOne, alphaTwo, ratio, deltaY
@@ -106,26 +82,16 @@ namespace dtOO {
       //
       // get necessary values
       //
-      float deltaY = dtXmlParserBase::muParseString(
-                       dtXmlParserBase::replaceDependencies(
-                         dtXmlParserBase::getAttributeStr(
-                           "delta_y", 
-                           toBuildP
-                         ), 
-                         cValP, 
-                         depSFunP
-                       )
-                     ); 
-      float deltaX = dtXmlParserBase::muParseString(
-                       dtXmlParserBase::replaceDependencies(
-                         dtXmlParserBase::getAttributeStr(
-                           "delta_x", 
-                           toBuildP
-                         ), 
-                         cValP, 
-                         depSFunP
-                       )
-                     ); 			
+      float deltaY 
+      = 
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "delta_y", toBuildP, cV, aF
+      );   
+      float deltaX 
+      = 
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "delta_x", toBuildP, cV, aF
+      );   			
 			dtC2d.reset(
 				bSplineCurve2d_angleDeltaXDeltaYConstructOCC(
 					alphaOne, alphaTwo, deltaX, deltaY
@@ -133,6 +99,41 @@ namespace dtOO {
 			);
     }		
     else dt__throwUnexpected(buildPart());
+
+    if ( 
+      dtXmlParserBase::hasAttribute("targetLength", toBuildP) 
+    ) {
+      float tL
+      =
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "targetLength", toBuildP, cV, aF
+      );
+      float tLTol
+      =
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "targetLengthTolerance", toBuildP, cV, aF
+      );      
+      logContainer<bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder> logC(
+        logINFO, "buildPart()"
+      );      
+      logC() << "Detect targetLength" << std::endl;
+      dt__forFromToIndex(0, 99, ii) {
+        float scale = tL / dtC2d->length();
+      
+        dtPoint2 p0 = dtC2d->controlPoint(0);
+        dtVector2 v0 = dtC2d->controlPoint(1) - dtC2d->controlPoint(0);
+        dtVector2 v1 = dtC2d->controlPoint(2) - dtC2d->controlPoint(1);
+
+        dtC2d->setControlPoint( 1, p0 + ( 1. + (scale-1.)/2. ) * v0 );
+        dtC2d->setControlPoint( 2, p0 + ( 1. + (scale-1.)/2. ) * ( v0 + v1 ) );
+        
+        logC() 
+          << logMe::dtFormat("( %3d ) : %5.2f -> %5.2f") 
+            % ii % scale % (tL / dtC2d->length())
+          << std::endl;
+        if ( fabs(tL / dtC2d->length() - 1.) <= tLTol ) break;
+      }
+    } 
     
     if ( 
       dtXmlParserBase::hasAttribute("originOnLengthPercent", toBuildP) 
@@ -140,7 +141,7 @@ namespace dtOO {
       float lP 
       =
       dtXmlParserBase::getAttributeFloatMuParse(
-        "originOnLengthPercent", toBuildP, cValP
+        "originOnLengthPercent", toBuildP, cV, aF
       );
       dtPoint2 adjustP = dtC2d->point( dtC2d->u_lPercent( lP ) );
       dt__forFromToIndex(0, dtC2d->nControlPoints(), ii) {
@@ -155,6 +156,6 @@ namespace dtOO {
 				dtOCCCurve2d::SecureCast(dtC2d.get())->revert();
 			}
 		}		
-		sFunP->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );
+		result->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );
   }
 }
