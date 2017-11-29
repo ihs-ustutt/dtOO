@@ -30,6 +30,7 @@ namespace dtOO {
     std::vector< dtTransformer const * > _dtT;
     float _relTol;
     float _absTol;
+    bool _copy;
   };
 }
 #endif	/* bVOTransformMeshPoints_H */
