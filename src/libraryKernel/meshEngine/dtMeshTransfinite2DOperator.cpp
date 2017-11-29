@@ -11,6 +11,8 @@
 #include <interfaceHeaven/threadSafe.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 
+#include <interfaceHeaven/staticPropertiesHandler.h>
+
 namespace dtOO {
   twoDArrayHandling< dtPoint2 > 
   dtMeshTransfinite2DOperator::computeEdgeLoops( dtGmshFace * gf ) {
@@ -208,72 +210,115 @@ namespace dtOO {
     dt__forAllRefAuto(bound2P, aPoint) bound[2].push_back(aPoint.x());
     dt__forAllRefAuto(bound3P, aPoint) bound[3].push_back(aPoint.y());
     
+    int nCorrLoops 
+    = 
+    staticPropertiesHandler::getInstance()->getOptionInt(
+      "transfinite_correctionLoops"
+    );
     dt__forFromToIndex(0, 4, ii) {
-      if(
-        !std::is_sorted(bound[ii].begin(), bound[ii].end())
-        &&
-        !std::is_sorted(bound[ii].rbegin(), bound[ii].rend())
-      ) {
-        dt__warning(
-          computeEdgeLoops(), 
-          << "Bound[ " << ii << " ] is not ascending nor descending." 
-          << std::endl
-          << bound[ii]
-        );
-        
-        // ascending
+      logContainer<dtMeshTransfinite2DOperator> logC(
+        logDEBUG, "computeEdgeLoops()"
+      );
+      bool asc = std::is_sorted(bound[ii].begin(), bound[ii].end());
+      bool desc = std::is_sorted(bound[ii].rbegin(), bound[ii].rend());      
+      dt__forFromToIndex(0, nCorrLoops, cc) {
+        asc = std::is_sorted(bound[ii].begin(), bound[ii].end());
+        desc = std::is_sorted(bound[ii].rbegin(), bound[ii].rend());
+
+        //
+        // break if sorted correctly
+        //      
+        if (asc || desc) break;
+
+        int boundSize = bound[ii].size();
         if ( bound[ii].front() < bound[ii].back() ) {
+          logC() 
+            << logMe::dtFormat( 
+              "[ %3d ] ( %3d ) : Ascending Edge %10.2f < %10.2f"
+            ) % ii % cc % bound[ii].front() % bound[ii].back() << std::endl;
           dt__forInnerIndex(bound[ii], jj) {
             if ( bound[ii][jj-1] > bound[ii][jj] ) {
               bound[ii][jj] = .5 * (bound[ii][jj+1] + bound[ii][jj-1]);
+              logC() 
+                << logMe::dtFormat( 
+                  "[ %3d ]    <    : %3d -> ... %10.7f < %10.7f < %10.7f ..."
+                ) % ii % jj % bound[ii][jj-1] % bound[ii][jj] % bound[ii][jj+1]
+                << std::endl;
             }
           }
           // last
           if ( 
-            bound[ii][bound[ii].size()-2] 
-            > 
-            bound[ii][bound[ii].size()-1] 
+            bound[ii][boundSize-2] > bound[ii][boundSize-1] 
           ) {
-            bound[ii][bound[ii].size()-2] 
+            bound[ii][boundSize-2] 
             = 
             .5 * (
-              bound[ii][bound[ii].size()-3] + bound[ii][bound[ii].size()-1]
+              bound[ii][boundSize-3] + bound[ii][boundSize-1]
             );
-          }          
+            logC() 
+              << logMe::dtFormat( 
+                "[ %3d ]    <    : end -> ... %10.7f < %10.7f < %10.7f ..."
+              ) 
+                % ii
+                % bound[ii][boundSize-3] 
+                % bound[ii][boundSize-2] 
+                % bound[ii][boundSize-1] << std::endl;              
+          }     
         }
         // descending
         else {
+          logC() 
+            << logMe::dtFormat( 
+              "[ %3d ] ( %3d ) : Descending Edge %10.2f > %10.2f"
+            ) % ii % cc % bound[ii].front() % bound[ii].back() << std::endl;            
           dt__forInnerIndex(bound[ii], jj) {
             if ( bound[ii][jj-1] < bound[ii][jj] ) {
               bound[ii][jj] = .5 * (bound[ii][jj+1] + bound[ii][jj-1]);
+              logC() 
+                << logMe::dtFormat( 
+                  "[ %3d ]    >    : %3d -> ... %10.7f > %10.7f > %10.7f ..."
+                ) % ii % jj % bound[ii][jj-1] % bound[ii][jj] % bound[ii][jj+1]
+                << std::endl;             
             }
           }
           // last
           if ( 
-            bound[ii][bound[ii].size()-2] 
-            < 
-            bound[ii][bound[ii].size()-1] 
+            bound[ii][boundSize-2] < bound[ii][boundSize-1] 
           ) {
-            bound[ii][bound[ii].size()-2] 
+            bound[ii][boundSize-2] 
             = 
             .5 * (
-              bound[ii][bound[ii].size()-3] + bound[ii][bound[ii].size()-1]
+              bound[ii][boundSize-3] + bound[ii][boundSize-1]
             );
+            logC() 
+              << logMe::dtFormat( 
+                "[ %3d ]    >    : end -> ... %10.7f > %10.7f > %10.7f ..."
+              ) 
+                % ii
+                % bound[ii][boundSize-3] 
+                % bound[ii][boundSize-2] 
+                % bound[ii][boundSize-1] << std::endl;                     
           }             
         }        
-        dt__warning(
-          computeEdgeLoops(), 
-          << "Fixed bound[ " << ii << " ] :" << std::endl
-          << bound[ii]
-        );
-        
+
         dt__forAllIndex(bound[ii], jj) {
-          if      (ii=0) pUV[jj][0] = dtPoint2( bound[ii][jj], pUV[jj][0].y() );
-          else if (ii=1) pUV[L][jj] = dtPoint2( pUV[L][jj].x(), bound[ii][jj] );
-          else if (ii=2) pUV[jj][H] = dtPoint2( bound[ii][jj], pUV[jj][H].y() );
-          else if (ii=3) pUV[0][jj] = dtPoint2( pUV[0][jj].x(), bound[ii][jj] );
+          if      (ii==0) pUV[jj][0] = dtPoint2(bound[ii][jj], pUV[jj][0].y());
+          else if (ii==1) pUV[L][jj] = dtPoint2(pUV[L][jj].x(), bound[ii][jj]);
+          else if (ii==2) pUV[jj][H] = dtPoint2(bound[ii][jj], pUV[jj][H].y());
+          else if (ii==3) pUV[0][jj] = dtPoint2(pUV[0][jj].x(), bound[ii][jj]);
         }
       }
+
+      //
+      // throw error if sorting fails
+      //
+      dt__throwIfWithMessage(
+        !asc && !desc,
+        computeEdgeLoops(), 
+        << "Cannot correct edge loop " << ii << "."
+      );
+
+      logC() << logMe::dtFormat("[ %3d ]   Ok") % ii << std::endl;
     }
     
     return pUV;
