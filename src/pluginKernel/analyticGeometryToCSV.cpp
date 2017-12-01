@@ -40,6 +40,21 @@ namespace dtOO {
 //    <analyticGeometry label="fun1"/>    
 //  </plugin>
     //
+    // get case
+    //    
+    _case = NULL;
+    if ( dtXmlParser::hasChild("case", element) ) {
+      _case 
+      = 
+      dC->get(
+        dtXmlParser::getAttributeStr(
+          "label", dtXmlParser::getChild("case", element)
+        )
+      );
+      _parser = dtXmlParser::ptr();
+    } 
+    
+    //
     // get number of points
     //
     _nP 
@@ -63,13 +78,25 @@ namespace dtOO {
       //
       // open file
       //
-      std::string filename 
-      = 
-      dtXmlParser::ptr()->currentState()
-      +
-      "_"
-      +
-      theG->getLabel()+".csv";
+      std::string filename;
+      if ( _case ) {
+        filename 
+        = 
+        _case->getDirectory( _parser->currentState() )
+        +
+        "/"
+        +
+        theG->getLabel()+".csv";
+      }
+      else {
+        filename 
+        = 
+        _parser->currentState()
+        +
+        "_"
+        +
+        theG->getLabel()+".csv";
+      }
       
       dt__info(apply(), << "Write to " << filename);
       std::fstream of;
