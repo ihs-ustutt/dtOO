@@ -14,3 +14,4 @@ from .dtSingletonState import dtSingletonState
 from .dtMigrateState import dtMigrateState
 from .dtInsertFittest import dtInsertFittest
 from .dtCreateMultiCulti import dtCreateMultiCulti
+from .dtAnalyticGeometry import dtAnalyticGeometry
