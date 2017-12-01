@@ -18,7 +18,7 @@ class dtSingletonState:
   ADDDATA = []
 
   @lockutils.synchronized('__init__', external=True, lock_path='./runLock/')
-  def __init__(self, id=-1):
+  def __init__(self, id=-1, defObj=None, defFit=None):
     #
     # get id from state
     #
@@ -56,7 +56,11 @@ class dtSingletonState:
         for i in range( np.size(dtSingletonState.ADDDATA) ):
           open(
             dtSingletonState.DATADIR+'/'+dtSingletonState.ADDDATA[i], "a"
-          ).write( '__empty__\n' )        
+          ).write( '__empty__\n' )  
+      if defObj is not None:
+        self.update('objective', defObj)    
+      if defFit is not None:
+        self.update('fitness', defFit)
     #
     # existing id
     #
