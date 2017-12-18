@@ -2331,6 +2331,16 @@ namespace dtOO {
     createAdvanced(&wEl, bC, cV, aF, dtTransformerP.get(), advancedP);      
   }
     
+  void dtXmlParserBase::createAdvanced( 
+    ::QDomElement const & toBuild,
+    baseContainer * const bC,
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF, 
+    aFPtrVec * advancedP 
+  ) {
+    createAdvanced( &toBuild, bC, cV, aF, advancedP );
+  }  
+  
   analyticFunction * dtXmlParserBase::createAnalyticFunction( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,

@@ -33,46 +33,61 @@ namespace dtOO {
   }
   
   void bSplineSurface_skinConstructOCCAFXmlBuilder::buildPart(
-		::QDomElement const & toBuildP, 
+		::QDomElement const & toBuild, 
 		baseContainer * const bC,
-		cVPtrVec const * const cValP, 
-		aFPtrVec const * const depSFunP,
-		aFPtrVec * sFunP 
+		cVPtrVec const * const cV, 
+		aFPtrVec const * const aF,
+		aFPtrVec * result 
 	) const {
     dt__throwIf(
-      !dtXmlParserBase::hasChild("analyticFunction", toBuildP), 
+      !dtXmlParserBase::hasChild("analyticFunction", toBuild), 
       buildPart()
     );
 
-    ::QDomElement elementP 
-    = 
-    dtXmlParserBase::getChild("analyticFunction", toBuildP);
     //
     // set input
     //
-    vectorHandling< dtCurve const * > cL;
-    while ( !elementP.isNull() ) {
-      aFPtrVec aF;
-      dtXmlParserBase::createAdvanced(&elementP, bC, cValP, depSFunP, &aF);
-
-      dt__forAllIndex(aF, ii) {
+    vectorHandling< dtCurve const * > cL;    
+    dt__forAllRefAuto(
+      dtXmlParserBase::getChildVector("analyticFunction", toBuild), anEl
+    ) {
+      aFPtrVec aFPtrV;
+      dtXmlParserBase::createAdvanced(anEl, bC, cV, aF, &aFPtrV);
+      dt__forAllRefAuto(aFPtrV, aF_t) {
         dt__ptrAss(
-          vec3dCurveOneD const * v3d1d, 
-          vec3dCurveOneD::ConstDownCast(aF[ii])
+          vec3dCurveOneD const * v3d1d, vec3dCurveOneD::ConstDownCast(aF_t)
         );
-        cL.push_back( v3d1d->ptrDtCurve() );
+        cL.push_back( v3d1d->ptrConstDtCurve()->clone() );
       }
-
-      elementP = dtXmlParserBase::getNextSibling("analyticFunction", elementP);      
-
+      aFPtrV.destroy();
     }
-    ptrHandling<dtSurface> dtS( 
-      bSplineSurface_skinConstructOCC(cL).result() 
+    
+    int nIter = 0;
+    if ( dtXmlParserBase::hasAttribute("nIterations", toBuild) ) {
+      nIter 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("nIterations", toBuild, cV, aF);
+    }
+    int minDeg = 1;
+    if ( dtXmlParserBase::hasAttribute("orderMin", toBuild) ) {
+      minDeg 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("orderMin", toBuild, cV, aF);
+    }    
+    int maxDeg = 25;
+    if ( dtXmlParserBase::hasAttribute("orderMax", toBuild) ) {
+      maxDeg 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("orderMax", toBuild, cV, aF);
+    }
+    
+    dt__pH(dtSurface) dtS( 
+      bSplineSurface_skinConstructOCC(cL, minDeg, maxDeg, nIter).result() 
     );
 
     //
     // create vec3dSurfaceTwoD
     //
-    sFunP->push_back( new vec3dSurfaceTwoD( dtS.get() ) );			
+    result->push_back( new vec3dSurfaceTwoD( dtS.get() ) );			
   }
 }

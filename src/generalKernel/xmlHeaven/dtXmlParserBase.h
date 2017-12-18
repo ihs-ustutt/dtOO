@@ -328,6 +328,13 @@ namespace dtOO {
       aFPtrVec const * const aF, 
       aFPtrVec * advancedP 
     );
+    static void createAdvanced( 
+      ::QDomElement const & toBuild,
+      baseContainer * const bC,
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF, 
+      aFPtrVec * advancedP 
+    );         
     static analyticFunction * createAnalyticFunction( 
       ::QDomElement const * toBuildP,
       baseContainer * const bC,

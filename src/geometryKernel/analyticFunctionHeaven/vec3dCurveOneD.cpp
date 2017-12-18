@@ -81,9 +81,13 @@ namespace dtOO {
 		return rV;
   }	
 	
-	dtCurve const * vec3dCurveOneD::ptrDtCurve( void ) const {
-		return _dtC.get();
-	}
+  dtCurve * vec3dCurveOneD::ptrDtCurve(void) const {
+    return _dtC.get();
+  }
+  
+  dtCurve const * const vec3dCurveOneD::ptrConstDtCurve(void) const {
+    return _dtC.get();
+  }
 	
 	bool vec3dCurveOneD::closed( int const & dir ) const {
 		return _dtC->closed();

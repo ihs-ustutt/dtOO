@@ -27,7 +27,8 @@ namespace dtOO {
     virtual ~vec3dCurveOneD();
     virtual aFY Y( aFX const & xx) const;    
     virtual vectorHandling< renderInterface * > getRender( void ) const;
-    dtCurve const * ptrDtCurve( void ) const;
+    dtCurve * ptrDtCurve(void) const;
+    dtCurve const * const ptrConstDtCurve(void) const;
     virtual bool closed( int const & dir ) const;
   private:
     ptrHandling<dtCurve> _dtC;
