@@ -14,16 +14,19 @@
 
 namespace dtOO {   
 	bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
-	  vectorHandling< dtCurve const * > const & cc, float const & tol 
+	  vectorHandling< dtCurve const * > const & cc, 
+    float const & tol, int const & param, int const & minM
 	) {
-		GeomConvert_CompCurveToBSplineCurve conv;
+		GeomConvert_CompCurveToBSplineCurve conv(
+      static_cast< Convert_ParameterisationType >(param)
+    );
 		dt__forAllIndex(cc, ii) {
 			dt__ptrAss( dtOCCCurve const * occC, dtOCCCurve::ConstDownCast(cc[ii]) );
 			Handle(Geom_BoundedCurve) boundedC
 			=
 			Handle(Geom_BoundedCurve)::DownCast( occC->OCCRef().getOCC() );
       dt__tryOcc(
-        conv.Add(boundedC, tol);
+        conv.Add(boundedC, tol, Standard_False, Standard_True, minM);
       ,
       << ""
       );
@@ -37,7 +40,8 @@ namespace dtOO {
 	  vectorHandling< dtCurve const * > const & cc
 	) {
     _dtC.reset(
-      bSplineCurve_curveConnectConstructOCC(cc, Precision::Confusion()
+      bSplineCurve_curveConnectConstructOCC(
+        cc, Precision::Confusion(), 0, 0
     ).result());
   } 
   

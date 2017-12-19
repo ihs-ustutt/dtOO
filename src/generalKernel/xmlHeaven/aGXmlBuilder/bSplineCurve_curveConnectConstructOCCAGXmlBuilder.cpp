@@ -50,19 +50,34 @@ namespace dtOO {
     }
     
     ptrHandling< dtCurve > dtC;
-    if ( !dtXmlParserBase::hasAttribute("tolerance", toBuild) ) {
-      dtC.reset(
-        bSplineCurve_curveConnectConstructOCC(ccV).result()
-      );
+    float tolerance = 1.E-07;
+    if ( dtXmlParserBase::hasAttribute("tolerance", toBuild) ) {
+      tolerance 
+      = 
+      dtXmlParserBase::getAttributeFloatMuParse("tolerance", toBuild, cV);
     }
-    else {
-      dtC.reset(
-        bSplineCurve_curveConnectConstructOCC(
-          ccV, 
-          dtXmlParserBase::getAttributeFloatMuParse("tolerance", toBuild, cV)
-        ).result()
-      );      
+    int param = 0;    
+    if ( dtXmlParserBase::hasAttribute("parameterization", toBuild) ) {
+      param 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("parameterization", toBuild, cV);
     }
+    int minM = 0;    
+    if ( dtXmlParserBase::hasAttribute("minM", toBuild) ) {
+      minM 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("minM", toBuild, cV);
+    }    
+    dt__info(
+      buildPart(), 
+      << "Connect with tol = " << tolerance << ", param = " << param
+      << " and minM = " << minM
+    );
+    dtC.reset(
+      bSplineCurve_curveConnectConstructOCC(
+        ccV, tolerance, param, minM
+      ).result()
+    );      
     
     result->push_back( new analyticCurve(dtC.get()) );
     ccV.destroy();
