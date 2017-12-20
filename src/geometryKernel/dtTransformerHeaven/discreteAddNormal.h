@@ -37,6 +37,9 @@ namespace dtOO {
     int _nV;
     int _order;
     int _nSteps;
+    int _skinOrderMin;
+    int _skinOrderMax;
+    int _skinNIterations;
   };
 }    
 

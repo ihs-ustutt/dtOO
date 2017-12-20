@@ -15,7 +15,9 @@ namespace dtOO {
   vec3dTwoD_normalOffset::vec3dTwoD_normalOffset(
     vec3dTwoD const * const v3d, vec3dTwoD const * const thick,
     dtVector3 const & nf, int const & nU, int const & nV,
-    int const & order
+    int const & order,
+    int const & skinOrderMin, int const & skinOrderMax,
+    int const & skinNIterations          
   ) {
     
     dt__pH(vec3dTwoD) cV3d( v3d->clone() );
@@ -68,7 +70,12 @@ namespace dtOO {
     }
     cV3d.reset( 
       new vec3dSurfaceTwoD(
-        dt__tmpPtr(dtSurface, bSplineSurface_skinConstructOCC(cL).result())
+        dt__tmpPtr(
+          dtSurface, 
+          bSplineSurface_skinConstructOCC(
+            cL, skinOrderMin, skinOrderMax, skinNIterations
+          ).result()
+        )
       )      
     );
     

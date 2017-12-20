@@ -43,7 +43,8 @@ namespace dtOO {
 			vec3dTwoD const * const vec3d2d = vec3dTwoD::ConstDownCast(aF);
       if (vec3d2d) {
         vec3dTwoD_normalOffset anOffset( 
-          vec3d2d, _tt.get(), _nf, _nU, _nV, _order
+          vec3d2d, _tt.get(), _nf, _nU, _nV, _order, 
+          _skinOrderMin, _skinOrderMax, _skinNIterations
         );       
         retV.push_back( anOffset.result() );
         
@@ -51,6 +52,7 @@ namespace dtOO {
         // append wire if debug option set
         //
         if ( optionHandling::debugTrue() ) {
+          dt__info(apply(), << "Debug option set. Appending wire.")
           dt__forAllRefAuto(anOffset.resultWire(), aCurve) {
             retV.push_back( aCurve.clone() );
           }
@@ -108,7 +110,24 @@ namespace dtOO {
     // get order
     //
 		_order = dtXmlParserBase::getAttributeIntMuParse("order", *tE, cV, aF);
-    
+    _skinOrderMin = 1;
+    if ( dtXmlParserBase::hasAttribute("skinOrderMin", *tE) ) {
+      _skinOrderMin 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("skinOrderMin", *tE, cV, aF);
+    }
+    _skinOrderMax = 25;
+    if ( dtXmlParserBase::hasAttribute("skinOrderMax", *tE) ) {
+      _skinOrderMax 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("skinOrderMax", *tE, cV, aF);
+    }
+    _skinNIterations = 0;
+    if ( dtXmlParserBase::hasAttribute("skinNIterations", *tE) ) {
+      _skinNIterations 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("skinNIterations", *tE, cV, aF);
+    }    
 		//
 		// get vector
 		//
