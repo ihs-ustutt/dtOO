@@ -192,6 +192,7 @@ class dtAverageValueField(dtValueField):
             self.ValueAvQOne()[i,2]
           ) 
         )  
+      for i in range( numpy.shape(self.ValueAvQTwo())[0] ):        
         fileOut2.write(
           "%16.8e, %16.8e, %16.8e, %16.8e\n" 
           % 
@@ -202,6 +203,7 @@ class dtAverageValueField(dtValueField):
             self.ValueAvQTwo()[i,2]
           ) 
         )  
+      for i in range( numpy.shape(self.ValueAvQThree())[0] ):        
         fileOut3.write(
           "%16.8e, %16.8e, %16.8e, %16.8e\n" 
           % 
@@ -274,6 +276,7 @@ class dtAverageValueField(dtValueField):
             self.CoordOne()[i,0], self.ValueAvQOne()[i,0]
           ) 
         )  
+      for i in range( numpy.shape(self.ValueAvQTwo())[0] ):        
         fileOut2.write(
           "%16.8e, %16.8e\n" 
           % 
@@ -281,6 +284,7 @@ class dtAverageValueField(dtValueField):
             self.CoordTwo()[i,0], self.ValueAvQTwo()[i,0]
           ) 
         )  
+      for i in range( numpy.shape(self.ValueAvQThree())[0] ):        
         fileOut3.write(
           "%16.8e, %16.8e\n" 
           % 
