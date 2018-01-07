@@ -30,6 +30,9 @@ class dtClusteredSingletonState:
     # create new id
     #
     if id < 0:
+      #
+      # create files
+      #
       if not os.path.isdir( dtClusteredSingletonState.DATADIR ) or not os.path.isfile( dtClusteredSingletonState.DATADIR+'/id.0' ):
         if not os.path.isdir( dtClusteredSingletonState.DATADIR ):
           os.mkdir(dtClusteredSingletonState.DATADIR)
@@ -37,49 +40,52 @@ class dtClusteredSingletonState:
         open(dtClusteredSingletonState.DATADIR+'/state.0', 'w').close()
         open(dtClusteredSingletonState.DATADIR+'/objective.0', 'w').close()
         open(dtClusteredSingletonState.DATADIR+'/fitness.0', 'w').close()
-        open(dtClusteredSingletonState.DATADIR+'/id.0', "a").write( str(1)+'\n' )
-        open(dtClusteredSingletonState.DATADIR+'/state.0', "a").write( dtClusteredSingletonState.PREFIX+'_1\n' )
-        open(dtClusteredSingletonState.DATADIR+'/objective.0', "a").write( '__empty__\n' )
-        open(dtClusteredSingletonState.DATADIR+'/fitness.0', "a").write( '__empty__\n' )
         for i in range( np.size(dtClusteredSingletonState.ADDDATA) ):
           open(
-            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.0', "a"
-          ).write( '__empty__\n' )
+            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.0', "w"
+          ).close()
         self.cur_id = 1
-      else:
-        lastFileIndex = -1
-        for aFile in glob.glob(dtClusteredSingletonState.DATADIR+'/id.*'):
-          thisFileIndex = int( 
-            aFile.replace(
-              dtClusteredSingletonState.DATADIR+'/id.',
-              ''
-            )
+#      else:
+      #
+      # write ti files
+      #
+      lastFileIndex = -1
+      for aFile in glob.glob(dtClusteredSingletonState.DATADIR+'/id.*'):
+        thisFileIndex = int( 
+          aFile.replace(
+            dtClusteredSingletonState.DATADIR+'/id.',
+            ''
           )
-          if lastFileIndex < thisFileIndex:
-            lastFileIndex = thisFileIndex
-        lastId = -1
-        lastId = sum(
-          1 for line in open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex))
         )
-        self.cur_id = lastId + lastFileIndex*1000 + 1
-        
-        if ( self.cur_id > (lastFileIndex+1)*1000 ):
-          lastFileIndex = lastFileIndex + 1
-          open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), 'w').close()
-          open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), 'w').close()
-          open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), 'w').close()
-          open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), 'w').close()
-        
-        open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), "a").write( str(self.cur_id)+'\n' )
-        open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), "a").write( dtClusteredSingletonState.PREFIX+'_'+str(self.cur_id)+'\n' )
-        if defObj is not None:
-          open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), "a").write( self.formatToWrite(defObj)+'\n' )    
-        if defFit is not None:
-          open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), "a").write( self.formatToWrite(defFit)+'\n'  )
-        for i in range( np.size(dtClusteredSingletonState.ADDDATA) ):
-          open(
-            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), "a"
-          ).write( '__empty__\n' )  
+        if lastFileIndex < thisFileIndex:
+          lastFileIndex = thisFileIndex
+      lastId = -1
+      lastId = sum(
+        1 for line in open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex))
+      )
+      self.cur_id = lastId + lastFileIndex*1000 + 1
+
+      if ( self.cur_id > (lastFileIndex+1)*1000 ):
+        lastFileIndex = lastFileIndex + 1
+        open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), 'w').close()
+        open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), 'w').close()
+        open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), 'w').close()
+        open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), 'w').close()
+
+      open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), "a").write( str(self.cur_id)+'\n' )
+      open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), "a").write( dtClusteredSingletonState.PREFIX+'_'+str(self.cur_id)+'\n' )
+      if defObj is not None:
+        open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), "a").write( self.formatToWrite(defObj)+'\n' )    
+      else:
+        open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), "a").write( '__empty__\n' )    
+      if defFit is not None:
+        open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), "a").write( self.formatToWrite(defFit)+'\n'  )
+      else:
+        open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), "a").write( '__empty__\n' )    
+      for i in range( np.size(dtClusteredSingletonState.ADDDATA) ):
+        open(
+          dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), "a"
+        ).write( '__empty__\n' )  
     #
     # existing id
     #
@@ -136,9 +142,9 @@ class dtClusteredSingletonState:
   def formatToWrite( self, value ):
     rStr = '__unknownDataType__'
     if isinstance(value,float):
-      rStr = "{:s}\n".format(value)
+      rStr = "{:s}\n".format(repr(value))
     elif isinstance(value,int):
-      rStr = "{:s}\n".format(value)
+      rStr = "{:s}\n".format(repr(value))
     elif isinstance(value,str):
       rStr = "{:s}\n".format(value)
     elif isinstance( np.array(value), np.ndarray):
