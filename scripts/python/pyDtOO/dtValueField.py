@@ -6,6 +6,15 @@ class dtValueField:
     self.data_ = data
     data_shape = numpy.shape(data)
 
+    self.coord_ = 0
+    self.value_ = 0
+    self.q_ = 0
+    self.sf_ = 0
+    self.vDim_ = 0
+    
+    if data_shape[0] == 0:
+      return
+    
     self.coord_ = data[:,0:3]
     self.nValues_ = data_shape[0]
     
