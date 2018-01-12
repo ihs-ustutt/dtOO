@@ -21,7 +21,9 @@ class dtScalarDeveloping:
     return max( self.scalar_[-nAverageSteps:] )  
   
   def ChangeLast(self, nAverageSteps ):
-    return (self.MaxLast(nAverageSteps) - self.MinLast(nAverageSteps))/self.MeanLast(nAverageSteps)
+    return (
+      self.MaxLast(nAverageSteps) - self.MinLast(nAverageSteps)
+    ) / self.MeanLast(nAverageSteps)
 
   def __add__(self, other):
     if not numpy.array_equal(self.time_,other.time_):
@@ -32,6 +34,20 @@ class dtScalarDeveloping:
     data[:,1] = self.scalar_ + other.scalar_
     
     return dtScalarDeveloping(data)
+  
+  def Min(self, step, nAverageSteps):
+    return min( self.scalar_[step-nAverageSteps:step] )  
+
+  def Max(self, step, nAverageSteps):
+    return max( self.scalar_[step-nAverageSteps:step] )  
+
+  def Mean(self, step, nAverageSteps):
+    return numpy.mean( self.scalar_[step-nAverageSteps:step] )  
+  
+  def Change(self, step, nAverageSteps):
+    return (
+      self.Max(step, nAverageSteps) - self.Min(step, nAverageSteps)
+    ) / self.Mean(step, nAverageSteps)
   
   def __sub__(self, other):
     if not numpy.array_equal(self.time_,other.time_):
