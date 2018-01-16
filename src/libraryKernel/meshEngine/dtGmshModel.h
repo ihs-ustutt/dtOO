@@ -50,6 +50,9 @@ namespace dtOO {
       dtGmshRegion * getDtGmshRegionByPhysical(
         std::string const & physical
       ) const;
+      std::list< dtGmshRegion * > getDtGmshRegionListByPhysical( 
+        std::string const & physical 
+      ) const;      
       dtGmshEdge * getDtGmshEdgeByTag( int const tag ) const;
       int getDtGmshEdgeTagByFromTo( int const from, int const to ) const;
       dtGmshEdge * getDtGmshEdgeByFromTo( int const from, int const to ) const;
@@ -70,6 +73,9 @@ namespace dtOO {
       static std::list< dtGmshRegion * > cast2DtGmshRegion( 
         std::list< ::GRegion * > regions 
       );    
+      static std::list< dtGmshRegion * > cast2DtGmshRegion( 
+        std::list< ::GEntity * > regions 
+      );
       static dtGmshEdge * cast2DtGmshEdge( ::GEntity * ge );  
       static std::list< dtGmshEdge * > cast2DtGmshEdge( 
         std::list< ::GEdge * > edges 
@@ -155,6 +161,12 @@ namespace dtOO {
       void tagPhysical(::GEntity * const ge, std::string const & pName);
       int getPhysicalNumber(const int &dim, const std::string &name) const;
       void removeEmptyPhysicals( void );
+      std::list< std::string > getFullPhysicalList( 
+        ::GEntity const * const ent 
+      ) const;
+      std::list< ::GEntity * > getGEntityListByWildCardPhysical( 
+        std::string wildStr
+      ) const;      
       bool matchWildCardPhysical( 
         std::string wildStr, ::GEntity const * const ge 
       ) const;
@@ -238,6 +250,11 @@ namespace dtOO {
       ) const;    
     private:
       static std::map< std::string, int > _facePositionStr;
+      static std::map< std::string, int > _edgePositionStr;
+      static std::map< std::string, int > _vertexPositionStr;
+      static std::map< int, std::vector< std::string > > _positionStrFace;      
+      static std::map< int, std::vector< std::string > > _positionStrEdge;      
+      static std::map< int, std::vector< std::string > > _positionStrVertex;      
       std::string _debug;
       ::FieldManager * _fmTwin;
   };

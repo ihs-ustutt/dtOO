@@ -70,7 +70,12 @@ namespace dtOO {
           % aE->tag() % gm->getPhysicalString(aE) % aE
         << std::endl
         << "  faces = " << aE->faces() << std::endl      
-        << "  vertices = " << aE->vertices() << std::endl;      
+        << "  vertices = " << aE->vertices() << std::endl      
+        << "  fullPhysicalList = [" << std::endl;
+      dt__forAllRefAuto(gm->getFullPhysicalList(aE), aString) {
+        logC() << aString << std::endl;
+      }
+      logC() << "]" << std::endl;              
     }    
     dt__forAllRefAuto(gm->faces(), aF) {
       if (!aF) {
@@ -83,7 +88,12 @@ namespace dtOO {
         << std::endl
         << "  edges = " << aF->edges() << std::endl
         << "  orientations = " << aF->orientations() << std::endl
-        << "  regions = " << aF->regions() << std::endl;
+        << "  regions = " << aF->regions() << std::endl
+        << "  fullPhysicalList = [" << std::endl;
+      dt__forAllRefAuto(gm->getFullPhysicalList(aF), aString) {
+        logC() << aString << std::endl;
+      }
+      logC() << "]" << std::endl;
     }
     dt__forAllRefAuto(gm->regions(), aR) {
       if (!aR) {
@@ -95,7 +105,12 @@ namespace dtOO {
           % aR->tag() % gm->getPhysicalString(aR) % aR
         << std::endl
         << "  faceList = " << aR->faces() << std::endl
-        << "  faceOrientations = " << aR->faceOrientations() << std::endl;
+        << "  faceOrientations = " << aR->faceOrientations() << std::endl
+        << "  fullPhysicalList = [" << std::endl;
+      dt__forAllRefAuto(gm->getFullPhysicalList(aR), aString) {
+        logC() << aString << std::endl;
+      }
+      logC() << "]" << std::endl;              
     }              
     logC()
       << "Gmsh fieldManager:" << std::endl

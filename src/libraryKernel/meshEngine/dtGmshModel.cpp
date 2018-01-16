@@ -36,8 +36,7 @@
 #include <boost/assign.hpp>
 #include <boost/regex.hpp>
 
-#define __caCThis \
-  const_cast< dtGmshModel * >(this)
+#define __caCThis const_cast< dtGmshModel * >(this)
 
 #define __cgnsCheck(cmd) \
   if (cmd) dt__throw(__cgnsCheck(), << dt__eval(cg_get_error()))
@@ -51,7 +50,89 @@ namespace dtOO {
       ("FRONT", 2)("front", 2)("2", 2)("F", 2)("f", 2)
       ("BACK", 3)("back", 3)("3", 3)("B", 3)("b", 3)
       ("WEST", 4)("west", 4)("4", 4)("W", 4)("w", 4)  
-      ("EAST", 5)("east", 5)("5", 5)("E", 5)("e", 5);      
+      ("EAST", 5)("east", 5)("5", 5)("E", 5)("e", 5);     
+    std::map< int, std::vector< std::string > > dtGmshModel::_positionStrFace
+    =
+    ::boost::assign::map_list_of
+      (
+        0, 
+        ::boost::assign::list_of
+          ("SOUTH")("south")("0")("S")("s").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        1, 
+        ::boost::assign::list_of
+          ("NORTH")("north")("1")("N")("n").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        2, 
+        ::boost::assign::list_of
+          ("FRONT")("front")("2")("F")("f").convert_to_container< std::vector< std::string > >()
+      )    
+      (
+        3, 
+        ::boost::assign::list_of
+          ("BACK")("back")("3")("B")("b").convert_to_container< std::vector< std::string > >()
+      )    
+      (
+        4, 
+        ::boost::assign::list_of
+          ("WEST")("west")("4")("W")("w").convert_to_container< std::vector< std::string > >()
+      )       
+      (
+        5, 
+        ::boost::assign::list_of
+          ("EAST")("east")("5")("E")("e").convert_to_container< std::vector< std::string > >()
+      );
+      
+    std::map< std::string, int > dtGmshModel::_edgePositionStr
+    =
+    ::boost::assign::map_list_of
+      ("0", 0)
+      ("1", 1)
+      ("2", 2)
+      ("3", 3);     
+    std::map< int, std::vector< std::string > > dtGmshModel::_positionStrEdge
+    =
+    ::boost::assign::map_list_of
+      (
+        0, 
+        ::boost::assign::list_of
+          ("0").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        1, 
+        ::boost::assign::list_of
+          ("1").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        2, 
+        ::boost::assign::list_of
+          ("2").convert_to_container< std::vector< std::string > >()
+      )    
+      (
+        3, 
+        ::boost::assign::list_of
+          ("3").convert_to_container< std::vector< std::string > >()
+      );    
+    std::map< std::string, int > dtGmshModel::_vertexPositionStr
+    =
+    ::boost::assign::map_list_of
+      ("0", 0)("START", 0)("start", 0)("S", 0)("s", 0)
+      ("1", 1)("END", 1)("end", 1)("E", 1)("e", 1);
+    std::map< int, std::vector< std::string > > dtGmshModel::_positionStrVertex
+    =
+    ::boost::assign::map_list_of
+      (
+        0, 
+        ::boost::assign::list_of
+          ("0")("START")("start")("S")("s").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        1, 
+        ::boost::assign::list_of
+          ("1")("END")("end")("E")("e").convert_to_container< std::vector< std::string > >()
+      );    
   dtGmshModel::dtGmshModel(std::string name) : GModel(name){
     _debug = "";
     _fmTwin = NULL;
@@ -301,22 +382,43 @@ namespace dtOO {
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByPhysical( 
     std::string const & physical 
   ) const {
-    int pN = __caCThis->getPhysicalNumber(1, physical);
-		intGEntityVMap gE_pN;
-		__caCThis->getPhysicalGroups(1, gE_pN);
-		
-		dt__throwIf(gE_pN[pN].size()!=1, getDtGmshEdgeByPhysical());
-		
-		return cast2DtGmshEdge(gE_pN[pN][0]);
+    if ( 
+      stringPrimitive::stringContains("->", physical) 
+      || 
+      stringPrimitive::isWildcard(physical) 
+    ) {
+      dt__forAllRefAuto( dtEdges(), aEdge ) {
+        if ( matchWildCardPhysical( physical, aEdge ) ) {
+          return aEdge;
+        }
+      }
+      dt__throw(
+        getDtGmshEdgeByPhysical(), << "edge[ " << physical << " ] not found."
+      );
+    }
+    else {
+      int pN = __caCThis->getPhysicalNumber(1, physical);  
+      intGEntityVMap gE_pN;
+      __caCThis->getPhysicalGroups(1, gE_pN);
+
+      dt__throwIfWithMessage(
+        gE_pN[pN].size()!=1, 
+        getDtGmshEdgeByPhysical(),
+        << "edge[ " << physical << " ] not found."
+      );
+
+      return cast2DtGmshEdge(gE_pN[pN][0]);    
+    }
   }	
   
   dtGmshFace * dtGmshModel::getDtGmshFaceByPhysical( 
     std::string const & physical 
   ) const {
-    dt__throwIf( 
-      stringPrimitive::isWildcard( physical), getDtGmshFaceByPhysical() 
-    );
-    if ( stringPrimitive::stringContains("->", physical) ) {
+    if ( 
+      stringPrimitive::stringContains("->", physical) 
+      || 
+      stringPrimitive::isWildcard(physical) 
+    ) {
       dt__forAllRefAuto( dtFaces(), aFace ) {
         if ( matchWildCardPhysical( physical, aFace ) ) {
           return aFace;
@@ -345,7 +447,11 @@ namespace dtOO {
     std::string const & physical 
   ) const {
     std::list< dtGmshFace * > faceL;
-    if ( stringPrimitive::stringContains("->", physical) ) {
+    if ( 
+      stringPrimitive::stringContains("->", physical) 
+      || 
+      stringPrimitive::isWildcard(physical) 
+    ) {
       dt__forAllRefAuto( dtFaces(), aFace ) {
         if ( matchWildCardPhysical( physical, aFace ) ) {
           faceL.push_back( aFace );
@@ -366,20 +472,60 @@ namespace dtOO {
   dtGmshRegion * dtGmshModel::getDtGmshRegionByPhysical( 
     std::string const & physical 
   ) const {
-    int pN = __caCThis->getPhysicalNumber(3, physical);
-		intGEntityVMap gE_pN;
-		__caCThis->getPhysicalGroups(3, gE_pN);
-		
-		dt__throwIfWithMessage(
-      gE_pN[pN].size()!=1, 
-      getDtGmshRegionByPhysical(),
-      << "physical = " << physical << std::endl
-      << "gE_pN[" << pN << "].size() = " << gE_pN[pN].size()
-    );
-		
-		return cast2DtGmshRegion(gE_pN[pN][0]);
+    if ( 
+      stringPrimitive::stringContains("->", physical) 
+      || 
+      stringPrimitive::isWildcard(physical) 
+    ) {
+      dt__forAllRefAuto( dtRegions(), aReg ) {
+        if ( matchWildCardPhysical( physical, aReg ) ) {
+          return aReg;
+        }
+      }
+      dt__throw(
+        getDtGmshRegionByPhysical(), << "region[ " << physical << " ] not found."
+      );
+    }
+    else {
+      int pN = __caCThis->getPhysicalNumber(3, physical);  
+      intGEntityVMap gE_pN;
+      __caCThis->getPhysicalGroups(3, gE_pN);
+
+      dt__throwIfWithMessage(
+        gE_pN[pN].size()!=1, 
+        getDtGmshRegionByPhysical(),
+        << "region[ " << physical << " ] not found."
+      );
+
+      return cast2DtGmshRegion(gE_pN[pN][0]);    
+    }
   }	  
   
+  std::list< dtGmshRegion * > dtGmshModel::getDtGmshRegionListByPhysical( 
+    std::string const & physical 
+  ) const {
+    std::list< dtGmshRegion * > regionL;
+    if ( 
+      stringPrimitive::stringContains("->", physical) 
+      || 
+      stringPrimitive::isWildcard(physical) 
+    ) {
+      dt__forAllRefAuto( dtRegions(), aRegion ) {
+        if ( matchWildCardPhysical( physical, aRegion ) ) {
+          regionL.push_back( aRegion );
+        }
+      }
+    }
+    else {
+      int pN = __caCThis->getPhysicalNumber(3, physical);  
+      intGEntityVMap gE_pN;
+      __caCThis->getPhysicalGroups(3, gE_pN);
+
+      regionL = cast2DtGmshRegion( progHelper::vector2List(gE_pN[pN]) );    
+    }
+    
+    return regionL;
+  }  
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByTag( int const tag ) const {
     ::GEdge * edge = ::GModel::getEdgeByTag(abs(tag));
     dt__ptrAss(dtGmshEdge * gEdge, dtGmshEdge::DownCast(edge));
@@ -469,6 +615,16 @@ namespace dtOO {
 		return ret;
 	}	  
 	
+  std::list< dtGmshRegion * > dtGmshModel::cast2DtGmshRegion( 
+    std::list< ::GEntity * > regions 
+  ) {
+		std::list< dtGmshRegion * > ret;
+		dt__forAllIter(std::list< ::GEntity * >, regions, it) {
+			ret.push_back( cast2DtGmshRegion(*it) );
+		}
+		return ret;
+	}	  
+  
   dtGmshVertex * dtGmshModel::cast2DtGmshVertex( ::GEntity * gv ) {
     assert( gv!=NULL );
     return dtGmshVertex::MustDownCast(gv);
@@ -548,11 +704,11 @@ namespace dtOO {
       ++vIt
     ) {
 			if ( dtGmshVertex::isEqual(gv, *vIt) ) {
-				dt__debug(
-					alreadyInModel(),
-					<< "duplicate vertex = " << gv->tag() 
-          << " equal to vertex tag = " << (*vIt)->tag()
-				);				
+//				dt__debug(
+//					alreadyInModel(),
+//					<< "duplicate vertex = " << gv->tag() 
+//          << " equal to vertex tag = " << (*vIt)->tag()
+//				);				
 				return (*vIt)->tag();
 			}
 		}
@@ -566,11 +722,11 @@ namespace dtOO {
       ++eIt
     ) {
 			if ( dtGmshEdge::isEqual(ge, *eIt) ) {
-				dt__debug(
-					alreadyInModel(),
-					<< "duplicate edge = " << ge->tag() 
-          << " equal to edge tag = " << (*eIt)->tag()
-				);				
+//				dt__debug(
+//					alreadyInModel(),
+//					<< "duplicate edge = " << ge->tag() 
+//          << " equal to edge tag = " << (*eIt)->tag()
+//				);				
 				return (*eIt)->tag();
 			}
 		}
@@ -584,11 +740,11 @@ namespace dtOO {
       ++fIt
     ) {
 			if ( dtGmshFace::isEqual(gf, *fIt) ) {
-				dt__debug(
-					alreadyInModel(),
-					<< "duplicate face = " << gf->tag() 
-          << " equal to face tag = " << (*fIt)->tag()
-				);				
+//				dt__debug(
+//					alreadyInModel(),
+//					<< "duplicate face = " << gf->tag() 
+//          << " equal to face tag = " << (*fIt)->tag()
+//				);				
 				return (*fIt)->tag();
 			}
 		}
@@ -602,11 +758,11 @@ namespace dtOO {
       ++rIt
     ) {
 			if ( dtGmshRegion::isEqual(gr, *rIt) ) {
-				dt__debug(
-					alreadyInModel(),
-					<< "duplicate region = " << gr->tag() 
-          << " equal to region tag = " << (*rIt)->tag()
-				);				
+//				dt__debug(
+//					alreadyInModel(),
+//					<< "duplicate region = " << gr->tag() 
+//          << " equal to region tag = " << (*rIt)->tag()
+//				);				
 				return (*rIt)->tag();
 			}
 		}
@@ -1455,129 +1611,335 @@ namespace dtOO {
     }    
   }
   
+  std::list< std::string > dtGmshModel::getFullPhysicalList( 
+    ::GEntity const * const ent 
+  ) const {
+    std::list< std::string > fullList;
+
+    //
+    // region
+    //
+    if ( dtGmshRegion::ConstDownCast( ent ) ) {
+      dtGmshRegion const * const reg = dtGmshRegion::ConstDownCast( ent );
+      //
+      // add label
+      //
+      fullList.push_back( reg->getPhysicalString() );
+    }
+    //
+    // face
+    //
+    else if ( dtGmshFace::ConstDownCast( ent ) ) {
+      dtGmshFace const * const face = dtGmshFace::ConstDownCast( ent );
+      //
+      // add label
+      //
+      fullList.push_back( face->getPhysicalString() );
+      std::string faceStr = face->getPhysicalString();
+      //
+      // region iterate
+      //
+      dt__forAllRefAuto( face->dtRegions(), aReg ) {
+        //
+        // region prefix iterate
+        //
+        dt__forAllRefAuto( getFullPhysicalList(aReg), aPrefix ) {
+          fullList.push_back( aPrefix + "->" + faceStr );
+          //
+          // get position index
+          //
+          std::list< dtGmshFace * > fL = aReg->dtFaces();
+          int faceI = std::distance(
+            fL.begin(),
+            std::find( fL.begin(), fL.end(), face )
+          );
+          //
+          // add position alias
+          //
+          dt__forAllRefAuto(_positionStrFace[faceI], posStr) {
+            fullList.push_back( aPrefix + "->" + posStr );
+          }        
+        }
+      }
+    }    
+    else if ( dtGmshEdge::ConstDownCast( ent ) ) {
+      dtGmshEdge const * const edge = dtGmshEdge::ConstDownCast( ent );
+      //
+      // add label
+      //
+      fullList.push_back( edge->getPhysicalString() );
+      std::string edgeStr = edge->getPhysicalString();       
+      //
+      // region iterate
+      //
+      dt__forAllRefAuto( edge->dtFaces(), aFace ) {
+        //
+        // region prefix iterate
+        //
+        dt__forAllRefAuto( getFullPhysicalList(aFace), aPrefix ) {
+          fullList.push_back( aPrefix + "->" + edgeStr );
+          //
+          // get position index
+          //
+          std::list< dtGmshEdge * > eL = aFace->dtEdges();
+          int edgeI = std::distance(
+            eL.begin(),
+            std::find( eL.begin(), eL.end(), edge )
+          );
+          //
+          // add position alias
+          //
+          dt__forAllRefAuto(_positionStrEdge[edgeI], posStr) {
+            fullList.push_back( aPrefix + "->" + posStr );
+          }        
+        }
+      }
+    }
+    else if ( dtGmshVertex::ConstDownCast( ent ) ) {
+      dtGmshVertex const * const vertex = dtGmshVertex::ConstDownCast( ent );
+      //
+      // add label
+      //
+      fullList.push_back( vertex->getPhysicalString() );
+      std::string vertexStr = vertex->getPhysicalString();       
+      //
+      // edge iterate
+      //
+      dt__forAllRefAuto( vertex->dtEdges(), aEdge ) {
+        //
+        // edge prefix iterate
+        //
+        dt__forAllRefAuto( getFullPhysicalList(aEdge), aPrefix ) {
+          fullList.push_back( aPrefix + "->" + vertexStr );
+          //
+          // get position index
+          //
+          std::list< dtGmshVertex * > vL = aEdge->dtVertices();
+          int vertexI = std::distance(
+            vL.begin(),
+            std::find( vL.begin(), vL.end(), vertex )
+          );
+          //
+          // add position alias
+          //
+          dt__forAllRefAuto(_positionStrVertex[vertexI], posStr) {
+            fullList.push_back( aPrefix + "->" + posStr );
+          }        
+        }
+      }
+    }      
+    
+    return fullList;
+  }
+        
+  std::list< ::GEntity * > dtGmshModel::getGEntityListByWildCardPhysical( 
+    std::string wildStr
+  ) const {
+//    ::boost::smatch what;
+    std::vector< std::string > physV;
+
+//    if ( !wildStr.empty() ) {
+//      std::string::const_iterator st = wildStr.begin();
+//      std::string::const_iterator en = wildStr.end();       
+//      // example: REGION->FACE->EDGE->VERTEX
+//      // what(0): what.str(0) : "REGION"
+//      // what(0): what.str(1) : ""
+//      // what(0): what.str(2) : "REGION"
+//      // what(1): what.str(0) : "->FACE"
+//      // what(1): what.str(1) : "->"
+//      // what(1): what.str(2) : "FACE"      
+//      // what(2): what.str(0) : "->EDGE"
+//      // what(2): what.str(1) : "->"
+//      // what(2): what.str(2) : "EDGE"         
+//      // what(3): what.str(0) : "->VERTEX"
+//      // what(3): what.str(1) : "->"
+//      // what(3): what.str(2) : "VERTEX"               
+//      //
+//      while ( 
+//        ::boost::regex_search(
+//          st, en, what, ::boost::regex("([-][>])?+([^->]+)")
+//        )
+//      ) {
+//        physV.push_back( what.str(2) );
+//        st = what[0].second;
+//      }
+//    }
+//    else physV.push_back("");
+    
+//    if ( (physV.size() == 1) && ( ge->dim()!=3 ) ) {
+//      dt__forFromToIndex(0, (4-ge->dim()-1), ii) {
+//        physV.insert( physV.begin(), std::string("*") );
+//      }
+//    }
+
+    //
+    // check input
+    //
+    dt__throwIf( physV.size()==0, matchWildCardPhysical() );
+
+    //
+    // arrays
+    //
+    std::list< dtGmshRegion * > region;
+    std::list< dtGmshFace * > face;
+    std::list< dtGmshEdge * > edge;
+    std::list< dtGmshVertex * > vertex;
+    
+    //
+    // region str
+    //
+    if ( physV.size() > 0 ) {
+      //
+      // pick region
+      //
+      if ( !stringPrimitive::isWildcard( physV[0] ) ) {
+        region = getDtGmshRegionListByPhysical( physV[0] );
+      }
+      else {
+        dt__forAllRefAuto(dtRegions(), aReg) {
+          if ( 
+            stringPrimitive::matchWildcard( physV[0], aReg->getPhysicalString() )
+          ) {
+            region.push_back( aReg );
+          }
+        }
+      }
+      //
+      // face str
+      //
+      if ( physV.size() > 1 ) {
+        dt__forAllRefAuto(region, aReg) {
+          //
+          // pick face
+          //
+          if ( _facePositionStr.find(physV[1]) != _facePositionStr.end() ) {
+            face.push_back(
+              progHelper::list2Vector( aReg->dtFaces() )[
+                _facePositionStr[ physV[1] ]
+              ]                  
+            );
+          }
+          else {
+            dt__forAllRefAuto(aReg->dtFaces(), aFace) {
+              if ( 
+                stringPrimitive::matchWildcard( physV[1], aFace->getPhysicalString() )
+              ) {
+                face.push_back( aFace );
+              }
+            }            
+          }
+        }
+        //
+        // edge str
+        //
+        if ( physV.size() > 2 ) {
+          dt__forAllRefAuto(face, aFace) {
+            //
+            // pick edge
+            //
+            if ( _edgePositionStr.find(physV[2]) != _edgePositionStr.end() ) {
+              edge.push_back(
+                progHelper::list2Vector( aFace->dtEdges() )[
+                  _edgePositionStr[ physV[2] ]
+                ]
+              );
+            }
+            else {
+              dt__forAllRefAuto(aFace->dtEdges(), aEdge) {
+                if ( 
+                  stringPrimitive::matchWildcard( physV[2], aEdge->getPhysicalString() )
+                ) {
+                  edge.push_back( aEdge );
+                }
+              }            
+            }          
+          }
+          if ( physV.size() > 3 ) {
+            dt__forAllRefAuto(edge, aEdge) {
+              vertex.push_back(
+                progHelper::list2Vector( aEdge->dtVertices() )[
+                  _vertexPositionStr[ physV[3] ]
+                ]
+              );
+            }
+          }            
+        }
+      }   
+    }
+    
+    std::list< ::GEntity * > ent;
+    if ( physV.size() == 4 ) {
+      dt__forAllRefAuto(vertex, aRef) {
+        ent.push_back( dynamic_cast< ::GEntity * >(aRef) );
+      }
+    }
+    else if ( physV.size() == 3 ) {
+      dt__forAllRefAuto(edge, aRef) {
+        ent.push_back( dynamic_cast< ::GEntity * >(aRef) );
+      }      
+    }    
+    else if ( physV.size() == 2 ) {
+      dt__forAllRefAuto(face, aRef) {
+        ent.push_back( dynamic_cast< ::GEntity * >(aRef) );
+      }      
+    }        
+    else if ( physV.size() == 1 ) {
+      dt__forAllRefAuto(region, aRef) {
+        ent.push_back( dynamic_cast< ::GEntity * >(aRef) );
+      }      
+    }
+    progHelper::removeBastardTwins( ent );
+    
+    return ent;
+  }
+  
   bool dtGmshModel::matchWildCardPhysical( 
     std::string wildStr, ::GEntity const * const ge 
   ) const {
-    if ( stringPrimitive::stringContains("->", wildStr) ) {
-      ::boost::smatch what;
-      std::vector< bool > rareV;
-      std::vector< std::string > physV;
-      
+    std::vector< std::string > physV;
+
+    if ( !wildStr.empty() ) {
+      // example: REGION->FACE->EDGE->VERTEX
+      // what(0): what.str(0) : "REGION"
+      // what(0): what.str(1) : ""
+      // what(0): what.str(2) : "REGION"
+      // what(1): what.str(0) : "->FACE"
+      // what(1): what.str(1) : "->"
+      // what(1): what.str(2) : "FACE"      
+      // what(2): what.str(0) : "->EDGE"
+      // what(2): what.str(1) : "->"
+      // what(2): what.str(2) : "EDGE"         
+      // what(3): what.str(0) : "->VERTEX"
+      // what(3): what.str(1) : "->"
+      // what(3): what.str(2) : "VERTEX"               
+      //
       std::string::const_iterator st = wildStr.begin();
-      std::string::const_iterator en = wildStr.end();       
+      std::string::const_iterator en = wildStr.end();
+      ::boost::smatch what;
       while ( 
         ::boost::regex_search(
           st, en, what, ::boost::regex("([-][>])?+([^->]+)")
         )
       ) {
         physV.push_back( what.str(2) );
-        if ( what.str(1).empty() ) rareV.push_back( false );
-        else rareV.push_back( true );
-
         st = what[0].second;
       }
-
-      dt__warnIfWithMessageAndSolution(
-        ge->dim()==0, 
-        return false, 
-        matchWildCardPhysical(), 
-          << "Not yet implemented."
-      ); 
-      dt__warnIfWithMessageAndSolution(
-        ge->dim()==1, 
-        return false, 
-        matchWildCardPhysical(), 
-          << "Not yet implemented."
-      );        
-//      if (ge->dim() == 0) {
-//        dt__warning(matchWildCardPhysical(), << "Returns always false.");
-//        return false;
-//      }
-//      else if (ge->dim() == 1) {
-//        dt__throwUnexpected(matchWildCardPhysical());
-//      }
-      if (ge->dim() == 2) {
-        //
-        // check region
-        //
-        dtGmshRegion const * reg = NULL;
-        if (rareV[0]) {
-          if (
-            !progHelper::contains(
-              dtRegions(), 
-              progHelper::list2Vector( dtRegions() )[
-                stringPrimitive::stringToInt( physV[0] )
-              ]            
-            )
-          ) return false;
-        }
-        else {
-          dt__forAllRefAuto(ge->regions(), aReg) {
-            if (
-              stringPrimitive::matchWildcard(
-                physV[0], this->getPhysicalString( aReg ) 
-              )
-            ) {
-              reg = dtGmshRegion::MustConstDownCast( aReg );
-              break;
-            }
-          }
-        }
-        if (!reg) return false;
-        
-        //
-        // check face
-        //
-        if (rareV[1]) {
-          if (
-            ge
-            ==
-            progHelper::list2Vector( reg->faces() )[
-              _facePositionStr[ physV[1] ]
-            ]            
-          ) {
-            return true;
-          }
-        }
-        else {
-          dt__forAllRefAuto(reg->faces(), aFace) {
-            if (
-              stringPrimitive::matchWildcard(
-                physV[1], this->getPhysicalString( aFace ) 
-              )
-            ) {
-              return true;
-            }
-          }
-        }        
-        return false;
-      }
-      else if (ge->dim() == 3) {
-        if ( rareV[0] ) {
-          return 
-            ( 
-              ge 
-              == 
-              (
-                progHelper::list2Vector( dtRegions() )[
-                  stringPrimitive::stringToInt( physV[0] )
-                ]
-              ) 
-            );
-        }
-        else {
-          return stringPrimitive::matchWildcard( 
-            wildStr, this->getPhysicalString(ge) 
-          );          
-        }
-      }
-
     }
-    else {
-      return stringPrimitive::matchWildcard( 
-        wildStr, this->getPhysicalString(ge) 
-      );
+    else physV.push_back("");
+    
+    if ( (physV.size() == 1) && ( ge->dim()!=3 ) ) {
+      dt__forFromToIndex(0, (4-ge->dim()-1), ii) {
+        physV.insert( physV.begin(), std::string("*") );
+      }
     }
+    
+    wildStr = physV[0];
+    dt__forFromToIndex(1, physV.size(), ii) wildStr = wildStr+"->"+physV[ii];
+   
+    dt__forAllRefAuto( getFullPhysicalList(ge), aPhysical) {
+      if ( stringPrimitive::matchWildcard(wildStr, aPhysical) ) return true;
+    }
+    return false;
   }
   
   void dtGmshModel::setDebug( std::string const debug ) {
