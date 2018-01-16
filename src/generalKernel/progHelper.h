@@ -45,6 +45,15 @@ namespace dtOO {
         );        
       }     
 
+      template < class T >
+      static void removeBastardTwins( std::list< T > & toMod) {
+        toMod.sort();
+        toMod.erase( 
+          std::unique(toMod.begin(), toMod.end() ), 
+          toMod.end()
+        );        
+      }         
+
       /** Moves duplicates to front, returning end of duplicates range.
        *  Use a sorted range as input. */
       template < class T >
