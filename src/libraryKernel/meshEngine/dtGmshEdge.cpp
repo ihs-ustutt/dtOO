@@ -172,6 +172,10 @@ namespace dtOO {
     return dtGmshModel::cast2DtGmshVertex( vertices() );
 	}
   
+  std::list< dtGmshFace * > dtGmshEdge::dtFaces( void ) const {
+    return dtGmshModel::cast2DtGmshFace( faces() );
+	}
+  
   bool dtGmshEdge::isEqual( 
     ::GEdge const * const ge0, ::GEdge const * const ge1 
   ) {	

@@ -14,6 +14,7 @@ class SBoundingBox3d;
 namespace dtOO {
   class map1dTo3d;
   class dtGmshVertex;
+  class dtGmshFace;
   
   class dtGmshEdge : public ::GEdge {
   public:
@@ -39,6 +40,7 @@ namespace dtOO {
     virtual ::SBoundingBox3d bounds( void ) const;
     virtual std::list< ::GVertex * > vertices( void ) const;
     virtual std::list< dtGmshVertex * > dtVertices( void ) const;
+    virtual std::list< dtGmshFace * > dtFaces( void ) const;
     static bool isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 );
     void setGrading( float const & grading, float const & type );
     std::string getPhysicalString( void ) const;

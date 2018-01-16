@@ -8,6 +8,8 @@
 class GPoint;
   
 namespace dtOO { 
+  class dtGmshEdge;
+  
   class dtGmshVertex : public ::GVertex {
   public:
     dt__class(dtGmshVertex, ::GEntity); 
@@ -24,6 +26,8 @@ namespace dtOO {
     dtPoint3 cast2DtPoint3( void ) const;
     void addGEntity( ::GEntity * const gEnt );
     static bool isEqual( ::GVertex const * const gv0, ::GVertex const * const gv1 );
+    virtual std::list< dtGmshEdge * > dtEdges( void ) const;
+    std::string getPhysicalString( void ) const;    
   public:
     mutable ::GEntity::MeshGenerationStatus _status;
   private:

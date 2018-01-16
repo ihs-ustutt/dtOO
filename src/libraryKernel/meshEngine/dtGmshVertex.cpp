@@ -3,11 +3,14 @@
 #include <gmsh/GPoint.h>
 #include <gmsh/GEdge.h>
 #include <gmsh/GModel.h>
+#include "dtGmshModel.h"
 #include "dtGmshFace.h"
 #include "dtGmshEdge.h"
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+
+#define __caCThis const_cast< dtGmshVertex * >(this)
 
 namespace dtOO { 
   dtGmshVertex::dtGmshVertex(
@@ -85,5 +88,17 @@ namespace dtOO {
 		else {
 			return false;
 		}
-	}	
+	}
+	
+  std::list< dtGmshEdge * > dtGmshVertex::dtEdges( void ) const {
+    return dtGmshModel::cast2DtGmshEdge( edges() );
+	}  
+  
+  std::string dtGmshVertex::getPhysicalString( void ) const {
+    dt__ptrAss( 
+      dtGmshModel const * const gm, 
+      dtGmshModel::ConstDownCast(__caCThis->model()) 
+    );
+    return gm->getPhysicalString(this);
+  }    
 }
