@@ -271,6 +271,16 @@ namespace dtOO {
           _clearLog->setValue(false);
         }        
       }
+			else if (strcmp(paramName, "_parseXml") == 0) {
+					if ( _parseXml->getValue() ) {
+            _parser.reset();
+						_parseXml->setValue(false);
+            _xmlBrowser->enable();
+            _cVStateBrowser->enable();
+//						setExecGracePeriod(0.1);
+//						selfExec();
+					}		
+				}      
       
 			if (strcmp(paramName, "_moduleChoice") == 0) {
 				if ( _moduleChoice->getValue() == 0 ) {
@@ -327,20 +337,10 @@ namespace dtOO {
 			// constValue param
 			//
 			if ( _cV.size() != 0 ) {
-				if (strcmp(paramName, "_parseXml") == 0) {
-					if ( _parseXml->getValue() ) {
-            _parser.reset();
-						_parseXml->setValue(false);
-            _xmlBrowser->enable();
-            _cVStateBrowser->enable();
-//						setExecGracePeriod(0.1);
-//						selfExec();
-					}		
-				}
 				//
 				// update slider parameter in GUI
 				//
-				else if (strcmp(paramName, "_cVChoice") == 0) {
+				if (strcmp(paramName, "_cVChoice") == 0) {
 					std::string label = _cVChoice->getActLabel();
 					constValue const * cVptr = _cV.get(label);
 					sliderFloatParam const * sfp = sliderFloatParam::ConstDownCast(cVptr);

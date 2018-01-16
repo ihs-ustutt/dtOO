@@ -56,7 +56,13 @@
     name const * ptr = dynamic_cast<name const *>(obj); \
     dt__throwIfNoClass( !ptr, MustConstDownCast() ); \
     return ptr; \
-  }  
+  } \
+  static name const * ConstCast(name * obj) { \
+    return const_cast< name const * >(obj); \
+  } \
+  static name * CastConst(name const * obj) { \
+    return const_cast< name * >(obj); \
+  }
 
   #define dt__handling( name ) \
     typedef labeledVectorHandling< name * > ptrVec
