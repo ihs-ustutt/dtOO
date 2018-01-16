@@ -1150,6 +1150,9 @@ namespace dtOO {
             )
           );
         }
+        else if (aGOption == "length%") {
+          pp.push_back( m1d->l_u( (*m1d) % argCS[0] ) );
+        }        
         else dt__throwUnexpected(replaceDependencies());        
       }
       else if (m2d) {

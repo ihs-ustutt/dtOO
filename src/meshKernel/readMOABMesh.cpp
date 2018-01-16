@@ -146,6 +146,15 @@ namespace dtOO {
     _rr_string = createRegions( _gm ,  *_mb, _mv_MOAB);
    
     //
+    // put all faces in first region
+    //
+    dt__forAllRefAuto(_ff_string, faceIt) {
+      dtGmshFace * thisFace = faceIt.second;
+      _rr_string.begin()->second->addFace( thisFace, 1 );
+      thisFace->addRegion( _rr_string.begin()->second );
+    }
+    
+    //
     // put all vertices that are not on a face in the first region
     //
     dt__forAllRefAuto(_mv_MOAB, aPair) {
