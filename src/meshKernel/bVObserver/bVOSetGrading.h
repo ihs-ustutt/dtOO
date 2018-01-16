@@ -28,7 +28,8 @@ namespace dtOO {
     virtual void preUpdate( void );
   private:
     std::vector< std::string > _regionLabel;    
-    std::vector< std::string > _faceLabel;   
+    std::vector< std::string > _faceLabel;
+    std::vector< std::string > _edgeLabel;
     std::vector< float > _grading;
     std::vector< float > _type;
   };

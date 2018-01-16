@@ -6,6 +6,7 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
+#include "dtGmshModel.h"
 #include "dtGmshFace.h"
 #include "dtGmshVertex.h"
 
@@ -17,6 +18,8 @@
 
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+
+#define __caCThis const_cast< dtGmshEdge * >(this)
 
 namespace dtOO {  
   dtGmshEdge::dtGmshEdge(::GModel *m, int tag) : GEdge(m, tag, NULL, NULL) {
@@ -165,6 +168,10 @@ namespace dtOO {
     return l_vertices; 
   }    
       
+  std::list< dtGmshVertex * > dtGmshEdge::dtVertices( void ) const {
+    return dtGmshModel::cast2DtGmshVertex( vertices() );
+	}
+  
   bool dtGmshEdge::isEqual( 
     ::GEdge const * const ge0, ::GEdge const * const ge1 
   ) {	
@@ -195,15 +202,23 @@ namespace dtOO {
 	}
   
 	void dtGmshEdge::setGrading( float const & grading, float const & type ) {
-    dt__debug(
-      setGrading(),
-      << "edge[ " << tag() << " ] : grading = " << grading << ", type = " 
-      << type
-    );
+//    dt__debug(
+//      setGrading(),
+//      << "edge[ " << tag() << " ] : grading = " << grading << ", type = " 
+//      << type
+//    );
     if ( ( grading == 0. ) && ( type == 0. ) ) return;
     
     this->meshAttributes.method = MESH_TRANSFINITE;    
     this->meshAttributes.coeffTransfinite = grading;
     this->meshAttributes.typeTransfinite = type;
   }
+  
+  std::string dtGmshEdge::getPhysicalString( void ) const {
+    dt__ptrAss( 
+      dtGmshModel const * const gm, 
+      dtGmshModel::ConstDownCast(__caCThis->model()) 
+    );
+    return gm->getPhysicalString(this);
+  }  
 }

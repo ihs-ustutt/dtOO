@@ -704,11 +704,11 @@ namespace dtOO {
     dt__throwIf(grading.size() != 4, setGrading());
     dt__throwIf(type.size() != 4, setGrading());
 		
-    dt__debug(
-      setGrading(),
-      << "Face[ " << tag() << " / " << getPhysicalString()
-      << " ] : grading = " << grading << ", type = " << type
-    );
+//    dt__debug(
+//      setGrading(),
+//      << "Face[ " << tag() << " / " << getPhysicalString()
+//      << " ] : grading = " << grading << ", type = " << type
+//    );
     
     int ii = 0;
     dt__forAllRefAuto(dtEdges(), ee) {

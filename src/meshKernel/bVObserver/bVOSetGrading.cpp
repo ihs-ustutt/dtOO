@@ -7,6 +7,7 @@
 #include <math.h>
 #include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParserBase.h>
+#include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
@@ -47,8 +48,22 @@ namespace dtOO {
 		_faceLabel
 		= 
 		dtXmlParserBase::getAttributeStrVector("faceLabel", element); 
+		_edgeLabel
+		= 
+		dtXmlParserBase::getAttributeStrVector("edgeLabel", element); 
     
-    dt__throwIf(_regionLabel.size() && _faceLabel.size(), init());
+    dt__throwIf(
+      ( _regionLabel.size() + _faceLabel.size() + _edgeLabel.size() )
+      >
+      std::max(
+        _regionLabel.size(), 
+        std::max(
+          _faceLabel.size(), 
+          _edgeLabel.size()
+        )
+      ), 
+      init()
+    );
 		
     _grading
 		= 
@@ -72,5 +87,8 @@ namespace dtOO {
     dt__forAllRefAuto(_faceLabel, aLabel) {
       gm->getDtGmshFaceByPhysical(aLabel)->setGrading(_grading, _type);
     }        
+    dt__forAllRefAuto(_edgeLabel, aLabel) {
+      gm->getDtGmshEdgeByPhysical(aLabel)->setGrading(_grading[0], _type[0]);
+    }
   }
 }

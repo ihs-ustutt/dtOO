@@ -285,11 +285,11 @@ namespace dtOO {
     dt__throwIf(grading.size() != 12, setGrading());
     dt__throwIf(type.size() != 12, setGrading());
 		
-    dt__debug(
-      setGrading(),
-      << "Region[ " << tag() << " / " << getPhysicalString()
-      << " ] : grading = " << grading << ", type = " << type
-    );
+//    dt__debug(
+//      setGrading(),
+//      << "Region[ " << tag() << " / " << getPhysicalString()
+//      << " ] : grading = " << grading << ", type = " << type
+//    );
     
     int ii = 0;
     dt__forAllRefAuto(dtEdges(), ee) {
