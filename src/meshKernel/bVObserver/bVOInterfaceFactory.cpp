@@ -27,6 +27,7 @@
 #include "bVOAddInternalEdge.h"
 #include "bVOAddFace.h"
 #include "bVOSetRotationalPeriodicity.h"
+#include "bVOSetTranslationalPeriodicity.h"
 #include "bVOTransformMeshPoints.h"
 #include "bVOWriteSU2.h"
 #include "bVOSetPrescribedFirstElementSize.h"
@@ -109,6 +110,7 @@ namespace dtOO {
     _instance->_builder.push_back( new bVOAddInternalEdge() );
     _instance->_builder.push_back( new bVOAddFace() );
     _instance->_builder.push_back( new bVOSetRotationalPeriodicity() );
+    _instance->_builder.push_back( new bVOSetTranslationalPeriodicity() );
     _instance->_builder.push_back( new bVOTransformMeshPoints() );
     _instance->_builder.push_back( new bVOWriteSU2() );
     _instance->_builder.push_back( new bVOSetGradingToFaceRule() );

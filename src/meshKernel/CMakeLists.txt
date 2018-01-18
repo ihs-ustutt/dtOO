@@ -25,6 +25,7 @@ SET(HEADERS
   bVObserver/bVOAddInternalEdge.h
   bVObserver/bVOAddFace.h
   bVObserver/bVOSetRotationalPeriodicity.h
+  bVObserver/bVOSetTranslationalPeriodicity.h
   bVObserver/bVOTransformMeshPoints.h
   bVObserver/bVOWriteSU2.h
   bVObserver/bVOSetPrescribedFirstElementSize.h
@@ -69,6 +70,7 @@ SET(SOURCES
   bVObserver/bVOAddInternalEdge.cpp
   bVObserver/bVOAddFace.cpp
   bVObserver/bVOSetRotationalPeriodicity.cpp
+  bVObserver/bVOSetTranslationalPeriodicity.cpp
   bVObserver/bVOTransformMeshPoints.cpp
   bVObserver/bVOSetPrescribedFirstElementSize.cpp
   bVObserver/bVOWriteSU2.cpp
