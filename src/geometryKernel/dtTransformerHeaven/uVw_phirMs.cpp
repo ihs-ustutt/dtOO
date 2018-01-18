@@ -65,8 +65,6 @@ namespace dtOO {
       float phir = toTrans->at(ii).x() * _ss.x();
 		  float mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
 		  float ss = toTrans->at(ii).z() * _ss.z();
-//      dt__warnIfWithMessageAndSolution(ss>1., ss=1., apply(), << dt__eval(ss));
-//      dt__warnIfWithMessageAndSolution(ss<0., ss=0., apply(), << dt__eval(ss));
       dt__solution(ss>1., ss=1.);
       dt__solution(ss<0., ss=0.);
       
@@ -194,33 +192,6 @@ namespace dtOO {
       << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(1.,1.) ) << std::endl
       << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(0.,1.) ) << std::endl
     );
-//    //
-//    // write csv of mapping
-//    //
-//    std::fstream of;
-//    of.open("ms.csv", std::ios::out | std::ios::trunc);
-//    of.precision(8);
-//    of.fixed;
-//    of << "x_coord,y_coord,z_coord,u_p,v_p,m,s,m_p,s_p" << std::endl;
-//    dt__forAllIndex(ms, ii) {
-//      dt__forAllIndex(ms[ii], jj) {
-//        float uPercent = static_cast<float>(ii)/(_nV-1);
-//        float vPercent = static_cast<float>(jj)/(_nW-1);
-//
-//        dtPoint3 pXYZ 
-//        = 
-//        _rM2d->constRefMap2dTo3d().getPointPercent(uPercent, vPercent);
-//        
-//        of 
-//        << pXYZ.x() << ", " << pXYZ.y() << ", " << pXYZ.z() << ", "
-//        << uPercent << ", " << vPercent << ", "
-//        << ms[ii][jj].x() << ", " << ms[ii][jj].y() << ", "
-//        << ms[ii][jj].x()/ms.back()[jj].x() << ", " 
-//        << ms[ii][jj].y()/ms[ii].back().y()
-//        << std::endl;
-//      }
-//    }
-//    of.close();
   }
   
 	float uVw_phirMs::m_uSVS(float const & uu, float const & vv) const {
@@ -288,14 +259,5 @@ namespace dtOO {
     dtVector3 rr = vXYZ - pointOnRotAx;
 		
 		return uu*dtLinearAlgebra::length(rr) * (2.*M_PI);
-  }
-  
-  float uVw_phirMs::m_vVs(float const & vv, float const & ss) const {
-    aFX xx 
-    = 
-    analyticFunction::aFXTwoD( _rM2d->constRefMap2dTo3d().u_percent(vv), ss );
-    aFY yy = _ms_uSPercentVSPercent->Y(xx);
-    
-    return _rM2d->constRefMap2dTo3d().percent_u(yy[0]);    
   }
 }

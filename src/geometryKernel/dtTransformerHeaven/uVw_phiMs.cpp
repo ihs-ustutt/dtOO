@@ -15,6 +15,9 @@
 
 namespace dtOO {
   uVw_phiMs::uVw_phiMs() : dtTransformer() {
+    _ss = dtVector3(1.,1.,1.);
+    _nV = 11;
+    _nW = 11;        
   }
 
   uVw_phiMs::uVw_phiMs(
@@ -23,8 +26,8 @@ namespace dtOO {
 		_rM2d.reset( orig._rM2d->clone() );
 		_ss = orig._ss;
     _ms_uSPercentVSPercent.reset( orig._ms_uSPercentVSPercent->clone() );
-    _nU = orig._nU;
     _nV = orig._nV;
+    _nW = orig._nW;
   }
 	
   uVw_phiMs::~uVw_phiMs() {
@@ -39,13 +42,7 @@ namespace dtOO {
 		return new uVw_phiMs();
 	}
 	
-	/**
-	 * @todo ConstDownCast to current types is not a satisfying solution. Maybe
-	 * "transformed cloning" is a better solution?!
-   */
-  aFPtrVec uVw_phiMs::apply( 
-	  aFPtrVec const * const aFP 
-	) const {
+  aFPtrVec uVw_phiMs::apply( aFPtrVec const * const aFP ) const {
 		aFPtrVec retV;
 		
     for (int ii=0; ii<aFP->size(); ii++) {
@@ -53,52 +50,6 @@ namespace dtOO {
 
       retV.push_back( aF->cloneTransformed( this ) );
       retV.back()->setLabel( aF->getLabel() );
-      
-//			vec3dCurveOneD const * const v1d = vec3dCurveOneD::ConstDownCast(aF);			
-//			vec3dSurfaceTwoD const * const v2d = vec3dSurfaceTwoD::ConstDownCast(aF);
-//			vec3dThickedTwoD const * const vT2d = vec3dThickedTwoD::ConstDownCast(aF);
-//      vec3dTransVolThreeD const * const v3d 
-//      = 
-//      vec3dTransVolThreeD::ConstDownCast(aF);
-			
-//			if (v1d) {
-//				analyticFunctionTransformed<vec3dCurveOneD> * aFT
-//				= new analyticFunctionTransformed<vec3dCurveOneD>(*v1d);
-//				aFT->setTransformer(this);
-//				retV.push_back( aFT );
-//				retV.back()->setLabel(aF->getLabel());
-//			}			
-//      else if (v2d) {
-//				analyticFunctionTransformed<vec3dSurfaceTwoD> * aFT
-//				= new analyticFunctionTransformed<vec3dSurfaceTwoD>(*v2d);
-//				aFT->setTransformer(this);
-//				retV.push_back( aFT );
-//				retV.back()->setLabel(aF->getLabel());				
-//			}
-//      else if (vT2d) {			
-//				analyticFunctionTransformed<vec3dThickedTwoD> * aFT
-//				= new analyticFunctionTransformed<vec3dThickedTwoD>(*vT2d);
-//				aFT->setTransformer(this);
-//				retV.push_back( aFT );
-//				retV.back()->setLabel(aF->getLabel());	
-//			}	
-//      else if (v3d) {			
-//				analyticFunctionTransformed<vec3dTransVolThreeD> * aFT
-//				= new analyticFunctionTransformed<vec3dTransVolThreeD>(*v3d);
-//				aFT->setTransformer(this);
-//				retV.push_back( aFT );
-//				retV.back()->setLabel(aF->getLabel());	
-//			}		      
-//			else {
-//				dt__throw(
-//					apply(),
-//					<< dt__eval(v1d) << std::endl
-//					<< dt__eval(v2d) << std::endl
-//					<< dt__eval(vT2d) << std::endl								
-//					<< dt__eval(v3d) << std::endl		          
-//					<< "Unknown type."
-//				);
-//			}
 		}
 		
 		return retV;
@@ -112,8 +63,6 @@ namespace dtOO {
       float phir = toTrans->at(ii).x() * _ss.x();
 		  float mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
 		  float ss = toTrans->at(ii).z() * _ss.z();
-//      dt__warnIfWithMessageAndSolution(ss>1., ss=1., apply(), << dt__eval(ss));
-//      dt__warnIfWithMessageAndSolution(ss<0., ss=0., apply(), << dt__eval(ss));
       dt__solution(ss>1., ss=1.);
       dt__solution(ss<0., ss=0.);
       
@@ -176,50 +125,44 @@ namespace dtOO {
     aGPtrVec const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
-		
+		    
 		if ( dtXmlParserBase::hasChild("Vector_3", *tE) ) {
 			::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
-			handleDtVector3(
-				"Vector_3", 
-				dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG)
-			);
+      _ss = dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG);
 		}
-		else {
-      handleDtVector3("Vector_3", dtVector3(1.,1.,1.));			
-		}
-		handleAnalyticGeometry(
-			"part_label", 
-			aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
-		);
     
+    dt__ptrAss(
+      rotatingMap2dTo3d const * const rM2d, 
+      rotatingMap2dTo3d::ConstDownCast(
+        aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
+      )
+    );
+    _rM2d.reset( rM2d->clone() );
+
 		if ( dtXmlParserBase::hasAttribute("number_points_two", *tE) ) {
-      handleInt(
-        "number_points_two", 
-        dtXmlParserBase::getAttributeIntMuParse(
-          "number_points_two", *tE, cV, aF
-        )
-  		);
+      _nW 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse(
+        "number_points_two", *tE, cV, aF
+      );
     } 
-    else handleInt("number_points_two", 11);
 
 		if ( dtXmlParserBase::hasAttribute("number_points_three", *tE) ) {
-      handleInt(
-        "number_points_three", 
-        dtXmlParserBase::getAttributeIntMuParse(
-          "number_points_three", *tE, cV, aF
-        )
-  		);
+      _nW
+      = 
+      dtXmlParserBase::getAttributeIntMuParse(
+        "number_points_three", *tE, cV, aF
+      );
     } 
-    else handleInt("number_points_three", 11);
     
     //
     // create piecewise bilinear mapping
     //
-    twoDArrayHandling< dtPoint2 > ms(_nU, _nV);
+    twoDArrayHandling< dtPoint2 > ms(_nW, _nW);
     dt__forAllIndex(ms, ii) {
       dt__forAllIndex(ms[ii], jj) {
-        float uPercent = static_cast<float>(ii)/(_nU-1);
-        float vPercent = static_cast<float>(jj)/(_nV-1);
+        float uPercent = static_cast<float>(ii)/(_nW-1);
+        float vPercent = static_cast<float>(jj)/(_nW-1);
         ms[ii][jj] 
         = 
         dtPoint2(
@@ -235,74 +178,59 @@ namespace dtOO {
       }
     }
     _ms_uSPercentVSPercent.reset( new vec2dMultiBiLinearTwoD(ms) );
-//    //
-//    // write csv of mapping
-//    //
-//    std::fstream of;
-//    of.open("ms.csv", std::ios::out | std::ios::trunc);
-//    of.precision(8);
-//    of.fixed;
-//    of << "x_coord,y_coord,z_coord,u_p,v_p,m,s,m_p,s_p" << std::endl;
-//    dt__forAllIndex(ms, ii) {
-//      dt__forAllIndex(ms[ii], jj) {
-//        float uPercent = static_cast<float>(ii)/(_nU-1);
-//        float vPercent = static_cast<float>(jj)/(_nV-1);
-//
-//        dtPoint3 pXYZ 
-//        = 
-//        _rM2d->constRefMap2dTo3d().getPointPercent(uPercent, vPercent);
-//        
-//        of 
-//        << pXYZ.x() << ", " << pXYZ.y() << ", " << pXYZ.z() << ", "
-//        << uPercent << ", " << vPercent << ", "
-//        << ms[ii][jj].x() << ", " << ms[ii][jj].y() << ", "
-//        << ms[ii][jj].x()/ms.back()[jj].x() << ", " 
-//        << ms[ii][jj].y()/ms[ii].back().y()
-//        << std::endl;
-//      }
-//    }
-//    of.close();
-  }
-  
-  void uVw_phiMs::handleAnalyticGeometry(
-    std::string const name, analyticGeometry const * value
-  ) {
-    if (name == "part_label") {
-      dt__ptrAss(
-        rotatingMap2dTo3d const * const m3d, 
-        rotatingMap2dTo3d::ConstDownCast(value)
-      );
-			_rM2d.reset( m3d->clone() );
-      return;
-    }
-    dtTransformer::handleAnalyticGeometry(name, value);
-  }
-	
-  void uVw_phiMs::handleDtVector3(
-    std::string const name, dtVector3 const value
-  ) {
-    if (name == "Vector_3") {
-      _ss = value;
-      return;
-    }
-    dtTransformer::handleDtVector3(name, value);
-  }	
-  
-  void uVw_phiMs::handleInt(std::string const name, int const value) {
-    dt__info(handleInt(),
-      << dt__eval(name) << std::endl
-      << dt__eval(value) 
+    
+    dt__info(
+      init(),
+      << dt__eval(_rM2d->constRefMap2dTo3d().getUMin()) << std::endl
+      << dt__eval(_rM2d->constRefMap2dTo3d().getUMax()) << std::endl
+      << dt__eval(_rM2d->constRefMap2dTo3d().getVMin()) << std::endl
+      << dt__eval(_rM2d->constRefMap2dTo3d().getVMax()) << std::endl
+      << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(0.,0.) ) << std::endl
+      << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(1.,0.) ) << std::endl
+      << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(1.,1.) ) << std::endl
+      << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(0.,1.) ) << std::endl
     );
-    if (name == "number_points_two") {
-      _nU = value;
-      return;
-    }
-    else if (name == "number_points_three") {
-      _nV = value;
-      return;
-    }
-    dtTransformer::handleInt(name, value);
-  }	  
+  }
+  
+//  void uVw_phiMs::handleAnalyticGeometry(
+//    std::string const name, analyticGeometry const * value
+//  ) {
+//    if (name == "part_label") {
+//      dt__ptrAss(
+//        rotatingMap2dTo3d const * const m3d, 
+//        rotatingMap2dTo3d::ConstDownCast(value)
+//      );
+//			_rM2d.reset( m3d->clone() );
+//      return;
+//    }
+//    dtTransformer::handleAnalyticGeometry(name, value);
+//  }
+//	
+//  void uVw_phiMs::handleDtVector3(
+//    std::string const name, dtVector3 const value
+//  ) {
+//    if (name == "Vector_3") {
+//      _ss = value;
+//      return;
+//    }
+//    dtTransformer::handleDtVector3(name, value);
+//  }	
+//  
+//  void uVw_phiMs::handleInt(std::string const name, int const value) {
+//    dt__info(handleInt(),
+//      << dt__eval(name) << std::endl
+//      << dt__eval(value) 
+//    );
+//    if (name == "number_points_two") {
+//      _nV = value;
+//      return;
+//    }
+//    else if (name == "number_points_three") {
+//      _nW = value;
+//      return;
+//    }
+//    dtTransformer::handleInt(name, value);
+//  }	  
   
 	float uVw_phiMs::m_uSVS(float const & uu, float const & vv) const {
 		ptrHandling< map1dTo3d > m1d( 
@@ -378,12 +306,12 @@ namespace dtOO {
 		return uu * (2.*M_PI);
   }
   
-  float uVw_phiMs::m_vVs(float const & vv, float const & ss) const {
-    aFX xx 
-    = 
-    analyticFunction::aFXTwoD( _rM2d->constRefMap2dTo3d().u_percent(vv), ss );
-    aFY yy = _ms_uSPercentVSPercent->Y(xx);
-    
-    return _rM2d->constRefMap2dTo3d().percent_u(yy[0]);    
-  }
+//  float uVw_phiMs::m_vVs(float const & vv, float const & ss) const {
+//    aFX xx 
+//    = 
+//    analyticFunction::aFXTwoD( _rM2d->constRefMap2dTo3d().u_percent(vv), ss );
+//    aFY yy = _ms_uSPercentVSPercent->Y(xx);
+//    
+//    return _rM2d->constRefMap2dTo3d().percent_u(yy[0]);    
+//  }
 }

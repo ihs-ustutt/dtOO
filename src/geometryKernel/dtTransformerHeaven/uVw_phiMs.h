@@ -42,11 +42,6 @@ namespace dtOO {
     apply( std::vector< dtPoint3 > const * const toTrans ) const;        
     std::vector< dtPoint3 > 
     retract(std::vector< dtPoint3 > const * const toRetract) const;    
-    virtual void handleAnalyticGeometry(
-      std::string const name, analyticGeometry const * value
-    );
-    virtual void handleDtVector3(std::string const name, dtVector3 const value);
-    virtual void handleInt(std::string const name, int const value);
   private:
     /**
      * @todo Should be on map3dto3d
@@ -76,16 +71,12 @@ namespace dtOO {
     float phir_uVvVwV(
       float const & uu, float const & vv, float const & ww
     ) const;
-    /**
-     * @todo Should be on map3dto3d
-     */
-    float m_vVs(float const & vv, float const & ss) const;      
   private:
     dt__pH(rotatingMap2dTo3d const) _rM2d;
     dtVector3 _ss;
     dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
-    int _nU;
     int _nV;
+    int _nW;
   };
 }
 

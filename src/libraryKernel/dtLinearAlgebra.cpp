@@ -53,15 +53,12 @@ namespace dtOO {
 			1
 		);
 	}
-
-	dtAffTransformation3 dtLinearAlgebra::getDiagTrans( dtVector3 const vector) {
-		return dtAffTransformation3(
-      vector.x(), 0., 0.,
-			0., vector.y(), 0.,
-      0., 0., vector.z(),
-			1.
-		);      
-	}
+  
+	dtAffTransformation3 dtLinearAlgebra::getTranslation(
+		dtVector3 const vector
+	) {  
+		return dtAffTransformation3( dtAffTranslation(), vector );
+	}  
 
 	dtVector3 dtLinearAlgebra::crossProduct(
 		dtVector3 const & v0, 

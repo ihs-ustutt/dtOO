@@ -71,11 +71,7 @@ namespace dtOO {
      */    
     float phir_uVvVwV(
       float const & uu, float const & vv, float const & ww
-    ) const;
-    /**
-     * @todo Should be on map3dto3d
-     */
-    float m_vVs(float const & vv, float const & ss) const;      
+    ) const;  
   private:
     dt__pH(rotatingMap2dTo3d const) _rM2d;
     dtVector3 _ss;

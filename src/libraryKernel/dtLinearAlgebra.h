@@ -27,6 +27,7 @@ namespace dtOO {
   typedef ::CGAL::Point_2< dtKernel > dtPoint2;
   typedef ::CGAL::Vector_2< dtKernel > dtVector2;
   typedef ::CGAL::Aff_transformation_2< dtKernel > dtAffTransformation2;
+  typedef ::CGAL::Translation dtAffTranslation;
   typedef ::CGAL::Line_3< dtKernel > dtLine3;
   typedef ::CGAL::Line_2< dtKernel > dtLine2;
   typedef ::CGAL::Triangle_3< dtKernel > dtTriangle3;
@@ -51,9 +52,7 @@ namespace dtOO {
       dtVector3 const vector, 
       const float angle
     );
-    static dtAffTransformation3 getDiagTrans(
-      dtVector3 const vector
-    );    
+    static dtAffTransformation3 getTranslation( dtVector3 const vector );    
     static dtVector3 crossProduct(
       dtVector3 const & v0, 
       dtVector3 const & v1

@@ -28,6 +28,10 @@ namespace dtOO {
   }
 
   void dtMesh2DOperator::copyMesh( dtGmshFace * from, dtGmshFace *to) {
+    Msg::Info(
+      "Copy mesh from surface %d to surface %d ( dtMesh2DOperator )", 
+      from->tag(), to->tag()
+    );
     ::copyMesh( (::GFace *) from, (::GFace *) to );
   }
 }
