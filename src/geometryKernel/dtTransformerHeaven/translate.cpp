@@ -184,6 +184,16 @@ namespace dtOO {
     return retAGeo;
   }
   
+	std::vector< dtPoint3 > translate::retract( 
+    std::vector< dtPoint3 > const * const toRetract 
+  ) const {
+		std::vector< dtPoint3 > ret(toRetract->size());
+    
+		dt__forAllIndex(*toRetract, ii) ret[ii] = toRetract->at(ii) - _v3;
+		
+		return ret;
+	}
+  
   bool translate::isNecessary( void ) const {
     return true;
   }
@@ -205,5 +215,13 @@ namespace dtOO {
 			::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
 			_v3 = dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG);
     }
+  }
+  
+  dtVector3 translate::translationAxis3d( void ) const {
+    return _v3;
+  }
+  
+  dtVector2 translate::translationAxis2d( void ) const {
+    return _v2;
   }
 }

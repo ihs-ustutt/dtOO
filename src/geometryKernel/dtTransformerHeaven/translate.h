@@ -7,7 +7,7 @@
 namespace dtOO {
   class translate : public dtTransformer {
   public:    
-    dt__classOnlyName(translate);
+    dt__class(translate, dtTransformer);
     translate();
     translate( translate const & orig );
     virtual ~translate();
@@ -25,7 +25,11 @@ namespace dtOO {
       std::vector< dtPoint3 > const * const toTrans 
     ) const;   
     virtual aFPtrVec apply( aFPtrVec const * const sFunP ) const; 
-    virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;    
+    virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
+    std::vector< dtPoint3 > 
+    retract(std::vector< dtPoint3 > const * const toRetract) const;       
+    dtVector3 translationAxis3d( void ) const;
+    dtVector2 translationAxis2d( void ) const;
   private:
     dtVector2 _v2;
     dtVector3 _v3;
