@@ -10,6 +10,7 @@ SET(HEADERS
   analyticGeometryHeaven/map1dTo3d.h
   analyticGeometryHeaven/trans6SidedCube.h
   analyticGeometryHeaven/rotatingMap2dTo3d.h
+  analyticGeometryHeaven/translatingMap2dTo3d.h
   analyticGeometryHeaven/infinityMap3dTo3d.h
   analyticGeometryHeaven/scaOneDInMap1dTo3d.h
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
@@ -119,6 +120,7 @@ SET(HEADERS
   dtTransformerHeaven/uVw_phirMs.h
   dtTransformerHeaven/uVw_skewPhirMs.h
   dtTransformerHeaven/uVw_phiMs.h
+  dtTransformerHeaven/uVw_deltaMs.h
   dtTransformerHeaven/averagePoints.h
   dtTransformerHeaven/projectOnSurface.h
   dtTransformerHeaven/reparamInSurface.h
@@ -147,6 +149,7 @@ SET(SOURCES
   analyticGeometryHeaven/map1dTo3d.cpp
   analyticGeometryHeaven/trans6SidedCube.cpp
   analyticGeometryHeaven/rotatingMap2dTo3d.cpp
+  analyticGeometryHeaven/translatingMap2dTo3d.cpp
   analyticGeometryHeaven/infinityMap3dTo3d.cpp
   analyticGeometryHeaven/scaOneDInMap1dTo3d.cpp
   analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.cpp
@@ -246,6 +249,7 @@ SET(SOURCES
   dtTransformerHeaven/uVw_phirMs.cpp
   dtTransformerHeaven/uVw_skewPhirMs.cpp
   dtTransformerHeaven/uVw_phiMs.cpp
+  dtTransformerHeaven/uVw_deltaMs.cpp
   dtTransformerHeaven/averagePoints.cpp
   dtTransformerHeaven/projectOnSurface.cpp
   dtTransformerHeaven/reparamInSurface.cpp

@@ -18,6 +18,7 @@
 #include "uVw_phirMs.h"
 #include "uVw_skewPhirMs.h"
 #include "uVw_phiMs.h"
+#include "uVw_deltaMs.h"
 #include "averagePoints.h"
 #include "projectOnSurface.h"
 #include "reparamInSurface.h"
@@ -104,6 +105,7 @@ namespace dtOO {
     _instance->_transformer.push_back( new addConstCoordinate() );
     _instance->_transformer.push_back( new uVw_phirMs() );
     _instance->_transformer.push_back( new uVw_phiMs() );
+    _instance->_transformer.push_back( new uVw_deltaMs() );
     _instance->_transformer.push_back( new averagePoints() );
     _instance->_transformer.push_back( new projectOnSurface() );
     _instance->_transformer.push_back( new reparamInSurface() );

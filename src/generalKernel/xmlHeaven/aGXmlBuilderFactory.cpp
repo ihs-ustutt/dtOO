@@ -13,6 +13,7 @@
 #include "aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/rotatingMap2dTo3dAGXmlBuilder.h"
+#include "aGXmlBuilder/translatingMap2dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/rotatingMap1dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/infinityMap3dTo3dAGXmlBuilder.h"
 #include "aGXmlBuilder/makeCompoundAGXmlBuilder.h"
@@ -117,6 +118,7 @@ namespace dtOO {
     _instance->_builder.push_back( new vec2dInMap2dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new vec3dInMap3dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new rotatingMap2dTo3dAGXmlBuilder() );
+    _instance->_builder.push_back( new translatingMap2dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new rotatingMap1dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new infinityMap3dTo3dAGXmlBuilder() );
     _instance->_builder.push_back( new makeCompoundAGXmlBuilder() );

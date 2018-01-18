@@ -36,6 +36,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/rotatingMap2dTo3dAGXmlBuilder.h  
+  xmlHeaven/aGXmlBuilder/translatingMap2dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/rotatingMap1dTo3dAGXmlBuilder.h  
   xmlHeaven/aGXmlBuilder/infinityMap3dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/makeCompoundAGXmlBuilder.h
@@ -132,6 +133,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/vec2dInMap2dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec3dInMap3dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/rotatingMap2dTo3dAGXmlBuilder.cpp  
+  xmlHeaven/aGXmlBuilder/translatingMap2dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/rotatingMap1dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/infinityMap3dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/makeCompoundAGXmlBuilder.cpp
