@@ -6,12 +6,9 @@
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
-namespace mu {
-  class Parser;
-}
-
 namespace dtOO {
   class dtTransformer;
+  class dtMuParser;
   
   class scaMuParserTwoD : public scaTwoD {
   public:
@@ -32,7 +29,7 @@ namespace dtOO {
     virtual float YFloat( float const & x0, float const & x1 ) const;
     virtual bool closed( int const & dir ) const;    
   private:
-    dt__pH(mu::Parser) _parser;
+    dt__pH(dtMuParser) _parser;
     dt__pVH(double) _arg;
     std::string _expressionStr;
     std::string _argStr[2];

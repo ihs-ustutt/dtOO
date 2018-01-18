@@ -12,7 +12,7 @@ namespace dtOO {
 
   vec3dMuParserOneD::vec3dMuParserOneD(
     vec3dMuParserOneD const & orig
-  ) : vec3dOneD(orig), _parser(new mu::Parser) {
+  ) : vec3dOneD(orig), _parser( new dtMuParser() ) {
 		for (int ii=0; ii<1; ii++) {
       _arg.push_back( new double(0.) );
 		  _argStr[ii] = orig._argStr[ii];
