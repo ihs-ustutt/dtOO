@@ -6,6 +6,7 @@
 #include "dtMeshGFace.h"
 #include "dtMeshGRegion.h"
 #include "dtMeshGRegionWithBoundaryLayer.h"
+#include "dtMeshGRegionWithOneLayer.h"
 #include "dtMeshAndOrientGEdge.h"
 #include "dtMeshAndOrientGFace.h"
 #include "dtMeshTransfiniteRecombineSelectionGFace.h"
@@ -33,6 +34,9 @@ namespace dtOO {
     if (str == "dtMeshGRegionWithBoundaryLayer") {
       return new dtMeshGRegionWithBoundaryLayer();
     }
+    if (str == "dtMeshGRegionWithOneLayer") {
+      return new dtMeshGRegionWithOneLayer();
+    }    
     if (str == "dtMeshAndOrientGEdge") return new dtMeshAndOrientGEdge();
     if (str == "dtMeshAndOrientGFace") return new dtMeshAndOrientGFace();
     if (str == "dtMeshTransfiniteRecombineSelectionGFace") {

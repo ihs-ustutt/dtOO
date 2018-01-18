@@ -108,6 +108,7 @@ SET(HEADERS
   meshEngine/dtMeshGFace.h
   meshEngine/dtMeshGRegion.h
   meshEngine/dtMeshGRegionWithBoundaryLayer.h
+  meshEngine/dtMeshGRegionWithOneLayer.h
   meshEngine/dtMeshAndOrientGEdge.h
   meshEngine/dtMeshAndOrientGFace.h
   meshEngine/dtMeshTransfinite2DOperator.h
@@ -246,6 +247,7 @@ SET(SOURCES
   meshEngine/dtMeshGFace.cpp
   meshEngine/dtMeshGRegion.cpp
   meshEngine/dtMeshGRegionWithBoundaryLayer.cpp
+  meshEngine/dtMeshGRegionWithOneLayer.cpp
   meshEngine/dtMeshAndOrientGEdge.cpp
   meshEngine/dtMeshAndOrientGFace.cpp
   meshEngine/dtMeshTransfinite2DOperator.cpp
