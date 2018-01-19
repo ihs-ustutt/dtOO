@@ -1,4 +1,5 @@
 #include "scaOneD_forceBSplineCurve2dAFXmlBuilder.h"
+#include "xmlHeaven/dtXmlParser.h"
 
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -34,57 +35,42 @@ namespace dtOO {
 		aFPtrVec const * const depSFunP,
 		aFPtrVec * sFunP 
 	) const {
-    //
-    //check input
-    //
-    bool hasOrder = dtXmlParserBase::hasAttribute("order", toBuildP);
-    bool hasPoints = dtXmlParserBase::hasChild("Point_2", toBuildP);
-    bool hasScaFunction = dtXmlParserBase::hasChild("function", toBuildP);
-    bool hasShapeFactor = dtXmlParserBase::hasAttribute("shape_factor", toBuildP);
-    
-    if (hasShapeFactor && hasOrder) {
-      dt__throw(buildPart(),
-              << "order- and shape_factor-Attribute given.");
-    }
+    dt__throwIf(
+      !dtXmlParserBase::hasAttribute("order", toBuildP)
+      ||
+      !dtXmlParserBase::hasChild("Point_2", toBuildP),
+      buildPart()
+    );
 
-    /* ------------------------------------------------------------------------ */
-    // create spline out of points and order
-    /* ------------------------------------------------------------------------ */
-    if ( hasPoints && hasOrder ) {
-			std::vector< dtPoint2 > pointsArray;
-      ::QDomElement elementP = dtXmlParserBase::getChild("Point_2", toBuildP);
-      //
-      //set input
-      //
-      int order = dtXmlParserBase::getAttributeInt("order", toBuildP);
-      while ( !elementP.isNull() ) {
-				std::vector< dtPoint2 > workingPoint;
-        dtXmlParserBase::dtXmlParserBase::createBasic( 
-          &elementP, bC, cValP, depSFunP, &workingPoint 
-        );
-        for (int ii=0; ii<workingPoint.size();ii++) {
-					pointsArray.push_back( workingPoint[ii] );
+    std::vector< dtPoint2 > pointsArray;
+    ::QDomElement elementP = dtXmlParserBase::getChild("Point_2", toBuildP);
+    //
+    //set input
+    //
+    int order 
+    = 
+    dtXmlParserBase::getAttributeIntMuParse("order", toBuildP, cValP);
+    while ( !elementP.isNull() ) {
+      std::vector< dtPoint2 > workingPoint;
+      dtXmlParserBase::dtXmlParserBase::createBasic( 
+        &elementP, bC, cValP, depSFunP, &workingPoint 
+      );
+      for (int ii=0; ii<workingPoint.size();ii++) {
+        pointsArray.push_back( workingPoint[ii] );
 //					delete workingPoint[ii];
-        }
-      // next sibling
-      elementP 
-      = 
-      ::QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
       }
-			ptrHandling<dtCurve2d> dtC2d( 
-				bSplineCurve2d_pointConstructOCC(pointsArray, order).result() 
-			);
+    // next sibling
+    elementP 
+    = 
+    ::QDomElement( dtXmlParserBase::getNextSibling("Point_2", elementP) );      
+    }
+    ptrHandling<dtCurve2d> dtC2d( 
+      bSplineCurve2d_pointConstructOCC(pointsArray, order).result() 
+    );
 
-      //
-      // create scaCurve2dOneD
-      //
-      sFunP->push_back( new scaCurve2dOneD( dtC2d.get() ) );			
-    }
-    else {
-      dt__throw(buildPart(),
-              << dt__eval(hasOrder) << std::endl
-              << dt__eval(hasPoints) << std::endl
-              << dt__eval(hasScaFunction) );
-    }
+    //
+    // create scaCurve2dOneD
+    //
+    sFunP->push_back( new scaCurve2dOneD( dtC2d.get() ) );
   }
 }
