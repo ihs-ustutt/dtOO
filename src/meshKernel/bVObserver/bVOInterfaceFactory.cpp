@@ -8,6 +8,7 @@
 #include "bVONameFaces.h"
 #include "bVOSetGradingToFaceRule.h"
 #include "bVONameRegions.h"
+#include "bVORemoveRegions.h"
 #include "bVOWriteMSH.h"
 #include "bVOReadMSH.h"
 #include "bVOTransfiniteFaces.h"
@@ -91,6 +92,7 @@ namespace dtOO {
     _instance->_builder.push_back( new bVOSetGrading() );
     _instance->_builder.push_back( new bVONameFaces() );
     _instance->_builder.push_back( new bVONameRegions() );
+    _instance->_builder.push_back( new bVORemoveRegions() );
     _instance->_builder.push_back( new bVOWriteMSH() );
     _instance->_builder.push_back( new bVOReadMSH() );
     _instance->_builder.push_back( new bVOTransfiniteFaces() );
