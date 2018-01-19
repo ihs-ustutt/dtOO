@@ -8,6 +8,7 @@
 #include <interfaceHeaven/stringPrimitive.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
+#include <geometryEngine/muParserFunctions.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <boundedVolumeFactory.h>
@@ -991,6 +992,11 @@ namespace dtOO {
     cVPtrVec const * const cVP, 
     aFPtrVec * aFP
 	) const {
+    //
+    // registrate analytic functions on muparser
+    //
+    muParserFunctions::instance()->registrateAnalyticFunctions( aFP );
+    
 		std::vector< std::string > label = getLabels("function");
 		
 		dt__forAllIndex(label, ii) createAnalyticFunction(label[ii], bC, cVP, aFP);

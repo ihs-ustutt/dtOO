@@ -49,7 +49,7 @@ namespace dtOO {
 			expStr 
 			= 
 			dtXmlParserBase::replaceDependencies(
-        dtXmlParserBase::getAttributeStr("value", expEl), cValP, depSFunP
+        dtXmlParserBase::getAttributeStr("value", expEl), cValP
       );
 			yDim = dtXmlParserBase::getAttributeInt("dimension", expEl);
 		}
