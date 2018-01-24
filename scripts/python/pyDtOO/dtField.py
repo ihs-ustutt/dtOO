@@ -11,5 +11,7 @@ class dtField:
 
   def Read(self):
     data = numpy.genfromtxt( self.f_.FullName(), delimiter=',', comments='#')
-    logging.info( 'Read data with %s', str(numpy.shape(data)) )
+    if numpy.size( numpy.shape( data ) )==1 and numpy.size( data )>0 :
+      data = data.reshape( (1,numpy.size(data)) ) 
+    logging.info( 'Read data with %s', str(numpy.shape(data)) )      
     return data

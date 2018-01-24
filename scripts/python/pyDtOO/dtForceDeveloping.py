@@ -43,4 +43,34 @@ class dtForceDeveloping:
     
   def MomentChangeLast(self, nAverageSteps ):
     return (self.MomentMaxLast(nAverageSteps) - self.MomentMinLast(nAverageSteps))/self.MomentMeanLast(nAverageSteps)
+  
+  def Force(self):
+    return self.forcePressure_ + self.forceViscous_
+  
+  def ForceMeanLast(self, nAverageSteps):
+    return numpy.mean( 
+      self.forcePressure_[-nAverageSteps:,:] + self.forceViscous_[-nAverageSteps:,:], 
+      axis=0 
+    )
+    
+  def ForceMinLast(self, nAverageSteps):
+    return numpy.min( 
+      self.forcePressure_[-nAverageSteps:,:] + self.forceViscous_[-nAverageSteps:,:], 
+      axis=0 
+    )
+
+  def ForceMaxLast(self, nAverageSteps):
+    return numpy.max( 
+      self.forcePressure_[-nAverageSteps:,:] + self.forceViscous_[-nAverageSteps:,:], 
+      axis=0 
+    )    
+
+  def ForceMean(self, step, nAverageSteps):
+    return numpy.mean( 
+      self.forcePressure_[step-nAverageSteps:step,:] + self.forceViscous_[step-nAverageSteps:step,:], 
+      axis=0 
+    )
+    
+  def ForceChangeLast(self, nAverageSteps ):
+    return (self.ForceMaxLast(nAverageSteps) - self.ForceMinLast(nAverageSteps))/self.ForceMeanLast(nAverageSteps)
  
