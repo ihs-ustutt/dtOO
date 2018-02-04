@@ -259,7 +259,7 @@ namespace dtOO {
       //
       // log container
       //
-      logContainer<uVw_skewPhirMs> dt__infoContainer(logC);
+      logContainer<uVw_skewPhirMs> logC(logINFO, "init()");
       logC() 
         << logMe::dtFormat("%12s | %12s | %12s") 
           % "" % "|| isM ||" % "|| isPhir ||" << std::endl
