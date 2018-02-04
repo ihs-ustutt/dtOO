@@ -21,6 +21,7 @@ namespace dtOO {
   class readMOABMesh : public gmshBoundedVolume {
   public:
     dt__class(readMOABMesh, boundedVolume);
+    dt__classSelfCreate(readMOABMesh);
     readMOABMesh();
     virtual ~readMOABMesh();
     virtual void init( 

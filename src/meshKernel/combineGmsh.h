@@ -15,8 +15,9 @@ namespace dtOO {
   class combineGmsh : public gmshBoundedVolume {
     public:
       dt__class(combineGmsh, boundedVolume);
+      dt__classSelfCreate(combineGmsh);               
       combineGmsh();
-      virtual ~combineGmsh();
+      virtual ~combineGmsh();     
       virtual void init( 
         ::QDomElement const & element,
         baseContainer const * const bC,

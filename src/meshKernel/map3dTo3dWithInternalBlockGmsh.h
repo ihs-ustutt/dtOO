@@ -15,6 +15,7 @@ namespace dtOO {
   class map3dTo3dWithInternalBlockGmsh : public gmshBoundedVolume {
   public:
     dt__class(map3dTo3dWithInternalBlockGmsh, boundedVolume);
+    dt__classSelfCreate(map3dTo3dWithInternalBlockGmsh);
     map3dTo3dWithInternalBlockGmsh();
     virtual ~map3dTo3dWithInternalBlockGmsh();
     virtual void init( 

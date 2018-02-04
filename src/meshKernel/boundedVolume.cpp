@@ -19,6 +19,10 @@ namespace dtOO {
   boundedVolume::~boundedVolume() {
   }
 
+  std::vector< std::string > boundedVolume::factoryAlias( void ) const {
+    return std::vector< std::string>(0);
+  }    
+  
   void boundedVolume::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,

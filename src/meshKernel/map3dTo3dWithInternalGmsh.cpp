@@ -20,7 +20,7 @@ namespace dtOO {
 
 	map3dTo3dWithInternalGmsh::~map3dTo3dWithInternalGmsh() {
 	}
-	
+  
   void map3dTo3dWithInternalGmsh::init( 
     ::QDomElement const & element,
 		baseContainer const * const bC,

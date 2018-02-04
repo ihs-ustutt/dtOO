@@ -17,33 +17,34 @@ namespace dtOO {
   class dtGmshModel;
   
   class gmshBoundedVolume : public boundedVolume {
-  public:
-    dt__class(gmshBoundedVolume, boundedVolume);      
-    gmshBoundedVolume();
-    virtual ~gmshBoundedVolume();
-    virtual void init( 
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV
-    );
-  	virtual vectorHandling< renderInterface * > getRender( void ) const;
-  	virtual vectorHandling< renderInterface * > getExtRender( void ) const;        
-    virtual std::vector< std::string > getMeshTags( void ) const;
-	  virtual dtGmshFace * getFace( std::string const & tag ) const;
-	  virtual dtGmshRegion * getRegion( std::string const & tag ) const;
-    virtual dtGmshModel * getModel( void ) const;
-	  virtual void makePreGrid( void );
-    virtual void makeGrid( void );
-  private:
-    void updatePhysicals( void ) const;    
-    mutable twoDArrayHandling< std::string > _physLabels;    
-  protected:
-    void updateBoundingBox( void );
-  protected:
-    dtGmshModel * _gm;
+    public:
+      dt__class(gmshBoundedVolume, boundedVolume);      
+      dt__classSelfCreate(gmshBoundedVolume);          
+      gmshBoundedVolume();
+      virtual ~gmshBoundedVolume(); 
+      virtual void init( 
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV
+      );
+      virtual vectorHandling< renderInterface * > getRender( void ) const;
+      virtual vectorHandling< renderInterface * > getExtRender( void ) const;        
+      virtual std::vector< std::string > getMeshTags( void ) const;
+      virtual dtGmshFace * getFace( std::string const & tag ) const;
+      virtual dtGmshRegion * getRegion( std::string const & tag ) const;
+      virtual dtGmshModel * getModel( void ) const;
+      virtual void makePreGrid( void );
+      virtual void makeGrid( void );
+    private:
+      void updatePhysicals( void ) const;    
+      mutable twoDArrayHandling< std::string > _physLabels;    
+    protected:
+      void updateBoundingBox( void );
+    protected:
+      dtGmshModel * _gm;
   };
 }
 #endif	/* GMSHBOUNDEDVOLUME_H */

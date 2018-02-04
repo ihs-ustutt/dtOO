@@ -16,7 +16,7 @@ namespace dtOO {
 
 	map2dTo3dTriangulated::~map2dTo3dTriangulated() {
 	}
-	
+	  
   void map2dTo3dTriangulated::init( 
     ::QDomElement const & element,
 		baseContainer const * const bC,

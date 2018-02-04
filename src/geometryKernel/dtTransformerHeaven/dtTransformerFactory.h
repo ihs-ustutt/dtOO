@@ -19,7 +19,6 @@ namespace dtOO {
   private:
     vectorHandling< dtTransformer * > _transformer;
     static dt__pH(dtTransformerFactory) _instance;      
-
   };
 }
 

@@ -22,7 +22,7 @@ namespace dtOO {
 
 	map3dTo3dWithInternalBlockGmsh::~map3dTo3dWithInternalBlockGmsh() {
 	}
-	
+  
   void map3dTo3dWithInternalBlockGmsh::init( 
     ::QDomElement const & element,
 		baseContainer const * const bC,

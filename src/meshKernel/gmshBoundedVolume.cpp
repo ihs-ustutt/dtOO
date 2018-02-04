@@ -38,7 +38,7 @@ namespace dtOO {
     //
 	  GmshFinalize();		
 	}
-
+      
 	void gmshBoundedVolume::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,

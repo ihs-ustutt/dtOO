@@ -28,7 +28,7 @@ namespace dtOO {
 
 	combineGmsh::~combineGmsh() {
 	}
-	
+  
   void combineGmsh::init( 
     ::QDomElement const & element,
 		baseContainer const * const bC,

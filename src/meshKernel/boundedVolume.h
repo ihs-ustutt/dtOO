@@ -28,6 +28,8 @@ namespace dtOO {
     dt__class(boundedVolume, boundedVolume);
     boundedVolume();
     virtual ~boundedVolume();
+    virtual boundedVolume * create( void ) const = 0;     
+    virtual std::vector< std::string > factoryAlias( void ) const;    
     virtual void init( 
       ::QDomElement const & element,
       baseContainer const * const bC,
