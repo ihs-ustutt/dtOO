@@ -112,6 +112,10 @@ class dtClusteredSingletonState:
     pass  
 
   @staticmethod
+  def fileIndex( id ):
+    return int( id  - 1) / int( 1000 )
+    
+  @staticmethod
   def currentMaxId():
     lastFileIndex = -1
     for aFile in glob.glob(dtClusteredSingletonState.DATADIR+'/id.*'):
@@ -165,7 +169,7 @@ class dtClusteredSingletonState:
   
   @lockutils.synchronized('fileIO', external=True, lock_path='./runLock/')
   def update( self, fileName, value ):
-    fileIndex = int( self.cur_id - 1 ) / int( 1000 )
+    fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
     tmpF = tempfile.TemporaryFile()
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fileName+'.'+str(fileIndex)
     curF = open( fullFileName, "r" )
@@ -185,7 +189,7 @@ class dtClusteredSingletonState:
     curF.close()
 
   def read( self, fName ):
-    fileIndex = int( self.cur_id ) / int( 1000 )
+    fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
     tmpF = tempfile.TemporaryFile()
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fName+'.'+str(fileIndex)
     curF = open( fullFileName, "r" )
@@ -226,13 +230,13 @@ class dtClusteredSingletonState:
     bestFit = float('inf')
     bestId = -1
     #ids = np.zeros( 0, int )
-    for i in range( dtClusteredSingletonState.currentMaxId() ):
-      thisObj = dtClusteredSingletonState(i+1).objective()
+    for i in range( 1,dtClusteredSingletonState.currentMaxId() ):
+      thisObj = dtClusteredSingletonState(i).objective()
       if thisObj.size != obj.size:
         continue
       thisFit = abs( np.sum( thisObj - obj ) )
       if (thisFit < bestFit):
-        bestId = i+1
+        bestId = i
         bestFit = thisFit
 
     if (bestFit > .1):
@@ -245,9 +249,9 @@ class dtClusteredSingletonState:
   @staticmethod
   @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
   def fullRead():
-    maxFileIndex = int( 
-      dtClusteredSingletonState.currentMaxId() - 1
-    ) / int( 1000 )
+    maxFileIndex = dtClusteredSingletonState.fileIndex( 
+      dtClusteredSingletonState.currentMaxId() 
+    )
         
     FIT = np.genfromtxt('runData/fitness.0')
     OBJ = np.genfromtxt('runData/objective.0')

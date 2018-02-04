@@ -70,6 +70,13 @@ class dtValueField:
         ret[i] = ret[i] + self.value_[j,i] * numpy.linalg.norm( self.sf_[j,:] )      
     return ret
   
+  def SIntValueA(self):
+    ret = numpy.zeros( (self.vDim_, 3) )
+    logging.info('vDim = %d', self.vDim_)
+    for i in range(0, self.vDim_):
+      ret[i,:] = numpy.sum( self.value_[:,i:i+1] * self.sf_, axis=0 )
+    return ret
+  
   def VDim(self):
     return self.vDim_
   
