@@ -6,6 +6,7 @@
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <QtXml/QDomElement>
+#include <pluginEngine/pugg/Kernel.h>
 
 namespace dtOO {
   dtTransformer::dtTransformer() : labelHandling(), optionHandling() {
@@ -228,6 +229,10 @@ namespace dtOO {
       << dt__eval(name) << std::endl
       << dt__vector2d(value) 
     );  		
-	}	
+	}
+	
+  void dtTransformer::setKernel( ::pugg::Kernel * kernel ) {
+    _kernel.reset( kernel );
+  }  
 }
 

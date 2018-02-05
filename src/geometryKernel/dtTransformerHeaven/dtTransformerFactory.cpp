@@ -1,6 +1,8 @@
 #include "dtTransformerFactory.h"
 #include <logMe/logMe.h>
 #include "dtTransformer.h"
+#include "dtTransformerKernel.h"
+#include "dtTransformerDriver.h"
 #include "doNothing.h"
 #include "thicknessIncreasing.h"
 #include "biThicknessIncreasing.h"
@@ -80,6 +82,52 @@ namespace dtOO {
   dtTransformer* dtTransformerFactory::create( char const * const str ) {
     return create( std::string(str) );
   }
+  
+  dtTransformer * dtTransformerFactory::createFromPlugin(
+    std::string const & str, 
+    std::string const & pluginName, 
+    std::string const & pluginDriver
+  ) {
+    dt__info( createFromPlugin(), << "creating " << str <<  "..." );
+  
+    //
+    // init kernel
+    //
+    dtTransformerKernel * kernel = new dtTransformerKernel();
+    kernel->add_server(dtTransformer::server_name(), dtTransformer::version);  
+
+    //
+    // output
+    //
+    dt__info(
+      createFromPlugin(), 
+      << dt__eval(pluginName) << std::endl
+      << dt__eval(pluginDriver)
+    );    
+    
+    //
+    // load shared library
+    //
+    dt__throwIf( 
+      !kernel->load_plugin(pluginName), << "Loading plugin failed."
+    );
+
+    //
+    // create plugin using plugin driver
+    //
+    dtTransformer *  ret 
+    = 
+    kernel->get_driver< dtTransformerDriver >(
+      dtTransformer::server_name(), pluginDriver
+    )->create();
+
+    //
+    // store kernel in plugin
+    //
+    ret->setKernel(kernel);
+    
+    return ret;
+  }  
   
   dtTransformerFactory * dtTransformerFactory::instance( void ) {
     if ( !_instance.isNull() ) return _instance.get();

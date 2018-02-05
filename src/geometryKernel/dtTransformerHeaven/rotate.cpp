@@ -21,23 +21,23 @@
 #include <baseContainerHeaven/vectorContainer.h>
 
 namespace dtOO {
-  rotate::rotate() : dtStrongTransformer() {
+  rotate::rotate() : dtTransformerInvThreeD() {
   }
 
   rotate::~rotate() {
   }
 	
-	rotate::rotate(const rotate& orig) : dtStrongTransformer(orig) {
+	rotate::rotate(const rotate& orig) : dtTransformerInvThreeD(orig) {
 		_angle = orig._angle;
 		_origin = orig._origin;
 		_rotVector = orig._rotVector;
 	}
 	
-  dtStrongTransformer * rotate::clone( void ) const {
+  dtTransformerInvThreeD * rotate::clone( void ) const {
 	  return new rotate(*this);	
 	}
 	
-  dtStrongTransformer * rotate::create( void ) const {
+  dtTransformerInvThreeD * rotate::create( void ) const {
 		return new rotate();
 	}	
 

@@ -1,19 +1,19 @@
 #ifndef scale_H
 #define	scale_H
 
-#include "dtStrongTransformer.h"
+#include "dtTransformerInvThreeD.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class scale : public dtStrongTransformer {
+  class scale : public dtTransformerInvThreeD {
   public:    
     dt__classOnlyName(scale);
     scale();
     virtual ~scale();
     scale(const scale& orig);    
-    virtual dtStrongTransformer * clone( void ) const;
-    virtual dtStrongTransformer * create( void ) const;       
+    virtual dtTransformerInvThreeD * clone( void ) const;
+    virtual dtTransformerInvThreeD * create( void ) const;       
     virtual bool isNecessary( void ) const;
     void init(
       ::QDomElement const * tE, 

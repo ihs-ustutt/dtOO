@@ -1,4 +1,4 @@
-#include "dtStrongTransformer.h"
+#include "dtTransformerInvThreeD.h"
 
 #include <logMe/logMe.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -8,19 +8,19 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
-  dtStrongTransformer::dtStrongTransformer() : dtTransformer() {
+  dtTransformerInvThreeD::dtTransformerInvThreeD() : dtTransformer() {
   }
 
-  dtStrongTransformer::~dtStrongTransformer() {
+  dtTransformerInvThreeD::~dtTransformerInvThreeD() {
   }
 	
-	dtStrongTransformer::dtStrongTransformer(
-    dtStrongTransformer const & orig
+	dtTransformerInvThreeD::dtTransformerInvThreeD(
+    dtTransformerInvThreeD const & orig
   ) : dtTransformer(orig) {
 		
 	}
 
-	dtVector3 dtStrongTransformer::apply(dtVector3 const & pp) const {
+	dtVector3 dtTransformerInvThreeD::apply(dtVector3 const & pp) const {
 		std::vector< dtVector3 > vec;
 		vec.push_back( dtVector3(pp) );
 		
@@ -29,7 +29,7 @@ namespace dtOO {
 		return retVec[0];
 	}
 
-	dtVector3 dtStrongTransformer::retract(dtVector3 const & pp) const {
+	dtVector3 dtTransformerInvThreeD::retract(dtVector3 const & pp) const {
 		std::vector< dtVector3 > vec;
 		vec.push_back( dtVector3(pp) );
 		
@@ -38,13 +38,13 @@ namespace dtOO {
 		return retVec[0];
 	}
   
-	std::vector< dtVector3 > dtStrongTransformer::apply(
+	std::vector< dtVector3 > dtTransformerInvThreeD::apply(
     std::vector< dtVector3 > const & pp
   ) const {
     return apply(&pp);
 	}
 
-	std::vector< dtVector3 > dtStrongTransformer::retract(
+	std::vector< dtVector3 > dtTransformerInvThreeD::retract(
     std::vector< dtVector3 > const & pp
   ) const {
 		return retract(&pp);

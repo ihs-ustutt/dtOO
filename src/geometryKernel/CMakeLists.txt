@@ -101,7 +101,9 @@ SET(HEADERS
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h
   analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.h
   dtTransformerHeaven/dtTransformer.h
-  dtTransformerHeaven/dtStrongTransformer.h
+  dtTransformerHeaven/dtTransformerKernel.h
+  dtTransformerHeaven/dtTransformerDriver.h
+  dtTransformerHeaven/dtTransformerInvThreeD.h
   dtTransformerHeaven/dtTransformerFactory.h
   dtTransformerHeaven/thicknessIncreasing.h
   dtTransformerHeaven/biThicknessIncreasing.h
@@ -230,7 +232,9 @@ SET(SOURCES
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.cpp
   analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.cpp
   dtTransformerHeaven/dtTransformer.cpp
-  dtTransformerHeaven/dtStrongTransformer.cpp
+  dtTransformerHeaven/dtTransformerKernel.cpp
+  dtTransformerHeaven/dtTransformerDriver.cpp
+  dtTransformerHeaven/dtTransformerInvThreeD.cpp
   dtTransformerHeaven/dtTransformerFactory.cpp
   dtTransformerHeaven/thicknessIncreasing.cpp
   dtTransformerHeaven/biThicknessIncreasing.cpp

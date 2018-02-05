@@ -1,7 +1,7 @@
 #ifndef MAP2DTO3DTRANSFORMED_H
 #define	MAP2DTO3DTRANSFORMED_H
 
-#include <dtTransformerHeaven/dtStrongTransformer.h>
+#include <dtTransformerHeaven/dtTransformerInvThreeD.h>
 #include "analyticGeometry.h"
 #include "map2dTo3d.h"
 #include <logMe/dtMacros.h>
@@ -38,7 +38,7 @@ namespace dtOO {
     virtual dtPoint2 reparamOnFace(dtPoint3 const & ppXYZ) const;  
     virtual bool isTransformed( void ) const;
   private:
-    dt__pH(dtStrongTransformer) _dtT;
+    dt__pH(dtTransformerInvThreeD) _dtT;
   };  
   
   template < typename funT >
@@ -64,9 +64,9 @@ namespace dtOO {
   map2dTo3dTransformed< funT >::map2dTo3dTransformed(
     funT const & orig, dtTransformer const * const dtT
   ) : funT(orig) {
-    dtStrongTransformer const * const dtsT
+    dtTransformerInvThreeD const * const dtsT
     =
-    dynamic_cast< dtStrongTransformer const * >(dtT);
+    dynamic_cast< dtTransformerInvThreeD const * >(dtT);
     dt__throwIf(!dtsT, map2dTo3dTransformed());
     
     _dtT.reset( dtsT->clone() );

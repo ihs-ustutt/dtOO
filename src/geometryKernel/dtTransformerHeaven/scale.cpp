@@ -16,21 +16,21 @@
 #include <baseContainerHeaven/vectorContainer.h>
 
 namespace dtOO {
-  scale::scale() : dtStrongTransformer() {
+  scale::scale() : dtTransformerInvThreeD() {
   }
 
   scale::~scale() {
   }
 	
-	scale::scale(const scale& orig) : dtStrongTransformer(orig) {
+	scale::scale(const scale& orig) : dtTransformerInvThreeD(orig) {
 		_scale = orig._scale;
 	}
 	
-  dtStrongTransformer * scale::clone( void ) const {
+  dtTransformerInvThreeD * scale::clone( void ) const {
 	  return new scale(*this);	
 	}
 	
-  dtStrongTransformer * scale::create( void ) const {
+  dtTransformerInvThreeD * scale::create( void ) const {
 		return new scale();
 	}	
 
@@ -113,7 +113,7 @@ namespace dtOO {
 		aFPtrVec const * const aF,
 		aGPtrVec const * const aG 
 	) {
-    dtStrongTransformer::init(tE, bC, cV, aF, aG);
+    dtTransformerInvThreeD::init(tE, bC, cV, aF, aG);
 		
     dt__throwIf( !dtXmlParserBase::hasAttribute("scale_vector", *tE), init() );
 

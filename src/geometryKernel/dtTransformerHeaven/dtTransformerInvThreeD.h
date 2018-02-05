@@ -1,5 +1,5 @@
-#ifndef dtStrongTransformer_H
-#define	dtStrongTransformer_H
+#ifndef dtTransformerInvThreeD_H
+#define	dtTransformerInvThreeD_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -8,21 +8,26 @@
 class QDomElement;
 
 namespace dtOO {  
-  class dtStrongTransformer : public dtTransformer {
+  class dtTransformerInvThreeD : public dtTransformer {
   public:
-    dt__classOnlyName(dtStrongTransformer);
-    dtStrongTransformer();
-    virtual ~dtStrongTransformer();
-    dtStrongTransformer(dtStrongTransformer const & orig);
+    dt__classOnlyName(dtTransformerInvThreeD);
+    dtTransformerInvThreeD();
+    virtual ~dtTransformerInvThreeD();
+    dtTransformerInvThreeD(dtTransformerInvThreeD const & orig);
     //
     // overload
     //
-    virtual dtStrongTransformer * clone( void ) const = 0;
-    virtual dtStrongTransformer * create( void ) const = 0;    
+    virtual dtTransformerInvThreeD * clone( void ) const = 0;
+    virtual dtTransformerInvThreeD * create( void ) const = 0;    
+    virtual std::vector< dtPoint3 > apply(
+      std::vector< dtPoint3 > const * const toTrans 
+    ) const = 0;
     virtual std::vector< dtVector3 > apply(
       std::vector< dtVector3 > const * const toTrans 
     ) const = 0;
-    
+    virtual std::vector< dtPoint3 > retract(
+      std::vector< dtPoint3 > const * const toRetract
+    ) const = 0;        
     virtual std::vector< dtVector3 > retract(
       std::vector< dtVector3 > const * const toRetract
     ) const = 0;
@@ -42,5 +47,5 @@ namespace dtOO {
   };
 }
 
-#endif	/* dtStrongTransformer_H */
+#endif	/* dtTransformerInvThreeD_H */
 

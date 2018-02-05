@@ -53,7 +53,7 @@ namespace dtOO {
 		aFPtrVec const * const aF, 
 		aGPtrVec const * const aG
 	) {
-		dtTransformer * dtTransformerP;
+		dtTransformer * dtTransformerP = NULL;
 		
 		//
 		// get transformer element
@@ -83,51 +83,39 @@ namespace dtOO {
 				name = getAttributeStr("name", wElement);
 			}			
 			
-			if ( !hasLabel ) {
-				dtTransformerP 
-				= 
-				dtTransformerFactory::create( name );
-				if (aG) {
-				  dtTransformerP->init(&wElement, bC, cV, aF, aG);			
-				}
-				else {
-					dtTransformerP->init(&wElement, bC, cV, aF);			
-				}
-			}
-			else if (hasLabel && inContainer && !hasName) {
+			if (hasLabel && inContainer && !hasName) {
 				return bC->ptrTransformerContainer()->get(label)->clone();
 			}
-			else if (hasLabel && !inContainer && hasName) {
+			if (hasLabel && inContainer && hasName) {
+				return dtTransformerFactory::create("doNothing");
+			}			
+      
+      if ( hasAttribute("transformerLibrary", *toBuildP) ) {
 				dtTransformerP 
 				= 
-				dtTransformerFactory::create( name );
-				if (aG) {
-				  dtTransformerP->init(&wElement, bC, cV, aF, aG);			
-				}
-				else {
-					dtTransformerP->init(&wElement, bC, cV, aF);
-				}
+        dtTransformerFactory::createFromPlugin( 
+          getAttributeStr("name", *toBuildP) ,
+          getAttributeStr("transformerLibrary", *toBuildP),
+          getAttributeStr("transformerDriver", *toBuildP)
+        );
+      }
+      else {
+				dtTransformerP 
+				= 
+        dtTransformerFactory::create( getAttributeStr("name", *toBuildP) );
+      }
+			dtTransformerP->init(&wElement, bC, cV, aF, aG);	      
+			
+      if ( !inContainer && hasName) {	
         bC->ptrTransformerContainer()->add(dtTransformerP);
 				delete dtTransformerP;
 				dtTransformerP = dtTransformerFactory::create("doNothing");
 			}
-			else if (hasLabel && inContainer && hasName) {
-				dtTransformerP = dtTransformerFactory::create("doNothing");
-			}			
-			else {
-				dt__throw(
-					createTransformer(),
-					<< dt__eval(hasLabel) << std::endl
-					<< dt__eval(hasName) << std::endl
-					<< dt__eval(inContainer) << std::endl
-					<< dt__eval(label) << std::endl
-					<< dt__eval(name) << std::endl
-					<< "Problem creating transformer."
-				);
-			}
 		}
 		else dtTransformerP = dtTransformerFactory::create("doNothing");
-    
+
+    dt__throwIf( dtTransformerP==NULL, createTransformer() );
+   
 		return dtTransformerP;
   }
 

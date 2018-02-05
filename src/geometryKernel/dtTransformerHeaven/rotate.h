@@ -1,19 +1,19 @@
 #ifndef ROTATE_H
 #define	ROTATE_H
 
-#include "dtStrongTransformer.h"
+#include "dtTransformerInvThreeD.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class rotate : public dtStrongTransformer {
+  class rotate : public dtTransformerInvThreeD {
   public:    
     dt__classOnlyName(rotate);
     rotate();
     virtual ~rotate();
     rotate(const rotate& orig);    
-    virtual dtStrongTransformer * clone( void ) const;
-    virtual dtStrongTransformer * create( void ) const;       
+    virtual dtTransformerInvThreeD * clone( void ) const;
+    virtual dtTransformerInvThreeD * create( void ) const;       
     virtual bool isNecessary( void ) const;
     void init(
       ::QDomElement const * tE, 

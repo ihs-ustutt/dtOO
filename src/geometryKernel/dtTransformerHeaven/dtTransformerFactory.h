@@ -15,6 +15,11 @@ namespace dtOO {
     virtual ~dtTransformerFactory();
     static dtTransformer * create(char const * const str);
     static dtTransformer * create( std::string const str); 
+    static dtTransformer * createFromPlugin(
+      std::string const & className, 
+      std::string const & pluginName, 
+      std::string const & pluginDriver
+    );    
     static dtTransformerFactory * instance( void );         
   private:
     vectorHandling< dtTransformer * > _transformer;
