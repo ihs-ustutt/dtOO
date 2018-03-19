@@ -59,23 +59,23 @@ class dtCreateMultiCulti(dtMigrateState):
     
     return popO, popF
   
-  def Migrate( self, I, O, F, popO, popF ):
+  def Migrate( self, poolI, poolO, poolF, popO, popF, islandIndex=-1 ):
     nInd = np.shape( popF )[0]
     if nInd > self.nCultures_:
       raise ValueError(
         'More individuals in poulation ( %d ) than number of cultures ( %d ).'
         % (nInd, self.nCultures_)
       )
-    clusterId = self.CreateCultures( O )
+    clusterId = self.CreateCultures( poolO )
 
     logging.info(
       'Create multi culti population with nCultures = %d, mode = %s, fDim = %d' 
       % ( self.nCultures_, self.mode_, self.fDim_ )
     )    
     if self.mode_ == 'mix':
-      return self.Mixture(I, O, F, popO, popF, clusterId)
+      return self.Mixture(poolI, poolO, poolF, popO, popF, clusterId)
     elif self.mode_ == 'elite':
-      return self.Elite(I, O, F, popO, popF, clusterId)
+      return self.Elite(poolI, poolO, poolF, popO, popF, clusterId)
     else:
       raise ValueError( 'mode = > %s < not supported' )
       

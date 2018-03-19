@@ -142,6 +142,33 @@ class dtAverageValueField(dtValueField):
   def CoordThree(self):
     return self.coordThree_
   
+  def InterValueAvQOne( self, interCoord ):
+    interValueAvQ = numpy.zeros((numpy.size(interCoord),3),float)
+    for i in range(3):
+      interValueAvQ[:,i] = numpy.interp( 
+        interCoord, 
+        self.coordOne_[:,0], self.valueAvQOne_[:,i] 
+      )
+    return interValueAvQ
+
+  def InterValueAvQTwo( self, interCoord ):
+    interValueAvQ = numpy.zeros((numpy.size(interCoord),3),float)
+    for i in range(3):
+      interValueAvQ[:,i] = numpy.interp( 
+        interCoord, 
+        self.coordTwo_[:,1], self.valueAvQTwo_[:,i] 
+      )
+    return interValueAvQ
+  
+  def InterValueAvQThree( self, interCoord ):
+    interValueAvQ = numpy.zeros((numpy.size(interCoord),3),float)
+    for i in range(3):
+      interValueAvQ[:,i] = numpy.interp( 
+        interCoord, 
+        self.coordThree_[:,2], self.valueAvQThree_[:,i] 
+      )
+    return interValueAvQ
+  
   def WriteProfile1DFixedValueCSV(self, prefix, header):
     fileOut1 = open(prefix+'_Q1.csv', 'w')
     fileOut1.write( "%s\n" % (dtAverageValueField.HEADER_[header]) )

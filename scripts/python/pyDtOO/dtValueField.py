@@ -61,7 +61,15 @@ class dtValueField:
     for i in range(0, self.vDim_):
       ret[i] = numpy.dot( self.value_[:,i], self.q_[:] )
     return ret
- 
+
+  def IntMagQ(self):
+    return numpy.dot( 
+      numpy.sqrt(numpy.sum( self.value_[:,:]**2., axis=1 )), self.q_[:] 
+    )
+
+  def IntMagSquareQ(self):
+    return numpy.dot( numpy.sum( self.value_[:,:]**2., axis=1 ), self.q_[:] )
+  
   def IntValueA(self):
     ret = numpy.zeros( self.vDim_ )
     logging.info('vDim = %d', self.vDim_)
@@ -69,7 +77,7 @@ class dtValueField:
       for j in range( len(self.q_) ):
         ret[i] = ret[i] + self.value_[j,i] * numpy.linalg.norm( self.sf_[j,:] )      
     return ret
-  
+    
   def SIntValueA(self):
     ret = numpy.zeros( (self.vDim_, 3) )
     logging.info('vDim = %d', self.vDim_)

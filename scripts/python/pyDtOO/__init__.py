@@ -15,4 +15,6 @@ from .dtClusteredSingletonState import dtClusteredSingletonState
 from .dtMigrateState import dtMigrateState
 from .dtInsertFittest import dtInsertFittest
 from .dtCreateMultiCulti import dtCreateMultiCulti
+from .dtRandomRingMedianEuclidian import dtRandomRingMedianEuclidian
 from .dtAnalyticGeometry import dtAnalyticGeometry
+from .dtAnalyticFunction import dtAnalyticFunction
