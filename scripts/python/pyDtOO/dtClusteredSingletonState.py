@@ -17,6 +17,7 @@ class dtClusteredSingletonState:
   NPROC = 1
   SIMSH = ''
   ADDDATA = []
+  PROB = None
 
   @lockutils.synchronized('fileIO', external=True, lock_path='./runLock/')
   def __init__(self, id=-1, defObj=None, defFit=None):
