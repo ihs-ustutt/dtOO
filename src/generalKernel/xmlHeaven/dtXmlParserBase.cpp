@@ -81,7 +81,7 @@ namespace dtOO {
 			}
 			if (hasName) {
 				name = getAttributeStr("name", wElement);
-			}			
+			}
 			
 			if (hasLabel && inContainer && !hasName) {
 				return bC->ptrTransformerContainer()->get(label)->clone();
@@ -90,23 +90,23 @@ namespace dtOO {
 				return dtTransformerFactory::create("doNothing");
 			}			
       
-      if ( hasAttribute("transformerLibrary", *toBuildP) ) {
+      if ( hasAttribute("transformerLibrary", wElement) ) {
 				dtTransformerP 
 				= 
         dtTransformerFactory::createFromPlugin( 
-          getAttributeStr("name", *toBuildP) ,
-          getAttributeStr("transformerLibrary", *toBuildP),
-          getAttributeStr("transformerDriver", *toBuildP)
+          getAttributeStr("name", wElement) ,
+          getAttributeStr("transformerLibrary", wElement),
+          getAttributeStr("transformerDriver", wElement)
         );
       }
       else {
 				dtTransformerP 
 				= 
-        dtTransformerFactory::create( getAttributeStr("name", *toBuildP) );
+        dtTransformerFactory::create( getAttributeStr("name", wElement) );
       }
 			dtTransformerP->init(&wElement, bC, cV, aF, aG);	      
 			
-      if ( !inContainer && hasName) {	
+      if ( !inContainer && hasLabel) {	
         bC->ptrTransformerContainer()->add(dtTransformerP);
 				delete dtTransformerP;
 				dtTransformerP = dtTransformerFactory::create("doNothing");
@@ -1193,6 +1193,30 @@ namespace dtOO {
             )
           );
         }  
+        else if (aGOption == "%dU") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              m2d->firstDerU( 
+                m2d->uv_percent( argCS[0], argCS[1] ).x(), 
+                m2d->uv_percent( argCS[0], argCS[1] ).y() 
+              )
+            )
+          );
+        }        
+        else if (aGOption == "%dV") {
+          pp 
+          = 
+          dtLinearAlgebra::toStdVector(
+            dtLinearAlgebra::toDtPoint3(
+              m2d->firstDerV(  
+                m2d->uv_percent( argCS[0], argCS[1] ).x(), 
+                m2d->uv_percent( argCS[0], argCS[1] ).y() 
+              )
+            )
+          );
+        }          
         else if (aGOption == "ndU") {
           pp 
           = 

@@ -14,11 +14,8 @@ namespace dtOO {
     _dtT.destroy();
   }
 
-	/**
-	 * 
-   * @todo Clone transformer.
-   */
   void transformerContainer::add(dtTransformer const * const dtT ) {
+    dt__info( add(), << "Add transformer " << dtT->getLabel() );
     _dtT.push_back( dtT->clone() );
   }
 
