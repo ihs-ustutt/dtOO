@@ -170,173 +170,67 @@ class dtAverageValueField(dtValueField):
     return interValueAvQ
   
   def WriteProfile1DFixedValueCSV(self, prefix, header):
-    fileOut1 = open(prefix+'_Q1.csv', 'w')
-    fileOut1.write( "%s\n" % (dtAverageValueField.HEADER_[header]) )
-    fileOut2 = open(prefix+'_Q2.csv', 'w')
-    fileOut2.write( "%s\n" % (dtAverageValueField.HEADER_[header]) )
-    fileOut3 = open(prefix+'_Q3.csv', 'w')
-    fileOut3.write( "%s\n" % (dtAverageValueField.HEADER_[header]) )
-    if self.vDim_ == 3:
-      fileOut1.write(
-        "%16.8e, %16.8e, %16.8e, %16.8e\n" 
-        % 
-        (
-          0.9 * self.CoordOne()[0,0],
-          self.ValueAvQOne()[0,0],
-          self.ValueAvQOne()[0,1],
-          self.ValueAvQOne()[0,2]
-        ) 
-      )
-      fileOut2.write(
-        "%16.8e, %16.8e, %16.8e, %16.8e\n" 
-        % 
-        (
-          0.9 * self.CoordTwo()[0,0],
-          self.ValueAvQTwo()[0,0],
-          self.ValueAvQTwo()[0,1],
-          self.ValueAvQTwo()[0,2]
-        ) 
-      )
-      fileOut3.write(
-        "%16.8e, %16.8e, %16.8e, %16.8e\n" 
-        % 
-        (
-          0.9 * self.CoordThree()[0,0],
-          self.ValueAvQThree()[0,0],
-          self.ValueAvQThree()[0,1],
-          self.ValueAvQThree()[0,2]
-        ) 
-      )
+    dtAverageValueField.WriteProfile1DFixedValueCSV( 
+      prefix+'_Q1', header, self.coordOne(), self.ValueAvQOne() 
+    )
+    dtAverageValueField.WriteProfile1DFixedValueCSV( 
+      prefix+'_Q2', header, self.coordTwo(), self.ValueAvQTwo() 
+    )    
+    dtAverageValueField.WriteProfile1DFixedValueCSV( 
+      prefix+'_Q3', header, self.coordThree(), self.ValueAvQThree() 
+    )    
       
-      for i in range( numpy.shape(self.ValueAvQOne())[0] ):
-        fileOut1.write(
-          "%16.8e, %16.8e, %16.8e, %16.8e\n" 
-          % 
-          (
-            self.CoordOne()[i,0],
-            self.ValueAvQOne()[i,0],
-            self.ValueAvQOne()[i,1],
-            self.ValueAvQOne()[i,2]
-          ) 
-        )  
-      for i in range( numpy.shape(self.ValueAvQTwo())[0] ):        
-        fileOut2.write(
-          "%16.8e, %16.8e, %16.8e, %16.8e\n" 
-          % 
-          (
-            self.CoordTwo()[i,0],
-            self.ValueAvQTwo()[i,0],
-            self.ValueAvQTwo()[i,1],
-            self.ValueAvQTwo()[i,2]
-          ) 
-        )  
-      for i in range( numpy.shape(self.ValueAvQThree())[0] ):        
-        fileOut3.write(
-          "%16.8e, %16.8e, %16.8e, %16.8e\n" 
-          % 
-          (
-            self.CoordThree()[i,0],
-            self.ValueAvQThree()[i,0],
-            self.ValueAvQThree()[i,1],
-            self.ValueAvQThree()[i,2]
-          ) 
-        )  
-        
-      fileOut1.write(
+  @staticmethod    
+  def WriteProfile1DFixedValueCSV(prefix, header, coord, value):
+    fileOut = open(prefix+'.csv', 'w')
+    fileOut.write( "%s\n" % (dtAverageValueField.HEADER_[header]) )
+    ij = numpy.shape( value )
+    
+    if ij[1] == 3:
+      fileOut.write(
         "%16.8e, %16.8e, %16.8e, %16.8e\n" 
         % 
         (
-          1.1 * self.CoordOne()[-1,0],
-          self.ValueAvQOne()[-1,0],
-          self.ValueAvQOne()[-1,1],
-          self.ValueAvQOne()[-1,2]
+          0.9 * coord[0,0], value[0,0], value[0,1], value[0,2]
+        ) 
+      )     
+      for i in range( ij[0] ):
+        fileOut.write(
+          "%16.8e, %16.8e, %16.8e, %16.8e\n" 
+          % 
+          (
+            coord[i,0], value[i,0], value[i,1], value[i,2]
+          ) 
+        )         
+      fileOut.write(
+        "%16.8e, %16.8e, %16.8e, %16.8e\n" 
+        % 
+        (
+          1.1 * coord[-1,0], value[-1,0], value[-1,1], value[-1,2]
         ) 
       )  
-      fileOut2.write(
-        "%16.8e, %16.8e, %16.8e, %16.8e\n" 
-        % 
-        (
-          1.1 * self.CoordTwo()[-1,0],
-          self.ValueAvQTwo()[-1,0],
-          self.ValueAvQTwo()[-1,1],
-          self.ValueAvQTwo()[-1,2]
-        ) 
-      )  
-      fileOut3.write(
-        "%16.8e, %16.8e, %16.8e, %16.8e\n" 
-        % 
-        (
-          1.1 * self.CoordThree()[-1,0],
-          self.ValueAvQThree()[-1,0],
-          self.ValueAvQThree()[-1,1],
-          self.ValueAvQThree()[-1,2]
-        ) 
-      )
     else:
-      fileOut1.write(
+      fileOut.write(
         "%16.8e, %16.8e\n" 
         % 
         (
-          0.9 * self.CoordOne()[0,0], self.ValueAvQOne()[0,0]
+          0.9 * coord[0,0], value[0,0]
         ) 
-      )
-      fileOut2.write(
-        "%16.8e, %16.8e\n" 
-        % 
-        (
-          0.9 * self.CoordTwo()[0,0], self.ValueAvQTwo()[0,0]
-        ) 
-      )
-      fileOut3.write(
-        "%16.8e, %16.8e\n" 
-        % 
-        (
-          0.9 * self.CoordThree()[0,0], self.ValueAvQThree()[0,0]
-        )
       )
       
-      for i in range( numpy.shape(self.ValueAvQOne())[0] ):
-        fileOut1.write(
+      for i in range( ij[0] ):
+        fileOut.write(
           "%16.8e, %16.8e\n" 
           % 
           (
-            self.CoordOne()[i,0], self.ValueAvQOne()[i,0]
+            0.9 * coord[i,0], value[i,0]
           ) 
-        )  
-      for i in range( numpy.shape(self.ValueAvQTwo())[0] ):        
-        fileOut2.write(
-          "%16.8e, %16.8e\n" 
-          % 
-          (
-            self.CoordTwo()[i,0], self.ValueAvQTwo()[i,0]
-          ) 
-        )  
-      for i in range( numpy.shape(self.ValueAvQThree())[0] ):        
-        fileOut3.write(
-          "%16.8e, %16.8e\n" 
-          % 
-          (
-            self.CoordThree()[i,0], self.ValueAvQThree()[i,0]
-          ) 
-        )  
-      fileOut1.write(
+        )
+
+      fileOut.write(
         "%16.8e, %16.8e\n" 
         % 
         (
-          1.1 * self.CoordOne()[-1,0], self.ValueAvQOne()[-1,0]
+          1.1 * coord[-1,0], value[-1,0]
         ) 
-      )  
-      fileOut2.write(
-        "%16.8e, %16.8e\n" 
-        % 
-        (
-          1.1 * self.CoordTwo()[-1,0], self.ValueAvQTwo()[-1,0]
-        ) 
-      )  
-      fileOut3.write(
-        "%16.8e, %16.8e\n" 
-        % 
-        (
-          1.1 * self.CoordThree()[-1,0], self.ValueAvQThree()[-1,0]
-        ) 
-      )
+      ) 
