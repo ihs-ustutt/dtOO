@@ -147,11 +147,11 @@ class dtClusteredSingletonState:
   def formatToWrite( self, value ):
     rStr = '__unknownDataType__'
     if isinstance(value,float):
-      rStr = "{:s}\n".format(repr(value))
+      rStr = "{:s}".format(repr(value))
     elif isinstance(value,int):
-      rStr = "{:s}\n".format(repr(value))
+      rStr = "{:s}".format(repr(value))
     elif isinstance(value,str):
-      rStr = "{:s}\n".format(value)
+      rStr = "{:s}".format(value)
     elif isinstance( np.array(value), np.ndarray):
       valueAsArr = np.array(value)
 
@@ -243,32 +243,34 @@ class dtClusteredSingletonState:
     if (bestFit > .1):
       logging.warning(
         'readIdFromObjective( %s ) -> bestId = %d, bestFit = %f ', 
-        bestId, obj, bestFit
+        bestId, bestId, bestFit
       )
     return bestId
   
   @staticmethod
   @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
-  def fullRead():
+  def fullRead( addFile=None, addDtype=float ):
     maxFileIndex = dtClusteredSingletonState.fileIndex( 
       dtClusteredSingletonState.currentMaxId() 
     )
         
     FIT = np.genfromtxt('runData/fitness.0')
     OBJ = np.genfromtxt('runData/objective.0')
-    ID = np.genfromtxt('runData/id.0', dtype=int)        
-    for thisIndex in range(maxFileIndex):
-      f = np.genfromtxt('runData/fitness.'+str(thisIndex+1))
-      o = np.genfromtxt('runData/objective.'+str(thisIndex+1))
-      i = np.genfromtxt('runData/id.'+str(thisIndex+1), dtype=int)
-      FIT = np.concatenate( (FIT, f) )
-      OBJ = np.concatenate( (OBJ, o) )
-      ID = np.concatenate( (ID, i) )
+    ID = np.genfromtxt('runData/id.0', dtype=int)
+    ADD = None
+    if addFile is not None:
+      ADD = np.genfromtxt('runData/'+addFile+'.0', dtype=addDtype)
+      for thisIndex in range(maxFileIndex):
+        add = np.genfromtxt('runData/'+addFile+'.'+str(thisIndex+1))
+        ADD = np.concatenate( (ADD, add) )
 
     if np.size( np.shape(FIT) ) == 1:
       FIT = np.resize(FIT, (np.size(FIT),1))
 
-    return ID, OBJ, FIT
+    if addFile is not None:
+      return ID, OBJ, FIT, ADD
+    else:
+      return ID, OBJ, FIT
 
   def hasDirectory(self):
     return os.path.isdir( dtClusteredSingletonState.CASE+'_'+self.state() )
