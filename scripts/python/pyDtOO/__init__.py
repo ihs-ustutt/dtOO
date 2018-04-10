@@ -18,3 +18,4 @@ from .dtCreateMultiCulti import dtCreateMultiCulti
 from .dtRandomRingMedianEuclidian import dtRandomRingMedianEuclidian
 from .dtAnalyticGeometry import dtAnalyticGeometry
 from .dtAnalyticFunction import dtAnalyticFunction
+from .dtPagmo2Binding import dtPagmo2Binding
