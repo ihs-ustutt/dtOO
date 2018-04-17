@@ -250,6 +250,15 @@ class dtClusteredSingletonState:
   @staticmethod
   @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
   def fullRead( addFile=None, addDtype=float ):
+    if \
+      not os.path.isfile('runData/fitness.0') and \
+      not os.path.isfile('runData/objective.0') and \
+      not os.path.isfile('runData/id.0'):
+      return \
+        numpy.zeros(0, int), \
+        numpy.zeros((0,0), int), \
+        numpy.zeros((0,0), int)
+        
     maxFileIndex = dtClusteredSingletonState.fileIndex( 
       dtClusteredSingletonState.currentMaxId() 
     )

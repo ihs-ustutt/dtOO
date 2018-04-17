@@ -261,8 +261,6 @@ class dtPagmo2Binding:
     return False
   
   def giveAllSuccessfull( self ):
-    if not os.path.isfile('runData/fitness.0'):
-      return numpy.zeros(0, int), numpy.zeros((0,0), int), numpy.zeros((0,0), int)
     I, O, F = dtPagmo2Binding.STATECOUNTER.fullRead()
     OK = numpy.zeros( numpy.size(I) )
     for i in range( numpy.size(I) ):
