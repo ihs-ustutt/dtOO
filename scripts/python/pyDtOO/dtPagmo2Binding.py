@@ -179,7 +179,7 @@ class dtPagmo2Binding:
     )
     
     while self.maxNumEvolsReached():
-      self.time.sleep(1)
+      time.sleep(1)
       
     p = subprocess.Popen(cmd)
     return p
