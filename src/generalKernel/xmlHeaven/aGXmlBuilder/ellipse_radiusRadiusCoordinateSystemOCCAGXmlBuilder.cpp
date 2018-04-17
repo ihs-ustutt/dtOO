@@ -50,10 +50,15 @@ namespace dtOO {
     //
     float const r0
     = 
-    dtXmlParserBase::getAttributeFloatMuParse("radius_one", toBuild, cV, aF);
+    dtXmlParserBase::getAttributeFloatMuParse("radius_one", toBuild, cV, aF, aG);
     float const r1
     = 
-    dtXmlParserBase::getAttributeFloatMuParse("radius_two", toBuild, cV, aF);
+    dtXmlParserBase::getAttributeFloatMuParse("radius_two", toBuild, cV, aF, aG);
+    dt__info(
+      buildPart(), 
+      << "r0 = " << r0 << std::endl
+      << "r1 = " << r1      
+    );
     dt__throwIf( r0<r1, buildPart() );
     
     //
@@ -98,7 +103,7 @@ namespace dtOO {
       //
       float angle 
       = 
-      dtXmlParserBase::getAttributeFloatMuParse("angle", toBuild, cV, aF);
+      dtXmlParserBase::getAttributeFloatMuParse("angle", toBuild, cV, aF, aG);
       
       //
       // calculate uMax
