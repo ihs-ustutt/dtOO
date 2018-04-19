@@ -267,6 +267,13 @@ class dtClusteredSingletonState:
     OBJ = np.genfromtxt('runData/objective.0')
     ID = np.genfromtxt('runData/id.0', dtype=int)
     ADD = None
+    for thisIndex in range(maxFileIndex):
+      f = np.genfromtxt('runData/fitness.'+str(thisIndex+1))
+      o = np.genfromtxt('runData/objective.'+str(thisIndex+1))
+      i = np.genfromtxt('runData/id.'+str(thisIndex+1), dtype=int)
+      FIT = np.concatenate( (FIT, f) )
+      OBJ = np.concatenate( (OBJ, o) )
+      ID = np.concatenate( (ID, i) )
     if addFile is not None:
       ADD = np.genfromtxt('runData/'+addFile+'.0', dtype=addDtype)
       for thisIndex in range(maxFileIndex):
