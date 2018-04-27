@@ -170,18 +170,18 @@ class dtAverageValueField(dtValueField):
     return interValueAvQ
   
   def WriteProfile1DFixedValueCSV(self, prefix, header):
-    dtAverageValueField.WriteProfile1DFixedValueCSV( 
+    dtAverageValueField.WriteOneProfile1DFixedValueCSV( 
       prefix+'_Q1', header, self.coordOne(), self.ValueAvQOne() 
     )
-    dtAverageValueField.WriteProfile1DFixedValueCSV( 
+    dtAverageValueField.WriteOneProfile1DFixedValueCSV( 
       prefix+'_Q2', header, self.coordTwo(), self.ValueAvQTwo() 
     )    
-    dtAverageValueField.WriteProfile1DFixedValueCSV( 
+    dtAverageValueField.WriteOneProfile1DFixedValueCSV( 
       prefix+'_Q3', header, self.coordThree(), self.ValueAvQThree() 
     )    
       
   @staticmethod    
-  def WriteProfile1DFixedValueCSV(prefix, header, coord, value):
+  def WriteOneProfile1DFixedValueCSV(prefix, header, coord, value):
     fileOut = open(prefix+'.csv', 'w')
     fileOut.write( "%s\n" % (dtAverageValueField.HEADER_[header]) )
     ij = numpy.shape( value )
