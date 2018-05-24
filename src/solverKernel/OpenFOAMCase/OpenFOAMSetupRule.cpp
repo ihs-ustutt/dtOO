@@ -28,6 +28,7 @@
 #include <rotatingWallVelocityFvPatchVectorField.H>
 #include <flowRateInletVelocityFvPatchVectorField.H>
 #include <slipFvPatchField.H>
+#include <movingWallVelocityFvPatchVectorField.H>
 #include <dictionary.H>
 
 namespace dtOO {
@@ -251,6 +252,25 @@ namespace dtOO {
               field.mesh().boundary()[i], 
               field, 
               parseOptionDict("slip", thisRule)
+            )
+          );
+          
+          return;
+        }        
+        else if ( 
+          stringPrimitive::getStringBetween("", "(", thisRule) 
+          == 
+          "movingWallVelocity"           
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i,
+            new ::Foam::movingWallVelocityFvPatchVectorField(
+              field.mesh().boundary()[i], 
+              field, 
+              parseOptionDict("movingWallVelocity", thisRule)
             )
           );
           
