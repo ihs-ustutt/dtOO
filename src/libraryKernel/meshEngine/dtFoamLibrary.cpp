@@ -43,7 +43,8 @@ namespace dtOO {
       if (!meshPointMap.found(meshF[0]))
       {
 //        dt__warning(
-//          << "Not using gmsh face " << meshF
+//          findFace(),
+//          << "Not using gmsh face " << meshF[0]
 //          << " since zero vertex is not on boundary of polyMesh"
 //        );
         return -1;
@@ -607,7 +608,7 @@ namespace dtOO {
       }
 
       dt__info(
-        apply(), 
+        readMesh(), 
         << "Patch " << patchI << " gets name " << boundaryPatchNames[patchI]
       );
     }
@@ -662,7 +663,7 @@ namespace dtOO {
       = 
       patchFaces[patchI];
 
-      dt__info(apply(), << "Finding faces of patch " << patchI);
+//      dt__info(readMesh(), << "Finding faces of patch " << patchI);
 
       forAll(pFaces, i) {
         const ::Foam::face& f = pFaces[i];
@@ -671,6 +672,7 @@ namespace dtOO {
         ::Foam::label patchFaceI = dtFoamLibrary::findFace(pp, f);
 
         if (patchFaceI != -1) {
+//          dt__info(readMesh(), << "Correspoding patchFace " << patchFaceI);
           ::Foam::label meshFaceI = pp.start() + patchFaceI;
 
           repatcher.changePatchID(meshFaceI, patchI);
@@ -682,9 +684,14 @@ namespace dtOO {
           = 
           dtFoamLibrary::findInternalFace(mesh, f);
 
-          if (meshFaceI != -1) zoneFaces[patchI].append(meshFaceI);
+          if (meshFaceI != -1) {
+//            dt__info(readMesh(), << "Internal face: meshFaceI = " << meshFaceI);
+            zoneFaces[patchI].append(meshFaceI);
+          }
           else {
-            dt__warning(apply(), 
+            dt__warning(
+              readMesh(), 
+              << "Internal face: meshFaceI = -1" << std::endl            
               << "Could not match gmsh face "
               << " to any of the interior or exterior faces"
               << " that share the same 0th point"
@@ -694,22 +701,22 @@ namespace dtOO {
       }
     }
 
-//    // Face zones
-//    ::Foam::label nValidFaceZones = 0;
-//
-//    forAll(zoneFaces, zoneI) {
-//      zoneFaces[zoneI].shrink();
-//
-//      const ::Foam::labelList& zFaces = zoneFaces[zoneI];
-//
-//      if (zFaces.size()) {
-//        nValidFaceZones++;
-//
-//        dt__info(
-//          apply(), << "zoneFaces = " << zoneI << " size = " << zFaces.size()
-//        );
-//      }
-//    }
+    // Face zones
+    ::Foam::label nValidFaceZones = 0;
+
+    forAll(zoneFaces, zoneI) {
+      zoneFaces[zoneI].shrink();
+
+      const ::Foam::labelList& zFaces = zoneFaces[zoneI];
+
+      if (zFaces.size()) {
+        nValidFaceZones++;
+
+        dt__info(
+          readMesh(), << "zoneFaces = " << zoneI << " size = " << zFaces.size()
+        );
+      }
+    }
 
     repatcher.repatch();
 
@@ -738,7 +745,7 @@ namespace dtOO {
           if (iter != physicalNames.end()) zoneName = iter();
 
           dt__info(
-            apply(), 
+            readMesh(), 
             << "Writing zone " << zoneI << " to cellZone "
             << zoneName << " and cellSet"
           );
@@ -758,50 +765,44 @@ namespace dtOO {
       }
     }
 
-//    if (nValidFaceZones > 0) {
-//      fz.setSize(nValidFaceZones);
-//
-//      nValidFaceZones = 0;
-//
-//      forAll(zoneFaces, zoneI) {
-//        if (zoneFaces[zoneI].size()) {
-//          ::Foam::label physReg = zoneToPhys[zoneI];
-//
-//          ::Foam::Map< ::Foam::word >::const_iterator iter 
-//          = 
-//          physicalNames.find(physReg);
-//
-//          ::Foam::word zoneName = "faceZone_" + ::Foam::name(zoneI);
-//
-//          if (iter != physicalNames.end()) zoneName = iter();
-//
-//          dt__info(
-//            apply(), 
-//            << "Writing zone " << zoneI << " to faceZone "
-//            << zoneName << " and faceSet"
-//          );
-//
-//          ::Foam::faceSet fset(
-//            mesh, zoneName, ::Foam::labelHashSet(zoneFaces[zoneI])
-//          );
-//          fset.write();
-//
-//          fz[nValidFaceZones] 
-//          = 
-//          new ::Foam::faceZone (
-//            zoneName, 
-//            zoneFaces[zoneI], 
-//            ::Foam::boolList(
-//              zoneFaces[zoneI].size(), true
-//            ),
-//            nValidFaceZones,
-//            mesh.faceZones()
-//          );
-//
-//          nValidFaceZones++;
-//        }
-//      }
-//    }
+    if (nValidFaceZones > 0) {
+      fz.setSize(nValidFaceZones);
+
+      nValidFaceZones = 0;
+
+      forAll(zoneFaces, zoneI) {
+        if (zoneFaces[zoneI].size()) {
+          ::Foam::word zoneName = "faceZone_" + ::Foam::name(zoneI);
+          if ( ! boundaryPatchNames[zoneI].empty() ) {
+            zoneName = boundaryPatchNames[zoneI];
+          }
+          dt__info(
+            readMesh(), 
+            << "Writing zone " << zoneI << " to faceZone "
+            << zoneName << " and faceSet"
+          );
+
+          ::Foam::faceSet fset(
+            mesh, zoneName, ::Foam::labelHashSet(zoneFaces[zoneI])
+          );
+          fset.write();
+
+          fz[nValidFaceZones] 
+          = 
+          new ::Foam::faceZone (
+            zoneName, 
+            zoneFaces[zoneI], 
+            ::Foam::boolList(
+              zoneFaces[zoneI].size(), true
+            ),
+            nValidFaceZones,
+            mesh.faceZones()
+          );
+
+          nValidFaceZones++;
+        }
+      }
+    }
 
     if (cz.size() || fz.size()) {
       mesh.addZones( ::Foam::List< ::Foam::pointZone * >(0), fz, cz);
