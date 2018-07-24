@@ -288,5 +288,31 @@ class dtClusteredSingletonState:
     else:
       return ID, OBJ, FIT
 
+  @staticmethod
+  @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
+  def fullAddRead( addFileV, addDtypeV ):
+    retMap = {}
+    
+    if \
+      not os.path.isfile('runData/fitness.0') and \
+      not os.path.isfile('runData/objective.0') and \
+      not os.path.isfile('runData/id.0'):
+      pass
+    
+    else:
+      maxFileIndex = dtClusteredSingletonState.fileIndex( 
+        dtClusteredSingletonState.currentMaxId() 
+      )
+
+      for addFile, addDtype in zip(addFileV, addDtypeV):
+        ADD = []
+        ADD = np.genfromtxt('runData/'+addFile+'.0', dtype=addDtype)
+        for thisIndex in range(maxFileIndex):
+          add = np.genfromtxt('runData/'+addFile+'.'+str(thisIndex+1))
+          ADD = np.concatenate( (ADD, add) )
+        retMap[addFile] = ADD
+
+    return retMap
+
   def hasDirectory(self):
     return os.path.isdir( dtClusteredSingletonState.CASE+'_'+self.state() )
