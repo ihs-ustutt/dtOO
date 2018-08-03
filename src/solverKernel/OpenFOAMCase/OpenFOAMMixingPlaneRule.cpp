@@ -42,8 +42,8 @@ namespace dtOO {
     const_cast<::Foam::polyBoundaryMesh&>(mesh.boundaryMesh());      
     ::Foam::label id0 = bM.findPatchID(csvString[0]);
     ::Foam::label id1 = bM.findPatchID(csvString[1]);
-    dt__throwIf(id0<0, executeOnMesh());
-    dt__throwIf(id1<0, executeOnMesh());
+    dt__throwIfWithMessage( id0<0, executeOnMesh(), << csvString[0] );
+    dt__throwIfWithMessage( id1<0, executeOnMesh(), << csvString[1] );
     
     //
     // create faceZones
