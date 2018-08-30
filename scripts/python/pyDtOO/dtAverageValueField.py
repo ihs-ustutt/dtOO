@@ -27,37 +27,42 @@ class dtAverageValueField(dtValueField):
     #
     orderingOne = numpy.argsort( self.Coord()[:,0] )
     perBinOne = self.NumValues() / nBinsOne
-    binsOne = numpy.zeros(nBinsOne)
+    self.binsOne = numpy.zeros(nBinsOne+1)
     for i in range(nBinsOne):
-      binsOne[ i ] = self.Coord()[ orderingOne[ i * (perBinOne-1) ], 0 ]
-    binsOne[nBinsOne-1] = max(self.Coord()[:,0])
+      self.binsOne[ i ] = self.Coord()[ orderingOne[ i * (perBinOne) ], 0 ]
+    self.binsOne[nBinsOne] = max(self.Coord()[:,0])
+    self.binsOne[0] = self.binsOne[0]*.99
+    self.binsOne[-1] = self.binsOne[-1]*1.01
 
     #
     # binTwo
     #
     orderingTwo = numpy.argsort( self.Coord()[:,1] )
     perBinTwo = self.NumValues() / nBinsTwo
-    binsTwo = numpy.zeros(nBinsTwo)
+    self.binsTwo = numpy.zeros(nBinsTwo+1)
     for i in range(nBinsTwo):
-      binsTwo[ i ] = self.Coord()[ orderingTwo[ i * (perBinTwo-1) ], 1 ]
-    binsTwo[nBinsTwo-1] = max(self.Coord()[:,1])
+      self.binsTwo[ i ] = self.Coord()[ orderingTwo[ i * (perBinTwo) ], 1 ]
+    self.binsTwo[nBinsTwo] = max(self.Coord()[:,1])
+    self.binsTwo[0] = self.binsTwo[0]*.99
+    self.binsTwo[-1] = self.binsTwo[-1]*1.01
 
     #
     # binThree
     #
     orderingThree = numpy.argsort( self.Coord()[:,2] )
     perBinThree = self.NumValues() / nBinsThree
-    binsThree = numpy.zeros(nBinsThree)
+    self.binsThree = numpy.zeros(nBinsThree+1)
     for i in range(nBinsThree):
-      binsThree[ i ] = self.Coord()[ orderingThree[ i * (perBinThree-1) ], 2 ]
-    binsThree[nBinsThree-1] = max(self.Coord()[:,2])    
-    
-#    binsTwo = numpy.linspace(min(self.Coord()[:,1]), max(self.Coord()[:,1]), nBinsTwo)    
-#    binsThree = numpy.linspace(min(self.Coord()[:,2]), max(self.Coord()[:,2]), nBinsThree)
+      self.binsThree[ i ] = self.Coord()[ orderingThree[ i * (perBinThree) ], 2 ]
+    self.binsThree[nBinsThree] = max(self.Coord()[:,2])    
+    self.binsThree[0] = self.binsThree[0]*.99
+    self.binsThree[-1] = self.binsThree[-1]*1.01    
+#    self.binsTwo = numpy.linspace(min(self.Coord()[:,1]), max(self.Coord()[:,1]), nBinsTwo)    
+#    self.binsThree = numpy.linspace(min(self.Coord()[:,2]), max(self.Coord()[:,2]), nBinsThree)
 
-    indsOne = numpy.digitize(self.Coord()[:,0], binsOne)
-    indsTwo = numpy.digitize(self.Coord()[:,1], binsTwo)
-    indsThree = numpy.digitize(self.Coord()[:,2], binsThree)
+    self.indsOne = numpy.digitize(self.Coord()[:,0], self.binsOne)
+    self.indsTwo = numpy.digitize(self.Coord()[:,1], self.binsTwo)
+    self.indsThree = numpy.digitize(self.Coord()[:,2], self.binsThree)
 
     self.valueAvQOne_ = numpy.zeros( (nBinsOne, self.VDim()) ) 
     self.valueAvQTwo_ = numpy.zeros( (nBinsTwo, self.VDim()) ) 
@@ -78,29 +83,29 @@ class dtAverageValueField(dtValueField):
     self.nPointsTwo_ = numpy.zeros( nBinsTwo ) 
     self.nPointsThree_ = numpy.zeros( nBinsThree ) 
     
-    for i in range(len(indsOne)):
-      self.nPointsOne_[ indsOne[i]-1 ] = self.nPointsOne_[ indsOne[i]-1 ] + 1      
-      self.coordOne_[ indsOne[i]-1,: ] = self.coordOne_[ indsOne[i]-1,: ] + self.Coord()[i,:]
-      self.valueAvQOne_[ indsOne[i]-1,: ] = self.valueAvQOne_[ indsOne[i]-1,: ] + self.Value()[i,:] * self.Q()[i]
-      self.valueAvAOne_[ indsOne[i]-1,: ] = self.valueAvAOne_[ indsOne[i]-1,: ] + self.Value()[i,:] * self.A()[i]
-      self.QOne_[indsOne[i]-1] = self.QOne_[indsOne[i]-1] + self.Q()[i]
-      self.AOne_[indsOne[i]-1] = self.AOne_[indsOne[i]-1] + self.A()[i]
+    for i in range(len(self.indsOne)):
+      self.nPointsOne_[ self.indsOne[i]-1 ] = self.nPointsOne_[ self.indsOne[i]-1 ] + 1      
+      self.coordOne_[ self.indsOne[i]-1,: ] = self.coordOne_[ self.indsOne[i]-1,: ] + self.Coord()[i,:]
+      self.valueAvQOne_[ self.indsOne[i]-1,: ] = self.valueAvQOne_[ self.indsOne[i]-1,: ] + self.Value()[i,:] * self.Q()[i]
+      self.valueAvAOne_[ self.indsOne[i]-1,: ] = self.valueAvAOne_[ self.indsOne[i]-1,: ] + self.Value()[i,:] * self.A()[i]
+      self.QOne_[self.indsOne[i]-1] = self.QOne_[self.indsOne[i]-1] + self.Q()[i]
+      self.AOne_[self.indsOne[i]-1] = self.AOne_[self.indsOne[i]-1] + self.A()[i]
     
-    for i in range(len(indsTwo)):      
-      self.nPointsTwo_[ indsTwo[i]-1 ] = self.nPointsTwo_[ indsTwo[i]-1 ] + 1
-      self.coordTwo_[ indsTwo[i]-1,: ] = self.coordTwo_[ indsTwo[i]-1,: ] + self.Coord()[i,:]
-      self.valueAvQTwo_[ indsTwo[i]-1,: ] = self.valueAvQTwo_[ indsTwo[i]-1,: ] + self.Value()[i,:] * self.Q()[i]
-      self.valueAvATwo_[ indsTwo[i]-1,: ] = self.valueAvATwo_[ indsTwo[i]-1,: ] + self.Value()[i,:] * self.A()[i]
-      self.QTwo_[indsTwo[i]-1] = self.QTwo_[indsTwo[i]-1] + self.Q()[i]
-      self.ATwo_[indsTwo[i]-1] = self.ATwo_[indsTwo[i]-1] + self.A()[i]
+    for i in range(len(self.indsTwo)):      
+      self.nPointsTwo_[ self.indsTwo[i]-1 ] = self.nPointsTwo_[ self.indsTwo[i]-1 ] + 1
+      self.coordTwo_[ self.indsTwo[i]-1,: ] = self.coordTwo_[ self.indsTwo[i]-1,: ] + self.Coord()[i,:]
+      self.valueAvQTwo_[ self.indsTwo[i]-1,: ] = self.valueAvQTwo_[ self.indsTwo[i]-1,: ] + self.Value()[i,:] * self.Q()[i]
+      self.valueAvATwo_[ self.indsTwo[i]-1,: ] = self.valueAvATwo_[ self.indsTwo[i]-1,: ] + self.Value()[i,:] * self.A()[i]
+      self.QTwo_[self.indsTwo[i]-1] = self.QTwo_[self.indsTwo[i]-1] + self.Q()[i]
+      self.ATwo_[self.indsTwo[i]-1] = self.ATwo_[self.indsTwo[i]-1] + self.A()[i]
       
-    for i in range(len(indsThree)):      
-      self.nPointsThree_[ indsThree[i]-1 ] = self.nPointsThree_[ indsThree[i]-1 ] + 1      
-      self.coordThree_[ indsThree[i]-1,: ] = self.coordThree_[ indsThree[i]-1,: ] + self.Coord()[i,:]
-      self.valueAvQThree_[ indsThree[i]-1,: ] = self.valueAvQThree_[ indsThree[i]-1,: ] + self.Value()[i,:] * self.Q()[i]
-      self.valueAvAThree_[ indsThree[i]-1,: ] = self.valueAvAThree_[ indsThree[i]-1,: ] + self.Value()[i,:] * self.A()[i]
-      self.QThree_[indsThree[i]-1] = self.QThree_[indsThree[i]-1] + self.Q()[i]
-      self.AThree_[indsThree[i]-1] = self.AThree_[indsThree[i]-1] + self.A()[i]
+    for i in range(len(self.indsThree)):      
+      self.nPointsThree_[ self.indsThree[i]-1 ] = self.nPointsThree_[ self.indsThree[i]-1 ] + 1      
+      self.coordThree_[ self.indsThree[i]-1,: ] = self.coordThree_[ self.indsThree[i]-1,: ] + self.Coord()[i,:]
+      self.valueAvQThree_[ self.indsThree[i]-1,: ] = self.valueAvQThree_[ self.indsThree[i]-1,: ] + self.Value()[i,:] * self.Q()[i]
+      self.valueAvAThree_[ self.indsThree[i]-1,: ] = self.valueAvAThree_[ self.indsThree[i]-1,: ] + self.Value()[i,:] * self.A()[i]
+      self.QThree_[self.indsThree[i]-1] = self.QThree_[self.indsThree[i]-1] + self.Q()[i]
+      self.AThree_[self.indsThree[i]-1] = self.AThree_[self.indsThree[i]-1] + self.A()[i]
       
     for i in range(nBinsOne):
       self.coordOne_[i,:] = self.coordOne_[i,:] / self.nPointsOne_[i]
@@ -171,13 +176,13 @@ class dtAverageValueField(dtValueField):
   
   def WriteProfile1DFixedValueCSV(self, prefix, header):
     dtAverageValueField.WriteOneProfile1DFixedValueCSV( 
-      prefix+'_Q1', header, self.coordOne(), self.ValueAvQOne() 
+      prefix+'_Q1', header, self.CoordOne(), self.ValueAvQOne() 
     )
     dtAverageValueField.WriteOneProfile1DFixedValueCSV( 
-      prefix+'_Q2', header, self.coordTwo(), self.ValueAvQTwo() 
+      prefix+'_Q2', header, self.CoordTwo(), self.ValueAvQTwo() 
     )    
     dtAverageValueField.WriteOneProfile1DFixedValueCSV( 
-      prefix+'_Q3', header, self.coordThree(), self.ValueAvQThree() 
+      prefix+'_Q3', header, self.CoordThree(), self.ValueAvQThree() 
     )    
       
   @staticmethod    
