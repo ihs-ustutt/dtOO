@@ -6,3 +6,4 @@ src/generalKernel/dtOOVersion.h
 /cmake/dtOOConfig.cmake
 *.m~
 *.pyc
+scripts/doc/html
