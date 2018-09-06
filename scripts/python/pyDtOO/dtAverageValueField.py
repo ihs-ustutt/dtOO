@@ -21,7 +21,6 @@ class dtAverageValueField(dtValueField):
   }
   def __init__(self, data, nBinsOne, nBinsTwo, nBinsThree):
     dtValueField.__init__(self, data)
-    
     #
     # binOne
     #
@@ -31,8 +30,8 @@ class dtAverageValueField(dtValueField):
     for i in range(nBinsOne):
       self.binsOne[ i ] = self.Coord()[ orderingOne[ i * (perBinOne) ], 0 ]
     self.binsOne[nBinsOne] = max(self.Coord()[:,0])
-    self.binsOne[0] = self.binsOne[0]*.99
-    self.binsOne[-1] = self.binsOne[-1]*1.01
+    self.binsOne[0] = self.binsOne[0] - (self.binsOne[-1]-0.99*self.binsOne[0]) * 0.01
+    self.binsOne[-1] = self.binsOne[-1] + (self.binsOne[-1]-0.99*self.binsOne[0]) * 0.01
 
     #
     # binTwo
@@ -43,8 +42,8 @@ class dtAverageValueField(dtValueField):
     for i in range(nBinsTwo):
       self.binsTwo[ i ] = self.Coord()[ orderingTwo[ i * (perBinTwo) ], 1 ]
     self.binsTwo[nBinsTwo] = max(self.Coord()[:,1])
-    self.binsTwo[0] = self.binsTwo[0]*.99
-    self.binsTwo[-1] = self.binsTwo[-1]*1.01
+    self.binsTwo[0] = self.binsTwo[0] - (self.binsTwo[-1]-0.99*self.binsTwo[0]) *0.01
+    self.binsTwo[-1] = self.binsTwo[-1] + (self.binsTwo[-1]-0.99*self.binsTwo[0]) * 0.01
 
     #
     # binThree
@@ -55,10 +54,8 @@ class dtAverageValueField(dtValueField):
     for i in range(nBinsThree):
       self.binsThree[ i ] = self.Coord()[ orderingThree[ i * (perBinThree) ], 2 ]
     self.binsThree[nBinsThree] = max(self.Coord()[:,2])    
-    self.binsThree[0] = self.binsThree[0]*.99
-    self.binsThree[-1] = self.binsThree[-1]*1.01    
-#    self.binsTwo = numpy.linspace(min(self.Coord()[:,1]), max(self.Coord()[:,1]), nBinsTwo)    
-#    self.binsThree = numpy.linspace(min(self.Coord()[:,2]), max(self.Coord()[:,2]), nBinsThree)
+    self.binsThree[0] = self.binsThree[0] - (self.binsThree[-1]-0.99*self.binsThree[0]) *0.01
+    self.binsThree[-1] = self.binsThree[-1] + (self.binsThree[-1]-0.99*self.binsThree[0]) * 0.01
 
     self.indsOne = numpy.digitize(self.Coord()[:,0], self.binsOne)
     self.indsTwo = numpy.digitize(self.Coord()[:,1], self.binsTwo)
