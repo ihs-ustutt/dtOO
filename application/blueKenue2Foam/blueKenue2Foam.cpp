@@ -158,7 +158,9 @@ void readT3s(
   return;
 }
 
-void splitShore(std::list< std::string > & shoreLabel, std::list< int > & shoreline ) {
+void splitShore(
+  std::list< std::string > & shoreLabel, std::list< int > & shoreline 
+) {
   std::string lastLabel = shoreLabel.back();
   int lastNode = shoreline.back();
   if ( shoreLabel.front()==shoreLabel.back() ) {
@@ -274,8 +276,6 @@ void readBc2(
       stringPrimitive::stringToInt( 
         stringPrimitive::getStringBetween(" ", "", line)
       );
-      //twoDArrayHandling< std::string > blockStr = readBlock(nBoundarys, in);
-//      segments.resize(nBoundarys);
       int jj = 0;
       dt__forAllRefAuto(readBlock(nBoundarys, in), aStr) {
         segments.push_back(
@@ -427,37 +427,80 @@ void readBc2(
   return;
 }
 
-dtGmshModel * createModel(
+void createModel(
+  dtGmshModel * gm, 
+  dtOMMesh & om,
   twoDArrayHandling< float > const & nodes, 
   twoDArrayHandling< int > const & elements,
+  vectorHandling< float > const & bathymetry,
   std::map< std::string, int > const & boundaryNumber,
   std::map< std::string, std::list< int > > const & boundarys
 ) {
   //
-  // OpenMesh topology and fields
+  // create fields
   //
-  dtOMMesh om;
-  dtOMVertexField< std::string > boundaryNameVertexField(
-    "boundaryNameVertexField", om, ""
+  om.enqueueField( 
+    new dtOMVertexField< std::string >("boundaryNameVertexField", om, "")
   );
-  dtOMEdgeField< std::string > boundaryNameEdgeField(
-    "boundaryNameEdgeField", om, ""
+  om.enqueueField( 
+    new dtOMEdgeField< std::string >("boundaryNameEdgeField", om, "")  
   );
-  dtOMVertexField< int > vectorIndexField(
-    "vectorIndexField", om, -1
+  om.enqueueField( 
+    new dtOMVertexField< dtGmshVertex * >("gVertexField", om, NULL)  
+  );  
+  om.enqueueField( 
+    new dtOMEdgeField< dtGmshEdge * >("gEdgeField", om, NULL)  
   );    
-  dtOMVertexField< dtGmshVertex * > gVertexField("gVertexField", om, NULL);
-  dtOMEdgeField< dtGmshEdge * > gEdgeField("gEdgeField", om, NULL);
-  om.enqueueField( &boundaryNameVertexField );
-  om.enqueueField( &boundaryNameEdgeField );
-  om.enqueueField( &vectorIndexField );
-  om.enqueueField( &gVertexField );
-  om.enqueueField( &gEdgeField );
-
+  om.enqueueField(
+    new dtOMVertexField< int >("vIndexField", om, -1)
+  );
+  om.enqueueField(
+    new dtOMFaceField< int >("fIndexField", om, -1)
+  );  
+  om.enqueueField( 
+    new dtOMVertexField< float >(
+      "bathymetryField", om, std::numeric_limits<float>::max()
+    )
+  );  
+  dtOMVertexField< std::string > & boundaryNameVertexField 
+  =
+  *dtOMVertexField< std::string >::MustDownCast( 
+    om["boundaryNameVertexField"] 
+  );  
+  dtOMEdgeField< std::string > & boundaryNameEdgeField 
+  =
+  *dtOMEdgeField< std::string >::MustDownCast( 
+    om["boundaryNameEdgeField"] 
+  );    
+  dtOMVertexField< int > & vIndexField 
+  =
+  *dtOMVertexField< int >::MustDownCast( 
+    om["vIndexField"] 
+  );    
+  dtOMFaceField< int > & fIndexField 
+  =
+  *dtOMFaceField< int >::MustDownCast( 
+    om["fIndexField"] 
+  );    
+  dtOMVertexField< dtGmshVertex * > & gVertexField 
+  =
+  *dtOMVertexField< dtGmshVertex * >::MustDownCast( 
+    om["gVertexField"] 
+  );     
+  dtOMEdgeField< dtGmshEdge * > & gEdgeField
+  =
+  *dtOMEdgeField< dtGmshEdge * >::MustDownCast( 
+    om["gEdgeField"] 
+  );     
+  dtOMVertexField< float > & bathymetryField 
+  =
+  *dtOMVertexField< float >::MustDownCast( 
+    om["bathymetryField"] 
+  );  
+  
   //
   // gmsh
   //
-  dtGmshModel * gm = new dtGmshModel("blueKenue");
   dtGmshFace * gf = new dtGmshFace(gm, 1);
   gm->add( gf );
   gm->tagPhysical( gf, "up" );
@@ -480,17 +523,25 @@ dtGmshModel * createModel(
     tt.push_back( 
       new MTriangle(vv[aElement[0]], vv[aElement[1]], vv[aElement[2]]) 
     );
-    // add element to OpenMesh
     om.addFace( tt.back() );
-    vectorIndexField[ vv[aElement[0]] ] = aElement[0];
-    vectorIndexField[ vv[aElement[1]] ] = aElement[1];
-    vectorIndexField[ vv[aElement[2]] ] = aElement[2];
   }
 
   //
   // update fields and mesh
   //
-  om.update();      
+  om.update();    
+  
+  int cc = 0;
+  dt__forAllRefAuto(elements, aElement) {
+    vIndexField[ vv[aElement[0]] ] = aElement[0];
+    vIndexField[ vv[aElement[1]] ] = aElement[1];
+    vIndexField[ vv[aElement[2]] ] = aElement[2];
+    fIndexField[ om.at(tt[cc]) ] = cc;
+    bathymetryField[ vv[aElement[0]] ] = bathymetry[ aElement[0] ];
+    bathymetryField[ vv[aElement[1]] ] = bathymetry[ aElement[1] ];
+    bathymetryField[ vv[aElement[2]] ] = bathymetry[ aElement[2] ];    
+    cc = cc + 1;
+  }
 
   //
   // tag boundary vertices -> boundaryNameVertexField
@@ -529,7 +580,7 @@ dtGmshModel * createModel(
       }
     }
     dt__infoNoClass( 
-      main(), 
+      createModel(), 
       << "[boundaryEdge]"
       << boundaryNameVertexField.at(v0) 
       << " -- " 
@@ -545,7 +596,7 @@ dtGmshModel * createModel(
   dt__forAllRefAuto(boundaryNumber, aNumber) {
     nEdgeLoops = std::max( aNumber.second + 1, nEdgeLoops );
   }
-  dt__infoNoClass( main(), << "nEdgeLoops = " << nEdgeLoops );
+  dt__infoNoClass( createModel(), << "nEdgeLoops = " << nEdgeLoops );
 
   //
   // get one vertex at edge loop
@@ -557,7 +608,7 @@ dtGmshModel * createModel(
     = 
     boundarys.at( aNumber.first ).front();
     dt__infoNoClass( 
-      main(), 
+      createModel(), 
       << "firstVertexOnEdgeLoop[ " << aNumber.second << " ] = "
       << firstVertexOnEdgeLoop[ aNumber.second ]
     );
@@ -590,8 +641,8 @@ dtGmshModel * createModel(
         }
       }
     }    
-    dt__throwIfNoClass( !he0.is_valid(), main() );
-    dt__throwIfNoClass( !om.is_boundary(he0), main() );
+    dt__throwIfNoClass( !he0.is_valid(), createModel() );
+    dt__throwIfNoClass( !om.is_boundary(he0), createModel() );
 
     omHalfedgeH he = he0;
     std::string bName( boundaryNameEdgeField.at( om.edge_handle(he0) ) );
@@ -600,10 +651,10 @@ dtGmshModel * createModel(
       if ( bName != boundaryNameEdgeField.at( om.edge_handle(he) ) ) {
         firstVertexOnEdgeLoop[ii] 
         = 
-        vectorIndexField.at( om.from_vertex_handle(he) );
+        vIndexField.at( om.from_vertex_handle(he) );
         startHalfedgeOfEdgeLoop[ii] = he;
         dt__infoNoClass(
-          main(), 
+          createModel(), 
           << "[firstVertexOnEdgeLoop] Correct vertex vv[ " 
           << firstVertexOnEdgeLoop[ii] << " ] for edgeLoop = " << ii
         );          
@@ -613,7 +664,7 @@ dtGmshModel * createModel(
     }
     while (he == he0);
     dt__infoNoClass( 
-      main(), 
+      createModel(), 
       << "uniqueEdgeLoop[ " << ii << " ] = " << uniqueEdgeLoop[ ii ]
     );
     if ( uniqueEdgeLoop[ii] ) {
@@ -627,7 +678,7 @@ dtGmshModel * createModel(
         gVertexField[ splitV ]->addMeshVertex( om[ splitV ] );
         om[ splitV ]->setEntity( gVertexField[ splitV ] );
         dt__infoNoClass(
-          main(), 
+          createModel(), 
           << "[dtGmshVertex] Create dtGmshVertex at unique boundary: tag = " 
           << gm->getNumVertices() << ", " << "boundaryName = " 
           << bName
@@ -680,7 +731,7 @@ dtGmshModel * createModel(
           gVertexField.at(v_from)->addMeshVertex( om[ v_from ] );
           om[ v_from ]->setEntity( gVertexField[v_from] );
           dt__infoNoClass(
-            main(), 
+            createModel(), 
             << "[dtGmshVertex] Create dtGmshVertex : tag = " 
             << gm->getNumVertices() << ", " << "< bName_prev, bName > = < " 
             << bName_prev << ", " << bName << " >"
@@ -748,8 +799,6 @@ dtGmshModel * createModel(
   dt__forFromToIter( omFaceI, om.faces_begin(), om.faces_end(), fIt ) {
     gf->addElement( om[*fIt] );
   }  
-  
-  return gm;
 }
 
 void makeModel3d( dtGmshModel * gm, float const & ss ) {
@@ -904,7 +953,19 @@ void makeModel3d( dtGmshModel * gm, float const & ss ) {
   //
   // tag down face
   //
-  gm->tagPhysical( newOldG[ gm->getDtGmshFaceByPhysical("up") ], "down" );  
+  gm->tagPhysical( newOldG[ gm->getDtGmshFaceByPhysical("up") ], "down" );
+  
+  //
+  // label all empty as noLabel
+  //
+  dt__forAllRefAuto( gm->dtFaces(), aFace) {
+    if ( 
+      stringPrimitive::stringContains("empty", aFace->getPhysicalString() ) 
+    ) {
+      gm->untagPhysical( aFace );
+      gm->tagPhysical( aFace, "noLabel");
+    }
+  }
 }
 
 void initMeshVectors(
@@ -1010,23 +1071,28 @@ int main( int ac, char* av[] ) {
       (
         "bc2,b", 
         dtPO::value< std::string >(), 
-        "path to bc2 file (required)"
+        "path to bc2 file"
       )    
       (
         "t3s,t", 
         dtPO::value< std::string >(), 
-        "path to t3s file (required)"
+        "path to t3s file"
       )        
       (
         "size,s", 
         dtPO::value< float >(), 
-        "size of the cells (required)"
+        "size of the cells"
       )            
       (
         "case,c", 
         dtPO::value< std::string >(), 
-        "path to foam case (required)"
+        "path to foam case"
       )         
+      (
+        "gmsh,g", 
+        dtPO::value< std::string >()->default_value(""), 
+        "write file <gmsh>.msh"
+      )             
     ;
     vm.update();
     
@@ -1060,23 +1126,38 @@ int main( int ac, char* av[] ) {
     //
     readBc2(vm["bc2"].as< std::string >(), boundaryNumber, boundarys);
 
+
+    dtGmshModel * gm = new dtGmshModel("blueKenue");
+    dtOMMesh om;
+
     //
     // create two dimensional gmsh model
-    //
-    dtGmshModel * gm = createModel(nodes, elements, boundaryNumber, boundarys);
+    //    
+    createModel(gm, om, nodes, elements, bathymetry, boundaryNumber, boundarys);
     
     //
     // create three dimensional model
     //
     makeModel3d( gm, vm["size"].as< float >() );
 
-    
-    gm->writeMSH( vm["bc2"].as< std::string >()+".msh", 2.2, false, true );
-    
+    //
+    // write gmsh file
+    //    
+    if ( vm["gmsh"].as< std::string >() != "" ) {
+      gm->writeMSH( vm["gmsh"].as< std::string >()+".msh", 2.2, false, true );
+    }
     //
     // foam
     //
 
+    std::vector< ::MVertex * > allVerts;
+    std::vector< std::pair< ::MElement *, int > > allElems;
+    std::map< int, std::string > physicalNames;        
+    //
+    // read vertices and elements
+    //
+    initMeshVectors(gm, allVerts, allElems, physicalNames);
+    
     // enable exception throwing
     ::Foam::FatalError.throwExceptions();    
     ::Foam::FatalIOError.throwExceptions();    
@@ -1092,15 +1173,6 @@ int main( int ac, char* av[] ) {
     argv[0] = const_cast< char *>(argvStr[0].c_str());
     argv[1] = const_cast< char *>(argvStr[1].c_str());
     argv[2] = const_cast< char *>(argvStr[2].c_str());
-
-    std::vector< ::MVertex * > allVerts;
-    std::vector< std::pair< ::MElement *, int > > allElems;
-    std::map< int, std::string > physicalNames;
-
-    //
-    // read vertices and elements
-    //
-    initMeshVectors(gm, allVerts, allElems, physicalNames);
 
     //
     // create OpenFOAM rootCase and time
@@ -1168,7 +1240,7 @@ int main( int ac, char* av[] ) {
       //
       ::Foam::volScalarField volScalarBathy(
         ::Foam::IOobject(
-          "bathymetry",
+          "h0",
           runTime.timeName(),
           runTime,
           ::Foam::IOobject::NO_READ,
@@ -1176,19 +1248,27 @@ int main( int ac, char* av[] ) {
         ),
         fvMesh,
         ::Foam::dimensionedScalar(
-          "bathymetry", 
+          "h0", 
           ::Foam::dimensionSet(::Foam::IStringStream("[0 1 0 0 0 0 0]")()), 
           ::Foam::scalar(0.)
         )
       );
 
+      //
+      // get bathymetry
+      //
+      dtOMVertexField< float > * bathymetryField 
+      = 
+      dtOMVertexField<float>::MustDownCast( om["bathymetryField"] );
+      
       int cc = 0;
       dt__forAllRefAuto(gm->getDtGmshFaceByPhysical("up")->triangles, aPri) {
         SPoint3 bUVW = aPri->barycenterUVW();
         std::vector< double > val(3, 0.);
-        val[0] = bathymetry[ elements[cc][0] ];
-        val[1] = bathymetry[ elements[cc][1] ];
-        val[2] = bathymetry[ elements[cc][2] ];
+        omFaceH const & fH = om.at(aPri);
+        dt__forFromToIndex(0, 3, ii) {
+          val[ii] = bathymetryField->at( om.at(fH)->getVertex(ii) );
+        }
         volScalarBathy.internalField()[cc] 
         = 
         aPri->interpolate( &(val[0]), bUVW.x(), bUVW.y(), bUVW.z(), 1, 0 );
@@ -1226,7 +1306,8 @@ int main( int ac, char* av[] ) {
   //
   catch (std::exception& e) {
     dtOO::FILELog().Get(dtOO::logERROR) 
-      << "std::exception caught: " << e.what() << std::endl;
+      << "std::exception caught: " << e.what() << std::endl
+      << dtOO::logMe::Backtrace();
   }
 	
 	return 0;
