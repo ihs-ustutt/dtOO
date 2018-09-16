@@ -387,6 +387,13 @@ namespace dtOO {
     );
   }  
   
+  dtOMField * dtOMMesh::operator[]( std::string const & fieldName ) {
+    dt__forAllRefAuto(_attachedField, aField) {
+      if ( aField->getLabel() == fieldName ) return aField;
+    }
+    dt__throw(operator[](), << "Field " << fieldName << " not attached.");
+  }
+  
   omHalfedgeH dtOMMesh::sameHalfedgeInNextFace( omHalfedgeH const & heH) const {
     dt__throwIf( 
       nVertices( face_handle(heH) )!=4, 

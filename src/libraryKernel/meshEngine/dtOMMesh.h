@@ -70,7 +70,8 @@ namespace dtOO {
       // attach fields
       //
       void enqueueField( dtOMField * omField );
-      void dequeueField( dtOMField * omField );      
+      void dequeueField( dtOMField * omField );
+      dtOMField * operator[]( std::string const & fieldName );
       //
       // output
       //
