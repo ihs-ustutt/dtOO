@@ -277,7 +277,7 @@ class dtClusteredSingletonState:
     if addFile is not None:
       ADD = np.genfromtxt('runData/'+addFile+'.0', dtype=addDtype)
       for thisIndex in range(maxFileIndex):
-        add = np.genfromtxt('runData/'+addFile+'.'+str(thisIndex+1))
+        add = np.genfromtxt('runData/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
         ADD = np.concatenate( (ADD, add) )
 
     if np.size( np.shape(FIT) ) == 1:
@@ -308,7 +308,7 @@ class dtClusteredSingletonState:
         ADD = []
         ADD = np.genfromtxt('runData/'+addFile+'.0', dtype=addDtype)
         for thisIndex in range(maxFileIndex):
-          add = np.genfromtxt('runData/'+addFile+'.'+str(thisIndex+1))
+          add = np.genfromtxt('runData/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
           ADD = np.concatenate( (ADD, add) )
         retMap[addFile] = ADD
 
