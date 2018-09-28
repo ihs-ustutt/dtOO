@@ -1093,6 +1093,11 @@ int main( int ac, char* av[] ) {
         dtPO::value< std::string >()->default_value(""), 
         "write file <gmsh>.msh"
       )             
+      (
+        "extend,x", 
+        dtPO::value< bool >()->default_value(false), 
+        "extended interpolation"
+      )      
     ;
     vm.update();
     
@@ -1263,15 +1268,46 @@ int main( int ac, char* av[] ) {
       
       int cc = 0;
       dt__forAllRefAuto(gm->getDtGmshFaceByPhysical("up")->triangles, aPri) {
-        SPoint3 bUVW = aPri->barycenterUVW();
-        std::vector< double > val(3, 0.);
         omFaceH const & fH = om.at(aPri);
-        dt__forFromToIndex(0, 3, ii) {
-          val[ii] = bathymetryField->at( om.at(fH)->getVertex(ii) );
+        float intValue = 0.;
+        
+        if ( vm["extend"].as< bool >() ) {
+          std::vector< omVertexH > vH_v;
+          dt__forFromToIter(
+            omFaceHalfedgeI, 
+            om.fh_begin(fH), om.fh_end(fH), he_it) {
+            //omFaceHalfedgeI) {
+            omFaceH neighbourFH 
+            = 
+            om.face_handle(
+              om.opposite_halfedge_handle( *he_it )
+            );
+            dt__forFromToIter(
+              omFaceVertexI, 
+              om.fv_begin(neighbourFH), om.fv_end(neighbourFH), v_it
+            ) {
+              vH_v.push_back( *v_it);
+            }
+          }
+          progHelper::removeBastardTwins( vH_v );
+          dt__forAllRefAuto(vH_v, aH) {
+            intValue = intValue + bathymetryField->at(aH);
+          }
+          intValue = intValue / vH_v.size();
+        }
+        else {
+          SPoint3 bUVW = aPri->barycenterUVW();
+          std::vector< double > val(3, 0.);         
+          dt__forFromToIndex(0, 3, ii) {
+            val[ii] = bathymetryField->at( om.at(fH)->getVertex(ii) );
+          }          
+          intValue
+          = 
+          aPri->interpolate( &(val[0]), bUVW.x(), bUVW.y(), bUVW.z(), 1, 0 );
         }
         volScalarBathy.internalField()[cc] 
         = 
-        aPri->interpolate( &(val[0]), bUVW.x(), bUVW.y(), bUVW.z(), 1, 0 );
+        intValue;//aPri->interpolate( &(val[0]), bUVW.x(), bUVW.y(), bUVW.z(), 1, 0 );
 
         cc = cc + 1; 
       }
