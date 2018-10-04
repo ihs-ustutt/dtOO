@@ -1272,7 +1272,13 @@ int main( int ac, char* av[] ) {
         float intValue = 0.;
         
         if ( vm["extend"].as< bool >() ) {
-          std::vector< omVertexH > vH_v;
+          std::vector< omVertexH > vH_v;        
+          dt__forFromToIter(
+            omFaceVertexI, 
+            om.fv_begin(fH), om.fv_end(fH), v_it
+          ) {
+            vH_v.push_back( *v_it);
+          }          
           dt__forFromToIter(
             omFaceHalfedgeI, 
             om.fh_begin(fH), om.fh_end(fH), he_it) {
@@ -1281,7 +1287,8 @@ int main( int ac, char* av[] ) {
             = 
             om.face_handle(
               om.opposite_halfedge_handle( *he_it )
-            );
+            );          
+            if ( om.is_boundary(neighbourFH) ) continue;
             dt__forFromToIter(
               omFaceVertexI, 
               om.fv_begin(neighbourFH), om.fv_end(neighbourFH), v_it
