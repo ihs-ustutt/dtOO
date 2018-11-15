@@ -251,9 +251,9 @@ class dtClusteredSingletonState:
   @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
   def fullRead( addFile=None, addDtype=float ):
     if \
-      not os.path.isfile('runData/fitness.0') and \
-      not os.path.isfile('runData/objective.0') and \
-      not os.path.isfile('runData/id.0'):
+      not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
+      not os.path.isfile(dtClusteredSingletonState.DATADIR+'/objective.0') and \
+      not os.path.isfile(dtClusteredSingletonState.DATADIR+'/id.0'):
       return \
         numpy.zeros(0, int), \
         numpy.zeros((0,0), int), \
@@ -263,21 +263,21 @@ class dtClusteredSingletonState:
       dtClusteredSingletonState.currentMaxId() 
     )
         
-    FIT = np.genfromtxt('runData/fitness.0')
-    OBJ = np.genfromtxt('runData/objective.0')
-    ID = np.genfromtxt('runData/id.0', dtype=int)
+    FIT = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/fitness.0')
+    OBJ = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/objective.0')
+    ID = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/id.0', dtype=int)
     ADD = None
     for thisIndex in range(maxFileIndex):
-      f = np.genfromtxt('runData/fitness.'+str(thisIndex+1))
-      o = np.genfromtxt('runData/objective.'+str(thisIndex+1))
-      i = np.genfromtxt('runData/id.'+str(thisIndex+1), dtype=int)
+      f = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/fitness.'+str(thisIndex+1))
+      o = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/objective.'+str(thisIndex+1))
+      i = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/id.'+str(thisIndex+1), dtype=int)
       FIT = np.concatenate( (FIT, f) )
       OBJ = np.concatenate( (OBJ, o) )
       ID = np.concatenate( (ID, i) )
     if addFile is not None:
-      ADD = np.genfromtxt('runData/'+addFile+'.0', dtype=addDtype)
+      ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
       for thisIndex in range(maxFileIndex):
-        add = np.genfromtxt('runData/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
+        add = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
         ADD = np.concatenate( (ADD, add) )
 
     if np.size( np.shape(FIT) ) == 1:
@@ -294,9 +294,9 @@ class dtClusteredSingletonState:
     retMap = {}
     
     if \
-      not os.path.isfile('runData/fitness.0') and \
-      not os.path.isfile('runData/objective.0') and \
-      not os.path.isfile('runData/id.0'):
+      not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
+      not os.path.isfile(dtClusteredSingletonState.DATADIR+'/objective.0') and \
+      not os.path.isfile(dtClusteredSingletonState.DATADIR+'/id.0'):
       pass
     
     else:
@@ -306,9 +306,9 @@ class dtClusteredSingletonState:
 
       for addFile, addDtype in zip(addFileV, addDtypeV):
         ADD = []
-        ADD = np.genfromtxt('runData/'+addFile+'.0', dtype=addDtype)
+        ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
         for thisIndex in range(maxFileIndex):
-          add = np.genfromtxt('runData/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
+          add = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
           ADD = np.concatenate( (ADD, add) )
         retMap[addFile] = ADD
 

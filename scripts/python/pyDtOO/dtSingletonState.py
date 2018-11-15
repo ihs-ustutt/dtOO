@@ -340,17 +340,17 @@ class dtSingletonState:
   @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
   def fullRead():
     if \
-      not os.path.isfile('runData/fitness') and \
-      not os.path.isfile('runData/objective') and \
-      not os.path.isfile('runData/id'):
+      not os.path.isfile(dtSingletonState.DATADIR+'/fitness') and \
+      not os.path.isfile(dtSingletonState.DATADIR+'/objective') and \
+      not os.path.isfile(dtSingletonState.DATADIR+'/id'):
       return \
         numpy.zeros(0, int), \
         numpy.zeros((0,0), int), \
         numpy.zeros((0,0), int)
         
-    FIT = np.genfromtxt('runData/fitness')
-    OBJ = np.genfromtxt('runData/objective')
-    ID = np.genfromtxt('runData/id', dtype=int)
+    FIT = np.genfromtxt(dtSingletonState.DATADIR+'/fitness')
+    OBJ = np.genfromtxt(dtSingletonState.DATADIR+'/objective')
+    ID = np.genfromtxt(dtSingletonState.DATADIR+'/id', dtype=int)
 
     if np.size( np.shape(FIT) ) == 1:
       FIT = np.resize(FIT, (np.size(FIT),1))
