@@ -17,7 +17,8 @@ namespace dtOO {
     dtVector3 const & nf, int const & nU, int const & nV,
     int const & order,
     int const & skinOrderMin, int const & skinOrderMax,
-    int const & skinNIterations          
+    int const & skinNIterations,
+    bool const & closeU
   ) {
     
     dt__pH(vec3dTwoD) cV3d( v3d->clone() );
@@ -54,6 +55,14 @@ namespace dtOO {
         dtMatrixVector xx = dtLinearAlgebra::solveMatrix(AA, bb);
 
         grid[ii][jj] = yy + tt * nn + xx[0] * der[0] + xx[1] * der[1];
+      }
+    }
+    if (closeU) {
+      dt__forAllIndex(uGrid[0], jj) {        
+        dtPoint3 p_s = grid[0][jj];
+        dtPoint3 p_e = grid[grid.size(0)-1][jj];
+        grid[0][jj] = p_e + 0.5*(p_s - p_e);
+        grid[grid.size(0)-1][jj] = grid[0][jj];
       }
     }
     dt__forFromToIndex(0, grid.size(1), jj) {

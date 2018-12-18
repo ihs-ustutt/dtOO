@@ -44,7 +44,8 @@ namespace dtOO {
       if (vec3d2d) {
         vec3dTwoD_normalOffset anOffset( 
           vec3d2d, _tt.get(), _nf, _nU, _nV, _order, 
-          _skinOrderMin, _skinOrderMax, _skinNIterations
+          _skinOrderMin, _skinOrderMax, _skinNIterations,
+          _closeU
         );       
         retV.push_back( anOffset.result() );
         
@@ -128,6 +129,16 @@ namespace dtOO {
       = 
       dtXmlParserBase::getAttributeIntMuParse("skinNIterations", *tE, cV, aF);
     }    
+    
+    //
+    // get flag if close
+    //
+    _closeU = false;
+    if ( dtXmlParserBase::hasAttribute("closeU", *tE) ) {
+      _closeU 
+      = 
+      dtXmlParserBase::getAttributeBool("closeU", *tE);
+    }        
 		//
 		// get vector
 		//

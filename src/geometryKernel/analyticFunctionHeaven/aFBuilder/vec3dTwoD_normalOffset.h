@@ -16,7 +16,8 @@ namespace dtOO {
         dtVector3 const & nf, int const & nU, int const & nV,
         int const & order,
         int const & skinOrderMin, int const & skinOrderMax,
-        int const & skinNIterations
+        int const & skinNIterations,
+        bool const & closeU = false
       );
       virtual ~vec3dTwoD_normalOffset();
       vec3dTwoD * result(void) const;

@@ -40,6 +40,7 @@ namespace dtOO {
     int _skinOrderMin;
     int _skinOrderMax;
     int _skinNIterations;
+    bool _closeU;
   };
 }    
 
