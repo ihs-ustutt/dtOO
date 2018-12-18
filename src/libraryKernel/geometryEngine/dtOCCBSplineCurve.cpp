@@ -4,6 +4,8 @@
 #include "dtOCCCurveBase.h"
 #include "progHelper.h"
 
+#include <Standard_Failure.hxx>
+#include <Standard_ErrorHandler.hxx>
 #include <Standard_TypeDef.hxx>
 #include <gp_Pnt.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -54,7 +56,13 @@ namespace dtOO {
 		Handle(Geom_Curve) occC = dtOCCCurve::OCCRef().getOCC();
 		Handle(Geom_BSplineCurve) occBsc = Handle(Geom_BSplineCurve)::DownCast(occC);
 		
-		occBsc->SetPole(nPI, pp);
+    dt__tryOcc(        
+      occBsc->SetPole(nPI, pp);
+      ,
+      << "SetPole fails." << std::endl
+      << "nPoint = " << nPoint << std::endl
+      << "pp = " << dt__point3d(point) << std::endl
+    );
 	}
 
 	std::string dtOCCBSplineCurve::dumpToString( void ) const {

@@ -4,6 +4,8 @@
 #include "dtOCCCurve2dBase.h"
 #include "progHelper.h"
 
+#include <Standard_Failure.hxx>
+#include <Standard_ErrorHandler.hxx>
 #include <Standard_TypeDef.hxx>
 #include <gp_Pnt2d.hxx>
 #include <Geom2d_BSplineCurve.hxx>
@@ -52,6 +54,12 @@ namespace dtOO {
 		Handle(Geom2d_Curve) occC = dtOCCCurve2d::OCCRef().getOCC();
 		Handle(Geom2d_BSplineCurve) occBsc = Handle(Geom2d_BSplineCurve)::DownCast(occC);
 		
-		occBsc->SetPole(nPI, pp);
+    dt__tryOcc(        
+      occBsc->SetPole(nPI, pp);
+      ,
+      << "SetPole fails." << std::endl
+      << "nPoint = " << nPoint << std::endl
+      << "pp = " << dt__point2d(point) << std::endl
+    );
 	}
 }
