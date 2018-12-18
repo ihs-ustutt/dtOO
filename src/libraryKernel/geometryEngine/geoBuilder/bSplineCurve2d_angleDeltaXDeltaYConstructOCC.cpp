@@ -35,6 +35,7 @@ namespace dtOO {
           //
           std::vector< dtPoint2 > pV;
           pV.push_back( dtPoint2(0.,0.) );
+          pV.push_back( dtPoint2(0.5 * deltaX,0.5 * deltaY) );
 					pV.push_back( dtPoint2(deltaX, deltaY));
           
           dt__info(
@@ -44,7 +45,8 @@ namespace dtOO {
             << dt__eval(deltaX) << std::endl 
             << dt__eval(deltaY) << std::endl
             << dt__point2d(pV[0]) << std::endl
-            << dt__point2d(pV[1])
+            << dt__point2d(pV[1]) << std::endl
+            << dt__point2d(pV[2])
           );
           
 					_dtC2d.reset( bSplineCurve2d_pointConstructOCC(pV, 1).result() );		
