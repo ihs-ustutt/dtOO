@@ -21,6 +21,7 @@
 #include "aFXmlBuilder/vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder.h"
 #include "aFXmlBuilder/scaTanhGradingOneDAFXmlBuilder.h"
 #include "aFXmlBuilder/scaTanhUnitGradingOneDAFXmlBuilder.h"
+#include "aFXmlBuilder/bSplineCurve_curveConnectConstructOCCAFXmlBuilder.h"
 
 namespace dtOO {
   dt__pH(aFXmlBuilderFactory) aFXmlBuilderFactory::_instance(NULL);
@@ -132,6 +133,9 @@ namespace dtOO {
     _instance->_builder.push_back(
       new scaTanhUnitGradingOneDAFXmlBuilder()
     );    
+    _instance->_builder.push_back(
+      new bSplineCurve_curveConnectConstructOCCAFXmlBuilder() 
+    );
     return _instance.get();
   }
   

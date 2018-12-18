@@ -26,6 +26,7 @@ SET(HEADERS
   xmlHeaven/aFXmlBuilder/vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/scaTanhGradingOneDAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/scaTanhUnitGradingOneDAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineCurve_curveConnectConstructOCCAFXmlBuilder.h
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/splitTrans6SidedCubeAGXmlBuilder.h
@@ -123,6 +124,7 @@ SET(SOURCES
   xmlHeaven/aFXmlBuilder/vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/scaTanhGradingOneDAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/scaTanhUnitGradingOneDAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineCurve_curveConnectConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/splitTrans6SidedCubeAGXmlBuilder.cpp
