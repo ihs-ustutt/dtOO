@@ -24,29 +24,29 @@ namespace dtOO {
   }
 
   void bSplineCurve2d_pointConstructOCCAFXmlBuilder::buildPart(
-		::QDomElement const & toBuildP, 
-		baseContainer * const bC,
-		cVPtrVec const * const cValP, 
-		aFPtrVec const * const depSFunP,
-		aFPtrVec * sFunP 
+    ::QDomElement const & toBuild, 
+    baseContainer * const bC,
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    aFPtrVec * result
 	) const {
     dt__throwIf(
-      !dtXmlParserBase::hasChild("Point_2", toBuildP)
+      !dtXmlParserBase::hasChild("Point_2", toBuild)
       ||
-      !dtXmlParserBase::hasAttribute("order", toBuildP), 
+      !dtXmlParserBase::hasAttribute("order", toBuild), 
       buildPart()
     );    
     
     std::vector< dtPoint2 > pointsArray;
-    ::QDomElement elementP = dtXmlParserBase::getChild("Point_2", toBuildP);
+    ::QDomElement elementP = dtXmlParserBase::getChild("Point_2", toBuild);
     //
     //set input
     //
-    int order = dtXmlParserBase::getAttributeInt("order", toBuildP);
+    int order = dtXmlParserBase::getAttributeInt("order", toBuild);
     while ( !elementP.isNull() ) {
       std::vector< dtPoint2 > workingPoint;
       dtXmlParserBase::dtXmlParserBase::createBasic( 
-        &elementP, bC, cValP, depSFunP, &workingPoint 
+        &elementP, bC, cV, aF, &workingPoint 
       );
       for (int ii=0;ii<workingPoint.size();ii++) {
         // put in point builder
@@ -62,6 +62,6 @@ namespace dtOO {
     //
     // create scaCurve2dOneD
     //
-    sFunP->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );			
+    result->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );			
   }
 }

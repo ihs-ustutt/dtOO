@@ -19,11 +19,11 @@ namespace dtOO {
     bSplineCurve2d_pointConstructOCCAFXmlBuilder();
     virtual ~bSplineCurve2d_pointConstructOCCAFXmlBuilder();
     virtual void buildPart(
-      ::QDomElement const & toBuildP, 
+      ::QDomElement const & toBuild, 
       baseContainer * const bC,
-      cVPtrVec const * const cValP, 
-      aFPtrVec const * const depSFunP,
-      aFPtrVec * sFunP
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aFPtrVec * result
     ) const;
   };
 }
