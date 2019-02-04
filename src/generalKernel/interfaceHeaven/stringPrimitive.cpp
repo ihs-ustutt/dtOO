@@ -50,8 +50,12 @@ namespace dtOO {
   } 
 
   bool stringPrimitive::stringToBool(std::string const value) {
-    if ( (value == "true") || (value=="1") ) return true;
-    if ( (value == "false") || (value=="0") || (value=="") ) return false;
+    if ( 
+      (value == "true") || (value=="1") || (value=="True")
+    ) return true;
+    if ( 
+      (value == "false") || (value=="0") || (value=="False") 
+    ) return false;
 		dt__warning(
 			stringToBool(),
       << "Value of " << dt__eval(value) << std::endl
