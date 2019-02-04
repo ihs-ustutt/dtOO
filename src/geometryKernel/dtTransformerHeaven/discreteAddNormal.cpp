@@ -19,6 +19,12 @@ namespace dtOO {
     _nU = orig._nU;
     _nV = orig._nV;
     _order = orig._order;
+    _nSteps = orig._nSteps;
+    _skinOrderMin = orig._skinOrderMin;
+    _skinOrderMax = orig._skinOrderMax;
+    _skinNIterations = orig._skinNIterations;
+    _closeSmooth = orig._closeSmooth;
+    _closeU = orig._closeU;
   }	
   
   discreteAddNormal::~discreteAddNormal() {
@@ -45,7 +51,7 @@ namespace dtOO {
         vec3dTwoD_normalOffset anOffset( 
           vec3d2d, _tt.get(), _nf, _nU, _nV, _order, 
           _skinOrderMin, _skinOrderMax, _skinNIterations,
-          _closeU
+          _closeU, _closeSmooth
         );       
         retV.push_back( anOffset.result() );
         
@@ -139,6 +145,15 @@ namespace dtOO {
       = 
       dtXmlParserBase::getAttributeBool("closeU", *tE);
     }        
+    //
+    // get flag if close smooth
+    //
+    _closeSmooth = -1.;
+    if ( dtXmlParserBase::hasAttribute("closeSmooth", *tE) ) {
+      _closeSmooth
+      = 
+      dtXmlParserBase::getAttributeFloatMuParse("closeSmooth", *tE, cV, aF);
+    }            
 		//
 		// get vector
 		//

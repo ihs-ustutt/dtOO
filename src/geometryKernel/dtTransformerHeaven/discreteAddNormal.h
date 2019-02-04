@@ -29,9 +29,6 @@ namespace dtOO {
     apply( aFPtrVec const * const aFP ) const;
   private:
     dt__pH(vec3dTwoD) _tt;
-//    dtVector3 _min;
-//    dtVector3 _max;
-//    int _nSmooth;
     dtVector3 _nf;
     int _nU;
     int _nV;
@@ -41,6 +38,7 @@ namespace dtOO {
     int _skinOrderMax;
     int _skinNIterations;
     bool _closeU;
+    float _closeSmooth;
   };
 }    
 

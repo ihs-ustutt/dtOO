@@ -17,7 +17,8 @@ namespace dtOO {
         int const & order,
         int const & skinOrderMin, int const & skinOrderMax,
         int const & skinNIterations,
-        bool const & closeU = false
+        bool const & closeU = false,
+        float const & closeSmooth = -1.
       );
       virtual ~vec3dTwoD_normalOffset();
       vec3dTwoD * result(void) const;
