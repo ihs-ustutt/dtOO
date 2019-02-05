@@ -57,32 +57,44 @@ namespace dtOO {
       (
         0, 
         ::boost::assign::list_of
-          ("SOUTH")("south")("0")("S")("s").convert_to_container< std::vector< std::string > >()
+          ("SOUTH")("south")
+          ("0")
+          ("S")("s").convert_to_container< std::vector< std::string > >()
       )
       (
         1, 
         ::boost::assign::list_of
-          ("NORTH")("north")("1")("N")("n").convert_to_container< std::vector< std::string > >()
+          ("NORTH")("north")
+          ("1")
+          ("N")("n").convert_to_container< std::vector< std::string > >()
       )
       (
         2, 
         ::boost::assign::list_of
-          ("FRONT")("front")("2")("F")("f").convert_to_container< std::vector< std::string > >()
+          ("FRONT")("front")
+          ("2")
+          ("F")("f").convert_to_container< std::vector< std::string > >()
       )    
       (
         3, 
         ::boost::assign::list_of
-          ("BACK")("back")("3")("B")("b").convert_to_container< std::vector< std::string > >()
+          ("BACK")("back")
+          ("3")
+          ("B")("b").convert_to_container< std::vector< std::string > >()
       )    
       (
         4, 
         ::boost::assign::list_of
-          ("WEST")("west")("4")("W")("w").convert_to_container< std::vector< std::string > >()
+          ("WEST")("west")
+          ("4")
+          ("W")("w").convert_to_container< std::vector< std::string > >()
       )       
       (
         5, 
         ::boost::assign::list_of
-          ("EAST")("east")("5")("E")("e").convert_to_container< std::vector< std::string > >()
+          ("EAST")("east")
+          ("5")
+          ("E")("e").convert_to_container< std::vector< std::string > >()
       );
       
     std::map< std::string, int > dtGmshModel::_edgePositionStr
@@ -126,12 +138,16 @@ namespace dtOO {
       (
         0, 
         ::boost::assign::list_of
-          ("0")("START")("start")("S")("s").convert_to_container< std::vector< std::string > >()
+          ("0")
+          ("START")("start")
+          ("S")("s").convert_to_container< std::vector< std::string > >()
       )
       (
         1, 
         ::boost::assign::list_of
-          ("1")("END")("end")("E")("e").convert_to_container< std::vector< std::string > >()
+          ("1")
+          ("END")("end")
+          ("E")("e").convert_to_container< std::vector< std::string > >()
       );    
   dtGmshModel::dtGmshModel(std::string name) : GModel(name){
     _debug = "";
@@ -1798,7 +1814,9 @@ namespace dtOO {
       else {
         dt__forAllRefAuto(dtRegions(), aReg) {
           if ( 
-            stringPrimitive::matchWildcard( physV[0], aReg->getPhysicalString() )
+            stringPrimitive::matchWildcard( 
+              physV[0], aReg->getPhysicalString() 
+            )
           ) {
             region.push_back( aReg );
           }
@@ -1822,7 +1840,9 @@ namespace dtOO {
           else {
             dt__forAllRefAuto(aReg->dtFaces(), aFace) {
               if ( 
-                stringPrimitive::matchWildcard( physV[1], aFace->getPhysicalString() )
+                stringPrimitive::matchWildcard( 
+                  physV[1], aFace->getPhysicalString() 
+                )
               ) {
                 face.push_back( aFace );
               }
@@ -1847,7 +1867,9 @@ namespace dtOO {
             else {
               dt__forAllRefAuto(aFace->dtEdges(), aEdge) {
                 if ( 
-                  stringPrimitive::matchWildcard( physV[2], aEdge->getPhysicalString() )
+                  stringPrimitive::matchWildcard( 
+                    physV[2], aEdge->getPhysicalString() 
+                  )
                 ) {
                   edge.push_back( aEdge );
                 }

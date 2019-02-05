@@ -9,12 +9,22 @@ namespace dtOO {
     _nPieces = 1;
     _xyPercent = false;
   }
+  
+  offset::offset( offset const & orig ) {
+    _paraOneOffsetPercent = orig._paraOneOffsetPercent;
+    _paraTwoOffsetPercent = orig._paraTwoOffsetPercent;
+    _xyPercent = orig._xyPercent;
+    _xOffset = orig._xOffset;
+    _yOffset = orig._yOffset;
+    _normalOffset = orig._normalOffset;
+    _nPieces = orig._nPieces;
+  }
 
   offset::~offset() {
   }
 
   dtTransformer * offset::clone( void ) const {
-	  dt__throw(clone(), << "Not yet implemented.");
+	  return new offset(*this);
 	}
 	
   dtTransformer * offset::create( void ) const {
@@ -22,97 +32,61 @@ namespace dtOO {
 	}
 	
   aGPtrVec offset::apply( 
-    aGPtrVec const * const aGeoVecP 
+    aGPtrVec const * const toTrans 
   ) const {
     aGPtrVec retAGeo;
 
-    //each analyticGeometry
-    for (int ii=0;ii< aGeoVecP->size();ii++) {
-        //each piece
-        for (int jj=1;jj<=_nPieces;jj++) {
-          //
-          // clone and cast analyticGeometry
-          //
-          analyticGeometry * aGeoP = aGeoVecP->at(ii)->clone();
-          analyticSurface * aS = dynamic_cast< analyticSurface * >(aGeoP);
+    dt__forAllRefAuto(*toTrans, aTrans){
+      //each piece
+      dt__forFromToIndex(0, _nPieces, jj) {
+        analyticSurface * aS 
+        = 
+        analyticSurface::MustConstDownCast(aTrans)->clone();
 
-          //
-          // perform translation
-          //
-          if ( aS ) {
-            aS->offsetNormal( _normalOffset );
-          }
-          else {
-            dt__warning(
-              apply(),
-              << dt__eval(aS) << std::endl
-              << "Unknown type"
-            );
-          }
+        aS->offsetNormal( _normalOffset );
 
-          //
-          // push translated geometry in vector
-          //
-          retAGeo.push_back( aGeoP );
-        }
+        retAGeo.push_back( aS );
+      }
     }
     return retAGeo;
   }
 
   aFPtrVec offset::apply( 
-    aFPtrVec const * const sFunP 
+    aFPtrVec const * const toTrans 
   ) const { 
     aFPtrVec retSFun;
 
     //each analyticGeometry
-    for (int ii=0;ii< sFunP->size();ii++) {
-        //
-        // clone and cast scaFunction
-        //
-        dt__ptrAss( 
-          scaOneD * cloneP, scaOneD::DownCast( sFunP->at(ii)->clone() ) 
-        );
-        dt__ptrAss( 
-          scaCurve2dOneD  * splineP, scaCurve2dOneD::DownCast(cloneP) 
-        );
-          
-        //
-        // translation vector
-        //
-        dtVector2 transVec;
-        if (_xyPercent == true ) {
-          float xRange = splineP->xMax(0) - splineP->xMin(0);
-          float yRange 
-          = 
-          splineP->YFloat(splineP->xMax(0)) - splineP->YFloat(splineP->xMin(0));
-          transVec = dtVector2(_xOffset * xRange, _yOffset * yRange);
-        }
-        else {
-          transVec = dtVector2(_xOffset, _yOffset);
-        }
+    dt__forAllRefAuto(*toTrans, aTrans) {
+      scaCurve2dOneD  * s2d 
+      = 
+      scaCurve2dOneD::MustConstDownCast(aTrans)->clone();
+      //
+      // translation vector
+      //
+      dtVector2 transVec;
+      if (_xyPercent == true ) {
+        float xRange = s2d->xMax(0) - s2d->xMin(0);
+        float yRange 
+        = 
+        s2d->YFloat(s2d->xMax(0)) - s2d->YFloat(s2d->xMin(0));
+        transVec = dtVector2(_xOffset * xRange, _yOffset * yRange);
+      }
+      else {
+        transVec = dtVector2(_xOffset, _yOffset);
+      }
 
-        //each piece
-        for (int jj=1;jj<=_nPieces;jj++) {
-          //convert integer to float      
-          float jjF = (float) jj;
+      //each piece
+      dt__forFromToIndex(0, _nPieces, jj) {
+        //convert integer to float      
+        float jjF = (float) (jj+1);
+        s2d->translate( jjF * transVec );
 
-          //
-          // perform translation
-          //
-//          if ( splineP ) {
-          splineP->translate( jjF * transVec );
-//          }
-//          else {
-//            dt__warning(apply(),
-//                    << dt__eval(splineP) << std::endl
-//                    << "Unknown type");
-//          }
-
-          //
-          // push translated geometry in vector
-          //
-          retSFun.push_back( cloneP );
-        }
+        //
+        // push translated geometry in vector
+        //
+        retSFun.push_back( s2d );
+      }
     }
     return retSFun;    
   }
@@ -131,111 +105,129 @@ namespace dtOO {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		
     if (dtXmlParserBase::hasAttribute("parameter_one_offset_percent", *tE)) {
-      _paraOneOffsetPercent = dtXmlParserBase::muParseString( 
-                                dtXmlParserBase::replaceDependencies(
-                                  dtXmlParserBase::getAttributeStr(
-                                    "parameter_one_offset_percent", 
-                                    *tE
-                                  ),
-                                  cV, 
-                                  aF
-                                ) 
-                              );
+      _paraOneOffsetPercent 
+      = 
+      dtXmlParserBase::muParseString( 
+        dtXmlParserBase::replaceDependencies(
+          dtXmlParserBase::getAttributeStr(
+            "parameter_one_offset_percent", 
+            *tE
+          ),
+          cV, 
+          aF
+        ) 
+      );
     }
     if (dtXmlParserBase::hasAttribute("parameter_two_offset_percent", *tE)) {
-      _paraTwoOffsetPercent = dtXmlParserBase::muParseString( 
-                                dtXmlParserBase::replaceDependencies(
-                                  dtXmlParserBase::getAttributeStr(
-                                    "parameter_two_offset_percent", 
-                                    *tE
-                                  ),
-                                  cV, 
-                                  aF
-                                ) 
-                              );
+      _paraTwoOffsetPercent 
+      = 
+      dtXmlParserBase::muParseString( 
+        dtXmlParserBase::replaceDependencies(
+          dtXmlParserBase::getAttributeStr(
+            "parameter_two_offset_percent", 
+            *tE
+          ),
+          cV, 
+          aF
+        ) 
+      );
     }  
     if (dtXmlParserBase::hasAttribute("number_pieces", *tE)) {
-      _nPieces = dtXmlParserBase::muParseString( 
-                   dtXmlParserBase::replaceDependencies(
-                     dtXmlParserBase::getAttributeStr(
-                       "number_pieces", 
-                       *tE
-                     ),
-                     cV, 
-                     aF
-                   ) 
-                 );
+      _nPieces 
+      = 
+      dtXmlParserBase::muParseString( 
+        dtXmlParserBase::replaceDependencies(
+          dtXmlParserBase::getAttributeStr(
+            "number_pieces", 
+            *tE
+          ),
+          cV, 
+          aF
+        ) 
+      );
     }  
     if (dtXmlParserBase::hasAttribute("x_offset_percent", *tE)) {
-      _xOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceDependencies(
-                            dtXmlParserBase::getAttributeStr(
-                              "x_offset_percent", 
-                              *tE
-                            ),
-                            cV, 
-                            aF
-                          ) 
-                        );
+      _xOffset 
+      = 
+      dtXmlParserBase::muParseString( 
+        dtXmlParserBase::replaceDependencies(
+          dtXmlParserBase::getAttributeStr(
+            "x_offset_percent", 
+            *tE
+          ),
+          cV, 
+          aF
+        ) 
+      );
       _xyPercent = true;
     }
     if (dtXmlParserBase::hasAttribute("y_offset_percent", *tE)) {
-      _yOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceDependencies(
-                            dtXmlParserBase::getAttributeStr(
-                              "y_offset_percent", 
-                              *tE
-                            ),
-                            cV, 
-                            aF
-                          ) 
-                        );
+      _yOffset 
+      = 
+      dtXmlParserBase::muParseString( 
+        dtXmlParserBase::replaceDependencies(
+          dtXmlParserBase::getAttributeStr(
+            "y_offset_percent", 
+            *tE
+          ),
+          cV, 
+          aF
+        ) 
+      );
       _xyPercent = true;
     }      
     if (dtXmlParserBase::hasAttribute("x_offset", *tE)) {
-      _xOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceDependencies(
-                            dtXmlParserBase::getAttributeStr(
-                              "x_offset", 
-                              *tE
-                            ),
-                            cV, 
-                            aF
-                          ) 
-                        );
+      _xOffset 
+      = 
+      dtXmlParserBase::muParseString( 
+        dtXmlParserBase::replaceDependencies(
+          dtXmlParserBase::getAttributeStr(
+            "x_offset", 
+            *tE
+          ),
+          cV, 
+          aF
+        ) 
+      );
     }
     if (dtXmlParserBase::hasAttribute("y_offset", *tE)) {
-      _yOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceDependencies(
-                            dtXmlParserBase::getAttributeStr(
-                              "y_offset", 
-                              *tE
-                            ),
-                            cV, 
-                            aF
-                          ) 
-                        );
+      _yOffset 
+      = 
+      dtXmlParserBase::muParseString( 
+        dtXmlParserBase::replaceDependencies(
+          dtXmlParserBase::getAttributeStr(
+            "y_offset", 
+            *tE
+          ),
+          cV, 
+          aF
+        ) 
+      );
     }      
     if (dtXmlParserBase::hasAttribute("normal_offset", *tE)) {
-      _normalOffset = dtXmlParserBase::muParseString( 
-                          dtXmlParserBase::replaceDependencies(
-                            dtXmlParserBase::getAttributeStr(
-                              "normal_offset", 
-                              *tE
-                            ),
-                            cV, 
-                            aF
-                          ) 
-                        );
+      _normalOffset 
+      = 
+      dtXmlParserBase::muParseString( 
+        dtXmlParserBase::replaceDependencies(
+          dtXmlParserBase::getAttributeStr(
+            "normal_offset", 
+            *tE
+          ),
+          cV, 
+          aF
+        ) 
+      );
     }          
     
-    dt__info(init(),
-            << dt__eval(_paraOneOffsetPercent) << std::endl
-            << dt__eval(_paraTwoOffsetPercent) << std::endl
-            << dt__eval(_normalOffset) << std::endl
-            << dt__eval(_xOffset) << std::endl
-            << dt__eval(_yOffset) << std::endl
-            << dt__eval(_xyPercent) << std::endl
-            << dt__eval(_nPieces) );
+    dt__info(
+      init(),
+      << dt__eval(_paraOneOffsetPercent) << std::endl
+      << dt__eval(_paraTwoOffsetPercent) << std::endl
+      << dt__eval(_normalOffset) << std::endl
+      << dt__eval(_xOffset) << std::endl
+      << dt__eval(_yOffset) << std::endl
+      << dt__eval(_xyPercent) << std::endl
+      << dt__eval(_nPieces) 
+    );
   }
 }

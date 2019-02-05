@@ -9,6 +9,7 @@ namespace dtOO {
   public:    
     dt__classOnlyName(offset);
     offset();
+    offset( offset const & orig );    
     virtual ~offset();
     virtual dtTransformer * clone( void ) const;
     virtual dtTransformer * create( void ) const;     
@@ -21,7 +22,7 @@ namespace dtOO {
       aGPtrVec const * const aG 
     );
     virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
-    virtual aFPtrVec apply( aFPtrVec const * const sFunP ) const; 
+    virtual aFPtrVec apply( aFPtrVec const * const toTrans ) const; 
   private:
     float _paraOneOffsetPercent;
     float _paraTwoOffsetPercent;
