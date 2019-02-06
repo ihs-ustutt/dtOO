@@ -82,6 +82,9 @@ namespace dtOO {
     static bool hasAttribute(
       std::string const attName, ::QDomElement const element 
     );
+    static bool isAttributeVector(
+      std::string const attName, ::QDomElement const element 
+    );    
     static int getAttributeInt( 
       std::string const attName, ::QDomElement const element 
     );

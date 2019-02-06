@@ -476,6 +476,14 @@ namespace dtOO {
     }
   }
     
+  bool qtXmlPrimitive::isAttributeVector(
+    std::string const attName, ::QDomElement const element 
+  ) {
+    return stringPrimitive::matchWildcard( 
+      "*{*}*", getAttributeStr(attName, element) 
+    );
+  }
+    
   int qtXmlPrimitive::getAttributeInt(
 	  std::string const attName, const ::QDomElement element
 	) {
