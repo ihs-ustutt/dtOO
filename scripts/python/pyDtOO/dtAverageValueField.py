@@ -22,6 +22,17 @@ class dtAverageValueField(dtValueField):
   def __init__(self, data, nBinsOne, nBinsTwo, nBinsThree):
     dtValueField.__init__(self, data)
     #
+    # determine characteristic length by bounding box
+    #
+    bbMin = numpy.zeros(3, float)
+    bbMax = numpy.zeros(3, float)
+    for i in range(3):
+      bbMin[i] = min( self.Coord()[:, i] )
+      bbMax[i] = max( self.Coord()[:, i] )
+    
+    cDist = numpy.linalg.norm(bbMax-bbMin)
+    
+    #
     # binOne
     #
     orderingOne = numpy.argsort( self.Coord()[:,0] )
@@ -30,8 +41,8 @@ class dtAverageValueField(dtValueField):
     for i in range(nBinsOne):
       self.binsOne[ i ] = self.Coord()[ orderingOne[ i * (perBinOne) ], 0 ]
     self.binsOne[nBinsOne] = max(self.Coord()[:,0])
-    self.binsOne[0] = self.binsOne[0] - (self.binsOne[-1]-0.99*self.binsOne[0]) * 0.01
-    self.binsOne[-1] = self.binsOne[-1] + (self.binsOne[-1]-0.99*self.binsOne[0]) * 0.01
+    self.binsOne[0] = self.binsOne[0] - 0.01*cDist
+    self.binsOne[-1] = self.binsOne[-1] + 0.01*cDist
 
     #
     # binTwo
@@ -42,8 +53,8 @@ class dtAverageValueField(dtValueField):
     for i in range(nBinsTwo):
       self.binsTwo[ i ] = self.Coord()[ orderingTwo[ i * (perBinTwo) ], 1 ]
     self.binsTwo[nBinsTwo] = max(self.Coord()[:,1])
-    self.binsTwo[0] = self.binsTwo[0] - (self.binsTwo[-1]-0.99*self.binsTwo[0]) *0.01
-    self.binsTwo[-1] = self.binsTwo[-1] + (self.binsTwo[-1]-0.99*self.binsTwo[0]) * 0.01
+    self.binsTwo[0] = self.binsTwo[0] - 0.01*cDist
+    self.binsTwo[-1] = self.binsTwo[-1] + 0.01*cDist
 
     #
     # binThree
@@ -54,8 +65,8 @@ class dtAverageValueField(dtValueField):
     for i in range(nBinsThree):
       self.binsThree[ i ] = self.Coord()[ orderingThree[ i * (perBinThree) ], 2 ]
     self.binsThree[nBinsThree] = max(self.Coord()[:,2])    
-    self.binsThree[0] = self.binsThree[0] - (self.binsThree[-1]-0.99*self.binsThree[0]) *0.01
-    self.binsThree[-1] = self.binsThree[-1] + (self.binsThree[-1]-0.99*self.binsThree[0]) * 0.01
+    self.binsThree[0] = self.binsThree[0] - 0.01*cDist
+    self.binsThree[-1] = self.binsThree[-1] + 0.01*cDist
 
     self.indsOne = numpy.digitize(self.Coord()[:,0], self.binsOne)
     self.indsTwo = numpy.digitize(self.Coord()[:,1], self.binsTwo)
