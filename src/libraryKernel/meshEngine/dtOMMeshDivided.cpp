@@ -1,6 +1,6 @@
 #include "dtOMMeshDivided.h"
 #include "progHelper.h"
-#include "interfaceHeaven/stringPrimitive.h"
+#include <interfaceHeaven/stringPrimitive.h>
 
 namespace dtOO {
   dtOMMeshDivided::dtOMMeshDivided() {
