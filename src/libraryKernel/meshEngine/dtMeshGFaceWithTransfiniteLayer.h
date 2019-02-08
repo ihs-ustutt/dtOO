@@ -30,22 +30,10 @@ namespace dtOO {
         labeledVectorHandling< dtMeshOperator * > const * const mO      
       );      
       void operator()( dtGmshFace * dtgr );    
-//    private:
-//      static void computeEdgeLoops(
-//        const ::GFace *gf, 
-//        std::vector< ::MVertex * > & all_mvertices, 
-//        std::vector< int > & indices,
-//        std::vector<MVertex*> & corners,
-//        std::vector <MVertex *> & m_vertices                  
-//      );
     private:
       int _direction;
-      int _nLayers;
+      std::vector< int > _nLayers;
       int _nSmooth;
-//      dt__pH(scaOneD) _alpha_2;
-//      dt__pH(scaOneD) _beta_1;
-//      dt__pH(scaOneD) _beta_2;
-//      dt__pH(scaOneD) _beta_3;
   };
 }
 #endif	/* dtMeshGFaceWithTransfiniteLayer_H */

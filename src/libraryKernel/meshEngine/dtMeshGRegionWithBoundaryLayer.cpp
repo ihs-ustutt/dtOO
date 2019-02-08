@@ -37,18 +37,22 @@ namespace dtOO {
   _nGrowingSmoothingSteps(0),
   _maxGrowingRatePerStep(1.0),
   _maxDihedralAngle(0.),
-  _nSpacingSteps(0),
+  _nSpacingSteps(std::vector< int >(0, 0)),
   _omInit(),
   _omMoved(),    
   _fixedF("_fixedF", _omInit, false),
   _slidableF("_slidableF", _omInit, false),
   _tF("_tF", _omInit, 0.),
-   _nF("nF", _omInit, dtVector3(0.,0.,0.)),		
+  _nF("nF", _omInit, dtVector3(0.,0.,0.)),	
+  _faceIndex("faceIndex", _omInit, -1),	          
   _extrudeF("_extrudeF", _omInit, 1),
   _typeF("_type", _omInit, 0),
+  _nSpacingStepsF("nSpacingStepsF", _omInit, 0),
+  _flipNormalF("_flipNormalF", _omInit, false),
   _buddyF("_buddyF", _omInit, std::vector< ::MVertex * >(0,NULL)),
-  _realSpacing("_realSpacing", _omInit, std::vector< float >(0,0.)) {
-    _3D = NULL;
+  _realSpacing("_realSpacing", _omInit, std::vector< float >(0,0.)),
+  _3D(NULL)
+  {
 	}
 
 	dtMeshGRegionWithBoundaryLayer::~dtMeshGRegionWithBoundaryLayer() {
@@ -66,14 +70,6 @@ namespace dtOO {
   ) {
     dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
     
-    _nSpacingSteps
-    =
-    qtXmlBase::getAttributeIntMuParse("nSpacingSteps", element, cV, aF);
-    _flipNormal = false;
-    if (_nSpacingSteps < 0) {
-      _flipNormal = true;
-    }
-    _nSpacingSteps = abs(_nSpacingSteps);
     _maxGrowingRatePerStep 
 		= 
 		qtXmlBase::getAttributeFloatMuParse(
@@ -104,11 +100,38 @@ namespace dtOO {
 		= 
 		qtXmlPrimitive::getAttributeStrVector("slidableFaceLabel", element);
     
-    dt__ptrAss(
-      _3D, 
-      dtMesh3DOperator::DownCast(
-        mO->get(qtXmlBase::getAttributeStr("dtMesh3DOperator", element))
-      )
+    _3D
+    =
+    dtMesh3DOperator::MustDownCast(
+      mO->get(qtXmlBase::getAttributeStr("dtMesh3DOperator", element))
+    );
+    
+    if ( qtXmlPrimitive::isAttributeVector("nSpacingSteps", element) ) {
+      _nSpacingSteps 
+      = 
+      qtXmlBase::getAttributeIntVectorMuParse("nSpacingSteps", element, cV, aF);
+    }
+    else {
+      _nSpacingSteps
+      =
+      std::vector< int >(
+        _faceLabel.size(), 
+        qtXmlBase::getAttributeIntMuParse("nSpacingSteps", element, cV, aF)
+      );
+    }
+    dt__throwIf( _faceLabel.size()!=_nSpacingSteps.size(), init() );
+    _flipNormal = std::vector< bool >(_nSpacingSteps.size(), false);
+    dt__forAllIndex(_nSpacingSteps, ii) {
+      if ( _nSpacingSteps[ii] < 0 ) {
+        _flipNormal[ii] = true;
+        _nSpacingSteps[ii] = abs( _nSpacingSteps[ii] );
+      }
+    }
+    
+    dt__info(
+      init(),
+      << "_nSpacingSteps = " << logMe::vecToString(_nSpacingSteps) << std::endl
+      << "_flipNormal = " << logMe::vecToString(_flipNormal) << std::endl
     );
 	}
 	
@@ -128,22 +151,17 @@ namespace dtOO {
 		
     dtOMMeshDivided omInitDiv;
     dtOMMeshDivided omMovedDiv;
-		dt__forAllConstIter( std::list< dtGmshFace const * >, faceList, it ) {
-      dtGmshFace const * const &thisFace = *it;
+    dt__forAllRefAuto(faceList, thisFace) {
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
       omInitDiv.add(*tmpOM);      
       omMovedDiv.add(*tmpOM);      
     } 
-		dt__forAllConstIter( std::list< dtGmshFace const * >, fixedFaceList, it ) {
-      dtGmshFace const * const &thisFace = *it;
+    dt__forAllRefAuto(fixedFaceList, thisFace) {
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
       omInitDiv.add(*tmpOM);      
       omMovedDiv.add(*tmpOM);      
     }
-		dt__forAllConstIter( 
-      std::list< dtGmshFace const * >, slidableFaceList, it 
-    ) {
-      dtGmshFace const * const &thisFace = *it;
+    dt__forAllRefAuto(slidableFaceList, thisFace) {
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
       omInitDiv.add(*tmpOM);      
       omMovedDiv.add(*tmpOM);      
@@ -164,26 +182,29 @@ namespace dtOO {
     dtgr->deleteMesh();
     
     dtOMDynamicVertexField< bool > canSlideF("canSlideF", _omInit, false);
-		
+    
     //
     // add different surface meshes and initialize fields
     //
 		// normal surface
-		dt__forAllConstIter( std::list< dtGmshFace const * >, faceList, it ) {
-			dtGmshFace const * const &thisFace = *it;
-
+    int cc = 0;
+    dt__forAllRefAuto(faceList, thisFace) {
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());      
 
 			// set fields
 			_tF.assign(*tmpOM, 0.);       
 			_typeF.assign(*tmpOM, dtMeshGRegionWithBoundaryLayer::_NORMAL);
+      _realSpacing.assign( 
+        *tmpOM, std::vector<float>(_nSpacingSteps[cc], 0.) 
+      );
+      _flipNormalF.assign( *tmpOM, _flipNormal[cc] );
+      _nSpacingStepsF.assign(*tmpOM, _nSpacingSteps[cc] );
+      _faceIndex.assign(*tmpOM, cc);
+      cc = cc + 1;
 		}
 		
 		// slidable surface
-		dt__forAllConstIter( 
-      std::list< dtGmshFace const * >, slidableFaceList, it 
-    ) {
-			dtGmshFace const * const &thisFace = *it;
+    dt__forAllRefAuto(slidableFaceList, thisFace) {    
 
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
 			
@@ -196,9 +217,7 @@ namespace dtOO {
 		}
     
 		// fixed surface
-		dt__forAllConstIter( std::list< dtGmshFace const * >, fixedFaceList, it ) {
-			dtGmshFace const * const &thisFace = *it;
-
+    dt__forAllRefAuto(fixedFaceList, thisFace) {    
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());
 			
 			// set fields
@@ -223,8 +242,19 @@ namespace dtOO {
       // detect sliders
       //      
       if ( isSlidable(canSlideF, *it) ) {
-        _slidableF[*it] = true;
-        _fixedF[*it] = false;
+        bool prevent = false;
+        dt__forFromToIter(
+          omConstVertexFaceI,_omInit.cvf_begin(*it), _omInit.cvf_end(*it), fIt
+        ) {
+          if ( _typeF.at(*fIt) == dtMeshGRegionWithBoundaryLayer::_FIXER ) {
+            prevent = true;
+            break;
+          }
+        }        
+        if ( !prevent ) {
+          _slidableF[*it] = true;
+          _fixedF[*it] = false;
+        }
       }
       
       //
@@ -271,17 +301,33 @@ namespace dtOO {
       }
 		}
     
-//		//
-//		// write fields
-//		//
-//		dtMoabCore mb0(_tF.refMesh());
-//		mb0.addVertexField(_fixedF);
-//    mb0.addVertexField(_slidableF);
-//    mb0.addFaceField(_extrudeF);
-//    mb0.addFaceField(_typeF);
-//    mb0.addVertexField(canSlideF);
-//		mb0.write_mesh("dtMeshGRegionWithBoundaryLayer_init_0.vtk");
-
+    if ( optionHandling::debugTrue() ) {
+      //
+      // write fields
+      //
+      dtMoabCore mb0(_tF.refMesh());
+      mb0.addVertexField(_fixedF);
+      mb0.addVertexField(_slidableF);
+      mb0.addFaceField(_extrudeF);
+      mb0.addFaceField(_typeF);
+      mb0.addVertexField(canSlideF);
+      mb0.addVertexField(_flipNormalF);
+      mb0.addFaceField(_nSpacingStepsF);
+      mb0.addVertexField(_tF);
+      mb0.addVertexField(_nF);      
+      mb0.addVertexField(_faceIndex);      
+      mb0.write_mesh(
+        std::string(
+          _3D->getLabel()
+          +
+          "_"
+          +
+          this->getLabel()
+          +
+          "_dtMeshGRegionWithBoundaryLayer_0.vtk"
+        ).c_str()
+      );
+    }
     std::vector< ::MVertex * > vertex;
     std::vector< ::MElement * > element;
     
@@ -294,6 +340,7 @@ namespace dtOO {
 		dt__forFromToIter(
 		  omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
 		) omManifolds.push_back( dtOMMeshManifold(_omInit, *v_it) );
+		dt__info(operator(), << "Manifolds created.");
     
 		//
 		// createLayerVertices
@@ -314,7 +361,7 @@ namespace dtOO {
 			dtVector3 nn = dtLinearAlgebra::normalize( dtLinearAlgebra::sum(nnV) );
 			
       _nF[it->centerMVertex()] = nn;
-      if (_flipNormal) {
+      if ( _flipNormalF.at(it->centerMVertex()) ) {
         _nF[it->centerMVertex()] = -1. * _nF[it->centerMVertex()];
       }
 		}
@@ -342,16 +389,45 @@ namespace dtOO {
 		//
     meshWithGmsh(_omMoved, vertex, element, dtgr->model()->getFields());
     
-//		//
-//		// write fields
-//		//
-//		dtMoabCore mb1(_tF.refMesh());
-//		mb1.addVertexField(_tF);
-//		mb1.addVertexField(nF);
-//		mb1.write_mesh("dtMeshGRegionWithBoundaryLayer_init_1.vtk");
-//
-//    dtMoabCore(_omMoved).write_mesh("dtMeshGRegionWithBoundaryLayer_moved_1.vtk");
-//		dt__info(operator(), << "Fields written.");
+		//
+		// write fields
+		//
+    if ( optionHandling::debugTrue() ) {
+      dtMoabCore mb1(_tF.refMesh());
+      mb1.addVertexField(_fixedF);
+      mb1.addVertexField(_slidableF);
+      mb1.addFaceField(_extrudeF);
+      mb1.addFaceField(_typeF);
+      mb1.addVertexField(canSlideF);
+      mb1.addVertexField(_flipNormalF);
+      mb1.addFaceField(_nSpacingStepsF);
+      mb1.addVertexField(_tF);
+      mb1.addVertexField(_nF); 
+      mb1.addVertexField(_faceIndex);
+      mb1.write_mesh(
+        std::string(
+          _3D->getLabel()
+          +
+          "_"
+          +
+          this->getLabel()
+          +
+          "_dtMeshGRegionWithBoundaryLayer_1.vtk"
+        ).c_str()    
+      );
+
+      dtMoabCore(_omMoved).write_mesh(
+        std::string(
+          _3D->getLabel()
+          +
+          "_"
+          +
+          this->getLabel()
+          +
+          "_dtMeshGRegionWithBoundaryLayer_moved_1.vtk"
+        ).c_str()    
+      );
+    }
     
 		//
 		// add elements and vertices to commonReg
@@ -403,10 +479,9 @@ namespace dtOO {
       // position in new surface mesh omT
       //      
       _buddyF[*it].pop_back();
-      _realSpacing[*it].clear();
-      dt__forFromToIndex(0, _nSpacingSteps, ii) {
+      dt__forFromToIndex(0, _realSpacing.at(*it).size(), ii) {
         _buddyF[*it].push_back( new ::MVertex(0., 0., 0., NULL));
-        _realSpacing[*it].push_back(0.);
+        _realSpacing[*it][ii] = 0.;
       }
       _buddyF[*it].push_back( new ::MVertex(0., 0., 0., NULL) );
 		}	 
@@ -443,7 +518,7 @@ namespace dtOO {
       if (!_extrudeF.at(*fIt) ) continue;
       
 			// create elements and add them to given region
-      dt__forFromToIndex(0, _nSpacingSteps+1, ii) {
+      dt__forFromToIndex(0, _nSpacingStepsF.at(*fIt)+1,ii) {
         std::vector< ::MVertex * > fixedVertices;
         std::vector< ::MVertex * > movedVertices;		      
         std::vector< ::MVertex * > commonVertices;		              
@@ -554,15 +629,17 @@ namespace dtOO {
     dt__forFromToIter(
       omConstFaceHalfedgeI, _omInit.cfh_begin(fH), _omInit.cfh_end(fH), hIt
     ) {
-      if ( 
-           _slidableF.at(_omInit.from_vertex_handle(*hIt)) 
-        && _slidableF.at(_omInit.to_vertex_handle(*hIt)) 
-      ) return *hIt;
+      if (
+        _slidableF.at(_omInit.from_vertex_handle(*hIt)) 
+        &&
+        _slidableF.at(_omInit.to_vertex_handle(*hIt)) 
+      ) {
+        return *hIt;
+      }
     }
     
     dt__throw(
-      slidableHalfedgeInFace(), 
-      << "No halfedge lies on slidable seam."
+      slidableHalfedgeInFace(), << "No halfedge lies on slidable seam."
     );
   }
         
@@ -585,21 +662,21 @@ namespace dtOO {
     
     dt__throwIf(!face.is_valid(), createRingOfBuddies());
     
-    
     omHalfedgeH slidableHe_init = slidableHalfedgeInFace(face);
     
     omHalfedgeH slidableHe = slidableHe_init;
-    do {
+    //do {
+    dt__forFromToIndex( 0, _omInit.n_edges(), ii ) {
       omHalfedgeH wHe = slidableHe;
-      dt__forFromToIndex(0, _nSpacingSteps, ii) {
+      dt__forFromToIndex(
+        0, 
+        _realSpacing.at(_omInit.to_vertex_handle(slidableHe)).size(), 
+        ii
+      ) {
         // mark halfedge
-        _omInit.data(
-          _omInit.next_halfedge_handle(wHe)
-        ).mark();
+        _omInit.data( _omInit.next_halfedge_handle(wHe) ).mark();
         
-        _buddyF[ 
-          _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
-        ].push_back(
+        _buddyF[ _omInit[ _omInit.to_vertex_handle(slidableHe) ] ].push_back(
           _omInit[ 
             _omInit.to_vertex_handle( _omInit.next_halfedge_handle(wHe) ) 
           ]
@@ -614,12 +691,8 @@ namespace dtOO {
       //
       // mark last halfedge and add last buddy
       //
-      _omInit.data(
-        _omInit.next_halfedge_handle(wHe)
-      ).mark();      
-      _buddyF[ 
-        _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
-      ].push_back(
+      _omInit.data( _omInit.next_halfedge_handle(wHe) ).mark();      
+      _buddyF[ _omInit[ _omInit.to_vertex_handle(slidableHe) ] ].push_back(
         _omInit[ 
           _omInit.to_vertex_handle( _omInit.next_halfedge_handle(wHe) ) 
         ]
@@ -628,14 +701,10 @@ namespace dtOO {
       
       std::vector< MVertex * > & thisBuddies 
       =
-      _buddyF[ 
-        _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
-      ];
+      _buddyF[ _omInit[ _omInit.to_vertex_handle(slidableHe) ] ];
       std::vector< float > & thisRealSpacing 
       =
-      _realSpacing[ 
-        _omInit[ _omInit.to_vertex_handle(slidableHe) ] 
-      ];
+      _realSpacing[ _omInit[ _omInit.to_vertex_handle(slidableHe) ] ];
       thisRealSpacing.clear();
       float tmpSpace = 0.;
       dt__forAllIndex(thisBuddies, ii) {
@@ -674,8 +743,20 @@ namespace dtOO {
           _omInit.next_halfedge_handle(slidableHe)
         )
       );
+      if ( slidableHe == slidableHe_init ) {
+        dt__info(
+          createRingOfBuddies(), 
+          << "Ring created in " << ii << " changes of init halfedge."
+        );
+        return;
+      }
     }
-    while (slidableHe != slidableHe_init);
+    dt__throw(
+      createRingOfBuddies(), 
+      << "More than " << _omInit.n_edges() << " changes of inital halfedge."
+      << std::endl
+      << "More changes than number of edges!"
+    );
   }
   
   void dtMeshGRegionWithBoundaryLayer::meshWithGmsh(
@@ -712,11 +793,9 @@ namespace dtOO {
       ) vv.push_back( const_cast< ::MVertex * >(mesh.at(*it)) );
       if ( vv.size() == 3 ) {
         gf->addElement( new ::MTriangle(vv[0], vv[1], vv[2]) );
-//        if ( mesh.data(*fit).inverted() ) gf->triangles.back()->reverse();
       }
       else if ( vv.size() == 4 ) {
         gf->addElement( new ::MQuadrangle( vv[0], vv[1], vv[2], vv[3] ) );        
-//        if ( mesh.data(*fit).inverted() ) gf->quadrangles.back()->reverse();
       }      
       else dt__throw(meshWithGmsh(), << dt__eval(vv.size()));
     }
@@ -726,7 +805,9 @@ namespace dtOO {
     gf->addRegion( gr );
 
     if ( debugTrue()  ) {
-      gm.writeMSH(getLabel()+"_0.msh", 4.0, false, true);
+      gm.writeMSH(
+        this->_3D->getLabel()+"_"+getLabel()+"_0.msh", 4.0, false, true
+      );
     }
     
     (*_3D)( gr );
@@ -763,16 +844,31 @@ namespace dtOO {
   }
   
   void dtMeshGRegionWithBoundaryLayer::adjustThickness( void ) { 
-    determinMinMaxAverageAtSliders();
+    twoDArrayHandling< float > avSpacing;
+    twoDArrayHandling< float > maxSpacing;
+    twoDArrayHandling< float > minSpacing;
+    vectorHandling< float > avT;
+    vectorHandling< float > maxT;
+    vectorHandling< float > minT;    
+    
+    determinMinMaxAverageAtSliders(
+      avSpacing, maxSpacing, minSpacing, avT, maxT, minT
+    );
+    
     dt__info(
       operator(),
-      //<< dt__eval(nodeCount) << std::endl 
-      << dt__eval(_avT) << std::endl
-      << dt__eval(_minT) << " " << dt__eval(_minT/_avT) << std::endl
-      << dt__eval(_maxT) << " " << dt__eval(_maxT/_avT) << std::endl
-      << dt__eval(_avSpacing) << std::endl
-      << dt__eval(_minSpacing) << std::endl
-      << dt__eval(_maxSpacing)
+      << "avSpacing = " << std::endl
+      << logMe::floatMatrixToString(avSpacing) << std::endl
+      << "maxSpacing = " << std::endl
+      << logMe::floatMatrixToString(maxSpacing) << std::endl
+      << "minSpacing = " << std::endl
+      << logMe::floatMatrixToString(minSpacing) << std::endl 
+      << "avT = " << std::endl
+      << logMe::vecToString(avT) << std::endl
+      << "maxT = " << std::endl
+      << logMe::vecToString(maxT) << std::endl
+      << "minT = " << std::endl
+      << logMe::vecToString(minT) << std::endl    
     );      
     
     //
@@ -783,11 +879,13 @@ namespace dtOO {
     ) {
       if ( _buddyF.at(*v_it).empty() ) continue;
       
+      int fI = _faceIndex.at(*v_it);
+      
       if ( !_slidableF.at(*v_it) ) {
         dt__forAllIndex(_realSpacing[ *v_it ], ii) {
-          _realSpacing[ *v_it ][ii] = _avSpacing[ii];
+          _realSpacing[ *v_it ][ii] = avSpacing[fI][ii];
         }
-        _tF[ *v_it ] = _minT;
+        _tF[ *v_it ] = minT[fI];
       }
       else {
         _nF[ *v_it ]
@@ -831,24 +929,23 @@ namespace dtOO {
       
       dt__forFromToIter(
         omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
-      ) {    
+      ) {
         if ( _buddyF.at(*v_it).empty() || _slidableF.at(*v_it) ) continue;
-        
-        tFTwin[ *v_it ] = std::max( _tF.oneRingAverage( *v_it ), _minT );
+        int fI = _faceIndex.at(*v_it);
+        tFTwin[ *v_it ] = std::max( _tF.oneRingAverage( *v_it ), minT[fI] );
       }
       dt__forFromToIter(
         omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
       ) {    
         if ( _buddyF.at(*v_it).empty() || _slidableF.at(*v_it) ) continue;
                
+        int fI = _faceIndex.at(*v_it);
+        
         _tF[ *v_it ] 
          = 
         std::min(
-          _maxT,
-           std::min(
-             _maxGrowingRatePerStep * _tF[ *v_it ], 
-             tFTwin[ *v_it ]
-          )
+          maxT[fI],
+          std::min( _maxGrowingRatePerStep * _tF[ *v_it ], tFTwin[ *v_it ] )
         );
       }
     }
@@ -886,50 +983,83 @@ namespace dtOO {
       } 
     }
     
-    determinMinMaxAverageAtSliders();
+    determinMinMaxAverageAtSliders(
+      avSpacing, maxSpacing, minSpacing, avT, maxT, minT
+    );
+    
     dt__info(
       operator(),
-      //<< dt__eval(nodeCount) << std::endl 
-      << dt__eval(_avT) << std::endl
-      << dt__eval(_minT) << " " << dt__eval(_minT/_avT) << std::endl
-      << dt__eval(_maxT) << " " << dt__eval(_maxT/_avT) << std::endl
-      << dt__eval(_avSpacing) << std::endl
-      << dt__eval(_minSpacing) << std::endl
-      << dt__eval(_maxSpacing)
+      << "avSpacing = " << std::endl
+      << logMe::floatMatrixToString(avSpacing) << std::endl
+      << "maxSpacing = " << std::endl
+      << logMe::floatMatrixToString(maxSpacing) << std::endl
+      << "minSpacing = " << std::endl
+      << logMe::floatMatrixToString(minSpacing) << std::endl 
+      << "avT = " << std::endl
+      << logMe::vecToString(avT) << std::endl
+      << "maxT = " << std::endl
+      << logMe::vecToString(maxT) << std::endl
+      << "minT = " << std::endl
+      << logMe::vecToString(minT) << std::endl    
     );      
   }  
   
-  void dtMeshGRegionWithBoundaryLayer::determinMinMaxAverageAtSliders(void) {
-    float nodeCount = 0.;
-    _avSpacing.resize( _nSpacingSteps, 0.);
-    _maxSpacing.resize(_nSpacingSteps, std::numeric_limits<float>::min());
-    _minSpacing.resize(_nSpacingSteps, std::numeric_limits<float>::max());
-    _avT = 0.;
-    _maxT = std::numeric_limits<float>::min();
-    _minT = std::numeric_limits<float>::max();
-
+  void dtMeshGRegionWithBoundaryLayer::determinMinMaxAverageAtSliders(
+      twoDArrayHandling< float > & avSpacing,
+      twoDArrayHandling< float > & maxSpacing,
+      twoDArrayHandling< float > & minSpacing,
+      vectorHandling< float > & avT,
+      vectorHandling< float > & maxT,
+      vectorHandling< float > & minT
+  ) {
+    avSpacing.clear();
+    maxSpacing.clear();
+    minSpacing.clear();
+    avT.clear();
+    maxT.clear();
+    minT.clear();
+    dt__forAllRefAuto(_nSpacingSteps, aSpace) {
+      avSpacing.push_back( std::vector< float >(aSpace, 0.) );
+      maxSpacing.push_back( 
+        std::vector< float >(aSpace, std::numeric_limits<float>::min()) 
+      );
+      minSpacing.push_back( 
+        std::vector< float >(aSpace, std::numeric_limits<float>::max()) 
+      );
+      avT.push_back(0.);
+      maxT.push_back( std::numeric_limits<float>::min() );
+      minT.push_back( std::numeric_limits<float>::max() );
+    }
+    std::vector< float > nodeCount 
+    = 
+    std::vector< float >(_nSpacingSteps.size(), 0.);
+    
 		dt__forFromToIter(
-		  omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
+		  omConstVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
 		) {
       if ( _buddyF.at( *v_it ).empty() || !_slidableF.at( *v_it ) ) continue;
+      int fI = _faceIndex.at(*v_it);
+      nodeCount[fI] = nodeCount[fI] + 1.;
       
-      nodeCount = nodeCount + 1.;
-      
-      _avT = _avT + _tF.at( *v_it );
-      _minT = std::min( _minT, _tF.at(*v_it) );
-      _maxT = std::max( _maxT, _tF.at(*v_it) );
+      avT[fI] = avT[fI] + _tF.at( *v_it );
+      minT[fI] = std::min( minT[fI], _tF.at(*v_it) );
+      maxT[fI] = std::max( maxT[fI], _tF.at(*v_it) );
       dt__forAllIndex(_realSpacing.at( *v_it ), ii) {
-        _avSpacing[ii] = _avSpacing[ii] + _realSpacing.at( *v_it )[ii];
-        _minSpacing[ii] 
-        = 
-        std::min(_minSpacing[ii], _realSpacing.at( *v_it )[ii]);
-        _maxSpacing[ii] 
-        = 
-        std::max(_maxSpacing[ii], _realSpacing.at( *v_it )[ii]);
+        avSpacing[fI][ii] = avSpacing[fI][ii] + _realSpacing.at( *v_it )[ii];
+        minSpacing[fI][ii] 
+        =
+        std::min(minSpacing[fI][ii], _realSpacing.at( *v_it )[ii]);
+        maxSpacing[fI][ii] 
+        =
+        std::max(maxSpacing[fI][ii], _realSpacing.at( *v_it )[ii]);
       }
     }
-    _avT = _avT/nodeCount;
-    dt__forAllRefAuto(_avSpacing, aSpacing) aSpacing = aSpacing/nodeCount;
+    dt__forAllIndex(_nSpacingSteps, fI) {
+      avT[fI] = avT[fI]/nodeCount[fI];
+      dt__forAllRefAuto(avSpacing[fI], aSpacing) {
+        aSpacing = aSpacing/nodeCount[fI];
+      }
+    }
   }
   
   void dtMeshGRegionWithBoundaryLayer::meshNormalsPointOutOfTheRegion(

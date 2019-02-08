@@ -45,7 +45,18 @@ namespace dtOO {
     dtMesh2DOperator::init(element, bC, cV, aF, aG, bV, mO);
     
     _direction = qtXmlBase::getAttributeIntMuParse("direction", element, cV);
-    _nLayers = qtXmlBase::getAttributeIntMuParse("nLayers", element, cV);     
+    _nLayers = std::vector< int >(2,0);
+    if ( qtXmlPrimitive::isAttributeVector("nLayers", element) ) {
+      _nLayers
+      = 
+      qtXmlBase::getAttributeIntVectorMuParse("nLayers", element, cV, aF);
+    }
+    else {
+      _nLayers[0]
+      =       
+      qtXmlBase::getAttributeIntMuParse("nLayers", element, cV),
+      _nLayers[1] = _nLayers[0];
+    }
     _nSmooth = 0;
     if ( qtXmlBase::hasAttribute("nSmooth", element) ) {
       _nSmooth = qtXmlBase::getAttributeIntMuParse("nSmooth", element, cV);       
@@ -163,9 +174,12 @@ namespace dtOO {
     //
     // sheet 0
     //
-    twoDArrayHandling< ::MVertex * > sheet0(edgeVertex[0].size(), _nLayers+1);
+    twoDArrayHandling< ::MVertex * > sheet0(
+      edgeVertex[0].size(), _nLayers[0]+1
+    );
     dt__forAllIndex(edgeVertex[0], ii) sheet0[ii][0] = edgeVertex[0][ii].first;
-    dt__forFromToIndex(1, _nLayers+1, layer) {
+    dt__forFromToIndex(1, _nLayers[0]+1, layer) {
+      dt__info( operator()(), << "Create layer " << layer << " on sheet0." );
       sheet0[0                     ][layer] = edgeVertex[3][layer].first;
       sheet0[edgeVertex[0].size()-1][layer] = edgeVertex[1][layer].first;
 
@@ -296,9 +310,12 @@ namespace dtOO {
     progHelper::reverse( edgeVertex[1] );    
     progHelper::reverse( edgeVertex[2] );
     progHelper::reverse( edgeVertex[3] );    
-    twoDArrayHandling< ::MVertex * > sheet1(edgeVertex[2].size(), _nLayers+1);
+    twoDArrayHandling< ::MVertex * > sheet1(
+      edgeVertex[2].size(), _nLayers[1]+1
+    );
     dt__forAllIndex(edgeVertex[2], ii) sheet1[ii][0] = edgeVertex[2][ii].first;
-    dt__forFromToIndex(1, _nLayers+1, layer) {
+    dt__forFromToIndex(1, _nLayers[1]+1, layer) {
+      dt__info( operator()(), << "Create layer " << layer << " on sheet1." );
       sheet1[0                     ][layer] = edgeVertex[1][layer].first;
       sheet1[edgeVertex[2].size()-1][layer] = edgeVertex[3][layer].first;
 
@@ -426,14 +443,20 @@ namespace dtOO {
     //
     // add mesh vertices, mesh elements and underlying geometry
     //
-    dt__forAllRefAuto(sheet0.fixJ(_nLayers), aVert) ge->addMeshVertex(aVert);
-    dt__forFromToIndex(_nLayers+1, edgeVertex[1].size()-_nLayers-1, ii) {
+    dt__forAllRefAuto(sheet0.fixJ(_nLayers[0]), aVert) {
+      ge->addMeshVertex(aVert);
+    }
+    dt__forFromToIndex(
+      _nLayers[0]+1, edgeVertex[1].size()-_nLayers[1]-1, ii
+    ) {
       ge->addMeshVertex( edgeVertex[1][ii].first );
     }
-    std::vector< ::MVertex * > tmpSheet = sheet1.fixJ(_nLayers);
+    std::vector< ::MVertex * > tmpSheet = sheet1.fixJ(_nLayers[1]);
     dt__forAllRefAuto(tmpSheet, aVert) ge->addMeshVertex(aVert);
     progHelper::reverse( edgeVertex[3] );
-    dt__forFromToIndex(_nLayers+1, edgeVertex[3].size()-_nLayers-1, ii) {
+    dt__forFromToIndex(
+      _nLayers[1]+1, edgeVertex[3].size()-_nLayers[0]-1, ii
+    ) {
       ge->addMeshVertex( edgeVertex[3][ii].first );
     }
     progHelper::reverse( edgeVertex[3] );
@@ -443,7 +466,7 @@ namespace dtOO {
         new ::MLine(ge->getMeshVertex(ii-1), ge->getMeshVertex(ii)) 
       );
     }
-    ge->addLine( 
+    ge->addLine(
       new ::MLine(
         ge->getMeshVertex(ge->getNumMeshVertices()-1), ge->getMeshVertex(0)
       ) 
@@ -451,19 +474,25 @@ namespace dtOO {
     ge->meshStatistics.status = ::GEntity::MeshGenerationStatus::DONE;
     gf->setMap2dTo3d( dtgf->getMap2dTo3d() );
     
+    if ( optionHandling::debugTrue() ) {
+      gm.writeMSH(
+        dtgf->getMap2dTo3d()->getLabel()+"dtMeshGFaceWithTransfiniteLayer_0.msh", 
+        2.2, false, true
+      );    
+    }
+    dtMeshGFace()( gf );
+
     //
     // perform meshing
-    //
-//    gm.writeMSH(
-//      dtgf->getMap2dTo3d()->getLabel()+"dtMeshGFaceWithTransfiniteLayer_0.msh", 
-//      2.2, false, true
-//    );    
-//    dtMeshGFace()( gf );
+    //    
     dtMeshTransfiniteGFace()( gf );
-//    gm.writeMSH(
-//      dtgf->getMap2dTo3d()->getLabel()+"dtMeshGFaceWithTransfiniteLayer_1.msh", 
-//      2.2, false, true
-//    );
+    
+    if ( optionHandling::debugTrue() ) {    
+      gm.writeMSH(
+        dtgf->getMap2dTo3d()->getLabel()+"dtMeshGFaceWithTransfiniteLayer_1.msh", 
+        2.2, false, true
+      );
+    }
     
     //
     // change back to old model
@@ -473,7 +502,7 @@ namespace dtOO {
     //
     // add transfinite layer quadrangles
     //
-    dt__forFromToIndex(0, _nLayers, layer) {
+    dt__forFromToIndex(0, _nLayers[0], layer) {
       dt__forFromToIndex(0, sheet0.size()-1, node) {
         dtgf->addElement(
           new MQuadrangle(
@@ -485,7 +514,7 @@ namespace dtOO {
         );
       }
     }
-    dt__forFromToIndex(0, _nLayers, layer) {
+    dt__forFromToIndex(0, _nLayers[1], layer) {
       dt__forFromToIndex(0, sheet1.size()-1, node) {
         dtgf->addElement(
           new MQuadrangle(
@@ -500,14 +529,14 @@ namespace dtOO {
     //
     // add transfinite layer vertices
     //
-    dt__forFromToIndex(0, _nLayers+1, layer) {
+    dt__forFromToIndex(0, _nLayers[0]+1, layer) {
       dt__forFromToIndex(0, sheet0.size(), node) {
         if ( sheet0[node][layer]->onWhat() == dtgf ) {
           dtgf->addMeshVertex(sheet0[node][layer]);
         }
       }
     }
-    dt__forFromToIndex(0, _nLayers+1, layer) {
+    dt__forFromToIndex(0, _nLayers[1]+1, layer) {
       dt__forFromToIndex(0, sheet1.size(), node) {
         if ( sheet1[node][layer]->onWhat() == dtgf ) {
           dtgf->addMeshVertex(sheet1[node][layer]);
@@ -549,9 +578,13 @@ namespace dtOO {
     //
     dtgf->meshStatistics.status = ::GEntity::MeshGenerationStatus::DONE;
     
-//    dtgf->refDtGmshModel().writeMSH(
-//      dtgf->getMap2dTo3d()->getLabel()+"dtMeshGFaceWithTransfiniteLayer_2.msh", 
-//      2.2, false, true
-//    );    
+    if ( optionHandling::debugTrue() ) {
+      dtgf->refDtGmshModel().writeMSH(
+        dtgf->getMap2dTo3d()->getLabel()
+        +
+        "dtMeshGFaceWithTransfiniteLayer_2.msh", 
+        2.2, false, true
+      );    
+    }
   }
 }

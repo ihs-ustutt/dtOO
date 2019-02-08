@@ -60,7 +60,14 @@ namespace dtOO {
         ::FieldManager * fm
       ) const;
       void adjustThickness( void );
-      void determinMinMaxAverageAtSliders(void);
+      void determinMinMaxAverageAtSliders(
+        twoDArrayHandling< float > & avSpacing,
+        twoDArrayHandling< float > & maxSpacing,
+        twoDArrayHandling< float > & minSpacing,
+        vectorHandling< float > & avT,
+        vectorHandling< float > & maxT,
+        vectorHandling< float > & minT      
+      );
       void meshNormalsPointOutOfTheRegion( dtGmshRegion * dtgr );
     private:
       static int _NORMAL;
@@ -70,8 +77,8 @@ namespace dtOO {
       int _nGrowingSmoothingSteps;
       float _maxGrowingRatePerStep;
       float _maxDihedralAngle;
-      int _nSpacingSteps;
-      bool _flipNormal;
+      std::vector< int > _nSpacingSteps;
+      std::vector< bool > _flipNormal;
       //
       // define two surface meshes with fixed, thickness 
       // and slidable vertex field
@@ -81,21 +88,18 @@ namespace dtOO {
       dtOMDynamicVertexField< bool > _fixedF;
       dtOMDynamicVertexField< bool > _slidableF;
       dtOMDynamicVertexField< float > _tF;
-      dtOMDynamicVertexField< dtVector3 > _nF;
-      dtOMDynamicFaceField< int > _extrudeF;
-      dtOMDynamicFaceField< int > _typeF;
+      dtOMDynamicVertexField< dtVector3 > _nF;  
+      dtOMDynamicVertexField< bool > _flipNormalF;
       dtOMDynamicVertexField< std::vector< ::MVertex * > > _buddyF;
       dtOMDynamicVertexField< std::vector< float > > _realSpacing;
+      dtOMDynamicVertexField< int > _faceIndex;
+      dtOMDynamicFaceField< int > _extrudeF;
+      dtOMDynamicFaceField< int > _typeF;
+      dtOMDynamicFaceField< int > _nSpacingStepsF;         
       std::vector< std::string > _faceLabel;
       std::vector< std::string > _fixedFaceLabel;
       std::vector< std::string > _slidableFaceLabel;
       dtMesh3DOperator * _3D;
-      std::vector< float > _avSpacing;
-      std::vector< float > _maxSpacing;
-      std::vector< float > _minSpacing;
-      float _avT;
-      float _maxT;
-      float _minT;
   };
 }
 
