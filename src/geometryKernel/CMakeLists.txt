@@ -10,6 +10,7 @@ SET(HEADERS
   analyticGeometryHeaven/map1dTo3d.h
   analyticGeometryHeaven/trans6SidedCube.h
   analyticGeometryHeaven/rotatingMap2dTo3d.h
+  analyticGeometryHeaven/radialTranslatingMap2dTo3d.h
   analyticGeometryHeaven/translatingMap2dTo3d.h
   analyticGeometryHeaven/infinityMap3dTo3d.h
   analyticGeometryHeaven/scaOneDInMap1dTo3d.h
@@ -110,6 +111,7 @@ SET(HEADERS
   dtTransformerHeaven/doNothing.h
   dtTransformerHeaven/offset.h
   dtTransformerHeaven/translate.h
+  dtTransformerHeaven/radialTranslate.h
   dtTransformerHeaven/rotate.h
   dtTransformerHeaven/pickMap3dTo3dRangePercent.h
   dtTransformerHeaven/pickMap2dTo3dRangePercent.h
@@ -151,6 +153,7 @@ SET(SOURCES
   analyticGeometryHeaven/map1dTo3d.cpp
   analyticGeometryHeaven/trans6SidedCube.cpp
   analyticGeometryHeaven/rotatingMap2dTo3d.cpp
+  analyticGeometryHeaven/radialTranslatingMap2dTo3d.cpp
   analyticGeometryHeaven/translatingMap2dTo3d.cpp
   analyticGeometryHeaven/infinityMap3dTo3d.cpp
   analyticGeometryHeaven/scaOneDInMap1dTo3d.cpp
@@ -241,6 +244,7 @@ SET(SOURCES
   dtTransformerHeaven/doNothing.cpp
   dtTransformerHeaven/offset.cpp
   dtTransformerHeaven/translate.cpp
+  dtTransformerHeaven/radialTranslate.cpp
   dtTransformerHeaven/rotate.cpp
   dtTransformerHeaven/pickMap3dTo3dRangePercent.cpp
   dtTransformerHeaven/pickMap2dTo3dRangePercent.cpp

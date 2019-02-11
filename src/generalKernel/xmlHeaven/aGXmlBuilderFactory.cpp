@@ -43,6 +43,7 @@
 #include "aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder.h"
+#include "aGXmlBuilder/radialTranslatingMap2dTo3dAGXmlBuilder.h"
 
 namespace dtOO {
   dt__pH(aGXmlBuilderFactory) aGXmlBuilderFactory::_instance(NULL);
@@ -194,7 +195,9 @@ namespace dtOO {
     _instance->_builder.push_back( 
       new bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder()
     );
-    
+    _instance->_builder.push_back( 
+      new radialTranslatingMap2dTo3dAGXmlBuilder() 
+    );
     return _instance.get();
   }  
 

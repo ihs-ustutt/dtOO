@@ -8,6 +8,7 @@
 #include "biThicknessIncreasing.h"
 #include "offset.h"
 #include "translate.h"
+#include "radialTranslate.h"
 #include "rotate.h"
 #include "pickMap3dTo3dRangePercent.h"
 #include "pickMap2dTo3dRangePercent.h"
@@ -142,6 +143,7 @@ namespace dtOO {
     _instance->_transformer.push_back( new biThicknessIncreasing() );
     _instance->_transformer.push_back( new offset() );
     _instance->_transformer.push_back( new translate() );
+    _instance->_transformer.push_back( new radialTranslate() );
     _instance->_transformer.push_back( new rotate() );
     _instance->_transformer.push_back( new pickMap3dTo3dRangePercent() );
     _instance->_transformer.push_back( new pickMap2dTo3dRangePercent() );

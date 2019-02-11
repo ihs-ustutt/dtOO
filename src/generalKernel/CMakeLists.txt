@@ -66,6 +66,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/radialTranslatingMap2dTo3dAGXmlBuilder.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -164,6 +165,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/radialTranslatingMap2dTo3dAGXmlBuilder.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp
