@@ -1,5 +1,5 @@
-#ifndef TRANSLATE_H
-#define	TRANSLATE_H
+#ifndef translate_H
+#define	translate_H
 
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
@@ -36,5 +36,5 @@ namespace dtOO {
   };    
 }
 
-#endif	/* TRANSLATE_H */
+#endif	/* translate_H */
 
