@@ -21,7 +21,8 @@ namespace dtOO {
       //      
       virtual analyticSurface * create( void ) const;
       virtual analyticSurface * clone( void ) const;
-      virtual analyticSurface * cloneTransformed( dtTransformer const * const dtT ) const;
+      virtual analyticSurface * 
+      cloneTransformed( dtTransformer const * const dtT ) const;
       virtual dtPoint3 getPoint(float const & uu, float const & vv) const;      
       virtual bool isClosed( int const & dir) const;
       virtual float getMin( int const & dir) const;

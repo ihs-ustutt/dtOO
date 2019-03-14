@@ -1,5 +1,5 @@
-#ifndef MAP2DTO3DTRANSFORMED_H
-#define	MAP2DTO3DTRANSFORMED_H
+#ifndef map2dTo3dTransformed_H
+#define	map2dTo3dTransformed_H
 
 #include <dtTransformerHeaven/dtTransformerInvThreeD.h>
 #include "analyticGeometry.h"
@@ -140,5 +140,5 @@ namespace dtOO {
     return true;
   }
 }
-#endif	/* MAP2DTO3DTRANSFORMED_H */
+#endif	/* map2dTo3dTransformed_H */
 

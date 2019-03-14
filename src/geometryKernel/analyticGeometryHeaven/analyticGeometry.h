@@ -14,13 +14,7 @@
 #include <mainConceptFwd.h>
 
 namespace dtOO { 
-  /**
-   * @author A. Tismer
-   * @date 05.11.2012
-   * @brief Abstract analytic geometry class
-   * Defines basic interfaces of an analyticGeometry.
-   */
-  
+
   class analyticGeometry : public optionHandling,
                            public labelHandling,
                            public renderInterface {

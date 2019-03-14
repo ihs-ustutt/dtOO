@@ -111,9 +111,8 @@ namespace dtOO {
 		return false;
 	}
 
-	vectorHandling< analyticGeometry const * > analyticGeometry::compoundInternal(
-    void 
-  ) const {
+	vectorHandling< analyticGeometry const * > 
+  analyticGeometry::compoundInternal( void ) const {
 		return vectorHandling< analyticGeometry const * >();
 	}		
 	
