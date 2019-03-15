@@ -25,7 +25,7 @@ namespace dtOO {
   
   void map3dTo3dWithInternalBlockGmsh::init( 
     ::QDomElement const & element,
-		baseContainer const * const bC,
+		baseContainer * const bC,
 		cVPtrVec const * const cV,
 		aFPtrVec const * const aF,
 		aGPtrVec const * const aG,

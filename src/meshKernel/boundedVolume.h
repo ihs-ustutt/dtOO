@@ -32,7 +32,7 @@ namespace dtOO {
     virtual std::vector< std::string > factoryAlias( void ) const;    
     virtual void init( 
       ::QDomElement const & element,
-      baseContainer const * const bC,
+      baseContainer * const bC,
       cVPtrVec const * const cV,
       aFPtrVec const * const sF,
       aGPtrVec const * const aF,
