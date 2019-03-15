@@ -13,6 +13,7 @@ class GVertex;
 class FieldManager;
 
 namespace dtOO {
+  class analyticGeometry;
   class map1dTo3d;
   class map2dTo3d;
   class map3dTo3d;
@@ -108,6 +109,36 @@ namespace dtOO {
       void addIfRegionToGmshModel(
         map3dTo3d const * const region, int * const tag
       );
+      void addIfEdgeToGmshModel(
+        map1dTo3d const * const edge, 
+        int * const tag, 
+        int const from, 
+        int const to 
+      );
+      void addIfFaceToGmshModel(
+        map2dTo3d const * const face, int * const tag,
+        std::list< ::GEdge * > const & edges, std::vector< int > const & ori
+      );
+      void addIfFaceToGmshModel( 
+        map2dTo3d const * const face, int * const tag,
+        int const & eId0, int const & eId1, int const & eId2, int const & eId3
+      );      
+      void addIfRegionToGmshModel(
+        map3dTo3d const * const region, int * const tag,
+        std::list< ::GFace * > const & faces, std::vector< int > const & ori   
+      );    
+      void addIfRegionToGmshModel( 
+        map3dTo3d const * const region, int * const tag,
+        int const & fId0, int const & fId1, 
+        int const & fId2, int const & fId3, 
+        int const & fId4, int const & fId5
+      );           
+      //
+      //add
+      //
+      void addIfToGmshModel(
+        analyticGeometry const * const aG, int * const tag
+      );      
       //
       // add general entities
       //
@@ -179,7 +210,7 @@ namespace dtOO {
         int const dim1Tag, 
         int const dim2Tag, 
         int const dim3Tag 
-      ) const;
+      ) const;      
     private:    
       static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
         std::vector< ::MVertex const * > const & vertices, 
@@ -195,31 +226,7 @@ namespace dtOO {
       static renderInterface * toAdequateSurfaceRenderInterface( 
         std::vector< ::MVertex const * > const & vertices, 
         std::vector< ::MElement const * > const & elements
-      );    
-      void addIfEdgeToGmshModel(
-        map1dTo3d const * const edge, 
-        int * const tag, 
-        int const from, 
-        int const to 
-      );
-      void addIfFaceToGmshModel(
-        map2dTo3d const * const face, int * const tag,
-        std::list< ::GEdge * > const & edges, std::vector< int > const & ori
-      );
-      void addIfFaceToGmshModel( 
-        map2dTo3d const * const face, int * const tag,
-        int const & eId0, int const & eId1, int const & eId2, int const & eId3
-      );      
-      void addIfRegionToGmshModel(
-        map3dTo3d const * const region, int * const tag,
-        std::list< ::GFace * > const & faces, std::vector< int > const & ori   
-      );    
-      void addIfRegionToGmshModel( 
-        map3dTo3d const * const region, int * const tag,
-        int const & fId0, int const & fId1, 
-        int const & fId2, int const & fId3, 
-        int const & fId4, int const & fId5
-      );      
+      );     
       //
       // check if geometrical entity is already in model
       //

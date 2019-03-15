@@ -361,6 +361,21 @@ namespace dtOO {
     );    
   }  
 			
+  void dtGmshModel::addIfToGmshModel(
+    analyticGeometry const * const aG, int * const tag
+  ) {
+    if ( map1dTo3d::ConstDownCast(aG) ) {
+      addIfEdgeToGmshModel(map1dTo3d::ConstSecureCast(aG), tag);
+    }
+    else if ( map2dTo3d::ConstDownCast(aG) ) {
+      addIfFaceToGmshModel(map2dTo3d::ConstSecureCast(aG), tag);
+    }    
+    else if ( map3dTo3d::ConstDownCast(aG) ) {
+      addIfRegionToGmshModel(map3dTo3d::ConstSecureCast(aG), tag);
+    }
+    else dt__throwUnexpected(addIfToGmshModel());
+  }
+        
   dtGmshRegion * dtGmshModel::getDtGmshRegionByTag( int const tag ) const {
     ::GRegion * region = ::GModel::getRegionByTag(abs(tag));
     dt__ptrAss(dtGmshRegion * gRegion, dtGmshRegion::DownCast(region));
