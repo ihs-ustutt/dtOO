@@ -55,11 +55,11 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
 		
-    dt__forAllConstIter(std::vector< std::string >, _faceLabel, fLIt) {
-      gm->getDtGmshFaceByPhysical(*fLIt)->meshTransfinite();
-      gm->getDtGmshFaceByPhysical(*fLIt)->meshWNElements(
-        _nE[0], _nE[1]
-      );
+    dt__forAllRefAuto(_faceLabel, aLabel) {
+      dt__forAllRefAuto( gm->getDtGmshFaceListByPhysical(aLabel), aFace ) {
+        aFace->meshTransfinite();
+        aFace->meshWNElements( _nE[0], _nE[1] );
+      }
     }
 		std::list< ::GFace * > ff = gm->faces();
 		dt__forAllIter(std::list< ::GFace * >, ff, it) {
