@@ -6,6 +6,7 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
 
 namespace dtOO {  
   bVOSetNElements::bVOSetNElements() {
@@ -28,23 +29,24 @@ namespace dtOO {
     // init bVOInterface
     //
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
-    
-		// <bVObserver 
-		//   name="bVOSetNElements" 
-		//   faceLabel="{name0}{name1}{name2}{name3}{name4}{name5}"
-		//   numberElements="{numU}{numV}"    
-		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
 		_faceLabel
 		= 
-		dtXmlParserBase::getAttributeStrVector("faceLabel", element);
+		dtXmlParserBase::getAttributeStrVector(
+      "faceLabel", element, std::vector< std::string >()
+    );
+    
+		_regionLabel
+		= 
+		dtXmlParserBase::getAttributeStrVector(
+      "regionLabel", element, std::vector< std::string >()
+    );    
 		_nE
 		= 
 		dtXmlParserBase::getAttributeIntVectorMuParse(
 			"numberElements", element, cV, aF
 		);
-    dt__throwIf((_nE.size()!=2) && (_nE.size()!=4), init());    
   }
   
   void bVOSetNElements::preUpdate( void ) {
@@ -67,5 +69,12 @@ namespace dtOO {
         );        
       }
     }
+    dt__forAllConstIter(std::vector< std::string >, _regionLabel, rLIt) {
+      if (_nE.size() == 3) {
+        gm->getDtGmshRegionByPhysical(*rLIt)->meshWNElements(
+          _nE[0], _nE[1], _nE[2]
+        );
+      }
+    }    
   }
 }
