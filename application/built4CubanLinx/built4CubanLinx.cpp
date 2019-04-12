@@ -116,7 +116,40 @@ std::string parseCommand(
     dt__throwIfNoClass(addRule.size()!=1, parseCommand());
     parser.loadStateToConst(addRule[0], cV);
     return std::string("");    
-  }      
+  }
+  dt__commandIf( aRule, help, "diffStateTo", "diff current state to another state" ) {
+    std::stringstream ss;
+    dt__throwIfNoClass(addRule.size()!=1, parseCommand());
+    //parser.loadStateToConst(addRule[0], cV);
+    std::string currentState = parser.currentState();
+    parser.loadStateToConst(addRule[0], cV);
+    vectorHandling< float > cV_val(
+      cV.size(), std::numeric_limits<float>::max()
+    );
+    dt__forAllIndex(cV, ii) {
+      cV_val[ii] = cV[ii]->getValue();
+    }
+    ss //<< currentState << " <--> " << addRule[0] << std::endl;
+      << logMe::dtFormat("%32s | %32s | %32s | %8s") 
+           % "label" % currentState % addRule[0] % " "
+      << std::endl
+      << "---------------------------------|"
+      << std::endl;
+    parser.loadStateToConst(currentState, cV);
+    dt__forAllIndex(cV, ii) {
+      if ( cV_val[ii] != cV[ii]->getValue() ) {
+        ss 
+        << logMe::dtFormat(
+          "%32s | %32.16e | %32.16e | %8.2f"
+          ) 
+          % cV[ii]->getLabel() % cV[ii]->getValue() 
+          % cV_val[ii] % (cV[ii]->getValuePercent()*100.)
+        << std::endl;
+      }
+    }
+    
+    return ss.str();
+  }       
   dt__commandIf( aRule, help, "write", "write current state" ) {
     dt__throwIfNoClass(addRule.size()!=1, parseCommand());
     parser.write(addRule[0], cV);
