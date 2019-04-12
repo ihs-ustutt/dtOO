@@ -9,6 +9,7 @@
 #include "map3dTo3dWithInternalBlockGmsh.h"
 #include "map3dTo3dGmsh.h"
 #include "combineGmsh.h"
+#include "customGmsh.h"
 
 namespace dtOO {
   dt__pH(boundedVolumeFactory) boundedVolumeFactory::_instance(NULL);
@@ -71,6 +72,7 @@ namespace dtOO {
     _instance->_boundedVolume.push_back( new map3dTo3dWithInternalBlockGmsh() );
     _instance->_boundedVolume.push_back( new map3dTo3dGmsh() );
     _instance->_boundedVolume.push_back( new combineGmsh() );
+    _instance->_boundedVolume.push_back( new customGmsh() );
     
     return _instance.get();
   }        
