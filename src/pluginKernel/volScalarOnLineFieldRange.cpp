@@ -228,9 +228,20 @@ namespace dtOO {
           +
           "/"
           +
-          virtualClassName()+"_"+getLabel()+"_"+fieldHeader.name()+".csv";
+          virtualClassName()+"_"
+          +getLabel()+"_"
+          +m1d->getLabel()+"_"
+          +fieldHeader.name()+".csv";
           std::fstream of;
           of.open( filename.c_str(), std::ios::out | std::ios::trunc );
+          
+          //
+          // calculate length
+          //
+          vectorHandling< float > ll( grid.size(), 0 );
+          dt__forFromToIndex(1, ll.size(), ii) {
+            ll[ii] = ll[ii-1] + dtLinearAlgebra::length( grid[ii] - grid[ii-1] );
+          }
           
           //
           // write header
@@ -239,17 +250,19 @@ namespace dtOO {
           << "# 1  x" << std::endl
           << "# 2  y" << std::endl
           << "# 3  z" << std::endl
-          << "# 4  value" << std::endl;
+          << "# 4  l" << std::endl
+          << "# 5  value" << std::endl;
           
           //
           // write values
           //
           dt__forFromToIndex(0, value.size(), ii) {
             of 
-            << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e") 
+            << logMe::dtFormat("%16.8e, %16.8e, %16.8e, %16.8e, %16.8e") 
               % grid[ii].x() 
               % grid[ii].y() 
               % grid[ii].z() 
+              % ll[ii]                     
               % value[ii] 
             << std::endl;
           }
