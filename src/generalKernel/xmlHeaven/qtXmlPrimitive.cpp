@@ -609,6 +609,17 @@ namespace dtOO {
 		return convertToStringVector("{", "}", att);
 	}
 
+	std::vector< std::string > qtXmlPrimitive::getAttributeStrVector(
+		std::string const attName, 
+    ::QDomElement const element, 
+    std::vector< std::string > const def
+	) {
+    if ( !hasAttribute(attName, element) ) return def;
+      
+    std::string att = getAttributeStr(attName, element);
+    return convertToStringVector("{", "}", att);
+	}
+  
 	std::vector< std::string > qtXmlPrimitive::getAttributeRareStrVector(
 		std::string const attName, ::QDomElement const element
 	) {
