@@ -17,6 +17,7 @@ class dtClusteredSingletonState:
   NPROC = 1
   SIMSH = ''
   ADDDATA = []
+  ADDDATADEF = []
   PROB = None
 
   @lockutils.synchronized('fileIO', external=True, lock_path='./runLock/')
@@ -83,10 +84,20 @@ class dtClusteredSingletonState:
         open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), "a").write( self.formatToWrite(defFit)+'\n'  )
       else:
         open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), "a").write( '__empty__\n' )    
+ 
+      if np.size(dtClusteredSingletonState.ADDDATA) != np.shape(dtClusteredSingletonState.ADDDATADEF)[0]:
+        raise ValueError(
+          'Size of ADDDATA is not equal to size of ADDDATADEF  ' + str(dtClusteredSingletonState.ADDDATA) + ' ' + str(dtClusteredSingletonState.ADDDATADEF)
+          )
       for i in range( np.size(dtClusteredSingletonState.ADDDATA) ):
-        open(
-          dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), "a"
-        ).write( '__empty__\n' )  
+        if np.size( dtClusteredSingletonState.ADDDATADEF[i] ) == 0 or np.size(dtClusteredSingletonState.ADDDATA) != np.shape(dtClusteredSingletonState.ADDDATADEF)[0]:
+          open(
+            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), "a"
+          ).write( '__empty__\n' )
+        else:
+          open(
+            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), "a"
+          ).write( self.formatToWrite(dtClusteredSingletonState.ADDDATADEF[i])+'\n' )          
     #
     # existing id
     #
