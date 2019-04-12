@@ -48,8 +48,10 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
     
-    dt__forAllConstIter(std::vector< std::string >, _faceLabel, fIt) {
-      gm->getDtGmshFaceByPhysical(*fIt)->meshRecombine();
+    dt__forAllRefAuto(_faceLabel, aLabel) {
+      dt__forAllRefAuto( gm->getDtGmshFaceListByPhysical(aLabel), aFace ) {
+        aFace->meshRecombine();
+      }
     }
   }
 }
