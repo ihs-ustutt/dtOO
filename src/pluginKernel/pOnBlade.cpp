@@ -254,8 +254,10 @@ namespace dtOO {
         // write header
         //
         of
-        << "# 1 length" << std::endl
-        << "# 2 value" << std::endl;
+        << "# 1 i" << std::endl
+        << "# 2 j" << std::endl
+        << "# 3 length" << std::endl
+        << "# 4 value" << std::endl;
         
         int cc = 0;
         dt__forAllRefAuto(bladeCut, aBladeCut) {
@@ -329,14 +331,10 @@ namespace dtOO {
           float lStagCorrect = uStagCorrect * ll[uStagCorrectIndex];
           dt__forFromToIndex(0, value.size(), ii) {
             of 
-            << logMe::dtFormat("%16.8e, %16.8e") 
-              % ( ll[ii] - lStagCorrect ) % value[ii] 
+            << logMe::dtFormat("%16d, %16d, %16.8e, %16.8e") 
+              % ii % cc % ( ll[ii] - lStagCorrect ) % value[ii] 
             << std::endl;
           }
-          //
-          // gnuplot block
-          //
-          of << std::endl << std::endl;
           cc++;
         }
         of.close();        
