@@ -78,14 +78,14 @@ namespace dtOO {
     convertToGmsh();
     
     //
-    // call observers
-    //
-		boundedVolume::postNotify();
-		
-    //
     // mark as meshed
     //
     boundedVolume::setMeshed();
+    
+    //
+    // call observers
+    //
+		boundedVolume::postNotify();
 	}
 
 	void readMOABMesh::convertToGmsh( void ) {
