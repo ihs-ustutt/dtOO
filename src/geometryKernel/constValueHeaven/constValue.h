@@ -23,6 +23,7 @@ namespace dtOO {
     virtual constValue * clone( void ) const = 0;    
     virtual void dump(void) const = 0;
     virtual float getValue(void) const;
+    virtual float getValuePercent(void) const;
     virtual void setValue(float const toSet);
     virtual void setRange(float const min, float const max);
     virtual void writeToElement(QDomDocument & doc, ::QDomElement & element) = 0;

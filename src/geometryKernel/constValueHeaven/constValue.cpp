@@ -48,6 +48,10 @@ namespace dtOO {
     return _value;
   }
 
+  float constValue::getValuePercent(void) const {
+    return (_value - this->getMin()) / (this->getMax()-this->getMin());
+  }
+  
   void constValue::setValue(float const toSet) {
     if (toSet != _value) {
       dtXmlParser::reference().freeState();
