@@ -36,6 +36,11 @@ namespace dtOO {
 		// check size
 		//		
     logContainer< bVODumpModel > logC(logINFO, "preUpdate()");
+    logC()
+      << "number GVertex = " << gm->getNumVertices() << std::endl
+      << "number GEdge = " << gm->getNumEdges() << std::endl
+      << "number GFace = " << gm->getNumFaces() << std::endl
+      << "number GRegion = " << gm->getNumRegions() << std::endl;
     dt__forFromToIndex(0, 4, dim) {
       dtGmshModel::intGEntityVMap map;
       gm->getPhysicalGroups(dim, map);
