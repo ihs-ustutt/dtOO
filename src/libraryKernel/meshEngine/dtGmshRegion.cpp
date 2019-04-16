@@ -113,7 +113,7 @@ namespace dtOO {
 		//    
 		std::vector< dtGmshFace * > ff 
     = 
-    progHelper::list2Vector( dtGmshModel::cast2DtGmshFace(faces()) );
+    dtGmshModel::cast2DtGmshFace(faces());
 		dt__throwIf(ff.size()!=6, meshWNElements());
 		
 		//
@@ -132,24 +132,22 @@ namespace dtOO {
 	
   void dtGmshRegion::meshRecombineRecursive( void ) {
     this->meshAttributes.recombine3D = 1;
-		std::list< ::GFace * > fl = faces();
-    dt__forAllIter(std::list< ::GFace * >, fl, f_it) {
-			(*f_it)->meshAttributes.recombine = 1;
-		}    
+		std::vector< ::GFace * > fl = faces();
+    dt__forAllRefAuto(fl, aFace) aFace->meshAttributes.recombine = 1;
   }  
   
   void dtGmshRegion::meshUnstructured( void ) {
     this->meshAttributes.method = MESH_UNSTRUCTURED;
     this->meshAttributes.recombine3D = 0;
-		std::list< ::GFace * > fl = faces();
+		std::vector< ::GFace * > fl = faces();
 		for (
-      std::list< ::GFace * >::iterator f_it = fl.begin(); 
+      std::vector< ::GFace * >::iterator f_it = fl.begin(); 
       f_it != fl.end(); 
       ++f_it
     ) {
-			std::list< ::GEdge * > el = (*f_it)->edges();
+			std::vector< ::GEdge * > el = (*f_it)->edges();
 			for (
-        std::list< ::GEdge * >::iterator e_it = el.begin(); 
+        std::vector< ::GEdge * >::iterator e_it = el.begin(); 
         e_it != el.end(); 
         ++e_it
       ) (*e_it)->meshAttributes.method = MESH_UNSTRUCTURED;
@@ -166,10 +164,10 @@ namespace dtOO {
   }  	
 
   void dtGmshRegion::deleteFace( ::GFace * face ) {
-    std::list< ::GFace * > ff;
-    std::list< int > oo;    
-    std::list< ::GFace * >::iterator i;
-    std::list< int >::iterator j;
+    std::vector< ::GFace * > ff;
+    std::vector< int > oo;    
+    std::vector< ::GFace * >::iterator i;
+    std::vector< int >::iterator j;
     for( 
       i = l_faces.begin(), 
       j = l_dirs.begin(); 
@@ -188,8 +186,8 @@ namespace dtOO {
   }  	
 	
   int dtGmshRegion::faceOrientation( ::GFace * face ) const {
-    typedef std::list< ::GFace * >::const_iterator FIter;
-    std::list< int >::const_iterator OriIter = l_dirs.begin();
+    typedef std::vector< ::GFace * >::const_iterator FIter;
+    std::vector< int >::const_iterator OriIter = l_dirs.begin();
 
     for (FIter fi = l_faces.begin(); fi != l_faces.end(); ++fi) {
       if (*fi == face) return *OriIter;
@@ -231,16 +229,16 @@ namespace dtOO {
   bool dtGmshRegion::isEqual( 
     ::GRegion const * const gr0, ::GRegion const * const gr1 
   ) {	
-		std::list< ::GVertex * > VL0 = gr0->vertices();
-		std::list< ::GVertex * > VL1 = gr1->vertices();
+		std::vector< ::GVertex * > VL0 = gr0->vertices();
+		std::vector< ::GVertex * > VL1 = gr1->vertices();
 		
 		if (VL0.size() != VL1.size()) {
 			return false;
 		}
 		
 		int counter = 0;
-		std::list< ::GVertex * >::iterator V0_it;
-		std::list< ::GVertex * >::iterator V1_it;
+		std::vector< ::GVertex * >::iterator V0_it;
+		std::vector< ::GVertex * >::iterator V1_it;
 		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
       for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {
 				if ( dtGmshVertex::isEqual(*V0_it, *V1_it) ) {
@@ -257,13 +255,29 @@ namespace dtOO {
 		}		
 	}  
   
+  void dtGmshRegion::replaceFaces( std::vector< GFace * > & new_faces) {
+    std::vector<GFace*>::iterator it = l_faces.begin();
+    std::vector<GFace*>::iterator it2 = new_faces.begin();
+    std::vector<int>::iterator it3 = l_dirs.begin();
+    std::vector<int> newdirs;
+    for ( ; it != l_faces.end(); ++it, ++it2, ++it3){
+      (*it)->delRegion(this);
+      (*it2)->addRegion(this);
+      // if ((*it2)->getBeginVertex() == (*it)->getBeginVertex())
+        newdirs.push_back(*it3);
+      // else
+      //   newdirs.push_back(-(*it3));
+    }
+    l_faces = new_faces;
+    l_dirs = newdirs;
+  }
+  
   void dtGmshRegion::replaceFace( 
     ::GFace const * const toReplace, ::GFace * const with 
   ) {
-    std::list< ::GFace * > faces = l_faces;
-    dt__forAllIter(std::list< GFace * >, faces, it) {
-      if ( (*it) == toReplace ) (*it) = with;
-    }
+    std::vector< ::GFace * > faces = l_faces;
+    dt__forAllRefAuto(faces, aFace) if ( aFace == toReplace ) aFace = with;
+
     replaceFaces(faces);
     
     dt__forAllRefAuto(dtEdges(), ee) ee->delFace( (::GFace*) toReplace );
@@ -272,9 +286,9 @@ namespace dtOO {
 	std::string dtGmshRegion::dumpToString( void ) const {
 		std::stringstream ss;
 		
-    std::list< ::GFace * > ff = faces(); 
-    dt__forAllConstIter(std::list< ::GFace * >, ff, it) {
-		  ss << "face: " << refDtGmshModel().getPhysicalString(*it) << std::endl;
+    std::vector< ::GFace * > ff = faces(); 
+    dt__forAllRefAuto(ff, aFace) {
+		  ss << "face: " << refDtGmshModel().getPhysicalString(aFace) << std::endl;
 		}
 		return ss.str();
 	}	  
@@ -329,10 +343,10 @@ namespace dtOO {
   }  
 
   std::list< dtGmshFace * > dtGmshRegion::dtFaces( void ) const {
-    return dtGmshModel::cast2DtGmshFace( faces() );
+    return progHelper::vector2List( dtGmshModel::cast2DtGmshFace( faces() ) );
 	}    
 
   std::list< dtGmshEdge * > dtGmshRegion::dtEdges( void ) const {
-    return dtGmshModel::cast2DtGmshEdge( edges() );
+    return progHelper::vector2List( dtGmshModel::cast2DtGmshEdge( edges() ) );
 	}      
 }

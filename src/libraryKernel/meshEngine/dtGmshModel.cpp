@@ -569,8 +569,8 @@ namespace dtOO {
   ) const {
     dtGmshVertex * gv = getDtGmshVertexByTag(from);
     
-    std::list< ::GEdge * > edges = gv->edges();
-    std::list< ::GEdge * >::iterator it = edges.begin();
+    std::vector< ::GEdge * > edges = gv->edges();
+    std::vector< ::GEdge * >::iterator it = edges.begin();
     for (it; it != edges.end(); ++it) {
       if ( (*it)->getBeginVertex()->tag() == to ) {
         return -((*it)->tag());
@@ -620,6 +620,15 @@ namespace dtOO {
 		return retEdges;
 	}
 	
+  std::vector< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( 
+    std::vector< ::GEdge * > edges 
+  ) {
+		std::vector< dtGmshEdge * > ret;
+		dt__forAllRefAuto(edges, anEdge) ret.push_back( cast2DtGmshEdge(anEdge) );
+    
+		return ret;
+	}
+  
   std::list< dtGmshFace * > dtGmshModel::cast2DtGmshFace( 
     std::list< ::GFace * > faces 
   ) {
@@ -627,6 +636,14 @@ namespace dtOO {
 		dt__forAllRefAuto(faces, aFace) ret.push_back( cast2DtGmshFace(aFace) );
 		return ret;
 	}
+
+  std::vector< dtGmshFace * > dtGmshModel::cast2DtGmshFace( 
+    std::vector< ::GFace * > faces 
+  ) {
+		std::vector< dtGmshFace * > ret;
+		dt__forAllRefAuto(faces, aFace) ret.push_back( cast2DtGmshFace(aFace) );
+		return ret;
+	}  
 
   std::list< dtGmshFace * > dtGmshModel::cast2DtGmshFace( 
     std::list< ::GEntity * > faces 
@@ -669,6 +686,15 @@ namespace dtOO {
 			retVertices.push_back( cast2DtGmshVertex(*it) );
 		}
 		return retVertices;
+	}
+  
+  std::vector< dtGmshVertex * > dtGmshModel::cast2DtGmshVertex( 
+    std::vector< ::GVertex * > vertices 
+  ) {
+		std::vector< dtGmshVertex * > ret;
+		dt__forAllRefAuto(vertices, aVert) ret.push_back( cast2DtGmshVertex(aVert) );
+    
+		return ret;
 	}
   
   dtPoint3 dtGmshModel::extractPosition( ::GVertex const * const gv ) {
@@ -1547,13 +1573,33 @@ namespace dtOO {
 	}
   
   void dtGmshModel::untagPhysical( ::GEntity * const ge ) {
-		dt__warnIfWithMessage(
-      ge->physicals.size()!=1, 
+		dt__throwIfWithMessage(
+      ge->physicals.size()>1, 
       untagPhysical(),
-      << getPhysicalNames(ge->dim(), ge->physicals)
+      << "physicalName = " << getPhysicalNames(ge->dim(), ge->physicals)
+      << std::endl
+      << "ge->physicals = [ " << ge->physicals << " ]"
     );
-		  
+		
+    if ( ge->physicals.empty() ) return;
+    
+    int pNum = ge->physicals[0];
 		ge->physicals.clear();
+    std::vector< ::GEntity * > ent;
+    this->getEntities(ent, ge->dim());
+    bool found = false;
+    dt__forAllRefAuto(ent, anEnt) {
+      if ( 
+        std::find( anEnt->physicals.begin(), anEnt->physicals.end(), pNum )
+        !=
+        anEnt->physicals.end()
+      ) {
+        found = true;
+      }
+    }
+    if (!found) {
+      this->removePhysicalName( this->getPhysicalName(ge->dim(), pNum) );
+    }
 	}
 	
   std::string dtGmshModel::getPhysicalString( 
@@ -1606,7 +1652,7 @@ namespace dtOO {
     logContainer< dtGmshModel > logC(logDEBUG, "removeEmptyPhysicals()");
     
     std::map< std::pair< int, int >, bool > keepName;
-    dt__forAllRefAuto( GModel::physicalNames, aPair ) {
+    dt__forAllRefAuto( GModel::getPhysicalNames(), aPair ) {
       keepName[ aPair.first ] = false;
     }
     dtGmshModel::intGEntityVMap ge_number;
@@ -1626,16 +1672,17 @@ namespace dtOO {
           << std::endl;
         if (nIt->second.empty()) {
           logC() << "    --> delete" << std::endl;
-          GModel::deletePhysicalGroup(dim, nIt->first);
+          GModel::removePhysicalGroup(dim, nIt->first);
         }
         else keepName[ std::pair< int, int >(dim, nIt->first) ] = true;
       }
     }
     dt__forAllRefAuto( keepName, aPair ) {
-      logC() << "Check " << GModel::physicalNames[aPair.first] << std::endl;
+      if ( _physicalNames.find(aPair.first) == _physicalNames.end() ) continue;
+      logC() << "Check " << _physicalNames.at(aPair.first) << std::endl;
       if ( !aPair.second ) {
-        GModel::physicalNames.erase(
-          GModel::physicalNames.find( aPair.first )
+        _physicalNames.erase(
+          _physicalNames.find( aPair.first )
         );
         logC() << "  --> erase" << std::endl;
       }

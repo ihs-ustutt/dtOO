@@ -36,7 +36,7 @@ namespace dtOO {
     const std::list< ::GEdge * > &edges, const std::vector< int > &ori 
   ) : GFace(m, tag),
       _geomType( ::GEntity::GeomType::Unknown ) {
-    edgeLoops.push_back(GEdgeLoop(edges));
+    edgeLoops.push_back(GEdgeLoop( progHelper::list2Vector(edges) ));
     typedef std::list< ::GEdge * >::const_iterator EIter;
     int ii = 0;
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
@@ -52,7 +52,7 @@ namespace dtOO {
     ::GModel *m, int tag, const std::list< ::GEdge * > &edges
   ) : GFace(m, tag),
       _geomType( ::GEntity::GeomType::Unknown ) {
-    edgeLoops.push_back(::GEdgeLoop(edges));
+    edgeLoops.push_back(::GEdgeLoop( progHelper::list2Vector(edges) ));
     typedef std::list< ::GEdge * >::const_iterator EIter;
     for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
       ::GEdge *e = *ei;
@@ -130,14 +130,14 @@ namespace dtOO {
   }
 
   void dtGmshFace::secondDer(
-    const SPoint2 &param, SVector3 *dudu, SVector3 *dvdv, SVector3 *dudv
+    const SPoint2 &param, SVector3 & dudu, SVector3 & dvdv, SVector3 & dudv
   ) const {
     dtVector3 ddUddU = _mm->secondDerUU( (float) param.x(), (float) param.y() );
     dtVector3 ddVddV = _mm->secondDerVV( (float) param.x(), (float) param.y() );    
     dtVector3 ddUddV = _mm->secondDerUV( (float) param.x(), (float) param.y() );    
-    *dudu = SVector3(ddUddU.x(), ddUddU.y(), ddUddU.z());
-    *dvdv = SVector3(ddVddV.x(), ddVddV.y(), ddVddV.z());
-    *dudv = SVector3(ddUddV.x(), ddUddV.y(), ddUddV.z()); 
+    dudu = SVector3(ddUddU.x(), ddUddU.y(), ddUddU.z());
+    dvdv = SVector3(ddVddV.x(), ddVddV.y(), ddVddV.z());
+    dudv = SVector3(ddUddV.x(), ddUddV.y(), ddUddV.z()); 
   }
 
   dtVector3 dtGmshFace::normal( dtPoint2 const & uv ) const {
@@ -183,8 +183,8 @@ namespace dtOO {
   }  
 
   int dtGmshFace::edgeOrientation( ::GEdge * edge ) const {
-    typedef std::list< ::GEdge * >::const_iterator EIter;
-    std::list< int >::const_iterator OriIter = l_dirs.begin();
+    typedef std::vector< ::GEdge * >::const_iterator EIter;
+    std::vector< int >::const_iterator OriIter = l_dirs.begin();
 
     for (EIter ei = l_edges.begin(); ei != l_edges.end(); ++ei) {
       if (*ei == edge) return *OriIter;
@@ -227,11 +227,7 @@ namespace dtOO {
     
     return reparamOnFace( pp );
   }
-  
-  std::list< ::GEdge * > dtGmshFace::edges( void ) const { 
-    return l_edges;
-  }
-  
+   
   bool dtGmshFace::isClosed( int const dim ) const {
     if (dim == 0) {
       return _mm->isClosedU();
@@ -239,11 +235,11 @@ namespace dtOO {
     else if (dim == 1) {
       return _mm->isClosedV();
     }
-    else {
-      dt__throw(isClosed(),
-              << dt__eval(dim) << std::endl
-              << "dim should be 0 or 1.");
-    }    
+    else dt__throw(
+           isClosed(),
+           << dt__eval(dim) << std::endl
+           << "dim should be 0 or 1."
+          );
   }
   
   void dtGmshFace::meshTransfinite( void ) {
@@ -257,13 +253,12 @@ namespace dtOO {
   void dtGmshFace::meshWNElements( 
     int const & nElementsU, int const & nElementsV 
   ) {	
-		std::list< dtGmshEdge * > eeList = dtGmshModel::cast2DtGmshEdge(edges());
+		std::vector< dtGmshEdge * > ee = dtGmshModel::cast2DtGmshEdge(edges());
 		
 		//
 		// only supported for 4-sided faces
 		//
-		dt__throwIf(eeList.size()!=4, meshWNElements());
-		std::vector< dtGmshEdge * > ee = progHelper::list2Vector(eeList);
+		dt__throwIf(ee.size()!=4, meshWNElements());
 		
 		//
 		// set number of elements
@@ -278,13 +273,12 @@ namespace dtOO {
     int const & nElements0, int const & nElements1, 
     int const & nElements2, int const & nElements3 
   ) {	
-		std::list< dtGmshEdge * > eeList = dtGmshModel::cast2DtGmshEdge(edges());
+		std::vector< dtGmshEdge * > ee = dtGmshModel::cast2DtGmshEdge(edges());
 		
 		//
 		// only supported for 4-sided faces
 		//
-		dt__throwIf(eeList.size()!=4, meshWNElements());
-		std::vector< dtGmshEdge * > ee = progHelper::list2Vector(eeList);
+		dt__throwIf(ee.size()!=4, meshWNElements());
 		
 		//
 		// set number of elements
@@ -301,9 +295,7 @@ namespace dtOO {
 		//
 		if (GFace::meshAttributes.method != MESH_TRANSFINITE) return;
 		
-		std::list< dtGmshEdge * > eeList = dtGmshModel::cast2DtGmshEdge(edges());
-    std::vector< dtGmshEdge * > ee = progHelper::list2Vector(eeList);		
-		
+		std::vector< dtGmshEdge * > ee = dtGmshModel::cast2DtGmshEdge(edges());		
 		//
 		// only supported for 4-sided faces
 		//
@@ -346,32 +338,20 @@ namespace dtOO {
 		ee[1]->meshAttributes.nbPointsTransfinite;
 		
 		if (correct[0]) {
-			std::list< dtGmshFace * > faces0 
-      = 
-      dtGmshModel::cast2DtGmshFace(ee[0]->faces());
-			std::list< dtGmshFace * > faces2 
-      = 
-      dtGmshModel::cast2DtGmshFace(ee[2]->faces());
-			dt__forAllIter(std::list< dtGmshFace * >, faces0, it) {
-				(*it)->correctIfTransfinite();
+			dt__forAllRefAuto(dtGmshModel::cast2DtGmshFace( ee[0]->faces() ), aFace) {
+				aFace->correctIfTransfinite();
 			}
-			dt__forAllIter(std::list< dtGmshFace * >, faces2, it) {
-				(*it)->correctIfTransfinite();
+			dt__forAllRefAuto(dtGmshModel::cast2DtGmshFace( ee[2]->faces() ), aFace) {
+				aFace->correctIfTransfinite();
 			}				
 		}
 		if (correct[1]) {
-			std::list< dtGmshFace * > faces1 
-      = 
-      dtGmshModel::cast2DtGmshFace(ee[1]->faces());
-			std::list< dtGmshFace * > faces3 
-      = 
-      dtGmshModel::cast2DtGmshFace(ee[3]->faces());
-			dt__forAllIter(std::list< dtGmshFace * >, faces1, it) {
-				(*it)->correctIfTransfinite();
+			dt__forAllRefAuto(dtGmshModel::cast2DtGmshFace( ee[1]->faces() ), aFace) {
+				aFace->correctIfTransfinite();
 			}
-			dt__forAllIter(std::list< dtGmshFace * >, faces3, it) {
-				(*it)->correctIfTransfinite();
-			}				
+			dt__forAllRefAuto(dtGmshModel::cast2DtGmshFace( ee[3]->faces() ), aFace) {
+				aFace->correctIfTransfinite();
+			}					
 		}		
 	}	
 
@@ -382,7 +362,7 @@ namespace dtOO {
   std::vector< int > dtGmshFace::estimateTransfiniteNElements( 
 	  float const & uWidth, float const & vWidth 
 	) const {	
-		std::list< dtGmshEdge * > const ee = dtGmshModel::cast2DtGmshEdge(edges());
+		std::vector< dtGmshEdge * > const ee = dtGmshModel::cast2DtGmshEdge(edges());
 		
 		//
 		// only supported for 4-sided faces
@@ -394,13 +374,13 @@ namespace dtOO {
 		//
 		bool toggle = false;
 		std::vector< float > average(2, 0.);
-		dt__forAllConstIter(std::list< dtGmshEdge * >, ee, it) {
+		dt__forAllRefAuto(ee, anEdge) {
 			if ( !toggle) {
-				average[0] = average[0] + (*it)->getMap1dTo3d()->length()/uWidth;
+				average[0] = average[0] + anEdge->getMap1dTo3d()->length()/uWidth;
 				toggle = true;
 			}
 			else {
-				average[1] = average[1] + (*it)->getMap1dTo3d()->length()/vWidth;
+				average[1] = average[1] + anEdge->getMap1dTo3d()->length()/vWidth;
 				toggle = false;
 			}			
 		}
@@ -418,17 +398,17 @@ namespace dtOO {
 
   bool dtGmshFace::isEqual( 
     ::GFace const * const gf0, ::GFace const * const gf1 
-  ) {	
-		std::list< ::GVertex * > VL0 = gf0->vertices();
-		std::list< ::GVertex * > VL1 = gf1->vertices();
+  ) {
+		std::vector< ::GVertex * > VL0 = gf0->vertices();
+		std::vector< ::GVertex * > VL1 = gf1->vertices();
 		
 		if (VL0.size() != VL1.size()) {
 			return false;
 		}
 		
 		int counter = 0;
-		std::list< ::GVertex * >::iterator V0_it;
-		std::list< ::GVertex * >::iterator V1_it;
+		std::vector< ::GVertex * >::iterator V0_it;
+		std::vector< ::GVertex * >::iterator V1_it;
 		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
       for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {
 				if ( dtGmshVertex::isEqual(*V0_it, *V1_it) ) {
@@ -718,11 +698,15 @@ namespace dtOO {
   }
 
   std::list< dtGmshVertex * > dtGmshFace::dtVertices( void ) const {
-    return dtGmshModel::cast2DtGmshVertex( vertices() );
+    return progHelper::vector2List(
+      dtGmshModel::cast2DtGmshVertex(vertices())
+    );
 	}
 	
   std::list< dtGmshEdge * > dtGmshFace::dtEdges( void ) const {
-    return dtGmshModel::cast2DtGmshEdge( edges() );
+    return progHelper::vector2List(
+      dtGmshModel::cast2DtGmshEdge(edges())
+    );
 	}  
 
   std::list< dtGmshRegion * > dtGmshFace::dtRegions( void ) const {

@@ -29,6 +29,7 @@ namespace dtOO {
       int size( int const dim = 0) const;
       std::vector< T > fixJ(int const jj) const;
       std::vector< T > fixI(int const ii) const;
+      void clear( void );
   };
 
   //----------------------------------------------------------------------------
@@ -108,6 +109,14 @@ namespace dtOO {
   std::vector< T > twoDArrayHandling< T >::fixI(int const ii) const {
     return this->at(ii);
   }
+
+  template < typename T >    
+  void twoDArrayHandling< T >::clear( void ) {
+    dt__forAllIndex(*this, ii) {
+      this->at(ii).clear();
+    } 
+    std::vector< std::vector< T > >::clear();
+  }  
 }
 #endif	/* twoDArrayHandling_H */
 

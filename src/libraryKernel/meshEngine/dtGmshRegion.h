@@ -45,6 +45,9 @@ namespace dtOO {
     static bool isEqual(
       ::GRegion const * const gr0, ::GRegion const * const gr1 
     );
+    void replaceFaces( 
+      std::vector< GFace * > & new_faces
+    );    
     void replaceFace( 
       ::GFace const * const toReplace, ::GFace * const with     
     );

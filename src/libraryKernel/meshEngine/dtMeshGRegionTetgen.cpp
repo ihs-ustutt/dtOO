@@ -111,43 +111,37 @@ namespace dtOO {
     //
     // faces
     //
-    std::list< dtGmshFace * > ff 
+    std::vector< dtGmshFace * > ff 
     = 
     dtGmshModel::cast2DtGmshFace( gr->faces() );
-    dt__forFromToIter(
-      std::list< dtGmshFace * >::iterator, ff.begin(), ff.end(), fit
-    ) {
+    dt__forAllRefAuto( ff, fit ) {
       // face vertices and elements
       enqueueMVertices(
-        (*fit)->mesh_vertices, nodeIndex, MVertexInt, intMVertex
+        fit->mesh_vertices, nodeIndex, MVertexInt, intMVertex
       );
-      enqueueMTriangles((*fit)->triangles, triangle);
+      enqueueMTriangles(fit->triangles, triangle);
       
       //
       // edges
       //
-      std::list< dtGmshEdge * > ee 
+      std::vector< dtGmshEdge * > ee 
       = 
-      dtGmshModel::cast2DtGmshEdge( (*fit)->edges() );
-      dt__forFromToIter(
-        std::list< dtGmshEdge * >::iterator, ee.begin(), ee.end(), eit
-      ) {
+      dtGmshModel::cast2DtGmshEdge( fit->edges() );
+      dt__forAllRefAuto( ee, eit ) {
         // edge vertices
         enqueueMVertices(
-          (*eit)->mesh_vertices, nodeIndex, MVertexInt, intMVertex
+          eit->mesh_vertices, nodeIndex, MVertexInt, intMVertex
         );
         //
         // vertices
         //
-        std::list< dtGmshVertex * > vv
+        std::vector< dtGmshVertex * > vv
         =
-        dtGmshModel::cast2DtGmshVertex( (*eit)->vertices() );
-        dt__forFromToIter(
-          std::list< dtGmshVertex * >::iterator, vv.begin(), vv.end(), vit
-        ) {
+        dtGmshModel::cast2DtGmshVertex( eit->vertices() );
+        dt__forAllRefAuto( vv, vit ) {
           // vertex vertices
           enqueueMVertices(
-            (*vit)->mesh_vertices, nodeIndex, MVertexInt, intMVertex
+            vit->mesh_vertices, nodeIndex, MVertexInt, intMVertex
           );
         }
       }              

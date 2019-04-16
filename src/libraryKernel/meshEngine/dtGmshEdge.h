@@ -38,7 +38,6 @@ namespace dtOO {
     void addVertex( ::GVertex * gv);
     void addElement( ::MElement * me );
     virtual ::SBoundingBox3d bounds( void ) const;
-    virtual std::list< ::GVertex * > vertices( void ) const;
     virtual std::list< dtGmshVertex * > dtVertices( void ) const;
     virtual std::list< dtGmshFace * > dtFaces( void ) const;
     static bool isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 );

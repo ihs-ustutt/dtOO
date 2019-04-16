@@ -6,6 +6,7 @@
 #include "dtGmshModel.h"
 #include "dtGmshFace.h"
 #include "dtGmshEdge.h"
+#include <progHelper.h>
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
@@ -91,7 +92,9 @@ namespace dtOO {
 	}
 	
   std::list< dtGmshEdge * > dtGmshVertex::dtEdges( void ) const {
-    return dtGmshModel::cast2DtGmshEdge( edges() );
+    return progHelper::vector2List( 
+      dtGmshModel::cast2DtGmshEdge(edges())
+    );
 	}  
   
   std::string dtGmshVertex::getPhysicalString( void ) const {

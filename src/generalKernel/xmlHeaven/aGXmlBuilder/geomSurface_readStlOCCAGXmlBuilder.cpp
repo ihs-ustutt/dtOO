@@ -16,7 +16,6 @@
 #include <meshEngine/dtGmshVertex.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
-#include <gmsh/GFaceCompound.h>
 #include <gmsh/MLine.h>
 #include <meshEngine/dtOMMesh.h>
 #include <meshEngine/dtOMDynamicVertexField.h>

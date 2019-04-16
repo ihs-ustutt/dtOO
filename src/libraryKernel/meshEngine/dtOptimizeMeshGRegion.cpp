@@ -38,7 +38,7 @@ namespace dtOO {
   void dtOptimizeMeshGRegion::operator()( dtGmshRegion * dtgr) {
     Msg::Info("dtOptimizeMeshGRegion()() volume %d", dtgr->tag());
     
-    if (_gmsh) ::optimizeMeshGRegionGmsh()(dtgr);  
+    if (_gmsh) ::optimizeMeshGRegion()(dtgr);  
     
     if (_netgen) {
       //
