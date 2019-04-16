@@ -20,7 +20,7 @@
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
-#include <gmsh/Gmsh.h>
+#include <gmsh.h>
 #include <gmsh/Context.h>
 #include <gmsh/OpenFile.h>
 #include <gmsh/MVertex.h>
@@ -29,14 +29,14 @@
 
 namespace dtOO {
 	gmshBoundedVolume::gmshBoundedVolume() : boundedVolume() {
-	  GmshInitialize();		
+	  gmsh::initialize();
 	}
 
 	gmshBoundedVolume::~gmshBoundedVolume() {
     //
     // gmsh deletes also the models
     //
-	  GmshFinalize();		
+//	  gmsh::finalize();
 	}
       
 	void gmshBoundedVolume::init( 
@@ -279,11 +279,14 @@ namespace dtOO {
     }
 
     if ( hasOption("gmshMeshStr") ) {
-      dt__info(
+      dt__throw(
         makePreGrid(),
-        << "ParseString( " << getOption("gmshMeshStr") << " );"
+        << "Option > gmshMeshStr < no longer supported." << std::endl
+        << "Please add options like this:" << std::endl
+        << "<option name=\"[gmsh]General.Terminal\" value=\"1.\"/>" << std::endl
+        << "<option name=\"[gmsh]Mesh.LcIntegrationPrecision\""
+           " value=\"#cV_ru_lcIntPrec#\"/>"
       );
-      ParseString( getOption("gmshMeshStr") );
     }
 
     
@@ -301,7 +304,9 @@ namespace dtOO {
         << ", " 
         << oG[ii].second << ");"
       );
-      GmshSetOption(oG[ii].first[0], oG[ii].first[1], oG[ii].second);
+      gmsh::option::setNumber( 
+        oG[ii].first[0]+"."+oG[ii].first[1], oG[ii].second 
+      );
     }
 		
     //

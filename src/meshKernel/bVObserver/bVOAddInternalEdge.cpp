@@ -59,10 +59,10 @@ namespace dtOO {
     
     std::vector< dtGmshFace * > fV = progHelper::list2Vector( gr->dtFaces() );
     
-    std::list< GEdge * > e0;
-    std::list< GEdge * > e2;
+    std::vector< GEdge * > e0;
+    std::vector< GEdge * > e2;
     dt__forFromToIndex(6, fV.size(), ii) {
-      std::vector< ::GEdge * > eV = progHelper::list2Vector( fV[ii]->edges() );
+      std::vector< ::GEdge * > eV = fV[ii]->edges();
       e0.push_back( eV[0] );
       e2.push_back( eV[2] );
     }

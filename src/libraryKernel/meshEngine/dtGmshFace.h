@@ -36,14 +36,13 @@ namespace dtOO {
     virtual GPoint point(double par1, double par2) const; 
     virtual Pair<SVector3,SVector3> firstDer(const SPoint2 &param) const;
     virtual void secondDer(
-      const SPoint2 &param, SVector3 *dudu, SVector3 *dvdv, SVector3 *dudv
+      const SPoint2 &param, SVector3 & dudu, SVector3 & dvdv, SVector3 & dudv
     ) const;
     using GFace::normal;
     dtVector3 normal( dtPoint2 const & uv ) const;
     SPoint2 reparamOnFace( dtPoint3 const ppXYZ ) const;
     SPoint2 reparamOnFace(::GVertex const * gv) const;
     virtual SPoint2 parFromPoint(const SPoint3 &, bool onSurface) const;    
-    virtual std::list< ::GEdge * > edges( void ) const;
     virtual void setMap2dTo3d( map2dTo3d const * const base );
     virtual map2dTo3d const * getMap2dTo3d( void ) const;
     void addEdge( ::GEdge * edge, int const ori );

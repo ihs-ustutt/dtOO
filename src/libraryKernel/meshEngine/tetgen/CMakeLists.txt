@@ -1,5 +1,3 @@
-add_definitions(TETLIBRARY)
-
 SET(HEADERS
   tetgen.h
 )

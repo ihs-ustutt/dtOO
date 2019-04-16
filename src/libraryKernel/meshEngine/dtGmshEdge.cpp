@@ -9,6 +9,7 @@
 #include "dtGmshModel.h"
 #include "dtGmshFace.h"
 #include "dtGmshVertex.h"
+#include <progHelper.h>
 
 #include <gmsh/GmshDefines.h>
 #include <gmsh/GVertex.h>
@@ -164,31 +165,31 @@ namespace dtOO {
     );
   }
   
-  std::list< ::GVertex * > dtGmshEdge::vertices( void ) const { 
-    return l_vertices; 
-  }    
-      
   std::list< dtGmshVertex * > dtGmshEdge::dtVertices( void ) const {
-    return dtGmshModel::cast2DtGmshVertex( vertices() );
+    return progHelper::vector2List(
+      dtGmshModel::cast2DtGmshVertex(vertices())
+    );
 	}
   
   std::list< dtGmshFace * > dtGmshEdge::dtFaces( void ) const {
-    return dtGmshModel::cast2DtGmshFace( faces() );
+    return progHelper::vector2List( 
+      dtGmshModel::cast2DtGmshFace(faces())
+    );
 	}
   
   bool dtGmshEdge::isEqual( 
     ::GEdge const * const ge0, ::GEdge const * const ge1 
   ) {	
-		std::list< ::GVertex * > VL0 = ge0->vertices();
-		std::list< ::GVertex * > VL1 = ge1->vertices();
+		std::vector< ::GVertex * > VL0 = ge0->vertices();
+		std::vector< ::GVertex * > VL1 = ge1->vertices();
 		
 		if (VL0.size() != VL1.size()) {
 			return false;
 		}
 		
 		int counter = 0;
-		std::list< ::GVertex * >::iterator V0_it;
-		std::list< ::GVertex * >::iterator V1_it;
+		std::vector< ::GVertex * >::iterator V0_it;
+		std::vector< ::GVertex * >::iterator V1_it;
 		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
       for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {
 				if ( dtGmshVertex::isEqual(*V0_it, *V1_it) ) {        

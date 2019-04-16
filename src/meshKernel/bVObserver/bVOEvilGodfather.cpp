@@ -178,11 +178,12 @@ namespace dtOO {
         
         logC() 
           << logMe::dtFormat(
-            "(0) MTetrahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+            "(0) MTetrahedron[ %6i ]: V = %8.3e, "
+            "skew = %8.3e angleShapeMeasure = %8.3e"
           ) 
           % jinx->getNum() 
           % jinx->getVolume() % jinx->skewness()
-          % jinx->rhoShapeMeasure()
+          % jinx->angleShapeMeasure()
           << std::endl;
         
         //
@@ -193,11 +194,12 @@ namespace dtOO {
           
           logC() 
             << logMe::dtFormat(
-              "(1) MTetrahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+              "(1) MTetrahedron[ %6i ]: V = %8.3e, "
+              "skew = %8.3e angleShapeMeasure = %8.3e"
             ) 
             % jinx->getNum() 
             % jinx->getVolume() % jinx->skewness()
-            % jinx->rhoShapeMeasure()
+            % jinx->angleShapeMeasure()
             << std::endl;  
         }
         else if (_perturbTet < 0.) {
@@ -223,11 +225,12 @@ namespace dtOO {
           dt__forAllRefAuto(nT.first, aTet) {
             logC() 
               << logMe::dtFormat(
-                "(1a) MTetrahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+                "(1a) MTetrahedron[ %6i ]: V = %8.3e, "
+                "skew = %8.3e angleShapeMeasure = %8.3e"
               ) 
               % aTet->getNum() 
               % aTet->getVolume() % aTet->skewness()
-              % aTet->rhoShapeMeasure()
+              % aTet->angleShapeMeasure()
               << std::endl; 
           }
         }     
@@ -296,11 +299,12 @@ namespace dtOO {
         
         logC() 
           << logMe::dtFormat(
-            "(0) MHexahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+            "(0) MHexahedron[ %6i ]: V = %8.3e, "
+            "skew = %8.3e angleShapeMeasure = %8.3e"
           ) 
           % jinx->getNum() 
           % jinx->getVolume() % jinx->skewness()
-          % jinx->rhoShapeMeasure()
+          % jinx->angleShapeMeasure()
           << std::endl;
         
         //
@@ -311,11 +315,12 @@ namespace dtOO {
 
           logC() 
             << logMe::dtFormat(
-              "(1) MHexahedron[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+              "(1) MHexahedron[ %6i ]: V = %8.3e, "
+              "skew = %8.3e angleShapeMeasure = %8.3e"
             ) 
             % jinx->getNum() 
             % jinx->getVolume() % jinx->skewness()
-            % jinx->rhoShapeMeasure()
+            % jinx->angleShapeMeasure()
             << std::endl;              
         }
         else if (_perturbHex < 0.) {
@@ -340,11 +345,12 @@ namespace dtOO {
           dt__forAllRefAuto(nP.first, aPyr) {
             logC() 
               << logMe::dtFormat(
-                "(1a) MPyramid[ %6i ]: V = %8.3e, skew = %8.3e rhoShapeMeasure = %8.3e"
+                "(1a) MPyramid[ %6i ]: V = %8.3e, "
+                "skew = %8.3e angleShapeMeasure = %8.3e"
               ) 
               % aPyr->getNum() 
               % aPyr->getVolume() % aPyr->skewness()
-              % aPyr->rhoShapeMeasure()
+              % aPyr->angleShapeMeasure()
               << std::endl; 
           }
         }

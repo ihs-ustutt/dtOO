@@ -21,10 +21,6 @@
 #include <meshEngine/dtGmshModel.h>
 #include <algorithm>
 
-//#ifdef DTOO_HAS_MPI
-//#include <boost/mpi/communicator.hpp>
-//#endif  
-
 namespace dtOO {
   meshWhisperer::meshWhisperer( dtGmshModel * const gm )
     : _gm(gm), 
@@ -331,7 +327,7 @@ namespace dtOO {
           else if (thisMvType == 1) {
             aNewMv 
             = 
-            new ::MEdgeVertex(thisX, thisY, thisZ, NULL, thisU, -1.0, thisNum);
+            new ::MEdgeVertex(thisX, thisY, thisZ, NULL, thisU, thisNum, -1.0);
           }
           else if (thisMvType == 2) {
             aNewMv 
@@ -484,7 +480,7 @@ namespace dtOO {
           else dt__throwUnexpected(addRenumberedElements());
         }
         else {
-          _me[ ii ]->setNum( thisMeNum );
+          _me[ ii ]->forceNum( thisMeNum );
         }
       }
     }    

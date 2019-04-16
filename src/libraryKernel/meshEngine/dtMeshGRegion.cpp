@@ -142,13 +142,13 @@ namespace dtOO {
       //
       // create new pseudo face
       //
-      std::list< int > ori = gf->edgeOrientations();
+      std::vector< int > ori = gf->edgeOrientations();
       dtGmshFace * pseudo 
       =  
       new dtGmshFace(
         gf->model(), 
         dtgr->refDtGmshModel().getMaxFaceTag()+1, 
-        gf->edges(), progHelper::list2Vector(ori)
+        progHelper::vector2List(gf->edges()), ori
       );
       gf->model()->add(pseudo);
       

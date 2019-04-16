@@ -200,7 +200,7 @@ namespace dtOO {
         )
         &&
         (
-          aVertex->meshMaster() == aVertex
+          aVertex->getMeshMaster() == aVertex
         )
       )
       dtMeshGVertex()( aVertex );
@@ -210,9 +210,9 @@ namespace dtOO {
     // corresponding vertices
     //
 	  dt__forAllRefAuto(vv, aVertex) {    
-      if ( aVertex->meshMaster() != aVertex ) {
+      if ( aVertex->getMeshMaster() != aVertex ) {
         dtMesh0DOperator::correspondingVertex( 
-          dtGmshModel::cast2DtGmshVertex( aVertex->meshMaster()), aVertex 
+          dtGmshModel::cast2DtGmshVertex( aVertex->getMeshMaster()), aVertex 
         );
       }
     }    
@@ -242,7 +242,7 @@ namespace dtOO {
               ::GEntity::MeshGenerationStatus::DONE 
             )
             &&
-            (aEdge->meshMaster() == aEdge)
+            (aEdge->getMeshMaster() == aEdge)
           ) (*current1D)(aEdge); 
           if (optionHandling::debugTrue()) {
             gm->writeMSH(
@@ -265,9 +265,9 @@ namespace dtOO {
     // copy slave edges
     //
 	  dt__forAllRefAuto(ee, aEdge) {    
-      if ( aEdge->meshMaster() != aEdge ) {
+      if ( aEdge->getMeshMaster() != aEdge ) {
         dtMesh1DOperator::copyMesh( 
-          dtGmshModel::cast2DtGmshEdge( aEdge->meshMaster()), aEdge 
+          dtGmshModel::cast2DtGmshEdge( aEdge->getMeshMaster()), aEdge 
         );
       }
     }
@@ -302,7 +302,7 @@ namespace dtOO {
           gm->matchWildCardPhysical(currentGEntityStr, aFace)
           &&
           (
-            aFace->meshMaster() == aFace
+            aFace->getMeshMaster() == aFace
           )
         ) (*current2D)(aFace);
         if (optionHandling::debugTrue()) {
@@ -323,9 +323,9 @@ namespace dtOO {
     // copy slave faces
     //
 	  dt__forAllRefAuto(ff, aFace) {    
-      if ( aFace->meshMaster() != aFace ) {
+      if ( aFace->getMeshMaster() != aFace ) {
         dtMesh2DOperator::copyMesh( 
-          dtGmshModel::cast2DtGmshFace( aFace->meshMaster()), aFace 
+          dtGmshModel::cast2DtGmshFace( aFace->getMeshMaster()), aFace 
         );
       }
     }    
@@ -356,7 +356,7 @@ namespace dtOO {
           gm->matchWildCardPhysical(currentGEntityStr, aReg)
           &&
           (
-            aReg->meshMaster() == aReg
+            aReg->getMeshMaster() == aReg
           )
         ) (*current3D)(aReg);
         if (optionHandling::debugTrue()) {

@@ -80,8 +80,8 @@ namespace dtOO {
     //
     // get edges
     //
-    std::vector< ::GEdge * > slaveEdge = progHelper::list2Vector( slaveF->edges() );
-    std::vector< ::GEdge * > masterEdge = progHelper::list2Vector( masterF->edges() );
+    std::vector< ::GEdge * > slaveEdge = slaveF->edges();
+    std::vector< ::GEdge * > masterEdge = masterF->edges();
     
     //
     // create unique vectors of all vertices of slave and master face

@@ -1,5 +1,5 @@
 DTOO_FIND_LIBRARY(
-  "GMSH_FOUND" "gmsh/Gmsh.h" "libGmsh.so" 
+  "GMSH_FOUND" "gmsh.h" "libgmsh.so" 
   "GMSH_INCLUDE_DIR" "GMSH_LINK_DIRECTORY" "GMSH_LIBRARIES" 
   "GMSH_FIND_COMPONENTS"
 )

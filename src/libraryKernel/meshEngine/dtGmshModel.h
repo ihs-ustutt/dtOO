@@ -67,6 +67,9 @@ namespace dtOO {
       static std::list< dtGmshFace * > cast2DtGmshFace( 
         std::list< ::GFace * > faces 
       );
+      static std::vector< dtGmshFace * > cast2DtGmshFace( 
+        std::vector< ::GFace * > faces 
+      );      
       static std::list< dtGmshFace * > cast2DtGmshFace( 
         std::list< ::GEntity * > faces 
       );
@@ -81,10 +84,16 @@ namespace dtOO {
       static std::list< dtGmshEdge * > cast2DtGmshEdge( 
         std::list< ::GEdge * > edges 
       );
+      static std::vector< dtGmshEdge * > cast2DtGmshEdge( 
+        std::vector< ::GEdge * > edges 
+      );      
       static dtGmshVertex * cast2DtGmshVertex( ::GEntity * gv );
       static std::list< dtGmshVertex * > cast2DtGmshVertex( 
         std::list< ::GVertex * > vertices
-      );    
+      );
+      static std::vector< dtGmshVertex * > cast2DtGmshVertex( 
+        std::vector< ::GVertex * > vertices
+      );          
       //
       // modify position of MVertex and GVertex
       //

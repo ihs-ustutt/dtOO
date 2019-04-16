@@ -86,8 +86,8 @@ namespace dtOO {
     //
     // order orientation and edge
     //
-    std::vector< ::GEdge * > edges = progHelper::list2Vector( dtgf->edges() );
-    std::vector< int > ori = progHelper::list2Vector( dtgf->orientations() );
+    std::vector< ::GEdge * > edges = dtgf->edges();
+    std::vector< int > ori = dtgf->orientations();
     std::vector< std::pair< int, ::GEdge * > > ordered(4);
     if (_direction == 0) {
       ordered[0] = std::pair< int, ::GEdge * >(ori[0], edges[0]);

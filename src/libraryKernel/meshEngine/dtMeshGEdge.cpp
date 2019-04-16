@@ -2,6 +2,7 @@
 
 #include "dtGmshEdge.h"
 #include <gmsh/meshGEdge.h>
+#include <gmsh/Context.h>
 
 namespace dtOO {
   dtMeshGEdge::dtMeshGEdge() : dtMesh1DOperator() {
@@ -14,7 +15,14 @@ namespace dtOO {
   } 
 
   void dtMeshGEdge::operator()( dtGmshEdge * dtge) {
-      ::meshGEdge()( dtge );
+    //
+    // reset temporarily lc parameter of gmsh
+    // --> prevents really slow meshing
+    //
+    double lcOld = CTX::instance()->lc;
+    CTX::instance()->lc = 1.e+12 * CTX::instance()->mesh.lcIntegrationPrecision;
+    ::meshGEdge()( dtge );
+    CTX::instance()->lc = lcOld;
   }
 }
 

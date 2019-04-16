@@ -44,7 +44,7 @@ option(DTOO_USE_MPI "Use MPI" OFF)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(CGAL REQUIRED COMPONENTS CGAL)
-find_package(GMSH REQUIRED Gmsh)
+find_package(GMSH REQUIRED gmsh)
 find_package(
   OpenCASCADE 
   COMPONENTS 
@@ -126,6 +126,16 @@ endif (MPI_FOUND)
 #
 #------------------------------------------------------------------------------#
 add_subdirectory(src)
+
+#------------------------------------------------------------------------------#
+#
+# special compile propertys
+#
+#------------------------------------------------------------------------------#
+set_property(
+  SOURCE "src/libraryKernel/meshEngine/tetgen/tetgen.cxx" 
+  PROPERTY COMPILE_FLAGS -DTETLIBRARY
+)
 
 #------------------------------------------------------------------------------#
 #

@@ -1,5 +1,6 @@
 #include "dtMeshCustom2x3TransfiniteGFace.h"
 #include "dtMeshGFace.h"
+#include <progHelper.h>
 
 #include <xmlHeaven/qtXmlPrimitive.h>
 #include <xmlHeaven/dtXmlParserBase.h>
@@ -24,10 +25,10 @@ namespace dtOO {
     findTransfiniteCorners(const_cast<::GFace*>(gf), corners);
     dt__throwIf(corners.size()!= 4, computeEdgeLoops());
     
-    std::list<GEdge*> edges = gf->edges();
-    std::list<int> ori = gf->orientations();
-    std::list<GEdge*>::iterator it = edges.begin();
-    std::list<int>::iterator ito = ori.begin();
+    std::vector<GEdge*> edges = gf->edges();
+    std::vector<int> ori = gf->orientations();
+    std::vector<GEdge*>::iterator it = edges.begin();
+    std::vector<int>::iterator ito = ori.begin();
 
     indices.push_back(0);
     GVertex *start = ((*ito) == 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();

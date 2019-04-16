@@ -14,7 +14,7 @@
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
-#include <gmsh/Gmsh.h>
+#include <gmsh.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
 
