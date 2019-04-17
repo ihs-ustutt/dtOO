@@ -340,7 +340,7 @@ namespace dtOO {
         dtLinearAlgebra::length( dist0 )
       )
       /
-      ( sheet0.fixJ(layer).size() - 1);
+      ( sheet1.fixJ(layer).size() - 1);
       
       std::vector< dtVector3 > NN( sheet1.fixJ(layer).size() );
       NN[ 0 ] = -1. * dtLinearAlgebra::normalize( dist0 );      
