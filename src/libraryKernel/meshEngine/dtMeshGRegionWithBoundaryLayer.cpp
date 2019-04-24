@@ -136,6 +136,8 @@ namespace dtOO {
 	}
 	
   void dtMeshGRegionWithBoundaryLayer::operator() (dtGmshRegion * dtgr) {
+    dtgr->setOutwardOrientationMeshConstraint();
+    
 		//
 		// init faces and regions
 		//
