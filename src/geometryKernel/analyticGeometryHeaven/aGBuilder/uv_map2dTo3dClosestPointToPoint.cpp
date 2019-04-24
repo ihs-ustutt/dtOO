@@ -64,7 +64,9 @@ namespace dtOO {
         _distance
       ) {
         _closestUV = ( _m2d % dtPoint2(theRoot[0], theRoot[1]) );
-        _distance = dtLinearAlgebra::distance( _pXYZ, _m2d.getPoint( _closestUV ) );
+        _distance 
+        = 
+        dtLinearAlgebra::distance( _pXYZ, _m2d.getPoint( _closestUV ) );
       }
     }
 	}
