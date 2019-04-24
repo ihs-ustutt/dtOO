@@ -42,7 +42,10 @@ namespace dtOO {
     dtVector3 normal( dtPoint2 const & uv ) const;
     SPoint2 reparamOnFace( dtPoint3 const ppXYZ ) const;
     SPoint2 reparamOnFace(::GVertex const * gv) const;
-    virtual SPoint2 parFromPoint(const SPoint3 &, bool onSurface) const;    
+    virtual SPoint2 parFromPoint(const SPoint3 &, bool onSurface) const; 
+    virtual GPoint closestPoint(
+      const SPoint3 &queryPoint, const double initialGuess[2]
+    ) const;    
     virtual void setMap2dTo3d( map2dTo3d const * const base );
     virtual map2dTo3d const * getMap2dTo3d( void ) const;
     void addEdge( ::GEdge * edge, int const ori );

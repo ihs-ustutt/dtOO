@@ -227,6 +227,13 @@ namespace dtOO {
     
     return reparamOnFace( pp );
   }
+  
+  GPoint dtGmshFace::closestPoint(
+    const SPoint3 &queryPoint, const double initialGuess[2]
+  ) const {
+    SPoint2 p = GFace::parFromPoint(queryPoint, false);
+    return point( p.x(), p.y() );
+  }
    
   bool dtGmshFace::isClosed( int const dim ) const {
     if (dim == 0) {
