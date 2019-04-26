@@ -32,6 +32,10 @@ class dtAverageValueField(dtValueField):
     
     cDist = numpy.linalg.norm(bbMax-bbMin)
     
+    self.nBinsOne_ = nBinsOne
+    self.nBinsTwo_ = nBinsTwo
+    self.nBinsThree_ = nBinsThree
+    
     #
     # binOne
     #
@@ -182,6 +186,69 @@ class dtAverageValueField(dtValueField):
       )
     return interValueAvQ
   
+  def IntValueAOne(self):
+    ret = numpy.zeros( (self.nBinsOne_, self.vDim_), float )
+    for i in range(0, self.vDim_):
+      for j in range( len(self.indsOne) ):
+        ret[self.indsOne[j]-1,i] \
+        = \
+        ret[self.indsOne[j]-1, i] \
+        + \
+        self.value_[j,i] * numpy.linalg.norm( self.sf_[j,:] )      
+    return ret
+
+  def IntValueATwo(self):
+    ret = numpy.zeros( (self.nBinsTwo_, self.vDim_), float )
+    for i in range(0, self.vDim_):
+      for j in range( len(self.indsTwo) ):
+        ret[self.indsTwo[j]-1,i] \
+        = \
+        ret[self.indsTwo[j]-1, i] \
+        + \
+        self.value_[j,i] * numpy.linalg.norm( self.sf_[j,:] )      
+    return ret
+
+  def IntValueAThree(self):
+    ret = numpy.zeros( (self.nBinsThree_, self.vDim_), float )
+    for i in range(0, self.vDim_):
+      for j in range( len(self.indsThree) ):
+        ret[self.indsThree[j]-1,i] \
+        = \
+        ret[self.indsThree[j]-1, i] \
+        + \
+        self.value_[j,i] * numpy.linalg.norm( self.sf_[j,:] )      
+    return ret
+
+  def SIntValueOne(self):
+    ret = numpy.zeros( (self.nBinsOne_, self.vDim_, 3), float )
+    for j in range(self.nBinsOne_):
+      for i in range(0, self.vDim_):
+        ret[j, i,:] = numpy.sum( 
+          self.value_[self.indsOne==j+1,i:i+1] * self.sf_[self.indsOne==j+1,:], 
+          axis=0 
+        )
+    return ret
+
+  def SIntValueTwo(self):
+    ret = numpy.zeros( (self.nBinsTwo_, self.vDim_, 3), float )
+    for j in range(self.nBinsTwo_):
+      for i in range(0, self.vDim_):
+        ret[j, i,:] = numpy.sum( 
+          self.value_[self.indsTwo==j+1,i:i+1] * self.sf_[self.indsTwo==j+1,:], 
+          axis=0 
+        )
+    return ret
+
+  def SIntValueThree(self):
+    ret = numpy.zeros( (self.nBinsThree_, self.vDim_, 3), float )
+    for j in range(self.nBinsThree_):
+      for i in range(0, self.vDim_):
+        ret[j, i,:] = numpy.sum( 
+          self.value_[self.indsThree==j+1,i:i+1] * self.sf_[self.indsThree==j+1,:], 
+          axis=0 
+        )
+    return ret
+
   def WriteProfile1DFixedValueCSV(self, prefix, header):
     dtAverageValueField.WriteOneProfile1DFixedValueCSV( 
       prefix+'_Q1', header, self.CoordOne(), self.ValueAvQOne() 

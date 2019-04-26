@@ -33,9 +33,11 @@ class dtValueField:
     else:
       raise ValueError('Bad shape of data array.')
   
-    self.a_ = numpy.zeros( numpy.shape(self.sf_)[0] )
+    self.a_ = numpy.zeros( numpy.shape(self.sf_)[0], float )
+    self.n_ = numpy.zeros( numpy.shape(self.sf_), float )
     for i in range( numpy.shape(self.sf_)[0] ):
       self.a_[i] = numpy.linalg.norm( self.sf_[i,:] )
+      self.n_[i,:] = self.sf_[i,:] / self.a_[i]
 
   def Coord(self):
     return self.coord_
