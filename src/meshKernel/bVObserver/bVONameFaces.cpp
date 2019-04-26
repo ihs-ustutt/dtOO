@@ -54,21 +54,10 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
     
-    std::list< ::GFace * > faceL = gm->faces();
-//    std::list< ::GFace * >::iterator f_it;
-    std::list< ::GRegion * > regionL = gm->regions();
-//    std::list< ::GRegion * >::iterator r_it;
-    
-//    //
-//    // check size
-//    //
-//    dt__throwIf( 
-//      (!_faceLabel.empty())&&(_faceLabel.size()!=faceL.size()), preUpdate()
-//    );
     logContainer< bVONameFaces > logC(logINFO, "preUpdate()");
     if ( _faceLabel.empty() ) {
       logC() << "Apply automatic naming" << std::endl;
-      dt__forAllRefAuto(regionL, aReg) {
+      dt__forAllRefAuto(gm->regions(), aReg) {
         int cc = 0;
         logC() << "Region : " << gm->getPhysicalString(aReg) << std::endl;
         dt__forAllRefAuto( aReg->faces(), aFace ) {
@@ -102,7 +91,7 @@ namespace dtOO {
       }
       else {
         int counter = 0;      
-        dt__forAllRefAuto(faceL, aFace) {
+        dt__forAllRefAuto(gm->faces(), aFace) {
           std::vector< int > pInt = aFace->getPhysicalEntities();
           dt__throwIf(pInt.size()!=0, preUpdate());
 
