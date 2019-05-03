@@ -3,6 +3,7 @@
 #include "dtOMField.h"
 #include "dtGmshModel.h"
 #include "dtGmshEdge.h"
+#include <progHelper.h>
 #include <logMe/dtMacros.h>
 
 #include <logMe/logMe.h>
@@ -86,7 +87,7 @@ namespace dtOO {
 		  << dt__eval( handle.size() ) << std::endl
 			<< handle
 		);
-		
+		    
 		return fH;
 	}	
   
@@ -368,14 +369,38 @@ namespace dtOO {
     
     return true;
 	}
-	
-	std::vector< omEdgeH > dtOMMesh::oneRingEdgeH( omVertexH const & vH ) const {
-	  std::vector< omEdgeH > eHV;	
-		dt__forFromToIter(omConstVertexOHalfedgeI, cvoh_begin(vH), cvoh_end(vH), heIt) {
-			eHV.push_back( edge_handle( next_halfedge_handle(*heIt) ) );
+
+//
+// can produce problems if quadrangles are connected to the vertex
+//	
+//	std::vector< omEdgeH > dtOMMesh::oneRingEdgeH( omVertexH const & vH ) const {
+//	  std::vector< omEdgeH > eHV;	
+//		dt__forFromToIter(
+//      omConstVertexOHalfedgeI, cvoh_begin(vH), cvoh_end(vH), heIt
+//    ) {
+//			eHV.push_back( edge_handle( next_halfedge_handle(*heIt) ) );
+//		}
+//		return eHV;
+//	}
+  
+	std::vector< omVertexH > dtOMMesh::oneRingVertexH( 
+    omVertexH const & vH 
+  ) const {
+	  std::vector< omVertexH > vH_v;	
+		dt__forFromToIter(
+      omConstVertexFaceI, cvf_begin(vH), cvf_end(vH), fIt
+    ) {
+      dt__forFromToIter(
+        omConstFaceVertexI, cfv_begin(*fIt), cfv_end(*fIt), vIt
+      ) {      
+			  vH_v.push_back( *vIt  );
+      }
 		}
-		return eHV;
-	}
+    progHelper::removeBastardTwins( vH_v );
+    progHelper::removeChildren( vH_v, vH );
+    
+		return vH_v;
+	}  
   
   void dtOMMesh::enqueueField( dtOMField * omField ) {
     _attachedField.push_back( omField );

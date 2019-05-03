@@ -57,7 +57,7 @@ namespace dtOO {
         std::vector< omFaceH > const & fH, 
         dtPoint3 const & start, dtPoint3 const & target 
       ) const;
-      std::vector< omEdgeH > oneRingEdgeH( omVertexH const & vH ) const;
+      std::vector< omVertexH > oneRingVertexH( omVertexH const & vH ) const;
       //
       // conversion and replace positions
       //

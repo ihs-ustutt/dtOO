@@ -21,6 +21,7 @@
 #include <gmsh/MTriangle.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MPrism.h>
+#include <gmsh/MHexahedron.h>
 #include <gmsh/MPyramid.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/Field.h>
@@ -557,39 +558,65 @@ namespace dtOO {
         }
               
 				if (commonVertices.size() == 0) {
-					::MPrism * pri 
-					= 
-					new ::MPrism(
-				    fixedVertices[0], 
-            fixedVertices[1], 
-            fixedVertices[2],
-						movedVertices[0], 
-            movedVertices[1], 
-            movedVertices[2]
-					);
-					if (pri->getVolumeSign()<0.) pri->reverse();
-					element.push_back(pri);
+          if ( dynamic_cast< const ::MTriangle * >( _omInit.at(*fIt) ) ) {
+            ::MPrism * pri 
+            = 
+            new ::MPrism(
+              fixedVertices[0], 
+              fixedVertices[1], 
+              fixedVertices[2],
+              movedVertices[0], 
+              movedVertices[1], 
+              movedVertices[2]
+            );
+            if (pri->getVolumeSign()<0.) pri->reverse();
+            element.push_back(pri);
+          }
+          else if ( dynamic_cast< const ::MQuadrangle * >( _omInit.at(*fIt) ) ) {
+            ::MHexahedron * hex
+            = 
+            new ::MHexahedron(
+              fixedVertices[0], 
+              fixedVertices[1], 
+              fixedVertices[2],
+              fixedVertices[3],
+              movedVertices[0], 
+              movedVertices[1], 
+              movedVertices[2],
+              movedVertices[3]
+            );
+            if (hex->getVolumeSign()<0.) hex->reverse();
+            element.push_back(hex);
+          }     
+          else dt__throwUnexpected(createBoundaryLayerElements());
+          
 				}
 				else if (commonVertices.size() == 1) {
-					::MPyramid * pyr 
-					= 
-					new ::MPyramid(
-						movedVertices[1], movedVertices[0], 
-						fixedVertices[0], fixedVertices[1], 
-						commonVertices[0]
-					);
-					if (pyr->getVolumeSign()<0.) pyr->reverse();
-					element.push_back(pyr);
+          if ( dynamic_cast< const ::MTriangle * >( _omInit.at(*fIt) ) ) {          
+            ::MPyramid * pyr 
+            = 
+            new ::MPyramid(
+              movedVertices[1], movedVertices[0], 
+              fixedVertices[0], fixedVertices[1], 
+              commonVertices[0]
+            );
+            if (pyr->getVolumeSign()<0.) pyr->reverse();
+            element.push_back(pyr);
+          }
+          else dt__throwUnexpected(createBoundaryLayerElements());
 				}
 				else if (commonVertices.size() == 2) {
-					::MTetrahedron * tet 
-					= 
-					new ::MTetrahedron(
-						movedVertices[0], fixedVertices[0], 
-						commonVertices[0], commonVertices[1]
-					);				
-					if (tet->getVolumeSign()<0.) tet->reverse();
-					element.push_back(tet);
+          if ( dynamic_cast< const ::MTriangle * >( _omInit.at(*fIt) ) ) {          
+            ::MTetrahedron * tet 
+            = 
+            new ::MTetrahedron(
+              movedVertices[0], fixedVertices[0], 
+              commonVertices[0], commonVertices[1]
+            );				
+            if (tet->getVolumeSign()<0.) tet->reverse();
+            element.push_back(tet);
+          }
+          else dt__throwUnexpected(createBoundaryLayerElements());            
 				}
       }
 	  }	
@@ -607,13 +634,8 @@ namespace dtOO {
     if ( !canSlideF.at(vH) ) return false;
     
     std::vector< bool > localSlide;
-    dt__forFromToIter(
-      omConstVertexVertexI, 
-      canSlideF.refMesh().cvv_begin(vH), 
-      canSlideF.refMesh().cvv_end(vH), 
-      vvIt
-    ) {
-      bool isSliding = canSlideF.at(*vvIt);
+    dt__forAllRefAuto(canSlideF.refMesh().oneRingVertexH(vH), aVertex) {    
+      bool isSliding = canSlideF.at(aVertex);
       dt__forAllConstIter(std::vector< bool >, localSlide, it) {
         if (*it != isSliding) return true;
       }
