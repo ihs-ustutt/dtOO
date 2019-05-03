@@ -10,7 +10,7 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class dtGmshModel;
-  class map3dTo3d;
+//  class map3dTo3d;
    
   class map3dTo3dGmsh : public gmshBoundedVolume {
   public:
