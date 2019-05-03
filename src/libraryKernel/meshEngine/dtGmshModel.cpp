@@ -1703,6 +1703,17 @@ namespace dtOO {
       // add label
       //
       fullList.push_back( reg->getPhysicalString() );
+      
+      //
+      // add number in vector
+      //
+      int cc = 0;
+      dt__forAllRefAuto( dtRegions(), aReg ) {
+        if (aReg == reg) {
+          fullList.push_back( "R_"+stringPrimitive::intToString(cc) );
+        }
+        cc = cc + 1;
+      }      
     }
     //
     // face
@@ -1731,9 +1742,16 @@ namespace dtOO {
             fL.begin(),
             std::find( fL.begin(), fL.end(), face )
           );
+          
           //
           // add position alias
           //
+          fullList.push_back( 
+            aPrefix + "->F_" + stringPrimitive::intToString(faceI) 
+          );          
+          if ( _positionStrFace.find(faceI) == _positionStrFace.end() ) {
+            continue;
+          }
           dt__forAllRefAuto(_positionStrFace[faceI], posStr) {
             fullList.push_back( aPrefix + "->" + posStr );
           }        
