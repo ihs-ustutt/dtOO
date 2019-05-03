@@ -480,13 +480,12 @@ namespace dtOO {
         2.2, false, true
       );    
     }
-    dtMeshGFace()( gf );
 
     //
     // perform meshing
     //    
-    dtMeshTransfiniteGFace()( gf );
-    
+    dtMeshGFace()( gf );
+
     if ( optionHandling::debugTrue() ) {    
       gm.writeMSH(
         dtgf->getMap2dTo3d()->getLabel()+"dtMeshGFaceWithTransfiniteLayer_1.msh", 
