@@ -26,7 +26,7 @@ class dtMigrateState:
 
   @staticmethod
   def HeterogeneityToFittest( popO, popF, fDim=0 ):
-    return dtMigrateState.HeterogenityToPosition(
+    return dtMigrateState.HeterogeneityToPosition(
       popO, dtMigrateState.FittestPosition( popF, fDim)
     )
 
