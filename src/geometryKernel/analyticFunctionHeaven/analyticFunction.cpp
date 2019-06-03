@@ -25,6 +25,12 @@ namespace dtOO {
     return clone();
   }
 
+  analyticFunction * analyticFunction::cloneTransformed( 
+    dtTransformer const * const dtT 
+  ) const {
+    dt__throwUnexpected(cloneTransformed());
+  }
+      
   void analyticFunction::dump(void) const {
     dt__info(
 			dump(), 

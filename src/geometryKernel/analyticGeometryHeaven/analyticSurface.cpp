@@ -203,7 +203,7 @@ namespace dtOO {
 		
 		ss
     << 
-    dt__dumpToString( 
+    dt__dumpToString(
       << "_dtS = " << _dtS->virtualClassName() << std::endl
       << _dtS->dumpToString()
     );

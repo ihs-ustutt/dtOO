@@ -182,10 +182,15 @@ include_directories(
 if (MPI_FOUND)
   include_directories(
     AFTER 
-    ${MPI_CXX_INCLUDE_PATH} 
+    ${MPI_CXX_INCLUDE_PATH}
 )
 endif (MPI_FOUND)
-
+#if (PYTHONLIBS_FOUND)
+#  include_directories(
+#    AFTER 
+#    ${PYTHON_INCLUDE_PATH}
+#  )
+#endif
 #------------------------------------------------------------------------------#
 #
 # parse version and write header version.h

@@ -47,7 +47,7 @@ namespace dtOO {
   
   dtXmlParser * dtXmlParser::ptr( void ) {
     dt__throwIf(!_pH, ptr());
-    return _pH;  
+    return _pH;
   }
   
   dtXmlParser const & dtXmlParser::constReference( void ) {
@@ -78,10 +78,10 @@ namespace dtOO {
   }
   
   void dtXmlParser::parse( void ) {
-    parse(_inFile.c_str());
+    parseFile(_inFile.c_str());
   }
   
-  void dtXmlParser::parse(char const * const fileName) {
+  void dtXmlParser::parseFile(char const * const fileName) {
     QFile xmlFile(fileName);
     QDomDocument xmlDocument;
 
@@ -176,7 +176,7 @@ namespace dtOO {
     //
     // parse included files
     //
-    for (int ii=0; ii<label.size(); ii++) this->parse( label[ii].c_str() );
+    for (int ii=0; ii<label.size(); ii++) this->parseFile( label[ii].c_str() );
     
     
 		//
@@ -719,39 +719,33 @@ namespace dtOO {
   }  
   
   void dtXmlParser::createConstValue(
-    std::string const constValueLabel, 
     cVPtrVec * cValP
   ) const {
-    ::QDomElement const wElement = getElement("constValue", constValueLabel);
-       
-    constValue * aCV 
-    = 
-    constValue::create( 
-      getAttributeStr("name", wElement), 
-      constValueLabel, 
-      getAttributeStr("value", wElement),
-      getIfAttributeBool("loadable", wElement, true)
-    );
-    
-    if ( hasAttribute("min", wElement) && hasAttribute("max", wElement) ) {
-      aCV->setRange( 
-        muParseString( getAttributeStr( "min", wElement ) ), 
-        muParseString( getAttributeStr( "max", wElement ) ) 
-      );      
-    }
-    
-    cValP->push_back( aCV );      
-  }
-	
-  void dtXmlParser::createConstValue(
-    cVPtrVec * cValP
-  ) const {
-    std::vector< std::string > label = getLabels("constValue");
-
     //
     // create const values
     //
-		dt__forAllIndex( label, ii) createConstValue(label[ii], cValP);
+		dt__forAllRefAuto( getLabels("constValue"), label) {
+     // createConstValue(label[ii], cValP);
+      ::QDomElement const wElement = getElement("constValue", label);
+
+      constValue * aCV 
+      = 
+      constValue::create( 
+        getAttributeStr("name", wElement), 
+        label, 
+        getAttributeStr("value", wElement),
+        getIfAttributeBool("loadable", wElement, true)
+      );
+
+      if ( hasAttribute("min", wElement) && hasAttribute("max", wElement) ) {
+        aCV->setRange( 
+          muParseString( getAttributeStr( "min", wElement ) ), 
+          muParseString( getAttributeStr( "max", wElement ) ) 
+        );      
+      }
+
+      cValP->push_back( aCV );       
+    }
        
     //
     // resolve constraints
@@ -798,6 +792,11 @@ namespace dtOO {
     }    
   }
 	
+  void dtXmlParser::createConstValue(
+    cVPtrVec & cValRef
+  ) const {
+    createConstValue(&cValRef);
+  }
   void dtXmlParser::getLabels( 
     std::string lookType, std::vector< std::string > * names 
   ) const {
@@ -1272,4 +1271,13 @@ namespace dtOO {
 			}
     }
   }
+  
+  void dtXmlParser::dump( void ) const {
+    dt__info(
+			dump(), 
+			<< dt__eval(_inFile) << std::endl
+		  << dt__eval(_outFile) << std::endl
+			<< "_pH = " << _pH
+		);
+  }  
 }

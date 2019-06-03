@@ -37,6 +37,10 @@ namespace dtOO {
   analyticGeometry::~analyticGeometry() {
   }
 
+  dtPoint3 analyticGeometry::getPoint( float const * const uvw ) const {
+    dt__throwUnexpected(getPoint());
+  }
+
   dtPoint3 analyticGeometry::getPointPercent( float const * const uvw ) const {
     float uvwP[dim()];
     dt__forFromToIndex(0, dim(), ii) {
@@ -261,6 +265,10 @@ namespace dtOO {
     if (_characteristicLength < 0.) updateBoundingBox();
     
     return _characteristicLength;
+  }
+  
+  dtPoint3 analyticGeometry::getPoint( std::vector< float > const & uvw ) const {
+    return getPoint( &(uvw[0]) );
   }
   
   bool analyticGeometry::inXYZTolerance(

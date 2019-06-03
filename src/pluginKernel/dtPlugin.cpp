@@ -38,6 +38,10 @@ namespace dtOO {
     optionHandling::init( element, bC, cV, aF, aG );
   }
   
+  void dtPlugin::apply( void ) {
+    dt__throwUnexpected(apply());
+  }
+       
   std::vector< std::string > dtPlugin::factoryAlias( void ) const {
     return std::vector< std::string>(0);
   }  

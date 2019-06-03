@@ -55,6 +55,10 @@ namespace dtOO {
     optionHandling::init( element, bC, cV, aF, aG );
   }	
 
+  void dtCase::runCurrentState( void ) {
+    dt__throwUnexpected(runCurrentState());
+  }
+  
   void dtCase::update( void ) {
     std::vector< fpath > dL
     =

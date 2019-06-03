@@ -61,7 +61,6 @@ namespace dtOO {
       void setState( std::string const & newState) const;
       void freeState( void ) const;
       bool stateLoaded( void ) const;
-      void createConstValue(cVPtrVec * cValP) const;
       void getLabels(
         std::string toLookFor, std::vector< std::string > * machinePartNames 
       ) const;
@@ -75,6 +74,8 @@ namespace dtOO {
       std::vector< ::QDomElement > getElementRecursive( 
         std::string const lookType 
       ) const;
+      void createConstValue(cVPtrVec * cValP) const;
+      void createConstValue(cVPtrVec & cValRef) const;      
       void createAnalyticFunction(
         std::string const functionName,
         baseContainer * const bC,
@@ -159,9 +160,10 @@ namespace dtOO {
         dCPtrVec & dC,
         dPPtrVec & pL
       ) const;  
+      void dump( void ) const;
     private:
       dtXmlParser(std::string const & inFile, std::string const & outFile);
-      void parse(char const * const fileName);
+      void parseFile(char const * const fileName);
       void checkFile(
         char const * const fileName, QDomDocument & xmlDocument
       ) const;
@@ -169,9 +171,9 @@ namespace dtOO {
         std::string const & fileName, QDomDocument & xmlDocument
       );
       void setStaticProperties( void );
-      void createConstValue(
-        std::string const constValueLabel, cVPtrVec * cValP
-      ) const;      
+//      void createConstValue(
+//        std::string const constValueLabel, cVPtrVec * cValP
+//      ) const;      
     private:
       std::vector< ::QDomElement > _rootRead;
       std::vector< ::QDomDocument > _rootReadDoc;
