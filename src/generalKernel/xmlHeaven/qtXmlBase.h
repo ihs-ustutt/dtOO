@@ -47,6 +47,13 @@ namespace dtOO {
       cVPtrVec const * const cV,
       aFPtrVec const * const aF 
     );
+    static float getAttributeFloatMuParse(
+      std::string const attName, 
+      ::QDomElement const element, 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      float const & def
+    );    
     static int getAttributeIntMuParse( 
       std::string const attName, 
       ::QDomElement const element, 
@@ -57,6 +64,13 @@ namespace dtOO {
       ::QDomElement const element, 
       cVPtrVec const * const cV,
       aFPtrVec const * const aF 
+    );
+    static int getAttributeIntMuParse(
+      std::string const attName, 
+      ::QDomElement const element, 
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      int const & def
     );
     static std::vector< float > getAttributeFloatVectorMuParse( 
       std::string const attName, 

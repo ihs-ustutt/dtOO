@@ -575,7 +575,7 @@ namespace dtOO {
     );
   }
 
-  bool qtXmlPrimitive::getIfAttributeBool(
+  bool qtXmlPrimitive::getAttributeBool(
 	  std::string const attName, const ::QDomElement element, bool const & dBool
 	) {
     if ( ! hasAttribute(attName, element) ) {

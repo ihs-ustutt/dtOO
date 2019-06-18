@@ -188,7 +188,17 @@ namespace dtOO {
       else if (v2dF) {
         if (aFOption == "") {
           pp = v2dF->Y( argCS ).stdVector();
-        }        
+        }    
+        else if (aFOption == "%x") {
+          aFX xx = v2dF->Y( v2dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[0];
+        }           
+        else if (aFOption == "%y") {
+          aFX xx = v2dF->Y( v2dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[1];
+        }         
         else dt__throwUnexpected(replaceDependencies()); 
       }
       else if (v3dF) {
@@ -329,6 +339,19 @@ namespace dtOO {
       replaceDependencies( getAttributeStr(attName, element), cV, aF )
     );
   }
+  
+  float qtXmlBase::getAttributeFloatMuParse(
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    float const & def
+  ) {
+    if ( hasAttribute(attName, element) ) {
+      return getAttributeFloatMuParse( attName, element, cV, aF );
+    }
+    else return def;
+  }    
 
   int qtXmlBase::getAttributeIntMuParse(
     std::string const attName, 
@@ -338,7 +361,7 @@ namespace dtOO {
     return muParseStringInt( 
       replaceDependencies( getAttributeStr(attName, element), cV )
     );
-  }
+  }  
   
   int qtXmlBase::getAttributeIntMuParse(
     std::string const attName, 
@@ -350,6 +373,19 @@ namespace dtOO {
       replaceDependencies( getAttributeStr(attName, element), cV, aF )
     );
   }
+
+  int qtXmlBase::getAttributeIntMuParse(
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    int const & def
+  ) {
+    if ( hasAttribute(attName, element) ) {
+      return getAttributeIntMuParse( attName, element, cV, aF );
+    }
+    else return def;
+  }  
   
 	std::vector< float > qtXmlBase::getAttributeFloatVectorMuParse( 
 		std::string const attName, 

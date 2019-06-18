@@ -104,7 +104,7 @@ namespace dtOO {
     static bool getAttributeBool(
       std::string const attName, const ::QDomElement element
     );
-    static bool getIfAttributeBool(
+    static bool getAttributeBool(
       std::string const attName, const ::QDomElement element, bool const & dBool
     );    
     static std::vector< bool > getAttributeBoolVector(

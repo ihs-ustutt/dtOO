@@ -59,7 +59,7 @@ namespace dtOO {
         bC->constPtrTransformerContainer()->get( aLabel )
       );
     }
-    _copy = dtXmlParserBase::getIfAttributeBool("copy", element, true);
+    _copy = dtXmlParserBase::getAttributeBool("copy", element, true);
     
     _relTol = std::numeric_limits<float>::max();
     if ( 

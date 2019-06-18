@@ -734,7 +734,7 @@ namespace dtOO {
         getAttributeStr("name", wElement), 
         label, 
         getAttributeStr("value", wElement),
-        getIfAttributeBool("loadable", wElement, true)
+        getAttributeBool("loadable", wElement, true)
       );
 
       if ( hasAttribute("min", wElement) && hasAttribute("max", wElement) ) {
