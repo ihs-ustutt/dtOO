@@ -13,10 +13,12 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
-  radialTranslatingMap2dTo3dAGXmlBuilder::radialTranslatingMap2dTo3dAGXmlBuilder() {
+  radialTranslatingMap2dTo3dAGXmlBuilder
+    ::radialTranslatingMap2dTo3dAGXmlBuilder() {
   }
 
-  radialTranslatingMap2dTo3dAGXmlBuilder::~radialTranslatingMap2dTo3dAGXmlBuilder() {
+  radialTranslatingMap2dTo3dAGXmlBuilder
+    ::~radialTranslatingMap2dTo3dAGXmlBuilder() {
   }
 
   void radialTranslatingMap2dTo3dAGXmlBuilder::buildPart( 
