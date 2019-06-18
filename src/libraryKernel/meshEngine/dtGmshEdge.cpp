@@ -207,28 +207,35 @@ namespace dtOO {
         ge0->point( 
           0.5 * ( ge0->parBounds(0).low() + ge0->parBounds(0).high() )
         );
-        ::GPoint p1 
-        = 
-        ge1->point( 
-          0.5 * ( ge1->parBounds(0).low() + ge1->parBounds(0).high() )
-        ); 
+        double iG = 0.5;
+        ::GPoint p1 = ge1->closestPoint( ::SPoint3(p0.x(), p0.y(), p0.z()), iG);
         
+        float const dist
+        =
+        dtLinearAlgebra::distance(
+          dtPoint3(p0.x(), p0.y(), p0.z()), 
+          dtPoint3(p1.x(), p1.y(), p1.z())
+        );
+        bool differentPoint
+        =
+        dist 
+        >
+        staticPropertiesHandler::getInstance()->getOptionFloat(
+          "XYZ_resolution"
+        );
         dt__debug(
           isEqual(), 
-          << logMe::dtFormat("p0 = (%f, %f, %f)") % p0.x() % p0.y() % p0.z() 
+          << logMe::dtFormat("p0 = (%6.2f, %6.2f, %6.2f)") 
+            % p0.x() % p0.y() % p0.z() 
           << std::endl
-          << logMe::dtFormat("p1 = (%f, %f, %f)") % p1.x() % p1.y() % p1.z();
+          << logMe::dtFormat("p1 = (%6.2f, %6.2f, %6.2f)") 
+            % p1.x() % p1.y() % p1.z()
+          << std::endl
+          << "|p0 - p1| = " << dist
+          << std::endl
+          << "p0 != p1 = " << differentPoint
         );
-        if ( 
-          dtLinearAlgebra::distance(
-            dtPoint3(p0.x(), p0.y(), p0.z()), 
-            dtPoint3(p1.x(), p1.y(), p1.z())
-          ) 
-          >
-          staticPropertiesHandler::getInstance()->getOptionFloat(
-            "XYZ_resolution"
-          )
-        ) return false;
+        if ( differentPoint ) return false;        
       }
 			return true;
 		}
