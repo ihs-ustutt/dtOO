@@ -45,6 +45,7 @@ namespace dtOO {
     setOption("map2dTo3d_deltaPer", "0.01");    
     setOption("map3dTo3d_deltaPer", "0.01");   
     setOption("transfinite_correctionLoops", "10");   
+    setOption("isEqualExtendCheck", "false");
     
     _gDebug = false;
   }

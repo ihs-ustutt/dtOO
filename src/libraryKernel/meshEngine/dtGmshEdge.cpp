@@ -157,7 +157,7 @@ namespace dtOO {
     }
 	}
 	
-  ::SBoundingBox3d dtGmshEdge::bounds( void ) const {
+  ::SBoundingBox3d dtGmshEdge::bounds( bool fast ) const {
     std::pair< dtPoint3, dtPoint3 > bb = _mm->boundingBox();
     return ::SBoundingBox3d(
       bb.first.x(), bb.first.y(), bb.first.z(),
@@ -182,7 +182,7 @@ namespace dtOO {
   ) {	
 		std::vector< ::GVertex * > VL0 = ge0->vertices();
 		std::vector< ::GVertex * > VL1 = ge1->vertices();
-		
+		    
 		if (VL0.size() != VL1.size()) {
 			return false;
 		}
@@ -192,13 +192,44 @@ namespace dtOO {
 		std::vector< ::GVertex * >::iterator V1_it;
 		for (V0_it = VL0.begin(); V0_it != VL0.end(); ++V0_it) {
       for (V1_it = VL1.begin(); V1_it != VL1.end(); ++V1_it) {
-				if ( dtGmshVertex::isEqual(*V0_it, *V1_it) ) {        
+				if ( dtGmshVertex::isEqual(*V0_it, *V1_it) ) {
 					counter++;
 				}
 			}
 		}
 		
 		if (VL0.size() == counter) {
+      if ( 
+        staticPropertiesHandler::getInstance()->optionTrue("isEqualExtendCheck") 
+      ) {
+        ::GPoint p0 
+        = 
+        ge0->point( 
+          0.5 * ( ge0->parBounds(0).low() + ge0->parBounds(0).high() )
+        );
+        ::GPoint p1 
+        = 
+        ge1->point( 
+          0.5 * ( ge1->parBounds(0).low() + ge1->parBounds(0).high() )
+        ); 
+        
+        dt__debug(
+          isEqual(), 
+          << logMe::dtFormat("p0 = (%f, %f, %f)") % p0.x() % p0.y() % p0.z() 
+          << std::endl
+          << logMe::dtFormat("p1 = (%f, %f, %f)") % p1.x() % p1.y() % p1.z();
+        );
+        if ( 
+          dtLinearAlgebra::distance(
+            dtPoint3(p0.x(), p0.y(), p0.z()), 
+            dtPoint3(p1.x(), p1.y(), p1.z())
+          ) 
+          >
+          staticPropertiesHandler::getInstance()->getOptionFloat(
+            "XYZ_resolution"
+          )
+        ) return false;
+      }
 			return true;
 		}
 		else {

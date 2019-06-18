@@ -369,7 +369,9 @@ namespace dtOO {
   std::vector< int > dtGmshFace::estimateTransfiniteNElements( 
 	  float const & uWidth, float const & vWidth 
 	) const {	
-		std::vector< dtGmshEdge * > const ee = dtGmshModel::cast2DtGmshEdge(edges());
+		std::vector< dtGmshEdge * > const ee 
+    = 
+    dtGmshModel::cast2DtGmshEdge(edges());
 		
 		//
 		// only supported for 4-sided faces
@@ -425,6 +427,39 @@ namespace dtOO {
 		}
 		
 		if (VL0.size() == counter) {
+      if ( 
+        staticPropertiesHandler::getInstance()->optionTrue("isEqualExtendCheck") 
+      ) {
+        ::GPoint p0 
+        = 
+        gf0->point( 
+          0.5 * ( gf0->parBounds(0).low() + gf0->parBounds(0).high() ),
+          0.5 * ( gf0->parBounds(1).low() + gf0->parBounds(1).high() )                
+        );
+        ::GPoint p1 
+        = 
+        gf1->point( 
+          0.5 * ( gf1->parBounds(0).low() + gf1->parBounds(0).high() ),
+          0.5 * ( gf1->parBounds(1).low() + gf1->parBounds(1).high() )                
+        );
+        
+        dt__debug(
+          isEqual(), 
+          << logMe::dtFormat("p0 = (%f, %f, %f)") % p0.x() % p0.y() % p0.z() 
+          << std::endl
+          << logMe::dtFormat("p1 = (%f, %f, %f)") % p1.x() % p1.y() % p1.z();
+        );
+        if ( 
+          dtLinearAlgebra::distance(
+            dtPoint3(p0.x(), p0.y(), p0.z()), 
+            dtPoint3(p1.x(), p1.y(), p1.z())
+          ) 
+          >
+          staticPropertiesHandler::getInstance()->getOptionFloat(
+            "XYZ_resolution"
+          )
+        ) return false;
+      }
 			return true;
 		}
 		else {

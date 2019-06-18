@@ -248,7 +248,21 @@ namespace dtOO {
 		}
 		
 		if (VL0.size() == counter) {
-			return true;
+      if ( 
+        staticPropertiesHandler::getInstance()->optionTrue("isEqualExtendCheck") 
+      ) {
+        int faceCounter = 0;
+        dt__forAllRefAuto(gr0->faces(), aFace0) {
+          dt__forAllRefAuto(gr1->faces(), aFace1) {
+            if ( dtGmshFace::isEqual( aFace0, aFace1 ) ) {
+              faceCounter = faceCounter + 1;
+              break;
+            }
+          }
+        }
+        if ( faceCounter != gr0->faces().size() ) return false;
+      }		
+      return true;
 		}
 		else {
 			return false;

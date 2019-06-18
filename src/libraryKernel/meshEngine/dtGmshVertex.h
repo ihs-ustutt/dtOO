@@ -25,7 +25,10 @@ namespace dtOO {
     virtual void setPosition(dtPoint3 const * const p);
     dtPoint3 cast2DtPoint3( void ) const;
     void addGEntity( ::GEntity * const gEnt );
-    static bool isEqual( ::GVertex const * const gv0, ::GVertex const * const gv1 );
+    static bool isEqual( 
+      ::GVertex const * const gv0, 
+      ::GVertex const * const gv1 
+    );
     virtual std::list< dtGmshEdge * > dtEdges( void ) const;
     std::string getPhysicalString( void ) const;    
   public:
