@@ -82,10 +82,18 @@ namespace dtOO {
 		::GModel::setCurrent( gm );
 	
     dt__forAllRefAuto(_regionLabel, aLabel) {
-      gm->getDtGmshRegionByPhysical(aLabel)->setGrading(_grading, _type);
+      dt__info( preUpdate(), << "Handling regions " << aLabel );
+      dt__forAllRefAuto(gm->getDtGmshRegionListByPhysical(aLabel), aReg) {
+        dt__info( preUpdate(), << "Set grading to region " << aReg );
+        aReg->setGrading(_grading, _type);
+      }
     }    
     dt__forAllRefAuto(_faceLabel, aLabel) {
-      gm->getDtGmshFaceByPhysical(aLabel)->setGrading(_grading, _type);
+      dt__info( preUpdate(), << "Handling faces " << aLabel );
+      dt__forAllRefAuto(gm->getDtGmshFaceListByPhysical(aLabel), aFace) {
+        dt__info( preUpdate(), << "Set grading to face " << aFace );
+        aFace->setGrading(_grading, _type);
+      }
     }        
     dt__forAllRefAuto(_edgeLabel, aLabel) {
       gm->getDtGmshEdgeByPhysical(aLabel)->setGrading(_grading[0], _type[0]);

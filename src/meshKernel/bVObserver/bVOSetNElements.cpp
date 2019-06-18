@@ -57,23 +57,23 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
 		
-    dt__forAllConstIter(std::vector< std::string >, _faceLabel, fLIt) {
+    dt__forAllRefAuto(_faceLabel, aLabel) {
       if (_nE.size() == 2) {
-        gm->getDtGmshFaceByPhysical(*fLIt)->meshWNElements(
-          _nE[0], _nE[1]
-        );
+        dt__forAllRefAuto(gm->getDtGmshFaceListByPhysical(aLabel), aFace) {
+          aFace->meshWNElements(_nE[0], _nE[1]);
+        }
       }
       else {
-        gm->getDtGmshFaceByPhysical(*fLIt)->meshWNElements(
-          _nE[0], _nE[1], _nE[2], _nE[3]
-        );        
+        dt__forAllRefAuto(gm->getDtGmshFaceListByPhysical(aLabel), aFace) {        
+          aFace->meshWNElements( _nE[0], _nE[1], _nE[2], _nE[3] );        
+        }
       }
     }
-    dt__forAllConstIter(std::vector< std::string >, _regionLabel, rLIt) {
+    dt__forAllRefAuto(_faceLabel, aLabel) {
       if (_nE.size() == 3) {
-        gm->getDtGmshRegionByPhysical(*rLIt)->meshWNElements(
-          _nE[0], _nE[1], _nE[2]
-        );
+        dt__forAllRefAuto(gm->getDtGmshRegionListByPhysical(aLabel), aReg) {        
+          aReg->meshWNElements( _nE[0], _nE[1], _nE[2] );
+        }
       }
     }    
   }
