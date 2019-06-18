@@ -38,6 +38,18 @@ namespace dtOO {
       buildPart()
     );
 
+    bool polynomial 
+    = 
+    qtXmlBase::getAttributeBool("polynomial", toBuild, false);
+    int absShape 
+    = 
+    qtXmlBase::getAttributeIntMuParse("absShape", toBuild, cV, aF, 2);
+    int maxDegree 
+    = 
+    qtXmlBase::getAttributeIntMuParse("maxDegree", toBuild, cV, aF, 11);
+    int nbSections 
+    = 
+    qtXmlBase::getAttributeIntMuParse("nbSections", toBuild, cV, aF, 30);
     
     std::vector< ::QDomElement > wE_v 
     = 
@@ -53,7 +65,11 @@ namespace dtOO {
       dtS.reset(
         bSplineSurface_pipeConstructOCC(
           analyticCurve::MustDownCast(aPath.get())->ptrConstDtCurve(),
-          dtXmlParserBase::getAttributeFloatMuParse("radius", toBuild, cV, aF)
+          dtXmlParserBase::getAttributeFloatMuParse("radius", toBuild, cV, aF),
+          polynomial, 
+          absShape, 
+          maxDegree, 
+          nbSections               
         ).result()
       );
     }
@@ -67,16 +83,39 @@ namespace dtOO {
       dtS.reset(      
         bSplineSurface_pipeConstructOCC(
           analyticCurve::MustDownCast(aPath.get())->ptrConstDtCurve(),
-          analyticCurve::MustDownCast(aSecOne.get())->ptrConstDtCurve()
+          analyticCurve::MustDownCast(aSecOne.get())->ptrConstDtCurve(),
+          polynomial, 
+          absShape, 
+          maxDegree, 
+          nbSections
         ).result()        
       );
     }    
+    else if ( wE_v.size()==3 ) {
+      dt__pH(analyticGeometry) aPath(
+        dtXmlParserBase::createAnalyticGeometry(wE_v[0], bC, cV, aF, aG)
+      );
+      dt__pH(analyticGeometry) aSecOne(
+        dtXmlParserBase::createAnalyticGeometry(wE_v[1], bC, cV, aF, aG)
+      );      
+      dt__pH(analyticGeometry) aSecTwo(
+        dtXmlParserBase::createAnalyticGeometry(wE_v[2], bC, cV, aF, aG)
+      );      
+      dtS.reset(
+        bSplineSurface_pipeConstructOCC(
+          analyticCurve::MustDownCast(aPath.get())->ptrConstDtCurve(),
+          analyticCurve::MustDownCast(aSecOne.get())->ptrConstDtCurve(),
+          analyticCurve::MustDownCast(aSecTwo.get())->ptrConstDtCurve(),
+          polynomial, 
+          absShape, 
+          maxDegree, 
+          nbSections              
+        ).result()        
+      );
+    }        
     else dt__throwUnexpected(buildPart());
-    if (
-      dtXmlParserBase::hasAttribute("exchange", toBuild)  
-      && 
-      dtXmlParserBase::getAttributeBool("exchange", toBuild)
-    ) {
+    
+    if ( dtXmlParserBase::getAttributeBool("exchange", toBuild, false) ) {
       dtS.reset( 
         bSplineSurface_exchangeSurfaceConstructOCC(dtS.get()).result()
       );
