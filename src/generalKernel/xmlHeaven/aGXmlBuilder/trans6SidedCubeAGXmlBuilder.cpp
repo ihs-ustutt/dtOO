@@ -12,6 +12,7 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.h>
 #include <geometryEngine/dtSurface.h>
 
 #include <QtXml/QDomElement>
@@ -45,8 +46,24 @@ namespace dtOO {
     = 
     dtXmlParserBase::getChildVector( "analyticGeometry", toBuild );
     if (wElementVec.size() == 6) {
+      std::vector< bool > exchange(6, false);
+      std::vector< std::string > reverse(6,"");
+      if ( dtXmlParserBase::hasAttribute("exchange", toBuild) ) {
+        exchange 
+        = 
+        dtXmlParserBase::getAttributeBoolVector( "exchange", toBuild );    
+      }
+      if ( dtXmlParserBase::hasAttribute("reverse", toBuild) ) {
+        reverse
+        = 
+        dtXmlParserBase::getAttributeStrVector( "reverse", toBuild );    
+      }      
+      dt__info(buildPart(), << "exchange = " << exchange);
+      dt__info(buildPart(), << "reverse = " << reverse);
+      
       int counter = 0;
       dt__forAllIter(std::vector< ::QDomElement >, wElementVec, it) {
+        
         //
         // get analyticGeometry
         //
@@ -56,61 +73,106 @@ namespace dtOO {
         //
         // check if it is a map2dTo3d
         //
-        mm.push_back( map2dTo3d::MustDownCast(aG_t->clone()) );
+        dt__pH(dtSurface) dtS(
+          analyticSurface::MustConstDownCast(
+            aG_t.get()
+          )->ptrConstDtSurface()->clone()
+        );
+        if ( exchange[counter] ) {
+          dtS.reset(
+            bSplineSurface_exchangeSurfaceConstructOCC( dtS.get() ).result()
+          );          
+        }
+        if ( reverse[counter] != "" ) {
+          if ( reverse[counter] == "u" ) {
+            dtS.reset(
+              geomSurface_surfaceReverseConstructOCC( 
+                dtS.get(), true, false 
+              ).result()
+            );          
+          }
+          else if ( reverse[counter] == "v" ) {
+            dtS.reset(
+              geomSurface_surfaceReverseConstructOCC( 
+                dtS.get(), false, true 
+              ).result()            
+            );
+          }
+          else if ( reverse[counter] == "uv" ) {
+            dtS.reset(
+              geomSurface_surfaceReverseConstructOCC( 
+                dtS.get(), true, true
+              ).result()            
+            );
+          }
+          else dt__throwUnexpected(buildPart());
+        }        
+        mm.push_back( 
+          new analyticSurface( dtS.get() )//map2dTo3d::MustDownCast(aG_t->clone()) 
+        );
         counter++;
       }
     }
-    else if (wElementVec.size() == 2) {
+    else if (wElementVec.size() == 2) {     
       std::vector< bool > exchange(2, false);
+      std::vector< std::string > reverse(2,"");
       if ( dtXmlParserBase::hasAttribute("exchange", toBuild) ) {
         exchange 
         = 
         dtXmlParserBase::getAttributeBoolVector( "exchange", toBuild );    
       }
-    
+      if ( dtXmlParserBase::hasAttribute("reverse", toBuild) ) {
+        reverse
+        = 
+        dtXmlParserBase::getAttributeStrVector( "reverse", toBuild );    
+      }        
       dt__info(buildPart(), << "exchange = " << exchange);
-      //
-      // get analyticGeometry
-      //
-      dt__pH(analyticGeometry const) aG0_t(
-        dtXmlParserBase::createAnalyticGeometry(&wElementVec[0], bC, cV, aF, aG)
-      );      
-      dt__pH(analyticGeometry const) aG1_t(
-        dtXmlParserBase::createAnalyticGeometry(&wElementVec[1], bC, cV, aF, aG)
-      );            
-      //
-      // check if it is a map2dTo3d
-      //
-      dt__ptrAss(
-        analyticSurface const * aS0, analyticSurface::ConstDownCast(aG0_t.get())
-      );
-      dt__ptrAss(
-        analyticSurface const * aS1, analyticSurface::ConstDownCast(aG1_t.get())
-      );
-
+      
       vectorHandling< dtSurface const * > cDtS;
-      
-      if ( !exchange[0] ) {
-        cDtS.push_back( aS0->ptrDtSurface()->clone() );
-      }
-      else {
-        cDtS.push_back(
-          bSplineSurface_exchangeSurfaceConstructOCC( 
-            aS0->ptrDtSurface() 
-          ).result()
+      dt__forFromToIndex(0,2,ii) {
+        dt__pH(dtSurface const) thisSurface( 
+          analyticSurface::ConstDownCast(
+            dt__tmpPtr(
+              analyticGeometry,
+              dtXmlParserBase::createAnalyticGeometry(
+                &wElementVec[ii], bC, cV, aF, aG
+              )
+            )
+          )->ptrConstDtSurface()->clone()
         );
+        
+        if ( exchange[ii] ) {
+          thisSurface.reset(
+            bSplineSurface_exchangeSurfaceConstructOCC(thisSurface.get()).result()
+          );
+        }
+        if ( reverse[ii] != "" ) {
+          if ( reverse[ii] == "u" ) {
+            thisSurface.reset(
+              geomSurface_surfaceReverseConstructOCC( 
+                thisSurface.get(), true, false 
+              ).result()
+            );          
+          }
+          else if ( reverse[ii] == "v" ) {
+            thisSurface.reset(
+              geomSurface_surfaceReverseConstructOCC( 
+                thisSurface.get(), false, true 
+              ).result()            
+            );
+          }
+          else if ( reverse[ii] == "uv" ) {
+            thisSurface.reset(
+              geomSurface_surfaceReverseConstructOCC( 
+                thisSurface.get(), true, true
+              ).result()            
+            );
+          }
+          else dt__throwUnexpected(buildPart());
+        }         
+        cDtS.push_back( thisSurface->clone() );
       }
-      if ( !exchange[1] ) {
-        cDtS.push_back( aS1->ptrDtSurface()->clone() );
-      }
-      else {
-        cDtS.push_back(
-          bSplineSurface_exchangeSurfaceConstructOCC( 
-            aS1->ptrDtSurface() 
-          ).result()
-        );
-      }
-      
+
       vectorHandling< dtSurface * > dtS
       = 
       bSplineSurfaces_bSplineSurfaceSkinConstructOCC(cDtS).result();
