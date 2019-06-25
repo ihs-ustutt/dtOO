@@ -40,16 +40,16 @@ namespace dtOO {
 
     bool polynomial 
     = 
-    qtXmlBase::getAttributeBool("polynomial", toBuild, false);
+    dtXmlParserBase::getAttributeBool("polynomial", toBuild, false);
     int absShape 
     = 
-    qtXmlBase::getAttributeIntMuParse("absShape", toBuild, cV, aF, 2);
+    dtXmlParserBase::getAttributeIntMuParse("absShape", toBuild, cV, aF, 2);
     int maxDegree 
     = 
-    qtXmlBase::getAttributeIntMuParse("maxDegree", toBuild, cV, aF, 11);
+    dtXmlParserBase::getAttributeIntMuParse("maxDegree", toBuild, cV, aF, 11);
     int nbSections 
     = 
-    qtXmlBase::getAttributeIntMuParse("nbSections", toBuild, cV, aF, 30);
+    dtXmlParserBase::getAttributeIntMuParse("nbSections", toBuild, cV, aF, 30);
     
     std::vector< ::QDomElement > wE_v 
     = 

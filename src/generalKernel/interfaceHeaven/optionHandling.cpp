@@ -124,7 +124,7 @@ namespace dtOO {
     aFPtrVec const * const aF					
 	) const {
      return qtXmlBase::muParseString( 
-      qtXmlBase::replaceDependencies(getOption(name), cV, aF)
+      dtXmlParserBase::replaceDependencies(getOption(name), cV, aF)
     );
   }
 	
@@ -140,7 +140,7 @@ namespace dtOO {
     aFPtrVec const * const aF					
 	) const {
      return qtXmlBase::muParseStringInt( 
-      qtXmlBase::replaceDependencies(getOption(name), cV, aF)
+      dtXmlParserBase::replaceDependencies(getOption(name), cV, aF)
     );
   }
 	

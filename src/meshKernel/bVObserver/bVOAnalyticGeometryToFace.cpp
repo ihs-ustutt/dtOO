@@ -1,7 +1,7 @@
 #include "bVOAnalyticGeometryToFace.h"
 
 #include <logMe/logMe.h>
-#include <xmlHeaven/qtXmlBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -44,14 +44,11 @@ namespace dtOO {
 //				increase_tolerance="1000."
 //			/>								
 
-    _inc = 1.;
-    if ( qtXmlBase::hasAttribute("increase_tolerance", element) ) {
-      _inc 
-      = 
-      qtXmlBase::getAttributeFloatMuParse(
-        "increase_tolerance", element, cV, aF
-      );
-    }
+    _inc 
+    = 
+    dtXmlParserBase::getAttributeFloatMuParse(
+      "increase_tolerance", element, cV, aF, 1.
+    );
     dt__forAllRefAuto(
       qtXmlBase::getAttributeStrVector("analyticGeometry", element),
       anEl

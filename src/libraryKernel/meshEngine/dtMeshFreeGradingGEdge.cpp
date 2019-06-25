@@ -50,16 +50,16 @@ namespace dtOO {
       _gradingInt[ _typeTransfinite[ii] ] = _grading[ ii ];
     }
     
-    _tol = 1.e-8;
-    if ( qtXmlBase::hasAttribute("tolerance", element) ) {
-      _tol = qtXmlBase::getAttributeFloatMuParse("tolerance", element, cV);
-    }    
-    _maxSmooth = 20;
-    if ( qtXmlBase::hasAttribute("nSmoothSteps", element) ) {
-      _maxSmooth 
-      = 
-      qtXmlBase::getAttributeIntMuParse("nSmoothSteps", element, cV);
-    }      
+    _tol 
+    = 
+    dtXmlParserBase::getAttributeFloatMuParse(
+      "tolerance", element, cV, aF, 1.e-8
+    );
+    _maxSmooth 
+    = 
+    dtXmlParserBase::getAttributeIntMuParse(
+      "nSmoothSteps", element, cV, aF, 20
+    );
   }
 
   void dtMeshFreeGradingGEdge::operator()( dtGmshEdge * dtge) {

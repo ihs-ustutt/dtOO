@@ -158,11 +158,11 @@ namespace dtOO {
     
     _surface= aG->get(surface);
     _refSurface= aG->get(refSurface);
-    _printlevel=qtXmlBase::getAttributeIntMuParse("Printlevel", element,cV);
-    _tolerance=qtXmlBase::getAttributeFloatMuParse("tolerance", element,cV);
-    _transition = qtXmlBase::getAttributeFloatMuParse("interval", element,cV);
-    _span = qtXmlBase::getAttributeFloatMuParse("span", element,cV);
-    _precision = qtXmlBase::getAttributeFloatMuParse("precision", element,cV);
+    _printlevel=dtXmlParserBase::getAttributeIntMuParse("Printlevel", element,cV);
+    _tolerance=dtXmlParserBase::getAttributeFloatMuParse("tolerance", element,cV);
+    _transition = dtXmlParserBase::getAttributeFloatMuParse("interval", element,cV);
+    _span = dtXmlParserBase::getAttributeFloatMuParse("span", element,cV);
+    _precision = dtXmlParserBase::getAttributeFloatMuParse("precision", element,cV);
     
     }
     catch (std::exception& e) {

@@ -3,7 +3,7 @@
 #include "dtGmshRegion.h"
 #include "dtGmshModel.h"
 #include "dtGmshFace.h"
-#include <xmlHeaven/qtXmlBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <gmsh/meshGRegion.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MTriangle.h>
@@ -46,22 +46,25 @@ namespace dtOO {
     
     _relax 
     = 
-    qtXmlBase::getAttributeFloatMuParse("relax", element, cV, aF);
+    dtXmlParserBase::getAttributeFloatMuParse("relax", element, cV, aF);
     _minQShapeMetric 
     = 
-    qtXmlBase::getAttributeFloatMuParse("minQShapeMetric", element, cV, aF);    
+    dtXmlParserBase::getAttributeFloatMuParse(
+      "minQShapeMetric", element, cV, aF
+    );    
     _nPyramidOpenSteps
     = 
-    qtXmlBase::getAttributeIntMuParse("nPyramidOpenSteps", element, cV, aF);     
+    dtXmlParserBase::getAttributeIntMuParse(
+      "nPyramidOpenSteps", element, cV, aF
+    );     
     _nSmooths
     = 
-    qtXmlBase::getAttributeIntMuParse("nSmooths", element, cV, aF);   
-    _maxHeight = std::numeric_limits<float>::max();
-    if ( qtXmlBase::hasAttribute("maxHeight", element) ) {
-      _maxHeight
-      = 
-      qtXmlBase::getAttributeFloatMuParse("maxHeight", element, cV, aF);       
-    }
+    dtXmlParserBase::getAttributeIntMuParse("nSmooths", element, cV, aF);   
+    _maxHeight
+    = 
+    dtXmlParserBase::getAttributeFloatMuParse(
+      "maxHeight", element, cV, aF, std::numeric_limits<float>::max()
+    );
   }
 
   void dtMeshGRegion::operator()( dtGmshRegion * dtgr) {

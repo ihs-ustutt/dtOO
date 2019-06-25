@@ -2,7 +2,7 @@
 
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
-#include <xmlHeaven/qtXmlBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 
 #include "dtMeshGRegion.h"
 #include "dtGmshModel.h"
@@ -43,7 +43,7 @@ namespace dtOO {
     
     _tetOpt 
     = 
-    qtXmlBase::replaceDependencies(
+    dtXmlParserBase::replaceDependencies(
       qtXmlBase::getAttributeStr("tetgenOption", element), cV
     );
     _tetOpt.append("Y");    

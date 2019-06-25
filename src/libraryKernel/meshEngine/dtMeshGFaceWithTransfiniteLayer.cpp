@@ -44,22 +44,26 @@ namespace dtOO {
   ) {
     dtMesh2DOperator::init(element, bC, cV, aF, aG, bV, mO);
     
-    _direction = qtXmlBase::getAttributeIntMuParse("direction", element, cV);
+    _direction 
+    = 
+    dtXmlParserBase::getAttributeIntMuParse("direction", element, cV);
     _nLayers = std::vector< int >(2,0);
     if ( qtXmlPrimitive::isAttributeVector("nLayers", element) ) {
       _nLayers
       = 
-      qtXmlBase::getAttributeIntVectorMuParse("nLayers", element, cV, aF);
+      dtXmlParserBase::getAttributeIntVectorMuParse("nLayers", element, cV, aF);
     }
     else {
       _nLayers[0]
       =       
-      qtXmlBase::getAttributeIntMuParse("nLayers", element, cV),
+      dtXmlParserBase::getAttributeIntMuParse("nLayers", element, cV),
       _nLayers[1] = _nLayers[0];
     }
     _nSmooth = 0;
     if ( qtXmlBase::hasAttribute("nSmooth", element) ) {
-      _nSmooth = qtXmlBase::getAttributeIntMuParse("nSmooth", element, cV);       
+      _nSmooth 
+      = 
+      dtXmlParserBase::getAttributeIntMuParse("nSmooth", element, cV);       
     }
   }
       

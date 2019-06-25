@@ -40,6 +40,14 @@
 #include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
 
 namespace dtOO {
+  std::string dtXmlParserBase::_CALCSIGN = "`";
+  std::string dtXmlParserBase::_POINTSIGN = "!";
+  std::string dtXmlParserBase::_VECTORSIGN = "|";
+  std::string dtXmlParserBase::_DTTSIGN = "~";
+  std::string dtXmlParserBase::_CVSIGN = "#";
+  std::string dtXmlParserBase::_AFSIGN = "$";
+  std::string dtXmlParserBase::_AGSIGN = "@";
+  
   dtXmlParserBase::dtXmlParserBase() {
   }
 
@@ -185,7 +193,9 @@ namespace dtOO {
       std::vector< float > cXYZ 
       = 
       muParseCSString(
-        replaceDependencies( getAttributeStr("coordinates", *toBuildP), bC, cV, aF, aG )
+        replaceDependencies( 
+          getAttributeStr("coordinates", *toBuildP), bC, cV, aF, aG 
+        )
       );
 			basicP->push_back( dtPointD(cXYZ.size(), cXYZ.begin(), cXYZ.end()) );      
     }
@@ -810,7 +820,9 @@ namespace dtOO {
         std::vector< float > cXYZ 
         = 
         muParseCSString(
-          replaceDependencies( getAttributeStr("xyz", *toBuildP), bC, cV, aF, aG )
+          replaceDependencies( 
+            getAttributeStr("xyz", *toBuildP), bC, cV, aF, aG 
+          )
         );
         vv = dtVector3(cXYZ[0], cXYZ[1], cXYZ[2]);      
       }      
@@ -938,6 +950,248 @@ namespace dtOO {
 		return getDtPoint3(getAttributeStr("label", toBuildP), bC);
 	}	
 
+  std::string dtXmlParserBase::replaceDependencies( 
+	  std::string const expression, 
+		cVPtrVec const * const cV
+	) {
+    std::string returnExpression;
+    returnExpression = expression;
+    unsigned int found;
+    //
+    // check if there is a constValue in expression
+    // 1. * #cVLabel#
+    //
+    found = returnExpression.find(_CVSIGN);
+    while ( found < returnExpression.size() ) {
+      //
+      // find start and end of function
+      //
+      unsigned int foundEnd = returnExpression.find(_CVSIGN, found+1);
+      int replaceStart = found;
+      int replaceEnd = foundEnd-found+1;
+      
+      //
+      // extract constValue label and option
+      std::string cVLabel
+      = 
+      returnExpression.substr(replaceStart+1, replaceEnd-2);
+      if ( stringContains("[", cVLabel) ) {
+        std::string cVOption
+        = 
+        stringPrimitive::getStringBetweenAndRemove("[", "]", &cVLabel);
+        dt__debug( replaceDependencies(), << "cVOption = " << cVOption );
+        //
+        // add array index i -> label_i
+        //
+        cVLabel = cVLabel + "_" + intToString( muParseStringInt(cVOption) );
+      }
+      
+      //
+      // replace constValue string by value
+      //      
+      returnExpression.replace(
+        replaceStart, replaceEnd, floatToString( cV->get(cVLabel)->getValue() )
+      );
+
+      //
+      // go to next constValue
+      //
+      found = returnExpression.find(_CVSIGN);
+    }
+    //
+    // check if there is an instruction to calculate in expression
+    // `#cVLabel# + #cVLabel#`
+    //
+    found = returnExpression.find(_CALCSIGN);
+    while ( found < returnExpression.size() ) {
+      //
+      // find start and end of function
+      //
+      unsigned int foundEnd = returnExpression.find(_CALCSIGN, found+1);
+      int replaceStart = found;
+      int replaceEnd = foundEnd-found+1;
+      
+      //
+      // muparse string
+      //
+      returnExpression.replace(
+        replaceStart, 
+        replaceEnd, 
+        floatToString(
+          muParseString(        
+            returnExpression.substr(replaceStart+1, replaceEnd-2)
+          )
+        )
+      );
+
+      //
+      // go to next constValue
+      //
+      found = returnExpression.find(_CALCSIGN);
+    }    
+    return returnExpression;
+  }
+  
+  std::string dtXmlParserBase::replaceDependencies( 
+	  std::string const expression, 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF
+	) {
+    std::string returnExpression = expression;
+          
+    //
+    // crumble string down, respect brackets
+    //
+    std::vector< std::string > crumbles = crumbleDown("(", ")", expression);
+    
+    dt__forAllRefAuto(crumbles, aCrumble) {
+      if ( !stringContains(_AFSIGN, aCrumble) ) continue;
+      returnExpression 
+      = 
+      replaceStringInString(
+        aCrumble, 
+        replaceDependencies(aCrumble, cV, aF),
+        returnExpression
+      );
+    }
+    
+    //
+    // check if there is a function in expression
+    // $functionName(value * #constValue#)$
+    //
+    unsigned int found = returnExpression.find(_AFSIGN);
+    while ( found < returnExpression.size() ) {
+      //
+      // find start and end of function
+      //
+      //unsigned int foundEnd = returnExpression.find_last_of(_AFSIGN);
+      unsigned int foundEnd = returnExpression.find_first_of(_AFSIGN, found+1);
+      int replaceStart = found;
+      int replaceEnd = foundEnd-found+1;
+      std::string replaceString 
+      = 
+      returnExpression.substr(replaceStart+1, replaceEnd-2);
+     
+      //
+      // replace in argument
+      //
+      std::string arg 
+      = 
+      replaceDependencies(
+        getStringBetweenFirstLast("(", ")", replaceString), cV, aF
+      );
+
+      //
+      // get and cast analyticFunction
+      //
+      std::string aFLabel = getStringBetween("", "(", replaceString);
+      std::string aFOption = "";
+      if ( stringPrimitive::stringContains("[", aFLabel) ) {
+        aFOption 
+        = 
+        stringPrimitive::getStringBetweenAndRemove("[", "]", &aFLabel);
+      }
+      analyticFunction const * const theAF = aF->get(aFLabel); 
+      
+      scaFunction const * const sF = scaFunction::ConstDownCast(theAF);
+      vec2dFunction const * const v2dF = vec2dFunction::ConstDownCast(theAF);
+      vec3dFunction const * const v3dF = vec3dFunction::ConstDownCast(theAF);
+      
+      std::vector< float > pp; 
+      std::vector< float > argCS 
+      = 
+      muParseCSString( replaceDependencies(arg, cV, aF) );
+
+        
+      if (sF) {
+        if (aFOption == "") {
+          pp = sF->Y( argCS ).stdVector();
+        }        
+        else dt__throwUnexpected(replaceDependencies());        
+      }
+      else if (v2dF) {
+        if (aFOption == "") {
+          pp = v2dF->Y( argCS ).stdVector();
+        }    
+        else if (aFOption == "%x") {
+          aFX xx = v2dF->Y( v2dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[0];
+        }           
+        else if (aFOption == "%y") {
+          aFX xx = v2dF->Y( v2dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[1];
+        }         
+        else dt__throwUnexpected(replaceDependencies()); 
+      }
+      else if (v3dF) {
+        if (aFOption == "") {
+          pp = v3dF->Y( argCS ).stdVector();
+        }       
+        else if (aFOption == "%x") {
+          aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[0];
+        }           
+        else if (aFOption == "%y") {
+          aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[1];
+        } 
+        else if (aFOption == "%z") {
+          aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
+          pp.resize(1);
+          pp[0] = xx[2];
+        }         
+        else dt__throwUnexpected(replaceDependencies()); 
+      }
+      else dt__throwUnexpected(replaceDependencies());
+      
+      if (pp.size() == 3) {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(pp[0])
+          +
+          ","
+          +
+          stringPrimitive::floatToString(pp[1])
+          +
+          ","
+          +
+          stringPrimitive::floatToString(pp[2])
+        );
+      }
+      else if (pp.size() == 2) {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(pp[0])
+          +
+          ","
+          +
+          stringPrimitive::floatToString(pp[1])
+        );
+      }        
+      else if (pp.size() == 1) {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(pp[0])
+        );
+      }            
+      else dt__throwUnexpected(replaceDependencies());
+        
+      //
+      // go to next analyticGeometry
+      //
+      found = returnExpression.find(_AFSIGN);  
+    }
+
+    return replaceDependencies(returnExpression, cV);
+  }
+  
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
 		cVPtrVec const * const cV,
@@ -1525,7 +1779,7 @@ namespace dtOO {
     
     //
     // check if there is a point in expression
-    // %aPoint% or %aPoint[x]%
+    // !aPoint! or !aPoint[x]!
     //
     found = returnExpression.find(_POINTSIGN);
     while ( found < returnExpression.size() ) {
@@ -1540,7 +1794,7 @@ namespace dtOO {
       returnExpression.substr(replaceStart+1, replaceEnd-2);
      
       //
-      // get and cast analyticGeometry
+      // get option
       //
       std::string label = replaceString;
       std::string option = "";
@@ -1585,6 +1839,116 @@ namespace dtOO {
           ","
           +
           stringPrimitive::floatToString(thePoint.z())
+        );        
+      }
+      else dt__throwUnexpected(replaceDependencies());        
+
+      //
+      // go to next transformer
+      //
+      found = returnExpression.find(_POINTSIGN);
+    }
+    
+    //
+    // check if there is a vector in expression
+    // %aVector% or %aVector[x]%
+    //
+    found = returnExpression.find(_VECTORSIGN);
+    while ( found < returnExpression.size() ) {
+      //
+      // find start and end
+      //
+      unsigned int foundEnd 
+      = 
+      returnExpression.find_first_of(_VECTORSIGN, found+1);
+      int replaceStart = found;
+      int replaceEnd = foundEnd-found+1;
+      std::string replaceString 
+      = 
+      returnExpression.substr(replaceStart+1, replaceEnd-2);
+     
+      //
+      // replace in argument
+      //
+      
+      std::vector< float > argCS;
+      if ( stringPrimitive::stringContains("(", replaceString) ) {
+//        arg = getStringBetweenAndRemove("(", ")", &replaceString);//replaceDependencies( arg, bC, cV, aF, aG );
+        argCS 
+        = 
+        muParseCSString( 
+          replaceDependencies(
+            getStringBetweenAndRemove("(", ")", &replaceString), bC, cV, aF, aG
+          ) 
+        );
+      }
+
+      //
+      // get option
+      //
+      std::string label = replaceString;
+      std::string option = "";
+      if ( stringPrimitive::stringContains("[", label) ) {
+        option 
+        = 
+        stringPrimitive::getStringBetweenAndRemove("[", "]", &label);
+      }
+      dtVector3 const theVector = bC->constPtrVectorContainer()->get(label); 
+      
+      if (option == "x") {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(theVector.x())
+        );        
+      }
+      else if (option == "y") {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(theVector.y())
+        );        
+      }
+      else if (option == "z") {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(theVector.z())
+        );        
+      }     
+      else if (option == "crossProduct") {
+        dtVector3 resVector 
+        = 
+        dtLinearAlgebra::crossProduct(
+          theVector, dtVector3(argCS[0], argCS[1], argCS[2])
+        );
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(resVector.x())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(resVector.y())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(resVector.z())
+        );           
+      }
+      else if (option == "") {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(theVector.x())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(theVector.y())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(theVector.z())
         );        
       }
       else dt__throwUnexpected(replaceDependencies());        
@@ -1672,6 +2036,121 @@ namespace dtOO {
     
     return replaceDependencies(returnExpression, cV, aF, aG);    
   } 
+  
+  float dtXmlParserBase::getAttributeFloatMuParse( 
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV
+  ) {
+    return muParseString( 
+      replaceDependencies( getAttributeStr(attName, element), cV )
+    );
+  }
+  
+  float dtXmlParserBase::getAttributeFloatMuParse( 
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF
+  ) {
+    return muParseString( 
+      replaceDependencies( getAttributeStr(attName, element), cV, aF )
+    );
+  }
+  
+  float dtXmlParserBase::getAttributeFloatMuParse(
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    float const & def
+  ) {
+    if ( hasAttribute(attName, element) ) {
+      return getAttributeFloatMuParse( attName, element, cV, aF );
+    }
+    else return def;
+  }    
+
+  int dtXmlParserBase::getAttributeIntMuParse(
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV
+  ) {
+    return muParseStringInt( 
+      replaceDependencies( getAttributeStr(attName, element), cV )
+    );
+  }  
+  
+  int dtXmlParserBase::getAttributeIntMuParse(
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF 
+  ) {
+    return muParseStringInt( 
+      replaceDependencies( getAttributeStr(attName, element), cV, aF )
+    );
+  }
+
+  int dtXmlParserBase::getAttributeIntMuParse(
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    int const & def
+  ) {
+    if ( hasAttribute(attName, element) ) {
+      return getAttributeIntMuParse( attName, element, cV, aF );
+    }
+    else return def;
+  }  
+  
+	std::vector< float > dtXmlParserBase::getAttributeFloatVectorMuParse( 
+		std::string const attName, 
+		::QDomElement const element, 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF 
+	) {
+		std::string att = getAttributeStr(attName, element);
+		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
+		std::vector< float > floatVec(attVec.size(), 0.);
+		int counter = 0;
+		for ( auto &el : attVec ) {		
+			floatVec[counter] = muParseString( replaceDependencies(el, cV, aF) );
+			counter++;
+		}		
+		return floatVec;
+	}
+
+	std::vector< double > dtXmlParserBase::getAttributeDoubleVectorMuParse( 
+		std::string const attName, 
+		::QDomElement const element, 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF 
+	) {
+		std::vector< float > floatVec
+    =
+    getAttributeFloatVectorMuParse(attName, element, cV, aF);
+    
+    return std::vector< double >( floatVec.begin(), floatVec.end() );
+	}  
+
+	std::vector< int > dtXmlParserBase::getAttributeIntVectorMuParse( 
+		std::string const attName, 
+		::QDomElement const element, 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF 
+	) {
+		std::string att = getAttributeStr(attName, element);
+		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
+		std::vector< int > intVec(attVec.size(), 0.);
+		int counter = 0;
+		for ( auto &el : attVec ) {		
+			intVec[counter] = muParseStringInt( replaceDependencies(el, cV, aF) );
+			counter++;
+		}		
+		return intVec;
+	}
   
   float dtXmlParserBase::getAttributeFloatMuParse( 
     std::string const attName, 

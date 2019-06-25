@@ -14,7 +14,7 @@
 #include "dtGmshModel.h"
 #include <interfaceHeaven/optionHandling.h>
 
-#include <xmlHeaven/qtXmlBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
 
@@ -73,20 +73,24 @@ namespace dtOO {
     
     _maxGrowingRatePerStep 
 		= 
-		qtXmlBase::getAttributeFloatMuParse(
+		dtXmlParserBase::getAttributeFloatMuParse(
       "maxGrowingRatePerStep", element, cV, aF
     );
 		_nNormalSmoothingSteps 
 		= 
-		qtXmlBase::getAttributeIntMuParse("nNormalSmoothingSteps", element, cV, aF);		
+		dtXmlParserBase::getAttributeIntMuParse(
+      "nNormalSmoothingSteps", element, cV, aF
+    );		
 		_nGrowingSmoothingSteps 
 		=
-		qtXmlBase::getAttributeIntMuParse(
+		dtXmlParserBase::getAttributeIntMuParse(
       "nGrowingSmoothingSteps", element, cV, aF
     );		
 		_maxDihedralAngle 
 		= 
-		qtXmlBase::getAttributeFloatMuParse("maxDihedralAngle", element, cV, aF);		
+		dtXmlParserBase::getAttributeFloatMuParse(
+      "maxDihedralAngle", element, cV, aF
+    );		
     
 		//
 		// boundedVolume
@@ -110,14 +114,18 @@ namespace dtOO {
     if ( qtXmlPrimitive::isAttributeVector("nSpacingSteps", element) ) {
       _nSpacingSteps 
       = 
-      qtXmlBase::getAttributeIntVectorMuParse("nSpacingSteps", element, cV, aF);
+      dtXmlParserBase::getAttributeIntVectorMuParse(
+        "nSpacingSteps", element, cV, aF
+      );
     }
     else {
       _nSpacingSteps
       =
       std::vector< int >(
         _faceLabel.size(), 
-        qtXmlBase::getAttributeIntMuParse("nSpacingSteps", element, cV, aF)
+        dtXmlParserBase::getAttributeIntMuParse(
+          "nSpacingSteps", element, cV, aF
+        )
       );
     }
     dt__throwIf( _faceLabel.size()!=_nSpacingSteps.size(), init() );

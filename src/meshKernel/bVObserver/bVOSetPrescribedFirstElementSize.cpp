@@ -1,7 +1,7 @@
 #include "bVOSetPrescribedFirstElementSize.h"
 
 #include <logMe/logMe.h>
-#include <xmlHeaven/qtXmlBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/scaOneDPolyInterface.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
@@ -38,7 +38,9 @@ namespace dtOO {
     _type = qtXmlBase::getAttributeInt("type", element);
     _firstElementSize 
     = 
-    qtXmlBase::getAttributeFloatMuParse("firstElementSize", element, cV, aF);
+    dtXmlParserBase::getAttributeFloatMuParse(
+      "firstElementSize", element, cV, aF
+    );
     
     scaOneDPolyInterface const * const s1dPoly
     =
@@ -70,7 +72,9 @@ namespace dtOO {
     //
     ::GModel::setCurrent(gm);
     
-    logContainer< bVOSetPrescribedFirstElementSize > logC(logINFO, "preUpdate()");
+    logContainer< bVOSetPrescribedFirstElementSize > logC(
+      logINFO, "preUpdate()"
+    );
     logC() << "firstElementSize = " << _firstElementSize << std::endl;
     dt__forAllRefAuto( gm->dtEdges(), aEdge) {
       if ( aEdge->meshAttributes.typeTransfinite == _type ) {
@@ -116,7 +120,9 @@ namespace dtOO {
         min->SetMaxIterations(1000);
         min->SetTolerance( 1.e-8 );			
         min->SetPrintLevel(
-          staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel") 
+          staticPropertiesHandler::getInstance()->getOptionInt(
+            "root_printLevel"
+          ) 
         );
 
         //

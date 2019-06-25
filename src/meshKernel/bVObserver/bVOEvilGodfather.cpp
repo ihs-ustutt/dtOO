@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <logMe/dtParMacros.h>
-#include <xmlHeaven/qtXmlBase.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -49,14 +49,18 @@ namespace dtOO {
 //      perturbTet="0.5"
 //		  perHex="0.10"
 //		/>
-		_perHex = qtXmlBase::getAttributeFloatMuParse("perHex", element, cV, aF);		
-    _perTet = qtXmlBase::getAttributeFloatMuParse("perTet", element, cV, aF);		
+		_perHex 
+    = 
+    dtXmlParserBase::getAttributeFloatMuParse("perHex", element, cV, aF);		
+    _perTet
+    = 
+    dtXmlParserBase::getAttributeFloatMuParse("perTet", element, cV, aF);		
     _perturbTet 
     = 
-    qtXmlBase::getAttributeFloatMuParse("perturbTet", element, cV, aF);	    
+    dtXmlParserBase::getAttributeFloatMuParse("perturbTet", element, cV, aF);	    
     _perturbHex 
     = 
-    qtXmlBase::getAttributeFloatMuParse("perturbHex", element, cV, aF);	        
+    dtXmlParserBase::getAttributeFloatMuParse("perturbHex", element, cV, aF);	        
   }
   
   void bVOEvilGodfather::postUpdate( void ) {
