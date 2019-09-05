@@ -104,6 +104,33 @@ namespace dtOO {
     int tag = 0;
     _gm->addIfFaceToGmshModel(thisFace.get(), &tag, edges, ori);    
     
+    //
+    // handle internal edges
+    //
+    std::vector< ::GEdge * > iedges;
+    if ( qtXmlPrimitive::hasChild("internalEdgeLoop", element) ) {
+      dt__forAllRefAuto(
+        qtXmlPrimitive::getChildVector("internalEdgeLoop", element),
+        iEdgeElement
+      ) {
+        dt__forAllRefAuto(
+          qtXmlPrimitive::getChildVector( "analyticGeometry", iEdgeElement ), 
+          aEdgeLabel
+        ) {
+          dt__pH(analyticGeometry) thisEdge;
+          thisEdge.reset(
+            dtXmlParserBase::createAnalyticGeometry(aEdgeLabel, bC, cV, aF, aG)
+          );
+          int tag;
+          _gm->addIfToGmshModel(thisEdge.get(), &tag);
+          iedges.push_back( _gm->getEdgeByTag( tag ) );
+        }    
+        ::GEdgeLoop el(iedges);
+        for(::GEdgeLoop::citer it = el.begin(); it != el.end(); ++it){
+          _gm->getDtGmshFaceByTag(tag)->addEdge( it->ge, it->_sign );
+        }        
+      }
+    }    
     return tag;
   }
   

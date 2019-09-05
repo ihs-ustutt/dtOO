@@ -34,6 +34,7 @@
 #include "bVOSetPrescribedFirstElementSize.h"
 #include "bVOForceMeshPointCoordinates.h"
 #include "bVOAnalyticFunctionToFace.h"
+#include "bVOWriteINP.h"
 
 namespace dtOO {
   dt__pH(bVOInterfaceFactory) bVOInterfaceFactory::_instance(NULL);
@@ -119,6 +120,7 @@ namespace dtOO {
     _instance->_builder.push_back( new bVOSetPrescribedFirstElementSize() );
     _instance->_builder.push_back( new bVOForceMeshPointCoordinates() );
     _instance->_builder.push_back( new bVOAnalyticFunctionToFace() );
+    _instance->_builder.push_back( new bVOWriteINP() );
     return _instance.get();
   }    
 }

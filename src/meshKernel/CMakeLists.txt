@@ -32,6 +32,7 @@ SET(HEADERS
   bVObserver/bVOSetPrescribedFirstElementSize.h
   bVObserver/bVOForceMeshPointCoordinates.h
   bVObserver/bVOAnalyticFunctionToFace.h
+  bVObserver/bVOWriteINP.h
   boundedVolume.h
   boundedVolumeFactory.h
   map3dTo3dGmsh.h
@@ -79,6 +80,7 @@ SET(SOURCES
   bVObserver/bVOWriteSU2.cpp
   bVObserver/bVOForceMeshPointCoordinates.cpp
   bVObserver/bVOAnalyticFunctionToFace.cpp
+  bVObserver/bVOWriteINP.cpp
   boundedVolume.cpp
   boundedVolumeFactory.cpp
   map3dTo3dGmsh.cpp
