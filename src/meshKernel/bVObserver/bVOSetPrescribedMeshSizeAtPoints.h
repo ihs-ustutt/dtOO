@@ -27,7 +27,7 @@ namespace dtOO {
     );    
     virtual void preUpdate( void );
   private:
-    float _meshSize;
+    std::vector< float > _meshSize;
   };
 }
 #endif	/* bVOSetPrescribedMeshSizeAtPoints_H */

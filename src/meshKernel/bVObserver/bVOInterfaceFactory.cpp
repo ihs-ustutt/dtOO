@@ -35,6 +35,7 @@
 #include "bVOForceMeshPointCoordinates.h"
 #include "bVOAnalyticFunctionToFace.h"
 #include "bVOWriteINP.h"
+#include "bVOSetOrder.h"
 
 namespace dtOO {
   dt__pH(bVOInterfaceFactory) bVOInterfaceFactory::_instance(NULL);
@@ -121,6 +122,7 @@ namespace dtOO {
     _instance->_builder.push_back( new bVOForceMeshPointCoordinates() );
     _instance->_builder.push_back( new bVOAnalyticFunctionToFace() );
     _instance->_builder.push_back( new bVOWriteINP() );
+    _instance->_builder.push_back( new bVOSetOrder() );
     return _instance.get();
   }    
 }

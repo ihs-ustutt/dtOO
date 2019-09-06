@@ -37,9 +37,19 @@ namespace dtOO {
 		//   meshSize="0.1"
 		// />
 								
-		_meshSize
-		= 
-		dtXmlParserBase::getAttributeFloatMuParse("meshSize", element, cV, aF);
+    if ( dtXmlParserBase::isAttributeVector("meshSize", element) ) {
+      _meshSize
+      = 
+      dtXmlParserBase::getAttributeFloatVectorMuParse("meshSize", element, cV, aF);
+    }
+    else {
+      _meshSize
+      = 
+      std::vector< float >( 
+        1, 
+        dtXmlParserBase::getAttributeFloatMuParse("meshSize", element, cV, aF) 
+      );
+    }
   }
   
   void bVOSetPrescribedMeshSizeAtPoints::preUpdate( void ) {
@@ -50,8 +60,20 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
     
+    if (_meshSize.size() == 1) {
+      _meshSize
+      = 
+      std::vector< float >( gm->getNumVertices(), _meshSize[0] );
+    }
+    dt__throwIf(
+      gm->getNumVertices()!=_meshSize.size(), 
+      preUpdate()
+    );
+    
+    int cc = 0;
     dt__forAllRefAuto(gm->vertices(), aV) {
-      aV->setPrescribedMeshSizeAtVertex(_meshSize);
+      aV->setPrescribedMeshSizeAtVertex(_meshSize[cc]);
+      cc = cc + 1;
     }
 
     //
