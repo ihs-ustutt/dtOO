@@ -69,7 +69,7 @@ namespace dtOO {
         }
       }
     }
-    dt__forAllRefAuto(_faceLabel, aLabel) {
+    dt__forAllRefAuto(_regionLabel, aLabel) {
       if (_nE.size() == 3) {
         dt__forAllRefAuto(gm->getDtGmshRegionListByPhysical(aLabel), aReg) {        
           aReg->meshWNElements( _nE[0], _nE[1], _nE[2] );
