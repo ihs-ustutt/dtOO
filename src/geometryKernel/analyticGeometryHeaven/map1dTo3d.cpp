@@ -15,6 +15,7 @@
 
 #include <analyticFunctionHeaven/scaLinearOneD.h>
 #include "scaOneDInMap1dTo3d.h"
+#include "aGBuilder/dtPoint3_map1dTo3dPoint.h"
 
 namespace dtOO { 
   float map1dTo3d::_deltaPer 
@@ -112,14 +113,12 @@ namespace dtOO {
   }
   
   vectorHandling< renderInterface * > map1dTo3d::getRender( void ) const {
-		vectorHandling< dtPoint3 > pp(getRenderResolutionU());
-    float interval = (getUMax() - getUMin()) / (getRenderResolutionU()-1);
-    for(int ii=0; ii<getRenderResolutionU(); ii++){
-      float paraValue = getUMin() + ii * interval;
-      pp[ii] = getPoint(paraValue);
-    }
 		vectorHandling< renderInterface * > rV;
-		rV.push_back( new solid3dLine(pp) );
+		rV.push_back( 
+      new solid3dLine(
+        dtPoint3_map1dTo3dPoint(this, getRenderResolutionU()).result()
+      ) 
+    );
 
     return rV;
   }
