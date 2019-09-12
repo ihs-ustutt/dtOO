@@ -16,7 +16,8 @@ namespace dtOO {
       std::vector< float > const & weight, 
       std::vector< float > const & knot, 
       std::vector< int > const & mult, 
-      int const & order 
+      int const & order,
+      bool const & periodic
     );
     virtual ~bSplineCurve_poleWeightKnotMultOrderConstructOCC();
     dtCurve * result( void );

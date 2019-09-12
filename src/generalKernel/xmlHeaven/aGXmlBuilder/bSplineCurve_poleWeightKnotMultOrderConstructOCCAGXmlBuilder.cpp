@@ -34,13 +34,7 @@ namespace dtOO {
     dt__throwIf(
       !dtXmlParserBase::hasChild("Point_3", toBuild)
       ||
-      !dtXmlParserBase::hasAttribute("weights", toBuild)
-      ||
-      !dtXmlParserBase::hasAttribute("knots", toBuild)
-      ||
-      !dtXmlParserBase::hasAttribute("mults", toBuild)
-      ||
-      !dtXmlParserBase::hasAttribute("order", toBuild),
+      !dtXmlParserBase::hasAttribute("weights|knots|mults|order", toBuild),
       buildPart()
     );    
       //
@@ -72,7 +66,8 @@ namespace dtOO {
           dtXmlParserBase::getAttributeIntVectorMuParse(
             "mults", toBuild, cV, aF
           ), 
-          dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV)
+          dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV),
+          dtXmlParserBase::getAttributeBool("periodic", toBuild, false)
         ).result() 
       );        
       

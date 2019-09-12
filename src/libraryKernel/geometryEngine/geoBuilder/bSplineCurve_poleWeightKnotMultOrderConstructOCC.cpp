@@ -19,7 +19,8 @@ namespace dtOO {
     std::vector< float > const & weight, 
     std::vector< float > const & knot, 
     std::vector< int > const & mult, 
-    int const & order 
+    int const & order,
+    bool const & periodic  
   ) {
     //
     // convert arrays
@@ -41,7 +42,9 @@ namespace dtOO {
 		Handle(Geom_BSplineCurve) curve;
     
     dt__tryOcc(      
-      curve = new Geom_BSplineCurve( poles, weights, knots, mults, order );
+      curve 
+      = 
+      new Geom_BSplineCurve( poles, weights, knots, mults, order, periodic );
       ,
       << "Cannot create Geom_BSplineCurve."
     );
