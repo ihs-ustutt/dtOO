@@ -38,6 +38,24 @@ namespace dtOO {
 		return retVec[0];
 	}
   
+	dtPoint3 dtTransformerInvThreeD::apply(dtPoint3 const & pp) const {
+		std::vector< dtPoint3 > vec;
+		vec.push_back( dtPoint3(pp) );
+		
+		std::vector< dtPoint3 > retVec = this->apply(&vec);
+	
+		return retVec[0];
+	}
+
+	dtPoint3 dtTransformerInvThreeD::retract(dtPoint3 const & pp) const {
+		std::vector< dtPoint3 > vec;
+		vec.push_back( dtPoint3(pp) );
+		
+		std::vector< dtPoint3 > retVec = this->apply(&vec);
+	
+		return retVec[0];
+	}
+  
 	std::vector< dtVector3 > dtTransformerInvThreeD::apply(
     std::vector< dtVector3 > const & pp
   ) const {
@@ -49,5 +67,17 @@ namespace dtOO {
   ) const {
 		return retract(&pp);
 	}
+
+	std::vector< dtPoint3 > dtTransformerInvThreeD::apply(
+    std::vector< dtPoint3 > const & pp
+  ) const {
+    return apply(&pp);
+	}
+
+	std::vector< dtPoint3 > dtTransformerInvThreeD::retract(
+    std::vector< dtPoint3 > const & pp
+  ) const {
+		return retract(&pp);
+	}  
 }
 

@@ -44,6 +44,14 @@ namespace dtOO {
     ) const;
     dtVector3 apply(dtVector3 const & pp) const;
     dtVector3 retract(dtVector3 const & toRetract) const;
+    std::vector< dtPoint3 > apply(
+      std::vector< dtPoint3 > const & toTrans 
+    ) const;
+    std::vector< dtPoint3 > retract(
+      std::vector< dtPoint3 > const & toRetract
+    ) const;
+    dtPoint3 apply(dtPoint3 const & pp) const;
+    dtPoint3 retract(dtPoint3 const & toRetract) const;    
   };
 }
 
