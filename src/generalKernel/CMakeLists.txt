@@ -27,6 +27,7 @@ SET(HEADERS
   xmlHeaven/aFXmlBuilder/scaTanhGradingOneDAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/scaTanhUnitGradingOneDAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineCurve_curveConnectConstructOCCAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineSurface_pipeConstructOCCAFXmlBuilder.h
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/splitTrans6SidedCubeAGXmlBuilder.h
@@ -126,6 +127,7 @@ SET(SOURCES
   xmlHeaven/aFXmlBuilder/scaTanhGradingOneDAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/scaTanhUnitGradingOneDAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/bSplineCurve_curveConnectConstructOCCAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineSurface_pipeConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/splitTrans6SidedCubeAGXmlBuilder.cpp
