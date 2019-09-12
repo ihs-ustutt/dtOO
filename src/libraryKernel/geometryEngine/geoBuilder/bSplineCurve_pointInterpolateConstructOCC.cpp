@@ -14,18 +14,32 @@
 #include <TColgp_HArray1OfPnt.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <TColStd_HArray1OfReal.hxx>
+#include <GeomAbs_Shape.hxx>
 
 namespace dtOO {
 	bSplineCurve_pointInterpolateConstructOCC
     ::bSplineCurve_pointInterpolateConstructOCC( 
     std::vector < dtPoint3 > const & pp 
   ) {
-    _dtC.reset( bSplineCurve_pointInterpolateConstructOCC(pp, 3, 8).result() );
+    _dtC.reset( 
+      bSplineCurve_pointInterpolateConstructOCC(pp, 3, 8, 4).result() 
+    );
 	}
 	
   bSplineCurve_pointInterpolateConstructOCC
     ::bSplineCurve_pointInterpolateConstructOCC( 
     std::vector < dtPoint3 > const & pp, int const & degMin, int const & degMax
+  ) {
+    _dtC.reset( 
+      bSplineCurve_pointInterpolateConstructOCC(pp, degMin, degMax, 4).result() 
+    );
+    
+  }
+  
+  bSplineCurve_pointInterpolateConstructOCC
+    ::bSplineCurve_pointInterpolateConstructOCC( 
+    std::vector < dtPoint3 > const & pp, int const & degMin, int const & degMax,
+    int const & cont
   ) {
     //
 		// number of points
@@ -45,10 +59,9 @@ namespace dtOO {
 			arr2.SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) ); 
 		  para->SetValue( ii+1, static_cast<float>(ii) );
 	  }
-
 		dtOCCCurveBase base;
     dt__tryOcc(    
-      GeomAPI_PointsToBSpline Interp(arr2, degMin, degMax);
+      GeomAPI_PointsToBSpline Interp(arr2, degMin, degMax, cont);
       Handle(Geom_BSplineCurve) curve = Interp.Curve();
       base.setOCC( curve );
       ,

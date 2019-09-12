@@ -22,9 +22,9 @@ namespace dtOO {
     virtual void buildPart(
       ::QDomElement const & toBuildP,
       baseContainer * const bC,
-      cVPtrVec const * const cValP, 
-      aFPtrVec const * const depSFunP,
-      aFPtrVec * sFunP
+      cVPtrVec const * const cV, 
+      aFPtrVec const * const aF,
+      aFPtrVec * result
     ) const;
   };
 }

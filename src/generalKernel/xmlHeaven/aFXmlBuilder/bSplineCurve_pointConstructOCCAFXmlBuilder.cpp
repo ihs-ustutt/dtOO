@@ -34,9 +34,9 @@ namespace dtOO {
   void bSplineCurve_pointConstructOCCAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
-		cVPtrVec const * const cValP, 
-		aFPtrVec const * const depSFunP,
-		aFPtrVec * sFunP 
+		cVPtrVec const * const cV, 
+		aFPtrVec const * const aF,
+		aFPtrVec * result 
 	) const {
     dt__throwIf(!dtXmlParserBase::hasChild("Point_3", toBuildP), buildPart());    
       //
@@ -48,7 +48,7 @@ namespace dtOO {
       ) {
         std::vector< dtPoint3 > wP;
         dtXmlParserBase::dtXmlParserBase::createBasic( 
-          &anEl, bC, cValP, depSFunP, &wP 
+          &anEl, bC, cV, aF, &wP 
         );
         dt__forAllRefAuto(wP, aWP) points.push_back( aWP );
       }
@@ -84,20 +84,18 @@ namespace dtOO {
         == 
         "pointInterpolateConstruct" 
       ) {
-        dt__throwIf( 
-          dtXmlParserBase::hasAttribute("order", toBuildP), buildPart() 
-        );
-        dt__throwIf( 
-          !dtXmlParserBase::hasAttribute("orderMin", toBuildP), buildPart() 
-        );        
-        dt__throwIf( 
-          !dtXmlParserBase::hasAttribute("orderMax", toBuildP), buildPart() 
-        );                
         dtC.reset( 
           bSplineCurve_pointInterpolateConstructOCC(
             points,
-            dtXmlParserBase::getAttributeInt("orderMin", toBuildP),
-            dtXmlParserBase::getAttributeInt("orderMax", toBuildP)          
+            dtXmlParserBase::getAttributeIntMuParse(
+              "orderMin", toBuildP, cV, aF, 3
+            ),
+            dtXmlParserBase::getAttributeIntMuParse(
+              "orderMax", toBuildP, cV, aF, 8
+            ),
+            dtXmlParserBase::getAttributeIntMuParse(
+              "continuity", toBuildP, cV, aF, 4
+            )
           ).result() 
         );        
       }
@@ -106,6 +104,6 @@ namespace dtOO {
       //
       // create vec3dCurveOneD
       //
-      sFunP->push_back( new vec3dCurveOneD( dtC.get() ) );			
+      result->push_back( new vec3dCurveOneD( dtC.get() ) );			
   }
 }
