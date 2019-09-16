@@ -387,9 +387,9 @@ namespace dtOO {
 		//
 		// create polygon object
 		//
-    int nPoints = rI->refP3().size() * 6;
-    int nCorners = rI->refP3().size() * 8 * 3;
-    int nPolygons = rI->refP3().size() * 8;
+    int nPoints = rI->constRefP3().size() * 6;
+    int nCorners = rI->constRefP3().size() * 8 * 3;
+    int nPolygons = rI->constRefP3().size() * 8;
     ptrHandling<covise::coDoPolygons> oneObject(
 		  new covise::coDoPolygons( objName.get(), nPoints, nCorners, nPolygons)
 		);
@@ -421,17 +421,17 @@ namespace dtOO {
     int counterCorners = 0;
     int counterPolygons = 0;
     int ids[6];		
-    for(int ii=0;ii<rI->refP3().size();ii++) {
+    for(int ii=0;ii<rI->constRefP3().size();ii++) {
 			dtPoint3 edge[6];
 			dtVector3 xx(height,0,0);
 			dtVector3 yy(0, height,0);
 			dtVector3 zz(0, 0, height);			
-      edge[0] = rI->refP3()[ii] + yy;
-      edge[1] = rI->refP3()[ii] + xx;
-      edge[2] = rI->refP3()[ii] + zz;
-      edge[3] = rI->refP3()[ii] - xx;
-      edge[4] = rI->refP3()[ii] - zz;
-      edge[5] = rI->refP3()[ii] - yy;
+      edge[0] = rI->constRefP3()[ii] + yy;
+      edge[1] = rI->constRefP3()[ii] + xx;
+      edge[2] = rI->constRefP3()[ii] + zz;
+      edge[3] = rI->constRefP3()[ii] - xx;
+      edge[4] = rI->constRefP3()[ii] - zz;
+      edge[5] = rI->constRefP3()[ii] - yy;
       for (int jj=0;jj<6;jj++) {
         ids[jj] = counterPoints;
         *(xCoords+counterPoints) = edge[jj].x();

@@ -12,32 +12,32 @@ namespace dtOO {
   class renderInterface;
   
   class vec3dOneDInMap3dTo3d : public map1dTo3d {
-  public:
-    dt__class(vec3dOneDInMap3dTo3d, analyticGeometry);
-    vec3dOneDInMap3dTo3d();
-    vec3dOneDInMap3dTo3d(const vec3dOneDInMap3dTo3d& orig);
-    vec3dOneDInMap3dTo3d(    
-	    vec3dOneD const * const v1d, 
-		  map3dTo3d const * const m3d, 
-		  bool percentF = false
-    );        
-    virtual ~vec3dOneDInMap3dTo3d();
-    virtual vec3dOneDInMap3dTo3d * clone( void ) const;
-    virtual vec3dOneDInMap3dTo3d * cloneTransformed( 
-      dtTransformer const * const dtT 
-    ) const;     
-    virtual vec3dOneDInMap3dTo3d * create( void ) const;
-    virtual dtPoint3 getPoint( float const & uu ) const;
-    virtual bool isClosed( int const & dir) const;
-    virtual float getMin( int const & dir) const;
-    virtual float getMax( int const & dir) const;
-    vec3dOneD const * refToVec3dOneD( void ) const;
-    map3dTo3d const * refToMap3dTo3d( void ) const;
-    vectorHandling< renderInterface * > getExtRender( void ) const;
-  private:
-    ptrHandling< vec3dOneD > _v1d;
-    ptrHandling< map3dTo3d > _m3d;
-    bool _percentF;    
+    public:
+      dt__class(vec3dOneDInMap3dTo3d, analyticGeometry);
+      vec3dOneDInMap3dTo3d();
+      vec3dOneDInMap3dTo3d(const vec3dOneDInMap3dTo3d& orig);
+      vec3dOneDInMap3dTo3d(    
+        vec3dOneD const * const v1d, 
+        map3dTo3d const * const m3d, 
+        bool percentF = false
+      );        
+      virtual ~vec3dOneDInMap3dTo3d();
+      virtual vec3dOneDInMap3dTo3d * clone( void ) const;
+      virtual vec3dOneDInMap3dTo3d * cloneTransformed( 
+        dtTransformer const * const dtT 
+      ) const;     
+      virtual vec3dOneDInMap3dTo3d * create( void ) const;
+      virtual dtPoint3 getPoint( float const & uu ) const;
+      virtual bool isClosed( int const & dir) const;
+      virtual float getMin( int const & dir) const;
+      virtual float getMax( int const & dir) const;
+      vec3dOneD const * refToVec3dOneD( void ) const;
+      map3dTo3d const * refToMap3dTo3d( void ) const;
+      vectorHandling< renderInterface * > getExtRender( void ) const;
+    private:
+      ptrHandling< vec3dOneD > _v1d;
+      ptrHandling< map3dTo3d > _m3d;
+      bool _percentF;    
   };
 }
 #endif	/* vec3dOneDInMap3dTo3d_H */
