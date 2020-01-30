@@ -35,6 +35,7 @@ namespace dtOO {
       virtual float getMax( int const & dir) const;
       vec3dTwoD const * refToVec3dTwoD( void ) const;
       map3dTo3d const * refToMap3dTo3d( void ) const;
+      virtual vectorHandling< renderInterface * > getExtRender( void ) const;      
       virtual std::string dumpToString( void ) const;
     private:
       ptrHandling< vec3dTwoD > _v2d;

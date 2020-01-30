@@ -7,6 +7,7 @@
 #include <logMe/dtMacros.h>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_base_of.hpp>
+#include <discrete3dPoints.h>
 
 namespace dtOO {
   template < typename funT >
@@ -25,6 +26,7 @@ namespace dtOO {
     ) const;
     virtual map2dTo3dTransformed * create( void ) const;
     virtual dtPoint3 getPoint( float const & uu, float const & vv ) const; 
+    virtual vectorHandling< renderInterface * > getExtRender( void ) const;      
     //
     //
     //
@@ -106,6 +108,21 @@ namespace dtOO {
     
     return _dtT->apply(pp);
   }
+  
+  template < typename funT >
+  vectorHandling< renderInterface * > 
+  map2dTo3dTransformed< funT >::getExtRender( void ) const {
+    vectorHandling< renderInterface * > rI = funT::getExtRender();
+    
+    dt__forAllRefAuto(rI, aRI) {
+      if ( discrete3dPoints::Is( aRI ) ) {
+        discrete3dPoints::SecureCast( aRI )->refP3()
+        = 
+        _dtT->apply( discrete3dPoints::SecureCast( aRI )->constRefP3() );
+      }
+    }
+    return rI;
+  }  
   
   template < typename funT >
   dtVector3 map2dTo3dTransformed< funT >::normal( 

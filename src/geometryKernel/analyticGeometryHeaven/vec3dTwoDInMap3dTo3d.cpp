@@ -5,6 +5,8 @@
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
 #include "map2dTo3dTransformed.h"
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
+#include <geometryEngine/dtSurface.h>
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
 #include <dtTransformerHeaven/dtTransformer.h>
@@ -96,4 +98,33 @@ namespace dtOO {
     
 		return ss.str();
 	}
+  
+  vectorHandling< renderInterface * > 
+  vec3dTwoDInMap3dTo3d::getExtRender( void ) const {
+		vectorHandling< dtPoint3 > pp;
+
+    //
+    // get control points
+    //
+		vec3dSurfaceTwoD const * const v3d2d 
+    = 
+    vec3dSurfaceTwoD::ConstDownCast(_v2d.get());
+		if (v3d2d) {
+			dtSurface const * const dtS = v3d2d->ptrDtSurface();
+			dt__forFromToIndex(0, dtS->nControlPoints(0), ii) {
+        dt__forFromToIndex(0, dtS->nControlPoints(1), jj) {
+          if (!_percentF) {
+            pp.push_back( _m3d->getPoint( dtS->controlPoint(ii, jj) ) );
+          }
+          else {
+            pp.push_back( _m3d->getPointPercent( dtS->controlPoint(ii, jj) ) );
+          }
+        }
+      }
+		}
+
+		vectorHandling< renderInterface * > retVec(1);
+		retVec[0] = new discrete3dPoints(pp);
+		return retVec;
+  }	  
 }
