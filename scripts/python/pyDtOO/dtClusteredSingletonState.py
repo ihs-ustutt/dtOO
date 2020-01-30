@@ -125,7 +125,7 @@ class dtClusteredSingletonState:
 
   @staticmethod
   def fileIndex( id ):
-    return int( id  - 1) / int( 1000 )
+    return int( (id  - 1) / 1000 )
     
   @staticmethod
   def currentMaxId():
@@ -279,6 +279,7 @@ class dtClusteredSingletonState:
     ID = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/id.0', dtype=int)
     ADD = None
     for thisIndex in range(maxFileIndex):
+      logging.info('fullRead file index %d', thisIndex) 
       f = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/fitness.'+str(thisIndex+1))
       o = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/objective.'+str(thisIndex+1))
       i = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/id.'+str(thisIndex+1), dtype=int)
