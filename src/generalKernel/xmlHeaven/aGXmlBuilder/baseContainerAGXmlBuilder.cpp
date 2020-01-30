@@ -23,13 +23,17 @@ namespace dtOO {
     aGPtrVec * result 
 	) const {
    
-    std::vector< ::QDomElement > wElement = dtXmlParserBase::getChildVector(toBuild);
+    std::vector< ::QDomElement > wElement 
+    = 
+    dtXmlParserBase::getChildVector(toBuild);
 		
     //dt__FORALL(wElement, ii,
 		for (int ii=0; ii<wElement.size(); ii++) {
 			if ( dtXmlParserBase::is("Point_3", wElement[ii]) ) {
 				vectorHandling< dtPoint3 > workingPointP;
-				dtXmlParserBase::createBasic(&wElement[ii], bC, cV, aF, aG, &workingPointP);
+				dtXmlParserBase::createBasic(
+          &wElement[ii], bC, cV, aF, aG, NULL, &workingPointP
+        );
 			}
 		  else if ( dtXmlParserBase::is("Vector_3", wElement[ii]) ) {
 				dtVector3 workingVectorP 
@@ -40,9 +44,6 @@ namespace dtOO {
 				dt__pH(dtTransformer) dtT(
 				  dtXmlParserBase::createTransformer(&wElement[ii], bC, cV, aF, aG)
 				);
-//				if ( dtXmlParserBase::hasAttribute("label", wElement[ii]) ) {
-//				  bC->ptrTransformerContainer()->add(dtT.get());
-//				}
 			}		
     }
   }

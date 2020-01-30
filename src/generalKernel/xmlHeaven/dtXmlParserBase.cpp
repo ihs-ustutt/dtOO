@@ -227,11 +227,13 @@ namespace dtOO {
 		//
 		//transform points
 		//
-		if ( dtTransformerP->isNecessary() ) {
-      dt__throw(
-        createBasic(), << "Transformation of Point_D is not supported."
-      );
-		}
+    if (dtTransformerP != NULL) {
+      if ( dtTransformerP->isNecessary() ) {
+        dt__throw(
+          createBasic(), << "Transformation of Point_D is not supported."
+        );
+      }
+    }
   }
   
   void dtXmlParserBase::createBasic(
@@ -631,15 +633,17 @@ namespace dtOO {
 		//
 		//transform points
 		//
-		if ( dtTransformerP->isNecessary() ) {
-			std::vector< dtPoint3 > basicPTwin;
-			for (int ii=0;ii<basicP->size();ii++) {
-				basicPTwin.push_back( basicP->at(ii) );
-			}
-			basicP->clear();
-			*basicP = dtTransformerP->apply( &basicPTwin );
-			basicPTwin.clear();
-		}
+    if (dtTransformerP != NULL) {
+      if ( dtTransformerP->isNecessary() ) {
+        std::vector< dtPoint3 > basicPTwin;
+        for (int ii=0;ii<basicP->size();ii++) {
+          basicPTwin.push_back( basicP->at(ii) );
+        }
+        basicP->clear();
+        *basicP = dtTransformerP->apply( &basicPTwin );
+        basicPTwin.clear();
+      }
+    }
     
     //
     // store labeled points
@@ -1107,6 +1111,9 @@ namespace dtOO {
         if (aFOption == "") {
           pp = sF->Y( argCS ).stdVector();
         }        
+        else if (aFOption == "%") {
+          pp = sF->Y( sF->x_percent( aFX( argCS ) ) ).stdVector();
+        }                
         else dt__throwUnexpected(replaceDependencies());        
       }
       else if (v2dF) {
@@ -1129,6 +1136,9 @@ namespace dtOO {
         if (aFOption == "") {
           pp = v3dF->Y( argCS ).stdVector();
         }       
+        else if (aFOption == "%") {
+          pp = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
+        }                   
         else if (aFOption == "%x") {
           aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
           pp.resize(1);

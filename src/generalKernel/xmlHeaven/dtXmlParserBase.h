@@ -17,7 +17,6 @@ namespace dtOO {
     public:  
       dt__classOnlyName(dtXmlParserBase);
       virtual ~dtXmlParserBase();
-    private:
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
@@ -70,7 +69,6 @@ namespace dtOO {
         dtTransformer const * const dtTransformerP,                          
         aFPtrVec * advancedP 
       );    
-    public:     
       //
       // replace constValues, analyticFunctions and analyticGeometries
       //
