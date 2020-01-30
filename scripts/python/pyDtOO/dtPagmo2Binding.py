@@ -125,11 +125,15 @@ class dtPagmo2Binding:
     
     return X
   
-  def pre(self, x):
+  def pre(self, x, stateNumber=-1):
     #
     # create unique state label
     #
-    s = dtPagmo2Binding.STATECOUNTER( defObj=x, defFit=dtPagmo2Binding.PROB.FailedFitness() )
+    if stateNumber == -1:
+      s = dtPagmo2Binding.STATECOUNTER( defObj=x, defFit=dtPagmo2Binding.PROB.FailedFitness() )
+    else:
+      s = dtPagmo2Binding.STATECOUNTER(stateNumber)
+    
     stateNumber = s.id()
     
     x, cVStr = dtPagmo2Binding.PROB.TransformPre( 
