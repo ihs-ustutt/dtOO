@@ -37,6 +37,7 @@
 #include "reverse.h"
 #include "pickMap1dTo3dLinePercent.h"
 #include "applyVec3dThreeD.h"
+#include "xYz_localCoordinates.h"
 
 namespace dtOO {
   dt__pH(dtTransformerFactory) dtTransformerFactory::_instance(NULL);
@@ -172,6 +173,7 @@ namespace dtOO {
     _instance->_transformer.push_back( new reverse() );
     _instance->_transformer.push_back( new pickMap1dTo3dLinePercent() );
     _instance->_transformer.push_back( new applyVec3dThreeD() );
+    _instance->_transformer.push_back( new xYz_localCoordinates() );
     
     return _instance.get();
   }      
