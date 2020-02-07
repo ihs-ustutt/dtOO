@@ -122,6 +122,12 @@ namespace dtOO {
         }
       }
 		}
+    else {
+      pp.push_back( this->getPointPercent(0.,0.) );
+      pp.push_back( this->getPointPercent(1.,0.) );
+      pp.push_back( this->getPointPercent(1.,1.) );
+      pp.push_back( this->getPointPercent(0.,1.) );
+    }
 
 		vectorHandling< renderInterface * > retVec(1);
 		retVec[0] = new discrete3dPoints(pp);
