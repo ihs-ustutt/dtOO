@@ -23,6 +23,8 @@ SET(HEADERS
   analyticGeometryHeaven/map1dTo3dTransformed.h
   analyticGeometryHeaven/map2dTo3dTransformed.h
   analyticGeometryHeaven/map3dTo3dTransformed.h
+  analyticGeometryHeaven/multipleBoundedSurface.h
+  analyticGeometryHeaven/multipleBoundedVolume.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h
@@ -163,6 +165,8 @@ SET(SOURCES
   analyticGeometryHeaven/vec2dOneDInMap2dTo3d.cpp
   analyticGeometryHeaven/vec2dTwoDInMap2dTo3d.cpp
   analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.cpp
+  analyticGeometryHeaven/multipleBoundedSurface.cpp
+  analyticGeometryHeaven/multipleBoundedVolume.cpp
   analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.cpp
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.cpp
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.cpp

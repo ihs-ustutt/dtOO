@@ -68,6 +68,8 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/radialTranslatingMap2dTo3dAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/geomSurface_multipleBoundedSurfaceAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/geomVolume_multipleBoundedVolumeAGXmlBuilder.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -168,6 +170,8 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/radialTranslatingMap2dTo3dAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/geomSurface_multipleBoundedSurfaceAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/geomVolume_multipleBoundedVolumeAGXmlBuilder.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp

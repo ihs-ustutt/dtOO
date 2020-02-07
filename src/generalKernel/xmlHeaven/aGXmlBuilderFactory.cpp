@@ -44,6 +44,8 @@
 #include "aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder.h"
 #include "aGXmlBuilder/radialTranslatingMap2dTo3dAGXmlBuilder.h"
+#include "aGXmlBuilder/geomSurface_multipleBoundedSurfaceAGXmlBuilder.h"
+#include "aGXmlBuilder/geomVolume_multipleBoundedVolumeAGXmlBuilder.h"
 
 namespace dtOO {
   dt__pH(aGXmlBuilderFactory) aGXmlBuilderFactory::_instance(NULL);
@@ -197,6 +199,12 @@ namespace dtOO {
     );
     _instance->_builder.push_back( 
       new radialTranslatingMap2dTo3dAGXmlBuilder() 
+    );
+    _instance->_builder.push_back(
+      new geomSurface_multipleBoundedSurfaceAGXmlBuilder()
+    );
+    _instance->_builder.push_back(
+      new geomVolume_multipleBoundedVolumeAGXmlBuilder()
     );
     return _instance.get();
   }  
