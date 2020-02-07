@@ -8,7 +8,6 @@
 #include <geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.h>
 #include <geometryEngine/dtSurface.h>
 #include <interfaceHeaven/stringPrimitive.h>
-#include <interfaceHeaven/ptrVectorHandling.h>
 #include "map3dTo3dTransformed.h"
 #include <dtTransformerHeaven/dtTransformer.h>
 
