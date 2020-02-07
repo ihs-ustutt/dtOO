@@ -1,6 +1,6 @@
-find_package(Boost COMPONENTS python)
-find_package(PythonLibs 2.7 REQUIRED)
-FIND_package(PythonInterp 2.7)
+find_package(Boost COMPONENTS python3)
+find_package(PythonLibs 3.0 REQUIRED)
+FIND_package(PythonInterp 3.0)
 include_directories(
   ${PYTHON_INCLUDE_PATH}
   ${Boost_INCLUDE_DIRS}

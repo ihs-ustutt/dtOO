@@ -99,7 +99,7 @@ if (MPI_FOUND)
     system 
     timer
     program_options
-    thread-mt
+    thread
     regex
     mpi
     serialization
@@ -114,7 +114,7 @@ else (MPI_FOUND)
     system 
     timer
     program_options
-    thread-mt
+    thread
     regex
     REQUIRED
   )
@@ -294,6 +294,7 @@ list(REMOVE_DUPLICATES _rpathList)
 
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
 foreach(_rpath ${_rpathList})
+  message(STATUS "RPATH: Adding ${_rpath}")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${_rpath}")
   set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH}:${_rpath}")
 endforeach(_rpath)
