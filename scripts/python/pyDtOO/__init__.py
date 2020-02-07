@@ -10,7 +10,6 @@ from .dtGod import dtGod
 from .dtScalarDeveloping import dtScalarDeveloping
 from .dtValueField import dtValueField
 from .dtValueSpace import dtValueSpace
-from .dtSingletonState import dtSingletonState
 from .dtClusteredSingletonState import dtClusteredSingletonState
 from .dtMigrateState import dtMigrateState
 from .dtInsertFittest import dtInsertFittest
