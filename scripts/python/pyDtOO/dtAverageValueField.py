@@ -1,5 +1,6 @@
 import numpy
 import logging
+import io
 from pyDtOO.dtValueField import dtValueField
 
 class dtAverageValueField(dtValueField):
@@ -262,7 +263,7 @@ class dtAverageValueField(dtValueField):
       
   @staticmethod    
   def WriteOneProfile1DFixedValueCSV(prefix, header, coord, value):
-    fileOut = open(prefix+'.csv', 'w')
+    fileOut = io.open(prefix+'.csv', mode='w', encoding='utf-8')
     fileOut.write( "%s\n" % (dtAverageValueField.HEADER_[header]) )
     ij = numpy.shape( value )
     

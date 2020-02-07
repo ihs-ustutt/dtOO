@@ -16,8 +16,8 @@ class dtSample:
     timesteps = glob.glob('./' + self.folder_ + '/*')
     timestepsForSorting = numpy.zeros(numpy.size(timesteps))
     for k in range(numpy.size(timesteps)):
-        timesteps[k] = re.sub('^.*/', '', timesteps[k])
-        timestepsForSorting[k] = float(timesteps[k])
+      timesteps[k] = re.sub('^.*/', '', timesteps[k])
+      timestepsForSorting[k] = float(timesteps[k])
     timestepsSort =  numpy.sort(timestepsForSorting)
 
     # Get the names of the samples
@@ -104,7 +104,7 @@ class dtSample:
                   if d == 0:
                     data [sampleNames[sample],k][time,d] = timestepsSort[time]
                   elif d == 1 or d == 2 or d == 3:
-	            data[sampleNames[sample],k][time,d] = dataRead[d-1]
+	                  data[sampleNames[sample],k][time,d] = dataRead[d-1]
                   else:
                     data[sampleNames[sample],k][time,d] = dataRead[(d-1)+3*(counter-1)]
 

@@ -1,7 +1,7 @@
 import numpy
 import logging
 from pyDtOO.dtFile import dtFile
-import cStringIO
+import io
 import os
 
 class dtDeveloping:
@@ -15,8 +15,8 @@ class dtDeveloping:
     data = []
     for p in self.__GetFilepaths( self.f_.FullName() ):
       logging.info( 'Read data from %s', p )
-      txt = open(p, 'r').read() 
-      txt = cStringIO.StringIO(txt.replace('(', '').replace(')', ''))
+      txt = io.open(p, mode='r', encoding='utf-8').read() 
+      txt = io.StringIO(txt.replace('(', '').replace(')', ''))
       tmp = numpy.genfromtxt( txt, delimiter='', comments='#')
       if len(data)==0:
         data = tmp

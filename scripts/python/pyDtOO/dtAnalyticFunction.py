@@ -1,6 +1,7 @@
 import numpy
 import logging
 from pyDtOO.dtFile import dtFile
+import io
 
 class dtAnalyticFunction(dtFile):
   def __init__(self, fn):
@@ -22,7 +23,7 @@ class dtAnalyticFunction(dtFile):
     logging.info( 'Read data with %s', str(numpy.shape(self.data_)) )
   
   def ReadHeader(self):
-    f = open( self.FullName() )
+    f = io.open( self.FullName(), mode='r', encoding='utf-8' )
     # first line contains x dimension
     xDim = f.readline()
     # second line contains y dimension

@@ -7,6 +7,7 @@ import logging
 import time
 import shutil
 import datetime
+import io
 
 class dtClusteredSingletonState:
   PREFIX = ''
@@ -38,13 +39,13 @@ class dtClusteredSingletonState:
       if not os.path.isdir( dtClusteredSingletonState.DATADIR ) or not os.path.isfile( dtClusteredSingletonState.DATADIR+'/id.0' ):
         if not os.path.isdir( dtClusteredSingletonState.DATADIR ):
           os.mkdir(dtClusteredSingletonState.DATADIR)
-        open(dtClusteredSingletonState.DATADIR+'/id.0', 'w').close()
-        open(dtClusteredSingletonState.DATADIR+'/state.0', 'w').close()
-        open(dtClusteredSingletonState.DATADIR+'/objective.0', 'w').close()
-        open(dtClusteredSingletonState.DATADIR+'/fitness.0', 'w').close()
+        io.open(dtClusteredSingletonState.DATADIR+'/id.0', mode='w', encoding='utf-8').close()
+        io.open(dtClusteredSingletonState.DATADIR+'/state.0', mode='w', encoding='utf-8').close()
+        io.open(dtClusteredSingletonState.DATADIR+'/objective.0', mode='w', encoding='utf-8').close()
+        io.open(dtClusteredSingletonState.DATADIR+'/fitness.0', mode='w', encoding='utf-8').close()
         for i in range( np.size(dtClusteredSingletonState.ADDDATA) ):
-          open(
-            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.0', "w"
+          io.open(
+            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.0', mode='w', encoding='utf-8'
           ).close()
         self.cur_id = 1
 #      else:
@@ -63,27 +64,27 @@ class dtClusteredSingletonState:
           lastFileIndex = thisFileIndex
       lastId = -1
       lastId = sum(
-        1 for line in open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex))
+        1 for line in io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), encoding='utf-8')
       )
       self.cur_id = lastId + lastFileIndex*1000 + 1
 
       if ( self.cur_id > (lastFileIndex+1)*1000 ):
         lastFileIndex = lastFileIndex + 1
-        open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), 'w').close()
-        open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), 'w').close()
-        open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), 'w').close()
-        open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), 'w').close()
+        io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
+        io.open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
+        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
+        io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
 
-      open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), "a").write( str(self.cur_id)+'\n' )
-      open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), "a").write( dtClusteredSingletonState.PREFIX+'_'+str(self.cur_id)+'\n' )
+      io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), mode='a', encoding='utf-8').write( str(self.cur_id)+'\n' )
+      io.open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), mode='a', encoding='utf-8').write( dtClusteredSingletonState.PREFIX+'_'+str(self.cur_id)+'\n' )
       if defObj is not None:
-        open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), "a").write( self.formatToWrite(defObj)+'\n' )    
+        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='a', encoding='utf-8').write( self.formatToWrite(defObj)+'\n' )    
       else:
-        open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), "a").write( '__empty__\n' )    
+        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='a', encoding='utf-8').write( '__empty__\n' )    
       if defFit is not None:
-        open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), "a").write( self.formatToWrite(defFit)+'\n'  )
+        io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='a', encoding='utf-8').write( self.formatToWrite(defFit)+'\n'  )
       else:
-        open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), "a").write( '__empty__\n' )    
+        io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='a', encoding='utf-8').write( '__empty__\n' )    
  
       if np.size(dtClusteredSingletonState.ADDDATA) != np.shape(dtClusteredSingletonState.ADDDATADEF)[0]:
         raise ValueError(
@@ -91,12 +92,12 @@ class dtClusteredSingletonState:
           )
       for i in range( np.size(dtClusteredSingletonState.ADDDATA) ):
         if np.size( dtClusteredSingletonState.ADDDATADEF[i] ) == 0 or np.size(dtClusteredSingletonState.ADDDATA) != np.shape(dtClusteredSingletonState.ADDDATADEF)[0]:
-          open(
-            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), "a"
+          io.open(
+            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), mode='a', encoding='utf-8'
           ).write( '__empty__\n' )
         else:
-          open(
-            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), "a"
+          io.open(
+            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), mode='a', encoding='utf-8'
           ).write( self.formatToWrite(dtClusteredSingletonState.ADDDATADEF[i])+'\n' )          
     #
     # existing id
@@ -141,7 +142,7 @@ class dtClusteredSingletonState:
         lastFileIndex = thisFileIndex
     lastId = -1
     lastId = sum(
-      1 for line in open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex))
+      1 for line in io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), encoding='utf-8')
     )
     return (lastId + lastFileIndex*1000)
 
@@ -184,7 +185,7 @@ class dtClusteredSingletonState:
     fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
     tmpF = tempfile.TemporaryFile()
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fileName+'.'+str(fileIndex)
-    curF = open( fullFileName, "r" )
+    curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
     for line in curF:
       lineCounter = lineCounter + 1
@@ -194,7 +195,7 @@ class dtClusteredSingletonState:
         tmpF.write( line )
     curF.close()
 
-    curF = open(fullFileName, "w")
+    curF = io.open(fullFileName, mode='w', encoding='utf-8')
     tmpF.seek(0)
     for line in tmpF:
       curF.write( line )
@@ -204,7 +205,7 @@ class dtClusteredSingletonState:
     fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
     tmpF = tempfile.TemporaryFile()
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fName+'.'+str(fileIndex)
-    curF = open( fullFileName, "r" )
+    curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
     for line in curF:
       lineCounter = lineCounter + 1

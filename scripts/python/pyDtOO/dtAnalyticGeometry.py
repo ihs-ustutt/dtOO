@@ -21,7 +21,7 @@ class dtAnalyticGeometry(dtFile):
     logging.info( 'Read data with %s', str(numpy.shape(self.data_)) )
   
   def ReadHeader(self):
-    f = open( self.FullName() )
+    f = open( self.FullName(), mode='r', encoding='utf-8' )
     # first line contains dimension
     dim = f.readline()
     # second line contains number of points
