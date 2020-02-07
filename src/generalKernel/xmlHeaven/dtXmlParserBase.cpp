@@ -1925,7 +1925,14 @@ namespace dtOO {
           replaceEnd, 
           stringPrimitive::floatToString(theVector.z())
         );        
-      }     
+      }
+      else if (option == "length") {
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString( dtLinearAlgebra::length(theVector) )
+        );        
+      }
       else if (option == "crossProduct") {
         dtVector3 resVector 
         = 
@@ -1946,6 +1953,22 @@ namespace dtOO {
           stringPrimitive::floatToString(resVector.z())
         );           
       }
+      else if (option == "normalize") {
+        dtVector3 resVector = dtLinearAlgebra::normalize(theVector);
+        returnExpression.replace(
+          replaceStart, 
+          replaceEnd, 
+          stringPrimitive::floatToString(resVector.x())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(resVector.y())
+          +
+          ","
+          +
+          stringPrimitive::floatToString(resVector.z())
+        );           
+      }      
       else if (option == "") {
         returnExpression.replace(
           replaceStart, 
@@ -1966,7 +1989,7 @@ namespace dtOO {
       //
       // go to next transformer
       //
-      found = returnExpression.find(_POINTSIGN);
+      found = returnExpression.find(_VECTORSIGN);
     }
     
     //
