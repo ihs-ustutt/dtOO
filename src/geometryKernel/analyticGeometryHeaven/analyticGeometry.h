@@ -44,7 +44,7 @@ namespace dtOO {
         void 
       ) const;
       std::pair< dtPoint3, dtPoint3 > boundingBox( void ) const;
-      void boundingBox( std::pair< dtPoint3, dtPoint3 > boundingBox);
+      float boundingBoxValue( void ) const;
       void updateBoundingBox( void ) const;
       float characteristicLength( void ) const;
       std::vector< dtPoint3 > cornerPoints( void ) const;
@@ -57,9 +57,10 @@ namespace dtOO {
         bool output = false, float inc = 1.
       );
       static bool inXYZTolerance( float const dist, float inc = 1. );
+      bool degenerated( void ) const;
       static bool inUVWTolerance( dtPoint3 const & p0, dtPoint3 const & p1 );
       static bool inUVWTolerance( dtPoint2 const & p0, dtPoint2 const & p1 );    
-      static bool inUVWTolerance( float const & p0, float const & p1 );     
+      static bool inUVWTolerance( float const & p0, float const & p1 );
       //
       //
       //
@@ -77,6 +78,7 @@ namespace dtOO {
       mutable int _resW;
       mutable float _characteristicLength;
       mutable std::pair< dtPoint3, dtPoint3 > _boundingBox;
+      mutable float _boundingBoxValue;
       threadSafeRoot _threadRoot;
   };
   

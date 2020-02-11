@@ -22,6 +22,7 @@ namespace dtOO {
       "geometry_render_resolution_w"
     );
     _characteristicLength = -1.;
+    _boundingBoxValue = -1.;
   }
 
   analyticGeometry::analyticGeometry( 
@@ -32,6 +33,7 @@ namespace dtOO {
 		_resW = orig._resW;
     _characteristicLength = orig._characteristicLength;
     _boundingBox = orig._boundingBox;
+    _boundingBoxValue = orig._boundingBoxValue;
   }
 
   analyticGeometry::~analyticGeometry() {
@@ -128,16 +130,12 @@ namespace dtOO {
     return _boundingBox;
   }
   
-  void analyticGeometry::boundingBox( 
-    std::pair< dtPoint3, dtPoint3 > boundingBox
-  ) {
-    _boundingBox = boundingBox;
-
-    _characteristicLength 
-    = 
-    dtLinearAlgebra::length(_boundingBox.first - _boundingBox.second);    
-  }
+  float analyticGeometry::boundingBoxValue( void ) const {
+    if (_characteristicLength < 0.) updateBoundingBox();
     
+    return _boundingBoxValue;
+  }
+
   void analyticGeometry::updateBoundingBox( void ) const {
     //
     // 1D
@@ -150,8 +148,12 @@ namespace dtOO {
       dt__forFromToIndex(0, nOne, ii) {
         bb[ii] = getPointPercent( (float*) &(uvwOne[ii]) );
       }
-      
       _boundingBox = dtLinearAlgebra::boundingBox(bb);
+      _boundingBoxValue 
+      = 
+      dtLinearAlgebra::distance(bb[1], bb[0]) 
+      + 
+      dtLinearAlgebra::distance(bb[2], bb[1]);
     }
     //
     // 2D
@@ -170,8 +172,17 @@ namespace dtOO {
       dt__forFromToIndex(0, nTwo, ii) {
         bb[ii] = getPointPercent( (float*) &(uvwTwo[ii]) );
       }
-      
       _boundingBox = dtLinearAlgebra::boundingBox(bb);
+      
+      _boundingBoxValue 
+      = 
+      dtLinearAlgebra::area(bb[0], bb[3], bb[4] , bb[1])
+      +
+      dtLinearAlgebra::area(bb[3], bb[6], bb[7] , bb[4])
+      +
+      dtLinearAlgebra::area(bb[4], bb[7], bb[8] , bb[5])
+      +
+      dtLinearAlgebra::area(bb[1], bb[4], bb[5] , bb[2]);
     }
     //
     // 3D
@@ -184,7 +195,7 @@ namespace dtOO {
         {0.00, 0.00, 0.00}, {0.00, 0.00, 0.50}, {0.00, 0.00, 1.00},
         {0.00, 0.50, 0.00}, {0.00, 0.50, 0.50}, {0.00, 0.50, 1.00},
         {0.00, 1.00, 0.00}, {0.00, 1.00, 0.50}, {0.00, 1.00, 1.00},
-        {0.00, 0.00, 0.00}, {0.50, 0.00, 0.50}, {0.50, 0.00, 1.00},
+        {0.50, 0.00, 0.00}, {0.50, 0.00, 0.50}, {0.50, 0.00, 1.00},
         {0.50, 0.50, 0.00}, {0.50, 0.50, 0.50}, {0.50, 0.50, 1.00},
         {0.50, 1.00, 0.00}, {0.50, 1.00, 0.50}, {0.50, 1.00, 1.00},      
         {1.00, 0.00, 0.00}, {1.00, 0.00, 0.50}, {1.00, 0.00, 1.00},
@@ -195,9 +206,42 @@ namespace dtOO {
       std::vector< dtPoint3 > bb(nThree);
       dt__forFromToIndex(0, nThree, ii) {
         bb[ii] = getPointPercent( (float*) &(uvwThree[ii]) );
-      }
-      
+      } 
       _boundingBox = dtLinearAlgebra::boundingBox(bb);
+
+      _boundingBoxValue 
+      = 
+      dtLinearAlgebra::volume(
+        bb[0], bb[9], bb[3] , bb[12], bb[1], bb[10], bb[4] , bb[13]
+      )
+      +
+      dtLinearAlgebra::volume(
+        bb[1], bb[10], bb[4] , bb[13], bb[2], bb[11], bb[5] , bb[14]
+      )
+      +
+      dtLinearAlgebra::volume(
+        bb[3], bb[12], bb[6] , bb[15], bb[4], bb[13], bb[7] , bb[16]
+      )      
+      +
+      dtLinearAlgebra::volume(
+        bb[4], bb[13], bb[7] , bb[16], bb[5], bb[14], bb[8] , bb[17]
+      )      
+      +
+      dtLinearAlgebra::volume(
+        bb[9], bb[18], bb[12] , bb[21], bb[10], bb[19], bb[13] , bb[22]
+      )      
+      +
+      dtLinearAlgebra::volume(
+        bb[10], bb[19], bb[13] , bb[22], bb[11], bb[20], bb[14] , bb[23]
+      )      
+      +
+      dtLinearAlgebra::volume(
+        bb[12], bb[21], bb[15] , bb[24], bb[13], bb[22], bb[16] , bb[25]
+      )      
+      +
+      dtLinearAlgebra::volume(
+        bb[13], bb[22], bb[16] , bb[25], bb[14], bb[23], bb[17] , bb[26]
+      );        
     }
     else dt__throwUnexpected(updateBoundingBox());
     
@@ -314,6 +358,10 @@ namespace dtOO {
     return true;    
   }  
 
+  bool analyticGeometry::degenerated( void ) const {
+    return inXYZTolerance( boundingBoxValue() );
+  }
+  
   bool analyticGeometry::inUVWTolerance(
     dtPoint3 const & p0, dtPoint3 const & p1
   ) {
