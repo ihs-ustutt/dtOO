@@ -94,4 +94,14 @@ namespace dtOO {
 
     return rV;
   }  
+  
+  ptrVectorHandling< analyticGeometry > const & 
+  multipleBoundedSurface::boundsVectorConstRef( void ) const {
+    return _m1d;
+  }
+  
+  analyticGeometry const * const 
+  multipleBoundedSurface::surfaceConstPtr( void ) const {
+    return _m2d.get();
+  }
 }

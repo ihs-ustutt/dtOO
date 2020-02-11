@@ -99,4 +99,14 @@ namespace dtOO {
     }
     return rV;
   }  
+
+  ptrVectorHandling< analyticGeometry > const & 
+  multipleBoundedVolume::boundsVectorConstRef( void ) const {
+    return _m2d;
+  }
+  
+  analyticGeometry const * const 
+  multipleBoundedVolume::regionConstPtr( void ) const {
+    return _m3d.get();
+  }  
 }

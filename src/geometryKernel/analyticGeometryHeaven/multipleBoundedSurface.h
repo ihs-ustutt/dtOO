@@ -26,7 +26,9 @@ namespace dtOO {
     virtual float getMax( int const & dir) const;
     virtual dtPoint3 getPoint( float const * const uvw ) const; 
     vectorHandling< renderInterface * > getRender( void ) const;
-		vectorHandling< renderInterface * > rV;    
+    ptrVectorHandling< analyticGeometry > const & 
+    boundsVectorConstRef( void ) const;
+    analyticGeometry const * const surfaceConstPtr( void ) const;
   private:
     ptrHandling< analyticGeometry > _m2d;
     ptrVectorHandling< analyticGeometry > _m1d;
