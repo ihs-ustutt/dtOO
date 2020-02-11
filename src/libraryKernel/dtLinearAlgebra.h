@@ -163,6 +163,12 @@ namespace dtOO {
       dtPoint3 const & p0, dtPoint3 const & p1, 
       dtPoint3 const & p2, dtPoint3 const & p3
     );    
+    static float volume(
+      dtPoint3 const & p000, dtPoint3 const & p100,
+      dtPoint3 const & p010, dtPoint3 const & p110,
+      dtPoint3 const & p001, dtPoint3 const & p101,
+      dtPoint3 const & p011, dtPoint3 const & p111
+    );
     static std::vector< float > unitGrid(int const & nU);        
     static twoDArrayHandling< dtPoint2 > unitGrid( 
       int const & nU, int const & nV

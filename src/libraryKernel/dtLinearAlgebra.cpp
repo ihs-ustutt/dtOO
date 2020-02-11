@@ -853,6 +853,25 @@ namespace dtOO {
       sqrt(dtTriangle3(p2, p3, p0).squared_area());
   }
   
+
+  float dtLinearAlgebra::volume(
+    dtPoint3 const & p000, dtPoint3 const & p100,
+    dtPoint3 const & p010, dtPoint3 const & p110,
+    dtPoint3 const & p001, dtPoint3 const & p101,
+    dtPoint3 const & p011, dtPoint3 const & p111
+  ) {
+    return  
+      fabs( dtTetrahedron3(p000, p001, p011, p101).volume() )
+      +
+      fabs( dtTetrahedron3(p011, p101, p111, p110).volume() )
+      +
+      fabs( dtTetrahedron3(p000, p100, p110, p101).volume() )
+      +
+      fabs( dtTetrahedron3(p000, p010, p110, p011).volume() )
+      +
+      fabs( dtTetrahedron3(p011, p101, p000, p110).volume() );
+  }  
+  
   std::vector< float > dtLinearAlgebra::unitGrid(int const & nU) {
     std::vector< float > grid(nU);
     
