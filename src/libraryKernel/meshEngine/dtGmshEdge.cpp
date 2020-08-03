@@ -93,11 +93,11 @@ namespace dtOO {
   }
   
   void dtGmshEdge::setBeginVertex( ::GVertex * gv ) {
-    GEdge::v0 = gv;
+    GEdge::_v0 = gv;
   }
    
   void dtGmshEdge::setEndVertex( ::GVertex * gv ) {
-    GEdge::v1 = gv;
+    GEdge::_v1 = gv;
   }
   
   void dtGmshEdge::setNElements( int const nE ) {
