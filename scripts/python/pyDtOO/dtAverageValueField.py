@@ -41,7 +41,7 @@ class dtAverageValueField(dtValueField):
     # binOne
     #
     orderingOne = numpy.argsort( self.Coord()[:,0] )
-    perBinOne = self.NumValues() / nBinsOne
+    perBinOne = int(self.NumValues() / nBinsOne)
     self.binsOne = numpy.zeros(nBinsOne+1)
     for i in range(nBinsOne):
       self.binsOne[ i ] = self.Coord()[ orderingOne[ i * (perBinOne) ], 0 ]
@@ -53,7 +53,7 @@ class dtAverageValueField(dtValueField):
     # binTwo
     #
     orderingTwo = numpy.argsort( self.Coord()[:,1] )
-    perBinTwo = self.NumValues() / nBinsTwo
+    perBinTwo = int(self.NumValues() / nBinsTwo)
     self.binsTwo = numpy.zeros(nBinsTwo+1)
     for i in range(nBinsTwo):
       self.binsTwo[ i ] = self.Coord()[ orderingTwo[ i * (perBinTwo) ], 1 ]
@@ -65,7 +65,7 @@ class dtAverageValueField(dtValueField):
     # binThree
     #
     orderingThree = numpy.argsort( self.Coord()[:,2] )
-    perBinThree = self.NumValues() / nBinsThree
+    perBinThree = int(self.NumValues() / nBinsThree)
     self.binsThree = numpy.zeros(nBinsThree+1)
     for i in range(nBinsThree):
       self.binsThree[ i ] = self.Coord()[ orderingThree[ i * (perBinThree) ], 2 ]
