@@ -49,15 +49,15 @@ namespace dtOO {
     dt__forAllRefAuto(
       dtXmlParserBase::getChildVector("analyticGeometry", toBuild), aChild
     ) {
-      std::auto_ptr< analyticGeometry > aG_t(
+      ptrHandling< analyticGeometry > aG_t(
         dtXmlParserBase::createAnalyticGeometry(aChild, bC, cV, aF, aG)
       );
       
       if ( map2dTo3d::ConstDownCast(aG_t.get()) ) {
-        _m2d.reset( map2dTo3d::ConstSecureCast(aG_t.release()) );
+        _m2d.reset( map2dTo3d::ConstSecureCast(aG_t->clone()) );
       }
       else if ( map1dTo3d::ConstDownCast(aG_t.get()) ) {
-        _m1d.reset( map1dTo3d::ConstSecureCast(aG_t.release()) );
+        _m1d.reset( map1dTo3d::ConstSecureCast(aG_t->clone()) );
       }
       else dt__throwUnexpected(buildPart());
     }
