@@ -24,7 +24,7 @@ namespace dtOO {
     dtVector3 const & vv, map1dTo3d const * const m1d 
   ) : map2dTo3d() {
 		if (m1d->isClosedU() ) {
-			dt__throw(
+			dt__warning(
         rotatingMap1dTo3d(),
 				<< "Curve is closed. This is not yet supported." << std::endl
 				<< dt__eval(m1d->isClosedU())
