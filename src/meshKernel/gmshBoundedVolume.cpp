@@ -26,6 +26,7 @@
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
 #include <gmsh/Field.h>
+#include <gmsh/Parser.h>
 
 namespace dtOO {
 	gmshBoundedVolume::gmshBoundedVolume() : boundedVolume() {
@@ -165,6 +166,21 @@ namespace dtOO {
         rV.push_back( new discrete3dVector( vvV, vpV ) );
       }
     }
+    
+    if ( stringPrimitive::stringContains( "->", toRender ) ) {
+      dt__forAllRefAuto(_gm->dtFaces(), gf) {
+        if ( getModel()->matchWildCardPhysical(toRender, gf) ) {
+          std::vector< ::MElement const * > elTwoD;
+          for (int jj=0;jj<gf->getNumMeshElements(); jj++) {
+            elTwoD.push_back( gf->getMeshElement(jj) );	
+          }
+          rV.push_back(
+            dtGmshModel::toAdequateSurfaceRenderInterface(elTwoD)
+          );
+        }
+      }
+    }
+    
 		return rV;
 	}		
 	
@@ -288,7 +304,6 @@ namespace dtOO {
            " value=\"#cV_ru_lcIntPrec#\"/>"
       );
     }
-
     
     //
     // set options
@@ -308,7 +323,7 @@ namespace dtOO {
         oG[ii].first[0]+"."+oG[ii].first[1], oG[ii].second 
       );
     }
-		
+
     //
     // update bounding box
     //

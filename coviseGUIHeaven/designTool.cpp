@@ -112,7 +112,11 @@ namespace dtOO {
     );
     _bVRenderCurrentToggle->disable();
     _bVRenderCurrentToggle->setValue(false);	
-		
+		_bVRenderString 
+    = 
+    addStringParam("_bVRenderString", "_bVRenderStringDescription");
+    _bVRenderString->disable();
+    _bVRenderString->setValue("");
 		_dCChoice = addChoiceParam("_dCChoice", "_dCChoiceDescription");
     _dCChoice->disable();
     _dCRunCurrentState 
@@ -197,6 +201,7 @@ namespace dtOO {
     tmp.push_back( _bVRenderChoice );
     tmp.push_back( _bVRenderTags );
     tmp.push_back( _bVRenderCurrentToggle );
+    tmp.push_back( _bVRenderString );
 		_uifPara.push_back( tmp );		
 		//
 		// case
@@ -657,6 +662,23 @@ namespace dtOO {
 					setExecGracePeriod(0.1);
 					selfExec();		
 				}
+        else if ( strcmp(paramName, "_bVRenderString") == 0 ) {          
+					
+					
+          if ( _bVToRender.size() != 0 ) {
+            std::string str(_bVRenderChoice->getActLabel());
+            boundedVolume const * bV = _bV.get(str);
+            bV->extRender(
+              true, 
+              abstractModule::blankReConvert( 
+                _bVRenderString->getValString() 
+              ) 
+            );      
+          }
+          _recreate = false;
+          setExecGracePeriod(0.1);
+          selfExec();		              
+        }
 //				else if ( strcmp(paramName, "_bVMakeGridChoice") == 0 ) {
 //					std::string str(_bVMakeGridChoice->getActLabel());
 //					_bVToRender.get(str)->writeGrid();

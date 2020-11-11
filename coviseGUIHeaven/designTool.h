@@ -69,6 +69,7 @@ namespace dtOO {
       covise::coChoiceParam * _bVRenderChoice;
       covise::coChoiceParam * _bVRenderTags;
       covise::coBooleanParam * _bVRenderCurrentToggle;
+      covise::coStringParam * _bVRenderString;
 
 		  covise::coChoiceParam * _dCChoice;
       covise::coBooleanParam * _dCRunCurrentState;

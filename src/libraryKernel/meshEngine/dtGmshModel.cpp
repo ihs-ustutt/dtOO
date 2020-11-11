@@ -17,6 +17,8 @@
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
+#include <analyticGeometryHeaven/multipleBoundedSurface.h>
+#include <analyticGeometryHeaven/multipleBoundedVolume.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <unstructured3dMesh.h>
 #include <unstructured3dSurfaceMesh.h>
@@ -50,7 +52,12 @@ namespace dtOO {
       ("FRONT", 2)("front", 2)("2", 2)("F", 2)("f", 2)
       ("BACK", 3)("back", 3)("3", 3)("B", 3)("b", 3)
       ("WEST", 4)("west", 4)("4", 4)("W", 4)("w", 4)  
-      ("EAST", 5)("east", 5)("5", 5)("E", 5)("e", 5);     
+      ("EAST", 5)("east", 5)("5", 5)("E", 5)("e", 5)
+      ("6", 6)
+      ("7", 7)
+      ("8", 8)
+      ("9", 9)
+      ("10", 10);
     std::map< int, std::vector< std::string > > dtGmshModel::_positionStrFace
     =
     ::boost::assign::map_list_of
@@ -95,6 +102,36 @@ namespace dtOO {
           ("EAST")("east")
           ("5")
           ("E")("e").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        6, 
+        ::boost::assign::list_of
+          ("6").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        7, 
+        ::boost::assign::list_of
+          ("7").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        8, 
+        ::boost::assign::list_of
+          ("8").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        9, 
+        ::boost::assign::list_of
+          ("9").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        10, 
+        ::boost::assign::list_of
+          ("10").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        11, 
+        ::boost::assign::list_of
+          ("11").convert_to_container< std::vector< std::string > >()
       );
       
     std::map< std::string, int > dtGmshModel::_edgePositionStr
@@ -228,8 +265,18 @@ namespace dtOO {
 		std::vector< int > vId(2);
 		addIfVertexToGmshModel(edge->getPointPercent(0.), &(vId[0]) );
 		addIfVertexToGmshModel(edge->getPointPercent(1.), &(vId[1]) );
-		
-		addIfEdgeToGmshModel(edge, tag, vId[0], vId[1]);
+
+		if ( !edge->degenerated() ) {
+		  addIfEdgeToGmshModel(edge, tag, vId[0], vId[1]);
+    }
+    else {
+      dt__info(
+        addIfEdgeToGmshModel(),
+        << "Try to add a degenerated edge." << std::endl
+        << "boundingBoxValue = " << edge->boundingBoxValue()
+      );      
+      *tag = 0;
+    }
 	}
 	
   void dtGmshModel::addIfFaceToGmshModel( 
@@ -238,6 +285,16 @@ namespace dtOO {
   ) {
 		*tag = this->getMaxFaceTag()+1;	
 		
+    if ( face->degenerated() ) {
+      dt__info(
+        addIfFaceToGmshModel(),
+        << "Try to add a degenerated face." << std::endl
+        << "boundingBoxValue = " << face->boundingBoxValue()
+      );
+      *tag = 0;
+      return;
+    }
+    
 		dtGmshFace * gf = new dtGmshFace(this, *tag, edges, ori);
 		gf->setMap2dTo3d(face);
 		
@@ -273,21 +330,42 @@ namespace dtOO {
     map2dTo3d const * const face, int * const tag
   ) {
 		*tag = this->getMaxFaceTag()+1;		
-		std::vector< int > eId(4);
+		std::list< ::GEdge * > edges;//(4);
+    std::vector< int > ori;
+    int tmpEId = 0;
 		addIfEdgeToGmshModel(
-      dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(0)), &(eId[0]) 
+      dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(0)), &(tmpEId) 
     );
+    if (tmpEId!=0) {
+      edges.push_back( getDtGmshEdgeByTag(tmpEId) );
+      ori.push_back(1);
+    }
 		addIfEdgeToGmshModel(
-      dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(1)), &(eId[1]) 
+      dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(1)), &(tmpEId) 
     );
+    if (tmpEId!=0) {
+      edges.push_back( getDtGmshEdgeByTag(tmpEId) );
+      ori.push_back(1);
+    }
 		addIfEdgeToGmshModel(
-      dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(1)), &(eId[2]) 
+      dt__tmpPtr(map1dTo3d, face->segmentConstVPercent(1)), &(tmpEId) 
     );
+    if (tmpEId!=0) {
+      edges.push_back( getDtGmshEdgeByTag(tmpEId) );
+      ori.push_back(-1);
+    }
 		addIfEdgeToGmshModel(
-      dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(0)), &(eId[3]) 
+      dt__tmpPtr(map1dTo3d, face->segmentConstUPercent(0)), &(tmpEId) 
     );
-		
-  	addIfFaceToGmshModel(face, tag, eId[0], eId[1], -eId[2], -eId[3]);
+    if (tmpEId!=0) {
+      edges.push_back( getDtGmshEdgeByTag(tmpEId) );
+      ori.push_back(-1);
+    }
+		if ( !face->degenerated() ) {
+		  addIfFaceToGmshModel(face, tag, edges, ori);
+    }
+    else *tag = 0;		
+  	
 	}
 
   void dtGmshModel::addIfRegionToGmshModel(
@@ -298,6 +376,13 @@ namespace dtOO {
 		
 		dtGmshRegion * gr = new dtGmshRegion(this, *tag, faces, ori);
 		
+    dt__throwIfWithMessage(
+      region->degenerated(), 
+      addIfRegionToGmshModel(),
+      << "Try to add a degenerated region." << std::endl
+      << "boundingBoxValue = " << region->boundingBoxValue()
+    );
+    
 		int tTag = alreadyInModel(gr);
 		if (tTag) {
 			delete gr;
@@ -336,29 +421,53 @@ namespace dtOO {
     map3dTo3d const * const region, int * const tag
   ) {
 		*tag = this->getMaxRegionTag()+1;		
-		std::vector< int > fId(6);
+		std::list< ::GFace * > faces;//(4);
+    std::vector< int > ori;
+    int tmpFId = 0;
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(0)), &(fId[0])
-		);						
-		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(1)), &(fId[1])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(0)), &(tmpFId)
 		);
+    if (tmpFId!=0) {
+      faces.push_back( getDtGmshFaceByTag(tmpFId) );
+      ori.push_back(1);
+    }    
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(0)), &(fId[2])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstWPercent(1)), &(tmpFId)
 		);
+    if (tmpFId!=0) {
+      faces.push_back( getDtGmshFaceByTag(tmpFId) );
+      ori.push_back(1);
+    }        
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(1)), &(fId[3])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(0)), &(tmpFId)
 		);
+    if (tmpFId!=0) {
+      faces.push_back( getDtGmshFaceByTag(tmpFId) );
+      ori.push_back(1);
+    }        
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(0)), &(fId[4])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstVPercent(1)), &(tmpFId)
 		);
+    if (tmpFId!=0) {
+      faces.push_back( getDtGmshFaceByTag(tmpFId) );
+      ori.push_back(1);
+    }        
 		addIfFaceToGmshModel(
-		  dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(1)), &(fId[5])
+		  dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(0)), &(tmpFId)
+		);
+    if (tmpFId!=0) {
+      faces.push_back( getDtGmshFaceByTag(tmpFId) );
+      ori.push_back(1);
+    }        
+		addIfFaceToGmshModel(
+		  dt__tmpPtr(map2dTo3d, region->segmentConstUPercent(1)), &(tmpFId)
 		);    
-
-  	addIfRegionToGmshModel(
-      region, tag, fId[0], fId[1], fId[2], fId[3], fId[4], fId[5]
-    );    
+    if (tmpFId!=0) {
+      faces.push_back( getDtGmshFaceByTag(tmpFId) );
+      ori.push_back(1);
+    }    
+    
+  	addIfRegionToGmshModel( region, tag, faces, ori );    
   }  
 			
   void dtGmshModel::addIfToGmshModel(
@@ -372,6 +481,68 @@ namespace dtOO {
     }    
     else if ( map3dTo3d::ConstDownCast(aG) ) {
       addIfRegionToGmshModel(map3dTo3d::ConstSecureCast(aG), tag);
+    }
+    else if ( multipleBoundedSurface::ConstDownCast(aG) ) {
+      multipleBoundedSurface const * const mbs 
+      = 
+      multipleBoundedSurface::ConstSecureCast(aG);
+
+      //
+      // extract edges and create orientation vector
+      //
+      std::list< ::GEdge * > edges;
+      std::vector< int > ori;
+      dt__pVH(analyticGeometry) const & bounds = mbs->boundsVectorConstRef();
+      dt__forAllIndex(bounds, ii) {
+        int tmpTag;
+        addIfToGmshModel( &(bounds[ii]), &(tmpTag) );
+        edges.push_back( getDtGmshEdgeByTag(tmpTag) );
+        if (tmpTag<0) {
+          ori.push_back(-1);
+        }
+        else {
+          ori.push_back(1);
+        }
+      }
+
+      //
+      // add surface with multiple bounded edges
+      // currently it has to be a map2dTo3d
+      //
+      addIfFaceToGmshModel(
+        map2dTo3d::MustConstDownCast( mbs->surfaceConstPtr() ), tag, edges, ori
+      );
+    }
+    else if ( multipleBoundedVolume::ConstDownCast(aG) ) {
+      multipleBoundedVolume const * const mbv 
+      = 
+      multipleBoundedVolume::ConstSecureCast(aG);
+
+      //
+      // extract faces and orientation vector
+      //
+      std::list< ::GFace * > faces;
+      std::vector< int > ori;
+      dt__pVH(analyticGeometry) const & bounds = mbv->boundsVectorConstRef();
+      dt__forAllIndex(bounds, ii) {
+        int tmpTag;
+        addIfToGmshModel( &(bounds[ii]) , &(tmpTag) );
+        faces.push_back( getDtGmshFaceByTag(tmpTag) );
+        if (tmpTag<0) {
+          ori.push_back(-1);
+        }
+        else {
+          ori.push_back(1);
+        }
+      }
+
+      //
+      // add region with multiple bounded edges
+      // currently it has to be a map2dTo3d
+      //
+      addIfRegionToGmshModel(
+        map3dTo3d::MustConstDownCast( mbv->regionConstPtr() ), tag, faces, ori
+      );
     }
     else dt__throwUnexpected(addIfToGmshModel());
   }
