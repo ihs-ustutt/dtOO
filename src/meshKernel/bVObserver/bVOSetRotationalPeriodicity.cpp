@@ -83,6 +83,27 @@ namespace dtOO {
     std::vector< ::GEdge * > slaveEdge = slaveF->edges();
     std::vector< ::GEdge * > masterEdge = masterF->edges();
     
+    bool restart = false;
+    dt__forAllIndex(masterEdge, kk) {
+      restart = false;
+      dt__forAllIndex(masterEdge, ii) {
+        dt__forAllIndex(slaveEdge, jj) {
+          if ( slaveEdge[jj]->tag() == masterEdge[ii]->tag() ) {
+            dt__info(
+              preUpdate(), 
+              << "Remove edge with tag " << slaveEdge[jj]->tag()
+            );
+            slaveEdge.erase(slaveEdge.begin() + jj);
+            masterEdge.erase(masterEdge.begin() + ii);
+            restart = true;
+          }
+          if (restart) break;
+        }
+        if (restart) break;
+      }
+      if (!restart) break;
+    }
+    
     //
     // create unique vectors of all vertices of slave and master face
     //
@@ -151,6 +172,15 @@ namespace dtOO {
       // mappings
       master_slave_v[ *minSlave ] = aVertex;
       slave_master_v[ aVertex ] = *minSlave;
+      
+      if ( aVertex->tag() == (*minSlave)->tag() ) {
+        dt__info(
+          preUpdate(), 
+          << "Same vertices" << std::endl
+          << aVertex->tag() << " <-> " << (*minSlave)->tag() 
+        );
+        continue;
+      }
       
       angle.push_back(
         (*_dtT)( dtGmshModel::extractPosition(*minSlave), -1 ).y()
