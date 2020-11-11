@@ -2130,6 +2130,18 @@ namespace dtOO {
     ::QDomElement const element, 
     cVPtrVec const * const cV,
     aFPtrVec const * const aF,
+    aGPtrVec const * const aG 
+  ) {
+    return muParseStringInt( 
+      replaceDependencies( getAttributeStr(attName, element), cV, aF, aG )
+    );
+  }
+  
+  int dtXmlParserBase::getAttributeIntMuParse(
+    std::string const attName, 
+    ::QDomElement const element, 
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
     int const & def
   ) {
     if ( hasAttribute(attName, element) ) {
@@ -2180,6 +2192,24 @@ namespace dtOO {
 		int counter = 0;
 		for ( auto &el : attVec ) {		
 			intVec[counter] = muParseStringInt( replaceDependencies(el, cV, aF) );
+			counter++;
+		}		
+		return intVec;
+	}
+  
+	std::vector< int > dtXmlParserBase::getAttributeIntVectorMuParse( 
+		std::string const attName, 
+		::QDomElement const element, 
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+    aGPtrVec const * const aG      
+	) {
+		std::string att = getAttributeStr(attName, element);
+		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
+		std::vector< int > intVec(attVec.size(), 0.);
+		int counter = 0;
+		for ( auto &el : attVec ) {		
+			intVec[counter] = muParseStringInt( replaceDependencies(el, cV, aF, aG) );
 			counter++;
 		}		
 		return intVec;
