@@ -233,32 +233,33 @@ namespace dtOO {
         dtMesh1DOperator::DownCast(_meshOperator.get(currentOperatorStr) )
       );
       
-      if (currentGEntityStr == "*") {
-			  dt__forAllRefAuto(ee, aEdge) {
-          if ( 
+      dt__forAllRefAuto(ee, aEdge) {
+        if ( 
+          (
             (
               aEdge->meshStatistics.status 
               !=
               ::GEntity::MeshGenerationStatus::DONE 
             )
             &&
-            (aEdge->getMeshMaster() == aEdge)
-          ) (*current1D)(aEdge); 
-          if (optionHandling::debugTrue()) {
-            gm->writeMSH(
-              dtXmlParser::reference().currentState()
-              +
-              "_"
-              +
-              ptrBoundedVolume()->getLabel()
-              +
-              "_debug.msh", 
-              2.2, false, true
-            );
-          }
+            gm->matchWildCardPhysical(currentGEntityStr, aEdge)
+          )
+          &&
+          (aEdge->getMeshMaster() == aEdge)
+        ) (*current1D)(aEdge); 
+        if (optionHandling::debugTrue()) {
+          gm->writeMSH(
+            dtXmlParser::reference().currentState()
+            +
+            "_"
+            +
+            ptrBoundedVolume()->getLabel()
+            +
+            "_debug.msh", 
+            2.2, false, true
+          );
         }
       }
-      else dt__throw(preUpdate(), << "Only (*)-meshing is currently supported.");
     }
     
     //
