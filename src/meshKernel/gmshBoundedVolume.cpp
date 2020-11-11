@@ -283,17 +283,6 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( _gm );
 		
-    //
-    // parse gmsh file if option exists
-    //
-    if ( hasOption("gmshMeshFile") ) {
-      dt__info(
-        makePreGrid(),
-        << "ParseFile( " << getOption("gmshMeshFile") << ", true, true );"
-      );
-      ParseFile( getOption("gmshMeshFile"), true, true );
-    }
-
     if ( hasOption("gmshMeshStr") ) {
       dt__throw(
         makePreGrid(),
@@ -323,7 +312,38 @@ namespace dtOO {
         oG[ii].first[0]+"."+oG[ii].first[1], oG[ii].second 
       );
     }
+    optionGroup oGSym = getOptionGroup("gmshSymbol");      
+    for (int ii=0;ii<oGSym.size();ii++) {
+      dt__info(
+        makePreGrid(),
+        << "Define Gmsh symbol " 
+        << oGSym[ii].first[0] 
+        << " -> " 
+        << oGSym[ii].second
+      );
+      gmsh_yysymbols[ oGSym[ii].first[0] ] = gmsh_yysymbol();
+      gmsh_yysymbols.at( oGSym[ii].first[0] ).value.push_back( oGSym[ii].second );
+    }    
 
+    //
+    // parse gmsh file if option exists
+    //
+    if ( hasOption("gmshMeshFile") ) {
+      dt__info(
+        makePreGrid(),
+        << "ParseFile( " << getOption("gmshMeshFile") << ", true, true );"
+      );
+      ParseFile( getOption("gmshMeshFile"), true, true );
+    }
+		
+    dt__forAllRefAuto(gmsh_yysymbols, aSymb) {
+      dt__info( 
+        makePreGrid(), 
+        << aSymb.first 
+        << " -> " << aSymb.second.value << " : " << aSymb.second.list
+      );
+    }
+    
     //
     // update bounding box
     //
