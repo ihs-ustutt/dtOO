@@ -42,7 +42,7 @@ namespace dtOO {
 		_nE
 		= 
 		dtXmlParserBase::getAttributeIntVectorMuParse(
-			"numberElements", element, cV, aF
+			"numberElements", element, cV, aF, aG
 		);
     dt__throwIf(_nE.size()!=3, init());      
   }
