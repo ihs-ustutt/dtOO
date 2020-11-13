@@ -239,6 +239,18 @@ namespace dtOO {
     int const to 
   ) {
 		*tag = this->getMaxEdgeTag()+1;
+    
+    if ( edge->degenerated() ) {
+		  dt__info(
+        addIfEdgeToGmshModel(),
+        << "Try to add a degenerated edge." << std::endl
+        << "boundingBoxValue = " << edge->boundingBoxValue()
+      );      
+      *tag = 0;
+      
+      return;
+    }
+    
 		dtGmshEdge * ge = new dtGmshEdge(
 			this, *tag, ::GModel::getVertexByTag(from), ::GModel::getVertexByTag(to)
 		);
@@ -266,17 +278,7 @@ namespace dtOO {
 		addIfVertexToGmshModel(edge->getPointPercent(0.), &(vId[0]) );
 		addIfVertexToGmshModel(edge->getPointPercent(1.), &(vId[1]) );
 
-		if ( !edge->degenerated() ) {
-		  addIfEdgeToGmshModel(edge, tag, vId[0], vId[1]);
-	}
-    else {
-      dt__info(
-        addIfEdgeToGmshModel(),
-        << "Try to add a degenerated edge." << std::endl
-        << "boundingBoxValue = " << edge->boundingBoxValue()
-      );      
-      *tag = 0;
-    }
+    addIfEdgeToGmshModel(edge, tag, vId[0], vId[1]);
 	}
 	
   void dtGmshModel::addIfFaceToGmshModel( 
@@ -944,11 +946,6 @@ namespace dtOO {
       ++vIt
     ) {
 			if ( dtGmshVertex::isEqual(gv, *vIt) ) {
-//				dt__debug(
-//					alreadyInModel(),
-//					<< "duplicate vertex = " << gv->tag() 
-//          << " equal to vertex tag = " << (*vIt)->tag()
-//				);				
 				return (*vIt)->tag();
 			}
 		}
@@ -962,11 +959,6 @@ namespace dtOO {
       ++eIt
     ) {
 			if ( dtGmshEdge::isEqual(ge, *eIt) ) {
-//				dt__debug(
-//					alreadyInModel(),
-//					<< "duplicate edge = " << ge->tag() 
-//          << " equal to edge tag = " << (*eIt)->tag()
-//				);				
 				return (*eIt)->tag();
 			}
 		}
@@ -980,11 +972,6 @@ namespace dtOO {
       ++fIt
     ) {
 			if ( dtGmshFace::isEqual(gf, *fIt) ) {
-//				dt__debug(
-//					alreadyInModel(),
-//					<< "duplicate face = " << gf->tag() 
-//          << " equal to face tag = " << (*fIt)->tag()
-//				);				
 				return (*fIt)->tag();
 			}
 		}
@@ -998,11 +985,6 @@ namespace dtOO {
       ++rIt
     ) {
 			if ( dtGmshRegion::isEqual(gr, *rIt) ) {
-//				dt__debug(
-//					alreadyInModel(),
-//					<< "duplicate region = " << gr->tag() 
-//          << " equal to region tag = " << (*rIt)->tag()
-//				);				
 				return (*rIt)->tag();
 			}
 		}
