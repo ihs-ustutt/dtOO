@@ -266,18 +266,18 @@ namespace dtOO {
 		addIfVertexToGmshModel(edge->getPointPercent(0.), &(vId[0]) );
 		addIfVertexToGmshModel(edge->getPointPercent(1.), &(vId[1]) );
 
-//		if ( !edge->degenerated() ) {
+		if ( !edge->degenerated() ) {
 		  addIfEdgeToGmshModel(edge, tag, vId[0], vId[1]);
 	}
-//    else {
-//      dt__info(
-//        addIfEdgeToGmshModel(),
-//        << "Try to add a degenerated edge." << std::endl
-//        << "boundingBoxValue = " << edge->boundingBoxValue()
-//      );      
-//      *tag = 0;
-//	}
-//	}
+    else {
+      dt__info(
+        addIfEdgeToGmshModel(),
+        << "Try to add a degenerated edge." << std::endl
+        << "boundingBoxValue = " << edge->boundingBoxValue()
+      );      
+      *tag = 0;
+    }
+	}
 	
   void dtGmshModel::addIfFaceToGmshModel( 
     map2dTo3d const * const face, int * const tag,
@@ -285,15 +285,15 @@ namespace dtOO {
   ) {
 		*tag = this->getMaxFaceTag()+1;	
 		
-//    if ( face->degenerated() ) {
-//      dt__info(
-//        addIfFaceToGmshModel(),
-//        << "Try to add a degenerated face." << std::endl
-//        << "boundingBoxValue = " << face->boundingBoxValue()
-//      );
-//      *tag = 0;
-//      return;
-//    }
+    if ( face->degenerated() ) {
+      dt__info(
+        addIfFaceToGmshModel(),
+        << "Try to add a degenerated face." << std::endl
+        << "boundingBoxValue = " << face->boundingBoxValue()
+      );
+      *tag = 0;
+      return;
+    }
     
 		dtGmshFace * gf = new dtGmshFace(this, *tag, edges, ori);
 		gf->setMap2dTo3d(face);
@@ -361,11 +361,7 @@ namespace dtOO {
       edges.push_back( getDtGmshEdgeByTag(tmpEId) );
       ori.push_back(-1);
     }
-//		if ( !face->degenerated() ) {
-		  addIfFaceToGmshModel(face, tag, edges, ori);
-//    }
-//    else *tag = 0;		
-   
+		addIfFaceToGmshModel(face, tag, edges, ori);  	
 	}
 
   void dtGmshModel::addIfRegionToGmshModel(
@@ -376,12 +372,12 @@ namespace dtOO {
 		
 		dtGmshRegion * gr = new dtGmshRegion(this, *tag, faces, ori);
 		
-//    dt__throwIfWithMessage(
-//      region->degenerated(), 
-//      addIfRegionToGmshModel(),
-//      << "Try to add a degenerated region." << std::endl
-//      << "boundingBoxValue = " << region->boundingBoxValue()
-//    );
+    dt__throwIfWithMessage(
+      region->degenerated(), 
+      addIfRegionToGmshModel(),
+      << "Try to add a degenerated region." << std::endl
+      << "boundingBoxValue = " << region->boundingBoxValue()
+    );
     
 		int tTag = alreadyInModel(gr);
 		if (tTag) {
@@ -496,12 +492,20 @@ namespace dtOO {
       dt__forAllIndex(bounds, ii) {
         int tmpTag;
         addIfToGmshModel( &(bounds[ii]), &(tmpTag) );
-        edges.push_back( getDtGmshEdgeByTag(tmpTag) );
-        if (tmpTag<0) {
-          ori.push_back(-1);
+        if (tmpTag != 0) {
+          edges.push_back( getDtGmshEdgeByTag(tmpTag) );
+          if (tmpTag<0) {
+            ori.push_back(-1);
+          }
+          else {
+            ori.push_back(1);
+          }
         }
         else {
-          ori.push_back(1);
+          dt__warning(
+            addIfToGmshModel(), 
+            << "Degenerated bound (edge) [ ii = " << ii << " ]."
+          );
         }
       }
 
@@ -527,12 +531,20 @@ namespace dtOO {
       dt__forAllIndex(bounds, ii) {
         int tmpTag;
         addIfToGmshModel( &(bounds[ii]) , &(tmpTag) );
-        faces.push_back( getDtGmshFaceByTag(tmpTag) );
-        if (tmpTag<0) {
-          ori.push_back(-1);
+        if (tmpTag != 0) {
+          faces.push_back( getDtGmshFaceByTag(tmpTag) );
+          if (tmpTag<0) {
+            ori.push_back(-1);
+          }
+          else {
+            ori.push_back(1);
+          }
         }
         else {
-          ori.push_back(1);
+          dt__warning(
+            addIfToGmshModel(), 
+            << "Degenerated bound (face) [ ii = " << ii << " ]."
+          );
         }
       }
 

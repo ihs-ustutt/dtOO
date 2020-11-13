@@ -29,6 +29,10 @@ namespace dtOO {
   std::vector< float > qtXmlBase::muParseCSString( 
     std::string const expression 
   ) {
+    if ( !stringPrimitive::stringContains(",", expression) ) {
+      return std::vector< float >(1, muParseString(expression));
+    }
+    
     dtMuParser parser;
     try {
       parser.SetExpr( expression );
