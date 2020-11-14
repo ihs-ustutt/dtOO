@@ -373,14 +373,19 @@ namespace dtOO {
 		*tag = this->getMaxRegionTag()+1;	
 		
 		dtGmshRegion * gr = new dtGmshRegion(this, *tag, faces, ori);
-		
-    dt__throwIfWithMessage(
-      region->degenerated(), 
-      addIfRegionToGmshModel(),
-      << "Try to add a degenerated region." << std::endl
-      << "boundingBoxValue = " << region->boundingBoxValue()
-    );
-    
+
+    //
+    // customGmsh calls this function with NULL pointer for region
+    // so we have to check here for this case, otherwise we will get a segfault
+    //
+    if (region != NULL) {
+      dt__throwIfWithMessage(
+        region->degenerated(), 
+        addIfRegionToGmshModel(),
+        << "Try to add a degenerated region." << std::endl
+        << "boundingBoxValue = " << region->boundingBoxValue()
+      );
+    }
 		int tTag = alreadyInModel(gr);
 		if (tTag) {
 			delete gr;
