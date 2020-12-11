@@ -17,7 +17,7 @@ namespace dtOO {
 	
 	dtTransformer::dtTransformer(
     dtTransformer const & orig
-  ) : labelHandling(orig) {
+  ) : labelHandling(orig), optionHandling(orig) {
 		
 	}
 
