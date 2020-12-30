@@ -69,8 +69,6 @@ namespace dtOO {
     = 
     addChoiceParam("_aFRenderChoice", "_aFRenderChoiceDescription");
     _aFRenderChoice->disable();
-    //_aFRenderVector = addInt32VectorParam("_aGRenderVector", "_aGRenderVectorDescription");
-    //_aFRenderVector->disable();
     _aFRenderCurrentToggle 
     = 
     addBooleanParam(
@@ -95,7 +93,18 @@ namespace dtOO {
       "_aGRenderCurrentToggle", "_aGRenderCurrentToggleDescription"
     );
     _aGRenderCurrentToggle->disable();
-    _aGRenderCurrentToggle->setValue(false);	
+    _aGRenderCurrentToggle->setValue(false);
+    _aGRenderFilterString
+    = 
+    addStringParam("_aGRenderFilterString", "_aGRenderFilterStringDescription");
+    _aGRenderFilterString->setValue("");
+    _aGRenderFilterString->disable();
+    _aGRenderFilterChoice 
+    = 
+    addChoiceParam(
+      "_aGRenderFilterChoice", "_aGRenderFilterChoiceDescription"
+    );
+    _aGRenderFilterChoice->disable();
 
 		_bVChoice = addChoiceParam("_bVChoice", "_bVChoiceDescription");
     _bVChoice->disable();
@@ -190,7 +199,9 @@ namespace dtOO {
 		tmp.push_back( _aGChoice );
     tmp.push_back( _aGRenderChoice );
     tmp.push_back( _aGRenderVector );
-    tmp.push_back( _aGRenderCurrentToggle );		
+    tmp.push_back( _aGRenderCurrentToggle );	
+    tmp.push_back( _aGRenderFilterChoice );	
+    tmp.push_back( _aGRenderFilterString );
 		_uifPara.push_back( tmp );
 		//
 		// boundedVolumes
@@ -246,7 +257,6 @@ namespace dtOO {
 		_stateName->disable();    
     _stateName->setValue("");
     _clearLog->show();
-//    _dCStateString->show();
     _dCStateString->disable();
     //
     // init log file
@@ -282,62 +292,17 @@ namespace dtOO {
 						_parseXml->setValue(false);
             _xmlBrowser->enable();
             _cVStateBrowser->enable();
-//						setExecGracePeriod(0.1);
-//						selfExec();
 					}		
 				}      
       
 			if (strcmp(paramName, "_moduleChoice") == 0) {
-				if ( _moduleChoice->getValue() == 0 ) {
-					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->show();
-					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
-					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
-					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
-					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
-          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
-				}
-				else if (_moduleChoice->getValue() == 1) {
-					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
-					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->show();
-					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();				
-					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
-					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
-          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
-				}
-				else if (_moduleChoice->getValue() == 2) {
-					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
-					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
-					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->show();
-					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
-					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
-          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
-				}			
-				else if (_moduleChoice->getValue() == 3) {
-					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
-					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
-					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
-					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->show();
-					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
-          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
-				}				
-				else if (_moduleChoice->getValue() == 4) {
-					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
-					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
-					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
-					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
-					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->show();
-          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->hide();
-				}										
-				else if (_moduleChoice->getValue() == 5) {
-					dt__forAllIndex( _uifPara[0], ii) _uifPara[0][ii]->hide();
-					dt__forAllIndex( _uifPara[1], ii) _uifPara[1][ii]->hide();
-					dt__forAllIndex( _uifPara[2], ii) _uifPara[2][ii]->hide();
-					dt__forAllIndex( _uifPara[3], ii) _uifPara[3][ii]->hide();
-					dt__forAllIndex( _uifPara[4], ii) _uifPara[4][ii]->hide();
-          dt__forAllIndex( _uifPara[5], ii) _uifPara[5][ii]->show();
-				}										        
+        dt__forAllIndex(_uifPara, jj) {
+          dt__forAllIndex( _uifPara[jj], ii) _uifPara[jj][ii]->hide();
+        }
+        int const mChoice = _moduleChoice->getValue();
+			  dt__forAllIndex(_uifPara[mChoice], ii) _uifPara[mChoice][ii]->show();
 			}
-			//--------------------------------------------------------------------------
+			//------------------------------------------------------------------------
 			//
 			// constValue param
 			//
@@ -350,7 +315,9 @@ namespace dtOO {
 					constValue const * cVptr = _cV.get(label);
 					sliderFloatParam const * sfp = sliderFloatParam::ConstDownCast(cVptr);
 					intParam const * ip = intParam::ConstDownCast(cVptr);
-          constrainedFloatParam const * cfp = constrainedFloatParam::ConstDownCast(cVptr);
+          constrainedFloatParam const * cfp 
+          = 
+          constrainedFloatParam::ConstDownCast(cVptr);
 					
 					if (ip) {
             _infoStr->setValue(ip->className().c_str());
@@ -432,24 +399,14 @@ namespace dtOO {
 					}
 				}
 			}
-			//--------------------------------------------------------------------------
+			//------------------------------------------------------------------------
 			//
 			// analyticFunction param
 			//
 			if ( _aF.size() != 0 ) {		
 				if(strcmp(paramName, "_aFChoice") == 0) {    
-//					_aFToRender.clear();
-//					std::string label( _aFChoice->getLabel( _aFChoice->getValue() ) );
-//					_aFToRender.push_back( _aF.get(label) );
-//					_recreate = false;
-//					setExecGracePeriod(0.1);
-//					selfExec();
 				  int pos = _aFChoice->getValue();
 					if ( !_aFToRender.has( _aF[pos]->getLabel() ) ) {
-						// set ext rendering for chosen geometry
-//						_aF[pos]->extRender(true);
-						//reset other geometries
-						//dt__forAllIndex(_aFToRender,ii, _aFToRender[ii]->extRender(false); );
 						_aFToRender.push_back( _aF[pos] );
 					}
 					else {
@@ -462,44 +419,19 @@ namespace dtOO {
 				}		
 				else if ( strcmp(paramName, "_aFRenderChoice") == 0 ) {
 					std::string str(_aFRenderChoice->getActLabel());
-//					map1dTo3d const * m1d = map1dTo3d::ConstDownCast( _aG.get(str) );
-//					map2dTo3d const * m2d = map2dTo3d::ConstDownCast( _aG.get(str) );
-//					map3dTo3d const * m3d = map3dTo3d::ConstDownCast( _aG.get(str) );
-//					int res[3]; res[0] = 0; res[1] = 0; res[2] = 0;
-//					if (m1d) {
-//						res[0] = m1d->getRenderResolutionU();
-//					}
-//					else if (m2d) {
-//						res[0] = m2d->getRenderResolutionU();
-//						res[1] = m2d->getRenderResolutionV();
-//					}
-//					else if (m3d) {
-//						res[0] = m3d->getRenderResolutionU();
-//						res[1] = m3d->getRenderResolutionV();
-//						res[2] = m3d->getRenderResolutionW();
-//					}
-					
-//					_aGRenderVector->setValue( res[0], res[1], res[2] );
 					_recreate = false;
 					setExecGracePeriod(0.1);
 					selfExec();		
 				}				
 				else if ( strcmp(paramName, "_aFRenderCurrentToggle") == 0 ) {
-//					int pos = _aGRenderChoice->getValue();
-//					if ( !_aGToRender.has( _aG[pos]->getLabel() ) ) {
-//						_aGToRender.push_back( _aG[pos] );
-//					}
-//					else {
-						_aFToRender.erase( _aFRenderChoice->getValue() );
-//					}
+					_aFToRender.erase( _aFRenderChoice->getValue() );
 					_aFRenderCurrentToggle->setValue(false);				
-
 					_recreate = false;
 					setExecGracePeriod(0.1);
 					selfExec();				
 				}  					
 			}
-			//--------------------------------------------------------------------------
+			//------------------------------------------------------------------------
 			//
 			// analyticGeometry param
 			//
@@ -521,15 +453,6 @@ namespace dtOO {
 		      setExecGracePeriod(0.1);
 		      selfExec();
 				}		
-//				else if ( strcmp(paramName, "_aGRenderClear") == 0 ) {
-//					if ( _aGRenderClear->getValue() ) {
-//						_aGToRender.clear();
-//						_aGRenderClear->setValue(false);
-//					  _recreate = false;
-//						setExecGracePeriod(0.1);
-//						selfExec();			
-//					}
-//				}
 				else if ( strcmp(paramName, "_aGRenderChoice") == 0 ) {
 					std::string str(_aGRenderChoice->getActLabel());
 					map1dTo3d const * m1d = map1dTo3d::ConstDownCast( _aG.get(str) );
@@ -590,32 +513,58 @@ namespace dtOO {
 					selfExec();			
 				}
 				else if ( strcmp(paramName, "_aGRenderCurrentToggle") == 0 ) {
-//					int pos = _aGRenderChoice->getValue();
-//					if ( !_aGToRender.has( _aG[pos]->getLabel() ) ) {
-//						_aGToRender.push_back( _aG[pos] );
-//					}
-//					else {
-						_aGToRender.erase( _aGRenderChoice->getValue() );
-//					}
+  				_aGToRender.erase( _aGRenderChoice->getValue() );
 					_aGRenderCurrentToggle->setValue(false);				
-
 					_recreate = false;
 					setExecGracePeriod(0.1);
 					selfExec();				
 				}  		
-		//    else if ( strcmp(paramName, "_aGRenderShowAll") == 0 ) {
-		//      _aGRenderShowAll->setValue(false);
-		//      dt__forAllIndex(_aG, ii,
-		//        _aG[ii]->setRenderResolution(0, 10);
-		//			  _aG[ii]->setRenderResolution(1, 10);
-		//  			_aG[ii]->setRenderResolution(2, 10);
-		//      );
-		//			_recreate = false;
-		//      setExecGracePeriod(0.1);
-		//      selfExec();			
-		//    }  				
+		    else if ( strcmp(paramName, "_aGRenderFilterString") == 0 ) {
+          _aGRenderFilterChoice->disable();
+          std::string pattern(
+            abstractModule::blankReConvert(
+              _aGRenderFilterString->getValString()
+            )
+          );
+          std::vector<std::string> labels;
+          _AGFilterPos.clear();
+		      dt__forAllIndex(_aG, ii) {
+            if ( _parser->matchWildcard( pattern, _aG[ii]->getLabel() ) ) {
+              labels.push_back(_aG[ii]->getLabel());
+              _AGFilterPos.push_back(ii);
+            }
+          }
+          _aGRenderFilterChoice->setValue(labels.size(), labels, 0);  
+          _infoStr->setValue(
+            std::string(
+              _parser->intToString(labels.size())
+              +
+              std::string(" analyticGeometries in filter")
+            ).c_str()
+          );          
+          if ( !labels.empty() ) {            
+            _aGRenderFilterChoice->enable();
+          }			
+		    }  				
+				else if ( strcmp(paramName, "_aGRenderFilterChoice") == 0 ) {
+				  int pos = _AGFilterPos[ _aGRenderFilterChoice->getValue() ];
+					if ( !_aGToRender.has( _aG[pos]->getLabel() ) ) {
+						// set ext rendering for chosen geometry
+						_aG[pos]->extRender(true);
+						//reset other geometries
+						dt__forAllIndex(_aGToRender,ii) _aGToRender[ii]->extRender(false);
+						_aGToRender.push_back( _aG[pos] );
+					}
+					else {
+						int toDel = _aGToRender.getPosition( _aG[pos]->getLabel() );
+						_aGToRender.erase(toDel);
+					}
+		      _recreate = false;
+		      setExecGracePeriod(0.1);
+		      selfExec();
+				}		        
 			}
-			//--------------------------------------------------------------------------
+			//------------------------------------------------------------------------
 			//
 			// boundedVolumes param
 			//		
@@ -642,10 +591,6 @@ namespace dtOO {
 					boundedVolume const * bV = _bV.get(str);
           std::vector< std::string > tags = bV->getMeshTags();
 					abstractModule::updateChoiceParam(_bVRenderTags, &tags);
-//					bV->extRender(
-//            true, abstractModule::blankReConvert(_bVRenderTags->getActLabel()) 
-//          );
-//					_bVRenderTags->enable();
 					
 					_recreate = false;
 					setExecGracePeriod(0.1);
@@ -663,8 +608,6 @@ namespace dtOO {
 					selfExec();		
 				}
         else if ( strcmp(paramName, "_bVRenderString") == 0 ) {          
-					
-					
           if ( _bVToRender.size() != 0 ) {
             std::string str(_bVRenderChoice->getActLabel());
             boundedVolume const * bV = _bV.get(str);
@@ -679,23 +622,8 @@ namespace dtOO {
           setExecGracePeriod(0.1);
           selfExec();		              
         }
-//				else if ( strcmp(paramName, "_bVMakeGridChoice") == 0 ) {
-//					std::string str(_bVMakeGridChoice->getActLabel());
-//					_bVToRender.get(str)->writeGrid();
-//					_recreate = false;
-//					setExecGracePeriod(0.1);
-//					selfExec();		
-//				}
-//				else if ( strcmp(paramName, "_bVRenderCurrentToggle") == 0 ) {
-//					_bVToRender.erase( _bVRenderChoice->getValue() );
-//					_bVRenderCurrentToggle->setValue(false);				
-//
-//					_recreate = false;
-//					setExecGracePeriod(0.1);
-//					selfExec();				
-//				}  		
 			}
-			//--------------------------------------------------------------------------
+			//------------------------------------------------------------------------
 			//
 			// case param
 			//		
@@ -728,19 +656,11 @@ namespace dtOO {
           result.destroy();
 				}		        
 				else if ( strcmp(paramName, "_dCStateResValueChoice") == 0 ) {
-//          _dCStateString->setValue(
-//            _dC[ _dCChoice->getValue() ]->statusStr( 
-//              std::string(_dCStateChoice->getActLabel()) 
-//            ).c_str()
-//          );
           labeledVectorHandling< resultValue * > result
           =
           _dC[ _dCChoice->getValue() ]->result(
             std::string(_dCStateChoice->getActLabel()) 
           );
-//          abstractModule::updateChoiceParam(
-//            _dCStateResValueChoice, &result
-//          );  
           _dCStateResValue->setValue( 
             result.get(
               std::string(_dCStateResValueChoice->getActLabel())
@@ -749,7 +669,7 @@ namespace dtOO {
           result.destroy();
 				}		        
 			}	      
-			//--------------------------------------------------------------------------
+			//------------------------------------------------------------------------
 			//
 			// plugin param
 			//		
@@ -821,10 +741,10 @@ namespace dtOO {
         abstractModule::updateChoiceParam(_dCChoice, &_dC);
         
 				abstractModule::updateChoiceParam(_dPChoice, &_dP);
+        // update filter for analyticGeometries
+        param(_aGRenderFilterString->getName(), true);
 			}
-			else {
-			  _recreate = true;
-			}
+			else _recreate = true;
       
       //
       // update state label
@@ -854,13 +774,11 @@ namespace dtOO {
 			if ( _aGToRender.size() == 0 ) {
 				_aGRenderChoice->disable();
 				_aGRenderCurrentToggle->disable();
-//				_aGRenderInfo->disable();
 				_aGRenderVector->disable();
 			}
 			else {
 				_aGRenderChoice->enable();
 				_aGRenderCurrentToggle->enable();
-//				_aGRenderInfo->enable();
 				_aGRenderVector->enable();
 			  abstractModule::updateChoiceParam(_aGRenderChoice, &_aGToRender);				
 			}

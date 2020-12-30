@@ -64,6 +64,8 @@ namespace dtOO {
       covise::coChoiceParam * _aGRenderChoice;
       covise::coIntVectorParam * _aGRenderVector;
       covise::coBooleanParam * _aGRenderCurrentToggle;
+      covise::coStringParam * _aGRenderFilterString;
+      covise::coChoiceParam * _aGRenderFilterChoice;
 
 		  covise::coChoiceParam * _bVChoice;
       covise::coChoiceParam * _bVRenderChoice;
@@ -101,6 +103,8 @@ namespace dtOO {
       coDoSetHandling _bVToRender;
       
       bool _recreate;
+      
+      std::vector< int > _AGFilterPos;
       
       std::vector< std::string > _AGmemento;
       std::vector< std::string > _AFmemento;
