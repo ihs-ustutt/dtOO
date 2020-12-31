@@ -16,8 +16,8 @@ namespace dtOO {
   }
 
   void dtPlugin::init(
-	  ::QDomElement const & element,
-		baseContainer * const bC,
+    ::QDomElement const & element,
+    baseContainer * const bC,
     cVPtrVec const * const cV,
     aFPtrVec const * const aF,
     aGPtrVec const * const aG,
@@ -29,8 +29,8 @@ namespace dtOO {
     // set label of dtPlugin
     //
     labelHandling::setLabel( 
-		  dtXmlParserBase::getAttributeStr("label", element ) 
-		);
+      dtXmlParserBase::getAttributeStr("label", element ) 
+    );
     
     //
     // set options

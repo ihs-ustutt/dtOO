@@ -14,31 +14,31 @@
 #include <meshEngine/dtGmshModel.h>
 
 namespace dtOO {
-	customGmsh::customGmsh() : gmshBoundedVolume() {
-	}
+  customGmsh::customGmsh() : gmshBoundedVolume() {
+  }
 
-	customGmsh::~customGmsh() {
-	}
+  customGmsh::~customGmsh() {
+  }
   
   void customGmsh::init( 
     ::QDomElement const & element,
-		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV
-	) {
+    baseContainer * const bC,
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    aGPtrVec const * const aG,
+    bVPtrVec const * const bV
+  ) {
     //
     // init gmshBoundedVolume
     //
     gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 		
-		//
-		// set current model
-		//
-		::GModel::setCurrent( _gm );
+    //
+    // set current model
+    //
+    ::GModel::setCurrent( _gm );
 
-		dt__forAllRefAuto(
+    dt__forAllRefAuto(
       qtXmlPrimitive::getChildVector(element), anEl
     ) {
       //
@@ -53,7 +53,7 @@ namespace dtOO {
       else if ( qtXmlPrimitive::is("customRegion", anEl) ) {
         handleCustomRegion(anEl, bC, cV, aF, aG, bV);
       }
-	  }
+    }
   }
   
   int customGmsh::handleCustomFace( 

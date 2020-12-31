@@ -32,16 +32,16 @@ namespace dtOO {
   OpenFOAMCase::~OpenFOAMCase() {
   }
   
-	void OpenFOAMCase::init( 
-		::QDomElement const & element,
-		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
-		dCPtrVec const * const dC
-	) {
-	  dtCase::init(element, bC, cV, aF, aG, bV, dC);
+  void OpenFOAMCase::init( 
+    ::QDomElement const & element,
+    baseContainer const * const bC,
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    aGPtrVec const * const aG,
+    bVPtrVec const * const bV,
+    dCPtrVec const * const dC
+  ) {
+    dtCase::init(element, bC, cV, aF, aG, bV, dC);
     
     //
     // hold constValues

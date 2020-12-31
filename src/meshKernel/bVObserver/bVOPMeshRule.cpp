@@ -27,13 +27,13 @@ namespace dtOO {
   }
   
   void bVOPMeshRule::bVOPMeshRule::init( 
-		::QDomElement const & element,
-		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
-		boundedVolume * attachTo
+    ::QDomElement const & element,
+    baseContainer const * const bC,
+    cVPtrVec const * const cV,
+    aFPtrVec const * const aF,
+    aGPtrVec const * const aG,
+    bVPtrVec const * const bV,
+    boundedVolume * attachTo
   ) {
     //
     // init bVOInterface
