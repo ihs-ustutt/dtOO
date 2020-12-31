@@ -52,7 +52,7 @@ cmake -DCMAKE_INSTALL_PREFIX=<pwd> \
 make install
 ```
 
-###gmsh
+### gmsh
 
 It is necessary to modify the source code of gmsh. First check out the source code
 ```bash
@@ -143,7 +143,13 @@ Prerequisites of `dtOO` are
 - cgm
 - foam-ext-3.1
 
-The environment variable `DTOO_EXTERNLIBS` defines an additional search path for the required prerequisites. Additionally, initialize the `foam-ext-3.1` environment to find the libraries.
+The environment variable `DTOO_EXTERNLIBS` defines an additional search path, e.g.
+
+```bash
+export DTOO_EXTERNLIBS=<dir>
+```
+
+for the required prerequisites. Additionally, initialize the `foam-ext-3.1` environment to find the libraries.
 
 Clone repository, create a build directory and run cmake:
 ```bash
@@ -153,7 +159,7 @@ git submodule init
 git submodule update
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=../install -DDTOO_EXTERNLIBS=<dir> ..
+cmake -DCMAKE_INSTALL_PREFIX=../install ..
 ```
 ### GUI
 
