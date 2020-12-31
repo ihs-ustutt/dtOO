@@ -1,5 +1,6 @@
 build*
 install*
+leap*
 nbproject/
 doc/html/
 src/generalKernel/dtOOVersion.h
