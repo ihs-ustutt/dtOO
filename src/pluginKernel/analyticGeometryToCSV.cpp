@@ -13,8 +13,15 @@
 #include <boundedVolume.h>
 #include <dtCase.h>
 #include <xmlHeaven/dtXmlParser.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool analyticGeometryToCSV::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(analyticGeometryToCSV, new analyticGeometryToCSV())
+  );
+  
   analyticGeometryToCSV::analyticGeometryToCSV() { 
   }
 

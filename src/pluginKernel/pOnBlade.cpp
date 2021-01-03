@@ -1,17 +1,13 @@
 #include "pOnBlade.h"
 
-
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
-//#include <analyticFunctionHeaven/scaCurve2dOneD.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-//#include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-//#include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h>
 #include <boundedVolume.h>
@@ -29,8 +25,13 @@
 #include <interpolationCellPoint.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool pOnBlade::_registrated 
+  =
+  dtPluginFactory::registrate( dt__tmpPtr(pOnBlade, new pOnBlade()) );
+  
   pOnBlade::pOnBlade() { 
   }
 

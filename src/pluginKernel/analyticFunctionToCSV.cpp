@@ -10,8 +10,15 @@
 #include <boundedVolume.h>
 #include <dtCase.h>
 #include <xmlHeaven/dtXmlParser.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool analyticFunctionToCSV::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(analyticFunctionToCSV, new analyticFunctionToCSV())
+  );
+  
   analyticFunctionToCSV::analyticFunctionToCSV() { 
   }
 

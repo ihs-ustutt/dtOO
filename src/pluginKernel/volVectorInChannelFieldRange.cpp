@@ -24,8 +24,15 @@
 #include <interpolationCellPoint.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool volVectorInChannelFieldRange::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(volVectorInChannelFieldRange, new volVectorInChannelFieldRange())
+  );
+  
   volVectorInChannelFieldRange::volVectorInChannelFieldRange() { 
   }
 

@@ -38,6 +38,7 @@ namespace dtOO {
 		aFPtrVec const * _aF;
 		aGPtrVec const * _aG;
     std::vector< std::string > _assignRule;
+    static bool _registrated;
   };
 }
 #endif	/* constValueAssingRule_H */

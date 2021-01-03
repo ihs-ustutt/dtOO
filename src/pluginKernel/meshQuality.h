@@ -36,6 +36,7 @@ namespace dtOO {
   private:
     dtXmlParser const * _parser;
     dtCase const * _case;
+    static bool _registrated;
   };
 }
 

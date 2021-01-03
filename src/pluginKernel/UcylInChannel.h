@@ -41,6 +41,7 @@ namespace dtOO {
     std::vector< int > _nP;
     dtVector3 _axis;
     dtPoint3 _origin;
+    static bool _registrated;
   };
 }
 

@@ -22,8 +22,15 @@
 #include <volFields.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool volVectorFieldVersusXYZ::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(volVectorFieldVersusXYZ, new volVectorFieldVersusXYZ())
+  );
+  
   volVectorFieldVersusXYZ::volVectorFieldVersusXYZ() { 
   }
 

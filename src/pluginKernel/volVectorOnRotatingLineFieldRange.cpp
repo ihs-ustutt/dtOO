@@ -25,8 +25,18 @@
 #include <interpolationCellPoint.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool volVectorOnRotatingLineFieldRange::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(
+      volVectorOnRotatingLineFieldRange, 
+      new volVectorOnRotatingLineFieldRange()
+    )
+  );
+  
   volVectorOnRotatingLineFieldRange::volVectorOnRotatingLineFieldRange() { 
   }
 

@@ -2,55 +2,48 @@
 
 #include <logMe/logMe.h>
 #include "dtPlugin.h"
-#include "writeStep.h"
-#include "constValueAssingRule.h"
-#include "analyticFunctionToCSV.h"
-#include "analyticGeometryToCSV.h"
-#include "volVectorFieldVersusXYZ.h"
-#include "volScalarOnLineFieldRange.h"
-#include "pOnBlade.h"
-#include "UcylInChannel.h"
-#include "uRelInChannel.h"
-#include "meshQuality.h"
-#include "volScalarInChannelFieldRange.h"
-#include "volVectorPatchFieldRange.h"
-#include "volScalarPatchFieldRange.h"
 #include "dtPluginDriver.h"
 #include "dtPluginKernel.h"
-#include "volVectorInChannelFieldRange.h"
-#include "volVectorFieldRange.h"
-#include "volScalarFieldRange.h"
-#include "volVectorOnRotatingLineFieldRange.h"
 
 namespace dtOO {
-  dt__pH(dtPluginFactory) dtPluginFactory::_instance(NULL);
+    dt__pVH(dtPlugin) dtPluginFactory::_builder; 
 
   dtPluginFactory::~dtPluginFactory() {
-    _builder.destroy();
   }
 
+  bool dtPluginFactory::registrate( dtPlugin const * const dtP ) {
+    dt__forAllRefAuto( _builder, aBuilder ) {
+      if ( aBuilder.virtualClassName() == dtP->virtualClassName() ) {
+        return false;
+      }
+    }  
+    _builder.push_back( dtP->create() );
+    
+    return true;
+  }
+  
   dtPlugin * dtPluginFactory::create( std::string const str ) {
     dt__info( create(), << "str = " << str);
-    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
+    dt__forAllRefAuto( _builder, aBuilder ) {
       //
       // check virtual class name
       //
-      if ( aBuilder->virtualClassName() == str ) {
-        return aBuilder->create();
+      if ( aBuilder.virtualClassName() == str ) {
+        return aBuilder.create();
       }
             
       //
       // check alias
       //
-      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
-        if ( anAlias == str ) return aBuilder->create();
+      dt__forAllRefAuto(aBuilder.factoryAlias(), anAlias) {
+        if ( anAlias == str ) return aBuilder.create();
       }
     }
     
     std::vector< std::string > av;
-    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
-      av.push_back( aBuilder->virtualClassName() );
-      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
+    dt__forAllRefAuto( _builder, aBuilder ) {
+      av.push_back( aBuilder.virtualClassName() );
+      dt__forAllRefAuto(aBuilder.factoryAlias(), anAlias) {
         av.push_back("  -> "+anAlias); 
       }      
     }
@@ -107,36 +100,7 @@ namespace dtOO {
     
     return ret;
   }  
-
-  dtPluginFactory * dtPluginFactory::instance( void ) {
-    if ( !_instance.isNull() ) return _instance.get();
-    
-    _instance.reset( new dtPluginFactory() );
-    
-    //
-    // add builder
-    //
-    _instance->_builder.push_back( new writeStep() );
-    _instance->_builder.push_back( new constValueAssingRule() );
-    _instance->_builder.push_back( new analyticFunctionToCSV() );
-    _instance->_builder.push_back( new volVectorFieldVersusXYZ() );
-    _instance->_builder.push_back( new volScalarOnLineFieldRange() );
-    _instance->_builder.push_back( new pOnBlade() );
-    _instance->_builder.push_back( new UcylInChannel() );
-    _instance->_builder.push_back( new uRelInChannel() );
-    _instance->_builder.push_back( new meshQuality() );
-    _instance->_builder.push_back( new volScalarInChannelFieldRange() );
-    _instance->_builder.push_back( new volVectorPatchFieldRange() );
-    _instance->_builder.push_back( new volScalarPatchFieldRange() );
-    _instance->_builder.push_back( new volVectorInChannelFieldRange() );
-    _instance->_builder.push_back( new volVectorFieldRange() );
-    _instance->_builder.push_back( new volScalarFieldRange() );
-    _instance->_builder.push_back( new volVectorOnRotatingLineFieldRange() );
-    _instance->_builder.push_back( new analyticGeometryToCSV() );
-    
-    return _instance.get();
-  }
-  
+ 
   dtPluginFactory::dtPluginFactory() {   
   }  
 }

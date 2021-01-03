@@ -24,8 +24,15 @@
 
 #include "OpenFOAMSetupRule.h"
 #include <logMe/dtParMacros.h>
+#include "dtCaseFactory.h"
 
 namespace dtOO { 
+  bool OpenFOAMCase::_registrated 
+  =
+  dtCaseFactory::registrate(
+    dt__tmpPtr(OpenFOAMCase, new OpenFOAMCase())
+  );
+
   OpenFOAMCase::OpenFOAMCase() {
   }
 

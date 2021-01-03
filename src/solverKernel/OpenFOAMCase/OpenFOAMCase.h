@@ -22,7 +22,8 @@ namespace dtOO {
       
   class OpenFOAMCase : public dtCase {
   public:
-    dt__class(OpenFOAMCase, dtCase);    
+    dt__class(OpenFOAMCase, dtCase);
+    dt__classSelfCreate(OpenFOAMCase);
     OpenFOAMCase();
     virtual ~OpenFOAMCase();
     virtual void init( 
@@ -49,6 +50,7 @@ namespace dtOO {
     std::vector< boundedVolume * > _bV;
     std::string _runCommand;    
     std::vector< std::string > _noWriteRule;
+    static bool _registrated;
   };
 }
 #endif	/* CREATEOPENFOAMCASE_H */

@@ -22,9 +22,15 @@
 #include <Time.H>
 #include <polyMesh.H>
 #include <volFields.H>
-
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool volScalarOnLineFieldRange::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(volScalarOnLineFieldRange, new volScalarOnLineFieldRange())
+  );
+  
   volScalarOnLineFieldRange::volScalarOnLineFieldRange() { 
   }
 

@@ -20,6 +20,8 @@ namespace dtOO {
       dt__class(dtCase, dtCase);
       dtCase();
       virtual ~dtCase();
+      virtual dtCase * create( void ) const = 0;
+      virtual std::vector< std::string > factoryAlias( void ) const;
       virtual void init( 
         ::QDomElement const & element,
         baseContainer const * const bC,

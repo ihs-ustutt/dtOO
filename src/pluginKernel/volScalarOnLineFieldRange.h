@@ -39,6 +39,7 @@ namespace dtOO {
     dtCase const * _case;
     std::string _field;
     int _nP;
+    static bool _registrated;
 //    dtVector3 _axis;
 //    dtPoint3 _origin;
   };

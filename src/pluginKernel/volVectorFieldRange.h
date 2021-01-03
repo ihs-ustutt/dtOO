@@ -38,6 +38,7 @@ namespace dtOO {
       dt__pH(scaThreeD const) _inPosition;
       dtCase const * _case;
       std::string _field;
+      static bool _registrated;
   };
 }
 

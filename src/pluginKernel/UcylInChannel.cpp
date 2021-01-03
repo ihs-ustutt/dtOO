@@ -23,8 +23,13 @@
 #include <interpolationCellPoint.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool UcylInChannel::_registrated 
+  =
+  dtPluginFactory::registrate( dt__tmpPtr(UcylInChannel, new UcylInChannel()) );
+    
   UcylInChannel::UcylInChannel() { 
   }
 

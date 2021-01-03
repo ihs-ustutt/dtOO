@@ -20,8 +20,15 @@
 #include <Time.H>
 #include <polyMesh.H>
 #include <volFields.H>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool volVectorFieldRange::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(volVectorFieldRange, new volVectorFieldRange())
+  );
+  
   volVectorFieldRange::volVectorFieldRange() { 
   }
 

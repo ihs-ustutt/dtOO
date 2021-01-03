@@ -8,14 +8,14 @@ namespace dtOO {
   class dtCase;
   
   class dtCaseFactory {
-  public:
-    dt__classOnlyName(dtCaseFactory);
-    dtCaseFactory();
-    virtual ~dtCaseFactory();
-//    static dtCase * create(char const * const str);
-    static dtCase * create( std::string const str );
-  private:
-
+    public:
+      dt__classOnlyName(dtCaseFactory);
+      dtCaseFactory();
+      virtual ~dtCaseFactory();
+      static bool registrate( dtCase const * const );
+      static dtCase * create( std::string const str );
+    private:
+      static dt__pVH(dtCase) _builder;
   };
 }
 

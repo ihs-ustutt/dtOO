@@ -25,8 +25,15 @@
 #include <linear.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool volScalarInChannelFieldRange::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(volScalarInChannelFieldRange, new volScalarInChannelFieldRange())
+  );
+  
   volScalarInChannelFieldRange::volScalarInChannelFieldRange() { 
   }
 

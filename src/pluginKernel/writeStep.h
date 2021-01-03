@@ -36,6 +36,7 @@ namespace dtOO {
     aGPtrVec _aG;
     std::string _fn;
     int _translator;
+    static bool _registrated;
   };
 }
 #endif	/* WRITESTEP_H */

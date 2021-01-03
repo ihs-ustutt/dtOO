@@ -32,6 +32,10 @@ namespace dtOO {
 
 	dtCase::~dtCase() {
 	}
+  
+  std::vector< std::string > dtCase::factoryAlias( void ) const {
+    return std::vector< std::string>(0);
+  }  
 	
   void dtCase::init(
 	  ::QDomElement const & element,

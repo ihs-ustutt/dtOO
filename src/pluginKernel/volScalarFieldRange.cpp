@@ -21,8 +21,15 @@
 #include <Time.H>
 #include <polyMesh.H>
 #include <volFields.H>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool volScalarFieldRange::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(volScalarFieldRange, new volScalarFieldRange())
+  );
+  
   volScalarFieldRange::volScalarFieldRange() {
   }
 

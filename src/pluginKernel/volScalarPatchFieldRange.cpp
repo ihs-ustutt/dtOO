@@ -24,8 +24,15 @@
 #include <linear.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool volScalarPatchFieldRange::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(volScalarPatchFieldRange, new volScalarPatchFieldRange())
+  );
+  
   volScalarPatchFieldRange::volScalarPatchFieldRange() { 
   }
 

@@ -23,8 +23,15 @@
 #include <linear.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool volVectorPatchFieldRange::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(volVectorPatchFieldRange, new volVectorPatchFieldRange())
+  );
+  
   volVectorPatchFieldRange::volVectorPatchFieldRange() { 
   }
 

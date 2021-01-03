@@ -47,6 +47,7 @@ namespace dtOO {
     dtPoint3 _origin;
     float _relBandwithR;
     float _relBandwithZ;
+    static bool _registrated;
   };
 }
 

@@ -41,6 +41,7 @@ namespace dtOO {
     float _max;
     std::string _patchName;
     bool _noRange;
+    static bool _registrated;
   };
 }
 

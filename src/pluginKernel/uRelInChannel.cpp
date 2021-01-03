@@ -22,8 +22,13 @@
 #include <volFields.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool uRelInChannel::_registrated 
+  =
+  dtPluginFactory::registrate( dt__tmpPtr(uRelInChannel, new uRelInChannel()) );
+  
   uRelInChannel::uRelInChannel() { 
   }
 

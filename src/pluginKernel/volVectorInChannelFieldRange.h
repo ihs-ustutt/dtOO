@@ -42,6 +42,7 @@ namespace dtOO {
     float _max;    
     std::vector< int > _nP;
     bool _noRange;
+    static bool _registrated;
   };
 }
 

@@ -27,8 +27,13 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <Precision.hxx>
 #include <ShapeBuild_Edge.hxx>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool writeStep::_registrated 
+  =
+  dtPluginFactory::registrate( dt__tmpPtr(writeStep, new writeStep()) );
+    
   writeStep::writeStep() { 
     _translator = 0;
   }

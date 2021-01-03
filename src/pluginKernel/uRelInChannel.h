@@ -38,6 +38,7 @@ namespace dtOO {
     dtXmlParser const * _parser;
     dtCase const * _case;
     std::vector< int > _nP;
+    static bool _registrated;
   };
 }
 

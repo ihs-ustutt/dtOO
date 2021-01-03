@@ -8,8 +8,15 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <dtCase.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool constValueAssingRule::_registrated 
+  =
+  dtPluginFactory::registrate(
+    dt__tmpPtr(constValueAssingRule, new constValueAssingRule())
+  );
+    
   constValueAssingRule::constValueAssingRule() { 
   }
 

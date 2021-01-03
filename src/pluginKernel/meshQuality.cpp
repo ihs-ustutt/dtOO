@@ -25,8 +25,13 @@
 #include <volFields.H>
 
 #include <logMe/dtParMacros.h>
+#include "dtPluginFactory.h"
 
 namespace dtOO {  
+  bool meshQuality::_registrated 
+  =
+  dtPluginFactory::registrate( dt__tmpPtr(meshQuality, new meshQuality()) );
+  
   meshQuality::meshQuality() { 
   }
 

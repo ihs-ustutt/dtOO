@@ -37,7 +37,8 @@ namespace dtOO {
       vectorHandling< analyticGeometry const * > _aG;
       std::vector< int > _nP;
       dtXmlParser const * _parser;
-      dtCase const * _case;      
+      dtCase const * _case;    
+      static bool _registrated;
   };
 }
 #endif	/* analyticGeometryToCSV_H */
