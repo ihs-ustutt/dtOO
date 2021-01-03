@@ -45,3 +45,5 @@ set(
 #
 #
 install(TARGETS listLabel DESTINATION bin)
+
+message("**> Compile listLabel")

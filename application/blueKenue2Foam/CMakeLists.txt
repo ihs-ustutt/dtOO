@@ -1,3 +1,6 @@
+if (NOT OpenFOAM_FOUND)
+  return()
+endif (NOT OpenFOAM_FOUND)
 #
 #
 # find packages
@@ -9,7 +12,9 @@ find_package(
   program_options
   REQUIRED
 )
-find_package(MPI REQUIRED)
+if (DTOO_USE_MPI)
+  find_package(MPI REQUIRED)
+endif (DTOO_USE_MPI)
 
 #
 #
@@ -28,6 +33,9 @@ target_link_libraries(
   dtOO
   ${Boost_LIBRARIES}
 )
+if (MPI_FOUND)
+  target_link_libraries( blueKenue2Foam ${MPI_LIBRARIES} ${MPI_CXX_LIBRARIES} )
+endif (MPI_FOUND)
 
 #
 #
@@ -41,3 +49,5 @@ set(
 )
 
 install(TARGETS blueKenue2Foam DESTINATION bin)
+
+message("**> Compile blueKenue2Foam")

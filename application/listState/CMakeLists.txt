@@ -45,3 +45,5 @@ set(
 #
 #
 install(TARGETS listState DESTINATION bin)
+
+message("**> Compile listState")

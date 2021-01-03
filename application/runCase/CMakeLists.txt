@@ -1,3 +1,7 @@
+if (NOT DTOO_USE_MPI)
+  return()
+endif (NOT DTOO_USE_MPI)
+
 #
 #
 # find packages
@@ -40,3 +44,5 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${CMAKE_INSTALL_PREFIX}/lib")
 
 install(TARGETS runCase DESTINATION bin)
+
+message("**> Compile runCase")

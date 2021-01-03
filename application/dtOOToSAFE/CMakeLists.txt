@@ -57,3 +57,5 @@ set(
 install(TARGETS dtOOToSAFE DESTINATION bin)
 install(TARGETS resultValueParseArg DESTINATION bin)
 install(TARGETS readCsvParseArg DESTINATION bin)
+
+message("**> Compile dtOOToSAFE")

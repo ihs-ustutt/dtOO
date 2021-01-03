@@ -88,7 +88,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 #find_package(IGL REQUIRED COMPONENTS iglcork iglcgal cork igl)
 
 if (DTOO_USE_MPI)
-  find_package(MPI)
+  find_package(MPI REQUIRED)
 endif (DTOO_USE_MPI)
 
 if (MPI_FOUND)
@@ -161,23 +161,28 @@ include_directories(
   ${GSL_INCLUDE_DIR} 
   ${OpenCASCADE_INCLUDE_DIR}
   ${CGNS_INCLUDE_DIR}
-  ${OpenFOAM_INCLUDE_DIR}/foam/lnInclude
-  ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
-  ${OpenFOAM_INCLUDE_DIR}/meshTools/lnInclude
-  ${OpenFOAM_INCLUDE_DIR}/dynamicMesh/dynamicMesh/lnInclude
-  ${OpenFOAM_INCLUDE_DIR}/finiteVolume/lnInclude
-  ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/lnInclude
-  ${OpenFOAM_INCLUDE_DIR}/transportModels/incompressible/lnInclude
-  ${OpenFOAM_INCLUDE_DIR}/transportModels
-  ${OpenFOAM_INCLUDE_DIR}/turbulenceModels
-  ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/RASModel
   ${CGM_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}
   ${OpenMesh_INCLUDE_DIR}
   ${OpenVolumeMesh_INCLUDE_DIR}
-  ${OpenFoamTurbo_INCLUDE_DIR}
   ${IGL_INCLUDE_DIR}
 )
+
+if (OpenFOAM_FOUND)
+  include_directories(
+    ${OpenFOAM_INCLUDE_DIR}/foam/lnInclude
+    ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
+    ${OpenFOAM_INCLUDE_DIR}/meshTools/lnInclude
+    ${OpenFOAM_INCLUDE_DIR}/dynamicMesh/dynamicMesh/lnInclude
+    ${OpenFOAM_INCLUDE_DIR}/finiteVolume/lnInclude
+    ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/lnInclude
+    ${OpenFOAM_INCLUDE_DIR}/transportModels/incompressible/lnInclude
+    ${OpenFOAM_INCLUDE_DIR}/transportModels
+    ${OpenFOAM_INCLUDE_DIR}/turbulenceModels
+    ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/RASModel
+    ${OpenFoamTurbo_INCLUDE_DIR}
+)
+endif (OpenFOAM_FOUND)
 
 if (MPI_FOUND)
   include_directories(
@@ -240,12 +245,10 @@ target_link_libraries(
   ${GSL_LIBRARIES}
   ${Boost_LIBRARIES}
   ${CGNS_LIBRARIES}
-  ${OpenFOAM_LIBRARIES}
   ${CGM_LIBRARIES}
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
-  ${OpenFoamTurbo_LIBRARIES}
   ${IGL_LIBRARIES}
 )
 
@@ -259,12 +262,10 @@ set(
   ${GSL_LIBRARIES}
   ${Boost_LIBRARIES}
   ${CGNS_LIBRARIES}
-  ${OpenFOAM_LIBRARIES}
   ${CGM_LIBRARIES}
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
-  ${OpenFoamTurbo_LIBRARIES}
 )
 
 set(
@@ -275,13 +276,30 @@ set(
   ${OpenCASCADE_LINK_DIRECTORY}
   ${ROOT_LINK_DIRECTORY}
   ${CGNS_LINK_DIRECTORY}
-  ${OpenFOAM_LINK_DIRECTORY}
-  ${OpenFOAM_LINK_DIRECTORY}/openmpi-system
   ${CGM_LINK_DIRECTORY}
   ${MOAB_LINK_DIRECTORY}
   ${OpenVolumeMesh_LINK_DIRECTORY}
-  ${OpenFoamTurbo_LINK_DIRECTORY}
 )
+
+if (OpenFOAM_FOUND)
+  target_link_libraries(
+    dtOO 
+    ${OpenFOAM_LIBRARIES}
+    ${OpenFoamTurbo_LIBRARIES}
+  )
+
+  set(
+    _configLibList 
+    "${_configLibList};${OpenFOAM_LIBRARIES};${OpenFoamTurbo_LIBRARIES}"
+  )
+
+  set(
+    _rpathList
+    "${_rpathList};${OpenFOAM_LINK_DIRECTORY};"
+    "${OpenFOAM_LINK_DIRECTORY}/openmpi-system;"
+    "${OpenFoamTurbo_LINK_DIRECTORY}"
+  )
+endif (OpenFOAM_FOUND)
 
 if (MPI_FOUND)
   target_link_libraries( dtOO ${MPI_LIBRARIES} ${MPI_CXX_LIBRARIES} )

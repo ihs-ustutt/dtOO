@@ -26,9 +26,11 @@ add_executable(createState createState.cpp)
 target_link_libraries(
   createState 
   dtOO
-#  ${MPI_CXX_LIBRARIES}
   ${Boost_LIBRARIES}
 )
+if (MPI_FOUND)
+  target_link_libraries( createState ${MPI_LIBRARIES} ${MPI_CXX_LIBRARIES} )
+endif (MPI_FOUND)
 
 #
 #
@@ -39,3 +41,5 @@ set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${CMAKE_INSTALL_PREFIX}/lib")
 
 install(TARGETS createState DESTINATION bin)
+
+message("**> Compile createState")

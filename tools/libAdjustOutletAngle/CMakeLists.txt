@@ -25,3 +25,5 @@ target_link_libraries( adjustOutletAngle dtOO )
 #
 #
 install(TARGETS adjustOutletAngle DESTINATION tools)
+
+message("**> Compile lib adjustOutletAngle")

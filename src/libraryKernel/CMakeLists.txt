@@ -133,7 +133,6 @@ SET(HEADERS
   meshEngine/dtOMEdgeField.h
   meshEngine/dtOMFaceField.h
   meshEngine/dtOMDynamicFaceField.h
-  meshEngine/dtFoamLibrary.h
   pluginEngine/pugg/Driver.h
   pluginEngine/pugg/Kernel.h
   pluginEngine/pugg/Plugin.h
@@ -264,9 +263,15 @@ SET(SOURCES
   meshEngine/dtOMMeshDivided.cpp
   meshEngine/dtOMMeshManifold.cpp
   meshEngine/dtOMField.cpp
-  meshEngine/dtFoamLibrary.cpp
   dtGaussLegendreIntegration.cpp
 )
+
+if (OpenFOAM_FOUND)
+  list(APPEND HEADERS meshEngine/dtFoamLibrary.h)
+  list(APPEND SOURCES meshEngine/dtFoamLibrary.cpp)
+else (OpenFOAM_FOUND)
+  message("**> Do not include foam-ext based library")
+endif (OpenFOAM_FOUND)
 
 APPEND_DTOO_SOURCE(src/libraryKernel "${SOURCES}")
 APPEND_DTOO_HEADER(src/libraryKernel "${HEADERS}")

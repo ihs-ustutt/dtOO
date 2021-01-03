@@ -39,3 +39,5 @@ set(
 #
 #
 install(TARGETS dtOOPython DESTINATION tools)
+
+message("**> Compile lib dtOOPython")

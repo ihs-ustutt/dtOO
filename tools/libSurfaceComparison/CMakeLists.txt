@@ -25,3 +25,5 @@ target_link_libraries( surfaceComparison dtOO )
 #
 #
 install(TARGETS surfaceComparison DESTINATION tools)
+
+message("**> Compile lib surfaceComparison")
