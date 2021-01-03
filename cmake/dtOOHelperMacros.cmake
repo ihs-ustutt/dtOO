@@ -110,10 +110,10 @@ MACRO(
       ${_incsearchpath}
       NO_DEFAULT_PATH
     )
-    IF( ${LIB_INCLUDE_DIR} STREQUAL ${LIB_INCLUDE_DIR}-NOTFOUND )
-      SET( ${LIB_FOUND} FALSE CACHE BOOL FORCE )
-      MESSAGE( FATAL_ERROR "Cannot find ${_testincname} include dir." )
-    ENDIF( ${LIB_INCLUDE_DIR} STREQUAL ${LIB_INCLUDE_DIR}-NOTFOUND )
+    IF( ${LIB_INCLUDE_DIR} MATCHES ".*NOTFOUND.*" )
+      SET( ${LIB_FOUND} FALSE CACHE BOOL "Has been found?" FORCE )
+      MESSAGE( WARNING "Cannot find ${_testincname} include dir." )
+    ENDIF( ${LIB_INCLUDE_DIR} MATCHES ".*NOTFOUND.*" )
 
     # Find one lib and save its directory to LIB_LINK_DIRECTORY.
     FIND_PATH( 
@@ -122,10 +122,10 @@ MACRO(
       ${_libsearchpath} 
     )
 
-    IF( ${LIB_LINK_DIRECTORY} STREQUAL ${_testlibname}-NOTFOUND )
-      SET( ${LIB_FOUND} FALSE CACHE BOOL FORCE )
-      MESSAGE( FATAL_ERROR "Cannot find ${_testlibname}." )
-    ELSE( ${LIB_LINK_DIRECTORY} STREQUAL ${_testlibname}-NOTFOUND )
+    IF( ${LIB_LINK_DIRECTORY} MATCHES ".*NOTFOUND.*" )
+      SET( ${LIB_FOUND} FALSE CACHE BOOL "Has been found?" FORCE )
+      MESSAGE( WARNING "Cannot find ${_testlibname}." )
+    ELSE( ${LIB_LINK_DIRECTORY} MATCHES ".*NOTFOUND.*" )
       SET( ${LIB_FOUND} TRUE CACHE BOOL "Has been found?" FORCE )
       SET( _firsttime TRUE )
       MESSAGE( 
@@ -136,7 +136,7 @@ MACRO(
         "| ${LIB_LINK_DIRECTORY}=${${LIB_LINK_DIRECTORY}}\n"
         "|" 
         )
-    ENDIF( ${LIB_LINK_DIRECTORY} STREQUAL ${_testlibname}-NOTFOUND )
+    ENDIF( ${LIB_LINK_DIRECTORY} MATCHES ".*NOTFOUND.*" )
   ELSE( NOT ${LIB_FOUND} STREQUAL TRUE )
     SET( _firsttime FALSE ) #so that messages are only printed once
   ENDIF( NOT ${LIB_FOUND} STREQUAL TRUE )
@@ -152,19 +152,19 @@ MACRO(
           NO_DEFAULT_PATH
         )
         SET( _foundlib ${${_libname}_LIB} )
-        IF( _foundlib STREQUAL ${_libname}_LIB-NOTFOUND )
+        IF( _foundlib MATCHES ".*NOTFOUND.*" )
           MESSAGE( 
-            FATAL_ERROR 
+            WARNING 
             "Cannot find ${_libname}. Is it spelled correctly? Correct \
              capitalization? Do you have another package with similarly-named \
              libraries, installed at ${LIB_LINK_DIRECTORY}?" 
           )
-        ENDIF( _foundlib STREQUAL ${_libname}_LIB-NOTFOUND )
+        ENDIF( _foundlib MATCHES ".*NOTFOUND.*" )
         SET( ${LIB_LIBRARIES} ${${LIB_LIBRARIES}} ${_foundlib} )
       ENDFOREACH( _libname ${${LIB_FIND_COMPONENTS}} )
     ELSE( DEFINED ${LIB_FIND_COMPONENTS} )
       MESSAGE( 
-       AUTHOR_WARNING 
+       WARNING 
        "Developer must specify required libraries to link against in the cmake \
         file, i.e. find_package( LIB REQUIRED COMPONENTS lib1 lib2) . \
         Otherwise no libs will be added - linking against ALL libraries is \
@@ -211,10 +211,10 @@ MACRO(
       PATHS 
       ${_incsearchpath}
     )
-    IF( ${LIB_INCLUDE_DIR} STREQUAL ${LIB_INCLUDE_DIR}-NOTFOUND )
+    IF( ${LIB_INCLUDE_DIR} MATCHES ".*NOTFOUND.*" )
       SET( ${LIB_FOUND} FALSE CACHE BOOL FORCE )
-      MESSAGE( FATAL_ERROR "Cannot find ${_testincname} include dir." )
-    ENDIF( ${LIB_INCLUDE_DIR} STREQUAL ${LIB_INCLUDE_DIR}-NOTFOUND )
+      MESSAGE( WARNING "Cannot find ${_testincname} include dir." )
+    ENDIF( ${LIB_INCLUDE_DIR} MATCHES ".*NOTFOUND.*" )
 
 
       SET( ${LIB_FOUND} TRUE CACHE BOOL "Has been found?" FORCE )

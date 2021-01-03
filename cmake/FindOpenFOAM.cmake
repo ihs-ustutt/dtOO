@@ -38,17 +38,14 @@ IF( NOT OpenFOAM_FOUND STREQUAL TRUE )
     GLOB OpenFOAM_OPENMPI_DIR
     "${OpenFOAM_LINK_DIRECTORY}/openmpi*"
   )
-  IF( OpenFOAM_LINK_DIRECTORY STREQUAL ${_testlibname}-NOTFOUND )
-    SET( OpenFOAM_FOUND FALSE CACHE BOOL FORCE )
-    MESSAGE( FATAL_ERROR "Cannot find OF lib dir. Install openfoam." )
-  ELSE( OpenFOAM_LINK_DIRECTORY STREQUAL ${_testlibname}-NOTFOUND )
+  IF( OpenFOAM_LINK_DIRECTORY MATCHES ".*NOTFOUND.*" )
+    SET( OpenFOAM_FOUND FALSE CACHE BOOL "Has OF been found?" FORCE )
+    MESSAGE( WARNING "Cannot find OF lib dir. Install openfoam." )
+  ELSE( OpenFOAM_LINK_DIRECTORY MATCHES ".*NOTFOUND.*" )
     SET( OpenFOAM_FOUND TRUE CACHE BOOL "Has OF been found?" FORCE )
-    SET( _firsttime TRUE ) #so that messages are only printed once
     MESSAGE( STATUS "Found OF include dir: ${OpenFOAM_INCLUDE_DIR}" )
     MESSAGE( STATUS "Found OF lib dir: ${OpenFOAM_LINK_DIRECTORY}" )
-  ENDIF( OpenFOAM_LINK_DIRECTORY STREQUAL ${_testlibname}-NOTFOUND )
-ELSE( NOT OpenFOAM_FOUND STREQUAL TRUE )
-  SET( _firsttime FALSE ) #so that messages are only printed once
+  ENDIF( OpenFOAM_LINK_DIRECTORY MATCHES ".*NOTFOUND.*" )
 ENDIF( NOT OpenFOAM_FOUND STREQUAL TRUE )
 
 IF( OpenFOAM_FOUND STREQUAL TRUE )
