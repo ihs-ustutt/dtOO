@@ -162,17 +162,22 @@ export DTOO_EXTERNLIBS=<dir>
 
 for the required prerequisites. If available, initialize the `foam-ext-3.1` environment to find the libraries.
 
-Create a build directory and run cmake:
+Initialize and update the submodules with
+
 ```bash
-cd dtOO
 git submodule init
 git submodule update
+```
+
+and create a build directory before configuring with `cmake`:
+
+```bash
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=../install ..
 ```
 
-After successfull compiling the binaries and libraries of `dtOO` should be added:
+After successful compiling the binaries and libraries of `dtOO` should be added:
 
 ```
 export PATH=<path>:${PATH}
