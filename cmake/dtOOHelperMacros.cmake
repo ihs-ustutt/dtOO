@@ -89,7 +89,7 @@ MACRO(
       _incsearchpath 
       /usr/ihs/include/
       /usr/include/
-      ${LIB_ADD_INCSEARCHPATH}
+      ${LIB_ADD_INCSEARCHPATH}/
       $ENV{DTOO_EXTERNLIBS}/include/
     )
     set( 
@@ -98,7 +98,7 @@ MACRO(
       /usr/ihs/lib64/
       /usr/lib/
       /usr/lib64/
-      ${LIB_ADD_LIBSEARCHPATH}
+      ${LIB_ADD_LIBSEARCHPATH}/
       $ENV{DTOO_EXTERNLIBS}/lib/
       $ENV{DTOO_EXTERNLIBS}/lib64/
     )
