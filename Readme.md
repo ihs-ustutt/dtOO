@@ -2,8 +2,33 @@
 
 This is dtOO, a highly customizeable framework to design hydraulic machines.
 
+Prerequisites in openSUSE Leap 15.2 of the dependencies and `dtOO` can be installed by
+```
+zypper addrepo https://download.opensuse.org/repositories/science/openSUSE_Leap_15.1/science.repo
+zypper refresh
+zypper install git cmake gcc gcc-c++ make automake cmake-gui \
+  oce oce-devel autogen autoconf libtool cgns cgns-devel \
+  muparser-devel libCGAL13 cgal-devel gcc-fortran \
+  libQt5Core-devel libQt5Xml-devel gsl-devel \
+  libboost_system1_66_0-devel libboost_timer1_66_0-devel \
+  libboost_filesystem1_66_0-devel \
+  libboost_program_options1_66_0-devel \
+  libboost_regex1_66_0-devel libboost_thread1_66_0-devel \
+  libboost_python-py3-1_66_0-devel python3-devel \
+  root6 root6-devel
+```
+
 ## Compile external libraries
-Before building `dtOO` the prerequisites have to be installed or built. It is recomended to put all shared objects and binaries in one directory (`<dir>` in the following).
+Before building `dtOO` the prerequisites have to be built. 
+It is recommended to put all shared objects and binaries in one directory (`<dir>` in the following).
+One way is to execute
+```
+sh buildDep -i <path> -n 2 -o all
+```
+in the cloned repository.
+This will create a `ThirdParty` directory and provide dependencies for a minimal installation of `dtOO`.
+If it is working continue [here](#Build).
+If this is not working, you have to install all dependencies manually as described in the following.
 
 ### cgm
 
@@ -129,31 +154,16 @@ in your `foam-ext` directory.
 
 ## Build
 
-Prerequisites of `dtOO` are
-- gmsh
-- OpenCascade
-- Root
-- CGAL
-- GSL
-- Boost
-- Qt5
-- MeshKit
-- MOAB
-- muParser
-- cgm
-- foam-ext-3.1
-
 The environment variable `DTOO_EXTERNLIBS` defines an additional search path, e.g.
 
 ```bash
 export DTOO_EXTERNLIBS=<dir>
 ```
 
-for the required prerequisites. Additionally, initialize the `foam-ext-3.1` environment to find the libraries.
+for the required prerequisites. If available, initialize the `foam-ext-3.1` environment to find the libraries.
 
-Clone repository, create a build directory and run cmake:
+Create a build directory and run cmake:
 ```bash
-git clone git@github.tik.uni-stuttgart.de:atismer/dtOO.git
 cd dtOO
 git submodule init
 git submodule update
@@ -161,6 +171,14 @@ mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=../install ..
 ```
+
+After successfull compiling the binaries and libraries of `dtOO` should be added:
+
+```
+export PATH=<path>:${PATH}
+export LD_LIBRARY_PATH=<path>/lib:<path>/lib64:${LD_LIBRARY_PATH}
+```
+
 ### GUI
 
 For the GUI an existing `COVISE` installation is necessary. The source code and build instructions are available [here](https://github.com/hlrs-vis/covise)
