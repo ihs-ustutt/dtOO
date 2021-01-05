@@ -1,0 +1,142 @@
+#!/bin/bash
+
+while getopts ":i:n:" opt; do
+  case ${opt} in
+    i )
+      _installPrefix=${OPTARG}
+      if [[ "$_installPrefix" != /* ]]; then
+        echo "Please specify relative path starting with /"
+        exit
+      fi
+      ;;
+    n )
+      _nProcs=$OPTARG
+      ;;
+
+    \? )
+      echo "Invalid option: $OPTARG" 1>&2
+      exit
+      ;;
+    : )
+      echo "Option ${OPTARG} requires an argument" 1>&2
+      exit
+      ;;
+  esac
+done
+shift $((OPTIND -1))
+
+echo "#"
+echo "# _installPrefix=${_installPrefix}"
+echo "# _nProcs=${_nProcs}"
+echo "#"
+#exit
+
+# create directory
+mkdir -p ThirdParty
+cd ThirdParty
+_pwd=`pwd`
+
+echo "Start build" > ${_pwd}/buildDep.std
+
+# OpenMesh
+echo "# Build OpenMesh ..."
+cd $_pwd
+if [[ ! -f OpenMesh-8.1.tar.gz ]]; then
+  wget https://www.graphics.rwth-aachen.de/media/openmesh_static/Releases/8.1/OpenMesh-8.1.tar.gz >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+fi
+tar xfz OpenMesh-8.1.tar.gz  >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+mkdir -p ${_pwd}/build_OpenMesh-8.1 >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+cd ${_pwd}/build_OpenMesh-8.1 >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+cmake \
+  -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+  ../OpenMesh-8.1  \
+   >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+make -j${_nProcs} install >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+
+# OpenVolumeMesh
+echo "# Build OpenVolumeMesh ..."
+
+cd $_pwd
+if [[ ! -d OpenVolumeMesh ]]; then
+  git clone https://github.com/nTopology/OpenVolumeMesh.git OpenVolumeMesh >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+fi
+mkdir -p ${_pwd}/build_OpenVolumeMesh
+cd ${_pwd}/build_OpenVolumeMesh
+cmake \
+  -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+  -DCMAKE_BUILD_TYPE=Release \
+  ../OpenVolumeMesh \
+   >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+make -j${_nProcs} install  >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+
+# gmsh
+echo "# Build gmsh ..."
+
+cd $_pwd
+git clone https://gitlab.onelab.info/gmsh/gmsh.git gmsh >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+cd ${_pwd}/gmsh
+
+if [[ -z "$(git status CMakeLists.txt | grep modified)" ]]; then
+  echo "Modify CMakeLists.txt"
+  sed -e "s%file(GLOB_RECURSE HEADERS Common%file(GLOB_RECURSE HEADERS Parser/*.h Common%g" -i CMakeLists.txt
+fi
+if [[ -z "$(git status Geo/GEntity.h | grep modified)" ]]; then
+  echo "Modify Geo/GEntity.h"
+  sed '/^.*GModel \*model.*$/a\ \ void setModel( GModel * model ) { _model = model; }' -i Geo/GEntity.h
+fi
+if [[ -z "$(git status Geo/MVertex.h | grep modified)" ]]; then
+  echo "Modify Geo/MVertex.h"
+  sed '/^.*getNum\(\).*const.*$/a\ \ inline void setNum(int const num) { _num = num; }' -i Geo/MVertex.h
+fi
+if [[ -z "$(git status Mesh/meshGEdge.cpp | grep modified)" ]]; then
+  echo "Modify Mesh/meshGEdge.cpp"
+  sed -e "s%static void copyMesh%void copyMesh%g" -i Mesh/meshGEdge.cpp
+fi
+if [[ -z "$(git status Mesh/meshGFace.cpp | grep modified)" ]]; then
+  echo "Modify Mesh/meshGFace.cpp"
+  sed -e "s%static void copyMesh%void copyMesh%g" -i Mesh/meshGFace.cpp
+fi
+
+mkdir -p ${_pwd}/build_gmsh
+cd ${_pwd}/build_gmsh
+cmake \
+  -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+  -DENABLE_BUILD_SHARED=ON \
+  -DENABLE_PRIVATE_API=ON \
+  ../gmsh \
+   >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+make -j${_nProcs} install >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+
+# cgm
+echo "# Build cgm ..."
+
+cd $_pwd
+git clone https://bitbucket.org/fathomteam/cgm.git cgm  >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+cd ${_pwd}/cgm
+autoreconf -i  >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+LDFLAGS=-L${_installPrefix}/lib ./configure \
+  --prefix=${_installPrefix} \
+  --libdir=${_installPrefix}/lib \
+  --enable-debug \
+  --with-occ=/usr/ \
+  --enable-shared=yes \
+  --enable-static=no \
+  >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+make -j${_nProcs} install  >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+
+# moab
+echo "# Build moab ..."
+cd $_pwd
+git clone https://bitbucket.org/fathomteam/moab.git moab  >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+cd ${_pwd}/moab
+autoreconf -i  >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+./configure \
+  --exec-prefix=${_installPrefix} \
+  --prefix=${_installPrefix} \
+  --with-cgns=/usr/lib \
+  --enable-shared=yes \
+  --enable-static=no \
+  --enable-debug \
+  --with-cgm=${_installPrefix} \
+   >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err
+make -j${_nProcs} install  >> ${_pwd}/buildDep.std 2>${_pwd}/buildDep.err

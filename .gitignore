@@ -1,4 +1,4 @@
-build*
+build*/
 install*
 leap*
 nbproject/
@@ -8,3 +8,4 @@ src/generalKernel/dtOOVersion.h
 *.m~
 *.pyc
 scripts/doc/html
+ThirdParty/
