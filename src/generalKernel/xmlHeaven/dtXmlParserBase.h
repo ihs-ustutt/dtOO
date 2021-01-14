@@ -75,7 +75,7 @@ namespace dtOO {
       static std::string replaceDependencies(
         std::string const expression,
         cVPtrVec const * const cV
-      );    
+      );
       static std::string replaceDependencies(
         std::string const expression,
         cVPtrVec const * const cV,
@@ -94,6 +94,13 @@ namespace dtOO {
         aFPtrVec const * const aF,
         aGPtrVec const * const aG
       );
+      static std::string replaceDependenciesRef(
+        std::string const expression, 
+        baseContainer const & bC,      
+        cVPtrVec const & cV,
+        aFPtrVec const & aF,
+        aGPtrVec const & aG
+      );      
       static float getAttributeFloatMuParse( 
         std::string const attName, 
         ::QDomElement const element, 

@@ -37,4 +37,13 @@ boost::python::class_< dtOO::dtXmlParser >(
   .def("destroyAndCreate", &dtOO::dtXmlParser::destroyAndCreate)
   .def("currentState", &dtOO::dtXmlParser::currentState)
   .def("getStates", &dtOO::dtXmlParser::getStates)
+  .def<
+    void (dtOO::dtXmlParser::*)(std::string const, dtOO::cVPtrVec const &) const
+  >( 
+    "write", &dtOO::dtXmlParser::write 
+  )
+  .def(
+    "replaceDependencies", &dtOO::dtXmlParserBase::replaceDependenciesRef        
+  )
+  .staticmethod("replaceDependencies")    
 ;

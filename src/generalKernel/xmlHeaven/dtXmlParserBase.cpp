@@ -2070,6 +2070,18 @@ namespace dtOO {
     return replaceDependencies(returnExpression, cV, aF, aG);    
   } 
   
+  std::string dtXmlParserBase::replaceDependenciesRef(
+    std::string const expression, 
+    baseContainer const & bC,      
+    cVPtrVec const & cV,
+    aFPtrVec const & aF,
+    aGPtrVec const & aG
+  ) {
+    return dtXmlParserBase::replaceDependencies( 
+      expression, &bC, &cV, &aF, &aG 
+    );
+  }
+
   float dtXmlParserBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
@@ -2080,7 +2092,7 @@ namespace dtOO {
     );
   }
   
-  float dtXmlParserBase::getAttributeFloatMuParse( 
+  float dtXmlParserBase::getAttributeFloatMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
