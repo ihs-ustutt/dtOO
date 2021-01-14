@@ -4,7 +4,7 @@ This is dtOO, a highly customizeable framework to design hydraulic machines.
 
 Prerequisites in openSUSE Leap 15.2 of the dependencies and `dtOO` can be installed by
 ```
-zypper addrepo https://download.opensuse.org/repositories/science/openSUSE_Leap_15.1/science.repo
+zypper addrepo https://download.opensuse.org/repositories/science/openSUSE_Leap_15.2/science.repo
 zypper refresh
 zypper install git cmake gcc gcc-c++ make automake cmake-gui \
   oce oce-devel autogen autoconf libtool cgns cgns-devel \
