@@ -20,12 +20,10 @@ namespace dtOO {
         std::string const & pluginName, 
         std::string const & pluginDriver
       );
-      //static dtPluginFactory * instance( void );    
     private:
       dtPluginFactory();    
     private:
       static dt__pVH(dtPlugin) _builder;
-      //static dt__pH(dtPluginFactory) _instance;
   };
 }
 

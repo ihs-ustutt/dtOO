@@ -6,7 +6,7 @@
 #include "dtPluginKernel.h"
 
 namespace dtOO {
-    dt__pVH(dtPlugin) dtPluginFactory::_builder; 
+  dt__pVH(dtPlugin) dtPluginFactory::_builder; 
 
   dtPluginFactory::~dtPluginFactory() {
   }
