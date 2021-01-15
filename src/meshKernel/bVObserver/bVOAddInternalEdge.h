@@ -12,23 +12,23 @@ namespace dtOO {
   class map1dTo3d;
   
   class bVOAddInternalEdge : public bVOInterface {
-  public:
-    dt__class(bVOAddInternalEdge, bVOInterface);
-    dt__classSelfCreate(bVOAddInternalEdge);
-    bVOAddInternalEdge();
-    virtual ~bVOAddInternalEdge();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      boundedVolume * attachTo
-    );    
-    virtual void preUpdate( void );
-  private:
-    std::string _regionLabel;
+    public:
+      dt__class(bVOAddInternalEdge, bVOInterface);
+      dt__classSelfCreate(bVOAddInternalEdge);
+      bVOAddInternalEdge();
+      virtual ~bVOAddInternalEdge();
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        boundedVolume * attachTo
+      );    
+      virtual void preUpdate( void );
+    private:
+      std::string _regionLabel;
   };
 }
 #endif	/* bVOAddInternalEdge_H */

@@ -11,23 +11,23 @@ namespace dtOO {
   class dtGmshEdge;
   
   class bVORecombineRecursiveRegions : public bVOInterface {
-  public:
-    dt__class(bVORecombineRecursiveRegions, bVOInterface);
-    dt__classSelfCreate(bVORecombineRecursiveRegions);
-    bVORecombineRecursiveRegions();
-    virtual ~bVORecombineRecursiveRegions();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      boundedVolume * attachTo
-    );    
-    virtual void preUpdate( void );
-  private:
-    std::vector< std::string > _regionLabel;
+    public:
+      dt__class(bVORecombineRecursiveRegions, bVOInterface);
+      dt__classSelfCreate(bVORecombineRecursiveRegions);
+      bVORecombineRecursiveRegions();
+      virtual ~bVORecombineRecursiveRegions();
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        boundedVolume * attachTo
+      );    
+      virtual void preUpdate( void );
+    private:
+      std::vector< std::string > _regionLabel;
   };
 }
 #endif	/* bVORecombineRecursiveRegions_H */

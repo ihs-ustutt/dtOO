@@ -11,23 +11,23 @@ namespace dtOO {
   class dtGmshEdge;
   
   class bVOSetPrescribedMeshSizeAtPoints : public bVOInterface {
-  public:
-    dt__class(bVOSetPrescribedMeshSizeAtPoints, bVOInterface);
-    dt__classSelfCreate(bVOSetPrescribedMeshSizeAtPoints);
-    bVOSetPrescribedMeshSizeAtPoints();
-    virtual ~bVOSetPrescribedMeshSizeAtPoints();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      boundedVolume * attachTo
-    );    
-    virtual void preUpdate( void );
-  private:
-    std::vector< float > _meshSize;
+    public:
+      dt__class(bVOSetPrescribedMeshSizeAtPoints, bVOInterface);
+      dt__classSelfCreate(bVOSetPrescribedMeshSizeAtPoints);
+      bVOSetPrescribedMeshSizeAtPoints();
+      virtual ~bVOSetPrescribedMeshSizeAtPoints();
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        boundedVolume * attachTo
+      );    
+      virtual void preUpdate( void );
+    private:
+      std::vector< float > _meshSize;
   };
 }
 #endif	/* bVOSetPrescribedMeshSizeAtPoints_H */

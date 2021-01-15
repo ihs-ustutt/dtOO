@@ -10,13 +10,13 @@ namespace dtOO {
   typedef ROOT::Math::Minimizer dtMinimizer;
   
   class dtAnalysis {
-  public:
-    dt__classOnlyName(dtAnalysis);    
-    dtAnalysis();
-    dtAnalysis(const dtAnalysis& orig);
-    virtual ~dtAnalysis();
-    static dtMinimizer * createMinimizer( std::string minType );
-  private:
+    public:
+      dt__classOnlyName(dtAnalysis);    
+      dtAnalysis();
+      dtAnalysis(const dtAnalysis& orig);
+      virtual ~dtAnalysis();
+      static dtMinimizer * createMinimizer( std::string minType );
+    private:
 
   };
 }

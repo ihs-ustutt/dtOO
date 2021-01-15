@@ -10,25 +10,25 @@ namespace dtOO {
   class analyticGeometry;
   
   class bVOWriteMSH : public bVOInterface {
-  public:
-    dt__class(bVOWriteMSH, bVOInterface);
-    dt__classSelfCreate(bVOWriteMSH);
-    bVOWriteMSH();
-    virtual ~bVOWriteMSH();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      boundedVolume * attachTo
-    );    
-    virtual void postUpdate( void );
-  private:
-    std::string _filename;
-    bool _saveAll;
-    bool _saveParametric;
+    public:
+      dt__class(bVOWriteMSH, bVOInterface);
+      dt__classSelfCreate(bVOWriteMSH);
+      bVOWriteMSH();
+      virtual ~bVOWriteMSH();
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        boundedVolume * attachTo
+      );    
+      virtual void postUpdate( void );
+    private:
+      std::string _filename;
+      bool _saveAll;
+      bool _saveParametric;
   };
 }
 #endif	/* bVOWriteMSH_H */

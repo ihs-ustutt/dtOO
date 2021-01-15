@@ -17,31 +17,29 @@ namespace dtOO {
   class dtCase;
   
   class volScalarOnLineFieldRange : public dtPlugin {
-  public:
-    dt__class(volScalarOnLineFieldRange, dtPlugin);
-    dt__classSelfCreate(volScalarOnLineFieldRange);    
-    volScalarOnLineFieldRange();
-    virtual ~volScalarOnLineFieldRange();
-    virtual void init( 
-      ::QDomElement const & element,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      dCPtrVec const * const dC,      
-      dPPtrVec const * const pL
-    );    
-    virtual void apply(void);
-  private:
-		vectorHandling< analyticGeometry const * > _aG;    
-    dtXmlParser const * _parser;
-    dtCase const * _case;
-    std::string _field;
-    int _nP;
-    static bool _registrated;
-//    dtVector3 _axis;
-//    dtPoint3 _origin;
+    public:
+      dt__class(volScalarOnLineFieldRange, dtPlugin);
+      dt__classSelfCreate(volScalarOnLineFieldRange);    
+      volScalarOnLineFieldRange();
+      virtual ~volScalarOnLineFieldRange();
+      virtual void init( 
+        ::QDomElement const & element,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        dCPtrVec const * const dC,      
+        dPPtrVec const * const pL
+      );    
+      virtual void apply(void);
+    private:
+      vectorHandling< analyticGeometry const * > _aG;    
+      dtXmlParser const * _parser;
+      dtCase const * _case;
+      std::string _field;
+      int _nP;
+      static bool _registrated;
   };
 }
 

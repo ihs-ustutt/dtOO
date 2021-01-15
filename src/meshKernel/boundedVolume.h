@@ -24,33 +24,33 @@ namespace dtOO {
                         public labelHandling,
                         public optionHandling,
                         public renderInterface {
-  public:
-    dt__class(boundedVolume, boundedVolume);
-    boundedVolume();
-    virtual ~boundedVolume();
-    virtual boundedVolume * create( void ) const = 0;     
-    virtual std::vector< std::string > factoryAlias( void ) const;    
-    virtual void init( 
-      ::QDomElement const & element,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const sF,
-      aGPtrVec const * const aF,
-      bVPtrVec const * const bV
-    );
-    virtual void makeGrid(void) = 0;
-    virtual void makePreGrid(void) = 0;
-    bool isMeshed( void ) const;
-    void setMeshed( void );
-    bool isPreMeshed( void ) const;
-    void setPreMeshed( void );    
-    virtual std::vector< std::string > getMeshTags( void ) const = 0;
-	  virtual dtGmshFace * getFace( std::string const & tag ) const = 0;
-    virtual dtGmshRegion * getRegion( std::string const & tag ) const = 0;
-    virtual dtGmshModel * getModel( void ) const = 0;
-  private:
-    bool _meshed;
-    bool _preMeshed;
+    public:
+      dt__class(boundedVolume, boundedVolume);
+      boundedVolume();
+      virtual ~boundedVolume();
+      virtual boundedVolume * create( void ) const = 0;     
+      virtual std::vector< std::string > factoryAlias( void ) const;    
+      virtual void init( 
+        ::QDomElement const & element,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const sF,
+        aGPtrVec const * const aF,
+        bVPtrVec const * const bV
+      );
+      virtual void makeGrid(void) = 0;
+      virtual void makePreGrid(void) = 0;
+      bool isMeshed( void ) const;
+      void setMeshed( void );
+      bool isPreMeshed( void ) const;
+      void setPreMeshed( void );    
+      virtual std::vector< std::string > getMeshTags( void ) const = 0;
+      virtual dtGmshFace * getFace( std::string const & tag ) const = 0;
+      virtual dtGmshRegion * getRegion( std::string const & tag ) const = 0;
+      virtual dtGmshModel * getModel( void ) const = 0;
+    private:
+      bool _meshed;
+      bool _preMeshed;
   };
 }
 #endif	/* boundedVolume_H */

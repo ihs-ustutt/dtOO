@@ -11,24 +11,24 @@ namespace dtOO {
   class dtGmshEdge;
   
   class bVOTransfiniteRegions : public bVOInterface {
-  public:
-    dt__class(bVOTransfiniteRegions, bVOInterface);
-    dt__classSelfCreate(bVOTransfiniteRegions);
-    bVOTransfiniteRegions();
-    virtual ~bVOTransfiniteRegions();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      boundedVolume * attachTo
-    );    
-    virtual void preUpdate( void );
-  private:
-    std::vector< std::string > _regionLabel;
-		std::vector< int > _nE;       
+    public:
+      dt__class(bVOTransfiniteRegions, bVOInterface);
+      dt__classSelfCreate(bVOTransfiniteRegions);
+      bVOTransfiniteRegions();
+      virtual ~bVOTransfiniteRegions();
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        boundedVolume * attachTo
+      );    
+      virtual void preUpdate( void );
+    private:
+      std::vector< std::string > _regionLabel;
+      std::vector< int > _nE;       
   };
 }
 #endif	/* bVOTransfiniteRegions_H */

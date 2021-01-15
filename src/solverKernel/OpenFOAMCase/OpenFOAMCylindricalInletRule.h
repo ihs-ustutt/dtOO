@@ -6,14 +6,14 @@
 
 namespace dtOO {
   class OpenFOAMCylindricalInletRule : public OpenFOAMSetupRule {
-  public:
-    dt__class(OpenFOAMCylindricalInletRule, OpenFOAMSetupRule);  
-    OpenFOAMCylindricalInletRule();
-    virtual ~OpenFOAMCylindricalInletRule();
-    void executeOnVolVectorField(
-      std::vector< std::string > const & rule, ::Foam::volVectorField & field
-    ) const;
-  private:
+    public:
+      dt__class(OpenFOAMCylindricalInletRule, OpenFOAMSetupRule);  
+      OpenFOAMCylindricalInletRule();
+      virtual ~OpenFOAMCylindricalInletRule();
+      void executeOnVolVectorField(
+        std::vector< std::string > const & rule, ::Foam::volVectorField & field
+      ) const;
+    private:
 
   };
 }

@@ -10,24 +10,24 @@ namespace dtOO {
   class vec3dThreeD;
   
   class bVOForceMeshPointCoordinates : public bVOInterface {
-  public:
-    dt__class(bVOForceMeshPointCoordinates, bVOInterface);
-    dt__classSelfCreate(bVOForceMeshPointCoordinates);
-    bVOForceMeshPointCoordinates();
-    virtual ~bVOForceMeshPointCoordinates();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      boundedVolume * attachTo
-    );    
-    virtual void postUpdate( void );
-  private:
-    dt__pH(vec3dThreeD) _v3d;
-    std::vector< std::string > _faceLabel;
+    public:
+      dt__class(bVOForceMeshPointCoordinates, bVOInterface);
+      dt__classSelfCreate(bVOForceMeshPointCoordinates);
+      bVOForceMeshPointCoordinates();
+      virtual ~bVOForceMeshPointCoordinates();
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        boundedVolume * attachTo
+      );    
+      virtual void postUpdate( void );
+    private:
+      dt__pH(vec3dThreeD) _v3d;
+      std::vector< std::string > _faceLabel;
   };
 }
 #endif	/* bVOForceMeshPointCoordinates_H */

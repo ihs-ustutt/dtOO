@@ -13,19 +13,19 @@ namespace dtOO {
 //  class map3dTo3d;
    
   class map3dTo3dGmsh : public gmshBoundedVolume {
-  public:
-    dt__class(map3dTo3dGmsh, boundedVolume);
-    dt__classSelfCreate(map3dTo3dGmsh);
-    map3dTo3dGmsh();
-    virtual ~map3dTo3dGmsh();
-    virtual void init( 
-      ::QDomElement const & element,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV
-    );    
+    public:
+      dt__class(map3dTo3dGmsh, boundedVolume);
+      dt__classSelfCreate(map3dTo3dGmsh);
+      map3dTo3dGmsh();
+      virtual ~map3dTo3dGmsh();
+      virtual void init( 
+        ::QDomElement const & element,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV
+      );    
   };
 }
 #endif	/* map3dTo3dGmsh_H */

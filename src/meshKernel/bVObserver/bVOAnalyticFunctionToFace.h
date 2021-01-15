@@ -11,23 +11,23 @@ namespace dtOO {
   class scaThreeD;
   
   class bVOAnalyticFunctionToFace : public bVOInterface {
-  public:
-    dt__class(bVOAnalyticFunctionToFace, bVOInterface);
-    dt__classSelfCreate(bVOAnalyticFunctionToFace);
-    bVOAnalyticFunctionToFace();
-    virtual ~bVOAnalyticFunctionToFace();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      boundedVolume * attachTo
-    );    
-    virtual void preUpdate( void );
-  private:
-    dt__pVH(scaThreeD) _sca;
+    public:
+      dt__class(bVOAnalyticFunctionToFace, bVOInterface);
+      dt__classSelfCreate(bVOAnalyticFunctionToFace);
+      bVOAnalyticFunctionToFace();
+      virtual ~bVOAnalyticFunctionToFace();
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        boundedVolume * attachTo
+      );    
+      virtual void preUpdate( void );
+    private:
+      dt__pVH(scaThreeD) _sca;
   };
 }
 #endif	/* bVOAnalyticFunctionToFace_H */

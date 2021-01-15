@@ -8,12 +8,12 @@ namespace dtOO {
   class dtPlugin;
   
   class dtPluginDriver : public ::pugg::Driver {
-  public:
-    dt__classOnlyName(dtPluginDriver);       
-    dtPluginDriver(std::string name, int version);
-    ~dtPluginDriver();
-    virtual dtPlugin * create( void ) = 0;
-  private:
+    public:
+      dt__classOnlyName(dtPluginDriver);       
+      dtPluginDriver(std::string name, int version);
+      ~dtPluginDriver();
+      virtual dtPlugin * create( void ) = 0;
+    private:
 
   };
 }

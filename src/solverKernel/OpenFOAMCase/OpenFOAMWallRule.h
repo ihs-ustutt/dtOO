@@ -6,14 +6,14 @@
 
 namespace dtOO {
   class OpenFOAMWallRule : public OpenFOAMSetupRule {
-  public:
-    dt__class(OpenFOAMWallRule, OpenFOAMSetupRule);  
-    OpenFOAMWallRule();
-    virtual ~OpenFOAMWallRule();
-    virtual void executeOnMesh(
-      std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-    ) const;       
-  private:
+    public:
+      dt__class(OpenFOAMWallRule, OpenFOAMSetupRule);  
+      OpenFOAMWallRule();
+      virtual ~OpenFOAMWallRule();
+      virtual void executeOnMesh(
+        std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
+      ) const;       
+    private:
 
   };
 }

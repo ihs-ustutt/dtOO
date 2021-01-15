@@ -6,10 +6,10 @@
 
 namespace dtOO {
   class dtPluginKernel : public ::pugg::Kernel {
-  public:
-    dt__classOnlyName(dtPluginKernel);       
-    ~dtPluginKernel();
-  private:
+    public:
+      dt__classOnlyName(dtPluginKernel);       
+      ~dtPluginKernel();
+    private:
 
   };
 }

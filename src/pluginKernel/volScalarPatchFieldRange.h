@@ -17,31 +17,31 @@ namespace dtOO {
   class dtCase;
   
   class volScalarPatchFieldRange : public dtPlugin {
-  public:
-    dt__class(volScalarPatchFieldRange, dtPlugin);
-    dt__classSelfCreate(volScalarPatchFieldRange);    
-    volScalarPatchFieldRange();
-    virtual ~volScalarPatchFieldRange();
-    virtual void init( 
-      ::QDomElement const & element,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      dCPtrVec const * const dC,      
-      dPPtrVec const * const pL
-    );    
-    virtual void apply(void);
-  private:
-    dtXmlParser const * _parser;
-    dtCase const * _case;
-    std::string _field;
-    float _min;
-    float _max;
-    std::string _patchName;
-    bool _noRange;    
-    static bool _registrated;
+    public:
+      dt__class(volScalarPatchFieldRange, dtPlugin);
+      dt__classSelfCreate(volScalarPatchFieldRange);    
+      volScalarPatchFieldRange();
+      virtual ~volScalarPatchFieldRange();
+      virtual void init( 
+        ::QDomElement const & element,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        dCPtrVec const * const dC,      
+        dPPtrVec const * const pL
+      );    
+      virtual void apply(void);
+    private:
+      dtXmlParser const * _parser;
+      dtCase const * _case;
+      std::string _field;
+      float _min;
+      float _max;
+      std::string _patchName;
+      bool _noRange;    
+      static bool _registrated;
   };
 }
 

@@ -11,26 +11,26 @@ namespace dtOO {
   class dtTransformer;
   
   class bVOTransformMeshPoints : public bVOInterface {
-  public:
-    dt__class(bVOTransformMeshPoints, bVOInterface);
-    dt__classSelfCreate(bVOTransformMeshPoints);
-    bVOTransformMeshPoints();
-    virtual ~bVOTransformMeshPoints();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      boundedVolume * attachTo
-    );    
-    virtual void postUpdate( void );
-  private:
-    std::vector< dtTransformer const * > _dtT;
-    float _relTol;
-    float _absTol;
-    bool _copy;
+    public:
+      dt__class(bVOTransformMeshPoints, bVOInterface);
+      dt__classSelfCreate(bVOTransformMeshPoints);
+      bVOTransformMeshPoints();
+      virtual ~bVOTransformMeshPoints();
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG,
+        bVPtrVec const * const bV,
+        boundedVolume * attachTo
+      );    
+      virtual void postUpdate( void );
+    private:
+      std::vector< dtTransformer const * > _dtT;
+      float _relTol;
+      float _absTol;
+      bool _copy;
   };
 }
 #endif	/* bVOTransformMeshPoints_H */
