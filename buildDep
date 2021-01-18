@@ -1,8 +1,11 @@
 #!/bin/bash
 
+_skipBuild=0
+_skipDownload=0
+
 usage() { echo "$0 usage:" && grep " .)\ #" $0; exit 0; }
 [ $# -eq 0 ] && usage
-while getopts ":i:n:ho:" opt; do
+while getopts ":i:n:ho:bd" opt; do
   case ${opt} in
     h) # Display help
       usage
@@ -20,6 +23,12 @@ while getopts ":i:n:ho:" opt; do
     o) # Build [ all ] or only one dependency [ openmesh openvolumemesh gmsh cgm moab ]
       _dep=$OPTARG
       ;;
+    b) # Skip build
+      _skipBuild=1
+      ;;
+    d) # Skip download
+      _skipDownload=1
+      ;;
     \?)
       echo "Invalid option: $OPTARG" 1>&2
       exit
@@ -36,6 +45,8 @@ echo "#"
 echo "# _installPrefix=${_installPrefix}"
 echo "# _nProcs=${_nProcs}"
 echo "# _dep=${_dep}"
+echo "# _skipBuild=${_skipBuild}"
+echo "# _skipDownload=${_skipDownload}"
 echo "#"
 
 # create directory
@@ -49,18 +60,21 @@ _pwd=`pwd`
 echo "# Build OpenMesh ..."
 if [[ "$_dep" == "openmesh" || "$_dep" == "all" ]]; then
   cd $_pwd
-  rm -rf OpenMesh-8.1.tar.gz build_OpenMesh-8.1 OpenMesh-8.1
-  if [[ ! -f OpenMesh-8.1.tar.gz ]]; then
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf OpenMesh-8.1.tar.gz
     wget https://www.graphics.rwth-aachen.de/media/openmesh_static/Releases/8.1/OpenMesh-8.1.tar.gz 
   fi
-  tar xfz OpenMesh-8.1.tar.gz
-  mkdir -p ${_pwd}/build_OpenMesh-8.1
-  cd ${_pwd}/build_OpenMesh-8.1
-  cmake \
-    -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-    ../OpenMesh-8.1
+  if [[ "$_skipBuild" == "0" ]]; then
+    rm -rf build_OpenMesh-8.1 OpenMesh-8.1
+    tar xfz OpenMesh-8.1.tar.gz
+    mkdir -p ${_pwd}/build_OpenMesh-8.1
+    cd ${_pwd}/build_OpenMesh-8.1
+    cmake \
+      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+      ../OpenMesh-8.1
 
-  make -j${_nProcs} install
+    make -j${_nProcs} install
+  fi
 else
   echo "# ...skip"
 fi
@@ -71,18 +85,21 @@ fi
 echo "# Build OpenVolumeMesh ..."
 if [[ "$_dep" == "openvolumemesh" || "$_dep" == "all" ]]; then
   cd $_pwd
-  rm -rf OpenVolumeMesh build_OpenVolumeMesh
-  if [[ ! -d OpenVolumeMesh ]]; then
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf OpenVolumeMesh
     git clone https://github.com/nTopology/OpenVolumeMesh.git OpenVolumeMesh 
   fi
-  mkdir -p ${_pwd}/build_OpenVolumeMesh
-  cd ${_pwd}/build_OpenVolumeMesh
-  cmake \
-    -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-    -DCMAKE_BUILD_TYPE=Release \
-    ../OpenVolumeMesh
+  if [[ "$_skipBuild" == "0" ]]; then
+    rm -rf build_OpenVolumeMesh
+    mkdir -p ${_pwd}/build_OpenVolumeMesh
+    cd ${_pwd}/build_OpenVolumeMesh
+    cmake \
+      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+      -DCMAKE_BUILD_TYPE=Release \
+      ../OpenVolumeMesh
 
-  make -j${_nProcs} install
+    make -j${_nProcs} install
+  fi
 else
   echo "# ...skip"
 fi
@@ -92,40 +109,44 @@ fi
 echo "# Build gmsh ..."
 if [[ "$_dep" == "gmsh" || "$_dep" == "all" ]]; then
   cd $_pwd
-  rm -rf gmsh build_gmsh
-  git clone https://gitlab.onelab.info/gmsh/gmsh.git gmsh
-  cd ${_pwd}/gmsh
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf ${_pwd}/gmsh
+    git clone https://gitlab.onelab.info/gmsh/gmsh.git gmsh
+  fi
+  if [[ "$_skipBuild" == "0" ]]; then
+    rm -rf ${_pwd}/build_gmsh
+    cd ${_pwd}/gmsh
+    if [[ -z "$(git status CMakeLists.txt | grep modified)" ]]; then
+      echo "Modify CMakeLists.txt"
+      sed -e "s%file(GLOB_RECURSE HEADERS Common%file(GLOB_RECURSE HEADERS Parser/*.h Common%g" -i CMakeLists.txt
+    fi
+    if [[ -z "$(git status Geo/GEntity.h | grep modified)" ]]; then
+      echo "Modify Geo/GEntity.h"
+      sed '/^.*GModel \*model.*$/a\ \ void setModel( GModel * model ) { _model = model; }' -i Geo/GEntity.h
+    fi
+    if [[ -z "$(git status Geo/MVertex.h | grep modified)" ]]; then
+      echo "Modify Geo/MVertex.h"
+      sed '/^.*getNum\(\).*const.*$/a\ \ inline void setNum(int const num) { _num = num; }' -i Geo/MVertex.h
+    fi
+    if [[ -z "$(git status Mesh/meshGEdge.cpp | grep modified)" ]]; then
+      echo "Modify Mesh/meshGEdge.cpp"
+      sed -e "s%static void copyMesh%void copyMesh%g" -i Mesh/meshGEdge.cpp
+    fi
+    if [[ -z "$(git status Mesh/meshGFace.cpp | grep modified)" ]]; then
+      echo "Modify Mesh/meshGFace.cpp"
+      sed -e "s%static void copyMesh%void copyMesh%g" -i Mesh/meshGFace.cpp
+    fi
 
-  if [[ -z "$(git status CMakeLists.txt | grep modified)" ]]; then
-    echo "Modify CMakeLists.txt"
-    sed -e "s%file(GLOB_RECURSE HEADERS Common%file(GLOB_RECURSE HEADERS Parser/*.h Common%g" -i CMakeLists.txt
-  fi
-  if [[ -z "$(git status Geo/GEntity.h | grep modified)" ]]; then
-    echo "Modify Geo/GEntity.h"
-    sed '/^.*GModel \*model.*$/a\ \ void setModel( GModel * model ) { _model = model; }' -i Geo/GEntity.h
-  fi
-  if [[ -z "$(git status Geo/MVertex.h | grep modified)" ]]; then
-    echo "Modify Geo/MVertex.h"
-    sed '/^.*getNum\(\).*const.*$/a\ \ inline void setNum(int const num) { _num = num; }' -i Geo/MVertex.h
-  fi
-  if [[ -z "$(git status Mesh/meshGEdge.cpp | grep modified)" ]]; then
-    echo "Modify Mesh/meshGEdge.cpp"
-    sed -e "s%static void copyMesh%void copyMesh%g" -i Mesh/meshGEdge.cpp
-  fi
-  if [[ -z "$(git status Mesh/meshGFace.cpp | grep modified)" ]]; then
-    echo "Modify Mesh/meshGFace.cpp"
-    sed -e "s%static void copyMesh%void copyMesh%g" -i Mesh/meshGFace.cpp
-  fi
+    mkdir -p ${_pwd}/build_gmsh
+    cd ${_pwd}/build_gmsh
+    cmake \
+      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+      -DENABLE_BUILD_SHARED=ON \
+      -DENABLE_PRIVATE_API=ON \
+      ../gmsh
 
-  mkdir -p ${_pwd}/build_gmsh
-  cd ${_pwd}/build_gmsh
-  cmake \
-    -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-    -DENABLE_BUILD_SHARED=ON \
-    -DENABLE_PRIVATE_API=ON \
-    ../gmsh
-
-  make -j${_nProcs} install
+    make -j${_nProcs} install
+  fi
 else
   echo "# ...skip"
 fi
@@ -136,19 +157,23 @@ fi
 echo "# Build cgm ..."
 if [[ "$_dep" == "cgm" || "$_dep" == "all" ]]; then
   cd $_pwd
-  rm -rf cgm
-  git clone https://bitbucket.org/fathomteam/cgm.git cgm
-  cd ${_pwd}/cgm
-  autoreconf -i
-  LDFLAGS=-L${_installPrefix}/lib ./configure \
-    --prefix=${_installPrefix} \
-    --libdir=${_installPrefix}/lib \
-    --enable-debug \
-    --with-occ=/usr/ \
-    --enable-shared=yes \
-    --enable-static=no
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf cgm
+    git clone https://bitbucket.org/fathomteam/cgm.git cgm
+  fi
+  if [[ "$_skipBuild" == "0" ]]; then
+    cd ${_pwd}/cgm
+    autoreconf -i
+    LDFLAGS=-L${_installPrefix}/lib ./configure \
+      --prefix=${_installPrefix} \
+      --libdir=${_installPrefix}/lib \
+      --enable-debug \
+      --with-occ=/usr/ \
+      --enable-shared=yes \
+      --enable-static=no
 
-  make -j${_nProcs} install
+    make -j${_nProcs} install
+  fi
 else
   echo "# ...skip"
 fi
@@ -158,20 +183,24 @@ fi
 echo "# Build moab ..."
 if [[ "$_dep" == "moab" || "$_dep" == "all" ]]; then
   cd $_pwd
-  rm -rf moab 
-  git clone https://bitbucket.org/fathomteam/moab.git moab
-  cd ${_pwd}/moab
-  autoreconf -i
-  ./configure \
-    --exec-prefix=${_installPrefix} \
-    --prefix=${_installPrefix} \
-    --with-cgns=/usr/lib \
-    --enable-shared=yes \
-    --enable-static=no \
-    --enable-debug \
-    --with-cgm=${_installPrefix}
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf moab 
+    git clone https://bitbucket.org/fathomteam/moab.git moab
+  fi
+  if [[ "$_skipBuild" == "0" ]]; then
+    cd ${_pwd}/moab
+    autoreconf -i
+    ./configure \
+      --exec-prefix=${_installPrefix} \
+      --prefix=${_installPrefix} \
+      --with-cgns=/usr/lib \
+      --enable-shared=yes \
+      --enable-static=no \
+      --enable-debug \
+      --with-cgm=${_installPrefix}
 
-  make -j${_nProcs} install
+    make -j${_nProcs} install
+  fi
 else
   echo "# ...skip"
 fi
