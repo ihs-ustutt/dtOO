@@ -174,7 +174,7 @@ and create a build directory before configuring with `cmake`:
 ```bash
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=../install ..
+cmake -DCMAKE_INSTALL_PREFIX=<path> ..
 ```
 
 After successful compiling the binaries and libraries of `dtOO` should be added:
