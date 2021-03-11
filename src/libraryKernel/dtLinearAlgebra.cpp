@@ -175,6 +175,14 @@ namespace dtOO {
 		return CGAL::ORIGIN + pp;
 	}
 
+  std::vector< dtPoint3 > dtLinearAlgebra::toDtPoint3(
+    std::vector< dtVector3 > const & vv
+  ) {
+    std::vector< dtPoint3 > pp;
+		dt__forAllRefAuto(vv, aV) pp.push_back( toDtPoint3(aV) );
+    return pp;
+	}
+  
 	dtPoint2 dtLinearAlgebra::toDtPoint2(dtVector2 const & pp) {
 		return CGAL::ORIGIN + pp;
 	}        

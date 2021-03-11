@@ -37,6 +37,7 @@ namespace dtOO {
   typedef ::CGAL::Linear_algebraCd< dtFt >::Vector dtMatrixVector;
   typedef ::CGAL::Cartesian_d< dtFt > dtCD;
   typedef dtCD::Point_d dtPointD;
+  typedef ::CGAL::Origin dtOrigin;
   
   class dtLinearAlgebra {
     public:
@@ -83,6 +84,9 @@ namespace dtOO {
       static dtVector3 toDtVector3(dtPoint3 const & pp);
       static dtVector2 toDtVector2(dtPoint2 const & pp);
       static dtPoint3 toDtPoint3(dtVector3 const & pp);
+      static std::vector< dtPoint3 > toDtPoint3(
+        std::vector< dtVector3 > const & vv
+      );
       static dtPoint2 toDtPoint2(dtVector2 const & pp);   
       static std::vector< dtVector3 > toDtVector3(
         std::vector< dtPoint3 > const & pp
