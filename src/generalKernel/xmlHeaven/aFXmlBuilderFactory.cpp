@@ -11,6 +11,7 @@
 #include "aFXmlBuilder/bSplineCurve2d_pointConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineCurve_pointConstructOCCAFXmlBuilder.h"
+#include "aFXmlBuilder/bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.h"
 #include "aFXmlBuilder/bSplineSurface_skinConstructOCCAFXmlBuilder.h"
@@ -139,6 +140,9 @@ namespace dtOO {
     );
     _instance->_builder.push_back(
       new bSplineSurface_pipeConstructOCCAFXmlBuilder()
+    );    
+    _instance->_builder.push_back( 
+      new bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder() 
     );    
     return _instance.get();
   }

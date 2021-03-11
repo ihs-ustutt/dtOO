@@ -12,7 +12,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(bSplineCurve_normalOffsetGeomCurveOCC);    
     bSplineCurve_normalOffsetGeomCurveOCC(
-      dtCurve const * const dtC, float const & offset
+      dtCurve const * const dtC, float const & offset, dtVector3 const & nn
     );
     virtual ~bSplineCurve_normalOffsetGeomCurveOCC();
     dtCurve * result( void );
