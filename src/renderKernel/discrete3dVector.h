@@ -17,6 +17,8 @@ namespace dtOO {
       vectorHandling< dtVector3 > const & refV3( void ) const;
       vectorHandling< dtPoint3 > const & refP3( void ) const;
     private:
+      void updateBB( void );
+    private:
       vectorHandling< dtVector3 > _v3;
       vectorHandling< dtPoint3 > _p3;
   };
