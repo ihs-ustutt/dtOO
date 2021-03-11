@@ -413,7 +413,9 @@ namespace dtOO {
     = 
     staticPropertiesHandler::getInstance()->getOptionFloat(
       "point_render_diameter"
-    );  		
+    )
+    *
+    rI->characteristicLength();
 		//
 		// fill data arraies
 		//
@@ -820,7 +822,9 @@ namespace dtOO {
 		=
 		staticPropertiesHandler::getInstance()->getOptionFloat(
       "vector_render_size"
-    );
+    )
+    *
+    rI->characteristicLength();
 		
     ptrHandling<char> objName(new char[strlen(str)+5]);
     sprintf(objName.get(),"%s_%d", str,0);
