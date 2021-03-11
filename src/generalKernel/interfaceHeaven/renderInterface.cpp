@@ -1,4 +1,5 @@
 #include "renderInterface.h"
+#include <cmath>
 
 #include <logMe/logMe.h>
 
@@ -105,4 +106,19 @@ namespace dtOO {
               << "dir should be 0, 1 or 2.");
     }		
 	}			
+  
+  float renderInterface::characteristicLength( void ) const {
+    float cL
+    =
+    sqrt(
+      std::pow(geoBoundMax(0)-geoBoundMin(0), 2.0)
+      + 
+      std::pow(geoBoundMax(1)-geoBoundMin(1), 2.0)
+      + 
+      std::pow(geoBoundMax(2)-geoBoundMin(2), 2.0)
+    );
+    
+    dt__debug(characteristicLength(), << "cL = " << cL);
+    return cL;
+  }
 }

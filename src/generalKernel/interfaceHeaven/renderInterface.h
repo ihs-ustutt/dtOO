@@ -21,7 +21,8 @@ namespace dtOO {
 	  void geoBoundMin(int const & dir, float const & value) const;
 	  float geoBoundMin(int const & dir) const;	    
 	  void geoBoundMax(int const & dir, float const & value) const;
-	  float geoBoundMax(int const & dir) const;	     
+	  float geoBoundMax(int const & dir) const;
+    float characteristicLength( void ) const;
   private:
     mutable bool _extRender;
     mutable std::string _extRenderOption;
