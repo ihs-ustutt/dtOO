@@ -83,7 +83,8 @@ namespace dtOO {
   vectorHandling< renderInterface * > vec3dOneDInMap3dTo3d::getExtRender( void ) const {
 		vectorHandling< dtVector3 > vv;
 		vectorHandling< dtPoint3 > vp;
-//		vectorHandling< dtPoint3 > pp;
+		vectorHandling< dtPoint3 > pp;
+    
     //
     // get spline direction
     //
@@ -97,21 +98,22 @@ namespace dtOO {
 		vv.push_back(uu);
 		vp.push_back(startPoint);
 
+		vectorHandling< renderInterface * > retVec;
+		retVec.push_back( new discrete3dVector(vv, vp) );
+    
     //
     // get control points
     //
-//		vec3dCurveOneD const * const v3dC1d = vec3dCurveOneD::ConstDownCast(_v1d.get());
-//		if (v3dC1d) {
-//			dtCurve const * const dtC = v3dC1d->ptrDtCurve();
-//			int numPointsU = dtC->getNControlPoints();
-//			for (int ii=0; ii<numPointsU; ii++) {
-//			  pp.push_back( _m3d->getPoint( dtC->getControlPoint3d(ii) ) );
-//			}
-//		}
+		vec3dCurveOneD const * const v3dC1d = vec3dCurveOneD::ConstDownCast(_v1d.get());
+		if (v3dC1d) {
+			dtCurve const * const dtC = v3dC1d->ptrDtCurve();
+			int numPointsU = dtC->nControlPoints();
+			for (int ii=0; ii<numPointsU; ii++) {
+			  pp.push_back( _m3d->getPoint( dtC->controlPoint(ii) ) );
+			}
+      retVec.push_back( new discrete3dPoints(pp) );
+		}
 
-		vectorHandling< renderInterface * > retVec(1);
-//		retVec[0] = new discrete3dPoints(pp);
-		retVec[0] = new discrete3dVector(vv, vp);
 		return retVec;
   }	
 }
