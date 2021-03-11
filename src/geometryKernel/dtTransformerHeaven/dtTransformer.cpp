@@ -50,25 +50,37 @@ namespace dtOO {
   std::vector< dtPoint2 > dtTransformer::apply( 
     std::vector< dtPoint2 > const * const pointVecP 
   ) const {
-    dt__warning(init(), << "Call on abstract class!");
+    dt__warning(apply(), << "Call on abstract class!");
+    std::vector< dtPoint2 > ret;
+    dt__forAllRefAuto(*pointVecP, aP) ret.push_back(aP);
+    return ret;
   }
  
   std::vector< dtPoint3 > dtTransformer::apply( 
     std::vector< dtPoint3 > const * const pointVecP 
   ) const {
-    dt__warning(init(), << "Call on abstract class!");
+    dt__warning(apply(), << "Call on abstract class!");
+    std::vector< dtPoint3 > ret;
+    dt__forAllRefAuto(*pointVecP, aP) ret.push_back(aP);
+    return ret;    
   }
 
   aFPtrVec dtTransformer::apply( 
     aFPtrVec const * const sFunP 
   ) const {
-    dt__warning(apply(), << "Call on abstract class!");    
+    dt__warning(apply(), << "Call on abstract class!");
+    aFPtrVec ret;
+    dt__forAllRefAuto(*sFunP, aF) ret.push_back( aF->clone() );
+    return ret;   
   }
 
   aGPtrVec dtTransformer::apply( 
     aGPtrVec const * const sFunP 
   ) const {
-    dt__warning(apply(), << "Call on abstract class!");    
+    dt__warning(apply(), << "Call on abstract class!");
+    aGPtrVec ret;
+    dt__forAllRefAuto(*sFunP, aG) ret.push_back( aG->clone() );
+    return ret;   
   }
   
 	dtPoint3 dtTransformer::apply(dtPoint3 const & pp) const {
