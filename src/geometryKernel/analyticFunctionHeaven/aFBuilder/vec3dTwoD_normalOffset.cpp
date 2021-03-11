@@ -120,7 +120,7 @@ namespace dtOO {
         new vec3dCurveOneD( 
           dt__tmpPtr(
             dtCurve, bSplineCurve_pointConstructOCC(
-              grid.fixJ(jj), 1
+              grid.fixJ(jj), order
             ).result()
           )
         ) 
