@@ -9,15 +9,15 @@ namespace dtOO {
   std::string NowTime();
   std::string NowDateAndTime();
   
-  enum TLogLevel {logERROR, logWARNING, logINFO, logDEBUG};
+  enum TLogLevel {logERROR = 0, logWARNING, logINFO, logDEBUG};
   
   template < typename T > 
   class logBase {
     public:
       logBase();
       virtual ~logBase();
-      std::ostringstream& Get(TLogLevel level = logINFO);
-      std::ostringstream& GetNoHeader( TLogLevel level = logINFO );
+      std::ostringstream& Get(TLogLevel level = logERROR);
+      std::ostringstream& GetNoHeader( TLogLevel level = logERROR );
     public:
       static TLogLevel& ReportingLevel(void);
       static std::string ToString(TLogLevel level);
@@ -71,7 +71,7 @@ namespace dtOO {
 
   template < typename T > 
   TLogLevel& logBase< T >::ReportingLevel(void) {
-    static TLogLevel reportingLevel = logDEBUG;
+    static TLogLevel reportingLevel = logERROR;
     return reportingLevel;
   }
 

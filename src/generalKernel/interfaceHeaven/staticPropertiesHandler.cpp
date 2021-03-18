@@ -13,7 +13,7 @@ namespace dtOO {
   
   staticPropertiesHandler::staticPropertiesHandler() 
   : optionHandling(), _initialized(false) {
-    dt__info(
+    dt__forceInfo(
       staticPropertiesHandler(), << "Create staticPropertiesHandler ..."
     );
     setOption("reparamOnFace_precision", "1.e-2");
@@ -46,6 +46,7 @@ namespace dtOO {
     setOption("map3dTo3d_deltaPer", "0.01");   
     setOption("transfinite_correctionLoops", "10");   
     setOption("isEqualExtendCheck", "false");
+    setOption("logLevel", "0");
     
     _gDebug = false;
   }
@@ -74,8 +75,11 @@ namespace dtOO {
       _thisRank = ::boost::mpi::communicator().rank();
     }
 #endif    
-    dt__info(
+    FILELog::ReportingLevel() = TLogLevel(getOptionInt("logLevel"));
+    
+    dt__forceInfo(
       init(),
+      << dt__eval(FILELog::ReportingLevel()) << std::endl
       << dt__eval(omp_get_num_threads()) << std::endl
       << dt__eval(omp_get_thread_limit()) << std::endl
       << dt__eval(omp_get_max_threads()) << std::endl

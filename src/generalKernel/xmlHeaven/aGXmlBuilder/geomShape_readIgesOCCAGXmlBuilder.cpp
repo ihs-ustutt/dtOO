@@ -69,7 +69,9 @@ namespace dtOO {
     );
     reader.PrintCheckLoad( false, ::IFSelect_ItemsByEntity ); 
     
-    dt__info( buildPart(), << dt__eval(reader.TransferRoots()) );
+    int nGeos = reader.TransferRoots();
+    
+    dt__info( buildPart(), << nGeos << " successful translations." );
     
     dt__forFromToIndex(1, reader.NbShapes()+1, ii) {
       dt__info(
