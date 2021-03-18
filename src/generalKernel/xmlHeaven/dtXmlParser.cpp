@@ -899,7 +899,6 @@ namespace dtOO {
     //
     // log
     //
-    dt__makeChapter(creating function);
     dt__info(createAnalyticFunction(), << convertToString(aFElement) );
     
 
@@ -1015,7 +1014,6 @@ namespace dtOO {
 		aGPtrVec * aGP
 	) const {
     ::QDomElement partElement = getElement("part", label);
-    dt__makeChapter(creating part);
     dt__info(createMachinePart(), << convertToString(partElement) );
 
     //

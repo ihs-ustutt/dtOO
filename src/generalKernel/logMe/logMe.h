@@ -168,6 +168,10 @@ namespace dtOO {
     this << " {" << std::endl \
     log << std::endl \
 		<< "}"
+  #define dt__forceInfo(functionname, message) \
+    dtOO::FILELog().Get(dtOO::logINFO) \
+      << "[ " << className() << "::"#functionname << " ]" << std::endl \
+      message;
   #define dt__info(functionname, message) \
     if (dtOO::logINFO > dtOO::FILELog::ReportingLevel() ) {} else { \
       dtOO::FILELog().Get(dtOO::logINFO) \
@@ -310,17 +314,6 @@ namespace dtOO {
       << std::endl
   #define dt__solution(cond, solution) \
     if (cond) solution;
-  #define dt__makeChapter(cName) \
-    if (dtOO::logINFO > dtOO::FILELog::ReportingLevel() ) {} else { \
-      dtOO::FILELog().Get() \
-        << std::endl \
-        << "-----------------------------------------------------------------" \
-        << std::endl \
-        << "| " << std::endl \
-        << "| "#cName << " (send from " << className() << ")" << std::endl \
-        << "| " << std::endl \
-        << "-----------------------------------------------------------------" ;\
-    }
   #define dt__tryOcc(cmd, errorOut) \
     try { \
       OCC_CATCH_SIGNALS \
