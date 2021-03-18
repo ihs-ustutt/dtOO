@@ -10,21 +10,6 @@
 
 namespace dtOO {
 	std::string logMe::initLog( std::string const & logFileName ) {
-    char * dtOO_logMode = getenv("DTOO_LOGMODE");
-    if ( dtOO_logMode != NULL) {
-      if (strcmp(dtOO_logMode, "logDEBUG") == 0 ) {
-        FILELog::ReportingLevel() = logDEBUG;
-      }
-      else if (strcmp(dtOO_logMode, "logERROR") == 0 ) {
-        FILELog::ReportingLevel() = logERROR;
-      }
-      else if (strcmp(dtOO_logMode, "logWARNING") == 0 ) {
-        FILELog::ReportingLevel() = logWARNING;
-      }
-      else if (strcmp(dtOO_logMode, "logINFO") == 0 ) {
-        FILELog::ReportingLevel() = logINFO;
-      }
-    }
     //
     // close first
     //
@@ -58,6 +43,7 @@ namespace dtOO {
       << "." << dtOO::git::versionMinor
       << "." << dtOO::git::versionCommitNo
       << " ( " << dtOO::git::versionName << " )" << std::endl
+      << "* compiled " << __DATE__ << " " << __TIME__ << std::endl            
       << "* " << std::endl
       << "**********************************************"
          "**********************************" << std::endl

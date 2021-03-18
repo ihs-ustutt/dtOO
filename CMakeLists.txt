@@ -209,6 +209,13 @@ MAKE_DTOO_VERSION(VERSION_MAJOR VERSION_MINOR VERSION_COMMIT)
 #
 #------------------------------------------------------------------------------#
 add_library(dtOO SHARED ${DTOO_SOURCES})
+# always compile logMe.cpp to have correct compile time in log file
+add_custom_command(
+  TARGET dtOO
+  PRE_BUILD
+  COMMAND ${CMAKE_COMMAND} -E touch_nocreate 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/generalKernel/logMe/logMe.cpp
+)
 
 #------------------------------------------------------------------------------#
 #
