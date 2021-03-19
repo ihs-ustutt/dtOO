@@ -36,15 +36,29 @@ namespace dtOO {
     const std::list< ::GEdge * > &edges, const std::vector< int > &ori 
   ) : GFace(m, tag),
       _geomType( ::GEntity::GeomType::Unknown ) {
-    edgeLoops.push_back(GEdgeLoop( progHelper::list2Vector(edges) ));
-    typedef std::list< ::GEdge * >::const_iterator EIter;
-    int ii = 0;
-    for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
-      ::GEdge *e = *ei;
-      l_edges.push_back(e);
-      e->addFace(this);
-      l_dirs.push_back(ori[ii]);
-      ii++;
+    dt__forAllRefAuto(edges, aEdge) {
+      aEdge->addFace(this);
+    }
+    std::vector< ::GEdge * > edgeV = progHelper::list2Vector(edges);
+    GEdgeLoop theLoop( edgeV );
+    theLoop.getEdges(l_edges);
+    theLoop.getSigns(l_dirs);
+    edgeLoops.push_back(theLoop);
+    
+    //
+    // check
+    //
+    dt__forAllIndex(edgeV, ii) {
+      dt__warnIfWithMessage(
+        edgeV[ii] != l_edges[ii], 
+        dtGmshFace(), 
+        << "Edge[ " << ii << " ] not equal. Automatic change."
+      );
+      dt__warnIfWithMessage(
+        ori[ii] != l_dirs[ii], 
+        dtGmshFace(), 
+        << "Orientation[ " << ii << " ] not equal. Automatic change."
+      );      
     }
   }
 
@@ -52,14 +66,14 @@ namespace dtOO {
     ::GModel *m, int tag, const std::list< ::GEdge * > &edges
   ) : GFace(m, tag),
       _geomType( ::GEntity::GeomType::Unknown ) {
-    edgeLoops.push_back(::GEdgeLoop( progHelper::list2Vector(edges) ));
-    typedef std::list< ::GEdge * >::const_iterator EIter;
-    for (EIter ei=edges.begin(); ei != edges.end(); ++ei) {
-      ::GEdge *e = *ei;
-      l_edges.push_back(e);
-      e->addFace(this);
-      l_dirs.push_back(1);
+    dt__forAllRefAuto(edges, aEdge) {
+      aEdge->addFace(this);
     }
+    std::vector< ::GEdge * > edgeV = progHelper::list2Vector(edges);
+    GEdgeLoop theLoop( edgeV );
+    theLoop.getEdges(l_edges);
+    theLoop.getSigns(l_dirs);
+    edgeLoops.push_back(theLoop);
   }  
 
   dtGmshFace::~dtGmshFace() {
@@ -475,161 +489,6 @@ namespace dtOO {
 	
 	bool dtGmshFace::sortPredicate(::MVertex const * d1, ::MVertex const * d2) {
 		return d1->getNum() < d2->getNum();
-	}
-	
-	twoDArrayHandling< ::MVertex * > dtGmshFace::reconstructEdgesFromSurfaceMesh( 
-    void 
-  ) const {
-    std::map< ::MVertex *, std::vector< ::MElement * >  > e_v;
-		std::map< ::MVertex *, std::vector< ::MElement * >  >::iterator e_vIt;
-		std::map< ::MElement *, std::vector< ::MVertex * >  > v_e;
-		std::map< ::MElement *, std::vector< ::MVertex * >  >::iterator v_eIt;
-		
-		//
-		// create e_v => in: vertex out: element
-		// create v_e => in: element out: vertex
-		//
-		for (int ii=0; ii<__caCThis->getNumMeshElements(); ii++) {
-			::MElement * me = __caCThis->getMeshElement(ii);
-			std::vector< ::MVertex * > verts;
-			me->getVertices(verts);
-			for (int jj=0; jj<verts.size(); jj++) {
-				e_vIt = e_v.find( verts[jj] );
-				if (e_vIt == e_v.end()) {
-					e_v[verts[jj]] 
-					= 
-					std::vector< ::MElement * >(1,me);
-				}
-				else e_vIt->second.push_back(me);
-				v_eIt = v_e.find( me );
-				if (v_eIt == v_e.end()) {
-					v_e[me] = std::vector< ::MVertex * >(1,verts[jj]);
-				}
-				else v_eIt->second.push_back(verts[jj]);				
-			}
-		}
-		
-//		dt__info(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(e_v));
-//		dt__info(reconstructEdgesFromSurfaceMesh(), << logMe::mapToTable(v_e));
-		
-		std::vector< ::MVertex * > startVerts;
-		for (e_vIt = e_v.begin(); e_vIt != e_v.end(); ++e_vIt) {
-			if (e_vIt->second.size() == 1) {
-        startVerts.push_back(e_vIt->first);
-			}
-		}
-		std::sort(startVerts.begin(), startVerts.end(), dtGmshFace::sortPredicate);
-		
-		twoDArrayHandling< ::MVertex * > recEdges;
-		
-		while ( !startVerts.empty() ) {
-			//
-			// set start vertex
-			//
-			e_vIt = e_v.find(startVerts.back()); 
-			
-			//
-			// initialize reconstructed edge vector
-			//
-			recEdges.push_back( std::vector< ::MVertex * >(0) );
-			std::vector< ::MVertex * > & recEdge = recEdges.back();
-			recEdge.push_back(e_vIt->first);
-			::MElement * wE;
-			wE = e_vIt->second[0];
-
-			//
-			// perform reconstruction
-			//
-			do {
-				//
-				// get a reference to the vertices
-				//
-				std::vector< ::MVertex * > & pV = v_e[wE];
-				//
-				// iterate over all vertices
-				//
-				bool endVertex = false;
-				::MVertex * toSave = NULL;
-				for (int ii=0; ii<pV.size(); ii++) {
-					if (pV[ii] == recEdge.back()) continue;
-					
-					//
-					// found an internal edge vertex
-					//
-					if ( e_v[pV[ii]].size() == 2) {
-				    toSave = pV[ii];						
-//						dt__info(
-//							reconstructEdgesFomSurface(),
-//							<< logMe::dtFormat("Internal vertex %d") % recEdge.back()->getNum()
-//						);
-					}
-					//
-					// found the end vertex
-					//
-					else if ( e_v[pV[ii]].size() == 1) {
-				    toSave = pV[ii];						
-						endVertex = true;
-//						dt__info(
-//							reconstructEdgesFomSurface(),
-//							<< logMe::dtFormat("End vertex %d") % recEdge.back()->getNum()
-//						);
-						break;
-					}
-				}
-				//
-				// check if there is something to save
-				//
-				if (toSave) {
-					//
-					// save vertex in edge reconstruction
-					//
-					recEdge.push_back(toSave);
-					if (!endVertex) {
-						if (e_v[toSave][0] == wE) wE = e_v[toSave][1];
-						else wE = e_v[toSave][0];
-						//
-						// erase internal mapping from vertex to element
-						//
-						e_v[toSave].clear();
-					}
-				}
-			}
-			while ( e_v[recEdge.back()].size() != 1 );
-						
-			//
-			// delete start vertex if there is no connection to another end vertex
-			//
-			if (recEdge.size() == 1) {
-				e_v[recEdge[0]].clear();
-				recEdges.erase( progHelper::prior(recEdges.end()) );
-				startVerts.erase( progHelper::prior(startVerts.end()) );
-			}			
-			if (recEdge.size() == 2) {
-				dt__throwIf(recEdge[0]!=recEdge[1], reconstructEdgesFromSurfaceMesh());
-				e_v[recEdge[0]].clear();
-				recEdges.erase( progHelper::prior(recEdges.end()) );
-				startVerts.erase( progHelper::prior(startVerts.end()));
-			}
-		}
-
-//	  dt__info( 
-//		  reconstructFromEdges(), 
-//			<< logMe::dtFormat("%d edges reconstructed.") % recEdges.size()
-//		);    		
-		for (
-			twoDArrayHandling< ::MVertex * >::iterator0 it = recEdges.begin(); 
-			it!=recEdges.end(); 
-			++it 
-		) {
-			dt__info(
-				reconstructEdgesFromSurfaceMesh(), 
-				<< logMe::dtFormat(
-				  "Edge from vertex %d to vertex %d reconstructed with %d vertices"
-				) % it->at(0)->getNum() % it->back()->getNum() % it->size()
-			); 	
-		}		
-		
-		return recEdges;
 	}
 	
 	std::vector< const ::MVertex * > dtGmshFace::getMeshVertices( void ) const {	
