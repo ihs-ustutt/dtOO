@@ -216,6 +216,8 @@ namespace dtOO {
       ii++;
     }
     
+    dt__info(createVertices(), << ii << " vertices created and mapped.");
+    
     return mv_MOAB;
   }
   
@@ -269,7 +271,8 @@ namespace dtOO {
       if (dim[1] == 0) continue;
            
       logC()
-				<< logMe::dtFormat("[ %i ] handle %i") % meshSetCounter % currentSet
+				<< logMe::dtFormat("[ %i ] handle %i") 
+          % meshSetCounter % std::distance(allSets.begin(), it)
         << std::endl        
 				<< logMe::dtFormat(
           "[ %i ] number of entities (1D, 2D, 3D) = (%i, %i, %i)"
@@ -302,15 +305,27 @@ namespace dtOO {
       //
       for (
         moab::Range::iterator it = aRange.begin(); it != aRange.end(); it++
-      ) {   
+      ) {
         //
         // connectivities
         //
         moab::EntityHandle const * conn;
-        int nNodes;
+        int nNodes = 0;
         rval = mb.get_connectivity(*it, conn, nNodes);
         moab__throwIf(rval != moab::MB_SUCCESS, createFaces());
-
+        
+        dt__throwIf(nNodes!=4, createFaces());
+        dt__forFromToIndex(0,nNodes,ii) {
+          if (mv_MOAB[ conn[ii] ] == NULL) {
+            dt__throw(
+              createFaces(), 
+              << "Element " << std::distance(aRange.begin(),it)
+              << " contains conn[ " << ii << " ] = " << (unsigned int) conn[ii] << std::endl
+              << "mv_MOAB[ " << conn[ii] << " ] = " << mv_MOAB[ conn[ii] ]
+            );
+          }
+        }
+        
         thisFace->addQuadrangle(
           new ::MQuadrangle(
             mv_MOAB[ conn[0] ], 
