@@ -78,7 +78,6 @@ find_package(
   incompressibleTransportModels
 )
 find_package(OpenFoamTurbo COMPONENTS OpenFoamTurbo)
-find_package(CGM REQUIRED COMPONENTS iGeom)
 find_package(MOAB REQUIRED COMPONENTS MOAB iMesh)
 find_package(OpenMesh REQUIRED COMPONENTS OpenMeshCore OpenMeshTools)
 find_package(OpenVolumeMesh REQUIRED COMPONENTS OpenVolumeMesh)
@@ -161,7 +160,6 @@ include_directories(
   ${GSL_INCLUDE_DIR} 
   ${OpenCASCADE_INCLUDE_DIR}
   ${CGNS_INCLUDE_DIR}
-  ${CGM_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}
   ${OpenMesh_INCLUDE_DIR}
   ${OpenVolumeMesh_INCLUDE_DIR}
@@ -252,7 +250,6 @@ target_link_libraries(
   ${GSL_LIBRARIES}
   ${Boost_LIBRARIES}
   ${CGNS_LIBRARIES}
-  ${CGM_LIBRARIES}
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
@@ -269,7 +266,6 @@ set(
   ${GSL_LIBRARIES}
   ${Boost_LIBRARIES}
   ${CGNS_LIBRARIES}
-  ${CGM_LIBRARIES}
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
@@ -283,7 +279,6 @@ set(
   ${OpenCASCADE_LINK_DIRECTORY}
   ${ROOT_LINK_DIRECTORY}
   ${CGNS_LINK_DIRECTORY}
-  ${CGM_LINK_DIRECTORY}
   ${MOAB_LINK_DIRECTORY}
   ${OpenVolumeMesh_LINK_DIRECTORY}
 )
