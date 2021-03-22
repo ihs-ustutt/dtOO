@@ -1,5 +1,6 @@
 #include "vec3dThreeD_triLinearPointConstructAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dTriLinearThreeD.h>
@@ -11,6 +12,15 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool vec3dThreeD_triLinearPointConstructAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      vec3dThreeD_triLinearPointConstructAFXmlBuilder, 
+      new vec3dThreeD_triLinearPointConstructAFXmlBuilder()
+    )
+  );
+  
   vec3dThreeD_triLinearPointConstructAFXmlBuilder
     ::vec3dThreeD_triLinearPointConstructAFXmlBuilder() {
   }

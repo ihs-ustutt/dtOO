@@ -34,6 +34,8 @@ namespace dtOO {
       mutable dt__pH(map1dTo3d const) _m1d;
       mutable dt__pH(map2dTo3d const) _m2d;
       mutable std::vector< dtPoint3 > _sampleXYZ;
+    private: 
+      static bool _registrated;            
   };
 }
 #endif	/* vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder_H */

@@ -1,5 +1,6 @@
 #include "map2dTo3dApproximateInMap3dTo3dAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -15,6 +16,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool map2dTo3dApproximateInMap3dTo3dAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      map2dTo3dApproximateInMap3dTo3dAGXmlBuilder, 
+      new map2dTo3dApproximateInMap3dTo3dAGXmlBuilder()
+    )
+  );
+  
 	map2dTo3dApproximateInMap3dTo3dAGXmlBuilder
 		::map2dTo3dApproximateInMap3dTo3dAGXmlBuilder() {
 

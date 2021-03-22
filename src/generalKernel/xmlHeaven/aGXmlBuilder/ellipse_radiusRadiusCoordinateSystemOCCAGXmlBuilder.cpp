@@ -1,5 +1,6 @@
 #include "ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -15,6 +16,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder, 
+      new ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder()
+    )
+  );
+  
   ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder
     ::ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder() {
   }

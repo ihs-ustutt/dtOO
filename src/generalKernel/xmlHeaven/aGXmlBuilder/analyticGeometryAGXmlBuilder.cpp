@@ -1,5 +1,6 @@
 #include "analyticGeometryAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
@@ -12,6 +13,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool analyticGeometryAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      analyticGeometryAGXmlBuilder, 
+      new analyticGeometryAGXmlBuilder()
+    )
+  );
+  
   analyticGeometryAGXmlBuilder::analyticGeometryAGXmlBuilder() {
   }
 

@@ -13,19 +13,21 @@ namespace dtOO {
   class baseContainer;
 
   class makeCompoundAGXmlBuilder : public aGXmlBuilder {
-  public:  
-    dt__classOnlyName(makeCompoundAGXmlBuilder);
-    dt__classSelfCreate(makeCompoundAGXmlBuilder);
-    makeCompoundAGXmlBuilder();
-    virtual ~makeCompoundAGXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,  
-      aFPtrVec const * const aF,  
-      aGPtrVec const * const aG,
-      aGPtrVec * result 
-    ) const;       
+    public:  
+      dt__classOnlyName(makeCompoundAGXmlBuilder);
+      dt__classSelfCreate(makeCompoundAGXmlBuilder);
+      makeCompoundAGXmlBuilder();
+      virtual ~makeCompoundAGXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,  
+        aFPtrVec const * const aF,  
+        aGPtrVec const * const aG,
+        aGPtrVec * result 
+      ) const; 
+    private: 
+      static bool _registrated;          
   };
 }
 #endif	/* makeCompoundAGXmlBuilder_H */

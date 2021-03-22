@@ -1,5 +1,6 @@
 #include "scaInMap1dTo3dAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -14,6 +15,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool scaInMap1dTo3dAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      scaInMap1dTo3dAGXmlBuilder, 
+      new scaInMap1dTo3dAGXmlBuilder()
+    )
+  );
+  
   scaInMap1dTo3dAGXmlBuilder::scaInMap1dTo3dAGXmlBuilder() {
   }
 

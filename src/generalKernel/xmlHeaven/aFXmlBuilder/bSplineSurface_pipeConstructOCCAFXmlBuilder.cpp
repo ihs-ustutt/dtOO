@@ -1,5 +1,6 @@
 #include "bSplineSurface_pipeConstructOCCAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.h>
@@ -16,6 +17,15 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool bSplineSurface_pipeConstructOCCAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineSurface_pipeConstructOCCAFXmlBuilder, 
+      new bSplineSurface_pipeConstructOCCAFXmlBuilder()
+    )
+  );
+  
   bSplineSurface_pipeConstructOCCAFXmlBuilder
     ::bSplineSurface_pipeConstructOCCAFXmlBuilder() {
   }

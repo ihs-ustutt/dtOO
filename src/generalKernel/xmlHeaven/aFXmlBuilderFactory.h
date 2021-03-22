@@ -12,13 +12,13 @@ namespace dtOO {
   public:  
     dt__classOnlyName(aFXmlBuilderFactory);
     virtual ~aFXmlBuilderFactory();
+    static bool registrate( aFXmlBuilder const * const );    
     static aFXmlBuilder * create( char const * const str );
     static aFXmlBuilder * create( std::string const str );
-    static aFXmlBuilderFactory * instance( void );
   private:
-    vectorHandling< aFXmlBuilder * > _builder;
-    static dt__pH(aFXmlBuilderFactory) _instance;
     aFXmlBuilderFactory();
+  private:
+    static dt__pVH(aFXmlBuilder) _builder;
   };
 }
 #endif	/* aFXmlBuilderFactory_H */

@@ -13,19 +13,21 @@ namespace dtOO {
   class baseContainer;
 
   class bSplineSurface_pipeConstructOCCAFXmlBuilder : public aFXmlBuilder {
-  public:
-    dt__classOnlyName(bSplineSurface_pipeConstructOCCAFXmlBuilder);   
-    dt__classSelfCreate(bSplineSurface_pipeConstructOCCAFXmlBuilder);     
-    bSplineSurface_pipeConstructOCCAFXmlBuilder();
-    virtual ~bSplineSurface_pipeConstructOCCAFXmlBuilder();
-//    virtual std::vector< std::string > factoryAlias( void ) const;     
-    virtual void buildPart(
-     ::QDomElement const & toBuildP, 
-      baseContainer * const bC,
-      cVPtrVec const * const cValP, 
-      aFPtrVec const * const depSFunP,
-      aFPtrVec * sFunP
-    ) const;
+    public:
+      dt__classOnlyName(bSplineSurface_pipeConstructOCCAFXmlBuilder);   
+      dt__classSelfCreate(bSplineSurface_pipeConstructOCCAFXmlBuilder);     
+      bSplineSurface_pipeConstructOCCAFXmlBuilder();
+      virtual ~bSplineSurface_pipeConstructOCCAFXmlBuilder();
+  //    virtual std::vector< std::string > factoryAlias( void ) const;     
+      virtual void buildPart(
+       ::QDomElement const & toBuildP, 
+        baseContainer * const bC,
+        cVPtrVec const * const cValP, 
+        aFPtrVec const * const depSFunP,
+        aFPtrVec * sFunP
+      ) const;
+    private: 
+      static bool _registrated;      
   };
 }
 #endif	/* bSplineSurface_pipeConstructOCCAFXmlBuilder_H */

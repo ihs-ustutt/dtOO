@@ -1,5 +1,6 @@
 #include "analyticFunctionAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
@@ -10,6 +11,12 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool analyticFunctionAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(analyticFunctionAFXmlBuilder, new analyticFunctionAFXmlBuilder())
+  );
+    
   analyticFunctionAFXmlBuilder::analyticFunctionAFXmlBuilder() {
   }
 

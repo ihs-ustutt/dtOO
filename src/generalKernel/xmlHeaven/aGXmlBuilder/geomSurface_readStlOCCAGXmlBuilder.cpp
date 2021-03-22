@@ -1,5 +1,6 @@
 #include "geomSurface_readStlOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <progHelper.h>
 
 #include <logMe/logMe.h>
@@ -24,6 +25,15 @@
 #include <geometryEngine/dtCurve.h>
 
 namespace dtOO {
+  bool geomSurface_readStlOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      geomSurface_readStlOCCAGXmlBuilder, 
+      new geomSurface_readStlOCCAGXmlBuilder()
+    )
+  );
+  
   geomSurface_readStlOCCAGXmlBuilder
     ::geomSurface_readStlOCCAGXmlBuilder() {
   }

@@ -1,6 +1,7 @@
 #include "scaOneD_forceBSplineCurve2dAFXmlBuilder.h"
 #include "xmlHeaven/dtXmlParser.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
@@ -14,6 +15,15 @@
 #include <boost/assign.hpp>
 
 namespace dtOO {
+  bool scaOneD_forceBSplineCurve2dAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      scaOneD_forceBSplineCurve2dAFXmlBuilder, 
+      new scaOneD_forceBSplineCurve2dAFXmlBuilder()
+    )
+  );
+  
   scaOneD_forceBSplineCurve2dAFXmlBuilder
     ::scaOneD_forceBSplineCurve2dAFXmlBuilder() {
   }

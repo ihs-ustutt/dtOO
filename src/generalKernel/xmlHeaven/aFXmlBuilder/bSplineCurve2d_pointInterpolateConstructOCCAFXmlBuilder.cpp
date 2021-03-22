@@ -1,5 +1,6 @@
 #include "bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointInterpolateConstructOCC.h>
@@ -13,6 +14,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder, 
+      new bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder()
+    )
+  );
+  
   bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder
     ::bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder() {
   }

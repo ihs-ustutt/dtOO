@@ -13,18 +13,20 @@ namespace dtOO {
   class baseContainer;
   
   class bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder : public aFXmlBuilder {
-  public:
-    dt__classOnlyName(bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder);
-    dt__classSelfCreate(bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder);
-    bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder();
-    virtual ~bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuildP, 
-      baseContainer * const bC,
-      cVPtrVec const * const cValP, 
-      aFPtrVec const * const depSFunP,
-      aFPtrVec * sFunP
-    ) const;
+    public:
+      dt__classOnlyName(bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder);
+      dt__classSelfCreate(bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder);
+      bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder();
+      virtual ~bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuildP, 
+        baseContainer * const bC,
+        cVPtrVec const * const cValP, 
+        aFPtrVec const * const depSFunP,
+        aFPtrVec * sFunP
+      ) const;
+    private: 
+      static bool _registrated;      
   };
 }
 #endif	/* bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder_H */

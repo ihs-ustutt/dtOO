@@ -1,5 +1,6 @@
 #include "vec3dThreeD_transVolAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
@@ -16,6 +17,14 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool vec3dThreeD_transVolAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      vec3dThreeD_transVolAFXmlBuilder, new vec3dThreeD_transVolAFXmlBuilder()
+    )
+  );
+  
   vec3dThreeD_transVolAFXmlBuilder::vec3dThreeD_transVolAFXmlBuilder() {
   }
 

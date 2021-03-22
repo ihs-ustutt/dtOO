@@ -1,5 +1,6 @@
 #include "circle_radiusCoordinateSystemOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -15,6 +16,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool circle_radiusCoordinateSystemOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      circle_radiusCoordinateSystemOCCAGXmlBuilder, 
+      new circle_radiusCoordinateSystemOCCAGXmlBuilder()
+    )
+  );
+  
   circle_radiusCoordinateSystemOCCAGXmlBuilder
     ::circle_radiusCoordinateSystemOCCAGXmlBuilder() {
   }

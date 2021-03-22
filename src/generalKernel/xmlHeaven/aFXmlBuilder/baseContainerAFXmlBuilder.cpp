@@ -1,4 +1,6 @@
 #include "baseContainerAFXmlBuilder.h"
+
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -8,6 +10,12 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool baseContainerAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(baseContainerAFXmlBuilder, new baseContainerAFXmlBuilder())
+  );
+  
   baseContainerAFXmlBuilder::baseContainerAFXmlBuilder() {
   }
 

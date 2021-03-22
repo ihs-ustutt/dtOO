@@ -1,5 +1,6 @@
 #include "muParserAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/scaMuParserOneD.h>
 #include <analyticFunctionHeaven/scaMuParserTwoD.h>
@@ -15,6 +16,12 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool muParserAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(muParserAFXmlBuilder, new muParserAFXmlBuilder())
+  );
+  
   muParserAFXmlBuilder::muParserAFXmlBuilder() {
   }
 

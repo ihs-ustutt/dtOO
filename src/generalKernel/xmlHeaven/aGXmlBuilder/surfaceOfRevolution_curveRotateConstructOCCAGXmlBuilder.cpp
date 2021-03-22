@@ -1,4 +1,6 @@
 #include "surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder.h"
+
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include "geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h"
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <logMe/logMe.h>
@@ -18,6 +20,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder, 
+      new surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder()
+    )
+  );
+  
   surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder
     ::surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder() {
   }

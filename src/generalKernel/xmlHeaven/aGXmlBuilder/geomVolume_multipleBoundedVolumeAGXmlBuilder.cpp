@@ -1,5 +1,6 @@
 #include "geomVolume_multipleBoundedVolumeAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -12,6 +13,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool geomVolume_multipleBoundedVolumeAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      geomVolume_multipleBoundedVolumeAGXmlBuilder, 
+      new geomVolume_multipleBoundedVolumeAGXmlBuilder()
+    )
+  );
+  
   geomVolume_multipleBoundedVolumeAGXmlBuilder
     ::geomVolume_multipleBoundedVolumeAGXmlBuilder() {
   }

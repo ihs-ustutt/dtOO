@@ -1,4 +1,6 @@
 #include "bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder.h"
+#include <xmlHeaven/aGXmlBuilderFactory.h>
+
 #include "analyticGeometryHeaven/map2dTo3d.h"
 #include "geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h"
 
@@ -17,6 +19,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder, 
+      new bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder()
+    )
+  );
+  
   bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder
     ::bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder() {
   }

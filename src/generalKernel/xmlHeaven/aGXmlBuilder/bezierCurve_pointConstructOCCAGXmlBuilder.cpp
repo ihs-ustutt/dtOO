@@ -1,5 +1,6 @@
 #include "bezierCurve_pointConstructOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -14,6 +15,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool bezierCurve_pointConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bezierCurve_pointConstructOCCAGXmlBuilder, 
+      new bezierCurve_pointConstructOCCAGXmlBuilder()
+    )
+  );
+  
   bezierCurve_pointConstructOCCAGXmlBuilder
     ::bezierCurve_pointConstructOCCAGXmlBuilder() {
   }

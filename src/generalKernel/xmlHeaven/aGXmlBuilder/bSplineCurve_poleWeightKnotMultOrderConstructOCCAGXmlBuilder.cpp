@@ -1,4 +1,6 @@
 #include "bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder.h"
+
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include "analyticGeometryHeaven/analyticCurve.h"
 
 #include <xmlHeaven/dtXmlParserBase.h>
@@ -14,6 +16,16 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool 
+  bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder, 
+      new bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder()
+    )
+  );
+  
   bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder
     ::bSplineCurve_poleWeightKnotMultOrderConstructOCCAGXmlBuilder() {
   }

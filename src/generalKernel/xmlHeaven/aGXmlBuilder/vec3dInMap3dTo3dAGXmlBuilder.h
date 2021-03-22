@@ -34,6 +34,8 @@ namespace dtOO {
         aGPtrVec const * const aG,
         aGPtrVec * result 
       ) const;       
+    private: 
+      static bool _registrated;            
   };
 }
 #endif	/* vec3dInMap3dTo3dAGXmlBuilder_H */

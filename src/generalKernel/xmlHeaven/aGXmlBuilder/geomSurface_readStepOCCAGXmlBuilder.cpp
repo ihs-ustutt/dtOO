@@ -1,5 +1,6 @@
 #include "geomSurface_readStepOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtOCCSurface.h>
@@ -23,6 +24,15 @@
 #include <BRep_Tool.hxx>
 
 namespace dtOO {
+  bool geomSurface_readStepOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      geomSurface_readStepOCCAGXmlBuilder, 
+      new geomSurface_readStepOCCAGXmlBuilder()
+    )
+  );
+  
   geomSurface_readStepOCCAGXmlBuilder
     ::geomSurface_readStepOCCAGXmlBuilder() {
   }

@@ -1,5 +1,6 @@
 #include "vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -20,6 +21,15 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder, 
+      new vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder()
+    )
+  );
+    
   vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder
     ::vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder() {
   }

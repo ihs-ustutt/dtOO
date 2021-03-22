@@ -13,7 +13,7 @@ namespace dtOO {
     public:
       dt__classOnlyName(dtPluginFactory);
       virtual ~dtPluginFactory();
-        static bool registrate( dtPlugin const * const );    
+      static bool registrate( dtPlugin const * const );    
       static dtPlugin * create( std::string const str );
       static dtPlugin * createFromPlugin(
         std::string const & className, 

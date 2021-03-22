@@ -23,7 +23,7 @@ namespace dtOO {
   }
   
   dtPlugin * dtPluginFactory::create( std::string const str ) {
-    dt__info( create(), << "str = " << str);
+    dt__debug( create(), << "str = " << str);
     dt__forAllRefAuto( _builder, aBuilder ) {
       //
       // check virtual class name

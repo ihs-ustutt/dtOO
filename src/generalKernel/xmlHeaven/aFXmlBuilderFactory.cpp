@@ -2,47 +2,38 @@
 
 #include <logMe/logMe.h>
 #include <string.h>
-
-#include "aFXmlBuilder/analyticFunctionAFXmlBuilder.h"
-#include "aFXmlBuilder/analyticFunctionCombinationAFXmlBuilder.h"
-#include "aFXmlBuilder/baseContainerAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineCurve2d_pointConstructOCCAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineCurve_pointConstructOCCAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineSurface_skinConstructOCCAFXmlBuilder.h"
-#include "aFXmlBuilder/muParserAFXmlBuilder.h"
-#include "aFXmlBuilder/scaOneD_forceBSplineCurve2dAFXmlBuilder.h"
-#include "aFXmlBuilder/vec3dThreeD_transVolAFXmlBuilder.h"
-#include "aFXmlBuilder/vec3dThreeD_triLinearPointConstructAFXmlBuilder.h"
-#include "aFXmlBuilder/vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder.h"
-#include "aFXmlBuilder/scaTanhGradingOneDAFXmlBuilder.h"
-#include "aFXmlBuilder/scaTanhUnitGradingOneDAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineCurve_curveConnectConstructOCCAFXmlBuilder.h"
-#include "aFXmlBuilder/bSplineSurface_pipeConstructOCCAFXmlBuilder.h"
+#include "aFXmlBuilder.h"
 
 namespace dtOO {
-  dt__pH(aFXmlBuilderFactory) aFXmlBuilderFactory::_instance(NULL);
-  
+  dt__pVH(aFXmlBuilder) aFXmlBuilderFactory::_builder;
+
   aFXmlBuilderFactory::~aFXmlBuilderFactory() {
-    _builder.destroy();
+    
   }
 
+  bool aFXmlBuilderFactory::registrate( aFXmlBuilder const * const reg ) {
+    dt__forAllRefAuto( _builder, aBuilder ) {
+      if ( aBuilder.virtualClassName() == reg->virtualClassName() ) {
+        return false;
+      }
+    }  
+    _builder.push_back( reg->create() );
+    
+    return true;
+  }
+    
   aFXmlBuilder * aFXmlBuilderFactory::create(char const * const str) {
     return create( std::string(str) );
   }
 
   aFXmlBuilder * aFXmlBuilderFactory::create( std::string const str ) {
-    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
+    dt__debug( create(), << "str = " << str);
+    dt__forAllRefAuto( _builder, aBuilder ) {
       //
       // check virtual class name
       //
-      if ( aBuilder->virtualClassName() == str ) {
-        return aBuilder->create();
+      if ( aBuilder.virtualClassName() == str ) {
+        return aBuilder.create();
       }
       
       //
@@ -50,26 +41,26 @@ namespace dtOO {
       //
       if ( 
         stringPrimitive::replaceStringInString(
-          "AFXmlBuilder", "", aBuilder->virtualClassName() 
+          "AFXmlBuilder", "", aBuilder.virtualClassName() 
         ) 
         == 
         str
       ) {
-        return aBuilder->create();
+        return aBuilder.create();
       }
       
       //
       // check alias
       //
-      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
-        if ( anAlias == str ) return aBuilder->create();
+      dt__forAllRefAuto(aBuilder.factoryAlias(), anAlias) {
+        if ( anAlias == str ) return aBuilder.create();
       }
     }
     
     std::vector< std::string > av;
-    dt__forAllRefAuto( instance()->_builder, aBuilder ) {
-      av.push_back( aBuilder->virtualClassName() );
-      dt__forAllRefAuto(aBuilder->factoryAlias(), anAlias) {
+    dt__forAllRefAuto( _builder, aBuilder ) {
+      av.push_back( aBuilder.virtualClassName() );
+      dt__forAllRefAuto(aBuilder.factoryAlias(), anAlias) {
         av.push_back("  -> "+anAlias); 
       }      
     }
@@ -79,72 +70,6 @@ namespace dtOO {
       << "Implemented builder:" << std::endl
       << logMe::vecToString(av,1) << std::endl
     );    
-  }
-
-  aFXmlBuilderFactory * aFXmlBuilderFactory::instance( void ) {
-    if ( !_instance.isNull() ) return _instance.get();
-    
-    _instance.reset( new aFXmlBuilderFactory() );
-    
-    //
-    // add builder
-    //
-    _instance->_builder.push_back( new analyticFunctionAFXmlBuilder() );
-    _instance->_builder.push_back( 
-      new analyticFunctionCombinationAFXmlBuilder() 
-    );
-    _instance->_builder.push_back( new baseContainerAFXmlBuilder() );
-    _instance->_builder.push_back( 
-      new bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder() 
-    );
-    _instance->_builder.push_back( 
-      new bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder() 
-    );
-    _instance->_builder.push_back( 
-      new bSplineCurve2d_pointConstructOCCAFXmlBuilder() 
-    );
-    _instance->_builder.push_back( 
-      new bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder() 
-    );
-    _instance->_builder.push_back( 
-      new bSplineCurve_pointConstructOCCAFXmlBuilder() 
-    );
-    _instance->_builder.push_back( 
-      new bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder() 
-    );
-    _instance->_builder.push_back( 
-      new bSplineSurface_skinConstructOCCAFXmlBuilder() 
-    );
-    _instance->_builder.push_back( new muParserAFXmlBuilder() );
-    _instance->_builder.push_back( 
-      new scaOneD_forceBSplineCurve2dAFXmlBuilder() 
-    );
-    _instance->_builder.push_back( new vec3dThreeD_transVolAFXmlBuilder() );
-    _instance->_builder.push_back( 
-      new vec3dThreeD_triLinearPointConstructAFXmlBuilder() 
-    );
-    _instance->_builder.push_back(
-      new bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder()
-    );
-    _instance->_builder.push_back(
-      new vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder()
-    );
-    _instance->_builder.push_back(
-      new scaTanhGradingOneDAFXmlBuilder()
-    );
-    _instance->_builder.push_back(
-      new scaTanhUnitGradingOneDAFXmlBuilder()
-    );    
-    _instance->_builder.push_back(
-      new bSplineCurve_curveConnectConstructOCCAFXmlBuilder() 
-    );
-    _instance->_builder.push_back(
-      new bSplineSurface_pipeConstructOCCAFXmlBuilder()
-    );    
-    _instance->_builder.push_back( 
-      new bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder() 
-    );    
-    return _instance.get();
   }
   
   aFXmlBuilderFactory::aFXmlBuilderFactory() {

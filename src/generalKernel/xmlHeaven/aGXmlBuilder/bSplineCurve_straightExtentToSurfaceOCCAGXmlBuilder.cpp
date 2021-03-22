@@ -1,5 +1,6 @@
 #include "bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -14,6 +15,15 @@
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h>
 
 namespace dtOO {
+  bool bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder, 
+      new bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder()
+    )
+  );
+  
   bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder
 	  ::bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder() {
   }

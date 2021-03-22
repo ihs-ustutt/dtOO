@@ -1,5 +1,6 @@
 #include "vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -15,6 +16,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder, 
+      new vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder()
+    )
+  );
+   
 	vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder
 		::vec3dInMap3dTo3dSurroundingInternalAGXmlBuilder() {
 

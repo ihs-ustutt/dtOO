@@ -1,5 +1,6 @@
 #include "geomSurface_multipleBoundedSurfaceAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -12,6 +13,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool geomSurface_multipleBoundedSurfaceAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      geomSurface_multipleBoundedSurfaceAGXmlBuilder, 
+      new geomSurface_multipleBoundedSurfaceAGXmlBuilder()
+    )
+  );
+  
   geomSurface_multipleBoundedSurfaceAGXmlBuilder
     ::geomSurface_multipleBoundedSurfaceAGXmlBuilder() {
   }

@@ -24,7 +24,8 @@ namespace dtOO {
       aGPtrVec const * const aG,
       aGPtrVec * result 
       ) const;      
-    private:
+    private: 
+      static bool _registrated;      
 
   };
 }

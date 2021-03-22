@@ -11,19 +11,21 @@ namespace dtOO {
   class baseContainer;
 
   class bezierCurve_pointConstructOCCAGXmlBuilder : public aGXmlBuilder {
-  public:  
-    dt__classOnlyName(bezierCurve_pointConstructOCCAGXmlBuilder);
-    dt__classSelfCreate(bezierCurve_pointConstructOCCAGXmlBuilder);
-    bezierCurve_pointConstructOCCAGXmlBuilder();
-    virtual ~bezierCurve_pointConstructOCCAGXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,  
-      aFPtrVec const * const aF,  
-      aGPtrVec const * const aG,
-      aGPtrVec * result 
-    ) const;
+    public:  
+      dt__classOnlyName(bezierCurve_pointConstructOCCAGXmlBuilder);
+      dt__classSelfCreate(bezierCurve_pointConstructOCCAGXmlBuilder);
+      bezierCurve_pointConstructOCCAGXmlBuilder();
+      virtual ~bezierCurve_pointConstructOCCAGXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,  
+        aFPtrVec const * const aF,  
+        aGPtrVec const * const aG,
+        aGPtrVec * result 
+      ) const;
+    private: 
+      static bool _registrated;            
   };
 }
 #endif	/* bezierCurve_pointConstructOCCAGXmlBuilder_H */

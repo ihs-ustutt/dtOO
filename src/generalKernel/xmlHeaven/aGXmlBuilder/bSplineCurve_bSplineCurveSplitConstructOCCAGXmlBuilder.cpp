@@ -1,5 +1,6 @@
 #include "bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -14,6 +15,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder, 
+      new bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder()
+    )
+  );
+  
   bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder
     ::bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder() {
   }

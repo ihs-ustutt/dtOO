@@ -26,6 +26,8 @@ namespace dtOO {
         aGPtrVec const * const aG,
         aGPtrVec * result
       ) const; 
+    private: 
+      static bool _registrated;            
   };
 }
 #endif	/* splitTrans6SidedCubeAGXmlBuilder_H */

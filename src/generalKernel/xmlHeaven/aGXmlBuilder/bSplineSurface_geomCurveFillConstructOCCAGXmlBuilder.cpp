@@ -1,5 +1,6 @@
 #include "bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtSurface.h>
@@ -18,6 +19,15 @@
 #include <boost/assign.hpp>
 
 namespace dtOO {
+  bool bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder, 
+      new bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder()
+    )
+  );
+  
   bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder
     ::bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder() {
   }

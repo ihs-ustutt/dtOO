@@ -1,4 +1,6 @@
 #include "bezierCurvePointPickFromPartConstructOCCAGXmlBuilder.h"
+
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include "analyticGeometryHeaven/map2dTo3d.h"
 
 #include <logMe/logMe.h>
@@ -16,6 +18,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool bezierCurvePointPickFromPartConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bezierCurvePointPickFromPartConstructOCCAGXmlBuilder, 
+      new bezierCurvePointPickFromPartConstructOCCAGXmlBuilder()
+    )
+  );
+  
   bezierCurvePointPickFromPartConstructOCCAGXmlBuilder
     ::bezierCurvePointPickFromPartConstructOCCAGXmlBuilder() {
   }

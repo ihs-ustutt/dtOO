@@ -30,6 +30,8 @@ namespace dtOO {
         aFPtrVec const * const aF,
         aFPtrVec * result
       ) const;
+    private: 
+      static bool _registrated;      
     };
 }
 #endif	/* bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder_H */

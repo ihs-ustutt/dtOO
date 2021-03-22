@@ -11,19 +11,21 @@ namespace dtOO {
   class baseContainer;
 
   class circle_radiusCoordinateSystemOCCAGXmlBuilder : public aGXmlBuilder {
-  public:  
-    dt__classOnlyName(circle_radiusCoordinateSystemOCCAGXmlBuilder);
-    dt__classSelfCreate(circle_radiusCoordinateSystemOCCAGXmlBuilder);
-    circle_radiusCoordinateSystemOCCAGXmlBuilder();
-    virtual ~circle_radiusCoordinateSystemOCCAGXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,  
-      aFPtrVec const * const aF,  
-      aGPtrVec const * const aG,
-      aGPtrVec * result 
-    ) const;
+    public:  
+      dt__classOnlyName(circle_radiusCoordinateSystemOCCAGXmlBuilder);
+      dt__classSelfCreate(circle_radiusCoordinateSystemOCCAGXmlBuilder);
+      circle_radiusCoordinateSystemOCCAGXmlBuilder();
+      virtual ~circle_radiusCoordinateSystemOCCAGXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,  
+        aFPtrVec const * const aF,  
+        aGPtrVec const * const aG,
+        aGPtrVec * result 
+      ) const;
+    private: 
+      static bool _registrated;            
   };
 }
 #endif	/* circle_radiusCoordinateSystemOCCAGXmlBuilder_H */

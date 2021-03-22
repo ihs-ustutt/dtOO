@@ -13,19 +13,21 @@ class baseContainer;
 
 namespace dtOO {
   class analyticGeometryAGXmlBuilder : public aGXmlBuilder {
-  public:  
-    dt__classOnlyName(analyticGeometryAGXmlBuilder);
-    dt__classSelfCreate(analyticGeometryAGXmlBuilder);
-    analyticGeometryAGXmlBuilder();
-    virtual ~analyticGeometryAGXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,  
-      aFPtrVec const * const aF,  
-      aGPtrVec const * const aG,
-      aGPtrVec * result 
-    ) const;
+    public:  
+      dt__classOnlyName(analyticGeometryAGXmlBuilder);
+      dt__classSelfCreate(analyticGeometryAGXmlBuilder);
+      analyticGeometryAGXmlBuilder();
+      virtual ~analyticGeometryAGXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,  
+        aFPtrVec const * const aF,  
+        aGPtrVec const * const aG,
+        aGPtrVec * result 
+      ) const;
+    private: 
+      static bool _registrated;            
   };
 }
 #endif	/* analyticGeometryAGXmlBuilder_H */

@@ -1,5 +1,6 @@
 #include "rotatingMap2dTo3dAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -13,6 +14,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool rotatingMap2dTo3dAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      rotatingMap2dTo3dAGXmlBuilder, 
+      new rotatingMap2dTo3dAGXmlBuilder()
+    )
+  );
+  
   rotatingMap2dTo3dAGXmlBuilder::rotatingMap2dTo3dAGXmlBuilder() {
   }
 

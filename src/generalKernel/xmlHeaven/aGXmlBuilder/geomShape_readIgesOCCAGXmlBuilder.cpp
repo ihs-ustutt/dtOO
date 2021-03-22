@@ -1,4 +1,6 @@
 #include "geomShape_readIgesOCCAGXmlBuilder.h"
+
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include "geometryEngine/dtOCCCurveBase.h"
 
 #include <logMe/logMe.h>
@@ -30,6 +32,15 @@
 #include <BRep_Tool.hxx>
 
 namespace dtOO {
+  bool geomShape_readIgesOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      geomShape_readIgesOCCAGXmlBuilder, 
+      new geomShape_readIgesOCCAGXmlBuilder()
+    )
+  );
+  
   geomShape_readIgesOCCAGXmlBuilder
     ::geomShape_readIgesOCCAGXmlBuilder() {
   }

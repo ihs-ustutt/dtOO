@@ -1,4 +1,6 @@
 #include "baseContainerAGXmlBuilder.h"
+
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -8,6 +10,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool baseContainerAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      baseContainerAGXmlBuilder, 
+      new baseContainerAGXmlBuilder()
+    )
+  );
+  
   baseContainerAGXmlBuilder::baseContainerAGXmlBuilder() {
   }
 

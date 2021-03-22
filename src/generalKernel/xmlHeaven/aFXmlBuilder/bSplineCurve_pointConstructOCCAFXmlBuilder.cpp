@@ -1,5 +1,6 @@
 #include "bSplineCurve_pointConstructOCCAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -15,6 +16,15 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool bSplineCurve_pointConstructOCCAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve_pointConstructOCCAFXmlBuilder, 
+      new bSplineCurve_pointConstructOCCAFXmlBuilder()
+    )
+  );
+  
   bSplineCurve_pointConstructOCCAFXmlBuilder
     ::bSplineCurve_pointConstructOCCAFXmlBuilder() {
   }

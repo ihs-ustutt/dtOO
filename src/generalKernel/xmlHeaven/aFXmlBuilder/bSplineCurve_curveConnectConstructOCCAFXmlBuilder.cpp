@@ -1,5 +1,6 @@
 #include "bSplineCurve_curveConnectConstructOCCAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticCurve.h>
@@ -14,6 +15,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool bSplineCurve_curveConnectConstructOCCAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve_curveConnectConstructOCCAFXmlBuilder, 
+      new bSplineCurve_curveConnectConstructOCCAFXmlBuilder()
+    )
+  );
+  
   bSplineCurve_curveConnectConstructOCCAFXmlBuilder
     ::bSplineCurve_curveConnectConstructOCCAFXmlBuilder() {
   }

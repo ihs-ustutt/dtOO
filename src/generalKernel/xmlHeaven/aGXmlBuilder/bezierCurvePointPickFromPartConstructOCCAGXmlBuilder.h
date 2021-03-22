@@ -11,19 +11,21 @@ namespace dtOO {
   class baseContainer;
 
   class bezierCurvePointPickFromPartConstructOCCAGXmlBuilder : public aGXmlBuilder {
-  public:  
-    dt__classOnlyName(bezierCurvePointPickFromPartConstructOCCAGXmlBuilder);
-    dt__classSelfCreate(bezierCurvePointPickFromPartConstructOCCAGXmlBuilder);
-    bezierCurvePointPickFromPartConstructOCCAGXmlBuilder();
-    virtual ~bezierCurvePointPickFromPartConstructOCCAGXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,  
-      aFPtrVec const * const aF,  
-      aGPtrVec const * const aG,
-      aGPtrVec * result 
-    ) const;
+    public:  
+      dt__classOnlyName(bezierCurvePointPickFromPartConstructOCCAGXmlBuilder);
+      dt__classSelfCreate(bezierCurvePointPickFromPartConstructOCCAGXmlBuilder);
+      bezierCurvePointPickFromPartConstructOCCAGXmlBuilder();
+      virtual ~bezierCurvePointPickFromPartConstructOCCAGXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,  
+        aFPtrVec const * const aF,  
+        aGPtrVec const * const aG,
+        aGPtrVec * result 
+      ) const;
+    private: 
+      static bool _registrated;            
   };
 }
 

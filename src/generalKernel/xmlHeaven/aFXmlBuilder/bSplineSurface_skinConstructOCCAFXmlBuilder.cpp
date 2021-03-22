@@ -1,5 +1,6 @@
 #include "bSplineSurface_skinConstructOCCAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include "geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h"
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -16,6 +17,15 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool bSplineSurface_skinConstructOCCAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineSurface_skinConstructOCCAFXmlBuilder, 
+      new bSplineSurface_skinConstructOCCAFXmlBuilder()
+    )
+  );
+  
   bSplineSurface_skinConstructOCCAFXmlBuilder
     ::bSplineSurface_skinConstructOCCAFXmlBuilder() {
   }

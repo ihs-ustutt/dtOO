@@ -13,25 +13,27 @@ namespace dtOO {
   class baseContainer;
 
   class scaTanhGradingOneDAFXmlBuilder : public aFXmlBuilder {
-  public:  
-    dt__classOnlyName(scaTanhGradingOneDAFXmlBuilder);
-    dt__classSelfCreate(scaTanhGradingOneDAFXmlBuilder);
-    scaTanhGradingOneDAFXmlBuilder();
-    virtual ~scaTanhGradingOneDAFXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild, 
-      baseContainer * const bC,
-      cVPtrVec const * const cV, 
-      aFPtrVec const * const aF,
-      aFPtrVec * result
-    ) const;
-    virtual void buildPartCompound(
-      ::QDomElement const & toBuild, 
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aFPtrVec * result
-    ) const;
+    public:  
+      dt__classOnlyName(scaTanhGradingOneDAFXmlBuilder);
+      dt__classSelfCreate(scaTanhGradingOneDAFXmlBuilder);
+      scaTanhGradingOneDAFXmlBuilder();
+      virtual ~scaTanhGradingOneDAFXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild, 
+        baseContainer * const bC,
+        cVPtrVec const * const cV, 
+        aFPtrVec const * const aF,
+        aFPtrVec * result
+      ) const;
+      virtual void buildPartCompound(
+        ::QDomElement const & toBuild, 
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aFPtrVec * result
+      ) const;
+    private: 
+      static bool _registrated;      
   };
 }
 #endif	/* scaTanhGradingOneDAFXmlBuilder_H */

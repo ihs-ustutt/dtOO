@@ -11,19 +11,21 @@ namespace dtOO {
   class baseContainer;
 
   class geomSurface_readStepOCCAGXmlBuilder : public aGXmlBuilder {
-  public:  
-    dt__classOnlyName(geomSurface_readStepOCCAGXmlBuilder);
-    dt__classSelfCreate(geomSurface_readStepOCCAGXmlBuilder);
-    geomSurface_readStepOCCAGXmlBuilder();
-    virtual ~geomSurface_readStepOCCAGXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,  
-      aFPtrVec const * const aF,  
-      aGPtrVec const * const aG,
-      aGPtrVec * result 
-    ) const; 
+    public:  
+      dt__classOnlyName(geomSurface_readStepOCCAGXmlBuilder);
+      dt__classSelfCreate(geomSurface_readStepOCCAGXmlBuilder);
+      geomSurface_readStepOCCAGXmlBuilder();
+      virtual ~geomSurface_readStepOCCAGXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,  
+        aFPtrVec const * const aF,  
+        aGPtrVec const * const aG,
+        aGPtrVec * result 
+      ) const; 
+    private: 
+      static bool _registrated;          
   };
 }
 #endif	/* geomSurface_readStepOCCAGXmlBuilder_H */

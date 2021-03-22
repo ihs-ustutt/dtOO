@@ -1,5 +1,6 @@
 #include "bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <QtXml/QDomElement>
 
 #include <logMe/logMe.h>
@@ -12,6 +13,15 @@
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC.h>
 
 namespace dtOO {
+  bool bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder, 
+      new bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder()
+    )
+  );
+  
   bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder
     ::bSplineCurve2d_5PointMeanlineConstructAFXmlBuilder() { 
   }

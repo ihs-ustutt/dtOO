@@ -1,4 +1,6 @@
 #include "compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h"
+
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include "geometryEngine/geoBuilder/compositeSurface_surfaceConnectConstructOCC.h"
 
 #include <logMe/logMe.h>
@@ -18,6 +20,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder, 
+      new compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder()
+    )
+  );
+  
   compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder
     ::compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder() {
   }

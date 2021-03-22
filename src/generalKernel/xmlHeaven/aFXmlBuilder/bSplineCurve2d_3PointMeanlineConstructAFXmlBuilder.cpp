@@ -1,5 +1,6 @@
 #include "bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -13,6 +14,15 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder, 
+      new bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder()
+    )
+  );
+  
   bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder
     ::bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder() { 
   }

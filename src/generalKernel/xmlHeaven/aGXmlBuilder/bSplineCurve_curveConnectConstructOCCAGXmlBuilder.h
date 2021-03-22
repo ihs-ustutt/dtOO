@@ -11,19 +11,21 @@ namespace dtOO {
   class baseContainer;
 
   class bSplineCurve_curveConnectConstructOCCAGXmlBuilder : public aGXmlBuilder {
-  public:  
-    dt__classOnlyName(bSplineCurve_curveConnectConstructOCCAGXmlBuilder);
-    dt__classSelfCreate(bSplineCurve_curveConnectConstructOCCAGXmlBuilder);
-    bSplineCurve_curveConnectConstructOCCAGXmlBuilder();
-    virtual ~bSplineCurve_curveConnectConstructOCCAGXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,  
-      aFPtrVec const * const aF,  
-      aGPtrVec const * const aG,
-      aGPtrVec * result 
-    ) const; 
+    public:  
+      dt__classOnlyName(bSplineCurve_curveConnectConstructOCCAGXmlBuilder);
+      dt__classSelfCreate(bSplineCurve_curveConnectConstructOCCAGXmlBuilder);
+      bSplineCurve_curveConnectConstructOCCAGXmlBuilder();
+      virtual ~bSplineCurve_curveConnectConstructOCCAGXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,  
+        aFPtrVec const * const aF,  
+        aGPtrVec const * const aG,
+        aGPtrVec * result 
+      ) const; 
+    private: 
+      static bool _registrated;            
   };
 }
 #endif	/* bSplineCurve_curveConnectConstructOCCAGXmlBuilder_H */

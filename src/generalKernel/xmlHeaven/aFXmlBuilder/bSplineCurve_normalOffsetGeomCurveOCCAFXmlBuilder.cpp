@@ -1,5 +1,6 @@
 #include "bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -13,6 +14,15 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder, 
+      new bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder()
+    )
+  );
+  
   bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder
     ::bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder() {
   }

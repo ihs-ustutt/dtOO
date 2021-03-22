@@ -1,5 +1,6 @@
 #include "bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtSurface.h>
@@ -16,6 +17,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder, 
+      new bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder()
+    )
+  );
+  
   bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder
     ::bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder() {
   }

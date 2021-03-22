@@ -1,5 +1,6 @@
 #include "bSplineSurface_skinConstructOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtCurve.h>
@@ -17,6 +18,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool bSplineSurface_skinConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineSurface_skinConstructOCCAGXmlBuilder, 
+      new bSplineSurface_skinConstructOCCAGXmlBuilder()
+    )
+  );
+  
   bSplineSurface_skinConstructOCCAGXmlBuilder
     ::bSplineSurface_skinConstructOCCAGXmlBuilder() {
   }

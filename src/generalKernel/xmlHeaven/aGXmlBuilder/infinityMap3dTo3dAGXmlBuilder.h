@@ -13,19 +13,21 @@ namespace dtOO {
   class baseContainer;
 
   class infinityMap3dTo3dAGXmlBuilder : public aGXmlBuilder {
-  public:  
-    dt__classOnlyName(infinityMap3dTo3dAGXmlBuilder);
-    dt__classSelfCreate(infinityMap3dTo3dAGXmlBuilder);
-    infinityMap3dTo3dAGXmlBuilder();
-    virtual ~infinityMap3dTo3dAGXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuild,
-      baseContainer * const bC,
-      cVPtrVec const * const cV,  
-      aFPtrVec const * const aF,  
-      aGPtrVec const * const aG,
-      aGPtrVec * result 
-    ) const;
+    public:  
+      dt__classOnlyName(infinityMap3dTo3dAGXmlBuilder);
+      dt__classSelfCreate(infinityMap3dTo3dAGXmlBuilder);
+      infinityMap3dTo3dAGXmlBuilder();
+      virtual ~infinityMap3dTo3dAGXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuild,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,  
+        aFPtrVec const * const aF,  
+        aGPtrVec const * const aG,
+        aGPtrVec * result 
+      ) const;
+    private: 
+      static bool _registrated;          
   };
 }
 #endif	/* infinityMap3dTo3dAGXmlBuilder_H */

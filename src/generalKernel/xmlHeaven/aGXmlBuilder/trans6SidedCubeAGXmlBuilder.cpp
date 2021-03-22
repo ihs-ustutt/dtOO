@@ -1,5 +1,6 @@
 #include "trans6SidedCubeAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
@@ -19,6 +20,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool trans6SidedCubeAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      trans6SidedCubeAGXmlBuilder, 
+      new trans6SidedCubeAGXmlBuilder()
+    )
+  );
+  
   trans6SidedCubeAGXmlBuilder::trans6SidedCubeAGXmlBuilder() {
   }
 

@@ -14,18 +14,20 @@ namespace dtOO {
 
   class bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder 
     : public aFXmlBuilder {
-  public:
-    dt__classOnlyName(bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder);    
-    dt__classSelfCreate(bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder);    
-    bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder();
-    virtual ~bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuildP, 
-      baseContainer * const bC,
-      cVPtrVec const * const cValP, 
-      aFPtrVec const * const depSFunP,
-      aFPtrVec * sFunP
-    ) const;
+    public:
+      dt__classOnlyName(bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder);    
+      dt__classSelfCreate(bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder);    
+      bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder();
+      virtual ~bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuildP, 
+        baseContainer * const bC,
+        cVPtrVec const * const cValP, 
+        aFPtrVec const * const depSFunP,
+        aFPtrVec * sFunP
+      ) const;
+    private: 
+      static bool _registrated;      
   };
 }
 #endif	/* bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder_H */

@@ -14,18 +14,20 @@ namespace dtOO {
 
   class bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder 
     : public aFXmlBuilder {
-  public:
-    dt__classOnlyName(bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder); 
-    dt__classSelfCreate(bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder);  
-    bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder();
-    virtual ~bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder();
-    virtual void buildPart(
-      ::QDomElement const & toBuildP, 
-      baseContainer * const bC,
-      cVPtrVec const * const cValP, 
-      aFPtrVec const * const depSFunP,
-      aFPtrVec * sFunP
-    ) const;
+    public:
+      dt__classOnlyName(bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder); 
+      dt__classSelfCreate(bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder);  
+      bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder();
+      virtual ~bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder();
+      virtual void buildPart(
+        ::QDomElement const & toBuildP, 
+        baseContainer * const bC,
+        cVPtrVec const * const cValP, 
+        aFPtrVec const * const depSFunP,
+        aFPtrVec * sFunP
+      ) const;
+    private: 
+      static bool _registrated;
   };
 }
 #endif	/* bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder_H */

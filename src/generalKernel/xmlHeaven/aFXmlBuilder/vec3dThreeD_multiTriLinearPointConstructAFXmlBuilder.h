@@ -25,6 +25,8 @@ namespace dtOO {
         aFPtrVec const * const depSFunP,
         aFPtrVec * sFunP
       ) const;
+    private: 
+      static bool _registrated;      
     };
 }
 #endif	/* vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder_H */

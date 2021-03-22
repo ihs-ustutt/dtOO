@@ -1,5 +1,6 @@
 #include "scaTanhGradingOneDAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/scaTanhGradingOneD.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -9,6 +10,14 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool scaTanhGradingOneDAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      scaTanhGradingOneDAFXmlBuilder, new scaTanhGradingOneDAFXmlBuilder()
+    )
+  );
+  
   scaTanhGradingOneDAFXmlBuilder::scaTanhGradingOneDAFXmlBuilder() {
   }
 

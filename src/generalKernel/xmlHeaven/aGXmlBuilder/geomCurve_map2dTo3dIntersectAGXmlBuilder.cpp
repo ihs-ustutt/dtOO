@@ -1,5 +1,6 @@
 #include "geomCurve_map2dTo3dIntersectAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -18,6 +19,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool geomCurve_map2dTo3dIntersectAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      geomCurve_map2dTo3dIntersectAGXmlBuilder, 
+      new geomCurve_map2dTo3dIntersectAGXmlBuilder()
+    )
+  );
+  
 	geomCurve_map2dTo3dIntersectAGXmlBuilder
 		::geomCurve_map2dTo3dIntersectAGXmlBuilder() {
 

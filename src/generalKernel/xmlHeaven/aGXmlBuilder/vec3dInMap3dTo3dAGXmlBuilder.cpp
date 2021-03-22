@@ -1,4 +1,6 @@
 #include "vec3dInMap3dTo3dAGXmlBuilder.h"
+
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include "analyticFunctionHeaven/vec3dTransVolThreeD.h"
 
 #include <logMe/logMe.h>
@@ -19,6 +21,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool vec3dInMap3dTo3dAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      vec3dInMap3dTo3dAGXmlBuilder, 
+      new vec3dInMap3dTo3dAGXmlBuilder()
+    )
+  );
+  
   vec3dInMap3dTo3dAGXmlBuilder::vec3dInMap3dTo3dAGXmlBuilder() {
   }
 

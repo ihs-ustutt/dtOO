@@ -1,5 +1,6 @@
 #include "radialTranslatingMap2dTo3dAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -13,6 +14,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool radialTranslatingMap2dTo3dAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      radialTranslatingMap2dTo3dAGXmlBuilder, 
+      new radialTranslatingMap2dTo3dAGXmlBuilder()
+    )
+  );
+  
   radialTranslatingMap2dTo3dAGXmlBuilder
     ::radialTranslatingMap2dTo3dAGXmlBuilder() {
   }

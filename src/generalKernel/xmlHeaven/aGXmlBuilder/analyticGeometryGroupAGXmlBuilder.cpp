@@ -1,5 +1,6 @@
 #include "analyticGeometryGroupAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticGeometryGroup.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -12,6 +13,15 @@
 #include <boost/assign.hpp>
 
 namespace dtOO {
+  bool analyticGeometryGroupAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      analyticGeometryGroupAGXmlBuilder, 
+      new analyticGeometryGroupAGXmlBuilder()
+    )
+  );
+  
   analyticGeometryGroupAGXmlBuilder::analyticGeometryGroupAGXmlBuilder() {
 
   }

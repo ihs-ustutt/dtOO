@@ -1,5 +1,6 @@
 #include "makeCompoundAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -14,6 +15,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool makeCompoundAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      makeCompoundAGXmlBuilder, 
+      new makeCompoundAGXmlBuilder()
+    )
+  );
+  
   makeCompoundAGXmlBuilder::makeCompoundAGXmlBuilder() {
   }
 

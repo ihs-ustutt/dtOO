@@ -1,5 +1,6 @@
 #include "bSplineSurface_pipeConstructOCCAGXmlBuilder.h"
 
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtCurve.h>
@@ -17,6 +18,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool bSplineSurface_pipeConstructOCCAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineSurface_pipeConstructOCCAGXmlBuilder, 
+      new bSplineSurface_pipeConstructOCCAGXmlBuilder()
+    )
+  );
+  
   bSplineSurface_pipeConstructOCCAGXmlBuilder
     ::bSplineSurface_pipeConstructOCCAGXmlBuilder() {
   }

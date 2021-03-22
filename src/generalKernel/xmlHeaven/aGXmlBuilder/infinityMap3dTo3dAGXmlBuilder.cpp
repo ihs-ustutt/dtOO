@@ -1,4 +1,6 @@
 #include "infinityMap3dTo3dAGXmlBuilder.h"
+
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -11,6 +13,15 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
+  bool infinityMap3dTo3dAGXmlBuilder::_registrated 
+  =
+  aGXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      infinityMap3dTo3dAGXmlBuilder, 
+      new infinityMap3dTo3dAGXmlBuilder()
+    )
+  );
+  
   infinityMap3dTo3dAGXmlBuilder::infinityMap3dTo3dAGXmlBuilder() {
   }
 

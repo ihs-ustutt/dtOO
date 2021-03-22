@@ -13,19 +13,21 @@ namespace dtOO {
   class baseContainer;
 
   class scaOneD_forceBSplineCurve2dAFXmlBuilder : public aFXmlBuilder {
-  public:
-    dt__classOnlyName(scaOneD_forceBSplineCurve2dAFXmlBuilder);    
-    dt__classSelfCreate(scaOneD_forceBSplineCurve2dAFXmlBuilder);
-    scaOneD_forceBSplineCurve2dAFXmlBuilder();
-    virtual ~scaOneD_forceBSplineCurve2dAFXmlBuilder();
-    virtual std::vector< std::string > factoryAlias( void ) const;
-    virtual void buildPart(
-      ::QDomElement const & toBuildP, 
-      baseContainer * const bC,
-      cVPtrVec const * const cValP, 
-      aFPtrVec const * const depSFunP,
-      aFPtrVec * sFunP
-    ) const;
+    public:
+      dt__classOnlyName(scaOneD_forceBSplineCurve2dAFXmlBuilder);    
+      dt__classSelfCreate(scaOneD_forceBSplineCurve2dAFXmlBuilder);
+      scaOneD_forceBSplineCurve2dAFXmlBuilder();
+      virtual ~scaOneD_forceBSplineCurve2dAFXmlBuilder();
+      virtual std::vector< std::string > factoryAlias( void ) const;
+      virtual void buildPart(
+        ::QDomElement const & toBuildP, 
+        baseContainer * const bC,
+        cVPtrVec const * const cValP, 
+        aFPtrVec const * const depSFunP,
+        aFPtrVec * sFunP
+      ) const;
+    private: 
+      static bool _registrated;      
   };
 }
 #endif	/* scaOneD_forceBSplineCurve2dAFXmlBuilder_H */

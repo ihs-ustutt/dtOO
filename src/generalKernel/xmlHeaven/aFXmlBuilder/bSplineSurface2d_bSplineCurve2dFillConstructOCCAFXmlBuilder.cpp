@@ -1,5 +1,6 @@
 #include "bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <geometryEngine/dtCurve2d.h>
@@ -14,10 +15,21 @@
 #include <QtXml/QDomNode>
 
 namespace dtOO {
-  bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder::bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder() {
+  bool bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder, 
+      new bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder()
+    )
+  );
+  
+  bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder
+    ::bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder() {
   }
 
-  bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder::~bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder() {
+  bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder
+    ::~bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder() {
 
   }
 
@@ -40,7 +52,9 @@ namespace dtOO {
 			dtXmlParserBase::getChildVector("analyticFunction", toBuildP);
       dt__forAllIndex(elVec, ii) {
         dt__pH(analyticFunction) aF(
-				  dtXmlParserBase::createAnalyticFunction(&elVec[ii], bC, cValP, depSFunP)
+				  dtXmlParserBase::createAnalyticFunction(
+            &elVec[ii], bC, cValP, depSFunP
+          )
 				);
 				dt__ptrAss(
 					vec2dCurve2dOneD const * v2d1d,
@@ -58,8 +72,6 @@ namespace dtOO {
       //
       sFunP->push_back( new vec2dSurface2dTwoD( dtS2d.get() ) );			
     }
-    else {
-      dt__throw(buildPart(), << dt__eval(hasFunction) );
-    }
+    else dt__throw(buildPart(), << dt__eval(hasFunction) );
   }
 }

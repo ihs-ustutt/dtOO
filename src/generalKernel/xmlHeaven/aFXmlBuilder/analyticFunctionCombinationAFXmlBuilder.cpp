@@ -1,5 +1,6 @@
 #include "analyticFunctionCombinationAFXmlBuilder.h"
 
+#include <xmlHeaven/aFXmlBuilderFactory.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dThreeD.h>
@@ -10,6 +11,15 @@
 #include <QtXml/QDomElement>
 
 namespace dtOO {
+  bool analyticFunctionCombinationAFXmlBuilder::_registrated 
+  =
+  aFXmlBuilderFactory::registrate(
+    dt__tmpPtr(
+      analyticFunctionCombinationAFXmlBuilder, 
+      new analyticFunctionCombinationAFXmlBuilder()
+    )
+  );
+  
   analyticFunctionCombinationAFXmlBuilder
     ::analyticFunctionCombinationAFXmlBuilder(
   ) {
