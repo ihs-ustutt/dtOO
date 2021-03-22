@@ -64,7 +64,7 @@ if [[ "$_dep" == "openmesh" || "$_dep" == "all" ]]; then
   cd $_pwd
   if [[ "$_skipDownload" == "0" ]]; then
     rm -rf OpenMesh-8.1.tar.gz
-    wget https://www.graphics.rwth-aachen.de/media/openmesh_static/Releases/8.1/OpenMesh-8.1.tar.gz 
+    curl -o OpenMesh-8.1.tar.gz https://www.graphics.rwth-aachen.de/media/openmesh_static/Releases/8.1/OpenMesh-8.1.tar.gz 
   fi
   if [[ "$_skipBuild" == "0" ]]; then
     rm -rf build_OpenMesh-8.1 OpenMesh-8.1
