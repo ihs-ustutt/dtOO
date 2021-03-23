@@ -1,6 +1,18 @@
-find_package(Boost COMPONENTS python3)
-find_package(PythonLibs 3.0 REQUIRED)
-FIND_package(PythonInterp 3.0)
+find_package(PythonInterp REQUIRED)
+# component python could be labelled as e.g. python3 or python38
+#   -> preliminary search for pyhton3 and python38
+#   -> afterwards check with if statement
+find_package(
+  Boost
+  OPTIONAL_COMPONENTS 
+    python${PYTHON_VERSION_MAJOR} 
+    python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}
+)
+if (NOT Boost_LIBRARIES)
+  message("**> Do not compile dtOOPython, because missing boost_python!")
+  return()
+endif (NOT Boost_LIBRARIES)
+find_package(PythonLibs 3 REQUIRED)
 include_directories(
   ${PYTHON_INCLUDE_PATH}
   ${Boost_INCLUDE_DIRS}
