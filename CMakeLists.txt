@@ -25,7 +25,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 # compiler flags
 #
 #------------------------------------------------------------------------------#
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl") #for dladdr in Backtrace
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp -lmpfr") #for cgal
 
@@ -214,7 +213,8 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E touch_nocreate 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/generalKernel/logMe/logMe.cpp
 )
-
+# set cxx standard
+set_property(TARGET dtOO PROPERTY CXX_STANDARD 14)
 #------------------------------------------------------------------------------#
 #
 # make shared library version
