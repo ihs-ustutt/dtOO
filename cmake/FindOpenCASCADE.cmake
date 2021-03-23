@@ -14,11 +14,17 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
   set( _testlibname libTKernel.so )
   set( 
     _incsearchpath 
+    $ENV{DTOO_EXTERNLIBS}/include
+    $ENV{DTOO_EXTERNLIBS}/include/oce
     /usr/include  
     /usr/include/oce
   )
   set( 
     _libsearchpath 
+    $ENV{DTOO_EXTERNLIBS}/lib
+    $ENV{DTOO_EXTERNLIBS}/lib64
+    $ENV{DTOO_EXTERNLIBS}/lib/oce
+    $ENV{DTOO_EXTERNLIBS}/lib64/oce
     /usr/lib                                         
     /usr/lib64                                       
     /usr/lib/oce
