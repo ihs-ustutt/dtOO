@@ -193,14 +193,13 @@ if [[ "$_dep" == "moab" || "$_dep" == "all" ]]; then
       echo "Modify src/io/ReadCGNS.cpp"
       patch src/io/ReadCGNS.cpp < ${_patch}/patch.ReadCGNS.cpp
     fi
-    exit
     mkdir -p ${_pwd}/build_moab
     cd ${_pwd}/build_moab
     cmake \
       -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
       -DENABLE_CGM=OFF \
       -DENABLE_CGNS=ON \
-      -DCMAKE_SHARED_LINKER_FLAGS=-lcgns
+      -DCMAKE_SHARED_LINKER_FLAGS=-lcgns \
       ../moab
     make -j${_nProcs} install
   fi
