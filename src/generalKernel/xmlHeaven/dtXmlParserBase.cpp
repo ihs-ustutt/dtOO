@@ -1,5 +1,6 @@
 #include "dtXmlParserBase.h"
 #include "interfaceHeaven/ptrHandling.h"
+#include "interfaceHeaven/calculationTypeHandling.h"
 #include <baseContainerHeaven/transformerContainer.h>
 #include <baseContainerHeaven/baseBuilder/dtPoint3_readIBL.h>
 #include <baseContainerHeaven/baseBuilder/dtPoint3_readCSV.h>
@@ -1153,7 +1154,45 @@ namespace dtOO {
           aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
           pp.resize(1);
           pp[0] = xx[2];
-        }         
+        }
+        else if ( 
+          matchWildcard("%d*Yx", aFOption) 
+          ||
+          matchWildcard("%d*Yy", aFOption) 
+          ||
+          matchWildcard("%d*Yz", aFOption) 
+        ) {
+          std::string fDStr = getStringBetween("d", "Y", aFOption);
+          float fD = muParseString(fDStr);
+          std::vector< float > argCSUp(argCS);
+          std::vector< float > argCSDown(argCS);
+          dt__forAllIndex(argCS, ii) {
+            argCSUp[ii] = floatHandling::boundToRange(argCS[ii] + fD, 0., 1.);
+            argCSDown[ii] = floatHandling::boundToRange(argCS[ii] - fD, 0., 1.);
+          }
+          aFY yyUp(v3dF->Y( v3dF->x_percent( argCSUp ) ));
+          aFY yyDown(v3dF->Y( v3dF->x_percent( argCSDown ) ));
+          
+          aFY yy(yyUp);
+          float length = 0.;
+          dt__forAllIndex(yy, ii) {
+            yy[ii] = yyUp[ii] - yyDown[ii];
+            length = length + yy[ii] * yy[ii];
+          }
+          length = length / sqrt(length);
+          
+          pp.resize(1);
+          if ( stringContains("x", aFOption) ) {
+            pp[0] = yy[0] / length;          
+          }
+          else if ( stringContains("y", aFOption) ) {
+            pp[0] = yy[1] / length;          
+          }
+          else if ( stringContains("z", aFOption) ) {
+            pp[0] = yy[2] / length;          
+          }
+          else dt__throwUnexpected(replaceDependencies());
+        }
         else dt__throwUnexpected(replaceDependencies()); 
       }
       else dt__throwUnexpected(replaceDependencies());
