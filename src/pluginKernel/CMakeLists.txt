@@ -3,6 +3,10 @@ SET(HEADERS
   dtPluginFactory.h
   dtPluginDriver.h
   dtPluginKernel.h
+  writeStep.h
+  constValueAssingRule.h
+  analyticFunctionToCSV.h
+  analyticGeometryToCSV.h
 )
 
 SET(SOURCES
@@ -10,14 +14,14 @@ SET(SOURCES
   dtPluginFactory.cpp
   dtPluginDriver.cpp
   dtPluginKernel.cpp
+  writeStep.cpp
+  constValueAssingRule.cpp
+  analyticFunctionToCSV.cpp
+  analyticGeometryToCSV.cpp
 )
 
 if (OpenFOAM_FOUND)
   list(APPEND HEADERS
-    writeStep.h
-    constValueAssingRule.h
-    analyticFunctionToCSV.h
-    analyticGeometryToCSV.h
     volVectorFieldVersusXYZ.h
     volScalarOnLineFieldRange.h
     pOnBlade.h
@@ -34,10 +38,6 @@ if (OpenFOAM_FOUND)
   )
 
   list(APPEND SOURCES
-    writeStep.cpp
-    constValueAssingRule.cpp
-    analyticFunctionToCSV.cpp
-    analyticGeometryToCSV.cpp
     volVectorFieldVersusXYZ.cpp
     volScalarOnLineFieldRange.cpp
     pOnBlade.cpp
