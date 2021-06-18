@@ -114,6 +114,8 @@ if [[ "$_dep" == "gmsh" || "$_dep" == "all" ]]; then
   if [[ "$_skipDownload" == "0" ]]; then
     rm -rf ${_pwd}/gmsh
     git clone https://gitlab.onelab.info/gmsh/gmsh.git gmsh
+    cd ${_pwd}/gmsh
+    git checkout gmsh_4_8_1
   fi
   if [[ "$_skipBuild" == "0" ]]; then
     rm -rf ${_pwd}/build_gmsh
