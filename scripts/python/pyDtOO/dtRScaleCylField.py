@@ -3,7 +3,7 @@ from pyDtOO.dtCylField import dtCylField
 from pyDtOO.dtCylTrf import dtCylTrf
 import numpy
 
-class dtCylXRField(dtCylField):
+class dtRScaleCylField(dtCylField):
   def __init__(self, fn):
     dtCylField.__init__(self, fn)
     
