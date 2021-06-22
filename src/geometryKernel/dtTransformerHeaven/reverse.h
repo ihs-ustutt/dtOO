@@ -22,6 +22,7 @@ namespace dtOO {
       aGPtrVec const * const aG 
     );
     virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
+    virtual aFPtrVec apply( aFPtrVec const * const aF ) const;
   private:
     bool _revU;
     bool _revV;

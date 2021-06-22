@@ -8,6 +8,8 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/geomCurve_curveReverseConstructOCC.h>
@@ -96,6 +98,44 @@ namespace dtOO {
     return retAGeo;
   }
 
+  aFPtrVec reverse::apply( aFPtrVec const * const aF ) const {
+    aFPtrVec ret;
+
+    dt__forAllRefAuto(*aF, theF) {
+			//
+			// clone and cast analyticGeometry
+			//
+      vec3dCurveOneD const * const v1d = vec3dCurveOneD::ConstDownCast(theF);      
+      vec3dSurfaceTwoD const * const v2d = vec3dSurfaceTwoD::ConstDownCast(theF);      
+      if (v1d) {
+        ret.push_back( 
+          new vec3dCurveOneD(
+            dt__tmpPtr(
+              dtCurve,
+              geomCurve_curveReverseConstructOCC( 
+                v1d->ptrConstDtCurve(), _revU
+              ).result()
+            )
+          ) 
+        );
+      }
+			else if (v2d) {
+        ret.push_back( 
+          new vec3dSurfaceTwoD(
+            dt__tmpPtr(
+              dtSurface,
+              geomSurface_surfaceReverseConstructOCC( 
+                v2d->ptrDtSurface(), _revU, _revV
+              ).result()
+            )
+          ) 
+        );
+      }
+      else dt__throwUnexpected(apply());
+    }
+    return ret;
+  }  
+  
   bool reverse::isNecessary( void ) const {
     return true;
   }
