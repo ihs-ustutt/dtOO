@@ -311,12 +311,15 @@ namespace dtOO {
     return _characteristicLength;
   }
   
-  dtPoint3 analyticGeometry::getPoint( std::vector< float > const & uvw ) const {
+  dtPoint3 analyticGeometry::getPoint( 
+    std::vector< float > const & uvw 
+  ) const {
     return getPoint( &(uvw[0]) );
   }
   
   bool analyticGeometry::inXYZTolerance(
-    dtPoint3 const & p0, dtPoint3 const & p1, bool output, float inc
+    dtPoint3 const & p0, dtPoint3 const & p1, 
+    float * const dist, bool output, float inc 
   ) {
 		float xyzResolution 
 		= 
@@ -326,14 +329,15 @@ namespace dtOO {
       "xyz_resolution"
     );    		
     
-		dtVector3 dist = p0 - p1;
-		if (sqrt(dist.squared_length()) > xyzResolution) {		
+		dtVector3 distV = p0 - p1;
+    *dist = dtLinearAlgebra::length(distV);
+		if (*dist > xyzResolution) {
       if (output) {
         dt__warning(
           inXYZTolerance(), 
           << dt__point3d(p0) << std::endl
           << dt__point3d(p1) << std::endl
-          << dt__eval( dtLinearAlgebra::length( dist) )
+          << dt__eval( *dist )
         );
       }
       return false;
@@ -342,6 +346,13 @@ namespace dtOO {
     return true;    
   }
 
+  bool analyticGeometry::inXYZTolerance(
+    dtPoint3 const & p0, dtPoint3 const & p1
+  ) {
+    float dist;
+    return analyticGeometry::inXYZTolerance(p0, p1, &dist, false, 1.0);    
+  }
+  
   bool analyticGeometry::inXYZTolerance( 
     float const dist, float inc 
   ) {

@@ -204,6 +204,8 @@ namespace dtOO {
     double Z = ppXYZ.z();
     double U;
     double V;
+    double UBest = 1.E+99;
+    double VBest = 1.E+99;
 //    int const NumInitGuess = 11;
 //    double initU[NumInitGuess] 
 //    = 
@@ -232,6 +234,7 @@ namespace dtOO {
       "reparam_internalRestartDecreasePrecision"
     );    
     float currentPrec = 1.;
+    float dist = 1.E+99;
     dt__forFromToIndex(0, maxRestarts+1, thisRun) {
       dt__forFromToIndex(0, NumInitGuess, ii) {
         dt__forFromToIndex(0, NumInitGuess, jj) {       
@@ -270,15 +273,21 @@ namespace dtOO {
             // increase precision for restart
             //
             prec = internalRestartDecreasePrec * prec;
-            
+            dtPoint3 tP = getPointPercent(U,V);
             //
             // check if point is precise enough
             //
+            float cDist;
             if (
               analyticGeometry::inXYZTolerance(
-                ppXYZ, getPointPercent(U,V), false, currentPrec
+                ppXYZ, tP, &cDist, false, currentPrec
               )
-            ) return uv_percent( dtPoint2(U, V) );            
+            ) return uv_percent( dtPoint2(U, V) );
+            if (cDist <= dist) {
+              UBest = U;
+              VBest = V;
+              dist = cDist;
+            }
           }
         }
       }
@@ -297,6 +306,9 @@ namespace dtOO {
       << "(1,0) -> " << getPointPercent(1,0) << std::endl
       << "(0,1) -> " << getPointPercent(0,1) << std::endl
       << "(1,1) -> " << getPointPercent(1,1) << std::endl
+      << "UBest = " << UBest << std::endl
+      << "VBest = " << VBest << std::endl
+      << "dist = " << dist << std::endl
       << dumpToString()
     );
   }

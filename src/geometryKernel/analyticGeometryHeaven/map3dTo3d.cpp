@@ -709,6 +709,7 @@ namespace dtOO {
       "reparam_internalRestartDecreasePrecision"
     );    
     float currentPrec = 1.;  
+    float dist = 1.E+99;
     dt__forFromToIndex(0, maxRestarts+1, thisRun) {    
       dt__forFromToIndex(0, NumInitGuess, ii) {
         dt__forFromToIndex(0, NumInitGuess, jj) {       
@@ -759,7 +760,7 @@ namespace dtOO {
               //
               if (
                 analyticGeometry::inXYZTolerance(
-                  ppXYZ, getPointPercent(U, V, W), false, currentPrec
+                  ppXYZ, getPointPercent(U, V, W), &dist, false, currentPrec
                 )
               ) return uvw_percent( dtPoint3(U, V, W) );            
             }
