@@ -267,9 +267,9 @@ class dtClusteredSingletonState:
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/objective.0') and \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/id.0'):
       return \
-        numpy.zeros(0, int), \
-        numpy.zeros((0,0), int), \
-        numpy.zeros((0,0), int)
+        np.zeros(0, int), \
+        np.zeros((0,0), int), \
+        np.zeros((0,0), int)
         
     maxFileIndex = dtClusteredSingletonState.fileIndex( 
       dtClusteredSingletonState.currentMaxId() 
