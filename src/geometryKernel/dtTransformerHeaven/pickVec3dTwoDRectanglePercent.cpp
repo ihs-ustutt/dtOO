@@ -1,0 +1,82 @@
+#include "pickVec3dTwoDRectanglePercent.h"
+
+#include <logMe/logMe.h>
+#include <logMe/dtMacros.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
+#include <geometryEngine/dtSurface.h>
+#include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
+
+namespace dtOO {
+  pickVec3dTwoDRectanglePercent::pickVec3dTwoDRectanglePercent() 
+    : dtTransformer() {
+  }
+
+  pickVec3dTwoDRectanglePercent::pickVec3dTwoDRectanglePercent(
+    const pickVec3dTwoDRectanglePercent& orig
+  ) : dtTransformer(orig) {
+		_p0 = orig._p0;
+		_p1 = orig._p1;
+  }
+
+  pickVec3dTwoDRectanglePercent::~pickVec3dTwoDRectanglePercent() {
+  }
+
+  dtTransformer * pickVec3dTwoDRectanglePercent::clone( void ) const {
+	  return new pickVec3dTwoDRectanglePercent(*this);
+	}
+	
+  dtTransformer * pickVec3dTwoDRectanglePercent::create( void ) const {
+		return new pickVec3dTwoDRectanglePercent();
+	}
+	
+  aFPtrVec pickVec3dTwoDRectanglePercent::apply(
+    aFPtrVec const * const aFVecP 
+  ) const {
+    aFPtrVec aFRet;
+    dt__forAllRefAuto(*aFVecP, theF) {
+      dt__throwIfWithMessage(
+        theF->isTransformed(), 
+        apply(),
+        << theF->dumpToString()
+      );
+      dtSurface const * const oldSurf 
+      = 
+      vec3dSurfaceTwoD::MustConstDownCast( theF )->ptrDtSurface();
+      dt__pH(dtSurface) newSurf(
+        rectangularTrimmedSurface_uvBounds(
+          oldSurf, 
+          oldSurf->uv_uvPercent(_p0), 
+          oldSurf->uv_uvPercent(_p1)
+        ).result()
+      );
+      aFRet.push_back( new vec3dSurfaceTwoD( newSurf.get() ) );
+    }
+    return aFRet;
+  }
+
+  bool pickVec3dTwoDRectanglePercent::isNecessary( void ) const {
+    return true;
+  }
+  
+  void pickVec3dTwoDRectanglePercent::init( 
+	  ::QDomElement const * tE, 
+    baseContainer * const bC,
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
+	) {
+    dtTransformer::init(tE, bC, cV, aF, aG);
+    
+    dt__throwIf( !dtXmlParserBase::hasChild("Point_2", *tE), init() );
+
+    std::vector< ::QDomElement > wE 
+    = 
+    dtXmlParserBase::getChildVector("Point_2", *tE);
+    
+    dt__throwIf( wE.size() != 2, init() );
+    
+    _p0 = dtXmlParserBase::createDtPoint2( &(wE[0]), bC, cV, aF, aG );
+    _p1 = dtXmlParserBase::createDtPoint2( &(wE[1]), bC, cV, aF, aG );
+  }  
+}
