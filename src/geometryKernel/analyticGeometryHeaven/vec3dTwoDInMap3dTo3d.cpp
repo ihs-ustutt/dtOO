@@ -121,8 +121,8 @@ namespace dtOO {
           }
         }
       }
-		}
-    else {
+    }
+    if ( pp.empty() ) {
       pp.push_back( this->getPointPercent(0.,0.) );
       pp.push_back( this->getPointPercent(1.,0.) );
       pp.push_back( this->getPointPercent(1.,1.) );
