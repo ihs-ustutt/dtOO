@@ -188,10 +188,6 @@ namespace dtOO {
   map2dTo3d * analyticSurface::segmentRectangle(
 	  dtPoint2 const & p0, dtPoint2 const & p1
   ) const {
-		float uu0 = p0.x();
-		float uu1 = p1.x();
-		float vv0 = p0.y();
-		float vv1 = p1.y();
     ptrHandling< dtSurface > ss(		
 			rectangularTrimmedSurface_uvBounds( _dtS.get(), p0, p1 ).result()
 		);		
