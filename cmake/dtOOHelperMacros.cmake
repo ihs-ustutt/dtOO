@@ -86,21 +86,21 @@ MACRO(
     set( _testincname ${TESTINCNAME} )
     set( _testlibname ${TESTLIBNAME} )
     set( 
-      _incsearchpath 
+      _incsearchpath
+      $ENV{DTOO_EXTERNLIBS}/include/      
+      ${LIB_ADD_INCSEARCHPATH}/
       /usr/ihs/include/
       /usr/include/
-      ${LIB_ADD_INCSEARCHPATH}/
-      $ENV{DTOO_EXTERNLIBS}/include/
     )
     set( 
       _libsearchpath 
+      $ENV{DTOO_EXTERNLIBS}/lib/
+      $ENV{DTOO_EXTERNLIBS}/lib64/
+      ${LIB_ADD_LIBSEARCHPATH}/
       /usr/ihs/lib/
       /usr/ihs/lib64/
       /usr/lib/
       /usr/lib64/
-      ${LIB_ADD_LIBSEARCHPATH}/
-      $ENV{DTOO_EXTERNLIBS}/lib/
-      $ENV{DTOO_EXTERNLIBS}/lib64/
     )
     
     #find the include dir by looking for moab/Version.h
