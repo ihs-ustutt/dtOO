@@ -266,8 +266,10 @@ namespace dtOO {
                 << logMe::dtFormat(
                   "Error for initU = %12.4e initV = %12.4e at internalRestart = %i"
                 ) 
-                % initU[ii] % initV[jj] % thisRestart
-              );                 
+                % initU[ii] % initV[jj] % thisRestart 
+                << std::endl
+                << "eGen.what() = " << eGen.what()
+              );
             }
             //
             // increase precision for restart
@@ -887,7 +889,7 @@ namespace dtOO {
           "reparamOnFace_minimizer"
         )
       )
-    );        
+    );      
 		::ROOT::Math::Functor toMin(
 			this, &map2dTo3d::F, 2 
 		);			
@@ -917,18 +919,18 @@ namespace dtOO {
 		min->SetTolerance(
       staticPropertiesHandler::getInstance()->getOptionFloat(
         "reparamOnFace_precision"
-      ) * prec    
+      ) * prec
     );			
 		min->SetPrintLevel(
       staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel") 
     );
-
+    
 		//
 		// minimize
 		//
    	bool converged = min->Minimize();
 
-    double const * const theRoot = min->X( );
+    double const * const theRoot = min->X();
 
     U = theRoot[0];//std::max<double>( std::min<double>( theRoot[0], getUMax() ), getUMin());
     V = theRoot[1];//std::max<double>( std::min<double>( theRoot[1], getVMax() ), getVMin());
@@ -937,14 +939,9 @@ namespace dtOO {
 	}
   
 	double map2dTo3d::F(double const * xx) const {
-    dtPoint2 uv(xx[0], xx[1]);
-    double objective;
-    if ( inRange(uv) ) {
-      objective = dtLinearAlgebra::length( _pXYZ - getPointPercent(uv) );
-    }
-    else dt__throwUnexpected(F());
-    
-    return objective;    
+    return dtLinearAlgebra::length( 
+      _pXYZ - getPointPercent( dtPoint2(xx[0], xx[1]) ) 
+    );
 	}	   	
 
 	double map2dTo3d::FWrap(double const & x0, double const & x1) const {	
