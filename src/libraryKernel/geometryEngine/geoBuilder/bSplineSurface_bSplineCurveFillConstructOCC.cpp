@@ -6,6 +6,7 @@
 #include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCBSplineCurve.h>
 #include <geometryEngine/dtOCCBSplineSurface.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_convertOCC.h>
 
 #include <Standard_Failure.hxx>
 #include <Standard_ErrorHandler.hxx>
@@ -27,27 +28,33 @@ namespace dtOO {
 			<< "Only supported with 4 curves." << std::endl
 			<< dt__eval(cc.size())
 		);
-		Handle(Geom_BSplineCurve) C1;
-		Handle(Geom_BSplineCurve) C2;
-		Handle(Geom_BSplineCurve) C3;
-		Handle(Geom_BSplineCurve) C4;
+		std::vector< Handle(Geom_BSplineCurve) > CC(4);
 	  
-		dtOCCBSplineCurve const * occC;
-	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[0]) );
-		C1 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[1]) );
-		C2 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[2]) );
-		C3 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );
-	  dt__ptrAss( occC, dtOCCBSplineCurve::ConstDownCast(cc[3]) );
-		C4 = Handle(Geom_BSplineCurve)::DownCast( occC->OCCRef().getOCC() );		
-		
-		
+		dt__pVH(dtOCCBSplineCurve) occC;
+    dt__forAllIndex(CC, ii) {	    
+      if ( dtOCCBSplineCurve::ConstDownCast(cc[ii]) ) {
+        occC.push_back( dtOCCBSplineCurve::DownCast(cc[ii]->clone()) );
+      }
+      else {
+        dt__warning(
+          bSplineSurface_bSplineCurveFillConstructOCC(),
+          << "Position [" << ii << "] is not a BSpline. Try to convert."
+        );
+        occC.push_back(
+          dtOCCBSplineCurve::MustDownCast(
+            bSplineCurve_convertOCC( *(cc[ii]) ).result() 
+          )
+        );
+        
+      }
+		  CC[ii] = Handle(Geom_BSplineCurve)::DownCast( occC[ii].OCCRef().getOCC() );
+    }
+
 		GeomFill_BSplineCurvesExtPrecision fill;
 		dtOCCSurfaceBase base;	
 		dt__tryOcc(
 			fill.Init(
-			  C1, C2, C3, C4, 
+			  CC[0], CC[1], CC[2], CC[3], 
 				GeomFill_FillingStyle::GeomFill_StretchStyle,
 				staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
 			);						
