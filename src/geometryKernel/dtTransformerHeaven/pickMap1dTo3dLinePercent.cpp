@@ -5,8 +5,15 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool pickMap1dTo3dLinePercent::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(pickMap1dTo3dLinePercent, new pickMap1dTo3dLinePercent())
+  );
+  
   pickMap1dTo3dLinePercent::pickMap1dTo3dLinePercent() : dtTransformer() {
     _u0 = -1.;
 		_u1 = -1.;

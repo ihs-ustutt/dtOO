@@ -8,8 +8,15 @@
 #include <analyticGeometryHeaven/vec2dOneDInMap2dTo3d.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool approxInSurface::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(approxInSurface, new approxInSurface())
+  );
+  
   approxInSurface::approxInSurface() : dtTransformer() {
   }
 

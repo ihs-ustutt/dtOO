@@ -1,4 +1,5 @@
 #include "projectOnSurface.h"
+
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/analyticCurve.h>
 #include <logMe/dtMacros.h>
@@ -6,8 +7,15 @@
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool projectOnSurface::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(projectOnSurface, new projectOnSurface())
+  );
+  
   projectOnSurface::projectOnSurface() : dtTransformer() {
   }
 

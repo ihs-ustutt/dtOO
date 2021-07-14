@@ -10,8 +10,15 @@
 #include <analyticGeometryHeaven/map1dTo3dTransformed.h>
 #include <analyticGeometryHeaven/map2dTo3dTransformed.h>
 #include <analyticGeometryHeaven/map3dTo3dTransformed.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool radialTranslate::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(radialTranslate, new radialTranslate())
+  );
+  
   radialTranslate::radialTranslate() : dtTransformerInvThreeD() {
 		_v3 = dtVector3(0,0,0);
     _distance = 0.;

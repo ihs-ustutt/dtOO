@@ -7,7 +7,7 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <QtXml/QDomElement>
 
-namespace dtOO {
+namespace dtOO { 
   dtTransformerInvThreeD::dtTransformerInvThreeD() : dtTransformer() {
   }
 

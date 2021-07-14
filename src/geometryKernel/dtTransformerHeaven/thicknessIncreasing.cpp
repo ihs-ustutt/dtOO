@@ -1,4 +1,5 @@
 #include "thicknessIncreasing.h"
+
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/scaOneD.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
@@ -6,11 +7,18 @@
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include "dtTransformerFactory.h"
 
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {
+  bool thicknessIncreasing::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(thicknessIncreasing, new thicknessIncreasing())
+  );
+  
   thicknessIncreasing::thicknessIncreasing() : dtTransformer() {
     _nPointsOne = 0;
     _isInv = false;

@@ -1,4 +1,5 @@
 #include "predefinedExtension.h"
+
 #include "geometryEngine/dtCurve.h"
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
@@ -12,8 +13,16 @@
 
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
+#include "dtTransformerFactory.h"
+
 
 namespace dtOO {
+  bool predefinedExtension::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(predefinedExtension, new predefinedExtension())
+  );
+  
   predefinedExtension::predefinedExtension() : dtTransformer() {
   }
 	

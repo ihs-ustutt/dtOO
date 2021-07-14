@@ -3,8 +3,15 @@
 #include "progHelper.h"
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <logMe/logMe.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool offset::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(offset, new offset())
+  );
+  
   offset::offset() : dtTransformer() {
     _nPieces = 1;
     _xyPercent = false;

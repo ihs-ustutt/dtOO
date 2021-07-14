@@ -10,35 +10,36 @@ namespace dtOO {
   class vec3dTwoD;
   
   class discreteAddNormal : public dtTransformer {
-  public:    
-    dt__classOnlyName(discreteAddNormal);
-    discreteAddNormal();
-    discreteAddNormal(discreteAddNormal const & orig);
-    virtual ~discreteAddNormal();
-    virtual dtTransformer * clone( void ) const;
-    virtual dtTransformer * create( void ) const;     
-    virtual bool isNecessary( void ) const;
-    virtual void init( 
-      ::QDomElement const * tE, 
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG 
-    );
-    virtual aFPtrVec 
-    apply( aFPtrVec const * const aFP ) const;
-  private:
-    dt__pH(vec3dTwoD) _tt;
-    dtVector3 _nf;
-    int _nU;
-    int _nV;
-    int _order;
-    int _nSteps;
-    int _skinOrderMin;
-    int _skinOrderMax;
-    int _skinNIterations;
-    bool _closeU;
-    float _closeSmooth;
+    public:    
+      dt__classOnlyName(discreteAddNormal);
+      discreteAddNormal();
+      discreteAddNormal(discreteAddNormal const & orig);
+      virtual ~discreteAddNormal();
+      virtual dtTransformer * clone( void ) const;
+      virtual dtTransformer * create( void ) const;     
+      virtual bool isNecessary( void ) const;
+      virtual void init( 
+        ::QDomElement const * tE, 
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG 
+      );
+      virtual aFPtrVec 
+      apply( aFPtrVec const * const aFP ) const;
+    private:
+      dt__pH(vec3dTwoD) _tt;
+      dtVector3 _nf;
+      int _nU;
+      int _nV;
+      int _order;
+      int _nSteps;
+      int _skinOrderMin;
+      int _skinOrderMax;
+      int _skinNIterations;
+      bool _closeU;
+      float _closeSmooth;
+      static bool _registrated;    
   };
 }    
 

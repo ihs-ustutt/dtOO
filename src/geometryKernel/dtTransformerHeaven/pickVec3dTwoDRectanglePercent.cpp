@@ -6,8 +6,18 @@
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool pickVec3dTwoDRectanglePercent::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(
+      pickVec3dTwoDRectanglePercent, 
+      new pickVec3dTwoDRectanglePercent()
+    )
+  );
+  
   pickVec3dTwoDRectanglePercent::pickVec3dTwoDRectanglePercent() 
     : dtTransformer() {
   }

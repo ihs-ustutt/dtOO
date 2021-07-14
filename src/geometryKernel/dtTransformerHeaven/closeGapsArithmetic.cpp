@@ -7,9 +7,15 @@
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
-
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool closeGapsArithmetic::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(closeGapsArithmetic, new closeGapsArithmetic())
+  );
+  
   closeGapsArithmetic::closeGapsArithmetic() : dtTransformer() {
     _nSegments = -1;
     _dir = -1;

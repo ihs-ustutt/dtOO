@@ -34,6 +34,7 @@ namespace dtOO {
 //      dtPoint3 const & origin( void ) const;
     private:
       dt__pH(vec3dThreeD) _v3;
+      static bool _registrated;      
   };
 }
 

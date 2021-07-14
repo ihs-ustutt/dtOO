@@ -18,8 +18,15 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool reverse::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(reverse, new reverse())
+  );
+  
   reverse::reverse() : dtTransformer() {
     _revU = false;
     _revV = false;

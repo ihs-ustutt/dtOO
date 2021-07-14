@@ -12,8 +12,15 @@
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
 #include <analyticFunctionHeaven/analyticFunctionTransformed.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool uVw_phiMs::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(uVw_phiMs, new uVw_phiMs())
+  );
+  
   uVw_phiMs::uVw_phiMs() : dtTransformer() {
     _ss = dtVector3(1.,1.,1.);
     _nV = 11;

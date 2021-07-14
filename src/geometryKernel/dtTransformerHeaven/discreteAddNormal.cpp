@@ -1,4 +1,5 @@
 #include "discreteAddNormal.h"
+
 #include <baseContainerHeaven/baseContainer.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
@@ -6,8 +7,15 @@
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool discreteAddNormal::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(discreteAddNormal, new discreteAddNormal())
+  );
+  
   discreteAddNormal::discreteAddNormal() : dtTransformer() {
   }
 

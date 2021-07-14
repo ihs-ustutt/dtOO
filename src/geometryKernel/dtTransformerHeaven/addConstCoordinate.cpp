@@ -8,12 +8,21 @@
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool addConstCoordinate::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(addConstCoordinate, new addConstCoordinate())
+  );
+  
   addConstCoordinate::addConstCoordinate() : dtTransformer() {
   }
 
-  addConstCoordinate::addConstCoordinate(const addConstCoordinate& orig) : dtTransformer(orig) {
+  addConstCoordinate::addConstCoordinate(
+    const addConstCoordinate& orig
+  ) : dtTransformer(orig) {
 		_cc = orig._cc;
 		_vv = orig._vv;
   }
@@ -35,10 +44,15 @@ namespace dtOO {
     aFPtrVec aFVecRet;
     
     for (int ii=0;ii<aFVecP->size();ii++) {
-      dt__ptrAss(vec2dCurve2dOneD const * v2d1d, vec2dCurve2dOneD::DownCast(aFVecP->at(ii)));
+      dt__ptrAss(
+        vec2dCurve2dOneD const * v2d1d, 
+        vec2dCurve2dOneD::DownCast(aFVecP->at(ii))
+      );
 
 			dt__pH(dtCurve) dtC(
-			  geomCurve_convertGeomCurve2d(v2d1d->ptrDtCurve2d(), CGAL::ORIGIN + _vv*_cc, _vv).result()
+			  geomCurve_convertGeomCurve2d(
+          v2d1d->ptrDtCurve2d(), CGAL::ORIGIN + _vv*_cc, _vv
+        ).result()
 			);
 			aFVecRet.push_back( new vec3dCurveOneD(dtC.get()) );
     }
@@ -78,7 +92,9 @@ namespace dtOO {
 		handleDtVector3("dtVector3", vv);
   }
 	
-	void addConstCoordinate::handleFloat(const std::string name, const float value) {
+	void addConstCoordinate::handleFloat(
+    const std::string name, const float value
+  ) {
     if (name == "coordinate_value" ) {
       _cc = value;
       return;

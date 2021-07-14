@@ -1,4 +1,5 @@
 #include "pickVec3dTwoDRangePercent.h"
+
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -8,8 +9,15 @@
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtCurve.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool pickVec3dTwoDRangePercent::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(pickVec3dTwoDRangePercent, new pickVec3dTwoDRangePercent())
+  );
+  
   pickVec3dTwoDRangePercent::pickVec3dTwoDRangePercent() : dtTransformer() {
   }
 

@@ -4,8 +4,17 @@
 #include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool pickMap2dTo3dRectanglePercent::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(
+      pickMap2dTo3dRectanglePercent, new pickMap2dTo3dRectanglePercent()
+    )
+  );
+  
   pickMap2dTo3dRectanglePercent::pickMap2dTo3dRectanglePercent() 
     : dtTransformer() {
   }

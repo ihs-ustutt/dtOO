@@ -9,21 +9,21 @@ namespace dtOO {
   class dtTransformer;
 
   class dtTransformerFactory {
-  public:
-    dt__classOnlyName(dtTransformerFactory);
-    dtTransformerFactory();
-    virtual ~dtTransformerFactory();
-    static dtTransformer * create(char const * const str);
-    static dtTransformer * create( std::string const str); 
-    static dtTransformer * createFromPlugin(
-      std::string const & className, 
-      std::string const & pluginName, 
-      std::string const & pluginDriver
-    );    
-    static dtTransformerFactory * instance( void );         
-  private:
-    vectorHandling< dtTransformer * > _transformer;
-    static dt__pH(dtTransformerFactory) _instance;      
+    public:
+      dt__classOnlyName(dtTransformerFactory);
+      virtual ~dtTransformerFactory();
+      static bool registrate( dtTransformer const * const );     
+      static dtTransformer * create(char const * const str);
+      static dtTransformer * create( std::string const str); 
+      static dtTransformer * createFromPlugin(
+        std::string const & className, 
+        std::string const & pluginName, 
+        std::string const & pluginDriver
+      );    
+    private:
+      dtTransformerFactory();    
+    private:
+      static dt__pVH(dtTransformer) _transformer;     
   };
 }
 

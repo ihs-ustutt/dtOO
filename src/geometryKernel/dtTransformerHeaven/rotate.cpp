@@ -19,8 +19,15 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool rotate::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(rotate, new rotate())
+  );
+  
   rotate::rotate() : dtTransformerInvThreeD() {
   }
 

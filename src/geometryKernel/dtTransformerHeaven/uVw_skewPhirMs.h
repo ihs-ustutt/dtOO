@@ -26,46 +26,47 @@ namespace dtOO {
    * 
    */
   class uVw_skewPhirMs : public dtTransformer {
-  public:      
-    dt__classOnlyName(uVw_skewPhirMs);
-    uVw_skewPhirMs();
-    uVw_skewPhirMs( uVw_skewPhirMs const & orig );
-    virtual ~uVw_skewPhirMs();
-    virtual dtTransformer * clone( void ) const;
-    virtual dtTransformer * create( void ) const;     
-    virtual bool isNecessary( void ) const;
-    void init( 
-      ::QDomElement const * tE, 
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG 
-    );
-    virtual aFPtrVec 
-    apply( aFPtrVec const * const aFP ) const;
-    virtual std::vector< dtPoint3 > 
-    apply( std::vector< dtPoint3 > const * const toTrans ) const;        
-    std::vector< dtPoint3 > 
-    retract(std::vector< dtPoint3 > const * const toRetract) const;    
-  private:
-    /**
-     * @todo Should be on map3dto3d
-     */
-	  float m_uSVS(float const & uu, float const & vv) const;
-    void transformPhirM( void );
-  private:
-    dt__pH(rotatingMap2dTo3d const) _rM2d;
-    dtVector3 _ss;
-    dt__pH( vec3dThreeD ) _phirMS_uvw;
-    int _nU;
-    dt__pH(scaOneD) _fU;
-    dt__pH(scaOneD) _fV;
-    int _nV;
-    int _nW;
-    float _relaxM;
-    float _relaxPhir;
-    int _nSteps;
-    float _angle;
+    public:      
+      dt__classOnlyName(uVw_skewPhirMs);
+      uVw_skewPhirMs();
+      uVw_skewPhirMs( uVw_skewPhirMs const & orig );
+      virtual ~uVw_skewPhirMs();
+      virtual dtTransformer * clone( void ) const;
+      virtual dtTransformer * create( void ) const;     
+      virtual bool isNecessary( void ) const;
+      void init( 
+        ::QDomElement const * tE, 
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG 
+      );
+      virtual aFPtrVec 
+      apply( aFPtrVec const * const aFP ) const;
+      virtual std::vector< dtPoint3 > 
+      apply( std::vector< dtPoint3 > const * const toTrans ) const;        
+      std::vector< dtPoint3 > 
+      retract(std::vector< dtPoint3 > const * const toRetract) const;    
+    private:
+      /**
+       * @todo Should be on map3dto3d
+       */
+      float m_uSVS(float const & uu, float const & vv) const;
+      void transformPhirM( void );
+    private:
+      dt__pH(rotatingMap2dTo3d const) _rM2d;
+      dtVector3 _ss;
+      dt__pH( vec3dThreeD ) _phirMS_uvw;
+      int _nU;
+      dt__pH(scaOneD) _fU;
+      dt__pH(scaOneD) _fV;
+      int _nV;
+      int _nW;
+      float _relaxM;
+      float _relaxPhir;
+      int _nSteps;
+      float _angle;
+      static bool _registrated;    
   };
 }
 

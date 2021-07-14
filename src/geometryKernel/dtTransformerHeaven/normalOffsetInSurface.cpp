@@ -4,9 +4,15 @@
 #include <analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
-
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool normalOffsetInSurface::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(normalOffsetInSurface, new normalOffsetInSurface())
+  );
+  
   normalOffsetInSurface::normalOffsetInSurface() : dtTransformer() {
   }
 

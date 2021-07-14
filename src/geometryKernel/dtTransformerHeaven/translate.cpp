@@ -24,8 +24,15 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool translate::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(translate, new translate())
+  );
+  
   translate::translate() : dtTransformer() {
 		_v2 = dtVector2(0,0);
 		_v3 = dtVector3(0,0,0);

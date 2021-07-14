@@ -9,8 +9,15 @@
 #include <geometryEngine/dtCurve2d.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/geomCurve2d_reparamInGeomSurfaceOCC.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool reparamInSurface::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(reparamInSurface, new reparamInSurface())
+  );
+  
   reparamInSurface::reparamInSurface() : dtTransformer() {
   }
 

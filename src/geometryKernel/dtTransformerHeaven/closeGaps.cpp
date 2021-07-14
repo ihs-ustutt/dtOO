@@ -1,10 +1,18 @@
 #include "closeGaps.h"
+
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <geometryEngine/dtSurface.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool closeGaps::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(closeGaps, new closeGaps())
+  );
+  
   closeGaps::closeGaps() : dtTransformer() {
   }
 

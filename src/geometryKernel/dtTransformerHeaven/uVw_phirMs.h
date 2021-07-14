@@ -22,62 +22,63 @@ namespace dtOO {
    * 
    */
   class uVw_phirMs : public dtTransformer {
-  public:      
-    dt__classOnlyName(uVw_phirMs);
-    uVw_phirMs();
-    uVw_phirMs( uVw_phirMs const & orig );
-    virtual ~uVw_phirMs();
-    virtual dtTransformer * clone( void ) const;
-    virtual dtTransformer * create( void ) const;     
-    virtual bool isNecessary( void ) const;
-    void init( 
-      ::QDomElement const * tE, 
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG 
-    );
-    virtual aFPtrVec 
-    apply( aFPtrVec const * const aFP ) const;
-    virtual std::vector< dtPoint3 > 
-    apply( std::vector< dtPoint3 > const * const toTrans ) const;        
-    std::vector< dtPoint3 > 
-    retract(std::vector< dtPoint3 > const * const toRetract) const;    
-  private:
-    /**
-     * @todo Should be on map3dto3d
-     */
-	  float m_uSVS(float const & uu, float const & vv) const;
-    /**
-     * @todo Should be on map3dto3d
-     */    
-    float s_uSVS(float const & uu, float const & vv) const;     
-    /**
-     * @todo Should be on map3dto3d
-     */    
-    float uV_phirVVWV(
-      float const & phir, float const & vv, float const & ww
-    ) const;
-    /**
-     * @todo Should be on map3dto3d
-     */
-    float vV_ms(float const & mm, float const & ss) const;
-    /**
-     * @todo Should be on map3dto3d
-     */    
-    float wV_ms(float const & mm, float const & ss) const;
-    /**
-     * @todo Should be on map3dto3d
-     */    
-    float phir_uVvVwV(
-      float const & uu, float const & vv, float const & ww
-    ) const;  
-  private:
-    dt__pH(rotatingMap2dTo3d const) _rM2d;
-    dtVector3 _ss;
-    dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
-    int _nV;
-    int _nW;
+    public:      
+      dt__classOnlyName(uVw_phirMs);
+      uVw_phirMs();
+      uVw_phirMs( uVw_phirMs const & orig );
+      virtual ~uVw_phirMs();
+      virtual dtTransformer * clone( void ) const;
+      virtual dtTransformer * create( void ) const;     
+      virtual bool isNecessary( void ) const;
+      void init( 
+        ::QDomElement const * tE, 
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG 
+      );
+      virtual aFPtrVec 
+      apply( aFPtrVec const * const aFP ) const;
+      virtual std::vector< dtPoint3 > 
+      apply( std::vector< dtPoint3 > const * const toTrans ) const;        
+      std::vector< dtPoint3 > 
+      retract(std::vector< dtPoint3 > const * const toRetract) const;    
+    private:
+      /**
+       * @todo Should be on map3dto3d
+       */
+      float m_uSVS(float const & uu, float const & vv) const;
+      /**
+       * @todo Should be on map3dto3d
+       */    
+      float s_uSVS(float const & uu, float const & vv) const;     
+      /**
+       * @todo Should be on map3dto3d
+       */    
+      float uV_phirVVWV(
+        float const & phir, float const & vv, float const & ww
+      ) const;
+      /**
+       * @todo Should be on map3dto3d
+       */
+      float vV_ms(float const & mm, float const & ss) const;
+      /**
+       * @todo Should be on map3dto3d
+       */    
+      float wV_ms(float const & mm, float const & ss) const;
+      /**
+       * @todo Should be on map3dto3d
+       */    
+      float phir_uVvVwV(
+        float const & uu, float const & vv, float const & ww
+      ) const;  
+    private:
+      dt__pH(rotatingMap2dTo3d const) _rM2d;
+      dtVector3 _ss;
+      dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
+      int _nV;
+      int _nW;
+      static bool _registrated;    
   };
 }
 

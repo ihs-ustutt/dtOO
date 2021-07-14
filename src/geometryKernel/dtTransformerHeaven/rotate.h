@@ -7,40 +7,41 @@
 
 namespace dtOO {
   class rotate : public dtTransformerInvThreeD {
-  public:    
-    dt__classOnlyName(rotate);
-    rotate();
-    virtual ~rotate();
-    rotate(const rotate& orig);    
-    virtual dtTransformerInvThreeD * clone( void ) const;
-    virtual dtTransformerInvThreeD * create( void ) const;       
-    virtual bool isNecessary( void ) const;
-    void init(
-      ::QDomElement const * tE, 
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG 
-    );
-    virtual std::vector< dtPoint3 > apply( 
-      std::vector< dtPoint3 > const * const toTrans 
-    ) const;
-    virtual std::vector< dtPoint3 > retract(
-      std::vector< dtPoint3 > const * const toRetract
-    ) const;
-    virtual std::vector< dtVector3 > apply( 
-      std::vector< dtVector3 > const * const toTrans 
-    ) const;
-    virtual std::vector< dtVector3 > retract(
-      std::vector< dtVector3 > const * const toRetract
-    ) const;        
-    virtual aGPtrVec apply( 
-      aGPtrVec const * const aGeoVecP 
-    ) const;
-  private:
-    dtPoint3 _origin;
-    dtVector3 _rotVector;
-    float _angle;
+    public:    
+      dt__classOnlyName(rotate);
+      rotate();
+      virtual ~rotate();
+      rotate(const rotate& orig);    
+      virtual dtTransformerInvThreeD * clone( void ) const;
+      virtual dtTransformerInvThreeD * create( void ) const;       
+      virtual bool isNecessary( void ) const;
+      void init(
+        ::QDomElement const * tE, 
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG 
+      );
+      virtual std::vector< dtPoint3 > apply( 
+        std::vector< dtPoint3 > const * const toTrans 
+      ) const;
+      virtual std::vector< dtPoint3 > retract(
+        std::vector< dtPoint3 > const * const toRetract
+      ) const;
+      virtual std::vector< dtVector3 > apply( 
+        std::vector< dtVector3 > const * const toTrans 
+      ) const;
+      virtual std::vector< dtVector3 > retract(
+        std::vector< dtVector3 > const * const toRetract
+      ) const;        
+      virtual aGPtrVec apply( 
+        aGPtrVec const * const aGeoVecP 
+      ) const;
+    private:
+      dtPoint3 _origin;
+      dtVector3 _rotVector;
+      float _angle;
+      static bool _registrated;    
   };
 }
 #endif	/* ROTATE_H */

@@ -2,8 +2,14 @@
 #include <analyticFunctionHeaven/scaFunction.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool averagePoints::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(averagePoints, new averagePoints())
+  );
 
   averagePoints::averagePoints() {
   }

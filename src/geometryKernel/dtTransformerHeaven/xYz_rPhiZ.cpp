@@ -12,8 +12,15 @@
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
 #include <analyticFunctionHeaven/analyticFunctionTransformed.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool xYz_rPhiZ::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(xYz_rPhiZ, new xYz_rPhiZ())
+  );
+  
   xYz_rPhiZ::xYz_rPhiZ() : dtTransformer() {
   }
 

@@ -1,7 +1,15 @@
 #include "doNothing.h"
 #include <logMe/logMe.h>
 
+#include "dtTransformerFactory.h"
+
 namespace dtOO {
+  bool doNothing::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(doNothing, new doNothing())
+  );
+  
   doNothing::doNothing() : dtTransformer() {
   }
 
@@ -16,10 +24,15 @@ namespace dtOO {
 		return new doNothing();
 	}
 	
-  std::vector< dtPoint2 * > doNothing::apply( std::vector< dtPoint2 * > const * const pointVecP ) const {
+  std::vector< dtPoint2 * > doNothing::apply( 
+    std::vector< dtPoint2 * > const * const pointVecP 
+  ) const {
+    
   }
 
-  std::vector< dtPoint3 * > doNothing::apply( std::vector< dtPoint3 * > const * const pointVecP ) const {
+  std::vector< dtPoint3 * > doNothing::apply( 
+    std::vector< dtPoint3 * > const * const pointVecP 
+  ) const {
 
   }
 

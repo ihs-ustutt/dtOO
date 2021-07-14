@@ -12,12 +12,21 @@
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
 #include <analyticFunctionHeaven/analyticFunctionTransformed.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool xYz_localCoordinates::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(xYz_localCoordinates, new xYz_localCoordinates())
+  );
+  
   xYz_localCoordinates::xYz_localCoordinates() : dtTransformer() {
   }
 
-  xYz_localCoordinates::xYz_localCoordinates( xYz_localCoordinates const & orig ) : dtTransformer(orig) {
+  xYz_localCoordinates::xYz_localCoordinates( 
+    xYz_localCoordinates const & orig 
+  ) : dtTransformer(orig) {
     _e1 = orig._e1;
     _e2 = orig._e2;
     _e3 = orig._e3;

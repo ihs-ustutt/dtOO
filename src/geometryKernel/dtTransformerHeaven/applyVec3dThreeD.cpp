@@ -6,8 +6,15 @@
 #include <logMe/dtMacros.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dThreeD.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool applyVec3dThreeD::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(applyVec3dThreeD, new applyVec3dThreeD())
+  );
+  
   applyVec3dThreeD::applyVec3dThreeD() : dtTransformer() {
   }
 

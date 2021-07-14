@@ -6,33 +6,34 @@
 
 namespace dtOO {
   class translate : public dtTransformer {
-  public:    
-    dt__class(translate, dtTransformer);
-    translate();
-    translate( translate const & orig );
-    virtual ~translate();
-    virtual dtTransformer * clone( void ) const;
-    virtual dtTransformer * create( void ) const;     
-    virtual bool isNecessary( void ) const;
-    virtual void init( 
-	  ::QDomElement const * tE, 
-    baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
-    ); 
-    virtual std::vector< dtPoint3 > apply( 
-      std::vector< dtPoint3 > const * const toTrans 
-    ) const;   
-    virtual aFPtrVec apply( aFPtrVec const * const sFunP ) const; 
-    virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
-    std::vector< dtPoint3 > 
-    retract(std::vector< dtPoint3 > const * const toRetract) const;       
-    dtVector3 translationAxis3d( void ) const;
-    dtVector2 translationAxis2d( void ) const;
-  private:
-    dtVector2 _v2;
-    dtVector3 _v3;
+    public:    
+      dt__class(translate, dtTransformer);
+      translate();
+      translate( translate const & orig );
+      virtual ~translate();
+      virtual dtTransformer * clone( void ) const;
+      virtual dtTransformer * create( void ) const;     
+      virtual bool isNecessary( void ) const;
+      virtual void init( 
+      ::QDomElement const * tE, 
+      baseContainer * const bC,
+      cVPtrVec const * const cV,
+      aFPtrVec const * const aF,
+      aGPtrVec const * const aG 
+      ); 
+      virtual std::vector< dtPoint3 > apply( 
+        std::vector< dtPoint3 > const * const toTrans 
+      ) const;   
+      virtual aFPtrVec apply( aFPtrVec const * const sFunP ) const; 
+      virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
+      std::vector< dtPoint3 > 
+      retract(std::vector< dtPoint3 > const * const toRetract) const;       
+      dtVector3 translationAxis3d( void ) const;
+      dtVector2 translationAxis2d( void ) const;
+    private:
+      dtVector2 _v2;
+      dtVector3 _v3;
+      static bool _registrated;    
   };    
 }
 

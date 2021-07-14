@@ -1,4 +1,5 @@
 #include "makePolynomial.h"
+
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/analyticCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
@@ -7,8 +8,15 @@
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO { 
+  bool makePolynomial::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(makePolynomial, new makePolynomial())
+  );
+  
   makePolynomial::makePolynomial() : dtTransformer() {
     _nPointsOne = 5;
     _nPointsTwo = 5;
@@ -16,7 +24,10 @@ namespace dtOO {
     _orderTwo = 2;    
   }
 
-  makePolynomial::makePolynomial(const makePolynomial& orig) : dtTransformer(orig) {
+  makePolynomial::makePolynomial(
+    const makePolynomial& orig
+  ) : dtTransformer(orig) {
+    
   }
 
   makePolynomial::~makePolynomial() {

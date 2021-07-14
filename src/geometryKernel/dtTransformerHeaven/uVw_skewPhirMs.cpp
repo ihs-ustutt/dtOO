@@ -1,5 +1,6 @@
 #include "uVw_skewPhirMs.h"
 
+#include "dtTransformerFactory.h"
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
@@ -19,6 +20,12 @@
 #include <analyticFunctionHeaven/vec3dTriLinearThreeD.h>
 
 namespace dtOO {
+  bool uVw_skewPhirMs::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(uVw_skewPhirMs, new uVw_skewPhirMs())
+  );
+  
   uVw_skewPhirMs::uVw_skewPhirMs() : dtTransformer() {
     _ss = dtVector3(1.,1.,1.);
     _nU = 11;
@@ -291,7 +298,9 @@ namespace dtOO {
           = 
           _rM2d->origin() 
           - 
-          _rM2d->constRefMap2dTo3d().getPointPercent(vPercent[jj], wPercent[kk]);
+          _rM2d->constRefMap2dTo3d().getPointPercent(
+            vPercent[jj], wPercent[kk]
+          );
           dtVector3 pointOnRotAx 
           = 
           _rM2d->rotationAxis() 
@@ -480,14 +489,18 @@ namespace dtOO {
           dt__forFromToIndex(1, phirM_1[ii].size(), jj) {
             isM[ii] 
             = 
-            isM[ii] + dtLinearAlgebra::length(phirM_1[ii][jj] - phirM_1[ii][jj-1]);
+            isM[ii] 
+            + 
+            dtLinearAlgebra::length(phirM_1[ii][jj] - phirM_1[ii][jj-1]);
           }
         }
         dt__forFromToIndex(1, phirM_1.size(), ii) {
           dt__forFromToIndex(0, phirM_1[ii].size(), jj) {
             isPhir[jj] 
             = 
-            isPhir[jj] + dtLinearAlgebra::length(phirM_1[ii][jj] - phirM_1[ii-1][jj]);
+            isPhir[jj] 
+            + 
+            dtLinearAlgebra::length(phirM_1[ii][jj] - phirM_1[ii-1][jj]);
           }
         }
         
@@ -578,7 +591,8 @@ namespace dtOO {
         of.precision(8);
         of.fixed;
         dt__forAllRefAuto(sumPhirM.fixI(ii), anEl) {
-          of << anEl.x() << ", " << anEl.y() << ", " << wPercent[kk] << std::endl;
+          of << anEl.x() << ", " << anEl.y() << ", " << wPercent[kk] 
+            << std::endl;
         }
         of.close();
       }
@@ -594,7 +608,8 @@ namespace dtOO {
         of.precision(8);
         of.fixed;
         dt__forAllRefAuto(sumPhirM.fixJ(jj), anEl) {
-          of << anEl.x() << ", " << anEl.y() << ", " << wPercent[kk] << std::endl;
+          of << anEl.x() << ", " << anEl.y() << ", " << wPercent[kk] 
+            << std::endl;
         }
         of.close();
       }    

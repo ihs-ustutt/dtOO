@@ -1,5 +1,6 @@
 #include "scale.h"
-#include "baseContainerHeaven/baseContainer.h"
+
+#include <baseContainerHeaven/baseContainer.h>
 #include <logMe/logMe.h>
 #include <geometryEngine/dtSurface.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -14,8 +15,15 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool scale::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(scale, new scale())
+  );
+  
   scale::scale() : dtTransformerInvThreeD() {
   }
 

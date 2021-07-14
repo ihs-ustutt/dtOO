@@ -13,8 +13,15 @@
 #include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
 #include <analyticFunctionHeaven/analyticFunctionTransformed.h>
 #include <analyticGeometryHeaven/translatingMap2dTo3d.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool uVw_deltaMs::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(uVw_deltaMs, new uVw_deltaMs())
+  );
+  
   uVw_deltaMs::uVw_deltaMs() : dtTransformer() {
     _ss = dtVector3(1.,1.,1.);
     _nV = 11;

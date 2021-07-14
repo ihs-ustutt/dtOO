@@ -5,8 +5,15 @@
 #include <analyticFunctionHeaven/vec3dThickedTwoD.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool analyticAddNormal::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(analyticAddNormal, new analyticAddNormal())
+  );
+  
   analyticAddNormal::analyticAddNormal() : dtTransformer() {
   }
 

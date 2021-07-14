@@ -1,4 +1,5 @@
 #include "pickLengthRange.h"
+
 #include "geometryEngine/dtCurve.h"
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
@@ -11,8 +12,15 @@
 #include <analyticGeometryHeaven/analyticCurve.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool pickLengthRange::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(pickLengthRange, new pickLengthRange())
+  );
+  
   pickLengthRange::pickLengthRange() : dtTransformer() {
   }
 

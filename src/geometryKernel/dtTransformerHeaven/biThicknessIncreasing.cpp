@@ -11,8 +11,15 @@
 #include <algorithm>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
+#include "dtTransformerFactory.h"
 
 namespace dtOO {
+  bool biThicknessIncreasing::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(biThicknessIncreasing, new biThicknessIncreasing())
+  );
+  
   biThicknessIncreasing::biThicknessIncreasing() : dtTransformer() {
     _tD[0] = NULL;
 		_tD[1] = NULL;

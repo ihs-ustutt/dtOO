@@ -22,45 +22,46 @@ namespace dtOO {
    * 
    */
   class uVw_deltaMs : public dtTransformer {
-  public:      
-    dt__classOnlyName(uVw_deltaMs);
-    uVw_deltaMs();
-    uVw_deltaMs( uVw_deltaMs const & orig );
-    virtual ~uVw_deltaMs();
-    virtual dtTransformer * clone( void ) const;
-    virtual dtTransformer * create( void ) const;     
-    virtual bool isNecessary( void ) const;
-    void init( 
-      ::QDomElement const * tE, 
-      baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG 
-    );
-    virtual aFPtrVec 
-    apply( aFPtrVec const * const aFP ) const;
-    virtual std::vector< dtPoint3 > 
-    apply( std::vector< dtPoint3 > const * const toTrans ) const;        
-    std::vector< dtPoint3 > 
-    retract(std::vector< dtPoint3 > const * const toRetract) const;    
-  private:
-	  float m_uSVS(float const & uu, float const & vv) const;
-    float s_uSVS(float const & uu, float const & vv) const;     
-    float uV_deltaVVWV(
-      float const & delta, float const & vv, float const & ww
-    ) const;
-    float vV_ms(float const & mm, float const & ss) const;
-    float wV_ms(float const & mm, float const & ss) const;
-    float delta_uVvVwV(
-      float const & uu, float const & vv, float const & ww
-    ) const;
-  private:
-    dt__pH(translatingMap2dTo3d const) _tM2dTo3d;
-    dt__pH(map2dTo3d const) _msCut;
-    dtVector3 _ss;
-    dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
-    int _nV;
-    int _nW;
+    public:      
+      dt__classOnlyName(uVw_deltaMs);
+      uVw_deltaMs();
+      uVw_deltaMs( uVw_deltaMs const & orig );
+      virtual ~uVw_deltaMs();
+      virtual dtTransformer * clone( void ) const;
+      virtual dtTransformer * create( void ) const;     
+      virtual bool isNecessary( void ) const;
+      void init( 
+        ::QDomElement const * tE, 
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG 
+      );
+      virtual aFPtrVec 
+      apply( aFPtrVec const * const aFP ) const;
+      virtual std::vector< dtPoint3 > 
+      apply( std::vector< dtPoint3 > const * const toTrans ) const;        
+      std::vector< dtPoint3 > 
+      retract(std::vector< dtPoint3 > const * const toRetract) const;    
+    private:
+      float m_uSVS(float const & uu, float const & vv) const;
+      float s_uSVS(float const & uu, float const & vv) const;     
+      float uV_deltaVVWV(
+        float const & delta, float const & vv, float const & ww
+      ) const;
+      float vV_ms(float const & mm, float const & ss) const;
+      float wV_ms(float const & mm, float const & ss) const;
+      float delta_uVvVwV(
+        float const & uu, float const & vv, float const & ww
+      ) const;
+    private:
+      dt__pH(translatingMap2dTo3d const) _tM2dTo3d;
+      dt__pH(map2dTo3d const) _msCut;
+      dtVector3 _ss;
+      dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
+      int _nV;
+      int _nW;
+      static bool _registrated;    
   };
 }
 

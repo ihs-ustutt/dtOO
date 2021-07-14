@@ -1,5 +1,6 @@
 #include "pickMap2dTo3dRangePercent.h"
-#include "analyticGeometryHeaven/map2dTo3d.h"
+
+#include "dtTransformerFactory.h"
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
@@ -7,6 +8,12 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 
 namespace dtOO {
+  bool pickMap2dTo3dRangePercent::_registrated 
+  =
+  dtTransformerFactory::registrate(
+    dt__tmpPtr(pickMap2dTo3dRangePercent, new pickMap2dTo3dRangePercent())
+  );
+  
   pickMap2dTo3dRangePercent::pickMap2dTo3dRangePercent() : dtTransformer() {
   }
 
