@@ -1,5 +1,5 @@
 #include "OpenFOAMWallRule.h"
-#include "interfaceHeaven/stringPrimitive.h"
+#include <interfaceHeaven/stringPrimitive.h>
 
 #include <logMe/logMe.h>
 
