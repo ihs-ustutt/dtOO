@@ -7,12 +7,9 @@
 namespace dtOO {
   class OpenFOAMTurboRule : public OpenFOAMSetupRule {
     public:
-      dt__classOnlyName(OpenFOAMTurboRule);    
+      dt__class(OpenFOAMTurboRule, OpenFOAMSetupRule);    
       OpenFOAMTurboRule();
       virtual ~OpenFOAMTurboRule();
-//      virtual void executeOnMesh(
-//        std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-//      ) const;
       virtual void executeOnVolVectorField(
         std::vector< std::string > const & rule, ::Foam::volVectorField & field
       ) const;    
