@@ -20,7 +20,7 @@ SET(SOURCES
   analyticGeometryToCSV.cpp
 )
 
-if (OpenFOAM_FOUND)
+if (FOAMEXT_FOUND)
   list(APPEND HEADERS
     volVectorFieldVersusXYZ.h
     volScalarOnLineFieldRange.h
@@ -52,9 +52,9 @@ if (OpenFOAM_FOUND)
     volScalarFieldRange.cpp
     volVectorOnRotatingLineFieldRange.cpp
   )
-else (OpenFOAM_FOUND)
+else (FOAMEXT_FOUND)
   message("**> Do not include foam-ext based plugins")
-endif (OpenFOAM_FOUND)
+endif (FOAMEXT_FOUND)
 
 APPEND_DTOO_SOURCE(src/pluginKernel "${SOURCES}")
 APPEND_DTOO_HEADER(src/pluginKernel "${HEADERS}")

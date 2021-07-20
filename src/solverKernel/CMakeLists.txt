@@ -8,7 +8,7 @@ set(SOURCES
   dtCaseFactory.cpp
 )
 
-if (OpenFOAM_FOUND)
+if (FOAMEXT_FOUND)
   list(APPEND HEADERS
     OpenFOAMCase/OpenFOAMCase.h
     OpenFOAMCase/OpenFOAMSetupRule.h
@@ -32,9 +32,21 @@ if (OpenFOAM_FOUND)
     OpenFOAMCase/OpenFOAMCylindricalInletRule.cpp
     OpenFOAMCase/OpenFOAMCellZoneRule.cpp
   )
-else (OpenFOAM_FOUND)
+else (FOAMEXT_FOUND)
   message("**> Do not include foam-ext based cases")
-endif (OpenFOAM_FOUND)
+endif (FOAMEXT_FOUND)
+
+if (OpenFoamTurbo_FOUND)
+  list(APPEND HEADERS
+    OpenFOAMCase/OpenFOAMTurboRule.h
+  )
+
+  list(APPEND SOURCES
+    OpenFOAMCase/OpenFOAMTurboRule.cpp
+  )
+else (OpenFoamTurbo_FOUND)
+  message("**> Do not include OpenFoamTurbo based cases")
+endif (OpenFoamTurbo_FOUND)
 
 APPEND_DTOO_SOURCE(src/solverKernel "${SOURCES}")
 APPEND_DTOO_HEADER(src/solverKernel "${HEADERS}")

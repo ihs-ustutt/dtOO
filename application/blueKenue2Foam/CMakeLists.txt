@@ -1,6 +1,6 @@
-if (NOT OpenFOAM_FOUND)
+if (NOT FOAMEXT_FOUND)
   return()
-endif (NOT OpenFOAM_FOUND)
+endif (NOT FOAMEXT_FOUND)
 #
 #
 # find packages

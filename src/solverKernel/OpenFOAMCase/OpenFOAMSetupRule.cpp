@@ -23,7 +23,6 @@
 #include <nutWallFunctionFvPatchScalarField.H>
 #include <turbulentIntensityKineticEnergyInletFvPatchScalarField.H>
 #include <turbulentMixingLengthDissipationRateInletFvPatchScalarField.H>
-#include <profile1DfixedValueFvPatchField.H>
 #include <inletOutletFvPatchField.H>
 #include <rotatingWallVelocityFvPatchVectorField.H>
 #include <flowRateInletVelocityFvPatchVectorField.H>
@@ -164,25 +163,6 @@ namespace dtOO {
           
           return;
         }
-        else if ( 
-          stringPrimitive::getStringBetween("", "(", thisRule) 
-          == 
-          "profile1DfixedValue"           
-        ) {
-          //
-          // create and set new patch
-          //
-          bF.set(
-            i, 
-            new ::Foam::profile1DfixedValueFvPatchField< ::Foam::vector >(
-              field.mesh().boundary()[i], 
-              field, 
-              parseOptionDict("profile1DfixedValue", thisRule)
-            )            
-          );
-          
-          return;
-        }        
         else if ( 
           stringPrimitive::getStringBetween("", "(", thisRule) 
           == 
@@ -449,25 +429,6 @@ namespace dtOO {
           
           return;          
         }         
-        else if ( 
-          stringPrimitive::getStringBetween("", "(", thisRule) 
-          == 
-          "profile1DfixedValue"           
-        ) {
-          //
-          // create and set new patch
-          //
-          bF.set(
-            i, 
-            new ::Foam::profile1DfixedValueFvPatchField< ::Foam::scalar >(
-              field.mesh().boundary()[i], 
-              field, 
-              parseOptionDict("profile1DfixedValue", thisRule)
-            )            
-          );
-          
-          return;
-        }   
         else if ( 
           stringPrimitive::getStringBetween("", "(", thisRule) == "slip" 
         ) {

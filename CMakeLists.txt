@@ -70,7 +70,7 @@ find_package(
 find_package(GSL REQUIRED)
 find_package(CGNS REQUIRED COMPONENTS cgns)
 find_package(
-  OpenFOAM
+  FOAMEXT
   COMPONENTS 
   foam meshTools dynamicMesh finiteVolume Pstream incompressibleRASModels
   triSurface decompositionMethods lagrangian incompressibleTurbulenceModel
@@ -165,21 +165,21 @@ include_directories(
   ${IGL_INCLUDE_DIR}
 )
 
-if (OpenFOAM_FOUND)
+if (FOAMEXT_FOUND)
   include_directories(
-    ${OpenFOAM_INCLUDE_DIR}/foam/lnInclude
-    ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
-    ${OpenFOAM_INCLUDE_DIR}/meshTools/lnInclude
-    ${OpenFOAM_INCLUDE_DIR}/dynamicMesh/dynamicMesh/lnInclude
-    ${OpenFOAM_INCLUDE_DIR}/finiteVolume/lnInclude
-    ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/lnInclude
-    ${OpenFOAM_INCLUDE_DIR}/transportModels/incompressible/lnInclude
-    ${OpenFOAM_INCLUDE_DIR}/transportModels
-    ${OpenFOAM_INCLUDE_DIR}/turbulenceModels
-    ${OpenFOAM_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/RASModel
+    ${FOAMEXT_INCLUDE_DIR}/foam/lnInclude
+    ${FOAMEXT_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
+    ${FOAMEXT_INCLUDE_DIR}/meshTools/lnInclude
+    ${FOAMEXT_INCLUDE_DIR}/dynamicMesh/dynamicMesh/lnInclude
+    ${FOAMEXT_INCLUDE_DIR}/finiteVolume/lnInclude
+    ${FOAMEXT_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/lnInclude
+    ${FOAMEXT_INCLUDE_DIR}/transportModels/incompressible/lnInclude
+    ${FOAMEXT_INCLUDE_DIR}/transportModels
+    ${FOAMEXT_INCLUDE_DIR}/turbulenceModels
+    ${FOAMEXT_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/RASModel
     ${OpenFoamTurbo_INCLUDE_DIR}
 )
-endif (OpenFOAM_FOUND)
+endif (FOAMEXT_FOUND)
 
 if (MPI_FOUND)
   include_directories(
@@ -283,25 +283,25 @@ set(
   ${OpenVolumeMesh_LINK_DIRECTORY}
 )
 
-if (OpenFOAM_FOUND)
+if (FOAMEXT_FOUND)
   target_link_libraries(
     dtOO 
-    ${OpenFOAM_LIBRARIES}
+    ${FOAMEXT_LIBRARIES}
     ${OpenFoamTurbo_LIBRARIES}
   )
 
   set(
     _configLibList 
-    "${_configLibList};${OpenFOAM_LIBRARIES};${OpenFoamTurbo_LIBRARIES}"
+    "${_configLibList};${FOAMEXT_LIBRARIES};${OpenFoamTurbo_LIBRARIES}"
   )
 
   set(
     _rpathList
-    "${_rpathList};${OpenFOAM_LINK_DIRECTORY};"
-    "${OpenFOAM_LINK_DIRECTORY}/openmpi-system;"
+    "${_rpathList};${FOAMEXT_LINK_DIRECTORY};"
+    "${FOAMEXT_LINK_DIRECTORY}/openmpi-system;"
     "${OpenFoamTurbo_LINK_DIRECTORY}"
   )
-endif (OpenFOAM_FOUND)
+endif (FOAMEXT_FOUND)
 
 if (MPI_FOUND)
   target_link_libraries( dtOO ${MPI_LIBRARIES} ${MPI_CXX_LIBRARIES} )
