@@ -1,4 +1,4 @@
-#include "OpenFOAMTurboRule.h"
+#include "feOpenFOAMTurboRule.h"
 
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
@@ -9,15 +9,26 @@
 #include <polyPatch.H>
 #include <volFields.H>
 #include <profile1DfixedValueFvPatchField.H>
+#include <boost/assign.hpp>
 
 namespace dtOO {
-  OpenFOAMTurboRule::OpenFOAMTurboRule() {
+  bool feOpenFOAMTurboRule::_registrated 
+  =
+  feOpenFOAMSetupRule::registrate(
+    dt__tmpPtr(feOpenFOAMTurboRule, new feOpenFOAMTurboRule())
+  );
+  
+  feOpenFOAMTurboRule::feOpenFOAMTurboRule() {
   }
 
-  OpenFOAMTurboRule::~OpenFOAMTurboRule() {
+  feOpenFOAMTurboRule::~feOpenFOAMTurboRule() {
   }
   
-  void OpenFOAMTurboRule::executeOnVolVectorField(
+  std::vector< std::string > feOpenFOAMTurboRule::factoryAlias( void ) const {
+    return ::boost::assign::list_of("OpenFOAMTurboRule");
+  }  
+  
+  void feOpenFOAMTurboRule::executeOnVolVectorField(
     std::vector< std::string > const & rule, ::Foam::volVectorField & field
   ) const {
     std::string thisRule = getRuleOfField(field.name(), rule);
@@ -68,7 +79,7 @@ namespace dtOO {
     }
   }
     
-  void OpenFOAMTurboRule::executeOnVolScalarField(
+  void feOpenFOAMTurboRule::executeOnVolScalarField(
     std::vector< std::string > const & rule, ::Foam::volScalarField & field
   ) const {
     std::string thisRule = getRuleOfField(field.name(), rule);

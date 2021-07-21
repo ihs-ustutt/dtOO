@@ -10,27 +10,27 @@ set(SOURCES
 
 if (FOAMEXT_FOUND)
   list(APPEND HEADERS
-    OpenFOAMCase/OpenFOAMCase.h
-    OpenFOAMCase/OpenFOAMSetupRule.h
-    OpenFOAMCase/OpenFOAMWallRule.h
-    OpenFOAMCase/OpenFOAMGgiRule.h
-    OpenFOAMCase/OpenFOAMCyclicGgiRule.h
-    OpenFOAMCase/OpenFOAMMixingPlaneRule.h
-    OpenFOAMCase/OpenFOAMEmptyRule.h
-    OpenFOAMCase/OpenFOAMCylindricalInletRule.h
-    OpenFOAMCase/OpenFOAMCellZoneRule.h
+    feOpenFOAMCase/feOpenFOAMCase.h
+    feOpenFOAMCase/feOpenFOAMSetupRule.h
+    feOpenFOAMCase/feOpenFOAMWallRule.h
+    feOpenFOAMCase/feOpenFOAMGgiRule.h
+    feOpenFOAMCase/feOpenFOAMCyclicGgiRule.h
+    feOpenFOAMCase/feOpenFOAMMixingPlaneRule.h
+    feOpenFOAMCase/feOpenFOAMEmptyRule.h
+    feOpenFOAMCase/feOpenFOAMCylindricalInletRule.h
+    feOpenFOAMCase/feOpenFOAMCellZoneRule.h
   )
 
   list(APPEND SOURCES
-    OpenFOAMCase/OpenFOAMCase.cpp
-    OpenFOAMCase/OpenFOAMSetupRule.cpp
-    OpenFOAMCase/OpenFOAMWallRule.cpp
-    OpenFOAMCase/OpenFOAMGgiRule.cpp
-    OpenFOAMCase/OpenFOAMCyclicGgiRule.cpp
-    OpenFOAMCase/OpenFOAMMixingPlaneRule.cpp
-    OpenFOAMCase/OpenFOAMEmptyRule.cpp
-    OpenFOAMCase/OpenFOAMCylindricalInletRule.cpp
-    OpenFOAMCase/OpenFOAMCellZoneRule.cpp
+    feOpenFOAMCase/feOpenFOAMCase.cpp
+    feOpenFOAMCase/feOpenFOAMSetupRule.cpp
+    feOpenFOAMCase/feOpenFOAMWallRule.cpp
+    feOpenFOAMCase/feOpenFOAMGgiRule.cpp
+    feOpenFOAMCase/feOpenFOAMCyclicGgiRule.cpp
+    feOpenFOAMCase/feOpenFOAMMixingPlaneRule.cpp
+    feOpenFOAMCase/feOpenFOAMEmptyRule.cpp
+    feOpenFOAMCase/feOpenFOAMCylindricalInletRule.cpp
+    feOpenFOAMCase/feOpenFOAMCellZoneRule.cpp
   )
 else (FOAMEXT_FOUND)
   message("**> Do not include foam-ext based cases")
@@ -38,11 +38,11 @@ endif (FOAMEXT_FOUND)
 
 if (OpenFoamTurbo_FOUND)
   list(APPEND HEADERS
-    OpenFOAMCase/OpenFOAMTurboRule.h
+    feOpenFOAMCase/feOpenFOAMTurboRule.h
   )
 
   list(APPEND SOURCES
-    OpenFOAMCase/OpenFOAMTurboRule.cpp
+    feOpenFOAMCase/feOpenFOAMTurboRule.cpp
   )
 else (OpenFoamTurbo_FOUND)
   message("**> Do not include OpenFoamTurbo based cases")

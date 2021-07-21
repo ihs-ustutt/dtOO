@@ -1,4 +1,4 @@
-#include "OpenFOAMMixingPlaneRule.h"
+#include "feOpenFOAMCyclicGgiRule.h"
 #include "fvMesh.H"
 
 #include <logMe/logMe.h>
@@ -10,24 +10,34 @@
 #include <polyMesh.H>
 #include <polyBoundaryMesh.H>
 #include <polyPatch.H>
-#include <mixingPlaneFvPatchField.H>
-#include <mixingPlaneFvPatch.H>
-#include <mixingPlanePolyPatch.H>
-#include <cylindricalCS.H>
+#include <cyclicGgiPolyPatch.H>
 #include <volFields.H>
+#include <boost/assign.hpp>
 
 namespace dtOO {
-  OpenFOAMMixingPlaneRule::OpenFOAMMixingPlaneRule() {
+  bool feOpenFOAMCyclicGgiRule::_registrated 
+  =
+  feOpenFOAMSetupRule::registrate(
+    dt__tmpPtr(feOpenFOAMCyclicGgiRule, new feOpenFOAMCyclicGgiRule())
+  );
+  
+  feOpenFOAMCyclicGgiRule::feOpenFOAMCyclicGgiRule() {
   }
 
-  OpenFOAMMixingPlaneRule::~OpenFOAMMixingPlaneRule() {
+  feOpenFOAMCyclicGgiRule::~feOpenFOAMCyclicGgiRule() {
   }
   
-  void OpenFOAMMixingPlaneRule::executeOnMesh(
+  std::vector< std::string > feOpenFOAMCyclicGgiRule::factoryAlias( 
+    void 
+  ) const {
+    return ::boost::assign::list_of("OpenFOAMCyclicGgiRule");
+  }  
+  
+  void feOpenFOAMCyclicGgiRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
     //
-    // get patch labels
+    // get ggi patch labels
     //
     std::vector< std::string > csvString
     =
@@ -42,8 +52,8 @@ namespace dtOO {
     const_cast<::Foam::polyBoundaryMesh&>(mesh.boundaryMesh());      
     ::Foam::label id0 = bM.findPatchID(csvString[0]);
     ::Foam::label id1 = bM.findPatchID(csvString[1]);
-    dt__throwIfWithMessage( id0<0, executeOnMesh(), << csvString[0] );
-    dt__throwIfWithMessage( id1<0, executeOnMesh(), << csvString[1] );
+    dt__throwIf(id0<0, executeOnMesh());
+    dt__throwIf(id1<0, executeOnMesh());
     
     //
     // create faceZones
@@ -56,11 +66,11 @@ namespace dtOO {
     );    
     
     //
-    // create new mixingPlane patches
+    // create new ggi patches
     //
-    ::Foam::mixingPlanePolyPatch * mix0    
+    ::Foam::cyclicGgiPolyPatch * ggi0    
     =
-    new ::Foam::mixingPlanePolyPatch(
+    new ::Foam::cyclicGgiPolyPatch(
       bM[ id0 ].name(), 
       bM[ id0 ].size(),
       bM[ id0 ].start(), 
@@ -68,23 +78,14 @@ namespace dtOO {
       bM[ id0 ].boundaryMesh(),
       csvString[1],
       csvString[0]+"_zone",
-      ::Foam::cylindricalCS( 
-        "mixingCS", parseOptionDict("coordinateSystem", rule[2]) 
-      ),
-      ::Foam::mixingPlaneInterpolation::discretisationNames_[
-        parseOptionStr("discretisation", rule[2])
-      ],
-      ::Foam::mixingPlaneInterpolation::sweepAxisNames_[
-        parseOptionStr("sweepAxis", rule[2])
-      ],
-      ::Foam::mixingPlaneInterpolation::stackAxisNames_[
-        parseOptionStr("stackAxis", rule[2])
-      ],
-      ::Foam::fileName::null
+      parseOptionBool("bridgeOverlap", rule[2]),
+      parseOptionVector("separationOffset", rule[2]),
+      parseOptionVector("rotationAxis", rule[2]),
+      parseOptionScalar("rotationAngle", rule[2])
     );
-    ::Foam::mixingPlanePolyPatch * mix1    
+    ::Foam::cyclicGgiPolyPatch * ggi1    
     =
-    new ::Foam::mixingPlanePolyPatch(
+    new ::Foam::cyclicGgiPolyPatch(
       bM[ id1 ].name(), 
       bM[ id1 ].size(),
       bM[ id1 ].start(), 
@@ -92,32 +93,23 @@ namespace dtOO {
       bM[ id1 ].boundaryMesh(),
       csvString[0],
       csvString[1]+"_zone",
-      ::Foam::cylindricalCS( 
-        "mixingCS", parseOptionDict("coordinateSystem", rule[2]) 
-      ),
-      ::Foam::mixingPlaneInterpolation::discretisationNames_[
-        parseOptionStr("discretisation", rule[2])
-      ],
-      ::Foam::mixingPlaneInterpolation::sweepAxisNames_[
-        parseOptionStr("sweepAxis", rule[2])
-      ],
-      ::Foam::mixingPlaneInterpolation::stackAxisNames_[
-        parseOptionStr("stackAxis", rule[2])
-      ],
-      ::Foam::fileName::null
+      parseOptionBool("bridgeOverlap", rule[2]),
+      parseOptionVector("separationOffset", rule[2]),
+      parseOptionVector("rotationAxis", rule[2]),
+      -1. * parseOptionScalar("rotationAngle", rule[2])
     );
 
     //
-    // replace old patches with new patches
+    // replace old patches with new ggi patches
     //
-    bM.set( id0, mix0);
-    bM.set( id1, mix1);
+    bM.set( id0, ggi0);
+    bM.set( id1, ggi1);
   }
   
-  void OpenFOAMMixingPlaneRule::executeOnVolVectorField(
+  void feOpenFOAMCyclicGgiRule::executeOnVolVectorField(
     std::vector< std::string > const & rule, ::Foam::volVectorField & field
   ) const {
-    OpenFOAMSetupRule::executeOnVolVectorField(rule, field);
+    feOpenFOAMSetupRule::executeOnVolVectorField(rule, field);
     //
     // get ggi patch labels
     //
@@ -146,10 +138,10 @@ namespace dtOO {
     }
   }
   
-  void OpenFOAMMixingPlaneRule::executeOnVolScalarField(
+  void feOpenFOAMCyclicGgiRule::executeOnVolScalarField(
     std::vector< std::string > const & rule, ::Foam::volScalarField & field
   ) const {
-    OpenFOAMSetupRule::executeOnVolScalarField(rule, field);
+    feOpenFOAMSetupRule::executeOnVolScalarField(rule, field);
     //
     // get ggi patch labels
     //

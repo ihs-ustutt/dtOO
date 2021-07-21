@@ -1,4 +1,4 @@
-#include "OpenFOAMCase.h"
+#include "feOpenFOAMCase.h"
 
 #include <logMe/logMe.h>
 #include <baseContainerHeaven/baseContainer.h>
@@ -22,24 +22,29 @@
 #include <polyMesh.H>
 #include <volFields.H>
 
-#include "OpenFOAMSetupRule.h"
+#include "feOpenFOAMSetupRule.h"
 #include <logMe/dtParMacros.h>
 #include "dtCaseFactory.h"
+#include <boost/assign.hpp>
 
-namespace dtOO { 
-  bool OpenFOAMCase::_registrated 
+namespace dtOO {
+  bool feOpenFOAMCase::_registrated 
   =
   dtCaseFactory::registrate(
-    dt__tmpPtr(OpenFOAMCase, new OpenFOAMCase())
+    dt__tmpPtr(feOpenFOAMCase, new feOpenFOAMCase())
   );
 
-  OpenFOAMCase::OpenFOAMCase() {
+  feOpenFOAMCase::feOpenFOAMCase() {
   }
 
-  OpenFOAMCase::~OpenFOAMCase() {
+  feOpenFOAMCase::~feOpenFOAMCase() {
   }
   
-  void OpenFOAMCase::init( 
+  std::vector< std::string > feOpenFOAMCase::factoryAlias( void ) const {
+    return ::boost::assign::list_of("OpenFOAMCase");
+  }
+    
+  void feOpenFOAMCase::init( 
     ::QDomElement const & element,
     baseContainer const * const bC,
     cVPtrVec const * const cV,
@@ -100,7 +105,7 @@ namespace dtOO {
       //
       // create and init rule
       //
-      OpenFOAMSetupRule * rulePtr = OpenFOAMSetupRule::create(ruleStrVec[0]);
+      feOpenFOAMSetupRule * rulePtr = feOpenFOAMSetupRule::create(ruleStrVec[0]);
       rulePtr->init(bC, cV, aF, aG, bV, dC);
       
       //
@@ -110,7 +115,7 @@ namespace dtOO {
       
       dt__info(
         init(), 
-        << "OpenFOAMSetupRule[ " << ii << " ] = " << ruleStrVec
+        << "feOpenFOAMSetupRule[ " << ii << " ] = " << ruleStrVec
       );
     }
     
@@ -162,7 +167,7 @@ namespace dtOO {
     dt__throwIf(_runCommand.empty(), init());
   }
   
-  void OpenFOAMCase::initMeshVectors( 
+  void feOpenFOAMCase::initMeshVectors( 
     std::vector< ::MVertex * > & allVerts, 
     std::vector< std::pair< ::MElement *, int > > & allElems,
     std::map< int, std::string > & physicalNames
@@ -258,7 +263,7 @@ namespace dtOO {
     dt__info( initMeshVectors(), << "physicalNames = " << physicalNames );
   }
 
-  void OpenFOAMCase::runCurrentState(void) {
+  void feOpenFOAMCase::runCurrentState(void) {
     //
     // modify wDir for each run if necessary
     //
@@ -346,7 +351,7 @@ namespace dtOO {
       initMeshVectors(allVerts, allElems, physicalNames);
 
       //
-      // create OpenFOAM rootCase and time
+      // create feOpenFOAM rootCase and time
       //
       try {
         // disable floating point exception trapping
@@ -398,7 +403,7 @@ namespace dtOO {
         //
         dt__forAllRefAuto(_setupRule, aRulePair) {
           std::vector< std::string > const & aRule = aRulePair.first;
-          dt__pH(OpenFOAMSetupRule) const & exRule = aRulePair.second;        
+          dt__pH(feOpenFOAMSetupRule) const & exRule = aRulePair.second;        
           
           exRule->executeOnMesh(aRule, *mesh);
         }
@@ -481,7 +486,7 @@ namespace dtOO {
         //
         dt__forAllRefAuto(_setupRule, aRulePair) {   
           std::vector< std::string > const & aRule = aRulePair.first;
-          dt__pH(OpenFOAMSetupRule) const & exRule = aRulePair.second;
+          dt__pH(feOpenFOAMSetupRule) const & exRule = aRulePair.second;
           
           dt__forAllRefAuto(volVector_, aField) {
             exRule->executeOnVolVectorField(aRule, aField);

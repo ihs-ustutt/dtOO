@@ -1,4 +1,4 @@
-#include "OpenFOAMCyclicGgiRule.h"
+#include "feOpenFOAMGgiRule.h"
 #include "fvMesh.H"
 
 #include <logMe/logMe.h>
@@ -10,17 +10,28 @@
 #include <polyMesh.H>
 #include <polyBoundaryMesh.H>
 #include <polyPatch.H>
-#include <cyclicGgiPolyPatch.H>
+#include <ggiPolyPatch.H>
 #include <volFields.H>
+#include <boost/assign.hpp>
 
 namespace dtOO {
-  OpenFOAMCyclicGgiRule::OpenFOAMCyclicGgiRule() {
+  bool feOpenFOAMGgiRule::_registrated 
+  =
+  feOpenFOAMSetupRule::registrate(
+    dt__tmpPtr(feOpenFOAMGgiRule, new feOpenFOAMGgiRule())
+  );
+  
+  feOpenFOAMGgiRule::feOpenFOAMGgiRule() {
   }
 
-  OpenFOAMCyclicGgiRule::~OpenFOAMCyclicGgiRule() {
+  feOpenFOAMGgiRule::~feOpenFOAMGgiRule() {
   }
   
-  void OpenFOAMCyclicGgiRule::executeOnMesh(
+  std::vector< std::string > feOpenFOAMGgiRule::factoryAlias( void ) const {
+    return ::boost::assign::list_of("OpenFOAMGgiRule");
+  }  
+  
+  void feOpenFOAMGgiRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
     //
@@ -52,12 +63,14 @@ namespace dtOO {
       bM[ id1 ], csvString[1]+"_zone", mesh
     );    
     
+    bool bridgeOverlap = parseOptionBool("bridgeOverlap", rule[2]);
+
     //
     // create new ggi patches
     //
-    ::Foam::cyclicGgiPolyPatch * ggi0    
+    ::Foam::ggiPolyPatch * ggi0    
     =
-    new ::Foam::cyclicGgiPolyPatch(
+    new ::Foam::ggiPolyPatch(
       bM[ id0 ].name(), 
       bM[ id0 ].size(),
       bM[ id0 ].start(), 
@@ -65,14 +78,11 @@ namespace dtOO {
       bM[ id0 ].boundaryMesh(),
       csvString[1],
       csvString[0]+"_zone",
-      parseOptionBool("bridgeOverlap", rule[2]),
-      parseOptionVector("separationOffset", rule[2]),
-      parseOptionVector("rotationAxis", rule[2]),
-      parseOptionScalar("rotationAngle", rule[2])
+      bridgeOverlap
     );
-    ::Foam::cyclicGgiPolyPatch * ggi1    
+    ::Foam::ggiPolyPatch * ggi1    
     =
-    new ::Foam::cyclicGgiPolyPatch(
+    new ::Foam::ggiPolyPatch(
       bM[ id1 ].name(), 
       bM[ id1 ].size(),
       bM[ id1 ].start(), 
@@ -80,10 +90,7 @@ namespace dtOO {
       bM[ id1 ].boundaryMesh(),
       csvString[0],
       csvString[1]+"_zone",
-      parseOptionBool("bridgeOverlap", rule[2]),
-      parseOptionVector("separationOffset", rule[2]),
-      parseOptionVector("rotationAxis", rule[2]),
-      -1. * parseOptionScalar("rotationAngle", rule[2])
+      bridgeOverlap
     );
 
     //
@@ -91,12 +98,12 @@ namespace dtOO {
     //
     bM.set( id0, ggi0);
     bM.set( id1, ggi1);
-  }
+  }    
   
-  void OpenFOAMCyclicGgiRule::executeOnVolVectorField(
+  void feOpenFOAMGgiRule::executeOnVolVectorField(
     std::vector< std::string > const & rule, ::Foam::volVectorField & field
   ) const {
-    OpenFOAMSetupRule::executeOnVolVectorField(rule, field);
+    feOpenFOAMSetupRule::executeOnVolVectorField(rule, field);
     //
     // get ggi patch labels
     //
@@ -125,10 +132,10 @@ namespace dtOO {
     }
   }
   
-  void OpenFOAMCyclicGgiRule::executeOnVolScalarField(
+  void feOpenFOAMGgiRule::executeOnVolScalarField(
     std::vector< std::string > const & rule, ::Foam::volScalarField & field
   ) const {
-    OpenFOAMSetupRule::executeOnVolScalarField(rule, field);
+    feOpenFOAMSetupRule::executeOnVolScalarField(rule, field);
     //
     // get ggi patch labels
     //
@@ -155,6 +162,6 @@ namespace dtOO {
         bF[i] = field.internalField();
       } 
     }
-  }  
+  }
 }
 

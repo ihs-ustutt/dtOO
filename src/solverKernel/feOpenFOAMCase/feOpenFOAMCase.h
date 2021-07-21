@@ -1,5 +1,5 @@
-#ifndef CREATEOPENFOAMCASE_H
-#define	CREATEOPENFOAMCASE_H
+#ifndef feOpenFOAMCase_H
+#define	feOpenFOAMCase_H
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -18,14 +18,15 @@ namespace dtOO {
   class baseContainer;
   class dtGmshModel;
   class dtXmlParser;
-  class OpenFOAMSetupRule;
+  class feOpenFOAMSetupRule;
       
-  class OpenFOAMCase : public dtCase {
+  class feOpenFOAMCase : public dtCase {
     public:
-      dt__class(OpenFOAMCase, dtCase);
-      dt__classSelfCreate(OpenFOAMCase);
-      OpenFOAMCase();
-      virtual ~OpenFOAMCase();
+      dt__class(feOpenFOAMCase, dtCase);
+      dt__classSelfCreate(feOpenFOAMCase);
+      feOpenFOAMCase();
+      virtual ~feOpenFOAMCase();
+      virtual std::vector< std::string > factoryAlias( void ) const;
       virtual void init( 
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -45,7 +46,7 @@ namespace dtOO {
     private:
       cVPtrVec const * _cV;
       std::string _dictRule;
-      std::map< std::vector< std::string >, dt__pH(OpenFOAMSetupRule) > _setupRule;
+      std::map< std::vector< std::string >, dt__pH(feOpenFOAMSetupRule) > _setupRule;
       std::vector< std::vector< std::string > > _fieldRule;
       std::vector< boundedVolume * > _bV;
       std::string _runCommand;    
@@ -53,5 +54,5 @@ namespace dtOO {
       static bool _registrated;
   };
 }
-#endif	/* CREATEOPENFOAMCASE_H */
+#endif	/* feOpenFOAMCase_H */
 

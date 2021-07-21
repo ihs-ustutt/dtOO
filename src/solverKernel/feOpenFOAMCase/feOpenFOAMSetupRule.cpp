@@ -1,13 +1,13 @@
-#include "OpenFOAMSetupRule.h"
+#include "feOpenFOAMSetupRule.h"
 
 #include <logMe/logMe.h>
-#include "OpenFOAMWallRule.h"
-#include "OpenFOAMGgiRule.h"
-#include "OpenFOAMCyclicGgiRule.h"
-#include "OpenFOAMMixingPlaneRule.h"
-#include "OpenFOAMEmptyRule.h"
-#include "OpenFOAMCellZoneRule.h"
-#include "OpenFOAMCylindricalInletRule.h"
+#include "feOpenFOAMWallRule.h"
+#include "feOpenFOAMGgiRule.h"
+#include "feOpenFOAMCyclicGgiRule.h"
+#include "feOpenFOAMMixingPlaneRule.h"
+#include "feOpenFOAMEmptyRule.h"
+#include "feOpenFOAMCellZoneRule.h"
+#include "feOpenFOAMCylindricalInletRule.h"
 #include <xmlHeaven/qtXmlBase.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
@@ -29,33 +29,76 @@
 #include <slipFvPatchField.H>
 #include <movingWallVelocityFvPatchVectorField.H>
 #include <dictionary.H>
+#include <boost/assign.hpp>
 
 namespace dtOO {
-  OpenFOAMSetupRule::OpenFOAMSetupRule() {
+  dt__pVH(feOpenFOAMSetupRule) feOpenFOAMSetupRule::_rules;
+    
+  bool feOpenFOAMSetupRule::_registrated 
+  =
+  feOpenFOAMSetupRule::registrate(
+    dt__tmpPtr(feOpenFOAMSetupRule, new feOpenFOAMSetupRule())
+  );
+  
+  feOpenFOAMSetupRule::feOpenFOAMSetupRule() {
   }
 
-  OpenFOAMSetupRule::~OpenFOAMSetupRule() {
+  feOpenFOAMSetupRule::~feOpenFOAMSetupRule() {
   }
   
-  OpenFOAMSetupRule * OpenFOAMSetupRule::create( 
-    std::string const & name 
+  std::vector< std::string > feOpenFOAMSetupRule::factoryAlias( void ) const {
+    return ::boost::assign::list_of("OpenFOAMSetupRule");
+  }  
+  
+  bool feOpenFOAMSetupRule::registrate( 
+    feOpenFOAMSetupRule const * const rule 
   ) {
-    if (name == "OpenFOAMSetupRule") return new OpenFOAMSetupRule();    
-    if (name == "OpenFOAMWallRule") return new OpenFOAMWallRule();
-    if (name == "OpenFOAMGgiRule") return new OpenFOAMGgiRule();
-    if (name == "OpenFOAMEmptyRule") return new OpenFOAMEmptyRule();
-    if (name == "OpenFOAMCyclicGgiRule") return new OpenFOAMCyclicGgiRule();
-    if (name == "OpenFOAMCellZoneRule") return new OpenFOAMCellZoneRule();
-    if (name == "OpenFOAMCylindricalInletRule") {
-      return new OpenFOAMCylindricalInletRule();
+    dt__forAllRefAuto( _rules, aRule ) {
+      if ( aRule.virtualClassName() == rule->virtualClassName() ) {
+        return false;
+      }
+    }  
+    _rules.push_back( rule->create() );
+    
+    return true;
+  }  
+  
+  feOpenFOAMSetupRule * feOpenFOAMSetupRule::create( 
+    std::string const & str 
+  ) {
+    dt__info( create(), << "str = " << str);
+    dt__forAllRefAuto( _rules, aRule ) {
+      //
+      // check virtual class name
+      //
+      if ( aRule.virtualClassName() == str ) {
+        return aRule.create();
+      }
+            
+      //
+      // check alias
+      //
+      dt__forAllRefAuto(aRule.factoryAlias(), anAlias) {
+        if ( anAlias == str ) return aRule.create();
+      }
     }
-    if (name == "OpenFOAMMixingPlaneRule" ) {
-      return new OpenFOAMMixingPlaneRule();
+    
+    std::vector< std::string > av;
+    dt__forAllRefAuto( _rules, aRule ) {
+      av.push_back( aRule.virtualClassName() );
+      dt__forAllRefAuto(aRule.factoryAlias(), anAlias) {
+        av.push_back("  -> "+anAlias);
+      }      
     }
-    dt__throw(create(), << "Cannot create " << name);
+    dt__throw(
+      create(), 
+      << str <<  " could not be created." << std::endl
+      << "Implemented rules:" << std::endl
+      << logMe::vecToString(av,1) << std::endl
+    );   
   }
 
-  void OpenFOAMSetupRule::init(
+  void feOpenFOAMSetupRule::init(
     baseContainer const * const bC,
     cVPtrVec const * const cV,
     aFPtrVec const * const aF,
@@ -71,7 +114,7 @@ namespace dtOO {
     _dC = dC;
   }
     
-  void OpenFOAMSetupRule::executeOnMesh(
+  void feOpenFOAMSetupRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
     //
@@ -102,7 +145,7 @@ namespace dtOO {
     );
   }  
   
-  void OpenFOAMSetupRule::executeOnVolVectorField(
+  void feOpenFOAMSetupRule::executeOnVolVectorField(
     std::vector< std::string > const & rule, ::Foam::volVectorField & field
   ) const {
     std::string thisRule = getRuleOfField(field.name(), rule);
@@ -261,7 +304,7 @@ namespace dtOO {
     }
   }
     
-  void OpenFOAMSetupRule::executeOnVolScalarField(
+  void feOpenFOAMSetupRule::executeOnVolScalarField(
     std::vector< std::string > const & rule, ::Foam::volScalarField & field
   ) const {
     std::string thisRule = getRuleOfField(field.name(), rule);
@@ -451,7 +494,7 @@ namespace dtOO {
     }
   }
     
-  std::string OpenFOAMSetupRule::getRuleOfField(
+  std::string feOpenFOAMSetupRule::getRuleOfField(
     std::string const & fieldName, std::vector< std::string > const & rule
   ) {  
     //
@@ -469,7 +512,7 @@ namespace dtOO {
     return std::string("");    
   }
   
-  std::string OpenFOAMSetupRule::parseOptionStr(
+  std::string feOpenFOAMSetupRule::parseOptionStr(
     std::string const & name, std::string const & str
   ) {
     if ( stringPrimitive::stringContains(name, str) ) {
@@ -487,14 +530,14 @@ namespace dtOO {
     return std::string("");
   }    
   
-  bool OpenFOAMSetupRule::parseOptionBool(
+  bool feOpenFOAMSetupRule::parseOptionBool(
     std::string const & name, std::string const & str
   ) {
     if ( parseOptionStr(name, str) == "true") return true;
     return false;    
   }
    
-  ::Foam::vector OpenFOAMSetupRule::parseOptionVector(
+  ::Foam::vector feOpenFOAMSetupRule::parseOptionVector(
     std::string const & name, std::string const & str
   ) {
     std::vector< float > ff
@@ -506,7 +549,7 @@ namespace dtOO {
     return ::Foam::vector(ff[0], ff[1], ff[2]);
   }
 
-  ::Foam::scalar OpenFOAMSetupRule::parseOptionScalar(
+  ::Foam::scalar feOpenFOAMSetupRule::parseOptionScalar(
     std::string const & name, std::string const & str
   ) {
     return ::Foam::scalar(
@@ -514,7 +557,7 @@ namespace dtOO {
     );
   }  
 
-  ::Foam::dictionary OpenFOAMSetupRule::parseOptionDict(
+  ::Foam::dictionary feOpenFOAMSetupRule::parseOptionDict(
     std::string const & name, std::string const & str
   ) {
     ::Foam::IStringStream is(
@@ -528,7 +571,7 @@ namespace dtOO {
     return ::Foam::dictionary(is());
   }    
   
-  aFPtrVec const & OpenFOAMSetupRule::refAF( 
+  aFPtrVec const & feOpenFOAMSetupRule::refAF( 
     void 
   ) const {
     return *_aF;

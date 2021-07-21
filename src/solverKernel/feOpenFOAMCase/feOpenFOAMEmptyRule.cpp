@@ -1,4 +1,4 @@
-#include "OpenFOAMEmptyRule.h"
+#include "feOpenFOAMEmptyRule.h"
 #include "fvMesh.H"
 
 #include <logMe/logMe.h>
@@ -11,15 +11,26 @@
 #include <polyBoundaryMesh.H>
 #include <polyPatch.H>
 #include <emptyPolyPatch.H>
+#include <boost/assign.hpp>
 
 namespace dtOO {
-  OpenFOAMEmptyRule::OpenFOAMEmptyRule() {
+  bool feOpenFOAMEmptyRule::_registrated 
+  =
+  feOpenFOAMSetupRule::registrate(
+    dt__tmpPtr(feOpenFOAMEmptyRule, new feOpenFOAMEmptyRule())
+  );
+  
+  feOpenFOAMEmptyRule::feOpenFOAMEmptyRule() {
   }
 
-  OpenFOAMEmptyRule::~OpenFOAMEmptyRule() {
+  feOpenFOAMEmptyRule::~feOpenFOAMEmptyRule() {
   }
   
-  void OpenFOAMEmptyRule::executeOnMesh(
+  std::vector< std::string > feOpenFOAMEmptyRule::factoryAlias( void ) const {
+    return ::boost::assign::list_of("OpenFOAMEmptyRule");
+  }  
+  
+  void feOpenFOAMEmptyRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
     

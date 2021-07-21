@@ -1,4 +1,4 @@
-#include "OpenFOAMWallRule.h"
+#include "feOpenFOAMWallRule.h"
 #include <interfaceHeaven/stringPrimitive.h>
 
 #include <logMe/logMe.h>
@@ -8,15 +8,26 @@
 #include <polyPatch.H>
 #include <wallPolyPatch.H>
 #include <volFields.H>
+#include <boost/assign.hpp>
 
 namespace dtOO {
-  OpenFOAMWallRule::OpenFOAMWallRule() {
+  bool feOpenFOAMWallRule::_registrated 
+  =
+  feOpenFOAMSetupRule::registrate(
+    dt__tmpPtr(feOpenFOAMWallRule, new feOpenFOAMWallRule())
+  );
+  
+  feOpenFOAMWallRule::feOpenFOAMWallRule() {
   }
 
-  OpenFOAMWallRule::~OpenFOAMWallRule() {
+  feOpenFOAMWallRule::~feOpenFOAMWallRule() {
   }
   
-  void OpenFOAMWallRule::executeOnMesh(
+  std::vector< std::string > feOpenFOAMWallRule::factoryAlias( void ) const {
+    return ::boost::assign::list_of("OpenFOAMWallRule");
+  }  
+    
+  void feOpenFOAMWallRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
     //

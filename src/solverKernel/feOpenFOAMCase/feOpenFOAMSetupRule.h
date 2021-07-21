@@ -1,5 +1,5 @@
-#ifndef OPENFOAMSETUPRULE_H
-#define	OPENFOAMSETUPRULE_H
+#ifndef feOpenFOAMSetupRule_H
+#define	feOpenFOAMSetupRule_H
 
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
@@ -17,12 +17,15 @@ namespace Foam {
 namespace dtOO {
   class baseContainer;
   
-  class OpenFOAMSetupRule {
+  class feOpenFOAMSetupRule {
     public:
-      dt__classOnlyName(OpenFOAMSetupRule);    
-      OpenFOAMSetupRule();
-      virtual ~OpenFOAMSetupRule();
-      static OpenFOAMSetupRule * create( std::string const & name );
+      dt__classOnlyName(feOpenFOAMSetupRule);
+      dt__classSelfCreate(feOpenFOAMSetupRule);
+      feOpenFOAMSetupRule();
+      virtual ~feOpenFOAMSetupRule();
+      static bool registrate( feOpenFOAMSetupRule const * const );
+      virtual std::vector< std::string > factoryAlias( void ) const;
+      static feOpenFOAMSetupRule * create( std::string const & str );
       virtual void init(       
         baseContainer const * const bC,
         cVPtrVec const * const cV,
@@ -71,7 +74,10 @@ namespace dtOO {
       aGPtrVec const * _aG;
       bVPtrVec const * _bV;
       dCPtrVec const * _dC;
+    private:
+      static dt__pVH(feOpenFOAMSetupRule) _rules;
+      static bool _registrated;           
   };
 }
-#endif	/* OPENFOAMSETUPRULE_H */
+#endif	/* feOpenFOAMSetupRule_H */
 

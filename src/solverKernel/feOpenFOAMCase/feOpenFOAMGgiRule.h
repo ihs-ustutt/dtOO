@@ -1,15 +1,17 @@
-#ifndef OpenFOAMGgiRule_H
-#define	OpenFOAMGgiRule_H
+#ifndef feOpenFOAMGgiRule_H
+#define	feOpenFOAMGgiRule_H
 
 #include <logMe/dtMacros.h>
-#include "OpenFOAMSetupRule.h"
+#include "feOpenFOAMSetupRule.h"
 
 namespace dtOO {
-  class OpenFOAMGgiRule : public OpenFOAMSetupRule {
+  class feOpenFOAMGgiRule : public feOpenFOAMSetupRule {
     public:
-      dt__class(OpenFOAMGgiRule, OpenFOAMSetupRule);  
-      OpenFOAMGgiRule();
-      virtual ~OpenFOAMGgiRule();
+      dt__class(feOpenFOAMGgiRule, feOpenFOAMSetupRule);  
+      dt__classSelfCreate(feOpenFOAMGgiRule);
+      feOpenFOAMGgiRule();
+      virtual ~feOpenFOAMGgiRule();
+      virtual std::vector< std::string > factoryAlias( void ) const;
       virtual void executeOnMesh(
         std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
       ) const;
@@ -20,8 +22,9 @@ namespace dtOO {
         std::vector< std::string > const & rule, ::Foam::volScalarField & field
       ) const;         
     private:
+      static bool _registrated;
 
   };
 }
-#endif	/* OpenFOAMGgiRule_H */
+#endif	/* feOpenFOAMGgiRule_H */
 

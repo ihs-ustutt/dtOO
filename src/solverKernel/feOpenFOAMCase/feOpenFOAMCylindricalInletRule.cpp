@@ -1,4 +1,4 @@
-#include "OpenFOAMCylindricalInletRule.h"
+#include "feOpenFOAMCylindricalInletRule.h"
 
 #include <logMe/logMe.h>
 
@@ -12,14 +12,30 @@
 
 #include <analyticFunctionHeaven/vec3dThreeD.h>
 
+#include <boost/assign.hpp>
+
 namespace dtOO {
-  OpenFOAMCylindricalInletRule::OpenFOAMCylindricalInletRule() {
+  bool feOpenFOAMCylindricalInletRule::_registrated 
+  =
+  feOpenFOAMSetupRule::registrate(
+    dt__tmpPtr(
+      feOpenFOAMCylindricalInletRule, new feOpenFOAMCylindricalInletRule()
+    )
+  );
+  
+  feOpenFOAMCylindricalInletRule::feOpenFOAMCylindricalInletRule() {
   }
 
-  OpenFOAMCylindricalInletRule::~OpenFOAMCylindricalInletRule() {
+  feOpenFOAMCylindricalInletRule::~feOpenFOAMCylindricalInletRule() {
   }
 
-  void OpenFOAMCylindricalInletRule::executeOnVolVectorField(
+  std::vector< std::string > feOpenFOAMCylindricalInletRule::factoryAlias( 
+    void 
+  ) const {
+    return ::boost::assign::list_of("OpenFOAMCylindricalInletRule");
+  }  
+  
+  void feOpenFOAMCylindricalInletRule::executeOnVolVectorField(
     std::vector< std::string > const & rule, ::Foam::volVectorField & field
   ) const {
     std::string thisRule = getRuleOfField(field.name(), rule);
@@ -110,7 +126,7 @@ namespace dtOO {
             dt__ptrAss(
               vec3dThreeD const * const v3d,
               vec3dThreeD::ConstDownCast(
-                OpenFOAMSetupRule::refAF().get(
+                feOpenFOAMSetupRule::refAF().get(
                   parseOptionStr("function", thisRule)
                 )
               )
@@ -283,7 +299,7 @@ namespace dtOO {
     //
     // base class
     //
-    OpenFOAMSetupRule::executeOnVolVectorField(rule, field);
+    feOpenFOAMSetupRule::executeOnVolVectorField(rule, field);
   }  
 }
 
