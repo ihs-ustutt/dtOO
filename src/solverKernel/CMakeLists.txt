@@ -32,21 +32,20 @@ if (FOAMEXT_FOUND)
     feOpenFOAMCase/feOpenFOAMCylindricalInletRule.cpp
     feOpenFOAMCase/feOpenFOAMCellZoneRule.cpp
   )
+  if (OpenFoamTurbo_FOUND)
+    list(APPEND HEADERS
+      feOpenFOAMCase/feOpenFOAMTurboRule.h
+    )
+
+    list(APPEND SOURCES
+      feOpenFOAMCase/feOpenFOAMTurboRule.cpp
+    )
+  else (OpenFoamTurbo_FOUND)
+    message("**> Do not include OpenFoamTurbo based cases")
+  endif (OpenFoamTurbo_FOUND)
 else (FOAMEXT_FOUND)
   message("**> Do not include foam-ext based cases")
 endif (FOAMEXT_FOUND)
-
-if (OpenFoamTurbo_FOUND)
-  list(APPEND HEADERS
-    feOpenFOAMCase/feOpenFOAMTurboRule.h
-  )
-
-  list(APPEND SOURCES
-    feOpenFOAMCase/feOpenFOAMTurboRule.cpp
-  )
-else (OpenFoamTurbo_FOUND)
-  message("**> Do not include OpenFoamTurbo based cases")
-endif (OpenFoamTurbo_FOUND)
 
 APPEND_DTOO_SOURCE(src/solverKernel "${SOURCES}")
 APPEND_DTOO_HEADER(src/solverKernel "${HEADERS}")
