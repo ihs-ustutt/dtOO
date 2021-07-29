@@ -23,7 +23,7 @@ class dtDeveloping:
       else:
         data = numpy.append(data, tmp, axis=0)
   
-    timeSort = numpy.argsort( data[:,0] )
+    timeSort = numpy.argsort( data[:,0],kind='mergesort' )
 
     return data[timeSort, :]
   
