@@ -1,13 +1,6 @@
 #include "feOpenFOAMSetupRule.h"
 
 #include <logMe/logMe.h>
-#include "feOpenFOAMWallRule.h"
-#include "feOpenFOAMGgiRule.h"
-#include "feOpenFOAMCyclicGgiRule.h"
-#include "feOpenFOAMMixingPlaneRule.h"
-#include "feOpenFOAMEmptyRule.h"
-#include "feOpenFOAMCellZoneRule.h"
-#include "feOpenFOAMCylindricalInletRule.h"
 #include <xmlHeaven/qtXmlBase.h>
 #include <interfaceHeaven/stringPrimitive.h>
 
