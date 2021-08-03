@@ -48,7 +48,7 @@ namespace dtOO {
       std::string const & content,
       std::vector< std::string > const & noWriteRule
     );        
-    static ::Foam::argList initCase(
+    static dt__pH(::Foam::argList) initCase(
       std::string const & appName, std::string const & wDir
     );    
   private:

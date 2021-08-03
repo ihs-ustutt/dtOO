@@ -118,18 +118,20 @@ namespace dtOO {
       dt__throwIf( !systemHandling::directoryExists(wDir), apply() );
 
       try {
-        ::Foam::argList args = dtFoamLibrary::initCase( getLabel(), wDir );        
+        dt__pH(::Foam::argList) args 
+        = 
+        dtFoamLibrary::initCase( getLabel(), wDir );        
 
         //
         // create time
         //
         ::Foam::Time runTime(
           Foam::Time::controlDictName,
-          args.rootPath(),
-          args.caseName(),
+          args->rootPath(),
+          args->caseName(),
           "system",
           "constant",
-          !args.optionFound("noFunctionObjects")
+          !args->optionFound("noFunctionObjects")
         );
         
         //

@@ -963,7 +963,7 @@ namespace dtOO {
         "system",
         "constant"
     ).controlDict().writeHeader(os());
-
+    
     forAllConstIter(
       ::Foam::dictionary, contentDict.subDict("controlDict"), it
     ) {
@@ -1074,7 +1074,7 @@ namespace dtOO {
     }
   }
   
-  ::Foam::argList dtFoamLibrary::initCase(
+  dt__pH(::Foam::argList) dtFoamLibrary::initCase(
     std::string const & appName, std::string const & wDir
   ) {
     //
@@ -1103,8 +1103,8 @@ namespace dtOO {
     //
     // create rootCase
     //
-    ::Foam::argList args(argc, argv);
-    if (!args.checkRootCase()) {
+    ptrHandling<::Foam::argList> args( new ::Foam::argList(argc, argv) );
+    if (!args->checkRootCase()) {
       Foam::FatalError.exit();
     }      
     
