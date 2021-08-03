@@ -266,12 +266,12 @@ SET(SOURCES
   dtGaussLegendreIntegration.cpp
 )
 
-if (FOAMEXT_FOUND)
+if (FOAMEXT_FOUND OR OpenFOAM_FOUND)
   list(APPEND HEADERS meshEngine/dtFoamLibrary.h)
   list(APPEND SOURCES meshEngine/dtFoamLibrary.cpp)
-else (FOAMEXT_FOUND)
-  message("**> Do not include foam-ext based library")
-endif (FOAMEXT_FOUND)
+else (FOAMEXT_FOUND OR OpenFOAM_FOUND)
+  message("**> Do not include foam-ext or OpenFOAM based library")
+endif (FOAMEXT_FOUND OR OpenFOAM_FOUND)
 
 APPEND_DTOO_SOURCE(src/libraryKernel "${SOURCES}")
 APPEND_DTOO_HEADER(src/libraryKernel "${HEADERS}")

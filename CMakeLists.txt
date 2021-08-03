@@ -11,16 +11,6 @@ INCLUDE(cmake/dtOOHelperMacros.cmake)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 
 #------------------------------------------------------------------------------#
-#                                                                              #
-# externlibs path                                                              #
-#                                                                              #
-#------------------------------------------------------------------------------#
-#set(DTOO_EXTERNLIBS $ENV{EXTERNLIBS} CACHE FILEPATH "externlibs folder")
-#if (DTOO_EXTERNLIBS STREQUAL "")
-#  message( FATAL_ERROR "Please set DTOO_EXTERNLIBS." )
-#endif (DTOO_EXTERNLIBS STREQUAL "")
-
-#------------------------------------------------------------------------------#
 #
 # compiler flags
 #
@@ -56,9 +46,6 @@ find_package(
   TKXSBase
   REQUIRED 
 )
-#TKMesh TKIGES TKXSBase TKOffset TKBool
-#TKFeat TKSTEPAttr TKHLR TKBO TKPrim TKAdvTools 
-#TKSTEP209 TKSTEPBase 
 
 find_package(MUPARSER REQUIRED muparser)
 find_package(
@@ -69,6 +56,7 @@ find_package(
 )
 find_package(GSL REQUIRED)
 find_package(CGNS REQUIRED COMPONENTS cgns)
+
 find_package(
   FOAMEXT
   COMPONENTS 
@@ -76,14 +64,36 @@ find_package(
   triSurface decompositionMethods lagrangian incompressibleTurbulenceModel
   incompressibleTransportModels
 )
-find_package(OpenFoamTurbo COMPONENTS OpenFoamTurbo)
+if (FOAMEXT_FOUND)
+  add_definitions(-DDTOO_HAS_FOAMEXT)
+  find_package(OpenFoamTurbo COMPONENTS OpenFoamTurbo)
+endif (FOAMEXT_FOUND)
+
+if (NOT FOAMEXT_FOUND)
+  find_package(
+    OpenFOAM
+    COMPONENTS 
+    OpenFOAM meshTools dynamicMesh finiteVolume Pstream 
+    turbulenceModels
+    incompressibleTurbulenceModel
+    incompressibleTransportModels
+  )
+  if (OpenFOAM_FOUND)
+    add_definitions(-DDTOO_HAS_OpenFOAM)
+      find_package(
+        OpenFOAMWixingPlane
+        COMPONENTS 
+        wixingPlane
+      )
+  endif (OpenFOAM_FOUND)
+endif (NOT FOAMEXT_FOUND)
+
 find_package(MOAB REQUIRED COMPONENTS MOAB iMesh)
 find_package(OpenMesh REQUIRED COMPONENTS OpenMeshCore OpenMeshTools)
 find_package(OpenVolumeMesh REQUIRED COMPONENTS OpenVolumeMesh)
 find_package(OpenMP REQUIRED)
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-#find_package(IGL REQUIRED COMPONENTS iglcork iglcgal cork igl)
 
 if (DTOO_USE_MPI)
   find_package(MPI REQUIRED)
@@ -127,13 +137,16 @@ add_subdirectory(src)
 
 #------------------------------------------------------------------------------#
 #
-# special compile propertys
+# special compile properties
 #
 #------------------------------------------------------------------------------#
 set_property(
   SOURCE "src/libraryKernel/meshEngine/tetgen/tetgen.cxx" 
   PROPERTY COMPILE_FLAGS -DTETLIBRARY
 )
+if (OpenFOAM_FOUND)
+  add_compile_options("-DWM_LABEL_SIZE=$ENV{WM_LABEL_SIZE}")
+endif (OpenFOAM_FOUND)
 
 #------------------------------------------------------------------------------#
 #
@@ -177,9 +190,28 @@ if (FOAMEXT_FOUND)
     ${FOAMEXT_INCLUDE_DIR}/transportModels
     ${FOAMEXT_INCLUDE_DIR}/turbulenceModels
     ${FOAMEXT_INCLUDE_DIR}/turbulenceModels/incompressible/RAS/RASModel
-    ${OpenFoamTurbo_INCLUDE_DIR}
-)
+  )
+  if (OpenFoamTurbo_FOUND)
+    include_directories( ${OpenFoamTurbo_INCLUDE_DIR} )
+  endif (OpenFoamTurbo_FOUND)
+else (FOAMEXT_FOUND)
+  if (OpenFOAM_FOUND)
+    include_directories(
+      ${OpenFOAM_INCLUDE_DIR}/OpenFOAM/lnInclude
+      ${OpenFOAM_INCLUDE_DIR}/OSspecific/POSIX/lnInclude
+      ${OpenFOAM_INCLUDE_DIR}/meshTools/lnInclude
+      ${OpenFOAM_INCLUDE_DIR}/dynamicMesh/lnInclude
+      ${OpenFOAM_INCLUDE_DIR}/finiteVolume/lnInclude
+      ${OpenFOAM_INCLUDE_DIR}/TurbulenceModels/turbulenceModels/lnInclude
+      ${OpenFOAM_INCLUDE_DIR}/TurbulenceModels/incompressible/lnInclude
+      ${OpenFOAM_INCLUDE_DIR}/transportModels/incompressible/lnInclude
+    )
+    if (OpenFOAMWixingPlane_FOUND)
+      include_directories( ${OpenFOAMWixingPlane_INCLUDE_DIR} )
+    endif (OpenFOAMWixingPlane_FOUND)
+  endif (OpenFOAM_FOUND)
 endif (FOAMEXT_FOUND)
+
 
 if (MPI_FOUND)
   include_directories(
@@ -187,12 +219,6 @@ if (MPI_FOUND)
     ${MPI_CXX_INCLUDE_PATH}
 )
 endif (MPI_FOUND)
-#if (PYTHONLIBS_FOUND)
-#  include_directories(
-#    AFTER 
-#    ${PYTHON_INCLUDE_PATH}
-#  )
-#endif
 #------------------------------------------------------------------------------#
 #
 # parse version and write header version.h
@@ -287,21 +313,66 @@ if (FOAMEXT_FOUND)
   target_link_libraries(
     dtOO 
     ${FOAMEXT_LIBRARIES}
-    ${OpenFoamTurbo_LIBRARIES}
   )
 
   set(
     _configLibList 
-    "${_configLibList};${FOAMEXT_LIBRARIES};${OpenFoamTurbo_LIBRARIES}"
+    "${_configLibList};${FOAMEXT_LIBRARIES}"
   )
 
   set(
     _rpathList
     "${_rpathList};${FOAMEXT_LINK_DIRECTORY};"
-    "${FOAMEXT_LINK_DIRECTORY}/openmpi-system;"
-    "${OpenFoamTurbo_LINK_DIRECTORY}"
+    "${FOAMEXT_LINK_DIRECTORY}/openmpi-system"
   )
+  if (OpenFoamTurbo_FOUND)
+    target_link_libraries(
+      dtOO 
+      ${OpenFoamTurbo_LIBRARIES}
+    )
+
+    set(
+      _configLibList 
+      "${_configLibList};${OpenFoamTurbo_LIBRARIES}"
+    )
+
+    set(
+      _rpathList
+      "${_rpathList};${OpenFoamTurbo_LINK_DIRECTORY}"
+    )
+  endif (OpenFoamTurbo_FOUND)
 endif (FOAMEXT_FOUND)
+
+if (OpenFOAM_FOUND)
+  target_link_libraries(
+    dtOO 
+    ${OpenFOAM_LIBRARIES}
+  )
+
+  set(
+    _configLibList 
+    "${_configLibList};${OpenFOAM_LIBRARIES}"
+  )
+
+  set(
+    _rpathList
+    "${_rpathList};${OpenFOAM_LINK_DIRECTORY};"
+    "${OpenFOAM_LINK_DIRECTORY}/openmpi-system"
+  )
+
+    if (OpenFOAMWixingPlane_FOUND)
+    target_link_libraries(
+      dtOO 
+      ${OpenFOAMWixingPlane_LIBRARIES}
+    )
+    set(
+      _configLibList "${_configLibList};${OpenFOAMWixingPlane_LIBRARIES}"
+    )
+    set(
+      _rpathList "${_rpathList};${OpenFOAMWixingPlane_LINK_DIRECTORY}"
+    )      
+    endif (OpenFOAMWixingPlane_FOUND)
+endif (OpenFOAM_FOUND)
 
 if (MPI_FOUND)
   target_link_libraries( dtOO ${MPI_LIBRARIES} ${MPI_CXX_LIBRARIES} )

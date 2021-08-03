@@ -21,6 +21,11 @@
 #include <fvMesh.H>
 #include <wordList.H>
 
+#ifdef DTOO_HAS_OpenFOAM
+  #include <topoSet.H>
+  #include <OFstream.H>
+#endif
+
 namespace dtOO {
   dtFoamLibrary::dtFoamLibrary() {
   }
@@ -252,11 +257,18 @@ namespace dtOO {
     ::Foam::labelList& zoneToPhys,
     ::Foam::List< ::Foam::DynamicList< ::Foam::label > >& zoneCells
   ) {
+#ifdef DTOO_HAS_FOAMEXT
     const ::Foam::cellModel& hex = *(::Foam::cellModeller::lookup("hex"));
     const ::Foam::cellModel& prism = *(::Foam::cellModeller::lookup("prism"));
     const ::Foam::cellModel& pyr = *(::Foam::cellModeller::lookup("pyr"));
     const ::Foam::cellModel& tet = *(::Foam::cellModeller::lookup("tet"));
-
+#endif
+#ifdef DTOO_HAS_OpenFOAM    
+    const ::Foam::cellModel& hex = *(::Foam::cellModeller().lookup("hex"));
+    const ::Foam::cellModel& prism = *(::Foam::cellModeller().lookup("prism"));
+    const ::Foam::cellModel& pyr = *(::Foam::cellModeller().lookup("pyr"));
+    const ::Foam::cellModel& tet = *(::Foam::cellModeller().lookup("tet"));
+#endif    
     ::Foam::face triPoints(3);
     ::Foam::face quadPoints(4);
     ::Foam::labelList tetPoints(4);
@@ -631,7 +643,12 @@ namespace dtOO {
         runTime.constant(),
         runTime
       ),
+#ifdef DTOO_HAS_FOAMEXT            
       ::Foam::xferMove(points),
+#endif
+#ifdef DTOO_HAS_OpenFOAM
+      std::move(points), // https://develop.openfoam.com/Development/openfoam/-/issues/713
+#endif            
       cells,
       boundaryFaces,
       boundaryPatchNames,
@@ -816,6 +833,7 @@ namespace dtOO {
     ::Foam::word const & faceZone, 
     ::Foam::polyMesh & mesh
   ) {
+#ifdef DTOO_HAS_FOAMEXT               
     ::Foam::topoSet tS(
       mesh, 
       "faceSet", 
@@ -829,6 +847,21 @@ namespace dtOO {
     ).applyToSet(
       ::Foam::topoSetSource::ADD, tS
     );
+#endif
+#ifdef DTOO_HAS_OpenFOAM
+    ::Foam::faceSet tS(
+      mesh, 
+      faceZone,
+      ::Foam::IOobject::READ_IF_PRESENT,
+      ::Foam::IOobject::AUTO_WRITE
+    );
+    
+    ::Foam::patchToFace(
+      mesh, ::Foam::wordRe(patch.name())
+    ).applyToSet(
+      ::Foam::topoSetSource::ADD, tS
+    );
+#endif 
     
     ::Foam::SortableList< ::Foam::label > faceLabels(tS.toc());
 
@@ -877,6 +910,7 @@ namespace dtOO {
     ::Foam::word const & cellZone,
     ::Foam::polyMesh & mesh
   ) {
+#ifdef DTOO_HAS_FOAMEXT     
     ::Foam::topoSet tS(
       mesh, 
       "cellSet", 
@@ -890,7 +924,21 @@ namespace dtOO {
     ).applyToSet(
       ::Foam::topoSetSource::ADD, tS
     );
+#endif
+#ifdef DTOO_HAS_OpenFOAM
+    ::Foam::cellSet tS(
+      mesh, 
+      cellZone,
+      ::Foam::IOobject::READ_IF_PRESENT,
+      ::Foam::IOobject::AUTO_WRITE
+    );
     
+    ::Foam::boxToCell(
+      mesh, ::Foam::treeBoundBoxList( 1, ::Foam::treeBoundBox(min, max) )
+    ).applyToSet(
+      ::Foam::topoSetSource::ADD, tS
+    );
+#endif    
     ::Foam::SortableList< ::Foam::label > cellLabels(tS.toc());
 
     ::Foam::DynamicList< ::Foam::label > addressing(tS.size());
@@ -942,7 +990,14 @@ namespace dtOO {
 
     ::Foam::fileName fn 
     = 
+#ifdef DTOO_HAS_FOAMEXT            
     currentDict.lookupOrDefault< ::Foam::fileName >("dtOOFileName", "", false, "");
+#endif
+#ifdef DTOO_HAS_OpenFOAM
+    currentDict.getOrDefault(
+      "dtOOFileName", ::Foam::fileName(""), ::Foam::keyType::option::LITERAL
+    );    
+#endif
     dt__throwIf(fn.empty(), writeControlDict());
     ::Foam::OFstream os(workingDirectory/fn);
 
@@ -956,14 +1011,22 @@ namespace dtOO {
     //
     // pseudo time for writing
     //
-    ::Foam::Time(
+    ::Foam::Time theTime(
         contentDict.subDict("controlDict"),
         ::Foam::fileName(workingDirectory),
         ::Foam::fileName(workingDirectory).name(),
         "system",
         "constant"
-    ).controlDict().writeHeader(os());
+    );
     
+#ifdef DTOO_HAS_FOAMEXT            
+      theTime.writeHeader(os());
+#endif
+#ifdef DTOO_HAS_OpenFOAM
+      ::Foam::IOobject io("controlDict","system", theTime);
+      io.writeHeader(os(), "dictionary");
+#endif
+      
     forAllConstIter(
       ::Foam::dictionary, contentDict.subDict("controlDict"), it
     ) {
@@ -1014,9 +1077,16 @@ namespace dtOO {
         //
         ::Foam::fileName fn 
         = 
+#ifdef DTOO_HAS_FOAMEXT                
         currentDict.lookupOrDefault< ::Foam::fileName >(
           "dtOOFileName", "", false, ""
         );
+#endif
+#ifdef DTOO_HAS_OpenFOAM
+        currentDict.getOrDefault(
+          "dtOOFileName", ::Foam::fileName(""), ::Foam::keyType::option::LITERAL
+        );
+#endif        
         dt__throwIf(fn.empty(), writeDicts());
         ::Foam::OFstream os(workingDirectory/fn);
 
@@ -1045,7 +1115,9 @@ namespace dtOO {
         //
         ioDict.writeHeader(os());
         forAllConstIter(::Foam::dictionary, currentDict, it) {
-          if ( stringPrimitive::stringContains("noWriteRule", it().keyword()) ) {
+          if ( 
+            stringPrimitive::stringContains("noWriteRule", it().keyword()) 
+          ) {
             ::Foam::label pos = ::Foam::readLabel(it().stream());
             os() << noWriteRule[ pos ].c_str();
             os.endl();
