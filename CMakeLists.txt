@@ -46,7 +46,7 @@ find_package(
   TKXSBase
   REQUIRED 
 )
-
+find_package(MPFR)
 find_package(MUPARSER REQUIRED muparser)
 find_package(
   ROOT 
@@ -147,6 +147,17 @@ set_property(
 if (OpenFOAM_FOUND)
   add_compile_options("-DWM_LABEL_SIZE=$ENV{WM_LABEL_SIZE}")
 endif (OpenFOAM_FOUND)
+
+#------------------------------------------------------------------------------#
+#
+# link directories
+#
+#------------------------------------------------------------------------------#
+if (MPFR_FOUND)
+  link_directories(
+    ${MPFR_LINK_DIRECTORY}
+  )
+endif (MPFR_FOUND)
 
 #------------------------------------------------------------------------------#
 #
