@@ -75,7 +75,6 @@ if (NOT FOAMEXT_FOUND)
     COMPONENTS 
     OpenFOAM meshTools dynamicMesh finiteVolume Pstream 
     turbulenceModels
-    incompressibleTurbulenceModel
     incompressibleTransportModels
   )
   if (OpenFOAM_FOUND)
