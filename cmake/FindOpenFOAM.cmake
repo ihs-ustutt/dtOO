@@ -38,8 +38,7 @@ IF ( "$ENV{WM_FORK}" STREQUAL "" )
     )
     file( 
       GLOB OpenFOAM_OPENMPI_DIR
-      "${OpenFOAM_LINK_DIRECTORY}/openmpi*"
-      "${OpenFOAM_LINK_DIRECTORY}/sys*"
+      "${OpenFOAM_LINK_DIRECTORY}/*openmpi*"
     )
     IF( OpenFOAM_LINK_DIRECTORY MATCHES ".*NOTFOUND.*" )
       SET( OpenFOAM_FOUND FALSE CACHE BOOL "Has OF been found?" FORCE )
