@@ -3,7 +3,6 @@ import logging
 from pyDtOO.dtFile import dtFile
 import io
 import os
-import re
 
 class dtDeveloping:
   def __init__(self, fn):
@@ -26,7 +25,7 @@ class dtDeveloping:
       
       # create default pattern
       if pattern == None:
-        pattern = {base : ':,:'}
+        pattern = {base : ':,1:'}
       logging.info( 'Read data from %s', p )
       txt = io.open(p, mode='r', encoding='utf-8').read() 
       txt = io.StringIO(txt.replace('(', '').replace(')', ''))
@@ -40,16 +39,16 @@ class dtDeveloping:
       if thisPattern == '':
         raise ValueError('No Rule for file %s' % base)    
 
-      if rare_data.get(base)==None:
+      if base not in rare_data.keys():
         rare_data[base] = tmp
       else:
         rare_data[base] = numpy.append(rare_data[base], tmp, axis=0)
- 
+         
     for aKey in pattern:
       thisPattern = pattern[aKey]
       logging.info('Apply pattern > %s < to > %s <' % (thisPattern, aKey))
       if len(data)==0:
-        data = rare_data[aKey][:, 0:1]
+        data = rare_data[aKey][:, 0:1]      
       data = numpy.concatenate((data, rare_data[aKey][self.parseSlice(thisPattern)],), axis=1) 
 
     timeSort = numpy.argsort( data[:,0] )
