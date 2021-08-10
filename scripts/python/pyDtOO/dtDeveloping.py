@@ -3,6 +3,7 @@ import logging
 from pyDtOO.dtFile import dtFile
 import io
 import os
+import re
 
 class dtDeveloping:
   def __init__(self, fn):
@@ -11,18 +12,46 @@ class dtDeveloping:
   def Log(self):
     logging.info( 'Create dtDeveloping > %s > %s', self.f_.DirName(), self.f_.FileName() )
 
-  def Read(self):
+  @staticmethod
+  def parseSlice(sliceStr):
+    return tuple(
+      (slice(*(int(i) if i else None for i in part.strip().split(':'))) if ':' in part else int(part.strip())) for part in sliceStr.split(',')
+    )
+
+  def Read(self, pattern=None):
     data = []
+    rare_data = {}
     for p in self.__GetFilepaths( self.f_.FullName() ):
+      base = os.path.basename(p)
+      
+      # create default pattern
+      if pattern == None:
+        pattern = {base : ':,:'}
       logging.info( 'Read data from %s', p )
       txt = io.open(p, mode='r', encoding='utf-8').read() 
       txt = io.StringIO(txt.replace('(', '').replace(')', ''))
       tmp = numpy.genfromtxt( txt, delimiter='', comments='#')
-      if len(data)==0:
-        data = tmp
+      
+      # validate that pattern exist for every input file
+      thisPattern = ''
+      for file in pattern:
+        if base == file:
+          thisPattern = pattern[file]
+      if thisPattern == '':
+        raise ValueError('No Rule for file %s' % base)    
+
+      if rare_data.get(base)==None:
+        rare_data[base] = tmp
       else:
-        data = numpy.append(data, tmp, axis=0)
-  
+        rare_data[base] = numpy.append(rare_data[base], tmp, axis=0)
+ 
+    for aKey in pattern:
+      thisPattern = pattern[aKey]
+      logging.info('Apply pattern > %s < to > %s <' % (thisPattern, aKey))
+      if len(data)==0:
+        data = rare_data[aKey][:, 0:1]
+      data = numpy.concatenate((data, rare_data[aKey][self.parseSlice(thisPattern)],), axis=1) 
+
     timeSort = numpy.argsort( data[:,0] )
 
     return data[timeSort, :]
