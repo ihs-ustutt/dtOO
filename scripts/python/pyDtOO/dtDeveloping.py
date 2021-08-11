@@ -3,6 +3,7 @@ import logging
 from pyDtOO.dtFile import dtFile
 import io
 import os
+import fnmatch
 
 class dtDeveloping:
   def __init__(self, fn):
@@ -32,11 +33,11 @@ class dtDeveloping:
       tmp = numpy.genfromtxt( txt, delimiter='', comments='#')
       
       # validate that pattern exist for every input file
-      thisPattern = ''
+      thisPattern = None
       for file in pattern:
-        if base == file:
+        if fnmatch.fnmatch(base, file):
           thisPattern = pattern[file]
-      if thisPattern == '':
+      if thisPattern == None:
         raise ValueError('No Rule for file %s' % base)    
 
       if base not in rare_data.keys():
@@ -46,10 +47,11 @@ class dtDeveloping:
          
     for aKey in pattern:
       thisPattern = pattern[aKey]
-      logging.info('Apply pattern > %s < to > %s <' % (thisPattern, aKey))
-      if len(data)==0:
-        data = rare_data[aKey][:, 0:1]      
-      data = numpy.concatenate((data, rare_data[aKey][self.parseSlice(thisPattern)],), axis=1) 
+      if thisPattern != '':
+        logging.info('Apply pattern > %s < to > %s <' % (thisPattern, aKey))
+        if len(data)==0:
+          data = rare_data[aKey][:, 0:1]  
+        data = numpy.concatenate((data, rare_data[aKey][self.parseSlice(thisPattern)],), axis=1) 
 
     timeSort = numpy.argsort( data[:,0] )
 
