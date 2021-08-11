@@ -34,16 +34,18 @@ class dtDeveloping:
       
       # validate that pattern exist for every input file
       thisPattern = None
+      thisFile    = ''
       for file in pattern:
         if fnmatch.fnmatch(base, file):
           thisPattern = pattern[file]
+          thisFile = file
       if thisPattern == None:
         raise ValueError('No Rule for file %s' % base)    
 
-      if base not in rare_data.keys():
-        rare_data[base] = tmp
+      if thisFile not in rare_data.keys():
+        rare_data[thisFile] = tmp
       else:
-        rare_data[base] = numpy.append(rare_data[base], tmp, axis=0)
+        rare_data[thisFile] = numpy.append(rare_data[thisFile], tmp, axis=0)
          
     for aKey in pattern:
       thisPattern = pattern[aKey]
