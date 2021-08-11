@@ -3,6 +3,7 @@ import logging
 from pyDtOO.dtFile import dtFile
 import io
 import os
+import fnmatch
 
 class dtDeveloping:
   def __init__(self, fn):
@@ -11,19 +12,51 @@ class dtDeveloping:
   def Log(self):
     logging.info( 'Create dtDeveloping > %s > %s', self.f_.DirName(), self.f_.FileName() )
 
-  def Read(self):
+  @staticmethod
+  def parseSlice(sliceStr):
+    return tuple(
+      (slice(*(int(i) if i else None for i in part.strip().split(':'))) if ':' in part else int(part.strip())) for part in sliceStr.split(',')
+    )
+
+  def Read(self, pattern=None):
     data = []
+    rare_data = {}
     for p in self.__GetFilepaths( self.f_.FullName() ):
+      base = os.path.basename(p)
+      
+      # create default pattern
+      if pattern == None:
+        pattern = {base : ':,1:'}
       logging.info( 'Read data from %s', p )
       txt = io.open(p, mode='r', encoding='utf-8').read() 
       txt = io.StringIO(txt.replace('(', '').replace(')', ''))
       tmp = numpy.genfromtxt( txt, delimiter='', comments='#')
-      if len(data)==0:
-        data = tmp
+      
+      # validate that pattern exist for every input file
+      thisPattern = None
+      thisFile    = ''
+      for file in pattern:
+        if fnmatch.fnmatch(base, file):
+          thisPattern = pattern[file]
+          thisFile = file
+          break
+      if thisPattern == None:
+        raise ValueError('No Rule for file %s' % base)    
+
+      if thisFile not in rare_data.keys():
+        rare_data[thisFile] = tmp
       else:
-        data = numpy.append(data, tmp, axis=0)
-  
-    timeSort = numpy.argsort( data[:,0],kind='mergesort' )
+        rare_data[thisFile] = numpy.append(rare_data[thisFile], tmp, axis=0)
+         
+    for aKey in pattern:
+      thisPattern = pattern[aKey]
+      if thisPattern != '':
+        logging.info('Apply pattern > %s < to > %s <' % (thisPattern, aKey))
+        if len(data)==0:
+          data = rare_data[aKey][:, 0:1]  
+        data = numpy.concatenate((data, rare_data[aKey][self.parseSlice(thisPattern)],), axis=1) 
+
+    timeSort = numpy.argsort( data[:,0] )
 
     return data[timeSort, :]
   
