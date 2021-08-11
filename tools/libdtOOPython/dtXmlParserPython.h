@@ -42,6 +42,15 @@ boost::python::class_< dtOO::dtXmlParser >(
   >( 
     "write", &dtOO::dtXmlParser::write 
   )
+  .def<
+    void (dtOO::dtXmlParser::*)(
+      std::string const,
+      dtOO::cVPtrVec const &,
+      std::string const
+    ) const
+  >(
+    "extract", &dtOO::dtXmlParser::extract
+  )
   .def(
     "replaceDependencies", &dtOO::dtXmlParserBase::replaceDependenciesRef        
   )
