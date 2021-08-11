@@ -39,6 +39,7 @@ class dtDeveloping:
         if fnmatch.fnmatch(base, file):
           thisPattern = pattern[file]
           thisFile = file
+          break
       if thisPattern == None:
         raise ValueError('No Rule for file %s' % base)    
 
