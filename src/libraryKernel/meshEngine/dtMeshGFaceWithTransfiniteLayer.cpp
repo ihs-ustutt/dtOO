@@ -52,6 +52,11 @@ namespace dtOO {
       _nLayers
       = 
       dtXmlParserBase::getAttributeIntVectorMuParse("nLayers", element, cV, aF);
+      dt__warnIfWithSolution(
+        _nLayers.size()!=2, 
+        _nLayers = std::vector< int >(2, _nLayers[0]),
+        init()
+      );
     }
     else {
       _nLayers[0]
