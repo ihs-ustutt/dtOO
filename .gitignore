@@ -9,3 +9,4 @@ src/generalKernel/dtOOVersion.h
 *.pyc
 scripts/doc/html
 ThirdParty/
+.spyproject
