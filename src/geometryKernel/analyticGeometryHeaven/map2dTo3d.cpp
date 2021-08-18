@@ -295,7 +295,7 @@ namespace dtOO {
       }
       dt__warning(
         reparamOnFace(), 
-        << "Increasing reparamOnFace tolerance. Multiply inital precision by "
+        << "Increasing reparamOnFace tolerance. Multiply initial precision by "
         << restartIncreasePrec * currentPrec
       );        
       currentPrec = restartIncreasePrec * currentPrec;
