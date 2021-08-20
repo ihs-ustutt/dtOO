@@ -14,6 +14,8 @@
 #include <interfaceHeaven/threadSafe.h>
 #include <progHelper.h>
 
+#include <boost/assign.hpp>
+
 namespace dtOO {
   dtMeshGFaceWithTransfiniteLayer::dtMeshGFaceWithTransfiniteLayer() 
   : 
@@ -52,6 +54,23 @@ namespace dtOO {
       _nLayers
       = 
       dtXmlParserBase::getAttributeIntVectorMuParse("nLayers", element, cV, aF);
+            
+      dt__warnIfWithMessageAndSolution(
+        _nLayers.size()==1, 
+        _nLayers.push_back(0),
+        init(),
+        << "_nLayers = " << _nLayers << std::endl
+        << "Add zero element."
+      );
+      
+      dt__warnIfWithMessageAndSolution(
+        _nLayers.size()>2, 
+        _nLayers.erase(_nLayers.begin()+2, _nLayers.end()),
+        init(),
+        << "_nLayers = " << _nLayers << std::endl
+        << "Trim vector"
+      );
+      
     }
     else {
       _nLayers[0]

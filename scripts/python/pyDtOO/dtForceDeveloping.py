@@ -3,21 +3,14 @@ import logging
 
 class dtForceDeveloping:
   def __init__(self, data):
-    if numpy.shape(data)[1] == 13:
-      self.time_ = data[:,0]
-      self.forcePressure_ = data[:,1:4]
-      self.forceViscous_ = data[:,4:7]
-      self.momentPressure_ = data[:,7:10]
-      self.momentViscous_ = data[:,10:13]
-    elif numpy.shape(data)[1] == 10:
-      self.time_ = data[0::2,0]
-      self.forcePressure_ = data[0::2,4:7]
-      self.forceViscous_ = data[0::2,7:10]
-      self.momentPressure_ = data[1::2,4:7]
-      self.momentViscous_ = data[1::2,7:10]
-    else:
-      raise ValueError('Bad shape of data array.')
-
+    if numpy.shape(data)[1]!=13:
+      raise ValueError('Bad shape of data array.')    
+    self.time_ = data[:,0]
+    self.forcePressure_ = data[:,1:4]
+    self.forceViscous_ = data[:,4:7]
+    self.momentPressure_ = data[:,7:10]
+    self.momentViscous_ = data[:,10:13]
+    
   def LastTime(self):
     return max( self.time_[:] )
 
