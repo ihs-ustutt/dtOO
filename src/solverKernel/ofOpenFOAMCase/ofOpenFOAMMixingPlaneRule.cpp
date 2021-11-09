@@ -10,10 +10,8 @@
 #include <polyMesh.H>
 #include <polyBoundaryMesh.H>
 #include <polyPatch.H>
-#include <mixingInterfaceFvPatchField.H>
-//#include <mixingInterfaceFvPatch.H>
-#include <mixingInterfacePolyPatch.H>
-//#include <cylindricalCS.H>
+#include <mixingInterface/mixingInterfaceFvPatchField.H>
+#include <mixingInterface/mixingInterfacePolyPatch.H>
 #include <volFields.H>
 #include <boost/assign.hpp>
 
