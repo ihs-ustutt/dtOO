@@ -20,7 +20,7 @@ while getopts ":i:n:ho:bd" opt; do
     n) # Specify the number of build processes (_nProcs)
       _nProcs=$OPTARG
       ;;
-    o) # Build [ all ] or only one dependency [ openmesh openvolumemesh gmsh moab oce cgal muparser root lapack cgns]
+    o) # Build [ all ] or only one dependency [ openmesh openvolumemesh gmsh cgns moab oce cgal muparser root]
       _dep=$OPTARG
       ;;
     b) # Skip build
@@ -201,7 +201,9 @@ if [[ "$_dep" == "moab" || "$_dep" == "all" ]]; then
       -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
       -DENABLE_CGM=OFF \
       -DENABLE_CGNS=ON \
-      -DCMAKE_SHARED_LINKER_FLAGS=-lcgns \
+      -DCMAKE_CXX_FLAGS="-I${_installPrefix}/include" \
+      -DCMAKE_EXE_LINKER_FLAGS="-L${_installPrefix}/lib -lcgns" \
+      -DCMAKE_SHARED_LINKER_FLAGS="-L${_installPrefix}/lib -lcgns" \
       ../moab
     make -j${_nProcs} install
   fi
@@ -279,31 +281,6 @@ if [[ "$_dep" == "root" || "$_dep" == "all" ]]; then
       -Dminuit2=ON \
       -DCMAKE_BUILD_TYPE=Release \
       ../root
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
-#-------------------------------------------------------------------------------
-# lapack
-#-------------------------------------------------------------------------------
-echo "# Build lapack ..."
-if [[ "$_dep" == "lapack" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf root
-    git clone https://github.com/Reference-LAPACK/lapack lapack
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd lapack
-    mkdir -p ${_pwd}/build_lapack
-    cd ${_pwd}/build_lapack
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DCBLAS=ON \
-      -DBUILD_SHARED_LIBS=ON \
-      ../lapack
     make -j${_nProcs} install
   fi
 else
