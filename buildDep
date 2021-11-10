@@ -20,7 +20,7 @@ while getopts ":i:n:ho:bd" opt; do
     n) # Specify the number of build processes (_nProcs)
       _nProcs=$OPTARG
       ;;
-    o) # Build [ all ] or only one dependency [ openmesh openvolumemesh gmsh cgns moab oce cgal muparser root]
+    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab oce cgal muparser root]
       _dep=$OPTARG
       ;;
     b) # Skip build
@@ -332,7 +332,56 @@ if [[ "$_dep" == "cgal" || "$_dep" == "all" ]]; then
     cmake \
       -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
       -DCMAKE_BUILD_TYPE=Release \
+      -DMPFR_INCLUDE_DIR=${_installPrefix}/include \
+      -DMPFR_LIBRARIES=${_installPrefix}/lib64 \
       ../cgal
+    make -j${_nProcs} install
+  fi
+else
+  echo "# ...skip"
+fi
+
+#-------------------------------------------------------------------------------
+# lapack
+#-------------------------------------------------------------------------------
+echo "# Build lapack ..."
+if [[ "$_dep" == "lapack" || "$_dep" == "all" ]]; then
+  cd $_pwd
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf root
+    git clone https://github.com/Reference-LAPACK/lapack lapack
+  fi
+  if [[ "$_skipBuild" == "0" ]]; then
+    #cd lapack
+    mkdir -p ${_pwd}/build_lapack
+    cd ${_pwd}/build_lapack
+    cmake \
+      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+      -DCBLAS=ON \
+      -DBUILD_SHARED_LIBS=ON \
+      ../lapack
+    make -j${_nProcs} install
+  fi
+else
+  echo "# ...skip"
+fi
+
+#-------------------------------------------------------------------------------
+# mpfr
+#-------------------------------------------------------------------------------
+echo "# Build mpfr ..."
+if [[ "$_dep" == "mpfr" || "$_dep" == "all" ]]; then
+  cd $_pwd
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf ${_pwd}/mpfr-4.1.0
+    rm -rf ${_pwd}/mpfr-4.1.0.tar.xz
+    curl -o mpfr-4.1.0.tar.xz https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz
+    tar xvf mpfr-4.1.0.tar.xz
+  fi
+  if [[ "$_skipBuild" == "0" ]]; then
+    cd ${_pwd}/mpfr-4.1.0
+    ./configure \
+      --prefix=${_installPrefix}
     make -j${_nProcs} install
   fi
 else
