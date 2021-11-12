@@ -57,6 +57,80 @@ cd ThirdParty
 _pwd=`pwd`
 
 #-------------------------------------------------------------------------------
+# cgns
+#-------------------------------------------------------------------------------
+echo "# Build cgns ..."
+if [[ "$_dep" == "cgns" || "$_dep" == "all" ]]; then
+  cd $_pwd
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf cgns
+    git clone https://github.com/CGNS/CGNS cgns
+  fi
+  if [[ "$_skipBuild" == "0" ]]; then
+    cd cgns
+    mkdir -p ${_pwd}/build_cgns
+    cd ${_pwd}/build_cgns
+    cmake \
+      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+      -DCGNS_USE_SHARED=ON \
+      -DCGNS_ENABLE_SCOPING=OFF \
+      -DCGNS_ENABLE_HDF5=OFF \
+      -DCGNS_ENABLE_64BIT=ON \
+      ../cgns
+    make -j${_nProcs} install
+  fi
+else
+  echo "# ...skip"
+fi
+
+#-------------------------------------------------------------------------------
+# lapack
+#-------------------------------------------------------------------------------
+echo "# Build lapack ..."
+if [[ "$_dep" == "lapack" || "$_dep" == "all" ]]; then
+  cd $_pwd
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf root
+    git clone https://github.com/Reference-LAPACK/lapack lapack
+  fi
+  if [[ "$_skipBuild" == "0" ]]; then
+    #cd lapack
+    mkdir -p ${_pwd}/build_lapack
+    cd ${_pwd}/build_lapack
+    cmake \
+      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+      -DCBLAS=ON \
+      -DBUILD_SHARED_LIBS=ON \
+      ../lapack
+    make -j${_nProcs} install
+  fi
+else
+  echo "# ...skip"
+fi
+
+#-------------------------------------------------------------------------------
+# mpfr
+#-------------------------------------------------------------------------------
+echo "# Build mpfr ..."
+if [[ "$_dep" == "mpfr" || "$_dep" == "all" ]]; then
+  cd $_pwd
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf ${_pwd}/mpfr-4.1.0
+    rm -rf ${_pwd}/mpfr-4.1.0.tar.xz
+    curl -o mpfr-4.1.0.tar.xz https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz
+    tar xvf mpfr-4.1.0.tar.xz
+  fi
+  if [[ "$_skipBuild" == "0" ]]; then
+    cd ${_pwd}/mpfr-4.1.0
+    ./configure \
+      --prefix=${_installPrefix}
+    make -j${_nProcs} install
+  fi
+else
+  echo "# ...skip"
+fi
+
+#-------------------------------------------------------------------------------
 # OpenMesh
 #-------------------------------------------------------------------------------
 echo "# Build OpenMesh ..."
@@ -105,6 +179,7 @@ if [[ "$_dep" == "openvolumemesh" || "$_dep" == "all" ]]; then
 else
   echo "# ...skip"
 fi
+
 #-------------------------------------------------------------------------------
 # gmsh
 #-------------------------------------------------------------------------------
@@ -240,6 +315,33 @@ else
 fi
 
 #-------------------------------------------------------------------------------
+# cgal
+#-------------------------------------------------------------------------------
+echo "# Build cgal ..."
+if [[ "$_dep" == "cgal" || "$_dep" == "all" ]]; then
+  cd $_pwd
+  if [[ "$_skipDownload" == "0" ]]; then
+    rm -rf cgal
+    git clone https://github.com/CGAL/cgal cgal
+  fi
+  if [[ "$_skipBuild" == "0" ]]; then
+    cd cgal
+    git checkout v4.14.3
+    mkdir -p ${_pwd}/build_cgal
+    cd ${_pwd}/build_cgal
+    cmake \
+      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DMPFR_INCLUDE_DIR=${_installPrefix}/include \
+      -DMPFR_LIBRARIES=${_installPrefix}/lib64 \
+      ../cgal
+    make -j${_nProcs} install
+  fi
+else
+  echo "# ...skip"
+fi
+
+#-------------------------------------------------------------------------------
 # muparser
 #-------------------------------------------------------------------------------
 echo "# Build muparser ..."
@@ -281,107 +383,6 @@ if [[ "$_dep" == "root" || "$_dep" == "all" ]]; then
       -Dminuit2=ON \
       -DCMAKE_BUILD_TYPE=Release \
       ../root
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
-#-------------------------------------------------------------------------------
-# cgns
-#-------------------------------------------------------------------------------
-echo "# Build cgns ..."
-if [[ "$_dep" == "cgns" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf cgns
-    git clone https://github.com/CGNS/CGNS cgns
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd cgns
-    mkdir -p ${_pwd}/build_cgns
-    cd ${_pwd}/build_cgns
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DCGNS_USE_SHARED=ON \
-      -DCGNS_ENABLE_SCOPING=OFF \
-      -DCGNS_ENABLE_HDF5=OFF \
-      -DCGNS_ENABLE_64BIT=ON \
-      ../cgns
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
-#-------------------------------------------------------------------------------
-# cgal
-#-------------------------------------------------------------------------------
-echo "# Build cgal ..."
-if [[ "$_dep" == "cgal" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf cgal
-    git clone https://github.com/CGAL/cgal cgal
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd cgal
-    git checkout v4.14.3
-    mkdir -p ${_pwd}/build_cgal
-    cd ${_pwd}/build_cgal
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DMPFR_INCLUDE_DIR=${_installPrefix}/include \
-      -DMPFR_LIBRARIES=${_installPrefix}/lib64 \
-      ../cgal
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
-#-------------------------------------------------------------------------------
-# lapack
-#-------------------------------------------------------------------------------
-echo "# Build lapack ..."
-if [[ "$_dep" == "lapack" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf root
-    git clone https://github.com/Reference-LAPACK/lapack lapack
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    #cd lapack
-    mkdir -p ${_pwd}/build_lapack
-    cd ${_pwd}/build_lapack
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DCBLAS=ON \
-      -DBUILD_SHARED_LIBS=ON \
-      ../lapack
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
-#-------------------------------------------------------------------------------
-# mpfr
-#-------------------------------------------------------------------------------
-echo "# Build mpfr ..."
-if [[ "$_dep" == "mpfr" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf ${_pwd}/mpfr-4.1.0
-    rm -rf ${_pwd}/mpfr-4.1.0.tar.xz
-    curl -o mpfr-4.1.0.tar.xz https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz
-    tar xvf mpfr-4.1.0.tar.xz
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd ${_pwd}/mpfr-4.1.0
-    ./configure \
-      --prefix=${_installPrefix}
     make -j${_nProcs} install
   fi
 else
