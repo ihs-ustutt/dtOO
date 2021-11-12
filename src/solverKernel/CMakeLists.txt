@@ -47,5 +47,31 @@ else (FOAMEXT_FOUND)
   message("**> Do not include foam-ext based cases")
 endif (FOAMEXT_FOUND)
 
+if (OpenFOAM_FOUND)
+  list(APPEND HEADERS
+    ofOpenFOAMCase/ofOpenFOAMCase.h
+    ofOpenFOAMCase/ofOpenFOAMSetupRule.h
+    ofOpenFOAMCase/ofOpenFOAMWallRule.h
+    ofOpenFOAMCase/ofOpenFOAMCyclicAmiRule.h
+    ofOpenFOAMCase/ofOpenFOAMEmptyRule.h
+  )
+
+  list(APPEND SOURCES
+    ofOpenFOAMCase/ofOpenFOAMCase.cpp
+    ofOpenFOAMCase/ofOpenFOAMSetupRule.cpp
+    ofOpenFOAMCase/ofOpenFOAMWallRule.cpp
+    ofOpenFOAMCase/ofOpenFOAMCyclicAmiRule.cpp
+    ofOpenFOAMCase/ofOpenFOAMEmptyRule.cpp
+  )
+  if (OpenFOAMWixingPlane_FOUND)
+    list(APPEND HEADERS ofOpenFOAMCase/ofOpenFOAMMixingPlaneRule.h)
+    list(APPEND SOURCES ofOpenFOAMCase/ofOpenFOAMMixingPlaneRule.cpp)
+  else (OpenFOAMWixingPlane_FOUND)
+    message("**> Do not include OpenFOAMWixingPlane based cases")
+  endif (OpenFOAMWixingPlane_FOUND)
+else (OpenFOAM_FOUND)
+  message("**> Do not include OpenFOAM based cases")
+endif (OpenFOAM_FOUND)
+
 APPEND_DTOO_SOURCE(src/solverKernel "${SOURCES}")
 APPEND_DTOO_HEADER(src/solverKernel "${HEADERS}")
