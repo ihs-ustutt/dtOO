@@ -165,6 +165,11 @@ namespace dtOO {
     if ( isnan(par1) || isnan(par2) ) {
       gp = GPoint(1.e21, 1.e21, 1.e21, this, pp);
       gp.setNoSuccess();
+      dt__warning(
+        point(), 
+        << "par1 = " << par1 << ", par2 = " << par2 << std::endl
+        << "Return GPoint with NoSuccess."
+      );
     }
     else {
       dtPoint3 retPoint = _mm->getPoint(par1, par2);
