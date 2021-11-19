@@ -161,10 +161,16 @@ namespace dtOO {
   
   GPoint dtGmshFace::point(double par1, double par2) const {
     double pp[2] = {par1, par2};
-    
-    dtPoint3 retPoint = _mm->getPoint(par1, par2);
-    
-    return GPoint(retPoint.x(), retPoint.y(), retPoint.z(), this, pp);
+    GPoint gp;
+    if ( isnan(par1) || isnan(par2) ) {
+      gp = GPoint(1.e21, 1.e21, 1.e21, this, pp);
+      gp.setNoSuccess();
+    }
+    else {
+      dtPoint3 retPoint = _mm->getPoint(par1, par2);
+      gp = GPoint(retPoint.x(), retPoint.y(), retPoint.z(), this, pp);
+    }
+    return gp;
   }
 
   SPoint2 dtGmshFace::reparamOnFace(dtPoint3 const ppXYZ) const {
