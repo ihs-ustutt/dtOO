@@ -2,11 +2,10 @@
 #define	TIMEHANDLING_H
 
 #include <logMe/dtMacros.h>
-#include <sstream>
 
 namespace boost {
   namespace timer {
-    class auto_cpu_timer;
+    class cpu_timer;
   }
 }
 
@@ -16,10 +15,11 @@ namespace dtOO {
     dt__classOnlyName(timeHandling);    
     timeHandling(std::string const & keyword);
     virtual ~timeHandling();
+    void output( void );
   private:
     std::string _keyword;
-    std::ostringstream _stream;
-    ::boost::timer::auto_cpu_timer * _t;    
+    dt__pH(::boost::timer::cpu_timer) _t;
+    int _step;
   };
 }
 #endif	/* TIMEHANDLING_H */

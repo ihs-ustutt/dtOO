@@ -6,18 +6,19 @@
 namespace dtOO {
   timeHandling::timeHandling( std::string const & keyword ) {
     _keyword = keyword;
-    _t = new ::boost::timer::auto_cpu_timer(_stream);
+    _t.reset( new ::boost::timer::cpu_timer() );
+    _step = 0;
   }
 
   timeHandling::~timeHandling() {
-    delete _t;
-    
+  }
+  
+  void timeHandling::output( void ) {
     dt__info(
-      ~timeHandling(), 
-      << "time measurement" << std::endl
-      << dt__eval(_keyword) << std::endl
-      << dt__eval(_stream.str())
+      measure(), 
+      << _keyword << " ( " << _step << " ) " << _t->format()
     );
+    _step = _step + 1;
   }
 }
 
