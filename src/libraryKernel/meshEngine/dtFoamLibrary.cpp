@@ -1020,7 +1020,7 @@ namespace dtOO {
     );
     
 #ifdef DTOO_HAS_FOAMEXT            
-      theTime.writeHeader(os());
+      theTime.controlDict().writeHeader(os());
 #endif
 #ifdef DTOO_HAS_OpenFOAM
       ::Foam::IOobject io("controlDict","system", theTime);
