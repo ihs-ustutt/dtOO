@@ -84,7 +84,7 @@ MACRO(
 )
   IF( NOT ${LIB_FOUND} STREQUAL TRUE )
     set( _testincname ${TESTINCNAME} )
-    set( _testlibname ${TESTLIBNAME} )
+    set( _testlibnames ${TESTLIBNAME} )
     set( 
       _incsearchpath
       $ENV{DTOO_EXTERNLIBS}/include/      
@@ -115,12 +115,16 @@ MACRO(
       MESSAGE( WARNING "Cannot find ${_testincname} include dir." )
     ENDIF( ${LIB_INCLUDE_DIR} MATCHES ".*NOTFOUND.*" )
 
-    # Find one lib and save its directory to LIB_LINK_DIRECTORY.
-    FIND_PATH( 
-      ${LIB_LINK_DIRECTORY} ${_testlibname} 
-      PATH 
-      ${_libsearchpath} 
-    )
+    FOREACH(_testlibname ${_testlibnames})
+      FIND_PATH( 
+        ${LIB_LINK_DIRECTORY} ${_testlibname}
+        PATH 
+        ${_libsearchpath} 
+      )
+      IF( NOT ${LIB_LINK_DIRECTORY} MATCHES ".*NOTFOUND.*" )
+        BREAK()
+      ENDIF( NOT ${LIB_LINK_DIRECTORY} MATCHES ".*NOTFOUND.*" )
+    ENDFOREACH()
 
     IF( ${LIB_LINK_DIRECTORY} MATCHES ".*NOTFOUND.*" )
       SET( ${LIB_FOUND} FALSE CACHE BOOL "Has been found?" FORCE )
