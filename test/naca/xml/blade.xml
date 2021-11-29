@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ru_bladeRunner>
+<!--
+!
+!
+! blade
+!
+!
+-->						
+    <part label="aS_blade">
+      <builder name="vec3dInMap3dTo3d">
+        <analyticFunction label="~uVw_deltaMs(vec3d2d_blade)~"/>
+        <analyticGeometry label="t6C_mid_channel"/>
+      </builder>
+    </part>	   	
+<!--
+!
+!
+! stagnation line
+!
+!
+-->
+<!--	<part label="aS_ru_blade_stagnationLine">
+		<builder name="vec2dOneDInMap2dTo3d_closestCurve" numPoints="3">
+			<analyticGeometry label="aS_ru_blade"/>
+			<analyticGeometry label="~u0_s(aS_ru_meanplane)~"/>
+			</builder>
+	</part>	-->
+</ru_bladeRunner>
