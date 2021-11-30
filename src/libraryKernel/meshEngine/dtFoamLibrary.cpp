@@ -20,6 +20,7 @@
 #include <IOdictionary.H>
 #include <fvMesh.H>
 #include <wordList.H>
+#include <sigFpe.H>
 
 #ifdef DTOO_HAS_OpenFOAM
   #include <topoSet.H>
@@ -1170,7 +1171,7 @@ namespace dtOO {
     argv[2] = const_cast< char *>(argvStr[2].c_str());    
 
     // disable floating point exception trapping
-    systemHandling::unsetEnv("FOAM_SIGFPE");
+    ::Foam::sigFpe::unset(true);
 
     //
     // create rootCase
@@ -1182,4 +1183,8 @@ namespace dtOO {
     
     return args;
   }  
+  
+  void dtFoamLibrary::unsetFpe( void ) {
+    ::Foam::sigFpe::unset(true);
+  }
 }

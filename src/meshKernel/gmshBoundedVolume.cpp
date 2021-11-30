@@ -52,7 +52,7 @@ namespace dtOO {
     // init boundedVolume
     //
     boundedVolume::init(element, bC, cV, aF, aG, bV);
-		
+		   
 		//
 		// get compound and put pieces as regions to gmsh model
 		//
@@ -277,7 +277,7 @@ namespace dtOO {
     _physLabels[4].push_back("gmsh");
 	}
 
-	void gmshBoundedVolume::makePreGrid(void) {    
+	void gmshBoundedVolume::makePreGrid(void) {
 		//
 		// set current model
 		//

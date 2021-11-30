@@ -23,6 +23,7 @@
 
 #include <logMe/dtParMacros.h>
 #include "dtPluginFactory.h"
+#include <meshEngine/dtFoamLibrary.h>
 
 namespace dtOO {  
   bool volVectorFieldVersusXYZ::_registrated 
@@ -136,7 +137,7 @@ namespace dtOO {
 
       try {
         // disable floating point exception trapping
-        systemHandling::unsetEnv("FOAM_SIGFPE");
+        dtFoamLibrary::unsetFpe();
 
         //
         // create rootCase
