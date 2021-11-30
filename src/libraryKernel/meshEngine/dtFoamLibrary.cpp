@@ -1171,7 +1171,7 @@ namespace dtOO {
     argv[2] = const_cast< char *>(argvStr[2].c_str());    
 
     // disable floating point exception trapping
-    ::Foam::sigFpe::unset(true);
+    dtFoamLibrary::unsetFpe();
 
     //
     // create rootCase
