@@ -27,6 +27,9 @@
 #include <gmsh/MElement.h>
 #include <gmsh/Field.h>
 #include <gmsh/Parser.h>
+#if defined(DTOO_HAS_OpenFOAM) || defined(DTOO_HAS_FOAMEXT)
+  #include <meshEngine/dtFoamLibrary.h>
+#endif
 
 namespace dtOO {
 	gmshBoundedVolume::gmshBoundedVolume() : boundedVolume() {
@@ -52,7 +55,13 @@ namespace dtOO {
     // init boundedVolume
     //
     boundedVolume::init(element, bC, cV, aF, aG, bV);
-		   
+		
+    //
+    // disable sigFpe for gmsh if any version of OpenFOAM is present
+    //
+#if defined(DTOO_HAS_OpenFOAM) || defined(DTOO_HAS_FOAMEXT)
+    dtFoamLibrary::unsetFpe();
+#endif
 		//
 		// get compound and put pieces as regions to gmsh model
 		//
