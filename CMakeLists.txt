@@ -472,3 +472,9 @@ add_subdirectory(application)
 # add tools
 #
 add_subdirectory(tools)
+
+#
+# add test
+#
+enable_testing()
+add_subdirectory(test)

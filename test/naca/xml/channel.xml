@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<channel>
+<!--
+	!
+	! meridian shape
+	!
+-->
+	<constValue 
+		label="cV_R" 
+		name="sliderFloatParam" value="2.00" min="0." max="4.0"
+	/>
+	<constValue 
+		label="cV_L" 
+		name="sliderFloatParam" value="1.0" min="0." max="10."
+	/>
+	<constValue 
+		label="cV_LPer_ext" 
+		name="sliderFloatParam" value="2.0" min="0." max="10."
+	/>
+	<constValue 
+		label="cV_LPer_int" 
+		name="sliderFloatParam" value="0.1" min="0." max="1."
+	/>  
+	<constValue 
+		label="cV_nBlades" 
+		name="intParam" value="4." min="0" max="10"
+	/>	
+
+	<part label="s3_int_perio_a_down">
+		<builder name="bSplineCurve_pointConstructOCC" order="1">		
+			<Point_3 xyz="-.1,-.5*2.*_pi*#cV_R#/#cV_nBlades#, -#cV_LPer_int#*#cV_L#"/>
+			<Point_3 xyz="-.1,-.5*2.*_pi*#cV_R#/#cV_nBlades#, 0"/>
+		</builder>
+	</part>
+	<part label="s3_mid_perio_a_down">
+		<builder name="bSplineCurve_pointConstructOCC" order="1">		
+			<Point_3 xyz="-.1,-.5*2.*_pi*#cV_R#/#cV_nBlades#, 0"/>
+			<Point_3 xyz="-.1,-.5*2.*_pi*#cV_R#/#cV_nBlades#, #cV_L#"/>
+		</builder>
+	</part>
+	<part label="s3_ext_perio_a_down">
+		<builder name="bSplineCurve_pointConstructOCC" order="1">		
+			<Point_3 xyz="-.1,-.5*2.*_pi*#cV_R#/#cV_nBlades#, #cV_L#"/>
+			<Point_3 xyz="-.1,-.5*2.*_pi*#cV_R#/#cV_nBlades#, (1.+#cV_LPer_ext#)*#cV_L#"/>
+		</builder>
+	</part>
+  <replace variable="ii" values="{int}{mid}{ext}">
+    <part label="s3_{ii}_perio_a_up">
+      <builder name="analyticGeometry">
+        <transformer label="dtT_hubShroud"/>
+        <analyticGeometry label="s3_{ii}_perio_a_down"/>
+      </builder>
+    </part>
+  </replace>
+  <replace variable="ii" values="{int}{mid}{ext}">
+    <part label="aS_{ii}_channel_perio_a">
+      <builder name="bSplineSurface_skinConstructOCC" orderMin="1" orderMax="1" nIterations="0" exchange="false">
+        <analyticGeometry label="s3_{ii}_perio_a_down"/>
+        <analyticGeometry label="s3_{ii}_perio_a_up"/>
+      </builder>
+    </part>
+<!--    <part label="aS_{ii}_channel_up">
+      <builder name="analyticGeometry">
+        <transformer name="translate">
+          <Vector_3 xyz=".2,0,0"/>
+        </transformer>
+        <analyticGeometry label="aS_{ii}_channel_down"/>
+      </builder>
+    </part>    -->
+  </replace>  
+  <replace variable="ii" values="{int}{mid}{ext}">
+    <part label="t6C_{ii}_channel">
+      <!--<builder name="trans6SidedCubeAGXmlBuilder">-->
+      <builder name="translatingMap2dTo3dAGXmlBuilder">
+        <analyticGeometry label="aS_{ii}_channel_perio_a"/>
+        <Vector_3 xyz="0,2.*_pi*#cV_R#/#cV_nBlades#,0"/>
+        <!--<analyticGeometry label="aS_{ii}_channel_up"/>-->
+      </builder>
+    </part>    
+  </replace>  
+
+  <replace variable="ii" values="{int}{mid}{ext}">
+    <part label="aS_{ii}_hub">
+      <builder name="analyticGeometry">
+        <analyticGeometry label="~w0_v(t6C_{ii}_channel)~"/>
+      </builder>
+    </part>    
+    <part label="aS_{ii}_shroud">
+      <builder name="analyticGeometry">
+        <analyticGeometry label="~w1_v(t6C_{ii}_channel)~"/>
+      </builder>
+    </part>     
+    <part label="aS_{ii}_inlet">
+      <builder name="analyticGeometry">
+        <analyticGeometry label="~v0_v(t6C_{ii}_channel)~"/>
+      </builder>
+    </part>    
+    <part label="aS_{ii}_outlet">
+      <builder name="analyticGeometry">
+        <analyticGeometry label="~v1_v(t6C_{ii}_channel)~"/>
+      </builder>
+    </part>        
+    <part label="aS_{ii}_perio_a">
+      <builder name="analyticGeometry">
+        <analyticGeometry label="~u0_v(t6C_{ii}_channel)~"/>
+      </builder>
+    </part>    
+    <part label="aS_{ii}_perio_b">
+      <builder name="analyticGeometry">
+        <analyticGeometry label="~u1_v(t6C_{ii}_channel)~"/>
+      </builder>
+    </part>            
+  </replace>  
+
+  <part label="baseContainer_channel">
+    <builder name="baseContainer">
+			<transformer 
+				label="uVw_deltaMs" 
+				name="uVw_deltaMs" 
+				part_label="t6C_mid_channel"
+				number_points_two="31"
+				number_points_three="11"
+			/>
+    </builder>
+  </part>	
+</channel>

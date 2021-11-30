@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<of>
+	<case 
+		name="OpenFOAMCase" 
+		label="of"
+		noWriteRule="
+  {
+  1
+  (
+  }
+  {
+  )
+  }
+    "		
+		dictRule="
+			controlDict 
+			{
+		    dtOOFileName      &quot;system/controlDict&quot;;
+				application       simpleFoam;
+				startFrom         latestTime;
+				startTime         0;
+				stopAt            endTime;
+				endTime           1000;
+				deltaT            1;
+				writeInterval     500;	
+        runTimeModifiable yes;
+				writeFormat       binary;
+				functions
+				(
+          Q_out { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName OUTLET ; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          }
+          Q_in { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName INLET ; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          Q_perioa { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName PERIOA; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          }            
+          Q_periob { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName PERIOB; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          }   
+          ptot_in { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName INLET ; 
+            variables &quot;u=vector(0,-18.8496,0); &quot;;
+            expression &quot;(p+.5*magSqr(U-u)) * phi / sum( phi ) &quot;;
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          ptot_out { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName OUTLET ; 
+            variables &quot;u=vector(0,-18.8496,0); &quot;;
+            expression &quot;(p+.5*magSqr(U-u)) * phi / sum( phi ) &quot;;
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          forces { 
+            type forces ; 
+            functionObjectLibs ( &quot;libforces.so&quot; ) ; 
+            outputControl timeStep ; 
+            outputInterval 1 ; 
+            patches ( BLADE ) ; 
+            rhoName rhoInf ; 
+            log true ; 
+            rhoInf 997 ; 
+            CofR ( 0 0 0 ) ; 
+          } 
+        );
+
+				libs (
+          &quot;libOpenFoamTurbo.so&quot;							
+					&quot;libsimpleFunctionObjects.so&quot;
+					&quot;libsimpleSwakFunctionObjects.so&quot;
+				);				
+			}
+			decomposeParDict
+			{
+				dtOOFileName        &quot;system/decomposeParDict&quot;;
+
+        method          patchConstrained;
+
+        numberOfSubdomains 96;
+
+
+        globalFaceZones ( 
+          PERIOA_zone 
+          PERIOB_zone 
+        );
+
+			}
+		  fvSchemes 
+		  {
+		    dtOOFileName        &quot;system/fvSchemes&quot;;
+				ddtSchemes
+				{
+					default steadyState;
+				}
+
+				gradSchemes
+				{
+					default         cellLimited Gauss linear 0.33;
+					grad(p)         cellLimited Gauss linear 0.33;
+					grad(U)         cellLimited Gauss linear 0.33;
+				}
+
+				divSchemes
+				{
+					default           none;
+					div(phi,U)        Gauss linearUpwindV cellLimited Gauss linear 0.33;
+					div(phi,k)        Gauss upwind;
+					div(phi,epsilon)  Gauss upwind;
+					div((nuEff*dev(grad(U).T()))) Gauss linear;
+				}
+
+				laplacianSchemes 
+				{ 
+					default Gauss linear limited 0.333; 
+				} 
+
+				snGradSchemes 
+				{ 
+					default limited 0.333; 
+				} 
+
+				interpolationSchemes
+				{
+					default         linear;
+					interpolate(U)  linear;
+				}
+
+				fluxRequired
+				{
+					default         no;
+					p;
+				}
+
+				mixingPlane
+				{
+					default         areaAveraging;
+				}
+		  }
+		  fvSolution
+		  {
+		    dtOOFileName        &quot;system/fvSolution&quot;;
+				solvers
+				{
+					p
+					{
+						solver           PCG;
+						preconditioner   FDIC;
+						tolerance        1e-06;
+						relTol           0.1;
+					};
+					U
+					{
+						solver           BiCGStab;
+						preconditioner   DILU;
+						tolerance        1e-08;
+						relTol           0.0;
+					};
+					k
+					{
+						solver           BiCGStab;
+						preconditioner   DILU;
+						tolerance        1e-08;
+						relTol           0.0;
+					};
+					epsilon
+					{
+						solver           BiCGStab;
+						preconditioner   DILU;
+						tolerance        1e-08;
+						relTol           0.0;
+					};
+				}
+				relaxationFactors
+				{
+					p               0.3;
+					U               0.7;
+					k               0.7;				
+					epsilon         0.7;				
+				}
+				SIMPLE
+				{
+					nNonOrthogonalCorrectors 2;
+				}				
+		  }
+		  transportModel
+		  {
+				dtOOFileName        &quot;constant/transportProperties&quot;;
+				transportModel  Newtonian;
+
+				nu              nu [0 2 -1 0 0 0 0] 1.0e-06;
+			}
+		  RASProperties
+      {
+				dtOOFileName        &quot;constant/RASProperties&quot;;
+				RASModel            kEpsilon;
+				turbulence          on;
+
+				kEpsilonCoeffs
+				{
+					Cmu              0.09;
+					C1               1.44;
+					C2               1.92;
+					alphaEps         0.76923;
+				}				
+			}
+		"		
+		fieldRule="
+			{
+				:volVectorField::U::[0 1 -1 0 0 0 0]::(0 0 4 ):
+			}
+			{
+				:volScalarField::p::[0 2 -2 0 0 0 0]::0:
+			}
+			{
+				:volScalarField::k::[0 2 -2 0 0 0 0]::`(3./2.) * (#cV_U# * #cV_I#)^2`:
+			}
+			{
+				:volScalarField:
+				:epsilon:
+				:[0 2 -3 0 0 0 0]:
+				:`#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`:
+			}
+			{
+				:volScalarField::nut::[0 2 -1 0 0 0 0]::0.1:
+			}
+		"
+		setupRule="
+		  {
+				:OpenFOAMEmptyRule:::::
+			}
+		  {
+				:OpenFOAMCyclicGgiRule::PERIOA,PERIOB::
+				bridgeOverlap(false),
+				rotationAngle(0), 
+				rotationAxis(0,0,0),
+				separationOffset(0,2.*_pi*#cV_R#/#cV_nBlades#,0):
+			}
+		  {
+				:OpenFOAMWallRule::BLADE:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}				
+		  {
+				:OpenFOAMSetupRule::HUB:::
+				:U::slip(value uniform (0 0 0);):
+				:p::slip(value uniform 0;):
+				:k::slip(value uniform 0;):
+				:epsilon::slip( value uniform 0;):
+			}        
+		  {
+				:OpenFOAMSetupRule::SHROUD:::
+				:U::slip(value uniform (0 0 0);):
+				:p::slip(value uniform 0;):
+				:k::slip(value uniform 0;):
+				:epsilon::slip( value uniform 0;):
+			} 
+		  {
+				:OpenFOAMWallRule::INLET:::
+				:U::fixedValue(value uniform (0 -`#cV_omega#*#cV_R#` #cV_U#);):
+				:p::zeroGradient(value uniform 0;):
+				:k::turbulentIntensityKineticEnergyInlet(
+						intensity      #cV_I#;
+						value          uniform `(3./2.) * (#cV_U# * #cV_I#)^2`;
+					):				
+				:epsilon::turbulentMixingLengthDissipationRateInlet(
+						mixingLength `0.038 * #cV_L#`;
+						value uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`;
+					):
+			}
+		  {
+				:OpenFOAMWallRule::OUTLET:::
+				:U::zeroGradient(value uniform (0 0 0);):
+				:p::fixedValue(value uniform 100;):
+				:k::zeroGradient(
+						value          uniform 0.;
+					):				
+				:epsilon::zeroGradient(
+						value uniform 0.;
+					):
+			}
+		"
+				
+		runCommand="pwd"
+  >
+		<option name="keepOrientation" value="true"/>
+		
+		<boundedVolume label="gridGmsh"/>
+	</case>	
+  <replace variable="ii" values="{of}">
+    <plugin
+      name="volScalarFieldRange" 
+      label="{ii}_cav"
+      field="p"
+      inRangeFunction="aF_p_cav"
+    >
+      <case label="{ii}"/>
+    </plugin>
+    <plugin
+      name="volVectorFieldRange" 
+      label="{ii}_uZSmallerZero"
+      field="U"
+      inRangeFunction="aF_uZSmallerZero"
+    >
+      <case label="{ii}"/>
+    </plugin>      
+  </replace>
+	<!--
+		  {
+				:OpenFOAMCyclicGgiRule::GV_PERIOPS,GV_PERIOSS::
+				bridgeOverlap(false),
+				rotationAngle(-360./#cV_gv_nBlades#), 
+				rotationAxis(0,0,1),
+				separationOffset(0,0,0):
+			}	
+
+		  {
+				:OpenFOAMCylindricalInletRule::GV_INLET:
+				::
+				:U::
+				  rotationAxis(0, 0, 1),
+				  referenceAxis(0, 1, 0),
+				  origin(0, 0, 0),
+				  function(aF_gv_inlet_phi_r_m),
+				  scale(true),
+				  volumeFlow(-#cV_Q#/#cV_gv_nBlades#)
+				:
+				:p::zeroGradient(
+				  value uniform 0;
+				):
+				:k::turbulentIntensityKineticEnergyInlet(
+						intensity      #cV_I#;
+						value          uniform `(3./2.) * (#cV_U# * #cV_I#)^2`;
+					):				
+				:epsilon::turbulentMixingLengthDissipationRateInlet(
+						mixingLength `0.038 * #cV_L#`;
+						value uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`;
+					):
+			}					
+	
+		  {
+				:OpenFOAMMixingPlaneRule::GV_OUTLET,RU_INLET:
+				:
+					coordinateSystem(
+							type            cylindrical;
+							name            mixingCS;
+							origin          (0 0 0);
+							e1              (1 0 0);
+							e3              (0 0 1);
+					),
+					sweepAxis(Theta),
+					stackAxis(R),
+					discretisation(bothPatches)
+				:
+			}
+	
+	-->
+</of>

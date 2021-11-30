@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<case_constants>
+	<!--<constValue label="cV_Q" name="sliderFloatParam" value="0.26058" min="0." max="200."/>	-->
+	<constValue label="cV_n" name="sliderFloatParam" value="90." min="0." max="100."/>	
+	<constValue label="cV_omega" name="constrainedFloatParam" value="2.*_pi/60. * #cV_n#" min="0." max="100."/>	
+	<!--<constValue label="cV_L" name="sliderFloatParam" value="0.14116" min="0" max="10"/>-->
+	<constValue label="cV_LWall" name="sliderFloatParam" value="1.0/1000" min="0" max="10"/>
+	<constValue label="cV_I" name="sliderFloatParam" value="0.05" min="0." max="1."/>
+	<constValue 
+		label="cV_U" 
+		name="sliderFloatParam" 
+		value="5.77" min="0." max="100."
+	/>
+	
+	<constValue label="cV_Cmu" name="sliderFloatParam" value="0.09" min="0." max="1."/>
+	
+	<function label="uZGreaterZero"> 
+    <builder  name="muParser">
+			<expression 
+				value="zz &gt; 0.0 ? 1.0 : 0.0"
+				dimension="1"
+			/>
+      <x_one   name="xx" min="-100.0" max="100.0"/>
+			<x_two   name="yy" min="-100.0" max="100.0"/>
+			<x_three name="zz" min="-100.0" max="100.0"/>
+    </builder>		
+	</function>
+	<function label="aF_uZSmallerZero"> 
+    <builder  name="muParser">
+			<expression 
+				value="zz &lt; 0.0 ? 1.0 : 0.0"
+				dimension="1"
+			/>
+      <x_one   name="xx" min="-100.0" max="100.0"/>
+			<x_two   name="yy" min="-100.0" max="100.0"/>
+			<x_three name="zz" min="-100.0" max="100.0"/>
+    </builder>		
+	</function>  
+	<function label="aF_p_cav"> 
+    <builder  name="muParser">
+			<expression 
+				value="xx &lt; 0. ? 1.0 : 0.0"
+				dimension="1"
+			/>
+      <x_one   name="xx" min="-10000.0" max="10000.0"/>
+    </builder>		
+	</function>
+</case_constants>

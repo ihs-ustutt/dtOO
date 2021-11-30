@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<vec3d2d_bladeToCSV>
+  <plugin 
+    name="analyticFunctionToCSV" 
+    label="of_bladeToCSV" 
+    numPoints="{200}{2}{50}"
+  >
+    <analyticFunction label="vec3d2d_blade"/>
+    <case label="of"/>
+  </plugin>
+
+</vec3d2d_bladeToCSV>

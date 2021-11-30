@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ru_bladeRunner2d>
+<!--
+!
+!
+! design parameters (DOF)
+!
+!
+-->				
+  <constValue label="cV_t_a" name="sliderFloatParam" value="0.300" min="0.04" max="0.150"/>
+  <constValue label="cV_t_b" name="sliderFloatParam" value="0.300" min="0.04" max="0.150"/>
+
+  <constValue label="cV_thick_x_a" name="sliderFloatParam" value="0.5" min="0.01" max="0.99"/>	
+  <constValue label="cV_thick_y_a" name="sliderFloatParam" value="0.5" min="0.01" max=".99"/>    
+  <constValue label="cV_thick_x_b" name="sliderFloatParam" value="0.5" min="0.01" max="0.99"/>	
+  <constValue label="cV_thick_y_b" name="sliderFloatParam" value="0.5" min="0.01" max=".99"/>      
+  <constValue label="cV_thick_order" name="constrainedFloatParam" value="2" min="0.01" max=".99"/>    
+	<function label="aF_thick_bSpline_a">
+		<builder name="scaOneD_forceBSplineCurve2dAFXmlBuilder" order="2">
+      <Point_2 xy="0,1"/>
+      <Point_2 xy="#cV_thick_x_a#,#cV_thick_y_a#"/>
+      <Point_2 xy="1,0"/>
+		</builder>
+	</function>
+	<function label="aF_thick_bSpline_b">
+		<builder name="scaOneD_forceBSplineCurve2dAFXmlBuilder" order="2">
+      <Point_2 xy="0,1"/>
+      <Point_2 xy="#cV_thick_x_b#,#cV_thick_y_b#"/>
+      <Point_2 xy="1,0"/>
+		</builder>
+	</function>  
+	<function label="muParseF_thick_bSpline">
+		<builder name="muParser">
+			<expression 
+				value="
+          xx &lt; 1.
+          ?
+            Y(&quot;$aF_thick_bSpline_a()$&quot;,xx)
+          :
+            Y(&quot;$aF_thick_bSpline_b()$&quot;,2.-xx)
+        " 
+				dimension="1"
+			/>
+			<x_one name="xx" min="0." max="2."/>
+		</builder>
+	</function>  
+  
+<!--
+!
+!
+! thickness distributions
+!
+!
+-->				
+<!--  <constValue label="cV_thick_x" name="sliderFloatParam" value="0.5" min="0.01" max="0.99"/>	
+  <constValue label="cV_thick_y" name="sliderFloatParam" value="0.5" min="0.01" max=".99"/>	 -->   
+	<function label="v3d2d_thicknessDistribution">
+    <builder  name="muParser">
+			<expression value="
+          xx &lt; 1. 
+				  ? 
+						  ( #cV_t_a# )
+						* ( 
+						  0.2969 * sqrt( 1.-xx ) 
+						- 0.1260 *     ( 1.-xx ) 
+						- 0.3516 *     ( 1.-xx )^2. 
+						+ 0.2843 *     ( 1.-xx )^3. 
+						- 0.1015 *     ( 1.-xx )^4.
+						- 0.0021 *     ( 1.-xx )^4
+						)
+					: 
+						-1. * ( 
+						    ( #cV_t_b# ) 
+							* ( 
+							  0.2969 * sqrt( xx-1. ) 
+							- 0.1260 *     ( xx-1. ) 
+							- 0.3516 *     ( xx-1. )^2. 
+							+ 0.2843 *     ( xx-1. )^3. 
+							- 0.1015 *     ( xx-1. )^4.
+							- 0.0021 *     ( xx-1. )^4
+							)
+					  )
+				, 
+          Y(&quot;$muParseF_thick_bSpline()$&quot;,xx)
+				,
+				yy
+				"
+				dimension="3"/>
+      <x_one name="xx" min="0." max="2."/>
+			<x_two name="yy" min="0." max="1."/>
+    </builder>
+  </function>	
+<!--  <function label="v3d2d_ruWithTE_thicknessDistribution">
+    <builder  name="muParser">
+      <expression 
+        value="
+          xx &lt; 1. 
+          ? 
+              ( #cV_t_a_0# * (1-yy) + #cV_t_a_1# * (yy) )
+            * ( 
+              0.2969 * sqrt( 1.-xx ) 
+            - 0.1260 *     ( 1.-xx ) 
+            - 0.3516 *     ( 1.-xx )^2. 
+            + 0.2843 *     ( 1.-xx )^3. 
+            - 0.1015 *     ( 1.-xx )^4.
+            - 0.0021 *     ( 1.-xx )^4
+            )
+            + ( #cV_TEThick_0# * (1.-yy) + #cV_TEThick_1# * (yy) ) * ( 1.-xx )
+          : 
+            -1. * ( 
+              ( #cV_t_b_0# * (1.-yy) + #cV_t_b_1# * (yy) ) 
+                * ( 
+                  0.2969 * sqrt( xx-1. ) 
+                - 0.1260 *     ( xx-1. ) 
+                - 0.3516 *     ( xx-1. )^2. 
+                + 0.2843 *     ( xx-1. )^3. 
+                - 0.1015 *     ( xx-1. )^4.
+                - 0.0021 *     ( xx-1. )^4
+                )
+                + ( #cV_TEThick_0# * (1.-yy) + #cV_TEThick_1# * (yy) ) * ( xx-1. )
+            )
+          , 
+          xx &lt; #cV_thick_x#
+          ? 
+            ((#cV_thick_y#-1.)/(#cV_thick_x#-0.)) * xx + (1. - ((#cV_thick_y#-1.)/(#cV_thick_x#-0.)) * 0.)
+          : 
+            xx &lt; 1.
+            ? 
+              ((0.-#cV_thick_y#)/(1.-#cV_thick_x#)) * xx + ( #cV_thick_y# - ((0.-#cV_thick_y#)/(1.-#cV_thick_x#)) * #cV_thick_x# )
+            : 
+              xx &lt; (2.-#cV_thick_x#)
+              ? 
+                ((#cV_thick_y#-0.)/((2.-#cV_thick_x#)-1.)) * xx + ( 0 - ((#cV_thick_y#-0.)/((2.-#cV_thick_x#)-1.)) * 1. )  
+              :               
+                ((1.-#cV_thick_y#)/(2. - (2.-#cV_thick_x#))) * xx + (#cV_thick_y# - ((1.-#cV_thick_y#)/(2. - (2.-#cV_thick_x#))) * (2.-#cV_thick_x#))
+          ,
+          yy
+        "
+        dimension="3"
+      />
+      <x_one name="xx" min="0." max="2."/>
+      <x_two name="yy" min="0." max="1."/>
+    </builder>
+  </function>-->
+
+
+<!--  <function label="eiermann">
+    <builder  name="muParser">
+      <expression 
+        value="
+          xx &lt; #cV_thick_x#
+          ? 
+            ((#cV_thick_y#-1.)/(#cV_thick_x#-0.)) * xx + (1. - ((#cV_thick_y#-1.)/(#cV_thick_x#-0.)) * 0.)
+          : 
+            xx &lt; 1.
+            ? 
+              ((0.-#cV_thick_y#)/(1.-#cV_thick_x#)) * xx + ( #cV_thick_y# - ((0.-#cV_thick_y#)/(1.-#cV_thick_x#)) * #cV_thick_x# )
+            : 
+              xx &lt; (2.-#cV_thick_x#)
+              ? 
+                ((#cV_thick_y#-0.)/((2.-#cV_thick_x#)-1.)) * xx + ( 0 - ((#cV_thick_y#-0.)/((2.-#cV_thick_x#)-1.)) * 1. )  
+              :               
+                ((1.-#cV_thick_y#)/(2. - (2.-#cV_thick_x#))) * xx + (#cV_thick_y# - ((1.-#cV_thick_y#)/(2. - (2.-#cV_thick_x#))) * (2.-#cV_thick_x#))
+        "
+        dimension="1"
+      />
+      <x_one name="xx" min="0." max="2."/>
+    </builder>
+  </function>-->
+  
+<!--	<replace variable="ii" values="{a}{b}">
+		<constValue label="cV_t_tip_{ii}" name="sliderFloatParam" value="0.003" min="0.0027" max="0.0033"/>
+		<constValue label="cV_u_max_{ii}" name="sliderFloatParam" value="0.40" min="0.36" max="0.44"/>
+		<constValue label="cV_t_max_{ii}" name="sliderFloatParam" value="0.01" min="0.009" max="0.011"/>
+		<constValue label="cV_u_te_{ii}" name="sliderFloatParam" value="0.70" min="0.63" max="0.77"/>
+		<constValue label="cV_t_te_{ii}" name="sliderFloatParam" value="0.01" min="0.009" max="0.011"/>
+  </replace>-->
+<!--	<replace variable="ii" values="{a_1}{b_1}">
+		<constValue label="cV_t_tip_{ii}" name="sliderFloatParam" value="0.003" min="0.0027" max="0.0033"/>
+		<constValue label="cV_u_max_{ii}" name="sliderFloatParam" value="0.50" min="0.45" max="0.55"/>
+		<constValue label="cV_t_max_{ii}" name="sliderFloatParam" value="0.005" min="0.0045" max="0.0055"/>
+		<constValue label="cV_u_te_{ii}" name="sliderFloatParam" value="0.80" min="0.72" max="0.88"/>
+		<constValue label="cV_t_te_{ii}" name="sliderFloatParam" value="0.01" min="0.009" max="0.011"/>
+  </replace>-->
+	
+<!--	<replace variable="ii" values="{0}{1}">
+		<function label="v3d1d_thicknessDistribution_{ii}">
+			<builder  name="vec3dCurveOneDAFXmlBuilder" order="2">
+				<Point_3 x="0." y="1." z="{ii}"/>
+				<Point_3 x="#cV_t_max_a_{ii}#" y="#cV_u_max_a_{ii}#" z="{ii}"/>
+				<Point_3 x="#cV_t_tip_a_{ii}#" y="0" z="{ii}"/>
+				<Point_3 x="-#cV_t_tip_b_{ii}#" y="0" z="{ii}"/>
+				<Point_3 x="-#cV_t_max_b_{ii}#" y="#cV_u_max_b_{ii}#" z="{ii}"/>
+				<Point_3 x="0." y="1." z="{ii}"/>
+			</builder>
+		</function>	
+	</replace>-->
+<!--	<function label="v3d2d_thicknessDistribution_spline">
+		<builder  name="vec3dSurfaceTwoDAFXmlBuilder">
+			<analyticFunction label="v3d1d_thicknessDistribution_0"/>
+			<analyticFunction label="v3d1d_thicknessDistribution_1"/>
+		</builder>
+	</function>		-->
+<!--		<function label="v3d2d_thicknessDistribution">
+			<builder name="analyticFunction">
+				<analyticFunction label="v3d2d_thicknessDistribution_spline"/>
+			</builder>
+		</function>-->
+		
+<!--
+!
+!
+! combine thickness distribution of blade and meanplane
+!
+!
+-->
+  
+<!--  <replace variable="ii" values="{ru}">-->
+    <function label="vec3d2d_blade">
+      <builder name="analyticFunction">
+        <transformer 
+          name="discreteAddNormal"
+          function_label="v3d2d_thicknessDistribution"
+          number_points_one="61"
+          number_points_two="2"
+          order="3"
+          nf="v3_zz"
+          skinOrderMin="2"
+          skinOrderMax="2"
+          skinNIterations="3"          
+        />
+        <analyticFunction label="vec3d2d_meanplane"/>
+      </builder>
+    </function>
+<!--  </replace>-->
+<!--	<function label="vec3d2d_blade">
+		<builder name="analyticFunction">
+			<transformer 
+				name="discreteAddNormal"
+				function_label="v3d2d_ruWithTE_thicknessDistribution"
+				number_points_one="61"
+				number_points_two="11"
+				order="3"
+				nf="v3_zz"
+			/>
+			<analyticFunction label="vec3d2d_meanplane"/>
+		</builder>
+	</function>			-->  
+</ru_bladeRunner2d>
