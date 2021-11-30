@@ -1186,7 +1186,7 @@ namespace dtOO {
   
   void dtFoamLibrary::unsetFpe( void ) {
 #ifdef DTOO_HAS_FOAMEXT                
-    systemHandling::unsetEnv("FOAM_SIGFPE"):
+    systemHandling::unsetEnv("FOAM_SIGFPE");
     ::Foam::set(true)
 #endif
 #ifdef DTOO_HAS_OpenFOAM
