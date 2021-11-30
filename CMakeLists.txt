@@ -476,4 +476,5 @@ add_subdirectory(tools)
 #
 # add test
 #
+enable_testing()
 add_subdirectory(test)
