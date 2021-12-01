@@ -31,6 +31,8 @@ namespace dtOO {
       std::vector< std::string > _rule1D;
       std::vector< std::string > _rule2D;
       std::vector< std::string > _rule3D;
+      std::vector< std::string > _only;
+      std::vector< float > _faceWeight;
   };
 }
 #endif	/* bVOPMeshRule_H */
