@@ -51,6 +51,7 @@ namespace dtOO {
     static dt__pH(::Foam::argList) initCase(
       std::string const & appName, std::string const & wDir
     );    
+    static void unsetFpe( void );
   private:
     dtFoamLibrary();
     virtual ~dtFoamLibrary();

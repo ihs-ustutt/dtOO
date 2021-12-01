@@ -355,7 +355,7 @@ namespace dtOO {
       //
       try {
         // disable floating point exception trapping
-        systemHandling::unsetEnv("FOAM_SIGFPE");
+        dtFoamLibrary::unsetFpe();
 
         //
         // create rootCase
@@ -379,7 +379,7 @@ namespace dtOO {
             args.caseName(),
             "system",
             "constant",
-            !args.optionFound("noFunctionObjects"),
+            !args.found("noFunctionObjects"),
             true
         );
 
