@@ -9,7 +9,7 @@ add_test(
 set_tests_properties(
   base 
   PROPERTIES
-  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools
+  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
 )
 add_custom_target(
   cp-base-test ALL
@@ -29,7 +29,7 @@ add_test(
 set_tests_properties(
   naca
   PROPERTIES
-  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools
+  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
 )
 add_custom_target(
   cp-naca-test ALL
