@@ -121,11 +121,21 @@ namespace dtOO {
       "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
     );
     _only = qtXmlBase::getAttributeStrVector("only", element);
-    
+    dt__throwIf( _only.size()!=0, init()  );
+    _edgeWeight 
+    = 
+    dtXmlParserBase::getAttributeFloatVectorMuParse(
+      "edgeWeight", element, cV, aF
+    );
     _faceWeight 
     = 
     dtXmlParserBase::getAttributeFloatVectorMuParse(
       "faceWeight", element, cV, aF
+    );    
+    _regionWeight 
+    = 
+    dtXmlParserBase::getAttributeFloatVectorMuParse(
+      "regionWeight", element, cV, aF
     );
     dt__info(
       preUpdate(),
@@ -134,9 +144,104 @@ namespace dtOO {
       << "_rule2D = " << _rule2D << std::endl
       << "_rule3D = " << _rule3D << std::endl
       << "_only = " << _only << std::endl
+      << "_edgeWeight = " << _edgeWeight << std::endl
       << "_faceWeight = " << _faceWeight << std::endl
+      << "_regionWeight = " << _regionWeight << std::endl
       << "debug = " << optionHandling::debugTrue()      
     );
+  }
+  
+  bool bVOPMeshRule::isOwnMaster(::GEntity const * const gent) {
+    if ( gent->getMeshMaster() == gent ) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  bool bVOPMeshRule::isMeshed(dtGmshVertex const * const gent) {
+    if (
+      gent->_status == ::GEntity::MeshGenerationStatus::DONE 
+    ) {
+      return true;
+    }
+    else {
+      return false;
+    }        
+  }
+  
+  template < typename T >
+  bool bVOPMeshRule::isMeshed(T const * const gent) {
+    if (
+      gent->meshStatistics.status == ::GEntity::MeshGenerationStatus::DONE 
+    ) {
+      return true;
+    }
+    else {
+      return false;
+    }        
+  }  
+  template 
+  bool bVOPMeshRule::isMeshed< dtGmshEdge >(dtGmshEdge const * const);
+  template 
+  bool bVOPMeshRule::isMeshed< dtGmshFace >(dtGmshFace const * const);
+  
+  bool bVOPMeshRule::isMeshed(dtGmshRegion const * const gent) {
+    if (
+      gent->_status == ::GEntity::MeshGenerationStatus::DONE 
+    ) {
+      return true;
+    }
+    else {
+      return false;
+    }        
+  }
+  
+  template < typename T >
+  std::map< ::GEntity *, int > bVOPMeshRule::prepareDistribution(
+    std::list< T > list, std::vector< float > weight
+  ) {
+    std::vector< float > rankBalance(
+      staticPropertiesHandler::getInstance()->nRanks(), 0
+    );
+    std::map< ::GEntity *, int > onRankMap;
+    int currentRank = 0;
+    dt__forAllRefAuto(list, anEnt) {
+      if ( !isMeshed(anEnt) && isOwnMaster(anEnt) ) {
+        currentRank = progHelper::minPos(rankBalance);
+        rankBalance[ currentRank ] 
+        = 
+        rankBalance[ currentRank ] 
+        +
+        weight[ anEnt->tag() - 1 ];        
+        onRankMap[ anEnt ] = currentRank;
+      }
+    }
+    
+    logContainer< bVOPMeshRule > logC(
+      TLogLevel::logINFO, "prepareDistribution()"
+    );
+    logC() 
+      << "Distribution" << std::endl
+      << logMe::dtFormat("[ %4s ] -> %4s : %6s") 
+        % "tag" % "rank" % "master" 
+        << std::endl;    
+    dt__forAllRefAuto(list, anEnt) {
+      if ( !isOwnMaster(anEnt) ) {
+        onRankMap[ anEnt ] = onRankMap[ anEnt->getMeshMaster() ];
+      }
+      logC() 
+        << logMe::dtFormat("[ %4d ] -> %3d : %3d") 
+          % anEnt->tag() % onRankMap[anEnt] % anEnt->getMeshMaster()->tag() 
+          << std::endl;
+    }
+    logC() 
+      << "rankBalance = " << std::endl
+      << rankBalance << std::endl;
+    logC.log();    
+  
+    return onRankMap;
   }
   
   void bVOPMeshRule::preUpdate( void ) {
@@ -150,92 +255,53 @@ namespace dtOO {
     std::list< dtGmshFace * > ff;
     std::list< dtGmshRegion * > rr;   
     
-//    if (_only.empty()) {
     ee = dtGmshModel::cast2DtGmshEdge( gm->edges() );
     ff = dtGmshModel::cast2DtGmshFace( gm->faces() );        
     rr = dtGmshModel::cast2DtGmshRegion( gm->regions() );   
-//    }
-//    else {
-//      dt__forAllRefAuto(_only, anOnly) {
-//        ::GEntity * ge = gm->getGEntityByPhysical(anOnly);
-//        
-//        //
-//        // dtGmshFace
-//        //
-//        if (dtGmshFace::DownCast(ge)) {
-//          dtGmshFace * gf = dtGmshFace::SecureCast(ge);
-//          dt__forAllRefAuto(
-//            dtGmshModel::cast2DtGmshEdge(gf->edges()), anEdge
-//          ) ee.push_back(anEdge);
-//          ff.push_back(gf);
-//        }
-//        //
-//        // dtGmshRegion
-//        //
-//        else if (dtGmshRegion::DownCast(ge)) {
-//          dtGmshRegion * gr = dtGmshRegion::SecureCast(ge);
-//          dt__forAllRefAuto(
-//            dtGmshModel::cast2DtGmshFace(gr->faces()), aFace
-//          ) {
-//            ff.push_back(aFace);
-//            dt__forAllRefAuto(
-//              dtGmshModel::cast2DtGmshEdge(aFace->edges()), anEdge
-//            ) ee.push_back(anEdge);
-//          }
-//          rr.push_back(gr);
-//        }
-//        else dt__throwUnexpected(preUpdate());
-//      }
-//      
-//      //
-//      // make unique
-//      //
-//      ee.unique();
-//      ff.unique();
-//      rr.unique();
-//    }    
     
+    if ( _edgeWeight.size() != ee.size() ) {
+      _edgeWeight = std::vector< float >(ee.size(), 1.0);
+      dt__info(preUpdate(), << "Assume uniform _edgeWeight.");
+    }    
+    if ( _faceWeight.size() != ff.size() ) {
+      _faceWeight = std::vector< float >(ff.size(), 1.0);
+      dt__info(preUpdate(), << "Assume uniform _faceWeight.");
+    }    
+    if ( _regionWeight.size() != rr.size() ) {
+      _regionWeight = std::vector< float >(rr.size(), 1.0);
+      dt__info(preUpdate(), << "Assume uniform _regionWeight.");
+    }
     gm->prepareToMesh();
   
     //
     // 0D
     //
-//    gm->mesh(0);
     std::list< dtGmshVertex * > vv 
     = 
     dtGmshModel::cast2DtGmshVertex( gm->vertices() );
     
-    dt__forAllRefAuto(vv, aVertex) {  
-      if ( 
-        (
-          aVertex->_status != ::GEntity::MeshGenerationStatus::DONE 
-        )
-        &&
-        (
-          aVertex->getMeshMaster() == aVertex
-        )
-      )
-      dtMeshGVertex()( aVertex );
+    dt__forAllRefAuto(vv, aVertex) {
+      if ( !isMeshed(aVertex) && isOwnMaster(aVertex) ) {
+        dtMeshGVertex()( aVertex );
+      }
     }
 
     //
     // corresponding vertices
     //
 	  dt__forAllRefAuto(vv, aVertex) {    
-      if ( aVertex->getMeshMaster() != aVertex ) {
+      if ( !isOwnMaster(aVertex) ) {
         dtMesh0DOperator::correspondingVertex( 
           dtGmshModel::cast2DtGmshVertex( aVertex->getMeshMaster()), aVertex 
         );
       }
     } 
-    
-    gm->prepareToMesh();
-    
-    int currentRank = 0;
+
     std::map< ::GEntity *, int > onRankMap;
-    std::vector< float > rankBalance(
-      staticPropertiesHandler::getInstance()->nRanks(), 0
-    );
+    int const thisRank = staticPropertiesHandler::getInstance()->thisRank();
+    
+    gm->prepareToMesh();   
+    onRankMap = prepareDistribution(ee, _edgeWeight);
     
     //
     // 1D
@@ -250,102 +316,25 @@ namespace dtOO {
         dtMesh1DOperator * current1D,
         dtMesh1DOperator::DownCast(_meshOperator.get(currentOperatorStr) )
       );
-      
-      dt__forAllRefAuto(ee, aEdge) {
-        if ( 
-          (
-            (
-              aEdge->meshStatistics.status 
-              !=
-              ::GEntity::MeshGenerationStatus::DONE 
-            )
-            &&
-            gm->matchWildCardPhysical(currentGEntityStr, aEdge)
-            &&
-            (aEdge->getMeshMaster() == aEdge)
-          )
-        ) {
-//          tag.push_back(aEdge->tag());
-//          onRank.push_back(currentRank);
-          onRankMap[ aEdge ] = currentRank;
-        }
-//        dt__debug(
-//          preUpdate(),
-//          << "Meshing edge " << aEdge->tag() << " on rank " << onRankMap[aEdge]
-//        );
-        currentRank++;
-        if (currentRank == staticPropertiesHandler::getInstance()->nRanks()) {
-          currentRank = 0;
-        }        
-      }
-      logContainer< bVOPMeshRule > dt__infoContainer(logC);
-      dt__forAllRefAuto(ee, aEdge) {      
-        if ( aEdge != aEdge->getMeshMaster() ) {
-          onRankMap[ aEdge ] = 0;
-          onRankMap[ aEdge->getMeshMaster() ] = 0;
-        }
-        logC() 
-          << logMe::dtFormat("[ %4d ] -> %3d : %3d") 
-            % aEdge->tag() % onRankMap[aEdge] % aEdge->getMeshMaster()->tag() 
-            << std::endl;
-      }
-      logC.log();
     
-//      int ii = 0;
       dt__forAllRefAuto(ee, aEdge) {
         if ( 
+          !isMeshed(aEdge) 
+          && 
+          gm->matchWildCardPhysical(currentGEntityStr, aEdge)
+          &&
           (
-            (
-              aEdge->meshStatistics.status 
-              !=
-              ::GEntity::MeshGenerationStatus::DONE 
-            )
-            &&
-            gm->matchWildCardPhysical(currentGEntityStr, aEdge)
-            &&
-            (
-              onRankMap[aEdge] == staticPropertiesHandler::getInstance()->thisRank()
-            )
+            onRankMap[aEdge] == thisRank
           )
           &&
-          (aEdge->getMeshMaster() == aEdge)
+          isOwnMaster(aEdge)
         ) (*current1D)(aEdge); 
-//        ii = ii + 1;
       }
     }      
-      
-    //
-    // copy slave edges
-    //
-	  dt__forAllRefAuto(ee, aEdge) {
-      if ( 
-        (aEdge->getMeshMaster() != aEdge)
-        &&
-        (
-          dtGmshEdge::ConstDownCast(aEdge->getMeshMaster())->meshStatistics.status
-          ==
-          ::GEntity::MeshGenerationStatus::DONE 
-        )
-      ) {
-        dtMesh1DOperator::copyMesh( 
-          dtGmshModel::cast2DtGmshEdge( aEdge->getMeshMaster()), aEdge 
-        );
-      }
-    }
-    
+          
     meshWhisperer mW(gm);
 	  dt__forAllRefAuto(ee, aEdge) {    
-      if (
-        aEdge->meshStatistics.status 
-        ==
-        ::GEntity::MeshGenerationStatus::DONE       
-       ) {
-        dt__debug(
-          preUpdate(),
-          << "Setting edge " << aEdge->tag() 
-          << " on rank " << staticPropertiesHandler::getInstance()->thisRank()
-          << " to meshWhisperer "
-        );        
+      if ( isMeshed(aEdge) ) {
         mW.add(aEdge);
       }
       else {
@@ -355,6 +344,24 @@ namespace dtOO {
       }
     }
     mW.distribute();
+
+    //
+    // copy slave edges
+    //
+	  dt__forAllRefAuto(ee, aEdge) {
+      if ( 
+        !isOwnMaster(aEdge) 
+        && 
+        isMeshed( dtGmshEdge::ConstDownCast(aEdge->getMeshMaster()) )
+      ) {
+        dtMesh1DOperator::copyMesh( 
+          dtGmshModel::cast2DtGmshEdge( aEdge->getMeshMaster()), aEdge 
+        );
+        aEdge->meshStatistics.status = ::GEntity::MeshGenerationStatus::DONE;
+      }
+    }
+
+    
     
     if (optionHandling::debugTrue()) {
 //      dt__onlyMaster {
@@ -371,25 +378,15 @@ namespace dtOO {
             staticPropertiesHandler::getInstance()->thisRank()
           )
           +
-          "_debug.msh", 
+          "_1d_debug.msh", 
           2.2, false, true
         );
 //      }
     }
     
     gm->prepareToMesh();
-    
-//    tag.clear();
-//    onRank.clear();
-    onRankMap.clear();
-    currentRank = 0;
-    if ( _faceWeight.size() != ff.size() ) {
-      _faceWeight = std::vector< float >(ff.size(), 1.0);
-      dt__info(preUpdate(), << "Vector _faceWeight has wrong size.");
-    }
-    //
-    // 2D
-    //
+    onRankMap = prepareDistribution(ff, _faceWeight);    
+
     dt__forAllConstIter(std::vector< std::string >, _rule2D, it) {
       std::string currentOperatorStr = *it;
       std::string currentGEntityStr 
@@ -402,58 +399,19 @@ namespace dtOO {
       );
       
       //
-      // determine entities
+      // mesh entities
       //
       dt__forAllRefAuto(ff, aFace) {
         if ( 
-          (
-            aFace->meshStatistics.status 
-            !=
-            ::GEntity::MeshGenerationStatus::DONE 
-          )
+          !isMeshed(aFace)
           &&
           gm->matchWildCardPhysical(currentGEntityStr, aFace)
           &&
           (
-            aFace->getMeshMaster() == aFace
-          )
-        ) {
-          currentRank = progHelper::minPos(rankBalance);
-          onRankMap[ aFace ] = currentRank;
-          rankBalance[ currentRank ] 
-          = 
-          rankBalance[ currentRank ] 
-          +
-          _faceWeight[ aFace->tag() - 1 ];
-        }
-        dt__debug(
-          preUpdate(),
-          << "Meshing face " << aFace->tag() << " on rank " << onRankMap[aFace]
-        );
-//        currentRank++;
-//        if (currentRank == staticPropertiesHandler::getInstance()->nRanks()) {
-//          currentRank = 0;
-//        }           
-      }
-      dt__info( preUpdate(), << "rankBalance = " << rankBalance );      
-//      int ii = 0;
-      dt__forAllRefAuto(ff, aFace) {
-        if ( 
-          (
-            aFace->meshStatistics.status 
-            !=
-            ::GEntity::MeshGenerationStatus::DONE 
-          )
-          &&
-          gm->matchWildCardPhysical(currentGEntityStr, aFace)
-          &&
-          (
-            onRankMap[aFace] == staticPropertiesHandler::getInstance()->thisRank()
+            onRankMap[aFace] == thisRank
           )
           &&                
-          (
-            aFace->getMeshMaster() == aFace
-          )
+          isOwnMaster(aFace)
         ) {
           timeHandling tt(
             "Surface( " + stringPrimitive::intToString(aFace->tag()) + " )"
@@ -461,22 +419,11 @@ namespace dtOO {
           (*current2D)(aFace);
           tt.output();
         }
-//        ii = ii + 1;
       }      
     }
 
 	  dt__forAllRefAuto(ff, aFace) {    
-      if (
-        aFace->meshStatistics.status 
-        ==
-        ::GEntity::MeshGenerationStatus::DONE       
-       ) {
-        dt__debug(
-          preUpdate(),
-          << "Setting face " << aFace->tag() 
-          << " on rank " << staticPropertiesHandler::getInstance()->thisRank()
-          << " to meshWhisperer "
-        );      
+      if ( isMeshed(aFace) ) {
         mW.add(aFace);
       }
       else {
@@ -490,13 +437,16 @@ namespace dtOO {
     //
     // copy slave faces
     //
-	  dt__forAllRefAuto(ff, aFace) {    
+	  dt__forAllRefAuto(ff, aFace) {
       if ( 
-        aFace->getMeshMaster() != aFace
+        !isOwnMaster(aFace)
+        &&
+        isMeshed( dtGmshFace::ConstDownCast(aFace->getMeshMaster()) )
       ) {
         dtMesh2DOperator::copyMesh( 
           dtGmshModel::cast2DtGmshFace( aFace->getMeshMaster()), aFace 
         );
+        aFace->meshStatistics.status = ::GEntity::MeshGenerationStatus::DONE;
       }
     }       
     
@@ -515,18 +465,14 @@ namespace dtOO {
             staticPropertiesHandler::getInstance()->thisRank()
           )
           +
-          "_debug.msh", 
+          "_2d_debug.msh", 
           2.2, false, true
         );
 //      }
     }
 
     gm->prepareToMesh();
-    
-//    tag.clear();
-//    onRank.clear();
-    onRankMap.clear();
-    currentRank = 0;
+    onRankMap = prepareDistribution(rr, _regionWeight);
     
     //
     // 3D
@@ -541,63 +487,24 @@ namespace dtOO {
         dtMesh3DOperator * current3D,
         dtMesh3DOperator::DownCast(_meshOperator.get(currentOperatorStr) )
       );
-      dt__forAllRefAuto(rr, aReg) {
-        if ( 
-          (
-            aReg->_status
-            !=
-            ::GEntity::MeshGenerationStatus::DONE 
-          )
-          &&
-          gm->matchWildCardPhysical(currentGEntityStr, aReg)
-          &&
-          (
-            aReg->getMeshMaster() == aReg
-          )
-        ) {
-          onRankMap[aReg] = currentRank;
-        }
-        dt__debug(
-          preUpdate(),
-          << "Meshing region " << aReg->tag() << " on rank " << onRankMap[aReg]
-        );
-        currentRank++;
-        if (currentRank == staticPropertiesHandler::getInstance()->nRanks()) {
-          currentRank = 0;
-        }           
-      }
       
-//      int ii = 0;
       dt__forAllRefAuto(rr, aReg) {
         if ( 
-          (
-            aReg->_status
-            !=
-            ::GEntity::MeshGenerationStatus::DONE 
-          )
+          !isMeshed(aReg)
           &&
           gm->matchWildCardPhysical(currentGEntityStr, aReg)
+//          &&
+//          isOwnMaster(aReg)
           &&
           (
-            aReg->getMeshMaster() == aReg
-          )
-        ) (*current3D)(aReg);          
-//        ii = ii + 1;           
+            onRankMap[aReg] == thisRank
+          )                
+        ) (*current3D)(aReg);
       }      
     }
-  
+
 	  dt__forAllRefAuto(rr, aReg) {    
-      if (
-        aReg->_status 
-        ==
-        ::GEntity::MeshGenerationStatus::DONE       
-       ) {
-        dt__debug(
-          preUpdate(),
-          << "Setting region " << aReg->tag() 
-          << " on rank " << staticPropertiesHandler::getInstance()->thisRank()
-          << " to meshWhisperer "
-        );      
+      if ( isMeshed(aReg) ) {
         mW.add(aReg);
       }
       else {
@@ -623,7 +530,7 @@ namespace dtOO {
             staticPropertiesHandler::getInstance()->thisRank()
           )
           +
-          "_debug.msh", 
+          "_3d_debug.msh", 
           2.2, false, true
         );
 //      }
