@@ -14,6 +14,9 @@ namespace dtOO {
       bSplineCurve2d_pointConstructOCC( 
         std::vector< dtPoint2 > const & pp, int const & order 
       );
+      bSplineCurve2d_pointConstructOCC( 
+        dtPoint2 const & p0,  dtPoint2 const & p1
+      );      
       virtual ~bSplineCurve2d_pointConstructOCC();
       dtCurve2d * result( void );
     private:

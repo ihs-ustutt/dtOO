@@ -62,6 +62,15 @@ namespace dtOO {
 		_dtC2d.reset( new dtOCCBSplineCurve2d(base) );
 	}
 	
+  bSplineCurve2d_pointConstructOCC::bSplineCurve2d_pointConstructOCC( 
+    dtPoint2 const & p0,  dtPoint2 const & p1
+  ) {
+    std::vector< dtPoint2 > pp;
+    pp.push_back(p0);
+    pp.push_back(p1);
+    
+    bSplineCurve2d_pointConstructOCC(pp, 1);
+  }
 	bSplineCurve2d_pointConstructOCC::~bSplineCurve2d_pointConstructOCC() {
 	}
 	
