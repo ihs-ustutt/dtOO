@@ -94,9 +94,9 @@ namespace dtOO {
 		);
 			
 		return dtVector3(
-						static_cast<float>(vv.Coord(1)), 
-						static_cast<float>(vv.Coord(2)), 
-						static_cast<float>(vv.Coord(3))
+			static_cast<float>(vv.Coord(1)), 
+			static_cast<float>(vv.Coord(2)), 
+			static_cast<float>(vv.Coord(3))
 		);		
 	}
 		
@@ -198,6 +198,7 @@ namespace dtOO {
 	dtOCCCurveBase const & dtOCCCurve::OCCRef( void ) const {
 		return *(_curve.get());
 	}
+  
 	dtOCCCurveBase & dtOCCCurve::OCCRef( void ) {
 		return *(_curve.get());
 	}	
