@@ -1,0 +1,30 @@
+#ifndef dtOCCGeomFillBoundWithSurf_H
+#define	dtOCCGeomFillBoundWithSurf_H
+
+#include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
+#include "dtOCCGeomFillBoundary.h"
+
+class GeomFill_BoundWithSurf;
+
+namespace dtOO {
+  class dtOCCCurveBase; 
+  
+  class dtOCCGeomFillBoundWithSurf : public dtOCCGeomFillBoundary {
+    public:
+      dt__class(dtOCCGeomFillBoundWithSurf, dtCurve);
+      dtOCCGeomFillBoundWithSurf();
+      dtOCCGeomFillBoundWithSurf( 
+        dtOCCCurveBase const & cBase, dtOCCGeomFillBoundaryBase const & bBase
+      );
+      virtual ~dtOCCGeomFillBoundWithSurf();
+      virtual dtCurve * clone( void ) const;
+      virtual float minPara( int const & dir ) const;
+      virtual float maxPara( int const & dir ) const;    
+      virtual dtPoint3 point( float const uu ) const;
+    private:
+      GeomFill_BoundWithSurf const * _ptr;
+  };
+}
+#endif	/* dtOCCGeomFillBoundWithSurf_H */
+
