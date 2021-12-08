@@ -108,10 +108,12 @@ namespace dtOO {
 		if (v3dC1d) {
 			dtCurve const * const dtC = v3dC1d->ptrDtCurve();
 			int numPointsU = dtC->nControlPoints();
-			for (int ii=0; ii<numPointsU; ii++) {
-			  pp.push_back( _m3d->getPoint( dtC->controlPoint(ii) ) );
-			}
-      retVec.push_back( new discrete3dPoints(pp) );
+      if (dtC->nControlPoints() > 0) {
+        for (int ii=0; ii<numPointsU; ii++) {
+          pp.push_back( _m3d->getPoint( dtC->controlPoint(ii) ) );
+        }
+        retVec.push_back( new discrete3dPoints(pp) );
+      }
 		}
 
 		return retVec;
