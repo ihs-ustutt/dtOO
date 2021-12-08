@@ -12,7 +12,7 @@ namespace dtOO {
     : _hanWrap(new OCCHanWrap()) {	
 	}
 	
-	dtOCCSurfaceBase::dtOCCSurfaceBase(Handle_Geom_Surface & orig) 
+	dtOCCSurfaceBase::dtOCCSurfaceBase(Handle_Geom_Surface orig) 
     : _hanWrap(new OCCHanWrap()) {
 	  _hanWrap->occHandle = orig;
 	}
