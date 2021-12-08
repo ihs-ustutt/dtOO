@@ -30,7 +30,7 @@ SET(HEADERS
   xmlHeaven/aFXmlBuilder/bSplineSurface_pipeConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineCurve_normalOffsetGeomCurveOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineSurface_bSplineCurveFillConstructOCCAFXmlBuilder.h
-  xmlHeaven/aFXmlBuilder/geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder.h
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/splitTrans6SidedCubeAGXmlBuilder.h
