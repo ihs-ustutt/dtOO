@@ -77,20 +77,20 @@ namespace dtOO {
       ).result()
     );
 
-//    if ( dtXmlParserBase::hasAttribute("orientation", toBuildP) ) {
-//      dt__forAllRefAuto(
-//        dtXmlParserBase::getAttributeStrVector(
-//          "orientation", toBuildP
-//        ), 
-//        aOrient
-//      ) {
-//        if (aOrient == "exchange") {
-//          dtS.reset( 
-//            bSplineSurface_exchangeSurfaceConstructOCC(dtS.get()).result() 
-//          );
-//        }
-//      }
-//    }
+    if ( dtXmlParserBase::hasAttribute("orientation", toBuild) ) {
+      dt__forAllRefAuto(
+        dtXmlParserBase::getAttributeStrVector(
+          "orientation", toBuild
+        ), 
+        aOrient
+      ) {
+        if (aOrient == "exchange") {
+          dtS.reset( 
+            bSplineSurface_exchangeSurfaceConstructOCC(dtS.get()).result() 
+          );
+        }
+      }
+    }
 
     //
     // create scaCurve2dOneD
