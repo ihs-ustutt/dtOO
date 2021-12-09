@@ -62,9 +62,6 @@ namespace dtOO {
       CurveOnSurf, Precision::Confusion(), Precision::Angular()
     );
     
-    //Handle(Geom_Curve) bsCurve
-    //= 
-    //Handle(Geom_Curve)::DownCast( CurveOnSurf.BSpline()->Copy() );
     ptrHandling<dtCurve> bsC( 
       bSplineCurve_approxGeomCurve2dInGeomSurface(dtC2d, dtS).result()
     );
