@@ -11,6 +11,7 @@
 #include <discrete3dPoints.h>
 #include <discrete3dVector.h>
 #include "map1dTo3dTransformed.h"
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <dtTransformerHeaven/dtTransformer.h>
 
 namespace dtOO {    
@@ -107,15 +108,31 @@ namespace dtOO {
 		vec3dCurveOneD const * const v3dC1d = vec3dCurveOneD::ConstDownCast(_v1d.get());
 		if (v3dC1d) {
 			dtCurve const * const dtC = v3dC1d->ptrDtCurve();
-			int numPointsU = dtC->nControlPoints();
-      if (dtC->nControlPoints() > 0) {
-        for (int ii=0; ii<numPointsU; ii++) {
+			int nPointsU = dtC->nControlPoints();
+      int renderMaxPoints
+      =
+      staticPropertiesHandler::getInstance()->getOptionInt(
+        "render_max_nPoints"
+      );
+      if (nPointsU <= renderMaxPoints) {
+        for (int ii=0; ii<nPointsU; ii++) {
           pp.push_back( _m3d->getPoint( dtC->controlPoint(ii) ) );
         }
-        retVec.push_back( new discrete3dPoints(pp) );
+        //retVec.push_back( new discrete3dPoints(pp) );
+      }
+      else {
+        dt__warning(
+          extRender(),
+          << "Number of control points above option > render_max_nPoints <."
+        );
       }
 		}
-
+    
+    if ( pp.empty() ) {
+      pp.push_back( this->getPointPercent(0.) );
+      pp.push_back( this->getPointPercent(1.) );
+    }
+    retVec.push_back( new discrete3dPoints(pp) );
 		return retVec;
   }	
 }

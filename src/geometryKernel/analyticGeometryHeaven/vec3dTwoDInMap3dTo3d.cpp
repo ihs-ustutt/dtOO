@@ -110,16 +110,31 @@ namespace dtOO {
     = 
     vec3dSurfaceTwoD::ConstDownCast(_v2d.get());
 		if (v3d2d) {
-			dtSurface const * const dtS = v3d2d->ptrDtSurface();
-			dt__forFromToIndex(0, dtS->nControlPoints(0), ii) {
-        dt__forFromToIndex(0, dtS->nControlPoints(1), jj) {
-          if (!_percentF) {
-            pp.push_back( _m3d->getPoint( dtS->controlPoint(ii, jj) ) );
-          }
-          else {
-            pp.push_back( _m3d->getPointPercent( dtS->controlPoint(ii, jj) ) );
+      dtSurface const * const dtS = v3d2d->ptrDtSurface();      
+      int nPointsU = dtS->nControlPoints(0);
+      int nPointsV = dtS->nControlPoints(1);
+      int renderMaxPoints
+      =
+      staticPropertiesHandler::getInstance()->getOptionInt(
+        "render_max_nPoints"
+      );
+      if ( (nPointsU*nPointsV) <= renderMaxPoints) {
+        dt__forFromToIndex(0, nPointsU, ii) {
+          dt__forFromToIndex(0, nPointsV, jj) {
+            if (!_percentF) {
+              pp.push_back( _m3d->getPoint( dtS->controlPoint(ii, jj) ) );
+            }
+            else {
+              pp.push_back( _m3d->getPointPercent( dtS->controlPoint(ii, jj) ) );
+            }
           }
         }
+      }
+      else {
+        dt__warning(
+          extRender(),
+          << "Number of control points above option > render_max_nPoints <."
+        );        
       }
     }
     if ( pp.empty() ) {
