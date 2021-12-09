@@ -187,7 +187,7 @@ namespace dtOO {
 			// parse variable and values to replace
 			//
 			std::string var = getAttributeStr("variable", forElement);
-			  std::string valueStr = getAttributeStr("values", forElement);
+			std::string valueStr = getAttributeStr("values", forElement);
 			
 			//
 			// replace
