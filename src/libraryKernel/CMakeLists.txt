@@ -33,6 +33,7 @@ SET(HEADERS
   geometryEngine/dtOCCLine2d.h
   geometryEngine/dtOCCGeomFillBoundaryBase.h
   geometryEngine/dtOCCGeomFillBoundary.h
+  geometryEngine/dtOCCGeomFillSimpleBound.h
   geometryEngine/dtOCCGeomFillBoundWithSurf.h
   geometryEngine/dtMuParser.h
   geometryEngine/muParserFunctions.h
@@ -95,6 +96,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/uv_geomSurfaceClosestPoint.h
   geometryEngine/geoBuilder/bSplineCurve_approxGeomCurve2dInGeomSurface.h
   geometryEngine/geoBuilder/geomFillBoundWithSurf_surfaceConstructOCC.h
+  geometryEngine/geoBuilder/geomFillSimpleBound_curveConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurface_constrainedFillingConstructOCC.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
@@ -177,6 +179,7 @@ SET(SOURCES
   geometryEngine/dtOCCLine2d.cpp
   geometryEngine/dtOCCGeomFillBoundaryBase.cpp
   geometryEngine/dtOCCGeomFillBoundary.cpp
+  geometryEngine/dtOCCGeomFillSimpleBound.cpp
   geometryEngine/dtOCCGeomFillBoundWithSurf.cpp
   geometryEngine/dtMuParser.cpp
   geometryEngine/muParserFunctions.cpp
@@ -239,6 +242,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/uv_geomSurfaceClosestPoint.cpp
   geometryEngine/geoBuilder/bSplineCurve_approxGeomCurve2dInGeomSurface.cpp
   geometryEngine/geoBuilder/geomFillBoundWithSurf_surfaceConstructOCC.cpp
+  geometryEngine/geoBuilder/geomFillSimpleBound_curveConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_constrainedFillingConstructOCC.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
