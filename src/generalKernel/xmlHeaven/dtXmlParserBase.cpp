@@ -7,6 +7,7 @@
 #include <baseContainerHeaven/baseBuilder/dtPointD_readCSV.h>
 #include <analyticFunctionHeaven/scaOneD.h>
 #include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
+#include <analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
 #include <analyticFunctionHeaven/vec3dOneD.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
@@ -1103,9 +1104,12 @@ namespace dtOO {
       vec3dFunction const * const v3dF = vec3dFunction::ConstDownCast(theAF);
       
       std::vector< float > pp; 
-      std::vector< float > argCS 
-      = 
-      muParseCSString( replaceDependencies(arg, cV, aF) );
+      std::vector< float > argCS;
+      if (!arg.empty()) {
+        argCS
+        = 
+        muParseCSString( replaceDependencies(arg, cV, aF) );
+      }
 
         
       if (sF) {
@@ -1192,6 +1196,24 @@ namespace dtOO {
             pp[0] = yy[2] / length;          
           }
           else dt__throwUnexpected(replaceDependencies());
+        }
+        else if (aFOption == "-1") {
+          dt__forAllRefAuto(
+            x_vec3dClosestPointToPoint(v3dF, aFY(argCS)).result(), 
+            anX
+          ) pp.push_back(anX);
+        }
+        else if (aFOption == "xMin0") {
+            pp.push_back(v3dF->xMin(0));
+        }
+        else if (aFOption == "xMin1") {
+            pp.push_back(v3dF->xMin(1));
+        }
+        else if (aFOption == "xMax0") {
+            pp.push_back(v3dF->xMax(0));
+        }
+        else if (aFOption == "xMax1") {
+            pp.push_back(v3dF->xMax(1));
         }
         else dt__throwUnexpected(replaceDependencies()); 
       }
