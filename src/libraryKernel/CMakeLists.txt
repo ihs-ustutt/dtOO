@@ -98,6 +98,7 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomFillBoundWithSurf_surfaceConstructOCC.h
   geometryEngine/geoBuilder/geomFillSimpleBound_curveConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurface_constrainedFillingConstructOCC.h
+  geometryEngine/geoBuilder/u_geomCurveClosestPoint.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
@@ -244,6 +245,7 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomFillBoundWithSurf_surfaceConstructOCC.cpp
   geometryEngine/geoBuilder/geomFillSimpleBound_curveConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_constrainedFillingConstructOCC.cpp
+  geometryEngine/geoBuilder/u_geomCurveClosestPoint.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp
