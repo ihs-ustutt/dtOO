@@ -25,7 +25,7 @@ namespace dtOO {
       virtual void setControlPoint( int const nPoint, dtPoint3 const point ) = 0;    
       virtual float l_u( float const uu ) const = 0;
       virtual float u_l( float const length ) const = 0;
-      virtual float reparam(dtPoint3 const point) const = 0;
+      virtual float reparam(dtPoint3 const point) const;
       virtual void revert( void ) = 0;
       virtual void translate( dtVector3 const & tt ) = 0;      
       //
