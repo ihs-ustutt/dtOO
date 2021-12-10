@@ -69,7 +69,7 @@ namespace dtOO {
     pp.push_back(p0);
     pp.push_back(p1);
     
-    bSplineCurve2d_pointConstructOCC(pp, 1);
+    _dtC2d.reset( bSplineCurve2d_pointConstructOCC(pp, 1).result() );
   }
 	bSplineCurve2d_pointConstructOCC::~bSplineCurve2d_pointConstructOCC() {
 	}
