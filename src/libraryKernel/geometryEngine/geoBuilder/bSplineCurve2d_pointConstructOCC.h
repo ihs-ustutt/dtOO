@@ -20,7 +20,7 @@ namespace dtOO {
       virtual ~bSplineCurve2d_pointConstructOCC();
       dtCurve2d * result( void );
     private:
-    ptrHandling<dtCurve2d> _dtC2d;
+      ptrHandling<dtCurve2d> _dtC2d;
   };
 }
 #endif	/* BSPLINECURVE2D_POINTCONSTRUCTOCC_H */
