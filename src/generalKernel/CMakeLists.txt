@@ -33,6 +33,7 @@ SET(HEADERS
   xmlHeaven/aFXmlBuilder/geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineSurface_constrainedFillingConstructOCCAFXmlBuilder.h
   xmlHeaven/aFXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAFXmlBuilder.h
+  xmlHeaven/aFXmlBuilder/bSplineSurface_patchByPatchConstructOCCAFXmlBuilder.h
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/splitTrans6SidedCubeAGXmlBuilder.h
@@ -140,6 +141,7 @@ SET(SOURCES
   xmlHeaven/aFXmlBuilder/geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/bSplineSurface_constrainedFillingConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aFXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAFXmlBuilder.cpp
+  xmlHeaven/aFXmlBuilder/bSplineSurface_patchByPatchConstructOCCAFXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/trans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/orientTrans6SidedCubeAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/splitTrans6SidedCubeAGXmlBuilder.cpp
