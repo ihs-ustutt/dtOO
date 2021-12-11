@@ -1,17 +1,14 @@
 #include "compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h"
 
 #include <xmlHeaven/aGXmlBuilderFactory.h>
-#include "geometryEngine/geoBuilder/compositeSurface_surfaceConnectConstructOCC.h"
 
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtCurve.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/analyticCurve.h>
-#include <geometryEngine/dtOCCSurface.h>
-#include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
+#include <geometryEngine/dtSurface.h>
+#include <geometryEngine/geoBuilder/compositeSurface_surfaceConnectConstructOCC.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <constValueHeaven/constValue.h>
 #include <baseContainerHeaven/baseContainer.h>
