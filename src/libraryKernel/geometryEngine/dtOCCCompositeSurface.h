@@ -16,8 +16,12 @@ namespace dtOO {
     dtOCCCompositeSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCCompositeSurface();
     virtual dtSurface * clone( void ) const;
-	  virtual dtCurve * segmentConstU( float const uu, float const vvMin, float const vvMax) const;
-	  virtual dtCurve * segmentConstV( float const vv, float const uuMin, float const uuMax) const;     
+	  virtual dtCurve * segmentConstU( 
+      float const uu, float const vvMin, float const vvMax
+    ) const;
+	  virtual dtCurve * segmentConstV( 
+      float const vv, float const uuMin, float const uuMax
+    ) const;     
   private:
     ShapeExtend_CompositeSurface const * _ptr;
   };
