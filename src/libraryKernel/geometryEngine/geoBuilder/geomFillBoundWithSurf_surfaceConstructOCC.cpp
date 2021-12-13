@@ -77,7 +77,8 @@ namespace dtOO {
 		_dtC.reset( new dtOCCGeomFillBoundWithSurf(baseC, baseB) );
 	}
 	
-	geomFillBoundWithSurf_surfaceConstructOCC::~geomFillBoundWithSurf_surfaceConstructOCC() {
+	geomFillBoundWithSurf_surfaceConstructOCC
+    ::~geomFillBoundWithSurf_surfaceConstructOCC() {
 	}
 	
 	dtCurve * geomFillBoundWithSurf_surfaceConstructOCC::result( void ) {
