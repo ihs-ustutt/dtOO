@@ -200,7 +200,6 @@ namespace dtOO {
         boundCurv_3->reparam( boundCurv_2->pointPercent(0.0) )
       ).result()
     );
-//    logC() << "    - Push back surface to dtS[" << jj << "]\n";
     
     return bSplineSurface_constrainedFillingConstructOCC(
       bound_0.get(), bound_1.get(), bound_2.get(), bound_3.get(),
@@ -332,25 +331,36 @@ namespace dtOO {
         << "Create composite.\n"
         << "dtS size ( " << dtS.size(0) << " x " << dtS.size(1) << " )\n";
       
-      twoDArrayHandling< dtSurface const * > ssV(dtS.size(0), dtS.size(1));      
+      twoDArrayHandling< dtSurface const * > ssV0(dtS.size(0), 1);
+      twoDArrayHandling< dtSurface const * > ssV1(dtS.size(0), dtS.size(1)-1);
       dt__forAllIndex(dtS, ii) dt__forAllIndex(dtS[ii], jj) {
-        ssV[ii][jj] = dtS[ii][jj].get();
+        if ( jj==0 ) ssV0[ii][jj] = dtS[ii][jj].get();
+        else {
+          ssV1[ii][jj-1] = dtS[ii][jj].get();
+        }
+        
       };
       result->push_back( 
         new vec3dSurfaceTwoD(
           dt__tmpPtr(
             dtSurface, 
-            compositeSurface_surfaceConnectConstructOCC(ssV).result()
+            compositeSurface_surfaceConnectConstructOCC(ssV0).result()
+          )
+        )
+      );      
+      result->push_back( 
+        new vec3dSurfaceTwoD(
+          dt__tmpPtr(
+            dtSurface, 
+            compositeSurface_surfaceConnectConstructOCC(ssV1).result()
           )
         )
       );      
     }
-
-    //
-    // create scaCurve2dOneD
-    //
-    dt__forAllRefAuto(dtS, dtS0) dt__forAllRefAuto(dtS0, dtS01) {
-      result->push_back( new vec3dSurfaceTwoD( dtS01.get() ) );			
+    else {
+      dt__forAllIndex(dtS, ii) dt__forAllIndex(dtS[ii], jj) {      
+        result->push_back( new vec3dSurfaceTwoD( dtS[ii][jj].get() ) );              
+      }
     }
   }
 }
