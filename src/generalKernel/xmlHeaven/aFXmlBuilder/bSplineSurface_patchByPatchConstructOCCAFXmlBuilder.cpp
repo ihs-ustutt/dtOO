@@ -144,24 +144,24 @@ namespace dtOO {
     }
   }
         
-  dtSurface * bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::sortAndSkin(
+  dtSurface * bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::sortAndInit(
     int const & fixJ, twoDArrayHandling< dt__pH(dtCurve) > const & cc,
-    vectorHandling< dtCurve const * > & ccSkin,
     vectorHandling< dtCurve const * > & ccFill,
     int const & skin_nInitCuts, 
     int const & skin_minDeg, 
     int const & skin_maxDeg, 
     int const & skin_nIter
   ) const {
+    vectorHandling< dtCurve const * > ccSkin;
     dt__forFromToIndex(0, cc.size(0), ii ) {
       if ( ii < skin_nInitCuts ) ccSkin.push_back( cc[ii][fixJ].get() );
       else ccFill.push_back( cc[ii][fixJ].get() );
     }
-        
+
     return 
       bSplineSurface_skinConstructOCC(
-        ccSkin, skin_minDeg, skin_maxDeg, skin_nIter
-      ).result();       
+      ccSkin, skin_minDeg, skin_maxDeg, skin_nIter
+    ).result();       
   }
         
   dtSurface * bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::fillPatch(
@@ -206,7 +206,7 @@ namespace dtOO {
       fill_maxDeg, fill_maxSeg
     ).result();
   }
-  
+    
   void bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::buildPart(
 		::QDomElement const & toBuild, 
 		baseContainer * const bC,
@@ -251,28 +251,13 @@ namespace dtOO {
     twoDArrayHandling< dt__pH(dtSurface) > dtS(wire.size()+1, 0);
     logC() << "dtS size ( " << dtS.size(0) << " x " << dtS.size(1) << " )\n";
 
-    dt__forFromToIndex(0, cc.size(1), jj) {
+    dt__forFromToIndex(0, cc.size(1), jj) {      
       logC() << "  - Handle curves cc[*][" << jj << "].\n";
-      vectorHandling< dtCurve const * > ccSkin;
-      vectorHandling< dtCurve const * > ccFill;
-      //
-      // skin first cuts
-      //
-      dtS[jj].push_back(
-        sortAndSkin(
-          jj, cc, ccSkin, ccFill, 
-          dtXmlParserBase::getAttributeInt("skin_nInitCuts", toBuild),
-          dtXmlParserBase::getAttributeInt("skin_minDeg", toBuild),
-          dtXmlParserBase::getAttributeInt("skin_maxDeg", toBuild),
-          dtXmlParserBase::getAttributeInt("skin_nIter", toBuild)
-        )
-      );
-      logC() << "  - Push back surface to dtS[" << jj << "] -> dtS size ( " 
-        << dtS.size(0) << " x " << dtS.size(1) << " )\n";             
-   
+      
       //
       // pointInterpolateConstruct start and end points
       //
+      logC() << "  - Create B-Spline at fixJ( " << jj << " )\n";      
       vectorHandling< dt__pH(dtCurve) > dtC;
       dtC.push_back(
         dt__pH(dtCurve)(
@@ -287,6 +272,7 @@ namespace dtOO {
           ).result()
         )
       );
+      logC() << "  - Create B-Spline at fixJ( " << jj+1 << " )\n";
       dtC.push_back(
         dt__pH(dtCurve)(
           bSplineCurve_pointInterpolateConstructOCC(
@@ -300,6 +286,22 @@ namespace dtOO {
           ).result()
         )
       );
+      
+      vectorHandling< dtCurve const * > ccFill;
+      //
+      // skin first cuts
+      //
+      dtS[jj].push_back(
+        sortAndInit(
+          jj, cc, ccFill, 
+          dtXmlParserBase::getAttributeInt("skin_nInitCuts", toBuild),
+          dtXmlParserBase::getAttributeInt("skin_minDeg", toBuild),
+          dtXmlParserBase::getAttributeInt("skin_maxDeg", toBuild),
+          dtXmlParserBase::getAttributeInt("skin_nIter", toBuild)
+        )
+      );
+      logC() << "  - Push back surface to dtS[" << jj << "] -> dtS size ( " 
+        << dtS.size(0) << " x " << dtS.size(1) << " )\n";             
       
       //
       // fill other curves

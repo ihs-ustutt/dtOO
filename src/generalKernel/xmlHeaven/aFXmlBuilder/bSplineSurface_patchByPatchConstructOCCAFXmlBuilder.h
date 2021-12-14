@@ -38,14 +38,13 @@ namespace dtOO {
         twoDArrayHandling< dt__pH(dtCurve) > & cc,
         twoDArrayHandling< dtPoint3 > & pp
       ) const;
-      dtSurface * sortAndSkin(
+      dtSurface * sortAndInit(
         int const & fixJ, twoDArrayHandling< dt__pH(dtCurve) > const & cc,
-        vectorHandling< dtCurve const * > & ccSkin,
         vectorHandling< dtCurve const * > & ccFill,
         int const & skin_nInitCuts, 
         int const & skin_minDeg, 
         int const & skin_maxDeg, 
-        int const & skin_nIter 
+        int const & skin_nIter
       ) const;
       dtSurface * fillPatch(
         dtSurface const * const boundSurf_0,
