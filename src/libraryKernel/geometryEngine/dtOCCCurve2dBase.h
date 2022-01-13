@@ -12,7 +12,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(dtOCCCurve2dBase);
     dtOCCCurve2dBase();
-    dtOCCCurve2dBase(Handle_Geom2d_Curve & orig);        
+    dtOCCCurve2dBase(Handle_Geom2d_Curve orig);        
     virtual ~dtOCCCurve2dBase();
     void setOCC(Handle_Geom2d_Curve occCurve);    
     Handle_Geom2d_Curve const getOCC( void ) const;    

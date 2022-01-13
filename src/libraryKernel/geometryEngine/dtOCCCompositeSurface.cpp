@@ -46,13 +46,16 @@ namespace dtOO {
     Standard_Real v1R = static_cast<Standard_Real>(vvMax);
           
     if (_ptr->Patch(uR, v0R).Access() == _ptr->Patch(uR, v1R).Access() ) {
-      Handle(Geom_Surface) ss = _ptr->Patch(uR, v0R);
-      Handle(Geom_Curve) cc
-      =
-      ss->UIso(
-        _ptr->UGlobalToLocal( 
-          _ptr->LocateUParameter(uR), _ptr->LocateVParameter(v0R), uR 
-        )
+      Handle(Geom_Curve) cc;
+      dt__tryOcc(
+        cc
+        =
+        _ptr->Patch(uR, v0R)->UIso(
+          _ptr->UGlobalToLocal( 
+            _ptr->LocateUParameter(uR), _ptr->LocateVParameter(v0R), uR 
+          )
+        );
+        , <<""
       );
 
       dtOCCCurveBase base;
@@ -66,21 +69,20 @@ namespace dtOO {
       Standard_Integer J1 = _ptr->LocateVParameter(v1R);
       
       vectorHandling< dtCurve const * > ccV;
-      dt__forFromToIndex(J0, J1, jj) {
-        Handle(Geom_Surface) ss = _ptr->Patch(I, jj);
-        Handle(Geom_Curve) cLoc
-        =
-        ss->UIso( 
-          _ptr->UGlobalToLocal( 
-            _ptr->LocateVParameter(uR), _ptr->LocateUParameter(uR), uR 
-          )          
+      dt__forFromToIndex(J0, J1+1, jj) {
+        Handle(Geom_Curve) cLoc;   
+        dt__tryOcc(
+          cLoc
+          =
+          _ptr->Patch(I, jj)->UIso( _ptr->UGlobalToLocal( I, jj, uR ) );
+          , << ""
         );
         dtOCCCurveBase baseLoc;
         baseLoc.setOCC( cLoc );
-        ccV.push_back( geomCurve_baseConstructOCC(baseLoc).result() );
+        ccV.push_back( geomCurve_baseConstructOCC(baseLoc).result() );        
       }
       dtCurve * cc = bSplineCurve_curveConnectConstructOCC(ccV).result();
-      ccV.destroy();
+      ccV.destroy();           
       return cc;
     }
 	}
@@ -94,13 +96,16 @@ namespace dtOO {
     
     
     if ( _ptr->Patch(u0R, vR).Access() == _ptr->Patch(u1R, vR).Access() ) {
-      Handle(Geom_Surface) ss = _ptr->Patch(u0R, vR);
-      Handle(Geom_Curve) cc
-      =
-      ss->VIso(
-        _ptr->VGlobalToLocal( 
-          _ptr->LocateUParameter(u0R), _ptr->LocateVParameter(vR), vR 
-        )
+      Handle(Geom_Curve) cc;
+      dt__tryOcc(
+        cc
+        =
+        _ptr->Patch(u0R, vR)->VIso(
+          _ptr->VGlobalToLocal( 
+            _ptr->LocateUParameter(u0R), _ptr->LocateVParameter(vR), vR 
+          )
+        );
+        , << ""
       );
       dtOCCCurveBase base;      
       base.setOCC(cc);      
@@ -113,14 +118,13 @@ namespace dtOO {
       Standard_Integer J = _ptr->LocateVParameter(vR);
       
       vectorHandling< dtCurve const * > ccV;
-      dt__forFromToIndex(I0, I1, ii) {
-        Handle(Geom_Surface) ss = _ptr->Patch(ii, J);
-        Handle(Geom_Curve) cLoc
-        =
-        ss->VIso( 
-          _ptr->VGlobalToLocal( 
-            _ptr->LocateUParameter(u0R), _ptr->LocateVParameter(vR), vR 
-          )          
+      dt__forFromToIndex(I0, I1+1, ii) {
+        Handle(Geom_Curve) cLoc;
+        dt__tryOcc(
+          cLoc
+          =
+          _ptr->Patch(ii, J)->VIso( _ptr->VGlobalToLocal( ii, J, vR ) );
+          , << ""
         );
         dtOCCCurveBase baseLoc;
         baseLoc.setOCC( cLoc );

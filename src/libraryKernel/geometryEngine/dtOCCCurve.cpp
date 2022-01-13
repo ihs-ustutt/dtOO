@@ -94,9 +94,9 @@ namespace dtOO {
 		);
 			
 		return dtVector3(
-						static_cast<float>(vv.Coord(1)), 
-						static_cast<float>(vv.Coord(2)), 
-						static_cast<float>(vv.Coord(3))
+			static_cast<float>(vv.Coord(1)), 
+			static_cast<float>(vv.Coord(2)), 
+			static_cast<float>(vv.Coord(3))
 		);		
 	}
 		
@@ -160,11 +160,26 @@ namespace dtOO {
 	  );
 		GeomAdaptor_Curve gac;
 		gac.Load( _curve->getOCC() );
+		Extrema_ExtPC ext(
+      pp, 
+      gac
+    );
 		
-		Extrema_ExtPC ext(pp, gac);
-		
-		Extrema_POnCurv epp = ext.Point(1); 
-		
+    if (ext.NbExt() < 1) {
+      dt__warning( 
+        reparam(),
+        << "Reparameterization fails!" << std::endl
+        << "ext.NbExt() = " << ext.NbExt() << std::endl
+        << "Point = ( " << point << " )" << std::endl
+        << "( " << this->pointPercent(0.0) << " )---( "
+        << this->pointPercent(1.0) << " )" << std::endl
+      );
+
+     
+      return dtCurve::reparam(point);      
+    }
+    
+    Extrema_POnCurv epp = ext.Point(1); 
 		return static_cast<float>( epp.Parameter() );
 	}
 	
@@ -198,6 +213,7 @@ namespace dtOO {
 	dtOCCCurveBase const & dtOCCCurve::OCCRef( void ) const {
 		return *(_curve.get());
 	}
+  
 	dtOCCCurveBase & dtOCCCurve::OCCRef( void ) {
 		return *(_curve.get());
 	}	

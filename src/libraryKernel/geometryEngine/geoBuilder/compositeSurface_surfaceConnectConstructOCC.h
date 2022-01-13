@@ -11,7 +11,9 @@ namespace dtOO {
   class compositeSurface_surfaceConnectConstructOCC {
     public:
       dt__classOnlyName(compositeSurface_surfaceConnectConstructOCC);
-      compositeSurface_surfaceConnectConstructOCC( twoDArrayHandling< dtSurface const * > const & ss );
+      compositeSurface_surfaceConnectConstructOCC( 
+        twoDArrayHandling< dtSurface const * > const & ss 
+      );
       virtual ~compositeSurface_surfaceConnectConstructOCC();
       dtSurface * result( void );
     private:

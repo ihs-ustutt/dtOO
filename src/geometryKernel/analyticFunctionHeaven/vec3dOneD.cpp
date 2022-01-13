@@ -75,9 +75,11 @@ namespace dtOO {
         return _min;
         break;
       default:
-        dt__throw(xMin(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0.");
+        dt__throw(
+          xMin(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0."
+        );
     }   
 	}
 	
@@ -87,9 +89,11 @@ namespace dtOO {
         return _max;
         break;
       default:
-        dt__throw(xMax(),
-              << dt__eval(dir) << std::endl
-              << "dir should be 0.");
+        dt__throw(
+          xMax(),
+          << dt__eval(dir) << std::endl
+          << "dir should be 0."
+        );
     }
 	}	
 

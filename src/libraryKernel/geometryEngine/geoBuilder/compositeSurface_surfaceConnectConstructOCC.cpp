@@ -15,7 +15,8 @@
 #include <TColGeom_HArray2OfSurface.hxx>
 
 namespace dtOO {
-	compositeSurface_surfaceConnectConstructOCC::compositeSurface_surfaceConnectConstructOCC( 
+	compositeSurface_surfaceConnectConstructOCC
+    ::compositeSurface_surfaceConnectConstructOCC( 
 	  twoDArrayHandling< dtSurface const * > const & ss 
 	) {
 		Handle(TColGeom_HArray2OfSurface) grid
@@ -44,7 +45,8 @@ namespace dtOO {
 		_dtS.reset( new dtOCCCompositeSurface(baseS) );
 	}
 
-	compositeSurface_surfaceConnectConstructOCC::~compositeSurface_surfaceConnectConstructOCC() {
+	compositeSurface_surfaceConnectConstructOCC
+    ::~compositeSurface_surfaceConnectConstructOCC() {
 	}
 	
 	dtSurface * compositeSurface_surfaceConnectConstructOCC::result(void) {

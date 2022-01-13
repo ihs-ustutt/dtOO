@@ -1,6 +1,7 @@
 #include "dtCurve.h"
 
 #include <logMe/logMe.h>
+#include "geoBuilder/u_geomCurveClosestPoint.h"
 
 namespace dtOO {	
 	dtCurve::dtCurve() {
@@ -11,6 +12,10 @@ namespace dtOO {
 		
 	}
 	
+  float dtCurve::reparam(dtPoint3 const ppXYZ) const {
+    return u_geomCurveClosestPoint(this, ppXYZ).result();
+  }
+    
   //
   // optional overload
   //	

@@ -9,13 +9,15 @@ namespace dtOO {
   class dtCurve;
   
   class trimmedCurve_uBounds {
-  public:
-    dt__classOnlyName(trimmedCurve_uBounds);
-    trimmedCurve_uBounds(dtCurve const * dtC, float const & min, float const & max);
-    virtual ~trimmedCurve_uBounds();
-    dtCurve * result( void );
-    private:
-      ptrHandling< dtCurve > _dtC;
+    public:
+      dt__classOnlyName(trimmedCurve_uBounds);
+      trimmedCurve_uBounds(
+        dtCurve const * dtC, float const & min, float const & max
+      );
+      virtual ~trimmedCurve_uBounds();
+      dtCurve * result( void );
+      private:
+        ptrHandling< dtCurve > _dtC;
   };
 }
 #endif	/* TRIMMEDCURVE_UBOUNDS_H */
