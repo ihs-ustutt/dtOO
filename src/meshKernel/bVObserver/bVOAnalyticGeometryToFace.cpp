@@ -97,7 +97,13 @@ namespace dtOO {
           //
           // increase if in precision
           //
-          if ( analyticGeometry::inXYZTolerance( dist, _inc ) ) inTol++;
+          if ( analyticGeometry::inXYZTolerance( dist, _inc ) ) {
+            inTol++;
+          }
+          // break if at least one point is not on the surface
+          else {
+            break;
+          }
         }
 
         //
