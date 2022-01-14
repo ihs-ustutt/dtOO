@@ -37,9 +37,9 @@ namespace dtOO {
 		gp_Pnt pp = _ptr->Pole(uSi, vSi);
 
 		return dtPoint3(
-						static_cast<float>(pp.Coord(1)), 
-						static_cast<float>(pp.Coord(2)), 
-						static_cast<float>(pp.Coord(3))
+						static_cast<dtReal>(pp.Coord(1)), 
+						static_cast<dtReal>(pp.Coord(2)), 
+						static_cast<dtReal>(pp.Coord(3))
 		);				
 	}
 
@@ -65,7 +65,7 @@ namespace dtOO {
 	}
 
 	dtCurve * dtOCCBezierSurface::segmentConstU( 
-    float const uu, float const vvMin, float const vvMax
+    dtReal const uu, dtReal const vvMin, dtReal const vvMax
   ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
@@ -84,7 +84,7 @@ namespace dtOO {
 	}
 
 	dtCurve * dtOCCBezierSurface::segmentConstV( 
-    float const vv, float const uuMin, float const uuMax
+    dtReal const vv, dtReal const uuMin, dtReal const uuMax
   ) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		Handle(Geom_Curve) cc = _ptr->VIso(vR);

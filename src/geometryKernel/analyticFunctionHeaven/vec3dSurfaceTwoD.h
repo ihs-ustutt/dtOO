@@ -1,6 +1,8 @@
 #ifndef VEC3DSURFACETWOD_H
 #define	VEC3DSURFACETWOD_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dTwoD.h"

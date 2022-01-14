@@ -1,6 +1,8 @@
 #ifndef MAP2DTO3DTRIANGULATED_H
 #define	MAP2DTO3DTRIANGULATED_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "gmshBoundedVolume.h"
 

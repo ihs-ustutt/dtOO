@@ -1,6 +1,8 @@
 #ifndef vec3dMultiThreeD_H
 #define	vec3dMultiThreeD_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/logMe.h>
 #include <logMe/logContainer.h>
 #include <dtLinearAlgebra.h>
@@ -31,9 +33,9 @@ namespace dtOO {
       funT const & findF_x( aFX const & xx ) const;
     private:
       std::map< std::pair< aFX, aFX >, funT * > _ff;
-      RTree< funT *, float, 3, float > _x_rTree;
-      RTree< funT *, float, 3, float > _y_rTree;
-      constexpr static float _tol = 1.e-8;
+      RTree< funT *, dtReal, 3, dtReal > _x_rTree;
+      RTree< funT *, dtReal, 3, dtReal > _y_rTree;
+      constexpr static dtReal _tol = 1.e-8;
   };
   
   template < typename funT >  
@@ -94,10 +96,10 @@ namespace dtOO {
     }    
 
     std::vector< funT * > out;
-    std::vector< float > min
+    std::vector< dtReal > min
     = 
     ::boost::assign::list_of(xx[0]-_tol)(xx[1]-_tol)(xx[2]-_tol);
-    std::vector< float > max
+    std::vector< dtReal > max
     = 
     ::boost::assign::list_of(xx[0]+_tol)(xx[1]+_tol)(xx[2]+_tol);
     int nEnt 
@@ -152,13 +154,13 @@ namespace dtOO {
     //
     // insert in R-tree
     //
-    std::vector< float > min
+    std::vector< dtReal > min
     = 
     ::boost::assign::list_of
       (thisMin[0] - _tol)
       (thisMin[1] - _tol)
       (thisMin[2] - _tol);
-    std::vector< float > max 
+    std::vector< dtReal > max 
     = 
     ::boost::assign::list_of
       (thisMax[0] + _tol)

@@ -1,6 +1,8 @@
 #ifndef _GeomFill_BSplineCurvesExtPrecision_HeaderFile
 #define _GeomFill_BSplineCurvesExtPrecision_HeaderFile
 
+#include <dtOOTypeDef.h>
+
 #include <Standard.hxx>
 #include <Standard_DefineAlloc.hxx>
 #include <Standard_Macro.hxx>

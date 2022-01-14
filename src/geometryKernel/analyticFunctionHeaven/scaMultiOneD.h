@@ -1,6 +1,8 @@
 #ifndef scaMultiOneD_H
 #define	scaMultiOneD_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <string>
 #include <logMe/dtMacros.h>
@@ -19,15 +21,15 @@ namespace dtOO {
       virtual ~scaMultiOneD();
       virtual scaMultiOneD * clone( void ) const;
       virtual scaMultiOneD * create( void ) const;       
-      virtual float YFloat(float const & xx) const;
-      virtual float invYFloat(float const & yy) const;
+      virtual dtReal YFloat(dtReal const & xx) const;
+      virtual dtReal invYFloat(dtReal const & yy) const;
       virtual void add( funT const & aFun );
       virtual void dump( void ) const;
     private:
-      funT const & findF_x( float const & xx ) const;
-      funT const & findF_y( float const & yy ) const;
+      funT const & findF_x( dtReal const & xx ) const;
+      funT const & findF_y( dtReal const & yy ) const;
     private:
-      std::map< std::pair< float, float >, funT * > _ff;
+      std::map< std::pair< dtReal, dtReal >, funT * > _ff;
   };
   
   template < typename funT >  
@@ -57,23 +59,23 @@ namespace dtOO {
   }
 
   template < typename funT >      
-  float scaMultiOneD< funT >::YFloat(float const & xx) const {
+  dtReal scaMultiOneD< funT >::YFloat(dtReal const & xx) const {
     return findF_x(xx).YFloat(xx);
   }
 
   template < typename funT >      
-  float scaMultiOneD< funT >::invYFloat(float const & yy) const {
+  dtReal scaMultiOneD< funT >::invYFloat(dtReal const & yy) const {
     return findF_y(yy).invYFloat(yy);    
   }
   
   template < typename funT >
-  funT const & scaMultiOneD< funT >::findF_x( float const & xx ) const {
+  funT const & scaMultiOneD< funT >::findF_x( dtReal const & xx ) const {
     auto iter 
     = 
     std::find_if(
       _ff.cbegin(), 
       _ff.cend(), 
-      [=]( const std::pair< std::pair< float, float >, funT * >& fn ) {  
+      [=]( const std::pair< std::pair< dtReal, dtReal >, funT * >& fn ) {  
         return xx>=fn.first.first &&  xx<=fn.first.second; 
       }
     );
@@ -89,13 +91,13 @@ namespace dtOO {
   }
   
   template < typename funT >
-  funT const & scaMultiOneD< funT >::findF_y( float const & yy ) const {
+  funT const & scaMultiOneD< funT >::findF_y( dtReal const & yy ) const {
     auto iter 
     = 
     std::find_if(
       _ff.cbegin(), 
       _ff.cend(), 
-      [=]( const std::pair< std::pair< float, float >, funT * >& fn ) {  
+      [=]( const std::pair< std::pair< dtReal, dtReal >, funT * >& fn ) {  
         return 
           yy>=fn.second->YFloat(fn.first.first) 
           && 
@@ -121,16 +123,16 @@ namespace dtOO {
         _ff.cbegin(), 
         _ff.cend(), 
         [=]( 
-          const std::pair< std::pair< float, float >, funT * >& fnA, 
-          const std::pair< std::pair< float, float >, funT * >& fnB 
+          const std::pair< std::pair< dtReal, dtReal >, funT * >& fnA, 
+          const std::pair< std::pair< dtReal, dtReal >, funT * >& fnB 
         ) {  
-          float thisMinA 
+          dtReal thisMinA 
           =
           std::min(
             fabs(yy-fnA.second->YFloat(fnA.first.first)),
             fabs(yy-fnA.second->YFloat(fnA.first.second))
           );
-          float thisMinB 
+          dtReal thisMinB 
           =
           std::min(
             fabs(yy-fnB.second->YFloat(fnB.first.first)),
@@ -151,13 +153,13 @@ namespace dtOO {
       
   template < typename funT >      
   void scaMultiOneD< funT >::add( funT const & aFun ) {
-    float xMin = aFun.xMin(0);
-    float xMax = aFun.xMax(0);
+    dtReal xMin = aFun.xMin(0);
+    dtReal xMax = aFun.xMax(0);
     
     //
     // add function
     //
-    _ff[ std::pair< float, float >( xMin, xMax ) ] 
+    _ff[ std::pair< dtReal, dtReal >( xMin, xMax ) ] 
     = 
     aFun.clone();
     

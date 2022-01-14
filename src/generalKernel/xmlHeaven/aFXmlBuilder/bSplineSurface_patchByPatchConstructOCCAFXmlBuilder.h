@@ -1,6 +1,8 @@
 #ifndef bSplineSurface_patchByPatchConstructOCCAFXmlBuilder_H
 #define	bSplineSurface_patchByPatchConstructOCCAFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -34,7 +36,7 @@ namespace dtOO {
         baseContainer * const bC,
         cVPtrVec const * const cV, 
         aFPtrVec const * const aF,              
-        std::vector< float > const & wire,              
+        std::vector< dtReal > const & wire,              
         twoDArrayHandling< dt__pH(dtCurve) > & cc,
         twoDArrayHandling< dtPoint3 > & pp
       ) const;

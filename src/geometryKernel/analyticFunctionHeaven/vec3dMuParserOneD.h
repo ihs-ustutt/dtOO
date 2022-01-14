@@ -1,6 +1,8 @@
 #ifndef vec3dMuParserOneD_H
 #define	vec3dMuParserOneD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec3dOneD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>

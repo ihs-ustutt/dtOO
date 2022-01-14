@@ -1,6 +1,8 @@
 #ifndef DTPLUGINDRIVER_H
 #define	DTPLUGINDRIVER_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <pluginEngine/pugg/Driver.h>
 

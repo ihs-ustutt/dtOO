@@ -1,6 +1,8 @@
 #ifndef volVectorFieldVersusXYZ_H
 #define	volVectorFieldVersusXYZ_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

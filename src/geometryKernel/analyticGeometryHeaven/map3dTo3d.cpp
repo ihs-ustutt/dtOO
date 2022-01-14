@@ -25,7 +25,7 @@
 #include <Math/Functor.h>
 
 namespace dtOO { 
-  float map3dTo3d::_deltaPer 
+  dtReal map3dTo3d::_deltaPer 
   = 
   staticPropertiesHandler::getInstance()->getOptionFloat("map3dTo3d_deltaPer");
 
@@ -44,7 +44,7 @@ namespace dtOO {
     return 3;
   }
     
-  dtPoint3 map3dTo3d::getPoint( float const * const uvw ) const {
+  dtPoint3 map3dTo3d::getPoint( dtReal const * const uvw ) const {
     return getPoint( uvw[0], uvw[1], uvw[2] );
   }
   
@@ -53,9 +53,9 @@ namespace dtOO {
     //
     // calculate interval to create points
     //
-    float intU = (getUMax() - getUMin()) / (getRenderResolutionU()-1);
-    float intV = (getVMax() - getVMin()) / (getRenderResolutionV()-1);
-    float intW = (getWMax() - getWMin()) / (getRenderResolutionW()-1);
+    dtReal intU = (getUMax() - getUMin()) / (getRenderResolutionU()-1);
+    dtReal intV = (getVMax() - getVMin()) / (getRenderResolutionV()-1);
+    dtReal intW = (getWMax() - getWMin()) / (getRenderResolutionW()-1);
 		
 		vectorHandling< dtPoint3 > pp;
     //
@@ -63,9 +63,9 @@ namespace dtOO {
     //
 		// v=0, w=0
 		for(int ii=0; ii<getRenderResolutionU(); ii++) {
-			float uu = (getUMin() + ii * intU);
-			float vv = getVMin();// + jj * intV);
-			float ww = getWMin();// + kk * intW);
+			dtReal uu = (getUMin() + ii * intU);
+			dtReal vv = getVMin();// + jj * intV);
+			dtReal ww = getWMin();// + kk * intW);
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
@@ -78,9 +78,9 @@ namespace dtOO {
 		pp.clear();
 		// u=0, w=0
 		for(int ii=0; ii<getRenderResolutionV(); ii++){
-			float uu = getUMin();// + ii * intU);
-			float vv = getVMin() + ii * intV;
-			float ww = getWMin();// + kk * intW);
+			dtReal uu = getUMin();// + ii * intU);
+			dtReal vv = getVMin() + ii * intV;
+			dtReal ww = getWMin();// + kk * intW);
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
@@ -99,9 +99,9 @@ namespace dtOO {
 		pp.clear();		
 		// u=0, v=0
 		for(int ii=0; ii<getRenderResolutionW(); ii++){
-			float uu = getUMin();// + ii * intU);
-			float vv = getVMin();// + ii * intV;
-			float ww = getWMin() + ii * intW;
+			dtReal uu = getUMin();// + ii * intU);
+			dtReal vv = getVMin();// + ii * intV;
+			dtReal ww = getWMin() + ii * intW;
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
@@ -145,27 +145,27 @@ namespace dtOO {
     pp.clear();    
 		// v=0, w=0
 		for(int ii=0; ii<getRenderResolutionU(); ii++) {
-			float uu = (getUMin() + ii * intU);
-			float vv = getVMax();// + jj * intV);
-			float ww = getWMax();// + kk * intW);
+			dtReal uu = (getUMin() + ii * intU);
+			dtReal vv = getVMax();// + jj * intV);
+			dtReal ww = getWMax();// + kk * intW);
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
 		pp.clear();
 		// u=0, w=0
 		for(int ii=0; ii<getRenderResolutionV(); ii++){
-			float uu = getUMax();// + ii * intU);
-			float vv = getVMin() + ii * intV;
-			float ww = getWMax();// + kk * intW);
+			dtReal uu = getUMax();// + ii * intU);
+			dtReal vv = getVMin() + ii * intV;
+			dtReal ww = getWMax();// + kk * intW);
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
 		pp.clear();		
 		// u=0, v=0
 		for(int ii=0; ii<getRenderResolutionW(); ii++){
-			float uu = getUMax();// + ii * intU);
-			float vv = getVMax();// + ii * intV;
-			float ww = getWMin() + ii * intW;
+			dtReal uu = getUMax();// + ii * intU);
+			dtReal vv = getVMax();// + ii * intV;
+			dtReal ww = getWMin() + ii * intW;
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
@@ -173,27 +173,27 @@ namespace dtOO {
 
 		// v=0, w=0
 		for(int ii=0; ii<getRenderResolutionU(); ii++){
-			float uu = (getUMin() + ii * intU);
-			float vv = getVMin();// + jj * intV);
-			float ww = getWMax();// + kk * intW);
+			dtReal uu = (getUMin() + ii * intU);
+			dtReal vv = getVMin();// + jj * intV);
+			dtReal ww = getWMax();// + kk * intW);
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
 		pp.clear();
 		// u=0, w=0
 		for(int ii=0; ii<getRenderResolutionV(); ii++){
-			float uu = getUMin();// + ii * intU);
-			float vv = getVMin() + ii * intV;
-			float ww = getWMax();// + kk * intW);
+			dtReal uu = getUMin();// + ii * intU);
+			dtReal vv = getVMin() + ii * intV;
+			dtReal ww = getWMax();// + kk * intW);
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
 		pp.clear();		
 		// u=0, v=0
 		for(int ii=0; ii<getRenderResolutionW(); ii++){
-			float uu = getUMin();// + ii * intU);
-			float vv = getVMax();// + ii * intV;
-			float ww = getWMin() + ii * intW;
+			dtReal uu = getUMin();// + ii * intU);
+			dtReal vv = getVMax();// + ii * intV;
+			dtReal ww = getWMin() + ii * intW;
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
@@ -201,27 +201,27 @@ namespace dtOO {
 		
 		// v=0, w=0
 		for(int ii=0; ii<getRenderResolutionU(); ii++){
-			float uu = (getUMin() + ii * intU);
-			float vv = getVMax();// + jj * intV);
-			float ww = getWMin();// + kk * intW);
+			dtReal uu = (getUMin() + ii * intU);
+			dtReal vv = getVMax();// + jj * intV);
+			dtReal ww = getWMin();// + kk * intW);
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
 		pp.clear();
 		// u=0, w=0
 		for(int ii=0; ii<getRenderResolutionV(); ii++){
-			float uu = getUMax();// + ii * intU);
-			float vv = getVMin() + ii * intV;
-			float ww = getWMin();// + kk * intW);
+			dtReal uu = getUMax();// + ii * intU);
+			dtReal vv = getVMin() + ii * intV;
+			dtReal ww = getWMin();// + kk * intW);
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
 		pp.clear();		
 		// u=0, v=0
 		for(int ii=0; ii<getRenderResolutionW(); ii++){
-			float uu = getUMax();// + ii * intU);
-			float vv = getVMin();// + ii * intV;
-			float ww = getWMin() + ii * intW;
+			dtReal uu = getUMax();// + ii * intU);
+			dtReal vv = getVMin();// + ii * intV;
+			dtReal ww = getWMin() + ii * intW;
 			pp.push_back( getPoint(uu, vv, ww) );
 		}
 		rV.push_back( new solid3dLine(pp) );
@@ -231,11 +231,11 @@ namespace dtOO {
 	}
 	
   std::vector< dtVector3 > map3dTo3d::firstDer( 
-    float const & uu, float const & vv, float const & ww
+    dtReal const & uu, dtReal const & vv, dtReal const & ww
   ) const {
-    float uP = percent_u(uu);
-    float vP = percent_v(vv);
-    float wP = percent_w(ww);
+    dtReal uP = percent_u(uu);
+    dtReal vP = percent_v(vv);
+    dtReal wP = percent_w(ww);
     
     std::vector< dtVector3 > ret(3);
     if (uP<_deltaPer) {
@@ -317,19 +317,19 @@ namespace dtOO {
   }
   
   dtVector3 map3dTo3d::firstDerU( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
     return firstDer(uu, vv, ww)[0];
   }
 
   dtVector3 map3dTo3d::firstDerV( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
     return firstDer(uu, vv, ww)[1];
   }
 
   dtVector3 map3dTo3d::firstDerW( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
     return firstDer(uu, vv, ww)[2];
   }
@@ -374,27 +374,27 @@ namespace dtOO {
     return isClosed(2);
   }
   
-  float map3dTo3d::getUMin( void ) const {
+  dtReal map3dTo3d::getUMin( void ) const {
     return getMin(0);
   }
   
-  float map3dTo3d::getUMax( void ) const {
+  dtReal map3dTo3d::getUMax( void ) const {
     return getMax(0);
   }
   
-  float map3dTo3d::getVMin( void ) const {
+  dtReal map3dTo3d::getVMin( void ) const {
     return getMin(1);
   }
   
-  float map3dTo3d::getVMax( void ) const {
+  dtReal map3dTo3d::getVMax( void ) const {
     return getMax(1);
   }
   
-  float map3dTo3d::getWMin( void ) const {
+  dtReal map3dTo3d::getWMin( void ) const {
     return getMin(2);
   }
   
-  float map3dTo3d::getWMax( void ) const {
+  dtReal map3dTo3d::getWMax( void ) const {
     return getMax(2);
   }
 
@@ -409,7 +409,7 @@ namespace dtOO {
   }
   
   dtPoint3 map3dTo3d::getPointPercent( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
     return getPoint( u_percent(uu), v_percent(vv), w_percent(ww) );
   }
@@ -422,27 +422,27 @@ namespace dtOO {
 		return getPoint( uvw_percent(ppUVW) );
 	}
 		
-  float map3dTo3d::u_percent(float const & uu) const {
+  dtReal map3dTo3d::u_percent(dtReal const & uu) const {
     return (getUMin() +  (getUMax() - getUMin() ) * uu);    
   }
   
-  float map3dTo3d::v_percent(float const & vv) const {
+  dtReal map3dTo3d::v_percent(dtReal const & vv) const {
     return (getVMin() +  (getVMax() - getVMin() ) * vv);    
   }
   
-  float map3dTo3d::w_percent(float const & ww) const {
+  dtReal map3dTo3d::w_percent(dtReal const & ww) const {
     return (getWMin() +  (getWMax() - getWMin() ) * ww);    
   }
   
-  float map3dTo3d::percent_u(float const & uu) const {
+  dtReal map3dTo3d::percent_u(dtReal const & uu) const {
     return ( (uu - getUMin()) / (getUMax() - getUMin()) );
   }  
 
-  float map3dTo3d::percent_v(float const & vv) const {
+  dtReal map3dTo3d::percent_v(dtReal const & vv) const {
     return ( (vv - getVMin()) / (getVMax() - getVMin()) );
   }  
 
-  float map3dTo3d::percent_w(float const & ww) const {
+  dtReal map3dTo3d::percent_w(dtReal const & ww) const {
     return ( (ww - getWMin()) / (getWMax() - getWMin()) );
   }   
   
@@ -478,7 +478,7 @@ namespace dtOO {
 		return new vec3dTwoDInMap3dTo3d(&v3d2d, this);
 	}
 
-	map2dTo3d * map3dTo3d::segmentConstU( float const & uu ) const {
+	map2dTo3d * map3dTo3d::segmentConstU( dtReal const & uu ) const {
 	  dtPoint3 p30(uu, getVMin(), getWMin());
 		dtPoint3 p31(uu, getVMax(), getWMin());
 		dtPoint3 p32(uu, getVMax(), getWMax());
@@ -487,7 +487,7 @@ namespace dtOO {
 		return segment(p30, p31, p32, p33);
 	}
 
-	map2dTo3d * map3dTo3d::segmentConstV( float const & vv ) const {
+	map2dTo3d * map3dTo3d::segmentConstV( dtReal const & vv ) const {
 	  dtPoint3 p30(getUMin(), vv, getWMin());
 		dtPoint3 p31(getUMax(), vv, getWMin());
 		dtPoint3 p32(getUMax(), vv, getWMax());
@@ -496,7 +496,7 @@ namespace dtOO {
 		return segment(p30, p31, p32, p33);		
 	}
   
-	map2dTo3d * map3dTo3d::segmentConstW( float const & ww ) const {
+	map2dTo3d * map3dTo3d::segmentConstW( dtReal const & ww ) const {
 	  dtPoint3 p30(getUMin(), getVMin(), ww);
 		dtPoint3 p31(getUMax(), getVMin(), ww);
 		dtPoint3 p32(getUMax(), getVMax(), ww);
@@ -519,7 +519,7 @@ namespace dtOO {
 	 *   (0)      
    */	
 	map2dTo3d * map3dTo3d::segmentConstU( 
-    float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
+    dtReal const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
   ) const {
 	  dtPoint3 p30(uu, p0.x(), p0.y());
 		dtPoint3 p31(uu, p1.x(), p0.y());
@@ -543,7 +543,7 @@ namespace dtOO {
 	 *   (0)      
    */	  
 	map2dTo3d * map3dTo3d::segmentConstV( 
-    float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
+    dtReal const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
   ) const {
 	  dtPoint3 p30(p0.x(), vv, p0.y());
 		dtPoint3 p31(p1.x(), vv, p0.y());
@@ -567,7 +567,7 @@ namespace dtOO {
 	 *   (0)      
    */		
 	map2dTo3d * map3dTo3d::segmentConstW( 
-    float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
+    dtReal const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
   ) const {
 	  dtPoint3 p30(p0.x(), p0.y(), ww);
 		dtPoint3 p31(p1.x(), p0.y(), ww);
@@ -578,9 +578,9 @@ namespace dtOO {
 	}
 	
 	map2dTo3d * map3dTo3d::segmentConstUPercent( 
-    float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
+    dtReal const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
   ) const {
-	  float const uP = u_percent(uu);
+	  dtReal const uP = u_percent(uu);
 		dtPoint2 const p0P( v_percent(p0.x()), w_percent(p0.y()) );
 		dtPoint2 const p1P( v_percent(p1.x()), w_percent(p1.y()) );
 		
@@ -588,9 +588,9 @@ namespace dtOO {
 	}
 
 	map2dTo3d * map3dTo3d::segmentConstVPercent( 
-    float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
+    dtReal const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
   ) const {
-	  float const vP = v_percent(vv);
+	  dtReal const vP = v_percent(vv);
 		dtPoint2 const p0P( u_percent(p0.x()), u_percent(p0.y()) );
 		dtPoint2 const p1P( w_percent(p1.x()), w_percent(p1.y()) );
 		
@@ -598,24 +598,24 @@ namespace dtOO {
 	}
   
 	map2dTo3d * map3dTo3d::segmentConstWPercent( 
-    float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
+    dtReal const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
   ) const {
-	  float const wP = w_percent(ww);
+	  dtReal const wP = w_percent(ww);
 		dtPoint2 const p0P( u_percent(p0.x()), v_percent(p0.y()) );
 		dtPoint2 const p1P( u_percent(p1.x()), v_percent(p1.y()) );
 		
 		return segmentConstW(wP, p0P, p1P);	
 	}	
 
-	map2dTo3d * map3dTo3d::segmentConstUPercent( float const & uu ) const {		
+	map2dTo3d * map3dTo3d::segmentConstUPercent( dtReal const & uu ) const {		
 		return segmentConstU(u_percent(uu));
 	}
 
-	map2dTo3d * map3dTo3d::segmentConstVPercent( float const & vv ) const {
+	map2dTo3d * map3dTo3d::segmentConstVPercent( dtReal const & vv ) const {
 	  return segmentConstV(v_percent(vv));
 	}
   
-	map2dTo3d * map3dTo3d::segmentConstWPercent( float const & ww ) const {
+	map2dTo3d * map3dTo3d::segmentConstWPercent( dtReal const & ww ) const {
 	  return segmentConstW(w_percent(ww));
 	}		
   
@@ -698,18 +698,18 @@ namespace dtOO {
     = 
     staticPropertiesHandler
       ::getInstance()->getOptionInt("reparam_internalRestarts");    
-    float restartIncreasePrec
+    dtReal restartIncreasePrec
     = 
     staticPropertiesHandler::getInstance()->getOptionFloat(
       "reparam_restartIncreasePrecision"
     );
-    float internalRestartDecreasePrec
+    dtReal internalRestartDecreasePrec
     = 
     staticPropertiesHandler::getInstance()->getOptionFloat(
       "reparam_internalRestartDecreasePrecision"
     );    
-    float currentPrec = 1.;  
-    float dist = 1.E+99;
+    dtReal currentPrec = 1.;  
+    dtReal dist = 1.E+99;
     dt__forFromToIndex(0, maxRestarts+1, thisRun) {    
       dt__forFromToIndex(0, NumInitGuess, ii) {
         dt__forFromToIndex(0, NumInitGuess, jj) {       
@@ -790,7 +790,7 @@ namespace dtOO {
 //		double X, double Y, double Z, 
 //		double &U, double &V, double &W,
 //		double relax, double extU, double extV, double extW,
-//		std::vector< float > &itVal
+//		std::vector< dtReal > &itVal
 //	) const {
 //    double const Precision
 //    =
@@ -860,9 +860,9 @@ namespace dtOO {
 //  					dtPoint3 P 
 //						= 
 //						getPoint(
-//							static_cast<float>(U), 
-//							static_cast<float>(V), 
-//							static_cast<float>(W)
+//							static_cast<dtReal>(U), 
+//							static_cast<dtReal>(V), 
+//							static_cast<dtReal>(W)
 //						);
 //						err2 
 //            = 
@@ -877,30 +877,30 @@ namespace dtOO {
 //							P 
 //							= 
 //							getPoint(
-//								static_cast<float>(U), 
-//                static_cast<float>(V), 
-//                static_cast<float>(W)
+//								static_cast<dtReal>(U), 
+//                static_cast<dtReal>(V), 
+//                static_cast<dtReal>(W)
 //							);
 //							dtVector3 derU 
 //							= 
 //							firstDerU(
-//								static_cast<float>(U), 
-//                static_cast<float>(V), 
-//                static_cast<float>(W)
+//								static_cast<dtReal>(U), 
+//                static_cast<dtReal>(V), 
+//                static_cast<dtReal>(W)
 //							);
 //							dtVector3 derV 
 //							= 
 //							firstDerV(
-//								static_cast<float>(U), 
-//                static_cast<float>(V), 
-//                static_cast<float>(W)
+//								static_cast<dtReal>(U), 
+//                static_cast<dtReal>(V), 
+//                static_cast<dtReal>(W)
 //							);
 //							dtVector3 derW 
 //							= 
 //							firstDerW(
-//								static_cast<float>(U), 
-//                static_cast<float>(V), 
-//                static_cast<float>(W)
+//								static_cast<dtReal>(U), 
+//                static_cast<dtReal>(V), 
+//                static_cast<dtReal>(W)
 //							);
 //							dtMatrix mat(3,3);
 //							mat(0,0) = derU.x(); mat(0,1) = derU.y(); mat(0,2) = derU.z();
@@ -948,12 +948,12 @@ namespace dtOO {
 //							W = Wnew;
 //						}
 //
-//						itVal.push_back(static_cast<float>(i) );
-//						itVal.push_back(static_cast<float>(j) );
-//						itVal.push_back(static_cast<float>(k) );																	
-//						itVal.push_back(static_cast<float>(err2) );
-//						itVal.push_back(static_cast<float>(err) );
-//						itVal.push_back(static_cast<float>(iter) );
+//						itVal.push_back(static_cast<dtReal>(i) );
+//						itVal.push_back(static_cast<dtReal>(j) );
+//						itVal.push_back(static_cast<dtReal>(k) );																	
+//						itVal.push_back(static_cast<dtReal>(err2) );
+//						itVal.push_back(static_cast<dtReal>(err) );
+//						itVal.push_back(static_cast<dtReal>(iter) );
 //							
 //					bool inRange = (Unew <= umax) && (Vnew <= vmax) && (Wnew <= wmax)
 //					               && (Unew >= umin) && (Vnew >= vmin) && (Wnew >= wmin);
@@ -967,12 +967,12 @@ namespace dtOO {
 //						}
 //					}     /* ---------------------------------------------------END TRY */
 //					catch (eGeneral & eGenRef) {
-//						itVal.push_back(static_cast<float>(i) );
-//						itVal.push_back(static_cast<float>(j) );
-//						itVal.push_back(static_cast<float>(k) );																								
-//						itVal.push_back(static_cast<float>(err2) );
-//						itVal.push_back(static_cast<float>(err) );
-//						itVal.push_back(static_cast<float>(-iter) );						
+//						itVal.push_back(static_cast<dtReal>(i) );
+//						itVal.push_back(static_cast<dtReal>(j) );
+//						itVal.push_back(static_cast<dtReal>(k) );																								
+//						itVal.push_back(static_cast<dtReal>(err2) );
+//						itVal.push_back(static_cast<dtReal>(err) );
+//						itVal.push_back(static_cast<dtReal>(-iter) );						
 //						dt__warning(
 //						  XYZtoUVW(), 
 //							<< "Break initial guess (" << i << ", " << j << ", " << k 

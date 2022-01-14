@@ -125,7 +125,7 @@ namespace dtOO {
     //
     std::map< ::GVertex *, ::GVertex * > master_slave_v;
     std::map< ::GVertex *, ::GVertex * > slave_master_v;
-    std::vector< float > angle;
+    std::vector< dtReal > angle;
     dt__forAllRefAuto(masterVertex, aVertex) {
       dtPoint3 aVertex_rPhiZ 
       = 

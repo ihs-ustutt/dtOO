@@ -35,9 +35,9 @@ namespace dtOO {
 	}
 	
 	aFY vec3dBoxThreeD::Y( aFX const & xx) const {
-		float x0 = xx[0];
-		float x1 = xx[1];
-		float x2 = xx[2];
+		dtReal x0 = xx[0];
+		dtReal x1 = xx[1];
+		dtReal x2 = xx[2];
 		
 		
 		dtPoint3 rV 

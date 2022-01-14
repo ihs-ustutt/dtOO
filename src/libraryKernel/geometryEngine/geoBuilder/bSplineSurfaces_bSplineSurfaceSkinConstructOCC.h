@@ -1,6 +1,8 @@
 #ifndef bSplineSurfaces_bSplineSurfaceSkinConstructOCC_H
 #define	bSplineSurfaces_bSplineSurfaceSkinConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

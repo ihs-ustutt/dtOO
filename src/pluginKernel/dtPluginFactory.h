@@ -1,6 +1,8 @@
 #ifndef DTPLUGINFACTORY_H
 #define	DTPLUGINFACTORY_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

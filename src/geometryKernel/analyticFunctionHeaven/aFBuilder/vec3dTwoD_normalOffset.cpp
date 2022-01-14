@@ -19,7 +19,7 @@ namespace dtOO {
     int const & skinOrderMin, int const & skinOrderMax,
     int const & skinNIterations,
     bool const & closeU,
-    float const & closeSmooth
+    dtReal const & closeSmooth
   ) {
     
     dt__pH(vec3dTwoD) cV3d( v3d->clone() );
@@ -34,7 +34,7 @@ namespace dtOO {
         dtPoint3 ttUV 
         = 
         thick->YdtPoint3Percent( analyticFunction::aFXTwoD( uGrid[ii][jj] ) );
-        float tt = ttUV.x();
+        dtReal tt = ttUV.x();
         aFX uvT = analyticFunction::aFXTwoD(ttUV.y(), ttUV.z());
 
         dtPoint3 yy = cV3d->YdtPoint3Percent(uvT);

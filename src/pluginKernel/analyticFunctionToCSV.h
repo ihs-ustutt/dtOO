@@ -1,6 +1,8 @@
 #ifndef analyticFunctionToCSV_H
 #define	analyticFunctionToCSV_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

@@ -1,6 +1,8 @@
 #ifndef DTSURFACE_H
 #define	DTSURFACE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
@@ -17,22 +19,22 @@ namespace dtOO {
     // overload
     //
     virtual dtSurface * clone( void ) const = 0;
-    virtual float minPara( int const dim ) const = 0;
-    virtual float maxPara( int const dim ) const = 0;
+    virtual dtReal minPara( int const dim ) const = 0;
+    virtual dtReal maxPara( int const dim ) const = 0;
     virtual bool closed( int const dim ) const = 0; 
-    virtual dtPoint3 point( float const uu, float const vv) const = 0;
-    virtual dtVector3 normal( float const uu, float const vv) const = 0;
+    virtual dtPoint3 point( dtReal const uu, dtReal const vv) const = 0;
+    virtual dtVector3 normal( dtReal const uu, dtReal const vv) const = 0;
     virtual std::vector<dtVector3> firstDer( 
-      float const uu, float const vv
+      dtReal const uu, dtReal const vv
     ) const = 0;
     virtual std::vector<dtVector3> secondDer( 
-      float const uu, float const vv
+      dtReal const uu, dtReal const vv
     ) const = 0;
 	  virtual dtCurve * segmentConstU( 
-      float const uu, float const vvMin, float const vvMax
+      dtReal const uu, dtReal const vvMin, dtReal const vvMax
     ) const = 0;
 	  virtual dtCurve * segmentConstV( 
-      float const vv, float const uuMin, float const uuMax
+      dtReal const vv, dtReal const uuMin, dtReal const uuMax
     ) const = 0;    
     //
     // optional overload
@@ -45,67 +47,67 @@ namespace dtOO {
     virtual int nControlPoints( int const dim ) const;    
     void dump(void) const;
     virtual std::string dumpToString(void) const;
-    virtual void offsetNormal(float const nn);        
+    virtual void offsetNormal(dtReal const nn);        
     //
     //
     //    
-    float minU ( void ) const;
-    float maxU ( void ) const;  
-    float minV ( void ) const;
-    float maxV ( void ) const;    
+    dtReal minU ( void ) const;
+    dtReal maxU ( void ) const;  
+    dtReal minV ( void ) const;
+    dtReal maxV ( void ) const;    
     bool closedU( void ) const;
     bool closedV( void ) const;
-    float u_uPercent(float const percent) const;
-    float uPercent_u(float const uu) const;
-    float v_vPercent(float const percent) const;
-    float vPercent_v(float const vv) const;  
+    dtReal u_uPercent(dtReal const percent) const;
+    dtReal uPercent_u(dtReal const uu) const;
+    dtReal v_vPercent(dtReal const percent) const;
+    dtReal vPercent_v(dtReal const vv) const;  
     dtPoint3 getPoint3d( dtPoint2 const & pUV) const;
-    dtPoint3 getPointPercent3d(float const uP, float const vP) const;   
+    dtPoint3 getPointPercent3d(dtReal const uP, dtReal const vP) const;   
     std::vector< dtPoint3 > 
     getPoint3d( 
-      std::vector< float > const & uu, 
-      std::vector< float > const & vv
+      std::vector< dtReal > const & uu, 
+      std::vector< dtReal > const & vv
     ) const;
     std::vector< dtPoint3 > 
     getPointPercent3d( 
-      std::vector< float > const & uu, 
-      std::vector< float > const & vv
+      std::vector< dtReal > const & uu, 
+      std::vector< dtReal > const & vv
     ) const;    
     std::vector< dtPoint3 > 
     getPoint3d( 
-      std::vector< float > const * const uuV, 
-      std::vector< float > const * const vvV
+      std::vector< dtReal > const * const uuV, 
+      std::vector< dtReal > const * const vvV
     ) const;
-    dtVector3 firstDerU( float const uu, float const vv) const;
-    dtVector3 firstDerV( float const uu, float const vv) const ;
-    dtVector3 secondDerUU( float const uu, float const vv) const;
-    dtVector3 secondDerVV( float const uu, float const vv) const;
-    dtVector3 secondDerUV( float const uu, float const vv) const;
-    dtVector3 normalPercent( float const uP, float const vP ) const;
+    dtVector3 firstDerU( dtReal const uu, dtReal const vv) const;
+    dtVector3 firstDerV( dtReal const uu, dtReal const vv) const ;
+    dtVector3 secondDerUU( dtReal const uu, dtReal const vv) const;
+    dtVector3 secondDerVV( dtReal const uu, dtReal const vv) const;
+    dtVector3 secondDerUV( dtReal const uu, dtReal const vv) const;
+    dtVector3 normalPercent( dtReal const uP, dtReal const vP ) const;
     dtPoint2 uv_uvPercent( dtPoint2 const uvPercent) const;  
     int nControlPointsU( void ) const;
     int nControlPointsV( void ) const;
-    dtCurve * segmentConstU( float const uu) const;
-    dtCurve * segmentConstV( float const vv) const;    
-    dtCurve * segmentConstUPercent( float const uu) const;
-    dtCurve * segmentConstVPercent( float const vv) const;    
+    dtCurve * segmentConstU( dtReal const uu) const;
+    dtCurve * segmentConstV( dtReal const vv) const;    
+    dtCurve * segmentConstUPercent( dtReal const uu) const;
+    dtCurve * segmentConstVPercent( dtReal const vv) const;    
     dtCurve * segmentConstUPercent( 
-      float const uu, float const vvMin, float const vvMax
+      dtReal const uu, dtReal const vvMin, dtReal const vvMax
     ) const;
     dtCurve * segmentConstVPercent(
-      float const vv, float const uuMin, float const uuMax
+      dtReal const vv, dtReal const uuMin, dtReal const uuMax
     ) const;    
 	  dtCurve * segmentConst( 
-      int const & dir, float const at, float const from, float const to
+      int const & dir, dtReal const at, dtReal const from, dtReal const to
     ) const;
     dtCurve * segmentConst( 
-      int const & dir, float const at
+      int const & dir, dtReal const at
     ) const;
     dtCurve * segmentConstPercent( 
-      int const & dir, float const at
+      int const & dir, dtReal const at
     ) const;
     dtCurve * segmentConstPercent( 
-      int const & dir, float const at, float const from, float const to
+      int const & dir, dtReal const at, dtReal const from, dtReal const to
     ) const;
     dtPoint2 reparamPercent(dtPoint3 const point) const;
     static bool inXYZTolerance(

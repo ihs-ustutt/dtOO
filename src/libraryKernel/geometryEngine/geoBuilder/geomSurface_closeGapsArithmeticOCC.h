@@ -1,6 +1,8 @@
 #ifndef geomSurface_closeGapsArithmeticOCC_H
 #define	geomSurface_closeGapsArithmeticOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_pointInterpolateConstructOCC_H
 #define	bSplineCurve_pointInterpolateConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 

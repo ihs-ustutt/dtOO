@@ -14,7 +14,7 @@ namespace dtOO {
 	}
 
 	dtOCCTrimmedCurve2d::dtOCCTrimmedCurve2d(
-    dtOCCCurve2dBase const & orig, float const u0, float const u1
+    dtOCCCurve2dBase const & orig, dtReal const u0, dtReal const u1
   ) : dtOCCCurve2d(orig) {
 		dt__mustCast(OCCRef().getOCC().Access(), Geom2d_TrimmedCurve const, _ptr);		
 		_u0 = u0;
@@ -40,11 +40,11 @@ namespace dtOO {
 		dt__throwUnexpected(controlPoint());		
 	}
 	
-  float dtOCCTrimmedCurve2d::getU0( void ) const {
+  dtReal dtOCCTrimmedCurve2d::getU0( void ) const {
 		return _u0;
 	}
 	
-  float dtOCCTrimmedCurve2d::getU1( void ) const {
+  dtReal dtOCCTrimmedCurve2d::getU1( void ) const {
 		return _u1;
 	}
 }

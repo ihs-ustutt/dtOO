@@ -1,6 +1,8 @@
 #ifndef bVONameFaces_H
 #define	bVONameFaces_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

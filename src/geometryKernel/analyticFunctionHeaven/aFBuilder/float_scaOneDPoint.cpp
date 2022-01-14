@@ -9,9 +9,9 @@ namespace dtOO {
   ) {
 		_ff.resize(nPoints);
 		
-		float dist = 1./(nPoints-1);
+		dtReal dist = 1./(nPoints-1);
 		for (int ii=0; ii<nPoints; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			_ff[ii] = s1d->YFloat( dist * iiF );
 		}				
 	}
@@ -20,7 +20,7 @@ namespace dtOO {
 		
 	}
 	
-	std::vector< float > float_scaOneDPoint::result( void ) {
+	std::vector< dtReal > float_scaOneDPoint::result( void ) {
 		return _ff;
 	}
 }

@@ -1,6 +1,8 @@
 #ifndef scaMuParserThreeD_H
 #define	scaMuParserThreeD_H
 
+#include <dtOOTypeDef.h>
+
 #include "scaThreeD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -27,8 +29,8 @@ namespace dtOO {
     ) const;      
     scaMuParserThreeD * create( void ) const;    
     virtual ~scaMuParserThreeD();
-    virtual float YFloat( 
-      float const & x0, float const & x1, float const & x2 
+    virtual dtReal YFloat( 
+      dtReal const & x0, dtReal const & x1, dtReal const & x2 
     ) const;
     virtual bool closed( int const & dir ) const;    
   private:

@@ -1,6 +1,8 @@
 #ifndef pOnBlade_H
 #define	pOnBlade_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

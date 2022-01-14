@@ -117,7 +117,7 @@ namespace dtOO {
 
   bSplineSurface_pipeConstructOCC::bSplineSurface_pipeConstructOCC(
     dtCurve const * const aPath, 
-    float const & rr,
+    dtReal const & rr,
     bool const & polynomial,
     int const & absShape,
     int const & maxDegree,

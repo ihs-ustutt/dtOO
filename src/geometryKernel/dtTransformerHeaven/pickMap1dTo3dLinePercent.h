@@ -1,6 +1,8 @@
 #ifndef pickMap1dTo3dLinePercent_H
 #define	pickMap1dTo3dLinePercent_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 
@@ -27,8 +29,8 @@ namespace dtOO {
       virtual aGPtrVec 
       apply( aGPtrVec const * const aGeoVecP ) const;
     private:
-      float _u0;
-      float _u1;
+      dtReal _u0;
+      dtReal _u1;
       static bool _registrated;    
   };
 }

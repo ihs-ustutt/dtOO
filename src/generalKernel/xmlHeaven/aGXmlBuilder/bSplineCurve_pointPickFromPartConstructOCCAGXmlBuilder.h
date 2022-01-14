@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder_H
 #define	bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

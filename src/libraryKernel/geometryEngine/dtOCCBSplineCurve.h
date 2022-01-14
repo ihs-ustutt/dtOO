@@ -1,6 +1,8 @@
 #ifndef DTOCCBSPLINECURVE_H
 #define	DTOCCBSPLINECURVE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOCCCurve.h"

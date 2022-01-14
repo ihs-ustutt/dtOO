@@ -19,20 +19,20 @@ namespace dtOO {
   stringPrimitive::~stringPrimitive() {
   }
 
-  float stringPrimitive::stringToFloat(std::string const value) {
-    float argumentFloat;
+  dtReal stringPrimitive::stringToFloat(std::string const value) {
+    dtReal argumentFloat;
     std::istringstream(value) >> argumentFloat;
     return argumentFloat;
   }
 
-  std::string stringPrimitive::floatToString(float const value) {
+  std::string stringPrimitive::floatToString(dtReal const value) {
     std::ostringstream buff;
     buff << value;
     return buff.str();
   }
 
   int stringPrimitive::stringToInt(std::string const value) {
-    float argumentFloat;
+    dtReal argumentFloat;
     std::istringstream(value) >> argumentFloat;
     return argumentFloat;
   }

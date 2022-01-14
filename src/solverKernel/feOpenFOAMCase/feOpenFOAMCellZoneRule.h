@@ -1,6 +1,8 @@
 #ifndef feOpenFOAMCellZoneRule_H
 #define	feOpenFOAMCellZoneRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "feOpenFOAMSetupRule.h"
 

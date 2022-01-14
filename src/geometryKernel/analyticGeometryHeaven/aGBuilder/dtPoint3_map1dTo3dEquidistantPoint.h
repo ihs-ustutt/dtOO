@@ -1,6 +1,8 @@
 #ifndef dtPoint3_map1dTo3dEquidistantPoint_H
 #define	dtPoint3_map1dTo3dEquidistantPoint_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <vector>

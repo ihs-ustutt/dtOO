@@ -54,7 +54,7 @@ namespace dtOO {
         vec2dOneD::ConstDownCast( sFunP->at(ii) ) 
       );
 
-			std::vector<float> itVal;       
+			std::vector<dtReal> itVal;       
 			std::vector< std::string > header;
 			header.push_back("Y_x");
 			header.push_back("Y_y");
@@ -71,24 +71,24 @@ namespace dtOO {
       //
       // thickness increasing
       //            
-			float cLength = theF->length();
+			dtReal cLength = theF->length();
 			dt__info(apply(), << dt__eval(cLength) );
-      float xMin = _para->xMin(0);
-      float xMax = _para->xMax(0);
+      dtReal xMin = _para->xMin(0);
+      dtReal xMax = _para->xMax(0);
       //
       // points
       //
       for (int jj=0;jj<_nPointsOne;jj++) {
-        dt__toFloat(float jjF, jj);
-        dt__toFloat(float nPointsOneF, _nPointsOne);
-        float paraOne 
+        dt__toFloat(dtReal jjF, jj);
+        dt__toFloat(dtReal nPointsOneF, _nPointsOne);
+        dtReal paraOne 
         = 
         _para->YFloat( jjF * ( (xMax-xMin) / (nPointsOneF-1.)) ) ;
         dtPoint2 YY = theF->YdtPoint2Percent( paraOne );
         dtVector2 NN = theF->unitNdtVector2Percent( paraOne );
-				float curLength = theF->length( theF->x_percent(paraOne) );
-        float tt = _tD[0]->YFloat( curLength / cLength );
-				float ttInv = _tD[1]->YFloat( curLength / cLength );
+				dtReal curLength = theF->length( theF->x_percent(paraOne) );
+        dtReal tt = _tD[0]->YFloat( curLength / cLength );
+				dtReal ttInv = _tD[1]->YFloat( curLength / cLength );
 			  p2.push_back( YY + tt * NN );
 				p2Inv.push_back( YY - ttInv * NN );
 				itVal.push_back(YY.x()); itVal.push_back(YY.y());
@@ -114,7 +114,7 @@ namespace dtOO {
 			//
 			// remove
 			//
-			float uvRes
+			dtReal uvRes
 			= 
 			staticPropertiesHandler::getInstance()->getOptionFloat(
 				"uvw_resolution"

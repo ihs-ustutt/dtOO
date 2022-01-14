@@ -1,6 +1,8 @@
 #ifndef bSplineSurface_pipeConstructOCCAFXmlBuilder_H
 #define	bSplineSurface_pipeConstructOCCAFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

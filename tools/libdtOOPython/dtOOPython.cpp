@@ -35,8 +35,8 @@
 #include "labeledVectorHandlingPre.h"
 
 BOOST_PYTHON_MODULE(libdtOOPython){
-  boost::python::class_<std::vector<float> >("stdVectorFloat")
-    .def(boost::python::vector_indexing_suite<std::vector<float> >());
+  boost::python::class_<std::vector<dtOO::dtReal> >("stdVectorFloat")
+    .def(boost::python::vector_indexing_suite<std::vector<dtOO::dtReal> >());
   boost::python::class_<std::vector<std::string> >("stdVectorString")
     .def(boost::python::vector_indexing_suite<std::vector< std::string > >());    
   #include "logMePython.h"

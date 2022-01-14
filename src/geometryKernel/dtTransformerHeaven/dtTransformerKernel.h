@@ -1,6 +1,8 @@
 #ifndef dtTransformerKernel_H
 #define	dtTransformerKernel_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <pluginEngine/pugg/Kernel.h>
 

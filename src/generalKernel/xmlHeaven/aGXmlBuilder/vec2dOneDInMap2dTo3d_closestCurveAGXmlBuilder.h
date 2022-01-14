@@ -1,6 +1,8 @@
 #ifndef vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder_H
 #define	vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

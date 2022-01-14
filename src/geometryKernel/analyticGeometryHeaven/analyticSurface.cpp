@@ -50,7 +50,7 @@ namespace dtOO {
   analyticSurface::~analyticSurface() {
   }
 
-  dtPoint3 analyticSurface::getPoint(float const & uu, float const & vv) const {
+  dtPoint3 analyticSurface::getPoint(dtReal const & uu, dtReal const & vv) const {
 //    dt__warnIfWithMessage(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
 //		dt__warnIfWithMessage(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
 //    dt__warnIfWithMessage(uu>getUMax(), getPoint(), << uu << " > " << getUMax()); 
@@ -121,7 +121,7 @@ namespace dtOO {
     return _dtS.get();
   }   
   
-  void analyticSurface::offsetNormal( float const nn ) {
+  void analyticSurface::offsetNormal( dtReal const nn ) {
     _dtS->offsetNormal( nn );
   }
     
@@ -129,20 +129,20 @@ namespace dtOO {
     return _dtS->closed(dir);
   }
   
-  float analyticSurface::getMin( int const & dir) const {
+  dtReal analyticSurface::getMin( int const & dir) const {
 		return _dtS->minPara(dir);
   }
 
-  float analyticSurface::getMax( int const & dir) const {
+  dtReal analyticSurface::getMax( int const & dir) const {
     return _dtS->maxPara(dir);
   }
   
-  dtVector3 analyticSurface::normal( float const & uu, float const & vv) const {
+  dtVector3 analyticSurface::normal( dtReal const & uu, dtReal const & vv) const {
     return _dtS->normal(uu, vv);
   }
     
   std::vector< dtVector3 > analyticSurface::firstDer( 
-    float const & uu, float const & vv
+    dtReal const & uu, dtReal const & vv
   ) const {
     std::vector< dtVector3 > dd(2);
     dd[0] = _dtS->firstDerU(uu, vv);
@@ -150,7 +150,7 @@ namespace dtOO {
   }
   
   std::vector< dtVector3 > analyticSurface::secondDer( 
-    float const & uu, float const & vv
+    dtReal const & uu, dtReal const & vv
   ) const {
     std::vector< dtVector3 > dd(3);    
     dd[0] = _dtS->secondDerUU(uu, vv);
@@ -168,7 +168,7 @@ namespace dtOO {
   }
   
   map1dTo3d * analyticSurface::segmentConstU(
-    float const & uu, float const & p0, float const & p1
+    dtReal const & uu, dtReal const & p0, dtReal const & p1
   ) const {
     ptrHandling< dtCurve > cc(
       _dtS->segmentConstU(uu, p0, p1)
@@ -177,7 +177,7 @@ namespace dtOO {
   }
   
   map1dTo3d * analyticSurface::segmentConstV(
-      float const & vv, float const & p0, float const & p1
+      dtReal const & vv, dtReal const & p0, dtReal const & p1
     ) const {
       ptrHandling< dtCurve > cc(
         _dtS->segmentConstV(vv, p0, p1)

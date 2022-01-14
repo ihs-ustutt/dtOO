@@ -1,6 +1,8 @@
 #ifndef dtTransformerDriver_H
 #define	dtTransformerDriver_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <pluginEngine/pugg/Driver.h>
 

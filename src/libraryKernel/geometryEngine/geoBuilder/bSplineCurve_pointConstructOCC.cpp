@@ -44,7 +44,7 @@ namespace dtOO {
 		  poles.SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) );
 	  }
 		for (int ii=1;ii<=knots.Length();ii++) {
-			knots.SetValue( ii, static_cast<float>(ii-1) );
+			knots.SetValue( ii, static_cast<dtReal>(ii-1) );
 		}
 		mults.SetValue(1, order+1);
 		mults.SetValue(nOnes+2, order+1);
@@ -60,8 +60,8 @@ namespace dtOO {
 		base.setOCC( curve );
 		_dtC.reset( new dtOCCBSplineCurve(base) );
 		
-//		std::vector< float > ul;
-//		float length = _dtC->l_uPercent(1.);
+//		std::vector< dtReal > ul;
+//		dtReal length = _dtC->l_uPercent(1.);
 //		ul.push_back(0.);
 //		ul.push_back( _dtC->l_uPercent(0.)/length );		
 //		ul.push_back(.25);

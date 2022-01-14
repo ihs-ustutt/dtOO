@@ -1,6 +1,8 @@
 #ifndef dtOCCEllipse_H
 #define	dtOCCEllipse_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOCCCurve.h"

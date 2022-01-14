@@ -1,6 +1,8 @@
 #ifndef analyticGeometry_H
 #define	analyticGeometry_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <vector>
 #include <string>
@@ -23,7 +25,7 @@ namespace dtOO {
       analyticGeometry();
       virtual ~analyticGeometry();
       analyticGeometry( analyticGeometry const & orig );
-      dtPoint3 getPointPercent( float const * const uvw ) const;    
+      dtPoint3 getPointPercent( dtReal const * const uvw ) const;    
       //
       // overload
       //
@@ -31,9 +33,9 @@ namespace dtOO {
       virtual analyticGeometry * create( void ) const = 0;
       virtual int dim( void ) const = 0;
       virtual bool isClosed( int const & dir) const = 0;
-      virtual float getMin( int const & dir) const = 0;
-      virtual float getMax( int const & dir) const = 0;
-      virtual dtPoint3 getPoint( float const * const uvw ) const = 0;
+      virtual dtReal getMin( int const & dir) const = 0;
+      virtual dtReal getMax( int const & dir) const = 0;
+      virtual dtPoint3 getPoint( dtReal const * const uvw ) const = 0;
       //
       // optional overload
       //
@@ -44,26 +46,26 @@ namespace dtOO {
         void 
       ) const;
       std::pair< dtPoint3, dtPoint3 > boundingBox( void ) const;
-      float boundingBoxValue( void ) const;
+      dtReal boundingBoxValue( void ) const;
       void updateBoundingBox( void ) const;
-      float characteristicLength( void ) const;
+      dtReal characteristicLength( void ) const;
       std::vector< dtPoint3 > cornerPoints( void ) const;
       //
       //
       //
-      dtPoint3 getPoint( std::vector< float > const & uvw ) const;
+      dtPoint3 getPoint( std::vector< dtReal > const & uvw ) const;
       static bool inXYZTolerance(
-        dtPoint3 const & p0, dtPoint3 const & p1, float * const dist,
-        bool output, float inc
+        dtPoint3 const & p0, dtPoint3 const & p1, dtReal * const dist,
+        bool output, dtReal inc
       );
       static bool inXYZTolerance(
         dtPoint3 const & p0, dtPoint3 const & p1
       );      
-      static bool inXYZTolerance( float const dist, float inc = 1. );
+      static bool inXYZTolerance( dtReal const dist, dtReal inc = 1. );
       bool degenerated( void ) const;
       static bool inUVWTolerance( dtPoint3 const & p0, dtPoint3 const & p1 );
       static bool inUVWTolerance( dtPoint2 const & p0, dtPoint2 const & p1 );    
-      static bool inUVWTolerance( float const & p0, float const & p1 );
+      static bool inUVWTolerance( dtReal const & p0, dtReal const & p1 );
       //
       //
       //
@@ -79,9 +81,9 @@ namespace dtOO {
       mutable int _resU;
       mutable int _resV;
       mutable int _resW;
-      mutable float _characteristicLength;
+      mutable dtReal _characteristicLength;
       mutable std::pair< dtPoint3, dtPoint3 > _boundingBox;
-      mutable float _boundingBoxValue;
+      mutable dtReal _boundingBoxValue;
       threadSafeRoot _threadRoot;
   };
   

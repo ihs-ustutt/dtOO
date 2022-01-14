@@ -11,7 +11,7 @@ namespace dtOO {
   qShapeMetric::~qShapeMetric() {
   }
 
-  float qShapeMetric::operator()( ::MElement const * const me ) {
+  dtReal qShapeMetric::operator()( ::MElement const * const me ) {
     ::MElement * nC = const_cast< ::MElement * >(me);
     ::MPyramid * pyr = dynamic_cast< ::MPyramid * >(nC);
     ::MTetrahedron * tet = dynamic_cast< ::MTetrahedron * >(nC);
@@ -21,7 +21,7 @@ namespace dtOO {
     else dt__throwUnexpected(operator()()); 
   }
 
-  float qShapeMetric::calculatePyramid( ::MPyramid * pyr ) {
+  dtReal qShapeMetric::calculatePyramid( ::MPyramid * pyr ) {
     ::MTetrahedron tet0(
       pyr->getVertex(0), 
       pyr->getVertex(2),
@@ -72,7 +72,7 @@ namespace dtOO {
       .86034;
   }  
 
-  float qShapeMetric::calculateTetrahedron( ::MTetrahedron * tet ) {   
+  dtReal qShapeMetric::calculateTetrahedron( ::MTetrahedron * tet ) {   
     return 3. * fabs(tet->getInnerRadius()/tet->getCircumRadius());
   }    
 }

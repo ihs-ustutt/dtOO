@@ -1,6 +1,8 @@
 #ifndef radialTranslatingMap2dTo3dAGXmlBuilder_H
 #define	radialTranslatingMap2dTo3dAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

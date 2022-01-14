@@ -1,6 +1,8 @@
 #ifndef __LOGME_H__
 #define __LOGME_H__
 
+#include <dtOOTypeDef.h>
+
 //------------------------------------------------------------------------------
 #include <sstream>
 #include <string>
@@ -140,7 +142,7 @@ namespace dtOO {
       } 	
       
       static std::string floatMatrixToString( 
-        std::vector< std::vector< float > > const & mat 
+        std::vector< std::vector< dtReal > > const & mat 
       );
   };
   

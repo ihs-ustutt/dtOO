@@ -1,6 +1,8 @@
 #ifndef BITHICKNESSINCREASING_H
 #define	BITHICKNESSINCREASING_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 

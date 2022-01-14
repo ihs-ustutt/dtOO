@@ -1,6 +1,8 @@
 #ifndef LABELHANDLING_H
 #define	LABELHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <logMe/dtMacros.h>
 

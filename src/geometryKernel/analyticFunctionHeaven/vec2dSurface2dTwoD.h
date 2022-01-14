@@ -1,6 +1,8 @@
 #ifndef VEC2DSURFACE2DTWOD_H
 #define	VEC2DSURFACE2DTWOD_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec2dTwoD.h"

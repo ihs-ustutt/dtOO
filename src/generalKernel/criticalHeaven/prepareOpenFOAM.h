@@ -1,5 +1,7 @@
 #include "unsetGmsh.h"
 
+
+#include <dtOOTypeDef.h>
 // avoid issues with pre-processor defines
 #undef FALSE
 #undef TRUE

@@ -1,6 +1,8 @@
 #ifndef VECTORHANDLING_H
 #define	VECTORHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <vector>
 #include <string>
 #include "labelHandling.h"

@@ -1,6 +1,8 @@
 #ifndef BSPLINECURVE2D_POINTCONSTRUCTOCC_H
 #define	BSPLINECURVE2D_POINTCONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

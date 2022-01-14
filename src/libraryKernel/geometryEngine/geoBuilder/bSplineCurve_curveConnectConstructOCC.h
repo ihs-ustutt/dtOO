@@ -1,6 +1,8 @@
 #ifndef BSPLINECURVE_CURVECONNECTCONSTRUCTOCC_H
 #define	BSPLINECURVE_CURVECONNECTCONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -17,7 +19,7 @@ namespace dtOO {
       );    
       bSplineCurve_curveConnectConstructOCC( 
         vectorHandling< dtCurve const * > const & cc,
-        float const & tol, int const & param, int const & minM
+        dtReal const & tol, int const & param, int const & minM
       );
       bSplineCurve_curveConnectConstructOCC( 
         vectorHandling< dtCurve const * > const & cc

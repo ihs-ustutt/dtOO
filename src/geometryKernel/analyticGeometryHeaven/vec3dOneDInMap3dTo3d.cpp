@@ -37,7 +37,7 @@ namespace dtOO {
   vec3dOneDInMap3dTo3d::~vec3dOneDInMap3dTo3d() {
   }
   
-  dtPoint3 vec3dOneDInMap3dTo3d::getPoint( float const & uu ) const {
+  dtPoint3 vec3dOneDInMap3dTo3d::getPoint( dtReal const & uu ) const {
     dtPoint3 pUVW = _v1d->YdtPoint3(uu);
 		if (!_percentF) {
       return _m3d->getPoint( pUVW.x(), pUVW.y(), pUVW.z() );
@@ -51,11 +51,11 @@ namespace dtOO {
     return _v1d->closed(dir);
   }
   
-  float vec3dOneDInMap3dTo3d::getMin( int const & dir) const {
+  dtReal vec3dOneDInMap3dTo3d::getMin( int const & dir) const {
     return _v1d->xMin(dir);    
   }
 
-  float vec3dOneDInMap3dTo3d::getMax( int const & dir) const {
+  dtReal vec3dOneDInMap3dTo3d::getMax( int const & dir) const {
     return _v1d->xMax(dir);    
   }
   

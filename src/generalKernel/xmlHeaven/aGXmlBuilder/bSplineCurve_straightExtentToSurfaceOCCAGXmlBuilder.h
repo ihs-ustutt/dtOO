@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder_H
 #define	bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

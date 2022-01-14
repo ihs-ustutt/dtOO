@@ -1,6 +1,8 @@
 #ifndef dtCase_H
 #define	dtCase_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/labelHandling.h>

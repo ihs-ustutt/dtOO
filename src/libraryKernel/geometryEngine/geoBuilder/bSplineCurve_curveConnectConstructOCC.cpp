@@ -15,7 +15,7 @@
 namespace dtOO {   
 	bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
 	  vectorHandling< dtCurve const * > const & cc, 
-    float const & tol, int const & param, int const & minM
+    dtReal const & tol, int const & param, int const & minM
 	) {
 		GeomConvert_CompCurveToBSplineCurve conv(
       static_cast< Convert_ParameterisationType >(param)
@@ -32,7 +32,7 @@ namespace dtOO {
           =
           conv.Add(
             boundedC, 
-            pow(10.,float(tt)) * tol, 
+            pow(10.,dtReal(tt)) * tol, 
             Standard_False, Standard_True, minM
           );
           ,
@@ -41,7 +41,7 @@ namespace dtOO {
         if (check) break;          
         dt__warning(
           bSplineCurve_curveConnectConstructOCC(), 
-          << "Cannot connect curves with tolerance " << pow(10.,float(tt)) * tol
+          << "Cannot connect curves with tolerance " << pow(10.,dtReal(tt)) * tol
           << "\nMultiply tolerance by 10."
         );
       }        

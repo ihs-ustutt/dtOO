@@ -39,7 +39,7 @@ namespace dtOO {
 	
 	aFY vec3dThickedTwoD::Y( aFX const & xx) const {
 		dtPoint3 ttUV = _tt->YdtPoint3(xx);
-		float tt = ttUV.x();
+		dtReal tt = ttUV.x();
 		aFX uvT(2,0.);
 		uvT[0] = ttUV.y();
 		uvT[1] = ttUV.z();

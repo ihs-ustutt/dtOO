@@ -1,6 +1,8 @@
 #ifndef ROTATINMAP2DTO3D_H
 #define	ROTATINMAP2DTO3D_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include "map3dTo3d.h"
 #include <logMe/dtMacros.h>
@@ -23,14 +25,14 @@ namespace dtOO {
       dtTransformer const * const dtT 
     ) const;       
     virtual bool isClosed( int const & dir) const;
-    virtual float getMin( int const & dir) const;
-    virtual float getMax( int const & dir) const;
+    virtual dtReal getMin( int const & dir) const;
+    virtual dtReal getMax( int const & dir) const;
     virtual dtPoint3 getPoint( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const; 
-	  virtual map2dTo3d * segmentConstU( float const & uu ) const;
-	  virtual map2dTo3d * segmentConstV( float const & vv ) const;
-  	virtual map2dTo3d * segmentConstW( float const & ww ) const;
+	  virtual map2dTo3d * segmentConstU( dtReal const & uu ) const;
+	  virtual map2dTo3d * segmentConstV( dtReal const & vv ) const;
+  	virtual map2dTo3d * segmentConstW( dtReal const & ww ) const;
     virtual std::string dumpToString( void ) const;
     map2dTo3d const & constRefMap2dTo3d( void ) const;
     dtVector3 const & rotationAxis( void ) const;

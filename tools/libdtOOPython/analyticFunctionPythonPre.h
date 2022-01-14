@@ -23,10 +23,10 @@ class analyticFunctionWrap
   int yDim( void ) const {
     return this->get_override("yDim")();
   }  
-  float xMin( int const & dir ) const {
+  dtOO::dtReal xMin( int const & dir ) const {
     return this->get_override("xMin")(dir);
   }    
-  float xMax( int const & dir ) const {
+  dtOO::dtReal xMax( int const & dir ) const {
     return this->get_override("xMax")(dir);
   }      
 };

@@ -219,7 +219,7 @@ namespace dtOO {
         edgeVertex[1][layer].first->y() - edgeVertex[1][0].first->y(),
         edgeVertex[1][layer].first->z() - edgeVertex[1][0].first->z()
       );
-      float distInc 
+      dtReal distInc 
       = 
       ( 
         dtLinearAlgebra::length( dist1 )
@@ -355,7 +355,7 @@ namespace dtOO {
         edgeVertex[3][layer].first->y() - edgeVertex[3][0].first->y(),
         edgeVertex[3][layer].first->z() - edgeVertex[3][0].first->z()
       );
-      float distInc 
+      dtReal distInc 
       = 
       ( 
         dtLinearAlgebra::length( dist1 )

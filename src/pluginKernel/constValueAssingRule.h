@@ -1,6 +1,8 @@
 #ifndef constValueAssingRule_H
 #define	constValueAssingRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

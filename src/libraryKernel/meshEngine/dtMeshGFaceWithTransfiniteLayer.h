@@ -1,6 +1,8 @@
 #ifndef dtMeshGFaceWithTransfiniteLayer_H
 #define	dtMeshGFaceWithTransfiniteLayer_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMesh2DOperator.h"

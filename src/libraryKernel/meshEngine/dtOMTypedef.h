@@ -1,6 +1,8 @@
 #ifndef dtOMTypedef_H
 #define dtOMTypedef_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtOMMeshTraits.h"
 
 namespace dtOO {  

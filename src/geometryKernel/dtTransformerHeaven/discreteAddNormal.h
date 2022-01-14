@@ -1,6 +1,8 @@
 #ifndef discreteAddNormal_H
 #define	discreteAddNormal_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -38,7 +40,7 @@ namespace dtOO {
       int _skinOrderMax;
       int _skinNIterations;
       bool _closeU;
-      float _closeSmooth;
+      dtReal _closeSmooth;
       static bool _registrated;    
   };
 }    

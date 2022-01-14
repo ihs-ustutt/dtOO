@@ -34,7 +34,7 @@ namespace dtOO {
   }
   
   dtPoint3 vec3dThreeDInMap3dTo3d::getPoint( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
 		aFX xx(3,0);
 		xx[0] = uu; xx[1] = vv; xx[2] = ww;
@@ -51,11 +51,11 @@ namespace dtOO {
 		return false;
   }
   
-  float vec3dThreeDInMap3dTo3d::getMin( int const & dir) const {
+  dtReal vec3dThreeDInMap3dTo3d::getMin( int const & dir) const {
     return _v3d->xMin(dir);    
   }
 
-  float vec3dThreeDInMap3dTo3d::getMax( int const & dir) const {
+  dtReal vec3dThreeDInMap3dTo3d::getMax( int const & dir) const {
     return _v3d->xMax(dir);    
   }
 

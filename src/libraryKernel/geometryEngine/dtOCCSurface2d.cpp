@@ -37,7 +37,7 @@ namespace dtOO {
 		
 	}
 
-  float dtOCCSurface2d::minPara( int const dim ) const {
+  dtReal dtOCCSurface2d::minPara( int const dim ) const {
 		Standard_Real U1;
 		Standard_Real U2;
 		Standard_Real V1;
@@ -46,9 +46,9 @@ namespace dtOO {
 			_ptr->Bounds(U1, U2, V1, V2);
 			switch (dim) {
 				case 0:		
-					return static_cast<float>(U1);
+					return static_cast<dtReal>(U1);
 				case 1:		
-					return static_cast<float>(V1);
+					return static_cast<dtReal>(V1);
 				default:
 					dt__throw(minPara(),
 								<< dt__eval(dim) << std::endl
@@ -61,7 +61,7 @@ namespace dtOO {
 		);
 	}
 	
-  float dtOCCSurface2d::maxPara( int const dim ) const {
+  dtReal dtOCCSurface2d::maxPara( int const dim ) const {
 		Standard_Real U1;
 		Standard_Real U2;
 		Standard_Real V1;
@@ -70,9 +70,9 @@ namespace dtOO {
 			_ptr->Bounds(U1, U2, V1, V2);
 			switch (dim) {
 				case 0:		
-					return static_cast<float>(U2);
+					return static_cast<dtReal>(U2);
 				case 1:		
-					return static_cast<float>(V2);
+					return static_cast<dtReal>(V2);
 				default:
 					dt__throw(getMax(),
 								<< dt__eval(dim) << std::endl
@@ -100,7 +100,7 @@ namespace dtOO {
 		, << dt__eval(dim) );
 	}
 	
-  dtPoint2 dtOCCSurface2d::point( float const uu, float const vv) const {
+  dtPoint2 dtOCCSurface2d::point( dtReal const uu, dtReal const vv) const {
   	Standard_Real uR = static_cast<Standard_Real>(uu);
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		
@@ -114,14 +114,14 @@ namespace dtOO {
 	  );
 		return dtLinearAlgebra::ignoreZ(
 						 dtPoint3(
-							 static_cast<float>(pp.Coord(1)), 
-							 static_cast<float>(pp.Coord(2)), 
-							 static_cast<float>(pp.Coord(3))
+							 static_cast<dtReal>(pp.Coord(1)), 
+							 static_cast<dtReal>(pp.Coord(2)), 
+							 static_cast<dtReal>(pp.Coord(3))
 						)
 		);
 	}
 	
-  std::vector<dtVector2> dtOCCSurface2d::firstDer( float const uu, float const vv) const {
+  std::vector<dtVector2> dtOCCSurface2d::firstDer( dtReal const uu, dtReal const vv) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		gp_Pnt pp;
@@ -141,18 +141,18 @@ namespace dtOO {
 		= 
 		dtLinearAlgebra::ignoreZ(
 			dtVector3(
-				static_cast<float>(D1U.Coord(1)), 
-				static_cast<float>(D1U.Coord(2)), 
-				static_cast<float>(D1U.Coord(3))
+				static_cast<dtReal>(D1U.Coord(1)), 
+				static_cast<dtReal>(D1U.Coord(2)), 
+				static_cast<dtReal>(D1U.Coord(3))
 			)
 		);				
 		retVec[1] 
 		= 
 		dtLinearAlgebra::ignoreZ(
 			dtVector3(
-				static_cast<float>(D1V.Coord(1)), 
-				static_cast<float>(D1V.Coord(2)), 
-				static_cast<float>(D1V.Coord(3))
+				static_cast<dtReal>(D1V.Coord(1)), 
+				static_cast<dtReal>(D1V.Coord(2)), 
+				static_cast<dtReal>(D1V.Coord(3))
 			)
 		);
 
@@ -160,7 +160,7 @@ namespace dtOO {
 		
 	}
 	
-  std::vector<dtVector2> dtOCCSurface2d::secondDer( float const uu, float const vv) const {
+  std::vector<dtVector2> dtOCCSurface2d::secondDer( dtReal const uu, dtReal const vv) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		gp_Pnt pp;
@@ -188,27 +188,27 @@ namespace dtOO {
 		= 
 		dtLinearAlgebra::ignoreZ(
 			dtVector3(
-				static_cast<float>(D2U.Coord(1)), 
-				static_cast<float>(D2U.Coord(2)), 
-				static_cast<float>(D2U.Coord(3))
+				static_cast<dtReal>(D2U.Coord(1)), 
+				static_cast<dtReal>(D2U.Coord(2)), 
+				static_cast<dtReal>(D2U.Coord(3))
 			)
 		);				
 		retVec[1] 
 		= 
 		dtLinearAlgebra::ignoreZ(						
 			dtVector3(
-				static_cast<float>(D2UV.Coord(1)), 
-				static_cast<float>(D2UV.Coord(2)), 
-				static_cast<float>(D2UV.Coord(3))
+				static_cast<dtReal>(D2UV.Coord(1)), 
+				static_cast<dtReal>(D2UV.Coord(2)), 
+				static_cast<dtReal>(D2UV.Coord(3))
 			)
 		);
 		retVec[2] 
 		= 
 		dtLinearAlgebra::ignoreZ(						
 			dtVector3(
-				static_cast<float>(D2V.Coord(1)), 
-				static_cast<float>(D2V.Coord(2)), 
-				static_cast<float>(D2V.Coord(3))
+				static_cast<dtReal>(D2V.Coord(1)), 
+				static_cast<dtReal>(D2V.Coord(2)), 
+				static_cast<dtReal>(D2V.Coord(3))
 			)
 		);
 		return retVec;			
@@ -286,7 +286,7 @@ namespace dtOO {
 		Extrema_POnSurf epp = ext.Point(1); 
 		epp.Parameter(U, V);
 		
-		return dtPoint2(static_cast<float>(U), static_cast<float>(V));
+		return dtPoint2(static_cast<dtReal>(U), static_cast<dtReal>(V));
 	}
 
 	std::string dtOCCSurface2d::dumpToString( void ) const {

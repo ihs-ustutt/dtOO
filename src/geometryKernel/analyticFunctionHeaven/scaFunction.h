@@ -1,6 +1,8 @@
 #ifndef SCAFUNCTION_H
 #define	SCAFUNCTION_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "analyticFunction.h"
@@ -13,7 +15,7 @@ namespace dtOO {
     scaFunction( scaFunction const & orig);  
     virtual ~scaFunction();
     virtual int yDim( void ) const;      
-    virtual float YFloat(aFX const & xx) const = 0;
+    virtual dtReal YFloat(aFX const & xx) const = 0;
     virtual aFY Y(aFX const & xx) const;
   };
 }

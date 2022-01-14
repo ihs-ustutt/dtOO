@@ -1,6 +1,8 @@
 #ifndef DTMESHGREGION_H
 #define	DTMESHGREGION_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMesh3DOperator.h"
@@ -32,11 +34,11 @@ namespace dtOO {
   private:
     void createPyramids( dtGmshRegion * dtgr );
     void createOVM(dtGmshRegion * dtgr, dtOVMMesh & ovm);
-    static float pyramidHeight( ::MPyramid * pyr );
+    static dtReal pyramidHeight( ::MPyramid * pyr );
   private:
-    float _relax;
-    float _minQShapeMetric;
-    float _maxHeight;
+    dtReal _relax;
+    dtReal _minQShapeMetric;
+    dtReal _maxHeight;
     int _nPyramidOpenSteps;
     int _nSmooths;
   };

@@ -1,6 +1,8 @@
 #ifndef VEC3DTHICKEDTWOD_H
 #define	VEC3DTHICKEDTWOD_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dTwoD.h"

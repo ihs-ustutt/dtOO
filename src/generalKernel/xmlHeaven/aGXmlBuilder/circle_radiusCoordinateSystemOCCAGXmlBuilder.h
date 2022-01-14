@@ -1,6 +1,8 @@
 #ifndef circle_radiusCoordinateSystemOCCAGXmlBuilder_H
 #define	circle_radiusCoordinateSystemOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

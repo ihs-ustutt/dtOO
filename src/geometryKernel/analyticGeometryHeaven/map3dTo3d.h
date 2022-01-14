@@ -1,6 +1,8 @@
 #ifndef MAP3DTO3D_H
 #define	MAP3DTO3D_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include "analyticGeometry.h"
 #include <logMe/dtMacros.h>
@@ -18,7 +20,7 @@ namespace dtOO {
     map3dTo3d(const map3dTo3d& orig);
     virtual ~map3dTo3d();
     virtual int dim( void ) const;   
-    dtPoint3 getPoint( float const * const uvw ) const;
+    dtPoint3 getPoint( dtReal const * const uvw ) const;
     virtual vectorHandling< renderInterface * > getRender( void ) const;
     //
     // overload
@@ -29,7 +31,7 @@ namespace dtOO {
       dtTransformer const * const dtT 
     ) const = 0;    
     virtual dtPoint3 getPoint( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const = 0;   
     //
     // optional overload
@@ -37,7 +39,7 @@ namespace dtOO {
     virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;        
     virtual dtPoint3 approxInVolume(dtPoint3 const & ppXYZ) const; 
     virtual std::vector< dtVector3 > firstDer(
-      float const & uu, float const & vv, float const & ww
+      dtReal const & uu, dtReal const & vv, dtReal const & ww
     ) const;
     virtual map1dTo3d * segment(
       dtPoint3 const & p0, dtPoint3 const & p1
@@ -45,70 +47,70 @@ namespace dtOO {
     virtual map2dTo3d * segment(
       twoDArrayHandling< dtPoint3 > const & pp 
     ) const;
-    virtual map2dTo3d * segmentConstU( float const & uu ) const;
-    virtual map2dTo3d * segmentConstV( float const & vv ) const;
-    virtual map2dTo3d * segmentConstW( float const & ww ) const;
+    virtual map2dTo3d * segmentConstU( dtReal const & uu ) const;
+    virtual map2dTo3d * segmentConstV( dtReal const & vv ) const;
+    virtual map2dTo3d * segmentConstW( dtReal const & ww ) const;
     virtual map2dTo3d * segmentConstU( 
-      float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
+      dtReal const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;
     virtual map2dTo3d * segmentConstV( 
-      float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
+      dtReal const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;
     virtual map2dTo3d * segmentConstW( 
-      float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
+      dtReal const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;
     //
     //
     //
     dtVector3 firstDerU( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const;
     dtVector3 firstDerV( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const;    
     dtVector3 firstDerW( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const;
     dtPoint3 reparamPercentInVolume(dtPoint3 const & ppXYZ) const; 
     dtPoint3 approxPercentInVolume(dtPoint3 const & ppXYZ) const;     
     bool isClosedU( void ) const;
     bool isClosedV( void ) const;
     bool isClosedW( void ) const;
-    float getUMin( void ) const;
-    float getUMax( void ) const;
-    float getVMin( void ) const;
-    float getVMax( void ) const;     
-    float getWMin( void ) const;
-    float getWMax( void ) const;
+    dtReal getUMin( void ) const;
+    dtReal getUMax( void ) const;
+    dtReal getVMin( void ) const;
+    dtReal getVMax( void ) const;     
+    dtReal getWMin( void ) const;
+    dtReal getWMax( void ) const;
     bool inRange( dtPoint3 const & pUVW ) const;
     dtPoint3 getPointPercent( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const;
     dtPoint3 getPoint( dtPoint3 const & ppUVW ) const;
     dtPoint3 getPointPercent( dtPoint3 const & ppUVW ) const;    
-    float u_percent(float const & uu) const;
-    float v_percent(float const & vv) const;
-    float w_percent(float const & ww) const;    
-    float percent_u(float const & uu) const;
-    float percent_v(float const & vv) const;
-    float percent_w(float const & ww) const;        
+    dtReal u_percent(dtReal const & uu) const;
+    dtReal v_percent(dtReal const & vv) const;
+    dtReal w_percent(dtReal const & ww) const;    
+    dtReal percent_u(dtReal const & uu) const;
+    dtReal percent_v(dtReal const & vv) const;
+    dtReal percent_w(dtReal const & ww) const;        
     dtPoint3 percent_uvw(dtPoint3 const & pUVW) const;
     dtPoint3 uvw_percent(dtPoint3 const & pp) const;    
     int getRenderResolutionU( void ) const;
     int getRenderResolutionV( void ) const;            
     int getRenderResolutionW( void ) const;
     map2dTo3d * segmentConstUPercent( 
-      float const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
+      dtReal const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;
     map2dTo3d * segmentConstVPercent( 
-      float const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
+      dtReal const & vv, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;
     map2dTo3d * segmentConstWPercent( 
-      float const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
+      dtReal const & ww, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;    
-    map2dTo3d * segmentConstUPercent( float const & uu ) const;
-    map2dTo3d * segmentConstVPercent( float const & vv ) const;
-    map2dTo3d * segmentConstWPercent( float const & ww ) const;      
+    map2dTo3d * segmentConstUPercent( dtReal const & uu ) const;
+    map2dTo3d * segmentConstVPercent( dtReal const & vv ) const;
+    map2dTo3d * segmentConstWPercent( dtReal const & ww ) const;      
     map2dTo3d * segment( 
       dtPoint3 const & p0, dtPoint3 const & p1, 
       dtPoint3 const & p2, dtPoint3 const & p3 
@@ -143,7 +145,7 @@ namespace dtOO {
     ) const;
   private:
     mutable dtPoint3 _pXYZ;
-    static float _deltaPer;
+    static dtReal _deltaPer;
   };
 }
 #endif	/* MAP3DTO3D_H */

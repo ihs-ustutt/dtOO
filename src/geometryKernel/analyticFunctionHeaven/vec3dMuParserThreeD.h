@@ -1,6 +1,8 @@
 #ifndef VEC3DMUPARSERTHREED_H
 #define	VEC3DMUPARSERTHREED_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec3dThreeD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>

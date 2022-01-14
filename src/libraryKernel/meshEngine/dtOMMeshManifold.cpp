@@ -21,8 +21,8 @@ namespace dtOO {
 
 		update();
 		
-//		float minA = minDihedralAngle();
-//		float maxA = maxDihedralAngle();
+//		dtReal minA = minDihedralAngle();
+//		dtReal maxA = maxDihedralAngle();
 //		dt__info(
 //			dtOMMeshManifold(),
 //			<< dt__eval(closed()) << std::endl
@@ -64,8 +64,8 @@ namespace dtOO {
 	dtOMMeshManifold::~dtOMMeshManifold() {
 	}
 	
-	float dtOMMeshManifold::minDihedralAngle( void ) const {
-		float ret = 0.;
+	dtReal dtOMMeshManifold::minDihedralAngle( void ) const {
+		dtReal ret = 0.;
 		if (_dihedralAngleV.size() != 0) {
 			ret = *(std::min_element(_dihedralAngleV.begin(), _dihedralAngleV.end()));
 		}		
@@ -73,8 +73,8 @@ namespace dtOO {
 		return ret;
 	}
 
-	float dtOMMeshManifold::maxDihedralAngle( void ) const {
-		float ret = 0.;
+	dtReal dtOMMeshManifold::maxDihedralAngle( void ) const {
+		dtReal ret = 0.;
 		if (_dihedralAngleV.size() != 0) {
 			ret = *(std::max_element(_dihedralAngleV.begin(), _dihedralAngleV.end()));
 		}		
@@ -121,7 +121,7 @@ namespace dtOO {
 			//
 			// find max dihedral angle and save iterators
 			//
-      std::vector< float >::iterator maxAngleIt
+      std::vector< dtReal >::iterator maxAngleIt
 			=
 			std::max_element(_dihedralAngleV.begin(), _dihedralAngleV.end());
 		  omVertexEdgeI maxEdgeIt = ve_begin(_centerVertex);
@@ -131,7 +131,7 @@ namespace dtOO {
 			//
 			// find next max dihedral angle and save iterators
 			//			
-			std::vector< float >::iterator max2ndAngleIt;
+			std::vector< dtReal >::iterator max2ndAngleIt;
 			omVertexEdgeI max2ndEdgeIt;
 			dt__forAllIndex(_dihedralAngleV, tmp) {
 				max2ndAngleIt
@@ -172,7 +172,7 @@ namespace dtOO {
 			//
 			// find max dihedral angle and save iterators
 			//			
-			std::vector< float >::iterator maxAngleIt;
+			std::vector< dtReal >::iterator maxAngleIt;
 			omVertexEdgeI maxEdgeIt;
 			int maxAngleBegPos;
 			int maxAngleEndPos;			
@@ -212,7 +212,7 @@ namespace dtOO {
    * @todo Should support also quadrangle meshes.
    */
   std::vector< dtOMMeshManifold > dtOMMeshManifold::divide( 
-    float const & angle 
+    dtReal const & angle 
   ) {
 //    if ( )
 		std::vector< dtOMMeshManifold > manifolds;

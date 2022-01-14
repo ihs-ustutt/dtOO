@@ -1,6 +1,8 @@
 #ifndef MAKEPOLYNOMIAL_H
 #define	MAKEPOLYNOMIAL_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>

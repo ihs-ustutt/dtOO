@@ -336,14 +336,14 @@ namespace dtOO {
       );     
     }
 
-    float d_0_1 = (tab[0][0]->distance(tab[0][1]));
-    float d_0_2 = (tab[L][0]->distance(tab[L][1]));
-    float d_H_1 = (tab[0][H]->distance(tab[0][H-1]));
-    float d_H_2 = (tab[L][H]->distance(tab[L][H-1]));  
+    dtReal d_0_1 = (tab[0][0]->distance(tab[0][1]));
+    dtReal d_0_2 = (tab[L][0]->distance(tab[L][1]));
+    dtReal d_H_1 = (tab[0][H]->distance(tab[0][H-1]));
+    dtReal d_H_2 = (tab[L][H]->distance(tab[L][H-1]));  
 
   
     for (int i = 0; i < L+1; i++) {
-      float iF = static_cast< float >(i);
+      dtReal iF = static_cast< dtReal >(i);
       nUV[i][0]
       =
       dtLinearAlgebra::toDtVector2(
@@ -368,13 +368,13 @@ namespace dtOO {
         )
       );     
     }
-    float e_0_1 = (tab[1][0]->distance(tab[0][0]));
-    float e_0_2 = (tab[L][0]->distance(tab[L-1][0]));
-    float e_L_1 = (tab[1][H]->distance(tab[0][H]));
-    float e_L_2 = (tab[L][H]->distance(tab[L-1][H]));    
+    dtReal e_0_1 = (tab[1][0]->distance(tab[0][0]));
+    dtReal e_0_2 = (tab[L][0]->distance(tab[L-1][0]));
+    dtReal e_L_1 = (tab[1][H]->distance(tab[0][H]));
+    dtReal e_L_2 = (tab[L][H]->distance(tab[L-1][H]));    
 
     for (int i = 0; i < H+1; i++) {
-      float iF = static_cast< float >(i);    
+      dtReal iF = static_cast< dtReal >(i);    
       nUV[0][i]
       =
       dtLinearAlgebra::toDtVector2(
@@ -413,17 +413,17 @@ namespace dtOO {
     //create points using transfinite interpolation
     for(int i = 1; i < L; i++){
       for(int j = 1; j < H; j++){
-        float iF = static_cast< float >(i);
-        float jF = static_cast< float >(j);
+        dtReal iF = static_cast< dtReal >(i);
+        dtReal jF = static_cast< dtReal >(j);
 
         double psi = iF / (L);
         double eps = jF / (H);
-        float alpha_1 = _alpha_1->YFloat(psi);
-        float alpha_2 = _alpha_2->YFloat(psi);
+        dtReal alpha_1 = _alpha_1->YFloat(psi);
+        dtReal alpha_2 = _alpha_2->YFloat(psi);
 
-        float beta_1 = _beta_1->YFloat(eps);
-        float beta_2 = _beta_2->YFloat(eps);
-        float beta_3 = _beta_3->YFloat(eps);
+        dtReal beta_1 = _beta_1->YFloat(eps);
+        dtReal beta_2 = _beta_2->YFloat(eps);
+        dtReal beta_3 = _beta_3->YFloat(eps);
         
         dtVector2 P_u
         =

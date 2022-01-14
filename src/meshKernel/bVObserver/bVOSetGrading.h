@@ -1,6 +1,8 @@
 #ifndef bVOSetGrading_H
 #define	bVOSetGrading_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
@@ -30,8 +32,8 @@ namespace dtOO {
       std::vector< std::string > _regionLabel;    
       std::vector< std::string > _faceLabel;
       std::vector< std::string > _edgeLabel;
-      std::vector< float > _grading;
-      std::vector< float > _type;
+      std::vector< dtReal > _grading;
+      std::vector< dtReal > _type;
   };
 }
 #endif	/* bVOSetGrading_H */

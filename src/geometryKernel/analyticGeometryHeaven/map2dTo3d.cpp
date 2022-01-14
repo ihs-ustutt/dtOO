@@ -22,7 +22,7 @@
 #include <Math/Functor.h>
 
 namespace dtOO {  
-  float map2dTo3d::_deltaPer 
+  dtReal map2dTo3d::_deltaPer 
   = 
   staticPropertiesHandler::getInstance()->getOptionFloat("map2dTo3d_deltaPer");
   
@@ -39,7 +39,7 @@ namespace dtOO {
     return 2;
   }
 
-  dtPoint3 map2dTo3d::getPoint( float const * const uvw ) const {
+  dtPoint3 map2dTo3d::getPoint( dtReal const * const uvw ) const {
     return getPoint( uvw[0], uvw[1] );
   }  
   
@@ -59,19 +59,19 @@ namespace dtOO {
     return isClosed(1);
   }
   
-  float map2dTo3d::getUMin( void ) const {
+  dtReal map2dTo3d::getUMin( void ) const {
     return getMin(0);
   }
   
-  float map2dTo3d::getUMax( void ) const {
+  dtReal map2dTo3d::getUMax( void ) const {
     return getMax(0);
   }
   
-  float map2dTo3d::getVMin( void ) const {
+  dtReal map2dTo3d::getVMin( void ) const {
     return getMin(1);
   }
   
-  float map2dTo3d::getVMax( void ) const {
+  dtReal map2dTo3d::getVMax( void ) const {
     return getMax(1);
   }
   
@@ -84,7 +84,7 @@ namespace dtOO {
   }
   
   dtPoint3 map2dTo3d::getPointPercent( 
-    float const & uu, float const & vv 
+    dtReal const & uu, dtReal const & vv 
   ) const {
     return getPoint( u_percent(uu), v_percent(vv) );
   }    
@@ -100,25 +100,25 @@ namespace dtOO {
     //
     //calculate interval to create points
     //
-    float intervalFirst = (getUMax() - getUMin()) / (renderResU-1.);
-    float intervalSecond = (getVMax() - getVMin()) / (renderResV-1.);  
+    dtReal intervalFirst = (getUMax() - getUMin()) / (renderResU-1.);
+    dtReal intervalSecond = (getVMax() - getVMin()) / (renderResV-1.);  
 
     twoDArrayHandling< dtPoint3 > surfacePoints(renderResU, renderResV);
     for (int jj=0; jj<renderResU; jj++) {
       for(int ii=0; ii<renderResV; ii++) {
-				float uu;
-				float vv;				
+				dtReal uu;
+				dtReal vv;				
         if (jj == (renderResU-1) ) {
           uu = getUMax();
         }
         else {
-          uu = (float) (getUMin() + jj * intervalFirst);
+          uu = (dtReal) (getUMin() + jj * intervalFirst);
         }
         if (ii == (renderResV-1) ) {      
           vv = getVMax();
         }
         else {
-          vv = (float) (getVMin() + ii * intervalSecond);
+          vv = (dtReal) (getVMin() + ii * intervalSecond);
         }
         surfacePoints[jj][ii] = getPoint(uu, vv);
       }
@@ -180,12 +180,12 @@ namespace dtOO {
   }  
   
   dtVector3 map2dTo3d::getPointPercentVector( 
-    float const & uu, float const & vv 
+    dtReal const & uu, dtReal const & vv 
   ) const {
     return dtLinearAlgebra::toDtVector3( getPointPercent(uu, vv) );
   }
   
-  dtVector3 map2dTo3d::normal( float const & uu, float const & vv) const {
+  dtVector3 map2dTo3d::normal( dtReal const & uu, dtReal const & vv) const {
     dtVector3 vec(
       dtLinearAlgebra::crossProduct(
         firstDerU(uu, vv), firstDerV(uu, vv)
@@ -223,18 +223,18 @@ namespace dtOO {
     = 
     staticPropertiesHandler
       ::getInstance()->getOptionInt("reparam_internalRestarts");    
-    float restartIncreasePrec
+    dtReal restartIncreasePrec
     = 
     staticPropertiesHandler::getInstance()->getOptionFloat(
       "reparam_restartIncreasePrecision"
     );
-    float internalRestartDecreasePrec
+    dtReal internalRestartDecreasePrec
     = 
     staticPropertiesHandler::getInstance()->getOptionFloat(
       "reparam_internalRestartDecreasePrecision"
     );    
-    float currentPrec = 1.;
-    float dist = 1.E+99;
+    dtReal currentPrec = 1.;
+    dtReal dist = 1.E+99;
     dt__forFromToIndex(0, maxRestarts+1, thisRun) {
       dt__forFromToIndex(0, NumInitGuess, ii) {
         dt__forFromToIndex(0, NumInitGuess, jj) {       
@@ -279,7 +279,7 @@ namespace dtOO {
             //
             // check if point is precise enough
             //
-            float cDist;
+            dtReal cDist;
             if (
               analyticGeometry::inXYZTolerance(
                 ppXYZ, tP, &cDist, false, currentPrec
@@ -320,20 +320,20 @@ namespace dtOO {
   }  
   
   dtVector3 map2dTo3d::normalPercent( 
-    float const & uu, float const & vv 
+    dtReal const & uu, dtReal const & vv 
   ) const {
     return normal(u_percent(uu), v_percent(vv));  
   }
 	
 	std::vector< dtVector3 > map2dTo3d::firstDer( 
-    float const & uu, float const & vv
+    dtReal const & uu, dtReal const & vv
   ) const {
 		//
 		// dU
 		//
-    float uP = percent_u(uu);
-    float vP = percent_v(vv);
-    float const deltaPerInv = 1. - _deltaPer;
+    dtReal uP = percent_u(uu);
+    dtReal vP = percent_v(vv);
+    dtReal const deltaPerInv = 1. - _deltaPer;
 		std::vector< dtVector3 > dd(2);
     
     if (uP<_deltaPer) {
@@ -390,20 +390,20 @@ namespace dtOO {
 		return firstDer(pp.x(), pp.y());
 	}
 	
-  dtVector3 map2dTo3d::firstDerU( float const & uu, float const & vv) const {
+  dtVector3 map2dTo3d::firstDerU( dtReal const & uu, dtReal const & vv) const {
 		return firstDer(uu, vv)[0];
   }
   
-  dtVector3 map2dTo3d::firstDerV( float const & uu, float const & vv) const {
+  dtVector3 map2dTo3d::firstDerV( dtReal const & uu, dtReal const & vv) const {
     return firstDer(uu, vv)[1];		
   }
 
   std::vector< dtVector3 > map2dTo3d::secondDer( 
-    float const & uu, float const & vv
+    dtReal const & uu, dtReal const & vv
   ) const {
-    float uP = percent_u(uu);
-    float vP = percent_v(vv);
-    float const deltaPerInv = 1. - _deltaPer;		
+    dtReal uP = percent_u(uu);
+    dtReal vP = percent_v(vv);
+    dtReal const deltaPerInv = 1. - _deltaPer;		
     std::vector< dtVector3 > dd(3);
 		
 		//
@@ -484,19 +484,19 @@ namespace dtOO {
 	  return dd;
 	}
 	
-  dtVector3 map2dTo3d::secondDerUU( float const & uu, float const & vv) const {
+  dtVector3 map2dTo3d::secondDerUU( dtReal const & uu, dtReal const & vv) const {
 		return secondDer(uu, vv)[0];
   }
   
-  dtVector3 map2dTo3d::secondDerVV( float const & uu, float const & vv) const {
+  dtVector3 map2dTo3d::secondDerVV( dtReal const & uu, dtReal const & vv) const {
 		return secondDer(uu, vv)[2];
   }
   
-  dtVector3 map2dTo3d::secondDerUV( float const & uu, float const & vv) const {
+  dtVector3 map2dTo3d::secondDerUV( dtReal const & uu, dtReal const & vv) const {
 		return secondDer(uu, vv)[1];
   }
   
-	dtMatrix map2dTo3d::jacobi( float const & uu, float const & vv) const {
+	dtMatrix map2dTo3d::jacobi( dtReal const & uu, dtReal const & vv) const {
 		return dtLinearAlgebra::createMatrixGiveColumns( firstDer(uu, vv) );
 	}
 	
@@ -520,17 +520,17 @@ namespace dtOO {
     return dtPoint2( u_percent(pUV.x()), v_percent(pUV.y()) );
   }
     
-  dtPoint2 map2dTo3d::uv_percent(float const & uu, float const & vv) const {
+  dtPoint2 map2dTo3d::uv_percent(dtReal const & uu, dtReal const & vv) const {
     return dtPoint2( u_percent(uu), v_percent(vv) );
   }
     
-  float map2dTo3d::u_percent(float const & uu) const {
+  dtReal map2dTo3d::u_percent(dtReal const & uu) const {
     return floatHandling::boundToRange( 
       getUMin() +  (getUMax() - getUMin() ) * uu, getUMin(), getUMax()
     );
   }
     
-  float map2dTo3d::v_percent(float const & vv) const {
+  dtReal map2dTo3d::v_percent(dtReal const & vv) const {
     return floatHandling::boundToRange( 
       getVMin() +  (getVMax() - getVMin() ) * vv, getVMin(), getVMax()
     );
@@ -540,13 +540,13 @@ namespace dtOO {
     return dtPoint2( percent_u(pUV.x()), percent_v(pUV.y()) );
   }
   
-  float map2dTo3d::percent_u(float const & uu) const {
+  dtReal map2dTo3d::percent_u(dtReal const & uu) const {
     return floatHandling::boundToRange( 
       (uu - getUMin()) / (getUMax() - getUMin()), 0., 1.
     );
   }
   
-  float map2dTo3d::percent_v(float const & vv) const {
+  dtReal map2dTo3d::percent_v(dtReal const & vv) const {
     return floatHandling::boundToRange( 
       (vv - getVMin()) / (getVMax() - getVMin()), 0., 1.
     );
@@ -563,7 +563,7 @@ namespace dtOO {
 	}
  
 	map1dTo3d * map2dTo3d::segmentConstU( 
-    float const & uu, float const & p0, float const & p1 
+    dtReal const & uu, dtReal const & p0, dtReal const & p1 
   ) const {
 	  dtPoint2 p20(uu, p0);
 		dtPoint2 p21(uu, p1);
@@ -572,7 +572,7 @@ namespace dtOO {
 	}
 
 	map1dTo3d * map2dTo3d::segmentConstV( 
-    float const & vv, float const & p0, float const & p1 
+    dtReal const & vv, dtReal const & p0, dtReal const & p1 
   ) const {
 	  dtPoint2 p20(p0, vv);
 		dtPoint2 p21(p1, vv);
@@ -622,31 +622,31 @@ namespace dtOO {
 		return segment(p0, dtPoint2(p1.x(), p0.y()), p1, dtPoint2(p0.x(), p1.y()));
 	}	
 	
-	map1dTo3d * map2dTo3d::segmentConstU( float const & uu ) const {		
+	map1dTo3d * map2dTo3d::segmentConstU( dtReal const & uu ) const {		
 		return segmentConstU(uu, getVMin(), getVMax());
 	}
 
-	map1dTo3d * map2dTo3d::segmentConstV( float const & vv ) const {
+	map1dTo3d * map2dTo3d::segmentConstV( dtReal const & vv ) const {
 		return segmentConstV(vv, getUMin(), getUMax());
 	}
   
 	map1dTo3d * map2dTo3d::segmentConstUPercent( 
-    float const & uu, float const & p0, float const & p1 
+    dtReal const & uu, dtReal const & p0, dtReal const & p1 
   ) const {		
 		return segmentConstU(u_percent(uu), v_percent(p0), v_percent(p1));
 	}
 
 	map1dTo3d * map2dTo3d::segmentConstVPercent( 
-    float const & vv, float const & p0, float const & p1 
+    dtReal const & vv, dtReal const & p0, dtReal const & p1 
   ) const {
 		return segmentConstV( v_percent(vv), u_percent(p0), u_percent(p1) );
 	}
 
-	map1dTo3d * map2dTo3d::segmentConstUPercent( float const & uu ) const {		
+	map1dTo3d * map2dTo3d::segmentConstUPercent( dtReal const & uu ) const {		
 		return segmentConstU(u_percent(uu));
 	}
 
-	map1dTo3d * map2dTo3d::segmentConstVPercent( float const & vv ) const {
+	map1dTo3d * map2dTo3d::segmentConstVPercent( dtReal const & vv ) const {
 	  return segmentConstV(v_percent(vv));
 	}
 	
@@ -754,7 +754,7 @@ namespace dtOO {
 //				iter = 1;				
 //        
 //				try {
-//					dtPoint3 P = getPoint(static_cast<float>(U), static_cast<float>(V));
+//					dtPoint3 P = getPoint(static_cast<dtReal>(U), static_cast<dtReal>(V));
 //					err2 
 //          = 
 //          sqrt(
@@ -767,9 +767,9 @@ namespace dtOO {
 //		//      if (err2 < 1.e-8 * CTX::instance()->lc) return;
 //
 //					while(err > tol && iter < MaxIter) {
-//						P = getPoint(static_cast<float>(U), static_cast<float>(V));
-//						dtVector3 derU = firstDerU(static_cast<float>(U), static_cast<float>(V));
-//						dtVector3 derV = firstDerV(static_cast<float>(U), static_cast<float>(V));
+//						P = getPoint(static_cast<dtReal>(U), static_cast<dtReal>(V));
+//						dtVector3 derU = firstDerU(static_cast<dtReal>(U), static_cast<dtReal>(V));
+//						dtVector3 derV = firstDerV(static_cast<dtReal>(U), static_cast<dtReal>(V));
 //						dtMatrix mat(2,3);
 //						mat(0,0) = derU.x(); mat(0,1) = derU.y(); mat(0,2) = derU.z();
 //						mat(1,0) = derV.x(); mat(1,1) = derV.y(); mat(1,2) = derV.z();
@@ -818,11 +818,11 @@ namespace dtOO {
 //						V = Vnew;
 //					}
 //
-////					itVal.push_back( static_cast<float>(i) );
-////					itVal.push_back( static_cast<float>(j) );
-////					itVal.push_back( static_cast<float>(err2) );
-////					itVal.push_back( static_cast<float>(err) );
-////					itVal.push_back( static_cast<float>(iter) );
+////					itVal.push_back( static_cast<dtReal>(i) );
+////					itVal.push_back( static_cast<dtReal>(j) );
+////					itVal.push_back( static_cast<dtReal>(err2) );
+////					itVal.push_back( static_cast<dtReal>(err) );
+////					itVal.push_back( static_cast<dtReal>(iter) );
 //						
 //					bool inRange = (Unew <= umax) && (Vnew <= vmax) 
 //					               && (Unew >= umin) && (Vnew >= vmin);
@@ -833,11 +833,11 @@ namespace dtOO {
 //						|| ( (iter<MaxIter) && inRange && uvConv )  
 //						) {
 ////						itVal.clear();
-////						itVal.push_back(static_cast<float>(Unew) );
-////						itVal.push_back(static_cast<float>(Vnew) );
-////						itVal.push_back(static_cast<float>(err2) );
-////						itVal.push_back(static_cast<float>(err) );
-////						itVal.push_back(static_cast<float>(tol) );            
+////						itVal.push_back(static_cast<dtReal>(Unew) );
+////						itVal.push_back(static_cast<dtReal>(Vnew) );
+////						itVal.push_back(static_cast<dtReal>(err2) );
+////						itVal.push_back(static_cast<dtReal>(err) );
+////						itVal.push_back(static_cast<dtReal>(tol) );            
 //
 //						return true;
 //					}
@@ -850,11 +850,11 @@ namespace dtOO {
 //						<< "Break initial guess (" << i << ", " << j 
 //						<< ") and try next one." << std::endl
 //						<< eGenRef.what());
-////					itVal.push_back( static_cast<float>(i) );
-////					itVal.push_back( static_cast<float>(j) );
-////					itVal.push_back( static_cast<float>(err2) );
-////					itVal.push_back( static_cast<float>(err) );
-////					itVal.push_back( static_cast<float>(iter) );					
+////					itVal.push_back( static_cast<dtReal>(i) );
+////					itVal.push_back( static_cast<dtReal>(j) );
+////					itVal.push_back( static_cast<dtReal>(err2) );
+////					itVal.push_back( static_cast<dtReal>(err) );
+////					itVal.push_back( static_cast<dtReal>(iter) );					
 //					break;
 //				}				
 //      }

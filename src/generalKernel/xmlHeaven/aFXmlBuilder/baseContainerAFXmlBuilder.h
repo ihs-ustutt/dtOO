@@ -1,6 +1,8 @@
 #ifndef baseContainerAFXmlBuilder_H
 #define	baseContainerAFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include "baseContainerAFXmlBuilder.h"
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>

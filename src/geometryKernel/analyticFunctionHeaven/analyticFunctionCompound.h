@@ -1,6 +1,8 @@
 #ifndef analyticFunctionCompound_H
 #define	analyticFunctionCompound_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include "analyticFunction.h"

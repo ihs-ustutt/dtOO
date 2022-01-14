@@ -1,6 +1,8 @@
 #ifndef THREADSAFE_H
 #define	THREADSAFE_H
 
+#include <dtOOTypeDef.h>
+
 #include <omp.h>
 
 namespace dtOO {

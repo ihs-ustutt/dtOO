@@ -1,6 +1,8 @@
 #ifndef bVOTransformMeshPoints_H
 #define	bVOTransformMeshPoints_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
@@ -28,8 +30,8 @@ namespace dtOO {
       virtual void postUpdate( void );
     private:
       std::vector< dtTransformer const * > _dtT;
-      float _relTol;
-      float _absTol;
+      dtReal _relTol;
+      dtReal _absTol;
       bool _copy;
   };
 }

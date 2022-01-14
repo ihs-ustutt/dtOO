@@ -1,6 +1,8 @@
 #ifndef DTGMSHVERTEX_H
 #define	DTGMSHVERTEX_H
 
+#include <dtOOTypeDef.h>
+
 #include <gmsh/GVertex.h>
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>

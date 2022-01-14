@@ -26,7 +26,7 @@ namespace dtOO {
 	}
 
   aFY vec3dThreeD::Y(
-    float const & x0, float const & x1, float const & x2
+    dtReal const & x0, dtReal const & x1, dtReal const & x2
   ) const {	
 		aFX xx(3,0);
 		
@@ -42,7 +42,7 @@ namespace dtOO {
 	}
 
   dtPoint3 vec3dThreeD::YdtPoint3(
-    float const & x0, float const & x1, float const & x2
+    dtReal const & x0, dtReal const & x1, dtReal const & x2
   ) const {
 		aFX xx(3,0);
 		
@@ -58,7 +58,7 @@ namespace dtOO {
 	}
 	
 	dtPoint3 vec3dThreeD::YdtPoint3Percent(
-    float const & x0, float const & x1, float const & x2
+    dtReal const & x0, dtReal const & x1, dtReal const & x2
   ) const {
 		aFX xx(3,0);
 		
@@ -70,7 +70,7 @@ namespace dtOO {
 	}
 	
 	aFX vec3dThreeD::x_percent(
-    float const & x0, float const & x1, float const & x2
+    dtReal const & x0, dtReal const & x1, dtReal const & x2
   ) const {
 		aFX xx(3, 0.);
     xx[0] = x0;
@@ -81,7 +81,7 @@ namespace dtOO {
   }  
 	
 	aFX vec3dThreeD::percent_x(
-    float const & x0, float const & x1, float const & x2
+    dtReal const & x0, dtReal const & x1, dtReal const & x2
   ) const {
 		aFX xx(3, 0.);
     xx[0] = x0;
@@ -93,7 +93,7 @@ namespace dtOO {
 	
 	std::vector<dtVector3> vec3dThreeD::DYdtVector3( aFX const & xx ) const {
     aFX xP = percent_x(xx);
-    float deltaPer[3];
+    dtReal deltaPer[3];
 		deltaPer[0] = 0.0001;
 		deltaPer[1] = 0.0001;
 		deltaPer[2] = 0.0001;
@@ -154,7 +154,7 @@ namespace dtOO {
 		return dxdy;
 	}
 	
-  float vec3dThreeD::xMin( int const & dir) const {
+  dtReal vec3dThreeD::xMin( int const & dir) const {
     switch (dir) {
       case 0:
         return _min[0];
@@ -172,7 +172,7 @@ namespace dtOO {
     }   
 	}
 	
-  float vec3dThreeD::xMax( int const & dir) const {
+  dtReal vec3dThreeD::xMax( int const & dir) const {
     switch (dir) {
       case 0:
         return _max[0];
@@ -190,7 +190,7 @@ namespace dtOO {
     }
 	}	
 
-  void vec3dThreeD::setMin(int const & dir, float const & min) {
+  void vec3dThreeD::setMin(int const & dir, dtReal const & min) {
     switch (dir) {
       case 0:
         _min[0] = min;
@@ -208,7 +208,7 @@ namespace dtOO {
     }
   }
 
-  void vec3dThreeD::setMax(int const & dir, float const & max) {
+  void vec3dThreeD::setMax(int const & dir, dtReal const & max) {
     switch (dir) {
       case 0:
         _max[0] = max;
@@ -246,13 +246,13 @@ namespace dtOO {
 //		for (int kk=0; kk<nW; kk++) {
 //			for (int jj=0; jj<nV; jj++) {
 //				vectorHandling< dtPoint2 > p2(nU);
-//				float intervalU = (xMax(0) - xMin(0)) / (nU-1);
-//				float intervalV = (xMax(1) - xMin(1)) / (nV-1);
-//				float intervalW = (xMax(2) - xMin(2)) / (nW-1);
+//				dtReal intervalU = (xMax(0) - xMin(0)) / (nU-1);
+//				dtReal intervalV = (xMax(1) - xMin(1)) / (nV-1);
+//				dtReal intervalW = (xMax(2) - xMin(2)) / (nW-1);
 //				for (int ii=0; ii<nU; ii++) {
-//					dt__toFloat(float iiF, ii);
-//					dt__toFloat(float jjF, jj);
-//					dt__toFloat(float kkF, kk);
+//					dt__toFloat(dtReal iiF, ii);
+//					dt__toFloat(dtReal jjF, jj);
+//					dt__toFloat(dtReal kkF, kk);
 //					aFX xx(3,0);
 //					xx[0] = xMin(0) + iiF * intervalU;
 //					xx[1] = xMin(1) + jjF * intervalV;
@@ -264,11 +264,11 @@ namespace dtOO {
 //			}
 //		}
 		vectorHandling< dtPoint2 > p2;
-		float intervalU = (xMax(0) - xMin(0)) / (nU-1);
-		float intervalV = (xMax(1) - xMin(1)) / (nV-1);		
-		float intervalW = (xMax(2) - xMin(2)) / (nW-1);
+		dtReal intervalU = (xMax(0) - xMin(0)) / (nU-1);
+		dtReal intervalV = (xMax(1) - xMin(1)) / (nV-1);		
+		dtReal intervalW = (xMax(2) - xMin(2)) / (nW-1);
 		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			aFX xx(3,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMin(1);
@@ -280,7 +280,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			aFX xx(3,0);
 			xx[0] = xMin(0);
 			xx[1] = xMin(1) + jjF * intervalV;
@@ -292,7 +292,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );			
 		p2.clear();
 		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			aFX xx(3,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMax(1);
@@ -304,7 +304,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			aFX xx(3,0);
 			xx[0] = xMax(0);
 			xx[1] = xMin(1) + jjF * intervalV;
@@ -316,7 +316,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );		
 		p2.clear();
 		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			aFX xx(3,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMin(1);
@@ -328,7 +328,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			aFX xx(3,0);
 			xx[0] = xMin(0);
 			xx[1] = xMin(1) + jjF * intervalV;
@@ -340,7 +340,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );			
 		p2.clear();
 		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			aFX xx(3,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMax(1);
@@ -352,7 +352,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			aFX xx(3,0);
 			xx[0] = xMax(0);
 			xx[1] = xMin(1) + jjF * intervalV;

@@ -1,6 +1,8 @@
 #ifndef customGmsh_H
 #define	customGmsh_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "gmshBoundedVolume.h"
 

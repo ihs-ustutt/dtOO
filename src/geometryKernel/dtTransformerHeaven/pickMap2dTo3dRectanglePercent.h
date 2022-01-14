@@ -1,6 +1,8 @@
 #ifndef pickMap2dTo3dRectanglePercent_H
 #define	pickMap2dTo3dRectanglePercent_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 

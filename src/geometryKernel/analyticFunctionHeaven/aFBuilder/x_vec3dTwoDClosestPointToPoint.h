@@ -1,6 +1,8 @@
 #ifndef x_vec3dTwoDClosestPointToPoint_H
 #define	x_vec3dTwoDClosestPointToPoint_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <vector>

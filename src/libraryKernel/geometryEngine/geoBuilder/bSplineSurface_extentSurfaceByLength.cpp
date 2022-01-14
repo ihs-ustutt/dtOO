@@ -17,7 +17,7 @@
 namespace dtOO {
   bSplineSurface_extentSurfaceByLength::bSplineSurface_extentSurfaceByLength(
 		dtSurface const * const dtS, 
-		int const & parameterDir, float const & length, 
+		int const & parameterDir, dtReal const & length, 
 		int const & cont, bool const & forward
 	) {
 		dt__throwIf(

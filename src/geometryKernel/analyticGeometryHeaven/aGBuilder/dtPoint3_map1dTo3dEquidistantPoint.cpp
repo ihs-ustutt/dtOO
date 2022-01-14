@@ -8,10 +8,10 @@ namespace dtOO {
 	) {
 		dt__throwIf(nPoints==1, dtPoint3_map1dTo3dEquidistantPoint());
 		_ppXYZ.resize(nPoints);
-		float dist = 1./(nPoints-1);
-		float length = m1d->length();
+		dtReal dist = 1./(nPoints-1);
+		dtReal length = m1d->length();
 		for (int ii=0; ii<nPoints; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			_ppXYZ[ii] = m1d->getPoint( m1d->u_l(length * dist * iiF) );
 		}
 	}

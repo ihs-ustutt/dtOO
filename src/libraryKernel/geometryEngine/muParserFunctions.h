@@ -1,6 +1,8 @@
 #ifndef muParserFunctions_H
 #define	muParserFunctions_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <muParser.h>
 #include <mainConceptFwd.h>

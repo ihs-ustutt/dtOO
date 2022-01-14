@@ -64,7 +64,7 @@ namespace dtOO {
         vec2dOneD::ConstDownCast( sFunP->at(ii) ) 
       );
 
-			std::vector<float> itVal;       
+			std::vector<dtReal> itVal;       
 			std::vector< std::string > header;
 			header.push_back("Y_x");
 			header.push_back("Y_y");
@@ -76,17 +76,17 @@ namespace dtOO {
       //
       // thickness increasing
       //            
-			float cLength = theF->length();
+			dtReal cLength = theF->length();
 			dt__info(apply(), << dt__eval(cLength) );
-      float xMin = _paraOnePercentFunP->xMin(0);
-      float xMax = _paraOnePercentFunP->xMax(0);
+      dtReal xMin = _paraOnePercentFunP->xMin(0);
+      dtReal xMax = _paraOnePercentFunP->xMax(0);
       //
       // first point
       //
-      float paraOne = xMin;//0.;
+      dtReal paraOne = xMin;//0.;
       dtPoint2 YY = theF->YdtPoint2Percent( paraOne );
       dtVector2 NN = theF->unitNdtVector2Percent( paraOne );
-      float tt = _thicknessDistributionP->YFloat( 0. );
+      dtReal tt = _thicknessDistributionP->YFloat( 0. );
       if (_isInv) {
         tt = -tt;
       }
@@ -99,14 +99,14 @@ namespace dtOO {
       // inner points
       //
       for (int jj=1;jj<(_nPointsOne-1);jj++) {
-        dt__toFloat(float jjF, jj);
-        dt__toFloat(float nPointsOneF, _nPointsOne);
+        dt__toFloat(dtReal jjF, jj);
+        dt__toFloat(dtReal nPointsOneF, _nPointsOne);
         paraOne 
         = 
         _paraOnePercentFunP->YFloat( jjF * ( (xMax-xMin) / (nPointsOneF-1.)) );
         YY = theF->YdtPoint2Percent( paraOne );
         NN = theF->unitNdtVector2Percent( paraOne );
-				float curLength = theF->length( theF->x_percent(paraOne) );
+				dtReal curLength = theF->length( theF->x_percent(paraOne) );
         tt = _thicknessDistributionP->YFloat( curLength / cLength );
         if (_isInv) {
           tt = -tt;

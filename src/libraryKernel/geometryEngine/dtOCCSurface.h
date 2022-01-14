@@ -1,6 +1,8 @@
 #ifndef DTOCCSURFACE_H
 #define	DTOCCSURFACE_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/ptrHandling.h>
 #include "dtSurface.h"
 
@@ -18,13 +20,13 @@ namespace dtOO {
     //
     // overload
     //
-    virtual float minPara( int const dim ) const;
-    virtual float maxPara( int const dim ) const;
+    virtual dtReal minPara( int const dim ) const;
+    virtual dtReal maxPara( int const dim ) const;
     virtual bool closed( int const dim ) const;
-    virtual dtPoint3 point( float const uu, float const vv) const;
-    virtual dtVector3 normal( float const uu, float const vv) const;
-    virtual std::vector<dtVector3> firstDer( float const uu, float const vv) const;
-    virtual std::vector<dtVector3> secondDer( float const uu, float const vv) const;
+    virtual dtPoint3 point( dtReal const uu, dtReal const vv) const;
+    virtual dtVector3 normal( dtReal const uu, dtReal const vv) const;
+    virtual std::vector<dtVector3> firstDer( dtReal const uu, dtReal const vv) const;
+    virtual std::vector<dtVector3> secondDer( dtReal const uu, dtReal const vv) const;
     virtual dtPoint2 reparam(dtPoint3 const point) const;
     //
     // optional

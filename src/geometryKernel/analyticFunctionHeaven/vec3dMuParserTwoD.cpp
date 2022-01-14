@@ -82,7 +82,7 @@ namespace dtOO {
       double * yyD = _parser->Eval(nDim);
 		  dt__throwIf(nDim!=3, Y());
 			for (int ii=0; ii<3; ii++) {
-				yy[ii] = static_cast<float>(yyD[ii]);
+				yy[ii] = static_cast<dtReal>(yyD[ii]);
 			}
     }
     catch (mu::Parser::exception_type &e) {

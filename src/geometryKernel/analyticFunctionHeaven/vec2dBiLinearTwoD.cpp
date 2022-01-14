@@ -72,8 +72,8 @@ namespace dtOO {
   aFY vec2dBiLinearTwoD::Y( aFX const & xx ) const {
     dt__throwIf(xx.size()!=2, Y());
 
-		float uu = xx[0];
-		float vv = xx[1];
+		dtReal uu = xx[0];
+		dtReal vv = xx[1];
 		
 		dtVector2 vY(
 		  _v0 * (1.-uu)*(1.-vv) + _v1 * uu*(1.-vv) + _v3 * (1.-uu)*vv + _v2 * uu*vv
@@ -107,10 +107,10 @@ namespace dtOO {
   aFX vec2dBiLinearTwoD::invY( aFY const & yy ) const {
     dt__throwIf(yy.size()!=2, invY());
 
-    float u0;
-    float v0;
-    float u1;
-    float v1;
+    dtReal u0;
+    dtReal v0;
+    dtReal u1;
+    dtReal v1;
     
     int num_st 
     = 
@@ -123,8 +123,8 @@ namespace dtOO {
     
     if (num_st == 1) {
       return analyticFunction::aFXTwoD(
-        std::min<float>(std::max<float>(u0, 0.), 1.),
-        std::min<float>(std::max<float>(v0, 0.), 1.)
+        std::min<dtReal>(std::max<dtReal>(u0, 0.), 1.),
+        std::min<dtReal>(std::max<dtReal>(v0, 0.), 1.)
       );
     }
     
@@ -149,21 +149,21 @@ namespace dtOO {
     );
   }
   
-  int vec2dBiLinearTwoD::equals( float a, float b, float tolerance ) {
+  int vec2dBiLinearTwoD::equals( dtReal a, dtReal b, dtReal tolerance ) {
       return ( a == b ) ||
         ( ( a <= ( b + tolerance ) ) &&
           ( a >= ( b - tolerance ) ) );
   }
 
-  float vec2dBiLinearTwoD::cross2( 
-    float const & x0, float const & y0, float const & x1, float const & y1 
+  dtReal vec2dBiLinearTwoD::cross2( 
+    dtReal const & x0, dtReal const & y0, dtReal const & x1, dtReal const & y1 
   ) {
     return x0*y1 - y0*x1;
   }
 
 
   int vec2dBiLinearTwoD::in_range( 
-    float val, float range_min, float range_max, float tol 
+    dtReal val, dtReal range_min, dtReal range_max, dtReal tol 
   ) {
     return ((val+tol) >= range_min) && ((val-tol) <= range_max);
   }
@@ -176,12 +176,12 @@ namespace dtOO {
    * 
    */
   int vec2dBiLinearTwoD::inverseBilerp( 
-    float x0, float y0, float x1, float y1, 
-    float x2, float y2, float x3, float y3, 
-    float x, float y, 
-    float* sout, float* tout, float* s2out, float* t2out 
+    dtReal x0, dtReal y0, dtReal x1, dtReal y1, 
+    dtReal x2, dtReal y2, dtReal x3, dtReal y3, 
+    dtReal x, dtReal y, 
+    dtReal* sout, dtReal* tout, dtReal* s2out, dtReal* t2out 
   ) {
-		float tol
+		dtReal tol
 		=
 		staticPropertiesHandler::getInstance()->getOptionFloat(
       "invY_precision"
@@ -189,15 +189,15 @@ namespace dtOO {
     
     int t_valid, t2_valid;
 
-    float a  = cross2( x0-x, y0-y, x0-x2, y0-y2 );
-    float b1 = cross2( x0-x, y0-y, x1-x3, y1-y3 );
-    float b2 = cross2( x1-x, y1-y, x0-x2, y0-y2 );
-    float c  = cross2( x1-x, y1-y, x1-x3, y1-y3 );
-    float b  = 0.5 * (b1 + b2);
+    dtReal a  = cross2( x0-x, y0-y, x0-x2, y0-y2 );
+    dtReal b1 = cross2( x0-x, y0-y, x1-x3, y1-y3 );
+    dtReal b2 = cross2( x1-x, y1-y, x0-x2, y0-y2 );
+    dtReal c  = cross2( x1-x, y1-y, x1-x3, y1-y3 );
+    dtReal b  = 0.5 * (b1 + b2);
 
-    float s, s2, t, t2;
+    dtReal s, s2, t, t2;
 
-    float am2bpc = a-2*b+c;
+    dtReal am2bpc = a-2*b+c;
     /* this is how many valid s values we have */
     int num_valid_s = 0;
 
@@ -211,7 +211,7 @@ namespace dtOO {
       if ( in_range( s, 0, 1, tol ) ) num_valid_s = 1;
     }
     else {
-      float sqrtbsqmac = sqrt( b*b - a*c );
+      dtReal sqrtbsqmac = sqrt( b*b - a*c );
       s  = ((a-b) - sqrtbsqmac) / am2bpc;
       s2 = ((a-b) + sqrtbsqmac) / am2bpc;
       num_valid_s = 0;
@@ -231,8 +231,8 @@ namespace dtOO {
 
     t_valid = 0;
     if ( num_valid_s >= 1 ) {
-      float tdenom_x = (1-s)*(x0-x2) + s*(x1-x3);
-      float tdenom_y = (1-s)*(y0-y2) + s*(y1-y3);
+      dtReal tdenom_x = (1-s)*(x0-x2) + s*(x1-x3);
+      dtReal tdenom_y = (1-s)*(y0-y2) + s*(y1-y3);
       t_valid = 1;
       if ( equals( tdenom_x, 0, tol ) && equals( tdenom_y, 0, tol ) ) {
         t_valid = 0;
@@ -252,8 +252,8 @@ namespace dtOO {
     /* Same thing for s2 and t2 */
     t2_valid = 0;
     if ( num_valid_s == 2 ) {
-      float tdenom_x = (1-s2)*(x0-x2) + s2*(x1-x3);
-      float tdenom_y = (1-s2)*(y0-y2) + s2*(y1-y3);
+      dtReal tdenom_x = (1-s2)*(x0-x2) + s2*(x1-x3);
+      dtReal tdenom_y = (1-s2)*(y0-y2) + s2*(y1-y3);
       t2_valid = 1;
       if ( equals( tdenom_x, 0, tol ) && equals( tdenom_y, 0, tol ) ) {
         t2_valid = 0;

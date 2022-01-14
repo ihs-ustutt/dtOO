@@ -1,6 +1,8 @@
 #ifndef dtMeshTransfiniteRecombineSelectionGFace_H
 #define	dtMeshTransfiniteRecombineSelectionGFace_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMeshGFace.h"

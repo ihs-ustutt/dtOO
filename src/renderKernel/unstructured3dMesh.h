@@ -1,6 +1,8 @@
 #ifndef UNSTRUCTURED3DMESH_H
 #define	UNSTRUCTURED3DMESH_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>

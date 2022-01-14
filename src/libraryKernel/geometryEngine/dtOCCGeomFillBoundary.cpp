@@ -41,7 +41,7 @@ namespace dtOO {
     dt__throwUnexpected(closed());
   }
   
-  dtVector3 dtOCCGeomFillBoundary::firstDer( float const uu) const {
+  dtVector3 dtOCCGeomFillBoundary::firstDer( dtReal const uu) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt pp;
 		gp_Vec vv;
@@ -53,9 +53,9 @@ namespace dtOO {
 		);
 			
 		return dtVector3(
-			static_cast<float>(vv.Coord(1)), 
-			static_cast<float>(vv.Coord(2)), 
-			static_cast<float>(vv.Coord(3))
+			static_cast<dtReal>(vv.Coord(1)), 
+			static_cast<dtReal>(vv.Coord(2)), 
+			static_cast<dtReal>(vv.Coord(3))
 		);
   }
       
@@ -71,15 +71,15 @@ namespace dtOO {
 		dt__throwUnexpected(setControlPoint());
 	}
   
-  float dtOCCGeomFillBoundary::l_u( float const uu ) const {
+  dtReal dtOCCGeomFillBoundary::l_u( dtReal const uu ) const {
     dt__throwUnexpected(l_u());
   }
   
-  float dtOCCGeomFillBoundary::u_l( float const length ) const {
+  dtReal dtOCCGeomFillBoundary::u_l( dtReal const length ) const {
     dt__throwUnexpected(u_l());
   }
   
-  float dtOCCGeomFillBoundary::reparam(dtPoint3 const point) const {
+  dtReal dtOCCGeomFillBoundary::reparam(dtPoint3 const point) const {
     dt__throwUnexpected(reparam());
   }
   

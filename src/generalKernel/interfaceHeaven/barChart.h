@@ -1,6 +1,8 @@
 #ifndef barChart_H
 #define	barChart_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
@@ -9,29 +11,29 @@ namespace dtOO {
       dt__classOnlyName(barChart);    
       barChart(
         std::string const & title,
-        float const & min, float const & max, int const & nBars             
+        dtReal const & min, dtReal const & max, int const & nBars             
       );
       virtual ~barChart();
-      void operator()( float const & val );
-      float globalMin( void ) const;
-      float globalMax( void ) const;
+      void operator()( dtReal const & val );
+      dtReal globalMin( void ) const;
+      dtReal globalMax( void ) const;
       int nBars( void ) const;
-      float barAverage( int const & location ) const;
-      float average( void ) const;
+      dtReal barAverage( int const & location ) const;
+      dtReal average( void ) const;
     private:
       friend std::ostream& operator<<(std::ostream& os, const barChart& toLog);    
     private:
-      float _min;
-      float _max;
+      dtReal _min;
+      dtReal _max;
       int _nBars;
-      float _globalMin;
-      float _globalMax;
+      dtReal _globalMin;
+      dtReal _globalMax;
       std::vector< int > _bar;
-      std::vector< float > _barValue;
-      float _step;
+      std::vector< dtReal > _barValue;
+      dtReal _step;
       int _nValues;
       std::string _title;
-      float _sum;
+      dtReal _sum;
   };
   
   std::ostream& operator<<(std::ostream& os, const barChart& toLog);

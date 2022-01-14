@@ -1,6 +1,8 @@
 #ifndef uvw_map3dTo3dClosestPointToPoint_H
 #define	uvw_map3dTo3dClosestPointToPoint_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <vector>

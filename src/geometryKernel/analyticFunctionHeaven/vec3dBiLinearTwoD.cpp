@@ -66,8 +66,8 @@ namespace dtOO {
   aFY vec3dBiLinearTwoD::Y( aFX const & xx ) const {
     dt__throwIf(xx.size()!=2, Y());
 
-		float uu = xx[0];
-		float vv = xx[1];
+		dtReal uu = xx[0];
+		dtReal vv = xx[1];
 		
 		dtVector3 vY(
 		  _v0 * (1.-uu)*(1.-vv) + _v1 * uu*(1.-vv) + _v3 * (1.-uu)*vv + _v2 * uu*vv

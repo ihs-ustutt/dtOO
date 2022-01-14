@@ -69,10 +69,10 @@ namespace dtOO {
 //        for(int kk=0;kk<=_nPointsOne;kk++) { // second direction
 //          point.push_back(std::vector< dtPoint3 >() );
 //          for(int ll=0;ll<=_nPointsTwo;ll++) { // first direction
-//            float kkF = (float) kk;
-//            float llF = (float) ll;
-//            float nPointsTwoF = (float) _nPointsTwo;
-//            float nPointsOneF = (float) _nPointsOne;
+//            dtReal kkF = (float) kk;
+//            dtReal llF = (float) ll;
+//            dtReal nPointsTwoF = (float) _nPointsTwo;
+//            dtReal nPointsOneF = (float) _nPointsOne;
 //            point[kk].push_back( 
 //              map2dTo3dP->getPointPercent(
 //                llF/nPointsOneF, 
@@ -96,8 +96,8 @@ namespace dtOO {
         std::vector< dtPoint3 > point;
         point.push_back( map1dTo3dP->getPointPercent(0.) );
         for(int ll=1; ll<=_nPointsOne-1; ll++) { // first direction
-          float llF = (float) ll;
-          float nPointsOneF = (float) _nPointsOne;
+          dtReal llF = (dtReal) ll;
+          dtReal nPointsOneF = (dtReal) _nPointsOne;
           point.push_back( map1dTo3dP->getPointPercent(llF/nPointsOneF) );
         }
         point.push_back( map1dTo3dP->getPointPercent(1.) );

@@ -1,6 +1,8 @@
 #ifndef feOpenFOAMCase_H
 #define	feOpenFOAMCase_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

@@ -69,7 +69,7 @@ namespace dtOO {
     //
     // get precision for removing duplicate vertices
     //
-    _relTol = std::numeric_limits<float>::max();
+    _relTol = std::numeric_limits<dtReal>::max();
     if ( 
       dtXmlParserBase::hasAttribute("relative_tolerance", element)
     ) {
@@ -79,7 +79,7 @@ namespace dtOO {
         "relative_tolerance", element, cV
       );
     }
-    _absTol = std::numeric_limits<float>::max();
+    _absTol = std::numeric_limits<dtReal>::max();
     if ( 
       dtXmlParserBase::hasAttribute("absolute_tolerance", element)
     ) {
@@ -311,7 +311,7 @@ namespace dtOO {
     gmshBoundedVolume::updateBoundingBox();
     
     SBoundingBox3d bbox = _gm->bounds();
-    float lc = bbox.empty() ? 1. : norm(SVector3(bbox.max(), bbox.min()));  
+    dtReal lc = bbox.empty() ? 1. : norm(SVector3(bbox.max(), bbox.min()));  
     
     dt__info(
       makeGrid(),

@@ -204,7 +204,7 @@ namespace dtOO {
     std::vector< dtPoint2 > bound1P = pUV.fixI(L);
     std::vector< dtPoint2 > bound2P = pUV.fixJ(H);
     std::vector< dtPoint2 > bound3P = pUV.fixI(0);
-    std::vector< float > bound[4];
+    std::vector< dtReal > bound[4];
     dt__forAllRefAuto(bound0P, aPoint) bound[0].push_back(aPoint.x());
     dt__forAllRefAuto(bound1P, aPoint) bound[1].push_back(aPoint.y());
     dt__forAllRefAuto(bound2P, aPoint) bound[2].push_back(aPoint.x());

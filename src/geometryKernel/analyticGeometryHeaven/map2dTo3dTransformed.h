@@ -1,6 +1,8 @@
 #ifndef map2dTo3dTransformed_H
 #define	map2dTo3dTransformed_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtTransformerHeaven/dtTransformerInvThreeD.h>
 #include "analyticGeometry.h"
 #include "map2dTo3d.h"
@@ -25,17 +27,17 @@ namespace dtOO {
       dtTransformer const * const dtT
     ) const;
     virtual map2dTo3dTransformed * create( void ) const;
-    virtual dtPoint3 getPoint( float const & uu, float const & vv ) const; 
+    virtual dtPoint3 getPoint( dtReal const & uu, dtReal const & vv ) const; 
     virtual vectorHandling< renderInterface * > getExtRender( void ) const;      
     //
     //
     //
-    virtual dtVector3 normal( float const & uu, float const & vv) const;
+    virtual dtVector3 normal( dtReal const & uu, dtReal const & vv) const;
     virtual std::vector< dtVector3 > firstDer( 
-      float const & uu, float const & vv
+      dtReal const & uu, dtReal const & vv
     ) const;
     virtual std::vector< dtVector3 > secondDer( 
-      float const & uu, float const & vv
+      dtReal const & uu, dtReal const & vv
     ) const;    
     virtual dtPoint2 reparamOnFace(dtPoint3 const & ppXYZ) const;  
     virtual bool isTransformed( void ) const;
@@ -102,7 +104,7 @@ namespace dtOO {
     
   template < typename funT >    
   dtPoint3 map2dTo3dTransformed< funT >::getPoint( 
-    float const & uu, float const & vv 
+    dtReal const & uu, dtReal const & vv 
   ) const {
     dtPoint3 pp = funT::getPoint(uu, vv);
     
@@ -126,21 +128,21 @@ namespace dtOO {
   
   template < typename funT >
   dtVector3 map2dTo3dTransformed< funT >::normal( 
-    float const & uu, float const & vv
+    dtReal const & uu, dtReal const & vv
   ) const {
     return _dtT->apply( funT::normal(uu, vv) );
   }
   
   template < typename funT >
   std::vector< dtVector3 > map2dTo3dTransformed< funT >::firstDer( 
-    float const & uu, float const & vv
+    dtReal const & uu, dtReal const & vv
   ) const {
     return _dtT->apply( funT::firstDer(uu, vv) );    
   }
   
   template < typename funT >
   std::vector< dtVector3 > map2dTo3dTransformed< funT >::secondDer( 
-    float const & uu, float const & vv
+    dtReal const & uu, dtReal const & vv
   ) const {
     return _dtT->apply( funT::secondDer(uu, vv) );   
   }

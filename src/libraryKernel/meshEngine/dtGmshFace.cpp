@@ -134,8 +134,8 @@ namespace dtOO {
   }
 
   Pair<SVector3, SVector3> dtGmshFace::firstDer(const SPoint2 &param) const {
-    dtVector3 ddU = _mm->firstDerU( (float) param.x(), (float) param.y() );
-    dtVector3 ddV = _mm->firstDerV( (float) param.x(), (float) param.y() );
+    dtVector3 ddU = _mm->firstDerU( (dtReal) param.x(), (dtReal) param.y() );
+    dtVector3 ddV = _mm->firstDerV( (dtReal) param.x(), (dtReal) param.y() );
     
     return Pair<SVector3, SVector3>( 
       SVector3( (double) ddU.x(), (double) ddU.y(), (double) ddU.z()),
@@ -146,9 +146,9 @@ namespace dtOO {
   void dtGmshFace::secondDer(
     const SPoint2 &param, SVector3 & dudu, SVector3 & dvdv, SVector3 & dudv
   ) const {
-    dtVector3 ddUddU = _mm->secondDerUU( (float) param.x(), (float) param.y() );
-    dtVector3 ddVddV = _mm->secondDerVV( (float) param.x(), (float) param.y() );    
-    dtVector3 ddUddV = _mm->secondDerUV( (float) param.x(), (float) param.y() );    
+    dtVector3 ddUddU = _mm->secondDerUU( (dtReal) param.x(), (dtReal) param.y() );
+    dtVector3 ddVddV = _mm->secondDerVV( (dtReal) param.x(), (dtReal) param.y() );    
+    dtVector3 ddUddV = _mm->secondDerUV( (dtReal) param.x(), (dtReal) param.y() );    
     dudu = SVector3(ddUddU.x(), ddUddU.y(), ddUddU.z());
     dvdv = SVector3(ddVddV.x(), ddVddV.y(), ddVddV.z());
     dudv = SVector3(ddUddV.x(), ddUddV.y(), ddUddV.z()); 
@@ -392,7 +392,7 @@ namespace dtOO {
   }  
 	
   std::vector< int > dtGmshFace::estimateTransfiniteNElements( 
-	  float const & uWidth, float const & vWidth 
+	  dtReal const & uWidth, dtReal const & vWidth 
 	) const {	
 		std::vector< dtGmshEdge * > const ee 
     = 
@@ -407,7 +407,7 @@ namespace dtOO {
 		// set number of elements
 		//
 		bool toggle = false;
-		std::vector< float > average(2, 0.);
+		std::vector< dtReal > average(2, 0.);
 		dt__forAllRefAuto(ee, anEdge) {
 			if ( !toggle) {
 				average[0] = average[0] + anEdge->getMap1dTo3d()->length()/uWidth;
@@ -464,7 +464,7 @@ namespace dtOO {
         double iG[] = {0.5,0.5};
         ::GPoint p1 = gf1->closestPoint( ::SPoint3(p0.x(), p0.y(), p0.z()), iG);
         
-        float const dist
+        dtReal const dist
         =
         dtLinearAlgebra::distance(
           dtPoint3(p0.x(), p0.y(), p0.z()), 
@@ -597,7 +597,7 @@ namespace dtOO {
   }
 
   void dtGmshFace::setGrading(
-    std::vector< float > const & grading, std::vector< float > & type
+    std::vector< dtReal > const & grading, std::vector< dtReal > & type
   ) {
     dt__throwIf(grading.size() != 4, setGrading());
     dt__throwIf(type.size() != 4, setGrading());

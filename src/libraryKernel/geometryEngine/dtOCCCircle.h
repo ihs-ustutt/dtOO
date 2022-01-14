@@ -1,6 +1,8 @@
 #ifndef dtOCCCircle_H
 #define	dtOCCCircle_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOCCCurve.h"

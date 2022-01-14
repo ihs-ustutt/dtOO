@@ -266,7 +266,7 @@ namespace dtOO {
           // create grid by averaging 4 points
           //
           twoDArrayHandling< dtPoint3 > grid(_nP[0], _nP[1]);
-          twoDArrayHandling< float > A(_nP[0], _nP[1]);
+          twoDArrayHandling< dtReal > A(_nP[0], _nP[1]);
           twoDArrayHandling< dtVector3 > N(_nP[0], _nP[1]);          
           #pragma omp parallel
           {
@@ -309,13 +309,13 @@ namespace dtOO {
           //
           // get values
           // 
-//          float sumArea = 0.;          
+//          dtReal sumArea = 0.;          
           twoDArrayHandling< dtVector3 > U(grid.size(0), grid.size(1));
           twoDArrayHandling< dtVector3 > Ucyl(grid.size(0), grid.size(1));
-          twoDArrayHandling< float > U_n(grid.size(0), grid.size(1));
-          twoDArrayHandling< float > Ucyl_n(grid.size(0), grid.size(1));          
-          twoDArrayHandling< float > R(grid.size(0), grid.size(1));
-          twoDArrayHandling< float > Z(grid.size(0), grid.size(1));
+          twoDArrayHandling< dtReal > U_n(grid.size(0), grid.size(1));
+          twoDArrayHandling< dtReal > Ucyl_n(grid.size(0), grid.size(1));          
+          twoDArrayHandling< dtReal > R(grid.size(0), grid.size(1));
+          twoDArrayHandling< dtReal > Z(grid.size(0), grid.size(1));
           #pragma omp parallel
           {
             #pragma omp for
@@ -486,15 +486,15 @@ namespace dtOO {
           //
           dt__forFromToIndex(0, grid.size(1), jj) {
             dtVector3 avgXYZ(0,0,0);
-            float avgR = 0.;
-            float avgZ = 0.;
+            dtReal avgR = 0.;
+            dtReal avgZ = 0.;
             dtVector3 avgU(0,0,0);
             dtVector3 avgUcyl(0,0,0);
-            float sumAU_n = 0.;
+            dtReal sumAU_n = 0.;
             dtVector3 sumUcylAU_n(0,0,0);
-            float sumU_nAU_n = 0.;
-            float avgU_n = 0.;
-            float avgUcyl_n = 0.;
+            dtReal sumU_nAU_n = 0.;
+            dtReal avgU_n = 0.;
+            dtReal avgUcyl_n = 0.;
             int nSamples = grid.fixJ(jj).size();
             dt__forFromToIndex(0, nSamples, ii) {
               if (A[ii][jj] == 0.) continue;

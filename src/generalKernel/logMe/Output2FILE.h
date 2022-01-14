@@ -1,6 +1,8 @@
 #ifndef OUTPUT2FILE_H
 #define	OUTPUT2FILE_H
 
+#include <dtOOTypeDef.h>
+
 #include <fstream>
 #include "logBase.h"
 

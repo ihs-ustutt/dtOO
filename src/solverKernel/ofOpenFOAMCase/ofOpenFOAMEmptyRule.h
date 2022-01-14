@@ -1,6 +1,8 @@
 #ifndef ofOpenFOAMEmptyRule_H
 #define	ofOpenFOAMEmptyRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "ofOpenFOAMSetupRule.h"
 

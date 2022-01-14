@@ -77,12 +77,12 @@ namespace dtOO {
       //
       // initialize min distance to max float
       //
-      float minDistAv = std::numeric_limits<float>::max();
+      dtReal minDistAv = std::numeric_limits<dtReal>::max();
       dt__forAllRefAuto( gm->dtFaces(), aFace) {
         int inTol = 0;
-        float distAv = 0.;
+        dtReal distAv = 0.;
         dt__forAllRefAuto(aFace->dtVertices(), aVertex) {
-          float dist 
+          dtReal dist 
           = 
           uv_map2dTo3dClosestPointToPoint(
             &(aM2d), 

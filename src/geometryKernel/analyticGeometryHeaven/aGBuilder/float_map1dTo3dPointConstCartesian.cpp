@@ -7,8 +7,8 @@
 
 namespace dtOO {
 	float_map1dTo3dPointConstCartesian::float_map1dTo3dPointConstCartesian(
-    map1dTo3d const * const m1d, int const & dir, float const & value,
-    float const & initGuess
+    map1dTo3d const * const m1d, int const & dir, dtReal const & value,
+    dtReal const & initGuess
 	) : _m1d(*m1d) {
     _dir = dir;
     _value = value;
@@ -59,7 +59,7 @@ namespace dtOO {
 	}
 
   float_map1dTo3dPointConstCartesian::float_map1dTo3dPointConstCartesian(
-    map1dTo3d const * const m1d, int const & dir, float const & value
+    map1dTo3d const * const m1d, int const & dir, dtReal const & value
 	) : float_map1dTo3dPointConstCartesian(m1d, dir, value, 0.5) {
       
   }
@@ -67,7 +67,7 @@ namespace dtOO {
 	float_map1dTo3dPointConstCartesian::~float_map1dTo3dPointConstCartesian() {
 	}
 	
-	float float_map1dTo3dPointConstCartesian::result( void ) {
+	dtReal float_map1dTo3dPointConstCartesian::result( void ) {
 		return _u;
 	}
 

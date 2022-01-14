@@ -311,9 +311,9 @@ namespace dtOO {
         int const thisNum = _num.global()[ rr ][ii];
         int const thisOnWhatDim = _onWhatDim.global()[ rr ][ii];
         int const thisOnWhatTag = _onWhatTag.global()[ rr ][ii];
-        float const thisX = _x.global()[ rr ][ii];
-        float const thisY = _y.global()[ rr ][ii];
-        float const thisZ = _z.global()[ rr ][ii];
+        dtReal const thisX = _x.global()[ rr ][ii];
+        dtReal const thisY = _y.global()[ rr ][ii];
+        dtReal const thisZ = _z.global()[ rr ][ii];
         int const thisMvType = _mvType.global()[ rr ][ii];
         double const thisU = _u.global()[ rr ][ii];
         double const thisV = _v.global()[ rr ][ii];        

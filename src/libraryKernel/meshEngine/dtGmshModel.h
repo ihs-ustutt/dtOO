@@ -1,6 +1,8 @@
 #ifndef DTGMSHMODEL_H
 #define	DTGMSHMODEL_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <gmsh/GModel.h>
@@ -154,7 +156,7 @@ namespace dtOO {
       void add( ::GEntity * ge);    
       void meshEdgeTransfiniteFromTo(
         int const from, int const to, 
-        int const type, float const coeff, int const nEl
+        int const type, dtReal const coeff, int const nEl
       );
       //
       // mesh entities

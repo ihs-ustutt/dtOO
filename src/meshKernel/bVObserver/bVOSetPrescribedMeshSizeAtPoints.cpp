@@ -45,7 +45,7 @@ namespace dtOO {
     else {
       _meshSize
       = 
-      std::vector< float >( 
+      std::vector< dtReal >( 
         1, 
         dtXmlParserBase::getAttributeFloatMuParse("meshSize", element, cV, aF) 
       );
@@ -63,7 +63,7 @@ namespace dtOO {
     if (_meshSize.size() == 1) {
       _meshSize
       = 
-      std::vector< float >( gm->getNumVertices(), _meshSize[0] );
+      std::vector< dtReal >( gm->getNumVertices(), _meshSize[0] );
     }
     dt__throwIf(
       gm->getNumVertices()!=_meshSize.size(), 

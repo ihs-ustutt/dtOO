@@ -1,6 +1,8 @@
 #ifndef bVOForceMeshPointCoordinates_H
 #define	bVOForceMeshPointCoordinates_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

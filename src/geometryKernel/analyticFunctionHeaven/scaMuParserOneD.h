@@ -1,6 +1,8 @@
 #ifndef SCAMUPARSERONED_H
 #define	SCAMUPARSERONED_H
 
+#include <dtOOTypeDef.h>
+
 #include "scaOneD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -22,8 +24,8 @@ namespace dtOO {
     ) const;        
     scaMuParserOneD * create( void ) const;    
     virtual ~scaMuParserOneD();
-    virtual float YFloat(float const & xx) const;
-    void setArgumentRange(float xMin, float xMax);  
+    virtual dtReal YFloat(dtReal const & xx) const;
+    void setArgumentRange(dtReal xMin, dtReal xMax);  
   private:
     dt__pH(dtMuParser) _parser;
     dt__pH(double) _argument;

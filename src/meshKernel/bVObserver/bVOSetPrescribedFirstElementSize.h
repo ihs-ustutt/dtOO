@@ -1,6 +1,8 @@
 #ifndef bVOSetPrescribedFirstElementSize_H
 #define	bVOSetPrescribedFirstElementSize_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 
@@ -33,10 +35,10 @@ namespace dtOO {
     private:
       int _type;
       analyticFunctionCompoundTrojanHorse< scaOneDPolyInterface > _grading;
-      float _firstElementSize;
+      dtReal _firstElementSize;
       dt__pH(scaOneDPolyInterface) _polyI;
-      float _ll;
-      float _checkX;
+      dtReal _ll;
+      dtReal _checkX;
   };
 }
 #endif	/* bVOSetPrescribedFirstElementSize_H */

@@ -12,7 +12,7 @@ namespace dtOO {
     _gg = 1.;
     _ggMin = 1.;
     _ggMax = 1.;
-    _cc = std::vector< float >(4, 1.);
+    _cc = std::vector< dtReal >(4, 1.);
   }
   
 
@@ -26,8 +26,8 @@ namespace dtOO {
   }
 
   scaTanhGradingOneD::scaTanhGradingOneD( 
-    std::vector< float > cc, 
-    float const & gg, float const & ggMin, float const & ggMax
+    std::vector< dtReal > cc, 
+    dtReal const & gg, dtReal const & ggMin, dtReal const & ggMax
   ) : scaOneDPolyInterface() {
     setMinMax(0., 1.);
     _gg = gg;
@@ -55,7 +55,7 @@ namespace dtOO {
     return new scaTanhGradingOneD();
   }
 
-  float scaTanhGradingOneD::YFloat(float const & xx) const {
+  dtReal scaTanhGradingOneD::YFloat(dtReal const & xx) const {
     return 
       _cc[0] 
       + 
@@ -69,7 +69,7 @@ namespace dtOO {
   }
   
   void scaTanhGradingOneD::setDOF( 
-    std::vector< float > const value 
+    std::vector< dtReal > const value 
   ) {
     dt__throwIf( value.size()!=nDOF(), setDOF() );
     _gg = _ggMin +  value[0] * (_ggMax - _ggMin);

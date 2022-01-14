@@ -41,12 +41,12 @@ namespace dtOO {
   analyticCurve::~analyticCurve() {
   }
 
-  dtPoint3 analyticCurve::getPoint(float const & uu) const {
+  dtPoint3 analyticCurve::getPoint(dtReal const & uu) const {
     return (_dtC->point( uu ));
   }
 	
   map1dTo3d * analyticCurve::segment( 
-    float const & u0, float const & u1 
+    dtReal const & u0, dtReal const & u1 
   ) const {
     return new analyticCurve(
       dt__pH(dtCurve)(
@@ -104,15 +104,15 @@ namespace dtOO {
     return _dtC.get();
   }
   
-  dtVector3 analyticCurve::firstDerU( float const uu) const {
+  dtVector3 analyticCurve::firstDerU( dtReal const uu) const {
     return _dtC->firstDer(uu);
   }
 
-	float analyticCurve::l_u( float const & uu ) const {
+	dtReal analyticCurve::l_u( dtReal const & uu ) const {
 		return _dtC->l_u(uu);	
 	}	
   
-  float analyticCurve::u_l( float const & ll ) const {
+  dtReal analyticCurve::u_l( dtReal const & ll ) const {
     return _dtC->u_l(ll);
   } 
   
@@ -120,11 +120,11 @@ namespace dtOO {
     return _dtC->closed();
   }
   
-  float analyticCurve::getMin( int const & dir) const {
+  dtReal analyticCurve::getMin( int const & dir) const {
     return _dtC->minPara(dir);
   }
 
-  float analyticCurve::getMax( int const & dir) const {
+  dtReal analyticCurve::getMax( int const & dir) const {
     return _dtC->maxPara(dir);
   }  
 

@@ -1,6 +1,8 @@
 #ifndef TIMEHANDLING_H
 #define	TIMEHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 namespace boost {

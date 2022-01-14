@@ -1,6 +1,8 @@
 #ifndef RECTANGULARTRIMMEDSURFACE_UVBOUNDS_H
 #define	RECTANGULARTRIMMEDSURFACE_UVBOUNDS_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

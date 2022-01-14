@@ -1,6 +1,8 @@
 #ifndef constValue_H
 #define	constValue_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <logMe/dtMacros.h>
 #include <xmlHeaven/qtXmlPrimitive.h>
@@ -22,15 +24,15 @@ namespace dtOO {
     );
     virtual constValue * clone( void ) const = 0;    
     virtual void dump(void) const = 0;
-    virtual float getValue(void) const;
-    virtual float getValuePercent(void) const;
-    virtual void setValue(float const toSet);
-    virtual void setRange(float const min, float const max);
+    virtual dtReal getValue(void) const;
+    virtual dtReal getValuePercent(void) const;
+    virtual void setValue(dtReal const toSet);
+    virtual void setRange(dtReal const min, dtReal const max);
     virtual void writeToElement( 
       ::QDomDocument & doc, ::QDomElement & element
     ) = 0;
-    virtual float getMin(void) const;
-    virtual float getMax(void) const;
+    virtual dtReal getMin(void) const;
+    virtual dtReal getMax(void) const;
     virtual bool loadable( void ) const;
     virtual void resolveConstraint( 
       cVPtrVec const * const cVArr
@@ -38,7 +40,7 @@ namespace dtOO {
   protected:
     constValue();    
   private:
-    float _value;
+    dtReal _value;
     bool _loadable;
   };
 }

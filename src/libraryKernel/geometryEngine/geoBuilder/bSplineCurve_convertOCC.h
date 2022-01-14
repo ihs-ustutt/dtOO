@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_convertOCC_H
 #define	bSplineCurve_convertOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

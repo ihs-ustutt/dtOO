@@ -1,6 +1,8 @@
 #ifndef u_geomCurveClosestPoint_H
 #define	u_geomCurveClosestPoint_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <vector>
@@ -15,11 +17,11 @@ namespace dtOO {
         dtCurve const * const dtC, dtPoint3 const & pXYZ
       );
       virtual ~u_geomCurveClosestPoint();
-      float result( void );
+      dtReal result( void );
     private:
       double F(double const * xx) const;    
     private:
-      float _closestU;
+      dtReal _closestU;
       dtCurve const & _dtC;
       dtPoint3 const & _pXYZ;
   };

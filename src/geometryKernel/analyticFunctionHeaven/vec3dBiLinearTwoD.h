@@ -1,6 +1,8 @@
 #ifndef vec3dBiLinearTwoD_H
 #define	vec3dBiLinearTwoD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec3dTwoD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>

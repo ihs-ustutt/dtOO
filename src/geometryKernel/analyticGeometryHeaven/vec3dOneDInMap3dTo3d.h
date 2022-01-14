@@ -1,6 +1,8 @@
 #ifndef vec3dOneDInMap3dTo3d_H
 #define	vec3dOneDInMap3dTo3d_H
 
+#include <dtOOTypeDef.h>
+
 #include "map1dTo3d.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -27,10 +29,10 @@ namespace dtOO {
         dtTransformer const * const dtT 
       ) const;     
       virtual vec3dOneDInMap3dTo3d * create( void ) const;
-      virtual dtPoint3 getPoint( float const & uu ) const;
+      virtual dtPoint3 getPoint( dtReal const & uu ) const;
       virtual bool isClosed( int const & dir) const;
-      virtual float getMin( int const & dir) const;
-      virtual float getMax( int const & dir) const;
+      virtual dtReal getMin( int const & dir) const;
+      virtual dtReal getMax( int const & dir) const;
       vec3dOneD const * refToVec3dOneD( void ) const;
       map3dTo3d const * refToMap3dTo3d( void ) const;
       vectorHandling< renderInterface * > getExtRender( void ) const;

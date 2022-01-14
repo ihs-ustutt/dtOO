@@ -34,7 +34,7 @@ namespace dtOO {
     );
   }
 
-  void constrainedFloatParam::setRange(float const min, float const max) {
+  void constrainedFloatParam::setRange(dtReal const min, dtReal const max) {
     _max = max;
     _min = min;
   }
@@ -52,28 +52,28 @@ namespace dtOO {
     element.appendChild(cValElement);
   }
   
-  float constrainedFloatParam::getMax(void) const {
+  dtReal constrainedFloatParam::getMax(void) const {
     return _max;
   }
 
-  float constrainedFloatParam::getMin(void) const {
+  dtReal constrainedFloatParam::getMin(void) const {
     return _min;
   }  
 
-  float constrainedFloatParam::getValue(void) const {
+  dtReal constrainedFloatParam::getValue(void) const {
     return dtXmlParser::constReference().muParseString(
       dtXmlParser::constReference().replaceDependencies( _valueStr, _cVArr)
     );
   }
 
-  void constrainedFloatParam::setValue(float const toSet) {
+  void constrainedFloatParam::setValue(dtReal const toSet) {
     dt__warning(
       setValue(), 
       << "Try to set a constrainedFloatParam > " 
       << getLabel() << " <. Not possible. Set to constraint."
     );
     constValue::setValue(
-      std::numeric_limits< float >::infinity()
+      std::numeric_limits< dtReal >::infinity()
     );
   }  
   

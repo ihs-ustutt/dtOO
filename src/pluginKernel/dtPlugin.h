@@ -1,6 +1,8 @@
 #ifndef dtPlugin_H
 #define	dtPlugin_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/labelHandling.h>

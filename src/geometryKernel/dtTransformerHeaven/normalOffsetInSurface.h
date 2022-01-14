@@ -1,6 +1,8 @@
 #ifndef normalOffsetInSurface_H
 #define	normalOffsetInSurface_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -27,7 +29,7 @@ namespace dtOO {
       virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
     private:
       dt__pH(map2dTo3d const) _m2d;
-      float _thickness;
+      dtReal _thickness;
       int _nPoints;
       int _nIntPoints;
       int _order;

@@ -1,6 +1,8 @@
 #ifndef BVOSUBJECT_H
 #define	BVOSUBJECT_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
 

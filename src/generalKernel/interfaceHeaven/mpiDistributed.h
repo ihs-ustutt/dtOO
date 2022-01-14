@@ -1,6 +1,8 @@
 #ifndef mpiDistributed_H
 #define	mpiDistributed_H
 
+#include <dtOOTypeDef.h>
+
 #include "staticPropertiesHandler.h"
 #ifdef DTOO_HAS_MPI
 #include <boost/mpi/communicator.hpp>

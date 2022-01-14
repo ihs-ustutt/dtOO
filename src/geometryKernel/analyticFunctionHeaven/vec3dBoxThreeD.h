@@ -1,6 +1,8 @@
 #ifndef VEC3DBOXTHREED_H
 #define	VEC3DBOXTHREED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dThreeD.h"

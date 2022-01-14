@@ -499,11 +499,11 @@ namespace dtOO {
     return rInt;
   }
   
-  float qtXmlPrimitive::getAttributeFloat(
+  dtReal qtXmlPrimitive::getAttributeFloat(
 	  std::string const attName, const ::QDomElement element
 	) {
     bool flag;
-    float rInt = 0;
+    dtReal rInt = 0;
     rInt = element.attribute( attName.c_str() ).toFloat(&flag);
     if (!flag) {
       dt__throw( 
@@ -641,12 +641,12 @@ namespace dtOO {
 		return intVec;
 	}  
   
-	std::vector< float > qtXmlPrimitive::getAttributeFloatVector( 
+	std::vector< dtReal > qtXmlPrimitive::getAttributeFloatVector( 
 		std::string const attName, ::QDomElement const element
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
-		std::vector< float > floatVec(attVec.size(), 0.);
+		std::vector< dtReal > floatVec(attVec.size(), 0.);
 		int counter = 0;
 		dt__forAllRefAuto(attVec, el) {	
 			floatVec[counter] = stringToFloat(el);

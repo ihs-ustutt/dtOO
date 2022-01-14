@@ -1,6 +1,8 @@
 #ifndef bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder_H
 #define	bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

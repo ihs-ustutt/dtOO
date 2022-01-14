@@ -31,7 +31,7 @@ namespace dtOO {
 		for ( int ii=0; ii<nSegments; ii++) {
       dt__forAllConstIter(dt__pVH(dtSurface), dtS, it ) {
         dtSurface const & theSurface = *it;
-        float at = ii * 1./(nSegments-1);
+        dtReal at = ii * 1./(nSegments-1);
         cc[ii].push_back( theSurface.segmentConstPercent(dir, at) );
       }
       cc[ii] = geomCurve_closeGapsArithmeticOCC(cc[ii]).result();

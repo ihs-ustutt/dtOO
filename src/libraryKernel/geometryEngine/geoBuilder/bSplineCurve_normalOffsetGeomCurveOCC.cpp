@@ -7,7 +7,7 @@
 
 namespace dtOO {
 	bSplineCurve_normalOffsetGeomCurveOCC::bSplineCurve_normalOffsetGeomCurveOCC(
-    dtCurve const * const dtC, float const & offset, dtVector3 const & nn
+    dtCurve const * const dtC, dtReal const & offset, dtVector3 const & nn
   ) {
     dt__throwIf(
       dtC->nControlPoints()<3, bSplineCurve_normalOffsetGeomCurveOCC()

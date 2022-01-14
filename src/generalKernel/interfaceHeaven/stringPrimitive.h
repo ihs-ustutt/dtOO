@@ -1,6 +1,8 @@
 #ifndef STRINGPRIMITIVE_H
 #define	STRINGPRIMITIVE_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <vector>
 #include <map>
@@ -11,8 +13,8 @@ namespace dtOO {
   public:
     dt__classOnlyName(stringPrimitive);          
     virtual ~stringPrimitive();
-    static float stringToFloat(std::string const value);
-    static std::string floatToString(float const value);
+    static dtReal stringToFloat(std::string const value);
+    static std::string floatToString(dtReal const value);
     static int stringToInt(std::string const value);
     static std::string intToString(int const value);
     static std::string intToStringLZ(int const value, int const nZeros);   

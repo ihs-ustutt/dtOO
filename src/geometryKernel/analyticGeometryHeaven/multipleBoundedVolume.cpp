@@ -58,7 +58,7 @@ namespace dtOO {
     }
 	}
 
-	float multipleBoundedVolume::getMin( int const & dir) const {
+	dtReal multipleBoundedVolume::getMin( int const & dir) const {
     switch (dir) {
       case 0:
         return _m3d->getMin(0);
@@ -71,7 +71,7 @@ namespace dtOO {
     }    		
 	}
   
-	float multipleBoundedVolume::getMax( int const & dir) const {
+	dtReal multipleBoundedVolume::getMax( int const & dir) const {
     switch (dir) {
       case 0:
         return _m3d->getMax(0);
@@ -85,7 +85,7 @@ namespace dtOO {
 	}
     
 	dtPoint3 multipleBoundedVolume::getPoint( 
-    float const * const uvw 
+    dtReal const * const uvw 
   ) const {
    	return _m3d->getPoint(uvw);
 	}	

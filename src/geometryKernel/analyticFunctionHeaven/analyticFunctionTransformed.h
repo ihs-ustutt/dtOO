@@ -1,6 +1,8 @@
 #ifndef ANALYTICFUNCTIONTRANSFORMED_H
 #define	ANALYTICFUNCTIONTRANSFORMED_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtTransformerHeaven/dtTransformer.h>
 #include "analyticFunction.h"

@@ -1,6 +1,8 @@
 #ifndef INTPARAM_H
 #define	INTPARAM_H
 
+#include <dtOOTypeDef.h>
+
 #include "constValue.h"
 #include <logMe/dtMacros.h>
 

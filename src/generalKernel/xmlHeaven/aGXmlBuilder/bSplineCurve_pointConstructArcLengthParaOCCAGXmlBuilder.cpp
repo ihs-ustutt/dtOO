@@ -52,7 +52,7 @@ namespace dtOO {
     int const nSegments 
     = 
     dtXmlParserBase::getAttributeIntMuParse("num_segments", toBuild, cV, aF);
-    float const tol 
+    dtReal const tol 
     = 
     dtXmlParserBase::getAttributeFloatMuParse("tolerance", toBuild, cV, aF);
 

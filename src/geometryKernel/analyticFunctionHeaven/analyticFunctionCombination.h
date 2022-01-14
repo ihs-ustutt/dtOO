@@ -1,6 +1,8 @@
 #ifndef analyticFunctionCombination_H
 #define	analyticFunctionCombination_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec3dThreeD.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>

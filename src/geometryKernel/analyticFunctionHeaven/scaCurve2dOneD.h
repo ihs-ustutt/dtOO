@@ -1,6 +1,8 @@
 #ifndef scaCurve2dOneD_H
 #define	scaCurve2dOneD_H
 
+#include <dtOOTypeDef.h>
+
 #include "scaOneD.h"
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
@@ -22,7 +24,7 @@ namespace dtOO {
     ) const;
     scaCurve2dOneD * create( void ) const;    
     virtual ~scaCurve2dOneD();
-    virtual float YFloat(float const & xx) const;
+    virtual dtReal YFloat(dtReal const & xx) const;
     dtCurve2d const * ptrDtCurve2d( void ) const;
     void translate( dtVector2 const vector );
     std::vector< dtPoint2 > getControlPoints( void ) const;
@@ -31,7 +33,7 @@ namespace dtOO {
     vectorHandling< renderInterface * > getRender( void ) const;  
   private:
     ptrHandling< dtCurve2d > _dtC2d;
-    mutable float _tmpX;
+    mutable dtReal _tmpX;
   };
 }
 #endif	/* scaCurve2dOneD_H */

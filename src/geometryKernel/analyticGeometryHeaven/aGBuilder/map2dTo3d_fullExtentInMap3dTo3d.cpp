@@ -52,12 +52,12 @@ namespace dtOO {
       bool isPos = false;
       if ( (dY0[0].x()>0.) && (dY0[1].x()>0.) ) isPos = true;
       
-			float t0 = (from[0].y() - m3d->getVMin())/dY0[0].y();
-			float t1 = (m3d->getVMin() - from[1].y())/dY1[0].y();
-			float u0max = from[0].x()-t0*dY0[0].x();
-			float u1max = from[1].x()+t1*dY1[0].x();
-      float u0 = u0max;
-      float u1 = u1max;      
+			dtReal t0 = (from[0].y() - m3d->getVMin())/dY0[0].y();
+			dtReal t1 = (m3d->getVMin() - from[1].y())/dY1[0].y();
+			dtReal u0max = from[0].x()-t0*dY0[0].x();
+			dtReal u1max = from[1].x()+t1*dY1[0].x();
+      dtReal u0 = u0max;
+      dtReal u1 = u1max;      
       if (isPos) {
         u0 = std::min(u0max, u1max);
         u1 = u0;

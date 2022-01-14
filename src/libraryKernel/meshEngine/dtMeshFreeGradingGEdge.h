@@ -1,6 +1,8 @@
 #ifndef dtMeshFreeGradingGEdge_H
 #define	dtMeshFreeGradingGEdge_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMeshGEdge.h"
@@ -28,7 +30,7 @@ namespace dtOO {
       dt__vH(scaOneD const *) _grading;
       std::vector< int > _typeTransfinite;
       std::map< int, scaOneD const * > _gradingInt;
-      float _tol;
+      dtReal _tol;
       int _maxSmooth;
   };
 }

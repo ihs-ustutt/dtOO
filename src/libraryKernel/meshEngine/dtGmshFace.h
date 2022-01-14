@@ -1,6 +1,8 @@
 #ifndef DTGMSHFACE_H
 #define	DTGMSHFACE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <gmsh/GFace.h>
 #include <logMe/dtMacros.h>
@@ -62,7 +64,7 @@ namespace dtOO {
       int const & nElements2, int const & nElements3 
     );
     std::vector< int > estimateTransfiniteNElements( 
-      float const & uWidth, float const & vWidth 
+      dtReal const & uWidth, dtReal const & vWidth 
     ) const;
     void correctIfTransfinite( void );
     void meshUnstructured( void ); 
@@ -78,7 +80,7 @@ namespace dtOO {
     void addGEntity( ::GEntity * const gEnt );
     std::string getPhysicalString( void ) const;
     void setGrading( 
-      std::vector< float > const & grading, std::vector< float > & type
+      std::vector< dtReal > const & grading, std::vector< dtReal > & type
     );
     std::list< dtGmshVertex * > dtVertices( void ) const;   
     std::list< dtGmshEdge * > dtEdges( void ) const;     

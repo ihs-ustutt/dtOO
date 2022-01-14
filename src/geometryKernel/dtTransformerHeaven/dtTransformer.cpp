@@ -159,7 +159,7 @@ namespace dtOO {
     else dt__throwUnexpected(operator());
   }
   
-  void dtTransformer::handleFloat(std::string const name, float const value) {
+  void dtTransformer::handleFloat(std::string const name, dtReal const value) {
     dt__throw(
       handleFloat(),
       << "Could not handle:" << std::endl

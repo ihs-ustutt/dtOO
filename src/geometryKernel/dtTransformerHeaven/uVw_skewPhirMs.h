@@ -1,6 +1,8 @@
 #ifndef uVw_skewPhirMs_H
 #define	uVw_skewPhirMs_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>
@@ -51,7 +53,7 @@ namespace dtOO {
       /**
        * @todo Should be on map3dto3d
        */
-      float m_uSVS(float const & uu, float const & vv) const;
+      dtReal m_uSVS(dtReal const & uu, dtReal const & vv) const;
       void transformPhirM( void );
     private:
       dt__pH(rotatingMap2dTo3d const) _rM2d;
@@ -62,10 +64,10 @@ namespace dtOO {
       dt__pH(scaOneD) _fV;
       int _nV;
       int _nW;
-      float _relaxM;
-      float _relaxPhir;
+      dtReal _relaxM;
+      dtReal _relaxPhir;
       int _nSteps;
-      float _angle;
+      dtReal _angle;
       static bool _registrated;    
   };
 }

@@ -1,6 +1,8 @@
 #ifndef VEC3DCURVEONED_H
 #define	VEC3DCURVEONED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dOneD.h"

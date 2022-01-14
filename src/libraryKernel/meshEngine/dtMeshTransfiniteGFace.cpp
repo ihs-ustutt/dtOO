@@ -56,7 +56,7 @@ namespace dtOO {
   ) {
     dtMeshTransfinite2DOperator::init(element, bC, cV, aF, aG, bV, mO);
     
-    _vCorrPos = std::vector< float >(0);
+    _vCorrPos = std::vector< dtReal >(0);
     _vCorrSteps = 0;
     
     if ( dtXmlParser::hasAttribute( "v_correction_position", element ) ) {
@@ -218,8 +218,8 @@ namespace dtOO {
     
     logContainer< dtMeshTransfiniteGFace > logC(logDEBUG, "correctConstV()");
 
-    std::vector< float > uu(L+1);
-    std::vector< float > vv(L+1);
+    std::vector< dtReal > uu(L+1);
+    std::vector< dtReal > vv(L+1);
     std::vector< dtPoint3 > p3_u(L+1);
 
     dt__forFromToIndex(0, L+1, ii) {
@@ -245,26 +245,26 @@ namespace dtOO {
 
         
     dt__forFromToIndex(0, _vCorrSteps, smoothIt) {
-      std::vector< float > dL(L+1, 0.);      
+      std::vector< dtReal > dL(L+1, 0.);      
       dt__forFromToIndex(1, L+1, ii) {
         p3_u[ii] = dtgf->getMap2dTo3d()->getPoint(uu[ii], vv[ii]);
         dL[ii] = dtLinearAlgebra::length( p3_u[ii] - p3_u[ii-1] );
       }     
 
 
-      float sumL = dtLinearAlgebra::sum(dL);
-      std::vector< float > ll(L+1, 0.);      
+      dtReal sumL = dtLinearAlgebra::sum(dL);
+      std::vector< dtReal > ll(L+1, 0.);      
       scaMultiOneD< scaLinearOneD > l_u;
       dt__forFromToIndex(1, L, ii) {
         ll[ii] = ll[ii-1] + dL[ii];        
         l_u.add( scaLinearOneD(uu[ii-1], uu[ii], ll[ii-1], ll[ii]) );
       }  
 
-      float sumEps = 0;
-      float maxEps = std::numeric_limits<float>::min();
+      dtReal sumEps = 0;
+      dtReal maxEps = std::numeric_limits<dtReal>::min();
       dt__forFromToIndex(1, L, ii) {
         sumEps = sumEps + fabs(lengths_i[ii] / L_i-(ll[ii]/sumL));
-        maxEps = std::max( maxEps, std::fabs<float>(lengths_i[ii] / L_i-(ll[ii]/sumL)) );
+        maxEps = std::max( maxEps, std::fabs<dtReal>(lengths_i[ii] / L_i-(ll[ii]/sumL)) );
         uu[ii] = l_u.invYFloat( lengths_i[ii] / L_i * sumL );
       }
 
@@ -294,8 +294,8 @@ namespace dtOO {
   twoDArrayHandling< dtPoint2 > dtMeshTransfiniteGFace::linearInterpolateU( 
     twoDArrayHandling< dtPoint2 > pUV, int const & vStart, int const & vEnd
   ) {
-    float theStep = 1. / static_cast< float >(vEnd - vStart);
-    float cStep = 0.;
+    dtReal theStep = 1. / static_cast< dtReal >(vEnd - vStart);
+    dtReal cStep = 0.;
     dt__forFromToIndex(vStart+1, vEnd, vI) {
       cStep = cStep + theStep;
       

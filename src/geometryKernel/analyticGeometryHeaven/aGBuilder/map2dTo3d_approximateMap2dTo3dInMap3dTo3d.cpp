@@ -20,12 +20,12 @@ namespace dtOO {
 	) {
 		vectorHandling< dtCurve const * > cL;
 		
-		dt__toFloat(float deltaV, 1./(nV-1));
+		dt__toFloat(dtReal deltaV, 1./(nV-1));
 		for (int jj=0; jj<nV; jj++) {
 			//
 			// get constV segment
 			//
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			std::vector< dtPoint3 > ppXYZ
 			=
 			dtPoint3_map1dTo3dPoint(

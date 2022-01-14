@@ -11,7 +11,7 @@ namespace dtOO {
   intHandling::~intHandling() {
   }
   
-  int intHandling::round( float a ) {
+  int intHandling::round( dtReal a ) {
    return boost::math::iround(a);
 	}
   

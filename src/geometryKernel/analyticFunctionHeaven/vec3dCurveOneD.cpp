@@ -61,10 +61,10 @@ namespace dtOO {
     );		
 		
 		vectorHandling< dtPoint2 > p2(nU);
-    float interval = (xMax(0) - xMin(0)) / (nU-1);
+    dtReal interval = (xMax(0) - xMin(0)) / (nU-1);
     for (int ii=0;ii<nU;ii++) {
-			float iiF = static_cast<float>(ii);
-      float xx = xMin(0) + iiF * interval;
+			dtReal iiF = static_cast<dtReal>(ii);
+      dtReal xx = xMin(0) + iiF * interval;
 			dtPoint3 p3 = YdtPoint3(xx);
       p2[ii] = dtPoint2(p3.x(), p3.y());
     }

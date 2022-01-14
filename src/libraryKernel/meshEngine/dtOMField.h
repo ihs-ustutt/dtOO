@@ -1,6 +1,8 @@
 #ifndef DTOMFIELD_H
 #define	DTOMFIELD_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/labelHandling.h>

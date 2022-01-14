@@ -1,6 +1,8 @@
 #ifndef ROTATE_H
 #define	ROTATE_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformerInvThreeD.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -40,7 +42,7 @@ namespace dtOO {
     private:
       dtPoint3 _origin;
       dtVector3 _rotVector;
-      float _angle;
+      dtReal _angle;
       static bool _registrated;    
   };
 }

@@ -1,6 +1,8 @@
 #ifndef dtPoint3_vec3dTwoD_H
 #define	dtPoint3_vec3dTwoD_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/twoDArrayHandling.h>

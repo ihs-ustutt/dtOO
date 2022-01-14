@@ -108,7 +108,7 @@ namespace dtOO {
    * @todo Make me template.
    */
   std::string logMe::floatMatrixToString( 
-	  std::vector< std::vector< float > > const & mat 
+	  std::vector< std::vector< dtReal > > const & mat 
 	) {
     std::ostringstream os;
     

@@ -1,6 +1,8 @@
 #ifndef dtOCCCurve2dBase_H
 #define	dtOCCCurve2dBase_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <boost/shared_ptr.hpp>

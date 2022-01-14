@@ -1,6 +1,8 @@
 #ifndef map1dTo3dTransformed_H
 #define	map1dTo3dTransformed_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtTransformerHeaven/dtTransformerInvThreeD.h>
 #include "analyticGeometry.h"
 #include "map1dTo3d.h"
@@ -24,11 +26,11 @@ namespace dtOO {
       dtTransformer const * const dtT
     ) const;
     virtual map1dTo3dTransformed * create( void ) const;
-    virtual dtPoint3 getPoint( float const & uu ) const; 
+    virtual dtPoint3 getPoint( dtReal const & uu ) const; 
     //
     //
     //
-    virtual dtVector3 firstDerU( float const & uu) const;
+    virtual dtVector3 firstDerU( dtReal const & uu) const;
     virtual bool isTransformed( void ) const;
   private:
     dt__pH(dtTransformerInvThreeD) _dtT;
@@ -92,14 +94,14 @@ namespace dtOO {
   }
     
   template < typename funT >    
-  dtPoint3 map1dTo3dTransformed< funT >::getPoint( float const & uu ) const {
+  dtPoint3 map1dTo3dTransformed< funT >::getPoint( dtReal const & uu ) const {
     dtPoint3 pp = funT::getPoint(uu);
     
     return _dtT->apply(pp);
   }
   
   template < typename funT >
-  dtVector3 map1dTo3dTransformed< funT >::firstDerU( float const & uu ) const {
+  dtVector3 map1dTo3dTransformed< funT >::firstDerU( dtReal const & uu ) const {
     return _dtT->apply( funT::firstDerU(uu) );    
   }
   

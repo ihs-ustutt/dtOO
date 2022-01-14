@@ -1,6 +1,8 @@
 #ifndef BSPLINESURFACE_BSPLINECURVEFILLCONSTRUCTOCC_H
 #define	BSPLINESURFACE_BSPLINECURVEFILLCONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

@@ -88,7 +88,7 @@ namespace dtOO {
     = 
     {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};       
     
-    float prec 
+    dtReal prec 
     =      
     staticPropertiesHandler::getInstance()->getOptionFloat("invY_precision");    
     int rootPrintLevel
@@ -100,7 +100,7 @@ namespace dtOO {
     std::vector< int >   ijkMax(xDim(), numInitGuess);
     std::vector< int > ijkDelta(xDim(), 1);
 
-    float bestDistance = std::numeric_limits<float>::max();
+    dtReal bestDistance = std::numeric_limits<dtReal>::max();
     int depth = 0;
     ijk[0] = ijkMin[depth];
     while (true) {
@@ -152,7 +152,7 @@ namespace dtOO {
           //
           // convergence check
           //
-          float currentDistance 
+          dtReal currentDistance 
           = 
           distance( 
             Y(x_percent(retX)), _invY
@@ -215,18 +215,18 @@ namespace dtOO {
   
   std::pair< aFY, aFY > analyticFunction::yBoundingBox( void ) const {
     return std::pair< aFY, aFY >(
-      aFY(yDim(), std::numeric_limits<float>::min()),
-      aFY(yDim(), std::numeric_limits<float>::max())
+      aFY(yDim(), std::numeric_limits<dtReal>::min()),
+      aFY(yDim(), std::numeric_limits<dtReal>::max())
     );
   }
   
   bool analyticFunction::yBounded( void ) const {
     std::pair< aFY, aFY > bBox = yBoundingBox();
     dt__forAllRefAuto(bBox.first, aBound) {
-      if ( aBound == std::numeric_limits<float>::min() ) return false;
+      if ( aBound == std::numeric_limits<dtReal>::min() ) return false;
     }
     dt__forAllRefAuto(bBox.second, aBound) {
-      if ( aBound == std::numeric_limits<float>::max() ) return false;
+      if ( aBound == std::numeric_limits<dtReal>::max() ) return false;
     }
   }
     
@@ -235,14 +235,14 @@ namespace dtOO {
 		return aFX(0, 0.);
 	}
   
-  aFX analyticFunction::aFXOneD( float const & x0 ) {
+  aFX analyticFunction::aFXOneD( dtReal const & x0 ) {
 		aFX ret = aFX(1, 0.);
 		ret[0] = x0;
 		
 		return ret;
 	}
 	
-  aFX analyticFunction::aFXTwoD( float const & x0, float const & x1 ) {
+  aFX analyticFunction::aFXTwoD( dtReal const & x0, dtReal const & x1 ) {
 		aFX ret = aFX(2, 0.);
 		ret[0] = x0;
 		ret[1] = x1;		
@@ -251,7 +251,7 @@ namespace dtOO {
 	} 
 	
   aFX analyticFunction::aFXThreeD( 
-    float const & x0, float const & x1, float const & x2 
+    dtReal const & x0, dtReal const & x1, dtReal const & x2 
   ) {
 		aFX ret = aFX(3, 0.);
 		ret[0] = x0;
@@ -273,14 +273,14 @@ namespace dtOO {
 		return aFY(0, 0.);
 	}
   
-  aFY analyticFunction::aFYOneD( float const & x0 ) {
+  aFY analyticFunction::aFYOneD( dtReal const & x0 ) {
 		aFY ret = aFY(1, 0.);
 		ret[0] = x0;
 		
 		return ret;
 	}
 	
-  aFY analyticFunction::aFYTwoD( float const & x0, float const & x1 ) {
+  aFY analyticFunction::aFYTwoD( dtReal const & x0, dtReal const & x1 ) {
 		aFY ret = aFY(2, 0.);
 		ret[0] = x0;
 		ret[1] = x1;		
@@ -289,7 +289,7 @@ namespace dtOO {
 	}
 	
   aFY analyticFunction::aFYThreeD( 
-    float const & x0, float const & x1, float const & x2 
+    dtReal const & x0, dtReal const & x1, dtReal const & x2 
   ) {
 		aFY ret = aFY(3, 0.);
 		ret[0] = x0;
@@ -307,12 +307,12 @@ namespace dtOO {
 		return analyticFunction::aFYThreeD(pp.x(), pp.y(), pp.z());
 	}    
 
-//  aFX analyticFunction::aFX( std::vector< float > const & xx ) {
-//    return std::vector< float >(xx);
+//  aFX analyticFunction::aFX( std::vector< dtReal > const & xx ) {
+//    return std::vector< dtReal >(xx);
 //  }
 //  
-//  aFY analyticFunction::aFY( std::vector< float > const & xx ) {
-//    return std::vector< float >(xx);
+//  aFY analyticFunction::aFY( std::vector< dtReal > const & xx ) {
+//    return std::vector< dtReal >(xx);
 //  }
   
   aFY analyticFunction::aFY_aFX( aFX const & xx ) {
@@ -323,10 +323,10 @@ namespace dtOO {
     return aFX(yy);
   }
   
-  float analyticFunction::distance( aFX const & x0, aFX const & x1 ) {
+  dtReal analyticFunction::distance( aFX const & x0, aFX const & x1 ) {
     dt__throwIf(x0.size()!=x1.size(), length());
     
-    float dist = 0.;
+    dtReal dist = 0.;
     dt__forAllIndex(x0, ii) dist = dist + (x1[ii] - x0[ii])*(x1[ii] - x0[ii]);
     
     return sqrt(dist);

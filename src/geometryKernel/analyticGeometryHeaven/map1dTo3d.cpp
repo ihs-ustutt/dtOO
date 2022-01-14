@@ -18,7 +18,7 @@
 #include "aGBuilder/dtPoint3_map1dTo3dPoint.h"
 
 namespace dtOO { 
-  float map1dTo3d::_deltaPer 
+  dtReal map1dTo3d::_deltaPer 
   = 
   staticPropertiesHandler::getInstance()->getOptionFloat("map1dTo3d_deltaPer");
   
@@ -35,41 +35,41 @@ namespace dtOO {
     return 1;
   }
   
-  dtPoint3 map1dTo3d::getPoint( float const * const uvw ) const {
+  dtPoint3 map1dTo3d::getPoint( dtReal const * const uvw ) const {
     return getPoint( *uvw );
   }
   
-  dtPoint3 map1dTo3d::getPointPercent( float const & uu ) const {
+  dtPoint3 map1dTo3d::getPointPercent( dtReal const & uu ) const {
     return getPoint( u_percent(uu) );
   }
 
   map1dTo3d * map1dTo3d::segmentPercent( 
-    float const & u0, float const & u1 
+    dtReal const & u0, dtReal const & u1 
   ) const {
     return segment( u_percent(u0), u_percent(u1) );
   }
   
-  float map1dTo3d::u_percent(float const & uu) const {
+  dtReal map1dTo3d::u_percent(dtReal const & uu) const {
     return floatHandling::boundToRange( 
       getUMin() +  (getUMax() - getUMin() ) * uu, getUMin(), getUMax()
     );    
   }  
   
-  float map1dTo3d::percent_u(float const & uu) const {
+  dtReal map1dTo3d::percent_u(dtReal const & uu) const {
     return floatHandling::boundToRange( 
       (uu - getUMin()) / (getUMax() - getUMin()), 0., 1.
     );    
   }
 	
-	float map1dTo3d::u_lPercent(float const & lP) const {
+	dtReal map1dTo3d::u_lPercent(dtReal const & lP) const {
 		return u_l( lP*length() );
 	}
   
-  float map1dTo3d::percent_l(float const & ll) const {
+  dtReal map1dTo3d::percent_l(dtReal const & ll) const {
 		return percent_u( u_l(ll) );
 	}
 	
-  float map1dTo3d::lPercent_u(float const & uu) const {
+  dtReal map1dTo3d::lPercent_u(dtReal const & uu) const {
 		return percent_u( l_u(uu)/length() );
 	}
   
@@ -77,8 +77,8 @@ namespace dtOO {
     return analyticGeometry::getRenderResolution(0);
   }  
 
-  dtVector3 map1dTo3d::firstDerU( float const & uu) const {
-    float uP = percent_u(uu);
+  dtVector3 map1dTo3d::firstDerU( dtReal const & uu) const {
+    dtReal uP = percent_u(uu);
     
     if (uP<0.01) {
       return (
@@ -103,11 +103,11 @@ namespace dtOO {
     }
   }
 
-  dtVector3 map1dTo3d::firstDerUPercent( float const & uP) const {  
+  dtVector3 map1dTo3d::firstDerUPercent( dtReal const & uP) const {  
     return firstDerU( u_percent(uP) );
   }
   
-  map1dTo3d * map1dTo3d::segment( float const & u0, float const & u1 ) const {
+  map1dTo3d * map1dTo3d::segment( dtReal const & u0, dtReal const & u1 ) const {
     scaLinearOneD fun(0, 1, u0, u1);
     return new scaOneDInMap1dTo3d(&fun, this);
   }
@@ -127,19 +127,19 @@ namespace dtOO {
     return isClosed(0);
   }
   
-  float map1dTo3d::getUMin( void ) const {
+  dtReal map1dTo3d::getUMin( void ) const {
     return getMin(0);
   }
   
-  float map1dTo3d::getUMax( void ) const {
+  dtReal map1dTo3d::getUMax( void ) const {
     return getMax(0);
   }
 	
-	float map1dTo3d::length( void ) const {
+	dtReal map1dTo3d::length( void ) const {
 		return l_u(getUMax());
 	}
 	
-	float map1dTo3d::l_u( float const & uu, int const & nP ) const {
+	dtReal map1dTo3d::l_u( dtReal const & uu, int const & nP ) const {
     //
     // return if u = 0
     //
@@ -148,21 +148,21 @@ namespace dtOO {
     //
     // determine length
     //
-    std::vector< float > L(2, 0.0);
+    std::vector< dtReal > L(2, 0.0);
     dt__forFromToIndex(2, 4, nParts) {
-      std::vector< float > curGrid = dtLinearAlgebra::unitGrid(nParts);
+      std::vector< dtReal > curGrid = dtLinearAlgebra::unitGrid(nParts);
       dt__forFromToIndex(1, nParts, aPart) {
         std::vector< dtPoint2 > glp = dtLinearAlgebra::getGaussLegendre(nP);
-        //float L = 0.0;
-        float const u0 = curGrid[aPart-1] * uu;
-        float const u1 = curGrid[aPart] * uu;
-        const float rapJ = (u1 - u0) * .5;
+        //dtReal L = 0.0;
+        dtReal const u0 = curGrid[aPart-1] * uu;
+        dtReal const u1 = curGrid[aPart] * uu;
+        const dtReal rapJ = (u1 - u0) * .5;
         for (int i = 0; i < nP; i++){
-          float const tt = glp[i].x();
-          float const ww = glp[i].y();
-          const float ui = u0 * 0.5 * (1. - tt) + u1 * 0.5 * (1. + tt);
+          dtReal const tt = glp[i].x();
+          dtReal const ww = glp[i].y();
+          const dtReal ui = u0 * 0.5 * (1. - tt) + u1 * 0.5 * (1. + tt);
           dtVector3 der = firstDerU(ui);
-          const float d = sqrt(der.squared_length());
+          const dtReal d = sqrt(der.squared_length());
           L[1] += d * ww * rapJ;
         }
       }
@@ -182,19 +182,19 @@ namespace dtOO {
     return L[0];
 	}
 
-	float map1dTo3d::l_u( float const & uu ) const {
+	dtReal map1dTo3d::l_u( dtReal const & uu ) const {
 		return l_u(uu, 20);	
 	}	
 
 	double map1dTo3d::funValue(const double xx ) const {	
-		float ll = l_u( static_cast<float>(xx) );
+		dtReal ll = l_u( static_cast<dtReal>(xx) );
 		return static_cast< double >( ll - _tmpL );
 	}
 	
-  float map1dTo3d::u_l( float const & ll ) const {
+  dtReal map1dTo3d::u_l( dtReal const & ll ) const {
 		bool mustIterate = true;
-		float lMax = length();
-		float theRoot;
+		dtReal lMax = length();
+		dtReal theRoot;
 
 		if ( floatHandling::isSmall(ll) || (ll<0.) ) { 
 			mustIterate = false;
@@ -237,15 +237,15 @@ namespace dtOO {
 	  return theRoot;
   }
 	
-  float map1dTo3d::operator%(const float &percent) const {
+  dtReal map1dTo3d::operator%(const dtReal &percent) const {
 		return this->u_percent(percent);
 	}
 	
-  float map1dTo3d::operator|(const float &length) const {
+  dtReal map1dTo3d::operator|(const dtReal &length) const {
 		return this->u_l(length);
 	}
 	
-  float map1dTo3d::operator&(const float &lengthPercent) const {
+  dtReal map1dTo3d::operator&(const dtReal &lengthPercent) const {
 		return this->u_lPercent(lengthPercent);
 	}
 	

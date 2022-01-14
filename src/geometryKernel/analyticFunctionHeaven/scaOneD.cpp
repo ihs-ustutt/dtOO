@@ -7,8 +7,8 @@
 
 namespace dtOO {
   scaOneD::scaOneD() : scaFunction() {
-    _xxMax = std::numeric_limits<float>::min();
-    _xxMin = std::numeric_limits<float>::max();
+    _xxMax = std::numeric_limits<dtReal>::min();
+    _xxMin = std::numeric_limits<dtReal>::max();
   }
 
   scaOneD::scaOneD( scaOneD const & orig) : scaFunction(orig) {
@@ -19,7 +19,7 @@ namespace dtOO {
   scaOneD::~scaOneD() {
   }
 
-  float scaOneD::YFloat(aFX const & xx) const {
+  dtReal scaOneD::YFloat(aFX const & xx) const {
 		if (xx.size() != 1) {
 			dt__throw(
 			  YFloat(), 
@@ -31,11 +31,11 @@ namespace dtOO {
 		return YFloat( xx[0] );
 	}
   
-  float scaOneD::invYFloat(float const & yy) const {
+  dtReal scaOneD::invYFloat(dtReal const & yy) const {
 		return invY( analyticFunction::aFYOneD(yy) )[0];
   }
 	
-  float scaOneD::YFloatPercent( float const & xP ) const {
+  dtReal scaOneD::YFloatPercent( dtReal const & xP ) const {
     return YFloat( x_percent(xP) );
   }	
   
@@ -43,7 +43,7 @@ namespace dtOO {
 		return 1;
 	}
 	
-  float scaOneD::xMin( int const & dir) const {
+  dtReal scaOneD::xMin( int const & dir) const {
     switch (dir) {
       case 0:
         return _xxMin;
@@ -55,7 +55,7 @@ namespace dtOO {
     }   
 	}
 	
-  float scaOneD::xMax( int const & dir) const {
+  dtReal scaOneD::xMax( int const & dir) const {
     switch (dir) {
       case 0:
         return _xxMax;
@@ -67,30 +67,30 @@ namespace dtOO {
     }
 	}
   
-  void scaOneD::setMinMax( float const min, float const max) {
+  void scaOneD::setMinMax( dtReal const min, dtReal const max) {
     _xxMin = min;
     _xxMax = max;
   }
   
-  void scaOneD::setMin(float const min) {
+  void scaOneD::setMin(dtReal const min) {
     _xxMin = min;
   }
 
-  void scaOneD::setMax(float const max) {
+  void scaOneD::setMax(dtReal const max) {
     _xxMax = max;
   }  
   
-	float scaOneD::x_percent(float const & xx) const {
+	dtReal scaOneD::x_percent(dtReal const & xx) const {
     return (xMin(0) +  (xMax(0) - xMin(0) ) * xx);
   }  
   
-  float scaOneD::percent_x(float const & xx) const {
+  dtReal scaOneD::percent_x(dtReal const & xx) const {
     return ( (xx - xMin(0)) / (xMax(0) - xMin(0)) );
   }
 	
-  float scaOneD::DYFloat( float const & xx ) const {
-    float xP = percent_x(xx);
-    float const deltaPer = 0.01;
+  dtReal scaOneD::DYFloat( dtReal const & xx ) const {
+    dtReal xP = percent_x(xx);
+    dtReal const deltaPer = 0.01;
 
     if (xP<0.01) {
       return (
@@ -115,15 +115,15 @@ namespace dtOO {
     }
   }
 		
-  float scaOneD::getLength( void ) const {
-    float epsge = 1.e-08;
-    float curLength = 0.;
-    float value[2];
-    float valueOld[2];
+  dtReal scaOneD::getLength( void ) const {
+    dtReal epsge = 1.e-08;
+    dtReal curLength = 0.;
+    dtReal value[2];
+    dtReal valueOld[2];
     value[0] = scaOneD::xMin(0);
     value[1] = YFloat( value[0] );
     
-    float jjF = 0.;
+    dtReal jjF = 0.;
     while (value[0] <= scaOneD::xMax(0)) {
       valueOld[0] = value[0];
       valueOld[1] = value[1];
@@ -169,11 +169,11 @@ namespace dtOO {
     );		
 		
 		vectorHandling< dtPoint2 > p2(nU);
-    float interval = (xMax(0) - xMin(0)) / (nU-1);
+    dtReal interval = (xMax(0) - xMin(0)) / (nU-1);
     for (int ii=0;ii<nU;ii++) {
-			float iiF = static_cast<float>(ii);
-      float xx = xMin(0) + iiF * interval;
-      float yy = YFloat(xx);
+			dtReal iiF = static_cast<dtReal>(ii);
+      dtReal xx = xMin(0) + iiF * interval;
+      dtReal yy = YFloat(xx);
 			p2[ii] = dtPoint2(xx, yy);
     }
 		

@@ -1,6 +1,8 @@
 #ifndef DTOMVERTEXFIELD_H
 #define	DTOMVERTEXFIELD_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <logMe/dtMacros.h>
 #include "dtOMField.h"
@@ -86,7 +88,7 @@ namespace dtOO {
   template < typename T >
 	T dtOMVertexField< T >::oneRingAverage( omVertexH const & vH ) const {
     T tmp = _field.at(vH);
-    float tmpC = 1.;
+    dtReal tmpC = 1.;
     dt__forFromToIter(
       omConstVertexVertexI, refMesh().cvv_begin(vH), refMesh().cvv_end(vH), vvIt
     ) {			

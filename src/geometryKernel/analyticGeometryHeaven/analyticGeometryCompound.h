@@ -1,6 +1,8 @@
 #ifndef ANALYTICGEOMETRYCOMPOUND_H
 #define	ANALYTICGEOMETRYCOMPOUND_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include "analyticGeometry.h"

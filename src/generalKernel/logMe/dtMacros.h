@@ -1,6 +1,8 @@
 #ifndef DTMACROS_H
 #define	DTMACROS_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/ptrVectorHandling.h>
@@ -109,6 +111,6 @@
       dt__throw( dt__ptrAss, << "object "#ptr" cannot assigned to "#toAss ); \
     toAss = ptr
 
-  #define dt__toFloat(toAss, value ) toAss = static_cast<float>(value)
+  #define dt__toFloat(toAss, value ) toAss = static_cast<dtReal>(value)
 #endif	/* DTMACROS_H */
 

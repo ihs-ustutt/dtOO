@@ -12,31 +12,31 @@ namespace dtOO {
   //
   // optional overload
   //	
-	float dtCurve2d::minU ( void ) const {
+	dtReal dtCurve2d::minU ( void ) const {
 		return minPara(0);
 	}
 	
-	float dtCurve2d::maxU ( void ) const {
+	dtReal dtCurve2d::maxU ( void ) const {
 		return maxPara(0);
 	}
 	
-	float dtCurve2d::u_uPercent(float const percent) const {
+	dtReal dtCurve2d::u_uPercent(dtReal const percent) const {
     return minPara(0) + percent * (maxPara(0)-minPara(0));
 	}
 
-	float dtCurve2d::uPercent_u(float const uu) const {
-    float uMin = minPara(0);
-		float uMax = maxPara(0);
+	dtReal dtCurve2d::uPercent_u(dtReal const uu) const {
+    dtReal uMin = minPara(0);
+		dtReal uMax = maxPara(0);
 		
 		return (uu-uMin)/(uMax-uMin);
 	}
 
 	
-	dtPoint2 dtCurve2d::pointPercent( float const percent ) const {
+	dtPoint2 dtCurve2d::pointPercent( dtReal const percent ) const {
 		return point( u_uPercent(percent) );
 	}
 	
-	dtVector2 dtCurve2d::normalPercent( float const percent) const {
+	dtVector2 dtCurve2d::normalPercent( dtReal const percent) const {
 		return normal( u_uPercent(percent) );
 	}
 	
@@ -44,22 +44,22 @@ namespace dtOO {
 		return controlPoint(nControlPoints()-1);
 	}
 	
-	float dtCurve2d::length(void) const {
+	dtReal dtCurve2d::length(void) const {
 		return l_u( maxPara(0) );
 	}
 	
-	float dtCurve2d::l_uPercent(float const percent) const {
+	dtReal dtCurve2d::l_uPercent(dtReal const percent) const {
 		return l_u( u_uPercent(percent) );
 	}
 	
-	float dtCurve2d::u_lPercent( float const percent ) const {
+	dtReal dtCurve2d::u_lPercent( dtReal const percent ) const {
 		return u_l( percent*length() );
 	}
 
 	void dtCurve2d::setControlPoint( int const nPoint, dtPoint2 const point ) {
 		dt__throw(setControlPoint(), << "Call on dtCurve2d()");
 	}
-//  dtVector2 dtCurve2d::normal(float const uu) const {
+//  dtVector2 dtCurve2d::normal(dtReal const uu) const {
 //		dtVector2 nn = firstDer(uu);
 //    double xP = nn.x();
 //    double yP = nn.y();

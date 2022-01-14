@@ -1,6 +1,8 @@
 #ifndef map3dTo3dTransformed_H
 #define	map3dTo3dTransformed_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtTransformerHeaven/dtTransformerInvThreeD.h>
 #include "analyticGeometry.h"
 #include "map3dTo3d.h"
@@ -25,14 +27,14 @@ namespace dtOO {
     ) const;
     virtual map3dTo3dTransformed * create( void ) const;
     virtual dtPoint3 getPoint( 
-      float const & uu, float const & vv, float const & ww     
+      dtReal const & uu, dtReal const & vv, dtReal const & ww     
     ) const; 
     virtual std::string dumpToString(void) const;    
     //
     //
     //
     virtual std::vector< dtVector3 > firstDer( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const;
     virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;  
     virtual bool isTransformed( void ) const;    
@@ -99,14 +101,14 @@ namespace dtOO {
     
   template < typename funT >    
   dtPoint3 map3dTo3dTransformed< funT >::getPoint( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
     return _dtT->apply( funT::getPoint(uu, vv, ww) );
   }
   
   template < typename funT >
   std::vector< dtVector3 > map3dTo3dTransformed< funT >::firstDer( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
     return _dtT->apply( funT::firstDer(uu, vv, ww) );    
   }

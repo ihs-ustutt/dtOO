@@ -1,6 +1,8 @@
 #ifndef BEZIERSURFACE_BEZIERCURVEFILLCONSTRUCTOCC_H
 #define	BEZIERSURFACE_BEZIERCURVEFILLCONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

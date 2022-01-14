@@ -1,6 +1,8 @@
 #ifndef dtPoint3_map2dTo3dPoint_H
 #define	dtPoint3_map2dTo3dPoint_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/twoDArrayHandling.h>

@@ -1,6 +1,8 @@
 #ifndef calculationTypeHandling_H
 #define	calculationTypeHandling_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <vector>
 
@@ -52,7 +54,7 @@ namespace dtOO {
           return prev(a);
         }      
       }
-  //    static float boundToRange(float const value, float const a, float const b);
+  //    static dtReal boundToRange(dtReal const value, dtReal const a, dtReal const b);
       static R boundToRange(
         R const value, R const a, R const b
       ) {
@@ -84,7 +86,7 @@ namespace dtOO {
 
       }
   };
-  typedef calculationTypeHandling< float, double > floatHandling;
+  typedef calculationTypeHandling< dtReal, double > floatHandling;
 }
 #endif	/* calculationTypeHandling_H */
 

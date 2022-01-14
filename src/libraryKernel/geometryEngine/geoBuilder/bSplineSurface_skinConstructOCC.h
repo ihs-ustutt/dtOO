@@ -1,6 +1,8 @@
 #ifndef BSPLINESURFACE_SKINCONSTRUCTOCC_H
 #define	BSPLINESURFACE_SKINCONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

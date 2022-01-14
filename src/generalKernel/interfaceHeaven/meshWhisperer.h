@@ -1,6 +1,8 @@
 #ifndef MESHWHISPERER_H
 #define	MESHWHISPERER_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 #include <interfaceHeaven/mpiDistributed.h>
@@ -38,9 +40,9 @@ namespace dtOO {
       int _nRanks;
       dtGmshModel * const _gm;
       mpiDistributed< std::string > _generalInfo;
-      mpiDistributed< std::vector< float > > _x;
-      mpiDistributed< std::vector< float > > _y;
-      mpiDistributed< std::vector< float > > _z;
+      mpiDistributed< std::vector< dtReal > > _x;
+      mpiDistributed< std::vector< dtReal > > _y;
+      mpiDistributed< std::vector< dtReal > > _z;
       mpiDistributed< std::vector< double > > _u;
       mpiDistributed< std::vector< double > > _v;
       mpiDistributed< std::vector< int > > _mvType;

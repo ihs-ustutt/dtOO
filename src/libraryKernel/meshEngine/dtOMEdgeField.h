@@ -1,6 +1,8 @@
 #ifndef DTOMEDGEFIELD_H
 #define	DTOMEDGEFIELD_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <logMe/dtMacros.h>
 #include "dtOMField.h"

@@ -421,7 +421,7 @@ namespace dtOO {
   }
   
   void bVOEvilGodfather::perturbElement(
-    ::MElement * const jinx, float const & perturbFactor
+    ::MElement * const jinx, dtReal const & perturbFactor
   ) {
     std::vector< dtVector3 > perturbVector;
     dt__forFromToIndex(0, jinx->getNumEdges(), jj) {

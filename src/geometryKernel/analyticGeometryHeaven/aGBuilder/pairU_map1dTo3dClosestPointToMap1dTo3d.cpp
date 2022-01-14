@@ -54,7 +54,7 @@ namespace dtOO {
 	pairU_map1dTo3dClosestPointToMap1dTo3d::~pairU_map1dTo3dClosestPointToMap1dTo3d() {
 	}
 	
-	std::pair< float, float > pairU_map1dTo3dClosestPointToMap1dTo3d::result( void ) {
+	std::pair< dtReal, dtReal > pairU_map1dTo3dClosestPointToMap1dTo3d::result( void ) {
 		return _closestU;
 	}
   

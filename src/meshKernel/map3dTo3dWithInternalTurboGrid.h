@@ -1,6 +1,8 @@
 #ifndef MAP3DTO3DWITHINTERNALTURBOGRID_H
 #define	MAP3DTO3DWITHINTERNALTURBOGRID_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "gmshBoundedVolume.h"
 #include <interfaceHeaven/twoDArrayHandling.h>

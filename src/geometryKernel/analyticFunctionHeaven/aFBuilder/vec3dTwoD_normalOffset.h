@@ -1,6 +1,8 @@
 #ifndef vec3dTwoD_normalOffset_H
 #define	vec3dTwoD_normalOffset_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 
@@ -18,7 +20,7 @@ namespace dtOO {
         int const & skinOrderMin, int const & skinOrderMax,
         int const & skinNIterations,
         bool const & closeU = false,
-        float const & closeSmooth = -1.
+        dtReal const & closeSmooth = -1.
       );
       virtual ~vec3dTwoD_normalOffset();
       vec3dTwoD * result(void) const;

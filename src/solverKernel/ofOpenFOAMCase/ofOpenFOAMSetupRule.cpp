@@ -573,7 +573,7 @@ namespace dtOO {
   ::Foam::vector ofOpenFOAMSetupRule::parseOptionVector(
     std::string const & name, std::string const & str
   ) {
-    std::vector< float > ff
+    std::vector< dtReal > ff
     =
     qtXmlBase::muParseCSString( parseOptionStr(name, str) );
     

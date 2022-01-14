@@ -14,7 +14,7 @@
 namespace dtOO {  
   optionHandling::optionHandling() {
     std::vector< std::string > groupStrVec;
-    std::pair< std::vector< std::string >, float > groupPair;
+    std::pair< std::vector< std::string >, dtReal > groupPair;
     groupPair.first = groupStrVec;
     groupPair.second = 0.;
   }
@@ -112,13 +112,13 @@ namespace dtOO {
     return true;
   }
 
-  float optionHandling::getOptionFloat(std::string const name) const {
-    float argumentFloat;
+  dtReal optionHandling::getOptionFloat(std::string const name) const {
+    dtReal argumentFloat;
     std::istringstream( getOption(name) ) >> argumentFloat;
     return argumentFloat;
   }
 
-  float optionHandling::getOptionFloat(
+  dtReal optionHandling::getOptionFloat(
 	  std::string const name,
     cVPtrVec const * const cV,
     aFPtrVec const * const aF					

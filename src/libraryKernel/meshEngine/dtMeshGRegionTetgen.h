@@ -1,6 +1,8 @@
 #ifndef dtMeshGRegionTetgen_H
 #define	dtMeshGRegionTetgen_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMesh3DOperator.h"

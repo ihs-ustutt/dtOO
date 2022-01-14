@@ -1,6 +1,8 @@
 #ifndef DTXMLPARSER_H
 #define	DTXMLPARSER_H
 
+#include <dtOOTypeDef.h>
+
 #include <vector>
 #include <string>
 #include "dtXmlParserBase.h"

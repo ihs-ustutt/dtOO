@@ -1,6 +1,8 @@
 #ifndef dtOCCCurveBase_H
 #define	dtOCCCurveBase_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 

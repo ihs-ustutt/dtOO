@@ -1,6 +1,8 @@
 #ifndef DTGMSHREGION_H
 #define	DTGMSHREGION_H
 
+#include <dtOOTypeDef.h>
+
 #include <gmsh/GRegion.h>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
@@ -52,7 +54,7 @@ namespace dtOO {
       ::GFace const * const toReplace, ::GFace * const with     
     );
     void setGrading( 
-      std::vector< float > const & grading, std::vector< float > & type 
+      std::vector< dtReal > const & grading, std::vector< dtReal > & type 
     );
     std::list< dtGmshFace const * > constFaceList(
       std::vector< std::string > const & label

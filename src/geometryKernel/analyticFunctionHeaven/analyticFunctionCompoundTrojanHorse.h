@@ -1,6 +1,8 @@
 #ifndef analyticFunctionCompoundTrojanHorse_H
 #define	analyticFunctionCompoundTrojanHorse_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO {

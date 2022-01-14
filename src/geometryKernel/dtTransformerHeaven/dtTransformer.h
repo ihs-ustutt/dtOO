@@ -1,6 +1,8 @@
 #ifndef DTTRANSFORMER_H
 #define	DTTRANSFORMER_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -61,7 +63,7 @@ namespace dtOO {
       ) const;
       virtual void handleBool(std::string const name, bool const value);    
       virtual void handleInt(std::string const name, int const value);
-      virtual void handleFloat(std::string const name, float const value);
+      virtual void handleFloat(std::string const name, dtReal const value);
       virtual void handleDtPoint2(std::string const name, dtPoint2 const value);
       virtual void handleDtVector3(std::string const name, dtVector3 const value);
       virtual void handleDtVector2(std::string const name, dtVector2 const value);        

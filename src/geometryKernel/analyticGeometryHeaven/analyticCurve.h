@@ -1,6 +1,8 @@
 #ifndef analyticCurve_H
 #define	analyticCurve_H
 
+#include <dtOOTypeDef.h>
+
 #include "map1dTo3d.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -28,16 +30,16 @@ namespace dtOO {
         dtTransformer const * const dtT 
       ) const;       
       virtual bool isClosed( int const & dir) const;
-      virtual float getMin( int const & dir) const;
-      virtual float getMax( int const & dir) const;        
-      virtual dtPoint3 getPoint( float const & uu ) const;
+      virtual dtReal getMin( int const & dir) const;
+      virtual dtReal getMax( int const & dir) const;        
+      virtual dtPoint3 getPoint( dtReal const & uu ) const;
       //
       // optional overload
       //
-      virtual dtVector3 firstDerU( float const uu) const;
-      virtual map1dTo3d * segment( float const & u0, float const & u1 ) const;  
-      virtual float l_u( float const & uu ) const;
-      virtual float u_l( float const & ll ) const;      
+      virtual dtVector3 firstDerU( dtReal const uu) const;
+      virtual map1dTo3d * segment( dtReal const & u0, dtReal const & u1 ) const;  
+      virtual dtReal l_u( dtReal const & uu ) const;
+      virtual dtReal u_l( dtReal const & ll ) const;      
       virtual vectorHandling< renderInterface * > getExtRender( void ) const;
       dtCurve * ptrDtCurve(void) const;
       dtCurve const * const ptrConstDtCurve(void) const;

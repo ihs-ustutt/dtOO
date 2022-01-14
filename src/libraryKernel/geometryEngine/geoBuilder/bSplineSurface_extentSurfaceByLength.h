@@ -1,6 +1,8 @@
 #ifndef bSplineSurface_extentSurfaceByLength_H
 #define	bSplineSurface_extentSurfaceByLength_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -15,7 +17,7 @@ namespace dtOO {
     dt__classOnlyName(bSplineSurface_extentSurfaceByLength);
     bSplineSurface_extentSurfaceByLength( 
       dtSurface const * const dtS, 
-      int const & parameterDir, float const & length, 
+      int const & parameterDir, dtReal const & length, 
       int const & cont = 2, bool const & forward = false
     );
     virtual ~bSplineSurface_extentSurfaceByLength();

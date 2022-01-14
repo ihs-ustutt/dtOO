@@ -1,6 +1,8 @@
 #ifndef bVOReadMSH_H
 #define	bVOReadMSH_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 

@@ -1,6 +1,8 @@
 #ifndef compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder_H
 #define	compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

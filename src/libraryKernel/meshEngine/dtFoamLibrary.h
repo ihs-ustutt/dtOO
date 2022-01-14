@@ -1,6 +1,8 @@
 #ifndef DTFOAMLIBRARY_H
 #define	DTFOAMLIBRARY_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <map>
 

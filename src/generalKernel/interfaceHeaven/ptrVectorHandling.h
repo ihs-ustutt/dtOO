@@ -1,6 +1,8 @@
 #ifndef PTRVECTORHANDLING_H
 #define	PTRVECTORHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <boost/ptr_container/ptr_vector.hpp>
 
 namespace dtOO {

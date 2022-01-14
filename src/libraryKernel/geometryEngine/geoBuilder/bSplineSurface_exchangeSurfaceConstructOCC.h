@@ -1,6 +1,8 @@
 #ifndef bSplineSurface_exchangeSurfaceConstructOCC_H
 #define	bSplineSurface_exchangeSurfaceConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

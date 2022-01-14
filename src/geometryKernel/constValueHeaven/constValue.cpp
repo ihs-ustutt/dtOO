@@ -40,30 +40,30 @@ namespace dtOO {
     return aCV;
   }
 
-  void constValue::setRange(float const min, float const max) {
+  void constValue::setRange(dtReal const min, dtReal const max) {
     dt__warning(setRange(), << "Call on constValue.");
   }
 
-  float constValue::getValue(void) const {
+  dtReal constValue::getValue(void) const {
     return _value;
   }
 
-  float constValue::getValuePercent(void) const {
+  dtReal constValue::getValuePercent(void) const {
     return (_value - this->getMin()) / (this->getMax()-this->getMin());
   }
   
-  void constValue::setValue(float const toSet) {
+  void constValue::setValue(dtReal const toSet) {
     if (toSet != _value) {
       dtXmlParser::reference().freeState();
       _value = toSet;
     }
   }
 
-  float constValue::getMax(void) const {
+  dtReal constValue::getMax(void) const {
     return 0.;
   }
 
-  float constValue::getMin(void) const {
+  dtReal constValue::getMin(void) const {
     return 0.;
   }
   

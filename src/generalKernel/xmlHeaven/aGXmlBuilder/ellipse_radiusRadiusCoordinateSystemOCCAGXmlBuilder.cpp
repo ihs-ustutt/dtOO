@@ -58,10 +58,10 @@ namespace dtOO {
     //
     // radius
     //
-    float const r0
+    dtReal const r0
     = 
     dtXmlParserBase::getAttributeFloatMuParse("radius_one", toBuild, cV, aF, aG);
-    float const r1
+    dtReal const r1
     = 
     dtXmlParserBase::getAttributeFloatMuParse("radius_two", toBuild, cV, aF, aG);
     dt__info(
@@ -111,14 +111,14 @@ namespace dtOO {
       //
       // get angle
       //
-      float angle 
+      dtReal angle 
       = 
       dtXmlParserBase::getAttributeFloatMuParse("angle", toBuild, cV, aF, aG);
       
       //
       // calculate uMax
       //
-      float uMax 
+      dtReal uMax 
       = 
       dtC->getUMin() + (dtC->getUMax() - dtC->getUMin()) * angle/(2.*M_PI);
       

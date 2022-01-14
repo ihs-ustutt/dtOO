@@ -1,6 +1,8 @@
 #ifndef DTXMLPARSERBASE_H
 #define	DTXMLPARSERBASE_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <interfaceHeaven/vectorHandling.h>
 #include "qtXmlBase.h"
@@ -50,7 +52,7 @@ namespace dtOO {
         cVPtrVec const * const cV,
         aFPtrVec const * const aF, 
         aGPtrVec const * const aG,
-        std::vector< float > * basicP
+        std::vector< dtReal > * basicP
       );     
       static void createAdvanced( 
         ::QDomElement const * toBuildP,
@@ -101,23 +103,23 @@ namespace dtOO {
         aFPtrVec const & aF,
         aGPtrVec const & aG
       );      
-      static float getAttributeFloatMuParse( 
+      static dtReal getAttributeFloatMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV
       );
-      static float getAttributeFloatMuParse( 
+      static dtReal getAttributeFloatMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV,
         aFPtrVec const * const aF 
       );
-      static float getAttributeFloatMuParse(
+      static dtReal getAttributeFloatMuParse(
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV,
         aFPtrVec const * const aF,
-        float const & def
+        dtReal const & def
       );    
       static int getAttributeIntMuParse( 
         std::string const attName, 
@@ -144,7 +146,7 @@ namespace dtOO {
         aFPtrVec const * const aF,
         int const & def
       );
-      static std::vector< float > getAttributeFloatVectorMuParse( 
+      static std::vector< dtReal > getAttributeFloatVectorMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV,
@@ -169,7 +171,7 @@ namespace dtOO {
         aFPtrVec const * const aF,
         aGPtrVec const * const aG
       );      
-      static float getAttributeFloatMuParse( 
+      static dtReal getAttributeFloatMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV,
@@ -195,7 +197,7 @@ namespace dtOO {
       //
       // float
       //    
-      static float createFloat(
+      static dtReal createFloat(
         ::QDomElement const & toBuildP,
         baseContainer * const bC,
         cVPtrVec const * const cV,

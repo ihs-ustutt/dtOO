@@ -227,7 +227,7 @@ namespace dtOO {
           // create grid by averaging 4 points
           //
           twoDArrayHandling< dtPoint3 > grid(_nP[0], _nP[1]);
-          twoDArrayHandling< float > A(_nP[0], _nP[1]);
+          twoDArrayHandling< dtReal > A(_nP[0], _nP[1]);
           twoDArrayHandling< dtVector3 > N(_nP[0], _nP[1]);          
           #pragma omp parallel
           {
@@ -272,8 +272,8 @@ namespace dtOO {
           // 
           twoDArrayHandling< dtVector3 > U(grid.size(0), grid.size(1));
           twoDArrayHandling< dtVector3 > uRel(grid.size(0), grid.size(1));
-          twoDArrayHandling< float > U_n(grid.size(0), grid.size(1));
-          twoDArrayHandling< float > uRel_n(grid.size(0), grid.size(1));          
+          twoDArrayHandling< dtReal > U_n(grid.size(0), grid.size(1));
+          twoDArrayHandling< dtReal > uRel_n(grid.size(0), grid.size(1));          
           #pragma omp parallel
           {
             #pragma omp for
@@ -419,15 +419,15 @@ namespace dtOO {
           //
           dt__forFromToIndex(0, grid.size(1), jj) {
             dtVector3 avgXYZ(0,0,0);
-            float avgR = 0.;
-            float avgZ = 0.;
+            dtReal avgR = 0.;
+            dtReal avgZ = 0.;
             dtVector3 avgU(0,0,0);
             dtVector3 avguRel(0,0,0);
-            float sumAU_n = 0.;
+            dtReal sumAU_n = 0.;
             dtVector3 sumuRelAU_n(0,0,0);
-            float sumU_nAU_n = 0.;
-            float avgU_n = 0.;
-            float avguRel_n = 0.;
+            dtReal sumU_nAU_n = 0.;
+            dtReal avgU_n = 0.;
+            dtReal avguRel_n = 0.;
             int nSamples = grid.fixJ(jj).size();
             dt__forFromToIndex(0, nSamples, ii) {
               if (A[ii][jj] == 0.) continue;

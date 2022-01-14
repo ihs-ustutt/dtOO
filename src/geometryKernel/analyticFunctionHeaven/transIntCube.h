@@ -1,6 +1,8 @@
 #ifndef TRANSINTCUBE_H
 #define	TRANSINTCUBE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -22,7 +24,7 @@ namespace dtOO {
       );
       transIntCube(const transIntCube& orig);
       virtual ~transIntCube();
-      dtPoint3 getValue(float const xx, float const yy, float const zz) const;
+      dtPoint3 getValue(dtReal const xx, dtReal const yy, dtReal const zz) const;
       vectorHandling< map2dTo3d const * > const & getConstRefToMap2dTo3d( void ) const;
     private:
       vectorHandling< map2dTo3d const * > _aS;

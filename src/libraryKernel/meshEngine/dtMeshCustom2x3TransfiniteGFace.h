@@ -1,6 +1,8 @@
 #ifndef dtMeshCustom2x3TransfiniteGFace_H
 #define	dtMeshCustom2x3TransfiniteGFace_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMesh2DOperator.h"

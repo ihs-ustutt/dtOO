@@ -1,6 +1,8 @@
 #ifndef DTLINEARALGEBRA_H
 #define DTLINEARALGEBRA_H
 
+#include <dtOOTypeDef.h>
+
 #include <criticalHeaven/unsetGmsh.h>
 
 #include <logMe/dtMacros.h>
@@ -19,7 +21,7 @@
 #include <interfaceHeaven/twoDArrayHandling.h>
 
 namespace dtOO {
-  typedef float dtFt;
+  typedef dtReal dtFt;
   typedef ::CGAL::Exact_predicates_inexact_constructions_kernel dtKernel;
   typedef ::CGAL::Point_3< dtKernel > dtPoint3;
   typedef ::CGAL::Vector_3< dtKernel > dtVector3;
@@ -51,36 +53,36 @@ namespace dtOO {
       virtual ~dtLinearAlgebra();
       static dtAffTransformation3 getRotation(
         dtVector3 const vector, 
-        const float angle
+        const dtReal angle
       );
       static dtAffTransformation3 getTranslation( dtVector3 const vector );    
       static dtVector3 crossProduct(
         dtVector3 const & v0, 
         dtVector3 const & v1
       );
-      static float dotProduct(
+      static dtReal dotProduct(
         dtVector3 const & v0, 
         dtVector3 const & v1
       );    
       static dtVector3 normalize( dtVector3 const & v0 );
       static dtVector2 normalize( dtVector2 const & v0 );    
       static dtVector3 sum( std::vector< dtVector3 > const & vv );
-      static float sum( std::vector< float > const & vv );
-      static float sum( 
-        std::vector< float > const & vv, int const & from, int const & to 
+      static dtReal sum( std::vector< dtReal > const & vv );
+      static dtReal sum( 
+        std::vector< dtReal > const & vv, int const & from, int const & to 
       );
-      static float euclidianNorm( std::vector< float > const & vv );
-      static std::vector< float > subtract( 
-        std::vector< float > const & aa, std::vector< float > const & bb 
+      static dtReal euclidianNorm( std::vector< dtReal > const & vv );
+      static std::vector< dtReal > subtract( 
+        std::vector< dtReal > const & aa, std::vector< dtReal > const & bb 
       );    
-      static std::vector< float > add( 
-        std::vector< float > const & aa, std::vector< float > const & bb 
+      static std::vector< dtReal > add( 
+        std::vector< dtReal > const & aa, std::vector< dtReal > const & bb 
       );
-      static std::vector< float > multiply( 
-        float const & aa, std::vector< float > const & bb 
+      static std::vector< dtReal > multiply( 
+        dtReal const & aa, std::vector< dtReal > const & bb 
       );    
-      static float length( dtVector3 const & v0 );    
-      static float length( dtVector2 const & v0 );    
+      static dtReal length( dtVector3 const & v0 );    
+      static dtReal length( dtVector2 const & v0 );    
       static dtVector3 toDtVector3(dtPoint3 const & pp);
       static dtVector2 toDtVector2(dtPoint2 const & pp);
       static dtPoint3 toDtPoint3(dtVector3 const & pp);
@@ -96,10 +98,10 @@ namespace dtOO {
         std::vector< double > const & yy,
         std::vector< double > const & zz
       );
-      static std::vector< float > toStdVector( dtPoint3 const & pp );
-      static std::vector< float > toStdVector( dtPoint2 const & pp) ;
-      static std::vector< float > toStdVector( dtVector3 const & pp );
-      static std::vector< float > toStdVector( dtVector2 const & pp );
+      static std::vector< dtReal > toStdVector( dtPoint3 const & pp );
+      static std::vector< dtReal > toStdVector( dtPoint2 const & pp) ;
+      static std::vector< dtReal > toStdVector( dtVector3 const & pp );
+      static std::vector< dtReal > toStdVector( dtVector2 const & pp );
       static dtVector2 unitNormal( dtVector2 const & vv);
       static dtMatrix createMatrixGiveColumns( 
         std::vector< dtVector3 > const & cols 
@@ -132,12 +134,12 @@ namespace dtOO {
         std::vector< dtPoint3 > const & pp 
       );
       static bool isStraightLine( 
-        std::pair< dtPoint3, dtPoint3 > const & bBox, float const & eps 
+        std::pair< dtPoint3, dtPoint3 > const & bBox, dtReal const & eps 
       );
-      static float distance( dtPoint2 const & p0, dtPoint2 const & p1 );
-      static float distance( dtPoint3 const & p0, dtPoint3 const & p1 );
-      static float angle( dtVector3 const & v0, dtVector3 const & v1 );
-      static float angleDegree( dtVector3 const & v0, dtVector3 const & v1 );
+      static dtReal distance( dtPoint2 const & p0, dtPoint2 const & p1 );
+      static dtReal distance( dtPoint3 const & p0, dtPoint3 const & p1 );
+      static dtReal angle( dtVector3 const & v0, dtVector3 const & v1 );
+      static dtReal angleDegree( dtVector3 const & v0, dtVector3 const & v1 );
       static dtVector2 ignoreZ( dtVector3 const & v0 );
       static dtPoint2 ignoreZ( dtPoint3 const & v0 );
       static std::string directionString( dtVector3 const & vv );
@@ -148,8 +150,8 @@ namespace dtOO {
       static dtPoint2 intersectionPoint(
         dtLine2 const & line0, dtLine2 const & line1
       );
-      static std::vector< float > solveQuadraticEquation(
-        float const & aa, float const & bb, float const & cc
+      static std::vector< dtReal > solveQuadraticEquation(
+        dtReal const & aa, dtReal const & bb, dtReal const & cc
       );
       static bool isInsideQuadrangle(
         dtPoint2 const & pt,
@@ -163,17 +165,17 @@ namespace dtOO {
         dtPoint3 const & p001, dtPoint3 const & p101,
         dtPoint3 const & p011, dtPoint3 const & p111
       );    
-      static float area(
+      static dtReal area(
         dtPoint3 const & p0, dtPoint3 const & p1, 
         dtPoint3 const & p2, dtPoint3 const & p3
       );    
-      static float volume(
+      static dtReal volume(
         dtPoint3 const & p000, dtPoint3 const & p100,
         dtPoint3 const & p010, dtPoint3 const & p110,
         dtPoint3 const & p001, dtPoint3 const & p101,
         dtPoint3 const & p011, dtPoint3 const & p111
       );
-      static std::vector< float > unitGrid(int const & nU);        
+      static std::vector< dtReal > unitGrid(int const & nU);        
       static twoDArrayHandling< dtPoint2 > unitGrid( 
         int const & nU, int const & nV
       );

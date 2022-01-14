@@ -1,5 +1,7 @@
 //
 // gmsh fix:
+
+#include <dtOOTypeDef.h>
 // definition of sign(x) in Numeric.h (gmsh) conflicts with cgal
 //
 #ifdef _NUMERIC_H_

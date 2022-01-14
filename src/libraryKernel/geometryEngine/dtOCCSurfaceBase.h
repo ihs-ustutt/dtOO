@@ -1,6 +1,8 @@
 #ifndef DTOCCSURFACEBASE_H
 #define	DTOCCSURFACEBASE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 

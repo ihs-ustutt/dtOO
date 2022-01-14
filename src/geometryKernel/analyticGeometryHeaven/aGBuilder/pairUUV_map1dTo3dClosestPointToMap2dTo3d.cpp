@@ -58,7 +58,7 @@ namespace dtOO {
     ::~pairUUV_map1dTo3dClosestPointToMap2dTo3d() {
 	}
 	
-	std::pair< float, dtPoint2 > pairUUV_map1dTo3dClosestPointToMap2dTo3d
+	std::pair< dtReal, dtPoint2 > pairUUV_map1dTo3dClosestPointToMap2dTo3d
     ::result( void ) {
 		return _closestUUV;
 	}

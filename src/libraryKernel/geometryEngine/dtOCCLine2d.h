@@ -1,6 +1,8 @@
 #ifndef DTOCCLINE2D_H
 #define	DTOCCLINE2D_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOCCCurve2d.h"

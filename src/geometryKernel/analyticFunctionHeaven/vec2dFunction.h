@@ -1,6 +1,8 @@
 #ifndef VEC2DFUNCTION_H
 #define	VEC2DFUNCTION_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "analyticFunction.h"

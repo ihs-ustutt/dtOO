@@ -1,6 +1,8 @@
 #ifndef geomFillSimpleBound_curveConstructOCC_H
 #define	geomFillSimpleBound_curveConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

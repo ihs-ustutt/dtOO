@@ -1,6 +1,8 @@
 #ifndef geomSurface_readStepOCCAGXmlBuilder_H
 #define	geomSurface_readStepOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

@@ -1,6 +1,8 @@
 #ifndef VEC3DCURVE2DINSURFACEONED_H
 #define	VEC3DCURVE2DINSURFACEONED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dOneD.h"

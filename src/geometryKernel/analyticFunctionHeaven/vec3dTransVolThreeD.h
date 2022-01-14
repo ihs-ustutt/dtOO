@@ -1,6 +1,8 @@
 #ifndef VEC3DTRANSVOLTHREED_H
 #define	VEC3DTRANSVOLTHREED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dThreeD.h"

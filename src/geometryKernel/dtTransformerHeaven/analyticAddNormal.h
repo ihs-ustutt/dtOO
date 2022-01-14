@@ -1,6 +1,8 @@
 #ifndef ANALYTICADDNORMAL_H
 #define	ANALYTICADDNORMAL_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>

@@ -39,8 +39,8 @@ namespace dtOO {
 		gp_Pnt2d pp = _ptr->Pole(nPI);
 		
 		return dtPoint2(
-						static_cast<float>(pp.Coord(1)), 
-						static_cast<float>(pp.Coord(2))
+						static_cast<dtReal>(pp.Coord(1)), 
+						static_cast<dtReal>(pp.Coord(2))
 		);		
 	}
 	

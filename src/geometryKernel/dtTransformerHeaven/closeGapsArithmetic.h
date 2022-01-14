@@ -1,6 +1,8 @@
 #ifndef closeGapsArithmetic_H
 #define	closeGapsArithmetic_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>

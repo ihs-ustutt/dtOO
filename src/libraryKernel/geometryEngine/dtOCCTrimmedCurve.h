@@ -1,6 +1,8 @@
 #ifndef DTOCCTRIMMEDCURVE_H
 #define	DTOCCTRIMMEDCURVE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOCCCurve.h"

@@ -1,6 +1,8 @@
 #ifndef dtOMFaceField_H
 #define	dtOMFaceField_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <logMe/dtMacros.h>
 #include "dtOMField.h"

@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_normalOffsetGeomCurveOCC_H
 #define	bSplineCurve_normalOffsetGeomCurveOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -12,7 +14,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(bSplineCurve_normalOffsetGeomCurveOCC);    
     bSplineCurve_normalOffsetGeomCurveOCC(
-      dtCurve const * const dtC, float const & offset, dtVector3 const & nn
+      dtCurve const * const dtC, dtReal const & offset, dtVector3 const & nn
     );
     virtual ~bSplineCurve_normalOffsetGeomCurveOCC();
     dtCurve * result( void );

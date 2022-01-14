@@ -1,6 +1,8 @@
 #ifndef dtOMMesh_H
 #define	dtOMMesh_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 

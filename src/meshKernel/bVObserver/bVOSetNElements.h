@@ -1,6 +1,8 @@
 #ifndef bVOSetNElements_H
 #define	bVOSetNElements_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

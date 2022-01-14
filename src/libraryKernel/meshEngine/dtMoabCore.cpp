@@ -356,7 +356,7 @@ namespace dtOO {
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}
 	 
-	void dtMoabCore::addVertexField( dtOMVertexField<float> const & fF ) {
+	void dtMoabCore::addVertexField( dtOMVertexField<dtReal> const & fF ) {
 		moab::ErrorCode result;
 		
 		moab::Tag fieldTag;
@@ -389,7 +389,7 @@ namespace dtOO {
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}
 	
-//	void dtMoabCore::addEdgeField( dtOMEdgeField<float> const & eF ) {
+//	void dtMoabCore::addEdgeField( dtOMEdgeField<dtReal> const & eF ) {
 //		moab::ErrorCode result;
 //		
 //		moab::Tag fieldTag;
@@ -490,7 +490,7 @@ namespace dtOO {
 		moab__throwIf(result != moab::MB_SUCCESS, addFaceField());
 	}  
 
-	void dtMoabCore::addFaceField( dtOMFaceField< float > const & field ) {
+	void dtMoabCore::addFaceField( dtOMFaceField< dtReal > const & field ) {
 		moab::ErrorCode result;
 		
 		moab::Tag fieldTag;

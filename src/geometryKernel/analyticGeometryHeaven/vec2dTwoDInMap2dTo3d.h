@@ -1,6 +1,8 @@
 #ifndef VEC2DTWODINMAP2DTO3D_H
 #define	VEC2DTWODINMAP2DTO3D_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include "map2dTo3d.h"
 #include <logMe/dtMacros.h>
@@ -31,10 +33,10 @@ namespace dtOO {
       virtual vec2dTwoDInMap2dTo3d * create( void ) const;    
       virtual vec2dTwoDInMap2dTo3d * 
       cloneTransformed( dtTransformer const * const dtT ) const;      
-      virtual dtPoint3 getPoint( float const & uu, float const & vv ) const;
+      virtual dtPoint3 getPoint( dtReal const & uu, dtReal const & vv ) const;
       virtual bool isClosed( int const & dir) const;
-      virtual float getMin( int const & dir) const;
-      virtual float getMax( int const & dir) const;
+      virtual dtReal getMin( int const & dir) const;
+      virtual dtReal getMax( int const & dir) const;
       //
       //
       //        

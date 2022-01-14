@@ -51,7 +51,7 @@ namespace dtOO {
 	u_geomCurveClosestPoint::~u_geomCurveClosestPoint() {
 	}
 	
-	float u_geomCurveClosestPoint::result( void ) {
+	dtReal u_geomCurveClosestPoint::result( void ) {
 		return _closestU;
 	}
   

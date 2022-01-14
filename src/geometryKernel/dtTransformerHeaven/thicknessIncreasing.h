@@ -1,6 +1,8 @@
 #ifndef THICKNESSINCREASING_H
 #define	THICKNESSINCREASING_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 #include <logMe/dtMacros.h>

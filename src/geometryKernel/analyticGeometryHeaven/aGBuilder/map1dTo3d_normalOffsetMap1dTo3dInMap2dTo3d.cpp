@@ -19,7 +19,7 @@ namespace dtOO {
 	map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d
 	  ::map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(
       map1dTo3d const * const m1d, map2dTo3d const * const m2d,
-			float const & thick, int const & nPoints, int const & nIntegrationPoints,
+			dtReal const & thick, int const & nPoints, int const & nIntegrationPoints,
 		  int const & order
 	) {				  
 		//
@@ -36,12 +36,12 @@ namespace dtOO {
 		= 
 		dtPoint3_map1dTo3dEquidistantPoint(m1d, nPointsMax).result();
 		std::vector< dtPoint2 > ppNewUV(ppXYZ.size());
-		std::vector< float > itVal;
-		float deltaThick = thick/nIntegrationPoints;			
+		std::vector< dtReal > itVal;
+		dtReal deltaThick = thick/nIntegrationPoints;			
 		dt__forAllIndex(ppXYZ, ii) {
-			float percent 
+			dtReal percent 
 			= 
-			static_cast< float >(ii) / static_cast< float >(nPointsMax-1);
+			static_cast< dtReal >(ii) / static_cast< dtReal >(nPointsMax-1);
 			//
 			// reparam on surface and get derivative
 			//
@@ -51,7 +51,7 @@ namespace dtOO {
 			std::vector< dtPoint3 > movingXYZ(2);
 			movingXYZ[0] = ppXYZ[ii];
 			ppNewUV[ii] = ppUV;
-			float intDist = 0.;
+			dtReal intDist = 0.;
 			for (int jj=0; jj<nIntegrationPoints; jj++) {
 				//
 				// approximate normal

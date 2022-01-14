@@ -1,6 +1,8 @@
 #ifndef map2dTo3d_fullExtentInMap3dTo3d_H
 #define	map2dTo3d_fullExtentInMap3dTo3d_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 namespace dtOO {

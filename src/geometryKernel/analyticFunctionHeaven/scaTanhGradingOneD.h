@@ -1,6 +1,8 @@
 #ifndef scaTanhGradingOneD_H
 #define	scaTanhGradingOneD_H
 
+#include <dtOOTypeDef.h>
+
 #include "scaOneD.h"
 #include "scaOneDPolyInterface.h"
 #include <vector>
@@ -18,8 +20,8 @@ namespace dtOO {
       scaTanhGradingOneD();
       scaTanhGradingOneD(scaTanhGradingOneD const & orig);
       scaTanhGradingOneD( 
-        std::vector< float > cc,               
-        float const & gg, float const & ggMin, float const & ggMax
+        std::vector< dtReal > cc,               
+        dtReal const & gg, dtReal const & ggMin, dtReal const & ggMax
       );
       scaTanhGradingOneD * clone( void ) const;
       scaTanhGradingOneD * cloneTransformed(
@@ -27,14 +29,14 @@ namespace dtOO {
       ) const;        
       scaTanhGradingOneD * create( void ) const;    
       virtual ~scaTanhGradingOneD();
-      virtual float YFloat(float const & xx) const;  
+      virtual dtReal YFloat(dtReal const & xx) const;  
       virtual int nDOF( void ) const;
-      virtual void setDOF( std::vector< float > const value );    
+      virtual void setDOF( std::vector< dtReal > const value );    
     private:
-      float _gg;
-      float _ggMin;
-      float _ggMax;
-      std::vector< float > _cc;
+      dtReal _gg;
+      dtReal _ggMin;
+      dtReal _ggMax;
+      std::vector< dtReal > _cc;
   };
   typedef 
     analyticFunctionCompound< scaTanhGradingOneD >

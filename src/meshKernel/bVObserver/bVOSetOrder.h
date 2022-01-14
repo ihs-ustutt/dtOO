@@ -1,6 +1,8 @@
 #ifndef bVOSetOrder_H
 #define	bVOSetOrder_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

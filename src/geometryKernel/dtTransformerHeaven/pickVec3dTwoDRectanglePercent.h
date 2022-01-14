@@ -1,6 +1,8 @@
 #ifndef pickVec3dTwoDRectanglePercent_H
 #define	pickVec3dTwoDRectanglePercent_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 

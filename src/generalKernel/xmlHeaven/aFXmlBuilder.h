@@ -1,6 +1,8 @@
 #ifndef aFXmlBuilder_H
 #define	aFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtXmlParserBase.h"
 #include "aFXmlBuilder.h"
 #include <interfaceHeaven/vectorHandling.h>

@@ -221,10 +221,10 @@ namespace dtOO {
         anInterpolation(volField);
         
         dt__pVH(map1dTo3d) bladeCut;
-        std::vector< float > percent_bladeStagPoint;
+        std::vector< dtReal > percent_bladeStagPoint;
         dt__forAllRefAuto( dtLinearAlgebra::unitGrid(_nP[1]), vCut ) {
           bladeCut.push_back( _blade->segmentConstVPercent(vCut) );
-          std::pair< float, float > pairU 
+          std::pair< dtReal, dtReal > pairU 
           = 
           pairU_map1dTo3dClosestPointToMap1dTo3d(
             _stagnationLine, &(bladeCut.back()) 
@@ -266,15 +266,15 @@ namespace dtOO {
           //
           // create vector and value grid
           //
-          std::vector< float > grid = dtLinearAlgebra::unitGrid(_nP[0]);
-          vectorHandling< float > value(grid.size());
-          vectorHandling< float > ll(grid.size());
+          std::vector< dtReal > grid = dtLinearAlgebra::unitGrid(_nP[0]);
+          vectorHandling< dtReal > value(grid.size());
+          vectorHandling< dtReal > ll(grid.size());
 
           //
           // get values
           //
           dtPoint3 xyz0 = aBladeCut.getPointPercent( grid[0] );          
-          float uStagCorrect = 0.;
+          dtReal uStagCorrect = 0.;
           int uStagCorrectIndex = 0;
           dt__forAllIndex(grid, ii) {            
             dtPoint3 const & xyz1 = aBladeCut.getPointPercent( grid[ii] );
@@ -330,7 +330,7 @@ namespace dtOO {
           //
           // write values
           //
-          float lStagCorrect = uStagCorrect * ll[uStagCorrectIndex];
+          dtReal lStagCorrect = uStagCorrect * ll[uStagCorrectIndex];
           dt__forFromToIndex(0, value.size(), ii) {
             of 
             << logMe::dtFormat("%16d, %16d, %16.8e, %16.8e") 

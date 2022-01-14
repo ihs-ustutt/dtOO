@@ -1,6 +1,8 @@
 #ifndef DTOCCBEZIERCURVE_H
 #define	DTOCCBEZIERCURVE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOCCCurve.h"

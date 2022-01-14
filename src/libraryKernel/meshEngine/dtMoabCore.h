@@ -1,6 +1,8 @@
 #ifndef DTMOABCORE_H
 #define	DTMOABCORE_H
 
+#include <dtOOTypeDef.h>
+
 #include <moab/Core.hpp>
 #include <moab/Range.hpp>
 #include <logMe/dtMacros.h>
@@ -27,12 +29,12 @@ namespace dtOO {
     moab::Range addElements( std::vector< ::MElement const * > const & me );
     void addVertexField( dtOMVertexField< bool > const & field );
 	  void addVertexField( dtOMVertexField< int > const & field );
-    void addVertexField( dtOMVertexField< float > const & fF );
+    void addVertexField( dtOMVertexField< dtReal > const & fF );
     void addVertexField( dtOMVertexField< dtVector3 > const & vF );
 	  void addFaceField( dtOMFaceField< int > const & field );
-	  void addFaceField( dtOMFaceField< float > const & field );    
+	  void addFaceField( dtOMFaceField< dtReal > const & field );    
     void addFaceField( dtOMFaceField< bool > const & field );    
-//    void addEdgeField( dtOMEdgeField< float > const & eF );
+//    void addEdgeField( dtOMEdgeField< dtReal > const & eF );
     template< typename T >
     static void writeVtkVertexField(dtOMVertexField< T > const & field) {
       dtMoabCore mb(field.refMesh());

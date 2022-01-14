@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_pointConstructOCC_H
 #define	bSplineCurve_pointConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

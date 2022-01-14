@@ -1,6 +1,8 @@
 #ifndef vec3dTriLinearThreeD_H
 #define	vec3dTriLinearThreeD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec3dThreeD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>

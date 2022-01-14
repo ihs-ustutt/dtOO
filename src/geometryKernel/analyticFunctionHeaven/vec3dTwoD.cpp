@@ -23,7 +23,7 @@ namespace dtOO {
 		return 2;
 	}
 
-  aFY vec3dTwoD::Y(float const & x0, float const & x1) const {	
+  aFY vec3dTwoD::Y(dtReal const & x0, dtReal const & x1) const {	
 		aFX xx(2,0);
 		
 		xx[0] = x0;
@@ -36,7 +36,7 @@ namespace dtOO {
 		return vec3dFunction::YdtPoint3( xx );
 	}
 
-  dtPoint3 vec3dTwoD::YdtPoint3(float const & x0, float const & x1) const {
+  dtPoint3 vec3dTwoD::YdtPoint3(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2,0);
 		
 		xx[0] = x0;
@@ -49,7 +49,7 @@ namespace dtOO {
 		return YdtPoint3( x_percent(xx) );
 	}
 	
-	dtPoint3 vec3dTwoD::YdtPoint3Percent(float const & x0, float const & x1) const {
+	dtPoint3 vec3dTwoD::YdtPoint3Percent(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2,0);
 		
 		xx[0] = x0;
@@ -66,7 +66,7 @@ namespace dtOO {
 //		return ret;
 //  }
 
-	aFX vec3dTwoD::x_percent(float const & x0, float const & x1) const {
+	aFX vec3dTwoD::x_percent(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2, 0.);
     xx[0] = x0;
 		xx[1] = x1;
@@ -74,7 +74,7 @@ namespace dtOO {
 		return x_percent(xx);
   }  
 	
-	aFX vec3dTwoD::percent_x(float const & x0, float const & x1) const {
+	aFX vec3dTwoD::percent_x(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2, 0.);
     xx[0] = x0;
 		xx[1] = x1;
@@ -105,7 +105,7 @@ namespace dtOO {
 		 *                      (xP[0], uv[1][0]) -> yy[1][0] 
 		 */
     aFX xP = percent_x(xx);
-    float deltaPer[2];
+    dtReal deltaPer[2];
 		deltaPer[0] = 0.0001;
 		deltaPer[1] = 0.0001;
 
@@ -146,7 +146,7 @@ namespace dtOO {
 		return dxdy;
 	}
 		
-	std::vector<dtVector3> vec3dTwoD::DYdtVector3( float const & x0, float const & x1 ) const {
+	std::vector<dtVector3> vec3dTwoD::DYdtVector3( dtReal const & x0, dtReal const & x1 ) const {
 		aFX xx(2,0);
 		xx[0] = x0;
 		xx[1] = x1;
@@ -166,7 +166,7 @@ namespace dtOO {
 		return unitNdtVector3( x_percent(xx) );
 	}
 	
-  float vec3dTwoD::xMin( int const & dir) const {
+  dtReal vec3dTwoD::xMin( int const & dir) const {
     switch (dir) {
       case 0:
         return _min[0];
@@ -181,7 +181,7 @@ namespace dtOO {
     }   
 	}
 	
-  float vec3dTwoD::xMax( int const & dir) const {
+  dtReal vec3dTwoD::xMax( int const & dir) const {
     switch (dir) {
       case 0:
         return _max[0];
@@ -196,7 +196,7 @@ namespace dtOO {
     }
 	}	
 
-  void vec3dTwoD::setMin(int const & dir, float const & min) {
+  void vec3dTwoD::setMin(int const & dir, dtReal const & min) {
     switch (dir) {
       case 0:
         _min[0] = min;
@@ -211,7 +211,7 @@ namespace dtOO {
     }
   }
 
-  void vec3dTwoD::setMax(int const & dir, float const & max) {
+  void vec3dTwoD::setMax(int const & dir, dtReal const & max) {
     switch (dir) {
       case 0:
         _max[0] = max;
@@ -240,11 +240,11 @@ namespace dtOO {
 		vectorHandling< renderInterface * > rV;//(nV);
 	
 		vectorHandling< dtPoint2 > p2;
-		float intervalU = (xMax(0) - xMin(0)) / (nU-1);
-		float intervalV = (xMax(1) - xMin(1)) / (nV-1);
+		dtReal intervalU = (xMax(0) - xMin(0)) / (nU-1);
+		dtReal intervalV = (xMax(1) - xMin(1)) / (nV-1);
 		
 		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			aFX xx(2,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMin(1);
@@ -254,7 +254,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			aFX xx(2,0);
 			xx[0] = xMin(0);
 			xx[1] = xMin(1) + jjF * intervalV;
@@ -264,7 +264,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );			
 		p2.clear();
 		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			aFX xx(2,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMax(1);
@@ -274,7 +274,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			aFX xx(2,0);
 			xx[0] = xMax(0);
 			xx[1] = xMin(1) + jjF * intervalV;
@@ -291,24 +291,24 @@ namespace dtOO {
 		return x_percent(percent);
 	}	
   
-//  float vec3dTwoD::length( 
+//  dtReal vec3dTwoD::length( 
 //    int const & nP, aFX const & x0, aFX const & x1 
 //  ) const {
 //		std::vector< dtPoint2 > glp = dtLinearAlgebra::getGaussLegendre(nP);
-//		float L = 0.0;
+//		dtReal L = 0.0;
 //		dtPoint2 const u0(x0[0], x0[1]);
 //		dtPoint2 const u1(x1[0], x1[1]);
 //		dtVector2 const normalDir( dtLinearAlgebra::normalize(u1-u0) );
 //		const dtVector2 rapJ = .5 * (u1 - u0);
 //		for (int i = 0; i < nP; i++) {
-//			float const tt = glp[i].x();
-//			float const ww = glp[i].y();
+//			dtReal const tt = glp[i].x();
+//			dtReal const ww = glp[i].y();
 //			dtPoint2 const ui(
 //        .5 * (1. - tt) * u0.x()  + .5 * (1. + tt) * u1.x(),
 //        .5 * (1. - tt) * u0.y()  + .5 * (1. + tt) * u1.y()
 //      );
 //			std::vector< dtVector3 > der = DYdtVector3(ui.x(), ui.y());
-//			const float d 
+//			const dtReal d 
 //      = 
 //      dtLinearAlgebra::length(normalDir.x()*der[0]+normalDir.y()*der[1] );
 //			L += d * ww * dtLinearAlgebra::length(rapJ);
@@ -316,7 +316,7 @@ namespace dtOO {
 //		return L;    
 //  }
   
-//  float vec3dTwoD::length( aFX const & x0, aFX const & x1 ) const {	
+//  dtReal vec3dTwoD::length( aFX const & x0, aFX const & x1 ) const {	
 //    return length(20, x0, x1);
 //  }
   dt__C_addCloneForpVH(vec3dTwoD);      

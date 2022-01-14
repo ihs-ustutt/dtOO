@@ -1,6 +1,8 @@
 #ifndef PTRHANDLING_H
 #define	PTRHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <boost/shared_ptr.hpp>
 
 namespace dtOO {

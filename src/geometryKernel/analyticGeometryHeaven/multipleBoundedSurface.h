@@ -1,6 +1,8 @@
 #ifndef multipleBoundedSurface_H
 #define	multipleBoundedSurface_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include "analyticGeometry.h"
 #include <logMe/dtMacros.h>
@@ -22,9 +24,9 @@ namespace dtOO {
     virtual multipleBoundedSurface * clone( void ) const;
     virtual int dim( void ) const;    
     virtual bool isClosed( int const & dir) const;
-    virtual float getMin( int const & dir) const;
-    virtual float getMax( int const & dir) const;
-    virtual dtPoint3 getPoint( float const * const uvw ) const; 
+    virtual dtReal getMin( int const & dir) const;
+    virtual dtReal getMax( int const & dir) const;
+    virtual dtPoint3 getPoint( dtReal const * const uvw ) const; 
     vectorHandling< renderInterface * > getRender( void ) const;
     ptrVectorHandling< analyticGeometry > const & 
     boundsVectorConstRef( void ) const;

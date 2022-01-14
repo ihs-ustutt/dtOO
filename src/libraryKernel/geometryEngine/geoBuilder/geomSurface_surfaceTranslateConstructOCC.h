@@ -1,6 +1,8 @@
 #ifndef geomSurface_surfaceTranslateConstructOCC_H
 #define	geomSurface_surfaceTranslateConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

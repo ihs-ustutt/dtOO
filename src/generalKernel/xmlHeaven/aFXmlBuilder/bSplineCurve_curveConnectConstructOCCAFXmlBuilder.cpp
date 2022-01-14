@@ -59,7 +59,7 @@ namespace dtOO {
     }
     
     ptrHandling< dtCurve > dtC;
-    float tolerance = 1.E-07;
+    dtReal tolerance = 1.E-07;
     if ( dtXmlParserBase::hasAttribute("tolerance", toBuild) ) {
       tolerance 
       = 

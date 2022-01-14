@@ -15,13 +15,13 @@ class analyticGeometryWrap
   bool isClosed( int const & dir ) const {
     return this->get_override("isClosed")(dir);
   }
-  float getMin( int const & dir ) const {
+  dtOO::dtReal getMin( int const & dir ) const {
     return this->get_override("getMin")(dir);
   }    
-  float getMax( int const & dir ) const {
+  dtOO::dtReal getMax( int const & dir ) const {
     return this->get_override("getMax")(dir);
   }      
-  dtOO::dtPoint3 getPoint( float const * const uvw ) const {
+  dtOO::dtPoint3 getPoint( dtOO::dtReal const * const uvw ) const {
     if ( boost::python::override f = this->get_override("getPoint") ) {
       return f(uvw); // *note*
     }

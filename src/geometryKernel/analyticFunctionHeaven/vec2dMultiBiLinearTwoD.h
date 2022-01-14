@@ -1,6 +1,8 @@
 #ifndef vec2dMultiBiLinearTwoD_H
 #define	vec2dMultiBiLinearTwoD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec2dTwoD.h"
 #include "vec2dBiLinearTwoD.h"
 #include <interfaceHeaven/twoDArrayHandling.h>

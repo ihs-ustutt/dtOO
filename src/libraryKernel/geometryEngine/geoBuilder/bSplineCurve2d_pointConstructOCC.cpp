@@ -45,7 +45,7 @@ namespace dtOO {
 		  poles.SetValue( ii+1, gp_Pnt2d(pp[ii].x(), pp[ii].y()) ); 
 	  }
 		for (int ii=1;ii<=knots.Length();ii++) {
-			knots.SetValue( ii, static_cast<float>(ii-1) );
+			knots.SetValue( ii, static_cast<dtReal>(ii-1) );
 		}
 		mults.SetValue(1, order+1);
 		mults.SetValue(nOnes+2, order+1);

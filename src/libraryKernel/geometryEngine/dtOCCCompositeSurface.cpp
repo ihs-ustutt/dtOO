@@ -39,7 +39,7 @@ namespace dtOO {
 	}
 
 	dtCurve * dtOCCCompositeSurface::segmentConstU( 
-    float const uu, float const vvMin, float const vvMax
+    dtReal const uu, dtReal const vvMin, dtReal const vvMax
   ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
     Standard_Real v0R = static_cast<Standard_Real>(vvMin);
@@ -88,7 +88,7 @@ namespace dtOO {
 	}
 
 	dtCurve * dtOCCCompositeSurface::segmentConstV( 
-    float const vv, float const uuMin, float const uuMax
+    dtReal const vv, dtReal const uuMin, dtReal const uuMax
   ) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
     Standard_Real u0R = static_cast<Standard_Real>(uuMin);

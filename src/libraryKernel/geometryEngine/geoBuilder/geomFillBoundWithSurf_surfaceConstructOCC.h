@@ -1,6 +1,8 @@
 #ifndef geomFillBoundWithSurf_surfaceConstructOCC_H
 #define	geomFillBoundWithSurf_surfaceConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

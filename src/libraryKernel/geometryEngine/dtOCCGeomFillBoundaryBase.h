@@ -1,6 +1,8 @@
 #ifndef dtOCCGeomFillBoundaryBase_H
 #define	dtOCCGeomFillBoundaryBase_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 

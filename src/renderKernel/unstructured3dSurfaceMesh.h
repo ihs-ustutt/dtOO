@@ -1,6 +1,8 @@
 #ifndef UNSTRUCTURED3DSURFACEMESH_H
 #define	UNSTRUCTURED3DSURFACEMESH_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>

@@ -923,7 +923,7 @@ namespace dtOO {
 	
   void dtGmshModel::meshEdgeTransfiniteFromTo(
     int const from, int const to, 
-    int const type, float const coeff, 
+    int const type, dtReal const coeff, 
     int const nEl) {
     
     int eTag = getDtGmshEdgeTagByFromTo(from, to);
@@ -1014,9 +1014,9 @@ namespace dtOO {
 				pp[counter]
 				=
 				dtPoint3(
-					static_cast< float >(mv->x()), 
-					static_cast< float >(mv->y()), 
-					static_cast< float >(mv->z())
+					static_cast< dtReal >(mv->x()), 
+					static_cast< dtReal >(mv->y()), 
+					static_cast< dtReal >(mv->z())
 				); 				
 				vLoc_num[mv->getNum()] = counter;
 				counter++;
@@ -1155,9 +1155,9 @@ namespace dtOO {
 			pp[ii]
 			=
 			dtPoint3(
-				static_cast< float >(mv->x()), 
-				static_cast< float >(mv->y()), 
-				static_cast< float >(mv->z())
+				static_cast< dtReal >(mv->x()), 
+				static_cast< dtReal >(mv->y()), 
+				static_cast< dtReal >(mv->z())
 			); 				
 			vLoc_num[mv->getNum()] = ii;
 		}
@@ -1246,9 +1246,9 @@ namespace dtOO {
 			pp[ii]
 			=
 			dtPoint3(
-				static_cast< float >(mv->x()), 
-				static_cast< float >(mv->y()), 
-				static_cast< float >(mv->z())
+				static_cast< dtReal >(mv->x()), 
+				static_cast< dtReal >(mv->y()), 
+				static_cast< dtReal >(mv->z())
 			); 			
 			vLoc_num[mv->getNum()] = ii;
 		}
@@ -1297,9 +1297,9 @@ namespace dtOO {
 			pp[ii]
 			=
 			dtPoint3(
-				static_cast< float >(mv->x()), 
-				static_cast< float >(mv->y()), 
-				static_cast< float >(mv->z())
+				static_cast< dtReal >(mv->x()), 
+				static_cast< dtReal >(mv->y()), 
+				static_cast< dtReal >(mv->z())
 			); 			
 		}
 		
@@ -1433,7 +1433,7 @@ namespace dtOO {
 						switch(dataType) {
 							case RealSingle:
     						dt__info(dtReadCGNS(), << "Type is float");
-								coord = new float[nNodes];
+								coord = new dtReal[nNodes];
 								__cgnsCheck(
 									cg_coord_read(
 										index_file, index_base, index_zone, 
@@ -1441,9 +1441,9 @@ namespace dtOO {
 									)
 								);
 								for (int iNode = 0; iNode < nNodes; iNode++) {
-									nodes[iNode][iCoord] = (double)((float*)coord)[iNode];
+									nodes[iNode][iCoord] = (double)((dtReal*)coord)[iNode];
 								}
-								delete [] (float*)coord;
+								delete [] (dtReal*)coord;
 								break;
 							case RealDouble:
 								dt__info(dtReadCGNS(), << "Type is double");

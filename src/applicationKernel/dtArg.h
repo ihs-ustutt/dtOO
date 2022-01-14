@@ -1,6 +1,8 @@
 #ifndef DTARG_H
 #define	DTARG_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <boost/program_options.hpp>
 namespace dtPO = boost::program_options;

@@ -1,6 +1,8 @@
 #ifndef bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder_H
 #define	bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

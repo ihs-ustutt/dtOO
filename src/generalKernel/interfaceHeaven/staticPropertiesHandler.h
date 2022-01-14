@@ -1,6 +1,8 @@
 #ifndef staticPropertiesHandler_H
 #define	staticPropertiesHandler_H
 
+#include <dtOOTypeDef.h>
+
 #include "optionHandling.h"
 #include <logMe/dtMacros.h>
 

@@ -23,7 +23,7 @@ namespace dtOO {
 		return 2;
 	}
 
-  aFY vec2dTwoD::Y(float const & x0, float const & x1) const {	
+  aFY vec2dTwoD::Y(dtReal const & x0, dtReal const & x1) const {	
 		aFX xx(2,0);
 		
 		xx[0] = x0;
@@ -36,7 +36,7 @@ namespace dtOO {
 		return vec2dFunction::YdtPoint2( xx );
 	}
 
-  dtPoint2 vec2dTwoD::YdtPoint2(float const & x0, float const & x1) const {
+  dtPoint2 vec2dTwoD::YdtPoint2(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2,0);
 		
 		xx[0] = x0;
@@ -49,7 +49,7 @@ namespace dtOO {
 		return YdtPoint2( x_percent(xx) );
 	}
 	
-	dtPoint2 vec2dTwoD::YdtPoint2Percent(float const & x0, float const & x1) const {
+	dtPoint2 vec2dTwoD::YdtPoint2Percent(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2,0);
 		
 		xx[0] = x0;
@@ -58,7 +58,7 @@ namespace dtOO {
 		return YdtPoint2( x_percent(xx) );
 	}
 
-	aFX vec2dTwoD::x_percent(float const & x0, float const & x1) const {
+	aFX vec2dTwoD::x_percent(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2, 0.);
     xx[0] = x0;
 		xx[1] = x1;
@@ -66,7 +66,7 @@ namespace dtOO {
 		return x_percent(xx);
   }  
 	
-	aFX vec2dTwoD::percent_x(float const & x0, float const & x1) const {
+	aFX vec2dTwoD::percent_x(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2, 0.);
     xx[0] = x0;
 		xx[1] = x1;
@@ -89,7 +89,7 @@ namespace dtOO {
 		 *                      (xP[0], uv[1][0]) -> yy[1][0] 
 		 */
     aFX xP = percent_x(xx);
-    float deltaPer[2];
+    dtReal deltaPer[2];
 		deltaPer[0] = 0.0001;
 		deltaPer[1] = 0.0001;
 
@@ -122,7 +122,7 @@ namespace dtOO {
 		return dxdy;
 	}
 		
-	std::vector<dtVector2> vec2dTwoD::DYdtVector2( float const & x0, float const & x1 ) const {
+	std::vector<dtVector2> vec2dTwoD::DYdtVector2( dtReal const & x0, dtReal const & x1 ) const {
 		aFX xx(2,0);
 		xx[0] = x0;
 		xx[1] = x1;
@@ -130,7 +130,7 @@ namespace dtOO {
 		return DYdtVector2(xx);
 	}
 		
-  float vec2dTwoD::xMin( int const & dir) const {
+  dtReal vec2dTwoD::xMin( int const & dir) const {
     switch (dir) {
       case 0:
         return _min[0];
@@ -145,7 +145,7 @@ namespace dtOO {
     }   
 	}
 	
-  float vec2dTwoD::xMax( int const & dir) const {
+  dtReal vec2dTwoD::xMax( int const & dir) const {
     switch (dir) {
       case 0:
         return _max[0];
@@ -160,7 +160,7 @@ namespace dtOO {
     }
 	}	
 
-  void vec2dTwoD::setMin(int const & dir, float const & min) {
+  void vec2dTwoD::setMin(int const & dir, dtReal const & min) {
     switch (dir) {
       case 0:
         _min[0] = min;
@@ -175,7 +175,7 @@ namespace dtOO {
     }
   }
 
-  void vec2dTwoD::setMax(int const & dir, float const & max) {
+  void vec2dTwoD::setMax(int const & dir, dtReal const & max) {
     switch (dir) {
       case 0:
         _max[0] = max;
@@ -204,11 +204,11 @@ namespace dtOO {
 		vectorHandling< renderInterface * > rV;//(nV);
 	
 		vectorHandling< dtPoint2 > p2;
-		float intervalU = (xMax(0) - xMin(0)) / (nU-1);
-		float intervalV = (xMax(1) - xMin(1)) / (nV-1);
+		dtReal intervalU = (xMax(0) - xMin(0)) / (nU-1);
+		dtReal intervalV = (xMax(1) - xMin(1)) / (nV-1);
 		
 		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			aFX xx(2,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMin(1);
@@ -219,7 +219,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			aFX xx(2,0);
 			xx[0] = xMin(0);
 			xx[1] = xMin(1) + jjF * intervalV;
@@ -230,7 +230,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );			
 		p2.clear();
 		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(float iiF, ii);
+			dt__toFloat(dtReal iiF, ii);
 			aFX xx(2,0);
 			xx[0] = xMin(0) + iiF * intervalU;
 			xx[1] = xMax(1);
@@ -241,7 +241,7 @@ namespace dtOO {
 		rV.push_back( new solid2dLine(p2) );
 		p2.clear();
 		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			aFX xx(2,0);
 			xx[0] = xMax(0);
 			xx[1] = xMin(1) + jjF * intervalV;

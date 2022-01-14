@@ -39,12 +39,12 @@ namespace dtOO {
   analyticGeometry::~analyticGeometry() {
   }
 
-  dtPoint3 analyticGeometry::getPoint( float const * const uvw ) const {
+  dtPoint3 analyticGeometry::getPoint( dtReal const * const uvw ) const {
     dt__throwUnexpected(getPoint());
   }
 
-  dtPoint3 analyticGeometry::getPointPercent( float const * const uvw ) const {
-    float uvwP[dim()];
+  dtPoint3 analyticGeometry::getPointPercent( dtReal const * const uvw ) const {
+    dtReal uvwP[dim()];
     dt__forFromToIndex(0, dim(), ii) {
       uvwP[ii] = getMin(ii) + uvw[ii] * (getMax(ii)-getMin(ii));
     }
@@ -130,7 +130,7 @@ namespace dtOO {
     return _boundingBox;
   }
   
-  float analyticGeometry::boundingBoxValue( void ) const {
+  dtReal analyticGeometry::boundingBoxValue( void ) const {
     if (_characteristicLength < 0.) updateBoundingBox();
     
     return _boundingBoxValue;
@@ -142,11 +142,11 @@ namespace dtOO {
     //
     if (dim() == 1) {
       int nOne = 3;
-      float uvwOne[3] = {0.00, 0.50, 1.00};
+      dtReal uvwOne[3] = {0.00, 0.50, 1.00};
     
       std::vector< dtPoint3 > bb(nOne);
       dt__forFromToIndex(0, nOne, ii) {
-        bb[ii] = getPointPercent( (float*) &(uvwOne[ii]) );
+        bb[ii] = getPointPercent( (dtReal*) &(uvwOne[ii]) );
       }
       _boundingBox = dtLinearAlgebra::boundingBox(bb);
       _boundingBoxValue 
@@ -160,7 +160,7 @@ namespace dtOO {
     //
     else if (dim() == 2) {
       int nTwo = 9;
-      float uvwTwo[9][2] 
+      dtReal uvwTwo[9][2] 
       = 
       {
         {0.00, 0.00}, {0.00, 0.50}, {0.00, 1.00},
@@ -170,7 +170,7 @@ namespace dtOO {
       
       std::vector< dtPoint3 > bb(nTwo);
       dt__forFromToIndex(0, nTwo, ii) {
-        bb[ii] = getPointPercent( (float*) &(uvwTwo[ii]) );
+        bb[ii] = getPointPercent( (dtReal*) &(uvwTwo[ii]) );
       }
       _boundingBox = dtLinearAlgebra::boundingBox(bb);
       
@@ -189,7 +189,7 @@ namespace dtOO {
     //
     else if (dim() == 3) {
       int nThree = 27;
-      float uvwThree[27][3] 
+      dtReal uvwThree[27][3] 
       = 
       {
         {0.00, 0.00, 0.00}, {0.00, 0.00, 0.50}, {0.00, 0.00, 1.00},
@@ -205,7 +205,7 @@ namespace dtOO {
 
       std::vector< dtPoint3 > bb(nThree);
       dt__forFromToIndex(0, nThree, ii) {
-        bb[ii] = getPointPercent( (float*) &(uvwThree[ii]) );
+        bb[ii] = getPointPercent( (dtReal*) &(uvwThree[ii]) );
       } 
       _boundingBox = dtLinearAlgebra::boundingBox(bb);
 
@@ -256,11 +256,11 @@ namespace dtOO {
     //
     if (dim() == 1) {
       int nOne = 2;
-      float uvwOne[2] = {0.00, 1.00};
+      dtReal uvwOne[2] = {0.00, 1.00};
     
       std::vector< dtPoint3 > bb(nOne);
       dt__forFromToIndex(0, nOne, ii) {
-        bb[ii] = getPointPercent( (float*) &(uvwOne[ii]) );
+        bb[ii] = getPointPercent( (dtReal*) &(uvwOne[ii]) );
       }
       
       return bb;
@@ -270,13 +270,13 @@ namespace dtOO {
     //
     else if (dim() == 2) {
       int nTwo = 4;
-      float uvwTwo[4][2] 
+      dtReal uvwTwo[4][2] 
       = 
       { {0.00, 0.00}, {0.00, 1.00}, {1.00, 0.00}, {1.00, 1.00} };
       
       std::vector< dtPoint3 > bb(nTwo);
       dt__forFromToIndex(0, nTwo, ii) {
-        bb[ii] = getPointPercent( (float*) &(uvwTwo[ii]) );
+        bb[ii] = getPointPercent( (dtReal*) &(uvwTwo[ii]) );
       }
       
       return bb;
@@ -286,7 +286,7 @@ namespace dtOO {
     //
     else if (dim() == 3) {
       int nThree = 8;
-      float uvwThree[8][3] 
+      dtReal uvwThree[8][3] 
       = 
       {
         {0.00, 0.00, 0.00}, {0.00, 0.00, 1.00},
@@ -297,7 +297,7 @@ namespace dtOO {
 
       std::vector< dtPoint3 > bb(nThree);
       dt__forFromToIndex(0, nThree, ii) {
-        bb[ii] = getPointPercent( (float*) &(uvwThree[ii]) );
+        bb[ii] = getPointPercent( (dtReal*) &(uvwThree[ii]) );
       }
 
       return bb;      
@@ -305,23 +305,23 @@ namespace dtOO {
     else dt__throwUnexpected(updateBoundingBox());    
   }  
   
-  float analyticGeometry::characteristicLength( void ) const {
+  dtReal analyticGeometry::characteristicLength( void ) const {
     if (_characteristicLength < 0.) updateBoundingBox();
     
     return _characteristicLength;
   }
   
   dtPoint3 analyticGeometry::getPoint( 
-    std::vector< float > const & uvw 
+    std::vector< dtReal > const & uvw 
   ) const {
     return getPoint( &(uvw[0]) );
   }
   
   bool analyticGeometry::inXYZTolerance(
     dtPoint3 const & p0, dtPoint3 const & p1, 
-    float * const dist, bool output, float inc 
+    dtReal * const dist, bool output, dtReal inc 
   ) {
-		float xyzResolution 
+		dtReal xyzResolution 
 		= 
 		inc 
     *
@@ -349,14 +349,14 @@ namespace dtOO {
   bool analyticGeometry::inXYZTolerance(
     dtPoint3 const & p0, dtPoint3 const & p1
   ) {
-    float dist;
+    dtReal dist;
     return analyticGeometry::inXYZTolerance(p0, p1, &dist, false, 1.0);    
   }
   
   bool analyticGeometry::inXYZTolerance( 
-    float const dist, float inc 
+    dtReal const dist, dtReal inc 
   ) {
-		float xyzResolution 
+		dtReal xyzResolution 
 		= 
 		inc 
     *    
@@ -376,7 +376,7 @@ namespace dtOO {
   bool analyticGeometry::inUVWTolerance(
     dtPoint3 const & p0, dtPoint3 const & p1
   ) {
-		float uvwResolution 
+		dtReal uvwResolution 
 		=
     staticPropertiesHandler::getInstance()->getOptionFloat(
       "uvw_resolution"
@@ -391,7 +391,7 @@ namespace dtOO {
   bool analyticGeometry::inUVWTolerance(
     dtPoint2 const & p0, dtPoint2 const & p1
   ) {
-		float uvwResolution 
+		dtReal uvwResolution 
 		=
     staticPropertiesHandler::getInstance()->getOptionFloat(
       "uvw_resolution"
@@ -404,15 +404,15 @@ namespace dtOO {
   }
 
   bool analyticGeometry::inUVWTolerance(
-    float const & p0, float const & p1
+    dtReal const & p0, dtReal const & p1
   ) {
-		float uvwResolution 
+		dtReal uvwResolution 
 		=
     staticPropertiesHandler::getInstance()->getOptionFloat(
       "uvw_resolution"
     );
     
-		float dist = p0 - p1;
+		dtReal dist = p0 - p1;
 		if ( fabs(dist) > uvwResolution ) return false;
 
     return true;    

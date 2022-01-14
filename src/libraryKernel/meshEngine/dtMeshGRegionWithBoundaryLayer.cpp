@@ -51,7 +51,7 @@ namespace dtOO {
   _nSpacingStepsF("nSpacingStepsF", _omInit, 0),
   _flipNormalF("_flipNormalF", _omInit, false),
   _buddyF("_buddyF", _omInit, std::vector< ::MVertex * >(0,NULL)),
-  _realSpacing("_realSpacing", _omInit, std::vector< float >(0,0.)),
+  _realSpacing("_realSpacing", _omInit, std::vector< dtReal >(0,0.)),
   _3D(NULL)
   {
 	}
@@ -204,7 +204,7 @@ namespace dtOO {
 			_tF.assign(*tmpOM, 0.);       
 			_typeF.assign(*tmpOM, dtMeshGRegionWithBoundaryLayer::_NORMAL);
       _realSpacing.assign( 
-        *tmpOM, std::vector<float>(_nSpacingSteps[cc], 0.) 
+        *tmpOM, std::vector<dtReal>(_nSpacingSteps[cc], 0.) 
       );
       _flipNormalF.assign( *tmpOM, _flipNormal[cc] );
       _nSpacingStepsF.assign(*tmpOM, _nSpacingSteps[cc] );
@@ -732,11 +732,11 @@ namespace dtOO {
       std::vector< MVertex * > & thisBuddies 
       =
       _buddyF[ _omInit[ _omInit.to_vertex_handle(slidableHe) ] ];
-      std::vector< float > & thisRealSpacing 
+      std::vector< dtReal > & thisRealSpacing 
       =
       _realSpacing[ _omInit[ _omInit.to_vertex_handle(slidableHe) ] ];
       thisRealSpacing.clear();
-      float tmpSpace = 0.;
+      dtReal tmpSpace = 0.;
       dt__forAllIndex(thisBuddies, ii) {
         if (ii==0) {
           thisRealSpacing.push_back( 
@@ -760,7 +760,7 @@ namespace dtOO {
         }
         tmpSpace = tmpSpace + thisRealSpacing.back();
       }
-      float tmpASpace = 0.;
+      dtReal tmpASpace = 0.;
       dt__forAllRefAuto(thisRealSpacing, aSpace) {
         tmpASpace = aSpace + tmpASpace;
         aSpace = tmpASpace/tmpSpace;
@@ -874,12 +874,12 @@ namespace dtOO {
   }
   
   void dtMeshGRegionWithBoundaryLayer::adjustThickness( void ) { 
-    twoDArrayHandling< float > avSpacing;
-    twoDArrayHandling< float > maxSpacing;
-    twoDArrayHandling< float > minSpacing;
-    vectorHandling< float > avT;
-    vectorHandling< float > maxT;
-    vectorHandling< float > minT;    
+    twoDArrayHandling< dtReal > avSpacing;
+    twoDArrayHandling< dtReal > maxSpacing;
+    twoDArrayHandling< dtReal > minSpacing;
+    vectorHandling< dtReal > avT;
+    vectorHandling< dtReal > maxT;
+    vectorHandling< dtReal > minT;    
     
     determinMinMaxAverageAtSliders(
       avSpacing, maxSpacing, minSpacing, avT, maxT, minT
@@ -955,7 +955,7 @@ namespace dtOO {
     // smooth
     //
     dt__forFromToIndex(0, _nGrowingSmoothingSteps, ii) {
-      dtOMVertexField< float > tFTwin("tFTwin", _omInit, 0.);
+      dtOMVertexField< dtReal > tFTwin("tFTwin", _omInit, 0.);
       
       dt__forFromToIter(
         omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
@@ -993,8 +993,8 @@ namespace dtOO {
           if ( _buddyF.at(*vv_it).empty() || _slidableF.at(*vv_it) ) continue;
           
           std::vector< ::MVertex * > & thisBuddies = _buddyF[ *vv_it ];
-          std::vector< float > & thisRealSpacing = _realSpacing[ *vv_it ];
-          float & thisThickness = _tF[ *vv_it ];
+          std::vector< dtReal > & thisRealSpacing = _realSpacing[ *vv_it ];
+          dtReal & thisThickness = _tF[ *vv_it ];
           dtVector3 & thisNormal = _nF[ *vv_it ];
           dtPoint3 thisStart 
           = 
@@ -1035,12 +1035,12 @@ namespace dtOO {
   }  
   
   void dtMeshGRegionWithBoundaryLayer::determinMinMaxAverageAtSliders(
-      twoDArrayHandling< float > & avSpacing,
-      twoDArrayHandling< float > & maxSpacing,
-      twoDArrayHandling< float > & minSpacing,
-      vectorHandling< float > & avT,
-      vectorHandling< float > & maxT,
-      vectorHandling< float > & minT
+      twoDArrayHandling< dtReal > & avSpacing,
+      twoDArrayHandling< dtReal > & maxSpacing,
+      twoDArrayHandling< dtReal > & minSpacing,
+      vectorHandling< dtReal > & avT,
+      vectorHandling< dtReal > & maxT,
+      vectorHandling< dtReal > & minT
   ) {
     avSpacing.clear();
     maxSpacing.clear();
@@ -1049,20 +1049,20 @@ namespace dtOO {
     maxT.clear();
     minT.clear();
     dt__forAllRefAuto(_nSpacingSteps, aSpace) {
-      avSpacing.push_back( std::vector< float >(aSpace, 0.) );
+      avSpacing.push_back( std::vector< dtReal >(aSpace, 0.) );
       maxSpacing.push_back( 
-        std::vector< float >(aSpace, std::numeric_limits<float>::min()) 
+        std::vector< dtReal >(aSpace, std::numeric_limits<dtReal>::min()) 
       );
       minSpacing.push_back( 
-        std::vector< float >(aSpace, std::numeric_limits<float>::max()) 
+        std::vector< dtReal >(aSpace, std::numeric_limits<dtReal>::max()) 
       );
       avT.push_back(0.);
-      maxT.push_back( std::numeric_limits<float>::min() );
-      minT.push_back( std::numeric_limits<float>::max() );
+      maxT.push_back( std::numeric_limits<dtReal>::min() );
+      minT.push_back( std::numeric_limits<dtReal>::max() );
     }
-    std::vector< float > nodeCount 
+    std::vector< dtReal > nodeCount 
     = 
-    std::vector< float >(_nSpacingSteps.size(), 0.);
+    std::vector< dtReal >(_nSpacingSteps.size(), 0.);
     
 		dt__forFromToIter(
 		  omConstVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it

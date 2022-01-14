@@ -1,6 +1,8 @@
 #ifndef dtParMacros_H
 #define	dtParMacros_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
 #define dt__onlyMaster \

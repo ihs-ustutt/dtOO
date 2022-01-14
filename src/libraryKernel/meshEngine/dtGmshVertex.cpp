@@ -76,7 +76,7 @@ namespace dtOO {
   bool dtGmshVertex::isEqual( 
     ::GVertex const * const gv0, ::GVertex const * const gv1 
   ) {	   
-		float xyzRes 
+		dtReal xyzRes 
     = 
 		staticPropertiesHandler::getInstance()->getOptionFloat(
       "XYZ_resolution"

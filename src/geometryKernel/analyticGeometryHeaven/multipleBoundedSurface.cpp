@@ -56,7 +56,7 @@ namespace dtOO {
     }
 	}
 
-	float multipleBoundedSurface::getMin( int const & dir) const {
+	dtReal multipleBoundedSurface::getMin( int const & dir) const {
     switch (dir) {
       case 0:
         return _m2d->getMin(0);
@@ -67,7 +67,7 @@ namespace dtOO {
     }    		
 	}
   
-	float multipleBoundedSurface::getMax( int const & dir) const {
+	dtReal multipleBoundedSurface::getMax( int const & dir) const {
     switch (dir) {
       case 0:
         return _m2d->getMax(0);
@@ -79,7 +79,7 @@ namespace dtOO {
 	}
     
 	dtPoint3 multipleBoundedSurface::getPoint( 
-    float const * const uvw 
+    dtReal const * const uvw 
   ) const {
    	return _m2d->getPoint(uvw);
 	}	

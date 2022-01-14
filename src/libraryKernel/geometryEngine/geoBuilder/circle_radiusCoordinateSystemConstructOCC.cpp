@@ -14,7 +14,7 @@
 namespace dtOO {
 	circle_radiusCoordinateSystemConstructOCC
     ::circle_radiusCoordinateSystemConstructOCC(
-    dtPoint3 const & pp, dtVector3 const & xx, float const & rr 
+    dtPoint3 const & pp, dtVector3 const & xx, dtReal const & rr 
   ) {
 		//
 		// use standard constructor
@@ -45,7 +45,7 @@ namespace dtOO {
 	circle_radiusCoordinateSystemConstructOCC
     ::circle_radiusCoordinateSystemConstructOCC(
     dtPoint3 const & pp, dtVector3 const & nn, dtVector3 const & xx, 
-    float const & rr 
+    dtReal const & rr 
   ) {
 		//
 		// use standard constructor

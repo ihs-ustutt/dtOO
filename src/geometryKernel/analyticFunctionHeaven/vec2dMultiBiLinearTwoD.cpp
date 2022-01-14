@@ -39,8 +39,8 @@ namespace dtOO {
 			setMax( ii, 1. );
 		}				
     
-    twoDArrayHandling< float > rangeY0(_piece.size(0)+1, _piece.size(1)+1);
-    twoDArrayHandling< float > rangeY1(_piece.size(0)+1, _piece.size(1)+1);
+    twoDArrayHandling< dtReal > rangeY0(_piece.size(0)+1, _piece.size(1)+1);
+    twoDArrayHandling< dtReal > rangeY1(_piece.size(0)+1, _piece.size(1)+1);
     dt__forAllIndex(_piece, ii) {
       dt__forAllIndex(_piece[ii], jj) {    
         aFY y0 = _piece[ii][jj].Y( analyticFunction::aFXTwoD(0., 0.) );
@@ -74,8 +74,8 @@ namespace dtOO {
   aFY vec2dMultiBiLinearTwoD::Y( aFX const & xx ) const {
     dt__throwIf(xx.size()!=2, Y());
    
-    float distU = 1./_piece.size(0);
-    float distV = 1./_piece.size(1);
+    dtReal distU = 1./_piece.size(0);
+    dtReal distV = 1./_piece.size(1);
     int ii = xx[0] / distU;
     int jj = xx[1] / distV;
     
@@ -110,8 +110,8 @@ namespace dtOO {
   }
 
   aFX vec2dMultiBiLinearTwoD::invY( aFY const & yy ) const {
-    float distU = 1./_piece.size(0);
-    float distV = 1./_piece.size(1);
+    dtReal distU = 1./_piece.size(0);
+    dtReal distV = 1./_piece.size(1);
     
     dt__forAllIndex(_piece, ii) {
       dt__forAllIndex(_piece[ii], jj) {    
@@ -124,8 +124,8 @@ namespace dtOO {
         }
       } 
     }
-    twoDArrayHandling< float > rangeX0(_piece.size(0)+1, _piece.size(1)+1);
-    twoDArrayHandling< float > rangeX1(_piece.size(0)+1, _piece.size(1)+1);
+    twoDArrayHandling< dtReal > rangeX0(_piece.size(0)+1, _piece.size(1)+1);
+    twoDArrayHandling< dtReal > rangeX1(_piece.size(0)+1, _piece.size(1)+1);
     
     dt__forAllIndex(_piece, ii) {
       dt__forAllIndex(_piece[ii], jj) {    

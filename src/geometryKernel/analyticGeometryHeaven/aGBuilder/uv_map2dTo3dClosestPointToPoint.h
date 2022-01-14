@@ -1,6 +1,8 @@
 #ifndef uv_map2dTo3dClosestPointToPoint_H
 #define	uv_map2dTo3dClosestPointToPoint_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <vector>
@@ -16,12 +18,12 @@ namespace dtOO {
     );
     virtual ~uv_map2dTo3dClosestPointToPoint();
     dtPoint2 result( void );
-    float distance( void );
+    dtReal distance( void );
   private:
     double F(double const * xx) const;    
   private:
     dtPoint2 _closestUV;
-    float _distance;
+    dtReal _distance;
     map2dTo3d const & _m2d;
     dtPoint3 const & _pXYZ;
   };

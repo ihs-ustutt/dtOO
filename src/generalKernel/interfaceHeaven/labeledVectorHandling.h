@@ -1,6 +1,8 @@
 #ifndef labeledVectorHandling_H
 #define	labeledVectorHandling_H
 
+#include <dtOOTypeDef.h>
+
 #include "vectorHandling.h"
 
 namespace dtOO {

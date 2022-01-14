@@ -1,6 +1,8 @@
 #ifndef DTANALYSIS_H
 #define	DTANALYSIS_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 

@@ -47,7 +47,7 @@ namespace dtOO {
     baseContainer * const bC,
     cVPtrVec const * const cV, 
     aFPtrVec const * const aF,          
-    std::vector< float > const & wire,
+    std::vector< dtReal > const & wire,
     twoDArrayHandling< dt__pH(dtCurve) > & cc,
     twoDArrayHandling< dtPoint3 > & pp
   ) const {
@@ -172,9 +172,9 @@ namespace dtOO {
     int const & fill_maxDeg,
     int const & fill_maxSeg
   ) const {
-    float uMin = boundSurf_0->minPara(0);
-    float uMax = boundSurf_0->maxPara(0);
-    float vMax = boundSurf_0->maxPara(1);
+    dtReal uMin = boundSurf_0->minPara(0);
+    dtReal uMax = boundSurf_0->maxPara(0);
+    dtReal vMax = boundSurf_0->maxPara(1);
     dt__pH(dtCurve) bound_0(
       geomFillBoundWithSurf_surfaceConstructOCC( 
         boundSurf_0, 
@@ -233,7 +233,7 @@ namespace dtOO {
       TLogLevel::logINFO, "buildPart()"
     );
     
-    std::vector< float > wire 
+    std::vector< dtReal > wire 
     =  
     dtXmlParserBase::getAttributeFloatVectorMuParse("wire", toBuild, cV, aF);
     

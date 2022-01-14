@@ -1,6 +1,8 @@
 #ifndef float_map1dTo3dPointConstCartesian_H
 #define	float_map1dTo3dPointConstCartesian_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <vector>
@@ -12,20 +14,20 @@ namespace dtOO {
   public:
     dt__classOnlyName(float_map1dTo3dPointConstCartesian);     
     float_map1dTo3dPointConstCartesian(
-      map1dTo3d const * const m1d, int const & dir, float const & value,
-      float const & initGuess
+      map1dTo3d const * const m1d, int const & dir, dtReal const & value,
+      dtReal const & initGuess
     );        
     float_map1dTo3dPointConstCartesian(
-      map1dTo3d const * const m1d, int const & dir, float const & value
+      map1dTo3d const * const m1d, int const & dir, dtReal const & value
     );
     virtual ~float_map1dTo3dPointConstCartesian();
-    float result( void );
+    dtReal result( void );
   private:
     double F(double const * xx) const;
   private:
-    float _u;
+    dtReal _u;
     int _dir;
-    float _value;
+    dtReal _value;
     map1dTo3d const & _m1d;    
   };
 }

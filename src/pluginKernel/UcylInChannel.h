@@ -1,6 +1,8 @@
 #ifndef UcylInChannel_H
 #define	UcylInChannel_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

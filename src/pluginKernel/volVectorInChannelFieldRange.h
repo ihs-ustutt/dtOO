@@ -1,6 +1,8 @@
 #ifndef volVectorInChannelFieldRange_H
 #define	volVectorInChannelFieldRange_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -38,8 +40,8 @@ namespace dtOO {
       dtXmlParser const * _parser;
       dtCase const * _case;
       std::string _field;
-      float _min;
-      float _max;    
+      dtReal _min;
+      dtReal _max;    
       std::vector< int > _nP;
       bool _noRange;
       static bool _registrated;

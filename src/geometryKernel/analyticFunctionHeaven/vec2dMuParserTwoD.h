@@ -1,6 +1,8 @@
 #ifndef VEC2DMUPARSERTWOD_H
 #define	VEC2DMUPARSERTWOD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec2dTwoD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>

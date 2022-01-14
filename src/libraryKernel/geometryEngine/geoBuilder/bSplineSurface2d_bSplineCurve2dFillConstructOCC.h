@@ -1,6 +1,8 @@
 #ifndef BSPLINESURFACE2D_BSPLINECURVE2DFILLCONSTRUCTOCC_H
 #define	BSPLINESURFACE2D_BSPLINECURVE2DFILLCONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

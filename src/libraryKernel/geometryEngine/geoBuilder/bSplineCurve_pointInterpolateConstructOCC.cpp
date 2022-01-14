@@ -57,7 +57,7 @@ namespace dtOO {
 		//
 		dt__forAllIndex(pp, ii) {		        
 			arr2.SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) ); 
-		  para->SetValue( ii+1, static_cast<float>(ii) );
+		  para->SetValue( ii+1, static_cast<dtReal>(ii) );
 	  }
 		dtOCCCurveBase base;
     dt__tryOcc(    

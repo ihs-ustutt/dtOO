@@ -1,6 +1,8 @@
 #ifndef dtPointD_readCSV_H
 #define	dtPointD_readCSV_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 

@@ -1,6 +1,8 @@
 #ifndef BSPLINESURFACE_PIPECONSTRUCTOCC_H
 #define	BSPLINESURFACE_PIPECONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -31,7 +33,7 @@ namespace dtOO {
     );    
     bSplineSurface_pipeConstructOCC(
       dtCurve const * const aPath, 
-      float const & rr,
+      dtReal const & rr,
       bool const & polynomial,
       int const & absShape,
       int const & maxDegree,

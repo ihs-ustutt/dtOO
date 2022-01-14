@@ -1,6 +1,8 @@
 #ifndef GEOMSURFACE_SURFACEROTATECONSTRUCTOCC_H
 #define	GEOMSURFACE_SURFACEROTATECONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -17,7 +19,7 @@ namespace dtOO {
       dtSurface const * const dtS, 
       dtPoint3 const & oP, 
       dtVector3 const & rA, 
-      float const & angle
+      dtReal const & angle
     );
     virtual ~geomSurface_surfaceRotateConstructOCC();
     dtSurface * result( void );    

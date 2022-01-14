@@ -1,6 +1,8 @@
 #ifndef VEC2DCURVE2DONED_H
 #define	VEC2DCURVE2DONED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec2dOneD.h"
@@ -25,7 +27,7 @@ namespace dtOO {
     virtual vec2dCurve2dOneD * create( void ) const;    
     virtual ~vec2dCurve2dOneD();
     using vec2dOneD::Y; // name hiding
-    virtual aFY Y( float const & xx) const;
+    virtual aFY Y( dtReal const & xx) const;
     vectorHandling< renderInterface * > getRender( void ) const;
     dtCurve2d const * ptrDtCurve2d( void ) const;
     virtual bool closed( int const & dir ) const;

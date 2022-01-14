@@ -51,7 +51,7 @@ namespace dtOO {
     //
     // get distance
     //
-    float distance 
+    dtReal distance 
     = 
     dtXmlParserBase::getAttributeFloatMuParse("distance", toBuildP, cV, aF);
     

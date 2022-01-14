@@ -1,6 +1,8 @@
 #ifndef MAP1DTO3D_H
 #define	MAP1DTO3D_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include "analyticGeometry.h"
 #include <logMe/dtMacros.h>
@@ -15,7 +17,7 @@ namespace dtOO {
       map1dTo3d(const map1dTo3d& orig);
       virtual ~map1dTo3d();
       virtual int dim( void ) const;            
-      virtual dtPoint3 getPoint( float const * const uvw ) const;      
+      virtual dtPoint3 getPoint( dtReal const * const uvw ) const;      
       //
       // overload
       //
@@ -24,40 +26,40 @@ namespace dtOO {
       virtual map1dTo3d * cloneTransformed( 
         dtTransformer const * const dtT 
       ) const = 0;      
-      virtual dtPoint3 getPoint( float const & uu ) const = 0;
+      virtual dtPoint3 getPoint( dtReal const & uu ) const = 0;
       //
       // optional overload
       //
-      virtual dtVector3 firstDerU( float const & uu) const;
-      virtual map1dTo3d * segment( float const & u0, float const & u1 ) const;      
-      virtual float l_u( float const & uu ) const;
-      virtual float u_l( float const & ll ) const;
+      virtual dtVector3 firstDerU( dtReal const & uu) const;
+      virtual map1dTo3d * segment( dtReal const & u0, dtReal const & u1 ) const;      
+      virtual dtReal l_u( dtReal const & uu ) const;
+      virtual dtReal u_l( dtReal const & ll ) const;
       virtual vectorHandling< renderInterface * > getRender( void ) const;
       //
       //
       //
-      dtPoint3 getPointPercent( float const & uu ) const;  
-      dtVector3 firstDerUPercent( float const & uP) const;
-      map1dTo3d * segmentPercent( float const & u0, float const & u1 ) const;     
+      dtPoint3 getPointPercent( dtReal const & uu ) const;  
+      dtVector3 firstDerUPercent( dtReal const & uP) const;
+      map1dTo3d * segmentPercent( dtReal const & u0, dtReal const & u1 ) const;     
       int getRenderResolutionU( void ) const;
-      float u_percent(float const & uu) const;
-      float u_lPercent(float const & lP) const;
-      float percent_u(float const & uu) const;
-      float percent_l(float const & ll) const;  
-      float lPercent_u(float const & uu) const;
+      dtReal u_percent(dtReal const & uu) const;
+      dtReal u_lPercent(dtReal const & lP) const;
+      dtReal percent_u(dtReal const & uu) const;
+      dtReal percent_l(dtReal const & ll) const;  
+      dtReal lPercent_u(dtReal const & uu) const;
       bool isClosedU( void ) const;
-      float getUMin( void ) const;
-      float getUMax( void ) const;
-      float length( void ) const;
-      float operator%( const float &percent ) const;        
-      float operator|( const float &length ) const;  
-      float operator&( const float &lengthPercent ) const;
+      dtReal getUMin( void ) const;
+      dtReal getUMax( void ) const;
+      dtReal length( void ) const;
+      dtReal operator%( const dtReal &percent ) const;        
+      dtReal operator|( const dtReal &length ) const;  
+      dtReal operator&( const dtReal &lengthPercent ) const;
     private:
-      float l_u( float const & uu, int const & nP ) const;
+      dtReal l_u( dtReal const & uu, int const & nP ) const;
 	    double funValue(const double xx ) const;
     private:
-      mutable float _tmpL;
-      static float _deltaPer;      
+      mutable dtReal _tmpL;
+      static dtReal _deltaPer;      
   };  
   
 	//
