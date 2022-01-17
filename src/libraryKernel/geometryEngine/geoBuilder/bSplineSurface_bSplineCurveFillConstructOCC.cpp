@@ -15,7 +15,7 @@
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BSplineSurface.hxx>
 #include <GeomFill_FillingStyle.hxx>
-#include <geometryEngine/GeomFill_BSplineCurvesExtPrecision.h>
+#include <GeomFill_BSplineCurves.hxx>
 
 namespace dtOO {
 	bSplineSurface_bSplineCurveFillConstructOCC
@@ -50,13 +50,12 @@ namespace dtOO {
 		  CC[ii] = Handle(Geom_BSplineCurve)::DownCast( occC[ii].OCCRef().getOCC() );
     }
 
-		GeomFill_BSplineCurvesExtPrecision fill;
+		GeomFill_BSplineCurves fill;
 		dtOCCSurfaceBase base;	
 		dt__tryOcc(
 			fill.Init(
 			  CC[0], CC[1], CC[2], CC[3], 
-				GeomFill_FillingStyle::GeomFill_StretchStyle,
-				staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
+				GeomFill_FillingStyle::GeomFill_StretchStyle
 			);						
 			base.setOCC( fill.Surface() );
 		,
