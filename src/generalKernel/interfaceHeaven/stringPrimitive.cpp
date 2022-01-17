@@ -27,7 +27,7 @@ namespace dtOO {
 
   std::string stringPrimitive::floatToString(dtReal const value) {
     std::ostringstream buff;
-    buff << value;
+    buff << std::setprecision(8) << std::fixed << value;
     return buff.str();
   }
 
