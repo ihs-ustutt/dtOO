@@ -72,8 +72,8 @@ twoDArrayHandling< std::string > readBlock(
 
 void readT3s( 
   std::string const & filename, 
-  twoDArrayHandling< float > & nodes,
-  vectorHandling< float > & bathymetry,
+  twoDArrayHandling< dtReal > & nodes,
+  vectorHandling< dtReal > & bathymetry,
   twoDArrayHandling< int > & elements
 ) {
   std::ifstream in( filename.c_str() );
@@ -430,9 +430,9 @@ void readBc2(
 void createModel(
   dtGmshModel * gm, 
   dtOMMesh & om,
-  twoDArrayHandling< float > const & nodes, 
+  twoDArrayHandling< dtReal > const & nodes, 
   twoDArrayHandling< int > const & elements,
-  vectorHandling< float > const & bathymetry,
+  vectorHandling< dtReal > const & bathymetry,
   std::map< std::string, int > const & boundaryNumber,
   std::map< std::string, std::list< int > > const & boundarys
 ) {
@@ -458,8 +458,8 @@ void createModel(
     new dtOMFaceField< int >("fIndexField", om, -1)
   );  
   om.enqueueField( 
-    new dtOMVertexField< float >(
-      "bathymetryField", om, std::numeric_limits<float>::max()
+    new dtOMVertexField< dtReal >(
+      "bathymetryField", om, std::numeric_limits<dtReal>::max()
     )
   );  
   dtOMVertexField< std::string > & boundaryNameVertexField 
@@ -492,9 +492,9 @@ void createModel(
   *dtOMEdgeField< dtGmshEdge * >::MustDownCast( 
     om["gEdgeField"] 
   );     
-  dtOMVertexField< float > & bathymetryField 
+  dtOMVertexField< dtReal > & bathymetryField 
   =
-  *dtOMVertexField< float >::MustDownCast( 
+  *dtOMVertexField< dtReal >::MustDownCast( 
     om["bathymetryField"] 
   );  
   
@@ -801,7 +801,7 @@ void createModel(
   }  
 }
 
-void makeModel3d( dtGmshModel * gm, float const & ss ) {
+void makeModel3d( dtGmshModel * gm, dtReal const & ss ) {
   //
   // create 2d twin
   //
@@ -1080,7 +1080,7 @@ int main( int ac, char* av[] ) {
       )        
       (
         "size,s", 
-        dtPO::value< float >(), 
+        dtPO::value< dtReal >(), 
         "size of the cells"
       )            
       (
@@ -1114,8 +1114,8 @@ int main( int ac, char* av[] ) {
     //
     // elemts, nodes, bathymetry
     //
-    twoDArrayHandling< float > nodes;
-    vectorHandling< float > bathymetry;
+    twoDArrayHandling< dtReal > nodes;
+    vectorHandling< dtReal > bathymetry;
     twoDArrayHandling< int > elements;
         
     //
@@ -1143,7 +1143,7 @@ int main( int ac, char* av[] ) {
     //
     // create three dimensional model
     //
-    makeModel3d( gm, vm["size"].as< float >() );
+    makeModel3d( gm, vm["size"].as< dtReal >() );
 
     //
     // write gmsh file
@@ -1262,14 +1262,14 @@ int main( int ac, char* av[] ) {
       //
       // get bathymetry
       //
-      dtOMVertexField< float > * bathymetryField 
+      dtOMVertexField< dtReal > * bathymetryField 
       = 
-      dtOMVertexField<float>::MustDownCast( om["bathymetryField"] );
+      dtOMVertexField<dtReal>::MustDownCast( om["bathymetryField"] );
       
       int cc = 0;
       dt__forAllRefAuto(gm->getDtGmshFaceByPhysical("up")->triangles, aPri) {
         omFaceH const & fH = om.at(aPri);
-        float intValue = 0.;
+        dtReal intValue = 0.;
         
         if ( vm["extend"].as< bool >() ) {
           std::vector< omVertexH > vH_v;        

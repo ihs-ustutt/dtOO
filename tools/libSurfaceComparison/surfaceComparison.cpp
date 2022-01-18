@@ -28,9 +28,9 @@ namespace dtOO {
   double surfaceComparison::UAbl_R ( double const * xx )const {
     dt__ptrAss( map2dTo3d  *surface2, map2dTo3d::DownCast( _refSurface ) );
     dtPoint2 Help=surface2->uv_percent( 
-    static_cast< float >(xx[0]), static_cast< float >(xx[1]));
-    const float x=Help.x();
-    const float y=Help.y();
+    static_cast< dtReal >(xx[0]), static_cast< dtReal >(xx[1]));
+    const dtReal x=Help.x();
+    const dtReal y=Help.y();
     return (_point - surface2->getPoint(x,y))
            * (surface2->firstDerU(x,y));
   }
@@ -38,9 +38,9 @@ namespace dtOO {
   double surfaceComparison::VAbl_R ( double const * xx ) const {
     dt__ptrAss( map2dTo3d  *surface2, map2dTo3d::DownCast( _refSurface ) );
     dtPoint2  Help=surface2->uv_percent (
-    static_cast< float >(xx[0]), static_cast< float >(xx[1]));
-    const float x=Help.x();
-    const float y=Help.y();
+    static_cast< dtReal >(xx[0]), static_cast< dtReal >(xx[1]));
+    const dtReal x=Help.x();
+    const dtReal y=Help.y();
     return (_point - surface2->getPoint(x,y))
            * (surface2->firstDerV(x,y));
   }
@@ -48,9 +48,9 @@ namespace dtOO {
   double surfaceComparison::Euclidean_Distance (double const *Wert) const {
     dt__ptrAss( map2dTo3d  *surface2, map2dTo3d::DownCast( _refSurface ));
     return sqrt((_point - surface2->getPointPercent(
-            static_cast< float >(Wert[0]),static_cast< float >(Wert[1])))
-            *(_point - surface2->getPointPercent(static_cast< float >(Wert[0]), 
-            static_cast< float >(Wert[1]))));
+            static_cast< dtReal >(Wert[0]),static_cast< dtReal >(Wert[1])))
+            *(_point - surface2->getPointPercent(static_cast< dtReal >(Wert[0]), 
+            static_cast< dtReal >(Wert[1]))));
   }
    
   int surfaceComparison::Grinding(int Teiler) {
@@ -187,8 +187,8 @@ namespace dtOO {
     if (_printlevel>0)
       cout << "Start" << endl;
     
-    for (float j=0;j<=1.01;j=j+_span) {
-      for (float i=0;i<=1.01;i=i+_span) {
+    for (dtReal j=0;j<=1.01;j=j+_span) {
+      for (dtReal i=0;i<=1.01;i=i+_span) {
         _interval=_transition;
         _point = surface->getPointPercent(j,i);
         values++;

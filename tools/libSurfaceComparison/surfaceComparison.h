@@ -49,7 +49,7 @@ namespace dtOO {
     double _result[2];
     double _extension[2];
     int _printlevel;
-    float _span;
+    dtReal _span;
     double _auxiliary;
     int _precision;
     
