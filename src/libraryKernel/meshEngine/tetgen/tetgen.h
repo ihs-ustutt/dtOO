@@ -1,7 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-
-#include <dtOOTypeDef.h>
 // TetGen                                                                    //
 //                                                                           //
 // A Quality Tetrahedral Mesh Generator and A 3D Delaunay Triangulator       //
