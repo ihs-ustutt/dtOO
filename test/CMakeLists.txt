@@ -3,7 +3,7 @@
 #
 add_test(
   NAME base 
-  COMMAND ipython "build.py"
+  COMMAND python3 "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/base
 )
 set_tests_properties(
@@ -23,7 +23,7 @@ add_custom_target(
 #
 add_test(
   NAME naca 
-  COMMAND ipython "build.py"
+  COMMAND python3 "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
 )
 set_tests_properties(
