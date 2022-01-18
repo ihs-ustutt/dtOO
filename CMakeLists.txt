@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 2.8)
 
-find_program(CCACHE_PROGRAM ccache)
-if(CCACHE_PROGRAM)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-endif()
+option(DTOO_USE_CCACHE "Use CCACHE" OFF)
+if (DTOO_USE_CCACHE)
+  find_program(CCACHE_PROGRAM ccache)
+  if(CCACHE_PROGRAM)
+      set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+  endif()
+endif(DTOO_USE_CCACHE)  
 
-project (designTool)
+project(designTool)
 
 #------------------------------------------------------------------------------#
 #                                                                              #
