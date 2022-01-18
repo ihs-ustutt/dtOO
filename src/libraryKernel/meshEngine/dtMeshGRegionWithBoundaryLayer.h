@@ -65,14 +65,14 @@ namespace dtOO {
         vectorHandling< dtReal > & minT      
       );
     private:
-      static int _NORMAL;
-      static int _SLIDER;
-      static int _FIXER;        
-      int _nNormalSmoothingSteps;
-      int _nGrowingSmoothingSteps;
+      static dtInt _NORMAL;
+      static dtInt _SLIDER;
+      static dtInt _FIXER;        
+      dtInt _nNormalSmoothingSteps;
+      dtInt _nGrowingSmoothingSteps;
       dtReal _maxGrowingRatePerStep;
       dtReal _maxDihedralAngle;
-      std::vector< int > _nSpacingSteps;
+      std::vector< dtInt > _nSpacingSteps;
       std::vector< bool > _flipNormal;
       //
       // define two surface meshes with fixed, thickness 
@@ -87,10 +87,10 @@ namespace dtOO {
       dtOMDynamicVertexField< bool > _flipNormalF;
       dtOMDynamicVertexField< std::vector< ::MVertex * > > _buddyF;
       dtOMDynamicVertexField< std::vector< dtReal > > _realSpacing;
-      dtOMDynamicVertexField< int > _faceIndex;
-      dtOMDynamicFaceField< int > _extrudeF;
-      dtOMDynamicFaceField< int > _typeF;
-      dtOMDynamicFaceField< int > _nSpacingStepsF;         
+      dtOMDynamicVertexField< dtInt > _faceIndex;
+      dtOMDynamicFaceField< dtInt > _extrudeF;
+      dtOMDynamicFaceField< dtInt > _typeF;
+      dtOMDynamicFaceField< dtInt > _nSpacingStepsF;         
       std::vector< std::string > _faceLabel;
       std::vector< std::string > _fixedFaceLabel;
       std::vector< std::string > _slidableFaceLabel;

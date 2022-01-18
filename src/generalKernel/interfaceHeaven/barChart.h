@@ -11,27 +11,27 @@ namespace dtOO {
       dt__classOnlyName(barChart);    
       barChart(
         std::string const & title,
-        dtReal const & min, dtReal const & max, int const & nBars             
+        dtReal const & min, dtReal const & max, dtInt const & nBars             
       );
       virtual ~barChart();
       void operator()( dtReal const & val );
       dtReal globalMin( void ) const;
       dtReal globalMax( void ) const;
-      int nBars( void ) const;
-      dtReal barAverage( int const & location ) const;
+      dtInt nBars( void ) const;
+      dtReal barAverage( dtInt const & location ) const;
       dtReal average( void ) const;
     private:
       friend std::ostream& operator<<(std::ostream& os, const barChart& toLog);    
     private:
       dtReal _min;
       dtReal _max;
-      int _nBars;
+      dtInt _nBars;
       dtReal _globalMin;
       dtReal _globalMax;
-      std::vector< int > _bar;
+      std::vector< dtInt > _bar;
       std::vector< dtReal > _barValue;
       dtReal _step;
-      int _nValues;
+      dtInt _nValues;
       std::string _title;
       dtReal _sum;
   };

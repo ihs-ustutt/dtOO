@@ -49,7 +49,7 @@ namespace dtOO {
     scaOneD const * betaMod = _betaMod;
     scaOneD const * betaPrime = scaOneD::ConstDownCast( theF[0] );
     
-    int nn = 100;
+    dtInt nn = 100;
     dtReal const deltaR = 1./nn;
     dtReal sum = 0.;
     dt__forFromToIndex(0, 100, ii) {

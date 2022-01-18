@@ -83,7 +83,7 @@ namespace dtOO {
 		// control points
 		//		
 		if (_dtC->nControlPoints() != 0) {
-      int numPoints = _dtC->nControlPoints();
+      dtInt numPoints = _dtC->nControlPoints();
 			dtPoint3 tmpControlPoint;
 
 			for (int ii=0; ii<numPoints; ii++) {
@@ -116,15 +116,15 @@ namespace dtOO {
     return _dtC->u_l(ll);
   } 
   
-  bool analyticCurve::isClosed( int const & dir) const {
+  bool analyticCurve::isClosed( dtInt const & dir) const {
     return _dtC->closed();
   }
   
-  dtReal analyticCurve::getMin( int const & dir) const {
+  dtReal analyticCurve::getMin( dtInt const & dir) const {
     return _dtC->minPara(dir);
   }
 
-  dtReal analyticCurve::getMax( int const & dir) const {
+  dtReal analyticCurve::getMax( dtInt const & dir) const {
     return _dtC->maxPara(dir);
   }  
 

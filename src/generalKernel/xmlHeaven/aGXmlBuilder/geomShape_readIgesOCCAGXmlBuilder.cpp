@@ -80,7 +80,7 @@ namespace dtOO {
     );
     reader.PrintCheckLoad( false, ::IFSelect_ItemsByEntity ); 
     
-    int nGeos = reader.TransferRoots();
+    dtInt nGeos = reader.TransferRoots();
     
     dt__info( buildPart(), << nGeos << " successful translations." );
     

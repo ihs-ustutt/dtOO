@@ -19,7 +19,7 @@ using namespace dtOO;
 template< typename T > 
 void combinations( 
   std::vector< std::vector< T > > array, 
-  int i, 
+  dtInt i, 
   std::vector< T > accum, 
   std::vector< std::vector< T > > & comb
 ) {
@@ -41,7 +41,7 @@ void combinations(
 
 std::vector< std::vector< std::pair< constValue *, dtReal > > > simpleCreate(
   cVPtrVec & constValuePtrVec,
-  std::vector< int > & nSamples  
+  std::vector< dtInt > & nSamples  
 ) {
   //
   // create samples
@@ -54,7 +54,7 @@ std::vector< std::vector< std::pair< constValue *, dtReal > > > simpleCreate(
     constValue * thisCV = constValuePtrVec[jj];
 
     //
-    // convert int to float
+    // convert dtInt to float
     dtReal nSamplesF = static_cast< dtReal >(nSamples[jj]);
     dtReal step = (thisCV->getMax() - thisCV->getMin()) / (nSamplesF-1.);
 
@@ -78,7 +78,7 @@ std::vector< std::vector< std::pair< constValue *, dtReal > > > simpleCreate(
   //
   std::vector< std::vector< std::pair< constValue *, dtReal > > > out;
   std::vector< std::pair< constValue *, dtReal > > accum;
-  int counter = 0;
+  dtInt counter = 0;
   combinations(samples, counter, accum, out);
 
   return samples;
@@ -151,7 +151,7 @@ std::vector< std::vector< std::pair< constValue *, dtReal > > > csvCreate(
   return samples;
 }
 
-int main( int ac, char* av[] ) {
+int main( dtInt ac, char* av[] ) {
   try {
     //
     // options
@@ -179,7 +179,7 @@ int main( int ac, char* av[] ) {
       )
       (
         "nSamples,n", 
-        dtPO::value< std::vector< int > >(), 
+        dtPO::value< std::vector< dtInt > >(), 
         "number of samples (optional)"
       )
       (
@@ -261,7 +261,7 @@ int main( int ac, char* av[] ) {
         constValuePtrVec.push_back( cV.get( aConstValue ) );
       }
     
-      std::vector< int > nSamples = vm["nSamples"].as< std::vector< int > >();
+      std::vector< dtInt > nSamples = vm["nSamples"].as< std::vector< dtInt > >();
       dt__throwIfNoClass( nSamples.size()!=constValuePtrVec.size(), main() );
       samples = simpleCreate( constValuePtrVec, nSamples);
     }
@@ -282,7 +282,7 @@ int main( int ac, char* av[] ) {
     std::vector< cVPtrVec > stateToWrite;
     std::vector< std::string > stateLabel;
     std::string prefix = vm["prefix"].as< std::string >();
-    int pairCounter = 0;
+    dtInt pairCounter = 0;
     dt__forAllRefAuto(samples, samplesVec) {
       //
       // label

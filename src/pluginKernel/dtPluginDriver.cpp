@@ -4,7 +4,7 @@
 
 namespace dtOO {
   dtPluginDriver::dtPluginDriver(
-    std::string name, int version
+    std::string name, dtInt version
   ) : pugg::Driver(dtPlugin::server_name(), name, version) {
     
   }

@@ -54,7 +54,7 @@ namespace dtOO {
     return new map2dTo3dTransformed< rotatingMap1dTo3d >(*this, dtT);
   }  
 	
-  bool rotatingMap1dTo3d::isClosed( int const & dir) const {
+  bool rotatingMap1dTo3d::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return true;
@@ -69,7 +69,7 @@ namespace dtOO {
     }
 	}
   
-	dtReal rotatingMap1dTo3d::getMin( int const & dir) const {
+	dtReal rotatingMap1dTo3d::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 0.;
@@ -84,7 +84,7 @@ namespace dtOO {
     }    		
 	}
   
-	dtReal rotatingMap1dTo3d::getMax( int const & dir) const {
+	dtReal rotatingMap1dTo3d::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 1.;

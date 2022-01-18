@@ -52,7 +52,7 @@ namespace dtOO {
     return new map3dTo3dTransformed< radialTranslatingMap2dTo3d >(*this, dtT);
   }  
 	
-  bool radialTranslatingMap2dTo3d::isClosed( int const & dir) const {
+  bool radialTranslatingMap2dTo3d::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return false;
@@ -69,7 +69,7 @@ namespace dtOO {
     }
 	}
   
-	dtReal radialTranslatingMap2dTo3d::getMin( int const & dir) const {
+	dtReal radialTranslatingMap2dTo3d::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _m2d->getUMin();
@@ -86,7 +86,7 @@ namespace dtOO {
     }    		
 	}
   
-	dtReal radialTranslatingMap2dTo3d::getMax( int const & dir) const {
+	dtReal radialTranslatingMap2dTo3d::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _m2d->getUMax();

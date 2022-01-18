@@ -30,9 +30,9 @@ namespace dtOO {
     private:
       dt__pH(map2dTo3d const) _m2d;
       dtReal _thickness;
-      int _nPoints;
-      int _nIntPoints;
-      int _order;
+      dtInt _nPoints;
+      dtInt _nIntPoints;
+      dtInt _order;
       static bool _registrated;    
   };
 }

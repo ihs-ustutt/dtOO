@@ -19,10 +19,10 @@ namespace dtOO {
     dtOCCBSplineCurve2d( dtOCCCurve2dBase const & orig);
     virtual ~dtOCCBSplineCurve2d();
     virtual dtCurve2d * clone( void ) const;
-    virtual int order( void ) const;
-    virtual int nControlPoints( void ) const;
-    virtual dtPoint2 controlPoint( int const nPoint ) const;
-    virtual void setControlPoint( int const nPoint, dtPoint2 const point );    
+    virtual dtInt order( void ) const;
+    virtual dtInt nControlPoints( void ) const;
+    virtual dtPoint2 controlPoint( dtInt const nPoint ) const;
+    virtual void setControlPoint( dtInt const nPoint, dtPoint2 const point );    
   private:
     Geom2d_BSplineCurve const * _ptr;
   };

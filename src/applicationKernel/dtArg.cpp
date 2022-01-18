@@ -3,7 +3,7 @@
 
 namespace dtOO {  
   dtArg::dtArg( 
-    std::string const & appName, int argC, char const * const argV[] 
+    std::string const & appName, dtInt argC, char const * const argV[] 
   ) : dtArgMap(), _desc("Allowed options") {
     _argC = argC;    
     _argV = argV;

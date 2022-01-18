@@ -33,9 +33,9 @@ namespace dtOO {
       );      
       void operator()( dtGmshFace * dtgr );    
     private:
-      int _direction;
-      std::vector< int > _nLayers;
-      int _nSmooth;
+      dtInt _direction;
+      std::vector< dtInt > _nLayers;
+      dtInt _nSmooth;
   };
 }
 #endif	/* dtMeshGFaceWithTransfiniteLayer_H */

@@ -20,9 +20,9 @@ namespace dtOO {
     virtual dtSurface * clone( void ) const;
 	  virtual dtCurve * segmentConstU( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const;
 	  virtual dtCurve * segmentConstV( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const;     
-    virtual dtPoint3 controlPoint( int const uI, int const vI ) const;
-    virtual void setControlPoint( int const uI, int const vI, dtPoint3 const point );    
-    virtual int nControlPoints( int const dim ) const;   
+    virtual dtPoint3 controlPoint( dtInt const uI, dtInt const vI ) const;
+    virtual void setControlPoint( dtInt const uI, dtInt const vI, dtPoint3 const point );    
+    virtual dtInt nControlPoints( dtInt const dim ) const;   
   private:
     Geom_BezierSurface const * _ptr;
   };

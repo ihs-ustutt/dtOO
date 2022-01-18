@@ -69,7 +69,7 @@ namespace dtOO {
       static dtVector3 sum( std::vector< dtVector3 > const & vv );
       static dtReal sum( std::vector< dtReal > const & vv );
       static dtReal sum( 
-        std::vector< dtReal > const & vv, int const & from, int const & to 
+        std::vector< dtReal > const & vv, dtInt const & from, dtInt const & to 
       );
       static dtReal euclidianNorm( std::vector< dtReal > const & vv );
       static std::vector< dtReal > subtract( 
@@ -122,7 +122,7 @@ namespace dtOO {
       static dtPoint3 returnFarthestPointTo(
         dtPoint3 pp, dtPoint3 p0, dtPoint3 p1
       );
-      static int returnNearestPointIndexTo(
+      static dtInt returnNearestPointIndexTo(
         dtPoint3 const & pp, std::vector< dtPoint3 > const & pV
       );
       static void makeOrdered(std::vector< dtPoint3 > & pp);
@@ -177,7 +177,7 @@ namespace dtOO {
       );
       static std::vector< dtReal > unitGrid(int const & nU);        
       static twoDArrayHandling< dtPoint2 > unitGrid( 
-        int const & nU, int const & nV
+        dtInt const & nU, dtInt const & nV
       );
   };
 }

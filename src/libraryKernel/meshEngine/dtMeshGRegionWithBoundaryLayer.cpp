@@ -27,9 +27,9 @@
 #include <gmsh/Field.h>
 
 namespace dtOO {
-  int dtMeshGRegionWithBoundaryLayer::_NORMAL = 1;
-  int dtMeshGRegionWithBoundaryLayer::_SLIDER = 2;
-  int dtMeshGRegionWithBoundaryLayer::_FIXER = 3;
+  dtInt dtMeshGRegionWithBoundaryLayer::_NORMAL = 1;
+  dtInt dtMeshGRegionWithBoundaryLayer::_SLIDER = 2;
+  dtInt dtMeshGRegionWithBoundaryLayer::_FIXER = 3;
   
   dtMeshGRegionWithBoundaryLayer::dtMeshGRegionWithBoundaryLayer(
   ) 
@@ -38,7 +38,7 @@ namespace dtOO {
   _nGrowingSmoothingSteps(0),
   _maxGrowingRatePerStep(1.0),
   _maxDihedralAngle(0.),
-  _nSpacingSteps(std::vector< int >(0, 0)),
+  _nSpacingSteps(std::vector< dtInt >(0, 0)),
   _omInit(),
   _omMoved(),    
   _fixedF("_fixedF", _omInit, false),
@@ -121,7 +121,7 @@ namespace dtOO {
     else {
       _nSpacingSteps
       =
-      std::vector< int >(
+      std::vector< dtInt >(
         _faceLabel.size(), 
         dtXmlParserBase::getAttributeIntMuParse(
           "nSpacingSteps", element, cV, aF
@@ -196,7 +196,7 @@ namespace dtOO {
     // add different surface meshes and initialize fields
     //
 		// normal surface
-    int cc = 0;
+    dtInt cc = 0;
     dt__forAllRefAuto(faceList, thisFace) {
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());      
 
@@ -280,8 +280,8 @@ namespace dtOO {
       omFaceI, _omInit.faces_begin(), _omInit.faces_end(), fIt
     ) {
       // find slidable faces and mark them with 2
-      int slider = 0;
-      int nCanSlider = 0;
+      dtInt slider = 0;
+      dtInt nCanSlider = 0;
 			dt__forFromToIter(
 			  omConstFaceVertexI,_omInit.cfv_begin(*fIt), _omInit.cfv_end(*fIt), vIt
 			) {
@@ -909,7 +909,7 @@ namespace dtOO {
     ) {
       if ( _buddyF.at(*v_it).empty() ) continue;
       
-      int fI = _faceIndex.at(*v_it);
+      dtInt fI = _faceIndex.at(*v_it);
       
       if ( !_slidableF.at(*v_it) ) {
         dt__forAllIndex(_realSpacing[ *v_it ], ii) {
@@ -961,7 +961,7 @@ namespace dtOO {
         omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
       ) {
         if ( _buddyF.at(*v_it).empty() || _slidableF.at(*v_it) ) continue;
-        int fI = _faceIndex.at(*v_it);
+        dtInt fI = _faceIndex.at(*v_it);
         tFTwin[ *v_it ] = std::max( _tF.oneRingAverage( *v_it ), minT[fI] );
       }
       dt__forFromToIter(
@@ -969,7 +969,7 @@ namespace dtOO {
       ) {    
         if ( _buddyF.at(*v_it).empty() || _slidableF.at(*v_it) ) continue;
                
-        int fI = _faceIndex.at(*v_it);
+        dtInt fI = _faceIndex.at(*v_it);
         
         _tF[ *v_it ] 
          = 
@@ -1068,7 +1068,7 @@ namespace dtOO {
 		  omConstVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
 		) {
       if ( _buddyF.at( *v_it ).empty() || !_slidableF.at( *v_it ) ) continue;
-      int fI = _faceIndex.at(*v_it);
+      dtInt fI = _faceIndex.at(*v_it);
       nodeCount[fI] = nodeCount[fI] + 1.;
       
       avT[fI] = avT[fI] + _tF.at( *v_it );

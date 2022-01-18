@@ -48,8 +48,8 @@ namespace dtOO {
 		dt__throwIf(!dtXmlParserBase::hasAttribute("max_order", toBuild), buildPart());
 		dt__throwIf(!dtXmlParserBase::hasAttribute("num_segments", toBuild), buildPart());
 
-    int const maxOrder = dtXmlParserBase::getAttributeIntMuParse("max_order", toBuild, cV, aF);
-    int const nSegments 
+    dtInt const maxOrder = dtXmlParserBase::getAttributeIntMuParse("max_order", toBuild, cV, aF);
+    dtInt const nSegments 
     = 
     dtXmlParserBase::getAttributeIntMuParse("num_segments", toBuild, cV, aF);
     dtReal const tol 

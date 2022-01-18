@@ -31,7 +31,7 @@ namespace dtOO {
     private:
       std::vector< std::string > _faceLabel;
       std::vector< std::string > _regionLabel;
-      std::vector< int > _nE;     
+      std::vector< dtInt > _nE;     
   };
 }
 #endif	/* bVOSetNElements_H */

@@ -58,7 +58,7 @@ namespace dtOO {
     if ( _faceLabel.empty() ) {
       logC() << "Apply automatic naming" << std::endl;
       dt__forAllRefAuto(gm->regions(), aReg) {
-        int cc = 0;
+        dtInt cc = 0;
         logC() << "Region : " << gm->getPhysicalString(aReg) << std::endl;
         dt__forAllRefAuto( aReg->faces(), aFace ) {
           if ( gm->getPhysicalString(aFace) == "" ) {
@@ -90,14 +90,14 @@ namespace dtOO {
         }
       }
       else {
-        int counter = 0;      
+        dtInt counter = 0;      
         dt__forAllRefAuto(gm->faces(), aFace) {
-          std::vector< int > pInt = aFace->getPhysicalEntities();
+          std::vector< dtInt > pInt = aFace->getPhysicalEntities();
           dt__throwIf(pInt.size()!=0, preUpdate());
 
           std::string newL = _faceLabel[counter];
           if (newL != "") {
-            int pTag = aFace->model()->setPhysicalName(newL, 2, 0);
+            dtInt pTag = aFace->model()->setPhysicalName(newL, 2, 0);
             aFace->addPhysicalEntity(pTag);
             dtGmshModel::intGEntityVMap map;
             gm->getPhysicalGroups(2, map);          

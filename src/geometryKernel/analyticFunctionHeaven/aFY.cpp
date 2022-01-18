@@ -15,7 +15,7 @@ namespace dtOO {
     dt__forAllIndex( orig, ii ) this->operator[]( ii ) = orig.at( ii );
   }
   
-  aFY::aFY( int const & ss, double const & ref ) 
+  aFY::aFY( dtInt const & ss, double const & ref ) 
     : std::vector< dtReal >(ss, static_cast< dtReal >(ref) ) {
 
   }

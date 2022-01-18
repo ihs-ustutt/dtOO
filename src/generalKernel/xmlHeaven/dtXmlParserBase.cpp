@@ -962,7 +962,7 @@ namespace dtOO {
 	) {
     std::string returnExpression;
     returnExpression = expression;
-    unsigned int found;
+    dtUnsInt found;
     //
     // check if there is a constValue in expression
     // 1. * #cVLabel#
@@ -972,9 +972,9 @@ namespace dtOO {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find(_CVSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find(_CVSIGN, found+1);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       
       //
       // extract constValue label and option
@@ -1013,9 +1013,9 @@ namespace dtOO {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find(_CALCSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find(_CALCSIGN, found+1);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       
       //
       // muparse string
@@ -1065,15 +1065,15 @@ namespace dtOO {
     // check if there is a function in expression
     // $functionName(value * #constValue#)$
     //
-    unsigned int found = returnExpression.find(_AFSIGN);
+    dtUnsInt found = returnExpression.find(_AFSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
       //
-      //unsigned int foundEnd = returnExpression.find_last_of(_AFSIGN);
-      unsigned int foundEnd = returnExpression.find_first_of(_AFSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      //unsigned dtInt foundEnd = returnExpression.find_last_of(_AFSIGN);
+      dtUnsInt foundEnd = returnExpression.find_first_of(_AFSIGN, found+1);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -1290,14 +1290,14 @@ namespace dtOO {
     // check if there is a analyticGeometry in expression
     // @analyticGeometryName(1. * #constValue#, 2.)@
     //
-    unsigned int found = returnExpression.find(_AGSIGN);
+    dtUnsInt found = returnExpression.find(_AGSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find_last_of(_AGSIGN);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find_last_of(_AGSIGN);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -1846,7 +1846,7 @@ namespace dtOO {
 	) {
     std::string returnExpression;
     returnExpression = expression;
-    unsigned int found;
+    dtUnsInt found;
     
     //
     // check if there is a point in expression
@@ -1857,9 +1857,9 @@ namespace dtOO {
       //
       // find start and end
       //
-      unsigned int foundEnd = returnExpression.find_first_of(_POINTSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find_first_of(_POINTSIGN, found+1);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -1929,11 +1929,11 @@ namespace dtOO {
       //
       // find start and end
       //
-      unsigned int foundEnd 
+      dtUnsInt foundEnd 
       = 
       returnExpression.find_first_of(_VECTORSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -2062,9 +2062,9 @@ namespace dtOO {
       //
       // find start and end
       //
-      unsigned int foundEnd = returnExpression.find_last_of(_DTTSIGN);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find_last_of(_DTTSIGN);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -2177,7 +2177,7 @@ namespace dtOO {
     else return def;
   }    
 
-  int dtXmlParserBase::getAttributeIntMuParse(
+  dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV
@@ -2187,7 +2187,7 @@ namespace dtOO {
     );
   }  
   
-  int dtXmlParserBase::getAttributeIntMuParse(
+  dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
@@ -2198,7 +2198,7 @@ namespace dtOO {
     );
   }
 
-  int dtXmlParserBase::getAttributeIntMuParse(
+  dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
@@ -2210,12 +2210,12 @@ namespace dtOO {
     );
   }
   
-  int dtXmlParserBase::getAttributeIntMuParse(
+  dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
     aFPtrVec const * const aF,
-    int const & def
+    dtInt const & def
   ) {
     if ( hasAttribute(attName, element) ) {
       return getAttributeIntMuParse( attName, element, cV, aF );
@@ -2253,7 +2253,7 @@ namespace dtOO {
     return std::vector< double >( floatVec.begin(), floatVec.end() );
 	}  
 
-	std::vector< int > dtXmlParserBase::getAttributeIntVectorMuParse( 
+	std::vector< dtInt > dtXmlParserBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
 		cVPtrVec const * const cV,
@@ -2261,7 +2261,7 @@ namespace dtOO {
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
-		std::vector< int > intVec(attVec.size(), 0.);
+		std::vector< dtInt > intVec(attVec.size(), 0.);
 		int counter = 0;
 		for ( auto &el : attVec ) {		
 			intVec[counter] = muParseStringInt( replaceDependencies(el, cV, aF) );
@@ -2270,7 +2270,7 @@ namespace dtOO {
 		return intVec;
 	}
   
-	std::vector< int > dtXmlParserBase::getAttributeIntVectorMuParse( 
+	std::vector< dtInt > dtXmlParserBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
 		cVPtrVec const * const cV,
@@ -2279,7 +2279,7 @@ namespace dtOO {
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
-		std::vector< int > intVec(attVec.size(), 0.);
+		std::vector< dtInt > intVec(attVec.size(), 0.);
 		int counter = 0;
 		for ( auto &el : attVec ) {		
 			intVec[counter] = muParseStringInt( replaceDependencies(el, cV, aF, aG) );
@@ -2533,7 +2533,7 @@ namespace dtOO {
           && hasAttribute("parameter_percent_function", *toBuildP)
           && hasAttribute("number_points", *toBuildP) 
         ) {
-          int nPoints
+          dtInt nPoints
 				  = 
 					getAttributeIntMuParse("number_points", *toBuildP, cV, aF);
           
@@ -2585,7 +2585,7 @@ namespace dtOO {
 					}
 				}
 
-				for ( int ii=0; ii<fields.size(); ii++ ) {
+				for ( dtInt ii=0; ii<fields.size(); ii++ ) {
 					if ( fields[ii].size() != 2 ) {
 						dt__throw(
               createBasic(),

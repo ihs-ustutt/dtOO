@@ -127,10 +127,10 @@ namespace dtOO {
       > newTetrahedra;
       std::vector< ::MVertex * > newVertices;
       std::vector< std::pair< ::MTetrahedron *, ::GRegion * > > oldTetrahedra;
-      dt__forFromToIndex( 0, static_cast< int >( _perTet * tet.size() ), ii ) {
+      dt__forFromToIndex( 0, static_cast< dtInt >( _perTet * tet.size() ), ii ) {
         logContainer< bVOEvilGodfather > logC( logDEBUG, "postUpdate()" );
         
-        int toPerturb = rand.Integer( tet.size() );        
+        dtInt toPerturb = rand.Integer( tet.size() );        
         //
         // check if already perturbed
         //
@@ -248,10 +248,10 @@ namespace dtOO {
         std::pair< std::vector< ::MPyramid * >, ::GRegion * > 
       > newPyramids;
       std::vector< std::pair< ::MHexahedron *, ::GRegion * > > oldHexahedra;      
-      dt__forFromToIndex( 0, static_cast< int >( _perHex * hex.size() ), ii ) {
+      dt__forFromToIndex( 0, static_cast< dtInt >( _perHex * hex.size() ), ii ) {
         logContainer< bVOEvilGodfather > logC( logDEBUG, "postUpdate()" );
         
-        int toPerturb = rand.Integer( hex.size() );
+        dtInt toPerturb = rand.Integer( hex.size() );
         //
         // check if already perturbed
         //

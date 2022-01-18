@@ -116,7 +116,7 @@ namespace dtOO {
       // argList
       //
       ::Foam::argList::noParallel();
-      int argc = 3;
+      dtInt argc = 3;
       std::vector< std::string > argvStr(3);
       argvStr[0] = getLabel();
       argvStr[1] = std::string("-case");
@@ -428,7 +428,7 @@ namespace dtOO {
             dtReal sumU_nAU_n = 0.;
             dtReal avgU_n = 0.;
             dtReal avguRel_n = 0.;
-            int nSamples = grid.fixJ(jj).size();
+            dtInt nSamples = grid.fixJ(jj).size();
             dt__forFromToIndex(0, nSamples, ii) {
               if (A[ii][jj] == 0.) continue;
             

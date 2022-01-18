@@ -53,7 +53,7 @@ namespace dtOO {
   }
   
 	void analyticGeometry::setRenderResolution(
-    int const & dir, int const & value
+    dtInt const & dir, dtInt const & value
   ) const {
     switch (dir) {
       case 0:
@@ -141,7 +141,7 @@ namespace dtOO {
     // 1D
     //
     if (dim() == 1) {
-      int nOne = 3;
+      dtInt nOne = 3;
       dtReal uvwOne[3] = {0.00, 0.50, 1.00};
     
       std::vector< dtPoint3 > bb(nOne);
@@ -159,7 +159,7 @@ namespace dtOO {
     // 2D
     //
     else if (dim() == 2) {
-      int nTwo = 9;
+      dtInt nTwo = 9;
       dtReal uvwTwo[9][2] 
       = 
       {
@@ -188,7 +188,7 @@ namespace dtOO {
     // 3D
     //
     else if (dim() == 3) {
-      int nThree = 27;
+      dtInt nThree = 27;
       dtReal uvwThree[27][3] 
       = 
       {
@@ -255,7 +255,7 @@ namespace dtOO {
     // 1D
     //
     if (dim() == 1) {
-      int nOne = 2;
+      dtInt nOne = 2;
       dtReal uvwOne[2] = {0.00, 1.00};
     
       std::vector< dtPoint3 > bb(nOne);
@@ -269,7 +269,7 @@ namespace dtOO {
     // 2D
     //
     else if (dim() == 2) {
-      int nTwo = 4;
+      dtInt nTwo = 4;
       dtReal uvwTwo[4][2] 
       = 
       { {0.00, 0.00}, {0.00, 1.00}, {1.00, 0.00}, {1.00, 1.00} };
@@ -285,7 +285,7 @@ namespace dtOO {
     // 3D
     //
     else if (dim() == 3) {
-      int nThree = 8;
+      dtInt nThree = 8;
       dtReal uvwThree[8][3] 
       = 
       {
@@ -424,7 +424,7 @@ namespace dtOO {
     std::vector< dtPoint3 > thisCP = this->cornerPoints();
     std::vector< dtPoint3 > otherCP = other.cornerPoints();
     
-    std::vector< int > matchCP;
+    std::vector< dtInt > matchCP;
     dt__forAllRefAuto(thisCP, aCP) {
       matchCP.push_back(
         dtLinearAlgebra::returnNearestPointIndexTo(aCP, otherCP)

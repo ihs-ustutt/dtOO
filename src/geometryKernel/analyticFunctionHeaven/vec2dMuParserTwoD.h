@@ -29,7 +29,7 @@ namespace dtOO {
     vec2dMuParserTwoD * create( void ) const;    
     virtual ~vec2dMuParserTwoD();
     virtual aFY Y( aFX const & xx ) const;
-    virtual bool closed( int const & dir ) const;    
+    virtual bool closed( dtInt const & dir ) const;    
   private:
     dt__pH(dtMuParser) _parser;
     dt__pVH(double) _arg;

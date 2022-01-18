@@ -20,9 +20,9 @@ namespace dtOO {
     virtual dtSurface2d * clone( void ) const;
 	  virtual dtCurve2d * segmentConstU( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const;
 	  virtual dtCurve2d * segmentConstV( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const;     
-    virtual dtPoint2 controlPoint( int const uI, int const vI ) const;
-    virtual void setControlPoint( int const uI, int const vI, dtPoint2 const point );    
-    virtual int nControlPoints( int const dim ) const;   
+    virtual dtPoint2 controlPoint( dtInt const uI, dtInt const vI ) const;
+    virtual void setControlPoint( dtInt const uI, dtInt const vI, dtPoint2 const point );    
+    virtual dtInt nControlPoints( dtInt const dim ) const;   
   private:
     Geom_BSplineSurface const * _ptr;
   };

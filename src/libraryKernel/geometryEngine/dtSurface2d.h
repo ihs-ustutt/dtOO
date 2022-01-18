@@ -18,9 +18,9 @@ namespace dtOO {
     // overload
     //
     virtual dtSurface2d * clone( void ) const = 0;
-    virtual dtReal minPara( int const dim ) const = 0;
-    virtual dtReal maxPara( int const dim ) const = 0;
-    virtual bool closed( int const dim ) const = 0; 
+    virtual dtReal minPara( dtInt const dim ) const = 0;
+    virtual dtReal maxPara( dtInt const dim ) const = 0;
+    virtual bool closed( dtInt const dim ) const = 0; 
     virtual dtPoint2 point( dtReal const uu, dtReal const vv) const = 0;
     virtual std::vector<dtVector2> firstDer( dtReal const uu, dtReal const vv) const = 0;
     virtual std::vector<dtVector2> secondDer( dtReal const uu, dtReal const vv) const = 0;
@@ -30,9 +30,9 @@ namespace dtOO {
     //
     // optional overload
     //
-    virtual dtPoint2 controlPoint( int const uI, int const vI ) const;
-    virtual void setControlPoint( int const uI, int const vI, dtPoint2 const point );    
-    virtual int nControlPoints( int const dim ) const;    
+    virtual dtPoint2 controlPoint( dtInt const uI, dtInt const vI ) const;
+    virtual void setControlPoint( dtInt const uI, dtInt const vI, dtPoint2 const point );    
+    virtual dtInt nControlPoints( dtInt const dim ) const;    
     void dump( void ) const;
     virtual std::string dumpToString(void) const;
     //
@@ -57,8 +57,8 @@ namespace dtOO {
     dtVector2 secondDerUV( dtReal const uu, dtReal const vv) const;
     dtVector2 normalPercent( dtReal const uP, dtReal const vP ) const;
     dtPoint2 uv_uvPercent( dtPoint2 const uvPercent) const;  
-    int nControlPointsU( void ) const;
-    int nControlPointsV( void ) const;
+    dtInt nControlPointsU( void ) const;
+    dtInt nControlPointsV( void ) const;
     dtCurve2d * segmentConstU( dtReal const uu) const;
     dtCurve2d * segmentConstV( dtReal const vv) const;    
     dtCurve2d * segmentConstUPercent( dtReal const uu) const;

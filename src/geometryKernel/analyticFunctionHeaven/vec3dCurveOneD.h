@@ -31,7 +31,7 @@ namespace dtOO {
     virtual vectorHandling< renderInterface * > getRender( void ) const;
     dtCurve * ptrDtCurve(void) const;
     dtCurve const * const ptrConstDtCurve(void) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     ptrHandling<dtCurve> _dtC;
   };

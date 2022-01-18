@@ -22,9 +22,9 @@ namespace dtOO {
     dtCurve const * const aSecOne, 
     dtCurve const * const aSecTwo,
     bool const & polynomial,
-    int const & absShape,
-    int const & maxDegree,
-    int const & nbSections          
+    dtInt const & absShape,
+    dtInt const & maxDegree,
+    dtInt const & nbSections          
   ) {
 		dt__throwIf(
 			!dtOCCCurve::ConstDownCast(aPath) 
@@ -72,9 +72,9 @@ namespace dtOO {
     dtCurve const * const aPath, 
     dtCurve const * const aSecOne,
     bool const & polynomial,
-    int const & absShape,
-    int const & maxDegree,
-    int const & nbSections
+    dtInt const & absShape,
+    dtInt const & maxDegree,
+    dtInt const & nbSections
           
   ) {
 		dt__throwIf(
@@ -119,9 +119,9 @@ namespace dtOO {
     dtCurve const * const aPath, 
     dtReal const & rr,
     bool const & polynomial,
-    int const & absShape,
-    int const & maxDegree,
-    int const & nbSections          
+    dtInt const & absShape,
+    dtInt const & maxDegree,
+    dtInt const & nbSections          
   ) {
 		dt__throwIf(
       !dtOCCCurve::ConstDownCast(aPath), 

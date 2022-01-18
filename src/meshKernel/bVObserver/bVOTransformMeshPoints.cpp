@@ -122,7 +122,7 @@ namespace dtOO {
       }
       std::map< ::MVertex *, ::MVertex * > mv_newOld;
 
-      int cc = 0;
+      dtInt cc = 0;
       dt__forAllRefAuto(_dtT, aDtT) {
         std::map< ::GEntity *, ::GEntity * > & ge_newOld = ge_newOldV[cc];
         cc = cc+1;

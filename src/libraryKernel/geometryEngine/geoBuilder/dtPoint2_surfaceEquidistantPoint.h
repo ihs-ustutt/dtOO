@@ -14,7 +14,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(dtPoint2_surfaceEquidistantPoint);    
     dtPoint2_surfaceEquidistantPoint();
-    dtPoint2_surfaceEquidistantPoint( dtSurface const * const dtS, int const & nU, int const nV );
+    dtPoint2_surfaceEquidistantPoint( dtSurface const * const dtS, dtInt const & nU, dtInt const nV );
     virtual ~dtPoint2_surfaceEquidistantPoint();
     twoDArrayHandling< dtPoint2 > result( void );
   private:

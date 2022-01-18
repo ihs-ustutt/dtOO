@@ -26,7 +26,7 @@ namespace dtOO {
     void assign( dtOMMesh const & om, T const & value );    
     void execute( T (*executeMe)(T const & member) );
 	  T oneRingAverage( omVertexH const & vH ) const;
-    long unsigned int size( void ) const;
+    dtLongUnsInt size( void ) const;
     virtual void update( void );    
   private:
     std::map< omVertexH, T > _field;
@@ -99,7 +99,7 @@ namespace dtOO {
 	}
 
   template < typename T >
-  long unsigned int dtOMVertexField< T >::size( void ) const {
+  dtLongUnsInt dtOMVertexField< T >::size( void ) const {
     //return _om.n_vertices();
     return _field.size();
   }

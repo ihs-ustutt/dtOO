@@ -8,6 +8,8 @@
 namespace dtOO {
   typedef double dtReal;
   typedef int dtInt;
+  typedef unsigned int dtUnsInt;
+  typedef long unsigned int dtLongUnsInt;
 }
 
 #endif

@@ -51,13 +51,13 @@ namespace dtOO {
     bool polynomial 
     = 
     dtXmlParserBase::getAttributeBool("polynomial", toBuild, false);
-    int absShape 
+    dtInt absShape 
     = 
     dtXmlParserBase::getAttributeIntMuParse("absShape", toBuild, cV, aF, 2);
-    int maxDegree 
+    dtInt maxDegree 
     = 
     dtXmlParserBase::getAttributeIntMuParse("maxDegree", toBuild, cV, aF, 11);
-    int nbSections 
+    dtInt nbSections 
     = 
     dtXmlParserBase::getAttributeIntMuParse("nbSections", toBuild, cV, aF, 30);
     

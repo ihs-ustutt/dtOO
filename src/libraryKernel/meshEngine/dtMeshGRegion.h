@@ -39,8 +39,8 @@ namespace dtOO {
     dtReal _relax;
     dtReal _minQShapeMetric;
     dtReal _maxHeight;
-    int _nPyramidOpenSteps;
-    int _nSmooths;
+    dtInt _nPyramidOpenSteps;
+    dtInt _nSmooths;
   };
 }
 #endif	/* DTMESHGREGION_H */

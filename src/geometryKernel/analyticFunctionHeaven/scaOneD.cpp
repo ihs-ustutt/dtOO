@@ -39,11 +39,11 @@ namespace dtOO {
     return YFloat( x_percent(xP) );
   }	
   
-  int scaOneD::xDim( void ) const {
+  dtInt scaOneD::xDim( void ) const {
 		return 1;
 	}
 	
-  dtReal scaOneD::xMin( int const & dir) const {
+  dtReal scaOneD::xMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _xxMin;
@@ -55,7 +55,7 @@ namespace dtOO {
     }   
 	}
 	
-  dtReal scaOneD::xMax( int const & dir) const {
+  dtReal scaOneD::xMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _xxMax;

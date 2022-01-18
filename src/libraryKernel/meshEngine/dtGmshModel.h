@@ -39,8 +39,8 @@ namespace dtOO {
       //
       // get GEntitys
       //   
-      dtGmshRegion * getDtGmshRegionByTag( int const tag ) const;
-      dtGmshFace * getDtGmshFaceByTag( int const tag ) const;
+      dtGmshRegion * getDtGmshRegionByTag( dtInt const tag ) const;
+      dtGmshFace * getDtGmshFaceByTag( dtInt const tag ) const;
       dtGmshEdge * getDtGmshEdgeByPhysical( 
         std::string const & physical 
       ) const;
@@ -56,10 +56,10 @@ namespace dtOO {
       std::list< dtGmshRegion * > getDtGmshRegionListByPhysical( 
         std::string const & physical 
       ) const;      
-      dtGmshEdge * getDtGmshEdgeByTag( int const tag ) const;
-      int getDtGmshEdgeTagByFromTo( int const from, int const to ) const;
-      dtGmshEdge * getDtGmshEdgeByFromTo( int const from, int const to ) const;
-      dtGmshVertex * getDtGmshVertexByTag( int const tag ) const;
+      dtGmshEdge * getDtGmshEdgeByTag( dtInt const tag ) const;
+      dtInt getDtGmshEdgeTagByFromTo( dtInt const from, dtInt const to ) const;
+      dtGmshEdge * getDtGmshEdgeByFromTo( dtInt const from, dtInt const to ) const;
+      dtGmshVertex * getDtGmshVertexByTag( dtInt const tag ) const;
       ::GEntity * getGEntityByPhysical( std::string const & physical ) const;
       //
       // casts
@@ -105,58 +105,58 @@ namespace dtOO {
       //
       // add vertex
       //
-      void addIfVertexToGmshModel( dtPoint3 const & vertex, int * const tag );
+      void addIfVertexToGmshModel( dtPoint3 const & vertex, dtInt * const tag );
       //
       // add edge
       //    
-      void addIfEdgeToGmshModel(map1dTo3d const * const edge, int * const tag);
+      void addIfEdgeToGmshModel(map1dTo3d const * const edge, dtInt * const tag);
       //
       // add face
       //
-      void addIfFaceToGmshModel(map2dTo3d const * const face, int * const tag);    
+      void addIfFaceToGmshModel(map2dTo3d const * const face, dtInt * const tag);    
       //
       //add region
       //
       void addIfRegionToGmshModel(
-        map3dTo3d const * const region, int * const tag
+        map3dTo3d const * const region, dtInt * const tag
       );
       void addIfEdgeToGmshModel(
         map1dTo3d const * const edge, 
-        int * const tag, 
-        int const from, 
-        int const to 
+        dtInt * const tag, 
+        dtInt const from, 
+        dtInt const to 
       );
       void addIfFaceToGmshModel(
-        map2dTo3d const * const face, int * const tag,
-        std::list< ::GEdge * > const & edges, std::vector< int > const & ori
+        map2dTo3d const * const face, dtInt * const tag,
+        std::list< ::GEdge * > const & edges, std::vector< dtInt > const & ori
       );
       void addIfFaceToGmshModel( 
-        map2dTo3d const * const face, int * const tag,
-        int const & eId0, int const & eId1, int const & eId2, int const & eId3
+        map2dTo3d const * const face, dtInt * const tag,
+        dtInt const & eId0, dtInt const & eId1, dtInt const & eId2, dtInt const & eId3
       );      
       void addIfRegionToGmshModel(
-        map3dTo3d const * const region, int * const tag,
-        std::list< ::GFace * > const & faces, std::vector< int > const & ori   
+        map3dTo3d const * const region, dtInt * const tag,
+        std::list< ::GFace * > const & faces, std::vector< dtInt > const & ori   
       );    
       void addIfRegionToGmshModel( 
-        map3dTo3d const * const region, int * const tag,
-        int const & fId0, int const & fId1, 
-        int const & fId2, int const & fId3, 
-        int const & fId4, int const & fId5
+        map3dTo3d const * const region, dtInt * const tag,
+        dtInt const & fId0, dtInt const & fId1, 
+        dtInt const & fId2, dtInt const & fId3, 
+        dtInt const & fId4, dtInt const & fId5
       );           
       //
       //add
       //
       void addIfToGmshModel(
-        analyticGeometry const * const aG, int * const tag
+        analyticGeometry const * const aG, dtInt * const tag
       );      
       //
       // add general entities
       //
       void add( ::GEntity * ge);    
       void meshEdgeTransfiniteFromTo(
-        int const from, int const to, 
-        int const type, dtReal const coeff, int const nEl
+        dtInt const from, dtInt const to, 
+        dtInt const type, dtReal const coeff, dtInt const nEl
       );
       //
       // mesh entities
@@ -177,10 +177,10 @@ namespace dtOO {
       //
       // get max tags of entities
       //
-      int getMaxVertexTag( void ) const;
-      int getMaxEdgeTag( void ) const;
-      int getMaxFaceTag( void ) const;
-      int getMaxRegionTag( void ) const;
+      dtInt getMaxVertexTag( void ) const;
+      dtInt getMaxEdgeTag( void ) const;
+      dtInt getMaxFaceTag( void ) const;
+      dtInt getMaxRegionTag( void ) const;
       //
       // get lists of geometrical entities
       //    
@@ -198,10 +198,10 @@ namespace dtOO {
       void untagPhysical( ::GEntity * const ge );
       std::string getPhysicalString(::GEntity const * const ge ) const;
       std::vector< std::string > getPhysicalNames(
-        int const & dim, std::vector< int > const & number
+        dtInt const & dim, std::vector< dtInt > const & number
       ) const;
       void tagPhysical(::GEntity * const ge, std::string const & pName);
-      int getPhysicalNumber(const int &dim, const std::string &name) const;
+      dtInt getPhysicalNumber(const dtInt &dim, const std::string &name) const;
       void removeEmptyPhysicals( void );
       std::list< std::string > getFullPhysicalList( 
         ::GEntity const * const ent 
@@ -217,10 +217,10 @@ namespace dtOO {
       //
       //
       std::map< ::GEntity *, ::GEntity * > createTwin( 
-        int const dim0Tag, 
-        int const dim1Tag, 
-        int const dim2Tag, 
-        int const dim3Tag 
+        dtInt const dim0Tag, 
+        dtInt const dim1Tag, 
+        dtInt const dim2Tag, 
+        dtInt const dim3Tag 
       ) const;      
     private:    
       static unstructured3dSurfaceMesh * toUnstructured3dSurfaceMesh( 
@@ -241,24 +241,24 @@ namespace dtOO {
       //
       // check if geometrical entity is already in model
       //
-      int alreadyInModel( ::GVertex const * const gv ) const;
-      int alreadyInModel( ::GEdge const * const ge ) const;
-      int alreadyInModel( ::GFace const * const gf ) const;
-      int alreadyInModel( ::GRegion const * const gr ) const;
+      dtInt alreadyInModel( ::GVertex const * const gv ) const;
+      dtInt alreadyInModel( ::GEdge const * const ge ) const;
+      dtInt alreadyInModel( ::GFace const * const gf ) const;
+      dtInt alreadyInModel( ::GRegion const * const gr ) const;
       //
       //
       //
       std::map< dtGmshVertex *, dtGmshVertex * > createVertexTwins( 
-        int startTag 
+        dtInt startTag 
       ) const;
       std::map< dtGmshEdge *, dtGmshEdge * > createEdgeTwins( 
-        int startTag 
+        dtInt startTag 
       ) const;
       std::map< dtGmshFace *, dtGmshFace * > createFaceTwins( 
-        int startTag
+        dtInt startTag
       ) const;
       std::map< dtGmshRegion *, dtGmshRegion * > createRegionTwins( 
-        int startTag 
+        dtInt startTag 
       ) const;
       void updateAssociations( 
         std::map< dtGmshVertex *, dtGmshVertex * > & dim0, 
@@ -267,9 +267,9 @@ namespace dtOO {
         std::map< dtGmshRegion *, dtGmshRegion * > & dim3
       ) const;    
     private:
-      static std::map< std::string, int > _facePositionStr;
-      static std::map< std::string, int > _edgePositionStr;
-      static std::map< std::string, int > _vertexPositionStr;
+      static std::map< std::string, dtInt > _facePositionStr;
+      static std::map< std::string, dtInt > _edgePositionStr;
+      static std::map< std::string, dtInt > _vertexPositionStr;
       static std::map< int, std::vector< std::string > > _positionStrFace;      
       static std::map< int, std::vector< std::string > > _positionStrEdge;      
       static std::map< int, std::vector< std::string > > _positionStrVertex;      

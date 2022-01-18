@@ -40,7 +40,7 @@ namespace dtOO {
       dtXmlParser const * _parser;
       dtCase const * _case;
       std::string _field;
-      int _nP;
+      dtInt _nP;
       static bool _registrated;
   };
 }

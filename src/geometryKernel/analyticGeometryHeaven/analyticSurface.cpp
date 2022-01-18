@@ -95,7 +95,7 @@ namespace dtOO {
     //
     // get control points
     //
-    int numPointsU = _dtS->nControlPoints(0);
+    dtInt numPointsU = _dtS->nControlPoints(0);
 		int numPointsV = _dtS->nControlPoints(1);
     for (int ii=0; ii<numPointsU; ii++) {
 			for (int jj=0; jj<numPointsV; jj++) {
@@ -125,15 +125,15 @@ namespace dtOO {
     _dtS->offsetNormal( nn );
   }
     
-  bool analyticSurface::isClosed( int const & dir) const {
+  bool analyticSurface::isClosed( dtInt const & dir) const {
     return _dtS->closed(dir);
   }
   
-  dtReal analyticSurface::getMin( int const & dir) const {
+  dtReal analyticSurface::getMin( dtInt const & dir) const {
 		return _dtS->minPara(dir);
   }
 
-  dtReal analyticSurface::getMax( int const & dir) const {
+  dtReal analyticSurface::getMax( dtInt const & dir) const {
     return _dtS->maxPara(dir);
   }
   

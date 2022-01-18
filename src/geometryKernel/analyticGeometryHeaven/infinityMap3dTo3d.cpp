@@ -32,7 +32,7 @@ namespace dtOO {
     return new map3dTo3dTransformed< infinityMap3dTo3d >(*this, dtT);
   }  
 	
-  bool infinityMap3dTo3d::isClosed( int const & dir) const {
+  bool infinityMap3dTo3d::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return false;
@@ -47,7 +47,7 @@ namespace dtOO {
     }
 	}
   
-	dtReal infinityMap3dTo3d::getMin( int const & dir) const {
+	dtReal infinityMap3dTo3d::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return -1.;
@@ -62,7 +62,7 @@ namespace dtOO {
     }    		
 	}
   
-	dtReal infinityMap3dTo3d::getMax( int const & dir) const {
+	dtReal infinityMap3dTo3d::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 1.;

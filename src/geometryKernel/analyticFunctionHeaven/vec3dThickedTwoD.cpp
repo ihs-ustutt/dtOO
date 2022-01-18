@@ -75,7 +75,7 @@ namespace dtOO {
 	/**
 	 * @todo Is this correct? Is it never closed?
    */
-  bool vec3dThickedTwoD::closed( int const & dir ) const {
+  bool vec3dThickedTwoD::closed( dtInt const & dir ) const {
 		return false;
 	}
 }

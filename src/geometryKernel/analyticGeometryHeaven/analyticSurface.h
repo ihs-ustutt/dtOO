@@ -26,9 +26,9 @@ namespace dtOO {
       virtual analyticSurface * 
       cloneTransformed( dtTransformer const * const dtT ) const;
       virtual dtPoint3 getPoint(dtReal const & uu, dtReal const & vv) const;      
-      virtual bool isClosed( int const & dir) const;
-      virtual dtReal getMin( int const & dir) const;
-      virtual dtReal getMax( int const & dir) const;
+      virtual bool isClosed( dtInt const & dir) const;
+      virtual dtReal getMin( dtInt const & dir) const;
+      virtual dtReal getMax( dtInt const & dir) const;
       //
       // optional overload
       //

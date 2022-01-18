@@ -107,11 +107,11 @@ namespace dtOO {
 #endif
   }
   
-  int staticPropertiesHandler::thisRank( void ) const {
+  dtInt staticPropertiesHandler::thisRank( void ) const {
     return _thisRank;
   }
 
-  int staticPropertiesHandler::nRanks( void ) const {
+  dtInt staticPropertiesHandler::nRanks( void ) const {
     return _nRanks;
   }  
   

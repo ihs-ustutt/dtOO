@@ -41,11 +41,11 @@ namespace dtOO {
 		return new multipleBoundedSurface( *this );
 	}
   
-  int multipleBoundedSurface::dim( void ) const {
+  dtInt multipleBoundedSurface::dim( void ) const {
     return 2;
 	}
   
-  bool multipleBoundedSurface::isClosed( int const & dir) const {
+  bool multipleBoundedSurface::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return false;
@@ -56,7 +56,7 @@ namespace dtOO {
     }
 	}
 
-	dtReal multipleBoundedSurface::getMin( int const & dir) const {
+	dtReal multipleBoundedSurface::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _m2d->getMin(0);
@@ -67,7 +67,7 @@ namespace dtOO {
     }    		
 	}
   
-	dtReal multipleBoundedSurface::getMax( int const & dir) const {
+	dtReal multipleBoundedSurface::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _m2d->getMax(0);

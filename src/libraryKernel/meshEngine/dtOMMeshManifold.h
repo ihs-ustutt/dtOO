@@ -28,8 +28,8 @@ namespace dtOO {
     std::vector< dtReal > _dihedralAngleV;
 		std::vector< bool > _isBoundary;
     omVertexH _centerVertex;
-    int _nTri;
-    int _nQuad;
+    dtInt _nTri;
+    dtInt _nQuad;
   };
 }
 #endif	/* DTOMMESHMANIFOLD_H */

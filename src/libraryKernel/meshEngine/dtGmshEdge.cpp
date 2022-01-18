@@ -23,11 +23,11 @@
 #define __caCThis const_cast< dtGmshEdge * >(this)
 
 namespace dtOO {  
-  dtGmshEdge::dtGmshEdge(::GModel *m, int tag) : GEdge(m, tag, NULL, NULL) {
+  dtGmshEdge::dtGmshEdge(::GModel *m, dtInt tag) : GEdge(m, tag, NULL, NULL) {
     l_vertices.remove( NULL );
   }
 	
-  dtGmshEdge::dtGmshEdge(::GModel *m, int tag, ::GVertex *v1, ::GVertex *v2)
+  dtGmshEdge::dtGmshEdge(::GModel *m, dtInt tag, ::GVertex *v1, ::GVertex *v2)
     : GEdge(m, tag, v1, v2) {
 		if (v1) l_vertices.push_back( v1 );
     if (v2) l_vertices.push_back( v2 );
@@ -100,18 +100,18 @@ namespace dtOO {
     GEdge::_v1 = gv;
   }
   
-  void dtGmshEdge::setNElements( int const nE ) {
+  void dtGmshEdge::setNElements( dtInt const nE ) {
     this->meshAttributes.nbPointsTransfinite = nE+1;
   }
 
-  void dtGmshEdge::meshTransfinite( int const type, dtReal const coeff ) {
+  void dtGmshEdge::meshTransfinite( dtInt const type, dtReal const coeff ) {
     this->meshAttributes.method = MESH_TRANSFINITE;
     this->meshAttributes.typeTransfinite = type;
     this->meshAttributes.coeffTransfinite = coeff;
   }
 
   void dtGmshEdge::meshTransfiniteWNElements( 
-    int const type, dtReal const coeff, int const nElements 
+    dtInt const type, dtReal const coeff, dtInt const nElements 
   ) {
     if (nElements != 0) {
       setNElements(nElements);

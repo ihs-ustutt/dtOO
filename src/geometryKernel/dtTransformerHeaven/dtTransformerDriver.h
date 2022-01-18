@@ -12,7 +12,7 @@ namespace dtOO {
   class dtTransformerDriver : public ::pugg::Driver {
   public:
     dt__classOnlyName(dtTransformerDriver);       
-    dtTransformerDriver(std::string name, int version);
+    dtTransformerDriver(std::string name, dtInt version);
     ~dtTransformerDriver();
     virtual dtTransformer * create( void ) = 0;
   private:

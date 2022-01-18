@@ -47,15 +47,15 @@ namespace dtOO {
 		}
   }
   
-  bool vec3dThreeDInMap3dTo3d::isClosed( int const & dir) const {
+  bool vec3dThreeDInMap3dTo3d::isClosed( dtInt const & dir) const {
 		return false;
   }
   
-  dtReal vec3dThreeDInMap3dTo3d::getMin( int const & dir) const {
+  dtReal vec3dThreeDInMap3dTo3d::getMin( dtInt const & dir) const {
     return _v3d->xMin(dir);    
   }
 
-  dtReal vec3dThreeDInMap3dTo3d::getMax( int const & dir) const {
+  dtReal vec3dThreeDInMap3dTo3d::getMax( dtInt const & dir) const {
     return _v3d->xMax(dir);    
   }
 

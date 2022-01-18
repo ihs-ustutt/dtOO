@@ -19,9 +19,9 @@ namespace dtOO {
     //
     // call system
     //
-    int nullStatus = system(NULL);
-    int status = system( cmd.c_str() );
-    int wExitStatus = WEXITSTATUS(status);
+    dtInt nullStatus = system(NULL);
+    dtInt status = system( cmd.c_str() );
+    dtInt wExitStatus = WEXITSTATUS(status);
     
     dt__debug(
       command(),
@@ -36,12 +36,12 @@ namespace dtOO {
     //
     // call system
     //
-    int nullStatus = system(NULL);
+    dtInt nullStatus = system(NULL);
     FILE * status = popen( cmd.c_str(), "r" );
     dt__throwIf(status == 0, commandAndWait());
 
     logContainer< systemHandling > logC(logINFO, "commandAndWait()");
-    const int BUFSIZE = 80;
+    const dtInt BUFSIZE = 80;
     char buf[ BUFSIZE ];
     while( fgets( buf, BUFSIZE,  status ) ) {
       logC() << buf;
@@ -66,7 +66,7 @@ namespace dtOO {
     //
     // change directory
     //
-    int status = chdir(dirPath.c_str());
+    dtInt status = chdir(dirPath.c_str());
 
     //
     // output
@@ -86,7 +86,7 @@ namespace dtOO {
     //
     // create directory
     //
-    int status = mkdir(dirPath.c_str(), S_IRWXU);
+    dtInt status = mkdir(dirPath.c_str(), S_IRWXU);
 
     //
     // output

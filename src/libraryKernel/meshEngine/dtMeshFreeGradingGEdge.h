@@ -28,10 +28,10 @@ namespace dtOO {
       virtual void operator()( dtGmshEdge * dtge );  
     private:
       dt__vH(scaOneD const *) _grading;
-      std::vector< int > _typeTransfinite;
+      std::vector< dtInt > _typeTransfinite;
       std::map< int, scaOneD const * > _gradingInt;
       dtReal _tol;
-      int _maxSmooth;
+      dtInt _maxSmooth;
   };
 }
 #endif	/* dtMeshFreeGradingGEdge_H */

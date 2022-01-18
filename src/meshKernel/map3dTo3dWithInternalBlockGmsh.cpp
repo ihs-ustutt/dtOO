@@ -72,7 +72,7 @@ namespace dtOO {
     //
     // add all faces of outer channel
     //
-		std::vector< int > rId;
+		std::vector< dtInt > rId;
     rId.push_back(1);
     _gm->addIfRegionToGmshModel(_m3d.get(), &(rId.back()) );
 
@@ -110,7 +110,7 @@ namespace dtOO {
       //
       // internal faces (boundary faces between channel and internal blocks)
       //
-      int iFTag;
+      dtInt iFTag;
 			dt__pH(map2dTo3d) iF(
         theRegion.segmentPercent(
           dtPoint3(0,1,0), dtPoint3(1,1,0), 

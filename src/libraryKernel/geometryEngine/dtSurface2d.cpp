@@ -146,15 +146,15 @@ namespace dtOO {
 	//
 	//
 	//
-  dtPoint2 dtSurface2d::controlPoint( int const uI, int const vI ) const {
+  dtPoint2 dtSurface2d::controlPoint( dtInt const uI, dtInt const vI ) const {
 		dt__throw(controlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
-  void dtSurface2d::setControlPoint( int const uI, int const vI, dtPoint2 const point ) {
+  void dtSurface2d::setControlPoint( dtInt const uI, dtInt const vI, dtPoint2 const point ) {
 		dt__throw(setControlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
-  int dtSurface2d::nControlPoints( int const dim ) const {
+  dtInt dtSurface2d::nControlPoints( dtInt const dim ) const {
 		switch (dim) {
 			case 0:
 				return 0;

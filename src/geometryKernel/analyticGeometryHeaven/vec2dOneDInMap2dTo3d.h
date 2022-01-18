@@ -29,9 +29,9 @@ namespace dtOO {
       ) const;          
       virtual vec2dOneDInMap2dTo3d * create( void ) const;    
       virtual dtPoint3 getPoint( dtReal const & uu ) const;
-      virtual bool isClosed( int const & dir) const;
-      virtual dtReal getMin( int const & dir) const;
-      virtual dtReal getMax( int const & dir) const;
+      virtual bool isClosed( dtInt const & dir) const;
+      virtual dtReal getMin( dtInt const & dir) const;
+      virtual dtReal getMax( dtInt const & dir) const;
       //
       //
       //

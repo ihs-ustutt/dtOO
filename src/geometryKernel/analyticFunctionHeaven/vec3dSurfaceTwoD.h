@@ -28,7 +28,7 @@ namespace dtOO {
       virtual aFY Y( aFX const & xx) const;
       dtSurface * ptrDtSurface( void ) const;
       dtSurface const * constPtrDtSurface( void ) const;
-      virtual bool closed( int const & dir ) const;
+      virtual bool closed( dtInt const & dir ) const;
       virtual aFX invY(aFY const & yy) const;    
     private:
       ptrHandling<dtSurface> _dtS;

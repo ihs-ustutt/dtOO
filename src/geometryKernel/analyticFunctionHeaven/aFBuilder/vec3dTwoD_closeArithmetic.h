@@ -13,7 +13,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(vec3dTwoD_closeArithmetic);    
     vec3dTwoD_closeArithmetic( 
-      dt__pVH(vec3dTwoD) const & v3d, int const & dir, int const & nSegments
+      dt__pVH(vec3dTwoD) const & v3d, dtInt const & dir, dtInt const & nSegments
     );
     virtual ~vec3dTwoD_closeArithmetic();
     dt__pVH(vec3dTwoD) result(void);

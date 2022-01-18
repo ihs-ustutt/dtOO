@@ -17,12 +17,12 @@ namespace dtOO {
     );
     bSplineCurve_pointInterpolateConstructOCC( 
       std::vector < dtPoint3 > const & pp, 
-      int const & degMin, int const & degMax
+      dtInt const & degMin, dtInt const & degMax
     );
     bSplineCurve_pointInterpolateConstructOCC( 
       std::vector < dtPoint3 > const & pp, 
-      int const & degMin, int const & degMax,
-      int const & cont
+      dtInt const & degMin, dtInt const & degMax,
+      dtInt const & cont
     );
     virtual ~bSplineCurve_pointInterpolateConstructOCC();
     dtCurve * result( void );

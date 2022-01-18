@@ -12,7 +12,7 @@ namespace dtOO {
   scaFunction::~scaFunction() {
   }
 	
-  int scaFunction::yDim( void ) const {
+  dtInt scaFunction::yDim( void ) const {
 		return 1;
 	}  
     

@@ -59,14 +59,14 @@ namespace dtOO {
       dt__pH(rotatingMap2dTo3d const) _rM2d;
       dtVector3 _ss;
       dt__pH( vec3dThreeD ) _phirMS_uvw;
-      int _nU;
+      dtInt _nU;
       dt__pH(scaOneD) _fU;
       dt__pH(scaOneD) _fV;
-      int _nV;
-      int _nW;
+      dtInt _nV;
+      dtInt _nW;
       dtReal _relaxM;
       dtReal _relaxPhir;
-      int _nSteps;
+      dtInt _nSteps;
       dtReal _angle;
       static bool _registrated;    
   };

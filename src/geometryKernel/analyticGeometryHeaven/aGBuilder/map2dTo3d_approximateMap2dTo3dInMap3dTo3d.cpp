@@ -16,7 +16,7 @@ namespace dtOO {
 	map2dTo3d_approximateMap2dTo3dInMap3dTo3d
 	  ::map2dTo3d_approximateMap2dTo3dInMap3dTo3d(
 		map2dTo3d const * const m2d, map3dTo3d const * const m3d,
-		int const & nU, int const & nV, int const & order
+		int const & nU, dtInt const & nV, dtInt const & order
 	) {
 		vectorHandling< dtCurve const * > cL;
 		

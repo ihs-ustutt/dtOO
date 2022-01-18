@@ -69,7 +69,7 @@ namespace dtOO {
 		return DYdtVector3( x_percent(xx) );
 	}
 	
-  dtReal vec3dOneD::xMin( int const & dir) const {
+  dtReal vec3dOneD::xMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _min;
@@ -83,7 +83,7 @@ namespace dtOO {
     }   
 	}
 	
-  dtReal vec3dOneD::xMax( int const & dir) const {
+  dtReal vec3dOneD::xMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _max;
@@ -140,7 +140,7 @@ namespace dtOO {
     header.push_back("l1");
     header.push_back("eps");		
 		
-	  int glpOrder[16] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 20};
+	  dtInt glpOrder[16] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 20};
 		dtReal l0 = length(1, x1);
 		dtReal l1 = 0.;
 		dtReal const geoRes 
@@ -171,7 +171,7 @@ namespace dtOO {
 		return x_percent(percent);
 	}
 	
-	dtReal vec3dOneD::length( int const & nP, dtReal const & x1 ) const {
+	dtReal vec3dOneD::length( dtInt const & nP, dtReal const & x1 ) const {
 		std::vector< dtPoint2 > glp = dtLinearAlgebra::getGaussLegendre(nP);
 		dtReal L = 0.0;
 		dtReal const u0 = xMin(0);

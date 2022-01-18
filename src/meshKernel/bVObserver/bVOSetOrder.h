@@ -29,7 +29,7 @@ namespace dtOO {
       );    
       virtual void postUpdate( void );
     private:
-      int _order;
+      dtInt _order;
   };
 }
 #endif	/* bVOSetOrder_H */

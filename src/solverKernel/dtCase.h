@@ -39,19 +39,19 @@ namespace dtOO {
       std::vector< std::string > allStates( void ) const;
       std::string createDirectory( std::string const & state ) const;
       std::string getDirectory( std::string const & state ) const;
-      int status( std::string const & state ) const;
+      dtInt status( std::string const & state ) const;
       std::string statusStr( std::string const & state ) const;
       vectorHandling< resultValue * > result( std::string const & state ) const;
     public:
-      static const int SUCCESS;
-      static const int RUNNING;
-      static const int ERROR;
-      static const int UNEXPECTED;
+      static const dtInt SUCCESS;
+      static const dtInt RUNNING;
+      static const dtInt ERROR;
+      static const dtInt UNEXPECTED;
       static const std::string STATUSSTRING[];
     private:
       std::vector< std::string > _directory;
       std::vector< std::string > _state;
-      std::vector< int > _status;
+      std::vector< dtInt > _status;
   };
 }
 #endif	/* dtCase_H */

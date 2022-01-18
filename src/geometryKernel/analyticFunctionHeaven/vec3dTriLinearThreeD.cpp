@@ -149,7 +149,7 @@ namespace dtOO {
     return yy;
 	}
 	
-	bool vec3dTriLinearThreeD::closed( int const & dir ) const {
+	bool vec3dTriLinearThreeD::closed( dtInt const & dir ) const {
 		dt__throwIf( (dir!=0) && (dir!=1) && (dir!=2), closed() );
 		return false;
 	}

@@ -14,11 +14,11 @@ namespace dtOO {
   public:
     dt__classOnlyName(float_map1dTo3dPointConstCartesian);     
     float_map1dTo3dPointConstCartesian(
-      map1dTo3d const * const m1d, int const & dir, dtReal const & value,
+      map1dTo3d const * const m1d, dtInt const & dir, dtReal const & value,
       dtReal const & initGuess
     );        
     float_map1dTo3dPointConstCartesian(
-      map1dTo3d const * const m1d, int const & dir, dtReal const & value
+      map1dTo3d const * const m1d, dtInt const & dir, dtReal const & value
     );
     virtual ~float_map1dTo3dPointConstCartesian();
     dtReal result( void );
@@ -26,7 +26,7 @@ namespace dtOO {
     double F(double const * xx) const;
   private:
     dtReal _u;
-    int _dir;
+    dtInt _dir;
     dtReal _value;
     map1dTo3d const & _m1d;    
   };

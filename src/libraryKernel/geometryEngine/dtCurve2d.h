@@ -16,14 +16,14 @@ namespace dtOO {
       dtCurve2d();
       virtual ~dtCurve2d();
      	virtual dtCurve2d * clone( void ) const = 0;
-      virtual dtReal minPara ( int const & dir ) const = 0; 
-      virtual dtReal maxPara ( int const & dir ) const = 0;
-      virtual int order( void ) const = 0;
+      virtual dtReal minPara ( dtInt const & dir ) const = 0; 
+      virtual dtReal maxPara ( dtInt const & dir ) const = 0;
+      virtual dtInt order( void ) const = 0;
       virtual bool closed( void ) const = 0;
       virtual dtPoint2 point( dtReal const uu ) const = 0;
       virtual dtVector2 firstDer( dtReal const uu) const = 0;
-      virtual int nControlPoints( void ) const = 0;
-      virtual dtPoint2 controlPoint( int const nPoint ) const = 0;
+      virtual dtInt nControlPoints( void ) const = 0;
+      virtual dtPoint2 controlPoint( dtInt const nPoint ) const = 0;
       virtual dtReal l_u( dtReal const uu ) const = 0;
       virtual dtReal u_l( dtReal const length ) const = 0;
 	    virtual dtReal reparam(dtPoint2 const point) const = 0;
@@ -47,7 +47,7 @@ namespace dtOO {
       dtReal length(void) const;
       dtReal l_uPercent(dtReal const percent) const;
       dtReal u_lPercent( dtReal const percent ) const;
-      virtual void setControlPoint( int const nPoint, dtPoint2 const point );
+      virtual void setControlPoint( dtInt const nPoint, dtPoint2 const point );
     };
     dt__H_addCloneForpVH(dtCurve2d);    
 }

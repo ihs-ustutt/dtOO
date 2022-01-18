@@ -28,10 +28,10 @@ namespace dtOO {
     void addVertices( std::vector< ::MVertex const * > const & mv );
     moab::Range addElements( std::vector< ::MElement const * > const & me );
     void addVertexField( dtOMVertexField< bool > const & field );
-	  void addVertexField( dtOMVertexField< int > const & field );
+	  void addVertexField( dtOMVertexField< dtInt > const & field );
     void addVertexField( dtOMVertexField< dtReal > const & fF );
     void addVertexField( dtOMVertexField< dtVector3 > const & vF );
-	  void addFaceField( dtOMFaceField< int > const & field );
+	  void addFaceField( dtOMFaceField< dtInt > const & field );
 	  void addFaceField( dtOMFaceField< dtReal > const & field );    
     void addFaceField( dtOMFaceField< bool > const & field );    
 //    void addEdgeField( dtOMEdgeField< dtReal > const & eF );

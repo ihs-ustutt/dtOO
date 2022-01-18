@@ -63,15 +63,15 @@ namespace dtOO {
 		}
   }
 
-	bool vec2dOneDInMap2dTo3d::isClosed( int const & dir) const {
+	bool vec2dOneDInMap2dTo3d::isClosed( dtInt const & dir) const {
     return _v2d->closed(dir);
 	}
 
-	dtReal vec2dOneDInMap2dTo3d::getMin( int const & dir) const {
+	dtReal vec2dOneDInMap2dTo3d::getMin( dtInt const & dir) const {
 		return _v2d->xMin(dir);     
 	}
 
-	dtReal vec2dOneDInMap2dTo3d::getMax( int const & dir) const {
+	dtReal vec2dOneDInMap2dTo3d::getMax( dtInt const & dir) const {
 		return _v2d->xMax(dir);
 	}
 

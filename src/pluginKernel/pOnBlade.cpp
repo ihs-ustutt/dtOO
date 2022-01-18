@@ -137,7 +137,7 @@ namespace dtOO {
       // argList
       //
       ::Foam::argList::noParallel();
-      int argc = 3;
+      dtInt argc = 3;
       std::vector< std::string > argvStr(3);
       argvStr[0] = getLabel();
       argvStr[1] = std::string("-case");
@@ -261,7 +261,7 @@ namespace dtOO {
         << "# 3 length" << std::endl
         << "# 4 value" << std::endl;
         
-        int cc = 0;
+        dtInt cc = 0;
         dt__forAllRefAuto(bladeCut, aBladeCut) {
           //
           // create vector and value grid
@@ -275,7 +275,7 @@ namespace dtOO {
           //
           dtPoint3 xyz0 = aBladeCut.getPointPercent( grid[0] );          
           dtReal uStagCorrect = 0.;
-          int uStagCorrectIndex = 0;
+          dtInt uStagCorrectIndex = 0;
           dt__forAllIndex(grid, ii) {            
             dtPoint3 const & xyz1 = aBladeCut.getPointPercent( grid[ii] );
             

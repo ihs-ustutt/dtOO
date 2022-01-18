@@ -19,9 +19,9 @@ namespace dtOO {
     dtOCCTrimmedCurve2d(dtOCCCurve2dBase const & orig, dtReal const u0, dtReal const u1);
     virtual ~dtOCCTrimmedCurve2d();
     virtual dtCurve2d * clone( void ) const;
-    virtual int order( void ) const;
-    virtual int nControlPoints( void ) const;
-    virtual dtPoint2 controlPoint( int const nPoint ) const;
+    virtual dtInt order( void ) const;
+    virtual dtInt nControlPoints( void ) const;
+    virtual dtPoint2 controlPoint( dtInt const nPoint ) const;
     dtReal getU0( void ) const;
     dtReal getU1( void ) const;
   private:

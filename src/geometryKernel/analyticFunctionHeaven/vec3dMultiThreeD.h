@@ -102,7 +102,7 @@ namespace dtOO {
     std::vector< dtReal > max
     = 
     ::boost::assign::list_of(xx[0]+_tol)(xx[1]+_tol)(xx[2]+_tol);
-    int nEnt 
+    dtInt nEnt 
     = 
     const_cast< vec3dMultiThreeD< funT > * >(this)->_x_rTree.Search( 
       &min[0], &max[0], vec3dMultiThreeD< funT >::rTreeCallback, &out 
@@ -172,7 +172,7 @@ namespace dtOO {
   template < typename funT >    
   void vec3dMultiThreeD< funT >::dump( void ) const {
     logContainer< vec3dMultiThreeD< funT > > dt__debugContainer(logC);   
-    int cc = 0;
+    dtInt cc = 0;
 
     aFX xMin;
     aFX xMax;

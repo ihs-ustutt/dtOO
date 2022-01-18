@@ -28,7 +28,7 @@ namespace dtOO {
 	
   bSplineCurve_pointInterpolateConstructOCC
     ::bSplineCurve_pointInterpolateConstructOCC( 
-    std::vector < dtPoint3 > const & pp, int const & degMin, int const & degMax
+    std::vector < dtPoint3 > const & pp, dtInt const & degMin, dtInt const & degMax
   ) {
     _dtC.reset( 
       bSplineCurve_pointInterpolateConstructOCC(pp, degMin, degMax, 4).result() 
@@ -38,8 +38,8 @@ namespace dtOO {
   
   bSplineCurve_pointInterpolateConstructOCC
     ::bSplineCurve_pointInterpolateConstructOCC( 
-    std::vector < dtPoint3 > const & pp, int const & degMin, int const & degMax,
-    int const & cont
+    std::vector < dtPoint3 > const & pp, dtInt const & degMin, dtInt const & degMax,
+    dtInt const & cont
   ) {
     //
 		// number of points

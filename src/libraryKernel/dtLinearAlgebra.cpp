@@ -107,7 +107,7 @@ namespace dtOO {
 	}  
 
   dtReal dtLinearAlgebra::sum( 
-    std::vector< dtReal > const & vv, int const & from, int const & to 
+    std::vector< dtReal > const & vv, dtInt const & from, dtInt const & to 
   ) {
 		dtReal nn = 0.;
 		dt__forFromToIndex(from, to, ii) {
@@ -543,11 +543,11 @@ namespace dtOO {
 		}      
 	}
 
-  int dtLinearAlgebra::returnNearestPointIndexTo(
+  dtInt dtLinearAlgebra::returnNearestPointIndexTo(
     dtPoint3 const & pp, std::vector< dtPoint3 > const & pV
   ) {
     dtReal dist = std::numeric_limits<dtReal>::max();
-    int minIndex = -1;
+    dtInt minIndex = -1;
     dt__forAllIndex(pV, ii) {      
       dtReal newDist = distance(pp, pV[ii]);
       if ( newDist < dist ) {
@@ -606,7 +606,7 @@ namespace dtOO {
 							<< dt__eval(nPoints) );
 		}
 		std::vector<dtPoint2> p2(nPoints);
-		for ( int ii=0; ii<nPoints; ii++ ) {
+		for ( dtInt ii=0; ii<nPoints; ii++ ) {
 			p2[ii] = dtPoint2(tt[ii], ww[ii]);
 		}
 
@@ -893,7 +893,7 @@ namespace dtOO {
   }
     
   twoDArrayHandling< dtPoint2 > dtLinearAlgebra::unitGrid( 
-    int const & nU, int const & nV
+    dtInt const & nU, dtInt const & nV
   ) {
     twoDArrayHandling< dtPoint2 > grid(nU, nV);
     

@@ -61,7 +61,7 @@ namespace dtOO {
     //
     // iterate points
     //
-    for( int ii=0; ii<pA.size(); ii = ii + 2 ) {
+    for( dtInt ii=0; ii<pA.size(); ii = ii + 2 ) {
       dt__throwIf( pA[ii  ].dimension()!=6, buildPart() );
       dt__throwIf( pA[ii+1].dimension()!=6, buildPart() );
       

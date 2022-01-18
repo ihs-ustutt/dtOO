@@ -70,7 +70,7 @@ namespace dtOO {
       preUpdate()
     );
     
-    int cc = 0;
+    dtInt cc = 0;
     dt__forAllRefAuto(gm->vertices(), aV) {
       aV->setPrescribedMeshSizeAtVertex(_meshSize[cc]);
       cc = cc + 1;

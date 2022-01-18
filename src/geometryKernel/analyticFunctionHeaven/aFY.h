@@ -14,7 +14,7 @@ namespace dtOO {
       aFY( void );      
       aFY( const aFY& orig );
       aFY( const aFX& orig );
-      aFY( int const & ss, double const & ref );
+      aFY( dtInt const & ss, double const & ref );
       std::vector< dtReal > stdVector( void );
   };
 }

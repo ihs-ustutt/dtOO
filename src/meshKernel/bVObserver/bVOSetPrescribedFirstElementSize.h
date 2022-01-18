@@ -33,7 +33,7 @@ namespace dtOO {
       virtual void preUpdate( void );
       double F( double const * xx );
     private:
-      int _type;
+      dtInt _type;
       analyticFunctionCompoundTrojanHorse< scaOneDPolyInterface > _grading;
       dtReal _firstElementSize;
       dt__pH(scaOneDPolyInterface) _polyI;

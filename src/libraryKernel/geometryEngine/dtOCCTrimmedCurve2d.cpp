@@ -28,15 +28,15 @@ namespace dtOO {
 		return new dtOCCTrimmedCurve2d( OCCRef(), _u0, _u1 );		
 	}
 	
-  int dtOCCTrimmedCurve2d::order( void ) const {
+  dtInt dtOCCTrimmedCurve2d::order( void ) const {
 		dt__throwUnexpected(order());			
 	}
 	
-  int dtOCCTrimmedCurve2d::nControlPoints( void ) const {
+  dtInt dtOCCTrimmedCurve2d::nControlPoints( void ) const {
 		return 0;			
 	}
 	
-  dtPoint2 dtOCCTrimmedCurve2d::controlPoint( int const nPoint ) const {
+  dtPoint2 dtOCCTrimmedCurve2d::controlPoint( dtInt const nPoint ) const {
 		dt__throwUnexpected(controlPoint());		
 	}
 	

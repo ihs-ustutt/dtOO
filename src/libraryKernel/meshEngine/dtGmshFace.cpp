@@ -25,15 +25,15 @@
 #define __caCThis const_cast< dtGmshFace * >(this)
 
 namespace dtOO {    
-  dtGmshFace::dtGmshFace(::GModel *m, int tag) 
+  dtGmshFace::dtGmshFace(::GModel *m, dtInt tag) 
   : GFace(m, tag), 
     _geomType( ::GEntity::GeomType::Unknown ) {
     
   }
 	
   dtGmshFace::dtGmshFace(
-    ::GModel *m, int tag, 
-    const std::list< ::GEdge * > &edges, const std::vector< int > &ori 
+    ::GModel *m, dtInt tag, 
+    const std::list< ::GEdge * > &edges, const std::vector< dtInt > &ori 
   ) : GFace(m, tag),
       _geomType( ::GEntity::GeomType::Unknown ) {
     dt__forAllRefAuto(edges, aEdge) {
@@ -63,7 +63,7 @@ namespace dtOO {
   }
 
   dtGmshFace::dtGmshFace(
-    ::GModel *m, int tag, const std::list< ::GEdge * > &edges
+    ::GModel *m, dtInt tag, const std::list< ::GEdge * > &edges
   ) : GFace(m, tag),
       _geomType( ::GEntity::GeomType::Unknown ) {
     dt__forAllRefAuto(edges, aEdge) {
@@ -199,7 +199,7 @@ namespace dtOO {
     return _mm.get();
   }
   
-  void dtGmshFace::addEdge( ::GEdge * edge, int const ori ) {
+  void dtGmshFace::addEdge( ::GEdge * edge, dtInt const ori ) {
     l_edges.push_back( edge );
     edge->addFace(this);
     l_dirs.push_back( ori );
@@ -207,9 +207,9 @@ namespace dtOO {
     edgeLoops.push_back( ::GEdgeLoop(l_edges) );
   }  
 
-  int dtGmshFace::edgeOrientation( ::GEdge * edge ) const {
+  dtInt dtGmshFace::edgeOrientation( ::GEdge * edge ) const {
     typedef std::vector< ::GEdge * >::const_iterator EIter;
-    std::vector< int >::const_iterator OriIter = l_dirs.begin();
+    std::vector< dtInt >::const_iterator OriIter = l_dirs.begin();
 
     for (EIter ei = l_edges.begin(); ei != l_edges.end(); ++ei) {
       if (*ei == edge) return *OriIter;
@@ -260,7 +260,7 @@ namespace dtOO {
     return point( p.x(), p.y() );
   }
    
-  bool dtGmshFace::isClosed( int const dim ) const {
+  bool dtGmshFace::isClosed( dtInt const dim ) const {
     if (dim == 0) {
       return _mm->isClosedU();
     }
@@ -283,7 +283,7 @@ namespace dtOO {
 	}
   
   void dtGmshFace::meshWNElements( 
-    int const & nElementsU, int const & nElementsV 
+    dtInt const & nElementsU, dtInt const & nElementsV 
   ) {	
 		std::vector< dtGmshEdge * > ee = dtGmshModel::cast2DtGmshEdge(edges());
 		
@@ -302,8 +302,8 @@ namespace dtOO {
 	}
 
   void dtGmshFace::meshWNElements( 
-    int const & nElements0, int const & nElements1, 
-    int const & nElements2, int const & nElements3 
+    dtInt const & nElements0, dtInt const & nElements1, 
+    dtInt const & nElements2, dtInt const & nElements3 
   ) {	
 		std::vector< dtGmshEdge * > ee = dtGmshModel::cast2DtGmshEdge(edges());
 		
@@ -391,7 +391,7 @@ namespace dtOO {
     this->meshAttributes.method = MESH_UNSTRUCTURED;
   }  
 	
-  std::vector< int > dtGmshFace::estimateTransfiniteNElements( 
+  std::vector< dtInt > dtGmshFace::estimateTransfiniteNElements( 
 	  dtReal const & uWidth, dtReal const & vWidth 
 	) const {	
 		std::vector< dtGmshEdge * > const ee 
@@ -419,7 +419,7 @@ namespace dtOO {
 			}			
 		}
 
-    std::vector< int > nEl(2);
+    std::vector< dtInt > nEl(2);
     nEl[0] = std::max(intHandling::round(average[0]/2.), 1); 		
 		nEl[1] = std::max(intHandling::round(average[1]/2.), 1); 		
 		
@@ -608,7 +608,7 @@ namespace dtOO {
 //      << " ] : grading = " << grading << ", type = " << type
 //    );
     
-    int ii = 0;
+    dtInt ii = 0;
     dt__forAllRefAuto(dtEdges(), ee) {
       ee->setGrading(grading[ii], type[ii]);
       ii++;

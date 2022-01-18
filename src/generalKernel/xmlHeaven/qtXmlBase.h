@@ -18,8 +18,8 @@ namespace dtOO {
     virtual ~qtXmlBase();  
     static dtReal muParseString( std::string const expression ); 
     static std::vector< dtReal > muParseCSString( std::string const expression ); 
-    static int muParseStringInt( std::string const expression );
-    static std::vector< int > muParseCSStringInt(
+    static dtInt muParseStringInt( std::string const expression );
+    static std::vector< dtInt > muParseCSStringInt(
       std::string const expression
     );    
   protected:

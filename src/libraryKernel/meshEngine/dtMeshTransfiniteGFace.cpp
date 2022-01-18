@@ -112,8 +112,8 @@ namespace dtOO {
        2L+2H +------------+
              0     i      L
     */    
-    int L = pUV.size(0)-1;
-    int H = pUV.size(1)-1;
+    dtInt L = pUV.size(0)-1;
+    dtInt H = pUV.size(1)-1;
     double UC1 = pUV[0][0].x();
     double UC2 = pUV[L][0].x();
     double UC3 = pUV[L][H].x();
@@ -167,27 +167,27 @@ namespace dtOO {
     // correction at constant v
     //
     dt__forAllRefAuto( _vCorrPos, constV ) {
-      int pos = static_cast< int >(constV * H);
+      dtInt pos = static_cast< dtInt >(constV * H);
       pUV = correctConstV( dtgf, pUV, pos, _vCorrSteps, lengths_i, L_i );
     }
     if ( ! _vCorrPos.empty() ) {
       pUV 
       = 
-      linearInterpolateU( pUV, 0, static_cast< int >(_vCorrPos.front() * H) );
+      linearInterpolateU( pUV, 0, static_cast< dtInt >(_vCorrPos.front() * H) );
       
       dt__forFromToIndex( 1, _vCorrPos.size(), ii ) {
         pUV 
         = 
         linearInterpolateU(
           pUV, 
-          static_cast< int >(_vCorrPos[ii-1] * H), 
-          static_cast< int >(_vCorrPos[ii  ] * H)
+          static_cast< dtInt >(_vCorrPos[ii-1] * H), 
+          static_cast< dtInt >(_vCorrPos[ii  ] * H)
         );      
       }
     
       pUV 
       = 
-      linearInterpolateU( pUV, static_cast< int >(_vCorrPos.back() * H), H );      
+      linearInterpolateU( pUV, static_cast< dtInt >(_vCorrPos.back() * H), H );      
     }
     
 
@@ -210,11 +210,11 @@ namespace dtOO {
   
   twoDArrayHandling< dtPoint2 > dtMeshTransfiniteGFace::correctConstV( 
     dtGmshFace const * const dtgf, twoDArrayHandling< dtPoint2 > pUV,
-    int const & pos, int const & nSteps,
+    dtInt const & pos, dtInt const & nSteps,
     std::vector< double > lengths_i, double const & L_i
   ) const {
-    int L = pUV.size(0)-1;
-    int H = pUV.size(1)-1;
+    dtInt L = pUV.size(0)-1;
+    dtInt H = pUV.size(1)-1;
     
     logContainer< dtMeshTransfiniteGFace > logC(logDEBUG, "correctConstV()");
 
@@ -292,7 +292,7 @@ namespace dtOO {
   }
 
   twoDArrayHandling< dtPoint2 > dtMeshTransfiniteGFace::linearInterpolateU( 
-    twoDArrayHandling< dtPoint2 > pUV, int const & vStart, int const & vEnd
+    twoDArrayHandling< dtPoint2 > pUV, dtInt const & vStart, dtInt const & vEnd
   ) {
     dtReal theStep = 1. / static_cast< dtReal >(vEnd - vStart);
     dtReal cStep = 0.;

@@ -121,30 +121,30 @@ namespace dtOO {
         aFPtrVec const * const aF,
         dtReal const & def
       );    
-      static int getAttributeIntMuParse( 
+      static dtInt getAttributeIntMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV
       );    
-      static int getAttributeIntMuParse( 
+      static dtInt getAttributeIntMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV,
         aFPtrVec const * const aF 
       );
-      static int getAttributeIntMuParse( 
+      static dtInt getAttributeIntMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV,
         aFPtrVec const * const aF,
         aGPtrVec const * const aG        
       );      
-      static int getAttributeIntMuParse(
+      static dtInt getAttributeIntMuParse(
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV,
         aFPtrVec const * const aF,
-        int const & def
+        dtInt const & def
       );
       static std::vector< dtReal > getAttributeFloatVectorMuParse( 
         std::string const attName, 
@@ -158,13 +158,13 @@ namespace dtOO {
         cVPtrVec const * const cV,
         aFPtrVec const * const aF 
       );            
-      static std::vector< int > getAttributeIntVectorMuParse( 
+      static std::vector< dtInt > getAttributeIntVectorMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV,
         aFPtrVec const * const aF 
       );
-      static std::vector< int > getAttributeIntVectorMuParse( 
+      static std::vector< dtInt > getAttributeIntVectorMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
         cVPtrVec const * const cV,

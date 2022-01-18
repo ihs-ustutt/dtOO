@@ -21,8 +21,8 @@ namespace dtOO {
       );
       virtual ~dtOCCGeomFillBoundWithSurf();
       virtual dtCurve * clone( void ) const;
-      virtual dtReal minPara( int const & dir ) const;
-      virtual dtReal maxPara( int const & dir ) const;    
+      virtual dtReal minPara( dtInt const & dir ) const;
+      virtual dtReal maxPara( dtInt const & dir ) const;    
       virtual dtPoint3 point( dtReal const uu ) const;
     private:
       GeomFill_BoundWithSurf const * _ptr;

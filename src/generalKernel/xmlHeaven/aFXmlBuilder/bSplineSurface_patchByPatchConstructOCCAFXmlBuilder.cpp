@@ -145,12 +145,12 @@ namespace dtOO {
   }
         
   dtSurface * bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::sortAndInit(
-    int const & fixJ, twoDArrayHandling< dt__pH(dtCurve) > const & cc,
+    dtInt const & fixJ, twoDArrayHandling< dt__pH(dtCurve) > const & cc,
     vectorHandling< dtCurve const * > & ccFill,
-    int const & skin_nInitCuts, 
-    int const & skin_minDeg, 
-    int const & skin_maxDeg, 
-    int const & skin_nIter
+    dtInt const & skin_nInitCuts, 
+    dtInt const & skin_minDeg, 
+    dtInt const & skin_maxDeg, 
+    dtInt const & skin_nIter
   ) const {
     vectorHandling< dtCurve const * > ccSkin;
     dt__forFromToIndex(0, cc.size(0), ii ) {
@@ -169,8 +169,8 @@ namespace dtOO {
     dtCurve const * const boundCurv_1, //dtC[1]
     dtCurve const * const boundCurv_2,//ccFill[kk]
     dtCurve const * const boundCurv_3, //dtC[0]
-    int const & fill_maxDeg,
-    int const & fill_maxSeg
+    dtInt const & fill_maxDeg,
+    dtInt const & fill_maxSeg
   ) const {
     dtReal uMin = boundSurf_0->minPara(0);
     dtReal uMax = boundSurf_0->maxPara(0);

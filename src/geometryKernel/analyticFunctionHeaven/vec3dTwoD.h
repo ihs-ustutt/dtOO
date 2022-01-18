@@ -25,11 +25,11 @@ namespace dtOO {
     virtual vec3dTwoD * create( void ) const = 0;    
     virtual aFY Y( aFX const & xx ) const = 0;
     virtual aFY Y( dtReal const & x0, dtReal const & x1 ) const;
-    virtual int xDim( void ) const;
+    virtual dtInt xDim( void ) const;
     void setMax(int const & dir, dtReal const & max);
     void setMin(int const & dir, dtReal const & min);
-    virtual dtReal xMin( int const & dir) const;
-    virtual dtReal xMax( int const & dir) const;   
+    virtual dtReal xMin( dtInt const & dir) const;
+    virtual dtReal xMax( dtInt const & dir) const;   
     virtual std::vector<dtVector3> DYdtVector3( aFX const & xx ) const;
     std::vector<dtVector3> DYdtVector3( dtReal const & x0, dtReal const & x1 ) const;
     dtVector3 unitNdtVector3( aFX const & xx ) const;
@@ -46,7 +46,7 @@ namespace dtOO {
     aFX operator%(const aFX &percent) const;
 //    dtReal length( aFX const & x0, aFX const & x1 ) const;
   private:
-//	  dtReal length( int const & nP, aFX const & x0, aFX const & x1 ) const;    
+//	  dtReal length( dtInt const & nP, aFX const & x0, aFX const & x1 ) const;    
   private:    
     dtReal _min[2];
     dtReal _max[2];

@@ -35,7 +35,7 @@ namespace dtOO {
   map2dTo3d::~map2dTo3d() {
   }
   
-  int map2dTo3d::dim( void ) const {
+  dtInt map2dTo3d::dim( void ) const {
     return 2;
   }
 
@@ -171,11 +171,11 @@ namespace dtOO {
 		return retVec;
   }
    
-  int map2dTo3d::getRenderResolutionU( void ) const { 
+  dtInt map2dTo3d::getRenderResolutionU( void ) const { 
     return analyticGeometry::getRenderResolution(0);
   }
 
-  int map2dTo3d::getRenderResolutionV( void ) const { 
+  dtInt map2dTo3d::getRenderResolutionV( void ) const { 
     return analyticGeometry::getRenderResolution(1);
   }  
   
@@ -206,20 +206,20 @@ namespace dtOO {
     double V;
     double UBest = 1.E+99;
     double VBest = 1.E+99;
-//    int const NumInitGuess = 11;
+//    dtInt const NumInitGuess = 11;
 //    double initU[NumInitGuess] 
 //    = 
 //    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
 //    double initV[NumInitGuess] 
 //    = 
 //    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};    
-    int const NumInitGuess = 3;
+    dtInt const NumInitGuess = 3;
     double initU[NumInitGuess] = {0.5, 0.75, 0.25};
     double initV[NumInitGuess] = {0.5, 0.75, 0.25};
-    int maxRestarts 
+    dtInt maxRestarts 
     = 
     staticPropertiesHandler::getInstance()->getOptionInt("reparam_restarts");
-    int maxInternalRestarts 
+    dtInt maxInternalRestarts 
     = 
     staticPropertiesHandler
       ::getInstance()->getOptionInt("reparam_internalRestarts");    
@@ -718,11 +718,11 @@ namespace dtOO {
 //        "reparamOnFace_precisionXYZ"
 //      )
 //    );      		
-//    const int MaxIter = 25;
-//    const int NumInitGuess = 11;
+//    const dtInt MaxIter = 25;
+//    const dtInt NumInitGuess = 11;
 //
 //    double Unew = 0., Vnew = 0., err, err2;
-//    int iter;
+//    dtInt iter;
 //      double umin, umax, vmin, vmax;
 //    // don't use 0.9, 0.1 it fails with ruled surfaces
 //    double initu[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};

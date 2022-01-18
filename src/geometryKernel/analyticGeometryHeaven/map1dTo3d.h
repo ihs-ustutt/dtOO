@@ -16,7 +16,7 @@ namespace dtOO {
       map1dTo3d();
       map1dTo3d(const map1dTo3d& orig);
       virtual ~map1dTo3d();
-      virtual int dim( void ) const;            
+      virtual dtInt dim( void ) const;            
       virtual dtPoint3 getPoint( dtReal const * const uvw ) const;      
       //
       // overload
@@ -41,7 +41,7 @@ namespace dtOO {
       dtPoint3 getPointPercent( dtReal const & uu ) const;  
       dtVector3 firstDerUPercent( dtReal const & uP) const;
       map1dTo3d * segmentPercent( dtReal const & u0, dtReal const & u1 ) const;     
-      int getRenderResolutionU( void ) const;
+      dtInt getRenderResolutionU( void ) const;
       dtReal u_percent(dtReal const & uu) const;
       dtReal u_lPercent(dtReal const & lP) const;
       dtReal percent_u(dtReal const & uu) const;
@@ -55,7 +55,7 @@ namespace dtOO {
       dtReal operator|( const dtReal &length ) const;  
       dtReal operator&( const dtReal &lengthPercent ) const;
     private:
-      dtReal l_u( dtReal const & uu, int const & nP ) const;
+      dtReal l_u( dtReal const & uu, dtInt const & nP ) const;
 	    double funValue(const double xx ) const;
     private:
       mutable dtReal _tmpL;

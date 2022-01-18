@@ -218,17 +218,17 @@ namespace dtOO {
 	//
 	//
 	//
-  dtPoint3 dtSurface::controlPoint( int const uI, int const vI ) const {
+  dtPoint3 dtSurface::controlPoint( dtInt const uI, dtInt const vI ) const {
 		dt__throw(controlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
   void dtSurface::setControlPoint( 
-    int const uI, int const vI, dtPoint3 const point 
+    dtInt const uI, dtInt const vI, dtPoint3 const point 
   ) {
 		dt__throw(setControlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
-  int dtSurface::nControlPoints( int const dim ) const {
+  dtInt dtSurface::nControlPoints( dtInt const dim ) const {
 		switch (dim) {
 			case 0:
 				return 0;
@@ -269,7 +269,7 @@ namespace dtOO {
 	}
   
   dtCurve * dtSurface::segmentConst( 
-    int const & dir, dtReal const at, dtReal const from, dtReal const to
+    dtInt const & dir, dtReal const at, dtReal const from, dtReal const to
   ) const {
     if      (dir==0) return segmentConstU(at, from, to);
     else if (dir==1) return segmentConstV(at, from, to);
@@ -277,7 +277,7 @@ namespace dtOO {
   }
   
   dtCurve * dtSurface::segmentConst( 
-    int const & dir, dtReal const at
+    dtInt const & dir, dtReal const at
   ) const {
     if      (dir==0) return segmentConstU(at);
     else if (dir==1) return segmentConstV(at);
@@ -285,7 +285,7 @@ namespace dtOO {
   }
   
   dtCurve * dtSurface::segmentConstPercent( 
-    int const & dir, dtReal const at
+    dtInt const & dir, dtReal const at
   ) const {
     if      (dir==0) return segmentConstUPercent(at);
     else if (dir==1) return segmentConstVPercent(at);
@@ -293,7 +293,7 @@ namespace dtOO {
   }
   
   dtCurve * dtSurface::segmentConstPercent( 
-    int const & dir, dtReal const at, dtReal const from, dtReal const to
+    dtInt const & dir, dtReal const at, dtReal const from, dtReal const to
   ) const {
     if      (dir==0) return segmentConstUPercent(at, from, to);
     else if (dir==1) return segmentConstVPercent(at, from, to);

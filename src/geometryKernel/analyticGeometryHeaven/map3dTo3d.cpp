@@ -40,7 +40,7 @@ namespace dtOO {
   map3dTo3d::~map3dTo3d() {
   }
   
-  int map3dTo3d::dim( void ) const {
+  dtInt map3dTo3d::dim( void ) const {
     return 3;
   }
     
@@ -350,15 +350,15 @@ namespace dtOO {
     return percent_uvw(ppUVW);    
 	}    
 		 	
-  int map3dTo3d::getRenderResolutionU( void ) const { 
+  dtInt map3dTo3d::getRenderResolutionU( void ) const { 
     return analyticGeometry::getRenderResolution(0);
   }
 
-  int map3dTo3d::getRenderResolutionV( void ) const { 
+  dtInt map3dTo3d::getRenderResolutionV( void ) const { 
     return analyticGeometry::getRenderResolution(1);
   }
   
-  int map3dTo3d::getRenderResolutionW( void ) const { 
+  dtInt map3dTo3d::getRenderResolutionW( void ) const { 
     return analyticGeometry::getRenderResolution(2);
   }
 	
@@ -645,8 +645,8 @@ namespace dtOO {
     twoDArrayHandling< dtPoint3 > const & pp 
   ) const {
 		twoDArrayHandling< dtPoint3 > ppUVW(pp.size(0), pp.size(1));
-		for ( int ii=0; ii<pp.size(0); ii++) {
-			for ( int jj=0; jj<pp.size(1); jj++) {
+		for ( dtInt ii=0; ii<pp.size(0); ii++) {
+			for ( dtInt jj=0; jj<pp.size(1); jj++) {
         ppUVW[ii][jj] = uvw_percent(pp[ii][jj]);
 			}
 		}
@@ -677,7 +677,7 @@ namespace dtOO {
     double U;
     double V;
     double W;
-//    int const NumInitGuess = 11;
+//    dtInt const NumInitGuess = 11;
 //    double initU[NumInitGuess] 
 //    = 
 //    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
@@ -687,14 +687,14 @@ namespace dtOO {
 //    double initW[NumInitGuess] 
 //    = 
 //    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};        
-    int const NumInitGuess = 3;
+    dtInt const NumInitGuess = 3;
     double initU[NumInitGuess] = {0.5, 0.75, 0.25};
     double initV[NumInitGuess] = {0.5, 0.75, 0.25};
     double initW[NumInitGuess] = {0.5, 0.75, 0.25};
-    int maxRestarts 
+    dtInt maxRestarts 
     = 
     staticPropertiesHandler::getInstance()->getOptionInt("reparam_restarts");
-    int maxInternalRestarts 
+    dtInt maxInternalRestarts 
     = 
     staticPropertiesHandler
       ::getInstance()->getOptionInt("reparam_internalRestarts");    
@@ -806,11 +806,11 @@ namespace dtOO {
 //        "reparamInVolume_precisionXYZ"
 //      )
 //    );      		
-//    const int MaxIter = 25;
-//    const int NumInitGuess = 9;
+//    const dtInt MaxIter = 25;
+//    const dtInt NumInitGuess = 9;
 //
 //    double Unew = 0., Vnew = 0., Wnew = 0., err, err2;
-//    int iter;
+//    dtInt iter;
 //    double umin, umax, vmin, vmax, wmin, wmax;
 //    // don't use 0.9, 0.1 it fails with ruled surfaces
 //    double initu[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 1.0, 0.0};

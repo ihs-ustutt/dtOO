@@ -88,7 +88,7 @@ namespace dtOO {
     return yy;		
 	}
 	
-	bool scaMuParserTwoD::closed( int const & dir ) const {
+	bool scaMuParserTwoD::closed( dtInt const & dir ) const {
 		dt__throwIf( (dir!=0) && (dir!=1), closed );
 		return false;
 	}

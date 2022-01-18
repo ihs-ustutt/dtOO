@@ -15,7 +15,7 @@
 namespace dtOO {   
 	bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
 	  vectorHandling< dtCurve const * > const & cc, 
-    dtReal const & tol, int const & param, int const & minM
+    dtReal const & tol, dtInt const & param, dtInt const & minM
 	) {
 		GeomConvert_CompCurveToBSplineCurve conv(
       static_cast< Convert_ParameterisationType >(param)

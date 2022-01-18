@@ -19,7 +19,7 @@ namespace dtOO {
     map3dTo3d();
     map3dTo3d(const map3dTo3d& orig);
     virtual ~map3dTo3d();
-    virtual int dim( void ) const;   
+    virtual dtInt dim( void ) const;   
     dtPoint3 getPoint( dtReal const * const uvw ) const;
     virtual vectorHandling< renderInterface * > getRender( void ) const;
     //
@@ -96,9 +96,9 @@ namespace dtOO {
     dtReal percent_w(dtReal const & ww) const;        
     dtPoint3 percent_uvw(dtPoint3 const & pUVW) const;
     dtPoint3 uvw_percent(dtPoint3 const & pp) const;    
-    int getRenderResolutionU( void ) const;
-    int getRenderResolutionV( void ) const;            
-    int getRenderResolutionW( void ) const;
+    dtInt getRenderResolutionU( void ) const;
+    dtInt getRenderResolutionV( void ) const;            
+    dtInt getRenderResolutionW( void ) const;
     map2dTo3d * segmentConstUPercent( 
       dtReal const & uu, dtPoint2 const & p0, dtPoint2 const & p1 
     ) const;

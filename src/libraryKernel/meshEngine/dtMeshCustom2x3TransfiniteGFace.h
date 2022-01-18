@@ -36,7 +36,7 @@ namespace dtOO {
       static void computeEdgeLoops(
         const ::GFace *gf, 
         std::vector< ::MVertex * > & all_mvertices, 
-        std::vector< int > & indices,
+        std::vector< dtInt > & indices,
         std::vector<MVertex*> & corners,
         std::vector <MVertex *> & m_vertices                  
       );

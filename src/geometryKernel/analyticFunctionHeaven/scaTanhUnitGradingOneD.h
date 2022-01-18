@@ -30,7 +30,7 @@ namespace dtOO {
       scaTanhUnitGradingOneD * create( void ) const;    
       virtual ~scaTanhUnitGradingOneD();
       virtual dtReal YFloat(dtReal const & xx) const;  
-      virtual int nDOF( void ) const;
+      virtual dtInt nDOF( void ) const;
       virtual void setDOF( std::vector< dtReal > const value );    
     private:
       dtReal _gg;

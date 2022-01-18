@@ -78,7 +78,7 @@ namespace dtOO {
         bool marked( void ) const {
           return _mark;
         }                            
-        int nVertices( void ) const {
+        dtInt nVertices( void ) const {
           return _me->getNumVertices();
         }                  
     };

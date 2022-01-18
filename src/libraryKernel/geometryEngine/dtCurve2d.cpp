@@ -56,7 +56,7 @@ namespace dtOO {
 		return u_l( percent*length() );
 	}
 
-	void dtCurve2d::setControlPoint( int const nPoint, dtPoint2 const point ) {
+	void dtCurve2d::setControlPoint( dtInt const nPoint, dtPoint2 const point ) {
 		dt__throw(setControlPoint(), << "Call on dtCurve2d()");
 	}
 //  dtVector2 dtCurve2d::normal(dtReal const uu) const {

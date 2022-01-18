@@ -30,7 +30,7 @@ namespace dtOO {
 	}
 
 	dtPoint3 dtOCCBezierSurface::controlPoint( 
-    int const uI, int const vI 
+    dtInt const uI, dtInt const vI 
   ) const {
 		Standard_Integer uSi = static_cast<Standard_Integer>(uI+1);		
 		Standard_Integer vSi = static_cast<Standard_Integer>(vI+1);		
@@ -44,12 +44,12 @@ namespace dtOO {
 	}
 
 	void dtOCCBezierSurface::setControlPoint( 
-    int const uI, int const vI, dtPoint3 const point 
+    dtInt const uI, dtInt const vI, dtPoint3 const point 
   ) {
 		dt__throwUnexpected(setControlPoint());			
 	}
 
-	int dtOCCBezierSurface::nControlPoints( int const dim ) const {
+	int dtOCCBezierSurface::nControlPoints( dtInt const dim ) const {
 		switch (dim) {
 			case 0:		
 				return static_cast<int>(_ptr->NbUPoles());					

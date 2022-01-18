@@ -71,7 +71,7 @@ namespace dtOO {
     std::vector< dtPoint3 > p3(p2.size());
     dt__forAllIndex(p2, ii) p3[ii] = map->getPoint( p2[ii] );
 
-    int order = dtXmlParserBase::getAttributeInt("order", toBuild);
+    dtInt order = dtXmlParserBase::getAttributeInt("order", toBuild);
     result->push_back( 
       new analyticCurve(
         bSplineCurve_pointConstructOCC(p3, order).result()

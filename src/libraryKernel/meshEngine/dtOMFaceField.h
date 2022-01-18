@@ -22,7 +22,7 @@ namespace dtOO {
     void erase( omFaceH const & fH );
     void assign( dtOMMesh const & om, T const & value );
     void execute( T (*executeMe)(T const & member) );
-    long unsigned int size( void ) const;
+    dtLongUnsInt size( void ) const;
     virtual void update( void );     
   private:
     std::map< omFaceH, T > _field;
@@ -77,7 +77,7 @@ namespace dtOO {
   }
 
   template < typename T >
-  long unsigned int dtOMFaceField< T >::size( void ) const {
+  dtLongUnsInt dtOMFaceField< T >::size( void ) const {
     return _field.size();
   }  
 

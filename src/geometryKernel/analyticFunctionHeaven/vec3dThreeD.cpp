@@ -154,7 +154,7 @@ namespace dtOO {
 		return dxdy;
 	}
 	
-  dtReal vec3dThreeD::xMin( int const & dir) const {
+  dtReal vec3dThreeD::xMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _min[0];
@@ -172,7 +172,7 @@ namespace dtOO {
     }   
 	}
 	
-  dtReal vec3dThreeD::xMax( int const & dir) const {
+  dtReal vec3dThreeD::xMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _max[0];

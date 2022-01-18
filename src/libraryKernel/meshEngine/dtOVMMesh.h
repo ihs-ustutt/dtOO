@@ -15,7 +15,7 @@ namespace dtOO {
   class dtOVMMesh : public ovmMesh {
     public:
       dt__classOnlyName(dtOVMMesh);
-      dtOVMMesh(int const & nV = 0, int const & nE = 0);
+      dtOVMMesh(int const & nV = 0, dtInt const & nE = 0);
       virtual ~dtOVMMesh();
       //
       // add new vertices and elements
@@ -36,7 +36,7 @@ namespace dtOO {
       //
       // misc
       //
-      void makePartition( int const & num ) const;
+      void makePartition( dtInt const & num ) const;
       std::vector< dtPoint3 > adjacentVertices( ovmVertexH const & vH) const;
     private:
       ovmVertexH addVertex( ::MVertex * mv );

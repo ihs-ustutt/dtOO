@@ -38,7 +38,7 @@ namespace dtOO {
 		
 	}
 
-  dtReal dtOCCSurface::minPara( int const dim ) const {
+  dtReal dtOCCSurface::minPara( dtInt const dim ) const {
 		Standard_Real U1;
 		Standard_Real U2;
 		Standard_Real V1;
@@ -64,7 +64,7 @@ namespace dtOO {
 		);
 	}
 	
-  dtReal dtOCCSurface::maxPara( int const dim ) const {
+  dtReal dtOCCSurface::maxPara( dtInt const dim ) const {
 		Standard_Real U1;
 		Standard_Real U2;
 		Standard_Real V1;
@@ -90,7 +90,7 @@ namespace dtOO {
 		);
 	}
 	
-  bool dtOCCSurface::closed( int const dim ) const {
+  bool dtOCCSurface::closed( dtInt const dim ) const {
 		dt__tryOcc(			
 			switch (dim) {
 				case 0:		

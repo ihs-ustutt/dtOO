@@ -89,7 +89,7 @@ namespace dtOO {
     return _dtC.get();
   }
 	
-	bool vec3dCurveOneD::closed( int const & dir ) const {
+	bool vec3dCurveOneD::closed( dtInt const & dir ) const {
 		return _dtC->closed();
 	}
 }

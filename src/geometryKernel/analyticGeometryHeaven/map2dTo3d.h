@@ -17,7 +17,7 @@ namespace dtOO {
       map2dTo3d();
       map2dTo3d(const map2dTo3d& orig);
       virtual ~map2dTo3d();
-      virtual int dim( void ) const;                  
+      virtual dtInt dim( void ) const;                  
       virtual dtPoint3 getPoint( dtReal const * const uvw ) const;      
       //
       // overload
@@ -87,8 +87,8 @@ namespace dtOO {
       dtVector3 secondDerUV( dtReal const & uu, dtReal const & vv) const;           
       dtPoint2 reparamPercentOnFace(dtPoint3 const & ppXYZ) const;
       dtPoint2 approxPercentOnFace(dtPoint3 const & ppXYZ) const;      
-      int getRenderResolutionU( void ) const;
-      int getRenderResolutionV( void ) const;        
+      dtInt getRenderResolutionU( void ) const;
+      dtInt getRenderResolutionV( void ) const;        
       dtPoint2 uv_percent(dtPoint2 const & pUV) const;
       dtPoint2 uv_percent(dtReal const & uu, dtReal const & vv) const;
       dtReal u_percent(dtReal const & uu) const;

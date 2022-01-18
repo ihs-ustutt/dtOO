@@ -15,13 +15,13 @@
 
 namespace dtOO { 
   dtGmshVertex::dtGmshVertex(
-    ::GModel *m, int tag, double ms
+    ::GModel *m, dtInt tag, double ms
   ) : GVertex(m, tag, ms) {
     _dtP = dtPoint3(0., 0., 0.);
     _status = ::GEntity::MeshGenerationStatus::PENDING;
   }
 
-  dtGmshVertex::dtGmshVertex(::GModel *m, int tag) : GVertex(m, tag) {
+  dtGmshVertex::dtGmshVertex(::GModel *m, dtInt tag) : GVertex(m, tag) {
     _dtP = dtPoint3(0., 0., 0.);  
     _status = ::GEntity::MeshGenerationStatus::PENDING;
   }

@@ -13,7 +13,7 @@
 
 namespace dtOO {
 	bSplineCurve_pointConstructOCC::bSplineCurve_pointConstructOCC( 
-    std::vector< dtPoint3 > const & pp, int const & order 
+    std::vector< dtPoint3 > const & pp, dtInt const & order 
   ) {
     //
 		// number of points

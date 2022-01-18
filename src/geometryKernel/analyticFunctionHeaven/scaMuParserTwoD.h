@@ -29,7 +29,7 @@ namespace dtOO {
     scaMuParserTwoD * create( void ) const;    
     virtual ~scaMuParserTwoD();
     virtual dtReal YFloat( dtReal const & x0, dtReal const & x1 ) const;
-    virtual bool closed( int const & dir ) const;    
+    virtual bool closed( dtInt const & dir ) const;    
   private:
     dt__pH(dtMuParser) _parser;
     dt__pVH(double) _arg;

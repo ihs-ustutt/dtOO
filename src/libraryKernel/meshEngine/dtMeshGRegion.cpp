@@ -85,9 +85,9 @@ namespace dtOO {
     //
     // get number of quad faces
     //
-    int quadFaces = 0;
-    int quads = 0;
-    int elems = 0;
+    dtInt quadFaces = 0;
+    dtInt quads = 0;
+    dtInt elems = 0;
     dt__forAllRefAuto( dtGmshModel::cast2DtGmshFace( dtgr->faces() ), gf ) {
       quads = quads + gf->quadrangles.size();
       elems = elems + gf->getNumMeshElements();
@@ -145,7 +145,7 @@ namespace dtOO {
       //
       // create new pseudo face
       //
-      std::vector< int > ori = gf->edgeOrientations();
+      std::vector< dtInt > ori = gf->edgeOrientations();
       dtGmshFace * pseudo 
       =  
       new dtGmshFace(
@@ -348,8 +348,8 @@ namespace dtOO {
     // pyramid open method
     //
     dt__forFromToIndex(0, _nPyramidOpenSteps, ii) {
-      int vertMove = 0;
-      int vertFix = 0;
+      dtInt vertMove = 0;
+      dtInt vertFix = 0;
       dt__forAllRefAuto(vertices, aVert) {
         ovmVertexH const & vH = ovm.at( aVert );
         dt__throwIf(!vH.is_valid(), createPyramids());
@@ -475,7 +475,7 @@ namespace dtOO {
     ovm.request_cell_property< dtReal >("iV");
     ovm.set_persistent( iV );
     
-    int zeroVol = 0;
+    dtInt zeroVol = 0;
     dt__forAllRefAuto(dtgr->pyramids, aPyr) {
       dt__forFromToIndex(0, 5, ii) {
         std::vector< ::MElement * > meVec 

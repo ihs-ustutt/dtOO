@@ -16,7 +16,7 @@ namespace dtOO {
     dt__classOnlyName(geomSurface_closeGapsArithmeticOCC);    
     geomSurface_closeGapsArithmeticOCC();
     geomSurface_closeGapsArithmeticOCC(
-      dt__pVH(dtSurface) const & dtS, int const & dir, int const & nSegments
+      dt__pVH(dtSurface) const & dtS, dtInt const & dir, dtInt const & nSegments
     );
     virtual ~geomSurface_closeGapsArithmeticOCC();
     dt__pVH(dtSurface) result( void );    

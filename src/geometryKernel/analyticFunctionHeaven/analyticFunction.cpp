@@ -83,7 +83,7 @@ namespace dtOO {
     //
     _invY = yy;
 
-    int const numInitGuess = 11;    
+    dtInt const numInitGuess = 11;    
     double initGuess[numInitGuess] 
     = 
     {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};       
@@ -91,17 +91,17 @@ namespace dtOO {
     dtReal prec 
     =      
     staticPropertiesHandler::getInstance()->getOptionFloat("invY_precision");    
-    int rootPrintLevel
+    dtInt rootPrintLevel
     =
     staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel");
     
-    std::vector< int >      ijk(xDim(), 0);
-    std::vector< int >   ijkMin(xDim(), 0);
-    std::vector< int >   ijkMax(xDim(), numInitGuess);
-    std::vector< int > ijkDelta(xDim(), 1);
+    std::vector< dtInt >      ijk(xDim(), 0);
+    std::vector< dtInt >   ijkMin(xDim(), 0);
+    std::vector< dtInt >   ijkMax(xDim(), numInitGuess);
+    std::vector< dtInt > ijkDelta(xDim(), 1);
 
     dtReal bestDistance = std::numeric_limits<dtReal>::max();
-    int depth = 0;
+    dtInt depth = 0;
     ijk[0] = ijkMin[depth];
     while (true) {
       if (ijk[depth] < ijkMax[depth]) {
@@ -203,7 +203,7 @@ namespace dtOO {
 		dt__throwUnexpected(vecRef);
 	}			
 
-	std::map< int, int > const & analyticFunction::mapRef(
+	std::map< int, dtInt > const & analyticFunction::mapRef(
     void 
   ) const {
 		dt__throwUnexpected(mapRef);

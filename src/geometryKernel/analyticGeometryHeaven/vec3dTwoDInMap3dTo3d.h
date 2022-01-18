@@ -32,9 +32,9 @@ namespace dtOO {
         dtTransformer const * const dtT 
       ) const;
       virtual dtPoint3 getPoint( dtReal const & uu, dtReal const & vv ) const;
-      virtual bool isClosed( int const & dir) const;
-      virtual dtReal getMin( int const & dir) const;
-      virtual dtReal getMax( int const & dir) const;
+      virtual bool isClosed( dtInt const & dir) const;
+      virtual dtReal getMin( dtInt const & dir) const;
+      virtual dtReal getMax( dtInt const & dir) const;
       vec3dTwoD const * refToVec3dTwoD( void ) const;
       map3dTo3d const * refToMap3dTo3d( void ) const;
       virtual vectorHandling< renderInterface * > getExtRender( void ) const;      

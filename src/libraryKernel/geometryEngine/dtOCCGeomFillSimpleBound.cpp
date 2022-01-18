@@ -32,7 +32,7 @@ namespace dtOO {
 		return new dtOCCGeomFillSimpleBound( OCCRef(), OCCBoundaryRef() );
 	}
   
-  dtReal dtOCCGeomFillSimpleBound::minPara( int const & dir ) const {
+  dtReal dtOCCGeomFillSimpleBound::minPara( dtInt const & dir ) const {
     dt__throwIf(dir!=0, minPara());
     Standard_Real U0;
     Standard_Real U1;
@@ -44,7 +44,7 @@ namespace dtOO {
     return floatHandling::nextIfSmaller(U0);
   }
   
-  dtReal dtOCCGeomFillSimpleBound::maxPara( int const & dir ) const {
+  dtReal dtOCCGeomFillSimpleBound::maxPara( dtInt const & dir ) const {
     dt__throwIf(dir!=0, maxPara());
     Standard_Real U0;
     Standard_Real U1;

@@ -34,11 +34,11 @@ namespace dtOO {
     return YFloat( x_percent(xP0, xP1, xP2) );
   }
   
-  int scaThreeD::xDim( void ) const {
+  dtInt scaThreeD::xDim( void ) const {
 		return 3;
 	}
 	
-  dtReal scaThreeD::xMin( int const & dir) const {
+  dtReal scaThreeD::xMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _min[0];
@@ -55,7 +55,7 @@ namespace dtOO {
     );    
 	}
 
-  dtReal scaThreeD::xMax( int const & dir) const {
+  dtReal scaThreeD::xMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _max[0];

@@ -72,14 +72,14 @@ namespace dtOO {
       //
       // local counter to prevent equal tags
       //
-      int localCounter = 0;
+      dtInt localCounter = 0;
       
       //
       // initialize min distance to max float
       //
       dtReal minDistAv = std::numeric_limits<dtReal>::max();
       dt__forAllRefAuto( gm->dtFaces(), aFace) {
-        int inTol = 0;
+        dtInt inTol = 0;
         dtReal distAv = 0.;
         dt__forAllRefAuto(aFace->dtVertices(), aVertex) {
           dtReal dist 

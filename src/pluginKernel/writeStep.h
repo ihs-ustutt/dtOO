@@ -37,7 +37,7 @@ namespace dtOO {
   private:
     aGPtrVec _aG;
     std::string _fn;
-    int _translator;
+    dtInt _translator;
     static bool _registrated;
   };
 }

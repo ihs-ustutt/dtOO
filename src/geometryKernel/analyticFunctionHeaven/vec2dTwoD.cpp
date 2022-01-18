@@ -130,7 +130,7 @@ namespace dtOO {
 		return DYdtVector2(xx);
 	}
 		
-  dtReal vec2dTwoD::xMin( int const & dir) const {
+  dtReal vec2dTwoD::xMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _min[0];
@@ -145,7 +145,7 @@ namespace dtOO {
     }   
 	}
 	
-  dtReal vec2dTwoD::xMax( int const & dir) const {
+  dtReal vec2dTwoD::xMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _max[0];

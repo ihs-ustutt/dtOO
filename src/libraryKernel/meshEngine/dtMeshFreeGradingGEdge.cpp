@@ -63,7 +63,7 @@ namespace dtOO {
   }
 
   void dtMeshFreeGradingGEdge::operator()( dtGmshEdge * dtge) {
-    int transType = dtge->meshAttributes.typeTransfinite;
+    dtInt transType = dtge->meshAttributes.typeTransfinite;
     if (
       dtge->meshAttributes.method == MESH_TRANSFINITE
       &&
@@ -77,7 +77,7 @@ namespace dtOO {
       );      
       map1dTo3d const * const m1d = dtge->getMap1dTo3d();
 
-      int const nP = dtge->meshAttributes.nbPointsTransfinite;
+      dtInt const nP = dtge->meshAttributes.nbPointsTransfinite;
       std::vector< dtReal > gg
       =
       float_scaOneDPoint( _gradingInt[transType], nP ).result();

@@ -34,7 +34,7 @@ namespace dtOO {
     virtual vec3dTransVolThreeD * create( void ) const;    
     virtual ~vec3dTransVolThreeD();
     virtual aFY Y( aFX const & xx) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     ptrVectorHandling< vec3dTwoD > _v3dTwoD;
     dtVector3 _v3dTwoD_1_0_0;

@@ -32,7 +32,7 @@ namespace dtOO {
       dtReal _xOffset;
       dtReal _yOffset;
       dtReal _normalOffset;
-      int _nPieces;
+      dtInt _nPieces;
       static bool _registrated;    
   };    
 }

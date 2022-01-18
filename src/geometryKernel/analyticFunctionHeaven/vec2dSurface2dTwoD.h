@@ -26,7 +26,7 @@ namespace dtOO {
     virtual ~vec2dSurface2dTwoD();
     virtual aFY Y( aFX const & xx) const;
     dtSurface2d const * ptrDtSurface2d( void ) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     ptrHandling<dtSurface2d> _dtS2d;
   };

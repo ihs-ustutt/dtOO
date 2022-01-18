@@ -35,17 +35,17 @@ namespace dtOO {
     private:
       twoDArrayHandling< dtPoint2 > correctConstV( 
         dtGmshFace const * const dtgf, twoDArrayHandling< dtPoint2 > pUV,
-        int const & pos, int const & nSteps, 
+        dtInt const & pos, dtInt const & nSteps, 
         std::vector< double > lengths_i, double const & L_i
       ) const;
       static twoDArrayHandling< dtPoint2 > linearInterpolateU( 
-        twoDArrayHandling< dtPoint2 > pUV, int const & vStart, int const & vEnd
+        twoDArrayHandling< dtPoint2 > pUV, dtInt const & vStart, dtInt const & vEnd
       );
     private:
 //      std::vector< dtReal > _uCorrPos;
-//      int _uCorrSteps;
+//      dtInt _uCorrSteps;
       std::vector< dtReal > _vCorrPos;
-      int _vCorrSteps;
+      dtInt _vCorrSteps;
   };
 }
 #endif	/* dtMeshTransfiniteGFace_H */

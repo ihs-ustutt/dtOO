@@ -139,7 +139,7 @@ namespace dtOO {
 				std::max_element(_dihedralAngleV.begin(), _dihedralAngleV.end());
 				max2ndEdgeIt = ve_begin(_centerVertex);
 				for (
-          int ii=0;ii<(max2ndAngleIt-_dihedralAngleV.begin());ii++
+          dtInt ii=0;ii<(max2ndAngleIt-_dihedralAngleV.begin());ii++
         ) max2ndEdgeIt++;
 				*max2ndAngleIt = 0.;
 //				if ( 

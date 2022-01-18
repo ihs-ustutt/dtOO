@@ -56,7 +56,7 @@ namespace dtOO {
     }
   }
   
-  int customGmsh::handleCustomFace( 
+  dtInt customGmsh::handleCustomFace( 
     ::QDomElement const & element,
     baseContainer * const bC,
     cVPtrVec const * const cV,
@@ -65,7 +65,7 @@ namespace dtOO {
     bVPtrVec const * const bV
   ) {
     std::list< ::GEdge * > edges;
-    std::vector< int > ori;
+    std::vector< dtInt > ori;
     dt__forAllRefAuto(
       qtXmlPrimitive::getChildVector(
         "analyticGeometry", 
@@ -77,7 +77,7 @@ namespace dtOO {
       thisEdge.reset(
         dtXmlParserBase::createAnalyticGeometry(aEdgeLabel, bC, cV, aF, aG)
       );
-      int tag;
+      dtInt tag;
       _gm->addIfToGmshModel(thisEdge.get(), &tag);
       if ( tag<0 ) {
         ori.push_back(-1);
@@ -101,7 +101,7 @@ namespace dtOO {
         )
       )
     );
-    int tag = 0;
+    dtInt tag = 0;
     _gm->addIfFaceToGmshModel(thisFace.get(), &tag, edges, ori);    
     
     //
@@ -121,7 +121,7 @@ namespace dtOO {
           thisEdge.reset(
             dtXmlParserBase::createAnalyticGeometry(aEdgeLabel, bC, cV, aF, aG)
           );
-          int tag;
+          dtInt tag;
           _gm->addIfToGmshModel(thisEdge.get(), &tag);
           iedges.push_back( _gm->getEdgeByTag( tag ) );
         }    
@@ -134,7 +134,7 @@ namespace dtOO {
     return tag;
   }
   
-  int customGmsh::handleCustomRegion( 
+  dtInt customGmsh::handleCustomRegion( 
     ::QDomElement const & element,
     baseContainer * const bC,
     cVPtrVec const * const cV,
@@ -165,18 +165,18 @@ namespace dtOO {
     //
     // make a region
     //
-    int tag = 0;
+    dtInt tag = 0;
     _gm->addIfRegionToGmshModel(
       NULL,
       &tag,
       faces,
-      std::vector< int >(faces.size(), 1)
+      std::vector< dtInt >(faces.size(), 1)
     );    
 
     return tag;
   }
 
-  int customGmsh::handleAnalyticGeometry( 
+  dtInt customGmsh::handleAnalyticGeometry( 
     ::QDomElement const & element,
     baseContainer * const bC,
     cVPtrVec const * const cV,
@@ -188,7 +188,7 @@ namespace dtOO {
     thisAG.reset(
       dtXmlParserBase::createAnalyticGeometry(element, bC, cV, aF, aG)
     );
-    int thisId = 0;
+    dtInt thisId = 0;
     _gm->addIfToGmshModel( thisAG.get(), &thisId );
     return thisId;
   }    

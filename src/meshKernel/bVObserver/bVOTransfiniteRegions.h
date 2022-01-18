@@ -30,7 +30,7 @@ namespace dtOO {
       virtual void preUpdate( void );
     private:
       std::vector< std::string > _regionLabel;
-      std::vector< int > _nE;       
+      std::vector< dtInt > _nE;       
   };
 }
 #endif	/* bVOTransfiniteRegions_H */

@@ -31,7 +31,7 @@ namespace dtOO {
 		return new dtOCCGeomFillBoundWithSurf( OCCRef(), OCCBoundaryRef() );
 	}
   
-  dtReal dtOCCGeomFillBoundWithSurf::minPara( int const & dir ) const {
+  dtReal dtOCCGeomFillBoundWithSurf::minPara( dtInt const & dir ) const {
     dt__throwIf(dir!=0, minPara());
     Standard_Real U0;
     Standard_Real U1;
@@ -43,7 +43,7 @@ namespace dtOO {
     return floatHandling::nextIfSmaller(U0);
   }
   
-  dtReal dtOCCGeomFillBoundWithSurf::maxPara( int const & dir ) const {
+  dtReal dtOCCGeomFillBoundWithSurf::maxPara( dtInt const & dir ) const {
     dt__throwIf(dir!=0, maxPara());
     Standard_Real U0;
     Standard_Real U1;

@@ -22,13 +22,13 @@ namespace dtOO {
     public:
       dt__classOnlyName(twoDArrayHandling);
       twoDArrayHandling();
-      twoDArrayHandling( int const sizeI, int const sizeJ );
-      twoDArrayHandling( int const sizeI, int const sizeJ, T const & init );      
+      twoDArrayHandling( dtInt const sizeI, dtInt const sizeJ );
+      twoDArrayHandling( dtInt const sizeI, dtInt const sizeJ, T const & init );      
       twoDArrayHandling( const twoDArrayHandling& orig );
       virtual ~twoDArrayHandling();
-      void resize(int const sizeI, int const sizeJ);
+      void resize(int const sizeI, dtInt const sizeJ);
       void resize(int const sizeI);
-      int size( int const dim = 0) const;
+      dtInt size( dtInt const dim = 0) const;
       std::vector< T > fixJ(int const jj) const;
       std::vector< T > fixI(int const ii) const;
       void clear( void );
@@ -42,13 +42,13 @@ namespace dtOO {
   }
 
   template < typename T >
-  twoDArrayHandling< T >::twoDArrayHandling(int const sizeI, int const sizeJ) 
+  twoDArrayHandling< T >::twoDArrayHandling(int const sizeI, dtInt const sizeJ) 
     : std::vector< std::vector< T > >( sizeI, std::vector< T >(sizeJ) ) {
   }
   
   template < typename T >
   twoDArrayHandling< T >::twoDArrayHandling(
-    int const sizeI, int const sizeJ, T const & init
+    dtInt const sizeI, dtInt const sizeJ, T const & init
   ) 
     : std::vector< std::vector< T > >( sizeI, std::vector< T >(sizeJ, init) ) {
   }
@@ -69,7 +69,7 @@ namespace dtOO {
   }
 
   template < typename T >
-  void twoDArrayHandling< T >::resize(int const sizeI, int const sizeJ) {
+  void twoDArrayHandling< T >::resize(int const sizeI, dtInt const sizeJ) {
     dt__forAllIndex(*this, ii) this->at(ii).clear();        
     this->clear();
     
@@ -82,7 +82,7 @@ namespace dtOO {
   }
     
   template < typename T >
-  int twoDArrayHandling< T >::size(int const dim) const {
+  dtInt twoDArrayHandling< T >::size(int const dim) const {
     if (dim == 0) {
       return std::vector< std::vector< T > >::size();
     }

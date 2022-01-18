@@ -25,7 +25,7 @@ namespace dtOO {
   
   template < typename T >
   ptrVectorHandling< T >::ptrVectorHandling(
-    int const & size
+    dtInt const & size
   ) : boost::ptr_vector< T >(size) {
     
   }  

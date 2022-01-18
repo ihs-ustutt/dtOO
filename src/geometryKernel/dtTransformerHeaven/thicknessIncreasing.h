@@ -29,15 +29,15 @@ namespace dtOO {
       );    
       virtual aFPtrVec 
       apply( aFPtrVec const * const sFunP ) const;  
-      virtual void handleInt(std::string const name, int const value);
+      virtual void handleInt(std::string const name, dtInt const value);
       virtual void handleAnalyticFunction(std::string const name, analyticFunction const * value);
       virtual void handleBool(std::string const name, bool const value);
     private:
       dt__pH(scaOneD const) _thicknessDistributionP;
       dt__pH(scaOneD const) _paraOnePercentFunP;
-      int _nPointsOne;
+      dtInt _nPointsOne;
       bool _isInv;
-      int _splineOrder;
+      dtInt _splineOrder;
       static bool _registrated;    
   };
 }    

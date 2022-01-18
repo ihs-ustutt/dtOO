@@ -21,7 +21,7 @@ namespace dtOO {
     ::bSplineSurface_constrainedFillingConstructOCC( 
 		dtCurve const * c0, dtCurve const * c1, 
 		dtCurve const * c2, dtCurve const * c3,
-    int const & maxDeg, int const & maxSeg
+    dtInt const & maxDeg, dtInt const & maxSeg
 	) {
     dt__vH(dtCurve const *) cV;
     cV.push_back( c0 );    

@@ -7,7 +7,7 @@ namespace dtOO {
 	dtPoint2_surfaceEquidistantPoint::dtPoint2_surfaceEquidistantPoint() {
 	}
 
-	dtPoint2_surfaceEquidistantPoint::dtPoint2_surfaceEquidistantPoint( dtSurface const * const dtS, int const & nU, int const nV ) {
+	dtPoint2_surfaceEquidistantPoint::dtPoint2_surfaceEquidistantPoint( dtSurface const * const dtS, dtInt const & nU, dtInt const nV ) {
 		_pUV.resize(nU, nV);
 		_pXYZ.resize(nU, nV);
 		_dMS.resize(nU-1, nV-1);

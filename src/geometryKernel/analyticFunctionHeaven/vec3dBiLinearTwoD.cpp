@@ -80,7 +80,7 @@ namespace dtOO {
     return yy;		
 	}
 	
-	bool vec3dBiLinearTwoD::closed( int const & dir ) const {
+	bool vec3dBiLinearTwoD::closed( dtInt const & dir ) const {
 		dt__throwIf( (dir!=0) && (dir!=1), closed );
 		return false;
 	}

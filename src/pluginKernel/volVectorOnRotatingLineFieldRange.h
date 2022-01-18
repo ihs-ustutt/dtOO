@@ -42,7 +42,7 @@ namespace dtOO {
       std::string _field;
       dtReal _min;
       dtReal _max;    
-      int _nP;
+      dtInt _nP;
       bool _noRange;
       dtVector3 _rotAxis;
       dtVector3 _refAxis;

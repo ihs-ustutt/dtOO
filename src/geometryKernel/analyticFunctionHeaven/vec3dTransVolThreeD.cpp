@@ -130,7 +130,7 @@ namespace dtOO {
 	/**
    * @todo Fix closed method. Currently return value is always false!
    */
-  bool vec3dTransVolThreeD::closed( int const & dir ) const {
+  bool vec3dTransVolThreeD::closed( dtInt const & dir ) const {
     return false;
 	}
 }

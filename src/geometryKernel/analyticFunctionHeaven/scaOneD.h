@@ -29,9 +29,9 @@ namespace dtOO {
     void setMinMax( dtReal const min, dtReal const max);
     void setMin(dtReal const min);
     void setMax(dtReal const max);
-    virtual int xDim( void ) const;
-    virtual dtReal xMin( int const & dir) const;
-    virtual dtReal xMax( int const & dir) const;   
+    virtual dtInt xDim( void ) const;
+    virtual dtReal xMin( dtInt const & dir) const;
+    virtual dtReal xMax( dtInt const & dir) const;   
     dtReal getLength( void ) const;
     dtReal x_percent(dtReal const & xx) const;
     dtReal percent_x(dtReal const & xx) const;

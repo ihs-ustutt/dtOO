@@ -13,7 +13,7 @@ namespace dtOO {
 	bSplineCurve_pointConstructArcLengthParaOCC
     ::bSplineCurve_pointConstructArcLengthParaOCC( 
 	  dtCurve const * dtC, dtReal const tol, 
-		int const maxOrder, int const segments 
+		int const maxOrder, dtInt const segments 
 	) {
 		const Handle(Geom_BSplineCurve) bsc 
 		=

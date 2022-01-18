@@ -39,7 +39,7 @@ namespace dtOO {
       vectorHandling< analyticGeometry const * > _aG;    
       dtXmlParser const * _parser;
       dtCase const * _case;
-      std::vector< int > _nP;
+      std::vector< dtInt > _nP;
       static bool _registrated;
   };
 }

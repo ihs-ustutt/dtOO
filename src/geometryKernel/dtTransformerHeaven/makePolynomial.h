@@ -28,10 +28,10 @@ namespace dtOO {
       );
       virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
     private:
-      int _nPointsOne;
-      int _nPointsTwo;
-      int _orderOne;
-      int _orderTwo;
+      dtInt _nPointsOne;
+      dtInt _nPointsTwo;
+      dtInt _orderOne;
+      dtInt _orderTwo;
       static bool _registrated;    
   };
 }

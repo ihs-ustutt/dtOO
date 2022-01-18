@@ -61,8 +61,8 @@ namespace dtOO {
       dt__pH(map2dTo3d const) _msCut;
       dtVector3 _ss;
       dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
-      int _nV;
-      int _nW;
+      dtInt _nV;
+      dtInt _nW;
       static bool _registrated;    
   };
 }

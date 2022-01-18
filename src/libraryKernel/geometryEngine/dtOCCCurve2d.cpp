@@ -29,7 +29,7 @@ namespace dtOO {
 	dtOCCCurve2d::~dtOCCCurve2d() {
 	}
 
-  dtReal dtOCCCurve2d::minPara ( int const & dir ) const {
+  dtReal dtOCCCurve2d::minPara ( dtInt const & dir ) const {
     switch (dir) {
       case 0:
         return static_cast<dtReal>(_ptr->FirstParameter());
@@ -41,7 +41,7 @@ namespace dtOO {
     }    		    
 	}
 	
-  dtReal dtOCCCurve2d::maxPara ( int const & dir ) const {
+  dtReal dtOCCCurve2d::maxPara ( dtInt const & dir ) const {
     switch (dir) {
       case 0:
         return static_cast<dtReal>(_ptr->LastParameter());

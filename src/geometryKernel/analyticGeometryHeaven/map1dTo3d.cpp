@@ -31,7 +31,7 @@ namespace dtOO {
   map1dTo3d::~map1dTo3d() {
   }
   
-  int map1dTo3d::dim( void ) const {
+  dtInt map1dTo3d::dim( void ) const {
     return 1;
   }
   
@@ -73,7 +73,7 @@ namespace dtOO {
 		return percent_u( l_u(uu)/length() );
 	}
   
-  int map1dTo3d::getRenderResolutionU( void ) const { 
+  dtInt map1dTo3d::getRenderResolutionU( void ) const { 
     return analyticGeometry::getRenderResolution(0);
   }  
 
@@ -139,7 +139,7 @@ namespace dtOO {
 		return l_u(getUMax());
 	}
 	
-	dtReal map1dTo3d::l_u( dtReal const & uu, int const & nP ) const {
+	dtReal map1dTo3d::l_u( dtReal const & uu, dtInt const & nP ) const {
     //
     // return if u = 0
     //

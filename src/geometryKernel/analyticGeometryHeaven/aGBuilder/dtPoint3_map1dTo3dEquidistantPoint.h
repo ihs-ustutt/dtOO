@@ -14,7 +14,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(dtPoint3_map1dTo3dEquidistantPoint);     
     dtPoint3_map1dTo3dEquidistantPoint(
-      map1dTo3d const * const m1d, int const & nPoints
+      map1dTo3d const * const m1d, dtInt const & nPoints
     );
     virtual ~dtPoint3_map1dTo3dEquidistantPoint();
     std::vector< dtPoint3 > result( void );

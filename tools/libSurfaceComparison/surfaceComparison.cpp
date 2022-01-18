@@ -53,7 +53,7 @@ namespace dtOO {
             static_cast< dtReal >(Wert[1]))));
   }
    
-  int surfaceComparison::Grinding(int Teiler) {
+  dtInt surfaceComparison::Grinding(int Teiler) {
     double r1=_extension[0]-(_interval/(Teiler/10));
     if (r1<0)
       r1=0;
@@ -92,7 +92,7 @@ namespace dtOO {
     return 1;
   }
     
-  int surfaceComparison::RootFinding() {
+  dtInt surfaceComparison::RootFinding() {
     double x[2];
     _auxiliary=1000;
     
@@ -116,9 +116,9 @@ namespace dtOO {
           return 0;
         }
         if (j>1 && i>1) {
-          int a=10,f=0;
+          dtInt a=10,f=0;
           do {
-            int k=Grinding(a);
+            dtInt k=Grinding(a);
             a=a*10;
             f++;
             if (k==0)
@@ -194,7 +194,7 @@ namespace dtOO {
         values++;
         if (_printlevel>0)
           cout << "---------------------------------------------------" << endl;
-        int t=RootFinding();
+        dtInt t=RootFinding();
         
         switch (t) {
           case 0: {   

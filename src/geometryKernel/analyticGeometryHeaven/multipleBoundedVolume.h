@@ -22,10 +22,10 @@ namespace dtOO {
     
     virtual multipleBoundedVolume * create( void ) const;        
     virtual multipleBoundedVolume * clone( void ) const;
-    virtual int dim( void ) const;    
-    virtual bool isClosed( int const & dir) const;
-    virtual dtReal getMin( int const & dir) const;
-    virtual dtReal getMax( int const & dir) const;
+    virtual dtInt dim( void ) const;    
+    virtual bool isClosed( dtInt const & dir) const;
+    virtual dtReal getMin( dtInt const & dir) const;
+    virtual dtReal getMax( dtInt const & dir) const;
     virtual dtPoint3 getPoint( dtReal const * const uvw ) const; 
     vectorHandling< renderInterface * > getRender( void ) const; 
     ptrVectorHandling< analyticGeometry > const & 

@@ -65,17 +65,17 @@ namespace dtOO {
 	/**
    * @todo This check is not enough. Maybe a general check on base class?
    */
-	bool scaOneDInMap1dTo3d::isClosed( int const & dir) const {
+	bool scaOneDInMap1dTo3d::isClosed( dtInt const & dir) const {
     dt__throwIf(dir != 0, isClosed());
 		
 		return false;
 	}
 
-	dtReal scaOneDInMap1dTo3d::getMin( int const & dir) const {
+	dtReal scaOneDInMap1dTo3d::getMin( dtInt const & dir) const {
 		return _s1d->xMin(dir);     
 	}
 
-	dtReal scaOneDInMap1dTo3d::getMax( int const & dir) const {
+	dtReal scaOneDInMap1dTo3d::getMax( dtInt const & dir) const {
 		return _s1d->xMax(dir);
 	}
 

@@ -56,7 +56,7 @@ namespace dtOO {
     return _tI->getValue(uu, vv, ww);
   }
   
-  bool trans6SidedCube::isClosed( int const & dir) const {
+  bool trans6SidedCube::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return false;
@@ -73,7 +73,7 @@ namespace dtOO {
     }
   }
   
-  dtReal trans6SidedCube::getMin( int const & dir) const {
+  dtReal trans6SidedCube::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 0.;
@@ -90,7 +90,7 @@ namespace dtOO {
     }    
   }
   
-  dtReal trans6SidedCube::getMax( int const & dir) const {
+  dtReal trans6SidedCube::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 1.;

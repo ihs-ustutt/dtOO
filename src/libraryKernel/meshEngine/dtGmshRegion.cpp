@@ -19,21 +19,21 @@
 #define __caCThis const_cast< dtGmshRegion * >(this)
 
 namespace dtOO {
-	dtGmshRegion::dtGmshRegion(::GModel *m, int tag) 
+	dtGmshRegion::dtGmshRegion(::GModel *m, dtInt tag) 
     : GRegion(m, tag),
       _geomType( ::GEntity::GeomType::Unknown ) {
 	  _status = ::GEntity::MeshGenerationStatus::PENDING;
 	}
 	
   dtGmshRegion::dtGmshRegion(
-    ::GModel *m, int tag, 
+    ::GModel *m, dtInt tag, 
     const std::list< ::GFace * > &faces, 
     const std::vector<int> &ori 
   ) 
     : GRegion(m, tag),
       _geomType( ::GEntity::GeomType::Unknown ) {
     typedef std::list< ::GFace * >::const_iterator FIter;
-    int ii = 0;
+    dtInt ii = 0;
     for (FIter fi=faces.begin(); fi != faces.end(); ++fi) {
       ::GFace *f = *fi;
       l_faces.push_back(f);
@@ -45,14 +45,14 @@ namespace dtOO {
   }
 
   dtGmshRegion::dtGmshRegion(
-    ::GModel *m, int tag, 
+    ::GModel *m, dtInt tag, 
     const std::list< dtGmshFace* > &faces, 
     const std::vector<int> &ori 
   ) 
     : GRegion(m, tag),
       _geomType( ::GEntity::GeomType::Unknown ) {
     typedef std::list< dtGmshFace* >::const_iterator FIter;
-    int ii = 0;
+    dtInt ii = 0;
     for (FIter fi=faces.begin(); fi != faces.end(); ++fi) {
       ::GFace * f = static_cast< dtGmshFace* >(*fi);
       l_faces.push_back(f);
@@ -106,7 +106,7 @@ namespace dtOO {
   }
   
   void dtGmshRegion::meshWNElements( 
-    int const & nElementsU, int const & nElementsV, int const & nElementsW
+    dtInt const & nElementsU, dtInt const & nElementsV, dtInt const & nElementsW
   ) {
 		//
 		// only supported for 6-sided dtGmshRegions
@@ -156,7 +156,7 @@ namespace dtOO {
 		}
   }
 	
-  void dtGmshRegion::addFace( ::GFace * face, int const ori ) {
+  void dtGmshRegion::addFace( ::GFace * face, dtInt const ori ) {
 	  if (std::find(l_faces.begin(), l_faces.end(), face) == l_faces.end()) {
 		  l_faces.push_back(face);
 			l_dirs.push_back( ori );
@@ -165,9 +165,9 @@ namespace dtOO {
 
   void dtGmshRegion::deleteFace( ::GFace * face ) {
     std::vector< ::GFace * > ff;
-    std::vector< int > oo;    
+    std::vector< dtInt > oo;    
     std::vector< ::GFace * >::iterator i;
-    std::vector< int >::iterator j;
+    std::vector< dtInt >::iterator j;
     for( 
       i = l_faces.begin(), 
       j = l_dirs.begin(); 
@@ -185,9 +185,9 @@ namespace dtOO {
     l_dirs = oo;
   }  	
 	
-  int dtGmshRegion::faceOrientation( ::GFace * face ) const {
+  dtInt dtGmshRegion::faceOrientation( ::GFace * face ) const {
     typedef std::vector< ::GFace * >::const_iterator FIter;
-    std::vector< int >::const_iterator OriIter = l_dirs.begin();
+    std::vector< dtInt >::const_iterator OriIter = l_dirs.begin();
 
     for (FIter fi = l_faces.begin(); fi != l_faces.end(); ++fi) {
       if (*fi == face) return *OriIter;
@@ -251,7 +251,7 @@ namespace dtOO {
       if ( 
         staticPropertiesHandler::getInstance()->optionTrue("isEqualExtendCheck") 
       ) {
-        int faceCounter = 0;
+        dtInt faceCounter = 0;
         dt__forAllRefAuto(gr0->faces(), aFace0) {
           dt__forAllRefAuto(gr1->faces(), aFace1) {
             if ( dtGmshFace::isEqual( aFace0, aFace1 ) ) {
@@ -319,7 +319,7 @@ namespace dtOO {
 //      << " ] : grading = " << grading << ", type = " << type
 //    );
     
-    int ii = 0;
+    dtInt ii = 0;
     dt__forAllRefAuto(dtEdges(), ee) {
       ee->setGrading( grading[ii], type[ii] );
       ii++;

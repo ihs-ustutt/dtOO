@@ -98,7 +98,7 @@ namespace dtOO {
     //
     // set bounds
     //
-    int cc = 0;
+    dtInt cc = 0;
     dt__forAllRefAuto(_sampleXYZ, aSampleXYZ) {
       min->SetVariable( cc, "U_"+stringPrimitive::intToString(cc), 0.5, 0.01 );
       min->SetVariableLimits(cc, 0., 1.);	
@@ -157,7 +157,7 @@ namespace dtOO {
     double const * xx
   ) const {	
     double objective = 0.;
-    int cc = 0;
+    dtInt cc = 0;
     dt__forAllRefAuto(_sampleXYZ, aSampleXYZ) {
       objective
       =

@@ -17,16 +17,16 @@ class analyticFunctionWrap
   dtOO::aFY Y( dtOO::aFX const & xx ) const {
     return this->get_override("Y")(xx);
   }  
-  int xDim( void ) const {
+  dtOO::dtInt xDim( void ) const {
     return this->get_override("xDim")();
   }
-  int yDim( void ) const {
+  dtOO::dtInt yDim( void ) const {
     return this->get_override("yDim")();
   }  
-  dtOO::dtReal xMin( int const & dir ) const {
+  dtOO::dtReal xMin( dtOO::dtInt const & dir ) const {
     return this->get_override("xMin")(dir);
   }    
-  dtOO::dtReal xMax( int const & dir ) const {
+  dtOO::dtReal xMax( dtOO::dtInt const & dir ) const {
     return this->get_override("xMax")(dir);
   }      
 };

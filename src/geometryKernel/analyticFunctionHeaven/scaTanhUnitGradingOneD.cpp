@@ -70,7 +70,7 @@ namespace dtOO {
       tanh(_gg);
   }
   
-  int scaTanhUnitGradingOneD::nDOF( void ) const {
+  dtInt scaTanhUnitGradingOneD::nDOF( void ) const {
     return 1;
   }
   

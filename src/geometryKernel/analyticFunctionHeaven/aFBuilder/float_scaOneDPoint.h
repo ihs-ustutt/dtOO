@@ -13,7 +13,7 @@ namespace dtOO {
   class float_scaOneDPoint {
   public:
     float_scaOneDPoint(
-      scaOneD const * const s1d, int const & nPoints
+      scaOneD const * const s1d, dtInt const & nPoints
     );
     virtual ~float_scaOneDPoint();
     std::vector< dtReal > result( void );

@@ -6,7 +6,7 @@
 namespace dtOO {  
   barChart::barChart(
     std::string const & title,
-    dtReal const & min, dtReal const & max, int const & nBars 
+    dtReal const & min, dtReal const & max, dtInt const & nBars 
   ) {
     _min = min;
     _max = max;
@@ -27,7 +27,7 @@ namespace dtOO {
   void barChart::operator()( dtReal const & val ) {
     _sum = val + _sum;
     
-    int location = (val - _min) / _step;
+    dtInt location = (val - _min) / _step;
     
     location
     =
@@ -53,11 +53,11 @@ namespace dtOO {
     return _globalMax;
   }
   
-  int barChart::nBars( void ) const {
+  dtInt barChart::nBars( void ) const {
     return _nBars;
   }
   
-  dtReal barChart::barAverage( int const & location ) const {
+  dtReal barChart::barAverage( dtInt const & location ) const {
     if (_bar[location] != 0) {    
       return _barValue[location] / _bar[location];
     }
@@ -96,7 +96,7 @@ namespace dtOO {
     << logMe::dtFormat("| average   = %+5.2e") % av << std::endl      
     << "|" << std::endl;
     
-    int avPos = av * 30 / (toLog._max-toLog._min);
+    dtInt avPos = av * 30 / (toLog._max-toLog._min);
     std::string avString(avPos, ' ');
     avString = avString+"#";
     os << logMe::dtFormat("| < %+5.2e  %-32s          |") 
@@ -104,7 +104,7 @@ namespace dtOO {
     os << "|" << std::endl;
     dt__forAllIndex(scale, ii) {
       os << logMe::dtFormat("| < %+5.2e ") % (toLog._min + toLog._step * (ii+1));
-      int nSigns = scale[ii] * 30;
+      dtInt nSigns = scale[ii] * 30;
       std::string barString(nSigns, '+');
       os 
       << logMe::dtFormat(" %-32s %+6.2f %% | %i ( %5.2e )") 

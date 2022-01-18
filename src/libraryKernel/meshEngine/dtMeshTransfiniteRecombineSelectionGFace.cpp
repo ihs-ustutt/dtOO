@@ -56,12 +56,12 @@ namespace dtOO {
         = 
         qtXmlBase::replaceStringInString("empty", "-1", recombineRule[ii]);
       }
-      std::vector< int > const aRule 
+      std::vector< dtInt > const aRule 
       = 
       dtXmlParserBase::muParseCSStringInt(recombineRule[ii]);
       
       _recombineRule[
-        std::pair< int, int >(aRule[0], aRule[1])  
+        std::pair< int, dtInt >(aRule[0], aRule[1])  
       ]
       =
       true;
@@ -110,7 +110,7 @@ namespace dtOO {
         =
         (
           _recombineRule.find(
-            std::pair< int, int >(-1, -1)  
+            std::pair< int, dtInt >(-1, -1)  
           )
           != 
           _recombineRule.end()
@@ -118,7 +118,7 @@ namespace dtOO {
         ||        
         (
           _recombineRule.find(
-            std::pair< int, int >(-1, j)  
+            std::pair< int, dtInt >(-1, j)  
           )
           != 
           _recombineRule.end()
@@ -126,7 +126,7 @@ namespace dtOO {
         ||
         (
           _recombineRule.find(
-            std::pair< int, int >(i, -1)  
+            std::pair< int, dtInt >(i, -1)  
           )
           != 
           _recombineRule.end()
@@ -134,7 +134,7 @@ namespace dtOO {
         ||
         (
           _recombineRule.find(
-            std::pair< int, int >(i, j)  
+            std::pair< int, dtInt >(i, j)  
           )
           != 
           _recombineRule.end()

@@ -49,7 +49,7 @@ namespace dtOO {
     _direction 
     = 
     dtXmlParserBase::getAttributeIntMuParse("direction", element, cV);
-    _nLayers = std::vector< int >(2,0);
+    _nLayers = std::vector< dtInt >(2,0);
     if ( qtXmlPrimitive::isAttributeVector("nLayers", element) ) {
       _nLayers
       = 
@@ -110,7 +110,7 @@ namespace dtOO {
     // order orientation and edge
     //
     std::vector< ::GEdge * > edges = dtgf->edges();
-    std::vector< int > ori = dtgf->orientations();
+    std::vector< dtInt > ori = dtgf->orientations();
     std::vector< std::pair< int, ::GEdge * > > ordered(4);
     if (_direction == 0) {
       ordered[0] = std::pair< int, ::GEdge * >(ori[0], edges[0]);

@@ -74,7 +74,7 @@ namespace dtOO {
     }
     else {
       _optionValue[
-        static_cast< int >(it - _optionName.begin())
+        static_cast< dtInt >(it - _optionName.begin())
       ]
       =
       value;
@@ -128,13 +128,13 @@ namespace dtOO {
     );
   }
 	
-  int optionHandling::getOptionInt(std::string const name) const {
-    int argumentInt;
+  dtInt optionHandling::getOptionInt(std::string const name) const {
+    dtInt argumentInt;
     std::istringstream( getOption(name) ) >> argumentInt;
     return argumentInt;
   }
   
-  int optionHandling::getOptionInt(
+  dtInt optionHandling::getOptionInt(
 	  std::string const name,
     cVPtrVec const * const cV,
     aFPtrVec const * const aF					

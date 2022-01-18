@@ -35,10 +35,10 @@ namespace dtOO {
     virtual void dump(void) const;    
     virtual std::string dumpToString(void) const;
     virtual aFY Y(aFX const & xx) const = 0;
-    virtual int xDim( void ) const = 0;
-    virtual int yDim( void ) const = 0;
-    virtual dtReal xMin( int const & dir) const = 0;
-    virtual dtReal xMax( int const & dir) const = 0;
+    virtual dtInt xDim( void ) const = 0;
+    virtual dtInt yDim( void ) const = 0;
+    virtual dtReal xMin( dtInt const & dir) const = 0;
+    virtual dtReal xMax( dtInt const & dir) const = 0;
     virtual aFX xMin( void ) const;
     virtual aFX xMax( void ) const;        
 	  virtual aFX x_percent( aFX const & xx ) const;
@@ -46,7 +46,7 @@ namespace dtOO {
     virtual aFX invY(aFY const & yy) const;    
     virtual bool isCompound( void ) const;
     virtual vectorHandling< analyticFunction * > const & vecRef( void ) const;
-    virtual std::map< int, int > const & mapRef( void ) const;
+    virtual std::map< int, dtInt > const & mapRef( void ) const;
     virtual bool isTransformed( void ) const;
     virtual std::pair< aFY, aFY > yBoundingBox( void ) const;
     virtual bool yBounded( void ) const;

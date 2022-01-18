@@ -42,7 +42,7 @@ namespace dtOO {
       std::string _field;
       dtReal _min;
       dtReal _max;    
-      std::vector< int > _nP;
+      std::vector< dtInt > _nP;
       bool _noRange;
       static bool _registrated;
   };

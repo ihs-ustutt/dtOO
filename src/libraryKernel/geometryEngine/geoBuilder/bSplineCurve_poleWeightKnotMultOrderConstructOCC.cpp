@@ -18,8 +18,8 @@ namespace dtOO {
     std::vector< dtPoint3 > const & pole, 
     std::vector< dtReal > const & weight, 
     std::vector< dtReal > const & knot, 
-    std::vector< int > const & mult, 
-    int const & order,
+    std::vector< dtInt > const & mult, 
+    dtInt const & order,
     bool const & periodic  
   ) {
     //

@@ -30,7 +30,7 @@ namespace dtOO {
 		return new dtOCCBSplineSurface2d( OCCRef() );
 	}
 
-	dtPoint2 dtOCCBSplineSurface2d::controlPoint( int const uI, int const vI ) const {
+	dtPoint2 dtOCCBSplineSurface2d::controlPoint( dtInt const uI, dtInt const vI ) const {
 		Standard_Integer uSi = static_cast<Standard_Integer>(uI+1);		
 		Standard_Integer vSi = static_cast<Standard_Integer>(vI+1);		
 		gp_Pnt pp = _ptr->Pole(uSi, vSi);
@@ -44,7 +44,7 @@ namespace dtOO {
 		);				
 	}
 
-	void dtOCCBSplineSurface2d::setControlPoint( int const uI, int const vI, dtPoint2 const point ) {
+	void dtOCCBSplineSurface2d::setControlPoint( dtInt const uI, dtInt const vI, dtPoint2 const point ) {
 		Standard_Integer uSi = static_cast<Standard_Integer>(uI+1);		
 		Standard_Integer vSi = static_cast<Standard_Integer>(vI+1);		
 		
@@ -56,7 +56,7 @@ namespace dtOO {
 		occBss->SetPole(uSi, vSi, pp);
 	}
 
-	int dtOCCBSplineSurface2d::nControlPoints( int const dim ) const {
+	int dtOCCBSplineSurface2d::nControlPoints( dtInt const dim ) const {
 		switch (dim) {
 			case 0:		
 				return static_cast<int>(_ptr->NbUPoles());					

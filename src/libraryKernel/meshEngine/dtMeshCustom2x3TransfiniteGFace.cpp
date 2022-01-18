@@ -18,7 +18,7 @@ namespace dtOO {
   void dtMeshCustom2x3TransfiniteGFace::computeEdgeLoops(
     const ::GFace *gf, 
     std::vector< ::MVertex * > &all_mvertices, 
-    std::vector< int > &indices,
+    std::vector< dtInt > &indices,
     std::vector<MVertex*> & corners,
     std::vector <MVertex *> & m_vertices    
   ) {
@@ -35,7 +35,7 @@ namespace dtOO {
     GVertex *v_end = ((*ito) != 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
     all_mvertices.push_back(start->mesh_vertices[0]);
     if(*ito == 1)
-      for(unsigned int i = 0; i < (*it)->mesh_vertices.size(); i++)
+      for(dtUnsInt i = 0; i < (*it)->mesh_vertices.size(); i++)
         all_mvertices.push_back((*it)->mesh_vertices[i]);
     else
       for(int i = (*it)->mesh_vertices.size() - 1; i >= 0; i--)
@@ -66,7 +66,7 @@ namespace dtOO {
       }
       all_mvertices.push_back(v_start->mesh_vertices[0]);
       if(*ito == 1)
-        for(unsigned int i = 0; i < (*it)->mesh_vertices.size(); i++)
+        for(dtUnsInt i = 0; i < (*it)->mesh_vertices.size(); i++)
           all_mvertices.push_back((*it)->mesh_vertices[i]);
       else
         for(int i = (*it)->mesh_vertices.size()-1; i >= 0; i--)
@@ -78,17 +78,17 @@ namespace dtOO {
     // create a list of all boundary vertices, starting at the first
     // transfinite corner
 
-    unsigned int I;
+    dtUnsInt I;
     for(I = 0; I < all_mvertices.size(); I++)
       if(all_mvertices[I] == corners[0]) break;
-    for(unsigned int j = 0; j < all_mvertices.size(); j++)
+    for(dtUnsInt j = 0; j < all_mvertices.size(); j++)
       m_vertices.push_back(all_mvertices[(I + j) % all_mvertices.size()]);
 
     // make the ordering of the list consistent with the ordering of the
     // first two corners (if the second found corner is not the second
     // corner, just reverse the list)
     bool reverse = false;
-    for(unsigned int i = 1; i < m_vertices.size(); i++){
+    for(dtUnsInt i = 1; i < m_vertices.size(); i++){
       MVertex *v = m_vertices[i];
       if(v == corners[1] || v == corners[2] ||
          (corners.size() == 4 && v == corners[3])){
@@ -182,8 +182,8 @@ namespace dtOO {
     std::vector< double > U( m_vertices.size(), 0. );
     std::vector< double > V( m_vertices.size(), 0. );
 
-    int iCorner = 0, N[4] = {0, 0, 0, 0};  
-    for(unsigned int i = 0; i < m_vertices.size(); i++){
+    dtInt iCorner = 0, N[4] = {0, 0, 0, 0};  
+    for(dtUnsInt i = 0; i < m_vertices.size(); i++){
       MVertex *v = m_vertices[i];
       if(
         v == corners[0] || v == corners[1] 
@@ -199,10 +199,10 @@ namespace dtOO {
       V[i] = param[1];    
     }
 
-    int N1 = N[0], N2 = N[1], N3 = N[2], N4 = N[3];
-    int L = N2 - N1, H = N3 - N2;
+    dtInt N1 = N[0], N2 = N[1], N3 = N[2], N4 = N[3];
+    dtInt L = N2 - N1, H = N3 - N2;
 
-    int Lb = N4 - N3, Hb = m_vertices.size() - N4;
+    dtInt Lb = N4 - N3, Hb = m_vertices.size() - N4;
     dt__throwIf(Lb != L || Hb != H, operator());
 
     

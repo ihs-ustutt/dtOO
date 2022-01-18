@@ -29,7 +29,7 @@ namespace dtOO {
     virtual ~analyticFunctionCombination();
     virtual aFY Y( aFX const & xx ) const;
     virtual aFX invY( aFY const & yy ) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     dt__pH(funT) _fun;
     dt__pH(invFunT) _invFun;
@@ -105,7 +105,7 @@ namespace dtOO {
 
   template < typename funT, typename invFunT >
   bool analyticFunctionCombination< funT, invFunT >
-    ::closed( int const & dir ) const {
+    ::closed( dtInt const & dir ) const {
     return _fun->closed( dir );    
   }  
 }

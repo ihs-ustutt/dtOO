@@ -14,8 +14,8 @@ namespace dtOO {
       dt__classOnlyName(map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d);        
       map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(
         map1dTo3d const * const m1d, map2dTo3d const * const m2d,
-        dtReal const & thick, int const & nPoints, int const & nIntegrationPoints,
-        int const & order
+        dtReal const & thick, dtInt const & nPoints, dtInt const & nIntegrationPoints,
+        dtInt const & order
       );
       virtual ~map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d();
       map1dTo3d * result( void );

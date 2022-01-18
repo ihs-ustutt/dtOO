@@ -14,7 +14,7 @@ namespace dtOO {
     scaOneDPolyInterface();
     scaOneDPolyInterface(scaOneDPolyInterface const & orig);    
     virtual ~scaOneDPolyInterface();
-    virtual int nDOF( void ) const = 0;
+    virtual dtInt nDOF( void ) const = 0;
     virtual void setDOF( std::vector< dtReal > const value ) = 0;
   private:
 

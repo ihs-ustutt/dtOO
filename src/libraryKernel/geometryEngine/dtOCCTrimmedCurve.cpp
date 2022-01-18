@@ -32,20 +32,20 @@ namespace dtOO {
 		return new dtOCCTrimmedCurve( OCCRef());		
 	}
 	
-  int dtOCCTrimmedCurve::order( void ) const {
+  dtInt dtOCCTrimmedCurve::order( void ) const {
 		dt__throwUnexpected(order());			
 	}
 	
-  int dtOCCTrimmedCurve::nControlPoints( void ) const {
+  dtInt dtOCCTrimmedCurve::nControlPoints( void ) const {
 		return 0;			
 	}
 	
-  dtPoint3 dtOCCTrimmedCurve::controlPoint( int const nPoint ) const {
+  dtPoint3 dtOCCTrimmedCurve::controlPoint( dtInt const nPoint ) const {
 		dt__throwUnexpected(controlPoint());		
 	}
 	
   void dtOCCTrimmedCurve::setControlPoint( 
-    int const nPoint, dtPoint3 const point 
+    dtInt const nPoint, dtPoint3 const point 
   ) {
 		dt__throwUnexpected(setControlPoint());				
 	}

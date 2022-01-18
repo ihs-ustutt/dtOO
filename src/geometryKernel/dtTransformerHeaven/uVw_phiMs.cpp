@@ -223,7 +223,7 @@ namespace dtOO {
 //    dtTransformer::handleDtVector3(name, value);
 //  }	
 //  
-//  void uVw_phiMs::handleInt(std::string const name, int const value) {
+//  void uVw_phiMs::handleInt(std::string const name, dtInt const value) {
 //    dt__info(handleInt(),
 //      << dt__eval(name) << std::endl
 //      << dt__eval(value) 

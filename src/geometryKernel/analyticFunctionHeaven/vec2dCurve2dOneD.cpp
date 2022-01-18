@@ -83,7 +83,7 @@ namespace dtOO {
 		return _dtC2d.get();
 	}
 	
-  bool vec2dCurve2dOneD::closed( int const & dir ) const {
+  bool vec2dCurve2dOneD::closed( dtInt const & dir ) const {
 		switch (dir) {
 			case 0:		
 				return static_cast<bool>(_dtC2d->closed());

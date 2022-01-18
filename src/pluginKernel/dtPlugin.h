@@ -43,7 +43,7 @@ namespace dtOO {
       //
       // pugg stuff
       //
-      static const int version = 1;
+      static const dtInt version = 1;
       static const std::string server_name() {
         return "dtPluginServer";
       }   

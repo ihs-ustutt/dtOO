@@ -45,18 +45,18 @@ namespace dtOO {
       void convertToTetgen(
         dtGmshRegion * gr, tetgenio * in,
         std::map< int, ::MVertex * > & MVertexInt,
-        std::map< ::MVertex *, int > & intMVertex              
+        std::map< ::MVertex *, dtInt > & intMVertex              
       );
       void convertFromTetgen(
         dtGmshRegion * gr, tetgenio * out,
         std::map< int, ::MVertex * > & MVertexInt,
-        std::map< ::MVertex *, int > & intMVertex        
+        std::map< ::MVertex *, dtInt > & intMVertex        
       );      
       static void enqueueMVertices(
         std::vector< ::MVertex * > & vv,
-        int & nodeIndex,
+        dtInt & nodeIndex,
         std::map< int, ::MVertex * > & MVertexInt,
-        std::map< ::MVertex *, int > & intMVertex
+        std::map< ::MVertex *, dtInt > & intMVertex
       );
       static void enqueueMTriangles(
         std::vector< ::MTriangle * > & toEnqueue,

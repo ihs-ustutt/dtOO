@@ -13,7 +13,7 @@ namespace dtOO {
   aFX::aFX( const aFY& orig ) : std::vector< dtReal >( orig.size(), 0. ) {
     dt__forAllIndex( orig, ii ) this->operator[]( ii ) = orig.at( ii );
   }           
-  aFX::aFX( int const & ss, double const & ref ) 
+  aFX::aFX( dtInt const & ss, double const & ref ) 
     : std::vector< dtReal >(ss, static_cast< dtReal >(ref) ) {
   }
   

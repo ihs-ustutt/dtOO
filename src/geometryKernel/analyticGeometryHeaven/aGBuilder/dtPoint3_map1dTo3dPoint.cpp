@@ -4,7 +4,7 @@
 
 namespace dtOO {
 	dtPoint3_map1dTo3dPoint::dtPoint3_map1dTo3dPoint(
-    map1dTo3d const * const m1d, int const & nPoints
+    map1dTo3d const * const m1d, dtInt const & nPoints
 	) {
 		_ppXYZ.resize(nPoints);
 		dtReal dist = 1./(nPoints-1);

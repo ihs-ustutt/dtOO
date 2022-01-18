@@ -21,9 +21,9 @@ namespace dtOO {
     //
     // overload
     //
-    virtual dtReal minPara( int const dim ) const;
-    virtual dtReal maxPara( int const dim ) const;
-    virtual bool closed( int const dim ) const;
+    virtual dtReal minPara( dtInt const dim ) const;
+    virtual dtReal maxPara( dtInt const dim ) const;
+    virtual bool closed( dtInt const dim ) const;
     virtual dtPoint2 point( dtReal const uu, dtReal const vv) const;
     virtual std::vector<dtVector2> firstDer( dtReal const uu, dtReal const vv) const;
     virtual std::vector<dtVector2> secondDer( dtReal const uu, dtReal const vv) const;

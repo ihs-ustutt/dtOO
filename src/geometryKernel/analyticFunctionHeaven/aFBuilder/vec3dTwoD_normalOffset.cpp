@@ -14,10 +14,10 @@
 namespace dtOO {
   vec3dTwoD_normalOffset::vec3dTwoD_normalOffset(
     vec3dTwoD const * const v3d, vec3dTwoD const * const thick,
-    dtVector3 const & nf, int const & nU, int const & nV,
-    int const & order,
-    int const & skinOrderMin, int const & skinOrderMax,
-    int const & skinNIterations,
+    dtVector3 const & nf, dtInt const & nU, dtInt const & nV,
+    dtInt const & order,
+    dtInt const & skinOrderMin, dtInt const & skinOrderMax,
+    dtInt const & skinNIterations,
     bool const & closeU,
     dtReal const & closeSmooth
   ) {

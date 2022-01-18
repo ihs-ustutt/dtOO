@@ -221,7 +221,7 @@ namespace dtOO {
   }
 
   void biThicknessIncreasing::handleInt(
-    std::string const name, int const value
+    std::string const name, dtInt const value
   ) {
     if (name == "order" ) {
       _splineOrder = value;

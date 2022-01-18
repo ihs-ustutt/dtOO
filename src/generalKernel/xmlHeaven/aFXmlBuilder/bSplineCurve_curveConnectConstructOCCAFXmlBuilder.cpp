@@ -65,13 +65,13 @@ namespace dtOO {
       = 
       dtXmlParserBase::getAttributeFloatMuParse("tolerance", toBuild, cV);
     }
-    int param = 0;    
+    dtInt param = 0;    
     if ( dtXmlParserBase::hasAttribute("parameterization", toBuild) ) {
       param 
       = 
       dtXmlParserBase::getAttributeIntMuParse("parameterization", toBuild, cV);
     }
-    int minM = 0;    
+    dtInt minM = 0;    
     if ( dtXmlParserBase::hasAttribute("minM", toBuild) ) {
       minM 
       = 

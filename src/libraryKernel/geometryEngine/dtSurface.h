@@ -19,9 +19,9 @@ namespace dtOO {
     // overload
     //
     virtual dtSurface * clone( void ) const = 0;
-    virtual dtReal minPara( int const dim ) const = 0;
-    virtual dtReal maxPara( int const dim ) const = 0;
-    virtual bool closed( int const dim ) const = 0; 
+    virtual dtReal minPara( dtInt const dim ) const = 0;
+    virtual dtReal maxPara( dtInt const dim ) const = 0;
+    virtual bool closed( dtInt const dim ) const = 0; 
     virtual dtPoint3 point( dtReal const uu, dtReal const vv) const = 0;
     virtual dtVector3 normal( dtReal const uu, dtReal const vv) const = 0;
     virtual std::vector<dtVector3> firstDer( 
@@ -40,11 +40,11 @@ namespace dtOO {
     // optional overload
     //
     virtual dtPoint2 reparam(dtPoint3 const point) const;    
-    virtual dtPoint3 controlPoint( int const uI, int const vI ) const;
+    virtual dtPoint3 controlPoint( dtInt const uI, dtInt const vI ) const;
     virtual void setControlPoint( 
-      int const uI, int const vI, dtPoint3 const point 
+      dtInt const uI, dtInt const vI, dtPoint3 const point 
     );    
-    virtual int nControlPoints( int const dim ) const;    
+    virtual dtInt nControlPoints( dtInt const dim ) const;    
     void dump(void) const;
     virtual std::string dumpToString(void) const;
     virtual void offsetNormal(dtReal const nn);        
@@ -85,8 +85,8 @@ namespace dtOO {
     dtVector3 secondDerUV( dtReal const uu, dtReal const vv) const;
     dtVector3 normalPercent( dtReal const uP, dtReal const vP ) const;
     dtPoint2 uv_uvPercent( dtPoint2 const uvPercent) const;  
-    int nControlPointsU( void ) const;
-    int nControlPointsV( void ) const;
+    dtInt nControlPointsU( void ) const;
+    dtInt nControlPointsV( void ) const;
     dtCurve * segmentConstU( dtReal const uu) const;
     dtCurve * segmentConstV( dtReal const vv) const;    
     dtCurve * segmentConstUPercent( dtReal const uu) const;
@@ -98,16 +98,16 @@ namespace dtOO {
       dtReal const vv, dtReal const uuMin, dtReal const uuMax
     ) const;    
 	  dtCurve * segmentConst( 
-      int const & dir, dtReal const at, dtReal const from, dtReal const to
+      dtInt const & dir, dtReal const at, dtReal const from, dtReal const to
     ) const;
     dtCurve * segmentConst( 
-      int const & dir, dtReal const at
+      dtInt const & dir, dtReal const at
     ) const;
     dtCurve * segmentConstPercent( 
-      int const & dir, dtReal const at
+      dtInt const & dir, dtReal const at
     ) const;
     dtCurve * segmentConstPercent( 
-      int const & dir, dtReal const at, dtReal const from, dtReal const to
+      dtInt const & dir, dtReal const at, dtReal const from, dtReal const to
     ) const;
     dtPoint2 reparamPercent(dtPoint3 const point) const;
     static bool inXYZTolerance(

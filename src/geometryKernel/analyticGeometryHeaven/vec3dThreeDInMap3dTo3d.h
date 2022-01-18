@@ -31,9 +31,9 @@ namespace dtOO {
     virtual dtPoint3 getPoint( 
       dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const;
-    virtual bool isClosed( int const & dir) const;
-    virtual dtReal getMin( int const & dir) const;
-    virtual dtReal getMax( int const & dir) const;
+    virtual bool isClosed( dtInt const & dir) const;
+    virtual dtReal getMin( dtInt const & dir) const;
+    virtual dtReal getMax( dtInt const & dir) const;
   private:
     ptrHandling< vec3dThreeD > _v3d;
     ptrHandling< map3dTo3d > _m3d;

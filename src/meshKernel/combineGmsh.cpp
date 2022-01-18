@@ -143,7 +143,7 @@ namespace dtOO {
     
     std::map< ::MVertex *, ::MVertex * > mv_newOld;
     
-    int cc = 0;
+    dtInt cc = 0;
     dt__forAllRefAuto(ge_newOldV, ge_newOld) {
 //      std::map< ::GEntity *, ::GEntity * > & ge_newOld = ge_newOldV[cc];    
     //

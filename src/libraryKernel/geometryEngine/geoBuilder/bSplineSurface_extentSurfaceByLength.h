@@ -17,8 +17,8 @@ namespace dtOO {
     dt__classOnlyName(bSplineSurface_extentSurfaceByLength);
     bSplineSurface_extentSurfaceByLength( 
       dtSurface const * const dtS, 
-      int const & parameterDir, dtReal const & length, 
-      int const & cont = 2, bool const & forward = false
+      dtInt const & parameterDir, dtReal const & length, 
+      dtInt const & cont = 2, bool const & forward = false
     );
     virtual ~bSplineSurface_extentSurfaceByLength();
     dtSurface * result( void );

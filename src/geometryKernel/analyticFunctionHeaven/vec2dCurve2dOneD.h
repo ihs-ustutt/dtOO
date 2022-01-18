@@ -30,7 +30,7 @@ namespace dtOO {
     virtual aFY Y( dtReal const & xx) const;
     vectorHandling< renderInterface * > getRender( void ) const;
     dtCurve2d const * ptrDtCurve2d( void ) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     ptrHandling<dtCurve2d> _dtC2d;
   };

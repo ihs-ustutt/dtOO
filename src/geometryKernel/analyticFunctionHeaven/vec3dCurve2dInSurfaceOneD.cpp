@@ -85,7 +85,7 @@ namespace dtOO {
 	 * 
    * @todo: What if surface is closed and curve goes in periodic direction?
    */
-	bool vec3dCurve2dInSurfaceOneD::closed( int const & dir ) const {
+	bool vec3dCurve2dInSurfaceOneD::closed( dtInt const & dir ) const {
 		return _dtC2d->closed();
 	}
 }

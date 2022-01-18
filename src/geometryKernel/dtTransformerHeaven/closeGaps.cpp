@@ -52,7 +52,7 @@ namespace dtOO {
         }
       }
       if ( !_vvEndAGeo.isNull() ) {
-        int nV = aS->ptrDtSurface()->nControlPointsV();
+        dtInt nV = aS->ptrDtSurface()->nControlPointsV();
         for (int ii = 0;ii<aS->ptrDtSurface()->nControlPointsU();ii++) {        
           dtPoint3 cP = aS->ptrDtSurface()->controlPoint(ii, nV-1);
           dtPoint2 nearest = _vvEndAGeo->ptrDtSurface()->reparam( cP );

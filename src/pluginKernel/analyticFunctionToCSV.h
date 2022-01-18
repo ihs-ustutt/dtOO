@@ -37,7 +37,7 @@ namespace dtOO {
       virtual void apply(void);
     private:
       vectorHandling< analyticFunction const * > _aF;
-      std::vector< int > _nP;
+      std::vector< dtInt > _nP;
       dtXmlParser const * _parser;
       dtCase const * _case;
       static bool _registrated;

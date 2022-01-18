@@ -12,7 +12,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(map2dTo3d_fullExtentInMap3dTo3d);
     map2dTo3d_fullExtentInMap3dTo3d(
-      map2dTo3d const * const m2d, int const & m2dParDir, int const & toM3dParDir
+      map2dTo3d const * const m2d, dtInt const & m2dParDir, dtInt const & toM3dParDir
     );
     virtual ~map2dTo3d_fullExtentInMap3dTo3d();
     map2dTo3d * result( void );

@@ -15,9 +15,9 @@ namespace dtOO {
     virtual ~stringPrimitive();
     static dtReal stringToFloat(std::string const value);
     static std::string floatToString(dtReal const value);
-    static int stringToInt(std::string const value);
+    static dtInt stringToInt(std::string const value);
     static std::string intToString(int const value);
-    static std::string intToStringLZ(int const value, int const nZeros);   
+    static std::string intToStringLZ(int const value, dtInt const nZeros);   
     static bool stringToBool(std::string const value);
     static std::string getStringBetween(
       std::string signStart, std::string signEnd, 
@@ -73,24 +73,24 @@ namespace dtOO {
   protected:
     stringPrimitive();       
   private:
-    static std::pair< int, int > getFromToBetween(
+    static std::pair< int, dtInt > getFromToBetween(
       std::string const signStart, std::string const signEnd, 
       std::string const str
     );
-    static std::pair< int, int > getFromToBetweenFirstLast(
+    static std::pair< int, dtInt > getFromToBetweenFirstLast(
       std::string const signStart, std::string const signEnd, 
       std::string const str
     );
-    static std::pair< int, int > getFromToBetweenRespectOcc(
+    static std::pair< int, dtInt > getFromToBetweenRespectOcc(
       std::string const signStart, 
       std::string const signEnd, 
       std::string const str
     );
-    static std::vector< int > getOccurences(
+    static std::vector< dtInt > getOccurences(
       std::string const & pattern, std::string const & str, 
-      int from = 0, int to = 0 
+      dtInt from = 0, dtInt to = 0 
     );
-    static std::map< int, int > getOccurenceMap(
+    static std::map< int, dtInt > getOccurenceMap(
       std::string const & signStart, std::string const & signEnd, 
       std::string const & str
     );

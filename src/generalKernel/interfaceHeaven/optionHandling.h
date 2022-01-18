@@ -45,8 +45,8 @@ namespace dtOO {
         cVPtrVec const * const cV,
         aFPtrVec const * const aF					
       ) const;
-      int getOptionInt(std::string const name) const;
-      int getOptionInt(
+      dtInt getOptionInt(std::string const name) const;
+      dtInt getOptionInt(
         std::string const name,
         cVPtrVec const * const cV,
         aFPtrVec const * const aF					

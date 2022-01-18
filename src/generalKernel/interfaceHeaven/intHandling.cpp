@@ -11,11 +11,11 @@ namespace dtOO {
   intHandling::~intHandling() {
   }
   
-  int intHandling::round( dtReal a ) {
+  dtInt intHandling::round( dtReal a ) {
    return boost::math::iround(a);
 	}
   
-  int intHandling::bound( int const & toBound, int const & aa, int const & bb ) {
+  dtInt intHandling::bound( dtInt const & toBound, dtInt const & aa, dtInt const & bb ) {
     if (toBound < aa) return aa;
     else if (toBound > bb) return bb;
     else return toBound;

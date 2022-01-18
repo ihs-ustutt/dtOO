@@ -40,19 +40,19 @@ namespace dtOO {
     dt__throwUnexpected(getPoint());
   }
 	   
-  bool analyticGeometryGroup::isClosed( int const & dir) const {
+  bool analyticGeometryGroup::isClosed( dtInt const & dir) const {
     return false;
   }
   
-  dtReal analyticGeometryGroup::getMin( int const & dir) const {
+  dtReal analyticGeometryGroup::getMin( dtInt const & dir) const {
 		return 0.;
   }
 
-  dtReal analyticGeometryGroup::getMax( int const & dir) const {
+  dtReal analyticGeometryGroup::getMax( dtInt const & dir) const {
     return 0.;
   }
   
-  int analyticGeometryGroup::dim( void ) const {
+  dtInt analyticGeometryGroup::dim( void ) const {
     dt__throwUnexpected(dim());
   }  
   

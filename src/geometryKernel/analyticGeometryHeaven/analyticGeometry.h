@@ -31,10 +31,10 @@ namespace dtOO {
       //
       virtual analyticGeometry * clone( void ) const = 0;
       virtual analyticGeometry * create( void ) const = 0;
-      virtual int dim( void ) const = 0;
-      virtual bool isClosed( int const & dir) const = 0;
-      virtual dtReal getMin( int const & dir) const = 0;
-      virtual dtReal getMax( int const & dir) const = 0;
+      virtual dtInt dim( void ) const = 0;
+      virtual bool isClosed( dtInt const & dir) const = 0;
+      virtual dtReal getMin( dtInt const & dir) const = 0;
+      virtual dtReal getMax( dtInt const & dir) const = 0;
       virtual dtPoint3 getPoint( dtReal const * const uvw ) const = 0;
       //
       // optional overload
@@ -75,12 +75,12 @@ namespace dtOO {
       //
       //
       void dump(void) const;    
-      void setRenderResolution(int const & dir, int const & value) const;
-      int getRenderResolution(int const & dir) const;
+      void setRenderResolution(int const & dir, dtInt const & value) const;
+      dtInt getRenderResolution(int const & dir) const;
     private:
-      mutable int _resU;
-      mutable int _resV;
-      mutable int _resW;
+      mutable dtInt _resU;
+      mutable dtInt _resV;
+      mutable dtInt _resW;
       mutable dtReal _characteristicLength;
       mutable std::pair< dtPoint3, dtPoint3 > _boundingBox;
       mutable dtReal _boundingBoxValue;

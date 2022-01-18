@@ -59,7 +59,7 @@ namespace dtOO {
 		return _dtS2d.get();
 	}
 	
-  bool vec2dSurface2dTwoD::closed( int const & dir ) const {
+  bool vec2dSurface2dTwoD::closed( dtInt const & dir ) const {
 		return _dtS2d->closed(dir);
 	}
 }

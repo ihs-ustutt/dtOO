@@ -33,8 +33,8 @@ namespace dtOO {
         aFPtrVec const * const aF 
       ) const;    
     private:
-      int _dir;
-      int _nSegments;
+      dtInt _dir;
+      dtInt _nSegments;
       static bool _registrated;    
   };
 }

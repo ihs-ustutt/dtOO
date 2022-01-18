@@ -37,7 +37,7 @@ namespace dtOO {
     try {
       parser.SetExpr( expression );
       
-      int nDim;
+      dtInt nDim;
       double * yyD = parser.Eval(nDim);
       std::vector< dtReal > yy(nDim, 0.);
 			dt__forFromToIndex(0, nDim, ii) yy[ii] = static_cast<dtReal>(yyD[ii]);
@@ -51,17 +51,17 @@ namespace dtOO {
     }
   }  
 
-  int qtXmlBase::muParseStringInt( std::string const expression ) {
-    int ret = static_cast< int >(muParseString(expression));
+  dtInt qtXmlBase::muParseStringInt( std::string const expression ) {
+    dtInt ret = static_cast< dtInt >(muParseString(expression));
     return ret;
   }  
 
-  std::vector< int > qtXmlBase::muParseCSStringInt( 
+  std::vector< dtInt > qtXmlBase::muParseCSStringInt( 
     std::string const expression 
   ) {
     std::vector< dtReal > vec = muParseCSString(expression);
-    std::vector< int > retVec(vec.size());
-    dt__forAllIndex(vec, ii) retVec[ii] = static_cast< int >(vec[ii]);
+    std::vector< dtInt > retVec(vec.size());
+    dt__forAllIndex(vec, ii) retVec[ii] = static_cast< dtInt >(vec[ii]);
 
     return retVec;
   }  

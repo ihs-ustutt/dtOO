@@ -24,8 +24,8 @@ namespace dtOO {
 //    double UAbl_R ( double const * xx ) const ;
 //    double VAbl_R ( double const * xx ) const ;
 
-//    int Grinding ( int Teiler);
-//    int RootFinding();
+//    dtInt Grinding ( dtInt Teiler);
+//    dtInt RootFinding();
     adjustOutletAngle();
     virtual ~adjustOutletAngle();
     virtual dtPlugin * create( void ) const;    
@@ -59,10 +59,10 @@ namespace dtOO {
 //    double _tolerance;
 //    double _result[2];
 //    double _extension[2];
-//    int _printlevel;
+//    dtInt _printlevel;
 //    float _span;
 //    double _auxiliary;
-//    int _precision;
+//    dtInt _precision;
     
     
     

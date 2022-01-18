@@ -30,23 +30,23 @@ namespace dtOO {
     vec2dBiLinearTwoD * create( void ) const;    
     virtual ~vec2dBiLinearTwoD();
     virtual aFY Y( aFX const & xx ) const;
-    virtual bool closed( int const & dir ) const;    
+    virtual bool closed( dtInt const & dir ) const;    
     aFX invY(aFY const & yy) const;
     bool insideY( aFY const & yy ) const;
   private:
     static dtReal cross2(
       dtReal const & x0, dtReal const & y0, dtReal const & x1, dtReal const & y1
     );
-    static int inverseBilerp( 
+    static dtInt inverseBilerp( 
       dtReal x0, dtReal y0, dtReal x1, dtReal y1, 
       dtReal x2, dtReal y2, dtReal x3, dtReal y3, 
       dtReal x, dtReal y, 
       dtReal* sout, dtReal* tout, dtReal* s2out, dtReal* t2out 
     ); 
-    static int in_range( 
+    static dtInt in_range( 
       dtReal val, dtReal range_min, dtReal range_max, dtReal tol 
     );    
-  static int equals(dtReal a, dtReal b, dtReal tolerance);   
+  static dtInt equals(dtReal a, dtReal b, dtReal tolerance);   
   private:
     dtVector2 _v0;
     dtVector2 _v1;

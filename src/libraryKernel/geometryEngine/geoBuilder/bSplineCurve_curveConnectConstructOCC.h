@@ -19,7 +19,7 @@ namespace dtOO {
       );    
       bSplineCurve_curveConnectConstructOCC( 
         vectorHandling< dtCurve const * > const & cc,
-        dtReal const & tol, int const & param, int const & minM
+        dtReal const & tol, dtInt const & param, dtInt const & minM
       );
       bSplineCurve_curveConnectConstructOCC( 
         vectorHandling< dtCurve const * > const & cc

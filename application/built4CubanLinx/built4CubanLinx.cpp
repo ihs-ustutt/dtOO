@@ -278,7 +278,7 @@ std::string parseCommand(
     aRule, help, "info", "show info of cV" 
   ) {
     std::stringstream ss;
-    int cc = 0;
+    dtInt cc = 0;
     dt__forAllRefAuto(cV, aCV) {
       ss 
       << logMe::dtFormat(
@@ -589,7 +589,7 @@ std::string parseCommand(
   return std::string( "Unknown command: " + aRule + "\n");  
 }
 
-int main( int ac, char* av[] ) {
+int main( dtInt ac, char* av[] ) {
   try {
     //
     // options

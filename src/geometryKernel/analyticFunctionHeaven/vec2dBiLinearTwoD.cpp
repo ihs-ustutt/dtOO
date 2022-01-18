@@ -85,7 +85,7 @@ namespace dtOO {
     return yy;		
 	}
 	
-	bool vec2dBiLinearTwoD::closed( int const & dir ) const {
+	bool vec2dBiLinearTwoD::closed( dtInt const & dir ) const {
 		dt__throwIf( (dir!=0) && (dir!=1), closed );
 		return false;
 	}
@@ -112,7 +112,7 @@ namespace dtOO {
     dtReal u1;
     dtReal v1;
     
-    int num_st 
+    dtInt num_st 
     = 
     inverseBilerp( 
       _v0.x(), _v0.y(), _v1.x(), _v1.y(), 
@@ -149,7 +149,7 @@ namespace dtOO {
     );
   }
   
-  int vec2dBiLinearTwoD::equals( dtReal a, dtReal b, dtReal tolerance ) {
+  dtInt vec2dBiLinearTwoD::equals( dtReal a, dtReal b, dtReal tolerance ) {
       return ( a == b ) ||
         ( ( a <= ( b + tolerance ) ) &&
           ( a >= ( b - tolerance ) ) );
@@ -162,7 +162,7 @@ namespace dtOO {
   }
 
 
-  int vec2dBiLinearTwoD::in_range( 
+  dtInt vec2dBiLinearTwoD::in_range( 
     dtReal val, dtReal range_min, dtReal range_max, dtReal tol 
   ) {
     return ((val+tol) >= range_min) && ((val-tol) <= range_max);
@@ -175,7 +175,7 @@ namespace dtOO {
    * http://stackoverflow.com/questions/808441/inverse-bilinear-interpolation
    * 
    */
-  int vec2dBiLinearTwoD::inverseBilerp( 
+  dtInt vec2dBiLinearTwoD::inverseBilerp( 
     dtReal x0, dtReal y0, dtReal x1, dtReal y1, 
     dtReal x2, dtReal y2, dtReal x3, dtReal y3, 
     dtReal x, dtReal y, 
@@ -187,7 +187,7 @@ namespace dtOO {
       "invY_precision"
     );		
     
-    int t_valid, t2_valid;
+    dtInt t_valid, t2_valid;
 
     dtReal a  = cross2( x0-x, y0-y, x0-x2, y0-y2 );
     dtReal b1 = cross2( x0-x, y0-y, x1-x3, y1-y3 );
@@ -199,7 +199,7 @@ namespace dtOO {
 
     dtReal am2bpc = a-2*b+c;
     /* this is how many valid s values we have */
-    int num_valid_s = 0;
+    dtInt num_valid_s = 0;
 
     if ( equals( am2bpc, 0, tol ) ) {
       if ( equals( a-c, 0, tol ) ){

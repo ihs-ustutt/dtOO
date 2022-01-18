@@ -166,7 +166,7 @@ namespace dtOO {
 		return unitNdtVector3( x_percent(xx) );
 	}
 	
-  dtReal vec3dTwoD::xMin( int const & dir) const {
+  dtReal vec3dTwoD::xMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _min[0];
@@ -181,7 +181,7 @@ namespace dtOO {
     }   
 	}
 	
-  dtReal vec3dTwoD::xMax( int const & dir) const {
+  dtReal vec3dTwoD::xMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _max[0];
@@ -292,7 +292,7 @@ namespace dtOO {
 	}	
   
 //  dtReal vec3dTwoD::length( 
-//    int const & nP, aFX const & x0, aFX const & x1 
+//    dtInt const & nP, aFX const & x0, aFX const & x1 
 //  ) const {
 //		std::vector< dtPoint2 > glp = dtLinearAlgebra::getGaussLegendre(nP);
 //		dtReal L = 0.0;

@@ -76,8 +76,8 @@ namespace dtOO {
    
     dtReal distU = 1./_piece.size(0);
     dtReal distV = 1./_piece.size(1);
-    int ii = xx[0] / distU;
-    int jj = xx[1] / distV;
+    dtInt ii = xx[0] / distU;
+    dtInt jj = xx[1] / distV;
     
     ii = intHandling::bound(ii, 0, _piece.size(0)-1);
     jj = intHandling::bound(jj, 0, _piece.size(1)-1);
@@ -90,7 +90,7 @@ namespace dtOO {
     return _piece[ii][jj].Y(xxLocal);	
 	}
 	
-	bool vec2dMultiBiLinearTwoD::closed( int const & dir ) const {
+	bool vec2dMultiBiLinearTwoD::closed( dtInt const & dir ) const {
 		dt__throwIf( (dir!=0) && (dir!=1), closed );
 		return false;
 	}

@@ -91,7 +91,7 @@ namespace dtOO {
       // argList
       //
       ::Foam::argList::noParallel();
-      int argc = 3;
+      dtInt argc = 3;
       std::vector< std::string > argvStr(3);
       argvStr[0] = getLabel();
       argvStr[1] = std::string("-case");

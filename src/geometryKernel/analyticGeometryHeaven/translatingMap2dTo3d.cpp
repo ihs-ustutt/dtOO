@@ -56,7 +56,7 @@ namespace dtOO {
     return new map3dTo3dTransformed< translatingMap2dTo3d >(*this, dtT);
   }  
 	
-  bool translatingMap2dTo3d::isClosed( int const & dir) const {
+  bool translatingMap2dTo3d::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0: return false;
       case 1: return false;
@@ -70,7 +70,7 @@ namespace dtOO {
     }
 	}
   
-	dtReal translatingMap2dTo3d::getMin( int const & dir) const {
+	dtReal translatingMap2dTo3d::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0: return 0.;
       case 1: return _m2d->getUMin();
@@ -84,7 +84,7 @@ namespace dtOO {
     }    		
 	}
   
-	dtReal translatingMap2dTo3d::getMax( int const & dir) const {
+	dtReal translatingMap2dTo3d::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0: return 1.;
       case 1: return _m2d->getUMax();

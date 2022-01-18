@@ -152,7 +152,7 @@ namespace dtOO {
 	}	  
   
   dtPoint3 dtTransformer::operator()( 
-    dtPoint3 const & pp, int const dir
+    dtPoint3 const & pp, dtInt const dir
   ) const {
     if (dir == 1) return apply(pp);
     else if (dir == -1) return retract(pp);
@@ -168,7 +168,7 @@ namespace dtOO {
     );         
   }
   
-  void dtTransformer::handleInt(std::string const name, int const value) {
+  void dtTransformer::handleInt(std::string const name, dtInt const value) {
     dt__throw(
       handleInt(),
       << "Could not handle:" << std::endl

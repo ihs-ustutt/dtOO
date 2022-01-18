@@ -18,13 +18,13 @@ namespace dtOO {
   class dtGmshRegion : public ::GRegion {
   public:
     dt__class(dtGmshRegion, ::GEntity);
-    dtGmshRegion( ::GModel *m, int tag );
+    dtGmshRegion( ::GModel *m, dtInt tag );
     dtGmshRegion( 
-      ::GModel *m, int tag, 
+      ::GModel *m, dtInt tag, 
       const std::list< ::GFace * > &faces, const std::vector<int> &ori 
     );
     dtGmshRegion( 
-      ::GModel *m, int tag, 
+      ::GModel *m, dtInt tag, 
       const std::list<dtGmshFace*> &faces, const std::vector<int> &ori 
     );
     dtGmshModel const & refDtGmshModel( void ) const;
@@ -33,14 +33,14 @@ namespace dtOO {
     void meshTransfinite( void );
     void meshTransfiniteRecursive( void );
     void meshWNElements( 
-      int const & nElementsU, int const & nElementsV, int const & nElementsW
+      dtInt const & nElementsU, dtInt const & nElementsV, dtInt const & nElementsW
     );
     void meshRecombine( void );        
     void meshRecombineRecursive( void );    
     void meshUnstructured( void );
-    void addFace( ::GFace * face, int const ori );
+    void addFace( ::GFace * face, dtInt const ori );
     void deleteFace( ::GFace * face );
-    int faceOrientation( ::GFace * face ) const;
+    dtInt faceOrientation( ::GFace * face ) const;
     void addGEntity( ::GEntity * const gEnt );
     void addElement( ::MElement * me );
     bool isEqual( ::GRegion const * const gr ) const;    

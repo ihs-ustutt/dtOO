@@ -34,7 +34,7 @@ namespace dtOO {
 	dtOCCCurve::~dtOCCCurve() {
 	}
 
-  dtReal dtOCCCurve::minPara ( int const & dir ) const {
+  dtReal dtOCCCurve::minPara ( dtInt const & dir ) const {
     dt__throwIf(dir!=0, minPara());
 		Standard_Real U1;
 		Standard_Real U2;
@@ -48,7 +48,7 @@ namespace dtOO {
 		);       
 	}
 	
-  dtReal dtOCCCurve::maxPara ( int const & dir ) const {
+  dtReal dtOCCCurve::maxPara ( dtInt const & dir ) const {
     dt__throwIf(dir!=0, maxPara());
 		Standard_Real U1;
 		Standard_Real U2;

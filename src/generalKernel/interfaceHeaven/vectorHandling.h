@@ -36,20 +36,20 @@ namespace dtOO {
     virtual ~vectorHandling();
     T * set( T const & toSet);
     T * set( T const * toSet);
-    T const & get( int const ii) const;
+    T const & get( dtInt const ii) const;
 //    T const & get( std::string const & label) const;
-//    std::string getLabel( int const pos ) const;
+//    std::string getLabel( dtInt const pos ) const;
 //    T & getRef( std::string const label);
 //    bool has( std::string const label) const;
 //    bool hasTwice( std::string const label ) const;
 //    void checkForBastardTwins( void ) const;
 //    void checkForBastardTwinsAndMakeUnique( void );
     void nullify( void );
-//    int getPosition( std::string const label) const;
-    vectorHandling< T >::iterator getIterator( int const pos );
+//    dtInt getPosition( std::string const label) const;
+    vectorHandling< T >::iterator getIterator( dtInt const pos );
     void destroy( void );
     void destroy( std::vector< T > & vec );
-    void erase( int const pos );
+    void erase( dtInt const pos );
 //    void addIndex( void );
 //    void dump(void) const;
   };
@@ -72,7 +72,7 @@ namespace dtOO {
   vectorHandling< T >::vectorHandling(
     const vectorHandling& orig0, const vectorHandling& orig1
   ) : std::vector< T >(orig0.size()+orig1.size()) {
-    int counter = 0;
+    dtInt counter = 0;
     dt__forAllIndex(orig0, ii) {
       this->at(counter) = orig0[ii];
       counter++;
@@ -89,7 +89,7 @@ namespace dtOO {
     const vectorHandling& orig1, 
     const vectorHandling& orig2
   ) : std::vector< T >(orig0.size()+orig1.size()+orig2.size()) {
-    int counter = 0;
+    dtInt counter = 0;
     dt__forAllIndex(orig0, ii) {
       this->at(counter) = orig0[ii];
       counter++;
@@ -120,7 +120,7 @@ namespace dtOO {
   
   template < typename T >
   vectorHandling< T >::vectorHandling(
-    int const dim, T init
+    dtInt const dim, T init
   ) : std::vector<T>(dim, init) {
     
   }
@@ -142,7 +142,7 @@ namespace dtOO {
   }
   
   template< typename T >
-  T const & vectorHandling< T >::get( int const ii) const {
+  T const & vectorHandling< T >::get( dtInt const ii) const {
     return this->at(ii);
   }
 
@@ -168,7 +168,7 @@ namespace dtOO {
 //  }
 
 //  template< typename T >
-//  std::string vectorHandling< T >::getLabel( int const pos ) const {
+//  std::string vectorHandling< T >::getLabel( dtInt const pos ) const {
 //    labelHandling const * obj 
 //    = 
 //    dynamic_cast< labelHandling const * >(this->at(pos));
@@ -202,7 +202,7 @@ namespace dtOO {
 
 //  template< typename T >
 //  bool vectorHandling< T >::hasTwice( std::string const label ) const {
-//    int counter = 0;
+//    dtInt counter = 0;
 //    dt__forAllIndex(*this, ii) {
 //      //
 //      // check if class is of type labelHandling
@@ -265,7 +265,7 @@ namespace dtOO {
   }  
   
 //  template< typename T >
-//  int vectorHandling< T >::getPosition( std::string const label ) const {
+//  dtInt vectorHandling< T >::getPosition( std::string const label ) const {
 //    dt__forAllIndex(*this, ii) {
 //      //
 //      // check if class is of type labelHandling
@@ -282,10 +282,10 @@ namespace dtOO {
 
   template< typename T >
   typename vectorHandling< T >::iterator vectorHandling< T >::getIterator( 
-    int const pos 
+    dtInt const pos 
   ) {
     typename vectorHandling< T >::iterator it;
-    int counter = 0;
+    dtInt counter = 0;
     for (it = std::vector<T>::begin(); it != std::vector<T>::end(); ++it) {
       if (counter == pos) return it;
       counter++;
@@ -312,7 +312,7 @@ namespace dtOO {
   }
   
   template< typename T >
-  void vectorHandling< T >::erase( int const pos ) {
+  void vectorHandling< T >::erase( dtInt const pos ) {
     typename vectorHandling< T >::iterator it = getIterator(pos);
     std::vector<T>::erase(it);
   }

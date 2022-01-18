@@ -51,7 +51,7 @@ namespace dtOO {
           aG->get( qtXmlPrimitive::getAttributeStr("label", wEl[ii]) ) 
         )
       );      
-      int vId;
+      dtInt vId;
 			_gm->addIfRegionToGmshModel(m3d, &vId);
 
 		}

@@ -30,9 +30,9 @@ namespace dtOO {
     dtReal YFloatPercent( dtReal const & xP0, dtReal const & xP1, dtReal const & xP2 ) const;
     void setMin(int const & dir, dtReal const & min);
     void setMax(int const & dir, dtReal const & max);
-    virtual int xDim( void ) const;
-    virtual dtReal xMin( int const & dir) const;
-    virtual dtReal xMax( int const & dir) const;   
+    virtual dtInt xDim( void ) const;
+    virtual dtReal xMin( dtInt const & dir) const;
+    virtual dtReal xMax( dtInt const & dir) const;   
 	  using analyticFunction::x_percent;
     using analyticFunction::percent_x;
     aFX x_percent(dtReal const & x0, dtReal const & x1, dtReal const & x2) const;
