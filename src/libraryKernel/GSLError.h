@@ -1,8 +1,6 @@
 #ifndef GSLERROR_H
 #define GSLERROR_H
 
-#include <dtOOTypeDef.h>
-
 #include <gsl/gsl_errno.h>
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
