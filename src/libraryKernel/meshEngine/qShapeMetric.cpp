@@ -1,5 +1,6 @@
 #include "qShapeMetric.h"
 
+#include <gmsh.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MPyramid.h>
 #include <logMe/logMe.h>
@@ -61,19 +62,32 @@ namespace dtOO {
       std::min(
         std::min(
           std::min(
+#if GMSH_API_VERSION_MAJOR>=4 && GMSH_API_VERSION_MINOR>=9            
+            fabs(tet0.getInnerRadius()/tet0.getOuterRadius()),
+            fabs(tet1.getInnerRadius()/tet1.getOuterRadius())
+          ),
+          fabs(tet2.getInnerRadius()/tet2.getOuterRadius())
+        ),
+        fabs(tet3.getInnerRadius()/tet3.getOuterRadius())
+#else        
             fabs(tet0.getInnerRadius()/tet0.getCircumRadius()),
             fabs(tet1.getInnerRadius()/tet1.getCircumRadius())
           ),
           fabs(tet2.getInnerRadius()/tet2.getCircumRadius())
         ),
         fabs(tet3.getInnerRadius()/tet3.getCircumRadius())
+#endif        
       ) * 3. 
       / 
       .86034;
   }  
 
-  dtReal qShapeMetric::calculateTetrahedron( ::MTetrahedron * tet ) {   
+  dtReal qShapeMetric::calculateTetrahedron( ::MTetrahedron * tet ) {
+#if GMSH_API_VERSION_MAJOR>=4 && GMSH_API_VERSION_MINOR>=9        
+    return 3. * fabs(tet->getInnerRadius()/tet->getOuterRadius());
+#else            
     return 3. * fabs(tet->getInnerRadius()/tet->getCircumRadius());
+#endif
   }    
 }
 
