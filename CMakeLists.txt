@@ -257,8 +257,6 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E touch_nocreate 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/generalKernel/logMe/logMe.cpp
 )
-# set cxx standard
-set_property(TARGET dtOO PROPERTY CXX_STANDARD 14)
 #------------------------------------------------------------------------------#
 #
 # make shared library version
