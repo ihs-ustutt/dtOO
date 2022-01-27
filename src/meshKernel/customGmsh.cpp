@@ -127,7 +127,7 @@ namespace dtOO {
         }    
         ::GEdgeLoop el(iedges);
         for(::GEdgeLoop::citer it = el.begin(); it != el.end(); ++it){
-          _gm->getDtGmshFaceByTag(tag)->addEdge( it->ge, it->_sign );
+          _gm->getDtGmshFaceByTag(tag)->addEdge( it->getEdge(), it->getSign() );
         }        
       }
     }    
