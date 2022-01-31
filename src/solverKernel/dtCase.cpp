@@ -19,10 +19,10 @@
 #include <sstream>
 
 namespace dtOO {
-  int const dtCase::SUCCESS = 0;
-  int const dtCase::RUNNING = 1;
-  int const dtCase::ERROR = 2;
-  int const dtCase::UNEXPECTED = 3;
+  dtInt const dtCase::SUCCESS = 0;
+  dtInt const dtCase::RUNNING = 1;
+  dtInt const dtCase::ERROR = 2;
+  dtInt const dtCase::UNEXPECTED = 3;
   std::string const dtCase::STATUSSTRING[] 
   = 
   { "SUCCESS", "RUNNING", "ERROR", "UNEXPECTED"};
@@ -143,7 +143,7 @@ namespace dtOO {
     else return false;
   }
   
-  int dtCase::status( std::string const & state ) const {
+  dtInt dtCase::status( std::string const & state ) const {
     std::vector< std::string >::const_iterator it
     =
     std::find(_state.begin(), _state.end(), state);

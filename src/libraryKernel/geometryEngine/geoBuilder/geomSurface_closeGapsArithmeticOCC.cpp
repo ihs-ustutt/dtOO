@@ -11,7 +11,7 @@ namespace dtOO {
 	}
 
 	geomSurface_closeGapsArithmeticOCC::geomSurface_closeGapsArithmeticOCC(
-    dt__pVH(dtSurface) const & dtS, int const & dir, int const & nSegments
+    dt__pVH(dtSurface) const & dtS, dtInt const & dir, dtInt const & nSegments
 	) {
     //
     // small check
@@ -28,10 +28,10 @@ namespace dtOO {
     // pick constant parameter curves of surfaces and close curves
     //
     dt__vH(dt__pVH(dtCurve)) cc(nSegments);    
-		for ( int ii=0; ii<nSegments; ii++) {
+		for ( dtInt ii=0; ii<nSegments; ii++) {
       dt__forAllConstIter(dt__pVH(dtSurface), dtS, it ) {
         dtSurface const & theSurface = *it;
-        float at = ii * 1./(nSegments-1);
+        dtReal at = ii * 1./(nSegments-1);
         cc[ii].push_back( theSurface.segmentConstPercent(dir, at) );
       }
       cc[ii] = geomCurve_closeGapsArithmeticOCC(cc[ii]).result();

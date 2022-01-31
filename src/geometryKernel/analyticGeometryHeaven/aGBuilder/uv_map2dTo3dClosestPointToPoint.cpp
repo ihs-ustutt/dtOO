@@ -17,7 +17,7 @@ namespace dtOO {
     _closestUV = ( _m2d % dtPoint2(0.5, 0.5) );
     _distance = dtLinearAlgebra::distance( _pXYZ, _m2d.getPoint( _closestUV ) );
     
-    std::vector< float > initGuess = ::boost::assign::list_of(0.5)(0.0)(1.0);
+    std::vector< dtReal > initGuess = ::boost::assign::list_of(0.5)(0.0)(1.0);
     dt__forAllRefAuto(initGuess, aGuessU) {
       dt__forAllRefAuto(initGuess, aGuessV) {
         // 
@@ -86,7 +86,7 @@ namespace dtOO {
 		return _closestUV;
 	}
   
-  float uv_map2dTo3dClosestPointToPoint::distance( void ) {
+  dtReal uv_map2dTo3dClosestPointToPoint::distance( void ) {
     return _distance;  
   }
   

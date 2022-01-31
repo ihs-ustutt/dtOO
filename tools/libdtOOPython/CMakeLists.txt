@@ -39,7 +39,7 @@ add_library("dtOOPython" SHARED ${SOURCES})
 #
 target_link_libraries( dtOOPython dtOO ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 
-set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined,--disable-new-dtags")
 set(
   CMAKE_SHARED_LINKER_FLAGS 
   "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CMAKE_INSTALL_PREFIX}/lib"

@@ -1,6 +1,8 @@
 #ifndef BOUNDEDVOLUMEFACTORY_H
 #define	BOUNDEDVOLUMEFACTORY_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

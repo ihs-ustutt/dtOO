@@ -1,6 +1,8 @@
 #ifndef PICKVEC3DTWODRANGEPERCENT_H
 #define	PICKVEC3DTWODRANGEPERCENT_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 
@@ -26,8 +28,8 @@ namespace dtOO {
       virtual aFPtrVec 
       apply( aFPtrVec const * const aFVecP ) const;
     private:
-      float _x0;
-      float _x1;
+      dtReal _x0;
+      dtReal _x1;
       static bool _registrated;    
   };
 }

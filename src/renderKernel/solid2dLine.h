@@ -1,6 +1,8 @@
 #ifndef SOLID2DLINE_H
 #define	SOLID2DLINE_H
 
+#include <dtOOTypeDef.h>
+
 #include "discrete2dPoints.h"
 
 namespace dtOO {

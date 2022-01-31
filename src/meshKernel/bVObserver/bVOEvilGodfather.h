@@ -1,6 +1,8 @@
 #ifndef bVOEvilGodfather_H
 #define	bVOEvilGodfather_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 
@@ -34,7 +36,7 @@ namespace dtOO {
       virtual void postUpdate( void );
     private:
       static void perturbElement(
-        ::MElement * const jinx, float const & perturbFactor
+        ::MElement * const jinx, dtReal const & perturbFactor
       );
       static void divideTetrahedron(
         ::MTetrahedron * const jinx, 
@@ -47,10 +49,10 @@ namespace dtOO {
         ::MVertex * & newVertex     
       );        
     private:
-      float _perHex;
-      float _perTet;
-      float _perturbTet;
-      float _perturbHex;
+      dtReal _perHex;
+      dtReal _perTet;
+      dtReal _perturbTet;
+      dtReal _perturbHex;
   };
 }
 #endif	/* bVOEvilGodfather_H */

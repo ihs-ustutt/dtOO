@@ -1,6 +1,8 @@
 #ifndef BSPLINESURFACE_SKINCONSTRUCTOCC_H
 #define	BSPLINESURFACE_SKINCONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -19,7 +21,7 @@ namespace dtOO {
     );    
     bSplineSurface_skinConstructOCC(
     	vectorHandling< dtCurve const * > const &  cL, 
-      int const & minDeg, int const & maxDeg, int const & nIter
+      dtInt const & minDeg, dtInt const & maxDeg, dtInt const & nIter
     );
     virtual ~bSplineSurface_skinConstructOCC();
     dtSurface * result( void );

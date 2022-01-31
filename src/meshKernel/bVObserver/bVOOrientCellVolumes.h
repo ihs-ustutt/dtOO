@@ -1,6 +1,8 @@
 #ifndef bVOOrientCellVolumes_H
 #define	bVOOrientCellVolumes_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 

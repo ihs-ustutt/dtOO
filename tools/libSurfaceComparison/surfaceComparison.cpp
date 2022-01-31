@@ -28,9 +28,9 @@ namespace dtOO {
   double surfaceComparison::UAbl_R ( double const * xx )const {
     dt__ptrAss( map2dTo3d  *surface2, map2dTo3d::DownCast( _refSurface ) );
     dtPoint2 Help=surface2->uv_percent( 
-    static_cast< float >(xx[0]), static_cast< float >(xx[1]));
-    const float x=Help.x();
-    const float y=Help.y();
+    static_cast< dtReal >(xx[0]), static_cast< dtReal >(xx[1]));
+    const dtReal x=Help.x();
+    const dtReal y=Help.y();
     return (_point - surface2->getPoint(x,y))
            * (surface2->firstDerU(x,y));
   }
@@ -38,9 +38,9 @@ namespace dtOO {
   double surfaceComparison::VAbl_R ( double const * xx ) const {
     dt__ptrAss( map2dTo3d  *surface2, map2dTo3d::DownCast( _refSurface ) );
     dtPoint2  Help=surface2->uv_percent (
-    static_cast< float >(xx[0]), static_cast< float >(xx[1]));
-    const float x=Help.x();
-    const float y=Help.y();
+    static_cast< dtReal >(xx[0]), static_cast< dtReal >(xx[1]));
+    const dtReal x=Help.x();
+    const dtReal y=Help.y();
     return (_point - surface2->getPoint(x,y))
            * (surface2->firstDerV(x,y));
   }
@@ -48,12 +48,12 @@ namespace dtOO {
   double surfaceComparison::Euclidean_Distance (double const *Wert) const {
     dt__ptrAss( map2dTo3d  *surface2, map2dTo3d::DownCast( _refSurface ));
     return sqrt((_point - surface2->getPointPercent(
-            static_cast< float >(Wert[0]),static_cast< float >(Wert[1])))
-            *(_point - surface2->getPointPercent(static_cast< float >(Wert[0]), 
-            static_cast< float >(Wert[1]))));
+            static_cast< dtReal >(Wert[0]),static_cast< dtReal >(Wert[1])))
+            *(_point - surface2->getPointPercent(static_cast< dtReal >(Wert[0]), 
+            static_cast< dtReal >(Wert[1]))));
   }
    
-  int surfaceComparison::Grinding(int Teiler) {
+  dtInt surfaceComparison::Grinding(int Teiler) {
     double r1=_extension[0]-(_interval/(Teiler/10));
     if (r1<0)
       r1=0;
@@ -92,7 +92,7 @@ namespace dtOO {
     return 1;
   }
     
-  int surfaceComparison::RootFinding() {
+  dtInt surfaceComparison::RootFinding() {
     double x[2];
     _auxiliary=1000;
     
@@ -116,9 +116,9 @@ namespace dtOO {
           return 0;
         }
         if (j>1 && i>1) {
-          int a=10,f=0;
+          dtInt a=10,f=0;
           do {
-            int k=Grinding(a);
+            dtInt k=Grinding(a);
             a=a*10;
             f++;
             if (k==0)
@@ -187,14 +187,14 @@ namespace dtOO {
     if (_printlevel>0)
       cout << "Start" << endl;
     
-    for (float j=0;j<=1.01;j=j+_span) {
-      for (float i=0;i<=1.01;i=i+_span) {
+    for (dtReal j=0;j<=1.01;j=j+_span) {
+      for (dtReal i=0;i<=1.01;i=i+_span) {
         _interval=_transition;
         _point = surface->getPointPercent(j,i);
         values++;
         if (_printlevel>0)
           cout << "---------------------------------------------------" << endl;
-        int t=RootFinding();
+        dtInt t=RootFinding();
         
         switch (t) {
           case 0: {   

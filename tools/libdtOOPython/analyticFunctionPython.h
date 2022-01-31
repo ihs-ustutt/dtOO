@@ -21,9 +21,9 @@ boost::python::class_< analyticFunctionWrap, boost::noncopyable >(
   .def("yDim", boost::python::pure_virtual( &dtOO::analyticFunction::yDim) )
   //.def("isClosed", boost::python::pure_virtual( &dtOO::analyticFunction::isClosed) )
   .def<
-    float (dtOO::analyticFunction::*)(int const &) const
+    dtOO::dtReal (dtOO::analyticFunction::*)(int const &) const
   >("xMin", &dtOO::analyticFunction::xMin)
   .def<
-    float (dtOO::analyticFunction::*)(int const &) const
+    dtOO::dtReal (dtOO::analyticFunction::*)(int const &) const
   >("xMax", &dtOO::analyticFunction::xMax)
 ;

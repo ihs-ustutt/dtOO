@@ -1,6 +1,8 @@
 #ifndef SYSTEMHANDLING_H
 #define	SYSTEMHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <string>
 #include <boost/filesystem.hpp>

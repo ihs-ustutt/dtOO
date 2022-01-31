@@ -1,6 +1,8 @@
 #ifndef TRIMMEDCURVE_UBOUNDS_H
 #define	TRIMMEDCURVE_UBOUNDS_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -12,7 +14,7 @@ namespace dtOO {
     public:
       dt__classOnlyName(trimmedCurve_uBounds);
       trimmedCurve_uBounds(
-        dtCurve const * dtC, float const & min, float const & max
+        dtCurve const * dtC, dtReal const & min, dtReal const & max
       );
       virtual ~trimmedCurve_uBounds();
       dtCurve * result( void );

@@ -27,7 +27,7 @@ boost::python::class_<
   .def(
     "getPoint", 
     boost::python::pure_virtual<
-      dtOO::dtPoint3 (dtOO::map2dTo3d::*)(float const &, float const &) const
+      dtOO::dtPoint3 (dtOO::map2dTo3d::*)(dtOO::dtReal const &, dtOO::dtReal const &) const
     >( &dtOO::map2dTo3d::getPoint ) 
   )
   .def("getUMin", &dtOO::map2dTo3d::getUMin)

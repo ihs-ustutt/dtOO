@@ -1,6 +1,8 @@
 #ifndef aFXmlBuilderFactory_H
 #define	aFXmlBuilderFactory_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

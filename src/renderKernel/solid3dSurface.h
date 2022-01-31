@@ -1,6 +1,8 @@
 #ifndef SOLID3DSURFACE_H
 #define	SOLID3DSURFACE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>

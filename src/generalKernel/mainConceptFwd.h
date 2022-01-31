@@ -1,6 +1,8 @@
 #ifndef mainConceptFwd_H
 #define	mainConceptFwd_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/labeledVectorHandling.h>
 
 namespace dtOO {

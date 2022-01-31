@@ -35,7 +35,7 @@ namespace dtOO {
   
   bSplineSurface_skinConstructOCC::bSplineSurface_skinConstructOCC(
 	  vectorHandling< dtCurve const * > const &  cL, 
-    int const & minDeg, int const & maxDeg, int const & nIter
+    dtInt const & minDeg, dtInt const & maxDeg, dtInt const & nIter
 	) {
 		GeomFill_SectionGenerator aSecGen;
 		dt__forAllIndex(cL, ii) {

@@ -1,6 +1,8 @@
 #ifndef uRelInChannel_H
 #define	uRelInChannel_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -37,7 +39,7 @@ namespace dtOO {
       vectorHandling< analyticGeometry const * > _aG;    
       dtXmlParser const * _parser;
       dtCase const * _case;
-      std::vector< int > _nP;
+      std::vector< dtInt > _nP;
       static bool _registrated;
   };
 }

@@ -136,9 +136,9 @@ namespace dtOO {
     //
     gm->mesh(0);
 
-    std::vector< int > tag;
-    std::vector< int > onRank;
-    int currentRank = 0;
+    std::vector< dtInt > tag;
+    std::vector< dtInt > onRank;
+    dtInt currentRank = 0;
     
     //
     // 1D

@@ -1,6 +1,8 @@
 #ifndef bSplineSurface_constrainedFillingConstructOCCAFXmlBuilder_H
 #define	bSplineSurface_constrainedFillingConstructOCCAFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

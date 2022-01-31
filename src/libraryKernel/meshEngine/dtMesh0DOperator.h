@@ -1,6 +1,8 @@
 #ifndef dtMesh0DOperator_H
 #define	dtMesh0DOperator_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtMeshOperator.h"
 
 class QDomElement;

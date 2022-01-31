@@ -63,7 +63,7 @@ namespace dtOO {
   }
 
   void dtMeshFreeGradingGEdge::operator()( dtGmshEdge * dtge) {
-    int transType = dtge->meshAttributes.typeTransfinite;
+    dtInt transType = dtge->meshAttributes.typeTransfinite;
     if (
       dtge->meshAttributes.method == MESH_TRANSFINITE
       &&
@@ -77,8 +77,8 @@ namespace dtOO {
       );      
       map1dTo3d const * const m1d = dtge->getMap1dTo3d();
 
-      int const nP = dtge->meshAttributes.nbPointsTransfinite;
-      std::vector< float > gg
+      dtInt const nP = dtge->meshAttributes.nbPointsTransfinite;
+      std::vector< dtReal > gg
       =
       float_scaOneDPoint( _gradingInt[transType], nP ).result();
       if (
@@ -118,7 +118,7 @@ namespace dtOO {
 
       logContainer< dtMeshFreeGradingGEdge > logC(logDEBUG, "operator()");
       
-      std::vector< float > uu(gg.size());
+      std::vector< dtReal > uu(gg.size());
       uu[0] = m1d->getUMin();
       uu[gg.size()-1] = m1d->getUMax();
       std::vector< dtPoint3 > p3_u(gg.size());
@@ -140,15 +140,15 @@ namespace dtOO {
 
       
       dt__forFromToIndex(0, _maxSmooth, smoothIt) {
-        std::vector< float > dL(gg.size(), 0.);      
+        std::vector< dtReal > dL(gg.size(), 0.);      
         dt__forFromToIndex(1, nP, ii) {
           p3_u[ii] = m1d->getPoint(uu[ii]);
           dL[ii] = dtLinearAlgebra::length( p3_u[ii] - p3_u[ii-1] );
         }     
 
 
-        float sumL = dtLinearAlgebra::sum(dL);
-        std::vector< float > ll(gg.size(), 0.);      
+        dtReal sumL = dtLinearAlgebra::sum(dL);
+        std::vector< dtReal > ll(gg.size(), 0.);      
         scaMultiOneD< scaLinearOneD > l_u;
         dt__forFromToIndex(1, nP, ii) {
           ll[ii] = ll[ii-1] + dL[ii];        
@@ -161,8 +161,8 @@ namespace dtOO {
 //            % "u_n" % "l-l_0" % "dL" % "gg" % "(l-l_0)/sum(l)" 
 //            % "gg-(l-l_0)/sum(l)" % "u_n+1"
 //          << std::endl;
-        float sumEps = 0;
-        float maxEps = std::numeric_limits<float>::min();
+        dtReal sumEps = 0;
+        dtReal maxEps = std::numeric_limits<dtReal>::min();
         dt__forFromToIndex(1, nP-1, ii) {
 //          logC() 
 //            << logMe::dtFormat(
@@ -172,7 +172,7 @@ namespace dtOO {
 //              % (gg[ii]-(ll[ii]/sumL)) % l_u.invYFloat( gg[ii] * sumL )
 //            << std::endl;
           sumEps = sumEps + fabs(gg[ii]-(ll[ii]/sumL));
-          maxEps = std::max( maxEps, std::fabs<float>(gg[ii]-(ll[ii]/sumL)) );
+          maxEps = std::max( maxEps, std::fabs<dtReal>(gg[ii]-(ll[ii]/sumL)) );
           uu[ii] = l_u.invYFloat( gg[ii] * sumL );
         }
 

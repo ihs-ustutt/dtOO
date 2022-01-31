@@ -1,6 +1,8 @@
 #ifndef map3dTo3dWithInternalBlockGmsh_H
 #define	map3dTo3dWithInternalBlockGmsh_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "gmshBoundedVolume.h"
 

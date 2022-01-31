@@ -1,6 +1,8 @@
 #ifndef DTOPTIMIZEMESHGREGION_H
 #define	DTOPTIMIZEMESHGREGION_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "dtMesh3DOperator.h"
 

@@ -1,6 +1,8 @@
 #ifndef DTOMEDGEFIELD_H
 #define	DTOMEDGEFIELD_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <logMe/dtMacros.h>
 #include "dtOMField.h"
@@ -18,7 +20,7 @@ namespace dtOO {
     T & operator[](omEdgeH const & eH);    
     T const & at(omEdgeH const & eH) const;    
     void execute( T (*executeMe)(T const & member) );
-    long unsigned int size( void ) const;
+    dtLongUnsInt size( void ) const;
     virtual void update( void );     
   private:
     std::map< omEdgeH, T > _field;
@@ -57,7 +59,7 @@ namespace dtOO {
   }
 
   template < typename T >
-  long unsigned int dtOMEdgeField< T >::size( void ) const {
+  dtLongUnsInt dtOMEdgeField< T >::size( void ) const {
     return _field.size();
   }
 

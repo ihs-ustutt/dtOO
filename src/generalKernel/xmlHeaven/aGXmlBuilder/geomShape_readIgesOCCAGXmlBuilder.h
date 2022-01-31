@@ -1,6 +1,8 @@
 #ifndef geomShape_readIgesOCCAGXmlBuilder_H
 #define	geomShape_readIgesOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

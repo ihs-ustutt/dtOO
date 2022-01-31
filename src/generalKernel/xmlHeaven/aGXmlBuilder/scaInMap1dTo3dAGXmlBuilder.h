@@ -1,6 +1,8 @@
 #ifndef scaInMap1dTo3dAGXmlBuilder_H
 #define	scaInMap1dTo3dAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

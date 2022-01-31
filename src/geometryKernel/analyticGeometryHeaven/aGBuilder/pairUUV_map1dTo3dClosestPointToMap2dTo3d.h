@@ -1,6 +1,8 @@
 #ifndef pairUUV_map1dTo3dClosestPointToMap2dTo3d_H
 #define	pairUUV_map1dTo3dClosestPointToMap2dTo3d_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <vector>
@@ -16,11 +18,11 @@ namespace dtOO {
       map1dTo3d const * const m1d, map2dTo3d const * const m2d
     );
     virtual ~pairUUV_map1dTo3dClosestPointToMap2dTo3d();
-    std::pair< float, dtPoint2 > result( void );
+    std::pair< dtReal, dtPoint2 > result( void );
   private:
     double F(double const * xx) const;    
   private:
-    std::pair< float, dtPoint2 > _closestUUV;
+    std::pair< dtReal, dtPoint2 > _closestUUV;
     map1dTo3d const & _m1d;
     map2dTo3d const & _m2d;
   };

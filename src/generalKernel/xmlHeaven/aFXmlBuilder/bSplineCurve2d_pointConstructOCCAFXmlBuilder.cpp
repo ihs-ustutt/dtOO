@@ -52,7 +52,7 @@ namespace dtOO {
     //
     //set input
     //
-    int order = dtXmlParserBase::getAttributeInt("order", toBuild);
+    dtInt order = dtXmlParserBase::getAttributeInt("order", toBuild);
     while ( !elementP.isNull() ) {
       std::vector< dtPoint2 > workingPoint;
       dtXmlParserBase::dtXmlParserBase::createBasic( 

@@ -1,6 +1,8 @@
 #ifndef DISCRETE3DPOINTS_H
 #define	DISCRETE3DPOINTS_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>

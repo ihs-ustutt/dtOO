@@ -1,6 +1,8 @@
 #ifndef dtOCCGeomFillSimpleBound_H
 #define	dtOCCGeomFillSimpleBound_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOCCGeomFillBoundary.h"
@@ -19,9 +21,9 @@ namespace dtOO {
       );
       virtual ~dtOCCGeomFillSimpleBound();
       virtual dtCurve * clone( void ) const;
-      virtual float minPara( int const & dir ) const;
-      virtual float maxPara( int const & dir ) const;    
-      virtual dtPoint3 point( float const uu ) const;
+      virtual dtReal minPara( dtInt const & dir ) const;
+      virtual dtReal maxPara( dtInt const & dir ) const;    
+      virtual dtPoint3 point( dtReal const uu ) const;
     private:
       GeomFill_SimpleBound const * _ptr;
   };

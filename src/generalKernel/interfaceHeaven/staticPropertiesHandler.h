@@ -1,6 +1,8 @@
 #ifndef staticPropertiesHandler_H
 #define	staticPropertiesHandler_H
 
+#include <dtOOTypeDef.h>
+
 #include "optionHandling.h"
 #include <logMe/dtMacros.h>
 
@@ -12,8 +14,8 @@ namespace dtOO {
     virtual ~staticPropertiesHandler();
     virtual void init(::QDomElement const * const wElement);
     static bool mpiParallel( void );
-    int thisRank( void ) const; 
-    int nRanks( void ) const;
+    dtInt thisRank( void ) const; 
+    dtInt nRanks( void ) const;
     bool initialized( void ) const;
     static void mpiBarrier( void );
     bool gDebug( void ) const;
@@ -22,8 +24,8 @@ namespace dtOO {
     staticPropertiesHandler();
   private:
     static dt__pH(staticPropertiesHandler) _pH;
-    int _thisRank;
-    int _nRanks;
+    dtInt _thisRank;
+    dtInt _nRanks;
     bool _initialized;
     bool _gDebug;
   };

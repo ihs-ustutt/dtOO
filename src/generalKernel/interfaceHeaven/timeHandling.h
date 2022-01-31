@@ -1,6 +1,8 @@
 #ifndef TIMEHANDLING_H
 #define	TIMEHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 namespace boost {
@@ -19,7 +21,7 @@ namespace dtOO {
   private:
     std::string _keyword;
     dt__pH(::boost::timer::cpu_timer) _t;
-    int _step;
+    dtInt _step;
   };
 }
 #endif	/* TIMEHANDLING_H */

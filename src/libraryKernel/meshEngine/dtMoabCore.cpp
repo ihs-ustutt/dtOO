@@ -186,14 +186,14 @@ namespace dtOO {
 		);
     moab__throwIf(result != moab::MB_SUCCESS, makeGrid());
 		
-    std::vector< int > elem_ids;
+    std::vector< dtInt > elem_ids;
 		moab::Range elements;    
     dt__forAllIndex(me, ii) {
       //
       // first element gives number of nodes per element
       //
       const unsigned long num_elem = 1;//me.size();
-      const int node_per_elem = me[ii]->getNumVertices();
+      const dtInt node_per_elem = me[ii]->getNumVertices();
 
       //
       // get type
@@ -204,7 +204,7 @@ namespace dtOO {
       ::MHexahedron const * hex = dynamic_cast< ::MHexahedron const * >(me[ii]);
       ::MTriangle const * tri = dynamic_cast< ::MTriangle const * >(me[ii]);
       ::MLine const * line = dynamic_cast< ::MLine const * >(me[ii]);		
-      int elementDim = 0;
+      dtInt elementDim = 0;
       if (quad) {
         elementDim = 2;
         type = moab::MBQUAD;
@@ -240,7 +240,7 @@ namespace dtOO {
       // Create the element sequence
       moab::EntityHandle handle = 0;
       moab::EntityHandle * conn_array;
-      int prefStart = 1;
+      dtInt prefStart = 1;
       result 
       = 
       _readUtilIface->get_element_connect(
@@ -302,7 +302,7 @@ namespace dtOO {
 		);
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 		
-		std::vector< int > val(field.size(), 0);
+		std::vector< dtInt > val(field.size(), 0);
 		std::vector< moab::EntityHandle > ent(field.size());
 		int ii = 0;
 		dt__forFromToIter(
@@ -323,7 +323,7 @@ namespace dtOO {
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}
 	
-	void dtMoabCore::addVertexField( dtOMVertexField< int > const & field ) {
+	void dtMoabCore::addVertexField( dtOMVertexField< dtInt > const & field ) {
 		moab::ErrorCode result;
 		
 		moab::Tag fieldTag;
@@ -335,7 +335,7 @@ namespace dtOO {
 		);
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 		
-		std::vector< int > val(field.size(), 0.);
+		std::vector< dtInt > val(field.size(), 0.);
 		std::vector< moab::EntityHandle > ent(field.size());
 		int ii = 0;
 		dt__forFromToIter(
@@ -356,7 +356,7 @@ namespace dtOO {
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}
 	 
-	void dtMoabCore::addVertexField( dtOMVertexField<float> const & fF ) {
+	void dtMoabCore::addVertexField( dtOMVertexField<dtReal> const & fF ) {
 		moab::ErrorCode result;
 		
 		moab::Tag fieldTag;
@@ -389,7 +389,7 @@ namespace dtOO {
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}
 	
-//	void dtMoabCore::addEdgeField( dtOMEdgeField<float> const & eF ) {
+//	void dtMoabCore::addEdgeField( dtOMEdgeField<dtReal> const & eF ) {
 //		moab::ErrorCode result;
 //		
 //		moab::Tag fieldTag;
@@ -457,7 +457,7 @@ namespace dtOO {
 		moab__throwIf(result != moab::MB_SUCCESS, addVertexField());
 	}	
 
-	void dtMoabCore::addFaceField( dtOMFaceField< int > const & field ) {
+	void dtMoabCore::addFaceField( dtOMFaceField< dtInt > const & field ) {
 		moab::ErrorCode result;
 		
 		moab::Tag fieldTag;
@@ -469,7 +469,7 @@ namespace dtOO {
 		);
 		moab__throwIf(result != moab::MB_SUCCESS, addFaceField());
 		
-		std::vector< int > val(field.size(), 0.);
+		std::vector< dtInt > val(field.size(), 0.);
 		std::vector< moab::EntityHandle > ent(field.size());
 		int ii = 0;
 		dt__forFromToIter(
@@ -490,7 +490,7 @@ namespace dtOO {
 		moab__throwIf(result != moab::MB_SUCCESS, addFaceField());
 	}  
 
-	void dtMoabCore::addFaceField( dtOMFaceField< float > const & field ) {
+	void dtMoabCore::addFaceField( dtOMFaceField< dtReal > const & field ) {
 		moab::ErrorCode result;
 		
 		moab::Tag fieldTag;
@@ -535,7 +535,7 @@ namespace dtOO {
 		);
 		moab__throwIf(result != moab::MB_SUCCESS, addFaceField());
 		
-		std::vector< int > val(field.size(), 0.);
+		std::vector< dtInt > val(field.size(), 0.);
 		std::vector< moab::EntityHandle > ent(field.size());
 		int ii = 0;
 		dt__forFromToIter(

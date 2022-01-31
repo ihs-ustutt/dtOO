@@ -61,19 +61,19 @@ namespace dtOO {
       ccV.push_back( s3->ptrConstDtCurve()->clone() );
     }
 
-    int nIter = 0;
+    dtInt nIter = 0;
     if ( dtXmlParserBase::hasAttribute("nIterations", toBuild) ) {
       nIter 
       = 
       dtXmlParserBase::getAttributeIntMuParse("nIterations", toBuild, cV, aF);
     }
-    int minDeg = 1;
+    dtInt minDeg = 1;
     if ( dtXmlParserBase::hasAttribute("orderMin", toBuild) ) {
       minDeg 
       = 
       dtXmlParserBase::getAttributeIntMuParse("orderMin", toBuild, cV, aF);
     }    
-    int maxDeg = 25;
+    dtInt maxDeg = 25;
     if ( dtXmlParserBase::hasAttribute("orderMax", toBuild) ) {
       maxDeg 
       = 

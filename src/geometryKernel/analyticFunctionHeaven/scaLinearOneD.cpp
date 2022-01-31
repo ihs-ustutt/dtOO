@@ -17,7 +17,7 @@ namespace dtOO {
   }
 
   scaLinearOneD::scaLinearOneD(
-    float const & x0, float const & x1, float const & y0, float const & y1
+    dtReal const & x0, dtReal const & x1, dtReal const & y0, dtReal const & y1
   ) : scaOneD() {
     dt__throwIf(x0>=x1, scaLinearOneD());
     
@@ -45,11 +45,11 @@ namespace dtOO {
     return new scaLinearOneD();
   }
 
-  float scaLinearOneD::YFloat(float const & xx) const {
+  dtReal scaLinearOneD::YFloat(dtReal const & xx) const {
     return _m * xx + _b;
   }
 
-  float scaLinearOneD::invYFloat(float const & yy) const {
+  dtReal scaLinearOneD::invYFloat(dtReal const & yy) const {
 		return (yy - _b) / _m;
   }  
 }

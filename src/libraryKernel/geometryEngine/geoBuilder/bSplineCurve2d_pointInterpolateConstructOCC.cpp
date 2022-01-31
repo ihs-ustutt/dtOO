@@ -38,7 +38,7 @@ namespace dtOO {
 		dt__forAllIndex(pp, ii) {		        
 		  arr->SetValue( ii+1, gp_Pnt2d(pp[ii].x(), pp[ii].y()) ); 
 			arr2.SetValue( ii+1, gp_Pnt2d(pp[ii].x(), pp[ii].y()) ); 
-		  para->SetValue( ii+1, static_cast<float>(ii) );
+		  para->SetValue( ii+1, static_cast<dtReal>(ii) );
 	  }
 
 		dtOCCCurve2dBase base;

@@ -12,14 +12,14 @@
 #include <OpenVolumeMesh/FileManager/FileManager.hh>
 
 namespace dtOO {
-  dtOVMMesh::dtOVMMesh(int const & nV, int const & nE) : ovmMesh() {
-    ::OpenVolumeMesh::VertexPropertyT< int > mvProp 
+  dtOVMMesh::dtOVMMesh(int const & nV, dtInt const & nE) : ovmMesh() {
+    ::OpenVolumeMesh::VertexPropertyT< dtInt > mvProp 
     = 
-    request_vertex_property< int >("MVertex");
+    request_vertex_property< dtInt >("MVertex");
     set_persistent(mvProp); 
-    ::OpenVolumeMesh::CellPropertyT< int > meProp 
+    ::OpenVolumeMesh::CellPropertyT< dtInt > meProp 
     = 
-    request_cell_property< int >("MElement");
+    request_cell_property< dtInt >("MElement");
     set_persistent(meProp);     
 
     if (nV) _mv.reserve(nV);
@@ -39,7 +39,7 @@ namespace dtOO {
 		dt__throwIf(!vH.is_valid(), addVertex());
 		
     _mv.push_back( mv );
-    request_vertex_property< int >("MVertex")[ vH ] = _mv.size()-1;
+    request_vertex_property< dtInt >("MVertex")[ vH ] = _mv.size()-1;
 		
 		_ovm_gmsh[mv] = vH;
 		
@@ -65,7 +65,7 @@ namespace dtOO {
     ovmCellH cH = ovmMesh::add_cell( handle );
 
     _me.push_back( me );
-    request_cell_property< int >("MElement")[ cH ] = _me.size()-1;
+    request_cell_property< dtInt >("MElement")[ cH ] = _me.size()-1;
     _ovm_gmshElement[ me ] = cH;
     return cH;    
   }  
@@ -82,7 +82,7 @@ namespace dtOO {
   
 	ovmHalffaceH dtOVMMesh::addFace( std::vector< ::MVertex * > const & mv ) {
 		std::vector< ovmVertexH > handle(mv.size(), ovmVertexH());
-    int already = 0;
+    dtInt already = 0;
     
     dt__forFromToIndex(0, mv.size(), ii) {
       
@@ -121,7 +121,7 @@ namespace dtOO {
 	}
 	
   ::MVertex * dtOVMMesh::operator[](ovmVertexH const & vH) {
-		return _mv[ request_vertex_property< int >("MVertex")[vH] ];
+		return _mv[ request_vertex_property< dtInt >("MVertex")[vH] ];
 	}
 	
 	::MVertex const * const dtOVMMesh::at(ovmVertexH const & vH) const {
@@ -129,14 +129,14 @@ namespace dtOO {
       _mv.at( 
         const_cast< dtOVMMesh * >(
           this
-        )->request_vertex_property< int >(
+        )->request_vertex_property< dtInt >(
           "MVertex"
         )[vH] 
     );
 	}
 
   ::MElement * dtOVMMesh::operator[](ovmCellH const & cH) {
-    return _me[ request_cell_property< int >("MElement")[cH] ];
+    return _me[ request_cell_property< dtInt >("MElement")[cH] ];
   }
   
 	::MElement const * const dtOVMMesh::at(ovmCellH const & cH) const {
@@ -144,7 +144,7 @@ namespace dtOO {
       _me.at( 
         const_cast< dtOVMMesh * >(
           this
-        )->request_cell_property< int >(
+        )->request_cell_property< dtInt >(
           "MElement"
         )[cH] 
       );
@@ -161,7 +161,7 @@ namespace dtOO {
 	  ovmMesh::set_vertex(vH, ovmPoint(pp.x(), pp.y(), pp.z()));
 	}	
   
-  void dtOVMMesh::makePartition( int const & num ) const {
+  void dtOVMMesh::makePartition( dtInt const & num ) const {
     dt__forAllRefAuto(_me, anEl) {
       const_cast< ::MElement *>(anEl)->setPartition(num);
     }

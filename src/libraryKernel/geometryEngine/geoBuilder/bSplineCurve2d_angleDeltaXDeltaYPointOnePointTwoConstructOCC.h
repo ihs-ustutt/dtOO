@@ -1,6 +1,8 @@
 #ifndef bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC_H
 #define	bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -14,8 +16,8 @@ namespace dtOO {
       bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC
     );
     bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC( 
-      float angleIn, float angleOut, float const & deltaX, float const & deltaY, 
-      float const & pointOne, float const & pointTwo
+      dtReal angleIn, dtReal angleOut, dtReal const & deltaX, dtReal const & deltaY, 
+      dtReal const & pointOne, dtReal const & pointTwo
     );
     virtual ~bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC();
     dtCurve2d * result( void );

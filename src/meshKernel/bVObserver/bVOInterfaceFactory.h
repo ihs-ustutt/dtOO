@@ -1,6 +1,8 @@
 #ifndef BVOINTERFACEFACTORY_H
 #define	BVOINTERFACEFACTORY_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
 

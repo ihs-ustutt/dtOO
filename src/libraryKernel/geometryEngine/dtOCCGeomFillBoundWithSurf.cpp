@@ -31,7 +31,7 @@ namespace dtOO {
 		return new dtOCCGeomFillBoundWithSurf( OCCRef(), OCCBoundaryRef() );
 	}
   
-  float dtOCCGeomFillBoundWithSurf::minPara( int const & dir ) const {
+  dtReal dtOCCGeomFillBoundWithSurf::minPara( dtInt const & dir ) const {
     dt__throwIf(dir!=0, minPara());
     Standard_Real U0;
     Standard_Real U1;
@@ -43,7 +43,7 @@ namespace dtOO {
     return floatHandling::nextIfSmaller(U0);
   }
   
-  float dtOCCGeomFillBoundWithSurf::maxPara( int const & dir ) const {
+  dtReal dtOCCGeomFillBoundWithSurf::maxPara( dtInt const & dir ) const {
     dt__throwIf(dir!=0, maxPara());
     Standard_Real U0;
     Standard_Real U1;
@@ -55,7 +55,7 @@ namespace dtOO {
     return floatHandling::nextIfSmaller(U1);    
   }
         
-  dtPoint3 dtOCCGeomFillBoundWithSurf::point( float const uu ) const {
+  dtPoint3 dtOCCGeomFillBoundWithSurf::point( dtReal const uu ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt pp;
 		dt__tryOcc(
@@ -65,9 +65,9 @@ namespace dtOO {
 		);
 		
 		return dtPoint3(
-			static_cast<float>(pp.Coord(1)), 
-			static_cast<float>(pp.Coord(2)), 
-			static_cast<float>(pp.Coord(3))
+			static_cast<dtReal>(pp.Coord(1)), 
+			static_cast<dtReal>(pp.Coord(2)), 
+			static_cast<dtReal>(pp.Coord(3))
 		);    
   }
 }

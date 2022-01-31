@@ -63,9 +63,9 @@ namespace dtOO {
 	}
 	
 	aFY vec3dTransVolThreeD::Y( aFX const & xx) const {
-		float x0 = xx[0];
-		float x1 = xx[1];
-		float x2 = xx[2];
+		dtReal x0 = xx[0];
+		dtReal x1 = xx[1];
+		dtReal x2 = xx[2];
 		
     dtVector3 rV =
         (1.-x0) * dtLinearAlgebra::toDtVector3(_v3dTwoD[1].YdtPoint3Percent(x1, x2)) 
@@ -130,7 +130,7 @@ namespace dtOO {
 	/**
    * @todo Fix closed method. Currently return value is always false!
    */
-  bool vec3dTransVolThreeD::closed( int const & dir ) const {
+  bool vec3dTransVolThreeD::closed( dtInt const & dir ) const {
     return false;
 	}
 }

@@ -1,6 +1,8 @@
 #ifndef boundedVolume_H
 #define	boundedVolume_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <map>
 #include <logMe/dtMacros.h>

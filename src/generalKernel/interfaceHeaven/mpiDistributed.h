@@ -1,6 +1,8 @@
 #ifndef mpiDistributed_H
 #define	mpiDistributed_H
 
+#include <dtOOTypeDef.h>
+
 #include "staticPropertiesHandler.h"
 #ifdef DTOO_HAS_MPI
 #include <boost/mpi/communicator.hpp>
@@ -48,7 +50,7 @@ namespace dtOO {
       }
     }
     
-    void broadcast( int const & broadCastFrom ) {
+    void broadcast( dtInt const & broadCastFrom ) {
       if ( staticPropertiesHandler::getInstance()->mpiParallel() ) {      
 #ifdef DTOO_HAS_MPI    
         ::boost::mpi::communicator cc;
@@ -58,8 +60,8 @@ namespace dtOO {
     }    
   private:
     std::vector< T > _t;
-    int const _thisRank;
-    int const _nRanks;
+    dtInt const _thisRank;
+    dtInt const _nRanks;
   };
 }
 

@@ -1,6 +1,8 @@
 #ifndef aGXmlBuilderFactory_H
 #define	aGXmlBuilderFactory_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

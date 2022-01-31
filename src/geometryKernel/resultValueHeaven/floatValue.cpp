@@ -5,7 +5,7 @@
 
 namespace dtOO {
   floatValue::floatValue( 
-    std::string const & label, float const & value 
+    std::string const & label, dtReal const & value 
   ) : resultValue( label ) {
     _value = value;
   }
@@ -21,7 +21,7 @@ namespace dtOO {
     return new floatValue( *this );
   }
   
-  float floatValue::operator()( void ) {
+  dtReal floatValue::operator()( void ) {
     return _value;
   }
 }

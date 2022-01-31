@@ -1,6 +1,8 @@
 #ifndef GEOMCURVE_CONVERTGEOMCURVE2D_H
 #define	GEOMCURVE_CONVERTGEOMCURVE2D_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

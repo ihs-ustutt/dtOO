@@ -1,6 +1,8 @@
 #ifndef __LOGME_H__
 #define __LOGME_H__
 
+#include <dtOOTypeDef.h>
+
 //------------------------------------------------------------------------------
 #include <sstream>
 #include <string>
@@ -60,15 +62,15 @@ namespace dtOO {
             
       template< class T >
       static inline std::string vecToString( 
-        std::vector< T > const & vec, int const groupIn = 0 
+        std::vector< T > const & vec, dtInt const groupIn = 0 
       ) {
-        int grouping = vec.size();
+        dtInt grouping = vec.size();
         
         if (groupIn > 0) grouping = groupIn;
         
         std::ostringstream os;
         os << "[" << std::endl;
-        int ii = 0;
+        dtInt ii = 0;
         while( ii < vec.size() ) {
           for (int jj=0;jj<grouping;jj++) {
             os << vec[ii] << " ";
@@ -83,7 +85,7 @@ namespace dtOO {
       
       template< class mT, class T, class rT >
       static inline std::string stringPtrVec( 
-        mT const & vec, rT (T::*TMemFn)() const, int const grouping = 0
+        mT const & vec, rT (T::*TMemFn)() const, dtInt const grouping = 0
       ) {
         std::vector< rT > retVec;
         
@@ -99,7 +101,7 @@ namespace dtOO {
 
       template< class mT, class T, class rT >
       static inline std::string stringPtrVec( 
-        mT const & vec, rT (T::*TMemFn)(), int const grouping = 0
+        mT const & vec, rT (T::*TMemFn)(), dtInt const grouping = 0
       ) {
         std::vector< rT > retVec;
         
@@ -126,8 +128,8 @@ namespace dtOO {
          os << boost::format("| %13s ") % header[ii];
         }
         os << std::endl;
-        int ii = 0;
-        int grouping = header.size();
+        dtInt ii = 0;
+        dtInt grouping = header.size();
         while( ii < vec.size() ) {
           for (int jj=0;jj<grouping;jj++) {
             os << boost::format("| %+11.6e ") % vec[ii];
@@ -140,7 +142,7 @@ namespace dtOO {
       } 	
       
       static std::string floatMatrixToString( 
-        std::vector< std::vector< float > > const & mat 
+        std::vector< std::vector< dtReal > > const & mat 
       );
   };
   

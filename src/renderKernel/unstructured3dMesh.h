@@ -1,6 +1,8 @@
 #ifndef UNSTRUCTURED3DMESH_H
 #define	UNSTRUCTURED3DMESH_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>
@@ -14,20 +16,20 @@ namespace dtOO {
       virtual ~unstructured3dMesh();
       void addPoints( vectorHandling< dtPoint3 > const & pp );
       void addPoint( dtPoint3 const & pp );
-      void addElement( vectorHandling< int > const & el );
+      void addElement( vectorHandling< dtInt > const & el );
       vectorHandling< dtPoint3 > const & refP3( void ) const;    
-      vectorHandling< vectorHandling< int > > const & refEl( void ) const;
-      int getNHex( void ) const;
-      int getNTet( void ) const;
-      int getNPyr( void ) const;
-      int getNPri( void ) const;
+      vectorHandling< vectorHandling< dtInt > > const & refEl( void ) const;
+      dtInt getNHex( void ) const;
+      dtInt getNTet( void ) const;
+      dtInt getNPyr( void ) const;
+      dtInt getNPri( void ) const;
     private:
       vectorHandling< dtPoint3 > _pp;
-      vectorHandling< vectorHandling< int > > _el;
-      int _nTet;
-      int _nHex;
-      int _nPyr;
-      int _nPri;
+      vectorHandling< vectorHandling< dtInt > > _el;
+      dtInt _nTet;
+      dtInt _nHex;
+      dtInt _nPyr;
+      dtInt _nPri;
   };
 }
 #endif	/* UNSTRUCTURED3DMESH_H */

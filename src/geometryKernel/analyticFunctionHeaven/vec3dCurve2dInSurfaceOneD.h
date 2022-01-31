@@ -1,6 +1,8 @@
 #ifndef VEC3DCURVE2DINSURFACEONED_H
 #define	VEC3DCURVE2DINSURFACEONED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dOneD.h"
@@ -30,7 +32,7 @@ namespace dtOO {
     virtual aFY Y( aFX const & xx ) const;
     vectorHandling< renderInterface * > getRender( void ) const;
     //dtCurve const * ptrDtCurve( void ) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     ptrHandling<dtCurve2d> _dtC2d;
     ptrHandling<dtSurface> _dtS;

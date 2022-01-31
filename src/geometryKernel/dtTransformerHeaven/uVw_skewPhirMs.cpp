@@ -85,14 +85,14 @@ namespace dtOO {
   ) const {
 		std::vector< dtPoint3 > retVec;
 		dt__forAllIndex(*toTrans, ii) {
-      float phir = toTrans->at(ii).x() * _ss.x();
-      float correctPhir = 1.;
+      dtReal phir = toTrans->at(ii).x() * _ss.x();
+      dtReal correctPhir = 1.;
       if ( phir < 0. ) {
         phir = -1. * phir;
         correctPhir = -1.;
       }
-		  float mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
-		  float ss = toTrans->at(ii).z() * _ss.z();
+		  dtReal mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
+		  dtReal ss = toTrans->at(ii).z() * _ss.z();
       dt__solution(ss>1., ss=1.);
       dt__solution(ss<0., ss=0.);
       
@@ -110,19 +110,19 @@ namespace dtOO {
   ) const {
 		std::vector< dtPoint3 > retVec;
 		dt__forAllIndex(*toRetract, ii) {
-      float uu = toRetract->at(ii).x() / _ss.x();
-      float correctPhir = 1.;
+      dtReal uu = toRetract->at(ii).x() / _ss.x();
+      dtReal correctPhir = 1.;
       if ( uu > 0.5 ) {
         uu = 1.-uu;
         correctPhir = -1.;
       }      
-		  float vv = toRetract->at(ii).y() / _ss.y();
-		  float ww = toRetract->at(ii).z() / _ss.z();
+		  dtReal vv = toRetract->at(ii).y() / _ss.y();
+		  dtReal ww = toRetract->at(ii).z() / _ss.z();
 		
       aFY phirms = _phirMS_uvw->Y(uu, vv, ww);
-      float phir = correctPhir * phirms[0];        
-      float mm = phirms[1];        
-      float ss = phirms[2];
+      dtReal phir = correctPhir * phirms[0];        
+      dtReal mm = phirms[1];        
+      dtReal ss = phirms[2];
 						
       dt__debug(
         retract(),
@@ -245,8 +245,8 @@ namespace dtOO {
       )
     );    
 
-    std::vector< float > uPercent;
-    std::vector< float > vPercent;
+    std::vector< dtReal > uPercent;
+    std::vector< dtReal > vPercent;
     if ( !_fU.isNull() ) {
       uPercent = float_scaOneDPoint(_fU.get(), _nU).result();
     }
@@ -261,7 +261,7 @@ namespace dtOO {
     else {
       vPercent = dtLinearAlgebra::unitGrid(_nV);        
     }          
-    std::vector< float > wPercent = dtLinearAlgebra::unitGrid(_nW);            
+    std::vector< dtReal > wPercent = dtLinearAlgebra::unitGrid(_nW);            
     dt__forFromToIndex(0, _nW, kk) {
       //
       // log container
@@ -278,15 +278,15 @@ namespace dtOO {
 //      //
 //      // calculate w coordinate
 //      //
-//      float wPercent = static_cast<float>(kk)/(_nW-1);
+//      dtReal wPercent = static_cast<dtReal>(kk)/(_nW-1);
       
       //
       // create twoDArraHandlings
       //
       twoDArrayHandling< dtVector2 > phirM_0(_nU, _nV);
       twoDArrayHandling< dtVector2 > phirM_1(_nU, _nV);
-      std::vector< float > matchM(_nU, 0);
-      std::vector< float > matchPhir(_nV, 0);
+      std::vector< dtReal > matchM(_nU, 0);
+      std::vector< dtReal > matchPhir(_nV, 0);
       twoDArrayHandling< dtVector2 > sumPhirM( _nU, _nV, dtVector2(0.,0.) );      
 
       //
@@ -307,7 +307,7 @@ namespace dtOO {
           * 
           dtLinearAlgebra::dotProduct(_rM2d->rotationAxis(), vXYZ);
           dtVector3 rr = vXYZ - pointOnRotAx;
-          float mm 
+          dtReal mm 
           = 
           m_uSVS(
             _rM2d->constRefMap2dTo3d().u_percent(vPercent[jj]), 
@@ -386,8 +386,8 @@ namespace dtOO {
         //
         dt__forFromToIndex(1, phirM_1.size(), ii) {
           dt__forFromToIndex(1, phirM_1[ii].size(), jj) {
-            float matchDeltaPhir = phirM_0[ii][jj].x() - phirM_0[ii-1][jj].x();
-            float matchDeltaM = phirM_0[ii][jj].y() - phirM_0[ii][jj-1].y();
+            dtReal matchDeltaPhir = phirM_0[ii][jj].x() - phirM_0[ii-1][jj].x();
+            dtReal matchDeltaM = phirM_0[ii][jj].y() - phirM_0[ii][jj-1].y();
 
             //
             // first order
@@ -405,8 +405,8 @@ namespace dtOO {
               phirM_1[ii][jj][1] - phirM_1[ii][jj-1][1]
             );
 
-            float isDeltaPhir = dtLinearAlgebra::length( deltaPhir );
-            float isDeltaM = dtLinearAlgebra::length( deltaM );
+            dtReal isDeltaPhir = dtLinearAlgebra::length( deltaPhir );
+            dtReal isDeltaM = dtLinearAlgebra::length( deltaM );
             
             //
             // calculate new values
@@ -483,8 +483,8 @@ namespace dtOO {
         //
         // calculate current values
         //
-        std::vector< float > isM(_nU, 0);
-        std::vector< float > isPhir(_nV, 0);      
+        std::vector< dtReal > isM(_nU, 0);
+        std::vector< dtReal > isPhir(_nV, 0);      
         dt__forFromToIndex(0, phirM_1.size(), ii) {
           dt__forFromToIndex(1, phirM_1[ii].size(), jj) {
             isM[ii] 
@@ -643,7 +643,7 @@ namespace dtOO {
 //    theMap.dump();   
   }
   
-	float uVw_skewPhirMs::m_uSVS(float const & uu, float const & vv) const {
+	dtReal uVw_skewPhirMs::m_uSVS(dtReal const & uu, dtReal const & vv) const {
 		ptrHandling< map1dTo3d > m1d( 
       _rM2d->constRefMap2dTo3d().segmentConstV(vv) 
     );

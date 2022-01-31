@@ -22,23 +22,23 @@ namespace dtOO {
   scaThreeD::~scaThreeD() {
   }
 
-  float scaThreeD::YFloat(aFX const & xx) const {
+  dtReal scaThreeD::YFloat(aFX const & xx) const {
 		dt__throwIf(xx.size()!=3, YFloat());	
 		
 		return YFloat(xx[0], xx[1], xx[2]);
 	}
 	
-  float scaThreeD::YFloatPercent( 
-    float const & xP0, float const & xP1, float const & xP2
+  dtReal scaThreeD::YFloatPercent( 
+    dtReal const & xP0, dtReal const & xP1, dtReal const & xP2
   ) const {
     return YFloat( x_percent(xP0, xP1, xP2) );
   }
   
-  int scaThreeD::xDim( void ) const {
+  dtInt scaThreeD::xDim( void ) const {
 		return 3;
 	}
 	
-  float scaThreeD::xMin( int const & dir) const {
+  dtReal scaThreeD::xMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _min[0];
@@ -55,7 +55,7 @@ namespace dtOO {
     );    
 	}
 
-  float scaThreeD::xMax( int const & dir) const {
+  dtReal scaThreeD::xMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _max[0];
@@ -73,7 +73,7 @@ namespace dtOO {
     
 	}	
 	
-  void scaThreeD::setMin(int const & dir, float const & min) {
+  void scaThreeD::setMin(int const & dir, dtReal const & min) {
     switch (dir) {
       case 0:
         _min[0] = min;
@@ -93,7 +93,7 @@ namespace dtOO {
     );    
   }
    
-  void scaThreeD::setMax(int const & dir, float const & max) {
+  void scaThreeD::setMax(int const & dir, dtReal const & max) {
     switch (dir) {
       case 0:
         _max[0] = max;
@@ -114,20 +114,20 @@ namespace dtOO {
   }
   
 	aFX scaThreeD::x_percent(
-    float const & x0, float const & x1, float const & x2
+    dtReal const & x0, dtReal const & x1, dtReal const & x2
   ) const {	
 		return x_percent( analyticFunction::aFXThreeD(x0, x1, x2) );
   }  
 	
 	aFX scaThreeD::percent_x(
-    float const & x0, float const & x1, float const & x2
+    dtReal const & x0, dtReal const & x1, dtReal const & x2
   ) const {
 		return percent_x( analyticFunction::aFXThreeD(x0, x1, x2) );
   }  	
   
-	std::vector<float> scaThreeD::DYFloat( aFX const & xx ) const {
+	std::vector<dtReal> scaThreeD::DYFloat( aFX const & xx ) const {
     aFX xP = percent_x(xx);
-    float deltaPer[3];
+    dtReal deltaPer[3];
 		deltaPer[0] = 0.0001;
 		deltaPer[1] = 0.0001;
 		deltaPer[2] = 0.0001;
@@ -148,7 +148,7 @@ namespace dtOO {
 			}		
 		}
 		
-		twoDArrayHandling< float > yy(3,2);
+		twoDArrayHandling< dtReal > yy(3,2);
 		yy[0][0] = YFloat( x_percent(uv[0][0], xP[1], xP[2]) );
 		yy[0][1] = YFloat( x_percent(uv[0][1], xP[1], xP[2]) );
 		yy[1][0] = YFloat( x_percent(xP[0], uv[1][0], xP[2]) );
@@ -156,7 +156,7 @@ namespace dtOO {
 		yy[2][0] = YFloat( x_percent(xP[0], xP[1], uv[2][0]) );
 		yy[2][1] = YFloat( x_percent(xP[0], xP[1], uv[2][1]) );
 		
-		std::vector< float > dxdy(3);
+		std::vector< dtReal > dxdy(3);
 		dxdy[0] 
     = 
     (yy[0][1] - yy[0][0]) 
@@ -188,8 +188,8 @@ namespace dtOO {
 		return dxdy;
 	}
 	
-	std::vector<float> scaThreeD::DYFloat( 
-    float const & x0, float const & x1, float const & x2
+	std::vector<dtReal> scaThreeD::DYFloat( 
+    dtReal const & x0, dtReal const & x1, dtReal const & x2
   ) const {
 		aFX xx(2,0);
 		xx[0] = x0;
@@ -218,19 +218,19 @@ namespace dtOO {
 		vectorHandling< renderInterface * > rV;//(nV);
 	
 		vectorHandling< dtPoint2 > p2;
-		float intervalU = (xMax(0) - xMin(0)) / (nU-1);
-		float intervalV = (xMax(1) - xMin(1)) / (nV-1);
-    float intervalW = (xMax(2) - xMin(2)) / (nW-1);
+		dtReal intervalU = (xMax(0) - xMin(0)) / (nU-1);
+		dtReal intervalV = (xMax(1) - xMin(1)) / (nV-1);
+    dtReal intervalW = (xMax(2) - xMin(2)) / (nW-1);
 
 		for (int kk=0; kk<nW; kk++) {
-			dt__toFloat(float kkF, kk);			
-			float constW = xMin(2) + kkF * intervalW;
+			dt__toFloat(dtReal kkF, kk);			
+			dtReal constW = xMin(2) + kkF * intervalW;
       for (int jj=0; jj<nV; jj++) {
-        dt__toFloat(float jjF, jj);			
-        float constV = xMin(1) + jjF * intervalV;
+        dt__toFloat(dtReal jjF, jj);			
+        dtReal constV = xMin(1) + jjF * intervalV;
 
         for (int ii=0; ii<nU; ii++) {
-          dt__toFloat(float iiF, ii);
+          dt__toFloat(dtReal iiF, ii);
           aFX xx(3,0);
           xx[0] = xMin(0) + iiF * intervalU;
           xx[1] = constV;

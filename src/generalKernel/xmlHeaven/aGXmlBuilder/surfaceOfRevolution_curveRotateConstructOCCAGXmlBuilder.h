@@ -1,6 +1,8 @@
 #ifndef surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder_H
 #define	surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

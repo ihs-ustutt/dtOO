@@ -1,6 +1,8 @@
 #ifndef dtOMDynamicVertexField_H
 #define	dtOMDynamicVertexField_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtOMVertexField.h"
 
 namespace dtOO {

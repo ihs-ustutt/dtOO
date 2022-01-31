@@ -1,6 +1,8 @@
 #ifndef PTRVECTORHANDLING_H
 #define	PTRVECTORHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <boost/ptr_container/ptr_vector.hpp>
 
 namespace dtOO {
@@ -23,7 +25,7 @@ namespace dtOO {
   
   template < typename T >
   ptrVectorHandling< T >::ptrVectorHandling(
-    int const & size
+    dtInt const & size
   ) : boost::ptr_vector< T >(size) {
     
   }  

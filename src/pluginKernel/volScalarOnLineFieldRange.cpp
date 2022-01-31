@@ -124,7 +124,7 @@ namespace dtOO {
       // argList
       //
       ::Foam::argList::noParallel();
-      int argc = 3;
+      dtInt argc = 3;
       std::vector< std::string > argvStr(3);
       argvStr[0] = getLabel();
       argvStr[1] = std::string("-case");
@@ -206,7 +206,7 @@ namespace dtOO {
           std::vector< dtPoint3 > grid 
           = 
           dtPoint3_map1dTo3dPoint(m1d, _nP+1).result();//dtLinearAlgebra::unitGrid(_nP);
-          vectorHandling< float > value(grid.size());
+          vectorHandling< dtReal > value(grid.size());
 
           //
           // get values
@@ -246,7 +246,7 @@ namespace dtOO {
           //
           // calculate length
           //
-          vectorHandling< float > ll( grid.size(), 0 );
+          vectorHandling< dtReal > ll( grid.size(), 0 );
           dt__forFromToIndex(1, ll.size(), ii) {
             ll[ii] = ll[ii-1] + dtLinearAlgebra::length( grid[ii] - grid[ii-1] );
           }

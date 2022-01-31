@@ -1,6 +1,8 @@
 #ifndef bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder_H
 #define	bSplineSurface2d_bSplineCurve2dFillConstructOCCAFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_approxGeomCurve2dInGeomSurface_H
 #define	bSplineCurve_approxGeomCurve2dInGeomSurface_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

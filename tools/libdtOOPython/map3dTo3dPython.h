@@ -30,7 +30,7 @@ boost::python::class_<
     "getPoint", 
     boost::python::pure_virtual<
       dtOO::dtPoint3 (dtOO::map3dTo3d::*)(
-        float const &, float const &, float const &
+        dtOO::dtReal const &, dtOO::dtReal const &, dtOO::dtReal const &
       ) const
     >( &dtOO::map3dTo3d::getPoint ) 
   )

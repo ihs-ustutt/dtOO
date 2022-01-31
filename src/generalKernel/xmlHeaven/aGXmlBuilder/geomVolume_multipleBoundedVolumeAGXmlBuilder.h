@@ -1,6 +1,8 @@
 #ifndef geomVolume_multipleBoundedVolumeAGXmlBuilder_H
 #define	geomVolume_multipleBoundedVolumeAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

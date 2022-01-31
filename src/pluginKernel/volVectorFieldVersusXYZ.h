@@ -1,6 +1,8 @@
 #ifndef volVectorFieldVersusXYZ_H
 #define	volVectorFieldVersusXYZ_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -38,7 +40,7 @@ namespace dtOO {
       dtXmlParser const * _parser;
       dtCase const * _case;
       std::string _field;
-      std::vector< int > _nP;
+      std::vector< dtInt > _nP;
       static bool _registrated;
   };
 }

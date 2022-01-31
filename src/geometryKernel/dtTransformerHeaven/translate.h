@@ -1,6 +1,8 @@
 #ifndef translate_H
 #define	translate_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 

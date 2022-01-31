@@ -1,6 +1,8 @@
 #ifndef DISCRETE3DVECTOR_H
 #define	DISCRETE3DVECTOR_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>

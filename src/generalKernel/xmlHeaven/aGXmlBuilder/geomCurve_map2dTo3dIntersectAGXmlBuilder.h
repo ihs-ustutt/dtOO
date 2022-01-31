@@ -1,6 +1,8 @@
 #ifndef geomCurve_map2dTo3dIntersectAGXmlBuilder_H
 #define	geomCurve_map2dTo3dIntersectAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

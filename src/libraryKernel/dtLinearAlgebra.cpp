@@ -24,16 +24,16 @@ namespace dtOO {
 
 	dtAffTransformation3 dtLinearAlgebra::getRotation(
 		dtVector3 const vector, 
-		const float angle 
+		const dtReal angle 
 	) {  
-		float const one = 1.;
-		float const zero = 0.;
+		dtReal const one = 1.;
+		dtReal const zero = 0.;
 		dtMatrix EE(3,3); EE(0,0) = one; EE(1,1) = one; EE(2,2) = one;
 		dtMatrix dSnake(3,3, zero );
 		dtMatrix SS(3,3);
-		float sinAngle = sin(angle);
-		float cosAngle = cos(angle);
-		float length;
+		dtReal sinAngle = sin(angle);
+		dtReal cosAngle = cos(angle);
+		dtReal length;
 
 		//matrix of rotating vector
 		length = sqrt(vector.squared_length());
@@ -67,7 +67,7 @@ namespace dtOO {
 		return CGAL::cross_product(v0, v1);
 	}
 
-	float dtLinearAlgebra::dotProduct(
+	dtReal dtLinearAlgebra::dotProduct(
 		dtVector3 const & v0, 
 		dtVector3 const & v1
 	) {
@@ -77,7 +77,7 @@ namespace dtOO {
 	dtVector3 dtLinearAlgebra::normalize(
 		dtVector3 const & v0
 	) {
-		float sqL = v0.squared_length();
+		dtReal sqL = v0.squared_length();
 		if (sqL == 0.) return dtVector3(0.,0.,0.);
 		return (1./sqrt(sqL)) * v0;
 	}	
@@ -85,7 +85,7 @@ namespace dtOO {
 	dtVector2 dtLinearAlgebra::normalize(
 		dtVector2 const & v0
 	) {
-		float sqL = v0.squared_length();
+		dtReal sqL = v0.squared_length();
 		if (sqL == 0.) return dtVector2(0.,0.);
 		return (1./sqrt(sqL)) * v0;
 	}	  
@@ -98,68 +98,68 @@ namespace dtOO {
 		return nn;
 	}
   
-  float dtLinearAlgebra::sum( std::vector< float > const & vv ) {
-		float nn = 0.;
-		dt__forAllConstIter(std::vector< float >, vv, it) {
+  dtReal dtLinearAlgebra::sum( std::vector< dtReal > const & vv ) {
+		dtReal nn = 0.;
+		dt__forAllConstIter(std::vector< dtReal >, vv, it) {
 			nn = nn + (*it);
 		}
 		return nn;
 	}  
 
-  float dtLinearAlgebra::sum( 
-    std::vector< float > const & vv, int const & from, int const & to 
+  dtReal dtLinearAlgebra::sum( 
+    std::vector< dtReal > const & vv, dtInt const & from, dtInt const & to 
   ) {
-		float nn = 0.;
+		dtReal nn = 0.;
 		dt__forFromToIndex(from, to, ii) {
 			nn = nn + vv[ii];
 		}
 		return nn;    
   }
 	
-  float dtLinearAlgebra::euclidianNorm( std::vector< float > const & vv ) {
-		float nn = 0.;
+  dtReal dtLinearAlgebra::euclidianNorm( std::vector< dtReal > const & vv ) {
+		dtReal nn = 0.;
 		dt__forAllRefAuto(vv, it) {
 			nn = nn + it*it;
 		}
 		return nn;
 	}  
   
-  std::vector< float > dtLinearAlgebra::subtract( 
-    std::vector< float > const & aa, std::vector< float > const & bb 
+  std::vector< dtReal > dtLinearAlgebra::subtract( 
+    std::vector< dtReal > const & aa, std::vector< dtReal > const & bb 
   ) {
     dt__throwIf( aa.size()!=bb.size(), subtract() );
     
-    std::vector< float > ret(aa.size());
+    std::vector< dtReal > ret(aa.size());
     dt__forAllIndex(aa, ii) ret[ii] = aa[ii] - bb[ii];
     
     return ret;
   }
 
-  std::vector< float > dtLinearAlgebra::add( 
-    std::vector< float > const & aa, std::vector< float > const & bb 
+  std::vector< dtReal > dtLinearAlgebra::add( 
+    std::vector< dtReal > const & aa, std::vector< dtReal > const & bb 
   ) {
     dt__throwIf( aa.size()!=bb.size(), add() );
     
-    std::vector< float > ret(aa.size());
+    std::vector< dtReal > ret(aa.size());
     dt__forAllIndex(aa, ii) ret[ii] = aa[ii] + bb[ii];
     
     return ret;
   }
 
-  std::vector< float > dtLinearAlgebra::multiply( 
-    float const & aa, std::vector< float > const & bb 
+  std::vector< dtReal > dtLinearAlgebra::multiply( 
+    dtReal const & aa, std::vector< dtReal > const & bb 
   ) {
-    std::vector< float > ret(bb.size());
+    std::vector< dtReal > ret(bb.size());
     dt__forAllIndex(bb, ii) ret[ii] = aa * bb[ii];
     
     return ret;    
   }
     
-	float dtLinearAlgebra::length( dtVector3 const & v0 ) {
+	dtReal dtLinearAlgebra::length( dtVector3 const & v0 ) {
 		return sqrt(v0.squared_length());
 	}
 
-	float dtLinearAlgebra::length( dtVector2 const & v0 ) {
+	dtReal dtLinearAlgebra::length( dtVector2 const & v0 ) {
 		return sqrt(v0.squared_length());
 	}
   
@@ -211,33 +211,33 @@ namespace dtOO {
 		return pp;
 	}
   
-  std::vector< float > dtLinearAlgebra::toStdVector( dtPoint3 const & pp ) {
-    return std::vector< float > {
-      static_cast<float>(pp.x()), 
-      static_cast<float>(pp.y()), 
-      static_cast<float>(pp.z())
+  std::vector< dtReal > dtLinearAlgebra::toStdVector( dtPoint3 const & pp ) {
+    return std::vector< dtReal > {
+      static_cast<dtReal>(pp.x()), 
+      static_cast<dtReal>(pp.y()), 
+      static_cast<dtReal>(pp.z())
     };
   }
   
-  std::vector< float > dtLinearAlgebra::toStdVector( dtPoint2 const & pp) {
-    return std::vector< float > {
-      static_cast<float>(pp.x()), 
-      static_cast<float>(pp.y())
+  std::vector< dtReal > dtLinearAlgebra::toStdVector( dtPoint2 const & pp) {
+    return std::vector< dtReal > {
+      static_cast<dtReal>(pp.x()), 
+      static_cast<dtReal>(pp.y())
     };
   }
   
-  std::vector< float > dtLinearAlgebra::toStdVector( dtVector3 const & pp ) {
-    return std::vector< float > {
-      static_cast<float>(pp.x()), 
-      static_cast<float>(pp.y()), 
-      static_cast<float>(pp.z())
+  std::vector< dtReal > dtLinearAlgebra::toStdVector( dtVector3 const & pp ) {
+    return std::vector< dtReal > {
+      static_cast<dtReal>(pp.x()), 
+      static_cast<dtReal>(pp.y()), 
+      static_cast<dtReal>(pp.z())
     };
   }
   
-  std::vector< float > dtLinearAlgebra::toStdVector( dtVector2 const & pp ) {
-    return std::vector< float > {
-      static_cast<float>(pp.x()), 
-      static_cast<float>(pp.y())
+  std::vector< dtReal > dtLinearAlgebra::toStdVector( dtVector2 const & pp ) {
+    return std::vector< dtReal > {
+      static_cast<dtReal>(pp.x()), 
+      static_cast<dtReal>(pp.y())
     };
   }
 		
@@ -306,13 +306,13 @@ namespace dtOO {
 	}	
 	
 	dtMatrix dtLinearAlgebra::invertMatrix(dtMatrix const & mat) {
-//		twoDArrayHandling<float> mat2d(mat.dimension().first, mat.dimension().second);
+//		twoDArrayHandling<dtReal> mat2d(mat.dimension().first, mat.dimension().second);
 //		for (int ii=0; ii<mat2d.size(0);ii++) {
 //			for (int jj=0; jj<mat2d.size(1);jj++) {
 //        mat2d[ii][jj] = mat(ii,jj);
 //			}	
 //		}
-//		float cgalDet = CGAL::Linear_algebraCd<float>::determinant(mat);
+//		dtReal cgalDet = CGAL::Linear_algebraCd<dtReal>::determinant(mat);
 //		dt__debug(
 //			invertMatrix(), 
 //			<< dt__eval(cgalDet) << std::endl
@@ -345,7 +345,7 @@ namespace dtOO {
 			if (ok) {
 				bool invOk = svd.Invert(invRootMat);
 				if (!invOk) {		
-					twoDArrayHandling<float> mat2d(
+					twoDArrayHandling<dtReal> mat2d(
             mat.dimension().first, mat.dimension().second
           );
 					for (int ii=0; ii<mat2d.size(0);ii++) {
@@ -367,7 +367,7 @@ namespace dtOO {
 				}
 			}
 			else {
-				twoDArrayHandling<float> mat2d(
+				twoDArrayHandling<dtReal> mat2d(
           mat.dimension().first, mat.dimension().second
         );
 				for (int ii=0; ii<mat2d.size(0);ii++) {
@@ -399,7 +399,7 @@ namespace dtOO {
 			}
 		}
 
-//		twoDArrayHandling<float> inv2d(invMat.dimension().first, invMat.dimension().second);
+//		twoDArrayHandling<dtReal> inv2d(invMat.dimension().first, invMat.dimension().second);
 //		for (int ii=0; ii<inv2d.size(0);ii++) {
 //			for (int jj=0; jj<inv2d.size(1);jj++) {
 //        inv2d[ii][jj] = invMat(ii,jj);
@@ -413,7 +413,7 @@ namespace dtOO {
 //			<< floatMatrixToString(inv2d) << std::endl
 //		);
 		
-//		twoDArrayHandling<float> cont2d(invMat.row_dimension(), mat.column_dimension());
+//		twoDArrayHandling<dtReal> cont2d(invMat.row_dimension(), mat.column_dimension());
 //		dtMatrix cont = invMat * mat;
 //		for (int ii=0; ii<cont2d.size(0);ii++) {
 //			for (int jj=0; jj<cont2d.size(1);jj++) {
@@ -461,7 +461,7 @@ namespace dtOO {
 	}
 	
 	dtMatrix dtLinearAlgebra::transposeMatrix(dtMatrix const mat) {
-		return CGAL::Linear_algebraCd< float >::transpose(mat);
+		return CGAL::Linear_algebraCd< dtReal >::transpose(mat);
 	}    
 
 	dtMatrix dtLinearAlgebra::invert2x3Matrix(dtMatrix const mat) {
@@ -484,7 +484,7 @@ namespace dtOO {
 		matInv(1,0) = alpha[1]; matInv(1,1) = alpha[4]; 
 		matInv(2,0) = alpha[2]; matInv(2,1) = alpha[5]; 
 
-//		twoDArrayHandling<float> mat2d(mat.dimension().first, mat.dimension().second);
+//		twoDArrayHandling<dtReal> mat2d(mat.dimension().first, mat.dimension().second);
 //		for (int ii=0; ii<mat2d.size(0);ii++) {
 //			for (int jj=0; jj<mat2d.size(1);jj++) {
 //        mat2d[ii][jj] = mat(ii,jj);
@@ -492,11 +492,11 @@ namespace dtOO {
 //		}
 //		dt__debug(
 //			invertMatrix(), 
-//			<< dt__eval(CGAL::Linear_algebraCd<float>::determinant(mat)) << std::endl
+//			<< dt__eval(CGAL::Linear_algebraCd<dtReal>::determinant(mat)) << std::endl
 //			<< "mat = " << std::endl
 //			<< floatMatrixToString(mat2d) 
 //		);		
-//		twoDArrayHandling<float> inv2d(matInv.dimension().first, matInv.dimension().second);
+//		twoDArrayHandling<dtReal> inv2d(matInv.dimension().first, matInv.dimension().second);
 //		for (int ii=0; ii<inv2d.size(0);ii++) {
 //			for (int jj=0; jj<inv2d.size(1);jj++) {
 //        inv2d[ii][jj] = matInv(ii,jj);
@@ -543,13 +543,13 @@ namespace dtOO {
 		}      
 	}
 
-  int dtLinearAlgebra::returnNearestPointIndexTo(
+  dtInt dtLinearAlgebra::returnNearestPointIndexTo(
     dtPoint3 const & pp, std::vector< dtPoint3 > const & pV
   ) {
-    float dist = std::numeric_limits<float>::max();
-    int minIndex = -1;
+    dtReal dist = std::numeric_limits<dtReal>::max();
+    dtInt minIndex = -1;
     dt__forAllIndex(pV, ii) {      
-      float newDist = distance(pp, pV[ii]);
+      dtReal newDist = distance(pp, pV[ii]);
       if ( newDist < dist ) {
         dist = newDist;
         minIndex = ii;
@@ -595,8 +595,8 @@ namespace dtOO {
 	}    
 
 	std::vector<dtPoint2> dtLinearAlgebra::getGaussLegendre(int const & nPoints) {
-		float const * tt = NULL;
-		float const * ww = NULL;
+		dtReal const * tt = NULL;
+		dtReal const * ww = NULL;
 		dtGaussLegendreIntegration().gmshGaussLegendre1D(nPoints, &tt, &ww);
 
 		if ( !tt || !ww ) {
@@ -606,7 +606,7 @@ namespace dtOO {
 							<< dt__eval(nPoints) );
 		}
 		std::vector<dtPoint2> p2(nPoints);
-		for ( int ii=0; ii<nPoints; ii++ ) {
+		for ( dtInt ii=0; ii<nPoints; ii++ ) {
 			p2[ii] = dtPoint2(tt[ii], ww[ii]);
 		}
 
@@ -630,7 +630,7 @@ namespace dtOO {
 	}
 	
 	bool dtLinearAlgebra::isStraightLine( 
-    std::pair< dtPoint3, dtPoint3 > const & bBox, float const & eps 
+    std::pair< dtPoint3, dtPoint3 > const & bBox, dtReal const & eps 
   ) {
 		dtVector3 diff = bBox.first - bBox.second;
 		std::vector< bool > isSmall(3, false);
@@ -654,15 +654,15 @@ namespace dtOO {
 		return false;
 	}	
 	
-	float dtLinearAlgebra::distance( dtPoint2 const & p0, dtPoint2 const & p1 ) {
+	dtReal dtLinearAlgebra::distance( dtPoint2 const & p0, dtPoint2 const & p1 ) {
 		return sqrt(CGAL::squared_distance(p0, p1));
 	}
 	
-	float dtLinearAlgebra::distance( dtPoint3 const & p0, dtPoint3 const & p1 ) {
+	dtReal dtLinearAlgebra::distance( dtPoint3 const & p0, dtPoint3 const & p1 ) {
 		return sqrt(CGAL::squared_distance(p0, p1));
 	}
 	
-	float dtLinearAlgebra::angle( dtVector3 const & v0, dtVector3 const & v1 ) {
+	dtReal dtLinearAlgebra::angle( dtVector3 const & v0, dtVector3 const & v1 ) {
 		return acos(
 			dtLinearAlgebra::dotProduct(v0, v1)
 			/
@@ -670,7 +670,7 @@ namespace dtOO {
 		);
 	}
 
-	float dtLinearAlgebra::angleDegree( 
+	dtReal dtLinearAlgebra::angleDegree( 
     dtVector3 const & v0, dtVector3 const & v1 
   ) {
 		return dtLinearAlgebra::angle(v0, v1) * 180./M_PI;
@@ -708,7 +708,7 @@ namespace dtOO {
 		CGAL::Object res = CGAL::intersection(triangle, line);
     
     if (CGAL::assign(iPoint, res)) {
-//			float dP 
+//			dtReal dP 
 //			= 
 //		  dtLinearAlgebra::dotProduct(
 //				line.to_vector(),
@@ -777,18 +777,18 @@ namespace dtOO {
     else dt__throwUnexpected(intersectionPoint());
 	}
   
-  std::vector< float > dtLinearAlgebra::solveQuadraticEquation(
-    float const & aa, float const & bb, float const & cc
+  std::vector< dtReal > dtLinearAlgebra::solveQuadraticEquation(
+    dtReal const & aa, dtReal const & bb, dtReal const & cc
   ) {
-    float dis = bb*bb - 4.0*aa*cc;
+    dtReal dis = bb*bb - 4.0*aa*cc;
 
     dt__throwIf(dis<0.0, invY());
 
-    if (dis == 0.) return std::vector< float > ( 1, -bb/(2.0*aa) );
+    if (dis == 0.) return std::vector< dtReal > ( 1, -bb/(2.0*aa) );
     
     dis = sqrt(dis);
     
-    std::vector< float > sol(2);
+    std::vector< dtReal > sol(2);
     sol[0] = (-bb - dis)/(2.0*aa);
     sol[1] = (-bb + dis)/(2.0*aa);    
     
@@ -851,7 +851,7 @@ namespace dtOO {
     return false;
   }  
 
-  float dtLinearAlgebra::area(
+  dtReal dtLinearAlgebra::area(
     dtPoint3 const & p0, dtPoint3 const & p1, 
     dtPoint3 const & p2, dtPoint3 const & p3
   ) {
@@ -862,7 +862,7 @@ namespace dtOO {
   }
   
 
-  float dtLinearAlgebra::volume(
+  dtReal dtLinearAlgebra::volume(
     dtPoint3 const & p000, dtPoint3 const & p100,
     dtPoint3 const & p010, dtPoint3 const & p110,
     dtPoint3 const & p001, dtPoint3 const & p101,
@@ -880,12 +880,12 @@ namespace dtOO {
       fabs( dtTetrahedron3(p011, p101, p000, p110).volume() );
   }  
   
-  std::vector< float > dtLinearAlgebra::unitGrid(int const & nU) {
-    std::vector< float > grid(nU);
+  std::vector< dtReal > dtLinearAlgebra::unitGrid(int const & nU) {
+    std::vector< dtReal > grid(nU);
     
-    float distU = 1./(nU-1);
+    dtReal distU = 1./(nU-1);
 		for (int ii=0; ii<nU; ii++) {
-      dt__toFloat(float iiF, ii);
+      dt__toFloat(dtReal iiF, ii);
       grid[ii] = distU * iiF;
 		}
     
@@ -893,16 +893,16 @@ namespace dtOO {
   }
     
   twoDArrayHandling< dtPoint2 > dtLinearAlgebra::unitGrid( 
-    int const & nU, int const & nV
+    dtInt const & nU, dtInt const & nV
   ) {
     twoDArrayHandling< dtPoint2 > grid(nU, nV);
     
-    float distU = 1./(nU-1);
-    float distV = 1./(nV-1);
+    dtReal distU = 1./(nU-1);
+    dtReal distV = 1./(nV-1);
 		for (int ii=0; ii<nU; ii++) {
       for (int jj=0; jj<nV; jj++) {
-			  dt__toFloat(float iiF, ii);
-        dt__toFloat(float jjF, jj);
+			  dt__toFloat(dtReal iiF, ii);
+        dt__toFloat(dtReal jjF, jj);
 			  grid[ii][jj] = dtPoint2(distU * iiF, distV * jjF);
       }
 		}		

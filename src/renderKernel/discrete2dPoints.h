@@ -1,6 +1,8 @@
 #ifndef DISCRETE2DPOINTS_H
 #define	DISCRETE2DPOINTS_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>

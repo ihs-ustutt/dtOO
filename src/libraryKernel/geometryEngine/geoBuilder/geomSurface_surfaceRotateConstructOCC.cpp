@@ -21,7 +21,7 @@ namespace dtOO {
 		dtSurface const * const dtS, 
 		dtPoint3 const & oP, 
 		dtVector3 const & rA, 
-		float const & angle
+		dtReal const & angle
 	) {
 		dt__ptrAss( dtOCCSurface const * const ss, dtOCCSurface::ConstDownCast(dtS) );
 		

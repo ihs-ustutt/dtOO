@@ -1,6 +1,8 @@
 #ifndef DTGMSHFACE_H
 #define	DTGMSHFACE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <gmsh/GFace.h>
 #include <logMe/dtMacros.h>
@@ -21,12 +23,12 @@ namespace dtOO {
   class dtGmshFace : public ::GFace {
   public:
     dt__class(dtGmshFace, ::GEntity);
-    dtGmshFace(::GModel *m, int tag);
+    dtGmshFace(::GModel *m, dtInt tag);
     dtGmshFace(
-      ::GModel *m, int tag, 
-      const std::list< ::GEdge * > &edges, const std::vector< int > & ori
+      ::GModel *m, dtInt tag, 
+      const std::list< ::GEdge * > &edges, const std::vector< dtInt > & ori
     );
-    dtGmshFace(::GModel *m, int tag, const std::list< ::GEdge * > &edges);
+    dtGmshFace(::GModel *m, dtInt tag, const std::list< ::GEdge * > &edges);
     virtual ~dtGmshFace();
     dtGmshModel const & refDtGmshModel( void ) const;    
     dtGmshModel & refDtGmshModel( void );    
@@ -48,21 +50,21 @@ namespace dtOO {
     ) const;    
     virtual void setMap2dTo3d( map2dTo3d const * const base );
     virtual map2dTo3d const * getMap2dTo3d( void ) const;
-    void addEdge( ::GEdge * edge, int const ori );
-    int edgeOrientation( ::GEdge * edge ) const;
+    void addEdge( ::GEdge * edge, dtInt const ori );
+    dtInt edgeOrientation( ::GEdge * edge ) const;
     void addEdgeLoop( std::list< ::GEdge * > edgeL );
-    bool isClosed( int const dim ) const;
+    bool isClosed( dtInt const dim ) const;
     void meshTransfinite( void );
     void meshRecombine( void );
     void meshWNElements( 
-      int const & nElementsU, int const & nElementsV 
+      dtInt const & nElementsU, dtInt const & nElementsV 
     );
     void meshWNElements(
-      int const & nElements0, int const & nElements1, 
-      int const & nElements2, int const & nElements3 
+      dtInt const & nElements0, dtInt const & nElements1, 
+      dtInt const & nElements2, dtInt const & nElements3 
     );
-    std::vector< int > estimateTransfiniteNElements( 
-      float const & uWidth, float const & vWidth 
+    std::vector< dtInt > estimateTransfiniteNElements( 
+      dtReal const & uWidth, dtReal const & vWidth 
     ) const;
     void correctIfTransfinite( void );
     void meshUnstructured( void ); 
@@ -78,7 +80,7 @@ namespace dtOO {
     void addGEntity( ::GEntity * const gEnt );
     std::string getPhysicalString( void ) const;
     void setGrading( 
-      std::vector< float > const & grading, std::vector< float > & type
+      std::vector< dtReal > const & grading, std::vector< dtReal > & type
     );
     std::list< dtGmshVertex * > dtVertices( void ) const;   
     std::list< dtGmshEdge * > dtEdges( void ) const;     

@@ -1,6 +1,8 @@
 #ifndef DTOMMESHDIVIDED_H
 #define	DTOMMESHDIVIDED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 

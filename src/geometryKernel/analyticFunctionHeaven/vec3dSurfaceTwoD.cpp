@@ -64,7 +64,7 @@ namespace dtOO {
 		return _dtS.get();
 	}  
 	
-  bool vec3dSurfaceTwoD::closed( int const & dir ) const {
+  bool vec3dSurfaceTwoD::closed( dtInt const & dir ) const {
 		return _dtS->closed(dir);
 	}
   

@@ -125,7 +125,7 @@ namespace dtOO {
       // argList
       //
       ::Foam::argList::noParallel();
-      int argc = 3;
+      dtInt argc = 3;
       std::vector< std::string > argvStr(3);
       argvStr[0] = getLabel();
       argvStr[1] = std::string("-case");
@@ -220,7 +220,7 @@ namespace dtOO {
           dtPoint3_map2dTo3dPoint(m2d, _nP[0]+1, _nP[1]+1).result();
           
           twoDArrayHandling< dtPoint3 > grid(_nP[0], _nP[1]);
-          twoDArrayHandling< float > area(_nP[0], _nP[1]);
+          twoDArrayHandling< dtReal > area(_nP[0], _nP[1]);
           twoDArrayHandling< dtVector3 > normal(_nP[0], _nP[1]);
           dt__forFromToIndex(0, _nP[0], ii) {
             dt__forFromToIndex(0, _nP[1], jj) {
@@ -259,10 +259,10 @@ namespace dtOO {
           //
           // get values
           //          
-          float sumArea = 0.;
+          dtReal sumArea = 0.;
           twoDArrayHandling< dtVector3 > value(grid.size(0), grid.size(1));
-          twoDArrayHandling< float > valueN(grid.size(0), grid.size(1));
-          float sumValueN = 0.;
+          twoDArrayHandling< dtReal > valueN(grid.size(0), grid.size(1));
+          dtReal sumValueN = 0.;
           dt__forAllIndex(grid, ii) {
             dt__forAllIndex(grid[ii], jj) {
               dtPoint3 const & xyz = grid[ii][jj];

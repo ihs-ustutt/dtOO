@@ -82,7 +82,7 @@ namespace dtOO {
     // angle
     //
     bool hasAngle = dtXmlParserBase::hasChild("float", toBuild);
-    float angle = 2.*M_PI;
+    dtReal angle = 2.*M_PI;
     if ( hasAngle ) {
       angle
       =

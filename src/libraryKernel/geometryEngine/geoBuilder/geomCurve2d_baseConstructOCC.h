@@ -1,6 +1,8 @@
 #ifndef geomCurve2d_baseConstructOCC_H
 #define	geomCurve2d_baseConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

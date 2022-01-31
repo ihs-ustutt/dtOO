@@ -36,7 +36,7 @@ namespace dtOO {
   }
   
   dtPoint3 vec3dTwoDInMap3dTo3d::getPoint( 
-    float const & uu, float const & vv 
+    dtReal const & uu, dtReal const & vv 
   ) const {
 		aFX xx(2, 0.);
 		xx[0] = uu; xx[1] = vv;
@@ -49,15 +49,15 @@ namespace dtOO {
 		}		
   }
   
-  bool vec3dTwoDInMap3dTo3d::isClosed( int const & dir) const {
+  bool vec3dTwoDInMap3dTo3d::isClosed( dtInt const & dir) const {
 		return _v2d->closed(dir);
   }
   
-  float vec3dTwoDInMap3dTo3d::getMin( int const & dir) const {
+  dtReal vec3dTwoDInMap3dTo3d::getMin( dtInt const & dir) const {
     return _v2d->xMin(dir);    
   }
 
-  float vec3dTwoDInMap3dTo3d::getMax( int const & dir) const {
+  dtReal vec3dTwoDInMap3dTo3d::getMax( dtInt const & dir) const {
     return _v2d->xMax(dir);    
   }
 
@@ -111,9 +111,9 @@ namespace dtOO {
     vec3dSurfaceTwoD::ConstDownCast(_v2d.get());
 		if (v3d2d) {
       dtSurface const * const dtS = v3d2d->ptrDtSurface();      
-      int nPointsU = dtS->nControlPoints(0);
-      int nPointsV = dtS->nControlPoints(1);
-      int renderMaxPoints
+      dtInt nPointsU = dtS->nControlPoints(0);
+      dtInt nPointsV = dtS->nControlPoints(1);
+      dtInt renderMaxPoints
       =
       staticPropertiesHandler::getInstance()->getOptionInt(
         "render_max_nPoints"

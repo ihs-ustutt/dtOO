@@ -1,6 +1,8 @@
 #ifndef vec2dMultiBiLinearTwoD_H
 #define	vec2dMultiBiLinearTwoD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec2dTwoD.h"
 #include "vec2dBiLinearTwoD.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
@@ -23,7 +25,7 @@ namespace dtOO {
     vec2dMultiBiLinearTwoD * create( void ) const;    
     virtual ~vec2dMultiBiLinearTwoD();
     virtual aFY Y( aFX const & xx ) const;
-    virtual bool closed( int const & dir ) const;    
+    virtual bool closed( dtInt const & dir ) const;    
     aFX invY(aFY const & yy) const;
   private:
     twoDArrayHandling< vec2dBiLinearTwoD > _piece;

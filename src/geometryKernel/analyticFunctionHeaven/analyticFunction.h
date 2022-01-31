@@ -1,6 +1,8 @@
 #ifndef analyticFunction_H
 #define	analyticFunction_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/optionHandling.h>
 #include <interfaceHeaven/labelHandling.h>
@@ -33,10 +35,10 @@ namespace dtOO {
     virtual void dump(void) const;    
     virtual std::string dumpToString(void) const;
     virtual aFY Y(aFX const & xx) const = 0;
-    virtual int xDim( void ) const = 0;
-    virtual int yDim( void ) const = 0;
-    virtual float xMin( int const & dir) const = 0;
-    virtual float xMax( int const & dir) const = 0;
+    virtual dtInt xDim( void ) const = 0;
+    virtual dtInt yDim( void ) const = 0;
+    virtual dtReal xMin( dtInt const & dir) const = 0;
+    virtual dtReal xMax( dtInt const & dir) const = 0;
     virtual aFX xMin( void ) const;
     virtual aFX xMax( void ) const;        
 	  virtual aFX x_percent( aFX const & xx ) const;
@@ -44,31 +46,31 @@ namespace dtOO {
     virtual aFX invY(aFY const & yy) const;    
     virtual bool isCompound( void ) const;
     virtual vectorHandling< analyticFunction * > const & vecRef( void ) const;
-    virtual std::map< int, int > const & mapRef( void ) const;
+    virtual std::map< int, dtInt > const & mapRef( void ) const;
     virtual bool isTransformed( void ) const;
     virtual std::pair< aFY, aFY > yBoundingBox( void ) const;
     virtual bool yBounded( void ) const;
     static aFX aFXZeroD( void );
-    static aFX aFXOneD( float const & x0 );
-    static aFX aFXTwoD( float const & x0, float const & x1 );
+    static aFX aFXOneD( dtReal const & x0 );
+    static aFX aFXTwoD( dtReal const & x0, dtReal const & x1 );
     static aFX aFXThreeD( 
-      float const & x0, float const & x1, float const & x2 
+      dtReal const & x0, dtReal const & x1, dtReal const & x2 
     );
     static aFX aFXTwoD( dtPoint2 const & pp );    
     static aFX aFXThreeD( dtPoint3 const & pp );
     static aFY aFYZeroD( void );    
-    static aFY aFYOneD( float const & x0 );
-    static aFY aFYTwoD( float const & x0, float const & x1 );
+    static aFY aFYOneD( dtReal const & x0 );
+    static aFY aFYTwoD( dtReal const & x0, dtReal const & x1 );
     static aFY aFYThreeD( 
-      float const & x0, float const & x1, float const & x2 
+      dtReal const & x0, dtReal const & x1, dtReal const & x2 
     );    
     static aFY aFYTwoD( dtPoint2 const & pp );    
     static aFY aFYThreeD( dtPoint3 const & pp );    
-//    static aFX aFX( std::vector< float > const & xx );    
-//    static aFY aFY( std::vector< float > const & xx );
+//    static aFX aFX( std::vector< dtReal > const & xx );    
+//    static aFY aFY( std::vector< dtReal > const & xx );
     static aFY aFY_aFX( aFX const & xx );    
     static aFX aFX_aFY( aFY const & yy );
-    static float distance( aFX const & x0, aFX const & x1 );
+    static dtReal distance( aFX const & x0, aFX const & x1 );
   private:
 	  double F(double const * xx) const;
     mutable aFY _invY;

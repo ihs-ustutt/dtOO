@@ -37,7 +37,6 @@ SET(HEADERS
   geometryEngine/dtOCCGeomFillBoundWithSurf.h
   geometryEngine/dtMuParser.h
   geometryEngine/muParserFunctions.h
-  geometryEngine/GeomFill_BSplineCurvesExtPrecision.h
   geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_bSplineCurveSplitConstructOCC.h
@@ -184,7 +183,6 @@ SET(SOURCES
   geometryEngine/dtOCCGeomFillBoundWithSurf.cpp
   geometryEngine/dtMuParser.cpp
   geometryEngine/muParserFunctions.cpp
-  geometryEngine/GeomFill_BSplineCurvesExtPrecision.cpp
   geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_bSplineCurveSplitConstructOCC.cpp

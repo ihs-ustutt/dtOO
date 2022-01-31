@@ -125,7 +125,7 @@ namespace dtOO {
     //
     std::map< ::GVertex *, ::GVertex * > master_slave_v;
     std::map< ::GVertex *, ::GVertex * > slave_master_v;
-    std::vector< float > angle;
+    std::vector< dtReal > angle;
     dt__forAllRefAuto(masterVertex, aVertex) {
       dtPoint3 aVertex_rPhiZ 
       = 
@@ -214,7 +214,7 @@ namespace dtOO {
     // set master edge on slave edges
     //
     dt__forAllIndex( slaveEdge, ii ) {
-      int masterTag 
+      dtInt masterTag 
       = 
       gm->getDtGmshEdgeTagByFromTo(
         master_slave_v[ slaveEdge[ii]->getBeginVertex() ]->tag(),
@@ -280,7 +280,7 @@ namespace dtOO {
         slave_master_v[ masterVertex[ii] ]->z()
       );      
       ::SPoint3 xyzTfo(0,0,0);
-      int idx = 0;
+      dtInt idx = 0;
       for (int i=0;i<3;i++) {
         for (int j=0;j<3;j++) xyzTfo[i] += xyzOri[j] * tfo[idx++];
         xyzTfo[i] += tfo[idx++];

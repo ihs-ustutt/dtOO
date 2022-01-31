@@ -1,6 +1,8 @@
 #ifndef DTOCCLINE2D_H
 #define	DTOCCLINE2D_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOCCCurve2d.h"
@@ -17,9 +19,9 @@ namespace dtOO {
     dtOCCLine2d(dtOCCCurve2dBase const & orig);
     virtual ~dtOCCLine2d();
     virtual dtCurve2d * clone( void ) const;
-    virtual int order( void ) const;
-    virtual int nControlPoints( void ) const;
-    virtual dtPoint2 controlPoint( int const nPoint ) const;
+    virtual dtInt order( void ) const;
+    virtual dtInt nControlPoints( void ) const;
+    virtual dtPoint2 controlPoint( dtInt const nPoint ) const;
   private:
     Geom2d_Line const * _ptr;
   };

@@ -1,6 +1,8 @@
 #ifndef POINTCONTAINER_H
 #define	POINTCONTAINER_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <string>
 #include <logMe/dtMacros.h>

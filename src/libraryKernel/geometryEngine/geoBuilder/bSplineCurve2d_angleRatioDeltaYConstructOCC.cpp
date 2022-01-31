@@ -7,7 +7,7 @@
 
 namespace dtOO {
 	bSplineCurve2d_angleRatioDeltaYConstructOCC::bSplineCurve2d_angleRatioDeltaYConstructOCC( 
-	  float angleIn, float angleOut, float const & ratio, float const & deltaY
+	  dtReal angleIn, dtReal angleOut, dtReal const & ratio, dtReal const & deltaY
 	) {
 		//
 		// check values
@@ -37,7 +37,7 @@ namespace dtOO {
 			//
 			// calculate deltaX
 			//
-			float deltaX = deltaY * tan(angleIn);
+			dtReal deltaX = deltaY * tan(angleIn);
 			//
 			// calculate points
 			//
@@ -63,8 +63,8 @@ namespace dtOO {
 			//
 			// calculate deltaX
 			//
-			float deltaXMax;
-			float deltaXMin;
+			dtReal deltaXMax;
+			dtReal deltaXMin;
 			if (angleIn >= angleOut) {
 				deltaXMax = deltaY / tan(angleOut);
 				deltaXMin = deltaY / tan(angleIn);
@@ -74,7 +74,7 @@ namespace dtOO {
 				deltaXMax = deltaY / tan(angleIn);        
 			}
 
-			float deltaX = deltaXMin + ratio * (deltaXMax - deltaXMin);
+			dtReal deltaX = deltaXMin + ratio * (deltaXMax - deltaXMin);
 
 			//
 			// calculate points
@@ -84,7 +84,7 @@ namespace dtOO {
 //			int ss = ( deltaY - deltaX * sin(angleIn) / cos(angleIn) )
 //							 /
 //							 ( sin(angleOut) - (cos(angleOut)*sin(angleIn) / cos(angleIn)) );
-			float tt = ( deltaY - deltaX * sin(angleOut) / cos(angleOut) )
+			dtReal tt = ( deltaY - deltaX * sin(angleOut) / cos(angleOut) )
 							 /
 							 ( sin(angleIn) - (cos(angleIn)*sin(angleOut) / cos(angleOut)) );      
 //			if (!mirrorY) {

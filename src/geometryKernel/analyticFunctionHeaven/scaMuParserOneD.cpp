@@ -74,11 +74,11 @@ namespace dtOO {
     return new scaMuParserOneD();
   }
 
-  float scaMuParserOneD::YFloat(float const & xx) const {
-    float myFloat;
+  dtReal scaMuParserOneD::YFloat(dtReal const & xx) const {
+    dtReal myFloat;
     try {
       *_argument = (double) xx;
-      myFloat = (float) _parser->Eval();
+      myFloat = (dtReal) _parser->Eval();
     }
     catch (mu::Parser::exception_type &e) {
       dt__throw(getValue, << e.GetMsg() );
@@ -86,7 +86,7 @@ namespace dtOO {
     return myFloat;
   }
 
-  void scaMuParserOneD::setArgumentRange(float xMin, float xMax) {
+  void scaMuParserOneD::setArgumentRange(dtReal xMin, dtReal xMax) {
     scaOneD::setMinMax(xMin, xMax);
   }
 }

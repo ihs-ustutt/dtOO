@@ -1,6 +1,8 @@
 #ifndef DTPOINT2_SURFACEEQUIDISTANTPOINT_H
 #define	DTPOINT2_SURFACEEQUIDISTANTPOINT_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
@@ -12,7 +14,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(dtPoint2_surfaceEquidistantPoint);    
     dtPoint2_surfaceEquidistantPoint();
-    dtPoint2_surfaceEquidistantPoint( dtSurface const * const dtS, int const & nU, int const nV );
+    dtPoint2_surfaceEquidistantPoint( dtSurface const * const dtS, dtInt const & nU, dtInt const nV );
     virtual ~dtPoint2_surfaceEquidistantPoint();
     twoDArrayHandling< dtPoint2 > result( void );
   private:
@@ -21,8 +23,8 @@ namespace dtOO {
     twoDArrayHandling< dtPoint2 > _pUV;
     twoDArrayHandling< dtPoint3 > _pXYZ;
     twoDArrayHandling< dtVector2 > _dMS;
-    std::vector< float > _sumM;
-    std::vector< float > _sumS;
+    std::vector< dtReal > _sumM;
+    std::vector< dtReal > _sumS;
   };
 }
 #endif	/* DTPOINT2_SURFACEEQUIDISTANTPOINT_H */

@@ -6,7 +6,7 @@
 namespace dtOO {  
   barChart::barChart(
     std::string const & title,
-    float const & min, float const & max, int const & nBars 
+    dtReal const & min, dtReal const & max, dtInt const & nBars 
   ) {
     _min = min;
     _max = max;
@@ -24,10 +24,10 @@ namespace dtOO {
   barChart::~barChart() {
   }
   
-  void barChart::operator()( float const & val ) {
+  void barChart::operator()( dtReal const & val ) {
     _sum = val + _sum;
     
-    int location = (val - _min) / _step;
+    dtInt location = (val - _min) / _step;
     
     location
     =
@@ -45,19 +45,19 @@ namespace dtOO {
     _nValues++;    
   }
   
-  float barChart::globalMin( void ) const {
+  dtReal barChart::globalMin( void ) const {
     return _globalMin;  
   }
   
-  float barChart::globalMax( void ) const {
+  dtReal barChart::globalMax( void ) const {
     return _globalMax;
   }
   
-  int barChart::nBars( void ) const {
+  dtInt barChart::nBars( void ) const {
     return _nBars;
   }
   
-  float barChart::barAverage( int const & location ) const {
+  dtReal barChart::barAverage( dtInt const & location ) const {
     if (_bar[location] != 0) {    
       return _barValue[location] / _bar[location];
     }
@@ -65,22 +65,22 @@ namespace dtOO {
     return 0.;
   }
   
-  float barChart::average( void ) const {
+  dtReal barChart::average( void ) const {
     return _sum / _nValues;
   }
   
   std::ostream& operator<<(std::ostream& os, const barChart& toLog) {
-    std::vector< float > percent(toLog._bar.size(), 0.);
-    std::vector< float > scale(toLog._bar.size(), 0.);
+    std::vector< dtReal > percent(toLog._bar.size(), 0.);
+    std::vector< dtReal > scale(toLog._bar.size(), 0.);
     
-    float av = 0.;
+    dtReal av = 0.;
     dt__forAllIndex(toLog._bar, ii) {
-      percent[ii] = static_cast< float >(toLog._bar[ii]) / toLog._nValues;
+      percent[ii] = static_cast< dtReal >(toLog._bar[ii]) / toLog._nValues;
       av = av + toLog._bar[ii] * .5 * (ii+1) * toLog._step;
     }
     av = av / toLog._nValues;
     
-    float maxPercent = progHelper::max(percent);
+    dtReal maxPercent = progHelper::max(percent);
     dt__forAllIndex(scale, ii) {
       scale[ii] = percent[ii] / maxPercent;
     }    
@@ -96,7 +96,7 @@ namespace dtOO {
     << logMe::dtFormat("| average   = %+5.2e") % av << std::endl      
     << "|" << std::endl;
     
-    int avPos = av * 30 / (toLog._max-toLog._min);
+    dtInt avPos = av * 30 / (toLog._max-toLog._min);
     std::string avString(avPos, ' ');
     avString = avString+"#";
     os << logMe::dtFormat("| < %+5.2e  %-32s          |") 
@@ -104,7 +104,7 @@ namespace dtOO {
     os << "|" << std::endl;
     dt__forAllIndex(scale, ii) {
       os << logMe::dtFormat("| < %+5.2e ") % (toLog._min + toLog._step * (ii+1));
-      int nSigns = scale[ii] * 30;
+      dtInt nSigns = scale[ii] * 30;
       std::string barString(nSigns, '+');
       os 
       << logMe::dtFormat(" %-32s %+6.2f %% | %i ( %5.2e )") 

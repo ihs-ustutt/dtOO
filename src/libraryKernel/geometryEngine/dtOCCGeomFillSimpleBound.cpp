@@ -32,7 +32,7 @@ namespace dtOO {
 		return new dtOCCGeomFillSimpleBound( OCCRef(), OCCBoundaryRef() );
 	}
   
-  float dtOCCGeomFillSimpleBound::minPara( int const & dir ) const {
+  dtReal dtOCCGeomFillSimpleBound::minPara( dtInt const & dir ) const {
     dt__throwIf(dir!=0, minPara());
     Standard_Real U0;
     Standard_Real U1;
@@ -44,7 +44,7 @@ namespace dtOO {
     return floatHandling::nextIfSmaller(U0);
   }
   
-  float dtOCCGeomFillSimpleBound::maxPara( int const & dir ) const {
+  dtReal dtOCCGeomFillSimpleBound::maxPara( dtInt const & dir ) const {
     dt__throwIf(dir!=0, maxPara());
     Standard_Real U0;
     Standard_Real U1;
@@ -56,7 +56,7 @@ namespace dtOO {
     return floatHandling::nextIfSmaller(U1);    
   }
         
-  dtPoint3 dtOCCGeomFillSimpleBound::point( float const uu ) const {
+  dtPoint3 dtOCCGeomFillSimpleBound::point( dtReal const uu ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt pp;
 		dt__tryOcc(
@@ -66,9 +66,9 @@ namespace dtOO {
 		);
 		
 		return dtPoint3(
-			static_cast<float>(pp.Coord(1)), 
-			static_cast<float>(pp.Coord(2)), 
-			static_cast<float>(pp.Coord(3))
+			static_cast<dtReal>(pp.Coord(1)), 
+			static_cast<dtReal>(pp.Coord(2)), 
+			static_cast<dtReal>(pp.Coord(3))
 		);    
   }
 }

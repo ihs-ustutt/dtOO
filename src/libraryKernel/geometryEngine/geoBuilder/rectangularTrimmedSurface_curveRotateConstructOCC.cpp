@@ -19,7 +19,7 @@ namespace dtOO {
 	  dtCurve const & cL, 
     dtPoint3 const & oP, 					
 		dtVector3 const & rA, 
-		float const & angle 
+		dtReal const & angle 
 	) {
 		dt__ptrAss(dtOCCCurve const * bC, dtOCCCurve::ConstDownCast( &cL ));
 		

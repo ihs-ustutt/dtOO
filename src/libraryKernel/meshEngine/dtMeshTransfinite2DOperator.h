@@ -1,6 +1,8 @@
 #ifndef dtMeshTransfinite2DOperator_H
 #define	dtMeshTransfinite2DOperator_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtMesh2DOperator.h"
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/twoDArrayHandling.h>

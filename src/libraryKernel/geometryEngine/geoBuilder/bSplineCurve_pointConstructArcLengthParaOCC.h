@@ -1,6 +1,8 @@
 #ifndef BSPLINECURVE_POINTCONSTRUCTARCLENGTHPARAOCC_H
 #define	BSPLINECURVE_POINTCONSTRUCTARCLENGTHPARAOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -12,8 +14,8 @@ namespace dtOO {
   public:
     dt__classOnlyName(bSplineCurve_pointConstructArcLengthParaOCC);
     bSplineCurve_pointConstructArcLengthParaOCC( 
-      dtCurve const * dtC, float const tol, 
-      int const maxOrder, int const segments       
+      dtCurve const * dtC, dtReal const tol, 
+      dtInt const maxOrder, dtInt const segments       
     );
     virtual ~bSplineCurve_pointConstructArcLengthParaOCC();
     dtCurve * result( void );

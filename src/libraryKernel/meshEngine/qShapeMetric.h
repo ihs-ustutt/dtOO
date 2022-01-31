@@ -1,6 +1,8 @@
 #ifndef QSHAPEMETRIC_H
 #define	QSHAPEMETRIC_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 class MElement;
@@ -13,10 +15,10 @@ namespace dtOO {
     dt__classOnlyName(qShapeMetric);    
     qShapeMetric();
     virtual ~qShapeMetric();
-    float operator()( ::MElement const * const me );
+    dtReal operator()( ::MElement const * const me );
   private:
-    static float calculatePyramid( ::MPyramid * pyr );
-    static float calculateTetrahedron( ::MTetrahedron * tet );
+    static dtReal calculatePyramid( ::MPyramid * pyr );
+    static dtReal calculateTetrahedron( ::MTetrahedron * tet );
   };
 }
 #endif	/* QSHAPEMETRIC_H */

@@ -1,6 +1,8 @@
 #ifndef geomSurface_surfaceReverseConstructOCC_H
 #define	geomSurface_surfaceReverseConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

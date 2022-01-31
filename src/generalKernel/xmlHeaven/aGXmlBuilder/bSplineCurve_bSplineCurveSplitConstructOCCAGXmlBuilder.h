@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder_H
 #define	bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

@@ -1,6 +1,8 @@
 #ifndef closeGapsArithmetic_H
 #define	closeGapsArithmetic_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -31,8 +33,8 @@ namespace dtOO {
         aFPtrVec const * const aF 
       ) const;    
     private:
-      int _dir;
-      int _nSegments;
+      dtInt _dir;
+      dtInt _nSegments;
       static bool _registrated;    
   };
 }

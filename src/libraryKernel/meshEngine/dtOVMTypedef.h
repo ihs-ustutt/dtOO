@@ -1,6 +1,8 @@
 #ifndef dtOVMTypedef_H
 #define dtOVMTypedef_H
 
+#include <dtOOTypeDef.h>
+
 #include <OpenVolumeMesh/Mesh/PolyhedralMesh.hh>
 #include <OpenVolumeMesh/Core/OpenVolumeMeshProperty.hh>
 

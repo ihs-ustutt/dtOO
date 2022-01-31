@@ -30,7 +30,7 @@ namespace dtOO {
 		return new dtOCCRectangularTrimmedSurface( OCCRef() );
 	}
 
-	dtCurve * dtOCCRectangularTrimmedSurface::segmentConstU( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve * dtOCCRectangularTrimmedSurface::segmentConstU( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
 
@@ -47,7 +47,7 @@ namespace dtOO {
 		return new dtOCCTrimmedCurve(base);
 	}
 
-	dtCurve * dtOCCRectangularTrimmedSurface::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve * dtOCCRectangularTrimmedSurface::segmentConstV( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const {
 			Standard_Real vR = static_cast<Standard_Real>(vv);
 			Handle(Geom_Curve) cc = _ptr->VIso(vR);
 

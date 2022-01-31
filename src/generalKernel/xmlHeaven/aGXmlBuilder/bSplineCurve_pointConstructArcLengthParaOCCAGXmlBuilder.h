@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder_H
 #define	bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

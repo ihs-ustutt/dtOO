@@ -71,8 +71,8 @@ namespace dtOO {
       //
       std::string const & fStr0 = comp[0];
       std::string const & fStr1 = comp[1];
-      float const & fType = stringPrimitive::stringToFloat( comp[2] );
-      float const & fGrading = stringPrimitive::stringToFloat( comp[3] );
+      dtReal const & fType = stringPrimitive::stringToFloat( comp[2] );
+      dtReal const & fGrading = stringPrimitive::stringToFloat( comp[3] );
     
       //
       // output

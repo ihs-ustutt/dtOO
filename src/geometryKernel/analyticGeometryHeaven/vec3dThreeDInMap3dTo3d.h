@@ -1,6 +1,8 @@
 #ifndef vec3dThreeDInMap3dTo3d_H
 #define	vec3dThreeDInMap3dTo3d_H
 
+#include <dtOOTypeDef.h>
+
 #include "map3dTo3d.h"
 #include "analyticGeometryCompound.h"
 #include <dtLinearAlgebra.h>
@@ -27,11 +29,11 @@ namespace dtOO {
       dtTransformer const * const dtT 
     ) const;         
     virtual dtPoint3 getPoint( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const;
-    virtual bool isClosed( int const & dir) const;
-    virtual float getMin( int const & dir) const;
-    virtual float getMax( int const & dir) const;
+    virtual bool isClosed( dtInt const & dir) const;
+    virtual dtReal getMin( dtInt const & dir) const;
+    virtual dtReal getMax( dtInt const & dir) const;
   private:
     ptrHandling< vec3dThreeD > _v3d;
     ptrHandling< map3dTo3d > _m3d;

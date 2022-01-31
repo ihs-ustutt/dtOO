@@ -54,12 +54,12 @@ namespace dtOO {
 		bool hasDeltaX = dtXmlParserBase::hasAttribute("delta_x", toBuildP);
     bool hasDeltaY = dtXmlParserBase::hasAttribute("delta_y", toBuildP);
 
-    float alphaOne 
+    dtReal alphaOne 
     = 
     dtXmlParserBase::getAttributeFloatMuParse(
       "alpha_one", toBuildP, cV, aF
     );      
-    float alphaTwo 
+    dtReal alphaTwo 
     = 
     dtXmlParserBase::getAttributeFloatMuParse(
       "alpha_two", toBuildP, cV, aF
@@ -72,12 +72,12 @@ namespace dtOO {
       //
       // get necessary values
       //
-      float deltaY 
+      dtReal deltaY 
       = 
       dtXmlParserBase::getAttributeFloatMuParse(
         "delta_y", toBuildP, cV, aF
       );   
-      float ratio
+      dtReal ratio
       = 
       dtXmlParserBase::getAttributeFloatMuParse(
         "ratio", toBuildP, cV, aF
@@ -92,12 +92,12 @@ namespace dtOO {
       //
       // get necessary values
       //
-      float deltaY 
+      dtReal deltaY 
       = 
       dtXmlParserBase::getAttributeFloatMuParse(
         "delta_y", toBuildP, cV, aF
       );   
-      float deltaX 
+      dtReal deltaX 
       = 
       dtXmlParserBase::getAttributeFloatMuParse(
         "delta_x", toBuildP, cV, aF
@@ -113,12 +113,12 @@ namespace dtOO {
     if ( 
       dtXmlParserBase::hasAttribute("targetLength", toBuildP) 
     ) {
-      float tL
+      dtReal tL
       =
       dtXmlParserBase::getAttributeFloatMuParse(
         "targetLength", toBuildP, cV, aF
       );
-      float tLTol
+      dtReal tLTol
       =
       dtXmlParserBase::getAttributeFloatMuParse(
         "targetLengthTolerance", toBuildP, cV, aF
@@ -128,7 +128,7 @@ namespace dtOO {
       );      
       logC() << "Detect targetLength" << std::endl;
       dt__forFromToIndex(0, 99, ii) {
-        float scale = tL / dtC2d->length();
+        dtReal scale = tL / dtC2d->length();
       
         dtPoint2 p0 = dtC2d->controlPoint(0);
         dtVector2 v0 = dtC2d->controlPoint(1) - dtC2d->controlPoint(0);
@@ -148,7 +148,7 @@ namespace dtOO {
     if ( 
       dtXmlParserBase::hasAttribute("originOnLengthPercent", toBuildP) 
     ) {
-      float lP 
+      dtReal lP 
       =
       dtXmlParserBase::getAttributeFloatMuParse(
         "originOnLengthPercent", toBuildP, cV, aF

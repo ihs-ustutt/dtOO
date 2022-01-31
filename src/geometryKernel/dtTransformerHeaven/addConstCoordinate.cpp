@@ -73,7 +73,7 @@ namespace dtOO {
   ) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		
-		float cc 
+		dtReal cc 
 		= 
 		dtXmlParserBase::muParseString( 
 			dtXmlParserBase::replaceDependencies(
@@ -93,7 +93,7 @@ namespace dtOO {
   }
 	
 	void addConstCoordinate::handleFloat(
-    const std::string name, const float value
+    const std::string name, const dtReal value
   ) {
     if (name == "coordinate_value" ) {
       _cc = value;

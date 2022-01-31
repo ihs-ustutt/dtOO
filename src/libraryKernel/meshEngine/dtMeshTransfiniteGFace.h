@@ -1,6 +1,8 @@
 #ifndef dtMeshTransfiniteGFace_H
 #define	dtMeshTransfiniteGFace_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMeshTransfinite2DOperator.h"
@@ -33,17 +35,17 @@ namespace dtOO {
     private:
       twoDArrayHandling< dtPoint2 > correctConstV( 
         dtGmshFace const * const dtgf, twoDArrayHandling< dtPoint2 > pUV,
-        int const & pos, int const & nSteps, 
+        dtInt const & pos, dtInt const & nSteps, 
         std::vector< double > lengths_i, double const & L_i
       ) const;
       static twoDArrayHandling< dtPoint2 > linearInterpolateU( 
-        twoDArrayHandling< dtPoint2 > pUV, int const & vStart, int const & vEnd
+        twoDArrayHandling< dtPoint2 > pUV, dtInt const & vStart, dtInt const & vEnd
       );
     private:
-//      std::vector< float > _uCorrPos;
-//      int _uCorrSteps;
-      std::vector< float > _vCorrPos;
-      int _vCorrSteps;
+//      std::vector< dtReal > _uCorrPos;
+//      dtInt _uCorrSteps;
+      std::vector< dtReal > _vCorrPos;
+      dtInt _vCorrSteps;
   };
 }
 #endif	/* dtMeshTransfiniteGFace_H */

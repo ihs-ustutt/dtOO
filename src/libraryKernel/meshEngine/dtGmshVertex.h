@@ -1,6 +1,8 @@
 #ifndef DTGMSHVERTEX_H
 #define	DTGMSHVERTEX_H
 
+#include <dtOOTypeDef.h>
+
 #include <gmsh/GVertex.h>
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -13,8 +15,8 @@ namespace dtOO {
   class dtGmshVertex : public ::GVertex {
   public:
     dt__class(dtGmshVertex, ::GEntity); 
-    dtGmshVertex(::GModel *m, int tag, double ms);
-    dtGmshVertex(::GModel *m, int tag);
+    dtGmshVertex(::GModel *m, dtInt tag, double ms);
+    dtGmshVertex(::GModel *m, dtInt tag);
     virtual ~dtGmshVertex();
     virtual GPoint point() const;
     virtual double x() const;

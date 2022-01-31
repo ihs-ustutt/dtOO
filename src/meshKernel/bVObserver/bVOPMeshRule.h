@@ -1,6 +1,8 @@
 #ifndef bVOPMeshRule_H
 #define	bVOPMeshRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 #include <interfaceHeaven/labeledVectorHandling.h>

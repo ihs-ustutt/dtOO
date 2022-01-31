@@ -1,6 +1,8 @@
 #ifndef dtMeshGVertex_H
 #define	dtMeshGVertex_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMesh0DOperator.h"

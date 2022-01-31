@@ -138,14 +138,14 @@ namespace dtOO {
 		return createTransformer(toBuildP, bC, cV, aF, NULL);
   }
  
-  float dtXmlParserBase::createFloat(
+  dtReal dtXmlParserBase::createFloat(
     ::QDomElement const & toBuildP,
     baseContainer * const bC,
     cVPtrVec const * const cV,
     aFPtrVec const * const aF, 
     aGPtrVec const * const aG
   ) {
-    std::vector< float > vec;
+    std::vector< dtReal > vec;
     createBasic(&toBuildP, bC, cV, aF, aG, &vec);
     dt__throwIf( vec.size()!=1, createAdvanced() );
 
@@ -192,7 +192,7 @@ namespace dtOO {
     dt__throwIf(!is("Point_D", *toBuildP), createBasic());
 
 		if ( hasAttribute("coordinates", *toBuildP) ) {
-      std::vector< float > cXYZ 
+      std::vector< dtReal > cXYZ 
       = 
       muParseCSString(
         replaceDependencies( 
@@ -319,18 +319,18 @@ namespace dtOO {
     // create simple xyz point with given coordinates
     //
 		if ( hasAttribute("x|y|z", *toBuildP) ) {
-      float cX 
+      dtReal cX 
       = 
       muParseString(
         replaceDependencies( getAttributeStr("x", *toBuildP), bC, cV, aF, aG )
       );
-      float cY 
+      dtReal cY 
       = 
       muParseString(
         replaceDependencies( getAttributeStr("y", *toBuildP), bC, cV, aF, aG )
       );
       
-      float cZ 
+      dtReal cZ 
       = 
       muParseString(
         replaceDependencies( getAttributeStr("z", *toBuildP), bC, cV, aF, aG )
@@ -338,7 +338,7 @@ namespace dtOO {
 			basicP->push_back( dtPoint3(cX, cY, cZ) );      
     }      
 		else if ( hasAttribute("xyz", *toBuildP) ) { 
-      std::vector< float > cXYZ 
+      std::vector< dtReal > cXYZ 
       = 
       muParseCSString(
         replaceDependencies( getAttributeStr("xyz", *toBuildP), bC, cV, aF, aG )
@@ -377,8 +377,8 @@ namespace dtOO {
 					//analyticRotatingMap1dTo3d
 					//
 					if ( rS && hasAttribute("phi|z", *toBuildP) ) {
-			      float cX = getAttributeFloatMuParse("phi", *toBuildP, cV,  aF);
-			      float cY = getAttributeFloatMuParse("z", *toBuildP, cV,  aF);                 
+			      dtReal cX = getAttributeFloatMuParse("phi", *toBuildP, cV,  aF);
+			      dtReal cY = getAttributeFloatMuParse("z", *toBuildP, cV,  aF);                 
 						basicP->push_back( dtPoint3( rS->xyz_phiZ(cX, cY) ) );
 					}
 					else if (    
@@ -386,12 +386,12 @@ namespace dtOO {
               "parameter_one_percent|parameter_two_percent", *toBuildP
             )
           ) {
-			      float cX 
+			      dtReal cX 
             = 
             getAttributeFloatMuParse(
               "parameter_one_percent", *toBuildP, cV,  aF
             );
-			      float cY 
+			      dtReal cY 
             = 
             getAttributeFloatMuParse(
               "parameter_two_percent", *toBuildP, cV,  aF
@@ -403,7 +403,7 @@ namespace dtOO {
 		// 2 map1dTo3d
 		//         
 				else if (m1d && hasAttribute("parameter_one_percent", *toBuildP) ) {
-          float cX 
+          dtReal cX 
           = 
           getAttributeFloatMuParse(
             "parameter_one_percent", *toBuildP, cV,  aF
@@ -421,17 +421,17 @@ namespace dtOO {
               *toBuildP
             ) 
           ) {
-			      float cX 
+			      dtReal cX 
             = 
             getAttributeFloatMuParse(
               "parameter_one_percent", *toBuildP, cV,  aF
             );
-			      float cY 
+			      dtReal cY 
             = 
             getAttributeFloatMuParse(
               "parameter_two_percent", *toBuildP, cV,  aF
             );       
-			      float cZ 
+			      dtReal cZ 
             = 
             getAttributeFloatMuParse(
               "parameter_three_percent", *toBuildP, cV,  aF
@@ -443,13 +443,13 @@ namespace dtOO {
               "parameter_one|parameter_two|parameter_three", *toBuildP
             ) 
           ) {
-			      float cX 
+			      dtReal cX 
             = 
             getAttributeFloatMuParse("parameter_one", *toBuildP, cV,  aF);
-			      float cY 
+			      dtReal cY 
             = 
             getAttributeFloatMuParse("parameter_two", *toBuildP, cV,  aF);       
-			      float cZ 
+			      dtReal cZ 
             = 
             getAttributeFloatMuParse("parameter_three", *toBuildP, cV,  aF);       
 						basicP->push_back( m3d->getPoint(cX, cY, cZ) );
@@ -476,10 +476,10 @@ namespace dtOO {
 								)
 							)
 						);
-            std::vector< float > ff 
+            std::vector< dtReal > ff 
             = 
             float_scaOneDPoint(sF, nPointsOne).result();
-            dt__forAllConstIter(std::vector< float >, ff, it) {
+            dt__forAllConstIter(std::vector< dtReal >, ff, it) {
 							basicP->push_back(m1d->getPointPercent(*it));              
 						}
 					}
@@ -492,12 +492,12 @@ namespace dtOO {
 								)
 							)
 						);
-						float length = m1d->length();
-						float uP;
-            std::vector< float > ff 
+						dtReal length = m1d->length();
+						dtReal uP;
+            std::vector< dtReal > ff 
             = 
             float_scaOneDPoint(sF, nPointsOne).result();
-            dt__forAllConstIter(std::vector< float >, ff, it) {            
+            dt__forAllConstIter(std::vector< dtReal >, ff, it) {            
 							uP = m1d->u_l((*it)*length);
               basicP->push_back( m1d->getPoint(uP) );              					
 						}
@@ -538,10 +538,10 @@ namespace dtOO {
 					);
 					for (int ii=0;ii<nPointsOne;ii++) {
 						for (int jj=0;jj<nPointsTwo;jj++) {
-							dt__toFloat(float iiF, ii);
-							dt__toFloat(float jjF, jj);
-							float paraOne = fOne->YFloat( iiF / nPointsOne ) ;
-							float paraTwo = fTwo->YFloat( jjF / nPointsTwo ) ;
+							dt__toFloat(dtReal iiF, ii);
+							dt__toFloat(dtReal jjF, jj);
+							dtReal paraOne = fOne->YFloat( iiF / nPointsOne ) ;
+							dtReal paraTwo = fTwo->YFloat( jjF / nPointsTwo ) ;
 							basicP->push_back( 
 							  dtPoint3( m2d->getPointPercent( paraOne, paraTwo ) )
 							);              
@@ -571,27 +571,27 @@ namespace dtOO {
 
 			if ( attribute == "pick_from_function" ) {
 				if ( v1D && hasAttribute("x_one", *toBuildP) ) {
-			    float cX = getAttributeFloatMuParse("x_one", *toBuildP, cV,  aF);
+			    dtReal cX = getAttributeFloatMuParse("x_one", *toBuildP, cV,  aF);
 					basicP->push_back( v1D->YdtPoint3(cX) );
 				}
 				else if ( v1D && hasAttribute("x_one_percent", *toBuildP) ) {
-			    float cX 
+			    dtReal cX 
           = 
           getAttributeFloatMuParse("x_one_percent", *toBuildP, cV,  aF);
 					basicP->push_back( v1D->YdtPoint3Percent(cX) );
 				}				
 				else if ( v2D && hasAttribute("x_one|x_two", *toBuildP) ) {
-			    float cX = getAttributeFloatMuParse("x_one", *toBuildP, cV,  aF);
-			    float cY = getAttributeFloatMuParse("x_two", *toBuildP, cV,  aF);          
+			    dtReal cX = getAttributeFloatMuParse("x_one", *toBuildP, cV,  aF);
+			    dtReal cY = getAttributeFloatMuParse("x_two", *toBuildP, cV,  aF);          
 					basicP->push_back( v2D->YdtPoint3(cX, cY) );
 				}	
 				else if (
 				  v2D && hasAttribute("x_one_percent|x_two_percent", *toBuildP)
 				) {
-			    float cX 
+			    dtReal cX 
           = 
           getAttributeFloatMuParse("x_one_percent", *toBuildP, cV,  aF);
-			    float cY 
+			    dtReal cY 
           = 
           getAttributeFloatMuParse("x_two_percent", *toBuildP, cV,  aF);          
 					basicP->push_back( v2D->YdtPoint3Percent(cX, cY) );
@@ -687,7 +687,7 @@ namespace dtOO {
         //
         // create coordinates
         //
-        float cX 
+        dtReal cX 
         = 
         muParseString(
           replaceDependencies(
@@ -696,7 +696,7 @@ namespace dtOO {
             aF
           )
         );  
-        float cY 
+        dtReal cY 
         = 
         muParseString(
           replaceDependencies(
@@ -714,7 +714,7 @@ namespace dtOO {
         //
         // create coordinates
         //
-        float cX 
+        dtReal cX 
         =
         muParseString(
           replaceDependencies(
@@ -723,7 +723,7 @@ namespace dtOO {
             aF
           )
         );  
-        float cY 
+        dtReal cY 
         = 
         muParseString(
           replaceDependencies(
@@ -790,7 +790,7 @@ namespace dtOO {
         //
         // create coordinates
         //
-        float cX 
+        dtReal cX 
         = 
         muParseString(
           replaceDependencies(
@@ -799,7 +799,7 @@ namespace dtOO {
             aF
           )
         );  
-        float cY 
+        dtReal cY 
         = 
         muParseString(
           replaceDependencies(
@@ -808,7 +808,7 @@ namespace dtOO {
             aF
           )
         );
-        float cZ 
+        dtReal cZ 
         = 
         muParseString(
           replaceDependencies(
@@ -823,7 +823,7 @@ namespace dtOO {
         vv = dtVector3(cX, cY, cZ);      
       }
       else if ( hasAttribute("xyz", *toBuildP) ) { 
-        std::vector< float > cXYZ 
+        std::vector< dtReal > cXYZ 
         = 
         muParseCSString(
           replaceDependencies( 
@@ -962,7 +962,7 @@ namespace dtOO {
 	) {
     std::string returnExpression;
     returnExpression = expression;
-    unsigned int found;
+    dtUnsInt found;
     //
     // check if there is a constValue in expression
     // 1. * #cVLabel#
@@ -972,9 +972,9 @@ namespace dtOO {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find(_CVSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find(_CVSIGN, found+1);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       
       //
       // extract constValue label and option
@@ -1013,9 +1013,9 @@ namespace dtOO {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find(_CALCSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find(_CALCSIGN, found+1);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       
       //
       // muparse string
@@ -1065,15 +1065,15 @@ namespace dtOO {
     // check if there is a function in expression
     // $functionName(value * #constValue#)$
     //
-    unsigned int found = returnExpression.find(_AFSIGN);
+    dtUnsInt found = returnExpression.find(_AFSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
       //
-      //unsigned int foundEnd = returnExpression.find_last_of(_AFSIGN);
-      unsigned int foundEnd = returnExpression.find_first_of(_AFSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      //unsigned dtInt foundEnd = returnExpression.find_last_of(_AFSIGN);
+      dtUnsInt foundEnd = returnExpression.find_first_of(_AFSIGN, found+1);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -1103,8 +1103,8 @@ namespace dtOO {
       vec2dFunction const * const v2dF = vec2dFunction::ConstDownCast(theAF);
       vec3dFunction const * const v3dF = vec3dFunction::ConstDownCast(theAF);
       
-      std::vector< float > pp; 
-      std::vector< float > argCS;
+      std::vector< dtReal > pp; 
+      std::vector< dtReal > argCS;
       if (!arg.empty()) {
         argCS
         = 
@@ -1167,9 +1167,9 @@ namespace dtOO {
           matchWildcard("%d*Yz", aFOption) 
         ) {
           std::string fDStr = getStringBetween("d", "Y", aFOption);
-          float fD = muParseString(fDStr);
-          std::vector< float > argCSUp(argCS);
-          std::vector< float > argCSDown(argCS);
+          dtReal fD = muParseString(fDStr);
+          std::vector< dtReal > argCSUp(argCS);
+          std::vector< dtReal > argCSDown(argCS);
           dt__forAllIndex(argCS, ii) {
             argCSUp[ii] = floatHandling::boundToRange(argCS[ii] + fD, 0., 1.);
             argCSDown[ii] = floatHandling::boundToRange(argCS[ii] - fD, 0., 1.);
@@ -1178,7 +1178,7 @@ namespace dtOO {
           aFY yyDown(v3dF->Y( v3dF->x_percent( argCSDown ) ));
           
           aFY yy(yyUp);
-          float length = 0.;
+          dtReal length = 0.;
           dt__forAllIndex(yy, ii) {
             yy[ii] = yyUp[ii] - yyDown[ii];
             length = length + yy[ii] * yy[ii];
@@ -1290,14 +1290,14 @@ namespace dtOO {
     // check if there is a analyticGeometry in expression
     // @analyticGeometryName(1. * #constValue#, 2.)@
     //
-    unsigned int found = returnExpression.find(_AGSIGN);
+    dtUnsInt found = returnExpression.find(_AGSIGN);
     while ( found < returnExpression.size() ) {
       //
       // find start and end of function
       //
-      unsigned int foundEnd = returnExpression.find_last_of(_AGSIGN);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find_last_of(_AGSIGN);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -1327,8 +1327,8 @@ namespace dtOO {
       map2dTo3d const * const m2d = map2dTo3d::ConstDownCast(theAG);
       map3dTo3d const * const m3d = map3dTo3d::ConstDownCast(theAG);
       
-      std::vector< float > pp; 
-      std::vector< float > argCS 
+      std::vector< dtReal > pp; 
+      std::vector< dtReal > argCS 
       = 
       muParseCSString( replaceDependencies(arg, cV, aF) );
 
@@ -1846,7 +1846,7 @@ namespace dtOO {
 	) {
     std::string returnExpression;
     returnExpression = expression;
-    unsigned int found;
+    dtUnsInt found;
     
     //
     // check if there is a point in expression
@@ -1857,9 +1857,9 @@ namespace dtOO {
       //
       // find start and end
       //
-      unsigned int foundEnd = returnExpression.find_first_of(_POINTSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find_first_of(_POINTSIGN, found+1);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -1929,11 +1929,11 @@ namespace dtOO {
       //
       // find start and end
       //
-      unsigned int foundEnd 
+      dtUnsInt foundEnd 
       = 
       returnExpression.find_first_of(_VECTORSIGN, found+1);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -1942,7 +1942,7 @@ namespace dtOO {
       // replace in argument
       //
       
-      std::vector< float > argCS;
+      std::vector< dtReal > argCS;
       if ( stringPrimitive::stringContains("(", replaceString) ) {
 //        arg = getStringBetweenAndRemove("(", ")", &replaceString);//replaceDependencies( arg, bC, cV, aF, aG );
         argCS 
@@ -2062,9 +2062,9 @@ namespace dtOO {
       //
       // find start and end
       //
-      unsigned int foundEnd = returnExpression.find_last_of(_DTTSIGN);
-      int replaceStart = found;
-      int replaceEnd = foundEnd-found+1;
+      dtUnsInt foundEnd = returnExpression.find_last_of(_DTTSIGN);
+      dtInt replaceStart = found;
+      dtInt replaceEnd = foundEnd-found+1;
       std::string replaceString 
       = 
       returnExpression.substr(replaceStart+1, replaceEnd-2);
@@ -2092,7 +2092,7 @@ namespace dtOO {
       = 
       bC->constPtrTransformerContainer()->get(TLabel); 
       
-      std::vector< float > argVec 
+      std::vector< dtReal > argVec 
       = 
       muParseCSString( replaceDependencies(arg, cV, aF, aG) );
         
@@ -2143,7 +2143,7 @@ namespace dtOO {
     );
   }
 
-  float dtXmlParserBase::getAttributeFloatMuParse( 
+  dtReal dtXmlParserBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV
@@ -2153,7 +2153,7 @@ namespace dtOO {
     );
   }
   
-  float dtXmlParserBase::getAttributeFloatMuParse(
+  dtReal dtXmlParserBase::getAttributeFloatMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
@@ -2164,12 +2164,12 @@ namespace dtOO {
     );
   }
   
-  float dtXmlParserBase::getAttributeFloatMuParse(
+  dtReal dtXmlParserBase::getAttributeFloatMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
     aFPtrVec const * const aF,
-    float const & def
+    dtReal const & def
   ) {
     if ( hasAttribute(attName, element) ) {
       return getAttributeFloatMuParse( attName, element, cV, aF );
@@ -2177,7 +2177,7 @@ namespace dtOO {
     else return def;
   }    
 
-  int dtXmlParserBase::getAttributeIntMuParse(
+  dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV
@@ -2187,7 +2187,7 @@ namespace dtOO {
     );
   }  
   
-  int dtXmlParserBase::getAttributeIntMuParse(
+  dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
@@ -2198,7 +2198,7 @@ namespace dtOO {
     );
   }
 
-  int dtXmlParserBase::getAttributeIntMuParse(
+  dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
@@ -2210,12 +2210,12 @@ namespace dtOO {
     );
   }
   
-  int dtXmlParserBase::getAttributeIntMuParse(
+  dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
     aFPtrVec const * const aF,
-    int const & def
+    dtInt const & def
   ) {
     if ( hasAttribute(attName, element) ) {
       return getAttributeIntMuParse( attName, element, cV, aF );
@@ -2223,7 +2223,7 @@ namespace dtOO {
     else return def;
   }  
   
-	std::vector< float > dtXmlParserBase::getAttributeFloatVectorMuParse( 
+	std::vector< dtReal > dtXmlParserBase::getAttributeFloatVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
 		cVPtrVec const * const cV,
@@ -2231,7 +2231,7 @@ namespace dtOO {
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
-		std::vector< float > floatVec(attVec.size(), 0.);
+		std::vector< dtReal > floatVec(attVec.size(), 0.);
 		int counter = 0;
 		for ( auto &el : attVec ) {		
 			floatVec[counter] = muParseString( replaceDependencies(el, cV, aF) );
@@ -2246,14 +2246,14 @@ namespace dtOO {
 		cVPtrVec const * const cV,
 		aFPtrVec const * const aF 
 	) {
-		std::vector< float > floatVec
+		std::vector< dtReal > floatVec
     =
     getAttributeFloatVectorMuParse(attName, element, cV, aF);
     
     return std::vector< double >( floatVec.begin(), floatVec.end() );
 	}  
 
-	std::vector< int > dtXmlParserBase::getAttributeIntVectorMuParse( 
+	std::vector< dtInt > dtXmlParserBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
 		cVPtrVec const * const cV,
@@ -2261,7 +2261,7 @@ namespace dtOO {
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
-		std::vector< int > intVec(attVec.size(), 0.);
+		std::vector< dtInt > intVec(attVec.size(), 0.);
 		int counter = 0;
 		for ( auto &el : attVec ) {		
 			intVec[counter] = muParseStringInt( replaceDependencies(el, cV, aF) );
@@ -2270,7 +2270,7 @@ namespace dtOO {
 		return intVec;
 	}
   
-	std::vector< int > dtXmlParserBase::getAttributeIntVectorMuParse( 
+	std::vector< dtInt > dtXmlParserBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
 		cVPtrVec const * const cV,
@@ -2279,7 +2279,7 @@ namespace dtOO {
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
-		std::vector< int > intVec(attVec.size(), 0.);
+		std::vector< dtInt > intVec(attVec.size(), 0.);
 		int counter = 0;
 		for ( auto &el : attVec ) {		
 			intVec[counter] = muParseStringInt( replaceDependencies(el, cV, aF, aG) );
@@ -2288,7 +2288,7 @@ namespace dtOO {
 		return intVec;
 	}
   
-  float dtXmlParserBase::getAttributeFloatMuParse( 
+  dtReal dtXmlParserBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
     cVPtrVec const * const cV,
@@ -2427,15 +2427,15 @@ namespace dtOO {
       //
       // create coordinates
       //
-      float cX = getAttributeFloatMuParse("x", *toBuildP, cV, aF, aG);
-      float cY = getAttributeFloatMuParse("y", *toBuildP, cV, aF, aG);
+      dtReal cX = getAttributeFloatMuParse("x", *toBuildP, cV, aF, aG);
+      dtReal cY = getAttributeFloatMuParse("y", *toBuildP, cV, aF, aG);
       //
       // create point
       //
       basicP->push_back( dtPoint2(cX, cY) );
     }
 		else if ( hasAttribute("xy", *toBuildP) ) { 
-      std::vector< float > cXY 
+      std::vector< dtReal > cXY 
       = 
       muParseCSString(
         replaceDependencies( getAttributeStr("xy", *toBuildP), bC, cV, aF, aG )
@@ -2478,7 +2478,7 @@ namespace dtOO {
             //
             // create coordinates
             //
-            float pX 
+            dtReal pX 
             = 
             muParseString(
               replaceDependencies(
@@ -2487,7 +2487,7 @@ namespace dtOO {
                 aF
               )
             );  
-            float pY 
+            dtReal pY 
             = 
             muParseString(
               replaceDependencies(
@@ -2533,7 +2533,7 @@ namespace dtOO {
           && hasAttribute("parameter_percent_function", *toBuildP)
           && hasAttribute("number_points", *toBuildP) 
         ) {
-          int nPoints
+          dtInt nPoints
 				  = 
 					getAttributeIntMuParse("number_points", *toBuildP, cV, aF);
           
@@ -2551,8 +2551,8 @@ namespace dtOO {
 
           //get parameter range of function
           for (int ii=0;ii<nPoints;ii++) {
-            dt__toFloat(float iiF, ii);
-						dt__toFloat(float nPointsF, nPoints);
+            dt__toFloat(dtReal iiF, ii);
+						dt__toFloat(dtReal nPointsF, nPoints);
             // get value of scaFunction
             // pick points out of range
             basicP->push_back( 
@@ -2585,7 +2585,7 @@ namespace dtOO {
 					}
 				}
 
-				for ( int ii=0; ii<fields.size(); ii++ ) {
+				for ( dtInt ii=0; ii<fields.size(); ii++ ) {
 					if ( fields[ii].size() != 2 ) {
 						dt__throw(
               createBasic(),
@@ -2643,12 +2643,12 @@ namespace dtOO {
     cVPtrVec const * const cV,
     aFPtrVec const * const aF, 
     aGPtrVec const * const aG,
-    std::vector< float > * basicP
+    std::vector< dtReal > * basicP
   ) {
     dt__throwIf(!is("float", *toBuildP), createBasic());    
     
     if ( hasAttribute("value", *toBuildP) ) {
-      float val = getAttributeFloatMuParse("value", *toBuildP, cV, aF, aG);
+      dtReal val = getAttributeFloatMuParse("value", *toBuildP, cV, aF, aG);
       basicP->push_back( val );
     }
     else dt__throwUnexpected(createBasic());

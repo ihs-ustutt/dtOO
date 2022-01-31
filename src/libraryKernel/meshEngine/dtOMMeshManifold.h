@@ -1,6 +1,8 @@
 #ifndef DTOMMESHMANIFOLD_H
 #define	DTOMMESHMANIFOLD_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "dtOMMesh.h"
 
@@ -11,23 +13,23 @@ namespace dtOO {
     dtOMMeshManifold(dtOMMesh const & om, omVertexH const & vH);
     dtOMMeshManifold( dtOMMeshManifold const & orig);
     virtual ~dtOMMeshManifold();
-    float minDihedralAngle( void ) const;
-    float maxDihedralAngle( void ) const;
+    dtReal minDihedralAngle( void ) const;
+    dtReal maxDihedralAngle( void ) const;
     bool divideable( void ) const;
     bool closed( void ) const;
     virtual void update( void );
     dtOMMeshManifold divide(void);
-    std::vector< dtOMMeshManifold > divide( float const & angle );
+    std::vector< dtOMMeshManifold > divide( dtReal const & angle );
     dtVector3 normal( void ) const;
     MVertex * centerMVertex( void ) const;
   private:
     dtOMMeshManifold subractManifold(omEdgeH const & from, omEdgeH const & to);
   private:
-    std::vector< float > _dihedralAngleV;
+    std::vector< dtReal > _dihedralAngleV;
 		std::vector< bool > _isBoundary;
     omVertexH _centerVertex;
-    int _nTri;
-    int _nQuad;
+    dtInt _nTri;
+    dtInt _nQuad;
   };
 }
 #endif	/* DTOMMESHMANIFOLD_H */

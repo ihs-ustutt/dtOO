@@ -26,26 +26,26 @@ namespace dtOO {
 		return new dtOCCBSplineCurve( OCCRef() );
 	}
 	
-  int dtOCCBSplineCurve::order( void ) const {
+  dtInt dtOCCBSplineCurve::order( void ) const {
     return static_cast<int>(_ptr->Degree());		
 	}
 	
-  int dtOCCBSplineCurve::nControlPoints( void ) const {
+  dtInt dtOCCBSplineCurve::nControlPoints( void ) const {
 		return static_cast<int>(_ptr->NbPoles());		
 	}
 	
-  dtPoint3 dtOCCBSplineCurve::controlPoint( int const nPoint ) const {
+  dtPoint3 dtOCCBSplineCurve::controlPoint( dtInt const nPoint ) const {
 		Standard_Integer nPI = static_cast<Standard_Integer>(nPoint+1);		
 		gp_Pnt pp = _ptr->Pole(nPI);
 		
 		return dtPoint3(
-						static_cast<float>(pp.Coord(1)), 
-						static_cast<float>(pp.Coord(2)), 
-						static_cast<float>(pp.Coord(3))
+						static_cast<dtReal>(pp.Coord(1)), 
+						static_cast<dtReal>(pp.Coord(2)), 
+						static_cast<dtReal>(pp.Coord(3))
 		);		
 	}
 	
-  void dtOCCBSplineCurve::setControlPoint( int const nPoint, dtPoint3 const point ) {
+  void dtOCCBSplineCurve::setControlPoint( dtInt const nPoint, dtPoint3 const point ) {
 		Standard_Integer nPI = static_cast<Standard_Integer>(nPoint+1);		
 		gp_Pnt pp(
 			static_cast<Standard_Real>(point.x()), 

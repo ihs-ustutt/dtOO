@@ -1,5 +1,6 @@
 SET(HEADERS
   mainConceptFwd.h
+  dtOOTypeDef.h
   xmlHeaven/dtXmlParserBase.h
   xmlHeaven/qtXmlBase.h
   xmlHeaven/qtXmlPrimitive.h

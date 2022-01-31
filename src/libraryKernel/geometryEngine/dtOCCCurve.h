@@ -1,6 +1,8 @@
 #ifndef DTOCCCURVE_H
 #define	DTOCCCURVE_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/ptrHandling.h>
 #include "dtCurve.h"
 
@@ -18,15 +20,15 @@ namespace dtOO {
     //
     // overload
     //
-    virtual float minPara ( int const & dir ) const;
-    virtual float maxPara ( int const & dir ) const;
-//    virtual int getKind( void ) const;
+    virtual dtReal minPara ( dtInt const & dir ) const;
+    virtual dtReal maxPara ( dtInt const & dir ) const;
+//    virtual dtInt getKind( void ) const;
     virtual bool closed( void ) const;
-    virtual dtPoint3 point( float const uu ) const;
-    virtual dtVector3 firstDer( float const uu) const;
-    virtual float l_u( float const uu ) const;
-    virtual float u_l( float const length ) const;
-    virtual float reparam(dtPoint3 const point) const;
+    virtual dtPoint3 point( dtReal const uu ) const;
+    virtual dtVector3 firstDer( dtReal const uu) const;
+    virtual dtReal l_u( dtReal const uu ) const;
+    virtual dtReal u_l( dtReal const length ) const;
+    virtual dtReal reparam(dtPoint3 const point) const;
     //
     // optional
     //   

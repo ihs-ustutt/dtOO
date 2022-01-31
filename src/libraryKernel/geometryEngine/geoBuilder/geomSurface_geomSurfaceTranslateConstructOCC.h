@@ -1,6 +1,8 @@
 #ifndef GEOMSURFACE_GEOMSURFACETRANSLATECONSTRUCTOCC_H
 #define	GEOMSURFACE_GEOMSURFACETRANSLATECONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

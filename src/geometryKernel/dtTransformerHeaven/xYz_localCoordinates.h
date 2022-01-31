@@ -1,6 +1,8 @@
 #ifndef xYz_localCoordinates_H
 #define	xYz_localCoordinates_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>

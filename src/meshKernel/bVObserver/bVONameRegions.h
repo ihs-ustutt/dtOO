@@ -1,6 +1,8 @@
 #ifndef bVONameRegions_H
 #define	bVONameRegions_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

@@ -1,6 +1,8 @@
 #ifndef dtMeshGRegionWithBoundaryLayer_H
 #define	dtMeshGRegionWithBoundaryLayer_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtOMMesh.h"
@@ -55,22 +57,22 @@ namespace dtOO {
       ) const;
       void adjustThickness( void );
       void determinMinMaxAverageAtSliders(
-        twoDArrayHandling< float > & avSpacing,
-        twoDArrayHandling< float > & maxSpacing,
-        twoDArrayHandling< float > & minSpacing,
-        vectorHandling< float > & avT,
-        vectorHandling< float > & maxT,
-        vectorHandling< float > & minT      
-      );
+        twoDArrayHandling< dtReal > & avSpacing,
+        twoDArrayHandling< dtReal > & maxSpacing,
+        twoDArrayHandling< dtReal > & minSpacing,
+        vectorHandling< dtReal > & avT,
+        vectorHandling< dtReal > & maxT,
+        vectorHandling< dtReal > & minT      
+      ) const;
     private:
-      static int _NORMAL;
-      static int _SLIDER;
-      static int _FIXER;        
-      int _nNormalSmoothingSteps;
-      int _nGrowingSmoothingSteps;
-      float _maxGrowingRatePerStep;
-      float _maxDihedralAngle;
-      std::vector< int > _nSpacingSteps;
+      static dtInt _NORMAL;
+      static dtInt _SLIDER;
+      static dtInt _FIXER;        
+      dtInt _nNormalSmoothingSteps;
+      dtInt _nGrowingSmoothingSteps;
+      dtReal _maxGrowingRatePerStep;
+      dtReal _maxDihedralAngle;
+      std::vector< dtInt > _nSpacingSteps;
       std::vector< bool > _flipNormal;
       //
       // define two surface meshes with fixed, thickness 
@@ -80,15 +82,15 @@ namespace dtOO {
       dtOMMesh _omMoved;      
       dtOMDynamicVertexField< bool > _fixedF;
       dtOMDynamicVertexField< bool > _slidableF;
-      dtOMDynamicVertexField< float > _tF;
+      dtOMDynamicVertexField< dtReal > _tF;
       dtOMDynamicVertexField< dtVector3 > _nF;  
       dtOMDynamicVertexField< bool > _flipNormalF;
       dtOMDynamicVertexField< std::vector< ::MVertex * > > _buddyF;
-      dtOMDynamicVertexField< std::vector< float > > _realSpacing;
-      dtOMDynamicVertexField< int > _faceIndex;
-      dtOMDynamicFaceField< int > _extrudeF;
-      dtOMDynamicFaceField< int > _typeF;
-      dtOMDynamicFaceField< int > _nSpacingStepsF;         
+      dtOMDynamicVertexField< std::vector< dtReal > > _realSpacing;
+      dtOMDynamicVertexField< dtInt > _faceIndex;
+      dtOMDynamicFaceField< dtInt > _extrudeF;
+      dtOMDynamicFaceField< dtInt > _typeF;
+      dtOMDynamicFaceField< dtInt > _nSpacingStepsF;         
       std::vector< std::string > _faceLabel;
       std::vector< std::string > _fixedFaceLabel;
       std::vector< std::string > _slidableFaceLabel;

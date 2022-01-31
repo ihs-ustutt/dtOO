@@ -1,6 +1,8 @@
 #ifndef analyticGeometryToCSV_H
 #define	analyticGeometryToCSV_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -35,7 +37,7 @@ namespace dtOO {
       virtual void apply(void);
     private:
       vectorHandling< analyticGeometry const * > _aG;
-      std::vector< int > _nP;
+      std::vector< dtInt > _nP;
       dtXmlParser const * _parser;
       dtCase const * _case;    
       static bool _registrated;

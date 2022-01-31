@@ -1,6 +1,8 @@
 #ifndef ANALYTICSURFACE_H
 #define	ANALYTICSURFACE_H
 
+#include <dtOOTypeDef.h>
+
 #include "map2dTo3d.h"
 #include <dtLinearAlgebra.h>
 #include <vector>
@@ -23,27 +25,27 @@ namespace dtOO {
       virtual analyticSurface * clone( void ) const;
       virtual analyticSurface * 
       cloneTransformed( dtTransformer const * const dtT ) const;
-      virtual dtPoint3 getPoint(float const & uu, float const & vv) const;      
-      virtual bool isClosed( int const & dir) const;
-      virtual float getMin( int const & dir) const;
-      virtual float getMax( int const & dir) const;
+      virtual dtPoint3 getPoint(dtReal const & uu, dtReal const & vv) const;      
+      virtual bool isClosed( dtInt const & dir) const;
+      virtual dtReal getMin( dtInt const & dir) const;
+      virtual dtReal getMax( dtInt const & dir) const;
       //
       // optional overload
       //
       virtual vectorHandling< renderInterface * > getExtRender( void ) const;
-      virtual dtVector3 normal( float const & uu, float const & vv) const;
+      virtual dtVector3 normal( dtReal const & uu, dtReal const & vv) const;
       virtual std::vector< dtVector3 > firstDer( 
-        float const & uu, float const & vv
+        dtReal const & uu, dtReal const & vv
       ) const;
       virtual std::vector< dtVector3 > secondDer( 
-        float const & uu, float const & vv
+        dtReal const & uu, dtReal const & vv
       ) const;
       virtual dtPoint2 reparamOnFace(dtPoint3 const & ppXYZ) const;
       virtual map1dTo3d * segmentConstU(
-        float const & uu, float const & p0, float const & p1
+        dtReal const & uu, dtReal const & p0, dtReal const & p1
       ) const;
       virtual map1dTo3d * segmentConstV(
-        float const & vv, float const & p0, float const & p1
+        dtReal const & vv, dtReal const & p0, dtReal const & p1
       ) const;
       virtual map2dTo3d * segmentRectangle(
         dtPoint2 const & p0, dtPoint2 const & p1
@@ -55,7 +57,7 @@ namespace dtOO {
       dtSurface * ptrDtSurface( void ) const;
       dtSurface const * ptrConstDtSurface( void ) const; 
 
-      virtual void offsetNormal( float const nn );
+      virtual void offsetNormal( dtReal const nn );
     private:
       dt__pH(dtSurface) _dtS;
   };

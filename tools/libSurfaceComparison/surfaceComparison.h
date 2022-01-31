@@ -23,8 +23,8 @@ namespace dtOO {
     double UAbl_R ( double const * xx ) const ;
     double VAbl_R ( double const * xx ) const ;
     double Euclidean_Distance (double const *Wert) const;
-    int Grinding ( int Teiler);
-    int RootFinding();
+    dtInt Grinding ( dtInt Teiler);
+    dtInt RootFinding();
     surfaceComparison();
     virtual ~surfaceComparison();
     virtual dtPlugin * create( void ) const;    
@@ -48,10 +48,10 @@ namespace dtOO {
     double _tolerance;
     double _result[2];
     double _extension[2];
-    int _printlevel;
-    float _span;
+    dtInt _printlevel;
+    dtReal _span;
     double _auxiliary;
-    int _precision;
+    dtInt _precision;
     
     
     

@@ -41,7 +41,7 @@ namespace dtOO {
 		return _extRenderOption;
 	}  	
 	
-	void renderInterface::geoBoundMin(int const & dir, float const & value) const {
+	void renderInterface::geoBoundMin(int const & dir, dtReal const & value) const {
     switch (dir) {
       case 0:
 				_u[0] = value;
@@ -59,7 +59,7 @@ namespace dtOO {
     }		
 	}	
 
-	float renderInterface::geoBoundMin(int const & dir) const {
+	dtReal renderInterface::geoBoundMin(int const & dir) const {
     switch (dir) {
       case 0:
 				return _u[0];
@@ -74,7 +74,7 @@ namespace dtOO {
     }		
 	}		
 
-	void renderInterface::geoBoundMax(int const & dir, float const & value) const {
+	void renderInterface::geoBoundMax(int const & dir, dtReal const & value) const {
     switch (dir) {
       case 0:
 				_u[1] = value;
@@ -92,7 +92,7 @@ namespace dtOO {
     }		
 	}	
 
-	float renderInterface::geoBoundMax(int const & dir) const {
+	dtReal renderInterface::geoBoundMax(int const & dir) const {
     switch (dir) {
       case 0:
 				return _u[1];
@@ -107,8 +107,8 @@ namespace dtOO {
     }		
 	}			
   
-  float renderInterface::characteristicLength( void ) const {
-    float cL
+  dtReal renderInterface::characteristicLength( void ) const {
+    dtReal cL
     =
     sqrt(
       std::pow(geoBoundMax(0)-geoBoundMin(0), 2.0)

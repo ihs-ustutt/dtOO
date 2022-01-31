@@ -1,6 +1,8 @@
 #ifndef GEOMCURVE2D_IGNOREZ_H
 #define	GEOMCURVE2D_IGNOREZ_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

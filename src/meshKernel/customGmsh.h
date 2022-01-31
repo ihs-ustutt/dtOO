@@ -1,6 +1,8 @@
 #ifndef customGmsh_H
 #define	customGmsh_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "gmshBoundedVolume.h"
 
@@ -26,7 +28,7 @@ namespace dtOO {
         aGPtrVec const * const aG,
         bVPtrVec const * const bV
       );    
-      int handleCustomFace(
+      dtInt handleCustomFace(
         ::QDomElement const & element,
         baseContainer * const bC,
         cVPtrVec const * const cV,
@@ -34,7 +36,7 @@ namespace dtOO {
         aGPtrVec const * const aG,
         bVPtrVec const * const bV      
       );      
-      int handleCustomRegion(
+      dtInt handleCustomRegion(
         ::QDomElement const & element,
         baseContainer * const bC,
         cVPtrVec const * const cV,
@@ -42,7 +44,7 @@ namespace dtOO {
         aGPtrVec const * const aG,
         bVPtrVec const * const bV      
       );
-      int handleAnalyticGeometry(
+      dtInt handleAnalyticGeometry(
         ::QDomElement const & element,
         baseContainer * const bC,
         cVPtrVec const * const cV,

@@ -1,6 +1,8 @@
 #ifndef ANALYTICGEOMETRYCOMPOUND_H
 #define	ANALYTICGEOMETRYCOMPOUND_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include "analyticGeometry.h"
@@ -15,9 +17,9 @@ namespace dtOO {
     virtual ~analyticGeometryCompound();
     virtual analyticGeometryCompound * clone( void ) const;
     virtual analyticGeometryCompound * create( void ) const;
-    funT const & component( int const & pos) const;
+    funT const & component( dtInt const & pos) const;
     funT & addComponent( funT const & toAdd);
-    int nComponents( void ) const;
+    dtInt nComponents( void ) const;
     virtual vectorHandling< renderInterface * > getRender(void) const;
    	virtual bool isCompound( void ) const;
     vectorHandling< analyticGeometry const * > compoundInternal( void ) const;
@@ -53,7 +55,7 @@ namespace dtOO {
   }
     
   template < typename funT >  
-  funT const & analyticGeometryCompound< funT >::component( int const & pos ) const {
+  funT const & analyticGeometryCompound< funT >::component( dtInt const & pos ) const {
     return _vec[pos];
   }
   
@@ -65,7 +67,7 @@ namespace dtOO {
   }
 
   template < typename funT >  
-  int analyticGeometryCompound< funT >::nComponents( void ) const {
+  dtInt analyticGeometryCompound< funT >::nComponents( void ) const {
     return _vec.size();
   }
   

@@ -12,7 +12,7 @@
 
 using namespace dtOO;
 
-int main( int ac, char* av[] ) {
+int main( dtInt ac, char* av[] ) {
   try {
     //
     // options

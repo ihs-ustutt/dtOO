@@ -3,7 +3,54 @@
 _skipBuild=0
 _skipDownload=0
 
-usage() { echo "$0 usage:" && grep " .)\ #" $0; exit 0; }
+usage() { 
+  echo "$0 usage:" && grep " .)\ #" $0
+  exit 0
+}
+
+git_cmake_build() {
+  local _name=$1
+  local _cloneCommand=$2
+  local _checkoutCommand=$3
+  local _cmakeConf=$4
+
+  echo "# Process $_name ..."
+  if [[ "$_dep" == "$_name" || "$_dep" == "all" ]]; then
+    echo "#   ( L ) _name            : $_name"
+    echo "#   ( G ) _dep             : $_dep"
+    echo "#   ( G ) _skipBuild       : $_skipBuild"
+    echo "#   ( G ) _skipDownload    : $_skipDownload"
+    echo "#   ( L ) _checkoutCommand : $_checkoutCommand"
+    echo "#   ( L ) _cmakeConf       : $_cmakeConf"
+  
+    cd $_pwd
+    if [[ "$_skipDownload" == "0" ]]; then
+      rm -rf ${_pwd}/${_name}
+      git clone $_cloneCommand $_name
+      if [ ! -z "$_checkoutCommand" ]; then
+        cd ${_pwd}/${_name}
+        git checkout $_checkoutCommand
+        echo "${_patch}/${_name}.${_checkoutCommand}"
+        if [ -f "${_patch}/${_name}.${_checkoutCommand}" ]; then
+          echo "#     > Apply Patch ${_name}.${_checkoutCommand}"
+          git apply ${_patch}/${_name}.${_checkoutCommand}
+        fi
+      fi
+    fi
+    mkdir -p ${_pwd}/build_$_name
+    if [[ "$_skipBuild" == "0" ]]; then
+      rm -rf ${_pwd}/build_$_name/*
+      cd ${_pwd}/build_$_name
+      cmake $_cmakeConf ../$_name
+      make -j${_nProcs}
+    fi
+    cd ${_pwd}/build_$_name
+    make -j${_nProcs} install
+  else
+    echo "#   ...skip"
+  fi
+}
+
 [ $# -eq 0 ] && usage
 while getopts ":i:n:ho:bd" opt; do
   case ${opt} in
@@ -20,7 +67,7 @@ while getopts ":i:n:ho:bd" opt; do
     n) # Specify the number of build processes (_nProcs)
       _nProcs=$OPTARG
       ;;
-    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab oce cgal muparser root]
+    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab oce cgal muparser root ]
       _dep=$OPTARG
       ;;
     b) # Skip build
@@ -59,54 +106,29 @@ _pwd=`pwd`
 #-------------------------------------------------------------------------------
 # cgns
 #-------------------------------------------------------------------------------
-echo "# Build cgns ..."
-if [[ "$_dep" == "cgns" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf cgns
-    git clone https://github.com/CGNS/CGNS cgns
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd cgns
-    mkdir -p ${_pwd}/build_cgns
-    cd ${_pwd}/build_cgns
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DCGNS_USE_SHARED=ON \
-      -DCGNS_ENABLE_SCOPING=OFF \
-      -DCGNS_ENABLE_HDF5=OFF \
-      -DCGNS_ENABLE_64BIT=ON \
-      ../cgns
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
+git_cmake_build \
+  "cgns" \
+  "https://github.com/CGNS/CGNS" \
+  "" \
+  "\
+  -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+  -DCGNS_USE_SHARED=ON \
+  -DCGNS_ENABLE_SCOPING=OFF \
+  -DCGNS_ENABLE_HDF5=OFF \
+  -DCGNS_ENABLE_64BIT=ON \
+  "
 #-------------------------------------------------------------------------------
 # lapack
 #-------------------------------------------------------------------------------
-echo "# Build lapack ..."
-if [[ "$_dep" == "lapack" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf root
-    git clone https://github.com/Reference-LAPACK/lapack lapack
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    #cd lapack
-    mkdir -p ${_pwd}/build_lapack
-    cd ${_pwd}/build_lapack
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DCBLAS=ON \
-      -DBUILD_SHARED_LIBS=ON \
-      ../lapack
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
+git_cmake_build \
+  "lapack" \
+  "https://github.com/Reference-LAPACK/lapack" \
+  "" \
+  "\
+  -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+  -DCBLAS=ON \
+  -DBUILD_SHARED_LIBS=ON\
+  "
 
 #-------------------------------------------------------------------------------
 # mpfr
@@ -133,258 +155,116 @@ fi
 #-------------------------------------------------------------------------------
 # OpenMesh
 #-------------------------------------------------------------------------------
-echo "# Build OpenMesh ..."
-if [[ "$_dep" == "openmesh" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf OpenMesh-8.1.tar.gz
-    curl -o OpenMesh-8.1.tar.gz https://www.graphics.rwth-aachen.de/media/openmesh_static/Releases/8.1/OpenMesh-8.1.tar.gz 
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    rm -rf ${_pwd}/build_OpenMesh-8.1 ${_pwd}/OpenMesh-8.1
-    tar xfz OpenMesh-8.1.tar.gz
-    mkdir -p ${_pwd}/build_OpenMesh-8.1
-    cd ${_pwd}/build_OpenMesh-8.1
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      ../OpenMesh-8.1
-
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
+git_cmake_build \
+  "openmesh" \
+  "https://gitlab.vci.rwth-aachen.de:9000/OpenMesh/OpenMesh.git" \
+  "OpenMesh-8.1" \
+  "-DCMAKE_INSTALL_PREFIX=${_installPrefix}"
+  
 #-------------------------------------------------------------------------------
 # OpenVolumeMesh
 #-------------------------------------------------------------------------------
-echo "# Build OpenVolumeMesh ..."
-if [[ "$_dep" == "openvolumemesh" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf ${_pwd}/OpenVolumeMesh
-    git clone https://github.com/nTopology/OpenVolumeMesh.git OpenVolumeMesh 
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    rm -rf ${_pwd}/build_OpenVolumeMesh
-    mkdir -p ${_pwd}/build_OpenVolumeMesh
-    cd ${_pwd}/build_OpenVolumeMesh
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DCMAKE_BUILD_TYPE=Release \
-      ../OpenVolumeMesh
-
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
+git_cmake_build \
+  "openvolumemesh" \
+  "https://github.com/nTopology/OpenVolumeMesh.git" \
+  "" \
+  "\
+  -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+  -DCMAKE_BUILD_TYPE=Release \
+  "
 #-------------------------------------------------------------------------------
 # gmsh
 #-------------------------------------------------------------------------------
-echo "# Build gmsh ..."
-if [[ "$_dep" == "gmsh" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf ${_pwd}/gmsh
-    git clone https://gitlab.onelab.info/gmsh/gmsh.git gmsh
-    cd ${_pwd}/gmsh
-    git checkout gmsh_4_8_1
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    rm -rf ${_pwd}/build_gmsh
-    cd ${_pwd}/gmsh
-    if [[ -z "$(git status CMakeLists.txt | grep modified)" ]]; then
-      echo "Modify CMakeLists.txt"
-      sed -e "s%file(GLOB_RECURSE HEADERS Common%file(GLOB_RECURSE HEADERS Parser/*.h Common%g" -i CMakeLists.txt
-    fi
-    if [[ -z "$(git status Geo/GEntity.h | grep modified)" ]]; then
-      echo "Modify Geo/GEntity.h"
-      sed '/^.*GModel \*model.*$/a\ \ void setModel( GModel * model ) { _model = model; }' -i Geo/GEntity.h
-    fi
-    if [[ -z "$(git status Geo/MVertex.h | grep modified)" ]]; then
-      echo "Modify Geo/MVertex.h"
-      sed '/^.*getNum\(\).*const.*$/a\ \ inline void setNum(int const num) { _num = num; }' -i Geo/MVertex.h
-    fi
-    if [[ -z "$(git status Mesh/meshGEdge.cpp | grep modified)" ]]; then
-      echo "Modify Mesh/meshGEdge.cpp"
-      sed -e "s%static void copyMesh%void copyMesh%g" -i Mesh/meshGEdge.cpp
-    fi
-    if [[ -z "$(git status Mesh/meshGFace.cpp | grep modified)" ]]; then
-      echo "Modify Mesh/meshGFace.cpp"
-      sed -e "s%static void copyMesh%void copyMesh%g" -i Mesh/meshGFace.cpp
-    fi
-
-    mkdir -p ${_pwd}/build_gmsh
-    cd ${_pwd}/build_gmsh
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DENABLE_BUILD_SHARED=ON \
-      -DENABLE_PRIVATE_API=ON \
-      -DENABLE_SOLVER=OFF \
-      -DENABLE_GETDP=OFF \
-      -DENABLE_GMM=OFF \
-      -DENABLE_GMP=OFF \
-      -DENABLE_KBIPACK=OFF \
-      -DENABLE_METIS=OFF \
-      -DENABLE_MPEG_ENCODE=OFF \
-      -DENABLE_ONELAB_METAMODEL=OFF \
-      -DENABLE_PRO=OFF \
-      -DENABLE_DOMHEX=OFF \
-      -DENABLE_HXT=OFF \
-      -DENABLE_CGNS=OFF \
-      -DENABLE_MATHEX=OFF \
-      -DENABLE_MED=OFF \
-      -DENABLE_MMG=OFF \
-      -DENABLE_OCC=OFF \
-      -DENABLE_OCC_CAF=OFF \
-      -DENABLE_QUADTRI=OFF \
-      -DBUILD_TESTING=OFF \
-      ../gmsh
-# FLTK, POST, PLUGINS, ONELAB necessary for GUI
-#      -DENABLE_FLTK=OFF \
-#      -DENABLE_POST=OFF \
-#      -DENABLE_PLUGINS=OFF \
-#      -DENABLE_ONELAB=OFF \
-
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
+git_cmake_build \
+  "gmsh" \
+  "https://gitlab.onelab.info/gmsh/gmsh.git" \
+  "gmsh_4_9_3" \
+  "\
+  -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+  -DENABLE_BUILD_SHARED=ON \
+  -DENABLE_PRIVATE_API=ON \
+  -DENABLE_SOLVER=OFF \
+  -DENABLE_GETDP=OFF \
+  -DENABLE_GMM=OFF \
+  -DENABLE_GMP=OFF \
+  -DENABLE_KBIPACK=OFF \
+  -DENABLE_METIS=OFF \
+  -DENABLE_MPEG_ENCODE=OFF \
+  -DENABLE_ONELAB_METAMODEL=OFF \
+  -DENABLE_PRO=OFF \
+  -DENABLE_DOMHEX=OFF \
+  -DENABLE_HXT=OFF \
+  -DENABLE_CGNS=OFF \
+  -DENABLE_MATHEX=OFF \
+  -DENABLE_MED=OFF \
+  -DENABLE_MMG=OFF \
+  -DENABLE_OCC=OFF \
+  -DENABLE_OCC_CAF=OFF \
+  -DENABLE_QUADTRI=OFF \
+  -DENABLE_QUADMESHINGTOOLS=OFF \
+  -DENABLE_WINSLOWUNTANGLER=OFF \
+  -DBUILD_TESTING=OFF \
+  "
+  
 #-------------------------------------------------------------------------------
 # moab
 #-------------------------------------------------------------------------------
-echo "# Build moab ..."
-if [[ "$_dep" == "moab" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf moab 
-    git clone https://bitbucket.org/fathomteam/moab.git moab
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd ${_pwd}/moab
-    if [[ -z "$(git status src/io/ReadCGNS.cpp | grep modified)" ]]; then
-      echo "Modify src/io/ReadCGNS.cpp"
-      patch src/io/ReadCGNS.cpp < ${_patch}/patch.ReadCGNS.cpp
-    fi
-    mkdir -p ${_pwd}/build_moab
-    cd ${_pwd}/build_moab
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DENABLE_CGM=OFF \
-      -DENABLE_CGNS=ON \
-      -DCMAKE_CXX_FLAGS="-I${_installPrefix}/include" \
-      -DCMAKE_EXE_LINKER_FLAGS="-L${_installPrefix}/lib -lcgns" \
-      -DCMAKE_SHARED_LINKER_FLAGS="-L${_installPrefix}/lib -lcgns" \
-      ../moab
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
+git_cmake_build \
+  "moab" \
+  "https://bitbucket.org/fathomteam/moab.git" \
+  "" \
+  "\
+  -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+  -DENABLE_CGM=OFF \
+  -DENABLE_CGNS=ON \
+  -DCMAKE_CXX_FLAGS=-I${_installPrefix}/include \
+  -DCMAKE_EXE_LINKER_FLAGS=${_installPrefix}/lib/libcgns.so \
+  -DCMAKE_SHARED_LINKER_FLAGS=${_installPrefix}/lib/libcgns.so \
+  "
+  
 #-------------------------------------------------------------------------------
 # oce
 #-------------------------------------------------------------------------------
-echo "# Build oce ..."
-if [[ "$_dep" == "oce" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf oce
-    git clone https://github.com/tpaviot/oce oce
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd ${_pwd}/oce
-    git checkout OCE-0.18.3
-#    if [[ -z "$(git status src/io/ReadCGNS.cpp | grep modified)" ]]; then
-#      echo "Modify src/io/ReadCGNS.cpp"
-#      patch src/io/ReadCGNS.cpp < ${_patch}/patch.ReadCGNS.cpp
-#    fi
-    mkdir -p ${_pwd}/build_oce
-    cd ${_pwd}/build_oce
-    cmake \
-      -DOCE_INSTALL_PREFIX=${_installPrefix} \
-      ../oce
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
+git_cmake_build \
+  "oce" \
+  "https://github.com/tpaviot/oce" \
+  "OCE-0.18.3" \
+  "-DOCE_INSTALL_PREFIX=${_installPrefix}"
+  
 #-------------------------------------------------------------------------------
 # cgal
 #-------------------------------------------------------------------------------
-echo "# Build cgal ..."
-if [[ "$_dep" == "cgal" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf cgal
-    git clone https://github.com/CGAL/cgal cgal
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd cgal
-    git checkout v4.14.3
-    mkdir -p ${_pwd}/build_cgal
-    cd ${_pwd}/build_cgal
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DMPFR_INCLUDE_DIR=${_installPrefix}/include \
-      -DMPFR_LIBRARIES=${_installPrefix}/lib64 \
-      ../cgal
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
+git_cmake_build \
+  "cgal" \
+  "https://github.com/CGAL/cgal" \
+  "v4.14.3" \
+  "\
+  -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DMPFR_INCLUDE_DIR=${_installPrefix}/include \
+  -DMPFR_LIBRARIES=${_installPrefix}/lib64 \
+  "
+  
 #-------------------------------------------------------------------------------
 # muparser
 #-------------------------------------------------------------------------------
-echo "# Build muparser ..."
-if [[ "$_dep" == "muparser" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf muparser
-    git clone https://github.com/beltoforion/muparser muparser
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd ${_pwd}/muparser
-    mkdir -p ${_pwd}/build_muparser
-    cd ${_pwd}/build_muparser
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      ../muparser
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
-
+git_cmake_build \
+  "muparser" \
+  "https://github.com/beltoforion/muparser" \
+  "" \
+  "-DCMAKE_INSTALL_PREFIX=${_installPrefix}"
+  
 #-------------------------------------------------------------------------------
 # root
 #-------------------------------------------------------------------------------
-echo "# Build root ..."
-if [[ "$_dep" == "root" || "$_dep" == "all" ]]; then
-  cd $_pwd
-  if [[ "$_skipDownload" == "0" ]]; then
-    rm -rf root
-    git clone https://github.com/root-project/root root
-  fi
-  if [[ "$_skipBuild" == "0" ]]; then
-    cd ${_pwd}/root
-    mkdir -p ${_pwd}/build_root
-    cd ${_pwd}/build_root
-    cmake \
-      -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-      -Dminuit2=ON \
-      -DCMAKE_BUILD_TYPE=Release \
-      ../root
-    make -j${_nProcs} install
-  fi
-else
-  echo "# ...skip"
-fi
+git_cmake_build \
+  "root" \
+  "https://github.com/root-project/root" \
+  "latest-stable" \
+  "\
+   -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+   -Dminuit2=ON \
+   -DCMAKE_BUILD_TYPE=Release \
+   -Dbuiltin_openssl=TRUE \
+   -Dbuiltin_xrootd=TRUE \
+  "

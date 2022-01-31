@@ -61,7 +61,7 @@ namespace dtOO {
     logContainer< bVONameRegions > logC(logINFO, "preUpdate()");
     if ( _regionLabel.empty() ) {
       logC() << "Apply automatic naming" << std::endl;
-      int cc = 0;
+      dtInt cc = 0;
       dt__forAllRefAuto(gm->regions(), aReg) {
         if ( gm->getPhysicalString(aReg) == "" ) {
           gm->tagPhysical( aReg, "R_"+stringPrimitive::intToString(cc) );
@@ -71,15 +71,15 @@ namespace dtOO {
       }      
     }
     else {
-      int counter = 0;
+      dtInt counter = 0;
       dt__forAllRefAuto(gm->regions(), aReg) {
-        std::vector< int > pInt = aReg->getPhysicalEntities();
+        std::vector< dtInt > pInt = aReg->getPhysicalEntities();
         dt__throwIf(pInt.size()!=0, preUpdate());
 
         std::string newL = _regionLabel[counter];
 
         if (newL != "") {
-          int pTag = aReg->model()->setPhysicalName(newL, 3, 0);
+          dtInt pTag = aReg->model()->setPhysicalName(newL, 3, 0);
           aReg->addPhysicalEntity(pTag);
           dtGmshModel::intGEntityVMap map;
           gm->getPhysicalGroups(3, map);

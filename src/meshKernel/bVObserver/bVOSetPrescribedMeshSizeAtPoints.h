@@ -1,6 +1,8 @@
 #ifndef bVOSetPrescribedMeshSizeAtPoints_H
 #define	bVOSetPrescribedMeshSizeAtPoints_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
@@ -27,7 +29,7 @@ namespace dtOO {
       );    
       virtual void preUpdate( void );
     private:
-      std::vector< float > _meshSize;
+      std::vector< dtReal > _meshSize;
   };
 }
 #endif	/* bVOSetPrescribedMeshSizeAtPoints_H */

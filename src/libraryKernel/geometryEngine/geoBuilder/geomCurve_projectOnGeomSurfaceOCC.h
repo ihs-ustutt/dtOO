@@ -1,6 +1,8 @@
 #ifndef GEOMCURVE_PROJECTONGEOMSURFACEOCC_H
 #define	GEOMCURVE_PROJECTONGEOMSURFACEOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

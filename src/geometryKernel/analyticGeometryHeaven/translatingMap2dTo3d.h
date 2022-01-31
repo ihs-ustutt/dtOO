@@ -1,6 +1,8 @@
 #ifndef translatingMap2dTo3d_H
 #define	translatingMap2dTo3d_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include "map3dTo3d.h"
 #include <logMe/dtMacros.h>
@@ -22,15 +24,15 @@ namespace dtOO {
     virtual translatingMap2dTo3d * cloneTransformed( 
       dtTransformer const * const dtT 
     ) const;       
-    virtual bool isClosed( int const & dir) const;
-    virtual float getMin( int const & dir) const;
-    virtual float getMax( int const & dir) const;
+    virtual bool isClosed( dtInt const & dir) const;
+    virtual dtReal getMin( dtInt const & dir) const;
+    virtual dtReal getMax( dtInt const & dir) const;
     virtual dtPoint3 getPoint( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const; 
-	  virtual map2dTo3d * segmentConstU( float const & uu ) const;
-	  virtual map2dTo3d * segmentConstV( float const & vv ) const;
-  	virtual map2dTo3d * segmentConstW( float const & ww ) const;
+	  virtual map2dTo3d * segmentConstU( dtReal const & uu ) const;
+	  virtual map2dTo3d * segmentConstV( dtReal const & vv ) const;
+  	virtual map2dTo3d * segmentConstW( dtReal const & ww ) const;
     virtual std::string dumpToString( void ) const;
     map2dTo3d const & constRefMap2dTo3d( void ) const;
     dtVector3 const & translationAxis( void ) const;

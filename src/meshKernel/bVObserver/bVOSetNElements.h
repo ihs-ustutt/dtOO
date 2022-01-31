@@ -1,6 +1,8 @@
 #ifndef bVOSetNElements_H
 #define	bVOSetNElements_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
@@ -29,7 +31,7 @@ namespace dtOO {
     private:
       std::vector< std::string > _faceLabel;
       std::vector< std::string > _regionLabel;
-      std::vector< int > _nE;     
+      std::vector< dtInt > _nE;     
   };
 }
 #endif	/* bVOSetNElements_H */

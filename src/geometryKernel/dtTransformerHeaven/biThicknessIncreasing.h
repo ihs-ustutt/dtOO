@@ -1,6 +1,8 @@
 #ifndef BITHICKNESSINCREASING_H
 #define	BITHICKNESSINCREASING_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 
@@ -25,7 +27,7 @@ namespace dtOO {
       );
       virtual aFPtrVec 
       apply( aFPtrVec const * const sFunP ) const;  
-      virtual void handleInt(std::string const name, int const value);
+      virtual void handleInt(std::string const name, dtInt const value);
       virtual void handleAnalyticFunction(
         std::string const name, analyticFunction const * value
       );
@@ -33,8 +35,8 @@ namespace dtOO {
     private:
       scaOneD const * _tD[2];
       scaOneD const * _para;
-      int _nPointsOne;
-      int _splineOrder;
+      dtInt _nPointsOne;
+      dtInt _splineOrder;
       bool _reverse;
       static bool _registrated;    
   };

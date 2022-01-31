@@ -1,6 +1,8 @@
 #ifndef analyticFunctionCompound_H
 #define	analyticFunctionCompound_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include "analyticFunction.h"
@@ -16,7 +18,7 @@ namespace dtOO {
     analyticFunctionCompound( 
       funT const & orig,
       vectorHandling< analyticFunction * > const vec, 
-      std::map< int, int > const pos_tag
+      std::map< int, dtInt > const pos_tag
     );    
     virtual ~analyticFunctionCompound();
     virtual analyticFunctionCompound * clone( void ) const;
@@ -24,21 +26,21 @@ namespace dtOO {
     virtual analyticFunctionCompound * create( void ) const;     
     void trojanHorse( 
       vectorHandling< analyticFunction * > const & vec, 
-      std::map< int, int > const & pos_tag
+      std::map< int, dtInt > const & pos_tag
     );
-    funT const & component( int const & pos) const;
+    funT const & component( dtInt const & pos) const;
     funT & addComponent( funT const & toAdd);
-    int nComponents( void ) const;
-    funT const & componentFromTag( int const & tag) const;
-    bool hasTag( int const & tag) const;
+    dtInt nComponents( void ) const;
+    funT const & componentFromTag( dtInt const & tag) const;
+    bool hasTag( dtInt const & tag) const;
     virtual vectorHandling< renderInterface * > getRender( void ) const;
    	virtual bool isCompound( void ) const;
     virtual vectorHandling< analyticFunction * > const & vecRef( void ) const;
-    virtual std::map< int, int > const & mapRef( void ) const;
+    virtual std::map< int, dtInt > const & mapRef( void ) const;
     bool isTrojan( void ) const;
   private:
     vectorHandling< analyticFunction * > _vec;
-    std::map< int, int > _pos_tag;
+    std::map< int, dtInt > _pos_tag;
     bool _trojan;
   };  
   
@@ -69,7 +71,7 @@ namespace dtOO {
   analyticFunctionCompound< funT >::analyticFunctionCompound(
     funT const & orig,
     vectorHandling< analyticFunction * > const vec, 
-    std::map< int, int > const pos_tag
+    std::map< int, dtInt > const pos_tag
   ) : funT( orig ) {
     dt__forAllRefAuto( vec, aFun ) _vec.push_back( aFun->clone() );
     dt__forAllRefAuto( pos_tag, aPair ) {
@@ -104,17 +106,17 @@ namespace dtOO {
   void 
   analyticFunctionCompound< funT >::trojanHorse( 
     vectorHandling< analyticFunction * > const & vec, 
-    std::map< int, int > const & pos_tag
+    std::map< int, dtInt > const & pos_tag
   ) {
     dt__throwIf( !_vec.empty() || !_pos_tag.empty(),  trojanHorse() );
     _vec = const_cast< vectorHandling< analyticFunction * > >(vec);
-    _pos_tag = const_cast< std::map< int, int > >(pos_tag);
+    _pos_tag = const_cast< std::map< int, dtInt > >(pos_tag);
     _trojan = true;
   }
     
   template < typename funT >  
   funT const & 
-  analyticFunctionCompound< funT >::component( int const & pos ) const {
+  analyticFunctionCompound< funT >::component( dtInt const & pos ) const {
     return *( funT::ConstDownCast( _vec[pos] ) );
   }
   
@@ -122,7 +124,7 @@ namespace dtOO {
   funT & analyticFunctionCompound< funT >::addComponent(funT const & toAdd ) {
     _vec.push_back( toAdd.clone() );
     
-    int tag = 0;
+    dtInt tag = 0;
     if ( !_pos_tag.empty() ) tag = _pos_tag.rbegin()->first + 1;
     _pos_tag[ tag ] = _vec.size()-1;    
 
@@ -130,18 +132,18 @@ namespace dtOO {
   }
 
   template < typename funT >  
-  int analyticFunctionCompound< funT >::nComponents( void ) const {
+  dtInt analyticFunctionCompound< funT >::nComponents( void ) const {
     return _vec.size();
   }
   
   template < typename funT >  
   funT const & 
-  analyticFunctionCompound< funT >::componentFromTag( int const & tag) const {
+  analyticFunctionCompound< funT >::componentFromTag( dtInt const & tag) const {
     return component( _pos_tag.at( tag ) );
   }
   
   template < typename funT >  
-  bool analyticFunctionCompound< funT >::hasTag( int const & tag) const {
+  bool analyticFunctionCompound< funT >::hasTag( dtInt const & tag) const {
     return ( _pos_tag.find( tag ) != _pos_tag.end() );
   }
   
@@ -169,7 +171,7 @@ namespace dtOO {
 	}    
 
   template < typename funT >    
-	std::map< int, int > const &
+	std::map< int, dtInt > const &
   analyticFunctionCompound< funT >::mapRef( void ) const {
     return _pos_tag;
 	}  

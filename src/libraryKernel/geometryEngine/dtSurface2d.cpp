@@ -15,19 +15,19 @@ namespace dtOO {
 		
 	}
 	
-	float dtSurface2d::minU ( void ) const {
+	dtReal dtSurface2d::minU ( void ) const {
 	  return minPara(0);	
 	}
 	
-	float dtSurface2d::maxU ( void ) const {
+	dtReal dtSurface2d::maxU ( void ) const {
 		return maxPara(0);
 	}
 	
-	float dtSurface2d::minV ( void ) const {
+	dtReal dtSurface2d::minV ( void ) const {
 		return minPara(1);
 	}
 	
-	float dtSurface2d::maxV ( void ) const {
+	dtReal dtSurface2d::maxV ( void ) const {
 		return maxPara(1);
 	}
 	
@@ -39,24 +39,24 @@ namespace dtOO {
 		return closed(1);
 	}
 	
-	float dtSurface2d::u_uPercent(float const percent) const {
+	dtReal dtSurface2d::u_uPercent(dtReal const percent) const {
     return minPara(0) + percent * (maxPara(0)-minPara(0));
 	}
 
-	float dtSurface2d::uPercent_u(float const uu) const {
-    float uMin = minPara(0);
-		float uMax = maxPara(0);
+	dtReal dtSurface2d::uPercent_u(dtReal const uu) const {
+    dtReal uMin = minPara(0);
+		dtReal uMax = maxPara(0);
 		
 		return (uu-uMin)/(uMax-uMin);
 	}
 	
-	float dtSurface2d::v_vPercent(float const percent) const {
+	dtReal dtSurface2d::v_vPercent(dtReal const percent) const {
     return minPara(1) + percent * (maxPara(1)-minPara(1));
 	}
 
-	float dtSurface2d::vPercent_v(float const vv) const {
-    float vMin = minPara(1);
-		float vMax = maxPara(1);
+	dtReal dtSurface2d::vPercent_v(dtReal const vv) const {
+    dtReal vMin = minPara(1);
+		dtReal vMax = maxPara(1);
 		
 		return (vv-vMin)/(vMax-vMin);
 	}
@@ -65,31 +65,31 @@ namespace dtOO {
 		return point( pUV.x(), pUV.y() );
 	}
 	
-	dtPoint2 dtSurface2d::pointPercent(float const uP, float const vP) const {
+	dtPoint2 dtSurface2d::pointPercent(dtReal const uP, dtReal const vP) const {
 		return point(u_uPercent(uP), v_vPercent(vP));
 	}
 	
-  dtVector2 dtSurface2d::firstDerU( float const uu, float const vv) const {
+  dtVector2 dtSurface2d::firstDerU( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector2> der = firstDer(uu, vv);
 		return der[0];
 	}
 	
-  dtVector2 dtSurface2d::firstDerV( float const uu, float const vv) const {
+  dtVector2 dtSurface2d::firstDerV( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector2> der = firstDer(uu, vv);
 		return der[1];		
 	}
 	
-  dtVector2 dtSurface2d::secondDerUU( float const uu, float const vv) const {
+  dtVector2 dtSurface2d::secondDerUU( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector2> der = secondDer(uu, vv);
 		return der[0];		
 	}
 	
-  dtVector2 dtSurface2d::secondDerVV( float const uu, float const vv) const {
+  dtVector2 dtSurface2d::secondDerVV( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector2> der = secondDer(uu, vv);
 		return der[2];				
 	}
 	
-  dtVector2 dtSurface2d::secondDerUV( float const uu, float const vv) const {
+  dtVector2 dtSurface2d::secondDerUV( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector2> der = secondDer(uu, vv);
 		return der[1];				
 	}
@@ -106,23 +106,23 @@ namespace dtOO {
 		return nControlPoints(1);
 	}
 	
-	dtCurve2d * dtSurface2d::segmentConstU( float const uu) const {
+	dtCurve2d * dtSurface2d::segmentConstU( dtReal const uu) const {
 		return segmentConstU( uu, minPara(1), maxPara(1) );
 	}
 	
-	dtCurve2d * dtSurface2d::segmentConstV( float const vv) const {
+	dtCurve2d * dtSurface2d::segmentConstV( dtReal const vv) const {
 		return segmentConstV( vv, minPara(0), maxPara(0) );
 	}
 	
-	dtCurve2d * dtSurface2d::segmentConstUPercent( float const uu) const {
+	dtCurve2d * dtSurface2d::segmentConstUPercent( dtReal const uu) const {
 		return segmentConstU( u_uPercent(uu) );
 	}
 	
-	dtCurve2d * dtSurface2d::segmentConstVPercent( float const vv) const {
+	dtCurve2d * dtSurface2d::segmentConstVPercent( dtReal const vv) const {
 		return segmentConstV( v_vPercent(vv) );
 	}
 	
-	dtCurve2d * dtSurface2d::segmentConstUPercent( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve2d * dtSurface2d::segmentConstUPercent( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const {
 		return segmentConstU( 
 		  u_uPercent(uu), 
 			v_vPercent(vvMin), 
@@ -130,7 +130,7 @@ namespace dtOO {
 	  );
 	}
 	
-	dtCurve2d * dtSurface2d::segmentConstVPercent( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve2d * dtSurface2d::segmentConstVPercent( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const {
 		return segmentConstV( 
 		  v_vPercent(vv), 
 			u_uPercent(uuMin),
@@ -146,15 +146,15 @@ namespace dtOO {
 	//
 	//
 	//
-  dtPoint2 dtSurface2d::controlPoint( int const uI, int const vI ) const {
+  dtPoint2 dtSurface2d::controlPoint( dtInt const uI, dtInt const vI ) const {
 		dt__throw(controlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
-  void dtSurface2d::setControlPoint( int const uI, int const vI, dtPoint2 const point ) {
+  void dtSurface2d::setControlPoint( dtInt const uI, dtInt const vI, dtPoint2 const point ) {
 		dt__throw(setControlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
-  int dtSurface2d::nControlPoints( int const dim ) const {
+  dtInt dtSurface2d::nControlPoints( dtInt const dim ) const {
 		switch (dim) {
 			case 0:
 				return 0;

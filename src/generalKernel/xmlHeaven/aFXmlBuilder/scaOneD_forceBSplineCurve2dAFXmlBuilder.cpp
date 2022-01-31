@@ -57,7 +57,7 @@ namespace dtOO {
     //
     //set input
     //
-    int order 
+    dtInt order 
     = 
     dtXmlParserBase::getAttributeIntMuParse("order", toBuildP, cValP);
     while ( !elementP.isNull() ) {

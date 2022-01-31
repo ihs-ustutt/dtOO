@@ -82,7 +82,7 @@ namespace dtOO {
 		m2dV.push_back( _m3d->segmentConstVPercent(1.) );
 		m2dV.push_back( _m3d->segmentConstUPercent(0.) );
 		m2dV.push_back( _m3d->segmentConstUPercent(1.) );		
-		std::vector< int > fId(6);
+		std::vector< dtInt > fId(6);
 		for (int ii = 0; ii<6; ii++) {
 			map2dTo3d const & thisMap = m2dV[ii];
 			fId[ii] = 0;
@@ -105,7 +105,7 @@ namespace dtOO {
 			dt__pH(map1dTo3d) iE0(thisFace.segmentConstVPercent(0.));
 			dt__pH(map1dTo3d) iE1(thisFace.segmentConstVPercent(1.));
 
-			std::vector< int > eNEl;
+			std::vector< dtInt > eNEl;
 
 			int iE0Tag;
 			int iE1Tag;

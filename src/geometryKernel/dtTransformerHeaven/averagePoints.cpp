@@ -38,14 +38,14 @@ namespace dtOO {
 							<< dt__eval(toTrans->size()) );
     }
 		for (int ii=0; ii<=(((toTrans->size())/2)-1);(ii=ii+1)) {		
-			float xi = toTrans->at(ii)->x();
-			float yi = toTrans->at(ii)->y();
+			dtReal xi = toTrans->at(ii)->x();
+			dtReal yi = toTrans->at(ii)->y();
 
-			float xj = toTrans->at((toTrans->size()) - ii-1)->x();
-			float yj = toTrans->at((toTrans->size()) - ii-1)->y();
+			dtReal xj = toTrans->at((toTrans->size()) - ii-1)->x();
+			dtReal yj = toTrans->at((toTrans->size()) - ii-1)->y();
 
-			float xx = (xi+xj)/2;
-			float yy = (yi+yj)/2;
+			dtReal xx = (xi+xj)/2;
+			dtReal yy = (yi+yj)/2;
 
 			transP2.push_back( new dtPoint2(xx, yy) );
 		}

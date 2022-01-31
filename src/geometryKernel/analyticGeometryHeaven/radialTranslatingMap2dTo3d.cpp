@@ -21,7 +21,7 @@ namespace dtOO {
 	}
 	
   radialTranslatingMap2dTo3d::radialTranslatingMap2dTo3d( 
-    dtVector3 const & vv, float const & distance, map2dTo3d const * const m2d 
+    dtVector3 const & vv, dtReal const & distance, map2dTo3d const * const m2d 
   ) : map3dTo3d() {
 		if (m2d->isClosedU() || m2d->isClosedV() ) {
 			dt__throw(
@@ -52,7 +52,7 @@ namespace dtOO {
     return new map3dTo3dTransformed< radialTranslatingMap2dTo3d >(*this, dtT);
   }  
 	
-  bool radialTranslatingMap2dTo3d::isClosed( int const & dir) const {
+  bool radialTranslatingMap2dTo3d::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return false;
@@ -69,7 +69,7 @@ namespace dtOO {
     }
 	}
   
-	float radialTranslatingMap2dTo3d::getMin( int const & dir) const {
+	dtReal radialTranslatingMap2dTo3d::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _m2d->getUMin();
@@ -86,7 +86,7 @@ namespace dtOO {
     }    		
 	}
   
-	float radialTranslatingMap2dTo3d::getMax( int const & dir) const {
+	dtReal radialTranslatingMap2dTo3d::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return _m2d->getUMax();
@@ -104,7 +104,7 @@ namespace dtOO {
 	}
     
 	dtPoint3 radialTranslatingMap2dTo3d::getPoint( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
     	dtPoint3 P_0 = _m2d->getPoint(uu, vv);
       dtVector3 RR( P_0.x(), P_0.y(), P_0.z() );

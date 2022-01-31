@@ -35,9 +35,9 @@ namespace dtOO {
 	}
 	
 	aFY vec3dBoxThreeD::Y( aFX const & xx) const {
-		float x0 = xx[0];
-		float x1 = xx[1];
-		float x2 = xx[2];
+		dtReal x0 = xx[0];
+		dtReal x1 = xx[1];
+		dtReal x2 = xx[2];
 		
 		
 		dtPoint3 rV 
@@ -110,7 +110,7 @@ namespace dtOO {
 	/**
    * @todo Fix closed method. Currently return value is always false!
    */
-  bool vec3dBoxThreeD::closed( int const & dir ) const {
+  bool vec3dBoxThreeD::closed( dtInt const & dir ) const {
     return false;
 	}
 }

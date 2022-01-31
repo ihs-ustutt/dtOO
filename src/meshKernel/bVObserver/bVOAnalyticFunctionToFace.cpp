@@ -64,10 +64,10 @@ namespace dtOO {
       //
       // local counter to prevent equal tags
       //
-      int localCounter = 0;
+      dtInt localCounter = 0;
       
       dt__forAllRefAuto( gm->dtFaces(), aFace) {
-        int inTol = 0;
+        dtInt inTol = 0;
         dt__forAllRefAuto(aFace->dtVertices(), aVertex) {
           //
           // ask function if vertex is part of the face to tag

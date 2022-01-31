@@ -1,6 +1,8 @@
 #ifndef bSplineSurface_pipeConstructOCCAGXmlBuilder_H
 #define	bSplineSurface_pipeConstructOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

@@ -12,7 +12,7 @@
 
 namespace dtOO {
   trimmedCurve_uBounds::trimmedCurve_uBounds(
-	  dtCurve const * dtC, float const & min, float const & max
+	  dtCurve const * dtC, dtReal const & min, dtReal const & max
 	) {
     dt__ptrAss(
 		  dtOCCCurve const * occC, 
@@ -21,12 +21,12 @@ namespace dtOO {
 		
     Standard_Real U1
     = 
-    calculationTypeHandling< Standard_Real, float >::boundToRange(
+    calculationTypeHandling< Standard_Real, dtReal >::boundToRange(
       min, dtC->getUMin(), dtC->getUMax()
     );
     Standard_Real U2
     = 
-    calculationTypeHandling< Standard_Real, float >::boundToRange(
+    calculationTypeHandling< Standard_Real, dtReal >::boundToRange(
       max, dtC->getUMin(), dtC->getUMax()
     );    
 		Handle(Geom_TrimmedCurve) ts

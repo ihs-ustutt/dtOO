@@ -1,6 +1,8 @@
 #ifndef map1dTo3d_closeGapsArithmetic_H
 #define	map1dTo3d_closeGapsArithmetic_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 namespace dtOO {

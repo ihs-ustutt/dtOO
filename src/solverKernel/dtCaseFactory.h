@@ -1,6 +1,8 @@
 #ifndef DTCASEFACTORY_H
 #define	DTCASEFACTORY_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <logMe/dtMacros.h>
 

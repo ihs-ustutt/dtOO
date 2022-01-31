@@ -206,7 +206,7 @@ namespace dtOO {
     // create map
     //
     std::map< ::moab::EntityHandle, ::MVertex * > mv_MOAB;
-    int ii = 0;
+    dtInt ii = 0;
 		for (moab::Range::iterator vIt=aRange.begin(); vIt!=aRange.end(); vIt++) {
 		  moab::EntityHandle currentVertex = *vIt;
       
@@ -249,7 +249,7 @@ namespace dtOO {
 		moab__throwIf(rval != moab::MB_SUCCESS, createFaces());
 		
     
-    int meshSetCounter = 0;
+    dtInt meshSetCounter = 0;
     std::map< std::string, dtGmshFace * > ff_string;
 		for (moab::Range::iterator it=allSets.begin(); it!=allSets.end(); it++) {
 		  moab::EntityHandle currentSet = *it;
@@ -257,7 +257,7 @@ namespace dtOO {
       //
       // get dimension of entities
       //
-			std::vector< int > dim(3,0);
+			std::vector< dtInt > dim(3,0);
 			rval = mb.get_number_entities_by_dimension(currentSet, 1, dim[0], true);
 			moab__throwIf(rval != moab::MB_SUCCESS, createFaces());		
 			rval = mb.get_number_entities_by_dimension(currentSet, 2, dim[1], true);
@@ -310,7 +310,7 @@ namespace dtOO {
         // connectivities
         //
         moab::EntityHandle const * conn;
-        int nNodes = 0;
+        dtInt nNodes = 0;
         rval = mb.get_connectivity(*it, conn, nNodes);
         moab__throwIf(rval != moab::MB_SUCCESS, createFaces());
         
@@ -379,7 +379,7 @@ namespace dtOO {
 		moab__throwIf(rval != moab::MB_SUCCESS, createRegions());
 		
     
-    int meshSetCounter = 0;
+    dtInt meshSetCounter = 0;
     std::map< std::string, dtGmshRegion * > rr_string;
 		for (moab::Range::iterator it=allSets.begin(); it!=allSets.end(); it++) {
 		  moab::EntityHandle currentSet = *it;
@@ -387,7 +387,7 @@ namespace dtOO {
       //
       // get dimension of entities
       //
-			std::vector< int > dim(3,0);
+			std::vector< dtInt > dim(3,0);
 			rval = mb.get_number_entities_by_dimension(currentSet, 1, dim[0], true);
 			moab__throwIf(rval != moab::MB_SUCCESS, createRegions());		
 			rval = mb.get_number_entities_by_dimension(currentSet, 2, dim[1], true);
@@ -439,7 +439,7 @@ namespace dtOO {
         // connectivities
         //
         moab::EntityHandle const * conn;
-        int nNodes;
+        dtInt nNodes;
         rval = mb.get_connectivity(*it, conn, nNodes);
         moab__throwIf(rval != moab::MB_SUCCESS, createRegions());
 

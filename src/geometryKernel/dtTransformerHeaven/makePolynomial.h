@@ -1,6 +1,8 @@
 #ifndef MAKEPOLYNOMIAL_H
 #define	MAKEPOLYNOMIAL_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
@@ -26,10 +28,10 @@ namespace dtOO {
       );
       virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
     private:
-      int _nPointsOne;
-      int _nPointsTwo;
-      int _orderOne;
-      int _orderTwo;
+      dtInt _nPointsOne;
+      dtInt _nPointsTwo;
+      dtInt _orderOne;
+      dtInt _orderTwo;
       static bool _registrated;    
   };
 }

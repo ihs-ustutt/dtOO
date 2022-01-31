@@ -1,6 +1,8 @@
 #ifndef PROGHELPER_H
 #define	PROGHELPER_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <vector>
@@ -91,11 +93,11 @@ namespace dtOO {
       
       template < class T >      
       static T mostFrequentChild( std::vector< T > const & vec ) {
-        typename std::map< T , int > frequencyMap;
-        int maxFrequency = 0;
+        typename std::map< T , dtInt > frequencyMap;
+        dtInt maxFrequency = 0;
         T mostFrequentElement = vec.front();
         for (T x : vec) {
-          int f = ++frequencyMap[x];
+          dtInt f = ++frequencyMap[x];
           if (f > maxFrequency) {
             maxFrequency = f;
             mostFrequentElement = x;
@@ -127,7 +129,7 @@ namespace dtOO {
         return *result;        
       }
       template < class T > 
-      static int minPos( std::vector< T > const & x) { 
+      static dtInt minPos( std::vector< T > const & x) { 
         typename std::vector< T >::const_iterator result 
         = 
         std::min_element(
@@ -136,7 +138,7 @@ namespace dtOO {
         return std::distance(std::begin(x), result);
       }      
       template < class T > 
-      static int maxPos( std::vector< T > const & x) { 
+      static dtInt maxPos( std::vector< T > const & x) { 
         typename std::vector< T >::const_iterator result 
         = 
         std::max_element(

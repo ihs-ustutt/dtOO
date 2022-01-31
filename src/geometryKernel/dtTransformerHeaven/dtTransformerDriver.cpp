@@ -4,7 +4,7 @@
 
 namespace dtOO {
   dtTransformerDriver::dtTransformerDriver(
-    std::string name, int version
+    std::string name, dtInt version
   ) : pugg::Driver(dtTransformer::server_name(), name, version) {
     
   }

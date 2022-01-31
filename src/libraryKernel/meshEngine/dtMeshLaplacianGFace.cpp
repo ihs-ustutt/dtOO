@@ -50,8 +50,8 @@ namespace dtOO {
     // get transfinite vertices
     //
     std::vector< std::vector< ::MVertex * > > & tab = dtgf->transfinite_vertices;
-    int L = pUV.size(0)-1;
-    int H = pUV.size(1)-1;
+    dtInt L = pUV.size(0)-1;
+    dtInt H = pUV.size(1)-1;
     
     dt__forInnerIndex(pUV, ii) {
       dt__forInnerIndex(pUV[ii], jj) {

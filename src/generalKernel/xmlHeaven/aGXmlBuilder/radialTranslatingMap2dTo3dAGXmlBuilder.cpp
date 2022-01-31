@@ -73,7 +73,7 @@ namespace dtOO {
     dtVector3 vv
     =				
     dtXmlParserBase::createDtVector3(&wElement, bC, cV, aF, aG);
-    float distance 
+    dtReal distance 
     = 
     dtXmlParserBase::getAttributeFloatMuParse("distance", toBuild, cV, aF, aG);
     //

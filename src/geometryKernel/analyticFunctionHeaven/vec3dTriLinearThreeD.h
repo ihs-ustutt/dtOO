@@ -1,6 +1,8 @@
 #ifndef vec3dTriLinearThreeD_H
 #define	vec3dTriLinearThreeD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec3dThreeD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -41,7 +43,7 @@ namespace dtOO {
     vec3dTriLinearThreeD * create( void ) const;    
     virtual ~vec3dTriLinearThreeD();
     virtual aFY Y( aFX const & xx ) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
     virtual std::pair< aFY, aFY > yBoundingBox( void ) const;
   private:
     dtVector3 _v000;

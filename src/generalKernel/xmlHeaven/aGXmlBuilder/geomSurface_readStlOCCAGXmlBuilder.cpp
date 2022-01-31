@@ -87,7 +87,7 @@ namespace dtOO {
     //
     // create angle field
     //
-    dtOMDynamicVertexField< float > boundAngle("boundAngle", om, 0.);
+    dtOMDynamicVertexField< dtReal > boundAngle("boundAngle", om, 0.);
     std::pair< omHalfedgeH, omHalfedgeH > hePair( 
       heH, om.next_halfedge_handle( heH ) 
     );
@@ -95,7 +95,7 @@ namespace dtOO {
     //
     // calculate max angles
     //
-    std::vector< float > maxAngle( 4, -std::numeric_limits<float>::max() );
+    std::vector< dtReal > maxAngle( 4, -std::numeric_limits<dtReal>::max() );
     std::vector< omVertexH > maxAnglePos(4);
     do {
       omVertexH vH0 = om.from_vertex_handle( hePair.first );

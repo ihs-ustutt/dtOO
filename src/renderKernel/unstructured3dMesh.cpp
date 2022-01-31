@@ -21,7 +21,7 @@ namespace dtOO {
 		_pp.push_back(pp);
 	}
 	
-	void unstructured3dMesh::addElement( vectorHandling< int > const & el ) {
+	void unstructured3dMesh::addElement( vectorHandling< dtInt > const & el ) {
 		_el.push_back(el);
 		if (el.size() == 4) {
 			_nTet++;
@@ -41,23 +41,23 @@ namespace dtOO {
 		return _pp;
 	}
 
-	vectorHandling< vectorHandling< int > > const & unstructured3dMesh::refEl( void ) const {
+	vectorHandling< vectorHandling< dtInt > > const & unstructured3dMesh::refEl( void ) const {
 		return _el;
 	}
 
-  int unstructured3dMesh::getNHex( void ) const {
+  dtInt unstructured3dMesh::getNHex( void ) const {
   	return _nHex;
   }
 
-  int unstructured3dMesh::getNTet( void ) const {
+  dtInt unstructured3dMesh::getNTet( void ) const {
   	return _nTet;
   }
 
-  int unstructured3dMesh::getNPyr( void ) const {
+  dtInt unstructured3dMesh::getNPyr( void ) const {
   	return _nPyr;
   }
 
-  int unstructured3dMesh::getNPri( void ) const {
+  dtInt unstructured3dMesh::getNPri( void ) const {
   	return _nPri;
   }	
 }

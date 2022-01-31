@@ -59,7 +59,7 @@ namespace dtOO {
     //
     // u0
     //
-    float x0
+    dtReal x0
     = 
     dtXmlParserBase::getAttributeFloatMuParse(
       "x_one_from", toBuild, cV, aF
@@ -68,7 +68,7 @@ namespace dtOO {
     //
     // u1
     //
-    float x1
+    dtReal x1
     = 
     dtXmlParserBase::getAttributeFloatMuParse(
       "x_one_to", toBuild, cV, aF

@@ -110,10 +110,10 @@ namespace dtOO {
 		of.open(ofName.c_str(), std::ios::out | std::ios::trunc);	
 		of.precision(8);
 		of.fixed;
-		for ( int jj=0; jj<_nPoints;jj++) {			
-			float jjF = (float) jj;
-			float nPointsJJF = (float) _nPoints;                
-			float percentJJ = jjF * (1. / (nPointsJJF-1) );  
+		for ( dtInt jj=0; jj<_nPoints;jj++) {			
+			dtReal jjF = (dtReal) jj;
+			dtReal nPointsJJF = (dtReal) _nPoints;                
+			dtReal percentJJ = jjF * (1. / (nPointsJJF-1) );  
 
       dtPoint3 pp = hub->getPointPercent(percentJJ);
       of << pp.x() << " " << pp.y() << " " << pp.z() << std::endl;
@@ -130,10 +130,10 @@ namespace dtOO {
 		of.open(ofName.c_str(), std::ios::out | std::ios::trunc);	
 		of.precision(8);
 		of.fixed;
-		for ( int jj=0; jj<_nPoints;jj++) {			
-			dt__toFloat(float jjF,  jj);
-			dt__toFloat(float nPointsJJF,  _nPoints);          
-			float percentJJ = jjF * (1. / (nPointsJJF-1) );  
+		for ( dtInt jj=0; jj<_nPoints;jj++) {			
+			dt__toFloat(dtReal jjF,  jj);
+			dt__toFloat(dtReal nPointsJJF,  _nPoints);          
+			dtReal percentJJ = jjF * (1. / (nPointsJJF-1) );  
 
       dtPoint3 pp = shroud->getPointPercent(percentJJ);
       of << pp.x() << " " << pp.y() << " " << pp.z() << std::endl;
@@ -147,15 +147,15 @@ namespace dtOO {
 		of.open(ofName.c_str(), std::ios::out | std::ios::trunc);	
 		of.precision(8);
 		of.fixed;
-		for ( int ii=0; ii<_nInternalCuts;ii++) {			
-			dt__toFloat(float iiF,  ii);
-			dt__toFloat(float nPointsIIF,  _nInternalCuts);               
-			float percentII = iiF * (1. / (nPointsIIF-1.) );  		
+		for ( dtInt ii=0; ii<_nInternalCuts;ii++) {			
+			dt__toFloat(dtReal iiF,  ii);
+			dt__toFloat(dtReal nPointsIIF,  _nInternalCuts);               
+			dtReal percentII = iiF * (1. / (nPointsIIF-1.) );  		
 			of << "# percentII = " << percentII << std::endl;
-			for ( int jj=0; jj<_nPoints;jj++) {			
-				float jjF = (float) jj;
-				float nPointsJJF = (float) _nPoints;                
-				float percentJJ = jjF * (1. / (nPointsJJF-1) );  
+			for ( dtInt jj=0; jj<_nPoints;jj++) {			
+				dtReal jjF = (dtReal) jj;
+				dtReal nPointsJJF = (dtReal) _nPoints;                
+				dtReal percentJJ = jjF * (1. / (nPointsJJF-1) );  
 
 				dtPoint3 pp = _internal->getPointPercent(percentJJ, percentII);
 				of << pp.x() << " " << pp.y() << " " << pp.z() << std::endl;

@@ -1,6 +1,8 @@
 #ifndef bVOAddInternalEdge_H
 #define	bVOAddInternalEdge_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

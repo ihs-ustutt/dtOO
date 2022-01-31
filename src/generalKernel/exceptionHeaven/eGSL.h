@@ -1,6 +1,8 @@
 #ifndef EGSL_H
 #define	EGSL_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <string>
 #include <vector>

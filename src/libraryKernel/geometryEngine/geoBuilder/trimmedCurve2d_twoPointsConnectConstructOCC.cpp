@@ -44,7 +44,7 @@ namespace dtOO {
 		baseC.setOCC( curve );
 		_dtC2d.reset( 
 		  new dtOCCTrimmedCurve2d(
-		    baseC, static_cast<float>(U0), static_cast<float>(U1)
+		    baseC, static_cast<dtReal>(U0), static_cast<dtReal>(U1)
 		  ) 
 		);
 		

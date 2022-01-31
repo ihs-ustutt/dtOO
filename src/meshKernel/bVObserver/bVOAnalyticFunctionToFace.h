@@ -1,6 +1,8 @@
 #ifndef bVOAnalyticFunctionToFace_H
 #define	bVOAnalyticFunctionToFace_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 

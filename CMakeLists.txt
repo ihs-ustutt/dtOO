@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 2.8)
 
-project (designTool)
+option(DTOO_USE_CCACHE "Use CCACHE" OFF)
+if (DTOO_USE_CCACHE)
+  find_program(CCACHE_PROGRAM ccache)
+  if(CCACHE_PROGRAM)
+      set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+  endif()
+endif(DTOO_USE_CCACHE)  
+
+project(designTool)
 
 #------------------------------------------------------------------------------#
 #                                                                              #
@@ -98,6 +106,10 @@ if (DTOO_USE_MPI)
   find_package(MPI REQUIRED)
 endif (DTOO_USE_MPI)
 
+#
+# Use BOOST_CONFIG_LIBRARIES for configuring instead of Boost_LIBRARIES to 
+# prevent error, when linking dtOODesignTool
+#
 if (MPI_FOUND)
   find_package(
     Boost 
@@ -112,6 +124,13 @@ if (MPI_FOUND)
     serialization
     REQUIRED
   )
+  SET(
+    BOOST_CONFIG_LIBRARIES 
+    "${Boost_FILESYSTEM_LIBRARY_RELEASE};${Boost_SYSTEM_LIBRARY_RELEASE};"
+    "${Boost_TIMER_LIBRARY_RELEASE};${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE}"
+    "${Boost_THREAD_LIBRARY_RELEASE};${Boost_REGEX_LIBRARY_RELEASE}"
+    "${Boost_MPI_LIBRARY_RELEASE};${Boost_SERIALIZATION_LIBRARY_RELEASE}"
+  )
   add_definitions(-DDTOO_HAS_MPI)
 else (MPI_FOUND)
   find_package(
@@ -125,8 +144,13 @@ else (MPI_FOUND)
     regex
     REQUIRED
   )
+  SET(
+    BOOST_CONFIG_LIBRARIES 
+    "${Boost_FILESYSTEM_LIBRARY_RELEASE};${Boost_SYSTEM_LIBRARY_RELEASE};"
+    "${Boost_TIMER_LIBRARY_RELEASE};${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE}"
+    "${Boost_THREAD_LIBRARY_RELEASE};${Boost_REGEX_LIBRARY_RELEASE}"
+  )  
 endif (MPI_FOUND)
-
 #------------------------------------------------------------------------------#
 #
 # add src directory
@@ -249,8 +273,6 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E touch_nocreate 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/generalKernel/logMe/logMe.cpp
 )
-# set cxx standard
-set_property(TARGET dtOO PROPERTY CXX_STANDARD 14)
 #------------------------------------------------------------------------------#
 #
 # make shared library version
@@ -300,7 +322,7 @@ set(
   ${OpenCASCADE_LIBRARIES} 
   ${ROOT_LIBRARIES} 
   ${GSL_LIBRARIES}
-  ${Boost_LIBRARIES}
+  ${BOOST_CONFIG_LIBRARIES}
   ${CGNS_LIBRARIES}
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
@@ -393,7 +415,7 @@ endif (MPI_FOUND)
 list(REMOVE_DUPLICATES _configLibList)
 list(REMOVE_DUPLICATES _rpathList)
 
-set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined,--disable-new-dtags")
 foreach(_rpath ${_rpathList})
   message(STATUS "RPATH: Adding ${_rpath}")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${_rpath}")

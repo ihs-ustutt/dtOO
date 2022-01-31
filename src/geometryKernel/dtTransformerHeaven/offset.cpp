@@ -73,8 +73,8 @@ namespace dtOO {
       //
       dtVector2 transVec;
       if (_xyPercent == true ) {
-        float xRange = s2d->xMax(0) - s2d->xMin(0);
-        float yRange 
+        dtReal xRange = s2d->xMax(0) - s2d->xMin(0);
+        dtReal yRange 
         = 
         s2d->YFloat(s2d->xMax(0)) - s2d->YFloat(s2d->xMin(0));
         transVec = dtVector2(_xOffset * xRange, _yOffset * yRange);
@@ -85,8 +85,8 @@ namespace dtOO {
 
       //each piece
       dt__forFromToIndex(0, _nPieces, jj) {
-        //convert integer to float      
-        float jjF = (float) (jj+1);
+        //convert integer to dtReal      
+        dtReal jjF = (dtReal) (jj+1);
         s2d->translate( jjF * transVec );
 
         //

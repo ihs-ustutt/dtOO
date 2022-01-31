@@ -55,9 +55,9 @@ namespace dtOO {
   ) const {
 		std::vector< dtPoint3 > retVec;
 		dt__forAllRefAuto(*toTrans, aPoint) {
-      float coordRef1 = aPoint.x() * cos(aPoint.y());
-      float coordRef2 = aPoint.x() * sin(aPoint.y());
-      float coordZ = aPoint.z();
+      dtReal coordRef1 = aPoint.x() * cos(aPoint.y());
+      dtReal coordRef2 = aPoint.x() * sin(aPoint.y());
+      dtReal coordZ = aPoint.z();
 
       retVec.push_back( dtPoint3(coordRef1, coordRef2, coordZ) );
 		}
@@ -76,13 +76,13 @@ namespace dtOO {
       //
       // z coordinate
       //
-      float coordZ = dtLinearAlgebra::dotProduct(_rotAxis, dd);
+      dtReal coordZ = dtLinearAlgebra::dotProduct(_rotAxis, dd);
 
       //
       // r coordinate
       //      
       dtVector3 rr = dd - coordZ * _rotAxis;
-      float coordR = dtLinearAlgebra::length(rr);
+      dtReal coordR = dtLinearAlgebra::length(rr);
       
       //
       // reference and reference2 axis
@@ -96,7 +96,7 @@ namespace dtOO {
       //
       // phi coordinate
       //
-      float coordPhi 
+      dtReal coordPhi 
       = 
       atan2( 
         dtLinearAlgebra::dotProduct(ref2Axis, rr), 

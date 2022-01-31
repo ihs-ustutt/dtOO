@@ -70,10 +70,10 @@ namespace dtOO {
   scaMuParserThreeD::~scaMuParserThreeD() {
   }
 
-  float scaMuParserThreeD::YFloat( 
-    float const & x0, float const & x1, float const & x2 
+  dtReal scaMuParserThreeD::YFloat( 
+    dtReal const & x0, dtReal const & x1, dtReal const & x2 
   ) const {
-    float yy;
+    dtReal yy;
 		
     try {
       const_cast< double& >(_arg[0]) = static_cast<double>(x0);
@@ -83,7 +83,7 @@ namespace dtOO {
 			int nDim;
       double * yyD = _parser->Eval(nDim);
 		  dt__throwIf(nDim!=1, Y());
-		  yy = static_cast<float>(yyD[0]);
+		  yy = static_cast<dtReal>(yyD[0]);
     }
     catch (mu::Parser::exception_type &e) {
       dt__throw(Y(), << e.GetMsg() );
@@ -91,7 +91,7 @@ namespace dtOO {
     return yy;		
 	}
 	
-	bool scaMuParserThreeD::closed( int const & dir ) const {
+	bool scaMuParserThreeD::closed( dtInt const & dir ) const {
 		dt__throwIf( (dir!=0) && (dir!=1) && (dir!=2), closed() );
 		return false;
 	}

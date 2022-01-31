@@ -1,8 +1,8 @@
 #include "dtGaussLegendreIntegration.h"
 
 #define dt__defineGLIP( number ) \
-	 constexpr float dtGaussLegendreIntegration::_GL_pt##number[]; \
-	 constexpr float dtGaussLegendreIntegration::_GL_wt##number[]\
+	 constexpr dtReal dtGaussLegendreIntegration::_GL_pt##number[]; \
+	 constexpr dtReal dtGaussLegendreIntegration::_GL_wt##number[]\
 
 namespace dtOO {
 	 dt__defineGLIP(1);

@@ -1,6 +1,8 @@
 #ifndef ofOpenFOAMCyclicAmiRule_H
 #define	ofOpenFOAMCyclicAmiRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "ofOpenFOAMSetupRule.h"
 

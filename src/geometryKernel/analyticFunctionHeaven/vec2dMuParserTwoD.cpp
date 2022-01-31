@@ -82,7 +82,7 @@ namespace dtOO {
       double * yyD = _parser->Eval(nDim);
 		  dt__throwIf(nDim!=2, Y());
 			for (int ii=0; ii<2; ii++) {
-				yy[ii] = static_cast<float>(yyD[ii]);
+				yy[ii] = static_cast<dtReal>(yyD[ii]);
 			}
     }
     catch (mu::Parser::exception_type &e) {
@@ -91,7 +91,7 @@ namespace dtOO {
     return yy;		
 	}
 	
-	bool vec2dMuParserTwoD::closed( int const & dir ) const {
+	bool vec2dMuParserTwoD::closed( dtInt const & dir ) const {
 		dt__throwIf( (dir!=0) && (dir!=1), closed );
 		return false;
 	}

@@ -1,6 +1,8 @@
 #ifndef WRITESTEP_H
 #define	WRITESTEP_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -35,7 +37,7 @@ namespace dtOO {
   private:
     aGPtrVec _aG;
     std::string _fn;
-    int _translator;
+    dtInt _translator;
     static bool _registrated;
   };
 }

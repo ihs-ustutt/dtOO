@@ -1,6 +1,8 @@
 #ifndef OPTIONHANDLING_H
 #define	OPTIONHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "vectorHandling.h"
 #include <string>
@@ -11,8 +13,8 @@
 class QDomElement;
 
 namespace dtOO {
-  typedef std::pair< std::vector< std::string >, float > optionGroupElement;
-  typedef std::pair< std::vector< std::string >, float > optionGroupElementInt;
+  typedef std::pair< std::vector< std::string >, dtReal > optionGroupElement;
+  typedef std::pair< std::vector< std::string >, dtReal > optionGroupElementInt;
   typedef std::vector< optionGroupElement > optionGroup;
   typedef std::vector< optionGroupElementInt > optionGroupInt;
   
@@ -37,14 +39,14 @@ namespace dtOO {
         std::string const name, std::string const val
       ) const;
       std::string getOption(std::string const name) const;
-      float getOptionFloat(std::string const name) const;
-      float getOptionFloat(
+      dtReal getOptionFloat(std::string const name) const;
+      dtReal getOptionFloat(
         std::string const name,
         cVPtrVec const * const cV,
         aFPtrVec const * const aF					
       ) const;
-      int getOptionInt(std::string const name) const;
-      int getOptionInt(
+      dtInt getOptionInt(std::string const name) const;
+      dtInt getOptionInt(
         std::string const name,
         cVPtrVec const * const cV,
         aFPtrVec const * const aF					

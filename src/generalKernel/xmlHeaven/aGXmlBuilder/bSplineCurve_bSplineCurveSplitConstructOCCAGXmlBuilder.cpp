@@ -63,7 +63,7 @@ namespace dtOO {
     //
     // u0
     //
-    float u0;
+    dtReal u0;
     if(
       dtXmlParserBase::hasAttribute("parameter_percent_one_from", toBuild)
     ) {    
@@ -100,7 +100,7 @@ namespace dtOO {
     //
     // u1
     //
-    float u1;
+    dtReal u1;
     if(
       dtXmlParserBase::hasAttribute("parameter_percent_one_to", toBuild)
     ) {    

@@ -1,6 +1,8 @@
 #ifndef UcylInChannel_H
 #define	UcylInChannel_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -38,7 +40,7 @@ namespace dtOO {
       dtXmlParser const * _parser;
       dtCase const * _case;
   //    std::string _field;
-      std::vector< int > _nP;
+      std::vector< dtInt > _nP;
       dtVector3 _axis;
       dtPoint3 _origin;
       static bool _registrated;

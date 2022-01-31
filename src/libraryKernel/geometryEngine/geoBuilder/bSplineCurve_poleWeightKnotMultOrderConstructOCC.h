@@ -1,6 +1,8 @@
 #ifndef bSplineCurve_poleWeightKnotMultOrderConstructOCC_H
 #define	bSplineCurve_poleWeightKnotMultOrderConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -13,10 +15,10 @@ namespace dtOO {
     dt__classOnlyName(bSplineCurve_poleWeightKnotMultOrderConstructOCC);
     bSplineCurve_poleWeightKnotMultOrderConstructOCC( 
       std::vector< dtPoint3 > const & pole, 
-      std::vector< float > const & weight, 
-      std::vector< float > const & knot, 
-      std::vector< int > const & mult, 
-      int const & order,
+      std::vector< dtReal > const & weight, 
+      std::vector< dtReal > const & knot, 
+      std::vector< dtInt > const & mult, 
+      dtInt const & order,
       bool const & periodic
     );
     virtual ~bSplineCurve_poleWeightKnotMultOrderConstructOCC();

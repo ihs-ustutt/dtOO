@@ -1,6 +1,8 @@
 #ifndef vec3dBiLinearTwoD_H
 #define	vec3dBiLinearTwoD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec3dTwoD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -25,7 +27,7 @@ namespace dtOO {
     vec3dBiLinearTwoD * create( void ) const;    
     virtual ~vec3dBiLinearTwoD();
     virtual aFY Y( aFX const & xx ) const;
-    virtual bool closed( int const & dir ) const;    
+    virtual bool closed( dtInt const & dir ) const;    
   private:
     dtVector3 _v0;
     dtVector3 _v1;

@@ -34,7 +34,7 @@ namespace dtOO {
     _cV->get( _adjustConstValueS )->setValue( 
       _cV->get( _adjustConstValueS )->getMin()
       +
-      static_cast< float >(xx) 
+      static_cast< dtReal >(xx) 
       *
       (
         _cV->get( _adjustConstValueS )->getMax()
@@ -49,12 +49,12 @@ namespace dtOO {
     scaOneD const * betaMod = _betaMod;
     scaOneD const * betaPrime = scaOneD::ConstDownCast( theF[0] );
     
-    int nn = 100;
-    float const deltaR = 1./nn;
-    float sum = 0.;
+    dtInt nn = 100;
+    dtReal const deltaR = 1./nn;
+    dtReal sum = 0.;
     dt__forFromToIndex(0, 100, ii) {
       
-      float r_i = .5 * (1./nn) + ii * deltaR;
+      dtReal r_i = .5 * (1./nn) + ii * deltaR;
       sum 
       = 
       sum 

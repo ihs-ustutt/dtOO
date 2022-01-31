@@ -176,8 +176,8 @@ namespace dtOO {
         // get values
         // 
         std::vector< dtPoint3 > coord;         
-        std::vector< float > val;
-        std::vector< float > vol;
+        std::vector< dtReal > val;
+        std::vector< dtReal > vol;
 
         forAll(volField, cId) {
           ::Foam::scalar volFieldValue = volField[cId];

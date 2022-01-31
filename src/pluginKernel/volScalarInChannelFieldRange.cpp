@@ -213,7 +213,7 @@ namespace dtOO {
         // create grid by averaging 4 points
         //
         twoDArrayHandling< dtPoint3 > grid(_nP[0], _nP[1]);
-        twoDArrayHandling< float > A(_nP[0], _nP[1]);
+        twoDArrayHandling< dtReal > A(_nP[0], _nP[1]);
         twoDArrayHandling< dtVector3 > N(_nP[0], _nP[1]);          
         #pragma omp parallel
         {
@@ -256,9 +256,9 @@ namespace dtOO {
         //
         // get values
         // 
-        twoDArrayHandling< float > val(grid.size(0), grid.size(1));
+        twoDArrayHandling< dtReal > val(grid.size(0), grid.size(1));
         twoDArrayHandling< dtVector3 > sf(grid.size(0), grid.size(1));
-        twoDArrayHandling< float > phi(grid.size(0), grid.size(1));
+        twoDArrayHandling< dtReal > phi(grid.size(0), grid.size(1));
 
         #pragma omp parallel
         {

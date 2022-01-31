@@ -1,6 +1,8 @@
 #ifndef volVectorOnRotatingLineFieldRange_H
 #define	volVectorOnRotatingLineFieldRange_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -38,15 +40,15 @@ namespace dtOO {
       dtXmlParser const * _parser;
       dtCase const * _case;
       std::string _field;
-      float _min;
-      float _max;    
-      int _nP;
+      dtReal _min;
+      dtReal _max;    
+      dtInt _nP;
       bool _noRange;
       dtVector3 _rotAxis;
       dtVector3 _refAxis;
       dtPoint3 _origin;
-      float _relBandwithR;
-      float _relBandwithZ;
+      dtReal _relBandwithR;
+      dtReal _relBandwithZ;
       static bool _registrated;
   };
 }

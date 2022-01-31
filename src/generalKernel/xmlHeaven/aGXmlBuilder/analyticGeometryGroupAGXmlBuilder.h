@@ -1,6 +1,8 @@
 #ifndef analyticGeometryGroupAGXmlBuilder_H
 #define	analyticGeometryGroupAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>

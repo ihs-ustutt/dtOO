@@ -27,7 +27,7 @@ namespace dtOO {
 		setMax( dtC2d->maxU() );
 	}
 	
-	aFY vec2dCurve2dOneD::Y( float const & xx) const {
+	aFY vec2dCurve2dOneD::Y( dtReal const & xx) const {
 		dtPoint2 p2d = _dtC2d->point(xx);
 		
 		aFY yy(2, 0.);
@@ -60,10 +60,10 @@ namespace dtOO {
     );		
 		
 		vectorHandling< dtPoint2 > p2(nU);
-    float interval = (xMax(0) - xMin(0)) / (nU-1);
+    dtReal interval = (xMax(0) - xMin(0)) / (nU-1);
     for (int ii=0;ii<nU;ii++) {
-			float iiF = static_cast<float>(ii);
-      float xx = xMin(0) + iiF * interval;
+			dtReal iiF = static_cast<dtReal>(ii);
+      dtReal xx = xMin(0) + iiF * interval;
       p2[ii] = YdtPoint2(xx);
     }
 		
@@ -83,7 +83,7 @@ namespace dtOO {
 		return _dtC2d.get();
 	}
 	
-  bool vec2dCurve2dOneD::closed( int const & dir ) const {
+  bool vec2dCurve2dOneD::closed( dtInt const & dir ) const {
 		switch (dir) {
 			case 0:		
 				return static_cast<bool>(_dtC2d->closed());

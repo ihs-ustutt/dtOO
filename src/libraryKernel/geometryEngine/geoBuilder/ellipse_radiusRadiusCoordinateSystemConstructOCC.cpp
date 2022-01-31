@@ -15,7 +15,7 @@ namespace dtOO {
 	ellipse_radiusRadiusCoordinateSystemConstructOCC
     ::ellipse_radiusRadiusCoordinateSystemConstructOCC(
     dtPoint3 const & pp, dtVector3 const & xx, 
-    float const & r0, float const & r1
+    dtReal const & r0, dtReal const & r1
   ) {
 		//
 		// use standard constructor
@@ -46,7 +46,7 @@ namespace dtOO {
 	ellipse_radiusRadiusCoordinateSystemConstructOCC
     ::ellipse_radiusRadiusCoordinateSystemConstructOCC(
     dtPoint3 const & pp, dtVector3 const & nn, dtVector3 const & xx, 
-    float const & r0, float const & r1 
+    dtReal const & r0, dtReal const & r1 
   ) {
 		//
 		// use standard constructor

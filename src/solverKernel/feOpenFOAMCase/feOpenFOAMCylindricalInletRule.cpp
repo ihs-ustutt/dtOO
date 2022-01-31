@@ -229,8 +229,8 @@ namespace dtOO {
             // prevent scaling if target values are set
             //
             //
-            float s_cM = 1.0;
-            float s_cT = 1.0;           
+            dtReal s_cM = 1.0;
+            dtReal s_cT = 1.0;           
             ::Foam::scalar targetVolFlow = volFlow;
             if ( stringPrimitive::stringContains("volumeFlow", thisRule) ) {
               targetVolFlow = parseOptionScalar("volumeFlow", thisRule);

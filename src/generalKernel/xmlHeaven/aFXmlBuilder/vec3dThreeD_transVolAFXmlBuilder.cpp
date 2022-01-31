@@ -162,7 +162,7 @@ namespace dtOO {
       dtXmlParserBase::getNextSibling("analyticFunction", elementP);      
     }
 
-    int nComponents = v3dSC[0]->nComponents();
+    dtInt nComponents = v3dSC[0]->nComponents();
     vec3dTransVolThreeDCompound * vec3dTVC 
     =
     new vec3dTransVolThreeDCompound();

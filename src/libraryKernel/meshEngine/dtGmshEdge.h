@@ -1,6 +1,8 @@
 #ifndef DTGMSHEDGE_H
 #define	DTGMSHEDGE_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -19,8 +21,8 @@ namespace dtOO {
   class dtGmshEdge : public ::GEdge {
   public:
     dt__class(dtGmshEdge, ::GEntity);
-    dtGmshEdge(::GModel *m, int tag);
-    dtGmshEdge(::GModel * model, int tag, ::GVertex *v1, ::GVertex *v2);
+    dtGmshEdge(::GModel *m, dtInt tag);
+    dtGmshEdge(::GModel * model, dtInt tag, ::GVertex *v1, ::GVertex *v2);
     virtual ~dtGmshEdge();
     virtual Range<double> parBounds(int i) const;
     virtual GPoint point(double p) const;
@@ -30,9 +32,9 @@ namespace dtOO {
     map1dTo3d const * getMap1dTo3d( void ) const;
     void setBeginVertex( ::GVertex * gv );
     void setEndVertex( ::GVertex * gv );
-    void meshTransfinite( int const type, float const coeff );
+    void meshTransfinite( dtInt const type, dtReal const coeff );
     void meshTransfiniteWNElements( 
-      int const type, float const coeff, int const nElements 
+      dtInt const type, dtReal const coeff, dtInt const nElements 
     );
     void addGEntity( ::GEntity * const gEnt );
     void addVertex( ::GVertex * gv);
@@ -41,10 +43,10 @@ namespace dtOO {
     virtual std::list< dtGmshVertex * > dtVertices( void ) const;
     virtual std::list< dtGmshFace * > dtFaces( void ) const;
     static bool isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 );
-    void setGrading( float const & grading, float const & type );
+    void setGrading( dtReal const & grading, dtReal const & type );
     std::string getPhysicalString( void ) const;
   private:
-    void setNElements( int const nE );
+    void setNElements( dtInt const nE );
   private:
     ptrHandling< map1dTo3d > _mm;    
     std::list< ::GVertex * > l_vertices;

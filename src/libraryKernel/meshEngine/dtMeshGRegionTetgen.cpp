@@ -58,7 +58,7 @@ namespace dtOO {
     // mapping between gmsh and tetgen
     //
     std::map< int, ::MVertex * > MVertexInt;
-    std::map< ::MVertex *, int > intMVertex;    
+    std::map< ::MVertex *, dtInt > intMVertex;    
 
     //
     // debug output
@@ -101,12 +101,12 @@ namespace dtOO {
   void dtMeshGRegionTetgen::convertToTetgen(
     dtGmshRegion * gr, tetgenio * in,
     std::map< int, ::MVertex * > & MVertexInt,
-    std::map< ::MVertex *, int > & intMVertex    
+    std::map< ::MVertex *, dtInt > & intMVertex    
   ) {   
     //
     // start indexing with one
     //
-    int nodeIndex = 1;    
+    dtInt nodeIndex = 1;    
     std::vector< ::MTriangle * > triangle;
     //
     // faces
@@ -168,7 +168,7 @@ namespace dtOO {
     in->facetmarkerlist = NULL;//new int[in.numberoffacets];
 
     // faces
-    int faceIndex = 0;
+    dtInt faceIndex = 0;
     dt__forAllRefAuto(triangle, aTri) {
       tetgenio::facet * f = &in->facetlist[faceIndex];
       tetgenio::init(f);
@@ -189,12 +189,12 @@ namespace dtOO {
   void dtMeshGRegionTetgen::convertFromTetgen(
     dtGmshRegion * gr, tetgenio * out,
     std::map< int, ::MVertex * > & MVertexInt,
-    std::map< ::MVertex *, int > & intMVertex    
+    std::map< ::MVertex *, dtInt > & intMVertex    
   ) {
     //
     // get new vertices
     //
-    const int initialSize = (int)MVertexInt.size();
+    const dtInt initialSize = (int)MVertexInt.size();
     for(int i = initialSize; i < out->numberofpoints; i++){
       MVertex *v = new MVertex(out->pointlist[i * 3 + 0],
                                out->pointlist[i * 3 + 1],
@@ -228,9 +228,9 @@ namespace dtOO {
   
   void dtMeshGRegionTetgen::enqueueMVertices(
     std::vector< ::MVertex * > & vv,
-    int & nodeIndex,
+    dtInt & nodeIndex,
     std::map< int, ::MVertex * > & MVertexInt,
-    std::map< ::MVertex *, int > & intMVertex
+    std::map< ::MVertex *, dtInt > & intMVertex
   ) {
     dt__forAllIndex(vv, ii) {
       ::MVertex * mv = vv[ii];

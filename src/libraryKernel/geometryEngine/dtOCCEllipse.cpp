@@ -25,19 +25,19 @@ namespace dtOO {
 		return new dtOCCEllipse( OCCRef() );		
 	}
 	
-  int dtOCCEllipse::order( void ) const {
+  dtInt dtOCCEllipse::order( void ) const {
 		dt__throwUnexpected(order());			
 	}
 	
-  int dtOCCEllipse::nControlPoints( void ) const {
+  dtInt dtOCCEllipse::nControlPoints( void ) const {
 		return 0;
 	}
 	
-  dtPoint3 dtOCCEllipse::controlPoint( int const nPoint ) const {
+  dtPoint3 dtOCCEllipse::controlPoint( dtInt const nPoint ) const {
 		dt__throwUnexpected(controlPoint());		
 	}
 	
-  void dtOCCEllipse::setControlPoint( int const nPoint, dtPoint3 const point ) {
+  void dtOCCEllipse::setControlPoint( dtInt const nPoint, dtPoint3 const point ) {
 		dt__throwUnexpected(setControlPoint());				
 	}
 }

@@ -1,6 +1,8 @@
 #ifndef combineGmsh_H
 #define	combineGmsh_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "gmshBoundedVolume.h"
 
@@ -30,8 +32,8 @@ namespace dtOO {
     private:
       bVPtrVec _bV;
       vectorHandling< dtGmshModel const * > _dtGM;
-      float _relTol;
-      float _absTol;
+      dtReal _relTol;
+      dtReal _absTol;
   };
 }
 #endif	/* combineGmsh_H */

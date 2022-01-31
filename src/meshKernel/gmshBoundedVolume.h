@@ -1,6 +1,8 @@
 #ifndef GMSHBOUNDEDVOLUME_H
 #define	GMSHBOUNDEDVOLUME_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include "boundedVolume.h"

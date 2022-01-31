@@ -1,6 +1,8 @@
 #ifndef feOpenFOAMSetupRule_H
 #define	feOpenFOAMSetupRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -59,7 +61,7 @@ namespace dtOO {
       static ::Foam::scalar parseOptionScalar(
         std::string const & name, std::string const & str
       );
-      static float parseOptionFloat(
+      static dtReal parseOptionFloat(
         std::string const & name, std::string const & str
       );    
       static ::Foam::dictionary parseOptionDict(

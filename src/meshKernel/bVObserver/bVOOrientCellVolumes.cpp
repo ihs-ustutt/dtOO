@@ -49,9 +49,9 @@ namespace dtOO {
     //
     // counter
     //
-    int gCount = 0;
-    int pCount = 0;
-    int nCount = 0;
+    dtInt gCount = 0;
+    dtInt pCount = 0;
+    dtInt nCount = 0;
     
     //
     // revert element if necessary

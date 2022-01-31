@@ -1,6 +1,8 @@
 #ifndef muParserAFXmlBuilder_H
 #define	muParserAFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

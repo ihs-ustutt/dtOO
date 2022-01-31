@@ -33,7 +33,7 @@ namespace dtOO {
 	dtOCCGeomFillBoundary::~dtOCCGeomFillBoundary() {
 	}
 
-  int dtOCCGeomFillBoundary::order( void ) const {
+  dtInt dtOCCGeomFillBoundary::order( void ) const {
 		dt__throwUnexpected(order());		
 	}
 	
@@ -41,7 +41,7 @@ namespace dtOO {
     dt__throwUnexpected(closed());
   }
   
-  dtVector3 dtOCCGeomFillBoundary::firstDer( float const uu) const {
+  dtVector3 dtOCCGeomFillBoundary::firstDer( dtReal const uu) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt pp;
 		gp_Vec vv;
@@ -53,33 +53,33 @@ namespace dtOO {
 		);
 			
 		return dtVector3(
-			static_cast<float>(vv.Coord(1)), 
-			static_cast<float>(vv.Coord(2)), 
-			static_cast<float>(vv.Coord(3))
+			static_cast<dtReal>(vv.Coord(1)), 
+			static_cast<dtReal>(vv.Coord(2)), 
+			static_cast<dtReal>(vv.Coord(3))
 		);
   }
       
-  int dtOCCGeomFillBoundary::nControlPoints( void ) const {
+  dtInt dtOCCGeomFillBoundary::nControlPoints( void ) const {
 		return 0;
 	}
 	
-  dtPoint3 dtOCCGeomFillBoundary::controlPoint( int const nPoint ) const {
+  dtPoint3 dtOCCGeomFillBoundary::controlPoint( dtInt const nPoint ) const {
 		dt__throwUnexpected(controlPoint());		
 	}
 	
-  void dtOCCGeomFillBoundary::setControlPoint( int const nPoint, dtPoint3 const point ) {
+  void dtOCCGeomFillBoundary::setControlPoint( dtInt const nPoint, dtPoint3 const point ) {
 		dt__throwUnexpected(setControlPoint());
 	}
   
-  float dtOCCGeomFillBoundary::l_u( float const uu ) const {
+  dtReal dtOCCGeomFillBoundary::l_u( dtReal const uu ) const {
     dt__throwUnexpected(l_u());
   }
   
-  float dtOCCGeomFillBoundary::u_l( float const length ) const {
+  dtReal dtOCCGeomFillBoundary::u_l( dtReal const length ) const {
     dt__throwUnexpected(u_l());
   }
   
-  float dtOCCGeomFillBoundary::reparam(dtPoint3 const point) const {
+  dtReal dtOCCGeomFillBoundary::reparam(dtPoint3 const point) const {
     dt__throwUnexpected(reparam());
   }
   

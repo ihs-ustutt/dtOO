@@ -1,6 +1,8 @@
 #ifndef DTFOAMLIBRARY_H
 #define	DTFOAMLIBRARY_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <map>
 
@@ -23,7 +25,7 @@ namespace dtOO {
     dt__classOnlyName(dtFoamLibrary);
     static ::Foam::polyMesh * readMesh(     
       std::vector< ::MVertex * > allVerts,
-      std::vector< std::pair< ::MElement *, int > > allElems,
+      std::vector< std::pair< ::MElement *, dtInt > > allElems,
       std::map< int, std::string > physicalInt,
       ::Foam::Time const & runTime,
       bool keepOrientation
@@ -82,7 +84,7 @@ namespace dtOO {
       ::Foam::pointField& points, ::Foam::Map< ::Foam::label >& mshToFoam
     );
     static void readCells(
-      std::vector< std::pair< ::MElement *, int > > allElems,
+      std::vector< std::pair< ::MElement *, dtInt > > allElems,
       const bool keepOrientation,
       const ::Foam::pointField& points,
       const ::Foam::Map< ::Foam::label >& mshToFoam,

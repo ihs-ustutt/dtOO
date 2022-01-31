@@ -24,19 +24,19 @@ namespace dtOO {
     return uv_geomSurfaceClosestPoint(this, ppXYZ).result();
   }
   
-	float dtSurface::minU ( void ) const {
+	dtReal dtSurface::minU ( void ) const {
 	  return minPara(0);	
 	}
 	
-	float dtSurface::maxU ( void ) const {
+	dtReal dtSurface::maxU ( void ) const {
 		return maxPara(0);
 	}
 	
-	float dtSurface::minV ( void ) const {
+	dtReal dtSurface::minV ( void ) const {
 		return minPara(1);
 	}
 	
-	float dtSurface::maxV ( void ) const {
+	dtReal dtSurface::maxV ( void ) const {
 		return maxPara(1);
 	}
 	
@@ -48,7 +48,7 @@ namespace dtOO {
 		return closed(1);
 	}
 	
-	float dtSurface::u_uPercent(float const percent) const {
+	dtReal dtSurface::u_uPercent(dtReal const percent) const {
     return 
       floatHandling::boundToRange(
         minPara(0) + percent * (maxPara(0)-minPara(0)),
@@ -56,14 +56,14 @@ namespace dtOO {
       );
 	}
 
-	float dtSurface::uPercent_u(float const uu) const {
+	dtReal dtSurface::uPercent_u(dtReal const uu) const {
 		return 
       floatHandling::boundToRange(
         (uu-minPara(0))/(maxPara(0)-minPara(0)), 0, 1        
       );
 	}
 	
-	float dtSurface::v_vPercent(float const percent) const {
+	dtReal dtSurface::v_vPercent(dtReal const percent) const {
     return
       floatHandling::boundToRange(
         minPara(1) + percent * (maxPara(1)-minPara(1)),
@@ -71,7 +71,7 @@ namespace dtOO {
       );
 	}
 
-	float dtSurface::vPercent_v(float const vv) const {
+	dtReal dtSurface::vPercent_v(dtReal const vv) const {
     return
       floatHandling::boundToRange(
         (vv-minPara(1))/(maxPara(1)-minPara(1)), 0, 1        
@@ -82,14 +82,14 @@ namespace dtOO {
 		return point( pUV.x(), pUV.y() );
 	}
 	
-	dtPoint3 dtSurface::getPointPercent3d(float const uP, float const vP) const {
+	dtPoint3 dtSurface::getPointPercent3d(dtReal const uP, dtReal const vP) const {
 		return point(u_uPercent(uP), v_vPercent(vP));
 	}
 	
 	std::vector< dtPoint3 > 
 	dtSurface::getPoint3d( 
-		std::vector< float > const & uu, 
-		std::vector< float > const & vv
+		std::vector< dtReal > const & uu, 
+		std::vector< dtReal > const & vv
 	) const {
 		std::vector< dtPoint3 > pp( uu.size() );
 		dt__forAllIndex(uu, ii) {
@@ -101,8 +101,8 @@ namespace dtOO {
 	
 	std::vector< dtPoint3 > 
 	dtSurface::getPointPercent3d( 
-		std::vector< float > const & uu, 
-		std::vector< float > const & vv
+		std::vector< dtReal > const & uu, 
+		std::vector< dtReal > const & vv
 	) const {
 		std::vector< dtPoint3 > pp( uu.size() );
 		dt__forAllIndex(uu, ii) {
@@ -114,38 +114,38 @@ namespace dtOO {
 	
 	std::vector< dtPoint3 > 
 	dtSurface::getPoint3d( 
-		std::vector< float > const * const uuV, 
-		std::vector< float > const * const vvV
+		std::vector< dtReal > const * const uuV, 
+		std::vector< dtReal > const * const vvV
 	) const {
 		return getPoint3d(*uuV, *vvV);
 	}
 	
-  dtVector3 dtSurface::firstDerU( float const uu, float const vv) const {
+  dtVector3 dtSurface::firstDerU( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector3> der = firstDer(uu, vv);
 		return der[0];
 	}
 	
-  dtVector3 dtSurface::firstDerV( float const uu, float const vv) const {
+  dtVector3 dtSurface::firstDerV( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector3> der = firstDer(uu, vv);
 		return der[1];		
 	}
 	
-  dtVector3 dtSurface::secondDerUU( float const uu, float const vv) const {
+  dtVector3 dtSurface::secondDerUU( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector3> der = secondDer(uu, vv);
 		return der[0];		
 	}
 	
-  dtVector3 dtSurface::secondDerVV( float const uu, float const vv) const {
+  dtVector3 dtSurface::secondDerVV( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector3> der = secondDer(uu, vv);
 		return der[2];				
 	}
 	
-  dtVector3 dtSurface::secondDerUV( float const uu, float const vv) const {
+  dtVector3 dtSurface::secondDerUV( dtReal const uu, dtReal const vv) const {
 		std::vector<dtVector3> der = secondDer(uu, vv);
 		return der[1];				
 	}
 	
-	dtVector3 dtSurface::normalPercent( float const uP, float const vP ) const {
+	dtVector3 dtSurface::normalPercent( dtReal const uP, dtReal const vP ) const {
 		return normal( u_uPercent(uP), v_vPercent(vP) );
 	}
 	
@@ -161,24 +161,24 @@ namespace dtOO {
 		return nControlPoints(1);
 	}
 	
-	dtCurve * dtSurface::segmentConstU( float const uu) const {
+	dtCurve * dtSurface::segmentConstU( dtReal const uu) const {
 		return segmentConstU( uu, minPara(1), maxPara(1) );
 	}
 	
-	dtCurve * dtSurface::segmentConstV( float const vv) const {
+	dtCurve * dtSurface::segmentConstV( dtReal const vv) const {
 		return segmentConstV( vv, minPara(0), maxPara(0) );
 	}
 	
-	dtCurve * dtSurface::segmentConstUPercent( float const uu) const {
+	dtCurve * dtSurface::segmentConstUPercent( dtReal const uu) const {
 		return segmentConstU( u_uPercent(uu) );
 	}
 	
-	dtCurve * dtSurface::segmentConstVPercent( float const vv) const {
+	dtCurve * dtSurface::segmentConstVPercent( dtReal const vv) const {
 		return segmentConstV( v_vPercent(vv) );
 	}
 	
 	dtCurve * dtSurface::segmentConstUPercent( 
-    float const uu, float const vvMin, float const vvMax
+    dtReal const uu, dtReal const vvMin, dtReal const vvMax
   ) const {
 		return segmentConstU( 
 		  u_uPercent(uu), 
@@ -188,7 +188,7 @@ namespace dtOO {
 	}
 	
 	dtCurve * dtSurface::segmentConstVPercent( 
-    float const vv, float const uuMin, float const uuMax
+    dtReal const vv, dtReal const uuMin, dtReal const uuMax
   ) const {
 		return segmentConstV( 
 		  v_vPercent(vv), 
@@ -203,7 +203,7 @@ namespace dtOO {
 	}
   
   bool dtSurface::inXYZTolerance( dtPoint3 const & p0, dtPoint3 const & p1 ) {
-		float xyzResolution 
+		dtReal xyzResolution 
 		= 
     staticPropertiesHandler::getInstance()->getOptionFloat(
       "xyz_resolution"
@@ -218,17 +218,17 @@ namespace dtOO {
 	//
 	//
 	//
-  dtPoint3 dtSurface::controlPoint( int const uI, int const vI ) const {
+  dtPoint3 dtSurface::controlPoint( dtInt const uI, dtInt const vI ) const {
 		dt__throw(controlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
   void dtSurface::setControlPoint( 
-    int const uI, int const vI, dtPoint3 const point 
+    dtInt const uI, dtInt const vI, dtPoint3 const point 
   ) {
 		dt__throw(setControlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
-  int dtSurface::nControlPoints( int const dim ) const {
+  dtInt dtSurface::nControlPoints( dtInt const dim ) const {
 		switch (dim) {
 			case 0:
 				return 0;
@@ -264,12 +264,12 @@ namespace dtOO {
 		return ss.str();
 	}  
 	
-	void dtSurface::offsetNormal(float const nn) {
+	void dtSurface::offsetNormal(dtReal const nn) {
 		dt__throwUnexpected(offsetNormal());
 	}
   
   dtCurve * dtSurface::segmentConst( 
-    int const & dir, float const at, float const from, float const to
+    dtInt const & dir, dtReal const at, dtReal const from, dtReal const to
   ) const {
     if      (dir==0) return segmentConstU(at, from, to);
     else if (dir==1) return segmentConstV(at, from, to);
@@ -277,7 +277,7 @@ namespace dtOO {
   }
   
   dtCurve * dtSurface::segmentConst( 
-    int const & dir, float const at
+    dtInt const & dir, dtReal const at
   ) const {
     if      (dir==0) return segmentConstU(at);
     else if (dir==1) return segmentConstV(at);
@@ -285,7 +285,7 @@ namespace dtOO {
   }
   
   dtCurve * dtSurface::segmentConstPercent( 
-    int const & dir, float const at
+    dtInt const & dir, dtReal const at
   ) const {
     if      (dir==0) return segmentConstUPercent(at);
     else if (dir==1) return segmentConstVPercent(at);
@@ -293,7 +293,7 @@ namespace dtOO {
   }
   
   dtCurve * dtSurface::segmentConstPercent( 
-    int const & dir, float const at, float const from, float const to
+    dtInt const & dir, dtReal const at, dtReal const from, dtReal const to
   ) const {
     if      (dir==0) return segmentConstUPercent(at, from, to);
     else if (dir==1) return segmentConstVPercent(at, from, to);

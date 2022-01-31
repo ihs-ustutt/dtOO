@@ -51,12 +51,12 @@ namespace dtOO {
   }
   
   dtPoint3 trans6SidedCube::getPoint( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
     return _tI->getValue(uu, vv, ww);
   }
   
-  bool trans6SidedCube::isClosed( int const & dir) const {
+  bool trans6SidedCube::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return false;
@@ -73,7 +73,7 @@ namespace dtOO {
     }
   }
   
-  float trans6SidedCube::getMin( int const & dir) const {
+  dtReal trans6SidedCube::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 0.;
@@ -90,7 +90,7 @@ namespace dtOO {
     }    
   }
   
-  float trans6SidedCube::getMax( int const & dir) const {
+  dtReal trans6SidedCube::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 1.;
@@ -107,7 +107,7 @@ namespace dtOO {
     }    
   }
 
-  map2dTo3d * trans6SidedCube::segmentConstU( float const & uu ) const {
+  map2dTo3d * trans6SidedCube::segmentConstU( dtReal const & uu ) const {
     if ( analyticGeometry::inUVWTolerance(uu, getUMin()) ) {
       return _tI->getConstRefToMap2dTo3d()[1]->clone();
     }
@@ -119,7 +119,7 @@ namespace dtOO {
     }
   }
     
-  map2dTo3d * trans6SidedCube::segmentConstV( float const & vv ) const {
+  map2dTo3d * trans6SidedCube::segmentConstV( dtReal const & vv ) const {
     if ( analyticGeometry::inUVWTolerance(vv, getVMin()) ) {
       return _tI->getConstRefToMap2dTo3d()[4]->clone();      
     }
@@ -131,7 +131,7 @@ namespace dtOO {
     }
   }
     
-  map2dTo3d * trans6SidedCube::segmentConstW( float const & ww ) const {
+  map2dTo3d * trans6SidedCube::segmentConstW( dtReal const & ww ) const {
     if ( analyticGeometry::inUVWTolerance(ww, getWMin()) ) {
       return _tI->getConstRefToMap2dTo3d()[2]->clone();      
     }

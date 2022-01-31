@@ -54,7 +54,7 @@ namespace dtOO {
     return new map2dTo3dTransformed< rotatingMap1dTo3d >(*this, dtT);
   }  
 	
-  bool rotatingMap1dTo3d::isClosed( int const & dir) const {
+  bool rotatingMap1dTo3d::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return true;
@@ -69,7 +69,7 @@ namespace dtOO {
     }
 	}
   
-	float rotatingMap1dTo3d::getMin( int const & dir) const {
+	dtReal rotatingMap1dTo3d::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 0.;
@@ -84,7 +84,7 @@ namespace dtOO {
     }    		
 	}
   
-	float rotatingMap1dTo3d::getMax( int const & dir) const {
+	dtReal rotatingMap1dTo3d::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 1.;
@@ -100,7 +100,7 @@ namespace dtOO {
 	}
     
 	dtPoint3 rotatingMap1dTo3d::getPoint( 
-    float const & uu, float const & vv
+    dtReal const & uu, dtReal const & vv
   ) const {
 		dtAffTransformation3 rot = dtLinearAlgebra::getRotation(_vv, uu*2*M_PI);
 		return rot.transform( _m1d->getPoint(vv) );
@@ -109,7 +109,7 @@ namespace dtOO {
 	void rotatingMap1dTo3d::correctOrigin() {
 		dtVector3 dist = _m1d->getPointPercent(0.) - _pp;
 		if ( (dist*_vv) != 0. ) {
-			float adjusting 
+			dtReal adjusting 
 		  = 
 			dtLinearAlgebra::dotProduct(dist, _vv)/dtLinearAlgebra::length(_vv);
 
