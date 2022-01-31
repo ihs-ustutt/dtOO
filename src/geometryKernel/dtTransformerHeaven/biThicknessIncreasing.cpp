@@ -129,7 +129,7 @@ namespace dtOO {
 					<< dt__eval(uvRes) << std::endl
 					<< "Removing duplicate point."
 				);
-			  p2.erase( p2.end() );
+			  p2.pop_back();
 			}
 			std::vector< dtPoint2 > p2All( p2.size()+p2Inv.size() );
 			int counter = 0;
