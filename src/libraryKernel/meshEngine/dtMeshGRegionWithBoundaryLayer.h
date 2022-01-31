@@ -63,7 +63,7 @@ namespace dtOO {
         vectorHandling< dtReal > & avT,
         vectorHandling< dtReal > & maxT,
         vectorHandling< dtReal > & minT      
-      );
+      ) const;
     private:
       static dtInt _NORMAL;
       static dtInt _SLIDER;

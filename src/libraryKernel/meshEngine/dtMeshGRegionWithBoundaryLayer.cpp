@@ -1041,7 +1041,7 @@ namespace dtOO {
       vectorHandling< dtReal > & avT,
       vectorHandling< dtReal > & maxT,
       vectorHandling< dtReal > & minT
-  ) {
+  ) const {
     avSpacing.clear();
     maxSpacing.clear();
     minSpacing.clear();
@@ -1049,12 +1049,12 @@ namespace dtOO {
     maxT.clear();
     minT.clear();
     dt__forAllRefAuto(_nSpacingSteps, aSpace) {
-      avSpacing.push_back( std::vector< dtReal >(aSpace, 0.) );
+      avSpacing.push_back( std::vector< dtReal >(aSpace+1, 0.) );
       maxSpacing.push_back( 
-        std::vector< dtReal >(aSpace, std::numeric_limits<dtReal>::min()) 
+        std::vector< dtReal >(aSpace+1, std::numeric_limits<dtReal>::min()) 
       );
       minSpacing.push_back( 
-        std::vector< dtReal >(aSpace, std::numeric_limits<dtReal>::max()) 
+        std::vector< dtReal >(aSpace+1, std::numeric_limits<dtReal>::max()) 
       );
       avT.push_back(0.);
       maxT.push_back( std::numeric_limits<dtReal>::min() );
