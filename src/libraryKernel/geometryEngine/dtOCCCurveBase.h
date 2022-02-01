@@ -5,8 +5,7 @@
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-
-class Handle_Geom_Curve;
+#include <Geom_Curve.hxx>
 
 namespace dtOO {    
   class dtOCCCurveBase {

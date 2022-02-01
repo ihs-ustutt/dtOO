@@ -26,7 +26,7 @@ namespace dtOO {
 		_boundary.reset( new dtOCCGeomFillBoundaryBase() );		
 		_boundary->setOCC( Handle(GeomFill_Boundary)::DownCast(bBase.getOCC()) );
 		dt__mustCast(
-      OCCBoundaryRef().getOCC().Access(), GeomFill_Boundary const, _ptr
+      OCCBoundaryRef().getOCC().get(), GeomFill_Boundary const, _ptr
     );
 	}
 	

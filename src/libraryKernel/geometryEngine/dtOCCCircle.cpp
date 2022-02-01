@@ -15,7 +15,7 @@ namespace dtOO {
 	}
 
 	dtOCCCircle::dtOCCCircle(dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_Circle const, _ptr);	
+		dt__mustCast(OCCRef().getOCC().get(), Geom_Circle const, _ptr);	
 	}
 
 	dtOCCCircle::~dtOCCCircle() {

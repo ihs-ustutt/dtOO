@@ -23,7 +23,7 @@ namespace dtOO {
 	dtOCCCurve2d::dtOCCCurve2d( dtOCCCurve2dBase const & orig) {
 		_curve.reset( new dtOCCCurve2dBase() );		
 		_curve->setOCC( Handle(Geom2d_Curve)::DownCast(orig.getOCC()->Copy()) );
-		dt__mustCast(OCCRef().getOCC().Access(), Geom2d_Curve const, _ptr);
+		dt__mustCast(OCCRef().getOCC().get(), Geom2d_Curve const, _ptr);
 	}
 	
 	dtOCCCurve2d::~dtOCCCurve2d() {
@@ -164,7 +164,7 @@ namespace dtOO {
 	void dtOCCCurve2d::revert( void ) {
 		Handle(Geom2d_Curve) rev = _ptr->Reversed();
 		_curve->setOCC(rev);
-		dt__mustCast(OCCRef().getOCC().Access(), Geom2d_Curve const, _ptr);		
+		dt__mustCast(OCCRef().getOCC().get(), Geom2d_Curve const, _ptr);		
 	}	
 	
 	dtOCCCurve2dBase const & dtOCCCurve2d::OCCRef( void ) const {

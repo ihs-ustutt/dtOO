@@ -12,9 +12,9 @@
 #include <Standard_Failure.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Adaptor2d_Curve2d.hxx>
-#include <Adaptor3d_HSurface.hxx>
-#include <Geom2dAdaptor_HCurve.hxx>
-#include <GeomAdaptor_HSurface.hxx>
+#include <Adaptor3d_Surface.hxx>
+#include <Geom2dAdaptor_Curve.hxx>
+#include <GeomAdaptor_Surface.hxx>
 #include <Approx_CurveOnSurface.hxx>
 #include <Geom2d_Curve.hxx>
 #include <Geom_Surface.hxx>
@@ -36,12 +36,12 @@ namespace dtOO {
       dtOCCSurface::ConstDownCast(dtS)->OCCRef().getOCC()->Copy()
     );    
 
-    Handle(Adaptor2d_HCurve2d) hc 
+    Handle(Adaptor2d_Curve2d) hc 
     = 
-    new Geom2dAdaptor_HCurve(gc);
-    Handle(Adaptor3d_HSurface) hs 
+    new Geom2dAdaptor_Curve(gc);
+    Handle(Adaptor3d_Surface) hs 
     = 
-    new GeomAdaptor_HSurface(gs);    
+    new GeomAdaptor_Surface(gs);    
 
 		Handle(Geom_BSplineCurve) curve 
 		=     

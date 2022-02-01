@@ -22,11 +22,11 @@
 #include <Geom2d_Curve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <GeomFill_BoundWithSurf.hxx>
-#include <Adaptor2d_HCurve2d.hxx>
-#include <Adaptor3d_HSurface.hxx>
+#include <Adaptor2d_Curve2d.hxx>
+#include <Adaptor3d_Surface.hxx>
 #include <Adaptor3d_CurveOnSurface.hxx>
-#include <GeomAdaptor_HSurface.hxx>
-#include <Geom2dAdaptor_HCurve.hxx>
+#include <GeomAdaptor_Surface.hxx>
+#include <Geom2dAdaptor_Curve.hxx>
 
 namespace dtOO {
 	geomFillBoundWithSurf_surfaceConstructOCC
@@ -48,12 +48,12 @@ namespace dtOO {
     = 
     Handle(Geom2d_Curve)::DownCast( occC2d->OCCRef().getOCC()->Copy() );
     
-    Handle(GeomAdaptor_HSurface) Surface 
+    Handle(GeomAdaptor_Surface) Surface 
     = 
-    new GeomAdaptor_HSurface(mySurface);
-    Handle(Geom2dAdaptor_HCurve) ParamCurve 
+    new GeomAdaptor_Surface(mySurface);
+    Handle(Geom2dAdaptor_Curve) ParamCurve 
     = 
-    new Geom2dAdaptor_HCurve(myParamCurve);
+    new Geom2dAdaptor_Curve(myParamCurve);
     Adaptor3d_CurveOnSurface CurveOnSurf(ParamCurve,Surface);
     
     Handle(GeomFill_BoundWithSurf) myBoundary 

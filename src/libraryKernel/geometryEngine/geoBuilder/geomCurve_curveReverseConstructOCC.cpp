@@ -16,7 +16,7 @@ namespace dtOO {
 		dt__ptrAss( dtOCCCurve const * const cc, dtOCCCurve::ConstDownCast(dtC) );
 		
 		Geom_Curve const * cP;
-		dt__mustCast(cc->OCCRef().getOCC().Access(), Geom_Curve const, cP);
+		dt__mustCast(cc->OCCRef().getOCC().get(), Geom_Curve const, cP);
 		
 		Handle(Geom_Curve) aRes = Handle(Geom_Curve)::DownCast( cP->Copy() );
 		if (revU) aRes->Reverse();

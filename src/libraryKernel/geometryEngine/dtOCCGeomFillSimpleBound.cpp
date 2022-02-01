@@ -8,6 +8,7 @@
 #include <Standard_Failure.hxx>
 #include <Standard_ErrorHandler.hxx>
 #include <Standard_TypeDef.hxx>
+#include <Adaptor3d_Curve.hxx>
 #include <GeomFill_SimpleBound.hxx>
 #include <gp_Pnt.hxx>
 
@@ -21,7 +22,7 @@ namespace dtOO {
     dtOCCCurveBase const & cBase, dtOCCGeomFillBoundaryBase const & bBase
   ) : dtOCCGeomFillBoundary(cBase, bBase) {
 		dt__mustCast(
-      OCCBoundaryRef().getOCC().Access(), GeomFill_SimpleBound const, _ptr
+      OCCBoundaryRef().getOCC().get(), GeomFill_SimpleBound const, _ptr
     );
 	}
 	

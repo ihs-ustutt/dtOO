@@ -16,7 +16,7 @@ namespace dtOO {
 	dtOCCTrimmedCurve2d::dtOCCTrimmedCurve2d(
     dtOCCCurve2dBase const & orig, dtReal const u0, dtReal const u1
   ) : dtOCCCurve2d(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom2d_TrimmedCurve const, _ptr);		
+		dt__mustCast(OCCRef().getOCC().get(), Geom2d_TrimmedCurve const, _ptr);		
 		_u0 = u0;
 		_u1 = u1;
 	}

@@ -5,8 +5,8 @@
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-
-class Handle_GeomFill_Boundary;
+#include <GeomFill_Boundary.hxx>
+//class Handle_GeomFill_Boundary;
 
 namespace dtOO {    
   class dtOCCGeomFillBoundaryBase {

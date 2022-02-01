@@ -7,7 +7,7 @@
 #include <Standard_ErrorHandler.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Approx_CurvilinearParameter.hxx>
-#include <GeomAdaptor_HCurve.hxx>
+#include <GeomAdaptor_Curve.hxx>
 
 namespace dtOO {
 	bSplineCurve_pointConstructArcLengthParaOCC
@@ -21,11 +21,11 @@ namespace dtOO {
 		  dtOCCCurve::ConstDownCast(dtC)->OCCRef().getOCC()
 		);
 		
-		Handle(GeomAdaptor_HCurve) gahc;
+		Handle(GeomAdaptor_Curve) gahc;
 		dt__tryOcc(
 			gahc
 			=
-			new GeomAdaptor_HCurve(bsc);
+			new GeomAdaptor_Curve(bsc);
 		, << "");
 //		gahc.Load( bsc );
 		

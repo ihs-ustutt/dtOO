@@ -57,7 +57,7 @@ namespace dtOO {
 			  CC[0], CC[1], CC[2], CC[3], 
 				GeomFill_FillingStyle::GeomFill_StretchStyle
 			);						
-			base.setOCC( fill.Surface() );
+			base.setOCC( Handle(Geom_Surface)::DownCast(fill.Surface()) );
 		,
 			<< "Could not initialize and create filled surface." << std::endl
       << logMe::dtFormat("[0] (%e %e %e) -> (%e %e %e)\n")

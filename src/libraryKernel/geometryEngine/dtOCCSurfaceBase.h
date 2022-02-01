@@ -5,8 +5,7 @@
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-
-class Handle_Geom_Surface;
+#include <Geom_Surface.hxx>
 
 namespace dtOO {    
   class dtOCCSurfaceBase {

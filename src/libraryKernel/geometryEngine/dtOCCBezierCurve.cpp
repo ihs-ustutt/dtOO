@@ -16,7 +16,7 @@ namespace dtOO {
 	dtOCCBezierCurve::dtOCCBezierCurve( 
     dtOCCCurveBase const & orig
   ) : dtOCCCurve(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_BezierCurve const, _ptr);
+		dt__mustCast(OCCRef().getOCC().get(), Geom_BezierCurve const, _ptr);
 	}
 	
 	dtOCCBezierCurve::~dtOCCBezierCurve() {

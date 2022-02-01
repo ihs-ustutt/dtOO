@@ -27,7 +27,7 @@ namespace dtOO {
 
 	dtOCCCompositeSurface::dtOCCCompositeSurface(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), ShapeExtend_CompositeSurface const, _ptr);
+		dt__mustCast(OCCRef().getOCC().get(), ShapeExtend_CompositeSurface const, _ptr);
 	}
 
 	dtOCCCompositeSurface::~dtOCCCompositeSurface() {
@@ -45,7 +45,7 @@ namespace dtOO {
     Standard_Real v0R = static_cast<Standard_Real>(vvMin);
     Standard_Real v1R = static_cast<Standard_Real>(vvMax);
           
-    if (_ptr->Patch(uR, v0R).Access() == _ptr->Patch(uR, v1R).Access() ) {
+    if (_ptr->Patch(uR, v0R).get() == _ptr->Patch(uR, v1R).get() ) {
       Handle(Geom_Curve) cc;
       dt__tryOcc(
         cc
@@ -95,7 +95,7 @@ namespace dtOO {
     Standard_Real u1R = static_cast<Standard_Real>(uuMax);
     
     
-    if ( _ptr->Patch(u0R, vR).Access() == _ptr->Patch(u1R, vR).Access() ) {
+    if ( _ptr->Patch(u0R, vR).get() == _ptr->Patch(u1R, vR).get() ) {
       Handle(Geom_Curve) cc;
       dt__tryOcc(
         cc

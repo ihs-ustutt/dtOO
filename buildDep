@@ -67,7 +67,7 @@ while getopts ":i:n:ho:bd" opt; do
     n) # Specify the number of build processes (_nProcs)
       _nProcs=$OPTARG
       ;;
-    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab oce cgal muparser root ]
+    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab occt cgal muparser root ]
       _dep=$OPTARG
       ;;
     b) # Skip build
@@ -223,13 +223,28 @@ git_cmake_build \
   "
   
 #-------------------------------------------------------------------------------
-# oce
+# occt
 #-------------------------------------------------------------------------------
 git_cmake_build \
-  "oce" \
-  "https://github.com/tpaviot/oce" \
-  "OCE-0.18.3" \
-  "-DOCE_INSTALL_PREFIX=${_installPrefix}"
+  "occt" \
+  "https://git.dev.opencascade.org/repos/occt.git" \
+  "V7_5_1" \
+  "\
+    -DINSTALL_DIR=${_installPrefix} \
+    -DBUILD_RELEASE_DISABLE_EXCEPTIONS=FALSE \
+  "
+  
+#-------------------------------------------------------------------------------
+# pythonocc-core
+#-------------------------------------------------------------------------------
+git_cmake_build \  
+  "pythonocc-core"
+  "git://github.com/tpaviot/pythonocc-core.git"
+  "7.5.1"
+  "\
+    -DOCE_INCLUDE_PATH=${_installPrefix}/include/opencascade \
+    -DOCE_LIB_PATH=${_installPrefix}/lib \
+  "
   
 #-------------------------------------------------------------------------------
 # cgal
