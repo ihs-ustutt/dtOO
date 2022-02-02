@@ -11,7 +11,7 @@
 #include <Standard_ErrorHandler.hxx>
 #include <Standard_TypeDef.hxx>
 #include <Geom_Curve.hxx>
-#include <GeomAdaptor_Curve.hxx>
+#include <GeomAdaptor_HCurve.hxx>
 #include <GeomFill_SimpleBound.hxx>
 
 namespace dtOO {
@@ -27,9 +27,9 @@ namespace dtOO {
     = 
     Handle(Geom_Curve)::DownCast( occC->OCCRef().getOCC()->Copy() );
 
-    Handle(GeomAdaptor_Curve) ParamCurve 
+    Handle(GeomAdaptor_HCurve) ParamCurve 
     = 
-    new GeomAdaptor_Curve(myParamCurve);
+    new GeomAdaptor_HCurve(myParamCurve);
 
     Handle(GeomFill_SimpleBound) myBoundary 
     = 
