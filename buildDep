@@ -237,10 +237,10 @@ git_cmake_build \
 #-------------------------------------------------------------------------------
 # pythonocc-core
 #-------------------------------------------------------------------------------
-git_cmake_build \  
-  "pythonocc-core"
-  "git://github.com/tpaviot/pythonocc-core.git"
-  "7.5.1"
+git_cmake_build \
+  "pythonocc-core" \
+  "git://github.com/tpaviot/pythonocc-core.git" \
+  "7.5.1" \
   "\
     -DOCE_INCLUDE_PATH=${_installPrefix}/include/opencascade \
     -DOCE_LIB_PATH=${_installPrefix}/lib \
