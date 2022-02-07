@@ -18,6 +18,7 @@
 #include <boundedVolume.h>
 #include <dtCase.h>
 #include <dtPlugin.h>
+#include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/dtXmlParser.h>
 using namespace dtOO;
 #ifdef DTOO_HAS_PYTHONOCC
@@ -79,7 +80,7 @@ namespace dtOO {
   %template(labeledVectorHandlingDtCase) labeledVectorHandling< dtCase * >;
   %template(labeledVectorHandlingDtPlugin) labeledVectorHandling< dtPlugin * >;
 }
-
+%include <xmlHeaven/dtXmlParserBase.h>
 %include <xmlHeaven/dtXmlParser.h>
         
 %include geometryEngine/dtSurface.h
