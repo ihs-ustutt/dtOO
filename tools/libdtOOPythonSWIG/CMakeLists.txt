@@ -1,20 +1,26 @@
+
+option(DTOO_USE_PYTHONOCC "Use PythonOCC" OFF)
+
 find_package(PythonInterp REQUIRED)
-# component python could be labelled as e.g. python3 or python38
-#   -> preliminary search for pyhton3 and python38
-#   -> afterwards check with if statement
+
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
-find_package(PythonOCC REQUIRED)
+
+if (DTOO_USE_PYTHONOCC)
+  find_package(PythonOCC REQUIRED)
+  add_definitions(-DDTOO_HAS_PYTHONOCC)
+  include_directories(
+    ${PythonOCC_INCLUDE_DIR}/wrapper
+    ${PythonOCC_INCLUDE_DIR}/headers
+  )
+  set(CMAKE_SWIG_FLAGS "-DDTOO_HAS_PYTHONOCC")
+endif (DTOO_USE_PYTHONOCC)
 
 find_package(PythonLibs 3 REQUIRED)
 include_directories(
   ${PYTHON_INCLUDE_PATH}
-  ${PythonOCC_INCLUDE_DIR}/wrapper
-  ${PythonOCC_INCLUDE_DIR}/headers
 )
-
-set(CMAKE_SWIG_FLAGS "")
 
 #
 #
@@ -31,6 +37,7 @@ set( SOURCES dtOOPythonSWIG.i )
 #
 #
 SWIG_ADD_LIBRARY(dtOOPythonSWIG TYPE SHARED LANGUAGE python SOURCES ${SOURCES})
+
 #
 #
 # linking

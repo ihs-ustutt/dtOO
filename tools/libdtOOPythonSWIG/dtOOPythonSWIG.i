@@ -20,18 +20,21 @@
 #include <dtPlugin.h>
 #include <xmlHeaven/dtXmlParser.h>
 using namespace dtOO;
-#include <TColStd_module.hxx>
-#include <TCollection_module.hxx>
-#include <Message_module.hxx>
-#include <Geom_module.hxx>
-#include <TColgp_module.hxx>
+#ifdef DTOO_HAS_PYTHONOCC
+  #include <TColStd_module.hxx>
+  #include <TCollection_module.hxx>
+  #include <Message_module.hxx>
+  #include <Geom_module.hxx>
+  #include <TColgp_module.hxx>
+#endif
 %}
 
 %include <std_string.i>
-
+#ifdef DTOO_HAS_PYTHONOCC
 %import Standard.i
 %import math.i
 %import Geom.i
+#endif
 %exception;
 
 %include <dtOOTypeDef.h>
