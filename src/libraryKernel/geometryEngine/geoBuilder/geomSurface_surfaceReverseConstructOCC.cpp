@@ -22,7 +22,7 @@ namespace dtOO {
     );
 		
 		Geom_Surface const * sP;
-		dt__mustCast(ss->OCCRef().getOCC().Access(), Geom_Surface const, sP);
+		dt__mustCast(ss->OCCRef().getOCC().get(), Geom_Surface const, sP);
 		
 		Handle(Geom_Surface) aRes = Handle(Geom_Surface)::DownCast( sP->Copy() );
     

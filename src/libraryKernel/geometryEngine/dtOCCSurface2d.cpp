@@ -28,7 +28,7 @@ namespace dtOO {
 			_surface->setOCC( 
 				Handle(Geom_Surface)::DownCast(orig.getOCC()->Copy()) 
 			);
-			dt__mustCast(_surface->getOCC().Access(), Geom_Surface const, _ptr);
+			dt__mustCast(_surface->getOCC().get(), Geom_Surface const, _ptr);
 		, << dt__eval(_ptr) << std::endl
 		);
 	}

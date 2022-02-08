@@ -23,10 +23,12 @@ namespace dtOO {
 		dtVector3 const & rA, 
 		dtReal const & angle
 	) {
-		dt__ptrAss( dtOCCSurface const * const ss, dtOCCSurface::ConstDownCast(dtS) );
+		dt__ptrAss( 
+		  dtOCCSurface const * const ss, dtOCCSurface::ConstDownCast(dtS) 
+    );
 		
 		Geom_Surface const * sP;
-		dt__mustCast(ss->OCCRef().getOCC().Access(), Geom_Surface const, sP);
+		dt__mustCast(ss->OCCRef().getOCC().get(), Geom_Surface const, sP);
 		
 	  gp_Pnt pp(
 		  static_cast<Standard_Real>(oP.x()), 

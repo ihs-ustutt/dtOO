@@ -11,8 +11,8 @@
 #include <Standard_ErrorHandler.hxx>
 #include <Standard_TypeDef.hxx>
 #include <Geom_Curve.hxx>
-#include <GeomFill_SimpleBound.hxx>
 #include <GeomAdaptor_HCurve.hxx>
+#include <GeomFill_SimpleBound.hxx>
 
 namespace dtOO {
 	geomFillSimpleBound_curveConstructOCC

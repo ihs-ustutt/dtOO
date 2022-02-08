@@ -27,7 +27,7 @@ namespace dtOO {
     const dtOCCSurfaceBase& orig
   ) : dtOCCSurface(orig) {
 		dt__mustCast(
-      OCCRef().getOCC().Access(), Geom_SurfaceOfRevolution const, _ptr
+      OCCRef().getOCC().get(), Geom_SurfaceOfRevolution const, _ptr
     );
 	}
 
@@ -69,8 +69,8 @@ namespace dtOO {
 		}
 		else {
 			dt__throw(segmentConstU(),
-							<< dt__eval(ccBezier) << std::endl
-							<< dt__eval(ccBSpline) );
+							<< dt__eval(ccBezier.get()) << std::endl
+							<< dt__eval(ccBSpline.get()) );
 		}
 	}
 
@@ -119,9 +119,9 @@ namespace dtOO {
 		else {
 			dt__throw(
 				segmentConstV(),
-				<< dt__eval(ccBezier) << std::endl
-				<< dt__eval(ccBSpline) << std::endl
-				<< dt__eval(ccConic) 
+				<< dt__eval(ccBezier.get()) << std::endl
+				<< dt__eval(ccBSpline.get()) << std::endl
+				<< dt__eval(ccConic.get()) 
 			);
 		}
 	}		

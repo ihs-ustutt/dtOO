@@ -34,7 +34,7 @@ namespace dtOO {
     ss 
     << dt__dumpToString(
       << dt__eval(stH->Name()) << std::endl
-      << dt__eval( _hanWrap->occHandle.Access() )
+      << dt__eval( _hanWrap->occHandle.get() )
     );    
     
     return ss.str();

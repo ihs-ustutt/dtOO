@@ -20,7 +20,7 @@ namespace dtOO {
 
 	dtOCCBSplineSurface::dtOCCBSplineSurface(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_BSplineSurface const, _ptr);
+		dt__mustCast(OCCRef().getOCC().get(), Geom_BSplineSurface const, _ptr);
 	}
 
 	dtOCCBSplineSurface::~dtOCCBSplineSurface() {

@@ -20,7 +20,7 @@ namespace dtOO {
     dtOCCCurveBase const & cBase, dtOCCGeomFillBoundaryBase const & bBase
   ) : dtOCCGeomFillBoundary(cBase, bBase) {
 		dt__mustCast(
-      OCCBoundaryRef().getOCC().Access(), GeomFill_BoundWithSurf const, _ptr
+      OCCBoundaryRef().getOCC().get(), GeomFill_BoundWithSurf const, _ptr
     );
 	}
 	

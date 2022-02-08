@@ -15,7 +15,7 @@ namespace dtOO {
 	}
 
 	dtOCCEllipse::dtOCCEllipse(dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_Ellipse const, _ptr);	
+		dt__mustCast(OCCRef().getOCC().get(), Geom_Ellipse const, _ptr);	
 	}
 
 	dtOCCEllipse::~dtOCCEllipse() {

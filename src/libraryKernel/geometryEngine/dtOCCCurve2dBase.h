@@ -6,8 +6,9 @@
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <boost/shared_ptr.hpp>
+#include <Geom2d_Curve.hxx>
 
-class Handle_Geom2d_Curve;
+//class Handle_Geom2d_Curve;
 
 namespace dtOO {    
   class dtOCCCurve2dBase {

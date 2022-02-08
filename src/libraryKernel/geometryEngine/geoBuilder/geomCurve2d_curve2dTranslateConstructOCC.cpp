@@ -21,7 +21,7 @@ namespace dtOO {
     );
 		
 		Geom2d_Curve const * cP;
-		dt__mustCast(cc->OCCRef().getOCC().Access(), Geom2d_Curve const, cP);
+		dt__mustCast(cc->OCCRef().getOCC().get(), Geom2d_Curve const, cP);
 		
 		Handle(Geom2d_Curve) aRes = Handle(Geom2d_Curve)::DownCast( cP->Copy() );
 		aRes->Translate(

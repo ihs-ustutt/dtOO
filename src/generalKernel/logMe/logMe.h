@@ -321,14 +321,13 @@ namespace dtOO {
       OCC_CATCH_SIGNALS \
       cmd \
     } \
-    catch( Standard_Failure ) { \
+    catch( Standard_Failure & stdF) { \
         throw eGeneral( \
           std::ostringstream().flush() << className() << "::" << std::endl \
           << "*-> file '" <<  __FILE__ << "'" << std::endl \
           << "*-> line '" << __LINE__ << "'" << std::endl \
           << std::endl \
-          << Standard_Failure::Caught() << std::endl \
-          << Standard_Failure::Caught()->GetMessageString() << std::endl \
+          << stdF.GetMessageString() << std::endl \
           << std::endl \
           errorOut \
           << std::endl \

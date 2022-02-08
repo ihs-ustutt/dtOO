@@ -22,7 +22,7 @@ namespace dtOO {
 	dtOCCTrimmedCurve::dtOCCTrimmedCurve(
     dtOCCCurveBase const & orig
   ) : dtOCCCurve(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_TrimmedCurve const, _ptr);
+		dt__mustCast(OCCRef().getOCC().get(), Geom_TrimmedCurve const, _ptr);
 	}  
 
 	dtOCCTrimmedCurve::~dtOCCTrimmedCurve() {

@@ -18,7 +18,7 @@ namespace dtOO {
 
 	dtOCCBezierSurface::dtOCCBezierSurface(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_BezierSurface const, _ptr);
+		dt__mustCast(OCCRef().getOCC().get(), Geom_BezierSurface const, _ptr);
 	}
 
 	dtOCCBezierSurface::~dtOCCBezierSurface() {
