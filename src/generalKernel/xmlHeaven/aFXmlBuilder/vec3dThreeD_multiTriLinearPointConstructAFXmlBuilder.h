@@ -1,6 +1,8 @@
 #ifndef vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder_H
 #define	vec3dThreeD_multiTriLinearPointConstructAFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

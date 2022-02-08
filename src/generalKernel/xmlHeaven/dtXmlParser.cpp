@@ -96,8 +96,8 @@ namespace dtOO {
     // read file
     //
     QString qString;
-    int line;
-    int column;
+    dtInt line;
+    dtInt column;
     dt__throwIfWithMessage(
       !xmlDocument.setContent( &xmlFile, &qString, &line, &column ),
       parse(),
@@ -187,7 +187,7 @@ namespace dtOO {
 			// parse variable and values to replace
 			//
 			std::string var = getAttributeStr("variable", forElement);
-			  std::string valueStr = getAttributeStr("values", forElement);
+			std::string valueStr = getAttributeStr("values", forElement);
 			
 			//
 			// replace
@@ -232,7 +232,7 @@ namespace dtOO {
 			//
 			// replace
 			//
-      int iiInd = 0;
+      dtInt iiInd = 0;
       dt__forAllRefAuto(valueStr, aValueVec) {
         dt__debug(
           parse(),
@@ -241,7 +241,7 @@ namespace dtOO {
         dt__forAllRefAuto(getChildVector(forElement), aChild) {
           ::QDomElement childClone = aChild.cloneNode(true).toElement();
           
-          int jjInd = 0;          
+          dtInt jjInd = 0;          
           dt__forAllRefAuto(convertToStringVector("{", "}", aValueVec), aValue) {            
             std::string var = varStr[jjInd];
 
@@ -637,8 +637,8 @@ namespace dtOO {
     // try to read file and check if it is correct
     //
     QString qString;
-    int line;
-    int column;
+    dtInt line;
+    dtInt column;
     if( !xmlDocument.setContent( &xmlFile, &qString, &line, &column ) ) {
       dt__warning(
         checkFile(),
@@ -944,7 +944,7 @@ namespace dtOO {
         << "label = " << label << std::endl
         << "baseName = " << baseName << std::endl;
       
-      int counterLabel = 0;
+      dtInt counterLabel = 0;
       dt__forAllIndex(tmpAF, ii) {
         if ( !labelVector.empty() ) {
           tmpAF[ii]->setLabel( labelVector.front() );
@@ -1064,7 +1064,7 @@ namespace dtOO {
           //
           // replace in vector
           //          
-          int pos = aGP->getPosition( tmpAGeo[ii]->getLabel() );
+          dtInt pos = aGP->getPosition( tmpAGeo[ii]->getLabel() );
           delete aGP->at(pos);
           aGP->at(pos) = tmpAGeo[ii];
         }

@@ -199,14 +199,14 @@ namespace dtOO {
   }
   
   template < typename T >
-  std::map< ::GEntity *, int > bVOPMeshRule::prepareDistribution(
-    std::list< T > list, std::vector< float > weight
+  std::map< ::GEntity *, dtInt > bVOPMeshRule::prepareDistribution(
+    std::list< T > list, std::vector< dtReal > weight
   ) {
-    std::vector< float > rankBalance(
+    std::vector< dtReal > rankBalance(
       staticPropertiesHandler::getInstance()->nRanks(), 0
     );
-    std::map< ::GEntity *, int > onRankMap;
-    int currentRank = 0;
+    std::map< ::GEntity *, dtInt > onRankMap;
+    dtInt currentRank = 0;
     dt__forAllRefAuto(list, anEnt) {
       if ( !isMeshed(anEnt) && isOwnMaster(anEnt) ) {
         currentRank = progHelper::minPos(rankBalance);
@@ -260,15 +260,15 @@ namespace dtOO {
     rr = dtGmshModel::cast2DtGmshRegion( gm->regions() );   
     
     if ( _edgeWeight.size() != ee.size() ) {
-      _edgeWeight = std::vector< float >(ee.size(), 1.0);
+      _edgeWeight = std::vector< dtReal >(ee.size(), 1.0);
       dt__info(preUpdate(), << "Assume uniform _edgeWeight.");
     }    
     if ( _faceWeight.size() != ff.size() ) {
-      _faceWeight = std::vector< float >(ff.size(), 1.0);
+      _faceWeight = std::vector< dtReal >(ff.size(), 1.0);
       dt__info(preUpdate(), << "Assume uniform _faceWeight.");
     }    
     if ( _regionWeight.size() != rr.size() ) {
-      _regionWeight = std::vector< float >(rr.size(), 1.0);
+      _regionWeight = std::vector< dtReal >(rr.size(), 1.0);
       dt__info(preUpdate(), << "Assume uniform _regionWeight.");
     }
     gm->prepareToMesh();
@@ -297,8 +297,8 @@ namespace dtOO {
       }
     } 
 
-    std::map< ::GEntity *, int > onRankMap;
-    int const thisRank = staticPropertiesHandler::getInstance()->thisRank();
+    std::map< ::GEntity *, dtInt > onRankMap;
+    dtInt const thisRank = staticPropertiesHandler::getInstance()->thisRank();
     
     gm->prepareToMesh();   
     onRankMap = prepareDistribution(ee, _edgeWeight);

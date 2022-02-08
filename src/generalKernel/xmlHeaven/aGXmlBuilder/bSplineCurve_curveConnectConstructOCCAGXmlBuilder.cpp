@@ -60,19 +60,19 @@ namespace dtOO {
     }
     
     ptrHandling< dtCurve > dtC;
-    float tolerance = 1.E-07;
+    dtReal tolerance = 1.E-07;
     if ( dtXmlParserBase::hasAttribute("tolerance", toBuild) ) {
       tolerance 
       = 
       dtXmlParserBase::getAttributeFloatMuParse("tolerance", toBuild, cV);
     }
-    int param = 0;    
+    dtInt param = 0;    
     if ( dtXmlParserBase::hasAttribute("parameterization", toBuild) ) {
       param 
       = 
       dtXmlParserBase::getAttributeIntMuParse("parameterization", toBuild, cV);
     }
-    int minM = 0;    
+    dtInt minM = 0;    
     if ( dtXmlParserBase::hasAttribute("minM", toBuild) ) {
       minM 
       = 

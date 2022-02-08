@@ -20,7 +20,7 @@
 
 using namespace dtOO;
 
-int main( int ac, char* av[] ) {
+int main( dtInt ac, char* av[] ) {
   ::boost::mpi::environment env;
   ::boost::mpi::communicator world;    
   

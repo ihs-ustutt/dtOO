@@ -1,6 +1,8 @@
 #ifndef geomSurface_multipleBoundedSurfaceAGXmlBuilder_H
 #define	geomSurface_multipleBoundedSurfaceAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

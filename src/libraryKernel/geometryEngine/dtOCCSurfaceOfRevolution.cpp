@@ -27,7 +27,7 @@ namespace dtOO {
     const dtOCCSurfaceBase& orig
   ) : dtOCCSurface(orig) {
 		dt__mustCast(
-      OCCRef().getOCC().Access(), Geom_SurfaceOfRevolution const, _ptr
+      OCCRef().getOCC().get(), Geom_SurfaceOfRevolution const, _ptr
     );
 	}
 
@@ -40,7 +40,7 @@ namespace dtOO {
 	}
 
 	dtCurve * dtOCCSurfaceOfRevolution::segmentConstU( 
-    float const uu, float const vvMin, float const vvMax
+    dtReal const uu, dtReal const vvMin, dtReal const vvMax
   ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
@@ -69,13 +69,13 @@ namespace dtOO {
 		}
 		else {
 			dt__throw(segmentConstU(),
-							<< dt__eval(ccBezier) << std::endl
-							<< dt__eval(ccBSpline) );
+							<< dt__eval(ccBezier.get()) << std::endl
+							<< dt__eval(ccBSpline.get()) );
 		}
 	}
 
 	dtCurve * dtOCCSurfaceOfRevolution::segmentConstV( 
-    float const vv, float const uuMin, float const uuMax
+    dtReal const vv, dtReal const uuMin, dtReal const uuMax
   ) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		Handle(Geom_Curve) cc = _ptr->VIso(vR);
@@ -119,9 +119,9 @@ namespace dtOO {
 		else {
 			dt__throw(
 				segmentConstV(),
-				<< dt__eval(ccBezier) << std::endl
-				<< dt__eval(ccBSpline) << std::endl
-				<< dt__eval(ccConic) 
+				<< dt__eval(ccBezier.get()) << std::endl
+				<< dt__eval(ccBSpline.get()) << std::endl
+				<< dt__eval(ccConic.get()) 
 			);
 		}
 	}		

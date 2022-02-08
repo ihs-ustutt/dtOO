@@ -1,6 +1,8 @@
 #ifndef bVOSetTranslationalPeriodicity_H
 #define	bVOSetTranslationalPeriodicity_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

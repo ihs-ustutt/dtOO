@@ -434,7 +434,7 @@ namespace dtOO {
         (
           dtLinearAlgebra::length( bbMax - bbMin) 
           * 
-          std::numeric_limits<float>::epsilon()
+          std::numeric_limits<dtReal>::epsilon()
         )
       << std::endl
       << "lc = " << CTX::instance()->lc

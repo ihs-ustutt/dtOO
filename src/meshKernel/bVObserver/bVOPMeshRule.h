@@ -1,11 +1,11 @@
 #ifndef bVOPMeshRule_H
 #define	bVOPMeshRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 #include <interfaceHeaven/labeledVectorHandling.h>
-
-//#include <gmsh/GEntity.h>
 
 class GEntity;
 
@@ -37,8 +37,8 @@ namespace dtOO {
       static bool isMeshed(T const * const gent);
       static bool isOwnMaster(::GEntity const * const gent);
       template < typename T >
-      static std::map< ::GEntity *, int > prepareDistribution(
-        std::list< T > list, std::vector< float > weight
+      static std::map< ::GEntity *, dtInt > prepareDistribution(
+        std::list< T > list, std::vector< dtReal > weight
       );      
     private:
       labeledVectorHandling< dtMeshOperator * > _meshOperator;
@@ -46,9 +46,9 @@ namespace dtOO {
       std::vector< std::string > _rule2D;
       std::vector< std::string > _rule3D;
       std::vector< std::string > _only;
-      std::vector< float > _edgeWeight;
-      std::vector< float > _faceWeight;
-      std::vector< float > _regionWeight;
+      std::vector< dtReal > _edgeWeight;
+      std::vector< dtReal > _faceWeight;
+      std::vector< dtReal > _regionWeight;
   };
 }
 #endif	/* bVOPMeshRule_H */

@@ -1,6 +1,8 @@
 #ifndef bVOFaceToPatchRule_H
 #define	bVOFaceToPatchRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 

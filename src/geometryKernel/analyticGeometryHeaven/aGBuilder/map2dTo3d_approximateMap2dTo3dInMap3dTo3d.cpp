@@ -16,16 +16,16 @@ namespace dtOO {
 	map2dTo3d_approximateMap2dTo3dInMap3dTo3d
 	  ::map2dTo3d_approximateMap2dTo3dInMap3dTo3d(
 		map2dTo3d const * const m2d, map3dTo3d const * const m3d,
-		int const & nU, int const & nV, int const & order
+		int const & nU, dtInt const & nV, dtInt const & order
 	) {
 		vectorHandling< dtCurve const * > cL;
 		
-		dt__toFloat(float deltaV, 1./(nV-1));
+		dt__toFloat(dtReal deltaV, 1./(nV-1));
 		for (int jj=0; jj<nV; jj++) {
 			//
 			// get constV segment
 			//
-			dt__toFloat(float jjF, jj);
+			dt__toFloat(dtReal jjF, jj);
 			std::vector< dtPoint3 > ppXYZ
 			=
 			dtPoint3_map1dTo3dPoint(

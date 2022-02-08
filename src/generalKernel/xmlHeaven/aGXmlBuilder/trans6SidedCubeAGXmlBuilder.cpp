@@ -71,7 +71,7 @@ namespace dtOO {
       dt__info(buildPart(), << "exchange = " << exchange);
       dt__info(buildPart(), << "reverse = " << reverse);
       
-      int counter = 0;
+      dtInt counter = 0;
       dt__forAllIter(std::vector< ::QDomElement >, wElementVec, it) {
         
         //

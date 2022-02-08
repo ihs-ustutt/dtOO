@@ -1,6 +1,8 @@
 #ifndef dtPoint3_map1dTo3dPoint_H
 #define	dtPoint3_map1dTo3dPoint_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <vector>
@@ -12,7 +14,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(dtPoint3_map1dTo3dPoint);     
     dtPoint3_map1dTo3dPoint(
-      map1dTo3d const * const m1d, int const & nPoints
+      map1dTo3d const * const m1d, dtInt const & nPoints
     );
     virtual ~dtPoint3_map1dTo3dPoint();
     std::vector< dtPoint3 > result( void );

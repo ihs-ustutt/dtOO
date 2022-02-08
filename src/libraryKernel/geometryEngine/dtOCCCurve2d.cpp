@@ -23,16 +23,16 @@ namespace dtOO {
 	dtOCCCurve2d::dtOCCCurve2d( dtOCCCurve2dBase const & orig) {
 		_curve.reset( new dtOCCCurve2dBase() );		
 		_curve->setOCC( Handle(Geom2d_Curve)::DownCast(orig.getOCC()->Copy()) );
-		dt__mustCast(OCCRef().getOCC().Access(), Geom2d_Curve const, _ptr);
+		dt__mustCast(OCCRef().getOCC().get(), Geom2d_Curve const, _ptr);
 	}
 	
 	dtOCCCurve2d::~dtOCCCurve2d() {
 	}
 
-  float dtOCCCurve2d::minPara ( int const & dir ) const {
+  dtReal dtOCCCurve2d::minPara ( dtInt const & dir ) const {
     switch (dir) {
       case 0:
-        return static_cast<float>(_ptr->FirstParameter());
+        return static_cast<dtReal>(_ptr->FirstParameter());
         break;
       default:
         dt__throw(getMin(),
@@ -41,10 +41,10 @@ namespace dtOO {
     }    		    
 	}
 	
-  float dtOCCCurve2d::maxPara ( int const & dir ) const {
+  dtReal dtOCCCurve2d::maxPara ( dtInt const & dir ) const {
     switch (dir) {
       case 0:
-        return static_cast<float>(_ptr->LastParameter());
+        return static_cast<dtReal>(_ptr->LastParameter());
         break;
       default:
         dt__throw(getMin(),
@@ -57,17 +57,17 @@ namespace dtOO {
 		return static_cast<bool>(_ptr->IsClosed());
 	}
 	
-  dtPoint2 dtOCCCurve2d::point( float const uu ) const {
+  dtPoint2 dtOCCCurve2d::point( dtReal const uu ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt2d pp = _ptr->Value(uR);
 		
 		return dtPoint2(
-						static_cast<float>(pp.Coord(1)), 
-						static_cast<float>(pp.Coord(2))
+						static_cast<dtReal>(pp.Coord(1)), 
+						static_cast<dtReal>(pp.Coord(2))
 		);
 	}
 	
-  dtVector2 dtOCCCurve2d::firstDer( float const uu) const {
+  dtVector2 dtOCCCurve2d::firstDer( dtReal const uu) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt2d pp;
 		gp_Vec2d vv;
@@ -75,12 +75,12 @@ namespace dtOO {
 		_ptr->D1(uR, pp, vv);
 		
 		return dtVector2(
-						static_cast<float>(vv.Coord(1)), 
-						static_cast<float>(vv.Coord(2))
+						static_cast<dtReal>(vv.Coord(1)), 
+						static_cast<dtReal>(vv.Coord(2))
 		);		
 	}
 	
-  dtVector2 dtOCCCurve2d::normal( float const & uu) const {
+  dtVector2 dtOCCCurve2d::normal( dtReal const & uu) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt2d pp;
 		gp_Vec2d vv;
@@ -91,14 +91,14 @@ namespace dtOO {
 		=
 		dtLinearAlgebra::unitNormal(
 			dtVector2(
-				static_cast<float>(vv.Coord(1)), static_cast<float>(vv.Coord(2))
+				static_cast<dtReal>(vv.Coord(1)), static_cast<dtReal>(vv.Coord(2))
 			)
 		);	
 		
 		return nn;
 	}	
 		
-  float dtOCCCurve2d::l_u( float const uu ) const {
+  dtReal dtOCCCurve2d::l_u( dtReal const uu ) const {
     Geom2dAdaptor_Curve gac;
 		gac.Load( _curve->getOCC() );
 		
@@ -111,10 +111,10 @@ namespace dtOO {
 			uuR
 		);
 		
-		return static_cast<float>(ll);
+		return static_cast<dtReal>(ll);
 	}
 	
-  float dtOCCCurve2d::u_l( float const length ) const {
+  dtReal dtOCCCurve2d::u_l( dtReal const length ) const {
     Geom2dAdaptor_Curve gac;
 		gac.Load( _curve->getOCC() );
 		
@@ -123,10 +123,10 @@ namespace dtOO {
 		
 		Standard_Real uu = ap.Parameter();
 		
-		return static_cast<float>(uu);						
+		return static_cast<dtReal>(uu);						
 	}
 
-	float dtOCCCurve2d::reparam(dtPoint2 const point) const {
+	dtReal dtOCCCurve2d::reparam(dtPoint2 const point) const {
 		gp_Pnt2d pp(
 		  static_cast<Standard_Real>(point.x()),
 			static_cast<Standard_Real>(point.y())
@@ -138,7 +138,7 @@ namespace dtOO {
 		
 		Extrema_POnCurv2d epp = ext.Point(1); 
 		
-		return static_cast<float>( epp.Parameter() );
+		return static_cast<dtReal>( epp.Parameter() );
 	}	
 
 	std::string dtOCCCurve2d::dumpToString( void ) const {
@@ -164,7 +164,7 @@ namespace dtOO {
 	void dtOCCCurve2d::revert( void ) {
 		Handle(Geom2d_Curve) rev = _ptr->Reversed();
 		_curve->setOCC(rev);
-		dt__mustCast(OCCRef().getOCC().Access(), Geom2d_Curve const, _ptr);		
+		dt__mustCast(OCCRef().getOCC().get(), Geom2d_Curve const, _ptr);		
 	}	
 	
 	dtOCCCurve2dBase const & dtOCCCurve2d::OCCRef( void ) const {

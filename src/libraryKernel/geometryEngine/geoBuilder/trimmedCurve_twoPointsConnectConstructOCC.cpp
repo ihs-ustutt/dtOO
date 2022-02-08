@@ -15,7 +15,10 @@
 #include <gp_Dir.hxx>
 
 namespace dtOO {
-	trimmedCurve_twoPointsConnectConstructOCC::trimmedCurve_twoPointsConnectConstructOCC( dtPoint3 const & p0, dtPoint3 const & p1 ) {
+	trimmedCurve_twoPointsConnectConstructOCC
+    ::trimmedCurve_twoPointsConnectConstructOCC( 
+      dtPoint3 const & p0, dtPoint3 const & p1 
+  ) {
 		dtVector3 vv = p1 - p0;
 		
 		gp_Pnt pp;
@@ -57,7 +60,8 @@ namespace dtOO {
 		_dtC.reset( new dtOCCTrimmedCurve(baseC) );
 	}
 	
-	trimmedCurve_twoPointsConnectConstructOCC::~trimmedCurve_twoPointsConnectConstructOCC() {
+	trimmedCurve_twoPointsConnectConstructOCC
+    ::~trimmedCurve_twoPointsConnectConstructOCC() {
 	}
 	
 	dtCurve * trimmedCurve_twoPointsConnectConstructOCC::result( void ) {

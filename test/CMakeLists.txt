@@ -3,7 +3,7 @@
 #
 add_test(
   NAME base 
-  COMMAND ipython "build.py"
+  COMMAND python3 "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/base
 )
 set_tests_properties(
@@ -11,11 +11,19 @@ set_tests_properties(
   PROPERTIES
   ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
 )
-add_custom_target(
-  cp-base-test ALL
-  COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/test/base
-    ${CMAKE_CURRENT_BINARY_DIR}/base
+
+#
+# baseSWIG
+#
+add_test(
+  NAME baseSWIG 
+  COMMAND python3 "build.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/baseSWIG
+)
+set_tests_properties(
+  baseSWIG 
+  PROPERTIES
+  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools
 )
 
 #
@@ -23,7 +31,7 @@ add_custom_target(
 #
 add_test(
   NAME naca 
-  COMMAND ipython "build.py"
+  COMMAND python3 "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
 )
 set_tests_properties(
@@ -31,9 +39,17 @@ set_tests_properties(
   PROPERTIES
   ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
 )
-add_custom_target(
-  cp-naca-test ALL
-  COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/test/naca
-    ${CMAKE_CURRENT_BINARY_DIR}/naca
-)
+
+file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
+foreach(dirPath ${sources_list})
+    IF(IS_DIRECTORY ${dirPath})
+      get_filename_component(dir "${dirPath}" NAME)
+      message("**> Add target cp-${dir}-test")
+      add_custom_target(
+        cp-${dir}-test ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+          ${CMAKE_SOURCE_DIR}/test/${dir}
+          ${CMAKE_CURRENT_BINARY_DIR}/${dir}
+      )
+    ENDIF()
+endforeach()

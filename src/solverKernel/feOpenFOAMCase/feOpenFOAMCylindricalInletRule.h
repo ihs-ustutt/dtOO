@@ -1,6 +1,8 @@
 #ifndef feOpenFOAMCylindricalInletRule_H
 #define	feOpenFOAMCylindricalInletRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "feOpenFOAMSetupRule.h"
 

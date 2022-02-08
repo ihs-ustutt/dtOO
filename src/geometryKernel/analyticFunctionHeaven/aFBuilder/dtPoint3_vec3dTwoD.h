@@ -1,6 +1,8 @@
 #ifndef dtPoint3_vec3dTwoD_H
 #define	dtPoint3_vec3dTwoD_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
@@ -12,7 +14,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(dtPoint3_vec3dTwoD);    
     dtPoint3_vec3dTwoD(
-      vec3dTwoD const * const v3d, int const & nU, int const & nV
+      vec3dTwoD const * const v3d, dtInt const & nU, dtInt const & nV
     );
     virtual ~dtPoint3_vec3dTwoD();
     twoDArrayHandling< dtPoint3 > result( void );

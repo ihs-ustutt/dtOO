@@ -1,6 +1,8 @@
 #ifndef PREDEFINEDEXTENSION_H
 #define	PREDEFINEDEXTENSION_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 
@@ -30,10 +32,10 @@ namespace dtOO {
         dtPoint2 const & end, dtVector2 const & vvEnd    
       ) const;
     private:
-      float _yIn;
-      float _yOut;
-      float _alphaIn;
-      float _alphaOut;    
+      dtReal _yIn;
+      dtReal _yOut;
+      dtReal _alphaIn;
+      dtReal _alphaOut;    
       static bool _registrated;    
   };
 }    

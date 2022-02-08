@@ -28,13 +28,13 @@ namespace dtOO {
 	dtOCCCurve::dtOCCCurve( dtOCCCurveBase const & orig) {
 		_curve.reset( new dtOCCCurveBase() );		
 		_curve->setOCC( Handle(Geom_Curve)::DownCast(orig.getOCC()->Copy()) );
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);
+		dt__mustCast(OCCRef().getOCC().get(), Geom_Curve const, _ptr);
 	}
 	
 	dtOCCCurve::~dtOCCCurve() {
 	}
 
-  float dtOCCCurve::minPara ( int const & dir ) const {
+  dtReal dtOCCCurve::minPara ( dtInt const & dir ) const {
     dt__throwIf(dir!=0, minPara());
 		Standard_Real U1;
 		Standard_Real U2;
@@ -48,7 +48,7 @@ namespace dtOO {
 		);       
 	}
 	
-  float dtOCCCurve::maxPara ( int const & dir ) const {
+  dtReal dtOCCCurve::maxPara ( dtInt const & dir ) const {
     dt__throwIf(dir!=0, maxPara());
 		Standard_Real U1;
 		Standard_Real U2;
@@ -66,7 +66,7 @@ namespace dtOO {
 		return static_cast<bool>(_ptr->IsClosed());
 	}
 	
-  dtPoint3 dtOCCCurve::point( float const uu ) const {
+  dtPoint3 dtOCCCurve::point( dtReal const uu ) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt pp;
 		dt__tryOcc(
@@ -76,13 +76,13 @@ namespace dtOO {
 		);
 		
 		return dtPoint3(
-			static_cast<float>(pp.Coord(1)), 
-			static_cast<float>(pp.Coord(2)), 
-			static_cast<float>(pp.Coord(3))
+			static_cast<dtReal>(pp.Coord(1)), 
+			static_cast<dtReal>(pp.Coord(2)), 
+			static_cast<dtReal>(pp.Coord(3))
 		);
 	}
 	
-  dtVector3 dtOCCCurve::firstDer( float const uu) const {
+  dtVector3 dtOCCCurve::firstDer( dtReal const uu) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		gp_Pnt pp;
 		gp_Vec vv;
@@ -94,16 +94,16 @@ namespace dtOO {
 		);
 			
 		return dtVector3(
-						static_cast<float>(vv.Coord(1)), 
-						static_cast<float>(vv.Coord(2)), 
-						static_cast<float>(vv.Coord(3))
+			static_cast<dtReal>(vv.Coord(1)), 
+			static_cast<dtReal>(vv.Coord(2)), 
+			static_cast<dtReal>(vv.Coord(3))
 		);		
 	}
 		
 	/**
    * @todo Make tolerance adjustable or better automatically adjustable.
    */
-  float dtOCCCurve::l_u( float const uu ) const {
+  dtReal dtOCCCurve::l_u( dtReal const uu ) const {
     GeomAdaptor_Curve gac;
 		gac.Load( _curve->getOCC() );
 		
@@ -123,13 +123,13 @@ namespace dtOO {
 		);
 				
 		
-		return static_cast<float>(ll);
+		return static_cast<dtReal>(ll);
 	}
 
 	/**
    * @todo Make tolerance adjustable or better automatically adjustable.
    */	
-  float dtOCCCurve::u_l( float const length ) const {
+  dtReal dtOCCCurve::u_l( dtReal const length ) const {
     GeomAdaptor_Curve gac;
 		gac.Load( _curve->getOCC() );
 		
@@ -149,10 +149,10 @@ namespace dtOO {
 			<< dt__eval(uu)
 		);
 		
-		return static_cast<float>(uu);						
+		return static_cast<dtReal>(uu);						
 	}
 	
-	float dtOCCCurve::reparam(dtPoint3 const point) const {
+	dtReal dtOCCCurve::reparam(dtPoint3 const point) const {
 		gp_Pnt pp(
 		  static_cast<Standard_Real>(point.x()),
 			static_cast<Standard_Real>(point.y()),
@@ -160,12 +160,27 @@ namespace dtOO {
 	  );
 		GeomAdaptor_Curve gac;
 		gac.Load( _curve->getOCC() );
+		Extrema_ExtPC ext(
+      pp, 
+      gac
+    );
 		
-		Extrema_ExtPC ext(pp, gac);
-		
-		Extrema_POnCurv epp = ext.Point(1); 
-		
-		return static_cast<float>( epp.Parameter() );
+    if (ext.NbExt() < 1) {
+      dt__warning( 
+        reparam(),
+        << "Reparameterization fails!" << std::endl
+        << "ext.NbExt() = " << ext.NbExt() << std::endl
+        << "Point = ( " << point << " )" << std::endl
+        << "( " << this->pointPercent(0.0) << " )---( "
+        << this->pointPercent(1.0) << " )" << std::endl
+      );
+
+     
+      return dtCurve::reparam(point);      
+    }
+    
+    Extrema_POnCurv epp = ext.Point(1); 
+		return static_cast<dtReal>( epp.Parameter() );
 	}
 	
 	std::string dtOCCCurve::dumpToString( void ) const {
@@ -183,7 +198,7 @@ namespace dtOO {
 	void dtOCCCurve::revert( void ) {
 		Handle(Geom_Curve) rev = _ptr->Reversed();
 		_curve->setOCC(rev);
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_Curve const, _ptr);		
+		dt__mustCast(OCCRef().getOCC().get(), Geom_Curve const, _ptr);		
 	}	
 	
 	void dtOCCCurve::translate( dtVector3 const & tt ) {
@@ -198,6 +213,7 @@ namespace dtOO {
 	dtOCCCurveBase const & dtOCCCurve::OCCRef( void ) const {
 		return *(_curve.get());
 	}
+  
 	dtOCCCurveBase & dtOCCCurve::OCCRef( void ) {
 		return *(_curve.get());
 	}	

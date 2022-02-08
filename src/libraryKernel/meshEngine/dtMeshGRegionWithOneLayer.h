@@ -1,6 +1,8 @@
 #ifndef dtMeshGRegionWithOneLayer_H
 #define	dtMeshGRegionWithOneLayer_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMesh3DOperator.h"

@@ -36,23 +36,23 @@ namespace dtOO {
   analyticGeometryGroup::~analyticGeometryGroup() {
   }
 
-  dtPoint3 analyticGeometryGroup::getPoint( float const * const uvw ) const {
+  dtPoint3 analyticGeometryGroup::getPoint( dtReal const * const uvw ) const {
     dt__throwUnexpected(getPoint());
   }
 	   
-  bool analyticGeometryGroup::isClosed( int const & dir) const {
+  bool analyticGeometryGroup::isClosed( dtInt const & dir) const {
     return false;
   }
   
-  float analyticGeometryGroup::getMin( int const & dir) const {
+  dtReal analyticGeometryGroup::getMin( dtInt const & dir) const {
 		return 0.;
   }
 
-  float analyticGeometryGroup::getMax( int const & dir) const {
+  dtReal analyticGeometryGroup::getMax( dtInt const & dir) const {
     return 0.;
   }
   
-  int analyticGeometryGroup::dim( void ) const {
+  dtInt analyticGeometryGroup::dim( void ) const {
     dt__throwUnexpected(dim());
   }  
   

@@ -23,11 +23,11 @@
 #define __caCThis const_cast< dtGmshEdge * >(this)
 
 namespace dtOO {  
-  dtGmshEdge::dtGmshEdge(::GModel *m, int tag) : GEdge(m, tag, NULL, NULL) {
+  dtGmshEdge::dtGmshEdge(::GModel *m, dtInt tag) : GEdge(m, tag, NULL, NULL) {
     l_vertices.remove( NULL );
   }
 	
-  dtGmshEdge::dtGmshEdge(::GModel *m, int tag, ::GVertex *v1, ::GVertex *v2)
+  dtGmshEdge::dtGmshEdge(::GModel *m, dtInt tag, ::GVertex *v1, ::GVertex *v2)
     : GEdge(m, tag, v1, v2) {
 		if (v1) l_vertices.push_back( v1 );
     if (v2) l_vertices.push_back( v2 );
@@ -69,13 +69,13 @@ namespace dtOO {
   }
 
   GPoint dtGmshEdge::point(double par) const {
-    dtPoint3 pp = _mm->getPoint( static_cast<float>(par) );
+    dtPoint3 pp = _mm->getPoint( static_cast<dtReal>(par) );
    
     return GPoint(pp.x(), pp.y(), pp.z(), this, par);
   }
 
   SVector3 dtGmshEdge::firstDer(double par) const {
-    dtVector3 vv = _mm->firstDerU( static_cast<float>(par) );
+    dtVector3 vv = _mm->firstDerU( static_cast<dtReal>(par) );
 
     return SVector3(vv.x(), vv.y(), vv.z());
   }
@@ -100,18 +100,18 @@ namespace dtOO {
     GEdge::_v1 = gv;
   }
   
-  void dtGmshEdge::setNElements( int const nE ) {
+  void dtGmshEdge::setNElements( dtInt const nE ) {
     this->meshAttributes.nbPointsTransfinite = nE+1;
   }
 
-  void dtGmshEdge::meshTransfinite( int const type, float const coeff ) {
+  void dtGmshEdge::meshTransfinite( dtInt const type, dtReal const coeff ) {
     this->meshAttributes.method = MESH_TRANSFINITE;
     this->meshAttributes.typeTransfinite = type;
     this->meshAttributes.coeffTransfinite = coeff;
   }
 
   void dtGmshEdge::meshTransfiniteWNElements( 
-    int const type, float const coeff, int const nElements 
+    dtInt const type, dtReal const coeff, dtInt const nElements 
   ) {
     if (nElements != 0) {
       setNElements(nElements);
@@ -210,7 +210,7 @@ namespace dtOO {
         double iG = 0.5;
         ::GPoint p1 = ge1->closestPoint( ::SPoint3(p0.x(), p0.y(), p0.z()), iG);
         
-        float const dist
+        dtReal const dist
         =
         dtLinearAlgebra::distance(
           dtPoint3(p0.x(), p0.y(), p0.z()), 
@@ -244,7 +244,7 @@ namespace dtOO {
 		}		
 	}
   
-	void dtGmshEdge::setGrading( float const & grading, float const & type ) {
+	void dtGmshEdge::setGrading( dtReal const & grading, dtReal const & type ) {
 //    dt__debug(
 //      setGrading(),
 //      << "edge[ " << tag() << " ] : grading = " << grading << ", type = " 

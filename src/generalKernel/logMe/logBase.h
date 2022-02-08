@@ -1,6 +1,8 @@
 #ifndef LOGBASE_H
 #define	LOGBASE_H
 
+#include <dtOOTypeDef.h>
+
 #include <sstream>
 #include <string>
 #include <boost/format.hpp>

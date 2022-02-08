@@ -1,6 +1,8 @@
 #ifndef scaTanhGradingOneDAFXmlBuilder_H
 #define	scaTanhGradingOneDAFXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aFXmlBuilder.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>

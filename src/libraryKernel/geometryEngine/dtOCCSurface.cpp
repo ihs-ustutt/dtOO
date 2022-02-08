@@ -29,7 +29,7 @@ namespace dtOO {
 			_surface->setOCC( 
 				Handle(Geom_Surface)::DownCast(orig.getOCC()->Copy()) 
 			);
-			dt__mustCast(_surface->getOCC().Access(), Geom_Surface const, _ptr);
+			dt__mustCast(_surface->getOCC().get(), Geom_Surface const, _ptr);
 		, << dt__eval(_ptr) << std::endl
 		);
 	}
@@ -38,7 +38,7 @@ namespace dtOO {
 		
 	}
 
-  float dtOCCSurface::minPara( int const dim ) const {
+  dtReal dtOCCSurface::minPara( dtInt const dim ) const {
 		Standard_Real U1;
 		Standard_Real U2;
 		Standard_Real V1;
@@ -47,9 +47,9 @@ namespace dtOO {
 			_ptr->Bounds(U1, U2, V1, V2);
 			switch (dim) {
 				case 0:		
-					return floatHandling::nextIfSmaller(U1);//static_cast<float>(U1);
+					return floatHandling::nextIfSmaller(U1);//static_cast<dtReal>(U1);
 				case 1:		
-					return floatHandling::nextIfSmaller(V1);//static_cast<float>(V1);
+					return floatHandling::nextIfSmaller(V1);//static_cast<dtReal>(V1);
 				default:
 					dt__throw(
             minPara(),
@@ -64,7 +64,7 @@ namespace dtOO {
 		);
 	}
 	
-  float dtOCCSurface::maxPara( int const dim ) const {
+  dtReal dtOCCSurface::maxPara( dtInt const dim ) const {
 		Standard_Real U1;
 		Standard_Real U2;
 		Standard_Real V1;
@@ -73,9 +73,9 @@ namespace dtOO {
 			_ptr->Bounds(U1, U2, V1, V2);
 			switch (dim) {
 				case 0:		
-					return floatHandling::prevIfBigger(U2);//static_cast<float>(U2);
+					return floatHandling::prevIfBigger(U2);//static_cast<dtReal>(U2);
 				case 1:		
-					return floatHandling::prevIfBigger(V2);//static_cast<float>(V2);
+					return floatHandling::prevIfBigger(V2);//static_cast<dtReal>(V2);
 				default:
 					dt__throw(
             getMax(),
@@ -90,7 +90,7 @@ namespace dtOO {
 		);
 	}
 	
-  bool dtOCCSurface::closed( int const dim ) const {
+  bool dtOCCSurface::closed( dtInt const dim ) const {
 		dt__tryOcc(			
 			switch (dim) {
 				case 0:		
@@ -105,7 +105,7 @@ namespace dtOO {
 		, << dt__eval(dim) );
 	}
 	
-  dtPoint3 dtOCCSurface::point( float const uu, float const vv) const {
+  dtPoint3 dtOCCSurface::point( dtReal const uu, dtReal const vv) const {
 //  	Standard_Real uR = static_cast<Standard_Real>(uu);
 //		Standard_Real vR = static_cast<Standard_Real>(vv);
 		
@@ -117,12 +117,12 @@ namespace dtOO {
     
     Standard_Real uR 
     = 
-    calculationTypeHandling< Standard_Real, float >::boundToRange(
+    calculationTypeHandling< Standard_Real, dtReal >::boundToRange(
       uu, U1, U2
     );
     Standard_Real vR 
     = 
-    calculationTypeHandling< Standard_Real, float >::boundToRange(
+    calculationTypeHandling< Standard_Real, dtReal >::boundToRange(
       vv, V1, V2
     );
     
@@ -136,13 +136,13 @@ namespace dtOO {
 	  );
 		return 
       dtPoint3(
-        static_cast<float>(pp.Coord(1)), 
-				static_cast<float>(pp.Coord(2)), 
-				static_cast<float>(pp.Coord(3))
+        static_cast<dtReal>(pp.Coord(1)), 
+				static_cast<dtReal>(pp.Coord(2)), 
+				static_cast<dtReal>(pp.Coord(3))
       );
 	}
 	
-  dtVector3 dtOCCSurface::normal( float const uu, float const vv) const {
+  dtVector3 dtOCCSurface::normal( dtReal const uu, dtReal const vv) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 
@@ -159,7 +159,7 @@ namespace dtOO {
 		return dtVector3( dir.Coord(1), dir.Coord(2), dir.Coord(3) );
 	}
 	
-  std::vector<dtVector3> dtOCCSurface::firstDer( float const uu, float const vv) const {
+  std::vector<dtVector3> dtOCCSurface::firstDer( dtReal const uu, dtReal const vv) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		gp_Pnt pp;
@@ -178,23 +178,23 @@ namespace dtOO {
 		retVec[0] 
 		= 
 		dtVector3(
-			static_cast<float>(D1U.Coord(1)), 
-			static_cast<float>(D1U.Coord(2)), 
-			static_cast<float>(D1U.Coord(3))
+			static_cast<dtReal>(D1U.Coord(1)), 
+			static_cast<dtReal>(D1U.Coord(2)), 
+			static_cast<dtReal>(D1U.Coord(3))
 		);				
 		retVec[1] 
 		= 
 		dtVector3(
-			static_cast<float>(D1V.Coord(1)), 
-			static_cast<float>(D1V.Coord(2)), 
-			static_cast<float>(D1V.Coord(3))
+			static_cast<dtReal>(D1V.Coord(1)), 
+			static_cast<dtReal>(D1V.Coord(2)), 
+			static_cast<dtReal>(D1V.Coord(3))
 		);
 
 		return retVec;		
 		
 	}
 	
-  std::vector<dtVector3> dtOCCSurface::secondDer( float const uu, float const vv) const {
+  std::vector<dtVector3> dtOCCSurface::secondDer( dtReal const uu, dtReal const vv) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		gp_Pnt pp;
@@ -221,23 +221,23 @@ namespace dtOO {
 		retVec[0] 
 		= 
 		dtVector3(
-			static_cast<float>(D2U.Coord(1)), 
-			static_cast<float>(D2U.Coord(2)), 
-			static_cast<float>(D2U.Coord(3))
+			static_cast<dtReal>(D2U.Coord(1)), 
+			static_cast<dtReal>(D2U.Coord(2)), 
+			static_cast<dtReal>(D2U.Coord(3))
 		);				
 		retVec[1] 
 		= 
 		dtVector3(
-			static_cast<float>(D2UV.Coord(1)), 
-			static_cast<float>(D2UV.Coord(2)), 
-			static_cast<float>(D2UV.Coord(3))
+			static_cast<dtReal>(D2UV.Coord(1)), 
+			static_cast<dtReal>(D2UV.Coord(2)), 
+			static_cast<dtReal>(D2UV.Coord(3))
 		);
 		retVec[2] 
 		= 
 		dtVector3(
-			static_cast<float>(D2V.Coord(1)), 
-			static_cast<float>(D2V.Coord(2)), 
-			static_cast<float>(D2V.Coord(3))
+			static_cast<dtReal>(D2V.Coord(1)), 
+			static_cast<dtReal>(D2V.Coord(2)), 
+			static_cast<dtReal>(D2V.Coord(3))
 		);
 		return retVec;		
 			

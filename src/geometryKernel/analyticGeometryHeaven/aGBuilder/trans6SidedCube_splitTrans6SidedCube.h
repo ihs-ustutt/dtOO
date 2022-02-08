@@ -1,6 +1,8 @@
 #ifndef trans6SidedCube_splitTrans6SidedCube_H
 #define	trans6SidedCube_splitTrans6SidedCube_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/vectorHandling.h>

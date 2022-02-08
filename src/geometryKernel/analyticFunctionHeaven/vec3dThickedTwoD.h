@@ -1,6 +1,8 @@
 #ifndef VEC3DTHICKEDTWOD_H
 #define	VEC3DTHICKEDTWOD_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dTwoD.h"
@@ -48,7 +50,7 @@ namespace dtOO {
     virtual vec3dThickedTwoD * create( void ) const;    
     virtual ~vec3dThickedTwoD();
     virtual aFY Y( aFX const & xx) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     dt__pH(vec3dTwoD) _ff;
     dt__pH(vec3dTwoD) _tt;

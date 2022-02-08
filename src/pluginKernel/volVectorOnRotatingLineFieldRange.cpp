@@ -303,8 +303,8 @@ namespace dtOO {
         std::vector< dtPoint3 > grid_cyl = dtT.retract( &grid_cart );
         
         twoDArrayHandling< std::pair< int, dtPoint3 > > meshPair(grid_cyl.size(), 0);
-        float deltaR = _relBandwithR * m1d->length();
-        float deltaZ = _relBandwithZ * m1d->length();
+        dtReal deltaR = _relBandwithR * m1d->length();
+        dtReal deltaZ = _relBandwithZ * m1d->length();
         forAll(mesh.cells(), ii) {
           dt__forAllIndex(grid_cyl, jj) {
             dtPoint3 const & aPoint = grid_cyl[jj];
@@ -388,13 +388,13 @@ namespace dtOO {
         // get values
         // 
         dt__forFromToIndex(1, meshPair.size(), ii) {
-          float r0 = grid_cyl[ii-1].x();
-          float r1 = grid_cyl[ii].x();            
+          dtReal r0 = grid_cyl[ii-1].x();
+          dtReal r1 = grid_cyl[ii].x();            
           dt__forFromToIndex(1, meshPair[ii].size(), jj) {
-            float phi0 = meshPair[ii][jj-1].second.y();
-            float phi1 = meshPair[ii][jj].second.y();
-            float z0 = meshPair[ii][jj-1].second.z();
-            float z1 = meshPair[ii][jj].second.z();
+            dtReal phi0 = meshPair[ii][jj-1].second.y();
+            dtReal phi1 = meshPair[ii][jj].second.y();
+            dtReal z0 = meshPair[ii][jj-1].second.z();
+            dtReal z1 = meshPair[ii][jj].second.z();
 
             dtPoint3 p0 = dtT( dtPoint3( r0, phi0, 0.5*(z0+z1) ) );
             dtPoint3 p1 = dtT( dtPoint3( r0, phi1, 0.5*(z0+z1) ) );
@@ -423,7 +423,7 @@ namespace dtOO {
             dtLinearAlgebra::normalize(
               dtLinearAlgebra::crossProduct( p1 - p0, p3 - p0 )
             );              
-            float A = dtLinearAlgebra::area( p0, p1, p2, p3 );
+            dtReal A = dtLinearAlgebra::area( p0, p1, p2, p3 );
 
 
             //
@@ -468,7 +468,7 @@ namespace dtOO {
             dtVector3(
               volFieldValue.x(), volFieldValue.y(), volFieldValue.z()
             );
-            float phi
+            dtReal phi
             = 
             A
             *

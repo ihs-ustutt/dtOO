@@ -5,7 +5,7 @@
 
 namespace dtOO {
   dtPoint3_vec3dTwoD::dtPoint3_vec3dTwoD(
-      vec3dTwoD const * const v3d, int const & nU, int const & nV
+      vec3dTwoD const * const v3d, dtInt const & nU, dtInt const & nV
   ) {
 		_pp.resize(nU, nV);
 

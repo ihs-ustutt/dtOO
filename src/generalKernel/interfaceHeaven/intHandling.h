@@ -1,6 +1,8 @@
 #ifndef FLOATHANDLING_H
 #define	FLOATHANDLING_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <vector>
 
@@ -9,8 +11,8 @@ namespace dtOO {
   public:
     dt__classOnlyName(intHandling);
     virtual ~intHandling();
-    static int round( float a );
-    static int bound( int const & toBound, int const & aa, int const & bb );
+    static dtInt round( dtReal a );
+    static dtInt bound( dtInt const & toBound, dtInt const & aa, dtInt const & bb );
   private:
     intHandling();
   };

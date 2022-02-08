@@ -1,6 +1,8 @@
 #ifndef DONOTHING_H
 #define	DONOTHING_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 

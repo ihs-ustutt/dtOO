@@ -1,6 +1,8 @@
 #ifndef DTOCCBSPLINESURFACE2D_H
 #define	DTOCCBSPLINESURFACE2D_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "dtOCCSurface2d.h"
 
@@ -16,11 +18,11 @@ namespace dtOO {
     dtOCCBSplineSurface2d(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCBSplineSurface2d();
     virtual dtSurface2d * clone( void ) const;
-	  virtual dtCurve2d * segmentConstU( float const uu, float const vvMin, float const vvMax) const;
-	  virtual dtCurve2d * segmentConstV( float const vv, float const uuMin, float const uuMax) const;     
-    virtual dtPoint2 controlPoint( int const uI, int const vI ) const;
-    virtual void setControlPoint( int const uI, int const vI, dtPoint2 const point );    
-    virtual int nControlPoints( int const dim ) const;   
+	  virtual dtCurve2d * segmentConstU( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const;
+	  virtual dtCurve2d * segmentConstV( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const;     
+    virtual dtPoint2 controlPoint( dtInt const uI, dtInt const vI ) const;
+    virtual void setControlPoint( dtInt const uI, dtInt const vI, dtPoint2 const point );    
+    virtual dtInt nControlPoints( dtInt const dim ) const;   
   private:
     Geom_BSplineSurface const * _ptr;
   };

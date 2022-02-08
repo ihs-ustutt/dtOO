@@ -16,7 +16,7 @@ boost::python::class_< analyticGeometryWrap, boost::noncopyable >(
   .def("getMin", &dtOO::analyticGeometry::getMin)
   .def("getMax", &dtOO::analyticGeometry::getMax)
   .def< 
-    dtOO::dtPoint3 (dtOO::analyticGeometry::*)(std::vector< float > const &) const
+    dtOO::dtPoint3 (dtOO::analyticGeometry::*)(std::vector< dtOO::dtReal > const &) const
   >(
     "getPoint", &dtOO::analyticGeometry::getPoint
   )

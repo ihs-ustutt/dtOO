@@ -1,6 +1,8 @@
 #ifndef vec2dInMap2dTo3dAGXmlBuilder_H
 #define	vec2dInMap2dTo3dAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

@@ -1,6 +1,8 @@
 #ifndef radialTranslate_H
 #define	radialTranslate_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformerInvThreeD.h"
 #include <logMe/dtMacros.h>
 
@@ -36,7 +38,7 @@ namespace dtOO {
       virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
     private:
       dtVector3 _v3;
-      float _distance;
+      dtReal _distance;
       static bool _registrated;    
   };    
 }

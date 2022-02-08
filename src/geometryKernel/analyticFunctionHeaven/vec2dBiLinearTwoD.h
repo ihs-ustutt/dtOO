@@ -1,6 +1,8 @@
 #ifndef VEC2DBILINEARTWOD_H
 #define	VEC2DBILINEARTWOD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec2dTwoD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -28,23 +30,23 @@ namespace dtOO {
     vec2dBiLinearTwoD * create( void ) const;    
     virtual ~vec2dBiLinearTwoD();
     virtual aFY Y( aFX const & xx ) const;
-    virtual bool closed( int const & dir ) const;    
+    virtual bool closed( dtInt const & dir ) const;    
     aFX invY(aFY const & yy) const;
     bool insideY( aFY const & yy ) const;
   private:
-    static float cross2(
-      float const & x0, float const & y0, float const & x1, float const & y1
+    static dtReal cross2(
+      dtReal const & x0, dtReal const & y0, dtReal const & x1, dtReal const & y1
     );
-    static int inverseBilerp( 
-      float x0, float y0, float x1, float y1, 
-      float x2, float y2, float x3, float y3, 
-      float x, float y, 
-      float* sout, float* tout, float* s2out, float* t2out 
+    static dtInt inverseBilerp( 
+      dtReal x0, dtReal y0, dtReal x1, dtReal y1, 
+      dtReal x2, dtReal y2, dtReal x3, dtReal y3, 
+      dtReal x, dtReal y, 
+      dtReal* sout, dtReal* tout, dtReal* s2out, dtReal* t2out 
     ); 
-    static int in_range( 
-      float val, float range_min, float range_max, float tol 
+    static dtInt in_range( 
+      dtReal val, dtReal range_min, dtReal range_max, dtReal tol 
     );    
-  static int equals(float a, float b, float tolerance);   
+  static dtInt equals(dtReal a, dtReal b, dtReal tolerance);   
   private:
     dtVector2 _v0;
     dtVector2 _v1;

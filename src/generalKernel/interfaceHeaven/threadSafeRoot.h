@@ -1,6 +1,8 @@
 #ifndef THREADSAFEROOT_H
 #define	THREADSAFEROOT_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 class TThread;

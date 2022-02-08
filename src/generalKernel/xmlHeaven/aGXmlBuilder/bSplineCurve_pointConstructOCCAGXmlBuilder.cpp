@@ -46,7 +46,7 @@ namespace dtOO {
     dt__throwIf(!dtXmlParserBase::hasChild("Point_3", toBuild), buildPart());
     dt__throwIf(!dtXmlParserBase::hasAttribute("order", toBuild), buildPart());
 
-    int const order 
+    dtInt const order 
     = 
     dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV, aF);
     std::vector< dtPoint3 > workingPointP;

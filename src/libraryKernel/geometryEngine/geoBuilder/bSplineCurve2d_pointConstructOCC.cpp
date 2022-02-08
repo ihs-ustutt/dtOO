@@ -14,7 +14,7 @@
 
 namespace dtOO {
 	bSplineCurve2d_pointConstructOCC::bSplineCurve2d_pointConstructOCC( 
-    std::vector< dtPoint2 > const & pp, int const & order 
+    std::vector< dtPoint2 > const & pp, dtInt const & order 
   ) {
     //
 		// number of points
@@ -45,7 +45,7 @@ namespace dtOO {
 		  poles.SetValue( ii+1, gp_Pnt2d(pp[ii].x(), pp[ii].y()) ); 
 	  }
 		for (int ii=1;ii<=knots.Length();ii++) {
-			knots.SetValue( ii, static_cast<float>(ii-1) );
+			knots.SetValue( ii, static_cast<dtReal>(ii-1) );
 		}
 		mults.SetValue(1, order+1);
 		mults.SetValue(nOnes+2, order+1);
@@ -62,6 +62,15 @@ namespace dtOO {
 		_dtC2d.reset( new dtOCCBSplineCurve2d(base) );
 	}
 	
+  bSplineCurve2d_pointConstructOCC::bSplineCurve2d_pointConstructOCC( 
+    dtPoint2 const & p0,  dtPoint2 const & p1
+  ) {
+    std::vector< dtPoint2 > pp;
+    pp.push_back(p0);
+    pp.push_back(p1);
+    
+    _dtC2d.reset( bSplineCurve2d_pointConstructOCC(pp, 1).result() );
+  }
 	bSplineCurve2d_pointConstructOCC::~bSplineCurve2d_pointConstructOCC() {
 	}
 	

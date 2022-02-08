@@ -1,6 +1,8 @@
 #ifndef uVw_phirMs_H
 #define	uVw_phirMs_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>
@@ -47,37 +49,37 @@ namespace dtOO {
       /**
        * @todo Should be on map3dto3d
        */
-      float m_uSVS(float const & uu, float const & vv) const;
+      dtReal m_uSVS(dtReal const & uu, dtReal const & vv) const;
       /**
        * @todo Should be on map3dto3d
        */    
-      float s_uSVS(float const & uu, float const & vv) const;     
+      dtReal s_uSVS(dtReal const & uu, dtReal const & vv) const;     
       /**
        * @todo Should be on map3dto3d
        */    
-      float uV_phirVVWV(
-        float const & phir, float const & vv, float const & ww
+      dtReal uV_phirVVWV(
+        dtReal const & phir, dtReal const & vv, dtReal const & ww
       ) const;
       /**
        * @todo Should be on map3dto3d
        */
-      float vV_ms(float const & mm, float const & ss) const;
+      dtReal vV_ms(dtReal const & mm, dtReal const & ss) const;
       /**
        * @todo Should be on map3dto3d
        */    
-      float wV_ms(float const & mm, float const & ss) const;
+      dtReal wV_ms(dtReal const & mm, dtReal const & ss) const;
       /**
        * @todo Should be on map3dto3d
        */    
-      float phir_uVvVwV(
-        float const & uu, float const & vv, float const & ww
+      dtReal phir_uVvVwV(
+        dtReal const & uu, dtReal const & vv, dtReal const & ww
       ) const;  
     private:
       dt__pH(rotatingMap2dTo3d const) _rM2d;
       dtVector3 _ss;
       dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
-      int _nV;
-      int _nW;
+      dtInt _nV;
+      dtInt _nW;
       static bool _registrated;    
   };
 }

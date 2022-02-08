@@ -1,6 +1,8 @@
 #ifndef PICKMAP2DTO3DRANGEPERCENT_H
 #define	PICKMAP2DTO3DRANGEPERCENT_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 
@@ -27,8 +29,8 @@ namespace dtOO {
       virtual aGPtrVec 
       apply( aGPtrVec const * const aGeoVecP ) const;
     private:
-      float _u0;
-      float _v0;
+      dtReal _u0;
+      dtReal _v0;
       static bool _registrated;    
   };
 }

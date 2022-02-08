@@ -233,7 +233,7 @@ namespace dtOO {
 				//
 				// calculate new points
 				//
-				float xx = _alphaIn * (_yIn - start.y())*vvStart.x()/vvStart.y() + start.x();
+				dtReal xx = _alphaIn * (_yIn - start.y())*vvStart.x()/vvStart.y() + start.x();
 				dtPoint2 start1( xx, start.y() + _alphaIn * (_yIn-start.y()) );
 				dtPoint2 start2( xx, _yIn);
 

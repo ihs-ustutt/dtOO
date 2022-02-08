@@ -1,6 +1,8 @@
 #ifndef xYz_rPhiZ_H
 #define	xYz_rPhiZ_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>

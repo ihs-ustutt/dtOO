@@ -1,6 +1,8 @@
 #ifndef bSplineSurface_skinConstructOCCAGXmlBuilder_H
 #define	bSplineSurface_skinConstructOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

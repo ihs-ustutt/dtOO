@@ -1,5 +1,6 @@
 #include "qShapeMetric.h"
 
+#include <gmsh.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MPyramid.h>
 #include <logMe/logMe.h>
@@ -11,7 +12,7 @@ namespace dtOO {
   qShapeMetric::~qShapeMetric() {
   }
 
-  float qShapeMetric::operator()( ::MElement const * const me ) {
+  dtReal qShapeMetric::operator()( ::MElement const * const me ) {
     ::MElement * nC = const_cast< ::MElement * >(me);
     ::MPyramid * pyr = dynamic_cast< ::MPyramid * >(nC);
     ::MTetrahedron * tet = dynamic_cast< ::MTetrahedron * >(nC);
@@ -21,7 +22,7 @@ namespace dtOO {
     else dt__throwUnexpected(operator()()); 
   }
 
-  float qShapeMetric::calculatePyramid( ::MPyramid * pyr ) {
+  dtReal qShapeMetric::calculatePyramid( ::MPyramid * pyr ) {
     ::MTetrahedron tet0(
       pyr->getVertex(0), 
       pyr->getVertex(2),
@@ -61,19 +62,32 @@ namespace dtOO {
       std::min(
         std::min(
           std::min(
+#if GMSH_API_VERSION_MAJOR>=4 && GMSH_API_VERSION_MINOR>=9            
+            fabs(tet0.getInnerRadius()/tet0.getOuterRadius()),
+            fabs(tet1.getInnerRadius()/tet1.getOuterRadius())
+          ),
+          fabs(tet2.getInnerRadius()/tet2.getOuterRadius())
+        ),
+        fabs(tet3.getInnerRadius()/tet3.getOuterRadius())
+#else        
             fabs(tet0.getInnerRadius()/tet0.getCircumRadius()),
             fabs(tet1.getInnerRadius()/tet1.getCircumRadius())
           ),
           fabs(tet2.getInnerRadius()/tet2.getCircumRadius())
         ),
         fabs(tet3.getInnerRadius()/tet3.getCircumRadius())
+#endif        
       ) * 3. 
       / 
       .86034;
   }  
 
-  float qShapeMetric::calculateTetrahedron( ::MTetrahedron * tet ) {   
+  dtReal qShapeMetric::calculateTetrahedron( ::MTetrahedron * tet ) {
+#if GMSH_API_VERSION_MAJOR>=4 && GMSH_API_VERSION_MINOR>=9        
+    return 3. * fabs(tet->getInnerRadius()/tet->getOuterRadius());
+#else            
     return 3. * fabs(tet->getInnerRadius()/tet->getCircumRadius());
+#endif
   }    
 }
 

@@ -85,7 +85,7 @@ namespace dtOO {
         return;
       }
       
-      int status = gm->readMSH(cFileName);
+      dtInt status = gm->readMSH(cFileName);
       
       dt__info(
         preUpdate(),

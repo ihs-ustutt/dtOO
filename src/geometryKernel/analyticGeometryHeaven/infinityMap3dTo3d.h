@@ -1,6 +1,8 @@
 #ifndef INFINITYMAP3DTO3D_H
 #define	INFINITYMAP3DTO3D_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include "map3dTo3d.h"
 #include <logMe/dtMacros.h>
@@ -20,11 +22,11 @@ namespace dtOO {
     virtual infinityMap3dTo3d * cloneTransformed( 
       dtTransformer const * const dtT 
     ) const;    
-    virtual bool isClosed( int const & dir) const;
-    virtual float getMin( int const & dir) const;
-    virtual float getMax( int const & dir) const;
+    virtual bool isClosed( dtInt const & dir) const;
+    virtual dtReal getMin( dtInt const & dir) const;
+    virtual dtReal getMax( dtInt const & dir) const;
     virtual dtPoint3 getPoint( 
-      float const & uu, float const & vv, float const & ww 
+      dtReal const & uu, dtReal const & vv, dtReal const & ww 
     ) const; 
   };
 }

@@ -1,6 +1,8 @@
 #ifndef feOpenFOAMCase_H
 #define	feOpenFOAMCase_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -40,7 +42,7 @@ namespace dtOO {
     private:
       void initMeshVectors( 
         std::vector< ::MVertex * > & allVerts, 
-        std::vector< std::pair< ::MElement *, int > > & allElems,
+        std::vector< std::pair< ::MElement *, dtInt > > & allElems,
         std::map< int, std::string > & physicalNames    
       );
     private:

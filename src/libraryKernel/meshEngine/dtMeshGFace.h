@@ -1,6 +1,8 @@
 #ifndef dtMeshGFace_H
 #define	dtMeshGFace_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMesh2DOperator.h"

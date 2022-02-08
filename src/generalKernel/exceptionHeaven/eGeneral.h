@@ -1,6 +1,8 @@
 #ifndef EGENERAL_H
 #define	EGENERAL_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <string>
 #include <vector>

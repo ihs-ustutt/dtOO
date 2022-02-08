@@ -63,7 +63,7 @@ namespace dtOO {
   std::string logMe::Backtrace(void) {
 		int skip = 1;
 		void *callstack[128];
-		const int nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
+		const dtInt nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
 		char buf[1024];
 		int nFrames = backtrace(callstack, nMaxFrames);
 		char **symbols = backtrace_symbols(callstack, nFrames);
@@ -108,12 +108,12 @@ namespace dtOO {
    * @todo Make me template.
    */
   std::string logMe::floatMatrixToString( 
-	  std::vector< std::vector< float > > const & mat 
+	  std::vector< std::vector< dtReal > > const & mat 
 	) {
     std::ostringstream os;
     
-    int nU = mat.size();
-    int nV = mat[0].size();
+    dtInt nU = mat.size();
+    dtInt nV = mat[0].size();
     os << boost::format("| %13s ") % "i   |   j>>";
     for (int jj=0; jj<nV; jj++) {
       os << boost::format("| %13i ") % jj;

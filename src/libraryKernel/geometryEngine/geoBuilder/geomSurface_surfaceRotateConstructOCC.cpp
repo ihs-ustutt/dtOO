@@ -21,12 +21,14 @@ namespace dtOO {
 		dtSurface const * const dtS, 
 		dtPoint3 const & oP, 
 		dtVector3 const & rA, 
-		float const & angle
+		dtReal const & angle
 	) {
-		dt__ptrAss( dtOCCSurface const * const ss, dtOCCSurface::ConstDownCast(dtS) );
+		dt__ptrAss( 
+		  dtOCCSurface const * const ss, dtOCCSurface::ConstDownCast(dtS) 
+    );
 		
 		Geom_Surface const * sP;
-		dt__mustCast(ss->OCCRef().getOCC().Access(), Geom_Surface const, sP);
+		dt__mustCast(ss->OCCRef().getOCC().get(), Geom_Surface const, sP);
 		
 	  gp_Pnt pp(
 		  static_cast<Standard_Real>(oP.x()), 

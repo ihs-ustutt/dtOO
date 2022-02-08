@@ -19,7 +19,7 @@ namespace dtOO {
 		_pp.push_back(pp);
 	}
 	
-	void unstructured3dSurfaceMesh::addElement( vectorHandling< int > const & el ) {
+	void unstructured3dSurfaceMesh::addElement( vectorHandling< dtInt > const & el ) {
 		_el.push_back(el);
 		if (el.size() == 4) {
 			_nQuads++;
@@ -36,15 +36,15 @@ namespace dtOO {
 		return _pp;
 	}
 
-	vectorHandling< vectorHandling< int > > const & unstructured3dSurfaceMesh::refEl( void ) const {
+	vectorHandling< vectorHandling< dtInt > > const & unstructured3dSurfaceMesh::refEl( void ) const {
 		return _el;
 	}
 
-  int unstructured3dSurfaceMesh::getNQuads( void ) const {
+  dtInt unstructured3dSurfaceMesh::getNQuads( void ) const {
   	return _nQuads;
   }
 	
-  int unstructured3dSurfaceMesh::getNTris( void ) const {
+  dtInt unstructured3dSurfaceMesh::getNTris( void ) const {
   	return _nTris;
   }	
 }

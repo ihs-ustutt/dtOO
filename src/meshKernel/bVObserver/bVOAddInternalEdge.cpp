@@ -69,11 +69,11 @@ namespace dtOO {
     
     ::GEdgeLoop el0(e0);
     for(::GEdgeLoop::citer it = el0.begin(); it != el0.end(); ++it){
-      fV[0]->addEdge( it->ge, it->_sign );
+      fV[0]->addEdge( it->getEdge(), it->getSign() );
     }
     ::GEdgeLoop el2(e2);
     for(::GEdgeLoop::citer it = el2.begin(); it != el2.end(); ++it){
-      fV[1]->addEdge( it->ge, it->_sign );
+      fV[1]->addEdge( it->getEdge(), it->getSign() );
     }
   }
 }

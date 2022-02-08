@@ -19,7 +19,7 @@ using namespace dtOO;
 template< typename T > 
 void combinations( 
   std::vector< std::vector< T > > array, 
-  int i, 
+  dtInt i, 
   std::vector< T > accum, 
   std::vector< std::vector< T > > & comb
 ) {
@@ -39,14 +39,14 @@ void combinations(
   }
 }
 
-std::vector< std::vector< std::pair< constValue *, float > > > simpleCreate(
+std::vector< std::vector< std::pair< constValue *, dtReal > > > simpleCreate(
   cVPtrVec & constValuePtrVec,
-  std::vector< int > & nSamples  
+  std::vector< dtInt > & nSamples  
 ) {
   //
   // create samples
   //
-  std::vector< std::vector< std::pair< constValue *, float > > > samples;
+  std::vector< std::vector< std::pair< constValue *, dtReal > > > samples;
   dt__forAllIndex(constValuePtrVec, jj) {
     //
     // get desired constValue
@@ -54,19 +54,19 @@ std::vector< std::vector< std::pair< constValue *, float > > > simpleCreate(
     constValue * thisCV = constValuePtrVec[jj];
 
     //
-    // convert int to float
-    float nSamplesF = static_cast< float >(nSamples[jj]);
-    float step = (thisCV->getMax() - thisCV->getMin()) / (nSamplesF-1.);
+    // convert dtInt to float
+    dtReal nSamplesF = static_cast< dtReal >(nSamples[jj]);
+    dtReal step = (thisCV->getMax() - thisCV->getMin()) / (nSamplesF-1.);
 
     //
     // store samples
     //
     dt__forFromToIndex(0, nSamples[jj], ii) {
-      samples.push_back( std::vector< std::pair< constValue *, float > >(0) );      
-      float iiF = static_cast< float >(ii);
+      samples.push_back( std::vector< std::pair< constValue *, dtReal > >(0) );      
+      dtReal iiF = static_cast< dtReal >(ii);
 
       samples.back().push_back(
-        std::pair< constValue *, float >(
+        std::pair< constValue *, dtReal >(
           thisCV, thisCV->getMin() + iiF * step 
         )
       );
@@ -76,21 +76,21 @@ std::vector< std::vector< std::pair< constValue *, float > > > simpleCreate(
   //
   // create combinations
   //
-  std::vector< std::vector< std::pair< constValue *, float > > > out;
-  std::vector< std::pair< constValue *, float > > accum;
-  int counter = 0;
+  std::vector< std::vector< std::pair< constValue *, dtReal > > > out;
+  std::vector< std::pair< constValue *, dtReal > > accum;
+  dtInt counter = 0;
   combinations(samples, counter, accum, out);
 
   return samples;
 }
-std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
+std::vector< std::vector< std::pair< constValue *, dtReal > > > csvCreate(
   cVPtrVec & cV,
   cVPtrVec & constValuePtrVec,
   std::string const & filename,
   bool noPercent
 ) {
   dt__infoNoClass(csvCreate(), << "Create CSV.");
-  std::vector< std::vector< std::pair< constValue *, float > > > samples;
+  std::vector< std::vector< std::pair< constValue *, dtReal > > > samples;
   std::ifstream in( filename.c_str() );
   dt__throwIfNoClass(!in, csvCreate());
   
@@ -120,12 +120,12 @@ std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
 
     dt__throwIfNoClass( parts.size()!=constValuePtrVec.size(), main() );
 
-    std::vector< std::pair< constValue *, float > > aSample;
+    std::vector< std::pair< constValue *, dtReal > > aSample;
 
     dt__forAllIndex(parts, ii) {
       if ( noPercent ) {
         aSample.push_back(
-          std::pair< constValue *, float >(
+          std::pair< constValue *, dtReal >(
             constValuePtrVec[ii], 
             stringPrimitive::stringToFloat( parts[ii] )
           )
@@ -133,7 +133,7 @@ std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
       }
       else {
         aSample.push_back(
-          std::pair< constValue *, float >(
+          std::pair< constValue *, dtReal >(
             constValuePtrVec[ii], 
             constValuePtrVec[ii]->getMin()
             +
@@ -151,7 +151,7 @@ std::vector< std::vector< std::pair< constValue *, float > > > csvCreate(
   return samples;
 }
 
-int main( int ac, char* av[] ) {
+int main( dtInt ac, char* av[] ) {
   try {
     //
     // options
@@ -179,7 +179,7 @@ int main( int ac, char* av[] ) {
       )
       (
         "nSamples,n", 
-        dtPO::value< std::vector< int > >(), 
+        dtPO::value< std::vector< dtInt > >(), 
         "number of samples (optional)"
       )
       (
@@ -253,7 +253,7 @@ int main( int ac, char* av[] ) {
     //
     // create samples
     //
-    std::vector< std::vector< std::pair< constValue *, float > > > samples;
+    std::vector< std::vector< std::pair< constValue *, dtReal > > > samples;
     if ( vm.count("nSamples") && !vm.count("readCsv") ) {
       dt__forAllRefAuto(
         vm["constValue"].as< std::vector< std::string > >(), aConstValue
@@ -261,7 +261,7 @@ int main( int ac, char* av[] ) {
         constValuePtrVec.push_back( cV.get( aConstValue ) );
       }
     
-      std::vector< int > nSamples = vm["nSamples"].as< std::vector< int > >();
+      std::vector< dtInt > nSamples = vm["nSamples"].as< std::vector< dtInt > >();
       dt__throwIfNoClass( nSamples.size()!=constValuePtrVec.size(), main() );
       samples = simpleCreate( constValuePtrVec, nSamples);
     }
@@ -282,7 +282,7 @@ int main( int ac, char* av[] ) {
     std::vector< cVPtrVec > stateToWrite;
     std::vector< std::string > stateLabel;
     std::string prefix = vm["prefix"].as< std::string >();
-    int pairCounter = 0;
+    dtInt pairCounter = 0;
     dt__forAllRefAuto(samples, samplesVec) {
       //
       // label

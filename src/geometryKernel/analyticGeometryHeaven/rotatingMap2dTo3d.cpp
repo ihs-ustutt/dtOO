@@ -61,7 +61,7 @@ namespace dtOO {
     return new map3dTo3dTransformed< rotatingMap2dTo3d >(*this, dtT);
   }  
 	
-  bool rotatingMap2dTo3d::isClosed( int const & dir) const {
+  bool rotatingMap2dTo3d::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return true;
@@ -78,7 +78,7 @@ namespace dtOO {
     }
 	}
   
-	float rotatingMap2dTo3d::getMin( int const & dir) const {
+	dtReal rotatingMap2dTo3d::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 0.;
@@ -95,7 +95,7 @@ namespace dtOO {
     }    		
 	}
   
-	float rotatingMap2dTo3d::getMax( int const & dir) const {
+	dtReal rotatingMap2dTo3d::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0:
         return 1.;
@@ -113,7 +113,7 @@ namespace dtOO {
 	}
     
 	dtPoint3 rotatingMap2dTo3d::getPoint( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
 //    dt__warnIfWithMessage(uu<getUMin(), getPoint(), << uu << " < " << getUMin()); 
 //		dt__warnIfWithMessage(vv<getVMin(), getPoint(), << vv << " < " << getVMin());
@@ -126,7 +126,7 @@ namespace dtOO {
 		return rot.transform( _m2d->getPoint(vv, ww) );
 	}	
 	
-	map2dTo3d * rotatingMap2dTo3d::segmentConstU( float const & uu ) const {
+	map2dTo3d * rotatingMap2dTo3d::segmentConstU( dtReal const & uu ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			dt__pH(dtSurface) dtS(
@@ -141,7 +141,7 @@ namespace dtOO {
 		}
 	}
 
-	map2dTo3d * rotatingMap2dTo3d::segmentConstV( float const & vv ) const {
+	map2dTo3d * rotatingMap2dTo3d::segmentConstV( dtReal const & vv ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstUPercent(percent_v(vv), 0., 1.);
@@ -159,7 +159,7 @@ namespace dtOO {
 		}
 	}
   
-	map2dTo3d * rotatingMap2dTo3d::segmentConstW( float const & ww ) const {
+	map2dTo3d * rotatingMap2dTo3d::segmentConstW( dtReal const & ww ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstVPercent(percent_w(ww), 0., 1.);
@@ -180,7 +180,7 @@ namespace dtOO {
 	void rotatingMap2dTo3d::correctOrigin() {
 		dtVector3 dist = _m2d->getPointPercent(0.,0.) - _pp;
 		if ( (dist*_vv) != 0. ) {
-			float adjusting 
+			dtReal adjusting 
 		  = 
 			dtLinearAlgebra::dotProduct(dist, _vv)/dtLinearAlgebra::length(_vv);
 

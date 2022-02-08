@@ -1,6 +1,8 @@
 #ifndef TRIMMEDCURVE2D_TWOPOINTSCONNECTCONSTRUCT_H
 #define	TRIMMEDCURVE2D_TWOPOINTSCONNECTCONSTRUCT_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

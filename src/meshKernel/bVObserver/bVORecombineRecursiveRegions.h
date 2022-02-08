@@ -1,6 +1,8 @@
 #ifndef bVORecombineRecursiveRegions_H
 #define	bVORecombineRecursiveRegions_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

@@ -1,6 +1,8 @@
 #ifndef DTTRANSFORMER_H
 #define	DTTRANSFORMER_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -60,8 +62,8 @@ namespace dtOO {
         std::vector< dtPoint2 > const * const toRetract
       ) const;
       virtual void handleBool(std::string const name, bool const value);    
-      virtual void handleInt(std::string const name, int const value);
-      virtual void handleFloat(std::string const name, float const value);
+      virtual void handleInt(std::string const name, dtInt const value);
+      virtual void handleFloat(std::string const name, dtReal const value);
       virtual void handleDtPoint2(std::string const name, dtPoint2 const value);
       virtual void handleDtVector3(std::string const name, dtVector3 const value);
       virtual void handleDtVector2(std::string const name, dtVector2 const value);        
@@ -84,13 +86,13 @@ namespace dtOO {
       dtPoint2 apply(dtPoint2 const & pp) const;        
       dtPoint3 retract(dtPoint3 const & toRetract) const;
       dtPoint2 retract(dtPoint2 const & toRetract) const;
-      dtPoint3 operator()( dtPoint3 const & pp, int const dir = 1 ) const;
+      dtPoint3 operator()( dtPoint3 const & pp, dtInt const dir = 1 ) const;
       analyticFunction * apply(analyticFunction const * const sF) const;
       analyticGeometry * apply(analyticGeometry const * const aG) const;
         //
         // pugg stuff
         //
-        static const int version = 1;
+        static const dtInt version = 1;
         static const std::string server_name() {
           return "dtTransformerServer";
         }   

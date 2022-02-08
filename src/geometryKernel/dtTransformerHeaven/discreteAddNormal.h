@@ -1,6 +1,8 @@
 #ifndef discreteAddNormal_H
 #define	discreteAddNormal_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -30,15 +32,15 @@ namespace dtOO {
     private:
       dt__pH(vec3dTwoD) _tt;
       dtVector3 _nf;
-      int _nU;
-      int _nV;
-      int _order;
-      int _nSteps;
-      int _skinOrderMin;
-      int _skinOrderMax;
-      int _skinNIterations;
+      dtInt _nU;
+      dtInt _nV;
+      dtInt _order;
+      dtInt _nSteps;
+      dtInt _skinOrderMin;
+      dtInt _skinOrderMax;
+      dtInt _skinNIterations;
       bool _closeU;
-      float _closeSmooth;
+      dtReal _closeSmooth;
       static bool _registrated;    
   };
 }    

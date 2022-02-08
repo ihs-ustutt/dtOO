@@ -1,6 +1,8 @@
 #ifndef DTMESHOPERATOR_H
 #define	DTMESHOPERATOR_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
 #include <mainConceptFwd.h>

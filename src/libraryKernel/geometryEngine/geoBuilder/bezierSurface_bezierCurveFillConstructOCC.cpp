@@ -37,10 +37,12 @@ namespace dtOO {
 	  dt__ptrAss( occC, dtOCCBezierCurve::ConstDownCast(cc[3]) );
 		C4 = Handle(Geom_BezierCurve)::DownCast( occC->OCCRef().getOCC() );		
 		
-		GeomFill_BezierCurves fill(C1, C2, C3, C4, GeomFill_FillingStyle::GeomFill_StretchStyle);
+		GeomFill_BezierCurves fill(
+      C1, C2, C3, C4, GeomFill_FillingStyle::GeomFill_StretchStyle
+    );
 		
 		dtOCCSurfaceBase base;
-		base.setOCC( fill.Surface() );
+		base.setOCC( Handle(Geom_Surface)::DownCast(fill.Surface()) );
 		_dtS.reset( new dtOCCBezierSurface(base) );		
 	}
 	

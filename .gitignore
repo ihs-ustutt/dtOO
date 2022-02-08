@@ -10,3 +10,4 @@ src/generalKernel/dtOOVersion.h
 scripts/doc/html
 ThirdParty/
 .spyproject
+*kdev4*

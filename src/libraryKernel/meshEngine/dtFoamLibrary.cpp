@@ -231,7 +231,7 @@ namespace dtOO {
     points.setSize( ::Foam::label(allVerts.size()) );
     mshToFoam.resize( 2* ::Foam::label(allVerts.size()) );
 
-    int counter = 0;
+    dtInt counter = 0;
     dt__forAllRefAuto(allVerts, mv) {
 
       ::Foam::point & pt = points[ ::Foam::label(counter) ];
@@ -248,7 +248,7 @@ namespace dtOO {
   }  
   
   void dtFoamLibrary::readCells(
-    std::vector< std::pair< ::MElement *, int > > allElems,
+    std::vector< std::pair< ::MElement *, dtInt > > allElems,
     const bool keepOrientation,
     const ::Foam::pointField& points,
     const ::Foam::Map< ::Foam::label >& mshToFoam,
@@ -298,7 +298,7 @@ namespace dtOO {
     ::Foam::Map< ::Foam::label > physToZone;
 
 
-    int eC = 0;
+    dtInt eC = 0;
     dt__forAllRefAuto(allElems, aPair) {
       ::Foam::label elmType(aPair.first->getTypeForMSH());
       ::Foam::label regPhys(aPair.second);
@@ -534,7 +534,7 @@ namespace dtOO {
   
   ::Foam::polyMesh * dtFoamLibrary::readMesh(
     std::vector< ::MVertex * > allVerts,
-    std::vector< std::pair< ::MElement *, int > > allElems,
+    std::vector< std::pair< ::MElement *, dtInt > > allElems,
     std::map< int, std::string > physicalInt,
     ::Foam::Time const & runTime,
     bool keepOrientation
@@ -1160,7 +1160,7 @@ namespace dtOO {
     // argList
     //
     ::Foam::argList::noParallel();
-    int argc = 3;
+    dtInt argc = 3;
     std::vector< std::string > argvStr(3);
     argvStr[0] = appName;
     argvStr[1] = std::string("-case");

@@ -1,6 +1,8 @@
 #ifndef dtPluginKernel_H
 #define	dtPluginKernel_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <pluginEngine/pugg/Kernel.h>
 

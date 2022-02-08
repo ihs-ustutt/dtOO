@@ -1,6 +1,8 @@
 #ifndef TRANSFORMERCONTAINER_H
 #define	TRANSFORMERCONTAINER_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <string>
 #include <logMe/dtMacros.h>

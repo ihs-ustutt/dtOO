@@ -1,6 +1,8 @@
 #ifndef bVOAnalyticGeometryToFace_H
 #define	bVOAnalyticGeometryToFace_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 
@@ -29,7 +31,7 @@ namespace dtOO {
     private:
   //    std::vector< std::string > _patchRule;
       dt__pVH(map2dTo3d) _m2d;
-      float _inc;
+      dtReal _inc;
   };
 }
 #endif	/* bVOAnalyticGeometryToFace_H */

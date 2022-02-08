@@ -1,6 +1,8 @@
 #ifndef vec3dMuParserOneD_H
 #define	vec3dMuParserOneD_H
 
+#include <dtOOTypeDef.h>
+
 #include "vec3dOneD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -26,7 +28,7 @@ namespace dtOO {
     vec3dMuParserOneD * create( void ) const;    
     virtual ~vec3dMuParserOneD();
     virtual aFY Y( aFX const & xx ) const;
-    virtual bool closed( int const & dir ) const;    
+    virtual bool closed( dtInt const & dir ) const;    
   private:
     dt__pH(dtMuParser) _parser;
     dt__pVH(double) _arg;

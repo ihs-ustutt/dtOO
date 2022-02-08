@@ -1,6 +1,8 @@
 #ifndef MESHWHISPERER_H
 #define	MESHWHISPERER_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 #include <interfaceHeaven/mpiDistributed.h>
@@ -25,40 +27,40 @@ namespace dtOO {
       void add( ::MVertex * mv );
       void makeTransfinite( 
         ::MVertex const * const mv, 
-        int const & onWhatTag, 
-        int const & posU, int const & posV 
+        dtInt const & onWhatTag, 
+        dtInt const & posU, dtInt const & posV 
       );      
       void add( ::MElement * me, ::GEntity * ge );      
-      void renumberVertices( int const & leader );      
+      void renumberVertices( dtInt const & leader );      
       void addRenumberedVertices( void );
-      void renumberElements( int const & leader );      
+      void renumberElements( dtInt const & leader );      
       void addRenumberedElements( void );
     private:
-      int _thisRank;
-      int _nRanks;
+      dtInt _thisRank;
+      dtInt _nRanks;
       dtGmshModel * const _gm;
       mpiDistributed< std::string > _generalInfo;
-      mpiDistributed< std::vector< float > > _x;
-      mpiDistributed< std::vector< float > > _y;
-      mpiDistributed< std::vector< float > > _z;
+      mpiDistributed< std::vector< dtReal > > _x;
+      mpiDistributed< std::vector< dtReal > > _y;
+      mpiDistributed< std::vector< dtReal > > _z;
       mpiDistributed< std::vector< double > > _u;
       mpiDistributed< std::vector< double > > _v;
-      mpiDistributed< std::vector< int > > _mvType;
-      mpiDistributed< std::vector< int > > _onWhatTag;
-      mpiDistributed< std::vector< int > > _onWhatDim;
-      mpiDistributed< std::vector< int > > _num;
-      mpiDistributed< std::vector< int > > _tFVertexPosition;
-      mpiDistributed< std::vector< int > > _tFVertexOnWhatTag;
-      mpiDistributed< std::vector< int > > _tFVertexPosU;
-      mpiDistributed< std::vector< int > > _tFVertexPosV;
+      mpiDistributed< std::vector< dtInt > > _mvType;
+      mpiDistributed< std::vector< dtInt > > _onWhatTag;
+      mpiDistributed< std::vector< dtInt > > _onWhatDim;
+      mpiDistributed< std::vector< dtInt > > _num;
+      mpiDistributed< std::vector< dtInt > > _tFVertexPosition;
+      mpiDistributed< std::vector< dtInt > > _tFVertexOnWhatTag;
+      mpiDistributed< std::vector< dtInt > > _tFVertexPosU;
+      mpiDistributed< std::vector< dtInt > > _tFVertexPosV;
       std::vector< ::MVertex * > _mv;
       
-      mpiDistributed< std::vector< int > > _meOnWhatTag;
-      mpiDistributed< std::vector< int > > _meOnWhatDim;      
-      mpiDistributed< std::vector< int > > _meNum;
-      mpiDistributed< std::vector< int > > _meElementStartPosition;
-      mpiDistributed< std::vector< int > > _meVertexNum;      
-      mpiDistributed< std::vector< int > > _meTypeMSH;
+      mpiDistributed< std::vector< dtInt > > _meOnWhatTag;
+      mpiDistributed< std::vector< dtInt > > _meOnWhatDim;      
+      mpiDistributed< std::vector< dtInt > > _meNum;
+      mpiDistributed< std::vector< dtInt > > _meElementStartPosition;
+      mpiDistributed< std::vector< dtInt > > _meVertexNum;      
+      mpiDistributed< std::vector< dtInt > > _meTypeMSH;
       std::vector< ::MElement * > _me;
   };
 }

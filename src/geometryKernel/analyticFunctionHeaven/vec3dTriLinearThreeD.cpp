@@ -129,9 +129,9 @@ namespace dtOO {
 
     aFX xP = percent_x(xx);
     
-		float uu = xP[0];
-		float vv = xP[1];
-    float ww = xP[2];
+		dtReal uu = xP[0];
+		dtReal vv = xP[1];
+    dtReal ww = xP[2];
     
     dtVector3 c00(_v000 * (1.-uu) + _v100 * uu);
     dtVector3 c10(_v010 * (1.-uu) + _v110 * uu);
@@ -149,7 +149,7 @@ namespace dtOO {
     return yy;
 	}
 	
-	bool vec3dTriLinearThreeD::closed( int const & dir ) const {
+	bool vec3dTriLinearThreeD::closed( dtInt const & dir ) const {
 		dt__throwIf( (dir!=0) && (dir!=1) && (dir!=2), closed() );
 		return false;
 	}

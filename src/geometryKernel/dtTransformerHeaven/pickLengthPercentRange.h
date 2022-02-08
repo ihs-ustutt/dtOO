@@ -1,6 +1,8 @@
 #ifndef PICKLENGTHPERCENTRANGE_H
 #define	PICKLENGTHPERCENTRANGE_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 
@@ -26,10 +28,10 @@ namespace dtOO {
       );
       virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
     private:
-      float _lengthPercentOneStart;
-      float _lengthPercentTwoStart;
-      float _lengthPercentOneEnd;
-      float _lengthPercentTwoEnd;
+      dtReal _lengthPercentOneStart;
+      dtReal _lengthPercentTwoStart;
+      dtReal _lengthPercentOneEnd;
+      dtReal _lengthPercentTwoEnd;
       bool _createAnalyticSurface;
       bool _createSplineCurve3d;
       static bool _registrated;    

@@ -1,6 +1,8 @@
 #ifndef SCAONED_H
 #define	SCAONED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <string>
 #include <logMe/dtMacros.h>
@@ -20,26 +22,26 @@ namespace dtOO {
       dtTransformer const * const dtT 
     ) const = 0;      
     virtual scaOneD * create( void ) const = 0;       
-    virtual float YFloat(aFX const & xx) const;
-    virtual float YFloat(float const & xx) const = 0;
-    virtual float invYFloat(float const & yy) const;     
-    float YFloatPercent( float const & xP ) const;
-    void setMinMax( float const min, float const max);
-    void setMin(float const min);
-    void setMax(float const max);
-    virtual int xDim( void ) const;
-    virtual float xMin( int const & dir) const;
-    virtual float xMax( int const & dir) const;   
-    float getLength( void ) const;
-    float x_percent(float const & xx) const;
-    float percent_x(float const & xx) const;
-    float DYFloat( float const & xx ) const;    
+    virtual dtReal YFloat(aFX const & xx) const;
+    virtual dtReal YFloat(dtReal const & xx) const = 0;
+    virtual dtReal invYFloat(dtReal const & yy) const;     
+    dtReal YFloatPercent( dtReal const & xP ) const;
+    void setMinMax( dtReal const min, dtReal const max);
+    void setMin(dtReal const min);
+    void setMax(dtReal const max);
+    virtual dtInt xDim( void ) const;
+    virtual dtReal xMin( dtInt const & dir) const;
+    virtual dtReal xMax( dtInt const & dir) const;   
+    dtReal getLength( void ) const;
+    dtReal x_percent(dtReal const & xx) const;
+    dtReal percent_x(dtReal const & xx) const;
+    dtReal DYFloat( dtReal const & xx ) const;    
     virtual vectorHandling< renderInterface * > getRender( void ) const;
 //  private:
-//    float simpleNewton( float const yy) const;
+//    dtReal simpleNewton( dtReal const yy) const;
   private:
-    float _xxMin;
-    float _xxMax;    
+    dtReal _xxMin;
+    dtReal _xxMax;    
   };
   dt__H_addCloneForpVH(scaOneD);      
 }

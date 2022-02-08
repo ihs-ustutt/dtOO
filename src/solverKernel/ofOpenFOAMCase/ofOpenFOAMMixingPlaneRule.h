@@ -1,6 +1,8 @@
 #ifndef ofOpenFOAMMixingPlaneRule_H
 #define	ofOpenFOAMMixingPlaneRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "ofOpenFOAMSetupRule.h"
 

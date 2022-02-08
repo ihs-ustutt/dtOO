@@ -1,6 +1,8 @@
 #ifndef BEZIERCURVEPOINTCONSTRUCTOCC_H
 #define	BEZIERCURVEPOINTCONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

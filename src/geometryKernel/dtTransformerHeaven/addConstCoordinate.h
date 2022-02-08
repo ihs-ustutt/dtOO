@@ -1,6 +1,8 @@
 #ifndef ADDCONSTCOORDINATE_H
 #define	ADDCONSTCOORDINATE_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 
@@ -27,10 +29,10 @@ namespace dtOO {
       virtual aFPtrVec apply( 
         aFPtrVec const * const aFVecP 
       ) const;
-      virtual void handleFloat(const std::string name, const float value);
+      virtual void handleFloat(const std::string name, const dtReal value);
       virtual void handleDtVector3(const std::string name, const dtVector3 value);
     private:
-      float _cc;
+      dtReal _cc;
       dtVector3 _vv;
     private: 
       static bool _registrated;      

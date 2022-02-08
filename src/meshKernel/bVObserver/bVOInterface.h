@@ -1,6 +1,8 @@
 #ifndef BVOINTERFACE_H
 #define	BVOINTERFACE_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 #include <xmlHeaven/qtXmlBase.h>

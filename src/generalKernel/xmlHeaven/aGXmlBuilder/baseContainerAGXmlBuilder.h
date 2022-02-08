@@ -1,6 +1,8 @@
 #ifndef baseContainerAGXmlBuilder_H
 #define	baseContainerAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include "baseContainerAGXmlBuilder.h"
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>

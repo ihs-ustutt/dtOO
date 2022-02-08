@@ -1,6 +1,8 @@
 #ifndef dtMeshAndOrientGEdge_H
 #define	dtMeshAndOrientGEdge_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "dtMeshGEdge.h"

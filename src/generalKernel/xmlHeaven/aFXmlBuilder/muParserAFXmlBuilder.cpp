@@ -49,7 +49,7 @@ namespace dtOO {
 		//
 		// y-dimension
 		//
-    int yDim = 0;
+    dtInt yDim = 0;
 		std::string expStr = "";
 		if ( dtXmlParserBase::hasChild("expression", toBuildP) ) {
 			::QDomElement expEl = dtXmlParserBase::getChild("expression", toBuildP);

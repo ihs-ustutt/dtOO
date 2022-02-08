@@ -12,7 +12,7 @@ namespace dtOO {
     : _hanWrap(new OCCHanWrap) {
 	}
 
-	dtOCCCurve2dBase::dtOCCCurve2dBase(Handle_Geom2d_Curve & orig) 
+	dtOCCCurve2dBase::dtOCCCurve2dBase(Handle_Geom2d_Curve orig) 
     : _hanWrap(new OCCHanWrap()) {
 	  _hanWrap->occHandle = orig;
 	}
@@ -38,7 +38,7 @@ namespace dtOO {
     ss 
     << dt__dumpToString(
       << dt__eval(stH->Name()) << std::endl
-      << dt__eval( _hanWrap->occHandle.Access() )
+      << dt__eval( _hanWrap->occHandle.get() )
     );
     
     return ss.str();

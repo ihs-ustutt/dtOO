@@ -1,6 +1,8 @@
 #ifndef dtOMMesh_H
 #define	dtOMMesh_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
@@ -89,7 +91,7 @@ namespace dtOO {
       // mesh navigation
       //
       omHalfedgeH sameHalfedgeInNextFace( omHalfedgeH const & heH) const;
-      int nVertices( omFaceH const & fH) const;
+      dtInt nVertices( omFaceH const & fH) const;
       void createNewElements( void );
       void updateMap( bool vv = true, bool ff = true );
     private:

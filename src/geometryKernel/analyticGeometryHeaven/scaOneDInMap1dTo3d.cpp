@@ -53,7 +53,7 @@ namespace dtOO {
 		return new scaOneDInMap1dTo3d();
 	}
 
-	dtPoint3 scaOneDInMap1dTo3d::getPoint( float const & uu ) const {
+	dtPoint3 scaOneDInMap1dTo3d::getPoint( dtReal const & uu ) const {
 		if (_percentF) {
 			return _m1d->getPoint( _m1d->u_percent(_s1d->YFloat(uu)) );
 		}
@@ -65,17 +65,17 @@ namespace dtOO {
 	/**
    * @todo This check is not enough. Maybe a general check on base class?
    */
-	bool scaOneDInMap1dTo3d::isClosed( int const & dir) const {
+	bool scaOneDInMap1dTo3d::isClosed( dtInt const & dir) const {
     dt__throwIf(dir != 0, isClosed());
 		
 		return false;
 	}
 
-	float scaOneDInMap1dTo3d::getMin( int const & dir) const {
+	dtReal scaOneDInMap1dTo3d::getMin( dtInt const & dir) const {
 		return _s1d->xMin(dir);     
 	}
 
-	float scaOneDInMap1dTo3d::getMax( int const & dir) const {
+	dtReal scaOneDInMap1dTo3d::getMax( dtInt const & dir) const {
 		return _s1d->xMax(dir);
 	}
 

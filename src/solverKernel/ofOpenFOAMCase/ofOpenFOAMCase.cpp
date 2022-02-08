@@ -169,13 +169,13 @@ namespace dtOO {
   
   void ofOpenFOAMCase::initMeshVectors( 
     std::vector< ::MVertex * > & allVerts, 
-    std::vector< std::pair< ::MElement *, int > > & allElems,
+    std::vector< std::pair< ::MElement *, dtInt > > & allElems,
     std::map< int, std::string > & physicalNames
   ) {
     // model, dimension, physical number
-    std::map< std::tuple< dtGmshModel *, int, int >, int > globLoc;
-    int nVerts = 0;
-    int nElems = 0;    
+    std::map< std::tuple< dtGmshModel *, int, dtInt >, dtInt > globLoc;
+    dtInt nVerts = 0;
+    dtInt nElems = 0;    
 
     //
     // calculate number of elements and vertices
@@ -198,8 +198,8 @@ namespace dtOO {
     allElems.resize(nElems);
 
     // vertex and element counter
-    int vC = 0;
-    int eC = 0;
+    dtInt vC = 0;
+    dtInt eC = 0;
     dt__forAllRefAuto(_bV, aBV) {
       dt__ptrAss( dtGmshModel * gm, aBV->getModel() );
       std::vector< ::GEntity * > entities;
@@ -217,26 +217,26 @@ namespace dtOO {
         //
         // local and global physical number
         //
-        int dimension = anEntity->dim();
-        int locPhysInt 
+        dtInt dimension = anEntity->dim();
+        dtInt locPhysInt 
         = 
         gm->getPhysicalNumber(
           dimension, gm->getPhysicalString(anEntity)
         );
-        int globPhysInt = -1;                
+        dtInt globPhysInt = -1;                
         // check if  it is already in map
         std::map< 
-          std::tuple< dtGmshModel *, int, int >, int 
+          std::tuple< dtGmshModel *, int, dtInt >, dtInt 
         >::iterator thisPhysical
         =
         globLoc.find( 
-          std::tuple< dtGmshModel *, int, int >(gm, dimension, locPhysInt) 
+          std::tuple< dtGmshModel *, int, dtInt >(gm, dimension, locPhysInt) 
         );
         // not in map
         if ( thisPhysical == globLoc.end() ) {
           globPhysInt = globLoc.size()+1;
           globLoc[ 
-            std::tuple< dtGmshModel *, int, int >(gm, dimension, locPhysInt) 
+            std::tuple< dtGmshModel *, int, dtInt >(gm, dimension, locPhysInt) 
           ]
           =
           globPhysInt; 
@@ -253,7 +253,7 @@ namespace dtOO {
         dt__forFromToIndex(0, anEntity->getNumMeshElements(), ii) {
           allElems[ eC ] 
           = 
-          std::pair< ::MElement * , int >(
+          std::pair< ::MElement * , dtInt >(
             anEntity->getMeshElement(ii), globPhysInt
           );
           eC++;
@@ -325,7 +325,7 @@ namespace dtOO {
       ::Foam::FatalIOError.throwExceptions();    
 
       ::Foam::argList::noParallel();
-      int argc = 3;
+      dtInt argc = 3;
       std::vector< std::string > argvStr(3);
       argvStr[0] = getLabel();
       argvStr[1] = std::string("-case");
@@ -342,7 +342,7 @@ namespace dtOO {
       dt__throwIf( !systemHandling::directoryExists(wDir), init() );
 
       std::vector< ::MVertex * > allVerts;
-      std::vector< std::pair< ::MElement *, int > > allElems;
+      std::vector< std::pair< ::MElement *, dtInt > > allElems;
       std::map< int, std::string > physicalNames;
 
       //

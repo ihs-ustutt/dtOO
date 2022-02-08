@@ -68,12 +68,12 @@ namespace dtOO {
 		
   void constValueAssingRule::apply(void) {
     std::vector< constValue * > cV;
-    std::vector< float > cVVal;    
+    std::vector< dtReal > cVVal;    
     
     dt__forAllConstIter(std::vector< std::string >, _assignRule, it) {
       std::string theString = *it;
 
-      std::vector< float > val 
+      std::vector< dtReal > val 
       = 
       dtXmlParser::muParseCSString(
         dtXmlParser::replaceDependencies(

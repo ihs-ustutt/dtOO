@@ -1,6 +1,8 @@
 #ifndef bSplineSurface_convertOCC_H
 #define	bSplineSurface_convertOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

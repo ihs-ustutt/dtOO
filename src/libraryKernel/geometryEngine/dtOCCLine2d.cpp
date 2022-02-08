@@ -14,7 +14,7 @@ namespace dtOO {
 	}
 
 	dtOCCLine2d::dtOCCLine2d(dtOCCCurve2dBase const & orig) : dtOCCCurve2d(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom2d_Line const, _ptr);		
+		dt__mustCast(OCCRef().getOCC().get(), Geom2d_Line const, _ptr);		
 	}
 
 	dtOCCLine2d::~dtOCCLine2d() {
@@ -24,15 +24,15 @@ namespace dtOO {
 		return new dtOCCLine2d( OCCRef() );		
 	}
 	
-  int dtOCCLine2d::order( void ) const {
+  dtInt dtOCCLine2d::order( void ) const {
 		dt__throwUnexpected(order());			
 	}
 	
-  int dtOCCLine2d::nControlPoints( void ) const {
+  dtInt dtOCCLine2d::nControlPoints( void ) const {
 		return 0;			
 	}
 	
-  dtPoint2 dtOCCLine2d::controlPoint( int const nPoint ) const {
+  dtPoint2 dtOCCLine2d::controlPoint( dtInt const nPoint ) const {
 		dt__throwUnexpected(controlPoint());		
 	}
 		

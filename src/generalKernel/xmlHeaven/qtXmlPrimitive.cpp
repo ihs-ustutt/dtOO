@@ -421,10 +421,10 @@ namespace dtOO {
     }
   }
 	
-  int qtXmlPrimitive::getNChildren(
+  dtInt qtXmlPrimitive::getNChildren(
 	  std::string const sibName, ::QDomElement const element
 	) {
-    int counter = 0;
+    dtInt counter = 0;
     ::QDomElement wElement = getChild(sibName, element);
     while ( !wElement.isNull() ) {
       counter++;
@@ -484,11 +484,11 @@ namespace dtOO {
     );
   }
     
-  int qtXmlPrimitive::getAttributeInt(
+  dtInt qtXmlPrimitive::getAttributeInt(
 	  std::string const attName, const ::QDomElement element
 	) {
     bool flag;
-    int rInt = 0;
+    dtInt rInt = 0;
     rInt = element.attribute( attName.c_str() ).toInt(&flag);
     if (!flag) {
       dt__throw( getAttributeInt(),
@@ -499,11 +499,11 @@ namespace dtOO {
     return rInt;
   }
   
-  float qtXmlPrimitive::getAttributeFloat(
+  dtReal qtXmlPrimitive::getAttributeFloat(
 	  std::string const attName, const ::QDomElement element
 	) {
     bool flag;
-    float rInt = 0;
+    dtReal rInt = 0;
     rInt = element.attribute( attName.c_str() ).toFloat(&flag);
     if (!flag) {
       dt__throw( 
@@ -627,12 +627,12 @@ namespace dtOO {
 		return convertToStringVector("{", "}", att);
 	}
 	
-	std::vector< int > qtXmlPrimitive::getAttributeIntVector( 
+	std::vector< dtInt > qtXmlPrimitive::getAttributeIntVector( 
 		std::string const attName, ::QDomElement const element
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
-		std::vector< int > intVec(attVec.size(), 0.);
+		std::vector< dtInt > intVec(attVec.size(), 0.);
 		int counter = 0;
 		dt__forAllRefAuto(attVec, el) {	
 			intVec[counter] = stringToInt(el);
@@ -641,12 +641,12 @@ namespace dtOO {
 		return intVec;
 	}  
   
-	std::vector< float > qtXmlPrimitive::getAttributeFloatVector( 
+	std::vector< dtReal > qtXmlPrimitive::getAttributeFloatVector( 
 		std::string const attName, ::QDomElement const element
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
-		std::vector< float > floatVec(attVec.size(), 0.);
+		std::vector< dtReal > floatVec(attVec.size(), 0.);
 		int counter = 0;
 		dt__forAllRefAuto(attVec, el) {	
 			floatVec[counter] = stringToFloat(el);
@@ -765,7 +765,7 @@ namespace dtOO {
 		std::vector< QDomAttr > attrs;
 		if( element.hasAttributes() ) {
 			QDomNamedNodeMap map = element.attributes();
-			for( int i = 0 ; i < map.length() ; ++i ) {
+			for( dtInt i = 0 ; i < map.length() ; ++i ) {
 			  if(!(map.item(i).isNull())) {
 					::QDomNode debug = map.item(i);
 					QDomAttr attr = debug.toAttr();

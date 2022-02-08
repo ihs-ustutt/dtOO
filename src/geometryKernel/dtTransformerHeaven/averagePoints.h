@@ -1,6 +1,8 @@
 #ifndef AVERAGEPOINTS_H
 #define	AVERAGEPOINTS_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtTransformerHeaven/dtTransformer.h>
 #include <logMe/dtMacros.h>
 

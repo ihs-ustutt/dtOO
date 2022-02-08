@@ -1,6 +1,8 @@
 #ifndef ofOpenFOAMWallRule_H
 #define	ofOpenFOAMWallRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "ofOpenFOAMSetupRule.h"
 

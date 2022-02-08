@@ -1,6 +1,8 @@
 #ifndef LOGCONTAINER_H
 #define LOGCONTAINER_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtMacros.h"
 #include "logBase.h"
 #include "logMe.h"

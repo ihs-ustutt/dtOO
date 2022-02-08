@@ -1,6 +1,8 @@
 #ifndef READMOABMESH_H
 #define	READMOABMESH_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "gmshBoundedVolume.h"
 #include <interfaceHeaven/ptrHandling.h>

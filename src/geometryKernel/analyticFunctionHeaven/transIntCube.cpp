@@ -65,7 +65,7 @@ namespace dtOO {
   }
   
   dtPoint3 transIntCube::getValue(
-    float const xx, float const yy, float const zz
+    dtReal const xx, dtReal const yy, dtReal const zz
   ) const {
     dtVector3 rV =
         (1.-xx) * _aS[1]->getPointPercentVector(yy, zz) 
@@ -125,12 +125,12 @@ namespace dtOO {
     return dtLinearAlgebra::toDtPoint3( rV );
   }
   
-//  dtPoint3 transIntCube::getValue(float const xx, float const yy, float const zz) const {
-//    float xxN = 1.-xx;
-//    float yyN = 1.-yy;
-//    float zzN = 1.-zz;
+//  dtPoint3 transIntCube::getValue(dtReal const xx, dtReal const yy, dtReal const zz) const {
+//    dtReal xxN = 1.-xx;
+//    dtReal yyN = 1.-yy;
+//    dtReal zzN = 1.-zz;
 //    
-//    float pp[3][26];
+//    dtReal pp[3][26];
 //    
 //    dtPoint3 pN;
 //    __assignToVec(pN, 1, yy, zz, pp, 0);
@@ -162,7 +162,7 @@ namespace dtOO {
 //    __assignToVec2(_aS_3_1_0, pp, 24);
 //    __assignToVec2(_aS_3_1_1, pp, 25);
 //
-//    float rV[3];
+//    dtReal rV[3];
 //    for (int ii=0;ii<3;ii++) {
 //      rV[ii] =
 //          xxN * pp[ii][0] + xx * pp[ii][1]

@@ -1,6 +1,8 @@
 #ifndef VEC3DFUNCTION_H
 #define	VEC3DFUNCTION_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "analyticFunction.h"
@@ -12,9 +14,9 @@ namespace dtOO {
     vec3dFunction();
     vec3dFunction(const vec3dFunction& orig);
     virtual ~vec3dFunction();
-    virtual int yDim( void ) const;    
+    virtual dtInt yDim( void ) const;    
     dtPoint3 YdtPoint3(aFX const & xx) const;
-    virtual bool closed( int const & dir ) const = 0;
+    virtual bool closed( dtInt const & dir ) const = 0;
   };
 }
 #endif	/* VEC3DFUNCTION_H */

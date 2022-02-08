@@ -1,6 +1,7 @@
 #include "dtCurve.h"
 
 #include <logMe/logMe.h>
+#include "geoBuilder/u_geomCurveClosestPoint.h"
 
 namespace dtOO {	
 	dtCurve::dtCurve() {
@@ -11,61 +12,65 @@ namespace dtOO {
 		
 	}
 	
+  dtReal dtCurve::reparam(dtPoint3 const ppXYZ) const {
+    return u_geomCurveClosestPoint(this, ppXYZ).result();
+  }
+    
   //
   // optional overload
   //	
-	float dtCurve::getUMin ( void ) const {
+	dtReal dtCurve::getUMin ( void ) const {
 		return minPara(0);
 	}
 	
-	float dtCurve::getUMax ( void ) const {
+	dtReal dtCurve::getUMax ( void ) const {
 		return maxPara(0);
 	}
 	
-	float dtCurve::u_uPercent(float const percent) const {
+	dtReal dtCurve::u_uPercent(dtReal const percent) const {
     return minPara(0) + percent * (maxPara(0)-minPara(0));
 	}
 
-	float dtCurve::uPercent_u(float const uu) const {
-    float uMin = minPara(0);
-		float uMax = maxPara(0);
+	dtReal dtCurve::uPercent_u(dtReal const uu) const {
+    dtReal uMin = minPara(0);
+		dtReal uMax = maxPara(0);
 		
 		return (uu-uMin)/(uMax-uMin);
 	}
 	
-	dtPoint3 dtCurve::pointPercent( float const percent ) const {
+	dtPoint3 dtCurve::pointPercent( dtReal const percent ) const {
 		return point( u_uPercent(percent) );
 	}
 	
-	dtVector3 dtCurve::firstDerPercent( float const percent) const {
+	dtVector3 dtCurve::firstDerPercent( dtReal const percent) const {
 		return firstDer( u_uPercent(percent) );
 	}
 	
-	float dtCurve::length(void) const {
+	dtReal dtCurve::length(void) const {
 		return l_u( maxPara(0) );
 	}
 	
-	float dtCurve::l_uPercent(float const percent) const {
+	dtReal dtCurve::l_uPercent(dtReal const percent) const {
 		return l_u( u_uPercent(percent) );
 	}
 	
-	float dtCurve::lPercent_u(float const uu) const {
+	dtReal dtCurve::lPercent_u(dtReal const uu) const {
 		return l_u(uu) / length();
 	}
 
-	float dtCurve::lPercent_uPercent(float const uuPercent) const {
+	dtReal dtCurve::lPercent_uPercent(dtReal const uuPercent) const {
 		return l_uPercent(uuPercent) / length();
 	}	
 	
-	float dtCurve::u_lPercent( float const percent ) const {
+	dtReal dtCurve::u_lPercent( dtReal const percent ) const {
 		return u_l( percent*length() );
 	}
 
-	float dtCurve::uPercent_lPercent( float const percent ) const {
+	dtReal dtCurve::uPercent_lPercent( dtReal const percent ) const {
 		return uPercent_u( u_l( percent*length() ) );
 	}	
 	
-	float dtCurve::uPercent_l( float const ll ) const {
+	dtReal dtCurve::uPercent_l( dtReal const ll ) const {
 		return uPercent_u( u_l(ll) );
 	}	
 	

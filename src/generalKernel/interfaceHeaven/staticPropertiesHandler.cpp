@@ -28,6 +28,7 @@ namespace dtOO {
 		setOption("uvw_resolution", "1.e-2");
     setOption("point_render_diameter", "1.");
     setOption("vector_render_size", "1.");
+    setOption("render_max_nPoints", "50");
     setOption("function_render_resolution_u", "10");
 		setOption("function_render_resolution_v", "10");
 		setOption("function_render_resolution_w", "10");
@@ -106,11 +107,11 @@ namespace dtOO {
 #endif
   }
   
-  int staticPropertiesHandler::thisRank( void ) const {
+  dtInt staticPropertiesHandler::thisRank( void ) const {
     return _thisRank;
   }
 
-  int staticPropertiesHandler::nRanks( void ) const {
+  dtInt staticPropertiesHandler::nRanks( void ) const {
     return _nRanks;
   }  
   

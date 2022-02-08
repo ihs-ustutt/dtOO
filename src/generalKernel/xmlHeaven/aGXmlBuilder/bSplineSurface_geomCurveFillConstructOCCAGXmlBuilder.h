@@ -1,6 +1,8 @@
 #ifndef bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder_H
 #define	bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

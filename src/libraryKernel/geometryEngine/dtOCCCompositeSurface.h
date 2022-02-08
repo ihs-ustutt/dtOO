@@ -1,6 +1,8 @@
 #ifndef dtOCCCompositeSurface_H
 #define	dtOCCCompositeSurface_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "dtOCCSurface.h"
 
@@ -16,8 +18,12 @@ namespace dtOO {
     dtOCCCompositeSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCCompositeSurface();
     virtual dtSurface * clone( void ) const;
-	  virtual dtCurve * segmentConstU( float const uu, float const vvMin, float const vvMax) const;
-	  virtual dtCurve * segmentConstV( float const vv, float const uuMin, float const uuMax) const;     
+	  virtual dtCurve * segmentConstU( 
+      dtReal const uu, dtReal const vvMin, dtReal const vvMax
+    ) const;
+	  virtual dtCurve * segmentConstV( 
+      dtReal const vv, dtReal const uuMin, dtReal const uuMax
+    ) const;     
   private:
     ShapeExtend_CompositeSurface const * _ptr;
   };

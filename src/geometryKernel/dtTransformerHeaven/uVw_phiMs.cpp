@@ -67,15 +67,15 @@ namespace dtOO {
   ) const {
 		std::vector< dtPoint3 > retVec;
 		dt__forAllIndex(*toTrans, ii) {
-      float phir = toTrans->at(ii).x() * _ss.x();
-		  float mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
-		  float ss = toTrans->at(ii).z() * _ss.z();
+      dtReal phir = toTrans->at(ii).x() * _ss.x();
+		  dtReal mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
+		  dtReal ss = toTrans->at(ii).z() * _ss.z();
       dt__solution(ss>1., ss=1.);
       dt__solution(ss<0., ss=0.);
       
-      float wV = wV_ms(mm, ss);						
-			float vV = vV_ms(mm, ss);
-			float uV = uV_phirVVWV(phir, vV, wV);
+      dtReal wV = wV_ms(mm, ss);						
+			dtReal vV = vV_ms(mm, ss);
+			dtReal uV = uV_phirVVWV(phir, vV, wV);
 			
 			retVec.push_back( dtPoint3(uV, vV, wV) );
 		}
@@ -88,11 +88,11 @@ namespace dtOO {
   ) const {
 		std::vector< dtPoint3 > retVec;
 		dt__forAllIndex(*toRetract, ii) {
-      float uu = toRetract->at(ii).x() / _ss.x();
-		  float vv = toRetract->at(ii).y() / _ss.y();
-		  float ww = toRetract->at(ii).z() / _ss.z();
+      dtReal uu = toRetract->at(ii).x() / _ss.x();
+		  dtReal vv = toRetract->at(ii).y() / _ss.y();
+		  dtReal ww = toRetract->at(ii).z() / _ss.z();
 		
-			float phir = phir_uVvVwV(uu, vv, ww);
+			dtReal phir = phir_uVvVwV(uu, vv, ww);
       aFY ms
       =
       _ms_uSPercentVSPercent->Y(
@@ -101,8 +101,8 @@ namespace dtOO {
           _rM2d->constRefMap2dTo3d().percent_v(ww)
         )
       );
-      float mm = ms[0];        
-      float ss = ms[1];
+      dtReal mm = ms[0];        
+      dtReal ss = ms[1];
 						
       dt__debug(
         retract(),
@@ -168,8 +168,8 @@ namespace dtOO {
     twoDArrayHandling< dtPoint2 > ms(_nW, _nW);
     dt__forAllIndex(ms, ii) {
       dt__forAllIndex(ms[ii], jj) {
-        float uPercent = static_cast<float>(ii)/(_nW-1);
-        float vPercent = static_cast<float>(jj)/(_nW-1);
+        dtReal uPercent = static_cast<dtReal>(ii)/(_nW-1);
+        dtReal vPercent = static_cast<dtReal>(jj)/(_nW-1);
         ms[ii][jj] 
         = 
         dtPoint2(
@@ -223,7 +223,7 @@ namespace dtOO {
 //    dtTransformer::handleDtVector3(name, value);
 //  }	
 //  
-//  void uVw_phiMs::handleInt(std::string const name, int const value) {
+//  void uVw_phiMs::handleInt(std::string const name, dtInt const value) {
 //    dt__info(handleInt(),
 //      << dt__eval(name) << std::endl
 //      << dt__eval(value) 
@@ -239,14 +239,14 @@ namespace dtOO {
 //    dtTransformer::handleInt(name, value);
 //  }	  
   
-	float uVw_phiMs::m_uSVS(float const & uu, float const & vv) const {
+	dtReal uVw_phiMs::m_uSVS(dtReal const & uu, dtReal const & vv) const {
 		ptrHandling< map1dTo3d > m1d( 
       _rM2d->constRefMap2dTo3d().segmentConstV(vv) 
     );
 		return m1d->l_u(uu);		
 	}
   
-	float uVw_phiMs::s_uSVS(float const & uu, float const & vv) const {
+	dtReal uVw_phiMs::s_uSVS(dtReal const & uu, dtReal const & vv) const {
 		ptrHandling< map1dTo3d > m1d( 
       _rM2d->constRefMap2dTo3d().segmentConstU(uu) 
     );
@@ -254,8 +254,8 @@ namespace dtOO {
 		return m1d->lPercent_u(vv);		
 	} 
   
-	float uVw_phiMs::uV_phirVVWV(
-    float const & phir, float const & vv, float const & ww
+	dtReal uVw_phiMs::uV_phirVVWV(
+    dtReal const & phir, dtReal const & vv, dtReal const & ww
   ) const {
 //    //
 //		// get radius
@@ -279,22 +279,22 @@ namespace dtOO {
 		return phir / (2.*M_PI);
 	}
 	
-	float uVw_phiMs::vV_ms(float const & mm, float const & ss) const {
+	dtReal uVw_phiMs::vV_ms(dtReal const & mm, dtReal const & ss) const {
     aFY ms = analyticFunction::aFYTwoD(mm, ss);
     aFX uvPercent = _ms_uSPercentVSPercent->invY(ms);
     
     return _rM2d->constRefMap2dTo3d().u_percent(uvPercent[0]);
 	}	
 	
-	float uVw_phiMs::wV_ms(float const & mm, float const & ss) const {
+	dtReal uVw_phiMs::wV_ms(dtReal const & mm, dtReal const & ss) const {
     aFY ms = analyticFunction::aFYTwoD(mm, ss);
     aFX uvPercent = _ms_uSPercentVSPercent->invY(ms);
     
     return _rM2d->constRefMap2dTo3d().v_percent(uvPercent[1]);    
 	}    
 
-  float uVw_phiMs::phir_uVvVwV(
-    float const & uu, float const & vv, float const & ww
+  dtReal uVw_phiMs::phir_uVvVwV(
+    dtReal const & uu, dtReal const & vv, dtReal const & ww
   ) const {
 //    dtVector3 vXYZ 
 //    = 
@@ -313,7 +313,7 @@ namespace dtOO {
 		return uu * (2.*M_PI);
   }
   
-//  float uVw_phiMs::m_vVs(float const & vv, float const & ss) const {
+//  dtReal uVw_phiMs::m_vVs(dtReal const & vv, dtReal const & ss) const {
 //    aFX xx 
 //    = 
 //    analyticFunction::aFXTwoD( _rM2d->constRefMap2dTo3d().u_percent(vv), ss );

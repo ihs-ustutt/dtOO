@@ -1,6 +1,8 @@
 #ifndef applyVec3dThreeD_H
 #define	applyVec3dThreeD_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>

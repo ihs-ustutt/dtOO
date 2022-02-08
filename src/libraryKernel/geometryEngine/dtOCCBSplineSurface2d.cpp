@@ -19,7 +19,7 @@ namespace dtOO {
 
 	dtOCCBSplineSurface2d::dtOCCBSplineSurface2d(const dtOCCSurfaceBase& orig) 
 		: dtOCCSurface2d(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_BSplineSurface const, _ptr);
+		dt__mustCast(OCCRef().getOCC().get(), Geom_BSplineSurface const, _ptr);
 	}
 
 	dtOCCBSplineSurface2d::~dtOCCBSplineSurface2d() {
@@ -30,21 +30,21 @@ namespace dtOO {
 		return new dtOCCBSplineSurface2d( OCCRef() );
 	}
 
-	dtPoint2 dtOCCBSplineSurface2d::controlPoint( int const uI, int const vI ) const {
+	dtPoint2 dtOCCBSplineSurface2d::controlPoint( dtInt const uI, dtInt const vI ) const {
 		Standard_Integer uSi = static_cast<Standard_Integer>(uI+1);		
 		Standard_Integer vSi = static_cast<Standard_Integer>(vI+1);		
 		gp_Pnt pp = _ptr->Pole(uSi, vSi);
 
 		return dtLinearAlgebra::ignoreZ(
 			dtPoint3(
-			  static_cast<float>(pp.Coord(1)), 
-				static_cast<float>(pp.Coord(2)), 
-				static_cast<float>(pp.Coord(3))
+			  static_cast<dtReal>(pp.Coord(1)), 
+				static_cast<dtReal>(pp.Coord(2)), 
+				static_cast<dtReal>(pp.Coord(3))
 			)
 		);				
 	}
 
-	void dtOCCBSplineSurface2d::setControlPoint( int const uI, int const vI, dtPoint2 const point ) {
+	void dtOCCBSplineSurface2d::setControlPoint( dtInt const uI, dtInt const vI, dtPoint2 const point ) {
 		Standard_Integer uSi = static_cast<Standard_Integer>(uI+1);		
 		Standard_Integer vSi = static_cast<Standard_Integer>(vI+1);		
 		
@@ -56,7 +56,7 @@ namespace dtOO {
 		occBss->SetPole(uSi, vSi, pp);
 	}
 
-	int dtOCCBSplineSurface2d::nControlPoints( int const dim ) const {
+	int dtOCCBSplineSurface2d::nControlPoints( dtInt const dim ) const {
 		switch (dim) {
 			case 0:		
 				return static_cast<int>(_ptr->NbUPoles());					
@@ -69,7 +69,7 @@ namespace dtOO {
 		}	
 	}
 
-	dtCurve2d * dtOCCBSplineSurface2d::segmentConstU( float const uu, float const vvMin, float const vvMax) const {
+	dtCurve2d * dtOCCBSplineSurface2d::segmentConstU( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Handle(Geom_Curve) cc = _ptr->UIso(uR);
 
@@ -87,7 +87,7 @@ namespace dtOO {
 		return geomCurve2d_ignoreZ(&dtBS).result();
 	}
 
-	dtCurve2d * dtOCCBSplineSurface2d::segmentConstV( float const vv, float const uuMin, float const uuMax) const {
+	dtCurve2d * dtOCCBSplineSurface2d::segmentConstV( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const {
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		Handle(Geom_Curve) cc = _ptr->VIso(vR);
 

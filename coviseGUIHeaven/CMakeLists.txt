@@ -152,7 +152,7 @@ set(
   ${DTOO_LINK_DIRECTORY}
   ${DTOO_EXTERNLIBS}/ALL/lib
 )
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined")
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined,--disable-new-dtags")
 foreach(_rpath ${_rpathList})
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS},-rpath,${_rpath}")
   set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH}:${_rpath}")

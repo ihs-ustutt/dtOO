@@ -1,6 +1,8 @@
 #ifndef ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder_H
 #define	ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

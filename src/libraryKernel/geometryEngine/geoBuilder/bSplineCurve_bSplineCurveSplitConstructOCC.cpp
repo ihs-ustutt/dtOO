@@ -16,7 +16,7 @@
 namespace dtOO {
   bSplineCurve_bSplineCurveSplitConstructOCC
     ::bSplineCurve_bSplineCurveSplitConstructOCC( 
-    dtCurve const * const dtC, float const & u0, float const & u1
+    dtCurve const * const dtC, dtReal const & u0, dtReal const & u1
   ) {
     dt__ptrAss(
       dtOCCBSplineCurve const * const bS,

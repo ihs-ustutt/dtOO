@@ -1,6 +1,8 @@
 #ifndef feOpenFOAMCyclicGgiRule_H
 #define	feOpenFOAMCyclicGgiRule_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "feOpenFOAMSetupRule.h"
 

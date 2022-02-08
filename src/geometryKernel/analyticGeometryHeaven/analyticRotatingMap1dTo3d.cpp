@@ -24,7 +24,7 @@ namespace dtOO {
     dtSurface const & dtS, 
     dtPoint3 const & pp,
     dtVector3 const & vv,
-    float const & angle) : analyticSurface(&dtS) {
+    dtReal const & angle) : analyticSurface(&dtS) {
     
 	  _vv = dtVector3(vv);
 		_pp = dtPoint3(pp);
@@ -34,7 +34,7 @@ namespace dtOO {
   analyticRotatingMap1dTo3d::analyticRotatingMap1dTo3d(
     dtSurface const & dtS, 
     dtVector3 const & vv,
-    float const & angle) : analyticSurface(&dtS) {
+    dtReal const & angle) : analyticSurface(&dtS) {
     
 	  _vv = dtVector3(vv);
 		_pp = dtPoint3(0,0,0);
@@ -51,11 +51,11 @@ namespace dtOO {
     return _vv;
   }
 
-  float analyticRotatingMap1dTo3d::getAngle( void ) const {
+  dtReal analyticRotatingMap1dTo3d::getAngle( void ) const {
     return _angle;
   }  
       
-  float analyticRotatingMap1dTo3d::u_phi(float const & arg) const {
+  dtReal analyticRotatingMap1dTo3d::u_phi(dtReal const & arg) const {
     return 
         map2dTo3d::getUMin() 
       + arg * (
@@ -65,7 +65,7 @@ namespace dtOO {
         (2. * M_PI);
   }
   
-  float analyticRotatingMap1dTo3d::phi_u(float const & arg) const {
+  dtReal analyticRotatingMap1dTo3d::phi_u(dtReal const & arg) const {
     if (arg >= 0.) {
       return 
         2. * M_PI * (arg - map2dTo3d::getUMin()) 
@@ -73,7 +73,7 @@ namespace dtOO {
         (map2dTo3d::getUMax()-map2dTo3d::getUMin());    
     }
     else {
-      float uu 
+      dtReal uu 
       = 
       2. * M_PI * (fabs(arg) - map2dTo3d::getUMin()) 
       / 
@@ -82,62 +82,62 @@ namespace dtOO {
     }
   }
   
-  float analyticRotatingMap1dTo3d::v_m(float const & arg) const {
+  dtReal analyticRotatingMap1dTo3d::v_m(dtReal const & arg) const {
 //    ptrHandling<dtCurve const> rr( getRadiusCurve() );
     return ptrConstRadiusCurve()->u_l(arg);
   }
   
-  float analyticRotatingMap1dTo3d::m_v(float const & arg) const {
+  dtReal analyticRotatingMap1dTo3d::m_v(dtReal const & arg) const {
 //    ptrHandling<dtCurve const> rr( getRadiusCurve() );
     return ptrConstRadiusCurve()->l_u(arg);    
   }
   
   dtPoint3 analyticRotatingMap1dTo3d::xyz_phiZ(
-    float const & arg0, float const & arg1
+    dtReal const & arg0, dtReal const & arg1
   ) const {
     return getPoint( u_phi(arg0), v_z(arg1) );
   }
   
   dtPoint2 analyticRotatingMap1dTo3d::uv_phiZ(
-    float const & arg0, float const & arg1
+    dtReal const & arg0, dtReal const & arg1
   ) const {
     return dtPoint2(u_phi(arg0), v_z(arg1));
   }
   
   dtPoint2 analyticRotatingMap1dTo3d::uv_deltaPhiRadiusDeltaM(
-    float const & bU, float const & bV, float const & arg0, float const & arg1
+    dtReal const & bU, dtReal const & bV, dtReal const & arg0, dtReal const & arg1
   ) const {
-    float phi = phi_u(bU);
-    float rr = r_v(bV);
-    float mm = m_v(bV);
+    dtReal phi = phi_u(bU);
+    dtReal rr = r_v(bV);
+    dtReal mm = m_v(bV);
     
     return uv_phiRadiusM(phi*rr+arg0, mm+arg1);  
   }
   
   dtPoint2 analyticRotatingMap1dTo3d::uv_phiRadiusM(
-    float const & arg0, float const & arg1
+    dtReal const & arg0, dtReal const & arg1
   ) const {
-    float const vv = v_m(arg1);
-    float const rr = r_v(vv);
-    float const phi = arg0 / rr;
+    dtReal const vv = v_m(arg1);
+    dtReal const rr = r_v(vv);
+    dtReal const phi = arg0 / rr;
     return dtPoint2( u_phi(phi), vv );
   }
   
   dtPoint2 analyticRotatingMap1dTo3d::uv_phiM(
-    float const & arg0, float const & arg1
+    dtReal const & arg0, dtReal const & arg1
   ) const {
     return dtPoint2( u_phi(arg0), v_m(arg1) );
   }
   
-  float analyticRotatingMap1dTo3d::zMin( void ) const {
+  dtReal analyticRotatingMap1dTo3d::zMin( void ) const {
     return z_v( getMin(1) );
   }
   
-  float analyticRotatingMap1dTo3d::zMax( void ) const {
+  dtReal analyticRotatingMap1dTo3d::zMax( void ) const {
     return z_v( getMax(1) );
   }
   
-  float analyticRotatingMap1dTo3d::z_v(float const & arg) const {
+  dtReal analyticRotatingMap1dTo3d::z_v(dtReal const & arg) const {
     //
     //get point in x,y,z coordinates
     //
@@ -148,19 +148,19 @@ namespace dtOO {
     return _vv * (pointXYZ - _pp);
   }
 
-  float analyticRotatingMap1dTo3d::v_z(float const & arg) const {
-    float minZ = zMin();
-    float maxZ = zMax();
+  dtReal analyticRotatingMap1dTo3d::v_z(dtReal const & arg) const {
+    dtReal minZ = zMin();
+    dtReal maxZ = zMax();
     
     //
     // iterate
     //
-    float vv;
-    float relativeTol 
+    dtReal vv;
+    dtReal relativeTol 
 		= 
 		staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"); 
-    std::vector<float> cR(2);
-    std::vector<float> aR(2);
+    std::vector<dtReal> cR(2);
+    std::vector<dtReal> aR(2);
     cR[0] = map2dTo3d::getUMin();
     cR[1] = map2dTo3d::getUMax();
     aR[0] = map2dTo3d::getVMin();
@@ -168,7 +168,7 @@ namespace dtOO {
     
     vv = aR[0] + .5 * (aR[1]-aR[0]);
     for (int ii=0; ii<100; ii++) {
-      float res = fabs(arg-z_v(vv));
+      dtReal res = fabs(arg-z_v(vv));
       if( res < relativeTol ) {
         break;
       }
@@ -184,7 +184,7 @@ namespace dtOO {
     return vv;    
   }
   
-  float analyticRotatingMap1dTo3d::r_v(float const & arg0) const {
+  dtReal analyticRotatingMap1dTo3d::r_v(dtReal const & arg0) const {
     //
     //get point in x,y,z coordinates
     //
@@ -198,8 +198,8 @@ namespace dtOO {
     return sqrt(distance.squared_length());    
   }
   
-  float analyticRotatingMap1dTo3d::r_m(float const & arg0) const {
-    float const vv = v_m(arg0);
+  dtReal analyticRotatingMap1dTo3d::r_m(dtReal const & arg0) const {
+    dtReal const vv = v_m(arg0);
     return r_v(vv);
   }
 
@@ -227,7 +227,7 @@ namespace dtOO {
 		dtPoint3 start = map2dTo3d::getPointPercent(0.,0.);
 		dtVector3 dist = start - _pp;
 		if ( (dist*_vv) != 0. ) {
-			float adjusting = (dist*_vv)/sqrt(_vv.squared_length());
+			dtReal adjusting = (dist*_vv)/sqrt(_vv.squared_length());
 
 			_pp = _pp + _vv  * adjusting;
 

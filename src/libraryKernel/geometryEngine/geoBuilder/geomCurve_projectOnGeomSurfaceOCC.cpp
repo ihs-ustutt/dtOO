@@ -25,9 +25,9 @@ namespace dtOO {
 		dt__ptrAss( dtOCCCurve const * const cc, dtOCCCurve::ConstDownCast(dtC) );
 		
 		Geom_Surface const * sP;
-		dt__mustCast(ss->OCCRef().getOCC().Access(), Geom_Surface const, sP);
+		dt__mustCast(ss->OCCRef().getOCC().get(), Geom_Surface const, sP);
 		Geom_Curve const * cP;
-		dt__mustCast(cc->OCCRef().getOCC().Access(), Geom_Curve const, cP);
+		dt__mustCast(cc->OCCRef().getOCC().get(), Geom_Curve const, cP);
 		Handle(Geom_Curve) cH = cP;
 		Handle(Geom_Surface) sH = sP;
 		

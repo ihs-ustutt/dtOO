@@ -15,7 +15,7 @@ namespace dtOO {
 	}
 
 	dtOCCCircle::dtOCCCircle(dtOCCCurveBase const & orig) : dtOCCCurve(orig) {
-		dt__mustCast(OCCRef().getOCC().Access(), Geom_Circle const, _ptr);	
+		dt__mustCast(OCCRef().getOCC().get(), Geom_Circle const, _ptr);	
 	}
 
 	dtOCCCircle::~dtOCCCircle() {
@@ -25,19 +25,19 @@ namespace dtOO {
 		return new dtOCCCircle( OCCRef() );		
 	}
 	
-  int dtOCCCircle::order( void ) const {
+  dtInt dtOCCCircle::order( void ) const {
 		dt__throwUnexpected(order());			
 	}
 	
-  int dtOCCCircle::nControlPoints( void ) const {
+  dtInt dtOCCCircle::nControlPoints( void ) const {
 		return 0;
 	}
 	
-  dtPoint3 dtOCCCircle::controlPoint( int const nPoint ) const {
+  dtPoint3 dtOCCCircle::controlPoint( dtInt const nPoint ) const {
 		dt__throwUnexpected(controlPoint());		
 	}
 	
-  void dtOCCCircle::setControlPoint( int const nPoint, dtPoint3 const point ) {
+  void dtOCCCircle::setControlPoint( dtInt const nPoint, dtPoint3 const point ) {
 		dt__throwUnexpected(setControlPoint());				
 	}
 	

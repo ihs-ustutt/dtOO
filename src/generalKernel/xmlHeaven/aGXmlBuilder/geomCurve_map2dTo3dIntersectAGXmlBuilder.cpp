@@ -102,7 +102,7 @@ namespace dtOO {
     }
     else dt__throwUnexpected(buildPart());
     
-    std::vector< std::pair< float, dtPoint2 > > interPoints;
+    std::vector< std::pair< dtReal, dtPoint2 > > interPoints;
     dt__forAllRefAuto(m1dV, aMap) {
       interPoints.push_back(
         pairUUV_map1dTo3dClosestPointToMap2dTo3d(&aMap, m2d).result()

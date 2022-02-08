@@ -50,7 +50,7 @@ namespace dtOO {
     = 
     dtXmlParserBase::getChildVector("analyticGeometry", toBuild);
 
-    int ii = 0;
+    dtInt ii = 0;
     dt__pH(analyticGeometry const) aG_t(
       dtXmlParserBase::createAnalyticGeometry(&aGElVec[ii], bC, cV, aF, aG)
     );

@@ -149,7 +149,7 @@ namespace dtOO {
   }
   
 	double bVOSetPrescribedFirstElementSize::F( double const * xx ) {
-    _polyI->setDOF( std::vector<float>(_polyI->nDOF(), *xx) );
+    _polyI->setDOF( std::vector<dtReal>(_polyI->nDOF(), *xx) );
     return fabs(_polyI->YFloat(_checkX) * _ll - _firstElementSize);
 	}    
 }

@@ -1,6 +1,8 @@
 #ifndef geomCurve_curveReverseConstructOCC_H
 #define	geomCurve_curveReverseConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

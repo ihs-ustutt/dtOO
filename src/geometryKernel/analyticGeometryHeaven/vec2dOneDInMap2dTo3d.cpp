@@ -54,7 +54,7 @@ namespace dtOO {
 		return new vec2dOneDInMap2dTo3d();
 	}
 
-	dtPoint3 vec2dOneDInMap2dTo3d::getPoint( float const & uu ) const {
+	dtPoint3 vec2dOneDInMap2dTo3d::getPoint( dtReal const & uu ) const {
 		if (_percentF) {
 			return _m2d->getPoint( _m2d->uv_percent(_v2d->YdtPoint2(uu)) );
 		}
@@ -63,15 +63,15 @@ namespace dtOO {
 		}
   }
 
-	bool vec2dOneDInMap2dTo3d::isClosed( int const & dir) const {
+	bool vec2dOneDInMap2dTo3d::isClosed( dtInt const & dir) const {
     return _v2d->closed(dir);
 	}
 
-	float vec2dOneDInMap2dTo3d::getMin( int const & dir) const {
+	dtReal vec2dOneDInMap2dTo3d::getMin( dtInt const & dir) const {
 		return _v2d->xMin(dir);     
 	}
 
-	float vec2dOneDInMap2dTo3d::getMax( int const & dir) const {
+	dtReal vec2dOneDInMap2dTo3d::getMax( dtInt const & dir) const {
 		return _v2d->xMax(dir);
 	}
 

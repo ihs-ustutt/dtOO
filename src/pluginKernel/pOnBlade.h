@@ -1,6 +1,8 @@
 #ifndef pOnBlade_H
 #define	pOnBlade_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
@@ -40,7 +42,7 @@ namespace dtOO {
       map1dTo3d const * _stagnationLine; 
       dtXmlParser const * _parser;
       dtCase const * _case;
-      std::vector< int > _nP;
+      std::vector< dtInt > _nP;
       static bool _registrated;
   };
 }

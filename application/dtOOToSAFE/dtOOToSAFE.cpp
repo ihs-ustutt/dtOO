@@ -20,7 +20,7 @@
 
 using namespace dtOO;
 
-int main( int ac, char* av[] ) {
+int main( dtInt ac, char* av[] ) {
   try {
     //
     // options
@@ -63,8 +63,8 @@ int main( int ac, char* av[] ) {
       )
       (
         "yWorst", 
-        dtPO::value< std::vector< float > >()->required()->default_value(
-          std::vector< float >(0), "0"    
+        dtPO::value< std::vector< dtReal > >()->required()->default_value(
+          std::vector< dtReal >(0), "0"    
         ),
         "define worst y values (required)"
       )
@@ -119,9 +119,9 @@ int main( int ac, char* av[] ) {
     std::vector< std::string > yLabel 
     = 
     vm["y"].as< std::vector< std::string > >();
-    std::vector< float > yWorst 
+    std::vector< dtReal > yWorst 
     = 
-    vm["yWorst"].as< std::vector< float > >();    
+    vm["yWorst"].as< std::vector< dtReal > >();    
     
     dt__infoNoClass(main(), << "xLabel = " << xLabel);
     dt__infoNoClass(main(), << "yLabel = " << yLabel);

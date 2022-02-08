@@ -1,6 +1,8 @@
 #ifndef makeCompoundAGXmlBuilder_H
 #define	makeCompoundAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

@@ -1,6 +1,8 @@
 #ifndef dtOMDynamicFaceField_H
 #define	dtOMDynamicFaceField_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtOMFaceField.h"
 
 namespace dtOO {

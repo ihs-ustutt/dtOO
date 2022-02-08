@@ -61,18 +61,18 @@ namespace dtOO {
       else if (_createAnalyticSurface) {
 				dt__pH(map1dTo3d) m1dU(aSP->segmentConstVPercent(0., 0., 1.));
 				dt__ptrAss(analyticCurve * s3dU, analyticCurve::DownCast(m1dU.get()));
-				float u0 
+				dtReal u0 
         = 
         s3dU->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentOneStart);
-				float u1 
+				dtReal u1 
         = 
         s3dU->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentOneEnd);
 				dt__pH(map1dTo3d) m1dV(aSP->segmentConstUPercent(0., 0., 1.));
 				dt__ptrAss(analyticCurve * s3dV, analyticCurve::DownCast(m1dV.get()));
-				float v0
+				dtReal v0
         = 
         s3dV->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentTwoStart);
-				float v1 
+				dtReal v1 
         = 
         s3dV->ptrConstDtCurve()->uPercent_lPercent(_lengthPercentTwoEnd);
 				

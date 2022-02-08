@@ -1,6 +1,8 @@
 #ifndef TRANS6SIDEDCUBE_H
 #define	TRANS6SIDEDCUBE_H
 
+#include <dtOOTypeDef.h>
+
 #include "map3dTo3d.h"
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -29,15 +31,15 @@ namespace dtOO {
         dtTransformer const * const dtT 
       ) const;     
       virtual ~trans6SidedCube();
-      virtual bool isClosed( int const & dir) const;
-      virtual float getMin( int const & dir) const;
-      virtual float getMax( int const & dir) const;
+      virtual bool isClosed( dtInt const & dir) const;
+      virtual dtReal getMin( dtInt const & dir) const;
+      virtual dtReal getMax( dtInt const & dir) const;
       virtual dtPoint3 getPoint( 
-        float const & uu, float const & vv, float const & ww 
+        dtReal const & uu, dtReal const & vv, dtReal const & ww 
       ) const;
-      virtual map2dTo3d * segmentConstU( float const & uu ) const;
-      virtual map2dTo3d * segmentConstV( float const & vv ) const;
-      virtual map2dTo3d * segmentConstW( float const & ww ) const;
+      virtual map2dTo3d * segmentConstU( dtReal const & uu ) const;
+      virtual map2dTo3d * segmentConstV( dtReal const & vv ) const;
+      virtual map2dTo3d * segmentConstW( dtReal const & ww ) const;
       vectorHandling< map2dTo3d const * > const & 
       constRefMap2dTo3d( void ) const;
       void reverseU( void );

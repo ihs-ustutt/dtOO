@@ -1,6 +1,8 @@
 #ifndef dtPlugin_H
 #define	dtPlugin_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/labelHandling.h>
@@ -41,7 +43,7 @@ namespace dtOO {
       //
       // pugg stuff
       //
-      static const int version = 1;
+      static const dtInt version = 1;
       static const std::string server_name() {
         return "dtPluginServer";
       }   

@@ -54,7 +54,7 @@ namespace dtOO {
 		bool hasDeltaX = dtXmlParserBase::hasAttribute("delta_x", toBuildP);
     bool hasDeltaY = dtXmlParserBase::hasAttribute("delta_y", toBuildP);
 
-    float alphaOne 
+    dtReal alphaOne 
     = 
     dtXmlParserBase::muParseString(
       dtXmlParserBase::replaceDependencies(
@@ -66,7 +66,7 @@ namespace dtOO {
         depSFunP
       )
     );      
-    float alphaTwo 
+    dtReal alphaTwo 
     = 
     dtXmlParserBase::muParseString(
       dtXmlParserBase::replaceDependencies(
@@ -78,7 +78,7 @@ namespace dtOO {
         depSFunP
       )
     );      
-    float pointOne 
+    dtReal pointOne 
     = 
     dtXmlParserBase::muParseString(
       dtXmlParserBase::replaceDependencies(
@@ -90,7 +90,7 @@ namespace dtOO {
         depSFunP
       )
     ); 
-    float pointTwo 
+    dtReal pointTwo 
     = 
     dtXmlParserBase::muParseString(
       dtXmlParserBase::replaceDependencies(
@@ -111,7 +111,7 @@ namespace dtOO {
       //
       // get necessary values
       //
-      float deltaY 
+      dtReal deltaY 
 			= 
 			dtXmlParserBase::muParseString(
 				dtXmlParserBase::replaceDependencies(
@@ -123,7 +123,7 @@ namespace dtOO {
 					depSFunP
 				)
 			); 
-      float ratio
+      dtReal ratio
 			= 
 			dtXmlParserBase::muParseString(
 				dtXmlParserBase::replaceDependencies(
@@ -145,7 +145,7 @@ namespace dtOO {
       //
       // get necessary values
       //
-      float deltaX 
+      dtReal deltaX 
 			= 
 			dtXmlParserBase::muParseString(
 				dtXmlParserBase::replaceDependencies(
@@ -157,7 +157,7 @@ namespace dtOO {
 					depSFunP
 				)
 			); 
-      float deltaY 
+      dtReal deltaY 
 			= 
 			dtXmlParserBase::muParseString(
 				dtXmlParserBase::replaceDependencies(

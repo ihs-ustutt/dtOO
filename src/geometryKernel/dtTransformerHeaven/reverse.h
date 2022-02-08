@@ -1,6 +1,8 @@
 #ifndef reverse_H
 #define	reverse_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 

@@ -27,7 +27,7 @@ namespace dtOO {
     );
   }
 
-  void sliderFloatParam::setRange(float const min, float const max) {
+  void sliderFloatParam::setRange(dtReal const min, dtReal const max) {
     _max = max;
     _min = min;
   }
@@ -45,11 +45,11 @@ namespace dtOO {
     element.appendChild(cValElement);
   }
   
-  float sliderFloatParam::getMax(void) const {
+  dtReal sliderFloatParam::getMax(void) const {
     return _max;
   }
 
-  float sliderFloatParam::getMin(void) const {
+  dtReal sliderFloatParam::getMin(void) const {
     return _min;
   }  
 }

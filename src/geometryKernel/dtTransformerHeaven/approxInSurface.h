@@ -1,6 +1,8 @@
 #ifndef approxInSurface_H
 #define	approxInSurface_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
@@ -27,8 +29,8 @@ namespace dtOO {
       virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
     private:
       dt__pH(map2dTo3d const) _m2d;
-      int _nPoints;
-      int _order;
+      dtInt _nPoints;
+      dtInt _order;
       static bool _registrated;    
   };
 }

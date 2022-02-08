@@ -1,6 +1,8 @@
 #ifndef VEC3DBOXTHREED_H
 #define	VEC3DBOXTHREED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dThreeD.h"
@@ -25,7 +27,7 @@ namespace dtOO {
     virtual vec3dBoxThreeD * create( void ) const;    
     virtual ~vec3dBoxThreeD();
     virtual aFY Y( aFX const & xx) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     dtPoint3 _p0;   
     dtPoint3 _p1;

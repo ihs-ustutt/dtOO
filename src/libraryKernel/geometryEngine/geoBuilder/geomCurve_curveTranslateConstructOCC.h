@@ -1,6 +1,8 @@
 #ifndef geomCurve_curveTranslateConstructOCC_H
 #define	geomCurve_curveTranslateConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

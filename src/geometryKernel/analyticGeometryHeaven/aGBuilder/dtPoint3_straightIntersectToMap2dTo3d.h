@@ -1,6 +1,8 @@
 #ifndef dtPoint3_straightIntersectToMap2dTo3d_H
 #define	dtPoint3_straightIntersectToMap2dTo3d_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 

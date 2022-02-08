@@ -1,6 +1,8 @@
 #ifndef bVOSetRotationalPeriodicity_H
 #define	bVOSetRotationalPeriodicity_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

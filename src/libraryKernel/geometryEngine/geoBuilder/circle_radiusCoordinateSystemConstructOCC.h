@@ -1,6 +1,8 @@
 #ifndef circle_radiusCoordinateSystemConstructOCC_H
 #define	circle_radiusCoordinateSystemConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -12,11 +14,11 @@ namespace dtOO {
   public:
     dt__classOnlyName(circle_radiusCoordinateSystemConstructOCC);
     circle_radiusCoordinateSystemConstructOCC( 
-      dtPoint3 const & pp, dtVector3 const & xx, float const & rr
+      dtPoint3 const & pp, dtVector3 const & xx, dtReal const & rr
     );
     circle_radiusCoordinateSystemConstructOCC( 
       dtPoint3 const & pp, dtVector3 const & nn, dtVector3 const & xx, 
-      float const & rr
+      dtReal const & rr
     );    
     virtual ~circle_radiusCoordinateSystemConstructOCC();
     dtCurve * result( void );

@@ -1,6 +1,8 @@
 #ifndef VEC3DCURVEONED_H
 #define	VEC3DCURVEONED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dOneD.h"
@@ -29,7 +31,7 @@ namespace dtOO {
     virtual vectorHandling< renderInterface * > getRender( void ) const;
     dtCurve * ptrDtCurve(void) const;
     dtCurve const * const ptrConstDtCurve(void) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     ptrHandling<dtCurve> _dtC;
   };

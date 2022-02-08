@@ -1,6 +1,8 @@
 #ifndef BASECONTAINER_H
 #define	BASECONTAINER_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 namespace dtOO {

@@ -29,7 +29,7 @@ namespace dtOO {
 		//
 		dt__forAllIndex(pp, ii) {
 		  arr->SetValue( ii+1, gp_Pnt(pp[ii].x(), pp[ii].y(), pp[ii].z()) ); 
-//		  para->SetValue( ii+1, static_cast<float>(ii) );
+//		  para->SetValue( ii+1, static_cast<dtReal>(ii) );
 	  }
 
 //		GeomAPI_Interpolate Interp(arr, para, false, .01);

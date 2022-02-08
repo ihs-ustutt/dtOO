@@ -31,9 +31,12 @@ SET(HEADERS
   geometryEngine/dtOCCBSplineCurve2d.h
   geometryEngine/dtOCCTrimmedCurve2d.h
   geometryEngine/dtOCCLine2d.h
+  geometryEngine/dtOCCGeomFillBoundaryBase.h
+  geometryEngine/dtOCCGeomFillBoundary.h
+  geometryEngine/dtOCCGeomFillSimpleBound.h
+  geometryEngine/dtOCCGeomFillBoundWithSurf.h
   geometryEngine/dtMuParser.h
   geometryEngine/muParserFunctions.h
-  geometryEngine/GeomFill_BSplineCurvesExtPrecision.h
   geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.h
   geometryEngine/geoBuilder/bSplineCurve_bSplineCurveSplitConstructOCC.h
@@ -90,6 +93,11 @@ SET(HEADERS
   geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurface_convertOCC.h
   geometryEngine/geoBuilder/uv_geomSurfaceClosestPoint.h
+  geometryEngine/geoBuilder/bSplineCurve_approxGeomCurve2dInGeomSurface.h
+  geometryEngine/geoBuilder/geomFillBoundWithSurf_surfaceConstructOCC.h
+  geometryEngine/geoBuilder/geomFillSimpleBound_curveConstructOCC.h
+  geometryEngine/geoBuilder/bSplineSurface_constrainedFillingConstructOCC.h
+  geometryEngine/geoBuilder/u_geomCurveClosestPoint.h
   meshEngine/qShapeMetric.h
   meshEngine/dtGmshVertex.h
   meshEngine/dtGmshEdge.h
@@ -169,9 +177,12 @@ SET(SOURCES
   geometryEngine/dtOCCBSplineCurve2d.cpp
   geometryEngine/dtOCCTrimmedCurve2d.cpp
   geometryEngine/dtOCCLine2d.cpp
+  geometryEngine/dtOCCGeomFillBoundaryBase.cpp
+  geometryEngine/dtOCCGeomFillBoundary.cpp
+  geometryEngine/dtOCCGeomFillSimpleBound.cpp
+  geometryEngine/dtOCCGeomFillBoundWithSurf.cpp
   geometryEngine/dtMuParser.cpp
   geometryEngine/muParserFunctions.cpp
-  geometryEngine/GeomFill_BSplineCurvesExtPrecision.cpp
   geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineCurve_bSplineCurveSplitConstructOCC.cpp
@@ -228,6 +239,11 @@ SET(SOURCES
   geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface_convertOCC.cpp
   geometryEngine/geoBuilder/uv_geomSurfaceClosestPoint.cpp
+  geometryEngine/geoBuilder/bSplineCurve_approxGeomCurve2dInGeomSurface.cpp
+  geometryEngine/geoBuilder/geomFillBoundWithSurf_surfaceConstructOCC.cpp
+  geometryEngine/geoBuilder/geomFillSimpleBound_curveConstructOCC.cpp
+  geometryEngine/geoBuilder/bSplineSurface_constrainedFillingConstructOCC.cpp
+  geometryEngine/geoBuilder/u_geomCurveClosestPoint.cpp
   meshEngine/qShapeMetric.cpp
   meshEngine/dtGmshVertex.cpp
   meshEngine/dtGmshEdge.cpp

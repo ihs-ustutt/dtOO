@@ -1,6 +1,8 @@
 #ifndef QTXMLBASE_H
 #define	QTXMLBASE_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -14,10 +16,10 @@ namespace dtOO {
   public:  
     dt__classOnlyName(qtXmlBase);  
     virtual ~qtXmlBase();  
-    static float muParseString( std::string const expression ); 
-    static std::vector< float > muParseCSString( std::string const expression ); 
-    static int muParseStringInt( std::string const expression );
-    static std::vector< int > muParseCSStringInt(
+    static dtReal muParseString( std::string const expression ); 
+    static std::vector< dtReal > muParseCSString( std::string const expression ); 
+    static dtInt muParseStringInt( std::string const expression );
+    static std::vector< dtInt > muParseCSStringInt(
       std::string const expression
     );    
   protected:

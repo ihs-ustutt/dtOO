@@ -1,6 +1,8 @@
 #ifndef bVODumpModel_H
 #define	bVODumpModel_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"

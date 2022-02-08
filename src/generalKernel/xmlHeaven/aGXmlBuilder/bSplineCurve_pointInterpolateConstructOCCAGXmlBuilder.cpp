@@ -51,13 +51,13 @@ namespace dtOO {
       dtXmlParserBase::createBasic( &wElement, bC, cV, aF, aG, &workingPointP );
     }
     
-    int minDeg = 3;
+    dtInt minDeg = 3;
     if ( dtXmlParserBase::hasAttribute("orderMin", toBuild) ) {
       minDeg 
       = 
       dtXmlParserBase::getAttributeIntMuParse("orderMin", toBuild, cV, aF);
     }    
-    int maxDeg = 8;
+    dtInt maxDeg = 8;
     if ( dtXmlParserBase::hasAttribute("orderMax", toBuild) ) {
       maxDeg 
       = 

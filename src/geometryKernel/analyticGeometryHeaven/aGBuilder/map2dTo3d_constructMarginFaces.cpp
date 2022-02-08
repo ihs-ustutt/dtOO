@@ -5,7 +5,7 @@
 
 namespace dtOO {
 	map2dTo3d_constructMarginFaces::map2dTo3d_constructMarginFaces(
-	  map2dTo3d const * const m2d, float const & width
+	  map2dTo3d const * const m2d, dtReal const & width
 	) {
 		//
 		// get bounding edges
@@ -16,7 +16,7 @@ namespace dtOO {
 		m1d.push_back(m2d->segmentConstVPercent(1.));
 		m1d.push_back(m2d->segmentConstUPercent(0.));
 		
-		std::vector< float > ll;
+		std::vector< dtReal > ll;
 		
 		dt__forAllConstIter(dt__pVH(map1dTo3d), m1d, it) {
 			map1dTo3d const & thisCurve = *it;

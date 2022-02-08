@@ -1,6 +1,8 @@
 #ifndef bVOWriteSTL_H
 #define	bVOWriteSTL_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
 

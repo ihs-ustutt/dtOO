@@ -1,6 +1,8 @@
 #ifndef scaLinearOneD_H
 #define	scaLinearOneD_H
 
+#include <dtOOTypeDef.h>
+
 #include "scaOneD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -15,7 +17,7 @@ namespace dtOO {
       scaLinearOneD();
       scaLinearOneD(scaLinearOneD const & orig);
       scaLinearOneD(
-        float const & x0, float const & x1, float const & y0, float const & y1
+        dtReal const & x0, dtReal const & x1, dtReal const & y0, dtReal const & y1
       );
       scaLinearOneD * clone( void ) const;
       scaLinearOneD * cloneTransformed(
@@ -23,11 +25,11 @@ namespace dtOO {
       ) const;        
       scaLinearOneD * create( void ) const;    
       virtual ~scaLinearOneD();
-      virtual float YFloat(float const & xx) const;
-      virtual float invYFloat(float const & yy) const;
+      virtual dtReal YFloat(dtReal const & xx) const;
+      virtual dtReal invYFloat(dtReal const & yy) const;
     private:
-      float _m;
-      float _b;
+      dtReal _m;
+      dtReal _b;
   };
 }
 #endif	/* scaLinearOneD_H */

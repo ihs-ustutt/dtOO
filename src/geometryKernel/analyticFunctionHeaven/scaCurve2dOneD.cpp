@@ -61,20 +61,20 @@ namespace dtOO {
   }
 
 	double scaCurve2dOneD::funValue(const double xx ) const {	
-		dtPoint2 pp = _dtC2d->point( static_cast<float>(xx) );
+		dtPoint2 pp = _dtC2d->point( static_cast<dtReal>(xx) );
 		return static_cast< double >( _tmpX - pp.x() );
 	}
 
 	double scaCurve2dOneD::diffFunValue(const double xx ) const {
-		dtVector2 der = _dtC2d->firstDer( static_cast<float>(xx) );
+		dtVector2 der = _dtC2d->firstDer( static_cast<dtReal>(xx) );
 		return static_cast< double >( der.y() / der.x() );
 	}	
 	
-  float scaCurve2dOneD::YFloat(float const & xx) const {
+  dtReal scaCurve2dOneD::YFloat(dtReal const & xx) const {
 		bool mustIterate = true;
-		float theRoot;
+		dtReal theRoot;
 		if ( (xx>xMax(0)) || (xx<xMin(0)) ) {
-			float const range = fabs(xMax(0) - xMin(0));
+			dtReal const range = fabs(xMax(0) - xMin(0));
 			if ( floatHandling::isSmall( (xMin(0)-xx)/range ) ) { 
 				mustIterate = false;
 				theRoot = _dtC2d->minU();
@@ -152,7 +152,7 @@ namespace dtOO {
 		//
 		// output
 		//
-		dtPoint2 pp = _dtC2d->point( static_cast<float>( theRoot ) );
+		dtPoint2 pp = _dtC2d->point( static_cast<dtReal>( theRoot ) );
 //		dt__info(
 //			YFloat(),
 //			<< dt__eval(mustIterate) << std::endl
@@ -173,9 +173,9 @@ namespace dtOO {
     );		
 		
 		vectorHandling< dtPoint2 > p2(nU);
-    float interval = (_dtC2d->maxU() - _dtC2d->minU()) / (nU-1);
+    dtReal interval = (_dtC2d->maxU() - _dtC2d->minU()) / (nU-1);
     for (int ii=0;ii<nU;ii++) {
-			float iiF = static_cast<float>(ii);
+			dtReal iiF = static_cast<dtReal>(ii);
       p2[ii] = _dtC2d->point( _dtC2d->minU() + iiF * interval );
     }
 

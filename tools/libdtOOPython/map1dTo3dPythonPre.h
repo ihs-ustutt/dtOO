@@ -12,7 +12,7 @@ class map1dTo3dWrap
       dtOO::map1dTo3d * cloneTransformed( dtOO::dtTransformer const * const dtT  ) const {
         return this->get_override("cloneTransformed")(dtT);
       }  
-      dtOO::dtPoint3 getPoint( float const & uu ) const {
+      dtOO::dtPoint3 getPoint( dtOO::dtReal const & uu ) const {
         if ( boost::python::override f = this->get_override("getPoint") ) {
           return f(uu); // *note*
         }

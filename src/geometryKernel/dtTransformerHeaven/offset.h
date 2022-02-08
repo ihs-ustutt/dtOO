@@ -1,6 +1,8 @@
 #ifndef OFFSET_H
 #define	OFFSET_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
 
@@ -24,13 +26,13 @@ namespace dtOO {
       virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
       virtual aFPtrVec apply( aFPtrVec const * const toTrans ) const; 
     private:
-      float _paraOneOffsetPercent;
-      float _paraTwoOffsetPercent;
+      dtReal _paraOneOffsetPercent;
+      dtReal _paraTwoOffsetPercent;
       bool _xyPercent;
-      float _xOffset;
-      float _yOffset;
-      float _normalOffset;
-      int _nPieces;
+      dtReal _xOffset;
+      dtReal _yOffset;
+      dtReal _normalOffset;
+      dtInt _nPieces;
       static bool _registrated;    
   };    
 }

@@ -95,12 +95,12 @@ namespace dtOO {
       _min = dtXmlParser::getAttributeFloatMuParse("min", element, cV, aF);      
       _noRange = false;
     }
-    else _min = std::numeric_limits<float>::min();
+    else _min = std::numeric_limits<dtReal>::min();
     if ( dtXmlParser::hasAttribute("max", element) ) {
       _max = dtXmlParser::getAttributeFloatMuParse("max", element, cV, aF);      
       _noRange = false;
     }
-    else _max = std::numeric_limits<float>::max();
+    else _max = std::numeric_limits<dtReal>::max();
     
     //
     // patchName
@@ -173,9 +173,9 @@ namespace dtOO {
         ::Foam::volScalarField volField(fieldHeader, mesh);
        
         std::vector< dtPoint3 > pXYZ;
-        std::vector< float > val;
+        std::vector< dtReal > val;
         std::vector< dtVector3 > sf;
-        std::vector< float > phi;
+        std::vector< dtReal > phi;
         
         //
         // read velocity

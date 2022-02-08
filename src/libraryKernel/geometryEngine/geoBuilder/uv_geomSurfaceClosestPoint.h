@@ -1,6 +1,8 @@
 #ifndef uv_geomSurfaceClosestPoint_H
 #define	uv_geomSurfaceClosestPoint_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
 #include <vector>

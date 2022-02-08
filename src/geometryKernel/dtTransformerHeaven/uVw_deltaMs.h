@@ -1,6 +1,8 @@
 #ifndef uVw_deltaMs_H
 #define	uVw_deltaMs_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformer.h"
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>
@@ -44,23 +46,23 @@ namespace dtOO {
       std::vector< dtPoint3 > 
       retract(std::vector< dtPoint3 > const * const toRetract) const;    
     private:
-      float m_uSVS(float const & uu, float const & vv) const;
-      float s_uSVS(float const & uu, float const & vv) const;     
-      float uV_deltaVVWV(
-        float const & delta, float const & vv, float const & ww
+      dtReal m_uSVS(dtReal const & uu, dtReal const & vv) const;
+      dtReal s_uSVS(dtReal const & uu, dtReal const & vv) const;     
+      dtReal uV_deltaVVWV(
+        dtReal const & delta, dtReal const & vv, dtReal const & ww
       ) const;
-      float vV_ms(float const & mm, float const & ss) const;
-      float wV_ms(float const & mm, float const & ss) const;
-      float delta_uVvVwV(
-        float const & uu, float const & vv, float const & ww
+      dtReal vV_ms(dtReal const & mm, dtReal const & ss) const;
+      dtReal wV_ms(dtReal const & mm, dtReal const & ss) const;
+      dtReal delta_uVvVwV(
+        dtReal const & uu, dtReal const & vv, dtReal const & ww
       ) const;
     private:
       dt__pH(translatingMap2dTo3d const) _tM2dTo3d;
       dt__pH(map2dTo3d const) _msCut;
       dtVector3 _ss;
       dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
-      int _nV;
-      int _nW;
+      dtInt _nV;
+      dtInt _nW;
       static bool _registrated;    
   };
 }

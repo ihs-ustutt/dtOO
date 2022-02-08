@@ -1,6 +1,8 @@
 #ifndef labeledVectorHandling_H
 #define	labeledVectorHandling_H
 
+#include <dtOOTypeDef.h>
+
 #include "vectorHandling.h"
 
 namespace dtOO {
@@ -32,13 +34,13 @@ namespace dtOO {
     labeledVectorHandling(int const dim, T init);
     virtual ~labeledVectorHandling();
     T const & get( std::string const & label) const;
-    std::string getLabel( int const pos ) const;
+    std::string getLabel( dtInt const pos ) const;
     T & getRef( std::string const label);
     bool has( std::string const label) const;
     bool hasTwice( std::string const label ) const;
     void checkForBastardTwins( void ) const;
     void checkForBastardTwinsAndMakeUnique( void );
-    int getPosition( std::string const label) const;
+    dtInt getPosition( std::string const label) const;
     void addIndex( void );
     void dump(void) const;
     void sort(void);
@@ -89,7 +91,7 @@ namespace dtOO {
   }
   
   template < typename T >
-  labeledVectorHandling< T >::labeledVectorHandling( int const dim, T init ) 
+  labeledVectorHandling< T >::labeledVectorHandling( dtInt const dim, T init ) 
     : vectorHandling<T>(dim, init) {
     
   }
@@ -120,7 +122,7 @@ namespace dtOO {
   }  
   
   template< typename T >
-  std::string labeledVectorHandling< T >::getLabel( int const pos ) const {
+  std::string labeledVectorHandling< T >::getLabel( dtInt const pos ) const {
     labelHandling const * obj 
     = 
     dynamic_cast< labelHandling const * >(this->at(pos));
@@ -154,7 +156,7 @@ namespace dtOO {
 
   template< typename T >
   bool labeledVectorHandling< T >::hasTwice( std::string const label ) const {
-    int counter = 0;
+    dtInt counter = 0;
     dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
@@ -212,7 +214,7 @@ namespace dtOO {
   }  
 
   template< typename T >
-  int labeledVectorHandling< T >::getPosition( std::string const label ) const {
+  dtInt labeledVectorHandling< T >::getPosition( std::string const label ) const {
     dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
@@ -267,7 +269,7 @@ namespace dtOO {
     }
     std::sort( L.begin(), L.end() );
     dt__forAllIndex(L, ii) {
-      int pos = this->getPosition( L[ii] );
+      dtInt pos = this->getPosition( L[ii] );
       std::iter_swap( this->begin() + pos, this->begin() + ii);
     }    
   }  

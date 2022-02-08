@@ -116,7 +116,7 @@ namespace dtOO {
             << logMe::dtFormat("facet normal %g %g %g" ) % nn[0] % nn[1] % nn[2] 
             << std::endl
             << "  outer loop" << std::endl;          
-            int qid[3] = {0, 2, 3};          
+            dtInt qid[3] = {0, 2, 3};          
             dt__forFromToIndex(0, 3, kk) {
               of 
               << logMe::dtFormat(

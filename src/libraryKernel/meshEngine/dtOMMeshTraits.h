@@ -1,6 +1,8 @@
 #ifndef DTOMMESHTRAITS_H
 #define	DTOMMESHTRAITS_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <OpenMesh/Core/Mesh/Traits.hh>
 
@@ -38,14 +40,14 @@ namespace dtOO {
     
     EdgeTraits {
       private:
-        float _dihedralAngle;
+        dtReal _dihedralAngle;
       public:
         EdgeT() : _dihedralAngle(0.) {
         }
-        void dihedralAngle( float const & dihedralAngle ) {
+        void dihedralAngle( dtReal const & dihedralAngle ) {
           _dihedralAngle = dihedralAngle;
         }        
-        float dihedralAngle( void ) const {
+        dtReal dihedralAngle( void ) const {
           return _dihedralAngle;
         }
     };
@@ -76,7 +78,7 @@ namespace dtOO {
         bool marked( void ) const {
           return _mark;
         }                            
-        int nVertices( void ) const {
+        dtInt nVertices( void ) const {
           return _me->getNumVertices();
         }                  
     };

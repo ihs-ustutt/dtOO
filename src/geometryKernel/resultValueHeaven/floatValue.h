@@ -1,6 +1,8 @@
 #ifndef floatValue_H
 #define	floatValue_H
 
+#include <dtOOTypeDef.h>
+
 #include <string>
 #include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
@@ -13,13 +15,13 @@ namespace dtOO {
   public:
     dt__class(floatValue, resultValue);    
     floatValue( floatValue const & orig );
-    floatValue( std::string const & label, float const & value  );
+    floatValue( std::string const & label, dtReal const & value  );
     virtual ~floatValue();
     virtual floatValue * clone( void ) const;    
-    virtual float operator()( void );
-    void operator()( float const & value );
+    virtual dtReal operator()( void );
+    void operator()( dtReal const & value );
   private:
-    float _value;
+    dtReal _value;
   };
 }
 #endif	/* floatValue_H */

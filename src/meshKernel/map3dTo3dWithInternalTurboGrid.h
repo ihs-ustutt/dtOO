@@ -1,6 +1,8 @@
 #ifndef MAP3DTO3DWITHINTERNALTURBOGRID_H
 #define	MAP3DTO3DWITHINTERNALTURBOGRID_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 #include "gmshBoundedVolume.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
@@ -39,9 +41,9 @@ namespace dtOO {
       std::string _meshFileName;
       dt__pH(map3dTo3d) _channel;
       dt__pH(map2dTo3d) _internal;
-      int _nInternalCuts;
-      int _nPoints;
-      int _nInternals;
+      dtInt _nInternalCuts;
+      dtInt _nPoints;
+      dtInt _nInternals;
       dtVector3 _vv;
       std::string _directory;
       std::string _script;    

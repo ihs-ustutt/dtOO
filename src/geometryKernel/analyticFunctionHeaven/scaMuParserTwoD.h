@@ -1,6 +1,8 @@
 #ifndef SCAMUPARSERTWOD_H
 #define	SCAMUPARSERTWOD_H
 
+#include <dtOOTypeDef.h>
+
 #include "scaTwoD.h"
 #include <vector>
 #include <dtLinearAlgebra.h>
@@ -26,8 +28,8 @@ namespace dtOO {
     ) const;      
     scaMuParserTwoD * create( void ) const;    
     virtual ~scaMuParserTwoD();
-    virtual float YFloat( float const & x0, float const & x1 ) const;
-    virtual bool closed( int const & dir ) const;    
+    virtual dtReal YFloat( dtReal const & x0, dtReal const & x1 ) const;
+    virtual bool closed( dtInt const & dir ) const;    
   private:
     dt__pH(dtMuParser) _parser;
     dt__pVH(double) _arg;

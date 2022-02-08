@@ -1,6 +1,8 @@
 #ifndef analyticFunctionCompoundTrojanHorse_H
 #define	analyticFunctionCompoundTrojanHorse_H
 
+#include <dtOOTypeDef.h>
+
 #include <interfaceHeaven/vectorHandling.h>
 
 namespace dtOO {
@@ -12,20 +14,20 @@ namespace dtOO {
       analyticFunctionCompoundTrojanHorse( 
         funT const * const _refPtr,
         vectorHandling< analyticFunction * > const & vec, 
-        std::map< int, int > const & pos_tag
+        std::map< int, dtInt > const & pos_tag
       );    
       ~analyticFunctionCompoundTrojanHorse();
-      funT * component( int const & pos) const;
+      funT * component( dtInt const & pos) const;
       funT * addComponent( funT const * const toAdd);
-      funT * addComponent( funT const * const toAdd, int const & tag);
-      int nComponents( void ) const;
-      funT * componentFromTag( int const & tag) const;
-      bool hasTag( int const & tag) const;
+      funT * addComponent( funT const * const toAdd, dtInt const & tag);
+      dtInt nComponents( void ) const;
+      funT * componentFromTag( dtInt const & tag) const;
+      bool hasTag( dtInt const & tag) const;
       funT const * constRefPtr( void ) const;
     private:
       funT const * _refPtr;
       vectorHandling< analyticFunction * > * _vec;
-      std::map< int, int > * _pos_tag;
+      std::map< int, dtInt > * _pos_tag;
   };  
   
   template < typename funT >
@@ -40,11 +42,11 @@ namespace dtOO {
     ::analyticFunctionCompoundTrojanHorse(
     funT const * const refPtr,
     vectorHandling< analyticFunction * > const & vec, 
-    std::map< int, int > const & pos_tag
+    std::map< int, dtInt > const & pos_tag
   ) {
     _refPtr = refPtr;
     _vec = const_cast< vectorHandling< analyticFunction * > * >(&vec);
-    _pos_tag = const_cast< std::map< int, int > * >(&pos_tag);
+    _pos_tag = const_cast< std::map< int, dtInt > * >(&pos_tag);
   }  
   
   template < typename funT >  
@@ -55,7 +57,7 @@ namespace dtOO {
   template < typename funT >  
   funT *
   analyticFunctionCompoundTrojanHorse< funT >
-    ::component( int const & pos ) const {
+    ::component( dtInt const & pos ) const {
     return funT::DownCast( _vec->at(pos) );
   }
   
@@ -64,7 +66,7 @@ namespace dtOO {
     ::addComponent(funT const * const toAdd ) {
     _vec->push_back( toAdd->clone() );
     
-    int tag = 0;
+    dtInt tag = 0;
     if ( !_pos_tag->empty() ) tag = _pos_tag->rbegin()->first + 1;
     _pos_tag->operator[]( tag ) = _vec->size()-1;    
 
@@ -73,11 +75,11 @@ namespace dtOO {
 
   template < typename funT >  
   funT * analyticFunctionCompoundTrojanHorse< funT >
-    ::addComponent(funT const * const toAdd, int const & tag ) {
+    ::addComponent(funT const * const toAdd, dtInt const & tag ) {
     dt__throwIf( hasTag(tag), addComponent() );
     _vec->push_back( toAdd->clone() );
     
-//    int tag = 0;
+//    dtInt tag = 0;
 //    if ( !_pos_tag->empty() ) tag = _pos_tag->rbegin()->first + 1;
     _pos_tag->operator[]( tag ) = _vec->size()-1;    
 
@@ -85,20 +87,20 @@ namespace dtOO {
   }
   
   template < typename funT >  
-  int analyticFunctionCompoundTrojanHorse< funT >::nComponents( void ) const {
+  dtInt analyticFunctionCompoundTrojanHorse< funT >::nComponents( void ) const {
     return _vec->size();
   }
   
   template < typename funT >  
   funT *
   analyticFunctionCompoundTrojanHorse< funT >
-    ::componentFromTag( int const & tag) const {
+    ::componentFromTag( dtInt const & tag) const {
     return component( _pos_tag->at( tag ) );
   }
   
   template < typename funT >  
   bool analyticFunctionCompoundTrojanHorse< funT >
-    ::hasTag( int const & tag) const {
+    ::hasTag( dtInt const & tag) const {
     return ( _pos_tag->find( tag ) != _pos_tag->end() );
   }  
 

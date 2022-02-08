@@ -1,6 +1,8 @@
 #ifndef TRIMMEDCURVE_TWOPOINTSCONNECTCONSTRUCT_H
 #define	TRIMMEDCURVE_TWOPOINTSCONNECTCONSTRUCT_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -11,7 +13,9 @@ namespace dtOO {
   class trimmedCurve_twoPointsConnectConstructOCC {
   public:
     dt__classOnlyName(trimmedCurve_twoPointsConnectConstructOCC);
-    trimmedCurve_twoPointsConnectConstructOCC( dtPoint3 const & p0, dtPoint3 const & p1 );
+    trimmedCurve_twoPointsConnectConstructOCC( 
+      dtPoint3 const & p0, dtPoint3 const & p1 
+    );
     virtual ~trimmedCurve_twoPointsConnectConstructOCC();
     dtCurve * result( void );
   private:

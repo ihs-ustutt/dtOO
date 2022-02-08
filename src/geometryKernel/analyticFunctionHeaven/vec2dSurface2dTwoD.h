@@ -1,6 +1,8 @@
 #ifndef VEC2DSURFACE2DTWOD_H
 #define	VEC2DSURFACE2DTWOD_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec2dTwoD.h"
@@ -24,7 +26,7 @@ namespace dtOO {
     virtual ~vec2dSurface2dTwoD();
     virtual aFY Y( aFX const & xx) const;
     dtSurface2d const * ptrDtSurface2d( void ) const;
-    virtual bool closed( int const & dir ) const;
+    virtual bool closed( dtInt const & dir ) const;
   private:
     ptrHandling<dtSurface2d> _dtS2d;
   };

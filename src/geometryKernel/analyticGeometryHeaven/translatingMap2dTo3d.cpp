@@ -56,7 +56,7 @@ namespace dtOO {
     return new map3dTo3dTransformed< translatingMap2dTo3d >(*this, dtT);
   }  
 	
-  bool translatingMap2dTo3d::isClosed( int const & dir) const {
+  bool translatingMap2dTo3d::isClosed( dtInt const & dir) const {
     switch (dir) {
       case 0: return false;
       case 1: return false;
@@ -70,7 +70,7 @@ namespace dtOO {
     }
 	}
   
-	float translatingMap2dTo3d::getMin( int const & dir) const {
+	dtReal translatingMap2dTo3d::getMin( dtInt const & dir) const {
     switch (dir) {
       case 0: return 0.;
       case 1: return _m2d->getUMin();
@@ -84,7 +84,7 @@ namespace dtOO {
     }    		
 	}
   
-	float translatingMap2dTo3d::getMax( int const & dir) const {
+	dtReal translatingMap2dTo3d::getMax( dtInt const & dir) const {
     switch (dir) {
       case 0: return 1.;
       case 1: return _m2d->getUMax();
@@ -99,13 +99,13 @@ namespace dtOO {
 	}
     
 	dtPoint3 translatingMap2dTo3d::getPoint( 
-    float const & uu, float const & vv, float const & ww 
+    dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {	
 		dtAffTransformation3 trans = dtLinearAlgebra::getTranslation( uu * _vv );
 		return trans.transform( _m2d->getPoint(vv, ww) );
 	}	
 	
-	map2dTo3d * translatingMap2dTo3d::segmentConstU( float const & uu ) const {
+	map2dTo3d * translatingMap2dTo3d::segmentConstU( dtReal const & uu ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			dt__pH(dtSurface) dtS(
@@ -120,7 +120,7 @@ namespace dtOO {
 		}
 	}
 
-	map2dTo3d * translatingMap2dTo3d::segmentConstV( float const & vv ) const {
+	map2dTo3d * translatingMap2dTo3d::segmentConstV( dtReal const & vv ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstUPercent(percent_v(vv), 0., 1.);
@@ -146,7 +146,7 @@ namespace dtOO {
 		}
 	}
   
-	map2dTo3d * translatingMap2dTo3d::segmentConstW( float const & ww ) const {
+	map2dTo3d * translatingMap2dTo3d::segmentConstW( dtReal const & ww ) const {
 		analyticSurface const * aS = analyticSurface::ConstDownCast(_m2d.get());
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstVPercent(percent_w(ww), 0., 1.);

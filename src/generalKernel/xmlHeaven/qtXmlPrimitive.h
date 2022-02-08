@@ -1,6 +1,8 @@
 #ifndef QTXMLPRIMITIVE_H
 #define	QTXMLPRIMITIVE_H
 
+#include <dtOOTypeDef.h>
+
 
 #include <string>
 #include <vector>
@@ -65,7 +67,7 @@ namespace dtOO {
       std::vector< std::string > * labelValue,
       ::QDomElement const & parentElement
     );    
-    static int getNChildren(
+    static dtInt getNChildren(
       std::string const sibName, ::QDomElement const element 
     );
     static bool hasSibling(
@@ -85,10 +87,10 @@ namespace dtOO {
     static bool isAttributeVector(
       std::string const attName, ::QDomElement const element 
     );    
-    static int getAttributeInt( 
+    static dtInt getAttributeInt( 
       std::string const attName, ::QDomElement const element 
     );
-    static float getAttributeFloat( 
+    static dtReal getAttributeFloat( 
       std::string const attName, ::QDomElement const element 
     );
     static std::string getAttributeStr( 
@@ -121,10 +123,10 @@ namespace dtOO {
     static std::vector< std::string > getAttributeRareStrVector(
       std::string const attName, ::QDomElement const element
     );
-    static std::vector< int > getAttributeIntVector( 
+    static std::vector< dtInt > getAttributeIntVector( 
       std::string const attName, ::QDomElement const element
     );
-    static std::vector< float > getAttributeFloatVector( 
+    static std::vector< dtReal > getAttributeFloatVector( 
       std::string const attName, ::QDomElement const element
     );    
     static std::vector< std::string > getAttributeLabelVector(

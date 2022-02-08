@@ -15,7 +15,7 @@
 namespace dtOO {   
 	bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
 	  vectorHandling< dtCurve const * > const & cc, 
-    float const & tol, int const & param, int const & minM
+    dtReal const & tol, dtInt const & param, dtInt const & minM
 	) {
 		GeomConvert_CompCurveToBSplineCurve conv(
       static_cast< Convert_ParameterisationType >(param)
@@ -25,11 +25,26 @@ namespace dtOO {
 			Handle(Geom_BoundedCurve) boundedC
 			=
 			Handle(Geom_BoundedCurve)::DownCast( occC->OCCRef().getOCC() );
-      dt__tryOcc(
-        conv.Add(boundedC, tol, Standard_False, Standard_True, minM);
-      ,
-      << ""
-      );
+      dt__forFromToIndex(0,8,tt) {
+        Standard_Boolean check;        
+        dt__tryOcc(
+          check 
+          =
+          conv.Add(
+            boundedC, 
+            pow(10.,dtReal(tt)) * tol, 
+            Standard_False, Standard_True, minM
+          );
+          ,
+          << ""        
+        );
+        if (check) break;          
+        dt__warning(
+          bSplineCurve_curveConnectConstructOCC(), 
+          << "Cannot connect curves with tolerance " << pow(10.,dtReal(tt)) * tol
+          << "\nMultiply tolerance by 10."
+        );
+      }        
     }
 		dtOCCCurveBase base;
 		base.setOCC( conv.BSplineCurve() );

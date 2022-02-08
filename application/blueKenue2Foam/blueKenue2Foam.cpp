@@ -45,12 +45,12 @@
 using namespace dtOO;
 
 twoDArrayHandling< std::string > readBlock(
-  int const & nLines, std::ifstream & in
+  dtInt const & nLines, std::ifstream & in
 ) {
   dt__infoNoClass(readBlock(), << "Read block with " << nLines << " lines ...");   
   twoDArrayHandling< std::string > ret;
   std::string line;
-  int ii = 0;
+  dtInt ii = 0;
   while ( ii<nLines ) {
     getline(in, line);
     // ignore comments
@@ -72,15 +72,15 @@ twoDArrayHandling< std::string > readBlock(
 
 void readT3s( 
   std::string const & filename, 
-  twoDArrayHandling< float > & nodes,
-  vectorHandling< float > & bathymetry,
-  twoDArrayHandling< int > & elements
+  twoDArrayHandling< dtReal > & nodes,
+  vectorHandling< dtReal > & bathymetry,
+  twoDArrayHandling< dtInt > & elements
 ) {
   std::ifstream in( filename.c_str() );
   dt__throwIfNoClass(!in, readT3s());
 
-  int nNodes = 0;
-  int nElements = 0;
+  dtInt nNodes = 0;
+  dtInt nElements = 0;
   
   std::string line;    
   while ( getline(in, line) ) {
@@ -118,7 +118,7 @@ void readT3s(
         twoDArrayHandling< std::string > blockStr = readBlock(nNodes, in);
         nodes.resize(nNodes, 3);
         bathymetry.resize(nNodes);
-        int ii = 0;
+        dtInt ii = 0;
         dt__forAllRefAuto(blockStr, aStr) {
           nodes[ii][0] = stringPrimitive::stringToFloat( aStr[0] );
           nodes[ii][1] = stringPrimitive::stringToFloat( aStr[1] );
@@ -136,7 +136,7 @@ void readT3s(
         );      
         twoDArrayHandling< std::string > blockEStr = readBlock(nElements, in);
         elements.resize(nElements, 3);
-        int jj = 0;
+        dtInt jj = 0;
         dt__forAllRefAuto(blockEStr, aStr) {
           elements[jj][0] = stringPrimitive::stringToInt( aStr[0] )-1;
           elements[jj][1] = stringPrimitive::stringToInt( aStr[1] )-1;
@@ -159,10 +159,10 @@ void readT3s(
 }
 
 void splitShore(
-  std::list< std::string > & shoreLabel, std::list< int > & shoreline 
+  std::list< std::string > & shoreLabel, std::list< dtInt > & shoreline 
 ) {
   std::string lastLabel = shoreLabel.back();
-  int lastNode = shoreline.back();
+  dtInt lastNode = shoreline.back();
   if ( shoreLabel.front()==shoreLabel.back() ) {
     dt__infoNoClass(
       splitShore(), 
@@ -185,7 +185,7 @@ void splitShore(
       ++it
     ) {
       std::string aLabel = *(it.get_iterator_tuple().get<0>());
-      int aNode = *(it.get_iterator_tuple().get<1>());
+      dtInt aNode = *(it.get_iterator_tuple().get<1>());
       //
       // find split point -> label change
       //
@@ -205,12 +205,12 @@ void splitShore(
         //
         // split and merge shoreline
         //        
-        std::list< int > shore0 
+        std::list< dtInt > shore0 
         = 
-        std::list< int >(it.get_iterator_tuple().get<1>(), shoreline.end());
-        std::list< int > shore1 
+        std::list< dtInt >(it.get_iterator_tuple().get<1>(), shoreline.end());
+        std::list< dtInt > shore1 
         = 
-        std::list< int >(shoreline.begin(), it.get_iterator_tuple().get<1>());
+        std::list< dtInt >(shoreline.begin(), it.get_iterator_tuple().get<1>());
         shoreline.clear();
         shoreline.insert(shoreline.end(), shore0.begin(), shore0.end());
         shoreline.insert(shoreline.end(), shore1.begin(), shore1.end());  
@@ -233,18 +233,18 @@ void splitShore(
 
 void readBc2( 
   std::string const & filename, 
-  std::map< std::string, int > & boundaryNumber,
-  std::map< std::string, std::list< int > > & boundary
+  std::map< std::string, dtInt > & boundaryNumber,
+  std::map< std::string, std::list< dtInt > > & boundary
 ) {
   std::ifstream in( filename.c_str() );
   dt__throwIfNoClass(!in, readBc2());
 
-  int nNodes = 0;
-  int nElements = 0;
-  int nBoundarys = 0;
-  int nShorelines = 0;
-  int nShorelineNodes = 0;
-  std::vector< std::pair< std::pair< int, int >, std::pair< int, int > > >  segments;
+  dtInt nNodes = 0;
+  dtInt nElements = 0;
+  dtInt nBoundarys = 0;
+  dtInt nShorelines = 0;
+  dtInt nShorelineNodes = 0;
+  std::vector< std::pair< std::pair< int, dtInt >, std::pair< int, dtInt > > >  segments;
   std::string line;    
   while ( getline(in, line) ) {
     //
@@ -276,7 +276,7 @@ void readBc2(
       stringPrimitive::stringToInt( 
         stringPrimitive::getStringBetween(" ", "", line)
       );
-      int jj = 0;
+      dtInt jj = 0;
       dt__forAllRefAuto(readBlock(nBoundarys, in), aStr) {
         segments.push_back(
           std::pair< std::pair<int, int>, std::pair<int, int> >(
@@ -322,12 +322,12 @@ void readBc2(
     ) {
       if ( stringPrimitive::stringContains( ":BeginTable", line ) ) {
         line = stringPrimitive::replaceStringInString(":BeginTable ", "", line);
-        int nLines
+        dtInt nLines
         =
         stringPrimitive::stringToInt( 
           stringPrimitive::getStringBetween("", " ", line)
         );
-        int nColumns
+        dtInt nColumns
         =
         stringPrimitive::stringToInt( 
           stringPrimitive::getStringBetween(" ", "", line)
@@ -340,9 +340,9 @@ void readBc2(
           << "[Boundarys] : Read " << nLines 
           << " lines and " << nColumns << " columns ..."
         );
-        int jj = 0;
-        std::vector< std::list< int > > shorelines(
-          nShorelines, std::list< int >(0)
+        dtInt jj = 0;
+        std::vector< std::list< dtInt > > shorelines(
+          nShorelines, std::list< dtInt >(0)
         );
         std::vector< std::list< std::string > > shoreLabels(
           nShorelines, std::list< std::string >(0)
@@ -367,14 +367,14 @@ void readBc2(
         //
         // label boundarys
         //
-        int emptyC = 0;
+        dtInt emptyC = 0;
         dt__forAllIndex(shorelines, jj) {
           //
           // adjust shore
           //
           splitShore(shoreLabels[jj], shorelines[jj]);
           
-          std::list< int >::iterator shorelines_it = shorelines[jj].begin();
+          std::list< dtInt >::iterator shorelines_it = shorelines[jj].begin();
           std::list< std::string >::iterator shoreLabels_it = shoreLabels[jj].begin();
           bool lastEmpty = false;
           std::string lastBoundary = "";
@@ -430,11 +430,11 @@ void readBc2(
 void createModel(
   dtGmshModel * gm, 
   dtOMMesh & om,
-  twoDArrayHandling< float > const & nodes, 
-  twoDArrayHandling< int > const & elements,
-  vectorHandling< float > const & bathymetry,
-  std::map< std::string, int > const & boundaryNumber,
-  std::map< std::string, std::list< int > > const & boundarys
+  twoDArrayHandling< dtReal > const & nodes, 
+  twoDArrayHandling< dtInt > const & elements,
+  vectorHandling< dtReal > const & bathymetry,
+  std::map< std::string, dtInt > const & boundaryNumber,
+  std::map< std::string, std::list< dtInt > > const & boundarys
 ) {
   //
   // create fields
@@ -452,14 +452,14 @@ void createModel(
     new dtOMEdgeField< dtGmshEdge * >("gEdgeField", om, NULL)  
   );    
   om.enqueueField(
-    new dtOMVertexField< int >("vIndexField", om, -1)
+    new dtOMVertexField< dtInt >("vIndexField", om, -1)
   );
   om.enqueueField(
-    new dtOMFaceField< int >("fIndexField", om, -1)
+    new dtOMFaceField< dtInt >("fIndexField", om, -1)
   );  
   om.enqueueField( 
-    new dtOMVertexField< float >(
-      "bathymetryField", om, std::numeric_limits<float>::max()
+    new dtOMVertexField< dtReal >(
+      "bathymetryField", om, std::numeric_limits<dtReal>::max()
     )
   );  
   dtOMVertexField< std::string > & boundaryNameVertexField 
@@ -472,14 +472,14 @@ void createModel(
   *dtOMEdgeField< std::string >::MustDownCast( 
     om["boundaryNameEdgeField"] 
   );    
-  dtOMVertexField< int > & vIndexField 
+  dtOMVertexField< dtInt > & vIndexField 
   =
-  *dtOMVertexField< int >::MustDownCast( 
+  *dtOMVertexField< dtInt >::MustDownCast( 
     om["vIndexField"] 
   );    
-  dtOMFaceField< int > & fIndexField 
+  dtOMFaceField< dtInt > & fIndexField 
   =
-  *dtOMFaceField< int >::MustDownCast( 
+  *dtOMFaceField< dtInt >::MustDownCast( 
     om["fIndexField"] 
   );    
   dtOMVertexField< dtGmshVertex * > & gVertexField 
@@ -492,9 +492,9 @@ void createModel(
   *dtOMEdgeField< dtGmshEdge * >::MustDownCast( 
     om["gEdgeField"] 
   );     
-  dtOMVertexField< float > & bathymetryField 
+  dtOMVertexField< dtReal > & bathymetryField 
   =
-  *dtOMVertexField< float >::MustDownCast( 
+  *dtOMVertexField< dtReal >::MustDownCast( 
     om["bathymetryField"] 
   );  
   
@@ -531,7 +531,7 @@ void createModel(
   //
   om.update();    
   
-  int cc = 0;
+  dtInt cc = 0;
   dt__forAllRefAuto(elements, aElement) {
     vIndexField[ vv[aElement[0]] ] = aElement[0];
     vIndexField[ vv[aElement[1]] ] = aElement[1];
@@ -548,7 +548,7 @@ void createModel(
   //    
   dt__forAllRefAuto(boundarys, aBoundary) {
     std::string name = aBoundary.first;
-    std::list< int > const & nodeList = aBoundary.second;
+    std::list< dtInt > const & nodeList = aBoundary.second;
     dt__forAllRefAuto(nodeList, anIndex) {
       boundaryNameVertexField[ vv[anIndex] ] = name;
     }
@@ -592,7 +592,7 @@ void createModel(
   //
   // get number of edgeLoops
   //
-  int nEdgeLoops = 0;
+  dtInt nEdgeLoops = 0;
   dt__forAllRefAuto(boundaryNumber, aNumber) {
     nEdgeLoops = std::max( aNumber.second + 1, nEdgeLoops );
   }
@@ -601,7 +601,7 @@ void createModel(
   //
   // get one vertex at edge loop
   //
-  std::vector< int > firstVertexOnEdgeLoop(nEdgeLoops, -1);
+  std::vector< dtInt > firstVertexOnEdgeLoop(nEdgeLoops, -1);
   dt__forAllRefAuto(boundaryNumber, aNumber) {
     if ( firstVertexOnEdgeLoop[ aNumber.second ] != -1 ) continue;
     firstVertexOnEdgeLoop[ aNumber.second ] 
@@ -622,7 +622,7 @@ void createModel(
   std::vector< bool > uniqueEdgeLoop(nEdgeLoops, true);
   std::vector< omHalfedgeH > startHalfedgeOfEdgeLoop(nEdgeLoops, omHalfedgeH());
   dt__forAllIndex( firstVertexOnEdgeLoop, ii ) {
-    int aVertex( firstVertexOnEdgeLoop[ii] );
+    dtInt aVertex( firstVertexOnEdgeLoop[ii] );
     omHalfedgeH he0;
     dt__forFromToIter( 
       omVertexEdgeI, 
@@ -801,7 +801,7 @@ void createModel(
   }  
 }
 
-void makeModel3d( dtGmshModel * gm, float const & ss ) {
+void makeModel3d( dtGmshModel * gm, dtReal const & ss ) {
   //
   // create 2d twin
   //
@@ -971,13 +971,13 @@ void makeModel3d( dtGmshModel * gm, float const & ss ) {
 void initMeshVectors(
   dtGmshModel * gm,
   std::vector< ::MVertex * > & allVerts, 
-  std::vector< std::pair< ::MElement *, int > > & allElems,
+  std::vector< std::pair< ::MElement *, dtInt > > & allElems,
   std::map< int, std::string > & physicalNames
 ) {
   // model, dimension, physical number
-  std::map< std::tuple< dtGmshModel *, int, int >, int > globLoc;
-  int nVerts = 0;
-  int nElems = 0;    
+  std::map< std::tuple< dtGmshModel *, int, dtInt >, dtInt > globLoc;
+  dtInt nVerts = 0;
+  dtInt nElems = 0;    
 
   //
   // calculate number of elements and vertices
@@ -997,8 +997,8 @@ void initMeshVectors(
   allElems.resize(nElems);
 
   // vertex and element counter
-  int vC = 0;
-  int eC = 0;
+  dtInt vC = 0;
+  dtInt eC = 0;
 
   dt__forAllRefAuto(entities, anEntity) {
     //
@@ -1012,26 +1012,26 @@ void initMeshVectors(
     //
     // local and global physical number
     //
-    int dimension = anEntity->dim();
-    int locPhysInt 
+    dtInt dimension = anEntity->dim();
+    dtInt locPhysInt 
     = 
     gm->getPhysicalNumber(
       dimension, gm->getPhysicalString(anEntity)
     );
-    int globPhysInt = -1;                
+    dtInt globPhysInt = -1;                
     // check if  it is already in map
     std::map< 
-      std::tuple< dtGmshModel *, int, int >, int 
+      std::tuple< dtGmshModel *, int, dtInt >, dtInt 
     >::iterator thisPhysical
     =
     globLoc.find( 
-      std::tuple< dtGmshModel *, int, int >(gm, dimension, locPhysInt) 
+      std::tuple< dtGmshModel *, int, dtInt >(gm, dimension, locPhysInt) 
     );
     // not in map
     if ( thisPhysical == globLoc.end() ) {
       globPhysInt = globLoc.size()+1;
       globLoc[ 
-        std::tuple< dtGmshModel *, int, int >(gm, dimension, locPhysInt) 
+        std::tuple< dtGmshModel *, int, dtInt >(gm, dimension, locPhysInt) 
       ]
       =
       globPhysInt; 
@@ -1048,7 +1048,7 @@ void initMeshVectors(
     dt__forFromToIndex(0, anEntity->getNumMeshElements(), ii) {
       allElems[ eC ] 
       = 
-      std::pair< ::MElement * , int >(
+      std::pair< ::MElement * , dtInt >(
         anEntity->getMeshElement(ii), globPhysInt
       );
       eC++;
@@ -1057,7 +1057,7 @@ void initMeshVectors(
   dt__infoNoClass( initMeshVectors(), << "physicalNames = " << physicalNames );
 }
   
-int main( int ac, char* av[] ) {
+int main( dtInt ac, char* av[] ) {
   try {
     //
     // options
@@ -1080,7 +1080,7 @@ int main( int ac, char* av[] ) {
       )        
       (
         "size,s", 
-        dtPO::value< float >(), 
+        dtPO::value< dtReal >(), 
         "size of the cells"
       )            
       (
@@ -1114,17 +1114,17 @@ int main( int ac, char* av[] ) {
     //
     // elemts, nodes, bathymetry
     //
-    twoDArrayHandling< float > nodes;
-    vectorHandling< float > bathymetry;
-    twoDArrayHandling< int > elements;
+    twoDArrayHandling< dtReal > nodes;
+    vectorHandling< dtReal > bathymetry;
+    twoDArrayHandling< dtInt > elements;
         
     //
     // read t3s -> nodes, bathymetry, elements
     //
     readT3s(vm["t3s"].as< std::string >(), nodes, bathymetry, elements);
 
-    std::map< std::string, int > boundaryNumber;
-    std::map< std::string, std::list< int > > boundarys;
+    std::map< std::string, dtInt > boundaryNumber;
+    std::map< std::string, std::list< dtInt > > boundarys;
 
     //
     // read bc2 -> edges, edgeNames
@@ -1143,7 +1143,7 @@ int main( int ac, char* av[] ) {
     //
     // create three dimensional model
     //
-    makeModel3d( gm, vm["size"].as< float >() );
+    makeModel3d( gm, vm["size"].as< dtReal >() );
 
     //
     // write gmsh file
@@ -1156,7 +1156,7 @@ int main( int ac, char* av[] ) {
     //
 
     std::vector< ::MVertex * > allVerts;
-    std::vector< std::pair< ::MElement *, int > > allElems;
+    std::vector< std::pair< ::MElement *, dtInt > > allElems;
     std::map< int, std::string > physicalNames;        
     //
     // read vertices and elements
@@ -1168,7 +1168,7 @@ int main( int ac, char* av[] ) {
     ::Foam::FatalIOError.throwExceptions();    
 
     ::Foam::argList::noParallel();
-    int argc = 3;
+    dtInt argc = 3;
     std::vector< std::string > argvStr(3);
     argvStr[0] = "blueKenue2Foam";
     argvStr[1] = std::string("-case");
@@ -1262,14 +1262,14 @@ int main( int ac, char* av[] ) {
       //
       // get bathymetry
       //
-      dtOMVertexField< float > * bathymetryField 
+      dtOMVertexField< dtReal > * bathymetryField 
       = 
-      dtOMVertexField<float>::MustDownCast( om["bathymetryField"] );
+      dtOMVertexField<dtReal>::MustDownCast( om["bathymetryField"] );
       
-      int cc = 0;
+      dtInt cc = 0;
       dt__forAllRefAuto(gm->getDtGmshFaceByPhysical("up")->triangles, aPri) {
         omFaceH const & fH = om.at(aPri);
-        float intValue = 0.;
+        dtReal intValue = 0.;
         
         if ( vm["extend"].as< bool >() ) {
           std::vector< omVertexH > vH_v;        

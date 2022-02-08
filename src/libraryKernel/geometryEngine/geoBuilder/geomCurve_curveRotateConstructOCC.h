@@ -1,6 +1,8 @@
 #ifndef geomCurve_curveRotateConstructOCC_H
 #define	geomCurve_curveRotateConstructOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -17,7 +19,7 @@ namespace dtOO {
       dtCurve const * const dtC, 
       dtPoint3 const & oP, 
       dtVector3 const & rA, 
-      float const & angle
+      dtReal const & angle
     );
     virtual ~geomCurve_curveRotateConstructOCC();
     dtCurve * result( void );    

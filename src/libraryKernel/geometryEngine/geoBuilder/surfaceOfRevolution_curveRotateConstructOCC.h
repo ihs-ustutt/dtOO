@@ -1,6 +1,8 @@
 #ifndef SURFACEOFREVOLUTION_CURVEROTATECONSTRUCTOCC_H
 #define	SURFACEOFREVOLUTION_CURVEROTATECONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>

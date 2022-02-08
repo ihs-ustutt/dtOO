@@ -1,6 +1,8 @@
 #ifndef MAP2DTO3D_CONSTRUCTMARGINFACES_H
 #define	MAP2DTO3D_CONSTRUCTMARGINFACES_H
 
+#include <dtOOTypeDef.h>
+
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
@@ -29,7 +31,7 @@ namespace dtOO {
   public:
     dt__classOnlyName(map2dTo3d_constructMarginFaces);
     map2dTo3d_constructMarginFaces(
-      map2dTo3d const * const m2d, float const & width
+      map2dTo3d const * const m2d, dtReal const & width
     );
     virtual ~map2dTo3d_constructMarginFaces();
     dt__pVH(map2dTo3d) result( void );

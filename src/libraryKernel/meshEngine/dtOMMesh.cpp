@@ -439,8 +439,8 @@ namespace dtOO {
     return ret;
   }
   
-  int dtOMMesh::nVertices( omFaceH const & fH) const {
-    int counter = 0;
+  dtInt dtOMMesh::nVertices( omFaceH const & fH) const {
+    dtInt counter = 0;
     dt__forFromToIter(omConstFaceVertexI, cfv_begin(fH), cfv_end(fH), fIt) {
       counter++;
     }
@@ -506,7 +506,7 @@ namespace dtOO {
     omFaceH const & fH, std::vector< ::MVertex * > & vertices
   ) const {
     vertices.resize( nVertices(fH) );
-    int ii = 0;
+    dtInt ii = 0;
     dt__forFromToIter(omConstFaceVertexI, cfv_begin(fH), cfv_end(fH), fIt) {
       vertices[ii] = data(*fIt).MVertex();
       ii++;

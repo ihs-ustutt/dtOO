@@ -1,18 +1,21 @@
 #ifndef dtOCCCurve2dBase_H
 #define	dtOCCCurve2dBase_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <boost/shared_ptr.hpp>
+#include <Geom2d_Curve.hxx>
 
-class Handle_Geom2d_Curve;
+//class Handle_Geom2d_Curve;
 
 namespace dtOO {    
   class dtOCCCurve2dBase {
   public:
     dt__classOnlyName(dtOCCCurve2dBase);
     dtOCCCurve2dBase();
-    dtOCCCurve2dBase(Handle_Geom2d_Curve & orig);        
+    dtOCCCurve2dBase(Handle_Geom2d_Curve orig);        
     virtual ~dtOCCCurve2dBase();
     void setOCC(Handle_Geom2d_Curve occCurve);    
     Handle_Geom2d_Curve const getOCC( void ) const;    

@@ -1,6 +1,8 @@
 #ifndef DTCURVE_H
 #define	DTCURVE_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 
@@ -14,18 +16,18 @@ namespace dtOO {
       dtCurve();
       virtual ~dtCurve();
      	virtual dtCurve * clone( void ) const = 0;
-      virtual float minPara ( int const & dir ) const = 0;
-      virtual float maxPara ( int const & dir ) const = 0;
-      virtual int order( void ) const = 0;
+      virtual dtReal minPara ( dtInt const & dir ) const = 0;
+      virtual dtReal maxPara ( dtInt const & dir ) const = 0;
+      virtual dtInt order( void ) const = 0;
       virtual bool closed( void ) const = 0;
-      virtual dtPoint3 point( float const uu ) const = 0;
-      virtual dtVector3 firstDer( float const uu) const = 0;
-      virtual int nControlPoints( void ) const = 0;
-      virtual dtPoint3 controlPoint( int const nPoint ) const = 0;
-      virtual void setControlPoint( int const nPoint, dtPoint3 const point ) = 0;    
-      virtual float l_u( float const uu ) const = 0;
-      virtual float u_l( float const length ) const = 0;
-      virtual float reparam(dtPoint3 const point) const = 0;
+      virtual dtPoint3 point( dtReal const uu ) const = 0;
+      virtual dtVector3 firstDer( dtReal const uu) const = 0;
+      virtual dtInt nControlPoints( void ) const = 0;
+      virtual dtPoint3 controlPoint( dtInt const nPoint ) const = 0;
+      virtual void setControlPoint( dtInt const nPoint, dtPoint3 const point ) = 0;    
+      virtual dtReal l_u( dtReal const uu ) const = 0;
+      virtual dtReal u_l( dtReal const length ) const = 0;
+      virtual dtReal reparam(dtPoint3 const point) const;
       virtual void revert( void ) = 0;
       virtual void translate( dtVector3 const & tt ) = 0;      
       //
@@ -36,19 +38,19 @@ namespace dtOO {
       //
       // 
       //
-      float getUMin ( void ) const;
-      float getUMax ( void ) const;      
-      float u_uPercent(float const percent) const;
-      float uPercent_u(float const uu) const;
-      dtPoint3 pointPercent( float const percent ) const;
-      dtVector3 firstDerPercent( float const percent) const;    
-      float length(void) const;
-      float l_uPercent(float const percent) const;
-      float lPercent_u(float const uu) const;
-      float lPercent_uPercent(float const uuPercent) const;
-      float u_lPercent( float const percent ) const;
-      float uPercent_lPercent( float const percent ) const;
-      float uPercent_l( float const percent ) const;      
+      dtReal getUMin ( void ) const;
+      dtReal getUMax ( void ) const;      
+      dtReal u_uPercent(dtReal const percent) const;
+      dtReal uPercent_u(dtReal const uu) const;
+      dtPoint3 pointPercent( dtReal const percent ) const;
+      dtVector3 firstDerPercent( dtReal const percent) const;    
+      dtReal length(void) const;
+      dtReal l_uPercent(dtReal const percent) const;
+      dtReal lPercent_u(dtReal const uu) const;
+      dtReal lPercent_uPercent(dtReal const uuPercent) const;
+      dtReal u_lPercent( dtReal const percent ) const;
+      dtReal uPercent_lPercent( dtReal const percent ) const;
+      dtReal uPercent_l( dtReal const percent ) const;      
     };
     dt__H_addCloneForpVH(dtCurve);        
 }

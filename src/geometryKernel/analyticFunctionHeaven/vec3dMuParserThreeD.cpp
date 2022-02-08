@@ -87,7 +87,7 @@ namespace dtOO {
       double * yyD = _parser->Eval(nDim);
 		  dt__throwIf(nDim!=3, Y());
 			for (int ii=0; ii<3; ii++) {
-				yy[ii] = static_cast<float>(yyD[ii]);
+				yy[ii] = static_cast<dtReal>(yyD[ii]);
 			}
     }
     catch (mu::Parser::exception_type &e) {
@@ -96,7 +96,7 @@ namespace dtOO {
     return yy;		
 	}
 	
-	bool vec3dMuParserThreeD::closed( int const & dir ) const {
+	bool vec3dMuParserThreeD::closed( dtInt const & dir ) const {
 		dt__throwIf( (dir!=0) && (dir!=1) && (dir!=2), closed );
 		return false;
 	}

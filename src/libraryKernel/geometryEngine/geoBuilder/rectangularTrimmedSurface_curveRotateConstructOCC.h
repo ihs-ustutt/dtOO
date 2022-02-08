@@ -1,6 +1,8 @@
 #ifndef RECTANGULARTRIMMEDSURFACE_CURVEROTATECONSTRUCTOCC_H
 #define	RECTANGULARTRIMMEDSURFACE_CURVEROTATECONSTRUCTOCC_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
@@ -16,7 +18,7 @@ namespace dtOO {
       dtCurve const & cL, 
       dtPoint3 const & oP, 					
       dtVector3 const & rA, 
-      float const & angle 
+      dtReal const & angle 
     );
     virtual ~rectangularTrimmedSurface_curveRotateConstructOCC();
     dtSurface * result( void );

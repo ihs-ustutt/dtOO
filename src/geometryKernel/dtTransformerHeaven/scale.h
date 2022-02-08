@@ -1,6 +1,8 @@
 #ifndef scale_H
 #define	scale_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtTransformerInvThreeD.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>

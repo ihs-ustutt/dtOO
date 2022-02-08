@@ -17,12 +17,12 @@ namespace dtOO {
 		dtCurve const * const dtC, 
 		dtPoint3 const & oP, 
 		dtVector3 const & rA, 
-		float const & angle
+		dtReal const & angle
 	) {
 		dt__ptrAss( dtOCCCurve const * const cc, dtOCCCurve::ConstDownCast(dtC) );
 		
 		Geom_Curve const * cP;
-		dt__mustCast(cc->OCCRef().getOCC().Access(), Geom_Curve const, cP);
+		dt__mustCast(cc->OCCRef().getOCC().get(), Geom_Curve const, cP);
 		
 	  gp_Pnt pp(
 		  static_cast<Standard_Real>(oP.x()), 

@@ -1,6 +1,8 @@
 #ifndef bezierCurvePointPickFromPartConstructOCCAGXmlBuilder_H
 #define	bezierCurvePointPickFromPartConstructOCCAGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
 

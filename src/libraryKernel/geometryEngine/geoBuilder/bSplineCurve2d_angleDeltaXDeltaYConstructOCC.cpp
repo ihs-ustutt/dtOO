@@ -8,7 +8,7 @@
 namespace dtOO {
 	bSplineCurve2d_angleDeltaXDeltaYConstructOCC
     ::bSplineCurve2d_angleDeltaXDeltaYConstructOCC( 
-	  float angleIn, float angleOut, float const & deltaX, float const & deltaY
+	  dtReal angleIn, dtReal angleOut, dtReal const & deltaX, dtReal const & deltaY
 	) {
       //
       // check values
@@ -57,12 +57,12 @@ namespace dtOO {
         //
         std::vector< dtPoint2 > pV;
         pV.push_back( dtPoint2(0.,0.) );
-        float ss 
+        dtReal ss 
         = 
         ( deltaY - deltaX * sin(angleIn) / cos(angleIn) )
         /
         ( sin(angleOut) - (cos(angleOut)*sin(angleIn) / cos(angleIn)) );
-        float tt 
+        dtReal tt 
         = 
         ( deltaY - deltaX * sin(angleOut) / cos(angleOut) )
         /
@@ -96,8 +96,8 @@ namespace dtOO {
         //
         // calculate deltaX and check solution
         //
-        float deltaXMax;
-        float deltaXMin;
+        dtReal deltaXMax;
+        dtReal deltaXMin;
         if (angleIn >= angleOut) {
           deltaXMax = deltaY / tan(angleOut);
           deltaXMin = deltaY / tan(angleIn);
@@ -106,7 +106,7 @@ namespace dtOO {
           deltaXMin = deltaY / tan(angleOut);
           deltaXMax = deltaY / tan(angleIn);        
         }
-	      float ratio = (deltaX - deltaXMin) / (deltaXMax - deltaXMin);
+	      dtReal ratio = (deltaX - deltaXMin) / (deltaXMax - deltaXMin);
         dt__throwIfWithMessage( 
           ratio<0. || ratio>1., 
           bSplineCurve2d_angleDeltaXDeltaYConstructOCC(),

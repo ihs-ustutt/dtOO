@@ -1,6 +1,8 @@
 #ifndef scaOneDPolyInterface_H
 #define scaOneDPolyInterface_H
 
+#include <dtOOTypeDef.h>
+
 #include "scaOneD.h"
 
 namespace dtOO {
@@ -12,8 +14,8 @@ namespace dtOO {
     scaOneDPolyInterface();
     scaOneDPolyInterface(scaOneDPolyInterface const & orig);    
     virtual ~scaOneDPolyInterface();
-    virtual int nDOF( void ) const = 0;
-    virtual void setDOF( std::vector< float > const value ) = 0;
+    virtual dtInt nDOF( void ) const = 0;
+    virtual void setDOF( std::vector< dtReal > const value ) = 0;
   private:
 
   };

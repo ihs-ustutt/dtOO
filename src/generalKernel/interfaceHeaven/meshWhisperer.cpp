@@ -167,13 +167,13 @@ namespace dtOO {
 
   void meshWhisperer::makeTransfinite( 
     ::MVertex const * const mv, 
-    int const & onWhatTag, 
-    int const & posU, int const & posV 
+    dtInt const & onWhatTag, 
+    dtInt const & posU, dtInt const & posV 
   ) {
     std::vector< ::MVertex * >::iterator it 
     =
     std::find(_mv.begin(), _mv.end(), mv);
-    int pos = std::distance(_mv.begin(), it);
+    dtInt pos = std::distance(_mv.begin(), it);
     if (it == _mv.end()) {
       pos = -1 * mv->getNum();
     }
@@ -256,9 +256,9 @@ namespace dtOO {
     }
   }
   
-  void meshWhisperer::renumberVertices( int const & leader ) {
-    std::vector< int > & refNum = _num.global()[ leader ];
-    int maxNum = *(std::max_element( refNum.begin(), refNum.end() ) );
+  void meshWhisperer::renumberVertices( dtInt const & leader ) {
+    std::vector< dtInt > & refNum = _num.global()[ leader ];
+    dtInt maxNum = *(std::max_element( refNum.begin(), refNum.end() ) );
     if (_thisRank == leader) {
       dt__throwIfWithMessage( 
         _gm->getMaxVertexNumber()!= maxNum, 
@@ -273,7 +273,7 @@ namespace dtOO {
     dt__forFromToIndex(0, _nRanks, ii) {
       if ( ii == leader ) continue;
 
-      std::vector< int > & aNum = _num.global()[ ii ];
+      std::vector< dtInt > & aNum = _num.global()[ ii ];
       dt__forAllRefAuto(aNum, aNumEl) {
         //_gm->setMaxVertexNumber( _gm->getMaxVertexNumber() + 1 );
         maxNum++;
@@ -284,9 +284,9 @@ namespace dtOO {
     _gm->destroyMeshCaches();
   }
   
-  void meshWhisperer::renumberElements( int const & leader ) {
-    std::vector< int > & refNum = _meNum.global()[ leader ];
-    int maxNum = *(std::max_element( refNum.begin(), refNum.end() ) );
+  void meshWhisperer::renumberElements( dtInt const & leader ) {
+    std::vector< dtInt > & refNum = _meNum.global()[ leader ];
+    dtInt maxNum = *(std::max_element( refNum.begin(), refNum.end() ) );
     if (_thisRank == leader) {
       dt__warnIfWithMessage( 
         _gm->getMaxElementNumber()!=maxNum, 
@@ -300,7 +300,7 @@ namespace dtOO {
     dt__forFromToIndex(0, _nRanks, ii) {
       if ( ii == leader ) continue;
 
-      std::vector< int > & aNum = _meNum.global()[ ii ];
+      std::vector< dtInt > & aNum = _meNum.global()[ ii ];
       dt__forAllRefAuto(aNum, aNumEl) {
 //        //_gm->setMaxVertexNumber( _gm->getMaxVertexNumber() + 1 );
         maxNum++;
@@ -313,16 +313,16 @@ namespace dtOO {
   }
   
   void meshWhisperer::addRenumberedVertices( void ) {
-    int globalMaxVertexNum = -1;
+    dtInt globalMaxVertexNum = -1;
     dt__forFromToIndex(0, _nRanks, rr) {
       dt__forFromToIndex(0, _num.global()[ rr ].size(), ii) {
-        int const thisNum = _num.global()[ rr ][ii];
-        int const thisOnWhatDim = _onWhatDim.global()[ rr ][ii];
-        int const thisOnWhatTag = _onWhatTag.global()[ rr ][ii];
-        float const thisX = _x.global()[ rr ][ii];
-        float const thisY = _y.global()[ rr ][ii];
-        float const thisZ = _z.global()[ rr ][ii];
-        int const thisMvType = _mvType.global()[ rr ][ii];
+        dtInt const thisNum = _num.global()[ rr ][ii];
+        dtInt const thisOnWhatDim = _onWhatDim.global()[ rr ][ii];
+        dtInt const thisOnWhatTag = _onWhatTag.global()[ rr ][ii];
+        dtReal const thisX = _x.global()[ rr ][ii];
+        dtReal const thisY = _y.global()[ rr ][ii];
+        dtReal const thisZ = _z.global()[ rr ][ii];
+        dtInt const thisMvType = _mvType.global()[ rr ][ii];
         double const thisU = _u.global()[ rr ][ii];
         double const thisV = _v.global()[ rr ][ii];        
         globalMaxVertexNum = std::max(globalMaxVertexNum, thisNum);
@@ -418,12 +418,12 @@ namespace dtOO {
           }
         }
         dt__forFromToIndex(0, _tFVertexOnWhatTag.global()[ rr ].size(), ii) {
-          int const & tFVPosition = _tFVertexPosition.global()[ rr ][ii];
-          int const & tFVOnWhatTag = _tFVertexOnWhatTag.global()[ rr ][ii];
-          int const & tFVPosU = _tFVertexPosU.global()[ rr ][ii];
-          int const & tFVPosV = _tFVertexPosV.global()[ rr ][ii];
+          dtInt const & tFVPosition = _tFVertexPosition.global()[ rr ][ii];
+          dtInt const & tFVOnWhatTag = _tFVertexOnWhatTag.global()[ rr ][ii];
+          dtInt const & tFVPosU = _tFVertexPosU.global()[ rr ][ii];
+          dtInt const & tFVPosV = _tFVertexPosV.global()[ rr ][ii];
           
-          int globalNum;
+          dtInt globalNum;
           if (tFVPosition < 0) {
             globalNum = -1 * tFVPosition;
           }
@@ -441,17 +441,17 @@ namespace dtOO {
   }
   
   void meshWhisperer::addRenumberedElements( void ) {
-    int globalMaxElementNum = -1;
+    dtInt globalMaxElementNum = -1;
     dt__forFromToIndex(0, _nRanks, rr) {
-      std::vector< int > const & thisMeVertexNum = _meVertexNum.global()[ rr ];
+      std::vector< dtInt > const & thisMeVertexNum = _meVertexNum.global()[ rr ];
       dt__forFromToIndex(0, _meNum.global()[ rr ].size(), ii) {
-        int const thisMeNum = _meNum.global()[ rr ][ii];
-        int const thisMeOnWhatDim = _meOnWhatDim.global()[ rr ][ii];
-        int const thisMeOnWhatTag = _meOnWhatTag.global()[ rr ][ii];
-        int const thisMeElementStartPosition 
+        dtInt const thisMeNum = _meNum.global()[ rr ][ii];
+        dtInt const thisMeOnWhatDim = _meOnWhatDim.global()[ rr ][ii];
+        dtInt const thisMeOnWhatTag = _meOnWhatTag.global()[ rr ][ii];
+        dtInt const thisMeElementStartPosition 
         = 
         _meElementStartPosition.global()[ rr ][ii];
-        int const thisMeTypeMSH = _meTypeMSH.global()[ rr ][ii];     
+        dtInt const thisMeTypeMSH = _meTypeMSH.global()[ rr ][ii];     
         
         globalMaxElementNum = std::max(globalMaxElementNum, thisMeNum);
         

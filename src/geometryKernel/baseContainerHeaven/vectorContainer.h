@@ -1,6 +1,8 @@
 #ifndef VECTORCONTAINER_H
 #define	VECTORCONTAINER_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <string>
 #include <logMe/dtMacros.h>

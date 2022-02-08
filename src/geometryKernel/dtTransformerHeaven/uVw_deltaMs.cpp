@@ -67,15 +67,15 @@ namespace dtOO {
   ) const {
 		std::vector< dtPoint3 > retVec;
 		dt__forAllIndex(*toTrans, ii) {
-      float delta = toTrans->at(ii).x() * _ss.x();
-		  float mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
-		  float ss = toTrans->at(ii).z() * _ss.z();
+      dtReal delta = toTrans->at(ii).x() * _ss.x();
+		  dtReal mm = std::max( toTrans->at(ii).y() * _ss.y(), 0.);
+		  dtReal ss = toTrans->at(ii).z() * _ss.z();
       dt__solution(ss>1., ss=1.);
       dt__solution(ss<0., ss=0.);
       
-      float wV = wV_ms(mm, ss);						
-			float vV = vV_ms(mm, ss);
-			float uV = uV_deltaVVWV(delta, vV, wV);
+      dtReal wV = wV_ms(mm, ss);						
+			dtReal vV = vV_ms(mm, ss);
+			dtReal uV = uV_deltaVVWV(delta, vV, wV);
 			
 			retVec.push_back( dtPoint3(uV, vV, wV) );
 		}
@@ -88,11 +88,11 @@ namespace dtOO {
   ) const {
 		std::vector< dtPoint3 > retVec;
 		dt__forAllIndex(*toRetract, ii) {
-      float uu = toRetract->at(ii).x() / _ss.x();
-		  float vv = toRetract->at(ii).y() / _ss.y();
-		  float ww = toRetract->at(ii).z() / _ss.z();
+      dtReal uu = toRetract->at(ii).x() / _ss.x();
+		  dtReal vv = toRetract->at(ii).y() / _ss.y();
+		  dtReal ww = toRetract->at(ii).z() / _ss.z();
 		
-			float delta = delta_uVvVwV(uu, vv, ww);
+			dtReal delta = delta_uVvVwV(uu, vv, ww);
       aFY ms
       =
       _ms_uSPercentVSPercent->Y(
@@ -100,8 +100,8 @@ namespace dtOO {
           _msCut->percent_u(vv), _msCut->percent_v(ww)
         )
       );
-      float mm = ms[0];        
-      float ss = ms[1];
+      dtReal mm = ms[0];        
+      dtReal ss = ms[1];
 						
       dt__debug(
         retract(),
@@ -168,8 +168,8 @@ namespace dtOO {
     _msCut.reset( _tM2dTo3d->constRefMap2dTo3d().clone() );
     dt__forAllIndex(ms, ii) {
       dt__forAllIndex(ms[ii], jj) {
-        float uPercent = static_cast<float>(ii)/(_nW-1);
-        float vPercent = static_cast<float>(jj)/(_nW-1);
+        dtReal uPercent = static_cast<dtReal>(ii)/(_nW-1);
+        dtReal vPercent = static_cast<dtReal>(jj)/(_nW-1);
         ms[ii][jj] 
         = 
         dtPoint2(
@@ -202,14 +202,14 @@ namespace dtOO {
     );
   }
   
-	float uVw_deltaMs::m_uSVS(float const & uu, float const & vv) const {
+	dtReal uVw_deltaMs::m_uSVS(dtReal const & uu, dtReal const & vv) const {
 		ptrHandling< map1dTo3d > m1d( 
       _msCut->segmentConstV(vv) 
     );
 		return m1d->l_u(uu);		
 	}
   
-	float uVw_deltaMs::s_uSVS(float const & uu, float const & vv) const {
+	dtReal uVw_deltaMs::s_uSVS(dtReal const & uu, dtReal const & vv) const {
 		ptrHandling< map1dTo3d > m1d( 
       _msCut->segmentConstU(uu) 
     );
@@ -217,30 +217,30 @@ namespace dtOO {
 		return m1d->lPercent_u(vv);		
 	} 
   
-	float uVw_deltaMs::uV_deltaVVWV(
-    float const & delta, float const & vv, float const & ww
+	dtReal uVw_deltaMs::uV_deltaVVWV(
+    dtReal const & delta, dtReal const & vv, dtReal const & ww
   ) const {
 		return _tM2dTo3d->u_percent( 
       delta/dtLinearAlgebra::length( _tM2dTo3d->translationAxis() ) 
     );
 	}
 	
-	float uVw_deltaMs::vV_ms(float const & mm, float const & ss) const {
+	dtReal uVw_deltaMs::vV_ms(dtReal const & mm, dtReal const & ss) const {
     aFY ms = analyticFunction::aFYTwoD(mm, ss);
     aFX uvPercent = _ms_uSPercentVSPercent->invY(ms);
     
     return _msCut->u_percent(uvPercent[0]);
 	}	
 	
-	float uVw_deltaMs::wV_ms(float const & mm, float const & ss) const {
+	dtReal uVw_deltaMs::wV_ms(dtReal const & mm, dtReal const & ss) const {
     aFY ms = analyticFunction::aFYTwoD(mm, ss);
     aFX uvPercent = _ms_uSPercentVSPercent->invY(ms);
     
     return _msCut->v_percent(uvPercent[1]);    
 	}    
 
-  float uVw_deltaMs::delta_uVvVwV(
-    float const & uu, float const & vv, float const & ww
+  dtReal uVw_deltaMs::delta_uVvVwV(
+    dtReal const & uu, dtReal const & vv, dtReal const & ww
   ) const {
 		return 
       _tM2dTo3d->percent_u(uu) 

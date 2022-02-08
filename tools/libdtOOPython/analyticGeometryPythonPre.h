@@ -9,19 +9,19 @@ class analyticGeometryWrap
   dtOO::analyticGeometry * create( void ) const {
     return this->get_override("create")();
   }  
-  int dim( void ) const {
+  dtOO::dtInt dim( void ) const {
     return this->get_override("dim")();
   }
-  bool isClosed( int const & dir ) const {
+  bool isClosed( dtOO::dtInt const & dir ) const {
     return this->get_override("isClosed")(dir);
   }
-  float getMin( int const & dir ) const {
+  dtOO::dtReal getMin( dtOO::dtInt const & dir ) const {
     return this->get_override("getMin")(dir);
   }    
-  float getMax( int const & dir ) const {
+  dtOO::dtReal getMax( dtOO::dtInt const & dir ) const {
     return this->get_override("getMax")(dir);
   }      
-  dtOO::dtPoint3 getPoint( float const * const uvw ) const {
+  dtOO::dtPoint3 getPoint( dtOO::dtReal const * const uvw ) const {
     if ( boost::python::override f = this->get_override("getPoint") ) {
       return f(uvw); // *note*
     }

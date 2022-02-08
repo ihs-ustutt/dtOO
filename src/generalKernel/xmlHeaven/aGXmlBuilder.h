@@ -1,6 +1,8 @@
 #ifndef aGXmlBuilder_H
 #define	aGXmlBuilder_H
 
+#include <dtOOTypeDef.h>
+
 #include "dtXmlParserBase.h"
 #include <vector>
 #include <string>

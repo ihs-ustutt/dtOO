@@ -1,6 +1,8 @@
 #ifndef bVOSetOrder_H
 #define	bVOSetOrder_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "bVOInterface.h"
@@ -27,7 +29,7 @@ namespace dtOO {
       );    
       virtual void postUpdate( void );
     private:
-      int _order;
+      dtInt _order;
   };
 }
 #endif	/* bVOSetOrder_H */

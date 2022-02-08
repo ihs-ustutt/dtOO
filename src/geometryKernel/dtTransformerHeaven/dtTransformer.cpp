@@ -152,14 +152,14 @@ namespace dtOO {
 	}	  
   
   dtPoint3 dtTransformer::operator()( 
-    dtPoint3 const & pp, int const dir
+    dtPoint3 const & pp, dtInt const dir
   ) const {
     if (dir == 1) return apply(pp);
     else if (dir == -1) return retract(pp);
     else dt__throwUnexpected(operator());
   }
   
-  void dtTransformer::handleFloat(std::string const name, float const value) {
+  void dtTransformer::handleFloat(std::string const name, dtReal const value) {
     dt__throw(
       handleFloat(),
       << "Could not handle:" << std::endl
@@ -168,7 +168,7 @@ namespace dtOO {
     );         
   }
   
-  void dtTransformer::handleInt(std::string const name, int const value) {
+  void dtTransformer::handleInt(std::string const name, dtInt const value) {
     dt__throw(
       handleInt(),
       << "Could not handle:" << std::endl

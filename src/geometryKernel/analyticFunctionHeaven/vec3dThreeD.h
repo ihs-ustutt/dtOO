@@ -1,6 +1,8 @@
 #ifndef VEC3DTHREED_H
 #define	VEC3DTHREED_H
 
+#include <dtOOTypeDef.h>
+
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include "vec3dFunction.h"
@@ -22,31 +24,31 @@ namespace dtOO {
     ) const = 0;
     virtual vec3dThreeD * create( void ) const = 0;    
     virtual aFY Y( aFX const & xx ) const = 0;
-    virtual aFY Y( float const & x0, float const & x1, float const & x2 ) const;
-    virtual int xDim( void ) const;
-    void setMax(int const & dir, float const & max);
-    void setMin(int const & dir, float const & min);
+    virtual aFY Y( dtReal const & x0, dtReal const & x1, dtReal const & x2 ) const;
+    virtual dtInt xDim( void ) const;
+    void setMax(int const & dir, dtReal const & max);
+    void setMin(int const & dir, dtReal const & min);
     using analyticFunction::xMin;
     using analyticFunction::xMax;
-    virtual float xMin( int const & dir) const;
-    virtual float xMax( int const & dir) const;   
+    virtual dtReal xMin( dtInt const & dir) const;
+    virtual dtReal xMax( dtInt const & dir) const;   
     virtual std::vector<dtVector3> DYdtVector3( aFX const & xx ) const;
 	  using analyticFunction::x_percent;
     using analyticFunction::percent_x;
-	  aFX x_percent(float const & x0, float const & x1, float const & x2) const;
-	  aFX percent_x(float const & x0, float const & x1, float const & x2) const;
+	  aFX x_percent(dtReal const & x0, dtReal const & x1, dtReal const & x2) const;
+	  aFX percent_x(dtReal const & x0, dtReal const & x1, dtReal const & x2) const;
     dtPoint3 YdtPoint3(aFX const & xx) const;
     dtPoint3 YdtPoint3(
-      float const & x0, float const & x1, float const & x2
+      dtReal const & x0, dtReal const & x1, dtReal const & x2
     ) const;
     dtPoint3 YdtPoint3Percent(aFX const & xx) const;
     dtPoint3 YdtPoint3Percent(
-      float const & x0, float const & x1, float const & x2
+      dtReal const & x0, dtReal const & x1, dtReal const & x2
     ) const;    
     virtual vectorHandling< renderInterface * > getRender( void ) const;    
   private:    
-    float _min[3];
-    float _max[3];
+    dtReal _min[3];
+    dtReal _max[3];
   };
   dt__H_addCloneForpVH(vec3dThreeD);
 }

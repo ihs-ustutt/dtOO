@@ -13,7 +13,7 @@ class constValueWrap
   ) {
     this->get_override("writeToElement")(doc, element);
   }
-  void setValue( float const toSet ) {
+  void setValue( dtOO::dtReal const toSet ) {
     this->get_override("setValue")(toSet);
   }    
 };

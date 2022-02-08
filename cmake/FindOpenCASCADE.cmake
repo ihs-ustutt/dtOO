@@ -16,8 +16,10 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
     _incsearchpath 
     $ENV{DTOO_EXTERNLIBS}/include
     $ENV{DTOO_EXTERNLIBS}/include/oce
+    $ENV{DTOO_EXTERNLIBS}/include/opencascade
     /usr/include  
     /usr/include/oce
+    /usr/include/opencascade
   )
   set( 
     _libsearchpath 

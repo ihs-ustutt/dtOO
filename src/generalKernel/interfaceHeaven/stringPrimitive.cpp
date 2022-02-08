@@ -19,20 +19,20 @@ namespace dtOO {
   stringPrimitive::~stringPrimitive() {
   }
 
-  float stringPrimitive::stringToFloat(std::string const value) {
-    float argumentFloat;
+  dtReal stringPrimitive::stringToFloat(std::string const value) {
+    dtReal argumentFloat;
     std::istringstream(value) >> argumentFloat;
     return argumentFloat;
   }
 
-  std::string stringPrimitive::floatToString(float const value) {
+  std::string stringPrimitive::floatToString(dtReal const value) {
     std::ostringstream buff;
-    buff << value;
+    buff << std::setprecision(8) << std::fixed << value;
     return buff.str();
   }
 
-  int stringPrimitive::stringToInt(std::string const value) {
-    float argumentFloat;
+  dtInt stringPrimitive::stringToInt(std::string const value) {
+    dtReal argumentFloat;
     std::istringstream(value) >> argumentFloat;
     return argumentFloat;
   }
@@ -43,7 +43,7 @@ namespace dtOO {
     return buff.str();
   }
 
-  std::string stringPrimitive::intToStringLZ(int const value, int const nZeros) {
+  std::string stringPrimitive::intToStringLZ(int const value, dtInt const nZeros) {
     std::ostringstream buff;
     buff << std::setfill('0') << std::setw(nZeros) << value;;
     return buff.str();
@@ -84,7 +84,7 @@ namespace dtOO {
     if ( !stringContains(pattern, str) ) { //|| !stringContains(pattern, str) ) {
       return std::string("");
     }    
-    int pos = str.find(pattern.c_str());
+    dtInt pos = str.find(pattern.c_str());
     
     std::string retStr = str;
     
@@ -120,7 +120,7 @@ namespace dtOO {
 		std::string const signEnd, 
 		std::string const str
 	) {  
-    std::pair< int, int > fromTo 
+    std::pair< int, dtInt > fromTo 
     = 
     getFromToBetweenFirstLast(signStart, signEnd, str);
 		
@@ -141,15 +141,15 @@ namespace dtOO {
 		//
 		// get indices and remove return string with start and end sign
 		//
-    std::pair< int, int > fromTo = getFromToBetween(signStart, signEnd, *str);
+    std::pair< int, dtInt > fromTo = getFromToBetween(signStart, signEnd, *str);
 		if ( (fromTo.first == 0) && (fromTo.second == 0) ) return retStr;
 		
     //
     // adjust from to 0 if first signStart is empty
     //
-    int from = std::max(0, fromTo.first);
-    int to = fromTo.second;    
-    int nChars = to - from + 1;
+    dtInt from = std::max(0, fromTo.first);
+    dtInt to = fromTo.second;    
+    dtInt nChars = to - from + 1;
     
     dt__throwIfWithMessage(
       to==(str->length()+1), 
@@ -170,10 +170,10 @@ namespace dtOO {
 		std::string const signEnd, 
 		std::string const str
 	) {  
-    int pos = str.find_first_of( signStart.c_str() );
+    dtInt pos = str.find_first_of( signStart.c_str() );
     dt__throwIf(pos==std::string::npos, getStringBetweenRespectOcc());
     
-    std::map< int, int > occMap = getOccurenceMap(signStart, signEnd, str);
+    std::map< int, dtInt > occMap = getOccurenceMap(signStart, signEnd, str);
 		
     dt__throwIf(occMap.find(pos)==occMap.end(), getStringBetweenRespectOcc());
     
@@ -291,9 +291,9 @@ namespace dtOO {
   ) {
     std::vector< std::string > ret;
     
-    int counter = 0;
+    dtInt counter = 0;
     while ( counter < str.length() ) {
-      std::pair< int, int > fromTo 
+      std::pair< int, dtInt > fromTo 
       = 
       getFromToBetweenRespectOcc(signStart, signEnd, str.substr(counter));
       
@@ -337,7 +337,7 @@ namespace dtOO {
     const char * pWild = pWildStr.c_str();
     const char * pString = pStringStr.c_str();
       
-    int ii, star;
+    dtInt ii, star;
 
     new_segment:
 
@@ -376,7 +376,7 @@ namespace dtOO {
        goto test_match;
   }
   
-  std::pair< int, int > stringPrimitive::getFromToBetween(
+  std::pair< int, dtInt > stringPrimitive::getFromToBetween(
 	  std::string const signStart, std::string const signEnd, 
     std::string const str
 	) {
@@ -387,14 +387,14 @@ namespace dtOO {
       !stringContains(signStart, str) 
       || 
       !stringContains(signEnd, str) 
-    ) return std::pair< int, int >(0, 0);
+    ) return std::pair< int, dtInt >(0, 0);
 
-    int from;
+    dtInt from;
     if (!signStart.empty()) {
       from = str.find_first_of(signStart.c_str()) + signStart.size()-1;
     }
     else from = -1;
-    int to;
+    dtInt to;
     if (!signEnd.empty()) {
       to = str.find_first_of(signEnd.c_str(), from+1) + signEnd.size()-1;
     }
@@ -411,10 +411,10 @@ namespace dtOO {
       //
       // get occurrences of signStart and signEnd
       //
-      std::vector< int > ocSignStart 
+      std::vector< dtInt > ocSignStart 
       = 
       getOccurences(signStart, str, from+1, to-1);
-      std::vector< int > ocSignEnd 
+      std::vector< dtInt > ocSignEnd 
       = 
       getOccurences(signEnd, str, to+1);      
       
@@ -425,10 +425,10 @@ namespace dtOO {
     }
     
     return 
-      std::pair< int, int >(from, to);		
+      std::pair< int, dtInt >(from, to);		
 	}
   
-  std::pair< int, int > stringPrimitive::getFromToBetweenFirstLast(
+  std::pair< int, dtInt > stringPrimitive::getFromToBetweenFirstLast(
 	  std::string const signStart, std::string const signEnd, std::string const str
 	) {
     if ( (signStart.size() > 1) || (signEnd.size() > 1) ) {
@@ -441,50 +441,50 @@ namespace dtOO {
     }
 
     if ( !stringContains(signStart, str) || !stringContains(signEnd, str) ) {
-      return std::pair< int, int >(0, 0);
+      return std::pair< int, dtInt >(0, 0);
     }
 
-    int from;
+    dtInt from;
     if ( (signStart.size() == 1) ) {
       from = str.find_first_of(signStart.c_str());
     }
     else from = -1;
-    int to;
+    dtInt to;
     if ( (signEnd.size() == 1) ) {
       to = str.find_last_of(signEnd.c_str());
     }
     else to = str.length()+1;
 
-    return std::pair< int, int >(from, to);		
+    return std::pair< int, dtInt >(from, to);		
 	}
   
-  std::pair< int, int > stringPrimitive::getFromToBetweenRespectOcc(
+  std::pair< int, dtInt > stringPrimitive::getFromToBetweenRespectOcc(
 	  std::string const signStart, 
 		std::string const signEnd, 
 		std::string const str
 	) {  
     if ( !stringContains(signStart, str) || !stringContains(signEnd, str) ) {
-      return std::pair< int, int >(0, 0);
+      return std::pair< int, dtInt >(0, 0);
     }
     
-    int pos = str.find_first_of( signStart.c_str() );
+    dtInt pos = str.find_first_of( signStart.c_str() );
     dt__throwIf(pos==std::string::npos, getStringBetweenRespectOcc());
     
-    std::map< int, int > occMap = getOccurenceMap(signStart, signEnd, str);
+    std::map< int, dtInt > occMap = getOccurenceMap(signStart, signEnd, str);
 		
     dt__throwIf(occMap.find(pos)==occMap.end(), getStringBetweenRespectOcc());
     
-    return std::pair< int, int >(pos, occMap[pos]);
+    return std::pair< int, dtInt >(pos, occMap[pos]);
     //return str.substr( pos+1, occMap[pos]-pos-1);
   }  
   
-  std::vector< int > stringPrimitive::getOccurences(
-    std::string const & pattern, std::string const & str, int from, int to
+  std::vector< dtInt > stringPrimitive::getOccurences(
+    std::string const & pattern, std::string const & str, dtInt from, dtInt to
   ) {
-    int aMatch = from;
+    dtInt aMatch = from;
     if (to==0) to = str.size();
     
-    std::vector< int > matches(0);
+    std::vector< dtInt > matches(0);
     while (true) {
       aMatch = str.find_first_of(pattern, aMatch);
       
@@ -501,12 +501,12 @@ namespace dtOO {
     }
   }		
   
-  std::map< int, int > stringPrimitive::getOccurenceMap(
+  std::map< int, dtInt > stringPrimitive::getOccurenceMap(
     std::string const & signStart, std::string const & signEnd, 
     std::string const & str
   ) {
-    std::vector< int > matchStart = getOccurences(signStart, str);
-    std::vector< int > matchEnd = getOccurences(signEnd, str);
+    std::vector< dtInt > matchStart = getOccurences(signStart, str);
+    std::vector< dtInt > matchEnd = getOccurences(signEnd, str);
 
     dt__throwIfWithMessage(
       matchStart.size() != matchEnd.size(), 
@@ -518,14 +518,14 @@ namespace dtOO {
     
     progHelper::reverse(matchStart);
     
-    std::map< int, int > occMap;
+    std::map< int, dtInt > occMap;
     dt__forAllIndex(matchStart, ii) {
-      std::vector< int > dist(matchEnd.size(), 0);
+      std::vector< dtInt > dist(matchEnd.size(), 0);
       dt__forAllIndex(matchEnd, jj) {
         dist[jj] = matchEnd[jj] - matchStart[ii];
         if (dist[jj] <= 0) dist[jj] = std::numeric_limits<int>::max();
       }
-      std::vector< int >::iterator minIt 
+      std::vector< dtInt >::iterator minIt 
       = 
       std::min_element( dist.begin(), dist.end() );
       occMap[ matchStart[ii] ] 
