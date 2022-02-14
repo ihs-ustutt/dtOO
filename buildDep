@@ -306,6 +306,9 @@ git_cmake_build \
    -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
    -Dminuit2=ON \
    -DCMAKE_BUILD_TYPE=Release \
-   -Dbuiltin_openssl=TRUE \
-   -Dbuiltin_xrootd=TRUE \
+   -Dbuiltin_openssl=FALSE \
+   -Dbuiltin_xrootd=FALSE \
+   -Dxrootd=FALSE \
+   -Dssl=FALSE \
+   -Dx11=FALSE \
   "
