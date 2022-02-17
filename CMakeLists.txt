@@ -32,6 +32,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
 #
 #------------------------------------------------------------------------------#
 option(DTOO_USE_MPI "Use MPI" OFF)
+option(DTOO_USE_OMP "Use OpenMP" OFF)
 
 #------------------------------------------------------------------------------#
 #
@@ -98,13 +99,14 @@ endif (NOT FOAMEXT_FOUND)
 find_package(MOAB REQUIRED COMPONENTS MOAB iMesh)
 find_package(OpenMesh REQUIRED COMPONENTS OpenMeshCore OpenMeshTools)
 find_package(OpenVolumeMesh REQUIRED COMPONENTS OpenVolumeMesh)
-find_package(OpenMP REQUIRED COMPONENTS C)
-if (OpenMP_C_FOUND)
+if (DTOO_USE_OMP)
+  find_package(OpenMP REQUIRED)
   message("**> Extent CMAKE_C_FLAGS by ${OpenMP_C_FLAGS}")
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-  message("**> Extent CMAKE_CXX_FLAGS by ${OpenMP_C_FLAGS}")
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_C_FLAGS}")
-endif (OpenMP_C_FOUND)
+  message("**> Extent CMAKE_CXX_FLAGS by ${OpenMP_CXX_FLAGS}")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+  add_definitions(-DDTOO_HAS_OMP)
+endif (DTOO_USE_OMP)
 
 if (DTOO_USE_MPI)
   find_package(MPI REQUIRED)

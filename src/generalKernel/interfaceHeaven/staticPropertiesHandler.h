@@ -18,6 +18,11 @@ namespace dtOO {
     dtInt nRanks( void ) const;
     bool initialized( void ) const;
     static void mpiBarrier( void );
+    static dtInt ompGetMaxThreads( void );
+    static dtInt ompGetThreadNum( void );
+    static bool ompInParallel( void );
+    static dtInt ompGetNumThreads( void );
+    static dtInt ompGetThreadLimit( void );
     bool gDebug( void ) const;
     void setGDebug( void );
   private:

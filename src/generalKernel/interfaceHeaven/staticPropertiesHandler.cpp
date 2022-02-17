@@ -2,10 +2,12 @@
 #include "systemHandling.h"
 
 #include <logMe/logMe.h>
-#include <omp.h>
+#ifdef DTOO_HAS_OMP
+  #include <omp.h>
+#endif
 #ifdef DTOO_HAS_MPI  
-#include <boost/mpi/communicator.hpp>
-#include <boost/mpi/environment.hpp>
+  #include <boost/mpi/communicator.hpp>
+  #include <boost/mpi/environment.hpp>
 #endif
 
 namespace dtOO {
@@ -66,8 +68,9 @@ namespace dtOO {
     if (_initialized) return;
     
     optionHandling::init(wElement);
-    
+#ifdef DTOO_HAS_OMP    
     omp_set_num_threads( getOptionInt("ompNumThreads") );
+#endif
     _nRanks = 1;
     _thisRank = 0;    
 #ifdef DTOO_HAS_MPI    
@@ -80,10 +83,10 @@ namespace dtOO {
     
     dt__forceInfo(
       init(),
-      << dt__eval(FILELog::ReportingLevel()) << std::endl
-      << dt__eval(omp_get_num_threads()) << std::endl
-      << dt__eval(omp_get_thread_limit()) << std::endl
-      << dt__eval(omp_get_max_threads()) << std::endl
+      << dt__eval(FILELog::ReportingLevel()) << std::endl        
+      << dt__eval(ompGetNumThreads()) << std::endl
+      << dt__eval(ompGetThreadLimit()) << std::endl
+      << dt__eval(ompGetMaxThreads()) << std::endl
       << dt__eval(mpiParallel()) << std::endl
       << dt__eval(thisRank()) << std::endl
       << dt__eval(nRanks()) << std::endl
@@ -125,5 +128,45 @@ namespace dtOO {
   
   void staticPropertiesHandler::setGDebug( void ) {
     _gDebug = true;
+  }
+
+  dtInt staticPropertiesHandler::ompGetMaxThreads( void ) {
+    dtInt retInt = 1;
+#ifdef DTOO_HAS_OMP
+    retInt = omp_get_max_threads()
+#endif    
+    return retInt;       
+  }
+  
+  dtInt staticPropertiesHandler::ompGetThreadNum( void ) {
+    dtInt retInt = 0;
+#ifdef DTOO_HAS_OMP
+    retInt = omp_get_thread_num()
+#endif    
+    return retInt;    
+  }
+  
+  bool staticPropertiesHandler::ompInParallel( void ) {
+    bool retBool = false;
+#ifdef DTOO_HAS_OMP
+    retBool = omp_in_parallel()
+#endif    
+    return retBool;
+  }
+
+  dtInt staticPropertiesHandler::ompGetNumThreads( void ) {
+    dtInt retInt = 1;
+#ifdef DTOO_HAS_OMP
+    retInt = omp_get_num_threads()
+#endif    
+    return retInt;        
+  }
+  
+  dtInt staticPropertiesHandler::ompGetThreadLimit( void ) {
+    dtInt retInt = 1;
+#ifdef DTOO_HAS_OMP
+    retInt = omp_get_thread_limit()
+#endif    
+    return retInt;        
   }
 }
