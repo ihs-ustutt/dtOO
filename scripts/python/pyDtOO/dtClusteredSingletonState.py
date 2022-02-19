@@ -183,7 +183,7 @@ class dtClusteredSingletonState:
   @lockutils.synchronized('fileIO', external=True, lock_path='./runLock/')
   def update( self, fileName, value ):
     fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
-    tmpF = tempfile.TemporaryFile()
+    tmpF = tempfile.TemporaryFile(mode='r+', encoding='utf-8')
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fileName+'.'+str(fileIndex)
     curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
@@ -203,7 +203,6 @@ class dtClusteredSingletonState:
 
   def read( self, fName ):
     fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
-    tmpF = tempfile.TemporaryFile()
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fName+'.'+str(fileIndex)
     curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
