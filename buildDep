@@ -269,7 +269,7 @@ git_cmake_build \
 #-------------------------------------------------------------------------------
 git_nobuild \
   "pythonocc-core" \
-  "git://github.com/tpaviot/pythonocc-core.git" \
+  "https://github.com/tpaviot/pythonocc-core.git" \
   "7.5.1"
   
 #-------------------------------------------------------------------------------
