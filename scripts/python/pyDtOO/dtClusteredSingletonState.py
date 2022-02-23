@@ -10,18 +10,18 @@ import datetime
 import io
 
 class dtClusteredSingletonState:
-  PREFIX = ''
+  PREFIX = 'A1'
   CASE = ''
-  PIDDIR = 'runPid'
-  DATADIR = 'runData'
-  ITERDIR = 'runIter'
+  LOCKDIR = './runLock'
+  PIDDIR = './runPid'
+  DATADIR = './runData'
   NPROC = 1
   SIMSH = ''
   ADDDATA = []
   ADDDATADEF = []
   PROB = None
 
-  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock/')
+  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock')
   def __init__(self, id=-1, defObj=None, defFit=None):
     #
     # get id from state
@@ -140,6 +140,8 @@ class dtClusteredSingletonState:
       )
       if lastFileIndex < thisFileIndex:
         lastFileIndex = thisFileIndex
+    if (lastFileIndex<0):
+      raise ValueError('Detected FileIndex is smaller than zero.')
     lastId = -1
     lastId = sum(
       1 for line in io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), encoding='utf-8')
@@ -180,7 +182,7 @@ class dtClusteredSingletonState:
 
     return rStr
   
-  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock/')
+  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock')
   def update( self, fileName, value ):
     fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
     tmpF = tempfile.TemporaryFile(mode='r+', encoding='utf-8')
@@ -259,7 +261,6 @@ class dtClusteredSingletonState:
     return bestId
   
   @staticmethod
-  @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
   def fullRead( addFile=None, addDtype=float ):
     if \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
@@ -301,7 +302,6 @@ class dtClusteredSingletonState:
       return ID, OBJ, FIT
 
   @staticmethod
-  @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
   def fullAddRead( addFileV, addDtypeV ):
     retMap = {}
     
