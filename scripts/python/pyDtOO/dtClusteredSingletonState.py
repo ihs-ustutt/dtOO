@@ -4,10 +4,9 @@ import os
 import tempfile
 import numpy as np
 import logging
-import time
-import shutil
-import datetime
 import io
+import json
+import ast
 
 class dtClusteredSingletonState:
   PREFIX = 'A1'
@@ -179,7 +178,11 @@ class dtClusteredSingletonState:
       # remove square brackets and line breaks
       #
       rStr = valueAsStr.replace('[','').replace(']','').replace('\n','')
-
+    elif isinstance(value, dict):
+      rStr = json.dumps(value)
+    else:
+      logging.warning('Try to write unknown datatype.')
+      
     return rStr
   
   @lockutils.synchronized('fileIO', external=True, lock_path='./runLock')
@@ -239,6 +242,14 @@ class dtClusteredSingletonState:
   def fitness( self ):
     return self.readFloatArray( 'fitness' )  
 
+  def readDict( self, fName ):
+    ret = {}
+    try:
+      ret = dict( ast.literal_eval( self.read(fName) ) )
+    except:
+      logging.warning('invalid dict : %s', self.read(fName)) 
+    return ret
+  
   @staticmethod
   def readIdFromObjective( obj ):
     bestFit = float('inf')
