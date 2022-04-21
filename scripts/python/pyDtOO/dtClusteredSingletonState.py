@@ -329,13 +329,32 @@ class dtClusteredSingletonState:
 
       for addFile, addDtype in zip(addFileV, addDtypeV):
         ADD = []
-        ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
-        for thisIndex in range(maxFileIndex):
-          add = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
-          ADD = np.concatenate( (ADD, add) )
+        if addDtype == dict:
+          ADD = dtClusteredSingletonState.fullAddReadDict(addFile, maxFileIndex)
+        else:
+          ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
+          for thisIndex in range(maxFileIndex):
+            add = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
+            ADD = np.concatenate( (ADD, add) )
         retMap[addFile] = ADD
 
     return retMap
+
+  @staticmethod
+  def fullAddReadDict( addFile, maxFileIndex ):
+    ADD = np.full(dtClusteredSingletonState.currentMaxId(),dict())
+    count = 0
+    for thisIndex in range(maxFileIndex+1):
+      thisFile = open(
+        dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex),
+        'r'
+      )
+      theLines = thisFile.readlines()
+      for aLine in theLines:
+        #print("%05d : %s" % (count, line.strip()))
+        ADD[count] = dict( ast.literal_eval( aLine.strip() ) )
+        count = count + 1
+    return ADD
 
   def hasDirectory(self):
     return os.path.isdir( dtClusteredSingletonState.CASE+'_'+self.state() )
