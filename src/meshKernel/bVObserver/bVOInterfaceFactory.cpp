@@ -9,6 +9,7 @@
 #include "bVOSetGradingToFaceRule.h"
 #include "bVONameRegions.h"
 #include "bVORemoveRegions.h"
+#include "bVORemoveElements.h"
 #include "bVOWriteMSH.h"
 #include "bVOReadMSH.h"
 #include "bVOTransfiniteFaces.h"
@@ -30,6 +31,7 @@
 #include "bVOSetRotationalPeriodicity.h"
 #include "bVOSetTranslationalPeriodicity.h"
 #include "bVOTransformMeshPoints.h"
+#include "bVOCoherenceCheck.h"
 #include "bVOWriteSU2.h"
 #include "bVOSetPrescribedFirstElementSize.h"
 #include "bVOForceMeshPointCoordinates.h"
@@ -95,6 +97,7 @@ namespace dtOO {
     _instance->_builder.push_back( new bVONameFaces() );
     _instance->_builder.push_back( new bVONameRegions() );
     _instance->_builder.push_back( new bVORemoveRegions() );
+    _instance->_builder.push_back( new bVORemoveElements() );
     _instance->_builder.push_back( new bVOWriteMSH() );
     _instance->_builder.push_back( new bVOReadMSH() );
     _instance->_builder.push_back( new bVOTransfiniteFaces() );
@@ -116,6 +119,7 @@ namespace dtOO {
     _instance->_builder.push_back( new bVOSetRotationalPeriodicity() );
     _instance->_builder.push_back( new bVOSetTranslationalPeriodicity() );
     _instance->_builder.push_back( new bVOTransformMeshPoints() );
+    _instance->_builder.push_back( new bVOCoherenceCheck() );
     _instance->_builder.push_back( new bVOWriteSU2() );
     _instance->_builder.push_back( new bVOSetGradingToFaceRule() );
     _instance->_builder.push_back( new bVOSetPrescribedFirstElementSize() );
