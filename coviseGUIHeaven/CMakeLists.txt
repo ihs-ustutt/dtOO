@@ -84,7 +84,7 @@ include_directories(
 )
 add_library(dtOOAbstractModule STATIC ${AM_SOURCES} ${AM_HEADERS})
 target_link_libraries(
-  dtOOAbstractModule 
+  dtOOAbstractModule Qt5::Core Qt5::Xml
   coApi coAppl coCore coUtil coDo coShm 
   ${DTOO_LIBRARIES} ${DTOO_3RD_LIBRARIES}
 )
@@ -103,7 +103,8 @@ set(DT_SOURCES
 add_executable(dtOODesignTool ${DT_HEADERS} ${DT_SOURCES})
 target_link_libraries(
   dtOODesignTool 
-  dtOOAbstractModule coApi coAppl coCore coUtil coDo coShm
+  dtOOAbstractModule Qt5::Core Qt5::Xml
+  coApi coAppl coCore coUtil coDo coShm
   ${DTOO_LIBRARIES} ${DTOO_3RD_LIBRARIES}
 )
 
@@ -121,7 +122,8 @@ set(SC_SOURCES
 add_executable(dtOOSimCaller ${SC_HEADERS} ${SC_SOURCES})
 target_link_libraries(
   dtOOSimCaller 
-  dtOOAbstractModule coApi coAppl coCore coUtil coDo coShm 
+  dtOOAbstractModule Qt5::Core Qt5::Xml
+  coApi coAppl coCore coUtil coDo coShm 
   ${DTOO_LIBRARIES} ${DTOO_3RD_LIBRARIES}
 )
 
