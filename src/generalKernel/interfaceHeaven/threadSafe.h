@@ -2,15 +2,14 @@
 #define	THREADSAFE_H
 
 #include <dtOOTypeDef.h>
-
-#include <omp.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 
 namespace dtOO {
   template< typename T >
   class threadSafe {
   public:
-    dt__classOnlyName( mpiDistributed );
-    threadSafe() : _t(omp_get_max_threads()) {
+    dt__classOnlyName( threadSafe );
+    threadSafe() : _t(staticPropertiesHandler::ompGetMaxThreads()) {
     }
     
     virtual ~threadSafe() {
@@ -18,7 +17,7 @@ namespace dtOO {
     }
     
     T & operator()( void ) {
-      return _t[ omp_get_thread_num() ];
+      return _t[ staticPropertiesHandler::ompGetThreadNum() ];
     };
   private:
     std::vector< T > _t;

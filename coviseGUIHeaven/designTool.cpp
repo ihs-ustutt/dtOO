@@ -687,7 +687,10 @@ namespace dtOO {
       _infoStr->setValue("catchException");
       dt__catch(param(), eGenRef.what());
     }
-
+    catch(std::string & caught) {
+      _infoStr->setValue("catchString");
+      dt__catch(param(), caught.c_str());
+    }
     //
     // update state label
     //
@@ -851,6 +854,13 @@ namespace dtOO {
 			
 			return STOP_PIPELINE;
 		}
+    catch(std::string & caught) {
+      _infoStr->setValue("catchString");
+      
+      dt__catch(compute(), caught.c_str());
+      
+      return STOP_PIPELINE;
+    }    
   }
 	
   void designTool::saveCVState(void) {

@@ -50,7 +50,8 @@ namespace dtOO {
     os 
     << std::endl
     << std::endl
-    << ::boost::format("[ %12d ][ " ) % (clock() - startTime)
+    << ::boost::format("[ %12.2f ][ " ) 
+      % ( float (clock() - startTime) / (float CLOCKS_PER_SEC) )
     << ToString(level) << " ]";
 
     myLogLevel = level;

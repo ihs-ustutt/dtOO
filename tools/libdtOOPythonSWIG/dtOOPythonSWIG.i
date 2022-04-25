@@ -38,6 +38,16 @@ using namespace dtOO;
 #endif
 %exception;
 
+%exception {
+	try {
+		$action
+  } 
+  catch (...) {
+    PyErr_SetString(PyExc_Exception, "dtOOPythonSWIG catch exception");
+    SWIG_fail;
+	}
+}
+
 %include <dtOOTypeDef.h>
 %include <logMe/dtMacros.h>
 %include <interfaceHeaven/ptrHandling.h>

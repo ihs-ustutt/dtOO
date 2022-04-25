@@ -260,8 +260,12 @@ namespace dtOO {
     std::vector< dtInt > & refNum = _num.global()[ leader ];
     dtInt maxNum = *(std::max_element( refNum.begin(), refNum.end() ) );
     if (_thisRank == leader) {
-      dt__throwIf( 
-        _gm->getMaxVertexNumber()!= maxNum, renumberVertices()
+      dt__throwIfWithMessage( 
+        _gm->getMaxVertexNumber()!= maxNum, 
+        renumberVertices(),
+        << "_gm->getMaxVertexNumber() = " << _gm->getMaxVertexNumber() 
+        << std::endl
+        << "maxNum = " << maxNum
       );
     }
 
@@ -284,8 +288,12 @@ namespace dtOO {
     std::vector< dtInt > & refNum = _meNum.global()[ leader ];
     dtInt maxNum = *(std::max_element( refNum.begin(), refNum.end() ) );
     if (_thisRank == leader) {
-      dt__throwIf( 
-        _gm->getMaxElementNumber()!= maxNum, renumberElements()
+      dt__warnIfWithMessage( 
+        _gm->getMaxElementNumber()!=maxNum, 
+        renumberElements(),
+        << "_gm->getMaxElementNumber() = " << _gm->getMaxElementNumber() 
+        << std::endl
+        << "maxNum = " << maxNum              
       );
     }
 

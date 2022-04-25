@@ -38,6 +38,14 @@ namespace dtOO {
       _t.resize(_nRanks);
     }
     
+    static void barrier( void ) {
+      if ( staticPropertiesHandler::getInstance()->mpiParallel() ) {      
+#ifdef DTOO_HAS_MPI    
+        ::boost::mpi::communicator().barrier();
+#endif
+      }
+    }  
+    
     void distribute( void ) {
       if ( staticPropertiesHandler::getInstance()->mpiParallel() ) {
 #ifdef DTOO_HAS_MPI

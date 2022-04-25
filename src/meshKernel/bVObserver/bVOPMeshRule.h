@@ -11,7 +11,9 @@ class GEntity;
 
 namespace dtOO {
   class dtMeshOperator;
- 
+  class dtGmshVertex;
+  class dtGmshRegion;
+  
   class bVOPMeshRule : public bVOInterface {
     public:
       dt__class(bVOPMeshRule, bVOInterface);
@@ -29,10 +31,24 @@ namespace dtOO {
       );    
       virtual void preUpdate( void );
     private:
+      static bool isMeshed(dtGmshVertex const * const gent);
+      static bool isMeshed(dtGmshRegion const * const gent);
+      template < typename T >
+      static bool isMeshed(T const * const gent);
+      static bool isOwnMaster(::GEntity const * const gent);
+      template < typename T >
+      static std::map< ::GEntity *, dtInt > prepareDistribution(
+        std::list< T > list, std::vector< dtReal > weight
+      );      
+    private:
       labeledVectorHandling< dtMeshOperator * > _meshOperator;
       std::vector< std::string > _rule1D;
       std::vector< std::string > _rule2D;
       std::vector< std::string > _rule3D;
+      std::vector< std::string > _only;
+      std::vector< dtReal > _edgeWeight;
+      std::vector< dtReal > _faceWeight;
+      std::vector< dtReal > _regionWeight;
   };
 }
 #endif	/* bVOPMeshRule_H */

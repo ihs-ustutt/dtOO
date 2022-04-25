@@ -9,7 +9,7 @@ add_test(
 set_tests_properties(
   base 
   PROPERTIES
-  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools
+  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
 )
 
 #
@@ -37,7 +37,7 @@ add_test(
 set_tests_properties(
   naca
   PROPERTIES
-  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools
+  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
 )
 
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")

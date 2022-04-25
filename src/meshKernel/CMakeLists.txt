@@ -7,6 +7,7 @@ SET(HEADERS
   bVObserver/bVOSetGradingToFaceRule.h
   bVObserver/bVONameRegions.h
   bVObserver/bVORemoveRegions.h
+  bVObserver/bVORemoveElements.h
   bVObserver/bVOWriteMSH.h
   bVObserver/bVOReadMSH.h
   bVObserver/bVOTransfiniteFaces.h
@@ -28,6 +29,7 @@ SET(HEADERS
   bVObserver/bVOSetRotationalPeriodicity.h
   bVObserver/bVOSetTranslationalPeriodicity.h
   bVObserver/bVOTransformMeshPoints.h
+  bVObserver/bVOCoherenceCheck.h
   bVObserver/bVOWriteSU2.h
   bVObserver/bVOSetPrescribedFirstElementSize.h
   bVObserver/bVOForceMeshPointCoordinates.h
@@ -56,6 +58,7 @@ SET(SOURCES
   bVObserver/bVOSetGradingToFaceRule.cpp
   bVObserver/bVONameRegions.cpp
   bVObserver/bVORemoveRegions.cpp
+  bVObserver/bVORemoveElements.cpp
   bVObserver/bVOWriteMSH.cpp
   bVObserver/bVOReadMSH.cpp
   bVObserver/bVOTransfiniteFaces.cpp
@@ -77,6 +80,7 @@ SET(SOURCES
   bVObserver/bVOSetRotationalPeriodicity.cpp
   bVObserver/bVOSetTranslationalPeriodicity.cpp
   bVObserver/bVOTransformMeshPoints.cpp
+  bVObserver/bVOCoherenceCheck.cpp
   bVObserver/bVOSetPrescribedFirstElementSize.cpp
   bVObserver/bVOWriteSU2.cpp
   bVObserver/bVOForceMeshPointCoordinates.cpp

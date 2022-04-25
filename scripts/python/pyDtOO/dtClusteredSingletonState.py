@@ -4,24 +4,23 @@ import os
 import tempfile
 import numpy as np
 import logging
-import time
-import shutil
-import datetime
 import io
+import json
+import ast
 
 class dtClusteredSingletonState:
-  PREFIX = ''
+  PREFIX = 'A1'
   CASE = ''
-  PIDDIR = 'runPid'
-  DATADIR = 'runData'
-  ITERDIR = 'runIter'
+  LOCKDIR = './runLock'
+  PIDDIR = './runPid'
+  DATADIR = './runData'
   NPROC = 1
   SIMSH = ''
   ADDDATA = []
   ADDDATADEF = []
   PROB = None
 
-  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock/')
+  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock')
   def __init__(self, id=-1, defObj=None, defFit=None):
     #
     # get id from state
@@ -140,6 +139,8 @@ class dtClusteredSingletonState:
       )
       if lastFileIndex < thisFileIndex:
         lastFileIndex = thisFileIndex
+    if (lastFileIndex<0):
+      raise ValueError('Detected FileIndex is smaller than zero.')
     lastId = -1
     lastId = sum(
       1 for line in io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), encoding='utf-8')
@@ -177,13 +178,17 @@ class dtClusteredSingletonState:
       # remove square brackets and line breaks
       #
       rStr = valueAsStr.replace('[','').replace(']','').replace('\n','')
-
+    elif isinstance(value, dict):
+      rStr = json.dumps(value)
+    else:
+      logging.warning('Try to write unknown datatype.')
+      
     return rStr
   
-  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock/')
+  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock')
   def update( self, fileName, value ):
     fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
-    tmpF = tempfile.TemporaryFile()
+    tmpF = tempfile.TemporaryFile(mode='r+', encoding='utf-8')
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fileName+'.'+str(fileIndex)
     curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
@@ -203,7 +208,6 @@ class dtClusteredSingletonState:
 
   def read( self, fName ):
     fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
-    tmpF = tempfile.TemporaryFile()
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fName+'.'+str(fileIndex)
     curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
@@ -238,6 +242,14 @@ class dtClusteredSingletonState:
   def fitness( self ):
     return self.readFloatArray( 'fitness' )  
 
+  def readDict( self, fName ):
+    ret = {}
+    try:
+      ret = dict( ast.literal_eval( self.read(fName) ) )
+    except:
+      logging.warning('invalid dict : %s', self.read(fName)) 
+    return ret
+  
   @staticmethod
   def readIdFromObjective( obj ):
     bestFit = float('inf')
@@ -260,7 +272,6 @@ class dtClusteredSingletonState:
     return bestId
   
   @staticmethod
-  @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
   def fullRead( addFile=None, addDtype=float ):
     if \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
@@ -302,7 +313,6 @@ class dtClusteredSingletonState:
       return ID, OBJ, FIT
 
   @staticmethod
-  @lockutils.synchronized('fullRead', external=True, lock_path='./runLock/')  
   def fullAddRead( addFileV, addDtypeV ):
     retMap = {}
     
@@ -319,13 +329,32 @@ class dtClusteredSingletonState:
 
       for addFile, addDtype in zip(addFileV, addDtypeV):
         ADD = []
-        ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
-        for thisIndex in range(maxFileIndex):
-          add = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
-          ADD = np.concatenate( (ADD, add) )
+        if addDtype == dict:
+          ADD = dtClusteredSingletonState.fullAddReadDict(addFile, maxFileIndex)
+        else:
+          ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
+          for thisIndex in range(maxFileIndex):
+            add = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
+            ADD = np.concatenate( (ADD, add) )
         retMap[addFile] = ADD
 
     return retMap
+
+  @staticmethod
+  def fullAddReadDict( addFile, maxFileIndex ):
+    ADD = np.full(dtClusteredSingletonState.currentMaxId(),dict())
+    count = 0
+    for thisIndex in range(maxFileIndex+1):
+      thisFile = open(
+        dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex),
+        'r'
+      )
+      theLines = thisFile.readlines()
+      for aLine in theLines:
+        #print("%05d : %s" % (count, line.strip()))
+        ADD[count] = dict( ast.literal_eval( aLine.strip() ) )
+        count = count + 1
+    return ADD
 
   def hasDirectory(self):
     return os.path.isdir( dtClusteredSingletonState.CASE+'_'+self.state() )

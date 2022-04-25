@@ -38,7 +38,7 @@ namespace dtOO {
     
 		// <bVObserver 
 		//   name="bVORemoveRegions" 
-		//   faceLabel="{name0}"
+		//   regionLabel="{name0}"
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
