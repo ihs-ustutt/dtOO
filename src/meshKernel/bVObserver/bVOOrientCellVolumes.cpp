@@ -9,8 +9,15 @@
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <gmsh/MElement.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOOrientCellVolumes::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOOrientCellVolumes, new bVOOrientCellVolumes())
+  );
+  
   bVOOrientCellVolumes::bVOOrientCellVolumes() {
   }
 

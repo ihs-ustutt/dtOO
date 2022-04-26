@@ -22,8 +22,15 @@
 #include <interfaceHeaven/meshWhisperer.h>
 #include <interfaceHeaven/timeHandling.h>
 #include <progHelper.h>
+#include "bVOInterfaceFactory.h"
 
-namespace dtOO {  
+namespace dtOO {
+  bool bVOPMeshRule::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOPMeshRule, new bVOPMeshRule())
+  );
+  
   bVOPMeshRule::bVOPMeshRule() {
   }
 

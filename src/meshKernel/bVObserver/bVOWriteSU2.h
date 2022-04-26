@@ -30,6 +30,7 @@ namespace dtOO {
     private:
       std::string _filename;
       bool _saveAll;
+      static bool _registrated;      
   };
 }
 #endif	/* bVOWriteSU2_H */

@@ -53,6 +53,7 @@ namespace dtOO {
       dtReal _perTet;
       dtReal _perturbTet;
       dtReal _perturbHex;
+      static bool _registrated;
   };
 }
 #endif	/* bVOEvilGodfather_H */

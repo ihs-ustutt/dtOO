@@ -8,8 +8,15 @@
 #include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
+#include "bVOInterfaceFactory.h"
 
-namespace dtOO {  
+namespace dtOO {
+  bool bVONameRegions::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVONameRegions, new bVONameRegions())
+  );
+  
   bVONameRegions::bVONameRegions() {
   }
 

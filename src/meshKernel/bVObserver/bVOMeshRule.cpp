@@ -17,8 +17,15 @@
 #include <meshEngine/dtMesh2DOperator.h>
 #include <meshEngine/dtMesh3DOperator.h>
 #include <boundedVolume.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOMeshRule::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOMeshRule, new bVOMeshRule())
+  );
+  
   bVOMeshRule::bVOMeshRule() {
   }
 

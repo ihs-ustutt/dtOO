@@ -32,6 +32,7 @@ namespace dtOO {
   //    std::vector< std::string > _patchRule;
       dt__pVH(map2dTo3d) _m2d;
       dtReal _inc;
+      static bool _registrated;
   };
 }
 #endif	/* bVOAnalyticGeometryToFace_H */

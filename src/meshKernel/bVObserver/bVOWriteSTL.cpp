@@ -12,8 +12,15 @@
 #include <meshEngine/dtGmshFace.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MQuadrangle.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOWriteSTL::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOWriteSTL, new bVOWriteSTL())
+  );
+  
   bVOWriteSTL::bVOWriteSTL() {
   }
 

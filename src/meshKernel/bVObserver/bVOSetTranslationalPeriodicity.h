@@ -33,6 +33,7 @@ namespace dtOO {
       std::string _faceMaster;
       std::string _faceSlave;
       translate const * _dtT;
+      static bool _registrated;
   };
 }
 #endif	/* bVOSetTranslationalPeriodicity_H */

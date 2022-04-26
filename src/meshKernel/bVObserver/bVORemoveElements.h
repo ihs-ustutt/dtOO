@@ -31,6 +31,7 @@ namespace dtOO {
       using bVOInterface::postUpdate;
     private:
       std::vector< std::string > _label;
+      static bool _registrated;
   };
 }
 #endif	/* bVORemoveElements_H */

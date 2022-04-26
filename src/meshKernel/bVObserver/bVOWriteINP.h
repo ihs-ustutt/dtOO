@@ -31,6 +31,7 @@ namespace dtOO {
       std::string _filename;
       bool _saveAll;
       bool _saveGroupOfNodes;
+      static bool _registrated;
   };
 }
 #endif	/* bVOWriteINP_H */

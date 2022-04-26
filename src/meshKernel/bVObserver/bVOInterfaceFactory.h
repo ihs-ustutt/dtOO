@@ -13,14 +13,13 @@ namespace dtOO {
     public:    
       dt__classOnlyName(bVOInterfaceFactory);
       virtual ~bVOInterfaceFactory();
+      static bool registrate( bVOInterface const * const );           
       static bVOInterface * create(char const * const str);
       static bVOInterface * create(std::string const str);
-      static bVOInterfaceFactory * instance( void );       
     private:
       bVOInterfaceFactory();    
     private:
-      vectorHandling< bVOInterface * > _builder;
-      static dt__pH(bVOInterfaceFactory) _instance;       
+      static dt__pVH(bVOInterface) _observer;
   };
 }
 #endif	/* BVOINTERFACEFACTORY_H */

@@ -14,6 +14,7 @@
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
   bVOReadMSH::bVOReadMSH() {

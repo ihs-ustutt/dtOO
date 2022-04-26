@@ -13,6 +13,7 @@
 
 #include <gmsh/GEdgeLoop.h>
 #include <progHelper.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
   bVOAddInternalEdge::bVOAddInternalEdge() {

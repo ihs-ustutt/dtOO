@@ -10,8 +10,15 @@
 #include <analyticFunctionHeaven/vec3dThreeD.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshFace.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOForceMeshPointCoordinates::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOForceMeshPointCoordinates, new bVOForceMeshPointCoordinates())
+  );
+  
   bVOForceMeshPointCoordinates::bVOForceMeshPointCoordinates() {
   }
 

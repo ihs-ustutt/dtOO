@@ -12,7 +12,6 @@ namespace dtOO {
   class constValue;
   class analyticFunction;
   class analyticGeometry;
-//  class scaOneD;
   class scaOneDPolyInterface;
   
   class bVOSetPrescribedFirstElementSize : public bVOInterface {
@@ -39,6 +38,7 @@ namespace dtOO {
       dt__pH(scaOneDPolyInterface) _polyI;
       dtReal _ll;
       dtReal _checkX;
+      static bool _registrated;
   };
 }
 #endif	/* bVOSetPrescribedFirstElementSize_H */

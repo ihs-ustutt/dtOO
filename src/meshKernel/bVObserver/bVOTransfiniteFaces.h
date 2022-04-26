@@ -30,7 +30,8 @@ namespace dtOO {
       virtual void preUpdate( void );
     private:
       std::vector< std::string > _faceLabel;
-      std::vector< dtInt > _nE;     
+      std::vector< dtInt > _nE;
+      static bool _registrated;
   };
 }
 #endif	/* bVOTransfiniteFaces_H */

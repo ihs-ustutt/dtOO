@@ -11,7 +11,15 @@
 #include <meshEngine/dtGmshFace.h>
 
 #include <boost/assign.hpp>
+#include "bVOInterfaceFactory.h"
+
 namespace dtOO {  
+  bool bVOFaceToPatchRule::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOFaceToPatchRule, new bVOFaceToPatchRule())
+  );
+  
   bVOFaceToPatchRule::bVOFaceToPatchRule() {
   }
 

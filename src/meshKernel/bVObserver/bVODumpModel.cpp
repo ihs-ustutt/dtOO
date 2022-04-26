@@ -15,8 +15,15 @@
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVODumpModel::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVODumpModel, new bVODumpModel())
+  );
+  
   bVODumpModel::bVODumpModel() {
   }
 

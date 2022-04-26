@@ -11,10 +11,15 @@
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshVertex.h>
 #include <meshEngine/dtGmshFace.h>
-
-//#include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOAnalyticFunctionToFace::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOAnalyticFunctionToFace, new bVOAnalyticFunctionToFace())
+  );
+  
   bVOAnalyticFunctionToFace::bVOAnalyticFunctionToFace() {
   }
 

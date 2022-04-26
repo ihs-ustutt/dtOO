@@ -33,6 +33,7 @@ namespace dtOO {
       dtReal _relTol;
       dtReal _absTol;
       bool _copy;
+      static bool _registrated;
   };
 }
 #endif	/* bVOTransformMeshPoints_H */

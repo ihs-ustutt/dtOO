@@ -14,8 +14,15 @@
 #include <progHelper.h>
 
 #include <gmsh/Context.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOSetRotationalPeriodicity::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOSetRotationalPeriodicity, new bVOSetRotationalPeriodicity())
+  );
+  
   bVOSetRotationalPeriodicity::bVOSetRotationalPeriodicity() {
   }
 

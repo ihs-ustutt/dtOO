@@ -31,6 +31,7 @@ namespace dtOO {
     private:
       dtReal _relTol;
       dtReal _absTol;
+      static bool _registrated;
   };
 }
 #endif	/* bVOCoherenceCheck_H */

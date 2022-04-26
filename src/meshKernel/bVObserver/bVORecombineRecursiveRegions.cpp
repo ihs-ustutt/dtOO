@@ -6,6 +6,7 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
   bVORecombineRecursiveRegions::bVORecombineRecursiveRegions() {

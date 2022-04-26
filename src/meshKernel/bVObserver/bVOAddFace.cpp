@@ -8,8 +8,15 @@
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshFace.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOAddFace::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOAddFace, new bVOAddFace())
+  );
+  
   bVOAddFace::bVOAddFace() {
   }
 
