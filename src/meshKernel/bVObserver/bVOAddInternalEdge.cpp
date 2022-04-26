@@ -16,6 +16,12 @@
 #include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOAddInternalEdge::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOAddInternalEdge, new bVOAddInternalEdge())
+  );
+  
   bVOAddInternalEdge::bVOAddInternalEdge() {
   }
 

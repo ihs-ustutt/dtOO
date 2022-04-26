@@ -17,6 +17,12 @@
 #include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOReadMSH::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOReadMSH, new bVOReadMSH())
+  );
+  
   bVOReadMSH::bVOReadMSH() {
   }
 

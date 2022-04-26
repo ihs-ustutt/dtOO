@@ -31,6 +31,7 @@ namespace dtOO {
       std::string _filename;
   //    bool _saveAll;
       bool _mustRead;
+      static bool _registrated;      
   };
 }
 #endif	/* bVOReadMSH_H */
