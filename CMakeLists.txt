@@ -490,7 +490,9 @@ install(DIRECTORY cmake/ DESTINATION cmake FILES_MATCHING PATTERN "*")
 install(
   DIRECTORY scripts/ 
   DESTINATION scripts 
-  FILES_MATCHING PATTERN "[a-zA-Z]*"
+  FILES_MATCHING 
+  PATTERN "[a-zA-Z]*"
+  PATTERN "__init__.py"
   PATTERN "__pycache__" EXCLUDE
   PATTERN ".spyproject" EXCLUDE
 )
