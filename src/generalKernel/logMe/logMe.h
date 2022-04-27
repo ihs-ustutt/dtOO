@@ -303,14 +303,14 @@ namespace dtOO {
   #define dt__catch(functionname, eGWhat) \
     dtOO::FILELog().Get(dtOO::logERROR) \
       << "|    " << className() << "::"#functionname \
-      << " >> Catching instance of eGeneral from " \
+      << " >> Catching exception: " \
       << eGWhat \
       << std::endl \
       << std::endl
   #define dt__catchNoClass(functionname, eGWhat) \
     dtOO::FILELog().Get(dtOO::logERROR) \
       << "|    " << "::"#functionname \
-      << " >> Catching instance of eGeneral from " \
+      << " >> Catching exception: " \
       << eGWhat \
       << std::endl \
       << std::endl

@@ -684,13 +684,17 @@ namespace dtOO {
 			}			      
 		}		
 		catch (std::exception & eGenRef) {
-      _infoStr->setValue("catchException");
-      dt__catch(param(), eGenRef.what());
-    }
+      _infoStr->setValue( "catchException" );           
+			dt__catch(param(), eGenRef.what());
+		}
     catch(std::string & caught) {
       _infoStr->setValue("catchString");
       dt__catch(param(), caught.c_str());
-    }
+    }        
+    catch(...) {
+      _infoStr->setValue("catchUnknown");
+      dt__catch(param(), "Unknown exception type");
+    }        
     //
     // update state label
     //
@@ -858,6 +862,13 @@ namespace dtOO {
       _infoStr->setValue("catchString");
       
       dt__catch(compute(), caught.c_str());
+      
+      return STOP_PIPELINE;
+    }        
+    catch(...) {
+      _infoStr->setValue("catchUnknown");
+      
+      dt__catch(compute(), "Unknown exception type");
       
       return STOP_PIPELINE;
     }    
