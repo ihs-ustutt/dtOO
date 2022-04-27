@@ -11,8 +11,15 @@
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
+#include "boundedVolumeFactory.h"
 
 namespace dtOO {
+  bool map3dTo3dGmsh::_registrated 
+  =
+  boundedVolumeFactory::registrate(
+    dt__tmpPtr(map3dTo3dGmsh, new map3dTo3dGmsh())
+  );
+  
 	map3dTo3dGmsh::map3dTo3dGmsh() : gmshBoundedVolume() {
 	}
 

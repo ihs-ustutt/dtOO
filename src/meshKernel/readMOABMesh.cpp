@@ -21,8 +21,15 @@
 #include <gmsh/MVertex.h>
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MHexahedron.h>
+#include "boundedVolumeFactory.h"
 
 namespace dtOO {
+  bool readMOABMesh::_registrated 
+  =
+  boundedVolumeFactory::registrate(
+    dt__tmpPtr(readMOABMesh, new readMOABMesh())
+  );
+  
 	readMOABMesh::readMOABMesh() {
     _mb.reset( new moab::Core() );
 	}

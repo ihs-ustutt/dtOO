@@ -8,9 +8,15 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <meshEngine/dtGmshModel.h>
-
+#include "boundedVolumeFactory.h"
 
 namespace dtOO {
+  bool map2dTo3dTriangulated::_registrated 
+  =
+  boundedVolumeFactory::registrate(
+    dt__tmpPtr(map2dTo3dTriangulated, new map2dTo3dTriangulated())
+  );
+  
 	map2dTo3dTriangulated::map2dTo3dTriangulated() : gmshBoundedVolume() {
 	}
 

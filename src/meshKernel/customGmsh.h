@@ -52,6 +52,8 @@ namespace dtOO {
         aGPtrVec const * const aG,
         bVPtrVec const * const bV      
       );
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* customGmsh_H */

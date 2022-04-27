@@ -12,8 +12,15 @@
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
+#include "boundedVolumeFactory.h"
 
 namespace dtOO {
+  bool customGmsh::_registrated 
+  =
+  boundedVolumeFactory::registrate(
+    dt__tmpPtr(customGmsh, new customGmsh())
+  );
+  
   customGmsh::customGmsh() : gmshBoundedVolume() {
   }
 

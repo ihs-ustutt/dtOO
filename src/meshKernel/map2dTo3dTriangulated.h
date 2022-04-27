@@ -28,6 +28,7 @@ namespace dtOO {
         bVPtrVec const * const bV
       );
     private:
+      static bool _registrated;      
   };
 }
 

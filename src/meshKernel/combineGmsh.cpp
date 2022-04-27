@@ -21,8 +21,15 @@
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MPrism.h>
 #include <gmsh/MPyramid.h>
+#include "boundedVolumeFactory.h"
 
 namespace dtOO {
+  bool combineGmsh::_registrated 
+  =
+  boundedVolumeFactory::registrate(
+    dt__tmpPtr(combineGmsh, new combineGmsh())
+  );
+  
 	combineGmsh::combineGmsh() : gmshBoundedVolume() {
 	}
 

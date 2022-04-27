@@ -46,7 +46,8 @@ namespace dtOO {
       dtInt _nInternals;
       dtVector3 _vv;
       std::string _directory;
-      std::string _script;    
+      std::string _script;   
+      static bool _registrated;
   };
 }
 
