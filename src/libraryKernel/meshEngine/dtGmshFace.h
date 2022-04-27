@@ -44,7 +44,9 @@ namespace dtOO {
     dtVector3 normal( dtPoint2 const & uv ) const;
     SPoint2 reparamOnFace( dtPoint3 const ppXYZ ) const;
     SPoint2 reparamOnFace(::GVertex const * gv) const;
-    virtual SPoint2 parFromPoint(const SPoint3 &, bool onSurface) const; 
+    virtual SPoint2 parFromPoint(
+      const SPoint3 &, bool onSurface = true, bool convTestXYZ = false
+    ) const; 
     virtual GPoint closestPoint(
       const SPoint3 &queryPoint, const double initialGuess[2]
     ) const;    
