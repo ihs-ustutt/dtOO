@@ -247,7 +247,9 @@ namespace dtOO {
     }
   }  
   
-  SPoint2 dtGmshFace::parFromPoint(const SPoint3 &p, bool onSurface) const {
+  SPoint2 dtGmshFace::parFromPoint(
+    const SPoint3 &p, bool onSurface, bool convTestXYZ
+  ) const {
     dtPoint3 pp( p.x(), p.y(), p.z() );
     
     return reparamOnFace( pp );
