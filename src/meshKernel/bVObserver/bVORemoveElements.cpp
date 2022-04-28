@@ -82,6 +82,7 @@ namespace dtOO {
           aFace->quadrangles.clear();
           logC() << "Clear polygons ..." << std::endl;
           aFace->polygons.clear();
+          gm->untagPhysical(aFace);
         }
       }
     }
