@@ -30,6 +30,7 @@ namespace dtOO {
       virtual void preUpdate( void );
     private:
       std::vector< std::string > _rule;
+      static bool _registrated;
   };
 }
 #endif	/* bVOSetGradingToFaceRule_H */

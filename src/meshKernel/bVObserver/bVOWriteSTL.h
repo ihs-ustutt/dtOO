@@ -29,6 +29,7 @@ namespace dtOO {
       virtual void postUpdate( void );
     private:
       std::string _filename;
+      static bool _registrated;      
   };
 }
 #endif	/* bVOWriteSTL_H */

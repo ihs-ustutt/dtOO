@@ -9,8 +9,15 @@
 #include <meshEngine/dtGmshRegion.h>
 
 #include <gmsh.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOSetOrder::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOSetOrder, new bVOSetOrder())
+  );
+  
   bVOSetOrder::bVOSetOrder() {
   }
 

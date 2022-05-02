@@ -7,8 +7,15 @@
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOSetNElements::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOSetNElements, new bVOSetNElements())
+  );
+  
   bVOSetNElements::bVOSetNElements() {
   }
 

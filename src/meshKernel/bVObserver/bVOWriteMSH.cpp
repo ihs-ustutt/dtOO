@@ -9,8 +9,15 @@
 #include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <meshEngine/dtGmshModel.h>
+#include "bVOInterfaceFactory.h"
 
-namespace dtOO {  
+namespace dtOO {
+  bool bVOWriteMSH::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOWriteMSH, new bVOWriteMSH())
+  );
+  
   bVOWriteMSH::bVOWriteMSH() {
   }
 

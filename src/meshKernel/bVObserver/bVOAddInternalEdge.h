@@ -31,6 +31,7 @@ namespace dtOO {
       virtual void preUpdate( void );
     private:
       std::string _regionLabel;
+      static bool _registrated;      
   };
 }
 #endif	/* bVOAddInternalEdge_H */

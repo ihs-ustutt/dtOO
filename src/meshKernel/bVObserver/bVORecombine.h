@@ -29,6 +29,7 @@ namespace dtOO {
       virtual void preUpdate( void );
     private:
       std::vector< std::string > _faceLabel;
+      static bool _registrated;
   };
 }
 #endif	/* bVORecombine_H */

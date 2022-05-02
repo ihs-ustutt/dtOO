@@ -12,8 +12,17 @@
 #include <dtAnalysis.h>
 #include <Math/Functor.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOSetPrescribedFirstElementSize::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(
+      bVOSetPrescribedFirstElementSize, new bVOSetPrescribedFirstElementSize()
+    )
+  );
+  
   bVOSetPrescribedFirstElementSize::bVOSetPrescribedFirstElementSize() {
   }
 

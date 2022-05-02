@@ -30,6 +30,7 @@ namespace dtOO {
       virtual void preUpdate( void );
     private:
       dt__pVH(scaThreeD) _sca;
+      static bool _registrated;
   };
 }
 #endif	/* bVOAnalyticFunctionToFace_H */

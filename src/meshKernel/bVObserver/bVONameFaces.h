@@ -31,6 +31,7 @@ namespace dtOO {
     private:
       std::vector< std::string > _faceLabel;
       std::vector< std::string > _face;
+      static bool _registrated;
   };
 }
 #endif	/* bVONameFaces_H */

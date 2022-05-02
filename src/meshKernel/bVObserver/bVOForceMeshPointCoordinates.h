@@ -30,6 +30,7 @@ namespace dtOO {
     private:
       dt__pH(vec3dThreeD) _v3d;
       std::vector< std::string > _faceLabel;
+      static bool _registrated;
   };
 }
 #endif	/* bVOForceMeshPointCoordinates_H */

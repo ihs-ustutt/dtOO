@@ -13,8 +13,15 @@
 #include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVORemoveRegions::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVORemoveRegions, new bVORemoveRegions())
+  );
+  
   bVORemoveRegions::bVORemoveRegions() {
   }
 

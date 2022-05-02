@@ -31,6 +31,7 @@ namespace dtOO {
     private:
       std::vector< std::string > _patchRule;
       std::vector< std::string > _regRule;
+      static bool _registrated;
   };
 }
 #endif	/* bVOFaceToPatchRule_H */

@@ -9,8 +9,17 @@
 #include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOSetPrescribedMeshSizeAtPoints::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(
+      bVOSetPrescribedMeshSizeAtPoints, new bVOSetPrescribedMeshSizeAtPoints()
+    )
+  );
+  
   bVOSetPrescribedMeshSizeAtPoints::bVOSetPrescribedMeshSizeAtPoints() {
   }
 

@@ -17,8 +17,17 @@
 #include <gmsh.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
+#include "boundedVolumeFactory.h"
 
 namespace dtOO {
+  bool map3dTo3dWithInternalTurboGrid::_registrated 
+  =
+  boundedVolumeFactory::registrate(
+    dt__tmpPtr(
+      map3dTo3dWithInternalTurboGrid, new map3dTo3dWithInternalTurboGrid()
+    )
+  );
+  
 	map3dTo3dWithInternalTurboGrid::map3dTo3dWithInternalTurboGrid(
   ) : gmshBoundedVolume() {
     

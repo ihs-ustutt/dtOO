@@ -31,6 +31,7 @@ namespace dtOO {
       using bVOInterface::postUpdate;
     private:
       std::vector< std::string > _regionLabel;
+      static bool _registrated;
   };
 }
 #endif	/* bVONameRegions_H */

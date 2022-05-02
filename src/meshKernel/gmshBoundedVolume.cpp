@@ -30,8 +30,15 @@
 #if defined(DTOO_HAS_OpenFOAM) || defined(DTOO_HAS_FOAMEXT)
   #include <meshEngine/dtFoamLibrary.h>
 #endif
+#include "boundedVolumeFactory.h"
 
 namespace dtOO {
+  bool gmshBoundedVolume::_registrated 
+  =
+  boundedVolumeFactory::registrate(
+    dt__tmpPtr(gmshBoundedVolume, new gmshBoundedVolume())
+  );
+  
 	gmshBoundedVolume::gmshBoundedVolume() : boundedVolume() {
 	  gmsh::initialize();
 	}

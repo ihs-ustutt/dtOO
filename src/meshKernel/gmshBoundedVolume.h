@@ -47,6 +47,8 @@ namespace dtOO {
       void updateBoundingBox( void );
     protected:
       dtGmshModel * _gm;
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* GMSHBOUNDEDVOLUME_H */

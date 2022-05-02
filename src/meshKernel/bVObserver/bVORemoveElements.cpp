@@ -11,8 +11,15 @@
 #include <boundedVolume.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVORemoveElements::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVORemoveElements, new bVORemoveElements())
+  );
+  
   bVORemoveElements::bVORemoveElements() {
   }
 
@@ -75,6 +82,7 @@ namespace dtOO {
           aFace->quadrangles.clear();
           logC() << "Clear polygons ..." << std::endl;
           aFace->polygons.clear();
+          gm->untagPhysical(aFace);
         }
       }
     }

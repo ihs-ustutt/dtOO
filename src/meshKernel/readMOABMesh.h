@@ -56,6 +56,7 @@ namespace dtOO {
     std::map< ::moab::EntityHandle, ::MVertex * > _mv_MOAB;
     std::map< std::string, dtGmshFace * > _ff_string;
     std::map< std::string, dtGmshRegion * > _rr_string;
+    static bool _registrated;
   };
 }
 

@@ -89,9 +89,9 @@ if (NOT FOAMEXT_FOUND)
   if (OpenFOAM_FOUND)
     add_definitions(-DDTOO_HAS_OpenFOAM)
       find_package(
-        OpenFOAMWixingPlane
+        OpenFOAMMixingPlane
         COMPONENTS 
-        wixingPlane
+        mixingPlane
       )
   endif (OpenFOAM_FOUND)
 endif (NOT FOAMEXT_FOUND)
@@ -246,9 +246,9 @@ else (FOAMEXT_FOUND)
       ${OpenFOAM_INCLUDE_DIR}/TurbulenceModels/incompressible/lnInclude
       ${OpenFOAM_INCLUDE_DIR}/transportModels/incompressible/lnInclude
     )
-    if (OpenFOAMWixingPlane_FOUND)
-      include_directories( ${OpenFOAMWixingPlane_INCLUDE_DIR} )
-    endif (OpenFOAMWixingPlane_FOUND)
+    if (OpenFOAMMixingPlane_FOUND)
+      include_directories( ${OpenFOAMMixingPlane_INCLUDE_DIR} )
+    endif (OpenFOAMMixingPlane_FOUND)
   endif (OpenFOAM_FOUND)
 endif (FOAMEXT_FOUND)
 
@@ -398,18 +398,18 @@ if (OpenFOAM_FOUND)
     "${OpenFOAM_LINK_DIRECTORY}/openmpi-system"
   )
 
-    if (OpenFOAMWixingPlane_FOUND)
+    if (OpenFOAMMixingPlane_FOUND)
     target_link_libraries(
       dtOO 
-      ${OpenFOAMWixingPlane_LIBRARIES}
+      ${OpenFOAMMixingPlane_LIBRARIES}
     )
     set(
-      _configLibList "${_configLibList};${OpenFOAMWixingPlane_LIBRARIES}"
+      _configLibList "${_configLibList};${OpenFOAMMixingPlane_LIBRARIES}"
     )
     set(
-      _rpathList "${_rpathList};${OpenFOAMWixingPlane_LINK_DIRECTORY}"
+      _rpathList "${_rpathList};${OpenFOAMMixingPlane_LINK_DIRECTORY}"
     )      
-    endif (OpenFOAMWixingPlane_FOUND)
+    endif (OpenFOAMMixingPlane_FOUND)
 endif (OpenFOAM_FOUND)
 
 if (MPI_FOUND)

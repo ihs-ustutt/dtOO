@@ -21,8 +21,15 @@
 #include <gmsh/MPyramid.h>
 #include <gmsh/MPrism.h>
 #include <gmsh/MElementOctree.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOEvilGodfather::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOEvilGodfather, new bVOEvilGodfather())
+  );
+  
   bVOEvilGodfather::bVOEvilGodfather() {
   }
 

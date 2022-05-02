@@ -34,6 +34,7 @@ namespace dtOO {
       std::vector< std::string > _edgeLabel;
       std::vector< dtReal > _grading;
       std::vector< dtReal > _type;
+      static bool _registrated;
   };
 }
 #endif	/* bVOSetGrading_H */

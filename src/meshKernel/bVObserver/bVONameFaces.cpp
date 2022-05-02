@@ -9,8 +9,15 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshFace.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVONameFaces::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVONameFaces, new bVONameFaces())
+  );
+  
   bVONameFaces::bVONameFaces() {
   }
 

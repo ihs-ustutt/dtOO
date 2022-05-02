@@ -12,8 +12,15 @@
 #include <meshEngine/dtGmshFace.h>
 
 #include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOAnalyticGeometryToFace::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOAnalyticGeometryToFace, new bVOAnalyticGeometryToFace())
+  );
+  
   bVOAnalyticGeometryToFace::bVOAnalyticGeometryToFace() {
   }
 

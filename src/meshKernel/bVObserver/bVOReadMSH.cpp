@@ -14,8 +14,15 @@
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOReadMSH::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOReadMSH, new bVOReadMSH())
+  );
+  
   bVOReadMSH::bVOReadMSH() {
   }
 

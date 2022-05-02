@@ -34,6 +34,7 @@ namespace dtOO {
       vectorHandling< dtGmshModel const * > _dtGM;
       dtReal _relTol;
       dtReal _absTol;
+      static bool _registrated;
   };
 }
 #endif	/* combineGmsh_H */

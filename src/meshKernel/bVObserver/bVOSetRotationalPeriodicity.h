@@ -33,6 +33,7 @@ namespace dtOO {
       std::string _faceMaster;
       std::string _faceSlave;
       xYz_rPhiZ const * _dtT;
+      static bool _registrated;
   };
 }
 #endif	/* bVOSetRotationalPeriodicity_H */

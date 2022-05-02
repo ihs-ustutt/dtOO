@@ -20,8 +20,15 @@
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MPrism.h>
 #include <gmsh/MPyramid.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOCoherenceCheck::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOCoherenceCheck, new bVOCoherenceCheck())
+  );
+  
   bVOCoherenceCheck::bVOCoherenceCheck() {
   }
 

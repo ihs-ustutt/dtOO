@@ -7,8 +7,15 @@
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshFace.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOTransfiniteRegions::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOTransfiniteRegions, new bVOTransfiniteRegions())
+  );
+  
   bVOTransfiniteRegions::bVOTransfiniteRegions() {
   }
 

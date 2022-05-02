@@ -20,8 +20,15 @@
 #include <gmsh/MHexahedron.h>
 #include <gmsh/MPrism.h>
 #include <gmsh/MPyramid.h>
+#include "bVOInterfaceFactory.h"
 
-namespace dtOO {  
+namespace dtOO {
+  bool bVOTransformMeshPoints::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOTransformMeshPoints, new bVOTransformMeshPoints())
+  );
+  
   bVOTransformMeshPoints::bVOTransformMeshPoints() {
   }
 

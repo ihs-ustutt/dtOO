@@ -6,8 +6,15 @@
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshFace.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOTransfiniteFaces::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOTransfiniteFaces, new bVOTransfiniteFaces())
+  );
+  
   bVOTransfiniteFaces::bVOTransfiniteFaces() {
   }
 

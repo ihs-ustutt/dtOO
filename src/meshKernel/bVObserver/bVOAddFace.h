@@ -32,6 +32,7 @@ namespace dtOO {
     private:
       std::string _regionLabel;
       std::vector< std::string > _faceLabel;
+      static bool _registrated;
   };
 }
 #endif	/* bVOAddFace_H */

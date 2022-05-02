@@ -49,6 +49,7 @@ namespace dtOO {
       std::vector< dtReal > _edgeWeight;
       std::vector< dtReal > _faceWeight;
       std::vector< dtReal > _regionWeight;
+      static bool _registrated;
   };
 }
 #endif	/* bVOPMeshRule_H */

@@ -14,8 +14,18 @@
 #include <progHelper.h>
 
 #include <gmsh/Context.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOSetTranslationalPeriodicity::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(
+      bVOSetTranslationalPeriodicity, 
+      new bVOSetTranslationalPeriodicity()
+    )
+  );
+  
   bVOSetTranslationalPeriodicity::bVOSetTranslationalPeriodicity() {
   }
 

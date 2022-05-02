@@ -11,8 +11,15 @@
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
+#include "bVOInterfaceFactory.h"
 
 namespace dtOO {  
+  bool bVOSetGrading::_registrated 
+  =
+  bVOInterfaceFactory::registrate(
+    dt__tmpPtr(bVOSetGrading, new bVOSetGrading())
+  );
+  
   bVOSetGrading::bVOSetGrading() {
   }
 

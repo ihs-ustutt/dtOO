@@ -30,6 +30,7 @@ namespace dtOO {
       virtual void preUpdate( void );
     private:
       std::vector< dtReal > _meshSize;
+      static bool _registrated;
   };
 }
 #endif	/* bVOSetPrescribedMeshSizeAtPoints_H */

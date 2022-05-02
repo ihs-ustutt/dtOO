@@ -28,6 +28,8 @@ namespace dtOO {
         aGPtrVec const * const aG,
         bVPtrVec const * const bV
       );    
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* map3dTo3dGmsh_H */
