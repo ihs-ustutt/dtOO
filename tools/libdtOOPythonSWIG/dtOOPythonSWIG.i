@@ -2,6 +2,7 @@
 %{
 #include <logMe/logMe.h>
 #include <mainConceptFwd.h>
+#include <exceptionHeaven/eGeneral.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
@@ -30,6 +31,17 @@ using namespace dtOO;
 #endif
 %}
 
+namespace dtOO {
+  class eGeneral : public std::exception {
+  public:
+    eGeneral();
+    eGeneral( std::ostream & msg);
+    virtual ~eGeneral();
+    void clear(void);
+    virtual const char* what() const;
+  };
+}
+
 %include <std_string.i>
 #ifdef DTOO_HAS_PYTHONOCC
 %import Standard.i
@@ -42,6 +54,10 @@ using namespace dtOO;
 	try {
 		$action
   } 
+  catch (eGeneral &e) {
+    PyErr_SetString( PyExc_Exception, const_cast<char*>(e.what()) );  
+    SWIG_fail;
+	}  
   catch (...) {
     PyErr_SetString(PyExc_Exception, "dtOOPythonSWIG catch exception");
     SWIG_fail;
