@@ -7,11 +7,12 @@ import logging
 import io
 import json
 import ast
+from pyDtOO.dtGod import dtGod
 
 class dtClusteredSingletonState:
   PREFIX = 'A1'
   CASE = ''
-  LOCKDIR = './runLock'
+  LOCKDIR = dtGod().LockPath().FullName()
   PIDDIR = './runPid'
   DATADIR = './runData'
   NPROC = 1
@@ -20,7 +21,7 @@ class dtClusteredSingletonState:
   ADDDATADEF = []
   PROB = None
 
-  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock')
+  @lockutils.synchronized('fileIO', external=True)
   def __init__(self, id=-1, defObj=None, defFit=None):
     #
     # get id from state
@@ -185,7 +186,7 @@ class dtClusteredSingletonState:
 
     return rStr
 
-  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock')
+  @lockutils.synchronized('fileIO', external=True)
   def update( self, fileName, value ):
     fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
     tmpF = tempfile.TemporaryFile(mode='r+', encoding='utf-8')
