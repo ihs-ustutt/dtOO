@@ -285,6 +285,7 @@ class dtClusteredSingletonState:
     return arr
 
   @staticmethod
+  @lockutils.synchronized('fileIO', external=True)
   def fullRead( addFile=None, addDtype=float ):
     if \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
@@ -326,6 +327,7 @@ class dtClusteredSingletonState:
       return ID, OBJ, FIT
 
   @staticmethod
+  @lockutils.synchronized('fileIO', external=True)
   def fullAddRead( addFileV, addDtypeV ):
     retMap = {}
 
