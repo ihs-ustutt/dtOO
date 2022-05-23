@@ -5,12 +5,10 @@ import warnings
 from typing import Union
 
 class dtGod:
-  """
-  Singleton for constants, lock path, ...
+  """Singleton for constants, lock path, ...
 
   Attributes
   ----------
-
   instance : __dtGod | None
 
   """
@@ -23,45 +21,73 @@ class dtGod:
   instance: Union[__dtGod, None] = None
 
   def __init__(self, g: float=9.81, rho: float=1000.0) -> None:
-    """
-
+    """Constructor.
 
     Parameters
     ----------
     g : float, optional
-      DESCRIPTION. The default is 9.81.
+      Gravitational constant. The default is 9.81.
     rho : float, optional
-      DESCRIPTION. The default is 1000.0.
+      Density. The default is 1000.0.
 
     Returns
     -------
     None
-      DESCRIPTION.
 
     """
     if not dtGod.instance:
       dtGod.instance = dtGod.__dtGod(g, rho)
 
   def Murder( self ) -> None:
-    """
-    Destroy self.instance
-
+    """Destroy instance.
 
     Returns
     -------
-    None.
+    None
 
     """
     logging.info('Murder dtGod')
     dtGod.instance = None
 
-  def G( self ):
+  def G( self ) -> float:
+    """
+    Get gravitational constant.
+
+    Returns
+    -------
+    float
+      Gravitational constant.
+
+    """
     return dtGod.instance.g_
 
-  def Rho( self ):
+  def Rho( self ) -> float:
+    """Get density.
+
+    Returns
+    -------
+    float
+      Density.
+
+    """
     return dtGod.instance.rho_
 
   def LockPath( self ) -> dtDirectory:
+    """Get lock path.
+
+    Function checks if environment variable `OSLO_LOCK_PATH`
+    is defined.
+
+    Returns
+    -------
+    dtDirectory
+      Lock path.
+
+    Warns
+    -----
+    Warning if environment variable `OSLO_LOCK_PATH` not defined.
+
+    """
     if "OSLO_LOCK_PATH" not in os.environ:
       warnings.warn("Environment variable OSLO_LOCK_PATH not defined.")
       return dtDirectory("")
