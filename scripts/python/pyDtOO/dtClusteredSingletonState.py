@@ -12,7 +12,7 @@ from pyDtOO.dtGod import dtGod
 class dtClusteredSingletonState:
   PREFIX = 'A1'
   CASE = ''
-  LOCKDIR = dtGod().LockPath().FullName()
+  LOCKDIR = dtGod().LockPath()
   PIDDIR = './runPid'
   DATADIR = './runData'
   NPROC = 1
