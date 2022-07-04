@@ -583,6 +583,7 @@ class dtClusteredSingletonState:
     return arr
 
   @staticmethod
+  @lockutils.synchronized('fileIO', external=True)
   def fullRead(
     addFile: Union[ None, List[str] ]=None,
     addDtype: Union[float, int, dict]=float
@@ -649,6 +650,7 @@ class dtClusteredSingletonState:
       return ID, OBJ, FIT
 
   @staticmethod
+  @lockutils.synchronized('fileIO', external=True)
   def fullAddRead(
     addFileV: np.ndarray, addDtypeV: np.ndarray
   ) -> List[np.ndarray]:
