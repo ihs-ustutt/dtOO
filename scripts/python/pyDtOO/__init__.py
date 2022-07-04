@@ -5,7 +5,9 @@ from .dtCoordCrossField import dtCoordCrossField
 from .dtCylTrf import dtCylTrf
 from .dtDeveloping import dtDeveloping
 from .dtField import dtField
+from .dtPath import dtPath
 from .dtFile import dtFile
+from .dtDirectory import dtDirectory
 from .dtForceDeveloping import dtForceDeveloping
 from .dtGod import dtGod
 from .dtScalarDeveloping import dtScalarDeveloping

@@ -1,5 +1,6 @@
-#An example of a class
 import logging
+import os
+from pyDtOO.dtDirectory import dtDirectory
 
 class dtGod:
   class __dtGod:
@@ -22,3 +23,8 @@ class dtGod:
 
   def Rho( self ):
     return dtGod.instance.rho_
+
+  def LockPath( self ):
+    if "OSLO_LOCK_PATH" not in os.environ:
+      raise RuntimeError("Environment variable OSLO_LOCK_PATH not defined.")
+    return dtDirectory( os.environ['OSLO_LOCK_PATH'] )

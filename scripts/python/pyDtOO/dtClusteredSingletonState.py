@@ -7,11 +7,12 @@ import logging
 import io
 import json
 import ast
+from pyDtOO.dtGod import dtGod
 
 class dtClusteredSingletonState:
   PREFIX = 'A1'
   CASE = ''
-  LOCKDIR = './runLock'
+  LOCKDIR = dtGod().LockPath()
   PIDDIR = './runPid'
   DATADIR = './runData'
   NPROC = 1
@@ -20,7 +21,7 @@ class dtClusteredSingletonState:
   ADDDATADEF = []
   PROB = None
 
-  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock')
+  @lockutils.synchronized('fileIO', external=True)
   def __init__(self, id=-1, defObj=None, defFit=None):
     #
     # get id from state
@@ -53,7 +54,7 @@ class dtClusteredSingletonState:
       #
       lastFileIndex = -1
       for aFile in glob.glob(dtClusteredSingletonState.DATADIR+'/id.*'):
-        thisFileIndex = int( 
+        thisFileIndex = int(
           aFile.replace(
             dtClusteredSingletonState.DATADIR+'/id.',
             ''
@@ -77,14 +78,14 @@ class dtClusteredSingletonState:
       io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), mode='a', encoding='utf-8').write( str(self.cur_id)+'\n' )
       io.open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), mode='a', encoding='utf-8').write( dtClusteredSingletonState.PREFIX+'_'+str(self.cur_id)+'\n' )
       if defObj is not None:
-        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='a', encoding='utf-8').write( self.formatToWrite(defObj)+'\n' )    
+        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='a', encoding='utf-8').write( self.formatToWrite(defObj)+'\n' )
       else:
-        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='a', encoding='utf-8').write( '__empty__\n' )    
+        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='a', encoding='utf-8').write( '__empty__\n' )
       if defFit is not None:
         io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='a', encoding='utf-8').write( self.formatToWrite(defFit)+'\n'  )
       else:
-        io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='a', encoding='utf-8').write( '__empty__\n' )    
- 
+        io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='a', encoding='utf-8').write( '__empty__\n' )
+
       if np.size(dtClusteredSingletonState.ADDDATA) != np.shape(dtClusteredSingletonState.ADDDATADEF)[0]:
         raise ValueError(
           'Size of ADDDATA is not equal to size of ADDDATADEF  ' + str(dtClusteredSingletonState.ADDDATA) + ' ' + str(dtClusteredSingletonState.ADDDATADEF)
@@ -97,7 +98,7 @@ class dtClusteredSingletonState:
         else:
           io.open(
             dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), mode='a', encoding='utf-8'
-          ).write( self.formatToWrite(dtClusteredSingletonState.ADDDATADEF[i])+'\n' )          
+          ).write( self.formatToWrite(dtClusteredSingletonState.ADDDATADEF[i])+'\n' )
     #
     # existing id
     #
@@ -109,29 +110,29 @@ class dtClusteredSingletonState:
         )
       self.cur_id = id
 
-    self.cur_state = dtClusteredSingletonState.PREFIX+'_'+str(self.cur_id)  
+    self.cur_state = dtClusteredSingletonState.PREFIX+'_'+str(self.cur_id)
 
   @staticmethod
   def backup( stamp='' ):
     pass
 
-  @staticmethod  
+  @staticmethod
   def islandEvolutes( isl, evo, x, f ):
     pass
 
-  @staticmethod  
+  @staticmethod
   def islandFertilizes( isl, evo, x, f ):
-    pass  
+    pass
 
   @staticmethod
   def fileIndex( id ):
     return int( (id  - 1) / 1000 )
-    
+
   @staticmethod
   def currentMaxId():
     lastFileIndex = -1
     for aFile in glob.glob(dtClusteredSingletonState.DATADIR+'/id.*'):
-      thisFileIndex = int( 
+      thisFileIndex = int(
         aFile.replace(
           dtClusteredSingletonState.DATADIR+'/id.',
           ''
@@ -169,7 +170,7 @@ class dtClusteredSingletonState:
       valueAsArr = np.array(value)
 
       valueAsStr = np.array2string(
-        valueAsArr, 
+        valueAsArr,
         formatter = {
           'float_kind':lambda valueAsArr: "%s" % repr(valueAsArr)
         }
@@ -182,10 +183,10 @@ class dtClusteredSingletonState:
       rStr = json.dumps(value)
     else:
       logging.warning('Try to write unknown datatype.')
-      
+
     return rStr
-  
-  @lockutils.synchronized('fileIO', external=True, lock_path='./runLock')
+
+  @lockutils.synchronized('fileIO', external=True)
   def update( self, fileName, value ):
     fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
     tmpF = tempfile.TemporaryFile(mode='r+', encoding='utf-8')
@@ -221,10 +222,10 @@ class dtClusteredSingletonState:
     try:
       ret = np.fromstring( self.read(fName), dtype=float, sep=' ' )
     except:
-      logging.warning('exception in numpy.fromstring : %s', self.read(fName)) 
+      logging.warning('exception in numpy.fromstring : %s', self.read(fName))
 
     if ( ret.size == 0):
-      logging.warning('invalid float array : %s', self.read(fName)) 
+      logging.warning('invalid float array : %s', self.read(fName))
 
     return ret
 
@@ -233,23 +234,23 @@ class dtClusteredSingletonState:
     try:
       ret = int( self.read(fName) )
     except:
-      logging.warning('invalid integer : %s', self.read(fName)) 
+      logging.warning('invalid integer : %s', self.read(fName))
     return ret
 
   def objective( self ):
     return self.readFloatArray( 'objective' )
 
   def fitness( self ):
-    return self.readFloatArray( 'fitness' )  
+    return self.readFloatArray( 'fitness' )
 
   def readDict( self, fName ):
     ret = {}
     try:
       ret = dict( ast.literal_eval( self.read(fName) ) )
     except:
-      logging.warning('invalid dict : %s', self.read(fName)) 
+      logging.warning('invalid dict : %s', self.read(fName))
     return ret
-  
+
   @staticmethod
   def readIdFromObjective( obj ):
     bestFit = float('inf')
@@ -266,12 +267,25 @@ class dtClusteredSingletonState:
 
     if (bestFit > .1):
       logging.warning(
-        'readIdFromObjective( %s ) -> bestId = %d, bestFit = %f ', 
+        'readIdFromObjective( %s ) -> bestId = %d, bestFit = %f ',
         bestId, bestId, bestFit
       )
     return bestId
-  
+
   @staticmethod
+  def oneD( arr ):
+    if arr.ndim == 0:
+      arr = arr.reshape((1,))
+    return arr
+
+  @staticmethod
+  def twoD( arr ):
+    if arr.ndim == 1:
+      arr = arr.reshape((1,np.size(arr)))
+    return arr
+
+  @staticmethod
+  @lockutils.synchronized('fileIO', external=True)
   def fullRead( addFile=None, addDtype=float ):
     if \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
@@ -281,23 +295,23 @@ class dtClusteredSingletonState:
         np.zeros(0, int), \
         np.zeros((0,0), int), \
         np.zeros((0,0), int)
-        
-    maxFileIndex = dtClusteredSingletonState.fileIndex( 
-      dtClusteredSingletonState.currentMaxId() 
+
+    maxFileIndex = dtClusteredSingletonState.fileIndex(
+      dtClusteredSingletonState.currentMaxId()
     )
-        
+
     FIT = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/fitness.0')
     OBJ = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/objective.0')
     ID = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/id.0', dtype=int)
     ADD = None
     for thisIndex in range(maxFileIndex):
-      logging.info('fullRead file index %d', thisIndex) 
+      logging.info('fullRead file index %d', thisIndex)
       f = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/fitness.'+str(thisIndex+1))
       o = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/objective.'+str(thisIndex+1))
       i = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/id.'+str(thisIndex+1), dtype=int)
-      FIT = np.concatenate( (FIT, f) )
-      OBJ = np.concatenate( (OBJ, o) )
-      ID = np.concatenate( (ID, i) )
+      FIT = np.concatenate( (FIT, dtClusteredSingletonState.oneD(f)) )
+      OBJ = np.concatenate( (OBJ, dtClusteredSingletonState.twoD(o)) )
+      ID = np.concatenate( (ID, dtClusteredSingletonState.oneD(i)) )
     if addFile is not None:
       ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
       for thisIndex in range(maxFileIndex):
@@ -313,18 +327,19 @@ class dtClusteredSingletonState:
       return ID, OBJ, FIT
 
   @staticmethod
+  @lockutils.synchronized('fileIO', external=True)
   def fullAddRead( addFileV, addDtypeV ):
     retMap = {}
-    
+
     if \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/objective.0') and \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/id.0'):
       pass
-    
+
     else:
-      maxFileIndex = dtClusteredSingletonState.fileIndex( 
-        dtClusteredSingletonState.currentMaxId() 
+      maxFileIndex = dtClusteredSingletonState.fileIndex(
+        dtClusteredSingletonState.currentMaxId()
       )
 
       for addFile, addDtype in zip(addFileV, addDtypeV):

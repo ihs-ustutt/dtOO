@@ -1,15 +1,8 @@
-import logging
-import os
+from pyDtOO.dtPath import dtPath
 
-class dtFile:
+class dtFile(dtPath):
   def __init__(self, fn):
-    self.fn_ = fn
-  
+    super().__init__(fn)
+ 
   def FileName(self):
-    return os.path.basename(self.fn_)
-
-  def DirName(self):
-    return os.path.dirname(self.fn_)
-  
-  def FullName(self):
-    return self.fn_
+    return super().BaseName()
