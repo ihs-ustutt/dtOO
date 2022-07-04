@@ -35,10 +35,11 @@ class dtPath:
 
     Warns
     -----
-    Warning if last character is equal `=`.
+    Warning if last character is equal `/`.
 
     """
-    if fn.find("/")>=0:
+
+    if fn.rstrip("/") != fn:
       logging.warning("Last character of > fn[-1]==/ < -> rstrip")
     self.fn_ = fn.rstrip("/")
 
