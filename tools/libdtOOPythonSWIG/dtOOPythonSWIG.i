@@ -6,6 +6,8 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaMuParserOneD.h>
 #include <analyticFunctionHeaven/vec3dFunction.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
@@ -77,6 +79,8 @@ namespace dtOO {
 %include <baseContainerHeaven/baseContainer.h>
 %include <constValueHeaven/constValue.h>
 %include <analyticFunctionHeaven/analyticFunction.h>
+%include <analyticFunctionHeaven/scaFunction.h>
+%include <analyticFunctionHeaven/scaMuParserOneD.h>
 %include <analyticGeometryHeaven/analyticGeometry.h>
 %include <boundedVolume.h>
 %include <dtCase.h>
