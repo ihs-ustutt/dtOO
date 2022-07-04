@@ -1,30 +1,95 @@
 import logging
 import os
 from pyDtOO.dtDirectory import dtDirectory
+import warnings
+from typing import Union
 
 class dtGod:
-  class __dtGod:
-    def __init__(self, g, rho):
-        logging.info('Create dtGod')
-        self.g_ = g
-        self.rho_ = rho
-  instance = None
+  """Singleton for constants, lock path, ...
 
-  def __init__(self, g=9.81, rho=1000.):
+  Attributes
+  ----------
+  instance : __dtGod | None
+
+  """
+  class __dtGod:
+    def __init__(self, g: float, rho: float) -> None:
+      logging.info('Create dtGod')
+      self.g_ = g
+      self.rho_ = rho
+
+  instance: Union[__dtGod, None] = None
+
+  def __init__(self, g: float=9.81, rho: float=1000.0) -> None:
+    """Constructor.
+
+    Parameters
+    ----------
+    g : float, optional
+      Gravitational constant. The default is 9.81.
+    rho : float, optional
+      Density. The default is 1000.0.
+
+    Returns
+    -------
+    None
+
+    """
     if not dtGod.instance:
       dtGod.instance = dtGod.__dtGod(g, rho)
 
-  def Murder( self ):
+  def Murder( self ) -> None:
+    """Destroy instance.
+
+    Returns
+    -------
+    None
+
+    """
     logging.info('Murder dtGod')
     dtGod.instance = None
 
-  def G( self ):
+  def G( self ) -> float:
+    """
+    Get gravitational constant.
+
+    Returns
+    -------
+    float
+      Gravitational constant.
+
+    """
     return dtGod.instance.g_
 
-  def Rho( self ):
+  def Rho( self ) -> float:
+    """Get density.
+
+    Returns
+    -------
+    float
+      Density.
+
+    """
     return dtGod.instance.rho_
 
-  def LockPath( self ):
+  def LockPath( self ) -> dtDirectory:
+    """Get lock path.
+
+    Function checks if environment variable `OSLO_LOCK_PATH`
+    is defined.
+
+    Returns
+    -------
+    dtDirectory
+      Lock path.
+
+    Warns
+    -----
+    Warning if environment variable `OSLO_LOCK_PATH` not defined.
+
+    """
     if "OSLO_LOCK_PATH" not in os.environ:
-      raise RuntimeError("Environment variable OSLO_LOCK_PATH not defined.")
-    return dtDirectory( os.environ['OSLO_LOCK_PATH'] )
+      warnings.warn("Environment variable OSLO_LOCK_PATH not defined.")
+      return dtDirectory("")
+    else:
+      return dtDirectory( os.environ['OSLO_LOCK_PATH'] )

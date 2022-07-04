@@ -7,22 +7,141 @@ import logging
 import io
 import json
 import ast
+from pyDtOO.dtDirectory import dtDirectory
 from pyDtOO.dtGod import dtGod
+from typing import List, Union, Any, Tuple
 
 class dtClusteredSingletonState:
-  PREFIX = 'A1'
-  CASE = ''
-  LOCKDIR = dtGod().LockPath()
-  PIDDIR = './runPid'
-  DATADIR = './runData'
-  NPROC = 1
-  SIMSH = ''
-  ADDDATA = []
-  ADDDATADEF = []
-  PROB = None
+  """Manage database.
+
+  Connection to the database that holds at least fitness and objective values.
+  Objectives (inputs, parameters, degrees of freedom, ...) are the values that
+  are changed during optimization to improve the fitness (result value, ...) of
+  the problem. Every individual has an ID and a state as integer and str,
+  respectively. This class also stores optional (additional) data for each
+  individual. A data value is in the simplest case a scalar value as integer
+  or float. But it can be also a float array or a dict.
+
+  The class stores all data in the directory `DATADIR`. Fitness value,
+  objective value, ID and state are stored in the files `fitness.*`,
+  `objective.*`, `id.*` and `state.*`, respectively. If additional data is
+  used the files are named according to the `ADDDATA` array. The data in
+  `DATADIR` are divided in chunks of 1000 lines per file.
+
+  Attributes
+  ----------
+  PREFIX : str
+    Prefix for the state label. The default is 'A1'
+  CASE : str
+    Label of the simulation case. The default is ''
+  LOCKDIR : dtDirectory
+    Directory of the lock directory. The default is dtGod().LockPath()
+  PIDDIR : str
+    Directory of the PIDDIR. The default is './runPid'
+  DATADIR : str
+    Directory to store the data. The default is './runData'
+  NPROC : int
+    Number of processes. The default is 1
+  SIMSH : str
+    Name of the simulation script. The default is ''
+  ADDDATA : List[str]
+    Array of additional (optional) data. The default is []
+  ADDDATADEF : List[ Union[ List[float], int, dict] ]
+    Default values for additional data. The default is []
+  PROB : Any
+    Problem class. The default is None
+  id_ : float
+    ID of individual
+  state_ : str
+    State of individual
+
+  Examples
+  --------
+    >>> from pyDtOO import dtClusteredSingletonState
+
+    Add two optional values for each individual
+
+    >>> dtClusteredSingletonState.ADDDATA = ['addFloat', 'history']
+    >>> dtClusteredSingletonState.ADDDATADEF = [ [1.0,], {},]
+
+    Create first individual
+
+    >>> dtClusteredSingletonState()
+
+    Access individual by id and write data
+
+    >>> cSS = dtClusteredSingletonState(1)
+    >>> cSS.update('fitness', 1.0)
+    >>> cSS.update('objective', [1.0,2.0])
+    >>> cSS.update('history', {'float' : 1.0, 'str' : 'myStr'})
+
+    Read default data from individual
+
+    >>> cSS.id()
+    Out: 1
+    >>> cSS.state()
+    Out: 'A1_1'
+    >>> cSS.objective()
+    Out: array([1., 2.])
+    >>> cSS.fitness()
+    Out: array([1.])
+
+    Read additional data as str
+
+    >>> cSS.read('addFloat')
+    Out: '1.0'
+    >>> cSS.read('history')
+    Out: "{'float': 1.0, 'str': 'myStr'}"
+
+    Read additional data as specified type
+
+    >>> cSS.readFloatArray('addFloat')
+    Out: array([1.])
+    >>> cSS.readDict('history')
+    Out: {'float': 1.0, 'str': 'myStr'}
+
+  """
+
+
+  PREFIX: str = 'A1'
+  CASE: str = ''
+  LOCKDIR: dtDirectory = dtGod().LockPath()
+  PIDDIR: str = './runPid'
+  DATADIR: str = './runData'
+  NPROC: int = 1
+  SIMSH: str = ''
+  ADDDATA: List[str] = []
+  ADDDATADEF: List[ Union[ List[float], int, dict] ] = []
+  PROB: Any = None
 
   @lockutils.synchronized('fileIO', external=True)
-  def __init__(self, id=-1, defObj=None, defFit=None):
+  def __init__(
+    self,
+    id: Union[int,str] = -1,
+    defObj: Union[ None, List[float] ] = None,
+    defFit: Union[ None, List[float] ] = None
+  ) -> None:
+    """Constructor
+
+    Create new individual and initially write data, if default arguments are
+    given.
+
+    Access an existing individual and its data, if id is given.
+
+    Parameters
+    ----------
+    id : Union(int,str), optional
+      ID of individual. The default is -1.
+    defObj : Union[ None, List[float] ], optional
+      Default objective values. The default is None.
+    defFit : Union[ None, List[float] ], optional
+      Default fitness values. The default is None.
+
+    Returns
+    -------
+    None
+
+    """
     #
     # get id from state
     #
@@ -47,10 +166,9 @@ class dtClusteredSingletonState:
           io.open(
             dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.0', mode='w', encoding='utf-8'
           ).close()
-        self.cur_id = 1
-#      else:
+        self.id_ = 1
       #
-      # write ti files
+      # write files
       #
       lastFileIndex = -1
       for aFile in glob.glob(dtClusteredSingletonState.DATADIR+'/id.*'):
@@ -66,17 +184,17 @@ class dtClusteredSingletonState:
       lastId = sum(
         1 for line in io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), encoding='utf-8')
       )
-      self.cur_id = lastId + lastFileIndex*1000 + 1
+      self.id_ = lastId + lastFileIndex*1000 + 1
 
-      if ( self.cur_id > (lastFileIndex+1)*1000 ):
+      if ( self.id_ > (lastFileIndex+1)*1000 ):
         lastFileIndex = lastFileIndex + 1
         io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
         io.open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
         io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
         io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
 
-      io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), mode='a', encoding='utf-8').write( str(self.cur_id)+'\n' )
-      io.open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), mode='a', encoding='utf-8').write( dtClusteredSingletonState.PREFIX+'_'+str(self.cur_id)+'\n' )
+      io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), mode='a', encoding='utf-8').write( str(self.id_)+'\n' )
+      io.open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), mode='a', encoding='utf-8').write( dtClusteredSingletonState.PREFIX+'_'+str(self.id_)+'\n' )
       if defObj is not None:
         io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='a', encoding='utf-8').write( self.formatToWrite(defObj)+'\n' )
       else:
@@ -108,28 +226,42 @@ class dtClusteredSingletonState:
           'Create dtClusteredSingletonState with id = %d that does not exist. Current maxId = %d'
           % (id, dtClusteredSingletonState.currentMaxId())
         )
-      self.cur_id = id
+      self.id_ = id
 
-    self.cur_state = dtClusteredSingletonState.PREFIX+'_'+str(self.cur_id)
-
-  @staticmethod
-  def backup( stamp='' ):
-    pass
+    self.state_ = dtClusteredSingletonState.PREFIX+'_'+str(self.id_)
 
   @staticmethod
-  def islandEvolutes( isl, evo, x, f ):
-    pass
+  def fileIndex( id: int ) -> int:
+    """Get file index of individual's data.
 
-  @staticmethod
-  def islandFertilizes( isl, evo, x, f ):
-    pass
+    Parameters
+    ----------
+    id : int
+      ID of individual.
 
-  @staticmethod
-  def fileIndex( id ):
+    Returns
+    -------
+    int
+      File index.
+
+    """
     return int( (id  - 1) / 1000 )
 
   @staticmethod
-  def currentMaxId():
+  def currentMaxId() -> int:
+    """Get current maximum ID stored in database.
+
+    Raises
+    ------
+    ValueError
+      If file index < 0.
+
+    Returns
+    -------
+    int
+      Maximum ID.
+
+    """
     lastFileIndex = -1
     for aFile in glob.glob(dtClusteredSingletonState.DATADIR+'/id.*'):
       thisFileIndex = int(
@@ -148,17 +280,56 @@ class dtClusteredSingletonState:
     )
     return (lastId + lastFileIndex*1000)
 
-  def id(self):
-    if ( self.cur_id < 0 ):
-      raise ValueError('Id is smaller than zero')
-    return self.cur_id
+  def id(self) -> int:
+    """Get individual's ID.
 
-  def state(self):
-    if ( self.cur_id < 0 ):
-      raise ValueError('Id is smaller than zero')
-    return self.cur_state
+    Raises
+    ------
+    ValueError
+      If ID < 0.
 
-  def formatToWrite( self, value ):
+    Returns
+    -------
+    int
+      ID.
+
+    """
+    if ( self.id_ < 0 ):
+      raise ValueError('Id is smaller than zero')
+    return self.id_
+
+  def state(self) -> str:
+    """Get individual's state.
+
+    Raises
+    ------
+    ValueError
+      If ID < 0.
+
+    Returns
+    -------
+    str
+      State.
+
+    """
+    if ( self.id_ < 0 ):
+      raise ValueError('Id is smaller than zero')
+    return self.state_
+
+  def formatToWrite( self, value: Union[float, int, dict, np.array] ) -> str:
+    """Converts `value` to str.
+
+    Parameters
+    ----------
+    value : Union[float, int, dict, np.array]
+      Value to convert.
+
+    Returns
+    -------
+    str
+      Converted value.
+
+    """
     rStr = '__unknownDataType__'
     if isinstance(value,float):
       rStr = "{:s}".format(repr(value))
@@ -187,15 +358,31 @@ class dtClusteredSingletonState:
     return rStr
 
   @lockutils.synchronized('fileIO', external=True)
-  def update( self, fileName, value ):
-    fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
+  def update(
+    self, fileName: str, value: Union[float, int, dict, np.array]
+  ) -> None:
+    """Write data of `fName` for current individual.
+
+    Parameters
+    ----------
+    fileName : str
+      Label of data.
+    value : Union[float, int, dict, np.array]
+      Value.
+
+    Returns
+    -------
+    None
+
+    """
+    fileIndex = dtClusteredSingletonState.fileIndex( self.id_ )
     tmpF = tempfile.TemporaryFile(mode='r+', encoding='utf-8')
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fileName+'.'+str(fileIndex)
     curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
     for line in curF:
       lineCounter = lineCounter + 1
-      if lineCounter == self.cur_id:
+      if lineCounter == self.id_:
         tmpF.write(self.formatToWrite(value)+'\n')
       else:
         tmpF.write( line )
@@ -207,17 +394,43 @@ class dtClusteredSingletonState:
       curF.write( line )
     curF.close()
 
-  def read( self, fName ):
-    fileIndex = dtClusteredSingletonState.fileIndex( self.cur_id )
+  def read( self, fName: str ) -> str:
+    """Read data of `fName` for current individual.
+
+    Parameters
+    ----------
+    fName : str
+      Label of data.
+
+    Returns
+    -------
+    str
+      Value.
+
+    """
+    fileIndex = dtClusteredSingletonState.fileIndex( self.id_ )
     fullFileName = dtClusteredSingletonState.DATADIR+'/'+fName+'.'+str(fileIndex)
     curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
     for line in curF:
       lineCounter = lineCounter + 1
-      if lineCounter == self.cur_id:
+      if lineCounter == self.id_:
         return line.replace('\n','')
 
-  def readFloatArray( self, fName ):
+  def readFloatArray( self, fName: str ) -> np.ndarray:
+    """Read data of `fName` for current individual and return as float array.
+
+    Parameters
+    ----------
+    fName : str
+      Label of data.
+
+    Returns
+    -------
+    numpy.ndarray
+      Converted value.
+
+    """
     ret = np.zeros(0, float)
     try:
       ret = np.fromstring( self.read(fName), dtype=float, sep=' ' )
@@ -229,7 +442,20 @@ class dtClusteredSingletonState:
 
     return ret
 
-  def readInt( self, fName ):
+  def readInt( self, fName: str ) -> int:
+    """Read data of `fName` for current individual and return as integer.
+
+    Parameters
+    ----------
+    fName : str
+      Label of data.
+
+    Returns
+    -------
+    int
+      Converted value.
+
+    """
     ret = float('NaN')
     try:
       ret = int( self.read(fName) )
@@ -237,13 +463,42 @@ class dtClusteredSingletonState:
       logging.warning('invalid integer : %s', self.read(fName))
     return ret
 
-  def objective( self ):
+  def objective( self ) -> np.ndarray:
+    """Read objective for current individual.
+
+    Returns
+    -------
+    numpy.ndarray
+      Objective.
+
+    """
     return self.readFloatArray( 'objective' )
 
-  def fitness( self ):
+  def fitness( self ) -> np.ndarray:
+    """Read fitness for current individual.
+
+    Returns
+    -------
+    numpy.ndarray
+      Fitness.
+
+    """
     return self.readFloatArray( 'fitness' )
 
-  def readDict( self, fName ):
+  def readDict( self, fName: str ) -> dict:
+    """Read data of `fName` for current individual and return as dict.
+
+    Parameters
+    ----------
+    fName : str
+      Label of data.
+
+    Returns
+    -------
+    dict
+      Converted value.
+
+    """
     ret = {}
     try:
       ret = dict( ast.literal_eval( self.read(fName) ) )
@@ -252,7 +507,24 @@ class dtClusteredSingletonState:
     return ret
 
   @staticmethod
-  def readIdFromObjective( obj ):
+  def readIdFromObjective( obj: np.ndarray ) -> int:
+    """Returns ID of individual with objective `obj`.
+
+    Parameters
+    ----------
+    obj : numpy.ndarray
+      Objective.
+
+    Returns
+    -------
+    int
+      ID.
+
+    Warns
+    -----
+    Warning if difference in objective values >0.1.
+
+    """
     bestFit = float('inf')
     bestId = -1
     #ids = np.zeros( 0, int )
@@ -273,20 +545,71 @@ class dtClusteredSingletonState:
     return bestId
 
   @staticmethod
-  def oneD( arr ):
+  def oneD( arr: np.ndarray ) -> np.ndarray:
+    """Convert array's shape to one-dimensional numpy.ndarray.
+
+    Parameters
+    ----------
+    arr : numpy.ndarray
+      Array.
+
+    Returns
+    -------
+    numpy.ndarray
+      Converted array.
+
+    """
     if arr.ndim == 0:
       arr = arr.reshape((1,))
     return arr
 
   @staticmethod
-  def twoD( arr ):
+  def twoD( arr: np.ndarray ) -> np.ndarray:
+    """Convert array's shape to two-dimensional numpy.ndarray.
+
+    Parameters
+    ----------
+    arr : numpy.ndarray
+      Array.
+
+    Returns
+    -------
+    numpy.ndarray
+      Converted array.
+
+    """
     if arr.ndim == 1:
       arr = arr.reshape((1,np.size(arr)))
     return arr
 
   @staticmethod
   @lockutils.synchronized('fileIO', external=True)
-  def fullRead( addFile=None, addDtype=float ):
+  def fullRead(
+    addFile: Union[ None, List[str] ]=None,
+    addDtype: Union[float, int, dict]=float
+  ) -> Union[
+    Tuple[np.ndarray, np.ndarray, np.ndarray],
+    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]
+  ]:
+    """Read IDs, objective values and fitness values of all individuals.
+
+    Parameters
+    ----------
+    addFile : Union[ None, List[str] ], optional
+      List of additional files to read. The default is None.
+    addDtype : Union[float, int, dict], optional
+      `dtype` of additional values. The default is float.
+
+    Returns
+    -------
+    Union[
+      Tuple[np.ndarray, np.ndarray, np.ndarray],
+      Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]
+    ]
+      Tuple of IDs, objective and fitness values. If `addFile` is not None,
+      then the return tuple is extended by additional array.
+
+    """
     if \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/objective.0') and \
@@ -328,7 +651,23 @@ class dtClusteredSingletonState:
 
   @staticmethod
   @lockutils.synchronized('fileIO', external=True)
-  def fullAddRead( addFileV, addDtypeV ):
+  def fullAddRead(
+    addFileV: np.ndarray, addDtypeV: np.ndarray
+  ) -> List[np.ndarray]:
+    """Read additional data of all individuals.
+
+    Parameters
+    ----------
+    addFileV : np.ndarray
+      List of additional data to read.
+    addDtypeV : np.ndarray
+      List of additional `dtype`.
+
+    Returns
+    -------
+    List
+
+    """
     retMap = {}
 
     if \
@@ -356,7 +695,22 @@ class dtClusteredSingletonState:
     return retMap
 
   @staticmethod
-  def fullAddReadDict( addFile, maxFileIndex ):
+  def fullAddReadDict( addFile: str, maxFileIndex: int ) -> np.ndarray:
+    """Read additional dicts of all individuals.
+
+    Parameters
+    ----------
+    addFile : str
+      File name of additional dict.
+    maxFileIndex : int
+      Maximum file index.
+
+    Returns
+    -------
+    np.ndarray
+      Additional dicts for all individuals.
+
+    """
     ADD = np.full(dtClusteredSingletonState.currentMaxId(),dict())
     count = 0
     for thisIndex in range(maxFileIndex+1):
@@ -371,5 +725,12 @@ class dtClusteredSingletonState:
         count = count + 1
     return ADD
 
-  def hasDirectory(self):
+  def hasDirectory(self) -> bool:
+    """Check if individual's case directory exist
+
+    Returns
+    -------
+    bool
+
+    """
     return os.path.isdir( dtClusteredSingletonState.CASE+'_'+self.state() )
