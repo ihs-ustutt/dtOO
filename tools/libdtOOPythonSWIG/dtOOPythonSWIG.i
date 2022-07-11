@@ -1,3 +1,5 @@
+%import ../../doc/swig_includeAll.i
+
 %module dtOOPythonSWIG
 %{
 #include <logMe/logMe.h>
@@ -7,7 +9,10 @@
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/scaFunction.h>
+#include <analyticFunctionHeaven/scaOneD.h>
 #include <analyticFunctionHeaven/scaMuParserOneD.h>
+#include <analyticFunctionHeaven/scaMuParserTwoD.h>
+#include <analyticFunctionHeaven/scaMuParserThreeD.h>
 #include <analyticFunctionHeaven/vec3dFunction.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
@@ -32,6 +37,7 @@ using namespace dtOO;
   #include <TColgp_module.hxx>
 #endif
 %}
+%feature("autodoc", "1");
 
 namespace dtOO {
   class eGeneral : public std::exception {
@@ -75,12 +81,14 @@ namespace dtOO {
       static std::string initLog( std::string const & logFileName );
   };
 }
-
 %include <baseContainerHeaven/baseContainer.h>
 %include <constValueHeaven/constValue.h>
 %include <analyticFunctionHeaven/analyticFunction.h>
 %include <analyticFunctionHeaven/scaFunction.h>
+%include <analyticFunctionHeaven/scaOneD.h>
 %include <analyticFunctionHeaven/scaMuParserOneD.h>
+%include <analyticFunctionHeaven/scaMuParserTwoD.h>
+%include <analyticFunctionHeaven/scaMuParserThreeD.h>
 %include <analyticGeometryHeaven/analyticGeometry.h>
 %include <boundedVolume.h>
 %include <dtCase.h>

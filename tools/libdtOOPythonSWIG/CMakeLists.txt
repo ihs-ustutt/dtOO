@@ -1,11 +1,9 @@
-
 option(DTOO_USE_PYTHONOCC "Use PythonOCC" OFF)
 
 find_package(PythonInterp REQUIRED)
 
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
-
 
 if (DTOO_USE_PYTHONOCC)
   find_package(PythonOCC REQUIRED)
@@ -49,6 +47,22 @@ set(
   CMAKE_SHARED_LINKER_FLAGS 
   "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CMAKE_INSTALL_PREFIX}/lib"
 )
+
+#
+#
+# dependencies
+#  see https://gitlab.kitware.com/cmake/cmake/-/issues/17918#note_401481
+#
+# get internal dependencies
+get_property(
+  dependencies 
+  TARGET ${SWIG_MODULE_dtOOPythonSWIG_REAL_NAME} 
+  PROPERTY MANUALLY_ADDED_DEPENDENCIES
+)
+# add external project dependency on internal targets
+foreach (dependency IN LISTS dependencies)
+  add_dependencies (${dependency} createInclude)
+endforeach()
 
 #
 #
