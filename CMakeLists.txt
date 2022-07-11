@@ -512,3 +512,8 @@ add_subdirectory(tools)
 #
 enable_testing()
 add_subdirectory(test)
+
+#
+# add doc
+#
+add_subdirectory(doc)
