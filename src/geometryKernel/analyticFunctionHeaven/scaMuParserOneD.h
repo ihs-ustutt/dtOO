@@ -11,12 +11,25 @@
 namespace dtOO {
   class dtTransformer;
   class dtMuParser;
-  
+//! Scalar `muParser` function with one function argument.
+/*! Binding to `muParser` library. The function is created via a `string`
+ *  expression.
+ */
   class scaMuParserOneD : public scaOneD {
   public:
-    dt__class(scaMuParserOneD, analyticFunction);     
+    dt__class(scaMuParserOneD, analyticFunction);
     scaMuParserOneD();
     scaMuParserOneD(scaMuParserOneD const & orig);
+    /*! 
+     * @param expression Function expression.
+     * @param argument Argument.
+     * @exception dtOO::eGeneral Catch `muParser` and throw exception.
+     * 
+     *   Create a simple function, e.g by
+     * 
+     *   > fun = scaMuParserOneD("5.*xx*xx+(2*xx)", "xx")
+     * 
+     */
     scaMuParserOneD(std::string const expression, std::string const argument);
     scaMuParserOneD * clone( void ) const;
     scaMuParserOneD * cloneTransformed(
