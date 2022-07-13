@@ -5,17 +5,53 @@
 #include <logMe/logMe.h>
 #include <mainConceptFwd.h>
 #include <exceptionHeaven/eGeneral.h>
+#include <interfaceHeaven/labelHandling.h>
+#include <interfaceHeaven/optionHandling.h>
+#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/aFX.h>
+#include <analyticFunctionHeaven/aFY.h>
 #include <analyticFunctionHeaven/scaFunction.h>
 #include <analyticFunctionHeaven/scaOneD.h>
+#include <analyticFunctionHeaven/scaMultiOneD.h>
 #include <analyticFunctionHeaven/scaMuParserOneD.h>
+#include <analyticFunctionHeaven/scaCurve2dOneD.h>
+#include <analyticFunctionHeaven/scaTwoD.h>
 #include <analyticFunctionHeaven/scaMuParserTwoD.h>
+#include <analyticFunctionHeaven/transIntCube.h>
+#include <analyticFunctionHeaven/scaThreeD.h>
 #include <analyticFunctionHeaven/scaMuParserThreeD.h>
+#include <analyticFunctionHeaven/vec2dFunction.h>
+#include <analyticFunctionHeaven/vec2dOneD.h>
+#include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
+#include <analyticFunctionHeaven/vec2dTwoD.h>
+#include <analyticFunctionHeaven/vec2dSurface2dTwoD.h>
+#include <analyticFunctionHeaven/vec2dMuParserTwoD.h>
+#include <analyticFunctionHeaven/vec2dBiLinearTwoD.h>
+#include <analyticFunctionHeaven/vec2dMultiBiLinearTwoD.h>
 #include <analyticFunctionHeaven/vec3dFunction.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
 #include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
+#include <analyticFunctionHeaven/vec3dThickedTwoD.h>
+#include <analyticFunctionHeaven/vec3dMuParserTwoD.h>
+#include <analyticFunctionHeaven/vec3dOneD.h>
+#include <analyticFunctionHeaven/vec3dMuParserOneD.h>
+#include <analyticFunctionHeaven/vec3dCurveOneD.h>
+#include <analyticFunctionHeaven/vec3dCurve2dInSurfaceOneD.h>
+#include <analyticFunctionHeaven/vec3dThreeD.h>
+//#include <analyticFunctionHeaven/vec3dMultiThreeD.h>
+#include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
+#include <analyticFunctionHeaven/vec3dMuParserThreeD.h>
+#include <analyticFunctionHeaven/vec3dBoxThreeD.h>
+#include <analyticFunctionHeaven/vec3dTriLinearThreeD.h>
+#include <analyticFunctionHeaven/vec3dBiLinearTwoD.h>
+#include <analyticFunctionHeaven/scaTanhGradingOneD.h>
+#include <analyticFunctionHeaven/scaTanhUnitGradingOneD.h>
+#include <analyticFunctionHeaven/scaOneDPolyInterface.h>
+  
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
@@ -50,6 +86,7 @@ namespace dtOO {
   };
 }
 
+%include <std_vector.i>
 %include <std_string.i>
 #ifdef DTOO_HAS_PYTHONOCC
 %import Standard.i
@@ -72,29 +109,45 @@ namespace dtOO {
 	}
 }
 
-%include <dtOOTypeDef.h>
-%include <logMe/dtMacros.h>
-%include <interfaceHeaven/ptrHandling.h>
+%include dtOOTypeDef.h
+%include logMe/dtMacros.h
+%include interfaceHeaven/ptrHandling.h
 namespace dtOO {
   class logMe {
     public:
       static std::string initLog( std::string const & logFileName );
   };
 }
-%include <baseContainerHeaven/baseContainer.h>
-%include <constValueHeaven/constValue.h>
-%include <analyticFunctionHeaven/analyticFunction.h>
-%include <analyticFunctionHeaven/scaFunction.h>
-%include <analyticFunctionHeaven/scaOneD.h>
-%include <analyticFunctionHeaven/scaMuParserOneD.h>
-%include <analyticFunctionHeaven/scaMuParserTwoD.h>
-%include <analyticFunctionHeaven/scaMuParserThreeD.h>
-%include <analyticGeometryHeaven/analyticGeometry.h>
-%include <boundedVolume.h>
-%include <dtCase.h>
-%include <dtPlugin.h>
+%include interfaceHeaven/labelHandling.h
+%include interfaceHeaven/optionHandling.h
+%include baseContainerHeaven/baseContainer.h
+%include constValueHeaven/constValue.h
+%include analyticFunctionHeaven/analyticFunction.h
+%include analyticGeometryHeaven/analyticGeometry.h
+%include boundedVolume.h
+%include dtCase.h
+%include dtPlugin.h
 
 namespace dtOO {
+  %template(stdVectorConstValue)       ::std::vector< constValue * >;
+  %template(stdVectorAnalyticFunction) ::std::vector< analyticFunction * >;
+  %template(stdVectorAnalyticGeometry) ::std::vector< analyticGeometry * >;
+  %template(stdVectorBoundedVolume)    ::std::vector< boundedVolume * >;
+  %template(stdVectorDtCase)           ::std::vector< dtCase * >;
+  %template(stdVectorDtPlugin)         ::std::vector< dtPlugin * >;
+  
+  template < typename T >
+  class vectorHandling : public std::vector< T > {
+    public:
+      T * set( T const & toSet);
+  };
+  %template(vectorHandlingConstValue)       vectorHandling< constValue * >;
+  %template(vectorHandlingAnalyticFunction) vectorHandling< analyticFunction * >;
+  %template(vectorHandlingAnalyticGeometry) vectorHandling< analyticGeometry * >;
+  %template(vectorHandlingBoundedVolume)    vectorHandling< boundedVolume * >;
+  %template(vectorHandlingDtCase)           vectorHandling< dtCase * >;
+  %template(vectorHandlingDtPlugin)         vectorHandling< dtPlugin * >;
+  
   template < typename T >
   class labeledVectorHandling : public vectorHandling< T > {
     public:
@@ -121,14 +174,78 @@ namespace dtOO {
 %include <xmlHeaven/dtXmlParserBase.h>
 %include <xmlHeaven/dtXmlParser.h>
         
-%include geometryEngine/dtSurface.h
-%include geometryEngine/dtOCCSurfaceBase.h
-%include geometryEngine/dtOCCSurface.h
-%include geometryEngine/dtOCCBSplineSurface.h
+%include <geometryEngine/dtSurface.h>
+%include <geometryEngine/dtOCCSurfaceBase.h>
+%include <geometryEngine/dtOCCSurface.h>
+%include <geometryEngine/dtOCCBSplineSurface.h>
 
+//
+// Classes has to be not abstract, otherwise no constructors will be created, 
+// see https://www.swig.org/Doc4.0/SWIGPlus.html#SWIGPlus_nn9
+//
+%feature("notabstract") scaMultiOneD;
+%feature("notabstract") scaMuParserOneD;
+%feature("notabstract") scaCurve2dOneD;
+%feature("notabstract") scaMuParserTwoD;
+%feature("notabstract") transIntCube;
+%feature("notabstract") scaMuParserThreeD;
+%feature("notabstract") vec2dCurve2dOneD;
+%feature("notabstract") vec2dSurface2dTwoD;
+%feature("notabstract") vec2dMuParserTwoD;
+%feature("notabstract") vec2dBiLinearTwoD;
+%feature("notabstract") vec2dMultiBiLinearTwoD;
+%feature("notabstract") vec3dSurfaceTwoD;
+%feature("notabstract") vec3dThickedTwoD;
+%feature("notabstract") vec3dMuParserTwoD;
+%feature("notabstract") vec3dMuParserOneD;
+%feature("notabstract") vec3dCurveOneD;
+%feature("notabstract") vec3dCurve2dInSurfaceOneD;
+%feature("notabstract") vec3dTransVolThreeD;
+%feature("notabstract") vec3dMuParserThreeD;
+%feature("notabstract") vec3dBoxThreeD;
+%feature("notabstract") vec3dTriLinearThreeD;
+%feature("notabstract") vec3dBiLinearTwoD;
+%feature("notabstract") scaTanhGradingOneD;
+%feature("notabstract") scaTanhUnitGradingOneD;
+
+%include <analyticFunctionHeaven/aFX.h>
+%include <analyticFunctionHeaven/aFY.h>
+%include <analyticFunctionHeaven/scaFunction.h>
+%include <analyticFunctionHeaven/scaOneD.h>
+%include analyticFunctionHeaven/scaMultiOneD.h
+%include <analyticFunctionHeaven/scaMuParserOneD.h>
+%include analyticFunctionHeaven/scaCurve2dOneD.h
+%include analyticFunctionHeaven/scaTwoD.h
+%include analyticFunctionHeaven/scaMuParserTwoD.h
+%include analyticFunctionHeaven/transIntCube.h
+%include analyticFunctionHeaven/scaThreeD.h
+%include analyticFunctionHeaven/scaMuParserThreeD.h
+%include analyticFunctionHeaven/vec2dFunction.h
+%include analyticFunctionHeaven/vec2dOneD.h
+%include analyticFunctionHeaven/vec2dCurve2dOneD.h
+%include analyticFunctionHeaven/vec2dTwoD.h
+%include analyticFunctionHeaven/vec2dSurface2dTwoD.h
+%include analyticFunctionHeaven/vec2dMuParserTwoD.h
+%include analyticFunctionHeaven/vec2dBiLinearTwoD.h
+%include analyticFunctionHeaven/vec2dMultiBiLinearTwoD.h
 %include analyticFunctionHeaven/vec3dFunction.h
 %include analyticFunctionHeaven/vec3dTwoD.h
 %include analyticFunctionHeaven/vec3dSurfaceTwoD.h
-        
+%include analyticFunctionHeaven/vec3dThickedTwoD.h
+%include analyticFunctionHeaven/vec3dMuParserTwoD.h
+%include analyticFunctionHeaven/vec3dOneD.h
+%include analyticFunctionHeaven/vec3dMuParserOneD.h
+%include analyticFunctionHeaven/vec3dCurveOneD.h
+%include analyticFunctionHeaven/vec3dCurve2dInSurfaceOneD.h
+%include analyticFunctionHeaven/vec3dThreeD.h
+//%include analyticFunctionHeaven/vec3dMultiThreeD.h
+%include analyticFunctionHeaven/vec3dTransVolThreeD.h
+%include analyticFunctionHeaven/vec3dMuParserThreeD.h
+%include analyticFunctionHeaven/vec3dBoxThreeD.h
+%include analyticFunctionHeaven/vec3dTriLinearThreeD.h
+%include analyticFunctionHeaven/vec3dBiLinearTwoD.h
+%include analyticFunctionHeaven/scaTanhGradingOneD.h
+%include analyticFunctionHeaven/scaTanhUnitGradingOneD.h
+
 %include analyticGeometryHeaven/map2dTo3d.h
 %include analyticGeometryHeaven/analyticSurface.h
