@@ -1,6 +1,6 @@
 find_package(Doxygen)
 
-if (DOXYGEN_FOUND)
+if (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
   #
   #
   # set doxygen input file
@@ -57,7 +57,7 @@ if (DOXYGEN_FOUND)
     add_dependencies(createInclude ${_fName})
   endforeach()
     
-else (DOXYGEN_FOUND)
+else (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
   #
   #
   # add createInclude target 
@@ -70,4 +70,4 @@ else (DOXYGEN_FOUND)
         touch swig_includeAll.i
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   )
-endif (DOXYGEN_FOUND)
+endif (DOXYGEN_FOUND AND DTOO_BUILD_DOC)

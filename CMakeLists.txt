@@ -33,7 +33,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
 #------------------------------------------------------------------------------#
 option(DTOO_USE_MPI "Use MPI" OFF)
 option(DTOO_USE_OMP "Use OpenMP" OFF)
-
+option(DTOO_BUILD_DOC "Build documentation with doxygen" OFF)
 #------------------------------------------------------------------------------#
 #
 # required packages
