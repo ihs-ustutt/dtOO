@@ -60,7 +60,7 @@ SET(HEADERS
   analyticFunctionHeaven/scaOneD.h
   analyticFunctionHeaven/scaMultiOneD.h
   analyticFunctionHeaven/scaMuParserOneD.h
-  analyticFunctionHeaven/scaLinearOneD.cpp
+  analyticFunctionHeaven/scaLinearOneD.h
   analyticFunctionHeaven/scaCurve2dOneD.h
   analyticFunctionHeaven/scaTwoD.h
   analyticFunctionHeaven/scaMuParserTwoD.h
