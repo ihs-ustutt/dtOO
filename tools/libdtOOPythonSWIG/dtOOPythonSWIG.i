@@ -4,12 +4,26 @@
 %{
 #include <logMe/logMe.h>
 #include <mainConceptFwd.h>
+#include <dtOOTypeDef.h>
 #include <exceptionHeaven/eGeneral.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Point_3.h>  
+#include <dtLinearAlgebra.h>
+namespace dtOO {
+  typedef ::CGAL::Exact_predicates_inexact_constructions_kernel dtKernel;
+  typedef ::CGAL::Point_3< dtKernel > dtPoint3;
+  typedef ::CGAL::Vector_3< dtKernel > dtVector3;
+  typedef ::CGAL::Point_2< dtKernel > dtPoint2;
+  typedef ::CGAL::Vector_2< dtKernel > dtVector2;  
+}
 #include <baseContainerHeaven/baseContainer.h>
+#include <baseContainerHeaven/pointContainer.h>
+#include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/transformerContainer.h>
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/aFX.h>
@@ -108,7 +122,7 @@ namespace dtOO {
     SWIG_fail;
 	}
 }
-
+    
 %include dtOOTypeDef.h
 %include logMe/dtMacros.h
 %include interfaceHeaven/ptrHandling.h
@@ -120,7 +134,74 @@ namespace dtOO {
 }
 %include interfaceHeaven/labelHandling.h
 %include interfaceHeaven/optionHandling.h
+namespace dtOO {
+  class dtKernel;  
+}
+namespace CGAL {
+  template <class R_ > 
+  class Point_3 {
+    public:
+      virtual ~Point_3();
+      Point_3(
+        const ::dtOO::dtReal& x, 
+        const ::dtOO::dtReal& y, 
+        const ::dtOO::dtReal& z
+      );
+      Point_3( const Point_3& p );      
+      ::dtOO::dtReal x() const;
+      ::dtOO::dtReal y() const;
+      ::dtOO::dtReal z() const;
+  };
+  template <class R_ > 
+  class Vector_3 {
+    public:
+      virtual ~Vector_3();
+      Vector_3(
+        const ::dtOO::dtReal& x, 
+        const ::dtOO::dtReal& y, 
+        const ::dtOO::dtReal& z
+      );
+      Vector_3( const Vector_3& p );      
+      ::dtOO::dtReal x() const;
+      ::dtOO::dtReal y() const;
+      ::dtOO::dtReal z() const;
+  };
+  template <class R_ > 
+  class Point_2 {
+    public:
+      virtual ~Point_2();
+      Point_2(
+        const ::dtOO::dtReal& x, 
+        const ::dtOO::dtReal& y
+      );
+      Point_2( const Point_2& p );      
+      ::dtOO::dtReal x() const;
+      ::dtOO::dtReal y() const;
+  };
+  template <class R_ > 
+  class Vector_2 {
+    public:
+      virtual ~Vector_2();
+      Vector_2(
+        const ::dtOO::dtReal& x, 
+        const ::dtOO::dtReal& y
+      );
+      Vector_2( const Vector_2& p );      
+      ::dtOO::dtReal x() const;
+      ::dtOO::dtReal y() const;
+  };
+}
+namespace dtOO {
+  %template(dtPoint3)       ::CGAL::Point_3< dtKernel >;
+  %template(dtVector3)      ::CGAL::Vector_3< dtKernel >;
+  %template(dtPoint2)       ::CGAL::Point_2< dtKernel >;
+  %template(dtVector2)      ::CGAL::Vector_2< dtKernel >;
+}
+%include dtLinearAlgebra.h
 %include baseContainerHeaven/baseContainer.h
+%include baseContainerHeaven/pointContainer.h
+%include baseContainerHeaven/vectorContainer.h
+%include baseContainerHeaven/transformerContainer.h
 %include constValueHeaven/constValue.h
 %include analyticFunctionHeaven/analyticFunction.h
 %include analyticGeometryHeaven/analyticGeometry.h
