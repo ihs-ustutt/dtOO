@@ -14,12 +14,7 @@ namespace dtOO {
       pointContainer();
       pointContainer(const pointContainer& orig);
       virtual ~pointContainer();
-      void add(
-        dtPoint3 const * const pointP, std::string const * const stringP 
-      );
-      void add(dtPoint3 const * const pointP, std::string const  string );
-      void add(dtPoint3 const point, std::string const * const stringP );
-      void add(dtPoint3 const point, std::string const string = "");
+      void add(dtPoint3 const point, std::string const string);
       dtPoint3 get(std::string const string ) const;
       dtPoint3 get(std::string const * const stringP) const;
       bool has(std::string const string) const;
