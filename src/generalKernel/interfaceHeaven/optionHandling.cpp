@@ -117,16 +117,6 @@ namespace dtOO {
     std::istringstream( getOption(name) ) >> argumentFloat;
     return argumentFloat;
   }
-
-  dtReal optionHandling::getOptionFloat(
-	  std::string const name,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF					
-	) const {
-     return qtXmlBase::muParseString( 
-      dtXmlParserBase::replaceDependencies(getOption(name), cV, aF)
-    );
-  }
 	
   dtInt optionHandling::getOptionInt(std::string const name) const {
     dtInt argumentInt;
@@ -134,16 +124,6 @@ namespace dtOO {
     return argumentInt;
   }
   
-  dtInt optionHandling::getOptionInt(
-	  std::string const name,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF					
-	) const {
-     return qtXmlBase::muParseStringInt( 
-      dtXmlParserBase::replaceDependencies(getOption(name), cV, aF)
-    );
-  }
-	
   bool optionHandling::optionTrue(std::string const name) const {
     for (int ii=0;ii<_optionName.size();ii++) {
       if (_optionName[ii] == name) {

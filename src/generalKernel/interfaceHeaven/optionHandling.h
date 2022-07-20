@@ -40,17 +40,7 @@ namespace dtOO {
       ) const;
       std::string getOption(std::string const name) const;
       dtReal getOptionFloat(std::string const name) const;
-      dtReal getOptionFloat(
-        std::string const name,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF					
-      ) const;
       dtInt getOptionInt(std::string const name) const;
-      dtInt getOptionInt(
-        std::string const name,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF					
-      ) const;
       bool optionTrue(std::string const name) const;
       bool hasOption(std::string const name) const;
       optionGroup getOptionGroup( std::string const name ) const;
