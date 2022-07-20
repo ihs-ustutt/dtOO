@@ -41,6 +41,7 @@ option(DTOO_BUILD_DOC "Build documentation with doxygen" OFF)
 #------------------------------------------------------------------------------#
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Xml REQUIRED)
+find_package(NLOHMANN_JSON REQUIRED)
 find_package(CGAL REQUIRED COMPONENTS CGAL)
 find_package(GMSH REQUIRED gmsh)
 find_package(
@@ -216,6 +217,7 @@ include_directories(
   ${OpenMesh_INCLUDE_DIR}
   ${OpenVolumeMesh_INCLUDE_DIR}
   ${IGL_INCLUDE_DIR}
+  ${NLOHMANN_JSON_INCLUDE_DIR}
 )
 
 if (FOAMEXT_FOUND)
@@ -443,6 +445,7 @@ set(
   ${IGL_INCLUDE_DIR}
   ${Qt5Core_INCLUDE_DIRS}
   ${Qt5Xml_INCLUDE_DIRS}
+  ${NLOHMANN_JSON_INCLUDE_DIR}
 )
 set(
   CONF_DTOO_3RD_LIBRARIES 
