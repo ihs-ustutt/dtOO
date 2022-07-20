@@ -97,7 +97,7 @@ while getopts ":i:n:ho:bd" opt; do
     n) # Specify the number of build processes (_nProcs)
       _nProcs=$OPTARG
       ;;
-    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab occt cgal muparser root ]
+    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab occt cgal muparser root nlohmann_json]
       _dep=$OPTARG
       ;;
     b) # Skip build
@@ -316,4 +316,17 @@ git_cmake_build \
    -Dxrootd=FALSE \
    -Dssl=FALSE \
    -Dx11=FALSE \
+  "
+
+#-------------------------------------------------------------------------------
+# json
+#-------------------------------------------------------------------------------
+git_cmake_build \
+  "nlohmann_json" \
+  "https://github.com/nlohmann/json" \
+  "release/3.10.5" \
+  "\
+   -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+   -DCMAKE_BUILD_TYPE=Release \
+   -DJSON_MultipleHeaders=ON \
   "
