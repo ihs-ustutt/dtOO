@@ -218,18 +218,7 @@ namespace dtOO {
       aFY(yDim(), std::numeric_limits<dtReal>::min()),
       aFY(yDim(), std::numeric_limits<dtReal>::max())
     );
-  }
-  
-  bool analyticFunction::yBounded( void ) const {
-    std::pair< aFY, aFY > bBox = yBoundingBox();
-    dt__forAllRefAuto(bBox.first, aBound) {
-      if ( aBound == std::numeric_limits<dtReal>::min() ) return false;
-    }
-    dt__forAllRefAuto(bBox.second, aBound) {
-      if ( aBound == std::numeric_limits<dtReal>::max() ) return false;
-    }
-  }
-    
+  } 
 	
   aFX analyticFunction::aFXZeroD( void ) {
 		return aFX(0, 0.);

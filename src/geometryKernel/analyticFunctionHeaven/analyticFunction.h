@@ -49,7 +49,6 @@ namespace dtOO {
     virtual std::map< int, dtInt > const & mapRef( void ) const;
     virtual bool isTransformed( void ) const;
     virtual std::pair< aFY, aFY > yBoundingBox( void ) const;
-    virtual bool yBounded( void ) const;
     static aFX aFXZeroD( void );
     static aFX aFXOneD( dtReal const & x0 );
     static aFX aFXTwoD( dtReal const & x0, dtReal const & x1 );
