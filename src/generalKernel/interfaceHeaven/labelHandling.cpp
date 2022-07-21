@@ -25,10 +25,6 @@ namespace dtOO {
     _label = label;
   }
   
-  void labelHandling::setLabel( char const * const label ) {
-    _label = std::string(label);
-  }
-  
   std::string labelHandling::getLabel( void ) const {
     return _label;
   }

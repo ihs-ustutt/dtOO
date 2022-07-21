@@ -15,7 +15,6 @@ namespace dtOO {
     labelHandling(std::string const & label);
     virtual ~labelHandling();
     void setLabel(std::string const label);
-    void setLabel(char const * const label);
     std::string getLabel( void ) const;
   private:
     std::string _label;
