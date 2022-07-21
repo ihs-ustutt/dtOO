@@ -147,6 +147,8 @@ namespace dtOO {
     std::vector< dtVector3 > dd(2);
     dd[0] = _dtS->firstDerU(uu, vv);
     dd[1] = _dtS->firstDerV(uu, vv);
+    
+    return dd;
   }
   
   std::vector< dtVector3 > analyticSurface::secondDer( 
@@ -156,6 +158,8 @@ namespace dtOO {
     dd[0] = _dtS->secondDerUU(uu, vv);
     dd[1] = _dtS->secondDerUV(uu, vv);
     dd[2] = _dtS->secondDerVV(uu, vv);
+    
+    return dd;
   }
   
   dtPoint2 analyticSurface::reparamOnFace(dtPoint3 const & ppXYZ) const {
