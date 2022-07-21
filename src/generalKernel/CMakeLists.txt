@@ -77,6 +77,7 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/radialTranslatingMap2dTo3dAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomSurface_multipleBoundedSurfaceAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomVolume_multipleBoundedVolumeAGXmlBuilder.h
+  jsonHeaven/jsonPrimitive.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -185,6 +186,7 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/radialTranslatingMap2dTo3dAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomSurface_multipleBoundedSurfaceAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomVolume_multipleBoundedVolumeAGXmlBuilder.cpp
+  jsonHeaven/jsonPrimitive.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp
