@@ -5,6 +5,7 @@
 
 #include <dtLinearAlgebra.h>
 #include <xmlHeaven/dtXmlParserBase.h>
+#include <jsonHeaven/jsonPrimitive.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
@@ -30,11 +31,21 @@ namespace dtOO {
       dtTransformer();
       virtual ~dtTransformer();
       dtTransformer(dtTransformer const & orig);
+      dtTransformer( jsonPrimitive const & jE );
       //
       // overload
       //
       virtual dtTransformer * clone( void ) const = 0;
       virtual dtTransformer * create( void ) const = 0;    
+      virtual void jInit( 
+        jsonPrimitive const & jE,
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG
+      );
+      jsonPrimitive & config( void );
+      jsonPrimitive const & config( void ) const;
       virtual void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
@@ -98,6 +109,7 @@ namespace dtOO {
         }   
         void setKernel( ::pugg::Kernel * kernel );
       private:
+        jsonPrimitive _config;
         dt__pH(::pugg::Kernel) _kernel;
   };
 }

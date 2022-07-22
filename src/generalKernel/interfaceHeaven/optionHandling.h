@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <mainConceptFwd.h>
+#include <jsonHeaven/jsonPrimitive.h>
 
 class QDomElement;
 
@@ -27,6 +28,7 @@ namespace dtOO {
       optionHandling(const optionHandling& orig);
       virtual ~optionHandling();
       virtual void init(::QDomElement const * const wElement);
+      virtual void jInit( jsonPrimitive const & jE );
       virtual void init(
         ::QDomElement const & wElement,
         baseContainer const * const bC,      

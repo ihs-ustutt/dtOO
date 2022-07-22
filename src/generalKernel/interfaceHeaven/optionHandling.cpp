@@ -42,6 +42,19 @@ namespace dtOO {
     }
   }
 
+  void optionHandling::jInit( jsonPrimitive const & jE) {
+    if ( jE.contains("option") ) {
+      dt__forAllRefAuto(
+        jE.lookup<std::vector<jsonPrimitive>>("option"), anOpt
+      ) {
+        this->setOption(
+          anOpt.lookup<std::string>("name"),
+          anOpt.lookup<std::string>("value")
+        );
+      }
+    }
+  }
+  
   void optionHandling::init(
     ::QDomElement const & wElement,
     baseContainer const * const bC,      

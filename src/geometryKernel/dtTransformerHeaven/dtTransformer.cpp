@@ -18,9 +18,37 @@ namespace dtOO {
 	dtTransformer::dtTransformer(
     dtTransformer const & orig
   ) : labelHandling(orig), optionHandling(orig) {
-		
+		_config = orig._config;
 	}
 
+  dtTransformer::dtTransformer( 
+    jsonPrimitive const & jE 
+  ) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
+  
+  void dtTransformer::jInit( 
+	  jsonPrimitive const & jE, 
+    baseContainer * const bC,
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG
+	) {
+    _config = jE;
+		if ( _config.contains("label") ) {
+			labelHandling::setLabel( _config.lookup<std::string>("label") );
+		}
+    optionHandling::jInit(jE);
+  }
+  
+  jsonPrimitive & dtTransformer::config( void ) {
+    return _config;
+  }
+  
+  jsonPrimitive const & dtTransformer::config( void ) const {
+    return _config;
+  }
+      
   void dtTransformer::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
