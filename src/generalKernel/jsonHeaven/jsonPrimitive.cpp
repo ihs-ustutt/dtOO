@@ -3,6 +3,7 @@
 #include <logMe/dtMacros.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
+#include <interfaceHeaven/stringPrimitive.h>
 
 namespace dtOO {  
   jsonPrimitive::jsonPrimitive() {
@@ -25,7 +26,7 @@ namespace dtOO {
   }	
   
   bool jsonPrimitive::contains( std::string const & attName ) const {
-    if ( stringContains("|", attName) ) {
+    if ( stringPrimitive::stringContains("|", attName) ) {
       std::vector< std::string > attNameV;
       ::boost::split(
         attNameV, attName, ::boost::is_any_of("|"), ::boost::token_compress_on
@@ -41,7 +42,9 @@ namespace dtOO {
     return _json->contains(attName);
   }
   bool jsonPrimitive::containsChild( std::string const & childName ) const {
-    dt__throwIf(stringContains("|", childName), containsChild());
+    dt__throwIf(
+      stringPrimitive::stringContains("|", childName), containsChild()
+    );
     
     if ( this->contains(childName) ) {
       return _json->at(childName).is_object();
@@ -49,6 +52,10 @@ namespace dtOO {
     return false;
   }
 
+  void from_json(const ::nlohmann::json& from, jsonPrimitive& to) {
+    to = jsonPrimitive( from.dump() );
+  };
+  
   // template lookup
   template < typename T > 
   T jsonPrimitive::lookup( std::string const & str ) const {
@@ -61,6 +68,10 @@ namespace dtOO {
   template
   dtInt jsonPrimitive::lookup< dtInt >(std::string const &) const;
   template
+  jsonPrimitive jsonPrimitive::lookup< jsonPrimitive >( 
+    std::string const &
+  ) const;    
+  template
   std::vector<dtInt> jsonPrimitive::lookup< std::vector<dtInt> >(
     std::string const &
   ) const;  
@@ -68,11 +79,15 @@ namespace dtOO {
   std::vector<dtReal> jsonPrimitive::lookup< std::vector<dtReal> >(
     std::string const &
   ) const;
-  
-  jsonPrimitive jsonPrimitive::lookup( std::string const & str ) const {
-    return jsonPrimitive( _json->at(str).dump() );
-  }  
-  
+  template
+  std::vector<std::string> jsonPrimitive::lookup< std::vector<std::string> >(
+    std::string const &
+  ) const;  
+  template
+  std::vector<jsonPrimitive> jsonPrimitive::lookup< std::vector<jsonPrimitive> >(
+    std::string const &
+  ) const;
+
   // template lookupDef
   template < typename T > 
   T jsonPrimitive::lookupDef( std::string const & str, T const & def ) const {

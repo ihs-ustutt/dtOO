@@ -5,11 +5,10 @@
 #include <string>
 #include <vector>
 #include <logMe/dtMacros.h>
-#include <interfaceHeaven/stringPrimitive.h>
 #include <nlohmann/json_fwd.hpp>
 
 namespace dtOO {
-  class jsonPrimitive : public stringPrimitive {
+  class jsonPrimitive {
     public:
       dt__classOnlyName(jsonPrimitive);  
       jsonPrimitive();         
@@ -19,7 +18,6 @@ namespace dtOO {
       bool containsChild( std::string const & childName ) const;    
       bool contains( std::string const & attName ) const;
       template < typename T > T lookup( std::string const & str ) const;
-      jsonPrimitive lookup( std::string const & str ) const;
       template < typename T > T lookupDef( 
         std::string const & str, T const & def 
       ) const;
@@ -33,4 +31,3 @@ namespace dtOO {
 }
 
 #endif	/* jsonPrimitive_H */
-
