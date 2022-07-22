@@ -13,6 +13,9 @@
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Point_3.h>  
 #include <dtLinearAlgebra.h>
+namespace CGAL {
+  typedef Epick Exact_predicates_inexact_constructions_kernel;
+}
 namespace dtOO {
   typedef ::CGAL::Exact_predicates_inexact_constructions_kernel dtKernel;
   typedef ::CGAL::Point_3< dtKernel > dtPoint3;
@@ -179,8 +182,12 @@ namespace dtOO {
 }
 %include interfaceHeaven/labelHandling.h
 %include interfaceHeaven/optionHandling.h
+namespace CGAL {
+  class Epick;
+  typedef Epick Exact_predicates_inexact_constructions_kernel;
+}
 namespace dtOO {
-  class dtKernel;  
+  typedef ::CGAL::Exact_predicates_inexact_constructions_kernel dtKernel;
 }
 namespace CGAL {
   template <class R_ > 
@@ -307,10 +314,19 @@ namespace dtOO {
 %template(lookupInt) dtOO::jsonPrimitive::lookup< dtOO::dtInt >;
 %template(lookupReal) dtOO::jsonPrimitive::lookup< dtOO::dtReal >;
 %template(lookupJsonPrimitive) dtOO::jsonPrimitive::lookup< dtOO::jsonPrimitive >;
+%template(lookupDtPoint2) dtOO::jsonPrimitive::lookup< dtOO::dtPoint2 >;
+%template(lookupDtPoint3) dtOO::jsonPrimitive::lookup< dtOO::dtPoint3 >;
+%template(lookupDtVector3) dtOO::jsonPrimitive::lookup< dtOO::dtVector3 >;
 %template(lookupVectorInt) dtOO::jsonPrimitive::lookup< std::vector< dtOO::dtInt > >;
 %template(lookupVectorReal) dtOO::jsonPrimitive::lookup< std::vector< dtOO::dtReal > >;
 %template(lookupVectorStr) dtOO::jsonPrimitive::lookup< std::vector< std::string > >;
 %template(lookupVectorJsonPrimitive) dtOO::jsonPrimitive::lookup< std::vector< dtOO::jsonPrimitive > >;
+%template(appendStr) dtOO::jsonPrimitive::append< std::string >;
+%template(appendInt) dtOO::jsonPrimitive::append< dtOO::dtInt >;
+%template(appendReal) dtOO::jsonPrimitive::append< dtOO::dtReal >;
+%template(appendDtPoint2) dtOO::jsonPrimitive::append< dtPoint2 >;
+%template(appendDtPoint3) dtOO::jsonPrimitive::append< dtPoint3 >;
+%template(appendDtVector3) dtOO::jsonPrimitive::append< dtVector3 >;
 
 %include <geometryEngine/dtSurface.h>
 %include <geometryEngine/dtOCCSurfaceBase.h>
