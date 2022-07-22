@@ -65,7 +65,46 @@ namespace dtOO {
 #include <analyticFunctionHeaven/scaTanhGradingOneD.h>
 #include <analyticFunctionHeaven/scaTanhUnitGradingOneD.h>
 #include <analyticFunctionHeaven/scaOneDPolyInterface.h>
-  
+
+#include <dtTransformerHeaven/dtTransformer.h>
+#include <dtTransformerHeaven/dtTransformerInvThreeD.h>
+#include <dtTransformerHeaven/thicknessIncreasing.h>
+#include <dtTransformerHeaven/biThicknessIncreasing.h>
+#include <dtTransformerHeaven/doNothing.h>
+#include <dtTransformerHeaven/offset.h>
+#include <dtTransformerHeaven/translate.h>
+#include <dtTransformerHeaven/radialTranslate.h>
+#include <dtTransformerHeaven/rotate.h>
+#include <dtTransformerHeaven/pickMap3dTo3dRangePercent.h>
+#include <dtTransformerHeaven/pickMap2dTo3dRangePercent.h>
+#include <dtTransformerHeaven/addConstCoordinate.h>
+#include <dtTransformerHeaven/makePolynomial.h>
+#include <dtTransformerHeaven/predefinedExtension.h>
+#include <dtTransformerHeaven/closeGaps.h>
+#include <dtTransformerHeaven/pickLengthRange.h>
+#include <dtTransformerHeaven/pickLengthPercentRange.h>
+#include <dtTransformerHeaven/uVw_phirMs.h>
+#include <dtTransformerHeaven/uVw_skewPhirMs.h>
+#include <dtTransformerHeaven/uVw_phiMs.h>
+#include <dtTransformerHeaven/uVw_deltaMs.h>
+#include <dtTransformerHeaven/averagePoints.h>
+#include <dtTransformerHeaven/projectOnSurface.h>
+#include <dtTransformerHeaven/reparamInSurface.h>
+#include <dtTransformerHeaven/pickVec3dTwoDRangePercent.h>
+#include <dtTransformerHeaven/analyticAddNormal.h>
+#include <dtTransformerHeaven/discreteAddNormal.h>
+#include <dtTransformerHeaven/approxInSurface.h>
+#include <dtTransformerHeaven/normalOffsetInSurface.h>
+#include <dtTransformerHeaven/closeGapsArithmetic.h>
+#include <dtTransformerHeaven/scale.h>
+#include <dtTransformerHeaven/xYz_rPhiZ.h>
+#include <dtTransformerHeaven/pickMap2dTo3dRectanglePercent.h>
+#include <dtTransformerHeaven/reverse.h>
+#include <dtTransformerHeaven/pickMap1dTo3dLinePercent.h>
+#include <dtTransformerHeaven/applyVec3dThreeD.h>
+#include <dtTransformerHeaven/xYz_localCoordinates.h>
+#include <dtTransformerHeaven/pickVec3dTwoDRectanglePercent.h>
+
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
@@ -78,6 +117,7 @@ namespace dtOO {
 #include <dtPlugin.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/dtXmlParser.h>
+#include <jsonHeaven/jsonPrimitive.h>
 using namespace dtOO;
 #ifdef DTOO_HAS_PYTHONOCC
   #include <TColStd_module.hxx>
@@ -102,6 +142,7 @@ namespace dtOO {
 
 %include <std_vector.i>
 %include <std_string.i>
+%include <exception.i>
 #ifdef DTOO_HAS_PYTHONOCC
 %import Standard.i
 %import math.i
@@ -117,6 +158,10 @@ namespace dtOO {
     PyErr_SetString( PyExc_Exception, const_cast<char*>(e.what()) );  
     SWIG_fail;
 	}  
+  catch (std::exception &e) {
+    PyErr_SetString( PyExc_Exception, const_cast<char*>(e.what()) );
+    SWIG_fail;
+	}    
   catch (...) {
     PyErr_SetString(PyExc_Exception, "dtOOPythonSWIG catch exception");
     SWIG_fail;
@@ -208,14 +253,18 @@ namespace dtOO {
 %include boundedVolume.h
 %include dtCase.h
 %include dtPlugin.h
-
+%include <jsonHeaven/jsonPrimitive.h>  
 namespace dtOO {
-  %template(stdVectorConstValue)       ::std::vector< constValue * >;
-  %template(stdVectorAnalyticFunction) ::std::vector< analyticFunction * >;
-  %template(stdVectorAnalyticGeometry) ::std::vector< analyticGeometry * >;
-  %template(stdVectorBoundedVolume)    ::std::vector< boundedVolume * >;
-  %template(stdVectorDtCase)           ::std::vector< dtCase * >;
-  %template(stdVectorDtPlugin)         ::std::vector< dtPlugin * >;
+  %template(vectorInt)              ::std::vector< dtInt >;
+  %template(vectorReal)             ::std::vector< dtReal >;
+  %template(vectorStr)              ::std::vector< std::string >;
+  %template(vectorJsonPrimitive)    ::std::vector< jsonPrimitive >;
+  %template(vectorConstValue)       ::std::vector< constValue * >;
+  %template(vectorAnalyticFunction) ::std::vector< analyticFunction * >;
+  %template(vectorAnalyticGeometry) ::std::vector< analyticGeometry * >;
+  %template(vectorBoundedVolume)    ::std::vector< boundedVolume * >;
+  %template(vectorDtCase)           ::std::vector< dtCase * >;
+  %template(vectorDtPlugin)         ::std::vector< dtPlugin * >;
   
   template < typename T >
   class vectorHandling : public std::vector< T > {
@@ -253,8 +302,16 @@ namespace dtOO {
   %template(labeledVectorHandlingDtPlugin) labeledVectorHandling< dtPlugin * >;
 }
 %include <xmlHeaven/dtXmlParserBase.h>
-%include <xmlHeaven/dtXmlParser.h>
-        
+%include <xmlHeaven/dtXmlParser.h>     
+%template(lookupStr) dtOO::jsonPrimitive::lookup< std::string >;
+%template(lookupInt) dtOO::jsonPrimitive::lookup< dtOO::dtInt >;
+%template(lookupReal) dtOO::jsonPrimitive::lookup< dtOO::dtReal >;
+%template(lookupJsonPrimitive) dtOO::jsonPrimitive::lookup< dtOO::jsonPrimitive >;
+%template(lookupVectorInt) dtOO::jsonPrimitive::lookup< std::vector< dtOO::dtInt > >;
+%template(lookupVectorReal) dtOO::jsonPrimitive::lookup< std::vector< dtOO::dtReal > >;
+%template(lookupVectorStr) dtOO::jsonPrimitive::lookup< std::vector< std::string > >;
+%template(lookupVectorJsonPrimitive) dtOO::jsonPrimitive::lookup< std::vector< dtOO::jsonPrimitive > >;
+
 %include <geometryEngine/dtSurface.h>
 %include <geometryEngine/dtOCCSurfaceBase.h>
 %include <geometryEngine/dtOCCSurface.h>
@@ -328,5 +385,44 @@ namespace dtOO {
 %include analyticFunctionHeaven/scaTanhGradingOneD.h
 %include analyticFunctionHeaven/scaTanhUnitGradingOneD.h
 
+%include dtTransformerHeaven/dtTransformer.h
+%include dtTransformerHeaven/dtTransformerInvThreeD.h
+%include dtTransformerHeaven/thicknessIncreasing.h
+%include dtTransformerHeaven/biThicknessIncreasing.h
+%include dtTransformerHeaven/doNothing.h
+%include dtTransformerHeaven/offset.h
+%include dtTransformerHeaven/translate.h
+%include dtTransformerHeaven/radialTranslate.h
+%include dtTransformerHeaven/rotate.h
+%include dtTransformerHeaven/pickMap3dTo3dRangePercent.h
+%include dtTransformerHeaven/pickMap2dTo3dRangePercent.h
+%include dtTransformerHeaven/addConstCoordinate.h
+%include dtTransformerHeaven/makePolynomial.h
+%include dtTransformerHeaven/predefinedExtension.h
+%include dtTransformerHeaven/closeGaps.h
+%include dtTransformerHeaven/pickLengthRange.h
+%include dtTransformerHeaven/pickLengthPercentRange.h
+%include dtTransformerHeaven/uVw_phirMs.h
+%include dtTransformerHeaven/uVw_skewPhirMs.h
+%include dtTransformerHeaven/uVw_phiMs.h
+%include dtTransformerHeaven/uVw_deltaMs.h
+%include dtTransformerHeaven/averagePoints.h
+%include dtTransformerHeaven/projectOnSurface.h
+%include dtTransformerHeaven/reparamInSurface.h
+%include dtTransformerHeaven/pickVec3dTwoDRangePercent.h
+%include dtTransformerHeaven/analyticAddNormal.h
+%include dtTransformerHeaven/discreteAddNormal.h
+%include dtTransformerHeaven/approxInSurface.h
+%include dtTransformerHeaven/normalOffsetInSurface.h
+%include dtTransformerHeaven/closeGapsArithmetic.h
+%include dtTransformerHeaven/scale.h
+%include dtTransformerHeaven/xYz_rPhiZ.h
+%include dtTransformerHeaven/pickMap2dTo3dRectanglePercent.h
+%include dtTransformerHeaven/reverse.h
+%include dtTransformerHeaven/pickMap1dTo3dLinePercent.h
+%include dtTransformerHeaven/applyVec3dThreeD.h
+%include dtTransformerHeaven/xYz_localCoordinates.h
+%include dtTransformerHeaven/pickVec3dTwoDRectanglePercent.h
+        
 %include analyticGeometryHeaven/map2dTo3d.h
 %include analyticGeometryHeaven/analyticSurface.h
