@@ -2,7 +2,7 @@ option(DTOO_USE_PYTHONOCC "Use PythonOCC" OFF)
 
 find_package(PythonInterp REQUIRED)
 
-find_package(SWIG REQUIRED)
+find_package(SWIG 4.0.2 REQUIRED)
 include(${SWIG_USE_FILE})
 
 if (DTOO_USE_PYTHONOCC)
