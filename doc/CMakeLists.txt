@@ -66,8 +66,8 @@ else (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
   #
   add_custom_target(
     createInclude ALL
-      COMMAND 
-        touch swig_includeAll.i
+      COMMAND rm -f swig_includeAll.i
+      COMMAND touch swig_includeAll.i
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   )
 endif (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
