@@ -16,6 +16,7 @@ namespace dtOO {
       dtTransformerInvThreeD();
       virtual ~dtTransformerInvThreeD();
       dtTransformerInvThreeD(dtTransformerInvThreeD const & orig);
+      dtTransformerInvThreeD( jsonPrimitive const & jE );
       //
       // overload
       //
