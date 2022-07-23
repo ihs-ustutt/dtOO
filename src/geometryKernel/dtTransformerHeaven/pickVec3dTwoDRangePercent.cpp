@@ -1,7 +1,6 @@
 #include "pickVec3dTwoDRangePercent.h"
 
 #include <logMe/logMe.h>
-#include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
@@ -24,10 +23,14 @@ namespace dtOO {
   pickVec3dTwoDRangePercent::pickVec3dTwoDRangePercent(
 	  const pickVec3dTwoDRangePercent& orig
 	) : dtTransformer(orig) {
-		_x0 = orig._x0;
-		_x1 = orig._x1;
   }
 
+  pickVec3dTwoDRangePercent::pickVec3dTwoDRangePercent( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
+  
   pickVec3dTwoDRangePercent::~pickVec3dTwoDRangePercent() {
   }
 
@@ -44,34 +47,30 @@ namespace dtOO {
 	) const {
     aFPtrVec ret;
     
-    for (int ii=0;ii<aFVecP->size();ii++) {
+    dt__forAllRefAuto(*aFVecP, aFun) {
       dt__ptrAss(
-				vec3dTwoD const * const v3d, 
-				vec3dTwoD::ConstDownCast(aFVecP->at(ii))
+				vec3dSurfaceTwoD const * const v3dSurface, 
+				vec3dSurfaceTwoD::ConstDownCast(aFun)
 			);
-
-			vec3dSurfaceTwoD const * const v3dSurface 
-			= 
-			vec3dSurfaceTwoD::ConstDownCast(v3d);
 			
-			if (v3dSurface) {
-				dt__pH(dtCurve) dtC;
-				if (_x0 >= 0.) {
-					dtC.reset( v3dSurface->ptrDtSurface()->segmentConstUPercent(_x0) );
-				}
-				else if (_x1 >= 0.) {
-					dtC.reset( v3dSurface->ptrDtSurface()->segmentConstVPercent(_x1) );
-				}
-				ret.push_back( new vec3dCurveOneD( dtC.get() ) );
-			}
-			else {
-				dt__throw(
-					apply(), 
-					<< "Incompatible type." << std::endl
-					<< dt__eval(v3d) << std::endl
-					<< dt__eval(v3dSurface)
-				);		
-			}
+      dt__pH(dtCurve) dtC;
+      if ( config().contains("_x0") ) {
+        dtC.reset( 
+          v3dSurface->ptrDtSurface()->segmentConstUPercent(
+            config().lookup<dtReal>("_x0")
+          ) 
+        );
+      }
+      else if ( config().contains("_x1") ) {
+        dtC.reset( 
+          v3dSurface->ptrDtSurface()->segmentConstVPercent(
+            config().lookup<dtReal>("_x1")
+          ) 
+        );
+      }
+      else dt__throwUnexpected(apply());
+
+      ret.push_back( new vec3dCurveOneD( dtC.get() ) );
     }
 		
 		return ret;
@@ -79,6 +78,27 @@ namespace dtOO {
 
   bool pickVec3dTwoDRangePercent::isNecessary( void ) const {
     return true;
+  }
+  
+  void pickVec3dTwoDRangePercent::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+
+    int dirSet = 0;
+		if ( config().contains("_x0") ) dirSet = dirSet + 1;
+		if ( config().contains("_x1") ) dirSet = dirSet + 1;
+    if ( dirSet != 1 ) {
+      dt__throw(
+        jInit(),
+        << config().toStdString() << std::endl
+        << "Only one value should be greater than zero. Check input."
+      );
+    }
   }
   
   void pickVec3dTwoDRangePercent::init( 
@@ -90,28 +110,33 @@ namespace dtOO {
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     
-		_x0 = -1.;
-		_x1 = -1.;
+    jsonPrimitive config;
 
-		if ( dtXmlParserBase::hasAttribute("x_percent_one", *tE) ) {
-			_x0 
-			= 
-			dtXmlParserBase::muParseString( 
-				dtXmlParserBase::replaceDependencies(
-					dtXmlParserBase::getAttributeStr("x_percent_one", *tE), cV, aF
-				) 
-			);
-		}
-		if ( dtXmlParserBase::hasAttribute("x_percent_two", *tE) ) {
-			_x1
-			= 
-			dtXmlParserBase::muParseString( 
-				dtXmlParserBase::replaceDependencies(
-					dtXmlParserBase::getAttributeStr("x_percent_two", *tE), cV, aF
-				) 
-			);
-		}
-		
-    dt__throwIf( (_x0 >= 0.) && (_x1 >= 0.), init() );
+		if (dtXmlParserBase::hasAttribute("x_percent_one", *tE)) {
+			config.append(
+        "_x0",  
+        dtXmlParserBase::muParseString( 
+          dtXmlParserBase::replaceDependencies(
+            dtXmlParserBase::getAttributeStr("x_percent_one", *tE),
+            cV, 
+            aF
+          ) 
+        )
+      );
+		}    
+		if (dtXmlParserBase::hasAttribute("x_percent_two", *tE)) {
+			config.append(
+        "_x1",  
+        dtXmlParserBase::muParseString( 
+          dtXmlParserBase::replaceDependencies(
+            dtXmlParserBase::getAttributeStr("x_percent_two", *tE),
+            cV, 
+            aF
+          ) 
+        )
+      );
+		}        
+
+    jInit(config, bC, cV, aF, aG);
   }  
 }

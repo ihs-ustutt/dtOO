@@ -22,10 +22,14 @@ namespace dtOO {
   pickMap2dTo3dRectanglePercent::pickMap2dTo3dRectanglePercent(
     const pickMap2dTo3dRectanglePercent& orig
   ) : dtTransformer(orig) {
-		_p0 = orig._p0;
-		_p1 = orig._p1;
   }
 
+  pickMap2dTo3dRectanglePercent::pickMap2dTo3dRectanglePercent( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
+ 
   pickMap2dTo3dRectanglePercent::~pickMap2dTo3dRectanglePercent() {
   }
 
@@ -44,7 +48,9 @@ namespace dtOO {
     
     dt__forAllRefAuto( *aGeoVecP, aG) {
       aGeoRet.push_back( 
-        map2dTo3d::MustConstDownCast( aG )->segmentRectanglePercent(_p0, _p1) 
+        map2dTo3d::MustConstDownCast( aG )->segmentRectanglePercent(
+          config().lookup<dtPoint2>("_p0"), config().lookup<dtPoint2>("_p1")
+        ) 
       );
     }
     
@@ -55,6 +61,21 @@ namespace dtOO {
     return true;
   }
   
+  void pickMap2dTo3dRectanglePercent::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+
+    dt__throwIfWithMessage(
+      !config().contains("_p0") || !config().contains("_p1"),
+      jInit(),
+      << config().toStdString()
+    );
+  }  
   void pickMap2dTo3dRectanglePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
@@ -69,10 +90,15 @@ namespace dtOO {
     std::vector< ::QDomElement > wE 
     = 
     dtXmlParserBase::getChildVector("Point_2", *tE);
+       
+    jsonPrimitive config;
     
-    dt__throwIf( wE.size() != 2, init() );
-    
-    _p0 = dtXmlParserBase::createDtPoint2( &(wE[0]), bC, cV, aF, aG );
-    _p1 = dtXmlParserBase::createDtPoint2( &(wE[1]), bC, cV, aF, aG );
+    config.append<dtPoint2>( 
+      "_p0", dtXmlParserBase::createDtPoint2( &(wE[0]), bC, cV, aF, aG ) 
+    );
+    config.append<dtPoint2>( 
+      "_p1", dtXmlParserBase::createDtPoint2( &(wE[1]), bC, cV, aF, aG )
+    );
+    jInit(config, bC, cV, aF, aG);
   }  
 }
