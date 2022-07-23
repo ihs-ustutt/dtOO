@@ -42,6 +42,22 @@ set_tests_properties(
   ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
 )
 
+#
+# transformerSWIG
+#
+add_test(
+  NAME transformerSWIG 
+  COMMAND python3 "build.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/transformerSWIG
+)
+set_tests_properties(
+  transformerSWIG 
+  PROPERTIES
+  ENVIRONMENT 
+    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
+    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
+)
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})
