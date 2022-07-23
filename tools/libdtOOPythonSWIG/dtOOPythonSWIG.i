@@ -401,6 +401,10 @@ namespace dtOO {
 %include analyticFunctionHeaven/scaTanhGradingOneD.h
 %include analyticFunctionHeaven/scaTanhUnitGradingOneD.h
 
+namespace dtOO {
+  %rename(applyDtPoint3) dtTransformer::apply(dtPoint3 const&) const;
+  %rename(retractDtPoint3) dtTransformer::retract(dtPoint3 const&) const;
+}        
 %include dtTransformerHeaven/dtTransformer.h
 %include dtTransformerHeaven/dtTransformerInvThreeD.h
 %include dtTransformerHeaven/thicknessIncreasing.h
