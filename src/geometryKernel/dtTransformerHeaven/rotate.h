@@ -14,9 +14,17 @@ namespace dtOO {
       rotate();
       virtual ~rotate();
       rotate(const rotate& orig);    
+      rotate( jsonPrimitive const & jE );
       virtual dtTransformerInvThreeD * clone( void ) const;
       virtual dtTransformerInvThreeD * create( void ) const;       
       virtual bool isNecessary( void ) const;
+      virtual void jInit( 
+        jsonPrimitive const & jE, 
+        baseContainer * const bC,
+        cVPtrVec const * const cV,
+        aFPtrVec const * const aF,
+        aGPtrVec const * const aG
+      );    
       void init(
         ::QDomElement const * tE, 
         baseContainer * const bC,
@@ -40,9 +48,6 @@ namespace dtOO {
         aGPtrVec const * const aGeoVecP 
       ) const;
     private:
-      dtPoint3 _origin;
-      dtVector3 _rotVector;
-      dtReal _angle;
       static bool _registrated;    
   };
 }
