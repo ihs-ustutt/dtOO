@@ -1,17 +1,7 @@
 #include "xYz_rPhiZ.h"
-#include "interfaceHeaven/systemHandling.h"
-#include <analyticGeometryHeaven/map1dTo3d.h>
-#include <analyticGeometryHeaven/map2dTo3d.h>
-#include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
-#include <analyticFunctionHeaven/vec2dMultiBiLinearTwoD.h>
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
-#include <analyticFunctionHeaven/vec3dSurfaceTwoD.h>
-#include <analyticFunctionHeaven/vec3dThickedTwoD.h>
-#include <analyticFunctionHeaven/vec3dCurveOneD.h>
-#include <analyticFunctionHeaven/vec3dTransVolThreeD.h>
-#include <analyticFunctionHeaven/analyticFunctionTransformed.h>
 #include "dtTransformerFactory.h"
 
 namespace dtOO {
@@ -25,21 +15,16 @@ namespace dtOO {
   }
 
   xYz_rPhiZ::xYz_rPhiZ( xYz_rPhiZ const & orig ) : dtTransformer(orig) {
-    _rotAxis = orig._rotAxis;
-    _refAxis = orig._refAxis;
-    _origin = orig._origin;
   }
   
   xYz_rPhiZ::xYz_rPhiZ( 
-    dtPoint3 origin, dtVector3 rotAxis, dtVector3 refAxis 
-  ) : dtTransformer() {
-    _rotAxis = rotAxis;
-    _refAxis = refAxis;
-    _origin = origin;
-  }  
-	
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
+  	
   xYz_rPhiZ::~xYz_rPhiZ() {
-		
+
   }
 
   dtTransformer * xYz_rPhiZ::clone( void ) const {
@@ -69,19 +54,22 @@ namespace dtOO {
     std::vector< dtPoint3 > const * const toRetract 
   ) const {
 		std::vector< dtPoint3 > retVec;
+    dtVector3 rotAxis = config().lookup<dtVector3>("_rotAxis");
+    dtVector3 refAxis = config().lookup<dtVector3>("_refAxis");
+    dtPoint3 origin = config().lookup<dtPoint3>("_origin");
 		dt__forAllRefAuto(*toRetract, aPoint) {
       // define vector from origin to point
-      dtVector3 dd = aPoint - _origin;
+      dtVector3 dd = aPoint - origin;
       
       //
       // z coordinate
       //
-      dtReal coordZ = dtLinearAlgebra::dotProduct(_rotAxis, dd);
+      dtReal coordZ = dtLinearAlgebra::dotProduct(rotAxis, dd);
 
       //
       // r coordinate
       //      
-      dtVector3 rr = dd - coordZ * _rotAxis;
+      dtVector3 rr = dd - coordZ * rotAxis;
       dtReal coordR = dtLinearAlgebra::length(rr);
       
       //
@@ -90,7 +78,7 @@ namespace dtOO {
       dtVector3 ref2Axis 
       = 
       dtLinearAlgebra::normalize(
-        dtLinearAlgebra::crossProduct(_rotAxis, _refAxis)
+        dtLinearAlgebra::crossProduct(rotAxis, refAxis)
       );
             
       //
@@ -100,7 +88,7 @@ namespace dtOO {
       = 
       atan2( 
         dtLinearAlgebra::dotProduct(ref2Axis, rr), 
-        dtLinearAlgebra::dotProduct(_refAxis, rr)
+        dtLinearAlgebra::dotProduct(refAxis, rr)
       );          
 
 			retVec.push_back( dtPoint3(coordR, coordPhi, coordZ) );
@@ -109,22 +97,32 @@ namespace dtOO {
 		return retVec;
 	}
   
-  dtVector3 const & xYz_rPhiZ::rotationAxis( void ) const {
-    return _rotAxis;
+  dtVector3 const xYz_rPhiZ::rotationAxis( void ) const {
+    return config().lookup<dtVector3>("_rotAxis");
   }
   
-  dtVector3 const & xYz_rPhiZ::referenceAxis( void ) const {
-    return _refAxis;
+  dtVector3 const xYz_rPhiZ::referenceAxis( void ) const {
+    return config().lookup<dtVector3>("_refAxis");
   }
   
-  dtPoint3 const & xYz_rPhiZ::origin( void ) const {
-    return _origin;
+  dtPoint3 const xYz_rPhiZ::origin( void ) const {
+    return config().lookup<dtPoint3>("_origin");
   }
     
   bool xYz_rPhiZ::isNecessary( void ) const {
     return true;
   }
 
+  void xYz_rPhiZ::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+  }  
+  
   void xYz_rPhiZ::init( 
     ::QDomElement const * tE, 
     baseContainer * const bC,
@@ -143,24 +141,31 @@ namespace dtOO {
     
     dtTransformer::init(tE, bC, cV, aF, aG);
 		
-    _origin
-    =
-	  dtXmlParserBase::getDtPoint3(
-      dtXmlParserBase::getAttributeStr("origin", *tE), bC
-    );
-    _rotAxis
-    =
-	  dtLinearAlgebra::normalize(
-      dtXmlParserBase::getDtVector3(
-        dtXmlParserBase::getAttributeStr("rotationAxis", *tE), bC
+    jsonPrimitive config;
+    
+    config.append(
+      "_origin",
+      dtXmlParserBase::getDtPoint3(
+        dtXmlParserBase::getAttributeStr("origin", *tE), bC
       )
     );
-    _refAxis
-    =
-    dtLinearAlgebra::normalize(
-      dtXmlParserBase::getDtVector3(
-        dtXmlParserBase::getAttributeStr("referenceAxis", *tE), bC
+    config.append(
+      "_rotAxis",
+      dtLinearAlgebra::normalize(
+        dtXmlParserBase::getDtVector3(
+          dtXmlParserBase::getAttributeStr("rotationAxis", *tE), bC
+        )
       )
-    );    
+    );
+    config.append(
+      "_refAxis",
+      dtLinearAlgebra::normalize(
+        dtXmlParserBase::getDtVector3(
+          dtXmlParserBase::getAttributeStr("referenceAxis", *tE), bC
+        )
+      )
+    );  
+    
+    jInit(config, bC, cV, aF, aG);
   }
 }
