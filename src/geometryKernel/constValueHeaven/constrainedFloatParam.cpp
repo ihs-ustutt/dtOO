@@ -14,6 +14,7 @@ namespace dtOO {
     _max = orig._max;
     _min = orig._min;
     _valueStr = orig._valueStr;
+    _cVArr = orig._cVArr;
   }
 
   constrainedFloatParam::~constrainedFloatParam() {
