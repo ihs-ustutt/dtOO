@@ -266,6 +266,7 @@ namespace dtOO {
 %include <jsonHeaven/jsonPrimitive.h>  
 namespace dtOO {
   %template(vectorInt)              ::std::vector< dtInt >;
+  %template(vectorBool)             ::std::vector< bool >;
   %template(vectorReal)             ::std::vector< dtReal >;
   %template(vectorStr)              ::std::vector< std::string >;
   %template(vectorJsonPrimitive)    ::std::vector< jsonPrimitive >;
@@ -315,17 +316,20 @@ namespace dtOO {
 %include <xmlHeaven/dtXmlParser.h>     
 %template(lookupStr) dtOO::jsonPrimitive::lookup< std::string >;
 %template(lookupInt) dtOO::jsonPrimitive::lookup< dtOO::dtInt >;
+%template(lookupBool) dtOO::jsonPrimitive::lookup< bool >;
 %template(lookupReal) dtOO::jsonPrimitive::lookup< dtOO::dtReal >;
 %template(lookupJsonPrimitive) dtOO::jsonPrimitive::lookup< dtOO::jsonPrimitive >;
 %template(lookupDtPoint2) dtOO::jsonPrimitive::lookup< dtOO::dtPoint2 >;
 %template(lookupDtPoint3) dtOO::jsonPrimitive::lookup< dtOO::dtPoint3 >;
 %template(lookupDtVector3) dtOO::jsonPrimitive::lookup< dtOO::dtVector3 >;
 %template(lookupVectorInt) dtOO::jsonPrimitive::lookup< std::vector< dtOO::dtInt > >;
+%template(lookupVectorBool) dtOO::jsonPrimitive::lookup< std::vector< bool > >;
 %template(lookupVectorReal) dtOO::jsonPrimitive::lookup< std::vector< dtOO::dtReal > >;
 %template(lookupVectorStr) dtOO::jsonPrimitive::lookup< std::vector< std::string > >;
 %template(lookupVectorJsonPrimitive) dtOO::jsonPrimitive::lookup< std::vector< dtOO::jsonPrimitive > >;
 %template(appendStr) dtOO::jsonPrimitive::append< std::string >;
 %template(appendInt) dtOO::jsonPrimitive::append< dtOO::dtInt >;
+%template(appendBool) dtOO::jsonPrimitive::append< bool >;
 %template(appendReal) dtOO::jsonPrimitive::append< dtOO::dtReal >;
 %template(appendDtPoint2) dtOO::jsonPrimitive::append< dtPoint2 >;
 %template(appendDtPoint3) dtOO::jsonPrimitive::append< dtPoint3 >;

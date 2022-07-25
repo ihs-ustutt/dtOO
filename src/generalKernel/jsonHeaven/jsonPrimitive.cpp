@@ -117,6 +117,8 @@ namespace dtOO {
   template
   dtInt jsonPrimitive::lookup< dtInt >(std::string const &) const;
   template
+  bool jsonPrimitive::lookup< bool >(std::string const &) const;
+  template
   jsonPrimitive jsonPrimitive::lookup< jsonPrimitive >( 
     std::string const &
   ) const;    
@@ -130,6 +132,10 @@ namespace dtOO {
   std::vector<dtInt> jsonPrimitive::lookup< std::vector<dtInt> >(
     std::string const &
   ) const;  
+  template
+  std::vector<bool> jsonPrimitive::lookup< std::vector<bool> >(
+    std::string const &
+  ) const;    
   template
   std::vector<dtReal> jsonPrimitive::lookup< std::vector<dtReal> >(
     std::string const &
@@ -157,6 +163,10 @@ namespace dtOO {
   dtInt jsonPrimitive::lookupDef< dtInt >(
     std::string const &, dtInt const & def
   ) const;
+  template
+  bool jsonPrimitive::lookupDef< bool >(
+    std::string const &, bool const & def
+  ) const;  
   
   // template  operator[]
   template < typename T > 
@@ -202,6 +212,9 @@ namespace dtOO {
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtInt const & val 
   );  
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, bool const & val 
+  );    
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtPoint2 const & val
   );  
