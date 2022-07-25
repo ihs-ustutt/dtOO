@@ -28,6 +28,9 @@ namespace dtOO {
 #include <baseContainerHeaven/vectorContainer.h>
 #include <baseContainerHeaven/transformerContainer.h>
 #include <constValueHeaven/constValue.h>
+#include <constValueHeaven/sliderFloatParam.h>
+#include <constValueHeaven/intParam.h>
+#include <constValueHeaven/constrainedFloatParam.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/aFX.h>
 #include <analyticFunctionHeaven/aFY.h>
@@ -327,6 +330,10 @@ namespace dtOO {
 %template(appendDtPoint2) dtOO::jsonPrimitive::append< dtPoint2 >;
 %template(appendDtPoint3) dtOO::jsonPrimitive::append< dtPoint3 >;
 %template(appendDtVector3) dtOO::jsonPrimitive::append< dtVector3 >;
+
+%include constValueHeaven/sliderFloatParam.h
+%include constValueHeaven/intParam.h
+%include constValueHeaven/constrainedFloatParam.h
 
 %include <geometryEngine/dtSurface.h>
 %include <geometryEngine/dtOCCSurfaceBase.h>
