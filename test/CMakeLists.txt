@@ -58,6 +58,22 @@ set_tests_properties(
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
 
+#
+# constValueSWIG
+#
+add_test(
+  NAME constValueSWIG 
+  COMMAND python3 "build.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/constValueSWIG
+)
+set_tests_properties(
+  constValueSWIG 
+  PROPERTIES
+  ENVIRONMENT 
+    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
+    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
+)
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})
