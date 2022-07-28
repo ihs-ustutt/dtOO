@@ -56,6 +56,9 @@ namespace dtOO {
   void from_json(const ::nlohmann::json& from, jsonPrimitive& to) {
     to = jsonPrimitive( from.dump() );
   };  
+  void to_json(::nlohmann::json& to, const jsonPrimitive& from) {
+    to = ::nlohmann::json( from.json() );
+  };    
 }
 
 namespace dtOO {  
@@ -216,6 +219,9 @@ namespace dtOO {
     std::string const & str, bool const & val 
   );    
   template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, jsonPrimitive const & val
+  );      
+  template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtPoint2 const & val
   );  
   template jsonPrimitive jsonPrimitive::append( 
@@ -224,4 +230,8 @@ namespace dtOO {
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtVector3 const & val
   );      
+  
+  ::nlohmann::json const & jsonPrimitive::json( void ) const {
+    return *_json;
+  }
 }

@@ -25,6 +25,7 @@ namespace dtOO {
       template < typename T > 
       jsonPrimitive append( std::string const & str, T const & val );
       std::string toStdString( void ) const;
+      ::nlohmann::json const & json( void ) const;
     private:
       dt__pH(::nlohmann::json) _json;
   };

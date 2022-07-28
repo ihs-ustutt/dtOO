@@ -330,6 +330,7 @@ namespace dtOO {
 %template(appendStr) dtOO::jsonPrimitive::append< std::string >;
 %template(appendInt) dtOO::jsonPrimitive::append< dtOO::dtInt >;
 %template(appendBool) dtOO::jsonPrimitive::append< bool >;
+%template(appendJsonPrimitive) dtOO::jsonPrimitive::append< dtOO::jsonPrimitive >;
 %template(appendReal) dtOO::jsonPrimitive::append< dtOO::dtReal >;
 %template(appendDtPoint2) dtOO::jsonPrimitive::append< dtPoint2 >;
 %template(appendDtPoint3) dtOO::jsonPrimitive::append< dtPoint3 >;
