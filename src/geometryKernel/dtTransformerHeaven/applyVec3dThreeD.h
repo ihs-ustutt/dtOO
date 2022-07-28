@@ -31,9 +31,6 @@ namespace dtOO {
       apply( std::vector< dtPoint3 > const * const toTrans ) const;        
       std::vector< dtPoint3 > 
       retract(std::vector< dtPoint3 > const * const toRetract) const;    
-//      dtVector3 const & rotationAxis( void ) const;
-//      dtVector3 const & referenceAxis( void ) const;
-//      dtPoint3 const & origin( void ) const;
     private:
       dt__pH(vec3dThreeD) _v3;
       static bool _registrated;      
