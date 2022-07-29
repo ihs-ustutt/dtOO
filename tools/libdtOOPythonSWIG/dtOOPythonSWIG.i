@@ -332,9 +332,10 @@ namespace dtOO {
 %template(appendBool) dtOO::jsonPrimitive::append< bool >;
 %template(appendJsonPrimitive) dtOO::jsonPrimitive::append< dtOO::jsonPrimitive >;
 %template(appendReal) dtOO::jsonPrimitive::append< dtOO::dtReal >;
-%template(appendDtPoint2) dtOO::jsonPrimitive::append< dtPoint2 >;
-%template(appendDtPoint3) dtOO::jsonPrimitive::append< dtPoint3 >;
-%template(appendDtVector3) dtOO::jsonPrimitive::append< dtVector3 >;
+%template(appendDtPoint2) dtOO::jsonPrimitive::append< dtOO::dtPoint2 >;
+%template(appendDtPoint3) dtOO::jsonPrimitive::append< dtOO::dtPoint3 >;
+%template(appendDtVector3) dtOO::jsonPrimitive::append< dtOO::dtVector3 >;
+%template(appendAnalyticFunction) dtOO::jsonPrimitive::append< dtOO::analyticFunction const * >;
 
 %include constValueHeaven/sliderFloatParam.h
 %include constValueHeaven/intParam.h

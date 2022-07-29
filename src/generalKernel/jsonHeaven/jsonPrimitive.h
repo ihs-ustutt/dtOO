@@ -5,9 +5,10 @@
 #include <string>
 #include <vector>
 #include <logMe/dtMacros.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <nlohmann/json_fwd.hpp>
 
-namespace dtOO {
+namespace dtOO {  
   class jsonPrimitive {
     public:
       dt__classOnlyName(jsonPrimitive);  
@@ -20,6 +21,11 @@ namespace dtOO {
       template < typename T > T lookup( std::string const & str ) const;
       template < typename T > T lookupDef( 
         std::string const & str, T const & def 
+      ) const;
+      template < typename T > 
+      dt__pH(T) lookupClone( 
+        std::string const & str, 
+        labeledVectorHandling< T * > const * const ptrVec
       ) const;
       template < typename T > T const operator[]( std::string const & str ) const;
       template < typename T > 

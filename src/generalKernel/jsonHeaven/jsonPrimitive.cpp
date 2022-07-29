@@ -6,6 +6,8 @@
 #include <interfaceHeaven/stringPrimitive.h>
 #include <dtLinearAlgebra.h>
 
+#include <analyticFunctionHeaven/analyticFunction.h>
+
 namespace CGAL {
   //dtPoint2
   void from_json(const ::nlohmann::json& from, ::dtOO::dtPoint2& to) {
@@ -49,7 +51,7 @@ namespace CGAL {
     to["dtVector3"]["x"] = from.x();
     to["dtVector3"]["y"] = from.y();
     to["dtVector3"]["z"] = from.z();
-  };      
+  };  
 }
 
 namespace dtOO {
@@ -58,7 +60,10 @@ namespace dtOO {
   };  
   void to_json(::nlohmann::json& to, const jsonPrimitive& from) {
     to = ::nlohmann::json( from.json() );
-  };    
+  };
+  void to_json(::nlohmann::json& to, analyticFunction const * const & from) {
+    to["analyticFunction"]["label"] = from->getLabel();
+  };      
 }
 
 namespace dtOO {  
@@ -152,6 +157,22 @@ namespace dtOO {
     std::string const &
   ) const;
 
+  // template lookupCast
+  template < typename T > 
+  dt__pH(T) jsonPrimitive::lookupClone( 
+    std::string const & str, labeledVectorHandling< T * > const * const ptrVec
+  ) const {
+    jsonPrimitive jP 
+    = 
+    lookup<jsonPrimitive>(str).lookup<jsonPrimitive>( T::className() );
+    return dt__pH(T)(ptrVec->get( jP.lookup<std::string>("label") )->clone());
+  }
+  template
+  dt__pH(analyticFunction) jsonPrimitive::lookupClone( 
+    std::string const & str, 
+    labeledVectorHandling< analyticFunction * > const * const ptrVec
+  ) const;
+  
   // template lookupDef
   template < typename T > 
   T jsonPrimitive::lookupDef( std::string const & str, T const & def ) const {
@@ -229,7 +250,10 @@ namespace dtOO {
   );    
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtVector3 const & val
-  );      
+  );
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, analyticFunction const * const & val
+  );        
   
   ::nlohmann::json const & jsonPrimitive::json( void ) const {
     return *_json;
