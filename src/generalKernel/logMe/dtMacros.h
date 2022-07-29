@@ -37,8 +37,14 @@
   static bool Is(castFrom const * const obj) { \
     return (dynamic_cast<name const * const >(obj) == NULL ? false : true); \
   } \
+  static bool PointerIs(dt__pH(castFrom) const obj) { \
+    return (!boost::dynamic_pointer_cast<name, castFrom >(obj) ? false : true); \
+  } \
   static name * DownCast(castFrom * obj) { \
     return dynamic_cast<name *>(obj); \
+  } \
+  static dt__pH(name) PointerDownCast(dt__pH(castFrom) obj) { \
+    return boost::dynamic_pointer_cast<name, castFrom>(obj); \
   } \
   static name * SecureCast(castFrom * obj) { \
     return dynamic_cast<name *>(obj); \
