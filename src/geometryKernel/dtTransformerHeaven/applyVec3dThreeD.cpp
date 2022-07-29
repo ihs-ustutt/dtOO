@@ -67,6 +67,20 @@ namespace dtOO {
     return true;
   }
 
+  void applyVec3dThreeD::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		cVPtrVec const * const cV,
+		aFPtrVec const * const aF,
+		aGPtrVec const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+    
+    _v3
+    = 
+    vec3dThreeD::PointerDownCast( jE.lookupClone<analyticFunction>("_v3", aF) );
+  }  
+  
   void applyVec3dThreeD::init( 
     ::QDomElement const * tE, 
     baseContainer * const bC,
