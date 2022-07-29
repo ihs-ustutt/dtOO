@@ -40,7 +40,7 @@ namespace dtOO {
         analyticSurface * aS, analyticSurface::DownCast( aTrans->clone() )
       );
 
-      if ( !_vvStartAGeo.isNull() ) {
+      if ( _vvStartAGeo ) {
         for (int ii = 0;ii<aS->ptrDtSurface()->nControlPointsU();ii++) {
           dtPoint3 cP = aS->ptrDtSurface()->controlPoint(ii, 0);
           dtPoint2 nearest = _vvStartAGeo->ptrDtSurface()->reparam( cP );
@@ -51,7 +51,7 @@ namespace dtOO {
           aS->ptrDtSurface()->setControlPoint(ii, 0, cPNearest);
         }
       }
-      if ( !_vvEndAGeo.isNull() ) {
+      if ( _vvEndAGeo ) {
         dtInt nV = aS->ptrDtSurface()->nControlPointsV();
         for (int ii = 0;ii<aS->ptrDtSurface()->nControlPointsU();ii++) {        
           dtPoint3 cP = aS->ptrDtSurface()->controlPoint(ii, nV-1);
@@ -110,6 +110,6 @@ namespace dtOO {
         )->clone()
       )
     );  
-    dt__throwIf( _vvStartAGeo.isNull() || _vvEndAGeo.isNull(), init() );
+    dt__throwIf( !_vvStartAGeo || !_vvEndAGeo, init() );
   }
 }

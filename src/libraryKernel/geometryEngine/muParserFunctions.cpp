@@ -10,7 +10,7 @@ namespace dtOO {
   }
 
   muParserFunctions * muParserFunctions::instance( void ) {
-    if (_pH.isNull()) _pH.reset( new muParserFunctions() );
+    if (!_pH) _pH.reset( new muParserFunctions() );
     return _pH.get();
   }
   

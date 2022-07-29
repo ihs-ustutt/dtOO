@@ -69,7 +69,7 @@ namespace dtOO {
         map3dTo3d::ConstDownCast(aG_t.get())
       );
       
-			if (mm3d && _m3d.isNull()) _m3d.reset( mm3d->clone() );
+			if (mm3d && !_m3d) _m3d.reset( mm3d->clone() );
 			else _internal.push_back( mm3d->clone() );
 		}	
 

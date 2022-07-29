@@ -183,12 +183,12 @@ namespace dtOO {
           ::Foam::scalar volFieldValue = volField[cId];
 
           if ( 
-            !_inRange.isNull()
+            _inRange
             &&
             ( _inRange->YFloat( volFieldValue ) == 0 )
           ) continue;
           if ( 
-            !_inPosition.isNull()
+            _inPosition
             &&
             (
               _inPosition->YFloat( 

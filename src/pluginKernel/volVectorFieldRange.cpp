@@ -182,7 +182,7 @@ namespace dtOO {
           ::Foam::vector volFieldValue = volField[cId];
 
           if (
-            !_inRange.isNull()
+            _inRange
             &&
             (
               _inRange->YFloat(
@@ -193,7 +193,7 @@ namespace dtOO {
             )
           ) continue;
           if ( 
-            !_inPosition.isNull()
+            _inPosition
             &&
             (
               _inPosition->YFloat( 

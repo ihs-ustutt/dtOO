@@ -55,7 +55,7 @@ namespace dtOO {
   }
 
   staticPropertiesHandler * staticPropertiesHandler::getInstance( void ) {
-    if (_pH.isNull()) {    
+    if (!_pH) {    
       _pH.reset( new staticPropertiesHandler() );
     }
     return _pH.get();

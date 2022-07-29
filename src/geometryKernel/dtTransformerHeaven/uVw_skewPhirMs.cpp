@@ -45,8 +45,8 @@ namespace dtOO {
     _nU = orig._nU;
     _nV = orig._nV;
     _nW = orig._nW;
-    if( !orig._fU.isNull() ) _fU.reset( orig._fU->clone() );
-    if( !orig._fV.isNull() ) _fV.reset( orig._fV->clone() );
+    if( orig._fU ) _fU.reset( orig._fU->clone() );
+    if( orig._fV ) _fV.reset( orig._fV->clone() );
     _relaxM = orig._relaxM;
     _relaxPhir = orig._relaxPhir;
     _nSteps = orig._nSteps;
@@ -247,7 +247,7 @@ namespace dtOO {
 
     std::vector< dtReal > uPercent;
     std::vector< dtReal > vPercent;
-    if ( !_fU.isNull() ) {
+    if ( _fU ) {
       uPercent = float_scaOneDPoint(_fU.get(), _nU).result();
     }
     else {
@@ -255,7 +255,7 @@ namespace dtOO {
     }
     uPercent = dtLinearAlgebra::multiply( _angle/(2.*M_PI), uPercent );
     
-    if ( !_fV.isNull() ) {
+    if ( _fV ) {
       vPercent = float_scaOneDPoint(_fV.get(), _nV).result();
     }
     else {

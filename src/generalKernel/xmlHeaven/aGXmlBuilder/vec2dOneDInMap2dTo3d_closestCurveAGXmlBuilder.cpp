@@ -71,7 +71,7 @@ namespace dtOO {
       }
       else dt__throwUnexpected(buildPart());
     }
-    dt__throwIf(_m1d.isNull() || _m2d.isNull(), buildPart());    
+    dt__throwIf(!_m1d || !_m2d, buildPart());    
     
     dt__forAllRefAuto(
       dtLinearAlgebra::unitGrid(

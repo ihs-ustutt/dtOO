@@ -144,7 +144,7 @@ namespace dtOO {
     }
   }
         
-  dtSurface * bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::sortAndInit(
+  dt__pH(dtSurface) bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::sortAndInit(
     dtInt const & fixJ, twoDArrayHandling< dt__pH(dtCurve) > const & cc,
     vectorHandling< dtCurve const * > & ccFill,
     dtInt const & skin_nInitCuts, 
@@ -159,9 +159,11 @@ namespace dtOO {
     }
 
     return 
-      bSplineSurface_skinConstructOCC(
-      ccSkin, skin_minDeg, skin_maxDeg, skin_nIter
-    ).result();       
+      dt__pH(dtSurface)(
+        bSplineSurface_skinConstructOCC(
+          ccSkin, skin_minDeg, skin_maxDeg, skin_nIter
+        ).result()
+      );       
   }
         
   dtSurface * bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::fillPatch(
