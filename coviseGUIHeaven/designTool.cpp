@@ -698,7 +698,7 @@ namespace dtOO {
     //
     // update state label
     //
-    if (!_parser.isNull()) {
+    if (_parser) {
       _stateName->setValue(_parser->currentState().c_str());
     }
     return;
@@ -718,7 +718,7 @@ namespace dtOO {
 				_aFToRender.clear();
 				_bVToRender.clear();
 				
-        if (_parser.isNull()) {
+        if (!_parser) {
           _parser.reset( 
             dtXmlParser::init(
               std::string(_xmlBrowser->getValue()), 
