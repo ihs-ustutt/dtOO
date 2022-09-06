@@ -205,6 +205,7 @@ git_cmake_build \
 #-------------------------------------------------------------------------------
 # gmsh
 #-------------------------------------------------------------------------------
+export CASROOT=${_installPrefix}
 git_cmake_build \
   "gmsh" \
   "https://gitlab.onelab.info/gmsh/gmsh.git" \
@@ -228,7 +229,7 @@ git_cmake_build \
   -DENABLE_MATHEX=OFF \
   -DENABLE_MED=OFF \
   -DENABLE_MMG=OFF \
-  -DENABLE_OCC=OFF \
+  -DENABLE_OCC=ON \
   -DENABLE_OCC_CAF=OFF \
   -DENABLE_QUADTRI=OFF \
   -DENABLE_QUADMESHINGTOOLS=OFF \
