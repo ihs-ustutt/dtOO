@@ -112,12 +112,23 @@ namespace dtOO {
 #include <dtTransformerHeaven/pickVec3dTwoDRectanglePercent.h>
 
 #include <analyticGeometryHeaven/analyticGeometry.h>
+#include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
+#include <analyticGeometryHeaven/map3dTo3d.h>
+#include <analyticGeometryHeaven/analyticCurve.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
+#include <analyticGeometryHeaven/infinityMap3dTo3d.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCSurface.h>
 #include <geometryEngine/dtOCCBSplineSurface.h>
+#include <geometryEngine/dtCurve.h>
+#include <geometryEngine/dtOCCCurveBase.h>
+#include <geometryEngine/dtOCCCurve.h>
+#include <geometryEngine/dtOCCBSplineCurve.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
+        
 #include <boundedVolume.h>
 #include <dtCase.h>
 #include <dtPlugin.h>
@@ -173,7 +184,7 @@ namespace dtOO {
     SWIG_fail;
 	}
 }
-    
+
 %include dtOOTypeDef.h
 %include logMe/dtMacros.h
 %include interfaceHeaven/ptrHandling.h
@@ -276,6 +287,8 @@ namespace dtOO {
   %template(vectorBoundedVolume)    ::std::vector< boundedVolume * >;
   %template(vectorDtCase)           ::std::vector< dtCase * >;
   %template(vectorDtPlugin)         ::std::vector< dtPlugin * >;
+  %template(vectorDtPoint3)         ::std::vector< dtPoint3 >;
+  %template(vectorDtVector3)        ::std::vector< dtVector3 >;
   
   template < typename T >
   class vectorHandling : public std::vector< T > {
@@ -288,6 +301,7 @@ namespace dtOO {
   %template(vectorHandlingBoundedVolume)    vectorHandling< boundedVolume * >;
   %template(vectorHandlingDtCase)           vectorHandling< dtCase * >;
   %template(vectorHandlingDtPlugin)         vectorHandling< dtPlugin * >;
+  %template(vectorHandlingDtCurve)          vectorHandling< dtCurve * >;
   
   template < typename T >
   class labeledVectorHandling : public vectorHandling< T > {
@@ -341,10 +355,16 @@ namespace dtOO {
 %include constValueHeaven/intParam.h
 %include constValueHeaven/constrainedFloatParam.h
 
-%include <geometryEngine/dtSurface.h>
-%include <geometryEngine/dtOCCSurfaceBase.h>
-%include <geometryEngine/dtOCCSurface.h>
-%include <geometryEngine/dtOCCBSplineSurface.h>
+%include geometryEngine/dtSurface.h
+%include geometryEngine/dtOCCSurfaceBase.h
+%include geometryEngine/dtOCCSurface.h
+%include geometryEngine/dtOCCBSplineSurface.h
+%include geometryEngine/dtCurve.h
+%include geometryEngine/dtOCCCurveBase.h
+%include geometryEngine/dtOCCCurve.h
+%include geometryEngine/dtOCCBSplineCurve.h
+%include geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h
 
 //
 // Classes has to be not abstract, otherwise no constructors will be created, 
@@ -375,12 +395,12 @@ namespace dtOO {
 %feature("notabstract") scaTanhGradingOneD;
 %feature("notabstract") scaTanhUnitGradingOneD;
 
-%include <analyticFunctionHeaven/aFX.h>
-%include <analyticFunctionHeaven/aFY.h>
-%include <analyticFunctionHeaven/scaFunction.h>
-%include <analyticFunctionHeaven/scaOneD.h>
+%include analyticFunctionHeaven/aFX.h
+%include analyticFunctionHeaven/aFY.h
+%include analyticFunctionHeaven/scaFunction.h
+%include analyticFunctionHeaven/scaOneD.h
 %include analyticFunctionHeaven/scaMultiOneD.h
-%include <analyticFunctionHeaven/scaMuParserOneD.h>
+%include analyticFunctionHeaven/scaMuParserOneD.h
 %include analyticFunctionHeaven/scaCurve2dOneD.h
 %include analyticFunctionHeaven/scaTwoD.h
 %include analyticFunctionHeaven/scaMuParserTwoD.h
@@ -457,5 +477,13 @@ namespace dtOO {
 %include dtTransformerHeaven/xYz_localCoordinates.h
 %include dtTransformerHeaven/pickVec3dTwoDRectanglePercent.h
         
+%feature("notabstract") analyticSurface;
+%feature("notabstract") infinityMap3dTo3d;
+%feature("notabstract") analyticCurve;
+
+%include analyticGeometryHeaven/map1dTo3d.h
 %include analyticGeometryHeaven/map2dTo3d.h
+%include analyticGeometryHeaven/map3dTo3d.h
+%include analyticGeometryHeaven/analyticCurve.h
 %include analyticGeometryHeaven/analyticSurface.h
+%include analyticGeometryHeaven/infinityMap3dTo3d.h
