@@ -128,6 +128,7 @@ namespace dtOO {
 #include <geometryEngine/dtOCCBSplineCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomShape_readIgesOCC.h>
         
 #include <boundedVolume.h>
 #include <dtCase.h>
@@ -264,6 +265,8 @@ namespace dtOO {
   %template(dtVector2)      ::CGAL::Vector_2< dtKernel >;
 }
 %include dtLinearAlgebra.h
+%include geometryEngine/dtCurve.h
+%include geometryEngine/dtSurface.h
 %include baseContainerHeaven/baseContainer.h
 %include baseContainerHeaven/pointContainer.h
 %include baseContainerHeaven/vectorContainer.h
@@ -289,12 +292,22 @@ namespace dtOO {
   %template(vectorDtPlugin)         ::std::vector< dtPlugin * >;
   %template(vectorDtPoint3)         ::std::vector< dtPoint3 >;
   %template(vectorDtVector3)        ::std::vector< dtVector3 >;
+  %template(vectorDtCurve)          ::std::vector< dtCurve * >;
+  %template(vectorDtSurface)        ::std::vector< dtSurface * >;
   
   template < typename T >
   class vectorHandling : public std::vector< T > {
     public:
       T * set( T const & toSet);
   };
+  typedef vectorHandling< constValue * >       vH_constValue;
+  typedef vectorHandling< analyticFunction * > vH_analyticFunction;
+  typedef vectorHandling< analyticGeometry * > vH_analyticGeometry;
+  typedef vectorHandling< boundedVolume * >    vH_boundedVolume;
+  typedef vectorHandling< dtCase * >           vH_dtCase;
+  typedef vectorHandling< dtPlugin * >         vH_dtPlugin;  
+  typedef vectorHandling< dtCurve * >          vH_dtCurve;
+  typedef vectorHandling< dtSurface * >        vH_dtSurface;
   %template(vectorHandlingConstValue)       vectorHandling< constValue * >;
   %template(vectorHandlingAnalyticFunction) vectorHandling< analyticFunction * >;
   %template(vectorHandlingAnalyticGeometry) vectorHandling< analyticGeometry * >;
@@ -302,6 +315,7 @@ namespace dtOO {
   %template(vectorHandlingDtCase)           vectorHandling< dtCase * >;
   %template(vectorHandlingDtPlugin)         vectorHandling< dtPlugin * >;
   %template(vectorHandlingDtCurve)          vectorHandling< dtCurve * >;
+  %template(vectorHandlingDtSurface)        vectorHandling< dtSurface * >;
   
   template < typename T >
   class labeledVectorHandling : public vectorHandling< T > {
@@ -312,13 +326,20 @@ namespace dtOO {
       dtInt getPosition( std::string const label) const;
       void dump(void) const;
   };
-    
+  // deprecated names -------  
   typedef labeledVectorHandling< constValue * > cVPtrVec;
   typedef labeledVectorHandling< analyticFunction * > aFPtrVec;
   typedef labeledVectorHandling< analyticGeometry * > aGPtrVec;
   typedef labeledVectorHandling< boundedVolume * > bVPtrVec;
   typedef labeledVectorHandling< dtCase * > dCPtrVec;  
   typedef labeledVectorHandling< dtPlugin * > dPPtrVec;    
+  // -------
+  typedef labeledVectorHandling< constValue * >       lvH_constValue;
+  typedef labeledVectorHandling< analyticFunction * > lvH_analyticFunction;
+  typedef labeledVectorHandling< analyticGeometry * > lvH_analyticGeometry;
+  typedef labeledVectorHandling< boundedVolume * >    lvH_boundedVolume;
+  typedef labeledVectorHandling< dtCase * >           lvH_dtCase;
+  typedef labeledVectorHandling< dtPlugin * >         lvH_dtPlugin;  
   %template(labeledVectorHandlingConstValue) labeledVectorHandling< constValue * >;
   %template(labeledVectorHandlingAnalyticFunction) labeledVectorHandling< analyticFunction * >;
   %template(labeledVectorHandlingAnalyticGeometry) labeledVectorHandling< analyticGeometry * >;
@@ -355,16 +376,15 @@ namespace dtOO {
 %include constValueHeaven/intParam.h
 %include constValueHeaven/constrainedFloatParam.h
 
-%include geometryEngine/dtSurface.h
-%include geometryEngine/dtOCCSurfaceBase.h
-%include geometryEngine/dtOCCSurface.h
-%include geometryEngine/dtOCCBSplineSurface.h
-%include geometryEngine/dtCurve.h
 %include geometryEngine/dtOCCCurveBase.h
 %include geometryEngine/dtOCCCurve.h
 %include geometryEngine/dtOCCBSplineCurve.h
+%include geometryEngine/dtOCCSurfaceBase.h
+%include geometryEngine/dtOCCSurface.h
+%include geometryEngine/dtOCCBSplineSurface.h
 %include geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h
+%include geometryEngine/geoBuilder/geomShape_readIgesOCC.h
 
 //
 // Classes has to be not abstract, otherwise no constructors will be created, 
