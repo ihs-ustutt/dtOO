@@ -30,4 +30,8 @@ namespace dtOO {
   bool transformerContainer::isEmpty( void ) const {
     return _dtT.empty();
   }
+
+  std::vector< std::string > transformerContainer::labels( void ) const {
+    return _dtT.labels();
+  }    
 }

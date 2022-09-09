@@ -22,6 +22,7 @@ namespace dtOO {
     transformerContainer const * const constPtrTransformerContainer( 
       void 
     ) const;
+    std::vector< std::string > labels( void ) const;
     virtual ~baseContainer();
     void clear( void );
   private:

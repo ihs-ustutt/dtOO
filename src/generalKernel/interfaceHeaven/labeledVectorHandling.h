@@ -35,6 +35,7 @@ namespace dtOO {
     virtual ~labeledVectorHandling();
     T const & get( std::string const & label) const;
     std::string getLabel( dtInt const pos ) const;
+    std::vector< std::string > labels( void ) const;
     T & getRef( std::string const label);
     bool has( std::string const label) const;
     bool hasTwice( std::string const label ) const;
@@ -136,6 +137,17 @@ namespace dtOO {
         << "No labelHandling at " << dt__eval(pos) << " in vector."
       );
     }
+  }  
+  
+  template< typename T >
+  std::vector< std::string > labeledVectorHandling< T >::labels( void ) const {
+    std::vector< std::string > ret;
+    dt__forAllIndex(*this, ii) {
+      labelHandling const * obj;
+      dt__mustCast(this->at(ii), labelHandling const, obj);
+      ret.push_back( obj->getLabel() );
+    }
+    return ret;
   }  
   
   template< typename T >

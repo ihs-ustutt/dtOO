@@ -23,6 +23,7 @@ namespace dtOO {
     bool has(std::string const string) const;
     bool has(std::string const * const stringP) const;  
     bool isEmpty( void ) const;
+    std::vector< std::string > labels( void ) const;    
   private:
     std::vector< 
       std::pair <std::pair< dtVector3, dtPoint3 >, std::string > 

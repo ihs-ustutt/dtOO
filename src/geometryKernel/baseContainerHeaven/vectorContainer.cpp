@@ -72,4 +72,10 @@ namespace dtOO {
   bool vectorContainer::isEmpty( void ) const {
     return _pair.empty();
   }
+
+  std::vector< std::string > vectorContainer::labels( void ) const {
+    std::vector< std::string > ret;
+    dt__forAllRefAuto(_pair, aPair) ret.push_back( aPair.second);
+    return ret;
+  }  
 }
