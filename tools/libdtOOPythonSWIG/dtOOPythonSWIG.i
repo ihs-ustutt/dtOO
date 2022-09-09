@@ -117,7 +117,26 @@ namespace dtOO {
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/analyticCurve.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
+#include <analyticGeometryHeaven/analyticRotatingMap1dTo3d.h>
 #include <analyticGeometryHeaven/infinityMap3dTo3d.h>
+#include <analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h>
+#include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
+#include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h>
+#include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h>
+#include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
+#include <analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h>
+#include <analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h>
+#include <analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
+#include <analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h>
+#include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
+#include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
+#include <analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCSurface.h>
@@ -129,6 +148,8 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/geomShape_readIgesOCC.h>
+#include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
+#include <geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h>
         
 #include <boundedVolume.h>
 #include <dtCase.h>
@@ -145,7 +166,7 @@ using namespace dtOO;
   #include <TColgp_module.hxx>
 #endif
 %}
-%feature("autodoc", "1");
+%feature("autodoc", "3");
 
 namespace dtOO {
   class eGeneral : public std::exception {
@@ -160,6 +181,7 @@ namespace dtOO {
 
 %include <std_vector.i>
 %include <std_string.i>
+%include <std_pair.i>
 %include <exception.i>
 #ifdef DTOO_HAS_PYTHONOCC
 %import Standard.i
@@ -322,6 +344,7 @@ namespace dtOO {
     public:
       T const & get( std::string const & label) const;
       std::string getLabel( dtInt const pos ) const;
+      std::vector< std::string > labels( void ) const;
       T & getRef( std::string const label);      
       dtInt getPosition( std::string const label) const;
       void dump(void) const;
@@ -385,6 +408,8 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h
 %include geometryEngine/geoBuilder/geomShape_readIgesOCC.h
+%include geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h
+%include geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h
 
 //
 // Classes has to be not abstract, otherwise no constructors will be created, 
@@ -455,9 +480,13 @@ namespace dtOO {
 %include analyticFunctionHeaven/scaTanhUnitGradingOneD.h
 
 namespace dtOO {
+  %rename(applyDtPoint2) dtTransformer::apply(dtPoint2 const&) const;
+  %rename(retractDtPoint2) dtTransformer::retract(dtPoint2 const&) const;
   %rename(applyDtPoint3) dtTransformer::apply(dtPoint3 const&) const;
   %rename(retractDtPoint3) dtTransformer::retract(dtPoint3 const&) const;
-}        
+  %rename(applyAnalyticGeometry) dtTransformer::apply(analyticGeometry const * const) const;
+  %rename(applyAnalyticFunction) dtTransformer::apply(analyticFunction const * const) const;
+}       
 %include dtTransformerHeaven/dtTransformer.h
 %include dtTransformerHeaven/dtTransformerInvThreeD.h
 %include dtTransformerHeaven/thicknessIncreasing.h
@@ -496,14 +525,40 @@ namespace dtOO {
 %include dtTransformerHeaven/applyVec3dThreeD.h
 %include dtTransformerHeaven/xYz_localCoordinates.h
 %include dtTransformerHeaven/pickVec3dTwoDRectanglePercent.h
-        
-%feature("notabstract") analyticSurface;
-%feature("notabstract") infinityMap3dTo3d;
+
 %feature("notabstract") analyticCurve;
+%feature("notabstract") analyticSurface;
+%feature("notabstract") analyticRotatingMap1dTo3d;
+%feature("notabstract") infinityMap3dTo3d;
+%feature("notabstract") vec3dOneDInMap3dTo3d;
+%feature("notabstract") vec3dTwoDInMap3dTo3d;
+%feature("notabstract") vec3dThreeDInMap3dTo3d;
 
 %include analyticGeometryHeaven/map1dTo3d.h
 %include analyticGeometryHeaven/map2dTo3d.h
 %include analyticGeometryHeaven/map3dTo3d.h
 %include analyticGeometryHeaven/analyticCurve.h
 %include analyticGeometryHeaven/analyticSurface.h
+%include analyticGeometryHeaven/analyticRotatingMap1dTo3d.h
 %include analyticGeometryHeaven/infinityMap3dTo3d.h
+%include analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h
+%include analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
+%include analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
+namespace dtOO {
+  %template(pairDtRealDtPoint2) ::std::pair< dtReal, dtPoint2 >;
+}
+%include analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h
+%include analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h
+%include analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h
+%include analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h
+%include analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h
+%include analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h
+%include analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h
+%include analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h
+%include analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h
+%include analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h
+%include analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h
+%include analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h
+%include analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h
+%include analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h
+%include analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h
