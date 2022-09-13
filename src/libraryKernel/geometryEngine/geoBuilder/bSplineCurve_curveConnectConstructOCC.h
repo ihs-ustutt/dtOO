@@ -8,6 +8,8 @@
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
 
+#include <Precision.hxx>
+
 namespace dtOO {
   class dtCurve;
   
@@ -19,11 +21,9 @@ namespace dtOO {
       );    
       bSplineCurve_curveConnectConstructOCC( 
         vectorHandling< dtCurve const * > const & cc,
-        dtReal const & tol, dtInt const & param, dtInt const & minM
+        dtReal const & tol = Precision::Confusion(), 
+        dtInt const & param = 0, dtInt const & minM = 0
       );
-      bSplineCurve_curveConnectConstructOCC( 
-        vectorHandling< dtCurve const * > const & cc
-      );    
       virtual ~bSplineCurve_curveConnectConstructOCC();
       dtCurve * result( void );
     private:
@@ -31,4 +31,3 @@ namespace dtOO {
   };
 }
 #endif	/* BSPLINECURVE_CURVECONNECTCONSTRUCTOCC_H */
-
