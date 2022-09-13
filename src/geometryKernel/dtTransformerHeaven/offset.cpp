@@ -38,10 +38,10 @@ namespace dtOO {
 		return new offset();
 	}
 	
-  aGPtrVec offset::apply( 
-    aGPtrVec const * const toTrans 
+  lvH_analyticGeometry offset::apply( 
+    lvH_analyticGeometry const * const toTrans 
   ) const {
-    aGPtrVec retAGeo;
+    lvH_analyticGeometry retAGeo;
 
     dt__forAllRefAuto(*toTrans, aTrans){
       //each piece
@@ -58,10 +58,10 @@ namespace dtOO {
     return retAGeo;
   }
 
-  aFPtrVec offset::apply( 
-    aFPtrVec const * const toTrans 
+  lvH_analyticFunction offset::apply( 
+    lvH_analyticFunction const * const toTrans 
   ) const { 
-    aFPtrVec retSFun;
+    lvH_analyticFunction retSFun;
 
     //each analyticGeometry
     dt__forAllRefAuto(*toTrans, aTrans) {
@@ -105,9 +105,9 @@ namespace dtOO {
   void offset::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

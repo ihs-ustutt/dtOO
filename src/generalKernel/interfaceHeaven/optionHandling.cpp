@@ -58,9 +58,9 @@ namespace dtOO {
   void optionHandling::init(
     ::QDomElement const & wElement,
     baseContainer const * const bC,      
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG
   ) {
     dt__forAllRefAuto(
       qtXmlPrimitive::getChildVector("option", wElement), anOption

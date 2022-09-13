@@ -43,9 +43,9 @@ namespace dtOO {
   void vec3dThreeD_transVolAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
-		cVPtrVec const * const cValP, 
-		aFPtrVec const * const depSFunP,
-		aFPtrVec * sFunP 
+		lvH_constValue const * const cValP, 
+		lvH_analyticFunction const * const depSFunP,
+		lvH_analyticFunction * sFunP 
 	) const {
     dt__throwIf(
       !dtXmlParserBase::hasChild("analyticFunction", toBuildP),
@@ -124,9 +124,9 @@ namespace dtOO {
   void vec3dThreeD_transVolAFXmlBuilder::buildPartCompound(
 	  ::QDomElement const & toBuildP, 
 	  baseContainer * const bC,
-    cVPtrVec const * const cValP, 
-		aFPtrVec const * const depSFunP,
-		aFPtrVec * sFunP
+    lvH_constValue const * const cValP, 
+		lvH_analyticFunction const * const depSFunP,
+		lvH_analyticFunction * sFunP
 	) const {
     dt__throwIf(
       !dtXmlParserBase::hasChild("analyticFunction", toBuildP), 

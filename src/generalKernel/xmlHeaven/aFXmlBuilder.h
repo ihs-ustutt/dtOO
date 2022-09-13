@@ -22,16 +22,16 @@ namespace dtOO {
     virtual void buildPart(
       ::QDomElement const & toBuild, 
       baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aFPtrVec * result
+      lvH_constValue const * const cV,
+      lvH_analyticFunction const * const aF,
+      lvH_analyticFunction * result
     ) const = 0;
     virtual void buildPartCompound(
       ::QDomElement const & toBuild, 
       baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aFPtrVec * result
+      lvH_constValue const * const cV,
+      lvH_analyticFunction const * const aF,
+      lvH_analyticFunction * result
     ) const;     
     virtual std::vector< std::string > factoryAlias( void ) const;
   };

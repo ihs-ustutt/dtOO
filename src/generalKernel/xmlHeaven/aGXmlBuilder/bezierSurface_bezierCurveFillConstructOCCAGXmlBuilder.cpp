@@ -37,17 +37,17 @@ namespace dtOO {
   void bezierSurface_bezierCurveFillConstructOCCAGXmlBuilder::buildPart(
     ::QDomElement const & toBuild,
     baseContainer * const bC,           
-    cVPtrVec const * const cV,           
-    aFPtrVec const * const aF,    
-    aGPtrVec const * const aG,
-    aGPtrVec * result 
+    lvH_constValue const * const cV,           
+    lvH_analyticFunction const * const aF,    
+    lvH_analyticGeometry const * const aG,
+    lvH_analyticGeometry * result 
 	) const {
     //
 		// check input
 		//    
     dt__throwIf(!dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart());
 		
-    aGPtrVec aG_t;
+    lvH_analyticGeometry aG_t;
     ::QDomElement wElement = dtXmlParserBase::getChild("analyticGeometry", toBuild);
     while ( !wElement.isNull() ) {
       dtXmlParserBase::createAdvanced(&wElement, bC, cV, aF, aG, &aG_t);

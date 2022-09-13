@@ -46,10 +46,10 @@ namespace dtOO {
 		return new discreteAddNormal();
 	}
 	
-  aFPtrVec discreteAddNormal::apply( 
-	  aFPtrVec const * const aFP 
+  lvH_analyticFunction discreteAddNormal::apply( 
+	  lvH_analyticFunction const * const aFP 
 	) const {
-		aFPtrVec retV;
+		lvH_analyticFunction retV;
 		
     dt__forAllIndex(*aFP, ii) {
 			analyticFunction * aF = aFP->at(ii);
@@ -82,9 +82,9 @@ namespace dtOO {
   void discreteAddNormal::init( 
 		::QDomElement const * tE, 
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 				

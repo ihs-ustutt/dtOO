@@ -38,10 +38,10 @@ namespace dtOO {
 		return new addConstCoordinate();
 	}
 	
-  aFPtrVec addConstCoordinate::apply( 
-	  aFPtrVec const * const aFVecP 
+  lvH_analyticFunction addConstCoordinate::apply( 
+	  lvH_analyticFunction const * const aFVecP 
 	) const {
-    aFPtrVec aFVecRet;
+    lvH_analyticFunction aFVecRet;
     
     for (int ii=0;ii<aFVecP->size();ii++) {
       dt__ptrAss(
@@ -67,9 +67,9 @@ namespace dtOO {
   void addConstCoordinate::init( 
 		::QDomElement const * tE, 
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
   ) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

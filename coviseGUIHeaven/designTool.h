@@ -91,12 +91,12 @@ namespace dtOO {
      
       ptrHandling< dtXmlParser > _parser;
       ptrHandling< baseContainer > _bC;      
-      cVPtrVec _cV;
-      aGPtrVec _aG;
-      aFPtrVec _aF;
-      bVPtrVec _bV;
-      dCPtrVec _dC;
-      dPPtrVec _dP;
+      lvH_constValue _cV;
+      lvH_analyticGeometry _aG;
+      lvH_analyticFunction _aF;
+      lvH_boundedVolume _bV;
+      lvH_dtCase _dC;
+      lvH_dtPlugin _dP;
       dtCase * _dCApply;
       coDoSetHandling _aGToRender;
       coDoSetHandling _aFToRender;

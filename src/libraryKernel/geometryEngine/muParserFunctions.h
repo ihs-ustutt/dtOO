@@ -13,7 +13,7 @@ namespace dtOO {
       dt__classOnlyName(muParserFunctions);
       static muParserFunctions * instance( void );
       virtual ~muParserFunctions();
-      void registrateAnalyticFunctions( aFPtrVec const * aFPtrVec );
+      void registrateAnalyticFunctions( lvH_analyticFunction const * aFPtrVec );
       static mu::value_type YFix( ::mu::char_type const * expr);
       static mu::value_type Y( ::mu::char_type const * expr, ::mu::value_type val );
       static mu::value_type oneInRange(
@@ -23,7 +23,7 @@ namespace dtOO {
       muParserFunctions();
     private:
       static dt__pH(muParserFunctions) _pH;
-      aFPtrVec const * _aFPtrVec;
+      lvH_analyticFunction const * _aFPtrVec;
             
   };
 }

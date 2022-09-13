@@ -33,32 +33,32 @@ namespace dtOO {
       static dtXmlParser const & constReference( void );
       static dtXmlParser & reference( void );
       void parse(void);
-      void write( cVPtrVec const * const cValP ) const;
+      void write( lvH_constValue const * const cValP ) const;
       void write(
-        std::string const stateName, cVPtrVec const * const cValP
+        std::string const stateName, lvH_constValue const * const cValP
       ) const;
       void write(
         std::vector< std::string > const stateName,
-        std::vector< cVPtrVec > const & cValP
+        std::vector< lvH_constValue > const & cValP
       ) const;
-      void write( cVPtrVec const & cValP ) const;
+      void write( lvH_constValue const & cValP ) const;
       void write(
-        std::string const stateName, cVPtrVec const & cValP
+        std::string const stateName, lvH_constValue const & cValP
       ) const;       
       void writeUpdate(
-        std::string const stateName, cVPtrVec const & cValP
+        std::string const stateName, lvH_constValue const & cValP
       ) const;
       void extract(
         std::string const stateName, 
-        cVPtrVec const & cValP,
+        lvH_constValue const & cValP,
         std::string const fileName
       ) const;
-      void extractAll( cVPtrVec & cValP );
+      void extractAll( lvH_constValue & cValP );
       void remove( std::string const stateName ) const;
       void load( void ) const;
       std::vector< std::string > getStates( void ) const;
       bool hasState( std::string const stateName ) const;
-      void loadStateToConst( std::string const stateName, cVPtrVec &cValRef );
+      void loadStateToConst( std::string const stateName, lvH_constValue &cValRef );
       std::string currentState( void ) const;
       void setState( std::string const & newState) const;
       void freeState( void ) const;
@@ -76,91 +76,91 @@ namespace dtOO {
       std::vector< ::QDomElement > getElementRecursive( 
         std::string const lookType 
       ) const;
-      void createConstValue(cVPtrVec * cValP) const;
-      void createConstValue(cVPtrVec & cValRef) const;      
+      void createConstValue(lvH_constValue * cValP) const;
+      void createConstValue(lvH_constValue & cValRef) const;      
       void createAnalyticFunction(
         std::string const functionName,
         baseContainer * const bC,
-        cVPtrVec const * const cVP, 
-        aFPtrVec * aFP
+        lvH_constValue const * const cVP, 
+        lvH_analyticFunction * aFP
       ) const;
       void createAnalyticFunction(
         baseContainer * const bC,
-        cVPtrVec const * const cVP, 
-        aFPtrVec * aFP
+        lvH_constValue const * const cVP, 
+        lvH_analyticFunction * aFP
       ) const;
       void createAnalyticGeometry(
         std::string const label,
         baseContainer * const bC,
-        cVPtrVec const * const cVP,        
-        aFPtrVec const * const sFP,        
-        aGPtrVec * aGP
+        lvH_constValue const * const cVP,        
+        lvH_analyticFunction const * const sFP,        
+        lvH_analyticGeometry * aGP
       ) const;    
       void createAnalyticGeometry(
         baseContainer * const bC,
-        cVPtrVec const * const cVP,        
-        aFPtrVec const * const sFP,        
-        aGPtrVec * aGP
+        lvH_constValue const * const cVP,        
+        lvH_analyticFunction const * const sFP,        
+        lvH_analyticGeometry * aGP
       ) const;    
       void createBoundedVolume(
         std::string const label,
         baseContainer * const bC,
-        cVPtrVec const * const cVP,        
-        aFPtrVec const * const sFP,        
-        aGPtrVec const * const aGP,
-        bVPtrVec * bVP
+        lvH_constValue const * const cVP,        
+        lvH_analyticFunction const * const sFP,        
+        lvH_analyticGeometry const * const aGP,
+        lvH_boundedVolume * bVP
       ) const;    
       void createBoundedVolume(
         baseContainer * const bC,
-        cVPtrVec const * const cVP,        
-        aFPtrVec const * const sFP,        
-        aGPtrVec const * const aGP,
-        bVPtrVec * bVP
+        lvH_constValue const * const cVP,        
+        lvH_analyticFunction const * const sFP,        
+        lvH_analyticGeometry const * const aGP,
+        lvH_boundedVolume * bVP
       ) const;
       void createPlugin(
         std::string const label,
         baseContainer * const bC,
-        cVPtrVec const * const cVP,        
-        aFPtrVec const * const sFP,        
-        aGPtrVec const * const aGP,
-        bVPtrVec * bVP,
-        dCPtrVec const * const dCP,
-        dPPtrVec * pLP
+        lvH_constValue const * const cVP,        
+        lvH_analyticFunction const * const sFP,        
+        lvH_analyticGeometry const * const aGP,
+        lvH_boundedVolume * bVP,
+        lvH_dtCase const * const dCP,
+        lvH_dtPlugin * pLP
       ) const;      
       void createPlugin(
         baseContainer * const bC,
-        cVPtrVec const * const cVP,        
-        aFPtrVec const * const sFP,        
-        aGPtrVec const * const aGP,
-        bVPtrVec * bVP,
-        dCPtrVec const * const dCP,
-        dPPtrVec * pLP
+        lvH_constValue const * const cVP,        
+        lvH_analyticFunction const * const sFP,        
+        lvH_analyticGeometry const * const aGP,
+        lvH_boundedVolume * bVP,
+        lvH_dtCase const * const dCP,
+        lvH_dtPlugin * pLP
       ) const;        
       void createCase(
         std::string const label,
         baseContainer * const bC,
-        cVPtrVec const * const cVP,        
-        aFPtrVec const * const sFP,        
-        aGPtrVec const * const aGP,
-        bVPtrVec * bVP,
-        dCPtrVec * dCP
+        lvH_constValue const * const cVP,        
+        lvH_analyticFunction const * const sFP,        
+        lvH_analyticGeometry const * const aGP,
+        lvH_boundedVolume * bVP,
+        lvH_dtCase * dCP
       ) const;      
       void createCase(
         baseContainer * const bC,
-        cVPtrVec const * const cVP,        
-        aFPtrVec const * const sFP,        
-        aGPtrVec const * const aGP,
-        bVPtrVec * bVP,
-        dCPtrVec * dCP
+        lvH_constValue const * const cVP,        
+        lvH_analyticFunction const * const sFP,        
+        lvH_analyticGeometry const * const aGP,
+        lvH_boundedVolume * bVP,
+        lvH_dtCase * dCP
       ) const;       
       void destroyAndCreate(
         baseContainer & bC,
-        cVPtrVec & cV,
-        aFPtrVec & aF,
-        aGPtrVec & aG,
-        bVPtrVec & bV,
-        dCPtrVec & dC,
-        dPPtrVec & pL
+        lvH_constValue & cV,
+        lvH_analyticFunction & aF,
+        lvH_analyticGeometry & aG,
+        lvH_boundedVolume & bV,
+        lvH_dtCase & dC,
+        lvH_dtPlugin & pL
       ) const;  
       void dump( void ) const;
     private:

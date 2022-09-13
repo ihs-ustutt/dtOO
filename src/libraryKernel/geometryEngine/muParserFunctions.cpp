@@ -18,7 +18,7 @@ namespace dtOO {
   }
   
   void muParserFunctions::registrateAnalyticFunctions( 
-    aFPtrVec const * const aFPtrVec 
+    lvH_analyticFunction const * const aFPtrVec 
   ) {
     _aFPtrVec = aFPtrVec;
   }

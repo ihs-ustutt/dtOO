@@ -37,8 +37,8 @@ namespace dtOO {
 		return new approxInSurface();
 	}
 	
-  aGPtrVec approxInSurface::apply( aGPtrVec const * const aGeoVecP ) const {
-    aGPtrVec retAGeo;
+  lvH_analyticGeometry approxInSurface::apply( lvH_analyticGeometry const * const aGeoVecP ) const {
+    lvH_analyticGeometry retAGeo;
     for (int ii=0; ii<aGeoVecP->size(); ii++) {
       //
       // cast analyticGeometry
@@ -85,9 +85,9 @@ namespace dtOO {
   void approxInSurface::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

@@ -31,10 +31,10 @@ namespace dtOO {
   void analyticGeometryAGXmlBuilder::buildPart( 
     ::QDomElement const & toBuild,
     baseContainer * const bC,           
-    cVPtrVec const * const cV,           
-    aFPtrVec const * const aF,    
-    aGPtrVec const * const aG,
-    aGPtrVec * result 
+    lvH_constValue const * const cV,           
+    lvH_analyticFunction const * const aF,    
+    lvH_analyticGeometry const * const aG,
+    lvH_analyticGeometry * result 
   ) const {
     //
 		// check input
@@ -50,7 +50,7 @@ namespace dtOO {
     = 
     dtXmlParserBase::getChildVector("analyticGeometry", toBuild);     
     dt__forAllRefAuto(wE, anEl) {
-      aGPtrVec toCopy;
+      lvH_analyticGeometry toCopy;
       dtXmlParserBase::createAdvanced(&anEl, bC, cV, aF, aG, &toCopy);
       dt__forAllIndex(toCopy, ii) result->push_back( toCopy[ii] );
     }

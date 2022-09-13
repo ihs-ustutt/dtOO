@@ -19,12 +19,12 @@ namespace dtOO {
       void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG 
       );
-      virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
-      virtual aFPtrVec apply( aFPtrVec const * const toTrans ) const; 
+      virtual lvH_analyticGeometry apply( lvH_analyticGeometry const * const aGeoVecP ) const;
+      virtual lvH_analyticFunction apply( lvH_analyticFunction const * const toTrans ) const; 
     private:
       dtReal _paraOneOffsetPercent;
       dtReal _paraTwoOffsetPercent;

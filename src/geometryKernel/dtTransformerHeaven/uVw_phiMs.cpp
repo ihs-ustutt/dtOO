@@ -49,8 +49,8 @@ namespace dtOO {
 		return new uVw_phiMs();
 	}
 	
-  aFPtrVec uVw_phiMs::apply( aFPtrVec const * const aFP ) const {
-		aFPtrVec retV;
+  lvH_analyticFunction uVw_phiMs::apply( lvH_analyticFunction const * const aFP ) const {
+		lvH_analyticFunction retV;
 		
     for (int ii=0; ii<aFP->size(); ii++) {
 			analyticFunction * aF = aFP->at(ii);
@@ -127,9 +127,9 @@ namespace dtOO {
   void uVw_phiMs::init( 
     ::QDomElement const * tE, 
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		    

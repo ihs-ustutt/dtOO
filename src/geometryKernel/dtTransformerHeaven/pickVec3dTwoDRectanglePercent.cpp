@@ -40,10 +40,10 @@ namespace dtOO {
 		return new pickVec3dTwoDRectanglePercent();
 	}
 	
-  aFPtrVec pickVec3dTwoDRectanglePercent::apply(
-    aFPtrVec const * const aFVecP 
+  lvH_analyticFunction pickVec3dTwoDRectanglePercent::apply(
+    lvH_analyticFunction const * const aFVecP 
   ) const {
-    aFPtrVec aFRet;
+    lvH_analyticFunction aFRet;
     dt__forAllRefAuto(*aFVecP, theF) {
       dt__throwIfWithMessage(
         theF->isTransformed(), 
@@ -72,9 +72,9 @@ namespace dtOO {
   void pickVec3dTwoDRectanglePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

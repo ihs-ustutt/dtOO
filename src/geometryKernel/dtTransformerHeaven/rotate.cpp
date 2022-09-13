@@ -136,16 +136,16 @@ namespace dtOO {
 		return ret;
 	}  
 	
-  aGPtrVec rotate::apply( 
-	  aGPtrVec const * const aGeoVecP 
+  lvH_analyticGeometry rotate::apply( 
+	  lvH_analyticGeometry const * const aGeoVecP 
 	) const {
-    aGPtrVec retAGeo;
+    lvH_analyticGeometry retAGeo;
 
     dtReal angle = config().lookup<dtReal>("_angle");
     dtVector3 rotVector = config().lookup<dtVector3>("_rotVector");
     dtPoint3 origin = config().lookup<dtPoint3>("_origin");
     
-    dt__forAllConstIter(aGPtrVec, *aGeoVecP, it) {
+    dt__forAllConstIter(lvH_analyticGeometry, *aGeoVecP, it) {
 			//
 			// clone and cast analyticGeometry
 			//
@@ -204,9 +204,9 @@ namespace dtOO {
   void rotate::jInit( 
     jsonPrimitive const & jE,
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::jInit(jE, bC, cV, aF, aG);
   }  
@@ -214,9 +214,9 @@ namespace dtOO {
   void rotate::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

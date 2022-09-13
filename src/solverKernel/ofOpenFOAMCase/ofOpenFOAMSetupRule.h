@@ -30,11 +30,11 @@ namespace dtOO {
       static ofOpenFOAMSetupRule * create( std::string const & str );
       virtual void init(       
         baseContainer const * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG,
-        bVPtrVec const * const bV,
-        dCPtrVec const * const dC
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtCase const * const dC
       );
       virtual void executeOnMesh(
         std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
@@ -72,14 +72,14 @@ namespace dtOO {
         std::string const & name, std::string const & str
       );    
     protected:
-      aFPtrVec const & refAF( void ) const;
+      lvH_analyticFunction const & refAF( void ) const;
     private:
       baseContainer const * _bC;
-      cVPtrVec const * _cV;
-      aFPtrVec const * _aF;
-      aGPtrVec const * _aG;
-      bVPtrVec const * _bV;
-      dCPtrVec const * _dC;
+      lvH_constValue const * _cV;
+      lvH_analyticFunction const * _aF;
+      lvH_analyticGeometry const * _aG;
+      lvH_boundedVolume const * _bV;
+      lvH_dtCase const * _dC;
     private:
       static dt__pVH(ofOpenFOAMSetupRule) _rules;
       static bool _registrated;           

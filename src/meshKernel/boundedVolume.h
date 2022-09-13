@@ -35,10 +35,10 @@ namespace dtOO {
       virtual void init( 
         ::QDomElement const & element,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const sF,
-        aGPtrVec const * const aF,
-        bVPtrVec const * const bV
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const sF,
+        lvH_analyticGeometry const * const aF,
+        lvH_boundedVolume const * const bV
       );
       virtual void makeGrid(void) = 0;
       virtual void makePreGrid(void) = 0;

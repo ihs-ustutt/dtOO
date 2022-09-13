@@ -22,19 +22,19 @@ namespace dtOO {
       virtual void jInit( 
         jsonPrimitive const & jE, 
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
       );        
       void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG 
       );
-      virtual aFPtrVec 
-      apply( aFPtrVec const * const aFVecP ) const;
+      virtual lvH_analyticFunction 
+      apply( lvH_analyticFunction const * const aFVecP ) const;
     private:
       static bool _registrated;    
   };

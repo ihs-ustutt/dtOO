@@ -59,9 +59,9 @@ namespace dtOO {
   dtTransformer * dtXmlParserBase::createTransformer(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                    
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		dtTransformer * dtTransformerP = NULL;
 		
@@ -132,8 +132,8 @@ namespace dtOO {
   dtTransformer * dtXmlParserBase::createTransformer(
 	  ::QDomElement const * toBuildP,    
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF
 	) {
 		return createTransformer(toBuildP, bC, cV, aF, NULL);
   }
@@ -141,9 +141,9 @@ namespace dtOO {
   dtReal dtXmlParserBase::createFloat(
     ::QDomElement const & toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
     std::vector< dtReal > vec;
     createBasic(&toBuildP, bC, cV, aF, aG, &vec);
@@ -155,9 +155,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                  
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		std::vector< dtPoint3 > * basicP
 	) {
     //
@@ -183,9 +183,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,		
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPointD > * basicP
 	) {
@@ -241,9 +241,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,		
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPoint3 > * basicP
 	) {
@@ -670,9 +670,9 @@ namespace dtOO {
   dtVector2 dtXmlParserBase::createDtVector2(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {  
 		dtVector2 vv;
 
@@ -752,9 +752,9 @@ namespace dtOO {
   dtVector3 dtXmlParserBase::createDtVector3(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		dtVector3 vv;
 
@@ -858,8 +858,8 @@ namespace dtOO {
   dtVector3 dtXmlParserBase::createDtVector3(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {  
     return createDtVector3(toBuildP, bC, cV, aF, NULL); 
   }	
@@ -867,9 +867,9 @@ namespace dtOO {
 	dtVector2 dtXmlParserBase::getDtVector2(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		return createDtVector2(toBuildP, NULL, cV, aF, aG);
 	} 
@@ -877,9 +877,9 @@ namespace dtOO {
 	dtPoint3 dtXmlParserBase::getDtPoint3(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrPointContainer()->get(
@@ -892,8 +892,8 @@ namespace dtOO {
 	dtPoint3 dtXmlParserBase::getDtPoint3(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrPointContainer()->get(
@@ -906,9 +906,9 @@ namespace dtOO {
 	dtVector3 dtXmlParserBase::getDtVector3(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrVectorContainer()->get(
@@ -921,8 +921,8 @@ namespace dtOO {
 	dtVector3 dtXmlParserBase::getDtVector3(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrVectorContainer()->get(
@@ -958,7 +958,7 @@ namespace dtOO {
 
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
-		cVPtrVec const * const cV
+		lvH_constValue const * const cV
 	) {
     std::string returnExpression;
     returnExpression = expression;
@@ -1040,8 +1040,8 @@ namespace dtOO {
   
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF
 	) {
     std::string returnExpression = expression;
           
@@ -1265,9 +1265,9 @@ namespace dtOO {
   
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-    aGPtrVec const * const aG
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG
 	) {
     std::string returnExpression = expression;
           
@@ -1840,9 +1840,9 @@ namespace dtOO {
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
     baseContainer const * const bC,       
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-    aGPtrVec const * const aG
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG
 	) {
     std::string returnExpression;
     returnExpression = expression;
@@ -2134,9 +2134,9 @@ namespace dtOO {
   std::string dtXmlParserBase::replaceDependenciesRef(
     std::string const expression, 
     baseContainer const & bC,      
-    cVPtrVec const & cV,
-    aFPtrVec const & aF,
-    aGPtrVec const & aG
+    lvH_constValue const & cV,
+    lvH_analyticFunction const & aF,
+    lvH_analyticGeometry const & aG
   ) {
     return dtXmlParserBase::replaceDependencies( 
       expression, &bC, &cV, &aF, &aG 
@@ -2146,7 +2146,7 @@ namespace dtOO {
   dtReal dtXmlParserBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV
+    lvH_constValue const * const cV
   ) {
     return muParseString( 
       replaceDependencies( getAttributeStr(attName, element), cV )
@@ -2156,8 +2156,8 @@ namespace dtOO {
   dtReal dtXmlParserBase::getAttributeFloatMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF
   ) {
     return muParseString( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF )
@@ -2167,8 +2167,8 @@ namespace dtOO {
   dtReal dtXmlParserBase::getAttributeFloatMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
     dtReal const & def
   ) {
     if ( hasAttribute(attName, element) ) {
@@ -2180,7 +2180,7 @@ namespace dtOO {
   dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV
+    lvH_constValue const * const cV
   ) {
     return muParseStringInt( 
       replaceDependencies( getAttributeStr(attName, element), cV )
@@ -2190,8 +2190,8 @@ namespace dtOO {
   dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF 
   ) {
     return muParseStringInt( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF )
@@ -2201,9 +2201,9 @@ namespace dtOO {
   dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG 
   ) {
     return muParseStringInt( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF, aG )
@@ -2213,8 +2213,8 @@ namespace dtOO {
   dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
     dtInt const & def
   ) {
     if ( hasAttribute(attName, element) ) {
@@ -2226,8 +2226,8 @@ namespace dtOO {
 	std::vector< dtReal > dtXmlParserBase::getAttributeFloatVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF 
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
@@ -2243,8 +2243,8 @@ namespace dtOO {
 	std::vector< double > dtXmlParserBase::getAttributeDoubleVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF 
 	) {
 		std::vector< dtReal > floatVec
     =
@@ -2256,8 +2256,8 @@ namespace dtOO {
 	std::vector< dtInt > dtXmlParserBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF 
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
@@ -2273,9 +2273,9 @@ namespace dtOO {
 	std::vector< dtInt > dtXmlParserBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-    aGPtrVec const * const aG      
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG      
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
@@ -2291,9 +2291,9 @@ namespace dtOO {
   dtReal dtXmlParserBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG  
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG  
   ) {
     return muParseString( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF, aG )
@@ -2303,9 +2303,9 @@ namespace dtOO {
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                   
-    cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
   ) {
     std::vector< dtPoint3 > basicVec;
 
@@ -2319,9 +2319,9 @@ namespace dtOO {
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const & toBuild,
     baseContainer * const bC,                   
-    cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
   ) {
     return createDtPoint3(&toBuild, bC, cV, aF, aG);
 	}  
@@ -2329,8 +2329,8 @@ namespace dtOO {
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {  
     return createDtPoint3(toBuildP, bC, cV, aF, NULL); 
   }	
@@ -2338,9 +2338,9 @@ namespace dtOO {
   dtPoint2 dtXmlParserBase::createDtPoint2(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                   
-    cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
   ) {
     std::vector< dtPoint2 > basicVec;
 
@@ -2354,8 +2354,8 @@ namespace dtOO {
   dtPoint2 dtXmlParserBase::createDtPoint2(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {  
     return createDtPoint2(toBuildP, bC, cV, aF, NULL); 
   }	
@@ -2363,8 +2363,8 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP, 
     baseContainer * const bC,      					
-		cVPtrVec const * const cV, 
-		aFPtrVec const * const aF, 
+		lvH_constValue const * const cV, 
+		lvH_analyticFunction const * const aF, 
 		std::vector< dtPoint2 > * basicP
 	) {
     ptrHandling< dtTransformer > dtT(
@@ -2382,8 +2382,8 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,					
-		cVPtrVec const * const cV, 
-		aFPtrVec const * const aF, 
+		lvH_constValue const * const cV, 
+		lvH_analyticFunction const * const aF, 
 		std::vector< dtPointD > * basicP
 	) {
     ptrHandling< dtTransformer > dtT(
@@ -2398,8 +2398,8 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,					
-		cVPtrVec const * const cV, 
-		aFPtrVec const * const aF, 
+		lvH_constValue const * const cV, 
+		lvH_analyticFunction const * const aF, 
 		std::vector< dtPoint3 > * basicP
 	) {
 		::QDomElement wEl = *toBuildP;
@@ -2412,9 +2412,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,            
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPoint2 > * basicP
 	) {
@@ -2640,9 +2640,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG,
     std::vector< dtReal > * basicP
   ) {
     dt__throwIf(!is("float", *toBuildP), createBasic());    
@@ -2657,9 +2657,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		std::vector< dtPoint2 > * basicP
 	) {
     //
@@ -2680,10 +2680,10 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const & toBuild,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG,            
-    aGPtrVec * advancedP 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG,            
+    lvH_analyticGeometry * advancedP 
   ) {
     createAdvanced( &toBuild, bC, cV, aF, aG, advancedP );
   }  
@@ -2691,10 +2691,10 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG,            
-    aGPtrVec * advancedP 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG,            
+    lvH_analyticGeometry * advancedP 
   ) {
 
     //
@@ -2718,11 +2718,11 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG, 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG, 
     dtTransformer const * const dtTransformerP,                          
-    aGPtrVec * advancedP 
+    lvH_analyticGeometry * advancedP 
   ) {
     //
     // get label
@@ -2785,7 +2785,7 @@ namespace dtOO {
     //
     // copy
     //
-    aGPtrVec advancedTwin;
+    lvH_analyticGeometry advancedTwin;
     for (int ii=0;ii<advancedP->size();ii++) {
       advancedTwin.push_back( advancedP->at(ii) );
     }
@@ -2808,11 +2808,11 @@ namespace dtOO {
   analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
-    aGPtrVec advancedVec;
+    lvH_analyticGeometry advancedVec;
     createAdvanced(toBuildP, bC, cV, aF, aG, &advancedVec);
     if (advancedVec.size() != 1) {
       dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
@@ -2823,27 +2823,27 @@ namespace dtOO {
   analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
     ::QDomElement const & toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
     return createAnalyticGeometry(&toBuildP, bC, cV, aF, aG);
   } 
   
   analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
     ::QDomElement const * toBuildP,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
     return createAnalyticGeometry(toBuildP, NULL, cV, aF, aG);			
   }		
   
   analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
     ::QDomElement const & toBuildP,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
     return createAnalyticGeometry(&toBuildP, NULL, cV, aF, aG);			
   }		
@@ -2851,10 +2851,10 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
     dtTransformer const * const dtTransformerP,                          
-    aFPtrVec * advancedP 
+    lvH_analyticFunction * advancedP 
   ) {
     //
     // get label
@@ -2922,7 +2922,7 @@ namespace dtOO {
     //
     // copy
     //
-    aFPtrVec advancedTwin;
+    lvH_analyticFunction advancedTwin;
     for (int ii=0;ii<advancedP->size();ii++) {
       advancedTwin.push_back( advancedP->at(ii) );
     }
@@ -2944,9 +2944,9 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aFPtrVec * advancedP 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticFunction * advancedP 
   ) {
     //
     // create transformer if necessary
@@ -2964,9 +2964,9 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const & toBuild,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aFPtrVec * advancedP 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticFunction * advancedP 
   ) {
     createAdvanced( &toBuild, bC, cV, aF, advancedP );
   }  
@@ -2974,10 +2974,10 @@ namespace dtOO {
   analyticFunction * dtXmlParserBase::createAnalyticFunction( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF 
   ) {
-    aFPtrVec advancedVec;
+    lvH_analyticFunction advancedVec;
     createAdvanced(toBuildP, bC, cV, aF, &advancedVec);
     
     dt__throwIf(advancedVec.size()!=1, createAdvanced());
@@ -2987,8 +2987,8 @@ namespace dtOO {
   analyticFunction * dtXmlParserBase::createAnalyticFunction( 
     ::QDomElement const & toBuild,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF 
   ) {
     return createAnalyticFunction(&toBuild, bC, cV, aF);
   }  

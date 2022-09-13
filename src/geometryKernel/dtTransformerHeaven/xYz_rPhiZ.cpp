@@ -116,9 +116,9 @@ namespace dtOO {
   void xYz_rPhiZ::jInit( 
     jsonPrimitive const & jE,
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::jInit(jE, bC, cV, aF, aG);
   }  
@@ -126,9 +126,9 @@ namespace dtOO {
   void xYz_rPhiZ::init( 
     ::QDomElement const * tE, 
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG 
 	) {
     dt__throwIf(
       !dtXmlParserBase::hasAttribute("origin", *tE)

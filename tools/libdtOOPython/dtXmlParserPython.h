@@ -30,7 +30,7 @@ boost::python::class_< dtOO::dtXmlParser >(
   .staticmethod("reinit")    
   .def( "dump", &dtOO::dtXmlParser::dump )
   .def<
-    void (dtOO::dtXmlParser::*)(dtOO::cVPtrVec &) const
+    void (dtOO::dtXmlParser::*)(dtOO::lvH_constValue &) const
   >( 
     "createConstValue", &dtOO::dtXmlParser::createConstValue 
   )
@@ -38,14 +38,14 @@ boost::python::class_< dtOO::dtXmlParser >(
   .def("currentState", &dtOO::dtXmlParser::currentState)
   .def("getStates", &dtOO::dtXmlParser::getStates)
   .def<
-    void (dtOO::dtXmlParser::*)(std::string const, dtOO::cVPtrVec const &) const
+    void (dtOO::dtXmlParser::*)(std::string const, dtOO::lvH_constValue const &) const
   >( 
     "write", &dtOO::dtXmlParser::write 
   )
   .def<
     void (dtOO::dtXmlParser::*)(
       std::string const,
-      dtOO::cVPtrVec const &,
+      dtOO::lvH_constValue const &,
       std::string const
     ) const
   >(

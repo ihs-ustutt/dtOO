@@ -66,8 +66,8 @@ namespace dtOO {
 		return ret;
 	}
   
-  aFPtrVec translate::apply( aFPtrVec const * const aFunVecP ) const {
-    aFPtrVec retSFun;
+  lvH_analyticFunction translate::apply( lvH_analyticFunction const * const aFunVecP ) const {
+    lvH_analyticFunction retSFun;
 
 		
     dt__forAllRefAuto(*aFunVecP, aF) {
@@ -136,10 +136,10 @@ namespace dtOO {
     return retSFun;    
   }
 
-  aGPtrVec translate::apply( aGPtrVec const * const aGeoVecP ) const {
-    aGPtrVec retAGeo;
+  lvH_analyticGeometry translate::apply( lvH_analyticGeometry const * const aGeoVecP ) const {
+    lvH_analyticGeometry retAGeo;
 
-    dt__forAllConstIter(aGPtrVec, *aGeoVecP, it) {
+    dt__forAllConstIter(lvH_analyticGeometry, *aGeoVecP, it) {
 			//
 			// clone and cast analyticGeometry
 			//
@@ -208,9 +208,9 @@ namespace dtOO {
   void translate::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

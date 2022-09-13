@@ -40,7 +40,7 @@ void combinations(
 }
 
 std::vector< std::vector< std::pair< constValue *, dtReal > > > simpleCreate(
-  cVPtrVec & constValuePtrVec,
+  lvH_constValue & constValuePtrVec,
   std::vector< dtInt > & nSamples  
 ) {
   //
@@ -84,8 +84,8 @@ std::vector< std::vector< std::pair< constValue *, dtReal > > > simpleCreate(
   return samples;
 }
 std::vector< std::vector< std::pair< constValue *, dtReal > > > csvCreate(
-  cVPtrVec & cV,
-  cVPtrVec & constValuePtrVec,
+  lvH_constValue & cV,
+  lvH_constValue & constValuePtrVec,
   std::string const & filename,
   bool noPercent
 ) {
@@ -234,7 +234,7 @@ int main( dtInt ac, char* av[] ) {
     //
     // create constValues
     //
-    cVPtrVec cV;     
+    lvH_constValue cV;     
     parser.createConstValue(&cV);
 
     //
@@ -247,7 +247,7 @@ int main( dtInt ac, char* av[] ) {
     //
     // create vector
     //
-    cVPtrVec constValuePtrVec;
+    lvH_constValue constValuePtrVec;
 
     
     //
@@ -279,7 +279,7 @@ int main( dtInt ac, char* av[] ) {
     //
     // create state vector
     //
-    std::vector< cVPtrVec > stateToWrite;
+    std::vector< lvH_constValue > stateToWrite;
     std::vector< std::string > stateLabel;
     std::string prefix = vm["prefix"].as< std::string >();
     dtInt pairCounter = 0;
@@ -300,7 +300,7 @@ int main( dtInt ac, char* av[] ) {
       //
       // constValue vector
       //
-      stateToWrite.push_back( cVPtrVec(0) );      
+      stateToWrite.push_back( lvH_constValue(0) );      
       dt__forAllRefAuto(cV, aCV) {
         stateToWrite.back().push_back( aCV->clone() );
       }

@@ -56,11 +56,11 @@ int main( dtInt ac, char* av[] ) {
     //
     //
     baseContainer bC;
-    aGPtrVec aG; 
-    cVPtrVec cV; 
-    aFPtrVec aF; 
-    bVPtrVec bV; 
-    dCPtrVec dtC; 
+    lvH_analyticGeometry aG; 
+    lvH_constValue cV; 
+    lvH_analyticFunction aF; 
+    lvH_boundedVolume bV; 
+    lvH_dtCase dtC; 
 
     //
     // create log files

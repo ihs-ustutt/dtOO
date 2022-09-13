@@ -41,10 +41,10 @@ namespace dtOO {
 		return new pickMap2dTo3dRectanglePercent();
 	}
 	
-  aGPtrVec pickMap2dTo3dRectanglePercent::apply( 
-    aGPtrVec const * const aGeoVecP 
+  lvH_analyticGeometry pickMap2dTo3dRectanglePercent::apply( 
+    lvH_analyticGeometry const * const aGeoVecP 
   ) const {
-    aGPtrVec aGeoRet;
+    lvH_analyticGeometry aGeoRet;
     
     dt__forAllRefAuto( *aGeoVecP, aG) {
       aGeoRet.push_back( 
@@ -64,9 +64,9 @@ namespace dtOO {
   void pickMap2dTo3dRectanglePercent::jInit( 
     jsonPrimitive const & jE,
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::jInit(jE, bC, cV, aF, aG);
 
@@ -79,9 +79,9 @@ namespace dtOO {
   void pickMap2dTo3dRectanglePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

@@ -39,10 +39,10 @@ namespace dtOO {
 		return new pickMap1dTo3dLinePercent();
 	}
 	
-  aGPtrVec pickMap1dTo3dLinePercent::apply( 
-    aGPtrVec const * const aGeoVecP 
+  lvH_analyticGeometry pickMap1dTo3dLinePercent::apply( 
+    lvH_analyticGeometry const * const aGeoVecP 
   ) const {
-    aGPtrVec aGeoRet;
+    lvH_analyticGeometry aGeoRet;
     
     dt__forAllRefAuto(*aGeoVecP, aG) {
       map1dTo3d const * m1d = map1dTo3d::MustConstDownCast( aG );
@@ -65,9 +65,9 @@ namespace dtOO {
   void pickMap1dTo3dLinePercent::jInit( 
     jsonPrimitive const & jE,
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::jInit(jE, bC, cV, aF, aG);
 
@@ -81,9 +81,9 @@ namespace dtOO {
   void pickMap1dTo3dLinePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 

@@ -36,9 +36,9 @@ namespace dtOO {
   void bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder::buildPart(
     ::QDomElement const & toBuild, 
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aFPtrVec * result
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticFunction * result
 	) const {
     dt__throwIf(
       !dtXmlParserBase::hasChild("Point_3", toBuild)

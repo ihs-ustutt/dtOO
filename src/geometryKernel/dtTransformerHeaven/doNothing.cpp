@@ -42,14 +42,14 @@ namespace dtOO {
     return ret;
   }
 
-  aGPtrVec doNothing::apply( aGPtrVec const * const aGeoVecP ) const {
-    aGPtrVec ret;
+  lvH_analyticGeometry doNothing::apply( lvH_analyticGeometry const * const aGeoVecP ) const {
+    lvH_analyticGeometry ret;
     dt__forAllRefAuto( *aGeoVecP, aGeo) ret.push_back(aGeo->clone());
     return ret;
   }
 
-  aFPtrVec doNothing::apply( aFPtrVec const * const sFunVecP ) const {
-    aFPtrVec ret;
+  lvH_analyticFunction doNothing::apply( lvH_analyticFunction const * const sFunVecP ) const {
+    lvH_analyticFunction ret;
     dt__forAllRefAuto( *sFunVecP, aFun) ret.push_back(aFun->clone());
     return ret;
   }
@@ -57,9 +57,9 @@ namespace dtOO {
 	void doNothing::init( 
 		::QDomElement const * tE, 
 		baseContainer * const bC,
-		cVPtrVec const * const cValP,
-		aFPtrVec const * const sFunP,
-		aGPtrVec const * const depAGeoP 
+		lvH_constValue const * const cValP,
+		lvH_analyticFunction const * const sFunP,
+		lvH_analyticGeometry const * const depAGeoP 
 	) {
 		
 	}

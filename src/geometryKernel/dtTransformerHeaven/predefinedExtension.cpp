@@ -50,8 +50,8 @@ namespace dtOO {
    * 
    * @todo What if first and last control points are duplicate?
    */
-  aFPtrVec predefinedExtension::apply( aFPtrVec const * const sFunP ) const {
-    aFPtrVec transSFun;
+  lvH_analyticFunction predefinedExtension::apply( lvH_analyticFunction const * const sFunP ) const {
+    lvH_analyticFunction transSFun;
 
     for (int ii=0; ii<sFunP->size(); ii++) {
       //
@@ -188,9 +188,9 @@ namespace dtOO {
   void predefinedExtension::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     //

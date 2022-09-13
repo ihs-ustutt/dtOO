@@ -42,7 +42,7 @@ namespace dtOO {
         _cV->get( _adjustConstValueS )->getMin()
       )
     );
-    aFPtrVec theF;
+    lvH_analyticFunction theF;
     //dtXmlParser::reference().createAnalyticFunction(_betaS, NULL, _cV, &theF);
     dtXmlParser::reference().createAnalyticFunction(_betaPrimeS, NULL, _cV, &theF);
     scaOneD const * beta = _beta;
@@ -74,12 +74,12 @@ namespace dtOO {
   void adjustOutletAngle::init( 
     ::QDomElement const & element,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG,
-    bVPtrVec const * const bV,
-    dCPtrVec const * const dC,          
-    dPPtrVec const * const pL
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtCase const * const dC,          
+    lvH_dtPlugin const * const pL
   ) {
     dtPlugin::init(element, bC, cV, aF, aG, bV, dC, pL);
 
@@ -105,7 +105,7 @@ namespace dtOO {
   }
 
   void adjustOutletAngle::apply(void) {
-    aFPtrVec theF;
+    lvH_analyticFunction theF;
     
     ::ROOT::Math::Functor1D fun(this, &adjustOutletAngle::F);
     // Create the Integrator

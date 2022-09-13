@@ -38,10 +38,10 @@ namespace dtOO {
 		return new pickMap3dTo3dRangePercent();
 	}
 	
-  aGPtrVec pickMap3dTo3dRangePercent::apply( 
-    aGPtrVec const * const aGeoVecP 
+  lvH_analyticGeometry pickMap3dTo3dRangePercent::apply( 
+    lvH_analyticGeometry const * const aGeoVecP 
   ) const {
-    aGPtrVec aGeoRet;
+    lvH_analyticGeometry aGeoRet;
     
     for (int ii=0;ii<aGeoVecP->size();ii++) {
       dt__ptrAss(map3dTo3d const * m3d, map3dTo3d::DownCast(aGeoVecP->at(ii)));
@@ -69,9 +69,9 @@ namespace dtOO {
   void pickMap3dTo3dRangePercent::jInit( 
     jsonPrimitive const & jE,
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::jInit(jE, bC, cV, aF, aG);
 
@@ -91,9 +91,9 @@ namespace dtOO {
   void pickMap3dTo3dRangePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

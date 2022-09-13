@@ -28,9 +28,9 @@ namespace dtOO {
   void scaTanhUnitGradingOneDAFXmlBuilder::buildPart(
 	  ::QDomElement const & toBuild, 
 		baseContainer * const bC,
-		cVPtrVec const * const cV, 
-		aFPtrVec const * const aF,
-		aFPtrVec * result
+		lvH_constValue const * const cV, 
+		lvH_analyticFunction const * const aF,
+		lvH_analyticFunction * result
 	) const {
     result->push_back(
       new scaTanhUnitGradingOneD(
@@ -45,9 +45,9 @@ namespace dtOO {
   void scaTanhUnitGradingOneDAFXmlBuilder::buildPartCompound(
 	  ::QDomElement const & toBuild, 
 		baseContainer * const bC,
-		cVPtrVec const * const cV, 
-		aFPtrVec const * const aF,
-		aFPtrVec * result
+		lvH_constValue const * const cV, 
+		lvH_analyticFunction const * const aF,
+		lvH_analyticFunction * result
 	) const {
     result->push_back( 
       new scaTanhUnitGradingOneDCompound( 

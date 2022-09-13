@@ -25,13 +25,13 @@ namespace dtOO {
     );
     virtual bool loadable( void ) const;    
     virtual void resolveConstraint( 
-      cVPtrVec const * const cVArr
+      lvH_constValue const * const cVArr
     );
   private:
     dtReal _min;
     dtReal _max;
     std::string _valueStr;
-    cVPtrVec const * _cVArr;
+    lvH_constValue const * _cVArr;
   };
 }
 #endif	/* constrainedFloatParam_H */

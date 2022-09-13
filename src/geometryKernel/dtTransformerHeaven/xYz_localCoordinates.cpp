@@ -91,9 +91,9 @@ namespace dtOO {
   void xYz_localCoordinates::init( 
     ::QDomElement const * tE, 
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG 
 	) {
     dt__throwIf(
       !dtXmlParserBase::hasAttribute("origin", *tE)

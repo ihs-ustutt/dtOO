@@ -94,11 +94,11 @@ namespace dtOO {
 
   void ofOpenFOAMSetupRule::init(
     baseContainer const * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG,
-    bVPtrVec const * const bV,
-    dCPtrVec const * const dC
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtCase const * const dC
   ) {
     _bC = bC;
     _cV = cV;
@@ -604,7 +604,7 @@ namespace dtOO {
     return ::Foam::dictionary(is());
   }    
   
-  aFPtrVec const & ofOpenFOAMSetupRule::refAF( 
+  lvH_analyticFunction const & ofOpenFOAMSetupRule::refAF( 
     void 
   ) const {
     return *_aF;

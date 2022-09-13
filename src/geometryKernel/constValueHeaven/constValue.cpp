@@ -79,7 +79,7 @@ namespace dtOO {
   }
   
   void constValue::resolveConstraint( 
-    cVPtrVec const * const cVArr
+    lvH_constValue const * const cVArr
   ) {
     
   }

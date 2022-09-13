@@ -36,10 +36,10 @@ namespace dtOO {
   void ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder::buildPart(
     ::QDomElement const & toBuild,
     baseContainer * const bC,           
-    cVPtrVec const * const cV,           
-    aFPtrVec const * const aF,    
-    aGPtrVec const * const aG,
-    aGPtrVec * result 
+    lvH_constValue const * const cV,           
+    lvH_analyticFunction const * const aF,    
+    lvH_analyticGeometry const * const aG,
+    lvH_analyticGeometry * result 
 	) const {
     //
 		// check input

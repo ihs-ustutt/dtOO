@@ -36,7 +36,7 @@ namespace dtOO {
       virtual dtReal getMax(void) const;
       virtual bool loadable( void ) const;
       virtual void resolveConstraint( 
-        cVPtrVec const * const cVArr
+        lvH_constValue const * const cVArr
       );
     protected:
       constValue();    

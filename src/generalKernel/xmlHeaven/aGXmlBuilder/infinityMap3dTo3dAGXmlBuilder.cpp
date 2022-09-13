@@ -31,10 +31,10 @@ namespace dtOO {
   void infinityMap3dTo3dAGXmlBuilder::buildPart( 
     ::QDomElement const & toBuild,
     baseContainer * const bC,           
-    cVPtrVec const * const cV,           
-    aFPtrVec const * const aF,    
-    aGPtrVec const * const aG,
-    aGPtrVec * result 
+    lvH_constValue const * const cV,           
+    lvH_analyticFunction const * const aF,    
+    lvH_analyticGeometry const * const aG,
+    lvH_analyticGeometry * result 
   ) const {
     result->push_back( new infinityMap3dTo3d() );
   }

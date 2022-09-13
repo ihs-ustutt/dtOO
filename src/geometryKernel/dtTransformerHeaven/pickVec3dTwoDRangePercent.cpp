@@ -42,10 +42,10 @@ namespace dtOO {
 		return new pickVec3dTwoDRangePercent();
 	}
 	
-  aFPtrVec pickVec3dTwoDRangePercent::apply( 
-	  aFPtrVec const * const aFVecP 
+  lvH_analyticFunction pickVec3dTwoDRangePercent::apply( 
+	  lvH_analyticFunction const * const aFVecP 
 	) const {
-    aFPtrVec ret;
+    lvH_analyticFunction ret;
     
     dt__forAllRefAuto(*aFVecP, aFun) {
       dt__ptrAss(
@@ -83,9 +83,9 @@ namespace dtOO {
   void pickVec3dTwoDRangePercent::jInit( 
     jsonPrimitive const & jE,
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::jInit(jE, bC, cV, aF, aG);
 
@@ -104,9 +104,9 @@ namespace dtOO {
   void pickVec3dTwoDRangePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

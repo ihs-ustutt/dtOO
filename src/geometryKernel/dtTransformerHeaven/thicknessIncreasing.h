@@ -23,12 +23,12 @@ namespace dtOO {
       virtual void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cValP,
-        aFPtrVec const * const sFunP,
-        aGPtrVec const * const depAGeoP 
+        lvH_constValue const * const cValP,
+        lvH_analyticFunction const * const sFunP,
+        lvH_analyticGeometry const * const depAGeoP 
       );    
-      virtual aFPtrVec 
-      apply( aFPtrVec const * const sFunP ) const;  
+      virtual lvH_analyticFunction 
+      apply( lvH_analyticFunction const * const sFunP ) const;  
       virtual void handleInt(std::string const name, dtInt const value);
       virtual void handleAnalyticFunction(std::string const name, analyticFunction const * value);
       virtual void handleBool(std::string const name, bool const value);

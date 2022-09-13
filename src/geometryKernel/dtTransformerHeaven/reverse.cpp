@@ -49,12 +49,12 @@ namespace dtOO {
 		return new reverse();
 	}
 	
-  aGPtrVec reverse::apply( 
-    aGPtrVec const * const aGeoVecP 
+  lvH_analyticGeometry reverse::apply( 
+    lvH_analyticGeometry const * const aGeoVecP 
   ) const {
-    aGPtrVec retAGeo;
+    lvH_analyticGeometry retAGeo;
 
-    dt__forAllConstIter(aGPtrVec, *aGeoVecP, it) {
+    dt__forAllConstIter(lvH_analyticGeometry, *aGeoVecP, it) {
 			//
 			// clone and cast analyticGeometry
 			//
@@ -106,8 +106,8 @@ namespace dtOO {
     return retAGeo;
   }
 
-  aFPtrVec reverse::apply( aFPtrVec const * const aF ) const {
-    aFPtrVec ret;
+  lvH_analyticFunction reverse::apply( lvH_analyticFunction const * const aF ) const {
+    lvH_analyticFunction ret;
 
     dt__forAllRefAuto(*aF, theF) {
 			//
@@ -153,9 +153,9 @@ namespace dtOO {
   void reverse::jInit( 
     jsonPrimitive const & jE,
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::jInit(jE, bC, cV, aF, aG);
   }  
@@ -163,9 +163,9 @@ namespace dtOO {
   void reverse::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		
