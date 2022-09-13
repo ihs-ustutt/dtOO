@@ -5,11 +5,21 @@ namespace dtOO {
   sliderFloatParam::sliderFloatParam() {
   }
 
-  sliderFloatParam::sliderFloatParam(sliderFloatParam const & orig) : constValue(orig) {
+  sliderFloatParam::sliderFloatParam(
+    sliderFloatParam const & orig
+  ) : constValue(orig) {
     _max = orig._max;
     _min = orig._min;
   }
 
+  sliderFloatParam::sliderFloatParam(
+    std::string const & label, 
+    dtReal const & val, dtReal const & min, dtReal const & max
+  ) : constValue(label, val) {
+    _min = min;
+    _max = max;
+  }
+  
   sliderFloatParam::~sliderFloatParam() {
   }
   

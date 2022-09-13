@@ -15,6 +15,7 @@ namespace dtOO {
     public:
       dt__class(constValue, constValue);
       constValue( constValue const & orig );
+      constValue( std::string const & label, dtReal const & val );
       virtual ~constValue();
       static constValue * create(
         std::string const & type, 

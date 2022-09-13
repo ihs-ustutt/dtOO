@@ -17,6 +17,13 @@ namespace dtOO {
     _value = orig._value;
     _loadable = orig._loadable;
   }
+
+  constValue::constValue( 
+    std::string const & label, dtReal const & val 
+  ) : labelHandling(label) {
+    _loadable = true;
+    _value = val;
+  }  
   
   constValue::~constValue() {
   }
