@@ -31,19 +31,6 @@ namespace dtOO {
   typedef labeledVectorHandling< boundedVolume * >    lvH_boundedVolume;
   typedef labeledVectorHandling< dtCase * >           lvH_dtCase;
   typedef labeledVectorHandling< dtPlugin * >         lvH_dtPlugin;  
-  
-  [[deprecated("Please use lvH_constValue")]]
-    typedef lvH_constValue cVPtrVec;
-  [[deprecated("Please use lvH_analyticFunction")]]
-    typedef lvH_analyticFunction aFPtrVec;
-  [[deprecated("Please use lvH_analyticGeometry")]]
-    typedef lvH_analyticGeometry aGPtrVec;
-  [[deprecated("Please use lvH_boundedVolume")]]
-    typedef lvH_boundedVolume bVPtrVec;
-  [[deprecated("Please use lvH_dtCase")]]
-    typedef lvH_dtCase dCPtrVec;  
-  [[deprecated("Please use lvH_dtPlugin")]]
-    typedef lvH_dtPlugin dPPtrVec;  
 }
 #endif	/* mainConceptFwd_H */
 

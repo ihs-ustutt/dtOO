@@ -338,6 +338,7 @@ namespace dtOO {
   %template(vectorHandlingDtPlugin)         vectorHandling< dtPlugin * >;
   %template(vectorHandlingDtCurve)          vectorHandling< dtCurve * >;
   %template(vectorHandlingDtSurface)        vectorHandling< dtSurface * >;
+  %template(vectorHandlingConstDtCurve)     vectorHandling< dtCurve const * >;
   
   template < typename T >
   class labeledVectorHandling : public vectorHandling< T > {
@@ -349,26 +350,18 @@ namespace dtOO {
       dtInt getPosition( std::string const label) const;
       void dump(void) const;
   };
-  // deprecated names -------  
-  typedef labeledVectorHandling< constValue * > cVPtrVec;
-  typedef labeledVectorHandling< analyticFunction * > aFPtrVec;
-  typedef labeledVectorHandling< analyticGeometry * > aGPtrVec;
-  typedef labeledVectorHandling< boundedVolume * > bVPtrVec;
-  typedef labeledVectorHandling< dtCase * > dCPtrVec;  
-  typedef labeledVectorHandling< dtPlugin * > dPPtrVec;    
-  // -------
   typedef labeledVectorHandling< constValue * >       lvH_constValue;
   typedef labeledVectorHandling< analyticFunction * > lvH_analyticFunction;
   typedef labeledVectorHandling< analyticGeometry * > lvH_analyticGeometry;
   typedef labeledVectorHandling< boundedVolume * >    lvH_boundedVolume;
   typedef labeledVectorHandling< dtCase * >           lvH_dtCase;
   typedef labeledVectorHandling< dtPlugin * >         lvH_dtPlugin;  
-  %template(labeledVectorHandlingConstValue) labeledVectorHandling< constValue * >;
+  %template(labeledVectorHandlingConstValue)       labeledVectorHandling< constValue * >;
   %template(labeledVectorHandlingAnalyticFunction) labeledVectorHandling< analyticFunction * >;
   %template(labeledVectorHandlingAnalyticGeometry) labeledVectorHandling< analyticGeometry * >;
-  %template(labeledVectorHandlingBoundedVolume) labeledVectorHandling< boundedVolume * >;
-  %template(labeledVectorHandlingDtCase) labeledVectorHandling< dtCase * >;
-  %template(labeledVectorHandlingDtPlugin) labeledVectorHandling< dtPlugin * >;
+  %template(labeledVectorHandlingBoundedVolume)    labeledVectorHandling< boundedVolume * >;
+  %template(labeledVectorHandlingDtCase)           labeledVectorHandling< dtCase * >;
+  %template(labeledVectorHandlingDtPlugin)         labeledVectorHandling< dtPlugin * >;
 }
 %include <xmlHeaven/dtXmlParserBase.h>
 %include <xmlHeaven/dtXmlParser.h>     
