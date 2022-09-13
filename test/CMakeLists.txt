@@ -59,6 +59,22 @@ set_tests_properties(
 )
 
 #
+# analyticGeometrySWIG
+#
+add_test(
+  NAME analyticGeometrySWIG 
+  COMMAND python3 "build.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/analyticGeometrySWIG
+)
+set_tests_properties(
+  analyticGeometrySWIG 
+  PROPERTIES
+  ENVIRONMENT 
+    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
+    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
+)
+
+#
 # constValueSWIG
 #
 add_test(
