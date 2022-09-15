@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.15)
 
 option(DTOO_USE_CCACHE "Use CCACHE" OFF)
 if (DTOO_USE_CCACHE)

@@ -1,6 +1,6 @@
 option(DTOO_USE_PYTHONOCC "Use PythonOCC" OFF)
 
-find_package(PythonInterp REQUIRED)
+find_package(Python REQUIRED COMPONENTS Interpreter Development)
 
 find_package(SWIG 4.0.2 REQUIRED)
 include(${SWIG_USE_FILE})
@@ -15,9 +15,8 @@ if (DTOO_USE_PYTHONOCC)
   set(CMAKE_SWIG_FLAGS "-DDTOO_HAS_PYTHONOCC")
 endif (DTOO_USE_PYTHONOCC)
 
-find_package(PythonLibs 3 REQUIRED)
 include_directories(
-  ${PYTHON_INCLUDE_PATH}
+  ${Python_INCLUDE_DIRS}
 )
 
 #
@@ -41,7 +40,7 @@ SWIG_ADD_LIBRARY(dtOOPythonSWIG TYPE SHARED LANGUAGE python SOURCES ${SOURCES})
 # linking
 #
 #
-SWIG_LINK_LIBRARIES(dtOOPythonSWIG ${PYTHON_LIBRARIES} dtOO)
+SWIG_LINK_LIBRARIES(dtOOPythonSWIG ${Python_LIBRARIES} dtOO)
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined,--disable-new-dtags")
 set(
   CMAKE_SHARED_LINKER_FLAGS 
