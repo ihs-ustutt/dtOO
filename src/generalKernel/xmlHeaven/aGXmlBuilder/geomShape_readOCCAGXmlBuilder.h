@@ -1,5 +1,5 @@
-#ifndef geomShape_readIgesOCCAGXmlBuilder_H
-#define	geomShape_readIgesOCCAGXmlBuilder_H
+#ifndef geomShape_readOCCAGXmlBuilder_H
+#define	geomShape_readOCCAGXmlBuilder_H
 
 #include <dtOOTypeDef.h>
 
@@ -12,12 +12,13 @@ namespace dtOO {
   class constValue;
   class baseContainer;
 
-  class geomShape_readIgesOCCAGXmlBuilder : public aGXmlBuilder {
+  class geomShape_readOCCAGXmlBuilder : public aGXmlBuilder {
     public:  
-      dt__classOnlyName(geomShape_readIgesOCCAGXmlBuilder);
-      dt__classSelfCreate(geomShape_readIgesOCCAGXmlBuilder);
-      geomShape_readIgesOCCAGXmlBuilder();
-      virtual ~geomShape_readIgesOCCAGXmlBuilder();
+      dt__classOnlyName(geomShape_readOCCAGXmlBuilder);
+      dt__classSelfCreate(geomShape_readOCCAGXmlBuilder);
+      geomShape_readOCCAGXmlBuilder();
+      virtual ~geomShape_readOCCAGXmlBuilder();
+      virtual std::vector< std::string > factoryAlias( void ) const;
       virtual void buildPart(
         ::QDomElement const & toBuild,
         baseContainer * const bC,
@@ -27,8 +28,8 @@ namespace dtOO {
         lvH_analyticGeometry * result 
       ) const; 
     private: 
-      static bool _registrated;          
+      static bool _registrated;
   };
 }
-#endif	/* geomShape_readIgesOCCAGXmlBuilder_H */
+#endif	/* geomShape_readOCCAGXmlBuilder_H */
 

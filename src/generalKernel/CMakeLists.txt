@@ -65,9 +65,8 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.h  
   xmlHeaven/aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.h
-  xmlHeaven/aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h
-  xmlHeaven/aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.h
+  xmlHeaven/aGXmlBuilder/geomShape_readOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.h
@@ -174,9 +173,8 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.cpp
-  xmlHeaven/aGXmlBuilder/geomSurface_readStepOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.cpp
-  xmlHeaven/aGXmlBuilder/geomShape_readIgesOCCAGXmlBuilder.cpp
+  xmlHeaven/aGXmlBuilder/geomShape_readOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.cpp

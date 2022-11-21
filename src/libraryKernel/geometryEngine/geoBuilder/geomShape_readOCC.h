@@ -1,5 +1,5 @@
-#ifndef geomShape_readIgesOCC_H
-#define	geomShape_readIgesOCC_H
+#ifndef geomShape_readOCC_H
+#define	geomShape_readOCC_H
 
 #include <dtOOTypeDef.h>
 
@@ -12,12 +12,12 @@ namespace dtOO {
   class dtCurve;
   class dtSurface;
   
-  class geomShape_readIgesOCC {
+  class geomShape_readOCC {
   public:
-    dt__classOnlyName(geomShape_readIgesOCC);    
-    geomShape_readIgesOCC();
-    geomShape_readIgesOCC( std::string const & filename );
-    virtual ~geomShape_readIgesOCC();
+    dt__classOnlyName(geomShape_readOCC);    
+    geomShape_readOCC();
+    geomShape_readOCC( std::string const & filename );
+    virtual ~geomShape_readOCC();
     vectorHandling< dtCurve * > resultCurveVectorHandling( void ) const;
     vectorHandling< dtSurface * > resultSurfaceVectorHandling( void ) const;
     ptrVectorHandling< dtCurve > const & resultCurveRef( void ) const;
@@ -27,5 +27,5 @@ namespace dtOO {
     ptrVectorHandling< dtSurface > _dtS;
   };
 }
-#endif	/* geomShape_readIgesOCC_H */
+#endif	/* geomShape_readOCC_H */
 

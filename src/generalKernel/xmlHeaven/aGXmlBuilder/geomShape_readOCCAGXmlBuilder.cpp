@@ -1,11 +1,11 @@
-#include "geomShape_readIgesOCCAGXmlBuilder.h"
+#include "geomShape_readOCCAGXmlBuilder.h"
 
 #include <xmlHeaven/aGXmlBuilderFactory.h>
 #include <logMe/logMe.h>
 #include <dtLinearAlgebra.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
-#include <geometryEngine/geoBuilder/geomShape_readIgesOCC.h>
+#include <geometryEngine/geoBuilder/geomShape_readOCC.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/analyticCurve.h>
@@ -16,25 +16,37 @@
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
+#include <boost/assign.hpp>
+
 namespace dtOO {
-  bool geomShape_readIgesOCCAGXmlBuilder::_registrated 
+  bool geomShape_readOCCAGXmlBuilder::_registrated 
   =
   aGXmlBuilderFactory::registrate(
     dt__tmpPtr(
-      geomShape_readIgesOCCAGXmlBuilder, 
-      new geomShape_readIgesOCCAGXmlBuilder()
+      geomShape_readOCCAGXmlBuilder, 
+      new geomShape_readOCCAGXmlBuilder()
     )
   );
   
-  geomShape_readIgesOCCAGXmlBuilder
-    ::geomShape_readIgesOCCAGXmlBuilder() {
+  geomShape_readOCCAGXmlBuilder
+    ::geomShape_readOCCAGXmlBuilder() {
   }
 
-  geomShape_readIgesOCCAGXmlBuilder
-    ::~geomShape_readIgesOCCAGXmlBuilder() {
+  geomShape_readOCCAGXmlBuilder
+    ::~geomShape_readOCCAGXmlBuilder() {
   }
 
-  void geomShape_readIgesOCCAGXmlBuilder::buildPart(
+  std::vector< std::string > 
+    geomShape_readOCCAGXmlBuilder::factoryAlias( 
+      void 
+  ) const {
+    return 
+      ::boost::assign::list_of
+        ("geomShape_readIgesOCCAGXmlBuilder")
+        ("geomSurface_readStepOCCAGXmlBuilder");
+  }
+  
+  void geomShape_readOCCAGXmlBuilder::buildPart(
     ::QDomElement const & toBuild,
     baseContainer * const bC,           
     lvH_constValue const * const cV,           
@@ -47,7 +59,7 @@ namespace dtOO {
       buildPart()
     );
 
-    geomShape_readIgesOCC readIges(
+    geomShape_readOCC readIges(
       dtXmlParserBase::getAttributeStr("filename", toBuild)
     );
 

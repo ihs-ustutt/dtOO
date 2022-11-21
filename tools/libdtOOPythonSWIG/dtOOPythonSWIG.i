@@ -147,7 +147,7 @@ namespace dtOO {
 #include <geometryEngine/dtOCCBSplineCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
-#include <geometryEngine/geoBuilder/geomShape_readIgesOCC.h>
+#include <geometryEngine/geoBuilder/geomShape_readOCC.h>
 #include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h>
 #include <geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h>
@@ -403,7 +403,7 @@ namespace dtOO {
 %include geometryEngine/dtOCCBSplineSurface.h
 %include geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h
-%include geometryEngine/geoBuilder/geomShape_readIgesOCC.h
+%include geometryEngine/geoBuilder/geomShape_readOCC.h
 %include geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h
 %include geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h
 %include geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h
