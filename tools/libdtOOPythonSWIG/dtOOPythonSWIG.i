@@ -150,7 +150,9 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/geomShape_readIgesOCC.h>
 #include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h>
-        
+#include <geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h>
+#include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
+
 #include <boundedVolume.h>
 #include <dtCase.h>
 #include <dtPlugin.h>
@@ -349,6 +351,7 @@ namespace dtOO {
       T & getRef( std::string const label);      
       dtInt getPosition( std::string const label) const;
       void dump(void) const;
+      const T& operator[](std::string const & label) const;      
   };
   typedef labeledVectorHandling< constValue * >       lvH_constValue;
   typedef labeledVectorHandling< analyticFunction * > lvH_analyticFunction;
@@ -403,6 +406,8 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/geomShape_readIgesOCC.h
 %include geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h
 %include geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h
+%include geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h
+%include geometryEngine/geoBuilder/trimmedCurve_uBounds.h
 
 //
 // Classes has to be not abstract, otherwise no constructors will be created, 
