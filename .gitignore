@@ -3,6 +3,8 @@ install*
 leap*
 nbproject/
 doc/html/
+doc/xml/
+doc/swig_includeAll.i
 src/generalKernel/dtOOVersion.h
 /cmake/dtOOConfig.cmake
 *.m~

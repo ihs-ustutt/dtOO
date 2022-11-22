@@ -97,7 +97,7 @@ while getopts ":i:n:ho:bd" opt; do
     n) # Specify the number of build processes (_nProcs)
       _nProcs=$OPTARG
       ;;
-    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab occt cgal muparser root ]
+    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab occt pythonocc-core cgal muparser root nlohmann_json]
       _dep=$OPTARG
       ;;
     b) # Skip build
@@ -208,7 +208,7 @@ git_cmake_build \
 git_cmake_build \
   "gmsh" \
   "https://gitlab.onelab.info/gmsh/gmsh.git" \
-  "gmsh_4_9_3" \
+  "gmsh_4_11_0" \
   "\
   -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
   -DENABLE_BUILD_SHARED=ON \
@@ -234,6 +234,8 @@ git_cmake_build \
   -DENABLE_QUADMESHINGTOOLS=OFF \
   -DENABLE_WINSLOWUNTANGLER=OFF \
   -DBUILD_TESTING=OFF \
+  -DENABLE_WRAP_PYTHON=ON \
+  -DGMSHPY_INSTALL_DIRECTORY=${_installPrefix}/tools/gmshpy \
   "
   
 #-------------------------------------------------------------------------------
