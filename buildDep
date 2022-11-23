@@ -97,7 +97,7 @@ while getopts ":i:n:ho:bd" opt; do
     n) # Specify the number of build processes (_nProcs)
       _nProcs=$OPTARG
       ;;
-    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab occt cgal muparser root ]
+    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab occt pythonocc-core cgal muparser root nlohmann_json]
       _dep=$OPTARG
       ;;
     b) # Skip build
@@ -169,7 +169,8 @@ if [[ "$_dep" == "mpfr" || "$_dep" == "all" ]]; then
   if [[ "$_skipDownload" == "0" ]]; then
     rm -rf ${_pwd}/mpfr-4.1.0
     rm -rf ${_pwd}/mpfr-4.1.0.tar.xz
-    curl -o mpfr-4.1.0.tar.xz https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz
+    #curl -o mpfr-4.1.0.tar.xz https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.xz
+    curl -o mpfr-4.1.0.tar.xz https://toolchains.bootlin.com/downloads/releases/sources/mpfr-4.1.0/mpfr-4.1.0.tar.xz
     tar xvf mpfr-4.1.0.tar.xz
   fi
   if [[ "$_skipBuild" == "0" ]]; then
@@ -208,7 +209,7 @@ git_cmake_build \
 git_cmake_build \
   "gmsh" \
   "https://gitlab.onelab.info/gmsh/gmsh.git" \
-  "gmsh_4_9_3" \
+  "gmsh_4_11_0" \
   "\
   -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
   -DENABLE_BUILD_SHARED=ON \
@@ -234,6 +235,8 @@ git_cmake_build \
   -DENABLE_QUADMESHINGTOOLS=OFF \
   -DENABLE_WINSLOWUNTANGLER=OFF \
   -DBUILD_TESTING=OFF \
+  -DENABLE_WRAP_PYTHON=ON \
+  -DGMSHPY_INSTALL_DIRECTORY=${_installPrefix}/tools/gmshpy \
   "
   
 #-------------------------------------------------------------------------------
