@@ -195,6 +195,32 @@ namespace dtOO {
           );
         }
       }
+      dt__forAllRefAuto(_gm->dtEdges(), anEdge) {
+        if ( _gm->matchWildCardPhysical(toRender, anEdge) ) {
+          vectorHandling< dtPoint3 > ppV(5);
+          vectorHandling< dtPoint3 > vpV(3);
+          vectorHandling< dtVector3 > vvV(3);
+          ppV[0] = anEdge->getMap1dTo3d()->getPointPercent(0.0);
+          ppV[1] = anEdge->getMap1dTo3d()->getPointPercent(0.1);
+          ppV[2] = anEdge->getMap1dTo3d()->getPointPercent(0.5);
+          ppV[3] = anEdge->getMap1dTo3d()->getPointPercent(0.9);
+          ppV[4] = anEdge->getMap1dTo3d()->getPointPercent(1.0);
+
+          vvV[0] = anEdge->getMap1dTo3d()->firstDerUPercent(0.1);
+          vpV[0] = anEdge->getMap1dTo3d()->getPointPercent(0.1);
+          vvV[1] = anEdge->getMap1dTo3d()->firstDerUPercent(0.9);        
+          vpV[1] = anEdge->getMap1dTo3d()->getPointPercent(0.9);
+          vvV[2] 
+          = 
+          dtGmshModel::extractPosition(anEdge->getEndVertex())
+          -
+          dtGmshModel::extractPosition(anEdge->getBeginVertex());
+          vpV[2] = anEdge->getMap1dTo3d()->getPointPercent(0.5);
+
+          rV.push_back( new solid3dLine( ppV ) );
+          rV.push_back( new discrete3dVector( vvV, vpV ) );
+        }
+      }      
     }
     
 		return rV;
