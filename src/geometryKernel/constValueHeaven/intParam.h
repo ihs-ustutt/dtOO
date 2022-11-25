@@ -8,17 +8,18 @@
 
 namespace dtOO {
   class intParam : public constValue {
-  public:
-    dt__class(intParam, constValue);        
-    intParam();
-    intParam(intParam const & orig);
-    virtual ~intParam();
-    virtual intParam * clone( void ) const;    
-    virtual void dump(void) const;
-    virtual void writeToElement(
-      ::QDomDocument & doc, ::QDomElement & element
-    );
-  private:
+    public:
+      dt__class(intParam, constValue);        
+      intParam();
+      intParam(intParam const & orig);
+      intParam( std::string const & label, dtInt const & val );    
+      virtual ~intParam();
+      virtual intParam * clone( void ) const;    
+      virtual void dump(void) const;
+      virtual void writeToElement(
+        ::QDomDocument & doc, ::QDomElement & element
+      );
+    private:
   };
 }
 #endif	/* INTPARAM_H */
