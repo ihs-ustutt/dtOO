@@ -1,4 +1,6 @@
-%import ../../doc/swig_includeAll.i
+%feature("autodoc", "1");
+
+%include ../../doc/swig_includeAll.i
 
 %module dtOOPythonSWIG
 %{
@@ -122,6 +124,7 @@ namespace dtOO {
 #include <analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
+#include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
@@ -152,6 +155,7 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h>
 #include <geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
 
 #include <boundedVolume.h>
 #include <dtCase.h>
@@ -168,7 +172,6 @@ using namespace dtOO;
   #include <TColgp_module.hxx>
 #endif
 %}
-%feature("autodoc", "3");
 
 namespace dtOO {
   class eGeneral : public std::exception {
@@ -341,6 +344,7 @@ namespace dtOO {
   %template(vectorHandlingDtCurve)          vectorHandling< dtCurve * >;
   %template(vectorHandlingDtSurface)        vectorHandling< dtSurface * >;
   %template(vectorHandlingConstDtCurve)     vectorHandling< dtCurve const * >;
+  %template(vectorHandlingConstDtSurface)   vectorHandling< dtSurface const * >;
   
   template < typename T >
   class labeledVectorHandling : public vectorHandling< T > {
@@ -408,6 +412,7 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h
 %include geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h
 %include geometryEngine/geoBuilder/trimmedCurve_uBounds.h
+%include geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h
 
 //
 // Classes has to be not abstract, otherwise no constructors will be created, 
@@ -531,6 +536,7 @@ namespace dtOO {
 %feature("notabstract") vec3dOneDInMap3dTo3d;
 %feature("notabstract") vec3dTwoDInMap3dTo3d;
 %feature("notabstract") vec3dThreeDInMap3dTo3d;
+%feature("notabstract") rotatingMap2dTo3d;
 
 %include analyticGeometryHeaven/map1dTo3d.h
 %include analyticGeometryHeaven/map2dTo3d.h
@@ -542,6 +548,7 @@ namespace dtOO {
 %include analyticGeometryHeaven/vec3dOneDInMap3dTo3d.h
 %include analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
 %include analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
+%include analyticGeometryHeaven/rotatingMap2dTo3d.h
 namespace dtOO {
   %template(pairDtRealDtPoint2) ::std::pair< dtReal, dtPoint2 >;
 }
