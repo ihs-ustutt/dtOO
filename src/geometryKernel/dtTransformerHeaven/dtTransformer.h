@@ -44,8 +44,6 @@ namespace dtOO {
         lvH_analyticFunction const * const aF,
         lvH_analyticGeometry const * const aG
       );
-      jsonPrimitive & config( void );
-      jsonPrimitive const & config( void ) const;
       virtual void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
@@ -100,17 +98,20 @@ namespace dtOO {
       dtPoint3 operator()( dtPoint3 const & pp, dtInt const dir = 1 ) const;
       analyticFunction * apply(analyticFunction const * const sF) const;
       analyticGeometry * apply(analyticGeometry const * const aG) const;
-        //
-        // pugg stuff
-        //
-        static const dtInt version = 1;
-        static const std::string server_name() {
-          return "dtTransformerServer";
-        }   
-        void setKernel( ::pugg::Kernel * kernel );
-      private:
-        jsonPrimitive _config;
-        dt__pH(::pugg::Kernel) _kernel;
+      //
+      // pugg stuff
+      //
+      static const dtInt version = 1;
+      static const std::string server_name() {
+        return "dtTransformerServer";
+      }   
+      void setKernel( ::pugg::Kernel * kernel );
+    protected:
+      jsonPrimitive & config( void );
+      jsonPrimitive const & config( void ) const;
+    private:
+      jsonPrimitive _config;
+      dt__pH(::pugg::Kernel) _kernel;
   };
 }
 
