@@ -7,6 +7,7 @@
 #include <dtLinearAlgebra.h>
 
 #include <analyticFunctionHeaven/analyticFunction.h>
+#include "analyticGeometryHeaven/analyticGeometry.h"
 
 namespace CGAL {
   //dtPoint2
@@ -64,6 +65,9 @@ namespace dtOO {
   void to_json(::nlohmann::json& to, analyticFunction const * const & from) {
     to["analyticFunction"]["label"] = from->getLabel();
   };      
+  void to_json(::nlohmann::json& to, analyticGeometry const * const & from) {
+    to["analyticGeometry"]["label"] = from->getLabel();
+  };
 }
 
 namespace dtOO {  
@@ -172,6 +176,11 @@ namespace dtOO {
     std::string const & str, 
     labeledVectorHandling< analyticFunction * > const * const ptrVec
   ) const;
+  template
+  dt__pH(analyticGeometry) jsonPrimitive::lookupClone( 
+    std::string const & str, 
+    labeledVectorHandling< analyticGeometry * > const * const ptrVec
+  ) const;
   
   // template lookupDef
   template < typename T > 
@@ -190,7 +199,11 @@ namespace dtOO {
   template
   bool jsonPrimitive::lookupDef< bool >(
     std::string const &, bool const & def
-  ) const;  
+  ) const;
+  template
+  dtVector3 jsonPrimitive::lookupDef< dtVector3 >(
+    std::string const &, dtVector3 const & def
+  ) const;
   
   // template  operator[]
   template < typename T > 
@@ -253,7 +266,10 @@ namespace dtOO {
   );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, analyticFunction const * const & val
-  );        
+  );
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, analyticGeometry const * const & val
+  );  
   
   ::nlohmann::json const & jsonPrimitive::json( void ) const {
     return *_json;

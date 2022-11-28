@@ -394,6 +394,7 @@ namespace dtOO {
 %template(appendDtPoint3) dtOO::jsonPrimitive::append< dtOO::dtPoint3 >;
 %template(appendDtVector3) dtOO::jsonPrimitive::append< dtOO::dtVector3 >;
 %template(appendAnalyticFunction) dtOO::jsonPrimitive::append< dtOO::analyticFunction const * >;
+%template(appendAnalyticGeometry) dtOO::jsonPrimitive::append< dtOO::analyticGeometry const * >;
 
 %include constValueHeaven/sliderFloatParam.h
 %include constValueHeaven/intParam.h
