@@ -12,26 +12,33 @@ namespace dtOO {
   class vec2dMultiBiLinearTwoD;
   class scaOneD;
   
-  /**
-   * \brief Coordinate transformation for rotatingMap2dTo3d mapping according to
-   * \f[
-   *   (\phi r, m, s) \rightarrow (u_0,v_0,w_0)
-   * \f]
-   * \f$\phi r\f$ is the real circumferential length and \f$m\f$ is the real
-   * merdional length. \f$s\f$ is the spanwise direction, but not treated
-   * as real length. Scales the coordinates \f$ (\phi r, m, s) \f$ with given
-   * vector \f& \underline s \f$.
-   * 
+  //! Conformal mapping.
+  /*! Coordinate transformation for rotatingMap2dTo3d mapping according to 
+   *  @f[
+   *    (phi r, m, s) -> (u_0,v_0,w_0)
+   *  @f]
+   *  `phi r` is the real circumferential length and `m` is the real
+   *  merdional length. `s` is the spanwise direction, but not treated
+   *  as real length. Scales the coordinates `(phi r, m, s)` with given
+   *  vector `_ss`.
    */
   class uVw_phirMs : public dtTransformer {
     public:      
       dt__classOnlyName(uVw_phirMs);
       uVw_phirMs();
       uVw_phirMs( uVw_phirMs const & orig );
+      uVw_phirMs( jsonPrimitive const & jE );
       virtual ~uVw_phirMs();
       virtual dtTransformer * clone( void ) const;
       virtual dtTransformer * create( void ) const;     
       virtual bool isNecessary( void ) const;
+      virtual void jInit( 
+        jsonPrimitive const & jE, 
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
+      );          
       void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
@@ -46,40 +53,19 @@ namespace dtOO {
       std::vector< dtPoint3 > 
       retract(std::vector< dtPoint3 > const * const toRetract) const;    
     private:
-      /**
-       * @todo Should be on map3dto3d
-       */
       dtReal m_uSVS(dtReal const & uu, dtReal const & vv) const;
-      /**
-       * @todo Should be on map3dto3d
-       */    
       dtReal s_uSVS(dtReal const & uu, dtReal const & vv) const;     
-      /**
-       * @todo Should be on map3dto3d
-       */    
       dtReal uV_phirVVWV(
         dtReal const & phir, dtReal const & vv, dtReal const & ww
       ) const;
-      /**
-       * @todo Should be on map3dto3d
-       */
       dtReal vV_ms(dtReal const & mm, dtReal const & ss) const;
-      /**
-       * @todo Should be on map3dto3d
-       */    
       dtReal wV_ms(dtReal const & mm, dtReal const & ss) const;
-      /**
-       * @todo Should be on map3dto3d
-       */    
       dtReal phir_uVvVwV(
         dtReal const & uu, dtReal const & vv, dtReal const & ww
       ) const;  
     private:
       dt__pH(rotatingMap2dTo3d const) _rM2d;
-      dtVector3 _ss;
       dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;
-      dtInt _nV;
-      dtInt _nW;
       static bool _registrated;    
   };
 }
