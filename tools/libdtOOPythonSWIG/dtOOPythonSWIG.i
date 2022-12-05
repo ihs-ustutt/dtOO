@@ -156,6 +156,7 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 
 #include <boundedVolume.h>
 #include <dtCase.h>
@@ -317,6 +318,8 @@ namespace dtOO {
   %template(vectorBoundedVolume)    ::std::vector< boundedVolume * >;
   %template(vectorDtCase)           ::std::vector< dtCase * >;
   %template(vectorDtPlugin)         ::std::vector< dtPlugin * >;
+  %template(vectorDtPoint2)         ::std::vector< dtPoint2 >;
+  %template(vectorDtVector2)        ::std::vector< dtVector2 >;
   %template(vectorDtPoint3)         ::std::vector< dtPoint3 >;
   %template(vectorDtVector3)        ::std::vector< dtVector3 >;
   %template(vectorDtCurve)          ::std::vector< dtCurve * >;
@@ -414,6 +417,7 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h
 %include geometryEngine/geoBuilder/trimmedCurve_uBounds.h
 %include geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h
 
 //
 // Classes has to be not abstract, otherwise no constructors will be created, 
