@@ -97,7 +97,7 @@ while getopts ":i:n:ho:bd" opt; do
     n) # Specify the number of build processes (_nProcs)
       _nProcs=$OPTARG
       ;;
-    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh gmsh moab occt pythonocc-core cgal muparser root nlohmann_json]
+    o) # Build [ all ] or only one dependency [ cgns lapack mpfr openmesh openvolumemesh occt pythonocc-core gmsh moab cgal muparser root nlohmann_json]
       _dep=$OPTARG
       ;;
     b) # Skip build
@@ -203,6 +203,32 @@ git_cmake_build \
   -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
   -DCMAKE_BUILD_TYPE=Release \
   "
+  
+#-------------------------------------------------------------------------------
+# occt
+#-------------------------------------------------------------------------------
+git_cmake_build \
+  "occt" \
+  "https://git.dev.opencascade.org/repos/occt.git" \
+  "V7_5_1" \
+  "\
+    -DINSTALL_DIR=${_installPrefix} \
+    -DBUILD_RELEASE_DISABLE_EXCEPTIONS=FALSE \
+  "
+  
+#-------------------------------------------------------------------------------
+# pythonocc-core
+#-------------------------------------------------------------------------------
+git_cmake_build \
+  "pythonocc-core" \
+  "https://github.com/tpaviot/pythonocc-core.git" \
+  "7.5.1" \
+  "\
+    -DOCE_INCLUDE_PATH=${_installPrefix}/include/opencascade \
+    -DOCE_LIB_PATH=${_installPrefix}/lib \
+    -DPYTHONOCC_INSTALL_DIRECTORY=${_installPrefix}/tools/OCC \
+  "
+
 #-------------------------------------------------------------------------------
 # gmsh
 #-------------------------------------------------------------------------------
@@ -254,31 +280,6 @@ git_cmake_build \
   -DCMAKE_CXX_FLAGS=-I${_installPrefix}/include \
   -DCMAKE_EXE_LINKER_FLAGS=${_installPrefix}/lib/libcgns.so \
   -DCMAKE_SHARED_LINKER_FLAGS=${_installPrefix}/lib/libcgns.so \
-  "
-  
-#-------------------------------------------------------------------------------
-# occt
-#-------------------------------------------------------------------------------
-git_cmake_build \
-  "occt" \
-  "https://git.dev.opencascade.org/repos/occt.git" \
-  "V7_5_1" \
-  "\
-    -DINSTALL_DIR=${_installPrefix} \
-    -DBUILD_RELEASE_DISABLE_EXCEPTIONS=FALSE \
-  "
-  
-#-------------------------------------------------------------------------------
-# pythonocc-core
-#-------------------------------------------------------------------------------
-git_cmake_build \
-  "pythonocc-core" \
-  "https://github.com/tpaviot/pythonocc-core.git" \
-  "7.5.1" \
-  "\
-    -DOCE_INCLUDE_PATH=${_installPrefix}/include/opencascade \
-    -DOCE_LIB_PATH=${_installPrefix}/lib \
-    -DPYTHONOCC_INSTALL_DIRECTORY=${_installPrefix}/tools/OCC \
   "
   
 #-------------------------------------------------------------------------------
