@@ -17,6 +17,8 @@ namespace dtOO {
 //    );
   public:
     typedef typename std::vector< T >::iterator iterator;
+    typedef typename std::vector< T >::reference reference;
+    typedef typename std::vector< T >::const_reference const_reference;
   public:
     dt__classOnlyName(labeledVectorHandling);
     labeledVectorHandling();
@@ -33,10 +35,10 @@ namespace dtOO {
     labeledVectorHandling(int const dim);
     labeledVectorHandling(int const dim, T init);
     virtual ~labeledVectorHandling();
-    T const & get( std::string const & label) const;
+    const_reference get( std::string const & label) const;
+    reference get( std::string const & label);    
     std::string getLabel( dtInt const pos ) const;
     std::vector< std::string > labels( void ) const;
-    T & getRef( std::string const label);
     bool has( std::string const label) const;
     bool hasTwice( std::string const label ) const;
     void checkForBastardTwins( void ) const;
@@ -45,8 +47,13 @@ namespace dtOO {
     void addIndex( void );
     void dump(void) const;
     void sort(void);
-    const T& operator[](std::string const & label) const;
-    using std::vector< T >::operator[];
+    const_reference operator[](std::string const & label) const;
+    reference operator[](int ii) { 
+      return std::vector< T >::at(ii); 
+    }
+    const_reference operator[](int ii) const { 
+      return std::vector< T >::at(ii); 
+    }
   };
 
   //----------------------------------------------------------------------------
@@ -104,7 +111,8 @@ namespace dtOO {
   }
   
   template< typename T >
-  T const & labeledVectorHandling< T >::get( std::string const & label ) const {
+  typename labeledVectorHandling< T >::const_reference 
+  labeledVectorHandling< T >::get( std::string const & label ) const {
     dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
@@ -119,8 +127,9 @@ namespace dtOO {
   dt__throw(get(), << "No element with " << dt__eval(label) );
   }
 
-  template< typename T >
-  T & labeledVectorHandling< T >::getRef( std::string const label ) {
+  template< typename T > 
+  typename labeledVectorHandling< T >::reference 
+  labeledVectorHandling< T >::get( std::string const & label ) {
     return this->at( this->getPosition(label) );
   }  
   
@@ -290,7 +299,8 @@ namespace dtOO {
   }
   
   template< typename T >
-  const T& labeledVectorHandling< T >::operator[](std::string const & label) const {
+  typename labeledVectorHandling< T >::const_reference 
+  labeledVectorHandling< T >::operator[](std::string const & label) const {
     return this->get(label);
   } 
 }

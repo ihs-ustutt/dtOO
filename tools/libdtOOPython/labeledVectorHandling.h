@@ -5,7 +5,11 @@ boost::python::class_<
   labeledVectorHandlingWrap< dtOO::constValue * >, 
   boost::noncopyable 
 >("labeledVectorHandlingConstValue")
-.def(
+.def<
+  dtOO::labeledVectorHandling< dtOO::constValue * >::const_reference 
+  (dtOO::labeledVectorHandling< dtOO::constValue * >::*)
+  ( std::string const & ) const
+>(
   "get", 
   &labeledVectorHandlingWrap< dtOO::constValue * >::get,
   boost::python::return_value_policy<
@@ -26,7 +30,11 @@ boost::python::class_<
 boost::python::class_< 
   labeledVectorHandlingWrap< dtOO::analyticFunction * >, boost::noncopyable 
 >("labeledVectorHandlingAnalyticFunction")
-.def(
+.def<
+  dtOO::labeledVectorHandling< dtOO::analyticFunction * >::const_reference 
+  (dtOO::labeledVectorHandling< dtOO::analyticFunction * >::*)
+  ( std::string const & ) const
+>(
   "get", 
   &labeledVectorHandlingWrap< dtOO::analyticFunction * >::get,
   boost::python::return_value_policy<
@@ -47,7 +55,11 @@ boost::python::class_<
 boost::python::class_< 
   labeledVectorHandlingWrap< dtOO::analyticGeometry * >, boost::noncopyable 
 >("labeledVectorHandlingAnalyticGeometry")
-.def(
+.def<
+  dtOO::labeledVectorHandling< dtOO::analyticGeometry * >::const_reference 
+  (dtOO::labeledVectorHandling< dtOO::analyticGeometry * >::*)
+  ( std::string const & ) const
+>(
   "get", 
   &labeledVectorHandlingWrap< dtOO::analyticGeometry * >::get,
   boost::python::return_value_policy<
@@ -68,7 +80,11 @@ boost::python::class_<
 boost::python::class_< 
   labeledVectorHandlingWrap< dtOO::boundedVolume * >, boost::noncopyable 
 >("labeledVectorHandlingBoundedVolume")
-.def(
+.def<
+  dtOO::labeledVectorHandling< dtOO::boundedVolume * >::const_reference 
+  (dtOO::labeledVectorHandling< dtOO::boundedVolume * >::*)
+  ( std::string const & ) const
+>(
   "get", 
   &labeledVectorHandlingWrap< dtOO::boundedVolume * >::get,
   boost::python::return_value_policy<
@@ -89,7 +105,11 @@ boost::python::class_<
 boost::python::class_< 
   labeledVectorHandlingWrap< dtOO::dtCase * >, boost::noncopyable 
 >("labeledVectorHandlingDtCase")
-.def(
+.def<
+  dtOO::labeledVectorHandling< dtOO::dtCase * >::const_reference 
+  (dtOO::labeledVectorHandling< dtOO::dtCase * >::*)
+  ( std::string const & ) const
+>(
   "get", 
   &labeledVectorHandlingWrap< dtOO::dtCase * >::get,
   boost::python::return_value_policy<
@@ -110,7 +130,11 @@ boost::python::class_<
 boost::python::class_< 
   labeledVectorHandlingWrap< dtOO::dtPlugin * >, boost::noncopyable 
 >("labeledVectorHandlingDtPlugin")
-.def(
+.def<
+  dtOO::labeledVectorHandling< dtOO::dtPlugin * >::const_reference 
+  (dtOO::labeledVectorHandling< dtOO::dtPlugin * >::*)
+  ( std::string const & ) const
+>(
   "get", 
   &labeledVectorHandlingWrap< dtOO::dtPlugin * >::get,
   boost::python::return_value_policy<

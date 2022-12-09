@@ -352,14 +352,22 @@ namespace dtOO {
   template < typename T >
   class labeledVectorHandling : public vectorHandling< T > {
     public:
-      T const & get( std::string const & label) const;
+      typedef typename std::vector< T >::iterator iterator;
+      typedef typename std::vector< T >::reference reference;
+      typedef typename std::vector< T >::const_reference const_reference;    
+    public:
+      const_reference get( std::string const & label) const;
       std::string getLabel( dtInt const pos ) const;
       std::vector< std::string > labels( void ) const;
-      T & getRef( std::string const label);      
       dtInt getPosition( std::string const label) const;
-      void dump(void) const;
-      const T& operator[](std::string const & label) const;      
+      void dump(void) const;          
   };
+  %extend labeledVectorHandling {
+    T __getitem__(std::string const & str) {
+      return $self->get(str);
+    } 
+  }
+  
   typedef labeledVectorHandling< constValue * >       lvH_constValue;
   typedef labeledVectorHandling< analyticFunction * > lvH_analyticFunction;
   typedef labeledVectorHandling< analyticGeometry * > lvH_analyticGeometry;
