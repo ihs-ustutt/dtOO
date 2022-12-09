@@ -13,3 +13,4 @@ scripts/doc/html
 ThirdParty/
 .spyproject
 *kdev4*
+.vimrc
