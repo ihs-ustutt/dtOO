@@ -36,7 +36,7 @@ namespace dtOO {
     labeledVectorHandling(int const dim, T init);
     virtual ~labeledVectorHandling();
     const_reference get( std::string const & label) const;
-    reference get( std::string const & label);    
+    reference get( std::string const & label);
     std::string getLabel( dtInt const pos ) const;
     std::vector< std::string > labels( void ) const;
     bool has( std::string const label) const;
@@ -48,6 +48,7 @@ namespace dtOO {
     void dump(void) const;
     void sort(void);
     const_reference operator[](std::string const & label) const;
+    reference operator[](std::string const & label);
     reference operator[](int ii) { 
       return std::vector< T >::at(ii); 
     }
@@ -303,6 +304,12 @@ namespace dtOO {
   labeledVectorHandling< T >::operator[](std::string const & label) const {
     return this->get(label);
   } 
+
+  template< typename T >
+  typename labeledVectorHandling< T >::reference 
+  labeledVectorHandling< T >::operator[](std::string const & label) {
+    return this->get(label);
+  }   
 }
 #endif	/* labeledVectorHandling_H */
 

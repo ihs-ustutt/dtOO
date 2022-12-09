@@ -364,8 +364,11 @@ namespace dtOO {
   };
   %extend labeledVectorHandling {
     T __getitem__(std::string const & str) {
-      return $self->get(str);
+      return $self->operator[](str);
     } 
+    T __getitem__(int const & ii) {
+      return $self->operator[](ii);
+    }    
   }
   
   typedef labeledVectorHandling< constValue * >       lvH_constValue;
