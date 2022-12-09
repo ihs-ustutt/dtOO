@@ -320,6 +320,27 @@ namespace dtOO {
     
     return sqrt(dist);
   }
+  
+  std::vector< dtReal > const analyticFunction::operator()(
+    dtReal const & xx
+  ) const {
+    dt__throwIf(xDim()!=1, operator());  
+    return this->Y( aFXOneD(xx) ).stdVector();
+  }
+  
+  std::vector< dtReal > const analyticFunction::operator()(
+    dtReal const & xx, dtReal const & yy
+  ) const {
+    dt__throwIf(xDim()!=2, operator());
+    return this->Y( aFXTwoD(xx, yy) ).stdVector();
+  }
+
+  std::vector< dtReal > const analyticFunction::operator()(
+    dtReal const & xx, dtReal const & yy, dtReal const & zz
+  ) const {
+    dt__throwIf(xDim()!=3, operator());
+    return this->Y( aFXThreeD(xx, yy, zz) ).stdVector();
+  }  
     
 	double analyticFunction::F(double const * xx) const {	
     aFX xxT(xDim(), 0.);

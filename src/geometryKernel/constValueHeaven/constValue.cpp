@@ -59,6 +59,10 @@ namespace dtOO {
     return (_value - this->getMin()) / (this->getMax()-this->getMin());
   }
   
+  dtReal constValue::operator()( void ) const {
+    return this->getValue();
+  }
+  
   void constValue::setValue(dtReal const toSet) {
     if (toSet != _value) {
       dtXmlParser::reference().freeState();

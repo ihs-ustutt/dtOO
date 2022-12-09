@@ -27,6 +27,7 @@ namespace dtOO {
       virtual void dump(void) const = 0;
       virtual dtReal getValue(void) const;
       virtual dtReal getValuePercent(void) const;
+      dtReal operator()( void ) const;
       virtual void setValue(dtReal const toSet);
       virtual void setRange(dtReal const min, dtReal const max);
       virtual void writeToElement( 

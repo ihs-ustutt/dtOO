@@ -70,6 +70,13 @@ namespace dtOO {
     static aFY aFY_aFX( aFX const & xx );    
     static aFX aFX_aFY( aFY const & yy );
     static dtReal distance( aFX const & x0, aFX const & x1 );
+    std::vector< dtReal > const operator()(dtReal const & xx) const;
+    std::vector< dtReal > const operator()(
+      dtReal const & xx, dtReal const & yy
+    ) const;
+    std::vector< dtReal > const operator()(
+      dtReal const & xx, dtReal const & yy, dtReal const & zz
+    ) const;    
   private:
 	  double F(double const * xx) const;
     mutable aFY _invY;
