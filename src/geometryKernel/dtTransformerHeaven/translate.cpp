@@ -32,15 +32,18 @@ namespace dtOO {
   dtTransformerFactory::registrate(
     dt__tmpPtr(translate, new translate())
   );
-  
+ 
+
+  translate::translate( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
+
   translate::translate() : dtTransformer() {
-		_v2 = dtVector2(0,0);
-		_v3 = dtVector3(0,0,0);
   }
 
 	translate::translate( translate const & orig ) : dtTransformer(orig) {
-		_v2 = orig._v2;
-		_v3 = orig._v3;
 	}
 	
   translate::~translate() {
@@ -60,13 +63,15 @@ namespace dtOO {
 		std::vector< dtPoint3 > ret(toTrans->size());
     
 		dt__forAllIndex(*toTrans, ii) {
-		  ret[ii] = toTrans->at(ii) + _v3;
+		  ret[ii] = toTrans->at(ii) + config().lookup<dtVector3>("_v3");
 		}
 		
 		return ret;
 	}
   
-  lvH_analyticFunction translate::apply( lvH_analyticFunction const * const aFunVecP ) const {
+  lvH_analyticFunction translate::apply( 
+	  lvH_analyticFunction const * const aFunVecP 
+	) const {
     lvH_analyticFunction retSFun;
 
 		
@@ -90,7 +95,8 @@ namespace dtOO {
             dt__tmpPtr(
               dtCurve2d, 
               geomCurve2d_curve2dTranslateConstructOCC(
-                sC2d1d->ptrDtCurve2d(), _v2
+                sC2d1d->ptrDtCurve2d(), 
+								config().lookup<dtVector2>("_v2")
               ).result()
             )
           ) 
@@ -103,7 +109,8 @@ namespace dtOO {
             dt__tmpPtr(
               dtCurve2d, 
               geomCurve2d_curve2dTranslateConstructOCC(
-                v2dC1d->ptrDtCurve2d(), _v2
+                v2dC1d->ptrDtCurve2d(), 
+								config().lookup<dtVector2>("_v2")
               ).result()
             )
           ) 
@@ -116,7 +123,8 @@ namespace dtOO {
             dt__tmpPtr(
               dtCurve, 
               geomCurve_curveTranslateConstructOCC(
-                v3dC1d->ptrDtCurve(), _v3
+                v3dC1d->ptrDtCurve(), 
+								config().lookup<dtVector3>("_v3")
               ).result()
             )
           ) 
@@ -136,7 +144,9 @@ namespace dtOO {
     return retSFun;    
   }
 
-  lvH_analyticGeometry translate::apply( lvH_analyticGeometry const * const aGeoVecP ) const {
+  lvH_analyticGeometry translate::apply( 
+	  lvH_analyticGeometry const * const aGeoVecP 
+	) const {
     lvH_analyticGeometry retAGeo;
 
     dt__forAllConstIter(lvH_analyticGeometry, *aGeoVecP, it) {
@@ -155,7 +165,8 @@ namespace dtOO {
               dt__tmpPtr(
                 dtCurve,
                 geomCurve_curveTranslateConstructOCC( 
-                  s3->ptrConstDtCurve(), _v3
+                  s3->ptrConstDtCurve(),
+								  config().lookup<dtVector3>("_v3")
                 ).result()
               )
             ) 
@@ -173,8 +184,9 @@ namespace dtOO {
               dt__tmpPtr(
                 dtSurface,
                 geomSurface_surfaceTranslateConstructOCC( 
-                  aS->ptrDtSurface(), _v3
-                ).result()
+                  aS->ptrDtSurface(), 
+								  config().lookup<dtVector3>("_v3")
+							  ).result()
               )
             ) 
           );
@@ -196,7 +208,9 @@ namespace dtOO {
   ) const {
 		std::vector< dtPoint3 > ret(toRetract->size());
     
-		dt__forAllIndex(*toRetract, ii) ret[ii] = toRetract->at(ii) - _v3;
+		dt__forAllIndex(*toRetract, ii) {
+			ret[ii] = toRetract->at(ii) - config().lookup<dtVector3>("_v3");
+		}
 		
 		return ret;
 	}
@@ -204,6 +218,18 @@ namespace dtOO {
   bool translate::isNecessary( void ) const {
     return true;
   }
+
+	void translate::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+  }
+
+
 
   void translate::init( 
 	  ::QDomElement const * tE, 
@@ -214,21 +240,30 @@ namespace dtOO {
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		
+		jsonPrimitive config;
     if ( dtXmlParserBase::hasChild("Vector_2", *tE) ) {
-			::QDomElement v2El = dtXmlParserBase::getChild("Vector_2", *tE);
-			_v2 = dtXmlParserBase::getDtVector2(&v2El, bC, cV, aF, aG);
+   		::QDomElement	v2El = dtXmlParserBase::getChild("Vector_2", *tE);
+      config.append< dtVector2 >(
+			  "_v2", 
+			  dtXmlParserBase::getDtVector2(&v2El, bC, cV, aF, aG)
+			);
+
     }
     if ( dtXmlParserBase::hasChild("Vector_3", *tE) ) {
 			::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
-			_v3 = dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG);
+      config.append< dtVector3 >(
+			  "_v3", 
+			  dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG)
+			);
     }
+		jInit(config, bC, cV, aF, aG);
   }
   
   dtVector3 translate::translationAxis3d( void ) const {
-    return _v3;
+    return config().lookup<dtVector3>("_v3");
   }
   
   dtVector2 translate::translationAxis2d( void ) const {
-    return _v2;
+    return config().lookup<dtVector2>("_v2");
   }
 }
