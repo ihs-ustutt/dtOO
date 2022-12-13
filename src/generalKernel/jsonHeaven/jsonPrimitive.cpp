@@ -15,8 +15,8 @@ namespace CGAL {
     to 
     = 
     ::dtOO::dtPoint2( 
-      from.at("dtPoint2").at("x"), 
-      from.at("dtPoint2").at("y") 
+      from.at("dtPoint2").at("x").get<double>(), 
+      from.at("dtPoint2").at("y").get<double>() 
     );
   };    
   void to_json(::nlohmann::json& to, const ::dtOO::dtPoint2& from) {
@@ -28,9 +28,9 @@ namespace CGAL {
     to 
     = 
     ::dtOO::dtPoint3( 
-      from.at("dtPoint3").at("x"), 
-      from.at("dtPoint3").at("y"), 
-      from.at("dtPoint3").at("z") 
+      from.at("dtPoint3").at("x").get<double>(), 
+      from.at("dtPoint3").at("y").get<double>(), 
+      from.at("dtPoint3").at("z").get<double>() 
     );
   };    
   void to_json(::nlohmann::json& to, const ::dtOO::dtPoint3& from) {
@@ -38,14 +38,27 @@ namespace CGAL {
     to["dtPoint3"]["y"] = from.y();
     to["dtPoint3"]["z"] = from.z();
   };    
+  //dtVector2
+  void from_json(const ::nlohmann::json& from, ::dtOO::dtVector2& to) {
+    to 
+    = 
+    ::dtOO::dtVector2( 
+      from.at("dtVector2").at("x").get<double>(), 
+      from.at("dtVector2").at("y").get<double>() 
+    );
+  };    
+  void to_json(::nlohmann::json& to, const ::dtOO::dtVector2& from) {
+    to["dtVector2"]["x"] = from.x();
+    to["dtVector2"]["y"] = from.y();
+  };  
   //dtVector3
   void from_json(const ::nlohmann::json& from, ::dtOO::dtVector3& to) {
     to 
     = 
     ::dtOO::dtVector3( 
-      from.at("dtVector3").at("x"), 
-      from.at("dtVector3").at("y"), 
-      from.at("dtVector3").at("z") 
+      from.at("dtVector3").at("x").get<double>(), 
+      from.at("dtVector3").at("y").get<double>(), 
+      from.at("dtVector3").at("z").get<double>() 
     );
   };    
   void to_json(::nlohmann::json& to, const ::dtOO::dtVector3& from) {
@@ -136,6 +149,8 @@ namespace dtOO {
   ) const;    
   template
   dtPoint2 jsonPrimitive::lookup< dtPoint2 >(std::string const &) const;  
+  template
+  dtVector2 jsonPrimitive::lookup< dtVector2 >(std::string const &) const;  
   template
   dtPoint3 jsonPrimitive::lookup< dtPoint3 >(std::string const &) const;    
   template
@@ -258,6 +273,9 @@ namespace dtOO {
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtPoint2 const & val
   );  
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, dtVector2 const & val
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtPoint3 const & val
   );    
