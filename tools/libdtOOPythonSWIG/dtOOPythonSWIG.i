@@ -157,6 +157,7 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
+#include <jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h>
 
 #include <boundedVolume.h>
 #include <dtCase.h>
@@ -406,6 +407,7 @@ namespace dtOO {
 %template(appendReal) dtOO::jsonPrimitive::append< dtOO::dtReal >;
 %template(appendDtPoint2) dtOO::jsonPrimitive::append< dtOO::dtPoint2 >;
 %template(appendDtPoint3) dtOO::jsonPrimitive::append< dtOO::dtPoint3 >;
+%template(appendDtVector2) dtOO::jsonPrimitive::append< dtOO::dtVector2 >;
 %template(appendDtVector3) dtOO::jsonPrimitive::append< dtOO::dtVector3 >;
 %template(appendAnalyticFunction) dtOO::jsonPrimitive::append< dtOO::analyticFunction const * >;
 %template(appendAnalyticGeometry) dtOO::jsonPrimitive::append< dtOO::analyticGeometry const * >;
@@ -429,6 +431,7 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/trimmedCurve_uBounds.h
 %include geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h
+%include jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h
 
 //
 // Classes has to be not abstract, otherwise no constructors will be created, 

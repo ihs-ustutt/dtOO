@@ -9,7 +9,8 @@
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h>
 #include <analyticFunctionHeaven/vec2dCurve2dOneD.h>
-
+#include <jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h>
+#include <logMe/dtMacros.h>
 #include <boost/assign.hpp>
 #include <QtXml/QDomElement>
 
@@ -44,128 +45,93 @@ namespace dtOO {
 		lvH_analyticFunction const * const aF,
 		lvH_analyticFunction * result 
 	) const {
-    dt__throwIf(
-      !dtXmlParserBase::hasAttribute("alpha_one", toBuildP)
-      ||
-      !dtXmlParserBase::hasAttribute("alpha_two", toBuildP), 
-      buildPart()
-    );        
-    bool hasRatio = dtXmlParserBase::hasAttribute("ratio", toBuildP);
-		bool hasDeltaX = dtXmlParserBase::hasAttribute("delta_x", toBuildP);
-    bool hasDeltaY = dtXmlParserBase::hasAttribute("delta_y", toBuildP);
+		jsonPrimitive config;
+    if ( dtXmlParserBase::hasAttribute("alpha_one", toBuildP) ) {
+			config.append(
+        "alphaOne", 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "alpha_one", toBuildP, cV, aF
+        )
+			);
+		}
+    if ( dtXmlParserBase::hasAttribute("alpha_two", toBuildP) ) {
+			config.append(
+        "alphaTwo", 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "alpha_two", toBuildP, cV, aF
+        )
+			);
+		}
+    if ( dtXmlParserBase::hasAttribute("ratio", toBuildP) ) {
+			config.append(
+        "ratio", 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "ratio", toBuildP, cV, aF
+        )
+			);
+		}
 
-    dtReal alphaOne 
-    = 
-    dtXmlParserBase::getAttributeFloatMuParse(
-      "alpha_one", toBuildP, cV, aF
-    );      
-    dtReal alphaTwo 
-    = 
-    dtXmlParserBase::getAttributeFloatMuParse(
-      "alpha_two", toBuildP, cV, aF
-    );           
-    //
-    //
-    //
-		dt__pH(dtCurve2d) dtC2d;
-    if ( hasRatio && !hasDeltaX && hasDeltaY ) {
-      //
-      // get necessary values
-      //
-      dtReal deltaY 
-      = 
-      dtXmlParserBase::getAttributeFloatMuParse(
-        "delta_y", toBuildP, cV, aF
-      );   
-      dtReal ratio
-      = 
-      dtXmlParserBase::getAttributeFloatMuParse(
-        "ratio", toBuildP, cV, aF
-      );   
-			dtC2d.reset(
-				bSplineCurve2d_angleRatioDeltaYConstructOCC(
-					alphaOne, alphaTwo, ratio, deltaY
-				).result()
+		if ( dtXmlParserBase::hasAttribute("delta_x", toBuildP) ) {
+  		config.append(
+        "deltaX", 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "delta_x", toBuildP, cV, aF
+        )
 			);
-    }
-    else if ( !hasRatio && hasDeltaX && hasDeltaY ) {
-      //
-      // get necessary values
-      //
-      dtReal deltaY 
-      = 
-      dtXmlParserBase::getAttributeFloatMuParse(
-        "delta_y", toBuildP, cV, aF
-      );   
-      dtReal deltaX 
-      = 
-      dtXmlParserBase::getAttributeFloatMuParse(
-        "delta_x", toBuildP, cV, aF
-      );   			
-			dtC2d.reset(
-				bSplineCurve2d_angleDeltaXDeltaYConstructOCC(
-					alphaOne, alphaTwo, deltaX, deltaY
-				).result()
+		}
+
+    if ( dtXmlParserBase::hasAttribute("delta_y", toBuildP) ) {
+  		config.append(
+        "deltaY", 
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "delta_y", toBuildP, cV, aF
+        )
 			);
-    }		
-    else dt__throwUnexpected(buildPart());
+		}
 
     if ( 
-      dtXmlParserBase::hasAttribute("targetLength", toBuildP) 
+      dtXmlParserBase::hasAttribute("targetLength", toBuildP)
+			&&
+      dtXmlParserBase::hasAttribute("targetLengthTolerance", toBuildP)
     ) {
-      dtReal tL
-      =
-      dtXmlParserBase::getAttributeFloatMuParse(
-        "targetLength", toBuildP, cV, aF
-      );
-      dtReal tLTol
-      =
-      dtXmlParserBase::getAttributeFloatMuParse(
-        "targetLengthTolerance", toBuildP, cV, aF
-      );      
-      logContainer<bSplineCurve2d_3PointMeanlineConstructAFXmlBuilder> logC(
-        logINFO, "buildPart()"
-      );      
-      logC() << "Detect targetLength" << std::endl;
-      dt__forFromToIndex(0, 99, ii) {
-        dtReal scale = tL / dtC2d->length();
-      
-        dtPoint2 p0 = dtC2d->controlPoint(0);
-        dtVector2 v0 = dtC2d->controlPoint(1) - dtC2d->controlPoint(0);
-        dtVector2 v1 = dtC2d->controlPoint(2) - dtC2d->controlPoint(1);
-
-        dtC2d->setControlPoint( 1, p0 + ( 1. + (scale-1.)/2. ) * v0 );
-        dtC2d->setControlPoint( 2, p0 + ( 1. + (scale-1.)/2. ) * ( v0 + v1 ) );
-        
-        logC() 
-          << logMe::dtFormat("( %3d ) : %5.2f -> %5.2f") 
-            % ii % scale % (tL / dtC2d->length())
-          << std::endl;
-        if ( fabs(tL / dtC2d->length() - 1.) <= tLTol ) break;
-      }
+      config.append(
+				"targetLength",
+			  dtXmlParserBase::getAttributeFloatMuParse(
+          "targetLength", toBuildP, cV, aF
+        )
+			);
+      config.append(
+				"targetLengthTolerance",
+			  dtXmlParserBase::getAttributeFloatMuParse(
+          "targetLengthTolerance", toBuildP, cV, aF
+        )
+			);
     } 
     
     if ( 
       dtXmlParserBase::hasAttribute("originOnLengthPercent", toBuildP) 
     ) {
-      dtReal lP 
-      =
-      dtXmlParserBase::getAttributeFloatMuParse(
-        "originOnLengthPercent", toBuildP, cV, aF
-      );
-      dtPoint2 adjustP = dtC2d->point( dtC2d->u_lPercent( lP ) );
-      dt__forFromToIndex(0, dtC2d->nControlPoints(), ii) {
-        dtC2d->setControlPoint(
-          ii,
-          dtLinearAlgebra::toDtPoint2( dtC2d->controlPoint(ii) - adjustP )
-        );
-      }
+      config.append(
+        "originOnLengthPercent",
+				dtXmlParserBase::getAttributeFloatMuParse(
+          "originOnLengthPercent", toBuildP, cV, aF
+        )
+		  );
     } 
 		if ( dtXmlParserBase::hasAttribute("revert", toBuildP) ) {
-			if ( dtXmlParserBase::getAttributeBool("revert", toBuildP) ) {
-				dtOCCCurve2d::SecureCast(dtC2d.get())->revert();
-			}
-		}		
-		result->push_back( new vec2dCurve2dOneD( dtC2d.get() ) );
+			config.append(
+			  "revert",
+   			dtXmlParserBase::getAttributeBool("revert", toBuildP) 
+			);
+		}
+		dt__debug(buildPart(), << "config = " << config.toStdString());
+		dt__forAllRefAuto( 
+  	  bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder().buildPart(
+	  	  config, bC, cV, aF
+		  ),
+			aPart 
+		) {
+			result->push_back( aPart );
+		}
   }
 }

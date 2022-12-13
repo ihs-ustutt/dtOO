@@ -77,6 +77,8 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/geomSurface_multipleBoundedSurfaceAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomVolume_multipleBoundedVolumeAGXmlBuilder.h
   jsonHeaven/jsonPrimitive.h
+  jsonHeaven/aFJsonBuilder.h
+  jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -185,6 +187,8 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/geomSurface_multipleBoundedSurfaceAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomVolume_multipleBoundedVolumeAGXmlBuilder.cpp
   jsonHeaven/jsonPrimitive.cpp
+  jsonHeaven/aFJsonBuilder.cpp
+  jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp
