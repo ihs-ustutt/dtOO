@@ -120,8 +120,8 @@ namespace dtOO {
 		if ( config.lookupDef< bool >("revert", false) ) {
 		  dtOCCCurve2d::SecureCast(dtC2d.get())->revert();
 		}		
-    return lvH_analyticFunction(
-      ::boost::assign::list_of( new vec2dCurve2dOneD( dtC2d.get() ) )
-    );
+    lvH_analyticFunction ret;
+		ret.push_back( new vec2dCurve2dOneD( dtC2d.get() ) );
+    return ret; 
   }
 }
