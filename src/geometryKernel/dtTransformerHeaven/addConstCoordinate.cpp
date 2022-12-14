@@ -16,15 +16,19 @@ namespace dtOO {
   dtTransformerFactory::registrate(
     dt__tmpPtr(addConstCoordinate, new addConstCoordinate())
   );
-  
+ 
+  addConstCoordinate::addConstCoordinate( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
+
   addConstCoordinate::addConstCoordinate() : dtTransformer() {
   }
 
   addConstCoordinate::addConstCoordinate(
     const addConstCoordinate& orig
   ) : dtTransformer(orig) {
-		_cc = orig._cc;
-		_vv = orig._vv;
   }
 
   addConstCoordinate::~addConstCoordinate() {
@@ -43,7 +47,7 @@ namespace dtOO {
 	) const {
     lvH_analyticFunction aFVecRet;
     
-    for (int ii=0;ii<aFVecP->size();ii++) {
+    dt__forAllIndex(*aFVecP, ii) {
       dt__ptrAss(
         vec2dCurve2dOneD const * v2d1d, 
         vec2dCurve2dOneD::DownCast(aFVecP->at(ii))
@@ -51,7 +55,11 @@ namespace dtOO {
 
 			dt__pH(dtCurve) dtC(
 			  geomCurve_convertGeomCurve2d(
-          v2d1d->ptrDtCurve2d(), CGAL::ORIGIN + _vv*_cc, _vv
+          v2d1d->ptrDtCurve2d(), 
+					CGAL::ORIGIN 
+					+ 
+					config().lookup<dtVector3>("_vv")*config().lookup<dtReal>("_cc"), 
+					config().lookup<dtVector3>("_vv")
         ).result()
 			);
 			aFVecRet.push_back( new vec3dCurveOneD(dtC.get()) );
@@ -63,7 +71,17 @@ namespace dtOO {
   bool addConstCoordinate::isNecessary( void ) const {
     return true;
   }
-  
+ 
+  void addConstCoordinate::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG 
+  ) {
+
+  }
+
   void addConstCoordinate::init( 
 		::QDomElement const * tE, 
 		baseContainer * const bC,
@@ -72,41 +90,24 @@ namespace dtOO {
 		lvH_analyticGeometry const * const aG 
   ) {
     dtTransformer::init(tE, bC, cV, aF, aG);
-		
-		dtReal cc 
-		= 
-		dtXmlParserBase::muParseString( 
-			dtXmlParserBase::replaceDependencies(
-				dtXmlParserBase::getAttributeStr("coordinate_value", *tE),
-				cV, 
-				aF
-			) 
+
+		jsonPrimitive config;
+		config.append(
+		  "_cc",
+  		dtXmlParserBase::muParseString( 
+  			dtXmlParserBase::replaceDependencies(
+  				dtXmlParserBase::getAttributeStr("coordinate_value", *tE),
+  				cV, 
+  				aF
+  			) 
+  		)
 		);
-		handleFloat("coordinate_value", cc);
-
-		dtVector3 vv 
-    = 
-    dtXmlParserBase::getDtVector3(
-      dtXmlParserBase::getChild("Vector_3", *tE), bC
-    );
-		handleDtVector3("dtVector3", vv);
+    config.append(
+		  "_vv",
+      dtXmlParserBase::getDtVector3(
+        dtXmlParserBase::getChild("Vector_3", *tE), bC
+      )
+		);
+		jInit(config, bC, cV, aF, aG);
   }
-	
-	void addConstCoordinate::handleFloat(
-    const std::string name, const dtReal value
-  ) {
-    if (name == "coordinate_value" ) {
-      _cc = value;
-      return;
-    }
-    dtTransformer::handleFloat(name, value);		
-	}
-
-	void addConstCoordinate::handleDtVector3(const std::string name, const dtVector3 value) {
-    if (name == "dtVector3" ) {
-      _vv = value;
-      return;
-    }
-    dtTransformer::handleDtVector3(name, value);		
-	}	
 }
