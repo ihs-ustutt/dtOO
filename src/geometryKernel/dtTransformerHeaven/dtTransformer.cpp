@@ -39,6 +39,7 @@ namespace dtOO {
 			labelHandling::setLabel( _config.lookup<std::string>("label") );
 		}
     optionHandling::jInit(jE);
+		dt__debug( jInit(), << "config() = " << _config.toStdString() );
   }
   
   jsonPrimitive & dtTransformer::config( void ) {
