@@ -331,6 +331,11 @@ namespace dtOO {
     public:
       T * set( T const & toSet);
   };
+  %extend vectorHandling {
+    T __getitem__(int const & ii) {
+      return $self->operator[](ii);
+    }    
+  }
   typedef vectorHandling< constValue * >       vH_constValue;
   typedef vectorHandling< analyticFunction * > vH_analyticFunction;
   typedef vectorHandling< analyticGeometry * > vH_analyticGeometry;
