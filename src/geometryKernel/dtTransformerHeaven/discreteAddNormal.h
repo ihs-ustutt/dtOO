@@ -16,6 +16,7 @@ namespace dtOO {
       dt__classOnlyName(discreteAddNormal);
       discreteAddNormal();
       discreteAddNormal(discreteAddNormal const & orig);
+      discreteAddNormal( jsonPrimitive const & jE );
       virtual ~discreteAddNormal();
       virtual dtTransformer * clone( void ) const;
       virtual dtTransformer * create( void ) const;     
@@ -27,20 +28,17 @@ namespace dtOO {
         lvH_analyticFunction const * const aF,
         lvH_analyticGeometry const * const aG 
       );
+      virtual void jInit( 
+        jsonPrimitive const & jE, 
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
+      );        
       virtual lvH_analyticFunction 
       apply( lvH_analyticFunction const * const aFP ) const;
     private:
       dt__pH(vec3dTwoD) _tt;
-      dtVector3 _nf;
-      dtInt _nU;
-      dtInt _nV;
-      dtInt _order;
-      dtInt _nSteps;
-      dtInt _skinOrderMin;
-      dtInt _skinOrderMax;
-      dtInt _skinNIterations;
-      bool _closeU;
-      dtReal _closeSmooth;
       static bool _registrated;    
   };
 }    
