@@ -109,7 +109,7 @@ namespace dtOO {
     //  
     config.append<analyticFunction const *>(
       "_tt",
-      aF->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
+      aF->get(dtXmlParserBase::getAttributeStr("function_label", *tE))
     );
 
        
