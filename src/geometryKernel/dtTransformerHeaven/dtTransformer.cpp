@@ -136,7 +136,11 @@ namespace dtOO {
     lvH_analyticFunction vHIn;
     vHIn.push_back(const_cast< analyticFunction *>(sF));
     lvH_analyticFunction vHOut = this->apply( &vHIn );
-    
+    dt__throwIfWithMessage(
+      vHOut.size()>1, 
+      apply(),
+      << "Size of vHOut = " << vHOut.size()
+    );
     return vHOut[0];
   }
 
