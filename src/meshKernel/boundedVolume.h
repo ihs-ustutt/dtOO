@@ -12,6 +12,7 @@
 #include <interfaceHeaven/renderInterface.h>
 #include <dtLinearAlgebra.h>
 #include <mainConceptFwd.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 
 namespace dtOO {
   class analyticGeometry;

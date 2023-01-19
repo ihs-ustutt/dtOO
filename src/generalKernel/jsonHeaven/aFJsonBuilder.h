@@ -5,6 +5,7 @@
 
 #include "aFJsonBuilder.h"
 #include <mainConceptFwd.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <logMe/dtMacros.h>
 #include <jsonHeaven/jsonPrimitive.h>
 

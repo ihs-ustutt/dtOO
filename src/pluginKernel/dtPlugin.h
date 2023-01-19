@@ -8,7 +8,7 @@
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
 #include <xmlHeaven/dtXmlParserBase.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <mainConceptFwd.h>
 
 namespace pugg {

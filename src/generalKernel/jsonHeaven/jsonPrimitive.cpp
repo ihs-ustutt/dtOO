@@ -3,6 +3,7 @@
 #include <logMe/dtMacros.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <dtLinearAlgebra.h>
 
@@ -179,7 +180,7 @@ namespace dtOO {
     std::string const &
   ) const;
 
-  // template lookupCast
+  // template lookupClone
   template < typename T > 
   dt__pH(T) jsonPrimitive::lookupClone( 
     std::string const & str, labeledVectorHandling< T * > const * const ptrVec
@@ -221,6 +222,11 @@ namespace dtOO {
   template
   dtVector3 jsonPrimitive::lookupDef< dtVector3 >(
     std::string const &, dtVector3 const & def
+  ) const;
+  template
+  std::vector<jsonPrimitive> 
+  jsonPrimitive::lookupDef< std::vector<jsonPrimitive> >(
+    std::string const &, std::vector<jsonPrimitive> const & def
   ) const;
   
   // template  operator[]

@@ -6,7 +6,7 @@
 #include <dtLinearAlgebra.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <jsonHeaven/jsonPrimitive.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
 #include <vector>

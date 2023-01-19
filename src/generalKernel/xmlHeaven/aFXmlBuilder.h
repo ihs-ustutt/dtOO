@@ -5,7 +5,7 @@
 
 #include "dtXmlParserBase.h"
 #include "aFXmlBuilder.h"
-#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <logMe/dtMacros.h>
 
 namespace dtOO {

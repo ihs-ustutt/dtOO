@@ -5,11 +5,12 @@
 #include <string>
 #include <vector>
 #include <logMe/dtMacros.h>
-#include <interfaceHeaven/labeledVectorHandling.h>
 #include <nlohmann/json_fwd.hpp>
 #include <fstream>
 
 namespace dtOO {  
+  template< typename T > class labeledVectorHandling;
+
   class jsonPrimitive {
     public:
       dt__classOnlyName(jsonPrimitive);  
