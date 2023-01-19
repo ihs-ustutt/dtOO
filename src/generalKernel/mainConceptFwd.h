@@ -3,9 +3,6 @@
 
 #include <dtOOTypeDef.h>
 
-#include <interfaceHeaven/vectorHandling.h>
-#include <interfaceHeaven/labeledVectorHandling.h>
-
 namespace dtOO {
   class constValue;
   class analyticFunction;
@@ -16,6 +13,7 @@ namespace dtOO {
   class dtCurve;
   class dtSurface;
   
+  template< typename T > class vectorHandling;
   typedef vectorHandling< constValue * >       vH_constValue;
   typedef vectorHandling< analyticFunction * > vH_analyticFunction;
   typedef vectorHandling< analyticGeometry * > vH_analyticGeometry;
@@ -25,6 +23,7 @@ namespace dtOO {
   typedef vectorHandling< dtCurve * >          vH_dtCurve;
   typedef vectorHandling< dtSurface * >        vH_dtSurface;
    
+  template< typename T > class labeledVectorHandling;
   typedef labeledVectorHandling< constValue * >       lvH_constValue;
   typedef labeledVectorHandling< analyticFunction * > lvH_analyticFunction;
   typedef labeledVectorHandling< analyticGeometry * > lvH_analyticGeometry;
