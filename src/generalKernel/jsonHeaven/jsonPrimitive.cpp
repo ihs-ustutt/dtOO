@@ -95,6 +95,9 @@ namespace dtOO {
   jsonPrimitive::jsonPrimitive( jsonPrimitive const & orig ) {
     _json.reset( new ::nlohmann::json( *(orig._json) ) );
   }
+  jsonPrimitive::jsonPrimitive( std::fstream & fstr ) {
+    _json.reset( new ::nlohmann::json( ::nlohmann::json::parse(fstr) ) );
+  }
   
   jsonPrimitive::~jsonPrimitive() {
   }  
