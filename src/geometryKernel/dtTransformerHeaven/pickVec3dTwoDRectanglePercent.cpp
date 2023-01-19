@@ -25,8 +25,12 @@ namespace dtOO {
   pickVec3dTwoDRectanglePercent::pickVec3dTwoDRectanglePercent(
     const pickVec3dTwoDRectanglePercent& orig
   ) : dtTransformer(orig) {
-		_p0 = orig._p0;
-		_p1 = orig._p1;
+  }
+
+  pickVec3dTwoDRectanglePercent::pickVec3dTwoDRectanglePercent( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
   }
 
   pickVec3dTwoDRectanglePercent::~pickVec3dTwoDRectanglePercent() {
@@ -56,8 +60,8 @@ namespace dtOO {
       dt__pH(dtSurface) newSurf(
         rectangularTrimmedSurface_uvBounds(
           oldSurf, 
-          oldSurf->uv_uvPercent(_p0), 
-          oldSurf->uv_uvPercent(_p1)
+          oldSurf->uv_uvPercent(config().lookup<dtPoint2>("_p0")), 
+          oldSurf->uv_uvPercent(config().lookup<dtPoint2>("_p1")) 
         ).result()
       );
       aFRet.push_back( new vec3dSurfaceTwoD( newSurf.get() ) );
@@ -68,7 +72,17 @@ namespace dtOO {
   bool pickVec3dTwoDRectanglePercent::isNecessary( void ) const {
     return true;
   }
-  
+ 
+  void pickVec3dTwoDRectanglePercent::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+  }
+
   void pickVec3dTwoDRectanglePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
@@ -85,8 +99,13 @@ namespace dtOO {
     dtXmlParserBase::getChildVector("Point_2", *tE);
     
     dt__throwIf( wE.size() != 2, init() );
-    
-    _p0 = dtXmlParserBase::createDtPoint2( &(wE[0]), bC, cV, aF, aG );
-    _p1 = dtXmlParserBase::createDtPoint2( &(wE[1]), bC, cV, aF, aG );
+    jsonPrimitive config;    
+    config.append<dtPoint2>(
+      "_p0", dtXmlParserBase::createDtPoint2( &(wE[0]), bC, cV, aF, aG )
+    );
+    config.append<dtPoint2>(
+      "_p1", dtXmlParserBase::createDtPoint2( &(wE[1]), bC, cV, aF, aG )
+    );
+    this->jInit( config, bC, cV, aF, aG );
   }  
 }
