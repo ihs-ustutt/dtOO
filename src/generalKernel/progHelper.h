@@ -159,7 +159,11 @@ namespace dtOO {
       static bool contains( std::list< T > const & x, T const & y) { 
         if ( std::find(x.begin(), x.end(), y) == x.end() ) return false;
         return true;
-      }            
+      }
+      template< class T >
+      static void erase( std::vector< T > & vec, dtInt const & pos ) {
+        vec.erase( vec.begin() + pos );
+      }
     private:
       progHelper() {
         
