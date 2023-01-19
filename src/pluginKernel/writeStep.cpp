@@ -90,7 +90,7 @@ namespace dtOO {
 
         writer.Transfer(
           BRepBuilderAPI_MakeFace(
-                  dtOccS->OCCRef().getOCC(), Precision::Confusion()
+            dtOccS->OCCRef().getOCC(), Precision::Confusion()
           ).Shape(),
           static_cast< STEPControl_StepModelType >(_translator)
         );
