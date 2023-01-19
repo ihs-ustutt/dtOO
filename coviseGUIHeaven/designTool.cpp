@@ -20,6 +20,7 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <do/coDoSet.h>
 #include <abstractModule.h>
+#include <progHelper.h>
 
 namespace dtOO {
   designTool::designTool(
@@ -411,7 +412,7 @@ namespace dtOO {
 					}
 					else {
 						int toDel = _aFToRender.getPosition( _aF[pos]->getLabel() );
-						_aFToRender.erase(toDel);
+            progHelper::erase(_aFToRender, toDel);
 					}
 		      _recreate = false;
 		      setExecGracePeriod(0.1);
@@ -424,7 +425,7 @@ namespace dtOO {
 					selfExec();		
 				}				
 				else if ( strcmp(paramName, "_aFRenderCurrentToggle") == 0 ) {
-					_aFToRender.erase( _aFRenderChoice->getValue() );
+          progHelper::erase(_aFToRender, _aFRenderChoice->getValue() );
 					_aFRenderCurrentToggle->setValue(false);				
 					_recreate = false;
 					setExecGracePeriod(0.1);
@@ -447,7 +448,7 @@ namespace dtOO {
 					}
 					else {
 						int toDel = _aGToRender.getPosition( _aG[pos]->getLabel() );
-						_aGToRender.erase(toDel);
+            progHelper::erase(_aGToRender, toDel);
 					}
 		      _recreate = false;
 		      setExecGracePeriod(0.1);
@@ -513,7 +514,7 @@ namespace dtOO {
 					selfExec();			
 				}
 				else if ( strcmp(paramName, "_aGRenderCurrentToggle") == 0 ) {
-  				_aGToRender.erase( _aGRenderChoice->getValue() );
+          progHelper::erase(_aGToRender, _aGRenderChoice->getValue());
 					_aGRenderCurrentToggle->setValue(false);				
 					_recreate = false;
 					setExecGracePeriod(0.1);
@@ -557,7 +558,7 @@ namespace dtOO {
 					}
 					else {
 						int toDel = _aGToRender.getPosition( _aG[pos]->getLabel() );
-						_aGToRender.erase(toDel);
+            progHelper::erase(_aGToRender, toDel);
 					}
 		      _recreate = false;
 		      setExecGracePeriod(0.1);
@@ -576,7 +577,7 @@ namespace dtOO {
 					}
 					else {
 						int toDel = _bVToRender.getPosition( _bV[pos]->getLabel() );
-						_bVToRender.erase(toDel);
+            progHelper::erase(_bVToRender, toDel);
 					}
 					
 					_bVRenderTags->disable();

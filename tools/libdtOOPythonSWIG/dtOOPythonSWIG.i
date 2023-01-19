@@ -157,6 +157,7 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h>
 #include <jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h>
 
 #include <boundedVolume.h>
@@ -198,21 +199,21 @@ namespace dtOO {
 %exception;
 
 %exception {
-	try {
-		$action
+  try {
+    $action
   } 
   catch (eGeneral &e) {
     PyErr_SetString( PyExc_Exception, const_cast<char*>(e.what()) );  
     SWIG_fail;
-	}  
+  }  
   catch (std::exception &e) {
     PyErr_SetString( PyExc_Exception, const_cast<char*>(e.what()) );
     SWIG_fail;
-	}    
+  }    
   catch (...) {
     PyErr_SetString(PyExc_Exception, "dtOOPythonSWIG catch exception");
     SWIG_fail;
-	}
+  }
 }
 
 %include dtOOTypeDef.h
@@ -306,7 +307,7 @@ namespace dtOO {
 %include boundedVolume.h
 %include dtCase.h
 %include dtPlugin.h
-%include <jsonHeaven/jsonPrimitive.h>  
+%include jsonHeaven/jsonPrimitive.h
 namespace dtOO {
   %template(vectorInt)              ::std::vector< dtInt >;
   %template(vectorBool)             ::std::vector< bool >;
@@ -325,11 +326,13 @@ namespace dtOO {
   %template(vectorDtVector3)        ::std::vector< dtVector3 >;
   %template(vectorDtCurve)          ::std::vector< dtCurve * >;
   %template(vectorDtSurface)        ::std::vector< dtSurface * >;
+  %template(vectorConstDtCurve)     ::std::vector< dtCurve const * >;
+  %template(vectorConstDtSurface)   ::std::vector< dtSurface const * >;
   
   template < typename T >
   class vectorHandling : public std::vector< T > {
     public:
-      T * set( T const & toSet);
+      using std::vector< T >::push_back;
   };
   %extend vectorHandling {
     T __getitem__(int const & ii) {
@@ -362,6 +365,7 @@ namespace dtOO {
       typedef typename std::vector< T >::reference reference;
       typedef typename std::vector< T >::const_reference const_reference;    
     public:
+      void set( T const & toSet);
       const_reference get( std::string const & label) const;
       std::string getLabel( dtInt const pos ) const;
       std::vector< std::string > labels( void ) const;
@@ -436,6 +440,7 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/trimmedCurve_uBounds.h
 %include geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h
 %include jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h
 
 //
@@ -513,6 +518,7 @@ namespace dtOO {
   %rename(retractDtPoint3) dtTransformer::retract(dtPoint3 const&) const;
   %rename(applyAnalyticGeometry) dtTransformer::apply(analyticGeometry const * const) const;
   %rename(applyAnalyticFunction) dtTransformer::apply(analyticFunction const * const) const;
+  %rename(applyLabeledVectorHandlingAnalyticFunction) dtTransformer::apply(lvH_analyticFunction const * const) const;
 }       
 %include dtTransformerHeaven/dtTransformer.h
 %include dtTransformerHeaven/dtTransformerInvThreeD.h

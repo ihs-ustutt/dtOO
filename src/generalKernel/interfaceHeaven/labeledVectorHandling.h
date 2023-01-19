@@ -3,6 +3,7 @@
 
 #include <dtOOTypeDef.h>
 
+#include <logMe/dtMacros.h>
 #include "vectorHandling.h"
 
 namespace dtOO {
@@ -11,50 +12,44 @@ namespace dtOO {
   //----------------------------------------------------------------------------
   template < typename T >
   class labeledVectorHandling : public vectorHandling< T > {
-//    static_assert(
-//      std::is_base_of< labelHandling, *T >::value, 
-//      "labelHandling must be a base of T"
-//    );
-  public:
-    typedef typename std::vector< T >::iterator iterator;
-    typedef typename std::vector< T >::reference reference;
-    typedef typename std::vector< T >::const_reference const_reference;
-  public:
-    dt__classOnlyName(labeledVectorHandling);
-    labeledVectorHandling();
-    labeledVectorHandling(const labeledVectorHandling& orig);
-    labeledVectorHandling(
-      const labeledVectorHandling& orig0, const labeledVectorHandling& orig1
-    );        
-    labeledVectorHandling(
-      const labeledVectorHandling& orig0, 
-      const labeledVectorHandling& orig1, 
-      const labeledVectorHandling& orig2
-    );    
-    labeledVectorHandling(const std::vector< T >& orig);    
-    labeledVectorHandling(int const dim);
-    labeledVectorHandling(int const dim, T init);
-    virtual ~labeledVectorHandling();
-    const_reference get( std::string const & label) const;
-    reference get( std::string const & label);
-    std::string getLabel( dtInt const pos ) const;
-    std::vector< std::string > labels( void ) const;
-    bool has( std::string const label) const;
-    bool hasTwice( std::string const label ) const;
-    void checkForBastardTwins( void ) const;
-    void checkForBastardTwinsAndMakeUnique( void );
-    dtInt getPosition( std::string const label) const;
-    void addIndex( void );
-    void dump(void) const;
-    void sort(void);
-    const_reference operator[](std::string const & label) const;
-    reference operator[](std::string const & label);
-    reference operator[](int ii) { 
-      return std::vector< T >::at(ii); 
-    }
-    const_reference operator[](int ii) const { 
-      return std::vector< T >::at(ii); 
-    }
+    public:
+      typedef typename std::vector< T >::iterator iterator;
+      typedef typename std::vector< T >::reference reference;
+      typedef typename std::vector< T >::const_reference const_reference;
+    public:
+      dt__classOnlyName(labeledVectorHandling);
+      labeledVectorHandling();
+      labeledVectorHandling(const labeledVectorHandling& orig);
+      labeledVectorHandling(
+        const labeledVectorHandling& orig0, const labeledVectorHandling& orig1
+      );        
+      labeledVectorHandling(
+        const labeledVectorHandling& orig0, 
+        const labeledVectorHandling& orig1, 
+        const labeledVectorHandling& orig2
+      );    
+      labeledVectorHandling(const std::vector< T >& orig);    
+      labeledVectorHandling(int const dim);
+      labeledVectorHandling(int const dim, T init);
+      virtual ~labeledVectorHandling();
+      void set( T const & toSet);
+      void set( T const * toSet);
+      const_reference get( std::string const & label) const;
+      reference get( std::string const & label);
+      std::string getLabel( dtInt const pos ) const;
+      std::vector< std::string > labels( void ) const;
+      bool has( std::string const label) const;
+      dtInt getPosition( std::string const label) const;
+      void dump(void) const;
+      void sort(void);
+      const_reference operator[](std::string const & label) const;
+      reference operator[](std::string const & label);
+      reference operator[](int ii) { 
+        return std::vector< T >::at(ii); 
+      }
+      const_reference operator[](int ii) const { 
+        return std::vector< T >::at(ii); 
+      }
   };
 
   //----------------------------------------------------------------------------
@@ -69,7 +64,6 @@ namespace dtOO {
   labeledVectorHandling< T >::labeledVectorHandling(
     const labeledVectorHandling& orig
   ) : vectorHandling< T >(orig) {
-
   }
   
   template < typename T >
@@ -110,7 +104,17 @@ namespace dtOO {
   template < typename T >
   labeledVectorHandling< T >::~labeledVectorHandling() {
   }
+
+  template< typename T >
+  void labeledVectorHandling< T >::set( T const & toSet) {
+    std::vector<T>::push_back( toSet );
+  }
   
+  template< typename T >
+  void labeledVectorHandling< T >::set( T const * toSet) {
+    std::vector< T >::push_back( *toSet );
+  }
+
   template< typename T >
   typename labeledVectorHandling< T >::const_reference 
   labeledVectorHandling< T >::get( std::string const & label ) const {
@@ -179,92 +183,20 @@ namespace dtOO {
   }
 
   template< typename T >
-  bool labeledVectorHandling< T >::hasTwice( std::string const label ) const {
-    dtInt counter = 0;
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling const * obj;
-      dt__mustCast(this->at(ii), labelHandling const, obj);
-      
-      if (obj->getLabel() == label ) {
-        counter++;
-      }
-      if (counter == 2) {
-        return true;
-      }
-    }
-    return false;
-  }
-  
-  template< typename T >
-  void labeledVectorHandling< T >::checkForBastardTwins( void ) const {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling const * obj;
-      dt__mustCast(this->at(ii), labelHandling const, obj);
-    
-      //
-      // check
-      //
-      if ( this->hasTwice( obj->getLabel() ) ) {
-        dt__throw(checkForBastardTwins(),
-                 << "Duplicate element " << dt__eval( obj->getLabel() ) );
-      }
-    }
-  }
-
-  template< typename T >
-  void labeledVectorHandling< T >::checkForBastardTwinsAndMakeUnique( void ) {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling * obj;
-      dt__mustCast(this->at(ii), labelHandling, obj);
-    
-      //
-      // check
-      //
-      if ( this->hasTwice( obj->getLabel() ) ) {
-        dt__warning(checkForBastardTwinsAndMakeUnique(),
-                << "Make label " << dt__eval(obj->getLabel()) << " unique!");          
-        obj->setLabel( obj->getLabel()+"_" );
-      }
-    }
-  }  
-
-  template< typename T >
   dtInt labeledVectorHandling< T >::getPosition( std::string const label ) const {
     dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
       //
-      labelHandling const * obj = dynamic_cast< labelHandling const * >(
-                              this->at(ii)
-                            );
+      labelHandling const * obj 
+      = 
+      dynamic_cast< labelHandling const * >( this->at(ii) );
       if (obj->getLabel() == label ) {
         return ii;
       }
     }
     return -1;
   }  
-
-  template< typename T >
-  void labeledVectorHandling< T >::addIndex( void ) {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling * obj;
-      dt__mustCast(this->at(ii), labelHandling, obj);
-      
-      obj->setLabel( stringPrimitive().intToString(ii)+"_"+obj->getLabel() );
-    }
-  }
 
   template< typename T >  
   void labeledVectorHandling< T >::dump(void) const {
@@ -309,7 +241,7 @@ namespace dtOO {
   typename labeledVectorHandling< T >::reference 
   labeledVectorHandling< T >::operator[](std::string const & label) {
     return this->get(label);
-  }   
+  }
 }
 #endif	/* labeledVectorHandling_H */
 
