@@ -62,9 +62,16 @@ namespace dtOO {
   }  
 
   dtReal constrainedFloatParam::getValue(void) const {
-    return dtXmlParser::constReference().muParseString(
-      dtXmlParser::constReference().replaceDependencies( _valueStr, _cVArr)
+    if (_cVArr) {
+      return dtXmlParser::constReference().muParseString(
+        dtXmlParser::constReference().replaceDependencies( _valueStr, _cVArr)
+      );
+    }
+    dt__warning(
+      getValue(), 
+      << "Return 0.0 : Cannot determine correct value, _cVArr = " << _cVArr
     );
+    return 0.0;
   }
 
   void constrainedFloatParam::setValue(dtReal const toSet) {
