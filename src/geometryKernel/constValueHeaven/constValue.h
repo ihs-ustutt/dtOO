@@ -13,7 +13,7 @@
 namespace dtOO {
   class constValue : public labelHandling {
     public:
-      dt__class(constValue, constValue);
+      dt__class(constValue, labelHandling);
       constValue( constValue const & orig );
       constValue( std::string const & label, dtReal const & val );
       virtual ~constValue();
@@ -26,6 +26,7 @@ namespace dtOO {
       virtual constValue * clone( void ) const = 0;    
       virtual void dump(void) const = 0;
       virtual dtReal getValue(void) const;
+      virtual std::string getValueStr(void) const;
       virtual dtReal getValuePercent(void) const;
       dtReal operator()( void ) const;
       virtual void setValue(dtReal const toSet);

@@ -19,7 +19,7 @@ namespace dtOO {
   
   class dtCase : public labelHandling, public optionHandling {
     public:
-      dt__class(dtCase, dtCase);
+      dt__class(dtCase, labelHandling);
       dtCase();
       virtual ~dtCase();
       virtual dtCase * create( void ) const = 0;

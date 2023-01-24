@@ -22,7 +22,7 @@ namespace dtOO {
                            public labelHandling,
                            public renderInterface {
   public:
-    dt__class(analyticFunction, analyticFunction);
+    dt__class(analyticFunction, labelHandling);
     analyticFunction();
     analyticFunction(const analyticFunction& orig);
     virtual ~analyticFunction();

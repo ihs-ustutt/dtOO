@@ -74,6 +74,10 @@ namespace dtOO {
     return 0.0;
   }
 
+  std::string constrainedFloatParam::getValueStr(void) const {
+    return _valueStr; 
+  }
+
   void constrainedFloatParam::setValue(dtReal const toSet) {
     dt__warning(
       setValue(), 

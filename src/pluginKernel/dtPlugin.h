@@ -24,7 +24,7 @@ namespace dtOO {
   
   class dtPlugin : public labelHandling, public optionHandling {
     public:
-      dt__class(dtPlugin, dtPlugin);
+      dt__class(dtPlugin, labelHandling);
       dtPlugin();
       virtual ~dtPlugin();
       virtual dtPlugin * create( void ) const = 0;      

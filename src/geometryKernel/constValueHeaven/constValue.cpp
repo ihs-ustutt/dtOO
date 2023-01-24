@@ -35,8 +35,14 @@ namespace dtOO {
     bool const loadable
   ) {
     constValue * aCV;
-    if (type == "sliderFloatParam") aCV = new sliderFloatParam();  
-    else if (type == "intParam") aCV = new intParam();
+    if (type == "sliderFloatParam") {
+      aCV = new sliderFloatParam();
+      aCV->setValue(stringPrimitive::stringToFloat(valueStr) );
+    }
+    else if (type == "intParam") {
+      aCV = new intParam();
+      aCV->setValue(stringPrimitive::stringToFloat(valueStr) );
+    }
     else if (type == "constrainedFloatParam") {
       aCV = new constrainedFloatParam( valueStr );
     }
@@ -53,6 +59,10 @@ namespace dtOO {
 
   dtReal constValue::getValue(void) const {
     return _value;
+  }
+  
+  std::string constValue::getValueStr(void) const {
+    return stringPrimitive::floatToString( _value );
   }
 
   dtReal constValue::getValuePercent(void) const {

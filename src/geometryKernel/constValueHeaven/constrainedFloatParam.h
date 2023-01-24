@@ -19,6 +19,7 @@ namespace dtOO {
     virtual dtReal getMin(void) const;
     virtual dtReal getMax(void) const;
     virtual dtReal getValue(void) const;
+    virtual std::string getValueStr(void) const;
     virtual void setValue(dtReal const toSet);    
     virtual void writeToElement(
       ::QDomDocument & doc, ::QDomElement & element
