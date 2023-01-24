@@ -7,8 +7,9 @@
 #include <interfaceHeaven/stringPrimitive.h>
 #include <dtLinearAlgebra.h>
 
+#include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
-#include "analyticGeometryHeaven/analyticGeometry.h"
+#include <analyticGeometryHeaven/analyticGeometry.h>
 
 namespace CGAL {
   //dtPoint2
@@ -82,6 +83,26 @@ namespace dtOO {
   void to_json(::nlohmann::json& to, analyticGeometry const * const & from) {
     to["analyticGeometry"]["label"] = from->getLabel();
   };
+  void from_json(
+    const ::nlohmann::json& from, std::vector< constValue * > & to
+  ) {
+    if (from["constValue"].is_array()) {
+      dt__forAllRefAuto(from["constValue"], aFrom) {
+        bool loadable = false;
+        if ( aFrom.contains("loadable") ) {
+          bool loadable = aFrom.at("loadable");
+        }
+        to.push_back( 
+          constValue::create( 
+            aFrom.at("name"),
+            aFrom.at("label"),
+            aFrom.at("value"),
+            loadable
+          )
+        );
+      }
+   }
+  }
 }
 
 namespace dtOO {  
@@ -137,7 +158,14 @@ namespace dtOO {
   // template lookup
   template < typename T > 
   T jsonPrimitive::lookup( std::string const & str ) const {
-    return _json->at(str);
+    T ret;
+    if ( str.empty() ) {
+      from_json( *_json, ret );
+    }
+    else {
+      from_json( _json->at(str), ret );
+    }
+    return ret;
   }
   template 
   std::string jsonPrimitive::lookup< std::string >(std::string const &) const;
@@ -177,6 +205,10 @@ namespace dtOO {
   ) const;  
   template
   std::vector<jsonPrimitive> jsonPrimitive::lookup< std::vector<jsonPrimitive> >(
+    std::string const &
+  ) const;
+  template
+  std::vector< constValue * > jsonPrimitive::lookup< std::vector< constValue * > >(
     std::string const &
   ) const;
 
