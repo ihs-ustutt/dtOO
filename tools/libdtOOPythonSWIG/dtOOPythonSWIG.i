@@ -3,6 +3,29 @@
 %include ../../doc/swig_includeAll.i
 
 %module dtOOPythonSWIG
+
+%warnfilter(401) NCollection_DataMap;
+%warnfilter(401) NCollection_Sequence;
+%warnfilter(401) NCollection_IndexedDataMap;
+%warnfilter(401) NCollection_IndexedMap;
+%warnfilter(401) NCollection_TListIterator;
+%warnfilter(401) NCollection_List;
+%warnfilter(401) NCollection_Map;
+%warnfilter(325) Iterator;
+%warnfilter(325) MapNode;
+%warnfilter(325) Node;
+%warnfilter(325) IndexedMapNode;
+%warnfilter(325) DoubleMapNode;
+%warnfilter(325) ObjBnd;
+%warnfilter(325) TreeNode;
+%warnfilter(325) DataMapNode;
+%warnfilter(325) Selector;
+%warnfilter(325) ConstIterator;
+%warnfilter(325) rebind;
+%warnfilter(325) StreamBuffer;
+%warnfilter(325) NCollection_CellFilter_Inspector;
+%warnfilter(325) Callback;
+
 %{
 #include <logMe/logMe.h>
 #include <mainConceptFwd.h>
@@ -12,6 +35,9 @@
 #include <interfaceHeaven/optionHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
+#include <interfaceHeaven/lVHOSubject.h>
+#include <interfaceHeaven/lVHOInterface.h>
+#include <interfaceHeaven/lVHOjsonLoad.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Point_3.h>  
 #include <dtLinearAlgebra.h>
@@ -308,6 +334,7 @@ namespace dtOO {
 %include dtCase.h
 %include dtPlugin.h
 %include jsonHeaven/jsonPrimitive.h
+%include interfaceHeaven/lVHOSubject.h
 namespace dtOO {
   %template(vectorInt)              ::std::vector< dtInt >;
   %template(vectorBool)             ::std::vector< bool >;
@@ -359,7 +386,7 @@ namespace dtOO {
   %template(vectorHandlingConstDtSurface)   vectorHandling< dtSurface const * >;
   
   template < typename T >
-  class labeledVectorHandling : public vectorHandling< T > {
+  class labeledVectorHandling : public vectorHandling< T >, public lVHOSubject {
     public:
       typedef typename std::vector< T >::iterator iterator;
       typedef typename std::vector< T >::reference reference;
@@ -394,6 +421,9 @@ namespace dtOO {
   %template(labeledVectorHandlingDtCase)           labeledVectorHandling< dtCase * >;
   %template(labeledVectorHandlingDtPlugin)         labeledVectorHandling< dtPlugin * >;
 }
+
+%include <interfaceHeaven/lVHOInterface.h>
+%include <interfaceHeaven/lVHOjsonLoad.h>
 %include <xmlHeaven/dtXmlParserBase.h>
 %include <xmlHeaven/dtXmlParser.h>     
 %template(lookupStr) dtOO::jsonPrimitive::lookup< std::string >;

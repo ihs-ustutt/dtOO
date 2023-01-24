@@ -1,17 +1,20 @@
 #ifndef labeledVectorHandling_H
 #define	labeledVectorHandling_H
 
+#include <algorithm>
 #include <dtOOTypeDef.h>
 
 #include <logMe/dtMacros.h>
 #include "vectorHandling.h"
+#include "lVHOSubject.h"
+#include "lVHOInterface.h"
 
 namespace dtOO {
   //----------------------------------------------------------------------------
   // h
   //----------------------------------------------------------------------------
   template < typename T >
-  class labeledVectorHandling : public vectorHandling< T > {
+  class labeledVectorHandling : public vectorHandling< T >, public lVHOSubject {
     public:
       typedef typename std::vector< T >::iterator iterator;
       typedef typename std::vector< T >::reference reference;
@@ -50,6 +53,10 @@ namespace dtOO {
       const_reference operator[](int ii) const { 
         return std::vector< T >::at(ii); 
       }
+      virtual void attach(lVHOInterface * observer);
+      virtual void letObserve();
+    private:
+      dt__pVH(lVHOInterface) _observers;
   };
 
   //----------------------------------------------------------------------------
@@ -64,12 +71,15 @@ namespace dtOO {
   labeledVectorHandling< T >::labeledVectorHandling(
     const labeledVectorHandling& orig
   ) : vectorHandling< T >(orig) {
+    dt__throwIf( !orig._observers.empty(), labeledVectorHandling() );
   }
   
   template < typename T >
   labeledVectorHandling< T >::labeledVectorHandling(
     const labeledVectorHandling& orig0, const labeledVectorHandling& orig1
   ) : vectorHandling< T >(orig0, orig1) {
+    dt__throwIf( !orig0._observers.empty(), labeledVectorHandling() );
+    dt__throwIf( !orig1._observers.empty(), labeledVectorHandling() );
 
   }
   
@@ -79,7 +89,9 @@ namespace dtOO {
     const labeledVectorHandling& orig1, 
     const labeledVectorHandling& orig2
   ) : vectorHandling< T >(orig0, orig1, orig2) {
-
+    dt__throwIf( !orig0._observers.empty(), labeledVectorHandling() );
+    dt__throwIf( !orig1._observers.empty(), labeledVectorHandling() );
+    dt__throwIf( !orig2._observers.empty(), labeledVectorHandling() );
   }
   
   template < typename T >
@@ -108,11 +120,17 @@ namespace dtOO {
   template< typename T >
   void labeledVectorHandling< T >::set( T const & toSet) {
     std::vector<T>::push_back( toSet );
+    dt__forAllRefAuto( _observers, anObserver ) {
+      anObserver.observeSet( this->back() );
+    }
   }
   
   template< typename T >
   void labeledVectorHandling< T >::set( T const * toSet) {
     std::vector< T >::push_back( *toSet );
+    dt__forAllRefAuto( _observers, anObserver ) {
+      anObserver.observeSet( this->back() );
+    }
   }
 
   template< typename T >
@@ -241,6 +259,20 @@ namespace dtOO {
   typename labeledVectorHandling< T >::reference 
   labeledVectorHandling< T >::operator[](std::string const & label) {
     return this->get(label);
+  }
+
+  template< typename T >
+  void labeledVectorHandling< T >::attach(lVHOInterface * observer) {
+    _observers.push_back( observer );
+  }
+  
+  template< typename T >
+  void labeledVectorHandling< T >::letObserve( void ) {
+    dt__forAllRefAuto( _observers, anObserver ) {
+      dt__forAllIndex(*this, ii) {
+        anObserver.observe( this->at(ii) );
+      }
+    }
   }
 }
 #endif	/* labeledVectorHandling_H */

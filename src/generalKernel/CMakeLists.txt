@@ -102,6 +102,9 @@ SET(HEADERS
   interfaceHeaven/meshWhisperer.h
   interfaceHeaven/mpiDistributed.h
   interfaceHeaven/barChart.h
+  interfaceHeaven/lVHOSubject.h
+  interfaceHeaven/lVHOInterface.h
+  interfaceHeaven/lVHOjsonLoad.h
   logMe/logBase.h
   logMe/Output2FILE.h
   logMe/logMe.h
@@ -202,6 +205,9 @@ SET(SOURCES
   interfaceHeaven/threadSafeRoot.cpp
   interfaceHeaven/meshWhisperer.cpp
   interfaceHeaven/barChart.cpp
+  interfaceHeaven/lVHOSubject.cpp
+  interfaceHeaven/lVHOInterface.cpp
+  interfaceHeaven/lVHOjsonLoad.cpp
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp
