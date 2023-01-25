@@ -99,6 +99,13 @@ namespace dtOO {
 #include <analyticFunctionHeaven/scaTanhGradingOneD.h>
 #include <analyticFunctionHeaven/scaTanhUnitGradingOneD.h>
 #include <analyticFunctionHeaven/scaOneDPolyInterface.h>
+#include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
+#include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h>
+#include <analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h>
+#include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h>
+#include <analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.h>
+#include <analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h>
+#include <analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h>
 
 #include <dtTransformerHeaven/dtTransformer.h>
 #include <dtTransformerHeaven/dtTransformerInvThreeD.h>
@@ -353,6 +360,7 @@ namespace dtOO {
   %template(vectorDtVector3)        ::std::vector< dtVector3 >;
   %template(vectorDtCurve)          ::std::vector< dtCurve * >;
   %template(vectorDtSurface)        ::std::vector< dtSurface * >;
+  %template(vectorConstAnalyticFunction) ::std::vector< analyticFunction const * >;
   %template(vectorConstDtCurve)     ::std::vector< dtCurve const * >;
   %template(vectorConstDtSurface)   ::std::vector< dtSurface const * >;
   
@@ -382,6 +390,7 @@ namespace dtOO {
   %template(vectorHandlingDtPlugin)         vectorHandling< dtPlugin * >;
   %template(vectorHandlingDtCurve)          vectorHandling< dtCurve * >;
   %template(vectorHandlingDtSurface)        vectorHandling< dtSurface * >;
+  %template(vectorHandlingConstAnalyticFunction) vectorHandling< analyticFunction const * >;
   %template(vectorHandlingConstDtCurve)     vectorHandling< dtCurve const * >;
   %template(vectorHandlingConstDtSurface)   vectorHandling< dtSurface const * >;
   
@@ -540,6 +549,13 @@ namespace dtOO {
 %include analyticFunctionHeaven/vec3dBiLinearTwoD.h
 %include analyticFunctionHeaven/scaTanhGradingOneD.h
 %include analyticFunctionHeaven/scaTanhUnitGradingOneD.h
+%include analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h
+%include analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
+%include analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
+%include analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h
+%include analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.h
+%include analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h
+%include analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h
 
 namespace dtOO {
   %rename(applyDtPoint2) dtTransformer::apply(dtPoint2 const&) const;

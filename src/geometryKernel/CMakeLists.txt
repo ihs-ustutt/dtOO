@@ -104,6 +104,7 @@ SET(HEADERS
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h
   analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.h
   analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h
+  analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h
   dtTransformerHeaven/dtTransformer.h
   dtTransformerHeaven/dtTransformerKernel.h
   dtTransformerHeaven/dtTransformerDriver.h
@@ -242,6 +243,7 @@ SET(SOURCES
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.cpp
   analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.cpp
   analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.cpp
+  analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.cpp
   dtTransformerHeaven/dtTransformer.cpp
   dtTransformerHeaven/dtTransformerKernel.cpp
   dtTransformerHeaven/dtTransformerDriver.cpp
