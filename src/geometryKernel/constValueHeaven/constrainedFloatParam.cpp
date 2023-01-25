@@ -9,6 +9,16 @@ namespace dtOO {
   }
 
   constrainedFloatParam::constrainedFloatParam(
+    std::string const & label, 
+    std::string const & valueStr, dtReal const & min, dtReal const & max
+  ) : constValue(label, 0.0) {
+    _valueStr = valueStr;
+    _min = min;
+    _max = max;
+    _cVArr = NULL;
+  }
+
+  constrainedFloatParam::constrainedFloatParam(
     constrainedFloatParam const & orig
   ) : constValue(orig) {
     _max = orig._max;
