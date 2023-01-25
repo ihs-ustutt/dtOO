@@ -28,15 +28,15 @@ namespace dtOO {
    * \endcode
 	 */
   class map2dTo3d_constructMarginFaces {
-  public:
-    dt__classOnlyName(map2dTo3d_constructMarginFaces);
-    map2dTo3d_constructMarginFaces(
-      map2dTo3d const * const m2d, dtReal const & width
-    );
-    virtual ~map2dTo3d_constructMarginFaces();
-    dt__pVH(map2dTo3d) result( void );
-  private:
-    dt__pVH(map2dTo3d) _m2dV;
+    public:
+      dt__classOnlyName(map2dTo3d_constructMarginFaces);
+      map2dTo3d_constructMarginFaces(
+        map2dTo3d const * const m2d, dtReal const & width
+      );
+      virtual ~map2dTo3d_constructMarginFaces();
+      dt__pVH(map2dTo3d) result( void );
+    private:
+      dt__pVH(map2dTo3d) _m2dV;
   };
 }
 #endif	/* MAP2DTO3D_CONSTRUCTMARGINFACES_H */
