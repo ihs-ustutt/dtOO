@@ -123,9 +123,7 @@ std::string parseCommand(
     //parser.loadStateToConst(addRule[0], cV);
     std::string currentState = parser.currentState();
     parser.loadStateToConst(addRule[0], cV);
-    vectorHandling< dtReal > cV_val(
-      cV.size(), std::numeric_limits<dtReal>::max()
-    );
+    vectorHandling< dtReal > cV_val( cV.size() );
     dt__forAllIndex(cV, ii) {
       cV_val[ii] = cV[ii]->getValue();
     }
