@@ -5,9 +5,11 @@
 #include <dtOOTypeDef.h>
 
 #include <logMe/dtMacros.h>
+#include "logMe/logMe.h"
 #include "vectorHandling.h"
 #include "lVHOSubject.h"
 #include "lVHOInterface.h"
+#include "stringPrimitive.h"
 
 namespace dtOO {
   //----------------------------------------------------------------------------
@@ -38,7 +40,7 @@ namespace dtOO {
       void set( T const & toSet);
       void set( T const * toSet);
       const_reference get( std::string const & label) const;
-      reference get( std::string const & label);
+      std::vector< dtInt > getIndices( std::string const & label) const;
       std::string getLabel( dtInt const pos ) const;
       std::vector< std::string > labels( void ) const;
       bool has( std::string const label) const;
@@ -46,7 +48,6 @@ namespace dtOO {
       void dump(void) const;
       void sort(void);
       const_reference operator[](std::string const & label) const;
-      reference operator[](std::string const & label);
       reference operator[](int ii) { 
         return std::vector< T >::at(ii); 
       }
@@ -136,6 +137,16 @@ namespace dtOO {
   template< typename T >
   typename labeledVectorHandling< T >::const_reference 
   labeledVectorHandling< T >::get( std::string const & label ) const {
+    dtInt pos = this->getPosition( label );
+    dt__throwIfWithMessage(pos==-1, get(), << label << " not found!");
+    return this->at( pos );
+  }
+
+  template< typename T >
+  std::vector< dtInt >
+  labeledVectorHandling< T >::getIndices( std::string const & label ) const {
+    std::vector< dtInt > ret;
+    dtInt cc = 0;
     dt__forAllIndex(*this, ii) {
       //
       // check if class is of type labelHandling
@@ -143,61 +154,38 @@ namespace dtOO {
       labelHandling const * obj;
       dt__mustCast(this->at(ii), labelHandling const, obj);
       
-      if (obj->getLabel() == label ) {
-        return this->at(ii);
+      if (stringPrimitive::matchWildcard( label, obj->getLabel() ) ) {
+        ret.push_back( cc );
       }
+      cc = cc + 1;
     }
-  dt__throw(get(), << "No element with " << dt__eval(label) );
+    dt__throwIfWithMessage(ret.empty(), getIndices(), << "No elements for " << label);
+    return ret;
   }
 
-  template< typename T > 
-  typename labeledVectorHandling< T >::reference 
-  labeledVectorHandling< T >::get( std::string const & label ) {
-    return this->at( this->getPosition(label) );
-  }  
-  
+
   template< typename T >
   std::string labeledVectorHandling< T >::getLabel( dtInt const pos ) const {
-    labelHandling const * obj 
-    = 
-    dynamic_cast< labelHandling const * >(this->at(pos));
-
-    if (obj ) {
-      return obj->getLabel();
-    }
-    else {
-      dt__throw(
-        getLabel(), 
-        << "No labelHandling at " << dt__eval(pos) << " in vector."
-      );
-    }
+    labelHandling const * obj;
+    dt__mustCast(this->at(pos), labelHandling const, obj);
+    return obj->getLabel();
   }  
   
   template< typename T >
   std::vector< std::string > labeledVectorHandling< T >::labels( void ) const {
     std::vector< std::string > ret;
     dt__forAllIndex(*this, ii) {
-      labelHandling const * obj;
-      dt__mustCast(this->at(ii), labelHandling const, obj);
-      ret.push_back( obj->getLabel() );
+      ret.push_back( this->getLabel( ii ) );
     }
     return ret;
   }  
   
   template< typename T >
   bool labeledVectorHandling< T >::has( std::string const label ) const {
-    dt__forAllIndex(*this, ii) {
-      //
-      // check if class is of type labelHandling
-      //
-      labelHandling const * obj;
-      dt__mustCast(this->at(ii), labelHandling const, obj);
-      
-      if (obj->getLabel() == label ) {
-        return true;
-      }
+    if ( this->getPosition( label ) < 0 ) {
+      return false;
     }
-    return false;
+    return true;
   }
 
   template< typename T >
@@ -254,12 +242,6 @@ namespace dtOO {
   labeledVectorHandling< T >::operator[](std::string const & label) const {
     return this->get(label);
   } 
-
-  template< typename T >
-  typename labeledVectorHandling< T >::reference 
-  labeledVectorHandling< T >::operator[](std::string const & label) {
-    return this->get(label);
-  }
 
   template< typename T >
   void labeledVectorHandling< T >::attach(lVHOInterface * observer) {
