@@ -390,6 +390,11 @@ namespace dtOO {
     // update bounding box
     //
     updateBoundingBox();
+
+    //
+    // initialize fields
+    //
+    _gm->getFields()->initialize();
     
     //
 		// destroy old mesh
