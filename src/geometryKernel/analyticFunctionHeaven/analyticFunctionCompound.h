@@ -109,8 +109,12 @@ namespace dtOO {
     std::map< int, dtInt > const & pos_tag
   ) {
     dt__throwIf( !_vec.empty() || !_pos_tag.empty(),  trojanHorse() );
-    _vec = const_cast< vectorHandling< analyticFunction * > >(vec);
-    _pos_tag = const_cast< std::map< int, dtInt > >(pos_tag);
+    dt__forAllRefAuto(vec, aVec) {
+      _vec.push_back( aVec );
+    }
+    dt__forAllRefAuto(pos_tag, aPos_tag) {
+      _pos_tag[ aPos_tag.first ] = aPos_tag.second;
+    }
     _trojan = true;
   }
     
