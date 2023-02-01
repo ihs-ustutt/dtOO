@@ -66,6 +66,8 @@ namespace dtOO {
 #include <constValueHeaven/intParam.h>
 #include <constValueHeaven/constrainedFloatParam.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticFunctionHeaven/analyticFunctionCompound.h>
+
 #include <analyticFunctionHeaven/aFX.h>
 #include <analyticFunctionHeaven/aFY.h>
 #include <analyticFunctionHeaven/scaFunction.h>
@@ -102,9 +104,13 @@ namespace dtOO {
 #include <analyticFunctionHeaven/vec3dBoxThreeD.h>
 #include <analyticFunctionHeaven/vec3dTriLinearThreeD.h>
 #include <analyticFunctionHeaven/vec3dBiLinearTwoD.h>
+#include <analyticFunctionHeaven/scaOneDPolyInterface.h>
 #include <analyticFunctionHeaven/scaTanhGradingOneD.h>
 #include <analyticFunctionHeaven/scaTanhUnitGradingOneD.h>
-#include <analyticFunctionHeaven/scaOneDPolyInterface.h>
+namespace dtOO {
+  typedef analyticFunctionCompound< scaTanhGradingOneD > scaTanhGradingOneDCompound;
+}
+
 #include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h>
 #include <analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h>
@@ -539,7 +545,9 @@ namespace dtOO {
 %feature("notabstract") vec3dBiLinearTwoD;
 %feature("notabstract") scaTanhGradingOneD;
 %feature("notabstract") scaTanhUnitGradingOneD;
+%feature("notabstract") analyticFunctionCompound;
 
+%include analyticFunctionHeaven/analyticFunctionCompound.h
 %include analyticFunctionHeaven/aFX.h
 %include analyticFunctionHeaven/aFY.h
 %include analyticFunctionHeaven/scaFunction.h
@@ -576,8 +584,14 @@ namespace dtOO {
 %include analyticFunctionHeaven/vec3dBoxThreeD.h
 %include analyticFunctionHeaven/vec3dTriLinearThreeD.h
 %include analyticFunctionHeaven/vec3dBiLinearTwoD.h
+%include analyticFunctionHeaven/scaOneDPolyInterface.h
 %include analyticFunctionHeaven/scaTanhGradingOneD.h
 %include analyticFunctionHeaven/scaTanhUnitGradingOneD.h
+
+namespace dtOO {
+  %template(scaTanhGradingOneDCompound)    analyticFunctionCompound< scaTanhGradingOneD >;
+  typedef analyticFunctionCompound< scaTanhGradingOneD > scaTanhGradingOneDCompound;
+}
 %include analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h
 %include analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
 %include analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
