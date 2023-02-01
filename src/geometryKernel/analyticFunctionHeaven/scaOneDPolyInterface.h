@@ -8,15 +8,15 @@
 namespace dtOO {
   class dtTransformer;
   
-  class scaOneDPolyInterface : public virtual scaOneD {
-  public:
-    dt__class(scaOneDPolyInterface, analyticFunction);
-    scaOneDPolyInterface();
-    scaOneDPolyInterface(scaOneDPolyInterface const & orig);    
-    virtual ~scaOneDPolyInterface();
-    virtual dtInt nDOF( void ) const = 0;
-    virtual void setDOF( std::vector< dtReal > const value ) = 0;
-  private:
+  class scaOneDPolyInterface : public scaOneD {
+    public:
+      dt__class(scaOneDPolyInterface, analyticFunction);
+      scaOneDPolyInterface();
+      scaOneDPolyInterface(scaOneDPolyInterface const & orig);    
+      virtual ~scaOneDPolyInterface();
+      virtual dtInt nDOF( void ) const = 0;
+      virtual void setDOF( std::vector< dtReal > const value ) = 0;
+    private:
 
   };
 }
