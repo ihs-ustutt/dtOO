@@ -35,4 +35,3 @@ namespace dtOO {
   };
 }
 #endif	/* dtMeshFreeGradingGEdge_H */
-
