@@ -125,7 +125,7 @@ namespace dtOO {
 		if (aS) {
 			map1dTo3d * m1d = aS->segmentConstUPercent(percent_v(vv), 0., 1.);
 			dt__ptrAss(analyticCurve * s3d, analyticCurve::DownCast(m1d));
-      vectorHandling< dtCurve const * > cV(2, NULL);
+      vectorHandling< dtCurve const * > cV(2);
       cV[0] = s3d->ptrConstDtCurve()->clone();
       cV[1] 
       = 
