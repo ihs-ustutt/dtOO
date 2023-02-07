@@ -800,6 +800,11 @@ namespace dtOO {
     return dtGmshEdge::MustDownCast(ge);
   }
   
+  ::GModel * dtGmshModel::cast2GModel( dtGmshModel * gm ) {
+    assert( gm!=NULL );
+    return dynamic_cast< ::GModel * >(gm);
+  }
+  
   std::list< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( 
     std::list< ::GEdge * > edges 
   ) {
