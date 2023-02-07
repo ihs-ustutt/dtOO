@@ -16,13 +16,10 @@ namespace dtOO {
       bVOSubject();
       virtual ~bVOSubject();
       void attachBVObserver( bVOInterface* observer );
-  //    void detachBVObserver( bVOInterface* observer );
       void preNotify( void );
       void postNotify( void );
     private:
       vectorHandling< bVOInterface * > _observers;
-    private:
-
   };
 }
 #endif	/* BVOSUBJECT_H */
