@@ -35,9 +35,7 @@ namespace dtOO {
 		lvH_analyticGeometry const * const aG
 	) {
     _config = jE;
-		if ( _config.contains("label") ) {
-			labelHandling::setLabel( _config.lookup<std::string>("label") );
-		}
+	  labelHandling::jInit(jE);
     optionHandling::jInit(jE);
 		dt__debug( jInit(), << "config() = " << _config.toStdString() );
   }
