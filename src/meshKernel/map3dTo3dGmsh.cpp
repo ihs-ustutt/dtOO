@@ -12,6 +12,7 @@
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include "boundedVolumeFactory.h"
+#include "logMe/dtMacros.h"
 
 namespace dtOO {
   bool map3dTo3dGmsh::_registrated 
@@ -25,9 +26,9 @@ namespace dtOO {
 
 	map3dTo3dGmsh::~map3dTo3dGmsh() {
 	}
-  
-  void map3dTo3dGmsh::init( 
-    ::QDomElement const & element,
+
+  void map3dTo3dGmsh::jInit( 
+    jsonPrimitive const & jE,
 		baseContainer * const bC,
 		lvH_constValue const * const cV,
 		lvH_analyticFunction const * const aF,
@@ -37,30 +38,53 @@ namespace dtOO {
     //
     // init gmshBoundedVolume
     //
-    gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
-		
-    //
-		// region
-		//		
-    std::vector< ::QDomElement > wEl 
-    = 
-    qtXmlPrimitive::getChildVector("analyticGeometry", element);
-
+    gmshBoundedVolume::jInit(jE, bC, cV, aF, aG, bV);
+		 
 		//
 		// set current model
 		//
 		::GModel::setCurrent( _gm );
 
-		dt__forAllIndex(wEl, ii) {
-      dt__ptrAss(
-        map3dTo3d const * m3d,
-        map3dTo3d::ConstDownCast( 
-          aG->get( qtXmlPrimitive::getAttributeStr("label", wEl[ii]) ) 
-        )
-      );      
+    //
+		// region
+		//		
+    dt__forAllRefAuto(
+      jE.lookupVecClone< analyticGeometry >("", aG), anAG
+    ) {
       dtInt vId;
-			_gm->addIfRegionToGmshModel(m3d, &vId);
-
+			_gm->addIfRegionToGmshModel(
+        map3dTo3d::ConstDownCast( &anAG ), &vId
+      );
 		}
+	}
+ 
+  void map3dTo3dGmsh::init( 
+    ::QDomElement const & element,
+		baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV
+	) {
+    gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
+		
+    std::vector< jsonPrimitive > aGs;
+		dt__forAllRefAuto(
+      qtXmlPrimitive::getChildVector("analyticGeometry", element), theXml
+    ) {
+      aGs.push_back(
+        jsonPrimitive().append< std::string >(
+          "label",
+          qtXmlPrimitive::getAttributeStr("label", theXml)
+        )
+      );
+		}
+
+    map3dTo3dGmsh::jInit(
+      jsonPrimitive().append< std::vector< jsonPrimitive > >(
+        "analyticGeometry", aGs
+      ),
+      bC, cV, aF, aG, bV
+    );
 	}
 }

@@ -15,6 +15,21 @@ namespace dtOO {
   
   }
 
+  void bVOInterface::jInit( 
+    jsonPrimitive const & jE,
+		baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    boundedVolume * attachTo
+  ) {
+    _config = jE;
+    dt__debug( jInit(), << _config.toStdString() );
+    optionHandling::jInit(_config);
+    _bV = attachTo;
+  }  
+
   void bVOInterface::init( 
     ::QDomElement const & element,
 		baseContainer const * const bC,
@@ -25,8 +40,9 @@ namespace dtOO {
     boundedVolume * attachTo
   ) {
     optionHandling::init( element, bC, cV, aF, aG );
-    _bV = attachTo;
+    bVOInterface::jInit(jsonPrimitive(), bC, cV, aF, aG, bV, attachTo);
   }  
+
 	
   std::vector< std::string > bVOInterface::factoryAlias( void ) const {
     return std::vector< std::string>(0);
@@ -47,4 +63,12 @@ namespace dtOO {
   void bVOInterface::postUpdate( void ) {
 		
 	}
+
+  jsonPrimitive & bVOInterface::config( void ) {
+    return _config;
+  }
+  
+  jsonPrimitive const & bVOInterface::config( void ) const {
+    return _config;
+  }
 }

@@ -44,6 +44,7 @@ namespace dtOO {
 #include <interfaceHeaven/lVHOSubject.h>
 #include <interfaceHeaven/lVHOInterface.h>
 #include <interfaceHeaven/lVHOjsonLoad.h>
+#include <gmsh/GModel.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Point_3.h>  
 #include <dtLinearAlgebra.h>
@@ -204,8 +205,10 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h>
 #include <jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h>
-
+#include <meshEngine/dtGmshModel.h>
 #include <boundedVolume.h>
+#include <gmshBoundedVolume.h>
+#include <map3dTo3dGmsh.h>
 #include <dtCase.h>
 #include <dtPlugin.h>
 #include <xmlHeaven/dtXmlParserBase.h>
@@ -277,6 +280,8 @@ namespace dtOO {
 }
 %include interfaceHeaven/labelHandling.h
 %include interfaceHeaven/optionHandling.h
+%include <gmsh/GModel.h>
+
 namespace CGAL {
   class Epick;
   typedef Epick Exact_predicates_inexact_constructions_kernel;
@@ -355,6 +360,8 @@ namespace dtOO {
 %include analyticFunctionHeaven/analyticFunction.h
 %include analyticGeometryHeaven/analyticGeometry.h
 %include boundedVolume.h
+%include gmshBoundedVolume.h
+%include map3dTo3dGmsh.h
 %include dtCase.h
 %include dtPlugin.h
 %include jsonHeaven/jsonPrimitive.h
@@ -516,6 +523,8 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h
 %include jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h
+
+%include meshEngine/dtGmshModel.h
 
 //
 // Classes has to be not abstract, otherwise no constructors will be created, 

@@ -19,6 +19,14 @@ namespace dtOO {
       dt__classSelfCreate(map3dTo3dGmsh);
       map3dTo3dGmsh();
       virtual ~map3dTo3dGmsh();
+      virtual void jInit( 
+        jsonPrimitive const & jE,
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV
+      );    
       virtual void init( 
         ::QDomElement const & element,
         baseContainer * const bC,

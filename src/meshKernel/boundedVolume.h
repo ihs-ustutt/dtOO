@@ -13,6 +13,7 @@
 #include <dtLinearAlgebra.h>
 #include <mainConceptFwd.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
+#include <jsonHeaven/jsonPrimitive.h>
 
 namespace dtOO {
   class analyticGeometry;
@@ -41,6 +42,14 @@ namespace dtOO {
         lvH_analyticGeometry const * const aF,
         lvH_boundedVolume const * const bV
       );
+      virtual void jInit( 
+        jsonPrimitive const & jE,
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV
+      );
       virtual void makeGrid(void) = 0;
       virtual void makePreGrid(void) = 0;
       bool isMeshed( void ) const;
@@ -51,7 +60,11 @@ namespace dtOO {
       virtual dtGmshFace * getFace( std::string const & tag ) const = 0;
       virtual dtGmshRegion * getRegion( std::string const & tag ) const = 0;
       virtual dtGmshModel * getModel( void ) const = 0;
+    protected:
+      jsonPrimitive & config( void );
+      jsonPrimitive const & config( void ) const;
     private:
+      jsonPrimitive _config;
       bool _meshed;
       bool _preMeshed;
   };

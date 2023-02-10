@@ -49,9 +49,9 @@ namespace dtOO {
     //
 //	  gmsh::finalize();
 	}
-      
-	void gmshBoundedVolume::init( 
-		::QDomElement const & element,
+ 
+  void gmshBoundedVolume::jInit( 
+		jsonPrimitive const & jE,
 		baseContainer * const bC,
 		lvH_constValue const * const cV,
 		lvH_analyticFunction const * const aF,
@@ -61,7 +61,7 @@ namespace dtOO {
     //
     // init boundedVolume
     //
-    boundedVolume::init(element, bC, cV, aF, aG, bV);
+    boundedVolume::jInit(jE, bC, cV, aF, aG, bV);
 		
     //
     // disable sigFpe for gmsh if any version of OpenFOAM is present
@@ -79,6 +79,23 @@ namespace dtOO {
     if (optionHandling::debugTrue()) {
       _gm->setDebug( getLabel()+"_debug.msh" );
     };
+	}	
+
+
+	void gmshBoundedVolume::init( 
+		::QDomElement const & element,
+		baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV
+	) {
+    //
+    // init boundedVolume
+    //
+    boundedVolume::init(element, bC, cV, aF, aG, bV);
+
+    gmshBoundedVolume::jInit(jsonPrimitive(), bC, cV, aF, aG, bV);
 	}	
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( 
