@@ -232,7 +232,28 @@ namespace dtOO {
     std::string const & str, 
     labeledVectorHandling< analyticGeometry * > const * const ptrVec
   ) const;
-  
+   // template lookupClone
+  template < typename T > 
+  dt__pVH(T) jsonPrimitive::lookupVecClone( 
+    std::string const & str, labeledVectorHandling< T * > const * const ptrVec
+  ) const {
+    std::vector< jsonPrimitive > jP 
+    = 
+    lookup<jsonPrimitive>(str).lookup< std::vector< jsonPrimitive > >( 
+      T::className() 
+    );
+    dt__pVH(T) ret;
+    dt__forAllRefAuto(jP, aJP) {
+      ret.push_back( ptrVec->get( aJP.lookup<std::string>("label") )->clone() );
+    }
+    return ret;
+  }
+  template
+  dt__pVH(analyticGeometry) jsonPrimitive::lookupVecClone( 
+    std::string const & str, 
+    labeledVectorHandling< analyticGeometry * > const * const ptrVec
+  ) const;
+
   // template lookupDef
   template < typename T > 
   T jsonPrimitive::lookupDef( std::string const & str, T const & def ) const {
@@ -329,7 +350,14 @@ namespace dtOO {
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, analyticGeometry const * const & val
   );  
-  
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, std::vector< std::string > const & val 
+  );  
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, std::vector< jsonPrimitive > const & val 
+  );  
+
+ 
   ::nlohmann::json const & jsonPrimitive::json( void ) const {
     return *_json;
   }

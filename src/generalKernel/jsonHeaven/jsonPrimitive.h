@@ -31,6 +31,11 @@ namespace dtOO {
         labeledVectorHandling< T * > const * const ptrVec
       ) const;
       template < typename T > 
+      dt__pVH(T) lookupVecClone( 
+        std::string const & str, 
+        labeledVectorHandling< T * > const * const ptrVec
+      ) const;
+      template < typename T > 
       T const operator[]( std::string const & str ) const;
       template < typename T > 
       jsonPrimitive append( std::string const & str, T const & val );
