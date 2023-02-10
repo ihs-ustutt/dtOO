@@ -32,17 +32,11 @@ namespace dtOO {
   }
   
   void optionHandling::init( ::QDomElement const * const wElement) {
-    ::QDomElement option = qtXmlPrimitive::getChild("option", *wElement);
-    while ( !option.isNull() ) {
-      optionHandling::setOption(
-        qtXmlPrimitive::getAttributeStr("name", option), 
-        qtXmlPrimitive::getAttributeStr("value", option)
-      );
-      option = option.nextSiblingElement("option");
-    }
+    optionHandling::init( *wElement, NULL, NULL, NULL, NULL);
   }
 
   void optionHandling::jInit( jsonPrimitive const & jE) {
+    dt__debug(jInit(), << jE.toStdString());
     if ( jE.contains("option") ) {
       dt__forAllRefAuto(
         jE.lookup<std::vector<jsonPrimitive>>("option"), anOpt
@@ -62,16 +56,23 @@ namespace dtOO {
     lvH_analyticFunction const * const aF,
     lvH_analyticGeometry const * const aG
   ) {
+    std::vector< jsonPrimitive > options;
     dt__forAllRefAuto(
       qtXmlPrimitive::getChildVector("option", wElement), anOption
     ) {
-      optionHandling::setOption(
-        dtXmlParserBase::getAttributeStr("name", anOption), 
+      jsonPrimitive option;
+      option.append< std::string >("name", dtXmlParserBase::getAttributeStr("name", anOption));
+      option.append< std::string >(
+        "value", 
         dtXmlParserBase::replaceDependencies(
           dtXmlParserBase::getAttributeStr("value", anOption), bC, cV, aF, aG
         )
       );
+      options.push_back( option );
     }        
+    optionHandling::jInit(
+      jsonPrimitive().append< std::vector< jsonPrimitive > >("option", options)
+    );
   }
       
   void optionHandling::setOption(
