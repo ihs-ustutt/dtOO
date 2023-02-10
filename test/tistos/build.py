@@ -1,0 +1,18 @@
+from dtOOPythonSWIG import *
+
+logMe.initLog('build.log')
+dtXmlParser.init("machine.xml", "machineSave.xml")
+parser = dtXmlParser.reference()
+parser.parse()
+bC = baseContainer()
+cV = labeledVectorHandlingConstValue()
+aF = labeledVectorHandlingAnalyticFunction()
+aG = labeledVectorHandlingAnalyticGeometry()
+bV = labeledVectorHandlingBoundedVolume()
+dC = labeledVectorHandlingDtCase()
+dP = labeledVectorHandlingDtPlugin()
+parser.createConstValue(cV)
+parser.destroyAndCreate(bC, cV, aF, aG, bV, dC, dP)
+bV.get("ruWithRounding_mechMesh").makeGrid()
+dP.get('ru_adjustDomain').apply()
+dC.get("tistos_ru_of_n").runCurrentState()
