@@ -206,6 +206,8 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h>
 #include <jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h>
 #include <meshEngine/dtGmshModel.h>
+#include <bVObserver/bVOInterface.h>
+#include <bVObserver/bVOSubject.h>
 #include <boundedVolume.h>
 #include <gmshBoundedVolume.h>
 #include <map3dTo3dGmsh.h>
@@ -359,6 +361,8 @@ namespace dtOO {
 %include constValueHeaven/constValue.h
 %include analyticFunctionHeaven/analyticFunction.h
 %include analyticGeometryHeaven/analyticGeometry.h
+%include bVObserver/bVOInterface.h
+%include bVObserver/bVOSubject.h
 %include boundedVolume.h
 %include gmshBoundedVolume.h
 %include map3dTo3dGmsh.h
