@@ -83,6 +83,17 @@ namespace dtOO {
   void to_json(::nlohmann::json& to, analyticGeometry const * const & from) {
     to["analyticGeometry"]["label"] = from->getLabel();
   };
+  void to_json(
+    ::nlohmann::json& to, std::vector< analyticGeometry * > const & from
+  ) {
+    to["analyticGeometry"] = ::nlohmann::json::array_t();
+    dt__forAllRefAuto( from, aFrom ) {
+      to["analyticGeometry"].insert( 
+        to["analyticGeometry"].end(), 
+        ::nlohmann::json( {{"label", aFrom->getLabel()}} )
+      );
+    }
+  };
   void from_json(
     const ::nlohmann::json& from, std::vector< constValue * > & to
   ) {
@@ -208,7 +219,8 @@ namespace dtOO {
     std::string const &
   ) const;
   template
-  std::vector< constValue * > jsonPrimitive::lookup< std::vector< constValue * > >(
+  std::vector< constValue * > 
+  jsonPrimitive::lookup< std::vector< constValue * > >( 
     std::string const &
   ) const;
 
@@ -314,7 +326,12 @@ namespace dtOO {
   jsonPrimitive jsonPrimitive::append( 
     std::string const & str, T const & val 
   ) {
-    _json->operator[](str) = val;
+    if ( str.empty() ) {
+      to_json(*_json, val);
+    }
+    else {
+      to_json(_json->operator[](str), val);
+    }
     return *this;
   }
   template jsonPrimitive jsonPrimitive::append( 
@@ -356,8 +373,10 @@ namespace dtOO {
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< jsonPrimitive > const & val 
   );  
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, std::vector< analyticGeometry * > const & val
+  );  
 
- 
   ::nlohmann::json const & jsonPrimitive::json( void ) const {
     return *_json;
   }
