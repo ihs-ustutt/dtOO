@@ -51,6 +51,7 @@ namespace dtOO {
     private:
       dt__pH(::pugg::Kernel) _kernel;
   };
+  dt__I_addCloneForpVHNotImpl(dtPlugin);
 }
 #endif	/* dtPlugin_H */
 

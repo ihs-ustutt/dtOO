@@ -277,5 +277,6 @@ namespace dtOO {
   void dtTransformer::setKernel( ::pugg::Kernel * kernel ) {
     _kernel.reset( kernel );
   }  
+  dt__C_addCloneForpVH(dtTransformer);
 }
 

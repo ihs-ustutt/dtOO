@@ -46,6 +46,16 @@
   static dt__pH(name) PointerDownCast(dt__pH(castFrom) obj) { \
     return boost::dynamic_pointer_cast<name, castFrom>(obj); \
   } \
+  static dt__pVH(name) PointerVectorDownCast(dt__pVH(castFrom) obj) { \
+    dt__pVH(name) ret; \
+    while ( !obj.empty() ) { \
+      ret.push_back( \
+        dynamic_cast< name * >( obj.pop_back().release() ) \
+      ); \
+    } \
+    std::reverse(ret.base().begin(), ret.base().end()); \
+    return ret; \
+  } \
   static name * SecureCast(castFrom * obj) { \
     return dynamic_cast<name *>(obj); \
   } \
@@ -80,6 +90,11 @@
     type * new_clone( type const & aF ) { \
       return aF.clone(); \
     }
+  #define dt__I_addCloneForpVHNotImpl( type ) \
+    inline type * new_clone( type const & aF ) { \
+      dt__throwNoClass(new_clone(), << "Not implemented."); \
+    }
+
 
   #define dt__forAllIndex(vector, index) \
     for (int index = 0; index<((vector).size());index++)

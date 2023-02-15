@@ -337,4 +337,5 @@ namespace dtOO {
 	dtOCCSurfaceBase & dtOCCSurface::OCCRef( void ) {
 		return *(_surface.get());
 	}
+  dt__C_addCloneForpVH(dtOCCSurface);
 }

@@ -32,6 +32,7 @@ namespace dtOO {
     private:
 
   };
+  dt__I_addCloneForpVHNotImpl(dtMeshTransfinite2DOperator);
 }
 #endif	/* dtMeshTransfinite2DOperator_H */
 

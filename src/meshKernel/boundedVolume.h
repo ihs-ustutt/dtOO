@@ -68,6 +68,7 @@ namespace dtOO {
       bool _meshed;
       bool _preMeshed;
   };
+  dt__I_addCloneForpVHNotImpl(boundedVolume);
 }
 #endif	/* boundedVolume_H */
 

@@ -17,7 +17,7 @@ namespace dtOO {
     dtOCCBezierSurface();
     dtOCCBezierSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCBezierSurface();
-    virtual dtSurface * clone( void ) const;
+    virtual dtOCCBezierSurface * clone( void ) const;
 	  virtual dtCurve * segmentConstU( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const;
 	  virtual dtCurve * segmentConstV( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const;     
     virtual dtPoint3 controlPoint( dtInt const uI, dtInt const vI ) const;

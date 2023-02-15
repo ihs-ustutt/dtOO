@@ -443,7 +443,5 @@ namespace dtOO {
     return this->equal(*other);
   }
   
-  analyticGeometry * new_clone(analyticGeometry const & aG) {
-    return aG.clone();
-  }	
+  dt__C_addCloneForpVH(analyticGeometry);
 }

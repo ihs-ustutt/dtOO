@@ -22,4 +22,5 @@ namespace dtOO {
 		
 		return yy;
 	}
+  dt__C_addCloneForpVH(scaFunction);
 }

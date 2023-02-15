@@ -26,7 +26,7 @@ namespace dtOO {
 
 	}
 
-	dtSurface2d * dtOCCBSplineSurface2d::clone( void ) const {
+	dtOCCBSplineSurface2d * dtOCCBSplineSurface2d::clone( void ) const {
 		return new dtOCCBSplineSurface2d( OCCRef() );
 	}
 

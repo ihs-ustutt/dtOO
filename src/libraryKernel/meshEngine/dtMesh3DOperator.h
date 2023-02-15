@@ -31,9 +31,8 @@ namespace dtOO {
         labeledVectorHandling< dtMeshOperator * > const * const mO      
       );
       virtual void operator()( dtGmshRegion * dtgr ) = 0;    
-    private:
-
   };
+  dt__I_addCloneForpVHNotImpl(dtMesh3DOperator);
 }
 #endif	/* DTMESH3DOPERATOR_H */
 

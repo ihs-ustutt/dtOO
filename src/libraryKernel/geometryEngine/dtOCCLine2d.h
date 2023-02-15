@@ -18,7 +18,7 @@ namespace dtOO {
     dtOCCLine2d();
     dtOCCLine2d(dtOCCCurve2dBase const & orig);
     virtual ~dtOCCLine2d();
-    virtual dtCurve2d * clone( void ) const;
+    virtual dtOCCLine2d * clone( void ) const;
     virtual dtInt order( void ) const;
     virtual dtInt nControlPoints( void ) const;
     virtual dtPoint2 controlPoint( dtInt const nPoint ) const;

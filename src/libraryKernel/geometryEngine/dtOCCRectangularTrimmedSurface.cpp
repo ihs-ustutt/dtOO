@@ -26,7 +26,7 @@ namespace dtOO {
 
 	}
 
-	dtSurface * dtOCCRectangularTrimmedSurface::clone( void ) const {
+	dtOCCRectangularTrimmedSurface * dtOCCRectangularTrimmedSurface::clone( void ) const {
 		return new dtOCCRectangularTrimmedSurface( OCCRef() );
 	}
 

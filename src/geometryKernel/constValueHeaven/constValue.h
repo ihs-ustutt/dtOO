@@ -46,6 +46,7 @@ namespace dtOO {
       dtReal _value;
       bool _loadable;
   };
+  dt__H_addCloneForpVH(constValue);
 }
 #endif	/* constValue_H */
 

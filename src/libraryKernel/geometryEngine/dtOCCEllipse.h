@@ -18,7 +18,7 @@ namespace dtOO {
     dtOCCEllipse();
     dtOCCEllipse(dtOCCCurveBase const & orig);
     virtual ~dtOCCEllipse();
-    virtual dtCurve * clone( void ) const;
+    virtual dtOCCEllipse * clone( void ) const;
     virtual dtInt order( void ) const;
     virtual dtInt nControlPoints( void ) const;
     virtual dtPoint3 controlPoint( dtInt const nPoint ) const;

@@ -56,6 +56,7 @@ namespace dtOO {
       dtPoint3 apply(dtPoint3 const & pp) const;
       dtPoint3 retract(dtPoint3 const & toRetract) const;    
   };
+  dt__H_addCloneForpVH(dtTransformerInvThreeD);
 }
 
 #endif	/* dtTransformerInvThreeD_H */

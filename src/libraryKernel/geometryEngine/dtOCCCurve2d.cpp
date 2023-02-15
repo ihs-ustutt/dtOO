@@ -170,4 +170,5 @@ namespace dtOO {
 	dtOCCCurve2dBase const & dtOCCCurve2d::OCCRef( void ) const {
 		return *(_curve.get());
 	}
+  dt__C_addCloneForpVH(dtOCCCurve2d);
 }

@@ -20,7 +20,7 @@ namespace dtOO {
         dtOCCCurveBase const & cBase, dtOCCGeomFillBoundaryBase const & bBase
       );
       virtual ~dtOCCGeomFillBoundary();
-      virtual dtCurve * clone( void ) const = 0;
+      virtual dtOCCGeomFillBoundary * clone( void ) const = 0;
       virtual dtReal minPara( dtInt const & dir ) const = 0;
       virtual dtReal maxPara( dtInt const & dir ) const = 0;    
       virtual dtInt order( void ) const;
@@ -41,6 +41,7 @@ namespace dtOO {
       ptrHandling< dtOCCGeomFillBoundaryBase > _boundary;
       GeomFill_Boundary const * _ptr;
   };
+  dt__H_addCloneForpVH(dtOCCGeomFillBoundary);
 }
 #endif	/* dtOCCGeomFillBoundary_H */
 

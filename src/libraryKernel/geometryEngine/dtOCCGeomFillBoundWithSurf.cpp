@@ -27,7 +27,7 @@ namespace dtOO {
 	dtOCCGeomFillBoundWithSurf::~dtOCCGeomFillBoundWithSurf() {
 	}
 
-  dtCurve * dtOCCGeomFillBoundWithSurf::clone( void ) const {
+  dtOCCGeomFillBoundWithSurf * dtOCCGeomFillBoundWithSurf::clone( void ) const {
 		return new dtOCCGeomFillBoundWithSurf( OCCRef(), OCCBoundaryRef() );
 	}
   

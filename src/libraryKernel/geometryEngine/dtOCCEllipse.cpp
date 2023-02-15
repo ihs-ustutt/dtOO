@@ -21,7 +21,7 @@ namespace dtOO {
 	dtOCCEllipse::~dtOCCEllipse() {
 	}
 
-  dtCurve * dtOCCEllipse::clone( void ) const {
+  dtOCCEllipse * dtOCCEllipse::clone( void ) const {
 		return new dtOCCEllipse( OCCRef() );		
 	}
 	

@@ -97,4 +97,5 @@ namespace dtOO {
   ) {
     
   }
+  dt__C_addCloneForpVH(constValue);
 }

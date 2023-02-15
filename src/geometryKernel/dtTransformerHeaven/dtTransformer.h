@@ -113,6 +113,7 @@ namespace dtOO {
       jsonPrimitive _config;
       dt__pH(::pugg::Kernel) _kernel;
   };
+  dt__H_addCloneForpVH(dtTransformer);
 }
 
 #endif	/* DTTRANSFORMER_H */

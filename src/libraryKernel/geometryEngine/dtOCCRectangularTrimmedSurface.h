@@ -15,7 +15,7 @@ namespace dtOO {
     dtOCCRectangularTrimmedSurface();
     dtOCCRectangularTrimmedSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCRectangularTrimmedSurface();
-    virtual dtSurface * clone( void ) const;
+    virtual dtOCCRectangularTrimmedSurface * clone( void ) const;
 	  virtual dtCurve * segmentConstU( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const;
 	  virtual dtCurve * segmentConstV( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const;     
   private:

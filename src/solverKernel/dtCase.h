@@ -53,6 +53,7 @@ namespace dtOO {
       std::vector< std::string > _state;
       std::vector< dtInt > _status;
   };
+  dt__I_addCloneForpVHNotImpl(dtCase);
 }
 #endif	/* dtCase_H */
 

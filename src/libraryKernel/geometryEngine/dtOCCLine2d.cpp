@@ -20,7 +20,7 @@ namespace dtOO {
 	dtOCCLine2d::~dtOCCLine2d() {
 	}
 
-  dtCurve2d * dtOCCLine2d::clone( void ) const {
+  dtOCCLine2d * dtOCCLine2d::clone( void ) const {
 		return new dtOCCLine2d( OCCRef() );		
 	}
 	

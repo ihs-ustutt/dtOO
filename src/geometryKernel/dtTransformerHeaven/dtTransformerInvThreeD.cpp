@@ -85,5 +85,6 @@ namespace dtOO {
   ) const {
 		return retract(&pp);
 	}  
+  dt__C_addCloneForpVH(dtTransformerInvThreeD);
 }
 

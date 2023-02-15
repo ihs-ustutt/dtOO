@@ -15,7 +15,7 @@ namespace dtOO {
     dtOCCSurfaceOfRevolution();
     dtOCCSurfaceOfRevolution(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCSurfaceOfRevolution();
-    virtual dtSurface * clone( void ) const;
+    virtual dtOCCSurfaceOfRevolution * clone( void ) const;
 	  virtual dtCurve * segmentConstU( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const;
 	  virtual dtCurve * segmentConstV( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const;     
   private:

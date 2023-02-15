@@ -21,7 +21,7 @@ namespace dtOO {
 	dtOCCCircle::~dtOCCCircle() {
 	}
 
-  dtCurve * dtOCCCircle::clone( void ) const {
+  dtOCCCircle * dtOCCCircle::clone( void ) const {
 		return new dtOCCCircle( OCCRef() );		
 	}
 	

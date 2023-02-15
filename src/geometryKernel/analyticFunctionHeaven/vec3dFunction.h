@@ -9,15 +9,17 @@
 
 namespace dtOO {
   class vec3dFunction : public analyticFunction {
-  public:
-    dt__class(vec3dFunction, analyticFunction);     
-    vec3dFunction();
-    vec3dFunction(const vec3dFunction& orig);
-    virtual ~vec3dFunction();
-    virtual dtInt yDim( void ) const;    
-    dtPoint3 YdtPoint3(aFX const & xx) const;
-    virtual bool closed( dtInt const & dir ) const = 0;
+    public:
+      dt__class(vec3dFunction, analyticFunction);     
+      vec3dFunction();
+      vec3dFunction(const vec3dFunction& orig);
+      virtual vec3dFunction * clone( void ) const = 0;
+      virtual ~vec3dFunction();
+      virtual dtInt yDim( void ) const;    
+      dtPoint3 YdtPoint3(aFX const & xx) const;
+      virtual bool closed( dtInt const & dir ) const = 0;
   };
+  dt__H_addCloneForpVH(vec3dFunction);
 }
 #endif	/* VEC3DFUNCTION_H */
 
