@@ -93,6 +93,11 @@ if (NOT FOAMEXT_FOUND)
         COMPONENTS 
         mixingPlane
       )
+      find_package(
+	OpenFOAMMappedFieldFixedValue
+        COMPONENTS
+	mappedFieldFixedValue
+      )
   endif (OpenFOAM_FOUND)
 endif (NOT FOAMEXT_FOUND)
 
@@ -249,6 +254,9 @@ else (FOAMEXT_FOUND)
     if (OpenFOAMMixingPlane_FOUND)
       include_directories( ${OpenFOAMMixingPlane_INCLUDE_DIR} )
     endif (OpenFOAMMixingPlane_FOUND)
+    if (OpenFOAMMappedFieldFixedValue_FOUND)
+      include_directories( ${OpenFOAMMappedFieldFixedValue_INCLUDE_DIR} )
+    endif (OpenFOAMMappedFieldFixedValue_FOUND)
   endif (OpenFOAM_FOUND)
 endif (FOAMEXT_FOUND)
 
@@ -410,6 +418,18 @@ if (OpenFOAM_FOUND)
       _rpathList "${_rpathList};${OpenFOAMMixingPlane_LINK_DIRECTORY}"
     )      
     endif (OpenFOAMMixingPlane_FOUND)
+    if (OpenFOAMMappedFieldFixedValue_FOUND)
+    target_link_libraries(
+      dtOO
+      ${OpenFOAMMappedFieldFixedValue_LIBRARIES}
+    )
+    set(
+      _configLibList "${_configLibList};${OpenFOAMMappedFieldFixedValue_LIBRARIES}"
+    )
+    set(
+      _rpathList "${_rpathList};${OpenFOAMMappedFieldFixedValue_LINK_DIRECTORY}"
+    )
+    endif (OpenFOAMMappedFieldFixedValue_FOUND)
 endif (OpenFOAM_FOUND)
 
 if (MPI_FOUND)
