@@ -13,6 +13,7 @@
 
 #include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
 #include "bVOInterfaceFactory.h"
+#include <logMe/dtMacros.h>
 
 namespace dtOO {  
   bool bVOAnalyticGeometryToFace::_registrated 
@@ -27,7 +28,23 @@ namespace dtOO {
   bVOAnalyticGeometryToFace::~bVOAnalyticGeometryToFace() {
     
   }
-  
+ 
+  void bVOAnalyticGeometryToFace::jInit( 
+    jsonPrimitive const & jE,
+		baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    boundedVolume * attachTo
+  ) {
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
+
+    _m2d = map2dTo3d::PointerVectorDownCast(
+      jE.lookupVecClone< analyticGeometry >("", aG)
+    );
+  }  
+
   void bVOAnalyticGeometryToFace::bVOAnalyticGeometryToFace::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
@@ -50,18 +67,22 @@ namespace dtOO {
 //				"
 //				increase_tolerance="1000."
 //			/>								
-
-    _inc 
-    = 
-    dtXmlParserBase::getAttributeFloatMuParse(
-      "increase_tolerance", element, cV, aF, 1.
+    jsonPrimitive config;
+    config.append<dtReal>(
+      "_inc",
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "increase_tolerance", element, cV, aF, 1.
+      )
     );
+    std::vector< analyticGeometry * > geos;
     dt__forAllRefAuto(
       qtXmlBase::getAttributeStrVector("analyticGeometry", element),
       anEl
     ) {
-      _m2d.push_back( map2dTo3d::MustConstDownCast(aG->get(anEl))->clone() );
+      geos.push_back( aG->get(anEl) ); 
     }
+    config.append< std::vector< analyticGeometry * > >("", geos);
+    bVOAnalyticGeometryToFace::jInit( config, bC, cV, aF, aG, bV, attachTo );
   }
   
   void bVOAnalyticGeometryToFace::preUpdate( void ) {
@@ -104,7 +125,12 @@ namespace dtOO {
           //
           // increase if in precision
           //
-          if ( analyticGeometry::inXYZTolerance( dist, _inc ) ) {
+          if ( 
+            analyticGeometry::inXYZTolerance( 
+              dist, 
+              config().lookupDef<dtReal>("_inc", 1.0) 
+            ) 
+          ) {
             inTol++;
           }
           // break if at least one point is not on the surface
