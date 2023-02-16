@@ -165,10 +165,16 @@
                 writeControl    writeTime;
                 }
         };
+        
+        mappedFieldFixedValue
+        {
+            pathToData      &quot;../boundaryData_RU_INLET/{ii}/boundaryData&quot;;
+        }
 
         libs (
                                                 &quot;libsimpleFunctionObjects.so&quot;
                                                 &quot;libsimpleSwakFunctionObjects.so&quot;
+                                                &quot;libmappedFieldFixedValue.so&quot;
                                         );
                 }
 
@@ -200,7 +206,7 @@
                                                 default           none;
                                                 div(phi,U)        Gauss linearUpwindV cellLimited Gauss linear 0.33;
                                                 div(phi,k)        Gauss upwind;
-                                                div(phi,epsilon)  Gauss upwind;
+                                                div(phi,omega)  Gauss upwind;
                                                 div((nuEff*dev(grad(U).T()))) Gauss linear;
                                                 div((nuEff*dev2(T(grad(U))))) Gauss linear;
                                         }
@@ -226,6 +232,12 @@
                                                 default         no;
                                                 p;
                                         }
+                        
+                                        wallDist
+                                        {
+                                            method          meshWave;
+                                        }
+
 
         }
 
@@ -255,7 +267,7 @@
                                                         tolerance        1e-08;
                                                         relTol           0.0;
                                                 };
-                                                epsilon
+                                                omega
                                                 {
                                                         solver           PBiCGStab;
                                                         preconditioner   DILU;
@@ -268,7 +280,7 @@
                                                 p               0.3;
                                                 U               0.7;
                                                 k               0.7;
-                                                epsilon         0.7;
+                                                omega           0.7;
                                         }
                                         SIMPLE
                                         {
@@ -291,7 +303,7 @@
                         simulationType        RAS;
 
                         RAS {
-                                RASModel            kEpsilon;
+                                RASModel            kOmegaSST;
                                 turbulence          on;
                                 printCoeffs         on;
                                 }
@@ -325,9 +337,9 @@
                                 }
                                 {
                                         :volScalarField:
-                                        :epsilon:
-                                        :[0 2 -3 0 0 0 0]:
-                                        :`#cV_Cmu#*((3./2.) * (#cV_U_{ii}# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`:
+                                        :omega:
+                                        :[0 0 -1 0 0 0 0]:
+                                        :`((3./2.) * (#cV_U_{ii}# * #cV_I#)^2)^(1./2.) / (0.038 * #cV_L#)`:
                                 }
                                 {
                                         :volScalarField::nut::[0 2 -1 0 0 0 0]:
@@ -340,26 +352,33 @@
                                         :ofOpenFOAMEmptyRule:::::
                                 }
                         {
-                                        :ofOpenFOAMWallRule::RU_INLET:::
-                                        :U::fixedValue(value uniform (0 0 #cV_U_{ii}#);):
-                                        :p::zeroGradient(value uniform 0;):
-                                        :k::turbulentIntensityKineticEnergyInlet(
-                                                        intensity      #cV_I#;
-                                                        value          uniform `(3./2.) * (#cV_U_{ii}# * #cV_I#)^2`;
+                                        :ofOpenFOAMMappedFieldFixedValueRule::RU_INLET:::
+                                        :U::mappedFieldFixedValue(
+                                                        offset          (0 0 0);
+                                                        setAverage      0;
+                                                        scaleVolumeFlow
+                                                        {
+                                                            normalVelocity  #cV_U_{ii}#;
+                                                        }
                                                 ):
-                                        :epsilon::turbulentMixingLengthDissipationRateInlet(
-                                                        mixingLength `0.038 * #cV_L#`;
-                                                        value uniform `#cV_Cmu#*((3./2.) * (#cV_U_{ii}# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`;
+                                        :p::zeroGradient(value uniform 0;):
+                                        :k::mappedFieldFixedValue(
+                                                        offset          0;
+                                                        setAverage      off;
+                                                ):
+                                        :omega::mappedFieldFixedValue(
+                                                        offset          0;
+                                                        setAverage      off;
                                                 ):
                                 }
                 {
-                                        :ofOpenFOAMWallRule::RU_OUTLET:::
+                                        :ofOpenFOAMSetupRule::RU_OUTLET:::
                                         :U::zeroGradient(value uniform (0 0 4);):
                                         :p::fixedValue(value uniform 0;):
                                         :k::zeroGradient(
                                                         value          uniform 0.;
                                                 ):
-                                        :epsilon::zeroGradient(
+                                        :omega::zeroGradient(
                                                         value uniform 0.;
                                                 ):
                                 }
@@ -368,10 +387,11 @@
                                         :U::fixedValue(value uniform (0 0 0);):
                                         :p::zeroGradient(value uniform 0;):
                                         :k::kqRWallFunction(value uniform 0;):
-                                        :epsilon::epsilonWallFunction(
+                                        :omega::omegaWallFunction(
                                                                 U        U;
                                                                 refValue uniform 0.0;
-                                                                value    uniform `#cV_Cmu#*((3./2.) * (#cV_U_{ii}# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`;
+                                                                blending        stepwise;
+                                                                value    uniform `((3./2.) * (#cV_U_{ii}# * #cV_I#)^2)^(1./2.) / (0.038 * #cV_L#)`;
                                                 ):
                                         :nut::nutkWallFunction(value uniform 0.0;):
                                 }
@@ -380,10 +400,11 @@
                                         :U::fixedValue(value uniform (0 0 0);):
                                         :p::zeroGradient(value uniform 0;):
                                         :k::kqRWallFunction(value uniform 0;):
-                                        :epsilon::epsilonWallFunction(
+                                        :omega::omegaWallFunction(
                                                                 U        U;
                                                                 refValue uniform 0.0;
-                                                                value    uniform `#cV_Cmu#*((3./2.) * (#cV_U_{ii}# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`;
+                                                                blending        stepwise;
+                                                                value    uniform `((3./2.) * (#cV_U_{ii}# * #cV_I#)^2)^(1./2.) / (0.038 * #cV_L#)`;
                                                 ):
                                         :nut::nutkWallFunction(value uniform 0.0;):
                                 }
@@ -392,10 +413,11 @@
                                         :U::fixedValue(value uniform (0 0 0);):
                                         :p::zeroGradient(value uniform 0;):
                                         :k::kqRWallFunction(value uniform 0;):
-                                        :epsilon::epsilonWallFunction(
+                                        :omega::omegaWallFunction(
                                                                 U        U;
                                                                 refValue uniform 0.0;
-                                                                value    uniform `#cV_Cmu#*((3./2.) * (#cV_U_{ii}# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`;
+                                                                blending        stepwise;
+                                                                value    uniform `((3./2.) * (#cV_U_{ii}# * #cV_I#)^2)^(1./2.) / (0.038 * #cV_L#)`;
                                                 ):
                                         :nut::nutkWallFunction(value uniform 0.0;):
                                 }
