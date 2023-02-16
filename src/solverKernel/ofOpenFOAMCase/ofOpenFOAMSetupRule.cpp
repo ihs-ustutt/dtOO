@@ -13,6 +13,7 @@
 #include <fixedValueFvPatchField.H>
 #include <zeroGradientFvPatchField.H>
 #include <epsilonWallFunctionFvPatchScalarField.H>
+#include <omegaWallFunctionFvPatchScalarField.H>
 #include <kqRWallFunctionFvPatchField.H>
 #include <nutkWallFunctionFvPatchScalarField.H>
 #include <turbulentIntensityKineticEnergyInletFvPatchScalarField.H>
@@ -420,7 +421,27 @@ namespace dtOO {
           );
           
           return;          
-        }      
+        }
+        else if ( 
+          stringPrimitive::stringContains(
+            "omegaWallFunction",
+            stringPrimitive::getStringBetween("", "(", thisRule)
+          )                
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::omegaWallFunctionFvPatchScalarField(
+                field.mesh().boundary()[i], 
+                field, 
+                parseOptionDict("omegaWallFunction", thisRule)
+            ) 
+          );
+          
+          return;          
+        }
         else if ( 
           stringPrimitive::stringContains(
             "nutkWallFunction",
