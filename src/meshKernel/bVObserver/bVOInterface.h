@@ -53,6 +53,7 @@ namespace dtOO {
       jsonPrimitive _config;
       boundedVolume * _bV;
   };
+  dt__I_addCloneForpVHNotImpl(bVOInterface);
 }
 #endif	/* BVOINTERFACE_H */
 
