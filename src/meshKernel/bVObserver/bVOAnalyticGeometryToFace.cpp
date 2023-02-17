@@ -67,8 +67,8 @@ namespace dtOO {
 //				"
 //				increase_tolerance="1000."
 //			/>								
-    jsonPrimitive config;
-    config.append<dtReal>(
+    jsonPrimitive jE;
+    jE.append<dtReal>(
       "_inc",
       dtXmlParserBase::getAttributeFloatMuParse(
         "increase_tolerance", element, cV, aF, 1.
@@ -81,8 +81,8 @@ namespace dtOO {
     ) {
       geos.push_back( aG->get(anEl) ); 
     }
-    config.append< std::vector< analyticGeometry * > >("", geos);
-    bVOAnalyticGeometryToFace::jInit( config, bC, cV, aF, aG, bV, attachTo );
+    jE.append< std::vector< analyticGeometry * > >("", geos);
+    bVOAnalyticGeometryToFace::jInit( jE, bC, cV, aF, aG, bV, attachTo );
   }
   
   void bVOAnalyticGeometryToFace::preUpdate( void ) {
