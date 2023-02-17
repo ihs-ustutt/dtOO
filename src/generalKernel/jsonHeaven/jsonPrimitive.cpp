@@ -379,6 +379,9 @@ namespace dtOO {
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< dtInt > const & val 
   );
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, std::vector< dtReal > const & val 
+  );
 
   ::nlohmann::json const & jsonPrimitive::json( void ) const {
     return *_json;
