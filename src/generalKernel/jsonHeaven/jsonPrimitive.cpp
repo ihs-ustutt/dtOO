@@ -336,28 +336,28 @@ namespace dtOO {
   }
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::string const & val 
-  );  
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtReal const & val 
-  );  
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtInt const & val 
-  );  
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, bool const & val 
-  );    
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, jsonPrimitive const & val
-  );      
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtPoint2 const & val
-  );  
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtVector2 const & val
   );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtPoint3 const & val
-  );    
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, dtVector3 const & val
   );
@@ -366,16 +366,19 @@ namespace dtOO {
   );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, analyticGeometry const * const & val
-  );  
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< std::string > const & val 
-  );  
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< jsonPrimitive > const & val 
-  );  
+  ); 
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< analyticGeometry * > const & val
-  );  
+  );
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, std::vector< dtInt > const & val 
+  );
 
   ::nlohmann::json const & jsonPrimitive::json( void ) const {
     return *_json;
