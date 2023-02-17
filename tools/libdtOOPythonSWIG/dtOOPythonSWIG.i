@@ -209,6 +209,8 @@ namespace dtOO {
 #include <bVObserver/bVOInterface.h>
 #include <bVObserver/bVOSubject.h>
 #include <boundedVolume.h>
+#include <bVObserver/bVONameRegions.h>
+#include <bVObserver/bVOAnalyticGeometryToFace.h>
 #include <gmshBoundedVolume.h>
 #include <map3dTo3dGmsh.h>
 #include <dtCase.h>
@@ -364,6 +366,8 @@ namespace dtOO {
 %include bVObserver/bVOInterface.h
 %include bVObserver/bVOSubject.h
 %include boundedVolume.h
+%include bVObserver/bVONameRegions.h
+%include bVObserver/bVOAnalyticGeometryToFace.h
 %include gmshBoundedVolume.h
 %include map3dTo3dGmsh.h
 %include dtCase.h
