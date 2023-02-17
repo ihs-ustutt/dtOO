@@ -20,7 +20,7 @@ namespace dtOO {
       virtual ~bVONameRegions();
       void jInit( 
         jsonPrimitive const & jE,
-    		baseContainer const * const bC,
+        baseContainer const * const bC,
         lvH_constValue const * const cV,
         lvH_analyticFunction const * const aF,
         lvH_analyticGeometry const * const aG,

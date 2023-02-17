@@ -33,15 +33,7 @@ namespace dtOO {
     lvH_boundedVolume const * const bV,
     boundedVolume * attachTo
   ) {
-    //
-    // init bVOInterface
-    //
     bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
-    //_bV = attachTo;
-    dt__info(
-      jInit(), 
-      << this->config().lookup< std::vector< std::string > >("_regionLabel")
-    );
   }  
  
   void bVONameRegions::bVONameRegions::init( 
