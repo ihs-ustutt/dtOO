@@ -24,18 +24,6 @@ namespace dtOO {
     
   }
  
-  void bVONameRegions::jInit( 
-    jsonPrimitive const & jE,
-		baseContainer const * const bC,
-    lvH_constValue const * const cV,
-    lvH_analyticFunction const * const aF,
-    lvH_analyticGeometry const * const aG,
-    lvH_boundedVolume const * const bV,
-    boundedVolume * attachTo
-  ) {
-    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
-  }  
- 
   void bVONameRegions::bVONameRegions::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
@@ -56,12 +44,12 @@ namespace dtOO {
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-    jsonPrimitive config;
-    config.append<std::vector<std::string>>(
+    jsonPrimitive jE;
+    jE.append<std::vector<std::string>>(
       "_regionLabel", 
    		dtXmlParserBase::getAttributeStrVector("regionLabel", element)
     );
-    bVONameRegions::jInit(config, bC, cV, aF, aG, bV, attachTo);
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVONameRegions::preUpdate( void ) {
