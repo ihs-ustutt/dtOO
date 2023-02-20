@@ -599,7 +599,7 @@ namespace dtOO {
   }
 
   void dtGmshFace::setGrading(
-    std::vector< dtReal > const & grading, std::vector< dtReal > & type
+    std::vector< dtReal > const & grading, const std::vector< dtReal > & type
   ) {
     dt__throwIf(grading.size() != 4, setGrading());
     dt__throwIf(type.size() != 4, setGrading());

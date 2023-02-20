@@ -82,7 +82,7 @@ namespace dtOO {
     void addGEntity( ::GEntity * const gEnt );
     std::string getPhysicalString( void ) const;
     void setGrading( 
-      std::vector< dtReal > const & grading, std::vector< dtReal > & type
+      std::vector< dtReal > const & grading, const std::vector< dtReal > & type
     );
     std::list< dtGmshVertex * > dtVertices( void ) const;   
     std::list< dtGmshEdge * > dtEdges( void ) const;     

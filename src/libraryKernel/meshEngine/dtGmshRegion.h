@@ -54,7 +54,7 @@ namespace dtOO {
       ::GFace const * const toReplace, ::GFace * const with     
     );
     void setGrading( 
-      std::vector< dtReal > const & grading, std::vector< dtReal > & type 
+      std::vector< dtReal > const & grading, const std::vector< dtReal > & type 
     );
     std::list< dtGmshFace const * > constFaceList(
       std::vector< std::string > const & label
