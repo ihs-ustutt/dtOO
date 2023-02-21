@@ -8,6 +8,7 @@
 #include <dtLinearAlgebra.h>
 
 #include <constValueHeaven/constValue.h>
+#include <dtTransformerHeaven/dtTransformer.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 
@@ -83,6 +84,9 @@ namespace dtOO {
   void to_json(::nlohmann::json& to, analyticGeometry const * const & from) {
     to["analyticGeometry"]["label"] = from->getLabel();
   };
+  void to_json(::nlohmann::json& to, dtTransformer const * const & from) {
+    to["dtTransformer"]["label"] = from->getLabel();
+  };      
   void to_json(
     ::nlohmann::json& to, std::vector< analyticGeometry * > const & from
   ) {
@@ -244,7 +248,24 @@ namespace dtOO {
     std::string const & str, 
     labeledVectorHandling< analyticGeometry * > const * const ptrVec
   ) const;
-   // template lookupClone
+  template
+  dt__pH(dtTransformer) jsonPrimitive::lookupClone( 
+    std::string const & str, 
+    labeledVectorHandling< dtTransformer * > const * const ptrVec
+  ) const;
+  template < typename T > 
+  dt__pH(T) jsonPrimitive::lookupClone( 
+    std::string const & str, const labeledVectorHandling< T * > & ptrRef
+  ) const {
+    return this->lookupClone< T >(str, &ptrRef);
+  }
+  template
+  dt__pH(dtTransformer) jsonPrimitive::lookupClone( 
+    std::string const & str, 
+    const labeledVectorHandling< dtTransformer * > & ptrRef
+  ) const;
+
+  // template lookupVecClone
   template < typename T > 
   dt__pVH(T) jsonPrimitive::lookupVecClone( 
     std::string const & str, labeledVectorHandling< T * > const * const ptrVec
@@ -381,6 +402,9 @@ namespace dtOO {
   );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< dtReal > const & val 
+  );
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, dtTransformer const * const & val
   );
 
   ::nlohmann::json const & jsonPrimitive::json( void ) const {
