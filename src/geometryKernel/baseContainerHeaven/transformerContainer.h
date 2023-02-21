@@ -21,7 +21,9 @@ namespace dtOO {
       dtTransformer const * get( std::string const string ) const;
       bool has(std::string const string) const;
       bool isEmpty( void ) const;
-      std::vector< std::string > labels( void ) const;    
+      std::vector< std::string > labels( void ) const;
+      labeledVectorHandling< dtTransformer * > & lVH( void );
+      const labeledVectorHandling< dtTransformer * > & lVH( void ) const;
     private:
       labeledVectorHandling< dtTransformer * > _dtT;
   };
