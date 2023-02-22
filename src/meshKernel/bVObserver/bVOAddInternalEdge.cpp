@@ -42,16 +42,19 @@ namespace dtOO {
     // init bVOInterface
     //
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
-    
+        
 		// <bVObserver 
 		//   name="bVOAddInternalEdge" 
 		//   regionLabel="name0"
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_regionLabel
-		= 
-		dtXmlParserBase::getAttributeStr("regionLabel", element);
+    jsonPrimitive jE;
+		jE.append< std::string >(
+      "_regionLabel",
+      dtXmlParserBase::getAttributeStr("regionLabel", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOAddInternalEdge::preUpdate( void ) {
@@ -62,7 +65,11 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
     
-    dtGmshRegion * const gr = gm->getDtGmshRegionByPhysical(_regionLabel);
+    dtGmshRegion * const gr 
+    = 
+    gm->getDtGmshRegionByPhysical(
+      config().lookup< std::string >("_regionLabel")
+    );
     
     std::vector< dtGmshFace * > fV = progHelper::list2Vector( gr->dtFaces() );
     

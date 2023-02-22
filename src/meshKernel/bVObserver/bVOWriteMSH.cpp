@@ -42,19 +42,18 @@ namespace dtOO {
 //		<bVObserver name="bVOWriteMSH" 
 //		  filename="mesh.msh"
 //		  saveAll="false"
-//		/>									
-		_filename 
-		= 
-		qtXmlBase::getAttributeStr("filename", element);		
+//		/>
+		jsonPrimitive jE;
+		jE.append< std::string >(
+      "_filename",
+		  qtXmlBase::getAttributeStr("filename", element)
+    );		
     
-    _saveAll = false;
-    if (qtXmlBase::hasAttribute("saveAll", element)) {
-      _saveAll = qtXmlBase::getAttributeBool("saveAll", element);
-    }
-    _saveParametric = false;
-//    if (qtXmlBase::hasAttribute("saveParametric", element)) {
-//      _saveParametric = qtXmlBase::getAttributeBool("saveParametric", element);
-//    } 
+    jE.append< bool >(  
+      "_saveAll",
+      qtXmlBase::getAttributeBool("saveAll", element, false)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOWriteMSH::postUpdate( void ) {
@@ -75,7 +74,7 @@ namespace dtOO {
       //
       // create filename string if empty
       //
-      std::string cFileName = _filename;
+      std::string cFileName = config().lookup< std::string >("_filename");
       if ( cFileName == "" ) {
         cFileName 
         = 
@@ -87,17 +86,19 @@ namespace dtOO {
         +
         ".msh";
       }
-//      else dt__throwUnexpected(postUpdate);
       
       dt__info(
         postUpdate(),
         << "Write >" << cFileName << "<." << std::endl
-        << dt__eval(_saveAll) << std::endl
-        << dt__eval(_saveParametric)
+        << dt__eval(config().lookup< bool >("_saveAll"))
       );
       
 		  ptrBoundedVolume()->getModel()->writeMSH(
-        cFileName, 2.2, false, _saveAll, _saveParametric
+        cFileName, 
+        2.2, 
+        false, 
+        config().lookup< bool >("_saveAll"), 
+        false
       );
     }
   }

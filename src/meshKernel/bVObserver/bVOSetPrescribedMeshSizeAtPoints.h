@@ -29,7 +29,6 @@ namespace dtOO {
       );    
       virtual void preUpdate( void );
     private:
-      std::vector< dtReal > _meshSize;
       static bool _registrated;
   };
 }

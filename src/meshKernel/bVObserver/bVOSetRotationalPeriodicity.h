@@ -19,6 +19,15 @@ namespace dtOO {
       dt__classSelfCreate(bVOSetRotationalPeriodicity);
       bVOSetRotationalPeriodicity();
       virtual ~bVOSetRotationalPeriodicity();
+      void jInit( 
+        jsonPrimitive const & jE,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        boundedVolume * attachTo
+      );  
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -30,9 +39,7 @@ namespace dtOO {
       );    
       virtual void preUpdate( void );
     private:
-      std::string _faceMaster;
-      std::string _faceSlave;
-      xYz_rPhiZ const * _dtT;
+      dt__pH(xYz_rPhiZ) _dtT;
       static bool _registrated;
   };
 }

@@ -25,7 +25,7 @@ namespace dtOO {
     
   }
   
-  void bVOOrientCellVolumes::bVOOrientCellVolumes::init( 
+  void bVOOrientCellVolumes::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,
@@ -40,9 +40,12 @@ namespace dtOO {
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
     
 //		<bVObserver name="bVOOrientCellVolumes" positive="true"/>									
-		_positive
-		= 
-		qtXmlBase::getAttributeBool("positive", element);		
+    jsonPrimitive jE;
+    jE.append< bool >(
+		  "_positive",
+		  qtXmlBase::getAttributeBool("positive", element)
+    );		
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOOrientCellVolumes::postUpdate( void ) {
@@ -65,7 +68,7 @@ namespace dtOO {
     //
     std::list< GRegion * > reg = gm->regions();
     dt__forAllConstIter(std::list< GRegion * >, reg, it) {
-      if (_positive) {
+      if ( config().lookup< bool >("_positive") ) {
         dt__forFromToIndex( 0, (*it)->getNumMeshElements(), ii) {
           gCount++;
           if ( (*it)->getMeshElement(ii)->getVolume() < 0.) {
@@ -92,7 +95,7 @@ namespace dtOO {
     }
     dt__info(
       postUpdate(), 
-      << " _positive = " << _positive << std::endl
+      << " _positive = " << config().lookup< bool >("_positive") << std::endl
       << "Number of cells: " << gCount << std::endl
       << "Positive number of cells: " << pCount << std::endl
       << "Negative number of cells: " << nCount

@@ -15,6 +15,7 @@
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include "bVOInterfaceFactory.h"
+#include "jsonHeaven/jsonPrimitive.h"
 
 namespace dtOO {  
   bool bVOReadMSH::_registrated 
@@ -46,9 +47,17 @@ namespace dtOO {
     
 //		<bVObserver name="bVOReadMSH" 
 //		  filename="mesh.msh"
-//		/>									
-		_filename = qtXmlBase::getAttributeStr("filename", element);		
-    _mustRead = qtXmlBase::getAttributeBool("mustRead", element);		
+//		/>
+  	jsonPrimitive jE;
+    jE.append< std::string >(
+      "_filename",
+      qtXmlBase::getAttributeStr("filename", element)
+    );		
+    jE.append< bool >(
+      "_mustRead",
+      qtXmlBase::getAttributeBool("mustRead", element)
+    );		
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOReadMSH::preUpdate( void ) {
@@ -69,7 +78,7 @@ namespace dtOO {
       //
       // create filename string if empty
       //
-      std::string cFileName = _filename;
+      std::string cFileName = config().lookup< std::string >("_filename");
       if ( cFileName == "" ) {
         cFileName 
         = 
@@ -81,13 +90,16 @@ namespace dtOO {
         +
         ".msh";
       }
-//      else dt__throwUnexpected(preUpdate);
       
-      if ( !systemHandling::fileExists(cFileName) && !_mustRead ) {
+      if ( 
+        !systemHandling::fileExists(cFileName) 
+        && 
+        !config().lookup< bool >("_mustRead") 
+      ) {
         dt__info(
           preUpdate(), 
           << "No file >" << cFileName << "<. Do not read!" << std::endl
-          << "mustRead = " << _mustRead
+          << "mustRead = " << config().lookup< bool >("_mustRead") 
         );
         return;
       }

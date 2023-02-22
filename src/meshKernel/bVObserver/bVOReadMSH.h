@@ -28,9 +28,6 @@ namespace dtOO {
       );    
       virtual void preUpdate( void );
     private:
-      std::string _filename;
-  //    bool _saveAll;
-      bool _mustRead;
       static bool _registrated;      
   };
 }

@@ -28,7 +28,6 @@ namespace dtOO {
       );    
       virtual void postUpdate( void );
     private:
-      bool _positive;
       static bool _registrated;
   };
 }

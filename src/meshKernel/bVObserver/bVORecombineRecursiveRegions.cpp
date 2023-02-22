@@ -44,9 +44,12 @@ namespace dtOO {
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_regionLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("regionLabel", element);
+    jsonPrimitive jE;
+    jE.append< std::vector< std::string > >(
+      "_regionLabel",
+  		dtXmlParserBase::getAttributeStrVector("regionLabel", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVORecombineRecursiveRegions::preUpdate( void ) {
@@ -57,8 +60,10 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
     
-    dt__forAllConstIter(std::vector< std::string >, _regionLabel, rLIt) {
-      gm->getDtGmshRegionByPhysical(*rLIt)->meshRecombineRecursive();
+    dt__forAllRefAuto(
+        config().lookup< std::vector< std::string > >("_regionLabel"), aReg
+    ) {
+      gm->getDtGmshRegionByPhysical(aReg)->meshRecombineRecursive();
     }
   }
 }

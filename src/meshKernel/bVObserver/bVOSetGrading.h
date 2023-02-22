@@ -29,11 +29,6 @@ namespace dtOO {
       );    
       virtual void preUpdate( void );
     private:
-      std::vector< std::string > _regionLabel;    
-      std::vector< std::string > _faceLabel;
-      std::vector< std::string > _edgeLabel;
-      std::vector< dtReal > _grading;
-      std::vector< dtReal > _type;
       static bool _registrated;
   };
 }

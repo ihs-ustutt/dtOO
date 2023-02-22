@@ -29,7 +29,6 @@ namespace dtOO {
       );    
       virtual void preUpdate( void );
     private:
-      std::vector< std::string > _regionLabel;
       static bool _registrated;      
   };
 }

@@ -30,7 +30,7 @@ namespace dtOO {
       virtual void postUpdate( void );
       using bVOInterface::postUpdate;
     private:
-      std::vector< std::string > _label;
+//      std::vector< std::string > _label;
       static bool _registrated;
   };
 }

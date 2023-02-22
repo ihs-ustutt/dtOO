@@ -20,6 +20,15 @@ namespace dtOO {
       dt__classSelfCreate(bVOSetPrescribedFirstElementSize);
       bVOSetPrescribedFirstElementSize();
       virtual ~bVOSetPrescribedFirstElementSize();
+       void jInit( 
+        jsonPrimitive const & jE,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        boundedVolume * attachTo
+      );  
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -32,9 +41,7 @@ namespace dtOO {
       virtual void preUpdate( void );
       double F( double const * xx );
     private:
-      dtInt _type;
       analyticFunctionCompoundTrojanHorse< scaOneDPolyInterface > _grading;
-      dtReal _firstElementSize;
       dt__pH(scaOneDPolyInterface) _polyI;
       dtReal _ll;
       dtReal _checkX;

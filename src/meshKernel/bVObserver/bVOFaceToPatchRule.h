@@ -29,8 +29,6 @@ namespace dtOO {
       );    
       virtual void postUpdate( void );
     private:
-      std::vector< std::string > _patchRule;
-      std::vector< std::string > _regRule;
       static bool _registrated;
   };
 }

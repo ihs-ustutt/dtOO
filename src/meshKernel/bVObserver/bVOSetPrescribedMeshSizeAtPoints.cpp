@@ -45,20 +45,26 @@ namespace dtOO {
 		//   name="bVOSetPrescribedMeshSizeAtPoints" 
 		//   meshSize="0.1"
 		// />
-								
+
+    jsonPrimitive jE;
     if ( dtXmlParserBase::isAttributeVector("meshSize", element) ) {
-      _meshSize
-      = 
-      dtXmlParserBase::getAttributeFloatVectorMuParse("meshSize", element, cV, aF);
-    }
-    else {
-      _meshSize
-      = 
-      std::vector< dtReal >( 
-        1, 
-        dtXmlParserBase::getAttributeFloatMuParse("meshSize", element, cV, aF) 
+      jE.append< std::vector< dtReal > >(
+        "_meshSize",
+        dtXmlParserBase::getAttributeFloatVectorMuParse(
+          "meshSize", element, cV, aF
+        )
       );
     }
+    else {
+      jE.append< std::vector< dtReal > >(
+        "_meshSize",
+        std::vector< dtReal >( 
+          1, 
+          dtXmlParserBase::getAttributeFloatMuParse("meshSize", element, cV, aF) 
+        )
+      );
+    }
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOSetPrescribedMeshSizeAtPoints::preUpdate( void ) {
@@ -68,20 +74,22 @@ namespace dtOO {
 		// set current model
 		//
 		::GModel::setCurrent( gm );
-    
-    if (_meshSize.size() == 1) {
-      _meshSize
+    std::vector< dtReal > meshSize 
+    = 
+    config().lookup< std::vector< dtReal > >("_meshSize"); 
+    if (meshSize.size() == 1) {
+      meshSize
       = 
-      std::vector< dtReal >( gm->getNumVertices(), _meshSize[0] );
+      std::vector< dtReal >( gm->getNumVertices(), meshSize[0] );
     }
     dt__throwIf(
-      gm->getNumVertices()!=_meshSize.size(), 
+      gm->getNumVertices()!=meshSize.size(), 
       preUpdate()
     );
     
     dtInt cc = 0;
     dt__forAllRefAuto(gm->vertices(), aV) {
-      aV->setPrescribedMeshSizeAtVertex(_meshSize[cc]);
+      aV->setPrescribedMeshSizeAtVertex(meshSize[cc]);
       cc = cc + 1;
     }
 

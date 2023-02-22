@@ -211,6 +211,22 @@ namespace dtOO {
 #include <boundedVolume.h>
 #include <bVObserver/bVONameRegions.h>
 #include <bVObserver/bVOAnalyticGeometryToFace.h>
+#include <bVObserver/bVOAddFace.h>
+#include <bVObserver/bVOAddInternalEdge.h>
+#include <bVObserver/bVOTransfiniteRegions.h>
+#include <bVObserver/bVORecombineRecursiveRegions.h>
+#include <bVObserver/bVOSetPrescribedMeshSizeAtPoints.h>
+#include <bVObserver/bVOSetNElements.h>
+#include <bVObserver/bVOSetGradingToFaceRule.h>
+#include <bVObserver/bVOSetGrading.h>
+#include <bVObserver/bVOSetPrescribedFirstElementSize.h>
+#include <bVObserver/bVOReadMSH.h>
+#include <bVObserver/bVOSetRotationalPeriodicity.h>
+#include <bVObserver/bVOWriteMSH.h>
+#include <bVObserver/bVOFaceToPatchRule.h>
+#include <bVObserver/bVORemoveElements.h>
+#include <bVObserver/bVOOrientCellVolumes.h>
+#include <bVObserver/bVODumpModel.h>
 #include <gmshBoundedVolume.h>
 #include <map3dTo3dGmsh.h>
 #include <dtCase.h>
@@ -368,6 +384,22 @@ namespace dtOO {
 %include boundedVolume.h
 %include bVObserver/bVONameRegions.h
 %include bVObserver/bVOAnalyticGeometryToFace.h
+%include bVObserver/bVOAddFace.h
+%include bVObserver/bVOAddInternalEdge.h
+%include bVObserver/bVOTransfiniteRegions.h
+%include bVObserver/bVORecombineRecursiveRegions.h
+%include bVObserver/bVOSetPrescribedMeshSizeAtPoints.h
+%include bVObserver/bVOSetNElements.h
+%include bVObserver/bVOSetGradingToFaceRule.h
+%include bVObserver/bVOSetGrading.h
+%include bVObserver/bVOSetPrescribedFirstElementSize.h
+%include bVObserver/bVOReadMSH.h
+%include bVObserver/bVOSetRotationalPeriodicity.h
+%include bVObserver/bVOWriteMSH.h
+%include bVObserver/bVOFaceToPatchRule.h
+%include bVObserver/bVORemoveElements.h
+%include bVObserver/bVOOrientCellVolumes.h
+%include bVObserver/bVODumpModel.h
 %include gmshBoundedVolume.h
 %include map3dTo3dGmsh.h
 %include dtCase.h
@@ -509,6 +541,7 @@ namespace dtOO {
 %template(appendDtVector3) dtOO::jsonPrimitive::append< dtOO::dtVector3 >;
 %template(appendAnalyticFunction) dtOO::jsonPrimitive::append< dtOO::analyticFunction const * >;
 %template(appendAnalyticGeometry) dtOO::jsonPrimitive::append< dtOO::analyticGeometry const * >;
+%template(appendDtTransformer) dtOO::jsonPrimitive::append< dtOO::dtTransformer const * >;
 
 %include constValueHeaven/sliderFloatParam.h
 %include constValueHeaven/intParam.h
