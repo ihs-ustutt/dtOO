@@ -80,6 +80,12 @@
   } \
   static name * CastConst(name const * obj) { \
     return const_cast< name * >(obj); \
+  } \
+  static name & RefCast(castFrom & obj) { \
+    return static_cast<name &>(obj); \
+  } \
+  static const name & ConstRefCast(const castFrom & obj) { \
+    return static_cast<const name &>(obj); \
   }
 
   #define dt__handling( name ) \
