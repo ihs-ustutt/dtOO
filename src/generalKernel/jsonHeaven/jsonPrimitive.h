@@ -33,13 +33,24 @@ namespace dtOO {
       template < typename T > 
       dt__pH(T) lookupClone( 
         std::string const & str, 
-        const labeledVectorHandling< T * > & ptrRef
+        const labeledVectorHandling< T * > & refVec
+      ) const;
+      template < typename T > 
+      T const * const lookupRaw( 
+        std::string const & str, 
+        labeledVectorHandling< T * > const * const ptrVec
+      ) const;
+      template < typename T > 
+      const T & lookupRef( 
+        std::string const & str, 
+        labeledVectorHandling< T * > const * const ptrVec
       ) const;
       template < typename T > 
       dt__pVH(T) lookupVecClone( 
         std::string const & str, 
         labeledVectorHandling< T * > const * const ptrVec
       ) const;
+      
       template < typename T > 
       T const operator[]( std::string const & str ) const;
       template < typename T > 

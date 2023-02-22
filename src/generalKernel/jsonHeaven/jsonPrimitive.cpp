@@ -255,16 +255,48 @@ namespace dtOO {
   ) const;
   template < typename T > 
   dt__pH(T) jsonPrimitive::lookupClone( 
-    std::string const & str, const labeledVectorHandling< T * > & ptrRef
+    std::string const & str, const labeledVectorHandling< T * > & refVec
   ) const {
-    return this->lookupClone< T >(str, &ptrRef);
+    return this->lookupClone< T >(str, &refVec);
   }
   template
   dt__pH(dtTransformer) jsonPrimitive::lookupClone( 
     std::string const & str, 
-    const labeledVectorHandling< dtTransformer * > & ptrRef
+    const labeledVectorHandling< dtTransformer * > & refVec
   ) const;
 
+  // template lookupRaw
+  template < typename T > 
+  T const * const jsonPrimitive::lookupRaw( 
+    std::string const & str, labeledVectorHandling< T * > const * const ptrVec
+  ) const {
+    jsonPrimitive jP 
+    = 
+    lookup<jsonPrimitive>(str).lookup<jsonPrimitive>( T::className() );
+    return ptrVec->get( jP.lookup<std::string>("label") );
+  }
+  template
+  analyticFunction const * const jsonPrimitive::lookupRaw( 
+    std::string const & str, 
+    labeledVectorHandling< analyticFunction * > const * const ptrVec
+  ) const;
+  
+  // template lookupRef
+  template < typename T > 
+  const T & jsonPrimitive::lookupRef( 
+    std::string const & str, labeledVectorHandling< T * > const * const ptrVec
+  ) const {
+    jsonPrimitive jP 
+    = 
+    lookup<jsonPrimitive>(str).lookup<jsonPrimitive>( T::className() );
+    return *( ptrVec->get( jP.lookup<std::string>("label") ) );
+  }
+  template
+  const analyticFunction & jsonPrimitive::lookupRef( 
+    std::string const & str, 
+    labeledVectorHandling< analyticFunction * > const * const ptrVec
+  ) const;
+ 
   // template lookupVecClone
   template < typename T > 
   dt__pVH(T) jsonPrimitive::lookupVecClone( 
