@@ -25,7 +25,7 @@ namespace dtOO {
     
   }
   
-  void bVOSetOrder::bVOSetOrder::init( 
+  void bVOSetOrder::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

@@ -45,7 +45,7 @@ namespace dtOO {
     );
   }  
 
-  void bVOAnalyticGeometryToFace::bVOAnalyticGeometryToFace::init( 
+  void bVOAnalyticGeometryToFace::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

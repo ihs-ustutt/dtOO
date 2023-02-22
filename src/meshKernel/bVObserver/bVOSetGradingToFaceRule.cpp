@@ -27,7 +27,7 @@ namespace dtOO {
   bVOSetGradingToFaceRule::~bVOSetGradingToFaceRule() {
   }
   
-  void bVOSetGradingToFaceRule::bVOSetGradingToFaceRule::init( 
+  void bVOSetGradingToFaceRule::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

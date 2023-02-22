@@ -22,7 +22,7 @@ namespace dtOO {
     
   }
   
-  void bVORecombine::bVORecombine::init( 
+  void bVORecombine::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

@@ -25,7 +25,7 @@ namespace dtOO {
     
   }
   
-  void bVOWriteINP::bVOWriteINP::init( 
+  void bVOWriteINP::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

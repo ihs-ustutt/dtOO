@@ -26,7 +26,7 @@ namespace dtOO {
     
   }
   
-  void bVOForceMeshPointCoordinates::bVOForceMeshPointCoordinates::init( 
+  void bVOForceMeshPointCoordinates::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

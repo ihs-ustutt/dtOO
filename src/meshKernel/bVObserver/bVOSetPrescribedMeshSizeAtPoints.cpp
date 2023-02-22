@@ -27,7 +27,7 @@ namespace dtOO {
     
   }
   
-  void bVOSetPrescribedMeshSizeAtPoints::bVOSetPrescribedMeshSizeAtPoints::init( 
+  void bVOSetPrescribedMeshSizeAtPoints::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

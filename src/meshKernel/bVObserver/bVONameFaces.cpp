@@ -25,7 +25,7 @@ namespace dtOO {
     
   }
   
-  void bVONameFaces::bVONameFaces::init( 
+  void bVONameFaces::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

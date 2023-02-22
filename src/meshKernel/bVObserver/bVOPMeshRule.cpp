@@ -38,7 +38,7 @@ namespace dtOO {
     _meshOperator.destroy();
   }
   
-  void bVOPMeshRule::bVOPMeshRule::init( 
+  void bVOPMeshRule::init( 
     ::QDomElement const & element,
     baseContainer const * const bC,
     lvH_constValue const * const cV,

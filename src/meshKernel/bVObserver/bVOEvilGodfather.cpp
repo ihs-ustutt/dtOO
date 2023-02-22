@@ -37,7 +37,7 @@ namespace dtOO {
     
   }
   
-  void bVOEvilGodfather::bVOEvilGodfather::init( 
+  void bVOEvilGodfather::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

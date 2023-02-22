@@ -27,7 +27,7 @@ namespace dtOO {
     
   }
   
-  void bVORemoveElements::bVORemoveElements::init( 
+  void bVORemoveElements::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

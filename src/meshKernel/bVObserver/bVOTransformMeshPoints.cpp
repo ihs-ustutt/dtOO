@@ -36,7 +36,7 @@ namespace dtOO {
     
   }
   
-  void bVOTransformMeshPoints::bVOTransformMeshPoints::init( 
+  void bVOTransformMeshPoints::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

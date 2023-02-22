@@ -24,7 +24,7 @@ namespace dtOO {
     
   }
   
-  void bVORecombineRecursiveRegions::bVORecombineRecursiveRegions::init( 
+  void bVORecombineRecursiveRegions::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

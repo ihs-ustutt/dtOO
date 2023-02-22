@@ -23,7 +23,7 @@ namespace dtOO {
     
   }
   
-  void bVOTransfiniteRegions::bVOTransfiniteRegions::init( 
+  void bVOTransfiniteRegions::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

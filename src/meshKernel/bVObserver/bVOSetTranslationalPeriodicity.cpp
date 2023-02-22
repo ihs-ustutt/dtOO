@@ -33,7 +33,7 @@ namespace dtOO {
     
   }
   
-  void bVOSetTranslationalPeriodicity::bVOSetTranslationalPeriodicity::init( 
+  void bVOSetTranslationalPeriodicity::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

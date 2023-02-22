@@ -24,7 +24,7 @@ namespace dtOO {
     
   }
   
-  void bVOSetNElements::bVOSetNElements::init( 
+  void bVOSetNElements::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,

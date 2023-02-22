@@ -22,7 +22,7 @@ namespace dtOO {
     
   }
   
-  void bVOTransfiniteFaces::bVOTransfiniteFaces::init( 
+  void bVOTransfiniteFaces::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,
