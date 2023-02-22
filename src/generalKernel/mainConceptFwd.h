@@ -12,7 +12,8 @@ namespace dtOO {
   class dtPlugin;
   class dtCurve;
   class dtSurface;
-  
+  class dtMeshOperator;
+
   template< typename T > class vectorHandling;
   typedef vectorHandling< constValue * >       vH_constValue;
   typedef vectorHandling< analyticFunction * > vH_analyticFunction;
@@ -24,6 +25,7 @@ namespace dtOO {
   typedef vectorHandling< dtSurface * >        vH_dtSurface;
    
   template< typename T > class labeledVectorHandling;
+  typedef labeledVectorHandling< dtMeshOperator * >   lvH_dtMeshOperator;  
   typedef labeledVectorHandling< constValue * >       lvH_constValue;
   typedef labeledVectorHandling< analyticFunction * > lvH_analyticFunction;
   typedef labeledVectorHandling< analyticGeometry * > lvH_analyticGeometry;

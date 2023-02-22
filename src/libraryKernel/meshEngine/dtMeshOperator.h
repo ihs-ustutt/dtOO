@@ -24,7 +24,7 @@ namespace dtOO {
       lvH_analyticFunction const * const aF,
       lvH_analyticGeometry const * const aG,
       lvH_boundedVolume const * const bV,
-      labeledVectorHandling< dtMeshOperator * > const * const mO
+      lvH_dtMeshOperator const * const mO
     );
   private:
 
