@@ -60,7 +60,7 @@ namespace dtOO {
           config().lookup< dtInt >("_order"),
           config().lookupDef< dtInt >("_skinOrderMin", 1),
           config().lookupDef< dtInt >("_skinOrderMax", 25),
-          config().lookupDef< dtInt >("_skinOrderNIterations", 0),
+          config().lookupDef< dtInt >("_skinNIterations", 0),
           config().lookupDef< bool >("_closeU", false),
           config().lookupDef< dtReal >("_closeSmooth", -1.0)
         );       
