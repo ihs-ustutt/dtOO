@@ -41,21 +41,16 @@ set_tests_properties(
   PROPERTIES
   ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
 )
-
-#
-# naca-cmp
-#
-add_test(
-  NAME naca-cmp 
-  COMMAND sh "cmp.sh"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
-)
-#set_tests_properties(
-#  naca
-#  PROPERTIES
-#  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
-#)
-
+file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/naca/*.xz")
+foreach(xzFilePath ${sources_list})
+  get_filename_component(xzFile "${xzFilePath}" NAME)
+  message("**> Add test naca-cmp-${xzFile}")
+  add_test(
+    NAME naca-cmp-${xzFile} 
+    COMMAND sh "cmp.sh" "${xzFile}" 
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
+  )
+endforeach()
 #
 # transformerSWIG
 #
@@ -135,6 +130,17 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
+file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/tistos/*.xz")
+foreach(xzFilePath ${sources_list})
+  get_filename_component(xzFile "${xzFilePath}" NAME)
+  message("**> Add test tistos-cmp-${xzFile}")
+  add_test(
+    NAME tistos-cmp-${xzFile} 
+    COMMAND sh "cmp.sh" "${xzFile}" 
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tistos
+  )
+endforeach()
+
 
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
