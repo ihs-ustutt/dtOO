@@ -10,7 +10,7 @@ from libdtOOPython import *
 #print('My rank is ',rank)
 
 logMe.initLog('build.log')
-dtXmlParser.init("machine.xml", "K1_1.xml") 
+dtXmlParser.init("machine.xml", "machineSave.xml") 
 parser = dtXmlParser.reference() 
 parser.parse() 
 bC = baseContainer() 

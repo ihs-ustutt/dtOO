@@ -43,6 +43,20 @@ set_tests_properties(
 )
 
 #
+# naca-cmp
+#
+add_test(
+  NAME naca-cmp 
+  COMMAND sh "cmp.sh"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
+)
+#set_tests_properties(
+#  naca
+#  PROPERTIES
+#  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
+#)
+
+#
 # transformerSWIG
 #
 add_test(
