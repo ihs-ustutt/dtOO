@@ -16,8 +16,15 @@
 #include <interfaceHeaven/threadSafe.h>
 #include <omp.h>
 #include <progHelper.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshFreeGradingGEdge::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshFreeGradingGEdge, new dtMeshFreeGradingGEdge())
+  );
+ 
   dtMeshFreeGradingGEdge::dtMeshFreeGradingGEdge( void ) : dtMeshGEdge() {
     
   }

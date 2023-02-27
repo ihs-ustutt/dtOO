@@ -15,8 +15,17 @@
 #include <progHelper.h>
 
 #include <boost/assign.hpp>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshGFaceWithTransfiniteLayer::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(
+      dtMeshGFaceWithTransfiniteLayer, new dtMeshGFaceWithTransfiniteLayer()
+    )
+  );
+ 
   dtMeshGFaceWithTransfiniteLayer::dtMeshGFaceWithTransfiniteLayer() 
   : 
   dtMesh2DOperator() {
@@ -380,9 +389,15 @@ namespace dtOO {
         dtLinearAlgebra::normalize(
           dtLinearAlgebra::crossProduct(
             dtVector3(
-              edgeVertex[2][node+1].first->x() - edgeVertex[2][node-1].first->x(),
-              edgeVertex[2][node+1].first->y() - edgeVertex[2][node-1].first->y(),
-              edgeVertex[2][node+1].first->z() - edgeVertex[2][node-1].first->z()
+              edgeVertex[2][node+1].first->x() 
+              - 
+              edgeVertex[2][node-1].first->x(),
+              edgeVertex[2][node+1].first->y() 
+              - 
+              edgeVertex[2][node-1].first->y(),
+              edgeVertex[2][node+1].first->z() 
+              - 
+              edgeVertex[2][node-1].first->z()
             ),
             dtgf->normal( edgeVertex[2][node].second )
           )

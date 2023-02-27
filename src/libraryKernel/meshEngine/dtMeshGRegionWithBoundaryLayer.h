@@ -24,6 +24,7 @@ namespace dtOO {
   class dtMeshGRegionWithBoundaryLayer : public dtMesh3DOperator {
     public:
       dt__classOnlyName(dtMeshGRegionWithBoundaryLayer);          
+      dt__classSelfCreate(dtMeshGRegionWithBoundaryLayer);
       dtMeshGRegionWithBoundaryLayer();
       virtual ~dtMeshGRegionWithBoundaryLayer();
       virtual void init(
@@ -95,6 +96,8 @@ namespace dtOO {
       std::vector< std::string > _fixedFaceLabel;
       std::vector< std::string > _slidableFaceLabel;
       dtMesh3DOperator * _3D;
+    private:
+      static bool _registrated;
   };
 }
 

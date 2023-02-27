@@ -17,6 +17,7 @@ namespace dtOO {
   class dtMeshGFaceWithTransfiniteLayer : public dtMesh2DOperator {
     public:
       dt__class(dtMeshGFaceWithTransfiniteLayer, dtMeshOperator);     
+      dt__classSelfCreate(dtMeshGFaceWithTransfiniteLayer);
       dtMeshGFaceWithTransfiniteLayer();
       dtMeshGFaceWithTransfiniteLayer(
         const dtMeshGFaceWithTransfiniteLayer& orig
@@ -36,6 +37,8 @@ namespace dtOO {
       dtInt _direction;
       std::vector< dtInt > _nLayers;
       dtInt _nSmooth;
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* dtMeshGFaceWithTransfiniteLayer_H */

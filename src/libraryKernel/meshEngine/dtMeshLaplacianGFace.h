@@ -13,12 +13,15 @@ namespace dtOO {
   class dtMeshLaplacianGFace : public dtMeshTransfinite2DOperator {
     public:
       dt__class(dtMeshLaplacianGFace, dtMeshOperator);     
+      dt__classSelfCreate(dtMeshLaplacianGFace);
       dtMeshLaplacianGFace();
       dtMeshLaplacianGFace(
         const dtMeshLaplacianGFace& orig
       );
       virtual ~dtMeshLaplacianGFace();
       void operator()( dtGmshFace * dtgr );
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* dtMeshLaplacianGFace_H */

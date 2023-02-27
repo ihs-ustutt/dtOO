@@ -20,6 +20,16 @@ namespace dtOO {
       dt__class(dtMesh0DOperator, dtMeshOperator);    
       dtMesh0DOperator();
       virtual ~dtMesh0DOperator();
+      virtual dtMesh0DOperator * create( void ) const = 0;     
+      virtual void jInit(
+        jsonPrimitive const & jE,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO
+      );
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,

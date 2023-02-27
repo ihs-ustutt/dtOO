@@ -13,6 +13,7 @@
 
 #include <analyticFunctionHeaven/scaMultiOneD.h>
 #include <analyticFunctionHeaven/scaLinearOneD.h>
+#include "dtMeshOperatorFactory.h"
 
 /*
    s4 +-----c3-----+ s3
@@ -30,7 +31,14 @@
    (1.-u)*c4+u*c2+(1.-v)*c1+v*c3-((1.-u)*(1.-v)*s1+u*(1.-v)*s2+u*v*s3+(1.-u)*v*s4)
 
 namespace dtOO {
-  dtMeshTransfiniteGFace::dtMeshTransfiniteGFace() : dtMeshTransfinite2DOperator() {
+  bool dtMeshTransfiniteGFace::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshTransfiniteGFace, new dtMeshTransfiniteGFace())
+  );
+ 
+  dtMeshTransfiniteGFace::dtMeshTransfiniteGFace() 
+    : dtMeshTransfinite2DOperator() {
     
   }
 
@@ -264,7 +272,9 @@ namespace dtOO {
       dtReal maxEps = std::numeric_limits<dtReal>::min();
       dt__forFromToIndex(1, L, ii) {
         sumEps = sumEps + fabs(lengths_i[ii] / L_i-(ll[ii]/sumL));
-        maxEps = std::max( maxEps, std::fabs<dtReal>(lengths_i[ii] / L_i-(ll[ii]/sumL)) );
+        maxEps 
+        = 
+        std::max( maxEps, std::fabs<dtReal>(lengths_i[ii] / L_i-(ll[ii]/sumL)) );
         uu[ii] = l_u.invYFloat( lengths_i[ii] / L_i * sumL );
       }
 

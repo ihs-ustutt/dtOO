@@ -13,6 +13,7 @@ namespace dtOO {
   class dtMeshTransfiniteRecombineSelectionGFace : public dtMeshGFace {
     public:
       dt__class(dtMeshTransfiniteRecombineSelectionGFace, dtMeshOperator);     
+      dt__classSelfCreate(dtMeshTransfiniteRecombineSelectionGFace);
       dtMeshTransfiniteRecombineSelectionGFace();
       dtMeshTransfiniteRecombineSelectionGFace(
         const dtMeshTransfiniteRecombineSelectionGFace& orig
@@ -31,6 +32,8 @@ namespace dtOO {
     private:
       std::map< std::pair< int, dtInt >, bool > _recombineRule;
       dtInt _transfiniteArrangement;
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* dtMeshTransfiniteRecombineSelectionGFace_H */

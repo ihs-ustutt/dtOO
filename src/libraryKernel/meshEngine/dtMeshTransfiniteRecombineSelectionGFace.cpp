@@ -5,8 +5,18 @@
 #include "dtGmshFace.h"
 #include <gmsh/MTriangle.h>
 #include <gmsh/MQuadrangle.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshTransfiniteRecombineSelectionGFace::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(
+      dtMeshTransfiniteRecombineSelectionGFace, 
+      new dtMeshTransfiniteRecombineSelectionGFace()
+    )
+  );
+ 
   dtMeshTransfiniteRecombineSelectionGFace
     ::dtMeshTransfiniteRecombineSelectionGFace() : dtMeshGFace() {
     
@@ -82,7 +92,9 @@ namespace dtOO {
     
     std::vector< ::MTriangle * > &tri(dtgf->triangles);
     std::vector< ::MQuadrangle * > &quad(dtgf->quadrangles);
-    std::vector< std::vector< MVertex * > > &transVert(dtgf->transfinite_vertices);
+    std::vector< std::vector< MVertex * > > &transVert(
+      dtgf->transfinite_vertices
+    );
 
     dt__info(operator(), 
       << "Destroy " << tri.size() << " triangles" << std::endl

@@ -25,8 +25,17 @@
 #include <gmsh/MPyramid.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/Field.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshGRegionWithBoundaryLayer::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(
+      dtMeshGRegionWithBoundaryLayer, new dtMeshGRegionWithBoundaryLayer()
+    )
+  );
+
   dtInt dtMeshGRegionWithBoundaryLayer::_NORMAL = 1;
   dtInt dtMeshGRegionWithBoundaryLayer::_SLIDER = 2;
   dtInt dtMeshGRegionWithBoundaryLayer::_FIXER = 3;

@@ -14,6 +14,7 @@ namespace dtOO {
   class dtMeshFreeGradingGEdge : public dtMeshGEdge {
     public:
       dt__class(dtMeshFreeGradingGEdge, dtMeshOperator);     
+      dt__classSelfCreate(dtMeshFreeGradingGEdge);
       dtMeshFreeGradingGEdge();
       virtual ~dtMeshFreeGradingGEdge();
       virtual void init(
@@ -32,6 +33,8 @@ namespace dtOO {
       std::map< int, scaOneD const * > _gradingInt;
       dtReal _tol;
       dtInt _maxSmooth;
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* dtMeshFreeGradingGEdge_H */

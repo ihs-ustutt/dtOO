@@ -19,6 +19,7 @@ namespace dtOO {
   class dtMeshGRegionWithOneLayer : public dtMesh3DOperator {
     public:
       dt__classOnlyName(dtMeshGRegionWithOneLayer);          
+      dt__classSelfCreate(dtMeshGRegionWithOneLayer);
       dtMeshGRegionWithOneLayer();
       virtual ~dtMeshGRegionWithOneLayer();
       virtual void init(
@@ -34,6 +35,8 @@ namespace dtOO {
     private:
       std::string _faceMaster;
       std::string _faceSlave;
+    private:
+      static bool _registrated;
   };
 }
 

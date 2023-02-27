@@ -15,8 +15,15 @@
 #include <interfaceHeaven/barChart.h>
 #include "dtOptimizeMeshGRegion.h"
 #include <progHelper.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshGRegion::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshGRegion, new dtMeshGRegion())
+  );
+
   dtMeshGRegion::dtMeshGRegion() : dtMesh3DOperator() {
   }
 

@@ -17,45 +17,62 @@
 #include "dtOptimizeMeshGRegion.h"
 #include "dtMeshGFaceWithTransfiniteLayer.h"
 #include "dtMeshLaplacianGFace.h"
+#include "dtMeshGVertex.h"
 
 namespace dtOO {
+  dt__pVH(dtMeshOperator) dtMeshOperatorFactory::_product;
+  
   dtMeshOperatorFactory::dtMeshOperatorFactory() {
   }
 
   dtMeshOperatorFactory::~dtMeshOperatorFactory() {
+
   }
 
-  dtMeshOperator * dtMeshOperatorFactory::create(std::string const str) {
-    dt__info(create(), << "creating " << str <<  "...");
+  bool dtMeshOperatorFactory::registrate( dtMeshOperator const * const reg ) {
+    dt__forAllRefAuto( _product, aProd ) {
+      if ( aProd.virtualClassName() == reg->virtualClassName() ) {
+        return false;
+      }
+    }  
+    _product.push_back( reg->create() );
     
-		if (str == "dtMeshGEdge") return new dtMeshGEdge();
-    if (str == "dtMeshGFace") return new dtMeshGFace();
-    if (str == "dtMeshGRegion") return new dtMeshGRegion();
-    if (str == "dtMeshGRegionWithBoundaryLayer") {
-      return new dtMeshGRegionWithBoundaryLayer();
+    return true;
+  }
+  
+  dtMeshOperator * dtMeshOperatorFactory::create(char const * const str) {
+    return create( std::string(str) );
+  }
+
+  dtMeshOperator * dtMeshOperatorFactory::create( std::string const str ) {
+    dt__forAllRefAuto( _product, aProd ) {
+      //
+      // check virtual class name
+      //
+      if ( aProd.virtualClassName() == str ) {
+        return aProd.create();
+      }
+            
+      //
+      // check alias
+      //
+      dt__forAllRefAuto(aProd.factoryAlias(), anAlias) {
+        if ( anAlias == str ) return aProd.create();
+      }
     }
-    if (str == "dtMeshGRegionWithOneLayer") {
-      return new dtMeshGRegionWithOneLayer();
-    }    
-    if (str == "dtMeshAndOrientGEdge") return new dtMeshAndOrientGEdge();
-    if (str == "dtMeshAndOrientGFace") return new dtMeshAndOrientGFace();
-    if (str == "dtMeshTransfiniteRecombineSelectionGFace") {
-      return new dtMeshTransfiniteRecombineSelectionGFace();
+
+    std::vector< std::string > av;
+    dt__forAllRefAuto( _product, aProd ) {
+      av.push_back( aProd.virtualClassName() );
+      dt__forAllRefAuto(aProd.factoryAlias(), anAlias) {
+        av.push_back("  -> "+anAlias); 
+      }      
     }
-    if ( str == "dtMeshGRegionTetgen" ) return new dtMeshGRegionTetgen();
-    if ( str == "dtMeshFreeGradingGEdge" ) {
-      return new dtMeshFreeGradingGEdge();
-    }
-    if ( str == "dtMeshTransfiniteGFace" ) return new dtMeshTransfiniteGFace();
-    if ( str == "dtMeshCustom2x3TransfiniteGFace" ) {
-      return new dtMeshCustom2x3TransfiniteGFace();
-    }
-    if (str == "dtOptimizeMeshGRegion") return new dtOptimizeMeshGRegion();
-    if (str == "dtMeshGFaceWithTransfiniteLayer") {
-      return new dtMeshGFaceWithTransfiniteLayer();
-    }
-    if (str == "dtMeshLaplacianGFace") return new dtMeshLaplacianGFace();
-    
-    dt__throw(create(), << str <<  " could not be created");  
+    dt__throw(
+      create(), 
+      << str <<  " could not be created." << std::endl
+      << "Implemented builder:" << std::endl
+      << logMe::vecToString(av,1) << std::endl
+    );           
   }
 }

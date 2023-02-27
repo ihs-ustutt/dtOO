@@ -29,6 +29,7 @@ namespace dtOO {
   class dtMeshGRegionTetgen : public dtMesh3DOperator {
     public:
       dt__classOnlyName(dtMeshGRegionTetgen);          
+      dt__classSelfCreate(dtMeshGRegionTetgen);
       dtMeshGRegionTetgen();
       virtual ~dtMeshGRegionTetgen();
       virtual void init(
@@ -64,6 +65,8 @@ namespace dtOO {
       );      
     private:
       std::string _tetOpt;
+    private:
+      static bool _registrated;
   };
 }
 

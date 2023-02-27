@@ -13,8 +13,18 @@
 #include <gmsh/Context.h>
 
 #include <analyticFunctionHeaven/scaOneD.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshCustom2x3TransfiniteGFace::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(
+      dtMeshCustom2x3TransfiniteGFace, 
+      new dtMeshCustom2x3TransfiniteGFace()
+    )
+  );
+ 
   void dtMeshCustom2x3TransfiniteGFace::computeEdgeLoops(
     const ::GFace *gf, 
     std::vector< ::MVertex * > &all_mvertices, 
@@ -31,8 +41,12 @@ namespace dtOO {
     std::vector<int>::iterator ito = ori.begin();
 
     indices.push_back(0);
-    GVertex *start = ((*ito) == 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-    GVertex *v_end = ((*ito) != 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
+    GVertex *start 
+    = 
+    ((*ito) == 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
+    GVertex *v_end 
+    = 
+    ((*ito) != 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
     all_mvertices.push_back(start->mesh_vertices[0]);
     if(*ito == 1)
       for(dtUnsInt i = 0; i < (*it)->mesh_vertices.size(); i++)
@@ -105,7 +119,8 @@ namespace dtOO {
     }    
   }
 
-  dtMeshCustom2x3TransfiniteGFace::dtMeshCustom2x3TransfiniteGFace() : dtMesh2DOperator() {
+  dtMeshCustom2x3TransfiniteGFace::dtMeshCustom2x3TransfiniteGFace() 
+    : dtMesh2DOperator() {
     
   }
 
@@ -133,27 +148,37 @@ namespace dtOO {
     
     dt__ptrAss( 
       scaOneD const * alpha_1, 
-      scaOneD::ConstDownCast(aF->get(qtXmlBase::getAttributeStr("alpha_1", element))) 
+      scaOneD::ConstDownCast(
+        aF->get(qtXmlBase::getAttributeStr("alpha_1", element))
+      ) 
     );
     _alpha_1.reset( alpha_1->clone() );
     dt__ptrAss( 
       scaOneD const * alpha_2, 
-      scaOneD::ConstDownCast(aF->get(qtXmlBase::getAttributeStr("alpha_2", element))) 
+      scaOneD::ConstDownCast(
+        aF->get(qtXmlBase::getAttributeStr("alpha_2", element))
+      ) 
     );
     _alpha_2.reset( alpha_2->clone() );
     dt__ptrAss( 
       scaOneD const * beta_1, 
-      scaOneD::ConstDownCast(aF->get(qtXmlBase::getAttributeStr("beta_1", element))) 
+      scaOneD::ConstDownCast(
+        aF->get(qtXmlBase::getAttributeStr("beta_1", element))
+      ) 
     );
     _beta_1.reset( beta_1->clone() );    
     dt__ptrAss( 
       scaOneD const * beta_2, 
-      scaOneD::ConstDownCast(aF->get(qtXmlBase::getAttributeStr("beta_2", element))) 
+      scaOneD::ConstDownCast(
+        aF->get(qtXmlBase::getAttributeStr("beta_2", element))
+      ) 
     );
     _beta_2.reset( beta_2->clone() );     
     dt__ptrAss( 
       scaOneD const * beta_3, 
-      scaOneD::ConstDownCast(aF->get(qtXmlBase::getAttributeStr("beta_3", element))) 
+      scaOneD::ConstDownCast(
+        aF->get(qtXmlBase::getAttributeStr("beta_3", element))
+      ) 
     );
     _beta_3.reset( beta_3->clone() );         
   }
@@ -167,7 +192,9 @@ namespace dtOO {
     // destroy the mesh if it exists
     deMeshGFace()(dtgf);    
     
-    Msg::Info("Meshing surface %d ( dtMeshCustom2x3TransfiniteGFace )", dtgf->tag());
+    Msg::Info(
+      "Meshing surface %d ( dtMeshCustom2x3TransfiniteGFace )", dtgf->tag()
+    );
 
     std::vector<MVertex*> corners;
     std::vector<MVertex*> d_vertices;
@@ -351,7 +378,9 @@ namespace dtOO {
           dtgf->getMap2dTo3d()->jacobi(pUV[i][0])
           ,
           dtLinearAlgebra::createMatrixVector(
-            -(d_0_1 + (iF/L) * (d_0_2-d_0_1)) * dtLinearAlgebra::normalize( nXYZ[i][0] )      
+            -(d_0_1 + (iF/L) * (d_0_2-d_0_1)) 
+            * 
+            dtLinearAlgebra::normalize( nXYZ[i][0] )      
           )
         )
       );
@@ -363,7 +392,9 @@ namespace dtOO {
           dtgf->getMap2dTo3d()->jacobi(pUV[i][H])
           ,
           dtLinearAlgebra::createMatrixVector(
-            -(d_H_1 + (iF/L) * (d_H_2-d_H_1)) * dtLinearAlgebra::normalize( nXYZ[i][H] )
+            -(d_H_1 + (iF/L) * (d_H_2-d_H_1)) 
+            * 
+            dtLinearAlgebra::normalize( nXYZ[i][H] )
           )
         )
       );     
@@ -382,7 +413,9 @@ namespace dtOO {
           dtgf->getMap2dTo3d()->jacobi(pUV[0][i])
           ,
           dtLinearAlgebra::createMatrixVector(
-            (e_0_1 + (iF/H) * (e_0_2-e_0_1)) * dtLinearAlgebra::normalize( nXYZ[0][i] )
+            (e_0_1 + (iF/H) * (e_0_2-e_0_1)) 
+            *
+            dtLinearAlgebra::normalize( nXYZ[0][i] )
           )
         )      
       );
@@ -393,7 +426,9 @@ namespace dtOO {
           dtgf->getMap2dTo3d()->jacobi(pUV[L][i])
           ,
           dtLinearAlgebra::createMatrixVector(
-            (e_L_1 + (iF/H) * (e_L_2-e_L_1)) * dtLinearAlgebra::normalize( nXYZ[L][i] )
+            (e_L_1 + (iF/H) 
+            * 
+            (e_L_2-e_L_1)) * dtLinearAlgebra::normalize( nXYZ[L][i] )
           )
         )      
       );

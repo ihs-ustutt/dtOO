@@ -17,6 +17,7 @@ namespace dtOO {
   class dtMeshTransfiniteGFace : public dtMeshTransfinite2DOperator {
     public:
       dt__class(dtMeshTransfiniteGFace, dtMeshOperator);     
+      dt__classSelfCreate(dtMeshTransfiniteGFace);
       dtMeshTransfiniteGFace();
       dtMeshTransfiniteGFace(
         const dtMeshTransfiniteGFace& orig
@@ -39,13 +40,17 @@ namespace dtOO {
         std::vector< double > lengths_i, double const & L_i
       ) const;
       static twoDArrayHandling< dtPoint2 > linearInterpolateU( 
-        twoDArrayHandling< dtPoint2 > pUV, dtInt const & vStart, dtInt const & vEnd
+        twoDArrayHandling< dtPoint2 > pUV, 
+        dtInt const & vStart, 
+        dtInt const & vEnd
       );
     private:
 //      std::vector< dtReal > _uCorrPos;
 //      dtInt _uCorrSteps;
       std::vector< dtReal > _vCorrPos;
       dtInt _vCorrSteps;
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* dtMeshTransfiniteGFace_H */

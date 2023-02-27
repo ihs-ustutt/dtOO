@@ -16,10 +16,16 @@
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MPrism.h>
 #include <gmsh/MHexahedron.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
-  
-  dtMeshGRegionWithOneLayer::dtMeshGRegionWithOneLayer() {
+  bool dtMeshGRegionWithOneLayer::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshGRegionWithOneLayer, new dtMeshGRegionWithOneLayer())
+  );
+ 
+  dtMeshGRegionWithOneLayer::dtMeshGRegionWithOneLayer() : dtMesh3DOperator()  {
     
 	}
 

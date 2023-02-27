@@ -11,12 +11,15 @@ namespace dtOO {
   class dtGmshEdge;
   
   class dtMeshGEdge : public dtMesh1DOperator {
-  public:
-    dt__class(dtMeshGEdge, dtMeshOperator);     
-    dtMeshGEdge();
-    dtMeshGEdge(const dtMeshGEdge& orig);
-    virtual ~dtMeshGEdge();
-    virtual void operator()( dtGmshEdge * dtge );    
+    public:
+      dt__class(dtMeshGEdge, dtMeshOperator);
+      dt__classSelfCreate(dtMeshGEdge);
+      dtMeshGEdge();
+      dtMeshGEdge(const dtMeshGEdge& orig);
+      virtual ~dtMeshGEdge();
+      virtual void operator()( dtGmshEdge * dtge );    
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* dtMeshGEdge_H */

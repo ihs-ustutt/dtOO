@@ -17,6 +17,7 @@ namespace dtOO {
   class dtMeshCustom2x3TransfiniteGFace : public dtMesh2DOperator {
     public:
       dt__class(dtMeshCustom2x3TransfiniteGFace, dtMeshOperator);     
+      dt__classSelfCreate(dtMeshCustom2x3TransfiniteGFace);
       dtMeshCustom2x3TransfiniteGFace();
       dtMeshCustom2x3TransfiniteGFace(
         const dtMeshCustom2x3TransfiniteGFace& orig
@@ -46,6 +47,8 @@ namespace dtOO {
       dt__pH(scaOneD) _beta_1;
       dt__pH(scaOneD) _beta_2;
       dt__pH(scaOneD) _beta_3;
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* dtMeshCustom2x3TransfiniteGFace_H */

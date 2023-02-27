@@ -7,8 +7,15 @@
 #include <gmsh/meshGFace.h>
 #include <gmsh/GmshDefines.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshLaplacianGFace::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshLaplacianGFace, new dtMeshLaplacianGFace())
+  );
+ 
   dtMeshLaplacianGFace::dtMeshLaplacianGFace() : dtMeshTransfinite2DOperator() {
     
   }

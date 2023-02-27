@@ -27,16 +27,19 @@ namespace dtOO {
   class dtGmshRegion;
   
   class dtOptimizeMeshGRegion : public dtMesh3DOperator {
-  public:
-    dt__classOnlyName(dtOptimizeMeshGRegion);     
-    dtOptimizeMeshGRegion();
-    dtOptimizeMeshGRegion( bool gmsh, bool netgen );
-    dtOptimizeMeshGRegion(const dtOptimizeMeshGRegion& orig);    
-    virtual ~dtOptimizeMeshGRegion();
-    void operator()( dtGmshRegion * dtgr );    
-  private:
-    bool _gmsh;
-    bool _netgen;
+    public:
+      dt__classOnlyName(dtOptimizeMeshGRegion);     
+      dt__classSelfCreate(dtOptimizeMeshGRegion);
+      dtOptimizeMeshGRegion();
+      dtOptimizeMeshGRegion( bool gmsh, bool netgen );
+      dtOptimizeMeshGRegion(const dtOptimizeMeshGRegion& orig);    
+      virtual ~dtOptimizeMeshGRegion();
+      void operator()( dtGmshRegion * dtgr );    
+    private:
+      bool _gmsh;
+      bool _netgen;
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* DTOPTIMIZEMESHGREGION_H */

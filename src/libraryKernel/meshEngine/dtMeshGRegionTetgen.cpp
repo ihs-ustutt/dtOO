@@ -20,8 +20,15 @@
 #include <gmsh/MElement.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MTetrahedron.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {  
+  bool dtMeshGRegionTetgen::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshGRegionTetgen, new dtMeshGRegionTetgen())
+  );
+ 
   dtMeshGRegionTetgen::dtMeshGRegionTetgen(void) : dtMesh3DOperator() {
     
 	}

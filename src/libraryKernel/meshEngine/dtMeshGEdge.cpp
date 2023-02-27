@@ -3,8 +3,15 @@
 #include "dtGmshEdge.h"
 #include <gmsh/meshGEdge.h>
 #include <gmsh/Context.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshGEdge::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshGEdge, new dtMeshGEdge())
+  );
+ 
   dtMeshGEdge::dtMeshGEdge() : dtMesh1DOperator() {
   }
 
