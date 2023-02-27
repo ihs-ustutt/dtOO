@@ -1,6 +1,7 @@
 #ifndef DTMESHOPERATOR_H
 #define	DTMESHOPERATOR_H
 
+#include <logMe/dtMacros.h>
 #include <dtOOTypeDef.h>
 
 #include <jsonHeaven/jsonPrimitive.h>
@@ -15,7 +16,7 @@ namespace dtOO {
   
   class dtMeshOperator : public labelHandling, public optionHandling {
     public:
-      dt__classOnlyName(dtMeshOperator);    
+      dt__class(dtMeshOperator, labelHandling);    
       dtMeshOperator();
       virtual ~dtMeshOperator();
       virtual dtMeshOperator * create( void ) const = 0;     
@@ -44,6 +45,7 @@ namespace dtOO {
     private:
       jsonPrimitive _config;
   };
+  dt__I_addCloneForpVHNotImpl(dtMeshOperator);
 }
 #endif	/* DTMESHOPERATOR_H */
 
