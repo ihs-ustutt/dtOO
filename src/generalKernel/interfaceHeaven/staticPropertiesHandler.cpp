@@ -50,7 +50,13 @@ namespace dtOO {
     setOption("transfinite_correctionLoops", "10");   
     setOption("isEqualExtendCheck", "false");
     setOption("logLevel", "0");
-    
+    if ( std::getenv("DTOO_LOGLEVEL") != NULL  ) {
+      setOption(
+        "logLevel",
+        std::string( std::getenv("DTOO_LOGLEVEL") )
+      );
+    }
+   
     _gDebug = false;
   }
 
