@@ -16,6 +16,15 @@ namespace dtOO {
       dt__classSelfCreate(bVOMeshRule);
       bVOMeshRule();
       virtual ~bVOMeshRule();
+      virtual void jInit( 
+        jsonPrimitive const & jE,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        boundedVolume * attachTo
+      );
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -28,10 +37,6 @@ namespace dtOO {
       virtual void preUpdate( void );
     private:
       labeledVectorHandling< dtMeshOperator * > _meshOperator;
-      std::vector< std::string > _rule1D;
-      std::vector< std::string > _rule2D;
-      std::vector< std::string > _rule3D;
-      std::vector< std::string > _only;
       static bool _registrated;
   };
 }
