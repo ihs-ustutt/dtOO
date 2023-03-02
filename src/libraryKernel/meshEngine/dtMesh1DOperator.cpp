@@ -39,5 +39,4 @@ namespace dtOO {
   void dtMesh1DOperator::copyMesh( dtGmshEdge * from, dtGmshEdge * to) {
     ::copyMesh( (::GEdge*) from, (::GEdge*) to, to->masterOrientation );
   }
-
 }

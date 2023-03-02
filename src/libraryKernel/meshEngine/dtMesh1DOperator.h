@@ -4,6 +4,7 @@
 #include <dtOOTypeDef.h>
 
 #include "dtMeshOperator.h"
+#include <logMe/dtMacros.h>
 
 class QDomElement;
 
@@ -42,7 +43,7 @@ namespace dtOO {
       virtual void operator()( dtGmshEdge * dtge ) = 0;    
       static void copyMesh( dtGmshEdge * from, dtGmshEdge *to );
   };
-  dt__H_addCloneForpVH(dtMesh1DOperator);
+  dt__I_addCloneForpVHNotImpl(dtMesh1DOperator);
 }
 #endif	/* DTMESH1DOPERATOR_H */
 
