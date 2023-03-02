@@ -50,7 +50,17 @@ namespace dtOO {
         std::string const & str, 
         labeledVectorHandling< T * > const * const ptrVec
       ) const;
-      
+      template < typename T > 
+      std::vector< T const * > lookupVecRaw( 
+        std::string const & str, 
+        labeledVectorHandling< T * > const * const ptrVec
+      ) const;
+//      template < typename T > 
+//      std::vector< T const * > lookupVecRaw( 
+//        std::string const & str, 
+//        labeledVectorHandling< T * > const * const ptrVec
+//      ) const;
+    
       template < typename T > 
       T const operator[]( std::string const & str ) const;
       template < typename T > 

@@ -98,6 +98,18 @@ namespace dtOO {
       );
     }
   };
+  void to_json(
+    ::nlohmann::json& to, std::vector< analyticFunction * > const & from
+  ) {
+    to["analyticFunction"] = ::nlohmann::json::array_t();
+    dt__forAllRefAuto( from, aFrom ) {
+      to["analyticFunction"].insert( 
+        to["analyticFunction"].end(), 
+        ::nlohmann::json( {{"label", aFrom->getLabel()}} )
+      );
+    }
+  };
+ 
   void from_json(
     const ::nlohmann::json& from, std::vector< constValue * > & to
   ) {
@@ -318,7 +330,34 @@ namespace dtOO {
     std::string const & str, 
     labeledVectorHandling< analyticGeometry * > const * const ptrVec
   ) const;
+  template
+  dt__pVH(analyticFunction) jsonPrimitive::lookupVecClone( 
+    std::string const & str, 
+    labeledVectorHandling< analyticFunction * > const * const ptrVec
+  ) const;
 
+  // template lookupVecRaw
+  template < typename T > 
+  std::vector< T const * > jsonPrimitive::lookupVecRaw( 
+    std::string const & str, labeledVectorHandling< T * > const * const ptrVec
+  ) const {
+    std::vector< jsonPrimitive > jP
+    = 
+    lookup<jsonPrimitive>(str).lookup< std::vector< jsonPrimitive > >( 
+      T::className() 
+    );
+    std::vector< T const * > ret;
+    dt__forAllRefAuto(jP, aJP) {
+      ret.push_back( ptrVec->get( aJP.lookup<std::string>("label") ) );
+    }
+    return ret;
+  }
+  template
+  std::vector< analyticFunction const * > jsonPrimitive::lookupVecRaw( 
+    std::string const & str, 
+    labeledVectorHandling< analyticFunction * > const * const ptrVec
+  ) const;
+ 
   // template lookupDef
   template < typename T > 
   T jsonPrimitive::lookupDef( std::string const & str, T const & def ) const {
@@ -426,6 +465,9 @@ namespace dtOO {
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< jsonPrimitive > const & val 
   ); 
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, std::vector< analyticFunction * > const & val
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< analyticGeometry * > const & val
   );
