@@ -190,7 +190,23 @@ namespace dtOO {
       from_json( *_json, ret );
     }
     else {
-      from_json( _json->at(str), ret );
+      if (_json->find(str) != _json->end()) {
+        from_json( _json->at(str), ret );
+      }
+      else {
+        std::vector< std::string > positiveMatches;
+        for (auto& el : _json->items()) {
+          if ( stringPrimitive::matchWildcard( "*"+str+"*", el.key() ) ) {
+            positiveMatches.push_back( el.key() );
+          }
+        }
+        dt__throw( 
+          lookup(), 
+          << "Cannot find " << str << " in " << std::endl
+          << this->toStdString() << std::endl
+          << "Maybe: " << positiveMatches
+        );
+      }
     }
     return ret;
   }
@@ -470,6 +486,9 @@ namespace dtOO {
   );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< analyticGeometry * > const & val
+  );
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, std::vector< bool > const & val 
   );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< dtInt > const & val 
