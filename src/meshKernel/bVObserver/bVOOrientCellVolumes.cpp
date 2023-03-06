@@ -95,7 +95,7 @@ namespace dtOO {
     }
     dt__info(
       postUpdate(), 
-      << " _positive = " << config().lookup< bool >("_positive") << std::endl
+      << "_positive = " << config().lookup< bool >("_positive") << std::endl
       << "Number of cells: " << gCount << std::endl
       << "Positive number of cells: " << pCount << std::endl
       << "Negative number of cells: " << nCount

@@ -54,7 +54,7 @@ namespace dtOO {
       )
     );    
     jE.append< std::vector< dtInt > >(
-      "nE",
+      "_nE",
 		  dtXmlParserBase::getAttributeIntVectorMuParse(
 			  "numberElements", element, cV, aF
 		  )
@@ -70,7 +70,7 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
 	
-    std::vector< dtInt > nE = config().lookup< std::vector< dtInt > >("nE");
+    std::vector< dtInt > nE = config().lookup< std::vector< dtInt > >("_nE");
     dt__forAllRefAuto(
       config().lookup< std::vector< std::string > >("_faceLabel"), aLabel
     ) {
