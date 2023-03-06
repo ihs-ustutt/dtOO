@@ -34,10 +34,6 @@ namespace dtOO {
       );      
       void operator()( dtGmshFace * dtgr );    
     private:
-      dtInt _direction;
-      std::vector< dtInt > _nLayers;
-      dtInt _nSmooth;
-    private:
       static bool _registrated;
   };
 }

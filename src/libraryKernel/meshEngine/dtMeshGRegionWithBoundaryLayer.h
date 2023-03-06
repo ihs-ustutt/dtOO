@@ -27,6 +27,15 @@ namespace dtOO {
       dt__classSelfCreate(dtMeshGRegionWithBoundaryLayer);
       dtMeshGRegionWithBoundaryLayer();
       virtual ~dtMeshGRegionWithBoundaryLayer();
+      virtual void jInit(
+        jsonPrimitive const & jE,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO
+      );
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -69,11 +78,6 @@ namespace dtOO {
       static dtInt _NORMAL;
       static dtInt _SLIDER;
       static dtInt _FIXER;        
-      dtInt _nNormalSmoothingSteps;
-      dtInt _nGrowingSmoothingSteps;
-      dtReal _maxGrowingRatePerStep;
-      dtReal _maxDihedralAngle;
-      std::vector< dtInt > _nSpacingSteps;
       std::vector< bool > _flipNormal;
       //
       // define two surface meshes with fixed, thickness 
@@ -92,9 +96,6 @@ namespace dtOO {
       dtOMDynamicFaceField< dtInt > _extrudeF;
       dtOMDynamicFaceField< dtInt > _typeF;
       dtOMDynamicFaceField< dtInt > _nSpacingStepsF;         
-      std::vector< std::string > _faceLabel;
-      std::vector< std::string > _fixedFaceLabel;
-      std::vector< std::string > _slidableFaceLabel;
       dtMesh3DOperator * _3D;
     private:
       static bool _registrated;

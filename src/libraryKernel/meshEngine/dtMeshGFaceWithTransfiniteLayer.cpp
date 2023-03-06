@@ -35,9 +35,6 @@ namespace dtOO {
   dtMeshGFaceWithTransfiniteLayer::dtMeshGFaceWithTransfiniteLayer(
     const dtMeshGFaceWithTransfiniteLayer& orig
   ) : dtMesh2DOperator(orig) {
-    _direction = orig._direction;
-    _nLayers = orig._nLayers;
-    _nSmooth = orig._nSmooth;
   }
 
   dtMeshGFaceWithTransfiniteLayer::~dtMeshGFaceWithTransfiniteLayer() {
@@ -54,45 +51,50 @@ namespace dtOO {
     lvH_dtMeshOperator const * const mO      
   ) {
     dtMesh2DOperator::init(element, bC, cV, aF, aG, bV, mO);
-    
-    _direction 
-    = 
-    dtXmlParserBase::getAttributeIntMuParse("direction", element, cV);
-    _nLayers = std::vector< dtInt >(2,0);
+    jsonPrimitive jE;
+
+    jE.append< dtInt >(
+      "_direction",
+      dtXmlParserBase::getAttributeIntMuParse("direction", element, cV)
+    );
+
+    std::vector< dtInt > nLayers = std::vector< dtInt >(2,0);
     if ( qtXmlPrimitive::isAttributeVector("nLayers", element) ) {
-      _nLayers
+      nLayers
       = 
       dtXmlParserBase::getAttributeIntVectorMuParse("nLayers", element, cV, aF);
             
       dt__warnIfWithMessageAndSolution(
-        _nLayers.size()==1, 
-        _nLayers.push_back(0),
+        nLayers.size()==1, 
+        nLayers.push_back(0),
         init(),
-        << "_nLayers = " << _nLayers << std::endl
+        << "nLayers = " << nLayers << std::endl
         << "Add zero element."
       );
       
       dt__warnIfWithMessageAndSolution(
-        _nLayers.size()>2, 
-        _nLayers.erase(_nLayers.begin()+2, _nLayers.end()),
+        nLayers.size()>2, 
+        nLayers.erase(nLayers.begin()+2, nLayers.end()),
         init(),
-        << "_nLayers = " << _nLayers << std::endl
+        << "nLayers = " << nLayers << std::endl
         << "Trim vector"
       );
-      
     }
     else {
-      _nLayers[0]
+      nLayers[0]
       =       
       dtXmlParserBase::getAttributeIntMuParse("nLayers", element, cV),
-      _nLayers[1] = _nLayers[0];
+      nLayers[1] = nLayers[0];
     }
-    _nSmooth = 0;
+    jE.append< std::vector< dtInt > >("_nLayers", nLayers);
+    dtInt nSmooth = 0;
     if ( qtXmlBase::hasAttribute("nSmooth", element) ) {
-      _nSmooth 
+      nSmooth 
       = 
       dtXmlParserBase::getAttributeIntMuParse("nSmooth", element, cV);       
     }
+    jE.append< dtInt >("_nSmooth", nSmooth);
+    dtMesh2DOperator::jInit(jE, bC, cV, aF, aG, bV, mO);
   }
       
   void dtMeshGFaceWithTransfiniteLayer::operator()( dtGmshFace * dtgf ) {
@@ -121,13 +123,13 @@ namespace dtOO {
     std::vector< ::GEdge * > edges = dtgf->edges();
     std::vector< dtInt > ori = dtgf->orientations();
     std::vector< std::pair< int, ::GEdge * > > ordered(4);
-    if (_direction == 0) {
+    if (config().lookup< dtInt >("_direction") == 0) {
       ordered[0] = std::pair< int, ::GEdge * >(ori[0], edges[0]);
       ordered[1] = std::pair< int, ::GEdge * >(ori[1], edges[1]);
       ordered[2] = std::pair< int, ::GEdge * >(ori[2], edges[2]);
       ordered[3] = std::pair< int, ::GEdge * >(ori[3], edges[3]);
     }
-    else if (_direction == 1) {
+    else if (config().lookup< dtInt >("_direction") == 1) {
       ordered[0] = std::pair< int, ::GEdge * >(ori[1], edges[1]);
       ordered[1] = std::pair< int, ::GEdge * >(ori[2], edges[2]);
       ordered[2] = std::pair< int, ::GEdge * >(ori[3], edges[3]);
@@ -202,15 +204,17 @@ namespace dtOO {
     progHelper::reverse( edgeVertex[2] );
     progHelper::reverse( edgeVertex[3] );
     
-    
+    std::vector< dtInt > nLayers 
+    = 
+    config().lookup< std::vector< dtInt > >("_nLayers");
     //
     // sheet 0
     //
     twoDArrayHandling< ::MVertex * > sheet0(
-      edgeVertex[0].size(), _nLayers[0]+1
+      edgeVertex[0].size(), nLayers[0]+1
     );
     dt__forAllIndex(edgeVertex[0], ii) sheet0[ii][0] = edgeVertex[0][ii].first;
-    dt__forFromToIndex(1, _nLayers[0]+1, layer) {
+    dt__forFromToIndex(1, nLayers[0]+1, layer) {
       dt__info( operator()(), << "Create layer " << layer << " on sheet0." );
       sheet0[0                     ][layer] = edgeVertex[3][layer].first;
       sheet0[edgeVertex[0].size()-1][layer] = edgeVertex[1][layer].first;
@@ -289,7 +293,7 @@ namespace dtOO {
       //
       // smooth normals
       //
-      dt__forFromToIndex(0, _nSmooth, thisSmooth) {
+      dt__forFromToIndex(0, config().lookup< dtInt >("_nSmooth"), thisSmooth) {
         dt__forInnerIndex(sheet0.fixJ(layer), node) {
           NN[ node ]
           =
@@ -343,10 +347,10 @@ namespace dtOO {
     progHelper::reverse( edgeVertex[2] );
     progHelper::reverse( edgeVertex[3] );    
     twoDArrayHandling< ::MVertex * > sheet1(
-      edgeVertex[2].size(), _nLayers[1]+1
+      edgeVertex[2].size(), nLayers[1]+1
     );
     dt__forAllIndex(edgeVertex[2], ii) sheet1[ii][0] = edgeVertex[2][ii].first;
-    dt__forFromToIndex(1, _nLayers[1]+1, layer) {
+    dt__forFromToIndex(1, nLayers[1]+1, layer) {
       dt__info( operator()(), << "Create layer " << layer << " on sheet1." );
       sheet1[0                     ][layer] = edgeVertex[1][layer].first;
       sheet1[edgeVertex[2].size()-1][layer] = edgeVertex[3][layer].first;
@@ -414,7 +418,7 @@ namespace dtOO {
         -1. * NN[ sheet1.fixJ(layer).size() - 1 ];          
       }
       
-      dt__forFromToIndex(0, _nSmooth, thisSmooth) {
+      dt__forFromToIndex(0, config().lookup< dtInt >("_nSmooth"), thisSmooth) {
         dt__forInnerIndex(sheet1.fixJ(layer), node) {
           NN[ node ]
           =
@@ -481,19 +485,19 @@ namespace dtOO {
     //
     // add mesh vertices, mesh elements and underlying geometry
     //
-    dt__forAllRefAuto(sheet0.fixJ(_nLayers[0]), aVert) {
+    dt__forAllRefAuto(sheet0.fixJ(nLayers[0]), aVert) {
       ge->addMeshVertex(aVert);
     }
     dt__forFromToIndex(
-      _nLayers[0]+1, edgeVertex[1].size()-_nLayers[1]-1, ii
+      nLayers[0]+1, edgeVertex[1].size()-nLayers[1]-1, ii
     ) {
       ge->addMeshVertex( edgeVertex[1][ii].first );
     }
-    std::vector< ::MVertex * > tmpSheet = sheet1.fixJ(_nLayers[1]);
+    std::vector< ::MVertex * > tmpSheet = sheet1.fixJ(nLayers[1]);
     dt__forAllRefAuto(tmpSheet, aVert) ge->addMeshVertex(aVert);
     progHelper::reverse( edgeVertex[3] );
     dt__forFromToIndex(
-      _nLayers[1]+1, edgeVertex[3].size()-_nLayers[0]-1, ii
+      nLayers[1]+1, edgeVertex[3].size()-nLayers[0]-1, ii
     ) {
       ge->addMeshVertex( edgeVertex[3][ii].first );
     }
@@ -539,7 +543,7 @@ namespace dtOO {
     //
     // add transfinite layer quadrangles
     //
-    dt__forFromToIndex(0, _nLayers[0], layer) {
+    dt__forFromToIndex(0, nLayers[0], layer) {
       dt__forFromToIndex(0, sheet0.size()-1, node) {
         dtgf->addElement(
           new MQuadrangle(
@@ -551,7 +555,7 @@ namespace dtOO {
         );
       }
     }
-    dt__forFromToIndex(0, _nLayers[1], layer) {
+    dt__forFromToIndex(0, nLayers[1], layer) {
       dt__forFromToIndex(0, sheet1.size()-1, node) {
         dtgf->addElement(
           new MQuadrangle(
@@ -566,14 +570,14 @@ namespace dtOO {
     //
     // add transfinite layer vertices
     //
-    dt__forFromToIndex(0, _nLayers[0]+1, layer) {
+    dt__forFromToIndex(0, nLayers[0]+1, layer) {
       dt__forFromToIndex(0, sheet0.size(), node) {
         if ( sheet0[node][layer]->onWhat() == dtgf ) {
           dtgf->addMeshVertex(sheet0[node][layer]);
         }
       }
     }
-    dt__forFromToIndex(0, _nLayers[1]+1, layer) {
+    dt__forFromToIndex(0, nLayers[1]+1, layer) {
       dt__forFromToIndex(0, sheet1.size(), node) {
         if ( sheet1[node][layer]->onWhat() == dtgf ) {
           dtgf->addMeshVertex(sheet1[node][layer]);

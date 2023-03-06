@@ -37,11 +37,6 @@ namespace dtOO {
       void createOVM(dtGmshRegion * dtgr, dtOVMMesh & ovm);
       static dtReal pyramidHeight( ::MPyramid * pyr );
     private:
-      dtReal _relax;
-      dtReal _minQShapeMetric;
-      dtReal _maxHeight;
-      dtInt _nPyramidOpenSteps;
-      dtInt _nSmooths;
     private:
       static bool _registrated;
   };

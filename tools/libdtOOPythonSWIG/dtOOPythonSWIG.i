@@ -227,6 +227,8 @@ namespace dtOO {
 #include <bVObserver/bVORemoveElements.h>
 #include <bVObserver/bVOOrientCellVolumes.h>
 #include <bVObserver/bVODumpModel.h>
+#include <meshEngine/dtMeshOperator.h>
+#include <bVObserver/bVOMeshRule.h>
 #include <gmshBoundedVolume.h>
 #include <map3dTo3dGmsh.h>
 #include <dtCase.h>
@@ -400,6 +402,8 @@ namespace dtOO {
 %include bVObserver/bVORemoveElements.h
 %include bVObserver/bVOOrientCellVolumes.h
 %include bVObserver/bVODumpModel.h
+%include meshEngine/dtMeshOperator.h
+%include bVObserver/bVOMeshRule.h
 %include gmshBoundedVolume.h
 %include map3dTo3dGmsh.h
 %include dtCase.h
@@ -542,6 +546,7 @@ namespace dtOO {
 %template(appendAnalyticFunction) dtOO::jsonPrimitive::append< dtOO::analyticFunction const * >;
 %template(appendAnalyticGeometry) dtOO::jsonPrimitive::append< dtOO::analyticGeometry const * >;
 %template(appendDtTransformer) dtOO::jsonPrimitive::append< dtOO::dtTransformer const * >;
+%template(appendVectorInt) dtOO::jsonPrimitive::append< std::vector< dtOO::dtInt > >;
 
 %include constValueHeaven/sliderFloatParam.h
 %include constValueHeaven/intParam.h
