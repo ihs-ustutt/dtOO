@@ -467,7 +467,7 @@ namespace dtOO {
     dtPoint3 bbMax(
       CTX::instance()->max[0], CTX::instance()->max[1], CTX::instance()->max[2]
     );    
-    dt__info(makePreGrid(),
+    dt__info(updateBoundingBox(),
       << "Gmsh boundingBox:" << std::endl
       << logMe::dtFormat("min: (%d, %d, %d)")
         % CTX::instance()->min[0] 
