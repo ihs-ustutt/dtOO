@@ -20,14 +20,16 @@ namespace dtOO {
   }
 
   dtReal stringPrimitive::stringToFloat(std::string const value) {
-    dtReal argumentFloat;
-    std::istringstream(value) >> argumentFloat;
-    return argumentFloat;
+    return std::atof( value.c_str() );
   }
 
   std::string stringPrimitive::floatToString(dtReal const value) {
     std::ostringstream buff;
-    buff << std::setprecision(8) << std::fixed << value;
+    buff 
+      << std::defaultfloat 
+      << std::setprecision(std::numeric_limits<dtReal>::max_digits10) 
+      << value;
+    dt__throwIf(std::stod( buff.str() )!=value, floatToString());
     return buff.str();
   }
 
