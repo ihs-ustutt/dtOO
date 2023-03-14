@@ -40,11 +40,6 @@ namespace dtOO {
     //
     gmshBoundedVolume::init(element, bC, cV, aF, aG, bV);
 		
-    //
-    // set current model
-    //
-    ::GModel::setCurrent( _gm );
-
     dt__forAllRefAuto(
       qtXmlPrimitive::getChildVector(element), anEl
     ) {
