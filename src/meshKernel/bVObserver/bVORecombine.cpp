@@ -42,9 +42,12 @@ namespace dtOO {
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_faceLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("faceLabel", element);
+    jsonPrimitive jE;
+    jE.append< std::vector< std::string > >(
+      "_faceLabel",
+		  dtXmlParserBase::getAttributeStrVector("faceLabel", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVORecombine::preUpdate( void ) {
@@ -55,7 +58,9 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
     
-    dt__forAllRefAuto(_faceLabel, aLabel) {
+    dt__forAllRefAuto(
+      config().lookup< std::vector< std::string > >("_faceLabel"), aLabel
+    ) {
       dt__forAllRefAuto( gm->getDtGmshFaceListByPhysical(aLabel), aFace ) {
         aFace->meshRecombine();
       }

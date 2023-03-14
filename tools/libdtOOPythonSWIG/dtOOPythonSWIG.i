@@ -227,10 +227,13 @@ namespace dtOO {
 #include <bVObserver/bVORemoveElements.h>
 #include <bVObserver/bVOOrientCellVolumes.h>
 #include <bVObserver/bVODumpModel.h>
+#include <bVObserver/bVOTransfiniteFaces.h>
+#include <bVObserver/bVORecombine.h>
 #include <meshEngine/dtMeshOperator.h>
 #include <bVObserver/bVOMeshRule.h>
 #include <gmshBoundedVolume.h>
 #include <map3dTo3dGmsh.h>
+#include <customGmsh.h>
 #include <dtCase.h>
 #include <dtPlugin.h>
 #include <xmlHeaven/dtXmlParserBase.h>
@@ -402,10 +405,13 @@ namespace dtOO {
 %include bVObserver/bVORemoveElements.h
 %include bVObserver/bVOOrientCellVolumes.h
 %include bVObserver/bVODumpModel.h
+%include bVObserver/bVOTransfiniteFaces.h
+%include bVObserver/bVORecombine.h
 %include meshEngine/dtMeshOperator.h
 %include bVObserver/bVOMeshRule.h
 %include gmshBoundedVolume.h
 %include map3dTo3dGmsh.h
+%include customGmsh.h
 %include dtCase.h
 %include dtPlugin.h
 %include jsonHeaven/jsonPrimitive.h
