@@ -366,6 +366,12 @@ namespace dtOO {
 		addIfFaceToGmshModel(face, tag, edges, ori);  	
 	}
 
+  dtInt dtGmshModel::addIfFaceToGmshModel( map2dTo3d const * const face ) {
+    dtInt tag;
+    addIfFaceToGmshModel(face, &tag);
+    return tag;
+  }
+
   void dtGmshModel::addIfRegionToGmshModel(
     map3dTo3d const * const region, dtInt * const tag,
 		std::list< ::GFace * > const & faces, std::vector< dtInt > const & ori    
@@ -2209,12 +2215,29 @@ namespace dtOO {
         physV.insert( physV.begin(), std::string("*") );
       }
     }
-    
-    wildStr = physV[0];
-    dt__forFromToIndex(1, physV.size(), ii) wildStr = wildStr+"->"+physV[ii];
+    std::string wildStrWork = physV[0];
+    dt__forFromToIndex(1, physV.size(), ii) {
+      wildStrWork = wildStrWork+"->"+physV[ii];
+    }
    
     dt__forAllRefAuto( getFullPhysicalList(ge), aPhysical) {
-      if ( stringPrimitive::matchWildcard(wildStr, aPhysical) ) return true;
+      if ( !stringPrimitive::isWildcard(wildStr) ) {
+        if ( wildStr ==  aPhysical ) {
+          dt__debug(
+            matchWildCardPhysical(), 
+            << "Direct match with wildStr = " << wildStr
+          );
+          return true;
+        }
+      }
+      if ( stringPrimitive::matchWildcard(wildStrWork, aPhysical) ) {
+        dt__debug(
+          matchWildCardPhysical(), 
+          << "Match with wildStrWork = " << wildStrWork
+          << " == " << aPhysical
+        );
+        return true;
+      }
     }
     return false;
   }

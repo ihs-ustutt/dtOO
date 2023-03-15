@@ -115,6 +115,7 @@ namespace dtOO {
       // add face
       //
       void addIfFaceToGmshModel(map2dTo3d const * const face, dtInt * const tag);    
+      dtInt addIfFaceToGmshModel(map2dTo3d const * const face);    
       //
       //add region
       //
