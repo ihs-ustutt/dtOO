@@ -25,113 +25,57 @@ namespace dtOO {
     )
   );
  
-  void dtMeshCustom2x3TransfiniteGFace::computeEdgeLoops(
-    const ::GFace *gf, 
-    std::vector< ::MVertex * > &all_mvertices, 
-    std::vector< dtInt > &indices,
-    std::vector<MVertex*> & corners,
-    std::vector <MVertex *> & m_vertices    
-  ) {
-    findTransfiniteCorners(const_cast<::GFace*>(gf), corners);
-    dt__throwIf(corners.size()!= 4, computeEdgeLoops());
-    
-    std::vector<GEdge*> edges = gf->edges();
-    std::vector<int> ori = gf->orientations();
-    std::vector<GEdge*>::iterator it = edges.begin();
-    std::vector<int>::iterator ito = ori.begin();
-
-    indices.push_back(0);
-    GVertex *start 
-    = 
-    ((*ito) == 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-    GVertex *v_end 
-    = 
-    ((*ito) != 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-    all_mvertices.push_back(start->mesh_vertices[0]);
-    if(*ito == 1)
-      for(dtUnsInt i = 0; i < (*it)->mesh_vertices.size(); i++)
-        all_mvertices.push_back((*it)->mesh_vertices[i]);
-    else
-      for(int i = (*it)->mesh_vertices.size() - 1; i >= 0; i--)
-        all_mvertices.push_back((*it)->mesh_vertices[i]);
-
-    GVertex *v_start = start;
-    while(1){
-      ++it;
-      ++ito;
-      if(v_end == start){
-        indices.push_back(all_mvertices.size());
-        if(it == edges.end ()) break;
-        start = ((*ito) == 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-        v_end = ((*ito) != 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-        v_start = start;
-      }
-      else{
-        if(it == edges.end ()){
-          Msg::Error("Something wrong in edge loop computation");
-          return;
-        }
-        v_start = ((*ito) == 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-        if(v_start != v_end){
-          Msg::Error("Something wrong in edge loop computation");
-          return;
-        }
-        v_end = ((*ito) != 1) ? (*it)->getBeginVertex() : (*it)->getEndVertex();
-      }
-      all_mvertices.push_back(v_start->mesh_vertices[0]);
-      if(*ito == 1)
-        for(dtUnsInt i = 0; i < (*it)->mesh_vertices.size(); i++)
-          all_mvertices.push_back((*it)->mesh_vertices[i]);
-      else
-        for(int i = (*it)->mesh_vertices.size()-1; i >= 0; i--)
-          all_mvertices.push_back((*it)->mesh_vertices[i]);
-    }
-    
-    dt__throwIf(indices.size()!=2, operator());
-
-    // create a list of all boundary vertices, starting at the first
-    // transfinite corner
-
-    dtUnsInt I;
-    for(I = 0; I < all_mvertices.size(); I++)
-      if(all_mvertices[I] == corners[0]) break;
-    for(dtUnsInt j = 0; j < all_mvertices.size(); j++)
-      m_vertices.push_back(all_mvertices[(I + j) % all_mvertices.size()]);
-
-    // make the ordering of the list consistent with the ordering of the
-    // first two corners (if the second found corner is not the second
-    // corner, just reverse the list)
-    bool reverse = false;
-    for(dtUnsInt i = 1; i < m_vertices.size(); i++){
-      MVertex *v = m_vertices[i];
-      if(v == corners[1] || v == corners[2] ||
-         (corners.size() == 4 && v == corners[3])){
-        if(v != corners[1]) reverse = true;
-        break;
-      }
-    }
-    if(reverse){
-      std::vector <MVertex *> tmp;
-      tmp.push_back(m_vertices[0]);
-      for(int i = m_vertices.size() - 1; i > 0; i--)
-        tmp.push_back(m_vertices[i]);
-      m_vertices = tmp;
-    }    
-  }
-
   dtMeshCustom2x3TransfiniteGFace::dtMeshCustom2x3TransfiniteGFace() 
-    : dtMesh2DOperator() {
+    : dtMeshTransfinite2DOperator() {
     
   }
 
   dtMeshCustom2x3TransfiniteGFace::dtMeshCustom2x3TransfiniteGFace(
     const dtMeshCustom2x3TransfiniteGFace& orig
-  ) : dtMesh2DOperator(orig) {
+  ) : dtMeshTransfinite2DOperator(orig) {
     
   }
 
   dtMeshCustom2x3TransfiniteGFace::~dtMeshCustom2x3TransfiniteGFace() {
     
+  }
+
+  void dtMeshCustom2x3TransfiniteGFace::jInit(
+    jsonPrimitive const & jE,
+    baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtMeshOperator const * const mO    
+  ) {
+    dtMesh2DOperator::jInit(jE, bC, cV, aF, aG, bV, mO);
+
+    _alpha_1 
+    = 
+    scaOneD::PointerDownCast(
+      config().lookupClone< analyticFunction >("_alpha_1", aF)
+    );
+    _alpha_2 
+    = 
+    scaOneD::PointerDownCast(
+      config().lookupClone< analyticFunction >("_alpha_2", aF)
+    );
+    _beta_1 
+    = 
+    scaOneD::PointerDownCast(
+      config().lookupClone< analyticFunction >("_beta_1", aF)
+    );
+    _beta_2 
+    = 
+    scaOneD::PointerDownCast(
+      config().lookupClone< analyticFunction >("_beta_2", aF)
+    );
+    _beta_3 
+    = 
+    scaOneD::PointerDownCast(
+      config().lookupClone< analyticFunction >("_beta_3", aF)
+    );
   }
 
   void dtMeshCustom2x3TransfiniteGFace::init(
@@ -145,42 +89,38 @@ namespace dtOO {
   ) {
     dtMesh2DOperator::init(element, bC, cV, aF, aG, bV, mO);
     
-    
-    dt__ptrAss( 
-      scaOneD const * alpha_1, 
-      scaOneD::ConstDownCast(
+    jsonPrimitive jE; 
+    jE.append(
+      "_alpha_1", 
+      analyticFunction::ConstDownCast(
         aF->get(qtXmlBase::getAttributeStr("alpha_1", element))
-      ) 
+      )
     );
-    _alpha_1.reset( alpha_1->clone() );
-    dt__ptrAss( 
-      scaOneD const * alpha_2, 
-      scaOneD::ConstDownCast(
+    jE.append(
+      "_alpha_2", 
+      analyticFunction::ConstDownCast(
         aF->get(qtXmlBase::getAttributeStr("alpha_2", element))
-      ) 
+      )
     );
-    _alpha_2.reset( alpha_2->clone() );
-    dt__ptrAss( 
-      scaOneD const * beta_1, 
-      scaOneD::ConstDownCast(
+    jE.append(
+      "_beta_1", 
+      analyticFunction::ConstDownCast(
         aF->get(qtXmlBase::getAttributeStr("beta_1", element))
-      ) 
+      )
     );
-    _beta_1.reset( beta_1->clone() );    
-    dt__ptrAss( 
-      scaOneD const * beta_2, 
-      scaOneD::ConstDownCast(
+    jE.append(
+      "_beta_2", 
+      analyticFunction::ConstDownCast(
         aF->get(qtXmlBase::getAttributeStr("beta_2", element))
-      ) 
+      )
     );
-    _beta_2.reset( beta_2->clone() );     
-    dt__ptrAss( 
-      scaOneD const * beta_3, 
-      scaOneD::ConstDownCast(
+    jE.append(
+      "_beta_3", 
+      analyticFunction::ConstDownCast(
         aF->get(qtXmlBase::getAttributeStr("beta_3", element))
-      ) 
+      )
     );
-    _beta_3.reset( beta_3->clone() );         
+    dtMeshCustom2x3TransfiniteGFace::jInit(jE, bC, cV, aF, aG, bV, mO);
   }
       
   void dtMeshCustom2x3TransfiniteGFace::operator()( dtGmshFace * dtgf ) {
@@ -196,84 +136,28 @@ namespace dtOO {
       "Meshing surface %d ( dtMeshCustom2x3TransfiniteGFace )", dtgf->tag()
     );
 
-    std::vector<MVertex*> corners;
-    std::vector<MVertex*> d_vertices;
-    std::vector<int> indices;
-    std::vector <MVertex *> m_vertices;
-    computeEdgeLoops(dtgf, d_vertices, indices, corners, m_vertices);
-
-
-    // get the indices of the interpolation corners as well as the u,v
-    // coordinates of all the boundary vertices
-
-    std::vector< double > U( m_vertices.size(), 0. );
-    std::vector< double > V( m_vertices.size(), 0. );
-
-    dtInt iCorner = 0, N[4] = {0, 0, 0, 0};  
-    for(dtUnsInt i = 0; i < m_vertices.size(); i++){
-      MVertex *v = m_vertices[i];
-      if(
-        v == corners[0] || v == corners[1] 
-        || 
-        v == corners[2] || v == corners[3]
-      ) {
-        dt__throwIf(iCorner>3, operator());
-        N[iCorner++] = i;
-      }
-      SPoint2 param;
-      reparamMeshVertexOnFace(m_vertices[i], dtgf, param);
-      U[i] = param[0];
-      V[i] = param[1];    
-    }
-
-    dtInt N1 = N[0], N2 = N[1], N3 = N[2], N4 = N[3];
-    dtInt L = N2 - N1, H = N3 - N2;
-
-    dtInt Lb = N4 - N3, Hb = m_vertices.size() - N4;
-    dt__throwIf(Lb != L || Hb != H, operator());
-
-    
-    /*             k
-        2L+H +------------+ L+H
-             |            |
-             |            |
-           l |            | j
-             |            |
-       2L+2H +------------+
-             0     i      L
-    */
+//    
+//    /*             k
+//        2L+H +------------+ L+H
+//             |            |
+//             |            |
+//           l |            | j
+//             |            |
+//       2L+2H +------------+
+//             0     i      L
+//    */
 
     std::vector<std::vector<MVertex*> > &tab(dtgf->transfinite_vertices);
-    twoDArrayHandling< dtPoint2 > pUV(L+1, H+1, dtPoint2(0,0));
+    twoDArrayHandling< dtPoint2 > pUV 
+    = 
+    dtMeshTransfinite2DOperator::computeEdgeLoops(dtgf);
+    dtInt L = pUV.size(0)-1;
+    dtInt H = pUV.size(1)-1;
     twoDArrayHandling< dtVector3 > nXYZ(L+1, H+1, dtVector3(0,0,0));
     twoDArrayHandling< dtVector2 > nUV(L+1, H+1, dtVector2(0,0));
     twoDArrayHandling< dtVector2 > dF(L+1, H+1, dtVector2(0,0));
     twoDArrayHandling< dtVector2 > ddF(L+1, H+1, dtVector2(0,0));
 
-    tab.resize(L + 1);
-    for(int i = 0; i <= L; i++) tab[i].resize(H + 1);
-
-    tab[0][0] = m_vertices[0];
-    tab[L][0] = m_vertices[L];
-    tab[L][H] = m_vertices[L+H];
-    tab[0][H] = m_vertices[2*L+H];
-    pUV[0][0] = dtPoint2(U[0], V[0]);
-    pUV[L][0] = dtPoint2(U[L], V[L]);
-    pUV[L][H] = dtPoint2(U[L+H], V[L+H]);
-    pUV[0][H] = dtPoint2(U[2*L+H], V[2*L+H]);  
-    for (int i = 1; i < L; i++){
-      tab[i][0] = m_vertices[i];
-      tab[i][H] = m_vertices[2*L+H-i];
-      pUV[i][0] = dtPoint2(U[i], V[i]);
-      pUV[i][H] = dtPoint2(U[2*L+H-i], V[2*L+H-i]);      
-    }  
-    for(int i = 1; i < H; i++){
-      tab[L][i] = m_vertices[L+i];
-      tab[0][i] = m_vertices[2*L+2*H-i];
-      pUV[L][i] = dtPoint2(U[L+i], V[L+i]);
-      pUV[0][i] = dtPoint2(U[2*L+2*H-i], V[2*L+2*H-i]);     
-    }
-  
     for (int i = 1; i < L; i++){
       nXYZ[i][0] 
       = 
@@ -501,58 +385,7 @@ namespace dtOO {
       }
     }
   
-    //
-    // output
-    //
-    std::fstream of;
-    of.open(
-      (dtgf->getPhysicalString()+"_uv.dat").c_str(), 
-      std::ios::out | std::ios::trunc
-    );	
-    of.precision(8);
-    of.fixed;
-    of 
-      << "x coord, y coord, z coord, "
-      << "normal x, normal y, normal z, "
-      << "cross x, cross y, cross z" << std::endl;
-    for (int i = 0; i < L+1; i++) {
-      for (int j = 0; j < H+1; j++) {
-        of 
-        << pUV[i][j].x() << ", " << pUV[i][j].y() << ", 0. , "
-        << nUV[i][j].x() << ", " << nUV[i][j].y() << ", 0., "
-        << ddF[i][j].x() << ", " << ddF[i][j].y() << ", 0., "
-        << std::endl;   
-      }  
-    }
-    of.close();
-  
-    
-    // create elements
-    for(int i = 0; i < L ; i++){
-      for(int j = 0; j < H; j++){
-        MVertex *v1 = tab[i][j];
-        MVertex *v2 = tab[i + 1][j];
-        MVertex *v3 = tab[i + 1][j + 1];
-        MVertex *v4 = tab[i][j + 1];
-        if(CTX::instance()->mesh.recombineAll || dtgf->meshAttributes.recombine)
-          dtgf->quadrangles.push_back(new MQuadrangle(v1, v2, v3, v4));
-        else if(dtgf->meshAttributes.transfiniteArrangement == 1 ||
-                (dtgf->meshAttributes.transfiniteArrangement == 2 &&
-                 ((i % 2 == 0 && j % 2 == 1) ||
-                  (i % 2 == 1 && j % 2 == 0))) ||
-		(dtgf->meshAttributes.transfiniteArrangement == -2 &&
-                 ((i % 2 == 0 && j % 2 == 0) ||
-                  (i % 2 == 1 && j % 2 == 1)))
-		){
-          dtgf->triangles.push_back(new MTriangle(v1, v2, v3));
-          dtgf->triangles.push_back(new MTriangle(v3, v4, v1));
-        }
-        else{
-          dtgf->triangles.push_back(new MTriangle(v1, v2, v4));
-          dtgf->triangles.push_back(new MTriangle(v4, v2, v3));
-        }
-      }
-    }
+    dtMeshTransfinite2DOperator::createTransfiniteElements( dtgf );    
 
     dtgf->meshStatistics.status = GFace::DONE;
   }

@@ -5,7 +5,7 @@
 
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-#include "dtMesh2DOperator.h"
+#include "dtMeshTransfinite2DOperator.h"
 
 class GFace;
 class MVertex;
@@ -13,8 +13,15 @@ class MVertex;
 namespace dtOO {
   class dtGmshFace;
   class scaOneD;
-  
-  class dtMeshCustom2x3TransfiniteGFace : public dtMesh2DOperator {
+ 
+//! Hermite interpolation for mesh generation.
+/*! The interpolation is done according to [1]. 
+ *
+ * @todo: Calculation of the derivatives should be checked if this is correct.
+ *
+ *  [1] https://doi.org/10.1137/0906049
+ */
+  class dtMeshCustom2x3TransfiniteGFace : public dtMeshTransfinite2DOperator {
     public:
       dt__class(dtMeshCustom2x3TransfiniteGFace, dtMeshOperator);     
       dt__classSelfCreate(dtMeshCustom2x3TransfiniteGFace);
@@ -23,6 +30,15 @@ namespace dtOO {
         const dtMeshCustom2x3TransfiniteGFace& orig
       );
       virtual ~dtMeshCustom2x3TransfiniteGFace();
+      virtual void jInit(
+        jsonPrimitive const & jE,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO
+      );
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -33,14 +49,6 @@ namespace dtOO {
         lvH_dtMeshOperator const * const mO      
       );      
       void operator()( dtGmshFace * dtgr );    
-    private:
-      static void computeEdgeLoops(
-        const ::GFace *gf, 
-        std::vector< ::MVertex * > & all_mvertices, 
-        std::vector< dtInt > & indices,
-        std::vector<MVertex*> & corners,
-        std::vector <MVertex *> & m_vertices                  
-      );
     private:
       dt__pH(scaOneD) _alpha_1;
       dt__pH(scaOneD) _alpha_2;
