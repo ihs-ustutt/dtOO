@@ -140,6 +140,21 @@ foreach(xzFilePath ${sources_list})
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tistos
   )
 endforeach()
+#
+# meshSimpleSurface
+#
+add_test(
+  NAME meshSimpleSurface
+  COMMAND python3 "build.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshSimpleSurface
+)
+set_tests_properties(
+  meshSimpleSurface
+  PROPERTIES
+  ENVIRONMENT 
+    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
+    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
+)
 
 
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
