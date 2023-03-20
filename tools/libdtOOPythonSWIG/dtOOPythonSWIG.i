@@ -205,6 +205,8 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h>
 #include <jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h>
 #include <meshEngine/dtGmshModel.h>
 #include <bVObserver/bVOInterface.h>
@@ -576,6 +578,8 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h
 %include geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h
 %include jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h
 
 %include meshEngine/dtGmshModel.h
