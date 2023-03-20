@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<machine>
+  <staticProperties label="">
+    <option name="reparamOnFace_precision"          value="1.e-05"/>
+    <option name="reparamInVolume_precision"        value="1.e-05"/>
+    <option name="reparam_internalRestarts"         value="10"/>
+    <option name="reparam_restarts"                 value="10"/>
+    <option name="reparam_restartIncreasePrecision" value="10."/>
+    <option name="reparam_internalRestartDecreasePrecision" value="0.9"/>
+    <option name="reparamOnFace_minimizer"      value=":Minuit2::kMigrad:"/>
+    <option name="reparamInVolume_minimizer"    value=":Minuit2::kMigrad:"/>
+    <option name="invY_precision"               value="1.e-04"/>
+    <option name="xyz_resolution"               value="1.e-05"/>
+    <option name="XYZ_resolution"               value="1.e-04"/>
+    <option name="uvw_resolution"               value="1.e-04"/>
+    <option name="point_render_diameter"        value=".0025"/>
+    <option name="vector_render_size"           value=".0030"/>
+    <option name="function_render_resolution_u" value="201"/>
+    <option name="function_render_resolution_v" value="201"/>
+    <option name="function_render_resolution_w" value="201"/>
+    <option name="geometry_render_resolution_u" value="21"/>
+    <option name="geometry_render_resolution_v" value="21"/>
+    <option name="geometry_render_resolution_w" value="21"/>
+    <option name="root_printLevel"              value="0"/>		
+    <option name="root_maxIterations"           value="1000"/>
+    <option name="root_maxFunctionCalls"        value="1000000"/>
+    <option name="ompNumThreads"                value="2"/>
+    <option name="map1dTo3d_deltaPer"           value="0.01"/>
+    <option name="map2dTo3d_deltaPer"           value="0.01"/>
+    <option name="map3dTo3d_deltaPer"           value="0.01"/>
+    <option name="logLevel"                     value="99"/>
+  </staticProperties>	
+
+</machine>
