@@ -276,21 +276,18 @@ namespace dtOO {
       if ( !dtXmlParser::constReference().stateLoaded() ) {
         dtXmlParser::constReference().write(_cV);
       }
-      dirName = dirName+"_"+dtXmlParser::constReference().currentState();
     }
-    
-    //
-    // check if already simulated
-    //
-    if ( inPipeline(dtXmlParser::constReference().currentState()) ) return;
-    
     std::string wDir 
     = 
-    staticPropertiesHandler::getInstance()->getOption("workingDirectory")
-    +
-    "/"
-    +
-    dirName;
+    dtCase::getDirectory( dtXmlParser::constReference().currentState() );
+    
+    if ( systemHandling::directoryExists(wDir) ) {
+      dt__warning(
+        runCurrentState(),
+        << "Directory  " << wDir << " already exists. Skip this."
+      );
+      return;
+    }
     
     dt__info(
       runCurrentState(),
@@ -312,9 +309,6 @@ namespace dtOO {
     // create system folder
     //
     dt__onlyMaster {
-      if ( systemHandling::directoryExists(wDir) ) {      
-        systemHandling::deleteDirectory(wDir);
-      }
       systemHandling::createDirectory(wDir);
       systemHandling::createDirectory(wDir+"/system");
     

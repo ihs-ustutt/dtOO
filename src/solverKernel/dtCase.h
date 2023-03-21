@@ -9,6 +9,7 @@
 #include <interfaceHeaven/optionHandling.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <mainConceptFwd.h>
+#include <jsonHeaven/jsonPrimitive.h>
 
 namespace dtOO {
   class constValue;
@@ -24,6 +25,15 @@ namespace dtOO {
       virtual ~dtCase();
       virtual dtCase * create( void ) const = 0;
       virtual std::vector< std::string > factoryAlias( void ) const;
+      virtual void jInit( 
+        jsonPrimitive const & jE,
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtCase const * const dC
+      );
       virtual void init( 
         ::QDomElement const & element,
         baseContainer const * const bC,
@@ -34,24 +44,13 @@ namespace dtOO {
         lvH_dtCase const * const dC
       );    
       virtual void runCurrentState( void ) = 0;
-      void update( void );
-      bool inPipeline( std::string const & state) const;
-      std::vector< std::string > allStates( void ) const;
       std::string createDirectory( std::string const & state ) const;
       std::string getDirectory( std::string const & state ) const;
-      dtInt status( std::string const & state ) const;
-      std::string statusStr( std::string const & state ) const;
-      vectorHandling< resultValue * > result( std::string const & state ) const;
-    public:
-      static const dtInt SUCCESS;
-      static const dtInt RUNNING;
-      static const dtInt ERROR;
-      static const dtInt UNEXPECTED;
-      static const std::string STATUSSTRING[];
+    protected:
+      jsonPrimitive & config( void );
+      jsonPrimitive const & config( void ) const;
     private:
-      std::vector< std::string > _directory;
-      std::vector< std::string > _state;
-      std::vector< dtInt > _status;
+      jsonPrimitive _config;
   };
   dt__I_addCloneForpVHNotImpl(dtCase);
 }
