@@ -1,5 +1,5 @@
-#ifndef FLOATHANDLING_H
-#define	FLOATHANDLING_H
+#ifndef intHandling_H
+#define	intHandling_H
 
 #include <dtOOTypeDef.h>
 
@@ -17,5 +17,5 @@ namespace dtOO {
     intHandling();
   };
 }
-#endif	/* FLOATHANDLING_H */
+#endif	/* intHandling_H */
 
