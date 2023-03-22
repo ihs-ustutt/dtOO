@@ -288,6 +288,9 @@ namespace dtOO {
       );
       return;
     }
+    else {
+      dtCase::createDirectory( dtXmlParser::constReference().currentState() );
+    }
     
     dt__info(
       runCurrentState(),
@@ -309,7 +312,6 @@ namespace dtOO {
     // create system folder
     //
     dt__onlyMaster {
-      systemHandling::createDirectory(wDir);
       systemHandling::createDirectory(wDir+"/system");
     
       //

@@ -81,16 +81,7 @@ namespace dtOO {
   std::string dtCase::createDirectory( std::string const & state ) const {
     std::string wDir 
     = 
-    staticPropertiesHandler::getInstance()->getOption("workingDirectory")
-    +
-    "/"
-    +
-    getLabel();
-
-    //
-    // extend directory if state is not empty
-    //
-    if (state != "") wDir = wDir+"_"+state;
+    getDirectory( state );
     
     if ( !systemHandling::directoryExists(wDir) ) {
       systemHandling::createDirectory(wDir);
@@ -102,7 +93,20 @@ namespace dtOO {
   }  
   
   std::string dtCase::getDirectory( std::string const & state ) const {
-    return createDirectory(state);
+    std::string wDir 
+    = 
+    staticPropertiesHandler::getInstance()->getOption("workingDirectory")
+    +
+    "/"
+    +
+    getLabel();
+
+    //
+    // extend directory if state is not empty
+    //
+    if (state != "") wDir = wDir+"_"+state;
+
+    return wDir;
   }
   
   jsonPrimitive & dtCase::config( void ) {
