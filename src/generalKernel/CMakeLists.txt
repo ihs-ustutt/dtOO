@@ -78,7 +78,8 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/geomVolume_multipleBoundedVolumeAGXmlBuilder.h
   jsonHeaven/jsonPrimitive.h
   jsonHeaven/aFJsonBuilder.h
-  jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h
+  jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.cppbSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h
+  parseHeaven/dtParser.h
   criticalHeaven/unsetGmsh.h
   criticalHeaven/prepareOpenFOAM.h
   exceptionHeaven/eGeneral.h
@@ -192,6 +193,7 @@ SET(SOURCES
   jsonHeaven/jsonPrimitive.cpp
   jsonHeaven/aFJsonBuilder.cpp
   jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.cpp
+  parseHeaven/dtParser.cpp
   exceptionHeaven/eGeneral.cpp
   exceptionHeaven/eGSL.cpp
   interfaceHeaven/stringPrimitive.cpp

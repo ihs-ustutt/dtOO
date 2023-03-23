@@ -431,14 +431,6 @@ namespace dtOO {
       );
     protected:
       dtXmlParserBase();    
-    protected:    
-      static std::string _CALCSIGN;
-      static std::string _POINTSIGN;
-      static std::string _VECTORSIGN;
-      static std::string _DTTSIGN;
-      static std::string _CVSIGN;
-      static std::string _AFSIGN;
-      static std::string _AGSIGN;    
   };
 }
 #endif	/* DTXMLPARSERBASE_H */

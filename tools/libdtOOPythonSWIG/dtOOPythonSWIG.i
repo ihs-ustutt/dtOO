@@ -239,6 +239,7 @@ namespace dtOO {
 #include <customGmsh.h>
 #include <dtCase.h>
 #include <dtPlugin.h>
+#include <parseHeaven/dtParser.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <jsonHeaven/jsonPrimitive.h>
@@ -528,6 +529,15 @@ namespace dtOO {
 
 %include <interfaceHeaven/lVHOInterface.h>
 %include <interfaceHeaven/lVHOjsonLoad.h>
+%include <parseHeaven/dtParser.h>
+namespace dtOO {
+  %extend dtParser {
+    std::string __getitem__(std::string const & str) {
+      return $self->operator[](str);
+    } 
+  }
+}
+
 %include <xmlHeaven/dtXmlParserBase.h>
 %include <xmlHeaven/dtXmlParser.h>     
 %template(lookupStr) dtOO::jsonPrimitive::lookup< std::string >;
