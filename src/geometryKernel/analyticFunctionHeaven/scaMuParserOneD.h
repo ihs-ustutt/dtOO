@@ -16,34 +16,34 @@ namespace dtOO {
  *  expression.
  */
   class scaMuParserOneD : public scaOneD {
-  public:
-    dt__class(scaMuParserOneD, analyticFunction);
-    scaMuParserOneD();
-    scaMuParserOneD(scaMuParserOneD const & orig);
-    /*! 
-     * @param expression Function expression.
-     * @param argument Argument.
-     * @exception dtOO::eGeneral Catch `muParser` and throw exception.
-     * 
-     *   Create a simple function, e.g by
-     * 
-     *   > fun = scaMuParserOneD("5.*xx*xx+(2*xx)", "xx")
-     * 
-     */
-    scaMuParserOneD(std::string const expression, std::string const argument);
-    scaMuParserOneD * clone( void ) const;
-    scaMuParserOneD * cloneTransformed(
-      dtTransformer const * const dtT 
-    ) const;        
-    scaMuParserOneD * create( void ) const;    
-    virtual ~scaMuParserOneD();
-    virtual dtReal YFloat(dtReal const & xx) const;
-    void setArgumentRange(dtReal xMin, dtReal xMax);  
-  private:
-    dt__pH(dtMuParser) _parser;
-    dt__pH(double) _argument;
-    std::string _expressionStr;
-    std::string _argumentStr;
+    public:
+      dt__class(scaMuParserOneD, analyticFunction);
+      scaMuParserOneD();
+      scaMuParserOneD(scaMuParserOneD const & orig);
+      /*! 
+       * @param expression Function expression.
+       * @param argument Argument.
+       * @exception dtOO::eGeneral Catch `muParser` and throw exception.
+       * 
+       *   Create a simple function, e.g by
+       * 
+       *   > fun = scaMuParserOneD("5.*xx*xx+(2*xx)", "xx")
+       * 
+       */
+      scaMuParserOneD(std::string const expression, std::string const argument);
+      scaMuParserOneD * clone( void ) const;
+      scaMuParserOneD * cloneTransformed(
+        dtTransformer const * const dtT 
+      ) const;        
+      scaMuParserOneD * create( void ) const;    
+      virtual ~scaMuParserOneD();
+      virtual dtReal YFloat(dtReal const & xx) const;
+      void setArgumentRange(dtReal xMin, dtReal xMax);  
+    private:
+      dt__pH(dtMuParser) _parser;
+      dt__pH(double) _argument;
+      std::string _expressionStr;
+      std::string _argumentStr;
   };
 }
 #endif	/* SCAMUPARSERONED_H */
