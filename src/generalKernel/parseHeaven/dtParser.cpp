@@ -67,7 +67,6 @@ namespace dtOO {
 
 
   std::string dtParser::operator[]( std::string const expression) const {
-    dt__debug( operator[](), << "Replace in " << expression );
     return dtParser::replaceDependencies(
       expression, _bC, _cV, _aF, _aG
     ); 
