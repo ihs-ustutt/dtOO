@@ -11,6 +11,7 @@
 #include <dtTransformerHeaven/dtTransformer.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
+#include <boundedVolume.h>
 
 namespace CGAL {
   //dtPoint2
@@ -373,7 +374,12 @@ namespace dtOO {
     std::string const & str, 
     labeledVectorHandling< analyticFunction * > const * const ptrVec
   ) const;
- 
+  template
+  std::vector< boundedVolume const * > jsonPrimitive::lookupVecRaw( 
+    std::string const & str, 
+    labeledVectorHandling< boundedVolume * > const * const ptrVec
+  ) const;
+
   // template lookupDef
   template < typename T > 
   T jsonPrimitive::lookupDef( std::string const & str, T const & def ) const {
