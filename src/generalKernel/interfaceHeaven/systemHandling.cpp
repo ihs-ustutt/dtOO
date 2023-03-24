@@ -5,8 +5,10 @@
 #include <cstdlib>
 #include <sys/stat.h>
 #include <stdio.h>
+#include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 #include <iostream> 
+#include <errno.h>
 
 namespace dtOO { 
   systemHandling::systemHandling() {
@@ -82,7 +84,7 @@ namespace dtOO {
     return true;
   }
   
-  bool systemHandling::createDirectory(std::string const & dirPath) {
+  void systemHandling::createDirectory(std::string const & dirPath) {
     //
     // create directory
     //
@@ -96,10 +98,12 @@ namespace dtOO {
       << dt__eval(dirPath) << std::endl
       << dt__eval(status) 
     );
-    if (status) {
-      return false;
-    }
-    return true;
+    dt__throwIfWithMessage(
+      status!=0,
+      createDirectory(),
+      << "Cannot create directory " << dirPath << std::endl
+      << "errno = " << static_cast<int>(errno) 
+    );
   }
 
   bool systemHandling::fileExists(std::string const & filename) {
@@ -129,26 +133,18 @@ namespace dtOO {
   }
   
   void systemHandling::deleteDirectory( std::string const & dirname ) {
-  try {
-		boost::filesystem::remove_all( 
-		  boost::filesystem::path(dirname.c_str()) 
-		);
-  }
-	catch( boost::filesystem::filesystem_error const & e) {
+    try {
+  		boost::filesystem::remove_all( 
+  		  boost::filesystem::path(dirname.c_str()) 
+  		);
+    }
+  	catch( boost::filesystem::filesystem_error const & e) {
       dt__throw(
-				deleteDirectory(), 
-				<< "Error deleting " << dt__eval(e.what()) << std::endl
-				<< "Error deleting " << dt__eval(dirname) 
-			);
-
-  }		
-//    if( status != 0 ) {
-//      dt__THROW(
-//				deleteDirectory(), 
-//				<< "Error deleting " << dt__eval(status) << std::endl
-//				<< "Error deleting " << dt__eval(dirname) 
-//			);
-//    }
+  			deleteDirectory(), 
+  			<< "Error deleting " << dt__eval(e.what()) << std::endl
+  			<< "Error deleting " << dt__eval(dirname) 
+  		);
+    }		
   }	
 	
 	void systemHandling::copyDirectory(
@@ -157,98 +153,74 @@ namespace dtOO {
 		boost::filesystem::path source(from);
 		boost::filesystem::path destination(to);
 		namespace fs = boost::filesystem;
-		try
-		{
+		try {
 			// Check whether the function call is valid
 			if(
 					!fs::exists(source) ||
 					!fs::is_directory(source)
-			)
-			{
-	//				std::cerr << "Source directory " << source.string()
-	//						<< " does not exist or is not a directory." << '\n'
-	//				;
+			) 	{
 				dt__throw( 
 					copyDirectory(), 
 					<< "Source directory " << source.string() 
 					<< " does not exist or is not a directory."
 				);							
-//					return false;
 			}
-			if(fs::exists(destination))
-			{
-	//				std::cerr << "Destination directory " << destination.string()
-	//						<< " already exists." << '\n'
-	//				;
+			if(fs::exists(destination)) {
 				dt__throw( 
 					copyDirectory(), 
 					<< "Destination directory " << destination.string() << " already exists."
 				);				
-//					return false;
 			}
 			// Create the destination directory
-			if(!fs::create_directory(destination))
-			{
-	//			std::cerr << "Unable to create destination directory"
-	//					<< destination.string() << '\n'
-	//			;
+			if(!fs::create_directory(destination)) {
 				dt__throw( 
 					copyDirectory(), 
 					<< "Unable to create destination directory" << destination.string() 
 				);			
-//				return false;
 			}
 		}
-		catch(fs::filesystem_error const & e)
-		{
-			std::cerr << e.what() << '\n';
-//			return false;
+		catch(fs::filesystem_error const & e) {
+			dt__throw( copyDirectory(), << dt__eval(e.what()) );
 		}
 		// Iterate through the source directory
 		for(
 			fs::directory_iterator file(source);
 			file != fs::directory_iterator(); ++file
-		)
-		{
-			try
-			{
+		) {
+			try {
 				fs::path current(file->path());
-				if(fs::is_directory(current))
-				{
+				if(fs::is_directory(current))	{
 					// Found directory: Recursion
-//					if(
-							copyDirectory(
-								current.string(),
-								(destination / current.filename()).string()
-							);
-//					)
-//					{
-//							return false;
-//					}
+						copyDirectory(
+							current.string(),
+							(destination / current.filename()).string()
+						);
 				}
-				else
-				{
-//
-// produces compiler bug:
-// see: https://svn.boost.org/trac/boost/ticket/6124
-//
-					// Found file: Copy
-//					fs::copy_file(
-//						current,
-//						destination / current.filename()
-//					);
+				else {
+          //
+          // produces compiler bug:
+          // see: https://svn.boost.org/trac/boost/ticket/6124
+          //
+          // Found file: Copy
+          //fs::copy_file(
+          //	current,
+          //	destination / current.filename()
+          //);
 					command(
-						"cp "+current.string()+" "+(destination / current.filename()).string()
+						"cp "
+            +
+            current.string()
+            +
+            " "
+            +
+            (destination / current.filename()).string()
 					);
 				}
 			}
-			catch(fs::filesystem_error const & e)
-			{
-				//std:: cerr << e.what() << '\n';
+			catch(fs::filesystem_error const & e)	{
 				dt__throw( copyDirectory(), << dt__eval(e.what()) );
 			}
 		}
-//		return true;
 	}	
   
   std::string systemHandling::currentDirectory( void ) {
@@ -266,7 +238,7 @@ namespace dtOO {
     }
   }
   
-  std::vector< fpath > systemHandling::directoryList( 
+  std::vector< std::string > systemHandling::directoryList( 
     std::string const & path
   ) {
     ::boost::filesystem::path targetDir(path);
@@ -274,17 +246,13 @@ namespace dtOO {
     dt__info( directoryList(), << dt__eval(path) );
     ::boost::filesystem::directory_iterator iter(targetDir), eod;
 
-    std::vector< fpath > dL;
+    std::vector< std::string > dL;
     BOOST_FOREACH(
       ::boost::filesystem::path const & i, std::make_pair(iter, eod)
     ) {
       if ( ::boost::filesystem::is_directory(i) ) {
-//        dt__quickdebug( << "<directory> " << dt__eval(i.string()));
         dL.push_back( i.string() );
       }
-//      else {
-//        dt__quickdebug( << dt__eval(i.string()) );
-//      }
     }    
     
     return dL;
