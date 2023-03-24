@@ -8,6 +8,7 @@
 #include <boundedVolume.h>
 
 #include <xmlHeaven/dtXmlParser.h>
+#include <parseHeaven/dtParser.h>
 #include <interfaceHeaven/systemHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <meshEngine/dtFoamLibrary.h>
@@ -43,9 +44,9 @@ namespace dtOO {
   std::vector< std::string > ofOpenFOAMCase::factoryAlias( void ) const {
     return ::boost::assign::list_of("OpenFOAMCase");
   }
-    
-  void ofOpenFOAMCase::init( 
-    ::QDomElement const & element,
+ 
+  void ofOpenFOAMCase::jInit(
+    jsonPrimitive const & jE,
     baseContainer const * const bC,
     lvH_constValue const * const cV,
     lvH_analyticFunction const * const aF,
@@ -53,35 +54,26 @@ namespace dtOO {
     lvH_boundedVolume const * const bV,
     lvH_dtCase const * const dC
   ) {
-    dtCase::init(element, bC, cV, aF, aG, bV, dC);
-    
+    dtCase::jInit( jE, bC, cV, aF, aG, bV, dC );
     //
     // hold constValues
     //
     _cV = cV;
 
     //
-    // get noWriteRules
-    //
-    _noWriteRule
-    = 
-    qtXmlPrimitive::getAttributeRareStrVector("noWriteRule", element);
-      
-    //
     // get dict rules
     //
     _dictRule
     = 
-    dtXmlParser::replaceDependencies(
-      dtXmlParser::getAttributeRareStr("dictRule", element), bC, cV, aF, aG
-    );
+    dtParser(bC, cV, aF, aG, bV, dC)[ jE.lookup< std::string >("_dictRule") ];
+    dt__info(jInit(), << _dictRule);
     
     //
     // get setupRules
     //
     std::vector< std::string > tmpSetupRule 
     = 
-    qtXmlPrimitive::getAttributeRareStrVector("setupRule", element);
+    jE.lookup< std::vector< std::string > >("_setupRule");
     
     //
     // prepare setupRules
@@ -91,7 +83,7 @@ namespace dtOO {
       // replace dependencies
       //
       dt__forAllRefAuto(tmpSetupRule, aRule) {
-        aRule = dtXmlParser::replaceDependencies(aRule, cV, aF, aG);
+        aRule = dtParser(bC, cV, aF, aG, bV, dC)[aRule];
       }
       
       //
@@ -124,7 +116,7 @@ namespace dtOO {
     //
     std::vector< std::string > tmpFieldRule 
     = 
-    qtXmlPrimitive::getAttributeRareStrVector("fieldRule", element);
+    jE.lookup< std::vector< std::string > >("_fieldRule");
     
     //
     // prepare fieldRules
@@ -135,7 +127,7 @@ namespace dtOO {
       // replace dependencies
       //
       dt__forAllRefAuto(tmpFieldRule, aRule) {
-        aRule = dtXmlParser::replaceDependencies(aRule, cV, aF, aG);
+        aRule = dtParser(bC, cV, aF, aG, bV, dC)[aRule];
       }
       
       _fieldRule[ii] 
@@ -149,22 +141,63 @@ namespace dtOO {
       );
       dt__info(init(), << "_fieldRule[ " << ii << " ] = " << _fieldRule[ii]);
     }
-    
     //
     // get boundedVolumes
     //
+    _bV 
+    = 
+    boundedVolume::VectorCastConst( jE.lookupVecRaw< boundedVolume >("", bV) );
+  } 
+
+  void ofOpenFOAMCase::init( 
+    ::QDomElement const & element,
+    baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtCase const * const dC
+  ) {
+    dtCase::init(element, bC, cV, aF, aG, bV, dC);
+
+    jsonPrimitive jE;
+    
+    if ( qtXmlPrimitive::hasAttribute("noWriteRule", element) ) {
+      dt__warning(
+        init(), 
+        << "noWriteRule will be ignored!"
+      );
+    }
+
+    jE.append< std::string >(
+      "_dictRule",
+      dtXmlParser::replaceDependencies(
+        dtXmlParser::getAttributeRareStr("dictRule", element), bC, cV, aF, aG
+      )
+    );
+
+    jE.append< std::vector< std::string > >(
+      "_setupRule",
+      qtXmlPrimitive::getAttributeRareStrVector("setupRule", element)
+    );
+
+    jE.append< std::vector< std::string > >(
+      "_fieldRule",
+      qtXmlPrimitive::getAttributeRareStrVector("fieldRule", element)
+    );
+
     std::vector< ::QDomElement > bVChild
     =
-    qtXmlBase::getChildVector("boundedVolume", element);
-      
+    qtXmlBase::getChildVector("boundedVolume", element);  
+    std::vector< boundedVolume * > bVVec;
     dt__forAllRefAuto(bVChild, aChild) {
-      _bV.push_back(
+      bVVec.push_back(
         bV->get( dtXmlParser::getAttributeStr("label", aChild) )
       );
     }
-    
-    _runCommand = qtXmlPrimitive::getAttributeRareStr("runCommand", element);
-    dt__throwIf(_runCommand.empty(), init());
+    jE.append< std::vector< boundedVolume * > >("", bVVec);
+
+    ofOpenFOAMCase::jInit( jE, bC, cV, aF, aG, bV, dC );
   }
   
   void ofOpenFOAMCase::initMeshVectors( 
@@ -277,9 +310,10 @@ namespace dtOO {
         dtXmlParser::constReference().write(_cV);
       }
     }
+    std::string cState = dtXmlParser::constReference().currentState(); 
     std::string wDir 
     = 
-    dtCase::getDirectory( dtXmlParser::constReference().currentState() );
+    dtCase::getDirectory( cState );
     
     if ( systemHandling::directoryExists(wDir) ) {
       dt__warning(
@@ -288,9 +322,7 @@ namespace dtOO {
       );
       return;
     }
-    else {
-      dtCase::createDirectory( dtXmlParser::constReference().currentState() );
-    }
+    else dtCase::createDirectory( cState );
     
     dt__info(
       runCurrentState(),
@@ -312,6 +344,11 @@ namespace dtOO {
     // create system folder
     //
     dt__onlyMaster {
+      //
+      // check if working directory exists
+      //				
+      dt__throwIf( !systemHandling::directoryExists(wDir), init() );
+     
       systemHandling::createDirectory(wDir+"/system");
     
       //
@@ -331,11 +368,6 @@ namespace dtOO {
       argv[0] = const_cast< char *>(argvStr[0].c_str());
       argv[1] = const_cast< char *>(argvStr[1].c_str());
       argv[2] = const_cast< char *>(argvStr[2].c_str());
-
-      //
-      // check if working directory exists
-      //				
-      dt__throwIf( !systemHandling::directoryExists(wDir), init() );
 
       std::vector< ::MVertex * > allVerts;
       std::vector< std::pair< ::MElement *, dtInt > > allElems;
@@ -519,14 +551,6 @@ namespace dtOO {
         );
       }
     
-      if (!_runCommand.empty()) {
-        systemHandling::changeDirectory(wDir);
-        systemHandling::command(_runCommand);
-        systemHandling::changeDirectory(
-          staticPropertiesHandler::getInstance()->getOption("workingDirectory")   
-        );
-      }
-
       //
       // destroy pseudo arguments
       //
