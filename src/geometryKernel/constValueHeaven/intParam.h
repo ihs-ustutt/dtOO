@@ -10,7 +10,6 @@ namespace dtOO {
   class intParam : public constValue {
     public:
       dt__class(intParam, constValue);        
-      intParam();
       intParam(intParam const & orig);
       intParam( std::string const & label, dtInt const & val );    
       virtual ~intParam();

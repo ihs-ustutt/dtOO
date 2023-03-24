@@ -2,22 +2,21 @@
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  sliderFloatParam::sliderFloatParam() {
-  }
-
   sliderFloatParam::sliderFloatParam(
     sliderFloatParam const & orig
   ) : constValue(orig) {
-    _max = orig._max;
-    _min = orig._min;
+  }
+
+  sliderFloatParam::sliderFloatParam(
+    std::string const & label, dtReal const & val
+  ) : constValue(label, val) {
   }
 
   sliderFloatParam::sliderFloatParam(
     std::string const & label, 
     dtReal const & val, dtReal const & min, dtReal const & max
   ) : constValue(label, val) {
-    _min = min;
-    _max = max;
+    setRange(min, max);
   }
   
   sliderFloatParam::~sliderFloatParam() {
@@ -32,14 +31,9 @@ namespace dtOO {
       dump(),
       << getLabel() << std::endl
       << dt__eval( getValue() ) << std::endl
-      << dt__eval( _min ) << std::endl
-      << dt__eval( _max ) 
+      << dt__eval( getMin() ) << std::endl
+      << dt__eval( getMax() ) 
     );
-  }
-
-  void sliderFloatParam::setRange(dtReal const min, dtReal const max) {
-    _max = max;
-    _min = min;
   }
 
   void sliderFloatParam::writeToElement(
@@ -49,17 +43,9 @@ namespace dtOO {
     cValElement.setAttribute("label", getLabel().c_str());
     cValElement.setAttribute("name", "sliderFloatParam");
     cValElement.setAttribute("value", getValue());
-    cValElement.setAttribute("min", _min);
-    cValElement.setAttribute("max", _max);
+    cValElement.setAttribute("min", getMin());
+    cValElement.setAttribute("max", getMax());
 
     element.appendChild(cValElement);
   }
-  
-  dtReal sliderFloatParam::getMax(void) const {
-    return _max;
-  }
-
-  dtReal sliderFloatParam::getMin(void) const {
-    return _min;
-  }  
 }

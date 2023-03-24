@@ -40,10 +40,10 @@ namespace dtOO {
       virtual void resolveConstraint( 
         lvH_constValue const * const cVArr
       );
-    protected:
-      constValue();    
     private:
       dtReal _value;
+      dtReal _min;
+      dtReal _max;
       bool _loadable;
   };
   dt__H_addCloneForpVH(constValue);

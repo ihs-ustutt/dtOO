@@ -3,26 +3,26 @@
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  constrainedFloatParam::constrainedFloatParam( std::string const & valueStr ) {
+  constrainedFloatParam::constrainedFloatParam(
+    std::string const & label, std::string const & valueStr
+  ) : constValue(label, 0.0) {
     _valueStr = valueStr;
     _cVArr = NULL;
   }
+
 
   constrainedFloatParam::constrainedFloatParam(
     std::string const & label, 
     std::string const & valueStr, dtReal const & min, dtReal const & max
   ) : constValue(label, 0.0) {
     _valueStr = valueStr;
-    _min = min;
-    _max = max;
+    setRange(min, max);
     _cVArr = NULL;
   }
 
   constrainedFloatParam::constrainedFloatParam(
     constrainedFloatParam const & orig
   ) : constValue(orig) {
-    _max = orig._max;
-    _min = orig._min;
     _valueStr = orig._valueStr;
     _cVArr = orig._cVArr;
   }
@@ -39,15 +39,10 @@ namespace dtOO {
       dump(),
       << getLabel() << std::endl
       << dt__eval( getValue() ) << std::endl
-      << dt__eval( _min ) << std::endl
-      << dt__eval( _max )  << std::endl
+      << dt__eval( getMin() ) << std::endl
+      << dt__eval( getMax() )  << std::endl
       << dt__eval( _valueStr ) 
     );
-  }
-
-  void constrainedFloatParam::setRange(dtReal const min, dtReal const max) {
-    _max = max;
-    _min = min;
   }
 
   void constrainedFloatParam::writeToElement(
@@ -57,20 +52,12 @@ namespace dtOO {
     cValElement.setAttribute("label", getLabel().c_str());
     cValElement.setAttribute("name", "constrainedFloatParam");
     cValElement.setAttribute("value", _valueStr.c_str() );
-    cValElement.setAttribute("min", _min);
-    cValElement.setAttribute("max", _max);
+    cValElement.setAttribute("min", getMin());
+    cValElement.setAttribute("max", getMax());
 
     element.appendChild(cValElement);
   }
   
-  dtReal constrainedFloatParam::getMax(void) const {
-    return _max;
-  }
-
-  dtReal constrainedFloatParam::getMin(void) const {
-    return _min;
-  }  
-
   dtReal constrainedFloatParam::getValue(void) const {
     if (_cVArr) {
       return dtXmlParser::constReference().muParseString(

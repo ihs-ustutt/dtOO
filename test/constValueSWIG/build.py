@@ -8,25 +8,19 @@ cV = labeledVectorHandlingConstValue()
 #
 # intParam
 #
-iP = intParam()
-iP.setLabel("cV_iP")
-iP.setValue( 4.0 )
+iP = intParam("cV_iP", 4 )
 cV.set( iP.clone() )
 
 #
 # sliderFloatParam
 #
-sFP = sliderFloatParam()
-sFP.setLabel("cV_sFP")
-sFP.setValue( 10.5 )
+sFP = sliderFloatParam( "cV_sFP", 10.5 )
 cV.set( sFP.clone() )
 
 #
 # constrainedFloatParam
 #
-cFP = constrainedFloatParam("10.*#cV_sFP#")
-cFP.setLabel("cV_cFP")
-cFP.setValue( 10.0 )
+cFP = constrainedFloatParam("cV_cFP", "10.*#cV_sFP#")
 cFP.resolveConstraint(cV)
 cV.set( cFP.clone() )
 

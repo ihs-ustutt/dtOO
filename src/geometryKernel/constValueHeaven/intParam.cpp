@@ -3,9 +3,6 @@
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  intParam::intParam() {
-  }
-
   intParam::intParam(intParam const & orig) : constValue(orig) {
   }
   

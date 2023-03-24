@@ -1,4 +1,5 @@
 #include "constValue.h"
+#include <limits>
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 
@@ -8,21 +9,20 @@
 #include <xmlHeaven/dtXmlParser.h>
 
 namespace dtOO {
-  constValue::constValue() : labelHandling() {
-    _loadable = true;
-    _value = 0.;
-  }
-
   constValue::constValue( constValue const & orig ) : labelHandling(orig) {
     _value = orig._value;
     _loadable = orig._loadable;
+    _max = orig._max;
+    _min = orig._min;
   }
 
   constValue::constValue( 
-    std::string const & label, dtReal const & val 
+    std::string const & label, dtReal const & val
   ) : labelHandling(label) {
     _loadable = true;
     _value = val;
+    _min = std::numeric_limits< dtReal >::min();
+    _max = std::numeric_limits< dtReal >::max();
   }  
   
   constValue::~constValue() {
@@ -36,25 +36,33 @@ namespace dtOO {
   ) {
     constValue * aCV;
     if (type == "sliderFloatParam") {
-      aCV = new sliderFloatParam();
-      aCV->setValue(stringPrimitive::stringToFloat(valueStr) );
+      aCV 
+      = 
+      new sliderFloatParam(
+        label,
+        stringPrimitive::stringToFloat(valueStr) 
+      );
     }
     else if (type == "intParam") {
-      aCV = new intParam();
-      aCV->setValue(stringPrimitive::stringToFloat(valueStr) );
+      aCV 
+      = 
+      new intParam(
+        label, 
+        stringPrimitive::stringToInt(valueStr) 
+      );
     }
     else if (type == "constrainedFloatParam") {
-      aCV = new constrainedFloatParam( valueStr );
+      aCV = new constrainedFloatParam( label, valueStr );
     }
     else dt__throwUnexpected(create());
     
-    aCV->setLabel(label);
     aCV->_loadable = loadable;
     return aCV;
   }
 
   void constValue::setRange(dtReal const min, dtReal const max) {
-    dt__warning(setRange(), << "Call on constValue.");
+    _min = min;
+    _max = max;
   }
 
   dtReal constValue::getValue(void) const {
@@ -81,11 +89,11 @@ namespace dtOO {
   }
 
   dtReal constValue::getMax(void) const {
-    return 0.;
+    return _max;
   }
 
   dtReal constValue::getMin(void) const {
-    return 0.;
+    return _min;
   }
   
   bool constValue::loadable( void ) const {

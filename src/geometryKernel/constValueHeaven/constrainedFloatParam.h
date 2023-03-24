@@ -10,7 +10,9 @@ namespace dtOO {
   class constrainedFloatParam : public constValue {
     public:
       dt__class(constrainedFloatParam, constValue);    
-      constrainedFloatParam( std::string const & valueStr );
+      constrainedFloatParam(
+        std::string const & label, std::string const & valueStr
+      );
       constrainedFloatParam(
         std::string const & label, 
         std::string const & valueStr, dtReal const & min, dtReal const & max
@@ -19,9 +21,6 @@ namespace dtOO {
       virtual ~constrainedFloatParam();
       virtual constrainedFloatParam * clone( void ) const;
       virtual void dump(void) const;
-      virtual void setRange(dtReal const min, dtReal const max);
-      virtual dtReal getMin(void) const;
-      virtual dtReal getMax(void) const;
       virtual dtReal getValue(void) const;
       virtual std::string getValueStr(void) const;
       virtual void setValue(dtReal const toSet);    
@@ -33,8 +32,6 @@ namespace dtOO {
         lvH_constValue const * const cVArr
       );
     private:
-      dtReal _min;
-      dtReal _max;
       std::string _valueStr;
       lvH_constValue const * _cVArr;
   };
