@@ -110,7 +110,18 @@ namespace dtOO {
       );
     }
   };
- 
+  void to_json(
+    ::nlohmann::json& to, std::vector< boundedVolume * > const & from
+  ) {
+    to["boundedVolume"] = ::nlohmann::json::array_t();
+    dt__forAllRefAuto( from, aFrom ) {
+      to["boundedVolume"].insert( 
+        to["boundedVolume"].end(), 
+        ::nlohmann::json( {{"label", aFrom->getLabel()}} )
+      );
+    }
+  };
+
   void from_json(
     const ::nlohmann::json& from, std::vector< constValue * > & to
   ) {
@@ -492,6 +503,9 @@ namespace dtOO {
   );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< analyticGeometry * > const & val
+  );
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, std::vector< boundedVolume * > const & val
   );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< bool > const & val 
