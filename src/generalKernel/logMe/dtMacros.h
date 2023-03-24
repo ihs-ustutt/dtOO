@@ -81,6 +81,15 @@
   static name * CastConst(name const * obj) { \
     return const_cast< name * >(obj); \
   } \
+  static std::vector< name * > VectorCastConst(std::vector< name const * > obj) { \
+    std::vector< name * > ret; \
+    dt__forAllIndex( obj, ii ) { \
+      ret.push_back( \
+        const_cast< name * >( obj[ii] ) \
+      ); \
+    } \
+    return ret; \
+  } \
   static name & RefCast(castFrom & obj) { \
     return static_cast<name &>(obj); \
   } \
