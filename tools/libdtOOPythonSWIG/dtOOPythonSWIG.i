@@ -238,6 +238,7 @@ namespace dtOO {
 #include <map3dTo3dGmsh.h>
 #include <customGmsh.h>
 #include <dtCase.h>
+#include <ofOpenFOAMCase/ofOpenFOAMCase.h>
 #include <dtPlugin.h>
 #include <parseHeaven/dtParser.h>
 #include <xmlHeaven/dtXmlParserBase.h>
@@ -417,6 +418,7 @@ namespace dtOO {
 %include map3dTo3dGmsh.h
 %include customGmsh.h
 %include dtCase.h
+%include ofOpenFOAMCase/ofOpenFOAMCase.h
 %include dtPlugin.h
 %include jsonHeaven/jsonPrimitive.h
 %include interfaceHeaven/lVHOSubject.h
