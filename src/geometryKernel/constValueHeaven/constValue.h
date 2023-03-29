@@ -40,11 +40,16 @@ namespace dtOO {
       virtual void resolveConstraint( 
         lvH_constValue const * const cVArr
       );
+      void setState(std::string const & state);
+      std::string getState( void ) const;
+      void freeState( void );
+      bool inState( void ) const;
     private:
       dtReal _value;
       dtReal _min;
       dtReal _max;
       bool _loadable;
+      std::string _state;
   };
   dt__H_addCloneForpVH(constValue);
 }

@@ -7,6 +7,7 @@
 #include "intParam.h"
 #include "constrainedFloatParam.h"
 #include <xmlHeaven/dtXmlParser.h>
+#include <progHelper.h>
 
 namespace dtOO {
   constValue::constValue( constValue const & orig ) : labelHandling(orig) {
@@ -14,6 +15,7 @@ namespace dtOO {
     _loadable = orig._loadable;
     _max = orig._max;
     _min = orig._min;
+    _state = orig._state;
   }
 
   constValue::constValue( 
@@ -23,6 +25,7 @@ namespace dtOO {
     _value = val;
     _min = std::numeric_limits< dtReal >::min();
     _max = std::numeric_limits< dtReal >::max();
+    _state = "";
   }  
   
   constValue::~constValue() {
@@ -85,6 +88,7 @@ namespace dtOO {
     if (toSet != _value) {
       dtXmlParser::reference().freeState();
       _value = toSet;
+      _state = "";
     }
   }
 
@@ -104,6 +108,22 @@ namespace dtOO {
     lvH_constValue const * const cVArr
   ) {
     
+  }
+
+  void constValue::setState(std::string const & state) {
+    _state = state;
+  }
+
+  std::string constValue::getState( void ) const {
+    return _state;
+  }
+
+  void constValue::freeState( void ) {
+    _state = "";
+  }
+
+  bool constValue::inState( void ) const {
+    return ( _state != "" );
   }
   dt__C_addCloneForpVH(constValue);
 }

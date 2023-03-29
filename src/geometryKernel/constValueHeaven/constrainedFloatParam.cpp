@@ -81,9 +81,11 @@ namespace dtOO {
       << "Try to set a constrainedFloatParam > " 
       << getLabel() << " <. Not possible. Set to constraint."
     );
+    std::string cState = constValue::getState();
     constValue::setValue(
-      std::numeric_limits< dtReal >::infinity()
+      std::numeric_limits< dtReal >::quiet_NaN()
     );
+    constValue::setState( cState );
   }  
   
   bool constrainedFloatParam::loadable( void ) const {
