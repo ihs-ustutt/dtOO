@@ -12,7 +12,7 @@ namespace dtOO {
       lVHOSubject();
       virtual ~lVHOSubject();
       virtual void attach(lVHOInterface * observer);
-      virtual void letObserve();
+      virtual void letObserve( lVHOInterface * callerToObserve = NULL );
   };
 }
 

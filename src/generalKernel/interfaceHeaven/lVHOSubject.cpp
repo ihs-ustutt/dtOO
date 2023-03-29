@@ -13,7 +13,7 @@ namespace dtOO {
     dt__debug(attach(), << "Call");
   }
 
-  void lVHOSubject::letObserve() {
+  void lVHOSubject::letObserve( lVHOInterface * callerToObserve ) {
     dt__debug(letObserve(), << "Call");
   }
 }

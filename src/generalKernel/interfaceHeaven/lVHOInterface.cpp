@@ -19,6 +19,15 @@ namespace dtOO {
     );
   }
 
+  lVHOInterface::lVHOInterface( jsonPrimitive const & config ) {
+    // store config
+    _config.reset( new jsonPrimitive( config ) );
+    dt__debug( 
+      lVHOInterface(),
+      << "config() = " << _config->toStdString()
+    );
+  }
+
   lVHOInterface::~lVHOInterface( ) {
   
   }

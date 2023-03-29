@@ -55,7 +55,7 @@ namespace dtOO {
         return std::vector< T >::at(ii); 
       }
       virtual void attach(lVHOInterface * observer);
-      virtual void letObserve();
+      virtual void letObserve(lVHOInterface * callerToObserve = NULL);
     private:
       dt__pVH(lVHOInterface) _observers;
   };
@@ -249,11 +249,14 @@ namespace dtOO {
   }
   
   template< typename T >
-  void labeledVectorHandling< T >::letObserve( void ) {
-    dt__forAllRefAuto( _observers, anObserver ) {
-      dt__forAllIndex(*this, ii) {
-        anObserver.observe( this->at(ii) );
+  void labeledVectorHandling< T >::letObserve( lVHOInterface * callerToObserve ) {
+    if (callerToObserve == NULL) {
+      dt__forAllRefAuto( _observers, anObserver ) {
+        dt__forAllIndex(*this, ii) anObserver.observe( this->at(ii) );
       }
+    }
+    else {
+      dt__forAllIndex(*this, ii) callerToObserve->observe( this->at(ii) );
     }
   }
 }

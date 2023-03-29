@@ -13,6 +13,7 @@ namespace dtOO {
     public:
       dt__classOnlyName(lVHOInterface);
       lVHOInterface( lVHOSubject * subj, jsonPrimitive const & config );
+      lVHOInterface( jsonPrimitive const & config );
       virtual ~lVHOInterface();
       virtual void observeSet( labelHandling * lH );
       virtual void observe( labelHandling * lH );
