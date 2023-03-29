@@ -57,6 +57,9 @@ namespace dtOO {
       constValue::MustDownCast(lH)->setValue(
         _cV->get( lH->getLabel() )->getValue()
       );
+      constValue::MustDownCast(lH)->setState( 
+        this->config().lookup< std::string>("_label")
+      );
     }
     else {
       dt__info( 

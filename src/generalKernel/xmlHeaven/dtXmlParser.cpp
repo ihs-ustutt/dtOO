@@ -324,6 +324,7 @@ namespace dtOO {
               )
             )
           );
+          cValRef[ii]->setState(stateName);
         }
         else {
           dt__warning(
