@@ -9,6 +9,9 @@
 #include <interfaceHeaven/systemHandling.h>
 
 namespace dtOO {
+  lVHOjsonLoad::lVHOjsonLoad( void ) : lVHOInterface(jsonPrimitive()) {
+  }
+
   lVHOjsonLoad::lVHOjsonLoad( 
     jsonPrimitive const & config, lVHOSubject * subj
   ) : lVHOInterface(config, subj) {

@@ -3,6 +3,7 @@
 
 #include <mainConceptFwd.h>
 #include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 #include "lVHOInterface.h"
 #include "lVHOSubject.h"
 
@@ -11,7 +12,8 @@ namespace dtOO {
 
   class lVHOjsonLoad : public lVHOInterface {
     public:
-      dt__classOnlyName(lVHOjsonLoad);
+      dt__class(lVHOjsonLoad, lVHOInterface);
+      lVHOjsonLoad( void );
       lVHOjsonLoad( jsonPrimitive const & config, lVHOSubject * subj);
       virtual ~lVHOjsonLoad();
       virtual void observeSet( labelHandling * lH );
