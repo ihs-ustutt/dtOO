@@ -88,4 +88,12 @@ namespace dtOO {
     dt__throwIf(lVHOstateHandler::_subj==NULL, subject());
     return *lVHOstateHandler::_subj;
   }
+ 
+  bool lVHOstateHandler::typeObserves( lVHOSubject const & subj ) const {
+    dt__forAllRefAuto( subj.refObserver(), obs ) {
+      if ( lVHOstateHandler::Is( &obs ) ) return true;
+    }
+    return false;
+  }
+ 
 }
