@@ -57,6 +57,7 @@ namespace dtOO {
       virtual void attach(lVHOInterface * observer);
       virtual void letObserve(lVHOInterface * callerToObserve = NULL);
       virtual std::vector< labelHandling * > internalStdVector( void );
+      virtual dt__pVH(lVHOInterface) const & refObserver( void ) const;
     private:
       dt__pVH(lVHOInterface) _observers;
   };
@@ -280,6 +281,14 @@ namespace dtOO {
     }
     return ret; 
   }
+
+  template< typename T >
+  dt__pVH(lVHOInterface) const & 
+  labeledVectorHandling< T >::refObserver( void ) const {
+    return _observers;
+  };
+
+
 }
 #endif	/* labeledVectorHandling_H */
 

@@ -15,6 +15,7 @@ namespace dtOO {
       virtual void attach(lVHOInterface * observer);
       virtual void letObserve( lVHOInterface * callerToObserve = NULL );
       virtual std::vector< labelHandling * > internalStdVector( void );
+      virtual dt__pVH(lVHOInterface) const & refObserver( void ) const;
   };
 }
 

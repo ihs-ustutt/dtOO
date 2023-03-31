@@ -20,4 +20,8 @@ namespace dtOO {
   std::vector< labelHandling * > lVHOSubject::internalStdVector( void ) {
     dt__throw(internalStdVector(), << "Call");
   }
+
+  dt__pVH(lVHOInterface) const & lVHOSubject::refObserver( void ) const {
+    dt__throw(refObserver(), << "Call");
+  };
 }
