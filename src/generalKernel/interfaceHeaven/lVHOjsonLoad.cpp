@@ -6,45 +6,56 @@
 #include <jsonHeaven/jsonPrimitive.h>
 #include <fstream>
 #include <constValueHeaven/constValue.h>
+#include <interfaceHeaven/systemHandling.h>
 
 namespace dtOO {
   lVHOjsonLoad::lVHOjsonLoad( 
     jsonPrimitive const & config, lVHOSubject * subj
   ) : lVHOInterface(config, subj) {
-    // create file stream
-    std::fstream fStr 
-    = 
-    std::fstream(
-      this->config().lookup< std::string >("_filename"), std::ios::in
-    );
-
-    // search state in jsonPrimitive
-    dt__forAllRefAuto(
-      jsonPrimitive(fStr).lookupDef< std::vector< jsonPrimitive > >(
-        "state", std::vector< jsonPrimitive >()
-      ),
-      aState
+    if(
+      systemHandling::fileExists(
+        this->config().lookup< std::string >("_filename")
+      )
     ) {
-      if (
-        aState.lookup< std::string >("label")
-        ==
-        this->config().lookup< std::string>("_label")
+      // create file stream
+      std::fstream fStr 
+      = 
+      std::fstream(
+        this->config().lookup< std::string >("_filename"), std::ios::in
+      );
+  
+      // search state in jsonPrimitive
+      dt__forAllRefAuto(
+        jsonPrimitive(fStr).lookupDef< std::vector< jsonPrimitive > >(
+          "state", std::vector< jsonPrimitive >()
+        ),
+        aState
       ) {
-        _cV.reset(
-          new lvH_constValue( 
-            jsonPrimitive(aState).lookup< std::vector< constValue * > >("")
-          )
-        );
+        if (
+          aState.lookup< std::string >("label")
+          ==
+          this->config().lookup< std::string>("_label")
+        ) {
+          _cV.reset(
+            new lvH_constValue( 
+              jsonPrimitive(aState).lookup< std::vector< constValue * > >("")
+            )
+          );
+        }
       }
     }
-    dt__throwIf(!_cV, lVHOjsonLoad());
+    dt__warnIfWithMessage(
+      !_cV, lVHOjsonLoad(), << "_cV is empty. Nothing will be read."
+    );
   }
 
   lVHOjsonLoad::~lVHOjsonLoad() {
-    _cV->destroy();  
+    if (_cV) _cV->destroy();  
   }
 
   void lVHOjsonLoad::observeSet( labelHandling * lH ) {
+    if ( !_cV ) return;
+
     if ( constValue::MustDownCast(lH)->loadable() ) {
       dt__info(
         observeSet(), 
