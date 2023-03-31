@@ -150,7 +150,14 @@ namespace dtOO {
     dt__forAllRefAuto( from, aFrom ) {
       to["constValue"].insert( 
         to["constValue"].end(), 
-        ::nlohmann::json( {{"label", aFrom->getLabel()}} )
+        ::nlohmann::json( 
+          {
+            {"name", aFrom->virtualClassName()},
+            {"label", aFrom->getLabel()},
+            {"value", aFrom->getValueStr()},
+            {"loadable", aFrom->loadable()},
+          } 
+        )
       );
     }
   };
