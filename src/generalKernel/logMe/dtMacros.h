@@ -90,6 +90,15 @@
     } \
     return ret; \
   } \
+  static std::vector< name * > VectorMustDownCast(std::vector< castFrom * > obj) { \
+    std::vector< name * > ret; \
+    dt__forAllIndex( obj, ii ) { \
+      name * ptr = dynamic_cast<name *>(obj[ii]); \
+      dt__throwIfNoClass( !ptr, VectorMustDownCast() ); \
+      ret.push_back( ptr ); \
+    } \
+    return ret; \
+  } \
   static name & RefCast(castFrom & obj) { \
     return static_cast<name &>(obj); \
   } \
