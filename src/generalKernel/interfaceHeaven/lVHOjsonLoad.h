@@ -12,7 +12,7 @@ namespace dtOO {
   class lVHOjsonLoad : public lVHOInterface {
     public:
       dt__classOnlyName(lVHOjsonLoad);
-      lVHOjsonLoad( lVHOSubject * subj, jsonPrimitive const & config );
+      lVHOjsonLoad( jsonPrimitive const & config, lVHOSubject * subj);
       virtual ~lVHOjsonLoad();
       virtual void observeSet( labelHandling * lH );
     private:

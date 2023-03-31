@@ -9,8 +9,8 @@
 
 namespace dtOO {
   lVHOjsonLoad::lVHOjsonLoad( 
-    lVHOSubject * subj, jsonPrimitive const & config
-  ) : lVHOInterface(subj, config) {
+    jsonPrimitive const & config, lVHOSubject * subj
+  ) : lVHOInterface(config, subj) {
     // create file stream
     std::fstream fStr 
     = 

@@ -7,19 +7,11 @@
 
 namespace dtOO {
   lVHOInterface::lVHOInterface( 
-    lVHOSubject * subj, jsonPrimitive const & config 
+    jsonPrimitive const & config, lVHOSubject * subj
   ) {
+    _subj = subj;
     // attach observer
-    subj->attach( this );
-    // store config
-    _config.reset( new jsonPrimitive( config ) );
-    dt__debug( 
-      lVHOInterface(),
-      << "config() = " << _config->toStdString()
-    );
-  }
-
-  lVHOInterface::lVHOInterface( jsonPrimitive const & config ) {
+    if (subj!=NULL) subj->attach( this );
     // store config
     _config.reset( new jsonPrimitive( config ) );
     dt__debug( 
@@ -46,5 +38,15 @@ namespace dtOO {
   
   jsonPrimitive const & lVHOInterface::config( void ) const {
     return *_config;
+  }
+
+  lVHOSubject & lVHOInterface::subject( void ) {
+    dt__throwIf(_subj==NULL, subject());
+    return *_subj;
+  }
+  
+  lVHOSubject const & lVHOInterface::subject( void ) const {
+    dt__throwIf(_subj==NULL, subject());
+    return *_subj;
   }
 }
