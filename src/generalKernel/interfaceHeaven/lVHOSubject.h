@@ -5,6 +5,7 @@
 
 namespace dtOO {
   class lVHOInterface;
+  class labelHandling;
 
   class lVHOSubject {
     public:
@@ -13,6 +14,7 @@ namespace dtOO {
       virtual ~lVHOSubject();
       virtual void attach(lVHOInterface * observer);
       virtual void letObserve( lVHOInterface * callerToObserve = NULL );
+      virtual std::vector< labelHandling * > internalStdVector( void );
   };
 }
 

@@ -56,6 +56,7 @@ namespace dtOO {
       }
       virtual void attach(lVHOInterface * observer);
       virtual void letObserve(lVHOInterface * callerToObserve = NULL);
+      virtual std::vector< labelHandling * > internalStdVector( void );
     private:
       dt__pVH(lVHOInterface) _observers;
   };
@@ -245,11 +246,19 @@ namespace dtOO {
 
   template< typename T >
   void labeledVectorHandling< T >::attach(lVHOInterface * observer) {
+    dt__forAllRefAuto(_observers, anObs) {
+      if ( &(anObs) == observer ) {
+        dt__debug(attach(), << "Observer already attached.");
+        return;
+      }
+    }
     _observers.push_back( observer );
   }
   
   template< typename T >
-  void labeledVectorHandling< T >::letObserve( lVHOInterface * callerToObserve ) {
+  void labeledVectorHandling< T >::letObserve( 
+    lVHOInterface * callerToObserve 
+  ) {
     if (callerToObserve == NULL) {
       dt__forAllRefAuto( _observers, anObserver ) {
         dt__forAllIndex(*this, ii) anObserver.observe( this->at(ii) );
@@ -258,6 +267,18 @@ namespace dtOO {
     else {
       dt__forAllIndex(*this, ii) callerToObserve->observe( this->at(ii) );
     }
+  }
+
+  template< typename T >
+  std::vector< labelHandling * > 
+  labeledVectorHandling< T >::internalStdVector( void ) {
+    std::vector< labelHandling * > ret;
+    dt__forAllIndex(*this, ii) {
+      labelHandling * obj;
+      dt__mustCast(this->at(ii), labelHandling, obj);
+      ret.push_back( obj );
+    }
+    return ret; 
   }
 }
 #endif	/* labeledVectorHandling_H */

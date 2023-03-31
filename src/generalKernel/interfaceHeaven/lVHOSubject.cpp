@@ -16,4 +16,8 @@ namespace dtOO {
   void lVHOSubject::letObserve( lVHOInterface * callerToObserve ) {
     dt__debug(letObserve(), << "Call");
   }
+
+  std::vector< labelHandling * > lVHOSubject::internalStdVector( void ) {
+    dt__throw(internalStdVector(), << "Call");
+  }
 }
