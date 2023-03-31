@@ -3,6 +3,7 @@
 #include <logMe/dtMacros.h>
 #include <boost/algorithm/string.hpp>
 #include <nlohmann/json.hpp>
+#include <interfaceHeaven/systemHandling.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <dtLinearAlgebra.h>
@@ -142,6 +143,17 @@ namespace dtOO {
       }
    }
   }
+  void to_json(
+    ::nlohmann::json& to, std::vector< constValue * > const & from
+  ) {
+    to["constValue"] = ::nlohmann::json::array_t();
+    dt__forAllRefAuto( from, aFrom ) {
+      to["constValue"].insert( 
+        to["constValue"].end(), 
+        ::nlohmann::json( {{"label", aFrom->getLabel()}} )
+      );
+    }
+  };
 }
 
 namespace dtOO {  
@@ -162,6 +174,19 @@ namespace dtOO {
   
   jsonPrimitive::~jsonPrimitive() {
   }  
+
+  void jsonPrimitive::write( std::string const & fname ) const {
+    if ( !systemHandling::fileExists( fname ) ) {
+      std::ofstream file(fname);
+      file << *_json;
+    }
+    else {
+      dt__info(
+        write(), 
+        << "File " << fname << " already exists. Skip writing"
+      );
+    }
+  }
 
   std::string jsonPrimitive::toStdString( void ) const {
     return _json->dump();           
@@ -498,6 +523,9 @@ namespace dtOO {
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< jsonPrimitive > const & val 
   ); 
+  template jsonPrimitive jsonPrimitive::append( 
+    std::string const & str, std::vector< constValue * > const & val
+  );
   template jsonPrimitive jsonPrimitive::append( 
     std::string const & str, std::vector< analyticFunction * > const & val
   );

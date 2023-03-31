@@ -19,6 +19,7 @@ namespace dtOO {
       jsonPrimitive( jsonPrimitive const & orig );
       jsonPrimitive( std::fstream & fstr );
       virtual ~jsonPrimitive();
+      void write( std::string const & fname ) const;
       bool containsChild( std::string const & childName ) const;    
       bool contains( std::string const & attName ) const;
       template < typename T > T lookup( std::string const & str ) const;
