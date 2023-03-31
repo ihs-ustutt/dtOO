@@ -44,6 +44,7 @@ namespace dtOO {
 #include <interfaceHeaven/lVHOSubject.h>
 #include <interfaceHeaven/lVHOInterface.h>
 #include <interfaceHeaven/lVHOjsonLoad.h>
+#include <interfaceHeaven/lVHOstateHandler.h>
 #include <gmsh/GModel.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Point_3.h>  
@@ -531,6 +532,7 @@ namespace dtOO {
 
 %include <interfaceHeaven/lVHOInterface.h>
 %include <interfaceHeaven/lVHOjsonLoad.h>
+%include <interfaceHeaven/lVHOstateHandler.h>
 %include <parseHeaven/dtParser.h>
 namespace dtOO {
   %extend dtParser {

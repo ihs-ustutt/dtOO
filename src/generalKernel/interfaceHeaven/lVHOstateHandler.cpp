@@ -1,0 +1,91 @@
+#include "lVHOstateHandler.h"
+
+#include <logMe/logMe.h>
+#include <interfaceHeaven/labelHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
+#include <jsonHeaven/jsonPrimitive.h>
+#include <fstream>
+#include <constValueHeaven/constValue.h>
+#include <progHelper.h>
+
+namespace dtOO {
+  lVHOSubject * lVHOstateHandler::_subj(NULL);
+
+  lVHOstateHandler::lVHOstateHandler( void ) 
+  : 
+  lVHOInterface( jsonPrimitive() ) {
+    dt__throwIfWithMessage(
+      lVHOstateHandler::_subj==NULL,
+      lVHOstateHandler(),
+      << 
+        "No lVHOstateHandler() initialized. Please initialize this observer "
+        "to the desired labeledVectorHandling< constValue * > object."
+    );
+  }
+  
+  lVHOstateHandler::lVHOstateHandler( 
+    jsonPrimitive const & config, lVHOSubject * subj
+  ) : lVHOInterface(config, subj) {
+    if (!_subj) {
+      _subj = subj;
+    }
+    else {
+      dt__throw(lVHOstateHandler(), << "Already initialized.");
+    }
+  }
+
+  lVHOstateHandler::~lVHOstateHandler() {
+  }
+
+  std::string lVHOstateHandler::commonState( void ) {
+    std::vector< std::string > cStates;
+    
+    std::vector< constValue * > cVs
+    =
+    constValue::VectorMustDownCast( this->subject().internalStdVector() );
+
+    dt__forAllRefAuto( cVs, cV  ) {
+      if ( cV->loadable() ) cStates.push_back( cV->getState() );
+    }
+    progHelper::removeBastardTwins(cStates);
+
+    dt__debug(commonState(), << cStates);
+
+    if (cStates.size() == 1) {
+      return cStates[0];
+    }
+    else {
+      return std::string();
+    }
+  }
+
+  std::string lVHOstateHandler::writeState( std::string label ) {
+    if ( label == "" ) label = NowDateAndTime();
+    
+    std::vector< constValue * > cV
+    =
+    constValue::VectorMustDownCast( this->subject().internalStdVector() );
+
+    jsonPrimitive().append< std::vector< jsonPrimitive > >(
+      "state",
+      std::vector< jsonPrimitive >(
+        1, 
+        jsonPrimitive()
+          .append< std::string >("label", label)
+          .append< std::vector< constValue * > >("", cV)
+      )
+    ).write( label+".json" ); 
+
+    return label;
+  }
+
+  lVHOSubject & lVHOstateHandler::subject( void ) {
+    dt__throwIf(lVHOstateHandler::_subj==NULL, subject());
+    return *lVHOstateHandler::_subj;
+  }
+  
+  lVHOSubject const & lVHOstateHandler::subject( void ) const {
+    dt__throwIf(lVHOstateHandler::_subj==NULL, subject());
+    return *lVHOstateHandler::_subj;
+  }
+}
