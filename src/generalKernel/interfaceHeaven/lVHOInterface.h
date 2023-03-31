@@ -16,6 +16,7 @@ namespace dtOO {
       virtual ~lVHOInterface();
       virtual void observeSet( labelHandling * lH );
       virtual void observe( labelHandling * lH );
+      virtual bool typeObserves( lVHOSubject const & subj) const;
     protected:
       jsonPrimitive & config( void );
       jsonPrimitive const & config( void ) const;

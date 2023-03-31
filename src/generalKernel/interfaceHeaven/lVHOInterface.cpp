@@ -49,4 +49,8 @@ namespace dtOO {
     dt__throwIf(_subj==NULL, subject());
     return *_subj;
   }
+
+  bool lVHOInterface::typeObserves( lVHOSubject const & subj ) const {
+    dt__throw(typeObserves(), << "Call");
+  }
 }
