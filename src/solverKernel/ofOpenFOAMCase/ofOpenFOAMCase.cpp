@@ -11,6 +11,7 @@
 #include <parseHeaven/dtParser.h>
 #include <interfaceHeaven/systemHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <interfaceHeaven/lVHOstateHandler.h>
 #include <meshEngine/dtFoamLibrary.h>
 #include <meshEngine/dtGmshModel.h>
 
@@ -302,15 +303,17 @@ namespace dtOO {
     //
     dt__throwIf(_cV->size()==0, runCurrentState());
     std::string dirName = getLabel();
-    if ( !_cV->empty()) {
-      //
-      // check if dtXmlParser is in a state, if not create a new state
-      //
-      if ( !dtXmlParser::constReference().stateLoaded() ) {
-        dtXmlParser::constReference().write(_cV);
-      }
-    }
-    std::string cState = dtXmlParser::constReference().currentState(); 
+    
+    //
+    // check for common state
+    //
+    std::string cState = lVHOstateHandler().commonState();
+   
+    //
+    // write json file of commonState or create new state label
+    //
+    cState = lVHOstateHandler().writeState(cState);
+    
     std::string wDir 
     = 
     dtCase::getDirectory( cState );
