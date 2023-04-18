@@ -15,7 +15,7 @@ namespace dtOO {
   : 
   lVHOInterface( jsonPrimitive() ) {
     dt__throwIfWithMessage(
-      lVHOstateHandler::_subj==NULL,
+      !lVHOstateHandler::initialized(),
       lVHOstateHandler(),
       << 
         "No lVHOstateHandler() initialized. Please initialize this observer "
@@ -26,15 +26,17 @@ namespace dtOO {
   lVHOstateHandler::lVHOstateHandler( 
     jsonPrimitive const & config, lVHOSubject * subj
   ) : lVHOInterface(config, subj) {
-    if (!_subj) {
-      _subj = subj;
-    }
-    else {
+    if ( lVHOstateHandler::initialized() ) {
       dt__throw(lVHOstateHandler(), << "Already initialized.");
     }
+    _subj = subj;
   }
 
   lVHOstateHandler::~lVHOstateHandler() {
+  }
+
+  bool lVHOstateHandler::initialized( void ) {
+    return ( lVHOstateHandler::_subj!=NULL );
   }
 
   std::string lVHOstateHandler::commonState( void ) {

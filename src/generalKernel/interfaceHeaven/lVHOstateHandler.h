@@ -16,6 +16,7 @@ namespace dtOO {
       lVHOstateHandler( void );
       lVHOstateHandler( jsonPrimitive const & config, lVHOSubject * subj);
       virtual ~lVHOstateHandler();
+      static bool initialized( void );
       std::string commonState( void ); 
       std::string writeState( std::string label = "");
       virtual bool typeObserves( lVHOSubject const & subj) const;
