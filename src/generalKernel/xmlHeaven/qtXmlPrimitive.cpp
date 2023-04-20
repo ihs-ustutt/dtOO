@@ -530,12 +530,13 @@ namespace dtOO {
     //
     // replace state
     //
-    str 
-    = 
-    stringPrimitive::replaceStringInString(
-      "STATE", dtXmlParser::constReference().currentState(), str
-    );
-    
+    if ( stringPrimitive::stringContains("STATE", str) ) {
+      str 
+      = 
+      stringPrimitive::replaceStringInString(
+        "STATE", dtXmlParser::constReference().currentState(), str
+      );
+    }  
 		//
 		// remove whitespaces
 		//
