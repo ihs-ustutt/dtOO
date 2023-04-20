@@ -33,6 +33,7 @@ namespace dtOO {
   }
 
   lVHOstateHandler::~lVHOstateHandler() {
+
   }
 
   bool lVHOstateHandler::initialized( void ) {
@@ -61,8 +62,19 @@ namespace dtOO {
     }
   }
 
+  void lVHOstateHandler::makeState( std::string const & label ) {
+    std::vector< constValue * > cVs
+    =
+    constValue::VectorMustDownCast( this->subject().internalStdVector() );
+
+    dt__forAllRefAuto(cVs, cV) if ( cV->loadable() ) cV->setState( label );
+  }
+
   std::string lVHOstateHandler::writeState( std::string label ) {
-    if ( label == "" ) label = NowDateAndTime();
+    if ( label == "" ) {
+      label = NowDateAndTime();
+      this->makeState( label );
+    }
     
     std::vector< constValue * > cV
     =
@@ -97,5 +109,4 @@ namespace dtOO {
     }
     return false;
   }
- 
 }

@@ -18,6 +18,7 @@ namespace dtOO {
       virtual ~lVHOstateHandler();
       static bool initialized( void );
       std::string commonState( void ); 
+      void makeState( std::string const & label );
       std::string writeState( std::string label = "");
       virtual bool typeObserves( lVHOSubject const & subj) const;
     protected:
