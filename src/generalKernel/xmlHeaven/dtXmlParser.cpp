@@ -25,6 +25,7 @@
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomNode>
 #include <QtCore/QTextStream>
+#include <interfaceHeaven/lVHOstateHandler.h>
 
 namespace dtOO {
   dtXmlParser * dtXmlParser::_pH = NULL;
@@ -63,7 +64,6 @@ namespace dtOO {
   dtXmlParser::dtXmlParser(
     std::string const & inFile, std::string const & outFile
   ) : _inFile(inFile), _outFile(outFile) {
-    _currentState = "";
   }
 
   dtXmlParser::~dtXmlParser() {
@@ -73,7 +73,6 @@ namespace dtOO {
 		_pH->_rootReadDoc.clear();		
 		_pH->_rootLoad.clear();
 		_pH->_rootLoadDoc.clear();
-    _pH->_currentState = "";
     _pH = NULL;
   }
   
@@ -312,10 +311,10 @@ namespace dtOO {
     getChildElement("state", stateName, _rootLoad);      
     
     dt__forAllIndex(cValRef, ii) {
-      if ( 
-        hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) 
-      ) {
-        if ( cValRef[ii]->loadable() ) {
+      if ( cValRef[ii]->loadable() ) {
+        if ( 
+          hasChildElement("constValue", cValRef[ii]->getLabel(), stateElement) 
+        ) {
           cValRef[ii]->setValue(
             getAttributeFloat(
               "value",
@@ -324,26 +323,26 @@ namespace dtOO {
               )
             )
           );
-          cValRef[ii]->setState(stateName);
         }
         else {
           dt__warning(
             loadStateToConst(),
-            << "Defer not loadable constValue > " 
-            << cValRef[ii]->getLabel() << " <."
-          );
+            << cValRef[ii]->getLabel() 
+            << "-Element not in state file." << std::endl
+            << "Leave value as it was before load state."
+          );  
         }
+        cValRef[ii]->setState(stateName);
       }
       else {
         dt__warning(
           loadStateToConst(),
-          << cValRef[ii]->getLabel() 
-          << "-Element not in state file." << std::endl
-          << "Leave value as it was before load state."
-        );  
+          << "Defer not loadable constValue > " 
+          << cValRef[ii]->getLabel() << " <."
+        );
       }
     }
-    
+
     //
     // resolve constraints
     //
@@ -352,8 +351,8 @@ namespace dtOO {
     //
     // store this state name in parser
     //
-    _currentState = stateName;
-    dt__info(loadStateToConst(), << "Current working state: " << _currentState);
+    lVHOstateHandler().makeState( stateName );
+    dt__info(loadStateToConst(), << "Current working state: " << stateName);
   }
    
   std::vector< std::string > dtXmlParser::getStates(void) const {
@@ -703,25 +702,31 @@ namespace dtOO {
   }
   
   std::string dtXmlParser::currentState( void ) const {
-    return _currentState;
+    if ( !lVHOstateHandler::initialized() ) return std::string("");
+
+    return lVHOstateHandler().commonState();
   }
   
   void dtXmlParser::setState( std::string const & newState) const {
-    _currentState = newState;
+    lVHOstateHandler().makeState( newState );
   }
   
   void dtXmlParser::freeState( void ) const {
-    _currentState = "";
+    lVHOstateHandler().makeState( "" );
   }
 
   bool dtXmlParser::stateLoaded( void ) const {
-    if (_currentState == "") return false;
-    else return true;
+    if ( lVHOstateHandler().commonState() == "" ) return false;
+
+    return true;
   }  
   
   void dtXmlParser::createConstValue(
     lvH_constValue * cValP
   ) const {
+    if ( !lVHOstateHandler::initialized() ) {
+      lVHOstateHandler( jsonPrimitive(), cValP );
+    }
     //
     // create const values
     //
@@ -798,6 +803,7 @@ namespace dtOO {
   ) const {
     createConstValue(&cValRef);
   }
+
   void dtXmlParser::getLabels( 
     std::string lookType, std::vector< std::string > * names 
   ) const {
