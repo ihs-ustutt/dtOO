@@ -5,7 +5,7 @@
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include "coDoSetHandling.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <mainConceptFwd.h>
@@ -75,10 +75,6 @@ namespace dtOO {
 
 		  covise::coChoiceParam * _dCChoice;
       covise::coBooleanParam * _dCRunCurrentState;
-      covise::coChoiceParam * _dCStateChoice;
-      covise::coStringParam * _dCStateString;
-      covise::coChoiceParam * _dCStateResValueChoice;
-      covise::coFloatParam * _dCStateResValue;
       
 		  covise::coChoiceParam * _dPChoice;
       

@@ -133,24 +133,6 @@ namespace dtOO {
     = 
     addBooleanParam("_dCRunCurrentState", "_dCRunCurrentStateDescription");
     _dCRunCurrentState->setValue(false);
-		_dCStateChoice 
-    = 
-    addChoiceParam("_dCStateChoice", "_dCStateChoiceDescription");
-    _dCStateChoice->disable();
-    _dCStateString 
-    = 
-    addStringParam("_dCStateString", "_dCStateStringDescription");
-    _dCStateString->disable();
-    _dCStateResValueChoice 
-    = 
-    addChoiceParam(
-      "_dCStateResValueChoice", "_dCStateResValueChoiceDescription"
-    );
-    _dCStateResValueChoice->disable();
-    _dCStateResValue 
-    = 
-    addFloatParam("_dCStateResValue", "_dCStateResValueDescription");
-    _dCStateResValue->disable();
     
 		_dPChoice = addChoiceParam("_dPChoice", "_dPChoiceDescription");
     _dPChoice->disable();
@@ -222,10 +204,6 @@ namespace dtOO {
 		_moduleChoices.push_back("dCGen");
 		tmp.push_back( _dCChoice );
     tmp.push_back( _dCRunCurrentState );
-    tmp.push_back( _dCStateChoice );
-    tmp.push_back( _dCStateString );
-    tmp.push_back( _dCStateResValueChoice );
-    tmp.push_back( _dCStateResValue );
 		_uifPara.push_back( tmp );    
     
 		//
@@ -258,7 +236,6 @@ namespace dtOO {
 		_stateName->disable();    
     _stateName->setValue("");
     _clearLog->show();
-    _dCStateString->disable();
     //
     // init log file
     //
@@ -640,35 +617,6 @@ namespace dtOO {
 					setExecGracePeriod(0.1);
 					selfExec();		
 				}		
-				else if ( strcmp(paramName, "_dCStateChoice") == 0 ) {
-          _dCStateString->setValue(
-            _dC[ _dCChoice->getValue() ]->statusStr( 
-              std::string(_dCStateChoice->getActLabel()) 
-            ).c_str()
-          );
-          vectorHandling< resultValue * > result
-          =
-          _dC[ _dCChoice->getValue() ]->result(
-            std::string(_dCStateChoice->getActLabel()) 
-          );
-          abstractModule::updateChoiceParam(
-            _dCStateResValueChoice, &result
-          );  
-          result.destroy();
-				}		        
-				else if ( strcmp(paramName, "_dCStateResValueChoice") == 0 ) {
-          labeledVectorHandling< resultValue * > result
-          =
-          _dC[ _dCChoice->getValue() ]->result(
-            std::string(_dCStateChoice->getActLabel()) 
-          );
-          _dCStateResValue->setValue( 
-            result.get(
-              std::string(_dCStateResValueChoice->getActLabel())
-            )->operator()()
-          );
-          result.destroy();
-				}		        
 			}	      
 			//------------------------------------------------------------------------
 			//
@@ -763,10 +711,6 @@ namespace dtOO {
       // update case states
       //
       if (_dCApply) {
-        _dCApply->update();
-        abstractModule::updateChoiceParam(
-          _dCStateChoice, _dCApply->allStates()
-        );
         if (_dCRunCurrentState->getValue()) {
           _dCRunCurrentState->disable();
           _dCApply->runCurrentState();

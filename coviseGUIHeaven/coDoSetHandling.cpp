@@ -183,7 +183,29 @@ namespace dtOO {
 		}
     return setOne;   
   }      
+  
+  bool coDoSetHandling::has( std::string const label) const {
+    if ( this->getPosition( label ) < 0 ) {
+      return false;
+    }
+    return true;
+  }
 	
+  dtInt coDoSetHandling::getPosition( std::string const label) const {
+    dt__forAllIndex(*this, ii) {
+      //
+      // check if class is of type labelHandling
+      //
+      labelHandling const * obj 
+      = 
+      dynamic_cast< labelHandling const * >( this->at(ii) );
+      if (obj->getLabel() == label ) {
+        return ii;
+      }
+    }
+    return -1;
+  }
+
 	covise::coDoSet * coDoSetHandling::toCoDoSet( 
     renderInterface const * const rI, char const * str 
   ) {
