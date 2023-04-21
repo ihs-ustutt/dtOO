@@ -725,7 +725,8 @@ namespace dtOO {
     lvH_constValue * cValP
   ) const {
     if ( !lVHOstateHandler::initialized() ) {
-      lVHOstateHandler( jsonPrimitive(), cValP );
+      // the object (observer) is deleted within labeledVectorHandling
+      new lVHOstateHandler( jsonPrimitive(), cValP );
     }
     //
     // create const values
