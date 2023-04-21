@@ -4,6 +4,7 @@ from dtOOPythonSWIG import *
 
 dtXmlParser.init("","")
 cV = labeledVectorHandlingConstValue()
+lVHOstateHandler( jsonPrimitive(), cV ).thisown = False
 
 #
 # intParam
