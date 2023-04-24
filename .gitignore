@@ -14,6 +14,7 @@ ThirdParty/
 .spyproject
 *kdev4*
 .vimrc
+.nvimrc
 .cache
 .ycm_extra_conf.py
 compile_commands.json
