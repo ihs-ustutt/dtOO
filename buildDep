@@ -329,7 +329,7 @@ git_cmake_build \
 git_cmake_build \
   "nlohmann_json" \
   "https://github.com/nlohmann/json" \
-  "release/3.10.5" \
+  "8f8315368b74f3ea4f30154dff1242d2f145c705" \
   "\
    -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
    -DCMAKE_BUILD_TYPE=Release \
