@@ -12,13 +12,17 @@ if (DTOO_USE_PYTHONOCC)
     ${PythonOCC_INCLUDE_DIR}/wrapper
     ${PythonOCC_INCLUDE_DIR}/headers
   )
-  set(CMAKE_SWIG_FLAGS "-DDTOO_HAS_PYTHONOCC")
+  list(APPEND CMAKE_SWIG_FLAGS -DDTOO_HAS_PYTHONOCC)
 endif (DTOO_USE_PYTHONOCC)
 
 include_directories(
   ${Python_INCLUDE_DIRS}
 )
 
+# definitions
+if (OpenFOAM_FOUND)
+  list(APPEND CMAKE_SWIG_FLAGS -DDTOO_HAS_OpenFOAM)
+endif (OpenFOAM_FOUND)
 #
 #
 # sources
