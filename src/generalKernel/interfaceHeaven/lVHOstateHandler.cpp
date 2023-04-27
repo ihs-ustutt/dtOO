@@ -43,11 +43,9 @@ namespace dtOO {
   std::string lVHOstateHandler::commonState( void ) {
     std::vector< std::string > cStates;
     
-    std::vector< constValue * > cVs
-    =
-    constValue::VectorMustDownCast( this->subject().internalStdVector() );
-
-    dt__forAllRefAuto( cVs, cV  ) {
+    dt__forAllRefAuto( 
+      constValue::VectorMustDownCast( this->subject().internalStdVector() ), cV  
+    ) {
       if ( cV->loadable() ) cStates.push_back( cV->getState() );
     }
     progHelper::removeBastardTwins(cStates);
