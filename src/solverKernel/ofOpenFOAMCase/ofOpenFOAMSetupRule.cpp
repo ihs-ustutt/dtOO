@@ -526,7 +526,11 @@ namespace dtOO {
           
           return;
         }          
-        else dt__throwUnexpected(executeOnVolScalarField());
+        else dt__throw(
+          executeOnVolScalarField(),
+          << "Not supported: " 
+          << stringPrimitive::getStringBetween("", "(", thisRule)
+        );
       }
     }
   }
