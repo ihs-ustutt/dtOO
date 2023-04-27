@@ -86,7 +86,12 @@ namespace dtOO {
   
   void constValue::setValue(dtReal const toSet) {
     if (toSet != _value) {
-      dtXmlParser::reference().freeState();
+      dt__debug( 
+        setValue(), 
+        << "cV[ " << getLabel() << " ] : " << _value << " -> " << toSet 
+        << std::endl
+        << "Loose state : " << _state
+      );
       _value = toSet;
       _state = "";
     }
@@ -111,6 +116,10 @@ namespace dtOO {
   }
 
   void constValue::setState(std::string const & state) {
+    dt__debug( 
+      setState(), 
+      << "cV[ " << getLabel() << " ] : " << _state << " -> " << state 
+    );
     _state = state;
   }
 
@@ -119,7 +128,11 @@ namespace dtOO {
   }
 
   void constValue::freeState( void ) {
-    _state = "";
+    dt__debug( 
+      freeState(), 
+      << "cV[ " << getLabel() << " ] : " << _state << " -> "
+    );
+   _state = "";
   }
 
   bool constValue::inState( void ) const {
