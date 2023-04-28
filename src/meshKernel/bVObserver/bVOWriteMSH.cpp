@@ -7,7 +7,7 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
-#include <xmlHeaven/dtXmlParser.h>
+#include <interfaceHeaven/lVHOstateHandler.h>
 #include <meshEngine/dtGmshModel.h>
 #include "bVOInterfaceFactory.h"
 
@@ -78,7 +78,7 @@ namespace dtOO {
       if ( cFileName == "" ) {
         cFileName 
         = 
-        dtXmlParser::constReference().currentState()
+        lVHOstateHandler().commonState()
         +
         "_"
         +

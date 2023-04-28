@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <xmlHeaven/qtXmlPrimitive.h>
-#include <xmlHeaven/dtXmlParser.h>
+#include <interfaceHeaven/lVHOstateHandler.h>
 #include <meshEngine/dtGmshVertex.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
@@ -296,7 +296,7 @@ namespace dtOO {
         ) (*current1D)(aEdge); 
         if (optionHandling::debugTrue()) {
           gm->writeMSH(
-            dtXmlParser::reference().currentState()
+            lVHOstateHandler().commonState()
             +
             "_"
             +
@@ -356,7 +356,7 @@ namespace dtOO {
         ) (*current2D)(aFace);
         if (optionHandling::debugTrue()) {
           gm->writeMSH(
-            dtXmlParser::reference().currentState()
+            lVHOstateHandler().commonState()
             +
             "_"
             +
@@ -411,7 +411,7 @@ namespace dtOO {
         ) (*current3D)(aReg);
         if (optionHandling::debugTrue()) {
           gm->writeMSH(
-            dtXmlParser::reference().currentState()
+            lVHOstateHandler().commonState()
             +
             "_"
             +
