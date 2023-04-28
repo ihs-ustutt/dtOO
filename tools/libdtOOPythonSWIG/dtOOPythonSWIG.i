@@ -246,6 +246,7 @@ namespace dtOO {
 
 #include <dtPlugin.h>
 #include <parseHeaven/dtParser.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <jsonHeaven/jsonPrimitive.h>
@@ -548,6 +549,7 @@ namespace dtOO {
   }
 }
 
+%include <interfaceHeaven/staticPropertiesHandler.h>
 %include <xmlHeaven/dtXmlParserBase.h>
 %include <xmlHeaven/dtXmlParser.h>     
 %template(lookupStr) dtOO::jsonPrimitive::lookup< std::string >;
