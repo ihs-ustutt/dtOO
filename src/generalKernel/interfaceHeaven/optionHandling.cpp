@@ -87,6 +87,12 @@ namespace dtOO {
       _optionValue.push_back(value);
     }
     else {
+      dt__debug(
+        setOption(),
+        << "Reset option " << name << " : " 
+        <<  _optionValue[ static_cast< dtInt >(it - _optionName.begin()) ]
+        << " -> " << value
+      );
       _optionValue[
         static_cast< dtInt >(it - _optionName.begin())
       ]
