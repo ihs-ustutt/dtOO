@@ -1,5 +1,5 @@
 #include "constrainedFloatParam.h"
-#include "xmlHeaven/dtXmlParser.h"
+#include <parseHeaven/dtParser.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {
@@ -60,9 +60,9 @@ namespace dtOO {
   
   dtReal constrainedFloatParam::getValue(void) const {
     if (_cVArr) {
-      return dtXmlParser::constReference().muParseString(
-        dtXmlParser::constReference().replaceDependencies( _valueStr, _cVArr)
-      );
+      return dtParser()(
+        dtParser(NULL, _cVArr, NULL, NULL, NULL, NULL)[_valueStr]
+      )[0];
     }
     dt__warning(
       getValue(), 
