@@ -5,6 +5,7 @@
 
 #include "optionHandling.h"
 #include <logMe/dtMacros.h>
+#include <jsonHeaven/jsonPrimitive.h>
 
 namespace dtOO {
   class staticPropertiesHandler : public optionHandling {
@@ -12,6 +13,7 @@ namespace dtOO {
       dt__classOnlyName(staticPropertiesHandler);
       static staticPropertiesHandler * getInstance( void );
       virtual ~staticPropertiesHandler();
+      virtual void jInit(jsonPrimitive const & jE);
       virtual void init(::QDomElement const * const wElement);
       static bool mpiParallel( void );
       dtInt thisRank( void ) const; 
@@ -25,6 +27,9 @@ namespace dtOO {
       static dtInt ompGetThreadLimit( void );
       bool gDebug( void ) const;
       void setGDebug( void );
+    protected:
+      jsonPrimitive & config( void );
+      jsonPrimitive const & config( void ) const;
     private:
       staticPropertiesHandler();
     private:
@@ -33,6 +38,7 @@ namespace dtOO {
       dtInt _nRanks;
       bool _initialized;
       bool _gDebug;
+      jsonPrimitive _config;
   };
 }
 #endif	/* staticPropertiesHandler_H */

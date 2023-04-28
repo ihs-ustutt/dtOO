@@ -70,10 +70,17 @@ namespace dtOO {
   staticPropertiesHandler::~staticPropertiesHandler() {
   }
   
-  void staticPropertiesHandler::init(::QDomElement const * const wElement) {
-    if (_initialized) return;
+  void staticPropertiesHandler::jInit(jsonPrimitive const & jE) {
+     if (_initialized) return;
     
-    optionHandling::init(wElement);
+    optionHandling oH;
+    oH.jInit(jE);
+    if ( oH.hasOption("logLevel") ) {
+      setOption( "logLevel", oH.getOption("logLevel") );
+    }
+    FILELog::ReportingLevel() = TLogLevel( getOptionInt("logLevel") );
+
+    optionHandling::jInit( jE );
 #ifdef DTOO_HAS_OMP    
     omp_set_num_threads( getOptionInt("ompNumThreads") );
 #endif
@@ -85,10 +92,9 @@ namespace dtOO {
       _thisRank = ::boost::mpi::communicator().rank();
     }
 #endif    
-    FILELog::ReportingLevel() = TLogLevel(getOptionInt("logLevel"));
     
     dt__forceInfo(
-      init(),
+      jInit(),
       << dt__eval(FILELog::ReportingLevel()) << std::endl        
       << dt__eval(ompGetNumThreads()) << std::endl
       << dt__eval(ompGetThreadLimit()) << std::endl
@@ -100,6 +106,14 @@ namespace dtOO {
     );
     
     _initialized = true;
+   
+  }
+
+  void staticPropertiesHandler::init(::QDomElement const * const wElement) {
+    if (!_initialized) {    
+      optionHandling::init(wElement);
+      this->jInit( jsonPrimitive() );
+    }
   }
   
   bool staticPropertiesHandler::mpiParallel( void ) {
@@ -175,4 +189,13 @@ namespace dtOO {
 #endif    
     return retInt;        
   }
+
+  jsonPrimitive & staticPropertiesHandler::config( void ) {
+    return _config;
+  }
+  
+  jsonPrimitive const & staticPropertiesHandler::config( void ) const {
+    return _config;
+  }
+ 
 }
