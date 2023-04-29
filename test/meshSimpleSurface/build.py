@@ -3,9 +3,42 @@ import sys
 from dtOOPythonSWIG import *
 
 logMe.initLog("build.log")
-dtXmlParser.init("machine.xml", "machineSave.xml")
-parser = dtXmlParser.reference()
-parser.parse()
+staticPropertiesHandler.getInstance().jInit(
+  jsonPrimitive(
+    '{'
+      '"option" : ['
+        '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
+        '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
+        '{"name" : "reparam_internalRestarts", "value" : "10"},'
+        '{"name" : "reparam_restarts", "value" : "10"},'
+        '{"name" : "reparam_restartIncreasePrecision", "value" : "10."},'
+        '{"name" : "reparam_internalRestartDecreasePrecision", "value" : "0.9"},'
+        '{"name" : "reparamOnFace_minimizer", "value" : ":Minuit2::kMigrad:"},'		
+        '{"name" : "reparamInVolume_minimizer", "value" : ":Minuit2::kMigrad:"},'				
+        '{"name" : "invY_precision", "value" : "1.e-04"},'
+        '{"name" : "xyz_resolution", "value" : "1.e-05"},'
+        '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
+        '{"name" : "uvw_resolution", "value" : "1.e-04"},'
+        '{"name" : "point_render_diameter", "value" : "0.0025"},'
+        '{"name" : "vector_render_size", "value" : "0.0030"},'
+        '{"name" : "function_render_resolution_u", "value" : "201"},'
+        '{"name" : "function_render_resolution_v", "value" : "201"},'
+        '{"name" : "function_render_resolution_w", "value" : "201"},'
+        '{"name" : "geometry_render_resolution_u", "value" : "21"},'
+        '{"name" : "geometry_render_resolution_v", "value" : "21"},'
+        '{"name" : "geometry_render_resolution_w", "value" : "21"},'
+        '{"name" : "root_printLevel", "value" : "0"},'		
+        '{"name" : "root_maxIterations", "value" : "1000"},'
+        '{"name" : "root_maxFunctionCalls", "value" : "1000000"},'
+        '{"name" : "ompNumThreads", "value" : "2"},'
+        '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
+        '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
+        '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'
+        '{"name" : "logLevel", "value" : "99"}'
+      ']'
+    '}'
+  )
+)
 bC = baseContainer()
 cV = labeledVectorHandlingConstValue()
 aF = labeledVectorHandlingAnalyticFunction()
@@ -13,6 +46,8 @@ aG = labeledVectorHandlingAnalyticGeometry()
 bV = labeledVectorHandlingBoundedVolume()
 dC = labeledVectorHandlingDtCase()
 dP = labeledVectorHandlingDtPlugin()
+
+lVHOstateHandler( jsonPrimitive(), cV ).thisown = False
 
 vh = vectorHandlingConstDtCurve()
 
