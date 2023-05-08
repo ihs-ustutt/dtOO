@@ -28,9 +28,6 @@ namespace dtOO {
       );    
       virtual void postUpdate( void );
     private:
-//      std::string _filename;
-//      bool _saveAll;
-//      bool _saveParametric;
       static bool _registrated;
   };
 }
