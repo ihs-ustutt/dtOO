@@ -10,6 +10,7 @@
 #include <interfaceHeaven/lVHOstateHandler.h>
 #include <meshEngine/dtGmshModel.h>
 #include "bVOInterfaceFactory.h"
+#include <parseHeaven/dtParser.h>
 
 namespace dtOO {
   bool bVOWriteMSH::_registrated 
@@ -74,7 +75,10 @@ namespace dtOO {
       //
       // create filename string if empty
       //
-      std::string cFileName = config().lookup< std::string >("_filename");
+      std::string cFileName 
+      = 
+      dtParser()[config().lookup< std::string >("_filename")];
+   
       if ( cFileName == "" ) {
         cFileName 
         = 
