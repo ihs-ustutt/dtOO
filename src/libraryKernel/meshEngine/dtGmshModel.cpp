@@ -281,6 +281,12 @@ namespace dtOO {
     addIfEdgeToGmshModel(edge, tag, vId[0], vId[1]);
 	}
 	
+  dtInt dtGmshModel::addIfEdgeToGmshModel( map1dTo3d const * const edge ) {
+    dtInt tag;
+    addIfEdgeToGmshModel(edge, &tag);
+    return tag;
+  }
+
   void dtGmshModel::addIfFaceToGmshModel( 
     map2dTo3d const * const face, dtInt * const tag,
 		std::list< ::GEdge * > const & edges, std::vector< dtInt > const & ori
@@ -478,7 +484,26 @@ namespace dtOO {
     
   	addIfRegionToGmshModel( region, tag, faces, ori );    
   }  
-			
+
+  dtInt dtGmshModel::addIfRegionToGmshModel(
+    map3dTo3d const * const region, std::vector< int > const & faceIds
+  ) {
+    std::list< ::GFace * > faces;
+    std::vector< int > ori;
+    dt__forAllRefAuto(faceIds, faceId) {
+      faces.push_back( this->getDtGmshFaceByTag(faceId) );
+      if (faceId<0) {
+        ori.push_back(-1);
+      }
+      else {
+        ori.push_back(1);
+      }
+    }
+    dtInt rId;
+    addIfRegionToGmshModel(region, &rId, faces, ori);
+    return rId;
+  }
+
   void dtGmshModel::addIfToGmshModel(
     analyticGeometry const * const aG, dtInt * const tag
   ) {
