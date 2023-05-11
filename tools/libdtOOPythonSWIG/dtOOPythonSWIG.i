@@ -209,11 +209,16 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h>
 #include <jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h>
+#include <meshEngine/dtGmshVertex.h>
+#include <meshEngine/dtGmshEdge.h>
+#include <meshEngine/dtGmshFace.h>
+#include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include <bVObserver/bVOInterface.h>
 #include <bVObserver/bVOSubject.h>
 #include <boundedVolume.h>
 #include <bVObserver/bVONameRegions.h>
+#include <bVObserver/bVONameFaces.h>
 #include <bVObserver/bVOAnalyticGeometryToFace.h>
 #include <bVObserver/bVOAddFace.h>
 #include <bVObserver/bVOAddInternalEdge.h>
@@ -235,6 +240,8 @@ namespace dtOO {
 #include <bVObserver/bVORecombine.h>
 #include <meshEngine/dtMeshOperator.h>
 #include <bVObserver/bVOMeshRule.h>
+#include <bVObserver/bVOSetOrder.h>
+#include <bVObserver/bVOWriteINP.h>
 #include <gmshBoundedVolume.h>
 #include <map3dTo3dGmsh.h>
 #include <customGmsh.h>
@@ -399,6 +406,7 @@ namespace dtOO {
 %include bVObserver/bVOSubject.h
 %include boundedVolume.h
 %include bVObserver/bVONameRegions.h
+%include bVObserver/bVONameFaces.h
 %include bVObserver/bVOAnalyticGeometryToFace.h
 %include bVObserver/bVOAddFace.h
 %include bVObserver/bVOAddInternalEdge.h
@@ -420,6 +428,8 @@ namespace dtOO {
 %include bVObserver/bVORecombine.h
 %include meshEngine/dtMeshOperator.h
 %include bVObserver/bVOMeshRule.h
+%include bVObserver/bVOSetOrder.h
+%include bVObserver/bVOWriteINP.h
 %include gmshBoundedVolume.h
 %include map3dTo3dGmsh.h
 %include customGmsh.h
@@ -440,6 +450,10 @@ namespace dtOO {
   %template(vectorConstValue)       ::std::vector< constValue * >;
   %template(vectorAnalyticFunction) ::std::vector< analyticFunction * >;
   %template(vectorAnalyticGeometry) ::std::vector< analyticGeometry * >;
+  %template(vectorMap1dTo3d)        ::std::vector< map1dTo3d * >;
+  %template(vectorMap2dTo3d)        ::std::vector< map2dTo3d * >;
+  %template(vectorMap3dTo3d)        ::std::vector< map3dTo3d * >;
+
   %template(vectorBoundedVolume)    ::std::vector< boundedVolume * >;
   %template(vectorDtCase)           ::std::vector< dtCase * >;
   %template(vectorDtPlugin)         ::std::vector< dtPlugin * >;
@@ -464,6 +478,7 @@ namespace dtOO {
   class vectorHandling : public std::vector< T > {
     public:
       using std::vector< T >::push_back;
+      void destroy( void );
   };
   %extend vectorHandling {
     T __getitem__(int const & ii) {
@@ -482,6 +497,9 @@ namespace dtOO {
   %template(vectorHandlingConstValue)       vectorHandling< constValue * >;
   %template(vectorHandlingAnalyticFunction) vectorHandling< analyticFunction * >;
   %template(vectorHandlingAnalyticGeometry) vectorHandling< analyticGeometry * >;
+  %template(vectorHandlingMap1dTo3d)        vectorHandling< map1dTo3d * >;
+  %template(vectorHandlingMap2dTo3d)        vectorHandling< map2dTo3d * >;
+  %template(vectorHandlingMap3dTo3d)        vectorHandling< map3dTo3d * >;
   %template(vectorHandlingBoundedVolume)    vectorHandling< boundedVolume * >;
   %template(vectorHandlingDtCase)           vectorHandling< dtCase * >;
   %template(vectorHandlingDtPlugin)         vectorHandling< dtPlugin * >;
@@ -604,6 +622,10 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h
 %include jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h
 
+%include meshEngine/dtGmshVertex.h
+%include meshEngine/dtGmshEdge.h
+%include meshEngine/dtGmshFace.h
+%include meshEngine/dtGmshRegion.h
 %include meshEngine/dtGmshModel.h
 
 //
