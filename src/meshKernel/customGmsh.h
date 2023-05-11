@@ -12,6 +12,8 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class dtGmshModel;
+  class map1dTo3d;
+  class map2dTo3d;
   class map3dTo3d;
    
   class customGmsh : public gmshBoundedVolume {
@@ -36,6 +38,11 @@ namespace dtOO {
         lvH_analyticGeometry const * const aG,
         lvH_boundedVolume const * const bV      
       );      
+      dtInt handleCustomFace(
+        map2dTo3d const * const face,
+        vectorHandling< map1dTo3d * > const & oedges,
+        vectorHandling< map1dTo3d * > const & iedges
+      );
       dtInt handleCustomRegion(
         ::QDomElement const & element,
         baseContainer * const bC,

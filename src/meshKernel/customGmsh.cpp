@@ -66,8 +66,9 @@ namespace dtOO {
     lvH_analyticGeometry const * const aG,
     lvH_boundedVolume const * const bV
   ) {
-    std::list< ::GEdge * > edges;
-    std::vector< dtInt > ori;
+    vectorHandling< map1dTo3d * > out_edges;
+    vectorHandling< map1dTo3d * > in_edges;
+
     dt__forAllRefAuto(
       qtXmlPrimitive::getChildVector(
         "analyticGeometry", 
@@ -75,24 +76,15 @@ namespace dtOO {
       ), 
       aEdgeLabel
     ) {
-      dt__pH(analyticGeometry) thisEdge;
-      thisEdge.reset(
-        dtXmlParserBase::createAnalyticGeometry(aEdgeLabel, bC, cV, aF, aG)
+      out_edges.push_back(
+        map1dTo3d::MustDownCast(
+          dtXmlParserBase::createAnalyticGeometry(aEdgeLabel, bC, cV, aF, aG)
+        )
       );
-      dtInt tag;
-      _gm->addIfToGmshModel(thisEdge.get(), &tag);
-      if ( tag<0 ) {
-        ori.push_back(-1);
-        tag = -tag;
-      }
-      else {
-        ori.push_back(1);
-      }
-      edges.push_back( _gm->getEdgeByTag( tag ) );
     }
 
-    dt__pH(map2dTo3d) thisFace;
-    thisFace.reset(
+    dt__pH(map2dTo3d) theFace;
+    theFace.reset(
       map2dTo3d::MustDownCast(      
         dtXmlParserBase::createAnalyticGeometry(
           qtXmlPrimitive::getChild(
@@ -103,13 +95,10 @@ namespace dtOO {
         )
       )
     );
-    dtInt tag = 0;
-    _gm->addIfFaceToGmshModel(thisFace.get(), &tag, edges, ori);    
-    
+   
     //
     // handle internal edges
     //
-    std::vector< ::GEdge * > iedges;
     if ( qtXmlPrimitive::hasChild("internalEdgeLoop", element) ) {
       dt__forAllRefAuto(
         qtXmlPrimitive::getChildVector("internalEdgeLoop", element),
@@ -119,22 +108,71 @@ namespace dtOO {
           qtXmlPrimitive::getChildVector( "analyticGeometry", iEdgeElement ), 
           aEdgeLabel
         ) {
-          dt__pH(analyticGeometry) thisEdge;
-          thisEdge.reset(
-            dtXmlParserBase::createAnalyticGeometry(aEdgeLabel, bC, cV, aF, aG)
+          in_edges.push_back(
+            map1dTo3d::MustDownCast(
+              dtXmlParserBase::createAnalyticGeometry(aEdgeLabel, bC, cV, aF, aG)
+            )
           );
-          dtInt tag;
-          _gm->addIfToGmshModel(thisEdge.get(), &tag);
-          iedges.push_back( _gm->getEdgeByTag( tag ) );
         }    
-        ::GEdgeLoop el(iedges);
-        for(::GEdgeLoop::citer it = el.begin(); it != el.end(); ++it){
-          _gm->getDtGmshFaceByTag(tag)->addEdge( it->getEdge(), it->getSign() );
-        }        
       }
-    }    
-    return tag;
+    }
+    dtInt fTag = handleCustomFace( theFace.get(), out_edges, in_edges );
+    
+    out_edges.destroy();
+    in_edges.destroy();
+    
+    return fTag;
   }
+ 
+  dtInt customGmsh::handleCustomFace(
+    map2dTo3d const * const face,
+    vectorHandling< map1dTo3d * > const & oedges,
+    vectorHandling< map1dTo3d * > const & iedges
+  ) {
+    //
+    // add outter edges
+    //
+    std::list< ::GEdge * > edges;
+    std::vector< dtInt > ori;
+    dt__forAllRefAuto(oedges, oedge) {
+      dtInt tag = _gm->addIfEdgeToGmshModel(oedge);
+      if ( tag<0 ) {
+        ori.push_back(-1);
+        tag = -tag;
+      }
+      else {
+        ori.push_back(1);
+      }
+      edges.push_back( _gm->getEdgeByTag( tag ) );
+    }
+    //
+    // add internal edges
+    //
+    std::vector< ::GEdge * > iedgesL;
+    dt__forAllRefAuto(iedges, iedge) {
+      iedgesL.push_back( 
+        _gm->getEdgeByTag( 
+          _gm->addIfEdgeToGmshModel(iedge) 
+        ) 
+      );
+    }
+    //
+    // add face
+    //
+    dtInt ftag;
+    _gm->addIfFaceToGmshModel(face, &ftag, edges, ori);    
+
+    //
+    // create edge loop of internal edges
+    //
+    ::GEdgeLoop el(iedgesL);
+    for(::GEdgeLoop::citer it = el.begin(); it != el.end(); ++it) {
+      _gm->getDtGmshFaceByTag(ftag)->addEdge( it->getEdge(), it->getSign() );
+    }
+
+    return ftag;
+  }
+ 
   
   dtInt customGmsh::handleCustomRegion( 
     ::QDomElement const & element,
