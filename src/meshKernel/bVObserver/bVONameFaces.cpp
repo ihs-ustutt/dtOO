@@ -45,12 +45,16 @@ namespace dtOO {
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_faceLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("faceLabel", element);
-		_face
-		= 
-		dtXmlParserBase::getAttributeStrVector("face", element);    
+	  jsonPrimitive jE;
+    jE.append<std::vector<std::string>>(
+      "_faceLabel", 
+   		dtXmlParserBase::getAttributeStrVector("faceLabel", element)
+    );
+    jE.append<std::vector<std::string>>(
+      "_face", 
+   		dtXmlParserBase::getAttributeStrVector("face", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVONameFaces::preUpdate( void ) {
@@ -62,7 +66,15 @@ namespace dtOO {
 		::GModel::setCurrent( gm );
     
     logContainer< bVONameFaces > logC(logINFO, "preUpdate()");
-    if ( _faceLabel.empty() ) {
+
+    std::vector< std::string > faceLabel 
+    =
+    this->config().lookup< std::vector< std::string > >("_faceLabel");
+    std::vector< std::string > face 
+    =
+    this->config().lookup< std::vector< std::string > >("_face");
+
+    if ( faceLabel.empty() ) {
       logC() << "Apply automatic naming" << std::endl;
       dt__forAllRefAuto(gm->regions(), aReg) {
         dtInt cc = 0;
@@ -83,16 +95,16 @@ namespace dtOO {
       }
     }
     else {
-      if ( _face.size() == _faceLabel.size() ) {
+      if ( face.size() == faceLabel.size() ) {
         //int cc = 0;
-        dt__forAllIndex(_face, cc) {
-          dtGmshFace * gf = gm->getDtGmshFaceByPhysical( _face[cc] );
-          gm->tagPhysical( gf, _faceLabel[cc] );
+        dt__forAllIndex(face, cc) {
+          dtGmshFace * gf = gm->getDtGmshFaceByPhysical( face[cc] );
+          gm->tagPhysical( gf, faceLabel[cc] );
           logC()
             << logMe::dtFormat(
               "Tag face : %s -> %s"
             ) 
-            % _face[cc] % _faceLabel[cc]
+            % face[cc] % faceLabel[cc]
             << std::endl;          
         }
       }
@@ -102,7 +114,7 @@ namespace dtOO {
           std::vector< dtInt > pInt = aFace->getPhysicalEntities();
           dt__throwIf(pInt.size()!=0, preUpdate());
 
-          std::string newL = _faceLabel[counter];
+          std::string newL = faceLabel[counter];
           if (newL != "") {
             dtInt pTag = aFace->model()->setPhysicalName(newL, 2, 0);
             aFace->addPhysicalEntity(pTag);

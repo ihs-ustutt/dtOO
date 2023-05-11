@@ -40,11 +40,14 @@ namespace dtOO {
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_order
-		= 
-		dtXmlParserBase::getAttributeIntMuParse(
-      "order", element, cV, aF
+ 	  jsonPrimitive jE;
+    jE.append< dtInt >(
+      "_order",
+      dtXmlParserBase::getAttributeIntMuParse(
+        "order", element, cV, aF
+      )
     );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOSetOrder::postUpdate( void ) {
@@ -56,6 +59,6 @@ namespace dtOO {
 		::GModel::setCurrent( gm );
 		dt__throwIf( !ptrBoundedVolume()->isMeshed(), postUpdate() );
     
-    ::gmsh::model::mesh::setOrder( _order );
+    ::gmsh::model::mesh::setOrder( config().lookup< dtInt >("_order" ) );
   }
 }
