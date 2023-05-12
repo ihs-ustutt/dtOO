@@ -1,18 +1,4 @@
 #
-# base
-#
-add_test(
-  NAME base 
-  COMMAND python3 "build.py"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/base
-)
-set_tests_properties(
-  base 
-  PROPERTIES
-  ENVIRONMENT PYTHONPATH=${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH}
-)
-
-#
 # baseSWIG
 #
 add_test(

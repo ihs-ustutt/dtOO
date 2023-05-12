@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<machine>
- <state label="myState">
-  <constValue label="cV_alpha" name="sliderFloatParam" min="0" value="26" max="100"/>
- </state>
-</machine>
