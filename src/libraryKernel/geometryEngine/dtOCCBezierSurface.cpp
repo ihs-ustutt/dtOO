@@ -25,7 +25,7 @@ namespace dtOO {
 
 	}
 
-	dtSurface * dtOCCBezierSurface::clone( void ) const {
+	dtOCCBezierSurface * dtOCCBezierSurface::clone( void ) const {
 		return new dtOCCBezierSurface( OCCRef() );
 	}
 

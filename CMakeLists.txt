@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.15)
 
 option(DTOO_USE_CCACHE "Use CCACHE" OFF)
 if (DTOO_USE_CCACHE)
@@ -9,6 +9,14 @@ if (DTOO_USE_CCACHE)
 endif(DTOO_USE_CCACHE)  
 
 project(designTool)
+
+SET( CMAKE_EXPORT_COMPILE_COMMANDS ON )
+IF( EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json" )
+  EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json
+    ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
+  )
+ENDIF()
 
 #------------------------------------------------------------------------------#
 #                                                                              #
@@ -25,6 +33,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 #------------------------------------------------------------------------------#
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl") #for dladdr in Backtrace
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
+#add_compile_options("-fdiagnostics-color")
 
 #------------------------------------------------------------------------------#
 #
@@ -33,7 +42,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
 #------------------------------------------------------------------------------#
 option(DTOO_USE_MPI "Use MPI" OFF)
 option(DTOO_USE_OMP "Use OpenMP" OFF)
-
+option(DTOO_BUILD_DOC "Build documentation with doxygen" OFF)
 #------------------------------------------------------------------------------#
 #
 # required packages
@@ -41,6 +50,7 @@ option(DTOO_USE_OMP "Use OpenMP" OFF)
 #------------------------------------------------------------------------------#
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Xml REQUIRED)
+find_package(NLOHMANN_JSON REQUIRED)
 find_package(CGAL REQUIRED COMPONENTS CGAL)
 find_package(GMSH REQUIRED gmsh)
 find_package(
@@ -221,6 +231,7 @@ include_directories(
   ${OpenMesh_INCLUDE_DIR}
   ${OpenVolumeMesh_INCLUDE_DIR}
   ${IGL_INCLUDE_DIR}
+  ${NLOHMANN_JSON_INCLUDE_DIR}
 )
 
 if (FOAMEXT_FOUND)
@@ -463,6 +474,7 @@ set(
   ${IGL_INCLUDE_DIR}
   ${Qt5Core_INCLUDE_DIRS}
   ${Qt5Xml_INCLUDE_DIRS}
+  ${NLOHMANN_JSON_INCLUDE_DIR}
 )
 set(
   CONF_DTOO_3RD_LIBRARIES 
@@ -532,3 +544,8 @@ add_subdirectory(tools)
 #
 enable_testing()
 add_subdirectory(test)
+
+#
+# add doc
+#
+add_subdirectory(doc)

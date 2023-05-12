@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ru_bladeRunnerMeshBlock2d>
+<!--
+!
+!
+! mesh parameters (DOF)
+!
+!
+-->				
+  <constValue 
+		label="cV_ru_meshBlockThickness" name="sliderFloatParam" value="0.01" min="0.001" max="10.00"
+	/>
+  
+  <vectorReplace 
+    variables="{ii}{jj}" 
+    values="
+      {{cV_ruWithRoundingBlade_meshBlockThickness}{cV_ru_meshBlockThickness}}
+      {{cV_ruWithRoundingRounding_meshBlockThickness}{cV_ru_meshBlockThickness}}
+      {{cV_ruWithCP_meshBlockThickness}{cV_ru_meshBlockThickness}}
+      {{cV_ruWithCPWithRoundingBlade_meshBlockThickness}{cV_ru_meshBlockThickness}}
+      {{cV_ruWithCPWithRoundingRounding_meshBlockThickness}{cV_ru_meshBlockThickness}}
+    
+    ">
+  <constValue 
+    label="{ii}" name="constrainedFloatParam" value="#{jj}#" min="0.001" max="10.00"
+  />
+  </vectorReplace>
+	
+<!--
+!
+!
+! thickness distributions of mesh block around blade
+!
+!
+-->						
+  
+<replace variable="ii" values="{ru}{ruWithCP}{ruWithRoundingBlade}{ruWithRoundingRounding}{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
+    
+	<function label="v3d2d_{ii}_meshBlockThickness">
+    <builder  name="muParser">
+			<expression value="-1.*#cV_{ii}_meshBlockThickness#, xx, yy"
+				dimension="3"/>
+      <x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+    </builder>
+  </function>	
+	<function label="v3d2d_{ii}_meshBlockThickness_te_0">
+    <builder  name="muParser">
+			<expression value="0.5*#cV_{ii}_meshBlockThickness#, xx, yy"
+				dimension="3"/>
+      <x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+    </builder>
+  </function>	
+	<function label="v3d2d_{ii}_meshBlockThickness_te_1">
+    <builder  name="muParser">
+			<expression value="-0.5*#cV_{ii}_meshBlockThickness#, xx, yy"
+				dimension="3"/>
+      <x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+    </builder>
+  </function>		
+
+</replace>
+	
+<!--
+!
+!
+! combine thickness distribution of meshblock and blade
+!
+!
+-->						
+
+  <replace variable="ii" values="{ru}{ruWithRoundingBlade}{ruWithRoundingRounding}">
+
+    <function label="vec3d2d_{ii}_meshBlock">
+      <builder name="analyticFunction">
+        <transformer 
+          name="discreteAddNormal"
+          function_label="v3d2d_{ii}_meshBlockThickness"
+          number_points_one="61"
+          number_points_two="5"								
+          order="3"				
+          nf="v3_zz"
+        />
+        <analyticFunction label="vec3d2d_{ii}_blade"/>
+      </builder>
+    </function>
+
+  </replace>
+
+  <replace variable="ii" values="{ruWithCP}{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
+
+    <function label="vec3d2d_{ii}_meshBlock">
+      <builder name="analyticFunction">
+        <transformer
+          name="discreteAddNormal"
+          function_label="v3d2d_{ii}_meshBlockThickness"
+          number_points_one="61"
+          number_points_two="5"
+          order="3"
+          nf="v3_zz"
+          closeU="true"
+        />
+        <analyticFunction label="vec3d2d_{ii}_blade"/>
+      </builder>
+    </function>
+
+  </replace>
+
+  <replace variable="ii" values="{ru}{ruWithRoundingBlade}{ruWithRoundingRounding}">
+
+<!--
+!
+!
+! extract edges
+!
+!
+-->							
+	<function label="vec3d1d_{ii}_te">
+    <builder name="analyticFunction">
+      <analyticFunction label="~x00_f(vec3d2d_{ii}_blade)~"/>
+    </builder>
+  </function>
+	<function label="vec3d1d_{ii}_meshBlock_te_0">
+    <builder name="analyticFunction">
+      <analyticFunction label="~x00_f(vec3d2d_{ii}_meshBlock)~"/>
+    </builder>
+  </function>
+	<function label="vec3d1d_{ii}_meshBlock_te_1">
+    <builder name="analyticFunction">
+      <analyticFunction label="~x01_f(vec3d2d_{ii}_meshBlock)~"/>
+    </builder>
+  </function>
+	
+<!--
+!
+!
+! create single surfaces at trailing edge
+!
+!
+-->
+	<replace variable="jj" values="{0}{1}">	
+		<function label="vec3d2d_{ii}_meshBlock_te_{jj}">
+			<builder name="vec3dSurfaceTwoDAFXmlBuilder">
+				<analyticFunction label="vec3d1d_{ii}_te"/>
+				<analyticFunction label="vec3d1d_{ii}_meshBlock_te_{jj}"/>
+			</builder>
+		</function>
+	</replace>
+	
+<!--
+!
+!
+! create combined surface at trailing edge
+!
+!
+-->	
+	<function label="vec3d2d_{ii}_meshBlock_te_2">
+		<builder name="vec3dSurfaceTwoDAFXmlBuilder">
+			<analyticFunction label="vec3d1d_{ii}_meshBlock_te_1"/>
+			<analyticFunction label="vec3d1d_{ii}_te"/>
+			<analyticFunction label="vec3d1d_{ii}_meshBlock_te_0"/>
+		</builder>
+	</function>
+
+
+<!--
+!
+!
+! add thickness increasing of combinded trailing edge surface
+!
+!
+-->
+	<function label="vec3d2d_{ii}_meshBlock_teAdd_2">
+		<builder name="analyticFunction">
+			<transformer 
+				name="discreteAddNormal"
+				function_label="v3d2d_{ii}_meshBlockThickness_te_0"
+				number_points_one="21"
+				number_points_two="5"								
+				order="3"				
+				nf="v3_zz"
+			/>
+			<analyticFunction label="vec3d2d_{ii}_meshBlock_te_2"/>
+		</builder>
+	</function>	
+	
+<!--
+!
+!
+! extract edges of combined surface and reapproximate
+!
+!
+-->		
+	<replace variable="jj" values="{0.0}{0.5}{1.0}">			
+		<function label="vec3d1d_{ii}_meshBlock_teAdd_2_{jj}">
+			<builder name="analyticFunction">
+				<transformer name="pickVec3dTwoDRangePercent" x_percent_two="{jj}"/>				
+				<analyticFunction label="vec3d2d_{ii}_meshBlock_teAdd_2"/>
+			</builder>
+		</function>		
+	</replace>
+	<function label="vec3d2d_{ii}_meshBlock_teAdd_0">
+		<builder name="vec3dSurfaceTwoDAFXmlBuilder">
+			<analyticFunction label="vec3d1d_{ii}_meshBlock_teAdd_2_0.5"/>
+			<analyticFunction label="vec3d1d_{ii}_meshBlock_teAdd_2_1.0"/>
+		</builder>
+	</function>		
+	<function label="vec3d2d_{ii}_meshBlock_teAdd_1">
+		<builder name="vec3dSurfaceTwoDAFXmlBuilder">
+			<analyticFunction label="vec3d1d_{ii}_meshBlock_teAdd_2_0.5"/>
+			<analyticFunction label="vec3d1d_{ii}_meshBlock_teAdd_2_0.0"/>
+		</builder>
+	</function>	
+		
+<!--
+!
+!
+! create mesh blocks at trailing edge
+!
+!
+-->			
+	<replace variable="jj" values="{0}{1}">				
+		<function label="vec3d3d_{ii}_meshBlock_te_{jj}">
+			<builder name="vec3dTransVolThreeD">
+				<analyticFunction label="vec3d2d_{ii}_meshBlock_te_{jj}"/>
+				<analyticFunction label="vec3d2d_{ii}_meshBlock_teAdd_{jj}"/>
+			</builder>
+		</function>	
+	</replace>		
+	
+<!--	<replace 
+		variable="ii" 
+		values="
+		  {vec3d2d_ru_meshBlock_te_0}
+		  {vec3d2d_ru_meshBlock_te_1}
+			{vec3d3d_ru_meshBlock_te_0}
+			{vec3d3d_ru_meshBlock_te_1}
+			{vec3d2d_ru_meshBlock_teAdd_2}
+			{vec3d1d_ru_meshBlock_teAdd_2_0.0}
+		  {vec3d1d_ru_meshBlock_teAdd_2_0.5}
+		  {vec3d1d_ru_meshBlock_teAdd_2_1.0}
+		">
+		<part label="aG_{ii}">
+			<builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="~ru_uVw_phirMs({ii})~"/>
+				<analyticGeometry label="rM2dTo3d_ru_channel"/>
+			</builder>
+		</part>
+	</replace>-->
+<!--	<replace 
+		variable="ii" 
+		values="
+			{aG_vec3d3d_ru_meshBlock_te_0}
+			{aG_vec3d3d_ru_meshBlock_te_1}
+		"
+	>	
+		<part label="{ii}_correct">
+			<builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="aF_wvu_uvw"/>
+				<analyticGeometry label="{ii}"/>
+			</builder>
+		</part>	
+  </replace>-->
+<!--
+!
+!
+! close mesh block (thickness distribution is added normal to blade and te -> edges not closed)
+!
+!
+-->							
+<!--	<function label="vec3d2d_ru_meshBlock_closed_0">
+		<builder name="analyticFunction">-->
+<!--			<transformer 
+				name="closeGapsArithmetic"
+				number_segments="5"
+				direction="1"
+			/>-->
+<!--			<analyticFunction label="vec3d2d_ru_meshBlock"/>
+		</builder>
+	</function>-->
+
+<!--	<function label="vec3d2d_ru_meshBlock_closeInThree">
+		<builder 
+			name="closeInThreePoints" 
+			number_segments="5"
+			direction="1"
+			order="2"
+		>
+			<transformer 
+				name="closeGapsArithmetic"
+				number_segments="5"
+				direction="1"
+			/>
+			<analyticFunction label="vec3d2d_ru_meshBlock"/>
+		</builder>
+	</function>-->
+	
+<!--
+!
+!
+! create transfinite volume of meshblock surrounding blade and te
+!
+!
+-->								
+	
+<!--	<function label="vec3d3d_ru_meshBlock_closeInThree">
+		<builder name="vec3dTransVolThreeD">
+			<analyticFunction label="vec3d2d_ru_blade"/>
+			<analyticFunction label="vec3d2d_ru_meshBlock_closeInThree"/>
+		</builder>
+	</function>	-->
+  </replace>
+  
+  <replace variable="ii" values="{ru}{ruWithCP}{ruWithRoundingBlade}{ruWithRoundingRounding}{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
+
+	
+	<function label="vec3d3d_{ii}_meshBlock">
+		<builder name="vec3dTransVolThreeD">
+			<analyticFunction label="vec3d2d_{ii}_blade"/>
+			<analyticFunction label="vec3d2d_{ii}_meshBlock"/>
+		</builder>
+	</function>	
+	
+
+	
+	
+<!--	<function label="vec3d3d_meshBlock_closed_1">
+		<builder name="vec3dTransVolThreeD">
+			<analyticFunction label="vec3d2d_blade_te"/>
+			<analyticFunction label="vec3d2d_meshBlock_closed_1"/>
+		</builder>
+	</function>			-->
+  </replace>
+  
+</ru_bladeRunnerMeshBlock2d>

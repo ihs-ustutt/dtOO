@@ -3,10 +3,13 @@
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  intParam::intParam() {
-  }
-
   intParam::intParam(intParam const & orig) : constValue(orig) {
+  }
+  
+  intParam::intParam( 
+    std::string const & label, dtInt const & val 
+  ) : constValue(label, val) {
+    
   }
 
   intParam::~intParam() {

@@ -1,19 +1,30 @@
 #include "constrainedFloatParam.h"
-#include "xmlHeaven/dtXmlParser.h"
+#include <parseHeaven/dtParser.h>
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  constrainedFloatParam::constrainedFloatParam( std::string const & valueStr ) {
+  constrainedFloatParam::constrainedFloatParam(
+    std::string const & label, std::string const & valueStr
+  ) : constValue(label, 0.0) {
     _valueStr = valueStr;
+    _cVArr = NULL;
+  }
+
+
+  constrainedFloatParam::constrainedFloatParam(
+    std::string const & label, 
+    std::string const & valueStr, dtReal const & min, dtReal const & max
+  ) : constValue(label, 0.0) {
+    _valueStr = valueStr;
+    setRange(min, max);
     _cVArr = NULL;
   }
 
   constrainedFloatParam::constrainedFloatParam(
     constrainedFloatParam const & orig
   ) : constValue(orig) {
-    _max = orig._max;
-    _min = orig._min;
     _valueStr = orig._valueStr;
+    _cVArr = orig._cVArr;
   }
 
   constrainedFloatParam::~constrainedFloatParam() {
@@ -28,15 +39,10 @@ namespace dtOO {
       dump(),
       << getLabel() << std::endl
       << dt__eval( getValue() ) << std::endl
-      << dt__eval( _min ) << std::endl
-      << dt__eval( _max )  << std::endl
+      << dt__eval( getMin() ) << std::endl
+      << dt__eval( getMax() )  << std::endl
       << dt__eval( _valueStr ) 
     );
-  }
-
-  void constrainedFloatParam::setRange(dtReal const min, dtReal const max) {
-    _max = max;
-    _min = min;
   }
 
   void constrainedFloatParam::writeToElement(
@@ -46,24 +52,27 @@ namespace dtOO {
     cValElement.setAttribute("label", getLabel().c_str());
     cValElement.setAttribute("name", "constrainedFloatParam");
     cValElement.setAttribute("value", _valueStr.c_str() );
-    cValElement.setAttribute("min", _min);
-    cValElement.setAttribute("max", _max);
+    cValElement.setAttribute("min", getMin());
+    cValElement.setAttribute("max", getMax());
 
     element.appendChild(cValElement);
   }
   
-  dtReal constrainedFloatParam::getMax(void) const {
-    return _max;
+  dtReal constrainedFloatParam::getValue(void) const {
+    if (_cVArr) {
+      return dtParser()(
+        dtParser(NULL, _cVArr, NULL, NULL, NULL, NULL)[_valueStr]
+      )[0];
+    }
+    dt__warning(
+      getValue(), 
+      << "Return 0.0 : Cannot determine correct value, _cVArr = " << _cVArr
+    );
+    return 0.0;
   }
 
-  dtReal constrainedFloatParam::getMin(void) const {
-    return _min;
-  }  
-
-  dtReal constrainedFloatParam::getValue(void) const {
-    return dtXmlParser::constReference().muParseString(
-      dtXmlParser::constReference().replaceDependencies( _valueStr, _cVArr)
-    );
+  std::string constrainedFloatParam::getValueStr(void) const {
+    return _valueStr; 
   }
 
   void constrainedFloatParam::setValue(dtReal const toSet) {
@@ -72,9 +81,11 @@ namespace dtOO {
       << "Try to set a constrainedFloatParam > " 
       << getLabel() << " <. Not possible. Set to constraint."
     );
+    std::string cState = constValue::getState();
     constValue::setValue(
-      std::numeric_limits< dtReal >::infinity()
+      std::numeric_limits< dtReal >::quiet_NaN()
     );
+    constValue::setState( cState );
   }  
   
   bool constrainedFloatParam::loadable( void ) const {
@@ -82,7 +93,7 @@ namespace dtOO {
   }
   
   void constrainedFloatParam::resolveConstraint( 
-    cVPtrVec const * const cVArr 
+    lvH_constValue const * const cVArr 
   ) {
     _cVArr = cVArr;
   }

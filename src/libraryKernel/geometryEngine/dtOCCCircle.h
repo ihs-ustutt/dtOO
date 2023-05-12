@@ -18,7 +18,7 @@ namespace dtOO {
     dtOCCCircle();
     dtOCCCircle(dtOCCCurveBase const & orig);
     virtual ~dtOCCCircle();
-    virtual dtCurve * clone( void ) const;
+    virtual dtOCCCircle * clone( void ) const;
     virtual dtInt order( void ) const;
     virtual dtInt nControlPoints( void ) const;
     virtual dtPoint3 controlPoint( dtInt const nPoint ) const;

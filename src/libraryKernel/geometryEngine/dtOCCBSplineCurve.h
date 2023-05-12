@@ -18,7 +18,7 @@ namespace dtOO {
     dtOCCBSplineCurve();
     dtOCCBSplineCurve( dtOCCCurveBase const & orig);
     virtual ~dtOCCBSplineCurve();
-    virtual dtCurve * clone( void ) const;
+    virtual dtOCCBSplineCurve * clone( void ) const;
     virtual dtInt order( void ) const;
     virtual dtInt nControlPoints( void ) const;
     virtual dtPoint3 controlPoint( dtInt const nPoint ) const;

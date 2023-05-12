@@ -20,4 +20,5 @@ namespace dtOO {
 		
 		return dtPoint2(yy[0], yy[1]);		
 	}
+  dt__C_addCloneForpVH(vec2dFunction);
 }

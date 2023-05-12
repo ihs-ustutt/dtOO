@@ -22,161 +22,161 @@ namespace dtOO {
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG,
         dtTransformer const * const dtTransformerP, 
         std::vector< dtPointD > * basicP
       );    
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG,
         dtTransformer const * const dtTransformerP, 
         std::vector< dtPoint3 > * basicP
       );
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG,
         dtTransformer const * const dtTransformerP, 
         std::vector< dtPoint2 > * basicP
       );
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG,
         std::vector< dtReal > * basicP
       );     
       static void createAdvanced( 
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG,
         dtTransformer const * const dtTransformerP,                        
-        aGPtrVec * advancedP 
+        lvH_analyticGeometry * advancedP 
       );      
       static void createAdvanced( 
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
         dtTransformer const * const dtTransformerP,                          
-        aFPtrVec * advancedP 
+        lvH_analyticFunction * advancedP 
       );    
       //
       // replace constValues, analyticFunctions and analyticGeometries
       //
       static std::string replaceDependencies(
         std::string const expression,
-        cVPtrVec const * const cV
+        lvH_constValue const * const cV
       );
       static std::string replaceDependencies(
         std::string const expression,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF
       );
       static std::string replaceDependencies( 
         std::string const expression,      
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
       );
       static std::string replaceDependencies( 
         std::string const expression,
         baseContainer const * const bC,      
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
       );
       static std::string replaceDependenciesRef(
         std::string const expression, 
         baseContainer const & bC,      
-        cVPtrVec const & cV,
-        aFPtrVec const & aF,
-        aGPtrVec const & aG
+        lvH_constValue const & cV,
+        lvH_analyticFunction const & aF,
+        lvH_analyticGeometry const & aG
       );      
       static dtReal getAttributeFloatMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV
+        lvH_constValue const * const cV
       );
       static dtReal getAttributeFloatMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF 
       );
       static dtReal getAttributeFloatMuParse(
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
         dtReal const & def
       );    
       static dtInt getAttributeIntMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV
+        lvH_constValue const * const cV
       );    
       static dtInt getAttributeIntMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF 
       );
       static dtInt getAttributeIntMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG        
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG        
       );      
       static dtInt getAttributeIntMuParse(
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
         dtInt const & def
       );
       static std::vector< dtReal > getAttributeFloatVectorMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF 
       );        
       static std::vector< double > getAttributeDoubleVectorMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF 
       );            
       static std::vector< dtInt > getAttributeIntVectorMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF 
       );
       static std::vector< dtInt > getAttributeIntVectorMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
       );      
       static dtReal getAttributeFloatMuParse( 
         std::string const attName, 
         ::QDomElement const element, 
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
       );  
       //
       // transformer
@@ -184,15 +184,15 @@ namespace dtOO {
       static dtTransformer * createTransformer(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );       
       static dtTransformer * createTransformer(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF
       );
       //
       // float
@@ -200,9 +200,9 @@ namespace dtOO {
       static dtReal createFloat(
         ::QDomElement const & toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );        
       //
       // dtPointD
@@ -210,8 +210,8 @@ namespace dtOO {
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,      
-        cVPtrVec const * const cV, 
-        aFPtrVec const * const aF, 
+        lvH_constValue const * const cV, 
+        lvH_analyticFunction const * const aF, 
         std::vector< dtPointD > * basicP
       );
       //
@@ -220,50 +220,50 @@ namespace dtOO {
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG,
         std::vector< dtPoint3 > * basicP
       );
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,      
-        cVPtrVec const * const cV, 
-        aFPtrVec const * const aF, 
+        lvH_constValue const * const cV, 
+        lvH_analyticFunction const * const aF, 
         std::vector< dtPoint3 > * basicP
       );
       static dtPoint3 createDtPoint3(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );
       static dtPoint3 createDtPoint3(
         ::QDomElement const & toBuild,
         baseContainer * const bC,                   
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );
       static dtPoint3 createDtPoint3(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF
       );    
       static dtPoint3 getDtPoint3(
         ::QDomElement const * toBuildP,
         baseContainer const * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );
       static dtPoint3 getDtPoint3(
         ::QDomElement const * toBuildP,
         baseContainer const * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF
       );        
       static dtPoint3 getDtPoint3(
         std::string const & str, baseContainer const * const bC
@@ -278,30 +278,30 @@ namespace dtOO {
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG,
         std::vector< dtPoint2 > * basicP
       );
       static void createBasic(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,      
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
         std::vector< dtPoint2 > * basicP
       );     
       static dtPoint2 createDtPoint2(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );
       static dtPoint2 createDtPoint2(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF
       );        
       //
       // dtVector2
@@ -309,16 +309,16 @@ namespace dtOO {
       static dtVector2 createDtVector2(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,  
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,  
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );       
       static dtVector2 getDtVector2(
         ::QDomElement const * toBuildP,
         baseContainer const * const bC,
-        cVPtrVec const * const cV,  
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,  
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );    
       //
       // dtVector3
@@ -326,28 +326,28 @@ namespace dtOO {
       static dtVector3 createDtVector3(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,  
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,  
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );    
       static dtVector3 createDtVector3(
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,  
-        aFPtrVec const * const aF
+        lvH_constValue const * const cV,  
+        lvH_analyticFunction const * const aF
       );
       static dtVector3 getDtVector3(
         ::QDomElement const * toBuildP,
         baseContainer const * const bC,
-        cVPtrVec const * const cV,  
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,  
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );    
       static dtVector3 getDtVector3(
         ::QDomElement const * toBuildP,
         baseContainer const * const bC,
-        cVPtrVec const * const cV,  
-        aFPtrVec const * const aF
+        lvH_constValue const * const cV,  
+        lvH_analyticFunction const * const aF
       );    
       static dtVector3 getDtVector3(
         std::string const & str, baseContainer const * const bC
@@ -361,44 +361,44 @@ namespace dtOO {
       static void createAdvanced( 
         ::QDomElement const & toBuild,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG,            
-        aGPtrVec * advancedP 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG,            
+        lvH_analyticGeometry * advancedP 
       );
       static void createAdvanced( 
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG,            
-        aGPtrVec * advancedP 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG,            
+        lvH_analyticGeometry * advancedP 
       );
       static analyticGeometry * createAnalyticGeometry( 
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );
       static analyticGeometry * createAnalyticGeometry( 
         ::QDomElement const & toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );    
       static analyticGeometry * createAnalyticGeometry( 
         ::QDomElement const * toBuildP,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );      
       static analyticGeometry * createAnalyticGeometry( 
         ::QDomElement const & toBuildP,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticGeometry const * const aG
       );          
       //
       // analyticFunction
@@ -406,39 +406,31 @@ namespace dtOO {
       static void createAdvanced( 
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aFPtrVec * advancedP 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticFunction * advancedP 
       );
       static void createAdvanced( 
         ::QDomElement const & toBuild,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF, 
-        aFPtrVec * advancedP 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF, 
+        lvH_analyticFunction * advancedP 
       );         
       static analyticFunction * createAnalyticFunction( 
         ::QDomElement const * toBuildP,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF
       ); 
       static analyticFunction * createAnalyticFunction( 
         ::QDomElement const & toBuild,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF 
       );
     protected:
       dtXmlParserBase();    
-    protected:    
-      static std::string _CALCSIGN;
-      static std::string _POINTSIGN;
-      static std::string _VECTORSIGN;
-      static std::string _DTTSIGN;
-      static std::string _CVSIGN;
-      static std::string _AFSIGN;
-      static std::string _AGSIGN;    
   };
 }
 #endif	/* DTXMLPARSERBASE_H */

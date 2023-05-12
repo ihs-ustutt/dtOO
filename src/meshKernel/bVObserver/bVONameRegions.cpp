@@ -23,14 +23,14 @@ namespace dtOO {
   bVONameRegions::~bVONameRegions() {
     
   }
-  
-  void bVONameRegions::bVONameRegions::init( 
+ 
+  void bVONameRegions::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
@@ -40,13 +40,16 @@ namespace dtOO {
     
 		// <bVObserver 
 		//   name="bVONameRegions" 
-		//   faceLabel="{name0}"
+		//   regionLabel="{name0}"
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_regionLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("regionLabel", element);
+    jsonPrimitive jE;
+    jE.append<std::vector<std::string>>(
+      "_regionLabel", 
+   		dtXmlParserBase::getAttributeStrVector("regionLabel", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVONameRegions::preUpdate( void ) {
@@ -59,14 +62,17 @@ namespace dtOO {
     
 		//
 		// check size
-		//		
+		//
+    std::vector< std::string > regionLabel 
+    = 
+    this->config().lookup< std::vector< std::string > >("_regionLabel");
 		dt__throwIf(
-      !_regionLabel.empty()&&(_regionLabel.size()!=gm->getNumRegions()), 
+      !regionLabel.empty()&&(regionLabel.size()!=gm->getNumRegions()), 
       preUpdate()
     );
 		
     logContainer< bVONameRegions > logC(logINFO, "preUpdate()");
-    if ( _regionLabel.empty() ) {
+    if ( regionLabel.empty() ) {
       logC() << "Apply automatic naming" << std::endl;
       dtInt cc = 0;
       dt__forAllRefAuto(gm->regions(), aReg) {
@@ -83,7 +89,7 @@ namespace dtOO {
         std::vector< dtInt > pInt = aReg->getPhysicalEntities();
         dt__throwIf(pInt.size()!=0, preUpdate());
 
-        std::string newL = _regionLabel[counter];
+        std::string newL = regionLabel[counter];
 
         if (newL != "") {
           dtInt pTag = aReg->model()->setPhysicalName(newL, 3, 0);

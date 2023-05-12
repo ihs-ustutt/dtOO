@@ -17,7 +17,7 @@ namespace dtOO {
     dtOCCBSplineSurface();
     dtOCCBSplineSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCBSplineSurface();
-    virtual dtSurface * clone( void ) const;
+    virtual dtOCCBSplineSurface * clone( void ) const;
 	  virtual dtCurve * segmentConstU( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const;
 	  virtual dtCurve * segmentConstV( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const;     
     virtual dtPoint3 controlPoint( dtInt const uI, dtInt const vI ) const;

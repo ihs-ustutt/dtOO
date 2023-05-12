@@ -10,27 +10,34 @@ namespace dtOO {
   class analyticFunction;
   class vec2dOneD;
   
+  //! Trim segment between [_u0, _u1].
   class pickMap1dTo3dLinePercent : public dtTransformer {
     public:
       dt__classOnlyName(pickMap1dTo3dLinePercent);   
       pickMap1dTo3dLinePercent();
       pickMap1dTo3dLinePercent(const pickMap1dTo3dLinePercent& orig);
+      pickMap1dTo3dLinePercent( jsonPrimitive const & jE );      
       virtual ~pickMap1dTo3dLinePercent();
       virtual dtTransformer * clone( void ) const;
       virtual dtTransformer * create( void ) const;     
       virtual bool isNecessary( void ) const; 
+      virtual void jInit( 
+        jsonPrimitive const & jE, 
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
+      );
       void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG 
       );
-      virtual aGPtrVec 
-      apply( aGPtrVec const * const aGeoVecP ) const;
+      virtual lvH_analyticGeometry 
+      apply( lvH_analyticGeometry const * const aGeoVecP ) const;
     private:
-      dtReal _u0;
-      dtReal _u1;
       static bool _registrated;    
   };
 }

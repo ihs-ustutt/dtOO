@@ -12,4 +12,5 @@ namespace dtOO {
   
   scaOneDPolyInterface::~scaOneDPolyInterface() {
   }
+  dt__C_addCloneForpVH(scaOneDPolyInterface);
 }

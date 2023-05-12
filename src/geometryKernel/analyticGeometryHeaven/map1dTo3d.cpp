@@ -87,20 +87,18 @@ namespace dtOO {
         (u_percent(_deltaPer) - u_percent(0.) )
       );      
     }
-    else if ( (uP>=0.01) && (uP<=0.99) ) {
-      return (
-        ( getPointPercent(uP+_deltaPer) - getPointPercent(uP-_deltaPer) )
-        /
-        ( u_percent(uP+_deltaPer) - u_percent(uP-_deltaPer) )
-      );
-    }
-    else if (uP>0.99) {
+    if (uP>0.99) {
       return (
         (getPointPercent(1.) - getPointPercent(1.-_deltaPer))
         /
         (u_percent(1.) - u_percent(1.-_deltaPer) )
       );      
     }
+    return (
+      ( getPointPercent(uP+_deltaPer) - getPointPercent(uP-_deltaPer) )
+      /
+      ( u_percent(uP+_deltaPer) - u_percent(uP-_deltaPer) )
+    );
   }
 
   dtVector3 map1dTo3d::firstDerUPercent( dtReal const & uP) const {  

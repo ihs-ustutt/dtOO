@@ -20,6 +20,7 @@
 #include <baseContainerHeaven/baseContainer.h>
 #include <do/coDoSet.h>
 #include <abstractModule.h>
+#include <progHelper.h>
 
 namespace dtOO {
   designTool::designTool(
@@ -132,24 +133,6 @@ namespace dtOO {
     = 
     addBooleanParam("_dCRunCurrentState", "_dCRunCurrentStateDescription");
     _dCRunCurrentState->setValue(false);
-		_dCStateChoice 
-    = 
-    addChoiceParam("_dCStateChoice", "_dCStateChoiceDescription");
-    _dCStateChoice->disable();
-    _dCStateString 
-    = 
-    addStringParam("_dCStateString", "_dCStateStringDescription");
-    _dCStateString->disable();
-    _dCStateResValueChoice 
-    = 
-    addChoiceParam(
-      "_dCStateResValueChoice", "_dCStateResValueChoiceDescription"
-    );
-    _dCStateResValueChoice->disable();
-    _dCStateResValue 
-    = 
-    addFloatParam("_dCStateResValue", "_dCStateResValueDescription");
-    _dCStateResValue->disable();
     
 		_dPChoice = addChoiceParam("_dPChoice", "_dPChoiceDescription");
     _dPChoice->disable();
@@ -221,10 +204,6 @@ namespace dtOO {
 		_moduleChoices.push_back("dCGen");
 		tmp.push_back( _dCChoice );
     tmp.push_back( _dCRunCurrentState );
-    tmp.push_back( _dCStateChoice );
-    tmp.push_back( _dCStateString );
-    tmp.push_back( _dCStateResValueChoice );
-    tmp.push_back( _dCStateResValue );
 		_uifPara.push_back( tmp );    
     
 		//
@@ -257,7 +236,6 @@ namespace dtOO {
 		_stateName->disable();    
     _stateName->setValue("");
     _clearLog->show();
-    _dCStateString->disable();
     //
     // init log file
     //
@@ -411,7 +389,7 @@ namespace dtOO {
 					}
 					else {
 						int toDel = _aFToRender.getPosition( _aF[pos]->getLabel() );
-						_aFToRender.erase(toDel);
+            progHelper::erase(_aFToRender, toDel);
 					}
 		      _recreate = false;
 		      setExecGracePeriod(0.1);
@@ -424,7 +402,7 @@ namespace dtOO {
 					selfExec();		
 				}				
 				else if ( strcmp(paramName, "_aFRenderCurrentToggle") == 0 ) {
-					_aFToRender.erase( _aFRenderChoice->getValue() );
+          progHelper::erase(_aFToRender, _aFRenderChoice->getValue() );
 					_aFRenderCurrentToggle->setValue(false);				
 					_recreate = false;
 					setExecGracePeriod(0.1);
@@ -447,7 +425,7 @@ namespace dtOO {
 					}
 					else {
 						int toDel = _aGToRender.getPosition( _aG[pos]->getLabel() );
-						_aGToRender.erase(toDel);
+            progHelper::erase(_aGToRender, toDel);
 					}
 		      _recreate = false;
 		      setExecGracePeriod(0.1);
@@ -513,7 +491,7 @@ namespace dtOO {
 					selfExec();			
 				}
 				else if ( strcmp(paramName, "_aGRenderCurrentToggle") == 0 ) {
-  				_aGToRender.erase( _aGRenderChoice->getValue() );
+          progHelper::erase(_aGToRender, _aGRenderChoice->getValue());
 					_aGRenderCurrentToggle->setValue(false);				
 					_recreate = false;
 					setExecGracePeriod(0.1);
@@ -557,7 +535,7 @@ namespace dtOO {
 					}
 					else {
 						int toDel = _aGToRender.getPosition( _aG[pos]->getLabel() );
-						_aGToRender.erase(toDel);
+            progHelper::erase(_aGToRender, toDel);
 					}
 		      _recreate = false;
 		      setExecGracePeriod(0.1);
@@ -576,7 +554,7 @@ namespace dtOO {
 					}
 					else {
 						int toDel = _bVToRender.getPosition( _bV[pos]->getLabel() );
-						_bVToRender.erase(toDel);
+            progHelper::erase(_bVToRender, toDel);
 					}
 					
 					_bVRenderTags->disable();
@@ -639,35 +617,6 @@ namespace dtOO {
 					setExecGracePeriod(0.1);
 					selfExec();		
 				}		
-				else if ( strcmp(paramName, "_dCStateChoice") == 0 ) {
-          _dCStateString->setValue(
-            _dC[ _dCChoice->getValue() ]->statusStr( 
-              std::string(_dCStateChoice->getActLabel()) 
-            ).c_str()
-          );
-          vectorHandling< resultValue * > result
-          =
-          _dC[ _dCChoice->getValue() ]->result(
-            std::string(_dCStateChoice->getActLabel()) 
-          );
-          abstractModule::updateChoiceParam(
-            _dCStateResValueChoice, &result
-          );  
-          result.destroy();
-				}		        
-				else if ( strcmp(paramName, "_dCStateResValueChoice") == 0 ) {
-          labeledVectorHandling< resultValue * > result
-          =
-          _dC[ _dCChoice->getValue() ]->result(
-            std::string(_dCStateChoice->getActLabel()) 
-          );
-          _dCStateResValue->setValue( 
-            result.get(
-              std::string(_dCStateResValueChoice->getActLabel())
-            )->operator()()
-          );
-          result.destroy();
-				}		        
 			}	      
 			//------------------------------------------------------------------------
 			//
@@ -698,7 +647,7 @@ namespace dtOO {
     //
     // update state label
     //
-    if (!_parser.isNull()) {
+    if (_parser) {
       _stateName->setValue(_parser->currentState().c_str());
     }
     return;
@@ -718,7 +667,7 @@ namespace dtOO {
 				_aFToRender.clear();
 				_bVToRender.clear();
 				
-        if (_parser.isNull()) {
+        if (!_parser) {
           _parser.reset( 
             dtXmlParser::init(
               std::string(_xmlBrowser->getValue()), 
@@ -762,10 +711,6 @@ namespace dtOO {
       // update case states
       //
       if (_dCApply) {
-        _dCApply->update();
-        abstractModule::updateChoiceParam(
-          _dCStateChoice, _dCApply->allStates()
-        );
         if (_dCRunCurrentState->getValue()) {
           _dCRunCurrentState->disable();
           _dCApply->runCurrentState();

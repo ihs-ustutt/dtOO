@@ -18,15 +18,42 @@ namespace dtOO {
 	dtTransformer::dtTransformer(
     dtTransformer const & orig
   ) : labelHandling(orig), optionHandling(orig) {
-		
+		_config = orig._config;
 	}
 
+  dtTransformer::dtTransformer( 
+    jsonPrimitive const & jE 
+  ) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
+  
+  void dtTransformer::jInit( 
+	  jsonPrimitive const & jE, 
+    baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG
+	) {
+    _config = jE;
+	  labelHandling::jInit(jE);
+    optionHandling::jInit(jE);
+		dt__debug( jInit(), << "config() = " << _config.toStdString() );
+  }
+  
+  jsonPrimitive & dtTransformer::config( void ) {
+    return _config;
+  }
+  
+  jsonPrimitive const & dtTransformer::config( void ) const {
+    return _config;
+  }
+      
   void dtTransformer::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG
 	) {
 		if ( dtXmlParserBase::hasAttribute("label", *tE) ) {
 			labelHandling::setLabel(dtXmlParserBase::getAttributeStr("label", *tE));
@@ -37,8 +64,8 @@ namespace dtOO {
   void dtTransformer::init( 
 	  ::QDomElement const * tE,
 	  baseContainer * const bC, 
-		cVPtrVec const * const cValP,
-		aFPtrVec const * const sFunP
+		lvH_constValue const * const cValP,
+		lvH_analyticFunction const * const sFunP
 	) {
     init(tE, bC, cValP, sFunP, NULL);
   }
@@ -65,20 +92,20 @@ namespace dtOO {
     return ret;    
   }
 
-  aFPtrVec dtTransformer::apply( 
-    aFPtrVec const * const sFunP 
+  lvH_analyticFunction dtTransformer::apply( 
+    lvH_analyticFunction const * const sFunP 
   ) const {
     dt__warning(apply(), << "Call on abstract class!");
-    aFPtrVec ret;
+    lvH_analyticFunction ret;
     dt__forAllRefAuto(*sFunP, aF) ret.push_back( aF->clone() );
     return ret;   
   }
 
-  aGPtrVec dtTransformer::apply( 
-    aGPtrVec const * const sFunP 
+  lvH_analyticGeometry dtTransformer::apply( 
+    lvH_analyticGeometry const * const sFunP 
   ) const {
     dt__warning(apply(), << "Call on abstract class!");
-    aGPtrVec ret;
+    lvH_analyticGeometry ret;
     dt__forAllRefAuto(*sFunP, aG) ret.push_back( aG->clone() );
     return ret;   
   }
@@ -104,19 +131,23 @@ namespace dtOO {
   analyticFunction * dtTransformer::apply(
     analyticFunction const * const sF
   ) const {
-    aFPtrVec vHIn;
+    lvH_analyticFunction vHIn;
     vHIn.push_back(const_cast< analyticFunction *>(sF));
-    aFPtrVec vHOut = this->apply( &vHIn );
-    
+    lvH_analyticFunction vHOut = this->apply( &vHIn );
+    dt__throwIfWithMessage(
+      vHOut.size()>1, 
+      apply(),
+      << "Size of vHOut = " << vHOut.size()
+    );
     return vHOut[0];
   }
 
   analyticGeometry * dtTransformer::apply(
     analyticGeometry const * const aG
   ) const {
-    aGPtrVec vHIn;
+    lvH_analyticGeometry vHIn;
     vHIn.push_back(const_cast< analyticGeometry *>(aG));
-    aGPtrVec vHOut = this->apply( &vHIn );
+    lvH_analyticGeometry vHOut = this->apply( &vHIn );
     
     return vHOut[0];
   }  
@@ -246,5 +277,6 @@ namespace dtOO {
   void dtTransformer::setKernel( ::pugg::Kernel * kernel ) {
     _kernel.reset( kernel );
   }  
+  dt__C_addCloneForpVH(dtTransformer);
 }
 

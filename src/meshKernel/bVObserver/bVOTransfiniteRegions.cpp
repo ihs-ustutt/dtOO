@@ -23,13 +23,13 @@ namespace dtOO {
     
   }
   
-  void bVOTransfiniteRegions::bVOTransfiniteRegions::init( 
+  void bVOTransfiniteRegions::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
@@ -42,16 +42,19 @@ namespace dtOO {
 		//   regionLabel="{name0}{name1}{name2}{name3}{name4}{name5}"
 		// />
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-    
-		_regionLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("regionLabel", element);
-		_nE
-		= 
-		dtXmlParserBase::getAttributeIntVectorMuParse(
-			"numberElements", element, cV, aF, aG
-		);
-    dt__throwIf(_nE.size()!=3, init());      
+
+    jsonPrimitive jE;
+    jE.append< std::vector< std::string > >(
+      "_regionLabel",
+		  dtXmlParserBase::getAttributeStrVector("regionLabel", element)
+    );
+		jE.append< std::vector< dtInt > >(
+      "_nE",
+      dtXmlParserBase::getAttributeIntVectorMuParse(
+	  		"numberElements", element, cV, aF, aG
+		  )
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOTransfiniteRegions::preUpdate( void ) {
@@ -61,11 +64,17 @@ namespace dtOO {
 		// set current model
 		//
 		::GModel::setCurrent( gm );
-		
-    dt__forAllRefAuto(_regionLabel, aLabel) {
+	
+    std::vector< dtInt > nE = config().lookup< std::vector< dtInt > >("_nE");
+    dt__throwIf(nE.size()!=3, init());      
+    
+    dt__forAllRefAuto(
+     config().lookup< std::vector< std::string > >("_regionLabel"), 
+      aLabel
+    ) {
       gm->getDtGmshRegionByPhysical(aLabel)->meshTransfiniteRecursive();
       gm->getDtGmshRegionByPhysical(aLabel)->meshWNElements(
-        _nE[0], _nE[1], _nE[2]
+        nE[0], nE[1], nE[2]
       );
     }
 		dt__forAllRefAuto(gm->faces(), aFace) {

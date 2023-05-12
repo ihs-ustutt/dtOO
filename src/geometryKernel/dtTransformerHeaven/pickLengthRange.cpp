@@ -38,8 +38,8 @@ namespace dtOO {
 		return new pickLengthRange();
 	}
 	
-  aGPtrVec pickLengthRange::apply( aGPtrVec const * const aGeoVecP ) const {
-    aGPtrVec aGeoRet;
+  lvH_analyticGeometry pickLengthRange::apply( lvH_analyticGeometry const * const aGeoVecP ) const {
+    lvH_analyticGeometry aGeoRet;
     
     for (int ii=0;ii<aGeoVecP->size();ii++) {
       analyticGeometry * aGP = aGeoVecP->at(ii)->clone();
@@ -87,9 +87,9 @@ namespace dtOO {
   void pickLengthRange::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

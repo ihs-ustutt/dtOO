@@ -94,6 +94,7 @@ namespace dtOO {
 	dtOCCGeomFillBoundaryBase const & dtOCCGeomFillBoundary::OCCBoundaryRef( void ) const {
 		return *(_boundary.get());
 	}
+  dt__C_addCloneForpVH(dtOCCGeomFillBoundary);
 //	dtOCCGeomFillBoundaryBase & dtOCCGeomFillBoundary::OCCBoundaryRef( void ) {
 //		return *(_boundary.get());
 //	}	  

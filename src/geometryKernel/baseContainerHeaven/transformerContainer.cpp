@@ -19,7 +19,8 @@ namespace dtOO {
     _dtT.push_back( dtT->clone() );
   }
 
-  dtTransformer const * transformerContainer::get( std::string const string ) const {
+  dtTransformer const * 
+  transformerContainer::get( std::string const string ) const {
     return _dtT.get(string);
   }
 
@@ -29,5 +30,18 @@ namespace dtOO {
 
   bool transformerContainer::isEmpty( void ) const {
     return _dtT.empty();
+  }
+
+  std::vector< std::string > transformerContainer::labels( void ) const {
+    return _dtT.labels();
+  }   
+
+  labeledVectorHandling< dtTransformer * > & transformerContainer::lVH( void ) {
+    return _dtT;
+  }
+
+  const labeledVectorHandling< dtTransformer * > & 
+  transformerContainer::lVH( void ) const {
+    return _dtT; 
   }
 }

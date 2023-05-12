@@ -16,10 +16,16 @@
 #include <gmsh/MQuadrangle.h>
 #include <gmsh/MPrism.h>
 #include <gmsh/MHexahedron.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
-  
-  dtMeshGRegionWithOneLayer::dtMeshGRegionWithOneLayer() {
+  bool dtMeshGRegionWithOneLayer::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshGRegionWithOneLayer, new dtMeshGRegionWithOneLayer())
+  );
+ 
+  dtMeshGRegionWithOneLayer::dtMeshGRegionWithOneLayer() : dtMesh3DOperator()  {
     
 	}
 
@@ -30,11 +36,11 @@ namespace dtOO {
   void dtMeshGRegionWithOneLayer::init(
     ::QDomElement const & element,
     baseContainer const * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG,
-    bVPtrVec const * const bV,
-    labeledVectorHandling< dtMeshOperator * > const * const mO
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtMeshOperator const * const mO
   ) {
     dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
     

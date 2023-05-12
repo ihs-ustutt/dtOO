@@ -4,8 +4,15 @@
 //#include <gmsh/meshGEdge.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MPoint.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshGVertex::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshGVertex, new dtMeshGVertex())
+  );
+
   dtMeshGVertex::dtMeshGVertex() : dtMesh0DOperator() {
   }
 

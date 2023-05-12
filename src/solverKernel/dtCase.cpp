@@ -6,8 +6,6 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
-#include <resultValueHeaven/resultValue.h>
-#include <resultValueHeaven/floatValue.h>
 #include <interfaceHeaven/systemHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 
@@ -19,14 +17,6 @@
 #include <sstream>
 
 namespace dtOO {
-  dtInt const dtCase::SUCCESS = 0;
-  dtInt const dtCase::RUNNING = 1;
-  dtInt const dtCase::ERROR = 2;
-  dtInt const dtCase::UNEXPECTED = 3;
-  std::string const dtCase::STATUSSTRING[] 
-  = 
-  { "SUCCESS", "RUNNING", "ERROR", "UNEXPECTED"};
-  
 	dtCase::dtCase() {
 	}
 
@@ -36,15 +26,40 @@ namespace dtOO {
   std::vector< std::string > dtCase::factoryAlias( void ) const {
     return std::vector< std::string>(0);
   }  
-	
+  
+  void dtCase::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtCase const * const dC
+  ) {
+    _config = jE;
+    //
+    // set label of boundenVolume
+    //
+    labelHandling::jInit(jE);
+    //
+    // set options
+    //
+    optionHandling::jInit(jE);
+		//
+    // debug output
+    //
+    dt__debug( jInit(), << "config() = " << _config.toStdString() );
+  }
+
+
   void dtCase::init(
 	  ::QDomElement const & element,
 		baseContainer const * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG,
-    bVPtrVec const * const bV,
-    dCPtrVec const * const dC
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtCase const * const dC
 	) {  
     //
     // set label of dtPlugin
@@ -63,56 +78,10 @@ namespace dtOO {
     dt__throwUnexpected(runCurrentState());
   }
   
-  void dtCase::update( void ) {
-    std::vector< fpath > dL
-    =
-    systemHandling::directoryList(
-      staticPropertiesHandler::getInstance()->getOption("workingDirectory")  
-    );
-    
-    _state.clear();
-    _directory.clear();    
-    dt__forAllRefAuto(dL, aDL) {
-      if ( 
-        stringPrimitive::stringContains( 
-          getLabel()+"_", aDL.filename().string() 
-        ) 
-      ) {
-        _state.push_back(
-          stringPrimitive::replaceStringInString( 
-            getLabel()+"_", "", aDL.filename().string()
-          )
-        ); 
-        _directory.push_back( aDL.filename().string() );
-      }
-    }
-    
-    _status.resize(_directory.size(), UNEXPECTED);
-        dt__forAllIndex(_directory, ii) {
-      std::string statusFile = _directory[ii]+"/status";
-      
-      if ( systemHandling::fileExists(statusFile) ) {
-        std::ifstream in( statusFile.c_str() );
-        if (in) {
-          in >> _status[ii];
-          in.close();
-        }
-      }
-    }
-  }
-
-  std::vector< std::string > dtCase::allStates( void ) const {
-    return _state;
-  }
-
   std::string dtCase::createDirectory( std::string const & state ) const {
     std::string wDir 
     = 
-    staticPropertiesHandler::getInstance()->getOption("workingDirectory")
-    +
-    "/"
-    +
-    getLabel()+"_"+state;
+    getDirectory( state );
     
     if ( !systemHandling::directoryExists(wDir) ) {
       systemHandling::createDirectory(wDir);
@@ -122,98 +91,29 @@ namespace dtOO {
 
     return wDir;
   }  
-//  std::vector< std::string > dtCase::finishedStates( void ) const {
-//    std::vector< std::string > running = runningStates();
-//    std::vector< std::string > finished = finishedStates();
-//    
-//    dt__forAllRefAuto(finished, aFinished) {
-//      running.push_back( aFinished );
-//    }
-//    
-//    return running;
-//  }
-  
-  bool dtCase::inPipeline( std::string const & state) const {
-    std::vector< std::string >::const_iterator it
-    =
-    std::find(_state.begin(), _state.end(), state);
-    if (
-      std::find(_state.begin(), _state.end(), state) != _state.end()
-    ) return true;
-    else return false;
-  }
-  
-  dtInt dtCase::status( std::string const & state ) const {
-    std::vector< std::string >::const_iterator it
-    =
-    std::find(_state.begin(), _state.end(), state);
-    if (
-      std::find(_state.begin(), _state.end(), state) != _state.end()
-    ) {
-      return _status.at( static_cast<int>(it-_state.begin()) );
-    }
-    else return UNEXPECTED;//dt__throwUnexpected(status());
-  }
-
-  std::string dtCase::statusStr( std::string const & state ) const {
-    return STATUSSTRING[ status(state) ];
-  }
   
   std::string dtCase::getDirectory( std::string const & state ) const {
-    std::vector< std::string >::const_iterator it
-    =
-    std::find(_state.begin(), _state.end(), state);
-    
-    //dt__throwIf(it==_state.end(), getDirectory());
+    std::string wDir 
+    = 
+    staticPropertiesHandler::getInstance()->getOption("workingDirectory")
+    +
+    "/"
+    +
+    getLabel();
+
     //
-    // create if directory not listed and does not exist
+    // extend directory if state is not empty
     //
-    if( it != _state.end() ) {
-      return _directory.at( static_cast<int>(it-_state.begin()) );
-    }
-    else {
-      return createDirectory(state);
-    }
+    if (state != "") wDir = wDir+"_"+state;
+
+    return wDir;
   }
-
-  vectorHandling< resultValue * > dtCase::result( 
-    std::string const & state 
-  ) const {
-    vectorHandling< resultValue * > ret(0);
-    
-    if ( status(state) == SUCCESS ) {
-      std::ifstream in( 
-        (getDirectory(state)+"/resultValue").c_str() 
-      );
-      if (in) {
-        //
-        // read file
-        //
-        std::string line;
-        while (getline(in, line)) {
-          boost::algorithm::trim_all(line);
-          std::vector< std::string > parts;
-          boost::split(
-            parts, line, boost::is_any_of(","), boost::token_compress_on
-          );
-
-          dt__throwIf(parts.size()!=3, result());
-          //
-          // add new resultValue
-          //
-          if (parts[0] == "floatValue") {
-            ret.push_back( 
-              new floatValue( 
-                parts[1], stringPrimitive::stringToFloat(parts[2])
-              ) 
-            );
-          }
-          else dt__throwUnexpected(result());
-        }
-      }
-      in.close();    
-    }
-    
-    return ret; 
- }
+  
+  jsonPrimitive & dtCase::config( void ) {
+    return _config;
+  }
+  
+  jsonPrimitive const & dtCase::config( void ) const {
+    return _config;
+  }
 }

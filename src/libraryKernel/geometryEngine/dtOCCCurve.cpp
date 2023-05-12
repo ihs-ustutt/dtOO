@@ -217,4 +217,5 @@ namespace dtOO {
 	dtOCCCurveBase & dtOCCCurve::OCCRef( void ) {
 		return *(_curve.get());
 	}	
+  dt__C_addCloneForpVH(dtOCCCurve);
 }

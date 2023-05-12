@@ -35,9 +35,9 @@ namespace dtOO {
   void bSplineCurve2d_pointInterpolateConstructOCCAFXmlBuilder::buildPart(
 		::QDomElement const & toBuildP, 
 		baseContainer * const bC,
-		cVPtrVec const * const cValP, 
-		aFPtrVec const * const depSFunP,
-		aFPtrVec * sFunP 
+		lvH_constValue const * const cValP, 
+		lvH_analyticFunction const * const depSFunP,
+		lvH_analyticFunction * sFunP 
 	) const {
     dt__throwIf(!dtXmlParserBase::hasChild("Point_2", toBuildP), buildPart());
 

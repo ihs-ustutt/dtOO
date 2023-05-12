@@ -19,21 +19,24 @@ namespace dtOO {
   class dtMeshGRegionWithOneLayer : public dtMesh3DOperator {
     public:
       dt__classOnlyName(dtMeshGRegionWithOneLayer);          
+      dt__classSelfCreate(dtMeshGRegionWithOneLayer);
       dtMeshGRegionWithOneLayer();
       virtual ~dtMeshGRegionWithOneLayer();
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG,
-        bVPtrVec const * const bV,
-        labeledVectorHandling< dtMeshOperator * > const * const mO
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO
       );            
       virtual void operator()( dtGmshRegion * dtgr );
     private:
       std::string _faceMaster;
       std::string _faceSlave;
+    private:
+      static bool _registrated;
   };
 }
 

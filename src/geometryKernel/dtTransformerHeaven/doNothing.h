@@ -18,9 +18,9 @@ namespace dtOO {
       virtual void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cValP,
-        aFPtrVec const * const sFunP,
-        aGPtrVec const * const depAGeoP 
+        lvH_constValue const * const cValP,
+        lvH_analyticFunction const * const sFunP,
+        lvH_analyticGeometry const * const depAGeoP 
       );    
       virtual std::vector< dtPoint2 * > apply( 
         std::vector< dtPoint2 * > const * const pointVecP 
@@ -28,8 +28,8 @@ namespace dtOO {
       virtual std::vector< dtPoint3 * > apply( 
         std::vector< dtPoint3 * > const * const pointVecP 
       ) const;    
-      virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;  
-      virtual aFPtrVec apply( aFPtrVec const * const sFunVecP ) const;  
+      virtual lvH_analyticGeometry apply( lvH_analyticGeometry const * const aGeoVecP ) const;  
+      virtual lvH_analyticFunction apply( lvH_analyticFunction const * const sFunVecP ) const;  
     private: 
       static bool _registrated;
 

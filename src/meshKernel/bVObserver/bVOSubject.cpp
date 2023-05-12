@@ -1,6 +1,7 @@
 #include "bVOSubject.h"
 
 #include <logMe/logMe.h>
+#include <logMe/logContainer.h>
 #include "bVOInterface.h"
 #include <boundedVolume.h>
 
@@ -28,4 +29,13 @@ namespace dtOO {
   void bVOSubject::postNotify( void ) {
     dt__forAllRefAuto(_observers, anObserver) anObserver->postUpdate();
   }	
+
+  void bVOSubject::dump( void ) const {
+    logContainer< bVOSubject > logC(TLogLevel::logINFO, "dump()");
+    int cc = 0;
+    dt__forAllRefAuto(_observers, anOb) {
+      logC() << "[ " << cc << " ] : " << anOb->virtualClassName() << std::endl;
+      cc++;
+    }
+  }
 }

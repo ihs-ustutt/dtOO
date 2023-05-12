@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dt_writeStep>
+  
+	<!--
+	!
+	!
+	! plugin
+	!
+	!
+	-->		
+<!--  <part label="aS_gvru_porousVarFace">
+    <builder name="analyticGeometry">
+      <analyticGeometry label="~v1_v(t6C_gvru_porousVar_0)~"/>
+    </builder>
+  </part>-->
+		<plugin name="writeStep" label="dt_writeStep" filename="STATE_dt.stp" translator="5">
+			<analyticGeometry label="aS_skinCorpus_dtIn"/>
+			<analyticGeometry label="aS_skinCorpus_dt2In"/>
+			<analyticGeometry label="aS_skinCorpus_dt3In"/>      
+			<analyticGeometry label="aS_skinCorpus_dtOut"/>
+			<analyticGeometry label="aS_skinCorpus_dt2Out"/>
+			<analyticGeometry label="aS_skinCorpus_dt3Out"/>
+			<analyticGeometry label="aS_gv_ru_shroudOut"/>
+			<analyticGeometry label="aS_gv_hub_bulb"/>
+			<analyticGeometry label="aS_gv_hub"/>
+			<analyticGeometry label="aS_gv_shroud"/>
+			<analyticGeometry label="aS_ru_hub"/>
+			<analyticGeometry label="aS_ru_shroud"/>			
+			<analyticGeometry label="aS_dt_hub_0"/>		
+			<analyticGeometry label="aS_dt_hub_1"/>		
+			<analyticGeometry label="aS_dt_hubEnd"/>		
+			<analyticGeometry label="aS_skinCorpus_farMid"/>
+			<analyticGeometry label="aS_bevelBack_dt"/>
+			<analyticGeometry label="aS_bevelFront_dt2"/>
+			<analyticGeometry label="aS_gv_inlet_full"/>
+			<analyticGeometry label="aS_gv_outlet_full"/>
+			<analyticGeometry label="aS_ru_inlet_full"/>
+			<analyticGeometry label="aS_ru_outlet_full"/>
+<!--      <analyticGeometry label="aS_gvru_porousVarFace"/>-->
+		</plugin>
+</dt_writeStep>

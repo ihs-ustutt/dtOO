@@ -15,67 +15,9 @@ namespace dtOO {
   }
 
   void vectorContainer::add(
-    dtVector3 const * const vectorP, std::string const * const stringP 
-  ) {
-    this->add(*vectorP, *stringP);  
-  }
-
-  void vectorContainer::add(
-    dtVector3 const * const vectorP, std::string const  string 
-  ) {
-    this->add(*vectorP, string);  
-  }
-
-  void vectorContainer::add(
-    dtVector3 const vector, std::string const * const stringP 
-  ) {
-    this->add(vector, *stringP);    
-  }
-
-  void vectorContainer::add(
     dtVector3 const vector, std::string const string 
   ) {
     add(vector, string, dtPoint3(0,0,0));
-  }
-
-  void vectorContainer::add(
-    dtVector3 const * const vector, 
-    std::string const string, 
-    dtPoint3 const point 
-  ) {
-    this->add(*vector, string, point);
-  }
-
-  void vectorContainer::add(
-    dtVector3 const * const vector, 
-    std::string const * const string, 
-    dtPoint3 const point 
-  ) {
-    this->add(*vector, *string, point);
-  }
-
-  void vectorContainer::add(
-    dtVector3 const * const vector, 
-    std::string const * const string, 
-    dtPoint3 const * const point 
-  ) {
-    this->add(*vector, *string, *point);
-  }
-
-  void vectorContainer::add(
-    dtVector3 const vector, 
-    std::string const * const string, 
-    dtPoint3 const point 
-  ) {
-    this->add(vector, *string, point);
-  }
-
-  void vectorContainer::add(
-    dtVector3 const vector, 
-    std::string const * const string, 
-    dtPoint3 const * const point 
-  ) {
-    this->add(vector, string, *point);
   }
 
   void vectorContainer::add(
@@ -130,4 +72,10 @@ namespace dtOO {
   bool vectorContainer::isEmpty( void ) const {
     return _pair.empty();
   }
+
+  std::vector< std::string > vectorContainer::labels( void ) const {
+    std::vector< std::string > ret;
+    dt__forAllRefAuto(_pair, aPair) ret.push_back( aPair.second);
+    return ret;
+  }  
 }

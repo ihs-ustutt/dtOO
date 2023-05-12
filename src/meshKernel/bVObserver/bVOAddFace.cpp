@@ -23,14 +23,14 @@ namespace dtOO {
   bVOAddFace::~bVOAddFace() {
     
   }
-  
-  void bVOAddFace::bVOAddFace::init( 
+ 
+  void bVOAddFace::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
@@ -45,12 +45,16 @@ namespace dtOO {
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_regionLabel
-		= 
-		dtXmlParserBase::getAttributeStr("regionLabel", element);
-		_faceLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("faceLabel", element);    
+    jsonPrimitive jE;
+    jE.append< std::string >(
+      "_regionLabel", 
+      dtXmlParserBase::getAttributeStr("regionLabel", element)
+    );
+		jE.append< std::vector< std::string > >(
+      "_faceLabel",
+      dtXmlParserBase::getAttributeStrVector("faceLabel", element)
+    );    
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOAddFace::preUpdate( void ) {
@@ -61,9 +65,15 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
     
-    dtGmshRegion * const gr = gm->getDtGmshRegionByPhysical(_regionLabel);
+    dtGmshRegion * const gr 
+    = 
+    gm->getDtGmshRegionByPhysical(
+      config().lookup< std::string >("_regionLabel")
+    );
 
-    dt__forAllRefAuto(_faceLabel, aFace) {
+    dt__forAllRefAuto(
+      config().lookup< std::vector< std::string > >("_faceLabel"), aFace
+    ) {
       gr->addFace( gm->getDtGmshFaceByPhysical(aFace), 1 );
     }
   }

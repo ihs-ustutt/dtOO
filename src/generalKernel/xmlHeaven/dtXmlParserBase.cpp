@@ -1,55 +1,37 @@
 #include "dtXmlParserBase.h"
-#include "interfaceHeaven/ptrHandling.h"
-#include "interfaceHeaven/calculationTypeHandling.h"
-#include <baseContainerHeaven/transformerContainer.h>
+
 #include <baseContainerHeaven/baseBuilder/dtPoint3_readIBL.h>
 #include <baseContainerHeaven/baseBuilder/dtPoint3_readCSV.h>
 #include <baseContainerHeaven/baseBuilder/dtPointD_readCSV.h>
 #include <analyticFunctionHeaven/scaOneD.h>
 #include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
-#include <analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
 #include <analyticFunctionHeaven/vec3dOneD.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
-
-#include <dtLinearAlgebra.h>
-#include <logMe/logMe.h>
-#include <logMe/dtMacros.h>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
 
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
 #include <constValueHeaven/constValue.h>
-#include <analyticFunctionHeaven/analyticFunction.h>
 #include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>
+#include <baseContainerHeaven/transformerContainer.h>
 #include <dtTransformerHeaven/dtTransformerFactory.h>
 #include <dtTransformerHeaven/dtTransformer.h>
 #include <dtTransformerHeaven/doNothing.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/analyticRotatingMap1dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
+#include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
-#include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
-#include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
+
+#include <parseHeaven/dtParser.h>
 
 namespace dtOO {
-  std::string dtXmlParserBase::_CALCSIGN = "`";
-  std::string dtXmlParserBase::_POINTSIGN = "!";
-  std::string dtXmlParserBase::_VECTORSIGN = "|";
-  std::string dtXmlParserBase::_DTTSIGN = "~";
-  std::string dtXmlParserBase::_CVSIGN = "#";
-  std::string dtXmlParserBase::_AFSIGN = "$";
-  std::string dtXmlParserBase::_AGSIGN = "@";
-  
   dtXmlParserBase::dtXmlParserBase() {
   }
 
@@ -59,9 +41,9 @@ namespace dtOO {
   dtTransformer * dtXmlParserBase::createTransformer(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                    
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		dtTransformer * dtTransformerP = NULL;
 		
@@ -132,8 +114,8 @@ namespace dtOO {
   dtTransformer * dtXmlParserBase::createTransformer(
 	  ::QDomElement const * toBuildP,    
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF
 	) {
 		return createTransformer(toBuildP, bC, cV, aF, NULL);
   }
@@ -141,9 +123,9 @@ namespace dtOO {
   dtReal dtXmlParserBase::createFloat(
     ::QDomElement const & toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
     std::vector< dtReal > vec;
     createBasic(&toBuildP, bC, cV, aF, aG, &vec);
@@ -155,9 +137,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                  
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		std::vector< dtPoint3 > * basicP
 	) {
     //
@@ -183,9 +165,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,		
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPointD > * basicP
 	) {
@@ -241,9 +223,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,		
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPoint3 > * basicP
 	) {
@@ -670,9 +652,9 @@ namespace dtOO {
   dtVector2 dtXmlParserBase::createDtVector2(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {  
 		dtVector2 vv;
 
@@ -752,9 +734,9 @@ namespace dtOO {
   dtVector3 dtXmlParserBase::createDtVector3(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		dtVector3 vv;
 
@@ -858,8 +840,8 @@ namespace dtOO {
   dtVector3 dtXmlParserBase::createDtVector3(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {  
     return createDtVector3(toBuildP, bC, cV, aF, NULL); 
   }	
@@ -867,9 +849,9 @@ namespace dtOO {
 	dtVector2 dtXmlParserBase::getDtVector2(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		return createDtVector2(toBuildP, NULL, cV, aF, aG);
 	} 
@@ -877,9 +859,9 @@ namespace dtOO {
 	dtPoint3 dtXmlParserBase::getDtPoint3(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrPointContainer()->get(
@@ -892,8 +874,8 @@ namespace dtOO {
 	dtPoint3 dtXmlParserBase::getDtPoint3(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrPointContainer()->get(
@@ -906,9 +888,9 @@ namespace dtOO {
 	dtVector3 dtXmlParserBase::getDtVector3(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrVectorContainer()->get(
@@ -921,8 +903,8 @@ namespace dtOO {
 	dtVector3 dtXmlParserBase::getDtVector3(
 		::QDomElement const * toBuildP,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {
 		if ( hasAttribute("label", *toBuildP) ) {
 			return bC->constPtrVectorContainer()->get(
@@ -958,1185 +940,44 @@ namespace dtOO {
 
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
-		cVPtrVec const * const cV
+		lvH_constValue const * const cV
 	) {
-    std::string returnExpression;
-    returnExpression = expression;
-    dtUnsInt found;
-    //
-    // check if there is a constValue in expression
-    // 1. * #cVLabel#
-    //
-    found = returnExpression.find(_CVSIGN);
-    while ( found < returnExpression.size() ) {
-      //
-      // find start and end of function
-      //
-      dtUnsInt foundEnd = returnExpression.find(_CVSIGN, found+1);
-      dtInt replaceStart = found;
-      dtInt replaceEnd = foundEnd-found+1;
-      
-      //
-      // extract constValue label and option
-      std::string cVLabel
-      = 
-      returnExpression.substr(replaceStart+1, replaceEnd-2);
-      if ( stringContains("[", cVLabel) ) {
-        std::string cVOption
-        = 
-        stringPrimitive::getStringBetweenAndRemove("[", "]", &cVLabel);
-        dt__debug( replaceDependencies(), << "cVOption = " << cVOption );
-        //
-        // add array index i -> label_i
-        //
-        cVLabel = cVLabel + "_" + intToString( muParseStringInt(cVOption) );
-      }
-      
-      //
-      // replace constValue string by value
-      //      
-      returnExpression.replace(
-        replaceStart, replaceEnd, floatToString( cV->get(cVLabel)->getValue() )
-      );
-
-      //
-      // go to next constValue
-      //
-      found = returnExpression.find(_CVSIGN);
-    }
-    //
-    // check if there is an instruction to calculate in expression
-    // `#cVLabel# + #cVLabel#`
-    //
-    found = returnExpression.find(_CALCSIGN);
-    while ( found < returnExpression.size() ) {
-      //
-      // find start and end of function
-      //
-      dtUnsInt foundEnd = returnExpression.find(_CALCSIGN, found+1);
-      dtInt replaceStart = found;
-      dtInt replaceEnd = foundEnd-found+1;
-      
-      //
-      // muparse string
-      //
-      returnExpression.replace(
-        replaceStart, 
-        replaceEnd, 
-        floatToString(
-          muParseString(        
-            returnExpression.substr(replaceStart+1, replaceEnd-2)
-          )
-        )
-      );
-
-      //
-      // go to next constValue
-      //
-      found = returnExpression.find(_CALCSIGN);
-    }    
-    return returnExpression;
+    return dtParser(NULL, cV, NULL, NULL, NULL, NULL)[ expression ];
   }
   
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF
 	) {
-    std::string returnExpression = expression;
-          
-    //
-    // crumble string down, respect brackets
-    //
-    std::vector< std::string > crumbles = crumbleDown("(", ")", expression);
-    
-    dt__forAllRefAuto(crumbles, aCrumble) {
-      if ( !stringContains(_AFSIGN, aCrumble) ) continue;
-      returnExpression 
-      = 
-      replaceStringInString(
-        aCrumble, 
-        replaceDependencies(aCrumble, cV, aF),
-        returnExpression
-      );
-    }
-    
-    //
-    // check if there is a function in expression
-    // $functionName(value * #constValue#)$
-    //
-    dtUnsInt found = returnExpression.find(_AFSIGN);
-    while ( found < returnExpression.size() ) {
-      //
-      // find start and end of function
-      //
-      //unsigned dtInt foundEnd = returnExpression.find_last_of(_AFSIGN);
-      dtUnsInt foundEnd = returnExpression.find_first_of(_AFSIGN, found+1);
-      dtInt replaceStart = found;
-      dtInt replaceEnd = foundEnd-found+1;
-      std::string replaceString 
-      = 
-      returnExpression.substr(replaceStart+1, replaceEnd-2);
-     
-      //
-      // replace in argument
-      //
-      std::string arg 
-      = 
-      replaceDependencies(
-        getStringBetweenFirstLast("(", ")", replaceString), cV, aF
-      );
-
-      //
-      // get and cast analyticFunction
-      //
-      std::string aFLabel = getStringBetween("", "(", replaceString);
-      std::string aFOption = "";
-      if ( stringPrimitive::stringContains("[", aFLabel) ) {
-        aFOption 
-        = 
-        stringPrimitive::getStringBetweenAndRemove("[", "]", &aFLabel);
-      }
-      analyticFunction const * const theAF = aF->get(aFLabel); 
-      
-      scaFunction const * const sF = scaFunction::ConstDownCast(theAF);
-      vec2dFunction const * const v2dF = vec2dFunction::ConstDownCast(theAF);
-      vec3dFunction const * const v3dF = vec3dFunction::ConstDownCast(theAF);
-      
-      std::vector< dtReal > pp; 
-      std::vector< dtReal > argCS;
-      if (!arg.empty()) {
-        argCS
-        = 
-        muParseCSString( replaceDependencies(arg, cV, aF) );
-      }
-
-        
-      if (sF) {
-        if (aFOption == "") {
-          pp = sF->Y( argCS ).stdVector();
-        }        
-        else if (aFOption == "%") {
-          pp = sF->Y( sF->x_percent( aFX( argCS ) ) ).stdVector();
-        }                
-        else dt__throwUnexpected(replaceDependencies());        
-      }
-      else if (v2dF) {
-        if (aFOption == "") {
-          pp = v2dF->Y( argCS ).stdVector();
-        }    
-        else if (aFOption == "%x") {
-          aFX xx = v2dF->Y( v2dF->x_percent( argCS ) ).stdVector();
-          pp.resize(1);
-          pp[0] = xx[0];
-        }           
-        else if (aFOption == "%y") {
-          aFX xx = v2dF->Y( v2dF->x_percent( argCS ) ).stdVector();
-          pp.resize(1);
-          pp[0] = xx[1];
-        }         
-        else dt__throwUnexpected(replaceDependencies()); 
-      }
-      else if (v3dF) {
-        if (aFOption == "") {
-          pp = v3dF->Y( argCS ).stdVector();
-        }       
-        else if (aFOption == "%") {
-          pp = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
-        }                   
-        else if (aFOption == "%x") {
-          aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
-          pp.resize(1);
-          pp[0] = xx[0];
-        }           
-        else if (aFOption == "%y") {
-          aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
-          pp.resize(1);
-          pp[0] = xx[1];
-        } 
-        else if (aFOption == "%z") {
-          aFX xx = v3dF->Y( v3dF->x_percent( argCS ) ).stdVector();
-          pp.resize(1);
-          pp[0] = xx[2];
-        }
-        else if ( 
-          matchWildcard("%d*Yx", aFOption) 
-          ||
-          matchWildcard("%d*Yy", aFOption) 
-          ||
-          matchWildcard("%d*Yz", aFOption) 
-        ) {
-          std::string fDStr = getStringBetween("d", "Y", aFOption);
-          dtReal fD = muParseString(fDStr);
-          std::vector< dtReal > argCSUp(argCS);
-          std::vector< dtReal > argCSDown(argCS);
-          dt__forAllIndex(argCS, ii) {
-            argCSUp[ii] = floatHandling::boundToRange(argCS[ii] + fD, 0., 1.);
-            argCSDown[ii] = floatHandling::boundToRange(argCS[ii] - fD, 0., 1.);
-          }
-          aFY yyUp(v3dF->Y( v3dF->x_percent( argCSUp ) ));
-          aFY yyDown(v3dF->Y( v3dF->x_percent( argCSDown ) ));
-          
-          aFY yy(yyUp);
-          dtReal length = 0.;
-          dt__forAllIndex(yy, ii) {
-            yy[ii] = yyUp[ii] - yyDown[ii];
-            length = length + yy[ii] * yy[ii];
-          }
-          length = length / sqrt(length);
-          
-          pp.resize(1);
-          if ( stringContains("x", aFOption) ) {
-            pp[0] = yy[0] / length;          
-          }
-          else if ( stringContains("y", aFOption) ) {
-            pp[0] = yy[1] / length;          
-          }
-          else if ( stringContains("z", aFOption) ) {
-            pp[0] = yy[2] / length;          
-          }
-          else dt__throwUnexpected(replaceDependencies());
-        }
-        else if (aFOption == "-1") {
-          dt__forAllRefAuto(
-            x_vec3dClosestPointToPoint(v3dF, aFY(argCS)).result(), 
-            anX
-          ) pp.push_back(anX);
-        }
-        else if (aFOption == "xMin0") {
-            pp.push_back(v3dF->xMin(0));
-        }
-        else if (aFOption == "xMin1") {
-            pp.push_back(v3dF->xMin(1));
-        }
-        else if (aFOption == "xMax0") {
-            pp.push_back(v3dF->xMax(0));
-        }
-        else if (aFOption == "xMax1") {
-            pp.push_back(v3dF->xMax(1));
-        }
-        else dt__throwUnexpected(replaceDependencies()); 
-      }
-      else dt__throwUnexpected(replaceDependencies());
-      
-      if (pp.size() == 3) {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(pp[0])
-          +
-          ","
-          +
-          stringPrimitive::floatToString(pp[1])
-          +
-          ","
-          +
-          stringPrimitive::floatToString(pp[2])
-        );
-      }
-      else if (pp.size() == 2) {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(pp[0])
-          +
-          ","
-          +
-          stringPrimitive::floatToString(pp[1])
-        );
-      }        
-      else if (pp.size() == 1) {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(pp[0])
-        );
-      }            
-      else dt__throwUnexpected(replaceDependencies());
-        
-      //
-      // go to next analyticGeometry
-      //
-      found = returnExpression.find(_AFSIGN);  
-    }
-
-    return replaceDependencies(returnExpression, cV);
+    return dtParser(NULL, cV, aF, NULL, NULL, NULL)[ expression ];
   }
   
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-    aGPtrVec const * const aG
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG
 	) {
-    std::string returnExpression = expression;
-          
-    //
-    // crumble string down, respect brackets
-    //
-    std::vector< std::string > crumbles = crumbleDown("(", ")", expression);
-    dt__forAllRefAuto(crumbles, aCrumble) {
-      if ( !stringContains(_AGSIGN, aCrumble) ) continue;
-      returnExpression 
-      = 
-      replaceStringInString(
-        aCrumble, 
-        replaceDependencies(aCrumble, cV, aF, aG),
-        returnExpression
-      );
-    }
-    
-    //
-    // check if there is a analyticGeometry in expression
-    // @analyticGeometryName(1. * #constValue#, 2.)@
-    //
-    dtUnsInt found = returnExpression.find(_AGSIGN);
-    while ( found < returnExpression.size() ) {
-      //
-      // find start and end of function
-      //
-      dtUnsInt foundEnd = returnExpression.find_last_of(_AGSIGN);
-      dtInt replaceStart = found;
-      dtInt replaceEnd = foundEnd-found+1;
-      std::string replaceString 
-      = 
-      returnExpression.substr(replaceStart+1, replaceEnd-2);
-     
-      //
-      // replace in argument
-      //
-      std::string arg 
-      = 
-      replaceDependencies(
-        getStringBetweenFirstLast("(", ")", replaceString), cV, aF, aG
-      );
-
-      //
-      // get and cast analyticGeometry
-      //
-      std::string aGLabel = getStringBetween("", "(", replaceString);
-      std::string aGOption = "";
-      if ( stringPrimitive::stringContains("[", aGLabel) ) {
-        aGOption 
-        = 
-        stringPrimitive::getStringBetweenAndRemove("[", "]", &aGLabel);
-      }
-      analyticGeometry const * const theAG = aG->get(aGLabel); 
-      
-      map1dTo3d const * const m1d = map1dTo3d::ConstDownCast(theAG);
-      map2dTo3d const * const m2d = map2dTo3d::ConstDownCast(theAG);
-      map3dTo3d const * const m3d = map3dTo3d::ConstDownCast(theAG);
-      
-      std::vector< dtReal > pp; 
-      std::vector< dtReal > argCS 
-      = 
-      muParseCSString( replaceDependencies(arg, cV, aF) );
-
-        
-      if (m1d) {
-        dt__throwIf(argCS.size()!=1, replaceDependencies());       
-
-        if (aGOption == "") {
-          pp = dtLinearAlgebra::toStdVector( m1d->getPoint( argCS[0] ) );
-        }        
-        else if (aGOption == "%") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector( m1d->getPoint( (*m1d) % argCS[0] ) );
-        }
-        else if (aGOption == "%x") {
-          pp.push_back( m1d->getPoint( (*m1d) % argCS[0] ).x() );
-        }
-        else if (aGOption == "%y") {
-          pp.push_back( m1d->getPoint( (*m1d) % argCS[0] ).y() );
-        }        
-        else if (aGOption == "%z") {
-          pp.push_back( m1d->getPoint( (*m1d) % argCS[0] ).z() );
-        }
-        else if (aGOption == "%dU") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              m1d->firstDerU( (*m1d) % argCS[0] )
-            )
-          );
-        }        
-        else if (aGOption == "%ndU") {
-          pp
-          =
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              dtLinearAlgebra::normalize( m1d->firstDerU( (*m1d) % argCS[0] ) )
-            )
-          );
-        }        
-        else if (aGOption == "%ndUx") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m1d->firstDerU( (*m1d) % argCS[0] ) 
-            ).x()
-          );
-        }                  
-        else if (aGOption == "%ndUy") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m1d->firstDerU( (*m1d) % argCS[0] ) 
-            ).y()
-          );
-        }                 
-        else if (aGOption == "%ndUz") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m1d->firstDerU( (*m1d) % argCS[0] ) 
-            ).z()
-          );
-        }
-        else if ( matchWildcard("-1%*X=", aGOption) ) {
-          std::string initGuessStr = getStringBetween("%", "X", aGOption);
-          if ( initGuessStr.empty() ) {
-            pp.push_back(
-              m1d->percent_u(
-                float_map1dTo3dPointConstCartesian(m1d, 0, argCS[0]).result()
-              )
-            );
-          }
-          else {
-            pp.push_back(
-              m1d->percent_u(
-                float_map1dTo3dPointConstCartesian(
-                  m1d, 0, argCS[0], muParseString(initGuessStr)
-                ).result()
-              )
-            );            
-          }
-        }
-        else if ( matchWildcard("-1%*Y=", aGOption) ) {
-          std::string initGuessStr = getStringBetween("%", "Y", aGOption);
-          if ( initGuessStr.empty() ) {
-            pp.push_back(
-              m1d->percent_u(
-                float_map1dTo3dPointConstCartesian(m1d, 1, argCS[0]).result()
-              )
-            );
-          }
-          else {
-            pp.push_back(
-              m1d->percent_u(
-                float_map1dTo3dPointConstCartesian(
-                  m1d, 1, argCS[0], muParseString(initGuessStr)
-                ).result()
-              )
-            );            
-          }
-        }        
-        else if ( matchWildcard("-1%*Z=", aGOption) ) {
-          std::string initGuessStr = getStringBetween("%", "Z", aGOption);
-          if ( initGuessStr.empty() ) {
-            pp.push_back(
-              m1d->percent_u(
-                float_map1dTo3dPointConstCartesian(m1d, 2, argCS[0]).result()
-              )
-            );
-          }
-          else {
-            pp.push_back(
-              m1d->percent_u(
-                float_map1dTo3dPointConstCartesian(
-                  m1d, 2, argCS[0], muParseString(initGuessStr)
-                ).result()
-              )
-            );            
-          }
-        }
-        else if ( matchWildcard("-1%ClosestPointTo*", aGOption) ) {
-          map2dTo3d const * const closeMap2d
-          = 
-          map2dTo3d::MustConstDownCast(
-            aG->get( stringPrimitive::getStringBetween("@", "@", aGOption ) )
-          );
-          pp.push_back(
-            m1d->percent_u(
-              pairUUV_map1dTo3dClosestPointToMap2dTo3d(
-                m1d, closeMap2d
-              ).result().first
-            )
-          );
-        }
-        else if (aGOption == "length%") {
-          pp.push_back( m1d->l_u( (*m1d) % argCS[0] ) );
-        }        
-        else dt__throwUnexpected(replaceDependencies());        
-      }
-      else if (m2d) {
-        dt__throwIf(
-          (argCS.size()!=2)&&(argCS.size()!=3), 
-          replaceDependencies()
-        );
-        
-        //
-        // get dtPoint3
-        //
-        if (aGOption == "") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m2d->getPoint( argCS[0], argCS[1] )
-          );
-        }        
-        else if (aGOption == "%") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m2d->getPointPercent( argCS[0], argCS[1] )
-          );          
-        }
-        else if (aGOption == "%x") {
-          pp.push_back( m2d->getPointPercent( argCS[0], argCS[1] ).x() );          
-        }        
-        else if (aGOption == "%y") {
-          pp.push_back( m2d->getPointPercent( argCS[0], argCS[1] ).y() );          
-        }        
-        else if (aGOption == "%z") {
-          pp.push_back( m2d->getPointPercent( argCS[0], argCS[1] ).z() );          
-        }                
-        else if (aGOption == "dU") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              m2d->firstDerU( argCS[0], argCS[1] )
-            )
-          );
-        }        
-        else if (aGOption == "dV") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              m2d->firstDerV( argCS[0], argCS[1] )
-            )
-          );
-        }  
-        else if (aGOption == "%dU") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              m2d->firstDerU( 
-                m2d->uv_percent( argCS[0], argCS[1] ).x(), 
-                m2d->uv_percent( argCS[0], argCS[1] ).y() 
-              )
-            )
-          );
-        }        
-        else if (aGOption == "%dV") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              m2d->firstDerV(  
-                m2d->uv_percent( argCS[0], argCS[1] ).x(), 
-                m2d->uv_percent( argCS[0], argCS[1] ).y() 
-              )
-            )
-          );
-        }          
-        else if (aGOption == "ndU") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              dtLinearAlgebra::normalize( m2d->firstDerU( argCS[0], argCS[1] ) )
-            )
-          );
-        }        
-        else if (aGOption == "ndV") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              dtLinearAlgebra::normalize( m2d->firstDerV( argCS[0], argCS[1] ) )
-            )
-          );
-        }        
-        else if (aGOption == "%ndU") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              dtLinearAlgebra::normalize( 
-                m2d->firstDerU( 
-                  m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1])             
-                ) 
-              )
-            )
-          );
-        }        
-        else if (aGOption == "%ndV") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            dtLinearAlgebra::toDtPoint3(
-              dtLinearAlgebra::normalize( 
-                m2d->firstDerU( 
-                  m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1])             
-                ) 
-              )
-            )
-          );
-        }          
-        else if (aGOption == "ndUx") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerU( argCS[0], argCS[1] ) 
-            ).x()
-          );
-        }                  
-        else if (aGOption == "ndUy") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerU( argCS[0], argCS[1] ) 
-            ).y()
-          );
-        }                 
-        else if (aGOption == "ndUz") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerU( argCS[0], argCS[1] ) 
-            ).z()
-          );
-        }            
-        else if (aGOption == "%ndUx") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerU( 
-                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
-              ) 
-            ).x()
-          );
-        }                  
-        else if (aGOption == "%ndUy") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerU( 
-                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
-              ) 
-            ).y()
-          );
-        }                 
-        else if (aGOption == "%ndUz") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerU( 
-                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
-              ) 
-            ).z()
-          );
-        }                    
-        else if (aGOption == "ndVx") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerV( argCS[0], argCS[1] ) 
-            ).x()
-          );
-        }                  
-        else if (aGOption == "ndVy") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerV( argCS[0], argCS[1] ) 
-            ).y()
-          );
-        }                 
-        else if (aGOption == "ndVz") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerV( argCS[0], argCS[1] ) 
-            ).z()
-          );
-        }
-        else if (aGOption == "%ndVx") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerV( 
-                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
-              ) 
-            ).x()
-          );
-        }                  
-        else if (aGOption == "%ndVy") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerV( 
-                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
-              ) 
-            ).y()
-          );
-        }                 
-        else if (aGOption == "%ndVz") {
-          pp.push_back(
-            dtLinearAlgebra::normalize( 
-              m2d->firstDerV( 
-                m2d->u_percent(argCS[0]), m2d->v_percent(argCS[1]) 
-              ) 
-            ).z()
-          );
-        }        
-        else if (aGOption == "-1") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m2d->reparamOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
-          );
-        }
-        else if (aGOption == "-1%") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m2d->reparamPercentOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
-          );
-        }
-        else if (aGOption == "-a") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m2d->approxOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
-          );
-        }
-        else if (aGOption == "-a%") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m2d->approxPercentOnFace( dtPoint3(argCS[0], argCS[1], argCS[2]) )
-          );
-        }            
-        else if (aGOption == "-1%u") {
-          pp.push_back(
-            m2d->reparamPercentOnFace( 
-              dtPoint3(argCS[0], argCS[1], argCS[2]) 
-            ).x()
-          );
-        }        
-        else if (aGOption == "-1%v") {
-          pp.push_back(
-            m2d->reparamPercentOnFace( 
-              dtPoint3(argCS[0], argCS[1], argCS[2]) 
-            ).y()
-          );
-        }                
-        else dt__throwUnexpected(replaceDependencies());
-      }
-      else if (m3d) {
-        dt__throwIf( argCS.size()!=3, replaceDependencies() );
-        
-        //
-        // get dtPoint3
-        //
-        if (aGOption == "") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m3d->getPoint( argCS[0], argCS[1], argCS[2] )
-          );
-        }        
-        else if (aGOption == "%") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m3d->getPointPercent( argCS[0], argCS[1], argCS[2] )
-          );
-        }
-        else if (aGOption == "%x") {
-          pp.push_back(
-            m3d->getPointPercent( argCS[0], argCS[1], argCS[2] ).x() 
-          );
-        }        
-        else if (aGOption == "%y") {
-          pp.push_back(
-            m3d->getPointPercent( argCS[0], argCS[1], argCS[2] ).y() 
-          );
-        }        
-        else if (aGOption == "%z") {
-          pp.push_back(
-            m3d->getPointPercent( argCS[0], argCS[1], argCS[2] ).z() 
-          );
-        }              
-        else if (aGOption == "-1") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m3d->reparamInVolume(dtPoint3(argCS[0], argCS[1], argCS[2]))
-          );
-        }
-        else if (aGOption == "-1%") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m3d->reparamPercentInVolume(dtPoint3(argCS[0], argCS[1], argCS[2]))
-          );
-        }
-        else if (aGOption == "-a") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m3d->approxInVolume( dtPoint3(argCS[0], argCS[1], argCS[2]) )
-          );
-        }
-        else if (aGOption == "-a%") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m3d->approxPercentInVolume(dtPoint3(argCS[0], argCS[1], argCS[2]))
-          );
-        }        
-        else dt__throwUnexpected(replaceDependencies());
-      }    
-      else dt__throwUnexpected(replaceDependencies());
-      
-      if (pp.size() == 3) {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(pp[0])
-          +
-          ","
-          +
-          stringPrimitive::floatToString(pp[1])
-          +
-          ","
-          +
-          stringPrimitive::floatToString(pp[2])
-        );
-      }
-      else if (pp.size() == 2) {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(pp[0])
-          +
-          ","
-          +
-          stringPrimitive::floatToString(pp[1])
-        );
-      }        
-      else if (pp.size() == 1) {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(pp[0])
-        );
-      }            
-      else dt__throwUnexpected(replaceDependencies());
-        
-      //
-      // go to next analyticGeometry
-      //
-      found = returnExpression.find(_AGSIGN);
-    }
-    
-    return replaceDependencies(returnExpression, cV, aF);
+    return dtParser(NULL, cV, aF, aG, NULL, NULL)[ expression ];
   }
   
   std::string dtXmlParserBase::replaceDependencies( 
 	  std::string const expression, 
     baseContainer const * const bC,       
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-    aGPtrVec const * const aG
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG
 	) {
-    std::string returnExpression;
-    returnExpression = expression;
-    dtUnsInt found;
-    
-    //
-    // check if there is a point in expression
-    // !aPoint! or !aPoint[x]!
-    //
-    found = returnExpression.find(_POINTSIGN);
-    while ( found < returnExpression.size() ) {
-      //
-      // find start and end
-      //
-      dtUnsInt foundEnd = returnExpression.find_first_of(_POINTSIGN, found+1);
-      dtInt replaceStart = found;
-      dtInt replaceEnd = foundEnd-found+1;
-      std::string replaceString 
-      = 
-      returnExpression.substr(replaceStart+1, replaceEnd-2);
-     
-      //
-      // get option
-      //
-      std::string label = replaceString;
-      std::string option = "";
-      if ( stringPrimitive::stringContains("[", label) ) {
-        option 
-        = 
-        stringPrimitive::getStringBetweenAndRemove("[", "]", &label);
-      }
-      dtPoint3 const thePoint = bC->constPtrPointContainer()->get(label); 
-      
-      if (option == "x") {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(thePoint.x())
-        );        
-      }
-      else if (option == "y") {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(thePoint.y())
-        );        
-      }
-      else if (option == "z") {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(thePoint.z())
-        );        
-      }      
-      else if (option == "") {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(thePoint.x())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(thePoint.y())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(thePoint.z())
-        );        
-      }
-      else dt__throwUnexpected(replaceDependencies());        
-
-      //
-      // go to next transformer
-      //
-      found = returnExpression.find(_POINTSIGN);
-    }
-    
-    //
-    // check if there is a vector in expression
-    // %aVector% or %aVector[x]%
-    //
-    found = returnExpression.find(_VECTORSIGN);
-    while ( found < returnExpression.size() ) {
-      //
-      // find start and end
-      //
-      dtUnsInt foundEnd 
-      = 
-      returnExpression.find_first_of(_VECTORSIGN, found+1);
-      dtInt replaceStart = found;
-      dtInt replaceEnd = foundEnd-found+1;
-      std::string replaceString 
-      = 
-      returnExpression.substr(replaceStart+1, replaceEnd-2);
-     
-      //
-      // replace in argument
-      //
-      
-      std::vector< dtReal > argCS;
-      if ( stringPrimitive::stringContains("(", replaceString) ) {
-//        arg = getStringBetweenAndRemove("(", ")", &replaceString);//replaceDependencies( arg, bC, cV, aF, aG );
-        argCS 
-        = 
-        muParseCSString( 
-          replaceDependencies(
-            getStringBetweenAndRemove("(", ")", &replaceString), bC, cV, aF, aG
-          ) 
-        );
-      }
-
-      //
-      // get option
-      //
-      std::string label = replaceString;
-      std::string option = "";
-      if ( stringPrimitive::stringContains("[", label) ) {
-        option 
-        = 
-        stringPrimitive::getStringBetweenAndRemove("[", "]", &label);
-      }
-      dtVector3 const theVector = bC->constPtrVectorContainer()->get(label); 
-      
-      if (option == "x") {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(theVector.x())
-        );        
-      }
-      else if (option == "y") {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(theVector.y())
-        );        
-      }
-      else if (option == "z") {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(theVector.z())
-        );        
-      }
-      else if (option == "length") {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString( dtLinearAlgebra::length(theVector) )
-        );        
-      }
-      else if (option == "crossProduct") {
-        dtVector3 resVector 
-        = 
-        dtLinearAlgebra::crossProduct(
-          theVector, dtVector3(argCS[0], argCS[1], argCS[2])
-        );
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(resVector.x())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(resVector.y())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(resVector.z())
-        );           
-      }
-      else if (option == "normalize") {
-        dtVector3 resVector = dtLinearAlgebra::normalize(theVector);
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(resVector.x())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(resVector.y())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(resVector.z())
-        );           
-      }      
-      else if (option == "") {
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(theVector.x())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(theVector.y())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(theVector.z())
-        );        
-      }
-      else dt__throwUnexpected(replaceDependencies());        
-
-      //
-      // go to next transformer
-      //
-      found = returnExpression.find(_VECTORSIGN);
-    }
-    
-    //
-    // check if there is a transformer in expression
-    // ~dtT(@aG_1[-1](@aG_0[%](0.00, 0.00)@)@)~
-    //
-    found = returnExpression.find(_DTTSIGN);
-    while ( found < returnExpression.size() ) {
-      //
-      // find start and end
-      //
-      dtUnsInt foundEnd = returnExpression.find_last_of(_DTTSIGN);
-      dtInt replaceStart = found;
-      dtInt replaceEnd = foundEnd-found+1;
-      std::string replaceString 
-      = 
-      returnExpression.substr(replaceStart+1, replaceEnd-2);
-     
-      //
-      // replace in argument
-      //
-      std::string arg 
-      = 
-      replaceDependencies(
-        getStringBetweenFirstLast("(", ")", replaceString), bC, cV, aF, aG
-      );
-
-      //
-      // get and cast analyticGeometry
-      //
-      std::string TLabel = getStringBetween("", "(", replaceString);
-      std::string aGOption = "";
-      if ( stringPrimitive::stringContains("[", TLabel) ) {
-        aGOption 
-        = 
-        stringPrimitive::getStringBetweenAndRemove("[", "]", &TLabel);
-      }
-      dtTransformer const * const theT 
-      = 
-      bC->constPtrTransformerContainer()->get(TLabel); 
-      
-      std::vector< dtReal > argVec 
-      = 
-      muParseCSString( replaceDependencies(arg, cV, aF, aG) );
-        
-      if (argVec.size() == 3) {
-        dtPoint3 p3(argVec[0], argVec[1], argVec[2]);
-        if (aGOption == "-1") {
-          p3 = theT->retract( p3 );
-        }
-        else if (aGOption == "") {
-          p3 = theT->apply( p3 );
-        }
-        else dt__throwUnexpected(replaceDependencies());        
-        
-        returnExpression.replace(
-          replaceStart, 
-          replaceEnd, 
-          stringPrimitive::floatToString(p3.x())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(p3.y())
-          +
-          ","
-          +
-          stringPrimitive::floatToString(p3.z())
-        );        
-      }
-      else dt__throwUnexpected(replaceDependencies());
-      
-      //
-      // go to next transformer
-      //
-      found = returnExpression.find(_DTTSIGN);
-    }
-    
-    return replaceDependencies(returnExpression, cV, aF, aG);    
+    return dtParser(bC, cV, aF, aG, NULL, NULL)[ expression ];
   } 
   
   std::string dtXmlParserBase::replaceDependenciesRef(
     std::string const expression, 
     baseContainer const & bC,      
-    cVPtrVec const & cV,
-    aFPtrVec const & aF,
-    aGPtrVec const & aG
+    lvH_constValue const & cV,
+    lvH_analyticFunction const & aF,
+    lvH_analyticGeometry const & aG
   ) {
     return dtXmlParserBase::replaceDependencies( 
       expression, &bC, &cV, &aF, &aG 
@@ -2146,7 +987,7 @@ namespace dtOO {
   dtReal dtXmlParserBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV
+    lvH_constValue const * const cV
   ) {
     return muParseString( 
       replaceDependencies( getAttributeStr(attName, element), cV )
@@ -2156,8 +997,8 @@ namespace dtOO {
   dtReal dtXmlParserBase::getAttributeFloatMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF
   ) {
     return muParseString( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF )
@@ -2167,8 +1008,8 @@ namespace dtOO {
   dtReal dtXmlParserBase::getAttributeFloatMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
     dtReal const & def
   ) {
     if ( hasAttribute(attName, element) ) {
@@ -2180,7 +1021,7 @@ namespace dtOO {
   dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV
+    lvH_constValue const * const cV
   ) {
     return muParseStringInt( 
       replaceDependencies( getAttributeStr(attName, element), cV )
@@ -2190,8 +1031,8 @@ namespace dtOO {
   dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF 
   ) {
     return muParseStringInt( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF )
@@ -2201,9 +1042,9 @@ namespace dtOO {
   dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG 
   ) {
     return muParseStringInt( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF, aG )
@@ -2213,8 +1054,8 @@ namespace dtOO {
   dtInt dtXmlParserBase::getAttributeIntMuParse(
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
     dtInt const & def
   ) {
     if ( hasAttribute(attName, element) ) {
@@ -2226,8 +1067,8 @@ namespace dtOO {
 	std::vector< dtReal > dtXmlParserBase::getAttributeFloatVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF 
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
@@ -2243,8 +1084,8 @@ namespace dtOO {
 	std::vector< double > dtXmlParserBase::getAttributeDoubleVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF 
 	) {
 		std::vector< dtReal > floatVec
     =
@@ -2256,8 +1097,8 @@ namespace dtOO {
 	std::vector< dtInt > dtXmlParserBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF 
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
@@ -2273,9 +1114,9 @@ namespace dtOO {
 	std::vector< dtInt > dtXmlParserBase::getAttributeIntVectorMuParse( 
 		std::string const attName, 
 		::QDomElement const element, 
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-    aGPtrVec const * const aG      
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG      
 	) {
 		std::string att = getAttributeStr(attName, element);
 		std::vector< std::string > attVec = convertToStringVector("{", "}", att);
@@ -2291,9 +1132,9 @@ namespace dtOO {
   dtReal dtXmlParserBase::getAttributeFloatMuParse( 
     std::string const attName, 
     ::QDomElement const element, 
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG  
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG  
   ) {
     return muParseString( 
       replaceDependencies( getAttributeStr(attName, element), cV, aF, aG )
@@ -2303,9 +1144,9 @@ namespace dtOO {
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                   
-    cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
   ) {
     std::vector< dtPoint3 > basicVec;
 
@@ -2319,9 +1160,9 @@ namespace dtOO {
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const & toBuild,
     baseContainer * const bC,                   
-    cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
   ) {
     return createDtPoint3(&toBuild, bC, cV, aF, aG);
 	}  
@@ -2329,8 +1170,8 @@ namespace dtOO {
   dtPoint3 dtXmlParserBase::createDtPoint3(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {  
     return createDtPoint3(toBuildP, bC, cV, aF, NULL); 
   }	
@@ -2338,9 +1179,9 @@ namespace dtOO {
   dtPoint2 dtXmlParserBase::createDtPoint2(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,                   
-    cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG
   ) {
     std::vector< dtPoint2 > basicVec;
 
@@ -2354,8 +1195,8 @@ namespace dtOO {
   dtPoint2 dtXmlParserBase::createDtPoint2(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,  
-		aFPtrVec const * const aF
+		lvH_constValue const * const cV,  
+		lvH_analyticFunction const * const aF
 	) {  
     return createDtPoint2(toBuildP, bC, cV, aF, NULL); 
   }	
@@ -2363,8 +1204,8 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP, 
     baseContainer * const bC,      					
-		cVPtrVec const * const cV, 
-		aFPtrVec const * const aF, 
+		lvH_constValue const * const cV, 
+		lvH_analyticFunction const * const aF, 
 		std::vector< dtPoint2 > * basicP
 	) {
     ptrHandling< dtTransformer > dtT(
@@ -2382,8 +1223,8 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,					
-		cVPtrVec const * const cV, 
-		aFPtrVec const * const aF, 
+		lvH_constValue const * const cV, 
+		lvH_analyticFunction const * const aF, 
 		std::vector< dtPointD > * basicP
 	) {
     ptrHandling< dtTransformer > dtT(
@@ -2398,8 +1239,8 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,					
-		cVPtrVec const * const cV, 
-		aFPtrVec const * const aF, 
+		lvH_constValue const * const cV, 
+		lvH_analyticFunction const * const aF, 
 		std::vector< dtPoint3 > * basicP
 	) {
 		::QDomElement wEl = *toBuildP;
@@ -2412,9 +1253,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
     baseContainer * const bC,            
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		dtTransformer const * const dtTransformerP, 
 		std::vector< dtPoint2 > * basicP
 	) {
@@ -2640,9 +1481,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG,
     std::vector< dtReal > * basicP
   ) {
     dt__throwIf(!is("float", *toBuildP), createBasic());    
@@ -2657,9 +1498,9 @@ namespace dtOO {
   void dtXmlParserBase::createBasic(
 	  ::QDomElement const * toBuildP,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF, 
-		aGPtrVec const * const aG,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF, 
+		lvH_analyticGeometry const * const aG,
 		std::vector< dtPoint2 > * basicP
 	) {
     //
@@ -2680,10 +1521,10 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const & toBuild,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG,            
-    aGPtrVec * advancedP 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG,            
+    lvH_analyticGeometry * advancedP 
   ) {
     createAdvanced( &toBuild, bC, cV, aF, aG, advancedP );
   }  
@@ -2691,10 +1532,10 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG,            
-    aGPtrVec * advancedP 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG,            
+    lvH_analyticGeometry * advancedP 
   ) {
 
     //
@@ -2718,11 +1559,11 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG, 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG, 
     dtTransformer const * const dtTransformerP,                          
-    aGPtrVec * advancedP 
+    lvH_analyticGeometry * advancedP 
   ) {
     //
     // get label
@@ -2785,7 +1626,7 @@ namespace dtOO {
     //
     // copy
     //
-    aGPtrVec advancedTwin;
+    lvH_analyticGeometry advancedTwin;
     for (int ii=0;ii<advancedP->size();ii++) {
       advancedTwin.push_back( advancedP->at(ii) );
     }
@@ -2808,11 +1649,11 @@ namespace dtOO {
   analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
-    aGPtrVec advancedVec;
+    lvH_analyticGeometry advancedVec;
     createAdvanced(toBuildP, bC, cV, aF, aG, &advancedVec);
     if (advancedVec.size() != 1) {
       dt__throw(createAdvanced(), << dt__eval( advancedVec.size() ) );
@@ -2823,27 +1664,27 @@ namespace dtOO {
   analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
     ::QDomElement const & toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
     return createAnalyticGeometry(&toBuildP, bC, cV, aF, aG);
   } 
   
   analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
     ::QDomElement const * toBuildP,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
     return createAnalyticGeometry(toBuildP, NULL, cV, aF, aG);			
   }		
   
   analyticGeometry * dtXmlParserBase::createAnalyticGeometry( 
     ::QDomElement const & toBuildP,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticGeometry const * const aG
   ) {
     return createAnalyticGeometry(&toBuildP, NULL, cV, aF, aG);			
   }		
@@ -2851,10 +1692,10 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
     dtTransformer const * const dtTransformerP,                          
-    aFPtrVec * advancedP 
+    lvH_analyticFunction * advancedP 
   ) {
     //
     // get label
@@ -2922,7 +1763,7 @@ namespace dtOO {
     //
     // copy
     //
-    aFPtrVec advancedTwin;
+    lvH_analyticFunction advancedTwin;
     for (int ii=0;ii<advancedP->size();ii++) {
       advancedTwin.push_back( advancedP->at(ii) );
     }
@@ -2944,9 +1785,9 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aFPtrVec * advancedP 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticFunction * advancedP 
   ) {
     //
     // create transformer if necessary
@@ -2964,9 +1805,9 @@ namespace dtOO {
   void dtXmlParserBase::createAdvanced( 
     ::QDomElement const & toBuild,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF, 
-    aFPtrVec * advancedP 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF, 
+    lvH_analyticFunction * advancedP 
   ) {
     createAdvanced( &toBuild, bC, cV, aF, advancedP );
   }  
@@ -2974,10 +1815,10 @@ namespace dtOO {
   analyticFunction * dtXmlParserBase::createAnalyticFunction( 
     ::QDomElement const * toBuildP,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF 
   ) {
-    aFPtrVec advancedVec;
+    lvH_analyticFunction advancedVec;
     createAdvanced(toBuildP, bC, cV, aF, &advancedVec);
     
     dt__throwIf(advancedVec.size()!=1, createAdvanced());
@@ -2987,8 +1828,8 @@ namespace dtOO {
   analyticFunction * dtXmlParserBase::createAnalyticFunction( 
     ::QDomElement const & toBuild,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF 
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF 
   ) {
     return createAnalyticFunction(&toBuild, bC, cV, aF);
   }  

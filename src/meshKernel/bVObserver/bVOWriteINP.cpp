@@ -10,6 +10,7 @@
 #include <xmlHeaven/dtXmlParser.h>
 #include <meshEngine/dtGmshModel.h>
 #include "bVOInterfaceFactory.h"
+#include <parseHeaven/dtParser.h>
 
 namespace dtOO {
   bool bVOWriteINP::_registrated 
@@ -25,13 +26,13 @@ namespace dtOO {
     
   }
   
-  void bVOWriteINP::bVOWriteINP::init( 
+  void bVOWriteINP::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {		
     //
@@ -43,12 +44,20 @@ namespace dtOO {
 //		  filename="mesh.inp"
 //		  saveAll="false"
 //		/>									
-		_filename 
-		= 
-		qtXmlBase::getAttributeStr("filename", element);		
-    
-    _saveAll = qtXmlBase::getAttributeBool("saveAll", element, false);
-    _saveGroupOfNodes = qtXmlBase::getAttributeBool("saveGroupOfNodes", element, false);
+ 	  jsonPrimitive jE;
+    jE.append< std::string >(
+      "_filename", qtXmlBase::getAttributeStr("filename", element)
+    );
+   
+    jE.append< bool >(
+      "_saveAll",
+      qtXmlBase::getAttributeBool("saveAll", element, false)
+    );
+     jE.append< bool >(
+      "_saveGroupOfNodes",
+      qtXmlBase::getAttributeBool("saveGroupOfNodes", element, false)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOWriteINP::postUpdate( void ) {
@@ -69,7 +78,9 @@ namespace dtOO {
       //
       // create filename string if empty
       //
-      std::string cFileName = _filename;
+      std::string cFileName 
+      = 
+      dtParser()[config().lookup< std::string >("_filename")];
       if ( cFileName == "" ) {
         cFileName 
         = 
@@ -86,12 +97,15 @@ namespace dtOO {
       dt__info(
         postUpdate(),
         << "Write >" << cFileName << "<." << std::endl
-        << dt__eval(_saveAll) << std::endl
-        << dt__eval(_saveGroupOfNodes)
+        << dt__eval(config().lookup<bool>("_saveAll")) << std::endl
+        << dt__eval(config().lookup<bool>("_saveGroupOfNodes"))
       );
       
 		  ptrBoundedVolume()->getModel()->writeINP(
-        cFileName, _saveAll, _saveGroupOfNodes, 1.0
+        cFileName, 
+        config().lookup<bool>("_saveAll"), 
+        config().lookup<bool>("_saveGroupOfNodes"), 
+        1.0
       );
     }
   }

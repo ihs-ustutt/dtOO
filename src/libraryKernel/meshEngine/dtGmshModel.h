@@ -66,6 +66,7 @@ namespace dtOO {
       //
       static dtGmshRegion * cast2DtGmshRegion( ::GEntity * gr );
       static dtGmshFace * cast2DtGmshFace( ::GEntity * gf );
+      static ::GModel * cast2GModel( dtGmshModel * gm );      
       static std::list< dtGmshFace * > cast2DtGmshFace( 
         std::list< ::GFace * > faces 
       );
@@ -95,7 +96,7 @@ namespace dtOO {
       );
       static std::vector< dtGmshVertex * > cast2DtGmshVertex( 
         std::vector< ::GVertex * > vertices
-      );          
+      );
       //
       // modify position of MVertex and GVertex
       //
@@ -110,22 +111,18 @@ namespace dtOO {
       // add edge
       //    
       void addIfEdgeToGmshModel(map1dTo3d const * const edge, dtInt * const tag);
-      //
-      // add face
-      //
-      void addIfFaceToGmshModel(map2dTo3d const * const face, dtInt * const tag);    
-      //
-      //add region
-      //
-      void addIfRegionToGmshModel(
-        map3dTo3d const * const region, dtInt * const tag
-      );
       void addIfEdgeToGmshModel(
         map1dTo3d const * const edge, 
         dtInt * const tag, 
         dtInt const from, 
         dtInt const to 
       );
+      // SWIG
+      dtInt addIfEdgeToGmshModel(map1dTo3d const * const edge);
+      //
+      // add face
+      //
+      void addIfFaceToGmshModel(map2dTo3d const * const face, dtInt * const tag);    
       void addIfFaceToGmshModel(
         map2dTo3d const * const face, dtInt * const tag,
         std::list< ::GEdge * > const & edges, std::vector< dtInt > const & ori
@@ -133,7 +130,15 @@ namespace dtOO {
       void addIfFaceToGmshModel( 
         map2dTo3d const * const face, dtInt * const tag,
         dtInt const & eId0, dtInt const & eId1, dtInt const & eId2, dtInt const & eId3
-      );      
+      );
+      // SWIG
+      dtInt addIfFaceToGmshModel(map2dTo3d const * const face);
+      //
+      //add region
+      //
+      void addIfRegionToGmshModel(
+        map3dTo3d const * const region, dtInt * const tag
+      );
       void addIfRegionToGmshModel(
         map3dTo3d const * const region, dtInt * const tag,
         std::list< ::GFace * > const & faces, std::vector< dtInt > const & ori   
@@ -143,7 +148,12 @@ namespace dtOO {
         dtInt const & fId0, dtInt const & fId1, 
         dtInt const & fId2, dtInt const & fId3, 
         dtInt const & fId4, dtInt const & fId5
-      );           
+      );
+      // SWIG
+      dtInt addIfRegionToGmshModel(
+        map3dTo3d const * const region, std::vector< int > const & faceIds
+      );    
+
       //
       //add
       //

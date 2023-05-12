@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<far_writeStep>
+	<!--
+	!
+	!
+	! plugin
+	!
+	!
+	-->		
+		<plugin name="writeStep" label="far_writeStep" filename="STATE_far.stp">
+			<analyticGeometry label="aS_skinCorpus_farMid"/>
+		</plugin>
+</far_writeStep>

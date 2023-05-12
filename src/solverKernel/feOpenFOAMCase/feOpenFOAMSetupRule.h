@@ -30,7 +30,7 @@ namespace dtOO {
       static feOpenFOAMSetupRule * create( std::string const & str );
       virtual void init(       
         baseContainer const * const bC,
-        cVPtrVec const * const cV,
+        lvH_constValue const * const cV,
         aFPtrVec const * const aF,
         aGPtrVec const * const aG,
         bVPtrVec const * const bV,
@@ -71,7 +71,7 @@ namespace dtOO {
       aFPtrVec const & refAF( void ) const;
     private:
       baseContainer const * _bC;
-      cVPtrVec const * _cV;
+      lvH_constValue const * _cV;
       aFPtrVec const * _aF;
       aGPtrVec const * _aG;
       bVPtrVec const * _bV;

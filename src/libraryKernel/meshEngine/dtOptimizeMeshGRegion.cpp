@@ -11,8 +11,15 @@
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/MTriangle.h>
 #include <gmsh/MQuadrangle.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtOptimizeMeshGRegion::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtOptimizeMeshGRegion, new dtOptimizeMeshGRegion())
+  );
+ 
   dtOptimizeMeshGRegion::dtOptimizeMeshGRegion() : dtMesh3DOperator() {
     _gmsh = true;
     _netgen = true;

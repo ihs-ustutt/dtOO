@@ -20,20 +20,24 @@ namespace dtOO {
       virtual dtTransformer * clone( void ) const;
       virtual dtTransformer * create( void ) const;     
       virtual bool isNecessary( void ) const;
+      virtual void jInit( 
+        jsonPrimitive const & jE, 
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
+      );    
       void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG 
       );
       virtual std::vector< dtPoint3 > 
       apply( std::vector< dtPoint3 > const * const toTrans ) const;        
       std::vector< dtPoint3 > 
       retract(std::vector< dtPoint3 > const * const toRetract) const;    
-//      dtVector3 const & rotationAxis( void ) const;
-//      dtVector3 const & referenceAxis( void ) const;
-//      dtPoint3 const & origin( void ) const;
     private:
       dt__pH(vec3dThreeD) _v3;
       static bool _registrated;      

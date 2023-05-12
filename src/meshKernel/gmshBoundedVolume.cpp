@@ -49,19 +49,19 @@ namespace dtOO {
     //
 //	  gmsh::finalize();
 	}
-      
-	void gmshBoundedVolume::init( 
-		::QDomElement const & element,
+ 
+  void gmshBoundedVolume::jInit( 
+		jsonPrimitive const & jE,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV
 	) {
     //
     // init boundedVolume
     //
-    boundedVolume::init(element, bC, cV, aF, aG, bV);
+    boundedVolume::jInit(jE, bC, cV, aF, aG, bV);
 		
     //
     // disable sigFpe for gmsh if any version of OpenFOAM is present
@@ -79,6 +79,23 @@ namespace dtOO {
     if (optionHandling::debugTrue()) {
       _gm->setDebug( getLabel()+"_debug.msh" );
     };
+	}	
+
+
+	void gmshBoundedVolume::init( 
+		::QDomElement const & element,
+		baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV
+	) {
+    //
+    // init boundedVolume
+    //
+    boundedVolume::init(element, bC, cV, aF, aG, bV);
+
+    gmshBoundedVolume::jInit(jsonPrimitive(), bC, cV, aF, aG, bV);
 	}	
 	
 	vectorHandling< renderInterface * > gmshBoundedVolume::getRender( 
@@ -450,7 +467,7 @@ namespace dtOO {
     dtPoint3 bbMax(
       CTX::instance()->max[0], CTX::instance()->max[1], CTX::instance()->max[2]
     );    
-    dt__info(makePreGrid(),
+    dt__info(updateBoundingBox(),
       << "Gmsh boundingBox:" << std::endl
       << logMe::dtFormat("min: (%d, %d, %d)")
         % CTX::instance()->min[0] 

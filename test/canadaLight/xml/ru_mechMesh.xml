@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ru_mechMesh>	
+
+  <constValue name="sliderFloatParam" label="cV_ruMech_z_hub_0" value="-1.5" min="-2.5" max="-0.7"/>	
+  <constValue name="sliderFloatParam" label="cV_ruMech_z_hub_1" value="1.0" min="0.2" max="2.0"/>
+
+  <part label="s3_ru_hub_mechMesh">
+    <builder name="bSplineCurve_pointConstructOCC" order="1">
+      <Point_3 xyz="0,#cV_r_hub#,#cV_ruMech_z_hub_0#"/>
+      <Point_3 xyz="0,#cV_r_hub#,#cV_ruMech_z_hub_1#"/>
+    </builder>
+  </part>
+  <part label="aS_ru_hub_mechMesh">
+    <builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+      <analyticGeometry label="s3_ru_hub_mechMesh"/>
+      <Vector_3 label="v3_Nzz"/>
+      <Point_3 label="p3_0"/>
+      <float value="2.0*_pi"/>
+    </builder>
+  </part>
+
+  <part label="aS_ru_hub_0">
+    <builder name="analyticGeometry">
+      <transformer name="pickMap2dTo3dRectanglePercent">
+        <Point_2 xy="0.0,0.0"/>
+        <Point_2 xy="0.5,1.0"/>
+      </transformer>
+      <analyticGeometry label="aS_ru_hub_mechMesh"/>
+    </builder>
+  </part>
+  <part label="aS_ru_hub_1">
+    <builder name="analyticGeometry">
+      <transformer name="pickMap2dTo3dRectanglePercent">
+        <Point_2 xy="0.5,0.0"/>
+        <Point_2 xy="0.6,1"/>
+      </transformer>
+      <analyticGeometry label="aS_ru_hub_mechMesh"/>
+    </builder>
+  </part>
+  <part label="aS_ru_hub_2">
+    <builder name="analyticGeometry">
+      <transformer name="pickMap2dTo3dRectanglePercent">
+        <Point_2 xy="0.6,0.0"/>
+        <Point_2 xy="0.9,1.0"/>
+      </transformer>
+      <analyticGeometry label="aS_ru_hub_mechMesh"/>
+    </builder>
+  </part>  
+  <part label="aS_ru_hub_3">
+    <builder name="analyticGeometry">
+      <transformer name="pickMap2dTo3dRectanglePercent">
+        <Point_2 xy="0.9,0.0"/>
+        <Point_2 xy="1.0,1.0"/>
+      </transformer>
+      <analyticGeometry label="aS_ru_hub_mechMesh"/>
+    </builder>
+  </part>    
+  <part label="aS_ru_hub_4">
+    <builder name="bSplineSurface_bSplineCurveFillConstructOCC">
+      <analyticGeometry label="~v0_s(aS_ru_hub_0)~"/>
+      <analyticGeometry label="~v0_s(aS_ru_hub_1)~"/>
+      <analyticGeometry label="~v0_s(aS_ru_hub_2)~"/>
+      <analyticGeometry label="~v0_s(aS_ru_hub_3)~"/>
+    </builder>
+  </part>  
+  <part label="aS_ru_hub_5">
+    <builder name="bSplineSurface_bSplineCurveFillConstructOCC">
+      <analyticGeometry label="~v1_s(aS_ru_hub_0)~"/>
+      <analyticGeometry label="~v1_s(aS_ru_hub_1)~"/>
+      <analyticGeometry label="~v1_s(aS_ru_hub_2)~"/>
+      <analyticGeometry label="~v1_s(aS_ru_hub_3)~"/>
+    </builder>
+  </part>    
+<!--
+  !
+  !
+  ! mesh
+  !
+  ! Mesh.RandomFactor = 1.e-12;
+  !
+  -->
+ 
+  <constValue name="sliderFloatParam" label="cV_ruMech_lcIntPrec" value="0.01" min="0.0001" max="0.1"/>
+  <constValue name="sliderFloatParam" label="cV_ruMech_charLMin" value="0.1" min="0.0005" max="10.0"/>
+  <constValue name="sliderFloatParam" label="cV_ruMech_charCLMax" value="1.00" min="4.00" max="10.0"/>
+  <replace variable="ii" values="{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}">
+        <constValue name="sliderFloatParam" label="cV_ruMech_node_{ii}" value="1.00" min="-100.00" max="100.0"/>
+  </replace>
+
+  <boundedVolume name="customGmsh" label="ru_mechGridGmsh">	
+    <option name="[gmsh]General.Terminal" value="1."/>
+    <option name="[gmsh]General.Verbosity" value="100."/>
+    <option name="[gmsh]General.ExpertMode" value="1."/>
+    <option name="[gmsh]Mesh.LcIntegrationPrecision" value="#cV_ruMech_lcIntPrec#"/>
+    <option name="[gmsh]Mesh.SecondOrderLinear" value="1."/>
+    <option name="[gmsh]Mesh.CharacteristicLengthMin" value="#cV_ruMech_charLMin#"/>
+    <option name="[gmsh]Mesh.CharacteristicLengthMax" value="#cV_ruMech_charCLMax#*#cV_ruMech_charLMin#"/>
+    <option name="[gmsh]General.NumThreads" value="4"/>
+    <bVObserver name="bVODumpModel"/>
+    <bVObserver name="bVONameRegions" regionLabel=""/>
+    <bVObserver name="bVODumpModel"/>
+
+    <bVObserver 
+      name="bVONameFaces" 
+      face="
+      {R_0->0}{R_0->1}{R_0->2}{R_0->3}{R_0->4}{R_0->5}
+      "
+      faceLabel="{aS_ru_hub_0}{aS_ru_hub_1}{aS_ru_hub_2}{aS_ru_hub_3}{aS_ru_hub_4}{aS_ru_hub_5}"
+    />
+
+    
+    <bVObserver 
+      name="bVOSetPrescribedMeshSizeAtPoints" 
+      meshSize="
+        {#cV_ruMech_node_1# * #cV_ruMech_charLMin# * #cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_2# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_3# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_4# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_5# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_6# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_7# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_8# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}            
+        {#cV_ruMech_node_9# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_10# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_11# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_12# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_13# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+        {#cV_ruMech_node_14# * #cV_ruMech_charLMin#*#cV_ruMech_charCLMax#}
+      "
+    />
+  
+      
+    <bVObserver 
+      name="bVOMeshRule"
+      rule="
+        :
+          {dtMeshGEdge(*)}
+        :
+        :
+          {dtMeshGFace(*)}
+        :
+        :
+          {dtMeshGRegion(*)}
+        :
+      "
+      only=""
+    >
+      <option name="debug" value="true"/>		
+      <dtMeshOperator
+        name="dtMeshGFace"
+        label="dtMeshGFace"
+      />
+      <dtMeshOperator
+        name="dtMeshGEdge"
+        label="dtMeshGEdge"
+      />			
+      <dtMeshOperator
+        name="dtMeshGRegion"
+        label="dtMeshGRegion"
+        minQShapeMetric="0.00" 
+        relax="0.1"
+        nPyramidOpenSteps="10"
+        nSmooths="3"
+      />
+    </bVObserver>
+    <bVObserver name="bVOWriteMSH" filename="" saveAll="true"/>
+
+    <bVObserver name="bVOOrientCellVolumes" positive="true"/>
+
+    <bVObserver name="bVODumpModel"/>
+    
+    
+    <customRegion>
+      <replace variable="ii" values="{1}{2}{3}{4}{5}">     
+        <analyticGeometry label="aS_ru_hub_{ii}"/>
+      </replace>
+      <customFace>
+        <edgeLoop>
+          <analyticGeometry label="~v0_s(aS_ru_hub_0)~"/>
+          <analyticGeometry label="~u1_s(aS_ru_hub_0)~"/>
+          <analyticGeometry label="~v1_s(aS_ru_hub_0)~"/>
+          <analyticGeometry label="~u0_s(aS_ru_hub_0)~"/>
+        </edgeLoop>
+        <internalEdgeLoop>
+          <replace variable="ii" values="{0}{1}{2}">  
+            <analyticGeometry label="~v0_s(~w0_v(tV_ru_meshBlock_closed_0_{ii}_rot)~)~"/>
+          </replace>
+        </internalEdgeLoop>
+        <face>
+          <analyticGeometry label="aS_ru_hub_0"/>
+        </face>
+      </customFace>
+    <replace variable="ii" values="{0}{1}{2}">
+      <analyticGeometry label="~v0_v(tV_ru_meshBlock_closed_0_{ii}_rot)~"/>
+    </replace>
+      <customFace>
+        <edgeLoop>
+          <replace variable="ii" values="{0}{1}{2}">  
+            <analyticGeometry label="~v0_s(~w1_v(tV_ru_meshBlock_closed_0_{ii}_rot)~)~"/>
+          </replace>
+        </edgeLoop>
+        <face>
+          <analyticGeometry label="~w1_v(rM2dTo3d_ru_gridChannel)~"/>
+        </face>
+      </customFace>
+      
+    </customRegion>    
+    <bVObserver 
+      name="bVOPatchRule"
+      patchRule=" 
+        {:R_0->F_0::RUHUB:}      
+        {:R_0->F_1::RUHUB:}      
+        {:R_0->F_2::RUHUB:}      
+        {:R_0->F_3::RU_HUB_FIX:}      
+        {:R_0->F_4::RU_HUB_FIX:}            
+        {:R_0->F_5::RUHUB:}
+        {:R_0->F_6::RUBLADE:}
+        {:R_0->F_7::RUBLADE:}
+        {:R_0->F_8::RUBLADE:}
+        {:R_0->F_9::RUBLADE:}
+        {:R_0->F_10::RUBLADE:}
+        {:R_0->F_11::RUBLADE:}
+        {:R_0->F_12::RUBLADE:}
+      "
+      regRule="
+        {:*::RU:}
+      "			
+    />
+    <bVObserver name="bVOWriteMSH" filename="STATE_ru_mechMesh_1.msh" saveAll="true"/>
+    <bVObserver name="bVOWriteINP" filename="STATE_ru_mechMesh_1.inp" saveAll="true" saveGroupOfNodes="true"/>
+    <bVObserver name="bVOSetOrder" order="2"/>
+    <bVObserver name="bVOWriteMSH" filename="STATE_ru_mechMesh_2.msh" saveAll="true"/>
+    <bVObserver name="bVOWriteINP" filename="STATE_ru_mechMesh_2.inp" saveAll="true" saveGroupOfNodes="true"/>
+
+        
+  </boundedVolume>
+</ru_mechMesh>	

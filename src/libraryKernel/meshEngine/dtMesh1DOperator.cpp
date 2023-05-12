@@ -12,14 +12,26 @@ namespace dtOO {
   dtMesh1DOperator::~dtMesh1DOperator() {
   }
 
+  void dtMesh1DOperator::jInit(
+    jsonPrimitive const & jE,
+    baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtMeshOperator const * const mO    
+  ) {
+    dtMeshOperator::jInit(jE, bC, cV, aF, aG, bV, mO);
+  }
+
   void dtMesh1DOperator::init(
     ::QDomElement const & element,
     baseContainer const * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG,
-    bVPtrVec const * const bV,
-    labeledVectorHandling< dtMeshOperator * > const * const mO    
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtMeshOperator const * const mO    
   ) {
     dtMeshOperator::init(element, bC, cV, aF, aG, bV, mO);
   }
@@ -27,5 +39,4 @@ namespace dtOO {
   void dtMesh1DOperator::copyMesh( dtGmshEdge * from, dtGmshEdge * to) {
     ::copyMesh( (::GEdge*) from, (::GEdge*) to, to->masterOrientation );
   }
-
 }

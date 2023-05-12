@@ -20,8 +20,8 @@ namespace dtOO {
     _dtC.reset( orig.clone() );
   }  
 
-  analyticCurve::analyticCurve(dtCurve * orig) : map1dTo3d() {
-    _dtC.reset( orig->clone());
+  analyticCurve::analyticCurve(dtCurve const * const orig) : map1dTo3d() {
+    _dtC.reset( orig->clone() );
   }
 	
   analyticCurve * analyticCurve::clone( void ) const {

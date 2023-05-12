@@ -9,9 +9,6 @@
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include <analyticGeometryHeaven/analyticSurface.h>
-#include <analyticGeometryHeaven/map1dTo3dTransformed.h>
-#include <analyticGeometryHeaven/map2dTo3dTransformed.h>
-#include <analyticGeometryHeaven/map3dTo3dTransformed.h>
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/geoBuilder/geomCurve_curveRotateConstructOCC.h>
@@ -35,10 +32,13 @@ namespace dtOO {
   }
 	
 	rotate::rotate(const rotate& orig) : dtTransformerInvThreeD(orig) {
-		_angle = orig._angle;
-		_origin = orig._origin;
-		_rotVector = orig._rotVector;
 	}
+
+  rotate::rotate( 
+    jsonPrimitive const & jE 
+  ) : dtTransformerInvThreeD(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
 	
   dtTransformerInvThreeD * rotate::clone( void ) const {
 	  return new rotate(*this);	
@@ -51,14 +51,18 @@ namespace dtOO {
 	std::vector< dtPoint3 > rotate::apply( 
     std::vector< dtPoint3 > const * const toTrans 
   ) const {
+    dtReal angle = config().lookup<dtReal>("_angle");
+    dtVector3 rotVector = config().lookup<dtVector3>("_rotVector");
+    dtPoint3 origin = config().lookup<dtPoint3>("_origin");
+    
 		dtAffTransformation3 rot 
     = 
-    dtLinearAlgebra::getRotation(_rotVector, _angle);
+    dtLinearAlgebra::getRotation(rotVector, angle);
 	
 		std::vector< dtPoint3 > ret(toTrans->size());
 		dt__forAllIndex(*toTrans, ii) {
-			dtVector3 vv = rot.transform( toTrans->at(ii) - _origin );
-		  ret[ii] = _origin + vv;
+			dtVector3 vv = rot.transform( toTrans->at(ii) - origin );
+		  ret[ii] = origin + vv;
 		}
 		
 		return ret;
@@ -67,14 +71,18 @@ namespace dtOO {
 	std::vector< dtPoint3 > rotate::retract( 
     std::vector< dtPoint3 > const * const toTrans 
   ) const {
+    dtReal angle = config().lookup<dtReal>("_angle");
+    dtVector3 rotVector = config().lookup<dtVector3>("_rotVector");
+    dtPoint3 origin = config().lookup<dtPoint3>("_origin");
+    
 		dtAffTransformation3 rot 
     = 
-    dtLinearAlgebra::getRotation(_rotVector, -1.*_angle);
+    dtLinearAlgebra::getRotation(rotVector, -1.*angle);
 	
 		std::vector< dtPoint3 > ret(toTrans->size());
 		dt__forAllIndex(*toTrans, ii) {
-			dtVector3 vv = rot.transform( toTrans->at(ii) - _origin );
-		  ret[ii] = _origin + vv;
+			dtVector3 vv = rot.transform( toTrans->at(ii) - origin );
+		  ret[ii] = origin + vv;
 
       dt__debug(
         retract(),
@@ -89,9 +97,11 @@ namespace dtOO {
 	std::vector< dtVector3 > rotate::apply( 
     std::vector< dtVector3 > const * const toTrans 
   ) const {
+    dtReal angle = config().lookup<dtReal>("_angle");
+    dtVector3 rotVector = config().lookup<dtVector3>("_rotVector");
 		dtAffTransformation3 rot 
     = 
-    dtLinearAlgebra::getRotation(_rotVector, _angle);
+    dtLinearAlgebra::getRotation(rotVector, angle);
 	
 		std::vector< dtVector3 > ret(toTrans->size());
 		dt__forAllIndex(*toTrans, ii) {
@@ -105,9 +115,11 @@ namespace dtOO {
 	std::vector< dtVector3 > rotate::retract( 
     std::vector< dtVector3 > const * const toTrans 
   ) const {
+    dtReal angle = config().lookup<dtReal>("_angle");
+    dtVector3 rotVector = config().lookup<dtVector3>("_rotVector");
 		dtAffTransformation3 rot 
     = 
-    dtLinearAlgebra::getRotation(_rotVector, -1.*_angle);
+    dtLinearAlgebra::getRotation(rotVector, -1.*angle);
 	
 		std::vector< dtVector3 > ret(toTrans->size());
 		dt__forAllIndex(*toTrans, ii) {
@@ -124,12 +136,16 @@ namespace dtOO {
 		return ret;
 	}  
 	
-  aGPtrVec rotate::apply( 
-	  aGPtrVec const * const aGeoVecP 
+  lvH_analyticGeometry rotate::apply( 
+	  lvH_analyticGeometry const * const aGeoVecP 
 	) const {
-    aGPtrVec retAGeo;
+    lvH_analyticGeometry retAGeo;
 
-    dt__forAllConstIter(aGPtrVec, *aGeoVecP, it) {
+    dtReal angle = config().lookup<dtReal>("_angle");
+    dtVector3 rotVector = config().lookup<dtVector3>("_rotVector");
+    dtPoint3 origin = config().lookup<dtPoint3>("_origin");
+    
+    dt__forAllConstIter(lvH_analyticGeometry, *aGeoVecP, it) {
 			//
 			// clone and cast analyticGeometry
 			//
@@ -145,7 +161,7 @@ namespace dtOO {
               dt__tmpPtr(
                 dtCurve,
                 geomCurve_curveRotateConstructOCC( 
-                  s3->ptrConstDtCurve(), _origin, _rotVector, _angle 
+                  s3->ptrConstDtCurve(), origin, rotVector, angle 
                 ).result()
               )
             ) 
@@ -163,7 +179,7 @@ namespace dtOO {
               dt__tmpPtr(
                 dtSurface,
                 geomSurface_surfaceRotateConstructOCC( 
-                  aS->ptrDtSurface(), _origin, _rotVector, _angle 
+                  aS->ptrDtSurface(), origin, rotVector, angle 
                 ).result()
               )
             ) 
@@ -185,39 +201,42 @@ namespace dtOO {
     return true;
   }
 
+  void rotate::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+  }  
+    
   void rotate::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		
-    if (dtXmlParserBase::hasAttribute("origin", *tE)) {
-      _origin 
-			= 
+    jsonPrimitive config;
+    config.append(
+      "_origin",
 			dtXmlParserBase::getDtPoint3(
 				dtXmlParserBase::getAttributeStr("origin", *tE), bC 
-			);
-    }
-    if (dtXmlParserBase::hasAttribute("rotation_vector", *tE)) {
-      _rotVector
-			= 
-			dtXmlParserBase::getDtVector3(
+			)
+    );
+    config.append(
+      "_rotVector",
+    	dtXmlParserBase::getDtVector3(
 				dtXmlParserBase::getAttributeStr("rotation_vector", *tE), bC 
-			);
-    }
-    if (dtXmlParserBase::hasAttribute("angle", *tE)) {
-      _angle 
-			= 
-			dtXmlParserBase::getAttributeFloatMuParse("angle", *tE, cV, aF);
-    }
-    dt__debug(
-			init(),
-      << dt__point3d(_origin) << std::endl
-      << dt__vector3d(_rotVector) << std::endl
-      << dt__eval(_angle) 
-		);
+			)
+    );
+    config.append(
+      "_angle",
+			dtXmlParserBase::getAttributeFloatMuParse("angle", *tE, cV, aF)
+    );
+    jInit(config, bC, cV, aF, aG);
   }
 }

@@ -14,21 +14,27 @@ namespace dtOO {
       dt__classOnlyName(pickVec3dTwoDRectanglePercent);   
       pickVec3dTwoDRectanglePercent();
       pickVec3dTwoDRectanglePercent(const pickVec3dTwoDRectanglePercent& orig);
+      pickVec3dTwoDRectanglePercent( jsonPrimitive const & jE );
       virtual ~pickVec3dTwoDRectanglePercent();
       virtual dtTransformer * clone( void ) const;
       virtual dtTransformer * create( void ) const;     
       virtual bool isNecessary( void ) const; 
+      virtual void jInit( 
+        jsonPrimitive const & jE, 
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
+      );   
       void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG 
       );
-      virtual aFPtrVec apply( aFPtrVec const * const aFVecP ) const;
+      virtual lvH_analyticFunction apply( lvH_analyticFunction const * const aFVecP ) const;
     private:
-      dtPoint2 _p0;
-      dtPoint2 _p1;
       static bool _registrated;    
   };
 }

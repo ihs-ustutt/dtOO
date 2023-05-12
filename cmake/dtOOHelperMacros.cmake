@@ -203,10 +203,11 @@ MACRO(
   IF( NOT ${LIB_FOUND} STREQUAL TRUE )
     set( _testincname ${TESTINCNAME} )
     set( 
-      _incsearchpath 
+      _incsearchpath
+      $ENV{DTOO_EXTERNLIBS}/include/
+      ${LIB_ADD_INCSEARCHPATH}
       /usr/ihs/include/
       /usr/include/
-      ${LIB_ADD_INCSEARCHPATH}
     )
     
     #find the include dir by looking for moab/Version.h

@@ -24,9 +24,9 @@ namespace dtOO {
       virtual void buildPart(
         ::QDomElement const & toBuildP, 
         baseContainer * const bC,
-        cVPtrVec const * const cValP, 
-        aFPtrVec const * const depSFunP,
-        aFPtrVec * sFunP
+        lvH_constValue const * const cValP, 
+        lvH_analyticFunction const * const depSFunP,
+        lvH_analyticFunction * sFunP
       ) const;
     private: 
       static bool _registrated;

@@ -25,13 +25,13 @@ namespace dtOO {
     
   }
   
-  void bVOSetOrder::bVOSetOrder::init( 
+  void bVOSetOrder::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
@@ -40,11 +40,14 @@ namespace dtOO {
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_order
-		= 
-		dtXmlParserBase::getAttributeIntMuParse(
-      "order", element, cV, aF
+ 	  jsonPrimitive jE;
+    jE.append< dtInt >(
+      "_order",
+      dtXmlParserBase::getAttributeIntMuParse(
+        "order", element, cV, aF
+      )
     );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOSetOrder::postUpdate( void ) {
@@ -56,6 +59,6 @@ namespace dtOO {
 		::GModel::setCurrent( gm );
 		dt__throwIf( !ptrBoundedVolume()->isMeshed(), postUpdate() );
     
-    ::gmsh::model::mesh::setOrder( _order );
+    ::gmsh::model::mesh::setOrder( config().lookup< dtInt >("_order" ) );
   }
 }

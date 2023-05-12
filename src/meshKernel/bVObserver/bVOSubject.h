@@ -12,17 +12,15 @@ namespace dtOO {
   
   class bVOSubject {
     public:
-      dt__classOnlyName(bVOSubject);
+      dt__class(bVOSubject, bVOSubject);
       bVOSubject();
       virtual ~bVOSubject();
       void attachBVObserver( bVOInterface* observer );
-  //    void detachBVObserver( bVOInterface* observer );
       void preNotify( void );
       void postNotify( void );
+      void dump( void ) const;
     private:
       vectorHandling< bVOInterface * > _observers;
-    private:
-
   };
 }
 #endif	/* BVOSUBJECT_H */

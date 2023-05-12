@@ -1,9 +1,8 @@
 #include "pickMap3dTo3dRangePercent.h"
-#include "analyticGeometryHeaven/map2dTo3d.h"
-#include "pickLengthPercentRange.h"
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
+#include "analyticGeometryHeaven/map2dTo3d.h"
 #include <analyticGeometryHeaven/map3dTo3d.h>
 #include "dtTransformerFactory.h"
 
@@ -20,9 +19,12 @@ namespace dtOO {
   pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent(
     const pickMap3dTo3dRangePercent& orig
   ) : dtTransformer(orig) {
-		_u0 = orig._u0;
-		_v0 = orig._v0;
-		_w0 = orig._w0;
+  }
+
+  pickMap3dTo3dRangePercent::pickMap3dTo3dRangePercent( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
   }
 
   pickMap3dTo3dRangePercent::~pickMap3dTo3dRangePercent() {
@@ -36,24 +38,24 @@ namespace dtOO {
 		return new pickMap3dTo3dRangePercent();
 	}
 	
-  aGPtrVec pickMap3dTo3dRangePercent::apply( 
-    aGPtrVec const * const aGeoVecP 
+  lvH_analyticGeometry pickMap3dTo3dRangePercent::apply( 
+    lvH_analyticGeometry const * const aGeoVecP 
   ) const {
-    aGPtrVec aGeoRet;
+    lvH_analyticGeometry aGeoRet;
     
     for (int ii=0;ii<aGeoVecP->size();ii++) {
       dt__ptrAss(map3dTo3d const * m3d, map3dTo3d::DownCast(aGeoVecP->at(ii)));
 			
 			analyticGeometry * aG;
-			if (_u0 >= 0.) {
-				aG = m3d->segmentConstUPercent(_u0);				
+			if (config().contains("_u0")) {
+				aG = m3d->segmentConstUPercent(config().lookup<dtReal>("_u0"));
 		  }
-			else if (_v0 >= 0.) {
-				aG = m3d->segmentConstVPercent(_v0);				
+			else if (config().contains("_v0")) {
+				aG = m3d->segmentConstVPercent(config().lookup<dtReal>("_v0"));
 		  }
-			else if (_w0 >= 0.) {
-				aG = m3d->segmentConstWPercent(_w0);				
-		  }		
+			else if (config().contains("_w0")) {
+				aG = m3d->segmentConstWPercent(config().lookup<dtReal>("_w0"));
+		  }
       aGeoRet.push_back( aG );
     }
     
@@ -64,61 +66,75 @@ namespace dtOO {
     return true;
   }
   
+  void pickMap3dTo3dRangePercent::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+
+    int dirSet = 0;
+		if ( config().contains("_u0") ) dirSet = dirSet + 1;
+		if ( config().contains("_v0") ) dirSet = dirSet + 1;
+		if ( config().contains("_w0") ) dirSet = dirSet + 1;
+    if ( dirSet != 1 ) {
+      dt__throw(
+        jInit(),
+        << config().toStdString() << std::endl
+        << "Only one value should be greater than zero. Check input."
+      );
+    }
+  }
+  
   void pickMap3dTo3dRangePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     
-		_u0 = -1.;
-		_v0 = -1.;
-		_w0 = -1.;
+    jsonPrimitive config;
 
 		if (dtXmlParserBase::hasAttribute("parameter_percent_one", *tE)) {
-			_u0 
-			= 
-			dtXmlParserBase::muParseString( 
-				dtXmlParserBase::replaceDependencies(
-					dtXmlParserBase::getAttributeStr("parameter_percent_one", *tE),
-					cV, 
-					aF
-				) 
-			);
+			config.append(
+        "_u0",  
+        dtXmlParserBase::muParseString( 
+          dtXmlParserBase::replaceDependencies(
+            dtXmlParserBase::getAttributeStr("parameter_percent_one", *tE),
+            cV, 
+            aF
+          ) 
+        )
+      );
 		}
 		if (dtXmlParserBase::hasAttribute("parameter_percent_two", *tE)) {
-			_v0
-			= 
-			dtXmlParserBase::muParseString( 
-				dtXmlParserBase::replaceDependencies(
-					dtXmlParserBase::getAttributeStr("parameter_percent_two", *tE),
-					cV, 
-					aF
-				) 
-			);
+			config.append(
+        "_v0",  
+        dtXmlParserBase::muParseString( 
+          dtXmlParserBase::replaceDependencies(
+            dtXmlParserBase::getAttributeStr("parameter_percent_two", *tE),
+            cV, 
+            aF
+          ) 
+        )
+      );      
 		}
 		if (dtXmlParserBase::hasAttribute("parameter_percent_three", *tE)) {
-			_w0
-			= 
-			dtXmlParserBase::muParseString( 
-				dtXmlParserBase::replaceDependencies(
-					dtXmlParserBase::getAttributeStr("parameter_percent_three", *tE),
-					cV, 
-					aF
-				) 
-			);							
+			config.append(
+        "_w0",  
+        dtXmlParserBase::muParseString( 
+          dtXmlParserBase::replaceDependencies(
+            dtXmlParserBase::getAttributeStr("parameter_percent_three", *tE),
+            cV, 
+            aF
+          ) 
+        )
+      );          
 		}
-		
-    if ( (_u0 >= 0.) && (_v0 >= 0.) && (_w0 >= 0.) ) {
-			dt__throw(
-      init(),
-      << dt__eval(_u0) << std::endl
-      << dt__eval(_v0) << std::endl
-				<< dt__eval(_w0) << std::endl
-				<< "Only one value should be greater than zero. Check input."
-			);
-    }
+    jInit(config, bC, cV, aF, aG);
   }  
 }

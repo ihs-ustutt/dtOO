@@ -1,0 +1,1254 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dt>
+	<function label="f_dt_maxHeight">
+		<builder  name="muParser">
+			<expression 
+				value="5 - xx * 5, 2.15, 0 + yy * 10" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+		</builder>
+	</function>
+	<part label="aS_dt_maxHeight">
+		<builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="f_dt_maxHeight"/>
+			<analyticGeometry label="aG_inf"/>
+		</builder>
+	</part>  
+  
+	<constant 
+		label="DT_CUTS" value="
+		  {0}{50}{100}{150}{200}{250}{300}{350}{400}{450}{500}{550}{600}{650}{700}{750}{800}{850}{900}{950}{1000}
+		"
+	/>	
+<!--	<constant 
+		label="DT_CUTS" value="
+		  {0}{100}{200}{400}{600}{800}{1000}
+		"
+	/>		-->
+	<constant 
+		label="DT_CUTSNZ" value="
+		  {50}{100}{150}{200}{250}{300}{350}{400}{450}{500}{550}{600}{650}{700}{750}{800}{850}{900}{950}{1000}
+		"
+	/>		
+<!--	<constant 
+		label="DT_CUTSNZ" value="
+			{100}{200}{400}{600}{800}{1000}
+		"
+	/>			-->
+	<constant 
+		label="THICK_CUTS" value="
+		  {0}{100}{200}{300}{400}{500}{600}{700}{800}{900}{1000}
+		"
+	/>		
+<!--	<constant 
+		label="DT_HUB_CUTS" value="{0}{125}{250}{500}{750}{875}{1000}"
+	/>		-->
+<constant 
+	label="DT_HUB_CUTS" 
+	value="
+	  {0}{50}{100}{150}{200}{250}{300}{350}{400}{450}{500}{550}{600}{650}{700}{750}{800}{850}{900}{950}{1000}"
+	/>		
+	<!---
+	!
+	! degrees of freedom
+	!
+	-->	
+  <!-- hub -->
+	<constValue label="cV_r_1_dt_hub_1" name="sliderFloatParam" value=".4" min="0.005" max="1.5"/>
+	<constValue label="cV_r_1_dt_hub_2" name="sliderFloatParam" value="0.1" min="0.005" max="1.5"/>
+	<constValue label="cV_r_2_dt_hub_1" name="sliderFloatParam" value="0.25" min="0.005" max="1.5"/>
+	<constValue label="cV_r_2_dt_hub_2" name="sliderFloatParam" value=".1" min="0.005" max="1.5"/>		
+	<constValue label="cV_r_1_dt_hub_0.50" name="sliderFloatParam" value="0.4" min="0.005" max="1.5"/>
+	<constValue label="cV_r_2_dt_hub_0.50" name="sliderFloatParam" value="0.1" min="0.005" max="1.5"/>		
+	<constValue label="cV_percentL_dt_hub_0.25" name="sliderFloatParam" value=".25" min="0.01" max="0.99"/>	
+	<constValue label="cV_percentL_dt_hub_0.50" name="sliderFloatParam" value=".50" min="0.01" max="0.99"/>	
+	<constValue label="cV_deltaL_dt_hub_1" name="sliderFloatParam" value="-0.25" min="0.01" max="0.99"/>	
+  <constValue label="cV_deltaL_dt_hub_2" name="sliderFloatParam" value="-4.50" min="0.1" max="10.0"/>	
+  
+	<!-- dt -->
+  <constValue label="cV_T_dt_0" name="sliderFloatParam" value="0.04" min="0.005" max="1.5"/>
+	<constValue label="cV_T_dt_1" name="sliderFloatParam" value="0.03" min="0.005" max="1.5"/>	
+  <constValue label="cV_T_dt2_0" name="sliderFloatParam" value="0.04" min="0.005" max="1.5"/>
+	<constValue label="cV_T_dt2_1" name="sliderFloatParam" value="0.03" min="0.005" max="1.5"/>	
+  <constValue label="cV_T_dt3_0" name="sliderFloatParam" value="0.1" min="0.005" max="1.5"/>
+	<constValue label="cV_T_dt3_1" name="sliderFloatParam" value="0.1" min="0.005" max="1.5"/>		  
+  
+  <constValue label="cV_deltaL_dt_1" name="sliderFloatParam" value=".25" min="0." max="1.0"/>
+	<constValue label="cV_deltaL_dt_1.5" name="sliderFloatParam" value="0.5" min="0.0" max="1.0"/>
+	<constValue label="cV_deltaL_dt_2" name="sliderFloatParam" value=".05" min="0.0" max="1.0"/>	
+
+	<constValue label="cV_deltaE_dt_1.5" name="sliderFloatParam" value="0.10" min="0.0" max="1.0"/>
+	<constValue label="cV_deltaE_dt_2" name="sliderFloatParam" value="0.20" min="0.0" max="1.0"/>
+	
+	<constValue label="cV_deltaL_dt2_0" name="sliderFloatParam" value=".33" min="0.0" max="10.0"/>
+	<constValue label="cV_deltaL_dt2_1" name="sliderFloatParam" value="0.50" min="0.0" max="1.0"/>
+  <constValue label="cV_deltaL_dt2_2" name="sliderFloatParam" value="0.05" min="0.0" max="10.0"/> 
+  <constValue label="cV_deltaE_dt2_0" name="sliderFloatParam" value="0.05" min="0.0" max="1.0"/>
+	<constValue label="cV_deltaE_dt2_1" name="sliderFloatParam" value="0.30" min="0.0" max="1.0"/>
+  <constValue label="cV_deltaE_dt2_2" name="sliderFloatParam" value="0.60" min="0.0" max="1.0"/>
+  
+	<constValue label="cV_deltaL_dt3_0" name="sliderFloatParam" value=".66" min="0.0" max="10.0"/>
+	<constValue label="cV_deltaL_dt3_1" name="sliderFloatParam" value="6" min="0.0" max="10.0"/>
+  <constValue label="cV_deltaL_dt3_1.5" name="sliderFloatParam" value=".5" min="0.0" max="10.0"/>
+	<constValue label="cV_l_dt3_2" name="sliderFloatParam" value="7" min="0.0" max="10.0"/>	
+	<constValue label="cV_deltaE_dt3_0" name="sliderFloatParam" value="0.05" min="0.0" max="10.0"/>
+	<constValue label="cV_deltaE_dt3_1" name="sliderFloatParam" value="0.90" min="0.0" max="10.0"/>
+  <constValue label="cV_deltaE_dt3_1.5" name="sliderFloatParam" value="0.50" min="0.0" max="10.0"/>
+	<constValue label="cV_e_dt3_2" name="sliderFloatParam" value="2.00" min="0.0" max="10.0"/>		
+
+  <!---
+	!
+	! constraints<constValue label="cV_e_dt2_0" name="sliderFloatParam" value="0.50" min="0.0" max="1.0"/>
+	!
+	-->	
+  <!-- hub -->
+	<constValue label="cV_r_1_dt_hub_0" name="constrainedFloatParam" value="#cV_r_hub#" min="0.005" max="1.5"/>
+	<constValue label="cV_r_2_dt_hub_0" name="constrainedFloatParam" value="#cV_r_hub#" min="0.005" max="1.5"/>
+	<constValue label="cV_r_1_dt_hub_0.25" name="constrainedFloatParam" value="#cV_r_hub#" min="0.005" max="1.5"/>
+	<constValue label="cV_r_2_dt_hub_0.25" name="constrainedFloatParam" value="#cV_r_hub#" min="0.005" max="1.5"/>	
+	<constValue label="cV_l_dt_hub_0" name="constrainedFloatParam" value="#cV_l_ru#" min="0.005" max="10.5"/>		
+	<!-- dt -->
+	<!--<constant label="(#cV_l_ru#)" value="#cV_l_ru#"/-->>
+<!--  <constant label="(#cV_l_dt2_0#)" value="#cV_l_ru# + #cV_deltaL_dt2_0# * (#cV_l_dt3_2# - #cV_l_ru#)"/>	  -->
+  <constant 
+    label="CV_L_DT3_0" 
+    value="
+      ( #cV_l_ru# + #cV_deltaL_dt2_0# * (#cV_l_dt3_2# - #cV_l_ru#) )
+      + 
+      #cV_deltaL_dt3_0# * ( 
+        #cV_l_dt3_2#
+        -
+        (#cV_l_ru# + #cV_deltaL_dt2_0# * (#cV_l_dt3_2# - #cV_l_ru#))
+      )
+    "
+  />	  
+  <constant label="CV_L_DT_2" value="#cV_l_ru# + (#cV_deltaL_dt2_0#+#cV_deltaL_dt_2#) * (#cV_l_dt3_2# - #cV_l_ru#)"/>	  
+  <constant 
+    label="CV_L_DT2_2" 
+    value="
+      ( #cV_l_ru# + #cV_deltaL_dt2_0# * (#cV_l_dt3_2# - #cV_l_ru#) )
+      + 
+      (#cV_deltaL_dt3_0# + #cV_deltaL_dt2_2#) * ( 
+        #cV_l_dt3_2#
+        -
+        (#cV_l_ru# + #cV_deltaL_dt2_0# * (#cV_l_dt3_2# - #cV_l_ru#))
+      )
+    "
+  />  
+  <constValue label="cV_l_dt_0" name="constrainedFloatParam" value="#cV_l_ru#" min="0.0" max="10.0"/>
+  <constValue label="cV_l_dt2_0" name="constrainedFloatParam" value="#cV_l_ru# + #cV_deltaL_dt2_0# * (#cV_l_dt3_2# - #cV_l_ru#)" min="0.0" max="10.0"/>
+  <constValue label="cV_l_dt3_0" name="constrainedFloatParam" value="CV_L_DT3_0" min="0.0" max="10.0"/>
+<!--	<constant 
+		label="CV_L_DT_1" value="
+		  #cV_l_ru# + ((#cV_l_dt_2#-#cV_deltaL_dt2_0#)-#cV_l_ru#) * #cV_deltaL_dt_1#
+		"
+	/>	  -->
+  <constValue label="cV_l_dt_1" 
+    name="constrainedFloatParam" 
+    value="((#cV_l_ru#)) + #cV_deltaL_dt_1# * ( (CV_L_DT_2) - ((#cV_l_ru#)) )" 
+    min="0.0" max="10.0"
+  />
+	<constValue 
+    label="cV_l_dt_1.5" 
+    name="constrainedFloatParam" 
+    value="
+      ( 
+        ((#cV_l_ru#)) + #cV_deltaL_dt_1# * ( (CV_L_DT_2) - ((#cV_l_ru#))) 
+      ) 
+      + 
+      #cV_deltaL_dt_1.5# * ( 
+        (CV_L_DT_2) 
+        -
+        (
+          ((#cV_l_ru#)) + #cV_deltaL_dt_1# * ( (CV_L_DT_2) - ((#cV_l_ru#)))
+        ) 
+      )" 
+    min="0.0" max="10.0"
+  />
+	<constValue 
+    label="cV_l_dt_2" 
+    name="constrainedFloatParam" 
+    value="CV_L_DT_2" 
+    min="0.0" max="10.0"
+  />  
+  <constValue label="cV_l_dt2_1" 
+    name="constrainedFloatParam" 
+    value="((#cV_l_dt2_0#)) + ((CV_L_DT2_2) - ((#cV_l_dt2_0#))) * #cV_deltaL_dt2_1#" 
+    min="0.0" max="10.0"
+  />
+	<constValue 
+    label="cV_l_dt2_2" 
+    name="constrainedFloatParam" 
+    value="CV_L_DT2_2" 
+    min="0.0" max="10.0"
+  />    
+  <constValue label="cV_l_dt3_1" 
+    name="constrainedFloatParam" 
+    value="(CV_L_DT3_0) + ((#cV_l_dt3_2#) - (CV_L_DT3_0)) * #cV_deltaL_dt3_1#" 
+    min="0.0" max="10.0"
+  />
+  <constValue label="cV_l_dt3_1.5" 
+    name="constrainedFloatParam" 
+    value="
+      ( (#cV_l_dt3_0#) + ((#cV_l_dt3_2#) - (#cV_l_dt3_0#)) * #cV_deltaL_dt3_1# )
+      + 
+      (
+        #cV_l_dt3_2#
+        -
+        ( (#cV_l_dt3_0#) + ((#cV_l_dt3_2#) - (#cV_l_dt3_0#)) * #cV_deltaL_dt3_1# )
+      ) 
+      * 
+      #cV_deltaL_dt3_1.5#" 
+    min="0.0" max="10.0"
+  />
+  
+  <constant label="CV_E_DT_2" value="#cV_deltaE_dt_2# * (#cV_e_dt3_2# - 0.)"/>
+  <constant label="CV_E_DT2_2" value="(#cV_deltaE_dt_2# * (#cV_e_dt3_2# - 0.)) + #cV_deltaE_dt2_2# * (#cV_e_dt3_2# - (#cV_deltaE_dt_2# * (#cV_e_dt3_2# - 0.)) )"/>
+  
+  <constant label="CV_E_DT_0" value="0.0"/>
+  <constant label="CV_E_DT_1.5" value="0.0 + #cV_deltaE_dt_1.5# * ( #cV_deltaE_dt_2# * (#cV_e_dt3_2# - 0.) )"/>
+
+  <constValue label="cV_e_dt_0" name="constrainedFloatParam" value="CV_E_DT_0" min="0.0" max="10.0"/>
+  <constValue label="cV_e_dt_1" name="constrainedFloatParam" value="CV_E_DT_0" min="0.0" max="10.0"/>
+  <constValue label="cV_e_dt_1.5" name="constrainedFloatParam" value="CV_E_DT_0 + #cV_deltaE_dt_1.5# * ( CV_E_DT_2 - CV_E_DT_0 )" min="0.0" max="10.0"/>
+  <constValue label="cV_e_dt_2" name="constrainedFloatParam" value="CV_E_DT_2"/>
+  
+  <constValue label="cV_e_dt2_0" name="constrainedFloatParam" value="CV_E_DT_2 + #cV_deltaE_dt2_0# * ( CV_E_DT2_2 - CV_E_DT_2 )" min="0.0" max="10.0"/>
+  <constValue label="cV_e_dt2_1" name="constrainedFloatParam" value="CV_E_DT_2 + #cV_deltaE_dt2_1# * ( CV_E_DT2_2 - CV_E_DT_2 )" min="0.0" max="10.0"/>
+  <constValue label="cV_e_dt2_2" name="constrainedFloatParam" value="CV_E_DT2_2" min="0.0" max="10.0"/>
+  <constValue label="cV_e_dt3_0" name="constrainedFloatParam" value="CV_E_DT2_2 + #cV_deltaE_dt3_0# * ( #cV_e_dt3_2#-CV_E_DT2_2 )" min="0.0" max="10.0"/>
+  <constValue label="cV_e_dt3_1" name="constrainedFloatParam" value="CV_E_DT2_2 + #cV_deltaE_dt3_1# * ( #cV_e_dt3_2# - CV_E_DT2_2 )" min="0.0" max="10.0"/>
+  <constValue 
+    label="cV_e_dt3_1.5" 
+    name="constrainedFloatParam" 
+    value="
+      ( #cV_e_dt2_2# + #cV_deltaE_dt3_1# * ( #cV_e_dt3_2# - #cV_e_dt2_2# ) )
+      +
+        (
+          #cV_e_dt3_2#
+          -
+          ( #cV_e_dt2_2# + #cV_deltaE_dt3_1# * ( #cV_e_dt3_2# - #cV_e_dt2_2# ) )
+        )
+        *
+        #cV_deltaE_dt3_1.5#
+    " 
+    min="0.0" max="10.0"
+  />
+
+  <constValue label="cV_l_dt2_0" name="constrainedFloatParam" value="(#cV_l_dt2_0#)" min="0.0" max="10.0"/>-->
+	<constValue label="cV_l_dt_hub_2" name="constrainedFloatParam" value="#cV_deltaL_dt_hub_2#+(CV_L_DT_2)" min="0.005" max="10.5"/>		
+	<constValue label="cV_l_dt_hub_1" 
+		name="constrainedFloatParam" 
+		value="(CV_L_DT_2) + #cV_deltaL_dt_hub_2#+#cV_deltaL_dt_hub_1#" 
+		min="0.005" max="10.5"
+	/>    
+	<constValue label="cV_l_dt_hub_0.25" 
+		name="constrainedFloatParam" 
+		value="#cV_l_ru# + #cV_percentL_dt_hub_0.25#*(( (CV_L_DT_2)+#cV_deltaL_dt_hub_1#+#cV_deltaL_dt_hub_2# )-(#cV_l_ru#))" 
+		min="0.005" max="10.5"
+	/>
+	<constValue label="cV_l_dt_hub_0.50" 
+		name="constrainedFloatParam" 
+		value="#cV_l_ru# + #cV_percentL_dt_hub_0.50#*((( CV_L_DT_2 )+#cV_deltaL_dt_hub_1#+#cV_deltaL_dt_hub_2#)-(#cV_l_ru#))" 
+		min="0.005" max="10.5"
+	/>	
+<!--  <constValue label="cV_e_dt2_0" 
+    name="constrainedFloatParam" 
+    value="#cV_e_dt_2# + #cV_deltaE_dt2_0# *(#cV_e_dt2_2#-#cV_e_dt_2#)" 
+    min="0.0" max="10.0"
+  />-->
+<!--  <constValue 
+    label="cV_l_dt2_1" 
+    name="constrainedFloatParam" 
+    value="
+      ((#cV_l_dt2_0#)) 
+      + 
+      #cV_deltaL_dt2_1# * ( #cV_l_dt2_2# - ((#cV_l_dt2_0#)) )" 
+    min="0.0" max="10.0"
+  />  -->
+<!--	<constValue label="cV_e_dt2_1" 
+		name="constrainedFloatParam" 
+		value="#cV_e_dt_2# + #cV_deltaE_dt2_1# *(#cV_e_dt2_2#-#cV_e_dt_2#)" 
+		min="0.005" max="10.5"
+	/>-->
+
+	<constValue label="cV_l_far_0" name="sliderFloatParam" value="-2.5" min="0.0" max="10.0"/>
+	<constValue label="cV_l_far_1" name="sliderFloatParam" value="5.5" min="0.0" max="10.0"/>
+  <constValue label="cV_l_far_1.5" name="sliderFloatParam" value="11" min="0.0" max="10.0"/>
+	<constValue label="cV_l_far_2" name="sliderFloatParam" value="11" min="0.0" max="10.0"/>	
+	<constValue label="cV_e_far_0" name="sliderFloatParam" value="0.1" min="0.0" max="10.0"/>
+	<constValue label="cV_e_far_1" name="sliderFloatParam" value="0.1" min="0.0" max="10.0"/>
+  <constValue label="cV_e_far_1.5" name="sliderFloatParam" value="0.1" min="0.0" max="10.0"/>
+	<constValue label="cV_e_far_2" name="sliderFloatParam" value="0.1" min="0.0" max="10.0"/>		
+	<constValue label="cV_r_far" name="sliderFloatParam" value="4.0" min="0.0" max="10.0"/>
+	<constValue label="cV_T_far_0" name="sliderFloatParam" value="0.0" min="0.005" max="1.5"/>
+	<constValue label="cV_T_far_1" name="sliderFloatParam" value="0.0" min="0.005" max="1.5"/>		
+  <constValue label="cV_deltaR_dt" name="sliderFloatParam" value="-0.5" min="-10." max="10."/>
+  <constValue label="cV_deltaR_dt2" name="sliderFloatParam" value="-0.5" min="-10." max="10."/>
+  <constValue label="cV_deltaR_dt3" name="sliderFloatParam" value="-0.5" min="-10." max="10."/>
+  <!--<constValue label="cV_r_shroud_dt" name="sliderFloatParam" value="2." min="0.5" max="10."/>-->
+	<function label="f_R_dt">
+		<builder  name="muParser">
+			<expression 
+				value="#cV_r_shroud# + xx * (#cV_deltaR_dt#) + #cV_T_dt_0#" 
+				dimension="1"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+		</builder>
+	</function>	
+	<constValue label="cV_ROffset_dt2" name="sliderFloatParam" value=".1" min="0.0" max="10.0"/>
+	<function label="f_R_dt2">
+		<builder  name="muParser">
+			<expression 
+				value="#cV_r_shroud# + xx * (#cV_deltaR_dt2#) + #cV_ROffset_dt2#" 
+				dimension="1"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+		</builder>
+	</function>
+  <constValue label="cV_ROffset_dt3" name="sliderFloatParam" value=".1" min="0.0" max="10.0"/>
+	<function label="f_R_dt3">
+		<builder  name="muParser">
+			<expression 
+				value="#cV_r_shroud# + xx * (#cV_deltaR_dt3#) + #cV_ROffset_dt3#" 
+				dimension="1"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+		</builder>
+	</function>		  
+	<function label="f_R_far">
+		<builder  name="muParser">
+			<expression 
+				value="#cV_r_far#" 
+				dimension="1"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+		</builder>
+	</function>		
+
+  <constValue label="cV_splitMesh" name="sliderFloatParam" value="0.25" min=".01" max="0.99"/>	
+
+		<!---
+		!
+		! spine
+		!
+		-->			
+	<replace variable="dtPart" values="{dt}{dt3}">
+    <part label="s3_spine_{dtPart}"> 
+      <builder  name="bSplineCurve_pointConstructOCC" order="2">
+        <Point_3 xyz="#cV_e_{dtPart}_0#, 0, #cV_l_{dtPart}_0#"/>
+        <Point_3 xyz="#cV_e_{dtPart}_1#, 0, #cV_l_{dtPart}_1#"/>
+        <Point_3 xyz="#cV_e_{dtPart}_1.5#, 0, #cV_l_{dtPart}_1.5#"/>
+        <Point_3 xyz="#cV_e_{dtPart}_2#, 0, #cV_l_{dtPart}_2#"/>
+      </builder>
+    </part>	
+  </replace>
+	<replace variable="dtPart" values="{dt2}">
+		<part label="s3_spine_{dtPart}"> 
+			<builder  name="bSplineCurve_pointConstructOCC" order="2">
+				<Point_3 xyz="#cV_e_{dtPart}_0#, 0, #cV_l_{dtPart}_0#"/>
+				<Point_3 xyz="#cV_e_{dtPart}_1#, 0, #cV_l_{dtPart}_1#"/>
+				<Point_3 xyz="#cV_e_{dtPart}_2#, 0, #cV_l_{dtPart}_2#"/>
+			</builder>
+		</part>
+	</replace>
+	<replace variable="dtPart" values="{far}">
+		<part label="s3_spine_{dtPart}"> 
+			<builder  name="bSplineCurve_pointConstructOCC" order="1">
+				<Point_3 xyz="#cV_e_{dtPart}_0#, 0, #cV_l_{dtPart}_0#"/>
+<!--				<Point_3 xyz="#cV_e_{dtPart}_1#, 0, #cV_l_{dtPart}_1#"/>
+        <Point_3 xyz="#cV_e_{dtPart}_1.5#, 0, #cV_l_{dtPart}_1.5#"/>-->
+				<Point_3 xyz="#cV_e_{dtPart}_2#, 0, #cV_l_{dtPart}_2#"/>
+			</builder>
+		</part>
+	</replace>
+	
+	<replace variable="dtPart" values="{dt}">
+			
+    <!--
+		!
+		! thickness
+		!
+		-->
+		<function label="f_T_{dtPart}In">
+			<builder  name="muParser">
+				<expression 
+					value="
+						-(
+							#cV_T_{dtPart}_0# + xx * (#cV_T_{dtPart}_1#-#cV_T_{dtPart}_0#)
+						)
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>
+		<function label="f_T_{dtPart}Out">
+			<builder  name="muParser">
+				<expression 
+					value="
+						0.
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>
+		<function label="f_T_{dtPart}Mid">
+			<builder  name="muParser">
+				<expression 
+					value="
+						.5* (
+							#cV_T_{dtPart}_0# + xx * (#cV_T_{dtPart}_1#-#cV_T_{dtPart}_0#)
+						)
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>		
+		
+		<replace variable="dtOrient" values="{In}{Out}{Mid}">
+			<!--
+			!
+			! spines
+			!
+			-->			
+			<part label="s3_spine_{dtPart}{dtOrient}">
+				<builder 
+					name="bSplineCurve_pointInterpolateConstructOCC"
+					orderMin="2"
+					orderMax="2"
+				>
+					<replace variable="ii" values="THICK_CUTS">
+						<Point_3 
+							xyz="
+								(@s3_spine_{dtPart}[%x]({ii}/1000.)@) + $f_T_{dtPart}{dtOrient}({ii}/1000.)$,
+								(@s3_spine_{dtPart}[%y]({ii}/1000.)@),
+								(@s3_spine_{dtPart}[%z]({ii}/1000.)@)"
+							/>
+					</replace>
+				</builder>		
+			</part>
+
+			<!--
+			!
+			! ridges
+			!
+			-->						
+			<replace variable="ii" values="DT_CUTS">
+				<part label="s3_ridge_{dtPart}{dtOrient}_{ii}">
+					<builder 
+						name="circle_radiusCoordinateSystemOCCAGXmlBuilder" 
+						radius="
+						  $f_R_{dtPart}({ii}/1000.)$ 
+						  + 
+						  $f_T_{dtPart}{dtOrient}({ii}/1000.)$
+						" 
+						angle="_pi/2."
+					>
+						<Point_3 xyz="@s3_spine_{dtPart}[%]({ii}/1000)@"/>
+						<Vector_3 xyz="0,0,1"/>
+					</builder>
+				</part>
+			<!--
+			!
+			! vertebras
+			!
+			-->							
+				<part label="s3_vertebra_{dtPart}{dtOrient}_{ii}">
+					<builder name="bSplineCurve_pointConstructOCC" order="1">
+						<Point_3 xyz="@s3_ridge_{dtPart}{dtOrient}_{ii}[%](1)@"/>
+						<Point_3 
+							xyz="
+								0,
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%y](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%z](1)@)
+							"
+						/>
+					</builder>
+				</part>
+				<part label="s3_corpus_{dtPart}{dtOrient}_{ii}">
+					<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-2">
+						<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_{ii}"/>
+						<analyticGeometry label="s3_vertebra_{dtPart}{dtOrient}_{ii}"/>						
+					</builder>
+				</part>
+				
+			</replace>
+<!--			<part label="aS_skinRidge_{dtPart}{dtOrient}">
+				<builder name="bSplineSurface_skinConstructOCC">
+					<replace variable="ii" values="DT_CUTS">
+						<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_{ii}"/>
+					</replace>		
+				</builder>
+			</part>-->
+			<part label="aS_skinCorpus_{dtPart}{dtOrient}">
+				<builder 
+					name="bSplineSurface_skinConstructOCC" 
+					nIterations="1"
+					orderMin="3"
+					orderMax="3"
+				>
+					<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_0"/>
+					<replace variable="ii" values="DT_CUTSNZ">
+						<analyticGeometry label="s3_corpus_{dtPart}{dtOrient}_{ii}"/>
+					</replace>		
+				</builder>
+			</part>			
+		</replace> <!-- dtOrient -->		
+	</replace> <!-- dtPart -->
+	
+	<replace variable="dtPart" values="{dt2}">
+			
+    <!--
+		!
+		! thickness
+		!
+		-->
+		<function label="f_T_{dtPart}In">
+			<builder  name="muParser">
+				<expression 
+					value="
+						-(#cV_T_{dtPart}_0# + xx * (#cV_T_{dtPart}_1#-#cV_T_{dtPart}_0#))
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>
+		<function label="f_T_{dtPart}Out">
+			<builder  name="muParser">
+				<expression 
+					value="
+						(
+							0
+						)
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>
+		<function label="f_T_{dtPart}Mid">
+			<builder  name="muParser">
+				<expression 
+					value="
+						.5* (
+							#cV_T_{dtPart}_0# + xx * (#cV_T_{dtPart}_1#-#cV_T_{dtPart}_0#)
+						)
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>		
+		
+		<replace variable="dtOrient" values="{In}{Out}{Mid}">
+			<!--
+			!
+			! spines
+			!
+			-->			
+			<part label="s3_spine_{dtPart}{dtOrient}">
+				<builder 
+					name="bSplineCurve_pointInterpolateConstructOCC"
+					orderMin="2"
+					orderMax="2"
+				>
+					<replace variable="ii" values="THICK_CUTS">
+						<Point_3 
+							xyz="
+								(@s3_spine_{dtPart}[%x]({ii}/1000.)@) + $f_T_{dtPart}{dtOrient}({ii}/1000.)$,
+								(@s3_spine_{dtPart}[%y]({ii}/1000.)@),
+								(@s3_spine_{dtPart}[%z]({ii}/1000.)@)"
+							/>
+					</replace>
+				</builder>		
+			</part>
+
+			<!--
+			!
+			! ridges
+			!
+			-->						
+			<replace variable="ii" values="DT_CUTS">
+				<part label="s3_ridge_{dtPart}{dtOrient}_{ii}">
+					<builder 
+						name="circle_radiusCoordinateSystemOCCAGXmlBuilder" 
+						radius="
+						  $f_R_{dtPart}({ii}/1000.)$ 
+						  + 
+						  $f_T_{dtPart}{dtOrient}({ii}/1000.)$
+						" 
+						angle="_pi/2."
+					>
+						<Point_3 xyz="@s3_spine_{dtPart}[%]({ii}/1000)@"/>
+						<Vector_3 xyz="0,0,1"/>
+					</builder>
+				</part>
+			<!--
+			!
+			! vertebras
+			!
+			-->							
+				<part label="s3_vertebra_{dtPart}{dtOrient}_{ii}">
+					<builder name="bSplineCurve_pointConstructOCC" order="1">
+						<Point_3 xyz="@s3_ridge_{dtPart}{dtOrient}_{ii}[%](1)@"/>
+						<Point_3 
+							xyz="
+								0,
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%y](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%z](1)@)
+							"
+						/>
+					</builder>
+				</part>
+				<part label="s3_corpus_{dtPart}{dtOrient}_{ii}">
+					<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-2">
+						<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_{ii}"/>
+						<analyticGeometry label="s3_vertebra_{dtPart}{dtOrient}_{ii}"/>						
+					</builder>
+				</part>
+				
+			</replace>
+<!--			<part label="aS_skinRidge_{dtPart}{dtOrient}">
+				<builder name="bSplineSurface_skinConstructOCC">
+					<replace variable="ii" values="DT_CUTS">
+						<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_{ii}"/>
+					</replace>		
+				</builder>
+			</part>-->
+			<part label="aS_skinCorpus_{dtPart}{dtOrient}">
+				<builder 
+					name="bSplineSurface_skinConstructOCC" 
+					nIterations="3"
+					orderMin="3"
+					orderMax="3"
+				>
+					<replace variable="ii" values="DT_CUTS">
+						<analyticGeometry label="s3_corpus_{dtPart}{dtOrient}_{ii}"/>
+					</replace>		
+				</builder>
+			</part>			
+		</replace> <!-- dtOrient -->		
+	</replace> <!-- dtPart -->
+	
+  <replace variable="dtPart" values="{dt3}">
+			
+    <!--
+		!
+		! thickness
+		!
+		-->
+		<function label="f_T_{dtPart}In">
+			<builder  name="muParser">
+				<expression 
+					value="
+						-(#cV_T_{dtPart}_0# + xx * (#cV_T_{dtPart}_1#-#cV_T_{dtPart}_0#))
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>
+		<function label="f_T_{dtPart}Out">
+			<builder  name="muParser">
+				<expression 
+					value="
+						(
+							0
+						)
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>
+		<function label="f_T_{dtPart}Mid">
+			<builder  name="muParser">
+				<expression 
+					value="
+						.5* (
+							#cV_T_{dtPart}_0# + xx * (#cV_T_{dtPart}_1#-#cV_T_{dtPart}_0#)
+						)
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>		
+		
+		<replace variable="dtOrient" values="{In}{Out}{Mid}">
+			<!--
+			!
+			! spines
+			!
+			-->			
+			<part label="s3_spine_{dtPart}{dtOrient}">
+				<builder 
+					name="bSplineCurve_pointInterpolateConstructOCC"
+					orderMin="2"
+					orderMax="2"
+				>
+					<replace variable="ii" values="THICK_CUTS">
+						<Point_3 
+							xyz="
+								(@s3_spine_{dtPart}[%x]({ii}/1000.)@) + $f_T_{dtPart}{dtOrient}({ii}/1000.)$,
+								(@s3_spine_{dtPart}[%y]({ii}/1000.)@),
+								(@s3_spine_{dtPart}[%z]({ii}/1000.)@)"
+							/>
+<!--						<Point_3 
+							xyz="
+								(@s3_spine_{dtPart}[%x]({ii}/1000.)@) 
+                +
+                sin(
+                  _pi/2-atan(
+                    (@s3_spine_{dtPart}[%ndUx]({ii}/1000.)@)
+                    /
+                    ( (@s3_spine_{dtPart}[%ndUz]({ii}/1000.)@) )
+                  )
+                )
+                *
+                $f_T_{dtPart}{dtOrient}({ii}/1000.)$,
+								(@s3_spine_{dtPart}[%y]({ii}/1000.)@),
+								(@s3_spine_{dtPart}[%z]({ii}/1000.)@)
+                -
+                cos(
+                  _pi/2-atan(
+                    (@s3_spine_{dtPart}[%ndUx]({ii}/1000.)@)
+                    /
+                    ( (@s3_spine_{dtPart}[%ndUz]({ii}/1000.)@) )
+                  )
+                )
+                *
+                $f_T_{dtPart}{dtOrient}({ii}/1000.)$"
+							/>-->            
+					</replace>
+				</builder>		
+			</part>
+
+			<!--
+			!
+			! ridges
+			!
+			-->						
+			<replace variable="ii" values="DT_CUTS">
+				<part label="s3_ridge_{dtPart}{dtOrient}_{ii}">
+					<builder 
+						name="circle_radiusCoordinateSystemOCCAGXmlBuilder" 
+						radius="
+						  $f_R_{dtPart}({ii}/1000.)$ 
+						  + 
+						  $f_T_{dtPart}{dtOrient}({ii}/1000.)$
+						" 
+						angle="_pi/2."
+					>
+						<Point_3 xyz="@s3_spine_{dtPart}[%]({ii}/1000)@"/>
+						<Vector_3 xyz="0,0,1"/>
+					</builder>
+				</part>
+			<!--
+			!
+			! vertebras
+			!
+			-->							
+				<part label="s3_vertebra_{dtPart}{dtOrient}_{ii}">
+					<builder name="bSplineCurve_pointConstructOCC" order="1">
+						<Point_3 xyz="@s3_ridge_{dtPart}{dtOrient}_{ii}[%](1)@"/>
+<!--						<Point_3 
+							xyz="
+								(.7 - ({ii}/1000.) * (.7-.05)/1) * (@s3_ridge_{dtPart}{dtOrient}_{ii}[%x](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%y](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%z](1)@)
+							"
+						/>   -->         
+<!--						<Point_3 
+							xyz="
+								( 
+                  oneInRange(0.0, 0.5, {ii}/1000.) * .6 
+                  + 
+                  oneInRange(0.5, 1.0, {ii}/1000.) 
+                  * 
+                  (
+                    0.6 
+                    - 
+                    ( 
+                      ({ii}/1000.-.5) * (.60-.15)/.5 
+                    ) 
+                  ) 
+                  +
+                  oneInRange(1.0, 2.0, {ii}/1000.) * .15
+                )  
+                * 
+                (@s3_ridge_{dtPart}{dtOrient}_{ii}[%x](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%y](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%z](1)@)
+							"
+						/>        -->                     
+						<Point_3 
+							xyz="
+								0,
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%y](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%z](1)@)
+							"
+						/>
+					</builder>
+				</part>
+				<part label="s3_corpus_{dtPart}{dtOrient}_{ii}">
+					<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-2">
+						<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_{ii}"/>
+						<analyticGeometry label="s3_vertebra_{dtPart}{dtOrient}_{ii}"/>						
+					</builder>
+				</part>
+				
+			</replace>
+<!--			<part label="aS_skinRidge_{dtPart}{dtOrient}">
+				<builder name="bSplineSurface_skinConstructOCC">
+					<replace variable="ii" values="DT_CUTS">
+						<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_{ii}"/>
+					</replace>		
+				</builder>
+			</part>-->
+			<part label="aS_skinCorpus_{dtPart}{dtOrient}">
+				<builder 
+					name="bSplineSurface_skinConstructOCC" 
+					nIterations="3"
+					orderMin="3"
+					orderMax="3"
+				>
+					<replace variable="ii" values="DT_CUTS">
+						<analyticGeometry label="s3_corpus_{dtPart}{dtOrient}_{ii}"/>
+					</replace>		
+				</builder>
+			</part>			
+		</replace> <!-- dtOrient -->		
+	</replace> <!-- dtPart -->
+	
+  <replace variable="dtPart" values="{far}">
+			
+    <!--
+		!
+		! thickness
+		!
+		-->
+		<function label="f_T_{dtPart}In">
+			<builder  name="muParser">
+				<expression 
+					value="
+						0.
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>
+		<function label="f_T_{dtPart}Out">
+			<builder  name="muParser">
+				<expression 
+					value="
+						(
+							#cV_T_{dtPart}_0# + xx * (#cV_T_{dtPart}_1#-#cV_T_{dtPart}_0#)
+						)
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>
+		<function label="f_T_{dtPart}Mid">
+			<builder  name="muParser">
+				<expression 
+					value="
+						.5* (
+							#cV_T_{dtPart}_0# + xx * (#cV_T_{dtPart}_1#-#cV_T_{dtPart}_0#)
+						)
+					"
+					dimension="1"/>
+				<x_one name="xx" min="0." max="1."/>
+			</builder>
+		</function>		
+		
+		<replace variable="dtOrient" values="{In}{Out}{Mid}">
+			<!--
+			!
+			! spines
+			!
+			-->			
+			<part label="s3_spine_{dtPart}{dtOrient}">
+				<builder 
+					name="bSplineCurve_pointInterpolateConstructOCC"
+					orderMin="2"
+					orderMax="2"
+				>
+					<replace variable="ii" values="THICK_CUTS">
+						<Point_3 
+							xyz="
+								(@s3_spine_{dtPart}[%x]({ii}/1000.)@) + $f_T_{dtPart}{dtOrient}({ii}/1000.)$,
+								(@s3_spine_{dtPart}[%y]({ii}/1000.)@),
+								(@s3_spine_{dtPart}[%z]({ii}/1000.)@)"
+							/>
+					</replace>
+				</builder>		
+			</part>
+
+			<!--
+			!
+			! ridges
+			!
+			-->						
+			<replace variable="ii" values="DT_CUTS">
+				<part label="s3_ridge_{dtPart}{dtOrient}_{ii}">
+					<builder 
+						name="circle_radiusCoordinateSystemOCCAGXmlBuilder" 
+						radius="
+						  $f_R_{dtPart}({ii}/1000.)$ 
+						  + 
+						  $f_T_{dtPart}{dtOrient}({ii}/1000.)$
+						" 
+						angle="_pi/2."
+					>
+						<Point_3 xyz="@s3_spine_{dtPart}[%]({ii}/1000)@"/>
+						<Vector_3 xyz="0,0,1"/>
+					</builder>
+				</part>
+			<!--
+			!
+			! vertebras
+			!
+			-->							
+				<part label="s3_vertebra_{dtPart}{dtOrient}_{ii}">
+					<builder name="bSplineCurve_pointConstructOCC" order="1">
+						<Point_3 xyz="@s3_ridge_{dtPart}{dtOrient}_{ii}[%](1)@"/>
+<!--						<Point_3 
+							xyz="
+								( (.75 - ({ii}/1000.) * (.75-.01)/.25) + oneInRange(.75, 1.0, .01) ) * (@s3_ridge_{dtPart}{dtOrient}_{ii}[%x](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%y](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%z](1)@)
+							"
+						/>         -->              
+						<Point_3 
+							xyz="
+								0,
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%y](1)@),
+								(@s3_ridge_{dtPart}{dtOrient}_{ii}[%z](1)@)
+							"
+						/>
+					</builder>
+				</part>
+				<part label="s3_corpus_{dtPart}{dtOrient}_{ii}">
+					<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-2">
+						<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_{ii}"/>
+						<analyticGeometry label="s3_vertebra_{dtPart}{dtOrient}_{ii}"/>						
+					</builder>
+				</part>
+				
+			</replace>
+<!--			<part label="aS_skinRidge_{dtPart}{dtOrient}">
+				<builder name="bSplineSurface_skinConstructOCC">
+					<replace variable="ii" values="DT_CUTS">
+						<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_{ii}"/>
+					</replace>		
+				</builder>
+			</part>-->
+			<part label="aS_skinCorpus_{dtPart}{dtOrient}">
+				<builder 
+					name="bSplineSurface_skinConstructOCC" 
+					nIterations="3"
+					orderMin="3"
+					orderMax="3"
+				>
+					<analyticGeometry label="s3_ridge_{dtPart}{dtOrient}_0"/>
+					<replace variable="ii" values="DT_CUTSNZ">
+						<analyticGeometry label="s3_corpus_{dtPart}{dtOrient}_{ii}"/>
+					</replace>		
+				</builder>
+			</part>			
+		</replace> <!-- dtOrient -->		
+	</replace> <!-- dtPart -->
+
+
+<!--
+	!
+	! spoiler
+	!
+-->	
+  <constValue label="cV_e_dt2_spoiler" name="sliderFloatParam" value=".1" min="-100." max="100."/>
+  <constValue label="cV_l_dt2_spoiler" name="sliderFloatParam" value=".1" min="-100." max="100."/>
+	<part label="s3_spoiler_path_dt2In">
+		<builder name="analyticGeometry">
+				<analyticGeometry label="~v1_s(aS_skinCorpus_dt2In)~"/>
+		</builder>
+	</part>
+	<part label="s3_spoiler_path_dt2Out">
+		<builder name="analyticGeometry">
+				<analyticGeometry label="~v1_s(aS_skinCorpus_dt2Out)~"/>
+		</builder>
+	</part>	
+	<part label="s3_spoiler_sec_dt2In">
+		<builder name="bSplineCurve_pointConstructOCC" order="1">
+				<Point_3 xyz="@s3_spoiler_path_dt2In[%](0)@"/>
+				<Point_3 
+					xyz="
+						(@s3_spoiler_path_dt2Out[%x](0)@) + #cV_e_dt2_spoiler#,
+					  (@s3_spoiler_path_dt2Out[%y](0)@),
+					  (@s3_spoiler_path_dt2Out[%z](0)@) + #cV_l_dt2_spoiler#
+					"
+					/>
+		</builder>
+	</part>	
+	<part label="aS_spoiler_dt2In">
+		<builder name="bSplineSurface_pipeConstructOCCAGXmlBuilder">
+				<analyticGeometry label="s3_spoiler_path_dt2In"/>
+				<analyticGeometry label="s3_spoiler_sec_dt2In"/>
+		</builder>
+	</part>
+	<part label="aS_spoiler_dt2InExchange">
+		<builder 
+			name="bSplineSurface_pipeConstructOCCAGXmlBuilder"
+			exchange="true"
+		>
+				<analyticGeometry label="s3_spoiler_path_dt2In"/>
+				<analyticGeometry label="s3_spoiler_sec_dt2In"/>
+		</builder>
+	</part>	
+	<part label="s3_spoiler_sec_dt2Out">
+		<builder name="bSplineCurve_pointConstructOCC" order="1">
+				<Point_3 xyz="@s3_spoiler_path_dt2Out[%](0)@"/>
+				<Point_3 xyz="@s3_spoiler_sec_dt2In[%](1)@"/>
+		</builder>
+	</part>		
+	<part label="aS_spoiler_dt2Out_wrongUV">
+		<builder name="bSplineSurface_pipeConstructOCCAGXmlBuilder">
+				<analyticGeometry label="s3_spoiler_path_dt2Out"/>
+				<analyticGeometry label="s3_spoiler_sec_dt2Out"/>
+		</builder>
+	</part>	
+	<!-- 
+		respline spoiler to make sure parameterization 
+		is correct in split direction 
+	-->
+	<part label="aS_spoiler_dt2Out">
+		<builder name="bSplineSurface_skinConstructOCC" exchange="true">
+				<analyticGeometry label="~u0_s(aS_spoiler_dt2Out_wrongUV)~"/>
+				<analyticGeometry label="~u1_s(aS_spoiler_dt2In)~"/>
+		</builder>
+	</part>		
+<!--
+	!
+	! bevels
+	!
+-->	
+	<!-- dt back-->
+	<part label="aS_bevelBack_dt">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+			exchange="true"
+		>
+				<analyticGeometry label="~v1_s(aS_skinCorpus_dtIn)~"/>
+				<analyticGeometry label="~v1_s(aS_skinCorpus_dtOut)~"/>
+		</builder>
+	</part>
+	
+	<!-- dt2 front -->	
+	<part label="aS_bevelFront_dt2">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+			exchange="false"
+		>
+				<analyticGeometry label="~v0_s(aS_skinCorpus_dt2Out)~"/>			
+				<analyticGeometry label="~v0_s(aS_skinCorpus_dt2In)~"/>
+		</builder>
+	</part>	
+	
+	<part label="aS_bevelBack_dt2">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+			exchange="true"
+		>
+				<analyticGeometry label="~v1_s(aS_skinCorpus_dt2In)~"/>
+				<analyticGeometry label="~v1_s(aS_skinCorpus_dt2Out)~"/>
+		</builder>
+	</part>  
+	<part label="aS_bevelFront_dt3">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+			exchange="true"
+		>
+			<analyticGeometry label="~v0_s(aS_skinCorpus_dt3Out)~"/>			
+			<analyticGeometry label="~v0_s(aS_skinCorpus_dt3In)~"/>
+    </builder>
+	</part>    
+	<part label="aS_bevelBack_dt3">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+			exchange="true"
+		>
+				<analyticGeometry label="~v1_s(aS_skinCorpus_dt3In)~"/>
+				<analyticGeometry label="~v1_s(aS_skinCorpus_dt3Out)~"/>
+		</builder>
+	</part>    
+	<!--
+	 !
+	 ! hub part in draft tube
+	 !
+	-->
+			<replace variable="ii" values="{0}{0.25}{0.50}{1}{2}">
+				<part label="s3_dt_hub_ellipse_{ii}">
+					<builder 
+						name="ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder" 
+						radius_one="#cV_r_1_dt_hub_{ii}#" 
+						radius_two="#cV_r_2_dt_hub_{ii}#" 
+						angle="_pi/2."
+					>
+						<Point_3 xyz="0,0,#cV_l_dt_hub_{ii}#"/>
+						<Vector_3 xyz="0,0,1"/>
+						<Vector_3 xyz="1,0,0"/>
+					</builder>
+				</part>	
+			</replace>	
+			<part label="aS_dt_hub_0">
+				<builder 
+					name="bSplineSurface_skinConstructOCC" 
+					orderMin="3" 
+					orderMax="3" 
+					nIterations="3"
+				>
+					<replace variable="ii" values="{0}{0.25}{0.50}{1}">
+						<analyticGeometry label="s3_dt_hub_ellipse_{ii}"/>
+					</replace>
+				</builder>
+			</part>										
+			<part label="aS_dt_hub_1">
+				<builder name="bSplineSurface_skinConstructOCC" orderMin="1" orderMax="1" nIterations="0">
+					<replace variable="ii" values="{1}{2}">
+						<analyticGeometry label="s3_dt_hub_ellipse_{ii}"/>
+					</replace>
+				</builder>
+			</part>
+			<part label="s3_dt_hubEnd_0">
+				<builder name="analyticGeometry">
+					<transformer name="pickMap1dTo3dLinePercent">
+						<float value="0.00"/>
+						<float value="#cV_splitMesh#"/>				
+					</transformer>				
+					<analyticGeometry label="~v1_s(aS_dt_hub_1)~"/>
+				</builder>
+			</part>
+		<part label="s3_dt_hubEnd_1">
+			<builder name="analyticGeometry">
+				<transformer name="pickMap1dTo3dLinePercent">
+					<float value="#cV_splitMesh#"/>
+					<float value="1.00"/>				
+				</transformer>				
+				<analyticGeometry label="~v1_s(aS_dt_hub_1)~"/>
+			</builder>
+		</part>
+		<part label="s3_dt_hubEnd_2">
+			<builder name="bSplineCurve_pointConstructOCC" order="1">
+				<Point_3 xyz="0,0,@aS_dt_hub_1[%z](0,1)@"/>
+				<Point_3 xyz="@aS_dt_hub_1[%](0,1)@"/>
+			</builder>
+		</part>		
+		<part label="s3_dt_hubEnd_3">
+			<builder name="bSplineCurve_pointConstructOCC" order="1">
+				<Point_3 xyz="0,0,@aS_dt_hub_1[%z](0,1)@"/>
+				<Point_3 xyz="@aS_dt_hub_1[%](1,1)@"/>
+			</builder>
+		</part>
+		<part label="aS_dt_hubEnd">				
+			<builder name="bSplineSurface_bSplineCurveFillConstructOCC">
+				<analyticGeometry label="s3_dt_hubEnd_0"/>
+				<analyticGeometry label="s3_dt_hubEnd_1"/>
+				<analyticGeometry label="s3_dt_hubEnd_2"/>
+				<analyticGeometry label="s3_dt_hubEnd_3"/>
+			</builder>		
+		</part>					
+<!--
+ !
+ ! outter part of gv ru
+ !
+-->
+			<part label="s3_gv_ru_shroudOut_1">
+				<builder name="bSplineCurve_pointConstructOCC" order="2">
+					<Point_3 xyz="@s3_shroudOut_in[%](0)@"/>
+<!--					<Point_3 
+						xyz="
+						  (@s3_shroudOut_in[%x](0)@) - (@s3_shroudOut_in[%ndUx](0)@) * .2,
+						  (@s3_shroudOut_in[%y](0)@) - (@s3_shroudOut_in[%ndUy](0)@) * .2,
+						  (@s3_shroudOut_in[%z](0)@) - (@s3_shroudOut_in[%ndUz](0)@) * .2
+						"/>-->
+					<Point_3 
+						xyz="
+						  (@s3_shroudOut_in[%x](0)@),
+						  (@s3_shroudOut_in[%y](0)@),
+						  .90 * ( 
+						    (@s3_shroudOut_in[%z](0)@) + (@aS_skinCorpus_dtOut[%z](1,0)@) 
+						  )
+						"/>					
+<!--						<Point_3 xyz="
+						  (@aS_skinCorpus_dtOut[%x](1,0)@),
+						  (@aS_skinCorpus_dtOut[%y](1,0)@),
+						  (@aS_skinCorpus_dtOut[%z](1,0)@) - .2
+						"/>					-->
+<!--					<Point_3 
+						xyz="
+						  (@aS_skinCorpus_dtOut[%x](1,0)@),
+						  (@aS_skinCorpus_dtOut[%y](1,0)@),
+						  .10 * ( 
+						    (@s3_shroudOut_in[%z](0)@) + (@aS_skinCorpus_dtOut[%z](1,0)@) 
+						  )
+						"/>-->
+					<Point_3 
+						xyz="
+						  (@aS_skinCorpus_dtOut[%x](1,0)@) - (@aS_skinCorpus_dtOut[%ndVx](1,0)@) * .2,
+						  (@aS_skinCorpus_dtOut[%y](1,0)@) - (@aS_skinCorpus_dtOut[%ndVy](1,0)@) * .2,
+						  (@aS_skinCorpus_dtOut[%z](1,0)@) - (@aS_skinCorpus_dtOut[%ndVz](1,0)@) * .2
+						"/>					
+					<Point_3 
+						xyz="
+						  @aS_skinCorpus_dtOut[%](1,0)@
+						"
+					/>
+				</builder>
+			</part>
+			<part label="s3_gv_ru_shroudOut">
+				<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-2">
+					<analyticGeometry label="~revU(s3_shroudOut_in)~"/>
+					<analyticGeometry label="s3_gv_ru_shroudOut_1"/>
+				</builder>
+			</part>
+	  <part label="aS_gv_ru_shroudOut">	
+			<builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="s3_gv_ru_shroudOut"/>
+				<Vector_3 label="v3_Nzz"/>
+				<Point_3 label="p3_0"/>
+				<float value="_pi/2."/>
+		</builder>  
+	</part>	
+  <replace 
+    variable="ii" 
+    values="
+      {skinCorpus_dtIn}{skinCorpus_dtOut}{skinCorpus_dt2In}{skinCorpus_dt2Out}
+      {skinCorpus_dt3In}{skinCorpus_dt3Out}
+      {dt_hub_0}{dt_hub_1}
+    ">
+    <part label="s3_nx_{ii}">
+      <builder name="analyticGeometry">
+        <analyticGeometry label="~u1_s(aS_{ii})~"/>
+      </builder>
+    </part>    
+    <part label="s3_ny_{ii}">
+      <builder name="analyticGeometry">
+        <analyticGeometry label="~u0_s(aS_{ii})~"/>
+      </builder>
+    </part>    
+  </replace>
+   
+<!--  <plugin 
+    name="analyticGeometryToCSV"
+    label="dtToCSV"
+    numPoints="{50}{50}{50}"   
+  >
+    <replace 
+      variable="ii" 
+      values="
+        {skinCorpus_dtIn}{skinCorpus_dtOut}{skinCorpus_dt2In}{skinCorpus_dt2Out}{skinCorpus_dt3In}{skinCorpus_dt3Out}
+        {dt_hub_0}{dt_hub_1}
+      "
+    >    
+      <analyticGeometry label="s3_ny_{ii}"/>
+    </replace>
+  </plugin>-->
+</dt>

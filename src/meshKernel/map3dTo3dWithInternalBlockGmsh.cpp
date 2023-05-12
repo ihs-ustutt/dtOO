@@ -35,10 +35,10 @@ namespace dtOO {
   void map3dTo3dWithInternalBlockGmsh::init( 
     ::QDomElement const & element,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV
 	) {
     //
     // init gmshBoundedVolume
@@ -69,7 +69,7 @@ namespace dtOO {
         map3dTo3d::ConstDownCast(aG_t.get())
       );
       
-			if (mm3d && _m3d.isNull()) _m3d.reset( mm3d->clone() );
+			if (mm3d && !_m3d) _m3d.reset( mm3d->clone() );
 			else _internal.push_back( mm3d->clone() );
 		}	
 

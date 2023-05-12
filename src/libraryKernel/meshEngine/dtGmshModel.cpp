@@ -281,6 +281,12 @@ namespace dtOO {
     addIfEdgeToGmshModel(edge, tag, vId[0], vId[1]);
 	}
 	
+  dtInt dtGmshModel::addIfEdgeToGmshModel( map1dTo3d const * const edge ) {
+    dtInt tag;
+    addIfEdgeToGmshModel(edge, &tag);
+    return tag;
+  }
+
   void dtGmshModel::addIfFaceToGmshModel( 
     map2dTo3d const * const face, dtInt * const tag,
 		std::list< ::GEdge * > const & edges, std::vector< dtInt > const & ori
@@ -365,6 +371,12 @@ namespace dtOO {
     }
 		addIfFaceToGmshModel(face, tag, edges, ori);  	
 	}
+
+  dtInt dtGmshModel::addIfFaceToGmshModel( map2dTo3d const * const face ) {
+    dtInt tag;
+    addIfFaceToGmshModel(face, &tag);
+    return tag;
+  }
 
   void dtGmshModel::addIfRegionToGmshModel(
     map3dTo3d const * const region, dtInt * const tag,
@@ -472,7 +484,26 @@ namespace dtOO {
     
   	addIfRegionToGmshModel( region, tag, faces, ori );    
   }  
-			
+
+  dtInt dtGmshModel::addIfRegionToGmshModel(
+    map3dTo3d const * const region, std::vector< int > const & faceIds
+  ) {
+    std::list< ::GFace * > faces;
+    std::vector< int > ori;
+    dt__forAllRefAuto(faceIds, faceId) {
+      faces.push_back( this->getDtGmshFaceByTag(faceId) );
+      if (faceId<0) {
+        ori.push_back(-1);
+      }
+      else {
+        ori.push_back(1);
+      }
+    }
+    dtInt rId;
+    addIfRegionToGmshModel(region, &rId, faces, ori);
+    return rId;
+  }
+
   void dtGmshModel::addIfToGmshModel(
     analyticGeometry const * const aG, dtInt * const tag
   ) {
@@ -798,6 +829,11 @@ namespace dtOO {
   dtGmshEdge * dtGmshModel::cast2DtGmshEdge( ::GEntity * ge ) {
     assert( ge!=NULL );
     return dtGmshEdge::MustDownCast(ge);
+  }
+  
+  ::GModel * dtGmshModel::cast2GModel( dtGmshModel * gm ) {
+    assert( gm!=NULL );
+    return dynamic_cast< ::GModel * >(gm);
   }
   
   std::list< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( 
@@ -2204,12 +2240,29 @@ namespace dtOO {
         physV.insert( physV.begin(), std::string("*") );
       }
     }
-    
-    wildStr = physV[0];
-    dt__forFromToIndex(1, physV.size(), ii) wildStr = wildStr+"->"+physV[ii];
+    std::string wildStrWork = physV[0];
+    dt__forFromToIndex(1, physV.size(), ii) {
+      wildStrWork = wildStrWork+"->"+physV[ii];
+    }
    
     dt__forAllRefAuto( getFullPhysicalList(ge), aPhysical) {
-      if ( stringPrimitive::matchWildcard(wildStr, aPhysical) ) return true;
+      if ( !stringPrimitive::isWildcard(wildStr) ) {
+        if ( wildStr ==  aPhysical ) {
+          dt__debug(
+            matchWildCardPhysical(), 
+            << "Direct match with wildStr = " << wildStr
+          );
+          return true;
+        }
+      }
+      if ( stringPrimitive::matchWildcard(wildStrWork, aPhysical) ) {
+        dt__debug(
+          matchWildCardPhysical(), 
+          << "Match with wildStrWork = " << wildStrWork
+          << " == " << aPhysical
+        );
+        return true;
+      }
     }
     return false;
   }

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <mainConceptFwd.h>
+#include <jsonHeaven/jsonPrimitive.h>
 
 class QDomElement;
 
@@ -27,12 +28,13 @@ namespace dtOO {
       optionHandling(const optionHandling& orig);
       virtual ~optionHandling();
       virtual void init(::QDomElement const * const wElement);
+      virtual void jInit( jsonPrimitive const & jE );
       virtual void init(
         ::QDomElement const & wElement,
         baseContainer const * const bC,      
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
       );      
       void setOption(std::string const name, std::string const value);
       std::string getOption(
@@ -40,17 +42,7 @@ namespace dtOO {
       ) const;
       std::string getOption(std::string const name) const;
       dtReal getOptionFloat(std::string const name) const;
-      dtReal getOptionFloat(
-        std::string const name,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF					
-      ) const;
       dtInt getOptionInt(std::string const name) const;
-      dtInt getOptionInt(
-        std::string const name,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF					
-      ) const;
       bool optionTrue(std::string const name) const;
       bool hasOption(std::string const name) const;
       optionGroup getOptionGroup( std::string const name ) const;

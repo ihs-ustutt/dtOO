@@ -19,6 +19,12 @@ namespace dtOO {
   ) : dtTransformer(orig) {
 		
 	}
+  
+  dtTransformerInvThreeD::dtTransformerInvThreeD( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }  
 
 	dtVector3 dtTransformerInvThreeD::apply(dtVector3 const & pp) const {
 		std::vector< dtVector3 > vec;
@@ -79,5 +85,6 @@ namespace dtOO {
   ) const {
 		return retract(&pp);
 	}  
+  dt__C_addCloneForpVH(dtTransformerInvThreeD);
 }
 

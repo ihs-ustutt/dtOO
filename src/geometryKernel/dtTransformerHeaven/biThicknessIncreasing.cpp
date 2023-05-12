@@ -39,10 +39,10 @@ namespace dtOO {
 		return new biThicknessIncreasing();
 	}
 	
-  aFPtrVec biThicknessIncreasing::apply( 
-    aFPtrVec const * const sFunP 
+  lvH_analyticFunction biThicknessIncreasing::apply( 
+    lvH_analyticFunction const * const sFunP 
   ) const {
-    aFPtrVec transSFun;
+    lvH_analyticFunction transSFun;
     for (int ii=0;ii<sFunP->size();ii++) {
 			std::vector< dtPoint2 > p2;
 			std::vector< dtPoint2 > p2Inv;
@@ -181,9 +181,9 @@ namespace dtOO {
   void biThicknessIncreasing::init( 
 		::QDomElement const * tE, 
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		

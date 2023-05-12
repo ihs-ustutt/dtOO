@@ -27,13 +27,13 @@ namespace dtOO {
     
   }
   
-  void bVORemoveElements::bVORemoveElements::init( 
+  void bVORemoveElements::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
@@ -47,9 +47,12 @@ namespace dtOO {
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_label
-		= 
-		dtXmlParserBase::getAttributeStrVector("label", element);
+    jsonPrimitive jE;
+    jE.append< std::vector< std::string > >(
+      "_label",
+		  dtXmlParserBase::getAttributeStrVector("label", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVORemoveElements::postUpdate( void ) {
@@ -61,7 +64,9 @@ namespace dtOO {
 		::GModel::setCurrent( gm );
     	
     logContainer< bVORemoveElements > logC(logINFO, "postUpdate()");
-    dt__forAllRefAuto(_label, aLabel) {
+    dt__forAllRefAuto(
+      config().lookup< std::vector< std::string > >("_label"), aLabel
+    ) {
       dt__forAllRefAuto( gm->dtEdges(), aEdge ) {
         if ( gm->matchWildCardPhysical( aLabel, aEdge ) ) {
           logC() 

@@ -8,13 +8,14 @@
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
 #include <interfaceHeaven/systemHandling.h>
-#include <xmlHeaven/dtXmlParser.h>
+#include <interfaceHeaven/lVHOstateHandler.h>
 #include <meshEngine/dtGmshVertex.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include "bVOInterfaceFactory.h"
+#include "jsonHeaven/jsonPrimitive.h"
 
 namespace dtOO {  
   bool bVOReadMSH::_registrated 
@@ -30,13 +31,13 @@ namespace dtOO {
     
   }
   
-  void bVOReadMSH::bVOReadMSH::init( 
+  void bVOReadMSH::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {		
     //
@@ -46,9 +47,17 @@ namespace dtOO {
     
 //		<bVObserver name="bVOReadMSH" 
 //		  filename="mesh.msh"
-//		/>									
-		_filename = qtXmlBase::getAttributeStr("filename", element);		
-    _mustRead = qtXmlBase::getAttributeBool("mustRead", element);		
+//		/>
+  	jsonPrimitive jE;
+    jE.append< std::string >(
+      "_filename",
+      qtXmlBase::getAttributeStr("filename", element)
+    );		
+    jE.append< bool >(
+      "_mustRead",
+      qtXmlBase::getAttributeBool("mustRead", element)
+    );		
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOReadMSH::preUpdate( void ) {
@@ -69,11 +78,11 @@ namespace dtOO {
       //
       // create filename string if empty
       //
-      std::string cFileName = _filename;
+      std::string cFileName = config().lookup< std::string >("_filename");
       if ( cFileName == "" ) {
         cFileName 
         = 
-        dtXmlParser::constReference().currentState()
+        lVHOstateHandler().commonState()
         +
         "_"
         +
@@ -81,13 +90,16 @@ namespace dtOO {
         +
         ".msh";
       }
-//      else dt__throwUnexpected(preUpdate);
       
-      if ( !systemHandling::fileExists(cFileName) && !_mustRead ) {
+      if ( 
+        !systemHandling::fileExists(cFileName) 
+        && 
+        !config().lookup< bool >("_mustRead") 
+      ) {
         dt__info(
           preUpdate(), 
           << "No file >" << cFileName << "<. Do not read!" << std::endl
-          << "mustRead = " << _mustRead
+          << "mustRead = " << config().lookup< bool >("_mustRead") 
         );
         return;
       }

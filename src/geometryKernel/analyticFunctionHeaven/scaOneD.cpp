@@ -99,20 +99,18 @@ namespace dtOO {
         (x_percent(deltaPer) - x_percent(0.) )
       );      
     }
-    else if ( (xP>=deltaPer) && (xP<=(1.-deltaPer)) ) {
-      return (
-        ( YFloatPercent(xP+deltaPer) - YFloatPercent(xP-deltaPer) )
-        /
-        ( x_percent(xP+deltaPer) - x_percent(xP-deltaPer) )
-      );
-    }
-    else if (xP>0.99) {
+    if (xP>0.99) {
       return (
         (YFloatPercent(1.) - YFloatPercent(1.-deltaPer))
         /
         (x_percent(1.) - x_percent(1.-deltaPer) )
       );      
     }
+    return (
+      ( YFloatPercent(xP+deltaPer) - YFloatPercent(xP-deltaPer) )
+      /
+      ( x_percent(xP+deltaPer) - x_percent(xP-deltaPer) )
+    );    
   }
 		
   dtReal scaOneD::getLength( void ) const {

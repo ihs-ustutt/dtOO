@@ -41,10 +41,10 @@ namespace dtOO {
   void readMOABMesh::init( 
       ::QDomElement const & element,
       baseContainer * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV
+      lvH_constValue const * const cV,
+      lvH_analyticFunction const * const aF,
+      lvH_analyticGeometry const * const aG,
+      lvH_boundedVolume const * const bV
 	) {
     //
     // init

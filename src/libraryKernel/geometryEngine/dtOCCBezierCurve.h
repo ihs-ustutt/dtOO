@@ -18,7 +18,7 @@ namespace dtOO {
     dtOCCBezierCurve();
     dtOCCBezierCurve( dtOCCCurveBase const & orig);
     virtual ~dtOCCBezierCurve();
-    virtual dtCurve * clone( void ) const;
+    virtual dtOCCBezierCurve * clone( void ) const;
     virtual dtInt order( void ) const;
     virtual dtInt nControlPoints( void ) const;
     virtual dtPoint3 controlPoint( dtInt const nPoint ) const;

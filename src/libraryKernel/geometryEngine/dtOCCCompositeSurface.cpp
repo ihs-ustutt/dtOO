@@ -34,7 +34,7 @@ namespace dtOO {
 
 	}
 
-	dtSurface * dtOCCCompositeSurface::clone( void ) const {
+	dtOCCCompositeSurface * dtOCCCompositeSurface::clone( void ) const {
 		return new dtOCCCompositeSurface( OCCRef() );
 	}
 

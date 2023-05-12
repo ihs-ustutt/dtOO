@@ -218,18 +218,7 @@ namespace dtOO {
       aFY(yDim(), std::numeric_limits<dtReal>::min()),
       aFY(yDim(), std::numeric_limits<dtReal>::max())
     );
-  }
-  
-  bool analyticFunction::yBounded( void ) const {
-    std::pair< aFY, aFY > bBox = yBoundingBox();
-    dt__forAllRefAuto(bBox.first, aBound) {
-      if ( aBound == std::numeric_limits<dtReal>::min() ) return false;
-    }
-    dt__forAllRefAuto(bBox.second, aBound) {
-      if ( aBound == std::numeric_limits<dtReal>::max() ) return false;
-    }
-  }
-    
+  } 
 	
   aFX analyticFunction::aFXZeroD( void ) {
 		return aFX(0, 0.);
@@ -331,6 +320,27 @@ namespace dtOO {
     
     return sqrt(dist);
   }
+  
+  std::vector< dtReal > const analyticFunction::operator()(
+    dtReal const & xx
+  ) const {
+    dt__throwIf(xDim()!=1, operator());  
+    return this->Y( aFXOneD(xx) ).stdVector();
+  }
+  
+  std::vector< dtReal > const analyticFunction::operator()(
+    dtReal const & xx, dtReal const & yy
+  ) const {
+    dt__throwIf(xDim()!=2, operator());
+    return this->Y( aFXTwoD(xx, yy) ).stdVector();
+  }
+
+  std::vector< dtReal > const analyticFunction::operator()(
+    dtReal const & xx, dtReal const & yy, dtReal const & zz
+  ) const {
+    dt__throwIf(xDim()!=3, operator());
+    return this->Y( aFXThreeD(xx, yy, zz) ).stdVector();
+  }  
     
 	double analyticFunction::F(double const * xx) const {	
     aFX xxT(xDim(), 0.);

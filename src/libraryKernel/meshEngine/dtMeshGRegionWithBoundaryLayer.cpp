@@ -25,8 +25,17 @@
 #include <gmsh/MPyramid.h>
 #include <gmsh/MTetrahedron.h>
 #include <gmsh/Field.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshGRegionWithBoundaryLayer::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(
+      dtMeshGRegionWithBoundaryLayer, new dtMeshGRegionWithBoundaryLayer()
+    )
+  );
+
   dtInt dtMeshGRegionWithBoundaryLayer::_NORMAL = 1;
   dtInt dtMeshGRegionWithBoundaryLayer::_SLIDER = 2;
   dtInt dtMeshGRegionWithBoundaryLayer::_FIXER = 3;
@@ -34,11 +43,6 @@ namespace dtOO {
   dtMeshGRegionWithBoundaryLayer::dtMeshGRegionWithBoundaryLayer(
   ) 
   : 
-  _nNormalSmoothingSteps(0),
-  _nGrowingSmoothingSteps(0),
-  _maxGrowingRatePerStep(1.0),
-  _maxDihedralAngle(0.),
-  _nSpacingSteps(std::vector< dtInt >(0, 0)),
   _omInit(),
   _omMoved(),    
   _fixedF("_fixedF", _omInit, false),
@@ -59,89 +63,128 @@ namespace dtOO {
 	dtMeshGRegionWithBoundaryLayer::~dtMeshGRegionWithBoundaryLayer() {
     
 	}
-	
+	void dtMeshGRegionWithBoundaryLayer::jInit(
+    jsonPrimitive const & jE,
+    baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtMeshOperator const * const mO
+  ) {
+    dtMesh3DOperator::jInit(jE, bC, cV, aF, aG, bV, mO);
+
+    _3D
+    =
+    dtMesh3DOperator::MustDownCast(
+      mO->get( jE.lookup< std::string >("dtMesh3DOperator") )
+    );
+
+    std::vector< dtInt > nSpacingSteps
+    =
+    config().lookup< std::vector< dtInt > >("_nSpacingSteps");
+    _flipNormal = std::vector< bool >( nSpacingSteps.size(), false );
+    dt__forAllIndex(nSpacingSteps, ii) {
+      if ( nSpacingSteps[ii] < 0 ) {
+        _flipNormal[ii] = true;
+        nSpacingSteps[ii] = abs( nSpacingSteps[ii] );
+      }
+    }
+    config().append< std::vector< dtInt > >("_nSpacingSteps", nSpacingSteps);
+    dt__info(
+      jInit(),
+      << "_nSpacingSteps = " << logMe::vecToString(nSpacingSteps) << std::endl
+      << "_flipNormal = " << logMe::vecToString(_flipNormal) << std::endl
+    );
+
+  }
+
   void dtMeshGRegionWithBoundaryLayer::init(
     ::QDomElement const & element,
     baseContainer const * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG,
-    bVPtrVec const * const bV,
-    labeledVectorHandling< dtMeshOperator * > const * const mO
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtMeshOperator const * const mO
   ) {
     dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
-    
-    _maxGrowingRatePerStep 
-		= 
-		dtXmlParserBase::getAttributeFloatMuParse(
-      "maxGrowingRatePerStep", element, cV, aF
+    jsonPrimitive jE;
+    jE.append< dtReal >(
+      "_maxGrowingRatePerStep",
+		  dtXmlParserBase::getAttributeFloatMuParse(
+        "maxGrowingRatePerStep", element, cV, aF
+      )
     );
-		_nNormalSmoothingSteps 
-		= 
-		dtXmlParserBase::getAttributeIntMuParse(
-      "nNormalSmoothingSteps", element, cV, aF
+    jE.append< dtInt >(
+		  "_nNormalSmoothingSteps",
+		  dtXmlParserBase::getAttributeIntMuParse(
+        "nNormalSmoothingSteps", element, cV, aF
+      )
     );		
-		_nGrowingSmoothingSteps 
-		=
-		dtXmlParserBase::getAttributeIntMuParse(
-      "nGrowingSmoothingSteps", element, cV, aF
+		jE.append< dtInt >(
+      "_nGrowingSmoothingSteps",
+		  dtXmlParserBase::getAttributeIntMuParse(
+        "nGrowingSmoothingSteps", element, cV, aF
+      )
     );		
-		_maxDihedralAngle 
-		= 
-		dtXmlParserBase::getAttributeFloatMuParse(
-      "maxDihedralAngle", element, cV, aF
+		jE.append< dtReal >(
+      "_maxDihedralAngle",
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "maxDihedralAngle", element, cV, aF
+      )
     );		
     
 		//
 		// boundedVolume
 		//		
-		_faceLabel 
-		= 
-		qtXmlPrimitive::getAttributeStrVector("faceLabel", element);
-		_fixedFaceLabel 
-		= 
-		qtXmlPrimitive::getAttributeStrVector("fixedFaceLabel", element);
-		_slidableFaceLabel 
-		= 
-		qtXmlPrimitive::getAttributeStrVector("slidableFaceLabel", element);
-    
-    _3D
-    =
-    dtMesh3DOperator::MustDownCast(
-      mO->get(qtXmlBase::getAttributeStr("dtMesh3DOperator", element))
+		jE.append< std::vector< std::string > >(
+      "_faceLabel",
+		  qtXmlPrimitive::getAttributeStrVector("faceLabel", element)
+    );
+		jE.append< std::vector< std::string > >(
+		  "_fixedFaceLabel",
+		  qtXmlPrimitive::getAttributeStrVector("fixedFaceLabel", element)
+    );
+		jE.append< std::vector< std::string > >(
+		  "_slidableFaceLabel",
+			qtXmlPrimitive::getAttributeStrVector("slidableFaceLabel", element)
     );
     
+    jE.append< std::string >(
+      "dtMesh3DOperator",
+      qtXmlBase::getAttributeStr("dtMesh3DOperator", element)
+    );
+    
+    std::vector< dtInt > nSpacingSteps;
     if ( qtXmlPrimitive::isAttributeVector("nSpacingSteps", element) ) {
-      _nSpacingSteps 
+      nSpacingSteps 
       = 
       dtXmlParserBase::getAttributeIntVectorMuParse(
         "nSpacingSteps", element, cV, aF
       );
     }
     else {
-      _nSpacingSteps
+      nSpacingSteps
       =
       std::vector< dtInt >(
-        _faceLabel.size(), 
+        jE.lookup< std::vector< std::string > >("_faceLabel").size(), 
         dtXmlParserBase::getAttributeIntMuParse(
           "nSpacingSteps", element, cV, aF
         )
       );
     }
-    dt__throwIf( _faceLabel.size()!=_nSpacingSteps.size(), init() );
-    _flipNormal = std::vector< bool >(_nSpacingSteps.size(), false);
-    dt__forAllIndex(_nSpacingSteps, ii) {
-      if ( _nSpacingSteps[ii] < 0 ) {
-        _flipNormal[ii] = true;
-        _nSpacingSteps[ii] = abs( _nSpacingSteps[ii] );
-      }
-    }
-    
-    dt__info(
-      init(),
-      << "_nSpacingSteps = " << logMe::vecToString(_nSpacingSteps) << std::endl
-      << "_flipNormal = " << logMe::vecToString(_flipNormal) << std::endl
+  
+    dt__throwIf( 
+      jE.lookup< std::vector< std::string > >("_faceLabel").size()
+      !=
+      nSpacingSteps.size(), 
+      init() 
     );
+     
+    jE.append< std::vector< dtInt > >("_nSpacingSteps", nSpacingSteps);
+    
+    dtMeshGRegionWithBoundaryLayer::jInit(jE, bC, cV, aF, aG, bV, mO);
 	}
 	
   void dtMeshGRegionWithBoundaryLayer::operator() (dtGmshRegion * dtgr) {
@@ -150,13 +193,21 @@ namespace dtOO {
 		//
 		// init faces and regions
 		//
-		std::list< dtGmshFace const * > faceList = dtgr->constFaceList(_faceLabel);
+		std::list< dtGmshFace const * > faceList 
+    = 
+    dtgr->constFaceList(
+      config().lookup< std::vector< std::string > >("_faceLabel")
+    );
 		std::list< dtGmshFace const * > fixedFaceList 
     = 
-    dtgr->constFaceList(_fixedFaceLabel);
+    dtgr->constFaceList(
+      config().lookup< std::vector< std::string > >("_fixedFaceLabel")
+    );
 		std::list< dtGmshFace const * > slidableFaceList 
     = 
-    dtgr->constFaceList(_slidableFaceLabel);    
+    dtgr->constFaceList(
+      config().lookup< std::vector< std::string > >("_slidableFaceLabel")
+    );    
 		
     dtOMMeshDivided omInitDiv;
     dtOMMeshDivided omMovedDiv;
@@ -197,6 +248,9 @@ namespace dtOO {
     //
 		// normal surface
     dtInt cc = 0;
+    std::vector< dtInt > nSpacingSteps 
+    = 
+    config().lookup< std::vector< dtInt > >("_nSpacingSteps");
     dt__forAllRefAuto(faceList, thisFace) {
 			dt__pH(dtOMMesh) tmpOM(thisFace->getOMMesh());      
 
@@ -204,10 +258,10 @@ namespace dtOO {
 			_tF.assign(*tmpOM, 0.);       
 			_typeF.assign(*tmpOM, dtMeshGRegionWithBoundaryLayer::_NORMAL);
       _realSpacing.assign( 
-        *tmpOM, std::vector<dtReal>(_nSpacingSteps[cc], 0.) 
+        *tmpOM, std::vector<dtReal>(nSpacingSteps[cc], 0.) 
       );
       _flipNormalF.assign( *tmpOM, _flipNormal[cc] );
-      _nSpacingStepsF.assign(*tmpOM, _nSpacingSteps[cc] );
+      _nSpacingStepsF.assign(*tmpOM, nSpacingSteps[cc] );
       _faceIndex.assign(*tmpOM, cc);
       cc = cc + 1;
 		}
@@ -362,7 +416,9 @@ namespace dtOO {
 		// averaging all normals of manifolds
 		//
 		dt__forAllIter(std::vector< dtOMMeshManifold >, omManifolds, it) {
-			std::vector< dtOMMeshManifold > divOmMs = it->divide(_maxDihedralAngle);
+			std::vector< dtOMMeshManifold > divOmMs 
+      = 
+      it->divide( config().lookup< dtReal >("_maxDihedralAngle") );
 			std::vector< dtVector3 > nnV;
 			dt__forAllIter(std::vector< dtOMMeshManifold >, divOmMs, itDiv) {
 				nnV.push_back(itDiv->normal());
@@ -931,7 +987,9 @@ namespace dtOO {
     //
     // smooth normals
     //
-    dt__forFromToIndex(0, _nNormalSmoothingSteps, ii) {
+    dt__forFromToIndex(
+      0, config().lookup< dtInt >("_nNormalSmoothingSteps"), ii
+    ) {
       dtOMVertexField< dtVector3 > nFTwin("nFTwin", _omInit, dtVector3(0,0,0));
       dt__forFromToIter(
         omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
@@ -954,7 +1012,9 @@ namespace dtOO {
     //
     // smooth
     //
-    dt__forFromToIndex(0, _nGrowingSmoothingSteps, ii) {
+    dt__forFromToIndex(
+      0, config().lookup< dtInt >("_nGrowingSmoothingSteps"), ii
+    ) {
       dtOMVertexField< dtReal > tFTwin("tFTwin", _omInit, 0.);
       
       dt__forFromToIter(
@@ -975,7 +1035,10 @@ namespace dtOO {
          = 
         std::min(
           maxT[fI],
-          std::min( _maxGrowingRatePerStep * _tF[ *v_it ], tFTwin[ *v_it ] )
+          std::min( 
+            config().lookup< dtReal >("_maxGrowingRatePerStep") * _tF[ *v_it ], 
+            tFTwin[ *v_it ] 
+          )
         );
       }
     }
@@ -983,7 +1046,9 @@ namespace dtOO {
     //
     // adjust thickness
     //
-    dt__forFromToIndex(0, _nGrowingSmoothingSteps, ii) {
+    dt__forFromToIndex(
+      0, config().lookup< dtInt >("_nGrowingSmoothingSteps"), ii
+    ) {
       dt__forFromToIter(
         omVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
       ) {    
@@ -1048,7 +1113,10 @@ namespace dtOO {
     avT.clear();
     maxT.clear();
     minT.clear();
-    dt__forAllRefAuto(_nSpacingSteps, aSpace) {
+    std::vector< dtInt > nSpacingSteps 
+    = 
+    config().lookup< std::vector< dtInt > >("_nSpacingSteps");
+    dt__forAllRefAuto(nSpacingSteps, aSpace) {
       avSpacing.push_back( std::vector< dtReal >(aSpace+1, 0.) );
       maxSpacing.push_back( 
         std::vector< dtReal >(aSpace+1, std::numeric_limits<dtReal>::min()) 
@@ -1062,7 +1130,7 @@ namespace dtOO {
     }
     std::vector< dtReal > nodeCount 
     = 
-    std::vector< dtReal >(_nSpacingSteps.size(), 0.);
+    std::vector< dtReal >(nSpacingSteps.size(), 0.);
     
 		dt__forFromToIter(
 		  omConstVertexI, _omInit.vertices_begin(), _omInit.vertices_end(), v_it
@@ -1084,7 +1152,7 @@ namespace dtOO {
         std::max(maxSpacing[fI][ii], _realSpacing.at( *v_it )[ii]);
       }
     }
-    dt__forAllIndex(_nSpacingSteps, fI) {
+    dt__forAllIndex(nSpacingSteps, fI) {
       avT[fI] = avT[fI]/nodeCount[fI];
       dt__forAllRefAuto(avSpacing[fI], aSpacing) {
         aSpacing = aSpacing/nodeCount[fI];

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ingvrudtout_splitMeshBlocks>	
+<!--	<function label="aF_split_0">
+		<builder name="muParser">
+			<expression 
+				value="xx, yy, zz" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="0." max="#cV_splitMesh#"/>
+			<x_two name="yy" min="0." max="1"/>
+			<x_three name="zz" min="0." max="1"/>
+		</builder>
+	</function>				
+	<function label="aF_split_1">
+		<builder name="muParser">
+			<expression 
+				value="xx, yy, zz" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="#cV_splitMesh#" max="1.0"/>
+			<x_two name="yy" min="0" max="1.0"/>
+			<x_three name="zz" min="0" max="1.0"/>
+		</builder>
+	</function>				
+	<part label="alternative_splat_0">
+		<builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="aF_split_0"/>
+			<analyticGeometry label="*_t6C_*_orient"/>
+		</builder>
+	</part>	
+	<part label="alternative_splat_1">
+		<builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="aF_split_1"/>
+			<analyticGeometry label="*_t6C_*_orient"/>
+		</builder>
+	</part>		-->
+  
+  
+	<part label="t6C_orient_split">
+		<builder name="splitTrans6SidedCube">
+			<analyticGeometry label="*_t6C_*_orient"/>
+			<Point_3 xyz="#cV_splitMesh#,0,0"/>
+		</builder>
+	</part>
+	
+		<part label="aS_internal_30_0">
+			<builder name="analyticGeometry">
+				<analyticGeometry label="aS_dt_hubEnd"/>
+		</builder>
+	</part>
+  <replace variable="ii" values="{meshHubExt_0}{meshHubExt_1}{meshHubExt_2}">
+    <part label="alternative_s3_{ii}_x">
+      <builder name="bSplineCurve_pointConstructOCC" order="1">
+        <Point_3 
+          xyz="
+            0,
+            (@alternative_s3_{ii}[%y](0)@),
+            (@alternative_s3_{ii}[%z](0)@)
+          "/>
+        <Point_3 xyz="@alternative_s3_{ii}[%](0)@"/>
+      </builder>
+    </part>
+    <part label="alternative_s3_{ii}_y">
+      <builder name="bSplineCurve_pointConstructOCC" order="1">
+        <Point_3 xyz="@alternative_s3_{ii}[%](1)@"/>
+        <Point_3 
+          xyz="
+            (@alternative_s3_{ii}[%x](1)@),
+            0,
+            (@alternative_s3_{ii}[%z](1)@)
+          "/>
+      </builder>
+    </part>  
+    <part label="alternative_aS_{ii}_piece_0">
+      <builder name="analyticGeometry">
+        <transformer name="pickMap1dTo3dLinePercent">
+          <float value="0.00"/>
+          <float value="#cV_splitMesh#"/>				
+        </transformer>				
+        <analyticGeometry label="alternative_s3_{ii}"/>
+      </builder>
+    </part>
+    <part label="alternative_aS_{ii}_piece_1">
+      <builder name="analyticGeometry">
+        <transformer name="pickMap1dTo3dLinePercent">
+          <float value="#cV_splitMesh#"/>				
+          <float value="1.0"/>				
+        </transformer>				
+        <analyticGeometry label="alternative_s3_{ii}"/>
+      </builder>
+    </part>   
+    <part label="alternative_aS_{ii}">				
+      <builder name="bSplineSurface_bSplineCurveFillConstructOCC">
+        <analyticGeometry label="alternative_aS_{ii}_piece_0"/>
+        <analyticGeometry label="alternative_aS_{ii}_piece_1"/>
+        <analyticGeometry label="alternative_s3_{ii}_y"/>
+        <analyticGeometry label="alternative_s3_{ii}_x"/>
+      </builder>		
+    </part>
+  </replace>
+    
+  
+		<part label="aS_internal_30_1">
+			<builder name="analyticGeometry">
+<!--				<transformer name="translate">
+					<Vector_3 xyz="0,0,(@aS_skinCorpus_dt2In[%z](0,1)@)-(@aS_dt_hub_1[%z](0,1)@)"/>
+				</transformer>				
+				<analyticGeometry label="aS_dt_hubEnd"/>-->
+        <analyticGeometry label="alternative_aS_meshHubExt_0"/>
+		</builder>
+	</part>	
+		<part label="aS_internal_30_2">
+			<builder name="analyticGeometry">
+<!--				<transformer name="translate">
+					<Vector_3 xyz="0,0,(@s3_internal_111_path[%z](1)@)-(@aS_dt_hub_1[%z](0,1)@)"/>
+				</transformer>				
+				<analyticGeometry label="aS_dt_hubEnd"/>-->
+        <analyticGeometry label="alternative_aS_meshHubExt_1"/>
+		</builder>
+	</part>
+		<part label="aS_internal_30_3">
+			<builder name="analyticGeometry">
+<!--				<transformer name="translate">
+					<Vector_3 xyz="0,0,(@aS_skinCorpus_farIn[%z](0,1)@)-(@aS_dt_hub_1[%z](0,1)@)"/>
+				</transformer>				
+				<analyticGeometry label="aS_dt_hubEnd"/>-->
+        <analyticGeometry label="alternative_aS_meshHubExt_2"/>
+		</builder>
+	</part>  
+	<part label="t6C_dtHub_0_0">
+		<builder name="trans6SidedCube">
+			<analyticGeometry label="aS_internal_30_0"/>
+			<analyticGeometry label="aS_internal_30_1"/>
+		</builder>
+	</part>		
+	<part label="t6C_dtHub_0_1">
+		<builder name="trans6SidedCube">
+			<analyticGeometry label="aS_internal_30_1"/>
+			<analyticGeometry label="aS_internal_30_2"/>
+		</builder>
+	</part>			
+	<part label="t6C_dtHub_0_2">
+		<builder name="trans6SidedCube">
+			<analyticGeometry label="aS_internal_30_2"/>
+			<analyticGeometry label="aS_internal_30_3"/>
+		</builder>
+	</part>			  
+	<part label="dtHub_*_orient">
+		<builder name="orientTrans6SidedCube">
+			<analyticGeometry label="t6C_dtHub_0_0" orient="{exchangeVW}"/>
+			<analyticGeometry label="t6C_dtHub_0_1" orient="{exchangeVW}"/>
+      <analyticGeometry label="t6C_dtHub_0_2" orient="{exchangeVW}"/>
+		</builder>
+	</part>
+	<part label="inHub_*_orient">
+		<builder name="orientTrans6SidedCube">	
+			<analyticGeometry label="t6C_in_-1_0" orient="{exchangeVW}{reverseV}"/>	
+		</builder>
+	</part>
+</ingvrudtout_splitMeshBlocks>

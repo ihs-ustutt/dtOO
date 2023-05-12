@@ -32,33 +32,47 @@ namespace dtOO {
   }
   
   void optionHandling::init( ::QDomElement const * const wElement) {
-    ::QDomElement option = qtXmlPrimitive::getChild("option", *wElement);
-    while ( !option.isNull() ) {
-      optionHandling::setOption(
-        qtXmlPrimitive::getAttributeStr("name", option), 
-        qtXmlPrimitive::getAttributeStr("value", option)
-      );
-      option = option.nextSiblingElement("option");
-    }
+    optionHandling::init( *wElement, NULL, NULL, NULL, NULL);
   }
 
+  void optionHandling::jInit( jsonPrimitive const & jE) {
+    dt__debug(jInit(), << jE.toStdString());
+    if ( jE.contains("option") ) {
+      dt__forAllRefAuto(
+        jE.lookup<std::vector<jsonPrimitive>>("option"), anOpt
+      ) {
+        this->setOption(
+          anOpt.lookup<std::string>("name"),
+          anOpt.lookup<std::string>("value")
+        );
+      }
+    }
+  }
+  
   void optionHandling::init(
     ::QDomElement const & wElement,
     baseContainer const * const bC,      
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG
   ) {
+    std::vector< jsonPrimitive > options;
     dt__forAllRefAuto(
       qtXmlPrimitive::getChildVector("option", wElement), anOption
     ) {
-      optionHandling::setOption(
-        dtXmlParserBase::getAttributeStr("name", anOption), 
+      jsonPrimitive option;
+      option.append< std::string >("name", dtXmlParserBase::getAttributeStr("name", anOption));
+      option.append< std::string >(
+        "value", 
         dtXmlParserBase::replaceDependencies(
           dtXmlParserBase::getAttributeStr("value", anOption), bC, cV, aF, aG
         )
       );
+      options.push_back( option );
     }        
+    optionHandling::jInit(
+      jsonPrimitive().append< std::vector< jsonPrimitive > >("option", options)
+    );
   }
       
   void optionHandling::setOption(
@@ -73,6 +87,12 @@ namespace dtOO {
       _optionValue.push_back(value);
     }
     else {
+      dt__debug(
+        setOption(),
+        << "Reset option " << name << " : " 
+        <<  _optionValue[ static_cast< dtInt >(it - _optionName.begin()) ]
+        << " -> " << value
+      );
       _optionValue[
         static_cast< dtInt >(it - _optionName.begin())
       ]
@@ -117,16 +137,6 @@ namespace dtOO {
     std::istringstream( getOption(name) ) >> argumentFloat;
     return argumentFloat;
   }
-
-  dtReal optionHandling::getOptionFloat(
-	  std::string const name,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF					
-	) const {
-     return qtXmlBase::muParseString( 
-      dtXmlParserBase::replaceDependencies(getOption(name), cV, aF)
-    );
-  }
 	
   dtInt optionHandling::getOptionInt(std::string const name) const {
     dtInt argumentInt;
@@ -134,16 +144,6 @@ namespace dtOO {
     return argumentInt;
   }
   
-  dtInt optionHandling::getOptionInt(
-	  std::string const name,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF					
-	) const {
-     return qtXmlBase::muParseStringInt( 
-      dtXmlParserBase::replaceDependencies(getOption(name), cV, aF)
-    );
-  }
-	
   bool optionHandling::optionTrue(std::string const name) const {
     for (int ii=0;ii<_optionName.size();ii++) {
       if (_optionName[ii] == name) {

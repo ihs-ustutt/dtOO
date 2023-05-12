@@ -2,8 +2,16 @@
 
 #include "dtGmshEdge.h"
 #include <gmsh/meshGEdge.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshAndOrientGEdge::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshAndOrientGEdge, new dtMeshAndOrientGEdge())
+  );
+ 
+ 
   dtMeshAndOrientGEdge::dtMeshAndOrientGEdge() : dtMeshGEdge() {
   }
 

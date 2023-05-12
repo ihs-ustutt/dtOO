@@ -72,4 +72,17 @@ namespace dtOO {
 		
 		return _tC.get();
   }  
+  
+  std::vector< std::string > baseContainer::labels( void ) const {
+    std::vector< std::string > pLab = this->constPtrPointContainer()->labels();
+    std::vector< std::string > vLab = this->constPtrVectorContainer()->labels();
+    std::vector< std::string > tLab = this->constPtrTransformerContainer()->labels();
+    
+    std::vector< std::string > ret;
+    ret.insert( ret.end(), pLab.begin(), pLab.end() );
+    ret.insert( ret.end(), vLab.begin(), vLab.end() );
+    ret.insert( ret.end(), tLab.begin(), tLab.end() );
+    
+    return ret;
+  }
 }

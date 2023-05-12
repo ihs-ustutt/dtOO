@@ -29,7 +29,7 @@ namespace dtOO {
 	dtOCCGeomFillSimpleBound::~dtOCCGeomFillSimpleBound() {
 	}
 
-  dtCurve * dtOCCGeomFillSimpleBound::clone( void ) const {
+  dtOCCGeomFillSimpleBound * dtOCCGeomFillSimpleBound::clone( void ) const {
 		return new dtOCCGeomFillSimpleBound( OCCRef(), OCCBoundaryRef() );
 	}
   

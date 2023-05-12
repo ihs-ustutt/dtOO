@@ -1,11 +1,9 @@
-
 option(DTOO_USE_PYTHONOCC "Use PythonOCC" OFF)
 
-find_package(PythonInterp REQUIRED)
+find_package(Python REQUIRED COMPONENTS Interpreter Development)
 
-find_package(SWIG REQUIRED)
+find_package(SWIG 4.0.2 REQUIRED)
 include(${SWIG_USE_FILE})
-
 
 if (DTOO_USE_PYTHONOCC)
   find_package(PythonOCC REQUIRED)
@@ -14,14 +12,17 @@ if (DTOO_USE_PYTHONOCC)
     ${PythonOCC_INCLUDE_DIR}/wrapper
     ${PythonOCC_INCLUDE_DIR}/headers
   )
-  set(CMAKE_SWIG_FLAGS "-DDTOO_HAS_PYTHONOCC")
+  list(APPEND CMAKE_SWIG_FLAGS -DDTOO_HAS_PYTHONOCC)
 endif (DTOO_USE_PYTHONOCC)
 
-find_package(PythonLibs 3 REQUIRED)
 include_directories(
-  ${PYTHON_INCLUDE_PATH}
+  ${Python_INCLUDE_DIRS}
 )
 
+# definitions
+if (OpenFOAM_FOUND)
+  list(APPEND CMAKE_SWIG_FLAGS -DDTOO_HAS_OpenFOAM)
+endif (OpenFOAM_FOUND)
 #
 #
 # sources
@@ -43,12 +44,28 @@ SWIG_ADD_LIBRARY(dtOOPythonSWIG TYPE SHARED LANGUAGE python SOURCES ${SOURCES})
 # linking
 #
 #
-SWIG_LINK_LIBRARIES(dtOOPythonSWIG ${PYTHON_LIBRARIES} dtOO)
+SWIG_LINK_LIBRARIES(dtOOPythonSWIG ${Python_LIBRARIES} dtOO)
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined,--disable-new-dtags")
 set(
   CMAKE_SHARED_LINKER_FLAGS 
   "${CMAKE_SHARED_LINKER_FLAGS},-rpath,${CMAKE_INSTALL_PREFIX}/lib"
 )
+
+#
+#
+# dependencies
+#  see https://gitlab.kitware.com/cmake/cmake/-/issues/17918#note_401481
+#
+# get internal dependencies
+get_property(
+  dependencies 
+  TARGET ${SWIG_MODULE_dtOOPythonSWIG_REAL_NAME} 
+  PROPERTY MANUALLY_ADDED_DEPENDENCIES
+)
+# add external project dependency on internal targets
+foreach (dependency IN LISTS dependencies)
+  add_dependencies (${dependency} createInclude)
+endforeach()
 
 #
 #

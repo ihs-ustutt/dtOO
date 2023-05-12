@@ -3,6 +3,7 @@
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <constValueHeaven/constValue.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/systemHandling.h>
@@ -61,7 +62,7 @@ int main( dtInt ac, char* av[] ) {
     //
     // vectorHandling of constValues
     //
-    cVPtrVec cV; 
+    lvH_constValue cV; 
     
     //
     // create parser and parse

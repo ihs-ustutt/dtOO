@@ -50,16 +50,7 @@ namespace dtOO {
 		base.setOCC( conv.BSplineCurve() );
 		_dtC.reset( new dtOCCBSplineCurve(base) );		
 	}
-	
-	bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
-	  vectorHandling< dtCurve const * > const & cc
-	) {
-    _dtC.reset(
-      bSplineCurve_curveConnectConstructOCC(
-        cc, Precision::Confusion(), 0, 0
-    ).result());
-  } 
-  
+	 
   bSplineCurve_curveConnectConstructOCC::bSplineCurve_curveConnectConstructOCC( 
     dtCurve const * const c0,  dtCurve const * const c1 
   ) {

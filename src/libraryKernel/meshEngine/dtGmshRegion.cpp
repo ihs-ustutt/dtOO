@@ -308,7 +308,7 @@ namespace dtOO {
 	}	  
 
   void dtGmshRegion::setGrading( 
-    std::vector< dtReal > const & grading, std::vector< dtReal > & type 
+    std::vector< dtReal > const & grading, const std::vector< dtReal > & type 
   ) {
     dt__throwIf(grading.size() != 12, setGrading());
     dt__throwIf(type.size() != 12, setGrading());

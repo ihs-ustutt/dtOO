@@ -41,12 +41,12 @@ std::string parseCommand(
   std::string aRule,
   dtXmlParser & parser,
   baseContainer & bC,
-  cVPtrVec & cV,
-  aFPtrVec & aF,
-  aGPtrVec & aG,
-  bVPtrVec & bV,
-  dCPtrVec & dtC,
-  dPPtrVec & dtP
+  lvH_constValue & cV,
+  lvH_analyticFunction & aF,
+  lvH_analyticGeometry & aG,
+  lvH_boundedVolume & bV,
+  lvH_dtCase & dtC,
+  lvH_dtPlugin & dtP
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -123,9 +123,7 @@ std::string parseCommand(
     //parser.loadStateToConst(addRule[0], cV);
     std::string currentState = parser.currentState();
     parser.loadStateToConst(addRule[0], cV);
-    vectorHandling< dtReal > cV_val(
-      cV.size(), std::numeric_limits<dtReal>::max()
-    );
+    vectorHandling< dtReal > cV_val( cV.size() );
     dt__forAllIndex(cV, ii) {
       cV_val[ii] = cV[ii]->getValue();
     }
@@ -254,7 +252,7 @@ std::string parseCommand(
 // constValue commands
 //
 std::string parseCommand(
-  std::string aRule, dtXmlParser & parser, cVPtrVec & cV
+  std::string aRule, dtXmlParser & parser, lvH_constValue & cV
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -307,7 +305,7 @@ std::string parseCommand(
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
-  aFPtrVec & aF
+  lvH_analyticFunction & aF
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -355,7 +353,7 @@ std::string parseCommand(
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
-  aGPtrVec & aG
+  lvH_analyticGeometry & aG
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -445,7 +443,7 @@ std::string parseCommand(
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
-  bVPtrVec & bV
+  lvH_boundedVolume & bV
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -504,7 +502,7 @@ std::string parseCommand(
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
-  dCPtrVec & dtC
+  lvH_dtCase & dtC
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -551,7 +549,7 @@ std::string parseCommand(
 std::string parseCommand(
   std::string aRule, 
   dtXmlParser & parser, 
-  dPPtrVec & dtP
+  lvH_dtPlugin & dtP
 ) {
   std::stringstream help;  
   help << "Commands:" << std::endl;
@@ -634,12 +632,12 @@ int main( dtInt ac, char* av[] ) {
     dtXmlParser & parser = dtXmlParser::reference();
     
     baseContainer bC;
-    aGPtrVec aG; 
-    cVPtrVec cV; 
-    aFPtrVec aF; 
-    bVPtrVec bV; 
-    dCPtrVec dtC; 
-    dPPtrVec dtP;      
+    lvH_analyticGeometry aG; 
+    lvH_constValue cV; 
+    lvH_analyticFunction aF; 
+    lvH_boundedVolume bV; 
+    lvH_dtCase dtC; 
+    lvH_dtPlugin dtP;      
     
     std::cout 
       << "# define standard variables" << std::endl

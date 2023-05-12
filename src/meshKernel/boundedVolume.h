@@ -12,6 +12,8 @@
 #include <interfaceHeaven/renderInterface.h>
 #include <dtLinearAlgebra.h>
 #include <mainConceptFwd.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
+#include <jsonHeaven/jsonPrimitive.h>
 
 namespace dtOO {
   class analyticGeometry;
@@ -27,7 +29,7 @@ namespace dtOO {
                         public optionHandling,
                         public renderInterface {
     public:
-      dt__class(boundedVolume, boundedVolume);
+      dt__class(boundedVolume, labelHandling);
       boundedVolume();
       virtual ~boundedVolume();
       virtual boundedVolume * create( void ) const = 0;     
@@ -35,10 +37,18 @@ namespace dtOO {
       virtual void init( 
         ::QDomElement const & element,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const sF,
-        aGPtrVec const * const aF,
-        bVPtrVec const * const bV
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const sF,
+        lvH_analyticGeometry const * const aF,
+        lvH_boundedVolume const * const bV
+      );
+      virtual void jInit( 
+        jsonPrimitive const & jE,
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV
       );
       virtual void makeGrid(void) = 0;
       virtual void makePreGrid(void) = 0;
@@ -50,10 +60,15 @@ namespace dtOO {
       virtual dtGmshFace * getFace( std::string const & tag ) const = 0;
       virtual dtGmshRegion * getRegion( std::string const & tag ) const = 0;
       virtual dtGmshModel * getModel( void ) const = 0;
+    protected:
+      jsonPrimitive & config( void );
+      jsonPrimitive const & config( void ) const;
     private:
+      jsonPrimitive _config;
       bool _meshed;
       bool _preMeshed;
   };
+  dt__I_addCloneForpVHNotImpl(boundedVolume);
 }
 #endif	/* boundedVolume_H */
 

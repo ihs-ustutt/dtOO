@@ -1,5 +1,4 @@
 #include "reverse.h"
-#include "geometryEngine/geoBuilder/geomCurve_curveReverseConstructOCC.h"
 #include <progHelper.h>
 #include <logMe/logMe.h>
 
@@ -28,19 +27,19 @@ namespace dtOO {
   );
   
   reverse::reverse() : dtTransformer() {
-    _revU = false;
-    _revV = false;
-    _revW = false;
   }
 
   reverse::~reverse() {
   }
 
 	reverse::reverse(const reverse& orig) : dtTransformer(orig) {
-		_revU = orig._revU;
-    _revV = orig._revV;
-    _revW = orig._revW;
 	}  
+  
+  reverse::reverse( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
   
   dtTransformer * reverse::clone( void ) const {
 	  return new reverse(*this);
@@ -50,12 +49,12 @@ namespace dtOO {
 		return new reverse();
 	}
 	
-  aGPtrVec reverse::apply( 
-    aGPtrVec const * const aGeoVecP 
+  lvH_analyticGeometry reverse::apply( 
+    lvH_analyticGeometry const * const aGeoVecP 
   ) const {
-    aGPtrVec retAGeo;
+    lvH_analyticGeometry retAGeo;
 
-    dt__forAllConstIter(aGPtrVec, *aGeoVecP, it) {
+    dt__forAllConstIter(lvH_analyticGeometry, *aGeoVecP, it) {
 			//
 			// clone and cast analyticGeometry
 			//
@@ -71,7 +70,7 @@ namespace dtOO {
               dt__tmpPtr(
                 dtCurve,
                 geomCurve_curveReverseConstructOCC( 
-                  s3->ptrConstDtCurve(), _revU
+                  s3->ptrConstDtCurve(), config().lookupDef("_revU", false)
                 ).result()
               )
             ) 
@@ -89,7 +88,9 @@ namespace dtOO {
               dt__tmpPtr(
                 dtSurface,
                 geomSurface_surfaceReverseConstructOCC( 
-                  aS->ptrDtSurface(), _revU, _revV
+                  aS->ptrDtSurface(), 
+                  config().lookupDef("_revU", false), 
+                  config().lookupDef("_revV", false)
                 ).result()
               )
             ) 
@@ -105,8 +106,8 @@ namespace dtOO {
     return retAGeo;
   }
 
-  aFPtrVec reverse::apply( aFPtrVec const * const aF ) const {
-    aFPtrVec ret;
+  lvH_analyticFunction reverse::apply( lvH_analyticFunction const * const aF ) const {
+    lvH_analyticFunction ret;
 
     dt__forAllRefAuto(*aF, theF) {
 			//
@@ -120,7 +121,7 @@ namespace dtOO {
             dt__tmpPtr(
               dtCurve,
               geomCurve_curveReverseConstructOCC( 
-                v1d->ptrConstDtCurve(), _revU
+                v1d->ptrConstDtCurve(), config().lookupDef("_revU", false)
               ).result()
             )
           ) 
@@ -132,7 +133,9 @@ namespace dtOO {
             dt__tmpPtr(
               dtSurface,
               geomSurface_surfaceReverseConstructOCC( 
-                v2d->ptrDtSurface(), _revU, _revV
+                v2d->ptrDtSurface(), 
+                config().lookupDef("_revU", false), 
+                config().lookupDef("_revV", false)
               ).result()
             )
           ) 
@@ -147,23 +150,38 @@ namespace dtOO {
     return true;
   }
 
+  void reverse::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+  }  
+  
   void reverse::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 		
-    if (dtXmlParserBase::hasAttribute("reverse_u", *tE)) {
-      _revU = dtXmlParserBase::getAttributeBool("reverse_u", *tE);
-    }
-    if (dtXmlParserBase::hasAttribute("reverse_v", *tE)) {
-      _revV = dtXmlParserBase::getAttributeBool("reverse_v", *tE);
-    }
-    if (dtXmlParserBase::hasAttribute("reverse_w", *tE)) {
-      _revW = dtXmlParserBase::getAttributeBool("reverse_w", *tE);
-    }    
+    jsonPrimitive config;
+    config.append(
+      "_revU",
+			dtXmlParserBase::getAttributeBool("reverse_u", *tE)
+    );
+    config.append(
+      "_revV",
+			dtXmlParserBase::getAttributeBool("reverse_v", *tE)
+    );
+    config.append(
+      "_revW",
+			dtXmlParserBase::getAttributeBool("reverse_w", *tE)
+    );
+    jInit(config, bC, cV, aF, aG);    
   }
 }

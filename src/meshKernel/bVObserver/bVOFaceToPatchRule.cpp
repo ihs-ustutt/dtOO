@@ -31,13 +31,13 @@ namespace dtOO {
     return ::boost::assign::list_of("bVOPatchRule");
   }
   
-  void bVOFaceToPatchRule::bVOFaceToPatchRule::init( 
+  void bVOFaceToPatchRule::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {		
     //
@@ -54,9 +54,16 @@ namespace dtOO {
 //    		{:REG*::REG:}
 //		  "    
 //		/>									
-
-    _patchRule = qtXmlBase::getAttributeStrVector("patchRule", element);
-    _regRule = qtXmlBase::getAttributeStrVector("regRule", element);
+    jsonPrimitive jE;
+    jE.append< std::vector< std::string > >(
+      "_patchRule", 
+      qtXmlBase::getAttributeStrVector("patchRule", element)
+     );
+    jE.append< std::vector< std::string > >(
+      "_regRule",
+      qtXmlBase::getAttributeStrVector("regRule", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOFaceToPatchRule::postUpdate( void ) {
@@ -73,8 +80,10 @@ namespace dtOO {
     dtGmshModel::intGEntityVMap gf_number;
     gm->getPhysicalGroups(2, gf_number);      
 
-    dt__forAllConstIter(std::vector< std::string >, _patchRule, it) {
-      std::string newPhys = *it;
+    dt__forAllRefAuto(
+      config().lookup< std::vector< std::string > >("_patchRule"), aRule
+    ) {
+      std::string newPhys = aRule;
       std::string oldPhys 
       = 
       qtXmlBase::getStringBetweenAndRemove(":", ":", &newPhys);
@@ -106,8 +115,10 @@ namespace dtOO {
     dtGmshModel::intGEntityVMap gr_number;
     gm->getPhysicalGroups(3, gr_number);      
 
-    dt__forAllConstIter(std::vector< std::string >, _regRule, it) {
-      std::string newPhys = *it;
+    dt__forAllRefAuto(
+      config().lookup< std::vector< std::string > >("_regRule"), aRule
+    ) {
+      std::string newPhys = aRule;
       std::string oldPhys 
       = 
       qtXmlBase::getStringBetweenAndRemove(":", ":", &newPhys);

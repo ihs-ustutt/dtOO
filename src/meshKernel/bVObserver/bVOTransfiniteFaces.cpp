@@ -21,37 +21,40 @@ namespace dtOO {
   bVOTransfiniteFaces::~bVOTransfiniteFaces() {
     
   }
-  
-  void bVOTransfiniteFaces::bVOTransfiniteFaces::init( 
+ 
+  void bVOTransfiniteFaces::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
     // init bVOInterface
     //
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
-    
+   
 		// <bVObserver 
 		//   name="bVOTransfiniteFaces" 
 		//   faceLabel="{name0}{name1}{name2}{name3}{name4}{name5}"
 		//   numberElements="{numU}{numV}"    
 		// />
-								
+
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_faceLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("faceLabel", element);
-		_nE
-		= 
-		dtXmlParserBase::getAttributeIntVectorMuParse(
-			"numberElements", element, cV, aF
-		);
-    dt__throwIf(_nE.size()!=2, init());    
+    jsonPrimitive jE;
+    jE.append< std::vector< std::string > >(
+      "_faceLabel",
+		  dtXmlParserBase::getAttributeStrVector("faceLabel", element)
+    );
+		jE.append< std::vector< dtInt > >(
+      "_nE",
+      dtXmlParserBase::getAttributeIntVectorMuParse(
+	  		"numberElements", element, cV, aF, aG
+		  )
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOTransfiniteFaces::preUpdate( void ) {
@@ -61,11 +64,16 @@ namespace dtOO {
 		// set current model
 		//
 		::GModel::setCurrent( gm );
-		
-    dt__forAllRefAuto(_faceLabel, aLabel) {
+	
+    std::vector< dtInt > nE = config().lookup< std::vector< dtInt > >("_nE");
+    dt__throwIf(nE.size()!=2, preUpdate());
+
+    dt__forAllRefAuto(
+      config().lookup< std::vector< std::string > >("_faceLabel"), aLabel
+    ) {
       dt__forAllRefAuto( gm->getDtGmshFaceListByPhysical(aLabel), aFace ) {
         aFace->meshTransfinite();
-        aFace->meshWNElements( _nE[0], _nE[1] );
+        aFace->meshWNElements( nE[0], nE[1] );
       }
     }
 		std::list< ::GFace * > ff = gm->faces();

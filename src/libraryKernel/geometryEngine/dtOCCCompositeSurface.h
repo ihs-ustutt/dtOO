@@ -17,7 +17,7 @@ namespace dtOO {
     dtOCCCompositeSurface();
     dtOCCCompositeSurface(const dtOCCSurfaceBase& orig);
     virtual ~dtOCCCompositeSurface();
-    virtual dtSurface * clone( void ) const;
+    virtual dtOCCCompositeSurface * clone( void ) const;
 	  virtual dtCurve * segmentConstU( 
       dtReal const uu, dtReal const vvMin, dtReal const vvMax
     ) const;

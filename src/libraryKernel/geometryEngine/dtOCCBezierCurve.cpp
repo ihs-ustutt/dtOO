@@ -22,7 +22,7 @@ namespace dtOO {
 	dtOCCBezierCurve::~dtOCCBezierCurve() {
 	}
 
-  dtCurve * dtOCCBezierCurve::clone( void ) const {
+  dtOCCBezierCurve * dtOCCBezierCurve::clone( void ) const {
 		return new dtOCCBezierCurve( OCCRef() );
 	}
 	

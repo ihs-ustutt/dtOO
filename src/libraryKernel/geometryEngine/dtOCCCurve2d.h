@@ -17,6 +17,7 @@ namespace dtOO {
     dt__class(dtOCCCurve2d, dtCurve2d);
     dtOCCCurve2d();
     dtOCCCurve2d( dtOCCCurve2dBase const & orig);
+    virtual dtOCCCurve2d * clone( void ) const = 0;
     virtual ~dtOCCCurve2d();
     //
     // overload
@@ -45,6 +46,7 @@ namespace dtOO {
     ptrHandling< dtOCCCurve2dBase > _curve;
     Geom2d_Curve const * _ptr;
   };
+  dt__H_addCloneForpVH(dtOCCCurve2d);
 }
 #endif	/* DTOCCCURVE2D_H */
 

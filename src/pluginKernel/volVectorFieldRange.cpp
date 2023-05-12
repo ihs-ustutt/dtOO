@@ -38,12 +38,12 @@ namespace dtOO {
   void volVectorFieldRange::init( 
     ::QDomElement const & element,
     baseContainer * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG,
-    bVPtrVec const * const bV,
-    dCPtrVec const * const dC,
-    dPPtrVec const * const pL
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtCase const * const dC,
+    lvH_dtPlugin const * const pL
   ) {   
     dtPlugin::init(element, bC, cV, aF, aG, bV, dC, pL);
     
@@ -182,7 +182,7 @@ namespace dtOO {
           ::Foam::vector volFieldValue = volField[cId];
 
           if (
-            !_inRange.isNull()
+            _inRange
             &&
             (
               _inRange->YFloat(
@@ -193,7 +193,7 @@ namespace dtOO {
             )
           ) continue;
           if ( 
-            !_inPosition.isNull()
+            _inPosition
             &&
             (
               _inPosition->YFloat( 

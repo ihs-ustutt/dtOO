@@ -22,14 +22,52 @@ namespace dtOO {
   std::vector< std::string > boundedVolume::factoryAlias( void ) const {
     return std::vector< std::string>(0);
   }    
-  
+ 
+  void boundedVolume::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV
+  ) {
+    _config = jE;
+    //
+    // set label of boundenVolume
+    //
+    labelHandling::jInit(jE);
+    //
+    // set options
+    //
+    optionHandling::jInit(jE);
+    //
+    // check for bVObservers
+    //
+    
+    dt__forAllRefAuto(
+      _config.lookupDef< std::vector< jsonPrimitive > >(
+        "bVObserver", 
+        std::vector< jsonPrimitive >() 
+      ), 
+      anObs
+    ) {
+      bVOInterface * bVI
+      =
+      bVOInterfaceFactory::create( anObs.lookup< std::string >("name") );
+      bVI->jInit(anObs, bC, cV, aF, aG, bV, this);
+      this->attachBVObserver( bVI );
+    }
+
+		dt__debug( jInit(), << "config() = " << _config.toStdString() );
+  }
+
   void boundedVolume::init( 
 		::QDomElement const & element,
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV
 	) {
     //
     // set label of boundenVolume
@@ -77,5 +115,13 @@ namespace dtOO {
   void boundedVolume::setPreMeshed( void ) {
     dt__info(setPreMeshed(), << "Set " << getLabel() << " -> preMeshed.");
 		_preMeshed = true;
-	}  
+	} 
+
+  jsonPrimitive & boundedVolume::config( void ) {
+    return _config;
+  }
+  
+  jsonPrimitive const & boundedVolume::config( void ) const {
+    return _config;
+  }
 }

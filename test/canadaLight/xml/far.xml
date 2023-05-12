@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<far>
+
+	<part label="aG_far">
+		<builder name="infinityMap3dTo3d"/>
+	</part>	
+	
+	<boundedVolume 
+		name="readMOABMesh" 
+		label="far_gridCgns"
+	>
+		<option name="mesh_file" value="./Mesh/DomainMitte.cgns"/>
+		<option name="defer_mesh_0" value="true"/>
+		<option name="defer_mesh_1" value="true"/>
+		<option name="defer_mesh_2" value="true"/>
+		<option name="defer_mesh_3" value="true"/>
+
+		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+			  {:meshSet_2d_0::FAR_FARFAR:}
+				{:meshSet_2d_1::FAR_INGVRUDTOUTFAR:}			
+			  {:meshSet_2d_2::FAR_INLET:}
+				{:meshSet_2d_3::FAR_OUTLET:}
+				{:meshSet_2d_4::FAR_SYMNY:}
+				{:meshSet_2d_5::FAR_SYMNX:}
+				{:meshSet_2d_6::FAR_INFAR:}
+				{:meshSet_2d_7::FAR_DTFAR:}
+			"
+			regRule="
+			  {:meshSet_3d_*::FAR:}
+			"
+		/>
+<!--		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+			  {:meshSet_2d_*:::}
+			"
+			regRule="
+			  {:meshSet_3d_*:::}
+			"
+		/>			-->
+		<bVObserver name="bVOOrientCellVolumes" positive="true"/>
+<!--		<bVObserver name="bVOWriteMSH" filename="eier.msh"/>		-->
+		<analyticGeometry label="aG_far"/>
+	</boundedVolume>		
+	
+	<boundedVolume 
+		name="readMOABMesh" 
+		label="farFull_gridCgns"
+	>
+		<option name="mesh_file" value="./Mesh/DomainMitteFull.cgns"/>
+		<option name="defer_mesh_0" value="true"/>
+		<option name="defer_mesh_1" value="true"/>
+		<option name="defer_mesh_2" value="true"/>
+		<option name="defer_mesh_3" value="true"/>
+
+		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+			  {:meshSet_2d_0::FAR_FARFAR:}
+				{:meshSet_2d_1::FAR_INGVRUDTOUTFAR:}			
+			  {:meshSet_2d_2::FAR_INLET:}
+				{:meshSet_2d_3::FAR_OUTLET:}
+				{:meshSet_2d_4::FAR_INFAR:}
+				{:meshSet_2d_5::FAR_DTFAR:}
+			"
+			regRule="
+			  {:meshSet_3d_*::FAR:}
+			"
+		/>
+<!--		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+			  {:meshSet_2d_*:::}
+			"
+			regRule="
+			  {:meshSet_3d_*:::}
+			"
+		/>			-->
+		<bVObserver name="bVOOrientCellVolumes" positive="true"/>
+<!--		<bVObserver name="bVOWriteMSH" filename="eier.msh"/>		-->
+		<analyticGeometry label="aG_far"/>
+	</boundedVolume>		
+</far>

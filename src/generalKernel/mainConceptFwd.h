@@ -3,33 +3,35 @@
 
 #include <dtOOTypeDef.h>
 
-#include <interfaceHeaven/labeledVectorHandling.h>
-
 namespace dtOO {
-//#ifndef constValue_H
   class constValue;
-//#endif  
-  typedef labeledVectorHandling< constValue * > cVPtrVec;
-//#ifndef analyticFunction_H
   class analyticFunction;
-//#endif    
-  typedef labeledVectorHandling< analyticFunction * > aFPtrVec;
-//#ifndef analyticGeometry_H
   class analyticGeometry;
-//#endif    
-  typedef labeledVectorHandling< analyticGeometry * > aGPtrVec;
-//#ifndef boundedVolume_H
   class boundedVolume;
-//#endif  
-  typedef labeledVectorHandling< boundedVolume * > bVPtrVec;
-//#ifndef dtCase_H
   class dtCase;
-//#endif    
-  typedef labeledVectorHandling< dtCase * > dCPtrVec;  
-//#ifndef dtPlugin_H
   class dtPlugin;
-//#endif    
-  typedef labeledVectorHandling< dtPlugin * > dPPtrVec;    
+  class dtCurve;
+  class dtSurface;
+  class dtMeshOperator;
+
+  template< typename T > class vectorHandling;
+  typedef vectorHandling< constValue * >       vH_constValue;
+  typedef vectorHandling< analyticFunction * > vH_analyticFunction;
+  typedef vectorHandling< analyticGeometry * > vH_analyticGeometry;
+  typedef vectorHandling< boundedVolume * >    vH_boundedVolume;
+  typedef vectorHandling< dtCase * >           vH_dtCase;
+  typedef vectorHandling< dtPlugin * >         vH_dtPlugin;  
+  typedef vectorHandling< dtCurve * >          vH_dtCurve;
+  typedef vectorHandling< dtSurface * >        vH_dtSurface;
+   
+  template< typename T > class labeledVectorHandling;
+  typedef labeledVectorHandling< dtMeshOperator * >   lvH_dtMeshOperator;  
+  typedef labeledVectorHandling< constValue * >       lvH_constValue;
+  typedef labeledVectorHandling< analyticFunction * > lvH_analyticFunction;
+  typedef labeledVectorHandling< analyticGeometry * > lvH_analyticGeometry;
+  typedef labeledVectorHandling< boundedVolume * >    lvH_boundedVolume;
+  typedef labeledVectorHandling< dtCase * >           lvH_dtCase;
+  typedef labeledVectorHandling< dtPlugin * >         lvH_dtPlugin;  
 }
 #endif	/* mainConceptFwd_H */
 

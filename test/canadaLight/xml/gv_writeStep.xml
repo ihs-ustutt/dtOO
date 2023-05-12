@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<gv_writeStep>
+	<constant 
+    label="RESPLINECUTS" 
+    value="
+      {0}{50}{100}{150}{200}{250}{300}{350}{400}{450}{500}{550}{600}{650}{700}{750}{800}{850}{900}{950}{1000}
+    "
+  />
+	
+<!--
+!
+!
+! point distribution
+!
+!
+-->					
+	<function label="f_gv_pointDistribution_0_lin"> 
+    <builder  name="muParser">
+      <expression value="xx" dimension="1"/>
+      <x_one name="xx" min="0." max="1."/>
+    </builder>
+  </function>	
+
+<!--	<replace variable="kk" values="{ru}{gv}">-->
+		
+	<!--
+	!
+	!
+	! periodic surfaces
+	!
+	!
+	-->						
+		<replace variable="jj" values="{u0_v}{u1_v}">	
+			<part label="{jj}_rM2dTo3d_gv_gridChannel">
+				<builder name="analyticGeometry">
+					<analyticGeometry label="~{jj}(rM2dTo3d_gv_gridChannel)~"/>
+				</builder>
+			</part>
+		</replace>
+<!--		<replace variable="jj" values="{u0_v}{u1_v}">	
+			<part label="{jj}_rM2dTo3d_gvExt_gridChannel">
+				<builder name="analyticGeometry">
+					<analyticGeometry label="~{jj}(rM2dTo3d_gvExt_gridChannel)~"/>
+				</builder>
+			</part>
+		</replace>-->
+	<!--
+	!
+	!
+	! convert curves
+	!
+	!
+	-->
+	  <constValue label="cV_gv_stepNResplinePoints" name="intParam" value="500"/>
+		<replace 
+			variable="jj" 
+			values="
+			  {aS_gv_blade_rot}
+			  {u0_v_rM2dTo3d_gv_gridChannel}{u1_v_rM2dTo3d_gv_gridChannel}
+			"
+		>
+			<replace variable="ii" values="RESPLINECUTS">	
+				<part label="{jj}_cut_{ii}">
+					<builder name="analyticGeometry">
+						<transformer 
+							name="pickMap2dTo3dRangePercent"
+							parameter_percent_two="{ii}/1000."
+						/>
+						<analyticGeometry label="{jj}"/>	
+					</builder>
+				</part>
+				<part label="{jj}_cut_{ii}_resplined">		
+					<builder name="bSplineCurve_pointConstructOCC" order="3">
+						<!--<transformer label="1.0E+03"/>-->
+						<Point_3 
+							attribute="pick_order_from_part"
+							number_points_one="#cV_gv_stepNResplinePoints#"
+							parameter_one_percent_function="f_gv_pointDistribution_0_lin"
+							part_label="{jj}_cut_{ii}"
+						/>
+					</builder>	
+				</part>
+			</replace>
+		</replace>
+<!--		<constValue label="cV_gv_stepNResplinePointsTe" name="intParam" value="10"/>
+		<replace 
+			variable="jj" 
+			values="
+			  {aS_gv_bladeWithTe_te}
+			"
+		>
+			<replace variable="ii" values="{0}{1000}">	
+				<part label="{jj}_cut_{ii}">
+					<builder name="analyticGeometry">
+						<transformer 
+							name="pickMap2dTo3dRangePercent"
+							parameter_percent_two="{ii}/1000."
+						/>
+						<analyticGeometry label="{jj}"/>	
+					</builder>
+				</part>
+				<part label="{jj}_cut_{ii}_resplined">		
+					<builder name="bSplineCurve_pointConstructOCC" order="3">
+						<transformer label="1.0E+03"/>
+						<Point_3 
+							attribute="pick_order_from_part"
+							number_points_one="#cV_gv_stepNResplinePointsTe#"
+							parameter_one_percent_function="f_gv_pointDistribution_0_lin"
+							part_label="{jj}_cut_{ii}"
+						/>
+					</builder>	
+				</part>
+			</replace>
+		</replace>-->
+
+		
+	<!--
+	!
+	!
+	! convert surfaces
+	!
+	!
+	-->
+		<part label="aG_gv_step_hub">
+			<builder name="surfaceOfRevolution_curveRotateConstructOCC">
+				<analyticGeometry label="u0_v_rM2dTo3d_gv_gridChannel_cut_0_resplined"/>
+				<Point_3 label="p3_0"/>
+				<Vector_3 label="v3_Nzz"/>
+				<float value="2.*_pi/#cV_gv_nBlades#"/>
+			</builder>
+		</part>	
+		<part label="aG_gv_step_shroud">
+			<builder name="surfaceOfRevolution_curveRotateConstructOCC">
+				<analyticGeometry label="u0_v_rM2dTo3d_gv_gridChannel_cut_1000_resplined"/>
+				<Point_3 label="p3_0"/>
+				<Vector_3 label="v3_Nzz"/>
+				<float value="2.*_pi/#cV_gv_nBlades#"/>
+			</builder>
+		</part>	
+		
+		<replace 
+			variable="ii" 
+			values="
+			  {aS_gv_blade_rot}
+			  {u0_v_rM2dTo3d_gv_gridChannel}{u1_v_rM2dTo3d_gv_gridChannel}
+	    "
+		>		
+			<part label="{ii}_resplined">
+				<builder name="bSplineSurface_skinConstructOCC"
+         	nIterations="1"
+					orderMin="3"
+					orderMax="3"
+        >
+					<replace variable="jj" values="RESPLINECUTS">					
+						<analyticGeometry label="{ii}_cut_{jj}_resplined"/>
+					</replace>
+				</builder>
+			</part>
+		</replace>
+
+<!--		<part label="aS_gvExt_blade_rot_resplined">
+			<builder name="analyticGeometry">
+				<analyticGeometry label="aS_gv_blade_rot_resplined"/>
+			</builder>
+		</part>-->
+		
+<!--		<part label="aS_gv_bladeWithTe_te_resplined">				
+			<builder name="bSplineSurface_bSplineCurveFillConstructOCC">
+				<analyticGeometry label="~u0_s(aS_gv_bladeWithTe_resplined)~"/>
+				<analyticGeometry label="aS_gv_bladeWithTe_te_cut_0_resplined"/>
+				<analyticGeometry label="~u1_s(aS_gv_bladeWithTe_resplined)~"/>
+				<analyticGeometry label="aS_gv_bladeWithTe_te_cut_1000_resplined"/>
+			</builder>		
+		</part>-->
+	<!--
+	!
+	!
+	! create inlet and outlet
+	!
+	!
+	-->
+		<replace variable="ii" values="{gv}">
+			<part label="aG_{ii}_step_s3_inlet">
+				<builder name="analyticGeometry">
+					<analyticGeometry label="~u0_s(u0_v_rM2dTo3d_{ii}_gridChannel_resplined)~"/>
+				</builder>
+			</part>
+			<part label="aG_{ii}_step_s3_outlet">
+				<builder name="analyticGeometry">
+					<analyticGeometry label="~u1_s(u0_v_rM2dTo3d_{ii}_gridChannel_resplined)~"/>
+				</builder>
+			</part>
+			<part label="aG_{ii}_step_inlet">
+				<builder name="surfaceOfRevolution_curveRotateConstructOCC">
+					<analyticGeometry label="aG_{ii}_step_s3_inlet"/>
+					<Point_3 label="p3_0"/>
+					<Vector_3 label="v3_Nzz"/>
+					<float value="2.*_pi/#cV_gv_nBlades#"/>
+				</builder>
+			</part>
+			<part label="aG_{ii}_step_outlet">
+				<builder name="surfaceOfRevolution_curveRotateConstructOCC">
+					<analyticGeometry label="aG_{ii}_step_s3_outlet"/>
+					<Point_3 label="p3_0"/>
+					<Vector_3 label="v3_Nzz"/>
+					<float value="2.*_pi/#cV_gv_nBlades#"/>
+				</builder>
+			</part>
+		</replace>
+
+		
+	<!--
+	!
+	!
+	! plugin
+	!
+	!
+	-->		
+	<replace variable="ii" values="{gv}">
+		<plugin name="writeStep" label="{ii}_writeStep" filename="STATE_{ii}.stp" translator="5">
+			<analyticGeometry label="aS_{ii}_blade_rot_resplined"/>
+			<analyticGeometry label="u0_v_rM2dTo3d_{ii}_gridChannel_resplined"/>
+			<analyticGeometry label="u1_v_rM2dTo3d_{ii}_gridChannel_resplined"/>
+			<analyticGeometry label="aG_{ii}_step_hub"/>
+			<analyticGeometry label="aG_{ii}_step_shroud"/>
+			<analyticGeometry label="aG_{ii}_step_inlet"/>
+			<analyticGeometry label="aG_{ii}_step_outlet"/>
+		</plugin>
+	</replace>
+  <plugin name="writeStep" label="gvCuts_writeStep" filename="STATE_gvCuts.stp">
+    <replace variable="jj" values="RESPLINECUTS">
+      <analyticGeometry label="aS_gv_blade_rot_cut_{jj}_resplined"/>
+    </replace>
+    <analyticGeometry label="~u0_s(aS_gv_blade_rot_resplined)~"/>
+  </plugin>  
+<!--		<plugin name="writeStep" label="gvWithTe_writeStep" filename="STATE_gvWithTe.stp">
+			<analyticGeometry label="aS_gv_bladeWithTe_resplined"/>
+			<analyticGeometry label="aS_gv_bladeWithTe_te_resplined"/>
+			<analyticGeometry label="u0_v_rM2dTo3d_gv_gridChannel_resplined"/>
+			<analyticGeometry label="u1_v_rM2dTo3d_gv_gridChannel_resplined"/>
+			<analyticGeometry label="aG_gv_step_hub"/>
+			<analyticGeometry label="aG_gv_step_shroud"/>
+			<analyticGeometry label="aG_gv_step_inlet"/>
+			<analyticGeometry label="aG_gv_step_outlet"/>
+		</plugin>		-->
+<!--	</replace>-->
+</gv_writeStep>

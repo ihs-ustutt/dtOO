@@ -45,8 +45,8 @@ namespace dtOO {
   void bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::createWire(
     ::QDomElement const & toBuild,
     baseContainer * const bC,
-    cVPtrVec const * const cV, 
-    aFPtrVec const * const aF,          
+    lvH_constValue const * const cV, 
+    lvH_analyticFunction const * const aF,          
     std::vector< dtReal > const & wire,
     twoDArrayHandling< dt__pH(dtCurve) > & cc,
     twoDArrayHandling< dtPoint3 > & pp
@@ -144,7 +144,7 @@ namespace dtOO {
     }
   }
         
-  dtSurface * bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::sortAndInit(
+  dt__pH(dtSurface) bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::sortAndInit(
     dtInt const & fixJ, twoDArrayHandling< dt__pH(dtCurve) > const & cc,
     vectorHandling< dtCurve const * > & ccFill,
     dtInt const & skin_nInitCuts, 
@@ -159,9 +159,11 @@ namespace dtOO {
     }
 
     return 
-      bSplineSurface_skinConstructOCC(
-      ccSkin, skin_minDeg, skin_maxDeg, skin_nIter
-    ).result();       
+      dt__pH(dtSurface)(
+        bSplineSurface_skinConstructOCC(
+          ccSkin, skin_minDeg, skin_maxDeg, skin_nIter
+        ).result()
+      );       
   }
         
   dtSurface * bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::fillPatch(
@@ -210,9 +212,9 @@ namespace dtOO {
   void bSplineSurface_patchByPatchConstructOCCAFXmlBuilder::buildPart(
 		::QDomElement const & toBuild, 
 		baseContainer * const bC,
-		cVPtrVec const * const cV, 
-		aFPtrVec const * const aF,
-		aFPtrVec * result 
+		lvH_constValue const * const cV, 
+		lvH_analyticFunction const * const aF,
+		lvH_analyticFunction * result 
 	) const {
     dt__throwIf(
       !dtXmlParserBase::hasChild("analyticFunction", toBuild)

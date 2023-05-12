@@ -7,28 +7,7 @@
 
 namespace dtOO {
   template < typename T >
-  class ptrVectorHandling : public boost::ptr_vector< T > {
-    public:
-      ptrVectorHandling();      
-      ptrVectorHandling(int const & size);
-  };
-
-  //----------------------------------------------------------------------------
-  // cpp
-  //----------------------------------------------------------------------------  
-  template < typename T >
-  ptrVectorHandling< T >::ptrVectorHandling(
-  
-  ) : boost::ptr_vector< T >() {
-    
-  }  
-  
-  template < typename T >
-  ptrVectorHandling< T >::ptrVectorHandling(
-    dtInt const & size
-  ) : boost::ptr_vector< T >(size) {
-    
-  }  
+  using ptrVectorHandling = boost::ptr_vector< T >;
 }
 
 #endif	/* PTRVECTORHANDLING_H */

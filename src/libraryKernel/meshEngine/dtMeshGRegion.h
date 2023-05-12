@@ -16,31 +16,29 @@ namespace dtOO {
   class dtGmshFace;
   
   class dtMeshGRegion : public dtMesh3DOperator {
-  public:
-    dt__class(dtMeshGRegion, dtMeshOperator);     
-    dtMeshGRegion();
-    dtMeshGRegion(const dtMeshGRegion& orig);
-    virtual ~dtMeshGRegion();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      labeledVectorHandling< dtMeshOperator * > const * const mO
-    );    
-    void operator()( dtGmshRegion * dtgr );    
-  private:
-    void createPyramids( dtGmshRegion * dtgr );
-    void createOVM(dtGmshRegion * dtgr, dtOVMMesh & ovm);
-    static dtReal pyramidHeight( ::MPyramid * pyr );
-  private:
-    dtReal _relax;
-    dtReal _minQShapeMetric;
-    dtReal _maxHeight;
-    dtInt _nPyramidOpenSteps;
-    dtInt _nSmooths;
+    public:
+      dt__class(dtMeshGRegion, dtMeshOperator);     
+      dt__classSelfCreate(dtMeshGRegion);
+      dtMeshGRegion();
+      dtMeshGRegion(const dtMeshGRegion& orig);
+      virtual ~dtMeshGRegion();
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO
+      );    
+      void operator()( dtGmshRegion * dtgr );    
+    private:
+      void createPyramids( dtGmshRegion * dtgr );
+      void createOVM(dtGmshRegion * dtgr, dtOVMMesh & ovm);
+      static dtReal pyramidHeight( ::MPyramid * pyr );
+    private:
+    private:
+      static bool _registrated;
   };
 }
 #endif	/* DTMESHGREGION_H */

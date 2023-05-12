@@ -1086,5 +1086,6 @@ namespace dtOO {
     uvw[2] = x2;
     
     return F(&(uvw[0]));
-	}	     
+	}
+  dt__C_addCloneForpVH(map3dTo3d);
 }

@@ -37,13 +37,13 @@ namespace dtOO {
 		return new closeGapsArithmetic();
 	}
 	
-  aGPtrVec closeGapsArithmetic::apply( 
-    aGPtrVec const * const aG 
+  lvH_analyticGeometry closeGapsArithmetic::apply( 
+    lvH_analyticGeometry const * const aG 
   ) const {
-    aGPtrVec ret;
+    lvH_analyticGeometry ret;
 		
 		dt__pVH(map1dTo3d) m1dV;
-    dt__forAllConstIter(aGPtrVec, (*aG), it) {
+    dt__forAllConstIter(lvH_analyticGeometry, (*aG), it) {
 			analyticGeometry * const & theAG = *it;
       //
       // cast analyticGeometry
@@ -64,15 +64,15 @@ namespace dtOO {
     return ret;
   }
 
-  aFPtrVec closeGapsArithmetic::apply( 
-    aFPtrVec const * const aF 
+  lvH_analyticFunction closeGapsArithmetic::apply( 
+    lvH_analyticFunction const * const aF 
   ) const {
     dt__throwIf(_dir<0, apply());
     dt__throwIf(_nSegments<0, apply());
     
-    aFPtrVec ret;
+    lvH_analyticFunction ret;
 		dt__pVH(vec3dTwoD) v3dV;
-    dt__forAllConstIter(aFPtrVec, (*aF), it) {
+    dt__forAllConstIter(lvH_analyticFunction, (*aF), it) {
 			analyticFunction * const & theAF = *it;
       //
       // cast analyticFunction
@@ -102,9 +102,9 @@ namespace dtOO {
   void closeGapsArithmetic::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
     

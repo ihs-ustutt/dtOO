@@ -21,19 +21,28 @@ namespace dtOO {
       dtMesh3DOperator();
       dtMesh3DOperator(const dtMesh3DOperator& orig);
       virtual ~dtMesh3DOperator();
+      virtual dtMesh3DOperator * create( void ) const = 0;     
+      virtual void jInit(
+        jsonPrimitive const & jE,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO
+      );
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG,
-        bVPtrVec const * const bV,
-        labeledVectorHandling< dtMeshOperator * > const * const mO      
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO      
       );
       virtual void operator()( dtGmshRegion * dtgr ) = 0;    
-    private:
-
   };
+  dt__I_addCloneForpVHNotImpl(dtMesh3DOperator);
 }
 #endif	/* DTMESH3DOPERATOR_H */
 

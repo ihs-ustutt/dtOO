@@ -14,10 +14,17 @@
 #include <gmsh/MLine.h>
 #include <interfaceHeaven/timeHandling.h>
 #include <interfaceHeaven/threadSafe.h>
-#include <omp.h>
 #include <progHelper.h>
+#include "dtMeshOperatorFactory.h"
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
+  bool dtMeshFreeGradingGEdge::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshFreeGradingGEdge, new dtMeshFreeGradingGEdge())
+  );
+ 
   dtMeshFreeGradingGEdge::dtMeshFreeGradingGEdge( void ) : dtMeshGEdge() {
     
   }
@@ -26,40 +33,80 @@ namespace dtOO {
     
   } 
     
+  void dtMeshFreeGradingGEdge::jInit(
+    jsonPrimitive const & jE,
+    baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtMeshOperator const * const mO
+  ) {
+    dtMeshGEdge::jInit(jE, bC, cV, aF, aG, bV, mO);
+    std::vector< dtInt > tTrans 
+    = 
+    jE.lookup< std::vector< dtInt > >("typeTransfinite");
+    // 
+    // it is necessary to store here the raw pointers and not a clone of the
+    // function, because the function is a compound that can be modified in 
+    // another observer
+    //
+    std::vector< analyticFunction const * > gFun 
+    = 
+    jE.lookupVecRaw< analyticFunction >("gradingFunctions", aF);
+    dt__forAllIndex(gFun, ii) { 
+      _gradingInt[ tTrans[ii] ] = scaOneD::ConstDownCast(gFun[ii]);
+      dt__info(
+        jInit(),
+        << "Map < " 
+        << tTrans[ii] << " > to " 
+        << _gradingInt[tTrans[ii]]->getLabel()
+      );
+    }
+  }
+
   void dtMeshFreeGradingGEdge::init(
     ::QDomElement const & element,
     baseContainer const * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG,
-    bVPtrVec const * const bV,
-    labeledVectorHandling< dtMeshOperator * > const * const mO      
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtMeshOperator const * const mO      
   ) {
     dtMeshGEdge::init(element, bC, cV, aF, aG, bV, mO);
     
-    _typeTransfinite 
-    = 
-    qtXmlBase::getAttributeIntVector("typeTransfinite", element);
+    jsonPrimitive jE;
+    jE.append< std::vector< dtInt > >(
+     "typeTransfinite",
+      qtXmlBase::getAttributeIntVector("typeTransfinite", element)
+    );
+
     std::vector< std::string > aFLabel 
     = 
     qtXmlBase::getAttributeStrVector("gradingLabel", element);
-    dt__forAllRefAuto(aFLabel, aLabel) {
-      _grading.push_back( scaOneD::MustConstDownCast(aF->get(aLabel)) );
+
+    lvH_analyticFunction gradFun;
+    dt__forAllIndex(aFLabel, ii) { 
+      gradFun.push_back( aF->get(aFLabel[ii]) );
     }
-    dt__forAllIndex(_typeTransfinite, ii) {
-      _gradingInt[ _typeTransfinite[ii] ] = _grading[ ii ];
-    }
-    
-    _tol 
-    = 
-    dtXmlParserBase::getAttributeFloatMuParse(
-      "tolerance", element, cV, aF, 1.e-8
+    jE.append< std::vector< analyticFunction * > >(
+      "gradingFunctions",
+      gradFun
     );
-    _maxSmooth 
-    = 
-    dtXmlParserBase::getAttributeIntMuParse(
-      "nSmoothSteps", element, cV, aF, 20
+    jE.append< dtReal >(
+      "_tolerance",
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "tolerance", element, cV, aF, 1.e-8
+      )
     );
+    jE.append< dtInt >(
+      "_nSmoothSteps",
+      dtXmlParserBase::getAttributeIntMuParse(
+        "nSmoothSteps", element, cV, aF, 20
+      )
+    );
+    dtMeshFreeGradingGEdge::jInit(jE, bC, cV, aF, aG, bV, mO);
   }
 
   void dtMeshFreeGradingGEdge::operator()( dtGmshEdge * dtge) {
@@ -139,7 +186,9 @@ namespace dtOO {
 //      }
 
       
-      dt__forFromToIndex(0, _maxSmooth, smoothIt) {
+      dt__forFromToIndex(
+        0, config().lookupDef< dtInt >("_nSmoothSteps", 20), smoothIt
+      ) {
         std::vector< dtReal > dL(gg.size(), 0.);      
         dt__forFromToIndex(1, nP, ii) {
           p3_u[ii] = m1d->getPoint(uu[ii]);
@@ -175,14 +224,14 @@ namespace dtOO {
           maxEps = std::max( maxEps, std::fabs<dtReal>(gg[ii]-(ll[ii]/sumL)) );
           uu[ii] = l_u.invYFloat( gg[ii] * sumL );
         }
-
+        dtReal tol = config().lookupDef< dtReal >("_tolerance", 1.E-08);
         logC() 
           << logMe::dtFormat(
             "[ %3i ] sumEps = %12.5e maxEps = %12.5e (threshold = %12.5e)"
-          ) % smoothIt % sumEps % maxEps % _tol 
+          ) % smoothIt % sumEps % maxEps % tol
           << std::endl;
         
-        if (maxEps < _tol) break;
+        if (maxEps < tol) break;
       }
       
       

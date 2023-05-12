@@ -35,7 +35,7 @@ namespace dtOO {
 
 	}
 
-	dtSurface * dtOCCSurfaceOfRevolution::clone( void ) const {
+	dtOCCSurfaceOfRevolution * dtOCCSurfaceOfRevolution::clone( void ) const {
 		return new dtOCCSurfaceOfRevolution( OCCRef() );
 	}
 

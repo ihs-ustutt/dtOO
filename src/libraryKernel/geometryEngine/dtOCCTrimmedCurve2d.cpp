@@ -24,7 +24,7 @@ namespace dtOO {
 	dtOCCTrimmedCurve2d::~dtOCCTrimmedCurve2d() {
 	}
 
-  dtCurve2d * dtOCCTrimmedCurve2d::clone( void ) const {
+  dtOCCTrimmedCurve2d * dtOCCTrimmedCurve2d::clone( void ) const {
 		return new dtOCCTrimmedCurve2d( OCCRef(), _u0, _u1 );		
 	}
 	

@@ -13,8 +13,7 @@
 namespace dtOO {
   class dtTransformer;
   
-  class scaTanhUnitGradingOneD 
-    : public virtual scaOneD, public scaOneDPolyInterface {
+  class scaTanhUnitGradingOneD : public scaOneDPolyInterface {
     public:
       dt__class(scaTanhUnitGradingOneD, analyticFunction);     
       scaTanhUnitGradingOneD();

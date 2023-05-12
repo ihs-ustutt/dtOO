@@ -16,24 +16,6 @@ namespace dtOO {
     _pair.clear();
   }
 
-  void pointContainer::add( 
-    dtPoint3 const * const pointP, std::string const * const stringP 
-  ) {
-    this->add(*pointP, *stringP);  
-  }
-
-  void pointContainer::add( 
-    dtPoint3 const * const pointP, std::string const  string 
-  ) {
-    this->add(*pointP, string);  
-  }
-
-  void pointContainer::add( 
-    dtPoint3 const point, std::string const * const stringP 
-  ) {
-    this->add(point, *stringP);    
-  }
-
   void pointContainer::add( dtPoint3 const point, std::string const string) {
     if (string != "") {
       for (int ii=0;ii<_pair.size();ii++) {
@@ -79,5 +61,11 @@ namespace dtOO {
   
   bool pointContainer::isEmpty( void ) const {
     return _pair.empty();
+  }
+  
+  std::vector< std::string > pointContainer::labels( void ) const {
+    std::vector< std::string > ret;
+    dt__forAllRefAuto(_pair, aPair) ret.push_back( aPair.second);
+    return ret;
   }
 }

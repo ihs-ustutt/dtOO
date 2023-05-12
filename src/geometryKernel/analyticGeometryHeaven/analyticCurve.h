@@ -19,7 +19,7 @@ namespace dtOO {
       analyticCurve();
       analyticCurve( analyticCurve const & orig );
       analyticCurve( dtCurve const & orig );
-      analyticCurve( dtCurve * orig );
+      analyticCurve( dtCurve const * const orig );
       virtual ~analyticCurve();
       //
       // overload

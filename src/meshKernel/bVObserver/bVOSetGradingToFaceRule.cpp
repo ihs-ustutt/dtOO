@@ -25,16 +25,15 @@ namespace dtOO {
   }
 
   bVOSetGradingToFaceRule::~bVOSetGradingToFaceRule() {
-    
   }
   
-  void bVOSetGradingToFaceRule::bVOSetGradingToFaceRule::init( 
+  void bVOSetGradingToFaceRule::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
@@ -50,9 +49,12 @@ namespace dtOO {
 //     />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_rule
-		= 
-		dtXmlParserBase::getAttributeStrVector("rule", element);
+    jsonPrimitive jE;
+    jE.append< std::vector< std::string > >(
+      "_rule",
+  		dtXmlParserBase::getAttributeStrVector("rule", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOSetGradingToFaceRule::preUpdate( void ) {
@@ -64,7 +66,9 @@ namespace dtOO {
 		::GModel::setCurrent( gm );
 
     logContainer< bVOSetGradingToFaceRule > logC(logINFO, "preUpdate");    
-    dt__forAllRefAuto( _rule, aRule ) {
+    dt__forAllRefAuto( 
+      config().lookup< std::vector< std::string > >("_rule"), aRule 
+    ) {
       //
       // create components
       //

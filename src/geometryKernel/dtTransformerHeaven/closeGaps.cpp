@@ -27,10 +27,10 @@ namespace dtOO {
 		return new closeGaps();
 	}
 	
-  aGPtrVec closeGaps::apply( 
-    aGPtrVec const * const toTrans 
+  lvH_analyticGeometry closeGaps::apply( 
+    lvH_analyticGeometry const * const toTrans 
   ) const {
-    aGPtrVec retAGeo;
+    lvH_analyticGeometry retAGeo;
 
     dt__forAllRefAuto( *toTrans, aTrans ) {
       //
@@ -40,7 +40,7 @@ namespace dtOO {
         analyticSurface * aS, analyticSurface::DownCast( aTrans->clone() )
       );
 
-      if ( !_vvStartAGeo.isNull() ) {
+      if ( _vvStartAGeo ) {
         for (int ii = 0;ii<aS->ptrDtSurface()->nControlPointsU();ii++) {
           dtPoint3 cP = aS->ptrDtSurface()->controlPoint(ii, 0);
           dtPoint2 nearest = _vvStartAGeo->ptrDtSurface()->reparam( cP );
@@ -51,7 +51,7 @@ namespace dtOO {
           aS->ptrDtSurface()->setControlPoint(ii, 0, cPNearest);
         }
       }
-      if ( !_vvEndAGeo.isNull() ) {
+      if ( _vvEndAGeo ) {
         dtInt nV = aS->ptrDtSurface()->nControlPointsV();
         for (int ii = 0;ii<aS->ptrDtSurface()->nControlPointsU();ii++) {        
           dtPoint3 cP = aS->ptrDtSurface()->controlPoint(ii, nV-1);
@@ -79,9 +79,9 @@ namespace dtOO {
   void closeGaps::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 
@@ -110,6 +110,6 @@ namespace dtOO {
         )->clone()
       )
     );  
-    dt__throwIf( _vvStartAGeo.isNull() || _vvEndAGeo.isNull(), init() );
+    dt__throwIf( !_vvStartAGeo || !_vvEndAGeo, init() );
   }
 }

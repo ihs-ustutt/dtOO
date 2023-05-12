@@ -14,15 +14,23 @@ namespace dtOO {
       rotate();
       virtual ~rotate();
       rotate(const rotate& orig);    
+      rotate( jsonPrimitive const & jE );
       virtual dtTransformerInvThreeD * clone( void ) const;
       virtual dtTransformerInvThreeD * create( void ) const;       
       virtual bool isNecessary( void ) const;
+      virtual void jInit( 
+        jsonPrimitive const & jE, 
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
+      );    
       void init(
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG 
       );
       virtual std::vector< dtPoint3 > apply( 
         std::vector< dtPoint3 > const * const toTrans 
@@ -36,13 +44,10 @@ namespace dtOO {
       virtual std::vector< dtVector3 > retract(
         std::vector< dtVector3 > const * const toRetract
       ) const;        
-      virtual aGPtrVec apply( 
-        aGPtrVec const * const aGeoVecP 
+      virtual lvH_analyticGeometry apply( 
+        lvH_analyticGeometry const * const aGeoVecP 
       ) const;
     private:
-      dtPoint3 _origin;
-      dtVector3 _rotVector;
-      dtReal _angle;
       static bool _registrated;    
   };
 }

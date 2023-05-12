@@ -7,9 +7,10 @@
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <boundedVolume.h>
-#include <xmlHeaven/dtXmlParser.h>
+#include <interfaceHeaven/lVHOstateHandler.h>
 #include <meshEngine/dtGmshModel.h>
 #include "bVOInterfaceFactory.h"
+#include <parseHeaven/dtParser.h>
 
 namespace dtOO {
   bool bVOWriteMSH::_registrated 
@@ -25,13 +26,13 @@ namespace dtOO {
     
   }
   
-  void bVOWriteMSH::bVOWriteMSH::init( 
+  void bVOWriteMSH::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {		
     //
@@ -42,19 +43,18 @@ namespace dtOO {
 //		<bVObserver name="bVOWriteMSH" 
 //		  filename="mesh.msh"
 //		  saveAll="false"
-//		/>									
-		_filename 
-		= 
-		qtXmlBase::getAttributeStr("filename", element);		
+//		/>
+		jsonPrimitive jE;
+		jE.append< std::string >(
+      "_filename",
+		  qtXmlBase::getAttributeStr("filename", element)
+    );		
     
-    _saveAll = false;
-    if (qtXmlBase::hasAttribute("saveAll", element)) {
-      _saveAll = qtXmlBase::getAttributeBool("saveAll", element);
-    }
-    _saveParametric = false;
-//    if (qtXmlBase::hasAttribute("saveParametric", element)) {
-//      _saveParametric = qtXmlBase::getAttributeBool("saveParametric", element);
-//    } 
+    jE.append< bool >(  
+      "_saveAll",
+      qtXmlBase::getAttributeBool("saveAll", element, false)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOWriteMSH::postUpdate( void ) {
@@ -75,11 +75,14 @@ namespace dtOO {
       //
       // create filename string if empty
       //
-      std::string cFileName = _filename;
+      std::string cFileName 
+      = 
+      dtParser()[config().lookup< std::string >("_filename")];
+   
       if ( cFileName == "" ) {
         cFileName 
         = 
-        dtXmlParser::constReference().currentState()
+        lVHOstateHandler().commonState()
         +
         "_"
         +
@@ -87,17 +90,19 @@ namespace dtOO {
         +
         ".msh";
       }
-//      else dt__throwUnexpected(postUpdate);
       
       dt__info(
         postUpdate(),
         << "Write >" << cFileName << "<." << std::endl
-        << dt__eval(_saveAll) << std::endl
-        << dt__eval(_saveParametric)
+        << dt__eval(config().lookup< bool >("_saveAll"))
       );
       
 		  ptrBoundedVolume()->getModel()->writeMSH(
-        cFileName, 2.2, false, _saveAll, _saveParametric
+        cFileName, 
+        2.2, 
+        false, 
+        config().lookup< bool >("_saveAll"), 
+        false
       );
     }
   }

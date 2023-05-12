@@ -12,6 +12,7 @@
 #include <meshEngine/dtGmshRegion.h>
 #include <meshEngine/dtGmshModel.h>
 #include "bVOInterfaceFactory.h"
+#include "jsonHeaven/jsonPrimitive.h"
 
 namespace dtOO {  
   bool bVOSetGrading::_registrated 
@@ -27,13 +28,13 @@ namespace dtOO {
     
   }
   
-  void bVOSetGrading::bVOSetGrading::init( 
+  void bVOSetGrading::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
@@ -49,61 +50,92 @@ namespace dtOO {
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_regionLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("regionLabel", element);    
-		_faceLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("faceLabel", element); 
-		_edgeLabel
-		= 
-		dtXmlParserBase::getAttributeStrVector("edgeLabel", element); 
+    jsonPrimitive jE;
+    jE.append< std::vector< std::string > >(
+      "_regionLabel",
+		  dtXmlParserBase::getAttributeStrVector("regionLabel", element)
+    );    
     
-    dt__throwIf(
-      ( _regionLabel.size() + _faceLabel.size() + _edgeLabel.size() )
-      >
-      std::max(
-        _regionLabel.size(), 
-        std::max(
-          _faceLabel.size(), 
-          _edgeLabel.size()
-        )
-      ), 
-      init()
+    jE.append< std::vector< std::string > >(
+      "_faceLabel",
+		  dtXmlParserBase::getAttributeStrVector("faceLabel", element)
+    ); 
+    jE.append< std::vector< std::string > >(
+      "_edgeLabel",
+		  dtXmlParserBase::getAttributeStrVector("edgeLabel", element)
+    ); 
+    
+    jE.append< std::vector< dtReal > >(
+      "_grading",
+		  dtXmlParserBase::getAttributeFloatVectorMuParse(
+        "grading", element, cV, aF
+      )
     );
-		
-    _grading
-		= 
-		dtXmlParserBase::getAttributeFloatVectorMuParse("grading", element, cV, aF);
-		_type
-		= 
-		dtXmlParserBase::getAttributeFloatVectorMuParse("type", element, cV, aF);
+    jE.append< std::vector< dtReal > >(
+      "_type",
+		  dtXmlParserBase::getAttributeFloatVectorMuParse("type", element, cV, aF)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOSetGrading::preUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
-    
+
+    dt__throwIf(
+      ( 
+        config().lookup< std::vector< std::string > >("_regionLabel").size()
+        + 
+        config().lookup< std::vector< std::string > >("_faceLabel").size()
+        + 
+        config().lookup< std::vector< std::string > >("_edgeLabel").size()
+      )
+      >
+      std::max(
+        config().lookup< std::vector< std::string > >("_regionLabel").size(),
+        std::max(
+          config().lookup< std::vector< std::string > >("_faceLabel").size(),
+          config().lookup< std::vector< std::string > >("_edgeLabel").size()
+        )
+      ), 
+      preUpdate()
+    );
+   
 		//
 		// set current model
 		//
 		::GModel::setCurrent( gm );
 	
-    dt__forAllRefAuto(_regionLabel, aLabel) {
+    dt__forAllRefAuto(
+      config().lookup< std::vector< std::string > >("_regionLabel"), aLabel
+    ) {
       dt__info( preUpdate(), << "Handling regions " << aLabel );
       dt__forAllRefAuto(gm->getDtGmshRegionListByPhysical(aLabel), aReg) {
         dt__info( preUpdate(), << "Set grading to region " << aReg );
-        aReg->setGrading(_grading, _type);
+        aReg->setGrading(
+          config().lookup< std::vector< dtReal > >("_grading"), 
+          config().lookup< std::vector< dtReal > >("_type")
+        );
       }
     }    
-    dt__forAllRefAuto(_faceLabel, aLabel) {
+    dt__forAllRefAuto(
+      config().lookup< std::vector< std::string > >("_faceLabel"), aLabel
+    ) {
       dt__info( preUpdate(), << "Handling faces " << aLabel );
       dt__forAllRefAuto(gm->getDtGmshFaceListByPhysical(aLabel), aFace) {
         dt__info( preUpdate(), << "Set grading to face " << aFace );
-        aFace->setGrading(_grading, _type);
+        aFace->setGrading(
+          config().lookup< std::vector< dtReal > >("_grading"), 
+          config().lookup< std::vector< dtReal > >("_type")
+        );
       }
     }        
-    dt__forAllRefAuto(_edgeLabel, aLabel) {
-      gm->getDtGmshEdgeByPhysical(aLabel)->setGrading(_grading[0], _type[0]);
+    dt__forAllRefAuto(
+      config().lookup< std::vector< std::string > >("_edgeLabel"), aLabel
+    ) {
+      gm->getDtGmshEdgeByPhysical(aLabel)->setGrading(
+        config().lookup< std::vector< dtReal > >("_grading")[0], 
+        config().lookup< std::vector< dtReal > >("_type")[0]
+      );
     }
   }
 }

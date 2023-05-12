@@ -205,7 +205,7 @@ namespace dtOO {
     l_dirs.push_back( ori );
     edgeLoops.clear();
     edgeLoops.push_back( ::GEdgeLoop(l_edges) );
-  }  
+  } 
 
   dtInt dtGmshFace::edgeOrientation( ::GEdge * edge ) const {
     typedef std::vector< ::GEdge * >::const_iterator EIter;
@@ -214,7 +214,8 @@ namespace dtOO {
     for (EIter ei = l_edges.begin(); ei != l_edges.end(); ++ei) {
       if (*ei == edge) return *OriIter;
       ++OriIter;
-    }    
+    }
+    return 0;
   }    
 	
   void dtGmshFace::addEdgeLoop( std::list< ::GEdge * > edgeL ) {
@@ -242,8 +243,10 @@ namespace dtOO {
       }
     }
     if (edgeL.size() != 0) {
-      dt__throw(addEdgeLoop(),
-              << dt__eval( edgeL.size() ) );
+      dt__throw(
+        addEdgeLoop(),
+        << dt__eval( edgeL.size() ) 
+      );
     }
   }  
   
@@ -599,7 +602,7 @@ namespace dtOO {
   }
 
   void dtGmshFace::setGrading(
-    std::vector< dtReal > const & grading, std::vector< dtReal > & type
+    std::vector< dtReal > const & grading, const std::vector< dtReal > & type
   ) {
     dt__throwIf(grading.size() != 4, setGrading());
     dt__throwIf(type.size() != 4, setGrading());

@@ -15,16 +15,18 @@ namespace dtOO {
   );
   
   pickMap1dTo3dLinePercent::pickMap1dTo3dLinePercent() : dtTransformer() {
-    _u0 = -1.;
-		_u1 = -1.;
   }
 
   pickMap1dTo3dLinePercent
     ::pickMap1dTo3dLinePercent(const pickMap1dTo3dLinePercent& orig)
     : dtTransformer(orig) {
-		_u0 = orig._u0;
-		_u1 = orig._u1;
   }
+
+  pickMap1dTo3dLinePercent::pickMap1dTo3dLinePercent( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }  
 
   pickMap1dTo3dLinePercent::~pickMap1dTo3dLinePercent() {
   }
@@ -37,15 +39,20 @@ namespace dtOO {
 		return new pickMap1dTo3dLinePercent();
 	}
 	
-  aGPtrVec pickMap1dTo3dLinePercent::apply( 
-    aGPtrVec const * const aGeoVecP 
+  lvH_analyticGeometry pickMap1dTo3dLinePercent::apply( 
+    lvH_analyticGeometry const * const aGeoVecP 
   ) const {
-    aGPtrVec aGeoRet;
+    lvH_analyticGeometry aGeoRet;
     
     dt__forAllRefAuto(*aGeoVecP, aG) {
       map1dTo3d const * m1d = map1dTo3d::MustConstDownCast( aG );
 			
-      aGeoRet.push_back( m1d->segmentPercent( _u0, _u1 ) );
+      aGeoRet.push_back( 
+        m1d->segmentPercent( 
+          config().lookup<dtReal>("_u0"), 
+          config().lookup<dtReal>("_u1")
+        ) 
+      );
     }
     
     return aGeoRet;
@@ -54,13 +61,29 @@ namespace dtOO {
   bool pickMap1dTo3dLinePercent::isNecessary( void ) const {
     return true;
   }
+
+  void pickMap1dTo3dLinePercent::jInit( 
+    jsonPrimitive const & jE,
+    baseContainer * const bC,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
+	) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+
+    dt__throwIfWithMessage(
+      !config().contains("_u0") || !config().contains("_u1"),
+      jInit(),
+      << config().toStdString()
+    );
+  }    
   
   void pickMap1dTo3dLinePercent::init( 
 	  ::QDomElement const * tE, 
     baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 
@@ -68,8 +91,17 @@ namespace dtOO {
     = 
     dtXmlParserBase::getChildVector("float", *tE);
     dt__throwIf( el.size()!=2, init() );
+
+    //_u0 = dtXmlParserBase::createFloat(el[0], bC, cV, aF, aG);
+    //_u1 = dtXmlParserBase::createFloat(el[1], bC, cV, aF, aG);
+    jsonPrimitive config;
     
-    _u0 = dtXmlParserBase::createFloat(el[0], bC, cV, aF, aG);
-    _u1 = dtXmlParserBase::createFloat(el[1], bC, cV, aF, aG);
+    config.append<dtReal>( 
+      "_u0", dtXmlParserBase::createFloat(el[0], bC, cV, aF, aG) 
+    );
+    config.append<dtReal>( 
+      "_u1", dtXmlParserBase::createFloat(el[1], bC, cV, aF, aG)
+    );
+    jInit(config, bC, cV, aF, aG);    
   }  
 }

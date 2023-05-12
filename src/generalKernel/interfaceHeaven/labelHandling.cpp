@@ -1,6 +1,7 @@
 #include "labelHandling.h"
 
 #include <logMe/logMe.h>
+#include <jsonHeaven/jsonPrimitive.h>
 
 namespace dtOO {  
   labelHandling::labelHandling() {
@@ -17,16 +18,18 @@ namespace dtOO {
 	  _label = label;	
 	}
 	
+  void labelHandling::jInit( jsonPrimitive const & jE) {
+  	if ( jE.contains("label") ) {
+			this->setLabel( jE.lookup<std::string>("label") );
+		}
+  }
+
   labelHandling::~labelHandling() {
     _label.clear();
   }
   
   void labelHandling::setLabel( std::string const label) {
     _label = label;
-  }
-  
-  void labelHandling::setLabel( char const * const label ) {
-    _label = std::string(label);
   }
   
   std::string labelHandling::getLabel( void ) const {

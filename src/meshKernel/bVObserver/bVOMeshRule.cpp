@@ -3,7 +3,7 @@
 #include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
 #include <xmlHeaven/qtXmlPrimitive.h>
-#include <xmlHeaven/dtXmlParser.h>
+#include <interfaceHeaven/lVHOstateHandler.h>
 #include <meshEngine/dtGmshVertex.h>
 #include <meshEngine/dtGmshEdge.h>
 #include <meshEngine/dtGmshFace.h>
@@ -32,14 +32,40 @@ namespace dtOO {
   bVOMeshRule::~bVOMeshRule() {
     _meshOperator.destroy();
   }
-  
-  void bVOMeshRule::bVOMeshRule::init( 
+ 
+  void bVOMeshRule::jInit( 
+    jsonPrimitive const & jE,
+		baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    boundedVolume * attachTo
+  ) {
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
+    
+    dt__forAllRefAuto(
+      jE.lookup< std::vector< jsonPrimitive > >("dtMeshOperator"), 
+      anOpJson
+    ) {
+      dtMeshOperator * anOp 
+      = 
+      dtMeshOperatorFactory::create(
+        anOpJson.lookup< std::string >("name")
+      );
+      anOp->jInit(anOpJson, bC, cV, aF, aG, bV, &_meshOperator);
+      
+      _meshOperator.push_back(anOp);
+    }
+  }  
+ 
+  void bVOMeshRule::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
@@ -91,7 +117,7 @@ namespace dtOO {
     //    slidableFaceOrientation="{-1}"
     //  />
     //</bVObserver>
-								
+	
     std::vector< ::QDomElement > meshOp
     =
     qtXmlPrimitive::getChildVector("dtMeshOperator", element);
@@ -106,31 +132,42 @@ namespace dtOO {
       
       _meshOperator.push_back(anOp);
     }
+
+    jsonPrimitive jE;
     std::string rule = qtXmlPrimitive::getAttributeStr("rule", element);
-    _rule1D 
-    = 
-    qtXmlBase::convertToStringVector(
-      "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
+    jE.append< std::vector< std::string > >(
+      "_rule1D",
+      qtXmlBase::convertToStringVector(
+        "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
+      )
     );
-    _rule2D 
-    = 
-    qtXmlBase::convertToStringVector(
-      "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
+    jE.append< std::vector< std::string > >(
+      "_rule2D",
+      qtXmlBase::convertToStringVector(
+        "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
+      )
     );
-    _rule3D 
-    = 
-    qtXmlBase::convertToStringVector(
-      "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
+    jE.append< std::vector< std::string > >(
+      "_rule3D",
+      qtXmlBase::convertToStringVector(
+        "{", "}", qtXmlPrimitive::getStringBetweenAndRemove(":", ":", &rule)
+      )
     );
-    _only = qtXmlBase::getAttributeStrVector("only", element);
+    jE.append< std::vector< std::string > >(
+      "_only", qtXmlBase::getAttributeStrVector("only", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
     
     dt__info(
       preUpdate(),
       << "rule = " << rule << std::endl
-      << "_rule1D = " << _rule1D << std::endl
-      << "_rule2D = " << _rule2D << std::endl
-      << "_rule3D = " << _rule3D << std::endl
-      << "_only = " << _only
+      << "_rule1D = " << config().lookup< std::vector< std::string > >("_rule1D") 
+      << std::endl
+      << "_rule2D = " << config().lookup< std::vector< std::string > >("_rule2D") 
+      << std::endl
+      << "_rule3D = " << config().lookup< std::vector< std::string > >("_rule3D") 
+      << std::endl
+      << "_only = " << config().lookup< std::vector< std::string > >("_only") 
     );
   }
   
@@ -144,14 +181,16 @@ namespace dtOO {
     std::list< dtGmshEdge * > ee;
     std::list< dtGmshFace * > ff;
     std::list< dtGmshRegion * > rr;   
-    
-    if (_only.empty()) {
+   
+    if (config().lookup< std::vector<std::string> >("_only").empty()) {
       ee = dtGmshModel::cast2DtGmshEdge( gm->edges() );
       ff = dtGmshModel::cast2DtGmshFace( gm->faces() );        
       rr = dtGmshModel::cast2DtGmshRegion( gm->regions() );   
     }
     else {
-      dt__forAllRefAuto(_only, anOnly) {
+      dt__forAllRefAuto(
+        config().lookup< std::vector<std::string> >("_only"), anOnly
+      ) {
         ::GEntity * ge = gm->getGEntityByPhysical(anOnly);
         
         //
@@ -229,8 +268,9 @@ namespace dtOO {
     //
     // 1D
     //
-    dt__forAllConstIter(std::vector< std::string >, _rule1D, it) {
-      std::string currentOperatorStr = *it;
+    dt__forAllRefAuto(
+      config().lookup< std::vector<std::string> >("_rule1D"), currentOperatorStr
+    ) {
       std::string currentGEntityStr 
       = 
       qtXmlBase::getStringBetweenAndRemove("(", ")", &currentOperatorStr);
@@ -256,7 +296,7 @@ namespace dtOO {
         ) (*current1D)(aEdge); 
         if (optionHandling::debugTrue()) {
           gm->writeMSH(
-            dtXmlParser::reference().currentState()
+            lVHOstateHandler().commonState()
             +
             "_"
             +
@@ -285,8 +325,9 @@ namespace dtOO {
     //
     // 2D
     //
-    dt__forAllConstIter(std::vector< std::string >, _rule2D, it) {
-      std::string currentOperatorStr = *it;
+    dt__forAllRefAuto(
+      config().lookup< std::vector<std::string> >("_rule2D"), currentOperatorStr
+    ) {
       std::string currentGEntityStr 
       = 
       qtXmlBase::getStringBetweenAndRemove("(", ")", &currentOperatorStr);
@@ -315,7 +356,7 @@ namespace dtOO {
         ) (*current2D)(aFace);
         if (optionHandling::debugTrue()) {
           gm->writeMSH(
-            dtXmlParser::reference().currentState()
+            lVHOstateHandler().commonState()
             +
             "_"
             +
@@ -343,8 +384,9 @@ namespace dtOO {
     //
     // 3D
     //
-    dt__forAllConstIter(std::vector< std::string >, _rule3D, it) {
-      std::string currentOperatorStr = *it;
+    dt__forAllRefAuto(
+      config().lookup< std::vector<std::string> >("_rule3D"), currentOperatorStr
+    ) {
       std::string currentGEntityStr 
       = 
       qtXmlBase::getStringBetweenAndRemove("(", ")", &currentOperatorStr);
@@ -369,7 +411,7 @@ namespace dtOO {
         ) (*current3D)(aReg);
         if (optionHandling::debugTrue()) {
           gm->writeMSH(
-            dtXmlParser::reference().currentState()
+            lVHOstateHandler().commonState()
             +
             "_"
             +

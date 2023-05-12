@@ -8,7 +8,7 @@
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/optionHandling.h>
 #include <xmlHeaven/dtXmlParserBase.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/labeledVectorHandling.h>
 #include <mainConceptFwd.h>
 
 namespace pugg {
@@ -24,19 +24,19 @@ namespace dtOO {
   
   class dtPlugin : public labelHandling, public optionHandling {
     public:
-      dt__class(dtPlugin, dtPlugin);
+      dt__class(dtPlugin, labelHandling);
       dtPlugin();
       virtual ~dtPlugin();
       virtual dtPlugin * create( void ) const = 0;      
       virtual void init( 
         ::QDomElement const & element,
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG,
-        bVPtrVec const * const bV,
-        dCPtrVec const * const dC,
-        dPPtrVec const * const pL
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtCase const * const dC,
+        lvH_dtPlugin const * const pL
       );
       virtual void apply( void ) = 0;    
       virtual std::vector< std::string > factoryAlias( void ) const;      
@@ -51,6 +51,7 @@ namespace dtOO {
     private:
       dt__pH(::pugg::Kernel) _kernel;
   };
+  dt__I_addCloneForpVHNotImpl(dtPlugin);
 }
 #endif	/* dtPlugin_H */
 

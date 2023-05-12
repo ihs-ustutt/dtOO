@@ -22,7 +22,7 @@ namespace dtOO {
 	dtOCCBSplineCurve::~dtOCCBSplineCurve() {
 	}
 
-  dtCurve * dtOCCBSplineCurve::clone( void ) const {
+  dtOCCBSplineCurve * dtOCCBSplineCurve::clone( void ) const {
 		return new dtOCCBSplineCurve( OCCRef() );
 	}
 	

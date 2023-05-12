@@ -26,21 +26,21 @@ namespace dtOO {
       virtual void buildPart(
         ::QDomElement const & toBuild, 
         baseContainer * const bC,
-        cVPtrVec const * const cV, 
-        aFPtrVec const * const aF,
-        aFPtrVec * result
+        lvH_constValue const * const cV, 
+        lvH_analyticFunction const * const aF,
+        lvH_analyticFunction * result
       ) const;
     private:
       void createWire(
         ::QDomElement const & toBuild,
         baseContainer * const bC,
-        cVPtrVec const * const cV, 
-        aFPtrVec const * const aF,              
+        lvH_constValue const * const cV, 
+        lvH_analyticFunction const * const aF,              
         std::vector< dtReal > const & wire,              
         twoDArrayHandling< dt__pH(dtCurve) > & cc,
         twoDArrayHandling< dtPoint3 > & pp
       ) const;
-      dtSurface * sortAndInit(
+      dt__pH(dtSurface) sortAndInit(
         dtInt const & fixJ, twoDArrayHandling< dt__pH(dtCurve) > const & cc,
         vectorHandling< dtCurve const * > & ccFill,
         dtInt const & skin_nInitCuts, 

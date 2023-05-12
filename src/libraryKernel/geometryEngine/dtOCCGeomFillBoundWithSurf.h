@@ -20,7 +20,7 @@ namespace dtOO {
         dtOCCCurveBase const & cBase, dtOCCGeomFillBoundaryBase const & bBase
       );
       virtual ~dtOCCGeomFillBoundWithSurf();
-      virtual dtCurve * clone( void ) const;
+      virtual dtOCCGeomFillBoundWithSurf * clone( void ) const;
       virtual dtReal minPara( dtInt const & dir ) const;
       virtual dtReal maxPara( dtInt const & dir ) const;    
       virtual dtPoint3 point( dtReal const uu ) const;

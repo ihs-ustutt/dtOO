@@ -12,23 +12,28 @@ namespace dtOO {
       dt__classOnlyName(reverse);
       reverse();
       virtual ~reverse();
-      reverse(const reverse& orig);       
+      reverse(const reverse& orig);   
+      reverse( jsonPrimitive const & jE );
       virtual dtTransformer * clone( void ) const;
       virtual dtTransformer * create( void ) const;     
       virtual bool isNecessary( void ) const;
+      virtual void jInit( 
+        jsonPrimitive const & jE, 
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
+      );      
       void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG 
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG 
       );
-      virtual aGPtrVec apply( aGPtrVec const * const aGeoVecP ) const;
-      virtual aFPtrVec apply( aFPtrVec const * const aF ) const;
+      virtual lvH_analyticGeometry apply( lvH_analyticGeometry const * const aGeoVecP ) const;
+      virtual lvH_analyticFunction apply( lvH_analyticFunction const * const aF ) const;
     private:
-      bool _revU;
-      bool _revV;
-      bool _revW;
       static bool _registrated;    
   };    
 }

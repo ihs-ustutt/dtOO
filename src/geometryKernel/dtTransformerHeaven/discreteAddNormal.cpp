@@ -23,17 +23,12 @@ namespace dtOO {
     discreteAddNormal const & orig
   ) : dtTransformer(orig) {
     _tt.reset( orig._tt->clone() );
-    _nf = orig._nf;
-    _nU = orig._nU;
-    _nV = orig._nV;
-    _order = orig._order;
-    _nSteps = orig._nSteps;
-    _skinOrderMin = orig._skinOrderMin;
-    _skinOrderMax = orig._skinOrderMax;
-    _skinNIterations = orig._skinNIterations;
-    _closeSmooth = orig._closeSmooth;
-    _closeU = orig._closeU;
   }	
+
+
+  discreteAddNormal::discreteAddNormal( jsonPrimitive const & jE ) {
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
   
   discreteAddNormal::~discreteAddNormal() {
   }
@@ -46,10 +41,10 @@ namespace dtOO {
 		return new discreteAddNormal();
 	}
 	
-  aFPtrVec discreteAddNormal::apply( 
-	  aFPtrVec const * const aFP 
+  lvH_analyticFunction discreteAddNormal::apply( 
+	  lvH_analyticFunction const * const aFP 
 	) const {
-		aFPtrVec retV;
+		lvH_analyticFunction retV;
 		
     dt__forAllIndex(*aFP, ii) {
 			analyticFunction * aF = aFP->at(ii);
@@ -57,9 +52,17 @@ namespace dtOO {
 			vec3dTwoD const * const vec3d2d = vec3dTwoD::ConstDownCast(aF);
       if (vec3d2d) {
         vec3dTwoD_normalOffset anOffset( 
-          vec3d2d, _tt.get(), _nf, _nU, _nV, _order, 
-          _skinOrderMin, _skinOrderMax, _skinNIterations,
-          _closeU, _closeSmooth
+          vec3d2d, 
+          _tt.get(), 
+          config().lookup< dtVector3 >("_nf"),
+          config().lookup< dtInt >("_nU"),
+          config().lookup< dtInt >("_nV"),
+          config().lookup< dtInt >("_order"),
+          config().lookupDef< dtInt >("_skinOrderMin", 1),
+          config().lookupDef< dtInt >("_skinOrderMax", 25),
+          config().lookupDef< dtInt >("_skinNIterations", 0),
+          config().lookupDef< bool >("_closeU", false),
+          config().lookupDef< dtReal >("_closeSmooth", -1.0)
         );       
         retV.push_back( anOffset.result() );
         
@@ -73,7 +76,7 @@ namespace dtOO {
           }
         }
 			}
-			else dt__throwUnexpected(apply());
+      else dt__throwUnexpected(apply());
 		}
 		
 		return retV;		
@@ -82,9 +85,9 @@ namespace dtOO {
   void discreteAddNormal::init( 
 		::QDomElement const * tE, 
 		baseContainer * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG 
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG 
 	) {
     dtTransformer::init(tE, bC, cV, aF, aG);
 				
@@ -100,76 +103,98 @@ namespace dtOO {
       !dtXmlParserBase::hasAttribute("nf", *tE),
       init()
     );
+    jsonPrimitive config;
     //
-    // get functions
+    // get function
     //  
-		dt__ptrAss(
-      vec3dTwoD const * const tt,
-      vec3dTwoD::ConstDownCast(
-        aF->get( dtXmlParserBase::getAttributeStr("function_label", *tE) )
-      )
+    config.append<analyticFunction const *>(
+      "_tt",
+      aF->get(dtXmlParserBase::getAttributeStr("function_label", *tE))
     );
-    _tt.reset(tt->clone());
+
        
     //
     // get number of points
     //
-		_nU
-    =
-    dtXmlParserBase::getAttributeIntMuParse("number_points_one", *tE, cV, aF);
-  	_nV 
-    = 
-	  dtXmlParserBase::getAttributeIntMuParse("number_points_two", *tE, cV, aF);
+    config.append< dtInt >(
+      "_nU",
+      dtXmlParserBase::getAttributeIntMuParse("number_points_one", *tE, cV, aF)
+    );
+    config.append< dtInt >(
+      "_nV",
+	    dtXmlParserBase::getAttributeIntMuParse("number_points_two", *tE, cV, aF)
+    );
 
     //
     // get order
     //
-		_order = dtXmlParserBase::getAttributeIntMuParse("order", *tE, cV, aF);
-    _skinOrderMin = 1;
+    config.append< dtInt >(
+      "_order",
+      dtXmlParserBase::getAttributeIntMuParse("order", *tE, cV, aF)
+    );
     if ( dtXmlParserBase::hasAttribute("skinOrderMin", *tE) ) {
-      _skinOrderMin 
-      = 
-      dtXmlParserBase::getAttributeIntMuParse("skinOrderMin", *tE, cV, aF);
+      config.append< dtInt >(
+        "_skinOrderMin",
+        dtXmlParserBase::getAttributeIntMuParse("skinOrderMin", *tE, cV, aF)
+      );
     }
-    _skinOrderMax = 25;
     if ( dtXmlParserBase::hasAttribute("skinOrderMax", *tE) ) {
-      _skinOrderMax 
-      = 
-      dtXmlParserBase::getAttributeIntMuParse("skinOrderMax", *tE, cV, aF);
+      config.append< dtInt >(
+        "_skinOrderMax",
+        dtXmlParserBase::getAttributeIntMuParse("skinOrderMax", *tE, cV, aF)
+      );
     }
-    _skinNIterations = 0;
     if ( dtXmlParserBase::hasAttribute("skinNIterations", *tE) ) {
-      _skinNIterations 
-      = 
-      dtXmlParserBase::getAttributeIntMuParse("skinNIterations", *tE, cV, aF);
+      config.append< dtInt >(
+        "_skinNIterations",
+        dtXmlParserBase::getAttributeIntMuParse("skinNIterations", *tE, cV, aF)
+      );
     }    
     
     //
     // get flag if close
     //
-    _closeU = false;
     if ( dtXmlParserBase::hasAttribute("closeU", *tE) ) {
-      _closeU 
-      = 
-      dtXmlParserBase::getAttributeBool("closeU", *tE);
+      config.append< bool >(
+        "_closeU",
+        dtXmlParserBase::getAttributeBool("closeU", *tE)
+      );
     }        
     //
     // get flag if close smooth
     //
-    _closeSmooth = -1.;
     if ( dtXmlParserBase::hasAttribute("closeSmooth", *tE) ) {
-      _closeSmooth
-      = 
-      dtXmlParserBase::getAttributeFloatMuParse("closeSmooth", *tE, cV, aF);
+      config.append< dtReal >(
+        "_closeSmooth",
+        dtXmlParserBase::getAttributeFloatMuParse("closeSmooth", *tE, cV, aF)
+      );
     }            
 		//
 		// get vector
 		//
-    _nf
+    config.append< dtVector3 >(
+      "_nf",
+      dtXmlParserBase::getDtVector3(
+        dtXmlParserBase::getAttributeStr("nf", *tE), bC 
+      )
+    );
+    jInit(config, bC, cV, aF, aG);
+  }
+
+  void discreteAddNormal::jInit( 
+    jsonPrimitive const & jE, 
+    baseContainer * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG
+  ) {
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
+    _tt
     =
-    dtXmlParserBase::getDtVector3(
-      dtXmlParserBase::getAttributeStr("nf", *tE), bC 
-    );    
+    vec3dTwoD::PointerDownCast(
+      config().lookupClone< analyticFunction >("_tt", aF)
+    );
+
   }
 
   bool discreteAddNormal::isNecessary( void ) const {

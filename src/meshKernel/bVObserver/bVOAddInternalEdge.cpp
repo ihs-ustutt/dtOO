@@ -29,29 +29,32 @@ namespace dtOO {
     
   }
   
-  void bVOAddInternalEdge::bVOAddInternalEdge::init( 
+  void bVOAddInternalEdge::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     //
     // init bVOInterface
     //
     bVOInterface::init(element, bC, cV, aF, aG, bV, attachTo);
-    
+        
 		// <bVObserver 
 		//   name="bVOAddInternalEdge" 
 		//   regionLabel="name0"
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_regionLabel
-		= 
-		dtXmlParserBase::getAttributeStr("regionLabel", element);
+    jsonPrimitive jE;
+		jE.append< std::string >(
+      "_regionLabel",
+      dtXmlParserBase::getAttributeStr("regionLabel", element)
+    );
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOAddInternalEdge::preUpdate( void ) {
@@ -62,7 +65,11 @@ namespace dtOO {
 		//
 		::GModel::setCurrent( gm );
     
-    dtGmshRegion * const gr = gm->getDtGmshRegionByPhysical(_regionLabel);
+    dtGmshRegion * const gr 
+    = 
+    gm->getDtGmshRegionByPhysical(
+      config().lookup< std::string >("_regionLabel")
+    );
     
     std::vector< dtGmshFace * > fV = progHelper::list2Vector( gr->dtFaces() );
     

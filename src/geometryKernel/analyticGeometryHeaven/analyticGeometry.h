@@ -21,7 +21,7 @@ namespace dtOO {
                            public labelHandling,
                            public renderInterface {
     public:  
-      dt__class(analyticGeometry, analyticGeometry);
+      dt__class(analyticGeometry, labelHandling);
       analyticGeometry();
       virtual ~analyticGeometry();
       analyticGeometry( analyticGeometry const & orig );
@@ -86,11 +86,7 @@ namespace dtOO {
       mutable dtReal _boundingBoxValue;
       threadSafeRoot _threadRoot;
   };
-  
-	//
-	// boost requires this method in ptr_vector
-	//  
-  analyticGeometry * new_clone(analyticGeometry const & aG);
+  dt__H_addCloneForpVH(analyticGeometry);
 }
 #endif	/* analyticGeometry_H */
 

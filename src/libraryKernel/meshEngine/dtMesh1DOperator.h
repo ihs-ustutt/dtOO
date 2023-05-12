@@ -4,6 +4,7 @@
 #include <dtOOTypeDef.h>
 
 #include "dtMeshOperator.h"
+#include <logMe/dtMacros.h>
 
 class QDomElement;
 
@@ -16,24 +17,33 @@ namespace dtOO {
   class dtGmshEdge;
   
   class dtMesh1DOperator : public dtMeshOperator {
-  public:
-    dt__class(dtMesh1DOperator, dtMeshOperator);    
-    dtMesh1DOperator();
-    virtual ~dtMesh1DOperator();
-    virtual void init(
-      ::QDomElement const & element,
-      baseContainer const * const bC,
-      cVPtrVec const * const cV,
-      aFPtrVec const * const aF,
-      aGPtrVec const * const aG,
-      bVPtrVec const * const bV,
-      labeledVectorHandling< dtMeshOperator * > const * const mO      
-    );
-    virtual void operator()( dtGmshEdge * dtge ) = 0;    
-    static void copyMesh( dtGmshEdge * from, dtGmshEdge *to );
-  private:
-
+    public:
+      dt__class(dtMesh1DOperator, dtMeshOperator);    
+      dtMesh1DOperator();
+      virtual ~dtMesh1DOperator();
+      virtual dtMesh1DOperator * create( void ) const = 0;     
+      virtual void jInit(
+        jsonPrimitive const & jE,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO
+      );
+      virtual void init(
+        ::QDomElement const & element,
+        baseContainer const * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO      
+      );
+      virtual void operator()( dtGmshEdge * dtge ) = 0;    
+      static void copyMesh( dtGmshEdge * from, dtGmshEdge *to );
   };
+  dt__I_addCloneForpVHNotImpl(dtMesh1DOperator);
 }
 #endif	/* DTMESH1DOPERATOR_H */
 

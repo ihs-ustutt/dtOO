@@ -17,9 +17,9 @@ namespace dtOO {
       void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
-        cVPtrVec const * const cValP,
-        aFPtrVec const * const sFunP,
-        aGPtrVec const * const depAGeoP 
+        lvH_constValue const * const cValP,
+        lvH_analyticFunction const * const sFunP,
+        lvH_analyticGeometry const * const depAGeoP 
       );    
       virtual ~averagePoints();
       virtual bool isNecessary( void ) const;

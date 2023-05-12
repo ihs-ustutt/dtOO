@@ -15,56 +15,65 @@
 #include <interfaceHeaven/barChart.h>
 #include "dtOptimizeMeshGRegion.h"
 #include <progHelper.h>
+#include "dtMeshOperatorFactory.h"
 
 namespace dtOO {
+  bool dtMeshGRegion::_registrated 
+  =
+  dtMeshOperatorFactory::registrate(
+    dt__tmpPtr(dtMeshGRegion, new dtMeshGRegion())
+  );
+
   dtMeshGRegion::dtMeshGRegion() : dtMesh3DOperator() {
   }
 
   dtMeshGRegion::dtMeshGRegion(
     const dtMeshGRegion& orig
   ) : dtMesh3DOperator(orig) {
-    _relax = orig._relax;
-    _minQShapeMetric = orig._minQShapeMetric;
-    _nPyramidOpenSteps = orig._nPyramidOpenSteps;
-    _nSmooths = orig._nSmooths;
-    _maxHeight = orig._maxHeight;
   }
 
   dtMeshGRegion::~dtMeshGRegion() {
   }
-  
+ 
   void dtMeshGRegion::init(
     ::QDomElement const & element,
     baseContainer const * const bC,
-    cVPtrVec const * const cV,
-    aFPtrVec const * const aF,
-    aGPtrVec const * const aG,
-    bVPtrVec const * const bV,
-    labeledVectorHandling< dtMeshOperator * > const * const mO
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    lvH_dtMeshOperator const * const mO
   ) {
     dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
     
-    _relax 
-    = 
-    dtXmlParserBase::getAttributeFloatMuParse("relax", element, cV, aF);
-    _minQShapeMetric 
-    = 
-    dtXmlParserBase::getAttributeFloatMuParse(
-      "minQShapeMetric", element, cV, aF
-    );    
-    _nPyramidOpenSteps
-    = 
-    dtXmlParserBase::getAttributeIntMuParse(
-      "nPyramidOpenSteps", element, cV, aF
-    );     
-    _nSmooths
-    = 
-    dtXmlParserBase::getAttributeIntMuParse("nSmooths", element, cV, aF);   
-    _maxHeight
-    = 
-    dtXmlParserBase::getAttributeFloatMuParse(
-      "maxHeight", element, cV, aF, std::numeric_limits<dtReal>::max()
+    jsonPrimitive jE;
+    jE.append< dtReal >(
+      "_relax",
+      dtXmlParserBase::getAttributeFloatMuParse("relax", element, cV, aF)
     );
+    jE.append< dtReal >(
+      "_minQShapeMetric",
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "minQShapeMetric", element, cV, aF
+      )
+    );   
+    jE.append< dtInt >(
+      "_nPyramidOpenSteps",
+      dtXmlParserBase::getAttributeIntMuParse(
+        "nPyramidOpenSteps", element, cV, aF
+      )
+    );
+    jE.append< dtInt >(
+      "_nSmooths",
+      dtXmlParserBase::getAttributeIntMuParse("nSmooths", element, cV, aF)
+    );   
+    jE.append< dtReal >(
+      "_maxHeight",
+      dtXmlParserBase::getAttributeFloatMuParse(
+        "maxHeight", element, cV, aF, std::numeric_limits<dtReal>::max()
+      )
+    );
+    dtMeshGRegion::jInit(jE, bC, cV, aF, aG, bV, mO);
   }
 
   void dtMeshGRegion::operator()( dtGmshRegion * dtgr) {
@@ -119,7 +128,11 @@ namespace dtOO {
       ::meshGRegion mr( delauny );
       mr(dtgr);    
       MeshDelaunayVolume(delauny);
-      dt__forFromToIndex(0, _nSmooths, ii) dtOptimizeMeshGRegion()(dtgr);
+      dt__forFromToIndex(
+        0, config().lookup< dtInt >("_nSmooths"), ii
+      ) {
+        dtOptimizeMeshGRegion()(dtgr);
+      }
 
       dtgr->_status = ::GEntity::MeshGenerationStatus::DONE;
     }
@@ -347,7 +360,9 @@ namespace dtOO {
     //
     // pyramid open method
     //
-    dt__forFromToIndex(0, _nPyramidOpenSteps, ii) {
+    dt__forFromToIndex(
+      0, config().lookup< dtInt >("_nPyramidOpenSteps"), ii
+    ) {
       dtInt vertMove = 0;
       dtInt vertFix = 0;
       dt__forAllRefAuto(vertices, aVert) {
@@ -367,7 +382,9 @@ namespace dtOO {
           * 
           dtLinearAlgebra::sum( dtLinearAlgebra::toDtVector3(pp) )
         );
-        ovm.replacePosition( vH,  cC + _relax * (c1 - cC) );
+        ovm.replacePosition( 
+          vH,  cC +  config().lookup<dtReal>("_relax") * (c1 - cC) 
+        ); 
 
         dtReal pyrShape = std::numeric_limits<dtReal>::min();
         ::MPyramid * pyr = NULL;;
@@ -409,7 +426,13 @@ namespace dtOO {
           vertFix++;          
         }
         // pyramid violates maxHeight
-        else if ( pyramidHeight(pyr) > _maxHeight ) {
+        else if ( 
+          pyramidHeight(pyr) 
+          > 
+          config().lookupDef<dtReal>(
+            "_maxHeight", std::numeric_limits<dtReal>::max() 
+          ) 
+        ) {
           // revert last step
           ovm.replacePosition( vH,  cC );
           vertFix++;
@@ -423,7 +446,8 @@ namespace dtOO {
       }
       logC() 
         << logMe::dtFormat("%3i / %3i : %8i / %8i => Q = %8.2e / Q_pyr = %8.2e")
-          % ii % _nPyramidOpenSteps % vertMove % vertFix % gMinQ % gPyrMinQ
+          % ii % config().lookup<dtInt>("_nPyramidOpenSteps") 
+          % vertMove % vertFix % gMinQ % gPyrMinQ
         << std::endl;
     }
     barChart QTet_1("QTet_1", -1., 1., 30);
@@ -438,7 +462,9 @@ namespace dtOO {
     }
     dt__info(createPyramids(), << QPyr_1);
     
-    dt__forFromToIndex(0, _nSmooths, ii) dtOptimizeMeshGRegion()(dtgr);
+    dt__forFromToIndex(0, config().lookup<dtInt>("_nSmooths"), ii) {
+      dtOptimizeMeshGRegion()(dtgr);
+    }
               
     barChart QTet_2("QTet_2", -1., 1., 30);
     dt__forAllRefAuto(dtgr->tetrahedra, aTet) {

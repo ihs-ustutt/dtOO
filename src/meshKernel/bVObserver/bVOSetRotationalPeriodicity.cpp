@@ -29,14 +29,35 @@ namespace dtOO {
   bVOSetRotationalPeriodicity::~bVOSetRotationalPeriodicity() {
     
   }
+
+   void bVOSetRotationalPeriodicity::jInit( 
+    jsonPrimitive const & jE,
+		baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    boundedVolume * attachTo
+  ) {
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
+
+    _dtT
+    =
+    xYz_rPhiZ::PointerDownCast(
+      jE.lookupClone< dtTransformer >( 
+        "_dtT", 
+        bC->constPtrTransformerContainer()->lVH()
+      )
+    );
+  }  
   
-  void bVOSetRotationalPeriodicity::bVOSetRotationalPeriodicity::init( 
+  void bVOSetRotationalPeriodicity::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
-		cVPtrVec const * const cV,
-		aFPtrVec const * const aF,
-		aGPtrVec const * const aG,
-		bVPtrVec const * const bV,
+		lvH_constValue const * const cV,
+		lvH_analyticFunction const * const aF,
+		lvH_analyticGeometry const * const aG,
+		lvH_boundedVolume const * const bV,
 		boundedVolume * attachTo
   ) {
     dt__throwIf(
@@ -57,17 +78,21 @@ namespace dtOO {
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_faceMaster = dtXmlParserBase::getAttributeStr("faceMaster", element);
-    _faceSlave = dtXmlParserBase::getAttributeStr("faceSlave", element);
+    jsonPrimitive jE;
+		jE.append< std::string >(
+      "_faceMaster", dtXmlParserBase::getAttributeStr("faceMaster", element)
+    );
+    jE.append< std::string >(
+      "_faceSlave", dtXmlParserBase::getAttributeStr("faceSlave", element)
+    );
     
-    dt__ptrAss(
-      _dtT,
-      xYz_rPhiZ::ConstDownCast(
-        bC->constPtrTransformerContainer()->get(
-          dtXmlParserBase::getAttributeStr("transformer", element)
-        )
+    jE.append< dtTransformer const * >(
+      "_dtT",
+      bC->constPtrTransformerContainer()->get(
+        dtXmlParserBase::getAttributeStr("transformer", element)
       )
-    );   
+    );
+    bVOSetRotationalPeriodicity::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOSetRotationalPeriodicity::preUpdate( void ) {
@@ -81,8 +106,12 @@ namespace dtOO {
     //
     // get faces
     //		
-    dtGmshFace * const masterF = gm->getDtGmshFaceByPhysical(_faceMaster);
-    dtGmshFace * const slaveF = gm->getDtGmshFaceByPhysical(_faceSlave);
+    dtGmshFace * const masterF 
+    = 
+    gm->getDtGmshFaceByPhysical(config().lookup< std::string >("_faceMaster"));
+    dtGmshFace * const slaveF 
+    = 
+    gm->getDtGmshFaceByPhysical(config().lookup< std::string >("_faceSlave") );
     dt__throwIf(masterF==slaveF, preUpdate());
     //
     // get edges
@@ -317,7 +346,7 @@ namespace dtOO {
         scale = std::max( scale, cScale );
         dt__warning(
           preUpdate(), 
-            << "Distance of corresponding vertices is bigger than gmsh "
+            << "Distance of corresponding vertices is greater than gmsh "
               "internal tolerance." 
             << std::endl
             << logMe::dtFormat("distance = %.16e, cScale = %.16e") 

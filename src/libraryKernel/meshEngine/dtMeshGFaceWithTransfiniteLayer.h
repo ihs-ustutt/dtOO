@@ -17,6 +17,7 @@ namespace dtOO {
   class dtMeshGFaceWithTransfiniteLayer : public dtMesh2DOperator {
     public:
       dt__class(dtMeshGFaceWithTransfiniteLayer, dtMeshOperator);     
+      dt__classSelfCreate(dtMeshGFaceWithTransfiniteLayer);
       dtMeshGFaceWithTransfiniteLayer();
       dtMeshGFaceWithTransfiniteLayer(
         const dtMeshGFaceWithTransfiniteLayer& orig
@@ -25,17 +26,15 @@ namespace dtOO {
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG,
-        bVPtrVec const * const bV,
-        labeledVectorHandling< dtMeshOperator * > const * const mO      
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO      
       );      
       void operator()( dtGmshFace * dtgr );    
     private:
-      dtInt _direction;
-      std::vector< dtInt > _nLayers;
-      dtInt _nSmooth;
+      static bool _registrated;
   };
 }
 #endif	/* dtMeshGFaceWithTransfiniteLayer_H */

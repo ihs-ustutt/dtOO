@@ -29,16 +29,17 @@ namespace dtOO {
   class dtMeshGRegionTetgen : public dtMesh3DOperator {
     public:
       dt__classOnlyName(dtMeshGRegionTetgen);          
+      dt__classSelfCreate(dtMeshGRegionTetgen);
       dtMeshGRegionTetgen();
       virtual ~dtMeshGRegionTetgen();
       virtual void init(
         ::QDomElement const & element,
         baseContainer const * const bC,
-        cVPtrVec const * const cV,
-        aFPtrVec const * const aF,
-        aGPtrVec const * const aG,
-        bVPtrVec const * const bV,
-        labeledVectorHandling< dtMeshOperator * > const * const mO
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG,
+        lvH_boundedVolume const * const bV,
+        lvH_dtMeshOperator const * const mO
       );            
       virtual void operator()( dtGmshRegion * dtgr );
     private:
@@ -64,6 +65,8 @@ namespace dtOO {
       );      
     private:
       std::string _tetOpt;
+    private:
+      static bool _registrated;
   };
 }
 
