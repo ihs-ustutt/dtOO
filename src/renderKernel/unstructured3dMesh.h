@@ -6,7 +6,8 @@
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <interfaceHeaven/twoDArrayHandling.h>
+#include <vector>
 
 namespace dtOO {
   class unstructured3dMesh : public renderInterface {
@@ -14,18 +15,18 @@ namespace dtOO {
       dt__class(unstructured3dMesh, renderInterface);    
       unstructured3dMesh();
       virtual ~unstructured3dMesh();
-      void addPoints( vectorHandling< dtPoint3 > const & pp );
+      void addPoints( std::vector< dtPoint3 > const & pp );
       void addPoint( dtPoint3 const & pp );
-      void addElement( vectorHandling< dtInt > const & el );
-      vectorHandling< dtPoint3 > const & refP3( void ) const;    
-      vectorHandling< vectorHandling< dtInt > > const & refEl( void ) const;
+      void addElement( std::vector< dtInt > const & el );
+      std::vector< dtPoint3 > const & refP3( void ) const;    
+      twoDArrayHandling< dtInt > const & refEl( void ) const;
       dtInt getNHex( void ) const;
       dtInt getNTet( void ) const;
       dtInt getNPyr( void ) const;
       dtInt getNPri( void ) const;
     private:
-      vectorHandling< dtPoint3 > _pp;
-      vectorHandling< vectorHandling< dtInt > > _el;
+      std::vector< dtPoint3 > _pp;
+      twoDArrayHandling< dtInt > _el;
       dtInt _nTet;
       dtInt _nHex;
       dtInt _nPyr;

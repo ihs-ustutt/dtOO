@@ -10,11 +10,11 @@ namespace dtOO {
 	solid3dLine::~solid3dLine() {
 	}
 
-  solid3dLine::solid3dLine(vectorHandling< dtPoint3 > const & pp) {
+  solid3dLine::solid3dLine(std::vector< dtPoint3 > const & pp) {
 		_p3 = pp;
 	}
 	
-	vectorHandling< dtPoint3 > const & solid3dLine::refP3( void ) const {
+	std::vector< dtPoint3 > const & solid3dLine::refP3( void ) const {
 		return _p3;
 	}		
 }
