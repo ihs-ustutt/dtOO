@@ -26,11 +26,11 @@ namespace dtOO {
       twoDArrayHandling( dtInt const sizeI, dtInt const sizeJ, T const & init );      
       twoDArrayHandling( const twoDArrayHandling& orig );
       virtual ~twoDArrayHandling();
-      void resize(int const sizeI, dtInt const sizeJ);
-      void resize(int const sizeI);
+      void resize( dtInt const sizeI, dtInt const sizeJ);
+      void resize( dtInt const sizeI);
       dtInt size( dtInt const dim = 0) const;
-      std::vector< T > fixJ(int const jj) const;
-      std::vector< T > fixI(int const ii) const;
+      std::vector< T > fixJ( dtInt const jj) const;
+      std::vector< T > fixI( dtInt const ii) const;
       void clear( void );
   };
 
@@ -42,7 +42,9 @@ namespace dtOO {
   }
 
   template < typename T >
-  twoDArrayHandling< T >::twoDArrayHandling(int const sizeI, dtInt const sizeJ) 
+  twoDArrayHandling< T >::twoDArrayHandling( 
+    dtInt const sizeI, dtInt const sizeJ 
+  ) 
     : std::vector< std::vector< T > >( sizeI, std::vector< T >(sizeJ) ) {
   }
   
@@ -69,7 +71,7 @@ namespace dtOO {
   }
 
   template < typename T >
-  void twoDArrayHandling< T >::resize(int const sizeI, dtInt const sizeJ) {
+  void twoDArrayHandling< T >::resize( dtInt const sizeI, dtInt const sizeJ) {
     dt__forAllIndex(*this, ii) this->at(ii).clear();        
     this->clear();
     
@@ -77,12 +79,12 @@ namespace dtOO {
   }  
 
   template < typename T >
-  void twoDArrayHandling< T >::resize(int const sizeI) {
+  void twoDArrayHandling< T >::resize( dtInt const sizeI ) {
     std::vector< std::vector< T > >::resize(sizeI);
   }
     
   template < typename T >
-  dtInt twoDArrayHandling< T >::size(int const dim) const {
+  dtInt twoDArrayHandling< T >::size( dtInt const dim ) const {
     if (dim == 0) {
       return std::vector< std::vector< T > >::size();
     }
@@ -99,7 +101,7 @@ namespace dtOO {
     }
   }    
   template < typename T >  
-  std::vector< T > twoDArrayHandling< T >::fixJ(int const jj) const {
+  std::vector< T > twoDArrayHandling< T >::fixJ( dtInt const jj ) const {
     std::vector< T > ret(this->size());
     dt__forAllIndex(*this, ii) {
       ret[ii] = this->at(ii).at(jj);      
@@ -108,7 +110,7 @@ namespace dtOO {
   }
   
   template < typename T >    
-  std::vector< T > twoDArrayHandling< T >::fixI(int const ii) const {
+  std::vector< T > twoDArrayHandling< T >::fixI( dtInt const ii ) const {
     return this->at(ii);
   }
 
