@@ -27,6 +27,8 @@
 %warnfilter(325) Callback;
 
 %{
+#include <string>
+#include <vector>
 #include <logMe/logMe.h>
 #include <mainConceptFwd.h>
 #include <dtOOTypeDef.h>
@@ -59,6 +61,16 @@ namespace dtOO {
   typedef ::CGAL::Point_2< dtKernel > dtPoint2;
   typedef ::CGAL::Vector_2< dtKernel > dtVector2;  
 }
+#include <interfaceHeaven/renderInterface.h>
+#include <discrete2dPoints.h>
+#include <discrete3dPoints.h>
+#include <discrete3dVector.h>
+#include <solid2dLine.h>
+#include <solid3dLine.h>
+#include <solid3dSurface.h>
+#include <unstructured3dMesh.h>
+#include <unstructured3dSurfaceMesh.h>
+
 #include <baseContainerHeaven/baseContainer.h>
 #include <baseContainerHeaven/pointContainer.h>
 #include <baseContainerHeaven/vectorContainer.h>
@@ -267,6 +279,7 @@ using namespace dtOO;
 #endif
 %}
 
+%include <std_except.i>
 namespace dtOO {
   class eGeneral : public std::exception {
   public:
@@ -293,15 +306,15 @@ namespace dtOO {
   try {
     $action
   } 
-  catch (eGeneral &e) {
+  catch ( eGeneral &e ) {
     PyErr_SetString( PyExc_Exception, const_cast<char*>(e.what()) );  
     SWIG_fail;
   }  
-  catch (std::exception &e) {
+  catch ( std::exception &e ) {
     PyErr_SetString( PyExc_Exception, const_cast<char*>(e.what()) );
     SWIG_fail;
   }    
-  catch (...) {
+  catch ( ... ) {
     PyErr_SetString(PyExc_Exception, "dtOOPythonSWIG catch exception");
     SWIG_fail;
   }
@@ -395,6 +408,15 @@ namespace dtOO {
 %include dtLinearAlgebra.h
 %include geometryEngine/dtCurve.h
 %include geometryEngine/dtSurface.h
+%include interfaceHeaven/renderInterface.h
+%include discrete2dPoints.h
+%include discrete3dPoints.h
+%include discrete3dVector.h
+%include solid2dLine.h
+%include solid3dLine.h
+%include solid3dSurface.h
+%include unstructured3dMesh.h
+%include unstructured3dSurfaceMesh.h
 %include baseContainerHeaven/baseContainer.h
 %include baseContainerHeaven/pointContainer.h
 %include baseContainerHeaven/vectorContainer.h
@@ -441,28 +463,29 @@ namespace dtOO {
 %include jsonHeaven/jsonPrimitive.h
 %include interfaceHeaven/lVHOSubject.h
 namespace dtOO {
-  %template(vectorInt)              ::std::vector< dtInt >;
-  %template(vectorBool)             ::std::vector< bool >;
-  %template(vectorReal)             ::std::vector< dtReal >;
-  %template(vectorStr)              ::std::vector< std::string >;
-  %template(vectorJsonPrimitive)    ::std::vector< jsonPrimitive >;
-  %template(vectorLabelHandling)    ::std::vector< labelHandling * >;
-  %template(vectorConstValue)       ::std::vector< constValue * >;
-  %template(vectorAnalyticFunction) ::std::vector< analyticFunction * >;
-  %template(vectorAnalyticGeometry) ::std::vector< analyticGeometry * >;
-  %template(vectorMap1dTo3d)        ::std::vector< map1dTo3d * >;
-  %template(vectorMap2dTo3d)        ::std::vector< map2dTo3d * >;
-  %template(vectorMap3dTo3d)        ::std::vector< map3dTo3d * >;
+  %template(vectorInt)                   ::std::vector< dtInt >;
+  %template(vectorBool)                  ::std::vector< bool >;
+  %template(vectorReal)                  ::std::vector< dtReal >;
+  %template(vectorStr)                   ::std::vector< std::string >;
+  %template(vectorJsonPrimitive)         ::std::vector< jsonPrimitive >;
+  %template(vectorLabelHandling)         ::std::vector< labelHandling * >;
+  %template(vectorConstValue)            ::std::vector< constValue * >;
+  %template(vectorAnalyticFunction)      ::std::vector< analyticFunction * >;
+  %template(vectorAnalyticGeometry)      ::std::vector< analyticGeometry * >;
+  %template(vectorMap1dTo3d)             ::std::vector< map1dTo3d * >;
+  %template(vectorMap2dTo3d)             ::std::vector< map2dTo3d * >;
+  %template(vectorMap3dTo3d)             ::std::vector< map3dTo3d * >;
+  %template(vectorRenderInterface)       ::std::vector< renderInterface * >;
 
-  %template(vectorBoundedVolume)    ::std::vector< boundedVolume * >;
-  %template(vectorDtCase)           ::std::vector< dtCase * >;
-  %template(vectorDtPlugin)         ::std::vector< dtPlugin * >;
-  %template(vectorDtPoint2)         ::std::vector< dtPoint2 >;
-  %template(vectorDtVector2)        ::std::vector< dtVector2 >;
-  %template(vectorDtPoint3)         ::std::vector< dtPoint3 >;
-  %template(vectorDtVector3)        ::std::vector< dtVector3 >;
-  %template(vectorDtCurve)          ::std::vector< dtCurve * >;
-  %template(vectorDtSurface)        ::std::vector< dtSurface * >;
+  %template(vectorBoundedVolume)         ::std::vector< boundedVolume * >;
+  %template(vectorDtCase)                ::std::vector< dtCase * >;
+  %template(vectorDtPlugin)              ::std::vector< dtPlugin * >;
+  %template(vectorDtPoint2)              ::std::vector< dtPoint2 >;
+  %template(vectorDtVector2)             ::std::vector< dtVector2 >;
+  %template(vectorDtPoint3)              ::std::vector< dtPoint3 >;
+  %template(vectorDtVector3)             ::std::vector< dtVector3 >;
+  %template(vectorDtCurve)               ::std::vector< dtCurve * >;
+  %template(vectorDtSurface)             ::std::vector< dtSurface * >;
 
   %template(vectorConstLabelHandling)    ::std::vector< labelHandling const * >;
   %template(vectorConstConstValue)       ::std::vector< constValue const * >;
@@ -475,9 +498,9 @@ namespace dtOO {
   %template(vectorConstDtSurface)        ::std::vector< dtSurface const * >;
   
   template < typename T >
-  class vectorHandling : public std::vector< T > {
+  class vectorHandling : public ::std::vector< T > {
     public:
-      using std::vector< T >::push_back;
+      using ::std::vector< T >::push_back;
       void destroy( void );
   };
   %extend vectorHandling {
@@ -485,26 +508,27 @@ namespace dtOO {
       return $self->operator[](ii);
     }    
   }
-  typedef vectorHandling< constValue * >       vH_constValue;
-  typedef vectorHandling< analyticFunction * > vH_analyticFunction;
-  typedef vectorHandling< analyticGeometry * > vH_analyticGeometry;
-  typedef vectorHandling< boundedVolume * >    vH_boundedVolume;
-  typedef vectorHandling< dtCase * >           vH_dtCase;
-  typedef vectorHandling< dtPlugin * >         vH_dtPlugin;  
-  typedef vectorHandling< dtCurve * >          vH_dtCurve;
-  typedef vectorHandling< dtSurface * >        vH_dtSurface;
-  %template(vectorHandlingLabelHandling)    vectorHandling< labelHandling * >;
-  %template(vectorHandlingConstValue)       vectorHandling< constValue * >;
-  %template(vectorHandlingAnalyticFunction) vectorHandling< analyticFunction * >;
-  %template(vectorHandlingAnalyticGeometry) vectorHandling< analyticGeometry * >;
-  %template(vectorHandlingMap1dTo3d)        vectorHandling< map1dTo3d * >;
-  %template(vectorHandlingMap2dTo3d)        vectorHandling< map2dTo3d * >;
-  %template(vectorHandlingMap3dTo3d)        vectorHandling< map3dTo3d * >;
-  %template(vectorHandlingBoundedVolume)    vectorHandling< boundedVolume * >;
-  %template(vectorHandlingDtCase)           vectorHandling< dtCase * >;
-  %template(vectorHandlingDtPlugin)         vectorHandling< dtPlugin * >;
-  %template(vectorHandlingDtCurve)          vectorHandling< dtCurve * >;
-  %template(vectorHandlingDtSurface)        vectorHandling< dtSurface * >;
+  typedef vectorHandling< constValue * >         vH_constValue;
+  typedef vectorHandling< analyticFunction * >   vH_analyticFunction;
+  typedef vectorHandling< analyticGeometry * >   vH_analyticGeometry;
+  typedef vectorHandling< boundedVolume * >      vH_boundedVolume;
+  typedef vectorHandling< dtCase * >             vH_dtCase;
+  typedef vectorHandling< dtPlugin * >           vH_dtPlugin;  
+  typedef vectorHandling< dtCurve * >            vH_dtCurve;
+  typedef vectorHandling< dtSurface * >          vH_dtSurface;
+  %template(vectorHandlingLabelHandling)         vectorHandling< labelHandling * >;
+  %template(vectorHandlingConstValue)            vectorHandling< constValue * >;
+  %template(vectorHandlingAnalyticFunction)      vectorHandling< analyticFunction * >;
+  %template(vectorHandlingAnalyticGeometry)      vectorHandling< analyticGeometry * >;
+  %template(vectorHandlingMap1dTo3d)             vectorHandling< map1dTo3d * >;
+  %template(vectorHandlingMap2dTo3d)             vectorHandling< map2dTo3d * >;
+  %template(vectorHandlingMap3dTo3d)             vectorHandling< map3dTo3d * >;
+  %template(vectorHandlingBoundedVolume)         vectorHandling< boundedVolume * >;
+  %template(vectorHandlingDtCase)                vectorHandling< dtCase * >;
+  %template(vectorHandlingDtPlugin)              vectorHandling< dtPlugin * >;
+  %template(vectorHandlingDtCurve)               vectorHandling< dtCurve * >;
+  %template(vectorHandlingDtSurface)             vectorHandling< dtSurface * >;
+  %template(vectorHandlingRenderInterface)       vectorHandling< renderInterface * >;
 
   %template(vectorHandlingConstLabelHandling)    vectorHandling< labelHandling const * >;
   %template(vectorHandlingConstConstValue)       vectorHandling< constValue const * >;
@@ -519,20 +543,20 @@ namespace dtOO {
   template < typename T >
   class labeledVectorHandling : public vectorHandling< T >, public lVHOSubject {
     public:
-      typedef typename std::vector< T >::iterator iterator;
-      typedef typename std::vector< T >::reference reference;
-      typedef typename std::vector< T >::const_reference const_reference;    
+      typedef typename ::std::vector< T >::iterator iterator;
+      typedef typename ::std::vector< T >::reference reference;
+      typedef typename ::std::vector< T >::const_reference const_reference;    
     public:
       void set( T const & toSet);
       const_reference get( std::string const & label) const;
       ::std::vector< dtOO::dtInt > getIndices( std::string const & label) const;
-      std::string getLabel( dtInt const pos ) const;
-      std::vector< std::string > labels( void ) const;
+      std::string getLabel( dtOO::dtInt const pos ) const;
+      ::std::vector< std::string > labels( void ) const;
       dtInt getPosition( std::string const label) const;
       void dump(void) const;          
   };
   %extend labeledVectorHandling {
-    T __getitem__(std::string const & str) {
+    T __getitem__( std::string const & str ) {
       return $self->operator[](str);
     } 
     T __getitem__(int const & ii) {
@@ -546,13 +570,29 @@ namespace dtOO {
   typedef labeledVectorHandling< boundedVolume * >    lvH_boundedVolume;
   typedef labeledVectorHandling< dtCase * >           lvH_dtCase;
   typedef labeledVectorHandling< dtPlugin * >         lvH_dtPlugin;  
-  %template(labeledVectorHandlingLabelHandling)    labeledVectorHandling< labelHandling * >;
-  %template(labeledVectorHandlingConstValue)       labeledVectorHandling< constValue * >;
-  %template(labeledVectorHandlingAnalyticFunction) labeledVectorHandling< analyticFunction * >;
-  %template(labeledVectorHandlingAnalyticGeometry) labeledVectorHandling< analyticGeometry * >;
-  %template(labeledVectorHandlingBoundedVolume)    labeledVectorHandling< boundedVolume * >;
-  %template(labeledVectorHandlingDtCase)           labeledVectorHandling< dtCase * >;
-  %template(labeledVectorHandlingDtPlugin)         labeledVectorHandling< dtPlugin * >;
+  %template(labeledVectorHandlingLabelHandling)       labeledVectorHandling< labelHandling * >;
+  %template(labeledVectorHandlingConstValue)          labeledVectorHandling< constValue * >;
+  %template(labeledVectorHandlingAnalyticFunction)    labeledVectorHandling< analyticFunction * >;
+  %template(labeledVectorHandlingAnalyticGeometry)    labeledVectorHandling< analyticGeometry * >;
+  %template(labeledVectorHandlingBoundedVolume)       labeledVectorHandling< boundedVolume * >;
+  %template(labeledVectorHandlingDtCase)              labeledVectorHandling< dtCase * >;
+  %template(labeledVectorHandlingDtPlugin)            labeledVectorHandling< dtPlugin * >;
+  
+  template < typename T >
+  class twoDArrayHandling : public ::std::vector< ::std::vector< T > > {
+    public:
+      dtOO::dtInt size( dtOO::dtInt const dim = 0) const;
+      ::std::vector< T > fixJ( dtOO::dtInt const jj) const;
+      ::std::vector< T > fixI( dtOO::dtInt const ii) const;
+      void clear( void );
+  };
+  %extend twoDArrayHandling {
+    ::std::vector< T > __getitem__(int const & ii) {
+      return $self->operator[](ii);
+    }    
+  }
+  %template(twoDArrayHandlingDtPoint3)     twoDArrayHandling< dtPoint3 >;
+  %template(twoDArrayHandlingInt)          twoDArrayHandling< dtInt >;
 }
 
 %include <interfaceHeaven/lVHOInterface.h>
@@ -561,7 +601,7 @@ namespace dtOO {
 %include <parseHeaven/dtParser.h>
 namespace dtOO {
   %extend dtParser {
-    std::string __getitem__(std::string const & str) {
+    std::string __getitem__( std::string const & str ) {
       return $self->operator[](str);
     } 
   }
