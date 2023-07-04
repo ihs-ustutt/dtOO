@@ -142,7 +142,7 @@ namespace dtOO {
 						dtGmshFace * gf = dtGmshFace::DownCast(ge);
 						dtGmshRegion * gr = dtGmshRegion::DownCast(ge);
 
-					  if (gf) {
+            if (gf) {
 							std::vector< ::MElement const * > elTwoD;
 							for (int jj=0;jj<gf->getNumMeshElements(); jj++) {
 								elTwoD.push_back( gf->getMeshElement(jj) );	
@@ -156,7 +156,7 @@ namespace dtOO {
 							  dtGmshModel::toAdequateSurfaceRenderInterface(elTwoD)
 							);
 						}
-						else if (gr) {
+            else if (gr) {
 							std::vector< ::MElement const * > elThreeD;
 							for (int jj=0;jj<gr->getNumMeshElements(); jj++) {
 								elThreeD.push_back( gr->getMeshElement(jj) );	

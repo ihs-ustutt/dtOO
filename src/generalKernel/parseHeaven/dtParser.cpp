@@ -28,6 +28,8 @@
 #include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
 #include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
 
+#include <interfaceHeaven/lVHOstateHandler.h>
+
 namespace dtOO {
   std::string dtParser::_CALCSIGN = "`";
   std::string dtParser::_POINTSIGN = "!";
@@ -67,8 +69,17 @@ namespace dtOO {
 
 
   std::string dtParser::operator[]( std::string const expression) const {
+    std::string wExpression = expression;
+    if ( stringPrimitive::stringContains( "STATE", wExpression ) ) {
+      wExpression
+      =
+      stringPrimitive::replaceStringInString( 
+        "STATE", lVHOstateHandler().commonState(), wExpression
+      );
+    }
+
     return dtParser::replaceDependencies(
-      expression, _bC, _cV, _aF, _aG
+      wExpression, _bC, _cV, _aF, _aG
     ); 
   }
 
