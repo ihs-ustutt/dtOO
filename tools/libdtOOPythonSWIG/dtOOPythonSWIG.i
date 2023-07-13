@@ -269,6 +269,7 @@ namespace dtOO {
 #include <xmlHeaven/dtXmlParserBase.h>
 #include <xmlHeaven/dtXmlParser.h>
 #include <jsonHeaven/jsonPrimitive.h>
+#include <interfaceHeaven/dtBundle.h>
 using namespace dtOO;
 #ifdef DTOO_HAS_PYTHONOCC
   #include <TColStd_module.hxx>
@@ -837,3 +838,4 @@ namespace dtOO {
 %include analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h
 %include analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h
+%include interfaceHeaven/dtBundle.h
