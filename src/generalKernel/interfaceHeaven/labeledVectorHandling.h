@@ -286,9 +286,7 @@ namespace dtOO {
   dt__pVH(lVHOInterface) const & 
   labeledVectorHandling< T >::refObserver( void ) const {
     return _observers;
-  };
-
-
+  }
 }
 #endif	/* labeledVectorHandling_H */
 
