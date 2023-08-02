@@ -272,7 +272,7 @@ git_cmake_build \
 git_cmake_build \
   "moab" \
   "https://bitbucket.org/fathomteam/moab.git" \
-  "5.4.1" \
+  "5.5.0" \
   "\
   -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
   -DENABLE_CGM=OFF \
