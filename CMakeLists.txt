@@ -92,7 +92,7 @@ if (NOT FOAMEXT_FOUND)
   find_package(
     OpenFOAM
     COMPONENTS 
-    OpenFOAM meshTools dynamicMesh finiteVolume Pstream 
+    OpenFOAM meshTools surfMesh dynamicMesh finiteVolume Pstream 
     turbulenceModels
     incompressibleTransportModels
   )
@@ -104,14 +104,14 @@ if (NOT FOAMEXT_FOUND)
         mixingPlane
       )
       find_package(
-	OpenFOAMMappedFieldFixedValue
+        OpenFOAMMappedFieldFixedValue
         COMPONENTS
-	mappedFieldFixedValue
+        mappedFieldFixedValue
       )
   endif (OpenFOAM_FOUND)
 endif (NOT FOAMEXT_FOUND)
 
-find_package(MOAB REQUIRED COMPONENTS MOAB iMesh)
+find_package(MOAB REQUIRED COMPONENTS MOAB)
 find_package(OpenMesh REQUIRED COMPONENTS OpenMeshCore OpenMeshTools)
 find_package(OpenVolumeMesh REQUIRED COMPONENTS OpenVolumeMesh)
 if (DTOO_USE_OMP)
@@ -261,6 +261,7 @@ else (FOAMEXT_FOUND)
       ${OpenFOAM_INCLUDE_DIR}/TurbulenceModels/turbulenceModels/lnInclude
       ${OpenFOAM_INCLUDE_DIR}/TurbulenceModels/incompressible/lnInclude
       ${OpenFOAM_INCLUDE_DIR}/transportModels/incompressible/lnInclude
+      ${OpenFOAM_INCLUDE_DIR}/surfMesh/lnInclude
     )
     if (OpenFOAMMixingPlane_FOUND)
       include_directories( ${OpenFOAMMixingPlane_INCLUDE_DIR} )
