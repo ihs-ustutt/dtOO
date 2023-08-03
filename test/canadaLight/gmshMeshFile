@@ -1,45 +1,41 @@
-Mesh.CharacteristicLengthExtendFromBoundary = 0;
-Mesh.CharacteristicLengthFromPoints = 0;
-Mesh.CharacteristicLengthFromCurvature = 0;
-
 //Vorder- und Hinterkante+Kranz
-Field[1] = Attractor;
-Field[1].NNodesByEdge = 100;
-Field[1].EdgesList = {22,23,24,25,26};
+Field[1] = Distance;
+Field[1].Sampling = 25;
+Field[1].CurvesList = {22,23,24,25,26};
 
 Field[2] = Threshold;
-Field[2].IField = 1;
-Field[2].LcMin = LMinB;
-Field[2].LcMax = LMax;
-Field[2].DistMin = distMinB;
-Field[2].DistMax = distMaxB;
+Field[2].InField = 1;
+Field[2].SizeMin = LMinB;
+Field[2].SizeMax = LMax;
+Field[2].DistMin = 0.03;
+Field[2].DistMax = 0.1;
 
 //Uebergang Ausrundung->Nabe
-Field[3] = Attractor;
-Field[3].NNodesByEdge = 100;
+Field[3] = Distance;
+Field[3].Sampling = 100;
 Field[3].EdgesList = {13,14,15,16,18,19};
 
 Field[4] = Threshold;
-Field[4].IField = 3;
-Field[4].LcMin = LMinHB;
-Field[4].LcMax = LMax;
-Field[4].DistMin = distMinHB;
-Field[4].DistMax = distMaxHB;
+Field[4].InField = 3;
+Field[4].SizeMin = LMinHB;
+Field[4].SizeMax = LMax;
+Field[4].DistMin = 0.05;
+Field[4].DistMax = 0.2;
 
 //Uebergang Schaufel->Ausrundung
-//Field[5] = Attractor;
-//Field[5].NNodesByEdge = 100;
-//Field[5].EdgesList = {20,21};
+Field[5] = Distance;
+Field[5].Sampling = 100;
+Field[5].EdgesList = {20,21};
 
-//Field[6] = Threshold;
-//Field[6].IField = 5;
-//Field[6].LcMin = LMinB;
-//Field[6].LcMax = LMax;
-//Field[6].DistMin = 0.02;
-//Field[6].DistMax = 0.1;
+Field[6] = Threshold;
+Field[6].InField = 5;
+Field[6].SizeMin = 0.008;
+Field[6].SizeMax = LMax;
+Field[6].DistMin = 0.02;
+Field[6].DistMax = 0.1;
 
 
-Field[5] = Min;
-Field[5].FieldsList = {2, 4};
+Field[7] = Min;
+Field[7].FieldsList = {2, 4, 6};
 
-Background Field = 5;
+Background Field = 7;
