@@ -107,6 +107,7 @@ SET(HEADERS
   interfaceHeaven/lVHOInterface.h
   interfaceHeaven/lVHOjsonLoad.h
   interfaceHeaven/lVHOstateHandler.h
+  interfaceHeaven/dtBundle.h
   logMe/logBase.h
   logMe/Output2FILE.h
   logMe/logMe.h
@@ -212,6 +213,7 @@ SET(SOURCES
   interfaceHeaven/lVHOInterface.cpp
   interfaceHeaven/lVHOjsonLoad.cpp
   interfaceHeaven/lVHOstateHandler.cpp
+  interfaceHeaven/dtBundle.cpp
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp

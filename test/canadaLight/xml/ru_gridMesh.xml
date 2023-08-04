@@ -78,6 +78,8 @@
         <option name="[gmsh]Mesh.CharacteristicLengthMin" value="#cV_ru_charLMin#"/>
         <option name="[gmsh]Mesh.CharacteristicLengthMax" value="#cV_ru_charCLMax#*#cV_ru_charLMin#"/>
         <option name="[gmsh]Mesh.Algorithm" value="1"/>
+        <option name="[gmsh]Mesh.MeshSizeExtendFromBoundary" value="1"/>
+        <option name="[gmsh]Mesh.MeshSizeFromPoints" value="1"/>
 
 		<bVObserver name="bVONameRegions" regionLabel=""/>
 

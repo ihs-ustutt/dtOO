@@ -21,6 +21,7 @@ namespace dtOO {
       void makeState( std::string const & label );
       std::string writeState( std::string label = "");
       virtual bool typeObserves( lVHOSubject const & subj) const;
+      static void clear( void );
     protected:
       virtual lVHOSubject & subject( void );
       virtual lVHOSubject const & subject( void ) const;

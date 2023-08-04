@@ -11,7 +11,7 @@ namespace dtOO {
 	unstructured3dSurfaceMesh::~unstructured3dSurfaceMesh() {
 	}
 	
-	void unstructured3dSurfaceMesh::addPoints( vectorHandling< dtPoint3 > const & pp ) {
+	void unstructured3dSurfaceMesh::addPoints( std::vector< dtPoint3 > const & pp ) {
 		_pp = pp;
 	}
 	
@@ -19,7 +19,7 @@ namespace dtOO {
 		_pp.push_back(pp);
 	}
 	
-	void unstructured3dSurfaceMesh::addElement( vectorHandling< dtInt > const & el ) {
+	void unstructured3dSurfaceMesh::addElement( std::vector< dtInt > const & el ) {
 		_el.push_back(el);
 		if (el.size() == 4) {
 			_nQuads++;
@@ -32,11 +32,11 @@ namespace dtOO {
 		}
 	}
 	
-	vectorHandling< dtPoint3 > const & unstructured3dSurfaceMesh::refP3( void ) const {
+	std::vector< dtPoint3 > const & unstructured3dSurfaceMesh::refP3( void ) const {
 		return _pp;
 	}
 
-	vectorHandling< vectorHandling< dtInt > > const & unstructured3dSurfaceMesh::refEl( void ) const {
+	twoDArrayHandling< dtInt > const & unstructured3dSurfaceMesh::refEl( void ) const {
 		return _el;
 	}
 

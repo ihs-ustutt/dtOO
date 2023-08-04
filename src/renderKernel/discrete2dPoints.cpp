@@ -10,7 +10,7 @@ namespace dtOO {
 	discrete2dPoints::~discrete2dPoints() {
 	}
 
-  discrete2dPoints::discrete2dPoints(vectorHandling< dtPoint2 > const & pp) : renderInterface() {
+  discrete2dPoints::discrete2dPoints(std::vector< dtPoint2 > const & pp) : renderInterface() {
 		_p2 = pp;
 		std::pair<dtPoint2, dtPoint2> minMax = dtLinearAlgebra::boundingBox(_p2);
 		geoBoundMin( 0, minMax.first.x() );
@@ -25,7 +25,7 @@ namespace dtOO {
 //		refOptionHandling().setOption("[covise_0]SYMBOL", "2");
 	}
 	
-	vectorHandling< dtPoint2 > const & discrete2dPoints::refP2( void ) const {
+	std::vector< dtPoint2 > const & discrete2dPoints::refP2( void ) const {
 		return _p2;
 	}
 }

@@ -6,7 +6,7 @@
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <vector>
 
 namespace dtOO {
   class unstructured3dSurfaceMesh : public renderInterface {
@@ -14,16 +14,16 @@ namespace dtOO {
       dt__class(unstructured3dSurfaceMesh, renderInterface);    
       unstructured3dSurfaceMesh();
       virtual ~unstructured3dSurfaceMesh();
-      void addPoints( vectorHandling< dtPoint3 > const & pp );
+      void addPoints( std::vector< dtPoint3 > const & pp );
       void addPoint( dtPoint3 const & pp );
-      void addElement( vectorHandling< dtInt > const & el );
-      vectorHandling< dtPoint3 > const & refP3( void ) const;    
-      vectorHandling< vectorHandling< dtInt > > const & refEl( void ) const;
+      void addElement( std::vector< dtInt > const & el );
+      std::vector< dtPoint3 > const & refP3( void ) const;    
+      twoDArrayHandling< dtInt > const & refEl( void ) const;
       dtInt getNQuads( void ) const;
       dtInt getNTris( void ) const;
     private:
-      vectorHandling< dtPoint3 > _pp;
-      vectorHandling< vectorHandling< dtInt > > _el;
+      std::vector< dtPoint3 > _pp;
+      twoDArrayHandling< dtInt > _el;
       dtInt _nQuads;
       dtInt _nTris;
   };

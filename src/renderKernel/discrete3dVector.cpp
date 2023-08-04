@@ -12,8 +12,8 @@ namespace dtOO {
 	}
 
   discrete3dVector::discrete3dVector(
-    vectorHandling< dtVector3 > const & vv, 
-    vectorHandling< dtPoint3 > const & pp
+    std::vector< dtVector3 > const & vv, 
+    std::vector< dtPoint3 > const & pp
   ) : renderInterface() {
 		_v3 = vv;
 		_p3 = pp;
@@ -30,11 +30,11 @@ namespace dtOO {
     updateBB();
 	}	
 	
-	vectorHandling< dtVector3 > const & discrete3dVector::refV3( void ) const {
+	std::vector< dtVector3 > const & discrete3dVector::refV3( void ) const {
 		return _v3;
 	}	
 	
-	vectorHandling< dtPoint3 > const & discrete3dVector::refP3( void ) const {
+	std::vector< dtPoint3 > const & discrete3dVector::refP3( void ) const {
 		return _p3;
 	}		
   

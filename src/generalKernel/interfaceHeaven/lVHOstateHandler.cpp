@@ -107,4 +107,8 @@ namespace dtOO {
     }
     return false;
   }
+
+  void lVHOstateHandler::clear( void ) {
+    lVHOstateHandler::_subj = NULL;  
+  }
 }

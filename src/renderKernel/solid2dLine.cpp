@@ -10,6 +10,6 @@ namespace dtOO {
 	solid2dLine::~solid2dLine() {
 	}
 
-  solid2dLine::solid2dLine(vectorHandling< dtPoint2 > const & pp) : discrete2dPoints(pp) {
+  solid2dLine::solid2dLine(std::vector< dtPoint2 > const & pp) : discrete2dPoints(pp) {
 	}
 }

@@ -12,12 +12,12 @@ namespace dtOO {
 	}
 
   discrete3dPoints::discrete3dPoints(
-    vectorHandling< dtPoint3 > const & pp
+    std::vector< dtPoint3 > const & pp
   ) : renderInterface() {
     addPoints(pp);
 	}
 	
-	void discrete3dPoints::addPoints( vectorHandling< dtPoint3 > const & pp ) {
+	void discrete3dPoints::addPoints( std::vector< dtPoint3 > const & pp ) {
 		dt__throwIf(pp.size()==0, addPoints());
 		
 		_p3 = pp;
@@ -31,11 +31,11 @@ namespace dtOO {
 		geoBoundMax( 2, minMax.second.z() );		
 	}	
 	
-	vectorHandling< dtPoint3 > const & discrete3dPoints::constRefP3( void ) const {
+	std::vector< dtPoint3 > const & discrete3dPoints::constRefP3( void ) const {
 		return _p3;
 	}	
 
-	vectorHandling< dtPoint3 > & discrete3dPoints::refP3( void ) {
+	std::vector< dtPoint3 > & discrete3dPoints::refP3( void ) {
 		return _p3;
 	}	  
 }

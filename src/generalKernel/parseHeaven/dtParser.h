@@ -18,7 +18,6 @@ namespace dtOO {
 //! Parser to handle internal dialect.
 /*! The parser handles internal dialect. A string is parsed and all fragments
  *  with key signs are replaced. 
- *  expression.
  */
   class dtParser {
     public:  

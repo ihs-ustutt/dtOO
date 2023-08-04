@@ -6,18 +6,18 @@
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/renderInterface.h>
-#include <interfaceHeaven/vectorHandling.h>
+#include <vector>
 
 namespace dtOO {
   class solid3dLine : public renderInterface {
     public:
       dt__class(solid3dLine, renderInterface);
       solid3dLine();
-      solid3dLine(vectorHandling< dtPoint3 > const & pp);
+      solid3dLine(std::vector< dtPoint3 > const & pp);
       virtual ~solid3dLine();
-      vectorHandling< dtPoint3 > const & refP3( void ) const;
+      std::vector< dtPoint3 > const & refP3( void ) const;
     private:
-      vectorHandling< dtPoint3 > _p3;
+      std::vector< dtPoint3 > _p3;
   };
 }
 #endif	/* SOLID3DLINE_H */

@@ -23,5 +23,5 @@ namespace dtOO {
 
   dt__pVH(lVHOInterface) const & lVHOSubject::refObserver( void ) const {
     dt__throw(refObserver(), << "Call");
-  };
+  }
 }
