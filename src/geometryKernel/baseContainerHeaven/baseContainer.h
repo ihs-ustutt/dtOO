@@ -22,6 +22,9 @@ namespace dtOO {
       transformerContainer const * const constPtrTransformerContainer( 
         void 
       ) const;
+      pointContainer const & dtPoint3( void );
+      vectorContainer const & dtVector3( void );
+      transformerContainer const & dtTransformer( void );
       std::vector< std::string > labels( void ) const;
       virtual ~baseContainer();
       void clear( void );

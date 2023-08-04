@@ -42,12 +42,8 @@ namespace dtOO {
     dt__throw(get(), << string << " not in pointContainer.");
   }
 
-  dtPoint3 pointContainer::get(std::string const * const stringP ) const {
-    return ( this->get(*stringP) );
-  }
-
-  bool pointContainer::has(std::string const * const stringP) const {
-    return this->has(*stringP);
+  dtPoint3 pointContainer::operator[]( std::string const label ) const {
+    return this->get( label ); 
   }
 
   bool pointContainer::has(std::string const string ) const {

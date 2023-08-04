@@ -51,13 +51,8 @@ namespace dtOO {
     dt__throw(get(), << string << " not in vectorContainer.");
   }
 
-
-  dtVector3 vectorContainer::get(std::string const * const stringP ) const {
-    return ( this->get(*stringP) );
-  }
-
-  bool vectorContainer::has(std::string const * const stringP) const {
-    return this->has(*stringP);
+  dtVector3 vectorContainer::operator[]( std::string const label ) const {
+    return this->get( label ); 
   }
 
   bool vectorContainer::has(std::string const string) const {

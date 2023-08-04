@@ -420,8 +420,29 @@ namespace dtOO {
 %include unstructured3dSurfaceMesh.h
 %include baseContainerHeaven/baseContainer.h
 %include baseContainerHeaven/pointContainer.h
+namespace dtOO {
+  %extend pointContainer {
+    dtPoint3 __getitem__( std::string const & str ) {
+      return $self->operator[](str);
+    } 
+  }
+}
 %include baseContainerHeaven/vectorContainer.h
+namespace dtOO {
+  %extend vectorContainer {
+    dtVector3 __getitem__( std::string const & str ) {
+      return $self->operator[](str);
+    } 
+  }
+}
 %include baseContainerHeaven/transformerContainer.h
+namespace dtOO {
+  %extend transformerContainer {
+    dtTransformer const * __getitem__( std::string const & str ) {
+      return $self->operator[](str);
+    } 
+  }
+}
 %include constValueHeaven/constValue.h
 %include analyticFunctionHeaven/analyticFunction.h
 %include analyticGeometryHeaven/analyticGeometry.h

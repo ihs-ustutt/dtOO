@@ -16,9 +16,8 @@ namespace dtOO {
       virtual ~pointContainer();
       void add(dtPoint3 const point, std::string const string);
       dtPoint3 get(std::string const string ) const;
-      dtPoint3 get(std::string const * const stringP) const;
+      dtPoint3 operator[]( std::string const label ) const;
       bool has(std::string const string) const;
-      bool has(std::string const * const stringP) const;
       bool isEmpty( void ) const;
       std::vector< std::string > labels( void ) const;
     private:

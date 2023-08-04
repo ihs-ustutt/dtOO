@@ -19,6 +19,7 @@ namespace dtOO {
       virtual ~transformerContainer();
       void add(dtTransformer const * const dtT );
       dtTransformer const * get( std::string const string ) const;
+      dtTransformer const * operator[]( std::string const label ) const;
       bool has(std::string const string) const;
       bool isEmpty( void ) const;
       std::vector< std::string > labels( void ) const;
