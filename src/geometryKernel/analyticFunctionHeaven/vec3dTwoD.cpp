@@ -1,8 +1,9 @@
 #include "vec3dTwoD.h"
+#include "analyticFunctionHeaven/analyticFunction.h"
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <solid2dLine.h>
+#include <solid3dSurface.h>
 #include <discrete2dPoints.h>
 
 namespace dtOO {
@@ -58,14 +59,6 @@ namespace dtOO {
 		return YdtPoint3( x_percent(xx) );
 	}
 	
-//	aFX vec3dTwoD::x_percent(aFX const & xx) const {
-//		aFX ret(2, 0.);
-//    ret[0] = xMin(0) +  (xMax(0) - xMin(0) ) * xx[0];
-//		ret[1] = xMin(1) +  (xMax(1) - xMin(1) ) * xx[1];
-//		
-//		return ret;
-//  }
-
 	aFX vec3dTwoD::x_percent(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2, 0.);
     xx[0] = x0;
@@ -82,14 +75,6 @@ namespace dtOO {
 		return percent_x(xx);
   }  	
   
-//  aFX vec3dTwoD::percent_x(aFX const & xx) const {
-//		aFX ret(2, 0.);
-//    ret[0] = (xx[0] - xMin(0)) / (xMax(0) - xMin(0));
-//		ret[1] = (xx[1] - xMin(1)) / (xMax(1) - xMin(1));
-//		
-//		return ret;
-//  }
-	
 	std::vector<dtVector3> vec3dTwoD::DYdtVector3( aFX const & xx ) const {
 		/*
 		 *                      (xP[0], uv[1][1]) -> yy[1][1]
@@ -239,49 +224,19 @@ namespace dtOO {
     );		
 		vectorHandling< renderInterface * > rV;//(nV);
 	
-		vectorHandling< dtPoint2 > p2;
-		dtReal intervalU = (xMax(0) - xMin(0)) / (nU-1);
-		dtReal intervalV = (xMax(1) - xMin(1)) / (nV-1);
-		
-		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(dtReal iiF, ii);
-			aFX xx(2,0);
-			xx[0] = xMin(0) + iiF * intervalU;
-			xx[1] = xMin(1);
-			dtPoint3 p3 = YdtPoint3(xx);
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );
-		p2.clear();
-		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(dtReal jjF, jj);
-			aFX xx(2,0);
-			xx[0] = xMin(0);
-			xx[1] = xMin(1) + jjF * intervalV;
-			dtPoint3 p3 = YdtPoint3(xx);
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );			
-		p2.clear();
-		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(dtReal iiF, ii);
-			aFX xx(2,0);
-			xx[0] = xMin(0) + iiF * intervalU;
-			xx[1] = xMax(1);
-			dtPoint3 p3 = YdtPoint3(xx);
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );
-		p2.clear();
-		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(dtReal jjF, jj);
-			aFX xx(2,0);
-			xx[0] = xMax(0);
-			xx[1] = xMin(1) + jjF * intervalV;
-			dtPoint3 p3 = YdtPoint3(xx);
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );			
+    twoDArrayHandling< dtPoint3 > pp(nU, nV);
+		pp.resize(nU, nV);
+
+    twoDArrayHandling< dtPoint2 > uGrid = dtLinearAlgebra::unitGrid(nU, nV);
+		dt__forAllIndex(uGrid, ii) {
+      dt__forAllIndex(uGrid[ii], jj) {
+			  pp[ii][jj] 
+        = 
+        this->YdtPoint3Percent( analyticFunction::aFXTwoD( uGrid[ii][jj] ) );
+      }
+		}				
+
+		rV.push_back( new solid3dSurface(pp) );			
 
 		
 		return rV;
@@ -291,33 +246,5 @@ namespace dtOO {
 		return x_percent(percent);
 	}	
   
-//  dtReal vec3dTwoD::length( 
-//    dtInt const & nP, aFX const & x0, aFX const & x1 
-//  ) const {
-//		std::vector< dtPoint2 > glp = dtLinearAlgebra::getGaussLegendre(nP);
-//		dtReal L = 0.0;
-//		dtPoint2 const u0(x0[0], x0[1]);
-//		dtPoint2 const u1(x1[0], x1[1]);
-//		dtVector2 const normalDir( dtLinearAlgebra::normalize(u1-u0) );
-//		const dtVector2 rapJ = .5 * (u1 - u0);
-//		for (int i = 0; i < nP; i++) {
-//			dtReal const tt = glp[i].x();
-//			dtReal const ww = glp[i].y();
-//			dtPoint2 const ui(
-//        .5 * (1. - tt) * u0.x()  + .5 * (1. + tt) * u1.x(),
-//        .5 * (1. - tt) * u0.y()  + .5 * (1. + tt) * u1.y()
-//      );
-//			std::vector< dtVector3 > der = DYdtVector3(ui.x(), ui.y());
-//			const dtReal d 
-//      = 
-//      dtLinearAlgebra::length(normalDir.x()*der[0]+normalDir.y()*der[1] );
-//			L += d * ww * dtLinearAlgebra::length(rapJ);
-//		}
-//		return L;    
-//  }
-  
-//  dtReal vec3dTwoD::length( aFX const & x0, aFX const & x1 ) const {	
-//    return length(20, x0, x1);
-//  }
   dt__C_addCloneForpVH(vec3dTwoD);      
 }
