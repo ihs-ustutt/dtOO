@@ -153,6 +153,9 @@ namespace dtOO {
       dtInt addIfRegionToGmshModel(
         map3dTo3d const * const region, std::vector< int > const & faceIds
       );    
+      dtInt addIfRegionToGmshModel(
+        map3dTo3d const * const region
+      );    
 
       //
       //add

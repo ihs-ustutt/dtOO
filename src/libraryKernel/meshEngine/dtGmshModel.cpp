@@ -504,6 +504,12 @@ namespace dtOO {
     return rId;
   }
 
+  dtInt dtGmshModel::addIfRegionToGmshModel( map3dTo3d const * const region ) {
+    dtInt rId;
+    addIfRegionToGmshModel(region, &rId);
+    return rId;
+  }
+
   void dtGmshModel::addIfToGmshModel(
     analyticGeometry const * const aG, dtInt * const tag
   ) {
