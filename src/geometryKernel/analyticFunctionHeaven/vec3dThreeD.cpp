@@ -7,7 +7,13 @@
 
 namespace dtOO {
 	vec3dThreeD::vec3dThreeD() : vec3dFunction() {
-	}
+		_min[0] = 0.0;
+		_min[1] = 0.0;
+		_min[2] = 0.0;
+		_max[0] = 1.0;
+		_max[1] = 1.0;
+		_max[2] = 1.0;
+}
 
 	vec3dThreeD::vec3dThreeD(const vec3dThreeD& orig) : vec3dFunction(orig) {
 		_min[0] = orig._min[0];
