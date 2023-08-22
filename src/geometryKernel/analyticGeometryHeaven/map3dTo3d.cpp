@@ -133,14 +133,23 @@ namespace dtOO {
     // v
     pp.push_back( getPointPercent(0.10, 0.10, 0.10) );
     pp.push_back( getPointPercent(0.10, 0.25, 0.10) );
-    pp.push_back( getPointPercent(0.10, 0.50, 0.10) );
+    rV.push_back( new solid3dLine(pp) );
+    pp.clear();
+    pp.push_back( getPointPercent(0.10, 0.30, 0.10) );
+    pp.push_back( getPointPercent(0.10, 0.45, 0.10) );
     rV.push_back( new solid3dLine(pp) );
     pp.clear();
     // v
     pp.push_back( getPointPercent(0.10, 0.10, 0.10) );
     pp.push_back( getPointPercent(0.10, 0.10, 0.25) );
+    rV.push_back( new solid3dLine(pp) );
+    pp.clear();
+    pp.push_back( getPointPercent(0.10, 0.10, 0.30) );
+    pp.push_back( getPointPercent(0.10, 0.10, 0.45) );
+    rV.push_back( new solid3dLine(pp) );
+    pp.clear();    
     pp.push_back( getPointPercent(0.10, 0.10, 0.50) );
-    pp.push_back( getPointPercent(0.10, 0.10, 0.75) );
+    pp.push_back( getPointPercent(0.10, 0.10, 0.65) );
     rV.push_back( new solid3dLine(pp) );
     pp.clear();    
 		// v=0, w=0

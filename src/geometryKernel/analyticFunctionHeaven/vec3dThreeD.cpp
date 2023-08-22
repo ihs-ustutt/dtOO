@@ -257,9 +257,6 @@ namespace dtOO {
 
 
     dtPoint3 p000(xMin(0), xMin(1), xMin(2));
-    dtPoint3 p000Dv(xMin(0) + intervalU, xMin(1), xMin(2));
-    dtPoint3 p000Dw(xMin(0), xMin(1)+intervalV, xMin(2));
-    dtPoint3 p000DDw(xMin(0), xMin(1)+2.*intervalV, xMin(2));
     dtPoint3 p111(xMax(0), xMax(1), xMax(2));
     dtPoint3 p100(xMax(0), xMin(1), xMin(2));
     dtPoint3 p011(xMin(0), xMax(1), xMax(2));
@@ -268,6 +265,35 @@ namespace dtOO {
     dtVector3 vU(intervalU, 0, 0);
     dtVector3 vV(0, intervalV, 0);
     dtVector3 vW(0, 0, intervalW);
+
+    // u
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.10) );
+    p3V.push_back( YdtPoint3Percent(0.25, 0.10, 0.10) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();
+    // v
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.10) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.25, 0.10) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();
+    p3V.push_back( YdtPoint3Percent(0.10, 0.30, 0.10) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.45, 0.10) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();
+    // v
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.10) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.25) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.30) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.45) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();    
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.50) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.65) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();    
+
 
     //p0 -> u
     p3V.clear();
@@ -281,28 +307,10 @@ namespace dtOO {
 			p3V.push_back( YdtPoint3( aFXThreeD( p000 + ii * vV) ) );
 		}
 		rV.push_back( new solid3dLine(p3V) );
- 	  //p000Dv -> v
-    p3V.clear();
-    dt__forFromToIndex(0, nV, ii) {
-			p3V.push_back( YdtPoint3( aFXThreeD( p000Dv + ii * vV) ) );
-		}
-		rV.push_back( new solid3dLine(p3V) );
 	  //p0 -> w
     p3V.clear();
     dt__forFromToIndex(0, nW, ii) {
 			p3V.push_back( YdtPoint3( aFXThreeD( p000 + ii * vW) ) );
-		}
-		rV.push_back( new solid3dLine(p3V) );
- 	  //p000Dw -> w
-    p3V.clear();
-    dt__forFromToIndex(0, nW, ii) {
-			p3V.push_back( YdtPoint3( aFXThreeD( p000Dw + ii * vW) ) );
-		}
-		rV.push_back( new solid3dLine(p3V) );
- 	  //p000DDw -> w
-    p3V.clear();
-    dt__forFromToIndex(0, nW, ii) {
-			p3V.push_back( YdtPoint3( aFXThreeD( p000DDw + ii * vW) ) );
 		}
 		rV.push_back( new solid3dLine(p3V) );
 
