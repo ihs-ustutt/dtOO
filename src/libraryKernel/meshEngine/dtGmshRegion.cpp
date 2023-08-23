@@ -163,6 +163,13 @@ namespace dtOO {
 		}
   }  	
 
+  void dtGmshRegion::addFace( dtInt const & faceId, dtInt const & ori ) {
+    addFace(
+      dynamic_cast< ::GFace * >(refDtGmshModel().getDtGmshFaceByTag( faceId )),
+      ori
+    );
+  }  	
+
   void dtGmshRegion::deleteFace( ::GFace * face ) {
     std::vector< ::GFace * > ff;
     std::vector< dtInt > oo;    
@@ -192,7 +199,8 @@ namespace dtOO {
     for (FIter fi = l_faces.begin(); fi != l_faces.end(); ++fi) {
       if (*fi == face) return *OriIter;
       ++OriIter;
-    }    
+    }
+    dt__throwUnexpected(faceOrientation());
   }      
   
 	void dtGmshRegion::addGEntity( ::GEntity * const gEnt ) {
