@@ -250,6 +250,16 @@ namespace dtOO {
     }
   }  
   
+  void dtGmshFace::addEdgeLoop( std::vector< dtInt > const & edgeIds ) {
+    std::list< ::GEdge * > edgeL;
+    dt__forAllRefAuto(edgeIds, edgeId) {
+      edgeL.push_back(
+        this->refDtGmshModel().getDtGmshEdgeByTag( edgeId )
+      );
+    }
+    this->addEdgeLoop( edgeL );
+  }
+
   SPoint2 dtGmshFace::parFromPoint(
     const SPoint3 &p, bool onSurface, bool convTestXYZ
   ) const {

@@ -55,6 +55,7 @@ namespace dtOO {
     void addEdge( ::GEdge * edge, dtInt const ori );
     dtInt edgeOrientation( ::GEdge * edge ) const;
     void addEdgeLoop( std::list< ::GEdge * > edgeL );
+    void addEdgeLoop( std::vector< dtInt > const & edgeL );
     bool isClosed( dtInt const dim ) const;
     void meshTransfinite( void );
     void meshRecombine( void );
