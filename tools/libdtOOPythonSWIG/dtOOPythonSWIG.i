@@ -199,6 +199,7 @@ namespace dtOO {
 #include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
 #include <analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h>
+#include <analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCSurface.h>
@@ -869,4 +870,5 @@ namespace dtOO {
 %include analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h
 %include analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h
+%include analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.h
 %include interfaceHeaven/dtBundle.h
