@@ -160,6 +160,7 @@ namespace dtOO {
 	  if (std::find(l_faces.begin(), l_faces.end(), face) == l_faces.end()) {
 		  l_faces.push_back(face);
 			l_dirs.push_back( ori );
+      face->addRegion( this );
 		}
   }  	
 
