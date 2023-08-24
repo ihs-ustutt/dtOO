@@ -30,6 +30,10 @@ namespace dtOO {
     _bV = attachTo;
   }  
 
+  void bVOInterface::jInit(jsonPrimitive const & jE, boundedVolume * attachTo) {
+    jInit( jE, NULL, NULL, NULL, NULL, NULL, attachTo );
+  }  
+
   void bVOInterface::init( 
     ::QDomElement const & element,
 		baseContainer const * const bC,

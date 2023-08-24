@@ -34,6 +34,7 @@ namespace dtOO {
         lvH_boundedVolume const * const bV,
         boundedVolume * attachTo
       );
+      virtual void jInit( jsonPrimitive const & jE, boundedVolume * attachTo );
       virtual void init( 
         ::QDomElement const & element,
         baseContainer const * const bC,
