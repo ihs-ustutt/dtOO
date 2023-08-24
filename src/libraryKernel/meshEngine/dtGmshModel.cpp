@@ -1127,7 +1127,7 @@ namespace dtOO {
 					<< dt__eval(nElTot)
 				);		
 			}			
-			else if (gr) {
+      else if (gr) {
 				std::vector< unsigned > nEl(5,0);
 				ent[ii]->getNumMeshElements(&(nEl[0]));
 				int nElTot = nEl[0] + nEl[1] + nEl[2] + nEl[3] + nEl[4];
