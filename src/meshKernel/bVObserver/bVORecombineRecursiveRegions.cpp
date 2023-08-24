@@ -61,9 +61,11 @@ namespace dtOO {
 		::GModel::setCurrent( gm );
     
     dt__forAllRefAuto(
-        config().lookup< std::vector< std::string > >("_regionLabel"), aReg
+        config().lookup< std::vector< std::string > >("_regionLabel"), aLabel
     ) {
-      gm->getDtGmshRegionByPhysical(aReg)->meshRecombineRecursive();
+      dt__forAllRefAuto(gm->getDtGmshRegionListByPhysical(aLabel), aReg) {
+        aReg->meshRecombineRecursive();
+      }
     }
   }
 }
