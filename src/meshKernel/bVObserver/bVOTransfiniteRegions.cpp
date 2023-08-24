@@ -72,10 +72,12 @@ namespace dtOO {
      config().lookup< std::vector< std::string > >("_regionLabel"), 
       aLabel
     ) {
-      gm->getDtGmshRegionByPhysical(aLabel)->meshTransfiniteRecursive();
-      gm->getDtGmshRegionByPhysical(aLabel)->meshWNElements(
-        nE[0], nE[1], nE[2]
-      );
+      dt__forAllRefAuto(gm->getDtGmshRegionListByPhysical(aLabel), aReg) {
+        aReg->meshTransfiniteRecursive();
+        aReg->meshWNElements(
+          nE[0], nE[1], nE[2]
+        );
+      }
     }
 		dt__forAllRefAuto(gm->faces(), aFace) {
 			dtGmshModel::cast2DtGmshFace(aFace)->correctIfTransfinite();
