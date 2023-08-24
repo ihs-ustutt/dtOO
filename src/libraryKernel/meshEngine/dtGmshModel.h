@@ -67,6 +67,10 @@ namespace dtOO {
       static dtGmshRegion * cast2DtGmshRegion( ::GEntity * gr );
       static dtGmshFace * cast2DtGmshFace( ::GEntity * gf );
       static ::GModel * cast2GModel( dtGmshModel * gm );      
+      static ::GEntity * cast2GEntity( dtGmshRegion * gr );      
+      static ::GEntity * cast2GEntity( dtGmshFace * gf );      
+      static ::GEntity * cast2GEntity( dtGmshEdge * ge );      
+      static ::GEntity * cast2GEntity( dtGmshVertex * gv );      
       static std::list< dtGmshFace * > cast2DtGmshFace( 
         std::list< ::GFace * > faces 
       );

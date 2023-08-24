@@ -841,7 +841,27 @@ namespace dtOO {
     assert( gm!=NULL );
     return dynamic_cast< ::GModel * >(gm);
   }
-  
+ 
+  ::GEntity * dtGmshModel::cast2GEntity( dtGmshRegion * gr ) {
+    assert( gr!=NULL );
+    return dynamic_cast< ::GEntity * >(gr);
+  }
+
+  ::GEntity * dtGmshModel::cast2GEntity( dtGmshFace * gf ) {
+    assert( gf!=NULL );
+    return dynamic_cast< ::GEntity * >(gf);
+  }
+
+  ::GEntity * dtGmshModel::cast2GEntity( dtGmshEdge * ge ) {
+    assert( ge!=NULL );
+    return dynamic_cast< ::GEntity * >(ge);
+  }
+
+  ::GEntity * dtGmshModel::cast2GEntity( dtGmshVertex * gv ) {
+    assert( gv!=NULL );
+    return dynamic_cast< ::GEntity * >(gv);
+  }
+
   std::list< dtGmshEdge * > dtGmshModel::cast2DtGmshEdge( 
     std::list< ::GEdge * > edges 
   ) {
