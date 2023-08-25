@@ -45,7 +45,6 @@ namespace dtOO {
     static bool isEqual( ::GEdge const * const ge0, ::GEdge const * const ge1 );
     void setGrading( dtReal const & grading, dtReal const & type );
     std::string getPhysicalString( void ) const;
-  private:
     void setNElements( dtInt const nE );
   private:
     ptrHandling< map1dTo3d > _mm;    
