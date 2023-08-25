@@ -381,7 +381,19 @@ namespace dtOO {
     );
     dt__pVH(T) ret;
     dt__forAllRefAuto(jP, aJP) {
-      ret.push_back( ptrVec->get( aJP.lookup<std::string>("label") )->clone() );
+      if ( aJP.contains("label") ) {
+        ret.push_back( 
+          ptrVec->get( aJP.lookup<std::string>("label") )->clone() 
+        );
+      }
+      else if ( aJP.contains("labels") ) {
+        dt__forAllRefAuto( ptrVec->getIndices(
+          aJP.lookup<std::string>("labels") ), anInd
+        ) {
+          ret.push_back( ptrVec->get( ptrVec->getLabel( anInd ) )->clone() );
+        }
+      }
+      else dt__throwUnexpected(lookupVecClone());
     }
     return ret;
   }
@@ -408,7 +420,19 @@ namespace dtOO {
     );
     std::vector< T const * > ret;
     dt__forAllRefAuto(jP, aJP) {
-      ret.push_back( ptrVec->get( aJP.lookup<std::string>("label") ) );
+      if ( aJP.contains("label") ) {
+        ret.push_back( 
+          ptrVec->get( aJP.lookup<std::string>("label") ) 
+        );
+      }
+      else if ( aJP.contains("labels") ) {
+        dt__forAllRefAuto( ptrVec->getIndices(
+          aJP.lookup<std::string>("labels") ), anInd
+        ) {
+          ret.push_back( ptrVec->get( ptrVec->getLabel( anInd ) ) );
+        }
+      }
+      else dt__throwUnexpected(lookupVecClone());
     }
     return ret;
   }
