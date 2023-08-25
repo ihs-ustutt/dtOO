@@ -343,7 +343,18 @@ namespace dtOO {
         functionname, \
         << "condition: "#cond" is true." << std::endl \
         << dt__eval(err) ); \
+    }
+  #define moab__throwIfWithMessage(cond, functionname, message) \
+    if (cond) { \
+      std::string err; \
+      moab::MBErrorHandler_GetLastError(err); \
+      dt__throw( \
+        functionname, \
+        << "condition: "#cond" is true." << std::endl \
+        << dt__eval(err) << std::endl \
+        message ); \
     }  
+ 
   #define meshkit__catch(functionname) \
     catch( MeshKit::Error & merr ) { \
       dt__throw(functionname, << merr.what() ); \
