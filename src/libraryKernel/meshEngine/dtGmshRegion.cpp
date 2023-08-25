@@ -338,21 +338,25 @@ namespace dtOO {
   std::list< dtGmshFace const * > dtGmshRegion::constFaceList(
     std::vector< std::string > const & label
   ) const {
-		std::list< dtGmshFace const * > faceList;
+		std::list< dtGmshFace const * > constFaceList;
 		dt__forAllConstIter(std::vector< std::string >, label, it) {
-		  faceList.push_back( refDtGmshModel().getDtGmshFaceByPhysical(*it) );
+		  dt__forAllRefAuto( 
+        refDtGmshModel().getDtGmshFaceListByPhysical(*it), aFace 
+      ) {
+		    constFaceList.push_back( aFace );
+      }
 		}
     
-    return faceList;
+    return constFaceList;
   }    
 
   std::list< dtGmshFace * > dtGmshRegion::faceList(
     std::vector< std::string > const & label
   ) {
-		std::list< dtGmshFace * > faceList;
-		dt__forAllConstIter(std::vector< std::string >, label, it) {
-		  faceList.push_back( refDtGmshModel().getDtGmshFaceByPhysical(*it) );
-		}
+ 		std::list< dtGmshFace * > faceList;
+    dt__forAllRefAuto(this->constFaceList(label), aFace) {
+      faceList.push_back( dtGmshFace::CastConst(aFace) );
+    }
     
     return faceList;
   }  
