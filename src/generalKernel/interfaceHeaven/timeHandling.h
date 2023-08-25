@@ -13,15 +13,15 @@ namespace boost {
 
 namespace dtOO {
   class timeHandling {
-  public:
-    dt__classOnlyName(timeHandling);    
-    timeHandling(std::string const & keyword);
-    virtual ~timeHandling();
-    void output( void );
-  private:
-    std::string _keyword;
-    dt__pH(::boost::timer::cpu_timer) _t;
-    dtInt _step;
+    public:
+      dt__classOnlyName(timeHandling);    
+      timeHandling(std::string const & keyword);
+      virtual ~timeHandling();
+      void output( void );
+    private:
+      std::string _keyword;
+      dt__pH(::boost::timer::cpu_timer) _t;
+      dtInt _step;
   };
 }
 #endif	/* TIMEHANDLING_H */
