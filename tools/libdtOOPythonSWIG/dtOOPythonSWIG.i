@@ -295,6 +295,7 @@ namespace dtOO {
   };
 }
 
+%include <std_list.i>
 %include <std_vector.i>
 %include <std_string.i>
 %include <std_pair.i>
@@ -488,6 +489,8 @@ namespace dtOO {
 %include jsonHeaven/jsonPrimitive.h
 %include interfaceHeaven/lVHOSubject.h
 namespace dtOO {
+  %template(listInt)                     ::std::list< dtInt >;
+
   %template(vectorInt)                   ::std::vector< dtInt >;
   %template(vectorBool)                  ::std::vector< bool >;
   %template(vectorReal)                  ::std::vector< dtReal >;

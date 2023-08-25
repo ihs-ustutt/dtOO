@@ -25,6 +25,7 @@
 #include "dtMeshGEdge.h"
 #include "dtMeshGFace.h"
 #include "dtMeshGRegion.h"
+#include <logMe/dtMacros.h>
 #include <gmsh/MVertex.h>
 #include <gmsh/MElement.h>
 #include <gmsh/MTetrahedron.h>
@@ -796,16 +797,15 @@ namespace dtOO {
   ) const {
     dtGmshVertex * gv = getDtGmshVertexByTag(from);
     
-    std::vector< ::GEdge * > edges = gv->edges();
-    std::vector< ::GEdge * >::iterator it = edges.begin();
-    for (it; it != edges.end(); ++it) {
-      if ( (*it)->getBeginVertex()->tag() == to ) {
-        return -((*it)->tag());
+    dt__forAllRefAuto(gv->edges(), edge) {
+      if ( edge->getBeginVertex()->tag() == to ) {
+        return -(edge->tag());
       }
-      else if ( (*it)->getEndVertex()->tag() == to ) {
-        return (*it)->tag();
+      else if ( edge->getEndVertex()->tag() == to ) {
+        return edge->tag();
       }
     }
+    dt__throwUnexpected(getDtGmshEdgeTagByFromTo());
   }
   
   dtGmshEdge * dtGmshModel::getDtGmshEdgeByFromTo( 
@@ -821,6 +821,35 @@ namespace dtOO {
     
     return gVertex;    
   }  
+
+  std::list< dtInt > dtGmshModel::getDtGmshEdgeTagListByFromToPhysical( 
+    std::string const & from, std::string const & to 
+  ) const {
+    std::list< dtInt > retList;
+    dt__forAllRefAuto( cast2DtGmshEdge( this->edges() ), edge) {
+      ::GVertex const * const v0 = edge->getBeginVertex();
+      dt__forAllRefAuto( v0->faces(), fromFace ) {
+        if ( matchWildCardPhysical( from, fromFace ) ) {
+          ::GVertex const * const v1 = edge->getEndVertex();
+          dt__forAllRefAuto( v1->faces(), toFace ) {
+            if ( matchWildCardPhysical( to, toFace ) ) {
+              retList.push_back( edge->tag() );
+            }
+          }
+        }
+        else if ( matchWildCardPhysical( to, fromFace ) ) {
+          ::GVertex const * const v1 = edge->getEndVertex();
+          dt__forAllRefAuto( v1->faces(), toFace ) {
+            if ( matchWildCardPhysical( from, toFace ) ) {
+              retList.push_back( -edge->tag() );
+            }
+          }
+        }
+      }
+    }
+    progHelper::removeBastardTwins( retList );
+    return retList;
+  }
 
   dtGmshRegion * dtGmshModel::cast2DtGmshRegion( ::GEntity * gr ){
     assert( gr!=NULL );

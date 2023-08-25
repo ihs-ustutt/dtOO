@@ -61,6 +61,9 @@ namespace dtOO {
       dtGmshEdge * getDtGmshEdgeByFromTo( dtInt const from, dtInt const to ) const;
       dtGmshVertex * getDtGmshVertexByTag( dtInt const tag ) const;
       ::GEntity * getGEntityByPhysical( std::string const & physical ) const;
+      std::list< dtInt > getDtGmshEdgeTagListByFromToPhysical( 
+        std::string const & from, std::string const & to 
+      ) const;
       //
       // casts
       //
