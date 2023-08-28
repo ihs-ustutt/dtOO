@@ -54,6 +54,10 @@ namespace dtOO {
       &s1dPoly, s1dPoly.vecRef(), s1dPoly.mapRef()
     );
     _polyI.reset( scaOneDPolyInterface::MustDownCast( s1dPoly.weakClone() ) );
+    dt__throwIfWithMessage(
+      _polyI->nDOF()!=1, jInit(), 
+      << "Currently only 1 DOF is supported."
+    );
   }  
  
   void bVOSetPrescribedFirstElementSize::init( 
