@@ -95,7 +95,7 @@ namespace dtOO {
             dt__tmpPtr(
               dtCurve2d, 
               geomCurve2d_curve2dTranslateConstructOCC(
-                sC2d1d->ptrDtCurve2d(), 
+                sC2d1d->constPtrDtCurve2d(), 
 								config().lookup<dtVector2>("_v2")
               ).result()
             )
