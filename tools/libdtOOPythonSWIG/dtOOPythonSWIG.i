@@ -365,6 +365,12 @@ namespace CGAL {
       ::dtOO::dtReal y() const;
       ::dtOO::dtReal z() const;
   };
+  %extend Point_3 {
+    ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
+      return $self->operator[](ii);
+    }
+  } 
+ 
   template <class R_ > 
   class Vector_3 {
     public:
@@ -379,6 +385,12 @@ namespace CGAL {
       ::dtOO::dtReal y() const;
       ::dtOO::dtReal z() const;
   };
+  %extend Vector_3 {
+    ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
+      return $self->operator[](ii);
+    }
+  } 
+
   template <class R_ > 
   class Point_2 {
     public:
@@ -391,6 +403,12 @@ namespace CGAL {
       ::dtOO::dtReal x() const;
       ::dtOO::dtReal y() const;
   };
+  %extend Point_2 {
+    ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
+      return $self->operator[](ii);
+    }
+  }
+ 
   template <class R_ > 
   class Vector_2 {
     public:
@@ -403,6 +421,12 @@ namespace CGAL {
       ::dtOO::dtReal x() const;
       ::dtOO::dtReal y() const;
   };
+  %extend Vector_2 {
+    ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
+      return $self->operator[](ii);
+    }
+  } 
+ 
 }
 namespace dtOO {
   %template(dtPoint3)       ::CGAL::Point_3< dtKernel >;
