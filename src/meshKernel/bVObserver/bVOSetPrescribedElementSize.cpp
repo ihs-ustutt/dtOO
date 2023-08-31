@@ -98,13 +98,14 @@ namespace dtOO {
         "firstElementSize", element, cV, aF
       )
     );
-    jE.append< dtReal >(
-      "_lastElementSize",
-      dtXmlParserBase::getAttributeFloatMuParse(
-        "lastElementSize", element, cV, aF
-      )
-    );
-   
+    if ( dtXmlParserBase::hasAttribute("lastElementSize", element) ) {
+      jE.append< dtReal >(
+        "_lastElementSize",
+        dtXmlParserBase::getAttributeFloatMuParse(
+          "lastElementSize", element, cV, aF
+        )
+      );
+    }   
     jE.append< analyticFunction const * >("_grading",
       aF->get( qtXmlBase::getAttributeStr("gradingLabel", element) ) 
     );
