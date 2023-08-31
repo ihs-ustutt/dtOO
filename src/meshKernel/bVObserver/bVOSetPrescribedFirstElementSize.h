@@ -13,14 +13,15 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class scaOneDPolyInterface;
-  
+  class dtGmshEdge;
+
   class bVOSetPrescribedFirstElementSize : public bVOInterface {
     public:
       dt__class(bVOSetPrescribedFirstElementSize, bVOInterface);
       dt__classSelfCreate(bVOSetPrescribedFirstElementSize);
       bVOSetPrescribedFirstElementSize();
       virtual ~bVOSetPrescribedFirstElementSize();
-       void jInit( 
+      void jInit( 
         jsonPrimitive const & jE,
         baseContainer const * const bC,
         lvH_constValue const * const cV,
@@ -39,12 +40,17 @@ namespace dtOO {
         boundedVolume * attachTo
       );    
       virtual void preUpdate( void );
-      double F( double const * xx );
+      double FFirstLast( double const * xx );
+      std::vector< dtReal > perform(
+        dtGmshEdge * aEdge,
+        double (bVOSetPrescribedFirstElementSize::*fPtr)(double const * xx) 
+      );
     private:
       analyticFunctionCompoundTrojanHorse< scaOneDPolyInterface > _grading;
       dt__pH(scaOneDPolyInterface) _polyI;
       dtReal _ll;
-      dtReal _checkX;
+      dtReal _checkXFirst;
+      dtReal _checkXLast;
       static bool _registrated;
   };
 }
