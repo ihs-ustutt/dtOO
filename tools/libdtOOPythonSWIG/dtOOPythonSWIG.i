@@ -245,7 +245,7 @@ namespace dtOO {
 #include <bVObserver/bVOSetNElements.h>
 #include <bVObserver/bVOSetGradingToFaceRule.h>
 #include <bVObserver/bVOSetGrading.h>
-#include <bVObserver/bVOSetPrescribedFirstElementSize.h>
+#include <bVObserver/bVOSetPrescribedElementSize.h>
 #include <bVObserver/bVOReadMSH.h>
 #include <bVObserver/bVOSetRotationalPeriodicity.h>
 #include <bVObserver/bVOWriteMSH.h>
@@ -490,7 +490,7 @@ namespace dtOO {
 %include bVObserver/bVOSetNElements.h
 %include bVObserver/bVOSetGradingToFaceRule.h
 %include bVObserver/bVOSetGrading.h
-%include bVObserver/bVOSetPrescribedFirstElementSize.h
+%include bVObserver/bVOSetPrescribedElementSize.h
 %include bVObserver/bVOReadMSH.h
 %include bVObserver/bVOSetRotationalPeriodicity.h
 %include bVObserver/bVOWriteMSH.h

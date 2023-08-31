@@ -1,4 +1,4 @@
-#include "bVOSetPrescribedFirstElementSize.h"
+#include "bVOSetPrescribedElementSize.h"
 
 #include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParserBase.h>
@@ -19,22 +19,30 @@
 #include <boost/assign.hpp>
 
 namespace dtOO {  
-  bool bVOSetPrescribedFirstElementSize::_registrated 
+  bool bVOSetPrescribedElementSize::_registrated 
   =
   bVOInterfaceFactory::registrate(
     dt__tmpPtr(
-      bVOSetPrescribedFirstElementSize, new bVOSetPrescribedFirstElementSize()
+      bVOSetPrescribedElementSize, new bVOSetPrescribedElementSize()
     )
   );
   
-  bVOSetPrescribedFirstElementSize::bVOSetPrescribedFirstElementSize() {
+  bVOSetPrescribedElementSize::bVOSetPrescribedElementSize() {
   }
 
-  bVOSetPrescribedFirstElementSize::~bVOSetPrescribedFirstElementSize() {
+  bVOSetPrescribedElementSize::~bVOSetPrescribedElementSize() {
     
   }
  
-  void bVOSetPrescribedFirstElementSize::jInit( 
+  std::vector< std::string > 
+  bVOSetPrescribedElementSize::factoryAlias( void ) const {
+    return ::boost::assign::list_of
+      ("bVOSetPrescribedFirstElementSize")
+      ("bVOSetPrescribedLastElementSize");
+  }
+
+
+  void bVOSetPrescribedElementSize::jInit( 
     jsonPrimitive const & jE,
 		baseContainer const * const bC,
     lvH_constValue const * const cV,
@@ -61,7 +69,7 @@ namespace dtOO {
     dt__throwIf( (_polyI->nDOF()!=1) && (_polyI->nDOF()!=2), jInit() );
   }  
  
-  void bVOSetPrescribedFirstElementSize::init( 
+  void bVOSetPrescribedElementSize::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
 		lvH_constValue const * const cV,
@@ -71,7 +79,7 @@ namespace dtOO {
 		boundedVolume * attachTo
   ) {
     // <bVObserver 
-    // 	name="bVOSetPrescribedFirstElementSize"
+    // 	name="bVOSetPrescribedElementSize"
     // 	type="7"
     // 	gradingLabel="aF_dt_gridGradingSpline_7"
     // 	firstElementSize="0.001"
@@ -100,10 +108,10 @@ namespace dtOO {
     jE.append< analyticFunction const * >("_grading",
       aF->get( qtXmlBase::getAttributeStr("gradingLabel", element) ) 
     );
-    bVOSetPrescribedFirstElementSize::jInit(jE, bC, cV, aF, aG, bV, attachTo);
+    bVOSetPrescribedElementSize::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
-  void bVOSetPrescribedFirstElementSize::preUpdate( void ) {
+  void bVOSetPrescribedElementSize::preUpdate( void ) {
 		dt__ptrAss(dtGmshModel * gm, ptrBoundedVolume()->getModel());
 		
     //
@@ -111,7 +119,7 @@ namespace dtOO {
     //
     ::GModel::setCurrent(gm);
     
-    logContainer< bVOSetPrescribedFirstElementSize > logC(
+    logContainer< bVOSetPrescribedElementSize > logC(
       logINFO, "preUpdate()"
     );
     dt__forAllRefAuto( gm->dtEdges(), aEdge) {
@@ -139,7 +147,7 @@ namespace dtOO {
         _checkXLast = 1. - 1./(aEdge->meshAttributes.nbPointsTransfinite-1);
         std::vector< dtReal > theRoot = this->perform(
           aEdge, 
-          &bVOSetPrescribedFirstElementSize::FFirstLast
+          &bVOSetPrescribedElementSize::FFirstLast
         );      
 
         if ( config().contains("_firstElementSize") ) {
@@ -181,7 +189,7 @@ namespace dtOO {
     }
   }
   
-	double bVOSetPrescribedFirstElementSize::FFirstLast( double const * xx ) {
+	double bVOSetPrescribedElementSize::FFirstLast( double const * xx ) {
     std::vector< dtReal > xVec(_polyI->nDOF(), -1);
     dt__forAllIndex(xVec, ii) xVec[ii] = xx[ii];
     _polyI->setDOF(xVec);
@@ -218,9 +226,9 @@ namespace dtOO {
     return retFirst + retLast;
 	}
 
-  std::vector< dtReal > bVOSetPrescribedFirstElementSize::perform(
+  std::vector< dtReal > bVOSetPrescribedElementSize::perform(
     dtGmshEdge * aEdge,
-    double (bVOSetPrescribedFirstElementSize::*fPtr)(double const * xx) 
+    double (bVOSetPrescribedElementSize::*fPtr)(double const * xx) 
   ) {
     // 
     // multidimensional minimization

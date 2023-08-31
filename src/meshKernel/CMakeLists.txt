@@ -31,7 +31,7 @@ SET(HEADERS
   bVObserver/bVOTransformMeshPoints.h
   bVObserver/bVOCoherenceCheck.h
   bVObserver/bVOWriteSU2.h
-  bVObserver/bVOSetPrescribedFirstElementSize.h
+  bVObserver/bVOSetPrescribedElementSize.h
   bVObserver/bVOForceMeshPointCoordinates.h
   bVObserver/bVOAnalyticFunctionToFace.h
   bVObserver/bVOWriteINP.h
@@ -81,7 +81,7 @@ SET(SOURCES
   bVObserver/bVOSetTranslationalPeriodicity.cpp
   bVObserver/bVOTransformMeshPoints.cpp
   bVObserver/bVOCoherenceCheck.cpp
-  bVObserver/bVOSetPrescribedFirstElementSize.cpp
+  bVObserver/bVOSetPrescribedElementSize.cpp
   bVObserver/bVOWriteSU2.cpp
   bVObserver/bVOForceMeshPointCoordinates.cpp
   bVObserver/bVOAnalyticFunctionToFace.cpp
