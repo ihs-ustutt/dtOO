@@ -121,8 +121,10 @@ namespace dtOO {
 #include <analyticFunctionHeaven/scaOneDPolyInterface.h>
 #include <analyticFunctionHeaven/scaTanhGradingOneD.h>
 #include <analyticFunctionHeaven/scaTanhUnitGradingOneD.h>
+#include <analyticFunctionHeaven/sca3PPointsBSplineOneD.h>
 namespace dtOO {
-  typedef analyticFunctionCompound< scaTanhGradingOneD > scaTanhGradingOneDCompound;
+  typedef analyticFunctionCompound< scaTanhGradingOneD >        scaTanhGradingOneDCompound;
+  typedef analyticFunctionCompound< sca3PPointsBSplineOneD > sca3PPointsBSplineOneDCompound;
 }
 
 #include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
@@ -756,6 +758,7 @@ namespace dtOO {
 %feature("notabstract") vec3dBiLinearTwoD;
 %feature("notabstract") scaTanhGradingOneD;
 %feature("notabstract") scaTanhUnitGradingOneD;
+%feature("notabstract") sca3PPointsBSplineOneD;
 %feature("notabstract") analyticFunctionCompound;
 
 %include analyticFunctionHeaven/analyticFunctionCompound.h
@@ -798,10 +801,13 @@ namespace dtOO {
 %include analyticFunctionHeaven/scaOneDPolyInterface.h
 %include analyticFunctionHeaven/scaTanhGradingOneD.h
 %include analyticFunctionHeaven/scaTanhUnitGradingOneD.h
+%include analyticFunctionHeaven/sca3PPointsBSplineOneD.h
 
 namespace dtOO {
-  %template(scaTanhGradingOneDCompound)    analyticFunctionCompound< scaTanhGradingOneD >;
-  typedef analyticFunctionCompound< scaTanhGradingOneD > scaTanhGradingOneDCompound;
+  %template(scaTanhGradingOneDCompound)                         analyticFunctionCompound< scaTanhGradingOneD >;
+  typedef analyticFunctionCompound< scaTanhGradingOneD >        scaTanhGradingOneDCompound;
+  %template(sca3PPointsBSplineOneDCompound)                  analyticFunctionCompound< sca3PPointsBSplineOneD >;
+  typedef analyticFunctionCompound< sca3PPointsBSplineOneD > sca3PPointsBSplineOneDCompound;
 }
 %include analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h
 %include analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
