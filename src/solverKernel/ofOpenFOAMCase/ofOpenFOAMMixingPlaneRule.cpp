@@ -55,15 +55,15 @@ namespace dtOO {
     ::Foam::label id1 = bM.findPatchID(csvString[1]);
     dt__throwIfWithMessage( id0<0, executeOnMesh(), << csvString[0] );
     dt__throwIfWithMessage( id1<0, executeOnMesh(), << csvString[1] );
-      
+    
     //
-    // create new mixingPlane patches
+    // create new mixingPlane patch (master side)
     //
-    ::Foam::dictionary dd0 = parseOptionDict(csvString[0], rule[2]);   
+    ::Foam::dictionary dd0 = parseOptionDict(csvString[0], rule[2]);  
     dd0.add("nFaces", bM[ id0 ].size());
     dd0.add("startFace", bM[ id0 ].start());
-    dd0.add("samplePatch", ::Foam::word(csvString[1]));
-    
+    dd0.add("shadowPatch", ::Foam::word(csvString[1]));
+
     ::Foam::mixingInterfacePolyPatch * mix0    
     =
     new ::Foam::mixingInterfacePolyPatch(        
@@ -73,25 +73,33 @@ namespace dtOO {
       bM[ id0 ].boundaryMesh(),
       "mixingInterfacePatch"
     );
-    ::Foam::dictionary dd1 = parseOptionDict(csvString[1], rule[2]);
-    dd1.add("nFaces", bM[ id1 ].size());
-    dd1.add("startFace", bM[ id1 ].start());
-    dd1.add("samplePatch", ::Foam::word(csvString[0]));
     
-    ::Foam::mixingInterfacePolyPatch * mix1
-    =
-    new ::Foam::mixingInterfacePolyPatch(        
-      bM[ id1 ].name(), 
-      dd1,
-      bM[ id1 ].index(),
-      bM[ id1 ].boundaryMesh(),
-      "mixingInterfacePatch"
-    );
-
     //
-    // replace old patches with new patches
+    // replace old patch with new patch
     //
     bM.set( id0, mix0);
+     
+    //
+    // create new mixingPlane patch (shadow side)
+    //
+    ::Foam::dictionary dd1 = parseOptionDict(csvString[1], rule[2]);
+     dd1.add("nFaces", bM[ id1 ].size());
+     dd1.add("startFace", bM[ id1 ].start());
+     dd1.add("shadowPatch", ::Foam::word(csvString[0]));
+     
+    ::Foam::mixingInterfacePolyPatch * mix1
+     =
+     new ::Foam::mixingInterfacePolyPatch(        
+       bM[ id1 ].name(), 
+       dd1,
+       bM[ id1 ].index(),
+       bM[ id1 ].boundaryMesh(),
+       "mixingInterfacePatch"
+     );
+
+    //
+    // replace old patch with new patch
+    // 
     bM.set( id1, mix1);
   }
   
