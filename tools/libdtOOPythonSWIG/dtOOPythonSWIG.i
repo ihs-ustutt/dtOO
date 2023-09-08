@@ -690,6 +690,8 @@ namespace dtOO {
 %template(appendAnalyticGeometry) dtOO::jsonPrimitive::append< dtOO::analyticGeometry const * >;
 %template(appendDtTransformer) dtOO::jsonPrimitive::append< dtOO::dtTransformer const * >;
 %template(appendVectorInt) dtOO::jsonPrimitive::append< std::vector< dtOO::dtInt > >;
+%template(appendVectorStr) dtOO::jsonPrimitive::append< std::vector< std::string > >;
+%template(appendVectorBoundedVolume) dtOO::jsonPrimitive::append< std::vector< boundedVolume * > >;
 
 %include constValueHeaven/sliderFloatParam.h
 %include constValueHeaven/intParam.h
