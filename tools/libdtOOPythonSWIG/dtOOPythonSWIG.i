@@ -184,6 +184,7 @@ namespace dtOO {
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
+#include <analyticGeometryHeaven/trans6SidedCube.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
@@ -199,6 +200,7 @@ namespace dtOO {
 #include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
 #include <analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h>
+
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCSurface.h>
@@ -257,6 +259,7 @@ namespace dtOO {
 #include <gmshBoundedVolume.h>
 #include <map3dTo3dGmsh.h>
 #include <customGmsh.h>
+#include <combineGmsh.h>
 #include <dtCase.h>
 #ifdef DTOO_HAS_OpenFOAM
   #include <ofOpenFOAMCase/ofOpenFOAMCase.h>
@@ -456,6 +459,7 @@ namespace dtOO {
 %include gmshBoundedVolume.h
 %include map3dTo3dGmsh.h
 %include customGmsh.h
+%include combineGmsh.h
 %include dtCase.h
 #ifdef DTOO_HAS_OpenFOAM
   %include ofOpenFOAMCase/ofOpenFOAMCase.h
@@ -820,6 +824,7 @@ namespace dtOO {
 %include analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
 %include analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
 %include analyticGeometryHeaven/rotatingMap2dTo3d.h
+%include analyticGeometryHeaven/trans6SidedCube.h
 namespace dtOO {
   %template(pairDtRealDtPoint2) ::std::pair< dtReal, dtPoint2 >;
 }
