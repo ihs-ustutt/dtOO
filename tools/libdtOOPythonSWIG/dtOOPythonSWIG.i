@@ -121,8 +121,10 @@ namespace dtOO {
 #include <analyticFunctionHeaven/scaOneDPolyInterface.h>
 #include <analyticFunctionHeaven/scaTanhGradingOneD.h>
 #include <analyticFunctionHeaven/scaTanhUnitGradingOneD.h>
+#include <analyticFunctionHeaven/sca3PPointsBSplineOneD.h>
 namespace dtOO {
-  typedef analyticFunctionCompound< scaTanhGradingOneD > scaTanhGradingOneDCompound;
+  typedef analyticFunctionCompound< scaTanhGradingOneD >        scaTanhGradingOneDCompound;
+  typedef analyticFunctionCompound< sca3PPointsBSplineOneD > sca3PPointsBSplineOneDCompound;
 }
 
 #include <analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h>
@@ -200,7 +202,7 @@ namespace dtOO {
 #include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
 #include <analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h>
-
+#include <analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.h>
 #include <geometryEngine/dtSurface.h>
 #include <geometryEngine/dtOCCSurfaceBase.h>
 #include <geometryEngine/dtOCCSurface.h>
@@ -222,6 +224,8 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_bSplineSurfaceSplitConstructOCC.h>
+#include <jsonHeaven/aFJsonBuilder.h>
 #include <jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h>
 #include <meshEngine/dtGmshVertex.h>
 #include <meshEngine/dtGmshEdge.h>
@@ -242,7 +246,7 @@ namespace dtOO {
 #include <bVObserver/bVOSetNElements.h>
 #include <bVObserver/bVOSetGradingToFaceRule.h>
 #include <bVObserver/bVOSetGrading.h>
-#include <bVObserver/bVOSetPrescribedFirstElementSize.h>
+#include <bVObserver/bVOSetPrescribedElementSize.h>
 #include <bVObserver/bVOReadMSH.h>
 #include <bVObserver/bVOSetRotationalPeriodicity.h>
 #include <bVObserver/bVOWriteMSH.h>
@@ -295,6 +299,7 @@ namespace dtOO {
   };
 }
 
+%include <std_list.i>
 %include <std_vector.i>
 %include <std_string.i>
 %include <std_pair.i>
@@ -364,6 +369,12 @@ namespace CGAL {
       ::dtOO::dtReal y() const;
       ::dtOO::dtReal z() const;
   };
+  %extend Point_3 {
+    ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
+      return $self->operator[](ii);
+    }
+  } 
+ 
   template <class R_ > 
   class Vector_3 {
     public:
@@ -378,6 +389,12 @@ namespace CGAL {
       ::dtOO::dtReal y() const;
       ::dtOO::dtReal z() const;
   };
+  %extend Vector_3 {
+    ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
+      return $self->operator[](ii);
+    }
+  } 
+
   template <class R_ > 
   class Point_2 {
     public:
@@ -390,6 +407,12 @@ namespace CGAL {
       ::dtOO::dtReal x() const;
       ::dtOO::dtReal y() const;
   };
+  %extend Point_2 {
+    ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
+      return $self->operator[](ii);
+    }
+  }
+ 
   template <class R_ > 
   class Vector_2 {
     public:
@@ -402,6 +425,12 @@ namespace CGAL {
       ::dtOO::dtReal x() const;
       ::dtOO::dtReal y() const;
   };
+  %extend Vector_2 {
+    ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
+      return $self->operator[](ii);
+    }
+  } 
+ 
 }
 namespace dtOO {
   %template(dtPoint3)       ::CGAL::Point_3< dtKernel >;
@@ -423,8 +452,29 @@ namespace dtOO {
 %include unstructured3dSurfaceMesh.h
 %include baseContainerHeaven/baseContainer.h
 %include baseContainerHeaven/pointContainer.h
+namespace dtOO {
+  %extend pointContainer {
+    dtPoint3 __getitem__( std::string const & str ) {
+      return $self->operator[](str);
+    } 
+  }
+}
 %include baseContainerHeaven/vectorContainer.h
+namespace dtOO {
+  %extend vectorContainer {
+    dtVector3 __getitem__( std::string const & str ) {
+      return $self->operator[](str);
+    } 
+  }
+}
 %include baseContainerHeaven/transformerContainer.h
+namespace dtOO {
+  %extend transformerContainer {
+    dtTransformer const * __getitem__( std::string const & str ) {
+      return $self->operator[](str);
+    } 
+  }
+}
 %include constValueHeaven/constValue.h
 %include analyticFunctionHeaven/analyticFunction.h
 %include analyticGeometryHeaven/analyticGeometry.h
@@ -442,7 +492,7 @@ namespace dtOO {
 %include bVObserver/bVOSetNElements.h
 %include bVObserver/bVOSetGradingToFaceRule.h
 %include bVObserver/bVOSetGrading.h
-%include bVObserver/bVOSetPrescribedFirstElementSize.h
+%include bVObserver/bVOSetPrescribedElementSize.h
 %include bVObserver/bVOReadMSH.h
 %include bVObserver/bVOSetRotationalPeriodicity.h
 %include bVObserver/bVOWriteMSH.h
@@ -468,6 +518,8 @@ namespace dtOO {
 %include jsonHeaven/jsonPrimitive.h
 %include interfaceHeaven/lVHOSubject.h
 namespace dtOO {
+  %template(listInt)                     ::std::list< dtInt >;
+
   %template(vectorInt)                   ::std::vector< dtInt >;
   %template(vectorBool)                  ::std::vector< bool >;
   %template(vectorReal)                  ::std::vector< dtReal >;
@@ -641,6 +693,8 @@ namespace dtOO {
 %template(appendAnalyticGeometry) dtOO::jsonPrimitive::append< dtOO::analyticGeometry const * >;
 %template(appendDtTransformer) dtOO::jsonPrimitive::append< dtOO::dtTransformer const * >;
 %template(appendVectorInt) dtOO::jsonPrimitive::append< std::vector< dtOO::dtInt > >;
+%template(appendVectorStr) dtOO::jsonPrimitive::append< std::vector< std::string > >;
+%template(appendVectorBoundedVolume) dtOO::jsonPrimitive::append< std::vector< boundedVolume * > >;
 
 %include constValueHeaven/sliderFloatParam.h
 %include constValueHeaven/intParam.h
@@ -665,7 +719,15 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_bSplineSurfaceSplitConstructOCC.h
+
+%include jsonHeaven/aFJsonBuilder.h
 %include jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h
+namespace dtOO {
+  %extend bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder {
+    using aFJsonBuilder::buildPart;
+  }
+}
 
 %include meshEngine/dtGmshVertex.h
 %include meshEngine/dtGmshEdge.h
@@ -701,6 +763,7 @@ namespace dtOO {
 %feature("notabstract") vec3dBiLinearTwoD;
 %feature("notabstract") scaTanhGradingOneD;
 %feature("notabstract") scaTanhUnitGradingOneD;
+%feature("notabstract") sca3PPointsBSplineOneD;
 %feature("notabstract") analyticFunctionCompound;
 
 %include analyticFunctionHeaven/analyticFunctionCompound.h
@@ -743,10 +806,13 @@ namespace dtOO {
 %include analyticFunctionHeaven/scaOneDPolyInterface.h
 %include analyticFunctionHeaven/scaTanhGradingOneD.h
 %include analyticFunctionHeaven/scaTanhUnitGradingOneD.h
+%include analyticFunctionHeaven/sca3PPointsBSplineOneD.h
 
 namespace dtOO {
-  %template(scaTanhGradingOneDCompound)    analyticFunctionCompound< scaTanhGradingOneD >;
-  typedef analyticFunctionCompound< scaTanhGradingOneD > scaTanhGradingOneDCompound;
+  %template(scaTanhGradingOneDCompound)                         analyticFunctionCompound< scaTanhGradingOneD >;
+  typedef analyticFunctionCompound< scaTanhGradingOneD >        scaTanhGradingOneDCompound;
+  %template(sca3PPointsBSplineOneDCompound)                  analyticFunctionCompound< sca3PPointsBSplineOneD >;
+  typedef analyticFunctionCompound< sca3PPointsBSplineOneD > sca3PPointsBSplineOneDCompound;
 }
 %include analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.h
 %include analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
@@ -843,4 +909,5 @@ namespace dtOO {
 %include analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h
 %include analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h
+%include analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.h
 %include interfaceHeaven/dtBundle.h

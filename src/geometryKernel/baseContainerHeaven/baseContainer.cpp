@@ -72,7 +72,19 @@ namespace dtOO {
 		
 		return _tC.get();
   }  
+
+  pointContainer const & baseContainer::dtPoint3( void ) {
+    return *(_pC);
+  }
+
+  vectorContainer const & baseContainer::dtVector3( void ) {
+    return *(_vC);
+  }
   
+  transformerContainer const & baseContainer::dtTransformer( void ) {
+    return *(_tC);
+  }
+
   std::vector< std::string > baseContainer::labels( void ) const {
     std::vector< std::string > pLab = this->constPtrPointContainer()->labels();
     std::vector< std::string > vLab = this->constPtrVectorContainer()->labels();

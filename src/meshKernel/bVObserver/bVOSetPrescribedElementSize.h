@@ -1,5 +1,5 @@
-#ifndef bVOSetPrescribedFirstElementSize_H
-#define	bVOSetPrescribedFirstElementSize_H
+#ifndef bVOSetPrescribedElementSize_H
+#define	bVOSetPrescribedElementSize_H
 
 #include <dtOOTypeDef.h>
 
@@ -13,14 +13,16 @@ namespace dtOO {
   class analyticFunction;
   class analyticGeometry;
   class scaOneDPolyInterface;
-  
-  class bVOSetPrescribedFirstElementSize : public bVOInterface {
+  class dtGmshEdge;
+
+  class bVOSetPrescribedElementSize : public bVOInterface {
     public:
-      dt__class(bVOSetPrescribedFirstElementSize, bVOInterface);
-      dt__classSelfCreate(bVOSetPrescribedFirstElementSize);
-      bVOSetPrescribedFirstElementSize();
-      virtual ~bVOSetPrescribedFirstElementSize();
-       void jInit( 
+      dt__class(bVOSetPrescribedElementSize, bVOInterface);
+      dt__classSelfCreate(bVOSetPrescribedElementSize);
+      bVOSetPrescribedElementSize();
+      virtual ~bVOSetPrescribedElementSize();
+      virtual std::vector< std::string > factoryAlias( void ) const;         
+      void jInit( 
         jsonPrimitive const & jE,
         baseContainer const * const bC,
         lvH_constValue const * const cV,
@@ -39,14 +41,19 @@ namespace dtOO {
         boundedVolume * attachTo
       );    
       virtual void preUpdate( void );
-      double F( double const * xx );
+      double FFirstLast( double const * xx );
+      std::vector< dtReal > perform(
+        dtGmshEdge * aEdge,
+        double (bVOSetPrescribedElementSize::*fPtr)(double const * xx) 
+      );
     private:
       analyticFunctionCompoundTrojanHorse< scaOneDPolyInterface > _grading;
       dt__pH(scaOneDPolyInterface) _polyI;
       dtReal _ll;
-      dtReal _checkX;
+      dtReal _checkXFirst;
+      dtReal _checkXLast;
       static bool _registrated;
   };
 }
-#endif	/* bVOSetPrescribedFirstElementSize_H */
+#endif	/* bVOSetPrescribedElementSize_H */
 

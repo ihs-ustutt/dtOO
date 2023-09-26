@@ -76,9 +76,8 @@ namespace dtOO {
         aFace->meshWNElements( nE[0], nE[1] );
       }
     }
-		std::list< ::GFace * > ff = gm->faces();
-		dt__forAllIter(std::list< ::GFace * >, ff, it) {
-			dtGmshModel::cast2DtGmshFace(*it)->correctIfTransfinite();
+		dt__forAllRefAuto(gm->faces(), aFace) {
+			dtGmshModel::cast2DtGmshFace(aFace)->correctIfTransfinite();
 		}	    
   }
 }

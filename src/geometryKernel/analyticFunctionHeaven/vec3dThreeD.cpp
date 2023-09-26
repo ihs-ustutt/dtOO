@@ -1,13 +1,19 @@
 #include "vec3dThreeD.h"
 #include "dtLinearAlgebra.h"
+#include <logMe/dtMacros.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
-#include <solid2dLine.h>
-#include <discrete2dPoints.h>
+#include <solid3dLine.h>
 
 namespace dtOO {
 	vec3dThreeD::vec3dThreeD() : vec3dFunction() {
-	}
+		_min[0] = 0.0;
+		_min[1] = 0.0;
+		_min[2] = 0.0;
+		_max[0] = 1.0;
+		_max[1] = 1.0;
+		_max[2] = 1.0;
+}
 
 	vec3dThreeD::vec3dThreeD(const vec3dThreeD& orig) : vec3dFunction(orig) {
 		_min[0] = orig._min[0];
@@ -243,133 +249,126 @@ namespace dtOO {
       "function_render_resolution_w"
     );				
 		vectorHandling< renderInterface * > rV;//(nV);
-//		for (int kk=0; kk<nW; kk++) {
-//			for (int jj=0; jj<nV; jj++) {
-//				vectorHandling< dtPoint2 > p2(nU);
-//				dtReal intervalU = (xMax(0) - xMin(0)) / (nU-1);
-//				dtReal intervalV = (xMax(1) - xMin(1)) / (nV-1);
-//				dtReal intervalW = (xMax(2) - xMin(2)) / (nW-1);
-//				for (int ii=0; ii<nU; ii++) {
-//					dt__toFloat(dtReal iiF, ii);
-//					dt__toFloat(dtReal jjF, jj);
-//					dt__toFloat(dtReal kkF, kk);
-//					aFX xx(3,0);
-//					xx[0] = xMin(0) + iiF * intervalU;
-//					xx[1] = xMin(1) + jjF * intervalV;
-//					xx[2] = xMin(2) + kkF * intervalW;
-//					dtPoint3 p3 = YdtPoint3(xx);
-//					p2[ii] = dtPoint2( p3.x(), p3.y() );
-//				}
-//				rV.push_back( new solid2dLine(p2) );
-//			}
-//		}
-		vectorHandling< dtPoint2 > p2;
+
+    vectorHandling< dtPoint3 > p3V;
 		dtReal intervalU = (xMax(0) - xMin(0)) / (nU-1);
 		dtReal intervalV = (xMax(1) - xMin(1)) / (nV-1);		
 		dtReal intervalW = (xMax(2) - xMin(2)) / (nW-1);
-		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(dtReal iiF, ii);
-			aFX xx(3,0);
-			xx[0] = xMin(0) + iiF * intervalU;
-			xx[1] = xMin(1);
-			xx[2] = xMin(2);
-			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );
-		p2.clear();
-		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(dtReal jjF, jj);
-			aFX xx(3,0);
-			xx[0] = xMin(0);
-			xx[1] = xMin(1) + jjF * intervalV;
-			xx[2] = xMin(2);
-			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );			
-		p2.clear();
-		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(dtReal iiF, ii);
-			aFX xx(3,0);
-			xx[0] = xMin(0) + iiF * intervalU;
-			xx[1] = xMax(1);
-			xx[2] = xMin(2);
-			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );
-		p2.clear();
-		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(dtReal jjF, jj);
-			aFX xx(3,0);
-			xx[0] = xMax(0);
-			xx[1] = xMin(1) + jjF * intervalV;
-			xx[2] = xMin(2);
-			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );		
-		p2.clear();
-		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(dtReal iiF, ii);
-			aFX xx(3,0);
-			xx[0] = xMin(0) + iiF * intervalU;
-			xx[1] = xMin(1);
-			xx[2] = xMax(2);
-			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );
-		p2.clear();
-		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(dtReal jjF, jj);
-			aFX xx(3,0);
-			xx[0] = xMin(0);
-			xx[1] = xMin(1) + jjF * intervalV;
-			xx[2] = xMax(2);
-			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );			
-		p2.clear();
-		for (int ii=0; ii<nU; ii++) {
-			dt__toFloat(dtReal iiF, ii);
-			aFX xx(3,0);
-			xx[0] = xMin(0) + iiF * intervalU;
-			xx[1] = xMax(1);
-			xx[2] = xMax(2);
-			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );
-		p2.clear();
-		for (int jj=0; jj<nV; jj++) {
-			dt__toFloat(dtReal jjF, jj);
-			aFX xx(3,0);
-			xx[0] = xMax(0);
-			xx[1] = xMin(1) + jjF * intervalV;
-			xx[2] = xMax(2);
-			dtPoint3 p3 = YdtPoint3(xx);
-			dt__info(getRender(), << dt__point3d(p3) );
-			p2.push_back( dtPoint2( p3.x(), p3.y() ) );
-		}
-		rV.push_back( new solid2dLine(p2) );						
-		
-//		vectorHandling< dtPoint2 > p2Cp(_dtS->nControlPoints());
-//		for (int ii=0; ii<p2Cp.size(); ii++) {
-//			dtPoint3 p3 = _dtS->controlPoint(ii);
-//      p2Cp[ii] = dtPoint2(p3.x(), p3.y());
-//    }
-//		rV.push_back( new discrete2dPoints(p2Cp) );
 
+
+    dtPoint3 p000(xMin(0), xMin(1), xMin(2));
+    dtPoint3 p111(xMax(0), xMax(1), xMax(2));
+    dtPoint3 p100(xMax(0), xMin(1), xMin(2));
+    dtPoint3 p011(xMin(0), xMax(1), xMax(2));
+    dtPoint3 p010(xMin(0), xMax(1), xMin(2));
+    dtPoint3 p001(xMin(0), xMin(1), xMax(2));
+    dtVector3 vU(intervalU, 0, 0);
+    dtVector3 vV(0, intervalV, 0);
+    dtVector3 vW(0, 0, intervalW);
+
+    // u
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.10) );
+    p3V.push_back( YdtPoint3Percent(0.25, 0.10, 0.10) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();
+    // v
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.10) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.25, 0.10) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();
+    p3V.push_back( YdtPoint3Percent(0.10, 0.30, 0.10) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.45, 0.10) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();
+    // v
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.10) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.25) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.30) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.45) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();    
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.50) );
+    p3V.push_back( YdtPoint3Percent(0.10, 0.10, 0.65) );
+    rV.push_back( new solid3dLine(p3V) );
+    p3V.clear();    
+
+
+    //p0 -> u
+    p3V.clear();
+    dt__forFromToIndex(0, nU, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p000 + ii * vU) ) );
+		}    
+		rV.push_back( new solid3dLine(p3V) );
+	  //p0 -> v
+    p3V.clear();
+    dt__forFromToIndex(0, nV, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p000 + ii * vV) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+	  //p0 -> w
+    p3V.clear();
+    dt__forFromToIndex(0, nW, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p000 + ii * vW) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+
+    //p1 -> -u
+    p3V.clear();
+    dt__forFromToIndex(0, nU, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p111 - ii * vU) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+	  //p1 -> -v
+    p3V.clear();
+    dt__forFromToIndex(0, nV, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p111 - ii * vV) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+	  //p1 -> -w
+    p3V.clear();
+    dt__forFromToIndex(0, nW, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p111 - ii * vW) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+	  //p100 -> v
+    p3V.clear();
+    dt__forFromToIndex(0, nV, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p100 + ii * vV) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+	  //p100 -> w
+    p3V.clear();
+    dt__forFromToIndex(0, nW, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p100 + ii * vW) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+	  //p011 -> -v
+    p3V.clear();
+    dt__forFromToIndex(0, nV, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p011 - ii * vV) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+	  //p011 -> -w
+    p3V.clear();
+    dt__forFromToIndex(0, nW, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p011 - ii * vW) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+    //p010 -> u
+    p3V.clear();
+    dt__forFromToIndex(0, nU, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p010 + ii * vU) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+    //p001 -> u
+    p3V.clear();
+    dt__forFromToIndex(0, nU, ii) {
+			p3V.push_back( YdtPoint3( aFXThreeD( p001 + ii * vU) ) );
+		}
+		rV.push_back( new solid3dLine(p3V) );
+		
 		return rV;
   }	
   

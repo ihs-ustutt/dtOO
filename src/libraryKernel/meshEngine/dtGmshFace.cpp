@@ -250,6 +250,16 @@ namespace dtOO {
     }
   }  
   
+  void dtGmshFace::addEdgeLoop( std::vector< dtInt > const & edgeIds ) {
+    std::list< ::GEdge * > edgeL;
+    dt__forAllRefAuto(edgeIds, edgeId) {
+      edgeL.push_back(
+        this->refDtGmshModel().getDtGmshEdgeByTag( edgeId )
+      );
+    }
+    this->addEdgeLoop( edgeL );
+  }
+
   SPoint2 dtGmshFace::parFromPoint(
     const SPoint3 &p, bool onSurface, bool convTestXYZ
   ) const {
@@ -336,7 +346,7 @@ namespace dtOO {
 		//
 		// only supported for 4-sided faces
 		//
-		dt__throwIf(ee.size()!=4, meshTransfiniteWNElements());
+		dt__throwIf(ee.size()!=4, correctIfTransfinite());
 
 		std::vector< bool > correct(2, false);
     if (
@@ -406,7 +416,7 @@ namespace dtOO {
 		//
 		// only supported for 4-sided faces
 		//
-		dt__throwIf(ee.size()!=4, meshTransfiniteWNElements());
+		dt__throwIf(ee.size()!=4, estimateTransfiniteNElements());
 		
 		//
 		// set number of elements

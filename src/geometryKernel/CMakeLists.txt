@@ -40,6 +40,7 @@ SET(HEADERS
   analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h
   analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h
   analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h
+  analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.h
   baseContainerHeaven/baseContainer.h
   baseContainerHeaven/pointContainer.h
   baseContainerHeaven/vectorContainer.h
@@ -93,6 +94,7 @@ SET(HEADERS
   analyticFunctionHeaven/vec3dBiLinearTwoD.h
   analyticFunctionHeaven/scaTanhGradingOneD.h
   analyticFunctionHeaven/scaTanhUnitGradingOneD.h
+  analyticFunctionHeaven/sca3PPointsBSplineOneD.h
   analyticFunctionHeaven/scaOneDPolyInterface.h
   analyticFunctionHeaven/analyticFunctionCombination.h
   analyticFunctionHeaven/analyticFunctionCompound.h
@@ -185,6 +187,7 @@ SET(SOURCES
   analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.cpp
   analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.cpp
+  analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.cpp
   baseContainerHeaven/baseContainer.cpp
   baseContainerHeaven/pointContainer.cpp
   baseContainerHeaven/vectorContainer.cpp
@@ -236,6 +239,7 @@ SET(SOURCES
   analyticFunctionHeaven/vec3dBiLinearTwoD.cpp
   analyticFunctionHeaven/scaTanhGradingOneD.cpp
   analyticFunctionHeaven/scaTanhUnitGradingOneD.cpp
+  analyticFunctionHeaven/sca3PPointsBSplineOneD.cpp
   analyticFunctionHeaven/scaOneDPolyInterface.cpp
   analyticFunctionHeaven/aFBuilder/float_scaOneDPoint.cpp
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.cpp

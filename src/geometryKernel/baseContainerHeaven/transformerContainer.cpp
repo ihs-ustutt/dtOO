@@ -19,9 +19,16 @@ namespace dtOO {
     _dtT.push_back( dtT->clone() );
   }
 
-  dtTransformer const * 
-  transformerContainer::get( std::string const string ) const {
+  dtTransformer const * transformerContainer::get( 
+    std::string const string 
+  ) const {
     return _dtT.get(string);
+  }
+
+  dtTransformer const * transformerContainer::operator[]( 
+    std::string const label 
+  ) const {
+    return this->get( label ); 
   }
 
   bool transformerContainer::has(std::string const string) const {

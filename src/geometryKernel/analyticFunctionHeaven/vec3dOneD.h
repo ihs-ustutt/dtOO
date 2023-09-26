@@ -39,6 +39,7 @@ namespace dtOO {
     dtReal length( dtReal const & x1 ) const;
     dtReal length( void ) const;
     dtReal operator%( const dtReal &percent ) const;     
+    vectorHandling< renderInterface * > getRender( void ) const;
   private:
 	  dtReal length( dtInt const & nP, dtReal const & x1 ) const;
   private:    

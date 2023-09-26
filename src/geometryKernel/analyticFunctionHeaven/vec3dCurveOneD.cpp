@@ -53,34 +53,6 @@ namespace dtOO {
 		return new vec3dCurveOneD();
 	}
 	
-  vectorHandling< renderInterface * > vec3dCurveOneD::getRender( void ) const {
-		int nU
-		=
-		staticPropertiesHandler::getInstance()->getOptionInt(
-      "function_render_resolution_u"
-    );		
-		
-		vectorHandling< dtPoint2 > p2(nU);
-    dtReal interval = (xMax(0) - xMin(0)) / (nU-1);
-    for (int ii=0;ii<nU;ii++) {
-			dtReal iiF = static_cast<dtReal>(ii);
-      dtReal xx = xMin(0) + iiF * interval;
-			dtPoint3 p3 = YdtPoint3(xx);
-      p2[ii] = dtPoint2(p3.x(), p3.y());
-    }
-		
-//		vectorHandling< dtPoint2 > p2Cp(_dtC->nControlPoints());
-//    for (int ii=0;ii<p2Cp.size();ii++) {
-//      p2Cp[ii] = _dtC->controlPoint( ii );
-//    }
-//		
-		vectorHandling< renderInterface * > rV(1);
-		rV[0] = new solid2dLine(p2);
-//		rV[1] = new discrete2dPoints(p2Cp);
-		
-		return rV;
-  }	
-	
   dtCurve * vec3dCurveOneD::ptrDtCurve(void) const {
     return _dtC.get();
   }

@@ -1,6 +1,7 @@
 #include "vec3dOneD.h"
 #include "dtLinearAlgebra.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <solid3dLine.h>
 
 namespace dtOO {
 	vec3dOneD::vec3dOneD() : vec3dFunction() {
@@ -171,6 +172,27 @@ namespace dtOO {
 		return x_percent(percent);
 	}
 	
+  vectorHandling< renderInterface * > vec3dOneD::getRender( void ) const {
+		int nU
+		=
+		staticPropertiesHandler::getInstance()->getOptionInt(
+      "function_render_resolution_u"
+    );		
+		
+		vectorHandling< dtPoint3 > p3(nU);
+    dtReal interval = (xMax(0) - xMin(0)) / (nU-1);
+    for (int ii=0;ii<nU;ii++) {
+			dtReal iiF = static_cast<dtReal>(ii);
+      dtReal xx = xMin(0) + iiF * interval;
+      p3[ii] = YdtPoint3(xx);
+    }
+		
+		vectorHandling< renderInterface * > rV(1);
+		rV[0] = new solid3dLine(p3);
+		
+		return rV;
+  }  
+
 	dtReal vec3dOneD::length( dtInt const & nP, dtReal const & x1 ) const {
 		std::vector< dtPoint2 > glp = dtLinearAlgebra::getGaussLegendre(nP);
 		dtReal L = 0.0;
@@ -187,6 +209,6 @@ namespace dtOO {
 		}
 		return L;
 	}		
-  
+ 
   dt__C_addCloneForpVH(vec3dOneD);   
 }

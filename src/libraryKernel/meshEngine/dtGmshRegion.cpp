@@ -160,7 +160,15 @@ namespace dtOO {
 	  if (std::find(l_faces.begin(), l_faces.end(), face) == l_faces.end()) {
 		  l_faces.push_back(face);
 			l_dirs.push_back( ori );
+      face->addRegion( this );
 		}
+  }  	
+
+  void dtGmshRegion::addFace( dtInt const & faceId, dtInt const & ori ) {
+    addFace(
+      dynamic_cast< ::GFace * >(refDtGmshModel().getDtGmshFaceByTag( faceId )),
+      ori
+    );
   }  	
 
   void dtGmshRegion::deleteFace( ::GFace * face ) {
@@ -192,7 +200,8 @@ namespace dtOO {
     for (FIter fi = l_faces.begin(); fi != l_faces.end(); ++fi) {
       if (*fi == face) return *OriIter;
       ++OriIter;
-    }    
+    }
+    dt__throwUnexpected(faceOrientation());
   }      
   
 	void dtGmshRegion::addGEntity( ::GEntity * const gEnt ) {
@@ -329,21 +338,25 @@ namespace dtOO {
   std::list< dtGmshFace const * > dtGmshRegion::constFaceList(
     std::vector< std::string > const & label
   ) const {
-		std::list< dtGmshFace const * > faceList;
+		std::list< dtGmshFace const * > constFaceList;
 		dt__forAllConstIter(std::vector< std::string >, label, it) {
-		  faceList.push_back( refDtGmshModel().getDtGmshFaceByPhysical(*it) );
+		  dt__forAllRefAuto( 
+        refDtGmshModel().getDtGmshFaceListByPhysical(*it), aFace 
+      ) {
+		    constFaceList.push_back( aFace );
+      }
 		}
     
-    return faceList;
+    return constFaceList;
   }    
 
   std::list< dtGmshFace * > dtGmshRegion::faceList(
     std::vector< std::string > const & label
   ) {
-		std::list< dtGmshFace * > faceList;
-		dt__forAllConstIter(std::vector< std::string >, label, it) {
-		  faceList.push_back( refDtGmshModel().getDtGmshFaceByPhysical(*it) );
-		}
+ 		std::list< dtGmshFace * > faceList;
+    dt__forAllRefAuto(this->constFaceList(label), aFace) {
+      faceList.push_back( dtGmshFace::CastConst(aFace) );
+    }
     
     return faceList;
   }  

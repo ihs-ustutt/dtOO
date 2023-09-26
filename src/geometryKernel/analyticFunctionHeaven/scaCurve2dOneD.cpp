@@ -191,7 +191,11 @@ namespace dtOO {
 		return rV;
   }
 	
-  dtCurve2d const * scaCurve2dOneD::ptrDtCurve2d( void ) const {
+  dtCurve2d const * scaCurve2dOneD::constPtrDtCurve2d( void ) const {
+    return _dtC2d.get();
+  }
+
+  dtCurve2d * scaCurve2dOneD::ptrDtCurve2d( void ) {
     return _dtC2d.get();
   }
 

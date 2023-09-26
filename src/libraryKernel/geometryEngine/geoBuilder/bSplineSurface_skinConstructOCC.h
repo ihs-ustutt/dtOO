@@ -13,20 +13,23 @@ namespace dtOO {
   class dtCurve;
   
   class bSplineSurface_skinConstructOCC {
-  public:
-    dt__classOnlyName(bSplineSurface_skinConstructOCC);
-    bSplineSurface_skinConstructOCC();
-    bSplineSurface_skinConstructOCC(
-    	vectorHandling< dtCurve const * > const &  cL
-    );    
-    bSplineSurface_skinConstructOCC(
-    	vectorHandling< dtCurve const * > const &  cL, 
-      dtInt const & minDeg, dtInt const & maxDeg, dtInt const & nIter
-    );
-    virtual ~bSplineSurface_skinConstructOCC();
-    dtSurface * result( void );
-  private:
-    ptrHandling<dtSurface> _dtS;
+    public:
+      dt__classOnlyName(bSplineSurface_skinConstructOCC);
+      bSplineSurface_skinConstructOCC();
+      bSplineSurface_skinConstructOCC(
+      	dtCurve const * const c0, dtCurve const * const c1 
+      );    
+      bSplineSurface_skinConstructOCC(
+      	vectorHandling< dtCurve const * > const &  cL
+      );    
+      bSplineSurface_skinConstructOCC(
+      	vectorHandling< dtCurve const * > const &  cL, 
+        dtInt const & minDeg, dtInt const & maxDeg, dtInt const & nIter
+      );
+      virtual ~bSplineSurface_skinConstructOCC();
+      dtSurface * result( void );
+    private:
+      ptrHandling<dtSurface> _dtS;
   };
 }
 #endif	/* BSPLINESURFACE_SKINCONSTRUCTOCC_H */

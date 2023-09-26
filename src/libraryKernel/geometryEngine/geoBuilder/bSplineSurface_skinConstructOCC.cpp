@@ -22,9 +22,17 @@ namespace dtOO {
 		
 	}
 	
-	/**
-	 * @todo ptrVectorHandling as input
-	 */
+  bSplineSurface_skinConstructOCC::bSplineSurface_skinConstructOCC(
+   	dtCurve const * const c0, dtCurve const * const c1 
+  ) {
+    vectorHandling< dtCurve const * > cL;
+    cL.push_back( c0 );
+    cL.push_back( c1 );
+    _dtS.reset(
+      bSplineSurface_skinConstructOCC(cL).result()
+    );    
+  }
+
   bSplineSurface_skinConstructOCC::bSplineSurface_skinConstructOCC(
 	  vectorHandling< dtCurve const * > const &  cL
 	) {

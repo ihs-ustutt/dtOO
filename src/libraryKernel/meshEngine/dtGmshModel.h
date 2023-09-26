@@ -61,12 +61,19 @@ namespace dtOO {
       dtGmshEdge * getDtGmshEdgeByFromTo( dtInt const from, dtInt const to ) const;
       dtGmshVertex * getDtGmshVertexByTag( dtInt const tag ) const;
       ::GEntity * getGEntityByPhysical( std::string const & physical ) const;
+      std::list< dtInt > getDtGmshEdgeTagListByFromToPhysical( 
+        std::string const & from, std::string const & to 
+      ) const;
       //
       // casts
       //
       static dtGmshRegion * cast2DtGmshRegion( ::GEntity * gr );
       static dtGmshFace * cast2DtGmshFace( ::GEntity * gf );
       static ::GModel * cast2GModel( dtGmshModel * gm );      
+      static ::GEntity * cast2GEntity( dtGmshRegion * gr );      
+      static ::GEntity * cast2GEntity( dtGmshFace * gf );      
+      static ::GEntity * cast2GEntity( dtGmshEdge * ge );      
+      static ::GEntity * cast2GEntity( dtGmshVertex * gv );      
       static std::list< dtGmshFace * > cast2DtGmshFace( 
         std::list< ::GFace * > faces 
       );
@@ -152,6 +159,9 @@ namespace dtOO {
       // SWIG
       dtInt addIfRegionToGmshModel(
         map3dTo3d const * const region, std::vector< int > const & faceIds
+      );    
+      dtInt addIfRegionToGmshModel(
+        map3dTo3d const * const region
       );    
 
       //

@@ -102,6 +102,9 @@ namespace dtOO {
   
   void dtGmshEdge::setNElements( dtInt const nE ) {
     this->meshAttributes.nbPointsTransfinite = nE+1;
+    dt__forAllRefAuto( dtGmshModel::cast2DtGmshFace(this->faces()), aFace ) {
+      aFace->correctIfTransfinite();
+    }
   }
 
   void dtGmshEdge::meshTransfinite( dtInt const type, dtReal const coeff ) {

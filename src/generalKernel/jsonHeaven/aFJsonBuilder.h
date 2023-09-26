@@ -3,7 +3,6 @@
 
 #include <dtOOTypeDef.h>
 
-#include "aFJsonBuilder.h"
 #include <mainConceptFwd.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
 #include <logMe/dtMacros.h>
@@ -25,6 +24,9 @@ namespace dtOO {
         lvH_constValue const * const cV,
         lvH_analyticFunction const * const aF
       ) const = 0;
+      virtual lvH_analyticFunction buildPart( 
+        jsonPrimitive const & config 
+      ) const;
   };
 }
 #endif	/* aFJsonBuilder_H */

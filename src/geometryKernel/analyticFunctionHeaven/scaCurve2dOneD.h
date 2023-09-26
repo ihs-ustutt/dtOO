@@ -25,7 +25,8 @@ namespace dtOO {
     scaCurve2dOneD * create( void ) const;    
     virtual ~scaCurve2dOneD();
     virtual dtReal YFloat(dtReal const & xx) const;
-    dtCurve2d const * ptrDtCurve2d( void ) const;
+    dtCurve2d const * constPtrDtCurve2d( void ) const;
+    dtCurve2d * ptrDtCurve2d( void );
     void translate( dtVector2 const vector );
     std::vector< dtPoint2 > getControlPoints( void ) const;
     double funValue(double const xx) const;
