@@ -44,7 +44,7 @@ if (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
     add_custom_target(
       ${_fName} ALL
       COMMAND 
-        python doxy2swig.py ${file} "${file}.i"
+        python3 doxy2swig.py ${file} "${file}.i"
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
