@@ -839,7 +839,7 @@ namespace dtOO {
     analyticFunction * __call__( analyticFunction const * const aF) {
       return $self->apply(aF);
     } 
-    lvH_analyticFunction * __call__( lvH_analyticFunction const * const lvh_aF) {
+    lvH_analyticFunction __call__( lvH_analyticFunction const * const lvh_aF) {
       return $self->apply(lvh_aF);
     } 
   }
