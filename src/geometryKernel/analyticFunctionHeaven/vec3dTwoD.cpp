@@ -50,7 +50,8 @@ namespace dtOO {
 		return YdtPoint3( x_percent(xx) );
 	}
 	
-	dtPoint3 vec3dTwoD::YdtPoint3Percent(dtReal const & x0, dtReal const & x1) const {
+	dtPoint3 
+  vec3dTwoD::YdtPoint3Percent(dtReal const & x0, dtReal const & x1) const {
 		aFX xx(2,0);
 		
 		xx[0] = x0;
@@ -131,7 +132,8 @@ namespace dtOO {
 		return dxdy;
 	}
 		
-	std::vector<dtVector3> vec3dTwoD::DYdtVector3( dtReal const & x0, dtReal const & x1 ) const {
+	std::vector<dtVector3> 
+  vec3dTwoD::DYdtVector3( dtReal const & x0, dtReal const & x1 ) const {
 		aFX xx(2,0);
 		xx[0] = x0;
 		xx[1] = x1;
