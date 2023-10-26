@@ -830,6 +830,19 @@ namespace dtOO {
   %rename(applyAnalyticGeometry) dtTransformer::apply(analyticGeometry const * const) const;
   %rename(applyAnalyticFunction) dtTransformer::apply(analyticFunction const * const) const;
   %rename(applyLabeledVectorHandlingAnalyticFunction) dtTransformer::apply(lvH_analyticFunction const * const) const;
+  %extend dtTransformer {
+    dtPoint2 __call__( dtPoint2 const& pp) { return $self->apply(pp); } 
+    dtPoint3 __call__( dtPoint3 const& pp) { return $self->apply(pp); } 
+    analyticGeometry * __call__( analyticGeometry const * const aG) {
+      return $self->apply(aG);
+    } 
+    analyticFunction * __call__( analyticFunction const * const aF) {
+      return $self->apply(aF);
+    } 
+    lvH_analyticFunction * __call__( lvH_analyticFunction const * const lvh_aF) {
+      return $self->apply(lvh_aF);
+    } 
+  }
 }       
 %include dtTransformerHeaven/dtTransformer.h
 %include dtTransformerHeaven/dtTransformerInvThreeD.h
