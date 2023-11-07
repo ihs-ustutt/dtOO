@@ -632,13 +632,18 @@ class dtClusteredSingletonState:
       f = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/fitness.'+str(thisIndex+1))
       o = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/objective.'+str(thisIndex+1))
       i = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/id.'+str(thisIndex+1), dtype=int)
-      FIT = np.concatenate( (FIT, dtClusteredSingletonState.oneD(f)) )
+      if FIT.ndim == 1:
+        FIT = np.concatenate( (FIT, dtClusteredSingletonState.oneD(f)) )
+      else:
+        FIT = np.concatenate( (FIT, dtClusteredSingletonState.twoD(f)) )
       OBJ = np.concatenate( (OBJ, dtClusteredSingletonState.twoD(o)) )
       ID = np.concatenate( (ID, dtClusteredSingletonState.oneD(i)) )
     if addFile is not None:
       ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
       for thisIndex in range(maxFileIndex):
         add = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
+        if np.size(add.shape) != np.size(ADD.shape):
+          add = np.array([add])
         ADD = np.concatenate( (ADD, add) )
 
     if np.size( np.shape(FIT) ) == 1:
