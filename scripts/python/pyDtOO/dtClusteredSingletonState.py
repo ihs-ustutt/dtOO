@@ -689,6 +689,8 @@ class dtClusteredSingletonState:
           ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
           for thisIndex in range(maxFileIndex):
             add = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
+            if np.size(add.shape) != np.size(ADD.shape):
+              add = np.array([add])
             ADD = np.concatenate( (ADD, add) )
         retMap[addFile] = ADD
 
