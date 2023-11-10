@@ -248,11 +248,11 @@ namespace dtOO {
 	}
   
 	void dtGmshEdge::setGrading( dtReal const & grading, dtReal const & type ) {
-//    dt__debug(
-//      setGrading(),
-//      << "edge[ " << tag() << " ] : grading = " << grading << ", type = " 
-//      << type
-//    );
+    dt__debug(
+      setGrading(),
+      << "edge[ " << tag() << " ] : grading = " << grading << ", type = " 
+      << type
+    );
     if ( ( grading == 0. ) && ( type == 0. ) ) return;
     
     this->meshAttributes.method = MESH_TRANSFINITE;    
