@@ -156,7 +156,7 @@ set_tests_properties(
   dtClusteredSingletonState
   PROPERTIES
     ENVIRONMENT 
-    "PYTHONPATH=$ENV{CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};"
+    "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};"
 )
 
 
