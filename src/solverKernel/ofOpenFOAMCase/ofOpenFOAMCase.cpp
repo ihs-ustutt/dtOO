@@ -56,10 +56,6 @@ namespace dtOO {
     lvH_dtCase const * const dC
   ) {
     dtCase::jInit( jE, bC, cV, aF, aG, bV, dC );
-    //
-    // hold constValues
-    //
-    _cV = cV;
 
     //
     // get dict rules
@@ -301,7 +297,6 @@ namespace dtOO {
     //
     // modify wDir for each run if necessary
     //
-    dt__throwIf(_cV->size()==0, runCurrentState());
     std::string dirName = getLabel();
     
     //

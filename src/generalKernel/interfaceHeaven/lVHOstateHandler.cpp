@@ -64,6 +64,7 @@ namespace dtOO {
     std::vector< constValue * > cVs
     =
     constValue::VectorMustDownCast( this->subject().internalStdVector() );
+    dt__throwIf(cVs.size()==0, makeState() );
 
     dt__forAllRefAuto(cVs, cV) if ( cV->loadable() ) cV->setState( label );
   }
