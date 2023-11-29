@@ -177,7 +177,20 @@ namespace dtOO {
     if ( ptrBoundedVolume()->isMeshed() ) return;
     
     ::GModel::setCurrent(gm);
-        
+    
+    //
+    // create filename for debug output
+    //
+    std::string cFileName;
+    if (optionHandling::debugTrue()) {
+      cFileName = lVHOstateHandler().commonState();
+      if (cFileName != "") {
+        cFileName = cFileName + "_";
+      }
+      cFileName = cFileName + ptrBoundedVolume()->getLabel() + "_debug.msh";
+    }          
+
+
     std::list< dtGmshEdge * > ee;
     std::list< dtGmshFace * > ff;
     std::list< dtGmshRegion * > rr;   
@@ -294,18 +307,7 @@ namespace dtOO {
           &&
           (aEdge->getMeshMaster() == aEdge)
         ) (*current1D)(aEdge); 
-        if (optionHandling::debugTrue()) {
-          gm->writeMSH(
-            lVHOstateHandler().commonState()
-            +
-            "_"
-            +
-            ptrBoundedVolume()->getLabel()
-            +
-            "_debug.msh", 
-            2.2, false, true
-          );
-        }
+        if (!cFileName.empty()) gm->writeMSH( cFileName, 2.2, false, true );
       }
     }
     
@@ -354,18 +356,7 @@ namespace dtOO {
             aFace->getMeshMaster() == aFace
           )
         ) (*current2D)(aFace);
-        if (optionHandling::debugTrue()) {
-          gm->writeMSH(
-            lVHOstateHandler().commonState()
-            +
-            "_"
-            +
-            ptrBoundedVolume()->getLabel()
-            +
-            "_debug.msh", 
-            2.2, false, true
-          );
-        }          
+        if (!cFileName.empty()) gm->writeMSH( cFileName, 2.2, false, true );
       }
     }        
     //
@@ -409,18 +400,7 @@ namespace dtOO {
             aReg->getMeshMaster() == aReg
           )
         ) (*current3D)(aReg);
-        if (optionHandling::debugTrue()) {
-          gm->writeMSH(
-            lVHOstateHandler().commonState()
-            +
-            "_"
-            +
-            ptrBoundedVolume()->getLabel()
-            +
-            "_debug.msh", 
-            2.2, false, true
-          );
-        }          
+        if (!cFileName.empty()) gm->writeMSH( cFileName, 2.2, false, true );
       }
     }
     

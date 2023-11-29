@@ -80,15 +80,11 @@ namespace dtOO {
       dtParser()[config().lookup< std::string >("_filename")];
    
       if ( cFileName == "" ) {
-        cFileName 
-        = 
-        lVHOstateHandler().commonState()
-        +
-        "_"
-        +
-        ptrBoundedVolume()->getLabel()
-        +
-        ".msh";
+        cFileName = lVHOstateHandler().commonState();
+        if (cFileName != "") {
+          cFileName = cFileName + "_";
+        }
+        cFileName = cFileName + ptrBoundedVolume()->getLabel() + ".msh";
       }
       
       dt__info(
