@@ -2,8 +2,7 @@
 
 #include <xmlHeaven/qtXmlPrimitive.h>
 #include "dtGmshFace.h"
-#include <gmsh/meshGEdge.h>
-void copyMesh(GFace *source, GFace *target);
+#include <gmsh/meshGFace.h>
 
 namespace dtOO {
   dtMesh2DOperator::dtMesh2DOperator() {
@@ -44,6 +43,6 @@ namespace dtOO {
       "Copy mesh from surface %d to surface %d ( dtMesh2DOperator )", 
       from->tag(), to->tag()
     );
-    ::copyMesh( (::GFace *) from, (::GFace *) to );
+    meshGFace()( to );
   }
 }

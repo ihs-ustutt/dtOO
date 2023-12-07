@@ -371,7 +371,7 @@ namespace dtOO {
           else dt__throwUnexpected(addRenumberedVertices());
         }
         else {
-          _mv[ ii ]->setNum( thisNum );
+          _mv[ ii ]->forceNum( thisNum );
         }
       }
     }
