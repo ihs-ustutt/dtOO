@@ -3,7 +3,6 @@
 #include <xmlHeaven/qtXmlPrimitive.h>
 #include "dtGmshEdge.h"
 #include <gmsh/meshGEdge.h>
-void copyMesh(GEdge *from, GEdge *to, int direction);
 
 namespace dtOO {
   dtMesh1DOperator::dtMesh1DOperator() {
@@ -37,6 +36,10 @@ namespace dtOO {
   }
   
   void dtMesh1DOperator::copyMesh( dtGmshEdge * from, dtGmshEdge * to) {
-    ::copyMesh( (::GEdge*) from, (::GEdge*) to, to->masterOrientation );
+     Msg::Info(
+      "Copy mesh from edge %d to edge %d ( dtMesh1DOperator )", 
+      from->tag(), to->tag()
+    );
+    meshGEdge()( to );
   }
 }

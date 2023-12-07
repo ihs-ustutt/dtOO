@@ -595,7 +595,7 @@ namespace dtOO {
       dtgf->model()->setMaxVertexNumber(
         dtgf->model()->getMaxVertexNumber() + 1
       );
-      gf->getMeshVertex(ii)->setNum( 
+      gf->getMeshVertex(ii)->forceNum( 
         dtgf->model()->getMaxVertexNumber() 
       );
     }
