@@ -58,6 +58,7 @@ IF ( "$ENV{WM_FORK}" STREQUAL "" )
           ${_libname}_OFLIB 
           ${_libname} 
           ${OpenFOAM_LINK_DIRECTORY} 
+          ${OpenFOAM_LINK_DIRECTORY}/dummy
           ${OpenFOAM_OPENMPI_DIR}
           NO_DEFAULT_PATH
         )
