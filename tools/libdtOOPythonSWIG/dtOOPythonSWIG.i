@@ -211,22 +211,77 @@ namespace dtOO {
 #include <geometryEngine/dtOCCCurveBase.h>
 #include <geometryEngine/dtOCCCurve.h>
 #include <geometryEngine/dtOCCBSplineCurve.h>
-#include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
-#include <geometryEngine/geoBuilder/geomShape_readOCC.h>
-#include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
-#include <geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h>
-#include <geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h>
-#include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
-#include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
+#include <geometryEngine/dtSurface2d.h>
+#include <geometryEngine/dtOCCSurface2d.h>
+#include <geometryEngine/dtOCCBSplineSurface2d.h>
+#include <geometryEngine/dtCurve2d.h>
+#include <geometryEngine/dtOCCCurve2dBase.h>
+#include <geometryEngine/dtOCCCurve2d.h>
+#include <geometryEngine/dtOCCBSplineCurve2d.h>
+
+#include <geometryEngine/geoBuilder/bezierCurve_pointConstructOCC.h>
+#include <geometryEngine/geoBuilder/bezierSurface_bezierCurveFillConstructOCC.h>
+#include <geometryEngine/geoBuilder/bezierSurface_pointConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve2d_curveConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve2d_pointInterpolateConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_approxGeomCurve2dInGeomSurface.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_bSplineCurveSplitConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_convertOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h>
-#include <geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h>
-#include <geometryEngine/geoBuilder/bSplineSurface_bSplineSurfaceSplitConstructOCC.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructArcLengthParaOCC.h>
-#include <geometryEngine/geoBuilder/ellipse_radiusRadiusCoordinateSystemConstructOCC.h> 
+#include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_bSplineSurfaceSplitConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_constrainedFillingConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_convertOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_extentSurfaceByLength.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h>
+#include <geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h>
+#include <geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h>
+#include <geometryEngine/geoBuilder/compositeSurface_surfaceConnectConstructOCC.h>
+#include <geometryEngine/geoBuilder/dtPoint2_surfaceEquidistantPoint.h>
+#include <geometryEngine/geoBuilder/ellipse_radiusRadiusCoordinateSystemConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve2d_baseConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve2d_closeGapsArithmeticOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve2d_curve2dTranslateConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve2d_ignoreZ.h>
+#include <geometryEngine/geoBuilder/geomCurve2d_reparamInGeomSurfaceOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve_baseConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve_closeGapsArithmeticOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.h>
+#include <geometryEngine/geoBuilder/geomCurve_curveReverseConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve_curveRotateConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve_curveTranslateConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.h>
+#include <geometryEngine/geoBuilder/geomFillBoundWithSurf_surfaceConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomFillSimpleBound_curveConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomShape_readOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_baseConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomSurface_surfaceTranslateConstructOCC.h>
+#include <geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h>
+#include <geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h>
+#include <geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h>
+#include <geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h>
+#include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
+#include <geometryEngine/geoBuilder/trimmedCurve_uBounds.h>
+#include <geometryEngine/geoBuilder/u_geomCurveClosestPoint.h>
+#include <geometryEngine/geoBuilder/uv_geomSurfaceClosestPoint.h>
 #include <jsonHeaven/aFJsonBuilder.h>
 #include <jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h>
 #include <meshEngine/dtGmshVertex.h>
@@ -443,6 +498,8 @@ namespace dtOO {
 %include dtLinearAlgebra.h
 %include geometryEngine/dtCurve.h
 %include geometryEngine/dtSurface.h
+%include geometryEngine/dtCurve2d.h
+%include geometryEngine/dtSurface2d.h
 %include interfaceHeaven/renderInterface.h
 %include discrete2dPoints.h
 %include discrete3dPoints.h
@@ -545,7 +602,9 @@ namespace dtOO {
   %template(vectorDtVector3)             ::std::vector< dtVector3 >;
   %template(vectorDtCurve)               ::std::vector< dtCurve * >;
   %template(vectorDtSurface)             ::std::vector< dtSurface * >;
-
+  %template(vectorDtCurve2d)             ::std::vector< dtCurve2d * >;
+  %template(vectorDtSurface2d)           ::std::vector< dtSurface2d * >;
+  
   %template(vectorConstLabelHandling)    ::std::vector< labelHandling const * >;
   %template(vectorConstConstValue)       ::std::vector< constValue const * >;
   %template(vectorConstAnalyticFunction) ::std::vector< analyticFunction const * >;
@@ -555,6 +614,8 @@ namespace dtOO {
   %template(vectorConstDtPlugin)         ::std::vector< dtPlugin const * >;
   %template(vectorConstDtCurve)          ::std::vector< dtCurve const * >;
   %template(vectorConstDtSurface)        ::std::vector< dtSurface const * >;
+  %template(vectorConstDtCurve2d)        ::std::vector< dtCurve2d const * >;
+  %template(vectorConstDtSurface2d)      ::std::vector< dtSurface2d const * >;
   
   template < typename T >
   class vectorHandling : public ::std::vector< T > {
@@ -575,6 +636,8 @@ namespace dtOO {
   typedef vectorHandling< dtPlugin * >           vH_dtPlugin;  
   typedef vectorHandling< dtCurve * >            vH_dtCurve;
   typedef vectorHandling< dtSurface * >          vH_dtSurface;
+  typedef vectorHandling< dtCurve2d * >          vH_dtCurve2d;
+  typedef vectorHandling< dtSurface2d * >        vH_dtSurface2d;
   %template(vectorHandlingLabelHandling)         vectorHandling< labelHandling * >;
   %template(vectorHandlingConstValue)            vectorHandling< constValue * >;
   %template(vectorHandlingAnalyticFunction)      vectorHandling< analyticFunction * >;
@@ -587,6 +650,8 @@ namespace dtOO {
   %template(vectorHandlingDtPlugin)              vectorHandling< dtPlugin * >;
   %template(vectorHandlingDtCurve)               vectorHandling< dtCurve * >;
   %template(vectorHandlingDtSurface)             vectorHandling< dtSurface * >;
+  %template(vectorHandlingDtCurve2d)             vectorHandling< dtCurve2d * >;
+  %template(vectorHandlingDtSurface2d)           vectorHandling< dtSurface2d * >;
   %template(vectorHandlingRenderInterface)       vectorHandling< renderInterface * >;
 
   %template(vectorHandlingConstLabelHandling)    vectorHandling< labelHandling const * >;
@@ -598,6 +663,8 @@ namespace dtOO {
   %template(vectorHandlingConstDtPlugin)         vectorHandling< dtPlugin const * >;
   %template(vectorHandlingConstDtCurve)          vectorHandling< dtCurve const * >;
   %template(vectorHandlingConstDtSurface)        vectorHandling< dtSurface const * >;
+  %template(vectorHandlingConstDtCurve2d)        vectorHandling< dtCurve2d const * >;
+  %template(vectorHandlingConstDtSurface2d)      vectorHandling< dtSurface2d const * >;
   
   template < typename T >
   class labeledVectorHandling : public vectorHandling< T >, public lVHOSubject {
@@ -708,22 +775,69 @@ namespace dtOO {
 %include geometryEngine/dtOCCSurfaceBase.h
 %include geometryEngine/dtOCCSurface.h
 %include geometryEngine/dtOCCBSplineSurface.h
-%include geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
-%include geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h
-%include geometryEngine/geoBuilder/geomShape_readOCC.h
-%include geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h
-%include geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h
-%include geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h
-%include geometryEngine/geoBuilder/trimmedCurve_uBounds.h
-%include geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h
+%include geometryEngine/geoBuilder/bezierCurve_pointConstructOCC.h
+%include geometryEngine/geoBuilder/bezierSurface_bezierCurveFillConstructOCC.h
+%include geometryEngine/geoBuilder/bezierSurface_pointConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve2d_angleRatioDeltaYPointOnePointTwoConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve2d_curveConnectConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve2d_pointConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve2d_pointInterpolateConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve_approxGeomCurve2dInGeomSurface.h
+%include geometryEngine/geoBuilder/bSplineCurve_bSplineCurveSplitConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve_convertOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve_curveConnectConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve_normalOffsetGeomCurveOCC.h
-%include geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h
-%include geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h
-%include geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h
-%include geometryEngine/geoBuilder/bSplineSurface_bSplineSurfaceSplitConstructOCC.h
 %include geometryEngine/geoBuilder/bSplineCurve_pointConstructArcLengthParaOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve_pointInterpolateConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineCurve_poleWeightKnotMultOrderConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_bSplineCurveFillConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_bSplineSurfaceSplitConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_constrainedFillingConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_convertOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_exchangeSurfaceConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_extentSurfaceByLength.h
+%include geometryEngine/geoBuilder/bSplineSurface_geomCurveFillConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_pipeConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h
+%include geometryEngine/geoBuilder/bSplineSurface_skinConstructOCC.h
+%include geometryEngine/geoBuilder/circle_radiusCoordinateSystemConstructOCC.h
+%include geometryEngine/geoBuilder/compositeSurface_surfaceConnectConstructOCC.h
+%include geometryEngine/geoBuilder/dtPoint2_surfaceEquidistantPoint.h
 %include geometryEngine/geoBuilder/ellipse_radiusRadiusCoordinateSystemConstructOCC.h
+%include geometryEngine/geoBuilder/geomCurve2d_baseConstructOCC.h
+%include geometryEngine/geoBuilder/geomCurve2d_closeGapsArithmeticOCC.h
+%include geometryEngine/geoBuilder/geomCurve2d_curve2dTranslateConstructOCC.h
+%include geometryEngine/geoBuilder/geomCurve2d_ignoreZ.h
+%include geometryEngine/geoBuilder/geomCurve2d_reparamInGeomSurfaceOCC.h
+%include geometryEngine/geoBuilder/geomCurve_baseConstructOCC.h
+%include geometryEngine/geoBuilder/geomCurve_closeGapsArithmeticOCC.h
+%include geometryEngine/geoBuilder/geomCurve_convertGeomCurve2d.h
+%include geometryEngine/geoBuilder/geomCurve_curveReverseConstructOCC.h
+%include geometryEngine/geoBuilder/geomCurve_curveRotateConstructOCC.h
+%include geometryEngine/geoBuilder/geomCurve_curveTranslateConstructOCC.h
+%include geometryEngine/geoBuilder/geomCurve_projectOnGeomSurfaceOCC.h
+%include geometryEngine/geoBuilder/geomFillBoundWithSurf_surfaceConstructOCC.h
+%include geometryEngine/geoBuilder/geomFillSimpleBound_curveConstructOCC.h
+%include geometryEngine/geoBuilder/geomShape_readOCC.h
+%include geometryEngine/geoBuilder/geomSurface_baseConstructOCC.h
+%include geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.h
+%include geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h
+%include geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.h
+%include geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h
+%include geometryEngine/geoBuilder/geomSurface_surfaceTranslateConstructOCC.h
+%include geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h
+%include geometryEngine/geoBuilder/rectangularTrimmedSurface_uvBounds.h
+%include geometryEngine/geoBuilder/surfaceOfRevolution_curveRotateConstructOCC.h
+%include geometryEngine/geoBuilder/trimmedCurve2d_twoPointsConnectConstructOCC.h
+%include geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h
+%include geometryEngine/geoBuilder/trimmedCurve_uBounds.h
+%include geometryEngine/geoBuilder/u_geomCurveClosestPoint.h
+%include geometryEngine/geoBuilder/uv_geomSurfaceClosestPoint.h
 
 %include jsonHeaven/aFJsonBuilder.h
 %include jsonHeaven/aFJsonBuilder/bSplineCurve2d_3PointMeanlineConstructAFJsonBuilder.h

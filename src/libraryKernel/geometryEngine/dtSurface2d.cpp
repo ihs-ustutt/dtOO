@@ -122,7 +122,9 @@ namespace dtOO {
 		return segmentConstV( v_vPercent(vv) );
 	}
 	
-	dtCurve2d * dtSurface2d::segmentConstUPercent( dtReal const uu, dtReal const vvMin, dtReal const vvMax) const {
+	dtCurve2d * dtSurface2d::segmentConstUPercent( 
+    dtReal const uu, dtReal const vvMin, dtReal const vvMax
+  ) const {
 		return segmentConstU( 
 		  u_uPercent(uu), 
 			v_vPercent(vvMin), 
@@ -130,7 +132,9 @@ namespace dtOO {
 	  );
 	}
 	
-	dtCurve2d * dtSurface2d::segmentConstVPercent( dtReal const vv, dtReal const uuMin, dtReal const uuMax) const {
+	dtCurve2d * dtSurface2d::segmentConstVPercent( 
+    dtReal const vv, dtReal const uuMin, dtReal const uuMax
+  ) const {
 		return segmentConstV( 
 		  v_vPercent(vv), 
 			u_uPercent(uuMin),
@@ -150,7 +154,9 @@ namespace dtOO {
 		dt__throw(controlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
-  void dtSurface2d::setControlPoint( dtInt const uI, dtInt const vI, dtPoint2 const point ) {
+  void dtSurface2d::setControlPoint( 
+    dtInt const uI, dtInt const vI, dtPoint2 const point 
+  ) {
 		dt__throw(setControlPoint(), <<"Not possible on this kind of surface.");
 	}
 	
