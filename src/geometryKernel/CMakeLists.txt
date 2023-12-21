@@ -10,6 +10,7 @@ SET(HEADERS
   analyticGeometryHeaven/map1dTo3d.h
   analyticGeometryHeaven/trans6SidedCube.h
   analyticGeometryHeaven/rotatingMap2dTo3d.h
+  analyticGeometryHeaven/partRotatingMap2dTo3d.h
   analyticGeometryHeaven/radialTranslatingMap2dTo3d.h
   analyticGeometryHeaven/translatingMap2dTo3d.h
   analyticGeometryHeaven/infinityMap3dTo3d.h
@@ -161,6 +162,7 @@ SET(SOURCES
   analyticGeometryHeaven/map1dTo3d.cpp
   analyticGeometryHeaven/trans6SidedCube.cpp
   analyticGeometryHeaven/rotatingMap2dTo3d.cpp
+  analyticGeometryHeaven/partRotatingMap2dTo3d.cpp
   analyticGeometryHeaven/radialTranslatingMap2dTo3d.cpp
   analyticGeometryHeaven/translatingMap2dTo3d.cpp
   analyticGeometryHeaven/infinityMap3dTo3d.cpp
