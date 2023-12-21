@@ -186,6 +186,7 @@ namespace dtOO {
 #include <analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h>
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
+#include <analyticGeometryHeaven/partRotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/trans6SidedCube.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h>
@@ -1009,6 +1010,7 @@ namespace dtOO {
 %feature("notabstract") vec3dTwoDInMap3dTo3d;
 %feature("notabstract") vec3dThreeDInMap3dTo3d;
 %feature("notabstract") rotatingMap2dTo3d;
+%feature("notabstract") partRotatingMap2dTo3d;
 
 %include analyticGeometryHeaven/map1dTo3d.h
 %include analyticGeometryHeaven/map2dTo3d.h
@@ -1021,6 +1023,7 @@ namespace dtOO {
 %include analyticGeometryHeaven/vec3dTwoDInMap3dTo3d.h
 %include analyticGeometryHeaven/vec3dThreeDInMap3dTo3d.h
 %include analyticGeometryHeaven/rotatingMap2dTo3d.h
+%include analyticGeometryHeaven/partRotatingMap2dTo3d.h
 %include analyticGeometryHeaven/trans6SidedCube.h
 namespace dtOO {
   %template(pairDtRealDtPoint2) ::std::pair< dtReal, dtPoint2 >;
