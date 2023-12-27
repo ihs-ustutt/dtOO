@@ -33,6 +33,7 @@ namespace dtOO {
       //
       // optional
       //   
+      virtual dtInt continuity( void ) const;
   	  virtual std::string dumpToString( void ) const;
       /**
        * @todo Do this in external builder.

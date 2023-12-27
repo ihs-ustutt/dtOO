@@ -19,7 +19,11 @@ namespace dtOO {
 	dtSurface::~dtSurface() {
 		
 	}
-	
+
+  dtInt dtSurface::continuity( void ) const {
+    return -1;
+  }
+
   dtPoint2 dtSurface::reparam(dtPoint3 const ppXYZ) const {
     return uv_geomSurfaceClosestPoint(this, ppXYZ).result();
   }

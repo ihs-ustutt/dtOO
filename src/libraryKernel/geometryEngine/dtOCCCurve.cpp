@@ -183,6 +183,15 @@ namespace dtOO {
 		return static_cast<dtReal>( epp.Parameter() );
 	}
 	
+  dtInt dtOCCCurve::continuity( void ) const {
+    dtInt ret = -1;
+		dt__tryOcc(
+			ret = static_cast< dtInt >(_ptr->Continuity());
+		  , << dt__eval(ret)
+		);
+    return ret;
+  }
+
 	std::string dtOCCCurve::dumpToString( void ) const {
 		std::stringstream ss;
 		

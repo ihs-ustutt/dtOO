@@ -159,7 +159,8 @@ namespace dtOO {
 		return dtVector3( dir.Coord(1), dir.Coord(2), dir.Coord(3) );
 	}
 	
-  std::vector<dtVector3> dtOCCSurface::firstDer( dtReal const uu, dtReal const vv) const {
+  std::vector<dtVector3> 
+  dtOCCSurface::firstDer( dtReal const uu, dtReal const vv) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		gp_Pnt pp;
@@ -194,7 +195,8 @@ namespace dtOO {
 		
 	}
 	
-  std::vector<dtVector3> dtOCCSurface::secondDer( dtReal const uu, dtReal const vv) const {
+  std::vector<dtVector3> 
+  dtOCCSurface::secondDer( dtReal const uu, dtReal const vv) const {
 		Standard_Real uR = static_cast<Standard_Real>(uu);
 		Standard_Real vR = static_cast<Standard_Real>(vv);
 		gp_Pnt pp;
@@ -318,6 +320,15 @@ namespace dtOO {
     return dtSurface::reparam(point);
   }
 	
+  dtInt dtOCCSurface::continuity( void ) const {
+    dtInt ret = -1;
+		dt__tryOcc(
+			ret = static_cast< dtInt >(_ptr->Continuity());
+		  , << dt__eval(ret)
+		);
+    return ret;
+  }
+
 	std::string dtOCCSurface::dumpToString( void ) const {
 		std::stringstream ss;
 		

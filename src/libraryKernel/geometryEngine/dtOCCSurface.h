@@ -26,12 +26,17 @@ namespace dtOO {
       virtual bool closed( dtInt const dim ) const;
       virtual dtPoint3 point( dtReal const uu, dtReal const vv) const;
       virtual dtVector3 normal( dtReal const uu, dtReal const vv) const;
-      virtual std::vector<dtVector3> firstDer( dtReal const uu, dtReal const vv) const;
-      virtual std::vector<dtVector3> secondDer( dtReal const uu, dtReal const vv) const;
+      virtual std::vector<dtVector3> firstDer( 
+        dtReal const uu, dtReal const vv
+      ) const;
+      virtual std::vector<dtVector3> secondDer( 
+        dtReal const uu, dtReal const vv
+      ) const;
       virtual dtPoint2 reparam(dtPoint3 const point) const;
       //
       // optional
       //
+      virtual dtInt continuity( void ) const;
   	  virtual std::string dumpToString(void) const;
       dtOCCSurfaceBase const & OCCRef(void) const;
       dtOCCSurfaceBase & OCCRef(void);  
