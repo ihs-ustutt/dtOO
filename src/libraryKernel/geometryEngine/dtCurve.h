@@ -33,6 +33,7 @@ namespace dtOO {
       //
       // optional overload
       //
+      virtual dtInt continuity( void ) const;
       void dump(void);
       virtual std::string dumpToString(void) const;
       //

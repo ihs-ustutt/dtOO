@@ -77,6 +77,10 @@ namespace dtOO {
 	//
 	//
 	//
+  dtInt dtCurve::continuity( void ) const {
+    return -1;
+  }
+
 	void dtCurve::dump(void) {
     dt__info(
 			dump(), 

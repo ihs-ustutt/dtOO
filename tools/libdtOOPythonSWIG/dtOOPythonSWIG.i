@@ -720,6 +720,8 @@ namespace dtOO {
   }
   %template(twoDArrayHandlingDtPoint3)     twoDArrayHandling< dtPoint3 >;
   %template(twoDArrayHandlingInt)          twoDArrayHandling< dtInt >;
+
+  %template(pairDtPoint3)                  ::std::pair< dtPoint3, dtPoint3 >;
 }
 
 %include <interfaceHeaven/lVHOInterface.h>
