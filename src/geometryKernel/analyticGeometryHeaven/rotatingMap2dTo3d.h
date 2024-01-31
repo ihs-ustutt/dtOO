@@ -35,6 +35,7 @@ namespace dtOO {
     	virtual map2dTo3d * segmentConstW( dtReal const & ww ) const;
       virtual std::string dumpToString( void ) const;
       map2dTo3d const & constRefMap2dTo3d( void ) const;
+      map2dTo3d const * const constPtrMap2dTo3d( void ) const;
       dtVector3 const & rotationAxis( void ) const;
       dtPoint3 const & origin( void ) const;    
     private:
