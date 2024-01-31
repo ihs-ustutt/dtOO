@@ -81,7 +81,19 @@ namespace dtOO {
         (vv-minPara(1))/(maxPara(1)-minPara(1)), 0, 1        
       );
 	}
-	
+
+  dtPoint3 dtSurface::point( dtPoint2 const & pp) const {
+		return point( pp.x(), pp.y() );
+	}
+
+  dtPoint3 dtSurface::pointPercent(dtPoint2 const & ppP) const {
+		return point( u_uPercent(ppP.x()), v_vPercent(ppP.y()) );
+	}
+
+  dtPoint3 dtSurface::pointPercent(dtReal const & uP, dtReal const & vP) const {
+		return point( u_uPercent(uP), v_vPercent(vP) );
+	}
+
 	dtPoint3 dtSurface::getPoint3d( dtPoint2 const & pUV) const {
 		return point( pUV.x(), pUV.y() );
 	}

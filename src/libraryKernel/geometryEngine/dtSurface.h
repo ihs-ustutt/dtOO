@@ -62,6 +62,9 @@ namespace dtOO {
       dtReal uPercent_u(dtReal const uu) const;
       dtReal v_vPercent(dtReal const percent) const;
       dtReal vPercent_v(dtReal const vv) const;  
+      dtPoint3 point( dtPoint2 const & pp ) const;
+      dtPoint3 pointPercent( dtPoint2 const & ppP ) const;
+      dtPoint3 pointPercent( dtReal const & uP, dtReal const & vP ) const;
       dtPoint3 getPoint3d( dtPoint2 const & pUV) const;
       dtPoint3 getPointPercent3d(dtReal const uP, dtReal const vP) const;   
       std::vector< dtPoint3 > 
