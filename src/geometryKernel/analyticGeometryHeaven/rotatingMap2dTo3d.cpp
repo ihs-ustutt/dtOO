@@ -213,7 +213,11 @@ namespace dtOO {
   map2dTo3d const & rotatingMap2dTo3d::constRefMap2dTo3d( void ) const {
     return *(_m2d.get());
   }
-  
+ 
+  map2dTo3d const * const rotatingMap2dTo3d::constPtrMap2dTo3d( void ) const {
+    return _m2d.get();
+  }
+ 
   dtVector3 const & rotatingMap2dTo3d::rotationAxis( void ) const {
     return _vv;
   }

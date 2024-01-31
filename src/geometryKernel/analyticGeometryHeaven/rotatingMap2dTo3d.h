@@ -1,5 +1,5 @@
-#ifndef ROTATINMAP2DTO3D_H
-#define	ROTATINMAP2DTO3D_H
+#ifndef rotatingMap2dTo3d_H
+#define	rotatingMap2dTo3d_H
 
 #include <dtOOTypeDef.h>
 
@@ -35,6 +35,7 @@ namespace dtOO {
     	virtual map2dTo3d * segmentConstW( dtReal const & ww ) const;
       virtual std::string dumpToString( void ) const;
       map2dTo3d const & constRefMap2dTo3d( void ) const;
+      map2dTo3d const * const constPtrMap2dTo3d( void ) const;
       dtVector3 const & rotationAxis( void ) const;
       dtPoint3 const & origin( void ) const;    
     private:
@@ -45,5 +46,5 @@ namespace dtOO {
       dtPoint3 _pp;
   };
 }
-#endif	/* ROTATINMAP2DTO3D_H */
+#endif	/* rotatingMap2dTo3d_H */
 

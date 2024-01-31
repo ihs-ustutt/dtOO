@@ -5,6 +5,8 @@
 #include "analyticCurve.h"
 #include <logMe/dtMacros.h>
 #include <geometryEngine/dtSurface.h>
+#include <geometryEngine/dtOCCSurfaceOfRevolution.h>
+#include <geometryEngine/dtOCCRectangularTrimmedSurface.h>
 #include <geometryEngine/dtCurve.h>
 #include <interfaceHeaven/ptrHandling.h>
 
@@ -24,8 +26,20 @@ namespace dtOO {
     dtSurface const & dtS, 
     dtPoint3 const & pp,
     dtVector3 const & vv,
-    dtReal const & angle) : analyticSurface(&dtS) {
-    
+    dtReal const & angle
+  ) : analyticSurface(&dtS) {
+    dt__throwIf(
+      (angle==2.*M_PI)
+      &&
+      !dtOCCSurfaceOfRevolution::Is(&dtS),
+      analyticRotatingMap1dTo3d()
+    );
+    dt__throwIf(
+      (angle!=2.*M_PI)
+      &&
+      !dtOCCRectangularTrimmedSurface::Is(&dtS),
+      analyticRotatingMap1dTo3d()
+    );
 	  _vv = dtVector3(vv);
 		_pp = dtPoint3(pp);
 		_angle = angle;		
@@ -34,8 +48,20 @@ namespace dtOO {
   analyticRotatingMap1dTo3d::analyticRotatingMap1dTo3d(
     dtSurface const & dtS, 
     dtVector3 const & vv,
-    dtReal const & angle) : analyticSurface(&dtS) {
-    
+    dtReal const & angle
+  ) : analyticSurface(&dtS) {
+    dt__throwIf(
+      (angle==2.*M_PI)
+      &&
+      !dtOCCSurfaceOfRevolution::Is(&dtS),
+      analyticRotatingMap1dTo3d()
+    );
+    dt__throwIf(
+      (angle!=2.*M_PI)
+      &&
+      !dtOCCRectangularTrimmedSurface::Is(&dtS),
+      analyticRotatingMap1dTo3d()
+    );
 	  _vv = dtVector3(vv);
 		_pp = dtPoint3(0,0,0);
 		_angle = angle;		

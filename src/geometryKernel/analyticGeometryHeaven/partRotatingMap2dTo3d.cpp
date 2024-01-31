@@ -1,5 +1,10 @@
 #include "partRotatingMap2dTo3d.h"
+#include "analyticRotatingMap1dTo3d.h"
+#include <geometryEngine/geoBuilder/rectangularTrimmedSurface_curveRotateConstructOCC.h>
+#include <geometryEngine/geoBuilder/geomCurve_curveRotateConstructOCC.h>
 #include "map3dTo3dTransformed.h"
+#include <geometryEngine/dtSurface.h>
+#include <geometryEngine/dtCurve.h>
 
 namespace dtOO {
 	partRotatingMap2dTo3d::partRotatingMap2dTo3d() : rotatingMap2dTo3d() {
@@ -68,5 +73,85 @@ namespace dtOO {
     dtReal const & uu, dtReal const & vv, dtReal const & ww 
   ) const {
 	  return rotatingMap2dTo3d::getPoint( uu, vv, ww );	
+	}
+
+ 	map2dTo3d * partRotatingMap2dTo3d::segmentConstV( dtReal const & vv ) const {
+		if ( analyticSurface::Is( rotatingMap2dTo3d::constPtrMap2dTo3d() ) ) {
+			dt__pH(analyticCurve) s3d( 
+        analyticCurve::SecureCast(  
+          analyticSurface::ConstDownCast(
+            rotatingMap2dTo3d::constPtrMap2dTo3d()
+          )->segmentConstUPercent(percent_v(vv))
+        )
+      );
+
+      // 
+      // surface is created in two steps:
+      //  1) rotate curve by _minB
+      //  2) create rectangularTrimmedSurface with rotated curve and with an
+      //     angle of 2.*M_PI*(_maxB-_minB)
+      //
+			return new analyticRotatingMap1dTo3d(
+        *dt__pH(dtSurface)(
+	        rectangularTrimmedSurface_curveRotateConstructOCC(
+            *dt__pH(dtCurve)(
+              geomCurve_curveRotateConstructOCC(
+                s3d->ptrConstDtCurve(),
+                origin(),
+                rotationAxis(),
+                2.0*M_PI * _minB
+              ).result()
+            ),
+            origin(), 
+            rotationAxis(), 
+            2.0*M_PI * (_maxB - _minB)
+          ).result()
+        ),
+        origin(), 
+        rotationAxis(), 
+        2.0*M_PI * (_maxB - _minB)
+      );
+		}
+		else return map3dTo3d::segmentConstV(vv);
+	}
+  
+	map2dTo3d * partRotatingMap2dTo3d::segmentConstW( dtReal const & ww ) const {
+		if ( analyticSurface::Is( rotatingMap2dTo3d::constPtrMap2dTo3d() ) ) {
+			dt__pH(analyticCurve) s3d( 
+        analyticCurve::SecureCast(  
+          analyticSurface::ConstDownCast(
+            rotatingMap2dTo3d::constPtrMap2dTo3d()
+          )->segmentConstVPercent(percent_w(ww))
+        )
+      );
+
+      // 
+      // surface is created in two steps:
+      //  1) rotate curve by _minB
+      //  2) create rectangularTrimmedSurface with rotated curve and with an
+      //     angle of 2.*M_PI*(_maxB-_minB)
+      //
+			return new analyticRotatingMap1dTo3d(
+        *dt__pH(dtSurface)(
+	        rectangularTrimmedSurface_curveRotateConstructOCC(
+            *dt__pH(dtCurve)(
+              geomCurve_curveRotateConstructOCC(
+                s3d->ptrConstDtCurve(),
+                origin(),
+                rotationAxis(),
+                2.0*M_PI * _minB
+              ).result()
+            ),
+            origin(), 
+            rotationAxis(), 
+            2.0*M_PI * (_maxB - _minB)
+          ).result()
+        ),
+        origin(), 
+        rotationAxis(), 
+        2.0*M_PI * (_maxB - _minB)
+      );
+		}
+		else return map3dTo3d::segmentConstW(ww);
 	}	
 }

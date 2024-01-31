@@ -13,6 +13,7 @@
 #include "dtGmshEdge.h"
 #include "dtGmshFace.h"
 #include "dtGmshModel.h"
+#include "logMe/logMe.h"
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <progHelper.h>
 
@@ -114,7 +115,11 @@ namespace dtOO {
 		std::vector< dtGmshFace * > ff 
     = 
     dtGmshModel::cast2DtGmshFace(faces());
-		dt__throwIf(ff.size()!=6, meshWNElements());
+		dt__throwIfWithMessage(
+      ff.size()!=6, 
+      meshWNElements(),
+      << "ff.size() = " << ff.size()
+    );
 		
 		//
 		// set number of elements
