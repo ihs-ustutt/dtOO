@@ -1,5 +1,5 @@
-#ifndef ROTATINMAP2DTO3D_H
-#define	ROTATINMAP2DTO3D_H
+#ifndef rotatingMap2dTo3d_H
+#define	rotatingMap2dTo3d_H
 
 #include <dtOOTypeDef.h>
 
@@ -46,5 +46,5 @@ namespace dtOO {
       dtPoint3 _pp;
   };
 }
-#endif	/* ROTATINMAP2DTO3D_H */
+#endif	/* rotatingMap2dTo3d_H */
 
