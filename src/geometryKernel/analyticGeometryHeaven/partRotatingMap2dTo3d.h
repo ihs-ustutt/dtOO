@@ -25,6 +25,8 @@ namespace dtOO {
       virtual dtPoint3 getPoint( 
         dtReal const & uu, dtReal const & vv, dtReal const & ww 
       ) const; 
+	    virtual map2dTo3d * segmentConstV( dtReal const & ww ) const;
+	    virtual map2dTo3d * segmentConstW( dtReal const & ww ) const;
     private:
       dtReal _minB;
       dtReal _maxB;
