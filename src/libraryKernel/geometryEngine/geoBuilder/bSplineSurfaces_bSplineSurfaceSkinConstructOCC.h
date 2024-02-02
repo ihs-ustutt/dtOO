@@ -16,6 +16,9 @@ namespace dtOO {
       bSplineSurfaces_bSplineSurfaceSkinConstructOCC( 
         dt__vH(dtSurface const *) const & dtS 
       );
+      bSplineSurfaces_bSplineSurfaceSkinConstructOCC( 
+        dtSurface const * const dtS0, dtSurface const * const dtS1
+      );
       virtual ~bSplineSurfaces_bSplineSurfaceSkinConstructOCC();
       vectorHandling< dtSurface * > result( void );    
     private:

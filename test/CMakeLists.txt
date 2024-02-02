@@ -39,6 +39,7 @@ foreach(xzFilePath ${sources_list})
     COMMAND sh "cmp.sh" "${xzFile}" 
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
   )
+  set_tests_properties(naca-cmp-${xzFile} PROPERTIES DEPENDS "naca")
 endforeach()
 #
 # transformerSWIG
@@ -128,6 +129,7 @@ foreach(xzFilePath ${sources_list})
     COMMAND sh "cmp.sh" "${xzFile}" 
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tistos
   )
+  set_tests_properties(tistos-cmp-${xzFile} PROPERTIES DEPENDS "tistos")
 endforeach()
 #
 # meshSimpleSurface
@@ -144,6 +146,33 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
+#
+# meshPrismBlock
+#
+add_test(
+  NAME meshPrismBlock
+  COMMAND python3 "build.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshPrismBlock
+)
+set_tests_properties(
+  meshPrismBlock
+  PROPERTIES
+  ENVIRONMENT 
+    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
+    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
+)
+file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/meshPrismBlock/*.xz")
+foreach(xzFilePath ${sources_list})
+  get_filename_component(xzFile "${xzFilePath}" NAME)
+  message("**> Add test meshPrismBlock-cmp-${xzFile}")
+  add_test(
+    NAME meshPrismBlock-cmp-${xzFile} 
+    COMMAND sh "cmp.sh" "${xzFile}" 
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshPrismBlock
+  )
+  set_tests_properties(meshPrismBlock-cmp-${xzFile} PROPERTIES DEPENDS "meshPrismBlock")
+endforeach()
+
 #
 # dtClusteredSingletonState
 #

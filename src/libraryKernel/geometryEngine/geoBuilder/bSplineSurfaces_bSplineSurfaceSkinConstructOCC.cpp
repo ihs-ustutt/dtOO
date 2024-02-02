@@ -32,6 +32,17 @@ namespace dtOO {
     _dtS[5] = sL2;
 	}
 
+  bSplineSurfaces_bSplineSurfaceSkinConstructOCC
+    ::bSplineSurfaces_bSplineSurfaceSkinConstructOCC(
+    dtSurface const * const dtS0, dtSurface const * const dtS1
+  ) {
+    vectorHandling< dtSurface const * > vh;
+    vh.push_back( dtS0 );
+    vh.push_back( dtS1 );
+
+    _dtS = bSplineSurfaces_bSplineSurfaceSkinConstructOCC(vh).result();
+  }
+
 	bSplineSurfaces_bSplineSurfaceSkinConstructOCC
     ::~bSplineSurfaces_bSplineSurfaceSkinConstructOCC() {
 		

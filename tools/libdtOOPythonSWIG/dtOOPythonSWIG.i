@@ -47,6 +47,11 @@ namespace dtOO {
 #include <interfaceHeaven/lVHOInterface.h>
 #include <interfaceHeaven/lVHOjsonLoad.h>
 #include <interfaceHeaven/lVHOstateHandler.h>
+#include <gmsh/GEntity.h>
+#include <gmsh/GVertex.h>
+#include <gmsh/GEdge.h>
+#include <gmsh/GFace.h>
+#include <gmsh/GRegion.h>
 #include <gmsh/GModel.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Point_3.h>  
@@ -403,6 +408,11 @@ namespace dtOO {
 }
 %include interfaceHeaven/labelHandling.h
 %include interfaceHeaven/optionHandling.h
+%include <gmsh/GEntity.h>
+%include <gmsh/GVertex.h>
+%include <gmsh/GEdge.h>
+%include <gmsh/GFace.h>
+%include <gmsh/GRegion.h>
 %include <gmsh/GModel.h>
 
 namespace CGAL {
@@ -853,6 +863,12 @@ namespace dtOO {
 %include meshEngine/dtGmshVertex.h
 %include meshEngine/dtGmshEdge.h
 %include meshEngine/dtGmshFace.h
+namespace dtOO {
+  %template(listDtGmshVertex)                   ::std::list< dtGmshVertex * >;
+  %template(listDtGmshEdge)                     ::std::list< dtGmshEdge * >;
+  %template(listDtGmshFace)                     ::std::list< dtGmshFace * >;
+  %template(listDtGmshRegion)                   ::std::list< dtGmshRegion * >;
+}
 %include meshEngine/dtGmshRegion.h
 %include meshEngine/dtGmshModel.h
 
