@@ -14,6 +14,10 @@
 #include <interfaceHeaven/threadSafe.h>
 #include <progHelper.h>
 
+#include "dtOMMesh.h"
+#include "dtOMVertexField.h"
+#include "dtMoabCore.h"
+
 #include <boost/assign.hpp>
 #include "dtMeshOperatorFactory.h"
 
@@ -137,6 +141,8 @@ namespace dtOO {
     }
     else dt__throwUnexpected(operator()());
 
+
+
     //
     // create edgeVertex array
     //
@@ -213,34 +219,44 @@ namespace dtOO {
     twoDArrayHandling< ::MVertex * > sheet0(
       edgeVertex[0].size(), nLayers[0]+1
     );
+    twoDArrayHandling< dtVector3 > nn0(
+      edgeVertex[0].size(), nLayers[0]+1
+    );  
+    twoDArrayHandling< dtPoint2 > uv0(
+      edgeVertex[0].size(), nLayers[0]+1
+    );  
+   
     dt__forAllIndex(edgeVertex[0], ii) sheet0[ii][0] = edgeVertex[0][ii].first;
+    dt__forAllIndex(edgeVertex[0], ii) uv0[ii][0] = edgeVertex[0][ii].second;
     dt__forFromToIndex(1, nLayers[0]+1, layer) {
       dt__info( operator()(), << "Create layer " << layer << " on sheet0." );
       sheet0[0                     ][layer] = edgeVertex[3][layer].first;
       sheet0[edgeVertex[0].size()-1][layer] = edgeVertex[1][layer].first;
+      uv0[0                     ][layer] = edgeVertex[3][layer].second;
+      uv0[edgeVertex[0].size()-1][layer] = edgeVertex[1][layer].second;
 
       //
       // determine spacing
       //
       dtVector3 dist0(
-        edgeVertex[3][layer].first->x() - edgeVertex[3][0].first->x(),
-        edgeVertex[3][layer].first->y() - edgeVertex[3][0].first->y(),
-        edgeVertex[3][layer].first->z() - edgeVertex[3][0].first->z()
+        edgeVertex[3][layer].first->x() - edgeVertex[3][layer-1].first->x(),
+        edgeVertex[3][layer].first->y() - edgeVertex[3][layer-1].first->y(),
+        edgeVertex[3][layer].first->z() - edgeVertex[3][layer-1].first->z()
       );
       dtVector3 dist1(
-        edgeVertex[1][layer].first->x() - edgeVertex[1][0].first->x(),
-        edgeVertex[1][layer].first->y() - edgeVertex[1][0].first->y(),
-        edgeVertex[1][layer].first->z() - edgeVertex[1][0].first->z()
+        edgeVertex[1][layer].first->x() - edgeVertex[1][layer-1].first->x(),
+        edgeVertex[1][layer].first->y() - edgeVertex[1][layer-1].first->y(),
+        edgeVertex[1][layer].first->z() - edgeVertex[1][layer-1].first->z()
       );
       dtReal distInc 
       = 
       ( 
         dtLinearAlgebra::length( dist1 )
-        -
+        +
         dtLinearAlgebra::length( dist0 )
       )
       /
-      ( sheet0.fixJ(layer).size() - 1);
+      2.0;
       
       //
       // calculate normals
@@ -320,18 +336,18 @@ namespace dtOO {
         =
         dtLinearAlgebra::toDtVector2(
           dtLinearAlgebra::solveMatrix(
-            dtgf->getMap2dTo3d()->jacobi( edgeVertex[0][node].second )
+            dtgf->getMap2dTo3d()->jacobi( uv0[node][layer-1] )
             ,
-            dtLinearAlgebra::createMatrixVector(
-              ( dtLinearAlgebra::length( dist0 ) + distInc * node ) * nn
-            )
+            dtLinearAlgebra::createMatrixVector( distInc * nn )
           )
         );
-
+        nn0[node][layer] = nn;
         //
         // create new point
         //
-        dtPoint2 uv = edgeVertex[0][node].second + nnUV;
+        //dtPoint2 uv = edgeVertex[0][node].second + nnUV;
+        dtPoint2 uv = uv0[node][layer-1] + nnUV;
+        uv0[node][layer] = uv;
         ::GPoint pp = dtgf->point(uv.x(), uv.y());
         sheet0[node][layer]
         = 
@@ -349,34 +365,44 @@ namespace dtOO {
     twoDArrayHandling< ::MVertex * > sheet1(
       edgeVertex[2].size(), nLayers[1]+1
     );
+     twoDArrayHandling< dtVector3 > nn1(
+      edgeVertex[2].size(), nLayers[1]+1
+    );  
+    twoDArrayHandling< dtPoint2 > uv1(
+      edgeVertex[2].size(), nLayers[1]+1
+    );  
+   
     dt__forAllIndex(edgeVertex[2], ii) sheet1[ii][0] = edgeVertex[2][ii].first;
+    dt__forAllIndex(edgeVertex[2], ii) uv1[ii][0] = edgeVertex[2][ii].second;
     dt__forFromToIndex(1, nLayers[1]+1, layer) {
       dt__info( operator()(), << "Create layer " << layer << " on sheet1." );
       sheet1[0                     ][layer] = edgeVertex[1][layer].first;
       sheet1[edgeVertex[2].size()-1][layer] = edgeVertex[3][layer].first;
+      uv1[0                     ][layer] = edgeVertex[1][layer].second;
+      uv1[edgeVertex[2].size()-1][layer] = edgeVertex[3][layer].second;
 
       //
       // determine spacing
       //
       dtVector3 dist0(
-        edgeVertex[1][layer].first->x() - edgeVertex[1][0].first->x(),
-        edgeVertex[1][layer].first->y() - edgeVertex[1][0].first->y(),
-        edgeVertex[1][layer].first->z() - edgeVertex[1][0].first->z()
+        edgeVertex[1][layer].first->x() - edgeVertex[1][layer-1].first->x(),
+        edgeVertex[1][layer].first->y() - edgeVertex[1][layer-1].first->y(),
+        edgeVertex[1][layer].first->z() - edgeVertex[1][layer-1].first->z()
       );
       dtVector3 dist1(
-        edgeVertex[3][layer].first->x() - edgeVertex[3][0].first->x(),
-        edgeVertex[3][layer].first->y() - edgeVertex[3][0].first->y(),
-        edgeVertex[3][layer].first->z() - edgeVertex[3][0].first->z()
+        edgeVertex[3][layer].first->x() - edgeVertex[3][layer-1].first->x(),
+        edgeVertex[3][layer].first->y() - edgeVertex[3][layer-1].first->y(),
+        edgeVertex[3][layer].first->z() - edgeVertex[3][layer-1].first->z()
       );
       dtReal distInc 
       = 
       ( 
         dtLinearAlgebra::length( dist1 )
-        -
+        +
         dtLinearAlgebra::length( dist0 )
       )
       /
-      ( sheet1.fixJ(layer).size() - 1);
+      2.0;
       
       std::vector< dtVector3 > NN( sheet1.fixJ(layer).size() );
       NN[ 0 ] = -1. * dtLinearAlgebra::normalize( dist0 );      
@@ -445,18 +471,17 @@ namespace dtOO {
         =
         dtLinearAlgebra::toDtVector2(
           dtLinearAlgebra::solveMatrix(
-            dtgf->getMap2dTo3d()->jacobi( edgeVertex[2][node].second )
+            dtgf->getMap2dTo3d()->jacobi( uv1[node][layer-1] )
             ,
-            dtLinearAlgebra::createMatrixVector(
-              ( dtLinearAlgebra::length( dist0 ) + distInc * node ) * nn
-            )
+            dtLinearAlgebra::createMatrixVector( distInc * nn )
           )
         );
-
+        nn1[node][layer] = nn;
         //
         // create new point
         //        
-        dtPoint2 uv = edgeVertex[2][node].second + nnUV;        
+        dtPoint2 uv = uv1[node][layer-1] + nnUV;
+        uv1[node][layer] = uv;
         ::GPoint pp = dtgf->point(uv.x(), uv.y());
         sheet1[node][layer] 
         = 
@@ -539,7 +564,11 @@ namespace dtOO {
     // change back to old model
     //
     ::GModel::setCurrent( dtgf->model() );
-    
+  
+    // debug
+    dtOMMesh om;
+    dtOMVertexField<dtVector3> omv("omv", om, dtVector3(0,0,0));
+
     //
     // add transfinite layer quadrangles
     //
@@ -553,6 +582,13 @@ namespace dtOO {
             sheet0[node][layer+1]
           )  
         );
+        if ( optionHandling::debugTrue() ) {
+          om.addFace( dtgf->quadrangles.back() );
+          omv[ sheet0[node][layer] ]     = nn0[node][layer];
+          omv[ sheet0[node+1][layer] ]   = nn0[node+1][layer];
+          omv[ sheet0[node+1][layer+1] ] = nn0[node+1][layer+1];
+          omv[ sheet0[node][layer+1] ]   = nn0[node][layer+1];
+        }
       }
     }
     dt__forFromToIndex(0, nLayers[1], layer) {
@@ -565,8 +601,24 @@ namespace dtOO {
             sheet1[node][layer+1]
           )
         );
+        if ( optionHandling::debugTrue() ) {
+          om.addFace( dtgf->quadrangles.back() );
+          omv[ sheet1[node][layer] ]     = nn1[node][layer];
+          omv[ sheet1[node+1][layer] ]   = nn1[node+1][layer];
+          omv[ sheet1[node+1][layer+1] ] = nn1[node+1][layer+1];
+          omv[ sheet1[node][layer+1] ]   = nn1[node][layer+1];
+        } 
       }
     }
+    if ( optionHandling::debugTrue() ) {
+      dtMoabCore mb(om);
+      omv.update();
+      mb.addVertexField(omv);
+      mb.write_mesh(
+        std::string( dtgf->getPhysicalString()+"_debug.vtk" ).c_str()
+      );
+    }
+
     //
     // add transfinite layer vertices
     //
