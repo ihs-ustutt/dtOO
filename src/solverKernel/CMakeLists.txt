@@ -54,6 +54,7 @@ if (OpenFOAM_FOUND)
     ofOpenFOAMCase/ofOpenFOAMWallRule.h
     ofOpenFOAMCase/ofOpenFOAMCyclicAmiRule.h
     ofOpenFOAMCase/ofOpenFOAMEmptyRule.h
+    ofOpenFOAMCase/ofOpenFOAMCylindricalInletRule.h
   )
 
   list(APPEND SOURCES
@@ -62,6 +63,7 @@ if (OpenFOAM_FOUND)
     ofOpenFOAMCase/ofOpenFOAMWallRule.cpp
     ofOpenFOAMCase/ofOpenFOAMCyclicAmiRule.cpp
     ofOpenFOAMCase/ofOpenFOAMEmptyRule.cpp
+    ofOpenFOAMCase/ofOpenFOAMCylindricalInletRule.cpp
   )
   if (OpenFOAMMixingPlane_FOUND)
     list(APPEND HEADERS ofOpenFOAMCase/ofOpenFOAMMixingPlaneRule.h)
