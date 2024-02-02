@@ -39,6 +39,7 @@ foreach(xzFilePath ${sources_list})
     COMMAND sh "cmp.sh" "${xzFile}" 
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
   )
+  set_tests_properties(naca-cmp-${xzFile} PROPERTIES DEPENDS "naca")
 endforeach()
 #
 # transformerSWIG
@@ -128,6 +129,7 @@ foreach(xzFilePath ${sources_list})
     COMMAND sh "cmp.sh" "${xzFile}" 
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tistos
   )
+  set_tests_properties(tistos-cmp-${xzFile} PROPERTIES DEPENDS "tistos")
 endforeach()
 #
 # meshSimpleSurface
@@ -168,6 +170,7 @@ foreach(xzFilePath ${sources_list})
     COMMAND sh "cmp.sh" "${xzFile}" 
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshPrismBlock
   )
+  set_tests_properties(meshPrismBlock-cmp-${xzFile} PROPERTIES DEPENDS "meshPrismBlock")
 endforeach()
 
 #
