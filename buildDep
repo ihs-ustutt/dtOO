@@ -315,6 +315,7 @@ git_cmake_build \
   "\
    -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
    -Dminuit2=ON \
+   -Dmathmore=ON \
    -DCMAKE_BUILD_TYPE=Release \
    -Dbuiltin_openssl=FALSE \
    -Dbuiltin_xrootd=FALSE \
@@ -329,7 +330,7 @@ git_cmake_build \
 git_cmake_build \
   "nlohmann_json" \
   "https://github.com/nlohmann/json" \
-  "8f8315368b74f3ea4f30154dff1242d2f145c705" \
+  "v3.11.3" \
   "\
    -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
    -DCMAKE_BUILD_TYPE=Release \
