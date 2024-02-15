@@ -203,6 +203,20 @@ set_tests_properties(
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
 
+#
+# pyDtOO-dtField
+#
+add_test(
+  NAME pyDtOO-dtField
+  COMMAND python3 "build.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pyDtOO-dtField
+)
+set_tests_properties(
+  pyDtOO-dtField
+  PROPERTIES
+    ENVIRONMENT 
+    "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};"
+)
 
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
