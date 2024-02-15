@@ -276,7 +276,6 @@ namespace dtOO {
 #include <geometryEngine/geoBuilder/geomShape_readOCC.h>
 #include <geometryEngine/geoBuilder/geomSurface_baseConstructOCC.h>
 #include <geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.h>
-#include <geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h>
 #include <geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.h>
 #include <geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h>
 #include <geometryEngine/geoBuilder/geomSurface_surfaceTranslateConstructOCC.h>
@@ -839,7 +838,6 @@ namespace dtOO {
 %include geometryEngine/geoBuilder/geomShape_readOCC.h
 %include geometryEngine/geoBuilder/geomSurface_baseConstructOCC.h
 %include geometryEngine/geoBuilder/geomSurface_closeGapsArithmeticOCC.h
-%include geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h
 %include geometryEngine/geoBuilder/geomSurface_surfaceReverseConstructOCC.h
 %include geometryEngine/geoBuilder/geomSurface_surfaceRotateConstructOCC.h
 %include geometryEngine/geoBuilder/geomSurface_surfaceTranslateConstructOCC.h

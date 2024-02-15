@@ -68,7 +68,6 @@ SET(HEADERS
   geometryEngine/geoBuilder/geomCurve2d_ignoreZ.h
   geometryEngine/geoBuilder/geomCurve_baseConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCC.h
-  geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.h
   geometryEngine/geoBuilder/geomSurface_baseConstructOCC.h
   geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.h
   geometryEngine/geoBuilder/geomCurve2d_closeGapsArithmeticOCC.h
@@ -216,7 +215,6 @@ SET(SOURCES
   geometryEngine/geoBuilder/geomCurve2d_ignoreZ.cpp
   geometryEngine/geoBuilder/geomCurve_baseConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurface2d_bSplineCurve2dFillConstructOCC.cpp
-  geometryEngine/geoBuilder/geomSurface_geomSurfaceTranslateConstructOCC.cpp
   geometryEngine/geoBuilder/geomSurface_baseConstructOCC.cpp
   geometryEngine/geoBuilder/bSplineSurfaces_bSplineSurfaceSkinConstructOCC.cpp
   geometryEngine/geoBuilder/geomCurve2d_closeGapsArithmeticOCC.cpp
