@@ -304,25 +304,6 @@ git_cmake_build \
   "https://github.com/beltoforion/muparser" \
   "" \
   "-DCMAKE_INSTALL_PREFIX=${_installPrefix}"
-  
-#-------------------------------------------------------------------------------
-# root
-#-------------------------------------------------------------------------------
-git_cmake_build \
-  "root" \
-  "https://github.com/root-project/root" \
-  "latest-stable" \
-  "\
-   -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
-   -Dminuit2=ON \
-   -Dmathmore=ON \
-   -DCMAKE_BUILD_TYPE=Release \
-   -Dbuiltin_openssl=FALSE \
-   -Dbuiltin_xrootd=FALSE \
-   -Dxrootd=FALSE \
-   -Dssl=FALSE \
-   -Dx11=FALSE \
-  "
 
 #-------------------------------------------------------------------------------
 # json
@@ -335,4 +316,23 @@ git_cmake_build \
    -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
    -DCMAKE_BUILD_TYPE=Release \
    -DJSON_MultipleHeaders=ON \
+  "
+
+#-------------------------------------------------------------------------------
+# root
+#-------------------------------------------------------------------------------
+git_cmake_build \
+  "root" \
+  "https://github.com/root-project/root" \
+  "v6-28-06" \
+  "\
+   -DCMAKE_INSTALL_PREFIX=${_installPrefix} \
+   -Dminuit2=ON \
+   -Dmathmore=ON \
+   -DCMAKE_BUILD_TYPE=Release \
+   -Dbuiltin_openssl=FALSE \
+   -Dbuiltin_xrootd=FALSE \
+   -Dxrootd=FALSE \
+   -Dssl=FALSE \
+   -Dx11=FALSE \
   "
