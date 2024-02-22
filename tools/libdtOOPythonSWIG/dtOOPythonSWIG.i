@@ -346,6 +346,7 @@ using namespace dtOO;
   #include <Message_module.hxx>
   #include <Geom_module.hxx>
   #include <TColgp_module.hxx>
+  #include <Standard_Persistent.hxx>
 #endif
 %}
 
