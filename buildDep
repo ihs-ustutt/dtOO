@@ -224,8 +224,8 @@ git_cmake_build \
   "https://github.com/tpaviot/pythonocc-core.git" \
   "7.7.2" \
   "\
-    -DOCE_INCLUDE_PATH=${_installPrefix}/include/opencascade \
-    -DOCE_LIB_PATH=${_installPrefix}/lib \
+    -DOCCT_INCLUDE_DIR=${_installPrefix}/include/opencascade \
+    -DOCCT_LIBRARY_DIR=${_installPrefix}/lib \
     -DPYTHONOCC_INSTALL_DIRECTORY=${_installPrefix}/tools/OCC \
   "
 
