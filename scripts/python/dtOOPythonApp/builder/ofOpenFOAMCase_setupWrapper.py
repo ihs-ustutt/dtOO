@@ -32,6 +32,7 @@ class ofOpenFOAMCase_setupWrapper:
   def controlDict(
     application: str  = "simpleFoam",
     endTime: int = 1000,
+    writeInterval: int = -1,
     QPatches: List[ str ] = [],
     PTPatches: List[ str ] = [],
     FPatches: List[ str ] = [],
@@ -59,6 +60,8 @@ class ofOpenFOAMCase_setupWrapper:
     str
       controlDictRule.
     """
+    if writeInterval<0:
+      writeInterval = endTime
 
     retStr = str(
       'controlDict {'
@@ -69,38 +72,56 @@ class ofOpenFOAMCase_setupWrapper:
       '  stopAt            endTime;\n'
       '  endTime           '+str(endTime)+';\n'
       '  deltaT            1;\n'
-      '  writeInterval     '+str(endTime)+';\n'
+      '  writeInterval     '+str(writeInterval)+';\n'
       '  runTimeModifiable yes;\n'
       '  writeFormat       binary;\n'
       '  functions {\n'
     )
+    retStr += str(
+      '    ptot {\n'
+      '      type pressure ;\n'
+      '      libs (fieldFunctionObjects) ;\n'
+      '      mode total ;\n'
+      '      result ptot ;\n'
+      '      rho rhoInf ;\n'
+      '      rhoInf 1.0 ;\n'
+      '      writeControl writeTime ;\n'
+      '      executeControl timeStep ;\n'
+      '      executeInterval 1 ;\n'
+      '    }\n'
+    )
     for QPatch in QPatches:
       retStr += str(
         '    Q_'+QPatch+' {\n'
-        '      type swakExpression ;\n'
-        '      valueType patch ;\n'
-        '      verbose true ;\n'
-        '      patchName '+QPatch+' ;\n'
-        '      expression \" phi \" ;\n'
-        '      accumulations ( sum ) ;\n'
-        '      outputInterval 1 ;\n'
+        '      type surfaceFieldValue ;\n'
+        '      libs (fieldFunctionObjects) ;\n'
+        '      enabled yes ;\n'
+        '      names ('+QPatch+') ;\n'
+        '      writeControl timeStep ;\n'
+        '      regionType patch ;\n'
+        '      operation sum ;\n'
+        '      writeFields no ;\n'
+        '      fields (phi) ;\n'
         '    }\n'
       )
     for PTPatch in PTPatches:
       retStr += str(
         '    PT_'+PTPatch+' {\n'
-        '      type swakExpression ;\n'
-        '      valueType patch ;\n'
-        '      verbose true ;\n'
-        '      patchName '+PTPatch+' ;\n'
-        '      expression \" (p+.5*magSqr(U)) * phi / sum( phi ) \" ;\n'
-        '      accumulations ( sum ) ;\n'
-        '      outputInterval 1 ;\n'
+        '      type surfaceFieldValue ;\n'
+        '      libs (fieldFunctionObjects) ;\n'
+        '      enabled yes ;\n'
+        '      writeControl timeStep ;\n'
+        '      regionType patch ;\n'
+        '      names ('+PTPatch+') ;\n'
+        '      operation weightedAverage ;\n'
+        '      weightField phi ;\n'
+        '      writeFields no ;\n'
+        '      fields (ptot) ;\n'
         '    }\n'
       )
     for FPatch in FPatches:
       retStr += str(
-        '    forces {\n'
+        '    F_'+FPatch+' {\n'
         '      type forces ;\n'
         '      libs ( \"libforces.so\" );\n'
         '      outputControl timeStep ;\n'
