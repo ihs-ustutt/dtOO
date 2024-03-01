@@ -130,17 +130,17 @@ else:
 
 # moment pressure
 rXp_blade = dtValueField( dtCoordCrossField("mesh_blade_p_50.csv").Read() )
-rXp_blade.SIntValueA()
-#array([[  4.09745839,  31.67941721, -24.55527675]])
+997.*rXp_blade.IntValueA()
+#array([-17.45492425,  26.52576507,  32.54913827])
 F.momentPressure_[-1,:]
 #array([-17402.56,  26446.19,  32451.49])
 
 DD = ( 
-  (997.*rXp_blade.SIntValueA()[0,0] + F.momentPressure_[-1,0])**2.0
+  (997.*rXp_blade.IntValueA()[0] - F.momentPressure_[-1,0])**2.0
   +
-  (997.*rXp_blade.SIntValueA()[0,1] + F.momentPressure_[-1,1])**2.0
+  (997.*rXp_blade.IntValueA()[1] - F.momentPressure_[-1,1])**2.0
   +
-  (997.*rXp_blade.SIntValueA()[0,2] + F.momentPressure_[-1,2])**2.0
+  (997.*rXp_blade.IntValueA()[2] - F.momentPressure_[-1,2])**2.0
 )**0.5 / np.sqrt( np.sum( F.momentPressure_[-1,:]**2.0 ) )
 if  DD < tolDD:
   print("OK - MomentPressure - %e" % DD)
