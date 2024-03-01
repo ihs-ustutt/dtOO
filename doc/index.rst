@@ -41,7 +41,7 @@ entry, which refers to the correspoding
    :maxdepth: 2
    :caption: Contents:
   
-   quickstart.md
+   quickstart.rst
    install.md
    api.rst
    Back to GitHub <https://github.com/ihs-ustutt/dtOO>
