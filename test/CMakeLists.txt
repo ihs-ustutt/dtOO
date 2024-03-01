@@ -14,6 +14,21 @@
 #    You should have received a copy of the License along with dtOO.
 #
 #------------------------------------------------------------------------------
+function(DTOO_ADDTESTWLABEL TNAME)
+  file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/${TNAME}/*.xz")
+  foreach(xzFilePath ${sources_list})
+    get_filename_component(xzFile "${xzFilePath}" NAME)
+    string(REGEX MATCH "gcc-[^ $!~]+" gccVer ${xzFile})
+    message("**> Add test ${TNAME}-cmp-${xzFile} / gccVer=${gccVer}")
+    add_test(
+      NAME ${TNAME}-cmp-${xzFile} 
+      COMMAND sh "cmp.sh" "${xzFile}" 
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${TNAME}
+    )
+    set_tests_properties(${TNAME}-cmp-${xzFile} PROPERTIES DEPENDS "${TNAME}")
+    set_property(TEST ${TNAME}-cmp-${xzFile}  PROPERTY LABELS ${gccVer})
+  endforeach()
+endfunction()
 
 #
 # baseSWIG
@@ -30,6 +45,7 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
+set_property(TEST baseSWIG  PROPERTY LABELS base-test)
 
 #
 # naca
@@ -45,19 +61,11 @@ set_tests_properties(
   ENVIRONMENT 
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
- 
 )
-file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/naca/*.xz")
-foreach(xzFilePath ${sources_list})
-  get_filename_component(xzFile "${xzFilePath}" NAME)
-  message("**> Add test naca-cmp-${xzFile}")
-  add_test(
-    NAME naca-cmp-${xzFile} 
-    COMMAND sh "cmp.sh" "${xzFile}" 
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
-  )
-  set_tests_properties(naca-cmp-${xzFile} PROPERTIES DEPENDS "naca")
-endforeach()
+set_property(TEST naca  PROPERTY LABELS base-test)
+
+DTOO_ADDTESTWLABEL("naca")
+
 #
 # transformerSWIG
 #
@@ -73,6 +81,7 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
+set_property(TEST transformerSWIG  PROPERTY LABELS base-test)
 
 #
 # analyticGeometrySWIG
@@ -89,6 +98,7 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
+set_property(TEST analyticGeometrySWIG  PROPERTY LABELS base-test)
 
 #
 # constValueSWIG
@@ -105,6 +115,7 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
+set_property(TEST constValueSWIG  PROPERTY LABELS base-test)
 
 #
 # canadaLight
@@ -121,6 +132,7 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
+set_property(TEST canadaLight PROPERTY LABELS base-test)
 
 #
 # tistos
@@ -137,17 +149,9 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
-file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/tistos/*.xz")
-foreach(xzFilePath ${sources_list})
-  get_filename_component(xzFile "${xzFilePath}" NAME)
-  message("**> Add test tistos-cmp-${xzFile}")
-  add_test(
-    NAME tistos-cmp-${xzFile} 
-    COMMAND sh "cmp.sh" "${xzFile}" 
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tistos
-  )
-  set_tests_properties(tistos-cmp-${xzFile} PROPERTIES DEPENDS "tistos")
-endforeach()
+set_property(TEST tistos PROPERTY LABELS base-test)
+DTOO_ADDTESTWLABEL("tistos")
+
 #
 # meshSimpleSurface
 #
@@ -163,6 +167,7 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
+set_property(TEST meshSimpleSurface PROPERTY LABELS base-test)
 #
 # meshPrismBlock
 #
@@ -178,17 +183,8 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
-file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/meshPrismBlock/*.xz")
-foreach(xzFilePath ${sources_list})
-  get_filename_component(xzFile "${xzFilePath}" NAME)
-  message("**> Add test meshPrismBlock-cmp-${xzFile}")
-  add_test(
-    NAME meshPrismBlock-cmp-${xzFile} 
-    COMMAND sh "cmp.sh" "${xzFile}" 
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshPrismBlock
-  )
-  set_tests_properties(meshPrismBlock-cmp-${xzFile} PROPERTIES DEPENDS "meshPrismBlock")
-endforeach()
+set_property(TEST meshPrismBlock PROPERTY LABELS base-test)
+DTOO_ADDTESTWLABEL("meshPrismBlock")
 
 #
 # dtClusteredSingletonState
@@ -204,6 +200,7 @@ set_tests_properties(
     ENVIRONMENT 
     "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};"
 )
+set_property(TEST dtClusteredSingletonState PROPERTY LABELS base-test)
 #
 # partRotatingMap2dTo3d
 #
@@ -219,6 +216,7 @@ set_tests_properties(
     "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
     LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
 )
+set_property(TEST partRotatingMap2dTo3d PROPERTY LABELS base-test)
 
 #
 # pyDtOO-dtField
@@ -234,6 +232,7 @@ set_tests_properties(
     ENVIRONMENT 
     "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};"
 )
+set_property(TEST pyDtOO-dtField PROPERTY LABELS base-test)
 
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
