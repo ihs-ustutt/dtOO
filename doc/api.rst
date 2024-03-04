@@ -10,3 +10,8 @@ Core classes
    :maxdepth: 1
 
    constValue
+   analyticFunction
+   analyticGeometry
+   boundedVolume
+   dtCase
+   dtPlugin

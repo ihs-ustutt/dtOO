@@ -31,7 +31,7 @@ entry, which refers to the correspoding
     year = {2020},
     month = {05},
     isbn = {978-3-948328-01-6},
-    publisher = {Universitt Stuttgart, Institut für Strömungsmechanik und Hydraulische Strömungsmaschinen},
+    publisher = {Universität Stuttgart, Institut für Strömungsmechanik und Hydraulische Strömungsmaschinen},
     series = {Institutsmitteilung},
     url = {https://d-nb.info/1220692778/34},
  }
