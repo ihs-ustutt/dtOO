@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<gv_meanline2d>
+
+	<constant label="STREAMWISECUTS" value="{0}{50}{100}{250}{500}{750}{900}{950}{1000}"/>
+	<!--<constant label="REPARAMCUTS" value="{0.00}{0.10}{0.25}{0.50}{0.75}{0.90}{1.00}"/>-->
+	<!--<constant label="REPARAMCUTS" value="{0.00}{0.25}{0.50}{0.75}{1.00}"/>-->
+	
+<!--
+!
+!
+! spanwise constant planes
+!
+!
+-->				
+	<replace variable="ii" values="STREAMWISECUTS">	
+		<constValue label="cV_gv_mplane_{ii}" name="sliderFloatParam" value="{ii}/1000." min="0." max="1."/>
+	</replace>
+
+<!--
+!
+!
+! design parameters (DOF)
+!
+!
+-->				
+  <constValue label="cV_gv_nBlades" name="intParam" value="5"/>
+	<replace variable="ii" values="{0.0}{0.5}{1.0}">		
+		<constValue label="cV_gv_alpha_1_ex_{ii}" name="sliderFloatParam" value="0." min="0." max="180."/>
+		<constValue label="cV_gv_alpha_2_ex_{ii}" name="sliderFloatParam" value="0." min="-50." max="50."/>
+		<constValue label="cV_gv_M_ex_{ii}" name="sliderFloatParam" value="0.0" min="0.05" max="1.0"/>
+		<!--<constValue label="cV_gv_phiR_ex_{ii}" name="sliderFloatParam" value="0.00" min="-0.025" max="0.025"/>-->
+		<constValue label="cV_gv_offsetM_ex_{ii}" name="sliderFloatParam" value="0.01" min="0.01" max="1.0"/>
+		<constValue label="cV_gv_offsetPhiR_ex_{ii}" name="sliderFloatParam" value="0.00" min="-0.02" max="0.02"/>
+		<constValue label="cV_gv_ratio_{ii}" name="sliderFloatParam" value="0.50" min="0.4" max="0.6"/>
+	</replace>
+
+		<function label="f_gv_alpha_1"> 
+			<builder  name="scaCurve2dOneD" order="2">
+				<Point_2 x="0.00" y="90."/>
+				<!--<Point_2 x="0.25" y="77.57"/>-->
+				<Point_2 x="0.50" y="90."/>
+				<!--<Point_2 x="0.75" y="82.34"/>-->
+				<Point_2 x="1.00" y="90."/>
+			</builder>
+		</function>	
+    
+		<function label="f_gv_alpha_2"> 
+			<builder  name="scaCurve2dOneD" order="2">
+				<Point_2 x="0.00" y="90.00"/>
+				<!--<Point_2 x="0.25" y="77.57"/>-->
+				<Point_2 x="0.50" y="90.00"/>
+				<!--<Point_2 x="0.75" y="82.34"/>-->
+				<Point_2 x="1.00" y="90.00"/>
+			</builder>
+		</function>	
+		<function label="f_gv_M"> 
+			<builder  name="scaCurve2dOneD" order="2">
+				<Point_2 x="0.00" y="0.30"/>
+				<Point_2 x="0.50" y="0.30"/>
+				<Point_2 x="1.00" y="0.30"/>
+			</builder>
+		</function>							
+		
+<!--
+!
+!
+! design parameter functions
+!
+!
+-->					
+	<replace 
+		label="myLoop" 
+		variable="ii" 
+		values="{M_ex}{alpha_1_ex}{alpha_2_ex}{offsetM_ex}{ratio}{offsetPhiR_ex}"
+	>
+		<function label="f_gv_{ii}"> 
+			<builder  name="scaCurve2dOneD" order="2">
+				<Point_2 x="0.0" y="#cV_gv_{ii}_0.0#"/>
+				<Point_2 x="0.5" y="#cV_gv_{ii}_0.5#"/>
+				<Point_2 x="1.0" y="#cV_gv_{ii}_1.0#"/>
+			</builder>
+		</function>	
+	</replace>
+<!--
+!
+!
+! spanwise constant blade cuts
+!
+!
+-->					
+	<!--<replace variable="ii" values="{0}{50}{125}{250}{500}{750}{875}{950}{1000}">-->	
+<replace variable="ii" values="STREAMWISECUTS">			
+<!-- meanlines -->
+		<function label="aF_gv_meanline_{ii}">
+			<builder name="sca3PointMeanline"
+				alpha_one="
+					_pi * ( $f_gv_alpha_1(#cV_gv_mplane_{ii}#)$ * ( 1 + $f_gv_alpha_1_ex(#cV_gv_mplane_{ii}#)$ ) ) / 180.
+				"
+				alpha_two="
+					_pi * ( $f_gv_alpha_2(#cV_gv_mplane_{ii}#)$ * ( 1 + $f_gv_alpha_2_ex(#cV_gv_mplane_{ii}#)$ ) ) / 180.
+				"
+				delta_y="( $f_gv_M_ex(#cV_gv_mplane_{ii}#)$ + 1 ) * $f_gv_M(#cV_gv_mplane_{ii}#)$"
+        delta_x="
+					( 1. - $f_gv_ratio(#cV_gv_mplane_{ii}#)$ ) 
+					* 
+					(					
+						(
+							( $f_gv_M_ex(#cV_gv_mplane_{ii}#)$ + 1 ) * $f_gv_M(#cV_gv_mplane_{ii}#)$
+						)
+						/
+						tan(
+							max(
+								_pi * ( $f_gv_alpha_2(#cV_gv_mplane_{ii}#)$ * ( 1 + $f_gv_alpha_2_ex(#cV_gv_mplane_{ii}#)$ ) ) / 180.,
+								_pi * ( $f_gv_alpha_1(#cV_gv_mplane_{ii}#)$ * ( 1 + $f_gv_alpha_1_ex(#cV_gv_mplane_{ii}#)$ ) ) / 180.
+							)
+						)
+					)	
+					+
+					$f_gv_ratio(#cV_gv_mplane_{ii}#)$
+					* 
+					(					
+						(
+							( $f_gv_M_ex(#cV_gv_mplane_{ii}#)$ + 1 ) * $f_gv_M(#cV_gv_mplane_{ii}#)$
+						)
+						/
+						tan(
+							min(
+								_pi * ( $f_gv_alpha_2(#cV_gv_mplane_{ii}#)$ * ( 1 + $f_gv_alpha_2_ex(#cV_gv_mplane_{ii}#)$ ) ) / 180.,
+								_pi * ( $f_gv_alpha_1(#cV_gv_mplane_{ii}#)$ * ( 1 + $f_gv_alpha_1_ex(#cV_gv_mplane_{ii}#)$ ) ) / 180.
+							)
+						)
+					)	
+				"	
+				originOnLengthPercent=".5"						
+			>
+					<function/>
+			</builder>
+		</function>				
+  <function label="myBaseContainer_gv_meanline2d_{ii}">
+    <builder name="baseContainer">
+			<transformer name="translate" label="gv_transM_{ii}">
+				<Vector_2 
+					x="$f_gv_offsetPhiR_ex(#cV_gv_mplane_{ii}#)$" 
+					y="$f_gv_offsetM_ex(#cV_gv_mplane_{ii}#)$"
+				/>
+				<Vector_3 
+					x="$f_gv_offsetPhiR_ex(#cV_gv_mplane_{ii}#)$" 
+					y="$f_gv_offsetM_ex(#cV_gv_mplane_{ii}#)$" 
+					z="0.0"
+				/>
+			</transformer>
+    </builder>
+  </function>
+<!-- meanline as 3d function f:(u)->(phiR, m, s)  -->
+		<function label="vec3d1d_gv_meanline_{ii}">
+			<builder name="analyticFunction">
+				<transformer name="addConstCoordinate" coordinate_value="{ii}/1000.">
+					<Vector_3 label="v3_zz"/>
+				</transformer>
+				<analyticFunction label="~gv_transM_{ii}(aF_gv_meanline_{ii})~"/>
+			</builder>
+		</function>		
+  </replace>
+
+<!--
+!
+!
+! meanplane as 3d function f:(u, v)->(phiR, m, s)
+!
+!
+-->						
+	<function label="vec3d2d_gv_meanplane">
+		<builder name="vec3dSurfaceTwoD">
+			<replace variable="ii" values="STREAMWISECUTS">
+			  <analyticFunction label="vec3d1d_gv_meanline_{ii}"/>	
+			</replace>
+		</builder>
+	</function>
+</gv_meanline2d>

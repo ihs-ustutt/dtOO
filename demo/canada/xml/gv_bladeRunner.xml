@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<gv_bladeRunner>
+        <function label="f_straightGVIn">
+                <builder  name="muParser">
+                        <expression 
+                                value="-5 + xx * 10, -5 + yy * 10, -1.62" 
+                                dimension="3"
+                        />
+                        <x_one name="xx" min="0." max="1."/>
+                        <x_two name="yy" min="0." max="1."/>
+                </builder>
+        </function>
+        <part label="aS_f_straightGVIn">
+                <builder name="vec3dInMap3dTo3d">
+                        <analyticFunction label="f_straightGVIn"/>
+                        <analyticGeometry label="aG_inf"/>
+                </builder>
+        </part>
+
+<!--
+!
+!
+! blade
+!
+!
+-->						
+	<part label="aS_gv_blade">
+		<builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="~gv_uVw_phirMs(vec3d2d_gv_blade)~"/>
+			<analyticGeometry label="rM2dTo3d_gv_channel"/>
+		</builder>
+	</part>	   	
+
+<!--
+!
+!
+! stagnation line
+!
+!
+-->
+<!--	<part label="aS_gv_blade_stagnationLine">
+		<builder name="vec2dOneDInMap2dTo3d_closestCurve" numPoints="3">
+			<analyticGeometry label="aS_gv_blade"/>
+			<analyticGeometry label="~u0_s(aS_gv_meanplane)~"/>
+			</builder>
+	</part>	-->
+</gv_bladeRunner>

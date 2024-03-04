@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<in_meshBlocks>
+	<part label="s3_internal_20_0">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~v0_s(aS_internal_16_1_0)~"/>
+		</builder>
+	</part>
+	<part label="s3_internal_20_1">
+		<builder name="analyticGeometry">
+			<transformer name="translate">
+				<Vector_3 xyz="0,0,#cV_l_far_2#-(@s3_internal_20_0[%z](0)@)"/>
+			</transformer>			
+			<analyticGeometry label="s3_internal_20_0"/>
+		</builder>
+	</part>
+	<part label="aS_internal_20_0">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+		>
+			<!--<analyticGeometry label="s3_internal_20_1"/>-->
+      <analyticGeometry label="alternative_s3_meshHubExt_2"/>
+			<analyticGeometry label="~v1_s(aS_skinCorpus_farIn)~"/>
+		</builder>
+	</part>	
+
+	<replace variable="ii" values="{0}{1}{2}{3}{4}{5}{6}">
+		<part label="aS_internal_20_1_{ii}">
+			<builder name="analyticGeometry">
+				<transformer name="pickMap2dTo3dRectanglePercent">
+					<Point_2 xy="0, {ii}/7."/>
+					<Point_2 xy="1, {ii}/7.+1./7."/>
+				</transformer>
+				<analyticGeometry label="aS_internal_20_0"/>
+			</builder>
+		</part>		
+	</replace>	
+
+	<part label="aS_internal_20_2_0">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~w1_v(t6C_dt_1_3)~"/>
+		</builder>
+	</part>		
+	<part label="aS_internal_20_2_1">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~w1_v(t6C_dt_2_3)~"/>
+		</builder>
+	</part>			
+	<part label="aS_internal_20_2_2">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~w1_v(t6C_dt_3_3)~"/>
+		</builder>
+	</part>			
+	<part label="aS_internal_20_2_3">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~w1_v(t6C_dt_4_3)~"/>
+		</builder>
+	</part>				
+	<part label="aS_internal_20_2_4">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~v1_v(t6C_dt_5_3)~"/>
+		</builder>
+	</part>				
+<!--	<part label="aS_internal_19_4_3">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~w0_v(t6C_gvru_0_2)~"/>
+		</builder>
+	</part>			
+	<part label="aS_internal_19_4_4">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~w0_v(t6C_gvru_0_3)~"/>
+		</builder>
+	</part> -->
+	<replace variable="ii" values="{0}{1}{2}{3}{4}">	
+		<part label="t6C_out_{ii}_0">
+			<builder name="trans6SidedCube"
+						exchange="{0}{0}">
+				<analyticGeometry label="aS_internal_20_1_{ii}"/>
+				<analyticGeometry label="aS_internal_20_2_{ii}"/>
+			</builder>
+		</part>
+	</replace>
+  <part label="t6C_out_5_0">
+    <builder name="trans6SidedCube"
+          exchange="{1}{0}">
+      <analyticGeometry label="aS_bevelBack_dt3"/>
+      <analyticGeometry label="aS_internal_20_1_5"/>
+    </builder>
+  </part>	
+  <part label="t6C_out_6_0">
+    <builder name="trans6SidedCube"
+          exchange="{0}{0}">
+      <analyticGeometry label="~v1_v(t6C_dt_7_2)~"/>
+      <analyticGeometry label="aS_internal_20_1_6"/>
+    </builder>
+  </part>	
+    
+	<part label="out_*_orient">
+		<builder name="orientTrans6SidedCube">
+			<analyticGeometry label="t6C_out_0_0" orient="{reverseW}{exchangeVW}"/>
+			<analyticGeometry label="t6C_out_1_0" orient="{reverseW}{exchangeVW}"/>
+			<analyticGeometry label="t6C_out_2_0" orient="{reverseW}{exchangeVW}"/>
+			<analyticGeometry label="t6C_out_3_0" orient="{reverseW}{exchangeVW}"/>
+			<analyticGeometry label="t6C_out_4_0" orient="{reverseW}{exchangeVW}"/>
+			<analyticGeometry label="t6C_out_5_0" orient="{exchangeVW}"/>      
+			<analyticGeometry label="t6C_out_6_0" orient="{exchangeVW}"/>      
+		</builder>
+	</part>				
+</in_meshBlocks>

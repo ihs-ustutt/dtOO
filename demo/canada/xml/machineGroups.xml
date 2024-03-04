@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<machineGroups>
+	<part label="z_dt">
+		<builder name="map2dTo3dGroup">
+			<analyticGeometry label="aS_skinCorpus_dtIn"/>
+			<analyticGeometry label="aS_skinCorpus_dtOut"/>
+			<analyticGeometry label="aS_skinCorpus_dt2In"/>
+			<analyticGeometry label="aS_skinCorpus_dt2Out"/>
+			<analyticGeometry label="aS_skinCorpus_dt3In"/>
+			<analyticGeometry label="aS_skinCorpus_dt3Out"/>
+      <analyticGeometry label="aS_bevelBack_dt"/>
+			<analyticGeometry label="aS_bevelFront_dt2"/>
+			<analyticGeometry label="aS_dt_hub_0"/>
+			<analyticGeometry label="aS_dt_hub_1"/>
+			<!--<analyticGeometry label="aS_dt_hub_1"/>-->
+<!--			<analyticGeometry label="aS_spoiler_dt2Out"/>
+			<analyticGeometry label="aS_spoiler_dt2In"/>-->
+		</builder>
+	</part>
+	<part label="z_gv_ru">
+		<builder name="map2dTo3dGroup">
+			<analyticGeometry label="aS_gv_shroudIn"/>
+			<analyticGeometry label="aS_ru_shroudIn"/>
+			<analyticGeometry label="aS_gv_hubIn"/>
+			<analyticGeometry label="aS_ru_hubIn"/>			
+			<!--<analyticGeometry label="aS_gv_shroud"/>-->
+			<analyticGeometry label="aS_gv_blade_rot"/>
+			<!--<analyticGeometry label="aS_ru_hub"/>-->
+			<!--<analyticGeometry label="aS_ru_shroud"/>-->
+			<analyticGeometry label="aS_ru_blade_rot"/>			
+			<analyticGeometry label="aS_ru_blade_rot"/>
+			<analyticGeometry label="aS_gv_ru_shroudOut"/>
+			<analyticGeometry label="aS_gv_hub_bulb"/>
+<!--      <analyticGeometry label="rM2dTo3d_gv_gridChannel"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_te_0_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_te_1_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_0_0_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_0_1_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_0_2_rot"/>-->
+		</builder>
+	</part>	
+<!--	<part label="gv_ru_grid">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="rM2dTo3d_gv_gridChannel"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_te_0_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_te_1_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_0_0_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_0_1_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_0_2_rot"/>
+      <analyticGeometry label="rM2dTo3d_ru_gridChannel"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_te_0_rot"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_te_1_rot"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_0_0_rot"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_0_1_rot"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_0_2_rot"/>
+      <analyticGeometry label="t6C_gvru_*_*"/>						
+		</builder>
+	</part>-->
+	<part label="z_gv_ru_grid_orient">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="rM2dTo3d_gv_gridChannel"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_te_0_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_te_1_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_0_0_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_0_1_rot"/>
+			<analyticGeometry label="tV_gv_meshBlock_closed_0_2_rot"/>
+      <analyticGeometry label="rM2dTo3d_ru_gridChannel"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_te_0_rot"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_te_1_rot"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_0_0_rot"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_0_1_rot"/>
+			<analyticGeometry label="tV_ru_meshBlock_closed_0_2_rot"/>
+      <analyticGeometry label="gvru_t6C_gvru_*_*_orient"/>						
+		</builder>
+	</part>	
+<!--	<part label="dt_grid">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="t6C_dt_*_*"/>			
+		</builder>
+	</part>-->
+	<part label="z_dt_grid_orient">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="dt_t6C_dt_*_*_orient"/>			
+		</builder>
+	</part>
+	<part label="z_dt_grid">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="t6C_dt_*_*"/>			
+		</builder>
+	</part>  
+	<part label="dt_construct">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="s3_spine_*"/>
+		</builder>
+	</part>			  
+	<part label="dt_fullConstruct">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="s3_spine_*"/>
+			<analyticGeometry label="s3_ridge_*_*"/>
+      <analyticGeometry label="s3_dt_hub_ellipse_*"/>
+		</builder>
+	</part>			
+<!--	<part label="in_grid">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="t6C_in_*_*"/>			
+		</builder>
+	</part>-->
+	<part label="z_in_grid_orient">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="in_t6C_in_*_*_orient"/>			
+		</builder>
+	</part>					
+<!--	<part label="out_grid">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="t6C_out_*_*"/>			
+		</builder>
+	</part>					-->
+	<part label="z_out_grid_orient">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="out_t6C_out_*_*_orient"/>			
+		</builder>
+	</part>	
+	<part label="z_mB">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="mB_*"/>			
+		</builder>
+	</part>		
+	<part label="z_replica">
+		<builder name="map2dTo3dGroup">
+      <analyticGeometry label="*replica*"/>			
+		</builder>
+	</part>			
+<!--	<part label="t6C_split_1">
+		<builder name="map3dTo3dGroup">
+      <analyticGeometry label="*_t6C_*_split_1"/>			
+		</builder>
+	</part>			-->
+</machineGroups>

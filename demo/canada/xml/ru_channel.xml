@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ru_channel>
+<!--	<replace variable="ii" values="{ru_hub}{ru_shroud}{ru_hub_ext}{ru_shroud_ext}">	
+		<part label="s3_{ii}">
+			<builder name="analyticGeometry">
+				<analyticGeometry label="s3_{ii}_approx"/>
+			</builder>
+		</part>
+	</replace>	-->	
+	<constValue label="cV_noBladeExt" name="sliderFloatParam" value="5.0" min="0.1" max="10.0"/>
+  <replace variable="part" values="{hub}{shroud}">
+    <part label="s3_ru_{part}_noBladeExt_0">
+      <builder name="bSplineCurve_pointConstructOCC" order="1">
+        <Point_3 xyz="@s3_ru_{part}[%](1.)@"/>
+        <Point_3 
+          xyz="
+            (@s3_ru_{part}[%x](1.)@),
+            (@s3_ru_{part}[%y](1.)@),
+            (@s3_ru_{part}[%z](1.)@) + #cV_noBladeExt#
+          "/>
+      </builder>
+    </part>
+    <part label="s3_ru_{part}_noBladeExt">
+      <builder name="bSplineCurve_curveConnectConstructOCC">
+        <analyticGeometry label="s3_ru_{part}"/>
+        <analyticGeometry label="s3_ru_{part}_noBladeExt_0"/>
+      </builder>
+    </part>
+  </replace>
+	<part label="aS_ru_channel_noBladeExt">
+		<builder name="bSplineSurface_skinConstructOCC">
+			<analyticGeometry label="s3_ru_hub_noBladeExt"/>
+			<analyticGeometry label="s3_ru_shroud_noBladeExt"/>
+		</builder>
+	</part>
+  <part label="rM2dTo3d_ru_channel_noBladeExt">	
+    <builder name="rotatingMap2dTo3d">
+				<analyticGeometry label="aS_ru_channel_noBladeExt"/>
+				<Vector_3 label="v3_Nzz"/>
+    </builder>  
+  </part>
+  
+	<part label="aS_ru_channel">
+		<builder name="bSplineSurface_skinConstructOCC">
+			<analyticGeometry label="s3_ru_hub"/>
+			<analyticGeometry label="s3_ru_shroud"/>
+		</builder>
+	</part>
+  <part label="rM2dTo3d_ru_channel">	
+    <builder name="rotatingMap2dTo3d">
+				<analyticGeometry label="aS_ru_channel"/>
+				<Vector_3 label="v3_Nzz"/>
+    </builder>  
+  </part>
+		
+	<part label="aS_ru_channel_ext">
+		<builder name="bSplineSurface_skinConstructOCC">
+			<analyticGeometry label="s3_ru_hub_ext"/>
+			<analyticGeometry label="s3_ru_shroud_ext"/>
+		</builder>
+	</part>
+  <part label="rM2dTo3d_ru_channel_ext">	
+    <builder name="rotatingMap2dTo3d">
+				<analyticGeometry label="aS_ru_channel_ext"/>
+				<Vector_3 label="v3_Nzz"/>
+    </builder>  
+  </part>
+  <part label="aS_ru_hub">	
+    <builder name="analyticGeometry">
+			<transformer name="pickMap3dTo3dRangePercent" parameter_percent_three="0."/>
+				<analyticGeometry label="rM2dTo3d_ru_channel"/>
+    </builder>  
+  </part>			
+  <part label="aS_ru_shroud">	
+    <builder name="analyticGeometry">
+			<transformer name="pickMap3dTo3dRangePercent" parameter_percent_three="1."/>
+				<analyticGeometry label="rM2dTo3d_ru_channel"/>
+    </builder>  
+  </part>
+  <part label="aS_ru_inlet_full">	
+    <builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="~u0_s(aS_ru_channel)~"/>
+				<Point_3 xyz="0,0,0"/>
+				<Vector_3 xyz="0,0,1"/>
+    </builder>  
+  </part>
+  <part label="aS_ru_outlet_full">	
+    <builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="~u1_s(aS_ru_channel)~"/>
+				<Point_3 xyz="0,0,0"/>
+				<Vector_3 xyz="0,0,1"/>
+    </builder>  
+  </part>
+<!--
+!
+!
+! coordinate transformation (phir, m, s) -> (u, v, w)
+!
+!
+-->				
+  <part label="baseContainer_ru_channel">
+    <builder name="baseContainer">
+			<transformer 
+				label="ru_uVw_phirMs" 
+				name="uVw_phirMs" 
+				part_label="rM2dTo3d_ru_channel"
+				number_points_two="31"
+				number_points_three="11"
+			/>
+    </builder>
+  </part>	
+</ru_channel>

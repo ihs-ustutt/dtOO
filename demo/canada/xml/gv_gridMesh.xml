@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<gv_gridMesh>	
+	<constValue label="cV_gv_nElemTangentialBlade" name="intParam" value="60" min="1" max="100"/>
+	<constValue label="cV_gv_nElemTangentialTip" name="intParam" value="15" min="1" max="100"/>
+	<constValue label="cV_gv_nElemNormalBlade" name="intParam" value="10" min="1" max="100"/>
+	<constValue label="cV_gv_nElemSpanwiseBlade" name="intParam" value="40" min="1" max="100"/>
+	<constValue label="cV_gv_nElemTrailingBlade" name="intParam" value="4" min="1" max="100"/>
+  <constValue label="cV_gv_nElemStreamwise" name="intParam" value="21" min="1" max="100"/>
+  <constValue label="cV_gv_nElemCirc" name="intParam" value="25" min="1" max="100"/>
+  <constValue label="cV_gv_nBoundaryLayers" name="intParam" value="11" min="1" max="30"/>	
+  <constValue name="sliderFloatParam" label="cV_gv_firstElementSize" value="0.001" min="0.0001" max="1.0"/>
+	<!--
+!
+!
+! grading hub-shroud
+!
+!
+-->					
+	<constValue 
+		label="cV_gv_gridDoubleGrading" 
+		name="sliderFloatParam" 
+		value="3.25" min="0.001" max="100.00"
+	/>	
+	<function label="aF_gv_gridGradingSpline_3"> 
+		<builder  
+			name="scaTanhGradingOneDAFXmlBuilder[]"
+			g="#cV_gv_gridDoubleGrading#" gMin="0.1" gMax="5."
+			c="{.5}{.5}{-1.}{2.}"
+		/>		
+	</function>
+	<function label="aF_gvNoBlade_gridGradingSpline_3"> 
+		<builder  
+			name="scaTanhGradingOneDAFXmlBuilder[]"
+			g="#cV_gv_gridDoubleGrading#" gMin="0.1" gMax="5."
+			c="{.5}{.5}{-1.}{2.}"
+		/>		
+	</function>  
+	
+<!--
+!
+!
+! grading blade normal
+!
+!
+-->						
+	<constValue 
+		label="cV_gv_gridSingleGrading" 
+		name="sliderFloatParam" 
+		value="2.7" min="0.001" max="100."
+	/>	
+	<function label="aF_gv_gridGradingSpline_6"> 
+		<builder  
+			name="scaTanhGradingOneDAFXmlBuilder[]"
+			g="#cV_gv_gridSingleGrading#" gMin="0.1" gMax="5."
+			c="{1}{-1}{1}{-1}"
+		/>
+	</function>	
+
+<!--
+!
+!
+! extract geometry of internal edges
+!
+!
+-->							
+<!--	<replace variable="ii" values="{0}{1}">	
+		<part label="aG_gv_meshBlock_te_hub_internalEdge_{ii}">
+			<builder name="analyticGeometry">
+				<analyticGeometry label="~v0_s(~u1_v(tV_gv_meshBlock_closed_te_{ii}_rot)~)~"/>
+			</builder>
+		</part>	
+	</replace>
+	<replace variable="ii" values="{0}{1}">	
+		<part label="aG_gv_meshBlock_te_shroud_internalEdge_{ii}">
+			<builder name="analyticGeometry">
+				<analyticGeometry label="~v1_s(~u1_v(tV_gv_meshBlock_closed_te_{ii}_rot)~)~"/>
+			</builder>
+		</part>	
+	</replace>	-->
+	
+		
+	<!--
+	!
+	!
+	! mesh
+	!
+	! Mesh.RandomFactor = 1.e-12;
+	!
+	-->
+	<constValue name="sliderFloatParam" label="cV_gv_lcIntPrec" value="0.01" min="0.0001" max="0.1"/>
+	<constValue name="sliderFloatParam" label="cV_gv_charLMin" value="0.0001" min="0.0001" max="10.0"/>
+	<constValue name="sliderFloatParam" label="cV_gv_charCLMax" value="2.00" min="4.00" max="10.0"/>
+	<boundedVolume name="map3dTo3dGmsh" label="gv_gridGmsh">	
+<!--		<option 
+			name="gmshMeshStr" 
+			value="
+				General.Terminal = 1.;
+				General.Verbosity = 100.;
+				General.ExpertMode = 1.;			
+				Mesh.LcIntegrationPrecision = #cV_gv_lcIntPrec#;
+				Mesh.CharacteristicLengthMin = #cV_gv_charLMin#;
+				Mesh.CharacteristicLengthMax = `#cV_gv_charCLMax#*#cV_gv_charLMin#`;			  
+			"
+		/>-->
+		<option name="[gmsh]General.Terminal" value="1."/>
+        <option name="[gmsh]General.Verbosity" value="100."/>
+        <option name="[gmsh]General.ExpertMode" value="1."/>
+        <option name="[gmsh]Mesh.LcIntegrationPrecision" value="#cV_gv_lcIntPrec#"/>
+        <option name="[gmsh]Mesh.CharacteristicLengthMin" value="#cV_gv_charLMin#"/>
+        <option name="[gmsh]Mesh.CharacteristicLengthMax" value="#cV_gv_charCLMax#*#cV_gv_charLMin#"/>
+        <option name="[gmsh]Mesh.Algorithm" value="1"/>
+
+		<bVObserver name="bVONameRegions" regionLabel=""/>
+					
+		<bVObserver 
+			name="bVOAnalyticGeometryToFace" 
+			analyticGeometry="
+				{aS_gv_blade_rot}{aS_gv_hub}{aS_gv_shroud}
+				{aS_gv_inlet_full}{aS_gv_outlet_full}
+			"
+			increase_tolerance="1."
+		/>
+		
+		<bVObserver 
+			name="bVOAddFace" 
+			regionLabel="R_0"
+			faceLabel="
+				{R_1->BACK}{R_2->BACK}{R_3->BACK}{R_4->BACK}{R_5->BACK}
+				{R_4->EAST}{R_5->EAST}
+			"
+	  />
+		
+    <bVObserver name="bVOAddInternalEdge" regionLabel="R_0"/>
+
+		<bVObserver name="bVOTransfiniteRegions"
+			regionLabel="{R_1}{R_2}{R_3}{R_4}{R_5}"
+			numberElements="{1}{1}{1}"
+		/>
+		
+    <bVObserver name="bVORecombineRecursiveRegions"
+			regionLabel="{R_1}{R_2}{R_3}{R_4}{R_5}"
+		/>
+		
+		<bVObserver name="bVOSetPrescribedMeshSizeAtPoints" meshSize="#cV_gv_charLMin#*#cV_gv_charCLMax#"/>
+
+		<bVObserver name="bVOSetNElements"
+			faceLabel="{R_0->FRONT}"
+			numberElements="{0}{#cV_gv_nElemSpanwiseBlade#}{0}{#cV_gv_nElemSpanwiseBlade#}"
+		/>				
+    <bVObserver name="bVOSetNElements"
+			faceLabel="{R_0->BACK}"
+			numberElements="{0}{#cV_gv_nElemSpanwiseBlade#}{0}{#cV_gv_nElemSpanwiseBlade#}"
+		/>						
+    <bVObserver name="bVOTransfiniteFaces"
+			faceLabel="{R_0->WEST}{R_0->EAST}"
+			numberElements="{#cV_gv_nElemStreamwise#}{#cV_gv_nElemSpanwiseBlade#}"
+		/>						
+    <bVObserver name="bVORecombine"
+			faceLabel="{R_0->WEST}{R_0->EAST}"
+		/>
+    <bVObserver name="bVOTransfiniteRegions"
+			regionLabel="{R_1}{R_3}"
+			numberElements="
+				{#cV_gv_nElemTangentialBlade#}
+				{#cV_gv_nElemNormalBlade#}
+				{#cV_gv_nElemSpanwiseBlade#}
+			"
+		/>		
+    <bVObserver name="bVOTransfiniteRegions"
+			regionLabel="{R_2}"
+			numberElements="
+				{#cV_gv_nElemTangentialTip#}
+				{#cV_gv_nElemNormalBlade#}
+				{#cV_gv_nElemSpanwiseBlade#}
+			"
+		/>				
+    <bVObserver name="bVOTransfiniteRegions"
+			regionLabel="{R_4}{R_5}"
+			numberElements="
+				{#cV_gv_nElemTrailingBlade#}
+				{#cV_gv_nElemNormalBlade#}
+				{#cV_gv_nElemSpanwiseBlade#}
+			"
+		/>
+		
+			<bVObserver 
+				name="bVOSetGradingToFaceRule"
+				rule="
+				  {:*blade*::*::6::1:}
+					{:*blade*::*blade*::0::1:}
+					{:*hub*::*shroud*::3::1:}				
+				"
+			/>
+
+		<bVObserver 
+			name="bVOSetPrescribedFirstElementSize"
+			type="3"
+			gradingLabel="aF_gv_gridGradingSpline_3"
+			firstElementSize="#cV_gv_firstElementSize#"
+		/>
+		<bVObserver 
+			name="bVOSetPrescribedFirstElementSize"
+			type="6"
+			gradingLabel="aF_gv_gridGradingSpline_6"
+			firstElementSize="#cV_gv_firstElementSize#"
+		/>    
+    
+		<bVObserver name="bVOReadMSH" filename="" mustRead="false"/>
+		
+	  <bVObserver 
+		  name="bVOSetRotationalPeriodicity"
+      faceMaster="R_0->WEST"
+			faceSlave="R_0->EAST"
+			transformer="xYz_rPhiZ"
+		>
+			<option name="force" value="true"/>
+		</bVObserver>
+
+		<bVObserver 
+			name="bVOMeshRule"
+			rule="
+			  :
+					{dtMeshFreeGradingGEdge(*)}
+			  :
+			  :
+					{dtMeshGFaceWithTransfiniteLayer(R_0->FRONT)}
+					{dtMeshGFaceWithTransfiniteLayer(R_0->BACK)}
+					{dtMeshGFace(R_0->NORTH)}
+					{dtMeshGFace(R_0->SOUTH)}
+					{dtMeshTransfiniteGFace(*)}
+			  :
+			  :
+					{dtMeshGRegionWithBoundaryLayer(R_0)}
+					{dtMeshGRegion(*)}
+			  :
+			"
+			only=""
+		>
+      <option name="debug" value="false"/>		
+			<dtMeshOperator
+				name="dtMeshFreeGradingGEdge"
+				label="dtMeshFreeGradingGEdge"
+				typeTransfinite="{3}{6}"
+				gradingLabel="
+				  {aF_gv_gridGradingSpline_3}
+				  {aF_gv_gridGradingSpline_6}
+				"
+				nSmoothSteps="30"
+				tolerance="1.e-6"
+			/>			
+			<dtMeshOperator
+				name="dtMeshGFace"
+				label="dtMeshGFace"
+			/>
+			<dtMeshOperator
+				name="dtMeshTransfiniteGFace"
+				label="dtMeshTransfiniteGFace"
+			/>			
+			<dtMeshOperator
+				name="dtMeshGRegion"
+				label="dtMeshGRegion"
+				minQShapeMetric="0.00" 
+				relax="0.1"
+				nPyramidOpenSteps="10"
+				nSmooths="3"
+			/>						
+			<dtMeshOperator
+				name="dtMeshGRegionWithBoundaryLayer"
+				label="dtMeshGRegionWithBoundaryLayer"
+        nSpacingSteps="-#cV_gv_nBoundaryLayers#"
+				nNormalSmoothingSteps="1000"
+				nGrowingSmoothingSteps="1000"
+				maxGrowingRatePerStep="1.1"
+				maxDihedralAngle="_pi*360./180."
+				faceLabel="
+				  {R_0->NORTH}{R_0->SOUTH}
+				"
+        slidableFaceLabel="
+          {R_1->BACK}{R_2->BACK}{R_3->BACK}
+					{R_4->BACK}{R_4->EAST}
+					{R_5->BACK}{R_5->EAST}
+				  {R_0->FRONT}{R_0->BACK}{R_0->EAST}{R_0->WEST}
+				"
+				dtMesh3DOperator="dtMeshGRegion"
+				fixedFaceLabel=""
+			>
+				<option name="debug" value="false"/>
+			</dtMeshOperator>
+			<dtMeshOperator 
+				name="dtMeshGFaceWithTransfiniteLayer" 
+				label="dtMeshGFaceWithTransfiniteLayer"
+				nLayers="#cV_gv_nBoundaryLayers#+1"
+				direction="0"
+				nSmooth="1000"
+			/>			
+		</bVObserver>
+
+		<bVObserver name="bVOWriteMSH" filename="" saveAll="true"/>
+		
+		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+				{:*hub*::GV_HUB:}
+				{:*shroud*::GV_SHROUD:}
+			  {:*blade*::GV_BLADE:}
+				{:*inlet*::GV_INLET:}
+				{:*outlet*::GV_OUTLET:}
+				{:R_0->EAST::GV_PERIOSS:}	
+				{:R_0->WEST::GV_PERIOPS:}				
+			"
+			regRule="
+			  {:*::GV:}
+			"			
+		/>
+		<bVObserver name="bVOOrientCellVolumes" positive="true"/>
+
+		<bVObserver name="bVODumpModel"/>
+		
+		<analyticGeometry label="rM2dTo3d_gv_gridChannel"/>
+		<analyticGeometry label="tV_gv_meshBlock_closed_0_0_rot"/>
+    <analyticGeometry label="tV_gv_meshBlock_closed_0_1_rot"/>
+		<analyticGeometry label="tV_gv_meshBlock_closed_0_2_rot"/>
+    <analyticGeometry label="tV_gv_meshBlock_closed_te_1_rot"/>
+		<analyticGeometry label="tV_gv_meshBlock_closed_te_0_rot"/>
+	</boundedVolume>
+	<boundedVolume name="map3dTo3dGmsh" label="gvNoBlade_gridGmsh">	
+<!--		<option 
+			name="gmshMeshStr" 
+			value="
+				General.Terminal = 1.;
+				General.Verbosity = 100.;
+				General.ExpertMode = 1.;			
+				Mesh.LcIntegrationPrecision = #cV_gv_lcIntPrec#;
+				Mesh.CharacteristicLengthMin = #cV_gv_charLMin#;
+				Mesh.CharacteristicLengthMax = `#cV_gv_charCLMax#*#cV_gv_charLMin#`;			  
+			"
+		/>-->
+		<option name="[gmsh]General.Terminal" value="1."/>
+        <option name="[gmsh]General.Verbosity" value="100."/>
+        <option name="[gmsh]General.ExpertMode" value="1."/>
+        <option name="[gmsh]Mesh.LcIntegrationPrecision" value="#cV_gv_lcIntPrec#"/>
+        <option name="[gmsh]Mesh.CharacteristicLengthMin" value="#cV_gv_charLMin#"/>
+        <option name="[gmsh]Mesh.CharacteristicLengthMax" value="#cV_gv_charCLMax#*#cV_gv_charLMin#"/>
+        <option name="[gmsh]Mesh.Algorithm" value="1"/>        
+
+		<bVObserver name="bVONameRegions" regionLabel=""/>
+					
+		<bVObserver 
+			name="bVOAnalyticGeometryToFace" 
+			analyticGeometry="
+				{aS_gv_hub}{aS_gv_shroud}
+				{aS_gv_inlet_full}{aS_gv_outlet_full}
+			"
+			increase_tolerance="1."
+		/>
+		
+    <bVObserver name="bVOTransfiniteRegions"
+			regionLabel="{R_0}"
+      numberElements="{#cV_gv_nElemCirc#}{#cV_gv_nElemStreamwise#}{#cV_gv_nElemSpanwiseBlade#}"
+		/>    
+		
+    <bVObserver name="bVORecombineRecursiveRegions"
+			regionLabel="{R_0}"
+		/>    
+			<bVObserver 
+				name="bVOSetGradingToFaceRule"
+				rule="
+					{:*hub*::*shroud*::3::1:}				
+				"
+			/>
+
+		<bVObserver 
+			name="bVOSetPrescribedFirstElementSize"
+			type="3"
+			gradingLabel="aF_gvNoBlade_gridGradingSpline_3"
+			firstElementSize="#cV_gv_firstElementSize#"
+		/>
+   
+		<bVObserver name="bVOReadMSH" filename="" mustRead="false"/>
+		
+		<bVObserver 
+			name="bVOMeshRule"
+			rule="
+			  :
+					{dtMeshFreeGradingGEdge(*)}
+			  :
+			  :
+					{dtMeshTransfiniteGFace(*)}
+			  :
+			  :
+					{dtMeshGRegion(*)}
+			  :
+			"
+			only=""
+		>
+      <option name="debug" value="false"/>		
+			<dtMeshOperator
+				name="dtMeshFreeGradingGEdge"
+				label="dtMeshFreeGradingGEdge"
+				typeTransfinite="{3}{6}"
+				gradingLabel="
+				  {aF_gv_gridGradingSpline_3}
+				"
+				nSmoothSteps="30"
+				tolerance="1.e-6"
+			/>			
+			<dtMeshOperator
+				name="dtMeshTransfiniteGFace"
+				label="dtMeshTransfiniteGFace"
+			/>			
+			<dtMeshOperator
+				name="dtMeshGRegion"
+				label="dtMeshGRegion"
+				minQShapeMetric="0.00" 
+				relax="0.1"
+				nPyramidOpenSteps="10"
+				nSmooths="3"
+			/>						
+			/>			
+		</bVObserver>
+
+		<bVObserver name="bVOWriteMSH" filename="" saveAll="true"/>
+		
+		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+				{:*hub*::GV_HUB:}
+				{:*shroud*::GV_SHROUD:}
+				{:*inlet*::GV_INLET:}
+				{:*outlet*::GV_OUTLET:}
+				{:R_0->EAST::GV_PERIOSS:}	
+				{:R_0->WEST::GV_PERIOPS:}				
+			"
+			regRule="
+			  {:*::GV:}
+			"			
+		/>
+		<bVObserver name="bVOOrientCellVolumes" positive="true"/>
+
+		<bVObserver name="bVODumpModel"/>
+		
+		<analyticGeometry label="rM2dTo3d_gv_gridChannel"/>
+	</boundedVolume>  
+	<boundedVolume 
+		name="combineGmsh" 
+		label="gv_fullGridGmsh_0"
+		absolute_tolerance="2.e-05"
+	>	
+
+		<bVObserver name="bVODumpModel"/>
+		<bVObserver 
+			name="bVOTransformMeshPoints" 
+			transformer="{rot_gv_1_NZ}"
+			copy="true"
+			absolute_tolerance="2.e-05"
+		/>			
+
+		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+				{:GV_HUB*::GV_HUB:}
+				{:GV_SHROUD*::GV_SHROUD:}
+			  {:GV_BLADE*::GV_BLADE:}
+				{:GV_INLET*::GV_INLET:}
+				{:GV_OUTLET*::GV_OUTLET:}
+				{:GV_PERIOSS*:::}	
+				{:GV_PERIOPS*:::}				
+			"
+			regRule="
+				{:GV*::GV:}
+			"			
+		/>
+
+    <bVObserver 
+      name="bVORemoveElements" 
+      label="
+			  {}
+      "
+    />		
+		
+		<bVObserver name="bVOOrientCellVolumes" positive="true"/>
+
+		<bVObserver name="bVOWriteMSH" filename="" saveAll="true"/>
+		
+		<bVObserver name="bVODumpModel"/>
+
+		<boundedVolume label="gv_gridGmsh"/>
+	</boundedVolume>
+	<boundedVolume 
+		name="combineGmsh" 
+		label="gv_fullGridGmsh_1"
+		absolute_tolerance="2.e-05"
+	>	
+
+		<bVObserver name="bVODumpModel"/>
+		<bVObserver 
+			name="bVOTransformMeshPoints" 
+			transformer="{rot_gv_2_NZ}"
+			copy="false"
+			absolute_tolerance="2.e-05"
+		/>			
+		<bVObserver 
+			name="bVOTransformMeshPoints" 
+			transformer="{rot_gv_1_NZ}{rot_gv_2_NZ}"
+			copy="true"
+			absolute_tolerance="2.e-05"
+		/>			
+		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+				{:GV_HUB*::GV_HUB:}
+				{:GV_SHROUD*::GV_SHROUD:}
+				{:GV_INLET*::GV_INLET:}
+				{:GV_OUTLET*::GV_OUTLET:}
+				{:GV_PERIOSS*:::}	
+				{:GV_PERIOPS*:::}				
+			"
+			regRule="
+				{:GV*::GV:}
+			"			
+		/>
+
+    <bVObserver 
+      name="bVORemoveElements" 
+      label="
+			  {}
+      "
+    />		
+		
+		<bVObserver name="bVOOrientCellVolumes" positive="true"/>
+
+		<bVObserver name="bVOWriteMSH" filename="" saveAll="true"/>
+		
+		<bVObserver name="bVODumpModel"/>
+
+		<boundedVolume label="gvNoBlade_gridGmsh"/>
+	</boundedVolume>  
+	<boundedVolume 
+		name="combineGmsh" 
+		label="gv_fullGridGmsh"
+		absolute_tolerance="2.e-05"
+	>	
+
+		<bVObserver name="bVODumpModel"/>
+<!--		<bVObserver 
+			name="bVOTransformMeshPoints" 
+			transformer="{rot_gv_1_NZ}"
+			copy="true"
+			absolute_tolerance="2.e-05"
+		/>			-->
+
+		
+		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+				{:GV_HUB*::GV_HUB:}
+				{:GV_SHROUD*::GV_SHROUD:}
+			  {:GV_BLADE*::GV_BLADE:}
+				{:GV_INLET*::GV_INLET:}
+				{:GV_OUTLET*::GV_OUTLET:}
+				{:GV_PERIOSS*:::}	
+				{:GV_PERIOPS*:::}				
+			"
+			regRule="
+				{:GV*::GV:}
+			"			
+		/>
+
+    <bVObserver 
+      name="bVORemoveElements" 
+      label="
+			  {}
+      "
+    />		
+		
+		<bVObserver name="bVOOrientCellVolumes" positive="true"/>
+
+		<bVObserver name="bVOWriteMSH" filename="" saveAll="true"/>
+		
+		<bVObserver name="bVODumpModel"/>
+
+		<boundedVolume label="gv_fullGridGmsh_0"/>
+    <boundedVolume label="gv_fullGridGmsh_1"/>
+	</boundedVolume>  
+</gv_gridMesh>	

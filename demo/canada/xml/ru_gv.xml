@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ru_gv>
+<!--
+	!
+	! meridian shape
+	!
+-->
+	<constValue 
+		label="cV_r_hub" 
+		name="sliderFloatParam" value="0.25" min="0.1" max="1.5"
+	/>
+	<constValue 
+		label="cV_r_shroud" 
+		name="sliderFloatParam" value="2.0" min="0.1" max="4.5"
+	/>
+	<constValue 
+		label="cV_l_gv" 
+		name="sliderFloatParam" value="-0.7" min="-10." max="10.0"
+	/>
+	<constValue 
+		label="cV_l_ru" 
+		name="sliderFloatParam" value="0.2" min="0.5" max="1.5"
+	/>	
+	<constValue 
+		label="cV_l_ext" 
+		name="sliderFloatParam" value="2.0" min="0.5" max="10."
+	/>
+
+	<part label="s3_gv_shroud_1">
+		<builder name="bSplineCurve_pointConstructOCC" order="1">		
+			<Point_3 xyz="@s3_shroud_in[%](1)@"/>
+			<Point_3 
+				xyz="
+				  (@s3_shroud_in[%x](1)@),
+				  (@s3_shroud_in[%y](1)@),
+				  #cV_l_gv#
+				"/>
+		</builder>
+	</part>
+	<part label="s3_gv_shroud">
+		<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-2">		
+			<analyticGeometry label="s3_shroud_in"/>
+			<analyticGeometry label="s3_gv_shroud_1"/>
+		</builder>
+	</part>		
+	<replace variable="ii" values="{hub}">	
+		<part label="s3_gv_{ii}">
+			<builder name="bSplineCurve_pointConstructOCC" order="1">		
+				<Point_3 xyz="0,#cV_r_{ii}#,@s3_gv_shroud[%z](0)@"/>
+				<Point_3 xyz="0,#cV_r_{ii}#,@s3_gv_shroud[%z](1)@"/>
+			</builder>
+		</part>
+	</replace>
+	<part label="s3_gv_hub_bulb">
+		<builder 
+			name="circle_radiusCoordinateSystemOCCAGXmlBuilder" 
+			radius="#cV_r_hub#" 
+			angle="_pi/2."
+		>
+			<Point_3 
+				xyz="
+					0,
+					0,
+					(@s3_gv_hub[%z](0)@)
+			"
+			/>
+			<Vector_3 xyz="0,-1,0"/>
+			<Vector_3 xyz="0,0,-1"/>			
+		</builder>	
+	</part>
+	<part label="aS_gv_hub_bulb">	
+		<builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+			<analyticGeometry label="s3_gv_hub_bulb"/>
+			<Vector_3 label="v3_zz"/>
+			<Point_3 label="p3_0"/>
+			<float value="_pi/2."/>
+		</builder>  
+	</part>	
+
+<!--	<part label="aS_dt_hub_1">	
+		<builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="~rot_1.0pi_NZ(s3_dt_hub_1)~"/>
+				<Vector_3 label="v3_Nzz"/>
+				<Point_3 label="p3_0"/>
+				<float value="_pi/2."/>
+		</builder>  
+	</part>-->
+<!--				<part label="s3_ellipse_0">
+					<builder 
+						name="ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder" 
+						radius_one=".5" 
+						radius_two=".5" 
+						angle="_pi/2."
+					>
+						<Point_3 xyz="0,0,0"/>
+						<Vector_3 xyz="0,0,1"/>
+						<Vector_3 xyz="1,0,0"/>
+					</builder>
+				</part>		-->
+	
+<!--	<replace variable="ii" values="{hub}{shroud}">	
+		<part label="s3_gv_{ii}">
+			<builder name="bSplineCurve_pointConstructOCC" order="1">		
+				<Point_3 xyz="0,#cV_r_{ii}#,-#cV_l_gv#-#cV_l_ru#"/>
+				<Point_3 xyz="0,#cV_r_{ii}#,-#cV_l_ru#"/>
+			</builder>		
+		</part>
+	</replace>-->
+		<part label="s3_ru_shroud">
+			<builder name="bSplineCurve_pointConstructOCC" order="1">		
+				<Point_3 xyz="(@s3_gv_shroud[%x](1)@),(@s3_gv_shroud[%y](1)@),(@s3_gv_shroud[%z](1)@)"/>
+				<Point_3 xyz="(@s3_gv_shroud[%x](1)@),(@s3_gv_shroud[%y](1)@),#cV_l_ru#"/>
+			</builder>		
+		</part>
+		<part label="s3_ext_shroud">
+			<builder name="analyticGeometry" order="1">		
+				<analyticGeometry label="s3_ru_shroud"/>
+				<!--<Point_3 xyz="0,#cV_r_{ii}#,@s3_ru_shroud[%z](1)@+#cV_l_ext#"/>-->
+			</builder>		
+		</part>			
+	<replace variable="ii" values="{hub}">	
+		<part label="s3_ru_{ii}">
+			<builder name="bSplineCurve_pointConstructOCC" order="1">		
+				<Point_3 xyz="0,#cV_r_{ii}#,@s3_gv_{ii}[%z](1)@"/>
+				<Point_3 xyz="0,#cV_r_{ii}#,#cV_l_ru#"/>
+			</builder>		
+		</part>
+		<part label="s3_ext_{ii}">
+			<builder name="bSplineCurve_pointConstructOCC" order="1">		
+				<Point_3 xyz="0,#cV_r_{ii}#,@s3_ru_{ii}[%z](1)@"/>
+				<Point_3 xyz="0,#cV_r_{ii}#,@s3_ru_{ii}[%z](1)@+#cV_l_ext#"/>
+			</builder>		
+		</part>		
+	</replace>
+	
+	<part label="s3_gv_hub_ext">
+		<builder name="analyticGeometry">
+<!--			<transformer name="pickMap1dTo3dLinePercent">
+				<float value="0.10"/>
+				<float value="1.00"/>
+			</transformer>-->
+			<analyticGeometry label="s3_gv_hub"/>
+		</builder>
+	</part>	
+	<part label="s3_gv_shroud_ext">
+		<builder name="analyticGeometry">
+			<transformer name="pickMap1dTo3dLinePercent">
+				<float value="0.15"/>
+				<float value="1.00"/>
+			</transformer>
+			<analyticGeometry label="s3_gv_shroud"/>
+		</builder>
+	</part>		
+	<replace variable="ii" values="{ru_hub}{ru_shroud}">	
+		<part label="s3_{ii}_ext">
+			<builder name="analyticGeometry">
+				<analyticGeometry label="s3_{ii}"/>
+			</builder>
+		</part>
+	</replace>
+		
+	<replace variable="ii" values="{gv_hub}{gv_shroud}{ru_hub}{ru_shroud}">	
+		<part label="aS_{ii}In">	
+			<builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="s3_{ii}"/>
+				<Vector_3 label="v3_Nzz"/>
+				<Point_3 label="p3_0"/>
+				<float value="_pi/2."/>
+			</builder>  
+		</part>	
+	</replace>
+<!--	<part label="aS_ru_shroudIn">	
+		<builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+			<analyticGeometry label="s3_ru_shroud"/>
+			<Vector_3 label="v3_Nzz"/>
+			<Point_3 label="p3_0"/>
+			<float value="_pi/2."/>
+		</builder>  
+	</part>		-->
+	
+<!--	<replace variable="ii" values="{hub}{shroud}">	
+		<part label="s3_ingvru_{ii}">
+			<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-4">
+				<analyticGeometry label="s3_gv_{ii}"/>
+				<analyticGeometry label="s3_ru_{ii}"/>
+			</builder>
+		</part>
+		<part label="s3_ingvru_{ii}_ext">
+			<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-4">
+				<analyticGeometry label="s3_gv_{ii}_ext"/>
+				<analyticGeometry label="s3_ru_{ii}_ext"/>
+			</builder>
+		</part>				
+		<part label="s3_ingvruExt_{ii}">
+			<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-4">
+				<analyticGeometry label="s3_gv_{ii}"/>
+				<analyticGeometry label="s3_ru_{ii}"/>
+				<analyticGeometry label="s3_ext_{ii}"/>
+			</builder>
+		</part>						
+		<part label="s3_ingvruExt_{ii}_ext">
+			<builder name="bSplineCurve_curveConnectConstructOCC" tolerance="1.e-4">
+				<analyticGeometry label="s3_gv_{ii}_ext"/>
+				<analyticGeometry label="s3_ru_{ii}_ext"/>
+			</builder>
+		</part>				
+	</replace>	-->
+</ru_gv>

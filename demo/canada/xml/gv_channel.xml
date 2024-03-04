@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<gv_channel>
+<!--	<replace variable="ii" values="{gv_hub}{gv_shroud}{gv_hub_ext}{gv_shroud_ext}">	
+		<part label="s3_{ii}">
+			<builder name="analyticGeometry">
+				<analyticGeometry label="s3_{ii}_approx"/>
+			</builder>
+		</part>
+	</replace>	-->
+
+	<part label="aS_gv_channel">
+		<builder name="bSplineSurface_skinConstructOCC">
+			<analyticGeometry label="s3_gv_hub"/>
+			<analyticGeometry label="s3_gv_shroud"/>
+		</builder>
+	</part>	
+  <part label="rM2dTo3d_gv_channel">	
+    <builder name="rotatingMap2dTo3d">
+				<analyticGeometry label="aS_gv_channel"/>
+				<Vector_3 label="v3_Nzz"/>
+    </builder>  
+  </part>
+	<part label="aS_gv_channel_ext">
+		<builder name="bSplineSurface_skinConstructOCC">
+			<analyticGeometry label="s3_gv_hub_ext"/>
+			<analyticGeometry label="s3_gv_shroud_ext"/>
+		</builder>
+	</part>		
+  <part label="rM2dTo3d_gv_channel_ext">	
+    <builder name="rotatingMap2dTo3d">
+				<analyticGeometry label="aS_gv_channel_ext"/>
+				<Vector_3 label="v3_Nzz"/>
+    </builder>  
+  </part>
+  <part label="aS_gv_hub">	
+    <builder name="analyticGeometry">
+			<transformer name="pickMap3dTo3dRangePercent" parameter_percent_three="0."/>
+				<analyticGeometry label="rM2dTo3d_gv_channel"/>
+    </builder>  
+  </part>			
+  <part label="aS_gv_shroud">	
+    <builder name="analyticGeometry">
+			<transformer name="pickMap3dTo3dRangePercent" parameter_percent_three="1."/>
+				<analyticGeometry label="rM2dTo3d_gv_channel"/>
+    </builder>  
+  </part>
+  <part label="aS_gv_inlet_full">	
+    <builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="~u0_s(aS_gv_channel_ext)~"/>
+				<Point_3 xyz="0,0,0"/>
+				<Vector_3 xyz="0,0,1"/>
+    </builder>  
+  </part>
+  <part label="aS_gv_outlet_full">	
+    <builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="~u1_s(aS_gv_channel_ext)~"/>
+				<Point_3 xyz="0,0,0"/>
+				<Vector_3 xyz="0,0,1"/>
+    </builder>  
+  </part>
+
+<!--
+!
+!
+! coordinate transformation (phir, m, s) -> (u, v, w)
+!
+!
+-->				
+  <part label="baseContainer_gv_channel">
+    <builder name="baseContainer">
+			<transformer 
+				label="gv_uVw_phirMs" 
+				name="uVw_phirMs" 
+				part_label="rM2dTo3d_gv_channel"
+				number_points_two="31"
+				number_points_three="11"
+			/>
+    </builder>
+  </part>
+	
+</gv_channel>

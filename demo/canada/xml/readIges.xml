@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<readIges>
+
+<!--
+!
+!
+! read file
+!
+!
+-->					
+  <part label="s3_shroud_inOut_bS"> 
+    <builder  name="bSplineCurve_pointConstructOCC" order="2">
+      <Point_3 xyz="0, 2.075, -1.7"/>
+      <Point_3 xyz="0, 2.150, -1.7"/>
+      <Point_3 xyz="0, 2.150, -1.2"/>
+    </builder>
+  </part>
+  <part label="s3_shroud_inIn_bS"> 
+    <builder  name="bSplineCurve_pointConstructOCC" order="2">
+      <Point_3 xyz="0, 2.075, -1.7"/>
+      <Point_3 xyz="0, 2.000, -1.7"/>
+      <Point_3 xyz="0, 2.000, -1.2"/>
+    </builder>
+  </part>
+  <part label="s3_shroud_in_bS"> 
+    <builder  name="bSplineCurve_curveConnectConstructOCC">
+      <analyticGeometry label="s3_shroud_inIn_bS"/>
+      <analyticGeometry label="s3_shroud_inOut_bS"/>
+    </builder>
+  </part>  
+  
+  <part label="aG_shroud_in.igs">
+    <builder name="analyticGeometry">
+      <analyticGeometry label="s3_shroud_inIn_bS"/>
+    </builder>
+  </part>
+  <part label="aG_shroud_in2.igs">
+    <builder name="analyticGeometry">
+      <analyticGeometry label="s3_shroud_in_bS"/>
+    </builder>
+  </part>  
+  
+	<replace 
+		variable="ii" 
+		values="{le_edge.igs}{la_edge.igs}"
+	>
+		<part label="aG_{ii}">
+			<builder name="geomShape_readIgesOCCAGXmlBuilder" filename="./geo/{ii}"/>
+		</part>
+	</replace>
+
+	<replace 
+		variable="ii" 
+		values="{le_edge.igs}{la_edge.igs}"
+	>	
+		<part label="sR_{ii}_0">	
+			<builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="aG_{ii}_0"/>
+				<Vector_3 label="v3_Nzz"/>
+				<Point_3 label="p3_0"/>
+				<float value="2.*_pi"/>
+			</builder>  
+		</part>	
+		<part label="sR_{ii}_1">	
+			<builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="aG_{ii}_1"/>
+				<Vector_3 label="v3_Nzz"/>
+				<Point_3 label="p3_0"/>
+				<float value="2.*_pi"/>
+			</builder>  
+		</part>			
+	</replace>
+
+	<function label="f_z">
+		<builder  name="muParser">
+			<expression 
+				value="-5 + xx * 10, -5 + yy * 10, -2.0" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+		</builder>
+	</function>
+	<part label="aS_z">
+		<builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="f_z"/>
+			<analyticGeometry label="aG_inf"/>
+		</builder>
+	</part>
+	<part label="s3_shroudOut_in">
+		<builder name="analyticGeometry">
+			<transformer name="pickMap1dTo3dLinePercent">
+				<float value="0"/>
+				<float value="@aG_shroud_in2.igs[-1%ClosestPointTo@aS_z@](0)@"/>
+			</transformer>
+			<analyticGeometry label="aG_shroud_in2.igs"/>
+		</builder>
+	</part>
+	<part label="s3_shroud_in">
+		<builder name="analyticGeometry">
+			<transformer name="pickMap1dTo3dLinePercent">
+				<float value="@aG_shroud_in2.igs[-1%ClosestPointTo@aS_z@](0)@"/>
+				<float value="1"/>				
+			</transformer>
+			<analyticGeometry label="aG_shroud_in2.igs"/>
+		</builder>
+	</part>		
+</readIges>
