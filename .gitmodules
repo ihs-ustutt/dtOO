@@ -2,3 +2,6 @@
 	path = src/libraryKernel/linenoise
 	url = https://github.com/antirez/linenoise
   ignore = dirty
+[submodule "dtOO-ThirdParty"]
+	path = dtOO-ThirdParty
+	url = https://github.com/ihs-ustutt/dtOO-ThirdParty.git

@@ -1,3 +1,20 @@
+#------------------------------------------------------------------------------
+#  dtOO < design tool Object-Oriented >
+#    
+#    Copyright (C) 2024 A. Tismer.
+#------------------------------------------------------------------------------
+#License
+#    This file is part of dtOO.
+#
+#    dtOO is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE.  See the LICENSE.txt file in the
+#    dtOO root directory for more details.
+#
+#    You should have received a copy of the License along with dtOO.
+#
+#------------------------------------------------------------------------------
+
 cmake_minimum_required(VERSION 3.15)
 
 option(DTOO_USE_CCACHE "Use CCACHE" OFF)
@@ -529,11 +546,6 @@ install(
   PATTERN "__pycache__" EXCLUDE
   PATTERN ".spyproject" EXCLUDE
 )
-
-#
-# add applications
-#
-add_subdirectory(application)
 
 #
 # add tools

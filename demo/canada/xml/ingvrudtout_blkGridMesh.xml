@@ -1,0 +1,793 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ingvrudtout_blkGridMesh>
+<!--
+!
+! constValue
+!
+-->	
+	<constValue name="sliderFloatParam" label="cV_dt_lcIntPrec" value="0.01" min="0.0001" max="0.1"/>
+	<constValue name="sliderFloatParam" label="cV_dt_charLMin" value="0.02" min="0.003" max="10.0"/>
+	<constValue name="sliderFloatParam" label="cV_dt_charCLMax" value="5.00" min="0.01" max="10.0"/>
+	<constValue name="intParam" label="cV_dt_nElemOutExt" value="60" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemCirc2" value="10" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemCirc1" value="4" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemStreamwiseDtOut" value="30" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemStreamwiseDtIn" value="30" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemStreamwiseDtIn2" value="20" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemSpanwiseDtIn" value="20" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemStreamwiseDt2Out" value="30" min="1" max="100"/>
+  <constValue name="intParam" label="cV_dt_nElemStreamwiseDt3Out" value="30" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemSpanwiseDt3Out" value="15" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemSpanwiseIn" value="20" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemStreamwiseIn" value="10" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemStreamwiseDt2Hub" value="30" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemSpanwiseDt2Hub" value="2" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemStreamwiseDt3Hub" value="30" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemSpanwiseDt3Hub" value="2" min="1" max="100"/>  
+	<constValue name="intParam" label="cV_dt_nElemSpanwiseInBulb" value="5" min="1" max="100"/>
+	<constValue name="intParam" label="cV_dt_nElemStreamwiseInBulb" value="10" min="1" max="100"/>	
+  <constValue name="intParam" label="cV_dt_nElemSpanwiseDtGap" value="10" min="1" max="100"/>
+  <constValue name="intParam" label="cV_dt_nElemSpanwiseDt2Gap" value="10" min="1" max="100"/>
+<!--	<constValue name="intParam" label="cV_dt_nElemSpanwiseDt2SpoilerFar" value="10" min="1" max="100"/>-->
+	<constValue name="sliderFloatParam" label="cV_dt_firstElementSize" value="0.003" min="0.0001" max="1.0"/>
+
+<!--
+!
+! analyticGeometry definitions for patch definitions
+!
+-->
+	<function label="f_sym_nx">
+		<builder  name="muParser">
+			<expression 
+				value="0, -1 + xx * 10, -5 + (#cV_l_far_2#+5+1)*yy" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+		</builder>
+	</function>
+	<part label="aS_sym_nx">
+		<builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="f_sym_nx"/>
+			<analyticGeometry label="aG_inf"/>
+		</builder>
+	</part>
+	<function label="f_sym_ny">
+		<builder  name="muParser">
+			<expression 
+				value="-1 + xx * 10, 0, -5 + (#cV_l_far_2#+5+1)*yy" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+		</builder>
+	</function>
+	<part label="aS_sym_ny">
+		<builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="f_sym_ny"/>
+			<analyticGeometry label="aG_inf"/>
+		</builder>
+	</part>
+	<function label="aS_sym_nx_analyticFunction">
+		<builder  name="muParser">
+			<expression 
+				value="abs(xx) &lt; 1.e-02 ? 1 : 0." 
+				dimension="1"
+			/>
+			<x_one name="xx" min="-100." max="100."/>
+			<x_two name="yy" min="-100." max="100."/>
+      <x_three name="zz" min="-100." max="100."/>
+		</builder>
+	</function>
+	<function label="aS_sym_ny_analyticFunction">
+		<builder  name="muParser">
+			<expression 
+				value="abs(yy) &lt; 1.e-02 ? 1 : 0." 
+				dimension="1"
+			/>
+			<x_one name="xx" min="-100." max="100."/>
+			<x_two name="yy" min="-100." max="100."/>
+      <x_three name="zz" min="-100." max="100."/>
+		</builder>
+	</function>  
+	<function label="f_inlet">
+		<builder  name="muParser">
+			<expression 
+				value="-1 + xx * 20, -1 + yy * 10, #cV_l_far_0#" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+		</builder>
+	</function>
+	<part label="aS_ingvrudtout_inlet">
+		<builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="f_inlet"/>
+			<analyticGeometry label="aG_inf"/>
+		</builder>
+	</part>
+		<function label="f_outlet">
+		<builder  name="muParser">
+			<expression 
+				value="-1 + xx * 20, -1 + yy * 10, #cV_l_far_2#" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="0." max="1."/>
+			<x_two name="yy" min="0." max="1."/>
+		</builder>
+	</function>
+	<part label="aS_ingvrudtout_outlet">
+		<builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="f_outlet"/>
+			<analyticGeometry label="aG_inf"/>
+		</builder>
+	</part>
+	<part label="aS_shroud_tip">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="aS_internal_38_1"/>
+		</builder>
+	</part>	
+	<function label="aS_dt3End_cSection_analyticFunction">
+		<builder  name="muParser">
+			<expression 
+				value="abs(zz - #cV_l_dt3_2#) &lt; 1.e-03 ? 1 : 0." 
+				dimension="1"
+			/>
+			<x_one name="xx" min="-100." max="100."/>
+			<x_two name="yy" min="-100." max="100."/>
+      <x_three name="zz" min="-100." max="100."/>
+		</builder>
+	</function>  
+<!--	<part label="aS_ingvrudtout_spoilerBegin_cSection">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="aS_internal_16_0"/>
+		</builder>
+	</part>	
+	<part label="aS_ingvrudtout_spoilerEnd_cSection">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~v0_v(t6C_dt_6_1)~"/>
+		</builder>
+	</part>		
+	<part label="aS_ingvrudtout_spoilerBeginHub_cSection">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="aS_internal_30_1"/>
+		</builder>
+	</part>		-->
+	
+	
+<!--
+!
+!
+! gradings
+!
+!
+-->					
+	<constValue 
+		label="cV_dt_gridDoubleGrading" 
+		name="sliderFloatParam" 
+		value="3.25" min="0.001" max="100.00"
+	/>	
+	<function label="aF_dt_gridGradingSpline_7"> 
+		<builder  
+			name="scaTanhGradingOneDAFXmlBuilder[]"
+			g="#cV_dt_gridDoubleGrading#" gMin="0.1" gMax="5."
+			c="{.5}{.5}{-1.}{2.}"
+		/>		
+	</function>
+	<constValue 
+		label="cV_dt_gridSingleGrading" 
+		name="sliderFloatParam" 
+		value="2.7" min="0.001" max="100."
+	/>	
+	<function label="aF_dt_gridGradingSpline_3"> 
+		<builder  
+			name="scaTanhGradingOneDAFXmlBuilder[]"
+			g="#cV_dt_gridSingleGrading#" gMin="0.1" gMax="5."
+			c="{1}{-1}{1}{-1}"
+		/>
+	</function>	
+	<function label="aF_dt_gridGradingSpline_4"> 
+		<builder  
+			name="scaTanhGradingOneDAFXmlBuilder[]"
+			g="#cV_dt_gridSingleGrading#" gMin="0.1" gMax="5."
+			c="{1}{-1}{1}{-1}"
+		/>
+	</function>
+
+	<function label="aF_dt_gridGradingSpline_8"> 
+		<builder  
+			name="scaTanhUnitGradingOneDAFXmlBuilder[]"
+			g="#cV_dt_gridDoubleGrading#" gMin="1." gMax="5."
+			c="{-0.5}{1.25}"
+		/>
+	</function>	
+
+<!--
+!
+!
+! coordinate function to bound mesh point coordinates
+!
+!
+-->						
+	<function label="f_forceNx">
+		<builder  name="muParser">
+			<expression 
+				value="0, yy, zz" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="-100." max="100."/>
+			<x_two name="yy" min="-100." max="100."/>
+      <x_three name="zz" min="-100." max="100."/>
+		</builder>
+	</function>
+	<function label="f_forceNy">
+		<builder  name="muParser">
+			<expression 
+				value="xx, 0, zz" 
+				dimension="3"
+			/>
+			<x_one name="xx" min="-100." max="100."/>
+			<x_two name="yy" min="-100." max="100."/>
+      <x_three name="zz" min="-100." max="100."/>
+		</builder>
+	</function>  
+<!--
+!
+!
+! boundedVolume
+!
+!
+-->						
+	<boundedVolume name="map3dTo3dGmsh" label="ingvrudtout_blkGridMesh">	
+<!--		<option 
+			name="gmshMeshStr" 
+			value="
+				General.Terminal = 1.;
+				General.Verbosity = 100.;
+				General.ExpertMode = 1.;			
+				Mesh.LcIntegrationPrecision = #cV_dt_lcIntPrec#;
+				Mesh.CharacteristicLengthMin = #cV_dt_charLMin#;
+				Mesh.CharacteristicLengthMax = `#cV_dt_charCLMax#*#cV_dt_charLMin#`;
+				Geometry.Tolerance = 1.e-4;
+				Mesh.OptimizeThreshold = 0.7;
+			"
+		/>-->
+		<option name="[gmsh]General.Terminal" value="1."/>
+        <option name="[gmsh]General.Verbosity" value="100."/>
+        <option name="[gmsh]General.ExpertMode" value="1."/>
+        <option name="[gmsh]Mesh.LcIntegrationPrecision" value="#cV_dt_lcIntPrec#"/>
+        <option name="[gmsh]Mesh.CharacteristicLengthMin" value="#cV_dt_charLMin#"/>
+        <option name="[gmsh]Mesh.CharacteristicLengthMax" value="#cV_dt_charCLMax#*#cV_dt_charLMin#"/>
+        <option name="[gmsh]Geometry.Tolerance" value="1.e-4"/>
+        <option name="[gmsh]Mesh.OptimizeThreshold" value="0.7"/>
+        <option name="[gmsh]Mesh.Algorithm" value="1"/>
+        
+		<bVObserver 
+			name="bVOSetPrescribedMeshSizeAtPoints" 
+			meshSize="#cV_dt_charLMin#*#cV_dt_charCLMax#"
+		/>
+		
+		<bVObserver name="bVONameRegions" regionLabel=""/>
+  	<bVObserver 
+      name="bVOAnalyticFunctionToFace"
+			analyticFunction="{aS_sym_nx_analyticFunction}{aS_sym_ny_analyticFunction}"
+    />		    
+		<bVObserver 
+			name="bVOAnalyticGeometryToFace" 
+			analyticGeometry="
+				{aS_dt_hub_0}{aS_dt_hub_1}{aS_dt_hubEnd}
+				{aS_bevelFront_dt2}{aS_bevelBack_dt}
+        {aS_bevelFront_dt3}{aS_bevelBack_dt2}
+				{aS_skinCorpus_dtIn}{aS_skinCorpus_dtOut}
+				{aS_skinCorpus_dt2In}{aS_skinCorpus_dt2Out}
+        {aS_skinCorpus_dt3In}{aS_skinCorpus_dt3Out}
+				{aS_bevelBack_dt3}
+				{aS_ingvrudtout_inlet}
+				{aS_ingvrudtout_outlet}
+				{aS_skinCorpus_farMid}
+				{aS_gv_hub_bulb}
+				{aS_gv_ru_shroudOut}
+				{aS_gv_inlet_full}
+				{aS_ru_outlet_full}
+				{aS_gv_shroud}
+				{aS_shroud_tip}
+			"
+			increase_tolerance="5."
+		/> 
+		<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="
+				{R_0}{R_2}{R_4}{R_6}{R_8}{R_10}{R_12}{R_14}{R_16}{R_18}{R_20}
+        {R_22}{R_24}{R_26}{R_28}{R_30}{R_32}{R_34}{R_36}{R_38}{R_40}
+        {R_42}{R_44}{R_46}{R_48}{R_50}{R_52}{R_54}{R_56}{R_58}{R_60}
+        {R_62}{R_64}{R_66}{R_68}{R_70}{R_72}{R_74}{R_76}{R_78}{R_80}
+        {R_82}{R_84}{R_86}{R_88}{R_90}{R_92}
+			"
+			numberElements="{#cV_dt_nElemCirc1#}{5}{5}"
+		/>
+		<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="
+				{R_1}{R_3}{R_5}{R_7}{R_9}{R_11}{R_13}{R_15}{R_17}{R_19}{R_21}
+        {R_23}{R_25}{R_27}{R_29}{R_31}{R_33}{R_35}{R_37}{R_39}{R_41}
+        {R_43}{R_45}{R_47}{R_49}{R_51}{R_53}{R_55}{R_57}{R_59}{R_61}
+        {R_63}{R_65}{R_67}{R_69}{R_71}{R_73}{R_75}{R_77}{R_79}{R_81}
+        {R_83}{R_85}{R_87}{R_89}{R_91}{R_93}
+			"
+			numberElements="{#cV_dt_nElemCirc2#}{5}{5}"
+		/>			
+		<bVObserver 
+			name="bVORecombineRecursiveRegions"
+			regionLabel="
+				{R_0}{R_1}{R_2}{R_3}{R_4}{R_5}{R_6}{R_7}{R_8}{R_9}{R_10}
+				{R_11}{R_12}{R_13}{R_14}{R_15}{R_16}{R_17}{R_18}{R_19}{R_20}
+				{R_21}{R_22}{R_23}{R_24}{R_25}{R_26}{R_27}{R_28}{R_29}{R_30}
+				{R_31}{R_32}{R_33}{R_34}{R_35}{R_36}{R_37}{R_38}{R_39}{R_40}
+				{R_41}{R_42}{R_43}{R_44}{R_45}{R_46}{R_47}{R_48}{R_49}{R_50}
+				{R_51}{R_52}{R_53}{R_54}{R_55}
+				{R_56}{R_57}{R_58}{R_59}{R_60}
+				{R_61}{R_62}{R_63}{R_64}{R_65}
+        {R_66}{R_67}{R_68}{R_69}{R_70}
+        {R_71}{R_72}{R_73}{R_74}{R_75}{R_76}{R_77}{R_78}{R_79}{R_80}
+        {R_81}{R_82}{R_83}{R_84}{R_85}{R_86}{R_87}{R_88}{R_89}{R_90}
+        {R_91}{R_92}{R_93}
+			"
+		/>
+		<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="{R_4}"
+			numberElements="{0}{#cV_dt_nElemStreamwiseDtOut#}{0}"
+		/>
+		<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="{R_7}"
+			numberElements="
+				{0}{0}{#cV_dt_nElemSpanwiseDtGap#}
+			"
+		/>    
+    <bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="{R_16}"
+			numberElements="
+				{0}{#cV_dt_nElemStreamwiseDtIn#}{#cV_dt_nElemSpanwiseDtIn#}
+			"
+		/>
+		<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="{R_18}"
+			numberElements="{0}{#cV_dt_nElemStreamwiseDtIn2#}{0}"
+		/>				
+		<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="{R_23}"
+			numberElements="
+				{0}{#cV_dt_nElemStreamwiseDt2Out#}{0}
+			"
+		/>
+		<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="{R_25}"
+			numberElements="
+				{0}{0}{#cV_dt_nElemSpanwiseDt2Gap#}
+			"
+		/>    
+		<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="{R_27}"
+			numberElements="
+				{0}{#cV_dt_nElemStreamwiseDt3Out#}{#cV_dt_nElemSpanwiseDt3Out#}
+			"
+		/>						    
+		<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="{R_54}"
+			numberElements="{0}{#cV_dt_nElemStreamwiseIn#}{#cV_dt_nElemSpanwiseIn#}"
+		/>
+<!--			<bVObserver 
+			name="bVOTransfiniteRegions"
+			regionLabel="{R_57}"
+			numberElements="{0}{20}{0}"
+		/>-->
+		
+		<bVObserver name="bVOTransfiniteFaces"
+			faceLabel="{R_94->SOUTH}" 
+			numberElements="{#cV_dt_nElemCirc1#}{#cV_dt_nElemStreamwiseDt2Hub#}"
+		/>
+		<bVObserver name="bVOTransfiniteFaces"
+			faceLabel="{R_94->EAST}" 
+			numberElements="{#cV_dt_nElemCirc2#}{#cV_dt_nElemStreamwiseDt2Hub#}"
+		/>
+<!--    <bVObserver name="bVOSetNElements"
+			faceLabel="{R_94->FRONT}" 
+			numberElements="{0}{0}{5}{5}
+			"
+		/>    -->
+		<bVObserver name="bVOSetNElements"
+			faceLabel="{R_94->NORTH}" 
+			numberElements="
+				{5}{#cV_dt_nElemStreamwiseDt2Hub#}{5}{#cV_dt_nElemStreamwiseDt2Hub#}
+			"
+		/>
+		<bVObserver name="bVOSetNElements"
+			faceLabel="{R_94->WEST}" 
+			numberElements="
+				{#cV_dt_nElemStreamwiseDt2Hub#}{15}{#cV_dt_nElemStreamwiseDt2Hub#}{5}
+			"
+		/>
+
+		<bVObserver name="bVOTransfiniteFaces"
+			faceLabel="{R_95->SOUTH}" 
+			numberElements="{#cV_dt_nElemCirc1#}{#cV_dt_nElemStreamwiseDt3Hub#}"
+		/>
+		<bVObserver name="bVOTransfiniteFaces"
+			faceLabel="{R_95->EAST}" 
+			numberElements="{#cV_dt_nElemCirc2#}{#cV_dt_nElemStreamwiseDt3Hub#}"
+		/>
+		<bVObserver name="bVOSetNElements"
+			faceLabel="{R_95->NORTH}" 
+			numberElements="
+				{5}{#cV_dt_nElemStreamwiseDt3Hub#}{5}{#cV_dt_nElemStreamwiseDt3Hub#}
+			"
+		/>
+		<bVObserver name="bVOSetNElements"
+			faceLabel="{R_95->WEST}" 
+			numberElements="
+				{#cV_dt_nElemStreamwiseDt3Hub#}{15}{#cV_dt_nElemStreamwiseDt3Hub#}{15}
+			"
+		/>
+    
+		<bVObserver name="bVOTransfiniteFaces"
+			faceLabel="{R_96->SOUTH}" numberElements="{#cV_dt_nElemCirc1#}{#cV_dt_nElemOutExt#}"
+		/>
+		<bVObserver name="bVOTransfiniteFaces"
+			faceLabel="{R_96->EAST}" numberElements="{#cV_dt_nElemCirc2#}{#cV_dt_nElemOutExt#}"
+		/>
+		<bVObserver name="bVOSetNElements"
+			faceLabel="{R_96->NORTH}" 
+			numberElements="{5}{#cV_dt_nElemOutExt#}{5}{#cV_dt_nElemOutExt#}"
+		/>
+		<bVObserver name="bVOSetNElements"
+			faceLabel="{R_96->WEST}" 
+			numberElements="{#cV_dt_nElemOutExt#}{15}{#cV_dt_nElemOutExt#}{15}"
+		/>			
+		
+		<bVObserver name="bVOTransfiniteFaces"
+			faceLabel="{R_97->SOUTH}" 
+			numberElements="{#cV_dt_nElemCirc1#}{#cV_dt_nElemStreamwiseInBulb#}"
+		/>
+		<bVObserver name="bVOTransfiniteFaces"
+			faceLabel="{R_97->EAST}" 
+			numberElements="{#cV_dt_nElemCirc2#}{#cV_dt_nElemStreamwiseInBulb#}"
+		/>
+		<bVObserver name="bVOSetNElements"
+			faceLabel="{R_97->NORTH}" 
+			numberElements="
+				{#cV_dt_nElemSpanwiseInBulb#}{#cV_dt_nElemStreamwiseInBulb#}
+			"
+		/>
+		<bVObserver name="bVOSetNElements"
+			faceLabel="{R_97->WEST}" 
+			numberElements="{#cV_dt_nElemStreamwiseInBulb#}{#cV_dt_nElemSpanwiseInBulb#}
+			"
+		/>			
+		
+		<bVObserver name="bVORecombine"
+			faceLabel="
+				{R_94->SOUTH}{R_94->EAST}
+				{R_95->SOUTH}{R_95->EAST}
+				{R_96->SOUTH}{R_96->EAST}
+        {R_97->SOUTH}{R_97->EAST}
+			"
+		/>
+<!--		<bVObserver name="bVORecombine"
+			faceLabel="
+				{R_94->NORTH}{R_94->WEST}
+				{R_95->NORTH}{R_95->WEST}
+				{R_96->NORTH}{R_96->WEST}
+        {R_97->NORTH}{R_97->WEST}
+			"
+		/>	-->
+<!--		<bVObserver name="bVORecombine"
+			faceLabel="
+        {R_97->NORTH}{R_97->WEST}
+			"
+		/>	    -->
+		<bVObserver 
+			name="bVOSetGradingToFaceRule"
+			rule="
+				{:aS_skinCorpus_dtOut*::*::3::1:}
+				{:aS_skinCorpus_dt2In*::*::3::1:}
+        {:aS_skinCorpus_dt2In*::::3::1:}      
+				{:aS_skinCorpus_dt2Out*::*::3::1:}
+        {:aS_skinCorpus_dt3In*::::3::1:}      
+				{:aS_skinCorpus_dt3Out*::*::3::1:}
+        {:aS_gv_ru_shroudOut_*::::3::1:}
+				{:aS_gv_shroud*::*::3::1:}
+				{:aS_dt_hub_*::aS_skinCorpus_dtIn*::7::1:}
+				{:::aS_gv_hub_bulb_*::8::1:}				
+        {:aS_gv_hub_bulb_*::aS_gv_hub_bulb_*::0::1:}			
+				{:aS_gv_hub_bulb_*::aS_gv_shroud*::7::1:}
+				{:aS_shroud_tip*::*::3::1:}
+				{:aS_shroud_tip*::aS_gv_hub_bulb_*::7::1:}
+				{:aS_skinCorpus_dtOut*::aS_skinCorpus_dtOut*::0::1:}
+				{:aS_skinCorpus_dt2In*::aS_skinCorpus_dt2In*::0::1:}
+				{:aS_skinCorpus_dt2Out*::aS_skinCorpus_dt2Out*::0::1:}
+				{:aS_skinCorpus_dt3In*::aS_skinCorpus_dt3In*::0::1:}
+				{:aS_skinCorpus_dt3Out*::aS_skinCorpus_dt3Out*::0::1:}
+        {:aS_gv_ru_shroudOut*::aS_gv_ru_shroudOut*::0::1:}
+				{:aS_gv_shroud*::aS_gv_ru_shroudOut*::0::1:}				
+				{:aS_bevelFront_dt2*::aS_bevelFront_dt2*::0::1:}
+				{:aS_bevelBack_dt*::aS_bevelBack_dt*::0::1:}
+				{:aS_bevelFront_dt3*::aS_bevelFront_dt3*::0::1:}
+				{:aS_bevelBack_dt2*::aS_bevelBack_dt2*::0::1:}      
+				{:aS_shroud_tip*::aS_shroud_tip*::0::1:}
+				{:aS_skinCorpus_dtOut_*::aS_skinCorpus_dt2In_*::7::1:}
+        {:aS_skinCorpus_dt2Out_*::aS_skinCorpus_dt3In_*::7::1:}
+				{:aS_ingvrudtout_outlet_*::aS_ingvrudtout_outlet_*::0::1:}
+				{:aS_spoiler_dt2In*::aS_spoiler_dt2In_*::0::1:}
+				{:aS_spoiler_dt2Out_*::aS_skinCorpus_farMid_*::4::1:}
+        {:aS_spoiler_dt3Out_*::aS_skinCorpus_farMid_*::4::1:}			
+			"
+		/>
+
+		<!-- remove gradings in u and v direction in all blocks -->
+		<bVObserver 
+			name="bVOSetGrading"
+                  edgeLabel=""
+			regionLabel="
+				{R_0}{R_1}{R_2}{R_3}{R_4}{R_5}{R_6}{R_7}{R_8}{R_9}{R_10}
+				{R_11}{R_12}{R_13}{R_14}{R_15}{R_16}{R_17}{R_18}{R_19}{R_20}
+				{R_21}{R_22}{R_23}{R_24}{R_25}{R_26}{R_27}{R_28}{R_29}{R_30}
+				{R_31}{R_32}{R_33}{R_34}{R_35}{R_36}{R_37}{R_38}{R_39}{R_40}
+				{R_41}{R_42}{R_43}{R_44}{R_45}{R_46}{R_47}{R_48}{R_49}{R_50}
+				{R_51}{R_52}{R_53}{R_54}{R_55}
+				{R_56}{R_57}{R_58}{R_59}{R_60}
+				{R_61}{R_62}{R_63}{R_64}{R_65}
+        {R_66}{R_67}{R_68}{R_69}{R_70}
+        {R_71}{R_72}{R_73}{R_74}{R_75}{R_76}{R_77}{R_78}{R_79}{R_80}
+        {R_81}{R_82}{R_83}{R_84}{R_85}{R_86}{R_87}{R_88}{R_89}{R_90}
+        {R_91}{R_92}{R_93}{R_94}
+			"
+			faceLabel=""
+			grading="{1}{1}{1}{1}{1}{1}{1}{1}{0}{0}{0}{0}"
+			type=   "{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}"
+		/>
+		<bVObserver 
+			name="bVOSetGradingToFaceRule"
+			rule="
+				{:aS_gv_ru_shroudOut_*::::3::1:}
+				{:aS_gv_ru_shroudOut_*::aS_gv_ru_shroudOut_*::0::1:}
+				{:aS_shroud_tip_*::aS_shroud_tip_*::0::1:}
+				{:aS_skinCorpus_dtOut*::aS_skinCorpus_dtOut*::0::1:}
+				{:aS_skinCorpus_dt2In*::aS_skinCorpus_dt2In*::0::1:}
+				{:aS_skinCorpus_dt2Out*::aS_skinCorpus_dt2Out*::0::1:}
+				{:aS_gv_ru_shroudOut*::aS_gv_ru_shroudOut*::0::1:}
+				{:aS_spoiler_dt2In*::aS_spoiler_dt2In*::0::1:}
+				{:aS_bevelFront_dt2*::aS_bevelFront_dt2*::0::1:}
+				{:aS_bevelBack_dt*::aS_bevelBack_dt*::0::1:}
+				{:aS_shroud_tip*::aS_shroud_tip*::0::1:}
+				{:aS_ingvrudtout_outlet_*::aS_ingvrudtout_outlet_*::0::1:}
+        {:aS_skinCorpus_dt2In_*::aS_skinCorpus_dt2In_*::0::1:}
+			"
+		/>		
+        <!--  
+    				{:aS_ingvrudtout_spoilerEnd_cSection_*::aS_ingvrudtout_spoilerEnd_cSection_*::0::1:}
+				{:aS_ingvrudtout_spoilerBegin_cSection_*::aS_ingvrudtout_spoilerBegin_cSection_*::0::1:}
+				{:aS_ingvrudtout_spoilerBeginHub_cSection_*::aS_ingvrudtout_spoilerBeginHub_cSection_*::0::1:}
+    -->
+		<!-- remove all gradings in u and v direction -->
+<!--			<bVObserver 
+			name="bVOSetGrading"
+                  edgeLabel=""
+			regionLabel="
+				{R_56}{R_57}{R_58}{R_59}{R_60}
+				{R_61}{R_62}{R_63}{R_64}{R_65}
+			"
+			faceLabel=""
+			grading="{1}{0}{1}{0}{1}{0}{1}{0}{0}{0}{0}{0}"
+			type=   "{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}"
+		/>		-->
+		<!-- remove all gradings in inlet block at bulb -->
+		<bVObserver 
+			name="bVOSetGrading"
+                  edgeLabel=""
+			regionLabel="{R_68}"
+			faceLabel=""
+			grading="{1}{1}{1}{1}{1}{1}{1}{1}{1}{1}{1}{1}"
+			type=   "{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}"
+		/>
+		
+		<bVObserver 
+			name="bVOSetPrescribedFirstElementSize"
+			type="3"
+			gradingLabel="aF_dt_gridGradingSpline_3"
+			firstElementSize="#cV_dt_firstElementSize#"
+		/>
+		<bVObserver 
+			name="bVOSetPrescribedFirstElementSize"
+			type="7"
+			gradingLabel="aF_dt_gridGradingSpline_7"
+			firstElementSize="#cV_dt_firstElementSize#"
+		/>
+		<bVObserver 
+			name="bVOSetPrescribedFirstElementSize"
+			type="8"
+			gradingLabel="aF_dt_gridGradingSpline_8"
+			firstElementSize="4.*#cV_dt_firstElementSize#"
+		/>		
+		<bVObserver 
+			name="bVOSetPrescribedFirstElementSize"
+			type="4"
+			gradingLabel="aF_dt_gridGradingSpline_4"
+			firstElementSize="2.*#cV_dt_firstElementSize#"
+		/>
+		
+		<bVObserver name="bVOReadMSH" filename="" mustRead="false"/>
+		
+		<bVObserver name="bVODumpModel"/>
+		
+		<bVObserver 
+			name="bVOMeshRule"
+			rule="
+				:{dtMeshFreeGradingGEdge(*)}:
+				:{dtMeshTransfiniteGFace(*)}:
+				:{dtMeshGRegion(*)}:
+			"
+			only="
+              
+			"
+		>
+			<option name="debug" value="true"/>
+			<dtMeshOperator
+				name="dtMeshFreeGradingGEdge"
+				label="dtMeshFreeGradingGEdge"
+				typeTransfinite="{3}{7}{4}{8}"
+				gradingLabel="
+					{aF_dt_gridGradingSpline_3}
+					{aF_dt_gridGradingSpline_7}
+					{aF_dt_gridGradingSpline_4}
+					{aF_dt_gridGradingSpline_8}
+				"
+			/>
+
+			<dtMeshOperator
+				name="dtMeshGFace"
+				label="dtMeshGFace"
+			/>
+			<dtMeshOperator
+				name="dtMeshTransfiniteGFace"
+				label="dtMeshTransfiniteGFace"
+			/>			
+			<dtMeshOperator
+				name="dtMeshGRegion"
+				label="dtMeshGRegion"
+				minQShapeMetric="0.0" 
+				relax="0.10"
+				nPyramidOpenSteps="10"
+				nSmooths="2"
+			/>
+		</bVObserver>
+
+		<bVObserver name="bVODumpModel"/>
+		
+		<bVObserver name="bVOWriteMSH" filename="" saveAll="true"/>
+		
+		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+				{:aS_dt_hub_0_*::DT_HUB:}
+				{:aS_dt_hub_1_*::DT_HUB:}
+				{:aS_dt_hubEnd_*::DT_HUB:}
+				{:aS_bevelFront_dt2_*::DT_WALL:}
+        {:aS_bevelBack_dt2_*::DT_WALL:}      
+				{:aS_bevelBack_dt_*::DT_WALL:}
+				{:aS_bevelFront_dt3_*::DT_WALL:}
+				{:aS_bevelBack_dt3_*::DT_WALL:}
+				{:aS_sym_nx_*::INGVRUDTOUT_SYMNX:}
+				{:aS_sym_ny_*::INGVRUDTOUT_SYMNY:}
+				{:aS_skinCorpus_dtIn_*::DT_WALL:}
+				{:aS_skinCorpus_dtOut_*::DT_WALL:}
+				{:aS_skinCorpus_dt2In_*::DT_WALL:}
+				{:aS_skinCorpus_dt2Out_*::DT_WALL:}
+				{:aS_skinCorpus_dt3In_*::DT_WALL:}
+				{:aS_skinCorpus_dt3Out_*::DT_WALL:}      
+				{:aS_ingvrudtout_inlet_*::IN_INLET:}
+				{:aS_ingvrudtout_outlet_*::OUT_OUTLET:}
+				{:aS_skinCorpus_farMid_*::INGVRUDTOUT_FAR:}
+				{:aS_gv_hub_bulb_*::IN_HUB:}
+				{:aS_gv_ru_shroudOut_*::GVRU_WALL:}
+				{:aS_gv_inlet_full_*::IN_OUTLET:}
+				{:aS_ru_outlet_full_*::DT_INLET:}
+				{:aS_shroud_tip*::GVRU_WALL:}
+			"
+			regRule="
+				{:R_*::INGVRUDTOUT:}
+			"			
+		/>
+    
+    <bVObserver 
+      name="bVOForceMeshPointCoordinates" 
+      coordinateFunction="f_forceNx"
+      faceLabel="{INGVRUDTOUT_SYMNX}"
+    />
+
+    <bVObserver 
+      name="bVOForceMeshPointCoordinates" 
+      coordinateFunction="f_forceNy"
+      faceLabel="{INGVRUDTOUT_SYMNY}"
+    />
+    
+		<bVObserver name="bVOOrientCellVolumes" positive="true"/>
+
+		<bVObserver name="bVODumpModel"/>
+		
+		<replace 
+			variable="ii" 
+			values="
+				{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}
+				{11}{12}{13}{14}{15}{16}{17}{18}{19}{20}
+				{21}{22}{23}{24}{25}{26}{27}{28}{29}{30}
+				{31}{32}{33}{34}{35}{36}{37}{38}{39}{40}
+				{41}{42}{43}{44}{45}{46}{47}{48}{49}{50}
+				{51}{52}{53}{54}{55}{56}{57}{58}{59}{60}
+				{61}{62}{63}{64}{65}{66}{67}{68}{69}{70}
+        {71}{72}{73}{74}{75}{76}{77}{78}{79}{80}
+        {81}{82}{83}{84}{85}{86}{87}{88}{89}{90}
+        {91}{92}{93}{94}{95}{96}{97}
+			">
+			<analyticGeometry label="mB_{ii}"/>
+		</replace>
+	</boundedVolume>	
+
+	<boundedVolume 
+		name="combineGmsh" 
+		label="ingvrudtout_fullBlkGridMesh"
+		absolute_tolerance="2.e-05"
+	>	
+
+		<bVObserver name="bVODumpModel"/>
+		<bVObserver 
+			name="bVOTransformMeshPoints" 
+			transformer="{mirrorX}{mirrorY}{mirrorXY}"
+			copy="true"
+			absolute_tolerance="2.e-05"
+		/>			
+
+    <bVObserver 
+      name="bVORemoveElements" 
+      label="
+        {*_SYMNX*->*}
+        {*_SYMNY*->*}
+        {*_SYMNX*}
+        {*_SYMNY*}
+			  {}
+      "
+    />		
+		
+		<bVObserver 
+			name="bVOPatchRule"
+			patchRule="
+				{:DT_HUB_*::DT_HUB:}
+				{:DT_WALL_*::DT_WALL:}
+				{:IN_INLET_*::IN_INLET:}
+				{:OUT_OUTLET_*::OUT_OUTLET:}
+				{:INGVRUDTOUT_FAR_*::INGVRUDTOUT_FAR:}
+				{:IN_HUB_*::IN_HUB:}
+				{:GVRU_WALL_*::GVRU_WALL:}
+				{:IN_OUTLET_*::IN_OUTLET:}
+				{:DT_INLET_*::DT_INLET:}
+			"
+			regRule="
+				{:*::INGVRUDTOUT:}
+			"			
+		/>
+
+		<bVObserver name="bVOOrientCellVolumes" positive="true"/>
+
+		<bVObserver name="bVOWriteMSH" filename="" saveAll="true"/>
+		
+		<bVObserver name="bVODumpModel"/>
+
+		<boundedVolume label="ingvrudtout_blkGridMesh"/>
+	</boundedVolume>			
+</ingvrudtout_blkGridMesh>	

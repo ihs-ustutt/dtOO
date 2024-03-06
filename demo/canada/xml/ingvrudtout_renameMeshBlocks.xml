@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ingvrudtout_renameMeshBlocks>
+	
+	<part label="mB">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="t6C_orient_split_*"/>
+			<analyticGeometry label="dtHub_*_orient"/>
+			<analyticGeometry label="inHub_*_orient"/>
+		</builder>
+	</part>
+</ingvrudtout_renameMeshBlocks>

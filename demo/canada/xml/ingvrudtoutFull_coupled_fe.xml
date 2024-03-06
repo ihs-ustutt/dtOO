@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ingvrudtoutFull_coupled_fe>
+	<case 
+		name="OpenFOAMCase" 
+		label="ingvrudtoutFull_coupled_of"
+		noWriteRule="
+  {
+  1
+  (
+  }
+  {
+  )
+  }
+    "		
+		dictRule="
+			controlDict 
+			{
+		    dtOOFileName      &quot;system/controlDict&quot;;
+				application       MRFSimpleFoam;
+				startFrom         latestTime;
+				startTime         0;
+				stopAt            endTime;
+				endTime           1000;
+				deltaT            1;
+				writeInterval     500;	
+        runTimeModifiable yes;
+				writeFormat       binary;
+				functions
+				(
+          Q_in_out { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName IN_OUTLET ; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          }
+          Q_gv_in { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName GV_INLET ; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          Q_gv_out { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName GV_OUTLET ; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          Q_ru_in { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName RU_INLET ; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          Q_ru_out { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName RU_OUTLET ; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          Q_dt_in { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName DT_INLET ; 
+            expression &quot; phi &quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          }
+          ptot_in_out { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName IN_OUTLET ; 
+            expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          ptot_gv_in { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName GV_INLET ; 
+            expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          ptot_gv_out { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName GV_OUTLET ; 
+            expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          ptot_ru_in { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName RU_INLET ; 
+            expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          ptot_ru_out { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName RU_OUTLET ; 
+            expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          ptot_dt_in { 
+            type swakExpression ; 
+            valueType patch ; 
+            verbose true ; 
+            patchName DT_INLET ; 
+            expression &quot; (p+.5*magSqr(U)) * phi / sum( phi )&quot; ; 
+            accumulations ( sum ) ; 
+            outputInterval 1 ; 
+          } 
+          forces { 
+            type forces ; 
+            functionObjectLibs ( &quot;libforces.so&quot; ) ; 
+            outputControl timeStep ; 
+            outputInterval 1 ; 
+            patches ( RU_BLADE ) ; 
+            rhoName rhoInf ; 
+            log true ; 
+            rhoInf 997 ; 
+            CofR ( 0 0 0 ) ; 
+          } 
+        );
+
+				libs (
+          &quot;libOpenFoamTurbo.so&quot;							
+					&quot;libsimpleFunctionObjects.so&quot;
+					&quot;libsimpleSwakFunctionObjects.so&quot;
+				);				
+			}
+			decomposeParDict
+			{
+				dtOOFileName        &quot;system/decomposeParDict&quot;;
+
+        method          patchConstrained;
+
+        numberOfSubdomains 96;
+
+
+        globalFaceZones ( 
+          RU_INLET_zone 
+          GV_OUTLET_zone 
+          DT_INLET_zone 
+          IN_OUTLET_zone
+          GV_INLET_zone
+          RU_OUTLET_zone
+          INGVRUDTOUT_FAR_zone
+          FAR_INGVRUDTOUTFAR_zone
+          OUT_OUTLET_zone
+          FAR_DTFAR_zone
+          IN_INLET_zone
+          FAR_INFAR_zone
+        );
+
+        patchConstrainedCoeffs
+        {
+            method          metis;
+            numberOfSubdomains 96;
+            patchConstraints ( 
+              ( GV_OUTLET 0 ) 
+              ( RU_INLET 0 )
+              ( GV_INLET 0 )
+              ( IN_OUTLET 0 )
+              ( RU_OUTLET 0 ) 
+              ( DT_INLET 0 )
+            );
+        }        
+			}
+		  fvSchemes 
+		  {
+		    dtOOFileName        &quot;system/fvSchemes&quot;;
+				ddtSchemes
+				{
+					default steadyState;
+				}
+
+				gradSchemes
+				{
+					default         cellLimited Gauss linear 0.33;
+					grad(p)         cellLimited Gauss linear 0.33;
+					grad(U)         cellLimited Gauss linear 0.33;
+				}
+
+				divSchemes
+				{
+					default           none;
+					div(phi,U)        Gauss linearUpwindV cellLimited Gauss linear 0.33;
+					div(phi,k)        Gauss upwind;
+					div(phi,epsilon)  Gauss upwind;
+					div((nuEff*dev(grad(U).T()))) Gauss linear;
+				}
+
+				laplacianSchemes 
+				{ 
+					default Gauss linear limited 0.333; 
+				} 
+
+				snGradSchemes 
+				{ 
+					default limited 0.333; 
+				} 
+
+				interpolationSchemes
+				{
+					default         linear;
+					interpolate(U)  linear;
+				}
+
+				fluxRequired
+				{
+					default         no;
+					p;
+				}
+
+				mixingPlane
+				{
+					default         areaAveraging;
+				}
+		  }
+		  fvSolution
+		  {
+		    dtOOFileName        &quot;system/fvSolution&quot;;
+				solvers
+				{
+					p
+					{
+						solver           PCG;
+						preconditioner   FDIC;
+						tolerance        1e-06;
+						relTol           0.1;
+					};
+					U
+					{
+						solver           BiCGStab;
+						preconditioner   DILU;
+						tolerance        1e-08;
+						relTol           0.0;
+					};
+					k
+					{
+						solver           BiCGStab;
+						preconditioner   DILU;
+						tolerance        1e-08;
+						relTol           0.0;
+					};
+					epsilon
+					{
+						solver           BiCGStab;
+						preconditioner   DILU;
+						tolerance        1e-08;
+						relTol           0.0;
+					};
+				}
+				relaxationFactors
+				{
+					p               0.3;
+					U               0.7;
+					k               0.7;				
+					epsilon         0.7;				
+				}
+				SIMPLE
+				{
+					nNonOrthogonalCorrectors 2;
+				}				
+		  }
+		  transportModel
+		  {
+				dtOOFileName        &quot;constant/transportProperties&quot;;
+				transportModel  Newtonian;
+
+				nu              nu [0 2 -1 0 0 0 0] 1.0e-06;
+			}
+		  RASProperties
+      {
+				dtOOFileName        &quot;constant/RASProperties&quot;;
+				RASModel            kEpsilon;
+				turbulence          on;
+
+				kEpsilonCoeffs
+				{
+					Cmu              0.09;
+					C1               1.44;
+					C2               1.92;
+					alphaEps         0.76923;
+				}				
+			}
+		  MRFZones
+      {
+				noWriteRuleStart 0;
+				
+				RU
+				{
+					patches ();
+					nonRotatingPatches ( RU_INLET RU_OUTLET RU_SHROUD );
+					origin    origin [0 1 0 0 0 0 0]  (0 0 0);
+					axis      axis   [0 0 0 0 0 0 0]  (0 0 1);
+					omega     omega  [0 0 -1 0 0 0 0] -#cV_omega#;
+				}
+
+
+				noWriteRuleEnd 1;
+				
+				dtOOFileName        &quot;constant/MRFZones&quot;;
+			}				
+		"		
+		fieldRule="
+			{
+				:volVectorField::U::[0 1 -1 0 0 0 0]::(0 0 4 ):
+			}
+			{
+				:volScalarField::p::[0 2 -2 0 0 0 0]::0:
+			}
+			{
+				:volScalarField::k::[0 2 -2 0 0 0 0]::`(3./2.) * (#cV_U# * #cV_I#)^2`:
+			}
+			{
+				:volScalarField:
+				:epsilon:
+				:[0 2 -3 0 0 0 0]:
+				:`#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`:
+			}
+			{
+				:volScalarField::nut::[0 2 -1 0 0 0 0]::0.1:
+			}
+		"
+		setupRule="
+		  {
+				:OpenFOAMEmptyRule:::::
+			}
+		  {
+				:OpenFOAMWallRule::DT_HUB:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}
+		  {
+				:OpenFOAMWallRule::DT_WALL:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}
+		  {
+				:OpenFOAMWallRule::IN_HUB:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}				
+		  {
+				:OpenFOAMWallRule::GVRU_WALL:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}				
+		  {
+				:OpenFOAMSetupRule::FAR_FARFAR:::
+				:U::slip(value uniform (0 0 0);):
+				:p::slip(value uniform 0;):
+				:k::slip(value uniform 0;):
+				:epsilon::slip( value uniform 0;):
+			}
+		  {
+				:OpenFOAMWallRule::FAR_INLET:::
+				:U::fixedValue(value uniform (0 0 4);):
+				:p::zeroGradient(value uniform 0;):
+				:k::turbulentIntensityKineticEnergyInlet(
+						intensity      #cV_I#;
+						value          uniform `(3./2.) * (#cV_U# * #cV_I#)^2`;
+					):				
+				:epsilon::turbulentMixingLengthDissipationRateInlet(
+						mixingLength `0.038 * #cV_L#`;
+						value uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`;
+					):
+			}
+		  {
+				:OpenFOAMWallRule::FAR_OUTLET:::
+				:U::zeroGradient(value uniform (0 0 4);):
+				:p::fixedValue(value uniform 0;):
+				:k::zeroGradient(
+						value          uniform 0.;
+					):				
+				:epsilon::zeroGradient(
+						value uniform 0.;
+					):
+			}
+		  {
+				:OpenFOAMGgiRule::IN_INLET,FAR_INFAR:
+				:
+					bridgeOverlap(false)
+				:
+			}
+		  {
+				:OpenFOAMGgiRule::INGVRUDTOUT_FAR,FAR_INGVRUDTOUTFAR:
+				:
+					bridgeOverlap(false)
+				:
+			}
+		  {
+				:OpenFOAMGgiRule::OUT_OUTLET,FAR_DTFAR:
+				:
+					bridgeOverlap(false)
+				:
+			}				
+		  {
+				:OpenFOAMGgiRule::IN_OUTLET,GV_INLET:
+				:
+					bridgeOverlap(true)
+				:
+			}				
+		  {
+				:OpenFOAMGgiRule::GV_OUTLET,RU_INLET:
+				:
+					bridgeOverlap(true)
+				:
+			}
+		  {
+				:OpenFOAMGgiRule::RU_OUTLET,DT_INLET:
+				:
+					bridgeOverlap(true)
+				:
+			}
+		  {
+				:OpenFOAMWallRule::GV_SHROUD:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}
+		  {
+				:OpenFOAMWallRule::GV_HUB:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}				
+		  {
+				:OpenFOAMWallRule::RU_SHROUD:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}
+		  {
+				:OpenFOAMWallRule::RU_HUB:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}
+		  {
+				:OpenFOAMWallRule::RU_BLADE:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}				
+		  {
+				:OpenFOAMWallRule::GV_BLADE:::
+				:U::fixedValue(value uniform (0 0 0);):
+				:p::zeroGradient(value uniform 0;):
+				:k::kqRWallFunction(value uniform 0;):
+				:epsilon::epsilonWallFunction(
+							U        U;
+							refValue uniform 0.0;
+							value    uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.4 * #cV_LWall#)`;
+					):
+				:nut::nutWallFunction(value uniform 0.0;):
+			}				
+		"
+				
+		runCommand="pwd"
+  >
+		<option name="keepOrientation" value="true"/>
+		
+		<boundedVolume label="ingvrudtout_fullBlkGridMesh"/>
+		<boundedVolume label="gv_fullGridGmsh"/>
+		<boundedVolume label="ru_fullGridGmsh"/>
+		<boundedVolume label="farFull_gridCgns"/>		
+	</case>	
+	<!--
+		  {
+				:OpenFOAMCyclicGgiRule::GV_PERIOPS,GV_PERIOSS::
+				bridgeOverlap(false),
+				rotationAngle(-360./#cV_gv_nBlades#), 
+				rotationAxis(0,0,1),
+				separationOffset(0,0,0):
+			}	
+
+		  {
+				:OpenFOAMCylindricalInletRule::GV_INLET:
+				::
+				:U::
+				  rotationAxis(0, 0, 1),
+				  referenceAxis(0, 1, 0),
+				  origin(0, 0, 0),
+				  function(aF_gv_inlet_phi_r_m),
+				  scale(true),
+				  volumeFlow(-#cV_Q#/#cV_gv_nBlades#)
+				:
+				:p::zeroGradient(
+				  value uniform 0;
+				):
+				:k::turbulentIntensityKineticEnergyInlet(
+						intensity      #cV_I#;
+						value          uniform `(3./2.) * (#cV_U# * #cV_I#)^2`;
+					):				
+				:epsilon::turbulentMixingLengthDissipationRateInlet(
+						mixingLength `0.038 * #cV_L#`;
+						value uniform `#cV_Cmu#*((3./2.) * (#cV_U# * #cV_I#)^2)^(3./2.) / (0.038 * #cV_L#)`;
+					):
+			}					
+	
+		  {
+				:OpenFOAMMixingPlaneRule::GV_OUTLET,RU_INLET:
+				:
+					coordinateSystem(
+							type            cylindrical;
+							name            mixingCS;
+							origin          (0 0 0);
+							e1              (1 0 0);
+							e3              (0 0 1);
+					),
+					sweepAxis(Theta),
+					stackAxis(R),
+					discretisation(bothPatches)
+				:
+			}
+	
+	-->
+</ingvrudtoutFull_coupled_fe>

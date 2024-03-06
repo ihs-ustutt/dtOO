@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<gv_meanline>
+<!--
+!
+!
+! meanplane
+!
+!
+-->					
+	<part label="aS_gv_meanplane">
+    <builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="~gv_uVw_phirMs(vec3d2d_gv_meanplane)~"/>
+			<analyticGeometry label="rM2dTo3d_gv_channel"/>
+    </builder>
+  </part>
+	
+<!--		<part label="s3_aS_gv_meanplane_test">
+			<builder name="bSplineCurve_pointInterpolateConstructOCC" order="1">		
+				<Point_3 xyz="@aS_gv_meanplane[%](0., 0.)@"/>
+				<Point_3 xyz="@aS_gv_meanplane[%](1., 1.)@"/>
+			</builder>		
+		</part>	-->
+</gv_meanline>

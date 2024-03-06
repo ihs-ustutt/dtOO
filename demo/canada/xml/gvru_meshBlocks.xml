@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<gvru_meshBlocks>
+	<part label="s3_internal_38_1">
+		<builder name="analyticGeometry">
+			<transformer name="pickMap1dTo3dLinePercent">
+				<float value="0.00"/>
+				<float value="0.10"/>
+			</transformer>
+			<analyticGeometry label="s3_gv_ru_shroudOut"/>
+		</builder>
+	</part>
+	<part label="s3_internal_38_2">
+		<builder name="analyticGeometry">
+<!--			<transformer name="pickMap2dTo3dRectanglePercent">
+				<Point_2 xy="0, 0.00"/>
+				<Point_2 xy="1, @aS_gv_shroudIn[-1%v](@aS_gv_channel_ext[%](0.,1.)@)@"/>
+			</transformer>-->
+			<transformer name="pickMap1dTo3dLinePercent">
+				<float value="0.00"/>
+				<float value="@s3_shroud_in[-1%Z=](@aS_gv_channel_ext[%z](0.,1.)@)@"/>
+			</transformer>			
+			<analyticGeometry label="s3_shroud_in"/>
+		</builder>
+	</part>	
+	<part label="s3_internal_38_3">
+		<builder name="bSplineCurve_curveConnectConstructOCC">
+			<analyticGeometry label="s3_internal_38_1"/>
+			<analyticGeometry label="s3_internal_38_2"/>
+		</builder>
+	</part>	
+		<part label="aS_internal_38_1">	
+			<builder name="surfaceOfRevolution_curveRotateConstructOCCAGXmlBuilder">
+				<analyticGeometry label="s3_internal_38_3"/>
+				<Vector_3 label="v3_Nzz"/>
+				<Point_3 label="p3_0"/>
+				<float value="_pi/2."/>
+			</builder>  
+		</part>	
+		
+	<part label="aS_internal_15_0">
+		<builder name="analyticGeometry">
+			<transformer name="pickMap2dTo3dRectanglePercent">
+				<Point_2 xy="0, 0.75*(@s3_internal_13[-1%Z=](@aS_gv_ru_shroudOut[%z](0.,0.)@)@)"/>
+				<Point_2 xy="1, @s3_internal_13[-1%Z=](@aS_gv_ru_shroudOut[%z](0.,1.)@)@"/>
+			</transformer>
+			<analyticGeometry label="aS_skinCorpus_farIn"/>
+		</builder>
+	</part>
+	<part label="aS_internal_15_1">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~revU(aS_internal_15_0)~"/>
+		</builder>
+	</part>
+	<part label="aS_internal_15_2_flat">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+		>
+			<analyticGeometry label="~v0_s(aS_gv_ru_shroudOut)~"/>
+			<analyticGeometry label="~v0_s(aS_internal_15_1)~"/>
+		</builder>
+	</part>	
+	<part label="s3_internal_15_2_0">
+		<builder name="analyticGeometry">
+			<transformer 
+				name="pickMap2dTo3dRangePercent"
+				parameter_percent_two=".05"
+			/>			
+			<analyticGeometry label="aS_internal_15_2_flat"/>
+		</builder>
+	</part>		
+	<part label="s3_internal_15_2_1">
+		<builder name="analyticGeometry">
+			<transformer name="translate">
+				<Vector_3 xyz="0,0,-.05"/>
+			</transformer>
+			<analyticGeometry label="s3_internal_15_2_0"/>
+		</builder>
+	</part>		
+	<part label="s3_internal_15_2_2">
+		<builder name="analyticGeometry">
+			<transformer 
+				name="pickMap2dTo3dRangePercent"
+				parameter_percent_two=".50"
+			/>			
+			<analyticGeometry label="aS_internal_15_2_flat"/>
+		</builder>
+	</part>		
+	<part label="s3_internal_15_2_3">
+		<builder name="analyticGeometry">
+			<transformer name="translate">
+				<Vector_3 xyz="0,0,-.10"/>
+			</transformer>
+			<analyticGeometry label="s3_internal_15_2_2"/>
+		</builder>
+	</part>		
+	<part label="s3_internal_15_2_4">
+		<builder name="analyticGeometry">
+			<transformer 
+				name="pickMap2dTo3dRangePercent"
+				parameter_percent_two=".75"
+			/>			
+			<analyticGeometry label="aS_internal_15_2_flat"/>
+		</builder>
+	</part>		
+	<part label="s3_internal_15_2_5">
+		<builder name="analyticGeometry">
+			<transformer name="translate">
+				<Vector_3 xyz="0,0,-.10"/>
+			</transformer>
+			<analyticGeometry label="s3_internal_15_2_4"/>
+		</builder>
+	</part>			
+	<part label="aS_internal_15_2">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+			orderMin="1" orderMax="8" nIterations="2"
+		>
+			<analyticGeometry label="~v0_s(aS_gv_ru_shroudOut)~"/>
+			<analyticGeometry label="s3_internal_15_2_1"/>
+			<analyticGeometry label="s3_internal_15_2_3"/>
+			<analyticGeometry label="s3_internal_15_2_5"/>
+			<analyticGeometry label="~v0_s(aS_internal_15_1)~"/>
+		</builder>
+	</part>	
+	
+	<part label="aS_internal_15_4_0">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="aS_internal_17_1_0"/>
+		</builder>
+	</part>	
+	<part label="aS_internal_15_4_1">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="aS_internal_17_1_1"/>
+		</builder>
+	</part>
+	<part label="aS_internal_15_4_2">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="aS_internal_17_1_2"/>
+		</builder>
+	</part>		
+	<part label="aS_internal_15_4_3">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="aS_internal_17_1_3"/>
+		</builder>
+	</part>			
+	<part label="aS_internal_15_4_4">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="aS_internal_17_1_4"/>
+		</builder>
+	</part>			
+<!--	<part label="s3_internal_15_5">
+		<builder name="analyticGeometry">
+			<analyticGeometry label="~v1_s(aS_internal_15_3_0)~"/>
+		</builder>
+	</part>				-->
+	<part label="s3_internal_15_7">
+		<builder name="analyticGeometry">
+			<transformer 
+				name="pickMap2dTo3dRangePercent" 
+				parameter_percent_two  ="0.80"
+			/>
+			<analyticGeometry label="aS_gv_hub_bulb"/>
+		</builder>
+	</part>	
+	<part label="s3_internal_15_8">
+		<builder 
+			name="circle_radiusCoordinateSystemOCCAGXmlBuilder" 
+			radius="#cV_r_shroud#" 
+			angle="_pi/2."
+		>
+			<Point_3 xyz="0,0,(@s3_internal_15_7[%z](0)@)"/>
+			<Vector_3 xyz="0,0,-1"/>
+			<Vector_3 xyz="0,1,0"/>			
+		</builder>	
+	</part>		
+	<part label="s3_internal_15_9">
+		<builder 
+			name="circle_radiusCoordinateSystemOCCAGXmlBuilder" 
+			radius="#cV_r_shroud#*1.2" 
+			angle="_pi/2."
+		>
+			<Point_3 xyz="0, 0, (@s3_internal_15_7[%z](0)@)"/>
+			<Vector_3 xyz="0,0,-1"/>
+			<Vector_3 xyz="0,1,0"/>			
+		</builder>	
+	</part>			
+	<part label="aS_internal_15_8">
+		<builder name="bSplineSurface_skinConstructOCC">
+			<analyticGeometry label="s3_internal_15_8"/>
+			<analyticGeometry label="s3_internal_15_9"/>
+		</builder>
+	</part>
+	
+	<part label="aS_internal_15_2_flat">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+		>
+			<analyticGeometry label="~v1_s(aS_internal_38_1)~"/>
+			<analyticGeometry label="~v0_s(aS_internal_15_1)~"/>
+		</builder>
+	</part>
+	<part label="aS_internal_15_2_flat_new">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+		>
+			<analyticGeometry label="~v1_s(aS_internal_15_8)~"/>
+			<analyticGeometry label="~v0_s(aS_internal_15_1)~"/>
+		</builder>
+	</part>				
+	<replace variable="ii" values="{1}{2}{3}{4}">
+		<part label="aS_internal_15_3_{ii}">
+			<builder name="analyticGeometry">
+				<transformer name="pickMap2dTo3dRectanglePercent">
+					<Point_2 xy="0, ({ii}-1)/4."/>
+					<Point_2 xy="1, ({ii}-1)/4.+1./4."/>
+				</transformer>
+				<!--<analyticGeometry label="aS_internal_15_2"/>-->
+				<analyticGeometry label="aS_internal_15_2_flat_new"/>
+				
+			</builder>
+		</part>		
+	</replace>
+<!--	<part label="aS_internal_15_7">
+		<builder name="bSplineSurface_skinConstructOCC">
+			<analyticGeometry label="~v0_s(aS_internal_15_5)~"/>
+			<analyticGeometry label="s3_internal_15_7"/>
+		</builder>
+	</part>			-->
+<!--	<part label="aS_internal_15_8">
+		<builder name="analyticGeometry">
+				<transformer name="pickMap2dTo3dRectanglePercent">
+					<Point_2 xy="1.00, 0.45"/>					
+					<Point_2 xy="0.00, 0.00"/>
+				</transformer>			
+			<analyticGeometry label="aS_internal_15_7"/>
+		</builder>
+	</part>			-->
+	<part label="t6C_in_gv_1">
+		<builder 
+			name="trans6SidedCube"
+			exchange="{0}{0}">
+			<analyticGeometry label="aS_internal_38_1"/>
+			<analyticGeometry label="aS_internal_15_8"/>
+			<!--<analyticGeometry label="aS_internal_15_6.9"/>-->
+		</builder>
+	</part>		
+
+<!--	<part label="aS_internal_15_5">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+		>
+			<analyticGeometry label="~revU(s3_internal_15_5)~"/>
+			<analyticGeometry label="~v1_s(aS_internal_15_4_0)~"/>
+		</builder>
+	</part>		-->
+	<part label="aS_internal_15_5">
+		<builder 
+			name="bSplineSurface_skinConstructOCC"
+		>
+			<!--<analyticGeometry label="~revU(s3_internal_15_5)~"/>-->
+			<analyticGeometry label="~revU(~v1_s(aS_internal_15_8)~)~"/>
+			<analyticGeometry label="~v1_s(aS_internal_15_4_0)~"/>
+		</builder>
+	</part>			
+	<part label="aS_internal_15_6">
+		<builder name="analyticGeometry">
+				<transformer name="pickMap2dTo3dRectanglePercent">
+					<Point_2 xy="@aS_gv_ru_shroudOut[-1%](@aS_internal_38_1[%](0,1)@)@"/>
+					<Point_2 xy="1, 1"/>
+				</transformer>			
+			<analyticGeometry label="aS_gv_ru_shroudOut"/>
+		</builder>
+	</part>				
+	<part label="t6C_gvru_0_0">
+		<builder name="trans6SidedCube">
+			<analyticGeometry label="aS_internal_15_6"/>
+			<analyticGeometry label="~revU(aS_internal_15_5)~"/>
+		</builder>
+	</part>
+	
+	<part label="t6C_gvru_0_1">
+		<builder 
+			name="trans6SidedCube"
+			exchange="{0}{0}">
+			<analyticGeometry label="aS_internal_15_3_1"/>
+			<analyticGeometry label="~revU(aS_internal_15_4_1)~"/>
+		</builder>
+	</part>		
+	<part label="t6C_gvru_0_2">
+		<builder name="trans6SidedCube"
+					 exchange="{0}{0}">
+			<analyticGeometry label="aS_internal_15_3_2"/>
+			<analyticGeometry label="~revU(aS_internal_15_4_2)~"/>
+		</builder>
+	</part>
+	<part label="t6C_gvru_0_3">
+		<builder name="trans6SidedCube"
+					 exchange="{0}{0}">
+			<analyticGeometry label="aS_internal_15_3_3"/>
+			<analyticGeometry label="~revU(aS_internal_15_4_3)~"/>
+		</builder>
+	</part>
+	<part label="t6C_gvru_0_4">
+		<builder name="trans6SidedCube"
+					 exchange="{0}{0}">
+			<analyticGeometry label="aS_internal_15_3_4"/>
+			<analyticGeometry label="~revU(aS_internal_15_4_4)~"/>
+		</builder>
+	</part>  
+	<part label="gvru_*_orient">
+		<builder name="orientTrans6SidedCube">
+			<analyticGeometry label="t6C_gvru_0_0" orient="{reverseU}"/>
+			<analyticGeometry label="t6C_gvru_0_1" orient="{reverseU}{exchangeVW}"/>
+			<analyticGeometry label="t6C_gvru_0_2" orient="{reverseU}{exchangeVW}"/>
+			<analyticGeometry label="t6C_gvru_0_3" orient="{reverseU}{exchangeVW}"/>
+      <analyticGeometry label="t6C_gvru_0_4" orient="{reverseU}{exchangeVW}"/>
+		</builder>
+	</part>					
+</gvru_meshBlocks>
