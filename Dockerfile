@@ -9,6 +9,8 @@ WORKDIR /
 RUN git clone https://github.com/ihs-ustutt/dtOO.git
 
 WORKDIR /dtOO
+ARG GIT_REV=main
+RUN git checkout ${GIT_REV}
 
 RUN git submodule init
 RUN git submodule update

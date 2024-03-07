@@ -19,6 +19,7 @@ jobs:
             if [[ "$GIT_BRANCH" == "main" ]]; then DOCKER_TAG=stable ; fi
             docker build \
               --build-arg "TAG=${GIT_THIRDPARTY_SHA}" \
+              --build-arg "GIT_REV=${GIT_REV}" \
               --progress=plain \
               -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} \
               -t ${DOCKER_USERNAME}/dtoo:latest \
