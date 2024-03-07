@@ -4,6 +4,7 @@ jobs:
   build:
     docker:
       - image: "cimg/base:current"
+    resource_class: large
     steps:
       - checkout
       - setup_remote_docker
@@ -11,6 +12,10 @@ jobs:
           name: Build and Push Docker image
           command: |
             GIT_REV=`git rev-parse HEAD`
-            docker build --progress=plain -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} -t ${DOCKER_USERNAME}/dtoo:latest .
+            GIT_DESC=`git describe --tags`
+            GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+            DOCKER_TAG=unstable
+            if [[ "$GIT_BRANCH" == "main" ]]; then DOCKER_TAG=stable ; fi
+            docker build --progress=plain -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} -t ${DOCKER_USERNAME}/dtoo:latest -t ${DOCKER_USERNAME}/dtoo:${GIT_DESC} -t ${DOCKER_USERNAME}/dtoo:${DOCKER_TAG} .
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker push --all-tags ${DOCKER_USERNAME}/dtoo

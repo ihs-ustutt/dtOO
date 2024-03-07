@@ -11,7 +11,7 @@ You can then simply un the container by executing:
 
 .. code-block:: bash
 
-  docker run -it dtoo
+  docker run -it atismer/dtoo
 
 If you would like to see the machine, it is possible to open ``paraview`` in
 the container. Therefore, you have to execute on the host

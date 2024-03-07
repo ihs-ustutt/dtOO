@@ -2,6 +2,7 @@ FROM atismer/dtoo-base:latest
 
 SHELL ["/bin/bash", "-c", "-l" ]
 
+ENV NCPU=4
 
 WORKDIR /
 RUN git clone https://github.com/ihs-ustutt/dtOO.git
