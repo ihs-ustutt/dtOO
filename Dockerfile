@@ -1,4 +1,5 @@
-FROM atismer/dtoo-base:latest
+ARG TAG=latest
+FROM atismer/dtoo-base:${TAG}
 
 SHELL ["/bin/bash", "-c", "-l" ]
 
