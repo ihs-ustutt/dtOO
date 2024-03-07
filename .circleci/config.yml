@@ -14,8 +14,16 @@ jobs:
             GIT_REV=`git rev-parse HEAD`
             GIT_DESC=`git describe --tags`
             GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+            GIT_THIRDPARTY_SHA=`git ls-tree HEAD dtOO-ThirdParty | awk '{print $3}'`
             DOCKER_TAG=unstable
             if [[ "$GIT_BRANCH" == "main" ]]; then DOCKER_TAG=stable ; fi
-            docker build --progress=plain -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} -t ${DOCKER_USERNAME}/dtoo:latest -t ${DOCKER_USERNAME}/dtoo:${GIT_DESC} -t ${DOCKER_USERNAME}/dtoo:${DOCKER_TAG} .
+            docker build \
+              --build-arg "TAG=${GIT_THIRDPARTY_SHA}" \
+              --build-arg "GIT_REV=${GIT_REV}" \
+              --progress=plain \
+              -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} \
+              -t ${DOCKER_USERNAME}/dtoo:latest \
+              -t ${DOCKER_USERNAME}/dtoo:${GIT_DESC} \
+              -t ${DOCKER_USERNAME}/dtoo:${DOCKER_TAG} .
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker push --all-tags ${DOCKER_USERNAME}/dtoo
