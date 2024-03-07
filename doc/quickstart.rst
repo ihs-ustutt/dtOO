@@ -5,13 +5,13 @@ The fastest way of trying dtOO is by using the image.
 
 .. code-block:: bash
 
-  docker pull atismer/dtoo:latest
+  docker pull atismer/dtoo:stable
 
-You can then simply un the container by executing:
+You can then simply run the container by executing:
 
 .. code-block:: bash
 
-  docker run -it atismer/dtoo
+  docker run -it atismer/dtoo:stable
 
 If you would like to see the machine, it is possible to open ``paraview`` in
 the container. Therefore, you have to execute on the host
@@ -20,11 +20,11 @@ the container. Therefore, you have to execute on the host
 
   xhost +local:*
 
-before runing the container by:
+before running the container by:
 
 .. code-block:: bash
 
-  run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ dtoo
+  docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix/ atismer/dtoo:stable
 
 Within the container navigate to the demo case:
 
@@ -32,9 +32,9 @@ Within the container navigate to the demo case:
 
   cd /dtOO/demo/simpleAxialRunner
 
-If you start your container with additional options for runing a GUI
-application, you can open ``paraFOAM`` and investigate the runner. 
-Additionally, you can investigate the geometry of the machine by:
+If you start your container with additional options for running a GUI
+application, you can open ``paraview`` and investigate the geometry. 
+Install ``paraview``,  adjust ``PYTHONPATH`` and open ``paraview``  by:
 
 .. code-block:: bash
 
@@ -53,7 +53,8 @@ You will see this:
 
 .. image:: img/paraview.png
 
-If you would like to simulate the machine just run the ``doctest`` by:
+If you would like to simulate the machine just run the ``doctest`` in the 
+container by:
 
 .. code-block:: python
 
