@@ -62,6 +62,7 @@ namespace dtOO {
 #include <interfaceHeaven/optionHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
+#include <interfaceHeaven/twoDArrayHandling.h>
 #include <interfaceHeaven/lVHOSubject.h>
 #include <interfaceHeaven/lVHOInterface.h>
 #include <interfaceHeaven/lVHOjsonLoad.h>
@@ -545,17 +546,9 @@ namespace CGAL {
 %include geometryEngine/dtSurface.h
 %include geometryEngine/dtCurve2d.h
 %include geometryEngine/dtSurface2d.h
-%include interfaceHeaven/renderInterface.h
-%include discrete2dPoints.h
-%include discrete3dPoints.h
-%include discrete3dVector.h
-%include solid2dLine.h
-%include solid3dLine.h
-%include solid3dSurface.h
-%include unstructured3dMesh.h
-%include unstructured3dSurfaceMesh.h
 %include baseContainerHeaven/baseContainer.h
 %include baseContainerHeaven/pointContainer.h
+%include interfaceHeaven/renderInterface.h
 namespace dtOO {
   %extend pointContainer {
     dtPoint3 __getitem__( std::string const & str ) {
@@ -764,6 +757,14 @@ namespace dtOO {
     } 
   }
 }
+%include discrete2dPoints.h
+%include discrete3dPoints.h
+%include discrete3dVector.h
+%include solid2dLine.h
+%include solid3dLine.h
+%include solid3dSurface.h
+%include unstructured3dMesh.h
+%include unstructured3dSurfaceMesh.h
 
 %include <interfaceHeaven/staticPropertiesHandler.h>
 %include <xmlHeaven/dtXmlParserBase.h>
