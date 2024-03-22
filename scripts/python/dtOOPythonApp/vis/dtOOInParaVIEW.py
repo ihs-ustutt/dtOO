@@ -300,3 +300,6 @@ class dtOOInParaVIEW:
     tp = TrivialProducer(guiName=guiName).GetClientSideObject().SetOutput(output)
     Show( tp )
     return tp
+ 
+  def FindAndShow( self, pattern: str ) -> TrivialProducer:
+    return self.Show( self.Find( pattern, True ) ) 
