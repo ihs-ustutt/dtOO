@@ -69,6 +69,12 @@ class analyticSurface_threePointMeanplane(dtBundleBuilder):
     Tolerance for length iteration. 
   originOnLengthPercent_: float
     Position of origin.
+  skinOrderMin_: int
+    Minimum order for skining.
+  skinOrderMax_: int
+    Maximum order for skining.
+  skinNIter_: int
+    Number of iterations for skining.
 
   Examples
   --------
@@ -151,7 +157,10 @@ class analyticSurface_threePointMeanplane(dtBundleBuilder):
     offY: scaOneD,
     targetLength: Union[scaOneD, None] = None,
     targetLengthTolerance: float = None,
-    originOnLengthPercent: float = None
+    originOnLengthPercent: float = None,
+    skinOrderMin: int = 2,
+    skinOrderMax: int = 2,
+    skinNIter: int = 0
   ) -> None:
     """Constructor.
   
@@ -179,6 +188,12 @@ class analyticSurface_threePointMeanplane(dtBundleBuilder):
       Tolerance for length iteration. 
     originOnLengthPercent: float
       Position of origin.
+    skinOrderMin: int
+      Minimum order for skining.
+    skinOrderMax: int
+      Maximum order for skining.
+    skinNIter: int
+      Number of iterations for skining.
 
     Returns
     -------
@@ -197,6 +212,9 @@ class analyticSurface_threePointMeanplane(dtBundleBuilder):
     self.targetLength_ = targetLength
     self.targetLengthTolerance_ = targetLengthTolerance
     self.originOnLengthPercent_ = originOnLengthPercent
+    self.skinOrderMin_ = skinOrderMin
+    self.skinOrderMax_ = skinOrderMax
+    self.skinNIter_ = skinNIter
 
   def build(self) -> None:
     """Build part.
@@ -262,7 +280,14 @@ class analyticSurface_threePointMeanplane(dtBundleBuilder):
           res
         ).ptrConstDtCurve()
       )
-    res = vec3dSurfaceTwoD( bSplineSurface_skinConstructOCC(cL).result() )
+    res = vec3dSurfaceTwoD( 
+      bSplineSurface_skinConstructOCC(
+        cL, 
+        self.skinOrderMin_, 
+        self.skinOrderMax_, 
+        self.skinNIter_
+      ).result() 
+    )
     res.setLabel( self.label_ )
     self.appendAnalyticFunction( res )
      
@@ -359,7 +384,10 @@ class analyticSurface_threePointMeanplaneFromRatio(
     offY: scaOneD,
     targetLength: Union[scaOneD, None] = None,
     targetLengthTolerance: float = None,
-    originOnLengthPercent: float = None
+    originOnLengthPercent: float = None,
+    skinOrderMin: int = 2,
+    skinOrderMax: int = 2,
+    skinNIter: int = 0
   ) -> None:
     """Constructor.
  
@@ -391,6 +419,12 @@ class analyticSurface_threePointMeanplaneFromRatio(
       Tolerance for length iteration. 
     originOnLengthPercent: float
       Position of origin.
+    skinOrderMin: int
+      Minimum order for skining.
+    skinOrderMax: int
+      Maximum order for skining.
+    skinNIter: int
+      Number of iterations for skining.
 
     Returns
     -------
