@@ -51,7 +51,7 @@ Then, just open the ``Python Shell`` and type:
 
 You will see this:
 
-.. image:: img/paraview.png
+.. image:: img/quickstart_paraview.png
 
 If you would like to simulate the machine just run the ``doctest`` in the 
 container by:
