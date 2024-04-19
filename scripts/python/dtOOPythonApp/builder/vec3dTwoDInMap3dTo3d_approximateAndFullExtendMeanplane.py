@@ -108,6 +108,12 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
     Segment positions in v direction on meanplane.
   critU_: float
     Critical fraction of u direction.
+  skinOrderMin_: int
+    Minimum order for skining.
+  skinOrderMax_: int
+    Maximum order for skining.
+  skinNIter_: int
+    Number of iterations for skining.
 
 
   Examples
@@ -227,7 +233,10 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
     )(),
     segUs: List[float] = [0.0, 0.5, 1.0],
     segVs: List[float] = [0.0, 0.5, 1.0],
-    critU: float = 0.5
+    critU: float = 0.5,
+    skinOrderMin: int = 2,
+    skinOrderMax: int = 2,
+    skinNIter: int = 0
   ) -> None:
     """Constructor.
   
@@ -251,6 +260,12 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
       Segment positions in v direction on meanplane.
     critU: float, default = 0.5
       Critical fraction of u direction.
+    skinOrderMin: int
+      Minimum order for skining.
+    skinOrderMax: int
+      Maximum order for skining.
+    skinNIter: int
+      Number of iterations for skining.
 
     Returns
     -------
@@ -270,6 +285,9 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
     self.segUs_ = segUs
     self.segVs_ = segVs
     self.critU_ = critU
+    self.skinOrderMin_ = skinOrderMin
+    self.skinOrderMax_ = skinOrderMax
+    self.skinNIter_ = skinNIter
 
   @staticmethod
   def shiftCurve( pL: List[dtPoint3], critU ) -> List[dtPoint3]:
@@ -473,7 +491,12 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
     #
     theRef = vec3dTwoDInMap3dTo3d(
       vec3dSurfaceTwoD(
-        bSplineSurface_skinConstructOCC(cc).result()
+        bSplineSurface_skinConstructOCC(
+          cc,
+          self.skinOrderMin_, 
+          self.skinOrderMax_, 
+          self.skinNIter_
+        ).result()
       ),
       self.channel_
     )
