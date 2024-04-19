@@ -42,6 +42,5 @@ entry, which refers to the correspoding
    :caption: Contents:
   
    quickstart.rst
-   install.md
    api.rst
    Back to GitHub <https://github.com/ihs-ustutt/dtOO>
