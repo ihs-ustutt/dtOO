@@ -52,8 +52,11 @@ diffuser section.
    from low (blue) to high (red); backflow volume shown as magenta coloured iso
    volume;
 
-The `PhD thesis <https://d-nb.info/1220692778/34>`_ contains a more detailed
-description including a documented optimization of the machine.
+`[Tismer_2020] <http://dx.doi.org/10.18419/opus-11091>`_ contains a more
+detailed description including a documented optimization.
+`[Mastaller_2023] <http://dx.doi.org/10.18419/opus-13951>`_ gives additional
+theoretical background and unsteady simulation results of an optimized
+candidate.
 
 Parameterization
 ----------------
