@@ -17,12 +17,12 @@ COPY --from=repo /dtOO${CBASE} /dtOO
 SHELL ["/bin/bash", "-c", "-l" ]
 
 ARG NCPU=4
-ENV NCPU=${NCPU}
 
 WORKDIR /dtOO
 RUN mkdir build
 
 WORKDIR /dtOO/build
+RUN mv /usr/include/root/nlohmann /usr/include/root/nlohmann.backup
 RUN cmake \
   -DCMAKE_INSTALL_PREFIX=${DTOO_EXTERNLIBS} \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
