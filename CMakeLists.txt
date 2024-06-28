@@ -24,6 +24,7 @@ if (DTOO_USE_CCACHE)
       set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
   endif()
 endif(DTOO_USE_CCACHE)  
+option(DTOO_OCC_78 "Use OpenCASCADE Version >7.8" OFF)
 
 project(designTool)
 
@@ -68,20 +69,35 @@ option(DTOO_BUILD_DOC "Build documentation with doxygen" OFF)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(NLOHMANN_JSON REQUIRED)
-find_package(CGAL REQUIRED COMPONENTS CGAL)
+find_package(CGAL REQUIRED)
 find_package(GMSH REQUIRED gmsh)
-find_package(
-  OpenCASCADE 
-  COMPONENTS 
-  TKernel TKMath
-  TKSTEP TKIGES
-  TKFillet TKShHealing 
-  TKTopAlgo TKBRep 
-  TKGeomBase TKGeomAlgo 
-  TKG3d TKG2d
-  TKXSBase
-  REQUIRED 
-)
+if (DTOO_OCC_78)
+  find_package(
+    OpenCASCADE 
+    REQUIRED 
+    COMPONENTS 
+    TKernel TKMath
+    TKFillet TKShHealing 
+    TKTopAlgo TKBRep 
+    TKGeomBase TKGeomAlgo 
+    TKG3d TKG2d
+    TKXSBase
+    TKDESTEP TKDEIGES
+  )
+else (DTOO_OCC_78)
+  find_package(
+    OpenCASCADE 
+    REQUIRED 
+    COMPONENTS 
+    TKernel TKMath
+    TKFillet TKShHealing 
+    TKTopAlgo TKBRep 
+    TKGeomBase TKGeomAlgo 
+    TKG3d TKG2d
+    TKXSBase
+    TKSTEP TKIGES
+  )
+endif (DTOO_OCC_78)
 find_package(MPFR)
 find_package(MUPARSER REQUIRED muparser)
 find_package(
