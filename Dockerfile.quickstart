@@ -1,0 +1,15 @@
+ARG CONTAINER=atismer/dtoo
+ARG TAG=stable
+
+FROM ${CONTAINER}:${TAG}
+
+RUN zypper -n install \
+  libQt5OpenGL-devel libQt5Widgets-devel libQt5Network-devel \
+  libQt5Svg-devel libqt5-qtxmlpatterns-devel libqt5-qttools-devel
+
+ARG NCPU=2
+WORKDIR /dtOO/dtOO-ThirdParty
+RUN sh buildDep -i ${DTOO_EXTERNLIBS} -n ${NCPU} -o paraview
+
+ENV PYTHONPATH=/dtOO-install/lib64/python3.11/site-packages:${PYTHONPATH}
+WORKDIR /dtOO/demo/

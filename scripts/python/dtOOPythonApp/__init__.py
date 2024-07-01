@@ -40,5 +40,6 @@ from .builder import *
 from .tools import *
 
 import importlib.util
-if importlib.util.find_spec("paraview.simple") is not None:
-  from .vis import *
+if importlib.util.find_spec("paraview") is not None:
+  if importlib.util.find_spec("paraview.simple") is not None:
+    from .vis import *

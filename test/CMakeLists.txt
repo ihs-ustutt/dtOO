@@ -35,7 +35,7 @@ endfunction()
 #
 add_test(
   NAME baseSWIG 
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/baseSWIG
 )
 set_tests_properties(
@@ -52,7 +52,7 @@ set_property(TEST baseSWIG  PROPERTY LABELS base-test)
 #
 add_test(
   NAME naca 
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
 )
 set_tests_properties(
@@ -71,7 +71,7 @@ DTOO_ADDTESTWLABEL("naca")
 #
 add_test(
   NAME transformerSWIG 
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/transformerSWIG
 )
 set_tests_properties(
@@ -88,7 +88,7 @@ set_property(TEST transformerSWIG  PROPERTY LABELS base-test)
 #
 add_test(
   NAME analyticGeometrySWIG 
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/analyticGeometrySWIG
 )
 set_tests_properties(
@@ -105,7 +105,7 @@ set_property(TEST analyticGeometrySWIG  PROPERTY LABELS base-test)
 #
 add_test(
   NAME constValueSWIG 
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/constValueSWIG
 )
 set_tests_properties(
@@ -122,7 +122,7 @@ set_property(TEST constValueSWIG  PROPERTY LABELS base-test)
 #
 add_test(
   NAME canadaLight 
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/canadaLight
 )
 set_tests_properties(
@@ -139,7 +139,7 @@ set_property(TEST canadaLight PROPERTY LABELS base-test)
 #
 add_test(
   NAME tistos 
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tistos
 )
 set_tests_properties(
@@ -157,7 +157,7 @@ DTOO_ADDTESTWLABEL("tistos")
 #
 add_test(
   NAME meshSimpleSurface
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshSimpleSurface
 )
 set_tests_properties(
@@ -173,7 +173,7 @@ set_property(TEST meshSimpleSurface PROPERTY LABELS base-test)
 #
 add_test(
   NAME meshPrismBlock
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshPrismBlock
 )
 set_tests_properties(
@@ -191,7 +191,7 @@ DTOO_ADDTESTWLABEL("meshPrismBlock")
 #
 add_test(
   NAME dtClusteredSingletonState
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dtClusteredSingletonState
 )
 set_tests_properties(
@@ -206,7 +206,7 @@ set_property(TEST dtClusteredSingletonState PROPERTY LABELS base-test)
 #
 add_test(
   NAME partRotatingMap2dTo3d
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/partRotatingMap2dTo3d
 )
 set_tests_properties(
@@ -223,7 +223,7 @@ set_property(TEST partRotatingMap2dTo3d PROPERTY LABELS base-test)
 #
 add_test(
   NAME pyDtOO-dtField
-  COMMAND python3 "build.py"
+  COMMAND ${Python_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pyDtOO-dtField
 )
 set_tests_properties(

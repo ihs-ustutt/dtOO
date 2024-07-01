@@ -283,7 +283,7 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
     m3dGmsh.getModel().getDtGmshRegionByTag( 
       channelId 
     ).meshTransfiniteRecursive()
-    nElements = np.zeros(3, np.int)
+    nElements = np.zeros(3, int)
     nElements[self.channelInletOutletDir_-1] = self.nElementsMeridional_
     nElements[self.channelHubShroudDir_-1] = self.nElementsRadial_
     nElements[self.channelSuctionPressureDir_-1] = self.nElementsCircumferential_
