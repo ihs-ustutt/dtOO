@@ -636,9 +636,33 @@ namespace std {
   %template(vectorDtCase)                vector< ::dtOO::dtCase * >;
   %template(vectorDtPlugin)              vector< ::dtOO::dtPlugin * >;
   %template(vectorDtPoint2)              vector< ::dtOO::dtPoint2 >;
+  %extend vector< ::dtOO::dtPoint2 > {
+    vector< ::dtOO::dtPoint2 > __lshift__( ::dtOO::dtPoint2 const & point ) {
+      $self->push_back( point );
+      return *$self;
+    }
+  }
   %template(vectorDtVector2)             vector< ::dtOO::dtVector2 >;
+  %extend vector< ::dtOO::dtVector2 > {
+    vector< ::dtOO::dtVector2 > __lshift__( ::dtOO::dtVector2 const & vec ) {
+      $self->push_back( vec );
+      return *$self;
+    }
+  }
   %template(vectorDtPoint3)              vector< ::dtOO::dtPoint3 >;
+  %extend vector< ::dtOO::dtPoint3 > {
+    vector< ::dtOO::dtPoint3 > __lshift__( ::dtOO::dtPoint3 const & point ) {
+      $self->push_back( point );
+      return *$self;
+    }
+  }
   %template(vectorDtVector3)             vector< ::dtOO::dtVector3 >;
+  %extend vector< ::dtOO::dtVector3 > {
+    vector< ::dtOO::dtVector3 > __lshift__( ::dtOO::dtVector3 const & vec ) {
+      $self->push_back( vec );
+      return *$self;
+    }
+  }
   %template(vectorDtCurve)               vector< ::dtOO::dtCurve * >;
   %template(vectorDtSurface)             vector< ::dtOO::dtSurface * >;
   %template(vectorDtCurve2d)             vector< ::dtOO::dtCurve2d * >;
