@@ -234,6 +234,22 @@ set_tests_properties(
 )
 set_property(TEST pyDtOO-dtField PROPERTY LABELS base-test)
 
+#
+# write-runData
+#
+add_test(
+  NAME write-runData
+  COMMAND ${Python_EXECUTABLE} "build.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/write-runData
+)
+set_tests_properties(
+  write-runData
+  PROPERTIES
+    ENVIRONMENT 
+    "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};"
+)
+set_property(TEST write-runData PROPERTY LABELS base-test)
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})

@@ -349,7 +349,7 @@ class dtClusteredSingletonState:
     """
     rStr = '__unknownDataType__'
     if isinstance(value,float):
-      rStr = "{:s}".format(repr(value))
+      rStr = np.format_float_scientific(value)
     elif isinstance(value,int):
       rStr = "{:s}".format(repr(value))
     elif isinstance(value,str):
@@ -360,7 +360,7 @@ class dtClusteredSingletonState:
       valueAsStr = np.array2string(
         valueAsArr,
         formatter = {
-          'float_kind':lambda valueAsArr: "%s" % repr(valueAsArr)
+          'float_kind': np.format_float_scientific
         }
       )
       #
