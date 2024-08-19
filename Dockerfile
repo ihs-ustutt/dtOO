@@ -26,7 +26,7 @@ RUN mv /usr/include/root/nlohmann /usr/include/root/nlohmann.backup
 RUN cmake \
   -DCMAKE_INSTALL_PREFIX=${DTOO_EXTERNLIBS} \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-  -DPython_EXECUTABLE=/usr/bin/python3.11 \
+  -DPython3_EXECUTABLE=/usr/bin/python3.11 \
   ..
 RUN make -j ${NCPU} install
 RUN ctest --output-on-failure -L base
