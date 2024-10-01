@@ -354,6 +354,8 @@ class dtClusteredSingletonState:
       rStr = "{:s}".format(repr(value))
     elif isinstance(value,str):
       rStr = "{:s}".format(value)
+    elif isinstance(value, dict):
+      rStr = json.dumps(value)
     elif isinstance( np.array(value), np.ndarray):
       valueAsArr = np.array(value)
 
@@ -367,8 +369,6 @@ class dtClusteredSingletonState:
       # remove square brackets and line breaks
       #
       rStr = valueAsStr.replace('[','').replace(']','').replace('\n','')
-    elif isinstance(value, dict):
-      rStr = json.dumps(value)
     else:
       logging.warning('Try to write unknown datatype.')
 
