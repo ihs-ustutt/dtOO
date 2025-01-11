@@ -58,7 +58,6 @@ SET(HEADERS
   map3dTo3dGmsh.h
   customGmsh.h
   map2dTo3dTriangulated.h
-  map3dTo3dWithInternalTurboGrid.h
   map3dTo3dWithInternalGmsh.h
   map3dTo3dWithInternalBlockGmsh.h
   readMOABMesh.h
@@ -109,7 +108,6 @@ SET(SOURCES
   map3dTo3dGmsh.cpp
   customGmsh.cpp
   map2dTo3dTriangulated.cpp
-  map3dTo3dWithInternalTurboGrid.cpp
   map3dTo3dWithInternalGmsh.cpp
   map3dTo3dWithInternalBlockGmsh.cpp
   readMOABMesh.cpp
