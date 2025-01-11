@@ -22,11 +22,11 @@ WORKDIR /dtOO
 RUN mkdir build
 
 WORKDIR /dtOO/build
-RUN mv /usr/include/root/nlohmann /usr/include/root/nlohmann.backup
 RUN cmake \
   -DCMAKE_INSTALL_PREFIX=${DTOO_EXTERNLIBS} \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DPython3_EXECUTABLE=/usr/bin/python3.11 \
+  -DDTOO_OCC_78=ON \
   ..
 RUN make -j ${NCPU} install
 RUN ctest --output-on-failure -L base
