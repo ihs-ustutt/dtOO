@@ -16,8 +16,9 @@
 #------------------------------------------------------------------------------
 
 find_package(Doxygen)
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
-if (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
+if (DOXYGEN_FOUND AND Python3_FOUND AND DTOO_BUILD_DOC)
   #
   #
   # set doxygen input file
@@ -46,7 +47,7 @@ if (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
   add_custom_target(
     createInclude ALL
       COMMAND 
-        python createInclude.py
+        ${Python3_EXECUTABLE} createInclude.py
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   )
 
@@ -61,7 +62,7 @@ if (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
     add_custom_target(
       ${_fName} ALL
       COMMAND 
-        python3 doxy2swig.py ${file} "${file}.i"
+        ${Python3_EXECUTABLE} doxy2swig.py ${file} "${file}.i"
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
@@ -87,4 +88,4 @@ else (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
       COMMAND touch swig_includeAll.i
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   )
-endif (DOXYGEN_FOUND AND DTOO_BUILD_DOC)
+endif (DOXYGEN_FOUND AND Python3_FOUND AND DTOO_BUILD_DOC)
