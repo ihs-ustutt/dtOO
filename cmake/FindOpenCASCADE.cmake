@@ -31,6 +31,7 @@ IF( NOT OpenCASCADE_FOUND STREQUAL TRUE )
     /usr/lib64                                       
     /usr/lib/oce
     /usr/lib64/oce
+    /usr/lib/x86_64-linux-gnu
   )
 
   #find the include dir by looking for Standard_Real.hxx

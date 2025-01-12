@@ -101,6 +101,7 @@ MACRO(
       /usr/ihs/lib64/
       /usr/lib/
       /usr/lib64/
+      /usr/lib/x86_64-linux-gnu
     )
     
     #find the include dir by looking for moab/Version.h

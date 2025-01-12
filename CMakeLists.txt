@@ -50,7 +50,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 #
 #------------------------------------------------------------------------------#
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl") #for dladdr in Backtrace
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgmp") #for cgal
 #add_compile_options("-fdiagnostics-color")
 
 #------------------------------------------------------------------------------#
@@ -107,7 +106,7 @@ find_package(
   Core Matrix MathCore MathMore Minuit2 Thread Hist
 )
 find_package(GSL REQUIRED)
-find_package(CGNS REQUIRED COMPONENTS cgns)
+find_package(GMP REQUIRED COMPONENTS gmp)
 
 find_package(
   FOAMEXT
@@ -259,7 +258,6 @@ include_directories(
   ${ROOT_INCLUDE_DIR} 
   ${GSL_INCLUDE_DIR} 
   ${OpenCASCADE_INCLUDE_DIR}
-  ${CGNS_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}
   ${OpenMesh_INCLUDE_DIR}
   ${OpenVolumeMesh_INCLUDE_DIR}
@@ -366,11 +364,11 @@ target_link_libraries(
   ${ROOT_LIBRARIES} 
   ${GSL_LIBRARIES}
   ${Boost_LIBRARIES}
-  ${CGNS_LIBRARIES}
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
   ${IGL_LIBRARIES}
+  ${GMP_LIBRARIES}
 )
 
 set(
@@ -382,7 +380,6 @@ set(
   ${ROOT_LIBRARIES} 
   ${GSL_LIBRARIES}
   ${BOOST_CONFIG_LIBRARIES}
-  ${CGNS_LIBRARIES}
   ${MOAB_LIBRARIES}
   ${OpenMesh_LIBRARIES}
   ${OpenVolumeMesh_LIBRARIES}
@@ -395,7 +392,6 @@ set(
   ${MUPARSER_LINK_DIRECTORY}
   ${OpenCASCADE_LINK_DIRECTORY}
   ${ROOT_LINK_DIRECTORY}
-  ${CGNS_LINK_DIRECTORY}
   ${MOAB_LINK_DIRECTORY}
   ${OpenVolumeMesh_LINK_DIRECTORY}
 )
@@ -514,9 +510,10 @@ set(
   CONF_DTOO_3RD_LIBRARIES 
   ${_configLibList}
 )
+set(CONF_DTOO_CXX_FLAGS "${CONF_DTOO_CXX_FLAGS} -ldl")
 set(
   CONF_DTOO_CXX_FLAGS 
-  "-ldl -lgmp -DCGAL_DISABLE_ROUNDING_MATH_CHECK"
+  "${CONF_DTOO_CXX_FLAGS} -DCGAL_DISABLE_ROUNDING_MATH_CHECK"
 )
 set(
   CONF_DTOO_3RD_LINKER_FLAGS 

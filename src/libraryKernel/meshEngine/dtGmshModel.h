@@ -209,7 +209,6 @@ namespace dtOO {
       static renderInterface * toAdequateSurfaceRenderInterface( 
           std::vector< ::MElement const * > const & elements
       );
-      void dtReadCGNS(const std::string & name);
       void clearModel( void );
       //
       // get max tags of entities
