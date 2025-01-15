@@ -284,7 +284,8 @@ namespace dtOO {
               dt__warning(
                 reparamOnFace(),
                 << logMe::dtFormat(
-                  "Error for initU = %12.4e initV = %12.4e at internalRestart = %i"
+                  "Error for "
+                  "initU = %12.4e initV = %12.4e at internalRestart = %i"
                 ) 
                 % initU[ii] % initV[jj] % thisRestart 
                 << std::endl
@@ -308,7 +309,7 @@ namespace dtOO {
               _callCounterSum = _callCounter + _callCounterSum;
               dt__debug(
                 reparamOnFace(), 
-                << "Calls map1dTo3d::F() : " << _callCounter << " / "
+                << "Calls map2dTo3d::F() : " << _callCounter << " / "
                 << _callCounterSum
               );
               return uv_percent( dtPoint2(U, V) );
