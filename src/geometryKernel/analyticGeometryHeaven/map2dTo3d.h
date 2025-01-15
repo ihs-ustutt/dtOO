@@ -152,6 +152,8 @@ namespace dtOO {
     private:
       mutable dtPoint3 _pXYZ;      
       static dtReal _deltaPer;      
+      mutable int _callCounter;
+      mutable int _callCounterSum;
   };
   
 	//

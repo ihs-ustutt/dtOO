@@ -44,9 +44,11 @@ namespace dtOO {
   staticPropertiesHandler::getInstance()->getOptionFloat("map2dTo3d_deltaPer");
   
   map2dTo3d::map2dTo3d() : analyticGeometry() {
+    _callCounterSum = 0;
   }
 
   map2dTo3d::map2dTo3d(const map2dTo3d& orig) : analyticGeometry(orig) {
+    _callCounterSum = 0;
   }
 
   map2dTo3d::~map2dTo3d() {
@@ -252,6 +254,7 @@ namespace dtOO {
     );    
     dtReal currentPrec = 1.;
     dtReal dist = 1.E+99;
+    _callCounter = 0;
     dt__forFromToIndex(0, maxRestarts+1, thisRun) {
       dt__forFromToIndex(0, NumInitGuess, ii) {
         dt__forFromToIndex(0, NumInitGuess, jj) {       
@@ -301,7 +304,15 @@ namespace dtOO {
               analyticGeometry::inXYZTolerance(
                 ppXYZ, tP, &cDist, false, currentPrec
               )
-            ) return uv_percent( dtPoint2(U, V) );
+            ) {
+              _callCounterSum = _callCounter + _callCounterSum;
+              dt__debug(
+                reparamOnFace(), 
+                << "Calls map1dTo3d::F() : " << _callCounter << " / "
+                << _callCounterSum
+              );
+              return uv_percent( dtPoint2(U, V) );
+            }
             if (cDist <= dist) {
               UBest = U;
               VBest = V;
@@ -956,6 +967,7 @@ namespace dtOO {
 	}
   
 	double map2dTo3d::F(double const * xx) const {
+    _callCounter = _callCounter + 1;
     return dtLinearAlgebra::length( 
       _pXYZ - getPointPercent( dtPoint2(xx[0], xx[1]) ) 
     );
