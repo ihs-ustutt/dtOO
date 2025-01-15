@@ -309,8 +309,11 @@ namespace dtOO {
               _callCounterSum = _callCounter + _callCounterSum;
               dt__debug(
                 reparamOnFace(), 
-                << "Calls map2dTo3d::F() : " << _callCounter << " / "
-                << _callCounterSum
+                << "label : " << getLabel() << std::endl
+                << "  calls : map2dTo3d::F() : " << _callCounter << " / "
+                << _callCounterSum << std::endl
+                << "  u (%): " << U << std::endl
+                << "  v (%): " << V
               );
               return uv_percent( dtPoint2(U, V) );
             }
