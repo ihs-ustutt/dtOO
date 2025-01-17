@@ -59,7 +59,7 @@ jobs:
               | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker push \
               --all-tags \
-              ${DOCKER_USERNAME}/dtoo
+              ${DOCKER_USERNAME}/dtoo-ubuntu
 workflows:
   wf-build:
     jobs:
