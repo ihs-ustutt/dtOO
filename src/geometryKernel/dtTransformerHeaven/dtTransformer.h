@@ -79,8 +79,12 @@ namespace dtOO {
       virtual std::vector< dtPoint3 > apply( 
         std::vector< dtPoint3 > const * const toTrans 
       ) const;
-      virtual lvH_analyticGeometry apply( lvH_analyticGeometry const * const toTrans ) const;
-      virtual lvH_analyticFunction apply( lvH_analyticFunction const * const toTrans ) const;
+      virtual lvH_analyticGeometry apply( 
+        lvH_analyticGeometry const * const toTrans 
+      ) const;
+      virtual lvH_analyticFunction apply( 
+        lvH_analyticFunction const * const toTrans 
+      ) const;
       virtual std::vector< dtPoint3 > retract(
         std::vector< dtPoint3 > const * const toRetract
       ) const;
