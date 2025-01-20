@@ -46,30 +46,42 @@ namespace dtOO {
   void ofOpenFOAMEmptyRule::executeOnMesh(
     std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
   ) const {
-    
     //
     // get corresponding patch ids
     //
     ::Foam::polyBoundaryMesh & bM
     = 
-    const_cast<::Foam::polyBoundaryMesh&>(mesh.boundaryMesh());      
-    forAll(bM, i) {
-      if ( bM[ i ].size() != 0 ) continue;
+    const_cast<::Foam::polyBoundaryMesh&>(mesh.boundaryMesh());
+    std::vector< std::string > patchNames
+    =
+    stringPrimitive::convertToCSVStringVector(rule[1]);
 
-      //
-      // replace old patches with new ggi patches
-      //
-      bM.set( 
-        i,       
-        new ::Foam::emptyPolyPatch(
-          bM[ i ].name(), 
-          bM[ i ].size(),
-          bM[ i ].start(), 
-          bM[ i ].index(),
-          bM[ i ].boundaryMesh(),
-          bM[ i ].type()
-        )
-      );
+    forAll(bM, i) {
+      bool setThisPatchEmpty = false;
+      dt__forAllRefAuto(patchNames, patchName) {
+        if (bM[ i ].name()==patchName) {
+          setThisPatchEmpty = true;
+          break;
+        }
+      }
+      // patch is empty
+      if ( setThisPatchEmpty || (bM[ i ].size() == 0) ) {
+        dt__info(
+          executeOnMesh(),
+          << "Set " << bM[ i ].name() << " to empty."
+        );
+        bM.set( 
+          i,       
+          new ::Foam::emptyPolyPatch(
+            bM[ i ].name(), 
+            bM[ i ].size(),
+            bM[ i ].start(), 
+            bM[ i ].index(),
+            bM[ i ].boundaryMesh(),
+            bM[ i ].type()
+          )
+        );
+      }
     }
   }    
 }
