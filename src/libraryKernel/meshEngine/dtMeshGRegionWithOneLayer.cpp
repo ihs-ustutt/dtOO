@@ -61,12 +61,16 @@ namespace dtOO {
   ) {
     dtMesh3DOperator::init(element, bC, cV, aF, aG, bV, mO);
     
-		_faceMaster
-		= 
-		qtXmlPrimitive::getAttributeStr("faceMaster", element);
-		_faceSlave
-		= 
-		qtXmlPrimitive::getAttributeStr("faceSlave", element);    
+    jsonPrimitive jE;
+    jE.append< std::string >(
+      "_faceMaster",
+	  	qtXmlPrimitive::getAttributeStr("faceMaster", element)
+    );
+    jE.append< std::string >(
+		  "_faceSlave",
+  		qtXmlPrimitive::getAttributeStr("faceSlave", element)
+    );
+    dtMeshGRegionWithOneLayer::jInit(jE, bC, cV, aF, aG, bV, mO);
 	}
 	
   void dtMeshGRegionWithOneLayer::operator() (dtGmshRegion * dtgr) {
@@ -79,7 +83,9 @@ namespace dtOO {
 		//
     dtGmshFace * masterFace
     =
-    dtgr->refDtGmshModel().getDtGmshFaceByPhysical( _faceMaster );
+    dtgr->refDtGmshModel().getDtGmshFaceByPhysical( 
+      config().lookup< std::string >("_faceMaster")
+    );
     dt__throwIf(
       std::find(
         dtgr->dtFaces().begin(), dtgr->dtFaces().end(), masterFace
@@ -91,7 +97,9 @@ namespace dtOO {
     );
     dtGmshFace * slaveFace
     =
-    dtgr->refDtGmshModel().getDtGmshFaceByPhysical( _faceSlave );
+    dtgr->refDtGmshModel().getDtGmshFaceByPhysical( 
+      config().lookup< std::string >("_faceSlave")
+    );
     dt__throwIf(
       std::find(
         dtgr->dtFaces().begin(), dtgr->dtFaces().end(), slaveFace

@@ -49,7 +49,28 @@ namespace dtOO {
   bVOSetTranslationalPeriodicity::~bVOSetTranslationalPeriodicity() {
     
   }
-  
+ 
+  void bVOSetTranslationalPeriodicity::jInit( 
+    jsonPrimitive const & jE,
+		baseContainer const * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG,
+    lvH_boundedVolume const * const bV,
+    boundedVolume * attachTo
+  ) {
+    bVOInterface::jInit(jE, bC, cV, aF, aG, bV, attachTo);
+
+    _dtT
+    =
+    translate::PointerDownCast(
+      jE.lookupClone< dtTransformer >( 
+        "_dtT", 
+        bC->constPtrTransformerContainer()->lVH()
+      )
+    );
+  }  
+
   void bVOSetTranslationalPeriodicity::init( 
 		::QDomElement const & element,
 		baseContainer const * const bC,
@@ -77,17 +98,20 @@ namespace dtOO {
 		// />
 								
     dt__info(init(), << dtXmlParserBase::convertToString(element) );
-		_faceMaster = dtXmlParserBase::getAttributeStr("faceMaster", element);
-    _faceSlave = dtXmlParserBase::getAttributeStr("faceSlave", element);
-    
-    dt__ptrAss(
-      _dtT,
-      translate::ConstDownCast(
-        bC->constPtrTransformerContainer()->get(
-          dtXmlParserBase::getAttributeStr("transformer", element)
-        )
+    jsonPrimitive jE;
+		jE.append< std::string >(
+      "_faceMaster", dtXmlParserBase::getAttributeStr("faceMaster", element)
+    );
+    jE.append< std::string >(
+      "_faceSlave", dtXmlParserBase::getAttributeStr("faceSlave", element)
+    );
+    jE.append< dtTransformer const * >(
+      "_dtT",
+      bC->constPtrTransformerContainer()->get(
+        dtXmlParserBase::getAttributeStr("transformer", element)
       )
     );
+    bVOSetTranslationalPeriodicity::jInit(jE, bC, cV, aF, aG, bV, attachTo);
   }
   
   void bVOSetTranslationalPeriodicity::preUpdate( void ) {
@@ -101,8 +125,12 @@ namespace dtOO {
     //
     // get faces
     //		
-    dtGmshFace * const masterF = gm->getDtGmshFaceByPhysical(_faceMaster);
-    dtGmshFace * const slaveF = gm->getDtGmshFaceByPhysical(_faceSlave);
+    dtGmshFace * const masterF = gm->getDtGmshFaceByPhysical(
+      config().lookup< std::string >("_faceMaster")
+    );
+    dtGmshFace * const slaveF = gm->getDtGmshFaceByPhysical(
+      config().lookup< std::string >("_faceSlave")
+    );
     dt__throwIf(masterF==slaveF, preUpdate());
     //
     // get edges

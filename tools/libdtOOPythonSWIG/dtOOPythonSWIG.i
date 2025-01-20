@@ -330,6 +330,7 @@ namespace dtOO {
 #include <bVObserver/bVOSetPrescribedElementSize.h>
 #include <bVObserver/bVOReadMSH.h>
 #include <bVObserver/bVOSetRotationalPeriodicity.h>
+#include <bVObserver/bVOSetTranslationalPeriodicity.h>
 #include <bVObserver/bVOWriteMSH.h>
 #include <bVObserver/bVOFaceToPatchRule.h>
 #include <bVObserver/bVORemoveElements.h>
@@ -593,6 +594,7 @@ namespace dtOO {
 %include bVObserver/bVOSetPrescribedElementSize.h
 %include bVObserver/bVOReadMSH.h
 %include bVObserver/bVOSetRotationalPeriodicity.h
+%include bVObserver/bVOSetTranslationalPeriodicity.h
 %include bVObserver/bVOWriteMSH.h
 %include bVObserver/bVOFaceToPatchRule.h
 %include bVObserver/bVORemoveElements.h
@@ -797,6 +799,7 @@ namespace dtOO {
 %template(appendDtTransformer) dtOO::jsonPrimitive::append< dtOO::dtTransformer const * >;
 %template(appendVectorInt) dtOO::jsonPrimitive::append< std::vector< dtOO::dtInt > >;
 %template(appendVectorStr) dtOO::jsonPrimitive::append< std::vector< std::string > >;
+%template(appendVectorAnalyticGeometry) dtOO::jsonPrimitive::append< std::vector< analyticGeometry * > >;
 %template(appendVectorBoundedVolume) dtOO::jsonPrimitive::append< std::vector< boundedVolume * > >;
 
 %include constValueHeaven/sliderFloatParam.h
