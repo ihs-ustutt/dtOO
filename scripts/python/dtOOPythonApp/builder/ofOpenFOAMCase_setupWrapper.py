@@ -626,9 +626,12 @@ class ofOpenFOAMCase_setupWrapper:
         )
       elif variable=="omega":
         if len(value)==0:
-          value = [0.0,]
+          value = [0.001,0.0]
         retStr += str(
-          ':omega::fixedValue(value uniform '+str(value[0])+';):'
+          ':omega::turbulentMixingLengthFrequencyInlet('
+          '  mixingLength  '+str(value[0])+';'
+          '  value uniform '+str(value[1])+';'
+          '):'
         )
       else:
         raise ValueError("Unknown variable %s" % variable)
