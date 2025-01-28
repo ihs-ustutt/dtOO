@@ -15,16 +15,35 @@
 #
 #------------------------------------------------------------------------------
 
-"""Brief eier.Simple machine consisting of an axial runner only.
+"""
+This example optimizes a hydrofoil that is defined with 3 DOFs. The 
+optimization is performed with the differential evolution algorithm of
+scipy.
 
-Do some imports
+It is necessary to set the OpenFoam environment variable "FOAM_SIGFPE" to 
+disable the handler. Otherwise the handler detects floating point exceptions
+at the beginning. Additionally, the environment variable "OSLO_LOCKPATH" 
+is necessary to have a defined locking directory for the oslo.concurrency
+library. Both variables are defined using the os package.
+
+>>> import os
+>>> os.environ["FOAM_SIGFPE"] = "0"
+>>> os.environ["OSLO_LOCKPATH"] = "/tmp"
+
+The optimizer is imported from scipy and the interested reader is refered to
+`[SciPy_2025] \
+<https://docs.scipy.org/doc/scipy/reference/generated/\
+scipy.optimize.differential_evolution.html#\
+scipy.optimize.differential_evolution>`_
 
 >>> from scipy.optimize import differential_evolution
->>> import os
 
->>> os.environ["FOAM_SIGFPE"] = "0"
+The callback function `optimizeHydFoil` of the optimizer executes all steps
+of the hydrofoil case. In the end, the fitness value of the hydrofoil is set
+as return value of the callback. Additionally, an exception handling catches
+all exceptions and returns a defined fitness value in case of an error.
 
->>> def optimizeHydroFoil(x):
+>>> def optimizeHydFoil(x):
 ...   try:
 ...     hf = hydFoil( alpha_1=x[0], alpha_2=x[1], t_mid=x[2] )
 ...     hf.Geometry()
@@ -37,15 +56,22 @@ Do some imports
 ...     fit = hydFoil.FailedFitness() 
 ...   return fit
 
+Define the bounds of the DOFs for the optimization.
+
 >>> bounds = [(150.0, 170.0), (155.0, 175.0), (0.01, 0.10),]
 
+Call the optimizer with the callback function. The number of candidates is
+low to have a fast code example.
+
 >>> result = differential_evolution(
-...   optimizeHydroFoil, 
+...   optimizeHydFoil, 
 ...   bounds, 
 ...   popsize=3, 
 ...   maxiter=2,
 ...   polish=False
 ... )
+
+Output the final result of the optimization.
 
 >>> logging.info( 
 ...   "Optimum found at (alpha_1, alpha_2, t_mid) = (%f, %f, %f) with %f"
@@ -54,6 +80,9 @@ Do some imports
 ... )
 """
 
+#
+# Create a logging object
+#
 import logging
 logging.basicConfig(
   format='[ %(asctime)s - %(levelname)8s - %(filename)s:%(lineno)d ]'
@@ -62,19 +91,25 @@ logging.basicConfig(
   level=logging.INFO
 )
 
+#
+# Import packages
+#
 import numpy as np
 import dtOOPythonSWIG as dtOO
-
 import foamlib as fl
-import pyDtOO as pd
-
 import sys
+import subprocess
+
+#
+# Define the values that will be stored during the optimization; here only the
+# name and the initial definition for each stored value is declared; the
+# arrays objective and fitness are created by default
+#
+import pyDtOO as pd
 pd.dtClusteredSingletonState.ADDDATA = ['dH', 'F', 'eta',]
 pd.dtClusteredSingletonState.ADDDATADEF = [
   [sys.float_info.max,], [sys.float_info.max,], [sys.float_info.max,],
 ]
-
-import subprocess
 
 class hydFoil:
   """Create, mesh, simulate and evaluate a hydrofoil.
@@ -220,7 +255,7 @@ class hydFoil:
     self.n_          = 90.0
     """float: Rotational speed in :math:`min^{-1}`."""
     self.c_mi_       = 5.77
-    """float: Absolute velocity at inlet in :math:`\frac{m}{s}`"""
+    """float: Absolute velocity at inlet in :math:`\\frac{m}{s}`"""
 
   def Geometry(self):
     """Create hyrdofoil's geometry.
