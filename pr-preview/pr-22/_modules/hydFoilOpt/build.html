@@ -144,9 +144,9 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyDtOO</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dH&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dH&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">,]</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATADEF</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">max</span><span class="p">,],</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">max</span><span class="p">,],</span>
+  <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">max</span><span class="p">,],</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">max</span><span class="p">,],</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">max</span><span class="p">,],</span>
 <span class="p">]</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
@@ -162,7 +162,7 @@
 
 <span class="sd">  .. _hydfoil:</span>
 <span class="sd">  .. figure:: img/hydfoil.png</span>
-<span class="sd">     :width: 400</span>
+<span class="sd">     :width: 600</span>
 <span class="sd">     :align: center</span>
 
 <span class="sd">     Hydrofoil&#39;s sketch including mean line (solid thick black line) and final</span>
@@ -176,6 +176,10 @@
 <span class="sd">  ----------</span>
 <span class="sd">  alpha_1: float</span>
 <span class="sd">    Inlet angle.</span>
+<span class="sd">  alpha_2: float</span>
+<span class="sd">    Outlet angle.</span>
+<span class="sd">  t_mid: float</span>
+<span class="sd">    Blade&#39;s thickness.</span>
 <span class="sd">  &quot;&quot;&quot;</span>
   
   <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -285,11 +289,15 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">L_</span>          <span class="o">=</span> <span class="mf">4.0</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Length of the mesh.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">twoPiRByNB_</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">nB_</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Width of the mesh. </span>
-<span class="sd">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Width of the mesh.</span>
+
 <span class="sd">    The width is given by the fraction of the unwounded length </span>
 <span class="sd">    :math:`2 \\pi R` and the number of blades :math:`n_B`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">n_</span>          <span class="o">=</span> <span class="mf">90.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Rotational speed in :math:`min^{-1}`.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">c_mi_</span>       <span class="o">=</span> <span class="mf">5.77</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Absolute velocity at inlet in :math:`\frac{m}{s}`&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="hydFoil.Geometry">
 <a class="viewcode-back" href="../../demonstration.html#hydFoilOpt.build.hydFoil.Geometry">[docs]</a>
@@ -828,7 +836,7 @@
     <span class="c1">#</span>
     <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="n">mbIndices</span><span class="p">:</span>
       <span class="n">mb</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">getDtGmshRegionByPhysical</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="n">iNum</span><span class="p">]</span><span class="o">.</span><span class="n">getLabel</span><span class="p">()</span> <span class="p">)</span>
-      <span class="n">mb</span><span class="o">.</span><span class="n">meshWNElements</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+      <span class="n">mb</span><span class="o">.</span><span class="n">meshWNElements</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
       <span class="n">mb</span><span class="o">.</span><span class="n">meshTransfiniteRecursive</span><span class="p">()</span>
       <span class="n">mb</span><span class="o">.</span><span class="n">meshRecombineRecursive</span><span class="p">()</span>
     
@@ -1054,12 +1062,12 @@
           <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">inletRuleString</span><span class="p">(</span>
             <span class="s2">&quot;INLET&quot;</span><span class="p">,</span> 
             <span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">],</span> 
-            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">18.85</span><span class="p">,</span><span class="mf">5.77</span><span class="p">],</span> <span class="p">]</span>
+            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">c_mi_</span><span class="p">],</span> <span class="p">]</span>
           <span class="p">),</span> 
           <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">inletRuleString</span><span class="p">(</span>
             <span class="s2">&quot;INLET&quot;</span><span class="p">,</span> 
             <span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;omega&quot;</span><span class="p">,],</span> 
-            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span> <span class="p">]</span>
+            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.032</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span> <span class="p">]</span>
           <span class="p">),</span>
           <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">emptyRuleString</span><span class="p">(</span>
             <span class="s2">&quot;EMPTYA&quot;</span>
@@ -1213,8 +1221,8 @@
     <span class="c1"># Transform relative velocity &quot;w&quot; to absolute velocity &quot;c&quot; by subtracting</span>
     <span class="c1"># &quot;u&quot;</span>
     <span class="c1">#</span>
-    <span class="n">U_i</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_i</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">18.85</span>
-    <span class="n">U_o</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_o</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">18.85</span>
+    <span class="n">U_i</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_i</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span>
+    <span class="n">U_o</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_o</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span>
 
     <span class="c1">#</span>
     <span class="c1"># Set constants density and gravitational acceleration</span>
@@ -1226,25 +1234,37 @@
     <span class="c1"># Integrate pressure and velocity over inlet and outlet; calculate the</span>
     <span class="c1"># sum of those energies to get the difference in head</span>
     <span class="c1">#</span>
-    <span class="n">e_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_i</span><span class="o">.</span><span class="n">IntValueQ</span><span class="p">()</span> <span class="o">/</span> <span class="n">g</span> <span class="o">+</span> <span class="n">U_i</span><span class="o">.</span><span class="n">IntMagSquareQ</span><span class="p">()</span><span class="o">/</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">rho</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span>
-    <span class="n">e_o</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_o</span><span class="o">.</span><span class="n">IntValueQ</span><span class="p">()</span> <span class="o">/</span> <span class="n">g</span> <span class="o">+</span> <span class="n">U_o</span><span class="o">.</span><span class="n">IntMagSquareQ</span><span class="p">()</span><span class="o">/</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">rho</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span>
-    <span class="n">Q_i</span> <span class="o">=</span> <span class="n">U_i</span><span class="o">.</span><span class="n">IntQ</span><span class="p">()</span>
+    <span class="n">e_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_i</span><span class="o">.</span><span class="n">IntValueQ</span><span class="p">()</span> <span class="o">/</span> <span class="n">g</span> <span class="o">+</span> <span class="n">U_i</span><span class="o">.</span><span class="n">IntMagSquareQ</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span>
+    <span class="n">e_o</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_o</span><span class="o">.</span><span class="n">IntValueQ</span><span class="p">()</span> <span class="o">/</span> <span class="n">g</span> <span class="o">+</span> <span class="n">U_o</span><span class="o">.</span><span class="n">IntMagSquareQ</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">g</span><span class="p">)</span>
+    <span class="n">Q_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U_i</span><span class="o">.</span><span class="n">IntQ</span><span class="p">())</span>
     <span class="n">dHMean</span> <span class="o">=</span> <span class="p">(</span><span class="n">e_i</span> <span class="o">+</span> <span class="n">e_o</span><span class="p">)</span> <span class="o">/</span> <span class="n">Q_i</span>
+   
+    <span class="c1">#</span>
+    <span class="c1"># Calculate efficiency of the blade</span>
+    <span class="c1">#</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">FMean</span> <span class="o">*</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">dHMean</span><span class="o">*</span><span class="n">Q_i</span><span class="p">))</span>
 
     <span class="c1">#</span>
     <span class="c1"># Output to log file</span>
     <span class="c1">#</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span> 
-      <span class="s2">&quot;dH = (e_i + e_o) / Q_i =( </span><span class="si">%f</span><span class="s2"> + </span><span class="si">%f</span><span class="s2"> ) / </span><span class="si">%f</span><span class="s2"> = </span><span class="si">%f</span><span class="s2"> / F = </span><span class="si">%f</span><span class="s2">&quot;</span> 
+      <span class="s2">&quot;dH = (e_i + e_o) / Q_i =( </span><span class="si">%f</span><span class="s2"> + </span><span class="si">%f</span><span class="s2"> ) / </span><span class="si">%f</span><span class="s2"> = </span><span class="si">%f</span><span class="s2"> / F = </span><span class="si">%f</span><span class="s2">&quot;</span>
       <span class="o">%</span> 
       <span class="p">(</span><span class="n">e_i</span><span class="p">,</span> <span class="n">e_o</span><span class="p">,</span> <span class="n">Q_i</span><span class="p">,</span> <span class="n">dHMean</span><span class="p">,</span> <span class="n">FMean</span><span class="p">)</span> 
     <span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;eta = </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eta</span><span class="p">)</span>
 
     <span class="c1">#</span>
     <span class="c1"># Calculate the fitness value as an averaged sum of design head deviation</span>
     <span class="c1"># and efficiency</span>
     <span class="c1">#</span>
-    <span class="n">fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dHMean</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">)</span><span class="o">/</span><span class="mf">0.8</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">FMean</span><span class="o">/</span><span class="mf">6.408E+04</span><span class="p">))</span>
+    <span class="n">fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dHMean</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">)</span><span class="o">/</span><span class="mf">0.8</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">eta</span><span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># Check if the simulated geometry is a pump or a turbine; if it is a pump,</span>
+    <span class="c1"># return an artificial value that is greater than all other fitness values</span>
+    <span class="c1">#</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">dHMean</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">):</span> <span class="n">fit</span> <span class="o">=</span> <span class="mf">1000.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span><span class="c1">#hydFoil.FailedFitness()</span>
 
     <span class="c1">#</span>
     <span class="c1"># Initialize an object of dtClusteredSingletonState to have access to the</span>
@@ -1253,6 +1273,7 @@
     <span class="n">sh</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">dtClusteredSingletonState</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_</span> <span class="p">)</span>
     <span class="n">sh</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;dH&#39;</span><span class="p">,</span> <span class="n">dHMean</span><span class="p">)</span>
     <span class="n">sh</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">FMean</span><span class="p">)</span>
+    <span class="n">sh</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;eta&#39;</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
     <span class="n">sh</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;fitness&#39;</span><span class="p">,</span> <span class="n">fit</span><span class="p">)</span>
 
     <span class="c1">#</span>

@@ -77,10 +77,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.bC"><code class="docutils literal notranslate"><span class="pre">hydFoil.bC</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.bV"><code class="docutils literal notranslate"><span class="pre">hydFoil.bV</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.cV"><code class="docutils literal notranslate"><span class="pre">hydFoil.cV</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.c_mi_"><code class="docutils literal notranslate"><span class="pre">hydFoil.c_mi_</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.container"><code class="docutils literal notranslate"><span class="pre">hydFoil.container</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.dC"><code class="docutils literal notranslate"><span class="pre">hydFoil.dC</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.dP"><code class="docutils literal notranslate"><span class="pre">hydFoil.dP</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.nB_"><code class="docutils literal notranslate"><span class="pre">hydFoil.nB_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.n_"><code class="docutils literal notranslate"><span class="pre">hydFoil.n_</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.state_"><code class="docutils literal notranslate"><span class="pre">hydFoil.state_</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.sys"><code class="docutils literal notranslate"><span class="pre">hydFoil.sys</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.twoPiRByNB_"><code class="docutils literal notranslate"><span class="pre">hydFoil.twoPiRByNB_</span></code></a></li>
@@ -886,7 +888,7 @@ described commands of PyFoam.</p>
 outlet angle and a blade thickness. <a class="reference internal" href="#hydfoil"><span class="std std-numref">Fig. 8</span></a> shows a sketch of the
 hydrofoil.</p>
 <figure class="align-center" id="id9">
-<span id="hydfoil"></span><a class="reference internal image-reference" href="_images/hydfoil.png"><img alt="_images/hydfoil.png" src="_images/hydfoil.png" style="width: 400px;" />
+<span id="hydfoil"></span><a class="reference internal image-reference" href="_images/hydfoil.png"><img alt="_images/hydfoil.png" src="_images/hydfoil.png" style="width: 600px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 8 </span><span class="caption-text">Hydrofoil’s sketch including mean line (solid thick black line) and final
@@ -899,7 +901,11 @@ colored in magenta; the DOFs, namely <span class="math notranslate nohighlight">
 </figure>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>alpha_1</strong> (<em>float</em>) – Inlet angle.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha_1</strong> (<em>float</em>) – Inlet angle.</p></li>
+<li><p><strong>alpha_2</strong> (<em>float</em>) – Outlet angle.</p></li>
+<li><p><strong>t_mid</strong> (<em>float</em>) – Blade’s thickness.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py method">
@@ -1063,6 +1069,21 @@ of dtOOPythonSWIG.constValue.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.c_mi_">
+<span class="sig-name descname"><span class="pre">c_mi_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.c_mi_" title="Link to this definition"></a></dt>
+<dd><p>math:`
+rac{m}{s}`</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Absolute velocity at inlet in</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.container">
 <span class="sig-name descname"><span class="pre">container</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.container" title="Link to this definition"></a></dt>
 <dd><p>Bundle object.</p>
@@ -1101,6 +1122,17 @@ of dtOOPythonSWIG.dtPlugin.</p>
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.nB_">
 <span class="sig-name descname"><span class="pre">nB_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.nB_" title="Link to this definition"></a></dt>
 <dd><p>Number of blades in which this hydrofoil is located.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.n_">
+<span class="sig-name descname"><span class="pre">n_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.n_" title="Link to this definition"></a></dt>
+<dd><p>Rotational speed in <span class="math notranslate nohighlight">\(min^{-1}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
