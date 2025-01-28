@@ -958,7 +958,7 @@ class ofOpenFOAMCase_setupWrapper:
       "  "+patchTwo+"("
       "    transform        translational;"
       "    separationVector ("
-             +str(sepVector[0])+" "+str(sepVector[1])+" "+str(sepVector[2])
+             +str(-sepVector[0])+" "+str(-sepVector[1])+" "+str(-sepVector[2])
            +");"
       "  )"
       ":"
