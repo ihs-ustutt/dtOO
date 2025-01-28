@@ -1031,7 +1031,7 @@ class hydFoil:
           ),
           ofOpenFOAMCase_setupWrapper.cyclicAmiTranslationalRuleString(
             "PERIOA", "PERIOB", 
-            sepVector = dtOO.dtVector3(0,1,0)
+            sepVector = dtOO.dtVector3(0,-self.twoPiRByNB_,0)
           ),
           ofOpenFOAMCase_setupWrapper.outletRuleString(
             "OUTLET", 
