@@ -1,0 +1,1167 @@
+#------------------------------------------------------------------------------
+#  dtOO < design tool Object-Oriented >
+#    
+#    Copyright (C) 2024 A. Tismer.
+#------------------------------------------------------------------------------
+#License
+#    This file is part of dtOO.
+#
+#    dtOO is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE.  See the LICENSE.txt file in the
+#    dtOO root directory for more details.
+#
+#    You should have received a copy of the License along with dtOO.
+#
+#------------------------------------------------------------------------------
+
+"""Brief eier.Simple machine consisting of an axial runner only.
+
+Do some imports
+
+>>> from scipy.optimize import differential_evolution
+>>> import os
+
+>>> os.environ["FOAM_SIGFPE"] = "0"
+
+>>> def optimizeHydroFoil(x):
+...   try:
+...     hf = hydFoil( alpha_1=x[0], alpha_2=x[1], t_mid=x[2] )
+...     hf.Geometry()
+...     hf.GeometryMesh()
+...     hf.Mesh()
+...     hf.Simulate()
+...     fit = hf.Evaluate()
+...   except:
+...     logging.warning("Catch Exception")
+...     fit = hydFoil.FailedFitness() 
+...   return fit
+
+>>> bounds = [(150.0, 170.0), (155.0, 175.0), (0.01, 0.10),]
+
+>>> result = differential_evolution(
+...   optimizeHydroFoil, 
+...   bounds, 
+...   popsize=3, 
+...   maxiter=2,
+...   polish=False
+... )
+
+>>> logging.info( 
+...   "Optimum found at (alpha_1, alpha_2, t_mid) = (%f, %f, %f) with %f"
+...   %
+...   ( result.x[0], result.x[1], result.x[2], result.fun )
+... )
+"""
+
+import logging
+logging.basicConfig(
+  format='[ %(asctime)s - %(levelname)8s - %(filename)s:%(lineno)d ]'
+         ' - %(message)s', 
+  datefmt='%d-%b-%y %H:%M:%S', 
+  level=logging.INFO
+)
+
+import numpy as np
+import dtOOPythonSWIG as dtOO
+
+import foamlib as fl
+import pyDtOO as pd
+
+import sys
+pd.dtClusteredSingletonState.ADDDATA = ['dH', 'F',]
+pd.dtClusteredSingletonState.ADDDATADEF = [
+  [sys.float_info.max,], [sys.float_info.max,],
+]
+
+import subprocess
+
+class hydFoil:
+  """Create, mesh, simulate and evaluate a hydrofoil.
+
+  This class holds all functions to create a hydrofoil with an inlet angle,
+  outlet angle and a blade thickness. :numref:`hydfoil` shows a sketch of the 
+  hydrofoil.
+
+  .. _hydfoil:
+  .. figure:: img/hydfoil.png
+     :width: 400
+     :align: center
+
+     Hydrofoil's sketch including mean line (solid thick black line) and final
+     shape (solid thin black line); B-Splines, that are used for constructing
+     the meanline and final shape, are shown as solid and dashed gray thin
+     lines; velocity triangles at inlet and outlet of the hydrofoil are 
+     colored in magenta; the DOFs, namely :math:`\\alpha_1`,
+     :math:`\\alpha_2`, and :math:`t_{mid}`, are shown and labeled in black
+
+  Parameters
+  ----------
+  alpha_1: float
+    Inlet angle.
+  """
+  
+  import sys
+  
+  def __init__(
+    self, 
+    alpha_1 = 100.0,  
+    alpha_2 = 130, 
+    t_mid = 0.1
+  ):
+    self.state_ = pd.dtClusteredSingletonState(
+      defObj = [alpha_1, alpha_2, t_mid],
+      defFit = [hydFoil.FailedFitness(),]
+    ).state()
+    """str: State label."""
+
+    dtOO.logMe.initLog('build.'+self.state_+'.log')
+    
+    dtOO.staticPropertiesHandler.getInstance().jInit(
+      dtOO.jsonPrimitive(
+        '{'
+          '"option" : ['
+            '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
+            '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
+            '{"name" : "reparam_internalRestarts", "value" : "10"},'
+            '{"name" : "reparam_restarts", "value" : "10"},'
+            '{"name" : "reparam_restartIncreasePrecision", "value" : "10."},'
+            '{'
+              '"name" : "reparam_internalRestartDecreasePrecision",'
+              ' "value" : "0.9"'
+            '},'
+            '{"name" : "invY_precision", "value" : "1.e-04"},'
+            '{"name" : "xyz_resolution", "value" : "1.e-05"},'
+            '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
+            '{"name" : "uvw_resolution", "value" : "1.e-04"},'
+            '{"name" : "root_printLevel", "value" : "0"},'		
+            '{"name" : "root_maxIterations", "value" : "1000"},'
+            '{"name" : "root_maxFunctionCalls", "value" : "1000000"},'
+            '{"name" : "logLevel", "value" : "99"}'
+          ']'
+        '}'
+      )
+    )
+    
+    self.container = dtOO.dtBundle()
+    """dtOOPythonSWIG.dtBundle: Bundle object."""
+    
+    self.bC = self.container.cptr_bC()
+    """dtOOPythonSWIG.baseContainer: base container."""
+    self.cV = self.container.cptr_cV()
+    """dtOOPythonSWIG.labeledVectorHandlingConstValue: Container object 
+    of dtOOPythonSWIG.constValue."""
+    self.aF = self.container.cptr_aF() 
+    """dtOOPythonSWIG.labeledVectorHandlingAnalyticFunction: Container object 
+    of dtOOPythonSWIG.analyticFunction."""
+    self.aG = self.container.cptr_aG() 
+    """dtOOPythonSWIG.labeledVectorHandlingAnalyticGeometry: Container object 
+    of dtOOPythonSWIG.analyticGeometry."""
+    self.bV = self.container.cptr_bV() 
+    """dtOOPythonSWIG.labeledVectorHandlingBoundedVolume: Container object 
+    of dtOOPythonSWIG.boundedVolume."""
+    self.dC = self.container.cptr_dC() 
+    """dtOOPythonSWIG.labeledVectorHandlingDtCase: Container object 
+    of dtOOPythonSWIG.dtCase."""
+    self.dP = self.container.cptr_dP() 
+    """dtOOPythonSWIG.labeledVectorHandlingDtPlugin: Container object 
+    of dtOOPythonSWIG.dtPlugin."""
+
+    #
+    # Create and initialize constValues for DOFs; the objects are cloned and
+    # appended to the container; it is necessary to create a clone, otherwise
+    # the instance is destructed at the end of this function; it is also 
+    # possible to use the thisown flag that is implemented via SWIG, see
+    # documentation of SWIG 
+    # https://www.swig.org/Doc4.1/SWIGDocumentation.html#Python_nn28
+    #
+    self.cV.set(
+      dtOO.sliderFloatParam("alpha_1", alpha_1, 130.0, 170.0).clone()
+    )
+    self.cV.set(
+      dtOO.sliderFloatParam("alpha_2", alpha_2, 130.0, 170.0).clone()
+    )
+    self.cV.set(
+      dtOO.sliderFloatParam("t_mid", t_mid, 0.01, 0.70).clone()
+    )
+
+    #
+    # Add a lVHOstateHandler object to create state labels; clearing is 
+    # necessary to prevent memory corruption; thisown is necessary to make
+    # sure that object is not destructed at the end of this function
+    #
+    dtOO.lVHOstateHandler.clear()
+    dtOO.lVHOstateHandler( dtOO.jsonPrimitive(), self.cV ).thisown = False
+
+    #
+    # Create a state using the lVHOstateHandler; this forces also the creation
+    # of a json file <statename>.json written to disk
+    #
+    dtOO.lVHOstateHandler().makeState(self.state_)
+
+    self.H_          = 0.2
+    """float: Height of the mesh."""
+    self.R_          = 2.0
+    """float: Radius of the blade cut where this hydrofoil is located."""
+    self.nB_         = 4
+    """float: Number of blades in which this hydrofoil is located."""
+    self.L_          = 4.0
+    """float: Length of the mesh."""
+    self.twoPiRByNB_ = 2.0*np.pi*self.R_/self.nB_
+    """float: Width of the mesh. 
+    
+    The width is given by the fraction of the unwounded length 
+    :math:`2 \\pi R` and the number of blades :math:`n_B`
+    """
+
+  def Geometry(self):
+    """Create hyrdofoil's geometry.
+  
+    The main objects of baseContainer, analyticFunction, and analyticGeometry
+    are created. Objects that are necessary or interesting are appended to the
+    :attr:`hydFoilOpt.build.hydFoil.bV`, :attr:`hydFoilOpt.build.hydFoil.aF`, 
+    and :attr:`hydFoilOpt.build.hydFoil.aG`.
+    """
+   
+    #
+    # Create 4 points to define the periodic surface located on the left side;
+    # points are objects of dtPoint3; coordinates are accessible using python's
+    # index notation ([]-operator)
+    #
+    P1 = dtOO.dtPoint3(-0.5*self.H_, -0.5*self.twoPiRByNB_, 0)
+    P2 = dtOO.dtPoint3(P1[0], P1[1], self.L_)
+    P3 = dtOO.dtPoint3(P1[0]+self.H_, P1[1], P1[2])
+    P4 = dtOO.dtPoint3(P2[0]+self.H_, P2[1], P2[2])
+   
+    #
+    # Create B-Spline surface by skinning two B-Spline lines; the lines are
+    # straight connections, because order is not specified; therefore default
+    # value of 1 is used
+    #
+    perio = dtOO.analyticSurface(
+      dtOO.bSplineSurface_skinConstructOCC(
+        dtOO.bSplineCurve_pointConstructOCC(P1, P2).result(),
+        dtOO.bSplineCurve_pointConstructOCC(P3, P4).result()
+      ).result()
+    )
+   
+    #
+    # Create channel volume by translating B-Spline surface in y-direction
+    #
+    channel = dtOO.translatingMap2dTo3d(
+     dtOO.dtVector3(0.0, self.twoPiRByNB_, 0.0), perio
+    )
+    
+    #
+    # Define label for the channel volume
+    #
+    channel.setLabel("xyz_channel")
+    
+    #
+    # Append a clone of the channel volume to the analyticGeometry container;
+    # as an alternative without cloning, the thisown flag of channel vollume
+    # must be set to 0
+    #
+    self.aG.set(channel.clone())
+   
+    #
+    # Create a conformal mapping to map between parameter and physical 
+    # coordinates; the transformer is initialized with a JSON object that
+    # defines the label, the geometry "to-map-to", the number of points in
+    # v-direction, and the number of points in w-direction; it is necessary
+    # to give self.aG as input argument, because the transformer clones the
+    # geometry "to-map-to" and keeps an instance as an attribute; therefore, a
+    # geometry change of "xyz_channel" after the next statement is useless
+    # for the transformer; the internal "to-map-to" geometry is not update;
+    # store a clone in the analyticGeometry container, too
+    #
+    cMap = dtOO.uVw_deltaMs()
+    cMap.jInit(
+      dtOO.jsonPrimitive()
+        .appendStr("label", "cMap")
+        .appendAnalyticGeometry("_tM2d", self.aG.get("xyz_channel"))
+        .appendInt("_nV", 31)
+        .appendInt("_nW", 11),
+      None, None, None, self.aG
+    )
+    self.bC.ptrTransformerContainer().add( cMap.clone() )
+
+    #
+    # Extract instances of constValue by their labels ("alpha_1" and 
+    # "alpha_2"); a call to the ()-operator on a constValue object, returns
+    # its internal value
+    #
+    alpha_1 = self.cV["alpha_1"]()
+    alpha_2 = self.cV["alpha_2"]()
+
+    #
+    # Define additional parameter variables and assign values; theoretically,
+    # those variables could also be modifyable, but the example is kept as
+    # small as possible; therefore those are fix
+    #
+    ratio = 0.5
+    deltaM = 0.30
+    offM   = 0.75
+    bladeLength = 0.70
+   
+    #
+    # Import predefined builder to create a mean plane based on alphaOne,
+    # alphaTwo, ratioX, deltaY, offX, offY and targetLength, see corresponding
+    # documentation for details; the DOFs are prescribed as functions; in this
+    # case, the functions are a linear curve between two points; the builder 
+    # gets and returns a dtBundle object; the generated mean plane is appended 
+    # to the input dtBundle object; all created objects are labeled with the 
+    # given tag; in the case at hand, it is simply "meanplane"
+    #
+    from dtOOPythonApp.builder import (
+      analyticSurface_threePointMeanplaneFromRatio,
+      scaOneD_scaCurve2dOneDPointConstruct
+    )
+    self.container = analyticSurface_threePointMeanplaneFromRatio(
+      "meanplane",
+      spanwiseCuts = [
+        0.00,  
+        1.00,
+      ],
+      alphaOne = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, (np.pi/180.) * alpha_1),  
+          dtOO.dtPoint2(1.00, (np.pi/180.) * alpha_1),
+        ],
+        1
+      )(),
+      alphaTwo = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, (np.pi/180.) * alpha_2),  
+          dtOO.dtPoint2(1.00, (np.pi/180.) * alpha_2),
+        ],
+        1
+      )(),
+      ratioX = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, ratio),
+          dtOO.dtPoint2(1.00, ratio),  
+        ],
+        1
+      )(),
+      deltaY = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, deltaM),
+          dtOO.dtPoint2(1.00, deltaM),  
+        ],
+        1
+      )(),
+      offX = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.5*self.twoPiRByNB_),  
+          dtOO.dtPoint2(1.00, 0.5*self.twoPiRByNB_)
+        ],
+        1
+      )(),
+      offY = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, offM),  
+          dtOO.dtPoint2(1.00, offM),
+        ],
+        1
+      )(),
+      targetLength = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, bladeLength),  
+          dtOO.dtPoint2(1.00, bladeLength),
+        ],
+        1
+      )(),
+      targetLengthTolerance = 0.01,
+      originOnLengthPercent = 0.5
+    ).buildExtract( self.container )
+
+    #
+    # At first, extract the DOF "t_mid" for the thickness distribution out of
+    # the container by its label; then, import and apply a predefined builder
+    # for a B-Spline thickness distribution defined by 5 control points
+    #
+    t_mid = self.cV["t_mid"]()
+    from dtOOPythonApp.builder import (
+      vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution
+    )
+    self.container = vec3dSurfaceTwoD_fivePointsBSplineThicknessDistribution(
+      "thicknessDistribution",
+      spanwiseCuts = [
+        0.00,  
+        1.00,
+      ],
+      tLe = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.05),  
+          dtOO.dtPoint2(1.00, 0.05),
+        ],
+        1
+      )(),
+      uLe = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.00),  
+          dtOO.dtPoint2(1.00, 0.00),
+        ],
+        1
+      )(),
+      tMid = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, t_mid),  
+          dtOO.dtPoint2(1.00, t_mid),
+        ],
+        1
+      )(),
+      uMid = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.50),  
+          dtOO.dtPoint2(1.00, 0.50),
+        ],
+        1
+      )(),
+      tTe = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.01),  
+          dtOO.dtPoint2(1.00, 0.01),
+        ],
+        1
+      )(),
+      uTe = scaOneD_scaCurve2dOneDPointConstruct(
+        [
+          dtOO.dtPoint2(0.00, 0.80),  
+          dtOO.dtPoint2(1.00, 0.80),
+        ],
+        1
+      )()
+    ).buildExtract( self.container )
+   
+    #
+    # Define a transformer to combine the mean plane and the thickness
+    # distribution; the transformer adds the thickness to the mean plane in
+    # perpendicular direction; a number of predefined points in u- and 
+    # v-direction, respectively, "_nU" and "_nV", are transformed to form
+    # the final hydrofoil's shape; the points are resplined and, therefore,
+    # connected by a B-Spline of order 3 ("_order"); as alredy explained the
+    # transformer clones the "thicknessDistribution" to keep an internal
+    # insctance and, in that sense, it is necessary to have self.aF as an 
+    # inlet argument
+    #
+    dAdd = dtOO.discreteAddNormal()
+    dAdd.jInit(
+      dtOO.jsonPrimitive(
+        '{"option" : [{"name" : "debug", "value" : "false"}]}'
+      )
+        .appendAnalyticFunction("_tt", self.aF["thicknessDistribution"])
+        .appendInt("_nU", 61)
+        .appendInt("_nV", 41)
+        .appendInt("_order", 3)
+        .appendDtVector3("_nf", dtOO.dtVector3(0,0,1)),
+      None, None, self.aF, None
+    )
+
+    #
+    # Apply the defined transformer to the "meanplane" function; set a label
+    # and append the object to the analyticFunction container
+    #
+    theAF = dAdd.applyAnalyticFunction( self.aF["meanplane"] )
+    theAF.setLabel("blade")
+    self.aF.set( theAF.clone() )
+
+  def GeometryMesh(self):
+    """Create additional hydrofoil's geometry for meshing.
+
+    Create additional objects that are necessary for creating the mesh. These
+    are mainly object's of the mesh block that is created around the blade.
+    This block is meshed as a structured block.
+    """
+
+    #
+    # Create an analyticFunction that maps (u,v)->(t,u,v) with u, v, and t or
+    # first parameter coordinate, second parameter coordinate, and thickness,
+    # respectively; the thickness is fixed to 0.1; set the label and define
+    # the bounds of first and second function argument
+    #
+    fRef = dtOO.vec3dMuParserTwoD("0.10, uu, vv", "uu", "vv")
+    fRef.setLabel("thicknessMeshBlock")
+    for i in range(2):
+      fRef.setMin(i, +0.0)
+      fRef.setMax(i, +1.0)
+   
+    #
+    # Create an temporary analyticFunction container to store the 
+    # analyticFunction; this is necessary to initialize the following
+    # transformer; as an alternative the analyticFunction can also be appended
+    # to :attr:`hydFoilOpt.build.hydFoil.aF`
+    #
+    tmpAF = dtOO.labeledVectorHandlingAnalyticFunction()
+    tmpAF.set( fRef.clone() )
+   
+    #
+    # Define the transformer to create the outter boundary of the mesh
+    # blocks; it is necessary to have a second trasnformer, because they
+    # operate on different "_tt" attributes
+    #
+    dAdd = dtOO.discreteAddNormal()
+    dAdd.jInit(
+      dtOO.jsonPrimitive(
+        '{"option" : [{"name" : "debug", "value" : "false"}]}'
+        ) \
+        .appendAnalyticFunction("_tt", tmpAF["thicknessMeshBlock"]) \
+        .appendInt("_nU", 61) \
+        .appendInt("_nV", 41) \
+        .appendInt("_order", 3) \
+        .appendDtVector3("_nf", dtOO.dtVector3(0,0,1)),
+      None, None, tmpAF, None
+    )
+   
+    #
+    # Apply transformer to blade geometry and append it to the corresponding
+    # container
+    #
+    theAF = dAdd.applyAnalyticFunction( self.aF["blade"] )
+    theAF.setLabel("meshBlock")
+    self.aF.set( theAF.clone() )
+    
+    #
+    # Import predefined builder to create the mesh blocks; they are created by
+    # skinning between the "blade" and "meshBlock" geometry in combination
+    # with splitting the final three dimensional region; the resulting
+    # geometries are appended to the dtBundle object
+    #
+    from dtOOPythonApp.builder import vec3dThreeD_skinAndSplit
+    self.container = vec3dThreeD_skinAndSplit(
+      label = "meshBlock",
+      aFOne = self.aF["blade"],
+      aFTwo = self.aF["meshBlock"],
+      splitDim = 0,
+      splits = [
+        [0.00, 0.10],
+        [0.10, 0.30],
+        [0.30, 0.45],
+        [0.45, 0.55],
+        [0.55, 0.70],
+        [0.70, 0.90],
+        [0.90, 1.00],
+      ]
+    ).buildExtract(self.container)
+  
+    #
+    # Get a reference of the conformal mapping transformer
+    #
+    cMap = self.bC.ptrTransformerContainer()["cMap"]
+
+    #
+    # Perform the conformal mapping of the two dimensional B-Spline geometries
+    # between parameter space (u,v) and physical space (x,y,z); the result is
+    # a composition of multiple functions; append for each geometry a shape to
+    # the analyticGeometry container
+    #
+    for ii in ["meanplane", "blade", "meshBlock",]:
+      theAG = dtOO.vec3dTwoDInMap3dTo3d(
+        dtOO.vec3dTwoD.MustConstDownCast(
+          cMap.applyAnalyticFunction( self.aF[ii].clone() )
+        ),
+        dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_channel"] )
+      )
+      theAG.setLabel("xyz_"+ii)
+      self.aG.set( theAG.clone() )
+   
+    #
+    # Perform the conformal mapping of the three dimensional B-Spline 
+    # geometries between parameter space (u,v,w) and (x,y,z)
+    #
+    for iNum in self.aF.getIndices("meshBlock_*"):
+      ii = self.aF.getLabel( iNum )
+      theAG = dtOO.vec3dThreeDInMap3dTo3d(
+        dtOO.vec3dThreeD.MustConstDownCast(
+          cMap.applyAnalyticFunction( self.aF[ii].clone() )
+        ),
+        dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_channel"] )
+      )
+      theAG.setLabel("xyz_"+ii)
+      self.aG.set( theAG.clone() )
+
+  def Mesh(self):
+    """Create hydrofoil's mesh.
+
+    Create the topology for the hydrofoil's mesh. Additionally, define number
+    of elements for edges and surfaces, define minimum and maximum element
+    lengths for unstructured meshing algorithms, and label mesh parts.
+    """
+
+    #
+    # Extract coupling surfaces between mesh blocks and outter region; these
+    # surfaces are necessary to define the outter region; in this simple test
+    # case the surfaces of intereset are clear, because the blocks are ordered;
+    # store the blocks and surfaces in two lists "blocks" and "couplingFaces"
+    #
+    blocks = []
+    for iNum in self.aG.getIndices("xyz_meshBlock_*"):
+      blocks.append( self.aG[ self.aG.getLabel( iNum ) ] )
+    
+    couplingFaces = []
+    couplingFaces.append( 
+      dtOO.map3dTo3d.MustDownCast( blocks[0] ).segmentConstUPercent( 0.0 )
+    )
+    for block in blocks:
+      couplingFaces.append( 
+        dtOO.map3dTo3d.MustDownCast( block ).segmentConstWPercent( 1.0 )
+      )
+    couplingFaces.append( 
+      dtOO.map3dTo3d.MustDownCast( blocks[-1] ).segmentConstUPercent( 1.0 )
+    )
+   
+    #
+    # Create a boundedVolume object that keeps all geometries, topologies and
+    # information for meshing; initialize the boundedVolume with a JSON 
+    # structure; gmsh options can be set as shown e.g. for the value
+    # "Mesh.CharacteristicLengthMin"; theoretically, the geometries being
+    # meshed can also be included in the JSON structure within the 
+    # vector of analyticGeometry; in the case at hand, they are added via
+    # separate functions
+    #
+    gBV = dtOO.gmshBoundedVolume()
+    gBV.jInit(
+      dtOO.jsonPrimitive(
+      '{'
+        '"label" : "mesh", '
+        '"option" : ['
+          '{"name" : "[gmsh]General.Terminal", "value" : "1."},'
+          '{"name" : "[gmsh]General.Verbosity", "value" : "100."},'
+          '{"name" : "[gmsh]General.ExpertMode", "value" : "1."},'
+          '{'
+            '"name" : "[gmsh]Mesh.LcIntegrationPrecision", '
+            '"value" : "1.0E-04"'
+          '},'
+          '{'
+            '"name" : "[gmsh]Mesh.CharacteristicLengthMin", '
+            '"value" : "0.1"'
+          '},'
+          '{'
+            '"name" : "[gmsh]Mesh.CharacteristicLengthMax", '
+            '"value" : "0.5"'
+          '},'
+          '{"name" : "[gmsh]Mesh.Algorithm", "value" : "1"},'
+          '{'
+            '"name" : "[gmsh]Mesh.MeshSizeExtendFromBoundary", '
+            '"value" : "1"'
+          '},'
+          '{"name" : "[gmsh]Mesh.MeshSizeFromPoints", "value" : "1"}'
+        '],'
+        '"analyticGeometry" : []'
+      '}'
+      ),
+      None, None, None, None, None
+    )
+
+    #
+    # Append the boundedVolume to its container; prevent destruction by
+    # setting thisown to false
+    #
+    gBV.thisown = False
+    self.bV.set( gBV )
+   
+    #
+    # Store the underlying gmsh model in a separate variable to have easy
+    # access
+    #
+    gm = gBV.getModel()
+   
+    #
+    # Add three dimensional outter region to model; the return value is the 
+    # internal tag of the region in the gmsh model; 
+    #
+    tag = gm.addIfRegionToGmshModel( 
+      dtOO.map3dTo3d.DownCast( self.aG["xyz_channel"] ) 
+    )
+   
+    #
+    # Add a physical tag to the region
+    #
+    gm.tagPhysical( gm.getRegionByTag(tag), "xyz_channel" )
+   
+    #
+    # Create a list that contains all indices of the mesh blocks; the list is
+    # for easy access of the desired geometries
+    #
+    mbIndices = self.aG.getIndices("xyz_meshBlock_*")
+    
+    #
+    # Add the mesh block geometries to the gmsh model and, additionally, add
+    # "NORTH" face of each block to the outter region; those faces are the
+    # coupling faces
+    #
+    for iNum in mbIndices:
+      tag = gm.addIfRegionToGmshModel( 
+        dtOO.map3dTo3d.DownCast( self.aG[iNum] ) 
+      )
+      gm.tagPhysical( gm.getRegionByTag(tag), self.aG[iNum].getLabel() )
+      gm.getDtGmshRegionByPhysical("xyz_channel").addFace(
+        gm.getDtGmshFaceByPhysical(self.aG[iNum].getLabel()+"->NORTH"), 1 
+      )
+
+    #
+    # Add "WEST" surface of first and "EAST" surface of last mesh block to
+    # outter region; both surfaces are also couling surfaces
+    #
+    gm.getDtGmshRegionByPhysical("xyz_channel").addFace(
+     gm.getDtGmshFaceByPhysical("xyz_meshBlock_0->WEST"), 1 
+    )
+    gm.getDtGmshRegionByPhysical("xyz_channel").addFace(
+      gm.getDtGmshFaceByPhysical(
+        "xyz_meshBlock_"+str(np.size(mbIndices)-1)+"->EAST"
+      ), 
+      1 
+    )
+   
+    #
+    # Create an observer to automatically detect internal edges of the outter 
+    # region "xyz_channel"; the observer extracts all edges that lie within 
+    # the "NORTH" and "SOUTH" face of the region; the extracted edges are then
+    # oriented to form an edge loop
+    #
+    ob = dtOO.bVOAddInternalEdge()
+    ob.jInit(
+      dtOO.jsonPrimitive('{ "_regionLabel" : "xyz_channel"}'), 
+      None, None, None, None, None, gBV
+    )
+
+    #
+    # Apply observer with the "preUpdate" function; in general, observers can
+    # be applied before or after the meshing procedure; theoretically, the 
+    # observer can also be appended to the internal observer vector of the
+    # bounded volume; if this is the case, all observers within the vector are
+    # then automatically applied; in the case at hand, the observer is
+    # manually applied
+    #
+    ob.preUpdate()
+   
+    #
+    # Define number of elements within the mesh blocks; the regions are also
+    # defined to be transfinite with a recursive recomobination; the latter
+    # enables the creation of quadrangles or rather hexahedrons
+    #
+    for iNum in mbIndices:
+      mb = gm.getDtGmshRegionByPhysical( self.aG[iNum].getLabel() )
+      mb.meshWNElements(10,1,5)
+      mb.meshTransfiniteRecursive()
+      mb.meshRecombineRecursive()
+    
+    #
+    # Define number of elements at periodic, inlet, and outlet surface; there
+    # is only one element in x-direction, because it is a two dimensional
+    # simulation; the surfaces are meshed transfinite and the mesh is then 
+    # recombined
+    #
+    for lab, nU, nV in zip(
+      [
+        "xyz_channel->EAST", 
+        "xyz_channel->WEST", 
+        "xyz_channel->FRONT",
+        "xyz_channel->BACK",
+      ],
+      [10,10,1, 1,],
+      [1, 1, 10,10,]
+    ):
+      gm.getDtGmshFaceByPhysical(lab).meshWNElements(10,1)
+      gm.getDtGmshFaceByPhysical(lab).meshTransfinite()
+      gm.getDtGmshFaceByPhysical(lab).meshRecombine()
+    
+    #
+    # As mentioned above, the case is a two dimensional simulation; therefore,
+    # the mesh is periodic on the "NORTH" and "SOUTH" face of the outter 
+    # region; the transformation between the nodes is a simple translation in
+    # x-direction; it is implemented by using objects of translate
+    #
+    dtT_hs = dtOO.translate( 
+      dtOO.jsonPrimitive().appendDtVector3("_v3", dtOO.dtVector3(self.H_,0,0))
+    )
+    
+    #
+    # The trasnformer is appended to a temporary baseContainer
+    # 
+    tmp_bC = dtOO.baseContainer()
+    tmp_bC.ptrTransformerContainer().add(dtT_hs)
+    
+    #
+    # Create the observer to handle translational periodicity in gmsh; 
+    # customize the observer with a JSON object that sets master and slave 
+    # face and, additionally, provide the transformer
+    #
+    ob = dtOO.bVOSetTranslationalPeriodicity()
+    ob.jInit( 
+      dtOO.jsonPrimitive(
+        '{'
+          '"_faceMaster" : "xyz_channel->SOUTH",'
+          '"_faceSlave" : "xyz_channel->NORTH"'
+        '}'
+      ).appendDtTransformer("_dtT", dtT_hs), 
+      tmp_bC, None, None, None, None, gBV 
+    )
+
+    #
+    # Apply transformer by calling "preUpdate" function
+    #
+    ob.preUpdate()
+   
+    #
+    # Perform the meshing procedure within the "bVOMeshRule" observer; the
+    # meshing procedure is customized within the JSON structure; there is a
+    # rule for each mesh dimension; within a rule an operator is combined
+    # with entities by their labels; the operators are then defined in the
+    # "dtMeshOperator" vector
+    #
+    ob = dtOO.bVOMeshRule()
+    ob.jInit(
+      dtOO.jsonPrimitive( 
+        '{'
+          '"option" : ['
+            '{"name" : "debug", "value" : "true"}'
+          '],'
+          '"_rule1D" : ['
+            '"dtMeshGEdge(xyz_channel->*->*)",'
+            '"dtMeshGEdge(xyz_meshBlock_*->*->*)"'
+          '],'
+          '"_rule2D" : ['
+            '"dtMeshTransfiniteGFace(xyz_meshBlock*->*)",'
+            '"dtMeshGFace(xyz_*->*)"'
+          '],'
+          '"_rule3D" : ['
+            '"dtMeshGRegion(xyz_meshBlock*)",'
+            '"dtMeshGRegionWithOneLayer(xyz_channel*)"'
+          '],'
+          '"_only" : [],'
+          '"dtMeshOperator" : ['
+            '{'
+              '"name" : "dtMeshGEdge",'
+              '"label" : "dtMeshGEdge"'
+            '},'
+            '{'
+              '"name" : "dtMeshGFace",'
+              '"label" : "dtMeshGFace"'
+            '},'
+            '{'
+              '"name" : "dtMeshTransfiniteGFace",'
+              '"label" : "dtMeshTransfiniteGFace"'
+            '},'
+            '{'
+              '"name" : "dtMeshGRegion",'
+              '"label" : "dtMeshGRegion",'
+              '"_minQShapeMetric" : 0.0,' 
+              '"_relax" : 0.1,'
+              '"_nPyramidOpenSteps" : 10,'
+              '"_nSmooths" : 3'
+            '},'
+            '{'
+              '"name" : "dtMeshGRegionWithOneLayer",'
+              '"label" : "dtMeshGRegionWithOneLayer",'
+              '"_faceMaster" : "xyz_channel->SOUTH",' 
+              '"_faceSlave" : "xyz_channel->NORTH"'
+            '}'
+                        
+          ']'
+        '}'
+      ),
+      None, None, None, None, None, gBV
+    )
+
+    #
+    # Attach the observer to the boundedVolume; this means that it is 
+    # automatically executed; it is necessary to set the thisown flag, 
+    # otherwise the objects is being destroied
+    #
+    gBV.attachBVObserver(ob)
+    ob.thisown = False
+   
+    #
+    # Create the mesh within the boundedVolume
+    #
+    gBV.makeGrid()
+   
+    #
+    # Create an observer that renames internal mesh faces; this cleans up and 
+    # creates a clear naming of the faces
+    #
+    ob = dtOO.bVOFaceToPatchRule()
+    ob.jInit(
+      dtOO.jsonPrimitive(
+        '{'
+          '"_patchRule" : ['
+            '":xyz_channel->FRONT::INLET:",'
+            '":xyz_channel->BACK::OUTLET:",'
+            '":xyz_channel->EAST::PERIOA:",'
+            '":xyz_channel->WEST::PERIOB:",'
+            '":xyz_meshBlock_*->BACK::EMPTYB:",'
+            '":xyz_meshBlock_*->FRONT::EMPTYA:",'
+            '":xyz_channel->SOUTH::EMPTYA:",'
+            '":xyz_channel->NORTH::EMPTYB:",'
+            '":xyz_meshBlock_*->SOUTH::BLADE:"'
+          '],'
+          '"_regRule" : [":*::R:"]'
+        '}'
+      ), gBV
+    )
+
+    #
+    # Apply the observer after the mesh is created; this is done by calling
+    # "postUpdate"
+    #
+    ob.postUpdate()
+    
+    #
+    # Create and apply an observer to write the mesh in the gmsh native "msh"
+    # format to disk
+    #
+    ob = dtOO.bVOWriteMSH()
+    ob.jInit(
+      dtOO.jsonPrimitive( '{"_filename" : "", "_saveAll" : true}' ), gBV 
+    )
+    ob.postUpdate()
+   
+    #
+    # Create and apply an observer that orients the cell volumes within the
+    # mesh; this makes sure to be conform with OpenFoam
+    #
+    ob = dtOO.bVOOrientCellVolumes()
+    ob.jInit(
+      dtOO.jsonPrimitive('{ "_positive" : true }'), gBV
+    )
+    ob.postUpdate()
+    
+    #
+    # Import a predefined builder to setup the OpenFoam case; within the 
+    # builder all necessary files are written to disk; it includes an
+    # automatic definition of functions for calculating total pressure and
+    # discharges on desired patches; additionally all boundary conditions are
+    # defined
+    #
+    from dtOOPythonApp.builder import (
+      ofOpenFOAMCase_turboMachine,
+      ofOpenFOAMCase_setupWrapper
+    )
+    self.container = ofOpenFOAMCase_turboMachine(
+      label = "of",
+      bVs = [
+        self.bV["mesh"],
+      ],
+      dictRule = 
+          ofOpenFOAMCase_setupWrapper.controlDict(
+            application = "simpleFoam",
+            endTime = 100,
+            QPatches = ['INLET','OUTLET',],
+            PTPatches = ['INLET', 'OUTLET',],
+            FPatches = ['BLADE',],
+            libs = []
+          )
+        + ofOpenFOAMCase_setupWrapper.fvSchemes()
+        + ofOpenFOAMCase_setupWrapper.fvSolution()
+        + ofOpenFOAMCase_setupWrapper.transportModel()
+        + ofOpenFOAMCase_setupWrapper.turbulenceProperties(),
+        fieldRules = [ 
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("U", [0.0,0.0,0.0,]),
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("p", [0.0,]),
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("k", [0.1,]),
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("omega", [0.1,]),
+          ofOpenFOAMCase_setupWrapper.fieldRuleString("nut", [0.1,]),
+        ],
+        setupRules = [
+          ofOpenFOAMCase_setupWrapper.emptyRuleString(),
+          ofOpenFOAMCase_setupWrapper.inletRuleString(
+            "INLET", 
+            ["U"], 
+            [ [0,-18.85,5.77], ]
+          ), 
+          ofOpenFOAMCase_setupWrapper.inletRuleString(
+            "INLET", 
+            ["p", "k", "omega",], 
+            [ [0], [0.0, 0.10], [0.001, 0.1] ]
+          ),
+          ofOpenFOAMCase_setupWrapper.emptyRuleString(
+            "EMPTYA"
+          ),
+          ofOpenFOAMCase_setupWrapper.emptyRuleString(
+            "EMPTYB" 
+          ),
+          ofOpenFOAMCase_setupWrapper.wallRuleString(
+            "BLADE", 
+            ["omega", "U", "p", "k", "nut"]
+          ),
+          ofOpenFOAMCase_setupWrapper.cyclicAmiTranslationalRuleString(
+            "PERIOA", "PERIOB", 
+            sepVector = dtOO.dtVector3(0,1,0)
+          ),
+          ofOpenFOAMCase_setupWrapper.outletRuleString(
+            "OUTLET", 
+            ["U", "p", "k", "omega",]
+          ),
+        ]
+       
+    ).buildExtract( self.container )
+
+    #
+    # Output to log of the current state label
+    #
+    logging.info( 
+      "Current state is > %s <." % (dtOO.lVHOstateHandler().commonState()) 
+    )
+
+    #
+    # Run the current state of the dtCase object "of"; this object was created
+    # with the "ofOpenFOAMCase_turboMachine" builder
+    #
+    self.dC["of"].runCurrentState()
+
+  def Simulate(self):
+    """Perform the simulation.
+
+    Perform the simulation using foamlib. The simulation runs for 500 
+    iterations as a laminar simulation. Afterwards, it is switched to turbulent
+    mode.
+    """
+
+    #
+    # Create an FoamCase object of foamlib to control the simulation; the
+    # "getDirectory" function returns the case directory that was created
+    #
+    fc = fl.FoamCase( 
+      self.dC["of"].getDirectory(dtOO.lVHOstateHandler().commonState()) 
+    )
+
+    #
+    # Turn off turbulence, modify the controlDict and run the simulation; this
+    # is done twice
+    #
+    fc.turbulence_properties["RAS"]["turbulence"] = False
+    fc.control_dict["endTime"] = 500
+    fc.control_dict["writeInterval"] = 500
+    fc.run()
+    fc.turbulence_properties["RAS"]["turbulence"] = True
+    fc.control_dict["endTime"] = 1000
+    fc.control_dict["writeInterval"] = 1000
+    fc.run()
+
+  @staticmethod
+  def FailedFitness():
+    """Failed fitness.
+
+    Returns the value that represents a failed design.
+
+    Returns
+    -------
+    float
+      Fitness for a failed design.
+    """
+    return hydFoil.sys.float_info.max    
+
+  def Evaluate(self):
+    """Evaluate the simulation.
+
+    The simulation is evaluated using the pyDtOO library. Additionally, the
+    "patchToCsv" application is used to create csv files of the boundaries.
+
+    Returns
+    -------
+    float:
+      Fitness value of this candidate.
+    """
+
+    #
+    # Get case directory of case
+    #
+    cDir = self.dC["of"].getDirectory(dtOO.lVHOstateHandler().commonState())
+   
+    #
+    # Run "patchToCsv" to extract the data on the boundary; this executable
+    # writes csv files for each boundary
+    #
+    subprocess.run(['patchToCsv', '-latestTime', 'U', 'INLET'], cwd=cDir)
+    subprocess.run(['patchToCsv', '-latestTime', 'U', 'OUTLET'], cwd=cDir)
+    subprocess.run(['patchToCsv', '-latestTime', 'p', 'INLET'], cwd=cDir)
+    subprocess.run(['patchToCsv', '-latestTime', 'p', 'OUTLET'], cwd=cDir)
+   
+    #
+    # Read the output generated by OpenFoam in the postProcessing folder; the
+    # class automatically provides functions for calculating the average of
+    # the forces
+    #
+    F = pd.dtForceDeveloping( 
+      pd.dtDeveloping(cDir+'/postProcessing/F_BLADE').Read(
+        {'force.dat' : ':,4:10', 'moment.dat' : ':,4:10', '*.*' : ''}
+      )
+    )
+
+    #
+    # Get the average of the force in y-direction
+    #
+    FMean = F.ForceMeanLast(10)[1]
+
+    #
+    # Init again an FoamCase object of foamlib
+    #
+    fc = fl.FoamCase(cDir)
+
+    #
+    # Get the last time directory
+    #
+    tName = fc[-1].name
+
+    #
+    # Read velocities and pressures at the inlet and outlet of the last time 
+    # step; the class dtValueField provides functions to evaluate integral
+    # values on the surfaces
+    #
+    U_i = pd.dtValueField( pd.dtField(cDir+'/INLET_U_'+tName+'.csv').Read() )
+    U_o = pd.dtValueField( pd.dtField(cDir+'/OUTLET_U_'+tName+'.csv').Read() )
+    p_i = pd.dtValueField( pd.dtField(cDir+'/INLET_p_'+tName+'.csv').Read() )
+    p_o = pd.dtValueField( pd.dtField(cDir+'/OUTLET_p_'+tName+'.csv').Read() )
+    
+    #
+    # Transform relative velocity "w" to absolute velocity "c" by subtracting
+    # "u"
+    #
+    U_i.value_[:,1] = U_i.value_[:,1] + 18.85
+    U_o.value_[:,1] = U_o.value_[:,1] + 18.85
+
+    #
+    # Set constants density and gravitational acceleration
+    #
+    rho = 997.0
+    g = 9.81
+
+    #
+    # Integrate pressure and velocity over inlet and outlet; calculate the
+    # sum of those energies to get the difference in head
+    #
+    e_i = (p_i.IntValueQ() / g + U_i.IntMagSquareQ()/2.0 / rho / g)
+    e_o = (p_o.IntValueQ() / g + U_o.IntMagSquareQ()/2.0 / rho / g)
+    Q_i = U_i.IntQ()
+    dHMean = (e_i + e_o) / Q_i
+
+    #
+    # Output to log file
+    #
+    logging.info( 
+      "dH = (e_i + e_o) / Q_i =( %f + %f ) / %f = %f / F = %f" 
+      % 
+      (e_i, e_o, Q_i, dHMean, FMean) 
+    )
+
+    #
+    # Calculate the fitness value as an averaged sum of design head deviation
+    # and efficiency
+    #
+    fit = np.abs(dHMean + 0.8)/0.8 + (1.0 - np.abs(FMean/6.408E+04))
+
+    #
+    # Initialize an object of dtClusteredSingletonState to have access to the
+    # data base; update values of "dH", "F" and fitness
+    #
+    sh = pd.dtClusteredSingletonState( self.state_ )
+    sh.update('dH', dHMean)
+    sh.update('F', FMean)
+    sh.update('fitness', fit)
+
+    #
+    # Return fitness value
+    #
+    return fit

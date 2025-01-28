@@ -5,6 +5,8 @@ Demonstration
 Documentation of the demonstration cases located in 
 `demo <https://github.com/ihs-ustutt/dtOO/tree/main/demo>`_.
 
+
+
 Kinetic Turbine ``canada``
 ==========================
 
@@ -695,3 +697,8 @@ Additionally, we have to simulate the new case written in the directory
 ``ingvrudtout_coupled_of_iahr2024_state``. This can be done with the above
 described commands of PyFoam.
 
+Optimization of a Hydrofoil
+===========================
+
+.. automodule:: hydFoilOpt.build
+    :members:
