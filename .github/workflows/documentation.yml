@@ -47,7 +47,7 @@ jobs:
       #    #force_orphan: true
       #    destination_dir: ${{ env.PR_PATH }}
       - name: Deploy preview
-        uses: rossjrw/pr-preview-action@v1
+        uses: rossjrw/pr-preview-action@v1.6.0
         if: github.ref != 'refs/heads/main'
         with:
           source-dir: doc/_build/            
