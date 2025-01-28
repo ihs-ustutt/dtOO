@@ -11,9 +11,8 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: write      
-    env:
-      PR_PATH: pull/${{github.event.number}}      
+      pull-requests: write
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
@@ -28,28 +27,26 @@ jobs:
       - name: Sphinx build
         run: |
           cd doc && sphinx-build . _build
-      - name: Deploy to GitHub Pages - if main
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        with:
-          publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: doc/_build/
-          force_orphan: true
-      - name: Set base URL for preview if PR
-        if: github.ref != 'refs/heads/main'
-        run: echo "BASE_URL=https://${{ env.DOMAIN }}/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
-      #- name: Deploy to PR preview
+      #- name: (main) Deploy to GitHub Pages
       #  uses: peaceiris/actions-gh-pages@v3
-      #  if: github.ref != 'refs/heads/main'
+      #  if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       #  with:
       #    publish_branch: gh-pages
       #    github_token: ${{ secrets.GITHUB_TOKEN }}
       #    publish_dir: doc/_build/
-      #    #force_orphan: true
-      #    destination_dir: ${{ env.PR_PATH }}
-      - name: Deploy preview
-        uses: rossjrw/pr-preview-action@v1.6.0
+      #    force_orphan: true
+      - name: (main) Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        with:
+          folder: doc/_build/
+          clean-exclude: pr-preview/
+          force: false
+      - name: (PR) Set base URL for preview
+        if: github.ref != 'refs/heads/main'
+        run: echo "BASE_URL=https://${{ env.DOMAIN }}/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
+      - name: (PR) Deploy preview
+        uses: rossjrw/pr-preview-action@v1
         if: github.ref != 'refs/heads/main'
         with:
           source-dir: doc/_build/            
