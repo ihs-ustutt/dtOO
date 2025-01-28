@@ -69,9 +69,9 @@ import foamlib as fl
 import pyDtOO as pd
 
 import sys
-pd.dtClusteredSingletonState.ADDDATA = ['dH', 'F',]
+pd.dtClusteredSingletonState.ADDDATA = ['dH', 'F', 'eta',]
 pd.dtClusteredSingletonState.ADDDATADEF = [
-  [sys.float_info.max,], [sys.float_info.max,],
+  [sys.float_info.max,], [sys.float_info.max,], [sys.float_info.max,],
 ]
 
 import subprocess
@@ -85,7 +85,7 @@ class hydFoil:
 
   .. _hydfoil:
   .. figure:: img/hydfoil.png
-     :width: 400
+     :width: 600
      :align: center
 
      Hydrofoil's sketch including mean line (solid thick black line) and final
@@ -99,6 +99,10 @@ class hydFoil:
   ----------
   alpha_1: float
     Inlet angle.
+  alpha_2: float
+    Outlet angle.
+  t_mid: float
+    Blade's thickness.
   """
   
   import sys
@@ -208,11 +212,15 @@ class hydFoil:
     self.L_          = 4.0
     """float: Length of the mesh."""
     self.twoPiRByNB_ = 2.0*np.pi*self.R_/self.nB_
-    """float: Width of the mesh. 
-    
+    """float: Width of the mesh.
+
     The width is given by the fraction of the unwounded length 
     :math:`2 \\pi R` and the number of blades :math:`n_B`
     """
+    self.n_          = 90.0
+    """float: Rotational speed in :math:`min^{-1}`."""
+    self.c_mi_       = 5.77
+    """float: Absolute velocity at inlet in :math:`\frac{m}{s}`"""
 
   def Geometry(self):
     """Create hyrdofoil's geometry.
@@ -743,7 +751,7 @@ class hydFoil:
     #
     for iNum in mbIndices:
       mb = gm.getDtGmshRegionByPhysical( self.aG[iNum].getLabel() )
-      mb.meshWNElements(10,1,5)
+      mb.meshWNElements(10,1,15)
       mb.meshTransfiniteRecursive()
       mb.meshRecombineRecursive()
     
@@ -969,12 +977,12 @@ class hydFoil:
           ofOpenFOAMCase_setupWrapper.inletRuleString(
             "INLET", 
             ["U"], 
-            [ [0,-18.85,5.77], ]
+            [ [0,-2.0*np.pi*self.n_/60.*self.R_,self.c_mi_], ]
           ), 
           ofOpenFOAMCase_setupWrapper.inletRuleString(
             "INLET", 
             ["p", "k", "omega",], 
-            [ [0], [0.0, 0.10], [0.001, 0.1] ]
+            [ [0], [0.10, 0.20], [0.032*self.R_, 0.1] ]
           ),
           ofOpenFOAMCase_setupWrapper.emptyRuleString(
             "EMPTYA"
@@ -1119,8 +1127,8 @@ class hydFoil:
     # Transform relative velocity "w" to absolute velocity "c" by subtracting
     # "u"
     #
-    U_i.value_[:,1] = U_i.value_[:,1] + 18.85
-    U_o.value_[:,1] = U_o.value_[:,1] + 18.85
+    U_i.value_[:,1] = U_i.value_[:,1] + 2.0*np.pi*self.n_/60.*self.R_
+    U_o.value_[:,1] = U_o.value_[:,1] + 2.0*np.pi*self.n_/60.*self.R_
 
     #
     # Set constants density and gravitational acceleration
@@ -1132,25 +1140,37 @@ class hydFoil:
     # Integrate pressure and velocity over inlet and outlet; calculate the
     # sum of those energies to get the difference in head
     #
-    e_i = (p_i.IntValueQ() / g + U_i.IntMagSquareQ()/2.0 / rho / g)
-    e_o = (p_o.IntValueQ() / g + U_o.IntMagSquareQ()/2.0 / rho / g)
-    Q_i = U_i.IntQ()
+    e_i = (p_i.IntValueQ() / g + U_i.IntMagSquareQ() / 2.0 / g)
+    e_o = (p_o.IntValueQ() / g + U_o.IntMagSquareQ() / 2.0 / g)
+    Q_i = np.abs(U_i.IntQ())
     dHMean = (e_i + e_o) / Q_i
+   
+    #
+    # Calculate efficiency of the blade
+    #
+    eta = np.abs((FMean * 2.0*np.pi*self.n_/60.*self.R_) / (rho*g*dHMean*Q_i))
 
     #
     # Output to log file
     #
     logging.info( 
-      "dH = (e_i + e_o) / Q_i =( %f + %f ) / %f = %f / F = %f" 
+      "dH = (e_i + e_o) / Q_i =( %f + %f ) / %f = %f / F = %f"
       % 
       (e_i, e_o, Q_i, dHMean, FMean) 
     )
+    logging.info("eta = %f" % eta)
 
     #
     # Calculate the fitness value as an averaged sum of design head deviation
     # and efficiency
     #
-    fit = np.abs(dHMean + 0.8)/0.8 + (1.0 - np.abs(FMean/6.408E+04))
+    fit = np.abs(dHMean + 0.8)/0.8 + (1.0 - eta)
+
+    #
+    # Check if the simulated geometry is a pump or a turbine; if it is a pump,
+    # return an artificial value that is greater than all other fitness values
+    #
+    if (dHMean > 0.0): fit = 1000. * np.abs(fit)#hydFoil.FailedFitness()
 
     #
     # Initialize an object of dtClusteredSingletonState to have access to the
@@ -1159,6 +1179,7 @@ class hydFoil:
     sh = pd.dtClusteredSingletonState( self.state_ )
     sh.update('dH', dHMean)
     sh.update('F', FMean)
+    sh.update('eta', eta)
     sh.update('fitness', fit)
 
     #
