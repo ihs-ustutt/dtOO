@@ -90,16 +90,35 @@
 <span class="c1">#</span>
 <span class="c1">#------------------------------------------------------------------------------</span>
 
-<span class="sd">&quot;&quot;&quot;Brief eier.Simple machine consisting of an axial runner only.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This example optimizes a hydrofoil that is defined with 3 DOFs. The </span>
+<span class="sd">optimization is performed with the differential evolution algorithm of</span>
+<span class="sd">scipy.</span>
 
-<span class="sd">Do some imports</span>
+<span class="sd">It is necessary to set the OpenFoam environment variable &quot;FOAM_SIGFPE&quot; to </span>
+<span class="sd">disable the handler. Otherwise the handler detects floating point exceptions</span>
+<span class="sd">at the beginning. Additionally, the environment variable &quot;OSLO_LOCKPATH&quot; </span>
+<span class="sd">is necessary to have a defined locking directory for the oslo.concurrency</span>
+<span class="sd">library. Both variables are defined using the os package.</span>
+
+<span class="sd">&gt;&gt;&gt; import os</span>
+<span class="sd">&gt;&gt;&gt; os.environ[&quot;FOAM_SIGFPE&quot;] = &quot;0&quot;</span>
+<span class="sd">&gt;&gt;&gt; os.environ[&quot;OSLO_LOCKPATH&quot;] = &quot;/tmp&quot;</span>
+
+<span class="sd">The optimizer is imported from scipy and the interested reader is refered to</span>
+<span class="sd">`[SciPy_2025] \</span>
+<span class="sd">&lt;https://docs.scipy.org/doc/scipy/reference/generated/\</span>
+<span class="sd">scipy.optimize.differential_evolution.html#\</span>
+<span class="sd">scipy.optimize.differential_evolution&gt;`_</span>
 
 <span class="sd">&gt;&gt;&gt; from scipy.optimize import differential_evolution</span>
-<span class="sd">&gt;&gt;&gt; import os</span>
 
-<span class="sd">&gt;&gt;&gt; os.environ[&quot;FOAM_SIGFPE&quot;] = &quot;0&quot;</span>
+<span class="sd">The callback function `optimizeHydFoil` of the optimizer executes all steps</span>
+<span class="sd">of the hydrofoil case. In the end, the fitness value of the hydrofoil is set</span>
+<span class="sd">as return value of the callback. Additionally, an exception handling catches</span>
+<span class="sd">all exceptions and returns a defined fitness value in case of an error.</span>
 
-<span class="sd">&gt;&gt;&gt; def optimizeHydroFoil(x):</span>
+<span class="sd">&gt;&gt;&gt; def optimizeHydFoil(x):</span>
 <span class="sd">...   try:</span>
 <span class="sd">...     hf = hydFoil( alpha_1=x[0], alpha_2=x[1], t_mid=x[2] )</span>
 <span class="sd">...     hf.Geometry()</span>
@@ -112,15 +131,22 @@
 <span class="sd">...     fit = hydFoil.FailedFitness() </span>
 <span class="sd">...   return fit</span>
 
+<span class="sd">Define the bounds of the DOFs for the optimization.</span>
+
 <span class="sd">&gt;&gt;&gt; bounds = [(150.0, 170.0), (155.0, 175.0), (0.01, 0.10),]</span>
 
+<span class="sd">Call the optimizer with the callback function. The number of candidates is</span>
+<span class="sd">low to have a fast code example.</span>
+
 <span class="sd">&gt;&gt;&gt; result = differential_evolution(</span>
-<span class="sd">...   optimizeHydroFoil, </span>
+<span class="sd">...   optimizeHydFoil, </span>
 <span class="sd">...   bounds, </span>
 <span class="sd">...   popsize=3, </span>
 <span class="sd">...   maxiter=2,</span>
 <span class="sd">...   polish=False</span>
 <span class="sd">... )</span>
+
+<span class="sd">Output the final result of the optimization.</span>
 
 <span class="sd">&gt;&gt;&gt; logging.info( </span>
 <span class="sd">...   &quot;Optimum found at (alpha_1, alpha_2, t_mid) = (%f, %f, %f) with %f&quot;</span>
@@ -129,6 +155,9 @@
 <span class="sd">... )</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="c1">#</span>
+<span class="c1"># Create a logging object</span>
+<span class="c1">#</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
   <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;[ </span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)8s</span><span class="s1"> - </span><span class="si">%(filename)s</span><span class="s1">:</span><span class="si">%(lineno)d</span><span class="s1"> ]&#39;</span>
@@ -137,19 +166,25 @@
   <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
 <span class="p">)</span>
 
+<span class="c1">#</span>
+<span class="c1"># Import packages</span>
+<span class="c1">#</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dtOO</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">foamlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">fl</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyDtOO</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+
+<span class="c1">#</span>
+<span class="c1"># Define the values that will be stored during the optimization; here only the</span>
+<span class="c1"># name and the initial definition for each stored value is declared; the</span>
+<span class="c1"># arrays objective and fitness are created by default</span>
+<span class="c1">#</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyDtOO</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dH&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">,]</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATADEF</span> <span class="o">=</span> <span class="p">[</span>
   <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">max</span><span class="p">,],</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">max</span><span class="p">,],</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">max</span><span class="p">,],</span>
 <span class="p">]</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 
 <div class="viewcode-block" id="hydFoil">
 <a class="viewcode-back" href="../../demonstration.html#hydFoilOpt.build.hydFoil">[docs]</a>
@@ -297,7 +332,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">n_</span>          <span class="o">=</span> <span class="mf">90.0</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Rotational speed in :math:`min^{-1}`.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">c_mi_</span>       <span class="o">=</span> <span class="mf">5.77</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Absolute velocity at inlet in :math:`\frac{m}{s}`&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Absolute velocity at inlet in :math:`\\frac{m}{s}`&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="hydFoil.Geometry">
 <a class="viewcode-back" href="../../demonstration.html#hydFoilOpt.build.hydFoil.Geometry">[docs]</a>

@@ -838,16 +838,29 @@ described commands of PyFoam.</p>
 </section>
 <section id="module-hydFoilOpt.build">
 <span id="optimization-of-a-hydrofoil"></span><h2>Optimization of a Hydrofoil<a class="headerlink" href="#module-hydFoilOpt.build" title="Link to this heading"></a></h2>
-<p>Brief eier.Simple machine consisting of an axial runner only.</p>
-<p>Do some imports</p>
+<p>This example optimizes a hydrofoil that is defined with 3 DOFs. The
+optimization is performed with the differential evolution algorithm of
+scipy.</p>
+<p>It is necessary to set the OpenFoam environment variable “FOAM_SIGFPE” to
+disable the handler. Otherwise the handler detects floating point exceptions
+at the beginning. Additionally, the environment variable “OSLO_LOCKPATH”
+is necessary to have a defined locking directory for the oslo.concurrency
+library. Both variables are defined using the os package.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;FOAM_SIGFPE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OSLO_LOCKPATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/tmp&quot;</span>
+</pre></div>
+</div>
+<p>The optimizer is imported from scipy and the interested reader is refered to
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.differential_evolution.html#scipy.optimize.differential_evolution">[SciPy_2025]</a></p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">differential_evolution</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;FOAM_SIGFPE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">optimizeHydroFoil</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<p>The callback function <cite>optimizeHydFoil</cite> of the optimizer executes all steps
+of the hydrofoil case. In the end, the fitness value of the hydrofoil is set
+as return value of the callback. Additionally, an exception handling catches
+all exceptions and returns a defined fitness value in case of an error.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">optimizeHydFoil</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">hf</span> <span class="o">=</span> <span class="n">hydFoil</span><span class="p">(</span> <span class="n">alpha_1</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">alpha_2</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">t_mid</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
 <span class="gp">... </span>    <span class="n">hf</span><span class="o">.</span><span class="n">Geometry</span><span class="p">()</span>
@@ -861,11 +874,14 @@ described commands of PyFoam.</p>
 <span class="gp">... </span>  <span class="k">return</span> <span class="n">fit</span>
 </pre></div>
 </div>
+<p>Define the bounds of the DOFs for the optimization.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bounds</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">170.0</span><span class="p">),</span> <span class="p">(</span><span class="mf">155.0</span><span class="p">,</span> <span class="mf">175.0</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">),]</span>
 </pre></div>
 </div>
+<p>Call the optimizer with the callback function. The number of candidates is
+low to have a fast code example.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">differential_evolution</span><span class="p">(</span>
-<span class="gp">... </span>  <span class="n">optimizeHydroFoil</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">optimizeHydFoil</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="n">bounds</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="n">popsize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="gp">... </span>  <span class="n">maxiter</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
@@ -873,6 +889,7 @@ described commands of PyFoam.</p>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Output the final result of the optimization.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
 <span class="gp">... </span>  <span class="s2">&quot;Optimum found at (alpha_1, alpha_2, t_mid) = (</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">) with </span><span class="si">%f</span><span class="s2">&quot;</span>
 <span class="gp">... </span>  <span class="o">%</span>
@@ -1071,14 +1088,10 @@ of dtOOPythonSWIG.constValue.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.c_mi_">
 <span class="sig-name descname"><span class="pre">c_mi_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.c_mi_" title="Link to this definition"></a></dt>
-<dd><p>math:`
-rac{m}{s}`</p>
+<dd><p>Absolute velocity at inlet in <span class="math notranslate nohighlight">\(\frac{m}{s}\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
-</dd>
-<dt class="field-even">Type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Absolute velocity at inlet in</p>
 </dd>
 </dl>
 </dd></dl>
