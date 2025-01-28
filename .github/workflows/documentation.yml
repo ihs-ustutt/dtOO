@@ -10,6 +10,8 @@ concurrency: preview-${{ github.ref }}
 jobs:
   docs:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write      
     env:
       PR_PATH: pull/${{github.event.number}}      
     steps:
@@ -51,4 +53,4 @@ jobs:
         if: github.ref != 'refs/heads/main'
         with:
           source-dir: doc/_build/            
-          token: ${{ secrets.MYTOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
