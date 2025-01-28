@@ -55,8 +55,8 @@ jobs:
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: doc/_build
-          force_orphan: true
+          publish_dir: doc/_build/
+          #force_orphan: true
           destination_dir: ${{ env.PR_PATH }}
       #- name: Update comment
       #  uses: hasura/comment-progress@v2.2.0
