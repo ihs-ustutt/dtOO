@@ -34,7 +34,7 @@ namespace dtOO {
       map2dTo3d();
       map2dTo3d(const map2dTo3d& orig);
       virtual ~map2dTo3d();
-      virtual dtInt dim( void ) const;                  
+      virtual dtInt dim( void ) const;
       virtual dtPoint3 getPoint( dtReal const * const uvw ) const;      
       //
       // overload
@@ -73,9 +73,6 @@ namespace dtOO {
       virtual map2dTo3d * segmentRectangle(
         dtPoint2 const & p0, dtPoint2 const & p1 
       ) const;
-      //
-      //
-      //    
       dtPoint3 getPoint( dtPoint2 const & pUV ) const;
       dtPoint3 getPoint( dtPoint2 const * const pUV ) const;
       dtPoint3 getPointPercent( dtReal const & uu, dtReal const & vv ) const;
@@ -154,7 +151,19 @@ namespace dtOO {
       static dtReal _deltaPer;      
       mutable int _callCounter;
       mutable int _callCounterSum;
-  };
+
+      struct UVGridData {
+          std::vector<double> U_grid;
+          std::vector<double> V_grid;
+          std::vector<double> X_grid;
+          std::vector<double> Y_grid;
+          std::vector<double> Z_grid;
+      };
+      mutable bool isUVGridPrecomputed;
+      mutable UVGridData grid;  
+      UVGridData precomputeUVGrid() const;
+      std::pair<double, double> findNearestUV(double X, double Y, double Z, const UVGridData& grid) const;
+        };
   
 	//
 	// boost requires this method in ptr_vector

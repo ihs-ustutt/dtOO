@@ -44,11 +44,9 @@ namespace dtOO {
   staticPropertiesHandler::getInstance()->getOptionFloat("map2dTo3d_deltaPer");
   
   map2dTo3d::map2dTo3d() : analyticGeometry() {
-    _callCounterSum = 0;
   }
 
   map2dTo3d::map2dTo3d(const map2dTo3d& orig) : analyticGeometry(orig) {
-    _callCounterSum = 0;
   }
 
   map2dTo3d::~map2dTo3d() {
@@ -217,6 +215,64 @@ namespace dtOO {
 		return normal(pp.x(), pp.y());
 	}
   
+  map2dTo3d::UVGridData map2dTo3d::precomputeUVGrid() const {
+      
+	  int grid_size_u = 10, grid_size_v = 10;
+	  int total_points = grid_size_u * grid_size_v;
+
+	  map2dTo3d::UVGridData gridData;
+	  gridData.U_grid.resize(total_points);
+	  gridData.V_grid.resize(total_points);
+	  gridData.X_grid.resize(total_points);
+	  gridData.Y_grid.resize(total_points);
+	  gridData.Z_grid.resize(total_points);
+
+	  for (int i = 0; i < grid_size_u; ++i) {
+	      for (int j = 0; j < grid_size_v; ++j) {
+		  int idx = i * grid_size_v + j;
+
+		  double U = static_cast<double>(i) / (grid_size_u - 1);
+		  double V = static_cast<double>(j) / (grid_size_v - 1);
+
+		  dtPoint3 xyz = getPointPercent(U, V);  // Could this throw an exception?
+
+		  gridData.U_grid[idx] = U;
+		  gridData.V_grid[idx] = V;
+		  gridData.X_grid[idx] = xyz.x();
+		  gridData.Y_grid[idx] = xyz.y();
+		  gridData.Z_grid[idx] = xyz.z();
+	      }
+	  }
+
+	  std::cout << "Precomputed UV-XYZ grid with " << total_points << " points.\n";
+	  return gridData;
+  }
+
+
+  std::pair<double, double> map2dTo3d::findNearestUV(double X, double Y, double Z, const UVGridData& grid) const {
+
+      size_t N = grid.X_grid.size();
+      std::vector<double> distances(N);
+
+      // #pragma omp parallel for
+      for (size_t i = 0; i < N; ++i) {
+	  double dx = X - grid.X_grid[i];
+	  double dy = Y - grid.Y_grid[i];
+	  double dz = Z - grid.Z_grid[i];
+	  distances[i] = dx * dx + dy * dy + dz * dz;
+      }
+
+      size_t best_index = std::distance(
+	  distances.begin(),
+	  std::min_element(distances.begin(), distances.end())
+      );
+
+      return {grid.U_grid[best_index], grid.V_grid[best_index]};
+  }
+
+// End trent extenstion
+
+ 
   dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const & ppXYZ) const {
     double X = ppXYZ.x();
     double Y = ppXYZ.y();
@@ -225,13 +281,11 @@ namespace dtOO {
     double V;
     double UBest = 1.E+99;
     double VBest = 1.E+99;
-//    dtInt const NumInitGuess = 11;
-//    double initU[NumInitGuess] 
-//    = 
-//    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
-//    double initV[NumInitGuess] 
-//    = 
-//    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};    
+    
+    if (isUVGridPrecomputed != true){
+      grid = precomputeUVGrid();
+      isUVGridPrecomputed = true;
+      }
     dtInt const NumInitGuess = 3;
     double initU[NumInitGuess] = {0.5, 0.75, 0.25};
     double initV[NumInitGuess] = {0.5, 0.75, 0.25};
@@ -254,18 +308,13 @@ namespace dtOO {
     );    
     dtReal currentPrec = 1.;
     dtReal dist = 1.E+99;
-    _callCounter = 0;
     dt__forFromToIndex(0, maxRestarts+1, thisRun) {
-      dt__forFromToIndex(0, NumInitGuess, ii) {
-        dt__forFromToIndex(0, NumInitGuess, jj) {       
-          //
-          // do reparameterization
-          //
 
-          U = initU[ii];
-          V = initV[jj];
+      std::pair<double, double> initUV = findNearestUV(X, Y, Z, grid);
+      double U = initUV.first;
+      double V = initUV.second;
 
-          dt__forFromToIndex(0, maxInternalRestarts, thisRestart) {
+      dt__forFromToIndex(0, maxInternalRestarts, thisRestart) {
             double stepU = .01;
             double stepV = .01;
             double prec = 1.;
@@ -284,10 +333,9 @@ namespace dtOO {
               dt__warning(
                 reparamOnFace(),
                 << logMe::dtFormat(
-                  "Error for "
-                  "initU = %12.4e initV = %12.4e at internalRestart = %i"
+                  "Error for initU = %12.4e initV = %12.4e at internalRestart = %i"
                 ) 
-                % initU[ii] % initV[jj] % thisRestart 
+     //           % initU[ii] % initV[jj] % thisRestart 
                 << std::endl
                 << "eGen.what() = " << eGen.what()
               );
@@ -305,26 +353,13 @@ namespace dtOO {
               analyticGeometry::inXYZTolerance(
                 ppXYZ, tP, &cDist, false, currentPrec
               )
-            ) {
-              _callCounterSum = _callCounter + _callCounterSum;
-              dt__debug(
-                reparamOnFace(), 
-                << "label : " << getLabel() << std::endl
-                << "  calls : map2dTo3d::F() : " << _callCounter << " / "
-                << _callCounterSum << std::endl
-                << "  u (%): " << U << std::endl
-                << "  v (%): " << V
-              );
-              return uv_percent( dtPoint2(U, V) );
-            }
+            ) return uv_percent( dtPoint2(U, V) );
             if (cDist <= dist) {
               UBest = U;
               VBest = V;
               dist = cDist;
             }
           }
-        }
-      }
       dt__warning(
         reparamOnFace(), 
         << "Increasing reparamOnFace tolerance. Multiply initial precision by "
@@ -971,7 +1006,6 @@ namespace dtOO {
 	}
   
 	double map2dTo3d::F(double const * xx) const {
-    _callCounter = _callCounter + 1;
     return dtLinearAlgebra::length( 
       _pXYZ - getPointPercent( dtPoint2(xx[0], xx[1]) ) 
     );
