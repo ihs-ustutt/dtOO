@@ -213,6 +213,19 @@
 <span class="sd">     colored in magenta; the DOFs, namely :math:`\\alpha_1`,</span>
 <span class="sd">     :math:`\\alpha_2`, and :math:`t_{mid}`, are shown and labeled in black</span>
 
+<span class="sd">  The simulation of the hydrofoil is performed in the relational frame of</span>
+<span class="sd">  reference. It means that all velocities in the CFD simulation correspond to</span>
+<span class="sd">  :math:`w`. Therefore, when evaluating hydrofoil&#39;s efficiency and head, the</span>
+<span class="sd">  transformation</span>
+
+<span class="sd">  .. math::</span>
+
+<span class="sd">    c = w + u = w + 2 \\pi n R \\approx w + 18.84 \\frac{m}{s}</span>
+<span class="sd">  </span>
+<span class="sd">  is necessary to get the absolute velocity :math:`c`. The hydrofoil is </span>
+<span class="sd">  designed for a design head of :math:`0.8 m`. The fitness function is </span>
+<span class="sd">  calculated based on head deviation and efficiency.</span>
+
 <span class="sd">  Parameters</span>
 <span class="sd">  ----------</span>
 <span class="sd">  alpha_1: float</span>
@@ -225,6 +238,20 @@
   
   <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
   
+  <span class="n">H_</span>          <span class="o">=</span> <span class="mf">0.2</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;float: Height of the mesh in :math:`m`.&quot;&quot;&quot;</span>
+  <span class="n">R_</span>          <span class="o">=</span> <span class="mf">2.0</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;float: Radius of the blade cut in :math:`m` where this hydrofoil is </span>
+<span class="sd">            located.&quot;&quot;&quot;</span>
+  <span class="n">nB_</span>         <span class="o">=</span> <span class="mi">4</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;float: Number of blades in which this hydrofoil is located.&quot;&quot;&quot;</span>
+  <span class="n">L_</span>          <span class="o">=</span> <span class="mf">4.0</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;float: Length of the mesh in :math:`m`.&quot;&quot;&quot;</span>
+  <span class="n">n_</span>          <span class="o">=</span> <span class="mf">90.0</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;float: Rotational speed in :math:`min^{-1}`.&quot;&quot;&quot;</span>
+  <span class="n">c_mi_</span>       <span class="o">=</span> <span class="mf">5.77</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;float: Absolute velocity at inlet in :math:`\\frac{m}{s}`&quot;&quot;&quot;</span>
+
   <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> 
     <span class="n">alpha_1</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>  
@@ -321,24 +348,6 @@
     <span class="c1">#</span>
     <span class="n">dtOO</span><span class="o">.</span><span class="n">lVHOstateHandler</span><span class="p">()</span><span class="o">.</span><span class="n">makeState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">H_</span>          <span class="o">=</span> <span class="mf">0.2</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Height of the mesh.&quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">R_</span>          <span class="o">=</span> <span class="mf">2.0</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Radius of the blade cut where this hydrofoil is located.&quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">nB_</span>         <span class="o">=</span> <span class="mi">4</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Number of blades in which this hydrofoil is located.&quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">L_</span>          <span class="o">=</span> <span class="mf">4.0</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Length of the mesh.&quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">twoPiRByNB_</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">nB_</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Width of the mesh.</span>
-
-<span class="sd">    The width is given by the fraction of the unwounded length </span>
-<span class="sd">    :math:`2 \\pi R` and the number of blades :math:`n_B`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">n_</span>          <span class="o">=</span> <span class="mf">90.0</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Rotational speed in :math:`min^{-1}`.&quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">c_mi_</span>       <span class="o">=</span> <span class="mf">5.77</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;float: Absolute velocity at inlet in :math:`\\frac{m}{s}`&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="hydFoil.Geometry">
 <a class="viewcode-back" href="../../demonstration.html#hydFoilOpt.build.hydFoil.Geometry">[docs]</a>
@@ -352,14 +361,20 @@
 <span class="sd">    &quot;&quot;&quot;</span>
    
     <span class="c1">#</span>
+    <span class="c1"># Calculate the width of the channel; it is given by the fraction of the </span>
+    <span class="c1"># unwounded length </span>
+    <span class="c1"># </span>
+    <span class="n">twoPiRByNB</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">R_</span><span class="o">/</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">nB_</span>
+    
+    <span class="c1">#</span>
     <span class="c1"># Create 4 points to define the periodic surface located on the left side;</span>
     <span class="c1"># points are objects of dtPoint3; coordinates are accessible using python&#39;s</span>
     <span class="c1"># index notation ([]-operator)</span>
     <span class="c1">#</span>
-    <span class="n">P1</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">H_</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">twoPiRByNB_</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">P2</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">L_</span><span class="p">)</span>
-    <span class="n">P3</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">H_</span><span class="p">,</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">P1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">P4</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="n">P2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">H_</span><span class="p">,</span> <span class="n">P2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">P2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">P1</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">H_</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">twoPiRByNB</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">P2</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">hydFoil</span><span class="o">.</span><span class="n">L_</span><span class="p">)</span>
+    <span class="n">P3</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="n">P1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">H_</span><span class="p">,</span> <span class="n">P1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">P1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">P4</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint3</span><span class="p">(</span><span class="n">P2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">H_</span><span class="p">,</span> <span class="n">P2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">P2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
    
     <span class="c1">#</span>
     <span class="c1"># Create B-Spline surface by skinning two B-Spline lines; the lines are</span>
@@ -377,7 +392,7 @@
     <span class="c1"># Create channel volume by translating B-Spline surface in y-direction</span>
     <span class="c1">#</span>
     <span class="n">channel</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">translatingMap2dTo3d</span><span class="p">(</span>
-     <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">twoPiRByNB_</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">perio</span>
+     <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">twoPiRByNB</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">perio</span>
     <span class="p">)</span>
     
     <span class="c1">#</span>
@@ -481,8 +496,8 @@
       <span class="p">)(),</span>
       <span class="n">offX</span> <span class="o">=</span> <span class="n">scaOneD_scaCurve2dOneDPointConstruct</span><span class="p">(</span>
         <span class="p">[</span>
-          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">twoPiRByNB_</span><span class="p">),</span>  
-          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">twoPiRByNB_</span><span class="p">)</span>
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">twoPiRByNB</span><span class="p">),</span>  
+          <span class="n">dtOO</span><span class="o">.</span><span class="n">dtPoint2</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">twoPiRByNB</span><span class="p">)</span>
         <span class="p">],</span>
         <span class="mi">1</span>
       <span class="p">)(),</span>
@@ -908,7 +923,7 @@
     <span class="c1"># x-direction; it is implemented by using objects of translate</span>
     <span class="c1">#</span>
     <span class="n">dtT_hs</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span> 
-      <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">()</span><span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">&quot;_v3&quot;</span><span class="p">,</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">H_</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+      <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">()</span><span class="o">.</span><span class="n">appendDtVector3</span><span class="p">(</span><span class="s2">&quot;_v3&quot;</span><span class="p">,</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">H_</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
     <span class="p">)</span>
     
     <span class="c1">#</span>
@@ -1063,6 +1078,12 @@
     <span class="n">ob</span><span class="o">.</span><span class="n">postUpdate</span><span class="p">()</span>
     
     <span class="c1">#</span>
+    <span class="c1"># Calculate again the width of the channel for defining the periodic</span>
+    <span class="c1"># surfaces</span>
+    <span class="c1">#</span>
+    <span class="n">twoPiRByNB</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">R_</span><span class="o">/</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">nB_</span>
+    
+    <span class="c1">#</span>
     <span class="c1"># Import a predefined builder to setup the OpenFoam case; within the </span>
     <span class="c1"># builder all necessary files are written to disk; it includes an</span>
     <span class="c1"># automatic definition of functions for calculating total pressure and</span>
@@ -1103,12 +1124,12 @@
           <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">inletRuleString</span><span class="p">(</span>
             <span class="s2">&quot;INLET&quot;</span><span class="p">,</span> 
             <span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">],</span> 
-            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">c_mi_</span><span class="p">],</span> <span class="p">]</span>
+            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">R_</span><span class="p">,</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">c_mi_</span><span class="p">],</span> <span class="p">]</span>
           <span class="p">),</span> 
           <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">inletRuleString</span><span class="p">(</span>
             <span class="s2">&quot;INLET&quot;</span><span class="p">,</span> 
             <span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;omega&quot;</span><span class="p">,],</span> 
-            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.032</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span> <span class="p">]</span>
+            <span class="p">[</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.032</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">R_</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span> <span class="p">]</span>
           <span class="p">),</span>
           <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">emptyRuleString</span><span class="p">(</span>
             <span class="s2">&quot;EMPTYA&quot;</span>
@@ -1122,14 +1143,13 @@
           <span class="p">),</span>
           <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">cyclicAmiTranslationalRuleString</span><span class="p">(</span>
             <span class="s2">&quot;PERIOA&quot;</span><span class="p">,</span> <span class="s2">&quot;PERIOB&quot;</span><span class="p">,</span> 
-            <span class="n">sepVector</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">twoPiRByNB_</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">sepVector</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">dtVector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">twoPiRByNB</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
           <span class="p">),</span>
           <span class="n">ofOpenFOAMCase_setupWrapper</span><span class="o">.</span><span class="n">outletRuleString</span><span class="p">(</span>
             <span class="s2">&quot;OUTLET&quot;</span><span class="p">,</span> 
             <span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;omega&quot;</span><span class="p">,]</span>
           <span class="p">),</span>
         <span class="p">]</span>
-       
     <span class="p">)</span><span class="o">.</span><span class="n">buildExtract</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="p">)</span>
 
     <span class="c1">#</span>
@@ -1202,6 +1222,32 @@
 <span class="sd">    The simulation is evaluated using the pyDtOO library. Additionally, the</span>
 <span class="sd">    &quot;patchToCsv&quot; application is used to create csv files of the boundaries.</span>
 
+<span class="sd">    The fitness function is calculated based on head deviation and efficiency.</span>
+<span class="sd">    Efficiency is given by the equation</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">      </span>
+<span class="sd">      \\Delta \\eta = 1 - \\frac{F_y u}{\\rho g H Q}</span>
+
+<span class="sd">    with :math:`F_y`, :math:`u`, :math:`\\rho`, :math:`g`, :math:`H`, </span>
+<span class="sd">    and :math;`Q` that corresponds to force in :math:`y`-direction, rotational</span>
+<span class="sd">    speed, density, gravitational constant, simulated head, and discharge. The </span>
+<span class="sd">    deviation in head is calculated by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">      \\Delta H = \\frac{|H-H_d|}{H_d}</span>
+
+<span class="sd">    with :math:`H_d` that corresponds to design head. Then, the fitness value </span>
+<span class="sd">    :math:`f` is defined as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">      f = \\Delta H + \\Delta \\eta \\mathrm{.}</span>
+
+<span class="sd">    It is clear: the lower the fitness function :math:`f`, the better the</span>
+<span class="sd">    candidate.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    float:</span>
@@ -1262,8 +1308,8 @@
     <span class="c1"># Transform relative velocity &quot;w&quot; to absolute velocity &quot;c&quot; by subtracting</span>
     <span class="c1"># &quot;u&quot;</span>
     <span class="c1">#</span>
-    <span class="n">U_i</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_i</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span>
-    <span class="n">U_o</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_o</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span>
+    <span class="n">U_i</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_i</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">R_</span>
+    <span class="n">U_o</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">U_o</span><span class="o">.</span><span class="n">value_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">R_</span>
 
     <span class="c1">#</span>
     <span class="c1"># Set constants density and gravitational acceleration</span>
@@ -1283,7 +1329,7 @@
     <span class="c1">#</span>
     <span class="c1"># Calculate efficiency of the blade</span>
     <span class="c1">#</span>
-    <span class="n">eta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">FMean</span> <span class="o">*</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R_</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">dHMean</span><span class="o">*</span><span class="n">Q_i</span><span class="p">))</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">FMean</span> <span class="o">*</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">n_</span><span class="o">/</span><span class="mf">60.</span><span class="o">*</span><span class="n">hydFoil</span><span class="o">.</span><span class="n">R_</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">dHMean</span><span class="o">*</span><span class="n">Q_i</span><span class="p">))</span>
 
     <span class="c1">#</span>
     <span class="c1"># Output to log file</span>

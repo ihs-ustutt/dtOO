@@ -85,7 +85,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.n_"><code class="docutils literal notranslate"><span class="pre">hydFoil.n_</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.state_"><code class="docutils literal notranslate"><span class="pre">hydFoil.state_</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.sys"><code class="docutils literal notranslate"><span class="pre">hydFoil.sys</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hydFoilOpt.build.hydFoil.twoPiRByNB_"><code class="docutils literal notranslate"><span class="pre">hydFoil.twoPiRByNB_</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -916,6 +915,15 @@ colored in magenta; the DOFs, namely <span class="math notranslate nohighlight">
 <span class="math notranslate nohighlight">\(\alpha_2\)</span>, and <span class="math notranslate nohighlight">\(t_{mid}\)</span>, are shown and labeled in black</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+<p>The simulation of the hydrofoil is performed in the relational frame of
+reference. It means that all velocities in the CFD simulation correspond to
+<span class="math notranslate nohighlight">\(w\)</span>. Therefore, when evaluating hydrofoil’s efficiency and head, the
+transformation</p>
+<div class="math notranslate nohighlight">
+\[c = w + u = w + 2 \pi n R \approx w + 18.84 \frac{m}{s}\]</div>
+<p>is necessary to get the absolute velocity <span class="math notranslate nohighlight">\(c\)</span>. The hydrofoil is
+designed for a design head of <span class="math notranslate nohighlight">\(0.8 m\)</span>. The fitness function is
+calculated based on head deviation and efficiency.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -931,6 +939,22 @@ colored in magenta; the DOFs, namely <span class="math notranslate nohighlight">
 <dd><p>Evaluate the simulation.</p>
 <p>The simulation is evaluated using the pyDtOO library. Additionally, the
 “patchToCsv” application is used to create csv files of the boundaries.</p>
+<p>The fitness function is calculated based on head deviation and efficiency.
+Efficiency is given by the equation</p>
+<div class="math notranslate nohighlight">
+\[\Delta \eta = 1 - \frac{F_y u}{\rho g H Q}\]</div>
+<p>with <span class="math notranslate nohighlight">\(F_y\)</span>, <span class="math notranslate nohighlight">\(u\)</span>, <span class="math notranslate nohighlight">\(\rho\)</span>, <span class="math notranslate nohighlight">\(g\)</span>, <span class="math notranslate nohighlight">\(H\)</span>,
+and :math;`Q` that corresponds to force in <span class="math notranslate nohighlight">\(y\)</span>-direction, rotational
+speed, density, gravitational constant, simulated head, and discharge. The
+deviation in head is calculated by</p>
+<div class="math notranslate nohighlight">
+\[\Delta H = \frac{|H-H_d|}{H_d}\]</div>
+<p>with <span class="math notranslate nohighlight">\(H_d\)</span> that corresponds to design head. Then, the fitness value
+<span class="math notranslate nohighlight">\(f\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[f = \Delta H + \Delta \eta \mathrm{.}\]</div>
+<p>It is clear: the lower the fitness function <span class="math notranslate nohighlight">\(f\)</span>, the better the
+candidate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Fitness value of this candidate.</p>
@@ -977,8 +1001,8 @@ This block is meshed as a structured block.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.H_">
-<span class="sig-name descname"><span class="pre">H_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.H_" title="Link to this definition"></a></dt>
-<dd><p>Height of the mesh.</p>
+<span class="sig-name descname"><span class="pre">H_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.2</span></em><a class="headerlink" href="#hydFoilOpt.build.hydFoil.H_" title="Link to this definition"></a></dt>
+<dd><p>Height of the mesh in <span class="math notranslate nohighlight">\(m\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -988,8 +1012,8 @@ This block is meshed as a structured block.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.L_">
-<span class="sig-name descname"><span class="pre">L_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.L_" title="Link to this definition"></a></dt>
-<dd><p>Length of the mesh.</p>
+<span class="sig-name descname"><span class="pre">L_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4.0</span></em><a class="headerlink" href="#hydFoilOpt.build.hydFoil.L_" title="Link to this definition"></a></dt>
+<dd><p>Length of the mesh in <span class="math notranslate nohighlight">\(m\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -1008,8 +1032,9 @@ lengths for unstructured meshing algorithms, and label mesh parts.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.R_">
-<span class="sig-name descname"><span class="pre">R_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.R_" title="Link to this definition"></a></dt>
-<dd><p>Radius of the blade cut where this hydrofoil is located.</p>
+<span class="sig-name descname"><span class="pre">R_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2.0</span></em><a class="headerlink" href="#hydFoilOpt.build.hydFoil.R_" title="Link to this definition"></a></dt>
+<dd><p>Radius of the blade cut in <span class="math notranslate nohighlight">\(m\)</span> where this hydrofoil is
+located.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -1087,7 +1112,7 @@ of dtOOPythonSWIG.constValue.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.c_mi_">
-<span class="sig-name descname"><span class="pre">c_mi_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.c_mi_" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">c_mi_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.77</span></em><a class="headerlink" href="#hydFoilOpt.build.hydFoil.c_mi_" title="Link to this definition"></a></dt>
 <dd><p>Absolute velocity at inlet in <span class="math notranslate nohighlight">\(\frac{m}{s}\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -1133,7 +1158,7 @@ of dtOOPythonSWIG.dtPlugin.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.nB_">
-<span class="sig-name descname"><span class="pre">nB_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.nB_" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">nB_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#hydFoilOpt.build.hydFoil.nB_" title="Link to this definition"></a></dt>
 <dd><p>Number of blades in which this hydrofoil is located.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -1144,7 +1169,7 @@ of dtOOPythonSWIG.dtPlugin.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.n_">
-<span class="sig-name descname"><span class="pre">n_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.n_" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">n_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">90.0</span></em><a class="headerlink" href="#hydFoilOpt.build.hydFoil.n_" title="Link to this definition"></a></dt>
 <dd><p>Rotational speed in <span class="math notranslate nohighlight">\(min^{-1}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -1168,19 +1193,6 @@ of dtOOPythonSWIG.dtPlugin.</p>
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.sys">
 <span class="sig-name descname"><span class="pre">sys</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;module</span> <span class="pre">'sys'</span> <span class="pre">(built-in)&gt;</span></em><a class="headerlink" href="#hydFoilOpt.build.hydFoil.sys" title="Link to this definition"></a></dt>
 <dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.twoPiRByNB_">
-<span class="sig-name descname"><span class="pre">twoPiRByNB_</span></span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.twoPiRByNB_" title="Link to this definition"></a></dt>
-<dd><p>Width of the mesh.</p>
-<p>The width is given by the fraction of the unwounded length
-<span class="math notranslate nohighlight">\(2 \pi R\)</span> and the number of blades <span class="math notranslate nohighlight">\(n_B\)</span></p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
 
 </dd></dl>
 
