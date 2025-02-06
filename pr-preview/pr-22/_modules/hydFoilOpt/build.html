@@ -91,21 +91,27 @@
 <span class="c1">#------------------------------------------------------------------------------</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This example optimizes a hydrofoil that is defined with 3 DOFs. The </span>
-<span class="sd">optimization is performed with the differential evolution algorithm of</span>
-<span class="sd">scipy.</span>
+<span class="sd">This example optimizes a hydrofoil that is defined with 3 Degrees Of Freedom </span>
+<span class="sd">(DOFs). The optimization is performed with the differential evolution </span>
+<span class="sd">algorithm of `scipy`.</span>
 
-<span class="sd">It is necessary to set the OpenFoam environment variable &quot;FOAM_SIGFPE&quot; to </span>
-<span class="sd">disable the handler. Otherwise the handler detects floating point exceptions</span>
-<span class="sd">at the beginning. Additionally, the environment variable &quot;OSLO_LOCKPATH&quot; </span>
-<span class="sd">is necessary to have a defined locking directory for the oslo.concurrency</span>
-<span class="sd">library. Both variables are defined using the os package.</span>
+<span class="sd">The fastest way to run the optimization of the hydrofoil is to execute:</span>
 
-<span class="sd">&gt;&gt;&gt; import os</span>
-<span class="sd">&gt;&gt;&gt; os.environ[&quot;FOAM_SIGFPE&quot;] = &quot;0&quot;</span>
-<span class="sd">&gt;&gt;&gt; os.environ[&quot;OSLO_LOCKPATH&quot;] = &quot;/tmp&quot;</span>
+<span class="sd">.. code-block:: bash</span>
+<span class="sd">  </span>
+<span class="sd">  pip install foamlib \</span>
+<span class="sd">    &amp;&amp; export OSLO_LOCK_PATH=/tmp \</span>
+<span class="sd">    &amp;&amp; export FOAM_SIGFPE=0 \</span>
+<span class="sd">    &amp;&amp; python3.12 -m doctest build.py</span>
 
-<span class="sd">The optimizer is imported from scipy and the interested reader is refered to</span>
+<span class="sd">Within the command `foamlib` is installed that is necessary to control </span>
+<span class="sd">OpenFoam in Python. The variable `OSLO_LOCK_PATH` defines the lock directory </span>
+<span class="sd">for `oslo.concurrency`. This should be a directory with fast I/O access. The </span>
+<span class="sd">second variable `FOAM_SIGFPE` is optional, but might be useful for preventing</span>
+<span class="sd">OpenFoam to fail with a floating point exception. Finally, this script is</span>
+<span class="sd">executed using the `doctest` module of Python.</span>
+
+<span class="sd">The optimizer is imported from scipy and the interested reader is referred to</span>
 <span class="sd">`[SciPy_2025] \</span>
 <span class="sd">&lt;https://docs.scipy.org/doc/scipy/reference/generated/\</span>
 <span class="sd">scipy.optimize.differential_evolution.html#\</span>
@@ -237,8 +243,8 @@
       <span class="n">dtOO</span><span class="o">.</span><span class="n">jsonPrimitive</span><span class="p">(</span>
         <span class="s1">&#39;{&#39;</span>
           <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
-            <span class="s1">&#39;{&quot;name&quot; : &quot;reparamOnFace_precision&quot;, &quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
-            <span class="s1">&#39;{&quot;name&quot; : &quot;reparamInVolume_precision&quot;,&quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;reparamOnFace_precision&quot;, &quot;value&quot; : &quot;1.e-06&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;reparamInVolume_precision&quot;,&quot;value&quot; : &quot;1.e-06&quot;},&#39;</span>
             <span class="s1">&#39;{&quot;name&quot; : &quot;reparam_internalRestarts&quot;, &quot;value&quot; : &quot;10&quot;},&#39;</span>
             <span class="s1">&#39;{&quot;name&quot; : &quot;reparam_restarts&quot;, &quot;value&quot; : &quot;10&quot;},&#39;</span>
             <span class="s1">&#39;{&quot;name&quot; : &quot;reparam_restartIncreasePrecision&quot;, &quot;value&quot; : &quot;10.&quot;},&#39;</span>
@@ -247,8 +253,8 @@
               <span class="s1">&#39; &quot;value&quot; : &quot;0.9&quot;&#39;</span>
             <span class="s1">&#39;},&#39;</span>
             <span class="s1">&#39;{&quot;name&quot; : &quot;invY_precision&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
-            <span class="s1">&#39;{&quot;name&quot; : &quot;xyz_resolution&quot;, &quot;value&quot; : &quot;1.e-05&quot;},&#39;</span>
-            <span class="s1">&#39;{&quot;name&quot; : &quot;XYZ_resolution&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;xyz_resolution&quot;, &quot;value&quot; : &quot;1.e-08&quot;},&#39;</span>
+            <span class="s1">&#39;{&quot;name&quot; : &quot;XYZ_resolution&quot;, &quot;value&quot; : &quot;1.e-07&quot;},&#39;</span>
             <span class="s1">&#39;{&quot;name&quot; : &quot;uvw_resolution&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
             <span class="s1">&#39;{&quot;name&quot; : &quot;root_printLevel&quot;, &quot;value&quot; : &quot;0&quot;},&#39;</span>		
             <span class="s1">&#39;{&quot;name&quot; : &quot;root_maxIterations&quot;, &quot;value&quot; : &quot;1000&quot;},&#39;</span>
@@ -381,7 +387,7 @@
     
     <span class="c1">#</span>
     <span class="c1"># Append a clone of the channel volume to the analyticGeometry container;</span>
-    <span class="c1"># as an alternative without cloning, the thisown flag of channel vollume</span>
+    <span class="c1"># as an alternative without cloning, the thisown flag of channel volume</span>
     <span class="c1"># must be set to 0</span>
     <span class="c1">#</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">channel</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
@@ -418,7 +424,7 @@
 
     <span class="c1">#</span>
     <span class="c1"># Define additional parameter variables and assign values; theoretically,</span>
-    <span class="c1"># those variables could also be modifyable, but the example is kept as</span>
+    <span class="c1"># those variables could also be modifiable, but the example is kept as</span>
     <span class="c1"># small as possible; therefore those are fix</span>
     <span class="c1">#</span>
     <span class="n">ratio</span> <span class="o">=</span> <span class="mf">0.5</span>
@@ -563,9 +569,9 @@
     <span class="c1"># perpendicular direction; a number of predefined points in u- and </span>
     <span class="c1"># v-direction, respectively, &quot;_nU&quot; and &quot;_nV&quot;, are transformed to form</span>
     <span class="c1"># the final hydrofoil&#39;s shape; the points are resplined and, therefore,</span>
-    <span class="c1"># connected by a B-Spline of order 3 (&quot;_order&quot;); as alredy explained the</span>
+    <span class="c1"># connected by a B-Spline of order 3 (&quot;_order&quot;); as already explained the</span>
     <span class="c1"># transformer clones the &quot;thicknessDistribution&quot; to keep an internal</span>
-    <span class="c1"># insctance and, in that sense, it is necessary to have self.aF as an </span>
+    <span class="c1"># instance and, in that sense, it is necessary to have self.aF as an </span>
     <span class="c1"># inlet argument</span>
     <span class="c1">#</span>
     <span class="n">dAdd</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">discreteAddNormal</span><span class="p">()</span>
@@ -622,8 +628,8 @@
     <span class="n">tmpAF</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">fRef</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
    
     <span class="c1">#</span>
-    <span class="c1"># Define the transformer to create the outter boundary of the mesh</span>
-    <span class="c1"># blocks; it is necessary to have a second trasnformer, because they</span>
+    <span class="c1"># Define the transformer to create the outer boundary of the mesh</span>
+    <span class="c1"># blocks; it is necessary to have a second transformer, because they</span>
     <span class="c1"># operate on different &quot;_tt&quot; attributes</span>
     <span class="c1">#</span>
     <span class="n">dAdd</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">discreteAddNormal</span><span class="p">()</span>
@@ -718,9 +724,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1">#</span>
-    <span class="c1"># Extract coupling surfaces between mesh blocks and outter region; these</span>
-    <span class="c1"># surfaces are necessary to define the outter region; in this simple test</span>
-    <span class="c1"># case the surfaces of intereset are clear, because the blocks are ordered;</span>
+    <span class="c1"># Extract coupling surfaces between mesh blocks and outer region; these</span>
+    <span class="c1"># surfaces are necessary to define the outer region; in this simple test</span>
+    <span class="c1"># case the surfaces of interest are clear, because the blocks are ordered;</span>
     <span class="c1"># store the blocks and surfaces in two lists &quot;blocks&quot; and &quot;couplingFaces&quot;</span>
     <span class="c1">#</span>
     <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
@@ -796,7 +802,7 @@
     <span class="n">gm</span> <span class="o">=</span> <span class="n">gBV</span><span class="o">.</span><span class="n">getModel</span><span class="p">()</span>
    
     <span class="c1">#</span>
-    <span class="c1"># Add three dimensional outter region to model; the return value is the </span>
+    <span class="c1"># Add three dimensional outer region to model; the return value is the </span>
     <span class="c1"># internal tag of the region in the gmsh model; </span>
     <span class="c1">#</span>
     <span class="n">tag</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">addIfRegionToGmshModel</span><span class="p">(</span> 
@@ -816,7 +822,7 @@
     
     <span class="c1">#</span>
     <span class="c1"># Add the mesh block geometries to the gmsh model and, additionally, add</span>
-    <span class="c1"># &quot;NORTH&quot; face of each block to the outter region; those faces are the</span>
+    <span class="c1"># &quot;NORTH&quot; face of each block to the outer region; those faces are the</span>
     <span class="c1"># coupling faces</span>
     <span class="c1">#</span>
     <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="n">mbIndices</span><span class="p">:</span>
@@ -830,7 +836,7 @@
 
     <span class="c1">#</span>
     <span class="c1"># Add &quot;WEST&quot; surface of first and &quot;EAST&quot; surface of last mesh block to</span>
-    <span class="c1"># outter region; both surfaces are also couling surfaces</span>
+    <span class="c1"># outer region; both surfaces are also coupling surfaces</span>
     <span class="c1">#</span>
     <span class="n">gm</span><span class="o">.</span><span class="n">getDtGmshRegionByPhysical</span><span class="p">(</span><span class="s2">&quot;xyz_channel&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">addFace</span><span class="p">(</span>
      <span class="n">gm</span><span class="o">.</span><span class="n">getDtGmshFaceByPhysical</span><span class="p">(</span><span class="s2">&quot;xyz_meshBlock_0-&gt;WEST&quot;</span><span class="p">),</span> <span class="mi">1</span> 
@@ -843,7 +849,7 @@
     <span class="p">)</span>
    
     <span class="c1">#</span>
-    <span class="c1"># Create an observer to automatically detect internal edges of the outter </span>
+    <span class="c1"># Create an observer to automatically detect internal edges of the outer </span>
     <span class="c1"># region &quot;xyz_channel&quot;; the observer extracts all edges that lie within </span>
     <span class="c1"># the &quot;NORTH&quot; and &quot;SOUTH&quot; face of the region; the extracted edges are then</span>
     <span class="c1"># oriented to form an edge loop</span>
@@ -866,7 +872,7 @@
    
     <span class="c1">#</span>
     <span class="c1"># Define number of elements within the mesh blocks; the regions are also</span>
-    <span class="c1"># defined to be transfinite with a recursive recomobination; the latter</span>
+    <span class="c1"># defined to be transfinite with a recursive recombination; the latter</span>
     <span class="c1"># enables the creation of quadrangles or rather hexahedrons</span>
     <span class="c1">#</span>
     <span class="k">for</span> <span class="n">iNum</span> <span class="ow">in</span> <span class="n">mbIndices</span><span class="p">:</span>
@@ -897,7 +903,7 @@
     
     <span class="c1">#</span>
     <span class="c1"># As mentioned above, the case is a two dimensional simulation; therefore,</span>
-    <span class="c1"># the mesh is periodic on the &quot;NORTH&quot; and &quot;SOUTH&quot; face of the outter </span>
+    <span class="c1"># the mesh is periodic on the &quot;NORTH&quot; and &quot;SOUTH&quot; face of the outer </span>
     <span class="c1"># region; the transformation between the nodes is a simple translation in</span>
     <span class="c1"># x-direction; it is implemented by using objects of translate</span>
     <span class="c1">#</span>
@@ -906,7 +912,7 @@
     <span class="p">)</span>
     
     <span class="c1">#</span>
-    <span class="c1"># The trasnformer is appended to a temporary baseContainer</span>
+    <span class="c1"># The transformer is appended to a temporary baseContainer</span>
     <span class="c1"># </span>
     <span class="n">tmp_bC</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">baseContainer</span><span class="p">()</span>
     <span class="n">tmp_bC</span><span class="o">.</span><span class="n">ptrTransformerContainer</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dtT_hs</span><span class="p">)</span>
@@ -996,7 +1002,7 @@
     <span class="c1">#</span>
     <span class="c1"># Attach the observer to the boundedVolume; this means that it is </span>
     <span class="c1"># automatically executed; it is necessary to set the thisown flag, </span>
-    <span class="c1"># otherwise the objects is being destroied</span>
+    <span class="c1"># otherwise the objects is being destroyed</span>
     <span class="c1">#</span>
     <span class="n">gBV</span><span class="o">.</span><span class="n">attachBVObserver</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
     <span class="n">ob</span><span class="o">.</span><span class="n">thisown</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1233,7 +1239,7 @@
     <span class="n">FMean</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">ForceMeanLast</span><span class="p">(</span><span class="mi">10</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="c1">#</span>
-    <span class="c1"># Init again an FoamCase object of foamlib</span>
+    <span class="c1"># Initialize again an FoamCase object of foamlib</span>
     <span class="c1">#</span>
     <span class="n">fc</span> <span class="o">=</span> <span class="n">fl</span><span class="o">.</span><span class="n">FoamCase</span><span class="p">(</span><span class="n">cDir</span><span class="p">)</span>
 

@@ -838,20 +838,20 @@ described commands of PyFoam.</p>
 </section>
 <section id="module-hydFoilOpt.build">
 <span id="optimization-of-a-hydrofoil"></span><h2>Optimization of a Hydrofoil<a class="headerlink" href="#module-hydFoilOpt.build" title="Link to this heading"></a></h2>
-<p>This example optimizes a hydrofoil that is defined with 3 DOFs. The
-optimization is performed with the differential evolution algorithm of
-scipy.</p>
-<p>It is necessary to set the OpenFoam environment variable “FOAM_SIGFPE” to
-disable the handler. Otherwise the handler detects floating point exceptions
-at the beginning. Additionally, the environment variable “OSLO_LOCKPATH”
-is necessary to have a defined locking directory for the oslo.concurrency
-library. Both variables are defined using the os package.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;FOAM_SIGFPE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OSLO_LOCKPATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/tmp&quot;</span>
+<p>This example optimizes a hydrofoil that is defined with 3 Degrees Of Freedom
+(DOFs). The optimization is performed with the differential evolution
+algorithm of <cite>scipy</cite>.</p>
+<p>The fastest way to run the optimization of the hydrofoil is to execute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>foamlib<span class="w">     </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">OSLO_LOCK_PATH</span><span class="o">=</span>/tmp<span class="w">     </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">FOAM_SIGFPE</span><span class="o">=</span><span class="m">0</span><span class="w">     </span><span class="o">&amp;&amp;</span><span class="w"> </span>python3.12<span class="w"> </span>-m<span class="w"> </span>doctest<span class="w"> </span>build.py
 </pre></div>
 </div>
-<p>The optimizer is imported from scipy and the interested reader is refered to
+<p>Within the command <cite>foamlib</cite> is installed that is necessary to control
+OpenFoam in Python. The variable <cite>OSLO_LOCK_PATH</cite> defines the lock directory
+for <cite>oslo.concurrency</cite>. This should be a directory with fast I/O access. The
+second variable <cite>FOAM_SIGFPE</cite> is optional, but might be useful for preventing
+OpenFoam to fail with a floating point exception. Finally, this script is
+executed using the <cite>doctest</cite> module of Python.</p>
+<p>The optimizer is imported from scipy and the interested reader is referred to
 <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.differential_evolution.html#scipy.optimize.differential_evolution">[SciPy_2025]</a></p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">differential_evolution</span>
 </pre></div>
