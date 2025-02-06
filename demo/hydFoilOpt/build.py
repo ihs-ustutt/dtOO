@@ -136,6 +136,19 @@ class hydFoil:
      colored in magenta; the DOFs, namely :math:`\\alpha_1`,
      :math:`\\alpha_2`, and :math:`t_{mid}`, are shown and labeled in black
 
+  The simulation of the hydrofoil is performed in the relational frame of
+  reference. It means that all velocities in the CFD simulation correspond to
+  :math:`w`. Therefore, when evaluating hydrofoil's efficiency and head, the
+  transformation
+
+  .. math::
+
+    c = w + u = w + 2 \\pi n R \\approx w + 18.84 \\frac{m}{s}
+  
+  is necessary to get the absolute velocity :math:`c`. The hydrofoil is 
+  designed for a design head of :math:`0.8 m`. The fitness function is 
+  calculated based on head deviation and efficiency.
+
   Parameters
   ----------
   alpha_1: float
@@ -148,6 +161,20 @@ class hydFoil:
   
   import sys
   
+  H_          = 0.2
+  """float: Height of the mesh in :math:`m`."""
+  R_          = 2.0
+  """float: Radius of the blade cut in :math:`m` where this hydrofoil is 
+            located."""
+  nB_         = 4
+  """float: Number of blades in which this hydrofoil is located."""
+  L_          = 4.0
+  """float: Length of the mesh in :math:`m`."""
+  n_          = 90.0
+  """float: Rotational speed in :math:`min^{-1}`."""
+  c_mi_       = 5.77
+  """float: Absolute velocity at inlet in :math:`\\frac{m}{s}`"""
+
   def __init__(
     self, 
     alpha_1 = 100.0,  
@@ -244,24 +271,6 @@ class hydFoil:
     #
     dtOO.lVHOstateHandler().makeState(self.state_)
 
-    self.H_          = 0.2
-    """float: Height of the mesh."""
-    self.R_          = 2.0
-    """float: Radius of the blade cut where this hydrofoil is located."""
-    self.nB_         = 4
-    """float: Number of blades in which this hydrofoil is located."""
-    self.L_          = 4.0
-    """float: Length of the mesh."""
-    self.twoPiRByNB_ = 2.0*np.pi*self.R_/self.nB_
-    """float: Width of the mesh.
-
-    The width is given by the fraction of the unwounded length 
-    :math:`2 \\pi R` and the number of blades :math:`n_B`
-    """
-    self.n_          = 90.0
-    """float: Rotational speed in :math:`min^{-1}`."""
-    self.c_mi_       = 5.77
-    """float: Absolute velocity at inlet in :math:`\\frac{m}{s}`"""
 
   def Geometry(self):
     """Create hyrdofoil's geometry.
@@ -273,14 +282,20 @@ class hydFoil:
     """
    
     #
+    # Calculate the width of the channel; it is given by the fraction of the 
+    # unwounded length 
+    # 
+    twoPiRByNB = 2.0*np.pi*hydFoil.R_/hydFoil.nB_
+    
+    #
     # Create 4 points to define the periodic surface located on the left side;
     # points are objects of dtPoint3; coordinates are accessible using python's
     # index notation ([]-operator)
     #
-    P1 = dtOO.dtPoint3(-0.5*self.H_, -0.5*self.twoPiRByNB_, 0)
-    P2 = dtOO.dtPoint3(P1[0], P1[1], self.L_)
-    P3 = dtOO.dtPoint3(P1[0]+self.H_, P1[1], P1[2])
-    P4 = dtOO.dtPoint3(P2[0]+self.H_, P2[1], P2[2])
+    P1 = dtOO.dtPoint3(-0.5*hydFoil.H_, -0.5*twoPiRByNB, 0)
+    P2 = dtOO.dtPoint3(P1[0], P1[1], hydFoil.L_)
+    P3 = dtOO.dtPoint3(P1[0]+hydFoil.H_, P1[1], P1[2])
+    P4 = dtOO.dtPoint3(P2[0]+hydFoil.H_, P2[1], P2[2])
    
     #
     # Create B-Spline surface by skinning two B-Spline lines; the lines are
@@ -298,7 +313,7 @@ class hydFoil:
     # Create channel volume by translating B-Spline surface in y-direction
     #
     channel = dtOO.translatingMap2dTo3d(
-     dtOO.dtVector3(0.0, self.twoPiRByNB_, 0.0), perio
+     dtOO.dtVector3(0.0, twoPiRByNB, 0.0), perio
     )
     
     #
@@ -402,8 +417,8 @@ class hydFoil:
       )(),
       offX = scaOneD_scaCurve2dOneDPointConstruct(
         [
-          dtOO.dtPoint2(0.00, 0.5*self.twoPiRByNB_),  
-          dtOO.dtPoint2(1.00, 0.5*self.twoPiRByNB_)
+          dtOO.dtPoint2(0.00, 0.5*twoPiRByNB),  
+          dtOO.dtPoint2(1.00, 0.5*twoPiRByNB)
         ],
         1
       )(),
@@ -823,7 +838,7 @@ class hydFoil:
     # x-direction; it is implemented by using objects of translate
     #
     dtT_hs = dtOO.translate( 
-      dtOO.jsonPrimitive().appendDtVector3("_v3", dtOO.dtVector3(self.H_,0,0))
+      dtOO.jsonPrimitive().appendDtVector3("_v3", dtOO.dtVector3(hydFoil.H_,0,0))
     )
     
     #
@@ -978,6 +993,12 @@ class hydFoil:
     ob.postUpdate()
     
     #
+    # Calculate again the width of the channel for defining the periodic
+    # surfaces
+    #
+    twoPiRByNB = 2.0*np.pi*hydFoil.R_/hydFoil.nB_
+    
+    #
     # Import a predefined builder to setup the OpenFoam case; within the 
     # builder all necessary files are written to disk; it includes an
     # automatic definition of functions for calculating total pressure and
@@ -1018,12 +1039,12 @@ class hydFoil:
           ofOpenFOAMCase_setupWrapper.inletRuleString(
             "INLET", 
             ["U"], 
-            [ [0,-2.0*np.pi*self.n_/60.*self.R_,self.c_mi_], ]
+            [ [0,-2.0*np.pi*hydFoil.n_/60.*hydFoil.R_,hydFoil.c_mi_], ]
           ), 
           ofOpenFOAMCase_setupWrapper.inletRuleString(
             "INLET", 
             ["p", "k", "omega",], 
-            [ [0], [0.10, 0.20], [0.032*self.R_, 0.1] ]
+            [ [0], [0.10, 0.20], [0.032*hydFoil.R_, 0.1] ]
           ),
           ofOpenFOAMCase_setupWrapper.emptyRuleString(
             "EMPTYA"
@@ -1037,14 +1058,13 @@ class hydFoil:
           ),
           ofOpenFOAMCase_setupWrapper.cyclicAmiTranslationalRuleString(
             "PERIOA", "PERIOB", 
-            sepVector = dtOO.dtVector3(0,-self.twoPiRByNB_,0)
+            sepVector = dtOO.dtVector3(0,-twoPiRByNB,0)
           ),
           ofOpenFOAMCase_setupWrapper.outletRuleString(
             "OUTLET", 
             ["U", "p", "k", "omega",]
           ),
         ]
-       
     ).buildExtract( self.container )
 
     #
@@ -1108,6 +1128,32 @@ class hydFoil:
     The simulation is evaluated using the pyDtOO library. Additionally, the
     "patchToCsv" application is used to create csv files of the boundaries.
 
+    The fitness function is calculated based on head deviation and efficiency.
+    Efficiency is given by the equation
+
+    .. math::
+      
+      \\Delta \\eta = 1 - \\frac{F_y u}{\\rho g H Q}
+
+    with :math:`F_y`, :math:`u`, :math:`\\rho`, :math:`g`, :math:`H`, 
+    and :math;`Q` that corresponds to force in :math:`y`-direction, rotational
+    speed, density, gravitational constant, simulated head, and discharge. The 
+    deviation in head is calculated by
+
+    .. math::
+
+      \\Delta H = \\frac{|H-H_d|}{H_d}
+
+    with :math:`H_d` that corresponds to design head. Then, the fitness value 
+    :math:`f` is defined as:
+
+    .. math::
+
+      f = \\Delta H + \\Delta \\eta \\mathrm{.}
+
+    It is clear: the lower the fitness function :math:`f`, the better the
+    candidate.
+
     Returns
     -------
     float:
@@ -1168,8 +1214,8 @@ class hydFoil:
     # Transform relative velocity "w" to absolute velocity "c" by subtracting
     # "u"
     #
-    U_i.value_[:,1] = U_i.value_[:,1] + 2.0*np.pi*self.n_/60.*self.R_
-    U_o.value_[:,1] = U_o.value_[:,1] + 2.0*np.pi*self.n_/60.*self.R_
+    U_i.value_[:,1] = U_i.value_[:,1] + 2.0*np.pi*hydFoil.n_/60.*hydFoil.R_
+    U_o.value_[:,1] = U_o.value_[:,1] + 2.0*np.pi*hydFoil.n_/60.*hydFoil.R_
 
     #
     # Set constants density and gravitational acceleration
@@ -1189,7 +1235,7 @@ class hydFoil:
     #
     # Calculate efficiency of the blade
     #
-    eta = np.abs((FMean * 2.0*np.pi*self.n_/60.*self.R_) / (rho*g*dHMean*Q_i))
+    eta = np.abs((FMean * 2.0*np.pi*hydFoil.n_/60.*hydFoil.R_) / (rho*g*dHMean*Q_i))
 
     #
     # Output to log file
