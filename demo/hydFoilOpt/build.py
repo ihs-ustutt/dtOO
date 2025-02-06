@@ -16,21 +16,27 @@
 #------------------------------------------------------------------------------
 
 """
-This example optimizes a hydrofoil that is defined with 3 DOFs. The 
-optimization is performed with the differential evolution algorithm of
-scipy.
+This example optimizes a hydrofoil that is defined with 3 Degrees Of Freedom 
+(DOFs). The optimization is performed with the differential evolution 
+algorithm of `scipy`.
 
-It is necessary to set the OpenFoam environment variable "FOAM_SIGFPE" to 
-disable the handler. Otherwise the handler detects floating point exceptions
-at the beginning. Additionally, the environment variable "OSLO_LOCKPATH" 
-is necessary to have a defined locking directory for the oslo.concurrency
-library. Both variables are defined using the os package.
+The fastest way to run the optimization of the hydrofoil is to execute:
 
->>> import os
->>> os.environ["FOAM_SIGFPE"] = "0"
->>> os.environ["OSLO_LOCKPATH"] = "/tmp"
+.. code-block:: bash
+  
+  pip install foamlib \
+    && export OSLO_LOCK_PATH=/tmp \
+    && export FOAM_SIGFPE=0 \
+    && python3.12 -m doctest build.py
 
-The optimizer is imported from scipy and the interested reader is refered to
+Within the command `foamlib` is installed that is necessary to control 
+OpenFoam in Python. The variable `OSLO_LOCK_PATH` defines the lock directory 
+for `oslo.concurrency`. This should be a directory with fast I/O access. The 
+second variable `FOAM_SIGFPE` is optional, but might be useful for preventing
+OpenFoam to fail with a floating point exception. Finally, this script is
+executed using the `doctest` module of Python.
+
+The optimizer is imported from scipy and the interested reader is referred to
 `[SciPy_2025] \
 <https://docs.scipy.org/doc/scipy/reference/generated/\
 scipy.optimize.differential_evolution.html#\
@@ -160,8 +166,8 @@ class hydFoil:
       dtOO.jsonPrimitive(
         '{'
           '"option" : ['
-            '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
-            '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
+            '{"name" : "reparamOnFace_precision", "value" : "1.e-06"},'
+            '{"name" : "reparamInVolume_precision","value" : "1.e-06"},'
             '{"name" : "reparam_internalRestarts", "value" : "10"},'
             '{"name" : "reparam_restarts", "value" : "10"},'
             '{"name" : "reparam_restartIncreasePrecision", "value" : "10."},'
@@ -170,8 +176,8 @@ class hydFoil:
               ' "value" : "0.9"'
             '},'
             '{"name" : "invY_precision", "value" : "1.e-04"},'
-            '{"name" : "xyz_resolution", "value" : "1.e-05"},'
-            '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
+            '{"name" : "xyz_resolution", "value" : "1.e-08"},'
+            '{"name" : "XYZ_resolution", "value" : "1.e-07"},'
             '{"name" : "uvw_resolution", "value" : "1.e-04"},'
             '{"name" : "root_printLevel", "value" : "0"},'		
             '{"name" : "root_maxIterations", "value" : "1000"},'
@@ -302,7 +308,7 @@ class hydFoil:
     
     #
     # Append a clone of the channel volume to the analyticGeometry container;
-    # as an alternative without cloning, the thisown flag of channel vollume
+    # as an alternative without cloning, the thisown flag of channel volume
     # must be set to 0
     #
     self.aG.set(channel.clone())
@@ -339,7 +345,7 @@ class hydFoil:
 
     #
     # Define additional parameter variables and assign values; theoretically,
-    # those variables could also be modifyable, but the example is kept as
+    # those variables could also be modifiable, but the example is kept as
     # small as possible; therefore those are fix
     #
     ratio = 0.5
@@ -484,9 +490,9 @@ class hydFoil:
     # perpendicular direction; a number of predefined points in u- and 
     # v-direction, respectively, "_nU" and "_nV", are transformed to form
     # the final hydrofoil's shape; the points are resplined and, therefore,
-    # connected by a B-Spline of order 3 ("_order"); as alredy explained the
+    # connected by a B-Spline of order 3 ("_order"); as already explained the
     # transformer clones the "thicknessDistribution" to keep an internal
-    # insctance and, in that sense, it is necessary to have self.aF as an 
+    # instance and, in that sense, it is necessary to have self.aF as an 
     # inlet argument
     #
     dAdd = dtOO.discreteAddNormal()
@@ -540,8 +546,8 @@ class hydFoil:
     tmpAF.set( fRef.clone() )
    
     #
-    # Define the transformer to create the outter boundary of the mesh
-    # blocks; it is necessary to have a second trasnformer, because they
+    # Define the transformer to create the outer boundary of the mesh
+    # blocks; it is necessary to have a second transformer, because they
     # operate on different "_tt" attributes
     #
     dAdd = dtOO.discreteAddNormal()
@@ -633,9 +639,9 @@ class hydFoil:
     """
 
     #
-    # Extract coupling surfaces between mesh blocks and outter region; these
-    # surfaces are necessary to define the outter region; in this simple test
-    # case the surfaces of intereset are clear, because the blocks are ordered;
+    # Extract coupling surfaces between mesh blocks and outer region; these
+    # surfaces are necessary to define the outer region; in this simple test
+    # case the surfaces of interest are clear, because the blocks are ordered;
     # store the blocks and surfaces in two lists "blocks" and "couplingFaces"
     #
     blocks = []
@@ -711,7 +717,7 @@ class hydFoil:
     gm = gBV.getModel()
    
     #
-    # Add three dimensional outter region to model; the return value is the 
+    # Add three dimensional outer region to model; the return value is the 
     # internal tag of the region in the gmsh model; 
     #
     tag = gm.addIfRegionToGmshModel( 
@@ -731,7 +737,7 @@ class hydFoil:
     
     #
     # Add the mesh block geometries to the gmsh model and, additionally, add
-    # "NORTH" face of each block to the outter region; those faces are the
+    # "NORTH" face of each block to the outer region; those faces are the
     # coupling faces
     #
     for iNum in mbIndices:
@@ -745,7 +751,7 @@ class hydFoil:
 
     #
     # Add "WEST" surface of first and "EAST" surface of last mesh block to
-    # outter region; both surfaces are also couling surfaces
+    # outer region; both surfaces are also coupling surfaces
     #
     gm.getDtGmshRegionByPhysical("xyz_channel").addFace(
      gm.getDtGmshFaceByPhysical("xyz_meshBlock_0->WEST"), 1 
@@ -758,7 +764,7 @@ class hydFoil:
     )
    
     #
-    # Create an observer to automatically detect internal edges of the outter 
+    # Create an observer to automatically detect internal edges of the outer 
     # region "xyz_channel"; the observer extracts all edges that lie within 
     # the "NORTH" and "SOUTH" face of the region; the extracted edges are then
     # oriented to form an edge loop
@@ -781,7 +787,7 @@ class hydFoil:
    
     #
     # Define number of elements within the mesh blocks; the regions are also
-    # defined to be transfinite with a recursive recomobination; the latter
+    # defined to be transfinite with a recursive recombination; the latter
     # enables the creation of quadrangles or rather hexahedrons
     #
     for iNum in mbIndices:
@@ -812,7 +818,7 @@ class hydFoil:
     
     #
     # As mentioned above, the case is a two dimensional simulation; therefore,
-    # the mesh is periodic on the "NORTH" and "SOUTH" face of the outter 
+    # the mesh is periodic on the "NORTH" and "SOUTH" face of the outer 
     # region; the transformation between the nodes is a simple translation in
     # x-direction; it is implemented by using objects of translate
     #
@@ -821,7 +827,7 @@ class hydFoil:
     )
     
     #
-    # The trasnformer is appended to a temporary baseContainer
+    # The transformer is appended to a temporary baseContainer
     # 
     tmp_bC = dtOO.baseContainer()
     tmp_bC.ptrTransformerContainer().add(dtT_hs)
@@ -911,7 +917,7 @@ class hydFoil:
     #
     # Attach the observer to the boundedVolume; this means that it is 
     # automatically executed; it is necessary to set the thisown flag, 
-    # otherwise the objects is being destroied
+    # otherwise the objects is being destroyed
     #
     gBV.attachBVObserver(ob)
     ob.thisown = False
@@ -1139,7 +1145,7 @@ class hydFoil:
     FMean = F.ForceMeanLast(10)[1]
 
     #
-    # Init again an FoamCase object of foamlib
+    # Initialize again an FoamCase object of foamlib
     #
     fc = fl.FoamCase(cDir)
 
