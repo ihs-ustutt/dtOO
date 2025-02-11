@@ -29,26 +29,23 @@ namespace dtOO {
   class translatingMap2dTo3d;
   class vec2dMultiBiLinearTwoD;
   
-  /**
-   * \brief Coordinate transformation for rotatingMap2dTo3d mapping according to
-   * \f[
-   *   (\phi r, m, s) \rightarrow (u_0,v_0,w_0)
-   * \f]
-   * \f$\phi r\f$ is the real circumferential length and \f$m\f$ is the real
-   * merdional length. \f$s\f$ is the spanwise direction, but not treated
-   * as real length. Scales the coordinates \f$ (\phi r, m, s) \f$ with given
-   * vector \f& \underline s \f$.
-   * 
-   */
   class uVw_deltaMs : public dtTransformer {
     public:      
       dt__classOnlyName(uVw_deltaMs);
       uVw_deltaMs();
       uVw_deltaMs( uVw_deltaMs const & orig );
+      uVw_deltaMs( jsonPrimitive const & jE );
       virtual ~uVw_deltaMs();
       virtual dtTransformer * clone( void ) const;
       virtual dtTransformer * create( void ) const;     
       virtual bool isNecessary( void ) const;
+      virtual void jInit( 
+        jsonPrimitive const & jE, 
+        baseContainer * const bC,
+        lvH_constValue const * const cV,
+        lvH_analyticFunction const * const aF,
+        lvH_analyticGeometry const * const aG
+      );          
       void init( 
         ::QDomElement const * tE, 
         baseContainer * const bC,
@@ -74,7 +71,7 @@ namespace dtOO {
         dtReal const & uu, dtReal const & vv, dtReal const & ww
       ) const;
     private:
-      dt__pH(translatingMap2dTo3d const) _tM2dTo3d;
+      dt__pH(translatingMap2dTo3d const) _tM2d;
       dt__pH(map2dTo3d const) _msCut;
       dtVector3 _ss;
       dt__pH(vec2dMultiBiLinearTwoD) _ms_uSPercentVSPercent;

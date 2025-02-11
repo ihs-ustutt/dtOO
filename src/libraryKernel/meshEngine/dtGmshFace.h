@@ -104,7 +104,9 @@ namespace dtOO {
       );
       std::list< dtGmshVertex * > dtVertices( void ) const;   
       std::list< dtGmshEdge * > dtEdges( void ) const;     
-      std::list< dtGmshRegion * > dtRegions( void ) const;     
+      std::list< dtGmshRegion * > dtRegions( void ) const;
+      bool isOnFace( ::GVertex const * const gv ) const;
+      bool isOnFace( ::GEdge const * const ge ) const;
     private:
       static bool sortPredicate(::MVertex const * d1, ::MVertex const * d2);
     private:

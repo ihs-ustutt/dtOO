@@ -5,9 +5,14 @@ on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: write
 
+concurrency: preview-${{ github.ref }}
+
 jobs:
   docs:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
@@ -22,11 +27,19 @@ jobs:
       - name: Sphinx build
         run: |
           cd doc && sphinx-build . _build
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: (main) Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
-          publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: doc/_build/
-          force_orphan: true
+          folder: doc/_build/
+          clean-exclude: pr-preview/
+          force: false
+      - name: (PR) Set base URL for preview
+        if: github.ref != 'refs/heads/main'
+        run: echo "BASE_URL=https://${{ env.DOMAIN }}/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
+      - name: (PR) Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        if: github.ref != 'refs/heads/main'
+        with:
+          source-dir: doc/_build/            
+          token: ${{ secrets.GITHUB_TOKEN }}

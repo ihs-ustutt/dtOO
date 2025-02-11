@@ -524,12 +524,13 @@ class ofOpenFOAMCase_setupWrapper:
       raise ValueError("Unkown varName = %s" % varName)
  
   @staticmethod
-  def emptyRuleString() -> str:
+  def emptyRuleString(patchName: str = "") -> str:
     """Create emptyRuleString.
 
     Parameters
     ----------
-    None
+    patchName: str
+      Patch name.
 
     Returns
     -------
@@ -538,7 +539,7 @@ class ofOpenFOAMCase_setupWrapper:
     
     """
 
-    return str(':ofOpenFOAMEmptyRule:::::')
+    return str(':ofOpenFOAMEmptyRule::'+patchName+':::')
 
   @staticmethod
   def inletRuleString( 
@@ -625,9 +626,12 @@ class ofOpenFOAMCase_setupWrapper:
         )
       elif variable=="omega":
         if len(value)==0:
-          value = [0.0,]
+          value = [0.001,0.0]
         retStr += str(
-          ':omega::fixedValue(value uniform '+str(value[0])+';):'
+          ':omega::turbulentMixingLengthFrequencyInlet('
+          '  mixingLength  '+str(value[0])+';'
+          '  value uniform '+str(value[1])+';'
+          '):'
         )
       else:
         raise ValueError("Unknown variable %s" % variable)
@@ -911,6 +915,50 @@ class ofOpenFOAMCase_setupWrapper:
            +");"
       "    rotationCentre  ("
              +str(rotCentre[0])+" "+str(rotCentre[1])+" "+str(rotCentre[2])
+           +");"
+      "  )"
+      ":"
+    )
+    return retStr
+
+  @staticmethod
+  def cyclicAmiTranslationalRuleString( 
+    patchOne: str, patchTwo: str, 
+    sepVector: dtVector3
+  ) -> str:
+    """Create a cyclic AMI rule.
+
+    Translational AMI is created between `patchOne` and `patchTwo` with 
+    separation vector
+
+    Parameters
+    ----------
+    patchOne: str
+      Patch one name.
+    patchTwo: str
+      Patch two name.
+    sepVector: dtVector3
+      Separation vector.
+
+    Returns
+    -------
+    str
+      Cyclic AMI rule string.
+    """
+   
+    retStr = ":ofOpenFOAMCyclicAmiRule::"+patchOne+","+patchTwo+":"
+    retStr += str(
+      ":"
+      "  "+patchOne+"("
+      "    transform        translational;"
+      "    separationVector ("
+             +str(sepVector[0])+" "+str(sepVector[1])+" "+str(sepVector[2])
+           +");"
+      "  ),"
+      "  "+patchTwo+"("
+      "    transform        translational;"
+      "    separationVector ("
+             +str(-sepVector[0])+" "+str(-sepVector[1])+" "+str(-sepVector[2])
            +");"
       "  )"
       ":"

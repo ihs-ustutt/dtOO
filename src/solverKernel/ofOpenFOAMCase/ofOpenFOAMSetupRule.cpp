@@ -35,6 +35,7 @@ License
 #include <nutkWallFunctionFvPatchScalarField.H>
 #include <turbulentIntensityKineticEnergyInletFvPatchScalarField.H>
 #include <turbulentMixingLengthDissipationRateInletFvPatchScalarField.H>
+#include <turbulentMixingLengthFrequencyInletFvPatchScalarField.H>
 #include <inletOutletFvPatchField.H>
 #include <rotatingWallVelocityFvPatchVectorField.H>
 #include <flowRateInletVelocityFvPatchVectorField.H>
@@ -523,6 +524,29 @@ namespace dtOO {
           
           return;          
         }         
+        else if ( 
+          stringPrimitive::stringContains(
+            "turbulentMixingLengthFrequencyInlet",
+            stringPrimitive::getStringBetween("", "(", thisRule) 
+          )                
+        ) {
+          //
+          // create and set new patch
+          //
+          bF.set(
+            i, 
+            new ::Foam::turbulentMixingLengthFrequencyInletFvPatchScalarField(
+                field.mesh().boundary()[i], 
+                field, 
+                parseOptionDict(
+                  "turbulentMixingLengthFrequencyInlet", thisRule
+                )
+            ) 
+          );
+          
+          return;          
+        }         
+
         else if ( 
           stringPrimitive::stringContains(
             "slip",

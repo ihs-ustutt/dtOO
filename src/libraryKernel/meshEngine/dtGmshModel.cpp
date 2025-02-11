@@ -74,7 +74,11 @@ namespace dtOO {
       ("7", 7)
       ("8", 8)
       ("9", 9)
-      ("10", 10);
+      ("10", 10)
+      ("11", 11)
+      ("12", 12)
+      ("13", 13)
+      ("14", 14);
     std::map< int, std::vector< std::string > > dtGmshModel::_positionStrFace
     =
     ::boost::assign::map_list_of
@@ -149,8 +153,23 @@ namespace dtOO {
         11, 
         ::boost::assign::list_of
           ("11").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        12, 
+        ::boost::assign::list_of
+          ("12").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        13, 
+        ::boost::assign::list_of
+          ("13").convert_to_container< std::vector< std::string > >()
+      )
+      (
+        14, 
+        ::boost::assign::list_of
+          ("14").convert_to_container< std::vector< std::string > >()
       );
-      
+   
     std::map< std::string, dtInt > dtGmshModel::_edgePositionStr
     =
     ::boost::assign::map_list_of

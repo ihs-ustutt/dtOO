@@ -47,7 +47,7 @@ namespace dtOO {
     
   }
 
-   void bVOSetRotationalPeriodicity::jInit( 
+  void bVOSetRotationalPeriodicity::jInit( 
     jsonPrimitive const & jE,
 		baseContainer const * const bC,
     lvH_constValue const * const cV,

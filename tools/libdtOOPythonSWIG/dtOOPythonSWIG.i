@@ -211,6 +211,7 @@ namespace dtOO {
 #include <analyticGeometryHeaven/rotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/partRotatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/trans6SidedCube.h>
+#include <analyticGeometryHeaven/translatingMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_constructMarginFaces.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dEquidistantPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
@@ -329,6 +330,7 @@ namespace dtOO {
 #include <bVObserver/bVOSetPrescribedElementSize.h>
 #include <bVObserver/bVOReadMSH.h>
 #include <bVObserver/bVOSetRotationalPeriodicity.h>
+#include <bVObserver/bVOSetTranslationalPeriodicity.h>
 #include <bVObserver/bVOWriteMSH.h>
 #include <bVObserver/bVOFaceToPatchRule.h>
 #include <bVObserver/bVORemoveElements.h>
@@ -592,6 +594,7 @@ namespace dtOO {
 %include bVObserver/bVOSetPrescribedElementSize.h
 %include bVObserver/bVOReadMSH.h
 %include bVObserver/bVOSetRotationalPeriodicity.h
+%include bVObserver/bVOSetTranslationalPeriodicity.h
 %include bVObserver/bVOWriteMSH.h
 %include bVObserver/bVOFaceToPatchRule.h
 %include bVObserver/bVORemoveElements.h
@@ -796,6 +799,7 @@ namespace dtOO {
 %template(appendDtTransformer) dtOO::jsonPrimitive::append< dtOO::dtTransformer const * >;
 %template(appendVectorInt) dtOO::jsonPrimitive::append< std::vector< dtOO::dtInt > >;
 %template(appendVectorStr) dtOO::jsonPrimitive::append< std::vector< std::string > >;
+%template(appendVectorAnalyticGeometry) dtOO::jsonPrimitive::append< std::vector< analyticGeometry * > >;
 %template(appendVectorBoundedVolume) dtOO::jsonPrimitive::append< std::vector< boundedVolume * > >;
 
 %include constValueHeaven/sliderFloatParam.h
@@ -1062,6 +1066,7 @@ namespace dtOO {
 %include analyticGeometryHeaven/rotatingMap2dTo3d.h
 %include analyticGeometryHeaven/partRotatingMap2dTo3d.h
 %include analyticGeometryHeaven/trans6SidedCube.h
+%include analyticGeometryHeaven/translatingMap2dTo3d.h
 namespace std {
   %template(pairDtRealDtPoint2) pair< ::dtOO::dtReal, ::dtOO::dtPoint2 >;
 }

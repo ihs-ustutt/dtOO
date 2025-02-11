@@ -94,9 +94,17 @@ namespace dtOO {
     std::vector< GEdge * > e2;
     dt__forFromToIndex(6, fV.size(), ii) {
       std::vector< ::GEdge * > eV = fV[ii]->edges();
-      e0.push_back( eV[0] );
-      e2.push_back( eV[2] );
+      dt__forAllRefAuto(eV, anEdge) {
+        if ( fV[0]->isOnFace(anEdge) ) e0.push_back( anEdge );
+        if ( fV[1]->isOnFace(anEdge) ) e2.push_back( anEdge );
+      }
     }
+
+    dt__debug(
+      preUpdate(),
+      << e0.size() << " edges lie in fV[0]." << std::endl
+      << e2.size() << " edges lie in fV[1]."
+    );
     
     ::GEdgeLoop el0(e0);
     for(::GEdgeLoop::citer it = el0.begin(); it != el0.end(); ++it){

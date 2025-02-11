@@ -16,7 +16,6 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "uVw_deltaMs.h"
-#include "interfaceHeaven/systemHandling.h"
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
 #include <analyticGeometryHeaven/map3dTo3d.h>
@@ -40,20 +39,26 @@ namespace dtOO {
   );
   
   uVw_deltaMs::uVw_deltaMs() : dtTransformer() {
-    _ss = dtVector3(1.,1.,1.);
+    _ss = dtVector3(1,1,1);
     _nV = 11;
     _nW = 11;        
   }
 
   uVw_deltaMs::uVw_deltaMs( uVw_deltaMs const & orig ) : dtTransformer(orig) {
-		_tM2dTo3d.reset( orig._tM2dTo3d->clone() );
+		_tM2d.reset( orig._tM2d->clone() );
     _msCut.reset( orig._msCut->clone() );
 		_ss = orig._ss;
     _ms_uSPercentVSPercent.reset( orig._ms_uSPercentVSPercent->clone() );
     _nV = orig._nV;
     _nW = orig._nW;
   }
-	
+
+  uVw_deltaMs::uVw_deltaMs( 
+    jsonPrimitive const & jE 
+  ) : dtTransformer(jE){
+    this->jInit(jE, NULL, NULL, NULL, NULL);
+  }
+
   uVw_deltaMs::~uVw_deltaMs() {
 		
   }
@@ -66,7 +71,9 @@ namespace dtOO {
 		return new uVw_deltaMs();
 	}
 	
-  lvH_analyticFunction uVw_deltaMs::apply( lvH_analyticFunction const * const aFP ) const {
+  lvH_analyticFunction uVw_deltaMs::apply( 
+    lvH_analyticFunction const * const aFP 
+  ) const {
 		lvH_analyticFunction retV;
 		
     for (int ii=0; ii<aFP->size(); ii++) {
@@ -140,49 +147,30 @@ namespace dtOO {
     return true;
   }
 
-  void uVw_deltaMs::init( 
-    ::QDomElement const * tE, 
+  void uVw_deltaMs::jInit( 
+    jsonPrimitive const & jE, 
     baseContainer * const bC,
     lvH_constValue const * const cV,
     lvH_analyticFunction const * const aF,
     lvH_analyticGeometry const * const aG 
 	) {
-    dtTransformer::init(tE, bC, cV, aF, aG);
+    dtTransformer::jInit(jE, bC, cV, aF, aG);
 		    
-		if ( dtXmlParserBase::hasChild("Vector_3", *tE) ) {
-			::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
-      _ss = dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG);
-		}
-    
-    dt__ptrAss(
-      translatingMap2dTo3d const * const tM2dTo3d, 
-      translatingMap2dTo3d::ConstDownCast(
-        aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
-      )
+    _ss = config().lookupDef< dtVector3 >("_ss", dtVector3(1,1,1));
+    _tM2d
+    =
+    translatingMap2dTo3d::PointerDownCast(
+      config().lookupClone< analyticGeometry >("_tM2d", aG)
     );
-    _tM2dTo3d.reset( tM2dTo3d->clone() );
 
-		if ( dtXmlParserBase::hasAttribute("number_points_two", *tE) ) {
-      _nW 
-      = 
-      dtXmlParserBase::getAttributeIntMuParse(
-        "number_points_two", *tE, cV, aF
-      );
-    } 
-
-		if ( dtXmlParserBase::hasAttribute("number_points_three", *tE) ) {
-      _nW
-      = 
-      dtXmlParserBase::getAttributeIntMuParse(
-        "number_points_three", *tE, cV, aF
-      );
-    } 
+    int nV = config().lookupDef< int >("_nV", 11);
+    int nW = config().lookupDef< int >("_nW", 11);
     
     //
     // create piecewise bilinear mapping
     //
     twoDArrayHandling< dtPoint2 > ms(_nW, _nW);
-    _msCut.reset( _tM2dTo3d->constRefMap2dTo3d().clone() );
+    _msCut.reset( _tM2d->constRefMap2dTo3d().clone() );
     dt__forAllIndex(ms, ii) {
       dt__forAllIndex(ms[ii], jj) {
         dtReal uPercent = static_cast<dtReal>(ii)/(_nW-1);
@@ -218,6 +206,50 @@ namespace dtOO {
       << dt__point2d( _ms_uSPercentVSPercent->YdtPoint2Percent(0.,1.) )
     );
   }
+
+  void uVw_deltaMs::init( 
+    ::QDomElement const * tE, 
+    baseContainer * const bC,
+    lvH_constValue const * const cV,
+    lvH_analyticFunction const * const aF,
+    lvH_analyticGeometry const * const aG 
+	) {
+    dtTransformer::init(tE, bC, cV, aF, aG);
+		    
+    jsonPrimitive config;
+
+		if ( dtXmlParserBase::hasChild("Vector_3", *tE) ) {
+			::QDomElement v3El = dtXmlParserBase::getChild("Vector_3", *tE);
+      config.append< dtVector3 >(
+        "_ss",
+        dtXmlParserBase::getDtVector3(&v3El, bC, cV, aF, aG)
+      );
+		}
+    
+    config.append<analyticGeometry const *>(
+      "_tM2d",
+      aG->get(dtXmlParserBase::getAttributeStr("part_label", *tE))
+    );
+
+		if ( dtXmlParserBase::hasAttribute("number_points_two", *tE) ) {
+      config.append< int >(
+        "_nV",
+        dtXmlParserBase::getAttributeIntMuParse(
+          "number_points_two", *tE, cV, aF
+        )
+      );
+    } 
+
+		if ( dtXmlParserBase::hasAttribute("number_points_three", *tE) ) {
+       config.append< int >(
+        "_nW",
+        dtXmlParserBase::getAttributeIntMuParse(
+          "number_points_three", *tE, cV, aF
+        )
+      );
+    } 
+    jInit(config, bC, cV, aF, aG);
+  }
   
 	dtReal uVw_deltaMs::m_uSVS(dtReal const & uu, dtReal const & vv) const {
 		ptrHandling< map1dTo3d > m1d( 
@@ -237,8 +269,8 @@ namespace dtOO {
 	dtReal uVw_deltaMs::uV_deltaVVWV(
     dtReal const & delta, dtReal const & vv, dtReal const & ww
   ) const {
-		return _tM2dTo3d->u_percent( 
-      delta/dtLinearAlgebra::length( _tM2dTo3d->translationAxis() ) 
+		return _tM2d->u_percent( 
+      delta/dtLinearAlgebra::length( _tM2d->translationAxis() ) 
     );
 	}
 	
@@ -260,8 +292,8 @@ namespace dtOO {
     dtReal const & uu, dtReal const & vv, dtReal const & ww
   ) const {
 		return 
-      _tM2dTo3d->percent_u(uu) 
+      _tM2d->percent_u(uu) 
       * 
-      dtLinearAlgebra::length( _tM2dTo3d->translationAxis() );
+      dtLinearAlgebra::length( _tM2d->translationAxis() );
   }
 }

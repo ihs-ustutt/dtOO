@@ -50,9 +50,6 @@ namespace dtOO {
       );            
       virtual void operator()( dtGmshRegion * dtgr );
     private:
-      std::string _faceMaster;
-      std::string _faceSlave;
-    private:
       static bool _registrated;
   };
 }

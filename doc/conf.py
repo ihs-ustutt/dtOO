@@ -2,6 +2,8 @@
 import os
 import sys
 
+sys.path.insert(0, os.path.abspath('../demo'))
+
 project = 'dtOO'
 copyright = 'Alexander Tismer'
 author = 'Alexander Tismer'
@@ -11,6 +13,10 @@ author = 'Alexander Tismer'
 extensions = [
   'myst_parser', 
   'breathe',
+  'sphinx.ext.autodoc', 
+  'sphinx.ext.coverage', 
+  'sphinx.ext.napoleon',
+  'sphinx.ext.viewcode',
 ]
 
 # Configuration for the breathe extension
@@ -30,3 +36,11 @@ html_theme_options = {
 }
 
 html_logo = "pics/dtoo-logo-inv-nbg.png"
+autodoc_mock_imports = [
+  'logging', 
+  'numpy', 
+  'dtOOPythonSWIG', 
+  'foamlib',
+  'pyDtOO',
+  'subprocess',
+  ]

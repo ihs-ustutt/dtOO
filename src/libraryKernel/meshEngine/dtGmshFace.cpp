@@ -38,6 +38,7 @@ License
 #include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <interfaceHeaven/intHandling.h>
+#include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
 
 #define __caCThis const_cast< dtGmshFace * >(this)
 
@@ -662,4 +663,27 @@ namespace dtOO {
   std::list< dtGmshRegion * > dtGmshFace::dtRegions( void ) const {
     return dtGmshModel::cast2DtGmshRegion( regions() );
 	}
+
+  bool dtGmshFace::isOnFace( ::GVertex const * const gv ) const {
+    uv_map2dTo3dClosestPointToPoint p0( 
+      _mm.get(), dtPoint3( gv->x(), gv->y(), gv->z())
+    );
+    if ( analyticGeometry::inXYZTolerance( p0.distance() ) ) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  bool dtGmshFace::isOnFace( ::GEdge const * const ge ) const {
+    if ( 
+      isOnFace(ge->getBeginVertex()) && isOnFace(ge->getEndVertex()) 
+    ) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 }
