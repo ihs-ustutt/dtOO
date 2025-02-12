@@ -273,7 +273,7 @@ class hydFoil:
 
 
   def Geometry(self):
-    """Create hyrdofoil's geometry.
+    """Create hydrofoil's geometry.
   
     The main objects of baseContainer, analyticFunction, and analyticGeometry
     are created. Objects that are necessary or interesting are appended to the
@@ -1136,7 +1136,7 @@ class hydFoil:
       \\Delta \\eta = 1 - \\frac{F_y u}{\\rho g H Q}
 
     with :math:`F_y`, :math:`u`, :math:`\\rho`, :math:`g`, :math:`H`, 
-    and :math;`Q` that corresponds to force in :math:`y`-direction, rotational
+    and :math:`Q` that corresponds to force in :math:`y`-direction, rotational
     speed, density, gravitational constant, simulated head, and discharge. The 
     deviation in head is calculated by
 
