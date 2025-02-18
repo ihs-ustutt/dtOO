@@ -44,9 +44,11 @@ namespace dtOO {
   staticPropertiesHandler::getInstance()->getOptionFloat("map2dTo3d_deltaPer");
   
   map2dTo3d::map2dTo3d() : analyticGeometry() {
+    isUVGridPrecomputed = false;
   }
 
   map2dTo3d::map2dTo3d(const map2dTo3d& orig) : analyticGeometry(orig) {
+    isUVGridPrecomputed = false;
   }
 
   map2dTo3d::~map2dTo3d() {
@@ -266,7 +268,13 @@ namespace dtOO {
 	  distances.begin(),
 	  std::min_element(distances.begin(), distances.end())
       );
-
+      if ( 
+        (best_index > (N-1)) 
+        ||
+        (best_index < 0)
+      ) {
+        dt__throw(findNearestUV(), << "best_index = " << best_index );
+      }
       return {grid.U_grid[best_index], grid.V_grid[best_index]};
   }
 
