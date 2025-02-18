@@ -64,7 +64,7 @@ Clone repository
 `[axial_turbine_database] <https://doi.org/10.5281/zenodo.14014525>`_, if
 necessary:
 
->>> clone = "git clone git@github.com:ihs-ustutt/axial_turbine_database.git" 
+>>> clone = "git clone https://github.com/ihs-ustutt/axial_turbine_database.git" 
 >>> if not os.path.isdir("./axial_turbine_database"):
 ...   logging.info("Clone repository.")
 ...   ret = os.system(clone)
