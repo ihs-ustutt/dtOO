@@ -148,7 +148,6 @@ namespace dtOO {
         double const stepU, double const stepV, double const prec
       ) const;      
 	    double F(double const * xx) const;        
-	    double FWrap(double const & x0, double const & x1) const;
     private:
       mutable dtPoint3 _pXYZ;      
       static dtReal _deltaPer;      

@@ -959,16 +959,8 @@ namespace dtOO {
     return dtLinearAlgebra::length( 
       _pXYZ - getPointPercent( dtPoint2(xx[0], xx[1]) ) 
     );
-	}	   	
+	}
 
-	double map2dTo3d::FWrap(double const & x0, double const & x1) const {	
-    std::vector< double > uv(2);
-    uv[0] = x0;
-    uv[1] = x1;
-    
-    return F(&(uv[0]));
-	}	   
-  
 	dtPoint2 map2dTo3d::operator%(const dtPoint2 &percent) const {
 		return dtPoint2( this->uv_percent(percent) );
 	}
