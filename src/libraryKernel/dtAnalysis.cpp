@@ -21,6 +21,7 @@ License
 
 #include <RConfigure.h>
 #include <Math/GSLNLSMinimizer.h>
+#include <Math/GSLMinimizer.h>
 #include <Math/GSLSimAnMinimizer.h>
 #include <Minuit2/Minuit2Minimizer.h>
 #include <Math/Functor.h>

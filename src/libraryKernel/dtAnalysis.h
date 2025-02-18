@@ -23,7 +23,7 @@ License
 #include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 
-#include <Math/GSLMinimizer.h>
+#include <Math/Minimizer.h>
 
 namespace dtOO {
   typedef ROOT::Math::Minimizer dtMinimizer;
