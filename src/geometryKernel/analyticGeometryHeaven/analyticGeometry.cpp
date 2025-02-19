@@ -20,6 +20,7 @@ License
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
+#include <geoAlgoHeaven/dtPoint3Algo.h>
 
 namespace dtOO {
   analyticGeometry::analyticGeometry() : labelHandling() {
@@ -458,6 +459,10 @@ namespace dtOO {
   
   bool analyticGeometry::equal( analyticGeometry const * const other) const {    
     return this->equal(*other);
+  }
+
+  void analyticGeometry::visitMe( dtPoint3Algo * d3algo ) const {
+    d3algo->visit(this);
   }
   
   dt__C_addCloneForpVH(analyticGeometry);

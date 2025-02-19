@@ -166,6 +166,8 @@ SET(HEADERS
   dtTransformerHeaven/applyVec3dThreeD.h
   dtTransformerHeaven/xYz_localCoordinates.h
   dtTransformerHeaven/pickVec3dTwoDRectanglePercent.h
+  geoAlgoHeaven/dtPoint3Algo.h
+  geoAlgoHeaven/gslMinDist.h
 )
 SET(SOURCES
   analyticGeometryHeaven/analyticGeometry.cpp
@@ -308,6 +310,8 @@ SET(SOURCES
   dtTransformerHeaven/applyVec3dThreeD.cpp
   dtTransformerHeaven/xYz_localCoordinates.cpp
   dtTransformerHeaven/pickVec3dTwoDRectanglePercent.cpp
+  geoAlgoHeaven/dtPoint3Algo.cpp
+  geoAlgoHeaven/gslMinDist.cpp
 )
 
 APPEND_DTOO_SOURCE(src/geometryKernel "${SOURCES}")

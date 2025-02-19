@@ -33,6 +33,7 @@ License
 #include <mainConceptFwd.h>
 
 namespace dtOO { 
+  class dtPoint3Algo;
 
   class analyticGeometry : public optionHandling,
                            public labelHandling,
@@ -94,6 +95,10 @@ namespace dtOO {
       void dump(void) const;    
       void setRenderResolution(int const & dir, dtInt const & value) const;
       dtInt getRenderResolution(int const & dir) const;
+      //
+      // visitor
+      //
+      virtual void visitMe( dtPoint3Algo * d3algo ) const;
     private:
       mutable dtInt _resU;
       mutable dtInt _resV;
