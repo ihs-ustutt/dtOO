@@ -22,7 +22,6 @@ License
 
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
-#include <vector>
 #include <analyticFunctionHeaven/analyticFunction.h>
 
 namespace dtOO {
