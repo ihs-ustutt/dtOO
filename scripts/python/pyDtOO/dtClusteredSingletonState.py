@@ -74,62 +74,164 @@ class dtClusteredSingletonState:
 
   Examples
   --------
-    >>> from pyDtOO import dtClusteredSingletonState
+  Add additional values for each individual
 
-    Add two optional values for each individual
+  >>> dtClusteredSingletonState.ADDDATA = [                                           
+  ...   'dict',                                                                       
+  ...   'float',                                                                      
+  ...   'int',                                                                        
+  ...   'np-float-arr',                                                               
+  ...   'np-int-arr',                                                                 
+  ...   'str',                                                                        
+  ... ]                                                                               
+  >>> dtClusteredSingletonState.ADDDATADEF = [                                        
+  ...   {'key' : 0.0},                                                                
+  ...   1.0,                                                                          
+  ...   2,                                                                            
+  ...   np.full(3, 5.0),                                                              
+  ...   np.full(3, -5),                                                               
+  ...   'test',                                                                       
+  ... ]
 
-    >>> dtClusteredSingletonState.ADDDATA = ['addFloat', 'history']
-    >>> dtClusteredSingletonState.ADDDATADEF = [ [1.0,], {},]
+  Create first individual
 
-    Create first individual
+  >>> dtClusteredSingletonState(
+  ...   defObj=[0.0,0.0,], 
+  ...   defFit=[0.0,0.0,]
+  ... ) # doctest: +ELLIPSIS
+  <dtClusteredSingletonState.dtClusteredSingletonState object at ...>
 
-    >>> dtClusteredSingletonState()
+  Access individual by id
 
-    Access individual by id and write data
+  >>> cSS = dtClusteredSingletonState(1)
 
-    >>> cSS = dtClusteredSingletonState(1)
-    >>> cSS.update('fitness', 1.0)
-    >>> cSS.update('objective', [1.0,2.0])
-    >>> cSS.update('history', {'float' : 1.0, 'str' : 'myStr'})
+  Check if data exactly matches the ADDDATADEF list
 
-    Read default data from individual
+  >>> for i in dtClusteredSingletonState.ADDDATA:                                     
+  ...   print( 
+  ...     cSS(i) 
+  ...     == 
+  ...     dtClusteredSingletonState.ADDDATADEF[
+  ...       dtClusteredSingletonState.ADDDATA.index(i)
+  ...     ] 
+  ...   )
+  True
+  True
+  True
+  [ True  True  True]
+  [ True  True  True]
+  True
+  
+  Write new data
 
-    >>> cSS.id()
-    Out: 1
-    >>> cSS.state()
-    Out: 'A1_1'
-    >>> cSS.objective()
-    Out: array([1., 2.])
-    >>> cSS.fitness()
-    Out: array([1.])
+  >>> cSS = dtClusteredSingletonState(1)
+  >>> cSS.update('fitness', 1.0)
+  >>> cSS.update('objective', [1.0,2.0])
+  >>> cSS.update('dict', {'float' : 1.0, 'str' : 'myStr'})
 
-    Read additional data as str
+  Read default data from individual
 
-    >>> cSS.read('addFloat')
-    Out: '1.0'
-    >>> cSS.read('history')
-    Out: "{'float': 1.0, 'str': 'myStr'}"
+  >>> cSS.id()
+  1
+  >>> cSS.state()
+  'A1_1'
+  >>> cSS.objective()
+  array([1., 2.])
+  >>> cSS.fitness()
+  array([1.])
 
-    Read additional data as specified type
+  Read additional data as str
 
-    >>> cSS.readFloatArray('addFloat')
-    Out: array([1.])
-    >>> cSS.readDict('history')
-    Out: {'float': 1.0, 'str': 'myStr'}
+  >>> cSS.read('float')
+  '1.e+00'
+  >>> cSS.read('dict')
+  '{"float": 1.0, "str": "myStr"}'
 
+  Read additional data with specified type
+
+  >>> cSS.readFloatArray('float')
+  array([1.])
+  >>> cSS.readFloat('float')
+  1.0
+  >>> cSS.readArray('np-int-arr', int)
+  array([-5, -5, -5])
+  >>> cSS.read('np-int-arr')
+  '-5 -5 -5'
+  >>> cSS.readDict('dict')
+  {'float': 1.0, 'str': 'myStr'}
+
+  Check data again; some checks have to fail, because the data was updated
+  
+  >>> for i in dtClusteredSingletonState.ADDDATA:                                     
+  ...   print("=> %s" % i)                                                            
+  ...   print(cSS(i))                                                                   
+  ...   print( 
+  ...     cSS(i) 
+  ...     == 
+  ...     dtClusteredSingletonState.ADDDATADEF[
+  ...       dtClusteredSingletonState.ADDDATA.index(i)
+  ...     ] 
+  ...   )
+  => dict
+  {'float': 1.0, 'str': 'myStr'}
+  False
+  => float
+  1.0
+  True
+  => int
+  2
+  True
+  => np-float-arr
+  [5. 5. 5.]
+  [ True  True  True]
+  => np-int-arr
+  [-5 -5 -5]
+  [ True  True  True]
+  => str
+  test
+  True
   """
-
 
   PREFIX: str = 'A1'
   CASE: str = ''
   LOCKDIR: dtDirectory = dtGod().LockPath()
-  PIDDIR: str = './runPid'
   DATADIR: str = './runData'
+  ADDDATA: List[str] = []
+  ADDDATADEF: List[ Union[ float, int, List[float], List[int], dict] ] = []
+  PIDDIR: str = './runPid'
   NPROC: int = 1
   SIMSH: str = ''
-  ADDDATA: List[str] = []
-  ADDDATADEF: List[ Union[ List[float], int, dict] ] = []
   PROB: Any = None
+
+  @staticmethod
+  @lockutils.synchronized('fileIO', external=True)
+  def clear( remove: bool = False ) -> None:
+    """Clear database.
+
+    Parameters
+    ----------
+    remove : bool
+      Flag to clean directory, too.
+
+    Returns
+    -------
+    None
+
+    """
+    if remove:
+      logging.info("Delete database in %s" % dtClusteredSingletonState.DATADIR)
+      os.system('rm -rf '+dtClusteredSingletonState.DATADIR)
+
+    dtClusteredSingletonState.PREFIX = 'A1'
+    dtClusteredSingletonState.LOCKDIR = dtGod().LockPath()
+    dtClusteredSingletonState.DATADIR = './runData'
+    dtClusteredSingletonState.ADDDATA = []
+    dtClusteredSingletonState.ADDDATADEF = []
+    dtClusteredSingletonState.PIDDIR = './runPid'
+    dtClusteredSingletonState.NPROC = 1
+    dtClusteredSingletonState.SIMSH = ''
+    dtClusteredSingletonState.CASE = ''
+    dtClusteredSingletonState.PROB = None
 
   @lockutils.synchronized('fileIO', external=True)
   def __init__(
@@ -158,6 +260,13 @@ class dtClusteredSingletonState:
     -------
     None
 
+    Examples
+    --------
+
+    >>> dtClusteredSingletonState.clear(True)
+    >>> cSS = dtClusteredSingletonState()
+    >>> cSS.id()
+    1
     """
     #
     # get id from state
@@ -172,16 +281,40 @@ class dtClusteredSingletonState:
       #
       # create files
       #
-      if not os.path.isdir( dtClusteredSingletonState.DATADIR ) or not os.path.isfile( dtClusteredSingletonState.DATADIR+'/id.0' ):
+      if \
+        not os.path.isdir( dtClusteredSingletonState.DATADIR ) \
+        or \
+        not os.path.isfile( dtClusteredSingletonState.DATADIR+'/id.0' ):
         if not os.path.isdir( dtClusteredSingletonState.DATADIR ):
           os.mkdir(dtClusteredSingletonState.DATADIR)
-        io.open(dtClusteredSingletonState.DATADIR+'/id.0', mode='w', encoding='utf-8').close()
-        io.open(dtClusteredSingletonState.DATADIR+'/state.0', mode='w', encoding='utf-8').close()
-        io.open(dtClusteredSingletonState.DATADIR+'/objective.0', mode='w', encoding='utf-8').close()
-        io.open(dtClusteredSingletonState.DATADIR+'/fitness.0', mode='w', encoding='utf-8').close()
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/id.0', 
+          mode='w', 
+          encoding='utf-8'
+        ).close()
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/state.0', 
+          mode='w', 
+          encoding='utf-8'
+        ).close()
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/objective.0', 
+          mode='w', 
+          encoding='utf-8'
+        ).close()
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/fitness.0', 
+          mode='w', 
+          encoding='utf-8'
+        ).close()
         for i in range( np.size(dtClusteredSingletonState.ADDDATA) ):
           io.open(
-            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.0', mode='w', encoding='utf-8'
+            dtClusteredSingletonState.DATADIR\
+              +'/'\
+              +dtClusteredSingletonState.ADDDATA[i]\
+              +'.0', 
+            mode='w', 
+            encoding='utf-8'
           ).close()
         self.id_ = 1
       #
@@ -221,12 +354,19 @@ class dtClusteredSingletonState:
       else:
         io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='a', encoding='utf-8').write( '__empty__\n' )
 
-      if np.size(dtClusteredSingletonState.ADDDATA) != np.shape(dtClusteredSingletonState.ADDDATADEF)[0]:
+      if len(dtClusteredSingletonState.ADDDATA) != len(dtClusteredSingletonState.ADDDATADEF):
         raise ValueError(
           'Size of ADDDATA is not equal to size of ADDDATADEF  ' + str(dtClusteredSingletonState.ADDDATA) + ' ' + str(dtClusteredSingletonState.ADDDATADEF)
           )
       for i in range( np.size(dtClusteredSingletonState.ADDDATA) ):
-        if np.size( dtClusteredSingletonState.ADDDATADEF[i] ) == 0 or np.size(dtClusteredSingletonState.ADDDATA) != np.shape(dtClusteredSingletonState.ADDDATADEF)[0]:
+        if \
+          np.size( dtClusteredSingletonState.ADDDATADEF[i] ) == 0 \
+          or \
+          ( \
+            np.size(dtClusteredSingletonState.ADDDATA) \
+            != \
+            len(dtClusteredSingletonState.ADDDATADEF) \
+          ):
           io.open(
             dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), mode='a', encoding='utf-8'
           ).write( '__empty__\n' )
@@ -278,6 +418,13 @@ class dtClusteredSingletonState:
     int
       Maximum ID.
 
+    Examples
+    --------
+    >>> dtClusteredSingletonState.clear(True)
+    >>> a = dtClusteredSingletonState()
+    >>> b = dtClusteredSingletonState()
+    >>> dtClusteredSingletonState.currentMaxId()
+    2
     """
     lastFileIndex = -1
     for aFile in glob.glob(dtClusteredSingletonState.DATADIR+'/id.*'):
@@ -333,7 +480,8 @@ class dtClusteredSingletonState:
       raise ValueError('Id is smaller than zero')
     return self.state_
 
-  def formatToWrite( self, value: Union[float, int, dict, np.array] ) -> str:
+  @staticmethod
+  def formatToWrite( value: Union[float, int, dict, np.array] ) -> str:
     """Converts `value` to str.
 
     Parameters
@@ -346,7 +494,34 @@ class dtClusteredSingletonState:
     str
       Converted value.
 
+    Examples
+    --------
+    >>> dtClusteredSingletonState.formatToWrite(1.0)
+    '1.e+00'
+    >>> dtClusteredSingletonState.formatToWrite(1)
+    '1'
+    >>> dtClusteredSingletonState.formatToWrite('word')
+    'word'
+    >>> dtClusteredSingletonState.formatToWrite(
+    ...   {'str' : 'word', 'float' : 1.0}
+    ... )
+    '{"str": "word", "float": 1.0}'
+    >>> dtClusteredSingletonState.formatToWrite(np.full(2,1.0))
+    '1.e+00 1.e+00'
+    >>> try:
+    ...   dtClusteredSingletonState.formatToWrite(['a', 'b',])
+    ... except ValueError as e:
+    ...   print(e)
+    Unknown datatype.
+    >>> class testclass:
+    ...   pass
+    >>> try:
+    ...   dtClusteredSingletonState.formatToWrite(testclass)
+    ... except ValueError as e:
+    ...   print(e)
+    Unknown datatype.
     """
+
     rStr = '__unknownDataType__'
     if isinstance(value,float):
       rStr = np.format_float_scientific(value)
@@ -358,19 +533,20 @@ class dtClusteredSingletonState:
       rStr = json.dumps(value)
     elif isinstance( np.array(value), np.ndarray):
       valueAsArr = np.array(value)
+      if (valueAsArr.dtype == int) or (valueAsArr.dtype == float):
+        valueAsStr = np.array2string(
+          valueAsArr,
+          formatter = {
+            'float_kind': np.format_float_scientific
+          }
+        )
+        #
+        # remove square brackets and line breaks
+        #
+        rStr = valueAsStr.replace('[','').replace(']','').replace('\n','')
 
-      valueAsStr = np.array2string(
-        valueAsArr,
-        formatter = {
-          'float_kind': np.format_float_scientific
-        }
-      )
-      #
-      # remove square brackets and line breaks
-      #
-      rStr = valueAsStr.replace('[','').replace(']','').replace('\n','')
-    else:
-      logging.warning('Try to write unknown datatype.')
+    if rStr == '__unknownDataType__':
+      raise ValueError('Unknown datatype.')
 
     return rStr
 
@@ -394,7 +570,8 @@ class dtClusteredSingletonState:
     """
     fileIndex = dtClusteredSingletonState.fileIndex( self.id_ )
     tmpF = tempfile.TemporaryFile(mode='r+', encoding='utf-8')
-    fullFileName = dtClusteredSingletonState.DATADIR+'/'+fileName+'.'+str(fileIndex)
+    fullFileName = \
+      dtClusteredSingletonState.DATADIR+'/'+fileName+'.'+str(fileIndex)
     curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
     for line in curF:
@@ -426,13 +603,41 @@ class dtClusteredSingletonState:
 
     """
     fileIndex = dtClusteredSingletonState.fileIndex( self.id_ )
-    fullFileName = dtClusteredSingletonState.DATADIR+'/'+fName+'.'+str(fileIndex)
+    fullFileName = \
+      dtClusteredSingletonState.DATADIR+'/'+fName+'.'+str(fileIndex)
     curF = io.open( fullFileName, mode='r', encoding='utf-8' )
     lineCounter = 0 + fileIndex*1000
     for line in curF:
       lineCounter = lineCounter + 1
       if lineCounter == self.id_:
         return line.replace('\n','')
+
+  def readArray( 
+    self, fName: str, dtype: Union[ float, int, str ]  
+  ) -> np.ndarray:
+    """Read data of `fName` for current individual and return as array.
+
+    Parameters
+    ----------
+    fName : str
+      Label of data.
+
+    Returns
+    -------
+    numpy.ndarray
+      Converted value.
+
+    """
+    ret = np.zeros(0, dtype)
+    try:
+      ret = np.fromstring( self.read(fName), dtype=dtype, sep=' ' )
+    except:
+      logging.warning('exception in numpy.fromstring : %s', self.read(fName))
+
+    if ( ret.size == 0):
+      logging.warning('invalid array : %s', self.read(fName))
+
+    return ret
 
   def readFloatArray( self, fName: str ) -> np.ndarray:
     """Read data of `fName` for current individual and return as float array.
@@ -448,16 +653,23 @@ class dtClusteredSingletonState:
       Converted value.
 
     """
-    ret = np.zeros(0, float)
-    try:
-      ret = np.fromstring( self.read(fName), dtype=float, sep=' ' )
-    except:
-      logging.warning('exception in numpy.fromstring : %s', self.read(fName))
+    return self.readArray(fName, float)
 
-    if ( ret.size == 0):
-      logging.warning('invalid float array : %s', self.read(fName))
+  def readIntArray( self, fName: str ) -> np.ndarray:
+    """Read data of `fName` for current individual and return as int array.
 
-    return ret
+    Parameters
+    ----------
+    fName : str
+      Label of data.
+
+    Returns
+    -------
+    numpy.ndarray
+      Converted value.
+
+    """
+    return self.readArray(fName, int)
 
   def readInt( self, fName: str ) -> int:
     """Read data of `fName` for current individual and return as integer.
@@ -473,9 +685,28 @@ class dtClusteredSingletonState:
       Converted value.
 
     """
-    ret = float('NaN')
     try:
       ret = int( self.read(fName) )
+    except:
+      logging.warning('invalid integer : %s', self.read(fName))
+    return ret
+
+  def readFloat( self, fName: str ) -> float:
+    """Read data of `fName` for current individual and return as float.
+
+    Parameters
+    ----------
+    fName : str
+      Label of data.
+
+    Returns
+    -------
+    float
+      Converted value.
+
+    """
+    try:
+      ret = float( self.read(fName) )
     except:
       logging.warning('invalid integer : %s', self.read(fName))
     return ret
@@ -541,11 +772,25 @@ class dtClusteredSingletonState:
     -----
     Warning if difference in objective values >0.1.
 
+    Examples
+    --------
+    >>> dtClusteredSingletonState.clear(True)
+    >>> a = dtClusteredSingletonState(defObj=[1.0, 1.0],defFit=[2.0])
+    >>> a.objective()
+    array([1., 1.])
+    >>> b = dtClusteredSingletonState(defObj=[2.0, 2.0],defFit=[2.0])
+    >>> b.objective()
+    array([2., 2.])
+    >>> dtClusteredSingletonState.readIdFromObjective(np.array(a.objective()))
+    1
+    >>> dtClusteredSingletonState.readIdFromObjective(np.array(b.objective()))
+    2
     """
+
     bestFit = float('inf')
     bestId = -1
     #ids = np.zeros( 0, int )
-    for i in range( 1,dtClusteredSingletonState.currentMaxId() ):
+    for i in range( 1, dtClusteredSingletonState.currentMaxId()+1 ):
       thisObj = dtClusteredSingletonState(i).objective()
       if thisObj.size != obj.size:
         continue
@@ -601,13 +846,7 @@ class dtClusteredSingletonState:
 
   @staticmethod
   @lockutils.synchronized('fileIO', external=True)
-  def fullRead(
-    addFile: Union[ None, List[str] ]=None,
-    addDtype: Union[float, int, dict]=float
-  ) -> Union[
-    Tuple[np.ndarray, np.ndarray, np.ndarray],
-    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]
-  ]:
+  def fullRead() -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Read IDs, objective values and fitness values of all individuals.
 
     Parameters
@@ -626,6 +865,22 @@ class dtClusteredSingletonState:
       Tuple of IDs, objective and fitness values. If `addFile` is not None,
       then the return tuple is extended by additional array.
 
+    Examples
+    --------
+    >>> dtClusteredSingletonState.clear(True)
+    >>> a = dtClusteredSingletonState(defObj=[1.0, 1.0],defFit=[1.5,1.5])
+    >>> b = dtClusteredSingletonState(defObj=[2.0, 2.0],defFit=[2.5, 2.5])
+    >>> I,O,F = dtClusteredSingletonState.fullRead()
+    >>> for i,o,f in zip(I,O,F):
+    ...   i
+    ...   o
+    ...   f
+    np.int64(1)
+    array([1., 1.])
+    array([1.5, 1.5])
+    np.int64(2)
+    array([2., 2.])
+    array([2.5, 2.5])
     """
     if \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
@@ -643,38 +898,33 @@ class dtClusteredSingletonState:
     FIT = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/fitness.0')
     OBJ = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/objective.0')
     ID = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/id.0', dtype=int)
-    ADD = None
     for thisIndex in range(maxFileIndex):
       logging.info('fullRead file index %d', thisIndex)
-      f = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/fitness.'+str(thisIndex+1))
-      o = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/objective.'+str(thisIndex+1))
-      i = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/id.'+str(thisIndex+1), dtype=int)
+      f = np.genfromtxt(
+        dtClusteredSingletonState.DATADIR+'/fitness.'+str(thisIndex+1)
+      )
+      o = np.genfromtxt(
+        dtClusteredSingletonState.DATADIR+'/objective.'+str(thisIndex+1)
+      )
+      i = np.genfromtxt(
+        dtClusteredSingletonState.DATADIR+'/id.'+str(thisIndex+1), dtype=int
+      )
       if FIT.ndim == 1:
         FIT = np.concatenate( (FIT, dtClusteredSingletonState.oneD(f)) )
       else:
         FIT = np.concatenate( (FIT, dtClusteredSingletonState.twoD(f)) )
       OBJ = np.concatenate( (OBJ, dtClusteredSingletonState.twoD(o)) )
       ID = np.concatenate( (ID, dtClusteredSingletonState.oneD(i)) )
-    if addFile is not None:
-      ADD = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.0', dtype=addDtype)
-      for thisIndex in range(maxFileIndex):
-        add = np.genfromtxt(dtClusteredSingletonState.DATADIR+'/'+addFile+'.'+str(thisIndex+1), dtype=addDtype)
-        if np.size(add.shape) != np.size(ADD.shape):
-          add = np.array([add])
-        ADD = np.concatenate( (ADD, add) )
 
     if np.size( np.shape(FIT) ) == 1:
       FIT = np.resize(FIT, (np.size(FIT),1))
 
-    if addFile is not None:
-      return ID, OBJ, FIT, ADD
-    else:
-      return ID, OBJ, FIT
+    return ID, OBJ, FIT
 
   @staticmethod
   @lockutils.synchronized('fileIO', external=True)
   def fullAddRead(
-    addFileV: np.ndarray, addDtypeV: np.ndarray
+    addFileV: List, addDtypeV: List = []
   ) -> List[np.ndarray]:
     """Read additional data of all individuals.
 
@@ -689,9 +939,32 @@ class dtClusteredSingletonState:
     -------
     List
 
+    Examples
+    --------
+    >>> dtClusteredSingletonState.clear(True)
+    >>> dtClusteredSingletonState.ADDDATA = ['float', 'dict']
+    >>> dtClusteredSingletonState.ADDDATADEF = [1.0, {'test' : 2.0},]
+    >>> a = dtClusteredSingletonState()
+    >>> b = dtClusteredSingletonState()
+    >>> A = dtClusteredSingletonState.fullAddRead(['float', 'dict'])
+    >>> A['float']
+    array([1., 1.])
+    >>> A['dict']
+    array([{'test': 2.0}, {'test': 2.0}], dtype=object)
+    >>> A['dict'][0]['test']
+    2.0
     """
     retMap = {}
 
+    if addDtypeV==[]:
+      for addFile in addFileV:
+        addDtypeV.append(
+          type( 
+            dtClusteredSingletonState.ADDDATADEF[
+              dtClusteredSingletonState.ADDDATA.index(addFile)
+            ]
+          )
+        )
     if \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/fitness.0') and \
       not os.path.isfile(dtClusteredSingletonState.DATADIR+'/objective.0') and \
@@ -702,7 +975,6 @@ class dtClusteredSingletonState:
       maxFileIndex = dtClusteredSingletonState.fileIndex(
         dtClusteredSingletonState.currentMaxId()
       )
-
       for addFile, addDtype in zip(addFileV, addDtypeV):
         ADD = []
         if addDtype == dict:
@@ -758,3 +1030,41 @@ class dtClusteredSingletonState:
 
     """
     return os.path.isdir( dtClusteredSingletonState.CASE+'_'+self.state() )
+
+  def __call__(self, idStr: str) -> Union[ str, dict, int, np.ndarray ]:
+    """Read data of `fStr` for current individual.
+
+    Parameters
+    ----------
+    fStr : str
+      Label of data.
+
+    Returns
+    -------
+    Union[ str, dict, int, np.ndarray ]
+      Converted value.
+
+    """
+    match self.ADDDATADEF[self.ADDDATA.index(idStr)]:
+      case np.ndarray():
+        return self.readArray(
+          idStr, 
+          self.ADDDATADEF[self.ADDDATA.index(idStr)].dtype
+        )
+      case int():
+        return self.readInt(idStr)
+      case dict():
+        return self.readDict(idStr)
+      case float():
+        return self.readFloat(idStr)
+      case str():
+        return self.read(idStr)
+      case _:
+       logging.warning(
+         "> %s < is not handled. Return as str > %s <." 
+         % (
+             type(self.ADDDATADEF[self.ADDDATA.index(idStr)]),
+             self.read(idStr)
+           )
+       )
+    return self.read(idStr)
