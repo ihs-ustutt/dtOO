@@ -252,6 +252,26 @@ set_tests_properties(
 )
 set_property(TEST write-runData PROPERTY LABELS base-test)
 
+#
+# pyDtOO-doctest
+#
+add_test(
+  NAME pyDtOO-doctest
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pyDtOO-doctest
+)
+set_tests_properties(
+  pyDtOO-doctest
+  PROPERTIES
+    ENVIRONMENT 
+    "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};\
+    OSLO_LOCK_PATH=./oslo-lock;"
+)
+set_property(TEST pyDtOO-doctest PROPERTY LABELS base-test)
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})
