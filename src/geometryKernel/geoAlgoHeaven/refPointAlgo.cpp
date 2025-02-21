@@ -15,7 +15,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "dtPoint3Algo.h"
+#include "refPointAlgo.h"
 
 #include <progHelper.h>
 #include <vector>
@@ -23,7 +23,7 @@ License
 #include <boost/assign.hpp>
 
 namespace dtOO {
-  dtPoint3Algo::dtPoint3Algo( 
+  refPointAlgo::refPointAlgo( 
     dtPoint3 const & p3, 
     dtPoint2 const & guess,
     dtPoint2 const & step,
@@ -31,7 +31,9 @@ namespace dtOO {
     dtInt const & maxIterations
   ) 
   :
-  _p3(p3),
+  _ref(
+    ::boost::assign::list_of(p3.x())(p3.y())(p3.z())
+  ),
   _dim(2),
   _guess( 
     ::boost::assign::list_of(guess.x())(guess.y()) 
@@ -49,7 +51,7 @@ namespace dtOO {
     _lastStatus = std::string("none");
   }
 
-  dtPoint3Algo::dtPoint3Algo( 
+  refPointAlgo::refPointAlgo( 
     dtPoint3 const & p3, 
     dtPoint3 const & guess,
     dtPoint3 const & step,
@@ -57,7 +59,9 @@ namespace dtOO {
     dtInt const & maxIterations
   ) 
   :
-  _p3(p3),
+  _ref(
+    ::boost::assign::list_of(p3.x())(p3.y())(p3.z())
+  ),
   _dim(3),
   _guess( 
     ::boost::assign::list_of(guess.x())(guess.y())(guess.z()) 
@@ -77,9 +81,9 @@ namespace dtOO {
   }
 
 
-  dtPoint3Algo::dtPoint3Algo( dtPoint3Algo const & orig ) 
+  refPointAlgo::refPointAlgo( refPointAlgo const & orig ) 
   :
-  _p3(orig._p3),
+  _ref(orig._ref),
   _dim(orig._dim),
   _guess( orig._guess ),
   _step( orig._step ),
@@ -89,57 +93,57 @@ namespace dtOO {
     _lastStatus = orig._lastStatus;
   }
 
-  dtPoint3Algo::~dtPoint3Algo() {
+  refPointAlgo::~refPointAlgo() {
   }
 
-  dtInt const & dtPoint3Algo::dimension() const {
+  dtInt const & refPointAlgo::dimension() const {
     return _dim;
   }
 
-  dtPoint3 const & dtPoint3Algo::p3(void) const {
-    return _p3;
+  dtPoint3 const refPointAlgo::p3(void) const {
+    return dtPoint3(_ref[0], _ref[1], _ref[2]);
   }
 
-  std::vector< dtReal > const & dtPoint3Algo::guess() const {
+  std::vector< dtReal > const & refPointAlgo::guess() const {
     return _guess;
   }
 
-  std::vector< dtReal > const & dtPoint3Algo::step() const {
+  std::vector< dtReal > const & refPointAlgo::step() const {
     return _step;
   }
 
-  dtReal const & dtPoint3Algo::precision() const {
+  dtReal const & refPointAlgo::precision() const {
     return _precision;
   }
 
-  dtInt const & dtPoint3Algo::maxIterations() const {
+  dtInt const & refPointAlgo::maxIterations() const {
     return _maxIterations;
   }
 
-  bool const & dtPoint3Algo::converged() const {
+  bool const & refPointAlgo::converged() const {
     return _converged;
   }
 
-  void dtPoint3Algo::converged( bool const converged) {
+  void refPointAlgo::converged( bool const converged) {
     _converged = converged;
   }
 
-  std::vector< dtReal > const & dtPoint3Algo::result() const {
+  std::vector< dtReal > const & refPointAlgo::result() const {
     //dt__warnIf(!_converged, result());
     return _result;
   }
 
-  void dtPoint3Algo::result( std::vector< dtReal> const result ) {
+  void refPointAlgo::result( std::vector< dtReal> const result ) {
     _result = result;
   }
 
-  std::string const & dtPoint3Algo::lastStatus() const {
+  std::string const & refPointAlgo::lastStatus() const {
     return _lastStatus;
   }
 
-  void dtPoint3Algo::lastStatus( std::string const & lastStatus ) {
+  void refPointAlgo::lastStatus( std::string const & lastStatus ) {
     _lastStatus = lastStatus;
   }
 
-  dt__C_addCloneForpVH(dtPoint3Algo);
+  dt__C_addCloneForpVH(refPointAlgo);
 }

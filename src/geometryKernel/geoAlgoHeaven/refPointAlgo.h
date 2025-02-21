@@ -15,8 +15,8 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef dtPoint3Algo_H
-#define	dtPoint3Algo_H
+#ifndef refPointAlgo_H
+#define	refPointAlgo_H
 
 #include <dtOOTypeDef.h>
 
@@ -27,11 +27,11 @@ License
 namespace dtOO { 
   class analyticGeometry;
 
-  class dtPoint3Algo {
+  class refPointAlgo {
     public:  
-      dt__classOnlyName(dtPoint3Algo);
+      dt__classOnlyName(refPointAlgo);
       // 2-dimensional constructor
-      dtPoint3Algo( 
+      refPointAlgo( 
         dtPoint3 const & p3, 
         dtPoint2 const & guess,
         dtPoint2 const & step,
@@ -39,7 +39,7 @@ namespace dtOO {
         dtInt const & maxIterations
       );
       // 3-dimensional constructor
-      dtPoint3Algo( 
+      refPointAlgo( 
         dtPoint3 const & p3, 
         dtPoint3 const & guess,
         dtPoint3 const & step,
@@ -47,9 +47,9 @@ namespace dtOO {
         dtInt const & maxIterations
       );
      
-      virtual ~dtPoint3Algo();
-      dtPoint3Algo( dtPoint3Algo const & orig );
-      virtual dtPoint3Algo * clone( void ) const = 0;
+      virtual ~refPointAlgo();
+      refPointAlgo( refPointAlgo const & orig );
+      virtual refPointAlgo * clone( void ) const = 0;
       //
       // visitor overload
       //
@@ -58,7 +58,7 @@ namespace dtOO {
       // get properties
       //
       dtInt const & dimension() const;
-      dtPoint3 const & p3(void) const;
+      dtPoint3 const p3(void) const;
       std::vector< dtReal > const & guess() const;
       std::vector< dtReal > const & step() const;
       dtReal const & precision() const;
@@ -73,7 +73,7 @@ namespace dtOO {
       void result( std::vector< dtReal > const result );
       void lastStatus( std::string const & lastStatus );
     private:
-      dtPoint3 const _p3;
+      std::vector< dtReal> const _ref;
       dtInt const _dim;
       std::vector< dtReal> const _guess;
       std::vector< dtReal> const _step;
@@ -83,6 +83,6 @@ namespace dtOO {
       std::vector< dtReal > _result;
       std::string _lastStatus;
   };
-  dt__H_addCloneForpVH(dtPoint3Algo);
+  dt__H_addCloneForpVH(refPointAlgo);
 }
-#endif	/* dtPoint3Algo_H */
+#endif	/* refPointAlgo_H */

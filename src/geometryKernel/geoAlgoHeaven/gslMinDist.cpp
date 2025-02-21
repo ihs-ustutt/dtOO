@@ -69,7 +69,7 @@ namespace dtOO {
     dtInt const & maxIterations
   ) 
   : 
-  dtPoint3Algo(p3, guess, step, precision, maxIterations) 
+  refPointAlgo(p3, guess, step, precision, maxIterations) 
   {
 
   }
@@ -82,14 +82,14 @@ namespace dtOO {
     dtInt const & maxIterations
   ) 
   : 
-  dtPoint3Algo(p3, guess, step, precision, maxIterations) 
+  refPointAlgo(p3, guess, step, precision, maxIterations) 
   {
 
   }
  
   gslMinDist::gslMinDist(gslMinDist const & orig) 
   : 
-  dtPoint3Algo(orig) 
+  refPointAlgo(orig) 
   {
 
   }

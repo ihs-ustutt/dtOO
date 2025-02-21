@@ -21,15 +21,15 @@ License
 #include <dtOOTypeDef.h>
 
 #include <logMe/dtMacros.h>
-#include "dtPoint3Algo.h"
+#include "refPointAlgo.h"
 
 
 namespace dtOO { 
   class analyticGeometry;
 
-  class gslMinDist : public dtPoint3Algo {
+  class gslMinDist : public refPointAlgo {
     public:  
-      dt__class(gslMinDist, dtPoint3Algo);
+      dt__class(gslMinDist, refPointAlgo);
       gslMinDist(
         dtPoint3 const & p3,
         dtPoint2 const & guess,
