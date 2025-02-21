@@ -3,6 +3,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath('../demo'))
+sys.path.insert(0, os.path.abspath('../scripts/python'))
 
 project = 'dtOO'
 copyright = 'Alexander Tismer'
@@ -41,6 +42,10 @@ autodoc_mock_imports = [
   'numpy', 
   'dtOOPythonSWIG', 
   'foamlib',
-  'pyDtOO',
+  'oslo_concurrency',
   'subprocess',
+  'sklearn',
+  'scipy',
+  'numpy',
+  'os'
   ]
