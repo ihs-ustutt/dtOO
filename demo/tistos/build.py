@@ -196,6 +196,18 @@ Define empty dicts for power, head, efficiency, and cavitation volume:
 Create geometry, perform simulation, and perform evaluation for each
 operating point:
 
+.. note::
+
+   Depending on the OpenFoam installation, it might be necessary to adjust
+   the decomposition method, e.g. to
+
+   .. code-block:: python
+
+     fc.decompose_par_dict['method'] = 'metis'
+
+   or any other method. As already mentioned, it depends on the current 
+   installation.
+
 >>> for i in ["tl" , "n", "vl"]:
 ...   #
 ...   # Create OpenFoam case
