@@ -89,6 +89,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tistos.build">Axial Runner</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">C++ API documentation</a></li>
@@ -139,14 +140,14 @@ The hub is spherical in front of the guide vane inlet and conical at the
 diffuser inlet. For the design, only runner and diffuser are variable; the
 guide vane is fixed and does not direct the flow. As a result, the inflow to
 the runner is swirl-free.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center" id="id3">
 <span id="canada-over"></span><a class="reference internal image-reference" href="_images/canada_over_nobg.png"><img alt="_images/canada_over_nobg.png" src="_images/canada_over_nobg.png" style="width: 400px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 1 </span><span class="caption-text">Three-dimensional representation of the kinetic turbine (top left) with two
 guide vanes arranged at the bottom and four rotor blades; diffuser is
 designed in three parts; machine’s side view without blades (top right);
-view from the front (bottom left); top view without blades (bottom right)</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+view from the front (bottom left); top view without blades (bottom right)</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><a class="reference internal" href="#canada-res"><span class="std std-numref">Fig. 2</span></a> shows a simulation result of an optimized machine. The
@@ -157,14 +158,14 @@ and, additionally, through the vents. Behind the hub only small vortices occur.
 The flow follows the opening of the diffuser. According to theoretical
 considerations, the optimized machine shows a flap at the end of the third
 diffuser section.</p>
-<figure class="align-center" id="id2">
+<figure class="align-center" id="id4">
 <span id="canada-res"></span><a class="reference internal image-reference" href="_images/canada_res_nobg.png"><img alt="_images/canada_res_nobg.png" src="_images/canada_res_nobg.png" style="width: 300px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 2 </span><span class="caption-text">Three-dimensional representation of the kinetic turbine including the
 simulated flow field; streamlines are coloured with the velocity magnitude
 from low (blue) to high (red); backflow volume shown as magenta coloured iso
-volume;</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+volume;</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><a class="reference external" href="http://dx.doi.org/10.18419/opus-11091">[Tismer_2020]</a> contains a more
@@ -207,7 +208,7 @@ unstructured areas decouple the mesh. In addition, the geometric deformation of
 the diffuser mesh in the <span class="math notranslate nohighlight">\(x\)</span>-direction can be compensated by tightening
 the inner blocks. This results in more tetrahedral elements; at the same time,
 the hexahedrons remain more uniform in the structured areas.</p>
-<figure class="align-center" id="id3">
+<figure class="align-center" id="id5">
 <span id="canada-dt-para"></span><a class="reference internal image-reference" href="_images/canada_dt_para_nobg.png"><img alt="_images/canada_dt_para_nobg.png" src="_images/canada_dt_para_nobg.png" style="width: 500px;" />
 </a>
 <figcaption>
@@ -215,7 +216,7 @@ the hexahedrons remain more uniform in the structured areas.</p>
 boundaries (gray) and the bladed space (black dash-dotted line); control
 points (rectangles) are fixed (empty) or moveable (filled); unstructured
 grid blocks drawn as black solid line; coupling (black dotted line) to the
-coarsely meshed far-field via a general grid interface</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+coarsely meshed far-field via a general grid interface</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><a class="reference internal" href="#canada-ru-para"><span class="std std-numref">Fig. 4</span></a> contains the parameterization of a mid-surface section
@@ -236,7 +237,7 @@ the cut in the spanwise direction. The distribution of the thickness is</p>
 parameter <span class="math notranslate nohighlight">\(X\)</span> (not shown in figure) shifts the maximum thickness
 <span class="math notranslate nohighlight">\(T\)</span> to the inlet or outlet. This means that only symmetrical thickenings
 can be generated.</p>
-<figure class="align-center" id="id4">
+<figure class="align-center" id="id6">
 <span id="canada-ru-para"></span><a class="reference internal image-reference" href="_images/canada_ru_para_nobg.png"><img alt="_images/canada_ru_para_nobg.png" src="_images/canada_ru_para_nobg.png" style="width: 300px;" />
 </a>
 <figcaption>
@@ -244,7 +245,7 @@ can be generated.</p>
 (empty) and movable (filled) control points; entry and exit angles
 <span class="math notranslate nohighlight">\(\alpha_o\)</span> and <span class="math notranslate nohighlight">\(\beta_o\)</span> as well as deflection <span class="math notranslate nohighlight">\(r_o\)</span> can
 be changed; position of the cut in circumferential direction can be changed
-via DOF <span class="math notranslate nohighlight">\(\phi r_o\)</span></span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+via DOF <span class="math notranslate nohighlight">\(\phi r_o\)</span></span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The runner blade is generated from three sections parameterized according to
@@ -257,14 +258,14 @@ arrows on the hub. The sections at the hub (<span class="math notranslate nohigh
 <span class="math notranslate nohighlight">\(o=2\)</span> are connected by a B-Spline surface.  According to
 <a class="reference internal" href="#canada-ru3d-para"><span class="std std-numref">Fig. 5</span></a>, the span direction is not necessarily the radial
 direction.</p>
-<figure class="align-center" id="id5">
+<figure class="align-center" id="id7">
 <span id="canada-ru3d-para"></span><a class="reference internal image-reference" href="_images/canada_ru3d_para_nobg.png"><img alt="_images/canada_ru3d_para_nobg.png" src="_images/canada_ru3d_para_nobg.png" style="width: 300px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 5 </span><span class="caption-text">Three-dimensional view of the impeller blade from three sections; hub
 section (thin black) with corresponding directional arrows; span direction
 of the blade (dashed directional arrow); visible (thick black) and hidden
-(thin gray) edges (solid); mean sections (dotted) shown for each section</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+(thin gray) edges (solid); mean sections (dotted) shown for each section</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The maximum thickening <span class="math notranslate nohighlight">\(T\)</span> of the mean line or mean surface from equation
@@ -305,13 +306,13 @@ makes it “s”-shaped according to the dashed lines from white to black. Chang
 <span class="math notranslate nohighlight">\(C\)</span> creates an asymmetrical blending in the direction of the hub or
 shroud (color gradient from dark to light). The steeper the gradient of
 <span class="math notranslate nohighlight">\(h(s)\)</span>, the faster the change in thickening in the spanwise direction.</p>
-<figure class="align-center" id="id6">
+<figure class="align-center" id="id8">
 <span id="canada-ru-blending"></span><a class="reference internal image-reference" href="_images/canada_ru_blending_nobg.png"><img alt="_images/canada_ru_blending_nobg.png" src="_images/canada_ru_blending_nobg.png" style="width: 250px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 6 </span><span class="caption-text">Blending function of the thickness distribution; linear blending shown as
 black dots; variation of <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(C\)</span> shown by dashed lines and
-color gradient, respectively</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+color gradient, respectively</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <section id="parameter-symbols-and-labels">
@@ -320,9 +321,9 @@ color gradient, respectively</span><a class="headerlink" href="#id6" title="Link
 <a class="reference internal" href="constValue.html#constvalue"><span class="std std-ref">constValue</span></a> labels. Additionally, the min and max value for each DOF is
 shown. It is important to mention that all DOFs are scaled. Therefore, the
 values does not directly correspond to the dimension of an angle or a length.</p>
-<span id="map-dof-lab"></span><table class="docutils align-center" id="id7">
+<span id="map-dof-lab"></span><table class="docutils align-center" id="id9">
 <caption><span class="caption-number">Table 1 </span><span class="caption-text">Mapping between math symbol and <a class="reference internal" href="constValue.html#constvalue"><span class="std std-ref">constValue</span></a> label for DOFs
-            including min and max values</span><a class="headerlink" href="#id7" title="Link to this table"></a></caption>
+            including min and max values</span><a class="headerlink" href="#id9" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 40.0%" />
@@ -514,7 +515,7 @@ and blade) rotates according to the angular velocity. The coupling surface
 <span class="math notranslate nohighlight">\((F_4, G_4)\)</span> at the runner inlet is also a generalized mesh interface.
 There is a mixing plane interface between the guide vane and runner
 <span class="math notranslate nohighlight">\((L_5, M_5)\)</span> or runner and diffuser <span class="math notranslate nohighlight">\((L_6, M_6)\)</span>.</p>
-<figure class="align-center" id="id8">
+<figure class="align-center" id="id10">
 <span id="canada-case-over"></span><a class="reference internal image-reference" href="_images/canada_case_over_nobg.png"><img alt="_images/canada_case_over_nobg.png" src="_images/canada_case_over_nobg.png" style="width: 600px;" />
 </a>
 <figcaption>
@@ -522,7 +523,7 @@ There is a mixing plane interface between the guide vane and runner
 (dotted cone) and far-field (dashed rectangle); boundary conditions shown on
 boundary surfaces (letters without indices) and coupling surfaces (letters
 with indices); guide vane (LE) and runner (LA) area including diffuser and
-hub (both dashed gray) in detail</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+hub (both dashed gray) in detail</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -898,12 +899,12 @@ low to have a fast code example.</p>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydFoilOpt.build.</span></span><span class="sig-name descname"><span class="pre">hydFoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">130</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_mid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydFoilOpt.build.</span></span><span class="sig-name descname"><span class="pre">hydFoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">130</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_mid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil" title="Link to this definition"></a></dt>
 <dd><p>Create, mesh, simulate and evaluate a hydrofoil.</p>
 <p>This class holds all functions to create a hydrofoil with an inlet angle,
 outlet angle and a blade thickness. <a class="reference internal" href="#hydfoil"><span class="std std-numref">Fig. 8</span></a> shows a sketch of the
 hydrofoil.</p>
-<figure class="align-center" id="id9">
+<figure class="align-center" id="id11">
 <span id="hydfoil"></span><a class="reference internal image-reference" href="_images/hydfoil.png"><img alt="_images/hydfoil.png" src="_images/hydfoil.png" style="width: 600px;" />
 </a>
 <figcaption>
@@ -912,7 +913,7 @@ shape (solid thin black line); B-Splines, that are used for constructing
 the meanline and final shape, are shown as solid and dashed gray thin
 lines; velocity triangles at inlet and outlet of the hydrofoil are
 colored in magenta; the DOFs, namely <span class="math notranslate nohighlight">\(\alpha_1\)</span>,
-<span class="math notranslate nohighlight">\(\alpha_2\)</span>, and <span class="math notranslate nohighlight">\(t_{mid}\)</span>, are shown and labeled in black</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+<span class="math notranslate nohighlight">\(\alpha_2\)</span>, and <span class="math notranslate nohighlight">\(t_{mid}\)</span>, are shown and labeled in black</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The simulation of the hydrofoil is performed in the relational frame of
@@ -935,7 +936,7 @@ calculated based on head deviation and efficiency.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.Evaluate">
-<span class="sig-name descname"><span class="pre">Evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.Evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Evaluate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Evaluate" title="Link to this definition"></a></dt>
 <dd><p>Evaluate the simulation.</p>
 <p>The simulation is evaluated using the pyDtOO library. Additionally, the
 “patchToCsv” application is used to create csv files of the boundaries.</p>
@@ -967,7 +968,7 @@ candidate.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.FailedFitness">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FailedFitness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.FailedFitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.FailedFitness" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FailedFitness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.FailedFitness" title="Link to this definition"></a></dt>
 <dd><p>Failed fitness.</p>
 <p>Returns the value that represents a failed design.</p>
 <dl class="field-list simple">
@@ -982,7 +983,7 @@ candidate.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.Geometry">
-<span class="sig-name descname"><span class="pre">Geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.Geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Geometry" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Geometry" title="Link to this definition"></a></dt>
 <dd><p>Create hydrofoil’s geometry.</p>
 <p>The main objects of baseContainer, analyticFunction, and analyticGeometry
 are created. Objects that are necessary or interesting are appended to the
@@ -992,7 +993,7 @@ and <a class="reference internal" href="#hydFoilOpt.build.hydFoil.aG" title="hyd
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.GeometryMesh">
-<span class="sig-name descname"><span class="pre">GeometryMesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.GeometryMesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.GeometryMesh" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">GeometryMesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.GeometryMesh" title="Link to this definition"></a></dt>
 <dd><p>Create additional hydrofoil’s geometry for meshing.</p>
 <p>Create additional objects that are necessary for creating the mesh. These
 are mainly object’s of the mesh block that is created around the blade.
@@ -1023,7 +1024,7 @@ This block is meshed as a structured block.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.Mesh">
-<span class="sig-name descname"><span class="pre">Mesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.Mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Mesh" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Mesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Mesh" title="Link to this definition"></a></dt>
 <dd><p>Create hydrofoil’s mesh.</p>
 <p>Create the topology for the hydrofoil’s mesh. Additionally, define number
 of elements for edges and surfaces, define minimum and maximum element
@@ -1044,7 +1045,7 @@ located.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.Simulate">
-<span class="sig-name descname"><span class="pre">Simulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.Simulate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Simulate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Simulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Simulate" title="Link to this definition"></a></dt>
 <dd><p>Perform the simulation.</p>
 <p>Perform the simulation using foamlib. The simulation runs for 500
 iterations as a laminar simulation. Afterwards, it is switched to turbulent
@@ -1196,6 +1197,312 @@ of dtOOPythonSWIG.dtPlugin.</p>
 
 </dd></dl>
 
+</section>
+<section id="module-tistos.build">
+<span id="axial-runner"></span><h2>Axial Runner<a class="headerlink" href="#module-tistos.build" title="Link to this heading"></a></h2>
+<p>Create, simulate, and evaluate an axial runner. This machine is the test case
+of <a class="reference external" href="https://doi.org/10.3390/en18030677">[Eyselein_2025]</a>,
+<a class="reference external" href="https://doi.org/10.1002/pamm.202400126">[Rentschler_2024]</a>,
+<a class="reference external" href="https://doi.org/10.1002/pamm.202400104">[Raj_2024]</a>, and
+<a class="reference external" href="https://doi.org/10.48550/arXiv.2410.18358">[Ebel_2024]</a>. For the
+publication <a class="reference external" href="https://doi.org/10.48550/arXiv.2410.18358">[Ebel_2024]</a>, the
+data set is provided in
+<a class="reference external" href="https://doi.org/10.5281/zenodo.14014525">[axial_turbine_database]</a>.
+This GitHub repository serves as the database for this demonstration case.</p>
+<p>Run this tutorial by executing:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">OSLO_LOCK_PATH</span><span class="o">=</span>/tmp<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">FOAM_SIGFPE</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>python3.12<span class="w"> </span>-m<span class="w"> </span>doctest<span class="w"> </span>build.py
+</pre></div>
+</div>
+<p>Import <code class="docutils literal notranslate"><span class="pre">logging</span></code> package and create a configuration:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Import necessary classes from <code class="docutils literal notranslate"><span class="pre">dtOO</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="gp">... </span>  <span class="n">logMe</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">dtXmlParser</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">baseContainer</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">labeledVectorHandlingConstValue</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">labeledVectorHandlingAnalyticFunction</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">labeledVectorHandlingAnalyticGeometry</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">labeledVectorHandlingBoundedVolume</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">labeledVectorHandlingDtCase</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">labeledVectorHandlingDtPlugin</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">lVHOstateHandler</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Import packages from <code class="docutils literal notranslate"><span class="pre">pyDtOO</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyDtOO</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="gp">... </span>  <span class="n">dtScalarDeveloping</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">dtForceDeveloping</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">dtDeveloping</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyDtOO</span><span class="w"> </span><span class="kn">import</span> <span class="n">dtClusteredSingletonState</span> <span class="k">as</span> <span class="n">stateCounter</span>
+</pre></div>
+</div>
+<p>Import <a class="reference external" href="https://github.com/gerlero/foamlib">foamlib</a> to control OpenFoam
+within Python:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">foamlib</span>
+</pre></div>
+</div>
+<p>Import other default packages, necessary for evaluation and system calls:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</pre></div>
+</div>
+<p>Clone repository
+<a class="reference external" href="https://doi.org/10.5281/zenodo.14014525">[axial_turbine_database]</a>, if
+necessary:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clone</span> <span class="o">=</span> <span class="s2">&quot;git clone https://github.com/ihs-ustutt/axial_turbine_database.git&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s2">&quot;./axial_turbine_database&quot;</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Clone repository.&quot;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">ret</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">clone</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set up <code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState</span></code> configuration:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">PREFIX</span> <span class="o">=</span> <span class="s1">&#39;T1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">CASE</span> <span class="o">=</span> <span class="s1">&#39;tistos_ru_of&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">DATADIR</span> <span class="o">=</span> <span class="s1">&#39;./axial_turbine_database/runData&#39;</span>
+</pre></div>
+</div>
+<p>Define the variables stored in the database:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>  <span class="s1">&#39;P&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;dH&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;eta&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;VCav&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;history&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;islandID&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Define default constructors for variables:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stateCounter</span><span class="o">.</span><span class="n">ADDDATADEF</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">&quot;tl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># P</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">&quot;tl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># dH</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">&quot;tl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># eta</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">&quot;tl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="c1"># VCav</span>
+<span class="gp">... </span>  <span class="p">{},</span> <span class="c1"># history</span>
+<span class="gp">... </span>  <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># islandID</span>
+<span class="gp">... </span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Define mapping between database’s parameters and <a class="reference internal" href="constValue.html#constvalue"><span class="std std-ref">constValue</span></a> label. The
+parameters in <code class="docutils literal notranslate"><span class="pre">runData</span></code> are in the same sequence as the mapping:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cVArr</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_1_ex_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.155</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.025</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_1_ex_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.19</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_1_ex_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.19</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_2_ex_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_2_ex_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_alpha_2_ex_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetM_ex_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetM_ex_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetM_ex_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_ratio_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_ratio_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_ratio_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetPhiR_ex_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetPhiR_ex_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_offsetPhiR_ex_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_bladeLength_0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_bladeLength_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_bladeLength_1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_le_a_0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_le_a_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_le_a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_mid_a_0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_mid_a_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_mid_a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_te_a_0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_te_a_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_t_te_a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_u_mid_a_0&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_u_mid_a_0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;cV_ru_u_mid_a_1&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Initialize a <code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState</span></code> object for state <code class="docutils literal notranslate"><span class="pre">21260</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="n">stateCounter</span><span class="p">(</span><span class="mi">21260</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create log file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s1">&#39;build-&#39;</span><span class="o">+</span><span class="n">sc</span><span class="o">.</span><span class="n">state</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;.log&#39;</span><span class="p">)</span>
+<span class="go">&#39;build-T1_21260.log&#39;</span>
+</pre></div>
+</div>
+<p>Initialize <code class="docutils literal notranslate"><span class="pre">XML</span></code> parser with construction and save file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span> <span class="o">=</span> <span class="n">dtXmlParser</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;machine.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;machineSave.xml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reference</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Parse <code class="docutils literal notranslate"><span class="pre">XML</span></code> files:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create basic container:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bC</span> <span class="o">=</span> <span class="n">baseContainer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cV</span> <span class="o">=</span> <span class="n">labeledVectorHandlingConstValue</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aF</span> <span class="o">=</span> <span class="n">labeledVectorHandlingAnalyticFunction</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aG</span> <span class="o">=</span> <span class="n">labeledVectorHandlingAnalyticGeometry</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bV</span> <span class="o">=</span> <span class="n">labeledVectorHandlingBoundedVolume</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dC</span> <span class="o">=</span> <span class="n">labeledVectorHandlingDtCase</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dP</span> <span class="o">=</span> <span class="n">labeledVectorHandlingDtPlugin</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Create <a class="reference internal" href="constValue.html#constvalue"><span class="std std-ref">constValue</span></a> instances and load the <code class="docutils literal notranslate"><span class="pre">templateState</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">createConstValue</span><span class="p">(</span><span class="n">cV</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">loadStateToConst</span><span class="p">(</span><span class="s2">&quot;templateState&quot;</span><span class="p">,</span> <span class="n">cV</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Iterate over all parameters from database and set the value in the
+correspoding <a class="reference internal" href="constValue.html#constvalue"><span class="std std-ref">constValue</span></a> object. The array <code class="docutils literal notranslate"><span class="pre">cVArr</span></code> reuturns the
+correct label:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cc</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">anObj</span> <span class="ow">in</span> <span class="n">sc</span><span class="o">.</span><span class="n">objective</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="n">cV</span><span class="p">[</span> <span class="n">cVArr</span><span class="p">[</span><span class="n">cc</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span> <span class="n">anObj</span> <span class="p">)</span>
+<span class="gp">... </span>  <span class="n">cc</span> <span class="o">=</span> <span class="n">cc</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Create geometry, apply the <code class="docutils literal notranslate"><span class="pre">ru_adjustDomain</span></code> plugin, and create geometry
+again. The plugin adjusts the runner domain by changing the DOFs; therefore,
+it necessary to create the geometry twice:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">destroyAndCreate</span><span class="p">(</span><span class="n">bC</span><span class="p">,</span> <span class="n">cV</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="n">aG</span><span class="p">,</span> <span class="n">bV</span><span class="p">,</span> <span class="n">dC</span><span class="p">,</span> <span class="n">dP</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ru_adjustDomain&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">destroyAndCreate</span><span class="p">(</span><span class="n">bC</span><span class="p">,</span> <span class="n">cV</span><span class="p">,</span> <span class="n">aF</span><span class="p">,</span> <span class="n">aG</span><span class="p">,</span> <span class="n">bV</span><span class="p">,</span> <span class="n">dC</span><span class="p">,</span> <span class="n">dP</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Make a state in the container of <a class="reference internal" href="constValue.html#constvalue"><span class="std std-ref">constValue</span></a>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lVHOstateHandler</span><span class="p">()</span><span class="o">.</span><span class="n">makeState</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">state</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Define empty dicts for power, head, efficiency, and cavitation volume:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dH</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eta</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Vcav</span> <span class="o">=</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<p>Create geometry, perform simulation, and perform evaluation for each
+operating point:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Depending on the OpenFoam installation, it might be necessary to adjust
+the decomposition method, e.g. to</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;metis&#39;</span>
+</pre></div>
+</div>
+<p>or any other method. As already mentioned, it depends on the current
+installation.</p>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;tl&quot;</span> <span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">]:</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="c1"># Create OpenFoam case</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="n">dC</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tistos_ru_of_&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">runCurrentState</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="c1"># Initialize ``foamlib`` object; define parallel solution on 4</span>
+<span class="gp">... </span>  <span class="c1"># processors; simulate 100 iterations laminar with a ``faceLimited``</span>
+<span class="gp">... </span>  <span class="c1"># scheme</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="n">fc</span> <span class="o">=</span> <span class="n">foamlib</span><span class="o">.</span><span class="n">FoamCase</span><span class="p">(</span> <span class="s1">&#39;tistos_ru_of_&#39;</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">sc</span><span class="o">.</span><span class="n">state</span><span class="p">()</span> <span class="p">)</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;scotch&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">&#39;numberOfSubdomains&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;writeInterval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">turbulence_properties</span><span class="p">[</span><span class="s2">&quot;RAS&quot;</span><span class="p">][</span><span class="s2">&quot;turbulence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;none&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;faceLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;grad(p)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;faceLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;grad(U)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;faceLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;divSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;div(phi,U)&#39;</span><span class="p">]</span> <span class="o">=</span> \
+<span class="gp">... </span>    <span class="s1">&#39;Gauss linearUpwindV faceLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="c1"># Simulate until 1000 iterations reached as a turbulent simulation with</span>
+<span class="gp">... </span>  <span class="c1"># a ``cellLimited`` scheme</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;writeInterval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">control_dict</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">turbulence_properties</span><span class="p">[</span><span class="s2">&quot;RAS&quot;</span><span class="p">][</span><span class="s2">&quot;turbulence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;none&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;cellLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;grad(p)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;cellLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;gradSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;grad(U)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;cellLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">fv_schemes</span><span class="p">[</span><span class="s1">&#39;divSchemes&#39;</span><span class="p">][</span><span class="s1">&#39;div(phi,U)&#39;</span><span class="p">]</span> <span class="o">=</span> \
+<span class="gp">... </span>    <span class="s1">&#39;Gauss linearUpwindV cellLimited Gauss linear 0.33&#39;</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="c1"># Reconstruct the case</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="n">fc</span><span class="o">.</span><span class="n">reconstruct_par</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="c1"># Extract the rotation speed from the case</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="n">omega</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">foamlib</span><span class="o">.</span><span class="n">FoamFile</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;constant/MRFProperties&#39;</span><span class="p">)[</span><span class="s1">&#39;MRF_RU&#39;</span><span class="p">][</span><span class="s1">&#39;omega&#39;</span><span class="p">]</span>
+<span class="gp">... </span>  <span class="p">)</span>
+<span class="gp">... </span>  <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="c1">#</span>
+<span class="gp">... </span>    <span class="c1"># Read data from ``postProcessing`` folder</span>
+<span class="gp">... </span>    <span class="c1">#</span>
+<span class="gp">... </span>    <span class="n">Q_ru_dev</span> <span class="o">=</span> <span class="n">dtScalarDeveloping</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/Q_ru_in/100&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">pIn_ru_dev</span> <span class="o">=</span> <span class="n">dtScalarDeveloping</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/ptot_ru_in/100&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">pOut_ru_dev</span> <span class="o">=</span> <span class="n">dtScalarDeveloping</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/ptot_ru_out/100&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">Vcav_dev</span> <span class="o">=</span> <span class="n">dtScalarDeveloping</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/V_CAV/100&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">F_dev</span> <span class="o">=</span> <span class="n">dtForceDeveloping</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">dtDeveloping</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fc</span><span class="o">.</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;postProcessing/forces&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s1">&#39;force.dat&#39;</span> <span class="p">:</span> <span class="s1">&#39;:,4:10&#39;</span><span class="p">,</span> <span class="s1">&#39;moment.dat&#39;</span> <span class="p">:</span> <span class="s1">&#39;:,4:10&#39;</span><span class="p">,</span> <span class="s1">&#39;*.*&#39;</span> <span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+<span class="gp">... </span>      <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="c1">#</span>
+<span class="gp">... </span>    <span class="c1"># Calculate power, head, efficiency, and cavitation volume; average</span>
+<span class="gp">... </span>    <span class="c1"># simulation results over 100 iterations</span>
+<span class="gp">... </span>    <span class="c1">#</span>
+<span class="gp">... </span>    <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">F_dev</span><span class="o">.</span><span class="n">MomentMeanLast</span><span class="p">(</span><span class="mi">100</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">omega</span>
+<span class="gp">... </span>    <span class="n">dH</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pOut_ru_dev</span><span class="o">.</span><span class="n">MeanLast</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="o">-</span> <span class="n">pIn_ru_dev</span><span class="o">.</span><span class="n">MeanLast</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="o">/</span> <span class="mf">9.81</span>
+<span class="gp">... </span>    <span class="n">eta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="n">dH</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Q_ru_dev</span><span class="o">.</span><span class="n">MeanLast</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">Vcav</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Vcav_dev</span><span class="o">.</span><span class="n">MeanLast</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1">#</span>
+<span class="gp">... </span>    <span class="c1"># Check if number of iterations reached and if it is a turbine not a</span>
+<span class="gp">... </span>    <span class="c1"># pump</span>
+<span class="gp">... </span>    <span class="c1">#</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">fc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;1000&#39;</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Max number of iterations not reached.&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eta</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pump detected.&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="c1"># Handle exceptions</span>
+<span class="gp">... </span>  <span class="c1">#</span>
+<span class="gp">... </span>  <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Catch exception : </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compare simulation results with the results in the database. Accept an error of
+1 %, otherwise report error:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">valLab</span><span class="p">,</span> <span class="n">valVar</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;dH&#39;</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">,],[</span><span class="n">P</span><span class="p">,</span> <span class="n">dH</span><span class="p">,</span> <span class="n">eta</span><span class="p">,]):</span>
+<span class="gp">... </span>  <span class="n">ref</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">readDict</span><span class="p">(</span><span class="n">valLab</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;vl&#39;</span><span class="p">,</span> <span class="s1">&#39;tl&#39;</span><span class="p">,]:</span>
+<span class="gp">... </span>    <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="p">(</span><span class="n">ref</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">valVar</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">ref</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Difference for </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">] : </span><span class="si">%f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">valLab</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">100.</span><span class="o">*</span><span class="n">diff</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Difference for </span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">] : </span><span class="si">%f</span><span class="s2"> </span><span class="si">%%</span><span class="s2"> &gt; 1</span><span class="si">%%</span><span class="s2">!&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">valLab</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mf">100.</span><span class="o">*</span><span class="n">diff</span><span class="p">))</span>
+</pre></div>
+</div>
 </section>
 </section>
 

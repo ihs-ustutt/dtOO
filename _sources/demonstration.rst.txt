@@ -702,3 +702,9 @@ Optimization of a Hydrofoil
 
 .. automodule:: hydFoilOpt.build
     :members:
+
+Axial Runner
+============
+
+.. automodule:: tistos.build
+    :members:
