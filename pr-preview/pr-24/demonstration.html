@@ -899,7 +899,7 @@ low to have a fast code example.</p>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydFoilOpt.build.</span></span><span class="sig-name descname"><span class="pre">hydFoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">130</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_mid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hydFoilOpt.build.</span></span><span class="sig-name descname"><span class="pre">hydFoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">130</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_mid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil" title="Link to this definition"></a></dt>
 <dd><p>Create, mesh, simulate and evaluate a hydrofoil.</p>
 <p>This class holds all functions to create a hydrofoil with an inlet angle,
 outlet angle and a blade thickness. <a class="reference internal" href="#hydfoil"><span class="std std-numref">Fig. 8</span></a> shows a sketch of the
@@ -936,7 +936,7 @@ calculated based on head deviation and efficiency.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.Evaluate">
-<span class="sig-name descname"><span class="pre">Evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.Evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Evaluate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Evaluate" title="Link to this definition"></a></dt>
 <dd><p>Evaluate the simulation.</p>
 <p>The simulation is evaluated using the pyDtOO library. Additionally, the
 “patchToCsv” application is used to create csv files of the boundaries.</p>
@@ -968,7 +968,7 @@ candidate.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.FailedFitness">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FailedFitness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.FailedFitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.FailedFitness" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FailedFitness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.FailedFitness" title="Link to this definition"></a></dt>
 <dd><p>Failed fitness.</p>
 <p>Returns the value that represents a failed design.</p>
 <dl class="field-list simple">
@@ -983,7 +983,7 @@ candidate.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.Geometry">
-<span class="sig-name descname"><span class="pre">Geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.Geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Geometry" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Geometry" title="Link to this definition"></a></dt>
 <dd><p>Create hydrofoil’s geometry.</p>
 <p>The main objects of baseContainer, analyticFunction, and analyticGeometry
 are created. Objects that are necessary or interesting are appended to the
@@ -993,7 +993,7 @@ and <a class="reference internal" href="#hydFoilOpt.build.hydFoil.aG" title="hyd
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.GeometryMesh">
-<span class="sig-name descname"><span class="pre">GeometryMesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.GeometryMesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.GeometryMesh" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">GeometryMesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.GeometryMesh" title="Link to this definition"></a></dt>
 <dd><p>Create additional hydrofoil’s geometry for meshing.</p>
 <p>Create additional objects that are necessary for creating the mesh. These
 are mainly object’s of the mesh block that is created around the blade.
@@ -1024,7 +1024,7 @@ This block is meshed as a structured block.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.Mesh">
-<span class="sig-name descname"><span class="pre">Mesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.Mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Mesh" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Mesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Mesh" title="Link to this definition"></a></dt>
 <dd><p>Create hydrofoil’s mesh.</p>
 <p>Create the topology for the hydrofoil’s mesh. Additionally, define number
 of elements for edges and surfaces, define minimum and maximum element
@@ -1045,7 +1045,7 @@ located.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hydFoilOpt.build.hydFoil.Simulate">
-<span class="sig-name descname"><span class="pre">Simulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hydFoilOpt/build.html#hydFoil.Simulate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Simulate" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Simulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydFoilOpt.build.hydFoil.Simulate" title="Link to this definition"></a></dt>
 <dd><p>Perform the simulation.</p>
 <p>Perform the simulation using foamlib. The simulation runs for 500
 iterations as a laminar simulation. Afterwards, it is switched to turbulent
@@ -1393,6 +1393,16 @@ it necessary to create the geometry twice:</p>
 </div>
 <p>Create geometry, perform simulation, and perform evaluation for each
 operating point:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Depending on the OpenFoam installation, it might be necessary to adjust
+the decomposition method, e.g. to</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fc</span><span class="o">.</span><span class="n">decompose_par_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;metis&#39;</span>
+</pre></div>
+</div>
+<p>or any other method. As already mentioned, it depends on the current
+installation.</p>
+</div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;tl&quot;</span> <span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;vl&quot;</span><span class="p">]:</span>
 <span class="gp">... </span>  <span class="c1">#</span>
 <span class="gp">... </span>  <span class="c1"># Create OpenFoam case</span>
