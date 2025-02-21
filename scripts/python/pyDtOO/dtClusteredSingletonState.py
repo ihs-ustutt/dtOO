@@ -190,6 +190,24 @@ class dtClusteredSingletonState:
   => str
   test
   True
+
+  Check type of elements in the arrays
+
+  .. note::
+  
+    Numpy versions smaller than 2.0.0 return int and float instead of np.int64
+    and float64, respectively.
+
+  >>> cSS('np-int-arr')[0] 
+  np.int64(-5)
+
+  >>> cSS('np-float-arr')[0]
+  np.float64(5.0)
+
+  Stored scalar integer values should be returned as int for both versions
+
+  >>> cSS('int')
+  2
   """
 
   PREFIX: str = 'A1'
@@ -332,32 +350,80 @@ class dtClusteredSingletonState:
           lastFileIndex = thisFileIndex
       lastId = -1
       lastId = sum(
-        1 for line in io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), encoding='utf-8')
+        1 for line in io.open(
+          dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), 
+          encoding='utf-8'
+        )
       )
       self.id_ = lastId + lastFileIndex*1000 + 1
 
       if ( self.id_ > (lastFileIndex+1)*1000 ):
         lastFileIndex = lastFileIndex + 1
-        io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
-        io.open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
-        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
-        io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='w', encoding='utf-8').close()
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), 
+          mode='w', 
+          encoding='utf-8'
+        ).close()
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), 
+          mode='w', 
+          encoding='utf-8'
+        ).close()
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), 
+          mode='w', 
+          encoding='utf-8'
+        ).close()
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), 
+          mode='w', 
+          encoding='utf-8'
+        ).close()
 
-      io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), mode='a', encoding='utf-8').write( str(self.id_)+'\n' )
-      io.open(dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), mode='a', encoding='utf-8').write( dtClusteredSingletonState.PREFIX+'_'+str(self.id_)+'\n' )
+      io.open(
+        dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), 
+        mode='a', 
+        encoding='utf-8'
+      ).write( str(self.id_)+'\n' )
+      io.open(
+        dtClusteredSingletonState.DATADIR+'/state.'+str(lastFileIndex), 
+        mode='a', 
+        encoding='utf-8'
+      ).write( dtClusteredSingletonState.PREFIX+'_'+str(self.id_)+'\n' )
       if defObj is not None:
-        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='a', encoding='utf-8').write( self.formatToWrite(defObj)+'\n' )
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), 
+          mode='a', 
+          encoding='utf-8'
+        ).write( self.formatToWrite(defObj)+'\n' )
       else:
-        io.open(dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), mode='a', encoding='utf-8').write( '__empty__\n' )
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/objective.'+str(lastFileIndex), 
+          mode='a', 
+          encoding='utf-8'
+        ).write( '__empty__\n' )
       if defFit is not None:
-        io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='a', encoding='utf-8').write( self.formatToWrite(defFit)+'\n'  )
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), 
+          mode='a', 
+          encoding='utf-8'
+        ).write( self.formatToWrite(defFit)+'\n'  )
       else:
-        io.open(dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), mode='a', encoding='utf-8').write( '__empty__\n' )
+        io.open(
+          dtClusteredSingletonState.DATADIR+'/fitness.'+str(lastFileIndex), 
+          mode='a', 
+          encoding='utf-8'
+        ).write( '__empty__\n' )
 
-      if len(dtClusteredSingletonState.ADDDATA) != len(dtClusteredSingletonState.ADDDATADEF):
+      if \
+        len(dtClusteredSingletonState.ADDDATA) \
+        != \
+        len(dtClusteredSingletonState.ADDDATADEF):
         raise ValueError(
-          'Size of ADDDATA is not equal to size of ADDDATADEF  ' + str(dtClusteredSingletonState.ADDDATA) + ' ' + str(dtClusteredSingletonState.ADDDATADEF)
-          )
+          'Size of ADDDATA is not equal to size of ADDDATADEF ' \
+          + str(dtClusteredSingletonState.ADDDATA) \
+          + ' ' + str(dtClusteredSingletonState.ADDDATADEF)
+        )
       for i in range( np.size(dtClusteredSingletonState.ADDDATA) ):
         if \
           np.size( dtClusteredSingletonState.ADDDATADEF[i] ) == 0 \
@@ -368,19 +434,33 @@ class dtClusteredSingletonState:
             len(dtClusteredSingletonState.ADDDATADEF) \
           ):
           io.open(
-            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), mode='a', encoding='utf-8'
+            dtClusteredSingletonState.DATADIR\
+              +'/'+dtClusteredSingletonState.ADDDATA[i]\
+              +'.'+str(lastFileIndex), 
+            mode='a', 
+            encoding='utf-8'
           ).write( '__empty__\n' )
         else:
           io.open(
-            dtClusteredSingletonState.DATADIR+'/'+dtClusteredSingletonState.ADDDATA[i]+'.'+str(lastFileIndex), mode='a', encoding='utf-8'
-          ).write( self.formatToWrite(dtClusteredSingletonState.ADDDATADEF[i])+'\n' )
+            dtClusteredSingletonState.DATADIR\
+              +'/'+dtClusteredSingletonState.ADDDATA[i]\
+              +'.'\
+              +str(lastFileIndex), 
+            mode='a', 
+            encoding='utf-8'
+          ).write( 
+            self.formatToWrite(dtClusteredSingletonState.ADDDATADEF[i])+'\n' 
+          )
     #
     # existing id
     #
     else:
       if id > dtClusteredSingletonState.currentMaxId():
         raise ValueError(
-          'Create dtClusteredSingletonState with id = %d that does not exist. Current maxId = %d'
+          (
+            'Create dtClusteredSingletonState with id = %d that does not '
+            'exist. Current maxId = %d'
+          )
           % (id, dtClusteredSingletonState.currentMaxId())
         )
       self.id_ = id
@@ -440,7 +520,10 @@ class dtClusteredSingletonState:
       raise ValueError('Detected FileIndex is smaller than zero.')
     lastId = -1
     lastId = sum(
-      1 for line in io.open(dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), encoding='utf-8')
+      1 for line in io.open(
+        dtClusteredSingletonState.DATADIR+'/id.'+str(lastFileIndex), 
+        encoding='utf-8'
+      )
     )
     return (lastId + lastFileIndex*1000)
 
