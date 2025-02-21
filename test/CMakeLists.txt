@@ -32,6 +32,13 @@ function(DTOO_ADDTESTWLABEL TNAME)
   endforeach()
 endfunction()
 
+set( 
+  TESTENVLIST
+  PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH}
+  LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}
+  OSLO_LOCK_PATH=./oslo-lock
+)
+
 #
 # baseSWIG
 #
@@ -40,13 +47,7 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/baseSWIG
 )
-set_tests_properties(
-  baseSWIG 
-  PROPERTIES
-  ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
-)
+set_tests_properties(baseSWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST baseSWIG  PROPERTY LABELS base-test)
 
 #
@@ -57,15 +58,8 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/naca
 )
-set_tests_properties(
-  naca
-  PROPERTIES
-  ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
-)
+set_tests_properties(naca PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST naca  PROPERTY LABELS base-test)
-
 DTOO_ADDTESTWLABEL("naca")
 
 #
@@ -76,13 +70,7 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/transformerSWIG
 )
-set_tests_properties(
-  transformerSWIG 
-  PROPERTIES
-  ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
-)
+set_tests_properties(transformerSWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST transformerSWIG  PROPERTY LABELS base-test)
 
 #
@@ -94,11 +82,7 @@ add_test(
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/analyticGeometrySWIG
 )
 set_tests_properties(
-  analyticGeometrySWIG 
-  PROPERTIES
-  ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
+  analyticGeometrySWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}"
 )
 set_property(TEST analyticGeometrySWIG  PROPERTY LABELS base-test)
 
@@ -110,13 +94,7 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/constValueSWIG
 )
-set_tests_properties(
-  constValueSWIG 
-  PROPERTIES
-  ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
-)
+set_tests_properties(constValueSWIG PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST constValueSWIG  PROPERTY LABELS base-test)
 
 #
@@ -127,13 +105,7 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/canadaLight
 )
-set_tests_properties(
-  canadaLight 
-  PROPERTIES
-  ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
-)
+set_tests_properties(canadaLight PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST canadaLight PROPERTY LABELS base-test)
 
 #
@@ -144,13 +116,7 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tistos
 )
-set_tests_properties(
-  tistos
-  PROPERTIES
-  ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
-)
+set_tests_properties(tistos PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST tistos PROPERTY LABELS base-test)
 DTOO_ADDTESTWLABEL("tistos")
 
@@ -162,13 +128,7 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshSimpleSurface
 )
-set_tests_properties(
-  meshSimpleSurface
-  PROPERTIES
-  ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
-)
+set_tests_properties(meshSimpleSurface PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST meshSimpleSurface PROPERTY LABELS base-test)
 #
 # meshPrismBlock
@@ -178,13 +138,7 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/meshPrismBlock
 )
-set_tests_properties(
-  meshPrismBlock
-  PROPERTIES
-  ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
-)
+set_tests_properties(meshPrismBlock PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST meshPrismBlock PROPERTY LABELS base-test)
 DTOO_ADDTESTWLABEL("meshPrismBlock")
 
@@ -196,13 +150,9 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dtClusteredSingletonState
 )
-set_tests_properties(
-  dtClusteredSingletonState
-  PROPERTIES
-    ENVIRONMENT 
-    "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};"
-)
+set_tests_properties(dtClusteredSingletonState PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST dtClusteredSingletonState PROPERTY LABELS base-test)
+
 #
 # partRotatingMap2dTo3d
 #
@@ -212,11 +162,7 @@ add_test(
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/partRotatingMap2dTo3d
 )
 set_tests_properties(
-  partRotatingMap2dTo3d
-  PROPERTIES
-    ENVIRONMENT 
-    "PYTHONPATH=$ENV{DTOO_EXTERNLIBS}/tools:${CMAKE_INSTALL_PREFIX}/tools:$ENV{PYTHONPATH};\
-    LD_LIBRARY_PATH=$ENV{DTOO_EXTERNLIBS}/lib:$ENV{LD_LIBRARY_PATH}"
+  partRotatingMap2dTo3d PROPERTIES ENVIRONMENT "${TESTENVLIST}"
 )
 set_property(TEST partRotatingMap2dTo3d PROPERTY LABELS base-test)
 
@@ -228,12 +174,7 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pyDtOO-dtField
 )
-set_tests_properties(
-  pyDtOO-dtField
-  PROPERTIES
-    ENVIRONMENT 
-    "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};"
-)
+set_tests_properties(pyDtOO-dtField PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST pyDtOO-dtField PROPERTY LABELS base-test)
 
 #
@@ -244,12 +185,7 @@ add_test(
   COMMAND ${Python3_EXECUTABLE} "build.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/write-runData
 )
-set_tests_properties(
-  write-runData
-  PROPERTIES
-    ENVIRONMENT 
-    "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};"
-)
+set_tests_properties(write-runData PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST write-runData PROPERTY LABELS base-test)
 
 #
@@ -263,13 +199,7 @@ add_test(
     "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/pyDtOO-doctest
 )
-set_tests_properties(
-  pyDtOO-doctest
-  PROPERTIES
-    ENVIRONMENT 
-    "PYTHONPATH=${CMAKE_SOURCE_DIR}/scripts/python:$ENV{PYTHONPATH};\
-    OSLO_LOCK_PATH=./oslo-lock;"
-)
+set_tests_properties(pyDtOO-doctest PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST pyDtOO-doctest PROPERTY LABELS base-test)
 
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
