@@ -163,6 +163,7 @@ SET(HEADERS
   pluginEngine/pugg/Plugin.h
   dtGaussLegendreIntegration.h
   GSLError.h
+  gslMinFloatAttr.h
 )
 SET(SOURCES
   dtLinearAlgebra.cpp
@@ -297,6 +298,7 @@ SET(SOURCES
   meshEngine/dtOMMeshManifold.cpp
   meshEngine/dtOMField.cpp
   dtGaussLegendreIntegration.cpp
+  gslMinFloatAttr.cpp
 )
 
 if (FOAMEXT_FOUND OR OpenFOAM_FOUND)

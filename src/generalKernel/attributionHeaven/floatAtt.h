@@ -15,40 +15,33 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef gslMinDist_H
-#define	gslMinDist_H
+#ifndef floatAtt_H
+#define	floatAtt_H
 
 #include <dtOOTypeDef.h>
 
+#include <dtLinearAlgebra.h>
+#include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
-#include "refPointAlgo.h"
-
+#include <vector>
 
 namespace dtOO { 
   class analyticGeometry;
+  class dtCurve;
 
-  class gslMinDist : public refPointAlgo {
+  class floatAtt {
     public:  
-      dt__class(gslMinDist, refPointAlgo);
-      gslMinDist(
-        dtPoint3 const & p3,
-        dtPoint2 const & guess,
-        dtPoint2 const & step,
-        dtReal const & precision,
-        dtInt const & maxIterations = 100
-      );
-      gslMinDist(
-        dtPoint3 const & p3,
-        dtPoint3 const & guess,
-        dtPoint3 const & step,
-        dtReal const & precision,
-        dtInt const & maxIterations = 100
-      );
-      gslMinDist( gslMinDist const & orig );
-      virtual ~gslMinDist();
-      virtual gslMinDist * clone( void ) const;
-      virtual void visit( analyticGeometry const * const aG );
+      dt__classOnlyName(floatAtt);
+      floatAtt();
+      virtual ~floatAtt();
+      floatAtt( floatAtt const & orig );
+      virtual floatAtt * clone( void ) const = 0;
+      virtual dtInt const & dimension() const = 0;
+      //
+      // visitor overload
+      //
+      virtual dtReal operator()( std::vector< dtReal > const & xx ) const = 0;
   };
-  dt__H_addCloneForpVH(gslMinDist);
+  dt__H_addCloneForpVH(floatAtt);
 }
-#endif	/* gslMinDist_H */
+#endif	/* floatAtt_H */

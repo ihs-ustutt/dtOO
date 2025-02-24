@@ -147,21 +147,6 @@ namespace dtOO {
         dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent
       ) const;    
     private:
-      bool XYZtoUVWPercent(
-        double X, double Y, double Z, 
-        double &U, double &V, double &W,
-        double const uMin, double const uMax, 
-        double const vMin, double const vMax, 
-        double const wMin, double const wMax,     
-        double const stepU, double const stepV, double const stepW, 
-        double const prec    
-      ) const;
-  	  double F(double const * xx) const;  
-      double FWrap(
-        double const & x0, double const & x1, double const & x2 
-      ) const;
-    private:
-      mutable dtPoint3 _pXYZ;
       static dtReal _deltaPer;
   };
   dt__H_addCloneForpVH(map3dTo3d);

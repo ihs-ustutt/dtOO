@@ -461,9 +461,5 @@ namespace dtOO {
     return this->equal(*other);
   }
 
-  void analyticGeometry::visitMe( refPointAlgo * rPAlgo ) const {
-    rPAlgo->visit(this);
-  }
-  
   dt__C_addCloneForpVH(analyticGeometry);
 }

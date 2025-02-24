@@ -135,21 +135,6 @@ namespace dtOO {
       ) const;
       dtPoint2 operator%(const dtPoint2 &percent) const;      
     private:
-//      bool XYZtoUVPercentGmsh(
-//        double X, double Y, double Z, double &U, double &V, 
-//        double const uMin, double const uMax, 
-//        double const vMin, double const vMax, 
-//        double const stepU, double const stepV, double const prec
-//      ) const;
-      bool XYZtoUVPercent(
-        double X, double Y, double Z, double &U, double &V, 
-        double const uMin, double const uMax, 
-        double const vMin, double const vMax, 
-        double const stepU, double const stepV, double const prec
-      ) const;      
-	    double F(double const * xx) const;        
-    private:
-      mutable dtPoint3 _pXYZ;      
       static dtReal _deltaPer;      
   };
   

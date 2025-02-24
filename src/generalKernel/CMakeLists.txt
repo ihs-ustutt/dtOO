@@ -132,6 +132,8 @@ SET(HEADERS
   logMe/dtParMacros.h
   logMe/logContainer.h
   progHelper.h
+  attributionHeaven/floatAtt.h
+  attributionHeaven/pointGeometryDist.h
 )
 SET(SOURCES
   xmlHeaven/dtXmlParserBase.cpp
@@ -234,6 +236,8 @@ SET(SOURCES
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp
+  attributionHeaven/floatAtt.cpp
+  attributionHeaven/pointGeometryDist.cpp
 )
 
 APPEND_DTOO_SOURCE(src/generalKernel "${SOURCES}")

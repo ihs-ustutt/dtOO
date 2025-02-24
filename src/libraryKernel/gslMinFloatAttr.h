@@ -15,50 +15,45 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef refPointAlgo_H
-#define	refPointAlgo_H
+#ifndef gslMinFloatAttr_H
+#define	gslMinFloatAttr_H
 
 #include <dtOOTypeDef.h>
 
-#include <dtLinearAlgebra.h>
-#include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+#include <attributionHeaven/floatAtt.h>
 
 namespace dtOO { 
-  class analyticGeometry;
 
-  class refPointAlgo {
+  class gslMinFloatAttr {
     public:  
-      dt__classOnlyName(refPointAlgo);
-      // 2-dimensional constructor
-      refPointAlgo( 
-        dtPoint3 const & p3, 
+      dt__classOnlyName(gslMinFloatAttr);
+      gslMinFloatAttr(
+        floatAtt * attribute,
+        std::vector< dtReal > const & guess,
+        std::vector< dtReal > const & step,
+        dtReal const & precision,
+        dtInt const & maxIterations = 100
+      );
+      gslMinFloatAttr(
+        floatAtt * attribute,
         dtPoint2 const & guess,
         dtPoint2 const & step,
         dtReal const & precision,
-        dtInt const & maxIterations
+        dtInt const & maxIterations = 100
       );
-      // 3-dimensional constructor
-      refPointAlgo( 
-        dtPoint3 const & p3, 
+      gslMinFloatAttr(
+        floatAtt * attribute,
         dtPoint3 const & guess,
         dtPoint3 const & step,
         dtReal const & precision,
-        dtInt const & maxIterations
+        dtInt const & maxIterations = 100
       );
      
-      virtual ~refPointAlgo();
-      refPointAlgo( refPointAlgo const & orig );
-      virtual refPointAlgo * clone( void ) const = 0;
-      //
-      // visitor overload
-      //
-      virtual void visit( analyticGeometry const * const aG ) = 0;
-      //
-      // get properties
-      //
-      dtInt const & dimension() const;
-      dtPoint3 const p3(void) const;
+      gslMinFloatAttr( gslMinFloatAttr const & orig );
+      virtual ~gslMinFloatAttr();
+      virtual gslMinFloatAttr * clone( void ) const;
+ 
       std::vector< dtReal > const & guess() const;
       std::vector< dtReal > const & step() const;
       dtReal const & precision() const;
@@ -66,15 +61,19 @@ namespace dtOO {
       bool const & converged() const;
       std::vector< dtReal > const & result() const;
       std::string const & lastStatus() const;
+      dtInt const & dimension() const;
       //
       // set result
       //
       void converged( bool const converged );
       void result( std::vector< dtReal > const result );
       void lastStatus( std::string const & lastStatus );
+      bool perform();
+      floatAtt const * const ptrAttribute( void ) const;
+      //void setFloatAttr( dt__pH(floatAtt) attribute );
+      //void setFloatAttr( floatAtt * attribute );
     private:
-      std::vector< dtReal> const _ref;
-      dtInt const _dim;
+      dtInt const _dimension;
       std::vector< dtReal> const _guess;
       std::vector< dtReal> const _step;
       dtReal const _precision;
@@ -82,7 +81,9 @@ namespace dtOO {
       bool _converged;
       std::vector< dtReal > _result;
       std::string _lastStatus;
+      dt__pH(floatAtt) _attribute;
+     
   };
-  dt__H_addCloneForpVH(refPointAlgo);
+  dt__H_addCloneForpVH(gslMinFloatAttr);
 }
-#endif	/* refPointAlgo_H */
+#endif	/* gslMinFloatAttr_H */

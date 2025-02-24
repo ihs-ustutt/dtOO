@@ -95,10 +95,6 @@ namespace dtOO {
       void dump(void) const;    
       void setRenderResolution(int const & dir, dtInt const & value) const;
       dtInt getRenderResolution(int const & dir) const;
-      //
-      // visitor
-      //
-      virtual void visitMe( refPointAlgo * rPAlgo ) const;
     private:
       mutable dtInt _resU;
       mutable dtInt _resV;
