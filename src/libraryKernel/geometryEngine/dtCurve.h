@@ -24,7 +24,7 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-    class dtCurve {
+  class dtCurve {
     public:
       dt__classOnlyName(dtCurve);     
       //
