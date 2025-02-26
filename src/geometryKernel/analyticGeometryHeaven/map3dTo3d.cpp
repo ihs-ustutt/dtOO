@@ -39,6 +39,7 @@ License
 #include "vec3dOneDInMap3dTo3d.h"
 #include <discrete3dVector.h>
 
+#include <boost/assign/list_of.hpp>
 #include <attributionHeaven/pointGeometryDist.h>
 #include <gslMinFloatAttr.h>
 
@@ -698,123 +699,45 @@ namespace dtOO {
   dtPoint3 map3dTo3d::reparamInVolume(
     dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent
   ) const {
-    double U;
-    double V;
-    double W;
-    dtInt const NumInitGuess = 3;
-    double initU[NumInitGuess] = {0.5, 0.75, 0.25};
-    double initV[NumInitGuess] = {0.5, 0.75, 0.25};
-    double initW[NumInitGuess] = {0.5, 0.75, 0.25};
-    dtInt maxRestarts 
-    = 
-    staticPropertiesHandler::getInstance()->getOptionInt("reparam_restarts");
-    dtInt maxInternalRestarts 
-    = 
-    staticPropertiesHandler
-      ::getInstance()->getOptionInt("reparam_internalRestarts");    
-    dtReal restartIncreasePrec
-    = 
-    staticPropertiesHandler::getInstance()->getOptionFloat(
-      "reparam_restartIncreasePrecision"
+     gslMinFloatAttr md(
+      new pointGeometryDist(ppXYZ, this),
+      std::vector< dtPoint3 >(
+        ::boost::assign::list_of
+          (dtPoint3(0.50, 0.50, 0.50))
+          (dtPoint3(0.75, 0.50, 0.50))
+          (dtPoint3(0.25, 0.50, 0.50))
+          (dtPoint3(0.50, 0.75, 0.50))
+          (dtPoint3(0.75, 0.75, 0.50))
+          (dtPoint3(0.25, 0.75, 0.50))
+          (dtPoint3(0.50, 0.25, 0.50))
+          (dtPoint3(0.75, 0.25, 0.50))
+          (dtPoint3(0.25, 0.25, 0.50))
+          (dtPoint3(0.50, 0.50, 0.75))
+          (dtPoint3(0.75, 0.50, 0.75))
+          (dtPoint3(0.25, 0.50, 0.75))
+          (dtPoint3(0.50, 0.75, 0.75))
+          (dtPoint3(0.75, 0.75, 0.75))
+          (dtPoint3(0.25, 0.75, 0.75))
+          (dtPoint3(0.50, 0.25, 0.75))
+          (dtPoint3(0.75, 0.25, 0.75))
+          (dtPoint3(0.25, 0.25, 0.75))
+          (dtPoint3(0.50, 0.50, 0.25))
+          (dtPoint3(0.75, 0.50, 0.25))
+          (dtPoint3(0.25, 0.50, 0.25))
+          (dtPoint3(0.50, 0.75, 0.25))
+          (dtPoint3(0.75, 0.75, 0.25))
+          (dtPoint3(0.25, 0.75, 0.25))
+          (dtPoint3(0.50, 0.25, 0.25))
+          (dtPoint3(0.75, 0.25, 0.25))
+          (dtPoint3(0.25, 0.25, 0.25))
+      ), 
+      dtPoint3(0.001, 0.001, 0.001),
+      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+      1000
     );
-    dtReal internalRestartDecreasePrec
-    = 
-    staticPropertiesHandler::getInstance()->getOptionFloat(
-      "reparam_internalRestartDecreasePrecision"
-    );   
-    dtReal const xyzResolution
-    =
-    staticPropertiesHandler::getInstance()->getOptionFloat(
-      "xyz_resolution"
-    );
-    dtReal currentPrec = 1.;  
-    dtReal dist = 1.E+99;
-    logContainer<map2dTo3d> logC(logDEBUG, "reparamInVolume()");
-    dt__forFromToIndex(0, maxRestarts+1, thisRun) {    
-      dt__forFromToIndex(0, NumInitGuess, ii) {
-        dt__forFromToIndex(0, NumInitGuess, jj) {       
-          dt__forFromToIndex(0, NumInitGuess, kk) {   
-            //
-            // do reparameterization
-            //
-            U = initU[ii];
-            V = initV[jj];
-            W = initW[kk];
-
-            dt__forFromToIndex(0, maxInternalRestarts, thisRestart) {
-              double stepU = .01;
-              double stepV = .01;
-              double stepW = .01;
-              double prec = 1.;
-              gslMinFloatAttr md(
-                new pointGeometryDist(ppXYZ, this),
-                dtPoint3(U, V, W), 
-                dtPoint3(stepU, stepV, stepW),
-                currentPrec*xyzResolution
-              );
-              try {
-                md.perform();
-                U = md.result()[0];
-                V = md.result()[1];
-                W = md.result()[2];
-                logC() 
-                  << logMe::dtFormat(
-                    "%2d : [%2d, %2d, %2d] (%2d) | "
-                    "U = %5.2e , V = %5.2e, W = %5.2e | %5.2e | %d | %s"
-                  ) 
-                  % thisRun 
-                  % ii 
-                  % jj 
-                  % kk 
-                  % thisRestart 
-                  % U 
-                  % V 
-                  % W
-                  % md.precision() 
-                  % md.converged()
-                  % md.lastStatus()
-                  << std::endl;
-              }
-              catch( eGeneral & eGen ) {
-                dt__warning(
-                  reparamInVolume(),
-                  << eGen.what() << std::endl
-                  << logMe::dtFormat(
-                    "Error for initU = %12.4e initV = %12.4e initW = %12.4e "
-                    "at internalRestart = %i"
-                  ) 
-                  % initU[ii] % initV[jj] % initW[kk] % thisRestart
-                );
-              }
-              //
-              // increase precision for restart
-              //
-              prec = internalRestartDecreasePrec * prec;
-
-              //
-              // check if point is precise enough
-              //
-              if (
-                analyticGeometry::inXYZTolerance(
-                  ppXYZ, getPointPercent(U, V, W), &dist, false, currentPrec
-                )
-              ) return uvw_percent( dtPoint3(U, V, W) );            
-            }
-          }
-        }
-      }
-      dt__warning(
-        reparamInVolume(), 
-        << "Increasing reparamInVolume tolerance. Multiply inital precision by " 
-        << restartIncreasePrec * currentPrec
-      );        
-      currentPrec = restartIncreasePrec * currentPrec;      
-    }
-    dt__throw(
-      reparamInVolume(), 
-      << "Reparameterization of " << dt__point3d(ppXYZ) << " fails." 
-      << std::endl
-      << dumpToString()
+    md.perform();
+    return uvw_percent(
+      dtPoint3( md.result()[0], md.result()[1], md.result()[2] )
     );
   }
   

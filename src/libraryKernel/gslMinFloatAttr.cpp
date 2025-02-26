@@ -18,9 +18,13 @@ License
 #include "gslMinFloatAttr.h"
 #include "logMe/dtMacros.h"
 
+#include <algorithm>
 #include <boost/assign.hpp>
+#include <boost/assign/list_of.hpp>
 #include <gsl/gsl_vector_double.h>
+#include <limits>
 #include <logMe/logMe.h>
+#include <logMe/logContainer.h>
 #include <progHelper.h>
 
 #include <gsl/gsl_vector.h>
@@ -42,6 +46,28 @@ double gsl_proxy_gslMinFloatAttr(gsl_vector const * v, void * params) {
 }
 
 namespace dtOO {
+  std::vector< std::vector< dtReal > > 
+  convertDtPoint2( std::vector< dtPoint2 > const & guess) {
+    std::vector< std::vector< dtReal > > ret;
+    dt__forAllIndex(guess, i) {
+      ret.push_back( 
+        ::boost::assign::list_of(guess[i].x())(guess[i].y())
+      );
+    }
+    return ret;
+  }
+
+  std::vector< std::vector< dtReal > > 
+  convertDtPoint3( std::vector< dtPoint3 > const & guess) {
+    std::vector< std::vector< dtReal > > ret;
+    dt__forAllIndex(guess, i) {
+      ret.push_back( 
+        ::boost::assign::list_of(guess[i].x())(guess[i].y())(guess[i].z())
+      );
+    }
+    return ret;
+  }
+
   gslMinFloatAttr::gslMinFloatAttr(
     floatAtt * attribute,
     std::vector< dtReal > const & guess,
@@ -52,7 +78,9 @@ namespace dtOO {
   :
   _attribute(attribute),
   _dimension(guess.size()),
-  _guess(guess),
+  _guess( 
+    ::boost::assign::list_of(guess) 
+  ),
   _step(step), 
   _precision(precision), 
   _maxIterations(maxIterations)
@@ -71,7 +99,9 @@ namespace dtOO {
   _attribute(attribute),
   _dimension(2),
   _guess( 
-    ::boost::assign::list_of(guess.x())(guess.y())
+    ::boost::assign::list_of(
+      ::boost::assign::list_of(guess.x())(guess.y())
+    )
   ),
   _step(
     ::boost::assign::list_of(step.x())(step.y())
@@ -89,6 +119,31 @@ namespace dtOO {
 
   gslMinFloatAttr::gslMinFloatAttr(
     floatAtt * attribute,
+    std::vector< dtPoint2 > const & guess,
+    dtPoint2 const & step,
+    dtReal const & precision,
+    dtInt const & maxIterations
+  ) 
+  :
+  _attribute(attribute),
+  _dimension(2),
+  _guess( convertDtPoint2(guess) ),
+  _step(
+    ::boost::assign::list_of(step.x())(step.y())
+  ),
+  _precision(precision),
+  _maxIterations(maxIterations),
+  _result( 
+    ::boost::assign::list_of
+      (std::numeric_limits<dtReal>::infinity())
+      (std::numeric_limits<dtReal>::infinity())
+  )
+  {
+    _converged = false;
+  }
+ 
+  gslMinFloatAttr::gslMinFloatAttr(
+    floatAtt * attribute,
     dtPoint3 const & guess,
     dtPoint3 const & step,
     dtReal const & precision,
@@ -98,7 +153,9 @@ namespace dtOO {
   _attribute(attribute),
   _dimension(3),
   _guess( 
-    ::boost::assign::list_of(guess.x())(guess.y())(guess.z())
+    ::boost::assign::list_of(
+      ::boost::assign::list_of(guess.x())(guess.y())(guess.z())
+    )
   ),
   _step(
     ::boost::assign::list_of(step.x())(step.y())(step.z())
@@ -111,6 +168,55 @@ namespace dtOO {
       (std::numeric_limits<dtReal>::infinity())
       (std::numeric_limits<dtReal>::infinity())
   )
+  {
+    _converged = false;
+  }
+
+  gslMinFloatAttr::gslMinFloatAttr(
+    floatAtt * attribute,
+    std::vector< dtPoint3 > const & guess,
+    dtPoint3 const & step,
+    dtReal const & precision,
+    dtInt const & maxIterations
+  ) 
+  :
+  _attribute(attribute),
+  _dimension(3),
+  _guess( convertDtPoint3(guess) ),
+  _step(
+    ::boost::assign::list_of(step.x())(step.y())
+  ),
+  _precision(precision),
+  _maxIterations(maxIterations),
+  _result( 
+    ::boost::assign::list_of
+      (std::numeric_limits<dtReal>::infinity())
+      (std::numeric_limits<dtReal>::infinity())
+      (std::numeric_limits<dtReal>::infinity())
+  )
+  {
+    _converged = false;
+  }
+
+  gslMinFloatAttr::gslMinFloatAttr(
+    floatAtt * attribute,
+    dtReal const & guess,
+    dtReal const & step,
+    dtReal const & precision,
+    dtInt const & maxIterations
+  ) 
+  :
+  _attribute(attribute),
+  _dimension(1),
+  _guess( 
+    ::boost::assign::list_of(
+      ::boost::assign::list_of(guess) 
+    )
+  ),
+  _step( ::boost::assign::list_of(step) ),
+  _precision(precision),
+  _maxIterations(maxIterations),
+  _result( ::boost::assign::list_of(std::numeric_limits<dtReal>::infinity()) )
   {
     _converged = false;
   }
@@ -129,20 +235,8 @@ namespace dtOO {
 
   }
 
-  std::vector< dtReal > const & gslMinFloatAttr::guess() const {
-    return _guess;
-  }
-
-  std::vector< dtReal > const & gslMinFloatAttr::step() const {
-    return _step;
-  }
-
   dtReal const & gslMinFloatAttr::precision() const {
     return _precision;
-  }
-
-  dtInt const & gslMinFloatAttr::maxIterations() const {
-    return _maxIterations;
   }
 
   bool const & gslMinFloatAttr::converged() const {
@@ -193,8 +287,7 @@ namespace dtOO {
     // cast to void * and set to params
     proxyF.params = (void*) &proxyS;
 
-    //dtInt dimension = _d
-
+    // strategy and gslMinFloatAttr must have the same dimension
     dt__throwIf(_dimension!=_attribute->dimension(), perform());
 
     // set dimension
@@ -204,66 +297,93 @@ namespace dtOO {
     // create minimizer struct
     //
     gsl_multimin_fminimizer * minf = gsl_multimin_fminimizer_alloc(
-      gsl_multimin_fminimizer_nmsimplex2, _dimension
+      gsl_multimin_fminimizer_nmsimplex2rand, _dimension
     );
 
     //
-    // set first guess and step size
+    // set step size
     //
-    gsl_vector * x = gsl_vector_alloc( _dimension );
     gsl_vector * ss = gsl_vector_alloc( _dimension );
-    dt__forFromToIndex(0, _dimension, ii) {
-      gsl_vector_set(x, ii, _guess[ii]);
-      gsl_vector_set(ss, ii, _step[ii]);
-    }
+    dt__forFromToIndex(0, _dimension, ii) gsl_vector_set(ss, ii, _step[ii]);
 
     //
-    // iterate
+    // allocate first guess
     //
-    int status = gsl_multimin_fminimizer_set(minf, &proxyF, x, ss);
-    dt__throwIf(status, perform);
+    gsl_vector * xx = gsl_vector_alloc( _dimension );
+
     dtInt iter = 0;
     _converged = false;
-    do {
-      iter = iter + 1;
-      status = gsl_multimin_fminimizer_iterate(minf);
-      if (status) {
-        break;
+    dtInt status;
+    dtReal gF = std::numeric_limits< dtReal >::max(); 
+    logContainer<gslMinFloatAttr> logC(logDEBUG, "perform()");
+    dt__forAllIndex(_guess, jj) {
+      dt__forFromToIndex(0, _dimension, ii) {
+        gsl_vector_set(xx, ii, _guess[jj][ii]);
+      }
+      // iterate
+      dt__throwIf(
+        gsl_multimin_fminimizer_set(minf, &proxyF, xx, ss), perform()
+      );
+      iter = 0;
+      do {
+        iter = iter + 1;
+        status = gsl_multimin_fminimizer_iterate(minf);
+
+        if (status) break;
+        
+        //logC() << logMe::dtFormat("  %3d : ") % iter;
+        //dt__forFromToIndex(0, _dimension, hh) {
+        //  logC() 
+        //    << logMe::dtFormat("%5.2e ") 
+        //      % gsl_vector_get(gsl_multimin_fminimizer_x(minf), hh);
+        //    
+        //}
+        //logC() 
+        //  << logMe::dtFormat(" -> %5.2e (%5.2e)\n") 
+        //    % minf->fval % gsl_multimin_fminimizer_size(minf);
+
+        if ( minf->fval < _precision ) {
+          _converged = true;
+          break;
+        }
+        //dtReal const & msize = gsl_multimin_fminimizer_size(minf);
+        //if (msize < 1.0e-09) {
+        //  break;
+        //}
+      }
+      while (iter < _maxIterations);
+      
+      if (minf->fval < gF) {
+        gF = minf->fval;
+        dt__forAllIndex(_result, kk) _result[kk] = gsl_vector_get(minf->x, kk);
+        logC() << logMe::dtFormat("-> Global minimum update -> %5.2d\n") % gF;
       }
 
-      if ( minf->fval < _precision ) {
-        _converged = true;
-        break;
+      logC() << logMe::dtFormat("%3d : [ ") % jj;
+      dt__forAllIndex(_guess[jj], kk) {
+        logC() << logMe::dtFormat("%5.2d ") % _guess[jj][kk];
       }
-    }
-    while (iter < _maxIterations);
-   
-    //
-    // set result
-    //
-    if (_dimension == 1) {
-      _result 
-      = 
-      ::boost::assign::list_of
-        (gsl_vector_get(minf->x,0));
-    }
-    else if (_dimension == 2) {
-      _result 
-      = 
-      ::boost::assign::list_of
-        (gsl_vector_get(minf->x,0))
-        (gsl_vector_get(minf->x,1));
-    }
-    else if (_dimension == 3) {
-      _result 
-      = 
-      ::boost::assign::list_of
-        (gsl_vector_get(minf->x,0))
-        (gsl_vector_get(minf->x,1))
-        (gsl_vector_get(minf->x,2));
-    }
-    else dt__throwUnexpected(perform());
+
+      logC() 
+        << logMe::dtFormat(
+          "] %3d -> %5.2e (%5.2e) = %d"
+        ) 
+        % iter
+        % minf->fval
+        % _precision
+        % _converged
+        << std::endl;
     
+      if (_converged) break;
+    }
+    logC() << logMe::dtFormat("=> min f( " );
+    dt__forAllIndex(_result, kk) {
+      logC() << logMe::dtFormat("%5.2d ") % _result[kk];
+    }
+    logC() << logMe::dtFormat(") = %5.2d") % gF;
+    if (!_converged) logC() << " -> F";
+    logC() << std::endl;
+
     //
     // set last status
     //
@@ -286,9 +406,10 @@ namespace dtOO {
 
     //
     // free memory
-    gsl_multimin_fminimizer_free(minf);
-    gsl_vector_free(x);
+    //
+    gsl_vector_free(xx);
     gsl_vector_free(ss);
+    gsl_multimin_fminimizer_free(minf);
 
     //
     // return status

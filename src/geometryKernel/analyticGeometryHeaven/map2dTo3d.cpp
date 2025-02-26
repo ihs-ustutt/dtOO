@@ -36,6 +36,7 @@ License
 #include "vec2dOneDInMap2dTo3d.h"
 #include "vec2dTwoDInMap2dTo3d.h"
 
+#include <boost/assign/list_of.hpp>
 #include <attributionHeaven/pointGeometryDist.h>
 #include <gslMinFloatAttr.h>
 
@@ -217,127 +218,27 @@ namespace dtOO {
 	}
   
   dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const & ppXYZ) const {
-    double U;
-    double V;
-    double UBest = 1.E+99;
-    double VBest = 1.E+99;
-    dtInt const NumInitGuess = 3;
-    double initU[NumInitGuess] = {0.5, 0.75, 0.25};
-    double initV[NumInitGuess] = {0.5, 0.75, 0.25};
-    dtInt maxRestarts 
-    = 
-    staticPropertiesHandler::getInstance()->getOptionInt("reparam_restarts");
-    dtInt maxInternalRestarts 
-    = 
-    staticPropertiesHandler
-      ::getInstance()->getOptionInt("reparam_internalRestarts");    
-    dtReal restartIncreasePrec
-    = 
-    staticPropertiesHandler::getInstance()->getOptionFloat(
-      "reparam_restartIncreasePrecision"
+    gslMinFloatAttr md(
+      new pointGeometryDist(ppXYZ, this),
+      std::vector< dtPoint2 >(
+        ::boost::assign::list_of
+          (dtPoint2(0.50, 0.50))
+          (dtPoint2(0.75, 0.50))
+          (dtPoint2(0.25, 0.50))
+          (dtPoint2(0.50, 0.75))
+          (dtPoint2(0.75, 0.75))
+          (dtPoint2(0.25, 0.75))
+          (dtPoint2(0.50, 0.25))
+          (dtPoint2(0.75, 0.25))
+          (dtPoint2(0.25, 0.25))
+      ), 
+      dtPoint2(0.001, 0.001),
+      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+      1000
     );
-    dtReal internalRestartDecreasePrec
-    = 
-    staticPropertiesHandler::getInstance()->getOptionFloat(
-      "reparam_internalRestartDecreasePrecision"
-    );   
-    dtReal const xyzResolution
-    =
-    staticPropertiesHandler::getInstance()->getOptionFloat(
-      "xyz_resolution"
-    );
-    dtReal currentPrec = 1.;
-    dtReal dist = 1.E+99;
-    logContainer<map2dTo3d> logC(logDEBUG, "reparamOnFace()");
-    dt__forFromToIndex(0, maxRestarts+1, thisRun) {
-      dt__forFromToIndex(0, NumInitGuess, ii) {
-        dt__forFromToIndex(0, NumInitGuess, jj) {       
-          //
-          // do reparameterization
-          //
-          U = initU[ii];
-          V = initV[jj];
-
-          dt__forFromToIndex(0, maxInternalRestarts, thisRestart) {
-            double stepU = .01;
-            double stepV = .01;
-            double prec = 1.;
-            gslMinFloatAttr md(
-              new pointGeometryDist(ppXYZ, this),
-              dtPoint2(U, V), 
-              dtPoint2(stepU, stepV),
-              currentPrec*xyzResolution
-            );
-            try {
-              md.perform();
-              U = md.result()[0];
-              V = md.result()[1];
-              logC() 
-                << logMe::dtFormat(
-                  "%2d : [%2d, %2d] (%2d) | "
-                  "U = %5.2e , V = %5.2e | %5.2e | %d | %s"
-                ) 
-                % thisRun 
-                % ii 
-                % jj 
-                % thisRestart 
-                % U 
-                % V 
-                % md.precision() 
-                % md.converged()
-                % md.lastStatus()
-                << std::endl;
-            }
-            catch( eGeneral & eGen ) {
-              dt__warning(
-                reparamOnFace(),
-                << logMe::dtFormat(
-                  "Error for initU = %12.4e initV = %12.4e at internalRestart = %i"
-                ) 
-                % initU[ii] % initV[jj] % thisRestart 
-              );
-            }
-            //
-            // increase precision for restart
-            //
-            prec = internalRestartDecreasePrec * prec;
-            dtPoint3 tP = getPointPercent(U,V);
-            //
-            // check if point is precise enough
-            //
-            dtReal cDist;
-            if (
-              analyticGeometry::inXYZTolerance(
-                ppXYZ, tP, &cDist, false, currentPrec
-              )
-            ) return uv_percent( dtPoint2(U, V) );
-            if (cDist <= dist) {
-              UBest = U;
-              VBest = V;
-              dist = cDist;
-            }
-          }
-        }
-      }
-      dt__warning(
-        reparamOnFace(), 
-        << "Increasing reparamOnFace tolerance. Multiply initial precision by "
-        << restartIncreasePrec * currentPrec
-      );        
-      currentPrec = restartIncreasePrec * currentPrec;
-    }
-    dt__throw(
-      reparamOnFace(), 
-      << "Reparameterization of " << dt__point3d(ppXYZ) << " fails." 
-      << std::endl
-      << "(0,0) -> " << getPointPercent(0,0) << std::endl
-      << "(1,0) -> " << getPointPercent(1,0) << std::endl
-      << "(0,1) -> " << getPointPercent(0,1) << std::endl
-      << "(1,1) -> " << getPointPercent(1,1) << std::endl
-      << "UBest = " << UBest << std::endl
-      << "VBest = " << VBest << std::endl
-      << "dist = " << dist << std::endl
-      << dumpToString()
+    md.perform();
+    return uv_percent(
+      dtPoint2( md.result()[0], md.result()[1] )
     );
   }
 
@@ -510,15 +411,21 @@ namespace dtOO {
 	  return dd;
 	}
 	
-  dtVector3 map2dTo3d::secondDerUU( dtReal const & uu, dtReal const & vv) const {
+  dtVector3 map2dTo3d::secondDerUU( 
+    dtReal const & uu, dtReal const & vv
+  ) const {
 		return secondDer(uu, vv)[0];
   }
   
-  dtVector3 map2dTo3d::secondDerVV( dtReal const & uu, dtReal const & vv) const {
+  dtVector3 map2dTo3d::secondDerVV( 
+    dtReal const & uu, dtReal const & vv
+  ) const {
 		return secondDer(uu, vv)[2];
   }
   
-  dtVector3 map2dTo3d::secondDerUV( dtReal const & uu, dtReal const & vv) const {
+  dtVector3 map2dTo3d::secondDerUV( 
+    dtReal const & uu, dtReal const & vv
+  ) const {
 		return secondDer(uu, vv)[1];
   }
   

@@ -44,20 +44,37 @@ namespace dtOO {
       );
       gslMinFloatAttr(
         floatAtt * attribute,
+        std::vector< dtPoint2 > const & guess,
+        dtPoint2 const & step,
+        dtReal const & precision,
+        dtInt const & maxIterations = 100
+      );
+      gslMinFloatAttr(
+        floatAtt * attribute,
         dtPoint3 const & guess,
         dtPoint3 const & step,
         dtReal const & precision,
         dtInt const & maxIterations = 100
       );
-     
+      gslMinFloatAttr(
+        floatAtt * attribute,
+        std::vector< dtPoint3 > const & guess,
+        dtPoint3 const & step,
+        dtReal const & precision,
+        dtInt const & maxIterations = 100
+      );
+      gslMinFloatAttr(
+        floatAtt * attribute,
+        dtReal const & guess,
+        dtReal const & step,
+        dtReal const & precision,
+        dtInt const & maxIterations = 100
+      );
       gslMinFloatAttr( gslMinFloatAttr const & orig );
       virtual ~gslMinFloatAttr();
       virtual gslMinFloatAttr * clone( void ) const;
  
-      std::vector< dtReal > const & guess() const;
-      std::vector< dtReal > const & step() const;
       dtReal const & precision() const;
-      dtInt const & maxIterations() const;
       bool const & converged() const;
       std::vector< dtReal > const & result() const;
       std::string const & lastStatus() const;
@@ -70,11 +87,9 @@ namespace dtOO {
       void lastStatus( std::string const & lastStatus );
       bool perform();
       floatAtt const * const ptrAttribute( void ) const;
-      //void setFloatAttr( dt__pH(floatAtt) attribute );
-      //void setFloatAttr( floatAtt * attribute );
     private:
       dtInt const _dimension;
-      std::vector< dtReal> const _guess;
+      std::vector< std::vector< dtReal> > const _guess;
       std::vector< dtReal> const _step;
       dtReal const _precision;
       dtInt const _maxIterations;
