@@ -84,7 +84,6 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomShape_readOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h
-  xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h
@@ -204,7 +203,6 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomShape_readOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.cpp
-  xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.cpp
