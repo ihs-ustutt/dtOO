@@ -154,7 +154,6 @@ namespace dtOO {
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h>
 #include <analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h>
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h>
-#include <analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h>
 #include <analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h>
 
 #include <dtTransformerHeaven/dtTransformer.h>
@@ -982,7 +981,6 @@ namespace dtOO {
 %include analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
 %include analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
 %include analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h
-%include analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h
 %include analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h
 
 namespace dtOO {

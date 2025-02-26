@@ -371,10 +371,7 @@ namespace dtOO {
           else dt__throwUnexpected(replaceDependencies());
         }
         else if (aFOption == "-1") {
-          dt__forAllRefAuto(
-            x_vec3dClosestPointToPoint(v3dF, aFY(argCS)).result(), 
-            anX
-          ) pp.push_back(anX);
+          pp = v3dF->invY( aFY(argCS) ).toStdVector();
         }
         else if (aFOption == "xMin0") {
             pp.push_back(v3dF->xMin(0));
