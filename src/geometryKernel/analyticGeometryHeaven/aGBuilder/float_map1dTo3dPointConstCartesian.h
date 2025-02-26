@@ -22,7 +22,6 @@ License
 
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
-#include <vector>
 
 namespace dtOO {
   class map1dTo3d;
@@ -40,12 +39,7 @@ namespace dtOO {
       virtual ~float_map1dTo3dPointConstCartesian();
       dtReal result( void );
     private:
-      double F(double const * xx) const;
-    private:
       dtReal _u;
-      dtInt _dir;
-      dtReal _value;
-      map1dTo3d const & _m1d;    
   };
 }
 #endif	/* float_map1dTo3dPointConstCartesian_H */
