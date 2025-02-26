@@ -130,6 +130,7 @@ add_test(
 )
 set_tests_properties(meshSimpleSurface PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST meshSimpleSurface PROPERTY LABELS base-test)
+DTOO_ADDTESTWLABEL("meshSimpleSurface")
 #
 # meshPrismBlock
 #
