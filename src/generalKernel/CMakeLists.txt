@@ -134,6 +134,7 @@ SET(HEADERS
   progHelper.h
   attributionHeaven/floatAtt.h
   attributionHeaven/pointGeometryDist.h
+  attributionHeaven/pointCurveDist.h
 )
 SET(SOURCES
   xmlHeaven/dtXmlParserBase.cpp
@@ -238,6 +239,7 @@ SET(SOURCES
   logMe/logMe.cpp
   attributionHeaven/floatAtt.cpp
   attributionHeaven/pointGeometryDist.cpp
+  attributionHeaven/pointCurveDist.cpp
 )
 
 APPEND_DTOO_SOURCE(src/generalKernel "${SOURCES}")

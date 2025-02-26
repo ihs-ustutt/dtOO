@@ -35,11 +35,7 @@ namespace dtOO {
       virtual ~u_geomCurveClosestPoint();
       dtReal result( void );
     private:
-      double F(double const * xx) const;    
-    private:
       dtReal _closestU;
-      dtCurve const & _dtC;
-      dtPoint3 const & _pXYZ;
   };
 }
 #endif	/* u_geomCurveClosestPoint_H */
