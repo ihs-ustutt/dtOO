@@ -741,9 +741,5 @@ namespace dtOO {
     );
   }
   
-  dtPoint3 map3dTo3d::approxInVolume( dtPoint3 const & ppXYZ ) const {
-    return uvw_map3dTo3dClosestPointToPoint(this, ppXYZ).result();
-  }  
-	
   dt__C_addCloneForpVH(map3dTo3d);
 }

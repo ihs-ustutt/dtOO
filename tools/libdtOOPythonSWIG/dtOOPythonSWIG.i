@@ -154,7 +154,6 @@ namespace dtOO {
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h>
 #include <analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h>
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h>
-#include <analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.h>
 #include <analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h>
 #include <analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h>
 
@@ -221,9 +220,7 @@ namespace dtOO {
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h>
-#include <analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
-#include <analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
 #include <analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h>
@@ -657,6 +654,13 @@ namespace std {
   %template(vectorConstDtSurface)        vector< ::dtOO::dtSurface const * >;
   %template(vectorConstDtCurve2d)        vector< ::dtOO::dtCurve2d const * >;
   %template(vectorConstDtSurface2d)      vector< ::dtOO::dtSurface2d const * >;
+
+  %extend vector< ::dtOO::dtPoint3 > {
+    vector< ::dtOO::dtPoint3 > __lshift__( ::dtOO::dtPoint3 & right) {
+      $self->push_back(right);
+      return *self;
+    }
+  }
 }
 namespace dtOO { 
   template < typename T >
@@ -978,7 +982,6 @@ namespace dtOO {
 %include analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
 %include analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
 %include analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h
-%include analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.h
 %include analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h
 %include analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h
 
@@ -1079,9 +1082,7 @@ namespace std {
 %include analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h
-%include analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h
-%include analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h
 %include analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h
 %include analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h

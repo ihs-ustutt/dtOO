@@ -41,7 +41,6 @@ if (FOAMEXT_FOUND)
   list(APPEND HEADERS
     volVectorFieldVersusXYZ.h
     volScalarOnLineFieldRange.h
-    pOnBlade.h
     UcylInChannel.h
     uRelInChannel.h
     meshQuality.h
@@ -57,7 +56,6 @@ if (FOAMEXT_FOUND)
   list(APPEND SOURCES
     volVectorFieldVersusXYZ.cpp
     volScalarOnLineFieldRange.cpp
-    pOnBlade.cpp
     UcylInChannel.cpp
     uRelInChannel.cpp
     meshQuality.cpp

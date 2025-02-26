@@ -962,20 +962,6 @@ namespace dtOO {
             m3d->reparamPercentInVolume(dtPoint3(argCS[0], argCS[1], argCS[2]))
           );
         }
-        else if (aGOption == "-a") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m3d->approxInVolume( dtPoint3(argCS[0], argCS[1], argCS[2]) )
-          );
-        }
-        else if (aGOption == "-a%") {
-          pp 
-          = 
-          dtLinearAlgebra::toStdVector(
-            m3d->approxPercentInVolume(dtPoint3(argCS[0], argCS[1], argCS[2]))
-          );
-        }        
         else dt__throwUnexpected(replaceDependencies());
       }    
       else dt__throwUnexpected(replaceDependencies());

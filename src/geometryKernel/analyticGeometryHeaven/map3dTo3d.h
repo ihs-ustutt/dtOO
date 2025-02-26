@@ -54,7 +54,6 @@ namespace dtOO {
       // optional overload
       //
       virtual dtPoint3 reparamInVolume(dtPoint3 const & ppXYZ) const;        
-      virtual dtPoint3 approxInVolume(dtPoint3 const & ppXYZ) const; 
       virtual std::vector< dtVector3 > firstDer(
         dtReal const & uu, dtReal const & vv, dtReal const & ww
       ) const;

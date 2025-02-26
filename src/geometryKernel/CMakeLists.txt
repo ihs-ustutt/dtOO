@@ -52,9 +52,7 @@ SET(HEADERS
   analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h
   analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h
-  analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h
   analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h
-  analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h
   analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h
   analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h
   analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h
@@ -122,7 +120,6 @@ SET(HEADERS
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
   analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h
-  analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.h
   analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h
   analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h
   dtTransformerHeaven/dtTransformer.h
@@ -200,9 +197,7 @@ SET(SOURCES
   analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.cpp
-  analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.cpp
-  analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.cpp
   analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.cpp
   analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.cpp
@@ -264,7 +259,6 @@ SET(SOURCES
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.cpp
   analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.cpp
   analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.cpp
-  analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.cpp
   analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.cpp
   analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.cpp
   dtTransformerHeaven/dtTransformer.cpp
