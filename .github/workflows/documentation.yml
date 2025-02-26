@@ -33,7 +33,6 @@ jobs:
         with:
           folder: doc/_build/
           clean-exclude: pr-preview/
-          force: false
       - name: (PR) Set base URL for preview
         if: github.ref != 'refs/heads/main'
         run: echo "BASE_URL=https://${{ env.DOMAIN }}/${{ github.event.repository.name }}/${{ env.PR_PATH}}/" >> $GITHUB_ENV
