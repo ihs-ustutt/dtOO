@@ -1,10 +1,11 @@
-C++ API documentation
-=====================
+*****************
+API documentation
+*****************
 
-The documentation of the C++ code
+The documentation of the C++ code.
 
-Core classes
-^^^^^^^^^^^^
+C++ core classes
+================
 
 .. toctree::
    :maxdepth: 1
@@ -15,3 +16,11 @@ Core classes
    boundedVolume
    dtCase
    dtPlugin
+
+Python pyDtOO classes
+=====================
+
+The documentation of the pyDtOO package.
+
+.. automodule:: pyDtOO.dtClusteredSingletonState
+    :members:
