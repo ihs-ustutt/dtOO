@@ -43,7 +43,6 @@ namespace dtOO {
       // get properties
       //
       virtual dtInt const & dimension() const;
-      dtPoint3 const p3(void) const;
     private:
       dtPoint3 const _p3;
       dtInt const _dimension;
