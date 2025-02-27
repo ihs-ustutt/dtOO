@@ -83,7 +83,10 @@ namespace dtOO {
   ),
   _step(step), 
   _precision(precision), 
-  _maxIterations(maxIterations)
+  _maxIterations(maxIterations),
+  _result( 
+    std::vector(guess.size(), std::numeric_limits<dtReal>::infinity()) 
+  )
   {
     _converged = false;
   }
@@ -277,6 +280,7 @@ namespace dtOO {
   floatAtt const * const gslMinFloatAttr::ptrAttribute( void ) const {
     return _attribute.get();
   }
+
   bool gslMinFloatAttr::perform() {
     // create function structure
     gsl_multimin_function proxyF;
