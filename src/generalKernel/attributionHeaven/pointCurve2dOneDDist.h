@@ -15,8 +15,8 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef pointGeometryOneDDist_H
-#define	pointGeometryOneDDist_H
+#ifndef pointCurve2dOneDDist_H
+#define	pointCurve2dOneDDist_H
 
 #include <dtOOTypeDef.h>
 
@@ -26,19 +26,19 @@ License
 #include "floatAtt.h"
 
 namespace dtOO { 
-  class analyticGeometry;
+  class dtCurve2d;
 
-  class pointGeometryOneDDist : public floatAtt {
+  class pointCurve2dOneDDist : public floatAtt {
     public:  
-      dt__classOnlyName(pointGeometryOneDDist);
-      pointGeometryOneDDist(
+      dt__classOnlyName(pointCurve2dOneDDist);
+      pointCurve2dOneDDist(
         dtReal const & value,
-        analyticGeometry const * const aG,
+        dtCurve2d const * const dtC,
         dtInt const & dir
       );
-      virtual ~pointGeometryOneDDist();
-      pointGeometryOneDDist( pointGeometryOneDDist const & orig );
-      virtual pointGeometryOneDDist * clone( void ) const;
+      virtual ~pointCurve2dOneDDist();
+      pointCurve2dOneDDist( pointCurve2dOneDDist const & orig );
+      virtual pointCurve2dOneDDist * clone( void ) const;
       virtual dtReal operator()( std::vector< dtReal > const & xx ) const;
       //
       // get properties
@@ -48,8 +48,8 @@ namespace dtOO {
       dtReal const _value;
       dtInt const _dir;
       dtInt const _dimension;
-      analyticGeometry const * const _aG;
+      dtCurve2d const * const _dtC;
   };
-  dt__H_addCloneForpVH(pointGeometryOneDDist);
+  dt__H_addCloneForpVH(pointCurve2dOneDDist);
 }
-#endif	/* pointGeometryOneDDist_H */
+#endif	/* pointCurve2dOneDDist_H */

@@ -15,8 +15,8 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef pointGeometryOneDDist_H
-#define	pointGeometryOneDDist_H
+#ifndef map1dTo3dLength_H
+#define	map1dTo3dLength_H
 
 #include <dtOOTypeDef.h>
 
@@ -26,30 +26,28 @@ License
 #include "floatAtt.h"
 
 namespace dtOO { 
-  class analyticGeometry;
+  class map1dTo3d;
 
-  class pointGeometryOneDDist : public floatAtt {
+  class map1dTo3dLength : public floatAtt {
     public:  
-      dt__classOnlyName(pointGeometryOneDDist);
-      pointGeometryOneDDist(
-        dtReal const & value,
-        analyticGeometry const * const aG,
-        dtInt const & dir
+      dt__classOnlyName(map1dTo3dLength);
+      map1dTo3dLength(
+        map1dTo3d const * const m1d,
+        dtReal const & ll
       );
-      virtual ~pointGeometryOneDDist();
-      pointGeometryOneDDist( pointGeometryOneDDist const & orig );
-      virtual pointGeometryOneDDist * clone( void ) const;
+      virtual ~map1dTo3dLength();
+      map1dTo3dLength( map1dTo3dLength const & orig );
+      virtual map1dTo3dLength * clone( void ) const;
       virtual dtReal operator()( std::vector< dtReal > const & xx ) const;
       //
       // get properties
       //
       virtual dtInt const & dimension() const;
     private:
-      dtReal const _value;
-      dtInt const _dir;
+      map1dTo3d const * const _m1d;
+      dtReal const _ll;
       dtInt const _dimension;
-      analyticGeometry const * const _aG;
   };
-  dt__H_addCloneForpVH(pointGeometryOneDDist);
+  dt__H_addCloneForpVH(map1dTo3dLength);
 }
-#endif	/* pointGeometryOneDDist_H */
+#endif	/* map1dTo3dLength_H */
