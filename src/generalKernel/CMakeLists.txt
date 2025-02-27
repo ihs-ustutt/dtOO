@@ -135,6 +135,7 @@ SET(HEADERS
   attributionHeaven/pointCurveDist.h
   attributionHeaven/pointSurfaceDist.h
   attributionHeaven/pointGeometryOneDDist.h
+  attributionHeaven/geometryGeometryDist.h
 )
 SET(SOURCES
   xmlHeaven/dtXmlParserBase.cpp
@@ -240,6 +241,7 @@ SET(SOURCES
   attributionHeaven/pointCurveDist.cpp
   attributionHeaven/pointSurfaceDist.cpp
   attributionHeaven/pointGeometryOneDDist.cpp
+  attributionHeaven/geometryGeometryDist.cpp
 )
 
 APPEND_DTOO_SOURCE(src/generalKernel "${SOURCES}")

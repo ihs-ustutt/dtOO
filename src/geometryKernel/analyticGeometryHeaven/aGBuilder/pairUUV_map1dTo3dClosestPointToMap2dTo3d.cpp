@@ -20,72 +20,33 @@ License
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-#include <dtAnalysis.h>
-#include <Math/Functor.h>
+#include <attributionHeaven/geometryGeometryDist.h>
+#include <gslMinFloatAttr.h>
 
 namespace dtOO {
 	pairUUV_map1dTo3dClosestPointToMap2dTo3d
     ::pairUUV_map1dTo3dClosestPointToMap2dTo3d(
       map1dTo3d const * const m1d, map2dTo3d const * const m2d
-	) : _m1d(*m1d), _m2d(*m2d) {
-
-    // 
-    // multidimensional minimization
-    //
-    dt__pH(dtMinimizer) min(
-      dtAnalysis::createMinimizer(":Minuit2::kMigrad:")
+	) {
+    gslMinFloatAttr md(
+      new geometryGeometryDist(m1d, m2d),
+      dtPoint3(0.5, 0.5, 0.5),
+      dtPoint3(0.001, 0.001, 0.001),
+      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution") 
     );
-    ::ROOT::Math::Functor toMin(
-      this, &pairUUV_map1dTo3dClosestPointToMap2dTo3d::F, 3
-    );			
-    min->SetFunction(toMin);          
-    
-    //
-    // set bounds
-    //
-    min->SetVariable( 0, "U_0", 0.5, 0.01 );
-    min->SetVariableLimits(0, 0., 1.);
-    min->SetVariable( 1, "U_1", 0.5, 0.01 );
-    min->SetVariableLimits(1, 0., 1.);
-    min->SetVariable( 2, "V_1", 0.5, 0.01 );
-    min->SetVariableLimits(2, 0., 1.);    
-
-    
-    //
-    // minimizer options
-    //        
-    min->SetMaxFunctionCalls(1000000);
-    min->SetMaxIterations(1000);
-    min->SetTolerance( 1.e-8 );			
-    min->SetPrintLevel(
-      staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel") 
+    md.perform();
+    _closestUUV.first = m1d->u_percent( md.result()[0] );
+    _closestUUV.second = m2d->uv_percent( 
+      dtPoint2( md.result()[1], md.result()[2] ) 
     );
-    
-    //
-    // minimize
-    //
-    min->Minimize();
-    double const * const theRoot = min->X();
-    
-    _closestUUV.first = ( _m1d % theRoot[0] );
-    _closestUUV.second = ( _m2d % dtPoint2( theRoot[1], theRoot[2] ) );
 	}
 
 	pairUUV_map1dTo3dClosestPointToMap2dTo3d
     ::~pairUUV_map1dTo3dClosestPointToMap2dTo3d() {
 	}
 	
-	std::pair< dtReal, dtPoint2 > pairUUV_map1dTo3dClosestPointToMap2dTo3d
-    ::result( void ) {
+	std::pair< dtReal, dtPoint2 > 
+  pairUUV_map1dTo3dClosestPointToMap2dTo3d::result( void ) {
 		return _closestUUV;
 	}
-  
-	double pairUUV_map1dTo3dClosestPointToMap2dTo3d::F(
-    double const * xx
-  ) const {	
-    return dtLinearAlgebra::length(
-      _m1d.getPointPercent(xx[0]) - _m2d.getPointPercent(xx[1], xx[2])
-    );
-
-	}    
 }
