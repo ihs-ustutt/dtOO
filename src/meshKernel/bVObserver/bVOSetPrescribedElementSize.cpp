@@ -26,8 +26,8 @@ License
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshEdge.h>
 
-#include <dtAnalysis.h>
-#include <Math/Functor.h>
+#include <attributionHeaven/scaOneDPolyIElSize.h>
+#include <gslMinFloatAttr.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include "bVOInterfaceFactory.h"
 #include <interfaceHeaven/stringPrimitive.h>
@@ -140,34 +140,51 @@ namespace dtOO {
     logContainer< bVOSetPrescribedElementSize > logC(
       logINFO, "preUpdate()"
     );
+
     dt__forAllRefAuto( gm->dtEdges(), aEdge) {
       if ( 
         aEdge->meshAttributes.typeTransfinite 
         == 
         config().lookup< dtInt >("_type") 
       ) {
+        
         //
         // reset pointer to new clone
         //
         _polyI.reset( 
-          scaOneDPolyInterface::MustDownCast( _polyI->weakClone() )
+          scaOneDPolyInterface::MustDownCast( _polyI->weakClone() ) 
         );
-       
+      
         //
         // get edge length
         //
-        _ll = aEdge->getMap1dTo3d()->length();
+        dtReal ll = aEdge->getMap1dTo3d()->length();
 
         //
         // x value of checkpoint of function
         //
-        _checkXFirst = 1./(aEdge->meshAttributes.nbPointsTransfinite-1);
-        _checkXLast = 1. - 1./(aEdge->meshAttributes.nbPointsTransfinite-1);
-        std::vector< dtReal > theRoot = this->perform(
-          aEdge, 
-          &bVOSetPrescribedElementSize::FFirstLast
-        );      
+        dtReal x0 = 1./(aEdge->meshAttributes.nbPointsTransfinite-1);
+        dtReal x1 = 1. - 1./(aEdge->meshAttributes.nbPointsTransfinite-1);
+        
+        dtReal lByS0 = config().lookupDef< dtReal >("_firstElementSize", 0.0);
+        if (lByS0>0.0) lByS0 = ll/lByS0;
+        dtReal lByS1 = config().lookupDef< dtReal >("_lastElementSize", 0.0);
+        if (lByS1>0.0) lByS1 = ll/lByS1;
 
+        gslMinFloatAttr md(
+          new scaOneDPolyIElSize( 
+            _polyI.get(), x0, x1, lByS0, lByS1
+          ),
+          ::std::vector<dtReal>(_polyI->nDOF(), 0.5),
+          ::std::vector<dtReal>(_polyI->nDOF(), 0.5),
+          1.0E-08
+        );
+        md.perform();
+        //std::vector< dtReal > const & theRoot = md.result();
+
+        //
+        // output
+        //
         if ( config().contains("_firstElementSize") ) {
           logC() 
             << logMe::dtFormat(
@@ -175,14 +192,14 @@ namespace dtOO {
             ) 
               % aEdge->tag()
               % config().lookup< dtReal >("_firstElementSize")
-              % (_polyI->YFloat( _checkXFirst ) * _ll)
+              % (_polyI->YFloat( x0 ) * ll)
               % ( 
-                  100. * _polyI->YFloat( _checkXFirst ) * _ll 
+                  100. * _polyI->YFloat( x0 ) * ll 
                   / 
                   config().lookup< dtReal >("_firstElementSize")
                 ) 
             << std::endl
-            << "DOF = " << theRoot << std::endl;
+            << "DOF = " << md.result() << std::endl;
         }
         if ( config().contains("_lastElementSize") ) {
           logC() 
@@ -191,105 +208,21 @@ namespace dtOO {
             ) 
               % aEdge->tag()
               % config().lookup< dtReal >("_lastElementSize")
-              % ( (1.-_polyI->YFloat( _checkXLast) ) * _ll )
+              % ( (1.-_polyI->YFloat( x1) ) * ll )
               % ( 
-                  100. * (1.-_polyI->YFloat( _checkXLast )) * _ll 
+                  100. * (1.-_polyI->YFloat( x1 )) * ll 
                   / 
                   config().lookup< dtReal >("_lastElementSize")
                 ) 
             << std::endl
-            << "DOF = " << theRoot << std::endl;
+            << "DOF = " << md.result() << std::endl;
         }
-        _grading.addComponent(
-          _polyI.get(), aEdge->tag()
-        );          
+
+        //
+        // add component
+        //
+        _grading.addComponent( _polyI.get(), aEdge->tag() );          
       }
     }
-  }
-  
-	double bVOSetPrescribedElementSize::FFirstLast( double const * xx ) {
-    std::vector< dtReal > xVec(_polyI->nDOF(), -1);
-    dt__forAllIndex(xVec, ii) xVec[ii] = xx[ii];
-    _polyI->setDOF(xVec);
-   
-    double retFirst = 0.0;
-    double retLast = 0.0;
-    if ( config().contains("_firstElementSize") ) {
-      retFirst
-      =
-      fabs(
-        _polyI->YFloat(_checkXFirst) * _ll 
-        - 
-        config().lookup< dtReal >("_firstElementSize")
-      )
-      /
-      config().lookup< dtReal >("_firstElementSize");
-    }
-    if ( config().contains("_lastElementSize") ) {
-      retLast
-      =
-      fabs(
-        (1.-_polyI->YFloat(_checkXLast)) * _ll 
-        - 
-        config().lookup< dtReal >("_lastElementSize")
-      )
-      /
-      config().lookup< dtReal >("_lastElementSize");
-    }
-    dt__debug(
-      FFirstLast(), 
-      << "Difference : " << retFirst+retLast 
-      << " = ( " << 100.*retFirst << " %, " << 100.*retLast << " %) "
-    );
-    return retFirst + retLast;
-	}
-
-  std::vector< dtReal > bVOSetPrescribedElementSize::perform(
-    dtGmshEdge * aEdge,
-    double (bVOSetPrescribedElementSize::*fPtr)(double const * xx) 
-  ) {
-    // 
-    // multidimensional minimization
-    //
-    dt__pH(dtMinimizer) min(
-      dtAnalysis::createMinimizer(":Minuit2::kMigrad:")
-    );
-    ::ROOT::Math::Functor toMin(
-      this, 
-      fPtr,
-      _polyI->nDOF()
-    );			
-    min->SetFunction(toMin);  
-
-    //
-    // set bounds
-    //
-    dt__forFromToIndex(0, _polyI->nDOF(), ii) {
-      min->SetVariable( ii, "V_"+stringPrimitive::intToString(ii), 0.5, 0.01 );
-      min->SetVariableLimits(ii, 0., 1.);
-    }
-    //
-    // minimizer options
-    //        
-    min->SetMaxFunctionCalls(1000000);
-    min->SetMaxIterations(1000);
-    min->SetTolerance( 1.e-8 );			
-    min->SetPrintLevel(
-      staticPropertiesHandler::getInstance()->getOptionInt(
-        "root_printLevel"
-      ) 
-    );
-
-    //
-    // minimize
-    //
-    min->Minimize();    
-
-    double const * const theRoot = min->X();
-    std::vector< dtReal > ret(_polyI->nDOF(), -1.0);
-    dt__forFromToIndex(0, _polyI->nDOF(), ii) {
-      ret[ii] = static_cast<dtReal>(theRoot[ii]); 
-    }
-    return ret; 
   }
 }
