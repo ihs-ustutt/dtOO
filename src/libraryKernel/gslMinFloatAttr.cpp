@@ -320,6 +320,7 @@ namespace dtOO {
     dtInt status;
     dtReal gF = std::numeric_limits< dtReal >::max(); 
     logContainer<gslMinFloatAttr> logC(logDEBUG, "perform()");
+    logC() << "Using: " << _attribute->virtualClassName() << std::endl;
     dt__forAllIndex(_guess, jj) {
       dt__forFromToIndex(0, _dimension, ii) {
         gsl_vector_set(xx, ii, _guess[jj][ii]);
