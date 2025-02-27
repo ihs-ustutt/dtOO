@@ -20,9 +20,8 @@ License
 #include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <Minuit2/Minuit2Minimizer.h>
-#include <Math/Functor.h>
-#include <omp.h>
+#include <attributionHeaven/vectorFunctionDist.h>
+#include <gslMinFloatAttr.h>
 
 namespace dtOO {
 	analyticFunction::analyticFunction() : optionHandling(), labelHandling() {
@@ -95,119 +94,15 @@ namespace dtOO {
   }
     
   aFX analyticFunction::invY(aFY const & yy) const {
-    //
-    // save target value in mutable variable
-    //
-    _invY = yy;
-
-    dtInt const numInitGuess = 11;    
-    double initGuess[numInitGuess] 
-    = 
-    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};       
-    
-    dtReal prec 
-    =      
-    staticPropertiesHandler::getInstance()->getOptionFloat("invY_precision");    
-    dtInt rootPrintLevel
-    =
-    staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel");
-    
-    std::vector< dtInt >      ijk(xDim(), 0);
-    std::vector< dtInt >   ijkMin(xDim(), 0);
-    std::vector< dtInt >   ijkMax(xDim(), numInitGuess);
-    std::vector< dtInt > ijkDelta(xDim(), 1);
-
-    dtReal bestDistance = std::numeric_limits<dtReal>::max();
-    dtInt depth = 0;
-    ijk[0] = ijkMin[depth];
-    while (true) {
-      if (ijk[depth] < ijkMax[depth]) {
-        if (depth == ijk.size()-1) {
-
-          // 
-          // multidimensional minimization
-          //
-          ROOT::Minuit2::Minuit2Minimizer min;
-          ROOT::Math::Functor toMin(
-            this, &analyticFunction::F, xDim() 
-          );			
-          min.SetFunction(toMin);
-
-          //
-          // minimizer options
-          //
-          min.SetMaxFunctionCalls(1000000);
-          min.SetMaxIterations(100000);
-          min.SetTolerance( prec/(10.*xDim()) ); // reduce precision
-          min.SetPrintLevel( rootPrintLevel );
-
-          //--------------------------------------------------------------------------    
-          //
-          // set bounds
-          //
-          dt__forFromToIndex(0, xDim(), kk) {
-            dt__throwIf(ijk[kk]>numInitGuess, invY());
-            std::string xStr = "x"+stringPrimitive::intToString(kk);
-            min.SetVariable( kk, xStr, initGuess[ ijk[kk] ], 0.01 );
-            min.SetVariableLimits(kk, 0., 1.);	
-          }
-
-//          dt__info(invY(), << "Trying ijk = " << ijk );
-
-          //
-          // minimize
-          //
-          min.Minimize();
-          double const * const theRoot = min.X( );
-
-          //
-          // get x (percent)
-          //
-          aFX retX(xDim(),0.);
-          dt__forFromToIndex(0, xDim(), kk) retX[kk] = theRoot[kk];
-
-          //
-          // convergence check
-          //
-          dtReal currentDistance 
-          = 
-          distance( 
-            Y(x_percent(retX)), _invY
-          );
-          bestDistance = std::min(bestDistance, currentDistance);
-          if ( currentDistance <= prec ) return x_percent(retX);  
-        }
-        else {
-          depth++;
-          ijk[depth] = ijkMin[depth];
-          continue;
-        }
-      }
-      else if (--depth == -1) break;
-
-      ijk[depth] += ijkDelta[depth];
-    }
-    
-    aFX xxMin;
-    aFX xxMax;
-    dt__forFromToIndex(0, xDim(), ii) xxMin.push_back(xMin(ii));
-    dt__forFromToIndex(0, xDim(), ii) xxMax.push_back(xMax(ii));
-    aFX xxMiddle;
-    dt__forFromToIndex(0, xDim(), ii) {
-      xxMiddle.push_back(.5 * (xxMax[ii] - xxMin[ii]) );
-    }
-    dt__throw( 
-      invY(),
-      << dt__eval(getLabel()) << std::endl
-      << dt__eval(_invY) << std::endl
-      << dt__eval( Y(xxMin) ) << std::endl
-      << dt__eval( Y(xxMiddle) ) << std::endl
-      << dt__eval( Y(xxMax) ) << std::endl
-      << dt__eval(bestDistance) << std::endl
-      << "No convergence reached. Maybe reducing invY solves this problem."
-    );    
-    
-//    return x_percent(retX);
+    gslMinFloatAttr md(
+      new vectorFunctionDist(yy, this),
+      ::std::vector(this->xDim(), 0.5),
+      ::std::vector(this->xDim(), 0.001),
+      staticPropertiesHandler::getInstance()->getOptionFloat("invY_precision")
+    );
+    md.perform();
+    dt__throwIf(!md.converged(), invY());
+    return x_percent(md.result());
   }
 
 	bool analyticFunction::isCompound( void ) const {
@@ -313,14 +208,6 @@ namespace dtOO {
 		return analyticFunction::aFYThreeD(pp.x(), pp.y(), pp.z());
 	}    
 
-//  aFX analyticFunction::aFX( std::vector< dtReal > const & xx ) {
-//    return std::vector< dtReal >(xx);
-//  }
-//  
-//  aFY analyticFunction::aFY( std::vector< dtReal > const & xx ) {
-//    return std::vector< dtReal >(xx);
-//  }
-  
   aFY analyticFunction::aFY_aFX( aFX const & xx ) {
     return aFY(xx);
   }
@@ -359,28 +246,5 @@ namespace dtOO {
     return this->Y( aFXThreeD(xx, yy, zz) ).stdVector();
   }  
     
-	double analyticFunction::F(double const * xx) const {	
-    aFX xxT(xDim(), 0.);
-    for (int ii=0; ii<xDim(); ii++) xxT[ii] = xx[ii];
-    xxT = x_percent(xxT);
-    aFY yy = Y(xxT);
-    
-    double objective = 0.;
-    for (int ii=0; ii<yDim(); ii++) {
-      objective 
-      = 
-      objective 
-      + 
-      (
-        yy[ii] - _invY[ii]
-      )
-      *
-      (
-        yy[ii] - _invY[ii]
-      );
-    }
-    return sqrt(objective);
-	}	    
-  
   dt__C_addCloneForpVH(analyticFunction);  
 }

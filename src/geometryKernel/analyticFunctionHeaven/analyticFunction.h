@@ -82,8 +82,6 @@ namespace dtOO {
     );    
     static aFY aFYTwoD( dtPoint2 const & pp );    
     static aFY aFYThreeD( dtPoint3 const & pp );    
-//    static aFX aFX( std::vector< dtReal > const & xx );    
-//    static aFY aFY( std::vector< dtReal > const & xx );
     static aFY aFY_aFX( aFX const & xx );    
     static aFX aFX_aFY( aFY const & yy );
     static dtReal distance( aFX const & x0, aFX const & x1 );
@@ -94,9 +92,6 @@ namespace dtOO {
     std::vector< dtReal > const operator()(
       dtReal const & xx, dtReal const & yy, dtReal const & zz
     ) const;    
-  private:
-	  double F(double const * xx) const;
-    mutable aFY _invY;
   };
   dt__H_addCloneForpVH(analyticFunction);
 }
