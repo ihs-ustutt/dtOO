@@ -80,7 +80,6 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.h  
-  xmlHeaven/aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomShape_readOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h
@@ -202,7 +201,6 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.cpp
-  xmlHeaven/aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomShape_readOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.cpp

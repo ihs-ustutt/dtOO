@@ -48,7 +48,6 @@ SET(HEADERS
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h
   analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h
   analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h
-  analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h
   analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h
   analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h
@@ -192,7 +191,6 @@ SET(SOURCES
   analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.cpp
   analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.cpp
-  analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.cpp
   analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.cpp

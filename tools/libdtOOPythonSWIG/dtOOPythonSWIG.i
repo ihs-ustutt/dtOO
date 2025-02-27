@@ -215,7 +215,6 @@ namespace dtOO {
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h>
-#include <analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h>
@@ -1076,7 +1075,6 @@ namespace std {
 %include analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h
 %include analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h
-%include analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h
