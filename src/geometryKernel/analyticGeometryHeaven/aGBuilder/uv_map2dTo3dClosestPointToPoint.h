@@ -22,7 +22,6 @@ License
 
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
-#include <vector>
 
 namespace dtOO {
   class map2dTo3d;
@@ -37,12 +36,8 @@ namespace dtOO {
       dtPoint2 result( void );
       dtReal distance( void );
     private:
-      double F(double const * xx) const;    
-    private:
       dtPoint2 _closestUV;
       dtReal _distance;
-      map2dTo3d const & _m2d;
-      dtPoint3 const & _pXYZ;
   };
 }
 #endif	/* uv_map2dTo3dClosestPointToPoint_H */
