@@ -28,7 +28,6 @@ License
 #include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticFunctionHeaven/scaOneD.h>
-#include <analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h>
 #include <analyticFunctionHeaven/vec2dOneD.h>
 #include <analyticFunctionHeaven/vec3dOneD.h>
 #include <baseContainerHeaven/baseContainer.h>
