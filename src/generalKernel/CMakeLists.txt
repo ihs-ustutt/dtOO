@@ -113,7 +113,6 @@ SET(HEADERS
   interfaceHeaven/twoDArrayHandling.h
   interfaceHeaven/timeHandling.h
   interfaceHeaven/threadSafe.h
-  interfaceHeaven/threadSafeRoot.h
   interfaceHeaven/meshWhisperer.h
   interfaceHeaven/mpiDistributed.h
   interfaceHeaven/barChart.h
@@ -227,7 +226,6 @@ SET(SOURCES
   interfaceHeaven/renderInterface.cpp
   interfaceHeaven/intHandling.cpp
   interfaceHeaven/timeHandling.cpp
-  interfaceHeaven/threadSafeRoot.cpp
   interfaceHeaven/meshWhisperer.cpp
   interfaceHeaven/barChart.cpp
   interfaceHeaven/lVHOSubject.cpp

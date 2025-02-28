@@ -29,7 +29,6 @@ License
 #include <interfaceHeaven/renderInterface.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
-#include <interfaceHeaven/threadSafeRoot.h>
 #include <mainConceptFwd.h>
 
 namespace dtOO { 
@@ -100,7 +99,6 @@ namespace dtOO {
       mutable dtReal _characteristicLength;
       mutable std::pair< dtPoint3, dtPoint3 > _boundingBox;
       mutable dtReal _boundingBoxValue;
-      threadSafeRoot _threadRoot;
   };
   dt__H_addCloneForpVH(analyticGeometry);
 }
