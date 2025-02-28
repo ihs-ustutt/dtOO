@@ -16,9 +16,9 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "gslMinFloatAttr.h"
+#include "attributionHeaven/floatAtt.h"
 #include "logMe/dtMacros.h"
 
-#include <algorithm>
 #include <boost/assign.hpp>
 #include <boost/assign/list_of.hpp>
 #include <gsl/gsl_vector_double.h>
@@ -31,18 +31,16 @@ License
 #include <gsl/gsl_multimin.h>
 
 // proxy structure
-struct gsl_proxy_t {
-  dtOO::gslMinFloatAttr * gmd_p;
+struct gsl_proxy_t { 
+  dtOO::floatAtt * att_p; 
 };
 // proxy function
 double gsl_proxy_gslMinFloatAttr(gsl_vector const * v, void * params) {
-  dtOO::gslMinFloatAttr * const ob 
-  = 
-  static_cast< gsl_proxy_t * >(params)->gmd_p;
+  dtOO::floatAtt * const ob = static_cast< gsl_proxy_t * >(params)->att_p;
   dtOO::dtInt const & dim = ob->dimension();
   std::vector< dtOO::dtReal > xx(dim);
   dt__forFromToIndex(0, dim, i)  xx[i] = gsl_vector_get(v,i);
-  return ob->ptrAttribute()->operator()(xx);
+  return ob->rangeCheckAndCall(xx);
 }
 
 namespace dtOO {
@@ -287,7 +285,7 @@ namespace dtOO {
     // set proxy function
     proxyF.f = &gsl_proxy_gslMinFloatAttr; 
     // set proxy structure
-    gsl_proxy_t proxyS = {this};
+    gsl_proxy_t proxyS = {this->_attribute.get()};
     // cast to void * and set to params
     proxyF.params = (void*) &proxyS;
 

@@ -20,7 +20,6 @@ License
 #include <progHelper.h>
 #include <vector>
 #include <geometryEngine/dtCurve2d.h>
-#include <limits>
 
 
 namespace dtOO {
@@ -56,11 +55,6 @@ namespace dtOO {
   dtReal pointCurve2dOneDDist::operator()( 
     std::vector< dtReal > const & xx 
   ) const {
-    dt__forAllIndex(xx, i) {
-      if ( (xx[i]<0.0) || (xx[i]>1.0) ) {
-        return std::numeric_limits< dtReal >::max();
-      }
-    }
     return fabs( 
       _dtC->pointPercent( xx[0] )[_dir] - _value 
     );

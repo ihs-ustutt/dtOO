@@ -20,7 +20,6 @@ License
 #include <progHelper.h>
 #include <vector>
 #include <analyticGeometryHeaven/map1dTo3d.h>
-#include <limits>
 
 
 namespace dtOO {
@@ -53,9 +52,6 @@ namespace dtOO {
   dtReal map1dTo3dLength::operator()( 
     std::vector< dtReal > const & xx 
   ) const {
-    if ( (xx[0]<0.0) || (xx[0]>1.0) ) {
-      return std::numeric_limits< dtReal >::max();
-    }
     return fabs( _m1d->l_u( _m1d->u_percent(xx[0]) ) - _ll );
   }
 

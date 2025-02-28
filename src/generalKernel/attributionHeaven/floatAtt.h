@@ -37,10 +37,13 @@ namespace dtOO {
       floatAtt( floatAtt const & orig );
       virtual floatAtt * clone( void ) const = 0;
       virtual dtInt const & dimension() const = 0;
+      bool outOfRange( ::std::vector< dtReal > const & xx ) const;
+      virtual dtReal outOfRangeResult() const;
+      dtReal rangeCheckAndCall(::std::vector<dtReal> const & xx) const;
       //
-      // visitor overload
+      // strategy overload
       //
-      virtual dtReal operator()( std::vector< dtReal > const & xx ) const = 0;
+      virtual dtReal operator()(::std::vector< dtReal > const & xx) const = 0;
   };
   dt__H_addCloneForpVH(floatAtt);
 }

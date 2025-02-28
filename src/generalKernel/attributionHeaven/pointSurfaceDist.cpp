@@ -20,7 +20,6 @@ License
 #include <progHelper.h>
 #include <vector>
 #include <geometryEngine/dtSurface.h>
-#include <limits>
 
 
 namespace dtOO {
@@ -53,9 +52,6 @@ namespace dtOO {
   dtReal pointSurfaceDist::operator()( 
     std::vector< dtReal > const & xx 
   ) const {
-    if ( (xx[0]<0.0) || (xx[0]>1.0) || (xx[1]<0.0) || (xx[1]>1.0) ) {
-      return std::numeric_limits< dtReal >::max();
-    }
     return dtLinearAlgebra::distance( 
       _dtS->pointPercent( xx[0], xx[1] ), _p3 
     );

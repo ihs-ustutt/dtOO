@@ -20,7 +20,6 @@ License
 #include <progHelper.h>
 #include <vector>
 #include <analyticGeometryHeaven/analyticGeometry.h>
-#include <limits>
 
 
 namespace dtOO {
@@ -53,11 +52,6 @@ namespace dtOO {
   dtReal pointGeometryDist::operator()( 
     std::vector< dtReal > const & xx 
   ) const {
-    dt__forAllIndex(xx, i) {
-      if ( (xx[i]<0.0) || (xx[i]>1.0) ) {
-        return std::numeric_limits< dtReal >::max();
-      }
-    }
     return dtLinearAlgebra::distance( _aG->getPointPercent( &(xx[0]) ), _p3 );
   }
 
