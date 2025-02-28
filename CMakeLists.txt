@@ -99,12 +99,6 @@ else (DTOO_OCC_78)
 endif (DTOO_OCC_78)
 find_package(MPFR)
 find_package(MUPARSER REQUIRED muparser)
-find_package(
-  ROOT 
-  REQUIRED 
-  COMPONENTS
-  Core Matrix MathCore MathMore Minuit2 Thread Hist
-)
 find_package(GSL REQUIRED)
 find_package(GMP REQUIRED COMPONENTS gmp)
 
@@ -255,7 +249,6 @@ include_directories(
   ${MUPARSER_INCLUDE_DIR}
   ${Qt5Core_INCLUDE_DIRS}
   ${Qt5Xml_INCLUDE_DIRS}
-  ${ROOT_INCLUDE_DIR} 
   ${GSL_INCLUDE_DIR} 
   ${OpenCASCADE_INCLUDE_DIR}
   ${MOAB_INCLUDE_DIR}
@@ -361,7 +354,6 @@ target_link_libraries(
   ${OpenCASCADE_LIBRARIES} 
   Qt5::Core
   Qt5::Xml
-  ${ROOT_LIBRARIES} 
   ${GSL_LIBRARIES}
   ${Boost_LIBRARIES}
   ${MOAB_LIBRARIES}
@@ -377,7 +369,6 @@ set(
   ${GMSH_LIBRARIES} 
   ${MUPARSER_LIBRARIES} 
   ${OpenCASCADE_LIBRARIES} 
-  ${ROOT_LIBRARIES} 
   ${GSL_LIBRARIES}
   ${BOOST_CONFIG_LIBRARIES}
   ${MOAB_LIBRARIES}
@@ -391,7 +382,6 @@ set(
   ${GMSH_LINK_DIRECTORY} 
   ${MUPARSER_LINK_DIRECTORY}
   ${OpenCASCADE_LINK_DIRECTORY}
-  ${ROOT_LINK_DIRECTORY}
   ${MOAB_LINK_DIRECTORY}
   ${OpenVolumeMesh_LINK_DIRECTORY}
 )
@@ -499,7 +489,6 @@ set_target_properties(dtOO PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(
   CONF_DTOO_3RD_INCLUDE_DIRS 
   ${CGAL_INCLUDE_DIR}
-  ${ROOT_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
   ${IGL_INCLUDE_DIR}
   ${Qt5Core_INCLUDE_DIRS}

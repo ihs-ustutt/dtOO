@@ -17,15 +17,21 @@ License
 
 #include "dtLinearAlgebra.h"
 
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_matrix_double.h>
+#include <gsl/gsl_permutation.h>
+#include <gsl/gsl_vector_double.h>
 #include <logMe/logMe.h>
 #include "dtGaussLegendreIntegration.h"
+#include "logMe/dtMacros.h"
 #include <CGAL/bounding_box.h>
 #include <CGAL/squared_distance_2.h>
 #include <CGAL/squared_distance_3.h>
 #include <CGAL/intersections.h>
 #include <CGAL/Polygon_2_algorithms.h>
-#include <TMatrixD.h>
-#include <TDecompSVD.h>
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_vector.h>
+#include <gsl/gsl_linalg.h>
 
 namespace dtOO {
 	dtVector3 dtLinearAlgebra::unitNormal0 = dtVector3(1,0,0);
@@ -321,160 +327,111 @@ namespace dtOO {
 		
 		return dtVector3(vec[0], vec[1], vec[2]);
 	}	
-	
+
+  gsl_matrix * convertToGSLMatrix( dtMatrix const & mat ) {
+    dtInt const R = mat.row_dimension();
+    dtInt const C = mat.column_dimension();
+    gsl_matrix * m = gsl_matrix_alloc(R, C);
+  
+    dt__forFromToIndex(0, R, r) 
+      dt__forFromToIndex(0, C, c)
+        gsl_matrix_set(m, r, c, mat(r,c));
+  
+    return m;
+  }
+
+  gsl_vector * convertToGSLVector( dtMatrixVector const & vec ) {
+    dtInt const R = vec.dimension();
+    gsl_vector * v = gsl_vector_alloc(R);
+  
+    dt__forFromToIndex(0, R, r) gsl_vector_set(v, r, vec[r]);
+  
+    return v;
+  }
+
+
 	dtMatrix dtLinearAlgebra::invertMatrix(dtMatrix const & mat) {
-//		twoDArrayHandling<dtReal> mat2d(mat.dimension().first, mat.dimension().second);
-//		for (int ii=0; ii<mat2d.size(0);ii++) {
-//			for (int jj=0; jj<mat2d.size(1);jj++) {
-//        mat2d[ii][jj] = mat(ii,jj);
-//			}	
-//		}
-//		dtReal cgalDet = CGAL::Linear_algebraCd<dtReal>::determinant(mat);
-//		dt__debug(
-//			invertMatrix(), 
-//			<< dt__eval(cgalDet) << std::endl
-//			<< dt__eval(mat.row_dimension()) << std::endl
-//			<< dt__eval(mat.column_dimension()) << std::endl
-//			<< "mat = " << std::endl
-//			<< floatMatrixToString(mat2d) 
-//		);
-
-		TMatrixD rootMat(
-      TMatrixD::kZero, TMatrixD(mat.row_dimension(),mat.column_dimension())
+    // dimensions
+    dtInt const & M = mat.row_dimension();
+    dtInt const & N = mat.column_dimension();
+    
+    // LU decomposition
+    gsl_matrix * A = convertToGSLMatrix(mat);
+    gsl_permutation * p = gsl_permutation_alloc(N);
+    dtInt signum = 0;
+    dtInt status;
+    status = gsl_linalg_LU_decomp(A, p, &signum);
+    dt__throwIfWithMessage(
+      status, 
+      invertMatrix(), 
+      << std::string(gsl_strerror(status))
     );
-		for (int rr=0; rr<mat.row_dimension(); rr++) {
-			for (int cc=0; cc<mat.column_dimension(); cc++) {		
-		    rootMat(rr,cc) = mat(rr, cc);
-			}
-		}
-		
-    //
-    // invert matrix
-    //		
-		double rootDet;
-		TMatrixD invRootMat = rootMat.Invert(&rootDet);		
-		
-		if (fabs(rootDet) == 0.) {
-//			dt__info(invertMatrix(), << "Using TDecompSVD");
-			TDecompSVD svd(rootMat);
-			svd.SetTol(1.e-16);
-			bool ok = svd.Decompose();
-			if (ok) {
-				bool invOk = svd.Invert(invRootMat);
-				if (!invOk) {		
-					twoDArrayHandling<dtReal> mat2d(
-            mat.dimension().first, mat.dimension().second
-          );
-					for (int ii=0; ii<mat2d.size(0);ii++) {
-						for (int jj=0; jj<mat2d.size(1);jj++) {
-							mat2d[ii][jj] = mat(ii,jj);
-						}	
-					}
-					dt__debug(
-						invertMatrix(), 
-						<< dt__eval(mat.row_dimension()) << std::endl
-						<< dt__eval(mat.column_dimension()) << std::endl
-						<< "mat = " << std::endl
-						<< logMe::floatMatrixToString(mat2d) 
-					);					
-					dt__throw(
-						invertMatrix(),
-						<< "Inversion of TDecompSVD fails."
-					);					
-				}
-			}
-			else {
-				twoDArrayHandling<dtReal> mat2d(
-          mat.dimension().first, mat.dimension().second
-        );
-				for (int ii=0; ii<mat2d.size(0);ii++) {
-					for (int jj=0; jj<mat2d.size(1);jj++) {
-						mat2d[ii][jj] = mat(ii,jj);
-					}	
-				}
-				dt__debug(
-					invertMatrix(), 
-					<< dt__eval(mat.row_dimension()) << std::endl
-					<< dt__eval(mat.column_dimension()) << std::endl
-					<< "mat = " << std::endl
-					<< logMe::floatMatrixToString(mat2d) 
-				);					
-				dt__throw(
-				  invertMatrix(),
-					<< "Decomposition fails."
-				);
-			}
-		}
+    gsl_matrix * inverse = gsl_matrix_alloc(N,M);
+    status = gsl_linalg_LU_invert(A, p, inverse);
+    dt__throwIfWithMessage(
+      status, 
+      invertMatrix(), 
+      << std::string(gsl_strerror(status))
+    );
 
-    //
-		// create inverse matrix and copy to cgal matrix
-		//
+		// convert
 		dtMatrix invMat = transposeMatrix(mat);
-		for (int rr=0; rr<invMat.row_dimension();rr++) {
-			for (int cc=0; cc<invMat.column_dimension();cc++) {		
-		    invMat(rr, cc) = invRootMat(rr, cc);
-			}
-		}
+		dt__forFromToIndex(0, M, r)//for (int rr=0; rr<invMat.row_dimension();rr++) {
+  		dt__forFromToIndex(0, N, c)//for (int cc=0; cc<invMat.column_dimension();cc++) {		
+		    invMat(r, c) = gsl_matrix_get(inverse, r, c);
 
-//		twoDArrayHandling<dtReal> inv2d(invMat.dimension().first, invMat.dimension().second);
-//		for (int ii=0; ii<inv2d.size(0);ii++) {
-//			for (int jj=0; jj<inv2d.size(1);jj++) {
-//        inv2d[ii][jj] = invMat(ii,jj);
-//			}	
-//		}
-//		dt__debug(
-//		  invertMatrix(), 
-//      << "ROOT(det) = " << rootDet << std::endl
-//      << dt__eval(rootMat.Norm1()) << std::endl
-//			<< "inv = " << std::endl
-//			<< floatMatrixToString(inv2d) << std::endl
-//		);
-		
-//		twoDArrayHandling<dtReal> cont2d(invMat.row_dimension(), mat.column_dimension());
-//		dtMatrix cont = invMat * mat;
-//		for (int ii=0; ii<cont2d.size(0);ii++) {
-//			for (int jj=0; jj<cont2d.size(1);jj++) {
-//        cont2d[ii][jj] = cont(ii,jj);
-//			}	
-//		}
-//		dt__debug(
-//		  invertMatrix(), 
-//			<< "invMat * mat = " << std::endl
-//			<< floatMatrixToString(cont2d) << std::endl
-//		);
-		
+    // free
+    gsl_matrix_free(A);
+    gsl_permutation_free(p);
+    gsl_matrix_free(inverse);
+
 		return invMat;
 	}
 
   dtMatrixVector dtLinearAlgebra::solveMatrix(
 	  dtMatrix const & mat, dtMatrixVector const & rhs
 	) {
- 		TMatrixD rootMat(
-      TMatrixD::kZero, TMatrixD(mat.row_dimension(),mat.column_dimension())
+    // get dimensions
+    dtInt const M = mat.row_dimension();
+    dtInt const N = mat.column_dimension();
+    dt__warnIf(M<N, solveMatrix());
+
+    // SVD decomposition
+    gsl_matrix * A = convertToGSLMatrix(mat);
+    gsl_matrix * V = gsl_matrix_alloc(N, N);
+    gsl_vector * S = gsl_vector_alloc(N);
+    gsl_vector * work = gsl_vector_alloc(N);
+    dtInt status = 0;
+    status = gsl_linalg_SV_decomp(A, V, S, work);
+    dt__throwIfWithMessage(
+      status, 
+      solveMatrix(), 
+      << std::string(gsl_strerror(status))
     );
-		for (int rr=0; rr<mat.row_dimension(); rr++) {
-			for (int cc=0; cc<mat.column_dimension(); cc++) {		
-		    rootMat(rr,cc) = mat(rr, cc);
-			}
-		}
-    TVectorD rootVec(rhs.dimension());
-		for (int rr=0; rr<rhs.dimension(); rr++) {
-			rootVec(rr) = rhs[rr];
-		}
-		
-		TDecompSVD svd(rootMat);	
-		
-		bool ok;
-		TVectorD rootSol = svd.Solve(rootVec, ok);
-		if (!ok) dt__throw(solveMatrix(), << dt__eval(ok));
-						
-    dtMatrixVector sol(rootSol.GetNrows());
-		for (int rr=0; rr<rootSol.GetNrows(); rr++) {
-			sol[rr] = rootSol(rr);
-		}
-		
+
+    // solve
+    gsl_vector * b = convertToGSLVector(rhs);
+    gsl_vector * x = gsl_vector_alloc(N);
+    status = gsl_linalg_SV_solve(A, V, S, b, x);
+    dt__throwIfWithMessage(
+      status, 
+      solveMatrix(), 
+      << std::string(gsl_strerror(status))
+    );
+
+    // convert
+    dtMatrixVector sol(N);
+		dt__forFromToIndex(0, N, i) sol[i] = gsl_vector_get(x,i);
+
+    // free
+    gsl_matrix_free(A);
+    gsl_matrix_free(V);
+    gsl_vector_free(S);
+    gsl_vector_free(work);
+    gsl_vector_free(b);
+    gsl_vector_free(x);
+
 		return sol;
-		
 	}
 	
 	dtMatrix dtLinearAlgebra::transposeMatrix(dtMatrix const mat) {
@@ -501,53 +458,8 @@ namespace dtOO {
 		matInv(1,0) = alpha[1]; matInv(1,1) = alpha[4]; 
 		matInv(2,0) = alpha[2]; matInv(2,1) = alpha[5]; 
 
-//		twoDArrayHandling<dtReal> mat2d(mat.dimension().first, mat.dimension().second);
-//		for (int ii=0; ii<mat2d.size(0);ii++) {
-//			for (int jj=0; jj<mat2d.size(1);jj++) {
-//        mat2d[ii][jj] = mat(ii,jj);
-//			}	
-//		}
-//		dt__debug(
-//			invertMatrix(), 
-//			<< dt__eval(CGAL::Linear_algebraCd<dtReal>::determinant(mat)) << std::endl
-//			<< "mat = " << std::endl
-//			<< floatMatrixToString(mat2d) 
-//		);		
-//		twoDArrayHandling<dtReal> inv2d(matInv.dimension().first, matInv.dimension().second);
-//		for (int ii=0; ii<inv2d.size(0);ii++) {
-//			for (int jj=0; jj<inv2d.size(1);jj++) {
-//        inv2d[ii][jj] = matInv(ii,jj);
-//			}	
-//		}
-//		dt__debug(
-//		  invertMatrix(), 
-//			<< "inv = " << std::endl
-//			<< floatMatrixToString(inv2d)
-//		);		
 		return matInv;      
 	}
-//
-//	dtMatrix dtLinearAlgebra::ultraInvert2x3Matrix(dtMatrix const mat) const {      
-//		dtMatrixVector alpha;
-//		dtMatrix Tmat = transposeMatrix(mat);
-//		dtMatrix AAInv = invertMatrix( mat * Tmat );  AAInv = AAInv * mat;
-//		dtMatrix matInv(3,2);
-//		dtMatrixVector yy(3, 0.);
-//
-//		yy[0] = 1.; yy[1] = 0.; yy[2] = 0.;
-//		alpha = AAInv * yy;
-//		matInv(0,0) = alpha[0]; matInv(0,1) = alpha[1]; 
-//
-//		yy[0] = 0.; yy[1] = 1.; yy[2] = 0.;
-//		alpha = AAInv * yy;
-//		matInv(1,0) = alpha[0]; matInv(1,1) = alpha[1]; 
-//
-//		yy[0] = 0.; yy[1] = 0.; yy[2] = 1.;
-//		alpha = AAInv * yy;
-//		matInv(2,0) = alpha[0]; matInv(2,1) = alpha[1]; 
-//
-//		return matInv;      
-//	}        
 
 	dtPoint3 dtLinearAlgebra::returnFarthestPointTo(
     dtPoint3 pp, dtPoint3 p0, dtPoint3 p1
