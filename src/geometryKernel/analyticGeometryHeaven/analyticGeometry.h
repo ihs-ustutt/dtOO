@@ -33,8 +33,6 @@ License
 #include <mainConceptFwd.h>
 
 namespace dtOO { 
-  class refPointAlgo;
-
   class analyticGeometry : public optionHandling,
                            public labelHandling,
                            public renderInterface {

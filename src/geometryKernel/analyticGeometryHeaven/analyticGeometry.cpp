@@ -20,7 +20,6 @@ License
 #include <logMe/logMe.h>
 #include <progHelper.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <geoAlgoHeaven/refPointAlgo.h>
 
 namespace dtOO {
   analyticGeometry::analyticGeometry() : labelHandling() {
