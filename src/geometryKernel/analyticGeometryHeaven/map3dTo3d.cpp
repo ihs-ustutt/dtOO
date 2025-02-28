@@ -29,7 +29,6 @@ License
 #include <geometryEngine/dtCurve.h>
 #include <geometryEngine/geoBuilder/bezierSurface_pointConstructOCC.h>
 #include <geometryEngine/geoBuilder/trimmedCurve_twoPointsConnectConstructOCC.h>
-#include <analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h>
 #include <analyticFunctionHeaven/vec3dOneD.h>
 #include <analyticFunctionHeaven/vec3dCurveOneD.h>
 #include <analyticFunctionHeaven/vec3dTwoD.h>
