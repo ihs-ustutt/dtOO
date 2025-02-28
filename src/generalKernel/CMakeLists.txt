@@ -138,6 +138,7 @@ SET(HEADERS
   attributionHeaven/vectorFunctionDist.h
   attributionHeaven/map1dTo3dLength.h
   attributionHeaven/pointCurve2dOneDDist.h
+  attributionHeaven/curveCurveDist.h
 )
 SET(SOURCES
   xmlHeaven/dtXmlParserBase.cpp
@@ -246,6 +247,7 @@ SET(SOURCES
   attributionHeaven/vectorFunctionDist.cpp
   attributionHeaven/map1dTo3dLength.cpp
   attributionHeaven/pointCurve2dOneDDist.cpp
+  attributionHeaven/curveCurveDist.cpp
 )
 
 APPEND_DTOO_SOURCE(src/generalKernel "${SOURCES}")

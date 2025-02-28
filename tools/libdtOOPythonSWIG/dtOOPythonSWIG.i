@@ -363,6 +363,9 @@ using namespace dtOO;
   #include <TColgp_module.hxx>
   #include <Standard_Persistent.hxx>
 #endif
+#include <attributionHeaven/geometryGeometryDist.h>
+#include <attributionHeaven/curveCurveDist.h>
+#include <gslMinFloatAttr.h>
 %}
 
 %include <std_except.i>
@@ -1084,3 +1087,6 @@ namespace std {
 %include analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h
 %include analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.h
 %include interfaceHeaven/dtBundle.h
+%include attributionHeaven/geometryGeometryDist.h
+%include attributionHeaven/curveCurveDist.h
+%include gslMinFloatAttr.h
