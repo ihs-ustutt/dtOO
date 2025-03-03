@@ -27,7 +27,7 @@ namespace dtOO {
     dtSurface const * const dtS, dtPoint3 const & pXYZ
 	) {
     gslMinFloatAttr md(
-      new pointSurfaceDist(pXYZ, dtS),
+      dt__pH(pointSurfaceDist)(new pointSurfaceDist(pXYZ, dtS)),
       dtPoint2(0.5, 0.5),
       dtPoint2(0.001, 0.001),
       staticPropertiesHandler::getInstance()->getOptionFloat(

@@ -29,7 +29,7 @@ namespace dtOO {
       map1dTo3d const * const m1d, map2dTo3d const * const m2d
 	) {
     gslMinFloatAttr md(
-      new geometryGeometryDist(m1d, m2d),
+      dt__pH(geometryGeometryDist)( new geometryGeometryDist(m1d, m2d) ),
       dtPoint3(0.5, 0.5, 0.5),
       dtPoint3(0.001, 0.001, 0.001),
       staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution") 

@@ -67,7 +67,7 @@ namespace dtOO {
   }
 
   gslMinFloatAttr::gslMinFloatAttr(
-    floatAtt * attribute,
+    dt__pH(floatAtt) const & attribute,
     std::vector< dtReal > const & guess,
     std::vector< dtReal > const & step,
     dtReal const & precision,
@@ -90,7 +90,7 @@ namespace dtOO {
   }
  
   gslMinFloatAttr::gslMinFloatAttr(
-    floatAtt * attribute,
+    dt__pH(floatAtt) const & attribute,
     dtPoint2 const & guess,
     dtPoint2 const & step,
     dtReal const & precision,
@@ -119,7 +119,7 @@ namespace dtOO {
   }
 
   gslMinFloatAttr::gslMinFloatAttr(
-    floatAtt * attribute,
+    dt__pH(floatAtt) const & attribute,
     std::vector< dtPoint2 > const & guess,
     dtPoint2 const & step,
     dtReal const & precision,
@@ -144,7 +144,7 @@ namespace dtOO {
   }
  
   gslMinFloatAttr::gslMinFloatAttr(
-    floatAtt * attribute,
+    dt__pH(floatAtt) const & attribute,
     dtPoint3 const & guess,
     dtPoint3 const & step,
     dtReal const & precision,
@@ -174,7 +174,7 @@ namespace dtOO {
   }
 
   gslMinFloatAttr::gslMinFloatAttr(
-    floatAtt * attribute,
+    dt__pH(floatAtt) const & attribute,
     std::vector< dtPoint3 > const & guess,
     dtPoint3 const & step,
     dtReal const & precision,
@@ -200,7 +200,7 @@ namespace dtOO {
   }
 
   gslMinFloatAttr::gslMinFloatAttr(
-    floatAtt * attribute,
+    dt__pH(floatAtt) const & attribute,
     dtReal const & guess,
     dtReal const & step,
     dtReal const & precision,

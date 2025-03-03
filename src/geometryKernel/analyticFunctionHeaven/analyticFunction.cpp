@@ -95,7 +95,7 @@ namespace dtOO {
     
   aFX analyticFunction::invY(aFY const & yy) const {
     gslMinFloatAttr md(
-      new vectorFunctionDist(yy, this),
+      dt__pH(vectorFunctionDist)( new vectorFunctionDist(yy, this) ),
       ::std::vector(this->xDim(), 0.5),
       ::std::vector(this->xDim(), 0.001),
       staticPropertiesHandler::getInstance()->getOptionFloat("invY_precision")

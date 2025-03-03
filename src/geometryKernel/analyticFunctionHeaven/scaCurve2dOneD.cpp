@@ -98,7 +98,9 @@ namespace dtOO {
 		}
 		if (mustIterate) {
       gslMinFloatAttr md(
-        new pointCurve2dOneDDist(xx, _dtC2d.get(), 0),
+        dt__pH(pointCurve2dOneDDist)(
+          new pointCurve2dOneDDist(xx, _dtC2d.get(), 0)
+        ),
         0.5,
         0.001,
         staticPropertiesHandler::getInstance()->getOptionFloat(

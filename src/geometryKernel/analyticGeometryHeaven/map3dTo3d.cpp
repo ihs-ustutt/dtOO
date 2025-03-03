@@ -699,7 +699,7 @@ namespace dtOO {
     dtPoint3 const & ppXYZ, dtVector3 const & uvwExtPercent
   ) const {
      gslMinFloatAttr md(
-      new pointGeometryDist(ppXYZ, this),
+      dt__pH(pointGeometryDist)(new pointGeometryDist(ppXYZ, this)),
       std::vector< dtPoint3 >(
         ::boost::assign::list_of
           (dtPoint3(0.50, 0.50, 0.50))

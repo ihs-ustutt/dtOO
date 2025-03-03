@@ -172,8 +172,8 @@ namespace dtOO {
         if (lByS1>0.0) lByS1 = ll/lByS1;
 
         gslMinFloatAttr md(
-          new scaOneDPolyIElSize( 
-            _polyI.get(), x0, x1, lByS0, lByS1
+          dt__pH(scaOneDPolyIElSize)(
+            new scaOneDPolyIElSize(_polyI.get(), x0, x1, lByS0, lByS1) 
           ),
           ::std::vector<dtReal>(_polyI->nDOF(), 0.5),
           ::std::vector<dtReal>(_polyI->nDOF(), 0.5),

@@ -37,7 +37,7 @@ namespace dtOO {
     // minimize
     //
     gslMinFloatAttr gmf(
-      new pointCurveDist(pXYZ, dtC),
+      dt__pH(pointCurveDist)(new pointCurveDist(pXYZ, dtC)),
       0.5,
       0.001,
       xyzResolution

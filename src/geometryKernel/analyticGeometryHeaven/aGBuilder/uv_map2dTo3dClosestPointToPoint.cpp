@@ -31,7 +31,7 @@ namespace dtOO {
     map2dTo3d const * const m2d, dtPoint3 const & pXYZ
 	) {
     gslMinFloatAttr md(
-      new pointGeometryDist(pXYZ, m2d),
+      dt__pH(pointGeometryDist)(new pointGeometryDist(pXYZ, m2d)),
       ::std::vector< dtPoint2 >(
         ::boost::assign::list_of
           (dtPoint2(0.5, 0.5))

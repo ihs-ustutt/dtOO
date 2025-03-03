@@ -28,7 +28,9 @@ namespace dtOO {
     dtReal const & initGuess
 	) {
     gslMinFloatAttr md(
-      new pointGeometryOneDDist(value, m1d, dir),
+      dt__pH(pointGeometryOneDDist)(
+        new pointGeometryOneDDist(value, m1d, dir)
+      ),
       initGuess,
       0.01,
       staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")

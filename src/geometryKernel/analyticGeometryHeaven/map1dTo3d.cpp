@@ -213,7 +213,7 @@ namespace dtOO {
     }
     else {
       gslMinFloatAttr md(
-        new map1dTo3dLength(this, ll),
+        dt__pH(map1dTo3dLength)(new map1dTo3dLength(this, ll)),
         0.5,
         0.001,
         staticPropertiesHandler::getInstance()->getOptionFloat(

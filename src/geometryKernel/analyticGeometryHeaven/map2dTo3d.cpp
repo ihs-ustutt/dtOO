@@ -219,7 +219,7 @@ namespace dtOO {
   
   dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const & ppXYZ) const {
     gslMinFloatAttr md(
-      new pointGeometryDist(ppXYZ, this),
+      dt__pH(pointGeometryDist)(new pointGeometryDist(ppXYZ, this)),
       std::vector< dtPoint2 >(
         ::boost::assign::list_of
           (dtPoint2(0.50, 0.50))
