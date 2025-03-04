@@ -20,8 +20,10 @@ License
 
 #include <dtOOTypeDef.h>
 
-#include <Geom_Surface.hxx>
+// clang-format off
 #include <dtLinearAlgebra.h>
+#include <Geom_Surface.hxx>
+// clang-format on
 #include <logMe/dtMacros.h>
 
 namespace dtOO {

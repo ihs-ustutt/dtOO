@@ -20,9 +20,11 @@ License
 
 #include <dtOOTypeDef.h>
 
-#include <Geom2d_Curve.hxx>
-#include <boost/shared_ptr.hpp>
+#include <interfaceHeaven/ptrHandling.h>
+// clang-format off
 #include <dtLinearAlgebra.h>
+#include <Geom2d_Curve.hxx>
+// clang-format on
 #include <logMe/dtMacros.h>
 
 // class Handle_Geom2d_Curve;

@@ -20,10 +20,11 @@ License
 
 #include <dtOOTypeDef.h>
 
-#include <GeomFill_Boundary.hxx>
+// clang-format off
 #include <dtLinearAlgebra.h>
+#include <GeomFill_Boundary.hxx>
+// clang-format on
 #include <logMe/dtMacros.h>
-// class Handle_GeomFill_Boundary;
 
 namespace dtOO {
 class dtOCCGeomFillBoundaryBase {
