@@ -531,6 +531,23 @@ class hydFoil:
     theAF.setLabel("blade")
     self.aF.set( theAF.clone() )
 
+    #
+    # Perform the conformal mapping of the two dimensional B-Spline geometries
+    # between parameter space (u,v) and physical space (x,y,z); the result is
+    # a composition of multiple functions; append for each geometry a shape to
+    # the analyticGeometry container
+    #
+    for ii in ["meanplane", "blade",]:
+      theAG = dtOO.vec3dTwoDInMap3dTo3d(
+        dtOO.vec3dTwoD.MustConstDownCast(
+          cMap.applyAnalyticFunction( self.aF[ii].clone() )
+        ),
+        dtOO.map3dTo3d.ConstDownCast( self.aG["xyz_channel"] )
+      )
+      theAG.setLabel("xyz_"+ii)
+      self.aG.set( theAG.clone() )
+
+
   def GeometryMesh(self):
     """Create additional hydrofoil's geometry for meshing.
 
@@ -616,11 +633,8 @@ class hydFoil:
 
     #
     # Perform the conformal mapping of the two dimensional B-Spline geometries
-    # between parameter space (u,v) and physical space (x,y,z); the result is
-    # a composition of multiple functions; append for each geometry a shape to
-    # the analyticGeometry container
     #
-    for ii in ["meanplane", "blade", "meshBlock",]:
+    for ii in ["meshBlock",]:
       theAG = dtOO.vec3dTwoDInMap3dTo3d(
         dtOO.vec3dTwoD.MustConstDownCast(
           cMap.applyAnalyticFunction( self.aF[ii].clone() )
