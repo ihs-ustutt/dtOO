@@ -154,8 +154,6 @@ namespace dtOO {
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h>
 #include <analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h>
 #include <analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h>
-#include <analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.h>
-#include <analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h>
 #include <analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h>
 
 #include <dtTransformerHeaven/dtTransformer.h>
@@ -217,13 +215,10 @@ namespace dtOO {
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h>
-#include <analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h>
-#include <analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
-#include <analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h>
 #include <analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h>
 #include <analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h>
 #include <analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h>
@@ -368,6 +363,10 @@ using namespace dtOO;
   #include <TColgp_module.hxx>
   #include <Standard_Persistent.hxx>
 #endif
+#include <attributionHeaven/floatAtt.h>
+#include <attributionHeaven/geometryGeometryDist.h>
+#include <attributionHeaven/curveCurveDist.h>
+#include <gslMinFloatAttr.h>
 %}
 
 %include <std_except.i>
@@ -436,7 +435,6 @@ namespace dtOO {
   typedef long unsigned int         dtLongUnsInt;
 }
 %include logMe/dtMacros.h
-%include interfaceHeaven/ptrHandling.h
 namespace dtOO {
   class logMe {
     public:
@@ -657,6 +655,13 @@ namespace std {
   %template(vectorConstDtSurface)        vector< ::dtOO::dtSurface const * >;
   %template(vectorConstDtCurve2d)        vector< ::dtOO::dtCurve2d const * >;
   %template(vectorConstDtSurface2d)      vector< ::dtOO::dtSurface2d const * >;
+
+  %extend vector< ::dtOO::dtPoint3 > {
+    vector< ::dtOO::dtPoint3 > __lshift__( ::dtOO::dtPoint3 & right) {
+      $self->push_back(right);
+      return *self;
+    }
+  }
 }
 namespace dtOO { 
   template < typename T >
@@ -978,8 +983,6 @@ namespace dtOO {
 %include analyticFunctionHeaven/aFBuilder/vec3dTwoD_normalOffset.h
 %include analyticFunctionHeaven/aFBuilder/dtPoint3_vec3dTwoD.h
 %include analyticFunctionHeaven/aFBuilder/vec3dTwoD_closeArithmetic.h
-%include analyticFunctionHeaven/aFBuilder/x_vec3dTwoDClosestPointToPoint.h
-%include analyticFunctionHeaven/aFBuilder/x_vec3dClosestPointToPoint.h
 %include analyticFunctionHeaven/aFBuilder/vec3dTransVolThreeD_skinBSplineSurfaces.h
 
 namespace dtOO {
@@ -1075,15 +1078,36 @@ namespace std {
 %include analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h
 %include analyticGeometryHeaven/aGBuilder/map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/map1dTo3d_closeGapsArithmetic.h
-%include analyticGeometryHeaven/aGBuilder/dtPoint3_straightIntersectToMap2dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/map2dTo3d_approximateMap2dTo3dInMap3dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/map2dTo3d_fullExtentInMap3dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/dtPoint3_map2dTo3dPoint.h
-%include analyticGeometryHeaven/aGBuilder/pairU_map1dTo3dClosestPointToMap1dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h
-%include analyticGeometryHeaven/aGBuilder/uvw_map3dTo3dClosestPointToPoint.h
 %include analyticGeometryHeaven/aGBuilder/pairUUV_map1dTo3dClosestPointToMap2dTo3d.h
 %include analyticGeometryHeaven/aGBuilder/float_map1dTo3dPointConstCartesian.h
 %include analyticGeometryHeaven/aGBuilder/trans6SidedCube_splitTrans6SidedCube.h
 %include analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.h
 %include interfaceHeaven/dtBundle.h
+%include attributionHeaven/floatAtt.h
+%include attributionHeaven/geometryGeometryDist.h
+%include attributionHeaven/curveCurveDist.h
+%include gslMinFloatAttr.h
+namespace dtOO {
+  %extend gslMinFloatAttr {
+    gslMinFloatAttr( 
+      floatAtt const * const att,
+      std::vector< dtReal > const & guess,
+      std::vector< dtReal > const & step,
+      dtReal const & precision,
+      dtInt const & maxIterations
+    ) {
+      return new gslMinFloatAttr(
+        dt__pH(floatAtt)(att->clone()), 
+        guess, 
+        step, 
+        precision, 
+        maxIterations
+      );
+    } 
+  }
+}
+

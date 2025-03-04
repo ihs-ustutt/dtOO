@@ -19,7 +19,6 @@ add_subdirectory(meshEngine/tetgen)
 
 SET(HEADERS
   dtLinearAlgebra.h
-  dtAnalysis.h
   RTree.h
   geometryEngine/dtCurve.h
   geometryEngine/dtCurve2d.h
@@ -162,11 +161,10 @@ SET(HEADERS
   pluginEngine/pugg/Kernel.h
   pluginEngine/pugg/Plugin.h
   dtGaussLegendreIntegration.h
-  GSLError.h
+  gslMinFloatAttr.h
 )
 SET(SOURCES
   dtLinearAlgebra.cpp
-  dtAnalysis.cpp
   geometryEngine/dtCurve.cpp
   geometryEngine/dtCurve2d.cpp
   geometryEngine/dtSurface.cpp
@@ -297,6 +295,7 @@ SET(SOURCES
   meshEngine/dtOMMeshManifold.cpp
   meshEngine/dtOMField.cpp
   dtGaussLegendreIntegration.cpp
+  gslMinFloatAttr.cpp
 )
 
 if (FOAMEXT_FOUND OR OpenFOAM_FOUND)

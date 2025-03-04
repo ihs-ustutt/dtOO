@@ -22,7 +22,7 @@ License
 #include <dtOOTypeDef.h>
 
 #include <logMe/dtMacros.h>
-#include "logMe/logMe.h"
+#include <logMe/logMe.h>
 #include "vectorHandling.h"
 #include "lVHOSubject.h"
 #include "lVHOInterface.h"

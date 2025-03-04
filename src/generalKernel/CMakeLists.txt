@@ -80,12 +80,9 @@ SET(HEADERS
   xmlHeaven/aGXmlBuilder/bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.h  
-  xmlHeaven/aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.h
-  xmlHeaven/aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/geomShape_readOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.h
-  xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.h
   xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.h
@@ -116,7 +113,6 @@ SET(HEADERS
   interfaceHeaven/twoDArrayHandling.h
   interfaceHeaven/timeHandling.h
   interfaceHeaven/threadSafe.h
-  interfaceHeaven/threadSafeRoot.h
   interfaceHeaven/meshWhisperer.h
   interfaceHeaven/mpiDistributed.h
   interfaceHeaven/barChart.h
@@ -132,6 +128,17 @@ SET(HEADERS
   logMe/dtParMacros.h
   logMe/logContainer.h
   progHelper.h
+  attributionHeaven/floatAtt.h
+  attributionHeaven/pointGeometryDist.h
+  attributionHeaven/pointCurveDist.h
+  attributionHeaven/pointSurfaceDist.h
+  attributionHeaven/pointGeometryOneDDist.h
+  attributionHeaven/geometryGeometryDist.h
+  attributionHeaven/scaOneDPolyIElSize.h
+  attributionHeaven/vectorFunctionDist.h
+  attributionHeaven/map1dTo3dLength.h
+  attributionHeaven/pointCurve2dOneDDist.h
+  attributionHeaven/curveCurveDist.h
 )
 SET(SOURCES
   xmlHeaven/dtXmlParserBase.cpp
@@ -196,12 +203,9 @@ SET(SOURCES
   xmlHeaven/aGXmlBuilder/bSplineSurface_geomCurveFillConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointPickFromPartConstructOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_pointConstructArcLengthParaOCCAGXmlBuilder.cpp
-  xmlHeaven/aGXmlBuilder/bSplineCurve_straightExtentToSurfaceOCCAGXmlBuilder.cpp
-  xmlHeaven/aGXmlBuilder/vec2dOneDInMap2dTo3d_closestCurveAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomSurface_readStlOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/geomShape_readOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/bSplineCurve_bSplineCurveSplitConstructOCCAGXmlBuilder.cpp
-  xmlHeaven/aGXmlBuilder/geomCurve_map2dTo3dIntersectAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/circle_radiusCoordinateSystemOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/ellipse_radiusRadiusCoordinateSystemOCCAGXmlBuilder.cpp
   xmlHeaven/aGXmlBuilder/compositeSurface_geomSurfaceConnectConstructOCCAGXmlBuilder.cpp
@@ -223,7 +227,6 @@ SET(SOURCES
   interfaceHeaven/renderInterface.cpp
   interfaceHeaven/intHandling.cpp
   interfaceHeaven/timeHandling.cpp
-  interfaceHeaven/threadSafeRoot.cpp
   interfaceHeaven/meshWhisperer.cpp
   interfaceHeaven/barChart.cpp
   interfaceHeaven/lVHOSubject.cpp
@@ -234,6 +237,17 @@ SET(SOURCES
   logMe/logBase.cpp
   logMe/Output2FILE.cpp
   logMe/logMe.cpp
+  attributionHeaven/floatAtt.cpp
+  attributionHeaven/pointGeometryDist.cpp
+  attributionHeaven/pointCurveDist.cpp
+  attributionHeaven/pointSurfaceDist.cpp
+  attributionHeaven/pointGeometryOneDDist.cpp
+  attributionHeaven/geometryGeometryDist.cpp
+  attributionHeaven/scaOneDPolyIElSize.cpp
+  attributionHeaven/vectorFunctionDist.cpp
+  attributionHeaven/map1dTo3dLength.cpp
+  attributionHeaven/pointCurve2dOneDDist.cpp
+  attributionHeaven/curveCurveDist.cpp
 )
 
 APPEND_DTOO_SOURCE(src/generalKernel "${SOURCES}")

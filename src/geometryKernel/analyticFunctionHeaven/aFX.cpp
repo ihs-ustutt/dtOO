@@ -38,7 +38,7 @@ namespace dtOO {
     
   }
   
-  std::vector< dtReal > aFX::stdVector( void ) {
+  std::vector< dtReal > aFX::toStdVector( void ) {
     std::vector< dtReal > ret = std::vector< dtReal >( this->size(), 0. );
     dt__forFromToIndex(0, this->size() , ii ) ret[ ii ] = this->at(ii);
     return ret;

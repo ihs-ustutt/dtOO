@@ -33,7 +33,7 @@ namespace dtOO {
       aFX( const aFY& orig );
       aFX( std::vector< dtReal > const & orig );
       aFX( dtInt const & ss, double const & ref );
-      std::vector< dtReal > stdVector( void );
+      std::vector< dtReal > toStdVector( void );
   };
 }
 #endif	/* aFX_H */

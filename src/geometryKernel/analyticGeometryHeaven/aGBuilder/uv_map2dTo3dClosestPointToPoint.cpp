@@ -16,84 +16,48 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "uv_map2dTo3dClosestPointToPoint.h"
+#include "dtLinearAlgebra.h"
 
+#include <boost/assign/list_of.hpp>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-#include <dtAnalysis.h>
-#include <Math/Functor.h>
+#include <attributionHeaven/pointGeometryDist.h>
+#include <gslMinFloatAttr.h>
 #include <boost/assign.hpp>
+#include <vector>
 
 namespace dtOO {
-	uv_map2dTo3dClosestPointToPoint
-    ::uv_map2dTo3dClosestPointToPoint(
-      map2dTo3d const * const m2d, dtPoint3 const & pXYZ
-	) : _m2d(*m2d), _pXYZ(pXYZ) {
-    //
-    // init
-    //
-    _closestUV = ( _m2d % dtPoint2(0.5, 0.5) );
-    _distance = dtLinearAlgebra::distance( _pXYZ, _m2d.getPoint( _closestUV ) );
-    
-    std::vector< dtReal > initGuess = ::boost::assign::list_of(0.5)(0.0)(1.0);
-    dt__forAllRefAuto(initGuess, aGuessU) {
-      dt__forAllRefAuto(initGuess, aGuessV) {
-        // 
-        // multidimensional minimization
-        //
-        dt__pH(dtMinimizer) min(
-          dtAnalysis::createMinimizer(":Minuit2::kMigrad:")
-        );
-        ::ROOT::Math::Functor toMin(
-          this, &uv_map2dTo3dClosestPointToPoint::F, 2
-        );			
-        min->SetFunction(toMin);          
+	uv_map2dTo3dClosestPointToPoint::uv_map2dTo3dClosestPointToPoint(
+    map2dTo3d const * const m2d, dtPoint3 const & pXYZ
+	) {
+    gslMinFloatAttr md(
+      dt__pH(pointGeometryDist)(new pointGeometryDist(pXYZ, m2d)),
+      ::std::vector< dtPoint2 >(
+        ::boost::assign::list_of
+          (dtPoint2(0.5, 0.5))
+          (dtPoint2(0.0, 0.5))
+          (dtPoint2(1.0, 0.5))
+          (dtPoint2(0.5, 0.0))
+          (dtPoint2(0.0, 0.0))
+          (dtPoint2(1.0, 0.0))
+          (dtPoint2(0.5, 1.0))
+          (dtPoint2(0.0, 1.0))
+          (dtPoint2(1.0, 1.0))
+      ),
+      dtPoint2(0.001, 0.001),
+      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
+    );
+    md.perform();
+    _closestUV = m2d->uv_percent( 
+      dtPoint2(md.result()[0], md.result()[1]) 
+    );
+    _distance
+    =
+    dtLinearAlgebra::distance(
+      m2d->getPoint(_closestUV),
+      pXYZ
+    );
 
-        //
-        // set bounds
-        //
-        min->SetVariable( 0, "U", aGuessU, 0.01 );
-        min->SetVariableLimits(0, 0., 1.);
-        min->SetVariable( 1, "V", aGuessV, 0.01 );
-        min->SetVariableLimits(1, 0., 1.);
-
-
-        //
-        // minimizer options
-        //        
-        min->SetMaxFunctionCalls(1000000);
-        min->SetMaxIterations(1000);
-        min->SetTolerance( 1.e-8 );			
-        min->SetPrintLevel(
-          staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel") 
-        );
-
-        //
-        // minimize
-        //
-        min->Minimize();
-        double const * const theRoot = min->X();
-
-        if (
-          dtLinearAlgebra::distance( 
-            _pXYZ, 
-            _m2d.getPoint( _m2d % dtPoint2(theRoot[0], theRoot[1]) ) 
-          )
-          <
-          _distance
-        ) {
-          _closestUV = ( _m2d % dtPoint2(theRoot[0], theRoot[1]) );
-          _distance 
-          = 
-          dtLinearAlgebra::distance( _pXYZ, _m2d.getPoint( _closestUV ) );
-          //
-          // iteration reaches geometry tolerance
-          //
-          if ( analyticGeometry::inXYZTolerance(_distance) ) {
-            return;
-          }
-        }
-      }
-    }
 	}
 
 	uv_map2dTo3dClosestPointToPoint::~uv_map2dTo3dClosestPointToPoint() {
@@ -106,12 +70,4 @@ namespace dtOO {
   dtReal uv_map2dTo3dClosestPointToPoint::distance( void ) {
     return _distance;  
   }
-  
-	double uv_map2dTo3dClosestPointToPoint::F(
-    double const * xx
-  ) const {	
-    return dtLinearAlgebra::length( 
-      _m2d.getPointPercent(xx[0], xx[1]) - _pXYZ 
-    );
-	}    
 }

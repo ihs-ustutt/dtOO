@@ -58,17 +58,9 @@ namespace dtOO {
         boundedVolume * attachTo
       );    
       virtual void preUpdate( void );
-      double FFirstLast( double const * xx );
-      std::vector< dtReal > perform(
-        dtGmshEdge * aEdge,
-        double (bVOSetPrescribedElementSize::*fPtr)(double const * xx) 
-      );
     private:
       analyticFunctionCompoundTrojanHorse< scaOneDPolyInterface > _grading;
       dt__pH(scaOneDPolyInterface) _polyI;
-      dtReal _ll;
-      dtReal _checkXFirst;
-      dtReal _checkXLast;
       static bool _registrated;
   };
 }

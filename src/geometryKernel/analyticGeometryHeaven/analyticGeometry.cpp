@@ -459,6 +459,6 @@ namespace dtOO {
   bool analyticGeometry::equal( analyticGeometry const * const other) const {    
     return this->equal(*other);
   }
-  
+
   dt__C_addCloneForpVH(analyticGeometry);
 }

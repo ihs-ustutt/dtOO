@@ -27,9 +27,6 @@ License
 #include <boundedVolume.h>
 #include <meshEngine/dtGmshModel.h>
 
-#include <TDatime.h>
-#include <TRandom3.h>
-
 #include <meshEngine/dtGmshModel.h>
 #include <meshEngine/dtGmshRegion.h>
 #include <gmsh/MVertex.h>
@@ -39,6 +36,7 @@ License
 #include <gmsh/MPrism.h>
 #include <gmsh/MElementOctree.h>
 #include "bVOInterfaceFactory.h"
+#include <cstdlib>
 
 namespace dtOO {  
   bool bVOEvilGodfather::_registrated 
@@ -138,11 +136,6 @@ namespace dtOO {
       ::MElementOctree oct(me);
     
       //
-      // random generator
-      //
-      ::TRandom3 rand( ::TDatime().Get() );
-      
-      //
       // tetrahedra
       //
       std::vector< bool > perturbedTet(tet.size(), false);
@@ -154,7 +147,7 @@ namespace dtOO {
       dt__forFromToIndex( 0, static_cast< dtInt >( _perTet * tet.size() ), ii ) {
         logContainer< bVOEvilGodfather > logC( logDEBUG, "postUpdate()" );
         
-        dtInt toPerturb = rand.Integer( tet.size() );        
+        dtInt toPerturb = rand() % (tet.size() + 1); //rand.Integer( tet.size() );        
         //
         // check if already perturbed
         //
@@ -275,7 +268,7 @@ namespace dtOO {
       dt__forFromToIndex( 0, static_cast< dtInt >( _perHex * hex.size() ), ii ) {
         logContainer< bVOEvilGodfather > logC( logDEBUG, "postUpdate()" );
         
-        dtInt toPerturb = rand.Integer( hex.size() );
+        dtInt toPerturb = rand() % (hex.size()+1);//rand.Integer( hex.size() );
         //
         // check if already perturbed
         //

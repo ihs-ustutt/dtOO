@@ -25,13 +25,8 @@ License
 #include <interfaceHeaven/calculationTypeHandling.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <solid2dLine.h>
-#include <RConfigure.h>
-#include <Rtypes.h>
-#include <Math/GSLMinimizer.h>
-#include <Math/GSLRootFinder.h>
-#include <Math/RootFinderAlgorithms.h>
-#include <Math/Functor.h>
-#include <GSLError.h>
+#include <attributionHeaven/pointCurve2dOneDDist.h>
+#include <gslMinFloatAttr.h>
 
 namespace dtOO {
   scaCurve2dOneD::scaCurve2dOneD() : scaOneD() {
@@ -77,16 +72,6 @@ namespace dtOO {
   scaCurve2dOneD::~scaCurve2dOneD() {
   }
 
-	double scaCurve2dOneD::funValue(const double xx ) const {	
-		dtPoint2 pp = _dtC2d->point( static_cast<dtReal>(xx) );
-		return static_cast< double >( _tmpX - pp.x() );
-	}
-
-	double scaCurve2dOneD::diffFunValue(const double xx ) const {
-		dtVector2 der = _dtC2d->firstDer( static_cast<dtReal>(xx) );
-		return static_cast< double >( der.y() / der.x() );
-	}	
-	
   dtReal scaCurve2dOneD::YFloat(dtReal const & xx) const {
 		bool mustIterate = true;
 		dtReal theRoot;
@@ -112,58 +97,19 @@ namespace dtOO {
 			}
 		}
 		if (mustIterate) {
-			_tmpX = xx;
-
-			// Create the Integrator
-			bool check = false;
-			ROOT::Math::Roots::Bisection bisectF;
-			ROOT::Math::Functor1D f0(this, &scaCurve2dOneD::funValue );
-
-			if (
-				(funValue(_dtC2d->minU()) < 0.0 && funValue(_dtC2d->maxU()) < 0.0) 
-				|| (funValue(_dtC2d->minU()) > 0.0 && funValue(_dtC2d->maxU()) > 0.0) 
-			) {
-
-			}
-			else {
-				check 
-				= 
-				bisectF.SetFunction(
-					f0,
-					static_cast<double>(_dtC2d->minU()), 
-					static_cast<double>(_dtC2d->maxU())
-				); 
-			}
-
-			if ( check ) {
-				check = bisectF.Solve();
-			}
-
-			if ( !check ) {
-				ROOT::Math::GradFunctor1D f1(this, &scaCurve2dOneD::funValue, &scaCurve2dOneD::diffFunValue );
-				ROOT::Math::Roots::Newton newtonF;
-				check 
-				= 
-				newtonF.SetFunction(
-					f1,
-					static_cast<double>(_dtC2d->minU() + .5*(_dtC2d->maxU() - _dtC2d->minU()))
-				); 
-
-				if (check) {
-					check = newtonF.Solve();
-				}
-				if ( !check ) {
-					dt__throw(
-						YFloat(), 
-						<< dt__eval(check) << std::endl
-						<< dt__eval(getLabel()) 
-					);			
-				}
-				theRoot = newtonF.Root();
-			}
-			else {
-				theRoot = bisectF.Root();
-			}
+      gslMinFloatAttr md(
+        dt__pH(pointCurve2dOneDDist)(
+          new pointCurve2dOneDDist(xx, _dtC2d.get(), 0)
+        ),
+        0.5,
+        0.001,
+        staticPropertiesHandler::getInstance()->getOptionFloat(
+          "xyz_resolution"
+        )
+      );
+      md.perform();
+      dt__throwIf(!md.converged(), YFloat());
+      theRoot = _dtC2d->u_uPercent( md.result()[0] );
 		}
 
 		//

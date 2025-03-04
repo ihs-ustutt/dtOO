@@ -18,6 +18,7 @@ License
 #include "map2dTo3d.h"
 
 #include <logMe/logMe.h>
+#include <logMe/logContainer.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include "map1dTo3d.h"
 #include <interfaceHeaven/twoDArrayHandling.h>
@@ -35,8 +36,9 @@ License
 #include "vec2dOneDInMap2dTo3d.h"
 #include "vec2dTwoDInMap2dTo3d.h"
 
-#include <dtAnalysis.h>
-#include <Math/Functor.h>
+#include <boost/assign/list_of.hpp>
+#include <attributionHeaven/pointGeometryDist.h>
+#include <gslMinFloatAttr.h>
 
 namespace dtOO {  
   dtReal map2dTo3d::_deltaPer 
@@ -216,119 +218,27 @@ namespace dtOO {
 	}
   
   dtPoint2 map2dTo3d::reparamOnFace(dtPoint3 const & ppXYZ) const {
-    double X = ppXYZ.x();
-    double Y = ppXYZ.y();
-    double Z = ppXYZ.z();
-    double U;
-    double V;
-    double UBest = 1.E+99;
-    double VBest = 1.E+99;
-//    dtInt const NumInitGuess = 11;
-//    double initU[NumInitGuess] 
-//    = 
-//    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
-//    double initV[NumInitGuess] 
-//    = 
-//    {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};    
-    dtInt const NumInitGuess = 3;
-    double initU[NumInitGuess] = {0.5, 0.75, 0.25};
-    double initV[NumInitGuess] = {0.5, 0.75, 0.25};
-    dtInt maxRestarts 
-    = 
-    staticPropertiesHandler::getInstance()->getOptionInt("reparam_restarts");
-    dtInt maxInternalRestarts 
-    = 
-    staticPropertiesHandler
-      ::getInstance()->getOptionInt("reparam_internalRestarts");    
-    dtReal restartIncreasePrec
-    = 
-    staticPropertiesHandler::getInstance()->getOptionFloat(
-      "reparam_restartIncreasePrecision"
+    gslMinFloatAttr md(
+      dt__pH(pointGeometryDist)(new pointGeometryDist(ppXYZ, this)),
+      std::vector< dtPoint2 >(
+        ::boost::assign::list_of
+          (dtPoint2(0.50, 0.50))
+          (dtPoint2(0.75, 0.50))
+          (dtPoint2(0.25, 0.50))
+          (dtPoint2(0.50, 0.75))
+          (dtPoint2(0.75, 0.75))
+          (dtPoint2(0.25, 0.75))
+          (dtPoint2(0.50, 0.25))
+          (dtPoint2(0.75, 0.25))
+          (dtPoint2(0.25, 0.25))
+      ), 
+      dtPoint2(0.001, 0.001),
+      staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
+      1000
     );
-    dtReal internalRestartDecreasePrec
-    = 
-    staticPropertiesHandler::getInstance()->getOptionFloat(
-      "reparam_internalRestartDecreasePrecision"
-    );    
-    dtReal currentPrec = 1.;
-    dtReal dist = 1.E+99;
-    dt__forFromToIndex(0, maxRestarts+1, thisRun) {
-      dt__forFromToIndex(0, NumInitGuess, ii) {
-        dt__forFromToIndex(0, NumInitGuess, jj) {       
-          //
-          // do reparameterization
-          //
-
-          U = initU[ii];
-          V = initV[jj];
-
-          dt__forFromToIndex(0, maxInternalRestarts, thisRestart) {
-            double stepU = .01;
-            double stepV = .01;
-            double prec = 1.;
-            double uMin = 0.;
-            double uMax = 1.;
-            double vMin = 0.;
-            double vMax = 1.;            
-            try {
-              XYZtoUVPercent(
-                X, Y, Z, 
-                U, V, uMin, uMax, vMin, vMax, 
-                stepU, stepV, prec
-              );
-            }
-            catch( eGeneral & eGen ) {
-              dt__warning(
-                reparamOnFace(),
-                << logMe::dtFormat(
-                  "Error for initU = %12.4e initV = %12.4e at internalRestart = %i"
-                ) 
-                % initU[ii] % initV[jj] % thisRestart 
-                << std::endl
-                << "eGen.what() = " << eGen.what()
-              );
-            }
-            //
-            // increase precision for restart
-            //
-            prec = internalRestartDecreasePrec * prec;
-            dtPoint3 tP = getPointPercent(U,V);
-            //
-            // check if point is precise enough
-            //
-            dtReal cDist;
-            if (
-              analyticGeometry::inXYZTolerance(
-                ppXYZ, tP, &cDist, false, currentPrec
-              )
-            ) return uv_percent( dtPoint2(U, V) );
-            if (cDist <= dist) {
-              UBest = U;
-              VBest = V;
-              dist = cDist;
-            }
-          }
-        }
-      }
-      dt__warning(
-        reparamOnFace(), 
-        << "Increasing reparamOnFace tolerance. Multiply initial precision by "
-        << restartIncreasePrec * currentPrec
-      );        
-      currentPrec = restartIncreasePrec * currentPrec;
-    }
-    dt__throw(
-      reparamOnFace(), 
-      << "Reparameterization of " << dt__point3d(ppXYZ) << " fails." 
-      << std::endl
-      << "(0,0) -> " << getPointPercent(0,0) << std::endl
-      << "(1,0) -> " << getPointPercent(1,0) << std::endl
-      << "(0,1) -> " << getPointPercent(0,1) << std::endl
-      << "(1,1) -> " << getPointPercent(1,1) << std::endl
-      << "UBest = " << UBest << std::endl
-      << "VBest = " << VBest << std::endl
-      << "dist = " << dist << std::endl
-      << dumpToString()
+    md.perform();
+    return uv_percent(
+      dtPoint2( md.result()[0], md.result()[1] )
     );
   }
 
@@ -501,15 +411,21 @@ namespace dtOO {
 	  return dd;
 	}
 	
-  dtVector3 map2dTo3d::secondDerUU( dtReal const & uu, dtReal const & vv) const {
+  dtVector3 map2dTo3d::secondDerUU( 
+    dtReal const & uu, dtReal const & vv
+  ) const {
 		return secondDer(uu, vv)[0];
   }
   
-  dtVector3 map2dTo3d::secondDerVV( dtReal const & uu, dtReal const & vv) const {
+  dtVector3 map2dTo3d::secondDerVV( 
+    dtReal const & uu, dtReal const & vv
+  ) const {
 		return secondDer(uu, vv)[2];
   }
   
-  dtVector3 map2dTo3d::secondDerUV( dtReal const & uu, dtReal const & vv) const {
+  dtVector3 map2dTo3d::secondDerUV( 
+    dtReal const & uu, dtReal const & vv
+  ) const {
 		return secondDer(uu, vv)[1];
   }
   
@@ -715,260 +631,6 @@ namespace dtOO {
 		return segmentRectangle(uv_percent(p0), uv_percent(p1));
 	}
 	
-//  bool map2dTo3d::XYZtoUVPercentGmsh(
-//    double X, double Y, double Z, double &U, double &V, 
-//    double const uMin, double const uMax, 
-//    double const vMin, double const vMax, 
-//    double const stepU, double const stepV, double const prec
-//  ) const {
-//    double const Precision
-//    =
-//    static_cast<double>(
-//      staticPropertiesHandler::getInstance()->getOptionFloat(
-//        "reparamOnFace_precision"
-//      )
-//    );      
-//    double const precXYZ
-//    =
-//    static_cast<double>(
-//      staticPropertiesHandler::getInstance()->getOptionFloat(
-//        "reparamOnFace_precisionXYZ"
-//      )
-//    );      		
-//    const dtInt MaxIter = 25;
-//    const dtInt NumInitGuess = 11;
-//
-//    double Unew = 0., Vnew = 0., err, err2;
-//    dtInt iter;
-//      double umin, umax, vmin, vmax;
-//    // don't use 0.9, 0.1 it fails with ruled surfaces
-//    double initu[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
-//    double initv[NumInitGuess] = {0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 1.0, 0.0};
-//
-//    umin = uMin;//static_cast<double>(getUMin());
-//    umax = uMax;//static_cast<double>(getUMax());
-//		double udiff = umax - umin;
-//		umax = umax + 0.1*udiff;
-//		umin = umin - 0.1*udiff;		
-//    vmin = vMin;//static_cast<double>(getVMin());
-//    vmax = vMax;//static_cast<double>(getVMax());
-//		double vdiff = vmax - vmin;
-//		vmax = vmax + 0.1*vdiff;
-//		vmin = vmin - 0.1*vdiff;		
-//    const double tol = Precision * ((umax-umin)*(umax-umin) + (vmax-vmin)*(vmax-vmin));
-//    const double relax = prec;
-//		
-//    for(int i = 0; i < NumInitGuess; i++) {
-//      initu[i] = umin + initu[i] * (umax - umin);
-//      initv[i] = vmin + initv[i] * (vmax - vmin);
-//    }
-//
-//    for(int i = 0; i < NumInitGuess; i++){
-//		  U = initu[i];			
-//      for(int j = 0; j < NumInitGuess; j++){
-//		    V = initv[j];				
-//			  err = 1.0;
-//				iter = 1;				
-//        
-//				try {
-//					dtPoint3 P = getPoint(static_cast<dtReal>(U), static_cast<dtReal>(V));
-//					err2 
-//          = 
-//          sqrt(
-//            (X - P.x())*(X - P.x()) 
-//            + 
-//            (Y - P.y())*(Y - P.y()) 
-//            + 
-//            (Z - P.z())*(Z - P.z())
-//          );
-//		//      if (err2 < 1.e-8 * CTX::instance()->lc) return;
-//
-//					while(err > tol && iter < MaxIter) {
-//						P = getPoint(static_cast<dtReal>(U), static_cast<dtReal>(V));
-//						dtVector3 derU = firstDerU(static_cast<dtReal>(U), static_cast<dtReal>(V));
-//						dtVector3 derV = firstDerV(static_cast<dtReal>(U), static_cast<dtReal>(V));
-//						dtMatrix mat(2,3);
-//						mat(0,0) = derU.x(); mat(0,1) = derU.y(); mat(0,2) = derU.z();
-//						mat(1,0) = derV.x(); mat(1,1) = derV.y(); mat(1,2) = derV.z();
-//						dtMatrix jac = dtLinearAlgebra::invert2x3Matrix(mat);
-//
-//						Unew = U + relax *
-//							(jac(0,0) * (X - P.x()) + jac(1,0) * (Y - P.y()) +
-//							 jac(2,0) * (Z - P.z()));
-//						Vnew = V + relax *
-//							(jac(0,1) * (X - P.x()) + jac(1,1) * (Y - P.y()) +
-//							 jac(2,1) * (Z - P.z()));
-////						dtMatrix mat(3,2);
-////						mat(0,0) = derU.x(); mat(1,0) = derU.y(); mat(2,0) = derU.z();
-////						mat(0,1) = derV.x(); mat(1,1) = derV.y(); mat(2,1) = derV.z();
-////						dtMatrix jac = dtLinearAlgebra::invertMatrix(mat);
-////
-////						Unew = U + relax *
-////							(jac(0,0) * (X - P.x()) + jac(0,1) * (Y - P.y()) +
-////							 jac(0,2) * (Z - P.z()));
-////						Vnew = V + relax *
-////							(jac(1,0) * (X - P.x()) + jac(1,1) * (Y - P.y()) +
-////							 jac(1,2) * (Z - P.z()));
-//
-//						// don't remove this test: it is important
-//						if((Unew > umax+tol || Unew < umin-tol) ||
-//							 (Vnew > vmax+tol || Vnew < vmin-tol)) {
-//							break;
-//						}
-//
-//						if ( isnan(Unew) ) break;
-//						if ( isnan(Vnew) ) break;
-//						
-//						err = (Unew - U)*(Unew - U) + (Vnew - V)*(Vnew - V);
-//						err2 //= sqrt(SQU(X - P.x()) + SQU(Y - P.y()) + SQU(Z - P.z()));
-//            =
-//            sqrt(
-//              (X - P.x())*(X - P.x()) 
-//              + 
-//              (Y - P.y())*(Y - P.y()) 
-//              + 
-//              (Z - P.z())*(Z - P.z())
-//            );
-//
-//						iter++;
-//						U = Unew;
-//						V = Vnew;
-//					}
-//
-////					itVal.push_back( static_cast<dtReal>(i) );
-////					itVal.push_back( static_cast<dtReal>(j) );
-////					itVal.push_back( static_cast<dtReal>(err2) );
-////					itVal.push_back( static_cast<dtReal>(err) );
-////					itVal.push_back( static_cast<dtReal>(iter) );
-//						
-//					bool inRange = (Unew <= umax) && (Vnew <= vmax) 
-//					               && (Unew >= umin) && (Vnew >= vmin);
-//					bool uvConv = (err <= tol);
-//					bool xyzConv = (err2 <= precXYZ);
-//					
-//					if( ( (iter<MaxIter) && inRange && xyzConv ) 
-//						|| ( (iter<MaxIter) && inRange && uvConv )  
-//						) {
-////						itVal.clear();
-////						itVal.push_back(static_cast<dtReal>(Unew) );
-////						itVal.push_back(static_cast<dtReal>(Vnew) );
-////						itVal.push_back(static_cast<dtReal>(err2) );
-////						itVal.push_back(static_cast<dtReal>(err) );
-////						itVal.push_back(static_cast<dtReal>(tol) );            
-//
-//						return true;
-//					}
-//			  }
-//				catch (eGeneral & eGenRef) {
-////					eGenRef.clear();
-////					itVal.clear();
-//					dt__warning(
-//						XYZtoUV(), 
-//						<< "Break initial guess (" << i << ", " << j 
-//						<< ") and try next one." << std::endl
-//						<< eGenRef.what());
-////					itVal.push_back( static_cast<dtReal>(i) );
-////					itVal.push_back( static_cast<dtReal>(j) );
-////					itVal.push_back( static_cast<dtReal>(err2) );
-////					itVal.push_back( static_cast<dtReal>(err) );
-////					itVal.push_back( static_cast<dtReal>(iter) );					
-//					break;
-//				}				
-//      }
-//    }
-//
-////    if(relax < 1.e-6) {
-////      dt__info(XYZtoUV(), << "Could not converge: surface mesh could be wrong");
-////      return false;
-////    }
-////    else {
-////      return XYZtoUV(X, Y, Z, U, V, 0.75 * relax, itVal);
-////    }
-//    U = percent_u( U );
-//    V = percent_v( V );
-//    
-//    return true;
-//  }
-  
-  bool map2dTo3d::XYZtoUVPercent(
-    double X, double Y, double Z, double &U, double &V, 
-    double const uMin, double const uMax, double const vMin, double const vMax, 
-    double const stepU, double const stepV, double const prec
-  ) const {
-    _pXYZ = dtPoint3(X, Y, Z);
-    
-		// 
-		// multidimensional minimization
-		//
-    dt__pH(dtMinimizer) min(
-      dtAnalysis::createMinimizer(
-        staticPropertiesHandler::getInstance()->getOption(
-          "reparamOnFace_minimizer"
-        )
-      )
-    );      
-		::ROOT::Math::Functor toMin(
-			this, &map2dTo3d::F, 2 
-		);			
-		min->SetFunction(toMin);
-
-		//
-		// set bounds
-		//
-    min->SetVariable( 0, "U", U, stepU );
-    min->SetVariableLimits(0, uMin, uMax);	
-    min->SetVariable( 1, "V", V, stepV );
-    min->SetVariableLimits(1, vMin, vMax);	
-    
-		//
-		// minimizer options
-		//        
-		min->SetMaxFunctionCalls(
-      staticPropertiesHandler::getInstance()->getOptionInt(
-        "root_maxFunctionCalls"
-      )        
-    );
-		min->SetMaxIterations(
-      staticPropertiesHandler::getInstance()->getOptionInt(
-        "root_maxIterations"
-      )      
-    );
-		min->SetTolerance(
-      staticPropertiesHandler::getInstance()->getOptionFloat(
-        "reparamOnFace_precision"
-      ) * prec
-    );			
-		min->SetPrintLevel(
-      staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel") 
-    );
-    
-		//
-		// minimize
-		//
-   	bool converged = min->Minimize();
-
-    double const * const theRoot = min->X();
-
-    U = theRoot[0];//std::max<double>( std::min<double>( theRoot[0], getUMax() ), getUMin());
-    V = theRoot[1];//std::max<double>( std::min<double>( theRoot[1], getVMax() ), getVMin());
-    
-    return converged;
-	}
-  
-	double map2dTo3d::F(double const * xx) const {
-    return dtLinearAlgebra::length( 
-      _pXYZ - getPointPercent( dtPoint2(xx[0], xx[1]) ) 
-    );
-	}	   	
-
-	double map2dTo3d::FWrap(double const & x0, double const & x1) const {	
-    std::vector< double > uv(2);
-    uv[0] = x0;
-    uv[1] = x1;
-    
-    return F(&(uv[0]));
-	}	   
-  
 	dtPoint2 map2dTo3d::operator%(const dtPoint2 &percent) const {
 		return dtPoint2( this->uv_percent(percent) );
 	}

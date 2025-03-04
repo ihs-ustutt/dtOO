@@ -16,53 +16,35 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "u_geomCurveClosestPoint.h"
+#include "logMe/logMe.h"
 
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <geometryEngine/dtCurve.h>
-#include <dtAnalysis.h>
-#include <Math/Functor.h>
+#include <attributionHeaven/pointCurveDist.h>
+#include <gslMinFloatAttr.h>
 
 namespace dtOO {
-	u_geomCurveClosestPoint
-    ::u_geomCurveClosestPoint(
+	u_geomCurveClosestPoint::u_geomCurveClosestPoint(
       dtCurve const * const dtC, dtPoint3 const & pXYZ
-	) : _dtC(*dtC), _pXYZ(pXYZ) {
-
-    // 
-    // multidimensional minimization
-    //
-    dt__pH(dtMinimizer) min(
-      dtAnalysis::createMinimizer(":Minuit2::kMigrad:")
+	) {
+    dtReal const xyzResolution
+    =
+    staticPropertiesHandler::getInstance()->getOptionFloat(
+      "xyz_resolution"
     );
-    ::ROOT::Math::Functor toMin(
-      this, &u_geomCurveClosestPoint::F, 1
-    );			
-    min->SetFunction(toMin);          
-    
-    //
-    // set bounds
-    //
-    min->SetVariable( 0, "U", 0.5, 0.01 );
-    min->SetVariableLimits(0, 0., 1.);
 
-    
-    //
-    // minimizer options
-    //        
-    min->SetMaxFunctionCalls(1000000);
-    min->SetMaxIterations(1000);
-    min->SetTolerance( 1.e-8 );			
-    min->SetPrintLevel(
-      staticPropertiesHandler::getInstance()->getOptionInt("root_printLevel") 
-    );
-    
     //
     // minimize
     //
-    min->Minimize();
-    double const * const theRoot = min->X();
-    
-    _closestU = _dtC.u_uPercent( theRoot[0] );
+    gslMinFloatAttr gmf(
+      dt__pH(pointCurveDist)(new pointCurveDist(pXYZ, dtC)),
+      0.5,
+      0.001,
+      xyzResolution
+    );
+    gmf.perform();
+
+    _closestU = dtC->u_uPercent( gmf.result()[0] );
 	}
 
 	u_geomCurveClosestPoint::~u_geomCurveClosestPoint() {
@@ -71,12 +53,4 @@ namespace dtOO {
 	dtReal u_geomCurveClosestPoint::result( void ) {
 		return _closestU;
 	}
-  
-	double u_geomCurveClosestPoint::F(
-    double const * xx
-  ) const {	
-    return dtLinearAlgebra::length( 
-      _dtC.pointPercent(xx[0]) - _pXYZ 
-    );
-	}    
 }

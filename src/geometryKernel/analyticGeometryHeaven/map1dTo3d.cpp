@@ -22,13 +22,8 @@ License
 #include <interfaceHeaven/ptrHandling.h>
 #include <solid3dLine.h>
 
-#include <RConfigure.h>
-#include <Rtypes.h>
-#include <Math/GSLMinimizer.h>
-#include <Math/GSLRootFinder.h>
-#include <Math/RootFinderAlgorithms.h>
-#include <Math/Functor.h>
-#include <GSLError.h>
+#include <attributionHeaven/map1dTo3dLength.h>
+#include <gslMinFloatAttr.h>
 
 #include <analyticFunctionHeaven/scaLinearOneD.h>
 #include "scaOneDInMap1dTo3d.h"
@@ -207,49 +202,29 @@ namespace dtOO {
 	}
 	
   dtReal map1dTo3d::u_l( dtReal const & ll ) const {
-		bool mustIterate = true;
 		dtReal lMax = length();
 		dtReal theRoot;
 
 		if ( floatHandling::isSmall(ll) || (ll<0.) ) { 
-			mustIterate = false;
 			theRoot = getUMin();
 		}
 		else if ( floatHandling::isSmall(lMax-ll) || (ll>lMax) ) {
-			mustIterate = false;
 			theRoot = getUMax();
+    }
+    else {
+      gslMinFloatAttr md(
+        dt__pH(map1dTo3dLength)(new map1dTo3dLength(this, ll)),
+        0.5,
+        0.001,
+        staticPropertiesHandler::getInstance()->getOptionFloat(
+          "xyz_resolution"
+        )
+      );
+      md.perform();
+      dt__throwIf(!md.converged(), u_l());
+      theRoot = md.result()[0];
 		}
-		
-		if (mustIterate) {
-			_tmpL = ll;
-
-			// Create the Integrator
-			bool check = false;
-			ROOT::Math::Roots::Bisection bisectF;
-			ROOT::Math::Functor1D f0(this, &map1dTo3d::funValue );
-
-			check 
-			= 
-			bisectF.SetFunction(
-				f0, static_cast<double>(getUMin()), static_cast<double>(getUMax())
-			); 
-
-			if ( check ) {
-				check = bisectF.Solve();
-			}
-			else {
-				dt__throw(u_l(), << "No iteration possible.");
-			}
-			theRoot = bisectF.Root();
-		}
-
-//		dt__info(
-//			u_l(),
-//			<< logMe::dtFormat(
-//			     "mustIterate = %i, ll=%f, theRoot = %f, |ll-l_u(theRoot)| = %f"
-//				 ) % mustIterate % ll % theRoot % fabs(ll-l_u(theRoot)) 
-//		);		
-	  return theRoot;
+	  return u_percent( theRoot );
   }
 	
   dtReal map1dTo3d::operator%(const dtReal &percent) const {

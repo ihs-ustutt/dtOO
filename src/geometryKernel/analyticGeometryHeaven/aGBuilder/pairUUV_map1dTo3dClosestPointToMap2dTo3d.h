@@ -22,7 +22,6 @@ License
 
 #include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
-#include <vector>
 
 namespace dtOO {
   class map1dTo3d;
@@ -37,11 +36,7 @@ namespace dtOO {
       virtual ~pairUUV_map1dTo3dClosestPointToMap2dTo3d();
       std::pair< dtReal, dtPoint2 > result( void );
     private:
-      double F(double const * xx) const;    
-    private:
       std::pair< dtReal, dtPoint2 > _closestUUV;
-      map1dTo3d const & _m1d;
-      map2dTo3d const & _m2d;
   };
 }
 #endif	/* pairUUV_map1dTo3dClosestPointToMap2dTo3d_H */
