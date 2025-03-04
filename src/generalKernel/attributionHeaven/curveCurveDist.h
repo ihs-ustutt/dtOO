@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,38 +16,36 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef curveCurveDist_H
-#define	curveCurveDist_H
+#define curveCurveDist_H
 
 #include <dtOOTypeDef.h>
 
-#include <dtLinearAlgebra.h>
-#include <logMe/logMe.h>
-#include <logMe/dtMacros.h>
 #include "floatAtt.h"
+#include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 
-namespace dtOO { 
-  class dtCurve;
+namespace dtOO {
+class dtCurve;
 
-  class curveCurveDist : public floatAtt {
-    public:  
-      dt__classOnlyName(curveCurveDist);
-      curveCurveDist(
-        dtCurve const * const c0,
-        dtCurve const * const c1
-      );
-      virtual ~curveCurveDist();
-      curveCurveDist( curveCurveDist const & orig );
-      virtual curveCurveDist * clone( void ) const;
-      virtual dtReal operator()( std::vector< dtReal > const & xx ) const;
-      //
-      // get properties
-      //
-      virtual dtInt const & dimension() const;
-    private:
-      dtCurve const * const _c0;
-      dtCurve const * const _c1;
-      dtInt const _dimension;
-  };
-  dt__H_addCloneForpVH(curveCurveDist);
-}
-#endif	/* curveCurveDist_H */
+class curveCurveDist : public floatAtt {
+public:
+  dt__classOnlyName(curveCurveDist);
+  curveCurveDist(dtCurve const *const c0, dtCurve const *const c1);
+  virtual ~curveCurveDist();
+  curveCurveDist(curveCurveDist const &orig);
+  virtual curveCurveDist *clone(void) const;
+  virtual dtReal operator()(std::vector<dtReal> const &xx) const;
+  //
+  // get properties
+  //
+  virtual dtInt const &dimension() const;
+
+private:
+  dtCurve const *const _c0;
+  dtCurve const *const _c1;
+  dtInt const _dimension;
+};
+dt__H_addCloneForpVH(curveCurveDist);
+} // namespace dtOO
+#endif /* curveCurveDist_H */

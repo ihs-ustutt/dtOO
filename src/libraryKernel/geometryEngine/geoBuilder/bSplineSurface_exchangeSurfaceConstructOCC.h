@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,28 +16,27 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bSplineSurface_exchangeSurfaceConstructOCC_H
-#define	bSplineSurface_exchangeSurfaceConstructOCC_H
+#define bSplineSurface_exchangeSurfaceConstructOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtSurface;
-  
-  class bSplineSurface_exchangeSurfaceConstructOCC {
-  public:
-    dt__classOnlyName(bSplineSurface_exchangeSurfaceConstructOCC);
-    bSplineSurface_exchangeSurfaceConstructOCC( 
-      dtSurface const * const dtS
-    );
-    virtual ~bSplineSurface_exchangeSurfaceConstructOCC();
-    dtSurface * result( void );
-  private:
-    ptrHandling< dtSurface > _dtS;
-  };
-}
-#endif	/* bSplineSurface_exchangeSurfaceConstructOCC_H */
+class dtSurface;
+
+class bSplineSurface_exchangeSurfaceConstructOCC {
+public:
+  dt__classOnlyName(bSplineSurface_exchangeSurfaceConstructOCC);
+  bSplineSurface_exchangeSurfaceConstructOCC(dtSurface const *const dtS);
+  virtual ~bSplineSurface_exchangeSurfaceConstructOCC();
+  dtSurface *result(void);
+
+private:
+  ptrHandling<dtSurface> _dtS;
+};
+} // namespace dtOO
+#endif /* bSplineSurface_exchangeSurfaceConstructOCC_H */

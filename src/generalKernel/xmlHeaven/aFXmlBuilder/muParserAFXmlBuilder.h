@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,36 +16,37 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef muParserAFXmlBuilder_H
-#define	muParserAFXmlBuilder_H
+#define muParserAFXmlBuilder_H
 
 #include <dtOOTypeDef.h>
 
-#include <xmlHeaven/aFXmlBuilder.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
+#include <xmlHeaven/aFXmlBuilder.h>
 
 class QDomElement;
 
 namespace dtOO {
-  class analyticFunction;
-  class constValue;
-  class baseContainer;
+class analyticFunction;
+class constValue;
+class baseContainer;
 
-  class muParserAFXmlBuilder : public aFXmlBuilder {
-    public:  
-      dt__classOnlyName(muParserAFXmlBuilder);
-      dt__classSelfCreate(muParserAFXmlBuilder);
-      muParserAFXmlBuilder();
-      virtual ~muParserAFXmlBuilder();
-      virtual void buildPart(
-        ::QDomElement const & toBuildP, 
-        baseContainer * const bC,
-        lvH_constValue const * const cValP, 
-        lvH_analyticFunction const * const depSFunP,
-        lvH_analyticFunction * sFunP
-      ) const;
-    private: 
-      static bool _registrated;      
-  };
-}
-#endif	/* muParserAFXmlBuilder_H */
+class muParserAFXmlBuilder : public aFXmlBuilder {
+public:
+  dt__classOnlyName(muParserAFXmlBuilder);
+  dt__classSelfCreate(muParserAFXmlBuilder);
+  muParserAFXmlBuilder();
+  virtual ~muParserAFXmlBuilder();
+  virtual void buildPart(
+    ::QDomElement const &toBuildP,
+    baseContainer *const bC,
+    lvH_constValue const *const cValP,
+    lvH_analyticFunction const *const depSFunP,
+    lvH_analyticFunction *sFunP
+  ) const;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* muParserAFXmlBuilder_H */

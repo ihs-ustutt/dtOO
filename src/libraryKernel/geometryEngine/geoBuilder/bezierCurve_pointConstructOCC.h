@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,25 +16,26 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef BEZIERCURVEPOINTCONSTRUCTOCC_H
-#define	BEZIERCURVEPOINTCONSTRUCTOCC_H
+#define BEZIERCURVEPOINTCONSTRUCTOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  
-  class bezierCurve_pointConstructOCC {
-  public:
-    dt__classOnlyName(bezierCurve_pointConstructOCC);
-    bezierCurve_pointConstructOCC( std::vector < dtPoint3 > const & pp );
-    virtual ~bezierCurve_pointConstructOCC();
-    dtCurve * result( void );
-  private:
-    ptrHandling<dtCurve> _dtC;
-  };
-}
-#endif	/* BEZIERCURVEPOINTCONSTRUCTOCC_H */
+class dtCurve;
+
+class bezierCurve_pointConstructOCC {
+public:
+  dt__classOnlyName(bezierCurve_pointConstructOCC);
+  bezierCurve_pointConstructOCC(std::vector<dtPoint3> const &pp);
+  virtual ~bezierCurve_pointConstructOCC();
+  dtCurve *result(void);
+
+private:
+  ptrHandling<dtCurve> _dtC;
+};
+} // namespace dtOO
+#endif /* BEZIERCURVEPOINTCONSTRUCTOCC_H */

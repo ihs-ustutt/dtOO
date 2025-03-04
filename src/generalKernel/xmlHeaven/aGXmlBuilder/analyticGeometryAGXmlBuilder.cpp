@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,59 +17,54 @@ License
 
 #include "analyticGeometryAGXmlBuilder.h"
 
-#include <xmlHeaven/aGXmlBuilderFactory.h>
-#include <logMe/logMe.h>
-#include <logMe/dtMacros.h>
-#include <dtLinearAlgebra.h>
-#include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
-#include <constValueHeaven/constValue.h>
+#include <analyticGeometryHeaven/analyticGeometry.h>
 #include <baseContainerHeaven/baseContainer.h>
+#include <constValueHeaven/constValue.h>
+#include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
 namespace dtOO {
-  bool analyticGeometryAGXmlBuilder::_registrated 
-  =
+bool analyticGeometryAGXmlBuilder::_registrated =
   aGXmlBuilderFactory::registrate(
-    dt__tmpPtr(
-      analyticGeometryAGXmlBuilder, 
-      new analyticGeometryAGXmlBuilder()
-    )
+    dt__tmpPtr(analyticGeometryAGXmlBuilder, new analyticGeometryAGXmlBuilder())
   );
-  
-  analyticGeometryAGXmlBuilder::analyticGeometryAGXmlBuilder() {
-  }
 
-  analyticGeometryAGXmlBuilder::~analyticGeometryAGXmlBuilder() {
-  }
+analyticGeometryAGXmlBuilder::analyticGeometryAGXmlBuilder() {}
 
-  void analyticGeometryAGXmlBuilder::buildPart( 
-    ::QDomElement const & toBuild,
-    baseContainer * const bC,           
-    lvH_constValue const * const cV,           
-    lvH_analyticFunction const * const aF,    
-    lvH_analyticGeometry const * const aG,
-    lvH_analyticGeometry * result 
-  ) const {
-    //
-		// check input
-		//    
-    dt__throwIf(
-      !dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart()
-    );
+analyticGeometryAGXmlBuilder::~analyticGeometryAGXmlBuilder() {}
 
-    //
-    // copy
-    //
-    std::vector< ::QDomElement > wE
-    = 
-    dtXmlParserBase::getChildVector("analyticGeometry", toBuild);     
-    dt__forAllRefAuto(wE, anEl) {
-      lvH_analyticGeometry toCopy;
-      dtXmlParserBase::createAdvanced(&anEl, bC, cV, aF, aG, &toCopy);
-      dt__forAllIndex(toCopy, ii) result->push_back( toCopy[ii] );
-    }
+void analyticGeometryAGXmlBuilder::buildPart(
+  ::QDomElement const &toBuild,
+  baseContainer *const bC,
+  lvH_constValue const *const cV,
+  lvH_analyticFunction const *const aF,
+  lvH_analyticGeometry const *const aG,
+  lvH_analyticGeometry *result
+) const
+{
+  //
+  // check input
+  //
+  dt__throwIf(
+    !dtXmlParserBase::hasChild("analyticGeometry", toBuild), buildPart()
+  );
+
+  //
+  // copy
+  //
+  std::vector<::QDomElement> wE =
+    dtXmlParserBase::getChildVector("analyticGeometry", toBuild);
+  dt__forAllRefAuto(wE, anEl)
+  {
+    lvH_analyticGeometry toCopy;
+    dtXmlParserBase::createAdvanced(&anEl, bC, cV, aF, aG, &toCopy);
+    dt__forAllIndex(toCopy, ii) result->push_back(toCopy[ii]);
   }
 }
+} // namespace dtOO

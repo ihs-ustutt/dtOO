@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,31 +16,32 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef ofOpenFOAMCyclicAmiRule_H
-#define	ofOpenFOAMCyclicAmiRule_H
+#define ofOpenFOAMCyclicAmiRule_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include "ofOpenFOAMSetupRule.h"
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class ofOpenFOAMCyclicAmiRule : public ofOpenFOAMSetupRule {
-    public:
-      dt__class(ofOpenFOAMCyclicAmiRule, ofOpenFOAMSetupRule);  
-      dt__classSelfCreate(ofOpenFOAMCyclicAmiRule);
-      ofOpenFOAMCyclicAmiRule();
-      virtual ~ofOpenFOAMCyclicAmiRule();
-      virtual void executeOnMesh(
-        std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-      ) const;
-      virtual void executeOnVolVectorField(
-        std::vector< std::string > const & rule, ::Foam::volVectorField & field
-      ) const;    
-      virtual void executeOnVolScalarField(
-        std::vector< std::string > const & rule, ::Foam::volScalarField & field
-      ) const;       
-    private:
-      static bool _registrated;
-  };
-}
-#endif	/* ofOpenFOAMCyclicAmiRule_H */
+class ofOpenFOAMCyclicAmiRule : public ofOpenFOAMSetupRule {
+public:
+  dt__class(ofOpenFOAMCyclicAmiRule, ofOpenFOAMSetupRule);
+  dt__classSelfCreate(ofOpenFOAMCyclicAmiRule);
+  ofOpenFOAMCyclicAmiRule();
+  virtual ~ofOpenFOAMCyclicAmiRule();
+  virtual void executeOnMesh(
+    std::vector<std::string> const &rule, ::Foam::polyMesh &mesh
+  ) const;
+  virtual void executeOnVolVectorField(
+    std::vector<std::string> const &rule, ::Foam::volVectorField &field
+  ) const;
+  virtual void executeOnVolScalarField(
+    std::vector<std::string> const &rule, ::Foam::volScalarField &field
+  ) const;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* ofOpenFOAMCyclicAmiRule_H */

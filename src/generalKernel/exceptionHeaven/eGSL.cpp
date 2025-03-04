@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,18 +16,14 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "eGSL.h"
-#include <sys/stat.h>
-#include <stdlib.h>
 #include <iostream>
+#include <stdlib.h>
+#include <sys/stat.h>
 
-namespace dtOO { 
-  eGSL::eGSL() _GLIBCXX_USE_NOEXCEPT : eGeneral() {
-  }
+namespace dtOO {
+eGSL::eGSL() _GLIBCXX_USE_NOEXCEPT : eGeneral() {}
 
-  eGSL::eGSL( std::ostream & msg) _GLIBCXX_USE_NOEXCEPT : eGeneral(msg) {
-	}
+eGSL::eGSL(std::ostream &msg) _GLIBCXX_USE_NOEXCEPT : eGeneral(msg) {}
 
-  eGSL::~eGSL() _GLIBCXX_USE_NOEXCEPT {
-		
-	}	
-}
+eGSL::~eGSL() _GLIBCXX_USE_NOEXCEPT {}
+} // namespace dtOO

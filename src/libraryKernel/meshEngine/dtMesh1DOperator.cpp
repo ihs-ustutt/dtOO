@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,46 +17,48 @@ License
 
 #include "dtMesh1DOperator.h"
 
-#include <xmlHeaven/qtXmlPrimitive.h>
 #include "dtGmshEdge.h"
 #include <gmsh/meshGEdge.h>
+#include <xmlHeaven/qtXmlPrimitive.h>
 
 namespace dtOO {
-  dtMesh1DOperator::dtMesh1DOperator() {
-  }
+dtMesh1DOperator::dtMesh1DOperator() {}
 
-  dtMesh1DOperator::~dtMesh1DOperator() {
-  }
+dtMesh1DOperator::~dtMesh1DOperator() {}
 
-  void dtMesh1DOperator::jInit(
-    jsonPrimitive const & jE,
-    baseContainer const * const bC,
-    lvH_constValue const * const cV,
-    lvH_analyticFunction const * const aF,
-    lvH_analyticGeometry const * const aG,
-    lvH_boundedVolume const * const bV,
-    lvH_dtMeshOperator const * const mO    
-  ) {
-    dtMeshOperator::jInit(jE, bC, cV, aF, aG, bV, mO);
-  }
-
-  void dtMesh1DOperator::init(
-    ::QDomElement const & element,
-    baseContainer const * const bC,
-    lvH_constValue const * const cV,
-    lvH_analyticFunction const * const aF,
-    lvH_analyticGeometry const * const aG,
-    lvH_boundedVolume const * const bV,
-    lvH_dtMeshOperator const * const mO    
-  ) {
-    dtMeshOperator::init(element, bC, cV, aF, aG, bV, mO);
-  }
-  
-  void dtMesh1DOperator::copyMesh( dtGmshEdge * from, dtGmshEdge * to) {
-     Msg::Info(
-      "Copy mesh from edge %d to edge %d ( dtMesh1DOperator )", 
-      from->tag(), to->tag()
-    );
-    meshGEdge()( to );
-  }
+void dtMesh1DOperator::jInit(
+  jsonPrimitive const &jE,
+  baseContainer const *const bC,
+  lvH_constValue const *const cV,
+  lvH_analyticFunction const *const aF,
+  lvH_analyticGeometry const *const aG,
+  lvH_boundedVolume const *const bV,
+  lvH_dtMeshOperator const *const mO
+)
+{
+  dtMeshOperator::jInit(jE, bC, cV, aF, aG, bV, mO);
 }
+
+void dtMesh1DOperator::init(
+  ::QDomElement const &element,
+  baseContainer const *const bC,
+  lvH_constValue const *const cV,
+  lvH_analyticFunction const *const aF,
+  lvH_analyticGeometry const *const aG,
+  lvH_boundedVolume const *const bV,
+  lvH_dtMeshOperator const *const mO
+)
+{
+  dtMeshOperator::init(element, bC, cV, aF, aG, bV, mO);
+}
+
+void dtMesh1DOperator::copyMesh(dtGmshEdge *from, dtGmshEdge *to)
+{
+  Msg::Info(
+    "Copy mesh from edge %d to edge %d ( dtMesh1DOperator )",
+    from->tag(),
+    to->tag()
+  );
+  meshGEdge()(to);
+}
+} // namespace dtOO

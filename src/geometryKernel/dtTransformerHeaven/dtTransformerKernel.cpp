@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -18,7 +18,5 @@ License
 #include "dtTransformerKernel.h"
 
 namespace dtOO {
-  dtTransformerKernel::~dtTransformerKernel() {
-    _plugins.clear();
-  }
-}
+dtTransformerKernel::~dtTransformerKernel() { _plugins.clear(); }
+} // namespace dtOO

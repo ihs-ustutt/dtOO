@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef INTPARAM_H
-#define	INTPARAM_H
+#define INTPARAM_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,18 +24,17 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class intParam : public constValue {
-    public:
-      dt__class(intParam, constValue);        
-      intParam(intParam const & orig);
-      intParam( std::string const & label, dtInt const & val );    
-      virtual ~intParam();
-      virtual intParam * clone( void ) const;    
-      virtual void dump(void) const;
-      virtual void writeToElement(
-        ::QDomDocument & doc, ::QDomElement & element
-      );
-    private:
-  };
-}
-#endif	/* INTPARAM_H */
+class intParam : public constValue {
+public:
+  dt__class(intParam, constValue);
+  intParam(intParam const &orig);
+  intParam(std::string const &label, dtInt const &val);
+  virtual ~intParam();
+  virtual intParam *clone(void) const;
+  virtual void dump(void) const;
+  virtual void writeToElement(::QDomDocument &doc, ::QDomElement &element);
+
+private:
+};
+} // namespace dtOO
+#endif /* INTPARAM_H */

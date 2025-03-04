@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,6 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "unsetGmsh.h"
-
 
 #include <dtOOTypeDef.h>
 // avoid issues with pre-processor defines

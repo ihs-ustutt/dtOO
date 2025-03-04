@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,35 +16,36 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bSplineSurface_skinConstructOCCAGXmlBuilder_H
-#define	bSplineSurface_skinConstructOCCAGXmlBuilder_H
+#define bSplineSurface_skinConstructOCCAGXmlBuilder_H
 
 #include <dtOOTypeDef.h>
 
-#include <xmlHeaven/aGXmlBuilder.h>
 #include <logMe/dtMacros.h>
+#include <xmlHeaven/aGXmlBuilder.h>
 
 namespace dtOO {
-  class analyticGeometry;
-  class analyticFunction;
-  class constValue;
-  class baseContainer;
+class analyticGeometry;
+class analyticFunction;
+class constValue;
+class baseContainer;
 
-  class bSplineSurface_skinConstructOCCAGXmlBuilder : public aGXmlBuilder {
-    public:  
-      dt__classOnlyName(bSplineSurface_skinConstructOCCAGXmlBuilder);
-      dt__classSelfCreate(bSplineSurface_skinConstructOCCAGXmlBuilder);
-      bSplineSurface_skinConstructOCCAGXmlBuilder();
-      virtual ~bSplineSurface_skinConstructOCCAGXmlBuilder();
-      virtual void buildPart(
-        ::QDomElement const & toBuild,
-        baseContainer * const bC,
-        lvH_constValue const * const cV,  
-        lvH_analyticFunction const * const aF,  
-        lvH_analyticGeometry const * const aG,
-        lvH_analyticGeometry * result 
-      ) const; 
-    private: 
-      static bool _registrated;            
-  };
-}
-#endif	/* bSplineSurface_skinConstructOCCAGXmlBuilder_H */
+class bSplineSurface_skinConstructOCCAGXmlBuilder : public aGXmlBuilder {
+public:
+  dt__classOnlyName(bSplineSurface_skinConstructOCCAGXmlBuilder);
+  dt__classSelfCreate(bSplineSurface_skinConstructOCCAGXmlBuilder);
+  bSplineSurface_skinConstructOCCAGXmlBuilder();
+  virtual ~bSplineSurface_skinConstructOCCAGXmlBuilder();
+  virtual void buildPart(
+    ::QDomElement const &toBuild,
+    baseContainer *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG,
+    lvH_analyticGeometry *result
+  ) const;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* bSplineSurface_skinConstructOCCAGXmlBuilder_H */

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -18,29 +18,26 @@ License
 #include "dtMeshAndOrientGFace.h"
 
 #include "dtGmshFace.h"
-#include <gmsh/meshGFace.h>
 #include "dtMeshOperatorFactory.h"
+#include <gmsh/meshGFace.h>
 
 namespace dtOO {
-  bool dtMeshAndOrientGFace::_registrated 
-  =
-  dtMeshOperatorFactory::registrate(
-    dt__tmpPtr(dtMeshAndOrientGFace, new dtMeshAndOrientGFace())
-  );
- 
-  dtMeshAndOrientGFace::dtMeshAndOrientGFace() : dtMeshGFace() {
-  }
+bool dtMeshAndOrientGFace::_registrated = dtMeshOperatorFactory::registrate(
+  dt__tmpPtr(dtMeshAndOrientGFace, new dtMeshAndOrientGFace())
+);
 
-  dtMeshAndOrientGFace::dtMeshAndOrientGFace(
-    const dtMeshAndOrientGFace& orig
-  ) : dtMeshGFace(orig) {
-  }
+dtMeshAndOrientGFace::dtMeshAndOrientGFace() : dtMeshGFace() {}
 
-  dtMeshAndOrientGFace::~dtMeshAndOrientGFace() {
-  }
-
-  void dtMeshAndOrientGFace::operator()( dtGmshFace * dtgf) {
-    dtMeshGFace()( dtgf );
-    ::orientMeshGFace()(dtgf);
-  }
+dtMeshAndOrientGFace::dtMeshAndOrientGFace(const dtMeshAndOrientGFace &orig)
+  : dtMeshGFace(orig)
+{
 }
+
+dtMeshAndOrientGFace::~dtMeshAndOrientGFace() {}
+
+void dtMeshAndOrientGFace::operator()(dtGmshFace *dtgf)
+{
+  dtMeshGFace()(dtgf);
+  ::orientMeshGFace()(dtgf);
+}
+} // namespace dtOO

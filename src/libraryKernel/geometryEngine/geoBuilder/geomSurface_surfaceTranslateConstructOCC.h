@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,29 +16,30 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef geomSurface_surfaceTranslateConstructOCC_H
-#define	geomSurface_surfaceTranslateConstructOCC_H
+#define geomSurface_surfaceTranslateConstructOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtSurface;
-  
-  class geomSurface_surfaceTranslateConstructOCC {
-  public:
-    dt__classOnlyName(geomSurface_surfaceTranslateConstructOCC);    
-    geomSurface_surfaceTranslateConstructOCC();
-    geomSurface_surfaceTranslateConstructOCC(
-      dtSurface const * const dtS, dtVector3 const & vv
-    );
-    virtual ~geomSurface_surfaceTranslateConstructOCC();
-    dtSurface * result( void );    
-  private:
-    ptrHandling< dtSurface > _dtS;
-  };
-}
-#endif	/* geomSurface_surfaceTranslateConstructOCC_H */
+class dtSurface;
+
+class geomSurface_surfaceTranslateConstructOCC {
+public:
+  dt__classOnlyName(geomSurface_surfaceTranslateConstructOCC);
+  geomSurface_surfaceTranslateConstructOCC();
+  geomSurface_surfaceTranslateConstructOCC(
+    dtSurface const *const dtS, dtVector3 const &vv
+  );
+  virtual ~geomSurface_surfaceTranslateConstructOCC();
+  dtSurface *result(void);
+
+private:
+  ptrHandling<dtSurface> _dtS;
+};
+} // namespace dtOO
+#endif /* geomSurface_surfaceTranslateConstructOCC_H */

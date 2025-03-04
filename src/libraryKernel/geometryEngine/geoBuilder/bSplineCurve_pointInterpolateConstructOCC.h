@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bSplineCurve_pointInterpolateConstructOCC_H
-#define	bSplineCurve_pointInterpolateConstructOCC_H
+#define bSplineCurve_pointInterpolateConstructOCC_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,27 +24,26 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  
-  class bSplineCurve_pointInterpolateConstructOCC {
-  public:
-    dt__classOnlyName(bSplineCurve_pointInterpolateConstructOCC);
-    bSplineCurve_pointInterpolateConstructOCC( 
-      std::vector < dtPoint3 > const & pp 
-    );
-    bSplineCurve_pointInterpolateConstructOCC( 
-      std::vector < dtPoint3 > const & pp, 
-      dtInt const & degMin, dtInt const & degMax
-    );
-    bSplineCurve_pointInterpolateConstructOCC( 
-      std::vector < dtPoint3 > const & pp, 
-      dtInt const & degMin, dtInt const & degMax,
-      dtInt const & cont
-    );
-    virtual ~bSplineCurve_pointInterpolateConstructOCC();
-    dtCurve * result( void );
-  private:
-    dt__pH(dtCurve) _dtC;
-  };
-}
-#endif	/* bSplineCurve_pointInterpolateConstructOCC_H */
+class dtCurve;
+
+class bSplineCurve_pointInterpolateConstructOCC {
+public:
+  dt__classOnlyName(bSplineCurve_pointInterpolateConstructOCC);
+  bSplineCurve_pointInterpolateConstructOCC(std::vector<dtPoint3> const &pp);
+  bSplineCurve_pointInterpolateConstructOCC(
+    std::vector<dtPoint3> const &pp, dtInt const &degMin, dtInt const &degMax
+  );
+  bSplineCurve_pointInterpolateConstructOCC(
+    std::vector<dtPoint3> const &pp,
+    dtInt const &degMin,
+    dtInt const &degMax,
+    dtInt const &cont
+  );
+  virtual ~bSplineCurve_pointInterpolateConstructOCC();
+  dtCurve *result(void);
+
+private:
+  dt__pH(dtCurve) _dtC;
+};
+} // namespace dtOO
+#endif /* bSplineCurve_pointInterpolateConstructOCC_H */

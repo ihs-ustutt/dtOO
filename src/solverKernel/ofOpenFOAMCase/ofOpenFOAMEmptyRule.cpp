@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -18,70 +18,66 @@ License
 #include "ofOpenFOAMEmptyRule.h"
 #include "fvMesh.H"
 
-#include <logMe/logMe.h>
 #include <interfaceHeaven/stringPrimitive.h>
+#include <logMe/logMe.h>
 
 #include <meshEngine/dtFoamLibrary.h>
 
-#include <typeInfo.H>
-#include <polyMesh.H>
-#include <polyBoundaryMesh.H>
-#include <polyPatch.H>
-#include <emptyPolyPatch.H>
 #include <boost/assign.hpp>
+#include <emptyPolyPatch.H>
+#include <polyBoundaryMesh.H>
+#include <polyMesh.H>
+#include <polyPatch.H>
+#include <typeInfo.H>
 
 namespace dtOO {
-  bool ofOpenFOAMEmptyRule::_registrated 
-  =
-  ofOpenFOAMSetupRule::registrate(
-    dt__tmpPtr(ofOpenFOAMEmptyRule, new ofOpenFOAMEmptyRule())
-  );
-  
-  ofOpenFOAMEmptyRule::ofOpenFOAMEmptyRule() {
-  }
+bool ofOpenFOAMEmptyRule::_registrated = ofOpenFOAMSetupRule::registrate(
+  dt__tmpPtr(ofOpenFOAMEmptyRule, new ofOpenFOAMEmptyRule())
+);
 
-  ofOpenFOAMEmptyRule::~ofOpenFOAMEmptyRule() {
-  }
-  
-  void ofOpenFOAMEmptyRule::executeOnMesh(
-    std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-  ) const {
-    //
-    // get corresponding patch ids
-    //
-    ::Foam::polyBoundaryMesh & bM
-    = 
-    const_cast<::Foam::polyBoundaryMesh&>(mesh.boundaryMesh());
-    std::vector< std::string > patchNames
-    =
+ofOpenFOAMEmptyRule::ofOpenFOAMEmptyRule() {}
+
+ofOpenFOAMEmptyRule::~ofOpenFOAMEmptyRule() {}
+
+void ofOpenFOAMEmptyRule::executeOnMesh(
+  std::vector<std::string> const &rule, ::Foam::polyMesh &mesh
+) const
+{
+  //
+  // get corresponding patch ids
+  //
+  ::Foam::polyBoundaryMesh &bM =
+    const_cast<::Foam::polyBoundaryMesh &>(mesh.boundaryMesh());
+  std::vector<std::string> patchNames =
     stringPrimitive::convertToCSVStringVector(rule[1]);
 
-    forAll(bM, i) {
-      bool setThisPatchEmpty = false;
-      dt__forAllRefAuto(patchNames, patchName) {
-        if (bM[ i ].name()==patchName) {
-          setThisPatchEmpty = true;
-          break;
-        }
-      }
-      // patch is empty
-      if ( setThisPatchEmpty || (bM[ i ].size() == 0) ) {
-        dt__info(
-          executeOnMesh(),
-          << "Set " << bM[ i ].name() << " to empty."
-        );
-        bM.set( 
-          i,       
-          new ::Foam::emptyPolyPatch(
-            bM[ i ].name(), 
-            bM[ i ].size(),
-            bM[ i ].start(), 
-            bM[ i ].index(),
-            bM[ i ].boundaryMesh(),
-            bM[ i ].type()
-          )
-        );
+  forAll(bM, i)
+  {
+    bool setThisPatchEmpty = false;
+    dt__forAllRefAuto(patchNames, patchName)
+    {
+      if (bM[i].name() == patchName)
+      {
+        setThisPatchEmpty = true;
+        break;
       }
     }
-  }    
+    // patch is empty
+    if (setThisPatchEmpty || (bM[i].size() == 0))
+    {
+      dt__info(executeOnMesh(), << "Set " << bM[i].name() << " to empty.");
+      bM.set(
+        i,
+        new ::Foam::emptyPolyPatch(
+          bM[i].name(),
+          bM[i].size(),
+          bM[i].start(),
+          bM[i].index(),
+          bM[i].boundaryMesh(),
+          bM[i].type()
+        )
+      );
+    }
+  }
 }
+} // namespace dtOO

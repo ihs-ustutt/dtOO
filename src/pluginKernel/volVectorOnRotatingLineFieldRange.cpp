@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,517 +17,439 @@ License
 
 #include "volVectorOnRotatingLineFieldRange.h"
 
-#include <logMe/logMe.h>
-#include <xmlHeaven/dtXmlParser.h>
-#include <baseContainerHeaven/baseContainer.h>
-#include <constValueHeaven/constValue.h>
 #include <analyticFunctionHeaven/analyticFunction.h>
+#include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
-#include <analyticGeometryHeaven/aGBuilder/dtPoint3_map1dTo3dPoint.h>
+#include <baseContainerHeaven/baseContainer.h>
 #include <boundedVolume.h>
+#include <constValueHeaven/constValue.h>
 #include <dtCase.h>
-
+#include <logMe/logMe.h>
 #include <xmlHeaven/dtXmlParser.h>
-#include <interfaceHeaven/systemHandling.h>
-#include <interfaceHeaven/staticPropertiesHandler.h>
-#include <dtTransformerHeaven/xYz_rPhiZ.h>
 
-#include <criticalHeaven/prepareOpenFOAM.h>
-#include <meshEngine/dtFoamLibrary.h>
-#include <argList.H>
+#include <dtTransformerHeaven/xYz_rPhiZ.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
+#include <interfaceHeaven/systemHandling.h>
+#include <xmlHeaven/dtXmlParser.h>
+
 #include <Time.H>
+#include <argList.H>
+#include <criticalHeaven/prepareOpenFOAM.h>
+#include <interpolationCellPoint.H>
+#include <meshEngine/dtFoamLibrary.h>
 #include <polyMesh.H>
 #include <volFields.H>
-#include <interpolationCellPoint.H>
 
-#include <logMe/dtParMacros.h>
 #include "dtPluginFactory.h"
+#include <logMe/dtParMacros.h>
 
-namespace dtOO {  
-  bool volVectorOnRotatingLineFieldRange::_registrated 
-  =
-  dtPluginFactory::registrate(
-    dt__tmpPtr(
-      volVectorOnRotatingLineFieldRange, 
-      new volVectorOnRotatingLineFieldRange()
-    )
+namespace dtOO {
+bool volVectorOnRotatingLineFieldRange::_registrated =
+  dtPluginFactory::registrate(dt__tmpPtr(
+    volVectorOnRotatingLineFieldRange, new volVectorOnRotatingLineFieldRange()
+  ));
+
+volVectorOnRotatingLineFieldRange::volVectorOnRotatingLineFieldRange() {}
+
+volVectorOnRotatingLineFieldRange::~volVectorOnRotatingLineFieldRange() {}
+
+void volVectorOnRotatingLineFieldRange::init(
+  ::QDomElement const &element,
+  baseContainer *const bC,
+  lvH_constValue const *const cV,
+  lvH_analyticFunction const *const aF,
+  lvH_analyticGeometry const *const aG,
+  lvH_boundedVolume const *const bV,
+  lvH_dtCase const *const dC,
+  lvH_dtPlugin const *const pL
+)
+{
+  dtPlugin::init(element, bC, cV, aF, aG, bV, dC, pL);
+
+  //	<plugin
+  //		name="volVectorOnRotatingLineFieldRange"
+  //		label="volVectorOnRotatingLineFieldRange"
+  //    numPoints="{10}{10}"
+  //    field="U"
+  //    min="0.00"
+  //    max="0.02"
+  //    analyticGeometryLabel="myAnalyticGeometry"
+  //	>
+  //    <case label="myCase"/>
+  //  </plugin>
+  dt__throwIf(
+    !dtXmlParser::hasChild("case", element) &&
+      !dtXmlParser::hasAttribute("analyticGeometryLabel", element) &&
+      !dtXmlParser::hasAttribute("field", element) &&
+      !dtXmlParser::hasAttribute("numPoints", element) &&
+      !dtXmlParser::hasAttribute("relBandwithR", element) &&
+      !dtXmlParser::hasAttribute("relBandwithZ", element) &&
+      !dtXmlParser::hasAttribute("origin", element) &&
+      !dtXmlParser::hasAttribute("rotationAxis", element) &&
+      !dtXmlParser::hasAttribute("referenceAxis", element),
+    init()
   );
-  
-  volVectorOnRotatingLineFieldRange::volVectorOnRotatingLineFieldRange() { 
-  }
 
-  volVectorOnRotatingLineFieldRange::~volVectorOnRotatingLineFieldRange() {
-  }
+  //
+  // get parser and case
+  //
+  _case = dC->get(dtXmlParser::getAttributeStr(
+    "label", dtXmlParser::getChild("case", element)
+  ));
+  dt__throwIf(cV->empty(), init());
+  _parser = dtXmlParser::ptr();
 
-  void volVectorOnRotatingLineFieldRange::init( 
-    ::QDomElement const & element,
-    baseContainer * const bC,
-    lvH_constValue const * const cV,
-    lvH_analyticFunction const * const aF,
-    lvH_analyticGeometry const * const aG,
-    lvH_boundedVolume const * const bV,
-    lvH_dtCase const * const dC,
-    lvH_dtPlugin const * const pL
-  ) {   
-    dtPlugin::init(element, bC, cV, aF, aG, bV, dC, pL);
-    
-//	<plugin 
-//		name="volVectorOnRotatingLineFieldRange" 
-//		label="volVectorOnRotatingLineFieldRange"
-//    numPoints="{10}{10}"
-//    field="U"    
-//    min="0.00"
-//    max="0.02"    
-//    analyticGeometryLabel="myAnalyticGeometry"
-//	>
-//    <case label="myCase"/>
-//  </plugin>
-    dt__throwIf(
-      !dtXmlParser::hasChild("case", element)
-      &&
-      !dtXmlParser::hasAttribute("analyticGeometryLabel", element)
-      &&
-      !dtXmlParser::hasAttribute("field", element)
-      &&
-      !dtXmlParser::hasAttribute("numPoints", element)
-      &&
-      !dtXmlParser::hasAttribute("relBandwithR", element)
-      &&
-      !dtXmlParser::hasAttribute("relBandwithZ", element)
-      &&
-      !dtXmlParser::hasAttribute("origin", element)
-      &&
-      !dtXmlParser::hasAttribute("rotationAxis", element)
-      &&
-      !dtXmlParser::hasAttribute("referenceAxis", element), 
-      init()
-    );
-    
-    //
-    // get parser and case
-    //
-    _case 
-    = 
-    dC->get(
-      dtXmlParser::getAttributeStr(
-        "label", dtXmlParser::getChild("case", element)
-      )
-    );
-    dt__throwIf(cV->empty(), init());
-    _parser = dtXmlParser::ptr();
-    
-    //
-    // get analyticGeometry
-    //
-    _aG 
-    = 
-    aG->get( dtXmlParser::getAttributeStr("analyticGeometryLabel", element) );
-    
-    //
-    // get field label
-    //
-    _field = dtXmlParser::getAttributeStr("field", element);
+  //
+  // get analyticGeometry
+  //
+  _aG = aG->get(dtXmlParser::getAttributeStr("analyticGeometryLabel", element));
 
-    //
-    // get number of points
-    //
-    _nP 
-    = 
-    dtXmlParser::getAttributeIntMuParse("numPoints", element, cV, aF);   
+  //
+  // get field label
+  //
+  _field = dtXmlParser::getAttributeStr("field", element);
 
-    _relBandwithR
-    = 
-    dtXmlParser::getAttributeFloatMuParse("relBandwithR", element, cV, aF); 
-    _relBandwithZ
-    = 
-    dtXmlParser::getAttributeFloatMuParse("relBandwithZ", element, cV, aF);     
-    
-    _origin
-    =
-	  dtXmlParserBase::getDtPoint3(
-      dtXmlParserBase::getAttributeStr("origin", element), bC
-    );
-    _rotAxis
-    =
-	  dtLinearAlgebra::normalize(
-      dtXmlParserBase::getDtVector3(
-        dtXmlParserBase::getAttributeStr("rotationAxis", element), bC
-      )
-    );
-    _refAxis
-    =
-    dtLinearAlgebra::normalize(
-      dtXmlParserBase::getDtVector3(
-        dtXmlParserBase::getAttributeStr("referenceAxis", element), bC
-      )
-    );       
-	}
-		
-  void volVectorOnRotatingLineFieldRange::apply(void) {    
-    //
-    // get directory
-    //
-    std::string wDir = _case->getDirectory( _parser->currentState() );
+  //
+  // get number of points
+  //
+  _nP = dtXmlParser::getAttributeIntMuParse("numPoints", element, cV, aF);
 
-    dt__onlyMaster {
-      dt__throwIf( !systemHandling::directoryExists(wDir), apply() );
-    
-      try {
-        dt__pH(::Foam::argList) args
-        = 
-        dtFoamLibrary::initCase( getLabel(), wDir );
-        
-        //
-        // create time
-        //
-        ::Foam::Time runTime(
-          Foam::Time::controlDictName,
-          args->rootPath(),
-          args->caseName(),
-          "system",
-          "constant",
-          !args->optionFound("noFunctionObjects")
-        );
-        
-        //
-        // create mesh
-        //
-        Foam::fvMesh mesh(
-          Foam::IOobject(
-            Foam::fvMesh::defaultRegion,
-            runTime.timeName(),
-            runTime,
-            Foam::IOobject::MUST_READ
-          )
-        );
-        
-        //
-        // create xYz_rPhiZ transformer
-        //
-        xYz_rPhiZ dtT( _origin, _rotAxis, _refAxis);
-        
-        //
-        // convert to cylindrical
-        //
-        // rotation axis      
-        ::Foam::vector rotAxis(_rotAxis.x(), _rotAxis.y(), _rotAxis.z());
-        rotAxis = rotAxis / ::Foam::mag(rotAxis);
-        // origin
-        ::Foam::vector origin(_origin.x(), _origin.y(), _origin.z());
-        // reference axis
-        ::Foam::vector refAxis(_refAxis.x(), _refAxis.y(), _refAxis.z());        
-        refAxis = refAxis / ::Foam::mag(refAxis);
-        ::Foam::vector ref2Axis = rotAxis ^ refAxis;
-        ref2Axis = ref2Axis / ::Foam::mag(ref2Axis);
-        
-        const ::Foam::vectorField& C = mesh.C();        
-        ::Foam::vectorField coord = C - origin;
+  _relBandwithR =
+    dtXmlParser::getAttributeFloatMuParse("relBandwithR", element, cV, aF);
+  _relBandwithZ =
+    dtXmlParser::getAttributeFloatMuParse("relBandwithZ", element, cV, aF);
 
-        ::Foam::vectorField r_ = coord - (rotAxis & coord)*rotAxis;
-        ::Foam::scalarField r = ::Foam::mag( r_ );
-        
-        ::Foam::scalarField ang = ::Foam::atan2( ref2Axis & r_, refAxis & r_ );
-        
-        ::Foam::vectorField z_ = (rotAxis & coord)*rotAxis;
-        ::Foam::scalarField z = (rotAxis & coord);
-        
+  _origin = dtXmlParserBase::getDtPoint3(
+    dtXmlParserBase::getAttributeStr("origin", element), bC
+  );
+  _rotAxis = dtLinearAlgebra::normalize(dtXmlParserBase::getDtVector3(
+    dtXmlParserBase::getAttributeStr("rotationAxis", element), bC
+  ));
+  _refAxis = dtLinearAlgebra::normalize(dtXmlParserBase::getDtVector3(
+    dtXmlParserBase::getAttributeStr("referenceAxis", element), bC
+  ));
+}
 
-        //
-        // lastTime
-        //
-        runTime.setTime(runTime.times().last(), runTime.times().size()-1);
-       
-        //
-        // read field header
-        //
-        ::Foam::IOobject fieldHeader(
-          _field,
-          runTime.timeName(),
-          mesh,
-          ::Foam::IOobject::MUST_READ
-        );
-        
-        //
-        // only volScalarField
-        // 
-        dt__throwIf( !fieldHeader.headerOk(), apply());
-        dt__throwIf(fieldHeader.headerClassName() != "volVectorField", apply());
-        
-        //
-        // read desired field
-        //
-        ::Foam::volVectorField volField(fieldHeader, mesh);
+void volVectorOnRotatingLineFieldRange::apply(void)
+{
+  //
+  // get directory
+  //
+  std::string wDir = _case->getDirectory(_parser->currentState());
 
-        //
-        // read U header
-        //
-        ::Foam::IOobject UHeader(
-          "U",
-          runTime.timeName(),
-          mesh,
-          ::Foam::IOobject::MUST_READ
-        );
-        
-        //
-        // update field 
-        //
-        mesh.readUpdate();
+  dt__onlyMaster
+  {
+    dt__throwIf(!systemHandling::directoryExists(wDir), apply());
 
-        //
-        // read UField
-        //
-        ::Foam::volVectorField UField(UHeader, mesh);
+    try
+    {
+      dt__pH(::Foam::argList) args = dtFoamLibrary::initCase(getLabel(), wDir);
 
-        //
-        // interpolation
-        //
-        ::Foam::interpolationCellPoint< ::Foam::vector > interU(UField);
-        ::Foam::interpolationCellPoint< ::Foam::vector > interVolField(volField);
+      //
+      // create time
+      //
+      ::Foam::Time runTime(
+        Foam::Time::controlDictName,
+        args->rootPath(),
+        args->caseName(),
+        "system",
+        "constant",
+        !args->optionFound("noFunctionObjects")
+      );
 
-        //
-        // only one dimensional mappings
-        //
-        dt__ptrAss(map1dTo3d const * m1d, map1dTo3d::ConstDownCast(_aG));
+      //
+      // create mesh
+      //
+      Foam::fvMesh mesh(Foam::IOobject(
+        Foam::fvMesh::defaultRegion,
+        runTime.timeName(),
+        runTime,
+        Foam::IOobject::MUST_READ
+      ));
 
-        //
-        // create curve grid
-        //
-        std::vector< dtPoint3 > gridPre 
-        = 
+      //
+      // create xYz_rPhiZ transformer
+      //
+      xYz_rPhiZ dtT(_origin, _rotAxis, _refAxis);
+
+      //
+      // convert to cylindrical
+      //
+      // rotation axis
+      ::Foam::vector rotAxis(_rotAxis.x(), _rotAxis.y(), _rotAxis.z());
+      rotAxis = rotAxis / ::Foam::mag(rotAxis);
+      // origin
+      ::Foam::vector origin(_origin.x(), _origin.y(), _origin.z());
+      // reference axis
+      ::Foam::vector refAxis(_refAxis.x(), _refAxis.y(), _refAxis.z());
+      refAxis = refAxis / ::Foam::mag(refAxis);
+      ::Foam::vector ref2Axis = rotAxis ^ refAxis;
+      ref2Axis = ref2Axis / ::Foam::mag(ref2Axis);
+
+      const ::Foam::vectorField &C = mesh.C();
+      ::Foam::vectorField coord = C - origin;
+
+      ::Foam::vectorField r_ = coord - (rotAxis & coord) * rotAxis;
+      ::Foam::scalarField r = ::Foam::mag(r_);
+
+      ::Foam::scalarField ang = ::Foam::atan2(ref2Axis & r_, refAxis & r_);
+
+      ::Foam::vectorField z_ = (rotAxis & coord) * rotAxis;
+      ::Foam::scalarField z = (rotAxis & coord);
+
+      //
+      // lastTime
+      //
+      runTime.setTime(runTime.times().last(), runTime.times().size() - 1);
+
+      //
+      // read field header
+      //
+      ::Foam::IOobject fieldHeader(
+        _field, runTime.timeName(), mesh, ::Foam::IOobject::MUST_READ
+      );
+
+      //
+      // only volScalarField
+      //
+      dt__throwIf(!fieldHeader.headerOk(), apply());
+      dt__throwIf(fieldHeader.headerClassName() != "volVectorField", apply());
+
+      //
+      // read desired field
+      //
+      ::Foam::volVectorField volField(fieldHeader, mesh);
+
+      //
+      // read U header
+      //
+      ::Foam::IOobject UHeader(
+        "U", runTime.timeName(), mesh, ::Foam::IOobject::MUST_READ
+      );
+
+      //
+      // update field
+      //
+      mesh.readUpdate();
+
+      //
+      // read UField
+      //
+      ::Foam::volVectorField UField(UHeader, mesh);
+
+      //
+      // interpolation
+      //
+      ::Foam::interpolationCellPoint<::Foam::vector> interU(UField);
+      ::Foam::interpolationCellPoint<::Foam::vector> interVolField(volField);
+
+      //
+      // only one dimensional mappings
+      //
+      dt__ptrAss(map1dTo3d const *m1d, map1dTo3d::ConstDownCast(_aG));
+
+      //
+      // create curve grid
+      //
+      std::vector<dtPoint3> gridPre =
         dtPoint3_map1dTo3dPoint(m1d, _nP).result();
 
-        //
-        // create grid by averaging 2 points
-        //
-        std::vector< dtPoint3 > grid_cart(_nP);
-        #pragma omp parallel
+      //
+      // create grid by averaging 2 points
+      //
+      std::vector<dtPoint3> grid_cart(_nP);
+#pragma omp parallel
+      {
+#pragma omp for
+        dt__forFromToIndex(0, _nP, ii)
         {
-          #pragma omp for
-          dt__forFromToIndex(0, _nP, ii) {
-            grid_cart[ii] = gridPre[ii];
-//              dtLinearAlgebra::toDtPoint3(
-//                (
-//                  dtLinearAlgebra::toDtVector3(gridPre[ii])
-//                  +
-//                  dtLinearAlgebra::toDtVector3(gridPre[ii+1])
-//                )
-//                /
-//                2.
-//              );
-          }
+          grid_cart[ii] = gridPre[ii];
+          //              dtLinearAlgebra::toDtPoint3(
+          //                (
+          //                  dtLinearAlgebra::toDtVector3(gridPre[ii])
+          //                  +
+          //                  dtLinearAlgebra::toDtVector3(gridPre[ii+1])
+          //                )
+          //                /
+          //                2.
+          //              );
         }
-        std::vector< dtPoint3 > grid_cyl = dtT.retract( &grid_cart );
-        
-        twoDArrayHandling< std::pair< int, dtPoint3 > > meshPair(grid_cyl.size(), 0);
-        dtReal deltaR = _relBandwithR * m1d->length();
-        dtReal deltaZ = _relBandwithZ * m1d->length();
-        forAll(mesh.cells(), ii) {
-          dt__forAllIndex(grid_cyl, jj) {
-            dtPoint3 const & aPoint = grid_cyl[jj];
-            ::Foam::scalar thisR = r[ii];
-            ::Foam::scalar thisAng = ang[ii];
-            ::Foam::scalar thisZ = z[ii];
-            
-              
-            if (
-              ( (aPoint.x() + deltaR) > thisR )
-              &&
-              ( (aPoint.x() - deltaR) < thisR )
-              &&
-              ( (aPoint.z() + deltaZ) > thisZ )
-              &&
-              ( (aPoint.z() - deltaZ) < thisZ )
-            ) {
-              meshPair[jj].push_back( 
-                std::pair< int, dtPoint3 >(
-                  ii, dtPoint3(thisR, thisAng, thisZ)
-                ) 
-              );
-            }
-          }
-        }
-        
-        //
-        // sort angles in ascending order
-        //
-        dt__forAllIndex(meshPair, ii) {        
-          std::sort( 
-            meshPair[ii].begin( ), 
-            meshPair[ii].end( ), 
-            []( 
-              const std::pair< int, dtPoint3 >& lhs, 
-              const std::pair< int, dtPoint3 >& rhs 
-            ) -> bool {
-             return lhs.second.y() < rhs.second.y();
-            }
-          );
-        }
-
-        dt__forAllIndex(meshPair, ii) {
-          dt__info( 
-            apply(), 
-            << "meshPair[ " << ii << " ] contains : " 
-            << meshPair[ii].size() << " elements." << std::endl
-          );
-        }
-          
-
-        //
-        // open file
-        //
-        std::string filename 
-        = 
-        _case->getDirectory( _parser->currentState() )
-        +
-        "/"
-        +
-        virtualClassName()+"_"+getLabel()+"_"+fieldHeader.name()+".csv";
-        std::fstream of;
-        of.open( filename.c_str(), std::ios::out | std::ios::trunc );
-
-        //
-        // write header
-        //
-        of 
-        << "# 1  x" << std::endl
-        << "# 2  y" << std::endl
-        << "# 3  z" << std::endl
-        << "# 4  valueX" << std::endl
-        << "# 5  valueY" << std::endl
-        << "# 6  valueZ" << std::endl
-        << "# 7  sfX " << std::endl          
-        << "# 8  sfY " << std::endl
-        << "# 9  sfZ " << std::endl
-        << "# 10 phi" << std::endl;
-        
-        //
-        // get values
-        // 
-        dt__forFromToIndex(1, meshPair.size(), ii) {
-          dtReal r0 = grid_cyl[ii-1].x();
-          dtReal r1 = grid_cyl[ii].x();            
-          dt__forFromToIndex(1, meshPair[ii].size(), jj) {
-            dtReal phi0 = meshPair[ii][jj-1].second.y();
-            dtReal phi1 = meshPair[ii][jj].second.y();
-            dtReal z0 = meshPair[ii][jj-1].second.z();
-            dtReal z1 = meshPair[ii][jj].second.z();
-
-            dtPoint3 p0 = dtT( dtPoint3( r0, phi0, 0.5*(z0+z1) ) );
-            dtPoint3 p1 = dtT( dtPoint3( r0, phi1, 0.5*(z0+z1) ) );
-            dtPoint3 p2 = dtT( dtPoint3( r1, phi1, 0.5*(z0+z1) ) );
-            dtPoint3 p3 = dtT( dtPoint3( r1, phi0, 0.5*(z0+z1) ) );
-
-            //
-            // get location
-            //
-            dtPoint3 xyz 
-            = 
-            dtLinearAlgebra::toDtPoint3(
-              0.25 * (
-                dtLinearAlgebra::toDtVector3(p0) 
-                + 
-                dtLinearAlgebra::toDtVector3(p1)
-                + 
-                dtLinearAlgebra::toDtVector3(p2)
-                + 
-                dtLinearAlgebra::toDtVector3(p3)
-              )
-            );
-
-            dtVector3 N
-            = 
-            dtLinearAlgebra::normalize(
-              dtLinearAlgebra::crossProduct( p1 - p0, p3 - p0 )
-            );              
-            dtReal A = dtLinearAlgebra::area( p0, p1, p2, p3 );
-
-
-            //
-            // create FOAM vector and search cell that contains point
-            //
-            ::Foam::vector probePoint(xyz.x(), xyz.y(), xyz.z());
-            ::Foam::label cId = mesh.findCell(probePoint);
-
-            ::Foam::vector UValue;
-            ::Foam::vector volFieldValue;
-
-            //
-            // set not found cells area to zero
-            //              
-            if (cId == -1) {
-              A = 0.;
-              UValue = ::Foam::vector::zero;
-              volFieldValue = ::Foam::vector::zero;
-              dt__warning(apply(), << "Ignore point at " dt__point3d(xyz) );
-            }
-            else {
-              //
-              // do interpolation
-              //            
-              UValue
-              =
-              interU.interpolate(
-                ::Foam::vector(xyz.x(), xyz.y(), xyz.z()), cId
-              );                  
-              volFieldValue
-              =
-              interVolField.interpolate(
-                ::Foam::vector(xyz.x(), xyz.y(), xyz.z()), cId
-              );                        
-            }
-
-            //
-            // assign values
-            //
-            dtVector3 val
-            = 
-            dtVector3(
-              volFieldValue.x(), volFieldValue.y(), volFieldValue.z()
-            );
-            dtReal phi
-            = 
-            A
-            *
-            dtLinearAlgebra::dotProduct(
-              dtVector3( UValue.x(), UValue.y(), UValue.z() ), N
-            );
-            dtVector3 sf = A * N;
-
-
-            //
-            // write values
-            //
-            if ( phi == 0.) continue;
-
-            of 
-              << logMe::dtFormat(
-                "%16.8e, %16.8e, %16.8e, "
-                "%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e"
-              ) 
-              % xyz.x() 
-              % xyz.y() 
-              % xyz.z() 
-              % val.x()
-              % val.y()
-              % val.z()
-              % sf.x()
-              % sf.y()
-              % sf.z()
-              % phi
-              << std::endl;
-          }
-        }        
-        of.close();
       }
-      catch (::Foam::error & err) {
-        dt__throw(
-          apply(), 
-          << "Instance of ::Foam::error thrown." << std::endl
-          << dt__eval(err.what()) << std::endl
-          << dt__eval(err.message())
+      std::vector<dtPoint3> grid_cyl = dtT.retract(&grid_cart);
+
+      twoDArrayHandling<std::pair<int, dtPoint3>> meshPair(grid_cyl.size(), 0);
+      dtReal deltaR = _relBandwithR * m1d->length();
+      dtReal deltaZ = _relBandwithZ * m1d->length();
+      forAll(mesh.cells(), ii)
+      {
+        dt__forAllIndex(grid_cyl, jj)
+        {
+          dtPoint3 const &aPoint = grid_cyl[jj];
+          ::Foam::scalar thisR = r[ii];
+          ::Foam::scalar thisAng = ang[ii];
+          ::Foam::scalar thisZ = z[ii];
+
+          if (((aPoint.x() + deltaR) > thisR) &&
+              ((aPoint.x() - deltaR) < thisR) &&
+              ((aPoint.z() + deltaZ) > thisZ) &&
+              ((aPoint.z() - deltaZ) < thisZ))
+          {
+            meshPair[jj].push_back(
+              std::pair<int, dtPoint3>(ii, dtPoint3(thisR, thisAng, thisZ))
+            );
+          }
+        }
+      }
+
+      //
+      // sort angles in ascending order
+      //
+      dt__forAllIndex(meshPair, ii)
+      {
+        std::sort(
+          meshPair[ii].begin(),
+          meshPair[ii].end(),
+          [](
+            const std::pair<int, dtPoint3> &lhs,
+            const std::pair<int, dtPoint3> &rhs
+          ) -> bool { return lhs.second.y() < rhs.second.y(); }
         );
-      }      
-    }    
+      }
+
+      dt__forAllIndex(meshPair, ii)
+      {
+        dt__info(
+          apply(),
+          << "meshPair[ " << ii << " ] contains : " << meshPair[ii].size()
+          << " elements." << std::endl
+        );
+      }
+
+      //
+      // open file
+      //
+      std::string filename = _case->getDirectory(_parser->currentState()) +
+                             "/" + virtualClassName() + "_" + getLabel() + "_" +
+                             fieldHeader.name() + ".csv";
+      std::fstream of;
+      of.open(filename.c_str(), std::ios::out | std::ios::trunc);
+
+      //
+      // write header
+      //
+      of << "# 1  x" << std::endl
+         << "# 2  y" << std::endl
+         << "# 3  z" << std::endl
+         << "# 4  valueX" << std::endl
+         << "# 5  valueY" << std::endl
+         << "# 6  valueZ" << std::endl
+         << "# 7  sfX " << std::endl
+         << "# 8  sfY " << std::endl
+         << "# 9  sfZ " << std::endl
+         << "# 10 phi" << std::endl;
+
+      //
+      // get values
+      //
+      dt__forFromToIndex(1, meshPair.size(), ii)
+      {
+        dtReal r0 = grid_cyl[ii - 1].x();
+        dtReal r1 = grid_cyl[ii].x();
+        dt__forFromToIndex(1, meshPair[ii].size(), jj)
+        {
+          dtReal phi0 = meshPair[ii][jj - 1].second.y();
+          dtReal phi1 = meshPair[ii][jj].second.y();
+          dtReal z0 = meshPair[ii][jj - 1].second.z();
+          dtReal z1 = meshPair[ii][jj].second.z();
+
+          dtPoint3 p0 = dtT(dtPoint3(r0, phi0, 0.5 * (z0 + z1)));
+          dtPoint3 p1 = dtT(dtPoint3(r0, phi1, 0.5 * (z0 + z1)));
+          dtPoint3 p2 = dtT(dtPoint3(r1, phi1, 0.5 * (z0 + z1)));
+          dtPoint3 p3 = dtT(dtPoint3(r1, phi0, 0.5 * (z0 + z1)));
+
+          //
+          // get location
+          //
+          dtPoint3 xyz = dtLinearAlgebra::toDtPoint3(
+            0.25 * (dtLinearAlgebra::toDtVector3(p0) +
+                    dtLinearAlgebra::toDtVector3(p1) +
+                    dtLinearAlgebra::toDtVector3(p2) +
+                    dtLinearAlgebra::toDtVector3(p3))
+          );
+
+          dtVector3 N = dtLinearAlgebra::normalize(
+            dtLinearAlgebra::crossProduct(p1 - p0, p3 - p0)
+          );
+          dtReal A = dtLinearAlgebra::area(p0, p1, p2, p3);
+
+          //
+          // create FOAM vector and search cell that contains point
+          //
+          ::Foam::vector probePoint(xyz.x(), xyz.y(), xyz.z());
+          ::Foam::label cId = mesh.findCell(probePoint);
+
+          ::Foam::vector UValue;
+          ::Foam::vector volFieldValue;
+
+          //
+          // set not found cells area to zero
+          //
+          if (cId == -1)
+          {
+            A = 0.;
+            UValue = ::Foam::vector::zero;
+            volFieldValue = ::Foam::vector::zero;
+            dt__warning(apply(), << "Ignore point at " dt__point3d(xyz));
+          }
+          else
+          {
+            //
+            // do interpolation
+            //
+            UValue = interU.interpolate(
+              ::Foam::vector(xyz.x(), xyz.y(), xyz.z()), cId
+            );
+            volFieldValue = interVolField.interpolate(
+              ::Foam::vector(xyz.x(), xyz.y(), xyz.z()), cId
+            );
+          }
+
+          //
+          // assign values
+          //
+          dtVector3 val =
+            dtVector3(volFieldValue.x(), volFieldValue.y(), volFieldValue.z());
+          dtReal phi = A * dtLinearAlgebra::dotProduct(
+                             dtVector3(UValue.x(), UValue.y(), UValue.z()), N
+                           );
+          dtVector3 sf = A * N;
+
+          //
+          // write values
+          //
+          if (phi == 0.)
+            continue;
+
+          of << logMe::dtFormat(
+                  "%16.8e, %16.8e, %16.8e, "
+                  "%16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e, %16.8e"
+                ) %
+                  xyz.x() % xyz.y() % xyz.z() % val.x() % val.y() % val.z() %
+                  sf.x() % sf.y() % sf.z() % phi
+             << std::endl;
+        }
+      }
+      of.close();
+    } catch (::Foam::error &err)
+    {
+      dt__throw(
+        apply(),
+        << "Instance of ::Foam::error thrown." << std::endl
+        << dt__eval(err.what()) << std::endl
+        << dt__eval(err.message())
+      );
+    }
   }
 }
+} // namespace dtOO

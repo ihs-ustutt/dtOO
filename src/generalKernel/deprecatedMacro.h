@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,12 +16,12 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef DEPRECATEDMACRO_H
-#define	DEPRECATEDMACRO_H
+#define DEPRECATEDMACRO_H
 
 #include <dtOOTypeDef.h>
 
 #ifdef __GNUC__
-#define DTDEPRECATED(func) func __attribute__ ((deprecated))
+#define DTDEPRECATED(func) func __attribute__((deprecated))
 #elif defined(_MSC_VER)
 #define DTDEPRECATED(func) __declspec(deprecated) func
 #else
@@ -29,4 +29,4 @@ License
 #define DTDEPRECATED(func) func
 #endif
 
-#endif	/* DEPRECATEDMACRO_H */
+#endif /* DEPRECATEDMACRO_H */

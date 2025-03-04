@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,30 +16,33 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef float_map1dTo3dPointConstCartesian_H
-#define	float_map1dTo3dPointConstCartesian_H
+#define float_map1dTo3dPointConstCartesian_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class map1dTo3d;
-  
-  class float_map1dTo3dPointConstCartesian {
-    public:
-      dt__classOnlyName(float_map1dTo3dPointConstCartesian);     
-      float_map1dTo3dPointConstCartesian(
-        map1dTo3d const * const m1d, dtInt const & dir, dtReal const & value,
-        dtReal const & initGuess
-      );        
-      float_map1dTo3dPointConstCartesian(
-        map1dTo3d const * const m1d, dtInt const & dir, dtReal const & value
-      );
-      virtual ~float_map1dTo3dPointConstCartesian();
-      dtReal result( void );
-    private:
-      dtReal _u;
-  };
-}
-#endif	/* float_map1dTo3dPointConstCartesian_H */
+class map1dTo3d;
+
+class float_map1dTo3dPointConstCartesian {
+public:
+  dt__classOnlyName(float_map1dTo3dPointConstCartesian);
+  float_map1dTo3dPointConstCartesian(
+    map1dTo3d const *const m1d,
+    dtInt const &dir,
+    dtReal const &value,
+    dtReal const &initGuess
+  );
+  float_map1dTo3dPointConstCartesian(
+    map1dTo3d const *const m1d, dtInt const &dir, dtReal const &value
+  );
+  virtual ~float_map1dTo3dPointConstCartesian();
+  dtReal result(void);
+
+private:
+  dtReal _u;
+};
+} // namespace dtOO
+#endif /* float_map1dTo3dPointConstCartesian_H */

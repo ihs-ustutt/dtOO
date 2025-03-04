@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,29 +16,30 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef TIMEHANDLING_H
-#define	TIMEHANDLING_H
+#define TIMEHANDLING_H
 
 #include <dtOOTypeDef.h>
 
 #include <logMe/dtMacros.h>
 
 namespace boost {
-  namespace timer {
-    class cpu_timer;
-  }
+namespace timer {
+class cpu_timer;
 }
+} // namespace boost
 
 namespace dtOO {
-  class timeHandling {
-    public:
-      dt__classOnlyName(timeHandling);    
-      timeHandling(std::string const & keyword);
-      virtual ~timeHandling();
-      void output( void );
-    private:
-      std::string _keyword;
-      dt__pH(::boost::timer::cpu_timer) _t;
-      dtInt _step;
-  };
-}
-#endif	/* TIMEHANDLING_H */
+class timeHandling {
+public:
+  dt__classOnlyName(timeHandling);
+  timeHandling(std::string const &keyword);
+  virtual ~timeHandling();
+  void output(void);
+
+private:
+  std::string _keyword;
+  dt__pH(::boost::timer::cpu_timer) _t;
+  dtInt _step;
+};
+} // namespace dtOO
+#endif /* TIMEHANDLING_H */

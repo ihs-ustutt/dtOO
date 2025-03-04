@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -18,26 +18,18 @@ License
 #include "dtMeshGFace.h"
 
 #include "dtGmshFace.h"
-#include <gmsh/meshGFace.h>
 #include "dtMeshOperatorFactory.h"
+#include <gmsh/meshGFace.h>
 
 namespace dtOO {
-  bool dtMeshGFace::_registrated 
-  =
-  dtMeshOperatorFactory::registrate(
-    dt__tmpPtr(dtMeshGFace, new dtMeshGFace())
-  );
- 
-  dtMeshGFace::dtMeshGFace() : dtMesh2DOperator() {
-  }
+bool dtMeshGFace::_registrated =
+  dtMeshOperatorFactory::registrate(dt__tmpPtr(dtMeshGFace, new dtMeshGFace()));
 
-  dtMeshGFace::dtMeshGFace(const dtMeshGFace& orig) : dtMesh2DOperator(orig) {
-  }
+dtMeshGFace::dtMeshGFace() : dtMesh2DOperator() {}
 
-  dtMeshGFace::~dtMeshGFace() {
-  }
+dtMeshGFace::dtMeshGFace(const dtMeshGFace &orig) : dtMesh2DOperator(orig) {}
 
-  void dtMeshGFace::operator()( dtGmshFace * dtgf) {
-    ::meshGFace()( dtgf );
-  }
-}
+dtMeshGFace::~dtMeshGFace() {}
+
+void dtMeshGFace::operator()(dtGmshFace *dtgf) { ::meshGFace()(dtgf); }
+} // namespace dtOO

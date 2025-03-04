@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef DTOMMESHDIVIDED_H
-#define	DTOMMESHDIVIDED_H
+#define DTOMMESHDIVIDED_H
 
 #include <dtOOTypeDef.h>
 
@@ -29,15 +29,16 @@ class MElement;
 class MVertex;
 
 namespace dtOO {
-  class dtOMMeshDivided {
-  public:
-    dt__classOnlyName(dtOMMeshDivided);    
-    dtOMMeshDivided();
-    virtual ~dtOMMeshDivided();
-    void add( dtOMMesh const & om );
-    dtOMMesh connect( void );
-  private:
-    std::list< dtOMMesh > _part;
-  };
-}
-#endif	/* DTOMMESHDIVIDED_H */
+class dtOMMeshDivided {
+public:
+  dt__classOnlyName(dtOMMeshDivided);
+  dtOMMeshDivided();
+  virtual ~dtOMMeshDivided();
+  void add(dtOMMesh const &om);
+  dtOMMesh connect(void);
+
+private:
+  std::list<dtOMMesh> _part;
+};
+} // namespace dtOO
+#endif /* DTOMMESHDIVIDED_H */

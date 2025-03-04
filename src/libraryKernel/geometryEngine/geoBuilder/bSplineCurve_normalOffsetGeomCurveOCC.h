@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,28 +16,29 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bSplineCurve_normalOffsetGeomCurveOCC_H
-#define	bSplineCurve_normalOffsetGeomCurveOCC_H
+#define bSplineCurve_normalOffsetGeomCurveOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  
-  class bSplineCurve_normalOffsetGeomCurveOCC {
-  public:
-    dt__classOnlyName(bSplineCurve_normalOffsetGeomCurveOCC);    
-    bSplineCurve_normalOffsetGeomCurveOCC(
-      dtCurve const * const dtC, dtReal const & offset, dtVector3 const & nn
-    );
-    virtual ~bSplineCurve_normalOffsetGeomCurveOCC();
-    dtCurve * result( void );
-  private:
-    ptrHandling<dtCurve> _dtC;    
-  };
-}
+class dtCurve;
 
-#endif	/* bSplineCurve_normalOffsetGeomCurveOCC_H */
+class bSplineCurve_normalOffsetGeomCurveOCC {
+public:
+  dt__classOnlyName(bSplineCurve_normalOffsetGeomCurveOCC);
+  bSplineCurve_normalOffsetGeomCurveOCC(
+    dtCurve const *const dtC, dtReal const &offset, dtVector3 const &nn
+  );
+  virtual ~bSplineCurve_normalOffsetGeomCurveOCC();
+  dtCurve *result(void);
+
+private:
+  ptrHandling<dtCurve> _dtC;
+};
+} // namespace dtOO
+
+#endif /* bSplineCurve_normalOffsetGeomCurveOCC_H */

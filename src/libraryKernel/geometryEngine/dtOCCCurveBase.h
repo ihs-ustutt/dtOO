@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,27 +16,28 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef dtOCCCurveBase_H
-#define	dtOCCCurveBase_H
+#define dtOCCCurveBase_H
 
 #include <dtOOTypeDef.h>
 
+#include <Geom_Curve.hxx>
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-#include <Geom_Curve.hxx>
 
-namespace dtOO {    
-  class dtOCCCurveBase {
-  public:
-    dt__classOnlyName(dtOCCCurveBase);
-    dtOCCCurveBase();
-	  dtOCCCurveBase(Handle_Geom_Curve orig);    
-    virtual ~dtOCCCurveBase();
-    void setOCC(Handle_Geom_Curve occCurve);    
-    Handle_Geom_Curve const getOCC( void ) const;
-	  std::string dumpToString(void) const;
-  private:
-    class OCCHanWrap;
-    dt__pH(OCCHanWrap) _hanWrap;
-  };
-}
-#endif	/* dtOCCCurveBase_H */
+namespace dtOO {
+class dtOCCCurveBase {
+public:
+  dt__classOnlyName(dtOCCCurveBase);
+  dtOCCCurveBase();
+  dtOCCCurveBase(Handle_Geom_Curve orig);
+  virtual ~dtOCCCurveBase();
+  void setOCC(Handle_Geom_Curve occCurve);
+  Handle_Geom_Curve const getOCC(void) const;
+  std::string dumpToString(void) const;
+
+private:
+  class OCCHanWrap;
+  dt__pH(OCCHanWrap) _hanWrap;
+};
+} // namespace dtOO
+#endif /* dtOCCCurveBase_H */

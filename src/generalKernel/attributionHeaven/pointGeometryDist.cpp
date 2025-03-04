@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,47 +17,36 @@ License
 
 #include "pointGeometryDist.h"
 
+#include <analyticGeometryHeaven/analyticGeometry.h>
 #include <progHelper.h>
 #include <vector>
-#include <analyticGeometryHeaven/analyticGeometry.h>
-
 
 namespace dtOO {
-  pointGeometryDist::pointGeometryDist( 
-    dtPoint3 const & p3,
-    analyticGeometry const * const aG
-  ) 
-  :
-  _p3(p3),
-  _dimension(aG->dim()),
-  _aG(aG)
-  {
-  }
-
-  pointGeometryDist::pointGeometryDist( pointGeometryDist const & orig ) 
-  :
-  _p3(orig._p3),
-  _dimension(orig._dimension),
-  _aG(orig._aG)
-  {
-  }
-
-  pointGeometryDist::~pointGeometryDist() {
-  }
-
-  pointGeometryDist * pointGeometryDist::clone(void) const {
-    return new pointGeometryDist(*this);
-  }
-
-  dtReal pointGeometryDist::operator()( 
-    std::vector< dtReal > const & xx 
-  ) const {
-    return dtLinearAlgebra::distance( _aG->getPointPercent( &(xx[0]) ), _p3 );
-  }
-
-  dtInt const & pointGeometryDist::dimension() const {
-    return _dimension;
-  }
-
-  dt__C_addCloneForpVH(pointGeometryDist);
+pointGeometryDist::pointGeometryDist(
+  dtPoint3 const &p3, analyticGeometry const *const aG
+)
+  : _p3(p3), _dimension(aG->dim()), _aG(aG)
+{
 }
+
+pointGeometryDist::pointGeometryDist(pointGeometryDist const &orig)
+  : _p3(orig._p3), _dimension(orig._dimension), _aG(orig._aG)
+{
+}
+
+pointGeometryDist::~pointGeometryDist() {}
+
+pointGeometryDist *pointGeometryDist::clone(void) const
+{
+  return new pointGeometryDist(*this);
+}
+
+dtReal pointGeometryDist::operator()(std::vector<dtReal> const &xx) const
+{
+  return dtLinearAlgebra::distance(_aG->getPointPercent(&(xx[0])), _p3);
+}
+
+dtInt const &pointGeometryDist::dimension() const { return _dimension; }
+
+dt__C_addCloneForpVH(pointGeometryDist);
+} // namespace dtOO

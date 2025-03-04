@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,27 +16,28 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef TRIMMEDCURVE_UBOUNDS_H
-#define	TRIMMEDCURVE_UBOUNDS_H
+#define TRIMMEDCURVE_UBOUNDS_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  
-  class trimmedCurve_uBounds {
-    public:
-      dt__classOnlyName(trimmedCurve_uBounds);
-      trimmedCurve_uBounds(
-        dtCurve const * dtC, dtReal const & min, dtReal const & max
-      );
-      virtual ~trimmedCurve_uBounds();
-      dtCurve * result( void );
-      private:
-        ptrHandling< dtCurve > _dtC;
-  };
-}
-#endif	/* TRIMMEDCURVE_UBOUNDS_H */
+class dtCurve;
+
+class trimmedCurve_uBounds {
+public:
+  dt__classOnlyName(trimmedCurve_uBounds);
+  trimmedCurve_uBounds(
+    dtCurve const *dtC, dtReal const &min, dtReal const &max
+  );
+  virtual ~trimmedCurve_uBounds();
+  dtCurve *result(void);
+
+private:
+  ptrHandling<dtCurve> _dtC;
+};
+} // namespace dtOO
+#endif /* TRIMMEDCURVE_UBOUNDS_H */

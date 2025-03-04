@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,33 +16,34 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef DTOCCTRIMMEDCURVE_H
-#define	DTOCCTRIMMEDCURVE_H
+#define DTOCCTRIMMEDCURVE_H
 
 #include <dtOOTypeDef.h>
 
+#include "dtOCCCurve.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-#include "dtOCCCurve.h"
 
 class Geom_TrimmedCurve;
 
 namespace dtOO {
-  class dtOCCCurveBase; 
-  
-  class dtOCCTrimmedCurve : public dtOCCCurve {
-  public:
-    dt__class(dtOCCTrimmedCurve, dtCurve);    
-    dtOCCTrimmedCurve();
-    dtOCCTrimmedCurve(dtOCCCurveBase const & orig);
-    virtual ~dtOCCTrimmedCurve();
-    virtual dtOCCTrimmedCurve * clone( void ) const;
-    virtual dtInt order( void ) const;
-    virtual dtInt nControlPoints( void ) const;
-    virtual dtPoint3 controlPoint( dtInt const nPoint ) const;
-    virtual void setControlPoint( dtInt const nPoint, dtPoint3 const point );  
-  private:
-    Geom_TrimmedCurve const * _ptr;
-  };
-}
+class dtOCCCurveBase;
 
-#endif	/* DTOCCTRIMMEDCURVE_H */
+class dtOCCTrimmedCurve : public dtOCCCurve {
+public:
+  dt__class(dtOCCTrimmedCurve, dtCurve);
+  dtOCCTrimmedCurve();
+  dtOCCTrimmedCurve(dtOCCCurveBase const &orig);
+  virtual ~dtOCCTrimmedCurve();
+  virtual dtOCCTrimmedCurve *clone(void) const;
+  virtual dtInt order(void) const;
+  virtual dtInt nControlPoints(void) const;
+  virtual dtPoint3 controlPoint(dtInt const nPoint) const;
+  virtual void setControlPoint(dtInt const nPoint, dtPoint3 const point);
+
+private:
+  Geom_TrimmedCurve const *_ptr;
+};
+} // namespace dtOO
+
+#endif /* DTOCCTRIMMEDCURVE_H */

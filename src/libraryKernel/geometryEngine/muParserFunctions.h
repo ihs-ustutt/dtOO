@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,32 +16,33 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef muParserFunctions_H
-#define	muParserFunctions_H
+#define muParserFunctions_H
 
 #include <dtOOTypeDef.h>
 
 #include <logMe/dtMacros.h>
-#include <muParser.h>
 #include <mainConceptFwd.h>
+#include <muParser.h>
 
 namespace dtOO {
-  class muParserFunctions  {
-    public:
-      dt__classOnlyName(muParserFunctions);
-      static muParserFunctions * instance( void );
-      virtual ~muParserFunctions();
-      void registrateAnalyticFunctions( lvH_analyticFunction const * aFPtrVec );
-      static mu::value_type YFix( ::mu::char_type const * expr);
-      static mu::value_type Y( ::mu::char_type const * expr, ::mu::value_type val );
-      static mu::value_type oneInRange(
-        ::mu::value_type low, ::mu::value_type high, ::mu::value_type value
-      );
-    private:
-      muParserFunctions();
-    private:
-      static dt__pH(muParserFunctions) _pH;
-      lvH_analyticFunction const * _aFPtrVec;
-            
-  };
-}
-#endif	/* muParserFunctions_H */
+class muParserFunctions {
+public:
+  dt__classOnlyName(muParserFunctions);
+  static muParserFunctions *instance(void);
+  virtual ~muParserFunctions();
+  void registrateAnalyticFunctions(lvH_analyticFunction const *aFPtrVec);
+  static mu::value_type YFix(::mu::char_type const *expr);
+  static mu::value_type Y(::mu::char_type const *expr, ::mu::value_type val);
+  static mu::value_type oneInRange(
+    ::mu::value_type low, ::mu::value_type high, ::mu::value_type value
+  );
+
+private:
+  muParserFunctions();
+
+private:
+  static dt__pH(muParserFunctions) _pH;
+  lvH_analyticFunction const *_aFPtrVec;
+};
+} // namespace dtOO
+#endif /* muParserFunctions_H */

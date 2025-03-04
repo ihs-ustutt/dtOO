@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,47 +17,34 @@ License
 
 #include "pointCurveDist.h"
 
+#include <geometryEngine/dtCurve.h>
 #include <progHelper.h>
 #include <vector>
-#include <geometryEngine/dtCurve.h>
-
 
 namespace dtOO {
-  pointCurveDist::pointCurveDist( 
-    dtPoint3 const & p3,
-    dtCurve const * const dtC
-  ) 
-  :
-  _p3(p3),
-  _dimension(1),
-  _dtC(dtC)
-  {
-  }
-
-  pointCurveDist::pointCurveDist( pointCurveDist const & orig ) 
-  :
-  _p3(orig._p3),
-  _dimension(orig._dimension),
-  _dtC(orig._dtC)
-  {
-  }
-
-  pointCurveDist::~pointCurveDist() {
-  }
-
-  pointCurveDist * pointCurveDist::clone(void) const {
-    return new pointCurveDist(*this);
-  }
-
-  dtReal pointCurveDist::operator()( 
-    std::vector< dtReal > const & xx 
-  ) const {
-    return dtLinearAlgebra::distance( _dtC->pointPercent( xx[0] ), _p3 );
-  }
-
-  dtInt const & pointCurveDist::dimension() const {
-    return _dimension;
-  }
-
-  dt__C_addCloneForpVH(pointCurveDist);
+pointCurveDist::pointCurveDist(dtPoint3 const &p3, dtCurve const *const dtC)
+  : _p3(p3), _dimension(1), _dtC(dtC)
+{
 }
+
+pointCurveDist::pointCurveDist(pointCurveDist const &orig)
+  : _p3(orig._p3), _dimension(orig._dimension), _dtC(orig._dtC)
+{
+}
+
+pointCurveDist::~pointCurveDist() {}
+
+pointCurveDist *pointCurveDist::clone(void) const
+{
+  return new pointCurveDist(*this);
+}
+
+dtReal pointCurveDist::operator()(std::vector<dtReal> const &xx) const
+{
+  return dtLinearAlgebra::distance(_dtC->pointPercent(xx[0]), _p3);
+}
+
+dtInt const &pointCurveDist::dimension() const { return _dimension; }
+
+dt__C_addCloneForpVH(pointCurveDist);
+} // namespace dtOO

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef dtTransformerDriver_H
-#define	dtTransformerDriver_H
+#define dtTransformerDriver_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,17 +24,17 @@ License
 #include <pluginEngine/pugg/Driver.h>
 
 namespace dtOO {
-  class dtTransformer;
-  
-  class dtTransformerDriver : public ::pugg::Driver {
-  public:
-    dt__classOnlyName(dtTransformerDriver);       
-    dtTransformerDriver(std::string name, dtInt version);
-    ~dtTransformerDriver();
-    virtual dtTransformer * create( void ) = 0;
-  private:
+class dtTransformer;
 
-  };
-}
+class dtTransformerDriver : public ::pugg::Driver {
+public:
+  dt__classOnlyName(dtTransformerDriver);
+  dtTransformerDriver(std::string name, dtInt version);
+  ~dtTransformerDriver();
+  virtual dtTransformer *create(void) = 0;
 
-#endif	/* dtTransformerDriver_H */
+private:
+};
+} // namespace dtOO
+
+#endif /* dtTransformerDriver_H */

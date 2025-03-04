@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef dtTransformerKernel_H
-#define	dtTransformerKernel_H
+#define dtTransformerKernel_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,13 +24,13 @@ License
 #include <pluginEngine/pugg/Kernel.h>
 
 namespace dtOO {
-  class dtTransformerKernel : public ::pugg::Kernel {
-  public:
-    dt__classOnlyName(dtTransformerKernel);       
-    ~dtTransformerKernel();
-  private:
+class dtTransformerKernel : public ::pugg::Kernel {
+public:
+  dt__classOnlyName(dtTransformerKernel);
+  ~dtTransformerKernel();
 
-  };
-}
+private:
+};
+} // namespace dtOO
 
-#endif	/* dtTransformerKernel_H */
+#endif /* dtTransformerKernel_H */

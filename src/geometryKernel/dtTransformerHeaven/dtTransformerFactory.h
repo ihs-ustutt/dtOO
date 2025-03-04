@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,34 +16,36 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef DTTRANSFORMERFACTORY_H
-#define	DTTRANSFORMERFACTORY_H
+#define DTTRANSFORMERFACTORY_H
 
 #include <dtOOTypeDef.h>
 
-#include <string>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
+#include <string>
 
 namespace dtOO {
-  class dtTransformer;
+class dtTransformer;
 
-  class dtTransformerFactory {
-    public:
-      dt__classOnlyName(dtTransformerFactory);
-      virtual ~dtTransformerFactory();
-      static bool registrate( dtTransformer const * const );     
-      static dtTransformer * create(char const * const str);
-      static dtTransformer * create( std::string const str); 
-      static dtTransformer * createFromPlugin(
-        std::string const & className, 
-        std::string const & pluginName, 
-        std::string const & pluginDriver
-      );    
-    private:
-      dtTransformerFactory();    
-    private:
-      static dt__pVH(dtTransformer) _transformer;     
-  };
-}
+class dtTransformerFactory {
+public:
+  dt__classOnlyName(dtTransformerFactory);
+  virtual ~dtTransformerFactory();
+  static bool registrate(dtTransformer const *const);
+  static dtTransformer *create(char const *const str);
+  static dtTransformer *create(std::string const str);
+  static dtTransformer *createFromPlugin(
+    std::string const &className,
+    std::string const &pluginName,
+    std::string const &pluginDriver
+  );
 
-#endif	/* DTTRANSFORMERFACTORY_H */
+private:
+  dtTransformerFactory();
+
+private:
+  static dt__pVH(dtTransformer) _transformer;
+};
+} // namespace dtOO
+
+#endif /* DTTRANSFORMERFACTORY_H */

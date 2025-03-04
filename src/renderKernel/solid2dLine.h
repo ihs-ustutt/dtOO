@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,21 +16,22 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef SOLID2DLINE_H
-#define	SOLID2DLINE_H
+#define SOLID2DLINE_H
 
 #include <dtOOTypeDef.h>
 
 #include "discrete2dPoints.h"
 
 namespace dtOO {
-  class solid2dLine : public discrete2dPoints {
-    public:
-      dt__class(solid2dLine, renderInterface);
-      solid2dLine();
-      solid2dLine(std::vector< dtPoint2 > const & pp);
-      virtual ~solid2dLine();
-    private:
-      std::vector< dtPoint2 > _p2;
-  };
-}
-#endif	/* SOLID2DLINE_H */
+class solid2dLine : public discrete2dPoints {
+public:
+  dt__class(solid2dLine, renderInterface);
+  solid2dLine();
+  solid2dLine(std::vector<dtPoint2> const &pp);
+  virtual ~solid2dLine();
+
+private:
+  std::vector<dtPoint2> _p2;
+};
+} // namespace dtOO
+#endif /* SOLID2DLINE_H */

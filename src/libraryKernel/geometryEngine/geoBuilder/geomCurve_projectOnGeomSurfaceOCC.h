@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,31 +16,31 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef GEOMCURVE_PROJECTONGEOMSURFACEOCC_H
-#define	GEOMCURVE_PROJECTONGEOMSURFACEOCC_H
+#define GEOMCURVE_PROJECTONGEOMSURFACEOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  class dtSurface;
-  
-  class geomCurve_projectOnGeomSurfaceOCC {
-  public:
-    dt__classOnlyName(geomCurve_projectOnGeomSurfaceOCC);    
-    geomCurve_projectOnGeomSurfaceOCC();
-    geomCurve_projectOnGeomSurfaceOCC(
-      dtCurve const * const dtC, 
-      dtSurface const * const dtS
-    );
-    virtual ~geomCurve_projectOnGeomSurfaceOCC();
-    dtCurve * result( void );    
-  private:
-    ptrHandling< dtCurve > _dtC;
-  };
-}
-#endif	/* GEOMCURVE_PROJECTONGEOMSURFACEOCC_H */
+class dtCurve;
+class dtSurface;
+
+class geomCurve_projectOnGeomSurfaceOCC {
+public:
+  dt__classOnlyName(geomCurve_projectOnGeomSurfaceOCC);
+  geomCurve_projectOnGeomSurfaceOCC();
+  geomCurve_projectOnGeomSurfaceOCC(
+    dtCurve const *const dtC, dtSurface const *const dtS
+  );
+  virtual ~geomCurve_projectOnGeomSurfaceOCC();
+  dtCurve *result(void);
+
+private:
+  ptrHandling<dtCurve> _dtC;
+};
+} // namespace dtOO
+#endif /* GEOMCURVE_PROJECTONGEOMSURFACEOCC_H */

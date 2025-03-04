@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,26 +16,27 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef ofOpenFOAMWallRule_H
-#define	ofOpenFOAMWallRule_H
+#define ofOpenFOAMWallRule_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include "ofOpenFOAMSetupRule.h"
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class ofOpenFOAMWallRule : public ofOpenFOAMSetupRule {
-    public:
-      dt__class(ofOpenFOAMWallRule, ofOpenFOAMSetupRule);  
-      dt__classSelfCreate(ofOpenFOAMWallRule);
-      ofOpenFOAMWallRule();
-      virtual ~ofOpenFOAMWallRule();
-      virtual std::vector< std::string > factoryAlias( void ) const;
-      virtual void executeOnMesh(
-        std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-      ) const;       
-    private:
-      static bool _registrated;
-  };
-}
-#endif	/* ofOpenFOAMWallRule_H */
+class ofOpenFOAMWallRule : public ofOpenFOAMSetupRule {
+public:
+  dt__class(ofOpenFOAMWallRule, ofOpenFOAMSetupRule);
+  dt__classSelfCreate(ofOpenFOAMWallRule);
+  ofOpenFOAMWallRule();
+  virtual ~ofOpenFOAMWallRule();
+  virtual std::vector<std::string> factoryAlias(void) const;
+  virtual void executeOnMesh(
+    std::vector<std::string> const &rule, ::Foam::polyMesh &mesh
+  ) const;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* ofOpenFOAMWallRule_H */

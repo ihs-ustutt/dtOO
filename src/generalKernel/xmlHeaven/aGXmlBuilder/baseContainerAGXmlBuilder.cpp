@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,62 +17,57 @@ License
 
 #include "baseContainerAGXmlBuilder.h"
 
-#include <xmlHeaven/aGXmlBuilderFactory.h>
-#include <logMe/logMe.h>
-#include <dtLinearAlgebra.h>
-#include <baseContainerHeaven/baseContainer.h>
-#include <baseContainerHeaven/transformerContainer.h>
-#include <dtTransformerHeaven/dtTransformer.h>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
+#include <baseContainerHeaven/baseContainer.h>
+#include <baseContainerHeaven/transformerContainer.h>
+#include <dtLinearAlgebra.h>
+#include <dtTransformerHeaven/dtTransformer.h>
+#include <logMe/logMe.h>
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 
 namespace dtOO {
-  bool baseContainerAGXmlBuilder::_registrated 
-  =
-  aGXmlBuilderFactory::registrate(
-    dt__tmpPtr(
-      baseContainerAGXmlBuilder, 
-      new baseContainerAGXmlBuilder()
-    )
-  );
-  
-  baseContainerAGXmlBuilder::baseContainerAGXmlBuilder() {
-  }
+bool baseContainerAGXmlBuilder::_registrated = aGXmlBuilderFactory::registrate(
+  dt__tmpPtr(baseContainerAGXmlBuilder, new baseContainerAGXmlBuilder())
+);
 
-  baseContainerAGXmlBuilder::~baseContainerAGXmlBuilder() {
-  }
+baseContainerAGXmlBuilder::baseContainerAGXmlBuilder() {}
 
-  void baseContainerAGXmlBuilder::buildPart(
-    ::QDomElement const & toBuild,
-    baseContainer * const bC,
-    lvH_constValue const * const cV,  
-    lvH_analyticFunction const * const aF,  
-    lvH_analyticGeometry const * const aG,
-    lvH_analyticGeometry * result 
-	) const {
-   
-    std::vector< ::QDomElement > wElement 
-    = 
+baseContainerAGXmlBuilder::~baseContainerAGXmlBuilder() {}
+
+void baseContainerAGXmlBuilder::buildPart(
+  ::QDomElement const &toBuild,
+  baseContainer *const bC,
+  lvH_constValue const *const cV,
+  lvH_analyticFunction const *const aF,
+  lvH_analyticGeometry const *const aG,
+  lvH_analyticGeometry *result
+) const
+{
+
+  std::vector<::QDomElement> wElement =
     dtXmlParserBase::getChildVector(toBuild);
-		
-    //dt__FORALL(wElement, ii,
-		for (int ii=0; ii<wElement.size(); ii++) {
-			if ( dtXmlParserBase::is("Point_3", wElement[ii]) ) {
-				vectorHandling< dtPoint3 > workingPointP;
-				dtXmlParserBase::createBasic(
-          &wElement[ii], bC, cV, aF, aG, NULL, &workingPointP
-        );
-			}
-		  else if ( dtXmlParserBase::is("Vector_3", wElement[ii]) ) {
-				dtVector3 workingVectorP 
-				= 
-				dtXmlParserBase::createDtVector3(&wElement[ii], bC, cV, aF, aG);
-			}
-		  else if ( dtXmlParserBase::is("transformer", wElement[ii]) ) {
-				dt__pH(dtTransformer) dtT(
-				  dtXmlParserBase::createTransformer(&wElement[ii], bC, cV, aF, aG)
-				);
-			}		
+
+  // dt__FORALL(wElement, ii,
+  for (int ii = 0; ii < wElement.size(); ii++)
+  {
+    if (dtXmlParserBase::is("Point_3", wElement[ii]))
+    {
+      vectorHandling<dtPoint3> workingPointP;
+      dtXmlParserBase::createBasic(
+        &wElement[ii], bC, cV, aF, aG, NULL, &workingPointP
+      );
+    }
+    else if (dtXmlParserBase::is("Vector_3", wElement[ii]))
+    {
+      dtVector3 workingVectorP =
+        dtXmlParserBase::createDtVector3(&wElement[ii], bC, cV, aF, aG);
+    }
+    else if (dtXmlParserBase::is("transformer", wElement[ii]))
+    {
+      dt__pH(dtTransformer)
+        dtT(dtXmlParserBase::createTransformer(&wElement[ii], bC, cV, aF, aG));
     }
   }
 }
+} // namespace dtOO

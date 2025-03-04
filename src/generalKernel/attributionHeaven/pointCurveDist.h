@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,38 +16,36 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef pointCurveDist_H
-#define	pointCurveDist_H
+#define pointCurveDist_H
 
 #include <dtOOTypeDef.h>
 
-#include <dtLinearAlgebra.h>
-#include <logMe/logMe.h>
-#include <logMe/dtMacros.h>
 #include "floatAtt.h"
+#include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 
-namespace dtOO { 
-  class dtCurve;
+namespace dtOO {
+class dtCurve;
 
-  class pointCurveDist : public floatAtt {
-    public:  
-      dt__classOnlyName(pointCurveDist);
-      pointCurveDist(
-        dtPoint3 const & p3,
-        dtCurve const * const dtC
-      );
-      virtual ~pointCurveDist();
-      pointCurveDist( pointCurveDist const & orig );
-      virtual pointCurveDist * clone( void ) const;
-      virtual dtReal operator()( std::vector< dtReal > const & xx ) const;
-      //
-      // get properties
-      //
-      virtual dtInt const & dimension() const;
-    private:
-      dtPoint3 const _p3;
-      dtInt const _dimension;
-      dtCurve const * const _dtC;
-  };
-  dt__H_addCloneForpVH(pointCurveDist);
-}
-#endif	/* pointCurveDist_H */
+class pointCurveDist : public floatAtt {
+public:
+  dt__classOnlyName(pointCurveDist);
+  pointCurveDist(dtPoint3 const &p3, dtCurve const *const dtC);
+  virtual ~pointCurveDist();
+  pointCurveDist(pointCurveDist const &orig);
+  virtual pointCurveDist *clone(void) const;
+  virtual dtReal operator()(std::vector<dtReal> const &xx) const;
+  //
+  // get properties
+  //
+  virtual dtInt const &dimension() const;
+
+private:
+  dtPoint3 const _p3;
+  dtInt const _dimension;
+  dtCurve const *const _dtC;
+};
+dt__H_addCloneForpVH(pointCurveDist);
+} // namespace dtOO
+#endif /* pointCurveDist_H */

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,35 +16,35 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef floatAtt_H
-#define	floatAtt_H
+#define floatAtt_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 #include <vector>
 
-namespace dtOO { 
-  class analyticGeometry;
-  class dtCurve;
+namespace dtOO {
+class analyticGeometry;
+class dtCurve;
 
-  class floatAtt {
-    public:  
-      dt__classOnlyName(floatAtt);
-      floatAtt();
-      virtual ~floatAtt();
-      floatAtt( floatAtt const & orig );
-      virtual floatAtt * clone( void ) const = 0;
-      virtual dtInt const & dimension() const = 0;
-      bool outOfRange( ::std::vector< dtReal > const & xx ) const;
-      virtual dtReal outOfRangeResult() const;
-      dtReal rangeCheckAndCall(::std::vector<dtReal> const & xx) const;
-      //
-      // strategy overload
-      //
-      virtual dtReal operator()(::std::vector< dtReal > const & xx) const = 0;
-  };
-  dt__H_addCloneForpVH(floatAtt);
-}
-#endif	/* floatAtt_H */
+class floatAtt {
+public:
+  dt__classOnlyName(floatAtt);
+  floatAtt();
+  virtual ~floatAtt();
+  floatAtt(floatAtt const &orig);
+  virtual floatAtt *clone(void) const = 0;
+  virtual dtInt const &dimension() const = 0;
+  bool outOfRange(::std::vector<dtReal> const &xx) const;
+  virtual dtReal outOfRangeResult() const;
+  dtReal rangeCheckAndCall(::std::vector<dtReal> const &xx) const;
+  //
+  // strategy overload
+  //
+  virtual dtReal operator()(::std::vector<dtReal> const &xx) const = 0;
+};
+dt__H_addCloneForpVH(floatAtt);
+} // namespace dtOO
+#endif /* floatAtt_H */

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -20,12 +20,10 @@ License
 #include "dtPlugin.h"
 
 namespace dtOO {
-  dtPluginDriver::dtPluginDriver(
-    std::string name, dtInt version
-  ) : pugg::Driver(dtPlugin::server_name(), name, version) {
-    
-  }
-
-  dtPluginDriver::~dtPluginDriver() {
-  }
+dtPluginDriver::dtPluginDriver(std::string name, dtInt version)
+  : pugg::Driver(dtPlugin::server_name(), name, version)
+{
 }
+
+dtPluginDriver::~dtPluginDriver() {}
+} // namespace dtOO

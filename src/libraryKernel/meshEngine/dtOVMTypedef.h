@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -20,33 +20,33 @@ License
 
 #include <dtOOTypeDef.h>
 
-#include <OpenVolumeMesh/Mesh/PolyhedralMesh.hh>
 #include <OpenVolumeMesh/Core/OpenVolumeMeshProperty.hh>
+#include <OpenVolumeMesh/Mesh/PolyhedralMesh.hh>
 
 namespace dtOO {
-  //
-  // typedefs
-  //
-  typedef ::OpenVolumeMesh::GeometricPolyhedralMeshV3f ovmMesh;
-  //
-  // handles
-  //
-  typedef ::OpenVolumeMesh::VertexHandle ovmVertexH;
-  typedef ::OpenVolumeMesh::HalfEdgeHandle ovmHalfedgeH;
-  typedef ::OpenVolumeMesh::EdgeHandle ovmEdgeH;
-  typedef ::OpenVolumeMesh::HalfFaceHandle ovmHalffaceH;
-  typedef ::OpenVolumeMesh::FaceHandle ovmFaceH;
-  typedef ::OpenVolumeMesh::CellHandle ovmCellH;
-  //
-  // iterators
-  //
-  typedef ::OpenVolumeMesh::VertexIter ovmVertexI;
-  typedef ::OpenVolumeMesh::VertexOHalfEdgeIter ovmVertexOHalfedgeI;
-  typedef ::OpenVolumeMesh::VertexCellIter ovmVertexCellI;
-  typedef ::OpenVolumeMesh::CellVertexIter ovmCellVertexI;
-  //
-  // misc
-  //
-  typedef ::OpenVolumeMesh::Vec3f ovmPoint;
-}
+//
+// typedefs
+//
+typedef ::OpenVolumeMesh::GeometricPolyhedralMeshV3f ovmMesh;
+//
+// handles
+//
+typedef ::OpenVolumeMesh::VertexHandle ovmVertexH;
+typedef ::OpenVolumeMesh::HalfEdgeHandle ovmHalfedgeH;
+typedef ::OpenVolumeMesh::EdgeHandle ovmEdgeH;
+typedef ::OpenVolumeMesh::HalfFaceHandle ovmHalffaceH;
+typedef ::OpenVolumeMesh::FaceHandle ovmFaceH;
+typedef ::OpenVolumeMesh::CellHandle ovmCellH;
+//
+// iterators
+//
+typedef ::OpenVolumeMesh::VertexIter ovmVertexI;
+typedef ::OpenVolumeMesh::VertexOHalfEdgeIter ovmVertexOHalfedgeI;
+typedef ::OpenVolumeMesh::VertexCellIter ovmVertexCellI;
+typedef ::OpenVolumeMesh::CellVertexIter ovmCellVertexI;
+//
+// misc
+//
+typedef ::OpenVolumeMesh::Vec3f ovmPoint;
+} // namespace dtOO
 #endif /* dtOVMTypedef_H */

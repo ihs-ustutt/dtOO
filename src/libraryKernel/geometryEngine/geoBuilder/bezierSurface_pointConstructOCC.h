@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,26 +16,27 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef BEZIERSURFACEPOINTCONSTRUCTOCC_H
-#define	BEZIERSURFACEPOINTCONSTRUCTOCC_H
+#define BEZIERSURFACEPOINTCONSTRUCTOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtSurface;
-  
-  class bezierSurface_pointConstructOCC {
-  public:
-    dt__classOnlyName(bezierSurface_pointConstructOCC);
-    bezierSurface_pointConstructOCC( twoDArrayHandling< dtPoint3 > const & pp );
-    virtual ~bezierSurface_pointConstructOCC();
-    dtSurface * result( void );
-  private:
-    ptrHandling<dtSurface> _dtS;
-  };
-}
-#endif	/* BEZIERSURFACEPOINTCONSTRUCTOCC_H */
+class dtSurface;
+
+class bezierSurface_pointConstructOCC {
+public:
+  dt__classOnlyName(bezierSurface_pointConstructOCC);
+  bezierSurface_pointConstructOCC(twoDArrayHandling<dtPoint3> const &pp);
+  virtual ~bezierSurface_pointConstructOCC();
+  dtSurface *result(void);
+
+private:
+  ptrHandling<dtSurface> _dtS;
+};
+} // namespace dtOO
+#endif /* BEZIERSURFACEPOINTCONSTRUCTOCC_H */

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,42 +16,42 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef SCAMUPARSERTWOD_H
-#define	SCAMUPARSERTWOD_H
+#define SCAMUPARSERTWOD_H
 
 #include <dtOOTypeDef.h>
 
 #include "scaTwoD.h"
-#include <vector>
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
+#include <vector>
 
 namespace dtOO {
-  class dtTransformer;
-  class dtMuParser;
-  
-  class scaMuParserTwoD : public scaTwoD {
-    public:
-      dt__class(scaMuParserTwoD, analyticFunction);     
-      scaMuParserTwoD();
-      scaMuParserTwoD(scaMuParserTwoD const & orig);
-      scaMuParserTwoD(
-        std::string const expression, 
-        std::string const argOne, 
-        std::string const argTwo
-      );
-      scaMuParserTwoD * clone( void ) const;
-      virtual scaMuParserTwoD * cloneTransformed(
-        dtTransformer const * const dtT 
-      ) const;      
-      scaMuParserTwoD * create( void ) const;    
-      virtual ~scaMuParserTwoD();
-      virtual dtReal YFloat( dtReal const & x0, dtReal const & x1 ) const;
-      virtual bool closed( dtInt const & dir ) const;    
-    private:
-      dt__pH(dtMuParser) _parser;
-      dt__pVH(double) _arg;
-      std::string _expressionStr;
-      std::string _argStr[2];
-  };
-}
-#endif	/* SCAMUPARSERTWOD_H */
+class dtTransformer;
+class dtMuParser;
+
+class scaMuParserTwoD : public scaTwoD {
+public:
+  dt__class(scaMuParserTwoD, analyticFunction);
+  scaMuParserTwoD();
+  scaMuParserTwoD(scaMuParserTwoD const &orig);
+  scaMuParserTwoD(
+    std::string const expression,
+    std::string const argOne,
+    std::string const argTwo
+  );
+  scaMuParserTwoD *clone(void) const;
+  virtual scaMuParserTwoD *cloneTransformed(dtTransformer const *const dtT
+  ) const;
+  scaMuParserTwoD *create(void) const;
+  virtual ~scaMuParserTwoD();
+  virtual dtReal YFloat(dtReal const &x0, dtReal const &x1) const;
+  virtual bool closed(dtInt const &dir) const;
+
+private:
+  dt__pH(dtMuParser) _parser;
+  dt__pVH(double) _arg;
+  std::string _expressionStr;
+  std::string _argStr[2];
+};
+} // namespace dtOO
+#endif /* SCAMUPARSERTWOD_H */

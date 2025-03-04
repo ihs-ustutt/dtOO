@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,28 +16,29 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef RECTANGULARTRIMMEDSURFACE_UVBOUNDS_H
-#define	RECTANGULARTRIMMEDSURFACE_UVBOUNDS_H
+#define RECTANGULARTRIMMEDSURFACE_UVBOUNDS_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtSurface;
-  class dtCurve;
-  
-  class rectangularTrimmedSurface_uvBounds {
-  public:
-    dt__classOnlyName(rectangularTrimmedSurface_uvBounds);
-    rectangularTrimmedSurface_uvBounds(
-      dtSurface const * dtS, dtPoint2 const & min, dtPoint2 const & max
-    );
-    virtual ~rectangularTrimmedSurface_uvBounds();
-    dtSurface * result( void );
-    private:
-      ptrHandling<dtSurface> _dtS;
-  };
-}
-#endif	/* RECTANGULARTRIMMEDSURFACE_UVBOUNDS_H */
+class dtSurface;
+class dtCurve;
+
+class rectangularTrimmedSurface_uvBounds {
+public:
+  dt__classOnlyName(rectangularTrimmedSurface_uvBounds);
+  rectangularTrimmedSurface_uvBounds(
+    dtSurface const *dtS, dtPoint2 const &min, dtPoint2 const &max
+  );
+  virtual ~rectangularTrimmedSurface_uvBounds();
+  dtSurface *result(void);
+
+private:
+  ptrHandling<dtSurface> _dtS;
+};
+} // namespace dtOO
+#endif /* RECTANGULARTRIMMEDSURFACE_UVBOUNDS_H */

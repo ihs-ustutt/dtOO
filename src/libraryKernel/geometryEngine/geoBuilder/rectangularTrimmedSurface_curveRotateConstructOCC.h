@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,31 +16,32 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef RECTANGULARTRIMMEDSURFACE_CURVEROTATECONSTRUCTOCC_H
-#define	RECTANGULARTRIMMEDSURFACE_CURVEROTATECONSTRUCTOCC_H
+#define RECTANGULARTRIMMEDSURFACE_CURVEROTATECONSTRUCTOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtSurface;
-  class dtCurve;
-  
-  class rectangularTrimmedSurface_curveRotateConstructOCC {
-  public:
-    dt__classOnlyName(rectangularTrimmedSurface_curveRotateConstructOCC);  
-    rectangularTrimmedSurface_curveRotateConstructOCC( 
-      dtCurve const & cL, 
-      dtPoint3 const & oP, 					
-      dtVector3 const & rA, 
-      dtReal const & angle 
-    );
-    virtual ~rectangularTrimmedSurface_curveRotateConstructOCC();
-    dtSurface * result( void );
-  private:
-    ptrHandling<dtSurface> _dtS;
-  };
-}
-#endif	/* RECTANGULARTRIMMEDSURFACE_CURVEROTATECONSTRUCTOCC_H */
+class dtSurface;
+class dtCurve;
+
+class rectangularTrimmedSurface_curveRotateConstructOCC {
+public:
+  dt__classOnlyName(rectangularTrimmedSurface_curveRotateConstructOCC);
+  rectangularTrimmedSurface_curveRotateConstructOCC(
+    dtCurve const &cL,
+    dtPoint3 const &oP,
+    dtVector3 const &rA,
+    dtReal const &angle
+  );
+  virtual ~rectangularTrimmedSurface_curveRotateConstructOCC();
+  dtSurface *result(void);
+
+private:
+  ptrHandling<dtSurface> _dtS;
+};
+} // namespace dtOO
+#endif /* RECTANGULARTRIMMEDSURFACE_CURVEROTATECONSTRUCTOCC_H */

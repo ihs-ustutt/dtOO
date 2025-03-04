@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,138 +17,107 @@ License
 
 #include "transIntCube.h"
 
-#include <logMe/logMe.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
-//#include <interfaceHeaven/twoDArrayHandling.h>
+#include <logMe/logMe.h>
+// #include <interfaceHeaven/twoDArrayHandling.h>
 
 //#define __assignToVec(pN, sId, uu, vv, vec, vId) \
 //    pN = _aS[sId]->getPointPercent(uu, vv); \
 //    vec[0][vId] = pN.x(); vec[1][vId] = pN.y(); vec[2][vId] = pN.z()
 //#define __assignToVec2(pN, vec, vId) \
 //    vec[0][vId] = pN.x(); vec[1][vId] = pN.y(); vec[2][vId] = pN.z()
-namespace dtOO {  
-  transIntCube::transIntCube() {
-  }
+namespace dtOO {
+transIntCube::transIntCube() {}
 
-  transIntCube::transIntCube(
-    map2dTo3d const * const aS0, 
-    map2dTo3d const * const aS1,
-    map2dTo3d const * const aS2, 
-    map2dTo3d const * const aS3, 
-    map2dTo3d const * const aS4,
-    map2dTo3d const * const aS5
-  ) {
-    _aS.push_back(aS0->clone());
-    _aS.push_back(aS1->clone());
-    _aS.push_back(aS2->clone());
-    _aS.push_back(aS3->clone());
-    _aS.push_back(aS4->clone());
-    _aS.push_back(aS5->clone());
+transIntCube::transIntCube(
+  map2dTo3d const *const aS0,
+  map2dTo3d const *const aS1,
+  map2dTo3d const *const aS2,
+  map2dTo3d const *const aS3,
+  map2dTo3d const *const aS4,
+  map2dTo3d const *const aS5
+)
+{
+  _aS.push_back(aS0->clone());
+  _aS.push_back(aS1->clone());
+  _aS.push_back(aS2->clone());
+  _aS.push_back(aS3->clone());
+  _aS.push_back(aS4->clone());
+  _aS.push_back(aS5->clone());
 
-    _aS_1_0_0 = _aS[1]->getPointPercentVector(0.,0.);
-    _aS_1_0_1 = _aS[1]->getPointPercentVector(0.,1.);
-    _aS_1_1_0 = _aS[1]->getPointPercentVector(1.,0.);
-    _aS_1_1_1 = _aS[1]->getPointPercentVector(1.,1.);
-    _aS_3_0_0 = _aS[3]->getPointPercentVector(0.,0.);
-    _aS_3_0_1 = _aS[3]->getPointPercentVector(0.,1.);
-    _aS_3_1_0 = _aS[3]->getPointPercentVector(1.,0.);
-    _aS_3_1_1 = _aS[3]->getPointPercentVector(1.,1.);
-                  
-    dt__info(transIntCube(),
-      << "Creating transfinite interpolation with:" << std::endl
-      << dt__eval(aS0->getLabel()) << std::endl
-      << dt__eval(aS1->getLabel()) << std::endl
-      << dt__eval(aS2->getLabel()) << std::endl
-      << dt__eval(aS3->getLabel()) << std::endl
-      << dt__eval(aS4->getLabel()) << std::endl
-      << dt__eval(aS5->getLabel()) << std::endl
-    );    
-  } 
+  _aS_1_0_0 = _aS[1]->getPointPercentVector(0., 0.);
+  _aS_1_0_1 = _aS[1]->getPointPercentVector(0., 1.);
+  _aS_1_1_0 = _aS[1]->getPointPercentVector(1., 0.);
+  _aS_1_1_1 = _aS[1]->getPointPercentVector(1., 1.);
+  _aS_3_0_0 = _aS[3]->getPointPercentVector(0., 0.);
+  _aS_3_0_1 = _aS[3]->getPointPercentVector(0., 1.);
+  _aS_3_1_0 = _aS[3]->getPointPercentVector(1., 0.);
+  _aS_3_1_1 = _aS[3]->getPointPercentVector(1., 1.);
 
-  transIntCube::transIntCube(const transIntCube& orig) {
-    dt__forAllIndex(orig._aS, ii) _aS.push_back( orig._aS[ii]->clone() );
-    _aS_1_0_0 = orig._aS_1_0_0;
-    _aS_1_0_1 = orig._aS_1_0_1;
-    _aS_1_1_0 = orig._aS_1_1_0;
-    _aS_1_1_1 = orig._aS_1_1_1;
-    _aS_3_0_0 = orig._aS_3_0_0;
-    _aS_3_0_1 = orig._aS_3_0_1;
-    _aS_3_1_0 = orig._aS_3_1_0;
-    _aS_3_1_1 = orig._aS_3_1_1;
-  }
+  dt__info(
+    transIntCube(),
+    << "Creating transfinite interpolation with:" << std::endl
+    << dt__eval(aS0->getLabel()) << std::endl
+    << dt__eval(aS1->getLabel()) << std::endl
+    << dt__eval(aS2->getLabel()) << std::endl
+    << dt__eval(aS3->getLabel()) << std::endl
+    << dt__eval(aS4->getLabel()) << std::endl
+    << dt__eval(aS5->getLabel()) << std::endl
+  );
+}
 
-  transIntCube::~transIntCube() {
-    _aS.destroy();
-  }
-  
-  dtPoint3 transIntCube::getValue(
-    dtReal const xx, dtReal const yy, dtReal const zz
-  ) const {
-    dtVector3 rV =
-        (1.-xx) * _aS[1]->getPointPercentVector(yy, zz) 
-      + xx * _aS[3]->getPointPercentVector(yy, zz)
-      + (1.-yy) * _aS[4]->getPointPercentVector(xx, zz) 
-      + yy * _aS[5]->getPointPercentVector(xx, zz)
-      + (1.-zz) * _aS[2]->getPointPercentVector(xx, yy) 
-      + zz * _aS[0]->getPointPercentVector(xx, yy)
-      - (1.-xx) * ( 
-        (1.-yy) * _aS[1]->getPointPercentVector(0., zz) 
-        + 
-        yy * _aS[1]->getPointPercentVector(1., zz) 
-      )
-      - xx      * ( 
-        (1.-yy) * _aS[3]->getPointPercentVector(0., zz) 
-        + 
-        yy * _aS[3]->getPointPercentVector(1., zz) 
-      )
-      - (1.-yy) * ( 
-        (1.-zz) * _aS[4]->getPointPercentVector(xx, 0.) 
-        + 
-        zz * _aS[4]->getPointPercentVector(xx, 1.) 
-      )
-      - yy      * ( 
-        (1.-zz) * _aS[5]->getPointPercentVector(xx, 0.) 
-        + 
-        zz * _aS[5]->getPointPercentVector(xx, 1.) 
-      )
-      - (1.-zz) * ( 
-        (1.-xx) * _aS[2]->getPointPercentVector(0., yy) 
-        + 
-        xx * _aS[2]->getPointPercentVector(1., yy) 
-      )
-      - zz      * ( 
-        (1.-xx) * _aS[0]->getPointPercentVector(0., yy) 
-        + 
-        xx * _aS[0]->getPointPercentVector(1., yy) 
-      )
-      + (1.-xx) * (
-          (1.-yy) * (
-            (1.-zz) * _aS_1_0_0 + zz * _aS_1_0_1
-          )
-          +
-          yy * (
-            (1.-zz) * _aS_1_1_0 + zz * _aS_1_1_1
-          )
-        )
-      + xx * ( 
-          (1.-yy) * (
-            (1.-zz) * _aS_3_0_0 + zz * _aS_3_0_1
-          )
-          +
-          yy * (
-            (1.-zz) * _aS_3_1_0 + zz * _aS_3_1_1
-          )
-        );            
-    return dtLinearAlgebra::toDtPoint3( rV );
-  }
-  
-//  dtPoint3 transIntCube::getValue(dtReal const xx, dtReal const yy, dtReal const zz) const {
+transIntCube::transIntCube(const transIntCube &orig)
+{
+  dt__forAllIndex(orig._aS, ii) _aS.push_back(orig._aS[ii]->clone());
+  _aS_1_0_0 = orig._aS_1_0_0;
+  _aS_1_0_1 = orig._aS_1_0_1;
+  _aS_1_1_0 = orig._aS_1_1_0;
+  _aS_1_1_1 = orig._aS_1_1_1;
+  _aS_3_0_0 = orig._aS_3_0_0;
+  _aS_3_0_1 = orig._aS_3_0_1;
+  _aS_3_1_0 = orig._aS_3_1_0;
+  _aS_3_1_1 = orig._aS_3_1_1;
+}
+
+transIntCube::~transIntCube() { _aS.destroy(); }
+
+dtPoint3
+transIntCube::getValue(dtReal const xx, dtReal const yy, dtReal const zz) const
+{
+  dtVector3 rV =
+    (1. - xx) * _aS[1]->getPointPercentVector(yy, zz) +
+    xx * _aS[3]->getPointPercentVector(yy, zz) +
+    (1. - yy) * _aS[4]->getPointPercentVector(xx, zz) +
+    yy * _aS[5]->getPointPercentVector(xx, zz) +
+    (1. - zz) * _aS[2]->getPointPercentVector(xx, yy) +
+    zz * _aS[0]->getPointPercentVector(xx, yy) -
+    (1. - xx) * ((1. - yy) * _aS[1]->getPointPercentVector(0., zz) +
+                 yy * _aS[1]->getPointPercentVector(1., zz)) -
+    xx * ((1. - yy) * _aS[3]->getPointPercentVector(0., zz) +
+          yy * _aS[3]->getPointPercentVector(1., zz)) -
+    (1. - yy) * ((1. - zz) * _aS[4]->getPointPercentVector(xx, 0.) +
+                 zz * _aS[4]->getPointPercentVector(xx, 1.)) -
+    yy * ((1. - zz) * _aS[5]->getPointPercentVector(xx, 0.) +
+          zz * _aS[5]->getPointPercentVector(xx, 1.)) -
+    (1. - zz) * ((1. - xx) * _aS[2]->getPointPercentVector(0., yy) +
+                 xx * _aS[2]->getPointPercentVector(1., yy)) -
+    zz * ((1. - xx) * _aS[0]->getPointPercentVector(0., yy) +
+          xx * _aS[0]->getPointPercentVector(1., yy)) +
+    (1. - xx) * ((1. - yy) * ((1. - zz) * _aS_1_0_0 + zz * _aS_1_0_1) +
+                 yy * ((1. - zz) * _aS_1_1_0 + zz * _aS_1_1_1)) +
+    xx * ((1. - yy) * ((1. - zz) * _aS_3_0_0 + zz * _aS_3_0_1) +
+          yy * ((1. - zz) * _aS_3_1_0 + zz * _aS_3_1_1));
+  return dtLinearAlgebra::toDtPoint3(rV);
+}
+
+//  dtPoint3 transIntCube::getValue(dtReal const xx, dtReal const yy, dtReal
+//  const zz) const {
 //    dtReal xxN = 1.-xx;
 //    dtReal yyN = 1.-yy;
 //    dtReal zzN = 1.-zz;
-//    
+//
 //    dtReal pp[3][26];
-//    
+//
 //    dtPoint3 pN;
 //    __assignToVec(pN, 1, yy, zz, pp, 0);
 //    __assignToVec(pN, 3, yy, zz, pp, 1);
@@ -156,7 +125,7 @@ namespace dtOO {
 //    __assignToVec(pN, 5, xx, zz, pp, 3);
 //    __assignToVec(pN, 2, xx, yy, pp, 4);
 //    __assignToVec(pN, 0, xx, yy, pp, 5);
-//    
+//
 //    __assignToVec(pN, 1, 0., zz, pp, 6);
 //    __assignToVec(pN, 1, 1., zz, pp, 7);
 //    __assignToVec(pN, 3, 0., zz, pp, 8);
@@ -168,8 +137,8 @@ namespace dtOO {
 //    __assignToVec(pN, 2, 0., yy, pp, 14);
 //    __assignToVec(pN, 2, 1., yy, pp, 15);
 //    __assignToVec(pN, 0, 0., yy, pp, 16);
-//    __assignToVec(pN, 0, 1., yy, pp, 17);    
-//    
+//    __assignToVec(pN, 0, 1., yy, pp, 17);
+//
 //    __assignToVec2(_aS_1_0_0, pp, 18);
 //    __assignToVec2(_aS_1_0_1, pp, 19);
 //    __assignToVec2(_aS_1_1_0, pp, 20);
@@ -191,30 +160,31 @@ namespace dtOO {
 //        - yy      * ( zzN * pp[ii][12] + zz * pp[ii][13] )
 //        - zzN * ( xxN * pp[ii][14] + xx * pp[ii][15] )
 //        - zz      * ( xxN * pp[ii][16] + xx * pp[ii][17] )
-//        + xxN * ( 
-//            yyN * ( 
+//        + xxN * (
+//            yyN * (
 //              zzN * pp[ii][18] + zz * pp[ii][19]
 //            )
 //            +
-//            yy * ( 
+//            yy * (
 //              zzN * pp[ii][20] + zz * pp[ii][21]
-//            )            
+//            )
 //          )
-//        + xx * ( 
-//            yyN * ( 
+//        + xx * (
+//            yyN * (
 //              zzN * pp[ii][22] + zz * pp[ii][23]
 //            )
 //            +
-//            yy * ( 
+//            yy * (
 //              zzN * pp[ii][24] + zz * pp[ii][25]
-//            )            
-//          );            
+//            )
+//          );
 //    }
 //    return dtPoint3( rV[0], rV[1], rV[2] );
 //  }
-  
-  vectorHandling< map2dTo3d const * > const & 
-  transIntCube::getConstRefToMap2dTo3d( void ) const {
-    return _aS;
-  }
+
+vectorHandling<map2dTo3d const *> const &
+transIntCube::getConstRefToMap2dTo3d(void) const
+{
+  return _aS;
 }
+} // namespace dtOO

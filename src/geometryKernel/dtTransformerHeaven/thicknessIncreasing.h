@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,47 +16,48 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef THICKNESSINCREASING_H
-#define	THICKNESSINCREASING_H
+#define THICKNESSINCREASING_H
 
 #include <dtOOTypeDef.h>
 
 #include "dtTransformer.h"
 #include <logMe/dtMacros.h>
-#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class analyticFunction;
-  class scaOneD;
-  
-  class thicknessIncreasing : public dtTransformer {
-    public:    
-      dt__classOnlyName(thicknessIncreasing);
-      thicknessIncreasing();
-      virtual ~thicknessIncreasing();
-      thicknessIncreasing(const thicknessIncreasing& orig);    
-      virtual dtTransformer * clone( void ) const;
-      virtual dtTransformer * create( void ) const;        
-      virtual bool isNecessary( void ) const;
-      virtual void init( 
-        ::QDomElement const * tE, 
-        baseContainer * const bC,
-        lvH_constValue const * const cValP,
-        lvH_analyticFunction const * const sFunP,
-        lvH_analyticGeometry const * const depAGeoP 
-      );    
-      virtual lvH_analyticFunction 
-      apply( lvH_analyticFunction const * const sFunP ) const;  
-      virtual void handleInt(std::string const name, dtInt const value);
-      virtual void handleAnalyticFunction(std::string const name, analyticFunction const * value);
-      virtual void handleBool(std::string const name, bool const value);
-    private:
-      dt__pH(scaOneD const) _thicknessDistributionP;
-      dt__pH(scaOneD const) _paraOnePercentFunP;
-      dtInt _nPointsOne;
-      bool _isInv;
-      dtInt _splineOrder;
-      static bool _registrated;    
-  };
-}    
+class analyticFunction;
+class scaOneD;
 
-#endif	/* THICKNESSINCREASING_H */
+class thicknessIncreasing : public dtTransformer {
+public:
+  dt__classOnlyName(thicknessIncreasing);
+  thicknessIncreasing();
+  virtual ~thicknessIncreasing();
+  thicknessIncreasing(const thicknessIncreasing &orig);
+  virtual dtTransformer *clone(void) const;
+  virtual dtTransformer *create(void) const;
+  virtual bool isNecessary(void) const;
+  virtual void init(
+    ::QDomElement const *tE,
+    baseContainer *const bC,
+    lvH_constValue const *const cValP,
+    lvH_analyticFunction const *const sFunP,
+    lvH_analyticGeometry const *const depAGeoP
+  );
+  virtual lvH_analyticFunction apply(lvH_analyticFunction const *const sFunP
+  ) const;
+  virtual void handleInt(std::string const name, dtInt const value);
+  virtual void
+  handleAnalyticFunction(std::string const name, analyticFunction const *value);
+  virtual void handleBool(std::string const name, bool const value);
+
+private:
+  dt__pH(scaOneD const) _thicknessDistributionP;
+  dt__pH(scaOneD const) _paraOnePercentFunP;
+  dtInt _nPointsOne;
+  bool _isInv;
+  dtInt _splineOrder;
+  static bool _registrated;
+};
+} // namespace dtOO
+
+#endif /* THICKNESSINCREASING_H */

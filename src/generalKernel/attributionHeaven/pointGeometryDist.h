@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,38 +16,36 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef pointGeometryDist_H
-#define	pointGeometryDist_H
+#define pointGeometryDist_H
 
 #include <dtOOTypeDef.h>
 
-#include <dtLinearAlgebra.h>
-#include <logMe/logMe.h>
-#include <logMe/dtMacros.h>
 #include "floatAtt.h"
+#include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 
-namespace dtOO { 
-  class analyticGeometry;
+namespace dtOO {
+class analyticGeometry;
 
-  class pointGeometryDist : public floatAtt {
-    public:  
-      dt__classOnlyName(pointGeometryDist);
-      pointGeometryDist(
-        dtPoint3 const & p3,
-        analyticGeometry const * const aG
-      );
-      virtual ~pointGeometryDist();
-      pointGeometryDist( pointGeometryDist const & orig );
-      virtual pointGeometryDist * clone( void ) const;
-      virtual dtReal operator()( std::vector< dtReal > const & xx ) const;
-      //
-      // get properties
-      //
-      virtual dtInt const & dimension() const;
-    private:
-      dtPoint3 const _p3;
-      dtInt const _dimension;
-      analyticGeometry const * const _aG;
-  };
-  dt__H_addCloneForpVH(pointGeometryDist);
-}
-#endif	/* pointGeometryDist_H */
+class pointGeometryDist : public floatAtt {
+public:
+  dt__classOnlyName(pointGeometryDist);
+  pointGeometryDist(dtPoint3 const &p3, analyticGeometry const *const aG);
+  virtual ~pointGeometryDist();
+  pointGeometryDist(pointGeometryDist const &orig);
+  virtual pointGeometryDist *clone(void) const;
+  virtual dtReal operator()(std::vector<dtReal> const &xx) const;
+  //
+  // get properties
+  //
+  virtual dtInt const &dimension() const;
+
+private:
+  dtPoint3 const _p3;
+  dtInt const _dimension;
+  analyticGeometry const *const _aG;
+};
+dt__H_addCloneForpVH(pointGeometryDist);
+} // namespace dtOO
+#endif /* pointGeometryDist_H */

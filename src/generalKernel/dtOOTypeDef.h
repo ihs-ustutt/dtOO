@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -21,10 +21,10 @@ License
 #include <string>
 
 namespace dtOO {
-  typedef double dtReal;
-  typedef int dtInt;
-  typedef unsigned int dtUnsInt;
-  typedef long unsigned int dtLongUnsInt;
-}
+typedef double dtReal;
+typedef int dtInt;
+typedef unsigned int dtUnsInt;
+typedef long unsigned int dtLongUnsInt;
+} // namespace dtOO
 
 #endif

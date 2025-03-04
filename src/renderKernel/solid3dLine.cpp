@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,21 +17,15 @@ License
 
 #include "solid3dLine.h"
 
-#include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/logMe.h>
 
 namespace dtOO {
-	solid3dLine::solid3dLine() {
-	}
+solid3dLine::solid3dLine() {}
 
-	solid3dLine::~solid3dLine() {
-	}
+solid3dLine::~solid3dLine() {}
 
-  solid3dLine::solid3dLine(std::vector< dtPoint3 > const & pp) {
-		_p3 = pp;
-	}
-	
-	std::vector< dtPoint3 > const & solid3dLine::refP3( void ) const {
-		return _p3;
-	}		
-}
+solid3dLine::solid3dLine(std::vector<dtPoint3> const &pp) { _p3 = pp; }
+
+std::vector<dtPoint3> const &solid3dLine::refP3(void) const { return _p3; }
+} // namespace dtOO

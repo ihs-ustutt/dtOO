@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,15 +16,14 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef PTRVECTORHANDLING_H
-#define	PTRVECTORHANDLING_H
+#define PTRVECTORHANDLING_H
 
 #include <dtOOTypeDef.h>
 
 #include <boost/ptr_container/ptr_vector.hpp>
 
 namespace dtOO {
-  template < typename T >
-  using ptrVectorHandling = boost::ptr_vector< T >;
+template <typename T> using ptrVectorHandling = boost::ptr_vector<T>;
 }
 
-#endif	/* PTRVECTORHANDLING_H */
+#endif /* PTRVECTORHANDLING_H */

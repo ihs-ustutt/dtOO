@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef ANALYTICADDNORMAL_H
-#define	ANALYTICADDNORMAL_H
+#define ANALYTICADDNORMAL_H
 
 #include <dtOOTypeDef.h>
 
@@ -25,36 +25,36 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class analyticFunction;
-  class vec3dTwoD;
-  
-  class analyticAddNormal : public dtTransformer {
-    public:    
-      dt__classOnlyName(analyticAddNormal);
-      analyticAddNormal();
-      analyticAddNormal(analyticAddNormal const & orig);
-      virtual ~analyticAddNormal();
-      virtual dtTransformer * clone( void ) const;
-      virtual dtTransformer * create( void ) const;     
-      virtual bool isNecessary( void ) const;
-      virtual void init( 
-        ::QDomElement const * tE, 
-        baseContainer * const bC,
-        lvH_constValue const * const cV,
-        lvH_analyticFunction const * const aF,
-        lvH_analyticGeometry const * const aG 
-      );
-      virtual lvH_analyticFunction 
-      apply( lvH_analyticFunction const * const aFP ) const;
-      virtual void handleAnalyticFunction(
-        std::string const name, analyticFunction const * value
-      );
-      virtual void handleDtVector3(std::string const name, dtVector3 const value);
-    private:
-      dt__pH(vec3dTwoD) _tt;
-      dtVector3 _nf;
-      static bool _registrated;
-  };
-}    
+class analyticFunction;
+class vec3dTwoD;
 
-#endif	/* ANALYTICADDNORMAL_H */
+class analyticAddNormal : public dtTransformer {
+public:
+  dt__classOnlyName(analyticAddNormal);
+  analyticAddNormal();
+  analyticAddNormal(analyticAddNormal const &orig);
+  virtual ~analyticAddNormal();
+  virtual dtTransformer *clone(void) const;
+  virtual dtTransformer *create(void) const;
+  virtual bool isNecessary(void) const;
+  virtual void init(
+    ::QDomElement const *tE,
+    baseContainer *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG
+  );
+  virtual lvH_analyticFunction apply(lvH_analyticFunction const *const aFP
+  ) const;
+  virtual void
+  handleAnalyticFunction(std::string const name, analyticFunction const *value);
+  virtual void handleDtVector3(std::string const name, dtVector3 const value);
+
+private:
+  dt__pH(vec3dTwoD) _tt;
+  dtVector3 _nf;
+  static bool _registrated;
+};
+} // namespace dtOO
+
+#endif /* ANALYTICADDNORMAL_H */
