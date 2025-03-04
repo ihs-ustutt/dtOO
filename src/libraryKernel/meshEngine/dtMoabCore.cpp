@@ -81,7 +81,7 @@ dtMoabCore::dtMoabCore(dtOMMesh const &om)
   //			MVertex const * const mvTo = om.at(to);
   //			_edgeElement.push_back(
   //				new MLine(const_cast< ::MVertex * >(mvFrom),
-  //const_cast< ::MVertex * >(mvTo))
+  // const_cast< ::MVertex * >(mvTo))
   //			);
   //			moab::Range range
   //			=

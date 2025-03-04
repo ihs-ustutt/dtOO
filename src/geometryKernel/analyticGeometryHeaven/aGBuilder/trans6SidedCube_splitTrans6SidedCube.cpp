@@ -158,8 +158,8 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //		map3dTo3d const * const m3d = vInMap->refToMap3dTo3d();
   //		vec3dTwoD const * const v3d = vInMap->refToVec3dTwoD();
   //		vec3dSurfaceTwoD const * const v3dS =
-  //vec3dSurfaceTwoD::ConstDownCast(v3d); 		dt__throwIf(!v3dS,
-  //trans6SidedCube_splitTrans6SidedCube());
+  // vec3dSurfaceTwoD::ConstDownCast(v3d); 		dt__throwIf(!v3dS,
+  // trans6SidedCube_splitTrans6SidedCube());
   //
   //		if ( (m2dParDir == 0) && (toM3dParDir == 1) ) {
   //			dt__pH(dtSurface) dtS0;
@@ -177,11 +177,11 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //			std::vector< dtVector3 > dY0
   //			=
   //			v3d->DYdtVector3( (*v3d) % analyticFunction::aFXTwoD(0.,
-  //0.) );
+  // 0.) );
   //      std::vector< dtVector3 > dY1
   //			=
   //			v3d->DYdtVector3( (*v3d) %
-  //analyticFunction::aFXTwoD(0., 1.) );
+  // analyticFunction::aFXTwoD(0., 1.) );
   //
   //      bool isPos = false;
   //      if ( (dY0[0].x()>0.) && (dY0[1].x()>0.) ) isPos = true;
@@ -207,7 +207,7 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //			dtC.push_back(
   //				bSplineCurve_pointConstructOCC(
   //					dtPoint3(u0, m3d->getVMin(),
-  //m3d->getWMin()), 					from[0]
+  // m3d->getWMin()), 					from[0]
   //				).result()
   //			);
   //			dtC.push_back( dtS->segmentConstUPercent(0.) );
@@ -215,13 +215,14 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //				bSplineCurve_pointConstructOCC(
   //					from[1],
   //					dtPoint3(u1, m3d->getVMin(),
-  //m3d->getWMax())
+  // m3d->getWMax())
   //				).result()
   //			);
   //      dtC.push_back(
   //				bSplineCurve_pointConstructOCC(
   //					dtPoint3(u1, m3d->getVMin(),
-  //m3d->getWMax()), 					dtPoint3(u0, m3d->getVMin(), m3d->getWMin())
+  // m3d->getWMax()), 					dtPoint3(u0,
+  // m3d->getVMin(), m3d->getWMin())
   //				).result()
   //			);
   //
@@ -229,7 +230,7 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //      // create inlet surface
   //      //
   //			dtS0.reset(
-  //bSplineSurface_bSplineCurveFillConstructOCC(dtC).result() );
+  // bSplineSurface_bSplineCurveFillConstructOCC(dtC).result() );
   //
   //      //
   //      // get derivative and approximate straight extension to the back
@@ -241,11 +242,11 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //			dY0
   //			=
   //			v3d->DYdtVector3( (*v3d) % analyticFunction::aFXTwoD(1.,
-  //0.) );
+  // 0.) );
   //      dY1
   //			=
   //			v3d->DYdtVector3( (*v3d) %
-  //analyticFunction::aFXTwoD(1., 1.) );
+  // analyticFunction::aFXTwoD(1., 1.) );
   //
   //      isPos = false;
   //      if ( (dY0[0].x()>0.) && (dY0[1].x()>0.) ) isPos = true;
@@ -270,13 +271,14 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //				bSplineCurve_pointConstructOCC(
   //					from[0],
   //					dtPoint3(u0, m3d->getVMax(),
-  //m3d->getWMin())
+  // m3d->getWMin())
   //				).result()
   //			);
   //      dtC.push_back(
   //				bSplineCurve_pointConstructOCC(
   //					dtPoint3(u0, m3d->getVMax(),
-  //m3d->getWMin()), 					dtPoint3(u1, m3d->getVMax(), m3d->getWMax())
+  // m3d->getWMin()), 					dtPoint3(u1,
+  // m3d->getVMax(), m3d->getWMax())
   //				).result()
   //			);
   //      dtC.push_back(
@@ -293,7 +295,7 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //      // create surface
   //      //
   //			dtS1.reset(
-  //bSplineSurface_bSplineCurveFillConstructOCC(dtC).result() );
+  // bSplineSurface_bSplineCurveFillConstructOCC(dtC).result() );
   //
   //      //
   //      // create grid of surfaces and composite surface
@@ -303,7 +305,7 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //			grid[1][0] = dtS.get();
   //			grid[2][0] = dtS1.get();
   //			dtS.reset(
-  //compositeSurface_surfaceConnectConstructOCC(grid).result() );
+  // compositeSurface_surfaceConnectConstructOCC(grid).result() );
   //
   //      //
   //      // create result surface
@@ -311,7 +313,7 @@ trans6SidedCube_splitTrans6SidedCube ::trans6SidedCube_splitTrans6SidedCube(
   //			_m2d.reset(
   //				new vec3dTwoDInMap3dTo3d(
   //			    dt__tmpPtr(vec3dSurfaceTwoD, new
-  //vec3dSurfaceTwoD(dtS.get())), m3d
+  // vec3dSurfaceTwoD(dtS.get())), m3d
   //		    )
   //			);
   //		}

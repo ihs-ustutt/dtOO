@@ -316,10 +316,10 @@ void dtOMMesh::replacePosition(omVertexH const &vH, dtPoint3 const &pp)
 //		omVertexH fromH
 //		=
 //		from_vertex_handle(const_cast<dtOMMesh*>(this)->halfedge_handle(eH,
-//0)); 		omVertexH toH
+// 0)); 		omVertexH toH
 //		=
 //		to_vertex_handle(const_cast<dtOMMesh*>(this)->halfedge_handle(eH,
-//0));
+// 0));
 //
 //		if (
 //			   dtGmshEdge::ConstDownCast(at(fromH)->onWhat())
@@ -332,8 +332,8 @@ void dtOMMesh::replacePosition(omVertexH const &vH, dtPoint3 const &pp)
 //	std::pair< omVertexH const, omVertexH const >
 //	dtOMMesh::foldVertices( omEdgeH const & eH) const {
 //		omHalfedgeH he0H =
-//const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 0); 		omHalfedgeH he1H =
-//const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 1);
+// const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 0);
+// omHalfedgeH he1H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 1);
 //
 //		he0H = const_cast<dtOMMesh*>(this)->next_halfedge_handle(he0H);
 //		he1H = const_cast<dtOMMesh*>(this)->next_halfedge_handle(he1H);
@@ -344,8 +344,9 @@ void dtOMMesh::replacePosition(omVertexH const &vH, dtPoint3 const &pp)
 //	}
 //
 //	std::pair< omFaceH, omFaceH > dtOMMesh::foldFaces( omEdgeH const & eH)
-//const { 		omHalfedgeH he0H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH,
-//0); 		omHalfedgeH he1H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 1);
+// const { 		omHalfedgeH he0H =
+// const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 0);
+// omHalfedgeH he1H = const_cast<dtOMMesh*>(this)->halfedge_handle(eH, 1);
 //
 //		return std::pair< omFaceH, omFaceH >(
 //			const_cast<dtOMMesh*>(this)->face_handle(he0H),
@@ -429,7 +430,7 @@ bool dtOMMesh::contains(::MVertex const *const mv) const
 // can produce problems if quadrangles are connected to the vertex
 //
 //	std::vector< omEdgeH > dtOMMesh::oneRingEdgeH( omVertexH const & vH )
-//const { 	  std::vector< omEdgeH > eHV; 		dt__forFromToIter(
+// const { 	  std::vector< omEdgeH > eHV; 		dt__forFromToIter(
 //      omConstVertexOHalfedgeI, cvoh_begin(vH), cvoh_end(vH), heIt
 //    ) {
 //			eHV.push_back( edge_handle( next_halfedge_handle(*heIt)

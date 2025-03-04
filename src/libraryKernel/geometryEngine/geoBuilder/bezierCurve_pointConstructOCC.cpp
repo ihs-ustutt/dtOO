@@ -43,7 +43,7 @@ bezierCurve_pointConstructOCC::bezierCurve_pointConstructOCC(
   //
   Handle(TColgp_HArray1OfPnt) arr = new TColgp_HArray1OfPnt(1, nP);
   //		Handle(TColStd_HArray1OfReal) para = new
-  //TColStd_HArray1OfReal(1, nP);
+  // TColStd_HArray1OfReal(1, nP);
 
   //
   // set arraies
@@ -60,7 +60,7 @@ bezierCurve_pointConstructOCC::bezierCurve_pointConstructOCC(
   dt__tryOcc(curve = new Geom_BezierCurve(arr->Array1());, << "");
   //		dt__info(bezierCurve_pointConstructOCC(),
   //						<< dt__eval(curve->Degree()) <<
-  //std::endl);
+  // std::endl);
   dtOCCCurveBase base;
   base.setOCC(curve);
   _dtC.reset(new dtOCCBezierCurve(base));

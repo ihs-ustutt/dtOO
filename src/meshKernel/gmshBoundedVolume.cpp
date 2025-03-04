@@ -171,8 +171,9 @@ vectorHandling<renderInterface *> gmshBoundedVolume::getExtRender(void) const
             //							std::vector<
             //::MVertex const * > vertices;
             //							_gm->getMeshVerticesForPhysicalGroup(ii,
-            //pNum, vertices); 							if (vertices.empty()) { 								vertices =
-            //gf->getMeshVertices();
+            // pNum, vertices);
+            // if (vertices.empty()) {
+            // vertices = gf->getMeshVertices();
             //							}
             rV.push_back(dtGmshModel::toAdequateSurfaceRenderInterface(elTwoD));
           }
@@ -186,7 +187,7 @@ vectorHandling<renderInterface *> gmshBoundedVolume::getExtRender(void) const
             //							std::vector<
             //::MVertex const * > vertices;
             //							_gm->getMeshVerticesForPhysicalGroup(ii,
-            //pNum, vertices);
+            // pNum, vertices);
             rV.push_back(dtGmshModel::toUnstructured3dMesh(elThreeD));
           }
         }
@@ -324,7 +325,7 @@ dtGmshRegion *gmshBoundedVolume::getRegion(std::string const &tag) const
     if (_physLabels[3][jj] == tag)
     {
       //				int pNum = _gm->getPhysicalNumber(3,
-      //tag);
+      // tag);
       dtGmshModel::intGEntityVMap groups;
       _gm->getPhysicalGroups(3, groups);
       std::vector<::GEntity *> &geV = groups[_gm->getPhysicalNumber(3, tag)];

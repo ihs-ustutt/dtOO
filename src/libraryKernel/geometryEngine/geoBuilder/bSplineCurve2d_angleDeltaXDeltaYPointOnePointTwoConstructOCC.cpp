@@ -57,7 +57,7 @@ bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC ::
   //				bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC(),
   //				<< dt__eval(ratio) << std::endl
   //				<< "Ratio is smaller than zero or bigger than
-  //one."
+  // one."
   //			);
   //		}
 
@@ -107,7 +107,7 @@ bSplineCurve2d_angleDeltaXDeltaYPointOnePointTwoConstructOCC ::
     }
 
     //			dtReal deltaX = deltaXMin + ratio * (deltaXMax -
-    //deltaXMin);
+    // deltaXMin);
     dtReal ratio = (deltaX - deltaXMin) / (deltaXMax - deltaXMin);
 
     //

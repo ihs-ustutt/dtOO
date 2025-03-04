@@ -67,39 +67,39 @@ aFY vec3dBoxThreeD::Y(aFX const &xx) const
   //        (1.-x0) *
   //        dtLinearAlgebra::toDtVector3(_v3dTwoD[1].YdtPoint3Percent(x1, x2))
   //			+ x0 *
-  //dtLinearAlgebra::toDtVector3(_v3dTwoD[3].YdtPoint3Percent(x1, x2))
+  // dtLinearAlgebra::toDtVector3(_v3dTwoD[3].YdtPoint3Percent(x1, x2))
   //      + (1.-x1) *
   //      dtLinearAlgebra::toDtVector3(_v3dTwoD[4].YdtPoint3Percent(x0, x2))
   //			+ x1 *
-  //dtLinearAlgebra::toDtVector3(_v3dTwoD[5].YdtPoint3Percent(x0, x2))
+  // dtLinearAlgebra::toDtVector3(_v3dTwoD[5].YdtPoint3Percent(x0, x2))
   //      + (1.-x2) *
   //      dtLinearAlgebra::toDtVector3(_v3dTwoD[2].YdtPoint3Percent(x0, x1))
   //			+ x2 *
-  //dtLinearAlgebra::toDtVector3(_v3dTwoD[0].YdtPoint3Percent(x0, x1))
+  // dtLinearAlgebra::toDtVector3(_v3dTwoD[0].YdtPoint3Percent(x0, x1))
   //      - (1.-x0) * ( (1.-x1) *
   //      dtLinearAlgebra::toDtVector3(_v3dTwoD[1].YdtPoint3Percent(0., x2))
   //			+ x1 *
-  //dtLinearAlgebra::toDtVector3(_v3dTwoD[1].YdtPoint3Percent(1., x2)) )
+  // dtLinearAlgebra::toDtVector3(_v3dTwoD[1].YdtPoint3Percent(1., x2)) )
   //      - x0      * ( (1.-x1) *
   //      dtLinearAlgebra::toDtVector3(_v3dTwoD[3].YdtPoint3Percent(0., x2))
   //			+ x1 *
-  //dtLinearAlgebra::toDtVector3(_v3dTwoD[3].YdtPoint3Percent(1., x2)) )
+  // dtLinearAlgebra::toDtVector3(_v3dTwoD[3].YdtPoint3Percent(1., x2)) )
   //      - (1.-x1) * ( (1.-x2) *
   //      dtLinearAlgebra::toDtVector3(_v3dTwoD[4].YdtPoint3Percent(x0, 0.))
   //			+ x2 *
-  //dtLinearAlgebra::toDtVector3(_v3dTwoD[4].YdtPoint3Percent(x0, 1.)) )
+  // dtLinearAlgebra::toDtVector3(_v3dTwoD[4].YdtPoint3Percent(x0, 1.)) )
   //      - x1      * ( (1.-x2) *
   //      dtLinearAlgebra::toDtVector3(_v3dTwoD[5].YdtPoint3Percent(x0, 0.))
   //			+ x2 *
-  //dtLinearAlgebra::toDtVector3(_v3dTwoD[5].YdtPoint3Percent(x0, 1.)) )
+  // dtLinearAlgebra::toDtVector3(_v3dTwoD[5].YdtPoint3Percent(x0, 1.)) )
   //      - (1.-x2) * ( (1.-x0) *
   //      dtLinearAlgebra::toDtVector3(_v3dTwoD[2].YdtPoint3Percent(0., x1))
   //			+ x0 *
-  //dtLinearAlgebra::toDtVector3(_v3dTwoD[2].YdtPoint3Percent(1., x1)) )
+  // dtLinearAlgebra::toDtVector3(_v3dTwoD[2].YdtPoint3Percent(1., x1)) )
   //      - x2      * ( (1.-x0) *
   //      dtLinearAlgebra::toDtVector3(_v3dTwoD[0].YdtPoint3Percent(0., x1))
   //			+ x0 *
-  //dtLinearAlgebra::toDtVector3(_v3dTwoD[0].YdtPoint3Percent(1., x1)) )
+  // dtLinearAlgebra::toDtVector3(_v3dTwoD[0].YdtPoint3Percent(1., x1)) )
   //      + (1.-x0) * (
   //          (1.-x1) * (
   //            (1.-x2) * _v3dTwoD_1_0_0 + x2 * _v3dTwoD_1_0_1

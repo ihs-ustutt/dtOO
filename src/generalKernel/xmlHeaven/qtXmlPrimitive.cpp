@@ -855,7 +855,7 @@ void qtXmlPrimitive::replaceInAllAttributes(
     //			dt__info(
     //				replaceInAllAttributes(),
     //				<< "Replace attribute " << name << " = " <<
-    //value << "." << std::endl
+    // value << "." << std::endl
     //				<< "-> " << replaced
     //			);
   }

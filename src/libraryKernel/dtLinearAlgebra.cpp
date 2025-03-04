@@ -697,9 +697,9 @@ bool dtLinearAlgebra::intersects(
     //				<< dt__point3d(iPoint) << std::endl
     //			  << dt__eval(dP ) << std::endl
     //				<< dt__eval(
-    //dtLinearAlgebra::length(line.to_vector()) ) << std::endl
+    // dtLinearAlgebra::length(line.to_vector()) ) << std::endl
     //				<< dt__eval( dtLinearAlgebra::length(iPoint -
-    //line.point(0)) )
+    // line.point(0)) )
     //			);
     if (dtLinearAlgebra::length(line.to_vector()) >
         dtLinearAlgebra::length(iPoint - line.point(0)))

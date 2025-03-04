@@ -48,7 +48,7 @@ map1dTo3d_closeGapsArithmetic::map1dTo3d_closeGapsArithmetic(dt__pVH(map1dTo3d)
       vec2dCurve2dOneD::ConstDownCast(v2dInM3d->ptrToVec2dOneD())
     );
     //			map2dTo3d const * const m2d =
-    //v2dInM3d->ptrToMap2dTo3d();
+    // v2dInM3d->ptrToMap2dTo3d();
     dtC2d.push_back(v2dC1d->ptrDtCurve2d()->clone());
   }
 

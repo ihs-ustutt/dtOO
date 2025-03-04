@@ -59,12 +59,13 @@ analyticAddNormal::apply(lvH_analyticFunction const *const aFP) const
     analyticFunction *aF = aFP->at(ii);
 
     //			vec2dOneD const * const vec2d1d =
-    //vec2dOneD::ConstDownCast(aF);
+    // vec2dOneD::ConstDownCast(aF);
     vec3dTwoD const *const vec3d2d = vec3dTwoD::ConstDownCast(aF);
 
     //			if (vec2d1d) {
     //				analyticFunctionTransformed<vec2dCurve2dOneD> *
-    //aFT 				= new analyticFunctionTransformed<vec2dCurve2dOneD>(*vec2dC1d);
+    // aFT 				= new
+    // analyticFunctionTransformed<vec2dCurve2dOneD>(*vec2dC1d);
     //				aFT->setTransformer(this);
     //				retV.push_back( aFT );
     //				retV.back()->setLabel(aF->getLabel());
@@ -79,7 +80,7 @@ analyticAddNormal::apply(lvH_analyticFunction const *const aFP) const
       dt__throw(
         apply(),
         //					<< dt__eval(vec2d1d) <<
-        //std::endl
+        // std::endl
         << dt__eval(vec3d2d) << std::endl
         << "Unknown type."
       );

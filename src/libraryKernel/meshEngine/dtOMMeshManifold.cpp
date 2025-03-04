@@ -49,9 +49,9 @@ dtOMMeshManifold::dtOMMeshManifold(dtOMMesh const &om, omVertexH const &vH)
   //			<< "_dihedralAngleV = " << _dihedralAngleV << std::endl
   //			<< "_isBoundary = " << _isBoundary << std::endl
   //			<< dt__eval(minA) << " rad (" << minA*180./M_PI << "
-  //degree )" << std::endl
+  // degree )" << std::endl
   //			<< dt__eval(maxA) << " rad (" << maxA*180./M_PI << "
-  //degree )" << std::endl
+  // degree )" << std::endl
   //		);
 }
 
@@ -172,7 +172,7 @@ dtOMMeshManifold dtOMMeshManifold::divide(void)
       //					   (abs(max2ndAngleIt-maxAngleIt)
       //> 0)
       //					&&
-      //((nEdges-abs(max2ndAngleIt-maxAngleIt))>0) 				) break;
+      //((nEdges-abs(max2ndAngleIt-maxAngleIt))>0) ) break;
     }
 
     //
@@ -185,7 +185,7 @@ dtOMMeshManifold dtOMMeshManifold::divide(void)
     //				<< " and " << max2ndAngleIt -
     //_dihedralAngleV.begin() << std::endl
     //				<< "Distance between " <<
-    //max2ndAngleIt-maxAngleIt
+    // max2ndAngleIt-maxAngleIt
     //			);
 
     //
@@ -229,12 +229,12 @@ dtOMMeshManifold dtOMMeshManifold::divide(void)
     //			dt__info(
     //				divide(),
     //				<< "Dividing manifold at " << maxAngleBegPos <<
-    //std::endl
+    // std::endl
     //				<< "Distance " << dt__eval(maxAngleBegPos)
     //				<< " and " << dt__eval(maxAngleEndPos) <<
-    //std::endl
+    // std::endl
     //				<< "_dihedralAngleV = " << _dihedralAngleV <<
-    //std::endl
+    // std::endl
     //				<< "_isBoundary = " << _isBoundary << std::endl
     //			);
 

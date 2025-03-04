@@ -64,7 +64,7 @@ dtPoint3_readIBL::dtPoint3_readIBL(std::string const &filename)
         //						<< "parts = " << parts
         //<< std::endl
         //						<<
-        //dt__eval(parts.size())
+        // dt__eval(parts.size())
         //					);
         dt__throwIf(parts.size() != 3, dtPoint3_readIBL());
         //

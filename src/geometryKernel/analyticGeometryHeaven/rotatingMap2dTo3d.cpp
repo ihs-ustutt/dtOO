@@ -145,13 +145,13 @@ dtPoint3 rotatingMap2dTo3d::getPoint(
   //    dt__warnIfWithMessage(uu<getUMin(), getPoint(), << uu << " < " <<
   //    getUMin());
   //		dt__warnIfWithMessage(vv<getVMin(), getPoint(), << vv << " < "
-  //<< getVMin()); 		dt__warnIfWithMessage(ww<getWMin(), getPoint(), << ww << " <
-  //" << getWMin());
+  //<< getVMin()); 		dt__warnIfWithMessage(ww<getWMin(), getPoint(),
+  //<< ww << " < " << getWMin());
   //    dt__warnIfWithMessage(uu>getUMax(), getPoint(), << uu << " > " <<
   //    getUMax());
   //		dt__warnIfWithMessage(vv>getVMax(), getPoint(), << vv << " > "
-  //<< getVMax()); 		dt__warnIfWithMessage(ww>getWMax(), getPoint(), << ww << " >
-  //" << getWMax());
+  //<< getVMax()); 		dt__warnIfWithMessage(ww>getWMax(), getPoint(),
+  //<< ww << " > " << getWMax());
 
   dtAffTransformation3 rot = dtLinearAlgebra::getRotation(_vv, uu * 2 * M_PI);
   return rot.transform(_m2d->getPoint(vv, ww));

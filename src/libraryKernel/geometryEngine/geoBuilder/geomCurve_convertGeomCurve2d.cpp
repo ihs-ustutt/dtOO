@@ -57,11 +57,12 @@ geomCurve_convertGeomCurve2d::geomCurve_convertGeomCurve2d(
   //{ 		  _dtC.reset( new dtOCCBezierCurve(base) );
   //		}
   //		else if ( !(Handle(Geom_TrimmedCurve)::DownCast(occC).IsNull())
-  //) { 			dt__ptrAss( 				dtOCCTrimmedCurve2d const * const tC2d,
+  //) { 			dt__ptrAss(
+  //dtOCCTrimmedCurve2d const * const tC2d,
   //				dtOCCTrimmedCurve2d::ConstDownCast(dtC2d)
   //			);
   //		  _dtC.reset( new dtOCCTrimmedCurve(base, tC2d->getU0(),
-  //tC2d->getU1() ) );
+  // tC2d->getU1() ) );
   //		}
   //		else if ( !(Handle(Geom_Line)::DownCast(occC).IsNull()) ) {
   //		  _dtC.reset( new dtOCCLine(base) );

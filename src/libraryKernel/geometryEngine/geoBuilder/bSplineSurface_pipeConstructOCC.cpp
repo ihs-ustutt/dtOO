@@ -141,7 +141,7 @@ bSplineSurface_pipeConstructOCC::bSplineSurface_pipeConstructOCC(
   // cast curves
   //
   //		dtOCCCurve const * const occCPath =
-  //dtOCCCurve::ConstSecureCast(aPath);
+  // dtOCCCurve::ConstSecureCast(aPath);
 
   Handle(Geom_Surface) aSurface;
   dt__tryOcc(GeomFill_Pipe aPipe(

@@ -154,7 +154,7 @@ void vec3dInMap3dTo3dAGXmlBuilder::buildPartCompound(
   //
   //			if (v1d) {
   //				aGeoP->push_back( new vec3dOneDInMap3dTo3d(v1d,
-  //m3d) );
+  // m3d) );
   //			}
   //			else if (v2d) {
   //			  aGeoP->push_back( new vec3dTwoDInMap3dTo3d(v2d, m3d)
@@ -167,7 +167,7 @@ void vec3dInMap3dTo3dAGXmlBuilder::buildPartCompound(
     {
       v3dC->addComponent(vec3dThreeDInMap3dTo3d(&(v3d->component(ii)), m3d));
       //			    aGeoP->push_back( new
-      //vec3dThreeDInMap3dTo3d(v3d, m3d) );
+      // vec3dThreeDInMap3dTo3d(v3d, m3d) );
     }
     result->push_back(v3dC);
   }

@@ -61,10 +61,10 @@ void map3dTo3dWithInternalGmsh::init(
   //		_bladeNormalWidth
   //		=
   //		qtXmlBase::getAttributeFloatMuParse("bladeNormalWidth", element,
-  //cV, aF); 		_bladeTangentialWidth
+  // cV, aF); 		_bladeTangentialWidth
   //		=
   //	  qtXmlBase::getAttributeFloatMuParse("bladeTangentialWidth", element,
-  //cV, aF);
+  // cV, aF);
 
   //
   // get geometries
@@ -151,7 +151,7 @@ void map3dTo3dWithInternalGmsh::init(
     //			  eNEl[0],eNEl[1]
     //			);
     //			_gm->getDtGmshFaceByTag(tmp)->meshAttributes.method =
-    //MESH_UNSTRUCTURED;
+    // MESH_UNSTRUCTURED;
   }
 
   //

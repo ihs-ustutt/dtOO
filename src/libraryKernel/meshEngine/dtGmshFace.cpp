@@ -102,19 +102,19 @@ dtGmshFace::~dtGmshFace()
    */
   //		dt__info(
   //			~dtGmshFace(), << "Removing face tag = " << tag() << "
-  //on all edges."
+  // on all edges."
   //		);
   //		dt__forAllRefAuto(edges(), ee) ee->delFace(this);
   //
   //		dt__info(
   //			~dtGmshFace(), << "Removing face tag = " << tag() << "
-  //on all regions."
+  // on all regions."
   //		);
   //		dt__forAllRefAuto(dtRegions(), rr) rr->deleteFace( this );
   //
   //    dt__info(
   //			~dtGmshFace(), << "Removing face tag = " << tag() << "
-  //on model."
+  // on model."
   //		);
   //		if ( model() ) model()->remove(this);
 }

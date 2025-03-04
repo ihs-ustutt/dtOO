@@ -110,9 +110,10 @@ dtCurve *dtOCCBSplineSurface::segmentConstU(
                //			<< "v1R = ccB->FirstParameter();"
   );
   dt__solution(v2R > ccB->LastParameter(),
-               v2R = ccB->LastParameter(); //,
-                                           //			segmentConstU(),
-                                           //			<< "v2R = ccB->LastParameter();"
+               v2R = ccB->LastParameter(
+               ); //,
+                  //			segmentConstU(),
+                  //			<< "v2R = ccB->LastParameter();"
   );
 
   dt__tryOcc(ccB->Segment(v1R, v2R);,
@@ -143,9 +144,10 @@ dtCurve *dtOCCBSplineSurface::segmentConstV(
                //			<< "u1R = ccB->FirstParameter();"
   );
   dt__solution(u2R > ccB->LastParameter(),
-               u2R = ccB->LastParameter(); //,
-                                           //			segmentConstV(),
-                                           //			<< "u2R = ccB->LastParameter();"
+               u2R = ccB->LastParameter(
+               ); //,
+                  //			segmentConstV(),
+                  //			<< "u2R = ccB->LastParameter();"
   );
 
   dt__tryOcc(ccB->Segment(u1R, u2R);,

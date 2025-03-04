@@ -105,11 +105,12 @@ void dtGmshRegion::meshTransfinite(void)
   //    this->meshAttributes.recombine3D = 1;
   //		std::list< ::GFace * > fl = faces();
   //		for (std::list< ::GFace * >::iterator f_it = fl.begin(); f_it !=
-  //fl.end(); ++f_it) { 			std::list< ::GEdge * > el = (*f_it)->edges(); 			for
-  //(std::list< ::GEdge * >::iterator e_it = el.begin(); e_it != el.end();
+  // fl.end(); ++f_it) { 			std::list< ::GEdge * > el =
+  // (*f_it)->edges(); 			for (std::list< ::GEdge * >::iterator
+  //e_it = el.begin(); e_it != el.end();
   //++e_it) {
   //				(*e_it)->meshAttributes.method =
-  //MESH_TRANSFINITE;
+  // MESH_TRANSFINITE;
   //				(*e_it)->meshAttributes.nbPointsTransfinite = 2;
   //				(*e_it)->meshAttributes.coeffTransfinite = 1.;
   //				(*e_it)->meshAttributes.typeTransfinite = 1.;
