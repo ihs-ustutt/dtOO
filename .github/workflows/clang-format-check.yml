@@ -11,4 +11,4 @@ jobs:
       with:
         clang-format-version: '18'
         check-path: 'src'
-        exclude-regex: '^.*(pugg|RTree).*$'
+        exclude-regex: '^.*(pugg|RTree|tetgen).*$'
