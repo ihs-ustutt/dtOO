@@ -87,8 +87,9 @@ void bSplineSurface_geomCurveFillConstructOCC::init(
     C[ii] = bSplineCurve_convertOCC(*(cc[ii])).result();
     //			dtOCCBSplineCurve const * occBsc =
     // dtOCCBSplineCurve::ConstDownCast(cc[ii]);
-    // dtOCCTrimmedCurve const * occTc = dtOCCTrimmedCurve::ConstDownCast(cc[ii]); 			if (occBsc) { 				C[ii] =
-    // occBsc->clone();
+    // dtOCCTrimmedCurve const * occTc =
+    // dtOCCTrimmedCurve::ConstDownCast(cc[ii]); 			if
+    // (occBsc) { 				C[ii] = occBsc->clone();
     //			}
     //			else if (occTc) {
     //  			C[ii] = occTc->bSplineCurve();

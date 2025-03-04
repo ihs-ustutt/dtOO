@@ -59,8 +59,9 @@ void dtOCCCircle::setControlPoint(dtInt const nPoint, dtPoint3 const point)
 //		dtCurve * bS;
 //	  if ( !Handle(Geom_Line)::DownCast(_ptr->BasisCurve()).IsNull() )
 //{ 			std::vector< dtPoint3 > pVec;
-//pVec.push_back( pointPercent(0.) ); 			pVec.push_back( pointPercent(1.) ); 			bS =
-//bSplineCurve_pointConstructOCC(pVec, 1).result();
+// pVec.push_back( pointPercent(0.) ); 			pVec.push_back(
+// pointPercent(1.) ); 			bS =
+// bSplineCurve_pointConstructOCC(pVec, 1).result();
 //		}
 //		else if (
 //! Handle(Geom_BSplineCurve)::DownCast(_ptr->BasisCurve()).IsNull() ) {
