@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -22,5 +22,5 @@ License
 // definition of sign(x) in Numeric.h (gmsh) conflicts with cgal
 //
 #ifdef _NUMERIC_H_
-  #undef sign
+#undef sign
 #endif

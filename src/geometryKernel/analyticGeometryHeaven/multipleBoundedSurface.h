@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,41 +16,41 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef multipleBoundedSurface_H
-#define	multipleBoundedSurface_H
+#define multipleBoundedSurface_H
 
 #include <dtOOTypeDef.h>
 
-#include <dtLinearAlgebra.h>
 #include "analyticGeometry.h"
-#include <logMe/dtMacros.h>
+#include <dtLinearAlgebra.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class multipleBoundedSurface : public analyticGeometry {
-  public:
-    dt__class(multipleBoundedSurface, analyticGeometry);
-    multipleBoundedSurface();
-    multipleBoundedSurface(const multipleBoundedSurface& orig);
-    virtual ~multipleBoundedSurface();
-    multipleBoundedSurface( 
-      analyticGeometry const * const m2d, 
-      ptrVectorHandling< analyticGeometry > const & m1d
-    );
-    
-    virtual multipleBoundedSurface * create( void ) const;        
-    virtual multipleBoundedSurface * clone( void ) const;
-    virtual dtInt dim( void ) const;    
-    virtual bool isClosed( dtInt const & dir) const;
-    virtual dtReal getMin( dtInt const & dir) const;
-    virtual dtReal getMax( dtInt const & dir) const;
-    virtual dtPoint3 getPoint( dtReal const * const uvw ) const; 
-    vectorHandling< renderInterface * > getRender( void ) const;
-    ptrVectorHandling< analyticGeometry > const & 
-    boundsVectorConstRef( void ) const;
-    analyticGeometry const * const surfaceConstPtr( void ) const;
-  private:
-    ptrHandling< analyticGeometry > _m2d;
-    ptrVectorHandling< analyticGeometry > _m1d;
-  };
-}
-#endif	/* multipleBoundedSurface_H */
+class multipleBoundedSurface : public analyticGeometry {
+public:
+  dt__class(multipleBoundedSurface, analyticGeometry);
+  multipleBoundedSurface();
+  multipleBoundedSurface(const multipleBoundedSurface &orig);
+  virtual ~multipleBoundedSurface();
+  multipleBoundedSurface(
+    analyticGeometry const *const m2d,
+    ptrVectorHandling<analyticGeometry> const &m1d
+  );
+
+  virtual multipleBoundedSurface *create(void) const;
+  virtual multipleBoundedSurface *clone(void) const;
+  virtual dtInt dim(void) const;
+  virtual bool isClosed(dtInt const &dir) const;
+  virtual dtReal getMin(dtInt const &dir) const;
+  virtual dtReal getMax(dtInt const &dir) const;
+  virtual dtPoint3 getPoint(dtReal const *const uvw) const;
+  vectorHandling<renderInterface *> getRender(void) const;
+  ptrVectorHandling<analyticGeometry> const &boundsVectorConstRef(void) const;
+  analyticGeometry const *const surfaceConstPtr(void) const;
+
+private:
+  ptrHandling<analyticGeometry> _m2d;
+  ptrVectorHandling<analyticGeometry> _m1d;
+};
+} // namespace dtOO
+#endif /* multipleBoundedSurface_H */

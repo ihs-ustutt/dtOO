@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,38 +16,39 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bVORemoveElements_H
-#define	bVORemoveElements_H
+#define bVORemoveElements_H
 
 #include <dtOOTypeDef.h>
 
-#include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include "bVOInterface.h"
+#include <dtLinearAlgebra.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class boundedVolume;
-  class dtGmshEdge;
-  
-  class bVORemoveElements : public bVOInterface {
-    public:
-      dt__class(bVORemoveElements, bVOInterface);
-      dt__classSelfCreate(bVORemoveElements);
-      bVORemoveElements();
-      virtual ~bVORemoveElements();
-      virtual void init(
-        ::QDomElement const & element,
-        baseContainer const * const bC,
-        lvH_constValue const * const cV,
-        lvH_analyticFunction const * const aF,
-        lvH_analyticGeometry const * const aG,
-        lvH_boundedVolume const * const bV,
-        boundedVolume * attachTo
-      );    
-      virtual void postUpdate( void );
-      using bVOInterface::postUpdate;
-    private:
-      static bool _registrated;
-  };
-}
-#endif	/* bVORemoveElements_H */
+class boundedVolume;
+class dtGmshEdge;
+
+class bVORemoveElements : public bVOInterface {
+public:
+  dt__class(bVORemoveElements, bVOInterface);
+  dt__classSelfCreate(bVORemoveElements);
+  bVORemoveElements();
+  virtual ~bVORemoveElements();
+  virtual void init(
+    ::QDomElement const &element,
+    baseContainer const *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG,
+    lvH_boundedVolume const *const bV,
+    boundedVolume *attachTo
+  );
+  virtual void postUpdate(void);
+  using bVOInterface::postUpdate;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* bVORemoveElements_H */

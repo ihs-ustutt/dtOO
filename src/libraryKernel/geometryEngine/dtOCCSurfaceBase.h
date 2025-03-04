@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,27 +16,30 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef DTOCCSURFACEBASE_H
-#define	DTOCCSURFACEBASE_H
+#define DTOCCSURFACEBASE_H
 
 #include <dtOOTypeDef.h>
 
+// clang-format off
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <Geom_Surface.hxx>
+// clang-format on
+#include <logMe/dtMacros.h>
 
-namespace dtOO {    
-  class dtOCCSurfaceBase {
-  public:
-    dt__classOnlyName(dtOCCSurfaceBase);  
-    dtOCCSurfaceBase();
-	  dtOCCSurfaceBase(Handle_Geom_Surface orig);
-    virtual ~dtOCCSurfaceBase();
-    void setOCC(Handle_Geom_Surface);    
-    Handle_Geom_Surface const getOCC( void ) const;
-    std::string dumpToString(void) const;
-  private:
-    class OCCHanWrap;
-    dt__pH(OCCHanWrap) _hanWrap;
-  };
-}
-#endif	/* DTOCCSURFACEBASE_H */
+namespace dtOO {
+class dtOCCSurfaceBase {
+public:
+  dt__classOnlyName(dtOCCSurfaceBase);
+  dtOCCSurfaceBase();
+  dtOCCSurfaceBase(Handle_Geom_Surface orig);
+  virtual ~dtOCCSurfaceBase();
+  void setOCC(Handle_Geom_Surface);
+  Handle_Geom_Surface const getOCC(void) const;
+  std::string dumpToString(void) const;
+
+private:
+  class OCCHanWrap;
+  dt__pH(OCCHanWrap) _hanWrap;
+};
+} // namespace dtOO
+#endif /* DTOCCSURFACEBASE_H */

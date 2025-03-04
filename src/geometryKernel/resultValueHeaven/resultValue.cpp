@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -20,12 +20,9 @@ License
 #include <logMe/logMe.h>
 
 namespace dtOO {
-  resultValue::resultValue( std::string const & label ) : labelHandling(label) {
-  }
+resultValue::resultValue(std::string const &label) : labelHandling(label) {}
 
-  resultValue::resultValue( resultValue const & orig ) : labelHandling(orig) {
-  }
-  
-  resultValue::~resultValue() {
-  }
-}
+resultValue::resultValue(resultValue const &orig) : labelHandling(orig) {}
+
+resultValue::~resultValue() {}
+} // namespace dtOO

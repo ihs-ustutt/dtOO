@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,28 +16,32 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d_H
-#define	map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d_H
+#define map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d_H
 
 #include <dtOOTypeDef.h>
 
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class map1dTo3d;
-  class map2dTo3d;
-  
-  class map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d {
-    public:
-      dt__classOnlyName(map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d);        
-      map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(
-        map1dTo3d const * const m1d, map2dTo3d const * const m2d,
-        dtReal const & thick, dtInt const & nPoints, dtInt const & nIntegrationPoints,
-        dtInt const & order
-      );
-      virtual ~map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d();
-      map1dTo3d * result( void );
-    private:
-      dt__pH(map1dTo3d) _m1d;
-  };
-}
-#endif	/* map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d_H */
+class map1dTo3d;
+class map2dTo3d;
+
+class map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d {
+public:
+  dt__classOnlyName(map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d);
+  map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d(
+    map1dTo3d const *const m1d,
+    map2dTo3d const *const m2d,
+    dtReal const &thick,
+    dtInt const &nPoints,
+    dtInt const &nIntegrationPoints,
+    dtInt const &order
+  );
+  virtual ~map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d();
+  map1dTo3d *result(void);
+
+private:
+  dt__pH(map1dTo3d) _m1d;
+};
+} // namespace dtOO
+#endif /* map1dTo3d_normalOffsetMap1dTo3dInMap2dTo3d_H */

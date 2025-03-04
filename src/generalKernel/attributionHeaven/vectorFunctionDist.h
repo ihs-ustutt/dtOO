@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,38 +16,38 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef vectorFunctionDist_H
-#define	vectorFunctionDist_H
+#define vectorFunctionDist_H
 
 #include <dtOOTypeDef.h>
 
-#include <dtLinearAlgebra.h>
-#include <logMe/logMe.h>
-#include <logMe/dtMacros.h>
 #include "floatAtt.h"
+#include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 
-namespace dtOO { 
-  class analyticFunction;
+namespace dtOO {
+class analyticFunction;
 
-  class vectorFunctionDist : public floatAtt {
-    public:  
-      dt__classOnlyName(vectorFunctionDist);
-      vectorFunctionDist(
-        std::vector< dtReal > const & vec,
-        analyticFunction const * const aF
-      );
-      virtual ~vectorFunctionDist();
-      vectorFunctionDist( vectorFunctionDist const & orig );
-      virtual vectorFunctionDist * clone( void ) const;
-      virtual dtReal operator()( std::vector< dtReal > const & xx ) const;
-      //
-      // get properties
-      //
-      virtual dtInt const & dimension() const;
-    private:
-      std::vector< dtReal > const _vec;
-      dtInt const _dimension;
-      analyticFunction const * const _aF;
-  };
-  dt__H_addCloneForpVH(vectorFunctionDist);
-}
-#endif	/* vectorFunctionDist_H */
+class vectorFunctionDist : public floatAtt {
+public:
+  dt__classOnlyName(vectorFunctionDist);
+  vectorFunctionDist(
+    std::vector<dtReal> const &vec, analyticFunction const *const aF
+  );
+  virtual ~vectorFunctionDist();
+  vectorFunctionDist(vectorFunctionDist const &orig);
+  virtual vectorFunctionDist *clone(void) const;
+  virtual dtReal operator()(std::vector<dtReal> const &xx) const;
+  //
+  // get properties
+  //
+  virtual dtInt const &dimension() const;
+
+private:
+  std::vector<dtReal> const _vec;
+  dtInt const _dimension;
+  analyticFunction const *const _aF;
+};
+dt__H_addCloneForpVH(vectorFunctionDist);
+} // namespace dtOO
+#endif /* vectorFunctionDist_H */

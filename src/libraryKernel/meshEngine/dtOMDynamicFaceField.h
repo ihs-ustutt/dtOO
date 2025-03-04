@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,35 +16,35 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef dtOMDynamicFaceField_H
-#define	dtOMDynamicFaceField_H
+#define dtOMDynamicFaceField_H
 
 #include <dtOOTypeDef.h>
 
 #include "dtOMFaceField.h"
 
 namespace dtOO {
-  template < typename T >  
-  class dtOMDynamicFaceField : public dtOMFaceField< T > {
-  public:
-    dt__class(dtOMDynamicFaceField, dtOMFaceField< T >);
-    dtOMDynamicFaceField(
-      std::string const & label, dtOMMesh & om, T const & init
-    );
-    virtual ~dtOMDynamicFaceField();
-  private:
-    dtOMMesh & _om;
-  };
+template <typename T> class dtOMDynamicFaceField : public dtOMFaceField<T> {
+public:
+  dt__class(dtOMDynamicFaceField, dtOMFaceField<T>);
+  dtOMDynamicFaceField(std::string const &label, dtOMMesh &om, T const &init);
+  virtual ~dtOMDynamicFaceField();
 
-  template < typename T >
-  dtOMDynamicFaceField< T >::dtOMDynamicFaceField( 
-    std::string const & label, dtOMMesh & om, T const & init 
-  ) : dtOMFaceField< T >(label, om, init), _om(om) {
-    _om.enqueueField(this);
-  }
-  
-  template < typename T >
-  dtOMDynamicFaceField< T >::~dtOMDynamicFaceField() {
-    _om.dequeueField(this);    
-  }    
+private:
+  dtOMMesh &_om;
+};
+
+template <typename T>
+dtOMDynamicFaceField<T>::dtOMDynamicFaceField(
+  std::string const &label, dtOMMesh &om, T const &init
+)
+  : dtOMFaceField<T>(label, om, init), _om(om)
+{
+  _om.enqueueField(this);
 }
-#endif	/* dtOMDynamicFaceField_H */
+
+template <typename T> dtOMDynamicFaceField<T>::~dtOMDynamicFaceField()
+{
+  _om.dequeueField(this);
+}
+} // namespace dtOO
+#endif /* dtOMDynamicFaceField_H */

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,36 +16,37 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef analyticFunctionAFXmlBuilder_H
-#define	analyticFunctionAFXmlBuilder_H
+#define analyticFunctionAFXmlBuilder_H
 
 #include <dtOOTypeDef.h>
 
-#include <xmlHeaven/aFXmlBuilder.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
+#include <xmlHeaven/aFXmlBuilder.h>
 
 class QDomElement;
 
 namespace dtOO {
-  class scaFunction;
-  class constValue;
-  class baseContainer;
+class scaFunction;
+class constValue;
+class baseContainer;
 
-  class analyticFunctionAFXmlBuilder : public aFXmlBuilder {
-    public:  
-      dt__classOnlyName(analyticFunctionAFXmlBuilder);
-      dt__classSelfCreate(analyticFunctionAFXmlBuilder);
-      analyticFunctionAFXmlBuilder();
-      virtual ~analyticFunctionAFXmlBuilder();
-      virtual void buildPart(
-        ::QDomElement const & toBuild, 
-        baseContainer * const bC,
-        lvH_constValue const * const cV,
-        lvH_analyticFunction const * const aF,
-        lvH_analyticFunction * result
-      ) const;
-    private: 
-      static bool _registrated;
-  };
-}
-#endif	/* analyticFunctionAFXmlBuilder_H */
+class analyticFunctionAFXmlBuilder : public aFXmlBuilder {
+public:
+  dt__classOnlyName(analyticFunctionAFXmlBuilder);
+  dt__classSelfCreate(analyticFunctionAFXmlBuilder);
+  analyticFunctionAFXmlBuilder();
+  virtual ~analyticFunctionAFXmlBuilder();
+  virtual void buildPart(
+    ::QDomElement const &toBuild,
+    baseContainer *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticFunction *result
+  ) const;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* analyticFunctionAFXmlBuilder_H */

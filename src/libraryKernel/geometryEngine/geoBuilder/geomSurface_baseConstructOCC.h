@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,28 +16,29 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef geomSurface_baseConstructOCC_H
-#define	geomSurface_baseConstructOCC_H
+#define geomSurface_baseConstructOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtSurface;
-  class dtOCCSurfaceBase;
-  
-  class geomSurface_baseConstructOCC {
-  public:
-    dt__classOnlyName(geomSurface_baseConstructOCC);
-    geomSurface_baseConstructOCC( dtOCCSurfaceBase const & base );
-    virtual ~geomSurface_baseConstructOCC();
-    static bool support( dtOCCSurfaceBase const & base );
-    dtSurface * result( void );
-  private:
-    ptrHandling<dtSurface> _dtS;
-  };
-}
-#endif	/* geomSurface_baseConstructOCC_H */
+class dtSurface;
+class dtOCCSurfaceBase;
+
+class geomSurface_baseConstructOCC {
+public:
+  dt__classOnlyName(geomSurface_baseConstructOCC);
+  geomSurface_baseConstructOCC(dtOCCSurfaceBase const &base);
+  virtual ~geomSurface_baseConstructOCC();
+  static bool support(dtOCCSurfaceBase const &base);
+  dtSurface *result(void);
+
+private:
+  ptrHandling<dtSurface> _dtS;
+};
+} // namespace dtOO
+#endif /* geomSurface_baseConstructOCC_H */

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef dtMuParser_H
-#define	dtMuParser_H
+#define dtMuParser_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,14 +24,14 @@ License
 #include <muParser.h>
 
 namespace dtOO {
-  class dtMuParser : public ::mu::Parser {
-  public:
-    dt__classOnlyName(dtMuParser);    
-    dtMuParser();
-    dtMuParser(const dtMuParser& orig);
-    virtual ~dtMuParser();
-  private:
+class dtMuParser : public ::mu::Parser {
+public:
+  dt__classOnlyName(dtMuParser);
+  dtMuParser();
+  dtMuParser(const dtMuParser &orig);
+  virtual ~dtMuParser();
 
-  };
-}
-#endif	/* dtMuParser_H */
+private:
+};
+} // namespace dtOO
+#endif /* dtMuParser_H */

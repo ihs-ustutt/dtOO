@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,26 +16,26 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef ofOpenFOAMEmptyRule_H
-#define	ofOpenFOAMEmptyRule_H
+#define ofOpenFOAMEmptyRule_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include "ofOpenFOAMSetupRule.h"
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class ofOpenFOAMEmptyRule : public ofOpenFOAMSetupRule {
-    public:
-      dt__class(ofOpenFOAMEmptyRule, ofOpenFOAMSetupRule);  
-      dt__classSelfCreate(ofOpenFOAMEmptyRule);
-      ofOpenFOAMEmptyRule();
-      virtual ~ofOpenFOAMEmptyRule();
-      virtual void executeOnMesh(
-        std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-      ) const;
-    private:
-      static bool _registrated;
+class ofOpenFOAMEmptyRule : public ofOpenFOAMSetupRule {
+public:
+  dt__class(ofOpenFOAMEmptyRule, ofOpenFOAMSetupRule);
+  dt__classSelfCreate(ofOpenFOAMEmptyRule);
+  ofOpenFOAMEmptyRule();
+  virtual ~ofOpenFOAMEmptyRule();
+  virtual void executeOnMesh(
+    std::vector<std::string> const &rule, ::Foam::polyMesh &mesh
+  ) const;
 
-  };
-}
-#endif	/* ofOpenFOAMEmptyRule_H */
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* ofOpenFOAMEmptyRule_H */

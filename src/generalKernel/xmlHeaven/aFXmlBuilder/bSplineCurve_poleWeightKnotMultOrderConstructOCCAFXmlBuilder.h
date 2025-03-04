@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,41 +16,41 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder_H
-#define	bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder_H
+#define bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder_H
 
 #include <dtOOTypeDef.h>
 
-#include <xmlHeaven/aFXmlBuilder.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
+#include <xmlHeaven/aFXmlBuilder.h>
 
 class QDomElement;
 
 namespace dtOO {
-  class analyticFunction;
-  class constValue;
-  class baseContainer;
-  
-  class bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder 
-    : public aFXmlBuilder {
-    public:
-      dt__classOnlyName(
-        bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder
-      );    
-      dt__classSelfCreate(
-        bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder
-      );
-      bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder();
-      virtual ~bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder();
-      virtual void buildPart(
-        ::QDomElement const & toBuild, 
-        baseContainer * const bC,
-        lvH_constValue const * const cV,
-        lvH_analyticFunction const * const aF,
-        lvH_analyticFunction * result
-      ) const;
-    private: 
-      static bool _registrated;      
-    };
-}
-#endif	/* bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder_H */
+class analyticFunction;
+class constValue;
+class baseContainer;
+
+class bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder
+  : public aFXmlBuilder {
+public:
+  dt__classOnlyName(bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder
+  );
+  dt__classSelfCreate(
+    bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder
+  );
+  bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder();
+  virtual ~bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder();
+  virtual void buildPart(
+    ::QDomElement const &toBuild,
+    baseContainer *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticFunction *result
+  ) const;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* bSplineCurve_poleWeightKnotMultOrderConstructOCCAFXmlBuilder_H */

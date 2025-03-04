@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -18,7 +18,5 @@ License
 #include "dtPluginKernel.h"
 
 namespace dtOO {
-  dtPluginKernel::~dtPluginKernel() {
-    _plugins.clear();
-  }
-}
+dtPluginKernel::~dtPluginKernel() { _plugins.clear(); }
+} // namespace dtOO

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,36 +16,37 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bVOWriteMSH_H
-#define	bVOWriteMSH_H
+#define bVOWriteMSH_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include "bVOInterface.h"
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class constValue;
-  class analyticFunction;
-  class analyticGeometry;
-  
-  class bVOWriteMSH : public bVOInterface {
-    public:
-      dt__class(bVOWriteMSH, bVOInterface);
-      dt__classSelfCreate(bVOWriteMSH);
-      bVOWriteMSH();
-      virtual ~bVOWriteMSH();
-      virtual void init(
-        ::QDomElement const & element,
-        baseContainer const * const bC,
-        lvH_constValue const * const cV,
-        lvH_analyticFunction const * const aF,
-        lvH_analyticGeometry const * const aG,
-        lvH_boundedVolume const * const bV,
-        boundedVolume * attachTo
-      );    
-      virtual void postUpdate( void );
-    private:
-      static bool _registrated;
-  };
-}
-#endif	/* bVOWriteMSH_H */
+class constValue;
+class analyticFunction;
+class analyticGeometry;
+
+class bVOWriteMSH : public bVOInterface {
+public:
+  dt__class(bVOWriteMSH, bVOInterface);
+  dt__classSelfCreate(bVOWriteMSH);
+  bVOWriteMSH();
+  virtual ~bVOWriteMSH();
+  virtual void init(
+    ::QDomElement const &element,
+    baseContainer const *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG,
+    lvH_boundedVolume const *const bV,
+    boundedVolume *attachTo
+  );
+  virtual void postUpdate(void);
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* bVOWriteMSH_H */

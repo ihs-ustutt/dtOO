@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,37 +16,38 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bVOWriteSTL_H
-#define	bVOWriteSTL_H
+#define bVOWriteSTL_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include "bVOInterface.h"
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class constValue;
-  class analyticFunction;
-  class analyticGeometry;
-  
-  class bVOWriteSTL : public bVOInterface {
-    public:
-      dt__class(bVOWriteSTL, bVOInterface);
-      dt__classSelfCreate(bVOWriteSTL);
-      bVOWriteSTL();
-      virtual ~bVOWriteSTL();
-      virtual void init(
-        ::QDomElement const & element,
-        baseContainer const * const bC,
-        lvH_constValue const * const cV,
-        lvH_analyticFunction const * const aF,
-        lvH_analyticGeometry const * const aG,
-        lvH_boundedVolume const * const bV,
-        boundedVolume * attachTo
-      );    
-      virtual void postUpdate( void );
-    private:
-      std::string _filename;
-      static bool _registrated;      
-  };
-}
-#endif	/* bVOWriteSTL_H */
+class constValue;
+class analyticFunction;
+class analyticGeometry;
+
+class bVOWriteSTL : public bVOInterface {
+public:
+  dt__class(bVOWriteSTL, bVOInterface);
+  dt__classSelfCreate(bVOWriteSTL);
+  bVOWriteSTL();
+  virtual ~bVOWriteSTL();
+  virtual void init(
+    ::QDomElement const &element,
+    baseContainer const *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG,
+    lvH_boundedVolume const *const bV,
+    boundedVolume *attachTo
+  );
+  virtual void postUpdate(void);
+
+private:
+  std::string _filename;
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* bVOWriteSTL_H */

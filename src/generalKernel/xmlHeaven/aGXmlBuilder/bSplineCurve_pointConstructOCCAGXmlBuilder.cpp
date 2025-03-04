@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,68 +17,63 @@ License
 
 #include "bSplineCurve_pointConstructOCCAGXmlBuilder.h"
 
-#include <xmlHeaven/aGXmlBuilderFactory.h>
-#include <logMe/logMe.h>
-#include <dtLinearAlgebra.h>
-#include <analyticGeometryHeaven/analyticGeometry.h>
+#include <analyticFunctionHeaven/analyticFunction.h>
 #include <analyticGeometryHeaven/analyticCurve.h>
+#include <analyticGeometryHeaven/analyticGeometry.h>
+#include <baseContainerHeaven/baseContainer.h>
+#include <constValueHeaven/constValue.h>
+#include <dtLinearAlgebra.h>
 #include <geometryEngine/dtOCCBezierCurve.h>
 #include <geometryEngine/geoBuilder/bSplineCurve_pointConstructOCC.h>
-#include <analyticFunctionHeaven/analyticFunction.h>
-#include <constValueHeaven/constValue.h>
-#include <baseContainerHeaven/baseContainer.h>
+#include <logMe/logMe.h>
+#include <xmlHeaven/aGXmlBuilderFactory.h>
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
 namespace dtOO {
-  bool bSplineCurve_pointConstructOCCAGXmlBuilder::_registrated 
-  =
-  aGXmlBuilderFactory::registrate(
-    dt__tmpPtr(
-      bSplineCurve_pointConstructOCCAGXmlBuilder, 
-      new bSplineCurve_pointConstructOCCAGXmlBuilder()
-    )
-  );
-  
-  bSplineCurve_pointConstructOCCAGXmlBuilder
-    ::bSplineCurve_pointConstructOCCAGXmlBuilder() {
-  }
+bool bSplineCurve_pointConstructOCCAGXmlBuilder::_registrated =
+  aGXmlBuilderFactory::registrate(dt__tmpPtr(
+    bSplineCurve_pointConstructOCCAGXmlBuilder,
+    new bSplineCurve_pointConstructOCCAGXmlBuilder()
+  ));
 
-  bSplineCurve_pointConstructOCCAGXmlBuilder
-    ::~bSplineCurve_pointConstructOCCAGXmlBuilder() {
-  }
-
-  void bSplineCurve_pointConstructOCCAGXmlBuilder::buildPart(
-    ::QDomElement const & toBuild,
-    baseContainer * const bC,           
-    lvH_constValue const * const cV,           
-    lvH_analyticFunction const * const aF,    
-    lvH_analyticGeometry const * const aG,
-    lvH_analyticGeometry * result 
-	) const {
-    //
-		// check input
-		//  
-    dt__throwIf(!dtXmlParserBase::hasChild("Point_3", toBuild), buildPart());
-    dt__throwIf(!dtXmlParserBase::hasAttribute("order", toBuild), buildPart());
-
-    dtInt const order 
-    = 
-    dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV, aF);
-    std::vector< dtPoint3 > workingPointP;
-    ::QDomElement wElement = dtXmlParserBase::getChild("Point_3", toBuild);
-    while ( !wElement.isNull() ) {
-      dtXmlParserBase::createBasic( &wElement, bC, cV, aF, aG, &workingPointP );
-      wElement = dtXmlParserBase::getNextSibling("Point_3", wElement);
-    }
-    result->push_back( 
-      new analyticCurve(
-        dt__tmpPtr(
-          dtCurve, 
-          bSplineCurve_pointConstructOCC(workingPointP, order).result()
-        )
-      )
-    );
-  }
+bSplineCurve_pointConstructOCCAGXmlBuilder ::
+  bSplineCurve_pointConstructOCCAGXmlBuilder()
+{
 }
+
+bSplineCurve_pointConstructOCCAGXmlBuilder ::
+  ~bSplineCurve_pointConstructOCCAGXmlBuilder()
+{
+}
+
+void bSplineCurve_pointConstructOCCAGXmlBuilder::buildPart(
+  ::QDomElement const &toBuild,
+  baseContainer *const bC,
+  lvH_constValue const *const cV,
+  lvH_analyticFunction const *const aF,
+  lvH_analyticGeometry const *const aG,
+  lvH_analyticGeometry *result
+) const
+{
+  //
+  // check input
+  //
+  dt__throwIf(!dtXmlParserBase::hasChild("Point_3", toBuild), buildPart());
+  dt__throwIf(!dtXmlParserBase::hasAttribute("order", toBuild), buildPart());
+
+  dtInt const order =
+    dtXmlParserBase::getAttributeIntMuParse("order", toBuild, cV, aF);
+  std::vector<dtPoint3> workingPointP;
+  ::QDomElement wElement = dtXmlParserBase::getChild("Point_3", toBuild);
+  while (!wElement.isNull())
+  {
+    dtXmlParserBase::createBasic(&wElement, bC, cV, aF, aG, &workingPointP);
+    wElement = dtXmlParserBase::getNextSibling("Point_3", wElement);
+  }
+  result->push_back(new analyticCurve(dt__tmpPtr(
+    dtCurve, bSplineCurve_pointConstructOCC(workingPointP, order).result()
+  )));
+}
+} // namespace dtOO

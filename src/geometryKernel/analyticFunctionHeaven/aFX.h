@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef aFX_H
-#define	aFX_H
+#define aFX_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,16 +24,16 @@ License
 #include <vector>
 
 namespace dtOO {
-  class aFY;
-  
-  class aFX : public std::vector< dtReal > {
-    public:
-      aFX( void );
-      aFX( const aFX& orig );
-      aFX( const aFY& orig );
-      aFX( std::vector< dtReal > const & orig );
-      aFX( dtInt const & ss, double const & ref );
-      std::vector< dtReal > toStdVector( void );
-  };
-}
-#endif	/* aFX_H */
+class aFY;
+
+class aFX : public std::vector<dtReal> {
+public:
+  aFX(void);
+  aFX(const aFX &orig);
+  aFX(const aFY &orig);
+  aFX(std::vector<dtReal> const &orig);
+  aFX(dtInt const &ss, double const &ref);
+  std::vector<dtReal> toStdVector(void);
+};
+} // namespace dtOO
+#endif /* aFX_H */

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef intHandling_H
-#define	intHandling_H
+#define intHandling_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,16 +24,15 @@ License
 #include <vector>
 
 namespace dtOO {
-  class intHandling {
-    public:
-      dt__classOnlyName(intHandling);
-      virtual ~intHandling();
-      static dtInt round( dtReal a );
-      static dtInt bound( 
-        dtInt const & toBound, dtInt const & aa, dtInt const & bb 
-      );
-    private:
-      intHandling();
-  };
-}
-#endif	/* intHandling_H */
+class intHandling {
+public:
+  dt__classOnlyName(intHandling);
+  virtual ~intHandling();
+  static dtInt round(dtReal a);
+  static dtInt bound(dtInt const &toBound, dtInt const &aa, dtInt const &bb);
+
+private:
+  intHandling();
+};
+} // namespace dtOO
+#endif /* intHandling_H */

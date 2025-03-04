@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -20,12 +20,10 @@ License
 #include "dtTransformer.h"
 
 namespace dtOO {
-  dtTransformerDriver::dtTransformerDriver(
-    std::string name, dtInt version
-  ) : pugg::Driver(dtTransformer::server_name(), name, version) {
-    
-  }
-
-  dtTransformerDriver::~dtTransformerDriver() {
-  }
+dtTransformerDriver::dtTransformerDriver(std::string name, dtInt version)
+  : pugg::Driver(dtTransformer::server_name(), name, version)
+{
 }
+
+dtTransformerDriver::~dtTransformerDriver() {}
+} // namespace dtOO

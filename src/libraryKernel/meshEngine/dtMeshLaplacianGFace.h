@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,29 +16,28 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef dtMeshLaplacianGFace_H
-#define	dtMeshLaplacianGFace_H
+#define dtMeshLaplacianGFace_H
 
 #include <dtOOTypeDef.h>
 
+#include "dtMeshTransfinite2DOperator.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-#include "dtMeshTransfinite2DOperator.h"
 
 namespace dtOO {
-  class dtGmshFace;
-  
-  class dtMeshLaplacianGFace : public dtMeshTransfinite2DOperator {
-    public:
-      dt__class(dtMeshLaplacianGFace, dtMeshOperator);     
-      dt__classSelfCreate(dtMeshLaplacianGFace);
-      dtMeshLaplacianGFace();
-      dtMeshLaplacianGFace(
-        const dtMeshLaplacianGFace& orig
-      );
-      virtual ~dtMeshLaplacianGFace();
-      void operator()( dtGmshFace * dtgr );
-    private:
-      static bool _registrated;
-  };
-}
-#endif	/* dtMeshLaplacianGFace_H */
+class dtGmshFace;
+
+class dtMeshLaplacianGFace : public dtMeshTransfinite2DOperator {
+public:
+  dt__class(dtMeshLaplacianGFace, dtMeshOperator);
+  dt__classSelfCreate(dtMeshLaplacianGFace);
+  dtMeshLaplacianGFace();
+  dtMeshLaplacianGFace(const dtMeshLaplacianGFace &orig);
+  virtual ~dtMeshLaplacianGFace();
+  void operator()(dtGmshFace *dtgr);
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* dtMeshLaplacianGFace_H */

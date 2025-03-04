@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,16 +17,15 @@ License
 
 #include "solid2dLine.h"
 
-#include <logMe/logMe.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/logMe.h>
 
 namespace dtOO {
-	solid2dLine::solid2dLine() : discrete2dPoints() {
-	}
+solid2dLine::solid2dLine() : discrete2dPoints() {}
 
-	solid2dLine::~solid2dLine() {
-	}
+solid2dLine::~solid2dLine() {}
 
-  solid2dLine::solid2dLine(std::vector< dtPoint2 > const & pp) : discrete2dPoints(pp) {
-	}
+solid2dLine::solid2dLine(std::vector<dtPoint2> const &pp) : discrete2dPoints(pp)
+{
 }
+} // namespace dtOO

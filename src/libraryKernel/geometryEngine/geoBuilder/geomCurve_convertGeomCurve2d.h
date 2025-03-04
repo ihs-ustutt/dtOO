@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,30 +16,29 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef GEOMCURVE_CONVERTGEOMCURVE2D_H
-#define	GEOMCURVE_CONVERTGEOMCURVE2D_H
+#define GEOMCURVE_CONVERTGEOMCURVE2D_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  class dtCurve2d;
-  
-  class geomCurve_convertGeomCurve2d {
-    public:
-      dt__classOnlyName(geomCurve_convertGeomCurve2d);
-      geomCurve_convertGeomCurve2d( 
-        dtCurve2d const * const dtC2d, 
-        dtPoint3 const & pp, 
-        dtVector3 const & vv 
-      );
-      virtual ~geomCurve_convertGeomCurve2d();
-      dtCurve * result( void );
-    private:
-      ptrHandling<dtCurve> _dtC;
-  };
-}
-#endif	/* GEOMCURVE_CONVERTGEOMCURVE2D_H */
+class dtCurve;
+class dtCurve2d;
+
+class geomCurve_convertGeomCurve2d {
+public:
+  dt__classOnlyName(geomCurve_convertGeomCurve2d);
+  geomCurve_convertGeomCurve2d(
+    dtCurve2d const *const dtC2d, dtPoint3 const &pp, dtVector3 const &vv
+  );
+  virtual ~geomCurve_convertGeomCurve2d();
+  dtCurve *result(void);
+
+private:
+  ptrHandling<dtCurve> _dtC;
+};
+} // namespace dtOO
+#endif /* GEOMCURVE_CONVERTGEOMCURVE2D_H */

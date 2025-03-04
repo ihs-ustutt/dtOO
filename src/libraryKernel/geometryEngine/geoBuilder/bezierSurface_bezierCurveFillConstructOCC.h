@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,27 +16,30 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef BEZIERSURFACE_BEZIERCURVEFILLCONSTRUCTOCC_H
-#define	BEZIERSURFACE_BEZIERCURVEFILLCONSTRUCTOCC_H
+#define BEZIERSURFACE_BEZIERCURVEFILLCONSTRUCTOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  class dtSurface;
-  
-  class bezierSurface_bezierCurveFillConstructOCC {
-    public:
-      dt__classOnlyName(bezierSurface_bezierCurveFillConstructOCC);
-      bezierSurface_bezierCurveFillConstructOCC( vectorHandling< dtCurve const * > const & cc );
-      virtual ~bezierSurface_bezierCurveFillConstructOCC();
-      dtSurface * result( void );
-    private:
-      ptrHandling<dtSurface> _dtS;
-  };
-}
-#endif	/* BEZIERSURFACE_BEZIERCURVEFILLCONSTRUCT_H */
+class dtCurve;
+class dtSurface;
+
+class bezierSurface_bezierCurveFillConstructOCC {
+public:
+  dt__classOnlyName(bezierSurface_bezierCurveFillConstructOCC);
+  bezierSurface_bezierCurveFillConstructOCC(
+    vectorHandling<dtCurve const *> const &cc
+  );
+  virtual ~bezierSurface_bezierCurveFillConstructOCC();
+  dtSurface *result(void);
+
+private:
+  ptrHandling<dtSurface> _dtS;
+};
+} // namespace dtOO
+#endif /* BEZIERSURFACE_BEZIERCURVEFILLCONSTRUCT_H */

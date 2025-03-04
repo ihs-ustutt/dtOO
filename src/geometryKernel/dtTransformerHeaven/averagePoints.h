@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef AVERAGEPOINTS_H
-#define	AVERAGEPOINTS_H
+#define AVERAGEPOINTS_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,28 +24,28 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class averagePoints : public dtTransformer {
-    public:    
-      dt__class(averagePoints, dtTransformer);  
-      averagePoints();
-      averagePoints( averagePoints const & orig );
-      virtual dtTransformer * clone( void ) const;
-      virtual dtTransformer * create( void ) const;      
-      void init( 
-        ::QDomElement const * tE, 
-        baseContainer * const bC,
-        lvH_constValue const * const cValP,
-        lvH_analyticFunction const * const sFunP,
-        lvH_analyticGeometry const * const depAGeoP 
-      );    
-      virtual ~averagePoints();
-      virtual bool isNecessary( void ) const;
-      virtual std::vector< dtPoint2 * > apply( 
-        std::vector< dtPoint2 * > const * const toTrans 
-      ) const;  
-    private:
-      static bool _registrated;
-  };
-}    
+class averagePoints : public dtTransformer {
+public:
+  dt__class(averagePoints, dtTransformer);
+  averagePoints();
+  averagePoints(averagePoints const &orig);
+  virtual dtTransformer *clone(void) const;
+  virtual dtTransformer *create(void) const;
+  void init(
+    ::QDomElement const *tE,
+    baseContainer *const bC,
+    lvH_constValue const *const cValP,
+    lvH_analyticFunction const *const sFunP,
+    lvH_analyticGeometry const *const depAGeoP
+  );
+  virtual ~averagePoints();
+  virtual bool isNecessary(void) const;
+  virtual std::vector<dtPoint2 *>
+  apply(std::vector<dtPoint2 *> const *const toTrans) const;
 
-#endif	/* AVERAGEPOINTS_H */
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+
+#endif /* AVERAGEPOINTS_H */

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef QSHAPEMETRIC_H
-#define	QSHAPEMETRIC_H
+#define QSHAPEMETRIC_H
 
 #include <dtOOTypeDef.h>
 
@@ -27,15 +27,16 @@ class MTetrahedron;
 class MPyramid;
 
 namespace dtOO {
-  class qShapeMetric {
-  public:
-    dt__classOnlyName(qShapeMetric);    
-    qShapeMetric();
-    virtual ~qShapeMetric();
-    dtReal operator()( ::MElement const * const me );
-  private:
-    static dtReal calculatePyramid( ::MPyramid * pyr );
-    static dtReal calculateTetrahedron( ::MTetrahedron * tet );
-  };
-}
-#endif	/* QSHAPEMETRIC_H */
+class qShapeMetric {
+public:
+  dt__classOnlyName(qShapeMetric);
+  qShapeMetric();
+  virtual ~qShapeMetric();
+  dtReal operator()(::MElement const *const me);
+
+private:
+  static dtReal calculatePyramid(::MPyramid *pyr);
+  static dtReal calculateTetrahedron(::MTetrahedron *tet);
+};
+} // namespace dtOO
+#endif /* QSHAPEMETRIC_H */

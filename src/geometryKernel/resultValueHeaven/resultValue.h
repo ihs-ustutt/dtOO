@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,26 +16,27 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef resultValue_H
-#define	resultValue_H
+#define resultValue_H
 
 #include <dtOOTypeDef.h>
 
-#include <string>
-#include <logMe/logMe.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/labelHandling.h>
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
+#include <string>
 
 namespace dtOO {
-  class resultValue : public labelHandling {
-    public:
-      dt__class(resultValue, resultValue);    
-      resultValue( resultValue const & orig );
-      virtual ~resultValue();
-      virtual resultValue * clone( void ) const = 0;    
-      virtual dtReal operator()( void ) = 0;
-    protected:
-      resultValue( std::string const & label ); 
-  };
-  dt__I_addCloneForpVHNotImpl(resultValue);
-}
-#endif	/* resultValue_H */
+class resultValue : public labelHandling {
+public:
+  dt__class(resultValue, resultValue);
+  resultValue(resultValue const &orig);
+  virtual ~resultValue();
+  virtual resultValue *clone(void) const = 0;
+  virtual dtReal operator()(void) = 0;
+
+protected:
+  resultValue(std::string const &label);
+};
+dt__I_addCloneForpVHNotImpl(resultValue);
+} // namespace dtOO
+#endif /* resultValue_H */

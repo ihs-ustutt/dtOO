@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,28 +16,29 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef BVOSUBJECT_H
-#define	BVOSUBJECT_H
+#define BVOSUBJECT_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class bVOInterface;
-  class boundedVolume;
-  
-  class bVOSubject {
-    public:
-      dt__class(bVOSubject, bVOSubject);
-      bVOSubject();
-      virtual ~bVOSubject();
-      void attachBVObserver( bVOInterface* observer );
-      void preNotify( void );
-      void postNotify( void );
-      void dump( void ) const;
-    private:
-      vectorHandling< bVOInterface * > _observers;
-  };
-}
-#endif	/* BVOSUBJECT_H */
+class bVOInterface;
+class boundedVolume;
+
+class bVOSubject {
+public:
+  dt__class(bVOSubject, bVOSubject);
+  bVOSubject();
+  virtual ~bVOSubject();
+  void attachBVObserver(bVOInterface *observer);
+  void preNotify(void);
+  void postNotify(void);
+  void dump(void) const;
+
+private:
+  vectorHandling<bVOInterface *> _observers;
+};
+} // namespace dtOO
+#endif /* BVOSUBJECT_H */

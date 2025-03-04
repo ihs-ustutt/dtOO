@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,28 +16,24 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "scaFunction.h"
-#include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 
 namespace dtOO {
-  scaFunction::scaFunction() : analyticFunction() {
-  }
+scaFunction::scaFunction() : analyticFunction() {}
 
-  scaFunction::scaFunction( scaFunction const & orig) : analyticFunction(orig) {
-  }
+scaFunction::scaFunction(scaFunction const &orig) : analyticFunction(orig) {}
 
-  scaFunction::~scaFunction() {
-  }
-	
-  dtInt scaFunction::yDim( void ) const {
-		return 1;
-	}  
-    
-	aFY scaFunction::Y( aFX const & xx ) const {
-		aFY yy(1, 0.); 
-		yy[0] = YFloat(xx);
-		
-		return yy;
-	}
-  dt__C_addCloneForpVH(scaFunction);
+scaFunction::~scaFunction() {}
+
+dtInt scaFunction::yDim(void) const { return 1; }
+
+aFY scaFunction::Y(aFX const &xx) const
+{
+  aFY yy(1, 0.);
+  yy[0] = YFloat(xx);
+
+  return yy;
 }
+dt__C_addCloneForpVH(scaFunction);
+} // namespace dtOO

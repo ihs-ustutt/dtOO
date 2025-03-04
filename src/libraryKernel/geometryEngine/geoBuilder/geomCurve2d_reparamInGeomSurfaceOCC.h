@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,32 +16,32 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef GEOMCURVE2D_REPARAMINGEOMSURFACEOCC_H
-#define	GEOMCURVE2D_REPARAMINGEOMSURFACEOCC_H
+#define GEOMCURVE2D_REPARAMINGEOMSURFACEOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  class dtCurve2d;
-  class dtSurface;
-  
-  class geomCurve2d_reparamInGeomSurfaceOCC {
-  public:
-    dt__classOnlyName(geomCurve2d_reparamInGeomSurfaceOCC);    
-    geomCurve2d_reparamInGeomSurfaceOCC();
-    geomCurve2d_reparamInGeomSurfaceOCC(
-      dtCurve const * const dtC, 
-      dtSurface const * const dtS
-    );
-    virtual ~geomCurve2d_reparamInGeomSurfaceOCC();
-    dtCurve2d * result( void );    
-  private:
-    dt__pH(dtCurve2d) _dtC2d;
-  };
-}
-#endif	/* GEOMCURVE2D_REPARAMINGEOMSURFACEOCC_H */
+class dtCurve;
+class dtCurve2d;
+class dtSurface;
+
+class geomCurve2d_reparamInGeomSurfaceOCC {
+public:
+  dt__classOnlyName(geomCurve2d_reparamInGeomSurfaceOCC);
+  geomCurve2d_reparamInGeomSurfaceOCC();
+  geomCurve2d_reparamInGeomSurfaceOCC(
+    dtCurve const *const dtC, dtSurface const *const dtS
+  );
+  virtual ~geomCurve2d_reparamInGeomSurfaceOCC();
+  dtCurve2d *result(void);
+
+private:
+  dt__pH(dtCurve2d) _dtC2d;
+};
+} // namespace dtOO
+#endif /* GEOMCURVE2D_REPARAMINGEOMSURFACEOCC_H */

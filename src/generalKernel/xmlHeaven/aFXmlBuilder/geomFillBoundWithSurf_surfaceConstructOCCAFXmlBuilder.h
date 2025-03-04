@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,41 +16,38 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder_H
-#define	geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder_H
+#define geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder_H
 
 #include <dtOOTypeDef.h>
 
-#include <xmlHeaven/aFXmlBuilder.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
+#include <xmlHeaven/aFXmlBuilder.h>
 
 class QDomElement;
 
 namespace dtOO {
-  class analyticFunction;
-  class constValue;
-  class baseContainer;
-  
-  class geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder 
-    : public aFXmlBuilder {
-    public:
-      dt__classOnlyName(
-        geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder
-      );    
-      dt__classSelfCreate(
-        geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder
-      );
-      geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder();
-      virtual ~geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder();
-      virtual void buildPart(
-        ::QDomElement const & toBuildP,
-        baseContainer * const bC,
-        lvH_constValue const * const cV, 
-        lvH_analyticFunction const * const aF,
-        lvH_analyticFunction * result
-      ) const;
-    private: 
-      static bool _registrated;      
-    };
-}
-#endif	/* geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder_H */
+class analyticFunction;
+class constValue;
+class baseContainer;
+
+class geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder
+  : public aFXmlBuilder {
+public:
+  dt__classOnlyName(geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder);
+  dt__classSelfCreate(geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder);
+  geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder();
+  virtual ~geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder();
+  virtual void buildPart(
+    ::QDomElement const &toBuildP,
+    baseContainer *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticFunction *result
+  ) const;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* geomFillBoundWithSurf_surfaceConstructOCCAFXmlBuilder_H */

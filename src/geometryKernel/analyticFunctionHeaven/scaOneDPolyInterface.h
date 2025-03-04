@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -23,18 +23,18 @@ License
 #include "scaOneD.h"
 
 namespace dtOO {
-  class dtTransformer;
-  
-  class scaOneDPolyInterface : public scaOneD {
-    public:
-      dt__class(scaOneDPolyInterface, analyticFunction);
-      scaOneDPolyInterface();
-      scaOneDPolyInterface(scaOneDPolyInterface const & orig);    
-      virtual scaOneDPolyInterface * clone( void ) const = 0;
-      virtual ~scaOneDPolyInterface();
-      virtual dtInt nDOF( void ) const = 0;
-      virtual void setDOF( std::vector< dtReal > const value ) = 0;
-  };
-  dt__H_addCloneForpVH(scaOneDPolyInterface);
-}
+class dtTransformer;
+
+class scaOneDPolyInterface : public scaOneD {
+public:
+  dt__class(scaOneDPolyInterface, analyticFunction);
+  scaOneDPolyInterface();
+  scaOneDPolyInterface(scaOneDPolyInterface const &orig);
+  virtual scaOneDPolyInterface *clone(void) const = 0;
+  virtual ~scaOneDPolyInterface();
+  virtual dtInt nDOF(void) const = 0;
+  virtual void setDOF(std::vector<dtReal> const value) = 0;
+};
+dt__H_addCloneForpVH(scaOneDPolyInterface);
+} // namespace dtOO
 #endif /* scaOneDPolyInterface_H */

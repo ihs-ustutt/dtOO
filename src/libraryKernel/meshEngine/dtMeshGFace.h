@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,27 +16,28 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef dtMeshGFace_H
-#define	dtMeshGFace_H
+#define dtMeshGFace_H
 
 #include <dtOOTypeDef.h>
 
+#include "dtMesh2DOperator.h"
 #include <dtLinearAlgebra.h>
 #include <logMe/dtMacros.h>
-#include "dtMesh2DOperator.h"
 
 namespace dtOO {
-  class dtGmshFace;
-  
-  class dtMeshGFace : public dtMesh2DOperator {
-    public:
-      dt__class(dtMeshGFace, dtMeshOperator);     
-      dt__classSelfCreate(dtMeshGFace);
-      dtMeshGFace();
-      dtMeshGFace(const dtMeshGFace& orig);
-      virtual ~dtMeshGFace();
-      void operator()( dtGmshFace * dtgr );    
-    private:
-      static bool _registrated;
-  };
-}
-#endif	/* dtMeshGFace_H */
+class dtGmshFace;
+
+class dtMeshGFace : public dtMesh2DOperator {
+public:
+  dt__class(dtMeshGFace, dtMeshOperator);
+  dt__classSelfCreate(dtMeshGFace);
+  dtMeshGFace();
+  dtMeshGFace(const dtMeshGFace &orig);
+  virtual ~dtMeshGFace();
+  void operator()(dtGmshFace *dtgr);
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* dtMeshGFace_H */

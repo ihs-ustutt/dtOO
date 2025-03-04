@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,27 +16,28 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef TRIMMEDCURVE_TWOPOINTSCONNECTCONSTRUCT_H
-#define	TRIMMEDCURVE_TWOPOINTSCONNECTCONSTRUCT_H
+#define TRIMMEDCURVE_TWOPOINTSCONNECTCONSTRUCT_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  
-  class trimmedCurve_twoPointsConnectConstructOCC {
-  public:
-    dt__classOnlyName(trimmedCurve_twoPointsConnectConstructOCC);
-    trimmedCurve_twoPointsConnectConstructOCC( 
-      dtPoint3 const & p0, dtPoint3 const & p1 
-    );
-    virtual ~trimmedCurve_twoPointsConnectConstructOCC();
-    dtCurve * result( void );
-  private:
-    ptrHandling<dtCurve> _dtC;
-  };
-}
-#endif	/* TRIMMEDCURVE_TWOPOINTSCONNECTCONSTRUCT_H */
+class dtCurve;
+
+class trimmedCurve_twoPointsConnectConstructOCC {
+public:
+  dt__classOnlyName(trimmedCurve_twoPointsConnectConstructOCC);
+  trimmedCurve_twoPointsConnectConstructOCC(
+    dtPoint3 const &p0, dtPoint3 const &p1
+  );
+  virtual ~trimmedCurve_twoPointsConnectConstructOCC();
+  dtCurve *result(void);
+
+private:
+  ptrHandling<dtCurve> _dtC;
+};
+} // namespace dtOO
+#endif /* TRIMMEDCURVE_TWOPOINTSCONNECTCONSTRUCT_H */

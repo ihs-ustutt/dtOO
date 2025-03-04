@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,26 +16,27 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef feOpenFOAMCellZoneRule_H
-#define	feOpenFOAMCellZoneRule_H
+#define feOpenFOAMCellZoneRule_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include "feOpenFOAMSetupRule.h"
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class feOpenFOAMCellZoneRule : public feOpenFOAMSetupRule {
-    public:
-      dt__class(feOpenFOAMCellZoneRule, feOpenFOAMSetupRule);  
-      dt__classSelfCreate(feOpenFOAMCellZoneRule);
-      feOpenFOAMCellZoneRule();
-      virtual ~feOpenFOAMCellZoneRule();
-      virtual std::vector< std::string > factoryAlias( void ) const;
-      virtual void executeOnMesh(
-        std::vector< std::string > const & rule, ::Foam::polyMesh & mesh
-      ) const;
-    private:
-      static bool _registrated;
-  };
-}
-#endif	/* feOpenFOAMCellZoneRule_H */
+class feOpenFOAMCellZoneRule : public feOpenFOAMSetupRule {
+public:
+  dt__class(feOpenFOAMCellZoneRule, feOpenFOAMSetupRule);
+  dt__classSelfCreate(feOpenFOAMCellZoneRule);
+  feOpenFOAMCellZoneRule();
+  virtual ~feOpenFOAMCellZoneRule();
+  virtual std::vector<std::string> factoryAlias(void) const;
+  virtual void executeOnMesh(
+    std::vector<std::string> const &rule, ::Foam::polyMesh &mesh
+  ) const;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* feOpenFOAMCellZoneRule_H */

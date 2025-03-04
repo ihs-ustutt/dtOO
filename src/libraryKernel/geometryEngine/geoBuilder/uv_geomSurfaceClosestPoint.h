@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,26 +16,25 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef uv_geomSurfaceClosestPoint_H
-#define	uv_geomSurfaceClosestPoint_H
+#define uv_geomSurfaceClosestPoint_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtSurface;
-  
-  class uv_geomSurfaceClosestPoint {
-    public:
-      dt__classOnlyName(uv_geomSurfaceClosestPoint);     
-      uv_geomSurfaceClosestPoint(
-        dtSurface const * const dtS, dtPoint3 const & pXYZ
-      );
-      virtual ~uv_geomSurfaceClosestPoint();
-      dtPoint2 result( void );
-    private:
-      dtPoint2 _closestUV;
-  };
-}
-#endif	/* uv_geomSurfaceClosestPoint_H */
+class dtSurface;
+
+class uv_geomSurfaceClosestPoint {
+public:
+  dt__classOnlyName(uv_geomSurfaceClosestPoint);
+  uv_geomSurfaceClosestPoint(dtSurface const *const dtS, dtPoint3 const &pXYZ);
+  virtual ~uv_geomSurfaceClosestPoint();
+  dtPoint2 result(void);
+
+private:
+  dtPoint2 _closestUV;
+};
+} // namespace dtOO
+#endif /* uv_geomSurfaceClosestPoint_H */

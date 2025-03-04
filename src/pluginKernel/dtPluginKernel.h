@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef dtPluginKernel_H
-#define	dtPluginKernel_H
+#define dtPluginKernel_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,13 +24,13 @@ License
 #include <pluginEngine/pugg/Kernel.h>
 
 namespace dtOO {
-  class dtPluginKernel : public ::pugg::Kernel {
-    public:
-      dt__classOnlyName(dtPluginKernel);       
-      ~dtPluginKernel();
-    private:
+class dtPluginKernel : public ::pugg::Kernel {
+public:
+  dt__classOnlyName(dtPluginKernel);
+  ~dtPluginKernel();
 
-  };
-}
+private:
+};
+} // namespace dtOO
 
-#endif	/* dtPluginKernel_H */
+#endif /* dtPluginKernel_H */

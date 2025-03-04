@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,39 +16,40 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bVORemoveRegions_H
-#define	bVORemoveRegions_H
+#define bVORemoveRegions_H
 
 #include <dtOOTypeDef.h>
 
-#include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include "bVOInterface.h"
+#include <dtLinearAlgebra.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class boundedVolume;
-  class dtGmshEdge;
-  
-  class bVORemoveRegions : public bVOInterface {
-    public:
-      dt__class(bVORemoveRegions, bVOInterface);
-      dt__classSelfCreate(bVORemoveRegions);
-      bVORemoveRegions();
-      virtual ~bVORemoveRegions();
-      virtual void init(
-        ::QDomElement const & element,
-        baseContainer const * const bC,
-        lvH_constValue const * const cV,
-        lvH_analyticFunction const * const aF,
-        lvH_analyticGeometry const * const aG,
-        lvH_boundedVolume const * const bV,
-        boundedVolume * attachTo
-      );    
-      virtual void preUpdate( void );
-      using bVOInterface::postUpdate;
-    private:
-      std::vector< std::string > _regionLabel;
-      static bool _registrated;
-  };
-}
-#endif	/* bVORemoveRegions_H */
+class boundedVolume;
+class dtGmshEdge;
+
+class bVORemoveRegions : public bVOInterface {
+public:
+  dt__class(bVORemoveRegions, bVOInterface);
+  dt__classSelfCreate(bVORemoveRegions);
+  bVORemoveRegions();
+  virtual ~bVORemoveRegions();
+  virtual void init(
+    ::QDomElement const &element,
+    baseContainer const *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG,
+    lvH_boundedVolume const *const bV,
+    boundedVolume *attachTo
+  );
+  virtual void preUpdate(void);
+  using bVOInterface::postUpdate;
+
+private:
+  std::vector<std::string> _regionLabel;
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* bVORemoveRegions_H */

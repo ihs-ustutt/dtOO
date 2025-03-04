@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,26 +16,29 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef BSPLINECURVE2D_CURVECONNECTCONSTRUCTOCC_H
-#define	BSPLINECURVE2D_CURVECONNECTCONSTRUCTOCC_H
+#define BSPLINECURVE2D_CURVECONNECTCONSTRUCTOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve2d;
-  
-  class bSplineCurve2d_curveConnectConstructOCC {
-    public:
-      dt__classOnlyName(bSplineCurve2d_curveConnectConstructOCC);
-      bSplineCurve2d_curveConnectConstructOCC( vectorHandling< dtCurve2d const * > const & cc );
-      virtual ~bSplineCurve2d_curveConnectConstructOCC();
-      dtCurve2d * result( void );
-    private:
-      ptrHandling< dtCurve2d > _dtC2d;
-  };
-}
-#endif	/* BSPLINECURVE_CURVECONNECTCONSTRUCTOCC_H */
+class dtCurve2d;
+
+class bSplineCurve2d_curveConnectConstructOCC {
+public:
+  dt__classOnlyName(bSplineCurve2d_curveConnectConstructOCC);
+  bSplineCurve2d_curveConnectConstructOCC(
+    vectorHandling<dtCurve2d const *> const &cc
+  );
+  virtual ~bSplineCurve2d_curveConnectConstructOCC();
+  dtCurve2d *result(void);
+
+private:
+  ptrHandling<dtCurve2d> _dtC2d;
+};
+} // namespace dtOO
+#endif /* BSPLINECURVE_CURVECONNECTCONSTRUCTOCC_H */

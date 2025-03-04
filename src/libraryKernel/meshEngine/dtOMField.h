@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,25 +16,25 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef DTOMFIELD_H
-#define	DTOMFIELD_H
+#define DTOMFIELD_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
-#include <logMe/dtMacros.h>
-#include <interfaceHeaven/labelHandling.h>
 #include "dtOMMesh.h"
+#include <interfaceHeaven/labelHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtOMField : public labelHandling {
-  public:
-    dt__classOnlyName(dtOMField);
-    dtOMField( std::string const & label, dtOMMesh const & om );
-    virtual ~dtOMField();
-    dtOMMesh const & refMesh( void ) const;
-    virtual void update( void ) = 0;
-  private:
-    dtOMMesh const & _om;
-  };
-}
-#endif	/* DTOMFIELD_H */
+class dtOMField : public labelHandling {
+public:
+  dt__classOnlyName(dtOMField);
+  dtOMField(std::string const &label, dtOMMesh const &om);
+  virtual ~dtOMField();
+  dtOMMesh const &refMesh(void) const;
+  virtual void update(void) = 0;
+
+private:
+  dtOMMesh const &_om;
+};
+} // namespace dtOO
+#endif /* DTOMFIELD_H */

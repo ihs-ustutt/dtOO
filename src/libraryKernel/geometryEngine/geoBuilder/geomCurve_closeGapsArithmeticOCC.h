@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,27 +16,28 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef geomCurve_closeGapsArithmeticOCC_H
-#define	geomCurve_closeGapsArithmeticOCC_H
+#define geomCurve_closeGapsArithmeticOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  
-  class geomCurve_closeGapsArithmeticOCC {
-  public:
-    dt__classOnlyName(geomCurve_closeGapsArithmeticOCC);    
-    geomCurve_closeGapsArithmeticOCC();
-    geomCurve_closeGapsArithmeticOCC(dt__pVH(dtCurve) const & dtC);
-    virtual ~geomCurve_closeGapsArithmeticOCC();
-    dt__pVH(dtCurve) result( void );    
-  private:
-    dt__pVH(dtCurve) _dtC;
-  };
-}
-#endif	/* geomCurve_closeGapsArithmeticOCC_H */
+class dtCurve;
+
+class geomCurve_closeGapsArithmeticOCC {
+public:
+  dt__classOnlyName(geomCurve_closeGapsArithmeticOCC);
+  geomCurve_closeGapsArithmeticOCC();
+  geomCurve_closeGapsArithmeticOCC(dt__pVH(dtCurve) const &dtC);
+  virtual ~geomCurve_closeGapsArithmeticOCC();
+  dt__pVH(dtCurve) result(void);
+
+private:
+  dt__pVH(dtCurve) _dtC;
+};
+} // namespace dtOO
+#endif /* geomCurve_closeGapsArithmeticOCC_H */

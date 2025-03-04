@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,12 +16,12 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bVOEvilGodfather_H
-#define	bVOEvilGodfather_H
+#define bVOEvilGodfather_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include "bVOInterface.h"
+#include <logMe/dtMacros.h>
 
 class GRegion;
 class MElement;
@@ -31,46 +31,47 @@ class MPyramid;
 class MVertex;
 
 namespace dtOO {
-  class constValue;
-  class analyticFunction;
-  class analyticGeometry;
-  
-  class bVOEvilGodfather : public bVOInterface {
-    public:
-      dt__class(bVOEvilGodfather, bVOInterface);
-      dt__classSelfCreate(bVOEvilGodfather);
-      bVOEvilGodfather();
-      virtual ~bVOEvilGodfather();
-      virtual void init(
-        ::QDomElement const & element,
-        baseContainer const * const bC,
-        lvH_constValue const * const cV,
-        lvH_analyticFunction const * const aF,
-        lvH_analyticGeometry const * const aG,
-        lvH_boundedVolume const * const bV,
-        boundedVolume * attachTo
-      );    
-      virtual void postUpdate( void );
-    private:
-      static void perturbElement(
-        ::MElement * const jinx, dtReal const & perturbFactor
-      );
-      static void divideTetrahedron(
-        ::MTetrahedron * const jinx, 
-        std::pair< std::vector< ::MTetrahedron * >, ::GRegion * > & newTets,
-        ::MVertex * & newVertex
-      );    
-      static void divideHexahedron(
-        ::MHexahedron * const jinx,
-        std::pair< std::vector< ::MPyramid * >, ::GRegion * > & newPyrs,
-        ::MVertex * & newVertex     
-      );        
-    private:
-      dtReal _perHex;
-      dtReal _perTet;
-      dtReal _perturbTet;
-      dtReal _perturbHex;
-      static bool _registrated;
-  };
-}
-#endif	/* bVOEvilGodfather_H */
+class constValue;
+class analyticFunction;
+class analyticGeometry;
+
+class bVOEvilGodfather : public bVOInterface {
+public:
+  dt__class(bVOEvilGodfather, bVOInterface);
+  dt__classSelfCreate(bVOEvilGodfather);
+  bVOEvilGodfather();
+  virtual ~bVOEvilGodfather();
+  virtual void init(
+    ::QDomElement const &element,
+    baseContainer const *const bC,
+    lvH_constValue const *const cV,
+    lvH_analyticFunction const *const aF,
+    lvH_analyticGeometry const *const aG,
+    lvH_boundedVolume const *const bV,
+    boundedVolume *attachTo
+  );
+  virtual void postUpdate(void);
+
+private:
+  static void
+  perturbElement(::MElement *const jinx, dtReal const &perturbFactor);
+  static void divideTetrahedron(
+    ::MTetrahedron *const jinx,
+    std::pair<std::vector<::MTetrahedron *>, ::GRegion *> &newTets,
+    ::MVertex *&newVertex
+  );
+  static void divideHexahedron(
+    ::MHexahedron *const jinx,
+    std::pair<std::vector<::MPyramid *>, ::GRegion *> &newPyrs,
+    ::MVertex *&newVertex
+  );
+
+private:
+  dtReal _perHex;
+  dtReal _perTet;
+  dtReal _perturbTet;
+  dtReal _perturbHex;
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* bVOEvilGodfather_H */

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,30 +16,31 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bVODumpModel_H
-#define	bVODumpModel_H
+#define bVODumpModel_H
 
 #include <dtOOTypeDef.h>
 
-#include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include "bVOInterface.h"
+#include <dtLinearAlgebra.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class boundedVolume;
-  class dtGmshEdge;
-  
-  class bVODumpModel : public bVOInterface {
-    public:
-      dt__class(bVODumpModel, bVOInterface);
-      dt__classSelfCreate(bVODumpModel);
-      bVODumpModel();
-      virtual ~bVODumpModel();
-      virtual void preUpdate( void );
-      virtual void postUpdate( void );
-      using bVOInterface::postUpdate;
-    private:
-      static bool _registrated;
-  };
-}
-#endif	/* bVODumpModel_H */
+class boundedVolume;
+class dtGmshEdge;
+
+class bVODumpModel : public bVOInterface {
+public:
+  dt__class(bVODumpModel, bVOInterface);
+  dt__classSelfCreate(bVODumpModel);
+  bVODumpModel();
+  virtual ~bVODumpModel();
+  virtual void preUpdate(void);
+  virtual void postUpdate(void);
+  using bVOInterface::postUpdate;
+
+private:
+  static bool _registrated;
+};
+} // namespace dtOO
+#endif /* bVODumpModel_H */

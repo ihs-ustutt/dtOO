@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,30 +16,29 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef BSPLINECURVE2D_POINTCONSTRUCTOCC_H
-#define	BSPLINECURVE2D_POINTCONSTRUCTOCC_H
+#define BSPLINECURVE2D_POINTCONSTRUCTOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve2d;
-  
-  class bSplineCurve2d_pointConstructOCC {
-    public:
-      dt__classOnlyName(bSplineCurve2d_pointConstructOCC);
-      bSplineCurve2d_pointConstructOCC( 
-        std::vector< dtPoint2 > const & pp, dtInt const & order 
-      );
-      bSplineCurve2d_pointConstructOCC( 
-        dtPoint2 const & p0,  dtPoint2 const & p1
-      );      
-      virtual ~bSplineCurve2d_pointConstructOCC();
-      dtCurve2d * result( void );
-    private:
-      ptrHandling<dtCurve2d> _dtC2d;
-  };
-}
-#endif	/* BSPLINECURVE2D_POINTCONSTRUCTOCC_H */
+class dtCurve2d;
+
+class bSplineCurve2d_pointConstructOCC {
+public:
+  dt__classOnlyName(bSplineCurve2d_pointConstructOCC);
+  bSplineCurve2d_pointConstructOCC(
+    std::vector<dtPoint2> const &pp, dtInt const &order
+  );
+  bSplineCurve2d_pointConstructOCC(dtPoint2 const &p0, dtPoint2 const &p1);
+  virtual ~bSplineCurve2d_pointConstructOCC();
+  dtCurve2d *result(void);
+
+private:
+  ptrHandling<dtCurve2d> _dtC2d;
+};
+} // namespace dtOO
+#endif /* BSPLINECURVE2D_POINTCONSTRUCTOCC_H */

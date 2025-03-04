@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,31 +16,34 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef circle_radiusCoordinateSystemConstructOCC_H
-#define	circle_radiusCoordinateSystemConstructOCC_H
+#define circle_radiusCoordinateSystemConstructOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  
-  class circle_radiusCoordinateSystemConstructOCC {
-  public:
-    dt__classOnlyName(circle_radiusCoordinateSystemConstructOCC);
-    circle_radiusCoordinateSystemConstructOCC( 
-      dtPoint3 const & pp, dtVector3 const & xx, dtReal const & rr
-    );
-    circle_radiusCoordinateSystemConstructOCC( 
-      dtPoint3 const & pp, dtVector3 const & nn, dtVector3 const & xx, 
-      dtReal const & rr
-    );    
-    virtual ~circle_radiusCoordinateSystemConstructOCC();
-    dtCurve * result( void );
-  private:
-    ptrHandling<dtCurve> _dtC;
-  };
-}
-#endif	/* circle_radiusCoordinateSystemConstructOCC_H */
+class dtCurve;
+
+class circle_radiusCoordinateSystemConstructOCC {
+public:
+  dt__classOnlyName(circle_radiusCoordinateSystemConstructOCC);
+  circle_radiusCoordinateSystemConstructOCC(
+    dtPoint3 const &pp, dtVector3 const &xx, dtReal const &rr
+  );
+  circle_radiusCoordinateSystemConstructOCC(
+    dtPoint3 const &pp,
+    dtVector3 const &nn,
+    dtVector3 const &xx,
+    dtReal const &rr
+  );
+  virtual ~circle_radiusCoordinateSystemConstructOCC();
+  dtCurve *result(void);
+
+private:
+  ptrHandling<dtCurve> _dtC;
+};
+} // namespace dtOO
+#endif /* circle_radiusCoordinateSystemConstructOCC_H */

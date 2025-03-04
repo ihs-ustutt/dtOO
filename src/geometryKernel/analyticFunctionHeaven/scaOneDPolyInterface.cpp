@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -18,16 +18,13 @@ License
 #include "scaOneDPolyInterface.h"
 
 namespace dtOO {
-  scaOneDPolyInterface::scaOneDPolyInterface() : scaOneD() {
-  }
+scaOneDPolyInterface::scaOneDPolyInterface() : scaOneD() {}
 
-  scaOneDPolyInterface::scaOneDPolyInterface( 
-    scaOneDPolyInterface const & orig
-  ) : scaOneD(orig) {
-    
-  }
-  
-  scaOneDPolyInterface::~scaOneDPolyInterface() {
-  }
-  dt__C_addCloneForpVH(scaOneDPolyInterface);
+scaOneDPolyInterface::scaOneDPolyInterface(scaOneDPolyInterface const &orig)
+  : scaOneD(orig)
+{
 }
+
+scaOneDPolyInterface::~scaOneDPolyInterface() {}
+dt__C_addCloneForpVH(scaOneDPolyInterface);
+} // namespace dtOO

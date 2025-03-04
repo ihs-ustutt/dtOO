@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,32 +16,33 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef GEOMSURFACE_SURFACEROTATECONSTRUCTOCC_H
-#define	GEOMSURFACE_SURFACEROTATECONSTRUCTOCC_H
+#define GEOMSURFACE_SURFACEROTATECONSTRUCTOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtSurface;
-  
-  class geomSurface_surfaceRotateConstructOCC {
-  public:
-    dt__classOnlyName(geomSurface_surfaceRotateConstructOCC);    
-    geomSurface_surfaceRotateConstructOCC();
-    geomSurface_surfaceRotateConstructOCC(
-      dtSurface const * const dtS, 
-      dtPoint3 const & oP, 
-      dtVector3 const & rA, 
-      dtReal const & angle
-    );
-    virtual ~geomSurface_surfaceRotateConstructOCC();
-    dtSurface * result( void );    
-  private:
-    ptrHandling< dtSurface > _dtS;
-  };
-}
-#endif	/* GEOMSURFACE_SURFACEROTATECONSTRUCTOCC_H */
+class dtSurface;
+
+class geomSurface_surfaceRotateConstructOCC {
+public:
+  dt__classOnlyName(geomSurface_surfaceRotateConstructOCC);
+  geomSurface_surfaceRotateConstructOCC();
+  geomSurface_surfaceRotateConstructOCC(
+    dtSurface const *const dtS,
+    dtPoint3 const &oP,
+    dtVector3 const &rA,
+    dtReal const &angle
+  );
+  virtual ~geomSurface_surfaceRotateConstructOCC();
+  dtSurface *result(void);
+
+private:
+  ptrHandling<dtSurface> _dtS;
+};
+} // namespace dtOO
+#endif /* GEOMSURFACE_SURFACEROTATECONSTRUCTOCC_H */

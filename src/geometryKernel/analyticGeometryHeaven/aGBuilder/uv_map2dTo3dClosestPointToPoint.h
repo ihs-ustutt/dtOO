@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,28 +16,29 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef uv_map2dTo3dClosestPointToPoint_H
-#define	uv_map2dTo3dClosestPointToPoint_H
+#define uv_map2dTo3dClosestPointToPoint_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class map2dTo3d;
-  
-  class uv_map2dTo3dClosestPointToPoint {
-    public:
-      dt__classOnlyName(uv_map2dTo3dClosestPointToPoint);     
-      uv_map2dTo3dClosestPointToPoint(
-        map2dTo3d const * const m2d, dtPoint3 const & pXYZ
-      );
-      virtual ~uv_map2dTo3dClosestPointToPoint();
-      dtPoint2 result( void );
-      dtReal distance( void );
-    private:
-      dtPoint2 _closestUV;
-      dtReal _distance;
-  };
-}
-#endif	/* uv_map2dTo3dClosestPointToPoint_H */
+class map2dTo3d;
+
+class uv_map2dTo3dClosestPointToPoint {
+public:
+  dt__classOnlyName(uv_map2dTo3dClosestPointToPoint);
+  uv_map2dTo3dClosestPointToPoint(
+    map2dTo3d const *const m2d, dtPoint3 const &pXYZ
+  );
+  virtual ~uv_map2dTo3dClosestPointToPoint();
+  dtPoint2 result(void);
+  dtReal distance(void);
+
+private:
+  dtPoint2 _closestUV;
+  dtReal _distance;
+};
+} // namespace dtOO
+#endif /* uv_map2dTo3dClosestPointToPoint_H */

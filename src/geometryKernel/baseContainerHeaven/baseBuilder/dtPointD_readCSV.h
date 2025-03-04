@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,7 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef dtPointD_readCSV_H
-#define	dtPointD_readCSV_H
+#define dtPointD_readCSV_H
 
 #include <dtOOTypeDef.h>
 
@@ -24,14 +24,15 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtPointD_readCSV {
-  public:
-    dt__classOnlyName(dtPointD_readCSV);
-    dtPointD_readCSV(std::string const & filename);
-    virtual ~dtPointD_readCSV();
-    std::vector< dtPointD > result(void) const;
-  private:
-    std::vector< dtPointD > _pp;
-  };
-}
-#endif	/* dtPointD_readCSV_H */
+class dtPointD_readCSV {
+public:
+  dt__classOnlyName(dtPointD_readCSV);
+  dtPointD_readCSV(std::string const &filename);
+  virtual ~dtPointD_readCSV();
+  std::vector<dtPointD> result(void) const;
+
+private:
+  std::vector<dtPointD> _pp;
+};
+} // namespace dtOO
+#endif /* dtPointD_readCSV_H */

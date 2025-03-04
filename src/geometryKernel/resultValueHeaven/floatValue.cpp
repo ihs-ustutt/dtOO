@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -17,28 +17,24 @@ License
 
 #include "floatValue.h"
 
-#include <logMe/logMe.h>
 #include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 
 namespace dtOO {
-  floatValue::floatValue( 
-    std::string const & label, dtReal const & value 
-  ) : resultValue( label ) {
-    _value = value;
-  }
-  
-  floatValue::floatValue( floatValue const & orig ) : resultValue(orig) {
-    _value = orig._value;
-  }
-  
-  floatValue::~floatValue() {
-  }
-
-  floatValue * floatValue::clone( void ) const {
-    return new floatValue( *this );
-  }
-  
-  dtReal floatValue::operator()( void ) {
-    return _value;
-  }
+floatValue::floatValue(std::string const &label, dtReal const &value)
+  : resultValue(label)
+{
+  _value = value;
 }
+
+floatValue::floatValue(floatValue const &orig) : resultValue(orig)
+{
+  _value = orig._value;
+}
+
+floatValue::~floatValue() {}
+
+floatValue *floatValue::clone(void) const { return new floatValue(*this); }
+
+dtReal floatValue::operator()(void) { return _value; }
+} // namespace dtOO

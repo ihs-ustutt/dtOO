@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,35 +16,35 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "floatAtt.h"
+#include <limits>
 #include <logMe/dtMacros.h>
 #include <progHelper.h>
-#include <limits>
 
 namespace dtOO {
-  floatAtt::floatAtt(){
+floatAtt::floatAtt() {}
 
-  }
+floatAtt::floatAtt(floatAtt const &orig) {}
 
-  floatAtt::floatAtt( floatAtt const & orig ) {
-  }
+floatAtt::~floatAtt() {}
 
-  floatAtt::~floatAtt() {
-  }
-
-  bool floatAtt::outOfRange( ::std::vector< dtReal > const & xx ) const {
-    dt__forAllIndex(xx, i) if ((xx[i]<0.0)||(xx[i]>1.0)) return true;
-    return false;
-  }
-
-  dtReal floatAtt::outOfRangeResult() const {
-    return ::std::numeric_limits< dtReal >::max();
-  }
-  
-  dtReal floatAtt::rangeCheckAndCall(::std::vector<dtReal> const & xx) const {
-    if ( outOfRange(xx) ) {
-      return outOfRangeResult();
-    }
-    return this->operator()(xx);
-  }
-  dt__C_addCloneForpVH(floatAtt);
+bool floatAtt::outOfRange(::std::vector<dtReal> const &xx) const
+{
+  dt__forAllIndex(xx, i) if ((xx[i] < 0.0) || (xx[i] > 1.0)) return true;
+  return false;
 }
+
+dtReal floatAtt::outOfRangeResult() const
+{
+  return ::std::numeric_limits<dtReal>::max();
+}
+
+dtReal floatAtt::rangeCheckAndCall(::std::vector<dtReal> const &xx) const
+{
+  if (outOfRange(xx))
+  {
+    return outOfRangeResult();
+  }
+  return this->operator()(xx);
+}
+dt__C_addCloneForpVH(floatAtt);
+} // namespace dtOO

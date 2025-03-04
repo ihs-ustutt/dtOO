@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,26 +16,27 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef DTCASEFACTORY_H
-#define	DTCASEFACTORY_H
+#define DTCASEFACTORY_H
 
 #include <dtOOTypeDef.h>
 
-#include <string>
 #include <logMe/dtMacros.h>
+#include <string>
 
 namespace dtOO {
-  class dtCase;
-  
-  class dtCaseFactory {
-    public:
-      dt__classOnlyName(dtCaseFactory);
-      dtCaseFactory();
-      virtual ~dtCaseFactory();
-      static bool registrate( dtCase const * const );
-      static dtCase * create( std::string const str );
-    private:
-      static dt__pVH(dtCase) _builder;
-  };
-}
+class dtCase;
 
-#endif	/* DTCASEFACTORY_H */
+class dtCaseFactory {
+public:
+  dt__classOnlyName(dtCaseFactory);
+  dtCaseFactory();
+  virtual ~dtCaseFactory();
+  static bool registrate(dtCase const *const);
+  static dtCase *create(std::string const str);
+
+private:
+  static dt__pVH(dtCase) _builder;
+};
+} // namespace dtOO
+
+#endif /* DTCASEFACTORY_H */

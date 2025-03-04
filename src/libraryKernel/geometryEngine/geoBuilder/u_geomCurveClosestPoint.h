@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,26 +16,25 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef u_geomCurveClosestPoint_H
-#define	u_geomCurveClosestPoint_H
+#define u_geomCurveClosestPoint_H
 
 #include <dtOOTypeDef.h>
 
-#include <logMe/dtMacros.h>
 #include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  
-  class u_geomCurveClosestPoint {
-    public:
-      dt__classOnlyName(u_geomCurveClosestPoint);     
-      u_geomCurveClosestPoint(
-        dtCurve const * const dtC, dtPoint3 const & pXYZ
-      );
-      virtual ~u_geomCurveClosestPoint();
-      dtReal result( void );
-    private:
-      dtReal _closestU;
-  };
-}
-#endif	/* u_geomCurveClosestPoint_H */
+class dtCurve;
+
+class u_geomCurveClosestPoint {
+public:
+  dt__classOnlyName(u_geomCurveClosestPoint);
+  u_geomCurveClosestPoint(dtCurve const *const dtC, dtPoint3 const &pXYZ);
+  virtual ~u_geomCurveClosestPoint();
+  dtReal result(void);
+
+private:
+  dtReal _closestU;
+};
+} // namespace dtOO
+#endif /* u_geomCurveClosestPoint_H */

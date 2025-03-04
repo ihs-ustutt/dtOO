@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------*\
   dtOO < design tool Object-Oriented >
-    
+
     Copyright (C) 2024 A. Tismer.
 -------------------------------------------------------------------------------
 License
@@ -16,27 +16,28 @@ License
 \*---------------------------------------------------------------------------*/
 
 #ifndef bSplineCurve_convertOCC_H
-#define	bSplineCurve_convertOCC_H
+#define bSplineCurve_convertOCC_H
 
 #include <dtOOTypeDef.h>
 
 #include <dtLinearAlgebra.h>
-#include <logMe/dtMacros.h>
 #include <interfaceHeaven/ptrHandling.h>
 #include <interfaceHeaven/vectorHandling.h>
+#include <logMe/dtMacros.h>
 
 namespace dtOO {
-  class dtCurve;
-  class dtOCCCurveBase;
-  
-  class bSplineCurve_convertOCC {
-  public:
-    dt__classOnlyName(bSplineCurve_convertOCC);
-    bSplineCurve_convertOCC( dtCurve const & base );
-    virtual ~bSplineCurve_convertOCC();
-    dtCurve * result( void );
-  private:
-    ptrHandling<dtCurve> _dtC;
-  };
-}
-#endif	/* bSplineCurve_convertOCC_H */
+class dtCurve;
+class dtOCCCurveBase;
+
+class bSplineCurve_convertOCC {
+public:
+  dt__classOnlyName(bSplineCurve_convertOCC);
+  bSplineCurve_convertOCC(dtCurve const &base);
+  virtual ~bSplineCurve_convertOCC();
+  dtCurve *result(void);
+
+private:
+  ptrHandling<dtCurve> _dtC;
+};
+} // namespace dtOO
+#endif /* bSplineCurve_convertOCC_H */
