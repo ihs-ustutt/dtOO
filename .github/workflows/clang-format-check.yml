@@ -11,4 +11,4 @@ jobs:
       with:
         clang-format-version: '18'
         check-path: 'src'
-        #fallback-style: 'Mozilla' # optional
+        exclude-regex: '^.*(pugg|RTree).*$'
