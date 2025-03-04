@@ -5,8 +5,6 @@ Demonstration
 Documentation of the demonstration cases located in 
 `demo <https://github.com/ihs-ustutt/dtOO/tree/main/demo>`_.
 
-
-
 Kinetic Turbine ``canada``
 ==========================
 
@@ -700,11 +698,11 @@ described commands of PyFoam.
 Optimization of a Hydrofoil
 ===========================
 
-.. automodule:: hydFoilOpt.build
+.. automodule:: dtOO.demo.hydFoilOpt.build
     :members:
 
-Axial Runner
-============
+Axial Runner ``tistos``
+=======================
 
-.. automodule:: tistos.build
+.. automodule:: dtOO.demo.tistos.build
     :members:

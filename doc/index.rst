@@ -43,5 +43,6 @@ entry, which refers to the correspoding
   
    quickstart.rst
    demonstration.rst
+   test.rst
    api.rst
    Back to GitHub <https://github.com/ihs-ustutt/dtOO>

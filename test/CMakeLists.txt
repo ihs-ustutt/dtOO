@@ -203,6 +203,20 @@ add_test(
 set_tests_properties(pyDtOO-doctest PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST pyDtOO-doctest PROPERTY LABELS base-test)
 
+#
+# interTransMesh
+#
+add_test(
+  NAME interTransMesh
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "${CMAKE_SOURCE_DIR}/scripts/python/pyDtOO/dtClusteredSingletonState.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/interTransMesh
+)
+set_tests_properties(interTransMesh PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST interTransMesh PROPERTY LABELS base-test)
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})
