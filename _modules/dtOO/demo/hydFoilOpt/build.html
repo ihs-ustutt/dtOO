@@ -609,7 +609,24 @@
     <span class="c1">#</span>
     <span class="n">theAF</span> <span class="o">=</span> <span class="n">dAdd</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="s2">&quot;meanplane&quot;</span><span class="p">]</span> <span class="p">)</span>
     <span class="n">theAF</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;blade&quot;</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">theAF</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span></div>
+    <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">theAF</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># Perform the conformal mapping of the two dimensional B-Spline geometries</span>
+    <span class="c1"># between parameter space (u,v) and physical space (x,y,z); the result is</span>
+    <span class="c1"># a composition of multiple functions; append for each geometry a shape to</span>
+    <span class="c1"># the analyticGeometry container</span>
+    <span class="c1">#</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;meanplane&quot;</span><span class="p">,</span> <span class="s2">&quot;blade&quot;</span><span class="p">,]:</span>
+      <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoDInMap3dTo3d</span><span class="p">(</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
+          <span class="n">cMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">dtOO</span><span class="o">.</span><span class="n">map3dTo3d</span><span class="o">.</span><span class="n">ConstDownCast</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="p">[</span><span class="s2">&quot;xyz_channel&quot;</span><span class="p">]</span> <span class="p">)</span>
+      <span class="p">)</span>
+      <span class="n">theAG</span><span class="o">.</span><span class="n">setLabel</span><span class="p">(</span><span class="s2">&quot;xyz_&quot;</span><span class="o">+</span><span class="n">ii</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">aG</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">theAG</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="hydFoil.GeometryMesh">
@@ -699,11 +716,8 @@
 
     <span class="c1">#</span>
     <span class="c1"># Perform the conformal mapping of the two dimensional B-Spline geometries</span>
-    <span class="c1"># between parameter space (u,v) and physical space (x,y,z); the result is</span>
-    <span class="c1"># a composition of multiple functions; append for each geometry a shape to</span>
-    <span class="c1"># the analyticGeometry container</span>
     <span class="c1">#</span>
-    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;meanplane&quot;</span><span class="p">,</span> <span class="s2">&quot;blade&quot;</span><span class="p">,</span> <span class="s2">&quot;meshBlock&quot;</span><span class="p">,]:</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;meshBlock&quot;</span><span class="p">,]:</span>
       <span class="n">theAG</span> <span class="o">=</span> <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoDInMap3dTo3d</span><span class="p">(</span>
         <span class="n">dtOO</span><span class="o">.</span><span class="n">vec3dTwoD</span><span class="o">.</span><span class="n">MustConstDownCast</span><span class="p">(</span>
           <span class="n">cMap</span><span class="o">.</span><span class="n">applyAnalyticFunction</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">aF</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="p">)</span>
