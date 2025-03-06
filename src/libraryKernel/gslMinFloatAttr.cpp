@@ -46,14 +46,15 @@ double gsl_proxy_gslMinFloatAttr(gsl_vector const *v, void *params)
 }
 
 void gsl_proxy_errorhandler(
-  const char * reason,  const char * file, int line, int gsl_errno
-) {
+  const char *reason, const char *file, int line, int gsl_errno
+)
+{
   dt__throwNoClass(
-    gsl_proxy_errorhandler(), 
+    gsl_proxy_errorhandler(),
     << "reason = " << std::string(reason) << std::endl
     << "file = " << std::string(file) << std::endl
     << "line = " << line << std::endl
-    << std::string(gsl_strerror(gsl_errno)) 
+    << std::string(gsl_strerror(gsl_errno))
   );
 }
 
@@ -251,7 +252,7 @@ bool gslMinFloatAttr::perform()
 
   // strategy and gslMinFloatAttr must have the same dimension
   dt__throwIf(_dimension != _attribute->dimension(), perform());
-  dt__throwIf(_dimension==0, perform());
+  dt__throwIf(_dimension == 0, perform());
 
   // set dimension
   proxyF.n = _dimension;
