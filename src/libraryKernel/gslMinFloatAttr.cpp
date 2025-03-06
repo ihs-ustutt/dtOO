@@ -21,6 +21,7 @@ License
 
 #include <boost/assign.hpp>
 #include <boost/assign/list_of.hpp>
+#include <gsl/gsl_errno.h>
 #include <gsl/gsl_vector_double.h>
 #include <limits>
 #include <logMe/logContainer.h>
@@ -42,6 +43,18 @@ double gsl_proxy_gslMinFloatAttr(gsl_vector const *v, void *params)
   std::vector<dtOO::dtReal> xx(dim);
   dt__forFromToIndex(0, dim, i) xx[i] = gsl_vector_get(v, i);
   return ob->rangeCheckAndCall(xx);
+}
+
+void gsl_proxy_errorhandler(
+  const char * reason,  const char * file, int line, int gsl_errno
+) {
+  dt__throwNoClass(
+    gsl_proxy_errorhandler(), 
+    << "reason = " << std::string(reason) << std::endl
+    << "file = " << std::string(file) << std::endl
+    << "line = " << line << std::endl
+    << std::string(gsl_strerror(gsl_errno)) 
+  );
 }
 
 namespace dtOO {
@@ -225,6 +238,8 @@ floatAtt const *const gslMinFloatAttr::ptrAttribute(void) const
 
 bool gslMinFloatAttr::perform()
 {
+  // set error handler
+  gsl_set_error_handler(&gsl_proxy_errorhandler);
   // create function structure
   gsl_multimin_function proxyF;
   // set proxy function
@@ -236,6 +251,7 @@ bool gslMinFloatAttr::perform()
 
   // strategy and gslMinFloatAttr must have the same dimension
   dt__throwIf(_dimension != _attribute->dimension(), perform());
+  dt__throwIf(_dimension==0, perform());
 
   // set dimension
   proxyF.n = _dimension;
@@ -355,6 +371,7 @@ bool gslMinFloatAttr::perform()
   gsl_vector_free(xx);
   gsl_vector_free(ss);
   gsl_multimin_fminimizer_free(minf);
+  gsl_set_error_handler(NULL);
 
   //
   // return status
