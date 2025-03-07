@@ -29,7 +29,13 @@ floatAtt::~floatAtt() {}
 
 bool floatAtt::outOfRange(::std::vector<dtReal> const &xx) const
 {
-  dt__forAllIndex(xx, i) if ((xx[i] < 0.0) || (xx[i] > 1.0)) return true;
+  dt__forAllIndex(xx, i)
+  {
+    if ((xx[i] < 0.0) || (xx[i] > 1.0) || isnan(xx[i]))
+    {
+      return true;
+    }
+  }
   return false;
 }
 
