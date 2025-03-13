@@ -18,7 +18,6 @@ License
 #include "dtOCCBSplineCurve.h"
 
 #include "dtOCCCurveBase.h"
-#include "progHelper.h"
 #include <logMe/logMe.h>
 
 #include <Geom_BSplineCurve.hxx>
