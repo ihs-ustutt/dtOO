@@ -482,6 +482,22 @@ namespace CGAL {
       vec.push_back( el );
       return vec;
     }
+    // v = p - p
+    ::CGAL::Vector_3< R_ > __sub__( ::CGAL::Point_3< R_ > const & v ) {
+      return ::CGAL::Vector_3< R_ >(
+        v.x() - $self->x(),
+        v.y() - $self->y(),
+        v.z() - $self->z()
+      );
+    }
+    // p = p + v
+    ::CGAL::Point_3< R_ > __add__( ::CGAL::Vector_3< R_ > const & v ) {
+      return ::CGAL::Point_3< R_ >(
+        v.x() + $self->x(),
+        v.y() + $self->y(),
+        v.z() + $self->z()
+      );
+    }   
   } 
  
   template <class R_ > 
@@ -508,6 +524,25 @@ namespace CGAL {
       vec.push_back( el );
       return vec;
     }
+    // v = v * dtReal
+    ::CGAL::Vector_3< R_ > __mul__( ::dtOO::dtReal const & mul ) {
+      return ::CGAL::Vector_3< R_ >(
+        mul * $self->x(), mul * $self->y(), mul * $self->z()
+      );
+    }
+    // v = v - v
+    ::CGAL::Vector_3< R_ > __sub__( ::CGAL::Vector_3 const & vv ) {
+      return ::CGAL::Vector_3< R_ >(
+        $self->x()-vv.x(), $self->y()-vv.y(), $self->z()-vv.z()
+      );
+    }
+    // v = v + v
+    ::CGAL::Vector_3< R_ > __add__( ::CGAL::Vector_3 const & vv ) {
+      return ::CGAL::Vector_3< R_ >(
+        $self->x()+vv.x(), $self->y()+vv.y(), $self->z()+vv.z()
+      );
+    }
+   
   }
 
   template <class R_ > 
@@ -566,6 +601,13 @@ namespace CGAL {
 }
 %include dtLinearAlgebra.h
 %include geometryEngine/dtCurve.h
+namespace dtOO {
+  %extend dtCurve {
+    ::std::string __str__( void ) {
+      return $self->dumpToString(); 
+    }
+  }
+}
 %include geometryEngine/dtSurface.h
 %include geometryEngine/dtCurve2d.h
 %include geometryEngine/dtSurface2d.h
