@@ -18,6 +18,7 @@ License
 #include "floatAtt.h"
 #include <limits>
 #include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 #include <progHelper.h>
 
 namespace dtOO {
@@ -33,7 +34,7 @@ bool floatAtt::outOfRange(::std::vector<dtReal> const &xx) const
   {
     if ((xx[i] < 0.0) || (xx[i] > 1.0) || isnan(xx[i]))
     {
-      return true;
+      dt__warnIf(isnan(xx[i]), outOfRange()) return true;
     }
   }
   return false;

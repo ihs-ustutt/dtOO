@@ -303,7 +303,6 @@ bool gslMinFloatAttr::perform()
       //   logC()
       //     << logMe::dtFormat("%5.2e ")
       //       % gsl_vector_get(gsl_multimin_fminimizer_x(minf), hh);
-      //
       // }
       // logC()
       //   << logMe::dtFormat(" -> %5.2e (%5.2e)\n")

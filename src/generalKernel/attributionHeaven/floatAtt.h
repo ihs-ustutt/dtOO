@@ -37,7 +37,7 @@ public:
   floatAtt(floatAtt const &orig);
   virtual floatAtt *clone(void) const = 0;
   virtual dtInt const &dimension() const = 0;
-  bool outOfRange(::std::vector<dtReal> const &xx) const;
+  virtual bool outOfRange(::std::vector<dtReal> const &xx) const;
   virtual dtReal outOfRangeResult() const;
   dtReal rangeCheckAndCall(::std::vector<dtReal> const &xx) const;
   //
