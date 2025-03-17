@@ -468,8 +468,7 @@ template std::vector<jsonPrimitive>
 jsonPrimitive::lookupDef<std::vector<jsonPrimitive>>(
   std::string const &, std::vector<jsonPrimitive> const &def
 ) const;
-template ::std::vector<dtInt>
-jsonPrimitive::lookupDef<::std::vector<dtInt>>(
+template ::std::vector<dtInt> jsonPrimitive::lookupDef<::std::vector<dtInt>>(
   std::string const &, ::std::vector<dtInt> const &def
 ) const;
 
