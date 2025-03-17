@@ -26,246 +26,87 @@
   <vectorReplace 
     variables="{ii}{jj}" 
     values="
-      {{cV_ruWithRoundingBlade_divideInternalMeshBlock_0_0}{#cV_ru_divideInternalMeshBlock_0_0#}}
-      {{cV_ruWithRoundingBlade_divideInternalMeshBlock_0_1}{#cV_ru_divideInternalMeshBlock_0_1#}}
-      {{cV_ruWithRoundingBlade_divideInternalMeshBlock_1_0}{#cV_ru_divideInternalMeshBlock_1_0#}}
-      {{cV_ruWithRoundingBlade_divideInternalMeshBlock_1_1}{#cV_ru_divideInternalMeshBlock_1_1#}}        
-      {{cV_ruWithRoundingRounding_divideInternalMeshBlock_0_0}{#cV_ru_divideInternalMeshBlock_0_0#}}
-      {{cV_ruWithRoundingRounding_divideInternalMeshBlock_0_1}{#cV_ru_divideInternalMeshBlock_0_1#}}
-      {{cV_ruWithRoundingRounding_divideInternalMeshBlock_1_0}{#cV_ru_divideInternalMeshBlock_1_0#}}
-      {{cV_ruWithRoundingRounding_divideInternalMeshBlock_1_1}{#cV_ru_divideInternalMeshBlock_1_1#}}           
-      {{cV_ruWithCP_divideInternalMeshBlock_0_0}{#cV_ru_divideInternalMeshBlock_0_0#}}
-      {{cV_ruWithCP_divideInternalMeshBlock_0_1}{#cV_ru_divideInternalMeshBlock_0_1#}}
-      {{cV_ruWithCP_divideInternalMeshBlock_1_0}{#cV_ru_divideInternalMeshBlock_1_0#}}
-      {{cV_ruWithCP_divideInternalMeshBlock_1_1}{#cV_ru_divideInternalMeshBlock_1_1#}}
-      {{cV_ruWithCPWithRoundingBlade_divideInternalMeshBlock_0_0}{#cV_ru_divideInternalMeshBlock_0_0#-0.05}}
-      {{cV_ruWithCPWithRoundingBlade_divideInternalMeshBlock_0_1}{#cV_ru_divideInternalMeshBlock_0_1#-0.05}}
-      {{cV_ruWithCPWithRoundingBlade_divideInternalMeshBlock_1_0}{0.05+#cV_ru_divideInternalMeshBlock_1_0#}}
-      {{cV_ruWithCPWithRoundingBlade_divideInternalMeshBlock_1_1}{0.05+#cV_ru_divideInternalMeshBlock_1_1#}}
-      {{cV_ruWithCPWithRoundingRounding_divideInternalMeshBlock_0_0}{#cV_ru_divideInternalMeshBlock_0_0#-0.05}}
-      {{cV_ruWithCPWithRoundingRounding_divideInternalMeshBlock_0_1}{#cV_ru_divideInternalMeshBlock_0_1#-0.05}}
-      {{cV_ruWithCPWithRoundingRounding_divideInternalMeshBlock_1_0}{0.05+#cV_ru_divideInternalMeshBlock_1_0#}}
-      {{cV_ruWithCPWithRoundingRounding_divideInternalMeshBlock_1_1}{0.05+#cV_ru_divideInternalMeshBlock_1_1#}}
+      {{cV_ruWithRoundingBlade_divideInternalMeshBlock_0_0}{cV_ru_divideInternalMeshBlock_0_0}}
+      {{cV_ruWithRoundingBlade_divideInternalMeshBlock_0_1}{cV_ru_divideInternalMeshBlock_0_1}}
+      {{cV_ruWithRoundingBlade_divideInternalMeshBlock_1_0}{cV_ru_divideInternalMeshBlock_1_0}}
+      {{cV_ruWithRoundingBlade_divideInternalMeshBlock_1_1}{cV_ru_divideInternalMeshBlock_1_1}}        
+      {{cV_ruWithRoundingRounding_divideInternalMeshBlock_0_0}{cV_ru_divideInternalMeshBlock_0_0}}
+      {{cV_ruWithRoundingRounding_divideInternalMeshBlock_0_1}{cV_ru_divideInternalMeshBlock_0_1}}
+      {{cV_ruWithRoundingRounding_divideInternalMeshBlock_1_0}{cV_ru_divideInternalMeshBlock_1_0}}
+      {{cV_ruWithRoundingRounding_divideInternalMeshBlock_1_1}{cV_ru_divideInternalMeshBlock_1_1}}           
     ">
   <constValue 
-    label="{ii}" name="constrainedFloatParam" value="{jj}" min="0.001" max="10.00"
+    label="{ii}" name="constrainedFloatParam" value="#{jj}#" min="0.001" max="10.00"
   />
   </vectorReplace> 
 	
-
-  
-<!--
-!
-!
-! composition of meshblock around blade
-!
-!
--->
-
-  <replace variable="ii" values="{ru}{ruWithCP}{ruWithRoundingBlade}{ruWithRoundingRounding}{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
-	<part label="tV_{ii}_meshBlock_closed_0">
-      <builder name="vec3dInMap3dTo3d">
-        <analyticFunction label="~ru_uVw_phirMs(vec3d3d_{ii}_meshBlock)~"/>
-        <analyticGeometry label="rM2dTo3d_ru_channel"/>
-      </builder>
-	</part>
-  </replace>
-  
-<!--
-!
-!
-! composition of meshblock around te (NACA thickness distribution)
-!
-!
--->
-
   <replace variable="ii" values="{ru}{ruWithRoundingBlade}{ruWithRoundingRounding}">
+	<function label="aF_tV_{ii}_meshBlock_closed_0_0">
+    <builder  name="vec3dTriLinearThreeD">
+			<Point_3 x="0." y="0." z="0."/>
+			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="0."/>
+			<Point_3 x="0." y="0." z="1."/>
+			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="1."/>			
+			<Point_3 x="0." y="1." z="0."/>
+			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="0."/>
+			<Point_3 x="0." y="1." z="1."/>
+			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="1."/>
+    </builder>
+  </function>
+  
+  <!--
+!
+!
+! composition of meshblock around blade and te
+!
+!
+-->						
 	<replace variable="jj" values="{0}{1}">	
-      <part label="aG_vec3d3d_{ii}_meshBlock_te_{jj}">
+		<part label="aG_vec3d3d_{ii}_meshBlock_te_{jj}">
+			<builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="~ru_uVw_phirMs(vec3d3d_{ii}_meshBlock_te_{jj})~"/>
+				<analyticGeometry label="rM2dTo3d_ru_channel"/>
+			</builder>
+		</part>
+	</replace>
+	<part label="tV_{ii}_meshBlock_closed_0">
 		<builder name="vec3dInMap3dTo3d">
-		  <analyticFunction label="~ru_uVw_phirMs(vec3d3d_{ii}_meshBlock_te_{jj})~"/>
-		  <analyticGeometry label="rM2dTo3d_ru_channel"/>
+			<analyticFunction label="~ru_uVw_phirMs(vec3d3d_{ii}_meshBlock)~"/>
+			<analyticGeometry label="rM2dTo3d_ru_channel"/>
 		</builder>
-      </part>
-      <part label="tV_{ii}_meshBlock_closed_te_{jj}">
-		<builder name="vec3dInMap3dTo3d">
-		  <analyticFunction label="aF_wvu_uvw"/>
-		  <analyticGeometry label="aG_vec3d3d_{ii}_meshBlock_te_{jj}"/>
-		</builder>
-      </part>	
+	</part>
+	<replace variable="jj" values="{0}{1}">	
+		<part label="tV_{ii}_meshBlock_closed_te_{jj}">
+			<builder name="vec3dInMap3dTo3d">
+				<analyticFunction label="aF_wvu_uvw"/>
+				<analyticGeometry label="aG_vec3d3d_{ii}_meshBlock_te_{jj}"/>
+			</builder>
+		</part>	
 	</replace>	
-  </replace>
-  
-<!--
-!
-!
-! composition of meshblock around te (thickness distribution with control points)
-!
-!
--->
-
-  <replace variable="ii" values="{ruWithCP}{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
-
-<!--
-!
-!
-! muParser function for meshblock division
-!
-!
--->
-    <function label="aF_tV_{ii}_meshBlock_closed_te_0">
-      <builder  name="vec3dTriLinearThreeD">
-        <Point_3 x="0.5+#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="0."/>
-        <Point_3 x="1." y="0." z="0."/>
-        <Point_3 x="0.5+#cV_{ii}_divideInternalMeshBlock_0_1#" y="0." z="1."/>
-        <Point_3 x="1." y="0." z="1."/>
-        <Point_3 x="0.5+#cV_{ii}_divideInternalMeshBlock_0_0#" y="1." z="0."/>
-        <Point_3 x="1." y="1." z="0."/>
-        <Point_3 x="0.5+#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="1."/>
-        <Point_3 x="1." y="1." z="1."/>
-      </builder>
-    </function>
-
-    <function label="aF_tV_{ii}_meshBlock_closed_te_1">
-      <builder  name="vec3dTriLinearThreeD">
-        <Point_3 x="0." y="0." z="0."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#-0.5" y="0." z="0."/>
-        <Point_3 x="0." y="0." z="1."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#-0.5" y="0." z="1."/>
-        <Point_3 x="0." y="1." z="0."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#-0.5" y="1." z="0."/>
-        <Point_3 x="0." y="1." z="1."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#-0.5" y="1." z="1."/>
-      </builder>
-    </function>
-    
+	
 <!--
 !
 !
 ! composition of mesh block
 !
 !
--->
-    
-    <replace variable="jj" values="{0}{1}">
-      <part label="tV_{ii}_meshBlock_closed_te_{jj}">
-        <builder name="vec3dInMap3dTo3d">
-          <analyticFunction label="aF_tV_{ii}_meshBlock_closed_te_{jj}"/>
-          <analyticGeometry label="tV_{ii}_meshBlock_closed_0"/>
-        </builder>
-      </part>
-    </replace>
-    
-  </replace>
-  
-<!--
-!
-!
-! composition of meshblock around le,ps,ss (NACA thickness distribution)
-!
-!
--->
-  
-  <replace variable="ii" values="{ru}{ruWithRoundingBlade}{ruWithRoundingRounding}">
-  
+-->									
+  <part label="tV_{ii}_meshBlock_closed_0_0">
+    <builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="aF_tV_{ii}_meshBlock_closed_0_0"/>
+			<analyticGeometry label="tV_{ii}_meshBlock_closed_0"/>
+    </builder>
+  </part>
+	
 <!--
 !
 !
 ! muParser function for meshblock division
 !
 !
--->
-  
-    <function label="aF_tV_{ii}_meshBlock_closed_0_0">
-      <builder  name="vec3dTriLinearThreeD">
-		<Point_3 x="0." y="0." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="0."/>
-		<Point_3 x="0." y="0." z="1."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="1."/>			
-		<Point_3 x="0." y="1." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="0."/>
-		<Point_3 x="0." y="1." z="1."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="1."/>
-      </builder>
-    </function>
-  
-    <function label="aF_tV_{ii}_meshBlock_closed_0_1">
-      <builder  name="vec3dTriLinearThreeD">
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="1."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="1."/>			
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="1."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="1."/>
-      </builder>
-    </function>	
-  
-    <function label="aF_tV_{ii}_meshBlock_closed_0_2">
-      <builder  name="vec3dTriLinearThreeD">
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="0."/>
-		<Point_3 x="1." y="0." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="1."/>
-		<Point_3 x="1." y="0." z="1."/>			
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="0."/>
-		<Point_3 x="1." y="1." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="1."/>
-		<Point_3 x="1." y="1." z="1."/>
-      </builder>
-    </function> 
-    
-<!--
-!
-!
-! composition of mesh block
-!
-!
--->
-    
-    <replace variable="jj" values="{0}{1}{2}">
-      <part label="tV_{ii}_meshBlock_closed_0_{jj}">
-        <builder name="vec3dInMap3dTo3d">
-		  <analyticFunction label="aF_tV_{ii}_meshBlock_closed_0_{jj}"/>
-		  <analyticGeometry label="tV_{ii}_meshBlock_closed_0"/>
-        </builder>
-      </part>
-    </replace>
-  
-  </replace>
-  
-<!--
-!
-!
-! composition of meshblock around le,ps,ss (thickness distribution witch control points)
-!
-!
--->
+-->						
 
-  <replace variable="ii" values="{ruWithCP}{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
-
-<!--
-!
-!
-! muParser function for meshblock division
-!
-!
--->      
-      
-    <function label="aF_tV_{ii}_meshBlock_closed_0_0">
-      <builder  name="vec3dTriLinearThreeD">
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#-0.5" y="0." z="0."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="0."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#-0.5" y="0." z="1."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="1."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#-0.5" y="1." z="0."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="0."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#-0.5" y="1." z="1."/>
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="1."/>
-      </builder>
-    </function>
-
-  <function label="aF_tV_{ii}_meshBlock_closed_0_1">
+	<function label="aF_tV_{ii}_meshBlock_closed_0_1">
     <builder  name="vec3dTriLinearThreeD">
 			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="0."/>
 			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="0."/>
@@ -277,100 +118,54 @@
 			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="1."/>
     </builder>
   </function>	
-  
-  <function label="aF_tV_{ii}_meshBlock_closed_0_2">
-    <builder  name="vec3dTriLinearThreeD">
-      <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="0."/>
-      <Point_3 x="0.5+#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="0."/>
-      <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="1."/>
-      <Point_3 x="0.5+#cV_{ii}_divideInternalMeshBlock_0_1#" y="0." z="1."/>
-      <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="0."/>
-      <Point_3 x="0.5+#cV_{ii}_divideInternalMeshBlock_0_0#" y="1." z="0."/>
-      <Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="1."/>
-      <Point_3 x="0.5+#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="1."/>
-    </builder>
-  </function>
-  
 <!--
 !
 !
 ! composition of mesh block
 !
 !
--->
-  
-    <replace variable="jj" values="{0}{1}{2}">
-      <part label="tV_{ii}_meshBlock_closed_0_{jj}">
-        <builder name="vec3dInMap3dTo3d">
-		  <analyticFunction label="aF_tV_{ii}_meshBlock_closed_0_{jj}"/>
-		  <analyticGeometry label="tV_{ii}_meshBlock_closed_0"/>
-        </builder>
-      </part>
-    </replace>
-
-  </replace>
-  
-<!--
-!
-!
-! composition of meshblock around le for mechMesh (thickness distribution with control points)
-!
-!
--->
-
-  <replace variable="ii" values="{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
-      
+-->								
+  <part label="tV_{ii}_meshBlock_closed_0_1">
+    <builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="aF_tV_{ii}_meshBlock_closed_0_1"/>
+			<analyticGeometry label="tV_{ii}_meshBlock_closed_0"/>
+    </builder>
+  </part>
+	
 <!--
 !
 !
 ! muParser function for meshblock division
 !
 !
---> 
-
-    <function label="aF_tV_{ii}_meshBlock_closed_le_0">
-      <builder  name="vec3dTriLinearThreeD">
-        <Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="0."/>
-		<Point_3 x="0.5" y="0." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_0#" y="0." z="1."/>
-		<Point_3 x="0.5" y="0." z="1."/>			
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="0."/>
-		<Point_3 x="0.5" y="1." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_0_1#" y="1." z="1."/>
-		<Point_3 x="0.5" y="1." z="1."/>
-      </builder>
-    </function>
-
-    <function label="aF_tV_{ii}_meshBlock_closed_le_1">
-      <builder  name="vec3dTriLinearThreeD">
-        <Point_3 x="0.5" y="0." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="0."/>
-		<Point_3 x="0.5" y="0." z="1."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="1."/>			
-		<Point_3 x="0.5" y="1." z="0."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="0."/>
-		<Point_3 x="0.5" y="1." z="1."/>
-		<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="1."/>
-      </builder>
-    </function>
-    
+-->
+	<function label="aF_tV_{ii}_meshBlock_closed_0_2">
+    <builder  name="vec3dTriLinearThreeD">
+			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="0."/>
+			<Point_3 x="1." y="0." z="0."/>
+			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_0#" y="0." z="1."/>
+			<Point_3 x="1." y="0." z="1."/>			
+			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="0."/>
+			<Point_3 x="1." y="1." z="0."/>
+			<Point_3 x="#cV_{ii}_divideInternalMeshBlock_1_1#" y="1." z="1."/>
+			<Point_3 x="1." y="1." z="1."/>
+    </builder>
+  </function>
+	
 <!--
 !
 !
 ! composition of mesh block
 !
 !
--->
+-->								
+    <part label="tV_{ii}_meshBlock_closed_0_2">
+      <builder name="vec3dInMap3dTo3d">
+			<analyticFunction label="aF_tV_{ii}_meshBlock_closed_0_2"/>
+			<analyticGeometry label="tV_{ii}_meshBlock_closed_0"/>
+      </builder>
+    </part>
     
-    <replace variable="jj" values="{0}{1}">
-      <part label="tV_{ii}_meshBlock_closed_le_{jj}">
-        <builder name="vec3dInMap3dTo3d">
-          <analyticFunction label="aF_tV_{ii}_meshBlock_closed_le_{jj}"/>
-          <analyticGeometry label="tV_{ii}_meshBlock_closed_0"/>
-        </builder>
-      </part>
-    </replace>
-
   </replace>
   
 </ru_bladeRunnerMeshBlock>

@@ -16,9 +16,6 @@
     values="
       {{cV_ruWithRoundingBlade_meshBlockThickness}{cV_ru_meshBlockThickness}}
       {{cV_ruWithRoundingRounding_meshBlockThickness}{cV_ru_meshBlockThickness}}
-      {{cV_ruWithCP_meshBlockThickness}{cV_ru_meshBlockThickness}}
-      {{cV_ruWithCPWithRoundingBlade_meshBlockThickness}{cV_ru_meshBlockThickness}}
-      {{cV_ruWithCPWithRoundingRounding_meshBlockThickness}{cV_ru_meshBlockThickness}}
     
     ">
   <constValue 
@@ -34,7 +31,7 @@
 !
 -->						
   
-<replace variable="ii" values="{ru}{ruWithCP}{ruWithRoundingBlade}{ruWithRoundingRounding}{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
+  <replace variable="ii" values="{ru}{ruWithRoundingBlade}{ruWithRoundingRounding}">
     
 	<function label="v3d2d_{ii}_meshBlockThickness">
     <builder  name="muParser">
@@ -60,8 +57,6 @@
 			<x_two name="yy" min="0." max="1."/>
     </builder>
   </function>		
-
-</replace>
 	
 <!--
 !
@@ -70,45 +65,19 @@
 !
 !
 -->						
-
-  <replace variable="ii" values="{ru}{ruWithRoundingBlade}{ruWithRoundingRounding}">
-
-    <function label="vec3d2d_{ii}_meshBlock">
-      <builder name="analyticFunction">
-        <transformer 
-          name="discreteAddNormal"
-          function_label="v3d2d_{ii}_meshBlockThickness"
-          number_points_one="61"
-          number_points_two="5"								
-          order="3"				
-          nf="v3_zz"
-        />
-        <analyticFunction label="vec3d2d_{ii}_blade"/>
-      </builder>
-    </function>
-
-  </replace>
-
-  <replace variable="ii" values="{ruWithCP}{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
-
-    <function label="vec3d2d_{ii}_meshBlock">
-      <builder name="analyticFunction">
-        <transformer
-          name="discreteAddNormal"
-          function_label="v3d2d_{ii}_meshBlockThickness"
-          number_points_one="61"
-          number_points_two="5"
-          order="3"
-          nf="v3_zz"
-          closeU="true"
-        />
-        <analyticFunction label="vec3d2d_{ii}_blade"/>
-      </builder>
-    </function>
-
-  </replace>
-
-  <replace variable="ii" values="{ru}{ruWithRoundingBlade}{ruWithRoundingRounding}">
+	<function label="vec3d2d_{ii}_meshBlock">
+    <builder name="analyticFunction">
+      <transformer 
+			  name="discreteAddNormal"
+        function_label="v3d2d_{ii}_meshBlockThickness"
+				number_points_one="61"
+				number_points_two="5"								
+				order="3"				
+				nf="v3_zz"
+		  />
+      <analyticFunction label="vec3d2d_{ii}_blade"/>
+    </builder>
+  </function>
 
 <!--
 !
@@ -311,10 +280,6 @@
 			<analyticFunction label="vec3d2d_ru_meshBlock_closeInThree"/>
 		</builder>
 	</function>	-->
-  </replace>
-  
-  <replace variable="ii" values="{ru}{ruWithCP}{ruWithRoundingBlade}{ruWithRoundingRounding}{ruWithCPWithRoundingBlade}{ruWithCPWithRoundingRounding}">
-
 	
 	<function label="vec3d3d_{ii}_meshBlock">
 		<builder name="vec3dTransVolThreeD">
