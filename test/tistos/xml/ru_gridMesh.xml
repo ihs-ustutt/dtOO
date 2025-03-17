@@ -107,11 +107,45 @@
     <bVObserver name="bVONameRegions" regionLabel=""/>
 
     <bVObserver 
-      name="bVOAnalyticGeometryToFace" 
-      analyticGeometry="
-        {aS_ru_blade_rot}{aS_ru_hub}{aS_ru_shroud}
+      name="bVONameFaces" 
+      faceLabel="
+        {aS_ru_blade_rot_0}
+        {aS_ru_blade_rot_1}
+        {aS_ru_blade_rot_2}
+        {aS_ru_blade_rot_3}
+        {aS_ru_blade_rot_4}
+        {aS_ru_hub_0}
+        {aS_ru_hub_1}
+        {aS_ru_hub_2}
+        {aS_ru_hub_3}
+        {aS_ru_hub_4}
+        {aS_ru_hub_5}
+        {aS_ru_shroud_0}
+        {aS_ru_shroud_1}
+        {aS_ru_shroud_2}
+        {aS_ru_shroud_3}
+        {aS_ru_shroud_4}
+        {aS_ru_shroud_5}
         "
-      increase_tolerance="10."
+      face="
+        {R_1->FRONT}
+        {R_2->FRONT}
+        {R_3->FRONT}
+        {R_4->FRONT}
+        {R_5->FRONT}
+        {R_0->SOUTH}
+        {R_1->SOUTH}
+        {R_2->SOUTH}
+        {R_3->SOUTH}
+        {R_4->SOUTH}
+        {R_5->SOUTH}
+        {R_0->NORTH}
+        {R_1->NORTH}
+        {R_2->NORTH}
+        {R_3->NORTH}
+        {R_4->NORTH}
+        {R_5->NORTH}
+      "
     />
 
     <bVObserver 

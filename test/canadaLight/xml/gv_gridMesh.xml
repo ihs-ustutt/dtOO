@@ -118,7 +118,12 @@
 				{aS_gv_blade_rot}{aS_gv_hub}{aS_gv_shroud}
 				{aS_gv_inlet_full}{aS_gv_outlet_full}
 			"
-			increase_tolerance="1."
+      increase_tolerance="1."
+      facesPerEntry="
+      {3}{6}{6}
+      {1}{1}
+      "
+     
 		/>
 		
 		<bVObserver 
@@ -351,7 +356,12 @@
 				{aS_gv_hub}{aS_gv_shroud}
 				{aS_gv_inlet_full}{aS_gv_outlet_full}
 			"
-			increase_tolerance="1."
+      increase_tolerance="1."
+      facesPerEntry="
+      {1}{1}
+      {1}{1}
+      "
+     
 		/>
 		
     <bVObserver name="bVOTransfiniteRegions"

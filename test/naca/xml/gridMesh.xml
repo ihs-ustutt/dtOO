@@ -127,7 +127,15 @@
         {aS_int_perio_b}{aS_mid_perio_b}{aS_ext_perio_b}
 				{aS_int_inlet}{aS_ext_outlet}
 			"
-			increase_tolerance="1."
+      increase_tolerance="1."
+      facesPerEntry="
+      {3}
+      {1}{6}{1}
+      {1}{6}{1}
+      {1}{1}{1}
+      {1}{1}{1}
+      {1}{1}
+      "
 		/>
 
 		<bVObserver 

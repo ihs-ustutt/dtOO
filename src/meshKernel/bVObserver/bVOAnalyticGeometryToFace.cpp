@@ -96,6 +96,13 @@ void bVOAnalyticGeometryToFace::init(
     geos.push_back(aG->get(anEl));
   }
   jE.append<std::vector<analyticGeometry *>>("", geos);
+  if (qtXmlBase::hasAttribute("facesPerEntry", element))
+  {
+    jE.append<std::vector<dtInt>>(
+      "_facesPerEntry",
+      qtXmlBase::getAttributeIntVector("facesPerEntry", element)
+    );
+  }
   bVOAnalyticGeometryToFace::jInit(jE, bC, cV, aF, aG, bV, attachTo);
 }
 
@@ -107,10 +114,15 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
   // set current model
   //
   ::GModel::setCurrent(gm);
-
+  ::std::vector<dtInt> facesPerEntry =
+    config().lookup<::std::vector<dtInt>>("_facesPerEntry");
   logContainer<bVOAnalyticGeometryToFace> logC(logINFO, "preUpdate()");
-  dt__forAllRefAuto(_m2d, aM2d)
+
+  // dt__forAllRefAuto(_m2d, aM2d)
+  dt__forAllIndex(_m2d, i)
   {
+    map2dTo3d const &aM2d = _m2d[i];
+    dtInt tagged = 0;
     logC() << aM2d.getLabel() << std::endl;
 
     //
@@ -169,6 +181,7 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       //
       if (inTol == aFace->vertices().size())
       {
+        tagged = tagged + 1;
         std::string tagString(
           aM2d.getLabel() + "_" + stringPrimitive::intToString(localCounter)
         );
@@ -178,6 +191,16 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       }
     }
     logC() << "  > minDistAv = " << minDistAv << std::endl;
+    if (facesPerEntry[i] >= 0)
+    {
+      dt__throwIfWithMessage(
+        facesPerEntry[i] != tagged,
+        preUpdate(),
+        << "tagged = " << tagged << std::endl
+        << "facesPerEntry = " << facesPerEntry[i] << std::endl
+        << "aM2d = " << aM2d.getLabel() << std::endl
+      );
+    }
   }
 }
 } // namespace dtOO
