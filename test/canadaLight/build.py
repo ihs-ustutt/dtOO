@@ -17,7 +17,7 @@
 
 from dtOOPythonSWIG import *
 
-logMe.initLog('build.log')
+logMe.initLog("build.log")
 dtXmlParser.init("machine.xml", "E1_12685.xml")
 parser = dtXmlParser.reference()
 parser.parse()

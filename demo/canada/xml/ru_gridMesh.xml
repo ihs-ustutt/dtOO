@@ -89,7 +89,11 @@
 				{aS_ru_blade_rot}{aS_ru_hub}{aS_ru_shroud}
 				{aS_ru_inlet_full}{aS_ru_outlet_full}
 			"
-			increase_tolerance="10."
+      increase_tolerance="10."
+      facesPerEntry="
+      {3}{6}{6}
+      {1}{1}
+      "
 		/>
 
 		<bVObserver 

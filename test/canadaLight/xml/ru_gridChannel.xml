@@ -22,9 +22,9 @@
 	<replace 
     variable="ii" 
     values="
-    {ru_meanplane}{ru_blade}{ruWithCP_blade}{ruWithRoundingRounding_blade}{ruWithRoundingBlade_blade}
+      {ru_meanplane}{ru_blade}{ruWithRoundingRounding_blade}{ruWithRoundingBlade_blade}
       {ruWithTEWithRoundingRounding_blade}{ruWithTEWithRoundingBlade_blade}{ruWithTEWithRoundingRoundingClose_blade}
-      {ruWithTEWithRoundingBladeTE_blade}{ruWithCPWithRoundingRounding_blade}{ruWithCPWithRoundingBlade_blade}
+      {ruWithTEWithRoundingBladeTE_blade}
     "
   >	
 		<part label="aS_{ii}_rot">
@@ -382,25 +382,14 @@
     </builder>
   </part>  
 
-  <replace variable="ii" values="{ru}{ruWithCP}{ruWithRoundingRounding}{ruWithRoundingBlade}{ruWithCPWithRoundingRounding}{ruWithCPWithRoundingBlade}">
-    <replace variable="jj" values="{te_0}{te_1}{0_0}{0_1}{0_2}">
-      <part label="tV_{ii}_meshBlock_closed_{jj}_rot">
-	<builder name="analyticGeometry">
-	  <!--<analyticGeometry label="~rotNZ(tV_meshBlock_closed_{ii})~"/>-->
-	  <analyticGeometry label="~rot_ru(tV_{ii}_meshBlock_closed_{jj})~"/>
-	</builder>
-      </part>	
-    </replace>
-  </replace>
-    
-  <replace variable="ii" values="{ruWithCPWithRoundingRounding}{ruWithCPWithRoundingBlade}"> 
-    <replace variable="jj" values="{le_0}{le_1}">
-      <part label="tV_{ii}_meshBlock_closed_{jj}_rot">
-        <builder name="analyticGeometry">
-          <analyticGeometry label="~rot_ru(tV_{ii}_meshBlock_closed_{jj})~"/>
-        </builder>
-      </part>	
-    </replace>
-  </replace>
-
+    <replace variable="ii" values="{ru}{ruWithRoundingRounding}{ruWithRoundingBlade}">
+	  <replace variable="jj" values="{te_0}{te_1}{0_0}{0_1}{0_2}">
+		<part label="tV_{ii}_meshBlock_closed_{jj}_rot">
+			<builder name="analyticGeometry">
+				<!--<analyticGeometry label="~rotNZ(tV_meshBlock_closed_{ii})~"/>-->
+				<analyticGeometry label="~rot_ru(tV_{ii}_meshBlock_closed_{jj})~"/>
+			</builder>
+		</part>	
+      </replace>
+	</replace>
 </ru_gridChannel>

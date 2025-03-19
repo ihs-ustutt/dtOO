@@ -694,15 +694,44 @@ dtPoint3 map3dTo3d::reparamInVolume(
   gslMinFloatAttr
     md(
       dt__pH(pointGeometryDist)(new pointGeometryDist(ppXYZ, this)),
-      std::
-        vector<dtPoint3>(::boost::assign::list_of(dtPoint3(0.50, 0.50, 0.50))(dtPoint3(0.75, 0.50, 0.50))(dtPoint3(0.25, 0.50, 0.50))(dtPoint3(0.50, 0.75, 0.50))(dtPoint3(0.75, 0.75, 0.50))(dtPoint3(0.25, 0.75, 0.50))(dtPoint3(0.50, 0.25, 0.50))(dtPoint3(0.75, 0.25, 0.50))(dtPoint3(0.25, 0.25, 0.50))(dtPoint3(0.50, 0.50, 0.75))(dtPoint3(0.75, 0.50, 0.75))(dtPoint3(0.25, 0.50, 0.75))(dtPoint3(0.50, 0.75, 0.75))(dtPoint3(0.75, 0.75, 0.75))(dtPoint3(0.25, 0.75, 0.75))(dtPoint3(0.50, 0.25, 0.75))(dtPoint3(0.75, 0.25, 0.75))(dtPoint3(0.25, 0.25, 0.75))(dtPoint3(0.50, 0.50, 0.25))(dtPoint3(0.75, 0.50, 0.25))(dtPoint3(0.25, 0.50, 0.25))(dtPoint3(0.50, 0.75, 0.25))(dtPoint3(0.75, 0.75, 0.25))(dtPoint3(0.25, 0.75, 0.25))(dtPoint3(0.50, 0.25, 0.25))(dtPoint3(0.75, 0.25, 0.25))(
-          dtPoint3(0.25, 0.25, 0.25)
-        )),
+      // clang-format off
+      std::vector<dtPoint3>(
+        ::boost::assign::list_of
+          (dtPoint3(0.50, 0.50, 0.50))
+          (dtPoint3(0.75, 0.50, 0.50))
+          (dtPoint3(0.25, 0.50, 0.50))
+          (dtPoint3(0.50, 0.75, 0.50))
+          (dtPoint3(0.75, 0.75, 0.50))
+          (dtPoint3(0.25, 0.75, 0.50))
+          (dtPoint3(0.50, 0.25, 0.50))
+          (dtPoint3(0.75, 0.25, 0.50))
+          (dtPoint3(0.25, 0.25, 0.50))
+          (dtPoint3(0.50, 0.50, 0.75))
+          (dtPoint3(0.75, 0.50, 0.75))
+          (dtPoint3(0.25, 0.50, 0.75))
+          (dtPoint3(0.50, 0.75, 0.75))
+          (dtPoint3(0.75, 0.75, 0.75))
+          (dtPoint3(0.25, 0.75, 0.75))
+          (dtPoint3(0.50, 0.25, 0.75))
+          (dtPoint3(0.75, 0.25, 0.75))
+          (dtPoint3(0.25, 0.25, 0.75))
+          (dtPoint3(0.50, 0.50, 0.25))
+          (dtPoint3(0.75, 0.50, 0.25))
+          (dtPoint3(0.25, 0.50, 0.25))
+          (dtPoint3(0.50, 0.75, 0.25))
+          (dtPoint3(0.75, 0.75, 0.25))
+          (dtPoint3(0.25, 0.75, 0.25))
+          (dtPoint3(0.50, 0.25, 0.25))
+          (dtPoint3(0.75, 0.25, 0.25))
+          (dtPoint3(0.25, 0.25, 0.25))
+      ),
+      // clang-format on
       dtPoint3(0.001, 0.001, 0.001),
       staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution"),
       1000
     );
   md.perform();
+  dt__throwIf(!md.converged(), reparamInVolume());
   return uvw_percent(dtPoint3(md.result()[0], md.result()[1], md.result()[2]));
 }
 

@@ -56,3 +56,6 @@ from .vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane import (
 from .map3dTo3dGmsh_gridFromChannel import (
   map3dTo3dGmsh_gridFromChannel
 )
+from .rotatingMap2dTo3d_splitFitted import (
+  rotatingMap2dTo3d_splitFitted
+)

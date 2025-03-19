@@ -289,10 +289,27 @@
 				{aS_gv_ru_shroudOut}
 				{aS_gv_inlet_full}
 				{aS_ru_outlet_full}
-				{aS_gv_shroud}
 				{aS_shroud_tip}
 			"
-			increase_tolerance="5."
+      increase_tolerance="5."
+      facesPerEntry="
+      {2}{2}{1}
+      {2}{2}
+      {2}{2}
+      {4}{4}
+      {4}{4}
+      {4}{2}
+      {2}
+      {13}
+      {15}
+      {14}
+      {5}
+      {2}
+      {2}
+      {2}
+      {2}
+      "
+
 		/> 
 		<bVObserver 
 			name="bVOTransfiniteRegions"
@@ -502,11 +519,9 @@
         {:aS_skinCorpus_dt3In*::::3::1:}      
 				{:aS_skinCorpus_dt3Out*::*::3::1:}
         {:aS_gv_ru_shroudOut_*::::3::1:}
-				{:aS_gv_shroud*::*::3::1:}
 				{:aS_dt_hub_*::aS_skinCorpus_dtIn*::7::1:}
 				{:::aS_gv_hub_bulb_*::8::1:}				
         {:aS_gv_hub_bulb_*::aS_gv_hub_bulb_*::0::1:}			
-				{:aS_gv_hub_bulb_*::aS_gv_shroud*::7::1:}
 				{:aS_shroud_tip*::*::3::1:}
 				{:aS_shroud_tip*::aS_gv_hub_bulb_*::7::1:}
 				{:aS_skinCorpus_dtOut*::aS_skinCorpus_dtOut*::0::1:}
@@ -515,7 +530,6 @@
 				{:aS_skinCorpus_dt3In*::aS_skinCorpus_dt3In*::0::1:}
 				{:aS_skinCorpus_dt3Out*::aS_skinCorpus_dt3Out*::0::1:}
         {:aS_gv_ru_shroudOut*::aS_gv_ru_shroudOut*::0::1:}
-				{:aS_gv_shroud*::aS_gv_ru_shroudOut*::0::1:}				
 				{:aS_bevelFront_dt2*::aS_bevelFront_dt2*::0::1:}
 				{:aS_bevelBack_dt*::aS_bevelBack_dt*::0::1:}
 				{:aS_bevelFront_dt3*::aS_bevelFront_dt3*::0::1:}

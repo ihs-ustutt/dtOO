@@ -172,7 +172,7 @@
   </function>
 
  
-  <!-- <replace variable="ii" values="{a_0}{b_0}">
+  <replace variable="ii" values="{a_0}{b_0}">
     <constValue label="cV_ru_t_tip_{ii}" name="sliderFloatParam" value="0.003" min="0.0027" max="0.0033"/>
     <constValue label="cV_ru_u_max_{ii}" name="sliderFloatParam" value="0.40" min="0.36" max="0.44"/>
     <constValue label="cV_ru_t_max_{ii}" name="sliderFloatParam" value="0.01" min="0.009" max="0.011"/>
@@ -185,81 +185,16 @@
     <constValue label="cV_ru_t_max_{ii}" name="sliderFloatParam" value="0.005" min="0.0045" max="0.0055"/>
     <constValue label="cV_ru_u_te_{ii}" name="sliderFloatParam" value="0.80" min="0.72" max="0.88"/>
     <constValue label="cV_ru_t_te_{ii}" name="sliderFloatParam" value="0.01" min="0.009" max="0.011"/>
-  </replace> -->
+  </replace>
 
   <!--
   !
   !
-  ! New thickness distribution with control points
+  ! New with rounding 
   !
   !
   -->
-
-  <replace variable="ii" values="{a_0}{b_0}">
-    <constValue label="cV_ru_th_le_{ii}" name="sliderFloatParam" value="0.035" min="0.001" max="0.08"/>
-    <constValue label="cV_ru_uc_le_{ii}" name="sliderFloatParam" value="0.0" min="0.0" max="0.1"/>
-    <constValue label="cV_ru_th_mid_{ii}" name="sliderFloatParam" value="0.042" min="0.001" max="0.08"/>
-    <constValue label="cV_ru_uc_mid_{ii}" name="sliderFloatParam" value="0.5" min="0.3" max="0.7"/>
-    <constValue label="cV_ru_th_te_{ii}" name="sliderFloatParam" value="0.007" min="0.001" max="0.08"/>
-    <constValue label="cV_ru_uc_te_{ii}" name="sliderFloatParam" value="1.0" min="0.9" max="1.0"/>
-  </replace>
-  <replace variable="ii" values="{a_1}{b_1}">
-    <constValue label="cV_ru_th_le_{ii}" name="sliderFloatParam" value="0.0083" min="0.001" max="0.02"/>
-    <constValue label="cV_ru_uc_le_{ii}" name="sliderFloatParam" value="0.0" min="0.0" max="0.1"/>
-    <constValue label="cV_ru_th_mid_{ii}" name="sliderFloatParam" value="0.0099" min="0.002" max="0.02"/>
-    <constValue label="cV_ru_uc_mid_{ii}" name="sliderFloatParam" value="0.5" min="0.3" max="0.7"/>
-    <constValue label="cV_ru_th_te_{ii}" name="sliderFloatParam" value="0.002" min="0.001" max="0.02"/>
-    <constValue label="cV_ru_uc_te_{ii}" name="sliderFloatParam" value="1.0" min="0.9" max="1.0"/>
-  </replace>
-
-  <replace variable="ii" values="{0}{1}">
-    <function label="v3d1d_ruWithCP_thicknessDistribution_a_{ii}">
-      <builder  name="vec3dCurveOneDAFXmlBuilder" order="2">
-        <Point_3 x="0." y="0." z="{ii}"/>
-        <Point_3 x="#cV_ru_th_le_a_{ii}#" y="#cV_ru_uc_le_a_{ii}#" z="{ii}"/>
-        <Point_3 x="#cV_ru_th_mid_a_{ii}#" y="#cV_ru_uc_mid_a_{ii}#" z="{ii}"/>
-	<Point_3 x="#cV_ru_th_te_a_{ii}#" y="#cV_ru_uc_te_a_{ii}#" z="{ii}"/>
-        <Point_3 x="0." y="1." z="{ii}"/>
-      </builder>
-    </function>
-    <function label="v3d1d_ruWithCP_thicknessDistribution_b_{ii}">
-      <builder  name="vec3dCurveOneDAFXmlBuilder" order="2">
-        <Point_3 x="0." y="0." z="{ii}"/>
-        <Point_3 x="-#cV_ru_th_le_b_{ii}#" y="#cV_ru_uc_le_b_{ii}#" z="{ii}"/>
-        <Point_3 x="-#cV_ru_th_mid_b_{ii}#" y="#cV_ru_uc_mid_b_{ii}#" z="{ii}"/>
-        <Point_3 x="-#cV_ru_th_te_b_{ii}#" y="#cV_ru_uc_te_b_{ii}#" z="{ii}"/>
-        <Point_3 x="0." y="1." z="{ii}"/>
-      </builder>
-    </function>
-    <function label="v3d1d_ruWithCP_thicknessDistribution_{ii}">
-      <builder name="bSplineCurve_curveConnectConstructOCCAFXmlBuilder">
-        <analyticFunction label="v3d1d_ruWithCP_thicknessDistribution_b_{ii}"/>
-        <analyticFunction label="v3d1d_ruWithCP_thicknessDistribution_a_{ii}"/>
-      </builder>
-    </function>
-  </replace>
-
-  <function label="v3d2d_ruWithCP_thicknessDistribution_spline">
-    <builder  name="vec3dSurfaceTwoDAFXmlBuilder" orderMin="2" orderMax="2">
-      <analyticFunction label="v3d1d_ruWithCP_thicknessDistribution_0"/>
-      <analyticFunction label="v3d1d_ruWithCP_thicknessDistribution_1"/>
-    </builder>
-  </function>
-  <function label="v3d2d_ruWithCP_thicknessDistribution">
-    <builder name="analyticFunction">
-      <analyticFunction label="v3d2d_ruWithCP_thicknessDistribution_spline"/>
-    </builder>
-  </function>
-
-
-  <!--
-  !
-  !
-  ! New with rounding (ruWithTE, ruWithCP)
-  !
-  !
-  -->
-  <replace variable="ii" values="{ru}{ruWithTE}{ruWithCP}">
+  <replace variable="ii" values="{ru}{ruWithTE}">
     <function label="vec3d2d_{ii}WithDebug_blade">
       <builder name="analyticFunction">
         <transformer 
@@ -284,7 +219,7 @@
     </function>
     </replace>
     
-    <replace variable="ii" values="{ruWithTE}{ruWithCP}">
+    <replace variable="ii" values="{ruWithTE}">
 <!--    <function label="vec3d2d_{ii}WithRoundingBlade_blade">
       <builder name="bSplineSurface_skinConstructOCC" orderMin="2" orderMax="2" nIterations="0">   
         <analyticFunction label="vec3d2d_{ii}WithDebug_blade_2"/>
@@ -415,7 +350,6 @@
         <analyticFunction label="vec3d2d_{ii}WithDebug_blade_41"/>
       </builder>
     </function>
-
     <function label="vec3d2d_{ii}WithRoundingRounding_blade">
       <builder name="analyticFunction">
         <transformer name="pickVec3dTwoDRectanglePercent">
@@ -433,18 +367,7 @@
         </transformer>
         <analyticFunction label="vec3d2d_{ii}WithRoundingRounding+Blade_blade"/>
       </builder>
-    </function>     
-  </replace>
-  
-  <!--
-  !
-  !
-  ! ruWithTE 
-  !
-  !
-  -->
-  
-  <replace variable="ii" values="{ruWithTE}">
+    </function>       
     <function label="vec3d2d_{ii}WithRoundingBladeTE_blade">   
       <builder name="bSplineSurface_skinConstructOCC" orderMin="1" orderMax="1" orientation="{exchange}">
         <analyticFunction label="~x00_f(vec3d2d_{ii}WithRoundingBlade_blade)~"/>
@@ -555,10 +478,5 @@
       <builder name="analyticFunction">
         <analyticFunction label="vec3d2d_ruWithTEWithRoundingBlade_blade"/>
       </builder>
-    </function>  
-    
- 
-
-
-
+    </function>        
 </ru_bladeRunner2d>

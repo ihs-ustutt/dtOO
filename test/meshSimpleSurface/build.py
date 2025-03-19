@@ -244,7 +244,8 @@ ob.jInit(
         '{"label" : "aS_0"},'
         '{"label" : "aS_1"}'
       '],'
-      '"_inc" : 10.0'
+      '"_inc" : 10.0,'
+      '"_facesPerEntry" : [1, 1]'
     '}'
   ), 
   bC, cV, aF, aG, bV, ref

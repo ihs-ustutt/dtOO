@@ -476,6 +476,28 @@ namespace CGAL {
     ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
       return $self->operator[](ii);
     }
+    ::std::vector< Point_3 > __lshift__( Point_3 const & el ) {
+      ::std::vector< CGAL::Point_3< R_ > > vec;
+      vec.push_back( *$self );
+      vec.push_back( el );
+      return vec;
+    }
+    // v = p - p
+    ::CGAL::Vector_3< R_ > __sub__( ::CGAL::Point_3< R_ > const & v ) {
+      return ::CGAL::Vector_3< R_ >(
+        v.x() - $self->x(),
+        v.y() - $self->y(),
+        v.z() - $self->z()
+      );
+    }
+    // p = p + v
+    ::CGAL::Point_3< R_ > __add__( ::CGAL::Vector_3< R_ > const & v ) {
+      return ::CGAL::Point_3< R_ >(
+        v.x() + $self->x(),
+        v.y() + $self->y(),
+        v.z() + $self->z()
+      );
+    }   
   } 
  
   template <class R_ > 
@@ -496,7 +518,32 @@ namespace CGAL {
     ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
       return $self->operator[](ii);
     }
-  } 
+    ::std::vector< Vector_3 > __lshift__( Vector_3 const & el ) {
+      ::std::vector< CGAL::Vector_3< R_ > > vec;
+      vec.push_back( *$self );
+      vec.push_back( el );
+      return vec;
+    }
+    // v = v * dtReal
+    ::CGAL::Vector_3< R_ > __mul__( ::dtOO::dtReal const & mul ) {
+      return ::CGAL::Vector_3< R_ >(
+        mul * $self->x(), mul * $self->y(), mul * $self->z()
+      );
+    }
+    // v = v - v
+    ::CGAL::Vector_3< R_ > __sub__( ::CGAL::Vector_3 const & vv ) {
+      return ::CGAL::Vector_3< R_ >(
+        $self->x()-vv.x(), $self->y()-vv.y(), $self->z()-vv.z()
+      );
+    }
+    // v = v + v
+    ::CGAL::Vector_3< R_ > __add__( ::CGAL::Vector_3 const & vv ) {
+      return ::CGAL::Vector_3< R_ >(
+        $self->x()+vv.x(), $self->y()+vv.y(), $self->z()+vv.z()
+      );
+    }
+   
+  }
 
   template <class R_ > 
   class Point_2 {
@@ -513,6 +560,12 @@ namespace CGAL {
   %extend Point_2 {
     ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
       return $self->operator[](ii);
+    }
+    ::std::vector< Point_2 > __lshift__( Point_2 const & el ) {
+      ::std::vector< CGAL::Point_2< R_ > > vec;
+      vec.push_back( *$self );
+      vec.push_back( el );
+      return vec;
     }
   }
  
@@ -532,8 +585,13 @@ namespace CGAL {
     ::dtOO::dtReal __getitem__( ::dtOO::dtInt const & ii) {
       return $self->operator[](ii);
     }
+    ::std::vector< Vector_2 > __lshift__( Vector_2 const & el ) {
+      ::std::vector< CGAL::Vector_2< R_ > > vec;
+      vec.push_back( *$self );
+      vec.push_back( el );
+      return vec;
+    }
   } 
- 
 }
 namespace CGAL {
   %template(dtPoint3)       Point_3< ::dtOO::dtKernel >;
@@ -543,6 +601,13 @@ namespace CGAL {
 }
 %include dtLinearAlgebra.h
 %include geometryEngine/dtCurve.h
+namespace dtOO {
+  %extend dtCurve {
+    ::std::string __str__( void ) {
+      return $self->dumpToString(); 
+    }
+  }
+}
 %include geometryEngine/dtSurface.h
 %include geometryEngine/dtCurve2d.h
 %include geometryEngine/dtSurface2d.h
@@ -575,6 +640,16 @@ namespace dtOO {
 %include constValueHeaven/constValue.h
 %include analyticFunctionHeaven/analyticFunction.h
 %include analyticGeometryHeaven/analyticGeometry.h
+namespace dtOO {
+  %extend analyticGeometry {
+    analyticGeometry * __lshift__( std::string const & str ) {
+      analyticGeometry * clone = $self->clone();
+      clone->setLabel(str);
+      return clone;
+    } 
+  }
+ 
+}
 %include bVObserver/bVOInterface.h
 %include bVObserver/bVOSubject.h
 %include boundedVolume.h
@@ -636,9 +711,79 @@ namespace std {
   %template(vectorDtCase)                vector< ::dtOO::dtCase * >;
   %template(vectorDtPlugin)              vector< ::dtOO::dtPlugin * >;
   %template(vectorDtPoint2)              vector< ::dtOO::dtPoint2 >;
+  %extend vector< ::dtOO::dtPoint2 > {
+    vector< ::dtOO::dtPoint2 > __lshift__( ::dtOO::dtPoint2 const & point ) {
+      ::std::vector< ::dtOO::dtPoint2 > twin = *$self;
+      twin.push_back( point );
+      return twin;
+    }
+    vector< ::dtOO::dtPoint2 > __ilshift__( vector< ::dtOO::dtPoint2 > const & vec ) {
+      for (int ii=0; ii<vec.size(); ii++) {
+        $self->push_back( vec.at(ii) );
+      }
+      return *$self;
+    }
+    vector< ::dtOO::dtPoint2 > __ilshift__( ::dtOO::dtPoint2 const & point ) {
+      $self->push_back( point );
+      return *$self;
+    }
+   
+  }
   %template(vectorDtVector2)             vector< ::dtOO::dtVector2 >;
+  %extend vector< ::dtOO::dtVector2 > {
+    vector< ::dtOO::dtVector2 > __lshift__( ::dtOO::dtVector2 const & point ) {
+      ::std::vector< ::dtOO::dtVector2 > twin = *$self;
+      twin.push_back( point );
+      return twin;
+    }
+    vector< ::dtOO::dtVector2 > __ilshift__( vector< ::dtOO::dtVector2 > const & vec ) {
+      for (int ii=0; ii<vec.size(); ii++) {
+        $self->push_back( vec.at(ii) );
+      }
+      return *$self;
+    }
+    vector< ::dtOO::dtVector2 > __ilshift__( ::dtOO::dtVector2 const & point ) {
+      $self->push_back( point );
+      return *$self;
+    }
+  }
   %template(vectorDtPoint3)              vector< ::dtOO::dtPoint3 >;
+  %extend vector< ::dtOO::dtPoint3 > {
+    vector< ::dtOO::dtPoint3 > __lshift__( ::dtOO::dtPoint3 const & point ) {
+      ::std::vector< ::dtOO::dtPoint3 > twin = *$self;
+      twin.push_back( point );
+      return twin;
+    }
+    vector< ::dtOO::dtPoint3 > __ilshift__( vector< ::dtOO::dtPoint3 > const & vec ) {
+      for (int ii=0; ii<vec.size(); ii++) {
+        $self->push_back( vec.at(ii) );
+      }
+      return *$self;
+    }
+    vector< ::dtOO::dtPoint3 > __ilshift__( ::dtOO::dtPoint3 const & point ) {
+      $self->push_back( point );
+      return *$self;
+    }
+  }
   %template(vectorDtVector3)             vector< ::dtOO::dtVector3 >;
+  %extend vector< ::dtOO::dtVector3 > {
+    vector< ::dtOO::dtVector3 > __lshift__( ::dtOO::dtVector3 const & point ) {
+      ::std::vector< ::dtOO::dtVector3 > twin = *$self;
+      twin.push_back( point );
+      return twin;
+    }
+    vector< ::dtOO::dtVector3 > __ilshift__( vector< ::dtOO::dtVector3 > const & vec ) {
+      for (int ii=0; ii<vec.size(); ii++) {
+        $self->push_back( vec.at(ii) );
+      }
+      return *$self;
+    }
+    vector< ::dtOO::dtVector3 > __ilshift__( ::dtOO::dtVector3 const & point ) {
+      $self->push_back( point );
+      return *$self;
+    }
+   
+  }
   %template(vectorDtCurve)               vector< ::dtOO::dtCurve * >;
   %template(vectorDtSurface)             vector< ::dtOO::dtSurface * >;
   %template(vectorDtCurve2d)             vector< ::dtOO::dtCurve2d * >;
@@ -655,13 +800,6 @@ namespace std {
   %template(vectorConstDtSurface)        vector< ::dtOO::dtSurface const * >;
   %template(vectorConstDtCurve2d)        vector< ::dtOO::dtCurve2d const * >;
   %template(vectorConstDtSurface2d)      vector< ::dtOO::dtSurface2d const * >;
-
-  %extend vector< ::dtOO::dtPoint3 > {
-    vector< ::dtOO::dtPoint3 > __lshift__( ::dtOO::dtPoint3 & right) {
-      $self->push_back(right);
-      return *self;
-    }
-  }
 }
 namespace dtOO { 
   template < typename T >

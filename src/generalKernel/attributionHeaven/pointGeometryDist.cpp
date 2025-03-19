@@ -16,6 +16,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "pointGeometryDist.h"
+#include "logMe/dtMacros.h"
 
 #include <analyticGeometryHeaven/analyticGeometry.h>
 #include <progHelper.h>
@@ -39,6 +40,25 @@ pointGeometryDist::~pointGeometryDist() {}
 pointGeometryDist *pointGeometryDist::clone(void) const
 {
   return new pointGeometryDist(*this);
+}
+
+bool pointGeometryDist::outOfRange(::std::vector<dtReal> const &xx) const
+{
+  if (!floatAtt::outOfRange(xx))
+    return false;
+
+  dt__forAllIndex(xx, i)
+  {
+    // find dimension that is out-of-range
+    if ((xx[i] < 0.0) || (xx[i] > 1.0))
+    {
+      // out-of-range dimension is not closed, so cannot handle
+      if (!_aG->isClosed(i))
+        return true;
+    }
+  }
+
+  return false;
 }
 
 dtReal pointGeometryDist::operator()(std::vector<dtReal> const &xx) const

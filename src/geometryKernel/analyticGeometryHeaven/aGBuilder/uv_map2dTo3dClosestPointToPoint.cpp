@@ -33,13 +33,21 @@ uv_map2dTo3dClosestPointToPoint::uv_map2dTo3dClosestPointToPoint(
 {
   gslMinFloatAttr md(
     dt__pH(pointGeometryDist)(new pointGeometryDist(pXYZ, m2d)),
+    // clang-format off
     ::std::vector<dtPoint2>(
-      ::boost::assign::
-        list_of(dtPoint2(0.5, 0.5))(dtPoint2(0.0, 0.5))(dtPoint2(1.0, 0.5))(dtPoint2(0.5, 0.0))(dtPoint2(0.0, 0.0))(dtPoint2(1.0, 0.0))(dtPoint2(0.5, 1.0))(dtPoint2(0.0, 1.0))(
-          dtPoint2(1.0, 1.0)
-        )
+      ::boost::assign::list_of
+        (dtPoint2(0.5, 0.5))
+        (dtPoint2(0.0, 0.5))
+        (dtPoint2(1.0, 0.5))
+        (dtPoint2(0.5, 0.0))
+        (dtPoint2(0.0, 0.0))
+        (dtPoint2(1.0, 0.0))
+        (dtPoint2(0.5, 1.0))
+        (dtPoint2(0.0, 1.0))
+        (dtPoint2(1.0, 1.0))
     ),
-    dtPoint2(0.001, 0.001),
+    // clang-format on
+    dtPoint2(0.01, 0.01),
     staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
   );
   md.perform();

@@ -147,14 +147,12 @@ ob.jInit(
       '"analyticGeometry" : ['
         '{"label" : "base"},'
         '{"label" : "trans"},'
-#        '{"label" : "s_0"}'
         '{"label" : "s_1"},'
-#        '{"label" : "s_2"},'
         '{"label" : "s_3"},'
-        '{"label" : "s_4"},'
         '{"label" : "s_5"}'
       '],'
-      '"_inc" : 10.0'
+      '"_inc" : 10.0,'
+      '"_facesPerEntry" : [1,1,1,1,1]'
     '}'
   ), 
   None, None, None, aG, None, ref

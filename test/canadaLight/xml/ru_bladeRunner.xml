@@ -10,10 +10,9 @@
   <replace 
     variable="ii" 
     values="
-    {ru}{ruWithTE}{ruWithCP}{ruWithRoundingRounding}{ruWithRoundingBlade}
+      {ru}{ruWithTE}{ruWithRoundingRounding}{ruWithRoundingBlade}
       {ruWithTEWithRoundingRounding}{ruWithTEWithRoundingBlade}
-      {ruWithTEWithRoundingRoundingClose}{ruWithTEWithRoundingBladeTE}
-      {ruWithCPWithRoundingRounding}{ruWithCPWithRoundingBlade}">  
+      {ruWithTEWithRoundingRoundingClose}{ruWithTEWithRoundingBladeTE}">  
     <part label="aS_{ii}_blade">
       <builder name="vec3dInMap3dTo3d">
         <analyticFunction label="~ru_uVw_phirMs(vec3d2d_{ii}_blade)~"/>
