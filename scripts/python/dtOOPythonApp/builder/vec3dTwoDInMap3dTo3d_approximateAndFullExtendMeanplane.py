@@ -114,7 +114,8 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
     Maximum order for skining.
   skinNIter_: int
     Number of iterations for skining.
-
+  intermediatePoints_: bool
+    Create intermediate points at outlet or not.
 
   Examples
   --------
@@ -236,7 +237,8 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
     critU: float = 0.5,
     skinOrderMin: int = 2,
     skinOrderMax: int = 2,
-    skinNIter: int = 0
+    skinNIter: int = 0,
+    intermediatePoints: bool = True
   ) -> None:
     """Constructor.
   
@@ -266,6 +268,8 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
       Maximum order for skining.
     skinNIter: int
       Number of iterations for skining.
+    intermediatePoints: bool
+      Create intermediate points at outlet or not.
 
     Returns
     -------
@@ -288,6 +292,7 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
     self.skinOrderMin_ = skinOrderMin
     self.skinOrderMax_ = skinOrderMax
     self.skinNIter_ = skinNIter
+    self.intermediatePoints_ = intermediatePoints
 
   @staticmethod
   def shiftCurve( pL: List[dtPoint3], critU ) -> List[dtPoint3]:
@@ -410,13 +415,14 @@ class vec3dTwoDInMap3dTo3d_approximateAndFullExtendMeanplane(dtBundleBuilder):
       #
       # insert intermediate point
       #
-      pL.append(
-        dtPoint3(
-          pL[-1][0] + ratioBladeExt * delta_phirms[0],
-          pL[-1][1] + 0.5 * ( self.channel_.getVMax()-pL[-1][1] ), 
-          pL[-1][2] + 0.5 * delta_phirms[2],
-        )
-      ) 
+      if self.intermediatePoints_:
+        pL.append(
+          dtPoint3(
+            pL[-1][0] + ratioBladeExt * delta_phirms[0],
+            pL[-1][1] + 0.5 * ( self.channel_.getVMax()-pL[-1][1] ), 
+            pL[-1][2] + 0.5 * delta_phirms[2],
+          )
+        ) 
 
       #
       # insert points at end
