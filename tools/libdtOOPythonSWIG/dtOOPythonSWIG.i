@@ -640,6 +640,16 @@ namespace dtOO {
 %include constValueHeaven/constValue.h
 %include analyticFunctionHeaven/analyticFunction.h
 %include analyticGeometryHeaven/analyticGeometry.h
+namespace dtOO {
+  %extend analyticGeometry {
+    analyticGeometry * __lshift__( std::string const & str ) {
+      analyticGeometry * clone = $self->clone();
+      clone->setLabel(str);
+      return clone;
+    } 
+  }
+ 
+}
 %include bVObserver/bVOInterface.h
 %include bVObserver/bVOSubject.h
 %include boundedVolume.h
@@ -790,13 +800,6 @@ namespace std {
   %template(vectorConstDtSurface)        vector< ::dtOO::dtSurface const * >;
   %template(vectorConstDtCurve2d)        vector< ::dtOO::dtCurve2d const * >;
   %template(vectorConstDtSurface2d)      vector< ::dtOO::dtSurface2d const * >;
-
-  %extend vector< ::dtOO::dtPoint3 > {
-    vector< ::dtOO::dtPoint3 > __lshift__( ::dtOO::dtPoint3 & right) {
-      $self->push_back(right);
-      return *self;
-    }
-  }
 }
 namespace dtOO { 
   template < typename T >
