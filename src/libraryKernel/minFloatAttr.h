@@ -15,74 +15,94 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef gslMinFloatAttr_H
-#define gslMinFloatAttr_H
+#ifndef minFloatAttr_H
+#define minFloatAttr_H
 
-#include "minFloatAttr.h"
 #include <dtOOTypeDef.h>
 
 #include <attributionHeaven/floatAtt.h>
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-class gslMinFloatAttr : public minFloatAttr {
+
+class minFloatAttr {
 public:
-  dt__class(gslMinFloatAttr, minFloatAttr);
-  gslMinFloatAttr(
+  dt__classOnlyName(minFloatAttr);
+  minFloatAttr(
     dt__pH(floatAtt) const &attribute,
     std::vector<dtReal> const &guess,
     std::vector<dtReal> const &step,
     dtReal const &precision,
     dtInt const &maxIterations = 100
-  )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  );
+  minFloatAttr(
     dt__pH(floatAtt) const &attribute,
     dtPoint2 const &guess,
     dtPoint2 const &step,
     dtReal const &precision,
     dtInt const &maxIterations = 100
-  )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  );
+  minFloatAttr(
     dt__pH(floatAtt) const &attribute,
     std::vector<dtPoint2> const &guess,
     dtPoint2 const &step,
     dtReal const &precision,
     dtInt const &maxIterations = 100
-  )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  );
+  minFloatAttr(
     dt__pH(floatAtt) const &attribute,
     dtPoint3 const &guess,
     dtPoint3 const &step,
     dtReal const &precision,
     dtInt const &maxIterations = 100
-  )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  );
+  minFloatAttr(
     dt__pH(floatAtt) const &attribute,
     std::vector<dtPoint3> const &guess,
     dtPoint3 const &step,
     dtReal const &precision,
     dtInt const &maxIterations = 100
-  )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  );
+  minFloatAttr(
     dt__pH(floatAtt) const &attribute,
     dtReal const &guess,
     dtReal const &step,
     dtReal const &precision,
     dtInt const &maxIterations = 100
-  )
-    : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(minFloatAttr const &orig) : minFloatAttr(orig){};
-  virtual ~gslMinFloatAttr();
-  virtual gslMinFloatAttr *clone(void) const;
-  virtual bool perform();
+  );
+  minFloatAttr(minFloatAttr const &orig);
+  virtual ~minFloatAttr();
+  virtual minFloatAttr *clone(void) const;
+
+  dtReal const &precision() const;
+  bool const &converged() const;
+  std::vector<dtReal> const &result() const;
+  // std::string const &lastStatus() const;
+  dtInt const &dimension() const;
+  dtInt const &maxIterations() const;
+  std::vector<dtReal> const &step() const;
+  std::vector<std::vector<dtReal>> const &guess() const;
+  //
+  // set result
+  //
+  void converged(bool const converged);
+  void result(std::vector<dtReal> const result);
+  // void lastStatus(std::string const &lastStatus);
+  virtual bool perform() { return false; };
+  floatAtt const *const ptrAttribute(void) const;
+  floatAtt *const ptrAttribute(void);
 
 private:
+  dtInt const _dimension;
+  std::vector<std::vector<dtReal>> const _guess;
+  std::vector<dtReal> const _step;
+  dtReal const _precision;
+  dtInt const _maxIterations;
+  bool _converged;
+  std::vector<dtReal> _result;
+  //  std::string _lastStatus;
+  dt__pH(floatAtt) _attribute;
 };
-dt__H_addCloneForpVH(gslMinFloatAttr);
+dt__H_addCloneForpVH(minFloatAttr);
 } // namespace dtOO
-#endif /* gslMinFloatAttr_H */
+#endif /* minFloatAttr_H */

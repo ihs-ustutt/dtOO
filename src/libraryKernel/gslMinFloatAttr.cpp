@@ -17,6 +17,7 @@ License
 
 #include "gslMinFloatAttr.h"
 #include "attributionHeaven/floatAtt.h"
+#include "exceptionHeaven/eGeneral.h"
 #include "logMe/dtMacros.h"
 
 #include <boost/assign.hpp>
@@ -42,7 +43,11 @@ double gsl_proxy_gslMinFloatAttr(gsl_vector const *v, void *params)
   dtOO::dtInt const &dim = ob->dimension();
   std::vector<dtOO::dtReal> xx(dim);
   dt__forFromToIndex(0, dim, i) xx[i] = gsl_vector_get(v, i);
-  return ob->rangeCheckAndCall(xx);
+  if (!ob->outOfRange(xx))
+  {
+    return ob->operator()(xx);
+  }
+  return GSL_NAN;
 }
 
 void gsl_proxy_errorhandler(
@@ -59,182 +64,12 @@ void gsl_proxy_errorhandler(
 }
 
 namespace dtOO {
-std::vector<std::vector<dtReal>>
-convertDtPoint2(std::vector<dtPoint2> const &guess)
-{
-  std::vector<std::vector<dtReal>> ret;
-  dt__forAllIndex(guess, i)
-  {
-    ret.push_back(::boost::assign::list_of(guess[i].x())(guess[i].y()));
-  }
-  return ret;
-}
-
-std::vector<std::vector<dtReal>>
-convertDtPoint3(std::vector<dtPoint3> const &guess)
-{
-  std::vector<std::vector<dtReal>> ret;
-  dt__forAllIndex(guess, i)
-  {
-    ret.push_back(
-      ::boost::assign::list_of(guess[i].x())(guess[i].y())(guess[i].z())
-    );
-  }
-  return ret;
-}
-
-gslMinFloatAttr::gslMinFloatAttr(
-  dt__pH(floatAtt) const &attribute,
-  std::vector<dtReal> const &guess,
-  std::vector<dtReal> const &step,
-  dtReal const &precision,
-  dtInt const &maxIterations
-)
-  : _attribute(attribute), _dimension(guess.size()),
-    _guess(::boost::assign::list_of(guess)), _step(step), _precision(precision),
-    _maxIterations(maxIterations),
-    _result(std::vector(guess.size(), std::numeric_limits<dtReal>::infinity()))
-{
-  _converged = false;
-}
-
-gslMinFloatAttr::gslMinFloatAttr(
-  dt__pH(floatAtt) const &attribute,
-  dtPoint2 const &guess,
-  dtPoint2 const &step,
-  dtReal const &precision,
-  dtInt const &maxIterations
-)
-  : _attribute(attribute), _dimension(2),
-    _guess(
-      ::boost::assign::list_of(::boost::assign::list_of(guess.x())(guess.y()))
-    ),
-    _step(::boost::assign::list_of(step.x())(step.y())), _precision(precision),
-    _maxIterations(maxIterations),
-    _result(::boost::assign::list_of(std::numeric_limits<dtReal>::infinity())(
-      std::numeric_limits<dtReal>::infinity()
-    ))
-{
-  _converged = false;
-}
-
-gslMinFloatAttr::gslMinFloatAttr(
-  dt__pH(floatAtt) const &attribute,
-  std::vector<dtPoint2> const &guess,
-  dtPoint2 const &step,
-  dtReal const &precision,
-  dtInt const &maxIterations
-)
-  : _attribute(attribute), _dimension(2), _guess(convertDtPoint2(guess)),
-    _step(::boost::assign::list_of(step.x())(step.y())), _precision(precision),
-    _maxIterations(maxIterations),
-    _result(::boost::assign::list_of(std::numeric_limits<dtReal>::infinity())(
-      std::numeric_limits<dtReal>::infinity()
-    ))
-{
-  _converged = false;
-}
-
-gslMinFloatAttr::gslMinFloatAttr(
-  dt__pH(floatAtt) const &attribute,
-  dtPoint3 const &guess,
-  dtPoint3 const &step,
-  dtReal const &precision,
-  dtInt const &maxIterations
-)
-  : _attribute(attribute), _dimension(3),
-    _guess(::boost::assign::list_of(
-      ::boost::assign::list_of(guess.x())(guess.y())(guess.z())
-    )),
-    _step(::boost::assign::list_of(step.x())(step.y())(step.z())),
-    _precision(precision), _maxIterations(maxIterations),
-    _result(::boost::assign::list_of(std::numeric_limits<dtReal>::
-                                       infinity())(std::numeric_limits<
-                                                   dtReal>::infinity())(
-      std::numeric_limits<dtReal>::infinity()
-    ))
-{
-  _converged = false;
-}
-
-gslMinFloatAttr::gslMinFloatAttr(
-  dt__pH(floatAtt) const &attribute,
-  std::vector<dtPoint3> const &guess,
-  dtPoint3 const &step,
-  dtReal const &precision,
-  dtInt const &maxIterations
-)
-  : _attribute(attribute), _dimension(3), _guess(convertDtPoint3(guess)),
-    _step(::boost::assign::list_of(step.x())(step.y())), _precision(precision),
-    _maxIterations(maxIterations),
-    _result(::boost::assign::list_of(std::numeric_limits<dtReal>::
-                                       infinity())(std::numeric_limits<
-                                                   dtReal>::infinity())(
-      std::numeric_limits<dtReal>::infinity()
-    ))
-{
-  _converged = false;
-}
-
-gslMinFloatAttr::gslMinFloatAttr(
-  dt__pH(floatAtt) const &attribute,
-  dtReal const &guess,
-  dtReal const &step,
-  dtReal const &precision,
-  dtInt const &maxIterations
-)
-  : _attribute(attribute), _dimension(1),
-    _guess(::boost::assign::list_of(::boost::assign::list_of(guess))),
-    _step(::boost::assign::list_of(step)), _precision(precision),
-    _maxIterations(maxIterations),
-    _result(::boost::assign::list_of(std::numeric_limits<dtReal>::infinity()))
-{
-  _converged = false;
-}
-
-gslMinFloatAttr::gslMinFloatAttr(gslMinFloatAttr const &orig)
-  : _dimension(orig._dimension), _guess(orig._guess), _step(orig._step),
-    _precision(orig._precision), _maxIterations(orig._maxIterations),
-    _converged(orig._converged), _result(orig._result),
-    _lastStatus(orig._lastStatus)
-{
-}
-
-dtReal const &gslMinFloatAttr::precision() const { return _precision; }
-
-bool const &gslMinFloatAttr::converged() const { return _converged; }
-
-void gslMinFloatAttr::converged(bool const converged)
-{
-  _converged = converged;
-}
-
-std::vector<dtReal> const &gslMinFloatAttr::result() const { return _result; }
-
-void gslMinFloatAttr::result(std::vector<dtReal> const result)
-{
-  _result = result;
-}
-
-std::string const &gslMinFloatAttr::lastStatus() const { return _lastStatus; }
-
-dtInt const &gslMinFloatAttr::dimension() const { return _dimension; }
-
-void gslMinFloatAttr::lastStatus(std::string const &lastStatus)
-{
-  _lastStatus = lastStatus;
-}
 
 gslMinFloatAttr::~gslMinFloatAttr() {}
 
 gslMinFloatAttr *gslMinFloatAttr::clone(void) const
 {
   return new gslMinFloatAttr(*this);
-}
-
-floatAtt const *const gslMinFloatAttr::ptrAttribute(void) const
-{
-  return _attribute.get();
 }
 
 bool gslMinFloatAttr::perform()
@@ -246,124 +81,135 @@ bool gslMinFloatAttr::perform()
   // set proxy function
   proxyF.f = &gsl_proxy_gslMinFloatAttr;
   // set proxy structure
-  gsl_proxy_t proxyS = {this->_attribute.get()};
+  gsl_proxy_t proxyS = {ptrAttribute()};
   // cast to void * and set to params
   proxyF.params = (void *)&proxyS;
 
   // strategy and gslMinFloatAttr must have the same dimension
-  dt__throwIf(_dimension != _attribute->dimension(), perform());
-  dt__throwIf(_dimension == 0, perform());
+  dt__throwIf(dimension() != ptrAttribute()->dimension(), perform());
+  dt__throwIf(dimension() == 0, perform());
 
   // set dimension
-  proxyF.n = _dimension;
+  proxyF.n = dimension();
 
   //
   // create minimizer struct
   //
   gsl_multimin_fminimizer *minf = gsl_multimin_fminimizer_alloc(
-    gsl_multimin_fminimizer_nmsimplex2rand, _dimension
+    gsl_multimin_fminimizer_nmsimplex2rand, dimension()
   );
 
   //
   // set step size
   //
-  gsl_vector *ss = gsl_vector_alloc(_dimension);
-  dt__forFromToIndex(0, _dimension, ii) gsl_vector_set(ss, ii, _step[ii]);
+  gsl_vector *ss = gsl_vector_alloc(dimension());
+  dt__forFromToIndex(0, dimension(), ii) gsl_vector_set(ss, ii, step()[ii]);
 
   //
   // allocate first guess
   //
-  gsl_vector *xx = gsl_vector_alloc(_dimension);
+  gsl_vector *xx = gsl_vector_alloc(dimension());
 
   dtInt iter = 0;
-  _converged = false;
+  converged(false);
+  ;
   dtInt status;
   dtReal gF = std::numeric_limits<dtReal>::max();
   logContainer<gslMinFloatAttr> logC(logDEBUG, "perform()");
-  logC() << "Using: " << _attribute->virtualClassName() << std::endl;
-  dt__forAllIndex(_guess, jj)
+  logC() << "Using: " << ptrAttribute()->virtualClassName() << std::endl;
+  dt__forAllIndex(guess(), jj)
   {
-    dt__forFromToIndex(0, _dimension, ii)
+    try
     {
-      gsl_vector_set(xx, ii, _guess[jj][ii]);
-    }
-    // iterate
-    dt__throwIf(gsl_multimin_fminimizer_set(minf, &proxyF, xx, ss), perform());
-    iter = 0;
-    do
-    {
-      iter = iter + 1;
-      status = gsl_multimin_fminimizer_iterate(minf);
-
-      if (status)
-        break;
-
-      // logC() << logMe::dtFormat("  %3d : ") % iter;
-      // dt__forFromToIndex(0, _dimension, hh) {
-      //   logC()
-      //     << logMe::dtFormat("%5.2e ")
-      //       % gsl_vector_get(gsl_multimin_fminimizer_x(minf), hh);
-      // }
-      // logC()
-      //   << logMe::dtFormat(" -> %5.2e (%5.2e)\n")
-      //     % minf->fval % gsl_multimin_fminimizer_size(minf);
-
-      if (minf->fval < _precision)
+      logC() << logMe::dtFormat("%3d : [ ") % jj;
+      dt__forAllIndex(guess()[jj], kk)
       {
-        _converged = true;
-        break;
+        logC() << logMe::dtFormat("%5.2d ") % guess()[jj][kk];
       }
-      // dtReal const & msize = gsl_multimin_fminimizer_size(minf);
-      // if (msize < 1.0e-09) {
-      //   break;
-      // }
-    } while (iter < _maxIterations);
+      logC() << "] ";
 
-    if (minf->fval < gF)
+      dt__forFromToIndex(0, dimension(), ii)
+      {
+        gsl_vector_set(xx, ii, guess()[jj][ii]);
+
+        dtReal const up = guess()[jj][ii] + step()[ii];
+        dtReal const low = guess()[jj][ii] - step()[ii];
+        dt__warnIfWithMessageAndSolution(
+          up > 1.0,
+          gsl_vector_set(xx, ii, 1.0 - step()[ii]),
+          perform(),
+          << "Shift upper guess to " << 1.0 - step()[ii]
+        );
+        dt__warnIfWithMessageAndSolution(
+          low < 0.0,
+          gsl_vector_set(xx, ii, 0.0 + step()[ii]),
+          perform(),
+          << "Shift lower guess to " << 0.0 + step()[ii]
+        );
+      }
+      // iterate
+      dt__throwIf(
+        gsl_multimin_fminimizer_set(minf, &proxyF, xx, ss), perform()
+      );
+      iter = 0;
+      do
+      {
+        iter = iter + 1;
+        status = gsl_multimin_fminimizer_iterate(minf);
+
+        if (status)
+          break;
+
+        // logC() << logMe::dtFormat("  %3d : ") % iter;
+        // dt__forFromToIndex(0, dimension(), hh) {
+        //   logC()
+        //     << logMe::dtFormat("%5.2e ")
+        //       % gsl_vector_get(gsl_multimin_fminimizer_x(minf), hh);
+        // }
+        // logC()
+        //   << logMe::dtFormat(" -> %5.2e (%5.2e)\n")
+        //     % minf->fval % gsl_multimin_fminimizer_size(minf);
+
+        if (minf->fval < precision())
+        {
+          converged(true);
+          break;
+        }
+        // dtReal const & msize = gsl_multimin_fminimizer_size(minf);
+        // if (msize < 1.0e-09) {
+        //   break;
+        // }
+      } while (iter < maxIterations());
+
+      logC() << logMe::dtFormat("%3d -> %5.2e (%5.2e) = %d") % iter %
+                  minf->fval % precision() % converged()
+             << std::endl;
+
+      if (minf->fval < gF)
+      {
+        gF = minf->fval;
+        std::vector<dtReal> tRes = result();
+        dt__forAllIndex(tRes, kk) tRes[kk] = gsl_vector_get(minf->x, kk);
+        result(tRes);
+        logC() << logMe::dtFormat("-> Global minimum update -> %5.2d\n") % gF;
+      }
+
+      if (converged())
+        break;
+    } catch (eGeneral const &egen)
     {
-      gF = minf->fval;
-      dt__forAllIndex(_result, kk) _result[kk] = gsl_vector_get(minf->x, kk);
-      logC() << logMe::dtFormat("-> Global minimum update -> %5.2d\n") % gF;
+      logC() << "-> Exception" << std::endl;
     }
-
-    logC() << logMe::dtFormat("%3d : [ ") % jj;
-    dt__forAllIndex(_guess[jj], kk)
-    {
-      logC() << logMe::dtFormat("%5.2d ") % _guess[jj][kk];
-    }
-
-    logC() << logMe::dtFormat("] %3d -> %5.2e (%5.2e) = %d") % iter %
-                minf->fval % _precision % _converged
-           << std::endl;
-
-    if (_converged)
-      break;
   }
   logC() << logMe::dtFormat("=> min f( ");
-  dt__forAllIndex(_result, kk)
+  dt__forAllIndex(result(), kk)
   {
-    logC() << logMe::dtFormat("%5.2d ") % _result[kk];
+    logC() << logMe::dtFormat("%5.2d ") % result()[kk];
   }
   logC() << logMe::dtFormat(") = %5.2d") % gF;
-  if (!_converged)
+  if (!converged())
     logC() << " -> F";
   logC() << std::endl;
-
-  //
-  // set last status
-  //
-  if (_converged)
-  {
-    _lastStatus = str(
-      logMe::dtFormat("C %5.2e %3d (GSL: %3d)") % minf->fval % iter % status
-    );
-  }
-  else
-  {
-    _lastStatus = str(
-      logMe::dtFormat("D %5.2e %3d (GSL: %3d)") % minf->fval % iter % status
-    );
-  }
 
   //
   // free memory
@@ -376,7 +222,7 @@ bool gslMinFloatAttr::perform()
   //
   // return status
   //
-  return _converged;
+  return converged();
 }
 
 dt__C_addCloneForpVH(gslMinFloatAttr);
