@@ -37,7 +37,7 @@ struct gsl_proxy_t {
   dtOO::floatAtt *att_p;
 };
 // proxy function
-double gsl_proxy_gslMinFloatAttr(gsl_vector const *v, void *params)
+static double gsl_proxy_gslMinFloatAttr(gsl_vector const *v, void *params)
 {
   dtOO::floatAtt *const ob = static_cast<gsl_proxy_t *>(params)->att_p;
   dtOO::dtInt const &dim = ob->dimension();
@@ -50,7 +50,7 @@ double gsl_proxy_gslMinFloatAttr(gsl_vector const *v, void *params)
   return GSL_NAN;
 }
 
-void gsl_proxy_errorhandler(
+static void gsl_proxy_errorhandler(
   const char *reason, const char *file, int line, int gsl_errno
 )
 {
@@ -112,7 +112,6 @@ bool gslMinFloatAttr::perform()
 
   dtInt iter = 0;
   converged(false);
-  ;
   dtInt status;
   dtReal gF = std::numeric_limits<dtReal>::max();
   logContainer<gslMinFloatAttr> logC(logDEBUG, "perform()");
