@@ -23,7 +23,6 @@ License
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
-#include <interfaceHeaven/optionHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>
@@ -32,9 +31,7 @@ License
 #include <vector>
 
 namespace dtOO {
-class analyticGeometry : public optionHandling,
-                         public labelHandling,
-                         public renderInterface {
+class analyticGeometry : public labelHandling, public renderInterface {
 public:
   dt__class(analyticGeometry, labelHandling);
   analyticGeometry();
