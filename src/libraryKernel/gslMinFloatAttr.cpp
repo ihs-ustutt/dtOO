@@ -125,7 +125,7 @@ bool gslMinFloatAttr::perform()
       {
         logC() << logMe::dtFormat("%5.2d ") % guess()[jj][kk];
       }
-      logC() << "] ";
+      logC() << "]";
 
       dt__forFromToIndex(0, dimension(), ii)
       {
@@ -156,31 +156,33 @@ bool gslMinFloatAttr::perform()
         iter = iter + 1;
         status = gsl_multimin_fminimizer_iterate(minf);
 
-        if (status)
-          break;
+        logC() << logMe::dtFormat("\n  %3d (status = %2d) : x = ") % iter %
+                    status;
+        gsl_vector *x = gsl_multimin_fminimizer_x(minf);
+        dt__forFromToIndex(0, dimension(), hh)
+        {
+          logC() << logMe::dtFormat("%+5.2e ") % gsl_vector_get(x, hh);
+        }
+        dtReal const size = gsl_multimin_fminimizer_size(minf);
+        logC() << logMe::dtFormat(" -> f = %+5.2e ( size = %+5.2e )") %
+                    minf->fval % size;
 
-        // logC() << logMe::dtFormat("  %3d : ") % iter;
-        // dt__forFromToIndex(0, dimension(), hh) {
-        //   logC()
-        //     << logMe::dtFormat("%5.2e ")
-        //       % gsl_vector_get(gsl_multimin_fminimizer_x(minf), hh);
-        // }
-        // logC()
-        //   << logMe::dtFormat(" -> %5.2e (%5.2e)\n")
-        //     % minf->fval % gsl_multimin_fminimizer_size(minf);
+        if (status)
+        {
+
+          logC() << logMe::dtFormat("\n  GSL: %s") %
+                      std::string(gsl_strerror(status));
+          break;
+        }
 
         if (minf->fval < precision())
         {
           converged(true);
           break;
         }
-        // dtReal const & msize = gsl_multimin_fminimizer_size(minf);
-        // if (msize < 1.0e-09) {
-        //   break;
-        // }
       } while (iter < maxIterations());
 
-      logC() << logMe::dtFormat("%3d -> %5.2e (%5.2e) = %d") % iter %
+      logC() << logMe::dtFormat("\n  %3d -> %+5.2e (%+5.2e) = %d") % iter %
                   minf->fval % precision() % converged()
              << std::endl;
 
@@ -190,7 +192,7 @@ bool gslMinFloatAttr::perform()
         std::vector<dtReal> tRes = result();
         dt__forAllIndex(tRes, kk) tRes[kk] = gsl_vector_get(minf->x, kk);
         result(tRes);
-        logC() << logMe::dtFormat("-> Global minimum update -> %5.2d\n") % gF;
+        logC() << logMe::dtFormat("-> Global minimum update -> %+5.2d\n") % gF;
       }
 
       if (converged())
@@ -203,9 +205,9 @@ bool gslMinFloatAttr::perform()
   logC() << logMe::dtFormat("=> min f( ");
   dt__forAllIndex(result(), kk)
   {
-    logC() << logMe::dtFormat("%5.2d ") % result()[kk];
+    logC() << logMe::dtFormat("%+5.2d ") % result()[kk];
   }
-  logC() << logMe::dtFormat(") = %5.2d") % gF;
+  logC() << logMe::dtFormat(") = %+5.2d") % gF;
   if (!converged())
     logC() << " -> F";
   logC() << std::endl;
