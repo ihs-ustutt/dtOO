@@ -56,6 +56,9 @@ dtPoint3 analyticGeometryGroup::getPoint(dtReal const *const uvw) const
   dt__throwUnexpected(getPoint());
 }
 
+::std::vector< dtVector3 > analyticGeometryGroup::firstDer(dtReal const *const uvw) const {
+  dt__throwUnexpected(firstDer());
+}
 bool analyticGeometryGroup::isClosed(dtInt const &dir) const { return false; }
 
 dtReal analyticGeometryGroup::getMin(dtInt const &dir) const { return 0.; }

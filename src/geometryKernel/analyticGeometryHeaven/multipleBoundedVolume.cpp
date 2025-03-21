@@ -109,6 +109,11 @@ dtPoint3 multipleBoundedVolume::getPoint(dtReal const *const uvw) const
 {
   return _m3d->getPoint(uvw);
 }
+::std::vector<dtVector3> multipleBoundedVolume::firstDer(dtReal const *const uvw
+) const
+{
+  return _m3d->firstDer(uvw);
+}
 
 vectorHandling<renderInterface *> multipleBoundedVolume::getRender(void) const
 {

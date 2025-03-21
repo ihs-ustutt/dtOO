@@ -44,6 +44,7 @@ public:
   virtual dtReal getMin(dtInt const &dir) const;
   virtual dtReal getMax(dtInt const &dir) const;
   virtual dtPoint3 getPoint(dtReal const *const uvw) const;
+  virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const;
   vectorHandling<renderInterface *> getRender(void) const;
   ptrVectorHandling<analyticGeometry> const &boundsVectorConstRef(void) const;
   analyticGeometry const *const surfaceConstPtr(void) const;

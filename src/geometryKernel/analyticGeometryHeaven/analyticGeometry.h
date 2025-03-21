@@ -51,6 +51,7 @@ public:
   virtual dtReal getMin(dtInt const &dir) const = 0;
   virtual dtReal getMax(dtInt const &dir) const = 0;
   virtual dtPoint3 getPoint(dtReal const *const uvw) const = 0;
+  virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const = 0;
   //
   // optional overload
   //
