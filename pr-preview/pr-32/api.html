@@ -1,0 +1,940 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API documentation &mdash; dtOO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="constValue" href="constValue.html" />
+    <link rel="prev" title="Test" href="test.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/dtoo-logo-inv-nbg.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demonstration.html">Demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">Test</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#c-core-classes">C++ core classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="constValue.html">constValue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyticFunction.html">analyticFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyticGeometry.html">analyticGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="boundedVolume.html">boundedVolume</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dtCase.html">dtCase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dtPlugin.html">dtPlugin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#python-pydtoo-classes">Python pyDtOO classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.PREFIX"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.PREFIX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.CASE"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.CASE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.LOCKDIR"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.LOCKDIR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.PIDDIR"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.PIDDIR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.DATADIR"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.DATADIR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.NPROC"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.NPROC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.SIMSH"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.SIMSH</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.ADDDATA"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.ADDDATA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.ADDDATADEF"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.ADDDATADEF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.PROB"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.PROB</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.id_"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.id_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.state_"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.state_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.clear"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.currentMaxId"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.currentMaxId()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fileIndex"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.fileIndex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fitness"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.fitness()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.formatToWrite"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.formatToWrite()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fullAddRead"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.fullAddRead()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fullAddReadDict"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.fullAddReadDict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fullRead"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.fullRead()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.hasDirectory"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.hasDirectory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.id"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.objective"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.objective()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.oneD"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.oneD()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.read"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readArray"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.readArray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readDict"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.readDict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readFloat"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.readFloat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readFloatArray"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.readFloatArray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readIdFromObjective"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.readIdFromObjective()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readInt"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.readInt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readIntArray"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.readIntArray()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.state"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.state()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.twoD"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.twoD()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.update"><code class="docutils literal notranslate"><span class="pre">dtClusteredSingletonState.update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/ihs-ustutt/dtOO">Back to GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dtOO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-documentation">
+<h1>API documentation<a class="headerlink" href="#api-documentation" title="Link to this heading"></a></h1>
+<p>The documentation of the C++ code.</p>
+<section id="c-core-classes">
+<h2>C++ core classes<a class="headerlink" href="#c-core-classes" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="constValue.html">constValue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analyticFunction.html">analyticFunction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analyticGeometry.html">analyticGeometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundedVolume.html">boundedVolume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dtCase.html">dtCase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dtPlugin.html">dtPlugin</a></li>
+</ul>
+</div>
+</section>
+<section id="python-pydtoo-classes">
+<h2>Python pyDtOO classes<a class="headerlink" href="#python-pydtoo-classes" title="Link to this heading"></a></h2>
+<p>The documentation of the pyDtOO package.</p>
+<dl class="py class" id="module-pyDtOO.dtClusteredSingletonState">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyDtOO.dtClusteredSingletonState.</span></span><span class="sig-name descname"><span class="pre">dtClusteredSingletonState</span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState" title="Link to this definition"></a></dt>
+<dd><p>Manage database.</p>
+<p>Connection to the database that holds at least fitness and objective values.
+Objectives (inputs, parameters, degrees of freedom, …) are the values that
+are changed during optimization to improve the fitness (result value, …) of
+the problem. Every individual has an ID and a state as integer and str,
+respectively. This class also stores optional (additional) data for each
+individual. A data value is in the simplest case a scalar value as integer
+or float. But it can be also a float array or a dict.</p>
+<p>The class stores all data in the directory <cite>DATADIR</cite>. Fitness value,
+objective value, ID and state are stored in the files <cite>fitness.*</cite>,
+<cite>objective.*</cite>, <cite>id.*</cite> and <cite>state.*</cite>, respectively. If additional data is
+used the files are named according to the <cite>ADDDATA</cite> array. The data in
+<cite>DATADIR</cite> are divided in chunks of 1000 lines per file.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.PREFIX">
+<span class="sig-name descname"><span class="pre">PREFIX</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.PREFIX" title="Link to this definition"></a></dt>
+<dd><p>Prefix for the state label. The default is ‘A1’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.CASE">
+<span class="sig-name descname"><span class="pre">CASE</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.CASE" title="Link to this definition"></a></dt>
+<dd><p>Label of the simulation case. The default is ‘’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.LOCKDIR">
+<span class="sig-name descname"><span class="pre">LOCKDIR</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.LOCKDIR" title="Link to this definition"></a></dt>
+<dd><p>Directory of the lock directory. The default is dtGod().LockPath()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dtDirectory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.PIDDIR">
+<span class="sig-name descname"><span class="pre">PIDDIR</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.PIDDIR" title="Link to this definition"></a></dt>
+<dd><p>Directory of the PIDDIR. The default is ‘./runPid’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.DATADIR">
+<span class="sig-name descname"><span class="pre">DATADIR</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.DATADIR" title="Link to this definition"></a></dt>
+<dd><p>Directory to store the data. The default is ‘./runData’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.NPROC">
+<span class="sig-name descname"><span class="pre">NPROC</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.NPROC" title="Link to this definition"></a></dt>
+<dd><p>Number of processes. The default is 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.SIMSH">
+<span class="sig-name descname"><span class="pre">SIMSH</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.SIMSH" title="Link to this definition"></a></dt>
+<dd><p>Name of the simulation script. The default is ‘’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.ADDDATA">
+<span class="sig-name descname"><span class="pre">ADDDATA</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.ADDDATA" title="Link to this definition"></a></dt>
+<dd><p>Array of additional (optional) data. The default is []</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.ADDDATADEF">
+<span class="sig-name descname"><span class="pre">ADDDATADEF</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.ADDDATADEF" title="Link to this definition"></a></dt>
+<dd><p>Default values for additional data. The default is []</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[ Union[ List[float], int, dict] ]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.PROB">
+<span class="sig-name descname"><span class="pre">PROB</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.PROB" title="Link to this definition"></a></dt>
+<dd><p>Problem class. The default is None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.id_">
+<span class="sig-name descname"><span class="pre">id_</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.id_" title="Link to this definition"></a></dt>
+<dd><p>ID of individual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.state_">
+<span class="sig-name descname"><span class="pre">state_</span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.state_" title="Link to this definition"></a></dt>
+<dd><p>State of individual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<p>Add additional values for each individual</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>  <span class="s1">&#39;dict&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;float&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;int&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;np-float-arr&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;np-int-arr&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s1">&#39;str&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATADEF</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;key&#39;</span> <span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+<span class="gp">... </span>  <span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+<span class="gp">... </span>  <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">),</span>
+<span class="gp">... </span>  <span class="s1">&#39;test&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Create first individual</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">defObj</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,],</span>
+<span class="gp">... </span>  <span class="n">defFit</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&lt;dtClusteredSingletonState.dtClusteredSingletonState object at ...&gt;</span>
+</pre></div>
+</div>
+<p>Access individual by id</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Check if data exactly matches the ADDDATADEF list</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">cSS</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">==</span>
+<span class="gp">... </span>    <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATADEF</span><span class="p">[</span>
+<span class="gp">... </span>      <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span>  <span class="p">)</span>
+<span class="go">True</span>
+<span class="go">True</span>
+<span class="go">True</span>
+<span class="go">[ True  True  True]</span>
+<span class="go">[ True  True  True]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Write new data</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;fitness&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;objective&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;float&#39;</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span> <span class="p">:</span> <span class="s1">&#39;myStr&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Read default data from individual</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">state</span><span class="p">()</span>
+<span class="go">&#39;A1_1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">objective</span><span class="p">()</span>
+<span class="go">array([1., 2.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">fitness</span><span class="p">()</span>
+<span class="go">array([1.])</span>
+</pre></div>
+</div>
+<p>Read additional data as str</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="go">&#39;1.e+00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+<span class="go">&#39;{&quot;float&quot;: 1.0, &quot;str&quot;: &quot;myStr&quot;}&#39;</span>
+</pre></div>
+</div>
+<p>Read additional data with specified type</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readFloatArray</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="go">array([1.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readFloat</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readArray</span><span class="p">(</span><span class="s1">&#39;np-int-arr&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<span class="go">array([-5, -5, -5])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;np-int-arr&#39;</span><span class="p">)</span>
+<span class="go">&#39;-5 -5 -5&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="o">.</span><span class="n">readDict</span><span class="p">(</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+<span class="go">{&#39;float&#39;: 1.0, &#39;str&#39;: &#39;myStr&#39;}</span>
+</pre></div>
+</div>
+<p>Check data again; some checks have to fail, because the data was updated</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">cSS</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">cSS</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="o">==</span>
+<span class="gp">... </span>    <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATADEF</span><span class="p">[</span>
+<span class="gp">... </span>      <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span>  <span class="p">)</span>
+<span class="go">=&gt; dict</span>
+<span class="go">{&#39;float&#39;: 1.0, &#39;str&#39;: &#39;myStr&#39;}</span>
+<span class="go">False</span>
+<span class="go">=&gt; float</span>
+<span class="go">1.0</span>
+<span class="go">True</span>
+<span class="go">=&gt; int</span>
+<span class="go">2</span>
+<span class="go">True</span>
+<span class="go">=&gt; np-float-arr</span>
+<span class="go">[5. 5. 5.]</span>
+<span class="go">[ True  True  True]</span>
+<span class="go">=&gt; np-int-arr</span>
+<span class="go">[-5 -5 -5]</span>
+<span class="go">[ True  True  True]</span>
+<span class="go">=&gt; str</span>
+<span class="go">test</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Check type of elements in the arrays</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Numpy versions smaller than 2.0.0 return int and float instead of np.int64
+and float64, respectively.</p>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="p">(</span><span class="s1">&#39;np-int-arr&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">np.int64(-5)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="p">(</span><span class="s1">&#39;np-float-arr&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">np.float64(5.0)</span>
+</pre></div>
+</div>
+<p>Stored scalar integer values should be returned as int for both versions</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cSS</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.clear">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.clear" title="Link to this definition"></a></dt>
+<dd><p>Clear database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>remove</strong> (<em>bool</em>) – Flag to clean directory, too.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.currentMaxId">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">currentMaxId</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.currentMaxId"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.currentMaxId" title="Link to this definition"></a></dt>
+<dd><p>Get current maximum ID stored in database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If file index &lt; 0.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Maximum ID.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">currentMaxId</span><span class="p">()</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fileIndex">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fileIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.fileIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fileIndex" title="Link to this definition"></a></dt>
+<dd><p>Get file index of individual’s data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – ID of individual.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>File index.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fitness">
+<span class="sig-name descname"><span class="pre">fitness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.fitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fitness" title="Link to this definition"></a></dt>
+<dd><p>Read fitness for current individual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Fitness.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.formatToWrite">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">formatToWrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.formatToWrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.formatToWrite" title="Link to this definition"></a></dt>
+<dd><p>Converts <cite>value</cite> to str.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>, </em><em>dict</em><em>, </em><em>np.array</em><em>]</em>) – Value to convert.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="go">&#39;1.e+00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="s1">&#39;word&#39;</span><span class="p">)</span>
+<span class="go">&#39;word&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s1">&#39;str&#39;</span> <span class="p">:</span> <span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&#39;{&quot;str&quot;: &quot;word&quot;, &quot;float&quot;: 1.0}&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mf">1.0</span><span class="p">))</span>
+<span class="go">&#39;1.e+00 1.e+00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,])</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="go">Unknown datatype.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">testclass</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">formatToWrite</span><span class="p">(</span><span class="n">testclass</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="go">Unknown datatype.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fullAddRead">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fullAddRead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addFileV</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addDtypeV</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fullAddRead" title="Link to this definition"></a></dt>
+<dd><p>Read additional data of all individuals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addFileV</strong> (<em>np.ndarray</em>) – List of additional data to read.</p></li>
+<li><p><strong>addDtypeV</strong> (<em>np.ndarray</em>) – List of additional <cite>dtype</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATA</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;dict&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">ADDDATADEF</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;test&#39;</span> <span class="p">:</span> <span class="mf">2.0</span><span class="p">},]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">fullAddRead</span><span class="p">([</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;dict&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[</span><span class="s1">&#39;float&#39;</span><span class="p">]</span>
+<span class="go">array([1., 1.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">]</span>
+<span class="go">array([{&#39;test&#39;: 2.0}, {&#39;test&#39;: 2.0}], dtype=object)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;test&#39;</span><span class="p">]</span>
+<span class="go">2.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fullAddReadDict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fullAddReadDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addFile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxFileIndex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.fullAddReadDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fullAddReadDict" title="Link to this definition"></a></dt>
+<dd><p>Read additional dicts of all individuals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addFile</strong> (<em>str</em>) – File name of additional dict.</p></li>
+<li><p><strong>maxFileIndex</strong> (<em>int</em>) – Maximum file index.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Additional dicts for all individuals.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fullRead">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fullRead</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.fullRead" title="Link to this definition"></a></dt>
+<dd><p>Read IDs, objective values and fitness values of all individuals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addFile</strong> (<em>Union</em><em>[ </em><em>None</em><em>, </em><em>List</em><em>[</em><em>str</em><em>] </em><em>]</em><em>, </em><em>optional</em>) – List of additional files to read. The default is None.</p></li>
+<li><p><strong>addDtype</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>, </em><em>dict</em><em>]</em><em>, </em><em>optional</em>) – <cite>dtype</cite> of additional values. The default is float.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>Union[</em> – Tuple[np.ndarray, np.ndarray, np.ndarray],
+Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]</p></li>
+<li><p><em>]</em> – Tuple of IDs, objective and fitness values. If <cite>addFile</cite> is not None,
+then the return tuple is extended by additional array.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">(</span><span class="n">defObj</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span><span class="n">defFit</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">(</span><span class="n">defObj</span><span class="o">=</span><span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span><span class="n">defFit</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">I</span><span class="p">,</span><span class="n">O</span><span class="p">,</span><span class="n">F</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">fullRead</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">o</span><span class="p">,</span><span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="n">O</span><span class="p">,</span><span class="n">F</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">i</span>
+<span class="gp">... </span>  <span class="n">o</span>
+<span class="gp">... </span>  <span class="n">f</span>
+<span class="go">np.int64(1)</span>
+<span class="go">array([1., 1.])</span>
+<span class="go">array([1.5, 1.5])</span>
+<span class="go">np.int64(2)</span>
+<span class="go">array([2., 2.])</span>
+<span class="go">array([2.5, 2.5])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.hasDirectory">
+<span class="sig-name descname"><span class="pre">hasDirectory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.hasDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.hasDirectory" title="Link to this definition"></a></dt>
+<dd><p>Check if individual’s case directory exist</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.id">
+<span class="sig-name descname"><span class="pre">id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.id" title="Link to this definition"></a></dt>
+<dd><p>Get individual’s ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If ID &lt; 0.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ID.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.objective">
+<span class="sig-name descname"><span class="pre">objective</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.objective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.objective" title="Link to this definition"></a></dt>
+<dd><p>Read objective for current individual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Objective.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.oneD">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">oneD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.oneD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.oneD" title="Link to this definition"></a></dt>
+<dd><p>Convert array’s shape to one-dimensional numpy.ndarray.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>arr</strong> (<em>numpy.ndarray</em>) – Array.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted array.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.read" title="Link to this definition"></a></dt>
+<dd><p>Read data of <cite>fName</cite> for current individual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fName</strong> (<em>str</em>) – Label of data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readArray">
+<span class="sig-name descname"><span class="pre">readArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.readArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readArray" title="Link to this definition"></a></dt>
+<dd><p>Read data of <cite>fName</cite> for current individual and return as array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fName</strong> (<em>str</em>) – Label of data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readDict">
+<span class="sig-name descname"><span class="pre">readDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.readDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readDict" title="Link to this definition"></a></dt>
+<dd><p>Read data of <cite>fName</cite> for current individual and return as dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fName</strong> (<em>str</em>) – Label of data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readFloat">
+<span class="sig-name descname"><span class="pre">readFloat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.readFloat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readFloat" title="Link to this definition"></a></dt>
+<dd><p>Read data of <cite>fName</cite> for current individual and return as float.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fName</strong> (<em>str</em>) – Label of data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readFloatArray">
+<span class="sig-name descname"><span class="pre">readFloatArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.readFloatArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readFloatArray" title="Link to this definition"></a></dt>
+<dd><p>Read data of <cite>fName</cite> for current individual and return as float array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fName</strong> (<em>str</em>) – Label of data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readIdFromObjective">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">readIdFromObjective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.readIdFromObjective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readIdFromObjective" title="Link to this definition"></a></dt>
+<dd><p>Returns ID of individual with objective <cite>obj</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<em>numpy.ndarray</em>) – Objective.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ID.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Warns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Warning if difference in objective values &gt;0.1.</strong></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">(</span><span class="n">defObj</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span><span class="n">defFit</span><span class="o">=</span><span class="p">[</span><span class="mf">2.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">objective</span><span class="p">()</span>
+<span class="go">array([1., 1.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">dtClusteredSingletonState</span><span class="p">(</span><span class="n">defObj</span><span class="o">=</span><span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span><span class="n">defFit</span><span class="o">=</span><span class="p">[</span><span class="mf">2.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">objective</span><span class="p">()</span>
+<span class="go">array([2., 2.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">readIdFromObjective</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">objective</span><span class="p">()))</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dtClusteredSingletonState</span><span class="o">.</span><span class="n">readIdFromObjective</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">objective</span><span class="p">()))</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readInt">
+<span class="sig-name descname"><span class="pre">readInt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.readInt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readInt" title="Link to this definition"></a></dt>
+<dd><p>Read data of <cite>fName</cite> for current individual and return as integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fName</strong> (<em>str</em>) – Label of data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readIntArray">
+<span class="sig-name descname"><span class="pre">readIntArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.readIntArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.readIntArray" title="Link to this definition"></a></dt>
+<dd><p>Read data of <cite>fName</cite> for current individual and return as int array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fName</strong> (<em>str</em>) – Label of data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.state" title="Link to this definition"></a></dt>
+<dd><p>Get individual’s state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If ID &lt; 0.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>State.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.twoD">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">twoD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyDtOO/dtClusteredSingletonState.html#dtClusteredSingletonState.twoD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.twoD" title="Link to this definition"></a></dt>
+<dd><p>Convert array’s shape to two-dimensional numpy.ndarray.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>arr</strong> (<em>numpy.ndarray</em>) – Array.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted array.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyDtOO.dtClusteredSingletonState.dtClusteredSingletonState.update" title="Link to this definition"></a></dt>
+<dd><p>Write data of <cite>fName</cite> for current individual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fileName</strong> (<em>str</em>) – Label of data.</p></li>
+<li><p><strong>value</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>int</em><em>, </em><em>dict</em><em>, </em><em>np.array</em><em>]</em>) – Value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="test.html" class="btn btn-neutral float-left" title="Test" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="constValue.html" class="btn btn-neutral float-right" title="constValue" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Alexander Tismer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
