@@ -41,6 +41,7 @@ public:
   virtual ~analyticGeometry();
   analyticGeometry(analyticGeometry const &orig);
   dtPoint3 getPointPercent(dtReal const *const uvw) const;
+  ::std::vector<dtVector3> firstDerPercent(dtReal const *const uvw) const;
   //
   // overload
   //

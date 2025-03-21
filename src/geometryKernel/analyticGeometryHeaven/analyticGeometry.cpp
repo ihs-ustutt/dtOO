@@ -66,6 +66,17 @@ dtPoint3 analyticGeometry::getPointPercent(dtReal const *const uvw) const
   return getPoint(uvwP);
 }
 
+::std::vector<dtVector3>
+analyticGeometry::firstDerPercent(dtReal const *const uvw) const
+{
+  dtReal uvwP[dim()];
+  dt__forFromToIndex(0, dim(), ii)
+  {
+    uvwP[ii] = getMin(ii) + uvw[ii] * (getMax(ii) - getMin(ii));
+  }
+  return firstDer(uvwP);
+}
+
 void analyticGeometry::setRenderResolution(dtInt const &dir, dtInt const &value)
   const
 {
