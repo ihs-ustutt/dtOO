@@ -163,6 +163,7 @@ SET(HEADERS
   dtGaussLegendreIntegration.h
   minFloatAttr.h
   gslMinFloatAttr.h
+  gslGradMinFloatAttr.h
 )
 SET(SOURCES
   dtLinearAlgebra.cpp
@@ -298,6 +299,7 @@ SET(SOURCES
   dtGaussLegendreIntegration.cpp
   minFloatAttr.cpp
   gslMinFloatAttr.cpp
+  gslGradMinFloatAttr.cpp
 )
 
 if (FOAMEXT_FOUND OR OpenFOAM_FOUND)

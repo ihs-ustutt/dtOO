@@ -71,10 +71,10 @@ dtReal pointGeometryDist::operator()(std::vector<dtReal> const &xx) const
 ::std::vector<dtReal> pointGeometryDist::grad(::std::vector<dtReal> const &xx
 ) const
 {
-  dtVector3 const ff = _aG->getPointPercent(&(xx[0])) - _p3;
-  dtReal const ffVal = dtLinearAlgebra::length(ff);
+  dtPoint3 const ff = _aG->getPointPercent(&(xx[0]));
+  dtReal const ffVal = this->operator()(xx);
 
-  ::std::vector<dtVector3> const der = _aG->firstDer(&(xx[0]));
+  ::std::vector<dtVector3> const der = _aG->firstDerPercent(&(xx[0]));
 
   ::std::vector<dtReal> grad(this->dimension(), 0.0);
 
@@ -82,11 +82,10 @@ dtReal pointGeometryDist::operator()(std::vector<dtReal> const &xx) const
   {
     dt__forFromToIndex(0, 3, j) // physical coordinate system
     {
-      grad[i] += ff[j] * der[i][j];
+      grad[i] = grad[i] + der[i][j] * (ff[j] - _p3[j]);
     }
-    grad[i] = ffVal * grad[i];
+    grad[i] = (1. / ffVal) * grad[i];
   }
-  // dt__quickdebug(<< "grad = " << grad);
   return grad;
 }
 
