@@ -364,9 +364,11 @@ using namespace dtOO;
   #include <Standard_Persistent.hxx>
 #endif
 #include <attributionHeaven/floatAtt.h>
+#include <attributionHeaven/pointGeometryDist.h>
 #include <attributionHeaven/geometryGeometryDist.h>
 #include <attributionHeaven/curveCurveDist.h>
 #include <gslMinFloatAttr.h>
+#include <gslGradMinFloatAttr.h>
 %}
 
 %include <std_except.i>
@@ -1226,6 +1228,7 @@ namespace std {
 %include analyticGeometryHeaven/aGBuilder/bool_map1dTo3dInMap2dTo3d.h
 %include interfaceHeaven/dtBundle.h
 %include attributionHeaven/floatAtt.h
+%include attributionHeaven/pointGeometryDist.h
 %include attributionHeaven/geometryGeometryDist.h
 %include attributionHeaven/curveCurveDist.h
 %include gslMinFloatAttr.h
@@ -1239,6 +1242,26 @@ namespace dtOO {
       dtInt const & maxIterations
     ) {
       return new gslMinFloatAttr(
+        dt__pH(floatAtt)(att->clone()), 
+        guess, 
+        step, 
+        precision, 
+        maxIterations
+      );
+    } 
+  }
+}
+%include gslGradMinFloatAttr.h
+namespace dtOO {
+  %extend gslGradMinFloatAttr {
+    gslGradMinFloatAttr( 
+      floatAtt const * const att,
+      std::vector< dtReal > const & guess,
+      std::vector< dtReal > const & step,
+      dtReal const & precision,
+      dtInt const & maxIterations
+    ) {
+      return new gslGradMinFloatAttr(
         dt__pH(floatAtt)(att->clone()), 
         guess, 
         step, 

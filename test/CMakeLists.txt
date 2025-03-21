@@ -217,6 +217,20 @@ add_test(
 set_tests_properties(interTransMesh PROPERTIES ENVIRONMENT "${TESTENVLIST}")
 set_property(TEST interTransMesh PROPERTY LABELS base-test)
 
+#
+# floatAtt
+#
+add_test(
+  NAME floatAtt
+  COMMAND 
+    "${Python3_EXECUTABLE}" 
+    "-m" "doctest" 
+    "floatAtt.py"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/floatAtt
+)
+set_tests_properties(floatAtt PROPERTIES ENVIRONMENT "${TESTENVLIST}")
+set_property(TEST floatAtt PROPERTY LABELS base-test)
+
 file(GLOB sources_list LIST_DIRECTORIES true "${CMAKE_SOURCE_DIR}/test/*")
 foreach(dirPath ${sources_list})
     IF(IS_DIRECTORY ${dirPath})

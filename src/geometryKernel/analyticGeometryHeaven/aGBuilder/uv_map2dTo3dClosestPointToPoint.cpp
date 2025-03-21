@@ -36,18 +36,18 @@ uv_map2dTo3dClosestPointToPoint::uv_map2dTo3dClosestPointToPoint(
     // clang-format off
     ::std::vector<dtPoint2>(
       ::boost::assign::list_of
-        (dtPoint2(0.5, 0.5))
-        (dtPoint2(0.0, 0.5))
-        (dtPoint2(1.0, 0.5))
-        (dtPoint2(0.5, 0.0))
-        (dtPoint2(0.0, 0.0))
-        (dtPoint2(1.0, 0.0))
-        (dtPoint2(0.5, 1.0))
-        (dtPoint2(0.0, 1.0))
-        (dtPoint2(1.0, 1.0))
+        (dtPoint2(0.50, 0.50))
+        (dtPoint2(0.75, 0.50))
+        (dtPoint2(0.25, 0.50))
+        (dtPoint2(0.50, 0.75))
+        (dtPoint2(0.75, 0.75))
+        (dtPoint2(0.25, 0.75))
+        (dtPoint2(0.50, 0.25))
+        (dtPoint2(0.75, 0.25))
+        (dtPoint2(0.25, 0.25))
     ),
     // clang-format on
-    dtPoint2(0.01, 0.01),
+    dtPoint2(0.001, 0.001),
     staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
   );
   md.perform();

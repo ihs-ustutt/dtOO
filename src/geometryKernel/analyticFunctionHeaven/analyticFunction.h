@@ -35,9 +35,7 @@ License
 namespace dtOO {
 class dtTransformer;
 
-class analyticFunction : public optionHandling,
-                         public labelHandling,
-                         public renderInterface {
+class analyticFunction : public labelHandling, public renderInterface {
 public:
   dt__class(analyticFunction, labelHandling);
   analyticFunction();

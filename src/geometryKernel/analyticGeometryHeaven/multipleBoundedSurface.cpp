@@ -106,6 +106,11 @@ dtPoint3 multipleBoundedSurface::getPoint(dtReal const *const uvw) const
   return _m2d->getPoint(uvw);
 }
 
+::std::vector<dtVector3>
+multipleBoundedSurface::firstDer(dtReal const *const uvw) const
+{
+  return _m2d->firstDer(uvw);
+}
 vectorHandling<renderInterface *> multipleBoundedSurface::getRender(void) const
 {
   vectorHandling<renderInterface *> rV;

@@ -57,6 +57,11 @@ dtPoint3 map2dTo3d::getPoint(dtReal const *const uvw) const
   return getPoint(uvw[0], uvw[1]);
 }
 
+::std::vector<dtVector3> map2dTo3d::firstDer(dtReal const *const uvw) const
+{
+  return this->firstDer(uvw[0], uvw[1]);
+}
+
 dtPoint3 map2dTo3d::getPoint(dtPoint2 const &pUV) const
 {
   return getPoint(pUV.x(), pUV.y());

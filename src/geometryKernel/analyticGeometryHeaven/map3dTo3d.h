@@ -38,6 +38,7 @@ public:
   virtual ~map3dTo3d();
   virtual dtInt dim(void) const;
   dtPoint3 getPoint(dtReal const *const uvw) const;
+  virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const;
   virtual vectorHandling<renderInterface *> getRender(void) const;
   //
   // overload

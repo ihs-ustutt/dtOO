@@ -23,7 +23,6 @@ License
 #include <dtLinearAlgebra.h>
 #include <interfaceHeaven/labelHandling.h>
 #include <interfaceHeaven/labeledVectorHandling.h>
-#include <interfaceHeaven/optionHandling.h>
 #include <interfaceHeaven/renderInterface.h>
 #include <interfaceHeaven/vectorHandling.h>
 #include <logMe/dtMacros.h>
@@ -32,15 +31,14 @@ License
 #include <vector>
 
 namespace dtOO {
-class analyticGeometry : public optionHandling,
-                         public labelHandling,
-                         public renderInterface {
+class analyticGeometry : public labelHandling, public renderInterface {
 public:
   dt__class(analyticGeometry, labelHandling);
   analyticGeometry();
   virtual ~analyticGeometry();
   analyticGeometry(analyticGeometry const &orig);
   dtPoint3 getPointPercent(dtReal const *const uvw) const;
+  ::std::vector<dtVector3> firstDerPercent(dtReal const *const uvw) const;
   //
   // overload
   //
@@ -51,6 +49,7 @@ public:
   virtual dtReal getMin(dtInt const &dir) const = 0;
   virtual dtReal getMax(dtInt const &dir) const = 0;
   virtual dtPoint3 getPoint(dtReal const *const uvw) const = 0;
+  virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const = 0;
   //
   // optional overload
   //

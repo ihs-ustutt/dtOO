@@ -15,7 +15,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "gslMinFloatAttr.h"
+#include "gslGradMinFloatAttr.h"
 #include "attributionHeaven/floatAtt.h"
 #include "exceptionHeaven/eGeneral.h"
 #include "logMe/dtMacros.h"
@@ -37,7 +37,7 @@ struct gsl_proxy_t {
   dtOO::floatAtt *att_p;
 };
 // proxy function
-static double gsl_proxy_gslMinFloatAttr(gsl_vector const *v, void *params)
+static double gsl_proxy_f_gslGradMinFloatAttr(gsl_vector const *v, void *params)
 {
   dtOO::floatAtt *const ob = static_cast<gsl_proxy_t *>(params)->att_p;
   dtOO::dtInt const &dim = ob->dimension();
@@ -48,6 +48,42 @@ static double gsl_proxy_gslMinFloatAttr(gsl_vector const *v, void *params)
     return ob->operator()(xx);
   }
   return GSL_NAN;
+}
+static void gsl_proxy_df_gslGradMinFloatAttr(
+  const gsl_vector *v, void *params, gsl_vector *g
+)
+{
+  dtOO::floatAtt *const ob = static_cast<gsl_proxy_t *>(params)->att_p;
+  dtOO::dtInt const &dim = ob->dimension();
+  std::vector<dtOO::dtReal> xx(dim);
+  dt__forFromToIndex(0, dim, i) xx[i] = gsl_vector_get(v, i);
+  std::vector<dtOO::dtReal> grad(ob->dimension(), GSL_NAN);
+  if (!ob->outOfRange(xx))
+  {
+    grad = ob->grad(xx);
+  }
+  dt__forFromToIndex(0, dim, i) gsl_vector_set(g, i, grad[i]);
+}
+
+static void gsl_proxy_fdf_gslGradMinFloatAttr(
+  const gsl_vector *v, void *params, double *f, gsl_vector *g
+)
+{
+  *f = gsl_proxy_f_gslGradMinFloatAttr(v, params);
+  gsl_proxy_df_gslGradMinFloatAttr(v, params, g);
+
+  if (*f == GSL_NAN)
+  {
+    dt__forFromToIndex(0, g->size, i) gsl_vector_set(g, i, GSL_NAN);
+  }
+
+  dt__forFromToIndex(0, g->size, i)
+  {
+    if (gsl_vector_get(g, i) == GSL_NAN)
+    {
+      *f = GSL_NAN;
+    }
+  }
 }
 
 static void gsl_proxy_errorhandler(
@@ -65,27 +101,30 @@ static void gsl_proxy_errorhandler(
 
 namespace dtOO {
 
-gslMinFloatAttr::~gslMinFloatAttr() {}
+gslGradMinFloatAttr::~gslGradMinFloatAttr() {}
 
-gslMinFloatAttr *gslMinFloatAttr::clone(void) const
+gslGradMinFloatAttr *gslGradMinFloatAttr::clone(void) const
 {
-  return new gslMinFloatAttr(*this);
+  return new gslGradMinFloatAttr(*this);
 }
 
-bool gslMinFloatAttr::perform()
+bool gslGradMinFloatAttr::perform()
 {
+  dt__throwIf(!ptrAttribute()->hasGrad(), perform());
   // set error handler
   gsl_set_error_handler(&gsl_proxy_errorhandler);
   // create function structure
-  gsl_multimin_function proxyF;
+  gsl_multimin_function_fdf proxyF;
   // set proxy function
-  proxyF.f = &gsl_proxy_gslMinFloatAttr;
+  proxyF.f = &gsl_proxy_f_gslGradMinFloatAttr;
+  proxyF.df = &gsl_proxy_df_gslGradMinFloatAttr;
+  proxyF.fdf = &gsl_proxy_fdf_gslGradMinFloatAttr;
   // set proxy structure
   gsl_proxy_t proxyS = {ptrAttribute()};
   // cast to void * and set to params
   proxyF.params = (void *)&proxyS;
 
-  // strategy and gslMinFloatAttr must have the same dimension
+  // strategy and gslGradMinFloatAttr must have the same dimension
   dt__throwIf(dimension() != ptrAttribute()->dimension(), perform());
   dt__throwIf(dimension() == 0, perform());
 
@@ -95,8 +134,8 @@ bool gslMinFloatAttr::perform()
   //
   // create minimizer struct
   //
-  gsl_multimin_fminimizer *minf = gsl_multimin_fminimizer_alloc(
-    gsl_multimin_fminimizer_nmsimplex2rand, dimension()
+  gsl_multimin_fdfminimizer *minf = gsl_multimin_fdfminimizer_alloc(
+    gsl_multimin_fdfminimizer_conjugate_fr, dimension()
   );
 
   //
@@ -114,12 +153,13 @@ bool gslMinFloatAttr::perform()
   converged(false);
   dtInt status;
   dtReal gF = std::numeric_limits<dtReal>::max();
-  logContainer<gslMinFloatAttr> logC(logDEBUG, "perform()");
+  logContainer<gslGradMinFloatAttr> logC(logDEBUG, "perform()");
   logC() << "Using: " << ptrAttribute()->virtualClassName() << std::endl;
   dt__forAllIndex(guess(), jj)
   {
     try
     {
+      // output
       logC() << logMe::dtFormat("%3d : [ ") % jj;
       dt__forAllIndex(guess()[jj], kk)
       {
@@ -131,6 +171,7 @@ bool gslMinFloatAttr::perform()
       {
         gsl_vector_set(xx, ii, guess()[jj][ii]);
 
+        // correct initial guess
         dtReal const up = guess()[jj][ii] + step()[ii];
         dtReal const low = guess()[jj][ii] - step()[ii];
         dt__warnIfWithMessageAndSolution(
@@ -146,36 +187,51 @@ bool gslMinFloatAttr::perform()
           << "Shift lower guess to " << 0.0 + step()[ii]
         );
       }
-      // iterate
+
       dt__throwIf(
-        gsl_multimin_fminimizer_set(minf, &proxyF, xx, ss), perform()
+        gsl_multimin_fdfminimizer_set(
+          minf, &proxyF, xx, step()[0], precision()
+        ),
+        perform()
       );
+      // iterate
       iter = 0;
       do
       {
         iter = iter + 1;
-        status = gsl_multimin_fminimizer_iterate(minf);
+        status = gsl_multimin_fdfminimizer_iterate(minf);
 
         logC() << logMe::dtFormat("\n  %3d (status = %2d) : x = ") % iter %
                     status;
-        gsl_vector *x = gsl_multimin_fminimizer_x(minf);
+        gsl_vector *x = gsl_multimin_fdfminimizer_x(minf);
         dt__forFromToIndex(0, dimension(), hh)
         {
           logC() << logMe::dtFormat("%+5.2e ") % gsl_vector_get(x, hh);
         }
-        dtReal const size = gsl_multimin_fminimizer_size(minf);
-        logC() << logMe::dtFormat(" -> f = %+5.2e ( size = %+5.2e )") %
-                    minf->fval % size;
+        gsl_vector *grad = gsl_multimin_fdfminimizer_gradient(minf);
+        logC() << " / grad = ";
+        dt__forFromToIndex(0, dimension(), hh)
+        {
+          logC() << logMe::dtFormat("%+5.2e ") % gsl_vector_get(grad, hh);
+        }
+        logC() << logMe::dtFormat(" -> f = %+5.2e ( dx = ") % minf->f;
+        gsl_vector *dx = gsl_multimin_fdfminimizer_dx(minf);
+        dt__forFromToIndex(0, dimension(), hh)
+        {
+          logC() << logMe::dtFormat("%+5.2e ") % gsl_vector_get(dx, hh);
+        }
+        logC() << ")";
 
+        // if status is anything else than zero, break the loop and continue
+        // with another guess
         if (status)
         {
-
           logC() << logMe::dtFormat("\n  GSL: %s") %
                       std::string(gsl_strerror(status));
           break;
         }
 
-        if (minf->fval < precision())
+        if (minf->f < precision())
         {
           converged(true);
           break;
@@ -183,12 +239,12 @@ bool gslMinFloatAttr::perform()
       } while (iter < maxIterations());
 
       logC() << logMe::dtFormat("\n  %3d -> %+5.2e (%+5.2e) = %d") % iter %
-                  minf->fval % precision() % converged()
+                  minf->f % precision() % converged()
              << std::endl;
 
-      if (minf->fval < gF)
+      if (minf->f < gF)
       {
-        gF = minf->fval;
+        gF = minf->f;
         std::vector<dtReal> tRes = result();
         dt__forAllIndex(tRes, kk) tRes[kk] = gsl_vector_get(minf->x, kk);
         result(tRes);
@@ -217,7 +273,7 @@ bool gslMinFloatAttr::perform()
   //
   gsl_vector_free(xx);
   gsl_vector_free(ss);
-  gsl_multimin_fminimizer_free(minf);
+  gsl_multimin_fdfminimizer_free(minf);
   gsl_set_error_handler(NULL);
 
   //
@@ -226,5 +282,5 @@ bool gslMinFloatAttr::perform()
   return converged();
 }
 
-dt__C_addCloneForpVH(gslMinFloatAttr);
+dt__C_addCloneForpVH(gslGradMinFloatAttr);
 } // namespace dtOO

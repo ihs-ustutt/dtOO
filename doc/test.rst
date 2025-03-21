@@ -10,3 +10,9 @@ Transfinite Mesh ``interTransMesh``
 
 .. automodule:: dtOO.test.interTransMesh.interTransMesh
     :members:
+
+Minimization ``floatAtt``
+=========================
+
+.. automodule:: dtOO.test.floatAtt.floatAtt
+    :members:

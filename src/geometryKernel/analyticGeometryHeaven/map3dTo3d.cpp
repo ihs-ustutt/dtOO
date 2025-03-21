@@ -59,6 +59,11 @@ dtPoint3 map3dTo3d::getPoint(dtReal const *const uvw) const
   return getPoint(uvw[0], uvw[1], uvw[2]);
 }
 
+::std::vector<dtVector3> map3dTo3d::firstDer(dtReal const *const uvw) const
+{
+  return this->firstDer(uvw[0], uvw[1], uvw[2]);
+}
+
 vectorHandling<renderInterface *> map3dTo3d::getRender(void) const
 {
   vectorHandling<renderInterface *> rV;

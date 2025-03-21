@@ -36,6 +36,7 @@ public:
   virtual ~map2dTo3d();
   virtual dtInt dim(void) const;
   virtual dtPoint3 getPoint(dtReal const *const uvw) const;
+  virtual ::std::vector<dtVector3> firstDer(dtReal const *const uvw) const;
   //
   // overload
   //
