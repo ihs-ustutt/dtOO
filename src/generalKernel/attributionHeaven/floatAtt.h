@@ -40,10 +40,12 @@ public:
   virtual bool outOfRange(::std::vector<dtReal> const &xx) const;
   virtual dtReal outOfRangeResult() const;
   dtReal rangeCheckAndCall(::std::vector<dtReal> const &xx) const;
+  virtual bool hasGrad(void) const;
   //
   // strategy overload
   //
   virtual dtReal operator()(::std::vector<dtReal> const &xx) const = 0;
+  virtual ::std::vector<dtReal> grad(::std::vector<dtReal> const &xx) const;
 };
 dt__H_addCloneForpVH(floatAtt);
 } // namespace dtOO

@@ -45,6 +45,9 @@ dtReal floatAtt::outOfRangeResult() const
   return ::std::numeric_limits<dtReal>::max();
 }
 
+bool floatAtt::hasGrad( void ) const {
+  return false;
+}
 dtReal floatAtt::rangeCheckAndCall(::std::vector<dtReal> const &xx) const
 {
   if (outOfRange(xx))
@@ -52,6 +55,10 @@ dtReal floatAtt::rangeCheckAndCall(::std::vector<dtReal> const &xx) const
     return outOfRangeResult();
   }
   return this->operator()(xx);
+}
+::std::vector< dtReal > floatAtt::grad(::std::vector<dtReal> const &xx) const
+{
+  dt__throwUnexpected(grad());
 }
 dt__C_addCloneForpVH(floatAtt);
 } // namespace dtOO

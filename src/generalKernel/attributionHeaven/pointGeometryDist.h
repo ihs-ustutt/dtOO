@@ -36,7 +36,9 @@ public:
   pointGeometryDist(pointGeometryDist const &orig);
   virtual pointGeometryDist *clone(void) const;
   virtual bool outOfRange(::std::vector<dtReal> const &xx) const;
+  virtual bool hasGrad( void ) const;
   virtual dtReal operator()(std::vector<dtReal> const &xx) const;
+  virtual ::std::vector<dtReal> grad(::std::vector<dtReal> const &xx) const;
   //
   // get properties
   //
