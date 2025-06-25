@@ -16,6 +16,7 @@
       <script src="_static/documentation_options.js?v=5929fcd5"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="demonstration.html">Demonstration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Test</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.interTransMesh.interTransMesh">Transfinite Mesh <code class="docutils literal notranslate"><span class="pre">interTransMesh</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dtOO.test.floatAtt.floatAtt">Minimization <code class="docutils literal notranslate"><span class="pre">floatAtt</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API documentation</a></li>
@@ -87,14 +89,14 @@
 <span id="transfinite-mesh-intertransmesh"></span><h2>Transfinite Mesh <code class="docutils literal notranslate"><span class="pre">interTransMesh</span></code><a class="headerlink" href="#module-dtOO.test.interTransMesh.interTransMesh" title="Link to this heading"></a></h2>
 <p>Create a simple geometry by an intersection of two curves and mesh a four
 sided face with quadrangles.</p>
-<figure class="align-center" id="id2">
+<figure class="align-center" id="id4">
 <span id="intertransmesh"></span><a class="reference internal image-reference" href="_images/interTransMesh.png"><img alt="_images/interTransMesh.png" src="_images/interTransMesh.png" style="width: 600px;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 9 </span><span class="caption-text">Sketch of geometry and mesh including control points (magenta colored),
 B-Splines (black thick solid), intersection point (magenta colored), and
 mesh face’s boundaries (yellow colored); transfinite mesh shown on the
-right hand side</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+right hand side</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>Import <code class="docutils literal notranslate"><span class="pre">dtOO</span></code>:</p>
@@ -311,6 +313,101 @@ prevent segmentation fault:</p>
 </div>
 <p>Apply the observer to write the mesh:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ob</span><span class="o">.</span><span class="n">postUpdate</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="module-dtOO.test.floatAtt.floatAtt">
+<span id="minimization-floatatt"></span><h2>Minimization <code class="docutils literal notranslate"><span class="pre">floatAtt</span></code><a class="headerlink" href="#module-dtOO.test.floatAtt.floatAtt" title="Link to this heading"></a></h2>
+<p>Import</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dtOOPythonSWIG</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Create <code class="docutils literal notranslate"><span class="pre">staticPropertiesHandler</span></code> and initialize:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">staticPropertiesHandler</span><span class="o">.</span><span class="n">getInstance</span><span class="p">()</span><span class="o">.</span><span class="n">jInit</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">jsonPrimitive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;{&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;&quot;option&quot; : [&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;reparamOnFace_precision&quot;, &quot;value&quot; : &quot;1.e-06&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;reparamInVolume_precision&quot;,&quot;value&quot; : &quot;1.e-06&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;invY_precision&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;xyz_resolution&quot;, &quot;value&quot; : &quot;1.e-08&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;XYZ_resolution&quot;, &quot;value&quot; : &quot;1.e-07&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;uvw_resolution&quot;, &quot;value&quot; : &quot;1.e-04&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;logLevel&quot;, &quot;value&quot; : &quot;99&quot;},&#39;</span>
+<span class="gp">... </span>        <span class="s1">&#39;{&quot;name&quot; : &quot;map2dTo3d_deltaPer&quot;, &quot;value&quot; : &quot;1.e-8&quot;}&#39;</span>
+<span class="gp">... </span>      <span class="s1">&#39;]&#39;</span>
+<span class="gp">... </span>    <span class="s1">&#39;}&#39;</span>
+<span class="gp">... </span>  <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Initialize a log file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logMe</span><span class="o">.</span><span class="n">initLog</span><span class="p">(</span><span class="s2">&quot;floatAtt.log&quot;</span><span class="p">)</span>
+<span class="go">&#39;floatAtt.log&#39;</span>
+</pre></div>
+</div>
+<p>Create the function</p>
+<div class="math notranslate nohighlight">
+\[ff: (u,v) \rightarrow (u,v,u^2+v^2)\]</div>
+<p>as a <code class="docutils literal notranslate"><span class="pre">vec3dMuParserTwoD</span></code>-object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ff</span> <span class="o">=</span> <span class="n">vec3dMuParserTwoD</span><span class="p">(</span><span class="s2">&quot;u,v,u*u+v*v&quot;</span><span class="p">,</span><span class="s2">&quot;u&quot;</span><span class="p">,</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set the ranges for <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,]:</span>
+<span class="gp">... </span>  <span class="n">ff</span><span class="o">.</span><span class="n">setMin</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="o">-</span><span class="mf">100.0</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">ff</span><span class="o">.</span><span class="n">setMax</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="o">+</span><span class="mf">100.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create the infinite space <span class="math notranslate nohighlight">\(im\)</span> as parameter space for the function <span class="math notranslate nohighlight">\(ff\)</span>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">im</span> <span class="o">=</span> <span class="n">infinityMap3dTo3d</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Define an <code class="docutils literal notranslate"><span class="pre">analyticGeometry</span></code> as a composition of <span class="math notranslate nohighlight">\(ff\)</span> and <span class="math notranslate nohighlight">\(im\)</span>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mm</span> <span class="o">=</span> <span class="n">vec3dTwoDInMap3dTo3d</span><span class="p">(</span><span class="n">ff</span><span class="p">,</span><span class="n">im</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Define the point <span class="math notranslate nohighlight">\(p0\)</span> that should be reparameterized:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p0</span> <span class="o">=</span> <span class="n">dtPoint3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Define a <code class="docutils literal notranslate"><span class="pre">pointGeometryDist</span></code> object that provides the connection between the
+<code class="docutils literal notranslate"><span class="pre">analyticGeometry</span></code> <span class="math notranslate nohighlight">\(mm\)</span> and the point <span class="math notranslate nohighlight">\(p0\)</span>; <code class="docutils literal notranslate"><span class="pre">pointGeometryDist</span></code>
+is a strategy for <a href="#id2"><span class="problematic" id="id3">``</span></a>floatAtt`:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">att</span> <span class="o">=</span> <span class="n">pointGeometryDist</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">mm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Minimize the distance between geometry and point using a gradient-based
+minimization technique; the attributes of the minimizer are the strategy, the
+initial guess, the step size, the desired precision, and the maximum number of
+iterations:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gradMin</span> <span class="o">=</span> <span class="n">gslGradMinFloatAttr</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">att</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">.99</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span><span class="mf">0.001</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="mf">1.e-8</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="mi">100</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Convergence check:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gradMin</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Minimize the distance using a gradient-free minimization technique:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">min</span> <span class="o">=</span> <span class="n">gslMinFloatAttr</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">att</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">.99</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span><span class="mf">0.001</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="mf">1.e-8</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="mi">100</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Convergence check:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">min</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </section>
