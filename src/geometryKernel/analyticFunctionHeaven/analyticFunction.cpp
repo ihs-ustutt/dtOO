@@ -24,10 +24,10 @@ License
 #include <logMe/logMe.h>
 
 namespace dtOO {
-analyticFunction::analyticFunction() : optionHandling(), labelHandling() {}
+analyticFunction::analyticFunction() : labelHandling() {}
 
 analyticFunction::analyticFunction(const analyticFunction &orig)
-  : optionHandling(orig), labelHandling(orig)
+  : labelHandling(orig)
 {
 }
 

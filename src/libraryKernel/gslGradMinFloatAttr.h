@@ -15,8 +15,8 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef gslMinFloatAttr_H
-#define gslMinFloatAttr_H
+#ifndef gslGradMinFloatAttr_H
+#define gslGradMinFloatAttr_H
 
 #include "minFloatAttr.h"
 #include <dtOOTypeDef.h>
@@ -25,10 +25,10 @@ License
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
-class gslMinFloatAttr : public minFloatAttr {
+class gslGradMinFloatAttr : public minFloatAttr {
 public:
-  dt__class(gslMinFloatAttr, minFloatAttr);
-  gslMinFloatAttr(
+  dt__class(gslGradMinFloatAttr, minFloatAttr);
+  gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     std::vector<dtReal> const &guess,
     std::vector<dtReal> const &step,
@@ -36,7 +36,7 @@ public:
     dtInt const &maxIterations = 100
   )
     : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     dtPoint2 const &guess,
     dtPoint2 const &step,
@@ -44,7 +44,7 @@ public:
     dtInt const &maxIterations = 100
   )
     : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     std::vector<dtPoint2> const &guess,
     dtPoint2 const &step,
@@ -52,7 +52,7 @@ public:
     dtInt const &maxIterations = 100
   )
     : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     dtPoint3 const &guess,
     dtPoint3 const &step,
@@ -60,7 +60,7 @@ public:
     dtInt const &maxIterations = 100
   )
     : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     std::vector<dtPoint3> const &guess,
     dtPoint3 const &step,
@@ -68,7 +68,7 @@ public:
     dtInt const &maxIterations = 100
   )
     : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(
+  gslGradMinFloatAttr(
     dt__pH(floatAtt) const &attribute,
     dtReal const &guess,
     dtReal const &step,
@@ -76,13 +76,13 @@ public:
     dtInt const &maxIterations = 100
   )
     : minFloatAttr(attribute, guess, step, precision, maxIterations){};
-  gslMinFloatAttr(minFloatAttr const &orig) : minFloatAttr(orig){};
-  virtual ~gslMinFloatAttr();
-  virtual gslMinFloatAttr *clone(void) const;
+  gslGradMinFloatAttr(minFloatAttr const &orig) : minFloatAttr(orig){};
+  virtual ~gslGradMinFloatAttr();
+  virtual gslGradMinFloatAttr *clone(void) const;
   virtual bool perform();
 
 private:
 };
-dt__H_addCloneForpVH(gslMinFloatAttr);
+dt__H_addCloneForpVH(gslGradMinFloatAttr);
 } // namespace dtOO
-#endif /* gslMinFloatAttr_H */
+#endif /* gslGradMinFloatAttr_H */

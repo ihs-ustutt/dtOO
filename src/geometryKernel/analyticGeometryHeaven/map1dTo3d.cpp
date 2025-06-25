@@ -51,6 +51,11 @@ dtPoint3 map1dTo3d::getPointPercent(dtReal const &uu) const
   return getPoint(u_percent(uu));
 }
 
+::std::vector<dtVector3> map1dTo3d::firstDer(dtReal const *const uvw) const
+{
+  return ::std::vector<dtVector3>(1, this->firstDerU(uvw[0]));
+}
+
 map1dTo3d *map1dTo3d::segmentPercent(dtReal const &u0, dtReal const &u1) const
 {
   return segment(u_percent(u0), u_percent(u1));

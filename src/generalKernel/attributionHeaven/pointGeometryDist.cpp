@@ -16,9 +16,10 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "pointGeometryDist.h"
-#include "logMe/dtMacros.h"
-
 #include <analyticGeometryHeaven/analyticGeometry.h>
+#include <dtLinearAlgebra.h>
+#include <logMe/dtMacros.h>
+#include <logMe/logMe.h>
 #include <progHelper.h>
 #include <vector>
 
@@ -60,10 +61,32 @@ bool pointGeometryDist::outOfRange(::std::vector<dtReal> const &xx) const
 
   return false;
 }
+bool pointGeometryDist::hasGrad(void) const { return true; }
 
 dtReal pointGeometryDist::operator()(std::vector<dtReal> const &xx) const
 {
   return dtLinearAlgebra::distance(_aG->getPointPercent(&(xx[0])), _p3);
+}
+
+::std::vector<dtReal> pointGeometryDist::grad(::std::vector<dtReal> const &xx
+) const
+{
+  dtPoint3 const ff = _aG->getPointPercent(&(xx[0]));
+  dtReal const ffVal = this->operator()(xx);
+
+  ::std::vector<dtVector3> const der = _aG->firstDerPercent(&(xx[0]));
+
+  ::std::vector<dtReal> grad(this->dimension(), 0.0);
+
+  dt__forFromToIndex(0, this->dimension(), i) // parameter coordinate system
+  {
+    dt__forFromToIndex(0, 3, j) // physical coordinate system
+    {
+      grad[i] = grad[i] + der[i][j] * (ff[j] - _p3[j]);
+    }
+    grad[i] = (1. / ffVal) * grad[i];
+  }
+  return grad;
 }
 
 dtInt const &pointGeometryDist::dimension() const { return _dimension; }
