@@ -45,20 +45,30 @@ pointGeometryDist *pointGeometryDist::clone(void) const
 
 bool pointGeometryDist::outOfRange(::std::vector<dtReal> const &xx) const
 {
-  if (!floatAtt::outOfRange(xx))
-    return false;
-
-  dt__forAllIndex(xx, i)
+  if (floatAtt::outOfRange(xx))
   {
-    // find dimension that is out-of-range
-    if ((xx[i] < 0.0) || (xx[i] > 1.0))
+    dt__forAllIndex(xx, i)
     {
-      // out-of-range dimension is not closed, so cannot handle
-      if (!_aG->isClosed(i))
+      if (isnan(xx[i]))
         return true;
+
+      // find dimension that is out-of-range
+      if ((xx[i] < 0.0) || (xx[i] > 1.0))
+      {
+        // out-of-range dimension is closed, so can handle
+        if (_aG->isClosed(i))
+        {
+          dt__warning(
+            outOfRange(),
+            << "Dimension " << i << " is out-of-range, but geometry is closed."
+          );
+        }
+        // out-of-range dimension is not closed
+        else
+          return true;
+      }
     }
   }
-
   return false;
 }
 bool pointGeometryDist::hasGrad(void) const { return true; }

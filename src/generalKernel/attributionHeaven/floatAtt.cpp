@@ -34,7 +34,8 @@ bool floatAtt::outOfRange(::std::vector<dtReal> const &xx) const
   {
     if ((xx[i] < 0.0) || (xx[i] > 1.0) || isnan(xx[i]))
     {
-      dt__warnIf(isnan(xx[i]), outOfRange()) return true;
+      dt__warning(outOfRange(), << "xx[ " << i << " ] = " << xx[i]);
+      return true;
     }
   }
   return false;
