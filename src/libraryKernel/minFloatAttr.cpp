@@ -133,8 +133,8 @@ minFloatAttr::minFloatAttr(
   dtInt const &maxIterations
 )
   : _attribute(attribute), _dimension(3), _guess(convertDtPoint3(guess)),
-    _step(::boost::assign::list_of(step.x())(step.y())), _precision(precision),
-    _maxIterations(maxIterations),
+    _step(::boost::assign::list_of(step.x())(step.y())(step.z())),
+    _precision(precision), _maxIterations(maxIterations),
     _result(::boost::assign::list_of(std::numeric_limits<dtReal>::
                                        infinity())(std::numeric_limits<
                                                    dtReal>::infinity())(
