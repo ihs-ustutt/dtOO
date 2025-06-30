@@ -234,9 +234,9 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
     firstElementSizeHubToShroud: float,
     firstElementSizeNormalBlade: float,
     bladeHubElementSize: scaOneD = None,
-    bladeHubElementScale: int = None,
+    bladeHubElementScale: float = None,
     bladeShroudElementSize: scaOneD = None,
-    bladeShroudElementScale: int = None,
+    bladeShroudElementScale: float = None,
     channelHubShroudDir: int = 3,
     channelInletOutletDir: int = 2,
     channelSuctionPressureDir: int = 1,
@@ -463,7 +463,8 @@ class map3dTo3dGmsh_gridFromChannelAndBlocks(dtBundleBuilder):
             '{"label" : "blade"},'
             '{"labels" : "coupling_*"}'
           '],'
-          '"_inc" : 10.0'
+          '"_inc" : 10.0,'
+          '"_facesPerEntry" : []'
         '}'
       ), 
       None, None, None, aG, None, m3dGmsh 

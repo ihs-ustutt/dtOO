@@ -191,7 +191,7 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       }
     }
     logC() << "  > minDistAv = " << minDistAv << std::endl;
-    if (facesPerEntry[i] >= 0)
+    if (!facesPerEntry.empty() && facesPerEntry[i] >= 0)
     {
       dt__throwIfWithMessage(
         facesPerEntry[i] != tagged,
