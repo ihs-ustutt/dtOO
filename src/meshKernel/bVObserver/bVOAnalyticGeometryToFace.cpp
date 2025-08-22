@@ -138,38 +138,59 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
     {
       dtInt inTol = 0;
       dtReal distAv = 0.;
-      dt__forAllRefAuto(aFace->dtVertices(), aVertex)
+
+      //
+      // define check points; prevent checking directly the corner points 
+      // (face vertices) as this is very unstable
+      //
+      std::vector<dtPoint3> ckPoints;
+      ckPoints.push_back(aFace->getMap2dTo3d()->getPointPercent(0.1, 0.1));
+      ckPoints.push_back(aFace->getMap2dTo3d()->getPointPercent(0.1, 0.9));
+      ckPoints.push_back(aFace->getMap2dTo3d()->getPointPercent(0.9, 0.9));
+      ckPoints.push_back(aFace->getMap2dTo3d()->getPointPercent(0.9, 0.1));
+
+      //
+      // define mid point and its distance
+      //
+      dtPoint3 midPoint = aFace->getMap2dTo3d()->getPointPercent(0.5, 0.5);
+      dtReal midDist =
+        uv_map2dTo3dClosestPointToPoint(&(aM2d), midPoint).distance();
+      bool midIsOnFace = analyticGeometry::inXYZTolerance(midDist);
+
+      // check internal check points only if the mid point is on the surface
+      if (midIsOnFace)
       {
-        dtReal dist = uv_map2dTo3dClosestPointToPoint(
-                        &(aM2d), dtGmshModel::extractPosition(aVertex)
-        )
-                        .distance();
-
-        //
-        // summerize distances
-        //
-        distAv = distAv + dist;
-
-        //
-        // increase if in precision
-        //
-        if (analyticGeometry::inXYZTolerance(
-              dist, config().lookupDef<dtReal>("_inc", 1.0)
-            ))
+        dt__forAllRefAuto(ckPoints, ckPoint)
         {
-          inTol++;
-        }
-        // break if at least one point is not on the surface
-        else
-        {
-          break;
+          dtReal dist =
+            uv_map2dTo3dClosestPointToPoint(&(aM2d), ckPoint).distance();
+
+          //
+          // summerize distances
+          //
+          distAv = distAv + dist;
+
+          //
+          // increase if in precision
+          //
+          if (analyticGeometry::inXYZTolerance(
+                dist, config().lookupDef<dtReal>("_inc", 1.0)
+              ))
+          {
+            inTol++;
+          }
+          // break if at least one point is not on the surface
+          else
+          {
+            break;
+          }
         }
       }
 
       //
       // calculate average
       //
-      distAv = distAv / aFace->vertices().size();
+      distAv = distAv / ckPoints.size();
 
       //
       // store min distance
@@ -179,8 +200,16 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       //
       // tag entity if in tolerance
       //
-      if (inTol == aFace->vertices().size())
+      if (inTol == ckPoints.size())
       {
+        dt__debug(
+          preUpdate(),
+          << logMe::dtFormat(
+               "Accept: midDist = %f, midIsOnFace = %d, %d == %d, distAv = %f"
+             ) % midDist %
+                 midIsOnFace % inTol % ckPoints.size() % distAv
+        );
+
         tagged = tagged + 1;
         std::string tagString(
           aM2d.getLabel() + "_" + stringPrimitive::intToString(localCounter)
@@ -188,6 +217,15 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
         logC() << "  > " << tagString << " ( " << distAv << " ) " << std::endl;
         gm->tagPhysical(aFace, tagString);
         localCounter++;
+      }
+      else
+      {
+        dt__debug(
+          preUpdate(),
+          << logMe::dtFormat("Skip: midDist = %f, midIsOnFace = %d, %d == %d "
+             ) % midDist %
+                 midIsOnFace % inTol % ckPoints.size()
+        );
       }
     }
     logC() << "  > minDistAv = " << minDistAv << std::endl;
