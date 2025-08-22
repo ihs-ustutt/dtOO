@@ -140,7 +140,7 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       dtReal distAv = 0.;
 
       //
-      // define check points; prevent checking directly the corner points 
+      // define check points; prevent checking directly the corner points
       // (face vertices) as this is very unstable
       //
       std::vector<dtPoint3> ckPoints;
