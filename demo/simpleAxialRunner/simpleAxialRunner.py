@@ -41,44 +41,27 @@ class simpleAxialRunner:
   ...   dtOO.lVHOstateHandler().commonState() 
   ... )
 
-  The `PyFoam` package is used to modify the dicts.
+  The `foamlib` package is used to modify the dicts.
 
-  >>> from PyFoam.Applications.WriteDictionary import WriteDictionary
+  >>> import foamlib
   
-  Before running the simulation the `writeInterval` is adjusted by:
+  Initialize ``foamlib`` object
 
-  >>> WriteDictionary(
-  ...   args=[
-  ...     cDir+"/system/controlDict", "writeInterval", "25"
-  ...   ]
-  ... )  # doctest: +ELLIPSIS
-  <PyFoam.Applications.WriteDictionary.WriteDictionary object at ...>
+  >>> fc = foamlib.FoamCase( cDir )
 
-  >>> WriteDictionary(
-  ...   args=[
-  ...     cDir+"/system/controlDict", "endTime", "50"
-  ...   ]
-  ... )  # doctest: +ELLIPSIS
-  <PyFoam.Applications.WriteDictionary.WriteDictionary object at ...>
+  Before running the simulation the `writeInterval` and `endTime` is adjusted 
+  by:
+
+  >>> fc.control_dict['writeInterval'] = 25
+  >>> fc.control_dict['endTime'] = 50
 
   Additionally, the flow is treated as laminar:
 
-  >>> WriteDictionary(
-  ...   args=[
-  ...     cDir+"/constant/turbulenceProperties", "RAS['turbulence']", "off"
-  ...   ]
-  ... )  # doctest: +ELLIPSIS
-  <PyFoam.Applications.WriteDictionary.WriteDictionary object at ...>
+  >>> fc.turbulence_properties["RAS"]["turbulence"] = False
 
-  The `PyFoam` package is used also to start simulation:
+  The `foamlib` package is used to start the simulation:
 
-  >>> from PyFoam.Applications.Runner import Runner
-  >>> Runner(
-  ...   args=[
-  ...     "--silent", "simpleFoam", "-case", cDir
-  ...   ]
-  ... ) # doctest: +ELLIPSIS
-  <PyFoam.Applications.Runner.Runner object at ...>
+  >>> fc.run()
 
   Attributes
   ----------
@@ -137,8 +120,8 @@ class simpleAxialRunner:
       dtOO.jsonPrimitive(
         '{'
           '"option" : ['
-            '{"name" : "reparamOnFace_precision", "value" : "1.e-05"},'
-            '{"name" : "reparamInVolume_precision","value" : "1.e-05"},'
+            '{"name" : "reparamOnFace_precision", "value" : "1.e-06"},'
+            '{"name" : "reparamInVolume_precision","value" : "1.e-06"},'
             '{"name" : "reparam_internalRestarts", "value" : "10"},'
             '{"name" : "reparam_restarts", "value" : "10"},'
             '{"name" : "reparam_restartIncreasePrecision", "value" : "10."},'
@@ -146,17 +129,9 @@ class simpleAxialRunner:
               '"name" : "reparam_internalRestartDecreasePrecision",'
               ' "value" : "0.9"'
             '},'
-            '{'
-              '"name" : "reparamOnFace_minimizer", '
-              '"value" : ":Minuit2::kMigrad:"'
-            '},'		
-            '{'
-              '"name" : "reparamInVolume_minimizer", '
-              '"value" : ":Minuit2::kMigrad:"'
-            '},'				
             '{"name" : "invY_precision", "value" : "1.e-04"},'
-            '{"name" : "xyz_resolution", "value" : "1.e-05"},'
-            '{"name" : "XYZ_resolution", "value" : "1.e-04"},'
+            '{"name" : "xyz_resolution", "value" : "1.e-06"},'
+            '{"name" : "XYZ_resolution", "value" : "1.e-05"},'
             '{"name" : "uvw_resolution", "value" : "1.e-04"},'
             '{"name" : "point_render_diameter", "value" : "0.005"},'
             '{"name" : "vector_render_size", "value" : "0.05"},'
@@ -166,13 +141,6 @@ class simpleAxialRunner:
             '{"name" : "geometry_render_resolution_u", "value" : "21"},'
             '{"name" : "geometry_render_resolution_v", "value" : "21"},'
             '{"name" : "geometry_render_resolution_w", "value" : "21"},'
-            '{"name" : "root_printLevel", "value" : "0"},'		
-            '{"name" : "root_maxIterations", "value" : "1000"},'
-            '{"name" : "root_maxFunctionCalls", "value" : "1000000"},'
-            '{"name" : "ompNumThreads", "value" : "2"},'
-            '{"name" : "map1dTo3d_deltaPer", "value" : "0.01"},'
-            '{"name" : "map2dTo3d_deltaPer", "value" : "0.01"},'
-            '{"name" : "map3dTo3d_deltaPer", "value" : "0.01"},'
             '{"name" : "logLevel", "value" : "99"},'
             '{"name" : "isEqualExtendCheck", "value" : "false"}'
           ']'
@@ -618,7 +586,7 @@ class simpleAxialRunner:
           ofOpenFOAMCase_setupWrapper.inletRuleString(
             "mesh_inlet", 
             ["p", "k", "omega",], 
-            [ [0], [0.0, 0.10], [0.1] ]
+            [ [0], [0.0, 0.10], [0.001, 0.1] ]
           ),
           ofOpenFOAMCase_setupWrapper.wallRuleString(
             "mesh_shroud", 
