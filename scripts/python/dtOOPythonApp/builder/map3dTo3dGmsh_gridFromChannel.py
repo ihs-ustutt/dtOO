@@ -331,7 +331,8 @@ class map3dTo3dGmsh_gridFromChannel(dtBundleBuilder):
             '{"label" : "suction"},'
             '{"label" : "pressure"}'
           '],'
-          '"_inc" : 10.0'
+          '"_inc" : 10.0,'
+          '"_facesPerEntry" : []'
         '}'
       ), 
       None, None, None, aG, None, m3dGmsh 
