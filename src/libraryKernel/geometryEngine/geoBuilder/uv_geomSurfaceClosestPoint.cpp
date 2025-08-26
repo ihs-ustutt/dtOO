@@ -18,11 +18,11 @@ License
 #include "uv_geomSurfaceClosestPoint.h"
 
 #include <attributionHeaven/pointSurfaceDist.h>
+#include <boost/assign.hpp>
+#include <boost/assign/list_of.hpp>
 #include <geometryEngine/dtSurface.h>
 #include <gslMinFloatAttr.h>
 #include <interfaceHeaven/staticPropertiesHandler.h>
-#include <boost/assign.hpp>
-#include <boost/assign/list_of.hpp>
 
 namespace dtOO {
 uv_geomSurfaceClosestPoint::uv_geomSurfaceClosestPoint(
@@ -31,6 +31,7 @@ uv_geomSurfaceClosestPoint::uv_geomSurfaceClosestPoint(
 {
   gslMinFloatAttr md(
     dt__pH(pointSurfaceDist)(new pointSurfaceDist(pXYZ, dtS)),
+    // clang-format off
     ::std::vector<dtPoint2>(
       ::boost::assign::list_of
         (dtPoint2(0.50, 0.50))
@@ -43,6 +44,7 @@ uv_geomSurfaceClosestPoint::uv_geomSurfaceClosestPoint(
         (dtPoint2(0.75, 0.25))
         (dtPoint2(0.25, 0.25))
     ),
+    // clang-format on
     dtPoint2(0.001, 0.001),
     staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
   );
