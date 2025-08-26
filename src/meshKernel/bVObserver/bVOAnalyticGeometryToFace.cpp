@@ -30,6 +30,8 @@ License
 
 #include "bVOInterfaceFactory.h"
 #include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
+#include <dtLinearAlgebra.h>
+#include <interfaceHeaven/staticPropertiesHandler.h>
 #include <logMe/dtMacros.h>
 
 namespace dtOO {
@@ -88,6 +90,17 @@ void bVOAnalyticGeometryToFace::init(
       "increase_tolerance", element, cV, aF, 1.
     )
   );
+  jE.append<bool>(
+    "_disableMidPoint",
+    dtXmlParserBase::getAttributeBool("disable_midPoint", element, false)
+  );
+  jE.append<dtReal>(
+    "_distanceCheckPoints",
+    dtXmlParserBase::getAttributeFloatMuParse(
+      "distance_checkpoints", element, cV, aF, 0.1
+    )
+  );
+
   std::vector<analyticGeometry *> geos;
   dt__forAllRefAuto(
     qtXmlBase::getAttributeStrVector("analyticGeometry", element), anEl
@@ -140,25 +153,73 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       dtReal distAv = 0.;
 
       //
+      // define mid point and its distance
+      //
+      std::vector<dtPoint2> const &vertUVs = aFace->getVerticesUV();
+      std::pair<dtPoint2, dtPoint2> uvBound =
+        dtLinearAlgebra::boundingBox(vertUVs);
+      dtPoint2 const midPointUV = dtPoint2(
+        uvBound.first[0] + 0.5 * (uvBound.second[0] - uvBound.first[0]),
+        uvBound.first[1] + 0.5 * (uvBound.second[1] - uvBound.first[1])
+      );
+      dtPoint3 const midPoint = aFace->getMap2dTo3d()->getPoint(midPointUV);
+      dtReal const midDist =
+        uv_map2dTo3dClosestPointToPoint(&(aM2d), midPoint).distance();
+      bool const midIsOnFace = analyticGeometry::inXYZTolerance(
+        midDist, config().lookupDef<dtReal>("_inc", 1.0)
+      );
+
+      dt__debug(
+        preUpdate(),
+        << logMe::dtFormat("Processing face: %s \n"
+                           "  BouningBox (UV) : < (%f, %f), (%f, %f) >\n"
+                           "  Vertices (UV) :\n"
+                           "    1: (%f %f)  2: (%f %f)\n"
+                           "    3: (%f %f)  4: (%f %f)\n"
+                           "  MidPoint (UV) -> (XYZ) :(%f, %f) -> (%f, %f, %f)"
+           ) % aM2d.getLabel() %
+               uvBound.first[0] % uvBound.first[1] % uvBound.second[0] %
+               uvBound.second[1] % midPointUV[0] % midPointUV[1] % midPoint[0] %
+               midPoint[1] % midPoint[2] % vertUVs[0][0] % vertUVs[0][1] %
+               vertUVs[1][0] % vertUVs[1][1] % vertUVs[2][0] % vertUVs[2][1] %
+               vertUVs[3][0] % vertUVs[3][1]
+      );
+
+      //
       // define check points; prevent checking directly the corner points
       // (face vertices) as this is very unstable
       //
+      dtReal const distanceCheckPoints =
+        config().lookupDef<dtReal>("_distanceCheckPoints", 0.1);
       std::vector<dtPoint3> ckPoints;
-      ckPoints.push_back(aFace->getMap2dTo3d()->getPointPercent(0.1, 0.1));
-      ckPoints.push_back(aFace->getMap2dTo3d()->getPointPercent(0.1, 0.9));
-      ckPoints.push_back(aFace->getMap2dTo3d()->getPointPercent(0.9, 0.9));
-      ckPoints.push_back(aFace->getMap2dTo3d()->getPointPercent(0.9, 0.1));
-
-      //
-      // define mid point and its distance
-      //
-      dtPoint3 midPoint = aFace->getMap2dTo3d()->getPointPercent(0.5, 0.5);
-      dtReal midDist =
-        uv_map2dTo3dClosestPointToPoint(&(aM2d), midPoint).distance();
-      bool midIsOnFace = analyticGeometry::inXYZTolerance(midDist);
+      ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(dtPoint2(
+        uvBound.first[0] +
+          distanceCheckPoints * (uvBound.second[0] - uvBound.first[0]),
+        uvBound.first[1] +
+          distanceCheckPoints * (uvBound.second[1] - uvBound.first[1])
+      )));
+      ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(dtPoint2(
+        uvBound.first[0] +
+          (1.0 - distanceCheckPoints) * (uvBound.second[0] - uvBound.first[0]),
+        uvBound.first[1] +
+          distanceCheckPoints * (uvBound.second[1] - uvBound.first[1])
+      )));
+      ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(dtPoint2(
+        uvBound.first[0] +
+          (1.0 - distanceCheckPoints) * (uvBound.second[0] - uvBound.first[0]),
+        uvBound.first[1] +
+          (1.0 - distanceCheckPoints) * (uvBound.second[1] - uvBound.first[1])
+      )));
+      ckPoints.push_back(aFace->getMap2dTo3d()->getPoint(dtPoint2(
+        uvBound.first[0] +
+          distanceCheckPoints * (uvBound.second[0] - uvBound.first[0]),
+        uvBound.first[1] +
+          (1.0 - distanceCheckPoints) * (uvBound.second[1] - uvBound.first[1])
+      )));
 
       // check internal check points only if the mid point is on the surface
-      if (midIsOnFace)
+      // and the check is not disabled
+      if (midIsOnFace || config().lookupDef("_disableMidPoint", false))
       {
         dt__forAllRefAuto(ckPoints, ckPoint)
         {
@@ -187,10 +248,9 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
         }
       }
 
-      //
-      // calculate average
-      //
-      distAv = distAv / ckPoints.size();
+      // calculate average; if for loop was aborted the distance was calculated
+      // for (inTol+1) points; therefore divide by (inTol+1)
+      distAv = distAv / ::std::min<int>(inTol + 1, ckPoints.size());
 
       //
       // store min distance
@@ -204,10 +264,10 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       {
         dt__debug(
           preUpdate(),
-          << logMe::dtFormat(
-               "Accept: midDist = %f, midIsOnFace = %d, %d == %d, distAv = %f"
-             ) % midDist %
-                 midIsOnFace % inTol % ckPoints.size() % distAv
+          << logMe::dtFormat("Accept: midDist = %f, midIsOnFace = %d, %d == "
+                             "%d, distAv = %f, label = %s") %
+                 midDist % midIsOnFace % inTol % ckPoints.size() % distAv %
+                 aM2d.getLabel()
         );
 
         tagged = tagged + 1;
@@ -222,9 +282,10 @@ void bVOAnalyticGeometryToFace::preUpdate(void)
       {
         dt__debug(
           preUpdate(),
-          << logMe::dtFormat("Skip: midDist = %f, midIsOnFace = %d, %d == %d "
-             ) % midDist %
-                 midIsOnFace % inTol % ckPoints.size()
+          << logMe::dtFormat("Skip: midDist = %f, midIsOnFace = %d, %d == %d, "
+                             "distAv = %f, label = %s") %
+                 midDist % midIsOnFace % inTol % ckPoints.size() % distAv %
+                 aM2d.getLabel()
         );
       }
     }
