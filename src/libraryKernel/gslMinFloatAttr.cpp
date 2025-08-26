@@ -114,8 +114,9 @@ bool gslMinFloatAttr::perform()
   converged(false);
   dtInt status;
   dtReal gF = std::numeric_limits<dtReal>::max();
-  logContainer<gslMinFloatAttr> logC(logDEBUG, "perform()");
-  logC() << "Using: " << ptrAttribute()->virtualClassName() << std::endl;
+  logContainer<gslMinFloatAttr> logC(logDDEBUG, "perform()");
+  logC() << "Using: " << ptrAttribute()->virtualClassName() << std::endl
+         << "extraInfo: " << this->extraInfo() << std::endl;
   dt__forAllIndex(guess(), jj)
   {
     try

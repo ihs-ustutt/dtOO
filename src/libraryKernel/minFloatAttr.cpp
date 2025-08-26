@@ -61,7 +61,8 @@ minFloatAttr::minFloatAttr(
   : _attribute(attribute), _dimension(guess.size()),
     _guess(::boost::assign::list_of(guess)), _step(step), _precision(precision),
     _maxIterations(maxIterations),
-    _result(std::vector(guess.size(), std::numeric_limits<dtReal>::infinity()))
+    _result(std::vector(guess.size(), std::numeric_limits<dtReal>::infinity())),
+    _extraInfo("")
 {
   _converged = false;
 }
@@ -81,7 +82,8 @@ minFloatAttr::minFloatAttr(
     _maxIterations(maxIterations),
     _result(::boost::assign::list_of(std::numeric_limits<dtReal>::infinity())(
       std::numeric_limits<dtReal>::infinity()
-    ))
+    )),
+    _extraInfo("")
 {
   _converged = false;
 }
@@ -98,7 +100,8 @@ minFloatAttr::minFloatAttr(
     _maxIterations(maxIterations),
     _result(::boost::assign::list_of(std::numeric_limits<dtReal>::infinity())(
       std::numeric_limits<dtReal>::infinity()
-    ))
+    )),
+    _extraInfo("")
 {
   _converged = false;
 }
@@ -120,7 +123,8 @@ minFloatAttr::minFloatAttr(
                                        infinity())(std::numeric_limits<
                                                    dtReal>::infinity())(
       std::numeric_limits<dtReal>::infinity()
-    ))
+    )),
+    _extraInfo("")
 {
   _converged = false;
 }
@@ -139,7 +143,8 @@ minFloatAttr::minFloatAttr(
                                        infinity())(std::numeric_limits<
                                                    dtReal>::infinity())(
       std::numeric_limits<dtReal>::infinity()
-    ))
+    )),
+    _extraInfo("")
 {
   _converged = false;
 }
@@ -155,7 +160,8 @@ minFloatAttr::minFloatAttr(
     _guess(::boost::assign::list_of(::boost::assign::list_of(guess))),
     _step(::boost::assign::list_of(step)), _precision(precision),
     _maxIterations(maxIterations),
-    _result(::boost::assign::list_of(std::numeric_limits<dtReal>::infinity()))
+    _result(::boost::assign::list_of(std::numeric_limits<dtReal>::infinity())),
+    _extraInfo("")
 {
   _converged = false;
 }
@@ -163,7 +169,7 @@ minFloatAttr::minFloatAttr(
 minFloatAttr::minFloatAttr(minFloatAttr const &orig)
   : _dimension(orig._dimension), _guess(orig._guess), _step(orig._step),
     _precision(orig._precision), _maxIterations(orig._maxIterations),
-    _converged(orig._converged), _result(orig._result)
+    _converged(orig._converged), _result(orig._result), _extraInfo("")
 {
 }
 
@@ -204,6 +210,13 @@ floatAtt const *const minFloatAttr::ptrAttribute(void) const
 }
 
 floatAtt *const minFloatAttr::ptrAttribute(void) { return _attribute.get(); }
+
+std::string const &minFloatAttr::extraInfo() const { return _extraInfo; }
+
+void minFloatAttr::extraInfo(std::string const &extraInfo)
+{
+  _extraInfo = extraInfo;
+}
 
 dt__C_addCloneForpVH(minFloatAttr);
 } // namespace dtOO

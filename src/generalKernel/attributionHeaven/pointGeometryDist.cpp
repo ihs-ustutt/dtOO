@@ -58,7 +58,7 @@ bool pointGeometryDist::outOfRange(::std::vector<dtReal> const &xx) const
         // out-of-range dimension is closed, so can handle
         if (_aG->isClosed(i))
         {
-          dt__warning(
+          dt__debug(
             outOfRange(),
             << "Dimension " << i << " is out-of-range, but geometry is closed."
           );

@@ -77,7 +77,7 @@ public:
   dtReal const &precision() const;
   bool const &converged() const;
   std::vector<dtReal> const &result() const;
-  // std::string const &lastStatus() const;
+  std::string const &extraInfo() const;
   dtInt const &dimension() const;
   dtInt const &maxIterations() const;
   std::vector<dtReal> const &step() const;
@@ -87,7 +87,7 @@ public:
   //
   void converged(bool const converged);
   void result(std::vector<dtReal> const result);
-  // void lastStatus(std::string const &lastStatus);
+  void extraInfo(std::string const &extraInfo);
   virtual bool perform() { return false; };
   floatAtt const *const ptrAttribute(void) const;
   floatAtt *const ptrAttribute(void);
@@ -100,7 +100,7 @@ private:
   dtInt const _maxIterations;
   bool _converged;
   std::vector<dtReal> _result;
-  //  std::string _lastStatus;
+  std::string _extraInfo;
   dt__pH(floatAtt) _attribute;
 };
 dt__H_addCloneForpVH(minFloatAttr);
