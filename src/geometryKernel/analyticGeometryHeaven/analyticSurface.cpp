@@ -200,7 +200,9 @@ dtPoint2 analyticSurface::reparamOnFace(dtPoint3 const &ppXYZ) const
   dtPoint2 ppUV = _dtS->reparam(ppXYZ);
   dtPoint3 ppXYZReparam = getPoint(ppUV.x(), ppUV.y());
 
-  analyticGeometry::inXYZTolerance(ppXYZ, ppXYZReparam);
+  dt__throwIf(
+    !analyticGeometry::inXYZTolerance(ppXYZ, ppXYZReparam), reparamOnFace()
+  );
 
   return ppUV;
 }
