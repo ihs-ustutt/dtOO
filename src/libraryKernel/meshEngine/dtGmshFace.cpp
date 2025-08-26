@@ -22,7 +22,6 @@ License
 #include "dtGmshRegion.h"
 #include "dtGmshVertex.h"
 #include "dtOMMesh.h"
-#include <logMe/dtMacros.h>
 #include <analyticGeometryHeaven/aGBuilder/uv_map2dTo3dClosestPointToPoint.h>
 #include <analyticGeometryHeaven/map1dTo3d.h>
 #include <analyticGeometryHeaven/map2dTo3d.h>
@@ -37,8 +36,8 @@ License
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <list>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
-#include <map>
 #include <progHelper.h>
 
 #define __caCThis const_cast<dtGmshFace *>(this)
