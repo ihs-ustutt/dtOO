@@ -50,6 +50,7 @@ uv_map2dTo3dClosestPointToPoint::uv_map2dTo3dClosestPointToPoint(
     dtPoint2(0.001, 0.001),
     staticPropertiesHandler::getInstance()->getOptionFloat("xyz_resolution")
   );
+  md.extraInfo(m2d->getLabel());
   md.perform();
   _closestUV = m2d->uv_percent(dtPoint2(md.result()[0], md.result()[1]));
   _distance = dtLinearAlgebra::distance(m2d->getPoint(_closestUV), pXYZ);
