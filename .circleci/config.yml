@@ -70,7 +70,7 @@ jobs:
       - run:
           name: Build and Push Docker image
           command: |
-            touch /testfile
+            touch ~/testfile
             export MYVAR=name
       - persist_to_workspace:
           root: /
@@ -86,7 +86,7 @@ jobs:
       - run:
           name: build-test-2-ls
           command: |
-            ls /
+            ls ~
             echo "$MYVAR"
 workflows:
   wf-build:
