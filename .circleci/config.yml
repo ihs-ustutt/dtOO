@@ -83,7 +83,7 @@ jobs:
               --progress=plain \
               -t ${DOCKER_USERNAME}/dirty:${GIT_REV} \
               -t ${DOCKER_USERNAME}/dirty:latest \
-              --target base-clone  .
+              --target base  .
       - run:
           name: Save image as tar
           command: |
@@ -110,9 +110,29 @@ jobs:
           command: |
             docker image ls
       - run:
-          name: Run image
+          name: Run base test
           command: |
-            docker run atismer/dirty:latest ls
+            docker run atismer/dirty:latest -w /dtOO/build ctest --output-on-failure -L base
+   test-dirty2:
+    docker:
+      - image: "cimg/base:current"
+    resource_class: large
+    steps:
+      - attach_workspace:
+          at: .
+      - setup_remote_docker
+      - run:
+          name: Load image
+          command: |
+            docker image load < "images/dirty-${CIRCLE_SHA1}"
+      - run:
+          name: Inspect loaded image
+          command: |
+            docker image ls
+      - run:
+          name: Run base test
+          command: |
+            docker run atismer/dirty:latest -w /dtOO/build ctest --output-on-failure -L gcc-$(${CC} -dumpversion)
 workflows:
   wf-build:
     jobs:
@@ -120,4 +140,6 @@ workflows:
       - test-dirty:
           requires:
             - build-dirty
-
+      - test-dirty2:
+          requires:
+            - build-dirty

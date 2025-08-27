@@ -21,7 +21,7 @@ ARG NCPU=4
 WORKDIR /dtOO
 RUN mkdir build
 
-FROM base-clone AS base-build
+FROM base-clone AS base
 COPY --from=repo /dtOO /dtOO
 SHELL ["/bin/bash", "-c", "-l" ]
 
@@ -33,13 +33,14 @@ RUN cmake \
   -DDTOO_OCC_78=ON \
   ..
 RUN make -j ${NCPU} install
-
-FROM base-build AS base
-COPY --from=repo /dtOO /dtOO
-SHELL ["/bin/bash", "-c", "-l" ]
-
-RUN ctest --output-on-failure -L base
-RUN ctest --output-on-failure -L gcc-$(${CC} -dumpversion)
-
 ENV PYTHONPATH=/dtOO-install/tools:/dtOO-install/scripts/python
 WORKDIR /dtOO/demo/
+
+#FROM base-test AS base
+#COPY --from=repo /dtOO /dtOO
+#SHELL ["/bin/bash", "-c", "-l" ]
+#
+#WORKDIR /dtOO/build
+#RUN ctest --output-on-failure -L base
+#RUN ctest --output-on-failure -L gcc-$(${CC} -dumpversion)
+
