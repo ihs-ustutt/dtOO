@@ -113,7 +113,7 @@ jobs:
           name: Run base test
           command: |
             docker run atismer/dirty:latest -w /dtOO/build ctest --output-on-failure -L base
-   test-dirty2:
+  test-dirty2:
     docker:
       - image: "cimg/base:current"
     resource_class: large
