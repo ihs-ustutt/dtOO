@@ -63,7 +63,7 @@ jobs:
   build-dirty:
     docker:
       - image: "cimg/base:current"
-    resource_class: large
+    resource_class: x-large
     steps:
       - checkout
       - setup_remote_docker

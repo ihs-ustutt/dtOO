@@ -16,7 +16,7 @@ ARG CBASE=
 COPY --from=repo /dtOO${CBASE} /dtOO
 SHELL ["/bin/bash", "-c", "-l" ]
 
-ARG NCPU=4
+ARG NCPU=8
 
 WORKDIR /dtOO
 RUN mkdir build
