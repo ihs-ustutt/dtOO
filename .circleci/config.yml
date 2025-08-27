@@ -80,8 +80,6 @@ jobs:
     docker:
       - image: "cimg/base:current"
     resource_class: large
-    requires:
-      - build-test-1
     steps:
       - attach_workspace:
           at: /
@@ -94,4 +92,7 @@ workflows:
   wf-build:
     jobs:
       - build-test-1
-      - build-test-2
+      - build-test-2:
+          requires:
+            - build-test-1
+
