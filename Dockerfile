@@ -11,7 +11,7 @@ RUN git submodule init
 RUN git submodule update
 COPY . /dtOO.local
 
-FROM ${CONTAINER}:${TAG} AS base
+FROM ${CONTAINER}:${TAG} AS base-clone
 ARG CBASE=
 COPY --from=repo /dtOO${CBASE} /dtOO
 SHELL ["/bin/bash", "-c", "-l" ]
@@ -21,6 +21,10 @@ ARG NCPU=4
 WORKDIR /dtOO
 RUN mkdir build
 
+FROM base-clone AS base-build
+COPY --from=repo /dtOO /dtOO
+SHELL ["/bin/bash", "-c", "-l" ]
+
 WORKDIR /dtOO/build
 RUN cmake \
   -DCMAKE_INSTALL_PREFIX=${DTOO_EXTERNLIBS} \
@@ -29,6 +33,11 @@ RUN cmake \
   -DDTOO_OCC_78=ON \
   ..
 RUN make -j ${NCPU} install
+
+FROM base-build AS base
+COPY --from=repo /dtOO /dtOO
+SHELL ["/bin/bash", "-c", "-l" ]
+
 RUN ctest --output-on-failure -L base
 RUN ctest --output-on-failure -L gcc-$(${CC} -dumpversion)
 
