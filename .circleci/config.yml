@@ -112,7 +112,7 @@ jobs:
       - run:
           name: Run base test
           command: |
-            docker run atismer/dirty:latest -w /dtOO/build ctest --output-on-failure -L base
+            docker run -w /dtOO/build atismer/dirty:latest ctest --output-on-failure -L base
   test-dirty2:
     docker:
       - image: "cimg/base:current"
@@ -132,7 +132,7 @@ jobs:
       - run:
           name: Run base test
           command: |
-            docker run atismer/dirty:latest -w /dtOO/build ctest --output-on-failure -L gcc-$(${CC} -dumpversion)
+            docker run -w /dtOO/build atismer/dirty:latest ctest --output-on-failure -L gcc-$(${CC} -dumpversion)
 workflows:
   wf-build:
     jobs:
