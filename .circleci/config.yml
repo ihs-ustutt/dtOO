@@ -100,6 +100,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - setup_remote_docker
       - run:
           name: Load image
           command: |
@@ -109,9 +110,9 @@ jobs:
           command: |
             docker image ls
       - run:
-          name: Use image
+          name: Run image
           command: |
-            echo "TODO: run container with image"            
+            docker run atismer/dirty:latest ls
 workflows:
   wf-build:
     jobs:
