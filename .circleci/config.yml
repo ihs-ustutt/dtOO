@@ -73,9 +73,9 @@ jobs:
             touch /testfile
             export MYVAR=name
       - persist_to_workspace:
-          root: .
+          root: /
           paths:
-            - /
+            - ./
   build-test-2:
     docker:
       - image: "cimg/base:current"
