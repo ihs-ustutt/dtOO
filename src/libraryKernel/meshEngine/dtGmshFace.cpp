@@ -36,8 +36,8 @@ License
 #include <interfaceHeaven/staticPropertiesHandler.h>
 #include <interfaceHeaven/twoDArrayHandling.h>
 #include <list>
+#include <logMe/dtMacros.h>
 #include <logMe/logMe.h>
-#include <map>
 #include <progHelper.h>
 
 #define __caCThis const_cast<dtGmshFace *>(this)
@@ -224,8 +224,20 @@ SPoint2 dtGmshFace::reparamOnFace(::GVertex const *gv) const
 
 void dtGmshFace::setMap2dTo3d(map2dTo3d const *const base)
 {
+  dt__throwIf(!vertices_uv.empty(), setMap2dTo3d());
   _geomType = ::GEntity::GeomType::ParametricSurface;
   _mm.reset(base->clone());
+  dt__forAllRefAuto(this->vertices(), vertex)
+  {
+    vertices_uv.push_back(_mm->reparamOnFace(dtGmshModel::extractPosition(vertex
+    )));
+  }
+}
+
+std::vector<dtPoint2> const &dtGmshFace::getVerticesUV(void)
+{
+  dt__throwIf(vertices_uv.empty(), getVerticesUV());
+  return vertices_uv;
 }
 
 map2dTo3d const *dtGmshFace::getMap2dTo3d(void) const { return _mm.get(); }

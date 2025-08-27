@@ -28,7 +28,7 @@ namespace dtOO {
 std::string NowTime();
 std::string NowDateAndTime();
 
-enum TLogLevel { logERROR = 0, logWARNING, logINFO, logDEBUG };
+enum TLogLevel { logERROR = 0, logWARNING, logINFO, logDEBUG, logDDEBUG };
 
 template <typename T> class logBase {
 public:
@@ -96,12 +96,14 @@ template <typename T> TLogLevel &logBase<T>::ReportingLevel(void)
 
 template <typename T> std::string logBase<T>::ToString(TLogLevel level)
 {
-  static const char *const buffer[] = {"E", "W", "I", "D"};
+  static const char *const buffer[] = {"E", "W", "I", "d", "D"};
   return buffer[level];
 }
 
 template <typename T> TLogLevel logBase<T>::FromString(const std::string &level)
 {
+  if (level == "DDEBUG")
+    return logDDEBUG;
   if (level == "DEBUG")
     return logDEBUG;
   if (level == "INFO")

@@ -196,13 +196,13 @@ class FILELog : public logBase<Output2FILE> {};
 #define dt__forceInfo(functionname, message)                                   \
   dtOO::FILELog().Get(dtOO::logINFO)                                           \
     << "[ " << className() << "::" #functionname << " ]" << std::endl message;
-#define dt__info(functionname, message)                                        \
-  if (dtOO::logINFO > dtOO::FILELog::ReportingLevel())                         \
+#define dt__ddebug(functionname, message)                                      \
+  if (dtOO::logDDEBUG > dtOO::FILELog::ReportingLevel())                       \
   {                                                                            \
   }                                                                            \
   else                                                                         \
   {                                                                            \
-    dtOO::FILELog().Get(dtOO::logINFO)                                         \
+    dtOO::FILELog().Get(dtOO::logDDEBUG)                                       \
       << "[ " << className() << "::" #functionname << " ]"                     \
       << std::endl message;                                                    \
   }
@@ -213,6 +213,16 @@ class FILELog : public logBase<Output2FILE> {};
   else                                                                         \
   {                                                                            \
     dtOO::FILELog().Get(dtOO::logDEBUG)                                        \
+      << "[ " << className() << "::" #functionname << " ]"                     \
+      << std::endl message;                                                    \
+  }
+#define dt__info(functionname, message)                                        \
+  if (dtOO::logINFO > dtOO::FILELog::ReportingLevel())                         \
+  {                                                                            \
+  }                                                                            \
+  else                                                                         \
+  {                                                                            \
+    dtOO::FILELog().Get(dtOO::logINFO)                                         \
       << "[ " << className() << "::" #functionname << " ]"                     \
       << std::endl message;                                                    \
   }

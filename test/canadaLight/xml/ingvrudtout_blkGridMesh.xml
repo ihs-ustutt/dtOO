@@ -292,6 +292,8 @@
 				{aS_shroud_tip}
 			"
       increase_tolerance="5."
+      disable_midPoint="true"
+      distance_checkpoints="0.0"
       facesPerEntry="
       {2}{2}{1}
       {2}{2}

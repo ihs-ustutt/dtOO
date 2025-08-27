@@ -32,7 +32,7 @@
 		<option name="map1dTo3d_deltaPer"           value="0.01"/>
 		<option name="map2dTo3d_deltaPer"           value="0.01"/>
 		<option name="map3dTo3d_deltaPer"           value="0.01"/>
-    <option name="logLevel"                     value="99"/>
+    <option name="logLevel"                     value="2"/>
 		<option name="isEqualExtendCheck"           value="false"/>
 	</staticProperties>	
 
