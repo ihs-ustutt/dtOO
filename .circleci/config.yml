@@ -88,7 +88,7 @@ jobs:
           name: Save image as tar
           command: |
             mkdir -p images
-            docker image save -o "images/dirty-${GIT_REV}" "${DOCKER_USERNAME}/dirty:${GIT_REV}"
+            docker image save -o "images/dirty-${CIRCLE_SHA1}" "atismer/dirty:latest"
       - persist_to_workspace:
           root: .
           paths:
@@ -103,7 +103,7 @@ jobs:
       - run:
           name: Load image
           command: |
-            docker image load < "images/dirty-${GIT_REV}"
+            docker image load < "images/dirty-${CIRCLE_SHA1}"
       - run:
           name: Inspect loaded image
           command: |
