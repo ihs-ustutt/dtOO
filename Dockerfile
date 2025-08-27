@@ -22,7 +22,29 @@ WORKDIR /dtOO
 RUN mkdir build
 
 FROM base-clone AS base
-COPY --from=repo /dtOO /dtOO
+#COPY --from=base-clone /bin             /bin
+#COPY --from=base-clone /boot            /boot
+#COPY --from=base-clone /dev             /dev
+#COPY --from=base-clone /dtOO-install    /dtOO-install
+#COPY --from=base-clone /etc             /etc
+#COPY --from=base-clone /foamFine        /foamFine
+#COPY --from=base-clone /home            /home
+#COPY --from=base-clone /lib             /lib
+#COPY --from=base-clone /lib64           /lib64
+#COPY --from=base-clone /mnt             /mnt
+#COPY --from=base-clone /opt             /opt
+#COPY --from=base-clone /proc            /proc
+#COPY --from=base-clone /root            /root
+#COPY --from=base-clone /run             /run
+#COPY --from=base-clone /sbin            /sbin
+#COPY --from=base-clone /selinux         /selinux
+#COPY --from=base-clone /srv             /srv
+#COPY --from=base-clone /sys             /sys
+#COPY --from=base-clone /tmp             /tmp
+#COPY --from=base-clone /usr             /usr
+#COPY --from=base-clone /var             /var
+#COPY --from=base-clone /dtOO            /dtOO
+
 SHELL ["/bin/bash", "-c", "-l" ]
 
 WORKDIR /dtOO/build
