@@ -60,8 +60,38 @@ jobs:
             docker push \
               --all-tags \
               ${DOCKER_USERNAME}/dtoo-ubuntu
+  build-test-1:
+    docker:
+      - image: "cimg/base:current"
+    resource_class: large
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build and Push Docker image
+          command: |
+            touch /testfile
+            export MYVAR=name
+      - persist_to_workspace:
+          root: .
+          paths:
+            - /
+  build-test-2:
+    docker:
+      - image: "cimg/base:current"
+    resource_class: large
+    requires:
+      - build-test-1
+    steps:
+      - attach_workspace:
+          at: /
+      - run:
+          name: build-test-2-ls
+          command: |
+            ls /
+            echo "$MYVAR"
 workflows:
   wf-build:
     jobs:
-      - build
-      - build-ubuntu
+      - build-test-1
+      - build-test-2
