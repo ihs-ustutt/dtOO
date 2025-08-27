@@ -60,7 +60,7 @@ jobs:
             docker push \
               --all-tags \
               ${DOCKER_USERNAME}/dtoo-ubuntu
-  build-test-1:
+  build-dirty:
     docker:
       - image: "cimg/base:current"
     resource_class: large
@@ -68,31 +68,55 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Build and Push Docker image
+          name: Build dirty image
           command: |
-            touch ~/testfile
-            export MYVAR=name
+            GIT_REV=`git rev-parse HEAD`
+            GIT_DESC=`git describe --tags`
+            GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+            GIT_THIRDPARTY_SHA=`git ls-tree HEAD dtOO-ThirdParty | awk '{print $3}'`
+            DOCKER_TAG=unstable
+            if [[ "$GIT_BRANCH" == "main" ]]; then DOCKER_TAG=stable ; fi
+            docker build \
+              --build-arg "TAG=${GIT_THIRDPARTY_SHA}" \
+              --build-arg "GIT_REV=${GIT_REV}" \
+              --build-arg "CONTAINER=atismer/dtoo-base-ubuntu" \
+              --progress=plain \
+              -t ${DOCKER_USERNAME}/dirty:${GIT_REV} \
+              -t ${DOCKER_USERNAME}/dirty:latest \
+              --target repo  .
+      - run:
+          name: Save image as tar
+          command: |
+            mkdir -p images
+            docker image save -o "images/dirty-${GIT_REV}" "${DOCKER_USERNAME}/dirty:${GIT_REV}"
       - persist_to_workspace:
-          root: ~/.
+          root: .
           paths:
-            - ./.
-  build-test-2:
+            - images
+  test-dirty:
     docker:
       - image: "cimg/base:current"
     resource_class: large
     steps:
       - attach_workspace:
-          at: ~/.
+          at: .
       - run:
-          name: build-test-2-ls
+          name: Load image
           command: |
-            ls ~
-            echo "$MYVAR"
+            docker image load < "images/dirty-${GIT_REV}"
+      - run:
+          name: Inspect loaded image
+          command: |
+            docker image ls
+      - run:
+          name: Use image
+          command: |
+            echo "TODO: run container with image"            
 workflows:
   wf-build:
     jobs:
-      - build-test-1
-      - build-test-2:
+      - build-dirty
+      - test-dirty:
           requires:
-            - build-test-1
+            - build-dirty
 
