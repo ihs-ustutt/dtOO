@@ -115,7 +115,7 @@ void bVODumpModel::preUpdate(void)
                 gm->getPhysicalString(aF) % aF
            << std::endl
            << "  edges = " << aF->edges() << std::endl
-           << "  orientations = " << aF->orientations() << std::endl
+           << "  edgeOrientations = " << aF->edgeOrientations() << std::endl
            << "  regions = " << aF->regions() << std::endl
            << "  fullPhysicalList = [" << std::endl;
     dt__forAllRefAuto(gm->getFullPhysicalList(aF), aString)

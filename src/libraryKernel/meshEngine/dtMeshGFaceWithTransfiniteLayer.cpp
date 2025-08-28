@@ -139,7 +139,7 @@ void dtMeshGFaceWithTransfiniteLayer::operator()(dtGmshFace *dtgf)
   // order orientation and edge
   //
   std::vector<::GEdge *> edges = dtgf->edges();
-  std::vector<dtInt> ori = dtgf->orientations();
+  std::vector<dtInt> ori = dtgf->edgeOrientations();
   std::vector<std::pair<int, ::GEdge *>> ordered(4);
   if (config().lookup<dtInt>("_direction") == 0)
   {
