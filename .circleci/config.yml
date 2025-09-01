@@ -24,16 +24,12 @@ jobs:
               -t ${DOCKER_USERNAME}/dtoo-opensuse:${GIT_REV} \
               -t ${DOCKER_USERNAME}/dtoo-opensuse:latest \
               -t ${DOCKER_USERNAME}/dtoo-opensuse:${GIT_DESC} \
-              -t ${DOCKER_USERNAME}/dtoo-opensuse:${DOCKER_TAG} \
-              -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} \
-              -t ${DOCKER_USERNAME}/dtoo:latest \
-              -t ${DOCKER_USERNAME}/dtoo:${GIT_DESC} \
-              -t ${DOCKER_USERNAME}/dtoo:${DOCKER_TAG} .
+              -t ${DOCKER_USERNAME}/dtoo-opensuse:${DOCKER_TAG} .
             echo "$DOCKER_PASSWORD" \
               | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker push \
               --all-tags \
-              ${DOCKER_USERNAME}/dtoo
+              ${DOCKER_USERNAME}/dtoo-opensuse
   build-ubuntu:
     docker:
       - image: "cimg/base:current"
@@ -91,7 +87,6 @@ jobs:
           name: Test Docker Image
           command: |
             GIT_REV=`git rev-parse HEAD`
-            GIT_REV=latest
             docker run \
               -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
               bash --login -c \
