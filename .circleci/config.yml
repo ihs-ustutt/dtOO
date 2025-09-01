@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  build-opensuse:
     docker:
       - image: "cimg/base:current"
     resource_class: large
@@ -21,6 +21,10 @@ jobs:
               --build-arg "TAG=${GIT_THIRDPARTY_SHA}" \
               --build-arg "GIT_REV=${GIT_REV}" \
               --progress=plain \
+              -t ${DOCKER_USERNAME}/dtoo-opensuse:${GIT_REV} \
+              -t ${DOCKER_USERNAME}/dtoo-opensuse:latest \
+              -t ${DOCKER_USERNAME}/dtoo-opensuse:${GIT_DESC} \
+              -t ${DOCKER_USERNAME}/dtoo-opensuse:${DOCKER_TAG} \
               -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} \
               -t ${DOCKER_USERNAME}/dtoo:latest \
               -t ${DOCKER_USERNAME}/dtoo:${GIT_DESC} \
@@ -63,14 +67,14 @@ jobs:
   fakebuild:
     docker:
       - image: "cimg/base:current"
-    resource_class: large
+    resource_class: small
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build and Push Docker image
           command: |
-            echo "Fast build"
+            echo "Fake build"
   test:
     docker:
       - image: "cimg/base:current"
@@ -96,12 +100,13 @@ jobs:
 workflows:
   wf-build:
     jobs:
-      #- build
-      #- build-ubuntu
-      - fakebuild
+      - build-opensuse
+      - build-ubuntu
+      #- fakebuild
       - test:
           requires:
-            - fakebuild
+            - build-opensuse
+            - build-ubuntu
           matrix: 
             parameters:
               tregs: [
