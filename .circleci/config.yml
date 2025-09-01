@@ -78,6 +78,8 @@ jobs:
     parameters:
       tregs:
         type: string
+      oss:
+        type: string
     steps:
       - checkout
       - setup_remote_docker
