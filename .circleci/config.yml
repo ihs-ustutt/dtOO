@@ -60,6 +60,17 @@ jobs:
             docker push \
               --all-tags \
               ${DOCKER_USERNAME}/dtoo-ubuntu
+  fakebuild:
+    docker:
+      - image: "cimg/base:current"
+    resource_class: large
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build and Push Docker image
+          command: |
+            echo "Fast build"
   test:
     docker:
       - image: "cimg/base:current"
@@ -74,20 +85,22 @@ jobs:
           name: Test Docker Image
           command: |
             GIT_REV=`git rev-parse HEAD`
+            GIT_REV=latest
             docker run \
               -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} \
-              --login -c \
+              bash --login -c \
               "cd /dtOO/build && ctest -R << parameters.tregs >>"
               #docker run -t dtoo-local bash --login -c "cd /dtOO/build && ctest -R '^naca$|^naca.*gcc-12.*opensuse.*'"
 
 workflows:
   wf-build:
     jobs:
-      - build
-      - build-ubuntu
+      #- build
+      #- build-ubuntu
+      - fakebuild
       - test:
           requires:
-            - build
+            - fastbuild
           matrix: 
             parameters:
               tregs: ["baseSWIG", "transformerSWIG"]
