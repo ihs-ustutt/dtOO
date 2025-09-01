@@ -64,6 +64,9 @@ jobs:
     docker:
       - image: "cimg/base:current"
     resource_class: large
+    parameters:
+      tregs:
+        type: string
     steps:
       - checkout
       - setup_remote_docker
