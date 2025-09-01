@@ -90,7 +90,6 @@ jobs:
               -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} \
               bash --login -c \
               "cd /dtOO/build && ctest -R << parameters.tregs >>"
-              #docker run -t dtoo-local bash --login -c "cd /dtOO/build && ctest -R '^naca$|^naca.*gcc-12.*opensuse.*'"
 
 workflows:
   wf-build:
@@ -103,4 +102,9 @@ workflows:
             - fakebuild
           matrix: 
             parameters:
-              tregs: ["baseSWIG", "transformerSWIG"]
+              tregs: [
+                "baseSWIG", 
+                "transformerSWIG", 
+                "analyticGeometrySWIG", 
+                "^naca$|^naca.*opensuse.*"
+              ]
