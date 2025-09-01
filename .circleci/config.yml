@@ -60,8 +60,31 @@ jobs:
             docker push \
               --all-tags \
               ${DOCKER_USERNAME}/dtoo-ubuntu
+  test:
+    docker:
+      - image: "cimg/base:current"
+    resource_class: large
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Test Docker Image
+          command: |
+            GIT_REV=`git rev-parse HEAD`
+            docker run \
+              -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} \
+              --login -c \
+              "cd /dtOO/build && ctest -R << parameters.tregs >>"
+              #docker run -t dtoo-local bash --login -c "cd /dtOO/build && ctest -R '^naca$|^naca.*gcc-12.*opensuse.*'"
+
 workflows:
   wf-build:
     jobs:
       - build
       - build-ubuntu
+      - test:
+          requires:
+            - build
+          matrix: 
+            parameters:
+              tregs: ["baseSWIG", "transformerSWIG"]
