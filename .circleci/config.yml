@@ -100,7 +100,7 @@ workflows:
       - fakebuild
       - test:
           requires:
-            - fastbuild
+            - fakebuild
           matrix: 
             parameters:
               tregs: ["baseSWIG", "transformerSWIG"]
