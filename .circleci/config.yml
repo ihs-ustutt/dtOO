@@ -87,9 +87,9 @@ jobs:
             GIT_REV=`git rev-parse HEAD`
             GIT_REV=latest
             docker run \
-              -t ${DOCKER_USERNAME}/dtoo:${GIT_REV} \
+              -t ${DOCKER_USERNAME}/dtoo-<< parameters.oss >>:${GIT_REV} \
               bash --login -c \
-              "cd /dtOO/build && ctest -R << parameters.tregs >>"
+              "cd /dtOO/build && ctest -R '^<< parameters.tregs >>$|^<< parameters.tregs >>.*<< parameters.oss >>.*'"
 
 workflows:
   wf-build:
@@ -106,5 +106,21 @@ workflows:
                 "baseSWIG", 
                 "transformerSWIG", 
                 "analyticGeometrySWIG", 
-                "'^naca$|^naca.*opensuse.*'"
+                "constValueSWIG",
+                "canadaLight",
+                "dtClusteredSingletonState",
+                "partRotatingMap2dTo3d",
+                "pyDtOO-dtField",
+                "write-runData",
+                "pyDtOO-doctest",
+                "interTransMesh",
+                "floatAtt",
+                "naca",
+                "tistos",
+                "meshSimpleSurface",
+                "meshPrismBlock"
+              ]
+              oss: [
+                'ubuntu',
+                'opensuse'
               ]
