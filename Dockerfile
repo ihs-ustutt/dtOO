@@ -1,4 +1,4 @@
-ARG CONTAINER=atismer/dtoo-base
+ARG CONTAINER=atismer/dtoo-base-opensuse
 ARG TAG=latest
 
 FROM alpine/git AS repo
