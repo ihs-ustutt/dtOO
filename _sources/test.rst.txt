@@ -16,3 +16,9 @@ Minimization ``floatAtt``
 
 .. automodule:: dtOO.test.floatAtt.floatAtt
     :members:
+
+Simple Axial Runner ``simpleAxialRunner``
+=========================================
+
+.. automodule:: dtOO.test.simpleAxialRunner.simpleAxialRunner
+    :members:
