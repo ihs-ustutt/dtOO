@@ -157,12 +157,12 @@ Range<double> dtGmshFace::parBounds(int i) const
   }
 }
 
-Pair<SVector3, SVector3> dtGmshFace::firstDer(const SPoint2 &param) const
+std::pair<SVector3, SVector3> dtGmshFace::firstDer(const SPoint2 &param) const
 {
   dtVector3 ddU = _mm->firstDerU((dtReal)param.x(), (dtReal)param.y());
   dtVector3 ddV = _mm->firstDerV((dtReal)param.x(), (dtReal)param.y());
 
-  return Pair<SVector3, SVector3>(
+  return std::pair<SVector3, SVector3>(
     SVector3((double)ddU.x(), (double)ddU.y(), (double)ddU.z()),
     SVector3((double)ddV.x(), (double)ddV.y(), (double)ddV.z())
   );

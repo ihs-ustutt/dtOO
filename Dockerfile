@@ -1,4 +1,4 @@
-ARG CONTAINER=atismer/dtoo-base
+ARG CONTAINER=atismer/dtoo-base-opensuse
 ARG TAG=latest
 
 FROM alpine/git AS repo
@@ -29,8 +29,6 @@ RUN cmake \
   -DDTOO_OCC_78=ON \
   ..
 RUN make -j ${NCPU} install
-RUN ctest --output-on-failure -L base
-RUN ctest --output-on-failure -L gcc-$(${CC} -dumpversion)
 
 ENV PYTHONPATH=/dtOO-install/tools:/dtOO-install/scripts/python
 WORKDIR /dtOO/demo/

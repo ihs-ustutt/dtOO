@@ -43,7 +43,7 @@ dtMeshTransfinite2DOperator::computeEdgeLoops(dtGmshFace *gf)
   dt__throwIf(corners.size() != 4, computeEdgeLoops());
 
   std::vector<GEdge *> edges = gf->edges();
-  std::vector<int> ori = gf->orientations();
+  std::vector<int> ori = gf->edgeOrientations();
   std::vector<GEdge *>::iterator it = edges.begin();
   std::vector<int>::iterator ito = ori.begin();
 

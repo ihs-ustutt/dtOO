@@ -55,7 +55,7 @@ public:
   void setGeomType(::GEntity::GeomType const &gT);
   virtual Range<double> parBounds(int i) const;
   virtual GPoint point(double par1, double par2) const;
-  virtual Pair<SVector3, SVector3> firstDer(const SPoint2 &param) const;
+  virtual std::pair<SVector3, SVector3> firstDer(const SPoint2 &param) const;
   virtual void secondDer(
     const SPoint2 &param, SVector3 &dudu, SVector3 &dvdv, SVector3 &dudv
   ) const;
