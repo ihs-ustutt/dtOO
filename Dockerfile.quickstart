@@ -1,4 +1,4 @@
-ARG CONTAINER=atismer/dtoo
+ARG CONTAINER=atismer/dtoo-opensuse
 ARG TAG=stable
 
 FROM ${CONTAINER}:${TAG}
